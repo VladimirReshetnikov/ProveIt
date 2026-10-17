@@ -1,0 +1,520 @@
+{
+  "scope": "Additive independent source/proof reviews plus root maintained placement/default preparation. Original successful evidence unchanged; no packaging proof build. No child publication review inferred.",
+  "source_first": {
+    "path": "/tmp/zfc-shift-cancellation/child-source-first-review.json",
+    "sha256": "cb8993e184f962fbc43bad4bfd4be28bcd0ff465cf7a25e5602ed36d6bd83e0f",
+    "original_json": "{\n  \"status\": \"CLEAN_READ_ONLY_SOURCE_FIRST_NOT_KERNEL_VERIFIED\",\n  \"defects\": [],\n  \"source\": {\n    \"path\": \"/tmp/zfc-shift-cancellation/sources/ZFCinPA/ModelCodedShiftCancellation.lean\",\n    \"sha256\": \"ab8b72fb2516e95c97ca6a5d26f73a4ae9f721941c15fc9c3c49f5fbf4582c06\"\n  },\n  \"design\": {\n    \"path\": \"/tmp/zfc-shift-cancellation/shift-buffer-design.md\",\n    \"sha256\": \"30b6f9713ea25766e43fc1ebf0ab01ba0169746ad9bdb0c8380ff72c8337b4f8\"\n  },\n  \"snapshots\": [\n    {\n      \"path\": \"/tmp/zfc-shift-cancellation/child-source-first-snapshots/shift-buffer-design.md\",\n      \"sha256\": \"30b6f9713ea25766e43fc1ebf0ab01ba0169746ad9bdb0c8380ff72c8337b4f8\"\n    },\n    {\n      \"path\": \"/tmp/zfc-shift-cancellation/child-source-first-snapshots/ModelCodedShiftCancellation.lean\",\n      \"sha256\": \"ab8b72fb2516e95c97ca6a5d26f73a4ae9f721941c15fc9c3c49f5fbf4582c06\"\n    }\n  ],\n  \"source_lines\": 57,\n  \"findings\": [\n    \"unaryView retains the raw code of a bound-closed Formula while raising its admitted bound-variable arity from0 to1. The checked unused-slot substitution law returns p at every internal free label, and the checked free_formula law identifies its free operation with p.shift.\",\n    \"cancelShift constructs an actual TProof via TProof.all on the vacuous unary view followed by specialize at free0. The Foundation all rule requires a proof of phi.free in the same InternalTheory; no extra arbitrary free-context generalization premise is introduced.\",\n    \"cancelShiftN is external Nat recursion over actual proof constructors. provable_shift_iff and provable_shiftN_iff have correct directions, with TProof.shift for the forward shift direction. All formula codes and free parameters remain arbitrary internal values.\",\n    \"The buffer proposal correctly identifies the obstruction in a naive K-family recursion: a source SHIFT needs a predecessor buffer. Fixed external proof-depth budgeting allows ALL child n+1 and SHIFT child n-1 while keeping sufficient buffer on strict child subproofs.\",\n    \"The future compiler still needs explicit family substitution/free/shift equations, actual proof callbacks at every axiom leaf and weakening, and predicate equality/congruence resources. The note explicitly retains these obligations and does not treat semantic arbitrary R or axiom membership as represented proofs.\",\n    \"No Collection theorem, general internal proof compilation, internal buffer iteration or PA endpoint is asserted. The source remains uncompiled in this review.\"\n  ],\n  \"foundation_api\": {\n    \"path\": \"/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Typed.lean\",\n    \"sha256\": \"4cf3493c7437280c3e6ae9151e6f3bdecd865e9312e91b5744bdb5f3cfbdd594\"\n  },\n  \"reviewer_actions\": {\n    \"proof_builds\": 0,\n    \"compiler_invocations\": 0,\n    \"checker_invocations\": 0,\n    \"author_source_edits\": 0,\n    \"tracked_edits\": 0\n  }\n}\n",
+    "record": {
+      "status": "CLEAN_READ_ONLY_SOURCE_FIRST_NOT_KERNEL_VERIFIED",
+      "defects": [],
+      "source": {
+        "path": "/tmp/zfc-shift-cancellation/sources/ZFCinPA/ModelCodedShiftCancellation.lean",
+        "sha256": "ab8b72fb2516e95c97ca6a5d26f73a4ae9f721941c15fc9c3c49f5fbf4582c06"
+      },
+      "design": {
+        "path": "/tmp/zfc-shift-cancellation/shift-buffer-design.md",
+        "sha256": "30b6f9713ea25766e43fc1ebf0ab01ba0169746ad9bdb0c8380ff72c8337b4f8"
+      },
+      "snapshots": [
+        {
+          "path": "/tmp/zfc-shift-cancellation/child-source-first-snapshots/shift-buffer-design.md",
+          "sha256": "30b6f9713ea25766e43fc1ebf0ab01ba0169746ad9bdb0c8380ff72c8337b4f8"
+        },
+        {
+          "path": "/tmp/zfc-shift-cancellation/child-source-first-snapshots/ModelCodedShiftCancellation.lean",
+          "sha256": "ab8b72fb2516e95c97ca6a5d26f73a4ae9f721941c15fc9c3c49f5fbf4582c06"
+        }
+      ],
+      "source_lines": 57,
+      "findings": [
+        "unaryView retains the raw code of a bound-closed Formula while raising its admitted bound-variable arity from0 to1. The checked unused-slot substitution law returns p at every internal free label, and the checked free_formula law identifies its free operation with p.shift.",
+        "cancelShift constructs an actual TProof via TProof.all on the vacuous unary view followed by specialize at free0. The Foundation all rule requires a proof of phi.free in the same InternalTheory; no extra arbitrary free-context generalization premise is introduced.",
+        "cancelShiftN is external Nat recursion over actual proof constructors. provable_shift_iff and provable_shiftN_iff have correct directions, with TProof.shift for the forward shift direction. All formula codes and free parameters remain arbitrary internal values.",
+        "The buffer proposal correctly identifies the obstruction in a naive K-family recursion: a source SHIFT needs a predecessor buffer. Fixed external proof-depth budgeting allows ALL child n+1 and SHIFT child n-1 while keeping sufficient buffer on strict child subproofs.",
+        "The future compiler still needs explicit family substitution/free/shift equations, actual proof callbacks at every axiom leaf and weakening, and predicate equality/congruence resources. The note explicitly retains these obligations and does not treat semantic arbitrary R or axiom membership as represented proofs.",
+        "No Collection theorem, general internal proof compilation, internal buffer iteration or PA endpoint is asserted. The source remains uncompiled in this review."
+      ],
+      "foundation_api": {
+        "path": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Typed.lean",
+        "sha256": "4cf3493c7437280c3e6ae9151e6f3bdecd865e9312e91b5744bdb5f3cfbdd594"
+      },
+      "reviewer_actions": {
+        "proof_builds": 0,
+        "compiler_invocations": 0,
+        "checker_invocations": 0,
+        "author_source_edits": 0,
+        "tracked_edits": 0
+      }
+    }
+  },
+  "proof": {
+    "path": "/tmp/zfc-shift-cancellation/child-finalproof-review.json",
+    "sha256": "0285f33406bc200c4b8565e2f8360992881f2718baab24519f12d03b68da4760",
+    "original_json": "{\n  \"status\": \"CLEAN_READ_ONLY_FINAL_SHIFT_CANCELLATION_PROOF_REVIEW\",\n  \"defects\": [],\n  \"source\": {\n    \"path\": \"/tmp/zfc-shift-cancellation/sources/ZFCinPA/ModelCodedShiftCancellation.lean\",\n    \"sha256\": \"ab8b72fb2516e95c97ca6a5d26f73a4ae9f721941c15fc9c3c49f5fbf4582c06\"\n  },\n  \"audit\": {\n    \"path\": \"/tmp/zfc-shift-cancellation/Audit.lean\",\n    \"sha256\": \"c1a49827aef000737fbd582b8747c2de7b0ef4f6278992bf5ad7a204c788cc26\"\n  },\n  \"executed_guard\": {\n    \"path\": \"/tmp/zfc-shift-cancellation/check.py\",\n    \"sha256\": \"3d20c19c29344f48c65dc8788ec9ef26b94f5fdec69bb1129f2e3acc3a3b2b3d\"\n  },\n  \"proof\": {\n    \"path\": \"/tmp/zfc-shift-cancellation/run1/verification.json\",\n    \"sha256\": \"8c9cad55fc156c994c9da2186279d34682fa474fb509ea123268455cdbc44a15\"\n  },\n  \"prepared\": {\n    \"path\": \"/tmp/zfc-shift-cancellation/prepared/verification.json\",\n    \"sha256\": \"16d821702a8a8cb5b4c8044ec0234cf38c4ac39b7afe6b8620a9dd69e9024e8d\"\n  },\n  \"identities\": {\n    \"path\": \"/tmp/zfc-shift-cancellation/child-proof-identities.json\",\n    \"sha256\": \"5d8b3ed5234890c057679b9ec092c5de3bf4a0209010c06d53510c316264c87d\"\n  },\n  \"hash_comparisons\": 219,\n  \"unique_paths\": 52,\n  \"proof_counts\": {\n    \"named_axiom_probes\": 6,\n    \"callers\": 9,\n    \"standard_axioms_only\": true,\n    \"warnings\": 0\n  },\n  \"timings\": {\n    \"source\": 2.743214277550578,\n    \"audit\": 2.1261214800179005\n  },\n  \"fresh_object\": {\n    \"module\": \"ZFCinPA.ModelCodedShiftCancellation\",\n    \"path\": \"/tmp/zfc-shift-cancellation/run1/cache/ZFCinPA/ModelCodedShiftCancellation.olean\",\n    \"sha256\": \"fe311bd1d500f6b6d87fe20dd0f3e18fa1b451c526ba21c4eab6e47cd4fff951\",\n    \"source_sha256\": \"ab8b72fb2516e95c97ca6a5d26f73a4ae9f721941c15fc9c3c49f5fbf4582c06\"\n  },\n  \"snapshots\": [\n    {\n      \"path\": \"/tmp/zfc-shift-cancellation/child-finalproof-snapshots/run1-verification.json\",\n      \"sha256\": \"8c9cad55fc156c994c9da2186279d34682fa474fb509ea123268455cdbc44a15\"\n    },\n    {\n      \"path\": \"/tmp/zfc-shift-cancellation/child-finalproof-snapshots/check.py\",\n      \"sha256\": \"3d20c19c29344f48c65dc8788ec9ef26b94f5fdec69bb1129f2e3acc3a3b2b3d\"\n    },\n    {\n      \"path\": \"/tmp/zfc-shift-cancellation/child-finalproof-snapshots/Audit.lean\",\n      \"sha256\": \"c1a49827aef000737fbd582b8747c2de7b0ef4f6278992bf5ad7a204c788cc26\"\n    },\n    {\n      \"path\": \"/tmp/zfc-shift-cancellation/child-finalproof-snapshots/prepared-verification.json\",\n      \"sha256\": \"16d821702a8a8cb5b4c8044ec0234cf38c4ac39b7afe6b8620a9dd69e9024e8d\"\n    },\n    {\n      \"path\": \"/tmp/zfc-shift-cancellation/child-finalproof-snapshots/ModelCodedShiftCancellation.lean\",\n      \"sha256\": \"ab8b72fb2516e95c97ca6a5d26f73a4ae9f721941c15fc9c3c49f5fbf4582c06\"\n    }\n  ],\n  \"prior_immutable_review\": {\n    \"path\": \"/tmp/zfc-shift-cancellation/child-source-first-review.json\",\n    \"sha256\": \"cb8993e184f962fbc43bad4bfd4be28bcd0ff465cf7a25e5602ed36d6bd83e0f\"\n  },\n  \"findings\": [\n    \"Final56-line source is byte-identical to the already reviewed source-first draft. The unused unary bound slot keeps p raw code intact, while free gives p.shift and specialization at free0 returns p using checked unused-slot substitution.\",\n    \"cancelShift/cancelShiftN construct actual internal proof data with all/specialize; they do not assume provability reflection or an inverse free-variable map. All formulas and free parameters are arbitrary internal model elements; only repetition count n is an external Nat.\",\n    \"The six ordered probes and nine callers cover actual proof constructors, arbitrary internal language/theory/formula, n0, n2 and raw-code identity. The first source/audit run passes with only propext, Classical.choice and Quot.sound and zero warnings.\",\n    \"The guard reuses only eleven selected syntax ancestors from the recorded AtomicVacuity parent, matching their exact parent source/object identities and current actual import DFS. Parent Atomic/Cantor client objects are not imported or required as new theorem dependencies; the guard explicitly records parent_fresh_object_imported=false and unused ancestors.\",\n    \"All47 inputs/current providers, six external boundaries, first Init/Omega, dependency/compiler/manifests, exact source/audit snapshots and fresh object after audit independently rehash. The recorded parent source/audit files serve provenance rather than imports.\",\n    \"Prepared and run1 records are distinct: preparation has no proof commands/fresh object; run1 is the actual firstPASS6/9. No reviewer compiler/checker or proof/control replay was invoked.\",\n    \"The finite shift-buffer compiler is still a design proposal. Family laws, axiom proof callbacks, weakening and predicate congruence remain obligations; no Collection/open-template compiler/PA endpoint follows merely from this cancellation module.\",\n    \"Publication note/default/relocation/control package has not yet been provided for this stage; no packaging validation is inferred.\"\n  ],\n  \"reviewer_actions\": {\n    \"compiler_invocations\": 0,\n    \"author_checker_invocations\": 0,\n    \"proof_builds\": 0,\n    \"source_edits\": 0,\n    \"tracked_edits\": 0\n  }\n}\n",
+    "record": {
+      "status": "CLEAN_READ_ONLY_FINAL_SHIFT_CANCELLATION_PROOF_REVIEW",
+      "defects": [],
+      "source": {
+        "path": "/tmp/zfc-shift-cancellation/sources/ZFCinPA/ModelCodedShiftCancellation.lean",
+        "sha256": "ab8b72fb2516e95c97ca6a5d26f73a4ae9f721941c15fc9c3c49f5fbf4582c06"
+      },
+      "audit": {
+        "path": "/tmp/zfc-shift-cancellation/Audit.lean",
+        "sha256": "c1a49827aef000737fbd582b8747c2de7b0ef4f6278992bf5ad7a204c788cc26"
+      },
+      "executed_guard": {
+        "path": "/tmp/zfc-shift-cancellation/check.py",
+        "sha256": "3d20c19c29344f48c65dc8788ec9ef26b94f5fdec69bb1129f2e3acc3a3b2b3d"
+      },
+      "proof": {
+        "path": "/tmp/zfc-shift-cancellation/run1/verification.json",
+        "sha256": "8c9cad55fc156c994c9da2186279d34682fa474fb509ea123268455cdbc44a15"
+      },
+      "prepared": {
+        "path": "/tmp/zfc-shift-cancellation/prepared/verification.json",
+        "sha256": "16d821702a8a8cb5b4c8044ec0234cf38c4ac39b7afe6b8620a9dd69e9024e8d"
+      },
+      "identities": {
+        "path": "/tmp/zfc-shift-cancellation/child-proof-identities.json",
+        "sha256": "5d8b3ed5234890c057679b9ec092c5de3bf4a0209010c06d53510c316264c87d"
+      },
+      "hash_comparisons": 219,
+      "unique_paths": 52,
+      "proof_counts": {
+        "named_axiom_probes": 6,
+        "callers": 9,
+        "standard_axioms_only": true,
+        "warnings": 0
+      },
+      "timings": {
+        "source": 2.743214277550578,
+        "audit": 2.1261214800179005
+      },
+      "fresh_object": {
+        "module": "ZFCinPA.ModelCodedShiftCancellation",
+        "path": "/tmp/zfc-shift-cancellation/run1/cache/ZFCinPA/ModelCodedShiftCancellation.olean",
+        "sha256": "fe311bd1d500f6b6d87fe20dd0f3e18fa1b451c526ba21c4eab6e47cd4fff951",
+        "source_sha256": "ab8b72fb2516e95c97ca6a5d26f73a4ae9f721941c15fc9c3c49f5fbf4582c06"
+      },
+      "snapshots": [
+        {
+          "path": "/tmp/zfc-shift-cancellation/child-finalproof-snapshots/run1-verification.json",
+          "sha256": "8c9cad55fc156c994c9da2186279d34682fa474fb509ea123268455cdbc44a15"
+        },
+        {
+          "path": "/tmp/zfc-shift-cancellation/child-finalproof-snapshots/check.py",
+          "sha256": "3d20c19c29344f48c65dc8788ec9ef26b94f5fdec69bb1129f2e3acc3a3b2b3d"
+        },
+        {
+          "path": "/tmp/zfc-shift-cancellation/child-finalproof-snapshots/Audit.lean",
+          "sha256": "c1a49827aef000737fbd582b8747c2de7b0ef4f6278992bf5ad7a204c788cc26"
+        },
+        {
+          "path": "/tmp/zfc-shift-cancellation/child-finalproof-snapshots/prepared-verification.json",
+          "sha256": "16d821702a8a8cb5b4c8044ec0234cf38c4ac39b7afe6b8620a9dd69e9024e8d"
+        },
+        {
+          "path": "/tmp/zfc-shift-cancellation/child-finalproof-snapshots/ModelCodedShiftCancellation.lean",
+          "sha256": "ab8b72fb2516e95c97ca6a5d26f73a4ae9f721941c15fc9c3c49f5fbf4582c06"
+        }
+      ],
+      "prior_immutable_review": {
+        "path": "/tmp/zfc-shift-cancellation/child-source-first-review.json",
+        "sha256": "cb8993e184f962fbc43bad4bfd4be28bcd0ff465cf7a25e5602ed36d6bd83e0f"
+      },
+      "findings": [
+        "Final56-line source is byte-identical to the already reviewed source-first draft. The unused unary bound slot keeps p raw code intact, while free gives p.shift and specialization at free0 returns p using checked unused-slot substitution.",
+        "cancelShift/cancelShiftN construct actual internal proof data with all/specialize; they do not assume provability reflection or an inverse free-variable map. All formulas and free parameters are arbitrary internal model elements; only repetition count n is an external Nat.",
+        "The six ordered probes and nine callers cover actual proof constructors, arbitrary internal language/theory/formula, n0, n2 and raw-code identity. The first source/audit run passes with only propext, Classical.choice and Quot.sound and zero warnings.",
+        "The guard reuses only eleven selected syntax ancestors from the recorded AtomicVacuity parent, matching their exact parent source/object identities and current actual import DFS. Parent Atomic/Cantor client objects are not imported or required as new theorem dependencies; the guard explicitly records parent_fresh_object_imported=false and unused ancestors.",
+        "All47 inputs/current providers, six external boundaries, first Init/Omega, dependency/compiler/manifests, exact source/audit snapshots and fresh object after audit independently rehash. The recorded parent source/audit files serve provenance rather than imports.",
+        "Prepared and run1 records are distinct: preparation has no proof commands/fresh object; run1 is the actual firstPASS6/9. No reviewer compiler/checker or proof/control replay was invoked.",
+        "The finite shift-buffer compiler is still a design proposal. Family laws, axiom proof callbacks, weakening and predicate congruence remain obligations; no Collection/open-template compiler/PA endpoint follows merely from this cancellation module.",
+        "Publication note/default/relocation/control package has not yet been provided for this stage; no packaging validation is inferred."
+      ],
+      "reviewer_actions": {
+        "compiler_invocations": 0,
+        "author_checker_invocations": 0,
+        "proof_builds": 0,
+        "source_edits": 0,
+        "tracked_edits": 0
+      }
+    }
+  },
+  "maintained_default": {
+    "path": "/tmp/zfc-shift-cancellation/maintained-default/verification.json",
+    "sha256": "10403b155d051a648cc6d1b64c65539a4613c3128c3e5c300e71f13c25ff7434",
+    "original_json": "{\n  \"status\": \"PREPARED_NOT_BUILT\",\n  \"scope\": \"Cancel free-variable shift through a vacuous unary view, then cancel externally finite repetitions. All internal formulas/free parameters retained. No open-template compiler or Collection theorem.\",\n  \"compiler\": {\n    \"path\": \"/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean\",\n    \"sha256\": \"e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550\",\n    \"version\": \"Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)\"\n  },\n  \"source\": {\n    \"path\": \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedShiftCancellation.lean\",\n    \"sha256\": \"ab8b72fb2516e95c97ca6a5d26f73a4ae9f721941c15fc9c3c49f5fbf4582c06\",\n    \"snapshot\": \"/tmp/zfc-shift-cancellation/maintained-default/sources/ZFCinPA/ModelCodedShiftCancellation.lean\"\n  },\n  \"audit\": {\n    \"path\": \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedShiftCancellationAudit.lean\",\n    \"sha256\": \"c1a49827aef000737fbd582b8747c2de7b0ef4f6278992bf5ad7a204c788cc26\",\n    \"snapshot\": \"/tmp/zfc-shift-cancellation/maintained-default/sources/Audit.lean\"\n  },\n  \"atomic_evidence\": {\n    \"path\": \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-atomic-vacuity254-verification.json\",\n    \"sha256\": \"c8db05327dc3841e76162ab89aa09cab4a923dc56b0f9231cf8473bd83a4bdbe\"\n  },\n  \"reused_modules\": [\n    {\n      \"module\": \"ZFCinPA.ModelCodedBinderAbsorption\",\n      \"source\": \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBinderAbsorption.lean\",\n      \"source_sha256\": \"5b77b0df979d82df4fcb68ceaeba5d154774842236d1351405ab0625d235801f\",\n      \"object\": \"/tmp/zfc-binder-absorption/run1/cache/ZFCinPA/ModelCodedBinderAbsorption.olean\",\n      \"object_sha256\": \"981acc1a435aa024ad702525aa2cbe1214bbad33c40b973e65ef9d8cc08711b7\"\n    },\n    {\n      \"module\": \"ZFCinPA.ModelCodedBindOne\",\n      \"source\": \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBindOne.lean\",\n      \"source_sha256\": \"78f5858a715e74bca2af835ec990e33775f588219ef7f30b217825acbffd6785\",\n      \"object\": \"/tmp/zfc-model-coded-bind-one/run4/cache/ZFCinPA/ModelCodedBindOne.olean\",\n      \"object_sha256\": \"c80e2be803b838d943eaec9051b93b0eaa9a2f34470c60f8920821fb21a75eca\"\n    },\n    {\n      \"module\": \"ZFCinPA.ModelCodedSpecialization\",\n      \"source\": \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedSpecialization.lean\",\n      \"source_sha256\": \"ae18d5c05167e4fbbf9e5bfadd6d807439140ec07031af22dc5198e4fc26ac38\",\n      \"object\": \"/tmp/zfc-model-coded-closure/specialization-run3/cache/ZFCinPA/ModelCodedSpecialization.olean\",\n      \"object_sha256\": \"4da6590fc5c0b4dcbc74583f52f089d2c095945236bd3eb3e2d529cbcef06141\"\n    },\n    {\n      \"module\": \"ZFCinPA.ModelCodedClosedSchemaAxioms\",\n      \"source\": \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedClosedSchemaAxioms.lean\",\n      \"source_sha256\": \"1318983c7727a9a280fe872003b6eac45b0959aec11c9d99a262bf99721be3b6\",\n      \"object\": \"/tmp/zfc-model-coded-closure/closed-run1/cache/ZFCinPA/ModelCodedClosedSchemaAxioms.olean\",\n      \"object_sha256\": \"23f65cac691b24d8becf1e46438b4577957917050bde3bb3a9166762adab8c20\"\n    },\n    {\n      \"module\": \"ZFCinPA.ModelCodedBindFree\",\n      \"source\": \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBindFree.lean\",\n      \"source_sha256\": \"f3a11fa8165406cec42a793a2cbd05c950b60cce867d374e5414ce867e3c36ce\",\n      \"object\": \"/tmp/zfc-model-coded-closure/run3/cache/ZFCinPA/ModelCodedBindFree.olean\",\n      \"object_sha256\": \"51fde1bcc35edce516064105b05ebdde64ad60aefaa00fab2484c25c1b1698e2\"\n    },\n    {\n      \"module\": \"ZFCinPA.Instances\",\n      \"source\": \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/Instances.lean\",\n      \"source_sha256\": \"30965b8b9533ae07fcfddf7743cd247df1ebd6a1224d4d4982786aa5bfe2446d\",\n      \"object\": \"/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/Instances.olean\",\n      \"object_sha256\": \"50532105d60be5b437537109a6ca8e37b2d883659dc4a64774fe5bf93d81595c\"\n    },\n    {\n      \"module\": \"ZFCinPA.SchemaClosure\",\n      \"source\": \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/SchemaClosure.lean\",\n      \"source_sha256\": \"64ec54b2c206d7b8ed77ce04f45af9c35625c31c06c784aedc5ac233fd18bec4\",\n      \"object\": \"/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/SchemaClosure.olean\",\n      \"object_sha256\": \"1d132a2dd2df2b38440a826bd19b7d35617cde4d0d240da816d66abb3309ab43\"\n    },\n    {\n      \"module\": \"ZFCinPA.ModelCodedSchemaAxioms\",\n      \"source\": \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedSchemaAxioms.lean\",\n      \"source_sha256\": \"a9fb204ca4f00fd30d28edfcc409ad561337a8378eab0b574b21bf8607f1c760\",\n      \"object\": \"/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ModelCodedSchemaAxioms.olean\",\n      \"object_sha256\": \"cfdc122e1487621dd3ea3405f5918598917e6a804f7517486a991ba4b46afa7d\"\n    },\n    {\n      \"module\": \"ZFCinPA.ZFDelta1\",\n      \"source\": \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean\",\n      \"source_sha256\": \"63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550\",\n      \"object\": \"/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean\",\n      \"object_sha256\": \"9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c\"\n    },\n    {\n      \"module\": \"ZFCinPA.ReplacementDelta1\",\n      \"source\": \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ReplacementDelta1.lean\",\n      \"source_sha256\": \"6653c8cf532e53212633d953a25e12e4b97465be2f5112ce4cda56f41e040454\",\n      \"object\": \"/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ReplacementDelta1.olean\",\n      \"object_sha256\": \"e1c374dfb26f3ce831b705d5d845e65aceacb4fea2a20dd427c717bb11ce9b1b\"\n    },\n    {\n      \"module\": \"ZFCinPA.SeparationDelta1\",\n      \"source\": \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/SeparationDelta1.lean\",\n      \"source_sha256\": \"695c4365853fe4500bde5978633aa0696716fe07dee639d75fe7e92995dda1a2\",\n      \"object\": \"/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/SeparationDelta1.olean\",\n      \"object_sha256\": \"52c63317a8c193209eaeb5f44e0f24a5ec1cc9feeed3a2029096bc394ba06885\"\n    }\n  ],\n  \"providers\": [\n    {\n      \"module\": \"Foundation.FirstOrder.SetTheory.Basic.Axioms\",\n      \"source\": \"/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/SetTheory/Basic/Axioms.lean\",\n      \"source_sha256\": \"9952df1012c4eeb08eb2f40b1719a1912856ce013daec5735a9ac81a97f4c9b8\",\n      \"object\": \"/tmp/zfc-model-coded-set-axioms/run4/cache/Foundation/FirstOrder/SetTheory/Basic/Axioms.olean\",\n      \"object_sha256\": \"e2654fef89ea6d605dbb52b87ad19d2b9e98ed3c532f6d3145689d404d5f0704\",\n      \"scope\": \"Reused source-matched fresh object from schema PASS.\"\n    },\n    {\n      \"module\": \"Foundation.FirstOrder.Bootstrapping.Syntax\",\n      \"source\": \"/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Bootstrapping/Syntax.lean\",\n      \"source_sha256\": \"18257680a6f1d84b6b4ae3d6dc5c07f4adcd4aa660fe3d4f63fa4df98932c79c\",\n      \"object\": \"/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Bootstrapping/Syntax.olean\",\n      \"object_sha256\": \"7eecf0d4bf8fd67fd59dba66deb007a78da940367d3e3b932f5a6f19eb14a23c\",\n      \"scope\": \"Recorded cached boundary; no whole-cache attestation.\"\n    },\n    {\n      \"module\": \"Foundation.FirstOrder.Incompleteness.InductionSchemeDelta1\",\n      \"source\": \"/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Incompleteness/InductionSchemeDelta1.lean\",\n      \"source_sha256\": \"4c87d00022da1dd0b75b3d73e184d04458835f362dcdda06e5529574ce2b99cf\",\n      \"object\": \"/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Incompleteness/InductionSchemeDelta1.olean\",\n      \"object_sha256\": \"5951b3610954e29c7de0bf2335ef7e3624a7e4c566f30eff6fb9b9d6ea6371a6\",\n      \"scope\": \"Recorded cached boundary; no whole-cache attestation.\"\n    },\n    {\n      \"module\": \"Foundation.FirstOrder.Bootstrapping.Syntax.Proof.Typed\",\n      \"source\": \"/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Typed.lean\",\n      \"source_sha256\": \"4cf3493c7437280c3e6ae9151e6f3bdecd865e9312e91b5744bdb5f3cfbdd594\",\n      \"object\": \"/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Typed.olean\",\n      \"object_sha256\": \"5415e8029090c3c989bdaa843a35c1d38422014d0849037c65c5a6c785b82d87\",\n      \"scope\": \"Recorded cached boundary; no whole-cache attestation.\"\n    },\n    {\n      \"module\": \"Foundation.FirstOrder.Arithmetic.IOpen.Basic\",\n      \"source\": \"/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Arithmetic/IOpen/Basic.lean\",\n      \"source_sha256\": \"4ec52a7a487aeafb0e9ea10716452b34f138d8214ad5a1aa5466064d6a4c9d7b\",\n      \"object\": \"/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Arithmetic/IOpen/Basic.olean\",\n      \"object_sha256\": \"b43eb2f8d8a2ef18004125594adafbff02b52f1b6ef62b9b836015bdce2351ad\",\n      \"scope\": \"Recorded cached boundary; no whole-cache attestation.\"\n    },\n    {\n      \"module\": \"Mathlib.Tactic.Ring\",\n      \"source\": \"/home/codex/src/Proofs/.lake/packages/mathlib/Mathlib/Tactic/Ring.lean\",\n      \"source_sha256\": \"d3ef5c49ebbd1108ce3f935e5ad95485e143abf02f28c027dba4bb6f3be8196e\",\n      \"object\": \"/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Tactic/Ring.olean\",\n      \"object_sha256\": \"cc12dfa66db7ef6ae4cd2d7a4e035ddffaca827168243f728812776b77836eb4\",\n      \"scope\": \"Recorded cached boundary; no whole-cache attestation.\"\n    }\n  ],\n  \"toolchain_providers\": [\n    {\n      \"module\": \"Init\",\n      \"object\": \"/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/lib/lean/Init.olean\",\n      \"object_sha256\": \"d2e85d72099f9d869c9582aad5fb13079968d9d121ac6061e8326b00800b306e\",\n      \"toolchain_reference\": \"/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/lib/lean/Init.olean\",\n      \"toolchain_reference_sha256\": \"d2e85d72099f9d869c9582aad5fb13079968d9d121ac6061e8326b00800b306e\"\n    },\n    {\n      \"module\": \"Lean.Elab.Tactic.Omega\",\n      \"object\": \"/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/lib/lean/Lean/Elab/Tactic/Omega.olean\",\n      \"object_sha256\": \"eb766bae1ab40110a853c7cca853e36e1f4aece010a09fa4dd9b1b48116953fe\",\n      \"toolchain_reference\": \"/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/lib/lean/Lean/Elab/Tactic/Omega.olean\",\n      \"toolchain_reference_sha256\": \"eb766bae1ab40110a853c7cca853e36e1f4aece010a09fa4dd9b1b48116953fe\"\n    }\n  ],\n  \"actual_direct_tool_imports\": [],\n  \"dependencies\": {\n    \"root\": \"/home/codex/src/Proofs\",\n    \"Foundation\": {\n      \"path\": \"/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation\",\n      \"pin\": \"32e1a0956a8622fad067328ca1959729a7634428\",\n      \"tracked_clean\": true\n    },\n    \"Mathlib\": {\n      \"path\": \"/home/codex/src/Proofs/.lake/packages/mathlib\",\n      \"pin\": \"81a5d257c8e410db227a6665ed08f64fea08e997\",\n      \"input_revision\": \"v4.32.0\",\n      \"tracked_clean\": true\n    },\n    \"lake_manifest_sha256\": \"95e215b005fe9aacc1e5490c781d57e3044d2da5ca452495cfcd0e4eff908665\",\n    \"discovery\": \"read-only lake-manifest.json and existing .lake build directories; no Lake process\",\n    \"providers\": {\n      \"Foundation.FirstOrder.Arithmetic.IOpen.Basic\": {\n        \"path\": \"/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Arithmetic/IOpen/Basic.olean\",\n        \"sha256\": \"b43eb2f8d8a2ef18004125594adafbff02b52f1b6ef62b9b836015bdce2351ad\"\n      },\n      \"Mathlib.Tactic.Ring\": {\n        \"path\": \"/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Tactic/Ring.olean\",\n        \"sha256\": \"cc12dfa66db7ef6ae4cd2d7a4e035ddffaca827168243f728812776b77836eb4\"\n      }\n    },\n    \"cached_objects_reused\": true,\n    \"dependency_rebuild\": false,\n    \"cache_provenance\": \"Existing built checkout is supplied by the caller; the checker records object identities but does not rebuild or independently attest the whole dependency cache.\"\n  },\n  \"exact_project_import_closure\": true,\n  \"parent_fresh_object_imported\": false,\n  \"parent_evidence_scope\": \"Selected eleven syntax ancestors only; parent Atomic client and Cantor are not imported\",\n  \"unused_parent_boundaries\": [],\n  \"unused_parent_modules\": [\n    \"BusyBeaver.ZFC.ArithmeticCantor\",\n    \"BusyBeaver.ZFC.ArithmeticCode254\",\n    \"BusyBeaver.ZFC.ArithmeticTemplates254\",\n    \"BusyBeaver.ZFC.Code254\",\n    \"BusyBeaver.ZFC.Kalmar\",\n    \"BusyBeaver.ZFC.Lukasiewicz\",\n    \"BusyBeaver.ZFC.TarskiCalculus\",\n    \"BusyBeaver.ZFC.TarskiClean\",\n    \"BusyBeaver.ZFC.TarskiComplete\",\n    \"BusyBeaver.ZFC.TarskiDerived\",\n    \"BusyBeaver.ZFC.TarskiFalsity\",\n    \"BusyBeaver.ZFC.TarskiLeibniz\",\n    \"FirstOrder.Fol\",\n    \"ZFCinPA.ModelCodedDecoder254\",\n    \"ZFCinPA.ModelCodedDecoderAtomicVacuity254\",\n    \"ZFCinPA.ModelCodedDecoderConstructors254\",\n    \"ZFCinPA.ModelCodedDecoderEquality254\",\n    \"ZFCinPA.ModelCodedDecoderFalsity254\",\n    \"ZFCinPA.ModelCodedDecoderGeneralization254\",\n    \"ZFCinPA.ModelCodedDecoderLukasiewicz254\",\n    \"ZFCinPA.ModelCodedDecoderPropositional254\",\n    \"ZFCinPA.ModelCodedDecoderRho1_254\",\n    \"ZFCinPA.ModelCodedDecoderRho2_254\",\n    \"ZFCinPA.ModelCodedDecoderRho6_254\",\n    \"ZFCinPA.ModelCodedFreeRenaming\",\n    \"ZFCinPA.ModelCodedNamedBinderLaws\",\n    \"ZFCinPA.ModelCodedNamedQuantifierTemplates254\",\n    \"ZFCinPA.ModelCodedProofRenaming\",\n    \"ZFCinPA.ModelCodedRenamingAxioms\",\n    \"ZFCinPA.ModelCodedRenamingBindOne\",\n    \"ZFCinPA.ModelCodedRenamingSets\"\n  ],\n  \"before\": {\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_shift_cancellation.py\": \"3d20c19c29344f48c65dc8788ec9ef26b94f5fdec69bb1129f2e3acc3a3b2b3d\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_arithmetic_cantor.py\": \"9a8d4d7dd467ac8152238c8a0cbe93ed87512be36b447e38bae0b8244a28b229\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-atomic-vacuity254-verification.json\": \"c8db05327dc3841e76162ab89aa09cab4a923dc56b0f9231cf8473bd83a4bdbe\",\n    \"/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean\": \"e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedShiftCancellation.lean\": \"ab8b72fb2516e95c97ca6a5d26f73a4ae9f721941c15fc9c3c49f5fbf4582c06\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedShiftCancellationAudit.lean\": \"c1a49827aef000737fbd582b8747c2de7b0ef4f6278992bf5ad7a204c788cc26\",\n    \"/tmp/zfc-shift-cancellation/maintained-default/sources/ZFCinPA/ModelCodedShiftCancellation.lean\": \"ab8b72fb2516e95c97ca6a5d26f73a4ae9f721941c15fc9c3c49f5fbf4582c06\",\n    \"/tmp/zfc-shift-cancellation/maintained-default/sources/Audit.lean\": \"c1a49827aef000737fbd582b8747c2de7b0ef4f6278992bf5ad7a204c788cc26\",\n    \"/home/codex/src/Proofs/lake-manifest.json\": \"95e215b005fe9aacc1e5490c781d57e3044d2da5ca452495cfcd0e4eff908665\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedDecoderAtomicVacuity254.lean\": \"e3cdebe04cb8e85bb115105c41dc2c764e52c91914cdfd3cd98a391bca947e14\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedDecoderAtomicVacuity254Audit.lean\": \"ecc51d64d446034b783e97cb3cd9cd551332c6d5b6bda15614cc74001751840e\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBinderAbsorption.lean\": \"5b77b0df979d82df4fcb68ceaeba5d154774842236d1351405ab0625d235801f\",\n    \"/tmp/zfc-binder-absorption/run1/cache/ZFCinPA/ModelCodedBinderAbsorption.olean\": \"981acc1a435aa024ad702525aa2cbe1214bbad33c40b973e65ef9d8cc08711b7\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBindOne.lean\": \"78f5858a715e74bca2af835ec990e33775f588219ef7f30b217825acbffd6785\",\n    \"/tmp/zfc-model-coded-bind-one/run4/cache/ZFCinPA/ModelCodedBindOne.olean\": \"c80e2be803b838d943eaec9051b93b0eaa9a2f34470c60f8920821fb21a75eca\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedSpecialization.lean\": \"ae18d5c05167e4fbbf9e5bfadd6d807439140ec07031af22dc5198e4fc26ac38\",\n    \"/tmp/zfc-model-coded-closure/specialization-run3/cache/ZFCinPA/ModelCodedSpecialization.olean\": \"4da6590fc5c0b4dcbc74583f52f089d2c095945236bd3eb3e2d529cbcef06141\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedClosedSchemaAxioms.lean\": \"1318983c7727a9a280fe872003b6eac45b0959aec11c9d99a262bf99721be3b6\",\n    \"/tmp/zfc-model-coded-closure/closed-run1/cache/ZFCinPA/ModelCodedClosedSchemaAxioms.olean\": \"23f65cac691b24d8becf1e46438b4577957917050bde3bb3a9166762adab8c20\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBindFree.lean\": \"f3a11fa8165406cec42a793a2cbd05c950b60cce867d374e5414ce867e3c36ce\",\n    \"/tmp/zfc-model-coded-closure/run3/cache/ZFCinPA/ModelCodedBindFree.olean\": \"51fde1bcc35edce516064105b05ebdde64ad60aefaa00fab2484c25c1b1698e2\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/Instances.lean\": \"30965b8b9533ae07fcfddf7743cd247df1ebd6a1224d4d4982786aa5bfe2446d\",\n    \"/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/Instances.olean\": \"50532105d60be5b437537109a6ca8e37b2d883659dc4a64774fe5bf93d81595c\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/SchemaClosure.lean\": \"64ec54b2c206d7b8ed77ce04f45af9c35625c31c06c784aedc5ac233fd18bec4\",\n    \"/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/SchemaClosure.olean\": \"1d132a2dd2df2b38440a826bd19b7d35617cde4d0d240da816d66abb3309ab43\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedSchemaAxioms.lean\": \"a9fb204ca4f00fd30d28edfcc409ad561337a8378eab0b574b21bf8607f1c760\",\n    \"/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ModelCodedSchemaAxioms.olean\": \"cfdc122e1487621dd3ea3405f5918598917e6a804f7517486a991ba4b46afa7d\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean\": \"63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550\",\n    \"/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean\": \"9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ReplacementDelta1.lean\": \"6653c8cf532e53212633d953a25e12e4b97465be2f5112ce4cda56f41e040454\",\n    \"/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ReplacementDelta1.olean\": \"e1c374dfb26f3ce831b705d5d845e65aceacb4fea2a20dd427c717bb11ce9b1b\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/SeparationDelta1.lean\": \"695c4365853fe4500bde5978633aa0696716fe07dee639d75fe7e92995dda1a2\",\n    \"/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/SeparationDelta1.olean\": \"52c63317a8c193209eaeb5f44e0f24a5ec1cc9feeed3a2029096bc394ba06885\",\n    \"/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/SetTheory/Basic/Axioms.lean\": \"9952df1012c4eeb08eb2f40b1719a1912856ce013daec5735a9ac81a97f4c9b8\",\n    \"/tmp/zfc-model-coded-set-axioms/run4/cache/Foundation/FirstOrder/SetTheory/Basic/Axioms.olean\": \"e2654fef89ea6d605dbb52b87ad19d2b9e98ed3c532f6d3145689d404d5f0704\",\n    \"/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Bootstrapping/Syntax.lean\": \"18257680a6f1d84b6b4ae3d6dc5c07f4adcd4aa660fe3d4f63fa4df98932c79c\",\n    \"/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Bootstrapping/Syntax.olean\": \"7eecf0d4bf8fd67fd59dba66deb007a78da940367d3e3b932f5a6f19eb14a23c\",\n    \"/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Incompleteness/InductionSchemeDelta1.lean\": \"4c87d00022da1dd0b75b3d73e184d04458835f362dcdda06e5529574ce2b99cf\",\n    \"/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Incompleteness/InductionSchemeDelta1.olean\": \"5951b3610954e29c7de0bf2335ef7e3624a7e4c566f30eff6fb9b9d6ea6371a6\",\n    \"/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Typed.lean\": \"4cf3493c7437280c3e6ae9151e6f3bdecd865e9312e91b5744bdb5f3cfbdd594\",\n    \"/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Typed.olean\": \"5415e8029090c3c989bdaa843a35c1d38422014d0849037c65c5a6c785b82d87\",\n    \"/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Arithmetic/IOpen/Basic.lean\": \"4ec52a7a487aeafb0e9ea10716452b34f138d8214ad5a1aa5466064d6a4c9d7b\",\n    \"/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Arithmetic/IOpen/Basic.olean\": \"b43eb2f8d8a2ef18004125594adafbff02b52f1b6ef62b9b836015bdce2351ad\",\n    \"/home/codex/src/Proofs/.lake/packages/mathlib/Mathlib/Tactic/Ring.lean\": \"d3ef5c49ebbd1108ce3f935e5ad95485e143abf02f28c027dba4bb6f3be8196e\",\n    \"/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Tactic/Ring.olean\": \"cc12dfa66db7ef6ae4cd2d7a4e035ddffaca827168243f728812776b77836eb4\",\n    \"/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/lib/lean/Init.olean\": \"d2e85d72099f9d869c9582aad5fb13079968d9d121ac6061e8326b00800b306e\",\n    \"/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/lib/lean/Lean/Elab/Tactic/Omega.olean\": \"eb766bae1ab40110a853c7cca853e36e1f4aece010a09fa4dd9b1b48116953fe\"\n  },\n  \"commands\": [],\n  \"fresh_modules\": [],\n  \"LEAN_PATH\": \"/tmp/zfc-shift-cancellation/maintained-default/cache:/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/plausible/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/importGraph/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/aesop/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/Qq/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/batteries/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/build/lib/lean\",\n  \"namespace_overlay\": {\n    \"target\": \"/tmp/zfc-shift-cancellation/maintained-default/cache/Foundation\",\n    \"source\": \"/tmp/zfc-model-coded-set-axioms/run4/cache/Foundation\"\n  },\n  \"dependency_build\": false,\n  \"downloads\": false,\n  \"after\": {\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_shift_cancellation.py\": \"3d20c19c29344f48c65dc8788ec9ef26b94f5fdec69bb1129f2e3acc3a3b2b3d\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_arithmetic_cantor.py\": \"9a8d4d7dd467ac8152238c8a0cbe93ed87512be36b447e38bae0b8244a28b229\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-atomic-vacuity254-verification.json\": \"c8db05327dc3841e76162ab89aa09cab4a923dc56b0f9231cf8473bd83a4bdbe\",\n    \"/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean\": \"e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedShiftCancellation.lean\": \"ab8b72fb2516e95c97ca6a5d26f73a4ae9f721941c15fc9c3c49f5fbf4582c06\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedShiftCancellationAudit.lean\": \"c1a49827aef000737fbd582b8747c2de7b0ef4f6278992bf5ad7a204c788cc26\",\n    \"/tmp/zfc-shift-cancellation/maintained-default/sources/ZFCinPA/ModelCodedShiftCancellation.lean\": \"ab8b72fb2516e95c97ca6a5d26f73a4ae9f721941c15fc9c3c49f5fbf4582c06\",\n    \"/tmp/zfc-shift-cancellation/maintained-default/sources/Audit.lean\": \"c1a49827aef000737fbd582b8747c2de7b0ef4f6278992bf5ad7a204c788cc26\",\n    \"/home/codex/src/Proofs/lake-manifest.json\": \"95e215b005fe9aacc1e5490c781d57e3044d2da5ca452495cfcd0e4eff908665\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedDecoderAtomicVacuity254.lean\": \"e3cdebe04cb8e85bb115105c41dc2c764e52c91914cdfd3cd98a391bca947e14\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedDecoderAtomicVacuity254Audit.lean\": \"ecc51d64d446034b783e97cb3cd9cd551332c6d5b6bda15614cc74001751840e\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBinderAbsorption.lean\": \"5b77b0df979d82df4fcb68ceaeba5d154774842236d1351405ab0625d235801f\",\n    \"/tmp/zfc-binder-absorption/run1/cache/ZFCinPA/ModelCodedBinderAbsorption.olean\": \"981acc1a435aa024ad702525aa2cbe1214bbad33c40b973e65ef9d8cc08711b7\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBindOne.lean\": \"78f5858a715e74bca2af835ec990e33775f588219ef7f30b217825acbffd6785\",\n    \"/tmp/zfc-model-coded-bind-one/run4/cache/ZFCinPA/ModelCodedBindOne.olean\": \"c80e2be803b838d943eaec9051b93b0eaa9a2f34470c60f8920821fb21a75eca\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedSpecialization.lean\": \"ae18d5c05167e4fbbf9e5bfadd6d807439140ec07031af22dc5198e4fc26ac38\",\n    \"/tmp/zfc-model-coded-closure/specialization-run3/cache/ZFCinPA/ModelCodedSpecialization.olean\": \"4da6590fc5c0b4dcbc74583f52f089d2c095945236bd3eb3e2d529cbcef06141\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedClosedSchemaAxioms.lean\": \"1318983c7727a9a280fe872003b6eac45b0959aec11c9d99a262bf99721be3b6\",\n    \"/tmp/zfc-model-coded-closure/closed-run1/cache/ZFCinPA/ModelCodedClosedSchemaAxioms.olean\": \"23f65cac691b24d8becf1e46438b4577957917050bde3bb3a9166762adab8c20\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBindFree.lean\": \"f3a11fa8165406cec42a793a2cbd05c950b60cce867d374e5414ce867e3c36ce\",\n    \"/tmp/zfc-model-coded-closure/run3/cache/ZFCinPA/ModelCodedBindFree.olean\": \"51fde1bcc35edce516064105b05ebdde64ad60aefaa00fab2484c25c1b1698e2\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/Instances.lean\": \"30965b8b9533ae07fcfddf7743cd247df1ebd6a1224d4d4982786aa5bfe2446d\",\n    \"/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/Instances.olean\": \"50532105d60be5b437537109a6ca8e37b2d883659dc4a64774fe5bf93d81595c\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/SchemaClosure.lean\": \"64ec54b2c206d7b8ed77ce04f45af9c35625c31c06c784aedc5ac233fd18bec4\",\n    \"/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/SchemaClosure.olean\": \"1d132a2dd2df2b38440a826bd19b7d35617cde4d0d240da816d66abb3309ab43\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedSchemaAxioms.lean\": \"a9fb204ca4f00fd30d28edfcc409ad561337a8378eab0b574b21bf8607f1c760\",\n    \"/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ModelCodedSchemaAxioms.olean\": \"cfdc122e1487621dd3ea3405f5918598917e6a804f7517486a991ba4b46afa7d\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean\": \"63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550\",\n    \"/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean\": \"9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ReplacementDelta1.lean\": \"6653c8cf532e53212633d953a25e12e4b97465be2f5112ce4cda56f41e040454\",\n    \"/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ReplacementDelta1.olean\": \"e1c374dfb26f3ce831b705d5d845e65aceacb4fea2a20dd427c717bb11ce9b1b\",\n    \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/SeparationDelta1.lean\": \"695c4365853fe4500bde5978633aa0696716fe07dee639d75fe7e92995dda1a2\",\n    \"/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/SeparationDelta1.olean\": \"52c63317a8c193209eaeb5f44e0f24a5ec1cc9feeed3a2029096bc394ba06885\",\n    \"/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/SetTheory/Basic/Axioms.lean\": \"9952df1012c4eeb08eb2f40b1719a1912856ce013daec5735a9ac81a97f4c9b8\",\n    \"/tmp/zfc-model-coded-set-axioms/run4/cache/Foundation/FirstOrder/SetTheory/Basic/Axioms.olean\": \"e2654fef89ea6d605dbb52b87ad19d2b9e98ed3c532f6d3145689d404d5f0704\",\n    \"/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Bootstrapping/Syntax.lean\": \"18257680a6f1d84b6b4ae3d6dc5c07f4adcd4aa660fe3d4f63fa4df98932c79c\",\n    \"/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Bootstrapping/Syntax.olean\": \"7eecf0d4bf8fd67fd59dba66deb007a78da940367d3e3b932f5a6f19eb14a23c\",\n    \"/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Incompleteness/InductionSchemeDelta1.lean\": \"4c87d00022da1dd0b75b3d73e184d04458835f362dcdda06e5529574ce2b99cf\",\n    \"/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Incompleteness/InductionSchemeDelta1.olean\": \"5951b3610954e29c7de0bf2335ef7e3624a7e4c566f30eff6fb9b9d6ea6371a6\",\n    \"/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Typed.lean\": \"4cf3493c7437280c3e6ae9151e6f3bdecd865e9312e91b5744bdb5f3cfbdd594\",\n    \"/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Typed.olean\": \"5415e8029090c3c989bdaa843a35c1d38422014d0849037c65c5a6c785b82d87\",\n    \"/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Arithmetic/IOpen/Basic.lean\": \"4ec52a7a487aeafb0e9ea10716452b34f138d8214ad5a1aa5466064d6a4c9d7b\",\n    \"/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Arithmetic/IOpen/Basic.olean\": \"b43eb2f8d8a2ef18004125594adafbff02b52f1b6ef62b9b836015bdce2351ad\",\n    \"/home/codex/src/Proofs/.lake/packages/mathlib/Mathlib/Tactic/Ring.lean\": \"d3ef5c49ebbd1108ce3f935e5ad95485e143abf02f28c027dba4bb6f3be8196e\",\n    \"/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Tactic/Ring.olean\": \"cc12dfa66db7ef6ae4cd2d7a4e035ddffaca827168243f728812776b77836eb4\",\n    \"/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/lib/lean/Init.olean\": \"d2e85d72099f9d869c9582aad5fb13079968d9d121ac6061e8326b00800b306e\",\n    \"/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/lib/lean/Lean/Elab/Tactic/Omega.olean\": \"eb766bae1ab40110a853c7cca853e36e1f4aece010a09fa4dd9b1b48116953fe\"\n  },\n  \"all_input_provider_postchecks\": true\n}\n",
+    "record": {
+      "status": "PREPARED_NOT_BUILT",
+      "scope": "Cancel free-variable shift through a vacuous unary view, then cancel externally finite repetitions. All internal formulas/free parameters retained. No open-template compiler or Collection theorem.",
+      "compiler": {
+        "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "sha256": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550",
+        "version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)"
+      },
+      "source": {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedShiftCancellation.lean",
+        "sha256": "ab8b72fb2516e95c97ca6a5d26f73a4ae9f721941c15fc9c3c49f5fbf4582c06",
+        "snapshot": "/tmp/zfc-shift-cancellation/maintained-default/sources/ZFCinPA/ModelCodedShiftCancellation.lean"
+      },
+      "audit": {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedShiftCancellationAudit.lean",
+        "sha256": "c1a49827aef000737fbd582b8747c2de7b0ef4f6278992bf5ad7a204c788cc26",
+        "snapshot": "/tmp/zfc-shift-cancellation/maintained-default/sources/Audit.lean"
+      },
+      "atomic_evidence": {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-atomic-vacuity254-verification.json",
+        "sha256": "c8db05327dc3841e76162ab89aa09cab4a923dc56b0f9231cf8473bd83a4bdbe"
+      },
+      "reused_modules": [
+        {
+          "module": "ZFCinPA.ModelCodedBinderAbsorption",
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBinderAbsorption.lean",
+          "source_sha256": "5b77b0df979d82df4fcb68ceaeba5d154774842236d1351405ab0625d235801f",
+          "object": "/tmp/zfc-binder-absorption/run1/cache/ZFCinPA/ModelCodedBinderAbsorption.olean",
+          "object_sha256": "981acc1a435aa024ad702525aa2cbe1214bbad33c40b973e65ef9d8cc08711b7"
+        },
+        {
+          "module": "ZFCinPA.ModelCodedBindOne",
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBindOne.lean",
+          "source_sha256": "78f5858a715e74bca2af835ec990e33775f588219ef7f30b217825acbffd6785",
+          "object": "/tmp/zfc-model-coded-bind-one/run4/cache/ZFCinPA/ModelCodedBindOne.olean",
+          "object_sha256": "c80e2be803b838d943eaec9051b93b0eaa9a2f34470c60f8920821fb21a75eca"
+        },
+        {
+          "module": "ZFCinPA.ModelCodedSpecialization",
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedSpecialization.lean",
+          "source_sha256": "ae18d5c05167e4fbbf9e5bfadd6d807439140ec07031af22dc5198e4fc26ac38",
+          "object": "/tmp/zfc-model-coded-closure/specialization-run3/cache/ZFCinPA/ModelCodedSpecialization.olean",
+          "object_sha256": "4da6590fc5c0b4dcbc74583f52f089d2c095945236bd3eb3e2d529cbcef06141"
+        },
+        {
+          "module": "ZFCinPA.ModelCodedClosedSchemaAxioms",
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedClosedSchemaAxioms.lean",
+          "source_sha256": "1318983c7727a9a280fe872003b6eac45b0959aec11c9d99a262bf99721be3b6",
+          "object": "/tmp/zfc-model-coded-closure/closed-run1/cache/ZFCinPA/ModelCodedClosedSchemaAxioms.olean",
+          "object_sha256": "23f65cac691b24d8becf1e46438b4577957917050bde3bb3a9166762adab8c20"
+        },
+        {
+          "module": "ZFCinPA.ModelCodedBindFree",
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBindFree.lean",
+          "source_sha256": "f3a11fa8165406cec42a793a2cbd05c950b60cce867d374e5414ce867e3c36ce",
+          "object": "/tmp/zfc-model-coded-closure/run3/cache/ZFCinPA/ModelCodedBindFree.olean",
+          "object_sha256": "51fde1bcc35edce516064105b05ebdde64ad60aefaa00fab2484c25c1b1698e2"
+        },
+        {
+          "module": "ZFCinPA.Instances",
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/Instances.lean",
+          "source_sha256": "30965b8b9533ae07fcfddf7743cd247df1ebd6a1224d4d4982786aa5bfe2446d",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/Instances.olean",
+          "object_sha256": "50532105d60be5b437537109a6ca8e37b2d883659dc4a64774fe5bf93d81595c"
+        },
+        {
+          "module": "ZFCinPA.SchemaClosure",
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/SchemaClosure.lean",
+          "source_sha256": "64ec54b2c206d7b8ed77ce04f45af9c35625c31c06c784aedc5ac233fd18bec4",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/SchemaClosure.olean",
+          "object_sha256": "1d132a2dd2df2b38440a826bd19b7d35617cde4d0d240da816d66abb3309ab43"
+        },
+        {
+          "module": "ZFCinPA.ModelCodedSchemaAxioms",
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedSchemaAxioms.lean",
+          "source_sha256": "a9fb204ca4f00fd30d28edfcc409ad561337a8378eab0b574b21bf8607f1c760",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ModelCodedSchemaAxioms.olean",
+          "object_sha256": "cfdc122e1487621dd3ea3405f5918598917e6a804f7517486a991ba4b46afa7d"
+        },
+        {
+          "module": "ZFCinPA.ZFDelta1",
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        {
+          "module": "ZFCinPA.ReplacementDelta1",
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ReplacementDelta1.lean",
+          "source_sha256": "6653c8cf532e53212633d953a25e12e4b97465be2f5112ce4cda56f41e040454",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ReplacementDelta1.olean",
+          "object_sha256": "e1c374dfb26f3ce831b705d5d845e65aceacb4fea2a20dd427c717bb11ce9b1b"
+        },
+        {
+          "module": "ZFCinPA.SeparationDelta1",
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/SeparationDelta1.lean",
+          "source_sha256": "695c4365853fe4500bde5978633aa0696716fe07dee639d75fe7e92995dda1a2",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/SeparationDelta1.olean",
+          "object_sha256": "52c63317a8c193209eaeb5f44e0f24a5ec1cc9feeed3a2029096bc394ba06885"
+        }
+      ],
+      "providers": [
+        {
+          "module": "Foundation.FirstOrder.SetTheory.Basic.Axioms",
+          "source": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/SetTheory/Basic/Axioms.lean",
+          "source_sha256": "9952df1012c4eeb08eb2f40b1719a1912856ce013daec5735a9ac81a97f4c9b8",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/Foundation/FirstOrder/SetTheory/Basic/Axioms.olean",
+          "object_sha256": "e2654fef89ea6d605dbb52b87ad19d2b9e98ed3c532f6d3145689d404d5f0704",
+          "scope": "Reused source-matched fresh object from schema PASS."
+        },
+        {
+          "module": "Foundation.FirstOrder.Bootstrapping.Syntax",
+          "source": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Bootstrapping/Syntax.lean",
+          "source_sha256": "18257680a6f1d84b6b4ae3d6dc5c07f4adcd4aa660fe3d4f63fa4df98932c79c",
+          "object": "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Bootstrapping/Syntax.olean",
+          "object_sha256": "7eecf0d4bf8fd67fd59dba66deb007a78da940367d3e3b932f5a6f19eb14a23c",
+          "scope": "Recorded cached boundary; no whole-cache attestation."
+        },
+        {
+          "module": "Foundation.FirstOrder.Incompleteness.InductionSchemeDelta1",
+          "source": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Incompleteness/InductionSchemeDelta1.lean",
+          "source_sha256": "4c87d00022da1dd0b75b3d73e184d04458835f362dcdda06e5529574ce2b99cf",
+          "object": "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Incompleteness/InductionSchemeDelta1.olean",
+          "object_sha256": "5951b3610954e29c7de0bf2335ef7e3624a7e4c566f30eff6fb9b9d6ea6371a6",
+          "scope": "Recorded cached boundary; no whole-cache attestation."
+        },
+        {
+          "module": "Foundation.FirstOrder.Bootstrapping.Syntax.Proof.Typed",
+          "source": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Typed.lean",
+          "source_sha256": "4cf3493c7437280c3e6ae9151e6f3bdecd865e9312e91b5744bdb5f3cfbdd594",
+          "object": "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Typed.olean",
+          "object_sha256": "5415e8029090c3c989bdaa843a35c1d38422014d0849037c65c5a6c785b82d87",
+          "scope": "Recorded cached boundary; no whole-cache attestation."
+        },
+        {
+          "module": "Foundation.FirstOrder.Arithmetic.IOpen.Basic",
+          "source": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Arithmetic/IOpen/Basic.lean",
+          "source_sha256": "4ec52a7a487aeafb0e9ea10716452b34f138d8214ad5a1aa5466064d6a4c9d7b",
+          "object": "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Arithmetic/IOpen/Basic.olean",
+          "object_sha256": "b43eb2f8d8a2ef18004125594adafbff02b52f1b6ef62b9b836015bdce2351ad",
+          "scope": "Recorded cached boundary; no whole-cache attestation."
+        },
+        {
+          "module": "Mathlib.Tactic.Ring",
+          "source": "/home/codex/src/Proofs/.lake/packages/mathlib/Mathlib/Tactic/Ring.lean",
+          "source_sha256": "d3ef5c49ebbd1108ce3f935e5ad95485e143abf02f28c027dba4bb6f3be8196e",
+          "object": "/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Tactic/Ring.olean",
+          "object_sha256": "cc12dfa66db7ef6ae4cd2d7a4e035ddffaca827168243f728812776b77836eb4",
+          "scope": "Recorded cached boundary; no whole-cache attestation."
+        }
+      ],
+      "toolchain_providers": [
+        {
+          "module": "Init",
+          "object": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/lib/lean/Init.olean",
+          "object_sha256": "d2e85d72099f9d869c9582aad5fb13079968d9d121ac6061e8326b00800b306e",
+          "toolchain_reference": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/lib/lean/Init.olean",
+          "toolchain_reference_sha256": "d2e85d72099f9d869c9582aad5fb13079968d9d121ac6061e8326b00800b306e"
+        },
+        {
+          "module": "Lean.Elab.Tactic.Omega",
+          "object": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/lib/lean/Lean/Elab/Tactic/Omega.olean",
+          "object_sha256": "eb766bae1ab40110a853c7cca853e36e1f4aece010a09fa4dd9b1b48116953fe",
+          "toolchain_reference": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/lib/lean/Lean/Elab/Tactic/Omega.olean",
+          "toolchain_reference_sha256": "eb766bae1ab40110a853c7cca853e36e1f4aece010a09fa4dd9b1b48116953fe"
+        }
+      ],
+      "actual_direct_tool_imports": [],
+      "dependencies": {
+        "root": "/home/codex/src/Proofs",
+        "Foundation": {
+          "path": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation",
+          "pin": "32e1a0956a8622fad067328ca1959729a7634428",
+          "tracked_clean": true
+        },
+        "Mathlib": {
+          "path": "/home/codex/src/Proofs/.lake/packages/mathlib",
+          "pin": "81a5d257c8e410db227a6665ed08f64fea08e997",
+          "input_revision": "v4.32.0",
+          "tracked_clean": true
+        },
+        "lake_manifest_sha256": "95e215b005fe9aacc1e5490c781d57e3044d2da5ca452495cfcd0e4eff908665",
+        "discovery": "read-only lake-manifest.json and existing .lake build directories; no Lake process",
+        "providers": {
+          "Foundation.FirstOrder.Arithmetic.IOpen.Basic": {
+            "path": "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Arithmetic/IOpen/Basic.olean",
+            "sha256": "b43eb2f8d8a2ef18004125594adafbff02b52f1b6ef62b9b836015bdce2351ad"
+          },
+          "Mathlib.Tactic.Ring": {
+            "path": "/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Tactic/Ring.olean",
+            "sha256": "cc12dfa66db7ef6ae4cd2d7a4e035ddffaca827168243f728812776b77836eb4"
+          }
+        },
+        "cached_objects_reused": true,
+        "dependency_rebuild": false,
+        "cache_provenance": "Existing built checkout is supplied by the caller; the checker records object identities but does not rebuild or independently attest the whole dependency cache."
+      },
+      "exact_project_import_closure": true,
+      "parent_fresh_object_imported": false,
+      "parent_evidence_scope": "Selected eleven syntax ancestors only; parent Atomic client and Cantor are not imported",
+      "unused_parent_boundaries": [],
+      "unused_parent_modules": [
+        "BusyBeaver.ZFC.ArithmeticCantor",
+        "BusyBeaver.ZFC.ArithmeticCode254",
+        "BusyBeaver.ZFC.ArithmeticTemplates254",
+        "BusyBeaver.ZFC.Code254",
+        "BusyBeaver.ZFC.Kalmar",
+        "BusyBeaver.ZFC.Lukasiewicz",
+        "BusyBeaver.ZFC.TarskiCalculus",
+        "BusyBeaver.ZFC.TarskiClean",
+        "BusyBeaver.ZFC.TarskiComplete",
+        "BusyBeaver.ZFC.TarskiDerived",
+        "BusyBeaver.ZFC.TarskiFalsity",
+        "BusyBeaver.ZFC.TarskiLeibniz",
+        "FirstOrder.Fol",
+        "ZFCinPA.ModelCodedDecoder254",
+        "ZFCinPA.ModelCodedDecoderAtomicVacuity254",
+        "ZFCinPA.ModelCodedDecoderConstructors254",
+        "ZFCinPA.ModelCodedDecoderEquality254",
+        "ZFCinPA.ModelCodedDecoderFalsity254",
+        "ZFCinPA.ModelCodedDecoderGeneralization254",
+        "ZFCinPA.ModelCodedDecoderLukasiewicz254",
+        "ZFCinPA.ModelCodedDecoderPropositional254",
+        "ZFCinPA.ModelCodedDecoderRho1_254",
+        "ZFCinPA.ModelCodedDecoderRho2_254",
+        "ZFCinPA.ModelCodedDecoderRho6_254",
+        "ZFCinPA.ModelCodedFreeRenaming",
+        "ZFCinPA.ModelCodedNamedBinderLaws",
+        "ZFCinPA.ModelCodedNamedQuantifierTemplates254",
+        "ZFCinPA.ModelCodedProofRenaming",
+        "ZFCinPA.ModelCodedRenamingAxioms",
+        "ZFCinPA.ModelCodedRenamingBindOne",
+        "ZFCinPA.ModelCodedRenamingSets"
+      ],
+      "before": {
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_shift_cancellation.py": "3d20c19c29344f48c65dc8788ec9ef26b94f5fdec69bb1129f2e3acc3a3b2b3d",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_arithmetic_cantor.py": "9a8d4d7dd467ac8152238c8a0cbe93ed87512be36b447e38bae0b8244a28b229",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-atomic-vacuity254-verification.json": "c8db05327dc3841e76162ab89aa09cab4a923dc56b0f9231cf8473bd83a4bdbe",
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedShiftCancellation.lean": "ab8b72fb2516e95c97ca6a5d26f73a4ae9f721941c15fc9c3c49f5fbf4582c06",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedShiftCancellationAudit.lean": "c1a49827aef000737fbd582b8747c2de7b0ef4f6278992bf5ad7a204c788cc26",
+        "/tmp/zfc-shift-cancellation/maintained-default/sources/ZFCinPA/ModelCodedShiftCancellation.lean": "ab8b72fb2516e95c97ca6a5d26f73a4ae9f721941c15fc9c3c49f5fbf4582c06",
+        "/tmp/zfc-shift-cancellation/maintained-default/sources/Audit.lean": "c1a49827aef000737fbd582b8747c2de7b0ef4f6278992bf5ad7a204c788cc26",
+        "/home/codex/src/Proofs/lake-manifest.json": "95e215b005fe9aacc1e5490c781d57e3044d2da5ca452495cfcd0e4eff908665",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedDecoderAtomicVacuity254.lean": "e3cdebe04cb8e85bb115105c41dc2c764e52c91914cdfd3cd98a391bca947e14",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedDecoderAtomicVacuity254Audit.lean": "ecc51d64d446034b783e97cb3cd9cd551332c6d5b6bda15614cc74001751840e",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBinderAbsorption.lean": "5b77b0df979d82df4fcb68ceaeba5d154774842236d1351405ab0625d235801f",
+        "/tmp/zfc-binder-absorption/run1/cache/ZFCinPA/ModelCodedBinderAbsorption.olean": "981acc1a435aa024ad702525aa2cbe1214bbad33c40b973e65ef9d8cc08711b7",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBindOne.lean": "78f5858a715e74bca2af835ec990e33775f588219ef7f30b217825acbffd6785",
+        "/tmp/zfc-model-coded-bind-one/run4/cache/ZFCinPA/ModelCodedBindOne.olean": "c80e2be803b838d943eaec9051b93b0eaa9a2f34470c60f8920821fb21a75eca",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedSpecialization.lean": "ae18d5c05167e4fbbf9e5bfadd6d807439140ec07031af22dc5198e4fc26ac38",
+        "/tmp/zfc-model-coded-closure/specialization-run3/cache/ZFCinPA/ModelCodedSpecialization.olean": "4da6590fc5c0b4dcbc74583f52f089d2c095945236bd3eb3e2d529cbcef06141",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedClosedSchemaAxioms.lean": "1318983c7727a9a280fe872003b6eac45b0959aec11c9d99a262bf99721be3b6",
+        "/tmp/zfc-model-coded-closure/closed-run1/cache/ZFCinPA/ModelCodedClosedSchemaAxioms.olean": "23f65cac691b24d8becf1e46438b4577957917050bde3bb3a9166762adab8c20",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBindFree.lean": "f3a11fa8165406cec42a793a2cbd05c950b60cce867d374e5414ce867e3c36ce",
+        "/tmp/zfc-model-coded-closure/run3/cache/ZFCinPA/ModelCodedBindFree.olean": "51fde1bcc35edce516064105b05ebdde64ad60aefaa00fab2484c25c1b1698e2",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/Instances.lean": "30965b8b9533ae07fcfddf7743cd247df1ebd6a1224d4d4982786aa5bfe2446d",
+        "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/Instances.olean": "50532105d60be5b437537109a6ca8e37b2d883659dc4a64774fe5bf93d81595c",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/SchemaClosure.lean": "64ec54b2c206d7b8ed77ce04f45af9c35625c31c06c784aedc5ac233fd18bec4",
+        "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/SchemaClosure.olean": "1d132a2dd2df2b38440a826bd19b7d35617cde4d0d240da816d66abb3309ab43",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedSchemaAxioms.lean": "a9fb204ca4f00fd30d28edfcc409ad561337a8378eab0b574b21bf8607f1c760",
+        "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ModelCodedSchemaAxioms.olean": "cfdc122e1487621dd3ea3405f5918598917e6a804f7517486a991ba4b46afa7d",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+        "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ReplacementDelta1.lean": "6653c8cf532e53212633d953a25e12e4b97465be2f5112ce4cda56f41e040454",
+        "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ReplacementDelta1.olean": "e1c374dfb26f3ce831b705d5d845e65aceacb4fea2a20dd427c717bb11ce9b1b",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/SeparationDelta1.lean": "695c4365853fe4500bde5978633aa0696716fe07dee639d75fe7e92995dda1a2",
+        "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/SeparationDelta1.olean": "52c63317a8c193209eaeb5f44e0f24a5ec1cc9feeed3a2029096bc394ba06885",
+        "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/SetTheory/Basic/Axioms.lean": "9952df1012c4eeb08eb2f40b1719a1912856ce013daec5735a9ac81a97f4c9b8",
+        "/tmp/zfc-model-coded-set-axioms/run4/cache/Foundation/FirstOrder/SetTheory/Basic/Axioms.olean": "e2654fef89ea6d605dbb52b87ad19d2b9e98ed3c532f6d3145689d404d5f0704",
+        "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Bootstrapping/Syntax.lean": "18257680a6f1d84b6b4ae3d6dc5c07f4adcd4aa660fe3d4f63fa4df98932c79c",
+        "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Bootstrapping/Syntax.olean": "7eecf0d4bf8fd67fd59dba66deb007a78da940367d3e3b932f5a6f19eb14a23c",
+        "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Incompleteness/InductionSchemeDelta1.lean": "4c87d00022da1dd0b75b3d73e184d04458835f362dcdda06e5529574ce2b99cf",
+        "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Incompleteness/InductionSchemeDelta1.olean": "5951b3610954e29c7de0bf2335ef7e3624a7e4c566f30eff6fb9b9d6ea6371a6",
+        "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Typed.lean": "4cf3493c7437280c3e6ae9151e6f3bdecd865e9312e91b5744bdb5f3cfbdd594",
+        "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Typed.olean": "5415e8029090c3c989bdaa843a35c1d38422014d0849037c65c5a6c785b82d87",
+        "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Arithmetic/IOpen/Basic.lean": "4ec52a7a487aeafb0e9ea10716452b34f138d8214ad5a1aa5466064d6a4c9d7b",
+        "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Arithmetic/IOpen/Basic.olean": "b43eb2f8d8a2ef18004125594adafbff02b52f1b6ef62b9b836015bdce2351ad",
+        "/home/codex/src/Proofs/.lake/packages/mathlib/Mathlib/Tactic/Ring.lean": "d3ef5c49ebbd1108ce3f935e5ad95485e143abf02f28c027dba4bb6f3be8196e",
+        "/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Tactic/Ring.olean": "cc12dfa66db7ef6ae4cd2d7a4e035ddffaca827168243f728812776b77836eb4",
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/lib/lean/Init.olean": "d2e85d72099f9d869c9582aad5fb13079968d9d121ac6061e8326b00800b306e",
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/lib/lean/Lean/Elab/Tactic/Omega.olean": "eb766bae1ab40110a853c7cca853e36e1f4aece010a09fa4dd9b1b48116953fe"
+      },
+      "commands": [],
+      "fresh_modules": [],
+      "LEAN_PATH": "/tmp/zfc-shift-cancellation/maintained-default/cache:/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/plausible/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/importGraph/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/aesop/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/Qq/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/batteries/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/build/lib/lean",
+      "namespace_overlay": {
+        "target": "/tmp/zfc-shift-cancellation/maintained-default/cache/Foundation",
+        "source": "/tmp/zfc-model-coded-set-axioms/run4/cache/Foundation"
+      },
+      "dependency_build": false,
+      "downloads": false,
+      "after": {
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_shift_cancellation.py": "3d20c19c29344f48c65dc8788ec9ef26b94f5fdec69bb1129f2e3acc3a3b2b3d",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_arithmetic_cantor.py": "9a8d4d7dd467ac8152238c8a0cbe93ed87512be36b447e38bae0b8244a28b229",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-atomic-vacuity254-verification.json": "c8db05327dc3841e76162ab89aa09cab4a923dc56b0f9231cf8473bd83a4bdbe",
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedShiftCancellation.lean": "ab8b72fb2516e95c97ca6a5d26f73a4ae9f721941c15fc9c3c49f5fbf4582c06",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedShiftCancellationAudit.lean": "c1a49827aef000737fbd582b8747c2de7b0ef4f6278992bf5ad7a204c788cc26",
+        "/tmp/zfc-shift-cancellation/maintained-default/sources/ZFCinPA/ModelCodedShiftCancellation.lean": "ab8b72fb2516e95c97ca6a5d26f73a4ae9f721941c15fc9c3c49f5fbf4582c06",
+        "/tmp/zfc-shift-cancellation/maintained-default/sources/Audit.lean": "c1a49827aef000737fbd582b8747c2de7b0ef4f6278992bf5ad7a204c788cc26",
+        "/home/codex/src/Proofs/lake-manifest.json": "95e215b005fe9aacc1e5490c781d57e3044d2da5ca452495cfcd0e4eff908665",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedDecoderAtomicVacuity254.lean": "e3cdebe04cb8e85bb115105c41dc2c764e52c91914cdfd3cd98a391bca947e14",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedDecoderAtomicVacuity254Audit.lean": "ecc51d64d446034b783e97cb3cd9cd551332c6d5b6bda15614cc74001751840e",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBinderAbsorption.lean": "5b77b0df979d82df4fcb68ceaeba5d154774842236d1351405ab0625d235801f",
+        "/tmp/zfc-binder-absorption/run1/cache/ZFCinPA/ModelCodedBinderAbsorption.olean": "981acc1a435aa024ad702525aa2cbe1214bbad33c40b973e65ef9d8cc08711b7",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBindOne.lean": "78f5858a715e74bca2af835ec990e33775f588219ef7f30b217825acbffd6785",
+        "/tmp/zfc-model-coded-bind-one/run4/cache/ZFCinPA/ModelCodedBindOne.olean": "c80e2be803b838d943eaec9051b93b0eaa9a2f34470c60f8920821fb21a75eca",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedSpecialization.lean": "ae18d5c05167e4fbbf9e5bfadd6d807439140ec07031af22dc5198e4fc26ac38",
+        "/tmp/zfc-model-coded-closure/specialization-run3/cache/ZFCinPA/ModelCodedSpecialization.olean": "4da6590fc5c0b4dcbc74583f52f089d2c095945236bd3eb3e2d529cbcef06141",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedClosedSchemaAxioms.lean": "1318983c7727a9a280fe872003b6eac45b0959aec11c9d99a262bf99721be3b6",
+        "/tmp/zfc-model-coded-closure/closed-run1/cache/ZFCinPA/ModelCodedClosedSchemaAxioms.olean": "23f65cac691b24d8becf1e46438b4577957917050bde3bb3a9166762adab8c20",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBindFree.lean": "f3a11fa8165406cec42a793a2cbd05c950b60cce867d374e5414ce867e3c36ce",
+        "/tmp/zfc-model-coded-closure/run3/cache/ZFCinPA/ModelCodedBindFree.olean": "51fde1bcc35edce516064105b05ebdde64ad60aefaa00fab2484c25c1b1698e2",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/Instances.lean": "30965b8b9533ae07fcfddf7743cd247df1ebd6a1224d4d4982786aa5bfe2446d",
+        "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/Instances.olean": "50532105d60be5b437537109a6ca8e37b2d883659dc4a64774fe5bf93d81595c",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/SchemaClosure.lean": "64ec54b2c206d7b8ed77ce04f45af9c35625c31c06c784aedc5ac233fd18bec4",
+        "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/SchemaClosure.olean": "1d132a2dd2df2b38440a826bd19b7d35617cde4d0d240da816d66abb3309ab43",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedSchemaAxioms.lean": "a9fb204ca4f00fd30d28edfcc409ad561337a8378eab0b574b21bf8607f1c760",
+        "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ModelCodedSchemaAxioms.olean": "cfdc122e1487621dd3ea3405f5918598917e6a804f7517486a991ba4b46afa7d",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+        "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ReplacementDelta1.lean": "6653c8cf532e53212633d953a25e12e4b97465be2f5112ce4cda56f41e040454",
+        "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ReplacementDelta1.olean": "e1c374dfb26f3ce831b705d5d845e65aceacb4fea2a20dd427c717bb11ce9b1b",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/SeparationDelta1.lean": "695c4365853fe4500bde5978633aa0696716fe07dee639d75fe7e92995dda1a2",
+        "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/SeparationDelta1.olean": "52c63317a8c193209eaeb5f44e0f24a5ec1cc9feeed3a2029096bc394ba06885",
+        "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/SetTheory/Basic/Axioms.lean": "9952df1012c4eeb08eb2f40b1719a1912856ce013daec5735a9ac81a97f4c9b8",
+        "/tmp/zfc-model-coded-set-axioms/run4/cache/Foundation/FirstOrder/SetTheory/Basic/Axioms.olean": "e2654fef89ea6d605dbb52b87ad19d2b9e98ed3c532f6d3145689d404d5f0704",
+        "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Bootstrapping/Syntax.lean": "18257680a6f1d84b6b4ae3d6dc5c07f4adcd4aa660fe3d4f63fa4df98932c79c",
+        "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Bootstrapping/Syntax.olean": "7eecf0d4bf8fd67fd59dba66deb007a78da940367d3e3b932f5a6f19eb14a23c",
+        "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Incompleteness/InductionSchemeDelta1.lean": "4c87d00022da1dd0b75b3d73e184d04458835f362dcdda06e5529574ce2b99cf",
+        "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Incompleteness/InductionSchemeDelta1.olean": "5951b3610954e29c7de0bf2335ef7e3624a7e4c566f30eff6fb9b9d6ea6371a6",
+        "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Typed.lean": "4cf3493c7437280c3e6ae9151e6f3bdecd865e9312e91b5744bdb5f3cfbdd594",
+        "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Typed.olean": "5415e8029090c3c989bdaa843a35c1d38422014d0849037c65c5a6c785b82d87",
+        "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Arithmetic/IOpen/Basic.lean": "4ec52a7a487aeafb0e9ea10716452b34f138d8214ad5a1aa5466064d6a4c9d7b",
+        "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Arithmetic/IOpen/Basic.olean": "b43eb2f8d8a2ef18004125594adafbff02b52f1b6ef62b9b836015bdce2351ad",
+        "/home/codex/src/Proofs/.lake/packages/mathlib/Mathlib/Tactic/Ring.lean": "d3ef5c49ebbd1108ce3f935e5ad95485e143abf02f28c027dba4bb6f3be8196e",
+        "/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Tactic/Ring.olean": "cc12dfa66db7ef6ae4cd2d7a4e035ddffaca827168243f728812776b77836eb4",
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/lib/lean/Init.olean": "d2e85d72099f9d869c9582aad5fb13079968d9d121ac6061e8326b00800b306e",
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/lib/lean/Lean/Elab/Tactic/Omega.olean": "eb766bae1ab40110a853c7cca853e36e1f4aece010a09fa4dd9b1b48116953fe"
+      },
+      "all_input_provider_postchecks": true
+    }
+  },
+  "maintained_placements": [
+    {
+      "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedShiftCancellation.lean",
+      "sha256": "ab8b72fb2516e95c97ca6a5d26f73a4ae9f721941c15fc9c3c49f5fbf4582c06"
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedShiftCancellationAudit.lean",
+      "sha256": "c1a49827aef000737fbd582b8747c2de7b0ef4f6278992bf5ad7a204c788cc26"
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/check_model_coded_shift_cancellation.py",
+      "sha256": "3d20c19c29344f48c65dc8788ec9ef26b94f5fdec69bb1129f2e3acc3a3b2b3d"
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/results/model-coded-shift-cancellation-verification.json",
+      "sha256": "8c9cad55fc156c994c9da2186279d34682fa474fb509ea123268455cdbc44a15"
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/results/model-coded-shift-cancellation-history.json",
+      "sha256": "668dd66bd106e52612cfc6597a294e51641b3e49d05076b94e5111ff5cbda50d"
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/model-coded-shift-cancellation.md",
+      "sha256": "a6c9da1ca889726f3931d75fc41cf5e6f1f0aafe1e578470837c2b8725e48c33"
+    }
+  ],
+  "all_47_default_inputs_rehashed": true,
+  "packaging_proof_builds": 0
+}

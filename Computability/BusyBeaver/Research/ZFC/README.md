@@ -1313,3 +1313,10 @@ and the internal L2/scheduler connection remain open.
 The [positive-code freshness theorem](../../../../Logic/Interpretability/ZFCinPA/model-coded-decoder-freshness254.md) proves that binding any positive label at least as large as an internal source code leaves its decoded formula unchanged, at every internal binder depth. Its eight-probe/twelve-caller Lean audit passed without warnings. The proof uses internal Π1 order induction and the actual strict child bounds, with the literal source0/label0 exception explicit. Positive codes therefore supply their own fresh label for the Collection row. The all-internal Collection proof and its zero-matrix case remain open.
 
 [`ModelCodedDecoderContainer254`](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedDecoderContainer254.lean) now proves the actual numerical C clause in internal ZF for arbitrary internal `a,b,c` satisfying only `c≠a` and `c≠b`, including `a=b` and valid zero-label cases. The 330-line source and 16/20 audit passed with standard axioms only and zero warnings. The finite distinct-label quote/substitution calculation uses the fixed ordinary NativeZF container row; the coincident branch is proved separately by irreflexivity and existential monotonicity. All failed attempts are retained, with no resource increase or dependency build. [The note](../../../../Logic/Interpretability/ZFCinPA/model-coded-decoder-container254.md) and [evidence](../../../../Logic/Interpretability/ZFCinPA/results/model-coded-decoder-container254-verification.json) retain the remaining G, full-bundle, accepted-proof and PA comparison obligations.
+
+[Finite shift cancellation](../../../../Logic/Interpretability/ZFCinPA/model-coded-shift-cancellation.md)
+now constructs actual internal proofs of p from proofs of any externally finite
+iteration of free-variable shift on p. Arbitrary internal formula codes and
+free parameters are retained; six axiom probes and nine callers pass with
+standard axioms and zero warnings. This is the cancellation step for a proposed
+open-predicate template compiler. That compiler and Collection remain separate.
