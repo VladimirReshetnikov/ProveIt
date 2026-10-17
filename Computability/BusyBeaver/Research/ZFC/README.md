@@ -77,6 +77,14 @@ freshly checks `DirtyReset254` and the umbrella, with 159 source-matched reused
 units. This enlarges the proved logical targets for initializer searches; it
 does not supply a new binary initializer or reduce the 252-state table.
 
+[Intake156](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch156-sparse-certificates-reset-synchronization-and-the-zfc-comparison)
+reconciles the three reports from `2447a98214`. Its useful new directions are a
+canonical sparse proof certificate with square-root row bound, the six dirty
+starts now ported above, and a classical HOD implementation plan for Choice.
+All advertised finite compiler, fusion and rotation controls reproduce; none
+improves 252 states. The ordinary ZFC reconstruction and HOD arguments remain
+distinct from the missing compiled Choice and internal PA/ZFC endpoints.
+
 A measured attempt to save a register by changing Cantor pairing to a
 [power-of-two encoding](register_lifetime.md) retained the full calculus but
 cost 306 states; its tested hybrids cost at least293. The current 252-state

@@ -147,3 +147,13 @@ additive parameter. Its dirty candidate-zero theorem additionally removes the
 initial formula/cache premises when `d=0`. Composing a dirty AX root with its
 eight unconditional good entries is still a separate interface step; the finite
 binary diagnostic above does not acquire a new machine-equivalence theorem.
+
+The subsequently checked [`DirtyReset254`](dirty_reset254.md), ported from
+intake156/source49, accepts clean candidate counters `0,1,2,4,5,6` with all four
+working fields arbitrary, including `d`. In logical register order
+`(N,T,W,A,D,H,X,Y,L)`, this requires `A=X=Y=L=0`; the physical zero slots are
+`1,4,5,8`, slot6 is one of the six counters, and slots0/2/3/7 may vary.
+The whole binary frame and existing simulation obligations still apply.
+Source49's sharper finite `K(p,n)` certificate and 215-of-256 control classifier
+remain ordinary results. They are not implied by the six-counter Lean theorem,
+and no new binary table is supplied by either extension.
