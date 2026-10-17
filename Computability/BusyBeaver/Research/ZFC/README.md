@@ -1194,9 +1194,14 @@ The [decoded existential-universal row](../../../../Logic/Interpretability/ZFCin
 now proves actual `rho6` in internal ZF and ZFC, including variable zero.
 Proof equivalence and named generalization handle capture of its relative
 falsity formula. Twelve axiom reports and sixteen callers pass with one
-retained style warning. The completed logical rows are `rho2` through `rho8`;
-`rho1` (existence of equality), the gated set-theoretic bundle and the full PA
-equivalence remain open.
+retained style warning.
+
+The [decoded existence-of-equality row](../../../../Logic/Interpretability/ZFCinPA/model-coded-decoder-rho1-254.md)
+proves actual `rho1` in internal ZF and ZFC, including coincident and zero
+labels. Opening its named binder at the other label yields reflexive equality.
+Ten axiom reports and sixteen callers pass without warnings. All eight
+individual logical-row clients are now proved; the gated set-theoretic bundle,
+accepted-proof translation and full PA equivalence remain open.
 
 
 The [arithmetic symbolic-tape interpretation](arithmetic_symbolic_tape_perm252.md)
@@ -1253,3 +1258,11 @@ decrement. Actual decoder coverage supplies the next leaf and its `follow`
 equation. The bootstrap also reaches its first accepted leaf at the same
 82,552-step clock. Sixteen axiom reports and eighteen callers pass with zero
 warnings. Variable-PC representation and global internal runtime remain open.
+
+The [compact finite-control representation](arithmetic_finite_control254.md)
+proves binary constants and bounded table lookup in every IOpen model, together
+with an exact common 40-bit dispatch frame under IΣ1. Eight axiom reports and
+thirteen callers pass with zero warnings. Large constants use their binary
+digits, keeping the recursive term only once at each step. The actual 6,460-row
+control certificate, represented interpreter and internal scheduler bridge
+remain open; the separate Python extraction is untrusted formal data.
