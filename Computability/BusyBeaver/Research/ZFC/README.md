@@ -135,6 +135,11 @@ now produce accepted internal proof codes for every original rule, with
 seventeen reports and eighteen callers. They support the planned
 [bounded proof-witness stack invariant](arithmetic_enumerator_soundness_plan254.md)
 for the reverse implication; that invariant is not yet proved.
+The [internal stack-tail drain](arithmetic_stack_tail254.md) now bounds every
+stream by its numerical code, and the [bounded certificate module](arithmetic_stack_certificate254.md)
+proves Δ1 stack certification, push/pop, bound weakening, zero certification
+and cached-falsity extraction. Their audits pass fourteen/fifteen and
+twenty-four/seventeen reports/callers. Runtime preservation remains open.
 
 The [finite proof-template compiler](model_coded_core_compiler.md) now handles
 arbitrary internal free parameters by compiling the existing logical proof

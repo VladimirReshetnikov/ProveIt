@@ -312,7 +312,11 @@ keeps one existential bound on proof witnesses for the current stack and
 registers. This gives a Σ1 time-invariant candidate. The required
 [actual proof-constructor equations](arithmetic_proof_constructors254.md)
 are now checked; stack-tail drain, local preservation and the reverse
-arithmetic sentence remain to be proved.
+arithmetic sentence remain to be proved. The subsequent
+[tail-drain](arithmetic_stack_tail254.md) and
+[certificate](arithmetic_stack_certificate254.md) modules now close the
+stack representation and local push/pop obligations. Runtime preservation,
+time induction and the reverse sentence are the remaining numerical steps.
 
 The [numeric history-checker construction](code254_arithmetic_checker.md)
 specifies a concrete next adapter: represent the exact Cantor pairing and its

@@ -1,8 +1,10 @@
 # Plan for internal scheduler soundness
 
 Status: the [proof-constructor equations](arithmetic_proof_constructors254.md)
-are checked. The stack-tail, certificate-preservation and time-induction
-arguments described below remain implementation work.
+are checked. The [stack-tail bound](arithmetic_stack_tail254.md) and
+[bounded stack-certificate predicates and operations](arithmetic_stack_certificate254.md)
+are now checked too. Runtime preservation and time induction remain
+implementation work.
 
 The reverse implication must start from a certified state. Arbitrary dirty
 registers can contain falsity in cache and halt on NIP without any accepted
