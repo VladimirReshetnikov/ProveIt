@@ -53,8 +53,13 @@ The current arithmetic checkpoints are:
   [vacuity proof](../../../../Logic/Interpretability/ZFCinPA/validator_environment_vacuity254.md)
   supplies generalization witnesses for every internal encoded formula when
   its free, bound and future binder labels avoid the generalized variable;
-  its uniform environment invariant uses Π₂ induction in IΣ₂. Alpha
-  equivalence and source-proof translation remain open; arbitrary accepted
+  its uniform environment invariant uses Π₂ induction in IΣ₂. The
+  [represented equality context](../../../../Logic/Interpretability/ZFCinPA/validator_equality_context254.md)
+  supplies coordinate projection and the binder-cons interface. Its
+  [vacuity theorem](../../../../Logic/Interpretability/ZFCinPA/validator_equality_context_vacuity254.md)
+  derives both context-vacuity resources from avoidance of equal-length
+  stacks, using Σ₁ induction in IΣ₁. Alpha equivalence and source-proof
+  translation remain open; arbitrary accepted
   proofs are not assumed closed under variable renaming.
 * [Both actual reads](arithmetic_control_read_template254.md) are checked on
   every internal register file with its scratch fields zero. They reach the
@@ -643,9 +648,12 @@ clients, the internal induction producing `Θ`, and the final schema/glue
 arguments remain open. The atomic clients must also discharge their
 `numOK` premises in ZF. These templates do not yet discharge `hSchema`.
 
-The subsequent `f1fe42d63c` adds `LIterate.orbit_closure`: the union of an
-ordinal orbit is a nonzero limit closure point above its starting ordinal.
-Its source-level contract keeps the class-function image set, the two
-Separation resources and the orbit set explicit. The next template must
-construct those resources in the enlarged language before this supplies the
-unbounded closure points required by the final schema arguments.
+`LIterate.orbit_closure` constructs a nonzero limit closure point by taking
+the union of an ordinal orbit. The merged `3c6917845f` adds
+`LClosure.closure_point`, which constructs its image set, two Separation
+resources and orbit set from concrete enlarged-language formulas in every
+template model. The image and orbit relations are totalized outside the
+ordinals and naturals respectively to meet the Replacement interface.
+This supplies the semantic closure-point resource; final schema templates
+and their internal compiler/induction clients remain separate. The review
+of these upstream sources does not claim a local compiler rerun.
