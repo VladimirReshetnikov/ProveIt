@@ -634,3 +634,10 @@ a new local compiler run of the upstream modules. The represented compiler
 clients, the internal induction producing `Θ`, and the final schema/glue
 arguments remain open. The atomic clients must also discharge their
 `numOK` premises in ZF. These templates do not yet discharge `hSchema`.
+
+The subsequent `f1fe42d63c` adds `LIterate.orbit_closure`: the union of an
+ordinal orbit is a nonzero limit closure point above its starting ordinal.
+Its source-level contract keeps the class-function image set, the two
+Separation resources and the orbit set explicit. The next template must
+construct those resources in the enlarged language before this supplies the
+unbounded closure points required by the final schema arguments.
