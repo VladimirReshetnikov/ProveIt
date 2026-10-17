@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings, 17 October 2026. This report now reconciles fifty-six manuscripts.
+Intake findings, 17 October 2026. This report now reconciles fifty-nine manuscripts.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -31,6 +31,15 @@ cache-result MP report provides a different 252-state startup and proof-block
 interface, with no smaller machine or new Lean endpoint. See the [complete-package
 recovery instructions](intake-158-reproduction.md) and [partial-package recovery
 instructions](intake-159-reproduction.md).
+
+Batch 160 adds [the prefix-carry250 construction and stronger audit](intake-160.md)
+as sources57–59. The two250-state packages contain the same exact table.
+All requested checks pass, including8391 symbolic cases and the585431-step
+complete blank prefix. Independent ordinary-proof review found no fatal defect
+within its scope. Exact-table Lean verification and the internal PA equivalence
+remain open; the already checked252 endpoint is unchanged. The earlier rejected
+250 scanner fold in source57 is a different machine. See the [reproduction and
+recovery instructions](intake-160-reproduction.md).
 
 ## Sources, overlap and base
 
