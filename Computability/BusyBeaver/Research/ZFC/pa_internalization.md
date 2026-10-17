@@ -33,15 +33,59 @@ The current arithmetic checkpoints are:
   arithmetic completeness is applied to these fixed sentences.
 * [Internal relative interpretation](internal_relativization_refresh.md)
   now includes domain-side discharge and the function-free set-language
-  adapter. Actual interpreted-domain, nonemptiness and translated-axiom
-  proofs remain explicit.
+  adapter. The [constructible interpretation](../../../../Logic/Interpretability/ZFCinPA/constructible_interpretation.md)
+  supplies the fixed L-domain formula, its nonemptiness, the quotation bridge,
+  and the finite equality, fixed ZF and Choice axiom obligations. The uniform
+  internal Separation/Replacement hypothesis `hSchema` remains open.
+* [Internal validator provability](../../../../Logic/Interpretability/ZFCinPA/validator_provability254.md)
+  supplies the twelve literal rule closures and a classical propositional
+  interface. The [formula encoder](../../../../Logic/Interpretability/ZFCinPA/validator_formula_encoder254.md)
+  has total, fixed arithmetic graphs with depth-sensitive variable labels.
+  The [quantifier interface](../../../../Logic/Interpretability/ZFCinPA/validator_quantifier_core254.md)
+  proves finite quantifier and vacuity laws, including a two-binder bridge
+  with four explicit vacuity premises. The [equality interface](../../../../Logic/Interpretability/ZFCinPA/validator_equality_core254.md)
+  supplies reflexivity, symmetry, transitivity and atomic congruence. The
+  [configurable environment encoder](../../../../Logic/Interpretability/ZFCinPA/validator_environment_labels254.md)
+  proves exact internal term, vector and formula SHIFT laws through nested
+  quantifiers. [Binder opening](../../../../Logic/Interpretability/ZFCinPA/validator_environment_opening254.md)
+  now gives exact term/vector/formula substitution identities and opened
+  ALL/EXS matrix equations for arbitrary internal depths. The
+  [vacuity proof](../../../../Logic/Interpretability/ZFCinPA/validator_environment_vacuity254.md)
+  supplies generalization witnesses for every internal encoded formula when
+  its free, bound and future binder labels avoid the generalized variable;
+  its uniform environment invariant uses Π₂ induction in IΣ₂. The
+  [represented equality context](../../../../Logic/Interpretability/ZFCinPA/validator_equality_context254.md)
+  supplies coordinate projection and the binder-cons interface. Its
+  [vacuity theorem](../../../../Logic/Interpretability/ZFCinPA/validator_equality_context_vacuity254.md)
+  derives both context-vacuity resources from avoidance of equal-length
+  stacks, using Σ₁ induction in IΣ₁. Alpha equivalence and source-proof
+  translation remain open; arbitrary accepted
+  proofs are not assumed closed under variable renaming.
 * [Both actual reads](arithmetic_control_read_template254.md) are checked on
   every internal register file with its scratch fields zero. They reach the
   actual dispatch control 38, retain the whole register file in their
   endpoint, and give a positive internal logical runtime.
+* [Actual dispatch](arithmetic_control_dispatch254.md) and the
+  [complete NIP branch](arithmetic_control_unpair254.md) are checked for
+  arbitrary internal values. With both scratches zero, cache1 halts;
+  otherwise NIP writes the two Cantor projections of WS to cache and WS,
+  then returns to fetch. The AC2 dispatcher composition additionally clears
+  AC. The [pairing routines](arithmetic_control_pair254.md) now have terminating
+  all-internal contracts, including both actual DROP and MP occurrences and
+  whole-file preservation. The [complete DROP branch](arithmetic_control_drop254.md)
+  pushes the old TW/WS pair, restores TW from the cache and returns to fetch;
+  its AC1 dispatcher composition is also checked. The
+  [MP comparison](arithmetic_control_compare254.md) clears scratch1 and cache,
+  reaches success exactly when their original values agree, and has the
+  exact internal logical clock `3*a+2*distance(a,b)+2`. Both
+  [MP parameter pushes and the comparison-to-fetch tail](arithmetic_control_param_push254.md)
+  are now checked. Each push preserves param1 while setting TW to param1
+  and WS to the pair of the original TW and WS. The short unpair and
+  constructor sequence still need contracts and composition into full MP;
+  AX also remains open.
 
 The remaining major steps are the reverse internal ZF-to-validator proof
-translation, the L-specific ZFC-to-ZF axiom proofs, and the complete
+translation, the internal L-specific Separation/Replacement proofs, and the complete
 interpreter-to-Enum connection. The forward validator sentence alone does
 not yet imply the requested PA theorem about the literal binary machine.
 
@@ -525,23 +569,42 @@ nonstandardly many free variables never need a nonstandard quantifier block.
   depth `d` as its changing parameter) replacing bound `#k` by `s(k)` and free
   `&i` by `s(d+i)`, each quantifier becoming a quantifier over `econs y s`;
   atoms read entries through ZF numerals (Codex's numeral code builders).
-  `P_K(s) := (K^L)⟦s⟧_0`.
-* `D_K`: a represented class of ordinals (code builder over `K`):
-  limits for atoms, `D₁ ∩ D₂` for `⋏`/`⋎`, and `D' ∩ W(P')` for `∃`/`∀`,
-  where `W(P')` is the witness-reflection class of the matrix.
-* **Invariant** `Θ(K)`: `ZF ⊢ ∃c ∈ Fml. Club(D_K) ∧
-  ∀β ∈ D_K ∀s (env on L_β) (P_K(s) ↔ SatIn(L_β, c, s))`, together with the
-  locality law `s, s'` agree below `N` → `P_K(s) ↔ P_K(s')` that the
-  witness-closure argument needs.
+  **Checked** as `ZFCinPA/EnvTransform.lean` (`envForm d K`, its equations,
+  and `isSemiformula_envForm`: the output has bound-variable arity at most
+  one). The latter typing theorem alone does not assert absence of free
+  variables; the required free-variable/shift laws remain separate.
+* Reflecting stages are the limit **closure points of a function** `f_K`
+  (a placeholder-definable graph, existentially supplied by the induction):
+  successor for atoms, `max(f₁, f₂)` for `⋏`/`⋎` (closure points of the
+  max are closure points of both, so no club intersection or iteration is
+  needed), and `max(f', g_{P'})` for `∃`/`∀`, where `g_{P'}(α)` bounds the
+  `L`-ranks of witnesses for environments on `L_α` (the planned Collection
+  template). The current invariant quantifies over **environments on an
+  earlier stage** `L_α`, with `α ∈ β`. Extending such an environment by one
+  element of `L_β` keeps it on a common earlier stage. The source no longer
+  requires finite support or a locality argument.
+* **Invariant** `Θ(K, d)`: `ZF ⊢ Total(f) ∧ ∃c ∈ Fml. ∀β (β limit closure
+  point of f) ∀α ∈ β, ∀ env s on L_α:
+  envForm d K (s) ↔ SatIn(L_β, c, s)`, by semiformula induction with the depth
+  as parameter (exactly the shape of the construction, so `free` never
+  appears).
+* Templates use the **full** Separation/Replacement schemata over the
+  enlarged language (Codex's `separationProof`/`replacementProof` are generic
+  in the matrix) and `congruenceProof₁/₂` for the placeholders, so the
+  semantic proofs may use any instance they need. ω-iteration is needed only
+  once, in the final templates: a generic "limit closure points are
+  unbounded" lemma.
+* The only `free`-based induction is the final **glue** (`envForm` versus
+  Foundation's `relativize` on the schema core), done by induction on formula
+  rank in models of PA (the endpoint's arithmetic).
 * Each inductive step is **one fixed template** over `ℒₛₑₜ` with placeholders
-  for the component predicates (`P'`, `D'`, numerals), proved semantically
+  for the component predicates (`P'`, `f'`, numerals), proved semantically
   from `SatIn`'s Tarski clauses and the constructible hierarchy of
   `BusyBeaver.ZFC` in every template structure, and compiled at the internal
   components by Codex's `OpenSetTemplateCompiler.compileOpenTemplate` (the
   `CollectionTemplate254`/`CompiledCollection254` pattern). The internal
-  induction on `K` then only chains `Derivable` facts (Σ₁ induction on
-  `IsUFormula`).
-* **Final templates**: `Sep^L(P)` from `Θ` (choose `β ∈ D_K` above `a` and
+  induction on `K` then only chains `Derivable` facts.
+* **Final templates**: `Sep^L(P)` from `Θ` (choose a limit closure point `β` of `f_K` above `a` and
   the parameters: the separated set is `{x ∈ a | SatIn(L_β, c, x::s)}`,
   definable over `L_β`, hence in `L_{β+1}`); `Repl^L(P)` from `Sep^L` and the
   `P`-independent `Coll^L` template.
@@ -549,6 +612,48 @@ nonstandardly many free variables never need a nonstandard quantifier block.
   `K⟦s⟧ ↔ K` under it (two small generators by internal induction on `m` and
   on `K`); `relativize` commutes with the `∀^m` closure of `SchemaRecognizer`.
 
+**Progress (checked, standard axioms only).** The template toolkit
+(`LTemplate`: template theory with the full enlarged schemata, a universal
+axiom callback, `compileT`; `LPieces`; `LTransVal`: translated codes are `Σ₁`
+in the placeholder codes) and **every inductive step** are theorems of the
+template theory, over one six-placeholder language with the common conclusion
+`totS F₅ ⋏ reflS P₄ F₅`: `LStepAnd` (`⋏`), `LStepBasic` (`⋎`, negated atoms,
+`⊤`, `⊥`), `LStepAtom` (membership and equality atoms read through numeral
+placeholders), `LStepEx`/`LStepExT` (`∃`, `∀`, with the witness-bounding
+function obtained from Replacement and Separation in every template model).
+Two design refinements were forced on the way: `reflS` quantifies over
+environments on *earlier stages* (no finiteness argument is needed anywhere),
+and `EnvTransform`'s fixed pieces are embeddings of closed semisentences, so
+each template's definitional hypotheses translate to literal tautologies.
+
+**Remaining for `hSchema`**: (i) ω-iteration of a placeholder-defined class
+function (limit closure points are unbounded) and the final Separation and
+Replacement templates; (ii) the internal induction driver chaining the
+compiled templates at internal codes (definitional hypotheses as internal
+tautologies); (iii) the glue from `SchemaRecognizer` codes to
+`relativize`.
+
 Feeding `hSchema` into `ConstructibleInterpretation.provable_falsum_ZF_of_ZFC`
 and the result into the C254/ZF comparison then gives the Choice half of the
 PA endpoint.
+
+The merged `efa3142e2d` supplies those quantifier resources:
+`LStepExT.wb_tot` obtains a total witness bound by Replacement over a set
+containing all environments on the earlier stage, then uses Separation and
+regularity to select the least bound. `exTemplate_provable` and
+`allTemplate_provable` consume it in the fixed template theory. This source
+review covers the 429-line module and its six-probe audit; it does not claim
+a new local compiler run of the upstream modules. The represented compiler
+clients, the internal induction producing `Θ`, and the final schema/glue
+arguments remain open. The atomic clients must also discharge their
+`numOK` premises in ZF. These templates do not yet discharge `hSchema`.
+
+`LIterate.orbit_closure` constructs a nonzero limit closure point by taking
+the union of an ordinal orbit. The merged `3c6917845f` adds
+`LClosure.closure_point`, which constructs its image set, two Separation
+resources and orbit set from concrete enlarged-language formulas in every
+template model. The image and orbit relations are totalized outside the
+ordinals and naturals respectively to meet the Replacement interface.
+This supplies the semantic closure-point resource; final schema templates
+and their internal compiler/induction clients remain separate. The review
+of these upstream sources does not claim a local compiler rerun.

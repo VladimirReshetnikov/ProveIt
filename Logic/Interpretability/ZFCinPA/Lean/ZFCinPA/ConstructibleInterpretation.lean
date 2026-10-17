@@ -1,4 +1,5 @@
-import ZFCinPA.Translation
+import ZFCinPA.NativeZFContainers254
+import Foundation.FirstOrder.Bootstrapping.DerivabilityCondition.D1
 import ZFCinPA.ZFDelta1
 import ZFCinPA.SetRelativization
 import BusyBeaver.ZFC.ConstructibleOrder
@@ -87,6 +88,7 @@ theorem sat_inLForm {V : Type*} {mem : V → V → Prop} (H : _root_.SetTheory.Z
 end Syntactic
 
 open LO LO.FirstOrder LO.FirstOrder.SetTheory
+open NativeZFContainers254 (memRel toSet eval_toSet)
 open SetTheory.BusyBeaver.ZFC.Constructible (InL)
 
 /-! ## The domain formula -/
@@ -303,76 +305,23 @@ variable {V : Type*} [SetStructure V] [Nonempty V] [V↓[ℒₛₑₜ] ⊧* 𝗭
 theorem modelsZ_of_modelsZF : V↓[ℒₛₑₜ] ⊧* 𝗭 :=
   models_theory_iff.mpr fun _ hφ => models_of_mem (z_subset_zf hφ)
 
-private theorem env2_eq_aux {W : Type*} (x y : W) (e : ℕ → W) :
-    ∀ i : Fin 2, ![x, y] i = _root_.SetTheory.scons x (_root_.SetTheory.scons y e) i.val := fun i =>
-  Fin.cases rfl (fun j => Fin.cases rfl (fun j0 => j0.elim0) j) i
-
-private theorem env2_shift_aux {W : Type*} (x y : W) (e : ℕ → W) (j : ℕ) :
-    e j = _root_.SetTheory.scons x (_root_.SetTheory.scons y e) (2 + j) := by
-  rw [Nat.add_comm]
-  rfl
-
-/-- The repository's Replacement clause in a model of `𝗭𝗙` (the proof of
-`Translation.repl_clause`, which is stated for `𝗭𝗙𝗖` but uses only
-Replacement and Separation). -/
+/-- The repository's Replacement clause, reusing the checked ordinary-ZF
+extraction in NativeZFContainers254 (adapted there from Translation). -/
 theorem repl_clauseZF (psi : _root_.SetTheory.Form) (e : ℕ → V)
     (hfun : _root_.SetTheory.Functional (_root_.SetTheory.relOf (memRel V) psi e)) (a : V) :
-    ∃ r : V, ∀ y, y ∈ r ↔ ∃ x, x ∈ a ∧ _root_.SetTheory.relOf (memRel V) psi e y x := by
-  haveI : V↓[ℒₛₑₜ] ⊧* 𝗭 := modelsZ_of_modelsZF (V := V)
-  have hTG : ∀ xv yv : V,
-      ((toSet 2 (totalGraphF psi)).Eval ![xv, yv] e ↔
-        (_root_.SetTheory.relOf (memRel V) psi e yv xv ∨
-          ((¬ ∃ z, _root_.SetTheory.relOf (memRel V) psi e z xv) ∧ yv = xv))) := fun xv yv =>
-    (eval_toSet (totalGraphF psi) 2 ![xv, yv] e
-        (_root_.SetTheory.scons xv (_root_.SetTheory.scons yv e))
-        (env2_eq_aux xv yv e) (fun j => env2_shift_aux xv yv e j)).trans
-      (sat_totalGraphF psi e xv yv)
-  have htot : ∀ x : V, ∃! y, (toSet 2 (totalGraphF psi)).Eval ![x, y] e := by
-    intro x
-    by_cases hx : ∃ z, _root_.SetTheory.relOf (memRel V) psi e z x
-    · obtain ⟨z, hz⟩ := hx
-      exact ⟨z, (hTG x z).mpr (Or.inl hz), fun y hy =>
-        ((hTG x y).mp hy).elim (fun h => hfun x y z h hz)
-          (fun h => absurd ⟨z, hz⟩ h.1)⟩
-    · exact ⟨x, (hTG x x).mpr (Or.inr ⟨hx, rfl⟩), fun y hy =>
-        ((hTG x y).mp hy).elim (fun h => absurd ⟨y, h⟩ hx) (fun h => h.2)⟩
-  have hrepl :
-      ∀ f : ℕ → V,
-        (∀ x : V, ∃! y : V, (toSet 2 (totalGraphF psi)).Eval ![x, y] f) →
-        ∀ X : V, ∃ Y : V, ∀ y : V,
-          y ∈ Y ↔ ∃ x ∈ X, (toSet 2 (totalGraphF psi)).Eval ![x, y] f := by
-    simpa [models_iff, Axiom.replacementSchema, Matrix.constant_eq_singleton,
-      Matrix.comp_vecCons'] using
-      models_of_mem (M := V) (T := 𝗭𝗙)
-        (ZermeloFraenkel.axiom_of_replacement (toSet 2 (totalGraphF psi)))
-  obtain ⟨Y, hY⟩ := hrepl e htot a
-  obtain ⟨r, hr⟩ := sep_clause (carveF psi) (_root_.SetTheory.scons a e) Y
-  refine ⟨r, fun y => ?_⟩
-  rw [hr y, sat_carveF psi e a y]
-  constructor
-  · rintro ⟨-, hx⟩
-    exact hx
-  · rintro ⟨x, hxa, hRyx⟩
-    exact ⟨(hY y).mpr ⟨x, hxa, (hTG x y).mpr (Or.inl hRyx)⟩, x, hxa, hRyx⟩
+    ∃ r : V, ∀ y, y ∈ r ↔ ∃ x, x ∈ a ∧ _root_.SetTheory.relOf (memRel V) psi e y x :=
+  NativeZFContainers254.repl_clause psi e hfun a
 
 /-- **Bundle extraction for `𝗭𝗙`.** -/
 theorem zfAxioms_of_modelsZF : _root_.SetTheory.ZFAxioms (memRel V) :=
-  haveI : V↓[ℒₛₑₜ] ⊧* 𝗭 := modelsZ_of_modelsZF (V := V)
-  { ext := fun _ _ h => mem_ext h
-    sep := sep_clause
-    pair := pairing_exists
-    union := union_clause
-    inf := inf_clause
-    repl := repl_clauseZF }
+  NativeZFContainers254.zfAxioms_of_models
 
 theorem power_of_modelsZF :
     ∀ a : V, ∃ p, ∀ x, memRel V x p ↔ _root_.SetTheory.Sub (memRel V) x a :=
-  haveI : V↓[ℒₛₑₜ] ⊧* 𝗭 := modelsZ_of_modelsZF (V := V)
-  pow_clause
+  NativeZFContainers254.pow_clause
 
 theorem regular_of_modelsZF : SetTheory.BusyBeaver.ZFC.InternalOrd.Regular (memRel V) :=
-  haveI : V↓[ℒₛₑₜ] ⊧* 𝗭 := modelsZ_of_modelsZF (V := V)
-  reg_clause
+  NativeZFContainers254.reg_clause
 
 end ZFModel
 
@@ -423,14 +372,16 @@ theorem L_models (σ : SetTheorySentence) (hσ : σ ∈ 𝗘𝗤 ℒₛₑₜ �
       obtain ⟨w, hw⟩ := HL.union x
       refine ⟨w, fun z => (hw z).trans ?_⟩
       constructor <;> rintro ⟨v, h1, h2⟩ <;> exact ⟨v, h2, h1⟩
-    · suffices ∀ x : {x : V // InLV x}, ∃ y, ∀ z, z ∈ y ↔ z ⊆ x by
-        simpa [models_iff, Axiom.power, -Subtype.exists]
+    · suffices ∀ x : {x : V // InLV x}, ∃ y : {x : V // InLV x},
+          ∀ z : {x : V // InLV x}, z ∈ y ↔ ∀ u : {x : V // InLV x}, u ∈ z → u ∈ x by
+        simpa [models_iff, Axiom.power, isSubsetOf, -Subtype.exists]
       intro x
       obtain ⟨p, hp⟩ := L_power H hR hP x
       exact ⟨p, fun z => (hp z).trans Iff.rfl⟩
-    · suffices ∃ ω : {x : V // InLV x}, (∀ e, LO.FirstOrder.SetTheory.IsEmpty e → e ∈ ω) ∧
+    · suffices ∃ ω : {x : V // InLV x}, (∀ e, (∀ z, z ∉ e) → e ∈ ω) ∧
           ∀ x ∈ ω, ∀ y, (∀ z, z ∈ y ↔ z = x ∨ z ∈ x) → y ∈ ω by
-        simpa [models_iff, Axiom.infinity, val_isSucc_iff]
+        simpa [models_iff, Axiom.infinity, isEmpty, isSucc, Rew.q_subst,
+          Semiterm.val_substs, Function.comp_def]
       obtain ⟨I, ⟨e0, he0I, he0⟩, hsucc⟩ := HL.inf
       refine ⟨I, fun e he => ?_, fun x hx y hy => ?_⟩
       · have : e = e0 := HL.ext e e0 fun z =>
@@ -443,22 +394,22 @@ theorem L_models (σ : SetTheorySentence) (hσ : σ ∈ 𝗘𝗤 ℒₛₑₜ �
           exact (hy t).trans or_comm
         rw [this]
         exact hsxI
-    · suffices ∀ x : {x : V // InLV x}, LO.FirstOrder.SetTheory.IsNonempty x →
+    · suffices ∀ x : {x : V // InLV x}, (∃ z, z ∈ x) →
           ∃ y ∈ x, ∀ z ∈ x, z ∉ y by
-        simpa [models_iff, Axiom.foundation]
+        simpa [models_iff, Axiom.foundation, isNonempty]
       intro x hx
-      obtain ⟨m, hm, hmin⟩ := L_regular H hR hP x (isNonempty_def.mp hx)
+      obtain ⟨m, hm, hmin⟩ := L_regular H hR hP x hx
       exact ⟨m, hm, fun z hz hzm => hmin ⟨z, hzm, hz⟩⟩
   · rcases hσ
     suffices ∀ 𝓧 : {x : V // InLV x},
-        (∀ X ∈ 𝓧, LO.FirstOrder.SetTheory.IsNonempty X) →
+        (∀ X ∈ 𝓧, ∃ z, z ∈ X) →
         (∀ X ∈ 𝓧, ∀ Y ∈ 𝓧, (∃ x ∈ X, x ∈ Y) → X = Y) →
         ∃ C, ∀ X ∈ 𝓧, ∃! x, x ∈ C ∧ x ∈ X by
-      simpa [models_iff, Axiom.choice, -Subtype.exists]
+      simpa [models_iff, Axiom.choice, isNonempty, -Subtype.exists]
     intro 𝓧 hne hdisj
     have hch := SetTheory.BusyBeaver.ZFC.ConstructibleOrder.choice_of_VL HL (L_regular H hR hP)
       (L_power H hR hP) (SetTheory.BusyBeaver.ZFC.ConstructibleAbs.vEqL H hR hP)
-    obtain ⟨C, hC⟩ := hch 𝓧 (fun X hX => isNonempty_def.mp (hne X hX))
+    obtain ⟨C, hC⟩ := hch 𝓧 hne
       (fun X Y hX hY hXY ⟨z, hzX, hzY⟩ => hXY (hdisj X hX Y hY ⟨z, hzX, hzY⟩))
     refine ⟨C, fun X hX => ?_⟩
     obtain ⟨z, hzX, hzC, hz⟩ := hC X hX

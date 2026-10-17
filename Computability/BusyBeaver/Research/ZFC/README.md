@@ -1381,3 +1381,51 @@ The actual first read/unpair macro is now checked in [`ArithmeticControlRead254.
 The actual second read and both reads together are checked in [`ArithmeticControlReadTemplate254.lean`](../../Lean/BusyBeaver/ZFC/ArithmeticControlReadTemplate254.lean). A finite `ReadShape` records only actual catalogue edges and continuations; its generic all-internal proof is closed by the literal controls24–37→38 binding. `read_p1` consumes PL into its Cantor components and adds the first to D. `reads_run` composes the checked controls10→24→38, giving AC=`oldAC+first(oldPL)`, D=`oldD+first(second(oldPL))`, PL=`second(second(oldPL))`, a positive internal logical clock, and preservation of the other six fields. The first focused source/audit attempt passed 12 ordered probes and 15 callers, standard axioms only, with zero warnings. See [the scoped note](arithmetic_control_read_template254.md), [verification](results/arithmetic-control-read-template254-verification.json), [history](results/arithmetic-control-read-template254-history.json), [independent review](results/arithmetic-control-read-template254-review.json) and [publication record](results/arithmetic-control-read-template254-publication.json). Dispatch/constructor calibration and the complete internal interpreter/Enum and PA endpoint remain open.
 
 Actual dispatch classification and the cached-falsity NIP branch are checked in [`ArithmeticControlDispatch254.lean`](../../Lean/BusyBeaver/ZFC/ArithmeticControlDispatch254.lean). All internal AC values split into 0, 1, 2, c+3 and enter the actual MP/DROP/NIP/AX branches with exact 1/2/3/3 logical instruction clocks and whole-file effects. Cache=1/scratch1=0 NIP halts in seven instructions, or ten including AC=2 classification; the other unused fields remain arbitrary. Existing positive-clock transport gives existential halting from the corresponding prepared binary entry, not a ten-step binary or blank-start claim. The focused audit passed 14 ordered probes and 18 callers, standard axioms only, with zero warnings; the first failed source attempt is retained. See [the scoped note](arithmetic_control_dispatch254.md), [verification](results/arithmetic-control-dispatch254-verification.json), [history](results/arithmetic-control-dispatch254-history.json), [independent review](results/arithmetic-control-dispatch254-review.json) and [publication record](results/arithmetic-control-dispatch254-publication.json). Remaining branch effects, the complete internal interpreter/Enum connection and the PA endpoint remain open.
+
+The actual NIP nonfalsity comparison/cache-clear phase is checked in
+[`ArithmeticControlNip254`](arithmetic_control_nip254.md): cache0 takes eight
+logical instructions and cache=c+2 takes `2*c+8`, for arbitrary internal c.
+Both reach the actual stack-pop entry with cache0 and preserve the other fields;
+classification from AC2 is also composed. The WS unpair/pop body remains a
+separate obligation, so this is not yet the complete internal NIP or L2/Enum
+connection. Source/audit, exact verification, all attempts, and the unbuilt
+default-path preflight are recorded separately under `results/arithmetic-control-nip254-*`.
+
+[`ArithmeticControlUnpair254`](arithmetic_control_unpair254.md) checks the actual
+WS unpair and complete literal NIP control branch for all internal values in
+IΣ1 models: cache1 halts; otherwise cache:=first(WS),WS:=second(WS), then the two
+literal breaks return to fetch. Both scratches start at0 and all other file
+fields are preserved; the AC2 dispatcher composition is included. The generic
+shape has explicit source/target physical bindings and disjointness. First
+source/audit check passed18/22 with zero warnings and standard axioms only.
+Exact evidence/history, independent reviews, and the unbuilt default-path
+preflight are separate; the complete L2/Enum and PA machine equivalence remain
+open.
+
+[Internal pairing and its actual DROP/MP occurrences](arithmetic_control_pair254.md)
+now have terminating contracts for all internal files in IΣ1 models. Pairing
+clears scratch1 and TW, adds their Cantor pair to scratch2, and preserves the
+remaining fields. Both literal occurrences are bound to actual controls; the
+complete DROP/MP instructions need further composition. The source and audit
+passed 13 probes and 18 callers with standard axioms and zero warnings. Exact
+evidence, all three attempts and the unbuilt default preparation are preserved
+in the matching `results/arithmetic-control-pair254-*` records.
+
+The [complete actual DROP contract](arithmetic_control_drop254.md) now composes
+those helpers through the literal cache restore and return to fetch. For all
+internal files in IΣ1 models with both scratches zero, TW becomes the old cache
+and WS becomes the Cantor pair of old TW and WS; other fields are preserved.
+Its AC=1 dispatcher composition also clears AC. The check passed 12 probes and
+18 callers with standard axioms; eleven unused-simp source warnings remain.
+Both attempts, exact evidence and independent review are recorded. Complete
+MP/AX, interpreter-to-Enum and the final PA equivalence remain open.
+
+The [actual MP destructive comparison](arithmetic_control_compare254.md) now has
+an exact all-internal logical clock: `3*a+2*distance(a,b)+2`, where `a` and `b`
+are the original scratch1 and cache. It clears both fields, preserves every
+other register, and enters the actual success push exactly on equality;
+otherwise it returns to fetch. The first source/audit check passed 14 axiom
+probes and 18 callers with standard axioms and no warnings. The full MP
+constructor and success-push composition remain open.
+
+`ArithmeticControlParamPush254` now proves both actual MP parameter pushes and the complete comparison-to-fetch tail in every model of IΣ₁. Each push requires scratch1=scratch2=0, sets TW to param1 and WS to cantor(old TW, old WS), and preserves every other field. The copy/restore sub-block takes exactly 7*param1+2 logical steps. The tail requires only scratch2=0 and returns to fetch in both comparison cases. The first guarded source/audit check passed 12 axiom probes and 22 callers with no warnings; the short unpair and constructor sequence needed for full MP remain open. See [the proof note](arithmetic_control_param_push254.md).

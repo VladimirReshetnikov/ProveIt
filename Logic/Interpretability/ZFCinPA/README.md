@@ -173,6 +173,19 @@ facade is [`Lean/ZFCinPA.lean`](Lean/ZFCinPA.lean).
 | `Endpoint` | the target, the chain to it, and its exact residue |
 | `SetRelativization` | represented relativization for `ℒₛₑₜ`: closed terms are variables, and the internal relative-interpretation theorem `provable_falsum_of_relativize_set` (generic core: `BoundedPAConsistency.InternalRelativization`) |
 | `ConstructibleInterpretation` | the constructible interpretation of `𝗭𝗙𝗖` in `𝗭𝗙`, internalized: a model-independent `x ∈ L` formula, external relativization with its evaluation and quotation laws, `𝗭𝗙 ⊢ σ^L` for the equality, fixed and choice axioms, and `provable_falsum_ZF_of_ZFC` (`Prov_ZFC(⊥) → Prov_ZF(⊥)` in every model of `IΣ₁`, modulo the separation/replacement schema obligation `hSchema`) |
+| `EnvTransform` | the `L`-relativized environment transform `envForm d K` for the `hSchema` reflection generator: every variable of an internal formula code read from one internal environment (`econs`/`applyV` slots via von Neumann numerals), one `UformulaRec1` construction with the binder depth as parameter (large fixed codes ride in the parameter, not as numerals), constructor equations, and `isSemiformula_envForm` (the output mentions only the environment) |
+| `LTemplate` | the template theory of the `hSchema` generator: lifted `𝗭𝗙`, enlarged equality, and the full separation/replacement schemata over placeholder relations; `translated_axiom` discharges every source axiom internally (placeholder arities ≤ 3), `compileT` compiles a fixed source derivation at internal formula codes, and the semantic side (`pure_models`, `sep_iff`, `repl_iff`, `templ_provable`) |
+| `LPieces` | the pure pieces of the reflection templates (ordinals, limits, `S = L_β`, membership relations, environments, finite support, formula codes, `SatIn`) with their evaluation in every model of ZF |
+| `LTransVal` | `transVal`, the untyped mirror of `translateFormula`, and its `Σ₁` definability in the placeholder codes (so translated template codes can enter internal inductions) |
+| `LInvariant` | the reflection invariant of the `hSchema` generator: `totS F` (a total function on ordinals above its argument) and `reflS P F` (one internal code reflects `P` as `SatIn` over every limit stage closed under `F`), read in every template model |
+| `LStepAnd` | the conjunction step: `and_step` for arbitrary relations (closure under the maximum gives closure under both components; the and-code reflects the conjunction by `satIn_and`) and `andTemplate_provable`, a theorem of the template theory over six placeholders |
+| `LStepBasic` | the disjunction step (`orTemplate`, by `satIn_or`), the negation step for negated atoms (`negTemplate`, code `c → ⊥`), and the constant bases `topBase`/`botBase` with the successor as reflection function |
+| `LStepAtom` | the atomic steps: if the numeral placeholders each define one natural number, the membership (equality) atom read at those environment slots, built literally from `EnvTransform`'s pieces, is reflected by the code `⟨0, ⟨a, b⟩⟩` (`⟨1, ⟨a, b⟩⟩`) with the successor as reflection function (`atom_step`, `atomTemplate_provable`) |
+| `LStepEx` | the mathematical core of the quantifier steps: the witness-bounding function (`Wit`, `WB`, `wb_exists`), earlier-stage bookkeeping at limits, and `ex_step`/`all_step` (codes `⟨7, c'⟩`, `⟨6, c'⟩` by `satIn_ex`/`satIn_all`) |
+| `LStepExT` | the quantifier templates: witness formulas (`hasWitS`, `anyWitS`, `witS`, `wbS`, `rkS`), `wb_tot` (in every template model the witness-bounding formula is a total function bounding witnesses, from Replacement for `rkS` over a power set of environments and Separation for `witS`), and `exTemplate_provable`/`allTemplate_provable` |
+| `LIterate` | ω-iteration of a class function on ordinals inside any ZF model: the successor-closure step `HStep`, finite chains (`Chain`, `chain_exists` by restricted ω-induction, `chain_agree`), and `orbit_closure` (the union of the orbit is a nonzero limit closed under the function), with every Separation/Replacement use an explicit hypothesis |
+| `LClosure` | `LIterate` inside template models: L6 formulas for steps, chains, images and orbits with their readings, and `closure_point` (if `F₅` is total on ordinals, limits closed under `F₅` are unbounded), discharging the resources by `sep_iff`/`repl_iff` |
+| `LFinalSep` | the final Separation template: `sep_final` (a reflected predicate cuts a definable subset of a closed stage `L_β`, hence a constructible set, by `inL_of_definable` and `inL_sep`) and `sepTemplate_provable`: `totS F₅ ⋏ reflS P₄ F₅ → ` `L`-separation for `P₄` at extended environments |
 
 ## Building
 
@@ -303,3 +316,62 @@ module supplies no schema callback or arbitrary internal source-proof transport.
 [The fixed forward consistency implications](validator_consistency_forward254.md) are now theorems of IΣ₁ and PA: Con(ZF) and Con(ZFC) each imply that no internal numerical proof code has validator value 2. The first check passed 8 probes/10 callers with standard Lean axioms and zero warnings. It uses the completed all-internal accepted-proof transport before arithmetic completeness. The converse and the actual binary-machine equivalence remain open.
 
 [The internal validator proof calculus](validator_provability254.md) now supplies a fixed Σ₁ theorem predicate with all twelve original rule closures and a classical implication interface, for arbitrary internal formula and proof codes. The check passed 22 probes/16 callers with standard Lean axioms and zero warnings. It reuses the existing numerical proof constructors and polymorphic propositional certificates. The internal formula/proof encoder and reverse consistency implication remain open; variable renaming needs special care because the bundle parameter is both a formula code and a variable label.
+
+- [Constructible interpretation: fixed L domain, finite axiom discharge, and conditional internal refutation transport](constructible_interpretation.md) — checked 25/18, standard axioms, zero warnings. Uniform internal Separation/Replacement `hSchema` remains open.
+
+The represented formula encoder now passes its 18-probe/24-caller narrow
+check: fixed Sigma1 syntax graphs and total Delta1 semantics for arbitrary
+internal source/depth inputs, with the actual set-language symbol codes and
+literal numeric constructor equations. The source has zero warnings; the
+audit retains one unused-simp warning. This supplies the computation used by
+a future ZF-to-validator proof compiler, not that compiler or a reverse
+consistency implication. See `ValidatorFormulaEncoder254.lean`,
+`validator_formula_encoder254.md`, and the matching verification/history/review
+records. Its maintained-default prepare-only check builds nothing and makes
+no compiler/version call.
+
+The finite CProv quantifier interface passes all 25 probes and 18 callers
+with standard axioms and zero warnings. It derives quantifier monotonicity,
+original gated atomic vacuity and the explicit-resource `all_relational`
+bridge at arbitrary internal formula/label values. All four vacuity proof
+witnesses remain premises; no global renaming closure of accepted proofs or
+bundles is assumed. The represented environment/alpha induction and actual
+ZF axiom reconstruction remain open. See `ValidatorQuantifierCore254.lean`,
+`validator_quantifier_core254.md`, and the matching records. The maintained
+prepare-only check queries the compiler version and performs no proof build.
+
+The [internal equality interface](validator_equality_core254.md) now checks reflexivity, symmetry, transitivity and both-coordinate atomic congruence for arbitrary internal labels. All nine probes and twelve callers passed with standard axioms and zero warnings; the environment induction and source-proof compiler remain open.
+
+The [configurable environment encoder](validator_environment_labels254.md) now checks total internal free/bound environment graphs and exact term, vector and formula SHIFT laws, including nested quantifiers. All 39 probes and 28 callers passed with standard axioms and zero warnings. Alpha induction and the source-proof compiler remain open.
+
+[Internal binder opening](validator_environment_opening254.md) now proves the
+exact term, vector and formula substitution identities for arbitrary internal
+depths and environments, with explicit stack-extension premises. Its finite
+clients identify the opened matrices of ALL and EXS. The check passed 19 probes
+and 22 callers with standard axioms and zero warnings. Alpha equivalence and
+the source-proof compiler remain open; this computation does not rename
+accepted proofs.
+
+[Encoded-formula vacuity](validator_environment_vacuity254.md) now constructs
+literal-validator vacuity witnesses for every internal source formula under
+explicit free-label, bound-label and future-binder-stream avoidance. Its
+universal environment invariant uses Π2 induction in IΣ2. The check passed
+10 probes and 16 callers with standard axioms, retaining two unused-section
+warnings. This supplies body-vacuity resources for the later alpha proof;
+alpha equivalence and source-proof translation remain open.
+
+[Internal equality contexts](validator_equality_context254.md) now represent
+pointwise stack equalities by a fixed total internal conjunction. All coordinate
+projections, both cons implications and the body-assumption discharge needed by
+the quantifier bridge are checked using IΣ1 induction and finite classical
+proofs. The check passed 21 probes and 24 callers with standard axioms and zero
+warnings. Stack lengths and all four quantifier vacuity witnesses remain
+explicit obligations for the later alpha proof; source-proof translation and
+the reverse consistency implication remain open.
+
+[Equality-context vacuity](validator_equality_context_vacuity254.md) now derives
+the two context-vacuity resources for the relational quantifier rule from
+explicit avoidance of both equal-length bound stacks. The represented-prefix
+proof uses Σ1 induction in IΣ1 and passed three probes and seven callers with
+standard axioms and zero warnings. Both cross-body vacuity resources remain
+explicit; the formula alpha induction and source-proof compiler remain open.
