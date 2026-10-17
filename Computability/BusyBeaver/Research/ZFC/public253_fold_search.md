@@ -158,3 +158,22 @@ shared-initializer quotients save states on larger clean layouts, with best
 public253. A full replay of source 33's broader final protected-basis search
 finds 268, matching the prior complete-word control. The table and recipe are
 preserved separately as `data/intake-152-source-33-protected268-*` in the host.
+
+## Batch153: a weaker root target and a precise short-gap diagnostic
+
+Source35 checks arbitrary-cutoff enumeration and exact absorption of dirty
+selector/scratch values into a virtual clean root. At a genuine structured
+root, safe formula data permits six other register fields to vary. This
+widens an initializer target; it does not certify an interior PC or arbitrary
+physical tape data.
+
+For the existing old5→64 runtime252 fold, its literal blank prefix reaches a
+fully specified interior dispatch frame at999,186 steps with gap32 and359
+spares. An affine failure after641 accelerated instructions is resolved for
+that particular reconstructed frame by a2,794-step literal instruction.
+An exact-gap model using inherited register-box summaries completes one
+million register instructions, with124 local cases and no root/overflow.
+Neither a safe-root formula invariant nor divergence is established. These
+findings refine the bounded diagnostic; they do not make the folded table a
+blank-start consistency machine. Full scope and archived checked Lean results
+are in the host's `intake-153-source-35.md`.

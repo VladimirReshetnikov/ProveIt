@@ -1,0 +1,24 @@
+EnumSafeStart254.pad_code_ge : ∀ (u : Nat) (cs : List Enum254.Cmd), u ≤ Enum254.encL (Enum254.Cmd.ax 0 1 1 u) cs
+EnumSafeStart254.complete_from : ∀ (s : Enum254.St), Code254.C254 Code254.F → EnumSafeStart254.HaltsFrom s
+EnumSafeStart254.safe_start_iff : ∀ (s : Enum254.St),
+  Enum254.Inv s → (EnumSafeStart254.HaltsFrom s ↔ Code254.C254 Code254.F)
+DirtyRoot254.fetch_any : ∀ (st : L2.AS), L2.Rn (RMDag.Edge.node 133) st (DirtyRoot254.fetched st)
+DirtyRoot254.read_ac_any : ∀ (st : L2.AS), L2.Rn (RMDag.Edge.node 174) st (DirtyRoot254.readAny st)
+DirtyRoot254.stage_virtual : ∀ (st : L2.AS), DirtyRoot254.stage (DirtyRoot254.virtual st) = DirtyRoot254.stage st
+DirtyRoot254.root_equiv : ∀ (st : L2.AS) (x : RMDag.Exit) (Q : RMDag.Regs),
+  RMDag.Run Dag254.dag254 (RMDag.Edge.node 0) (L2.enc st) x Q ↔
+    RMDag.Run Dag254.dag254 (RMDag.Edge.node 0) (L2.enc (DirtyRoot254.virtual st)) x Q
+DirtyRoot254.iter_equiv : ∀ (st : L2.AS),
+  RMDag.IterHalts Dag254.dag254 (L2.enc st) ↔ RMDag.IterHalts Dag254.dag254 (L2.enc (DirtyRoot254.virtual st))
+DirtyRoot254.virtual_enum_iff : ∀ (st : L2.AS),
+  Enum254.Inv (DirtyRoot254.enumOf st) →
+    (EnumSafeStart254.HaltsFrom (DirtyRoot254.enumOf (DirtyRoot254.virtual st)) ↔ Code254.C254 Code254.F)
+'SetTheory.BusyBeaver.ZFC.EnumSafeStart254.pad_code_ge' depends on axioms: [propext, Quot.sound]
+'SetTheory.BusyBeaver.ZFC.EnumSafeStart254.complete_from' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SetTheory.BusyBeaver.ZFC.EnumSafeStart254.safe_start_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SetTheory.BusyBeaver.ZFC.DirtyRoot254.fetch_any' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SetTheory.BusyBeaver.ZFC.DirtyRoot254.read_ac_any' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SetTheory.BusyBeaver.ZFC.DirtyRoot254.stage_virtual' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SetTheory.BusyBeaver.ZFC.DirtyRoot254.root_equiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SetTheory.BusyBeaver.ZFC.DirtyRoot254.iter_equiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SetTheory.BusyBeaver.ZFC.DirtyRoot254.virtual_enum_iff' depends on axioms: [propext, Classical.choice, Quot.sound]

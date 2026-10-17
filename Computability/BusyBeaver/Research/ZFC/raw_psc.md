@@ -333,3 +333,19 @@ These are ordinary calibrations, separate from current actual CP/GIC quotient
 ZF0, its one-way enumerator consistency implication and the remaining effective
 Foundation/Choice reductions. Their literal proof compilers and full internal
 machine endpoint remain open.
+
+## Batch153: the one-parameter Pairing obstruction
+
+Source36 in the closure-kernels host gives a three-component class
+interpretation of Extensionality, IR and full EPSC1, with full Separation,
+Union, Power Set, Infinity, parameter-free Replacement and the explicitly
+stated local graph Choice axiom, but without cross-component Pairing.
+The old hereditary-saturation domain is the whole interpretation and its
+profile quotient is actual equality, so that particular interpretation
+still lacks Pairing. A specified EPSC2 instance and a one-parameter
+Replacement instance also fail. This is an ordinary relative deductive
+separation under Con(ZFC), not a consistency-strength separation or a Lean
+theorem. The EPSC1 consistency question remains open to other interpretations;
+source26's EPSC1 plus adjunction/observational Pairing comparison is unchanged.
+Full proof, finite truncations that explicitly fail EPSC1, and review are in
+`SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-153-source-36.md`.

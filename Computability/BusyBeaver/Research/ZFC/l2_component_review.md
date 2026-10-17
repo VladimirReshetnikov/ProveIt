@@ -83,3 +83,14 @@ The remaining different-tree issue is unchanged: this theorem concerns
 or a binary transition table. Its endpoint cannot be spliced into the
 existing RM331 tape theorem by treating the two tree shapes as identical.
 The new `ProgramZF0` consequence is likewise at the structured-program layer.
+
+The subsequent L3 merge (`49c2ba7ed3`) proves that the same 219-node DAG,
+read in `RegisterPath` semantics, halts iff its structured execution does.
+`RMEquiv254.path_halts_iff_iter` applies to every initial register vector;
+`path_halts_iff` composes with the numerical endpoint at nextproof = 2.
+The kernel checks the concrete height and escape tables. Independent source
+review, regeneration and scoped source/umbrella checks are recorded in
+`results/rmequiv93-integration-verification.json`. Its callers also compose
+the native CP/GIC/IR refutation equivalence and the one-way ZF0 consequence
+at this path-DAG layer. The differently shaped literal `Prog254` remains a
+separate certificate obligation.

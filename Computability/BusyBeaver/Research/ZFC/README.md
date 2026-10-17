@@ -122,6 +122,18 @@ archived Lean audit scope and current post-pin overlaps. Full dossiers and
 `code/reproduce_152.py` provide offline recovery and finite replay. None of
 these new frontends has a kernel-checked full consistency-machine endpoint.
 
+Batch153 adds sources35–36 from `4e720ccbbf` (placement `6135ffef4b`,
+reconciliation `837b30d620`), bringing the host to36 sources. Checked dirty-root
+absorption permits six arbitrary nonformula fields at a valid root with safe
+formula data. An ordinary EPSC1 counterinterpretation rules out the old
+Pairing/hereditary-domain shortcut, while its consistency strength remains
+open. An actually reached scanner counterexample strengthens the earlier
+prepared-frame obstruction. Same-count253 rewrites,597080 transition checks,
+a290-state outgoing-equality control and unchanged268 grammar controls retain
+their exact finite scopes. Both reports have complete dossiers and offline
+replay through `code/reproduce_153.py`; they supply no new sub253 machine or
+complete internal-ZFC endpoint.
+
 [subset_only.md](subset_only.md) proves, at the mathematical level, that
 the membership arm can be removed from source 02's mixed local bound.
 A positive singleton-decoder hull covers the root's members without
@@ -340,6 +352,13 @@ source and final umbrella check, joint axiom audits and endpoint callers are
 recorded in `results/native91-integration-verification.json`, reusing the
 verified dependencies. This equivalence does not yet calibrate the theory
 to ZFC or connect the structured DAG to binary-tape execution.
+The merged `RMEquiv` and `RMEquiv254` extend the runner to 93 units.
+`results/rmequiv93-integration-verification.json` records their scoped
+source checks, regenerated height/escape tables, the final umbrella, nine
+axiom audits and three callers. The 219-node DAG's path semantics is now
+equivalent to its structured semantics for every register vector. This
+still leaves the separate 6,459-node literal `Prog254` correspondence and
+binary runtime proof; the public 3,010-pair certificate is the next bridge.
 The separate [target-permutation obstruction](quotient_ir_obstruction.md)
 shows at the ordinary mathematical level why raw IR cannot simply be passed
 through this bisimulation quotient, even when native equality and Pairing are

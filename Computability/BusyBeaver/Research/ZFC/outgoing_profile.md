@@ -93,3 +93,15 @@ direction, all binder shifts, false-point premise and stated scope.
 records the source identity, commands, final outputs and exact theorem audits.
 The subsequent integration adds the module to the project umbrella and serial
 checker; its scoped integration evidence is recorded separately.
+
+## Batch153: measured complete-row outgoing-equality controls
+
+Source36 moves endpoint shifts into shared arithmetic constructors and
+actually compiles432 complete-row recipes, retaining the original logical
+rows and bundle. Its best radix3 control has290 working states (228decisions
+plus62framework), with580 total rows. The prior268 complete-word control
+remains smaller. Arbitrary numeric payloads are still payloads: the finite
+constructor/template and pointed-semantic tests do not prove their global
+translation invariant or a complete consistency endpoint. These measured
+controls neither remove that obligation nor reduce the attributed253 table.
+See the closure-kernels host's source36 dossier for recipes and exact replay.
