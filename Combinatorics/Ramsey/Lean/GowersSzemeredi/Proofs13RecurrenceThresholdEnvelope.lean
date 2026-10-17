@@ -1,5 +1,4 @@
 import GowersSzemeredi.Proofs13IntegerThresholdEnvelope
-import GowersSzemeredi.Proofs13ExplicitRecurrenceThreshold
 import GowersSzemeredi.Proofs13RecurrenceRange
 
 /-! Numerical envelopes for the actual finite recurrence threshold. -/

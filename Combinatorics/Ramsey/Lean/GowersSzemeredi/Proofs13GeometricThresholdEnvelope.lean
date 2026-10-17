@@ -1,5 +1,4 @@
 import GowersSzemeredi.Proofs13RecurrenceThresholdEnvelope
-import GowersSzemeredi.Proofs13ExplicitGeometricThreshold
 
 /-! A conventional double-exponential bound for the complete Section 13
 geometric threshold, including every finite maximum and rounding operation. -/

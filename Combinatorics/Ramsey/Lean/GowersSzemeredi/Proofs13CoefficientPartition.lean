@@ -1,5 +1,5 @@
 import GowersSzemeredi.Proofs07UniversalPartition
-import GowersSzemeredi.Proofs13CompleteRowExtraction
+import GowersSzemeredi.Proofs13PartitionSelection
 
 /-! The coefficient partition and weighted selection used by Lemma 13.9.
 The two coefficient maps share one domain and therefore one spectrum. -/

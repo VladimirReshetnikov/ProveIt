@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs16RecoveredSliceCover
+import GowersSzemeredi.Proofs16FibreGeometry
 
 /-! # Synchronizing product covers without changing their candidates
 

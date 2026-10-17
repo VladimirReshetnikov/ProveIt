@@ -1,5 +1,5 @@
-import GowersSzemeredi.Proofs13ExplicitSquareScale
 import GowersSzemeredi.Proofs13ThresholdExponentialEnvelope
+import GowersSzemeredi.Proofs13SquareScale
 
 /-! Double-exponential bounds for the final square-extraction thresholds,
 with explicit budgets for every reciprocal coefficient and exponent. -/

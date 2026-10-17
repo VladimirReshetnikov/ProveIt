@@ -2,6 +2,9 @@ import GowersSzemeredi.Proofs05ExplicitPartitionBounds
 import GowersSzemeredi.Proofs16WeylBudgetGrowth
 import GowersSzemeredi.Proofs16PolynomialRecurrenceProfile
 import GowersSzemeredi.Proofs16FamilyLemma6
+import GowersSzemeredi.Proofs13CoefficientExtraction
+import GowersSzemeredi.Proofs13LargeScaleExtraction
+import GowersSzemeredi.Proofs13UniformEdgeModels
 
 /-! The explicit recurrence data used by the final quantitative theorem.
 

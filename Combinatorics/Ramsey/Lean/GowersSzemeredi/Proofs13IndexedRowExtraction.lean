@@ -1,5 +1,5 @@
-import GowersSzemeredi.Proofs13CompleteRowExtraction
 import GowersSzemeredi.Proofs07IndexedPartition
+import GowersSzemeredi.Proofs13LargeScaleExtraction
 
 /-! Stage 13.7 retaining the selected column's positive integer step ratio
 and span in the Stage 13.6 progression. -/
