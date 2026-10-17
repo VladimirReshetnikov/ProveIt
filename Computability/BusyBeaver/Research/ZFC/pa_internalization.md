@@ -426,3 +426,28 @@ The manuscript follows the later goal record when calling PA stronger than
 requested; the original user request explicitly requires PA, and remains the
 target here. Avoiding arithmetic inside a future verifier does not remove the
 arithmetic proof obligation relating its finite traces to Con(ZFC).
+
+## Claimed by the Claude lane: represented relativization (L-interpretation core)
+
+The ZFC-refutation → ZF-refutation direction (Choice) and the WF comparison
+both need a *syntax-sensitive* interpretation in arithmetic. The Claude lane
+(which proved the external Choice transport through L) is building its
+generic core in
+`Logic/PeanoArithmetic/BoundedConsistency/Lean/BoundedPAConsistency/InternalRelativization.lean`,
+next to `InternalAxiomProofTransport` and in the same style:
+
+1. `relativize L d p`: relativization of every internal formula code to the
+   class defined by an internal domain formula `d` (one `UformulaRec1`
+   construction; atoms unchanged, `∀q ↦ ∀(¬δ ∨ q^δ)`, `∃q ↦ ∃(δ ∧ q^δ)`).
+   **Checked:** definition, Σ₁ graph, constructor equations.
+2. Preservation of (semi)formulas; commutation with negation, shift and
+   substitution (for shift-fixed `d` with one bound variable).
+3. Derivation transport by `Derivation.induction1`: every T-derivable internal
+   sequent `s` has some `m` with `U ⊢ s^δ ∪ {¬δ(&i) | i < m}`, given
+   all-internal U-provability of the relativized T-axioms and that closed terms
+   are variables (true for `ℒₛₑₜ`).
+4. Discharge of the side formulas from `U ⊢ ∃x δ(x)`: `Provable T φ →
+   Provable U φ^δ` for sentences, in every IΣ₁ model.
+5. Then the L-specific obligations: `ZF ⊢ ax^L` for every internal ZFC axiom
+   code, by fixed templates for the finitely many axioms and internal formula
+   induction (reflection) for the Separation/Replacement schemata.
