@@ -1,0 +1,130 @@
+{
+  "status": "PASS: actual blank252 machine iff accepted C254 proof, native refutation and full ZF refutation",
+  "scope": "Fresh final BinaryPerm252 source plus ten caller checks. Complete literal-site, bootstrap, whole-frame runtime and program proofs are reused from source-matched checked dependencies. This is an external Lean theorem, not a PA formalization or ZFC consistency equivalence.",
+  "lean_executable": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+  "dependency_cache": "/tmp/zfc-sites-batches/cache",
+  "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BinaryPerm252.lean",
+  "source_sha256": "91be5f28bb2d5f43fbec9f34ef7a0a800e31f51ff256ef8a1e068b1293e8e062",
+  "audit_source": "import BusyBeaver.ZFC.BinaryPerm252\nnamespace SetTheory.BusyBeaver.ZFC.BinaryAuditPerm252\nopen BinaryPerm252\n\ntheorem numeric_refutation_halts (h : Code254.C254 Code254.F) :\n    \u2203 t, (machinePerm252.run t).state = none :=\n  blank_halts_iff_c254.mpr h\n\ntheorem binary_halting_refutes_native {t : Nat}\n    (h : (machinePerm252.run t).state = none) :\n    BProv NativeTheory254.NativeAx [] Form.fBot :=\n  blank_halts_iff_native_refutation.mp \u27e8t, h\u27e9\n\ntheorem native_consistency_excludes_each_halt\n    (h : \u00ac BProv NativeTheory254.NativeAx [] Form.fBot) :\n    \u2200 t, (machinePerm252.run t).state \u2260 none := by\n  intro t ht\n  exact h (binary_halting_refutes_native ht)\n\ntheorem literal_register_halt_implies_blank_halt\n    (h : RegisterPath.Halts Prog254.program Permutation252Frame.zeroRoot) :\n    BlankHalts machinePerm252 :=\n  blank_halts_iff_register.mpr h\n\ntheorem zf_refutation_halts (h : BProv ZFax_s [] Form.fBot) :\n    BlankHalts machinePerm252 := blank_halts_iff_zf_refutation.mpr h\n\ntheorem actual_blank_halting_refutes_zf (h : BlankHalts machinePerm252) :\n    BProv ZFax_s [] Form.fBot := blank_halts_iff_zf_refutation.mp h\n\ntheorem accepted_numeric_proof_halts (code : Nat)\n    (h : Code254Proof.check code Code254.F = true) : BlankHalts machinePerm252 :=\n  blank_halts_iff_checked_refutation.mpr \u27e8code, h\u27e9\n\ntheorem no_accepted_proof_excludes_binary_halting\n    (h : \u00ac \u2203 code, Code254Proof.check code Code254.F = true) :\n    \u00ac BlankHalts machinePerm252 :=\n  nonhalting_iff_no_checked_refutation.mpr h\n\ntheorem actual_working_state_count : rawTablePerm252.size = 252 := rawTablePerm252_size\n\ntheorem actual_total_transition_count :\n    (rawTablePerm252.toList.flatMap (fun row => [row.1, row.2])).length = 504 :=\n  rawTablePerm252_transition_count\n\n#print axioms numeric_refutation_halts\n#print axioms binary_halting_refutes_native\n#print axioms native_consistency_excludes_each_halt\n#print axioms literal_register_halt_implies_blank_halt\n#print axioms zf_refutation_halts\n#print axioms actual_blank_halting_refutes_zf\n#print axioms accepted_numeric_proof_halts\n#print axioms no_accepted_proof_excludes_binary_halting\n#print axioms actual_working_state_count\n#print axioms actual_total_transition_count\nend SetTheory.BusyBeaver.ZFC.BinaryAuditPerm252\n",
+  "checks": [
+    {
+      "kind": "source",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-binary-perm252-hp_k0tay/cache/BusyBeaver/ZFC/BinaryPerm252.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BinaryPerm252.lean"
+      ],
+      "cwd": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean",
+      "LEAN_PATH": "/tmp/zfc-binary-perm252-hp_k0tay/cache",
+      "elapsed_seconds": 0.5287209320813417,
+      "exit_code": 0,
+      "output": "'SetTheory.BusyBeaver.ZFC.BinaryPerm252.blank_initial_config' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.BinaryPerm252.actual_coverage' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.BinaryPerm252.boot_related' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.BinaryPerm252.blank_after_prefix_iff' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.BinaryPerm252.blank_halts_iff_register' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.BinaryPerm252.blank_halts_iff_c254' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.BinaryPerm252.blank_halts_iff_checked_refutation' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.BinaryPerm252.blank_halts_iff_native_refutation' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.BinaryPerm252.blank_halts_iff_zf_refutation' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.BinaryPerm252.nonhalting_iff_no_c254_refutation' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.BinaryPerm252.nonhalting_iff_no_checked_refutation' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.BinaryPerm252.nonhalting_iff_native_consistency' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.BinaryPerm252.nonhalting_iff_zf_consistency' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n",
+      "axiom_reports": 13,
+      "axiom_names": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    {
+      "kind": "ten_callers",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "/tmp/zfc-binary-perm252-hp_k0tay/Audit.lean"
+      ],
+      "cwd": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean",
+      "LEAN_PATH": "/tmp/zfc-binary-perm252-hp_k0tay/cache",
+      "elapsed_seconds": 0.45325062796473503,
+      "exit_code": 0,
+      "output": "'SetTheory.BusyBeaver.ZFC.BinaryAuditPerm252.numeric_refutation_halts' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.BinaryAuditPerm252.binary_halting_refutes_native' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.BinaryAuditPerm252.native_consistency_excludes_each_halt' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.BinaryAuditPerm252.literal_register_halt_implies_blank_halt' depends on axioms: [propext,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.BinaryAuditPerm252.zf_refutation_halts' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.BinaryAuditPerm252.actual_blank_halting_refutes_zf' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.BinaryAuditPerm252.accepted_numeric_proof_halts' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.BinaryAuditPerm252.no_accepted_proof_excludes_binary_halting' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.BinaryAuditPerm252.actual_working_state_count' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.BinaryAuditPerm252.actual_total_transition_count' does not depend on any axioms\n",
+      "axiom_reports": 10,
+      "axiom_names": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    }
+  ],
+  "lean_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+  "olean_sha256": "1defe2857b667dc2544149361f212fc89c4576bb3e906c7f1427016d3feedea6",
+  "attribution": {
+    "public_254_verification_commit": "297ab8df7e5de329605c3875b4934643b371a5e3",
+    "public_253_PR20_head": "0d544f2a2e3c18f12278441a74b7879f31cbe856",
+    "authors": "Mira-Cult original machine and calculus; Jeff verification; Wade compiler framework; mira-emmy public253 reduction; independently found register-permutation252 candidate."
+  },
+  "machine": {
+    "working_states": 252,
+    "transition_rows": 504,
+    "blank_start_state": 0,
+    "halt_representation": "Core state none; canonical textual target252",
+    "canonical_table": "Computability/BusyBeaver/Research/ZFC/candidate-permutation252/zfc_permutation252.tm",
+    "old_labels_table": "Computability/BusyBeaver/Research/ZFC/candidate-permutation252/zfc_permutation252_old.tm",
+    "bootstrap_transitions": 82552,
+    "site_certificate_chunks": 233,
+    "site_guard_cases": 8391,
+    "canonical_table_sha256": "8dae0c2359aa8bf87d32543b9e53e1f87fe4716c016a4e2fd174bfe09e520797",
+    "old_labels_table_sha256": "939f99d602c8f7057517c4369279de99e30827050fc743581df83f26aaf1b713"
+  },
+  "closed_endpoints": [
+    "BlankHalts machinePerm252 iff RegisterPath.Halts Prog254.program zeroRoot",
+    "BlankHalts machinePerm252 iff C254 F",
+    "BlankHalts machinePerm252 iff exists code, Code254Proof.check code F = true",
+    "BlankHalts machinePerm252 iff BProv NativeAx [] fBot",
+    "BlankHalts machinePerm252 iff BProv ZFax_s [] fBot",
+    "Negated halting iff no accepted proof / native consistency / ZF consistency"
+  ],
+  "no_open_coverage_or_operation_premises": true,
+  "not_claimed": [
+    "Unconditional blank nonhalting",
+    "Equivalence with standard ZFC consistency",
+    "Formalization of that equivalence in PA",
+    "State minimality",
+    "First arrival at the boot endpoint",
+    "Fresh recompilation of the full dependency closure"
+  ],
+  "dependency_evidence": [
+    "results/sites-permutation252-verification.json",
+    "results/runtime-perm252-verification.json",
+    "results/wf-model-theory-verification.json",
+    "results/code254-proof-verification.json"
+  ],
+  "direct_import_sources": {
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SitesPerm252.lean": "91a545753b3e262168ddb4e61e5ce9316e7928a94c66b80a44729344e51e1094",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RuntimeInstancePerm252.lean": "f538bd5f9883c2459dc0f480dd551acea258e77d928f88046681e6771a509b3d",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BootstrapFramePerm252.lean": "fd1994f64a97df216d61050d7e41229a7a87d48d7b148806433311ee3adaf532",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Permutation252Program.lean": "41f137e245505b4ea4cdbd689e9c13e451901b8c76b034142493edd20ad384ac",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFTheory.lean": "72969cd2d53f616816a83a36ae625b79adbcbecc2fd2fb1c0951a7801f747164",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254Proof.lean": "7bb8daf0f1c0965d22f2f16bbb1898d60cfb79f9a6feabe8ab38b3f69b3bc6d1"
+  },
+  "historical_import_layout_failure": {
+    "status": "INCOMPLETE",
+    "scope": "Fresh BinaryPerm252 and ten endpoint/count callers; source-matched dependencies reused, no full closure rebuild.",
+    "lean_executable": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+    "dependency_cache": "/tmp/zfc-sites-batches/cache",
+    "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BinaryPerm252.lean",
+    "source_sha256": "91be5f28bb2d5f43fbec9f34ef7a0a800e31f51ff256ef8a1e068b1293e8e062",
+    "audit_source": "import BusyBeaver.ZFC.BinaryPerm252\nnamespace SetTheory.BusyBeaver.ZFC.BinaryAuditPerm252\nopen BinaryPerm252\n\ntheorem numeric_refutation_halts (h : Code254.C254 Code254.F) :\n    \u2203 t, (machinePerm252.run t).state = none :=\n  blank_halts_iff_c254.mpr h\n\ntheorem binary_halting_refutes_native {t : Nat}\n    (h : (machinePerm252.run t).state = none) :\n    BProv NativeTheory254.NativeAx [] Form.fBot :=\n  blank_halts_iff_native_refutation.mp \u27e8t, h\u27e9\n\ntheorem native_consistency_excludes_each_halt\n    (h : \u00ac BProv NativeTheory254.NativeAx [] Form.fBot) :\n    \u2200 t, (machinePerm252.run t).state \u2260 none := by\n  intro t ht\n  exact h (binary_halting_refutes_native ht)\n\ntheorem literal_register_halt_implies_blank_halt\n    (h : RegisterPath.Halts Prog254.program Permutation252Frame.zeroRoot) :\n    BlankHalts machinePerm252 :=\n  blank_halts_iff_register.mpr h\n\ntheorem zf_refutation_halts (h : BProv ZFax_s [] Form.fBot) :\n    BlankHalts machinePerm252 := blank_halts_iff_zf_refutation.mpr h\n\ntheorem actual_blank_halting_refutes_zf (h : BlankHalts machinePerm252) :\n    BProv ZFax_s [] Form.fBot := blank_halts_iff_zf_refutation.mp h\n\ntheorem accepted_numeric_proof_halts (code : Nat)\n    (h : Code254Proof.check code Code254.F = true) : BlankHalts machinePerm252 :=\n  blank_halts_iff_checked_refutation.mpr \u27e8code, h\u27e9\n\ntheorem no_accepted_proof_excludes_binary_halting\n    (h : \u00ac \u2203 code, Code254Proof.check code Code254.F = true) :\n    \u00ac BlankHalts machinePerm252 :=\n  nonhalting_iff_no_checked_refutation.mpr h\n\ntheorem actual_working_state_count : rawTablePerm252.size = 252 := rawTablePerm252_size\n\ntheorem actual_total_transition_count :\n    (rawTablePerm252.toList.flatMap (fun row => [row.1, row.2])).length = 504 :=\n  rawTablePerm252_transition_count\n\n#print axioms numeric_refutation_halts\n#print axioms binary_halting_refutes_native\n#print axioms native_consistency_excludes_each_halt\n#print axioms literal_register_halt_implies_blank_halt\n#print axioms zf_refutation_halts\n#print axioms actual_blank_halting_refutes_zf\n#print axioms accepted_numeric_proof_halts\n#print axioms no_accepted_proof_excludes_binary_halting\n#print axioms actual_working_state_count\n#print axioms actual_total_transition_count\nend SetTheory.BusyBeaver.ZFC.BinaryAuditPerm252\n",
+    "checks": [
+      {
+        "kind": "source",
+        "command": [
+          "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+          "-o",
+          "/tmp/zfc-binary-perm252-hp_k0tay/cache/BusyBeaver/ZFC/BinaryPerm252.olean",
+          "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BinaryPerm252.lean"
+        ],
+        "cwd": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean",
+        "LEAN_PATH": "/tmp/zfc-binary-perm252-hp_k0tay/cache:/tmp/zfc-sites-batches/cache",
+        "elapsed_seconds": 0.1162330461665988,
+        "exit_code": 1,
+        "output": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BinaryPerm252.lean:1:0: error: object file '/tmp/zfc-binary-perm252-hp_k0tay/cache/BusyBeaver/ZFC/SitesPerm252.olean' of module BusyBeaver.ZFC.SitesPerm252 does not exist\n"
+      }
+    ],
+    "lean_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+    "resolution": "Created a complete file-symlink dependency overlay, including sidecars, instead of expecting package-prefix fallthrough between two LEAN_PATH roots. No Lean proof source changed. The fresh successful check above is separate."
+  },
+  "audit_source_sha256": "0e2edef3a5e2d9adbd61d9d2684c55caacf6fe5a1060386021feefd38a4fa6cb",
+  "harness_source": "#!/usr/bin/env python3\n\"\"\"Run only after the serialized slot and closed Sites certificate are granted.\"\"\"\nimport hashlib,json,os,pathlib,re,subprocess,time\nROOT=pathlib.Path('/home/codex/.codex/worktrees/ec20/Proofs')\nHERE=pathlib.Path(__file__).resolve().parent\nLEAN=pathlib.Path('/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean')\nSOURCE=ROOT/'Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BinaryPerm252.lean'\nBASE=pathlib.Path(os.environ['BINARY_VERIFIED_BASE_CACHE'])\nOUT=HERE/'cache'\nTARGET=OUT/'BusyBeaver/ZFC/BinaryPerm252.olean'\nTARGET.parent.mkdir(parents=True,exist_ok=True)\nif not (BASE/'BusyBeaver/ZFC/SitesPerm252.olean').is_file():\n    raise SystemExit('No closed Sites object in the explicitly supplied checked cache.')\n# Lean resolves a package prefix from one search root; make a real overlay\n# with file symlinks, including any private/server sidecars, rather than\n# expecting per-module fallthrough across two BusyBeaver package roots.\nfor folder,_,names in os.walk(BASE,followlinks=True):\n    rel=pathlib.Path(folder).relative_to(BASE)\n    target_folder=OUT/rel;target_folder.mkdir(parents=True,exist_ok=True)\n    for name in names:\n        dest=target_folder/name\n        if not dest.exists() and not dest.is_symlink():\n            dest.symlink_to((pathlib.Path(folder)/name).resolve())\nENV=os.environ.copy();ENV['LEAN_PATH']=str(OUT)\nCWD=ROOT/'Computability/BusyBeaver/Lean'\ndef digest(p):return hashlib.sha256(p.read_bytes()).hexdigest()\nrecord={'status':'RUNNING','scope':'Fresh BinaryPerm252 and ten endpoint/count callers; source-matched dependencies reused, no full closure rebuild.','lean_executable':str(LEAN),'dependency_cache':str(BASE),'source':str(SOURCE),'source_sha256':digest(SOURCE),'audit_source':(HERE/'Audit.lean').read_text(),'checks':[]}\nrecord['lean_version']=subprocess.check_output([str(LEAN),'--version'],cwd=CWD,text=True).strip()\n(HERE/'verification.json').write_text(json.dumps(record,indent=2)+'\\n')\nfor label,cmd in [('source',[str(LEAN),'-o',str(TARGET),str(SOURCE)]),('ten_callers',[str(LEAN),str(HERE/'Audit.lean')])]:\n    started=time.monotonic()\n    with (HERE/(label+'.log')).open('w') as out:\n        done=subprocess.run(cmd,cwd=CWD,env=ENV,stdout=out,stderr=subprocess.STDOUT)\n    entry={'kind':label,'command':cmd,'cwd':str(CWD),'LEAN_PATH':ENV['LEAN_PATH'],'elapsed_seconds':time.monotonic()-started,'exit_code':done.returncode,'output':(HERE/(label+'.log')).read_text()}\n    record['checks'].append(entry)\n    record['status']='INCOMPLETE' if done.returncode else 'RUNNING'\n    (HERE/'verification.json').write_text(json.dumps(record,indent=2)+'\\n')\n    print(json.dumps({k:entry[k] for k in ['kind','elapsed_seconds','exit_code']}),flush=True)\n    if done.returncode:raise SystemExit(done.returncode)\nif digest(SOURCE)!=record['source_sha256']:\n    raise SystemExit('Source changed during checks; no final pass recorded.')\nallowed={'propext','Classical.choice','Quot.sound'}\nfor entry,expected in zip(record['checks'],[13,10]):\n    blocks=re.findall(r'depends on axioms: \\[([^\\]]*)\\]',entry['output'])\n    no_axioms=entry['output'].count('does not depend on any axioms')\n    actual={x.strip() for b in blocks for x in b.split(',') if x.strip()}\n    entry['axiom_reports']=len(blocks)+no_axioms\n    entry['axiom_names']=sorted(actual)\n    if actual-allowed or entry['axiom_reports']!=expected:\n        raise SystemExit('Unexpected axiom report set or count; no final pass recorded.')\nrecord['status']='PASS'\nrecord['olean_sha256']=digest(TARGET)\nrecord['audit_sha256']=digest(HERE/'Audit.lean')\n(HERE/'verification.json').write_text(json.dumps(record,indent=2)+'\\n')\nprint('PASS',flush=True)\n",
+  "harness_sha256": "44adfafdeb9ab12e64591c62baa43711bfd2a0d48de0a59941ef062e555ce731"
+}

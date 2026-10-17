@@ -57,7 +57,10 @@ def main() -> None:
                         "RegisterIncrementPerm252", "RegisterDecrementPerm252",
                         "Permutation252Frame", "BootstrapFramePerm252", "SymbolicPerm252", "SitePerm252",
                         "RegisterPathClean", "Permutation252Simulation", "InstructionPerm252",
-                        "SiteCoverage", "RuntimePerm252", "RuntimeInstancePerm252", "Permutation252Program") ),
+                        "SiteCoverage", "RuntimePerm252", "RuntimeInstancePerm252", "Permutation252Program",
+                        "SitesPerm252Checks0", "SitesPerm252Checks1", "SitesPerm252Checks2", "SitesPerm252Checks3",
+                        "SitesPerm252Checks4", "SitesPerm252Checks5", "SitesPerm252Checks6", "SitesPerm252Checks7",
+                        "SitesPerm252", "BinaryPerm252", "ZFCBoundPerm252") ),
         ("Computability/BusyBeaver/Lean", "BusyBeaver/ZFC.lean"),
     ]
     if args.include_no_quotient:
