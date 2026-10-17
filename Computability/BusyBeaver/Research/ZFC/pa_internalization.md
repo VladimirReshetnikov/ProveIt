@@ -223,3 +223,12 @@ identification with `Code254.P`/`Cantor.ofNat`, in arbitrary IOpen models.
 Its semantic representation uses weaker arithmetic than full PA. The actual
 checker/history and finite proof/trace compiler remain unrepresented here;
 this local definability theorem is not the requested whole-machine PA proof.
+
+Intake157's [canonical term certificates](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch157-canonical-term-certificates-for-the-full-calculus)
+provide ordinary exact checker reductions and constructor-only derivations.
+Their small-witness and forward-equation arguments can guide internal sequence
+predicates, but those predicates and their all-code proof are not delivered.
+The manuscript follows the later goal record when calling PA stronger than
+requested; the original user request explicitly requires PA, and remains the
+target here. Avoiding arithmetic inside a future verifier does not remove the
+arithmetic proof obligation relating its finite traces to Con(ZFC).

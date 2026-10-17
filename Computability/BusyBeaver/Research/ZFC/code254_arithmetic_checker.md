@@ -192,3 +192,20 @@ The arbitrary-model totality theorem is a distinct target. Neither it nor the
 standard comparison proves the later PA-internal native/ZF/ZFC proof
 translations or machine-trace translations. The construction above identifies
 a small concrete first step, not those further endpoints.
+
+## Constructor certificates as an alternative representation
+
+[Source50](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch157-canonical-term-certificates-for-the-full-calculus)
+proves ordinary all-input equivalence between the legacy checker and local
+quoted certificates with forward polynomial equations. Its separate ground-term
+checker removes numeric literal/quotation arithmetic altogether, while retaining
+all twelve rules, native equality, both bundle gates and fixed falsity. Only
+`B0(Z,Z)` is normalized to Z. The delivered arena verifies unique constructor
+keys before treating identifier inequality as numeric inequality.
+
+These are alternatives to the already checked dense history, not corrections
+to its all-input equivalence theorem. The new weighted quotation and short-fuel
+bounds, normal-form bijection and certificate equivalences are not yet Lean
+ports. Our exact arithmetic Cantor component now fills the elementary pairing
+step proposed by the report; internal certificate normalization, represented
+history and full coded proof/trace transports remain separate obligations.
