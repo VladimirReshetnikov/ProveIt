@@ -133,8 +133,9 @@ handled by `DirtyProgram254`. The literal program's equivalence with the
 structured proof search has passed a fresh 3,010-entry certificate check.
 `BinaryPerm252.nonhalting_iff_zf_consistency` composes those results with the
 checked native/ZF calibration, with no coverage or startup assumption.
-`ChoiceCalibration254.nonhalting_iff_zfc_consistency` now closes the ZFC
-comparison in both directions. It constructs a model of ZFC inside the
+`BinaryZFC252.nonhalting_iff_zfc_consistency` and the independently composed
+`ChoiceCalibration254.nonhalting_iff_zfc_consistency` close the ZFC comparison
+in both directions. They construct a model of ZFC inside the
 constructible class of any ZF model, then uses external first-order completeness
 to transfer refutations. Its statement is
 
@@ -143,9 +144,11 @@ to transfer refutations. Its statement is
   ↔ ¬ BProv LeanProofs.BoundedZFCConsistency.ZFCax_s [] Form.fBot.
 ```
 
-The [165-unit integration](../results/choice-calibration254-integration-verification.json)
-freshly checks this final module, the umbrella, twelve axiom reports and eight
-callers, using 163 source-matched previously checked dependencies. The
+The [167-unit integration](../results/binary-zfc252-integration-verification.json)
+freshly checks seven affected modules, eighteen axiom reports and twelve
+callers, using 160 source- and object-matched previously checked dependencies.
+Both endpoint modules use the actual binary proof and its complete certificates.
+The
 [independent review](../results/choice-calibration254-review.json) confirms that
 the endpoint retains no model, Choice, coverage or startup assumption. Only
 the standard Lean axioms `propext`, `Classical.choice` and `Quot.sound` occur.

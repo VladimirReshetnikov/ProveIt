@@ -388,19 +388,21 @@ mathematical review of the named-formula and rank construction is recorded in
 identifies the exact numerical calculus with ordinary ZF refutation, including
 Foundation and Power. It combines this lane's `ZFNative` direction with the
 [direct well-founded model](wf_model.md) of the native CP/GIC quotient.
-For the literal register program, non-halting is therefore equivalent to
-`Con(ZF)` and follows from `Con(ZFC)`. Choice removal is the remaining semantic
-transport to full ZFC. The actual252-state binary table now has the
+For the literal register program, nonhalting is equivalent to
+`Con(ZF)`; the Choice transport below extends this to `Con(ZFC)`.
+The actual252-state binary table has the
 [closed `BinaryPerm252` endpoint](binary_perm252.md): complete blank bootstrap,
 all8,391 decoder guards and unbounded simulation give blank nonhalting iff
-`Con(ZF)`, with no coverage premise. PA internalization is an additional
-proof-code obligation.
+`Con(ZF)`, with no coverage premise. The
+[closed Choice calibration](choice_calibration254.md) gives the external
+nonhalting iff Con(ZFC) theorem for that same machine. PA internalization is
+still a separate proof-code and finite-trace obligation.
 
 ## The constructible class is a model of ZF
 
 The Choice transport (`foundation_choice_route.md`: a ZFC refutation yields a
 ZF refutation) is semantic in this lane: the constructible class of a model
-of `ZFax_s` should be a model of `ZFCax_s`. The ZF half is proved.
+of `ZFax_s` is a model of `ZFCax_s`. Both halves are now proved, as recorded below.
 
 * `TransRec`: transfinite recursion `stage a = ⋃ {G (stage c) | c ∈ a}` for
   any operation `G` whose graph is a named formula (`DefOp`); `InternalRank`'s
@@ -462,10 +464,12 @@ never halts iff Con(ZFC)). Both use only standard axioms. `Endpoint254` was
 compiled against the previously checked `Bisim254` object, whose exported
 `literal_halts_iff` statement is unchanged by the literal-tree rework.
 `BinaryZFC252` composes `BinaryPerm252.blank_halts_iff_zf_refutation` with
-the Choice transport; it was type-checked here against a stub carrying that
-exact statement, since the `BinaryPerm252` closure's site batches need about
-6 GB each. Its full-closure build belongs in the verified-integration
-workflow. PA internalization remains separate.
+the Choice transport. Its original remote check used a stub carrying that
+exact statement. The merged version has now passed the
+[167-unit integration](results/binary-zfc252-integration-verification.json)
+against the actual binary object and its complete source-matched certificate
+closure. Every affected consumer was freshly checked; the remaining imports
+reuse recorded successful builds. PA internalization remains separate.
 
 The constructibility modules received an
 [independent source review](constructible_choice_review.md). The review found

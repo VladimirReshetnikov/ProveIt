@@ -49,7 +49,11 @@ external Lean equivalence with standard ZFC consistency. It combines this
 binary/ZF endpoint with Choice in the constructible subtype and a refutation
 comparison through external completeness. The
 [165-unit integration](results/choice-calibration254-integration-verification.json)
-checks the final composition; its final statement has no additional premise.
+checked that final composition. The later
+[167-unit integration](results/binary-zfc252-integration-verification.json)
+also checks `BinaryZFC252` from the independently supplied Choice bridge
+against the actual binary objects, and refreshes every affected consumer.
+Both final statements have no additional premise.
 
 The PA formalization remains open: the accepted natural-number proof witness
 exposes an interface for arithmetic work, while represented proof and finite

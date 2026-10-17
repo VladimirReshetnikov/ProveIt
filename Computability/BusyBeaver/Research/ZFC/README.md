@@ -30,9 +30,11 @@ Choice and the external ZFC refutation comparison.
 proof-code and finite-trace bridge. The original PA request remains the target
 despite the later stored goal record saying ZFC.
 
-The latest [165-unit integration](results/choice-calibration254-integration-verification.json)
-freshly checks `ChoiceCalibration254`, the umbrella, twelve axiom reports and
-eight callers, with 163 source- and object-matched previously checked imports.
+The latest [167-unit integration](results/binary-zfc252-integration-verification.json)
+freshly checks both Choice/binary compositions and every affected consumer:
+seven modules, eighteen axiom reports and twelve callers, with 160 source- and
+object-matched previously checked imports. It extends the earlier
+[165-unit integration](results/choice-calibration254-integration-verification.json).
 The final theorem retains no model, Choice, coverage or startup premise and
 uses only standard Lean axioms. The earlier checkpoints below document the
 steps leading to this result; their then-open Choice interfaces are now closed.
@@ -51,11 +53,11 @@ of `ZFCax_s`, hence `BProv ZFax_s [] ⊥ ↔ BProv ZFCax_s [] ⊥`
 endpoints this gives `Endpoint254.literal_nonhalting_iff_zfc_consistent`
 (the literal `Prog254` register program never halts iff Con(ZFC)) and
 `BinaryZFC252.nonhalting_iff_zfc_consistency` (the 252-state blank machine
-never halts iff Con(ZFC)). `BinaryZFC252` is a one-line composition; in this
-lane it was type-checked against `BinaryPerm252`'s exact endpoint statement
-(a typed stub), because the site-certificate batches of the
-`BinaryPerm252` closure need about 6 GB each. Its full-closure build is
-pending in the verified-integration workflow. See
+never halts iff Con(ZFC)). The original remote check of `BinaryZFC252` used a
+typed stub. The merged version now passes the verified integration against
+the actual `BinaryPerm252` object and its source-matched full dependency
+closure, including the complete site certificates. The independent
+[source review](results/binary-zfc252-review.json) records the exact interfaces. See
 [tarski_logic_layer.md](tarski_logic_layer.md).
 
 The later merged `SatSupport` module also passed a
@@ -465,7 +467,7 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `BinaryPerm252.lean`, `ZFCBoundPerm252.lean` | Actual blank252 halting iff numerical/native/ZF refutation, also iff an accepted finite proof code. Con(ZFC) implies blank nonhalting; the following Choice module closes the converse. Internal PA formalization remains open. |
 | `CodeOrder.lean`, `TupleOrder.lean`, `ConstructibleOrder.lean` | Represented well-orders of all internal formula codes and finite tuples; bounded definition-key sets; definable ordinal recursion orders each constructible stage; `choice_of_VL` proves the exact selector-Choice axiom under V=L. |
 | `ChoiceCalibration254.lean` | Choice in the actual constructible subtype, sealed ZFC model, refutation transfer through external completeness, and closed actual252 blank nonhalting iff Con(ZFC). No internal PA proof-code claim. |
-| `ConstructibleChoice.lean`, `BinaryZFC252.lean` | Independently supplied Choice-in-L/refutation bridge and its composition with the exact literal 252-state binary endpoint. The merged versions are undergoing the same verified integration against actual binary objects; the original remote stub check alone is insufficient. |
+| `ConstructibleChoice.lean`, `BinaryZFC252.lean` | Independently supplied Choice-in-L/refutation bridge and its composition with the exact literal 252-state binary endpoint. Both merged endpoints pass the 167-unit integration against actual binary objects and the complete source-matched certificate closure; the earlier remote stub check is superseded. |
 
 The [Tarski audit](tarski_calculus_review.md) and subsequent
 [propositional certificate port](lukasiewicz_basis.md) now establish full
@@ -499,8 +501,8 @@ Rebuild the dependency closure **serially from source**:
 uv run --no-project python Computability/BusyBeaver/Research/ZFC/check_lean.py
 ```
 
-This compiles 99 source units: the first-order logic, calculus and completeness
-modules, `ZF.Zf`, `BusyBeaver.Core`, 93 research modules and the umbrella into a
+This compiles 167 source units: first-order logic, set-theory dependencies,
+`BusyBeaver.Core`, the research modules and the umbrella into a
 fresh scratch directory, without shared oleans or Lake's
 worker pool. [results/lean-verification.json](results/lean-verification.json)
 records the prior 38-unit fresh source check and axiom outputs. The seven
