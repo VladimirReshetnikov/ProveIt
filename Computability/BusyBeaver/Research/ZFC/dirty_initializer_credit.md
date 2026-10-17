@@ -138,3 +138,12 @@ census sources and raw 28,672-row output remain at
 `/tmp/zfc-dirty-init-followup/`; they are a diagnostic, not a maintained new
 machine generator. No Lean or Coq build, frozen-table edit, or shared-runner
 change was performed for this follow-up.
+
+The subsequent checked [`EnumStackCount254`](enum_stack_count254.md) closes the
+global counting and scheduler argument for this balance-credit interface on the
+actual enumerator. Its `credit_start_iff` accepts a witnessed good stack prefix
+of length at least `B(n)`, with good current formula and cache and arbitrary
+additive parameter. Its dirty candidate-zero theorem additionally removes the
+initial formula/cache premises when `d=0`. Composing a dirty AX root with its
+eight unconditional good entries is still a separate interface step; the finite
+binary diagnostic above does not acquire a new machine-equivalence theorem.

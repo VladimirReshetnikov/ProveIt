@@ -41,14 +41,17 @@ The checked results are:
   successful MP branch pushes only truth. The original `t`, `h`, and stack
   tail have no theoremhood premise.
 
-The remaining target is exactly
+At this module's checkpoint, the remaining target was exactly
 
 ```text
 ∀ t w h,
   EnumSafeStart254.HaltsFrom ⟨0,0,t,w,0,h⟩ ↔ Code254.C254 Code254.F.
 ```
 
-This full theorem is **not proved by this module**. The missing part is the
+This full theorem is **not proved by this module**. It is now proved by
+[`EnumStackCount254.dirty_start_iff`](enum_stack_count254.md), whose 160-unit
+integration also checks the umbrella. The following describes the gap at the
+earlier barrier-only checkpoint. The missing part was the
 global scheduler/counting connection: every reached occurrence must be
 identified with a position in the concatenation of decoded candidates in
 increasing numerical order. At a candidate boundary `pl=0`, the candidate

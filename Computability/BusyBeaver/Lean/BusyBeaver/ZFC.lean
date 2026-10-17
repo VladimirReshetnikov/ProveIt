@@ -106,6 +106,7 @@ import BusyBeaver.ZFC.NativeDecoded254
 import BusyBeaver.ZFC.NativeTheory254
 import BusyBeaver.ZFC.EnumSafeStart254
 import BusyBeaver.ZFC.EnumStackBarrier254
+import BusyBeaver.ZFC.EnumStackCount254
 import BusyBeaver.ZFC.DirtyRoot254
 import BusyBeaver.ZFC.DirtyProgram254
 import BusyBeaver.ZFC.WellFoundedPart

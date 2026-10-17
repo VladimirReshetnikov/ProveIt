@@ -13,8 +13,8 @@ The kit: the internal naturals (`wo_nat`), restriction, the
 lexicographic order of pairs with a well-ordered fibre over each first
 component (`wo_lex`), an order pulled back along least keys (`wo_pull`), and
 the ordered sum of two disjoint well-ordered classes (`wo_append`). With them
-the canonical well-order of the constructible hierarchy is assembled in
-`ConstructibleOrder`.
+a canonical well-order of the constructible hierarchy can be assembled
+in a later module; that construction is not supplied here.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.InternalWO

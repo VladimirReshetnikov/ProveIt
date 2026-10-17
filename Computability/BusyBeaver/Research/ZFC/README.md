@@ -58,6 +58,16 @@ Internal well-orders and Choice remain open. The enumerator lemmas establish
 the local stack invariant and the injection of NIP occurrences into earlier
 DROP occurrences; the global trace/counting theorem remains separate.
 
+The [160-unit integration](results/stack-count-order-integration-verification.json)
+now closes that counting link in
+[`EnumStackCount254`](enum_stack_count254.md). It proves the actual enumerator's
+halting/refutation equivalence from `pl=np=d=0` with arbitrary current formula,
+stack and cache, and supplies a general late-start credit interface. Four units
+were freshly checked and 156 source-matched units reused. The merged
+`InternalWO` and `OrderRec` modules also pass: they provide internal well-order
+operations and an ordinal-recursive order-extension interface. A concrete
+constructible well-order and Choice transport still need implementation.
+
 A measured attempt to save a register by changing Cantor pairing to a
 [power-of-two encoding](register_lifetime.md) retained the full calculus but
 cost 306 states; its tested hybrids cost at least293. The current 252-state
@@ -348,6 +358,8 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `NativeDecoded254.lean` | Native CP + full actual-Form GIC + raw IR satisfy every decoded bundle, including coincident binders and truth code 0. With an explicit valuation, ModelsEncodable and ModelsDecoded are equivalent. |
 | `NativeTheory254.lean` | Numerical falsity and actual 219-node structured-program halting are each equivalent to refutability of the explicit sentence theory CP + full native-Form GIC + IR. ZFC calibration and binary execution remain separate. |
 | `EnumStackBarrier254.lean` | Actual candidate/command round trips, injective marked NIP-to-earlier-DROP replacement, witnessed safe stack prefix over arbitrary bottom, local preservation with positive credit, and candidate-zero reset. The global scheduler/counting theorem is not supplied. |
+| `EnumStackCount254.lean` | Closes the actual global scheduler/counting link; safe credit at every candidate boundary, arbitrary dirty bottom, and `dirty_start_iff` for `pl=np=d=0`. No binary initializer or internal PA theorem is inferred. |
+| `InternalWO.lean`, `OrderRec.lean` | Internal natural, lexicographic, pullback and appended well-orders, with explicit collection/separation premises; definable order recursion on internal ordinals. The concrete constructible order and Choice remain open. |
 | `EnumSafeStart254.lean`, `DirtyRoot254.lean`, `DirtyProgram254.lean` | Attributed arbitrary-cutoff enumeration and dirty-root absorption, composed with the actual structured219/path program. Six numerical fields are unrestricted; top/cache/stack retain their exact theorem invariant and logical registers beyond8 remain zero. |
 | `SeedInvariant254.lean` | Six constructors certify nonzero initial theorem codes, unshifted stacks, and the resulting dirty-start/native-refutation equivalence. This gives a larger sufficient initializer target; no binary startup is inferred. |
 | `WellFoundedPart.lean`, `WFRelativization.lean`, `WFModel.lean`, `WFTheory.lean` | One actual GIC instance supplies closure of internal well-foundedness. Actual translated Separation/Replacement, Infinity and Power make its subtype a ZF model, yielding `C254 F ↔ BProv ZFax_s [] Bot` and native/ZF equiconsistency. Choice and internal PA proof codes remain open ([direct route](wf_model.md)). |
