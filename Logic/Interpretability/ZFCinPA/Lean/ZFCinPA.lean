@@ -75,3 +75,16 @@ import ZFCinPA.SetRelativization
 import ZFCinPA.SetRelativizationAudit
 import ZFCinPA.ConstructibleInterpretation
 import ZFCinPA.ConstructibleInterpretationAudit
+import ZFCinPA.EnvTransform
+import ZFCinPA.EnvTransformAudit
+import ZFCinPA.LTemplate
+import ZFCinPA.LPieces
+import ZFCinPA.LTransVal
+import ZFCinPA.LTemplateAudit
+import ZFCinPA.LInvariant
+import ZFCinPA.LStepAnd
+import ZFCinPA.LStepAndAudit
+import ZFCinPA.LStepBasic
+import ZFCinPA.LStepBasicAudit
+import ZFCinPA.LStepAtom
+import ZFCinPA.LStepAtomAudit
