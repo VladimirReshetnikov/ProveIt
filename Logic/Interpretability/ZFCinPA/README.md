@@ -186,6 +186,7 @@ facade is [`Lean/ZFCinPA.lean`](Lean/ZFCinPA.lean).
 | `LIterate` | ω-iteration of a class function on ordinals inside any ZF model: the successor-closure step `HStep`, finite chains (`Chain`, `chain_exists` by restricted ω-induction, `chain_agree`), and `orbit_closure` (the union of the orbit is a nonzero limit closed under the function), with every Separation/Replacement use an explicit hypothesis |
 | `LClosure` | `LIterate` inside template models: L6 formulas for steps, chains, images and orbits with their readings, and `closure_point` (if `F₅` is total on ordinals, limits closed under `F₅` are unbounded), discharging the resources by `sep_iff`/`repl_iff` |
 | `LFinalSep` | the final Separation template: `sep_final` (a reflected predicate cuts a definable subset of a closed stage `L_β`, hence a constructible set, by `inL_of_definable` and `inL_sep`) and `sepTemplate_provable`: `totS F₅ ⋏ reflS P₄ F₅ → ` `L`-separation for `P₄` at extended environments |
+| `LFinalRepl` | the final Replacement template: `env_patch` (an environment agreeing with `t` below `n` and carrying `X` at slot `n`), `repl_final` (the image is bounded in a stage by `stage_bound`; at a closed limit `β` the image is cut out of `L_β` by the code `∃x (x ∈ v_{n+2} ∧ c)`, where `n` is a support bound of the reflecting code `c` (`SatSupport.sat_support`), so no code shift is needed) and `replTemplate_provable`: `totS F₅ ⋏ reflS P₄ F₅ → ` `L`-replacement for `P₄` at `x :: y :: t` |
 
 ## Building
 
