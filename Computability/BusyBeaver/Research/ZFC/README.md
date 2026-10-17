@@ -145,6 +145,16 @@ their exact finite scopes. Both reports have complete dossiers and offline
 replay through `code/reproduce_153.py`; they supply no new sub253 machine or
 complete internal-ZFC endpoint.
 
+Batch154 adds sources 37–41 (placement `d1636c9af8`, reconciliation
+`9f4efefcff`, catalogue `21880d20b6`). Finite GIC/EPSC fusion, the EPSC1 plus
+BinaryUnion repair, stronger support countermodels, finite assignment/class
+and cyclic-algebra kernels continue the theory search. All advertised finite
+suites and the fresh 26-source Lean closure pass; the guarded shortcut keeps
+253 states. The algebraic ZFC query and complete new frontends remain
+unexpanded. These reports supply no strict EPSC1 consistency separation or
+new closed binary endpoint. Their preserved evidence and offline recovery are
+in the host's batch154 appendix and `code/reproduce_154.py`.
+
 [subset_only.md](subset_only.md) proves, at the mathematical level, that
 the membership arm can be removed from source 02's mixed local bound.
 A positive singleton-decoder hull covers the root's members without

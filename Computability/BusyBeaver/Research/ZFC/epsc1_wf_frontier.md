@@ -106,3 +106,23 @@ instance deriving a common container or canonical witness for two WF
 objects, with all activation and output bounds verified. Until such a
 lemma is available, this route has no calibrated replacement for the
 current theory row and no measured machine saving.
+
+## Batch154: coarse bounds still do not supply Pairing
+
+Local source39 strengthens the source36 counterinterpretation. Its hereditary
+one-index support model has Extensionality, irreflexivity, least exact unary
+hulls, and finite common membership, subset and transitive bounds, while exact
+Pairing still fails. Its hereditary-purity quotient is the entire bad model.
+Thus coarse common-container repairs alone do not establish that interpretation.
+The internally well-founded part still contains the ambient pure universe;
+the remaining two-WF-object question above is not refuted.
+
+The same report proves that adding exact BinaryUnion to EPSC1 permits the
+full extensional EPSC interpretation. Over EPSC1, BinaryUnion and exact
+profile Pairing imply each other. The proof packages finite pure parameters
+inside one pure object and keeps the actual matrix's single-parameter budget.
+These are ordinary mathematical results; the displayed formula/DAG counts
+exclude label payload, tuple operations, proof search and initialization.
+See the independently reviewed host dossier
+`SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-154-source-39.md`.
+No new calibrated binary implementation follows from this repair.
