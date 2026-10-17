@@ -150,6 +150,12 @@ The [internal positive-clock transport lemma](arithmetic_positive_simulation254.
 then supplies a conditional halting-equivalence argument without a global
 clock bound, passing four reports and four callers. Its concrete binary
 simulation premises remain to be proved.
+The [arbitrary-initial binary iterator](arithmetic_machine_run_from_perm252.md)
+now supplies actual internal run composition, full halted-tape absorption
+and equality with the blank evaluator, passing nineteen reports and twenty
+callers. The [arithmetic bootstrap theorem](arithmetic_bootstrap_perm252.md)
+transfers the checked 82,552-step prefix into every IΣ1 model and proves its
+fixed sentence in PA, passing eleven reports and thirteen callers.
 
 The [finite proof-template compiler](model_coded_core_compiler.md) now handles
 arbitrary internal free parameters by compiling the existing logical proof
@@ -157,6 +163,11 @@ core and cutting supplied translated-axiom proofs at the root. Four local
 modules and two audits pass, with six axiom reports and fourteen callers.
 Its source proof remains standard finite syntax; translating arbitrary
 internal source proofs remains part of the PA bridge.
+The separate [internal axiom-proof transport](internal_axiom_proof_transport.md)
+now handles arbitrary internally coded derivations when both theories use
+the same language and the target proves every well-formed source axiom.
+Three reports and seven callers pass. The actual C254/ZFC formula and axiom
+translations remain to be supplied.
 The subsequent lifted-PA client supplies the finite axiom witnesses itself.
 Its fresh five-module check passes nine reports and twenty callers, including
 specialization at matrices with internal free parameters.

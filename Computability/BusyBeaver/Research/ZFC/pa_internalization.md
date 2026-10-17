@@ -329,6 +329,22 @@ now handles the final conditional trace-composition argument by Σ1 induction.
 It needs only positive local clock increments, not a global upper clock
 bound. The actual binary run and simulation relation must still satisfy
 its explicit local premises in every IΣ1 model.
+The [arbitrary-initial binary run](arithmetic_machine_run_from_perm252.md)
+now supplies the concrete run's addition and halt-persistence laws, and the
+[fixed bootstrap lift](arithmetic_bootstrap_perm252.md) proves the exact
+82,552-step endpoint in every IΣ1 model and in PA. Unbounded instruction
+simulation and its arithmetic frame relation remain open.
+
+For proof-system transport, [internal axiom-proof substitution](internal_axiom_proof_transport.md)
+now composes existential target proofs through arbitrary internal source
+derivations in a shared language. It uses Σ1 induction and needs no selected
+proof compiler. Its explicit hypothesis is target provability of every
+well-formed internal source axiom. This implements a weaker sufficient
+interface already permitted by this plan; it does not supply the missing
+C254/Foundation syntax map or the WF/L axiom translations. The accompanying
+note identifies represented closed-matrix Separation/Replacement constructors
+as a concrete next client, while preserving the additional free-parameter
+closure obligation.
 
 The [numeric history-checker construction](code254_arithmetic_checker.md)
 specifies a concrete next adapter: represent the exact Cantor pairing and its
