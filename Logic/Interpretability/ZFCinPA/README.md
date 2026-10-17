@@ -171,6 +171,7 @@ facade is [`Lean/ZFCinPA.lean`](Lean/ZFCinPA.lean).
 | `NumeralUnique` | pins the numeral placeholder; uniqueness discharged internally |
 | `CodeInductionSource` | code-induction at `StepGood` as a Separation antecedent |
 | `Endpoint` | the target, the chain to it, and its exact residue |
+| `SetRelativization` | represented relativization for `ℒₛₑₜ`: closed terms are variables, and the internal relative-interpretation theorem `provable_falsum_of_relativize_set` (generic core: `BoundedPAConsistency.InternalRelativization`) |
 
 ## Building
 

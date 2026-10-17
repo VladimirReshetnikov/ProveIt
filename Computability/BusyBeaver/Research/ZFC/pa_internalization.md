@@ -427,27 +427,41 @@ requested; the original user request explicitly requires PA, and remains the
 target here. Avoiding arithmetic inside a future verifier does not remove the
 arithmetic proof obligation relating its finite traces to Con(ZFC).
 
-## Claimed by the Claude lane: represented relativization (L-interpretation core)
+## Claude lane: represented relativization (L-interpretation core)
 
 The ZFC-refutation → ZF-refutation direction (Choice) and the WF comparison
-both need a *syntax-sensitive* interpretation in arithmetic. The Claude lane
-(which proved the external Choice transport through L) is building its
-generic core in
-`Logic/PeanoArithmetic/BoundedConsistency/Lean/BoundedPAConsistency/InternalRelativization.lean`,
-next to `InternalAxiomProofTransport` and in the same style:
+both need a *syntax-sensitive* interpretation in arithmetic. Its generic core
+is now **checked** (standard axioms only), in
+`Logic/PeanoArithmetic/BoundedConsistency/Lean/BoundedPAConsistency/InternalRelativization.lean`
+(any language) and `Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/SetRelativization.lean`
+(the set language), with `…Audit` modules:
 
 1. `relativize L d p`: relativization of every internal formula code to the
-   class defined by an internal domain formula `d` (one `UformulaRec1`
-   construction; atoms unchanged, `∀q ↦ ∀(¬δ ∨ q^δ)`, `∃q ↦ ∃(δ ∧ q^δ)`).
-   **Checked:** definition, Σ₁ graph, constructor equations.
-2. Preservation of (semi)formulas; commutation with negation, shift and
-   substitution (for shift-fixed `d` with one bound variable).
-3. Derivation transport by `Derivation.induction1`: every T-derivable internal
-   sequent `s` has some `m` with `U ⊢ s^δ ∪ {¬δ(&i) | i < m}`, given
-   all-internal U-provability of the relativized T-axioms and that closed terms
-   are variables (true for `ℒₛₑₜ`).
-4. Discharge of the side formulas from `U ⊢ ∃x δ(x)`: `Provable T φ →
-   Provable U φ^δ` for sentences, in every IΣ₁ model.
-5. Then the L-specific obligations: `ZF ⊢ ax^L` for every internal ZFC axiom
-   code, by fixed templates for the finitely many axioms and internal formula
-   induction (reflection) for the Separation/Replacement schemata.
+   class defined by an internal domain formula `d` with one bound variable
+   (one `UformulaRec1` construction: atoms unchanged, `∀q ↦ ∀(¬δ ∨ q^δ)`,
+   `∃q ↦ ∃(δ ∧ q^δ)`), with Σ₁ graph and constructor equations.
+2. Formula laws: preservation of (semi)formulas; commutation with negation,
+   with shift (for shift-fixed `d`), and with substitution of terms for bound
+   variables (`subst_eq_self_of_prefix` generalizes Foundation's
+   `subst_eq_self` to longer vectors).
+3. `derivable_relSet`: every internal T-derivation of a sequent `s` (in every
+   IΣ₁ model, nonstandard derivations included) yields a U-derivation of
+   `s^δ ∪ {¬δ(&i) | i < m}` for some `m`, by one `Derivation.induction1` pass
+   with a Σ₁ predicate. Hypotheses: U derives the relativized T-axioms (with
+   side formulas), and closed terms are variables.
+4. `derivable_of_domSet`, `provable_relativize`, `provable_falsum_of_relativize`:
+   the side formulas are discharged from `U ⊢ ∃x δ(x)` (∀-rule on `¬δ(&0)`,
+   cut against `∃x δ(x)`, internal induction on `m`), so
+   `Prov_T(⊥) → Prov_U(⊥)` holds in every IΣ₁ model.
+5. `SetRelativization.isTerm_eq_fvar`: in the set language every closed
+   internal term is a free variable (its function-symbol recognizer is `⊥`),
+   and `provable_falsum_of_relativize_set` packages item 4 for set theories.
+
+**Remaining for the Choice transport in PA** (this lane, next): the
+L-specific obligations of `provable_falsum_of_relativize_set` with
+`T = 𝗭𝗙𝗖`, `U = 𝗭𝗙` and `d = ⌜x ∈ L⌝`:
+`Provable 𝗭𝗙 ⌜∃x (x ∈ L)⌝`, and `ZF ⊢ ax^L` (with side formulas) for every
+internal `𝗭𝗙𝗖` axiom code, by fixed templates for the finitely many single
+axioms (Choice included) and internal formula induction, via the reflection
+principle, for the Separation and Replacement schemata. Feeding the result
+into the C254/ZF comparison then gives the Choice half of the PA endpoint.
