@@ -1,0 +1,39 @@
+{
+  "status": "PASS read-only mathematical/interface audit; no local Lean build",
+  "read_coverage": "Entire four modules, 1120 source lines, plus exact ZFAxioms resource definition",
+  "sources": {
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NamedZF.lean": {
+      "lines": 175,
+      "sha256": "b477039b6308048559a03b3db363513ec20ae84b724f1788939fc8b162a5d249"
+    },
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalOrd.lean": {
+      "lines": 192,
+      "sha256": "e6ca852afcd59f47e18b68edae14765d605fed9ecb96819af1f5d7dea1357616"
+    },
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalRank.lean": {
+      "lines": 415,
+      "sha256": "45991036b6f9ea43eda5abb353d4568ae670c59e97b7b22de4cdd743554a1097"
+    },
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZFRank.lean": {
+      "lines": 338,
+      "sha256": "cb48b517067a57d99bf528c9694b14168fb88db5b5d5a710f0855d333be7a858"
+    }
+  },
+  "resources": {
+    "H": "ZFAxioms: Ext, actual-Form Separation, Pair, Union, ordinary Infinity, actual-Form Replacement with global partial functionality; no Power or Regularity in H",
+    "hR": "Internal set Regularity; not external well-foundedness",
+    "hP": "Exact powerset for every model element, quantified over every raw-domain subset",
+    "choice_in_model": "Not assumed; noncomputable chosen operators use metatheory choice only"
+  },
+  "audit_findings": [],
+  "key_checks": [
+    "Named atom toForm uses capture-correct rename and under-env identity; no injectivity/freshness premise is omitted.",
+    "Every sep_of/repl_of call supplies an actual NForm plus its semantic equivalence; every Replacement relation is globally partial-functional, including outside the chosen domain.",
+    "Ordinal and epsilon induction cut a definable counterexample set in a transitive successor/container; they do not invoke external well-foundedness.",
+    "Hierarchy gluing replaces each ordinal by its unique successor-domain approximation, and overlap agreement makes union a function. No arbitrary chosen family is collected.",
+    "Least-rank Replacement bounds all witness ranks without choosing an individual output. The final output set is separated from one V_beta.",
+    "The 100+k matrix parameters are protected along the actual atom ancestor binders; local helper binders may exceed 100 in separate branches that contain no atom, which is harmless.",
+    "Power containers include every raw-domain subset of every member, including subset objects outside the initial container.",
+    "No quotient IR, Foundation from CP/GIC, Choice axiom in the model, or standard-ZFC consistency equivalence follows from these four modules alone."
+  ]
+}
