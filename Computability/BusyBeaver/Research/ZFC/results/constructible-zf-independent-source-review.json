@@ -1,0 +1,63 @@
+{
+  "review_type": "independent read-only source and mathematical-contract audit",
+  "commit": "a856bfa0eb988cdfd8b15e4cf8cdbce26ea32752",
+  "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleZF.lean",
+  "sha256": "8d6802f21c12b9e31b8a7ba2738200cabbc5b8ce73cb9cd4bfe40663ef40b76c",
+  "bytes": 18455,
+  "lines": 404,
+  "locations": {
+    "inL_common": 27,
+    "satSet_exists": 56,
+    "inL_sep": 84,
+    "csat_rename": 131,
+    "sat_sub": 155,
+    "omega_trans": 200,
+    "ord_omega": 217,
+    "inL_ord": 220,
+    "inL_stage": 225,
+    "rslots": 230,
+    "swapRen": 236,
+    "inL_repl": 242,
+    "memL": 300,
+    "vals_scons": 303,
+    "L_zfAxioms": 313,
+    "L_power": 365,
+    "L_regular": 374,
+    "zfax_of": 382,
+    "L_models_ZF": 399
+  },
+  "builds_run": false,
+  "implementation_edits": false,
+  "conclusion": "No concrete mathematical or public-contract defect found.",
+  "public_endpoint": {
+    "name": "ConstructibleZF.L_models_ZF",
+    "premises": [
+      "H : ZFAxioms mem",
+      "hR : Regular mem",
+      "hP : full ambient PowerSets mem",
+      "v : Nat -> {x // InL H hP x}"
+    ],
+    "conclusion": "Every actual Form in ZFax_s is satisfied in the InL subtype under v.",
+    "choice_assumption": false,
+    "choice_conclusion": false,
+    "external_well_foundedness_assumption": false,
+    "standard_omega_assumption": false
+  },
+  "reviewed_bridges": [
+    "inL_common bounds finitely many external parameters in one internal ordinal stage.",
+    "inL_sep first truncates an arbitrary infinite external valuation to the finitely many free slots of the actual Form; its internal environment has whole range in the reflecting stage.",
+    "satSet_exists uses the internal set-structure satisfaction predicate, then the standard-Form truth bridge; it does not use ambient truth.",
+    "inL_repl uses ambient functional Replacement on an actual-Form graph guarded by InL for both input and output, with fresh rslots and output0/input1 ordering, then stage-bounds and separates the image.",
+    "sat_sub preserves native subtype equality and quantifier witnesses.",
+    "L_power contains only constructible subsets; subtype/raw subset equivalence uses InL transitivity.",
+    "L_regular transports the explicitly supplied internal Regularity axiom; it does not derive external well-foundedness.",
+    "L_zfAxioms Infinity uses the entire internal omega via actual-Form induction, without assuming all internal natural numbers standard."
+  ],
+  "open_scope": [
+    "No definable well-order of L or Choice theorem is proved in this file.",
+    "Uniform internal finite-support for all internal formula codes is still needed for the proposed future Def well-order construction; it is not needed for the standard actual-Form schema transport proved here.",
+    "No arithmetic proof-code representation, PA formalizability, or ZFC consistency equivalence is inferred by this review.",
+    "This is source audit evidence; any kernel checks are separate records owned by root."
+  ],
+  "four_module_review": "/tmp/zfc-constructible-independent-jmcwdhl9/review.json"
+}

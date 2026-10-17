@@ -98,7 +98,13 @@ global assumptions. No Coq work is proposed here.
 
 ## Smallest concrete next checkpoint
 
-Start with one new `Code254Proof.lean`, rather than arithmetizing model theory:
+The external finite-data checkpoint below is now checked in
+`Code254Proof.lean`: unindexed `RawProof`, structural validity/conclusion,
+positive Nat quotation, total fuel parser, and `c254_iff_checked`. Its scoped
+verification is [recorded separately](results/code254-proof-verification.json).
+No represented arithmetic checker or PA theorem follows yet.
+
+The staged route starts with this finite syntax, rather than arithmetizing model theory:
 
 1. Mirror C254 as finite data, quote it into natural numbers, and implement a
    total Boolean checker for its twelve rules. Record axiom parameters and
@@ -179,3 +185,11 @@ additional interfaces above. Conversely, proving the represented endpoint in
 every PA model and applying **arithmetic** completeness, as the local arithmetic
 projects do, is a valid way to obtain the actual PA proof without claiming a
 primitive-recursive extractor for the original semantic Lean proof.
+
+The next finite-data checkpoint is also checked: `Code254ProofCompiler`
+structurally maps every valid raw proof into the existing `Enum254` command
+blocks and proves their exact result contract. Its explicit refutation word
+halts from any working state; the existing fair scheduler yields the external
+enumerator-halting corollary. See [the compiler note](code254_proof_compiler.md).
+This removes proof-existence extraction from the compiler function itself;
+representing that computation and its correctness inside PA remains open.

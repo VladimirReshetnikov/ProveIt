@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16BaseCaseEndpoint
 import GowersSzemeredi.Proofs16ExplicitFaces
+import GowersSzemeredi.Proofs16BaseCaseAssemblySide
 
 /-! Lemma 16.3 (Theorem 16.2 in dimension one) holds at every modulus.
 

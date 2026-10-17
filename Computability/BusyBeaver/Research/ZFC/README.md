@@ -27,6 +27,12 @@ resource. Choice removal remains assigned to the constructible-class lane;
 proof-code bridge. The original request asks for a PA proof, which is stronger
 than the later goal record's ZFC metatheory target.
 
+The proof-data and constructible-model additions passed a
+[142-unit source-verified integration](results/theory-code-integration-verification.json):
+all141 imported source identities match successful scoped builds, with a fresh
+umbrella and joint callers. This is not a full142-module rebuild. The complete
+binary coverage check is separate and remains pending.
+
 The [attributed upstream baseline](../../../../lib/jeff-busy-beaver-zfc254/README.proveit.md)
 is imported at commit `297ab8df7e5de329605c3875b4934643b371a5e3`.
 Mira-Cult designed the machine; Jeff supplies the published verification.
@@ -233,7 +239,8 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `Prefix330.lean` | Exact 330-step public register prefix from the original initial vector to path 000 and logical registers [5,0,0,0,2,0,0,0,0], with the entire remaining register tail zero. |
 | `TarskiFalsity.lean` | The machines' relative falsity `F = Rel(0,0)`: the literal row set `ThmG (rel 0 0)` is sound for irreflexive models and complete for ⊥-free theories and targets; the comparison axiom IR is a generalized identity, not a row. |
 | `Code254.lean` | All-natural base-four decoder and original numerical calculus; soundness for decoded bundles, completeness under no nonempty model of literal encodable bundles. The corrected statement explicitly requires a valuation; `NativeDecoded254` now compares the two bundle model classes. |
-| `Enum254.lean` | The abstract six-register enumerator halts from zero iff code 1 is `C254`-derivable. Every candidate is reached unless an earlier one halts; proof blocks handle arbitrary retained registers. Model corollaries explicitly require a valuation. Its Prog254/RegisterPath and binary simulations remain open. |
+| `Code254Proof.lean`, `Code254ProofCompiler.lean` | Finite raw proof trees, a total natural-number checker and `C254 n ↔ ∃ code, check code n = true`; a structural compiler to the existing enumerator with exact block contracts and an explicit refutation command word. These external coding theorems are prerequisites for PA representation, not that representation itself ([checker](code254_proof.md), [compiler](code254_proof_compiler.md)). |
+| `Enum254.lean` | The abstract six-register enumerator halts from zero iff code 1 is `C254`-derivable. Every candidate is reached unless an earlier one halts; proof blocks handle arbitrary retained registers. Model corollaries explicitly require a valuation. Its literal Prog254/RegisterPath simulation is checked; complete binary coverage remains pending. |
 | `RMDag.lean`, `Dag254.lean`, `L2Lib254.lean`, `L2Macros254.lean`, `L2Control254.lean`, `L2Axioms254.lean`, `L2AxiomsEval254.lean`, `L2Root254.lean` | L2 for the shared 219-node register program (attributed data port of the pinned `Dag254.v`, used by the 253- and 254-state tables): Wade's structured semantics with determinism; every loop, `pair`, the unpair walk, all stack/formula macros, the equality test, fetch, MP/NIP/DROP and the generated `axioms()` closed forms; `root_step` (one root run is one `enumStep`, halting included), `iter_halts_boot` and `program_halts_iff : IterHalts dag254 (nextproof = 2) ↔ C254 1`. |
 | `RMEquiv.lean`, `RMEquiv254.lean` | L3: Wade's path semantics and the structured semantics agree for every well-formed DAG (`halts_iff_iterHalts`, forward and backward simulation up to trailing zero bits, Boolean well-formedness check); the 219-node program is well-formed (kernel-checked tables), giving `path_halts_iff : Halts pathDag254 (nextproof = 2) ↔ C254 1`. |
 | `RMBisim.lean`, `Bisim254.lean` | L4: segment bisimulations transfer path halting for every register file (symmetric relation defined by certificate lookup, so one check gives both directions); 3010 related test-site pairs between the literal 6459-row `Prog254` and the 219-node DAG, kernel-checked in 16 chunks, giving `literal_halts_iff : Halts Prog254.program Prog254.initial ↔ C254 1` ([tarski_logic_layer.md](tarski_logic_layer.md)). |
