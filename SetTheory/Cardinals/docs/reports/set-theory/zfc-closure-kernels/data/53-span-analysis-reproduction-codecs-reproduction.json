@@ -1,0 +1,149 @@
+{
+  "status": "PASS",
+  "command": "codecs",
+  "package": "/workspace/scratch/2cfedd6e2e7f/output/permutation252-reduction-study",
+  "upstream_subset": "/workspace/scratch/2cfedd6e2e7f/output/permutation252-reduction-study/upstream",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "commands": [
+    {
+      "label": "affine-codecs",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/proveit252-delivery-check/codecs/codecs/affine_codec_search.py",
+        "--max-modulus",
+        "12",
+        "--output",
+        "/tmp/proveit252-delivery-check/codecs/codecs/affine_codec_results.json"
+      ],
+      "cwd": "/tmp/proveit252-delivery-check/codecs/codecs",
+      "log": "logs/affine-codecs.log",
+      "returncode": 0,
+      "elapsed_seconds": 70.60026573300001
+    },
+    {
+      "label": "constructor-map",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/proveit252-delivery-check/codecs/codecs/map_constructor_subtrees.py"
+      ],
+      "cwd": "/tmp/proveit252-delivery-check/codecs/codecs",
+      "log": "logs/constructor-map.log",
+      "returncode": 0,
+      "elapsed_seconds": 0.0912169250000261
+    },
+    {
+      "label": "optimized-tag-swap",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/proveit252-delivery-check/codecs/codecs/swap_tags_optimized.py",
+        "--repo",
+        "/workspace/scratch/2cfedd6e2e7f/output/permutation252-reduction-study/upstream",
+        "--factor",
+        "direct",
+        "--output",
+        "/tmp/proveit252-delivery-check/codecs/codecs/swap_tags_results.json"
+      ],
+      "cwd": "/tmp/proveit252-delivery-check/codecs/codecs",
+      "log": "logs/optimized-tag-swap.log",
+      "returncode": 0,
+      "elapsed_seconds": 2.6447477000001527
+    },
+    {
+      "label": "dual-bottom-control",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/proveit252-delivery-check/codecs/codecs/dual_bottom4_cost.py"
+      ],
+      "cwd": "/tmp/proveit252-delivery-check/codecs/codecs",
+      "log": "logs/dual-bottom-control.log",
+      "returncode": 0,
+      "elapsed_seconds": 0.1937984010000946
+    }
+  ],
+  "checks": [
+    {
+      "check": "codecs/affine_codec_results.json",
+      "status": "PASS",
+      "excluded_metadata_fields": [
+        "elapsed_seconds",
+        "seconds"
+      ]
+    },
+    {
+      "check": "codecs/constructor_subtree_mapping.json",
+      "status": "PASS",
+      "excluded_metadata_fields": [
+        "elapsed_seconds",
+        "seconds"
+      ]
+    },
+    {
+      "check": "codecs/swap_tags_results.json",
+      "status": "PASS",
+      "excluded_metadata_fields": [
+        "elapsed_seconds",
+        "seconds"
+      ]
+    },
+    {
+      "check": "codecs/swap_tags_optimized_nodes.json",
+      "status": "PASS",
+      "excluded_metadata_fields": [
+        "elapsed_seconds",
+        "seconds"
+      ]
+    },
+    {
+      "check": "codecs/swap_tags_source_dag.json",
+      "status": "PASS",
+      "excluded_metadata_fields": [
+        "elapsed_seconds",
+        "seconds"
+      ]
+    },
+    {
+      "check": "codecs/swap_tags_segment_certificate.json",
+      "status": "PASS",
+      "excluded_metadata_fields": [
+        "elapsed_seconds",
+        "seconds"
+      ]
+    },
+    {
+      "check": "codecs/swap_tags_guard_cases.json",
+      "status": "PASS",
+      "excluded_metadata_fields": [
+        "elapsed_seconds",
+        "seconds"
+      ]
+    },
+    {
+      "check": "codecs/dual_bottom4_results.json",
+      "status": "PASS",
+      "excluded_metadata_fields": [
+        "elapsed_seconds",
+        "seconds"
+      ]
+    },
+    {
+      "check": "codecs/affine_codec_results.tm",
+      "sha256": "c65761a61b35598945e47a9902137d882ba70c1e5bde34e72b6069ba60d5316e",
+      "status": "PASS"
+    },
+    {
+      "check": "codecs/swap_tags_runtime.tm",
+      "sha256": "957a9687b35e2cd2d22fcb99c550ac1e61592cd39b5dc5c252783ab10e8bf18d",
+      "status": "PASS"
+    },
+    {
+      "check": "codecs/swap_tags_runtime_old.tm",
+      "sha256": "d4315d78269a81ae25e9b1d5eaf9cb9b5c855602a723f4fcb6e444f97a3e27db",
+      "status": "PASS"
+    }
+  ],
+  "scope": "Reproduction of finite evidence only; no new consistency or state lower-bound theorem."
+}
