@@ -435,3 +435,12 @@ Coq lines here. Mathematically the goal does not wait on it: non-halting is
 equivalent to `Con(ZF)` (`WFTheory.c254_refutation_iff_zf` with L4), and
 `Con(ZF) ↔ Con(ZFC)` is Gödel's 1938 theorem, whose `L ⊨ ZF` half is now
 formalized here.
+
+The constructibility modules received an
+[independent source review](constructible_choice_review.md). The review found
+no defect in their internal recursion and reflection arguments. For the
+remaining definable well-order, it identifies an explicit prerequisite:
+uniform internal finite support for `SatIn` on every internal formula code,
+so definitions use finite parameter tuples rather than arbitrary full
+omega-environments. Fixed-standard-Form support lemmas alone do not supply it.
+The review does not claim Choice or a new compiler check.
