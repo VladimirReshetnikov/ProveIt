@@ -193,3 +193,11 @@ halts from any working state; the existing fair scheduler yields the external
 enumerator-halting corollary. See [the compiler note](code254_proof_compiler.md).
 This removes proof-existence extraction from the compiler function itself;
 representing that computation and its correctness inside PA remains open.
+
+The [numeric history-checker construction](code254_arithmetic_checker.md)
+specifies a concrete next adapter: represent the exact Cantor pairing and its
+bounded projections, then use the existing arithmetic history iterator to
+evaluate all twelve proof rules. The pinned arithmetic library uses a different
+pairing for its own data, so that adapter cannot be omitted. The note gives the
+exact MP and gate tests, the fixed formula interface and all-input equivalence
+target; it is a construction plan, not a new PA theorem.

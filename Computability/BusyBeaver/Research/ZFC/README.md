@@ -51,6 +51,12 @@ axiom families and recovers generalization by induction using QI and MP. Its
 best tested complete control costs285 states. This sound ordinary
 admissibility idea also failed to improve the current machine.
 
+A [phase-invariant diagnostic](permutation252_phase_analysis.md) excludes six
+source-program guards from the zero-register start and re-tests503 affected
+fold recipes. None passes the bounded checker; fuel and abstraction stops
+remain distinct from counterexamples. Three literal continuation probes also
+show why different program counters need a proved semantic relation.
+
 The [attributed upstream baseline](../../../../lib/jeff-busy-beaver-zfc254/README.proveit.md)
 is imported at commit `297ab8df7e5de329605c3875b4934643b371a5e3`.
 Mira-Cult designed the machine; Jeff supplies the published verification.
