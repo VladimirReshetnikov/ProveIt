@@ -12,8 +12,10 @@ equality layer. Until now its soundness and completeness existed only inside
 the imported Coq development (`ZF/stdzf/coq/L1_LMeta.v`, `Std_alpha.v`,
 `Std_H.v` and `ZF/m254/coq/logic/*` at upstream commit
 `297ab8df7e5de329605c3875b4934643b371a5e3`). This note records an
-independent Lean proof. No Coq file was ported or executed; the derivations
-below were reconstructed from the classical Tarski/Kalish–Montague route.
+independent Lean proof. The named-formula metatheorems were reconstructed
+from the classical Tarski/Kalish–Montague route. The separately attributed
+propositional certificate and numerical program ports are described below;
+no Coq compiler was run.
 
 ## Statements
 
@@ -388,9 +390,11 @@ Foundation and Power. It combines this lane's `ZFNative` direction with the
 [direct well-founded model](wf_model.md) of the native CP/GIC quotient.
 For the literal register program, non-halting is therefore equivalent to
 `Con(ZF)` and follows from `Con(ZFC)`. Choice removal is the remaining semantic
-transport to full ZFC. The actual252-state binary table has a proved blank
-bootstrap and generic simulation; its complete finite coverage certificate is
-still being checked. PA internalization is an additional proof-code obligation.
+transport to full ZFC. The actual252-state binary table now has the
+[closed `BinaryPerm252` endpoint](binary_perm252.md): complete blank bootstrap,
+all8,391 decoder guards and unbounded simulation give blank nonhalting iff
+`Con(ZF)`, with no coverage premise. PA internalization is an additional
+proof-code obligation.
 
 ## The constructible class is a model of ZF
 
