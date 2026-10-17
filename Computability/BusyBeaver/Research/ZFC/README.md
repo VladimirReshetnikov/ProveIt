@@ -1355,3 +1355,13 @@ control0 is excluded and all physical-selector/source cases are calibrated.
 The focused check passed ten probes and ten callers with zero warnings, using
 84 matched project providers. Represented iteration, blank-entry composition
 and the internal L2/Enum connection remain separate obligations.
+
+`ArithmeticControlRun254.lean` and
+[arithmetic_control_run254.md](arithmetic_control_run254.md) iterate the actual
+source-derived numbered control step at every internal `IΣ1` time and prove
+`halts_iff_blank`: that interpreter reaches zero exactly when the actual blank
+binary evaluator halts. The concrete positive-clock simulation and existing
+bootstrap discharge all runtime assumptions; no bootstrap or guard replay is
+needed. The focused first check passed 16 probes and 18 callers with zero
+warnings, using 87 matched project providers. The further all-internal L2/Enum
+scheduler connection remains explicit.
