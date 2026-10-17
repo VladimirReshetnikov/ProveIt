@@ -1,0 +1,17 @@
+# Actual WS unpair and complete literal NIP control behavior
+
+`ArithmeticControlUnpair254` proves the complete literal NIP branch in every model of IΣ1, starting at its actual numbered control with both scratch registers zero. Every other register field may be arbitrary and internal.
+
+If the cache is 1, the branch halts. Otherwise it writes the first Cantor projection of WS to the cache, writes the second projection to WS, and returns to the actual fetch test. The complete original file remains visible in the endpoint, so all other fields are preserved. The actual dispatcher with AC2 is composed with this branch; classification additionally clears AC.
+
+The source-variable `UnpairShape` explicitly records its main logical/physical register binding, its target binding, their disjointness from one another and both scratch fields, and every actual edge/resolved continuation. Its generic result restores the second projection to the main field and adds the first projection to the initial target. The actual WS instance has main logical2/physical0 and target logical5/physical7. These bindings establish the WS instance directly; the earlier read template's fixed PL binding is not substituted for WS.
+
+The generic proof uses the already checked arithmetic Cantor walk, actual nested scratch transfers, and a bounded elapsed-iteration induction with the original file/input fixed. The existential clock is inside the Σ1 predicate; it does not require an unbounded universal-over-files/existential-time induction. All counters, input values, intermediate files, and clocks may be internal/nonstandard.
+
+The actual fourteen-control WS shape is bound through literal walk/consume and resolver source equations. Its two remaining break instructions are separately proved to return to the actual fetch test. Cache comparison/clear comes from the checked NIP predecessor, and its zero result supplies the target's initial zero for the stack pop. The cached-falsity branch reuses the checked literal halt. This proves an active-control contract; it asserts no first-exit property or exact binary clock.
+
+The first kernel attempt passed with no warnings: source 11.158s and audit 2.541s, 18 ordered axiom probes and 22 callers, only the standard axioms. The checker matched 94 project prerequisites, six external boundary providers, and 211 inputs before/after. It recorded the source object hash immediately after the source passed and verified it unchanged after the audit. Each compiler command had a 120-second timeout; neither timed out. Only the new source/audit was compiled; no dependency build/download, 8,391-site replay, or bootstrap replay occurred.
+
+The successful verification record is preserved byte-for-byte. Separate history keeps the original unbuilt preparation, the guard-only timeout/object-hash hardening, its Python draft syntax failure before checker mutation, the unchanged-old-guard metadata preparation, the final preparation, the successful run, and the maintained-default unbuilt preparation. That Python draft failure was not a Lean proof attempt. The portable checker is byte-identical to the successful executed checker. Its default-path preparation compiles no proof.
+
+MP, DROP, AX, the complete internal L2/Enum connection, and the final PA machine equivalence remain separate obligations. The current full unpair shape ends with a target-output loop; the MP unpair-to-scratch occurrence has a different exit and cannot simply be asserted to instantiate it. No whole PA consistency endpoint or state reduction is claimed here.

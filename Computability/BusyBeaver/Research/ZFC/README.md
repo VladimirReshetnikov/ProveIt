@@ -1390,3 +1390,14 @@ classification from AC2 is also composed. The WS unpair/pop body remains a
 separate obligation, so this is not yet the complete internal NIP or L2/Enum
 connection. Source/audit, exact verification, all attempts, and the unbuilt
 default-path preflight are recorded separately under `results/arithmetic-control-nip254-*`.
+
+[`ArithmeticControlUnpair254`](arithmetic_control_unpair254.md) checks the actual
+WS unpair and complete literal NIP control branch for all internal values in
+IΣ1 models: cache1 halts; otherwise cache:=first(WS),WS:=second(WS), then the two
+literal breaks return to fetch. Both scratches start at0 and all other file
+fields are preserved; the AC2 dispatcher composition is included. The generic
+shape has explicit source/target physical bindings and disjointness. First
+source/audit check passed18/22 with zero warnings and standard axioms only.
+Exact evidence/history, independent reviews, and the unbuilt default-path
+preflight are separate; the complete L2/Enum and PA machine equivalence remain
+open.
