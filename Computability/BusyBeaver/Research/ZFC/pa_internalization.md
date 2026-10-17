@@ -284,8 +284,8 @@ and [correctness theorem](arithmetic_proof_word_correct254.md) now discharge
 the exact twelve-case successor premise using the actual validator recurrence.
 The [represented refutation word](arithmetic_refutation_word254.md) then
 resets arbitrary working registers and halts whenever the validator accepts
-falsity. This closes the compiler-to-word direction in every IΣ1 model;
-scheduler transport, command-halting soundness, binary traces and internal
+falsity. This closes the compiler-to-word direction in every IΣ1 model.
+The scheduler comparison below is now checked; binary traces and internal
 C254/ZFC proof transformations remain to be connected.
 
 The [arithmetic scheduler step](arithmetic_enumerator_step254.md) now covers
@@ -295,8 +295,8 @@ uses a Σ1 invariant retaining an earlier stopped-word witness, since a
 completed word and a scheduler boundary have different next steps. It proves
 internal fairness and schedules every positive word halting from all working
 states. The raw candidate for shifted word `w` is `w-1`. This supplies the
-forward scheduling argument; converse command soundness, complete binary
-transport and the internal ZFC proof comparison remain separate.
+forward scheduling argument. Complete binary transport and the internal
+ZFC proof comparison remain separate.
 The subsequent [composition theorem](arithmetic_enumerator_refutation254.md)
 now states this forward direction as one fixed arithmetic sentence and proves
 its IΣ1 and PA derivability. Its hypothesis is the actual represented C254
@@ -309,14 +309,26 @@ standard interpretation of the run graph while keeping the all-internal
 proof obligations explicit.
 For the reverse direction, the [bounded-stack plan](arithmetic_enumerator_soundness_plan254.md)
 keeps one existential bound on proof witnesses for the current stack and
-registers. This gives a Σ1 time-invariant candidate. The required
+registers. This gives the checked Σ1 time invariant. The required
 [actual proof-constructor equations](arithmetic_proof_constructors254.md)
-are now checked; stack-tail drain, local preservation and the reverse
-arithmetic sentence remain to be proved. The subsequent
+are now checked. The subsequent
 [tail-drain](arithmetic_stack_tail254.md) and
 [certificate](arithmetic_stack_certificate254.md) modules now close the
-stack representation and local push/pop obligations. Runtime preservation,
-time induction and the reverse sentence are the remaining numerical steps.
+stack representation and local push/pop obligations.
+[Command preservation](arithmetic_command_preservation254.md) and Σ1 time
+induction now supply the reverse implication from every certified start.
+The [fixed equivalence theorem](arithmetic_enumerator_equivalence254.md)
+proves in IΣ1 and PA that the actual validator accepts a falsity code iff
+the actual arithmetic scheduler halts from scalar1. The proof establishes
+that scalar1 is precisely `liveValue 0 0 0`. All quantified codes and times
+are internal model elements. This completes the numerical validator/scheduler
+comparison, with binary execution and internal C254/ZFC proof transformations
+still open.
+The [internal positive-clock transport](arithmetic_positive_simulation254.md)
+now handles the final conditional trace-composition argument by Σ1 induction.
+It needs only positive local clock increments, not a global upper clock
+bound. The actual binary run and simulation relation must still satisfy
+its explicit local premises in every IΣ1 model.
 
 The [numeric history-checker construction](code254_arithmetic_checker.md)
 specifies a concrete next adapter: represent the exact Cantor pairing and its

@@ -110,8 +110,8 @@ discharges the twelve-case successor premise and proves the exact contract
 for every accepted internal code, with five reports and thirteen callers.
 The [represented refutation word](arithmetic_refutation_word254.md) then halts
 from every working state for each internal accepted falsity proof, passing
-eleven reports and twelve callers. Scheduler, binary-trace and internal
-proof-system transport remain open for the PA endpoint.
+eleven reports and twelve callers. The scheduler comparison below is now
+checked; binary-trace and internal proof-system transport remain open.
 The [arithmetic scheduler step](arithmetic_enumerator_step254.md) now models
 the actual six-register fetch/execute operation at every internal input and
 agrees with `Enum254.enumStep` on every ordinary state, passing fourteen
@@ -124,22 +124,32 @@ The [validator-to-scheduler composition](arithmetic_enumerator_refutation254.md)
 now proves a fixed arithmetic implication in IΣ1 and PA: every internal
 accepted falsity proof forces scheduler halting from pointer/candidate zero
 and arbitrary working registers. Five reports and nine callers pass. The
-reverse soundness direction requires a certified initial-state invariant;
-the internal binary and ZFC proof-code comparisons remain open.
+[two-way blank scheduler comparison](arithmetic_enumerator_equivalence254.md)
+now proves the fixed validator/scheduler equivalence in IΣ1 and PA. Its
+reverse direction uses certified initial working fields. Fourteen reports
+and seventeen callers pass for soundness and composition. The internal
+binary and ZFC proof-code comparisons remain open.
 The [ordinary-Nat scheduler adapter](arithmetic_enumerator_run_nat254.md)
 also proves exact agreement with actual `Enum254.run` for every time and
 six-register state, and identifies arithmetic blank halting with the native
 `Enum254.Halts` predicate. Eleven reports and fourteen callers pass.
 The [original validator's constructor equations](arithmetic_proof_constructors254.md)
 now produce accepted internal proof codes for every original rule, with
-seventeen reports and eighteen callers. They support the planned
+seventeen reports and eighteen callers. They support the checked
 [bounded proof-witness stack invariant](arithmetic_enumerator_soundness_plan254.md)
-for the reverse implication; that invariant is not yet proved.
+for the reverse implication.
 The [internal stack-tail drain](arithmetic_stack_tail254.md) now bounds every
 stream by its numerical code, and the [bounded certificate module](arithmetic_stack_certificate254.md)
 proves Δ1 stack certification, push/pop, bound weakening, zero certification
 and cached-falsity extraction. Their audits pass fourteen/fifteen and
-twenty-four/seventeen reports/callers. Runtime preservation remains open.
+twenty-four/seventeen reports/callers. The
+[local preservation theorem](arithmetic_command_preservation254.md) covers
+every actual command, preserves one explicit bound, and extracts an accepted
+falsity witness on halt. Twelve reports and fifteen callers pass.
+The [internal positive-clock transport lemma](arithmetic_positive_simulation254.md)
+then supplies a conditional halting-equivalence argument without a global
+clock bound, passing four reports and four callers. Its concrete binary
+simulation premises remain to be proved.
 
 The [finite proof-template compiler](model_coded_core_compiler.md) now handles
 arbitrary internal free parameters by compiling the existing logical proof

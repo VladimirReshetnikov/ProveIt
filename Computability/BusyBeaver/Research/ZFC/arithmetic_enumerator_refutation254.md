@@ -48,9 +48,10 @@ python -B Computability/BusyBeaver/Research/ZFC/check_arithmetic_enumerator_refu
 ```
 
 The represented validator is the C254 proof checker. This theorem supplies
-one direction of its comparison with the represented scheduler. The reverse
-direction requires a soundness invariant from a certified initial state;
-arbitrary dirty states can already contain falsity in cache. Binary-machine
+one direction of its comparison with the represented scheduler. The
+[reverse direction and fixed PA equivalence](arithmetic_enumerator_equivalence254.md)
+are now checked using a certified initial-state invariant; arbitrary dirty
+states can already contain falsity in cache. Binary-machine
 transport and internal C254/ZFC proof transformations remain open. The
 requested PA equivalence for the 252-state blank machine is therefore still
 unfinished.
