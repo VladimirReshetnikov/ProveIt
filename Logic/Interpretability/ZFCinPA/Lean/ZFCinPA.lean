@@ -81,3 +81,6 @@ import ZFCinPA.LTemplate
 import ZFCinPA.LPieces
 import ZFCinPA.LTransVal
 import ZFCinPA.LTemplateAudit
+import ZFCinPA.LInvariant
+import ZFCinPA.LStepAnd
+import ZFCinPA.LStepAndAudit
