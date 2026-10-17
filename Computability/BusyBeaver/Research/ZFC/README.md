@@ -1301,3 +1301,11 @@ halt opcode four. Represented control step/run and the internal scheduler bridge
 remain open. Exact proof and preparation/history records are stored separately.
 
 [`NativeZFContainers254`](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/NativeZFContainers254.lean) extracts the actual ordinary Foundation ZF axioms into the checked native rank interface, then proves two fixed power-container sentences, including the exact C-row binder/connective order. The 380-line source and 15-probe/15-caller audit passed with standard axioms only and zero warnings. The guarded closure reuses ten native project objects and one recorded direct Foundation boundary; both unsuccessful attempts and the successful run are retained. This is the ordinary fixed container theorem. The finite all-internal alpha/substitution client, coincident-label C case, arbitrary-internal Collection G, full bundle and PA proof-code comparison remain separate obligations. See [the note](../../../../Logic/Interpretability/ZFCinPA/native-zf-containers254.md) and [evidence](../../../../Logic/Interpretability/ZFCinPA/results/native-zf-containers254-verification.json).
+
+`ArithmeticControlStep254.lean` ([note](arithmetic_control_step254.md)) represents
+one step using the actual numbered literal-control columns and a bijective
+fixed nine-register code. Its 27-probe/30-caller focused check passed with zero
+warnings, reusing 82 matched project objects and six boundaries. Fixed Sigma1
+graphs and a total Delta1 step cover every internal input; invalid0 and genuine
+halt4 remain distinct opcode facts. Binary simulation, represented iteration
+and the internal L2/scheduler connection remain open.
