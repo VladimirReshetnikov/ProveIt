@@ -549,18 +549,21 @@ nonstandardly many free variables never need a nonstandard quantifier block.
   `&i` by `s(d+i)`, each quantifier becoming a quantifier over `econs y s`;
   atoms read entries through ZF numerals (Codex's numeral code builders).
   **Checked** as `ZFCinPA/EnvTransform.lean` (`envForm d K`, its equations,
-  and `isSemiformula_envForm`: the output mentions only the environment).
+  and `isSemiformula_envForm`: the output has bound-variable arity at most
+  one). The latter typing theorem alone does not assert absence of free
+  variables; the required free-variable/shift laws remain separate.
 * Reflecting stages are the limit **closure points of a function** `f_K`
   (a placeholder-definable graph, existentially supplied by the induction):
-  the identity for atoms, `max(f₁, f₂)` for `⋏`/`⋎` (closure points of the
+  successor for atoms, `max(f₁, f₂)` for `⋏`/`⋎` (closure points of the
   max are closure points of both, so no club intersection or iteration is
   needed), and `max(f', g_{P'})` for `∃`/`∀`, where `g_{P'}(α)` bounds the
-  `L`-ranks of witnesses for all finitely supported environments on `L_α`
-  (one Collection instance). Environments are **finitely supported**
-  (eventually `∅`), so a limit stage's environment already lives below it and
-  no locality or numeral-order law is needed.
+  `L`-ranks of witnesses for environments on `L_α` (the planned Collection
+  template). The current invariant quantifies over **environments on an
+  earlier stage** `L_α`, with `α ∈ β`. Extending such an environment by one
+  element of `L_β` keeps it on a common earlier stage. The source no longer
+  requires finite support or a locality argument.
 * **Invariant** `Θ(K, d)`: `ZF ⊢ Total(f) ∧ ∃c ∈ Fml. ∀β (β limit closure
-  point of f) ∀ finitely supported env s on L_β:
+  point of f) ∀α ∈ β, ∀ env s on L_α:
   envForm d K (s) ↔ SatIn(L_β, c, s)`, by semiformula induction with the depth
   as parameter (exactly the shape of the construction, so `free` never
   appears).
@@ -591,3 +594,11 @@ nonstandardly many free variables never need a nonstandard quantifier block.
 Feeding `hSchema` into `ConstructibleInterpretation.provable_falsum_ZF_of_ZFC`
 and the result into the C254/ZF comparison then gives the Choice half of the
 PA endpoint.
+
+At the merged `4a59f5ccc9` checkpoint, `LStepEx.wb_exists` still takes the
+witness bound and the required Separation instance as premises.
+`ex_step`/`all_step` prove semantic preservation of the invariant assuming a
+total witness-bounding function. The quantifier templates, their represented
+compiler clients, the induction producing `Θ` for every internal formula,
+and the final schema/glue arguments remain to be supplied. These source
+interfaces do not yet discharge `hSchema`.
