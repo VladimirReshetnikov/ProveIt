@@ -179,6 +179,7 @@ facade is [`Lean/ZFCinPA.lean`](Lean/ZFCinPA.lean).
 | `LTransVal` | `transVal`, the untyped mirror of `translateFormula`, and its `Σ₁` definability in the placeholder codes (so translated template codes can enter internal inductions) |
 | `LInvariant` | the reflection invariant of the `hSchema` generator: `totS F` (a total function on ordinals above its argument) and `reflS P F` (one internal code reflects `P` as `SatIn` over every limit stage closed under `F`), read in every template model |
 | `LStepAnd` | the conjunction step: `and_step` for arbitrary relations (closure under the maximum gives closure under both components; the and-code reflects the conjunction by `satIn_and`) and `andTemplate_provable`, a theorem of the template theory over six placeholders |
+| `LStepBasic` | the disjunction step (`orTemplate`, by `satIn_or`), the negation step for negated atoms (`negTemplate`, code `c → ⊥`), and the constant bases `topBase`/`botBase` with the successor as reflection function |
 
 ## Building
 

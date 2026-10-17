@@ -84,3 +84,5 @@ import ZFCinPA.LTemplateAudit
 import ZFCinPA.LInvariant
 import ZFCinPA.LStepAnd
 import ZFCinPA.LStepAndAudit
+import ZFCinPA.LStepBasic
+import ZFCinPA.LStepBasicAudit
