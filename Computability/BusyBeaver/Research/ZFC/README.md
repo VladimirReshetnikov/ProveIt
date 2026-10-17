@@ -560,3 +560,20 @@ nonuniform old107 removals and two uniform controls, preserving the full origina
 frontend and all55 protected pairs. No recipe survives the bounded affine
 filter; no modified table proceeds to bootstrap testing. The complete per-recipe
 ledger distinguishes fuel exhaustion, abstraction limits and unexpected halts.
+
+The [safe initializer experiment](safe_initializer_families.md) uses the checked
+nonzero seed certificates to permit many more startup configurations. All64
+stack-containing swaps/three-cycles retain the8,391 conditional instruction
+contracts, but none reaches the sufficient root target within its literal
+bound. Exact first-write analysis reduces all252 possible starts to seven
+nonblank classes and12 starts that remain blank; the455 class/table runs are
+finite observations. An independent interpreter replays all252 prefixes and
+six full normalized controls. Interior frames and short gaps remain separate
+from the sufficient root criterion.
+
+The [ground-equational proof generator](equational_generator_cost.md) removes
+formula matching and freshness by constructing only valid ground equalities.
+Its measured complete control is299 working states after bounded sharing,
+before a ZFC-specific query and writer. The isolated171-state axiom emitter is
+a component count. This first complete control is larger than the existing
+runtime; it supplies a reproducible cost baseline for a different architecture.
