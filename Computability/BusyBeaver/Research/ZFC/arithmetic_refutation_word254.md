@@ -36,5 +36,7 @@ python -B Computability/BusyBeaver/Research/ZFC/check_arithmetic_refutation_word
 ```
 
 This supplies the represented compiler-to-command-word refutation direction.
-Scheduler transport, arbitrary command-halting soundness, arithmetic-to-binary
-simulation and the internal PA consistency equivalence remain open.
+The subsequent [scheduler composition](arithmetic_enumerator_refutation254.md)
+now proves the forward scheduling implication in PA. Command-halting
+soundness from a certified initial state, arithmetic-to-binary simulation and
+the internal PA consistency equivalence remain open.

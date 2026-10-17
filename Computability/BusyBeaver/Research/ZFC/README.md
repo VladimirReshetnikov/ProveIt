@@ -120,6 +120,16 @@ prove that every candidate is reached unless the scheduler halts earlier.
 A positive word halting from every working state therefore forces scheduler
 halting. Sixteen reports and thirteen callers pass. The proof records the
 first completed-word witness before the scheduler resumes enumeration.
+The [validator-to-scheduler composition](arithmetic_enumerator_refutation254.md)
+now proves a fixed arithmetic implication in IΣ1 and PA: every internal
+accepted falsity proof forces scheduler halting from pointer/candidate zero
+and arbitrary working registers. Five reports and nine callers pass. The
+reverse soundness direction requires a certified initial-state invariant;
+the internal binary and ZFC proof-code comparisons remain open.
+The [ordinary-Nat scheduler adapter](arithmetic_enumerator_run_nat254.md)
+also proves exact agreement with actual `Enum254.run` for every time and
+six-register state, and identifies arithmetic blank halting with the native
+`Enum254.Halts` predicate. Eleven reports and fourteen callers pass.
 
 The [finite proof-template compiler](model_coded_core_compiler.md) now handles
 arbitrary internal free parameters by compiling the existing logical proof

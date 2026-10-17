@@ -297,6 +297,16 @@ internal fairness and schedules every positive word halting from all working
 states. The raw candidate for shifted word `w` is `w-1`. This supplies the
 forward scheduling argument; converse command soundness, complete binary
 transport and the internal ZFC proof comparison remain separate.
+The subsequent [composition theorem](arithmetic_enumerator_refutation254.md)
+now states this forward direction as one fixed arithmetic sentence and proves
+its IΣ1 and PA derivability. Its hypothesis is the actual represented C254
+validator returning 2; its conclusion uses the actual start and run graphs.
+It does not yet translate a ZFC proof code or a binary machine trace.
+The [ordinary-Nat adapter](arithmetic_enumerator_run_nat254.md) separately
+proves exact equality with the existing native scheduler at every ordinary
+time and state, including its blank-halting predicate. This identifies the
+standard interpretation of the run graph while keeping the all-internal
+proof obligations explicit.
 
 The [numeric history-checker construction](code254_arithmetic_checker.md)
 specifies a concrete next adapter: represent the exact Cantor pairing and its
