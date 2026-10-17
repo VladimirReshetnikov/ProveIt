@@ -224,6 +224,13 @@ Its semantic representation uses weaker arithmetic than full PA. The actual
 checker/history and finite proof/trace compiler remain unrepresented here;
 this local definability theorem is not the requested whole-machine PA proof.
 
+The [constructor extension](arithmetic_code254.md) now supplies fixed bounded
+graphs for the four live numerical constructors and the rho1 payload branch.
+It proves parameter-free formula correctness in arbitrary IOpen models and
+exact all-natural implementation agreement. Output bounds justify those
+constructor witnesses; they do not by themselves bound the intermediate values
+of a rejected MP row with output0. The full twelve-case checker remains open.
+
 Intake157's [canonical term certificates](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch157-canonical-term-certificates-for-the-full-calculus)
 provide ordinary exact checker reductions and constructor-only derivations.
 Their small-witness and forward-equation arguments can guide internal sequence

@@ -1,0 +1,917 @@
+{
+  "status": "PASS",
+  "scope": "Fresh Cantor and constructor/rho1 sources and stored audits, with cached core/Foundation/Mathlib. No full12-row/history/PA endpoint.",
+  "repo": "/home/codex/.codex/worktrees/ec20/Proofs",
+  "scratch": "/tmp/zfc-code254-maintained-check",
+  "runner": {
+    "path": "/tmp/zfc-code-arithmetic/check_arithmetic_code254.py",
+    "sha256": "108f021ba2a9a875552d40e1de0e99f2258b5a15d9d2ccf5d558521f4d4ca4ee"
+  },
+  "shared_helper": {
+    "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_arithmetic_cantor.py",
+    "sha256": "9a8d4d7dd467ac8152238c8a0cbe93ed87512be36b447e38bae0b8244a28b229"
+  },
+  "dependency_rebuild": false,
+  "downloads": false,
+  "main_runner_or_umbrella_modified": false,
+  "commands": [
+    {
+      "label": "cantor-prerequisite",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_arithmetic_cantor.py",
+        "--repo",
+        "/home/codex/.codex/worktrees/ec20/Proofs",
+        "--dependency-root",
+        "/home/codex/src/Proofs",
+        "--core-evidence",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/results/code-tuple-order-integration-verification.json",
+        "--output",
+        "/tmp/zfc-code254-maintained-check/cantor",
+        "--source",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticCantor.lean",
+        "--audit",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/arithmetic_cantor_audit.lean"
+      ],
+      "cwd": "/tmp/zfc-code254-maintained-check",
+      "exit_code": 0,
+      "seconds": 6.166014,
+      "log": "/tmp/zfc-code254-maintained-check/cantor-prerequisite.log",
+      "output": "source PASS 4.067111 seconds\naudit PASS 1.873743 seconds\nEvidence: /tmp/zfc-code254-maintained-check/cantor\n"
+    },
+    {
+      "label": "source",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "--root=/tmp/zfc-code254-maintained-check/sources",
+        "-o",
+        "/tmp/zfc-code254-maintained-check/cantor/cache/BusyBeaver/ZFC/ArithmeticCode254.olean",
+        "/tmp/zfc-code254-maintained-check/sources/BusyBeaver/ZFC/ArithmeticCode254.lean"
+      ],
+      "cwd": "/tmp/zfc-code254-maintained-check",
+      "exit_code": 0,
+      "seconds": 6.976202,
+      "log": "/tmp/zfc-code254-maintained-check/source.log",
+      "output": ""
+    },
+    {
+      "label": "audit",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "/tmp/zfc-code254-maintained-check/arithmetic_code254_audit.lean"
+      ],
+      "cwd": "/tmp/zfc-code254-maintained-check",
+      "exit_code": 0,
+      "seconds": 2.263533,
+      "log": "/tmp/zfc-code254-maintained-check/audit.log",
+      "output": "'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.cantor_polybound' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.cantor_bounded' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.pair_le_tagged' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.tagged_components' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.tagged_bounded' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.tagged_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.wim_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.wel_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.wal_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.weq_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.tagged_nat' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.wim_nat' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.wel_nat' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.wal_nat' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.weq_nat' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.rho1_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.rho1_nat' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.rho1Value_defined' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.rho1Value_nat' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.rho1_input_bounds' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.row3_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.row3_nat' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.codeWim_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.codeWel_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.codeWal_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.codeWeq_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.codeRho1_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.codeRho1Value_defined' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCode254.codeRow3_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n"
+    }
+  ],
+  "compiler": {
+    "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+    "version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+    "toolchain": "leanprover/lean4:v4.32.0"
+  },
+  "dependencies": {
+    "root": "/home/codex/src/Proofs",
+    "Foundation": {
+      "path": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation",
+      "pin": "32e1a0956a8622fad067328ca1959729a7634428",
+      "tracked_clean": true
+    },
+    "Mathlib": {
+      "path": "/home/codex/src/Proofs/.lake/packages/mathlib",
+      "pin": "81a5d257c8e410db227a6665ed08f64fea08e997",
+      "input_revision": "v4.32.0",
+      "tracked_clean": true
+    },
+    "lake_manifest_sha256": "95e215b005fe9aacc1e5490c781d57e3044d2da5ca452495cfcd0e4eff908665",
+    "discovery": "read-only lake-manifest.json and existing .lake build directories; no Lake process",
+    "providers": {
+      "Foundation.FirstOrder.Arithmetic.IOpen.Basic": {
+        "path": "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Arithmetic/IOpen/Basic.olean",
+        "sha256": "b43eb2f8d8a2ef18004125594adafbff02b52f1b6ef62b9b836015bdce2351ad"
+      },
+      "Mathlib.Tactic.Ring": {
+        "path": "/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Tactic/Ring.olean",
+        "sha256": "cc12dfa66db7ef6ae4cd2d7a4e035ddffaca827168243f728812776b77836eb4"
+      }
+    },
+    "cached_objects_reused": true,
+    "dependency_rebuild": false,
+    "cache_provenance": "Existing built checkout is supplied by the caller; the checker records object identities but does not rebuild or independently attest the whole dependency cache."
+  },
+  "core_evidence": {
+    "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/results/code-tuple-order-integration-verification.json",
+    "sha256": "f4d0e04472adc5c7896ee51e3fa74fd9a476b990aadd1684fdc6ae2c65c21217",
+    "status": "PASS163-unit source-verified integration",
+    "units": 163,
+    "cache": "/tmp/zfc-integration163-l3k66yqn/cache",
+    "cache_relocated": false,
+    "scope": "Only the actual Code254 transitive project-source closure is reused. No fresh core/dependency rebuild is asserted."
+  },
+  "reused_core": [
+    {
+      "module": "FirstOrder.Fol",
+      "path": "Logic/FirstOrder/Lean/FirstOrder/Fol.lean",
+      "source_sha256": "84add1e8222f9f655e1dc252a826914623238b8e3e8169d18ed39f740b2bbacd",
+      "olean": "/tmp/zfc-native91-integration-yduvdh8f/FirstOrder/Fol.olean",
+      "olean_sha256": "cacf1698575083566f959bedba34fefe15997d0d835de989f38d463433376fe4",
+      "prior_validation": "source identity with161-unit checked closure",
+      "prior_evidence": "dirty-reset-integration-verification.json"
+    },
+    {
+      "module": "BusyBeaver.ZFC.Kalmar",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Kalmar.lean",
+      "source_sha256": "7e1bd77e6e26943476e941e68caaae06a556b29f1c508d7a63f5aaa9d8397143",
+      "olean": "/tmp/zfc-native91-integration-yduvdh8f/BusyBeaver/ZFC/Kalmar.olean",
+      "olean_sha256": "277a27cc6131e906b88aa0aac5e604877f8aa4f8466ca49652072167e2d4b364",
+      "prior_validation": "source identity with161-unit checked closure",
+      "prior_evidence": "dirty-reset-integration-verification.json"
+    },
+    {
+      "module": "BusyBeaver.ZFC.TarskiCalculus",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiCalculus.lean",
+      "source_sha256": "5c7079151e9deb06014deec4f03c3990cff96556d347b501d15106d895447e06",
+      "olean": "/tmp/zfc-native91-integration-yduvdh8f/BusyBeaver/ZFC/TarskiCalculus.olean",
+      "olean_sha256": "4337484639134ff2f884823522973cf95bfb26ddb8a7866ba3ebeba35f553b9b",
+      "prior_validation": "source identity with161-unit checked closure",
+      "prior_evidence": "dirty-reset-integration-verification.json"
+    },
+    {
+      "module": "BusyBeaver.ZFC.TarskiDerived",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiDerived.lean",
+      "source_sha256": "2a7edf1180e4553cb1990d45c1fe755aa74c3e86f5e9862181118470c1727178",
+      "olean": "/tmp/zfc-native91-integration-yduvdh8f/BusyBeaver/ZFC/TarskiDerived.olean",
+      "olean_sha256": "63fde11f53d33aff7ffae883f719bdd89c6277a1681ab9480337c378547feb18",
+      "prior_validation": "source identity with161-unit checked closure",
+      "prior_evidence": "dirty-reset-integration-verification.json"
+    },
+    {
+      "module": "BusyBeaver.ZFC.TarskiLeibniz",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiLeibniz.lean",
+      "source_sha256": "45d8bbf29fbd7ee51ee08b4017f549a6e54120dc62728584ed8d8c11153a5df8",
+      "olean": "/tmp/zfc-native91-integration-yduvdh8f/BusyBeaver/ZFC/TarskiLeibniz.olean",
+      "olean_sha256": "1851669b6797dd1769d7b5f7b7e7050376283bb0a8cf8e376bcbfa934a685787",
+      "prior_validation": "source identity with161-unit checked closure",
+      "prior_evidence": "dirty-reset-integration-verification.json"
+    },
+    {
+      "module": "BusyBeaver.ZFC.TarskiClean",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiClean.lean",
+      "source_sha256": "6d06107dfc84bea7e8c42b484fecf718b41b964d95a26293767a6fc5db83cd36",
+      "olean": "/tmp/zfc-native91-integration-yduvdh8f/BusyBeaver/ZFC/TarskiClean.olean",
+      "olean_sha256": "6a2e227d9d9342d7ce0f2746165c8a617d8a3fed6b1819f5e27264032ed96108",
+      "prior_validation": "source identity with161-unit checked closure",
+      "prior_evidence": "dirty-reset-integration-verification.json"
+    },
+    {
+      "module": "BusyBeaver.ZFC.TarskiComplete",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiComplete.lean",
+      "source_sha256": "be7b860d750bd176bb332e4d331c4bb67550ef41e98b330df7a5ebb298dbb7ae",
+      "olean": "/tmp/zfc-native91-integration-yduvdh8f/BusyBeaver/ZFC/TarskiComplete.olean",
+      "olean_sha256": "61e26005a642944bdf77066a76ae7d18ade7c2efbbaf6db9dcd907101d635c75",
+      "prior_validation": "source identity with161-unit checked closure",
+      "prior_evidence": "dirty-reset-integration-verification.json"
+    },
+    {
+      "module": "BusyBeaver.ZFC.Lukasiewicz",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Lukasiewicz.lean",
+      "source_sha256": "5bae5186d702414adc6f1f7006d241a48ef9f24e53de48c90f84394ce3c500d3",
+      "olean": "/tmp/zfc-native91-integration-yduvdh8f/BusyBeaver/ZFC/Lukasiewicz.olean",
+      "olean_sha256": "4e1913275587f652e4a5c412501c9a138465f63be0b779d0e4b9790542032b87",
+      "prior_validation": "source identity with161-unit checked closure",
+      "prior_evidence": "dirty-reset-integration-verification.json"
+    },
+    {
+      "module": "BusyBeaver.ZFC.TarskiFalsity",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiFalsity.lean",
+      "source_sha256": "22e29d3aabb45646110fa3d7c29c789a221cdb571c5078786a4f19a0ae797215",
+      "olean": "/tmp/zfc-native91-integration-yduvdh8f/BusyBeaver/ZFC/TarskiFalsity.olean",
+      "olean_sha256": "787b1daf1f46b2dc121be9c1ffb783b010f74e8a1fe93f23edd215b9473381c2",
+      "prior_validation": "source identity with161-unit checked closure",
+      "prior_evidence": "dirty-reset-integration-verification.json"
+    },
+    {
+      "module": "BusyBeaver.ZFC.Code254",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean",
+      "source_sha256": "18311d4a28cba6778a0ba1a1ddee34f5c2dd5044a23958b63f46d0640be4e01e",
+      "olean": "/tmp/zfc-native91-integration-yduvdh8f/BusyBeaver/ZFC/Code254.olean",
+      "olean_sha256": "f030585bad7e2281cddc172dbc3169614a74d30a59cbff9dbd92c8626a9285b3",
+      "prior_validation": "source identity with161-unit checked closure",
+      "prior_evidence": "dirty-reset-integration-verification.json"
+    }
+  ],
+  "fresh_prerequisite": {
+    "evidence": "/tmp/zfc-code254-maintained-check/cantor/verification.json",
+    "sha256": "e17bd0a0637f8c3bcfe3c87785f947b9633d97f3a755849598a3b095461a295d",
+    "source": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticCantor.lean",
+      "sha256": "aadfdeb41e75c1652b555ed996fea5d15d7f1b9f65c7c553823a99773ee24c84",
+      "snapshot": "/tmp/zfc-code254-maintained-check/cantor/sources/BusyBeaver/ZFC/ArithmeticCantor.lean"
+    },
+    "audit": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/arithmetic_cantor_audit.lean",
+      "sha256": "1c6927ed924d1075fb248a984825f0a65fec53fb43ee2c19d7c3bb795579a2a2",
+      "snapshot": "/tmp/zfc-code254-maintained-check/cantor/arithmetic_cantor_audit.lean",
+      "callers": 20
+    },
+    "object": {
+      "path": "/tmp/zfc-code254-maintained-check/cantor/cache/BusyBeaver/ZFC/ArithmeticCantor.olean",
+      "sha256": "fe6300732a7ef928ebbd6db632d67c92138bf6f9f5850715225df46e97deb502"
+    },
+    "named_axiom_probes": 27,
+    "callers": 20,
+    "only_standard_axioms": true,
+    "full_evidence": {
+      "status": "PASS",
+      "scope": "Fresh scoped arithmetic module/audit with explicitly reused checked core and prebuilt Foundation/Mathlib; no whole PA evaluator/trace endpoint.",
+      "repo": "/home/codex/.codex/worktrees/ec20/Proofs",
+      "scratch": "/tmp/zfc-code254-maintained-check/cantor",
+      "dependency_rebuild": false,
+      "downloads": false,
+      "main_runner_or_umbrella_modified": false,
+      "runner": {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_arithmetic_cantor.py",
+        "sha256": "9a8d4d7dd467ac8152238c8a0cbe93ed87512be36b447e38bae0b8244a28b229"
+      },
+      "commands": [
+        {
+          "label": "source",
+          "command": [
+            "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+            "--root=/tmp/zfc-code254-maintained-check/cantor/sources",
+            "-o",
+            "/tmp/zfc-code254-maintained-check/cantor/cache/BusyBeaver/ZFC/ArithmeticCantor.olean",
+            "/tmp/zfc-code254-maintained-check/cantor/sources/BusyBeaver/ZFC/ArithmeticCantor.lean"
+          ],
+          "cwd": "/tmp/zfc-code254-maintained-check/cantor",
+          "exit_code": 0,
+          "seconds": 4.067111,
+          "log": "/tmp/zfc-code254-maintained-check/cantor/source.log",
+          "output": "/tmp/zfc-code254-maintained-check/cantor/sources/BusyBeaver/ZFC/ArithmeticCantor.lean:83:51: warning: Try `simp at this` instead of `simpa using this`\n\nNote: This linter can be disabled with `set_option linter.unnecessarySimpa false`\n/tmp/zfc-code254-maintained-check/cantor/sources/BusyBeaver/ZFC/ArithmeticCantor.lean:85:51: warning: Try `simp at this` instead of `simpa using this`\n\nNote: This linter can be disabled with `set_option linter.unnecessarySimpa false`\n/tmp/zfc-code254-maintained-check/cantor/sources/BusyBeaver/ZFC/ArithmeticCantor.lean:121:43: warning: try 'simp' instead of 'simpa'\n\nNote: This linter can be disabled with `set_option linter.unnecessarySimpa false`\n/tmp/zfc-code254-maintained-check/cantor/sources/BusyBeaver/ZFC/ArithmeticCantor.lean:160:9: warning: try 'simp' instead of 'simpa'\n\nNote: This linter can be disabled with `set_option linter.unnecessarySimpa false`\n/tmp/zfc-code254-maintained-check/cantor/sources/BusyBeaver/ZFC/ArithmeticCantor.lean:169:50: warning: try 'simp' instead of 'simpa'\n\nNote: This linter can be disabled with `set_option linter.unnecessarySimpa false`\n"
+        },
+        {
+          "label": "audit",
+          "command": [
+            "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+            "/tmp/zfc-code254-maintained-check/cantor/arithmetic_cantor_audit.lean"
+          ],
+          "cwd": "/tmp/zfc-code254-maintained-check/cantor",
+          "exit_code": 0,
+          "seconds": 1.873743,
+          "log": "/tmp/zfc-code254-maintained-check/cantor/audit.log",
+          "output": "'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.triangle_double' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.triangle_succ' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.triangle_mono' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.le_triangle' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.cantor_double' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.cantor_graph' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.components_le' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.diagonal_lt' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.cantor_injective' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.diagonal_exists' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.cantor_surjective' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.projections_spec' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.cantor_projections' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.first_cantor' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.second_cantor' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.cantor_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.first_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.second_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.triangle_nat' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.cantor_nat' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.projections_nat' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.first_nat' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.second_nat' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.codeP_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.codeFirst_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.codeSecond_defined' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticCantor.codeP_graph' depends on axioms: [propext, Classical.choice, Quot.sound]\n"
+        }
+      ],
+      "compiler": {
+        "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+        "toolchain": "leanprover/lean4:v4.32.0"
+      },
+      "core_evidence": {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/results/code-tuple-order-integration-verification.json",
+        "sha256": "f4d0e04472adc5c7896ee51e3fa74fd9a476b990aadd1684fdc6ae2c65c21217",
+        "status": "PASS163-unit source-verified integration",
+        "units": 163,
+        "cache": "/tmp/zfc-integration163-l3k66yqn/cache",
+        "cache_relocated": false,
+        "scope": "Only the actual Code254 transitive project-source closure is reused. No fresh core/dependency rebuild is asserted."
+      },
+      "reused_core": [
+        {
+          "module": "FirstOrder.Fol",
+          "path": "Logic/FirstOrder/Lean/FirstOrder/Fol.lean",
+          "source_sha256": "84add1e8222f9f655e1dc252a826914623238b8e3e8169d18ed39f740b2bbacd",
+          "olean": "/tmp/zfc-native91-integration-yduvdh8f/FirstOrder/Fol.olean",
+          "olean_sha256": "cacf1698575083566f959bedba34fefe15997d0d835de989f38d463433376fe4",
+          "prior_validation": "source identity with161-unit checked closure",
+          "prior_evidence": "dirty-reset-integration-verification.json"
+        },
+        {
+          "module": "BusyBeaver.ZFC.Kalmar",
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Kalmar.lean",
+          "source_sha256": "7e1bd77e6e26943476e941e68caaae06a556b29f1c508d7a63f5aaa9d8397143",
+          "olean": "/tmp/zfc-native91-integration-yduvdh8f/BusyBeaver/ZFC/Kalmar.olean",
+          "olean_sha256": "277a27cc6131e906b88aa0aac5e604877f8aa4f8466ca49652072167e2d4b364",
+          "prior_validation": "source identity with161-unit checked closure",
+          "prior_evidence": "dirty-reset-integration-verification.json"
+        },
+        {
+          "module": "BusyBeaver.ZFC.TarskiCalculus",
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiCalculus.lean",
+          "source_sha256": "5c7079151e9deb06014deec4f03c3990cff96556d347b501d15106d895447e06",
+          "olean": "/tmp/zfc-native91-integration-yduvdh8f/BusyBeaver/ZFC/TarskiCalculus.olean",
+          "olean_sha256": "4337484639134ff2f884823522973cf95bfb26ddb8a7866ba3ebeba35f553b9b",
+          "prior_validation": "source identity with161-unit checked closure",
+          "prior_evidence": "dirty-reset-integration-verification.json"
+        },
+        {
+          "module": "BusyBeaver.ZFC.TarskiDerived",
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiDerived.lean",
+          "source_sha256": "2a7edf1180e4553cb1990d45c1fe755aa74c3e86f5e9862181118470c1727178",
+          "olean": "/tmp/zfc-native91-integration-yduvdh8f/BusyBeaver/ZFC/TarskiDerived.olean",
+          "olean_sha256": "63fde11f53d33aff7ffae883f719bdd89c6277a1681ab9480337c378547feb18",
+          "prior_validation": "source identity with161-unit checked closure",
+          "prior_evidence": "dirty-reset-integration-verification.json"
+        },
+        {
+          "module": "BusyBeaver.ZFC.TarskiLeibniz",
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiLeibniz.lean",
+          "source_sha256": "45d8bbf29fbd7ee51ee08b4017f549a6e54120dc62728584ed8d8c11153a5df8",
+          "olean": "/tmp/zfc-native91-integration-yduvdh8f/BusyBeaver/ZFC/TarskiLeibniz.olean",
+          "olean_sha256": "1851669b6797dd1769d7b5f7b7e7050376283bb0a8cf8e376bcbfa934a685787",
+          "prior_validation": "source identity with161-unit checked closure",
+          "prior_evidence": "dirty-reset-integration-verification.json"
+        },
+        {
+          "module": "BusyBeaver.ZFC.TarskiClean",
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiClean.lean",
+          "source_sha256": "6d06107dfc84bea7e8c42b484fecf718b41b964d95a26293767a6fc5db83cd36",
+          "olean": "/tmp/zfc-native91-integration-yduvdh8f/BusyBeaver/ZFC/TarskiClean.olean",
+          "olean_sha256": "6a2e227d9d9342d7ce0f2746165c8a617d8a3fed6b1819f5e27264032ed96108",
+          "prior_validation": "source identity with161-unit checked closure",
+          "prior_evidence": "dirty-reset-integration-verification.json"
+        },
+        {
+          "module": "BusyBeaver.ZFC.TarskiComplete",
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiComplete.lean",
+          "source_sha256": "be7b860d750bd176bb332e4d331c4bb67550ef41e98b330df7a5ebb298dbb7ae",
+          "olean": "/tmp/zfc-native91-integration-yduvdh8f/BusyBeaver/ZFC/TarskiComplete.olean",
+          "olean_sha256": "61e26005a642944bdf77066a76ae7d18ade7c2efbbaf6db9dcd907101d635c75",
+          "prior_validation": "source identity with161-unit checked closure",
+          "prior_evidence": "dirty-reset-integration-verification.json"
+        },
+        {
+          "module": "BusyBeaver.ZFC.Lukasiewicz",
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Lukasiewicz.lean",
+          "source_sha256": "5bae5186d702414adc6f1f7006d241a48ef9f24e53de48c90f84394ce3c500d3",
+          "olean": "/tmp/zfc-native91-integration-yduvdh8f/BusyBeaver/ZFC/Lukasiewicz.olean",
+          "olean_sha256": "4e1913275587f652e4a5c412501c9a138465f63be0b779d0e4b9790542032b87",
+          "prior_validation": "source identity with161-unit checked closure",
+          "prior_evidence": "dirty-reset-integration-verification.json"
+        },
+        {
+          "module": "BusyBeaver.ZFC.TarskiFalsity",
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiFalsity.lean",
+          "source_sha256": "22e29d3aabb45646110fa3d7c29c789a221cdb571c5078786a4f19a0ae797215",
+          "olean": "/tmp/zfc-native91-integration-yduvdh8f/BusyBeaver/ZFC/TarskiFalsity.olean",
+          "olean_sha256": "787b1daf1f46b2dc121be9c1ffb783b010f74e8a1fe93f23edd215b9473381c2",
+          "prior_validation": "source identity with161-unit checked closure",
+          "prior_evidence": "dirty-reset-integration-verification.json"
+        },
+        {
+          "module": "BusyBeaver.ZFC.Code254",
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean",
+          "source_sha256": "18311d4a28cba6778a0ba1a1ddee34f5c2dd5044a23958b63f46d0640be4e01e",
+          "olean": "/tmp/zfc-native91-integration-yduvdh8f/BusyBeaver/ZFC/Code254.olean",
+          "olean_sha256": "f030585bad7e2281cddc172dbc3169614a74d30a59cbff9dbd92c8626a9285b3",
+          "prior_validation": "source identity with161-unit checked closure",
+          "prior_evidence": "dirty-reset-integration-verification.json"
+        }
+      ],
+      "dependencies": {
+        "root": "/home/codex/src/Proofs",
+        "Foundation": {
+          "path": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation",
+          "pin": "32e1a0956a8622fad067328ca1959729a7634428",
+          "tracked_clean": true
+        },
+        "Mathlib": {
+          "path": "/home/codex/src/Proofs/.lake/packages/mathlib",
+          "pin": "81a5d257c8e410db227a6665ed08f64fea08e997",
+          "input_revision": "v4.32.0",
+          "tracked_clean": true
+        },
+        "lake_manifest_sha256": "95e215b005fe9aacc1e5490c781d57e3044d2da5ca452495cfcd0e4eff908665",
+        "discovery": "read-only lake-manifest.json and existing .lake build directories; no Lake process",
+        "providers": {
+          "Foundation.FirstOrder.Arithmetic.IOpen.Basic": {
+            "path": "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Arithmetic/IOpen/Basic.olean",
+            "sha256": "b43eb2f8d8a2ef18004125594adafbff02b52f1b6ef62b9b836015bdce2351ad"
+          },
+          "Mathlib.Tactic.Ring": {
+            "path": "/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Tactic/Ring.olean",
+            "sha256": "cc12dfa66db7ef6ae4cd2d7a4e035ddffaca827168243f728812776b77836eb4"
+          }
+        },
+        "cached_objects_reused": true,
+        "dependency_rebuild": false,
+        "cache_provenance": "Existing built checkout is supplied by the caller; the checker records object identities but does not rebuild or independently attest the whole dependency cache."
+      },
+      "source": {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticCantor.lean",
+        "sha256": "aadfdeb41e75c1652b555ed996fea5d15d7f1b9f65c7c553823a99773ee24c84",
+        "snapshot": "/tmp/zfc-code254-maintained-check/cantor/sources/BusyBeaver/ZFC/ArithmeticCantor.lean"
+      },
+      "audit_source": {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/arithmetic_cantor_audit.lean",
+        "sha256": "1c6927ed924d1075fb248a984825f0a65fec53fb43ee2c19d7c3bb795579a2a2",
+        "snapshot": "/tmp/zfc-code254-maintained-check/cantor/arithmetic_cantor_audit.lean",
+        "callers": 20
+      },
+      "LEAN_PATH": "/tmp/zfc-code254-maintained-check/cantor/cache:/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/plausible/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/importGraph/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/aesop/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/Qq/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/batteries/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/build/lib/lean",
+      "axiom_reports": [
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.triangle_double",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.triangle_succ",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.triangle_mono",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.le_triangle",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.cantor_double",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.cantor_graph",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.components_le",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.diagonal_lt",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.cantor_injective",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.diagonal_exists",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.cantor_surjective",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.projections_spec",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.cantor_projections",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.first_cantor",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.second_cantor",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.cantor_defined",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.first_defined",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.second_defined",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.triangle_nat",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.cantor_nat",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.projections_nat",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.first_nat",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.second_nat",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.codeP_defined",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.codeFirst_defined",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.codeSecond_defined",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCantor.codeP_graph",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ],
+      "fresh_source_and_audit_only": true,
+      "source_unchanged_after_check": true,
+      "reused_core_unchanged_after_check": true,
+      "named_axiom_probes": 27,
+      "callers": 20,
+      "only_standard_axioms": true,
+      "new_arithmetic_assumptions": false,
+      "module_object": {
+        "path": "/tmp/zfc-code254-maintained-check/cantor/cache/BusyBeaver/ZFC/ArithmeticCantor.olean",
+        "sha256": "fe6300732a7ef928ebbd6db632d67c92138bf6f9f5850715225df46e97deb502"
+      },
+      "linter_warnings": 5
+    }
+  },
+  "LEAN_PATH": "/tmp/zfc-code254-maintained-check/cantor/cache:/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/plausible/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/importGraph/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/aesop/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/Qq/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/batteries/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/build/lib/lean",
+  "source": {
+    "path": "/tmp/zfc-code-arithmetic/ArithmeticCode254.lean",
+    "sha256": "2edf178b0061838b13299f1332d65c4fc3194207cbd0e761f129a7bcc36bdff0",
+    "snapshot": "/tmp/zfc-code254-maintained-check/sources/BusyBeaver/ZFC/ArithmeticCode254.lean"
+  },
+  "audit_source": {
+    "path": "/tmp/zfc-code-arithmetic/arithmetic_code254_audit.lean",
+    "sha256": "2c0643a3bf6545e7dbd2ab2ec54a5f25a5e2edbc2cffe25eff47b0f6e6a10c44",
+    "snapshot": "/tmp/zfc-code254-maintained-check/arithmetic_code254_audit.lean",
+    "callers": 27
+  },
+  "axiom_reports": [
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.cantor_polybound",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.cantor_bounded",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.pair_le_tagged",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.tagged_components",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.tagged_bounded",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.tagged_defined",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.wim_defined",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.wel_defined",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.wal_defined",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.weq_defined",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.tagged_nat",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.wim_nat",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.wel_nat",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.wal_nat",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.weq_nat",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.rho1_defined",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.rho1_nat",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.rho1Value_defined",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.rho1Value_nat",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.rho1_input_bounds",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.row3_defined",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.row3_nat",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.codeWim_defined",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.codeWel_defined",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.codeWal_defined",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.codeWeq_defined",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.codeRho1_defined",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.codeRho1Value_defined",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticCode254.codeRow3_defined",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "named_axiom_probes": 29,
+  "callers": 27,
+  "total_named_axiom_probes": 56,
+  "total_callers": 47,
+  "only_standard_axioms": true,
+  "fresh_modules": [
+    "BusyBeaver.ZFC.ArithmeticCantor",
+    "BusyBeaver.ZFC.ArithmeticCode254"
+  ],
+  "fresh_stored_audits": 2,
+  "module_object": {
+    "path": "/tmp/zfc-code254-maintained-check/cantor/cache/BusyBeaver/ZFC/ArithmeticCode254.olean",
+    "sha256": "031d950a5fd57b50a607db6073f25d9c215b96d3f18b19c2e136de751bd190b6"
+  },
+  "new_arithmetic_assumptions": false,
+  "all_source_and_reused_object_identities_unchanged_after_check": true,
+  "linter_warnings": 0,
+  "publication": {
+    "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticCode254.lean",
+    "audit": "Computability/BusyBeaver/Research/ZFC/arithmetic_code254_audit.lean",
+    "runner": "Computability/BusyBeaver/Research/ZFC/check_arithmetic_code254.py",
+    "exact_checked_bytes_preserved": true,
+    "verification_scope": "Fresh standalone runner on these exact candidate bytes with --repo/--source/--audit overrides before publication; no repeated core rebuild."
+  }
+}
