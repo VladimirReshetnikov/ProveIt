@@ -1124,15 +1124,22 @@ The [decoded truth and MP proof constructors](../../../../Logic/Interpretability
 now supply explicit internal proof codes with fixed total Σ1 graphs. MP handles
 the zero implication alias by returning the antecedent proof. Nine axiom
 reports and fourteen callers pass with zero warnings, including actual ZF/ZFC
-clients. GEN, the source axiom rows and the full PA endpoint remain open.
+clients. The source axiom rows and the full PA endpoint remain open.
 
 The [internal free-renaming and binder alignment](../../../../Logic/Interpretability/ZFCinPA/model_coded_free_renaming.md)
 checkpoints supply fixed total syntax operations, their SHIFT/substitution
 laws, actual ZF/ZFC axiom invariance and the exact named-binder opening law.
 All labels and counters are internal. Together the three modules pass
 twenty-three axiom reports and twenty-four callers with zero warnings.
-Transporting arbitrary internal derivations through this renaming remains
-the next obligation for GEN.
+These syntax laws support the internal derivation transport below.
+
+The [internal proof-renaming and named-GEN theorem](../../../../Logic/Interpretability/ZFCinPA/model_coded_proof_renaming.md)
+now transports arbitrary internal derivations of actual ZF and ZFC, including
+nonstandard formula codes. A fixed-budget Σ1 induction bounds both changing
+renaming counters and handles all ten derivation rules. Named generalization
+has no remaining freshness or axiom-closure premise. Two modules pass seventeen
+axiom reports and eighteen callers with zero warnings; the C254 axiom rows and
+accepted-history translation remain separate.
 
 The [decoded-falsity endpoint](../../../../Logic/Interpretability/ZFCinPA/model_coded_decoder_falsity254.md)
 now proves internal ZF-provability of `decode 1` exactly when ZF proves
@@ -1163,5 +1170,14 @@ primary values and an internal zero-spare count. It retains the explicit final
 padding cell, checks branches on the original values, and reuses all four
 checked box endpoints. Positive decrement alone appends a zero spare. Seventeen
 axiom reports and twenty callers pass with standard axioms; four source
-unused-section-variable style warnings are preserved. Whole symbolic-checker
-soundness and full internal runtime transport remain separate.
+unused-section-variable style warnings are preserved. Full internal runtime
+transport remains separate.
+
+The [arithmetic soundness of the actual symbolic checker](arithmetic_symbolic_execution_perm252.md)
+now connects the existing `sstep`, `exec` and `verifies` decisions to complete
+numeric machine runs in every IΣ1 model. A checked erasure equality retains
+the exact native targets, guards and progress flags; initially false progress
+yields a positive internal clock, including the real halt write and move.
+Twenty-five axiom reports and twenty callers pass with zero warnings. Syntax
+and fuel remain external finite data; the definable dispatcher relation and
+full internal runtime/PA endpoint remain separate.

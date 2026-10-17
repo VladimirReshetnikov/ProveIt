@@ -1,0 +1,9 @@
+Final SymbolicExecution review is clean. The previously reviewed primitive semantics and complete final erasure delta, full 25-probe/20-caller audit and both guard versions were read. Run5 passed using only propext, Classical.choice and Quot.sound, with zero source/audit warnings (6.193/2.560 s). Four earlier source failures remain nonpasses.
+
+Exact equality to actual SymbolicPerm252.sstep is now theorem-proved. Equality transport and Option.map-specific recursor lemmas safely move erasure through dependent case analysis; finite syntax/guard cases then compare the actual target/moved data. There is no assumed checker equivalence, boxed oracle or 252-state census. The old source-first packet is preserved separately.
+
+The executor composes arbitrary internal clocks and complete numeric configurations over external finite syntax/fuel. Original physical guards and single-effect boxes remain exact. Only literal transitions mark progress, including the final write/move on halt. Initial moved=false forces positive time, and accepted target normalization retains both full tape halves/exterior semantics.
+
+The final identity binding checked 675 comparisons over 124 paths, including all 118 inputs, exact 49-project closure, five external boundaries, actual first toolchain/Omega providers and fresh object. Portable default source-hash pin is the only guard delta. Maintained source/audit copies match; the maintained preflight is unbuilt. Three existing rejection controls were read, not rerun.
+
+No nonstandard syntax/fuel graph, whole runtime/dispatch/first-exit theorem, absolute-head result, general native spare suffix, Nat boxBits roundtrip or PA endpoint is claimed. No reviewer build, proof replay or source edit occurred. Exact evidence and preserved attempt history are in child-final-review.json.
