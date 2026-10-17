@@ -1210,6 +1210,16 @@ finite generalization without a target axiom or GEN premise. Ten axiom reports
 and twelve callers pass without warnings. The outer conjunction and the
 container and collection clauses remain open.
 
+The [finite circuit decoder](../../../../Logic/Interpretability/ZFCinPA/model-coded-decoder-circuits254.md)
+now handles every fixed constructor circuit at arbitrary internal inputs in
+actual ZF and ZFC. It transports relative falsity through named binders while
+keeping the original numeric variable labels. The [logical normalization
+helpers](../../../../Logic/Interpretability/ZFCinPA/model-coded-named-logical-normalization254.md)
+identify its conjunction and existential encodings with the native logical
+operations. Together their focused checks pass fourteen axiom reports and
+twenty callers with zero warnings. The C/G/bundle decoder results are
+equivalences; proving C and G remains open.
+
 
 The [arithmetic symbolic-tape interpretation](arithmetic_symbolic_tape_perm252.md)
 reuses actual finite segment/configuration syntax and normalization with an
