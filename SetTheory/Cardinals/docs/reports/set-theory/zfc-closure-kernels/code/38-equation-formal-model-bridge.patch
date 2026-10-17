@@ -1,0 +1,290 @@
+diff --git a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ModelBridge254.lean b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ModelBridge254.lean
+new file mode 100644
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ModelBridge254.lean
+@@ -0,0 +1,213 @@
++import BusyBeaver.ZFC.Code254Models
++import BusyBeaver.ZFC.DecodeFresh254
++import BusyBeaver.ZFC.NamedForm254
++
++/-!
++Same-structure comparison of all decoded and all encodable original bundles.
++
++The key input is `Code254GIC.collection_of_matrix`, which supplies collection
++for arbitrary actual `Form` matrices, including native equality. The weaker
++exported equality-free `ModelsCPGIC` interface is deliberately not used as a
++substitute. All original bundle gates, the case a=b, and truth code zero are
++retained. No compiler, arithmetic formalization, or ZFC endpoint is claimed.
++-/
++
++namespace SetTheory.BusyBeaver.ZFC.ModelBridge254
++
++open Tarski (NF)
++open Code254Containers ProfileCollection Code254Models
++
++universe u
++variable {V : Type u}
++
++theorem decoded_bundle_named (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
++    (a b c : Nat) (env : Nat → V) :
++    Tarski.Sat mem env (Code254.dec (Code254.bundle a b c)) ↔
++      Tarski.Sat mem env (namedBundle a b c (Code254.dec c)) := by
++  simp only [Code254.bundle, Code254.bundleC, Code254.bundleG,
++    namedBundle, namedC, namedG, Code254.sat_wa mem hirr,
++    Code254.sat_wex mem hirr, Code254.sat_wim, Code254.sat_wal,
++    Code254.sat_wel, Code254.sat_weq, sat_conj mem hirr,
++    sat_ex mem hirr, Tarski.Sat]
++
++/-- Containers validate C even when the two nongated labels coincide. -/
++theorem namedC_of_containers (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
++    (hC : Containers mem) (a b c : Nat) (hca : c ≠ a) (hcb : c ≠ b)
++    (env : Nat → V) : Tarski.Sat mem env (namedC a b c) := by
++  obtain ⟨v, hv, hTrans, hPower⟩ := hC (env c)
++  by_cases hab : a = b
++  · subst a
++    simp only [namedC, sat_ex mem hirr, sat_conj mem hirr, Tarski.Sat,
++      Tarski.update, hcb, Ne.symm hcb, ↓reduceIte]
++    refine ⟨v, ?_, hv⟩
++    intro x hx
++    exact (hirr x hx).elim
++  · simp only [namedC, sat_ex mem hirr, sat_conj mem hirr, Tarski.Sat,
++      Tarski.update, hcb, hab, Ne.symm hca, Ne.symm hcb,
++      Ne.symm hab, ↓reduceIte]
++    refine ⟨v, ?_, hv⟩
++    intro x hx
++    constructor
++    · obtain ⟨p, hp, hBound⟩ := hPower x hx
++      exact ⟨p, hBound, hp⟩
++    · exact hTrans x hx
++
++/-- Literal G needs collection for its actual decoded native-equality matrix. -/
++theorem namedG_of_collection (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
++    (a b c : Nat) (hca : c ≠ a) (hcb : c ≠ b) (env : Nat → V)
++    (hG : CollectionInstance mem (fun x y =>
++      Tarski.Sat mem (Tarski.update (Tarski.update env a x) b y) (Code254.dec c))) :
++    Tarski.Sat mem env (namedG a b c (Code254.dec c)) := by
++  obtain ⟨s, hSupport, hCover⟩ := hG (env b)
++  apply (sat_ex mem hirr env c _).mpr
++  refine ⟨s, (sat_conj mem hirr _ _ _).mpr ⟨?_, ?_⟩⟩
++  · intro x hx
++    by_cases hab : a = b
++    · subst a
++      have hxx : mem x x := by simpa [Tarski.Sat, Tarski.update] using hx
++      exact (hirr x hxx).elim
++    · intro y hxy
++      have hx' : mem x (env b) := by
++        simpa [Tarski.Sat, Tarski.update, Ne.symm hab, Ne.symm hcb] using hx
++      have hxy' := (DecodeFresh254.sat_context_update_own_code mem c a b env s x y).mp hxy
++      obtain ⟨z, hz, hxz⟩ := hCover x hx' ⟨y, hxy'⟩
++      apply (sat_ex mem hirr _ b _).mpr
++      refine ⟨z, (sat_conj mem hirr _ _ _).mpr ⟨?_, ?_⟩⟩
++      · apply (DecodeFresh254.sat_dec_ext mem c _ _ ?_).mpr hxz
++        intro i hi
++        have hic : i ≠ c := by omega
++        by_cases hib : i = b <;> simp [Tarski.update, hic, hib]
++      · simpa [Tarski.Sat, Tarski.update, hca, hcb] using hz
++  · intro y hy
++    have hy' : mem y s := by simpa [Tarski.Sat, Tarski.update, hcb] using hy
++    obtain ⟨x, hxy⟩ := hSupport y hy'
++    apply (sat_ex mem hirr _ a _).mpr
++    by_cases hab : a = b
++    · subst a
++      refine ⟨y, ?_⟩
++      apply (DecodeFresh254.sat_dec_ext mem c _ _ ?_).mpr hxy
++      intro i hi
++      have hic : i ≠ c := by omega
++      by_cases hib : i = b <;> simp [Tarski.update, hic, hib]
++    · refine ⟨x, ?_⟩
++      apply (DecodeFresh254.sat_dec_ext mem c _ _ ?_).mpr hxy
++      intro i hi
++      have hic : i ≠ c := by omega
++      by_cases hia : i = a
++      · subst i
++        simp [Tarski.update, hab]
++      · simp [Tarski.update, hic, hia]
++
++/-- The original encodable bundles supply the arbitrary decoded matrix,
++including native equality and nested code-zero subformulas. -/
++theorem decoded_collection_of_encodable (mem : V → V → Prop)
++    (hirr : ∀ x, ¬ mem x x) (h : ModelsEncodable mem)
++    (a b c : Nat) (env : Nat → V) :
++    CollectionInstance mem (fun x y =>
++      Tarski.Sat mem (Tarski.update (Tarski.update env a x) b y) (Code254.dec c)) := by
++  exact ProfileModel.collectionInstance_congr mem _ _
++    (NamedForm254.sat_matrix mem (Code254.dec c) a b env)
++    (Code254GIC.collection_of_matrix mem hirr env h
++      (NamedForm254.matrix (Code254.dec c) a b) env)
++
++/-- The reverse numerical-model direction on the same raw structure.
++No inhabitant is assumed globally: each model obligation provides a valuation. -/
++theorem decoded_of_encodable (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
++    (h : ModelsEncodable mem) : ModelsDecoded mem := by
++  intro a b c hca hcb env
++  apply (decoded_bundle_named mem hirr a b c env).mpr
++  apply (sat_conj mem hirr _ _ _).mpr
++  constructor
++  · apply (sat_conj mem hirr _ _ _).mpr
++    constructor
++    · exact namedC_of_containers mem hirr
++        (containers_of_encBundle mem hirr env h) a b c hca hcb env
++    · exact namedG_of_collection mem hirr a b c hca hcb env
++        (decoded_collection_of_encodable mem hirr h a b c env)
++  · apply (sat_conj mem hirr _ _ _).mpr
++    simp only [Tarski.Sat, Tarski.update, Ne.symm hca, Ne.symm hcb, ↓reduceIte]
++    exact ⟨fun h _ => h, fun h _ => h⟩
++
++theorem modelsDecoded_iff_modelsEncodable (mem : V → V → Prop)
++    (hirr : ∀ x, ¬ mem x x) : ModelsDecoded mem ↔ ModelsEncodable mem :=
++  ⟨encodable_of_decoded mem hirr, decoded_of_encodable mem hirr⟩
++
++/-- This is the native-equality variant, distinct from `ModelsCPGIC`.
++Its matrix schema is over every actual first-order formula and valuation. -/
++def ModelsNativeCPGIC (mem : V → V → Prop) : Prop :=
++  (∀ env, SetTheory.Sat mem env ProfileModel.containerForm) ∧
++    ∀ phi env, SetTheory.Sat mem env (ProfileSyntax.gicForm phi)
++
++theorem nativeCPGIC_of_encodable (mem : V → V → Prop)
++    (hirr : ∀ x, ¬ mem x x) (h : ModelsEncodable mem) :
++    ModelsNativeCPGIC mem := by
++  constructor
++  · intro env
++    exact (ProfileModel.sat_containerForm mem env).mpr
++      (containers_of_encBundle mem hirr env h)
++  · intro phi env
++    exact (ProfileSyntax.sat_gicForm mem phi env).mpr
++      (Code254GIC.collection_of_matrix mem hirr env h phi env)
++
++theorem decoded_of_nativeCPGIC (mem : V → V → Prop)
++    (hirr : ∀ x, ¬ mem x x) (h : ModelsNativeCPGIC mem) :
++    ModelsDecoded mem := by
++  intro a b c hca hcb env
++  apply (decoded_bundle_named mem hirr a b c env).mpr
++  apply (sat_conj mem hirr _ _ _).mpr
++  constructor
++  · apply (sat_conj mem hirr _ _ _).mpr
++    constructor
++    · exact namedC_of_containers mem hirr
++        ((ProfileModel.sat_containerForm mem env).mp (h.1 env)) a b c hca hcb env
++    · apply namedG_of_collection mem hirr a b c hca hcb env
++      exact ProfileModel.collectionInstance_congr mem _ _
++        (NamedForm254.sat_matrix mem (Code254.dec c) a b env)
++        ((ProfileSyntax.sat_gicForm mem (NamedForm254.matrix (Code254.dec c) a b) env).mp
++          (h.2 (NamedForm254.matrix (Code254.dec c) a b) env))
++  · apply (sat_conj mem hirr _ _ _).mpr
++    simp only [Tarski.Sat, Tarski.update, Ne.symm hca, Ne.symm hcb, ↓reduceIte]
++    exact ⟨fun h _ => h, fun h _ => h⟩
++
++theorem modelsDecoded_iff_modelsNativeCPGIC (mem : V → V → Prop)
++    (hirr : ∀ x, ¬ mem x x) : ModelsDecoded mem ↔ ModelsNativeCPGIC mem :=
++  ⟨fun h => nativeCPGIC_of_encodable mem hirr (encodable_of_decoded mem hirr h),
++    decoded_of_nativeCPGIC mem hirr⟩
++
++/-- Soundness and completeness now refer to exactly the same model theory.
++The explicit valuation excludes the previously identified empty-model loophole. -/
++theorem refutation_iff_no_decoded_model :
++    Code254.C254 1 ↔
++      ∀ (D : Type) (mem : D → D → Prop), (∀ x, ¬ mem x x) →
++        ModelsDecoded mem → (Nat → D) → False := by
++  constructor
++  · intro h D mem hirr hD valuation
++    exact no_refutation_of_decoded mem hirr hD valuation h
++  · intro h
++    exact Code254.c254_complete (fun D mem hirr hE valuation =>
++      h D mem hirr (decoded_of_encodable mem hirr hE) valuation)
++
++theorem refutation_iff_no_native_model :
++    Code254.C254 1 ↔
++      ∀ (D : Type) (mem : D → D → Prop), (∀ x, ¬ mem x x) →
++        ModelsNativeCPGIC mem → (Nat → D) → False := by
++  constructor
++  · intro h D mem hirr hN valuation
++    exact refutation_iff_no_decoded_model.mp h D mem hirr
++      (decoded_of_nativeCPGIC mem hirr hN) valuation
++  · intro h
++    apply refutation_iff_no_decoded_model.mpr
++    intro D mem hirr hD valuation
++    exact h D mem hirr ((modelsDecoded_iff_modelsNativeCPGIC mem hirr).mp hD) valuation
++
++end SetTheory.BusyBeaver.ZFC.ModelBridge254
++
++#print axioms SetTheory.BusyBeaver.ZFC.ModelBridge254.decoded_bundle_named
++#print axioms SetTheory.BusyBeaver.ZFC.ModelBridge254.namedC_of_containers
++#print axioms SetTheory.BusyBeaver.ZFC.ModelBridge254.namedG_of_collection
++#print axioms SetTheory.BusyBeaver.ZFC.ModelBridge254.decoded_collection_of_encodable
++#print axioms SetTheory.BusyBeaver.ZFC.ModelBridge254.decoded_of_encodable
++#print axioms SetTheory.BusyBeaver.ZFC.ModelBridge254.modelsDecoded_iff_modelsEncodable
++#print axioms SetTheory.BusyBeaver.ZFC.ModelBridge254.modelsDecoded_iff_modelsNativeCPGIC
++#print axioms SetTheory.BusyBeaver.ZFC.ModelBridge254.refutation_iff_no_decoded_model
++#print axioms SetTheory.BusyBeaver.ZFC.ModelBridge254.refutation_iff_no_native_model
+diff --git a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumModelBridge254.lean b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumModelBridge254.lean
+new file mode 100644
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumModelBridge254.lean
+@@ -0,0 +1,29 @@
++import BusyBeaver.ZFC.ModelBridge254
++import BusyBeaver.ZFC.Enum254
++
++/-!
++The existing abstract six-register enumerator now has the same exact
++native-equality CP/GIC model characterization in both directions.
++This is not an execution theorem for Prog254 or a binary Turing machine.
++-/
++
++namespace SetTheory.BusyBeaver.ZFC.EnumModelBridge254
++
++open Code254Models ModelBridge254
++
++theorem enum_halts_iff_no_decoded_model :
++    Enum254.Halts ↔
++      ∀ (D : Type) (mem : D → D → Prop), (∀ x, ¬ mem x x) →
++        ModelsDecoded mem → (Nat → D) → False := by
++  exact Enum254.enum_halts_iff.trans refutation_iff_no_decoded_model
++
++theorem enum_halts_iff_no_native_model :
++    Enum254.Halts ↔
++      ∀ (D : Type) (mem : D → D → Prop), (∀ x, ¬ mem x x) →
++        ModelsNativeCPGIC mem → (Nat → D) → False := by
++  exact Enum254.enum_halts_iff.trans refutation_iff_no_native_model
++
++end SetTheory.BusyBeaver.ZFC.EnumModelBridge254
++
++#print axioms SetTheory.BusyBeaver.ZFC.EnumModelBridge254.enum_halts_iff_no_decoded_model
++#print axioms SetTheory.BusyBeaver.ZFC.EnumModelBridge254.enum_halts_iff_no_native_model
+diff --git a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ModelBridge254Checks.lean b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ModelBridge254Checks.lean
+new file mode 100644
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ModelBridge254Checks.lean
+@@ -0,0 +1,33 @@
++import BusyBeaver.ZFC.ModelBridge254
++
++namespace SetTheory.BusyBeaver.ZFC.ModelBridge254Checks
++
++open Code254Models ModelBridge254
++
++universe u
++
++-- Keep the enormous recursively paired bundle constants symbolic in callers.
++attribute [local irreducible] Code254.dec Code254.bundle
++
++/-- Truth code zero together with the gate-allowed collision a=b. -/
++theorem zero_equal_labels {V : Type u} (mem : V → V → Prop)
++    (hirr : ∀ x, ¬ mem x x) (h : ModelsEncodable mem) (env : Nat → V) :
++    Tarski.Sat mem env (Code254.dec (Code254.bundle 1 1 0)) :=
++  decoded_of_encodable mem hirr h 1 1 0 (by decide) (by decide) env
++
++/-- Native equality Eq(1,2) has code35. Both original gates are retained. -/
++theorem native_point {V : Type u} (mem : V → V → Prop)
++    (hirr : ∀ x, ¬ mem x x) (h : ModelsEncodable mem) (env : Nat → V) :
++    Tarski.Sat mem env (Code254.dec (Code254.bundle 0 1 35)) :=
++  decoded_of_encodable mem hirr h 0 1 35 (by decide) (by decide) env
++
++/-- The equivalence theorem needs no hidden inhabitant, even for Empty. -/
++theorem empty_equivalence (mem : Empty → Empty → Prop) :
++    ModelsDecoded mem ↔ ModelsEncodable mem :=
++  modelsDecoded_iff_modelsEncodable mem (fun x => Empty.elim x)
++
++end SetTheory.BusyBeaver.ZFC.ModelBridge254Checks
++
++#print axioms SetTheory.BusyBeaver.ZFC.ModelBridge254Checks.zero_equal_labels
++#print axioms SetTheory.BusyBeaver.ZFC.ModelBridge254Checks.native_point
++#print axioms SetTheory.BusyBeaver.ZFC.ModelBridge254Checks.empty_equivalence
