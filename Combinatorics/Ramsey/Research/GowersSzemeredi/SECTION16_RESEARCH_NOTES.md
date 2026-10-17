@@ -10014,10 +10014,29 @@ declaration, structure field or namespace that no module it still sees declares
   only at the region's direct importers. It missed `Proofs16RetiledRecurrence`,
   which uses `Proofs16RecurrenceThreshold` through a longer path; the planner
   caught the gap with an assertion. Seeded from every live module, the 811-line
-  BaseCase region needs `lemma163Alpha_le_gammaInvSq` evacuated from
-  `Proofs16BaseCaseAssembly` and `properUnionClosure_holds` moved. The two largest
+  BaseCase region (`Proofs16BaseCaseSingleGraph` and the three modules below it)
+  needs two declarations of `Proofs16BaseCaseAssembly` moved: the assembly
+  theorem `proper_lemma_16_3_of_unionClosure` and `properMultiplyLinear_empty_base`.
+  (An earlier version of this note named `lemma163Alpha_le_gammaInvSq` and
+  `properUnionClosure_holds`; those belong to the evacuation of
+  `Proofs16BaseCaseAssembly` itself, a different question.) The two largest
   regions (2,369 and 1,433 lines) need 71 and 85 moved declarations, among them
   paper-named results.
+- The BaseCase region left with its two declarations moved to a new side module
+  `Proofs16BaseCaseAssemblySide` (`detach_side.py`). A side module imports its
+  source module and the region, and repeats the source's `open` lines and
+  module-level options (here `set_option maxRecDepth 100000`, which the first
+  generated version missed). Every module that names a moved declaration
+  imports it: here only `Proofs16ExplicitBaseCase`. The real route went from
+  569 modules and 117,466 lines to 565 and 116,570.
+- The other regions that need a few moves save 39 to 217 lines each, and would
+  each add one or two side modules. Some of the moved declarations have no user
+  at all, among them two deliberate dichotomies of Section 18
+  (`quadratic_explicit_cyclic_dichotomy`,
+  `section18_cyclic_dichotomy_holds_of_theorem_18_1`). These regions are left in
+  place. `Proofs16Basic`'s region shows the limit of text-based compensation:
+  its moved declarations are named `….mono`, and `mono` occurs in many modules
+  through dot notation, so the check cannot tell which modules use them.
 - Mostly-unused live modules are the other side of the same picture.
   `Proofs16BaseCaseUnion` has 805 lines, of which the 10 of
   `isMultilinear_const` are used; `Proofs16PolyPieceTwo` has 322, of which 4.

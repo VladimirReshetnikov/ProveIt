@@ -1212,6 +1212,7 @@ import GowersSzemeredi.Proofs05FullPartitionScale
 import GowersSzemeredi.Proofs05ThresholdFreeCorollary58
 import GowersSzemeredi.Proofs06PhiAdditiveFourier
 import GowersSzemeredi.Proofs00ExponentialBounds
+import GowersSzemeredi.Proofs16BaseCaseAssemblySide
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
