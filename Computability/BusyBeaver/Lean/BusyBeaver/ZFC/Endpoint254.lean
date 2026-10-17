@@ -1,5 +1,6 @@
 import BusyBeaver.ZFC.Bisim254
 import BusyBeaver.ZFC.ZFNative
+import BusyBeaver.ZFC.WFTheory
 
 /-!
 The register-program endpoint for the literal decoder tree.
@@ -43,5 +44,16 @@ theorem literal_nonhalting_of_zfc_consistent
     (hCon : ¬ BProv LeanProofs.BoundedZFCConsistency.ZFCax_s [] Form.fBot) :
     ¬ RegisterPath.Halts Prog254.program Prog254.initial :=
   fun h => hCon (zfc_refutation_of_literal_halting h)
+
+/-- **The literal program halts iff ZF is refutable** (Foundation and Power,
+no Choice): L4 with the Codex lane’s `WFTheory.c254_refutation_iff_zf`. -/
+theorem literal_halts_iff_zf_refutation :
+    RegisterPath.Halts Prog254.program Prog254.initial ↔ BProv ZFax_s [] Form.fBot :=
+  Bisim254.literal_halts_iff.trans WFTheory.c254_refutation_iff_zf
+
+/-- **Non-halting of the literal program is Con(ZF).** -/
+theorem literal_nonhalting_iff_zf_consistent :
+    ¬ RegisterPath.Halts Prog254.program Prog254.initial ↔ ¬ BProv ZFax_s [] Form.fBot :=
+  not_congr literal_halts_iff_zf_refutation
 
 end SetTheory.BusyBeaver.ZFC.Endpoint254
