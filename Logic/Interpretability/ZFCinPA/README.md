@@ -280,3 +280,5 @@ finite buffer remains explicit. The focused run6 check passed four probes and
 four callers with zero warnings, reusing 16 matched project providers; all five
 nonpasses and the maintained-default unbuilt preflight remain archived. This
 module supplies no schema callback or arbitrary internal source-proof transport.
+
+[Set congruence refresh](set_congruence_refresh.md) checks the unchanged equality-replacement and binary-congruence proofs for arbitrary internal predicates, including free parameters. Twelve axiom probes and fourteen callers passed with zero warnings. The original driver failure and the separately validated, read-only apostrophe-parser recovery are preserved; the maintained default preparation is explicitly unbuilt.
