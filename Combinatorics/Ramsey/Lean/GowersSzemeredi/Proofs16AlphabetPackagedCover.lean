@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16AlphabetCoverParameters
+import GowersSzemeredi.Proofs16ShortScale
 
 /-! Finite-alphabet witnesses for the all-box line-cover premise. -/
 set_option autoImplicit false

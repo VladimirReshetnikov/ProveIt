@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs18QuadraticDiscrepancy
 import GowersSzemeredi.Proofs18QuantitativeSzemeredi
+import GowersSzemeredi.Proofs03ProgressionCount
 
 /-! An unconditional quadratic density increment. The size exponent and
 density gain are explicit; the sufficiently-large threshold is existential. -/

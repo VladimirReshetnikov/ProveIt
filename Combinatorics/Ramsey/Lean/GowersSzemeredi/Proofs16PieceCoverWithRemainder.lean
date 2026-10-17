@@ -1,5 +1,5 @@
 import GowersSzemeredi.Proofs16Lemma9WithRemainder
-import GowersSzemeredi.Proofs16CubicCapBound
+import GowersSzemeredi.Proofs16CubicAllScaleCover
 
 /-! The cover of one structured piece with every control explicit.
 
@@ -13,7 +13,8 @@ The result is a `MultiplyLinearWith` cover of `φ₁` on `D` at every scale:
   bound `pieceSamples ≈ 24·Qr(ρ/8)/ρ`;
 * the width exponent is the capped `e·a/4` of the line exponent
   `e = Er·Eb / B(⌊Qb⌋)` and the slice exponent `a = Es`. By
-  `piece_cover_exponent_lower` it is at least `e·a/(16 + 4 log(16/z))`,
+  `piece_cover_exponent_lower` (in `Proofs16PieceCoverWithRemainderSide`, outside the
+  final route) it is at least `e·a/(16 + 4 log(16/z))`,
   where `z = ζ/A(⌊Qb⌋)`.
 
 So the piece cover is polynomial whenever the inputs are. Lemma 16.6
@@ -227,20 +228,5 @@ theorem section16_piece_cover_with {k : Nat} (hk : 1 ≤ k)
         (pieceLineExponent Bq Qb Eb Er rho) (pieceSliceExponent Qr Es rho)) hpos
       (section16_piece_large_box_profile hk hA hB hlemma6 ht ht1 hg hg1 hQb hEr hH1 hML
         hselection hidentity hD hrem hslice hranges hPb hEs)
-
-/-- The capped exponent of the piece cover keeps a constant multiple of the
-product of the line and slice exponents. -/
-theorem piece_cover_exponent_lower {A Bq : Nat → Real} {Qb Eb Qr Er : Real → Real}
-    {Es : Nat → Real → Real} {zeta rho : Real}
-    (hz : 0 < pieceWidthScale A Qb zeta rho) (hz1 : pieceWidthScale A Qb zeta rho ≤ 1)
-    (he : 0 < pieceLineExponent Bq Qb Eb Er rho) (he1 : pieceLineExponent Bq Qb Eb Er rho ≤ 1)
-    (ha : 0 < pieceSliceExponent Qr Es rho) (ha1 : pieceSliceExponent Qr Es rho ≤ 1) :
-    pieceLineExponent Bq Qb Eb Er rho * pieceSliceExponent Qr Es rho /
-        (16 + 4 * Real.log (16 / pieceWidthScale A Qb zeta rho)) ≤
-      section16CappedWidthExponent
-        (pieceLineExponent Bq Qb Eb Er rho * pieceSliceExponent Qr Es rho / 4)
-        (section16RoundedPowerThreshold (pieceWidthScale A Qb zeta rho)
-          (pieceLineExponent Bq Qb Eb Er rho) (pieceSliceExponent Qr Es rho)) :=
-  section16_cubic_capped_exponent_lower hz hz1 he he1 ha ha1
 
 end LeanProofs.GowersSzemeredi
