@@ -282,3 +282,6 @@ nonpasses and the maintained-default unbuilt preflight remain archived. This
 module supplies no schema callback or arbitrary internal source-proof transport.
 
 [Set congruence refresh](set_congruence_refresh.md) checks the unchanged equality-replacement and binary-congruence proofs for arbitrary internal predicates, including free parameters. Twelve axiom probes and fourteen callers passed with zero warnings. The original driver failure and the separately validated, read-only apostrophe-parser recovery are preserved; the maintained default preparation is explicitly unbuilt.
+
+
+[Open schema template callbacks](open-schema-templates.md) now provide actual internal ZF proofs of translated Separation and globally total functional Replacement, with finite closure of the ordinary source parameters and arbitrary additional internal predicate parameters retained. The lifted ordinary ZF-axiom callback is also checked. Run3 passed 5 probes/5 callers with standard axioms and one retained source unused-simp warning; both failed attempts and the maintained-default UNBUILT preflight remain separate. This supplies actual schema callbacks, not arbitrary internal source-proof compilation or nonfunctional Collection.
