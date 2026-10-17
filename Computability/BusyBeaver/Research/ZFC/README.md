@@ -1070,3 +1070,18 @@ followed only by an arbitrary internal zero-spare tail. Its exact
 2*value+4*count+7-step endpoint passes five axiom reports and eight callers
 with zero warnings. A nonzero following register and the whole runtime
 comparison require the separate register-file layer.
+
+
+The [internal positive-decrement endpoint](arithmetic_register_decrement_perm252.md)
+handles a fixed finite prefix/suffix of arbitrary internal register values and
+an arbitrary internal zero-spare count. It decreases the marked positive
+target and appends exactly one zero spare, in the stated whole-tape endpoint.
+Ten axiom reports and twelve callers pass with zero warnings; first exit and
+the complete dispatch/runtime invariant remain separate.
+
+The [open-schema proof constructors](../../../../Logic/Interpretability/ZFCinPA/model_coded_open_schema_axioms.md)
+now supply actual ZF and ZFC proofs of open Separation and Replacement bodies
+for arbitrary internal matrices and free labels. Their fixed Σ1 operation
+uses the checked closing and specialization constructions, with no shift-fixedness
+premise. Eleven axiom reports and sixteen callers pass with zero warnings.
+The numeric C254 formula translation and PA consistency comparison remain open.

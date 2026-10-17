@@ -29,7 +29,7 @@ The induction hypothesis applies to the resulting proof of `qqAlls body' m`. Exi
 
 identify its output formula with the required simultaneous opening. All vector-index reasoning uses internal inequalities and zero/successor decomposition. No external finite enumeration of indices is used.
 
-The final theorem `openClosedCode_isProof` composes this operation with the checked BindFree inverse. Thus the actual closed Separation/Replacement axiom codes can be specialized to their open schema bodies without a `K.shift = K` premise. Audit callers include unary Separation in ZF and binary Replacement in ZFC, with arbitrary internal free labels on the matrix. The generic theorem also applies to the other two theory/schema combinations.
+The final theorem `openClosedCode_isProof` composes this operation with the checked BindFree inverse. Thus the actual closed Separation/Replacement axiom codes can be specialized to their open schema bodies without a `K.shift = K` premise. Audit callers include unary Separation in ZF and binary Replacement in ZFC, with arbitrary internal free labels on the matrix. The subsequent [open-schema constructors](model_coded_open_schema_axioms.md) provide named raw and typed proof families for all four theory/schema combinations while preserving each literal proof code.
 
 This checkpoint does not supply a C254/ZFC formula interpretation, translated axiom families for the well-founded/constructible constructions, or the final PA consistency comparison. It does not make a machine-state or runtime claim. The new fixed graphs and all-model correctness are checked, but this module does not separately package their correctness as an actual PA sentence/proof.
 

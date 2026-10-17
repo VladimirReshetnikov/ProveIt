@@ -1,0 +1,187 @@
+{
+  "status": "KERNEL_PASS_PORTABLE_PREFLIGHT_INDEPENDENT_REVIEW_CLEAN",
+  "scope": "All-internal actual ZF/ZFC open Separation/Replacement proof codes; no C254 interpretation.",
+  "files": [
+    {
+      "source": "/tmp/zfc-model-coded-closure/sources/ZFCinPA/ModelCodedOpenSchemaAxioms.lean",
+      "target": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedOpenSchemaAxioms.lean",
+      "sha256": "e51c73b97672a8e8d1c57b6feb0fa73ade787724d52ab0c8bc4b751979241710"
+    },
+    {
+      "source": "/tmp/zfc-model-coded-closure/OpenSchemaAudit.lean",
+      "target": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedOpenSchemaAxiomsAudit.lean",
+      "sha256": "1ed7ac6f3c1024e9b00c1b362327477fa6e8d5ad33d02b61ee486450a1882e42"
+    },
+    {
+      "source": "/tmp/zfc-model-coded-closure/publication/check_model_coded_open_schema_axioms.py",
+      "target": "Logic/Interpretability/ZFCinPA/check_model_coded_open_schema_axioms.py",
+      "sha256": "949a0ef6ff30798d367d1ffa191d30a5652b3209d3fe5149c452af22b785afca"
+    },
+    {
+      "source": "/tmp/zfc-model-coded-closure/publication/model_coded_open_schema_axioms.md",
+      "target": "Logic/Interpretability/ZFCinPA/model_coded_open_schema_axioms.md",
+      "sha256": "22990dc11d570d87ca836b3d11edb8bbe857a8045ba7901f5d718bb1561118f3"
+    },
+    {
+      "source": "/tmp/zfc-model-coded-closure/open-schema-run4/verification.json",
+      "target": "Logic/Interpretability/ZFCinPA/results/model-coded-open-schema-axioms-verification.json",
+      "sha256": "fe5abdb0a6be81a729b6b66aba2e3dd061780debe7ab9a7ea3c7cf72b4885002"
+    },
+    {
+      "source": "/tmp/zfc-model-coded-closure/publication/open-schema-guard-validation.json",
+      "target": "Logic/Interpretability/ZFCinPA/results/model-coded-open-schema-axioms-guard-validation.json",
+      "sha256": "e4b3b30c2b5f5f74666b4eda1e544e2964ff2d3bee0f8894bd51da1e07874266"
+    }
+  ],
+  "history": [
+    {
+      "attempt": "open-schema-run1",
+      "status": "FAIL",
+      "record": {
+        "path": "/tmp/zfc-model-coded-closure/open-schema-run1/verification.json",
+        "sha256": "3d07ad8ae31405a8a9b530ddf562446bac7ab80045b1604fe82d0e99a372607f"
+      },
+      "source": {
+        "path": "/tmp/zfc-model-coded-closure/sources/ZFCinPA/ModelCodedOpenSchemaAxioms.lean",
+        "sha256": "35c74cbba54580a31ed78a598daf183a06ec021b854b594c3d075bbae34679f3",
+        "snapshot": "/tmp/zfc-model-coded-closure/open-schema-run1/sources/ZFCinPA/ModelCodedOpenSchemaAxioms.lean"
+      },
+      "audit": {
+        "path": "/tmp/zfc-model-coded-closure/OpenSchemaAudit.lean",
+        "sha256": "243a1982eb1fc83eada3ad469dde858347fc96fe529913f45a53da1e0683f68f",
+        "snapshot": "/tmp/zfc-model-coded-closure/open-schema-run1/sources/Audit.lean"
+      },
+      "commands": [
+        {
+          "label": "source",
+          "seconds": 4.096313725225627,
+          "exit_code": 1,
+          "output": "/tmp/zfc-model-coded-closure/open-schema-run1/sources/ZFCinPA/ModelCodedOpenSchemaAxioms.lean:43:19: warning: Possibly looping simp theorem: `axiomCode.eq_1`\n\nNote: Possibly caused by: `insert_empty_eq` and `singleton_eq_insert`\n\nHint: You can disable a simp theorem from the default simp set by passing `- theoremName` to `simp`.\n/tmp/zfc-model-coded-closure/open-schema-run1/sources/ZFCinPA/ModelCodedOpenSchemaAxioms.lean:43:29: warning: Possibly looping simp theorem: `singleton_eq_insert`\n\nNote: Possibly caused by: `insert_empty_eq`\n\nHint: You can disable a simp theorem from the default simp set by passing `- theoremName` to `simp`.\n/tmp/zfc-model-coded-closure/open-schema-run1/sources/ZFCinPA/ModelCodedOpenSchemaAxioms.lean:43:13: error: Tactic `simp` failed with a nested error:\nmaximum recursion depth has been reached\nuse `set_option maxRecDepth <num>` to increase limit\nuse `set_option diagnostics true` to get diagnostic information\n/tmp/zfc-model-coded-closure/open-schema-run1/sources/ZFCinPA/ModelCodedOpenSchemaAxioms.lean:48:9: error: Tactic `simp` failed with a nested error:\nmaximum recursion depth has been reached\nuse `set_option maxRecDepth <num>` to increase limit\nuse `set_option diagnostics true` to get diagnostic information\n/tmp/zfc-model-coded-closure/open-schema-run1/sources/ZFCinPA/ModelCodedOpenSchemaAxioms.lean:55:2: error: Type mismatch: After simplification, term\n  closedSeparation_mem_zf K\n has type\n  @Membership.mem V (Set V) Set.instMembership (Theory.\u0394\u2081Class \ud835\udded\ud835\uddd9) (closedSeparation K).val\nbut is expected to have type\n  @Membership.mem V (Set V) Set.instMembership (Theory.\u0394\u2081Class \ud835\udded\ud835\uddd9) (closeFormulaCode \u2112\u209b\u2091\u209c (sepBodyVal K.val))\n/tmp/zfc-model-coded-closure/open-schema-run1/sources/ZFCinPA/ModelCodedOpenSchemaAxioms.lean:60:2: error: Type mismatch: After simplification, term\n  closedReplacement_mem_zf K\n has type\n  @Membership.mem V (Set V) Set.instMembership (Theory.\u0394\u2081Class \ud835\udded\ud835\uddd9) (closedReplacement K).val\nbut is expected to have type\n  @Membership.mem V (Set V) Set.instMembership (Theory.\u0394\u2081Class \ud835\udded\ud835\uddd9) (closeFormulaCode \u2112\u209b\u2091\u209c (repBodyVal K.val))\n/tmp/zfc-model-coded-closure/open-schema-run1/sources/ZFCinPA/ModelCodedOpenSchemaAxioms.lean:65:2: error: Type mismatch: After simplification, term\n  closedSeparation_mem_zfc K\n has type\n  @Membership.mem V (Set V) Set.instMembership (Theory.\u0394\u2081Class \ud835\udded\ud835\uddd9\ud835\uddd6) (closedSeparation K).val\nbut is expected to have type\n  @Membership.mem V (Set V) Set.instMembership (Theory.\u0394\u2081Class \ud835\udded\ud835\uddd9\ud835\uddd6) (closeFormulaCode \u2112\u209b\u2091\u209c (sepBodyVal K.val))\n/tmp/zfc-model-coded-closure/open-schema-run1/sources/ZFCinPA/ModelCodedOpenSchemaAxioms.lean:70:2: error: Type mismatch: After simplification, term\n  closedReplacement_mem_zfc K\n has type\n  @Membership.mem V (Set V) Set.instMembership (Theory.\u0394\u2081Class \ud835\udded\ud835\uddd9\ud835\uddd6) (closedReplacement K).val\nbut is expected to have type\n  @Membership.mem V (Set V) Set.instMembership (Theory.\u0394\u2081Class \ud835\udded\ud835\uddd9\ud835\uddd6) (closeFormulaCode \u2112\u209b\u2091\u209c (repBodyVal K.val))\n"
+        }
+      ]
+    },
+    {
+      "attempt": "open-schema-run2",
+      "status": "FAIL",
+      "record": {
+        "path": "/tmp/zfc-model-coded-closure/open-schema-run2/verification.json",
+        "sha256": "ebfa0afacdc135744750ef92ff0e572bcefcb50219908e28d0e56ad310147a55"
+      },
+      "source": {
+        "path": "/tmp/zfc-model-coded-closure/sources/ZFCinPA/ModelCodedOpenSchemaAxioms.lean",
+        "sha256": "7bdb8b27b64bbef2d5349e0de87f9b6317213566d81e96e7f185deca3774fec1",
+        "snapshot": "/tmp/zfc-model-coded-closure/open-schema-run2/sources/ZFCinPA/ModelCodedOpenSchemaAxioms.lean"
+      },
+      "audit": {
+        "path": "/tmp/zfc-model-coded-closure/OpenSchemaAudit.lean",
+        "sha256": "243a1982eb1fc83eada3ad469dde858347fc96fe529913f45a53da1e0683f68f",
+        "snapshot": "/tmp/zfc-model-coded-closure/open-schema-run2/sources/Audit.lean"
+      },
+      "commands": [
+        {
+          "label": "source",
+          "seconds": 3.4289296846836805,
+          "exit_code": 1,
+          "output": "/tmp/zfc-model-coded-closure/open-schema-run2/sources/ZFCinPA/ModelCodedOpenSchemaAxioms.lean:48:9: error: Type mismatch: After simplification, term\n  hd\n has type\n  @DerivationOf V inst\u271d\u2074 inst\u271d\u00b3 L inst\u271d\u00b2 inst\u271d\u00b9 T inst\u271d d (p.val \u2afd \u2205)\nbut is expected to have type\n  @DerivationOf V inst\u271d\u2074 inst\u271d\u00b3 L inst\u271d\u00b2 inst\u271d\u00b9 (Theory.internalize V T).theory (inst\u0394\u2081Theory (Theory.internalize V T))\n    d (p.val \u2afd \u2205)\n"
+        }
+      ]
+    },
+    {
+      "attempt": "open-schema-run3",
+      "status": "FAIL",
+      "record": {
+        "path": "/tmp/zfc-model-coded-closure/open-schema-run3/verification.json",
+        "sha256": "280762e91a525bc81b765ad35e62b1cd753ff2865340933f862512e384c06189"
+      },
+      "source": {
+        "path": "/tmp/zfc-model-coded-closure/sources/ZFCinPA/ModelCodedOpenSchemaAxioms.lean",
+        "sha256": "e51c73b97672a8e8d1c57b6feb0fa73ade787724d52ab0c8bc4b751979241710",
+        "snapshot": "/tmp/zfc-model-coded-closure/open-schema-run3/sources/ZFCinPA/ModelCodedOpenSchemaAxioms.lean"
+      },
+      "audit": {
+        "path": "/tmp/zfc-model-coded-closure/OpenSchemaAudit.lean",
+        "sha256": "243a1982eb1fc83eada3ad469dde858347fc96fe529913f45a53da1e0683f68f",
+        "snapshot": "/tmp/zfc-model-coded-closure/open-schema-run3/sources/Audit.lean"
+      },
+      "commands": [
+        {
+          "label": "source",
+          "seconds": 3.352177389897406,
+          "exit_code": 0,
+          "output": ""
+        },
+        {
+          "label": "audit",
+          "seconds": 2.5537387328222394,
+          "exit_code": 1,
+          "output": "'LeanProofs.ZFCinPA.ModelCodedOpenSchemaAxioms.openAxiomProofCode_defined' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedOpenSchemaAxioms.openAxiomProofCode_isProof' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedOpenSchemaAxioms.typedProofOfCode_val' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedOpenSchemaAxioms.zfSeparation_isProof' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedOpenSchemaAxioms.zfReplacement_isProof' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedOpenSchemaAxioms.zfcSeparation_isProof' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedOpenSchemaAxioms.zfcReplacement_isProof' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedOpenSchemaAxioms.zfSeparationProof' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedOpenSchemaAxioms.zfReplacementProof' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedOpenSchemaAxioms.zfcSeparationProof' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedOpenSchemaAxioms.zfcReplacementProof' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n/tmp/zfc-model-coded-closure/open-schema-run3/sources/Audit.lean:33:0: error(lean.dependsOnNoncomputable): failed to compile definition, consider marking it as 'noncomputable' because it depends on 'zfSeparationProof', which is 'noncomputable'\n/tmp/zfc-model-coded-closure/open-schema-run3/sources/Audit.lean:34:0: error(lean.dependsOnNoncomputable): failed to compile definition, consider marking it as 'noncomputable' because it depends on 'zfReplacementProof', which is 'noncomputable'\n/tmp/zfc-model-coded-closure/open-schema-run3/sources/Audit.lean:35:0: error(lean.dependsOnNoncomputable): failed to compile definition, consider marking it as 'noncomputable' because it depends on 'zfcSeparationProof', which is 'noncomputable'\n/tmp/zfc-model-coded-closure/open-schema-run3/sources/Audit.lean:36:0: error(lean.dependsOnNoncomputable): failed to compile definition, consider marking it as 'noncomputable' because it depends on 'zfcReplacementProof', which is 'noncomputable'\n"
+        }
+      ]
+    },
+    {
+      "attempt": "open-schema-run4",
+      "status": "PASS",
+      "record": {
+        "path": "/tmp/zfc-model-coded-closure/open-schema-run4/verification.json",
+        "sha256": "fe5abdb0a6be81a729b6b66aba2e3dd061780debe7ab9a7ea3c7cf72b4885002"
+      },
+      "source": {
+        "path": "/tmp/zfc-model-coded-closure/sources/ZFCinPA/ModelCodedOpenSchemaAxioms.lean",
+        "sha256": "e51c73b97672a8e8d1c57b6feb0fa73ade787724d52ab0c8bc4b751979241710",
+        "snapshot": "/tmp/zfc-model-coded-closure/open-schema-run4/sources/ZFCinPA/ModelCodedOpenSchemaAxioms.lean"
+      },
+      "audit": {
+        "path": "/tmp/zfc-model-coded-closure/OpenSchemaAudit.lean",
+        "sha256": "1ed7ac6f3c1024e9b00c1b362327477fa6e8d5ad33d02b61ee486450a1882e42",
+        "snapshot": "/tmp/zfc-model-coded-closure/open-schema-run4/sources/Audit.lean"
+      },
+      "commands": [
+        {
+          "label": "source",
+          "seconds": 3.3508321093395352,
+          "exit_code": 0,
+          "output": ""
+        },
+        {
+          "label": "audit",
+          "seconds": 2.5631956038996577,
+          "exit_code": 0,
+          "output": "'LeanProofs.ZFCinPA.ModelCodedOpenSchemaAxioms.openAxiomProofCode_defined' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedOpenSchemaAxioms.openAxiomProofCode_isProof' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedOpenSchemaAxioms.typedProofOfCode_val' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedOpenSchemaAxioms.zfSeparation_isProof' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedOpenSchemaAxioms.zfReplacement_isProof' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedOpenSchemaAxioms.zfcSeparation_isProof' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedOpenSchemaAxioms.zfcReplacement_isProof' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedOpenSchemaAxioms.zfSeparationProof' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedOpenSchemaAxioms.zfReplacementProof' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedOpenSchemaAxioms.zfcSeparationProof' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedOpenSchemaAxioms.zfcReplacementProof' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n"
+        }
+      ]
+    }
+  ],
+  "source_diff": {
+    "path": "/tmp/zfc-model-coded-closure/publication/open-schema-first-to-final.diff",
+    "sha256": "bba02a0a4be979678ad69ba8ec1b6e778eff6fa72c11dcf03ec2514308dc4573"
+  },
+  "portable_preflight": {
+    "path": "/tmp/zfc-model-coded-closure/open-schema-portable-prepared/verification.json",
+    "sha256": "1a2704ff27c3614924a4a68d604b5250d7dd5322e21dfe16e08db0fefd895375",
+    "status": "PREPARED_NOT_BUILT",
+    "proof_commands": 0
+  },
+  "guard_controls": {
+    "path": "/tmp/zfc-model-coded-closure/publication/open-schema-guard-validation.json",
+    "sha256": "e4b3b30c2b5f5f74666b4eda1e544e2964ff2d3bee0f8894bd51da1e07874266"
+  },
+  "independent_review": {
+    "path": "Logic/Interpretability/ZFCinPA/results/model-coded-open-schema-axioms-review.json",
+    "sha256": "7a19cf15e3374ab113cdd5abc8b4ed84f2099c98f178d6fe3d817bfd2e5ae764"
+  },
+  "root_review": {
+    "path": "Logic/Interpretability/ZFCinPA/results/model-coded-open-schema-axioms-root-review.json",
+    "sha256": "31d22d084ad05f3c4a084987ebde6abd56ad0d9f1a6bbf3d1eb6a681fe2853c8"
+  },
+  "maintained_preflight": {
+    "path": "Logic/Interpretability/ZFCinPA/results/model-coded-open-schema-axioms-maintained-preflight.json",
+    "sha256": "e251f16029cd8caf773676ffa9349f0f186f5d910da36ffaa3651c5244bf6298",
+    "status": "PREPARED_NOT_BUILT",
+    "proof_commands": 0,
+    "input_hashes_checked": 40
+  },
+  "next_tasks": [
+    "Represent binding of a single named free label and decode C254 formula codes in arbitrary I\u03a31 models.",
+    "Construct actual translated C254 axiom/proof families, including GEN proof renaming and Collection/container templates."
+  ]
+}
