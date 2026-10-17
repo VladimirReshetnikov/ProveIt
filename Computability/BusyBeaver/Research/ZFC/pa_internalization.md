@@ -163,6 +163,12 @@ This removes the free-parameter restriction for fixed templates; represented
 translation of arbitrary internal source proofs remains open. The L schema
 step still needs syntax-sensitive relativization of the actual set-language
 matrix, rather than a generic uninterpreted-predicate substitution.
+The [fixed-template graph extension](model_coded_template_graph.md) now
+represents substitution into each standard source formula by fixed Σ1/Δ1
+graphs, and proves an actual IΣ1/PA sentence asserting provability for every
+well-formed internal matrix when a standard lifted-PA source proof is given.
+This closes the graph-selection step for fixed templates; it does not yet
+represent a translator for arbitrary internal source proof codes.
 
 ## Exact eventual endpoint
 

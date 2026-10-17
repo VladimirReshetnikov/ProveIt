@@ -82,6 +82,12 @@ three reports and six callers, with no warnings. The
 [independent client review](results/model-coded-peano-core-review.json)
 confirms this scope. The earlier APIs and final-theorem facade remain unchanged.
 
+The subsequent [fixed-template graph](model_coded_template_graph.md) gives
+this formula substitution a parameter-free Σ1/Δ1 arithmetic representation.
+It also proves an actual IΣ1/PA sentence quantifying over every internal
+matrix for each fixed standard source proof. The source-proof standardness
+boundary remains explicit.
+
 ## Boundary for the set-theoretic comparison
 
 Fixed logical and axiom templates are useful components of the planned

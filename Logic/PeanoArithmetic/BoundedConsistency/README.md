@@ -322,6 +322,11 @@ The subsequent
 client supplies the finite target axiom proofs automatically for lifted PA,
 again allowing arbitrary internal free parameters. Its maintained-path
 five-module check and three audits pass nine axiom reports and twenty callers.
+The subsequent [`ModelCodedTemplateGraph`](Lean/BoundedPAConsistency/ModelCodedTemplateGraph.lean)
+provides fixed Σ1/Δ1 substitution graphs and actual IΣ1/PA provability
+sentences for each standard lifted-PA template, uniformly over all internal
+matrices. Its [scoped record](../../../Computability/BusyBeaver/Research/ZFC/model_coded_template_graph.md)
+retains the boundary between fixed standard source proofs and internally coded matrices.
 
 ### Rocq/Coq theorem surface
 

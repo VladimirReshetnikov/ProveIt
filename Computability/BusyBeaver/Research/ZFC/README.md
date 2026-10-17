@@ -85,6 +85,10 @@ internal source proofs remains part of the PA bridge.
 The subsequent lifted-PA client supplies the finite axiom witnesses itself.
 Its fresh five-module check passes nine reports and twenty callers, including
 specialization at matrices with internal free parameters.
+The [fixed-template arithmetic graphs](model_coded_template_graph.md) now
+represent this substitution and yield actual IΣ1/PA provability statements
+quantifying over every internal matrix. Six fresh modules and four audits
+pass twenty-two reports and thirty-seven callers.
 
 The complete binary endpoint passed a
 [153-unit source-verified integration](results/binary-perm252-integration-verification.json):
