@@ -1,0 +1,132 @@
+{
+  "schema": "code-tuple-order-independent-review-v1",
+  "review_kind": "read-only complete mathematical/API/source audit; no compiler or axiom-print invocation",
+  "verdict": "CLEAN; no mathematical statement defect or hidden Choice found",
+  "HEAD": "fa0949ee27b07eb8f1a801241106ead9058e0871",
+  "requested_commits": [
+    "b5c4b5cdaa",
+    "b2d43d88bc"
+  ],
+  "sources": {
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/CodeOrder.lean": {
+      "sha256": "7c7f7dcacae596b04f560fc6f950e253ba98328c1b2d4e78c2f94d68d1047d03",
+      "git_blob": "216804e6a6a77238d930037e4653ce61a808822a",
+      "lines": 427,
+      "byte_identical_to_reviewed_HEAD": true,
+      "snapshot": "/tmp/zfc-order-code-tuple-review-sources/CodeOrder.lean"
+    },
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TupleOrder.lean": {
+      "sha256": "fecc0ac2b23a6b6f9c127c98ea4c9e61efa60fde52792da6e803150cbe38400a",
+      "git_blob": "053b53a7022d89b1bcac16a4837a89ff28c5cc4d",
+      "lines": 327,
+      "byte_identical_to_reviewed_HEAD": true,
+      "snapshot": "/tmp/zfc-order-code-tuple-review-sources/TupleOrder.lean"
+    },
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/OrderRec.lean": {
+      "sha256": "397cc37c3fcbd84392aceca9289c9e4d8623db917b95b56b1a921620933f8038",
+      "git_blob": "9d7d5a7909c3759c42cdf6046bd93cc44145cf47",
+      "lines": 309,
+      "byte_identical_to_reviewed_HEAD": true,
+      "snapshot": "/tmp/zfc-order-code-tuple-review-sources/OrderRec.lean"
+    },
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalWO.lean": {
+      "sha256": "7152e907d8fafbdc84a16d72e752c5ad05a6462e5840047dcb5c4c20c5f96858",
+      "git_blob": "8e6c8b8428325702e3156c73f108b660d75a8686",
+      "lines": 311,
+      "byte_identical_to_reviewed_HEAD": true,
+      "snapshot": "/tmp/zfc-order-code-tuple-review-sources/InternalWO.lean"
+    },
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TransRec.lean": {
+      "sha256": "c7e9caf6f59e1a6c9ef3a9cb7ac4c44f39ffb6fa882fbda7936b95fa718c784d",
+      "git_blob": "b58143ae002a1c5b6d6e2b02ff2c305b975e18e1",
+      "lines": 337,
+      "byte_identical_to_reviewed_HEAD": true,
+      "snapshot": "/tmp/zfc-order-code-tuple-review-sources/TransRec.lean"
+    },
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SatSupport.lean": {
+      "sha256": "173760b2b8569856cbcca87365e551b9c6586f9be9addf45aa3e6d63f9ae2226",
+      "git_blob": "447a791dca24135b49c9005b19535fb730c13c42",
+      "lines": 193,
+      "byte_identical_to_reviewed_HEAD": true,
+      "snapshot": "/tmp/zfc-order-code-tuple-review-sources/SatSupport.lean"
+    }
+  },
+  "requested_source_identity": {
+    "CodeOrder": {
+      "pin": "b5c4b5cdaa",
+      "same": true
+    },
+    "TupleOrder": {
+      "pin": "b2d43d88bc",
+      "same": true
+    },
+    "OrderRec": {
+      "pin": "b2d43d88bc",
+      "same": false,
+      "difference": "Only previously retained local header corrections; functional body matches remote b2d43d88bc."
+    }
+  },
+  "new_modules_read_completely": [
+    "CodeOrder",
+    "TupleOrder"
+  ],
+  "OrderRec_change": "AppendOp.le_iff restricted to IsWOS inputs; seven uses now supply the existing IsWOS proof",
+  "resource_scope": {
+    "ZFAxioms": "Ext, actual Form Sep, Pair, Union, Infinity, actual Form partial functional Replacement; no Power/Reg/Choice",
+    "CodeOrder": [
+      "H:ZFAxioms mem",
+      "Regular mem",
+      "explicit PowerSet interface hP"
+    ],
+    "TupleOrder_wo_lexN": [
+      "H:ZFAxioms mem",
+      "Regular mem",
+      "IsWOS H W",
+      "n is an internal natural"
+    ],
+    "TupleOrder_lexN_least": "No Regularity or Power assumption needed beyond actual H and supplied IsWOS; uses explicit formula internal omega induction",
+    "wellorder_semantics": "reflexive order with least elements for represented nonempty subsets; no external WellFounded or arbitrary external subclass quantification"
+  },
+  "checked_details": {
+    "CodeOrder": [
+      "all set bounds explicit, Cartesian products consume hP",
+      "G filters to actual pair endpoints; guarded append equivalence handles nonpair junk correctly",
+      "DefOp graph is literal finite named syntax with no object parameters",
+      "code_mem uses isFormCodeSem_ind with actual pmemF property; all internal codes including nonstandard",
+      "codeOrder existence and uniqueness via internal ordinal recursion, not external Nat stage induction",
+      "field contains all codes but is a larger pair closure; exact equality with code class not claimed"
+    ],
+    "TupleOrder": [
+      "tuple graph includes exact domain and no junk; extensionality is real set equality",
+      "first differing index obtained by actual Separation and internal nat wellorder",
+      "lex transitivity/antisymmetry use unique graph values and internal linearity",
+      "lex leastness encoded by one literal NForm phi with W parameter and omega_ind",
+      "prefix relation is globally functional by extensionality before actual Replacement",
+      "last values bounded by triple Union; no semantic arbitrary-predicate Sep or witness Choice",
+      "all n in model omega covered; no quotation or standard-length restriction"
+    ],
+    "OrderRec": [
+      "all consumers already had IsWOS, so weakening input contract preserves conclusions",
+      "new CodeOrder instantiation legitimately needs IsWOS for filtering old pairs"
+    ]
+  },
+  "scope_caveats": [
+    "CodeOrder header stage1-under-membership means reflexive mem-or-equality, not strict membership",
+    "code_order theorem is existence plus coverage; uniqueness supplied separately codeOrder_unique",
+    "wo_lexN does not itself package a represented relation graph or all-length tuple universe",
+    "No ConstructibleOrder/HOD model/selector Choice/finite refutation removal/PA theorem follows yet"
+  ],
+  "remaining_concrete_obligations": [
+    "order varying tuple lengths and form actual bounded key sets",
+    "least birth-stage keys or equivalent bound satisfying wo_pull all-keys hset; arbitrary ordinal-stage keys do not satisfy it",
+    "constructible successor append step/definability and stage-compatible endextension",
+    "show needed order restriction or selector belongs to L/HOD",
+    "exact Choice axiom model adapter and refutation transport",
+    "object-theory proof-code/trace internalization"
+  ],
+  "tracked_edits": false,
+  "builds": false,
+  "evidence_directory": "/tmp/zfc-order-code-tuple-review-sources",
+  "documentation_followup": "OrderRec header future CodeOrder wording now historical; theorem scope clean.",
+  "full_review_text": "# Independent review: CodeOrder, TupleOrder and the guarded append contract\n\nVerdict: **clean mathematical/API review**. I found no missing object-theory resource hidden in the main statements, no assumption that internal natural numbers or syntax trees are externally standard, no external well-foundedness assumption, and no circular use of Choice. This was a complete source read, with targeted reads of the actual named-formula induction, function-graph, ordinal recursion and order interfaces. It ran no Lean build or axiom printer and changed no tracked source.\n\nReviewed merged HEAD: `fa0949ee27b07eb8f1a801241106ead9058e0871`. Exact snapshots are `/tmp/zfc-order-code-tuple-review-sources/`; structured source identity and scope are `/tmp/zfc-order-code-tuple-review.json`.\n\n| File | Lines | Exact reviewed SHA256 |\n|---|---:|---|\n| `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/CodeOrder.lean` | 427 | `7c7f7dcacae596b04f560fc6f950e253ba98328c1b2d4e78c2f94d68d1047d03` |\n| `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TupleOrder.lean` | 327 | `fecc0ac2b23a6b6f9c127c98ea4c9e61efa60fde52792da6e803150cbe38400a` |\n| `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/OrderRec.lean` | 309 | `397cc37c3fcbd84392aceca9289c9e4d8623db917b95b56b1a921620933f8038` |\n\nCodeOrder and TupleOrder match the requested `b5c4b5cdaa` and `b2d43d88bc` bytes respectively. Current OrderRec retains the earlier local documentation corrections about nonpair junk and future concrete applications; apart from that header it matches the remote source. The 14-line functional diff (seven replacements) was reviewed in full. These fingerprints identify reviewed sources; no checksum-manifest work was performed.\n\n## Exact resource and semantic boundary\n\n`ZFAxioms mem` is the six-field interface at `SetTheory/ZF/Lean/ZF/Zf.lean:334`: Extensionality, formula-indexed Separation, Pairing, Union, Infinity and formula-indexed globally partial-functional Replacement. Power, Regularity and Choice are not members of this bundle.\n\nCodeOrder explicitly adds `Regular mem` and the Power-set interface `\u2200a,\u2203p,\u2200x,mem x p\u2194Sub mem x a` (`CodeOrder.lean:259`). These are genuine assumptions. In particular the Cartesian-product bounds use Power through `OrderRec.prod_exists`; no such resource is hidden in H. TupleOrder's final `wo_lexN` uses H, Regularity, an actual `IsWOS H W`, and the premise that n belongs to the model's omega. It needs no additional Power-set or Choice assumption. Its least-element lemma `lexN_least` deliberately omits Regularity; the supplied leastness of W plus the actual internal natural induction are enough for that part. Regularity is retained for first-difference/order reasoning in the final theorem.\n\n`IsWO` and `IsWOS` use reflexive orders. Least elements are required for nonempty **represented sets** Z of members of the field. They do not mean Lean's external `WellFounded`, least elements in every arbitrary external subclass, or absence of externally visible descending sequences in a nonstandard model. All claims about nonstandard models must keep this distinction. An externally infinite descending sequence of nonstandard naturals need not be represented by an internal set to which the least-element clause applies.\n\nThe noncomputable set selectors choose witnesses in the metatheory. Their extensional membership specifications and literal graph formulas control their use; they do not assume the object's Axiom of Choice.\n\n## CodeOrder\n\n### Construction and bounds\n\n`EmptyFld`, `InN`, `InO` and `InG` at lines 28\u201345 specify the construction explicitly. An empty old field adds all internal naturals, ordered by membership-or-equality. A nonempty field adds only new Kuratowski pairs of old field elements, ordered lexicographically by the old relation. Old elements precede all new elements.\n\nEvery stage is a represented set. The old field is separated from double Union of W (`fld_exists`, line 109). Candidate new elements lie in the union of that field, omega, and its Cartesian square (`cand_exists`, line 118); the new order and whole next relation are separated from explicit Cartesian products. Consequently each use of actual Separation is bounded and uses its supplied named formula. There is no request to form a set of all values of an arbitrary external operation.\n\n`InG` has an initial pair/endpoint filter. This removes nonpair junk and ensures that old pair entries retained by the next stage have their endpoints in the old/new field. The proof of its exact append behavior legitimately uses `IsWOS H W` to know the old edge endpoints lie in the field (`appendOp`, line 196). The newly guarded `AppendOp.le_iff` is precisely the right resource for this argument. The generic order relation continues to read only pair-members; it does not identify arbitrary W with a clean literal relation graph.\n\n### Named syntax and internal induction\n\n`emptyF`, `inNF`, `lexF`, `inOF`, and `inGF` each have a satisfaction theorem for arbitrary environments and input names. The introduced existential indices exceed the indices whose values they preserve. Reuse of a temporary index in a nested subformula only shadows values that that subformula does not use. `stepOp` at line 172 is an actual finite named-formula graph for equality to `stepG`; it is not a generic closure axiom for an external predicate.\n\nThe recursion is the existing definable ordinal stage recursion, with a literal formula witness, at the model's omega (`IsCodeOrder`, line 262). It is not an external recursion on Lean Nat producing only standard stages. `common_stage` at line 338 obtains a common **internal** positive finite stage using internal natural linearity/upper bounds. The only externally finite tags are the eight fixed constructor numbers; atomic variable indices range over arbitrary internal naturals.\n\nThe strongest coverage step is `code_mem`, line 361:\n\n```lean\ntheorem code_mem {CW : V} (hCW : IsCodeOrder H hP CW) :\n    \u2200 c, IsFormCodeSem H c \u2192 Fld H CW c\n```\n\nAt line 382 it invokes the actual definability-relative `isFormCodeSem_ind'` with the literal `toForm id (pmemF 1 0 0)` and environment containing CW. The property is exactly membership in the represented order's field. Its atom, falsity, binary and quantifier cases are all supplied. Thus this really covers every recognized internal formula code, including externally nonstandard ones; it is neither quotation induction on external Form values nor an assertion that all internal codes have standard finite depth. The underlying recognizer's possibly vacuous intersection issue is handled by the already proved `exists_formulaClosed H`, which is consumed by `isFormCodeSem_ind'` in `FormulaClosedSet.lean:493`.\n\n`code_order`, line 393, supplies existence, `IsWOS`, and coverage. Uniqueness is the separate `codeOrder_unique`, line 398. `codeOrderF`, line 415, and `nsat_codeOrderF`, line 419, define the order without object parameters apart from its output slot. Although the Lean declaration takes H and hP, its graph body is made from fixed finite named syntax; it does not add unnamed object constants selected by those proof arguments. No free-environment parameter for an arbitrary semantic relation is used.\n\n### Scope to retain\n\nCW's field is a larger pair closure of omega. It **contains** all formula codes and is not asserted equal to the exact formula-code class. Restricting its order to that definable class is immediate at the semantic `IsWO.mono` level, but a consumer wanting the exact represented relation graph must construct the corresponding restriction. The theorem does not enumerate every code by an internal natural-number ordinal and does not prove source49's separate natural decoder graph.\n\nThe header's stage1 order \u201cunder \u2208\u201d is shorthand for the reflexive `\u2208 or =` relation actually used. It should not be read as claiming strict membership is reflexive. This is a documentation precision, not a theorem defect.\n\n## TupleOrder\n\n### Tuple identity and first difference\n\n`IsTup`, line 28, uses the exact `IsFunctionOn` graph interface: single-valued, defined on all of n, and containing only pairs whose first coordinate lies in n. There is no unrecorded junk in a tuple graph. Its value guard places all outputs in the field of W. `tup_ext` uses those graph clauses and actual Extensionality to infer literal equality from coordinate agreement.\n\n`LexN`, line 32, is reflexive equality or a first differing internal coordinate with agreement below it and a strict-in-value comparison induced from the old reflexive order. Equal values at the proposed first difference are expressly excluded. `first_diff`, line 89, separates the set of differing positions from the represented n by a literal finite formula and applies the internal natural well-order. `diff_index`, line 118, uses internal linearity and agreement to prove uniqueness. Neither takes an external least differing standard index.\n\n`lexN_order`, line 131, treats the three possible relative positions of two first differences in its transitivity proof. Functionality identifies the intermediate coordinate values; agreement composes on all smaller coordinates. Antisymmetry compares the same unique first differing index and invokes the old order's antisymmetry. I found no omitted equal-index or equal-tuple branch.\n\n### Leastness for every internal length\n\n`lexN_least`, line 218, proves exactly the universal statement over every n in the model's omega and every represented nonempty set of n-tuples. Its induction predicate is encoded by the literal finite named formula phi at lines 220\u2013221, with W as a parameter, and checked by `h\u03c6`. The actual call is `omega_ind H (toForm id \u03c6)` at line 230. There is no unformulated predicate-induction resource or external standard-length restriction.\n\nThe successor step uses actual formula Replacement to collect restrictions to the prefix n (`res_exists`, `res_unique`). Restriction is globally functional for **every** graph input by Extensionality, satisfying the model's partial-functional convention before Replacement is invoked. A least prefix is obtained by the internal induction hypothesis. Then actual formula Separation restricts to tuples with that prefix and collects their last values. Those values lie in triple Union of the represented set of tuples (lines 266\u2013278): one Union exposes pair members, the next exposes `{n,v}`, and the third exposes v. No Power set, collection of arbitrary external values or Choice function is needed.\n\nOnly one least prefix and one least last value are chosen for the one represented nonempty set. This is an existence proof, not simultaneous arbitrary choices over all fibers. The final equal-prefix/equal-last branch uses tuple Extensionality; the unequal-prefix branch transports its earlier first difference. Zero length has exactly the empty tuple by the graph-domain clause.\n\n`wo_lexN`, line 318, therefore has the advertised internal well-order conclusion. It does not itself package a represented set of all tuples at all lengths or a represented set relation for that class. Those are separate bounds/formula constructions if a later key-order consumer requires them.\n\n## OrderRec API change\n\n`AppendOp.le_iff` now requires `IsWOS H W` before asserting the next-stage pair-edge decomposition. The other append fields already had that premise. All seven adjusted uses occur inside proofs that already possess exactly hW, so `fld_step`, `step_wos`, end-extension and `stage_wos` retain their prior conclusions. This is a safe weakening of an application hypothesis, not a weakened well-order conclusion or a new model axiom. It permits the sensible CodeOrder filter to behave arbitrarily outside well-ordered inputs.\n\nThe older local header correction remains, explaining nonpair junk. Its statement that concrete formula-code and constructible orders are \u201cfuture\u201d is now chronologically stale for CodeOrder. \u201cNot supplied here\u201d is still true file-locally, but it would be clearer to point to the new CodeOrder instantiation and leave only ConstructibleOrder as future work. No theorem needs changing.\n\n## What this closes, and what remains\n\nThe earlier intake156 cross-source note's absence of CodeOrder was accurate at its review HEAD and is now historical. The new module genuinely supplies that named missing building block and handles all internal codes. TupleOrder supplies the same-length internally finite parameter-tuple order, again without restricting lengths to standard ones.\n\nNeither module yet constructs the full canonical order of the constructible hierarchy or an HOD model. In particular:\n\n1. Varying tuple lengths need an ordered-sum/length-first adapter and actual set bounds for their key domain.\n2. The `InternalWO.wo_pull` all-keys `hset` resource remains real. Keys containing arbitrary witnessing ordinal stages do not satisfy it: even one object may then have proper-class many keys. A concrete definition must restrict to least birth-stage keys (or an equivalent bounded presentation), collect the uniquely defined birth bounds of a represented set via an actual formula Replacement instance, and bound its remaining code/tuple data by represented sets. CodeOrder and TupleOrder alone do not supply that argument.\n3. The new-stage canonical key map, its definability, unique decoding and successor append order must still be built, followed by the transfinite stage-compatible order. A supplied order on formula codes does not choose least satisfying environments for free.\n4. The needed order restriction or selector must be proved an element of the interpreted L/HOD domain. A parameter-free ambient definable class order is not automatically an internal relation in that domain.\n5. The exact selector-Choice axiom model adapter, finite ZFC-refutation removal, and any object-ZFC/PA proof-code/trace theorem remain distinct final interfaces.\n\nThe new files are useful concrete progress toward those interfaces. No new binary table, state saving, complete Choice endpoint or PA theorem follows directly. Kernel compilation and axiom status are left to root's serialized verification, without anticipating its result here.\n"
+}

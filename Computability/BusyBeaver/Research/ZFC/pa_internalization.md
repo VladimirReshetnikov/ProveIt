@@ -201,3 +201,25 @@ evaluate all twelve proof rules. The pinned arithmetic library uses a different
 pairing for its own data, so that adapter cannot be omitted. The note gives the
 exact MP and gate tests, the fixed formula interface and all-input equivalence
 target; it is a construction plan, not a new PA theorem.
+
+## Intake156 proof-coding continuations
+
+The [three new reports](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch156-sparse-certificates-reset-synchronization-and-the-zfc-comparison)
+separate three useful specifications. Source47 reconstructs an ordinary
+set-coded ZFC proof for the existing machine. Source48 supplies explicit sparse
+acceptance/rejection arithmetic graphs with bounded certificate-size arguments.
+Source49 specifies HOD descriptions, the exact selector Choice adapter and an
+internal-natural decoder covering every recognized formula tree, including
+nonstandard codes. The HOD construction is classical and attributed; the
+project-specific all-code adapters remain to be implemented. Its PA transport
+requires an actual primitive-recursive proof compiler and verified axiom-proof
+generators, not merely external semantic equivalence. None of these reports
+closes the requested internal PA theorem.
+
+
+The subsequent [ArithmeticCantor adapter](arithmetic_cantor.md) now supplies the
+literal Cantor polynomial graph, bounded inverse graphs and all-natural
+identification with `Code254.P`/`Cantor.ofNat`, in arbitrary IOpen models.
+Its semantic representation uses weaker arithmetic than full PA. The actual
+checker/history and finite proof/trace compiler remain unrepresented here;
+this local definability theorem is not the requested whole-machine PA proof.

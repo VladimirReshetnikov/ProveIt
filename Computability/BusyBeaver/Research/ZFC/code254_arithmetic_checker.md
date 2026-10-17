@@ -1,17 +1,18 @@
 # A concrete arithmetic representation of the exact C254 checker
 
-2026-10-16. The smallest useful next arithmetic adapter is **the exact Cantor
-pairing and its two projections in arbitrary arithmetic models**. Once that
-adapter is available, a represented history table computes our existing
+2026-10-16. The [exact Cantor adapter](arithmetic_cantor.md) is now implemented
+and checked in arbitrary IOpen models, with all-input identification of the
+actual `Code254.P` and `Cantor.ofNat` operations. A represented history table
+is the next step toward computing our existing
 `Code254Proof.check` without constructing or coding the `RawProof` datatype.
 The table's recursion is already supported by the pinned Foundation library.
-This note specifies the construction; it does not claim a newly implemented
-arithmetic formula or PA proof.
+The construction plan below is retained; pairing and projection graphs are now
+implemented, while the full evaluator and internal PA proof remain open.
 
-The Foundation gitlink is
-`32e1a0956a8622fad067328ca1959729a7634428`. Its worktree remains unpopulated,
-but the actual source was recovered read-only from the local submodule Git
-object database. No dependency checkout, network fetch or Lean build was done.
+The Foundation gitlink is `32e1a0956a8622fad067328ca1959729a7634428`.
+The initial read-only plan recovered its source from the Git object database.
+The later scoped adapter check uses the existing populated dependency checkout
+and cached Foundation/Mathlib objects, without rebuilding those dependencies.
 
 ## Preserve the exact literal pairing
 

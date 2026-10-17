@@ -1,0 +1,13 @@
+.PHONY: pdf verify full-verify clean
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+
+verify:
+	python3 code/verify_bundle.py
+
+full-verify:
+	python3 code/verify_bundle.py --full
+
+clean:
+	latexmk -c report.tex

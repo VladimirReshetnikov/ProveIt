@@ -1,0 +1,74 @@
+{
+  "review_type": "Independent mathematical/source review with small structural controls",
+  "verdict": "PASS within the stated arithmetic-program scope; no binary TM state bound",
+  "reviewed_files": {
+    "involutive_search.py": "b752860f7945126d2eb8547f4316109e8ff1f3a4f39b9e231d7870dc2e3413c4",
+    "involutive_theory.tex": "6ca871d6da72b348aa83a4b3cce9a7724c18128b554dab8f7aba54d94cc92897"
+  },
+  "structural_controls": {
+    "exact_recursive_reference_stages": [
+      {
+        "depth": 0,
+        "events": 1,
+        "swaps": 0
+      },
+      {
+        "depth": 1,
+        "events": 5,
+        "swaps": 2
+      },
+      {
+        "depth": 2,
+        "events": 17,
+        "swaps": 10
+      },
+      {
+        "depth": 3,
+        "events": 45,
+        "swaps": 30
+      },
+      {
+        "depth": 4,
+        "events": 105,
+        "swaps": 74
+      },
+      {
+        "depth": 5,
+        "events": 229,
+        "swaps": 166
+      },
+      {
+        "depth": 6,
+        "events": 481,
+        "swaps": 354
+      }
+    ],
+    "free_product_vertex_invariant_and_restoration": "all listed stages passed",
+    "last_letter_vertices_checked": 255,
+    "canonical_word_addresses_checked": 341,
+    "phase_involution_controls": 144,
+    "edge_orientation_lifts": "both directions and phases, including equal endpoints",
+    "search_boundary_controls": 6
+  },
+  "mathematical_obligations": {
+    "ground_completeness": "All ground contextual instances generate the ground equational congruence; each directed edge is implemented by a total endpoint transposition.",
+    "word_coverage": "Canonical address 1 0 1^i1 ... 0 1^ik has depth sum(ij+1). All finite words are reached at finite stage.",
+    "edge_inverse": "Right edge executes j then j+1; its return executes j+1 then j. Empty-word right edges are identities.",
+    "restoration": "Vertex invariant plus return to root gives exact restoration. The same proof applies to (term,phase).",
+    "call_count": "2(2^D-1) left calls plus 4(2^D-1-D) right calls gives 6(2^D-1)-4D; stated cumulative sum agrees.",
+    "threshold": "For B=2^D and positive heap vertex v, v<B iff its depth is below D. At root completion B doubles and direction resets.",
+    "counter_scope": "Core persistent traversal data B,v,direction; arithmetic scratch, term/phase data, and optional Python swap/report/budget metadata are additional. Vertex is unbounded path storage.",
+    "initial_and_empty_words": "Initial equality test handles the root and empty proof. An edge with zero calls leaves an already-tested value unchanged.",
+    "phase_lift": "F flips phase; J_e exchanges exactly (a_e,0) and (b_e,1), even when a_e=b_e. Other states are fixed. Projected orbit is exactly the ordinary orbit.",
+    "phase_weight": "Generator e+1 has weight e+2; at most one weight-1 phase flip per original step yields sum(e+3).",
+    "query_interface": "Explicitly conditional: an actual fixed ZFC-calibrated query and its writer/simulation remain to be emitted and proved."
+  },
+  "remaining_correctness_issues_found": [],
+  "limits": [
+    "Ordinary mathematical/source review, not a proof-assistant kernel check.",
+    "Did not rerun the author's large finite model or exhaustive involution suites.",
+    "Structural controls support implementation agreement; arbitrary-depth claims use the supplied mathematical induction, not finite tests.",
+    "No independent re-verification of the published first-order-to-Df3 theorem or prior E7 reduction in this controller audit.",
+    "No compiled binary machine, actual ZFC query term, or state-saving claim follows from this audit."
+  ]
+}

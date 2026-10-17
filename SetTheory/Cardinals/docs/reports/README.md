@@ -2698,3 +2698,46 @@ history integration, precise historical-pin corrections and independent reviews
 are recorded. Five scratch PDFs30/28/27/34/29 pages pass visual review; the base
 article and delivered files remain unchanged. No Coq build, new251 machine,
 general lower bound or internal PA/ZFC machine theorem follows from this intake.
+
+
+Batch156 adds three manuscripts from `2447a98214`, placed in `7755fdc9a8` and
+reconciled in `2799b08917` as sources47–49 of
+[ZFC closure kernels](set-theory/zfc-closure-kernels), now49 manuscripts and
+still290 collection reports. All272 ancillary files are preserved;41 main
+article/section/bibliography/PDF/delivery-README files remain in their committed
+archives. The three ZIPs were retired with placement; no source is superseded.
+
+An ordinary set-coded proof reconstruction formalizable in ZFC concerns the
+existing permutation252 table. It keeps the closed external Lean Con(ZF)
+endpoint separate from the final Choice/internal-arithmetic formalization.
+Cofinal padding uses the upstream closed-zero decoder; hidden-coordinate
+logical controls refute completeness of a weakened cofinal-vacuity fragment,
+without claiming a CP/GIC consistency separation. Exact eight-family gap
+enumeration is not yet a costed machine. Complete compiler controls measure
+279 and corrected286 states with their calibration/startup obligations retained.
+
+The unchanged numerical calculus gains an exact sparse history and canonical
+square-root row bound, explicit arithmetic circuits and conservative bit costs.
+Redundant accepted histories and unfolded proof occurrences are distinguished
+from canonical rows and distinct cache entries. A productive continuation
+criterion and three separate bounded deletion families retain zero sufficient
+certificates. A reset-free involutive orbit tour is complete as ordinary
+mathematics; its ZFC query, complete writer and binary state price remain open.
+
+Six candidate counters admit arbitrary formula/stack/additive-parameter/cache
+data. The exact conservative future credit and residual-pointer formula are
+paper results, not a necessity test for actual data. Subsequent current Lean
+checks the actual scheduler barrier and all six arbitrary-data starts; the
+sharper credit classifier, new binary initializer and PA representation remain
+separate. The HOD/selector-Choice and internal formula-decoder arguments are
+ordinary proof adapters, with their all-code formal implementation still open.
+
+All source47/48 advertised functional suites and bounded searches reproduce,
+including64 compiler alternatives,166413 incoming-action recipes, and the
+separate55471/132048 continuation searches. Source49's two full fusion ledgers, closure/differential controls, all238
+rotations and two fixed-iteration stochastic runs also reproduce.
+The offline helper retains functional identities while omitting bulk manifests.
+Three scratch PDFs38/37/26 pages were rebuilt and visually reviewed; source49's
+two underfull paragraphs are acceptable. Base/delivered files remain unchanged.
+No new state record, lower bound, Coq build or finished internal PA/ZFC machine
+endpoint follows from this intake.

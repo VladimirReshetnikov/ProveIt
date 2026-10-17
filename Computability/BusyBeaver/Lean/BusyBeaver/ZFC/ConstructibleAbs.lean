@@ -11,9 +11,11 @@ for a constructible set structure and environment when the code is valid in
 both the ambient and constructible models. `memRel_iff` compares the encoded
 membership relation.
 
-Formula-code absoluteness, replacement of arbitrary ambient environments by
-constructible ones, `Def` and hierarchy absoluteness, `V = L`, and Choice remain
-separate obligations; they are not conclusions of this module.
+The extension below proves formula-code absoluteness, replaces an arbitrary
+ambient environment by a constructible environment on its internally finite
+support, and transports definability and `Def`. Hierarchy comparison then gives
+`vEqL`: every constructible set is constructible in the sense of the constructible
+model. The internal well-order and Choice arguments remain separate obligations.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.ConstructibleAbs

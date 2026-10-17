@@ -1,0 +1,114 @@
+INDEPENDENT TARGETED REVIEW: EXACT C254 ARITHMETIC GRAPHS
+
+Verdict: the two CHECK graphs are Sigma_1 formulas and have the claimed
+mathematical equivalence to the exact Code254Proof.check. I found no defect in
+the stored-value convention, MP, GEN, schema dispatch, bundle gates, sorted
+lookup, or the global witness bound W. The two presentation clarifications
+listed below were subsequently implemented and independently checked. This
+review is ordinary mathematical/source verification,
+not a newly kernel-checked PA or Lean theorem.
+
+Scope and evidence
+------------------
+Reviewed code/arithmetic_formula.py, code/sparse_c254.py, the emitted
+arithmetic_graphs.txt, and formula_circuits.json. Compared them directly with
+Code254Proof.RawProof.valid, decodeStep, decodeFuel, check, and the numerical
+constructors/rows/bundles in Code254.lean. The reviewed file identities are
+recorded in sparse_arithmetic_review.json.
+
+An independent symbolic expansion compared each of the 11 emitted circuit
+DAGs with the full corresponding constructor tree. All 11 agreed, including
+the 60-pair bundle circuit. This comparison uses symbolic constructor trees,
+so it does not depend on hashing enormous integer outputs or sampling numeric
+parameters. The exported Lean source identity was checked and the fixed
+prefix definitions were also reviewed directly. Twenty-six small controls
+covered row dispatch, MP validity, GEN, both bundle gates, and forged or missing
+certificate rows. The large bundle calculations and the full numeric test
+suite were not rerun.
+
+Why these are Sigma_1
+--------------------
+After the displayed initial existential block, every quantifier is bounded:
+the history index by c or m, local values and circuit gates by W, LOOKUP's
+index by i, and BETA's quotient by B. Negating BETA in the sortedness
+implication merely negates a bounded formula. PAIR is a polynomial equality.
+Finite macro expansion therefore leaves a bounded arithmetic matrix over
+addition, multiplication, order, and equality. Both CHECK definitions have
+an existential prefix followed by such a matrix.
+
+Why the checker agrees
+----------------------
+PAIR is the graph of the same Cantor pairing used in the Lean source. For a
+positive proof code k, the equations k=12*p+tag+1, tag<12, and the three nested
+PAIR constraints uniquely recover the fields. Every recursive child is less
+than k because the child is at most its containing Cantor payload p, and
+12*p+tag+1>p. The row recursion consequently agrees with the parser at fuel
+k+1, with no truncation of a genuinely present finite subtree.
+
+Stored zero means either a failed parse or a parsed but invalid proof.
+Stored value n+1 means a valid proof with conclusion n. In particular, proof
+code zero is invalid, proof code one proves formula code zero, and formula
+code zero is not confused with failure. The numerical alias wim(0,0)=0 is
+preserved, so MP of two truth proofs with output zero is correctly accepted.
+
+MP looks up both children, requires both values to be positive, and compares
+the major conclusion with the exact numerical implication of the minor
+conclusion and the requested output. GEN requires its child to be valid and
+returns wal(binder, child_conclusion)+1. The eight schema argument lists
+match decodeStep, including the two-field rho1/rho6 rows and four-field rho8
+row. The bundle is returned only when its final parameter differs from both
+other parameters.
+
+Dense history correctness follows by induction on k. Sparse history
+correctness follows by induction on the row index. Earlier rows provide
+unique BETA-decoded keys and values. The sortedness test's restriction h<=W
+is safe: each earlier row already asserts that its actual key is <=W, so the
+actual key is included in that test. LOOKUP refers only to earlier indices;
+a missing child fails its existential condition and is not interpreted as a
+stored zero. Extra correctly evaluated rows are harmless. A minimal sorted
+demand closure provides a witness, but minimality is not required for soundness.
+
+There is no circular global-W requirement
+----------------------------------------
+First evaluate the finite row history and the finitely many circuit
+intermediates needed by those rows. Choose W larger than their values, the
+raw fields, row count, c, and n+1. In particular, W must include the prospective
+wim result used to reject an MP whose two children are valid but whose major
+formula is incorrect; that comparison result need not itself be a stored row
+value. This is still a finite collection.
+
+The beta coding witnesses are then supplied by finite-sequence coding/CRT.
+They need not be <=W. A beta quotient is bounded by its own B: if
+B=q*(1+(i+1)*C)+v with nonnegative variables, then q<=B because the modulus is
+at least one. Thus BETA introduces no unbounded quantifier beneath the matrix.
+Increasing W cannot create a different row result: Cantor pairing, the gate
+circuits, and BETA remainders are functional. It can only make a previously
+too-small finite witness bound adequate.
+
+Two presentation clarifications
+------------------------------
+Follow-up status: resolved. The emitted text now explicitly requires fresh
+bound-variable names in macro expansion and prints a full REJECT_SPARSE
+definition with a separate final value r. Its leading existential r, r<=W,
+and r!=n+1 replace the acceptance equality as required. The new rejection
+formula is Sigma_1 and expresses the complementary output condition. It
+does not need n+1<=W because n+1 is not evaluated inside its certificate.
+Follow-up file hashes are recorded separately in the JSON audit.
+
+1. Say explicitly that bound variables are alpha-renamed on every macro
+   expansion. This is the standard capture-avoiding interpretation intended
+   by the displayed formulas.
+2. For the rejection graph, replace the final acceptance conjunct
+
+      BETA(Bv,Cv,last,n+1)
+
+   by
+
+      EXISTS r<=W (BETA(Bv,Cv,last,r) AND r!=n+1),
+
+   retaining the other history conditions. The current phrase about a final
+   condition v!=n+1 is shorthand, but v in the printed universal row clause
+   is not in scope at the top level. Rejection should not retain the acceptance
+   equality and merely append an inequality. The corrected explicit formula
+   is again Sigma_1, and total unique evaluation makes it the complement of
+   CHECK_SPARSE on natural inputs.

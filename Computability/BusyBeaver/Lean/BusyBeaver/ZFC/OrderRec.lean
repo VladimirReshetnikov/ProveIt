@@ -3,8 +3,9 @@ import BusyBeaver.ZFC.InternalWO
 /-!
 Transfinite recursion of end-extending well-orders.
 
-A well-order is represented by a set `W` of Kuratowski pairs, reflexive on
-its field `{x | ⟨x, x⟩ ∈ W}` (`IsWOS`). A stage operation of the shape
+A relation is read from the Kuratowski-pair members of a set `W`, reflexive
+on its field `{x | ⟨x, x⟩ ∈ W}` (`IsWOS`). Nonpair members of `W` are ignored;
+a consumer requiring a literal relation set must separately remove them. A stage operation of the shape
 
     G W = W ∪ (field W × N W) ∪ O W,
 
@@ -12,9 +13,9 @@ where `N W` is a set of new elements and `O W` a well-order of `N W`, appends
 the new elements after the old ones. Every stage of the `TransRec` hierarchy
 of such a `G` is then a well-order, and end-extends every earlier stage
 (`stage_wos`): the union of a chain of end-extensions of well-orders is a
-well-order. This is the recursion behind the well-order of the formula codes
-(`CodeOrder`) and the canonical well-order of the constructible hierarchy
-(`ConstructibleOrder`).
+well-order. This supplies recursion machinery for future well-orders of
+formula codes and the constructible hierarchy; neither concrete construction
+is supplied here.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.OrderRec

@@ -1,0 +1,104 @@
+MATHEMATICAL AND PROOF-SCOPE REVIEW
+Date: 2026-10-17
+Reviewer scope: sections/internalization.tex, sections/arithmetic.tex,
+sections/sparse_bounds.tex, and data/arithmetic_graphs.txt.
+
+Result: no unresolved substantive mathematical or proof-scope issue found
+in the reviewed sections. Two displayed domain conditions were clarified
+during review and their corrections were verified in the final snapshot.
+This is an independent textual/algebraic review, not a new Lean, Coq, or
+formal PA verification.
+
+INTERNALIZATION
+
+1. Both consistency directions are correct. The literal execution bridge
+identifies halting with a native refutation, so nonhalting gives Con(N).
+Countable completeness, the native-to-ZF interpretation, and the
+constructible-model interpretation then give a ZFC model and Con(ZFC).
+Conversely, Con(ZFC) gives a coded ZFC model; theory inclusion and the
+ZF-to-native obligation give a native model, Con(N), and nonhalting.
+No unconditional model-existence or self-consistency assertion is made.
+
+2. The four project-specific internal ZFC hypotheses remain explicitly
+conditional. The arithmetic graph theorem is not presented as proving
+the register/table simulation, native/ZF comparison, or Choice transport.
+The existing external Lean theorem is treated as a blueprint rather than
+as an automatic reflection theorem into ZFC.
+
+3. Axiom certificates correctly avoid assuming that the unannotated
+range of an arbitrary recursively enumerable axiom presentation is
+decidable. Closed certified axioms and finite proof conditions give the
+intended fixed consistency predicates. Countable Henkin completeness
+uses ordinary sets, without transitive-model existence or external
+well-foundedness assumptions.
+
+4. Model satisfaction and the all-axiom clauses quantify over ambient
+formula codes. The text correctly distinguishes these from a model's
+potentially nonstandard internal syntax. Constructibility is selected by
+a fixed formula inside a set-coded model; no global truth predicate for
+the ambient universe or proper class L is used. The uniform inner-model
+axiom discharge remains a separate obligation.
+
+5. RESOLVED CLARIFICATIONS: the least-representative minimum now explicitly
+ranges over b in D; the displayed E* relation includes a,b in D*; and
+the L(A) satisfaction identity explicitly restricts to well-formed formula
+codes and assignments into D_L. These guards make the displayed formulas
+literal relations on the stated domains.
+
+6. Guarded witness search correctly gives ZFC-provably-total general
+recursive translators only after the internal witness implications have
+been established. It makes no primitive-recursive extraction claim.
+The final distinction between consistency and the stronger soundness
+needed to exclude false existential halting proofs is appropriate.
+
+ARITHMETIC GRAPHS
+
+7. Pairing, bounded beta lookup, initial invalid row, strict sortedness,
+all twelve cases, and the separate acceptance/rejection endpoints agree
+with the exact numerical evaluator. Missing dependencies cannot silently
+become valid. Redundant correct interior rows are soundly permitted.
+
+8. All quantifiers after the leading existential blocks are bounded,
+including beta-division witnesses bounded by their own B parameters.
+The existential W is chosen above every actual and prospective circuit
+value. In particular, a rejected MP comparison with valid premises is
+not incorrectly bounded by its stored zero result. Choosing W before the
+two CRT encodings introduces no circular bound on their B parameters.
+
+9. Functionality and finite-history induction establish soundness; total
+evaluation plus finite CRT encoding establish existence. Acceptance and
+rejection are therefore complementary Sigma_1 presentations of the exact
+relation. The statement that these finite arithmetic proofs can be
+carried out in PA is justified by primitive-recursive course-of-values
+evaluation and finite sequence coding. The report correctly distinguishes
+this ordinary representability proof from delivery of a formal PA proof
+or an arbitrary-model proof-assistant package.
+
+SPARSE BOUNDS
+
+10. The bit-growth proof includes zero premises and invalid input codes.
+The differences n^2 and (u-v)^2 establish N(N+2)<=3 bits(c). The cache
+bound is correctly limited to canonical certificates. Height, total bit
+mass, squared bit mass, and the unfolded-family sharpness claim follow
+with the stated qualifications.
+
+11. The stronger exponent D=2^23 is justified by the bundle tag and its
+nonzero valid payload, the confirmed depth 23, and the GEN induction.
+The fixed-circuit constants are explicitly acknowledged as enormous.
+The prospective rejected-MP bound is sufficient for the quadratic
+bit-model algorithm. Direct linear storage is not confused with CRT
+witness length or with a smaller binary machine state count.
+
+REVIEWED SNAPSHOT SHA-256
+
+sections/internalization.tex
+63e0a236be885e287b427bfb02357bb34b673b8cb919c43b7a16df822e3b615c
+
+sections/arithmetic.tex
+fd498873419e25e1df907e20183ef9b9e155bbe49c5326987e58447064cba416
+
+sections/sparse_bounds.tex
+166b3acf069670e1c1a1d0972a81c6b640c12459931dd8db937a04e5ca03448b
+
+data/arithmetic_graphs.txt
+139633622389345d2d623e4b73cea0ed5ad30a8f8cac37e30564dd010c6f7720
