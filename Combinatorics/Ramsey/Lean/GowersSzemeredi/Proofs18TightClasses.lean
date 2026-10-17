@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs18UniformCovers
+import GowersSzemeredi.Proofs18UniformCoversSide
 
 /-! A tighter degree for the split classes (Notes L.10b).
 

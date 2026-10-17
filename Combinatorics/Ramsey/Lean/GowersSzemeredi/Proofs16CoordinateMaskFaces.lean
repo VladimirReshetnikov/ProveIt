@@ -1,7 +1,10 @@
-import GowersSzemeredi.Proofs16AmbientFaceCover
+import GowersSzemeredi.Proofs16EmbeddedLift
 
 /-! Coordinate masks as proper-face retractions. These expose the ambient
-cover in the concrete form used by translated cube vertices. -/
+cover in the concrete form used by translated cube vertices.
+
+`ProperCrossSectionsMultiplyLinear.coordinate_mask_cover` is in
+`Proofs16CoordinateMaskFacesSide`, outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -30,28 +33,5 @@ def coordinateSubsetFace {N d : Nat} (s : Finset (Fin d)) (a : Point N d) :
       (selectedCoordinates (coordinateSubsetFace s a).free z) j =
       if j ∈ s then z j else a j := by
   by_cases hj : j ∈ s <;> simp [coordinateSubsetFace, selectedCoordinates, hj]
-
-/-- Every strict coordinate mask inherits an ambient cover from the proper
-cross-sections, with the same iteration parameter. -/
-theorem ProperCrossSectionsMultiplyLinear.coordinate_mask_cover
-    {N d : Nat} [NeZero N] [Fact N.Prime] {gamma r : Real}
-    {B : Finset (Point N d)} {phi : Point N d → ZMod N}
-    (hfaces : ProperCrossSectionsMultiplyLinear gamma r B phi)
-    (hg : 0 < gamma) (hg1 : gamma ≤ 1) (hr : 2 ≤ r)
-    (hgraphs : ((3 ^ d : Nat) : Real) ≤ r)
-    (s : Finset (Fin d)) (hs : s.card < d) (a t : Point N d)
-    (D : Finset (Point N d))
-    (hD : ∀ z ∈ D, (fun j => if j ∈ s then (z + t) j else a j) ∈ B) :
-    MultiplyLinearFunction gamma r D
-      (fun z => phi (fun j => if j ∈ s then (z + t) j else a j)) := by
-  have heq : ∀ z, (coordinateSubsetFace s a).map
-      (selectedCoordinates (coordinateSubsetFace s a).free (z + t)) =
-      (fun j => if j ∈ s then (z + t) j else a j) := by
-    intro z
-    funext j
-    exact coordinateSubsetFace_retraction s a (z + t) j
-  have hp := hfaces.ambient_face_cover hg hg1 hr hgraphs
-    (coordinateSubsetFace s a) hs t D (by simpa only [heq] using hD)
-  simpa only [heq] using hp
 
 end LeanProofs.GowersSzemeredi

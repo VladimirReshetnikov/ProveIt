@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs18CoverModulus
 import GowersSzemeredi.Proofs18GenericEnvelopeBase
+import GowersSzemeredi.Proofs18GenericEnvelopeBaseSide
 
 /-! The density envelope of the single-piece step with the joint-cover
 remainder (Notes L.12).

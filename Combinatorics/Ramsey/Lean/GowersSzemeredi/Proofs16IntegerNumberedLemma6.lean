@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs16IntegerFamilyLemma6
 import GowersSzemeredi.Proofs16IntegerSourceBudget
 import GowersSzemeredi.Proofs16AllDimensionsExplicit
+import GowersSzemeredi.Proofs16CubicCommonBase
 
 /-! Lemma 16.6 with the literal numbered width and ordinary integer boxes.
 The covering premise uses the paper's ordinary-box geometry. No primality

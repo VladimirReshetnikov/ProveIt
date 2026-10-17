@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16IntegerClassTwo
 import GowersSzemeredi.Proofs16AllDimensions
+import GowersSzemeredi.Proofs16AllDimensionsSide
 
 /-! Actual uniform classes carry integer cover certificates in every
 positive dimension above one, with the same degree and threshold bounds. -/

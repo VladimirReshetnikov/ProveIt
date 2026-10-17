@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16UniformPowerCover
 import GowersSzemeredi.Proofs16CommonBaseLineCovers
+import GowersSzemeredi.Proofs16UnusedCoordinateParameter
 
 /-! Apply the valid power-width lift to the actual structured pair and
 common-base witnesses used in the Section 16 induction. -/

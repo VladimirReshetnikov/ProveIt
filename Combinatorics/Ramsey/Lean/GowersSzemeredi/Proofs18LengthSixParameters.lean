@@ -1,6 +1,8 @@
 import GowersSzemeredi.Proofs18LengthSixExponents
 import GowersSzemeredi.Proofs03FourFactorSymmetry
 import GowersSzemeredi.Proofs05Corollary58
+import GowersSzemeredi.Proofs18LengthSixDensitySide
+import GowersSzemeredi.Proofs18LengthSixExponentsSide
 
 /-! The exponents of the length-six route are polynomial in `X = 2/α`.
 

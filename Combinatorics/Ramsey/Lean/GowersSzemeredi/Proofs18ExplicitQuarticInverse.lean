@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs18JointInverseInduction
 import GowersSzemeredi.Proofs16ExplicitDimensionTwo
+import GowersSzemeredi.Proofs16SpectrumInductionSide
 
 /-! The degree-four inverse theorem with an explicit modulus threshold.
 

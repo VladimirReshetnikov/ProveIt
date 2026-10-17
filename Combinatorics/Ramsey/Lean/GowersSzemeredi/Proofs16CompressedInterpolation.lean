@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16ShortColumns
+import GowersSzemeredi.Proofs16LocalizedCover
 
 /-! Unordered two-anchor interpolants already cover directly sampled points.
 Repeated sample values are allowed. If all values coincide, one slice list

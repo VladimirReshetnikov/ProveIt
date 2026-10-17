@@ -1,5 +1,4 @@
 import GowersSzemeredi.Proofs16FibreGeometry
-import GowersSzemeredi.Proofs16WidthMonotonicity
 
 /-! # Affine extensions and the selected fibre domain for Lemma 16.9 -/
 set_option autoImplicit false

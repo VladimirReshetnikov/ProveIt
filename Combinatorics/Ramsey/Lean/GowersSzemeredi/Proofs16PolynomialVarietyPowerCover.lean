@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16PolynomialMultilinearCover
 import GowersSzemeredi.Proofs16VarietyUniformLiftControls
+import GowersSzemeredi.Proofs16CubicCommonBase
 
 /-! Pure-power three-dimensional covers from structured variety slices.
 The polynomial line recurrence and the joint variety cover yield a

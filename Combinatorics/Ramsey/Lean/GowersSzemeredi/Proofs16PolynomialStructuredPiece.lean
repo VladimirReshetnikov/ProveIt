@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16PolynomialCommonBaseCover
 import GowersSzemeredi.Proofs16CubicStructuredCover
+import GowersSzemeredi.Proofs16CubicStructuredCoverSide
 
 /-! Dense graph pieces with polynomial spectrum-count recurrence controls.
 

@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs05SimultaneousMultiaffinePartition
 import GowersSzemeredi.Proofs16Lemma1
+import GowersSzemeredi.Proofs02Partition
 
 /-! A polynomial family-size recurrence bound for the geometry of Lemma 16.1.
 

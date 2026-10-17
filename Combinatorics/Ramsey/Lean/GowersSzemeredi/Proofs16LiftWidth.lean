@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16LocalAffineLift
+import GowersSzemeredi.Proofs16LocalizationBudget
 
 /-! # An explicit rounded width for synchronized affine lifting -/
 set_option autoImplicit false

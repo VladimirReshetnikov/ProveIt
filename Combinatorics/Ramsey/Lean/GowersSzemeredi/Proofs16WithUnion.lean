@@ -1,5 +1,5 @@
-import GowersSzemeredi.Proofs16WithLemma6
 import GowersSzemeredi.Proofs05BoxTransport
+import GowersSzemeredi.Proofs16LocalizedCover
 
 /-! Finite unions of relations with arbitrary multiple-multilinearity controls.
 

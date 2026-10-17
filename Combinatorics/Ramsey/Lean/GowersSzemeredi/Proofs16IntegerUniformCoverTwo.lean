@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16IntegerClassPieceCover
+import GowersSzemeredi.Proofs16UniformCoverTwo
 
 /-! Dimension-two Freiman piece families have genuine integer covers.
 The existing class data, counts, widths and decomposition are preserved. -/

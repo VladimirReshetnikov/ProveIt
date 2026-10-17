@@ -1,5 +1,7 @@
 import GowersSzemeredi.Proofs16CubicCapBound
 import GowersSzemeredi.Proofs16CubicStructuredCover
+import GowersSzemeredi.Proofs16CubicStructuredCoverSide
+import GowersSzemeredi.Proofs16UnusedCoordinateParameter
 
 /-! Remove the rounding threshold from the dimension-two width control.
 The remaining logarithm depends only on the outer density parameters, not

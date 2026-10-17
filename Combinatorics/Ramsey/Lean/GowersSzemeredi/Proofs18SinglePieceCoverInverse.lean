@@ -1,5 +1,7 @@
 import GowersSzemeredi.Proofs16SinglePieceCoverGlobal
 import GowersSzemeredi.Proofs18SinglePieceInverse
+import GowersSzemeredi.Proofs15ExplicitThresholds
+import GowersSzemeredi.Proofs16SinglePieceCoverGlobalSide
 
 /-! The frequency box and the inverse step with the remainder from joint
 vertex covers (Notes L.12).

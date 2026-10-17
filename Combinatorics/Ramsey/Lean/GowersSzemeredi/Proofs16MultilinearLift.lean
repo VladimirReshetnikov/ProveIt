@@ -1,21 +1,13 @@
 import GowersSzemeredi.Proofs05MultilinearIteration
 
-/-! # Lifting a multilinear function by one coordinate -/
+/-! # The root of the multilinear partition threshold
+
+The lift by one coordinate, `IsMultilinear.mul_new_coordinate`, is in
+`Proofs16Lemma1`, upstream of the final route's bridges that use it. -/
 set_option autoImplicit false
 noncomputable section
 open scoped BigOperators
 namespace LeanProofs.GowersSzemeredi
-
-/-- Multiplication by a new variable preserves multilinearity. -/
-theorem IsMultilinear.mul_new_coordinate {N k : Nat}
-    {mu : Point N k → ZMod N} (hmu : IsMultilinear mu) :
-    IsMultilinear (fun z : Point N (k + 1) => mu (Fin.tail z) * z 0) := by
-  obtain ⟨c, hc⟩ := hmu
-  refine ⟨fun e => if e 0 then c (Fin.tail e) else 0, ?_⟩
-  intro z
-  dsimp only
-  rw [hc, ← (Fin.consEquiv (fun _ : Fin (k + 1) => Bool)).sum_comp, Fintype.sum_prod_type]
-  simp [Fin.consEquiv, Fin.prod_univ_succ, Fin.tail, Finset.mul_sum, mul_comm, mul_left_comm]
 
 /-- The threshold forces the final root to be at least two, so every axis
 in a partition cell contains a pair of adjacent indices. -/

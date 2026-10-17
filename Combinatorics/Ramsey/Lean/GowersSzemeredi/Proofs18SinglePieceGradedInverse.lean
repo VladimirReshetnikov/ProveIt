@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs16SinglePieceGradedGlobal
 import GowersSzemeredi.Proofs18SinglePieceInverse
 import GowersSzemeredi.Proofs05Corollary58
+import GowersSzemeredi.Proofs15ExplicitThresholds
 
 /-! The frequency box and the inverse step with graded vertex providers
 (Notes L.10, G3b).

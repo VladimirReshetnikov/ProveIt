@@ -10041,6 +10041,25 @@ declaration, structure field or namespace that no module it still sees declares
   route module `Proofs16GlobalAffineLift`, outside it, uses one of its moved
   declarations, and the region of that module declares global simp lemmas
   (`Proofs16CoordinateDirections`). The planner refuses both situations.
+- The seven largest remaining regions then left together: 63 modules and 6,290
+  lines. The largest contains `Proofs16GlobalAffineLift`, so the
+  `Proofs16LocalAffineLift` region is no longer blocked. 154 declarations of 36
+  route modules needed the seven regions and moved to 36 side modules. The planner (`detach_side2.py`) needed
+  three extensions. A moved declaration that uses one moved from another module
+  V imports `VSide`; V precedes U in import order, so the side modules stay
+  acyclic. An existing side module receives the new declarations ahead of its
+  own body: they come from U, which does not import it. And a moved block keeps
+  the `open` and `variable` commands in scope at its old position, repeated in
+  a `section` around it, so that section variables bind as before. The moved
+  declarations include the assembled results of the superseded routes
+  (`theorem_16_2_of_family_lemmas`, `corollary_16_11_of_family_lemmas`,
+  `lemma_16_1_holds`, `PowerUniformClass.theorem162At`, the length-six
+  `length_six_function_discrepancy`). The attribute check refused
+  `Proofs16CoordinateDirections` for its two simp lemmas. Both are about
+  `CoordinateFace.direction`, which that module defines, so they can fire only
+  in modules that use its names, and the name compensation reaches those; the
+  module was allowed by hand. The real route went to 499 modules and 105,589
+  lines.
   `Proofs16Basic`'s region shows the limit of text-based compensation:
   its moved declarations are named `….mono`, and `mono` occurs in many modules
   through dot notation, so the check cannot tell which modules use them.

@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs18CoverDensity
 import GowersSzemeredi.Proofs18CoverModulusFejer
+import GowersSzemeredi.Proofs18FejerEnvelopeBaseSide
 
 /-! **The density envelope of the Section 18 step under the Fejér θ₁**
 (Notes L.16d).

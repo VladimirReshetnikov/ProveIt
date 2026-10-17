@@ -1,0 +1,367 @@
+import GowersSzemeredi.Proofs18LengthSixScale
+import GowersSzemeredi.Proofs18WidthPowerBoundsSide
+
+/-! Declarations of `Proofs18LengthSixScale` that the final route does not use and that
+need modules outside it (moved here so that those modules can leave the route). -/
+
+set_option autoImplicit false
+
+noncomputable section
+
+namespace LeanProofs.GowersSzemeredi
+
+/-- **The nested lift width is a power above an explicit threshold.** -/
+theorem lsNest_powerLB {Eb : Nat → Real → Real → Real → Real} {C : Real → Real} {alpha t : Real}
+    (hE : ∀ l g u s, 0 < s → s ≤ 1 → 0 < Eb l g u s ∧ Eb l g u s ≤ 1)
+    (hC : ∀ u, 0 < u → u ≤ 1 → 0 < C u ∧ C u ≤ 1) (ht : 0 < t) (ht1 : t ≤ 1) :
+    WidthPowerLB (fun L => nestW (fun _ => C) (fun _ => sixW Eb alpha) 3 t L)
+      (lsNestExp Eb C alpha t) (lsNestThr Eb C alpha t) := by
+  obtain ⟨hc1, hc1'⟩ := hC t ht ht1
+  obtain ⟨hc2, hc2'⟩ := hC (C t) hc1 hc1'
+  have h1 := sixW_powerLB (alpha := alpha) hE ht ht1
+  have h2 := sixW_powerLB (alpha := alpha) hE hc1 hc1'
+  have h3 := sixW_powerLB (alpha := alpha) hE hc2 hc2'
+  have a1 := sixWExp_pos (alpha := alpha) hE ht ht1
+  have a2 := sixWExp_pos (alpha := alpha) hE hc1 hc1'
+  have a3 := sixWExp_pos (alpha := alpha) hE hc2 hc2'
+  have h12 := WidthPowerLB.comp h1 h2 a1 a2.le (one_le_sixWThr Eb alpha t)
+    (zero_le_one.trans (one_le_sixWThr Eb alpha (C t)))
+  have h123 := WidthPowerLB.comp h12 h3 (mul_pos a1 a2) a3.le
+    ((one_le_sixWThr Eb alpha t).trans (le_max_left _ _))
+    (zero_le_one.trans (one_le_sixWThr Eb alpha (C (C t))))
+  intro L hL
+  have := h123 L hL
+  simpa only [nestW_three_eq, lsNestExp] using this
+
+end LeanProofs.GowersSzemeredi
+
+namespace LeanProofs.GowersSzemeredi
+
+section
+variable (A Bq : Nat → Real) (K2 p2 : Nat) (alpha : Real)
+
+def lsC : Real → Real := sixC sixQb alpha
+
+def lsRho1 : Real := lsC alpha (lsC alpha (lsC alpha (lsT2 alpha)))
+
+/-- The exponent of the spectrum-scale cover. -/
+def lsEm : Real := sixEb A Bq 2 (lsDelta alpha) (lsBudget alpha) (lsRho1 alpha / 2 / 2)
+
+/-- The exponent of `m` in `N`. -/
+def lsMExp : Real := lsNestExp (sixEb A Bq) (lsC alpha) alpha (lsT2 alpha) * (lsEm A Bq alpha / 2)
+
+/-- The threshold for `m ≥ N^lsMExp`. -/
+def lsMThr : Real :=
+  max (lsNestThr (sixEb A Bq) (lsC alpha) alpha (lsT2 alpha))
+    (64 ^ (1 / lsNestExp (sixEb A Bq) (lsC alpha) alpha (lsT2 alpha)))
+
+/-- The worst spectrum count. -/
+def lsQM : Nat := ⌊singlePieceGlobalQmax sixQb (lsC alpha) alpha (alpha / 2) 2⌋₊
+
+/-- The exponent of `m` in the spectrum cell width. -/
+def lsB : Real := familyRecExp 2 p2 (lsQM alpha) / 2
+
+def lsRho : Real := spectrumPieceRho (fun t => t / 2) (lsRho1 alpha)
+
+def lsThS : Real := singlePieceTheta (lsRho alpha) 1
+
+def lsCS : Real := singlePieceGlobalC sixQb alpha (alpha / 2) 2 (lsThS alpha)
+
+def lsEth : Real := sixEb A Bq 2 (alpha / 2) (lsBudget alpha) (lsThS alpha / 2)
+
+def lsEc : Real := sixEb A Bq 2 (alpha / 2) (lsBudget alpha) (lsCS alpha / 2)
+
+/-- The exponent of the final width in `N`. -/
+def lsF : Real :=
+  lsMExp A Bq alpha * (lsB p2 alpha * (lsEth A Bq alpha * lsEc A Bq alpha) / 2)
+
+/-- The localization exponent. -/
+def lsE : Real := lsF A Bq p2 alpha / 8
+
+/-- How large `m` must be. -/
+def lsMReq : Real :=
+  max (familyRecThr 2 K2 p2 (lsQM alpha) : Real)
+    (max ((8 / lsZeta alpha) ^ (1 / lsB p2 alpha))
+      (max ((4 / (lsZeta alpha * lsRho alpha ^ 3)) ^ (1 / lsB p2 alpha))
+        ((16 / lsZeta alpha) ^ (2 / lsB p2 alpha))))
+
+/-- **The modulus threshold of the length-six route.** -/
+def lsTloc : Real :=
+  max (max 3 (lemma156ExplicitThreshold 2 (alpha / 2) (alpha / 2)))
+    (max (lsMThr A Bq alpha)
+      (max (4 ^ (1 / lsNestExp (sixEb A Bq) (lsC alpha) alpha (lsT2 alpha)))
+        (max (lsMReq K2 p2 alpha ^ (1 / lsMExp A Bq alpha))
+          (max (6 ^ (1 / lsE A Bq p2 alpha)) (8 ^ (2 / lsF A Bq p2 alpha))))))
+
+end
+
+end LeanProofs.GowersSzemeredi
+
+namespace LeanProofs.GowersSzemeredi
+
+/-- **The scale conditions of the length-six route hold above `lsTloc`.** -/
+theorem ls_modulus_conditions {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q) {K2 p2 : Nat}
+    (hK2 : 2 ≤ K2) (hp2 : 0 < p2) {alpha : Real} (ha : 0 < alpha) (haHalf : alpha ≤ 1 / 2)
+    (N : Nat) [NeZero N] [Fact N.Prime] (hN : lsTloc A Bq K2 p2 alpha ≤ N) :
+    SinglePieceModulusConditions sixQb (sixEb A Bq) (sixC sixQb alpha)
+      (sixW (sixEb A Bq) alpha) alpha 2 (familyRecExp 2 p2) (familyRecThr 2 K2 p2)
+      (lsE A Bq p2 alpha) N := by
+  -- ranges of the controls
+  have hE : ∀ l g u s, 0 < s → s ≤ 1 → 0 < sixEb A Bq l g u s ∧ sixEb A Bq l g u s ≤ 1 :=
+    fun l g u s hs hs1 => ⟨sixEb_pos hB l g u s hs hs1, sixEb_le_one l g u s hs hs1⟩
+  have hC := sixC_pos_le (fun l g t s _ _ => sixQb_ge_one l g t s) alpha
+  have ha1 : alpha ≤ 1 := by linarith
+  obtain ⟨hθ₂, hθ₂1⟩ := section16ThetaTwo_pos_le (gamma := alpha / 2) 2 ha ha1 (by positivity)
+    (by linarith)
+  have ht2 : 0 < lsT2 alpha := by unfold lsT2 globalTheta2; positivity
+  have ht21 : lsT2 alpha ≤ 1 := by unfold lsT2 globalTheta2; linarith
+  obtain ⟨hc1, hc1'⟩ := hC _ ht2 ht21
+  obtain ⟨hc2, hc2'⟩ := hC _ hc1 hc1'
+  obtain ⟨hr1, hr1'⟩ := hC _ hc2 hc2'
+  have hρ1' : lsRho1 alpha ≤ 1 := hr1'
+  have hρ : 0 < lsRho alpha := by unfold lsRho spectrumPieceRho; positivity
+  have hρ' : lsRho alpha ≤ 1 := by
+    unfold lsRho spectrumPieceRho
+    have : lsRho1 alpha / 2 * (lsRho1 alpha / 2 / 2) ≤ 1 * 1 :=
+      mul_le_mul (by linarith) (by linarith) (by positivity) zero_le_one
+    linarith
+  have hthS : 0 < lsThS alpha := by unfold lsThS singlePieceTheta; positivity
+  have hthS' : lsThS alpha ≤ 1 := by
+    unfold lsThS singlePieceTheta
+    have h3 : lsRho alpha ^ 3 ≤ 1 := pow_le_one₀ hρ.le hρ'
+    rw [div_le_one (by positivity)]
+    norm_num
+    linarith
+  have hcS : 0 < lsCS alpha ∧ lsCS alpha ≤ 1 := by
+    have hq := sixQb_ge_one 2 (alpha / 2) (globalBudget alpha (alpha / 2) 2) (lsThS alpha / 2)
+    unfold lsCS singlePieceGlobalC
+    refine ⟨by positivity, ?_⟩
+    rw [div_le_one (by linarith)]
+    linarith
+  obtain ⟨hz, _⟩ := section16Zeta_pos_le_half 2 ha ha1 (by positivity : 0 < alpha / 2)
+    (by linarith : alpha / 2 ≤ 1)
+  have hζ : 0 < lsZeta alpha := hz
+  have hb : 0 < lsB p2 alpha := by unfold lsB; exact div_pos (familyRecExp_pos 2 p2 _ hp2) two_pos
+  obtain ⟨hEm, _⟩ := hE 2 (lsDelta alpha) (lsBudget alpha) (lsRho1 alpha / 2 / 2)
+    (by positivity) (by linarith)
+  obtain ⟨hEth, _⟩ := hE 2 (alpha / 2) (lsBudget alpha) (lsThS alpha / 2)
+    (by positivity) (by linarith)
+  obtain ⟨hEc, _⟩ := hE 2 (alpha / 2) (lsBudget alpha) (lsCS alpha / 2)
+    (by linarith [hcS.1]) (by linarith [hcS.2])
+  have haN := lsNestExp_pos (alpha := alpha) hE hC ht2 ht21
+  have hmE : 0 < lsMExp A Bq alpha := by
+    unfold lsMExp; exact mul_pos haN (div_pos (show 0 < lsEm A Bq alpha from hEm) two_pos)
+  have hF : 0 < lsF A Bq p2 alpha := by
+    unfold lsF lsEth lsEc at *
+    exact mul_pos hmE (by positivity)
+  have he : 0 < lsE A Bq p2 alpha := by unfold lsE; positivity
+  -- the modulus is large
+  have hNpos : (0 : Real) < N := by exact_mod_cast NeZero.pos N
+  have hT : ∀ X : Real, X ≤ lsTloc A Bq K2 p2 alpha → X ≤ N := fun X hX => hX.trans hN
+  have hN3 : (3 : Real) ≤ N := hT _ ((le_max_left _ _).trans (le_max_left _ _))
+  have hN156 : lemma156ExplicitThreshold 2 (alpha / 2) (alpha / 2) ≤ N :=
+    hT _ ((le_max_right _ _).trans (le_max_left _ _))
+  have hNM : lsMThr A Bq alpha ≤ N :=
+    hT _ ((le_max_left _ _).trans (le_max_right _ _))
+  have hN4 : (4 : Real) ^ (1 / lsNestExp (sixEb A Bq) (lsC alpha) alpha (lsT2 alpha)) ≤ N :=
+    hT _ ((le_max_left _ _).trans ((le_max_right _ _).trans (le_max_right _ _)))
+  have hNR : lsMReq K2 p2 alpha ^ (1 / lsMExp A Bq alpha) ≤ N :=
+    hT _ ((le_max_left _ _).trans ((le_max_right _ _).trans ((le_max_right _ _).trans
+      (le_max_right _ _))))
+  have hN6 : (6 : Real) ^ (1 / lsE A Bq p2 alpha) ≤ N :=
+    hT _ ((le_max_left _ _).trans ((le_max_right _ _).trans ((le_max_right _ _).trans
+      ((le_max_right _ _).trans (le_max_right _ _)))))
+  have hprime : N.Prime := Fact.out
+  have hodd : Odd N := hprime.odd_of_ne_two (by
+    intro h2; rw [h2] at hN3; norm_num at hN3)
+  -- the nested width and `m`
+  obtain ⟨NW, hNW⟩ : ∃ NW : Nat, nestW (fun _ => sixC sixQb alpha)
+      (fun _ => sixW (sixEb A Bq) alpha) (2 ^ 2 - 1) (globalTheta2 alpha (alpha / 2) 2) N = NW :=
+    ⟨_, rfl⟩
+  have hNW3 : nestW (fun _ => sixC sixQb alpha) (fun _ => sixW (sixEb A Bq) alpha) 3
+      (lsT2 alpha) N = NW := hNW
+  have hnest := lsNest_powerLB (alpha := alpha) hE hC ht2 ht21
+  have hNWpow : (N : Real) ^ lsNestExp (sixEb A Bq) (lsC alpha) alpha (lsT2 alpha) ≤ NW := by
+    have h : (N : Real) ^ lsNestExp (sixEb A Bq) (lsC alpha) alpha (lsT2 alpha) ≤
+        ((nestW (fun _ => sixC sixQb alpha) (fun _ => sixW (sixEb A Bq) alpha) 3
+          (lsT2 alpha) N : Nat) : Real) := hnest N (hNM.trans' (le_max_left _ _))
+    rw [hNW3] at h
+    exact h
+  have hNW4 : (4 : Real) ≤ NW :=
+    (le_rpow_of_rpow_inv_le haN (by norm_num) hN4).trans hNWpow
+  obtain ⟨m, hm⟩ : ∃ m : Nat, coverWidth (sixEb A Bq 2 (lsDelta alpha) (lsBudget alpha))
+      (singlePieceGlobalRho1 (sixC sixQb alpha) alpha (alpha / 2) 2 / 2)
+      ⌈(NW : Real) / 8⌉₊ = m := ⟨_, rfl⟩
+  have hmpow : (N : Real) ^ lsMExp A Bq alpha ≤ m := by
+    have hcov := coverWidth_div8_powerLB (sixEb A Bq 2 (lsDelta alpha) (lsBudget alpha))
+      (lsRho1 alpha / 2) hEm
+    have hcomp := WidthPowerLB.comp hnest hcov haN (by positivity)
+      ((one_le_sixWThr _ _ _).trans ((le_max_left _ _).trans (le_max_left _ _))) (by norm_num)
+    have h := hcomp N hNM
+    have hm' : coverWidth (sixEb A Bq 2 (lsDelta alpha) (lsBudget alpha)) (lsRho1 alpha / 2)
+        ⌈((nestW (fun _ => sixC sixQb alpha) (fun _ => sixW (sixEb A Bq) alpha) 3
+          (lsT2 alpha) N : Nat) : Real) / 8⌉₊ = m := by
+      rw [hNW3]; exact hm
+    have h' : (N : Real) ^ lsMExp A Bq alpha ≤
+        (coverWidth (sixEb A Bq 2 (lsDelta alpha) (lsBudget alpha)) (lsRho1 alpha / 2)
+          ⌈((nestW (fun _ => sixC sixQb alpha) (fun _ => sixW (sixEb A Bq) alpha) 3
+            (lsT2 alpha) N : Nat) : Real) / 8⌉₊ : Real) := h
+    rw [hm'] at h'
+    exact h'
+  have hm1 : (1 : Real) ≤ m :=
+    (Real.one_le_rpow (by linarith) hmE.le).trans hmpow
+  have hmReq : lsMReq K2 p2 alpha ≤ m :=
+    (le_rpow_of_rpow_inv_le hmE ((Nat.cast_nonneg _).trans (le_max_left _ _)) hNR).trans hmpow
+  have hmb8 : 8 / lsZeta alpha ≤ (m : Real) ^ lsB p2 alpha :=
+    le_rpow_of_rpow_inv_le hb (by positivity)
+      (((le_max_left _ _).trans (le_max_right _ _)).trans hmReq)
+  have hmbρ : 4 / (lsZeta alpha * lsRho alpha ^ 3) ≤ (m : Real) ^ lsB p2 alpha :=
+    le_rpow_of_rpow_inv_le hb (by positivity)
+      (((le_max_left _ _).trans ((le_max_right _ _).trans (le_max_right _ _))).trans hmReq)
+  have hmb16 : 16 / lsZeta alpha ≤ (m : Real) ^ (lsB p2 alpha / 2) := by
+    have h := ((le_max_right _ _).trans ((le_max_right _ _).trans (le_max_right _ _))).trans hmReq
+    apply le_rpow_of_rpow_inv_le (by positivity) (by positivity)
+    simpa only [one_div_div] using h
+  have hthr : (familyRecThr 2 K2 p2 (lsQM alpha) : Real) ≤ m := (le_max_left _ _).trans hmReq
+  -- the final exponent
+  have hρ1eq : singlePieceGlobalRho1 (sixC sixQb alpha) alpha (alpha / 2) 2 = lsRho1 alpha := rfl
+  have hthSeq : singlePieceTheta (spectrumPieceRho (fun t => t / 2) (lsRho1 alpha)) 1 =
+      lsThS alpha := rfl
+  have hcSeq : singlePieceGlobalC sixQb alpha (alpha / 2) 2 (lsThS alpha) = lsCS alpha := rfl
+  have hBudeq : globalBudget alpha (alpha / 2) 2 = lsBudget alpha := rfl
+  have hZeq : section16Zeta alpha (alpha / 2) 2 = lsZeta alpha := rfl
+  have hQeq : singlePieceGlobalQmax sixQb (sixC sixQb alpha) alpha (alpha / 2) 2 =
+      singlePieceGlobalQmax sixQb (lsC alpha) alpha (alpha / 2) 2 := rfl
+  have hFin : ∀ q : Nat, (q : Real) ≤ singlePieceGlobalQmax sixQb (lsC alpha) alpha (alpha / 2) 2 →
+      (N : Real) ^ lsF A Bq p2 alpha ≤
+        coverWidth (sixEb A Bq 2 (alpha / 2) (lsBudget alpha)) (lsCS alpha)
+          (coverWidth (sixEb A Bq 2 (alpha / 2) (lsBudget alpha)) (lsThS alpha)
+            ⌈spectrumCellWidth (lsZeta alpha) m (familyRecExp 2 p2 q) / 8⌉₊) ∧
+      2 * lsB p2 alpha ≤ familyRecExp 2 p2 q := by
+    intro q hq
+    have hqM : q ≤ lsQM alpha := Nat.le_floor hq
+    have heps : 2 * lsB p2 alpha ≤ familyRecExp 2 p2 q := by
+      unfold lsB
+      have := familyRecExp_antitone (k := 2) hp2 hqM
+      linarith
+    refine ⟨?_, heps⟩
+    have hSCW : (m : Real) ^ (lsB p2 alpha / 2) ≤
+        spectrumCellWidth (lsZeta alpha) m (familyRecExp 2 p2 q) / 8 :=
+      spectrumCellWidth_div8_ge_rpow hζ (by exact_mod_cast hm1) heps hmb16
+    let L : Nat := ⌈spectrumCellWidth (lsZeta alpha) m (familyRecExp 2 p2 q) / 8⌉₊
+    have hLge : (m : Real) ^ (lsB p2 alpha / 2) ≤ L := hSCW.trans (Nat.le_ceil _)
+    have hin := coverWidth_powerLB (sixEb A Bq 2 (alpha / 2) (lsBudget alpha)) (lsThS alpha)
+      hEth.le L (by positivity)
+    let X : Nat := coverWidth (sixEb A Bq 2 (alpha / 2) (lsBudget alpha)) (lsThS alpha) L
+    have hout := coverWidth_powerLB (sixEb A Bq 2 (alpha / 2) (lsBudget alpha)) (lsCS alpha)
+      hEc.le X (by positivity)
+    have hNL := rpow_le_comp hNpos.le (half_pos hb).le hmpow hLge
+    have hNX := rpow_le_comp hNpos.le hEth.le hNL hin
+    have hNY := rpow_le_comp hNpos.le hEc.le hNX hout
+    have hexp : lsF A Bq p2 alpha =
+        ((lsMExp A Bq alpha * (lsB p2 alpha / 2)) * lsEth A Bq alpha) * lsEc A Bq alpha := by
+      unfold lsF; ring
+    rw [hexp]
+    exact hNY
+  have h6pow : (6 : Real) ≤ (N : Real) ^ lsE A Bq p2 alpha :=
+    le_rpow_of_rpow_inv_le he (by norm_num) hN6
+  have hloc {L : Nat} (hL : (N : Real) ^ lsF A Bq p2 alpha ≤ L) :
+      2 ≤ L ∧ (N : Real) ^ lsE A Bq p2 alpha ≤ ((Nat.sqrt (L - 1) - 1 : Nat) : Real) :=
+    localization_width_bounds (by linarith only [hN3]) hF.le h6pow hL
+  unfold SinglePieceModulusConditions SinglePieceGlobalScale singlePieceGlobalWidth
+  simp only [hρ1eq, hthSeq, hcSeq, hBudeq, hZeq, hQeq]
+  refine ⟨hodd, hN156, ?_, m, ⟨by rw [hNW]; exact_mod_cast hNW4, by exact_mod_cast hm1,
+    by rw [hNW]; exact le_of_eq hm.symm, ?_⟩, ?_⟩
+  · -- `4 ≤ N^e`
+    linarith only [h6pow]
+  · intro q hq
+    obtain ⟨hFq, heps⟩ := hFin q hq
+    have hqM : q ≤ lsQM alpha := Nat.le_floor hq
+    have hthrq : (familyRecThr 2 K2 p2 q : Real) ≤ familyRecThr 2 K2 p2 (lsQM alpha) :=
+      Nat.cast_le.mpr (familyRecThr_mono (by omega) hqM)
+    obtain ⟨hcell4, hcellrho⟩ :=
+      spectrumCellWidth_scale_bounds hζ hρ (by exact_mod_cast hm1) heps hmb8 hmbρ
+    exact ⟨Nat.cast_le.mp (hthrq.trans hthr), hcell4, hcellrho, (hloc hFq).1⟩
+  · intro q hq
+    obtain ⟨hFq, -⟩ := hFin q hq
+    exact (hloc hFq).2
+
+/-- The localization exponent lies in `(0, 1/2]`. -/
+theorem lsE_pos_le {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q) {p2 : Nat} (hp2 : 0 < p2)
+    {alpha : Real} (ha : 0 < alpha) (haHalf : alpha ≤ 1 / 2) :
+    0 < lsE A Bq p2 alpha ∧ lsE A Bq p2 alpha ≤ 1 / 2 := by
+  have hE : ∀ l g u s, 0 < s → s ≤ 1 → 0 < sixEb A Bq l g u s ∧ sixEb A Bq l g u s ≤ 1 :=
+    fun l g u s hs hs1 => ⟨sixEb_pos hB l g u s hs hs1, sixEb_le_one l g u s hs hs1⟩
+  have hC := sixC_pos_le (fun l g t s _ _ => sixQb_ge_one l g t s) alpha
+  have ha1 : alpha ≤ 1 := by linarith
+  obtain ⟨hθ₂, hθ₂1⟩ := section16ThetaTwo_pos_le (gamma := alpha / 2) 2 ha ha1 (by positivity)
+    (by linarith)
+  have ht2 : 0 < lsT2 alpha := by unfold lsT2 globalTheta2; positivity
+  have ht21 : lsT2 alpha ≤ 1 := by unfold lsT2 globalTheta2; linarith
+  obtain ⟨hc1, hc1'⟩ := hC _ ht2 ht21
+  obtain ⟨hc2, hc2'⟩ := hC _ hc1 hc1'
+  obtain ⟨hr1, hr1'⟩ := hC _ hc2 hc2'
+  have hρ1' : lsRho1 alpha ≤ 1 := hr1'
+  have hρ : 0 < lsRho alpha := by unfold lsRho spectrumPieceRho; positivity
+  have hρ' : lsRho alpha ≤ 1 := by
+    unfold lsRho spectrumPieceRho
+    have : lsRho1 alpha / 2 * (lsRho1 alpha / 2 / 2) ≤ 1 * 1 :=
+      mul_le_mul (by linarith) (by linarith) (by positivity) zero_le_one
+    linarith
+  have hthS : 0 < lsThS alpha := by unfold lsThS singlePieceTheta; positivity
+  have hthS' : lsThS alpha ≤ 1 := by
+    unfold lsThS singlePieceTheta
+    have h3 : lsRho alpha ^ 3 ≤ 1 := pow_le_one₀ hρ.le hρ'
+    rw [div_le_one (by positivity)]
+    norm_num
+    linarith
+  have hcS : 0 < lsCS alpha ∧ lsCS alpha ≤ 1 := by
+    have hq := sixQb_ge_one 2 (alpha / 2) (globalBudget alpha (alpha / 2) 2) (lsThS alpha / 2)
+    unfold lsCS singlePieceGlobalC
+    refine ⟨by positivity, ?_⟩
+    rw [div_le_one (by linarith)]
+    linarith
+  obtain ⟨hEm, hEm'⟩ := hE 2 (lsDelta alpha) (lsBudget alpha) (lsRho1 alpha / 2 / 2)
+    (by positivity) (by linarith)
+  obtain ⟨hEth, hEth'⟩ := hE 2 (alpha / 2) (lsBudget alpha) (lsThS alpha / 2)
+    (by positivity) (by linarith)
+  obtain ⟨hEc, hEc'⟩ := hE 2 (alpha / 2) (lsBudget alpha) (lsCS alpha / 2)
+    (by linarith [hcS.1]) (by linarith [hcS.2])
+  have haN := lsNestExp_pos (alpha := alpha) hE hC ht2 ht21
+  have haN' := lsNestExp_le_one (alpha := alpha) hE hC ht2 ht21
+  have hb := familyRecExp_pos 2 p2 (lsQM alpha) hp2
+  have hb' := familyRecExp_le_one 2 p2 (lsQM alpha) hp2
+  have hBx : 0 < lsB p2 alpha ∧ lsB p2 alpha ≤ 1 := by
+    unfold lsB
+    exact ⟨by positivity, by linarith⟩
+  have h := localization_exponents_pos_le ⟨haN, haN'⟩ ⟨hEm, hEm'⟩ hBx
+    ⟨hEth, hEth'⟩ ⟨hEc, hEc'⟩
+  exact ⟨h.1, h.2.1⟩
+
+/-- **The degree-four discrepancy bound of the length-six route**, from the
+two recurrence profiles alone. -/
+theorem length_six_function_discrepancy {K1 p1 K2 p2 : Nat} (hK1 : 2 ≤ K1) (hp1 : 0 < p1)
+    (hrec1 : Section16RecurrenceProfileWith 1 (familyRecThr 1 K1 p1) (familyRecExp 1 p1))
+    (hK2 : 2 ≤ K2) (hp2 : 0 < p2)
+    (hrec2 : Section16RecurrenceProfileWith 2 (familyRecThr 2 K2 p2) (familyRecExp 2 p2))
+    {alpha : Real} (ha : 0 < alpha) (haHalf : alpha ≤ 1 / 2) :
+    FunctionDiscrepancyBound 4 alpha
+      (singlePieceEta sixQb (sixC sixQb alpha) alpha 2 *
+        fejerCubicDiscrepancyParameter (singlePieceCubicInput sixQb (sixC sixQb alpha) alpha) / 4)
+      (inverseStepExponent (2 + 1) (lsE (familyWidthPrefactor K1) (familyWidthDivisor 1 p1) p2 alpha)
+        (min (fejerCubicDiscrepancyExponent (singlePieceCubicInput sixQb (sixC sixQb alpha) alpha)) 16))
+      (max (shortLocalizationThreshold (2 + 1)
+          (lsE (familyWidthPrefactor K1) (familyWidthDivisor 1 p1) p2 alpha) (6 * ((2 + 1 : Nat) : Real))
+          (fejerCubicInverseThreshold (singlePieceCubicInput sixQb (sixC sixQb alpha) alpha))
+          (lsTloc (familyWidthPrefactor K1) (familyWidthDivisor 1 p1) K2 p2 alpha))
+        (inverseStepThreshold (2 + 1) (singlePieceEta sixQb (sixC sixQb alpha) alpha 2)
+          (fejerCubicDiscrepancyParameter (singlePieceCubicInput sixQb (sixC sixQb alpha) alpha))
+          (lsE (familyWidthPrefactor K1) (familyWidthDivisor 1 p1) p2 alpha)
+          (6 * ((2 + 1 : Nat) : Real))
+          (min (fejerCubicDiscrepancyExponent (singlePieceCubicInput sixQb (sixC sixQb alpha) alpha)) 16))) := by
+  have hB : ∀ q, 0 < familyWidthDivisor 1 p1 q := familyWidthDivisor_pos hp1
+  obtain ⟨he0, he⟩ := lsE_pos_le (A := familyWidthPrefactor K1) hB hp2 ha haHalf
+  exact length_six_quartic_inverse hK1 hp1 hrec1 hK2 hrec2 ha haHalf he0 he
+    (fun N _ _ hN => ls_modulus_conditions hB hK2 hp2 ha haHalf N hN)
+
+end LeanProofs.GowersSzemeredi

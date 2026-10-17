@@ -1,5 +1,8 @@
 import GowersSzemeredi.Proofs16SinglePieceCoverGlobal
 import GowersSzemeredi.Proofs16ClassStepFejer
+import GowersSzemeredi.Proofs16SinglePieceFrequency
+import GowersSzemeredi.Proofs17DenseFrequencyLocalization
+import GowersSzemeredi.Proofs18ShortLocalizationInverse
 
 /-! **The joint-cover inverse step under the Fejér θ₁ and the tight radius**
 (Notes L.16d).

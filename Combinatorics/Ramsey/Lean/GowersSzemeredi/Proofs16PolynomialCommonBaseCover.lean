@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs16PolynomialCubicPowerCover
 import GowersSzemeredi.Proofs16PolynomialLineExponentComparison
 import GowersSzemeredi.Proofs16CubicCommonBase
 import GowersSzemeredi.Proofs16CubicAllScaleCover
+import GowersSzemeredi.Proofs16CubicAllScaleCoverSide
 
 /-! Polynomial recurrence controls for the actual common-base construction.
 

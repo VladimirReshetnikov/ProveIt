@@ -1,5 +1,5 @@
 import GowersSzemeredi.Proofs16BoundedChunks
-import GowersSzemeredi.Proofs16GlobalGraphCover
+import GowersSzemeredi.Proofs16LiftAllScales
 
 /-! Uniform coarse covers for arbitrary functions on proper boxes.
 These handle small scales in ambient-dimension lifting without discarding

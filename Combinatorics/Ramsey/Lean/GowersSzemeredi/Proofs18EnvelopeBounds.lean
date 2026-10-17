@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs18GenericEnvelopeBase
 import GowersSzemeredi.Proofs18DoubleExponentialBounds
 import GowersSzemeredi.Proofs18FejerIterationParameters
 import GowersSzemeredi.Proofs05RefinementConstantBounds
+import GowersSzemeredi.Proofs18StructuralInverseParameters
 
 /-! Shared discrepancy envelopes and numerical bounds for the inverse step.
 

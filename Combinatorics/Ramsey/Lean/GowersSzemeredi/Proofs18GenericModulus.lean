@@ -1,4 +1,7 @@
 import GowersSzemeredi.Proofs18GenericLifts
+import GowersSzemeredi.Proofs15ExplicitThresholds
+import GowersSzemeredi.Proofs16SinglePieceGlobalSide
+import GowersSzemeredi.Proofs18SinglePieceInverse
 
 /-! The scale conditions of the single-piece step in any dimension
 (Notes L.7a, F3b).

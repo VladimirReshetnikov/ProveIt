@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16CubicAllScaleCover
+import GowersSzemeredi.Proofs16RoundedPowerWidth
 
 /-! A rational lower bound for the all-scale exponent cap. Taking logarithms
 of the explicit rounding threshold cancels its inverse powers. The bound

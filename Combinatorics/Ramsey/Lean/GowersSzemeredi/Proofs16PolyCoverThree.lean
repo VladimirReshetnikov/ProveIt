@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs16PolyPieceThreeData
 import GowersSzemeredi.Proofs03FourFactorSymmetry
 import GowersSzemeredi.Proofs05Corollary58
+import GowersSzemeredi.Proofs16PolyPieceThreeDataSide
 
 /-! **`PolyCoverAt 3`** (Notes L.5, D4).
 
