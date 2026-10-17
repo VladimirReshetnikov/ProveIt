@@ -394,3 +394,13 @@ first check passed 14 probes and 18 callers with standard axioms, retaining
 four source and two audit linter warnings. The configurable encoder can serve
 the remaining source-proof compiler directly; source-rule transport, ZF axiom
 reconstruction and the reverse consistency endpoint remain open.
+
+[Internal source instantiation](validator_environment_instantiation254.md)
+now identifies the configurable encoding of actual `substs1` with the body
+encoding whose bound slot carries the substituted term's interpreted label.
+The identity covers every internally typed term in the function-free set
+language, including fallback labels, using Π1 structural induction in IΣ1.
+The first check passed 12 axiom probes and 16 callers with standard axioms;
+one unused-variable audit warning is retained. This supplies the syntax
+identity for the source existential rule; its proof-rule transport and the
+reverse consistency compiler remain separate.
