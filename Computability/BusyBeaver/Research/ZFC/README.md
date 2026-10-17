@@ -1338,3 +1338,10 @@ witness; positive decrement adds one zero spare exactly once. The focused
 check passed 27 probes and 30 callers with zero warnings, using 83 matched
 project providers. Coded-step calibration, represented iteration and the
 internal L2/scheduler connection remain separate obligations.
+
+The [open set-template compiler](../../../../Logic/Interpretability/ZFCinPA/open-set-template-compiler.md)
+now instantiates that buffer interface for arbitrary internal set predicates,
+including free parameters, with no shift-fixedness condition. The two unchanged
+precursor modules, new client, and eight-probe/eight-caller audit pass with
+standard axioms. Two harmless style warnings are recorded. Actual target
+axiom-proof callbacks remain explicit; Collection and numerical G are separate.
