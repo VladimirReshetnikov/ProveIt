@@ -1148,6 +1148,18 @@ at free label zero, and uses explicit internal cut constructors. Eight axiom
 reports and twelve callers pass with zero warnings. Accepted-history
 translation and the full PA endpoint remain open.
 
+The [decoded single propositional axiom](../../../../Logic/Interpretability/ZFCinPA/model_coded_decoder_lukasiewicz254.md)
+now has an internal proof for arbitrary input codes in every IΣ1 model.
+Provable implication equivalence handles the zero alias through the actual
+arithmetic `rho8` constructor; a fixed Peirce proof supplies the target
+tautology. Five axiom reports and eight callers pass with zero warnings.
+
+The [decoded numerical GEN rule](../../../../Logic/Interpretability/ZFCinPA/model_coded_decoder_generalization254.md)
+connects the actual `wal` constructor to internal named generalization in
+ZF and ZFC. It includes free label zero and repeated binders. Three axiom
+reports and six callers pass with zero warnings. The remaining axiom rows,
+set-theoretic bundle and accepted-history translation remain open.
+
 
 The [arithmetic symbolic-tape interpretation](arithmetic_symbolic_tape_perm252.md)
 reuses actual finite segment/configuration syntax and normalization with an
@@ -1181,3 +1193,10 @@ yields a positive internal clock, including the real halt write and move.
 Twenty-five axiom reports and twenty callers pass with zero warnings. Syntax
 and fuel remain external finite data; the definable dispatcher relation and
 full internal runtime/PA endpoint remain separate.
+
+The [arithmetic site contracts](arithmetic_site_perm252.md) now turn actual
+accepted `SitePerm252` checks into their numeric endpoints in every IΣ1 model,
+including positive execution clocks, physical decrement guards and the
+complete final halt step. Twelve axiom reports and fourteen callers pass with
+zero warnings. The accepted-site premises remain explicit; internal dispatch
+and global runtime remain separate.
