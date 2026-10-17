@@ -43,31 +43,36 @@ section Fixed
 open SetTheory.BusyBeaver.ZFC.NamedZF SetTheory.BusyBeaver.ZFC.InternalRank
   SetTheory.BusyBeaver.ZFC.ConstructibleDef
 
-/-- A named formula at depth `k`, reading name `i` at De Bruijn slot `slots i`. -/
-def fixedP (k : ℕ) (slots : ℕ → ℕ) (φ : NForm) : SetTheorySemiproposition k :=
-  toSet k (toForm slots φ)
+/-- A named formula with free names among `0, …, n`, as a semisentence in
+`n + 1` variables (name `i` is bound variable `#i`). -/
+def piece (n : ℕ) (φ : NForm) : SetTheorySemisentence (n + 1) :=
+  Rew.rewrite (fun _ => (#0 : Semiterm ℒₛₑₜ Empty (n + 1))) ▹ toSet (n + 1) (toForm id φ)
 
-/-- `⟨m, x⟩ ∈ t` at depth `4`, with `t = #3`, `m = #0`, `x = #2`. -/
-def appXP : SetTheorySemiproposition 4 :=
-  fixedP 4 (fun i => if i = 0 then 3 else if i = 1 then 0 else 2) (pmemF 0 1 2)
+/-- `⟨m, x⟩ ∈ t`, with `t = #3`, `m = #0`, `x = #2`. -/
+def appXS : SetTheorySemisentence 4 := piece 3 (pmemF 3 0 2)
 
-/-- `⟨m, y⟩ ∈ t` at depth `4`, with `t = #3`, `m = #0`, `y = #1`. -/
-def appYP : SetTheorySemiproposition 4 :=
-  fixedP 4 (fun i => if i = 0 then 3 else if i = 1 then 0 else 1) (pmemF 0 1 2)
+/-- `⟨m, y⟩ ∈ t`, with `t = #3`, `m = #0`, `y = #1`. -/
+def appYS : SetTheorySemisentence 4 := piece 3 (pmemF 3 0 1)
 
-/-- `x ∈ y` at depth `3`, with `x = #1`, `y = #0`. -/
-def memXYP : SetTheorySemiproposition 3 := .rel Language.Mem.mem ![#1, #0]
+/-- `x ∈ y`, with `x = #1`, `y = #0`. -/
+def memXYS : SetTheorySemisentence 3 := .rel Language.Mem.mem ![#1, #0]
 
-/-- `x = y` at depth `3`, with `x = #1`, `y = #0`. -/
-def eqXYP : SetTheorySemiproposition 3 := .rel Language.Eq.eq ![#1, #0]
+/-- `x = y`, with `x = #1`, `y = #0`. -/
+def eqXYS : SetTheorySemisentence 3 := .rel Language.Eq.eq ![#1, #0]
 
-/-- `t' = econs y t` at depth `3`, with `t' = #0`, `y = #1`, `t = #2`. -/
-def econsP : SetTheorySemiproposition 3 :=
-  fixedP 3 (fun i => if i = 0 then 0 else if i = 1 then 1 else 2) (econsAtomF 0 1 2)
+/-- `t' = econs y t`, with `t' = #0`, `y = #1`, `t = #2`. -/
+def econsS : SetTheorySemisentence 3 := piece 2 (econsAtomF 0 1 2)
 
-/-- `y ∈ L` at depth `3`, with `y = #1`. -/
-noncomputable def domYP : SetTheorySemiproposition 3 :=
-  (Rewriting.emb domL : SetTheorySemiproposition 1) ⇜ ![#1]
+/-- `y ∈ L`, with `y = #1`. -/
+noncomputable def domYS : SetTheorySemisentence 3 := domL ⇜ ![#1]
+
+/-- The pieces as formulas (their codes are the codes of the semisentences). -/
+def appXP : SetTheorySemiproposition 4 := Rewriting.emb appXS
+def appYP : SetTheorySemiproposition 4 := Rewriting.emb appYS
+def memXYP : SetTheorySemiproposition 3 := Rewriting.emb memXYS
+def eqXYP : SetTheorySemiproposition 3 := Rewriting.emb eqXYS
+def econsP : SetTheorySemiproposition 3 := Rewriting.emb econsS
+noncomputable def domYP : SetTheorySemiproposition 3 := Rewriting.emb domYS
 
 @[irreducible] def appXCode : ℕ := appXP.toNat
 @[irreducible] def appYCode : ℕ := appYP.toNat

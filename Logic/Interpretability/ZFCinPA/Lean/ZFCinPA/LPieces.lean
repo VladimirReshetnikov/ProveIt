@@ -37,11 +37,6 @@ section Pieces
 
 open SetTheory.BusyBeaver.ZFC.NamedZF
 
-/-- A named formula with free names among `0, …, n`, as a semisentence in
-`n + 1` variables. -/
-def piece (n : ℕ) (φ : NForm) : SetTheorySemisentence (n + 1) :=
-  Rew.rewrite (fun _ => (#0 : Semiterm ℒₛₑₜ Empty (n + 1))) ▹ toSet (n + 1) (toForm id φ)
-
 theorem eval_piece {V : Type*} [SetStructure V] (n : ℕ) (φ : NForm)
     (e : Fin (n + 1) → V) (ε : Empty → V) :
     (piece n φ).Eval e ε ↔
