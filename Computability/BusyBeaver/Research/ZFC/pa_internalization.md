@@ -65,8 +65,11 @@ The current arithmetic checkpoints are:
   all-internal contracts, including both actual DROP and MP occurrences and
   whole-file preservation. The [complete DROP branch](arithmetic_control_drop254.md)
   pushes the old TW/WS pair, restores TW from the cache and returns to fetch;
-  its AC1 dispatcher composition is also checked. MP and AX still need their
-  complete actual-control contracts.
+  its AC1 dispatcher composition is also checked. The
+  [MP comparison](arithmetic_control_compare254.md) clears scratch1 and cache,
+  reaches success exactly when their original values agree, and has the
+  exact internal logical clock `3*a+2*distance(a,b)+2`. MP and AX still need
+  their complete actual-control contracts.
 
 The remaining major steps are the reverse internal ZF-to-validator proof
 translation, the internal L-specific Separation/Replacement proofs, and the complete
