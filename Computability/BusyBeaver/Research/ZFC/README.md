@@ -95,9 +95,14 @@ The two audits pass seventeen/nineteen and three/four reports/callers.
 The [internal word interpreter](arithmetic_command_run254.md) now represents
 all internal time steps and proves termination on every coded word, with
 halt and successful completion kept distinct. Its twenty-five reports and
-thirty callers pass. PA proves unique totality of this evaluator; agreement
-with the existing natural executor, append execution and the accepted-proof
-compiler contract remain open.
+thirty callers pass. PA proves unique totality of this evaluator.
+The [execution adapters](arithmetic_command_execution254.md) now prove
+agreement with the existing natural executor and all-internal successor and
+append execution, passing twelve/fifteen and fifteen/twenty reports/callers.
+The [Π1 contract interface](arithmetic_proof_word_contract254.md) proves that
+compiler correctness for every initial top and saved stack admits IΣ1
+induction. Six reports and eight callers pass; the twelve-case successor
+premise remains explicit.
 
 The [finite proof-template compiler](model_coded_core_compiler.md) now handles
 arbitrary internal free parameters by compiling the existing logical proof

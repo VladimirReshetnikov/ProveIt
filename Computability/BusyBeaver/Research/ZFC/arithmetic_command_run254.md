@@ -60,8 +60,9 @@ python -B Computability/BusyBeaver/Research/ZFC/check_arithmetic_command_run254.
 ```
 
 The append record supplies the checked PRF/Seq providers; this check does not
-import the append module's object. The next obligations are agreement with
-the existing natural-number `cexec`, execution of appended words, and the
-accepted-proof compiler contract. Scheduler and binary-trace transport and
+import the append module's object. The subsequent
+[execution adapters](arithmetic_command_execution254.md) now prove agreement
+with the existing natural-number `cexec` and execution of appended words at
+all internal inputs. The accepted-proof compiler contract, scheduler and binary-trace transport and
 the PA consistency equivalence remain open. No machine transition or state
 count changes here.

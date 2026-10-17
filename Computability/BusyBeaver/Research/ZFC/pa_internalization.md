@@ -270,8 +270,14 @@ The [internal iterator](arithmetic_command_run254.md) now has exact
 zero/successor and semigroup laws at every internal time. A pointwise Σ1
 induction proves that every shifted word halts or completes by the numerical
 bound given by its own code, with no bound on changing working registers.
-PA proves the resulting evaluator's unique totality. Its natural-executor
-adapter, append-execution law and accepted-proof contract remain open.
+PA proves the resulting evaluator's unique totality. The
+[execution adapters](arithmetic_command_execution254.md) now identify it with
+the actual natural executor and prove successor/append execution at every
+internal input. The [Π1 contract interface](arithmetic_proof_word_contract254.md)
+uses the total Δ1 functions to retain universal top/stack quantifiers inside
+a Π1 induction hypothesis. Thus the MP major can use its changed saved stack
+without a register-growth bound. The exact twelve-case successor premise
+remains to be discharged from the block contracts and validator recurrence.
 
 The [numeric history-checker construction](code254_arithmetic_checker.md)
 specifies a concrete next adapter: represent the exact Cantor pairing and its

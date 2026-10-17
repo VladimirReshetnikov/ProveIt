@@ -72,7 +72,8 @@ python -B Computability/BusyBeaver/Research/ZFC/check_arithmetic_command_step_wo
 
 The subsequent [internal iterator](arithmetic_command_run254.md) distinguishes
 halt from completion, makes both absorbing, and proves that every active
-tick decreases the remaining shifted word. Agreement with natural command
-execution, append execution, compiled-proof contracts, scheduler transport
-and the PA consistency equivalence remain open. These modules change no
+tick decreases the remaining shifted word. The
+[execution adapters](arithmetic_command_execution254.md) also prove natural
+command agreement and internal append execution. Compiled-proof contracts,
+scheduler transport and the PA consistency equivalence remain open. These modules change no
 machine transition or state count.
