@@ -46,6 +46,11 @@ cost 306 states; its tested hybrids cost at least293. The current 252-state
 table remains unchanged. Fewer registers alone do not guarantee a smaller
 complete machine.
 
+An independent [GEN-elimination presentation](gen_free.md) prefix-closes the
+axiom families and recovers generalization by induction using QI and MP. Its
+best tested complete control costs285 states. This sound ordinary
+admissibility idea also failed to improve the current machine.
+
 The [attributed upstream baseline](../../../../lib/jeff-busy-beaver-zfc254/README.proveit.md)
 is imported at commit `297ab8df7e5de329605c3875b4934643b371a5e3`.
 Mira-Cult designed the machine; Jeff supplies the published verification.
