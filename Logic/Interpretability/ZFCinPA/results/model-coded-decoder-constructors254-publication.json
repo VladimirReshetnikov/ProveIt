@@ -1,0 +1,141 @@
+{
+  "status": "KERNEL_PASS_PORTABLE_PREFLIGHT_INDEPENDENT_REVIEW_CLEAN",
+  "scope": "All-internal literal decoder constructor laws with exact zero implication alias; no proof transport or PA endpoint.",
+  "verification": {
+    "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-constructors254-verification.json",
+    "sha256": "e58ee25d0df49d9d944562df49e04073c0d31a6f9a32edfb654af134e6799ad9"
+  },
+  "source": {
+    "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedDecoderConstructors254.lean",
+    "sha256": "0ef9a540ad99fdf4393e8901cee99de2575b67c6ec992fff46e13265e98ec0f1"
+  },
+  "audit": {
+    "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedDecoderConstructors254Audit.lean",
+    "sha256": "211b26044a17f8135d71c7e24321b95df99354ea66153ecc1a3b430a5c7304d2"
+  },
+  "portable_guard": {
+    "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_decoder_constructors254.py",
+    "sha256": "d6245b3f15b797b26a6f2180004a79ff477676b4ab62c34ac97a0d10a97726b7"
+  },
+  "history": [
+    {
+      "attempt": 1,
+      "record": {
+        "path": "/tmp/zfc-decoder-constructors/run1/verification.json",
+        "sha256": "fb30c26ec5f13dee2fa663654d0781fe169aeb69e4d741537c6776f83fb7a7f7"
+      },
+      "status": "FAIL",
+      "source": {
+        "path": "/tmp/zfc-decoder-constructors/sources/ZFCinPA/ModelCodedDecoderConstructors254.lean",
+        "sha256": "4d3016873d6edcf0790d504031dd7deda8ea6ecc36f192ed659bb6a62f9bb439",
+        "snapshot": "/tmp/zfc-decoder-constructors/run1/sources/ZFCinPA/ModelCodedDecoderConstructors254.lean"
+      },
+      "audit": {
+        "path": "/tmp/zfc-decoder-constructors/Audit.lean",
+        "sha256": "4f18ad2ef5a49cbacfaa7497d6c5243dab870047a07d908fd0ddd4924545bc95",
+        "snapshot": "/tmp/zfc-decoder-constructors/run1/sources/Audit.lean"
+      },
+      "commands": [
+        {
+          "label": "source",
+          "seconds": 2.4351755557581782,
+          "exit_code": 1,
+          "output": "/tmp/zfc-decoder-constructors/run1/sources/ZFCinPA/ModelCodedDecoderConstructors254.lean:22:54: error: Ambiguous term\n  zero_div\nPossible interpretations:\n  _root_.zero_div : \u2200 (a : ?m.35), 0 / a = 0\n  \n  Arithmetic.zero_div : \u2200 (a : ?m.35), 0 / a = 0\n/tmp/zfc-decoder-constructors/run1/sources/ZFCinPA/ModelCodedDecoderConstructors254.lean:22:4: error: Type mismatch: After simplification, term\n  h\n has type\n  (a + b) * (a + b + 1) / 2 + b = 0\nbut is expected to have type\n  (a + b) * (a + b + 1) / 2 + b = 0 / 2 + 0\n/tmp/zfc-decoder-constructors/run1/sources/ZFCinPA/ModelCodedDecoderConstructors254.lean:87:48: error: Ambiguous term\n  zero_div\nPossible interpretations:\n  _root_.zero_div : \u2200 (a : ?m.24), 0 / a = 0\n  \n  Arithmetic.zero_div : \u2200 (a : ?m.24), 0 / a = 0\n/tmp/zfc-decoder-constructors/run1/sources/ZFCinPA/ModelCodedDecoderConstructors254.lean:87:2: error: Type mismatch: After simplification, term\n  decode_mem 0 0\n has type\n  decode (4 * (0 / 2 + 0) + 1) = atomCode 1 0 0\nbut is expected to have type\n  decode 1 = atomCode 1 0 0\n"
+        }
+      ]
+    },
+    {
+      "attempt": 2,
+      "record": {
+        "path": "/tmp/zfc-decoder-constructors/run2/verification.json",
+        "sha256": "32d331021a9b7fa1bf74b63b6f2f6a233610e6c7c696a17fb1cacfcb7090166a"
+      },
+      "status": "FAIL",
+      "source": {
+        "path": "/tmp/zfc-decoder-constructors/sources/ZFCinPA/ModelCodedDecoderConstructors254.lean",
+        "sha256": "0ef9a540ad99fdf4393e8901cee99de2575b67c6ec992fff46e13265e98ec0f1",
+        "snapshot": "/tmp/zfc-decoder-constructors/run2/sources/ZFCinPA/ModelCodedDecoderConstructors254.lean"
+      },
+      "audit": {
+        "path": "/tmp/zfc-decoder-constructors/Audit.lean",
+        "sha256": "4f18ad2ef5a49cbacfaa7497d6c5243dab870047a07d908fd0ddd4924545bc95",
+        "snapshot": "/tmp/zfc-decoder-constructors/run2/sources/Audit.lean"
+      },
+      "commands": [
+        {
+          "label": "source",
+          "seconds": 2.4768380913883448,
+          "exit_code": 0,
+          "output": ""
+        },
+        {
+          "label": "audit",
+          "seconds": 2.216215659864247,
+          "exit_code": 1,
+          "output": "'LeanProofs.ZFCinPA.ModelCodedDecoder254.cantor_zero_iff' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedDecoder254.impCode_zero_iff' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedDecoder254.decode_positive' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedDecoder254.decode_imp' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedDecoder254.decode_imp_total' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedDecoder254.decode_mem' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedDecoder254.decode_all' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedDecoder254.decode_eq' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedDecoder254.decode_one' depends on axioms: [propext, Classical.choice, Quot.sound]\n/tmp/zfc-decoder-constructors/run2/sources/Audit.lean:33:2: error: Type mismatch: After simplification, term\n  decode_imp a b h\n has type\n  @Eq \u2115 (decode (4 * Code254.P a b)) (imp \u2112\u209b\u2091\u209c (decode a) (decode b))\nbut is expected to have type\n  @Eq \u2115 (decode (4 * Code254.P a b)) (imp \u2112\u209b\u2091\u209c (decode a) (decode b))\n/tmp/zfc-decoder-constructors/run2/sources/Audit.lean:35:2: error: Type mismatch: After simplification, term\n  decode_mem a b\n has type\n  @Eq \u2115 (decode (4 * Code254.P a b + 1)) (atomCode 1 a b)\nbut is expected to have type\n  @Eq \u2115 (decode (4 * Code254.P a b + 1)) (atomCode 1 a b)\n/tmp/zfc-decoder-constructors/run2/sources/Audit.lean:37:2: error: Type mismatch: After simplification, term\n  decode_all a b\n has type\n  @Eq \u2115 (decode (4 * Code254.P a b + 2)) (namedAll \u2112\u209b\u2091\u209c a (decode b))\nbut is expected to have type\n  @Eq \u2115 (decode (4 * Code254.P a b + 2)) (namedAll \u2112\u209b\u2091\u209c a (decode b))\n/tmp/zfc-decoder-constructors/run2/sources/Audit.lean:39:2: error: Type mismatch: After simplification, term\n  decode_eq a b\n has type\n  @Eq \u2115 (decode (4 * Code254.P a b + 3)) (atomCode 0 a b)\nbut is expected to have type\n  @Eq \u2115 (decode (4 * Code254.P a b + 3)) (atomCode 0 a b)\n"
+        }
+      ]
+    },
+    {
+      "attempt": 3,
+      "record": {
+        "path": "/tmp/zfc-decoder-constructors/run3/verification.json",
+        "sha256": "e58ee25d0df49d9d944562df49e04073c0d31a6f9a32edfb654af134e6799ad9"
+      },
+      "status": "PASS",
+      "source": {
+        "path": "/tmp/zfc-decoder-constructors/sources/ZFCinPA/ModelCodedDecoderConstructors254.lean",
+        "sha256": "0ef9a540ad99fdf4393e8901cee99de2575b67c6ec992fff46e13265e98ec0f1",
+        "snapshot": "/tmp/zfc-decoder-constructors/run3/sources/ZFCinPA/ModelCodedDecoderConstructors254.lean"
+      },
+      "audit": {
+        "path": "/tmp/zfc-decoder-constructors/Audit.lean",
+        "sha256": "211b26044a17f8135d71c7e24321b95df99354ea66153ecc1a3b430a5c7304d2",
+        "snapshot": "/tmp/zfc-decoder-constructors/run3/sources/Audit.lean"
+      },
+      "commands": [
+        {
+          "label": "source",
+          "seconds": 2.4508698005229235,
+          "exit_code": 0,
+          "output": ""
+        },
+        {
+          "label": "audit",
+          "seconds": 2.178885825909674,
+          "exit_code": 0,
+          "output": "'LeanProofs.ZFCinPA.ModelCodedDecoder254.cantor_zero_iff' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedDecoder254.impCode_zero_iff' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedDecoder254.decode_positive' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedDecoder254.decode_imp' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedDecoder254.decode_imp_total' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedDecoder254.decode_mem' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedDecoder254.decode_all' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedDecoder254.decode_eq' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedDecoder254.decode_one' depends on axioms: [propext, Classical.choice, Quot.sound]\n"
+        }
+      ]
+    }
+  ],
+  "first_to_final_diff": {
+    "path": "/tmp/zfc-decoder-constructors/publication/first-to-final.diff",
+    "sha256": "cbfe49c02c635a58f3f9dc5c8eb123eba03e972956db02f0cafe2ef4f02a0577"
+  },
+  "prebuild_review": {
+    "path": "/tmp/zfc-decoder-constructors/child-source-review.json",
+    "sha256": "cf8644bb395900869d5b813e2ccccece053ae8d5d3902a52571dfaa520617498"
+  },
+  "maintained_preflight": {
+    "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-constructors254-maintained-preflight.json",
+    "sha256": "1e1ad11d9080752b4f41654ebd5952589036404a7f60bf51c4cdc545ae190eb4"
+  },
+  "guard_validation": {
+    "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-constructors254-guard-validation.json",
+    "sha256": "72ebe39c309e61c84f18d838485e747e4ca95ce3e0f6158755974cf322d57fc5"
+  },
+  "root_review": {
+    "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-constructors254-root-review.json",
+    "sha256": "a17b52e3c3f06493a90b50f9de728037503680f59a90439842b82f5b12e4f3b3"
+  },
+  "preparation_note": "First prebuild closure setup rejected before artifact creation; corrected duplicated PROJECTS member before any Lean run. No dependency builds/downloads.",
+  "independent_review": {
+    "path": "Logic/Interpretability/ZFCinPA/results/model-coded-decoder-constructors254-review.json",
+    "sha256": "41e3a2a4e084a1a6cfb839282a64aee8c10aa2a24cf2070ac6a1eedfcf87724c"
+  },
+  "documentation": {
+    "path": "Logic/Interpretability/ZFCinPA/model_coded_decoder_constructors254.md",
+    "sha256": "1aaa2300bb41dfe263c840734f3f3fc760c3e943364fa37a1f2d6825ad5ee764"
+  }
+}

@@ -1114,6 +1114,12 @@ reports and twenty-four callers pass with zero warnings. Source code 0 retains
 the literal truth formula and its syntactic free label 0; the implication alias
 at zero and all twelve proof-rule translations remain explicit obligations.
 
+The [literal decoder constructor equations](../../../../Logic/Interpretability/ZFCinPA/model_coded_decoder_constructors254.md)
+now identify all four arithmetic constructors with their decoded syntax for
+arbitrary internal inputs, including the exact implication case split at zero
+and code 1's membership(0,0) output. Nine axiom reports and twelve callers pass
+with zero warnings; proof-rule and consistency transport remain separate.
+
 
 The [arithmetic symbolic-tape interpretation](arithmetic_symbolic_tape_perm252.md)
 reuses actual finite segment/configuration syntax and normalization with an
