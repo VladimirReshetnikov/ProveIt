@@ -322,29 +322,60 @@ machine is the TM layer (literal 253/254 table ↔ path semantics of
 `Prog254`), and for ZFC the consistency transports between `NativeAx` and
 ZFC.
 
-## Next: ZF proves the native axioms (in progress in this lane)
+## ZF proves the native axioms
 
-*Correction.* An earlier version of this section claimed the Regularity
-transport and the file name `WellFoundedPart.lean`. That file already belongs
-to the Codex lane (well-founded part over the native CP/GIC base, where GIC
-supplies the Collection step), so this lane withdraws that claim.
+*Correction kept for the record.* An earlier version of this section claimed
+the Regularity transport and the file name `WellFoundedPart.lean`, which
+already belonged to the Codex lane; that claim was withdrawn.
 
-This lane now takes the other half of the comparison, the counterpart of
-upstream `S_sound.v`: every model of `SetTheory.ZFax_s` (ZF with Foundation
-and Power) satisfies `NativeTheory254.NativeAx`, so by `theory_transfer`
+Every model of `SetTheory.ZFax_s` (ZF with Foundation and Power) is a model
+of `NativeTheory254.NativeAx`, so by `theory_transfer`
 
 ```text
-BProv NativeAx [] Form.fBot → BProv SetTheory.ZFax_s [] Form.fBot
+ZFNative.zf_refutation_of_native :
+  BProv NativeAx [] fBot → BProv ZFax_s [] fBot
+Endpoint254.literal_nonhalting_of_zfc_consistent :
+  ¬ BProv ZFCax_s [] fBot → ¬ RegisterPath.Halts Prog254.program Prog254.initial
 ```
 
-and hence, with `NativeTheory254.program_halts_iff_native_refutation`,
-halting of the 219-node program (and, by L4, of the literal `Prog254`) gives a
-refutation of ZF. Irreflexivity is Foundation on singletons. The containers
-come from internal ω-recursion (`BoundedZFCConsistency.OmegaRecursion`, which
-needs neither Power nor Foundation). Full native GIC is Collection, which in
-ZF needs the cumulative hierarchy: internal ordinals, transfinite recursion
-for `V_α` and the rank theorem by ∈-induction (Foundation on transitive
-closures), all inside an arbitrary, possibly ill-founded from outside, model.
-Files: `BusyBeaver/ZFC/InternalRank.lean` and `BusyBeaver/ZFC/ZFNative.lean`.
-Coordination note: please avoid duplicating these; the Regularity and Choice
-transports stay with the Codex lane's existing plan.
+(the second through L4 and `NativeTheory254.c254_refutation_iff`). This is the
+counterpart of upstream `S_sound.v`, which works in the constructible
+universe; here the argument is semantic and needs no L:
+
+* `NamedZF`: named formulas over `Form` (each binder moves its name to slot
+  0), with an `atom` constructor embedding a De Bruijn matrix, and named
+  Separation/Replacement. Every internal construction below is a readable
+  formula with a one-line meaning lemma.
+* `InternalOrd`: inside any model of the `ZFAxioms` bundle with set
+  Regularity, ordinals (transitive sets of transitive sets), ordinal
+  induction without transitive closures (an ordinal is its own container),
+  trichotomy by a double induction, least elements of definable classes.
+* `InternalRank`: `V_a = {z | z ⊆ V_c, c ∈ a}` by transfinite recursion with
+  set approximations of Kuratowski pairs (unique by ordinal induction,
+  extended by one stage, glued by Replacement; the gluing relation carries
+  `Ord b` so that it is functional on *all* inputs).
+* `ZFRank`: transitive containers by recursion along ω
+  (`BoundedZFCConsistency.OmegaRecursion`, which needs neither Power nor
+  Foundation), ∈-induction, the rank theorem, **Collection for every matrix**
+  (outputs of least rank lie in one `V_β`) and power containers (`V_λ`, `λ` a
+  limit above the rank, by iterating the successor along ω).
+* `ZFNative`: irreflexivity is Foundation on a singleton; with the above,
+  every `ZFax_s` model satisfies containers, full native GIC and IR.
+
+The model is arbitrary: nothing assumes its membership is well-founded from
+outside; every induction cuts its counterexamples out by Separation. Axioms:
+`propext`, `Classical.choice`, `Quot.sound`. Each module compiles serially in
+seconds. `Endpoint254` was checked here against the plain-lookup `Bisim254`
+(commit 58d773ac24, 39 minutes); the current literal-tree `Bisim254`, whose
+`literal_halts_iff` has the same statement, was checked by the Codex lane
+(`results/bisim254-optimized-verification.json`, 6.9 GB peak, too large to
+repeat on this 13 GB machine alongside other builds).
+
+**Status of the goal.** For the literal register program the machine
+decodes: `Con(ZFC)` implies non-halting (this lane), and non-halting is
+equivalent to the consistency of `NativeAx` (L1–L4 with the Codex lane's
+native comparison). What remains for the full equivalence with `Con(ZFC)` is
+the converse transport, ZFC refutation → `NativeAx` refutation (Regularity
+and Choice, Codex lane: `WellFoundedPart.lean`, `foundation_choice_route.md`),
+and for the binary machine the TM layer (literal 253/254 table ↔ path
+semantics of `Prog254`).
