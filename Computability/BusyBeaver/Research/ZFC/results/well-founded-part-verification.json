@@ -1,0 +1,138 @@
+{
+  "scope": "Literal TW/WF syntax and one actual equality-free GIC matrix give WF closure; TW union/adjoin, hereditary WF, actual Reg_form on WF subtype and actual quotient nonempty. No full ZF interpretation or consistency comparison.",
+  "lean_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+  "sources": [
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WellFoundedPart.lean",
+      "sha256": "5318ce188d0753181fba355ab45ca08cb9823160f00691be63d4ce4e1655e08b",
+      "lines": 258
+    }
+  ],
+  "observed_head": "3cf360ff6334264bb9ae3eb5308e843c3e16e007",
+  "dependency_cache": "/tmp/zfc-rmequiv93-7ig6pzjh/cache",
+  "output_cache": "/tmp/zfc-well-founded-part-gmyf21_8/cache",
+  "checks": [
+    {
+      "phase": "module",
+      "module": "WellFoundedPart",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-well-founded-part-gmyf21_8/cache/BusyBeaver/ZFC/WellFoundedPart.olean",
+        "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WellFoundedPart.lean"
+      ],
+      "cwd": "/home/codex/.codex/worktrees/ec20/Proofs",
+      "LEAN_PATH": "/tmp/zfc-well-founded-part-gmyf21_8/cache",
+      "returncode": 0,
+      "seconds": 0.5295571284368634
+    },
+    {
+      "phase": "audit",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "/tmp/zfc-well-founded-part-gmyf21_8/Audit.lean"
+      ],
+      "cwd": "/home/codex/.codex/worktrees/ec20/Proofs",
+      "LEAN_PATH": "/tmp/zfc-well-founded-part-gmyf21_8/cache",
+      "returncode": 0,
+      "seconds": 0.31771407555788755
+    }
+  ],
+  "axiom_audits": 22,
+  "callers": 4,
+  "audit_source": "import BusyBeaver.ZFC.WellFoundedPart\n\nopen SetTheory SetTheory.BusyBeaver.ZFC\n\n#print axioms WellFoundedPart.sat_transitiveForm\n#print axioms WellFoundedPart.sat_nonemptyForm\n#print axioms WellFoundedPart.sat_minimalElementForm\n#print axioms WellFoundedPart.sat_minimalForm\n#print axioms WellFoundedPart.sat_wellFoundedForm\n#print axioms WellFoundedPart.sat_twForm\n#print axioms WellFoundedPart.sat_wfForm\n#print axioms WellFoundedPart.sat_witnessForm\n#print axioms WellFoundedPart.equalityFree_witnessForm\n#print axioms WellFoundedPart.equalityFree_wfForm\n#print axioms WellFoundedPart.intersection_exists\n#print axioms WellFoundedPart.minimal_of_meets_tw\n#print axioms WellFoundedPart.tw_union\n#print axioms WellFoundedPart.tw_adjoin\n#print axioms WellFoundedPart.wf_closure\n#print axioms WellFoundedPart.wf_closure_of_equalityFree_gic\n#print axioms WellFoundedPart.wf_mem\n#print axioms WellFoundedPart.wf_empty\n#print axioms WellFoundedPart.wf_minimal\n#print axioms WellFoundedPart.domain_regular\n#print axioms WellFoundedPart.quotient_wf_closure\n#print axioms WellFoundedPart.quotient_domain_nonempty\n\n-- Only this fixed actual GIC instance is needed by the closure lemma.\nexample {V : Type} {mem : V \u2192 V \u2192 Prop} (B : FiniteSets.Base mem) (a : V)\n    (hG : Sat mem (fun _ => a) (ProfileSyntax.gicForm WellFoundedPart.witnessForm))\n    (ha : \u2200x, mem x a \u2192 WellFoundedPart.WF mem x) : WellFoundedPart.WF mem a :=\n  WellFoundedPart.wf_closure B a hG ha\n\n-- The formula is literally allowed even by equality-free GIC.\nexample {V : Type} {mem : V \u2192 V \u2192 Prop} (B : FiniteSets.Base mem)\n    (hG : ProfileModel.ModelsGIC mem) (a : V)\n    (ha : \u2200x, mem x a \u2192 WellFoundedPart.WF mem x) : WellFoundedPart.WF mem a :=\n  WellFoundedPart.wf_closure_of_equalityFree_gic B hG a ha\n\n-- The actual quotient gives an inhabited internally regular WF substructure.\nexample {V : Type} (mem : V \u2192 V \u2192 Prop) (witness : V)\n    (h : ProfileModel.ModelsCPGIC mem) :\n    Nonempty (WellFoundedPart.Domain (QuotientModel.quotientMember mem witness h)) \u2227\n      \u2200 env, Sat (WellFoundedPart.domainMem (QuotientModel.quotientMember mem witness h))\n        env Reg_form :=\n  \u27e8WellFoundedPart.quotient_domain_nonempty mem witness h,\n    WellFoundedPart.domain_regular _\u27e9\n\n-- The internal minimal-element theorem has no external WellFounded premise.\nexample {V : Type} {mem : V \u2192 V \u2192 Prop} (a : V)\n    (ha : WellFoundedPart.WF mem a) (hne : \u2203 x, mem x a) :\n    \u2203m, mem m a \u2227 WellFoundedPart.WF mem m \u2227 \u2200z, mem z m \u2192 \u00ac mem z a :=\n  WellFoundedPart.wf_minimal a ha hne\n",
+  "audited_axiom_sets": {
+    "SetTheory.BusyBeaver.ZFC.WellFoundedPart.sat_transitiveForm": [],
+    "SetTheory.BusyBeaver.ZFC.WellFoundedPart.sat_nonemptyForm": [],
+    "SetTheory.BusyBeaver.ZFC.WellFoundedPart.sat_minimalElementForm": [],
+    "SetTheory.BusyBeaver.ZFC.WellFoundedPart.sat_minimalForm": [],
+    "SetTheory.BusyBeaver.ZFC.WellFoundedPart.sat_wellFoundedForm": [],
+    "SetTheory.BusyBeaver.ZFC.WellFoundedPart.sat_twForm": [],
+    "SetTheory.BusyBeaver.ZFC.WellFoundedPart.sat_wfForm": [],
+    "SetTheory.BusyBeaver.ZFC.WellFoundedPart.sat_witnessForm": [],
+    "SetTheory.BusyBeaver.ZFC.WellFoundedPart.equalityFree_witnessForm": [
+      "propext"
+    ],
+    "SetTheory.BusyBeaver.ZFC.WellFoundedPart.equalityFree_wfForm": [
+      "propext"
+    ],
+    "SetTheory.BusyBeaver.ZFC.WellFoundedPart.intersection_exists": [],
+    "SetTheory.BusyBeaver.ZFC.WellFoundedPart.minimal_of_meets_tw": [],
+    "SetTheory.BusyBeaver.ZFC.WellFoundedPart.tw_union": [
+      "Classical.choice"
+    ],
+    "SetTheory.BusyBeaver.ZFC.WellFoundedPart.tw_adjoin": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.WellFoundedPart.wf_closure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.WellFoundedPart.wf_closure_of_equalityFree_gic": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.WellFoundedPart.wf_mem": [],
+    "SetTheory.BusyBeaver.ZFC.WellFoundedPart.wf_empty": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.WellFoundedPart.wf_minimal": [],
+    "SetTheory.BusyBeaver.ZFC.WellFoundedPart.domain_regular": [],
+    "SetTheory.BusyBeaver.ZFC.WellFoundedPart.quotient_wf_closure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.WellFoundedPart.quotient_domain_nonempty": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "axioms_union": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "exact_audit_output": "'SetTheory.BusyBeaver.ZFC.WellFoundedPart.sat_transitiveForm' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.WellFoundedPart.sat_nonemptyForm' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.WellFoundedPart.sat_minimalElementForm' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.WellFoundedPart.sat_minimalForm' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.WellFoundedPart.sat_wellFoundedForm' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.WellFoundedPart.sat_twForm' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.WellFoundedPart.sat_wfForm' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.WellFoundedPart.sat_witnessForm' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.WellFoundedPart.equalityFree_witnessForm' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.WellFoundedPart.equalityFree_wfForm' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.WellFoundedPart.intersection_exists' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.WellFoundedPart.minimal_of_meets_tw' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.WellFoundedPart.tw_union' depends on axioms: [Classical.choice]\n'SetTheory.BusyBeaver.ZFC.WellFoundedPart.tw_adjoin' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.WellFoundedPart.wf_closure' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.WellFoundedPart.wf_closure_of_equalityFree_gic' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.WellFoundedPart.wf_mem' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.WellFoundedPart.wf_empty' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.WellFoundedPart.wf_minimal' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.WellFoundedPart.domain_regular' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.WellFoundedPart.quotient_wf_closure' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.WellFoundedPart.quotient_domain_nonempty' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n",
+  "success": true,
+  "no_sorry_or_custom_axioms": true,
+  "all_imports_rebuilt": false,
+  "scope_of_build": "Only1new module; reused parent-source-verified93-module cache, no full/Boot rebuild.",
+  "attribution": {
+    "definitions": "Attributed busy-beaver snapshot ZF/stdzf_r3/regcon/WF.v",
+    "upstream_pin": "297ab8df7e5de329605c3875b4934643b371a5e3",
+    "new_argument": "Fixed actual GIC collects TW witnesses directly; no canonical witness selection/Replacement-to-Collection argument."
+  },
+  "independent_review": "Bic read full source and found the semantic/API scope clean: TW represented subsets; exact Mem01 Separation; witnessForm correct input0/output1 and global GIC support; TW union/adjoin; actual Reg_form indices; actual quotient empty-singleton nonempty witness. No hidden external WellFounded/Foundation/Infinity/full interpretation claim.",
+  "scratch": "/tmp/zfc-well-founded-part-gmyf21_8",
+  "grant_released": true,
+  "source_compiled_first_attempt": false,
+  "proof_debugging": [
+    {
+      "finding": "One rfl disjunction pattern substituted away outer a; replaced with named hxa transport, with no mathematical or statement change.",
+      "log": "/tmp/zfc-well-founded-part-gmyf21_8/WellFoundedPart-initial.log"
+    }
+  ],
+  "small_base_interface": "FiniteSets.Base: Extensionality, Pairing, Union, Separation indexed by actual Form/environment.",
+  "separation_instances_used_by_new_closure": [
+    "Form.fMem 0 1; environment constantly t, giving s \u2229 t"
+  ],
+  "collection_instance_used": "ProfileSyntax.gicForm WellFoundedPart.witnessForm at constant environment a; witnessForm=twForm1 \u2227 Mem0,1",
+  "collection_matrix_equality_free": true,
+  "arbitrary_semantic_collection_schema_assumed": false,
+  "external_WellFounded_assumed": false,
+  "new_closure_uses_object_Choice": false,
+  "new_closure_uses_Infinity_Power_Replacement_Foundation": false,
+  "object_schema_parameters": "Actual finite Form instances throughout; no arbitrary external-predicate Separation.",
+  "domain_result": "The actual WF subtype is nonempty for a CP/GIC quotient and satisfies actual Reg_form. Other interpreted ZF axiom proofs and generic unary-Form relativization remain separate.",
+  "full_Foundation_consistency_comparison_proved": false,
+  "bare_ZF0_Collection_inferred": false,
+  "no_shared_files_edited": true
+}

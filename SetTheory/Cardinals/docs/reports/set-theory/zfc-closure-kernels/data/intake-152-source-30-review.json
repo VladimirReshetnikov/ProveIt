@@ -1,0 +1,290 @@
+{
+  "source": 5,
+  "local": 30,
+  "arrival": "da6dabcd8976acf94c4f3652ed3eeae5713b3d2a",
+  "placement": "b123527ff4",
+  "verdict": "accept-addition",
+  "full_text_read": true,
+  "current_claim_retraction_required": false,
+  "copies_only": true,
+  "original_delivery_untouched": true,
+  "checksum_project_and_line_ending_work_omitted": true,
+  "bulk_manifest_policy": "Skipped in memory. Source05 initial quick nested adapter omission is disclosed in dossier; final corrected quick rerun skipped all bulk loops. Functional table/source identity guards retained.",
+  "tests": {
+    "05-abstract_reachability": {
+      "name": "05-abstract_reachability",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "abstract_reachability.py",
+        "--k",
+        "2"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/05/optimizer",
+      "returncode": 0,
+      "elapsed_seconds": 0.4492132617160678,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/05-abstract_reachability.log"
+    },
+    "05-blank-replay-summary": {
+      "records": 5658,
+      "classifications": 707,
+      "result_records": 4951,
+      "outcomes": {
+        "fuel_limit": 2106,
+        "blank_ray_self_loop": 2845
+      },
+      "literal_moves": 6318032976,
+      "filtered_stderr_progress_lines": 35,
+      "every_first_write_representative_replayed": true,
+      "all_707_mutations_classified": true
+    },
+    "05-boot-all4951": {
+      "name": "05-boot-all4951",
+      "command": [
+        "/tmp/zfc-review152-fibers-cr40j77h/boot_mutations",
+        "sources/zfc_254.tm",
+        "single_row_survivors.tsv",
+        "3000000"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/05/optimizer",
+      "returncode": 0,
+      "elapsed_seconds": 74.66647182404995,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/05-boot-all4951.log"
+    },
+    "05-boot-compile": {
+      "name": "05-boot-compile",
+      "command": [
+        "c++",
+        "-O3",
+        "-std=c++17",
+        "boot_mutations.cpp",
+        "-o",
+        "/tmp/zfc-review152-fibers-cr40j77h/boot_mutations"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/05/optimizer",
+      "returncode": 0,
+      "elapsed_seconds": 2.043379567563534,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/05-boot-compile.log"
+    },
+    "05-core_fold_search": {
+      "name": "05-core_fold_search",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "core_fold_search.py"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/05/optimizer",
+      "returncode": 0,
+      "elapsed_seconds": 16.157178106717765,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/05-core_fold_search.log"
+    },
+    "05-emit_runtime_variants": {
+      "name": "05-emit_runtime_variants",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "emit_runtime_variants.py"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/05/optimizer",
+      "returncode": 0,
+      "elapsed_seconds": 0.10750805120915174,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/05-emit_runtime_variants.log"
+    },
+    "05-fixed-audit-regenerated": {
+      "name": "05-fixed-audit-regenerated",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "audit.py"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/05/fixed_emission",
+      "returncode": 0,
+      "elapsed_seconds": 5.740153907798231,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/05-fixed-audit-regenerated.log"
+    },
+    "05-fixed-certificate-regenerated": {
+      "name": "05-fixed-certificate-regenerated",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "verify_operation_certificate.py",
+        "--reference",
+        "results/reference_dag.json",
+        "--candidate",
+        "results/candidate_dag.json",
+        "--certificate",
+        "results/rm_bisimulation.json"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/05/fixed_emission",
+      "returncode": 0,
+      "elapsed_seconds": 4.028453170321882,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/05-fixed-certificate-regenerated.log"
+    },
+    "05-fixed-full": {
+      "name": "05-fixed-full",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "experiment.py",
+        "--seeds",
+        "4",
+        "--refine-seeds",
+        "128"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/05/fixed_emission",
+      "returncode": 0,
+      "elapsed_seconds": 26.718608328141272,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/05-fixed-full.log"
+    },
+    "05-incoming_fold_search": {
+      "name": "05-incoming_fold_search",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "incoming_fold_search.py"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/05/optimizer",
+      "returncode": 0,
+      "elapsed_seconds": 36.10905483644456,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/05-incoming_fold_search.log"
+    },
+    "05-mixed_fold_search": {
+      "name": "05-mixed_fold_search",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "mixed_fold_search.py"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/05/optimizer",
+      "returncode": 0,
+      "elapsed_seconds": 104.94938030745834,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/05-mixed_fold_search.log"
+    },
+    "05-quick-regenerated": {
+      "name": "05-quick-regenerated",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "/tmp/zfc-review152-fibers-cr40j77h/skip_bulk_manifest.py",
+        "reproduce.py",
+        "--quick"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/05",
+      "returncode": 0,
+      "elapsed_seconds": 6.9185771038755774
+    },
+    "05-quick": {
+      "name": "05-quick",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "/tmp/zfc-review152-fibers-cr40j77h/skip_bulk_manifest.py",
+        "reproduce.py",
+        "--quick"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/05",
+      "returncode": 0,
+      "elapsed_seconds": 7.727551787160337,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/05-quick.log"
+    },
+    "05-reachable_coverage": {
+      "name": "05-reachable_coverage",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "reachable_coverage.py"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/05/optimizer",
+      "returncode": 0,
+      "elapsed_seconds": 4.964490296319127,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/05-reachable_coverage.log"
+    },
+    "05-reachable_fold_search": {
+      "name": "05-reachable_fold_search",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "reachable_fold_search.py"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/05/optimizer",
+      "returncode": 0,
+      "elapsed_seconds": 42.34545309282839,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/05-reachable_fold_search.log"
+    },
+    "05-single_row_search": {
+      "name": "05-single_row_search",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "single_row_search.py"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/05/optimizer",
+      "returncode": 0,
+      "elapsed_seconds": 488.5997590813786,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/05-single_row_search.log"
+    },
+    "05-startup_extension_search": {
+      "name": "05-startup_extension_search",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "startup_extension_search.py"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/05/optimizer",
+      "returncode": 0,
+      "elapsed_seconds": 16.800577874295413,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/05-startup_extension_search.log"
+    },
+    "05-verify_abstract_certificate": {
+      "name": "05-verify_abstract_certificate",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "verify_abstract_certificate.py"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/05/optimizer",
+      "returncode": 0,
+      "elapsed_seconds": 0.42398852203041315,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/05-verify_abstract_certificate.log"
+    }
+  },
+  "dossier": "intake-152-source-30.md",
+  "new_sub253_calibrated_machine": false,
+  "new_proof_assistant_calibration": false,
+  "incoming_correction": {
+    "file": "sections/fixed_emission.tex",
+    "line": 58,
+    "claim": "code0 default is closed",
+    "finding": "syntactically false; semantic validity and c+2 freshness unaffected"
+  }
+}

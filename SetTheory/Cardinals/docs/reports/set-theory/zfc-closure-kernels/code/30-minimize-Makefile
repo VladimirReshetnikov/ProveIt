@@ -1,0 +1,17 @@
+.RECIPEPREFIX := >
+.PHONY: all pdf check clean
+
+all: pdf
+
+pdf:
+>mkdir -p build
+>pdflatex -interaction=nonstopmode -halt-on-error -output-directory=build report.tex
+>pdflatex -interaction=nonstopmode -halt-on-error -output-directory=build report.tex
+>pdflatex -interaction=nonstopmode -halt-on-error -output-directory=build report.tex
+>cp build/report.pdf report.pdf
+
+check:
+>python3 reproduce.py --quick
+
+clean:
+>rm -rf build

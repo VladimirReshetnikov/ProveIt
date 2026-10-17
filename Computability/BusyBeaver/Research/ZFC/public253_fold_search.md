@@ -138,3 +138,42 @@ still excludes old5/84. Thus it does not contradict this experiment's known
 5→64 runtime survivor. Source24 separately gives a complete finite exact-step
 quotient obstruction for literal253, not a blank-equivalence lower bound.
 See the host's `intake-151-source-25-machine.md` and `intake-151-source-24.md`.
+
+
+## Batch 152 independent extensions
+
+The host's sources 26–34 (arrival `da6dabcd89`) reproduce larger bounded
+families of direct folds, mixed fusions, incoming-edge rewrites, row mutations,
+grammar rotations and initializer reuse. Their different 53/55 protected-row
+interfaces and finite-fuel contracts are retained in their dossiers. A runtime
+survivor is not a blank-start certificate; fuel and abstraction failures remain
+unresolved. The searches do not establish global minimality.
+
+Source 27 supplies a four-row 253-state variant with the same complete
+bootstrap tape at 312,935 steps instead of 312,975. Its ordinary same-halting
+argument and independent 2,981-pair register certificate are useful controls,
+but do not remove a state or supply a new Lean runtime theorem. Source 34's
+shared-initializer quotients save states on larger clean layouts, with best
+309 among its listed controls; their differences cannot be subtracted from
+public253. A full replay of source 33's broader final protected-basis search
+finds 268, matching the prior complete-word control. The table and recipe are
+preserved separately as `data/intake-152-source-33-protected268-*` in the host.
+
+## Batch153: a weaker root target and a precise short-gap diagnostic
+
+Source35 checks arbitrary-cutoff enumeration and exact absorption of dirty
+selector/scratch values into a virtual clean root. At a genuine structured
+root, safe formula data permits six other register fields to vary. This
+widens an initializer target; it does not certify an interior PC or arbitrary
+physical tape data.
+
+For the existing old5→64 runtime252 fold, its literal blank prefix reaches a
+fully specified interior dispatch frame at999,186 steps with gap32 and359
+spares. An affine failure after641 accelerated instructions is resolved for
+that particular reconstructed frame by a2,794-step literal instruction.
+An exact-gap model using inherited register-box summaries completes one
+million register instructions, with124 local cases and no root/overflow.
+Neither a safe-root formula invariant nor divergence is established. These
+findings refine the bounded diagnostic; they do not make the folded table a
+blank-start consistency machine. Full scope and archived checked Lean results
+are in the host's `intake-153-source-35.md`.

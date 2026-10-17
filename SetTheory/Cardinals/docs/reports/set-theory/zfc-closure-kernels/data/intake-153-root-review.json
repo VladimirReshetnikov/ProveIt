@@ -1,0 +1,79 @@
+{
+  "arrival": "4e720ccbbfaa836b95be3b2f3f268a737b48c6d1",
+  "scratch": "/tmp/zfc-batch153-reproduce-j70djzh3",
+  "packages": {
+    "35": "/tmp/zfc-batch153-reproduce-j70djzh3/35/zfc_consistency_research_2026-10-16",
+    "36": "/tmp/zfc-batch153-reproduce-j70djzh3/36/zfc_small_machine_research_2026-10-16"
+  },
+  "scope": "Offline archive recovery and explicitly selected finite checks; no consistency endpoint.",
+  "checks": [
+    {
+      "name": "35-quick",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_153.py",
+        "_worker",
+        "35-quick",
+        "/tmp/zfc-batch153-reproduce-j70djzh3/35/zfc_consistency_research_2026-10-16/code/quick_checks.py",
+        "--output-dir",
+        "/tmp/zfc-batch153-reproduce-j70djzh3/quick35"
+      ],
+      "returncode": 0,
+      "seconds": 3.793
+    },
+    {
+      "name": "36-replay",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_153.py",
+        "_worker",
+        "36",
+        "/tmp/zfc-batch153-reproduce-j70djzh3/36/zfc_small_machine_research_2026-10-16/reproduction/reproduce.py",
+        "--output",
+        "/tmp/zfc-batch153-reproduce-j70djzh3/replay36"
+      ],
+      "returncode": 0,
+      "seconds": 35.257
+    }
+  ],
+  "root_independent_review": {
+    "source35": "Full paper/optimization and new Lean modules plus standalone direction verifier read clean.",
+    "source36": "Main and all three included sections read clean; ordinary support/automorphism/EPSC1 proof checked.",
+    "source36_adapter_correction": "Initial independent run replaced the identity function including3 standalone table guards; functional regeneration separately checked all3. Final recovery helper restores those3 guards, and a separate --verify-only check on the same untouched recovered inputs passes. No mathematical or experimental result changed.",
+    "helper_sha256": "54f9f77533fea02d8313339d46c7f470aae3c0318b80db725556f05101247f59",
+    "source36_final_guard_check": {
+      "bulk_manifests": "omitted by intake policy",
+      "functional_table_pins": 3,
+      "returncode": 0
+    },
+    "primary_references": [
+      "https://www.math.uni-bonn.de/people/schlicht/ZFC_without_parameters.pdf",
+      "https://www.scottaaronson.com/papers/bb.pdf"
+    ]
+  },
+  "root_visual_review": {
+    "source35": "Rebuilt physical page12: both exact dirty-root theorem statements and formulas legible, no clipping.",
+    "source36": "Rebuilt physical page7: EPSC1 separation theorem and normalized hierarchy legible, no clipping."
+  },
+  "independent_write_audit": {
+    "reviewer": "mira_backend_route",
+    "fidelity": "clean",
+    "nonclaims": "clean",
+    "helper": "three functional table guards retained; bulk checks omitted",
+    "rename_coverage": {
+      "files": 155,
+      "placed": 144,
+      "archive_only": 11,
+      "placed_per_source": [
+        75,
+        69
+      ],
+      "exact_once": true,
+      "casefold_collisions": 0,
+      "max_windows_path": 182
+    },
+    "host_pdf": "No host article.pdf exists; new text explicitly says no host PDF is produced."
+  }
+}

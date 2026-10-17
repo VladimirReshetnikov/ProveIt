@@ -1,0 +1,297 @@
+{
+  "source": 4,
+  "arrival": "da6dabcd8976acf94c4f3652ed3eeae5713b3d2a",
+  "title": "Towards Smaller Consistency Machines",
+  "verdict": "accept-addition",
+  "current_claim_retraction_required": false,
+  "full_text_read": true,
+  "copies_only": true,
+  "bulk_manifest_checks_skipped": true,
+  "proof_status": "ordinary ground epsilon calibration; archived narrow Lean numerical repair only",
+  "dossier": "/tmp/zfc-review152-fibers-cr40j77h/source04-review.md",
+  "tests": {
+    "04-epsilon": {
+      "name": "04-epsilon",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "epsilon/test_epsilon_native.py"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/04",
+      "returncode": 0,
+      "elapsed_seconds": 23.428393887355924,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/04-epsilon.log"
+    },
+    "04-functional-comparison": {
+      "public253-window4-audit.json": {
+        "functional_equal": true,
+        "different_fields": []
+      },
+      "public253-window6-audit.json": {
+        "functional_equal": true,
+        "different_fields": []
+      },
+      "hybrid-window-results.json": {
+        "functional_equal": true,
+        "different_fields": []
+      },
+      "hybrid-fusion-results.json": {
+        "functional_equal": true,
+        "different_fields": []
+      },
+      "greedy": {
+        "best_dag.json": {
+          "literal_bytes_equal": true,
+          "functional_equal": true
+        },
+        "best_recipe.json": {
+          "literal_bytes_equal": true,
+          "functional_equal": true
+        },
+        "certificate.json": {
+          "literal_bytes_equal": true,
+          "functional_equal": true
+        },
+        "results.json": {
+          "literal_bytes_equal": false,
+          "functional_equal": true
+        }
+      },
+      "weighted8": {
+        "best_dag.json": {
+          "literal_bytes_equal": true,
+          "functional_equal": true
+        },
+        "best_recipe.json": {
+          "literal_bytes_equal": true,
+          "functional_equal": true
+        },
+        "certificate.json": {
+          "literal_bytes_equal": true,
+          "functional_equal": true
+        },
+        "results.json": {
+          "literal_bytes_equal": false,
+          "functional_equal": true
+        }
+      },
+      "right4": {
+        "best_dag.json": {
+          "literal_bytes_equal": true,
+          "functional_equal": true
+        },
+        "best_recipe.json": {
+          "literal_bytes_equal": true,
+          "functional_equal": true
+        },
+        "certificate.json": {
+          "literal_bytes_equal": true,
+          "functional_equal": true
+        },
+        "results.json": {
+          "literal_bytes_equal": false,
+          "functional_equal": true
+        }
+      },
+      "weighted8_extended": {
+        "best_dag.json": {
+          "literal_bytes_equal": true,
+          "functional_equal": true
+        },
+        "best_recipe.json": {
+          "literal_bytes_equal": true,
+          "functional_equal": true
+        },
+        "certificate.json": {
+          "literal_bytes_equal": true,
+          "functional_equal": true
+        },
+        "results.json": {
+          "literal_bytes_equal": false,
+          "functional_equal": true
+        }
+      },
+      "weighted4_extended": {
+        "best_dag.json": {
+          "literal_bytes_equal": true,
+          "functional_equal": true
+        },
+        "best_recipe.json": {
+          "literal_bytes_equal": true,
+          "functional_equal": true
+        },
+        "certificate.json": {
+          "literal_bytes_equal": true,
+          "functional_equal": true
+        },
+        "results.json": {
+          "literal_bytes_equal": false,
+          "functional_equal": true
+        }
+      }
+    },
+    "04-grammar-greedy": {
+      "name": "04-grammar-greedy",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "grammar_search.py",
+        "--seeds",
+        "200",
+        "--greedy",
+        "--output",
+        "greedy"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/04/grammar",
+      "returncode": 0,
+      "elapsed_seconds": 7.463198134675622,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/04-grammar-greedy.log"
+    },
+    "04-grammar-right4": {
+      "name": "04-grammar-right4",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "grammar_search.py",
+        "--seeds",
+        "500",
+        "--exponent",
+        "4",
+        "--balance",
+        "right",
+        "--output",
+        "right4"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/04/grammar",
+      "returncode": 0,
+      "elapsed_seconds": 14.103898813948035,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/04-grammar-right4.log"
+    },
+    "04-grammar-verify-regenerated": {
+      "name": "04-grammar-verify-regenerated",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "verify_grammar.py"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/04/grammar",
+      "returncode": 0,
+      "elapsed_seconds": 7.6059271497651935,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/04-grammar-verify-regenerated.log"
+    },
+    "04-grammar-verify": {
+      "name": "04-grammar-verify",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "grammar/verify_grammar.py"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/04",
+      "returncode": 0,
+      "elapsed_seconds": 4.484210121445358,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/04-grammar-verify.log"
+    },
+    "04-grammar-weighted4_extended": {
+      "name": "04-grammar-weighted4_extended",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "grammar_search.py",
+        "--seeds",
+        "5000",
+        "--exponent",
+        "4",
+        "--balance",
+        "weighted",
+        "--output",
+        "weighted4_extended"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/04/grammar",
+      "returncode": 0,
+      "elapsed_seconds": 168.36290352605283,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/04-grammar-weighted4_extended.log"
+    },
+    "04-grammar-weighted8": {
+      "name": "04-grammar-weighted8",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "grammar_search.py",
+        "--seeds",
+        "500",
+        "--exponent",
+        "8",
+        "--balance",
+        "weighted",
+        "--output",
+        "weighted8"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/04/grammar",
+      "returncode": 0,
+      "elapsed_seconds": 18.26112709660083,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/04-grammar-weighted8.log"
+    },
+    "04-grammar-weighted8_extended": {
+      "name": "04-grammar-weighted8_extended",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "grammar_search.py",
+        "--start",
+        "500",
+        "--seeds",
+        "5000",
+        "--exponent",
+        "8",
+        "--balance",
+        "weighted",
+        "--output",
+        "weighted8_extended"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/04/grammar",
+      "returncode": 0,
+      "elapsed_seconds": 139.15037448797375,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/04-grammar-weighted8_extended.log"
+    },
+    "04-machines-full": {
+      "name": "04-machines-full",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "/tmp/zfc-review152-fibers-cr40j77h/skip_bulk_manifest.py",
+        "machine/reproduce.py"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/04",
+      "returncode": 0,
+      "elapsed_seconds": 656.9619397092611,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/04-machines-full.log"
+    }
+  },
+  "lean_evidence": "/tmp/zfc-review152-fibers-cr40j77h/04-lean-evidence.json",
+  "pdf_pages": 28,
+  "embedded_fonts": 24,
+  "visual_pages": [
+    12,
+    14
+  ],
+  "local": 29,
+  "placement": "b123527ff4"
+}

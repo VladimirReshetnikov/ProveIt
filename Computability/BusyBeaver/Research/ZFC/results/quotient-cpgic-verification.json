@@ -1,0 +1,63 @@
+{
+  "scope": "Actual quotient CP plus GIC for every native Form from actual EF CP/GIC and an explicit inhabitant; no quotient IR or numerical/binary endpoint.",
+  "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientCPGIC.lean",
+  "source_sha256": "dc580ae54d8c2f05657dfa34e187adcf206bf1f72b5479690ac347f79da6d146",
+  "source_lines": 232,
+  "observed_head": "8cf840b8a26d002041e7a26dc9688ce7ce5fd751",
+  "dependency_cache": "/tmp/zfc-equality85-integration-fd9ll849",
+  "output_cache": "/tmp/zfc-quotient-cpgic-g6n3ky11/cache",
+  "checks": [
+    {
+      "phase": "module",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-quotient-cpgic-g6n3ky11/cache/BusyBeaver/ZFC/QuotientCPGIC.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientCPGIC.lean"
+      ],
+      "cwd": "/home/codex/.codex/worktrees/ec20/Proofs",
+      "LEAN_PATH": "/tmp/zfc-quotient-cpgic-g6n3ky11/cache",
+      "returncode": 0,
+      "seconds": 0.4207147480919957,
+      "actual_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)"
+    },
+    {
+      "phase": "audit",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "/tmp/zfc-quotient-cpgic-g6n3ky11/Audit.lean"
+      ],
+      "cwd": "/home/codex/.codex/worktrees/ec20/Proofs",
+      "LEAN_PATH": "/tmp/zfc-quotient-cpgic-g6n3ky11/cache",
+      "returncode": 0,
+      "seconds": 0.30050437618047,
+      "actual_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)"
+    }
+  ],
+  "axiom_audits": 13,
+  "callers": 3,
+  "audit_source": "import BusyBeaver.ZFC.QuotientCPGIC\n\nnamespace SetTheory.BusyBeaver.ZFC.QuotientCPGIC\nopen ProfileCollection ProfileModel ProfileSyntax QuotientModel DeepPositiveClosure\n\n#print axioms equalityFree_strongTraceForm\n#print axioms sat_strongTraceForm\n#print axioms strongTrace_instance\n#print axioms strong_trace\n#print axioms literal_subset_representative\n#print axioms interpreted_transitive\n#print axioms quotient_containers\n#print axioms rel_matrix_congr\n#print axioms translated_instance\n#print axioms quotient_collection\n#print axioms quotient_fullGIC\n#print axioms quotient_fullCPGIC\n#print axioms quotient_modelsCPGIC\n\nuniverse u\nvariable {V : Type u}\n\n-- An actual native equality matrix produces an exact singleton object.\nexample (mem : V \u2192 V \u2192 Prop) (w : V) (h : ModelsCPGIC mem)\n    (t : Domain mem w h) :\n    \u2203 b, \u2200 y, quotientMember mem w h y b \u2194 y = t := by\n  obtain \u27e8a, hta, _, _\u27e9 := quotient_containers mem w h t\n  obtain \u27e8b, hs, hc\u27e9 := quotient_collection mem w h (.fEq 1 2) (fun _ => t) a\n  have htSome : \u2203 y, MatrixRelation (quotientMember mem w h) (.fEq 1 2)\n      (fun _ => t) t y := \u27e8t, rfl\u27e9\n  obtain \u27e8v, hvb, hvt\u27e9 := hc t hta htSome\n  change v = t at hvt\n  refine \u27e8b, ?_\u27e9\n  intro y\n  constructor\n  \u00b7 intro hy\n    obtain \u27e8x, hxy\u27e9 := hs y hy\n    exact hxy\n  \u00b7 intro hy\n    simpa only [hy, hvt] using hvb\n\n-- The actual false matrix supplies an empty quotient object.\nexample (mem : V \u2192 V \u2192 Prop) (w : V) (h : ModelsCPGIC mem) :\n    \u2203 e, \u2200 y, \u00ac quotientMember mem w h y e := by\n  obtain \u27e8e, hs, _\u27e9 := quotient_collection mem w h .fBot\n    (fun _ => mk mem w h w) (mk mem w h w)\n  refine \u27e8e, ?_\u27e9\n  intro y hy\n  obtain \u27e8x, hx\u27e9 := hs y hy\n  exact hx\n\n-- A quantified native-equality/parameter-collision matrix needs no EF premise.\nexample (mem : V \u2192 V \u2192 Prop) (w : V) (h : ModelsCPGIC mem)\n    (env : Nat \u2192 Domain mem w h) :\n    CollectionInstance (quotientMember mem w h)\n      (MatrixRelation (quotientMember mem w h)\n        (.fAll (.fImp (.fEq 0 2) (.fEq 2 3))) env) :=\n  quotient_collection mem w h _ env\n\nend SetTheory.BusyBeaver.ZFC.QuotientCPGIC\n",
+  "audit_output": "'SetTheory.BusyBeaver.ZFC.QuotientCPGIC.equalityFree_strongTraceForm' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.QuotientCPGIC.sat_strongTraceForm' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.QuotientCPGIC.strongTrace_instance' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.QuotientCPGIC.strong_trace' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.QuotientCPGIC.literal_subset_representative' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.QuotientCPGIC.interpreted_transitive' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.QuotientCPGIC.quotient_containers' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.QuotientCPGIC.rel_matrix_congr' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.QuotientCPGIC.translated_instance' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.QuotientCPGIC.quotient_collection' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.QuotientCPGIC.quotient_fullGIC' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.QuotientCPGIC.quotient_fullCPGIC' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.QuotientCPGIC.quotient_modelsCPGIC' depends on axioms: [propext, Classical.choice, Quot.sound]\n",
+  "success": true,
+  "scratch": "/tmp/zfc-quotient-cpgic-g6n3ky11",
+  "collection_schema": "Only actual EF strongTraceForm(phi) and translate(phi) instances; no arbitrary semantic relation schema.",
+  "strong_trace": "Literal raw subset due to separate mem(output,domain) guard; Member trace is exact for interpreted actual-Form predicate.",
+  "CP_container": "The same original raw CP container; interpreted subsets receive literal raw representatives.",
+  "native_equality": "Actual quotient identity via sat_quotient; no EqualityFree premise on output schema.",
+  "raw_IR_assumed": false,
+  "quotient_IR_proved": false,
+  "object_Choice_assumed": false,
+  "domain_nonempty": "Explicit raw witness; quotient valuation representatives selected metatheoretically by existing liftEnv.",
+  "numerical_decoded_bundle_model_claimed": false,
+  "binary_machine_endpoint_claimed": false,
+  "machine_changed": false,
+  "independent_review": "Child read all source/theorem contracts; no defect in literal output guard, representation orientation, same-container CP or native-GIC support/cover transport.",
+  "axioms_union": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "no_sorry_or_custom_axioms": true,
+  "initial_scratch_caller_issue": "Missing open DeepPositiveClosure for MatrixRelation in audit only; module compiled unchanged first attempt. Corrected audit passes. Initial log retained in scratch.",
+  "grant_released": true
+}

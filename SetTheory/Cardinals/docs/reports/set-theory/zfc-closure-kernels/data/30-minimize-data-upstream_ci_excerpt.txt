@@ -1,0 +1,57 @@
+2026-10-16T00:26:06.9353935Z Secret source: None
+2026-10-16T00:26:07.4039471Z Complete job name: zf253
+2026-10-16T00:26:07.5194391Z Docker client API version: '1.48'
+2026-10-16T00:26:07.5201983Z ##[group]Clean up resources from previous jobs
+2026-10-16T00:26:07.6003436Z a7b8f52fccc8ecc6cc8d1da79649279ba67fd4921c8247935194e820f68877d3
+2026-10-16T00:26:28.1495062Z 1ca95f6868d5: Pull complete
+2026-10-16T00:27:52.5025328Z   token: ***
+2026-10-16T00:27:52.5065918Z ##[command]/usr/bin/docker exec  219cd18c665b2dc2682ce18fc52592a79bf21c3c68a70442a3a3fafaa09bd7f9 sh -c "cat /etc/*release | grep ^ID"
+2026-10-16T00:27:52.6750687Z [command]/usr/bin/git config --global --add safe.directory /__w/busy-beaver/busy-beaver
+2026-10-16T00:27:52.7461305Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +26bd0b2beeed5c3dd88511e39acd604c235e2f1c:refs/remotes/pull/20/merge
+2026-10-16T00:27:53.6525152Z  * [new ref]         26bd0b2beeed5c3dd88511e39acd604c235e2f1c -> pull/20/merge
+2026-10-16T00:27:53.6610715Z ##[group]Checking out the ref
+2026-10-16T00:27:53.7311947Z do so (now or later) by using -c with the switch command. Example:
+2026-10-16T00:27:53.7314092Z HEAD is now at 26bd0b2 Merge 0d544f2a2e3c18f12278441a74b7879f31cbe856 into 297ab8df7e5de329605c3875b4934643b371a5e3
+2026-10-16T00:27:53.7376413Z 26bd0b2beeed5c3dd88511e39acd604c235e2f1c
+2026-10-16T00:27:53.7619446Z http.https://github.com/.extraheader
+2026-10-16T00:27:53.7986644Z [36;1m  'ZF/m253/machine/zfc_253.tm' | sha256sum --check[0m
+2026-10-16T00:27:53.7986941Z [36;1mpython3 -I -B ZF/m253/check.py --coqc coqc \[0m
+2026-10-16T00:27:53.7987571Z [36;1m  2>&1 | tee "$RUNNER_TEMP/zf253-check.log"[0m
+2026-10-16T00:27:53.7987936Z [36;1mgrep -Fxq 'dependency closure: 160 source files; 194 Print Assumptions probes' \[0m
+2026-10-16T00:27:53.7988304Z [36;1m  "$RUNNER_TEMP/zf253-check.log"[0m
+2026-10-16T00:27:53.7988644Z [36;1mgrep -Eq '^recursive coqchk PASS: 160 module roots and all recursive dependencies;' \[0m
+2026-10-16T00:27:53.7988991Z [36;1m  "$RUNNER_TEMP/zf253-check.log"[0m
+2026-10-16T00:27:53.7989316Z [36;1mgrep -Eq '^CHECK PASS: 194 closed reports;' "$RUNNER_TEMP/zf253-check.log"[0m
+2026-10-16T00:27:53.8440980Z ZF/m253/machine/zfc_253.tm: OK
+2026-10-16T00:27:55.2195553Z SOURCE PASS: exact 84a21f714017c1d491008d86e9bd19c43cc6c5c9ae99a538b4f2314387827d95; 253 states/506 rows; literal Coq table and maps agree
+2026-10-16T00:27:55.6477657Z dependency closure: 160 source files; 194 Print Assumptions probes
+2026-10-16T00:27:57.9828993Z    0.9s M253.Table253; closed probes 0
+2026-10-16T00:27:58.6957345Z    0.7s M253.TM253; closed probes 2
+2026-10-16T00:27:59.0030082Z    0.3s M253.Zip; closed probes 0
+2026-10-16T00:27:59.5130860Z    0.5s M253.SymExec; closed probes 0
+2026-10-16T00:28:00.3267866Z    0.8s M253.Box; closed probes 1
+2026-10-16T00:28:10.1291189Z    9.6s M253.Site; closed probes 0
+2026-10-16T00:28:12.3825456Z    2.2s M253.Sites253; closed probes 0
+2026-10-16T00:28:43.8297404Z   14.7s M253.Check253; closed probes 0
+2026-10-16T00:29:08.8733379Z running M253.Boot253: 25s, peak RSS 663704KiB
+2026-10-16T00:29:30.6788971Z   46.8s M253.Boot253; closed probes 8
+2026-10-16T00:29:30.8855542Z    0.2s M253.Prefix; closed probes 3
+2026-10-16T00:29:46.9421700Z   16.1s M253.Sim; closed probes 4
+2026-10-16T00:29:47.9547626Z    1.0s M253.Main; closed probes 3
+2026-10-16T00:29:53.0050635Z    0.9s M254P.Dag254; closed probes 0
+2026-10-16T00:31:05.5194963Z    0.3s Undecidability.FOL.Sets.ZF; closed probes 0
+2026-10-16T00:31:09.8160990Z    0.5s ZF.Std_F; closed probes 0
+2026-10-16T00:32:00.1250650Z    0.1s Undecidability.Shared.Libs.DLW.Wf.acc_irr; closed probes 0
+2026-10-16T00:32:03.3991944Z    0.3s Undecidability.PCP.Reductions.PCPX_iff_dPCP; closed probes 0
+2026-10-16T00:33:48.2926160Z   23.6s ZFC.Z_cl; closed probes 0
+2026-10-16T00:36:07.9160231Z running ZFC.Z_wo: 100s, peak RSS 730400KiB
+2026-10-16T00:41:23.1758007Z    7.3s M253E.E2E253; closed probes 3
+2026-10-16T00:41:23.1758424Z zf253_halts_iff_SIR =
+2026-10-16T00:41:23.1760778Z    (Morphisms.eq_proper_proxy (tprv S_def.SIR bot))) Main.tm253_rm
+2026-10-16T00:41:23.1768364Z zf253_halts_iff_ZF =
+2026-10-16T00:41:23.1769771Z    (Morphisms.eq_proper_proxy (tprv Std_iface.ZFc bot))) zf253_halts_iff_SIR
+2026-10-16T00:41:23.1770449Z zf253_halts_iff_ZFC =
+2026-10-16T00:41:23.1772637Z          bot))) zf253_halts_iff_SIR S_main.S_ZFC_equicons
+2026-10-16T00:41:39.8349377Z   16.7s M253E.Audit253; closed probes 161
+2026-10-16T00:45:25.4417725Z recursive coqchk PASS: 160 module roots and all recursive dependencies; 225.6s
+2026-10-16T00:45:25.4418380Z CHECK PASS: 194 closed reports; total 1049.7s; peak sampled RSS 1280936KiB

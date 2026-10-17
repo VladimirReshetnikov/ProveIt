@@ -1,0 +1,23 @@
+{
+  "status": "PASS scoped generic frame checkpoint",
+  "compiler": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+  "lean_version": "4.32.0",
+  "compiled_source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Permutation252Frame.lean",
+  "compiled_source_sha256": "63a3c9d9358a3a24edfef7889ffcc96d00f2aab3f2dd752c944c4f0e84236ae7",
+  "source_build_seconds": 0.687955277,
+  "audit_build_seconds": 0.637625412,
+  "audit_theorems": 17,
+  "caller_examples": 4,
+  "axioms": [
+    "propext",
+    "Quot.sound"
+  ],
+  "cache": "/tmp/zfc-permutation-frame-check/cache",
+  "base_cache": "/tmp/zfc-permutation105-9bfioj4b/cache",
+  "audit_source_sha256": "1a00e583afb0bfdd0766aa6a8f05b1a4d8a44bce2bdcfa2a27171f020430b82c",
+  "audit_source": "import BusyBeaver.ZFC.Permutation252Frame\nimport BusyBeaver.ZFC.BootPerm252\nnamespace SetTheory.BusyBeaver.ZFC\nopen RegisterPath FiniteZipper Permutation252Frame\n#print axioms permutation_composition\n#print axioms physOf_lt\n#print axioms physicalOrder_inverse\n#print axioms physOf_inverse\n#print axioms physOf_injective\n#print axioms vregs_length\n#print axioms nth_vregs\n#print axioms update_vregs\n#print axioms nth_vregs_append\n#print axioms update_vregs_append\n#print axioms increment_vregs\n#print axioms decrement_vregs\n#print axioms tail_update\n#print axioms vregs_zero\n#print axioms zeroRoot_tail\n#print axioms zeroRoot_dispatchZip\n#print axioms frame_of_zeroRoot_zip\nexample (R : Registers) (spares : List Nat) :\n    (vregs R ++ spares)[physOf 7]?.getD 0 = R 7 := nth_vregs_append R spares 7 (by decide)\nexample (R : Registers) (spares : List Nat) (v : Nat) :\n    writeRegisters (vregs R ++ spares) (physOf 8) v = vregs (update R 8 v) ++ spares :=\n  update_vregs_append R spares 8 v (by decide)\nexample : dispatchZip (\u27e894, by decide\u27e9 : Fin 252) 2 10 1 zeroRoot 40\n    BootPerm252.bootSparesPerm252 = BootPerm252.bootTargetPerm252 := by decide +kernel\nexample : DispatchFrame (\u27e894, by decide\u27e9 : Fin 252) (machinePerm252.run 82552)\n    zeroRoot 40 BootPerm252.bootSparesPerm252 := by\n  apply frame_of_zeroRoot_zip _ _ _ _ (by decide) 10 1\n  rw [BootPerm252.fullBootstrapPerm252_head]\n  have hz : dispatchZip (\u27e894, by decide\u27e9 : Fin 252) 2 10 1 zeroRoot 40\n      BootPerm252.bootSparesPerm252 = BootPerm252.bootTargetPerm252 := by decide +kernel\n  rw [hz]\n  exact BootPerm252.fullBootstrapPerm252\nend SetTheory.BusyBeaver.ZFC\n",
+  "audit_output": "'SetTheory.BusyBeaver.ZFC.Permutation252Frame.permutation_composition' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Permutation252Frame.physOf_lt' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Permutation252Frame.physicalOrder_inverse' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Permutation252Frame.physOf_inverse' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Permutation252Frame.physOf_injective' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Permutation252Frame.vregs_length' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Permutation252Frame.nth_vregs' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Permutation252Frame.update_vregs' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Permutation252Frame.nth_vregs_append' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Permutation252Frame.update_vregs_append' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Permutation252Frame.increment_vregs' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Permutation252Frame.decrement_vregs' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Permutation252Frame.tail_update' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Permutation252Frame.vregs_zero' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Permutation252Frame.zeroRoot_tail' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Permutation252Frame.zeroRoot_dispatchZip' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Permutation252Frame.frame_of_zeroRoot_zip' depends on axioms: [propext, Quot.sound]\n",
+  "scope": "Generic exact physical permutation/read-update commuting and complete tape frame; caller consumes proven82552 literalbootstrap to actualzeroRoot DispatchFrame. No generalbinarysimulation orZFCconsistencytheorem.",
+  "source_correction": "Explicit Nat.zero_add transport for40<=zeroRoot.path.length+gap; no mathematical change.",
+  "audit_environment_correction": "Merged dependency symlinks into one cache after initial colon overlay lacked RegisterBoxes253.olean; final serialized audit passed."
+}

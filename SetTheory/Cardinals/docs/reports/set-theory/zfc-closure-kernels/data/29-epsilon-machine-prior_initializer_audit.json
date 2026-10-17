@@ -1,0 +1,66 @@
+{
+  "conclusion": "The requested 2,000,000-step all-start search of the fixed known 252-state body was already completed in source04. It is not a new result; no duplicate full search was run.",
+  "source_pin": "6ec2e80dbbe45a99b7812fb5757977307959a51e",
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/VladimirReshetnikov/ProveIt/6ec2e80dbbe45a99b7812fb5757977307959a51e/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/04-machine-engineering-bootstrap_search.py",
+      "sha256": "66a10ee037b59db2cc837770a32499ae62552b01bb8d0b09315f44da8d9c4605"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/VladimirReshetnikov/ProveIt/6ec2e80dbbe45a99b7812fb5757977307959a51e/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/04-machine-engineering-bootstrap_results.json",
+      "sha256": "cb7f790f8d70482266c75f4307c6a4ae5d90684637a65410221aa299272382ba"
+    }
+  ],
+  "baseline254_sha256": "d655ce2cf8cccebd21caa21a49f0f9f010960a44b95c17aae6cc425c518954eb",
+  "checks": {
+    "working_states": 252,
+    "transitions": 504,
+    "protected_rows_unchanged": 55,
+    "classification_matches_saved_results": true,
+    "first_write_representatives": [
+      0,
+      7,
+      20,
+      42,
+      83,
+      95,
+      112
+    ],
+    "zero_write_cycle_starts": 12,
+    "first_write_starts": 240,
+    "maximum_first_write_prefix_steps": 15,
+    "representative_fuel": 2000000,
+    "recorded_dispatch_visits": 13987,
+    "recorded_valid_shape_frames": 0,
+    "public_target_ones": 178,
+    "public_target_passes_saved_frame_parser": {
+      "pc": "",
+      "gap": 40,
+      "source_regs": [
+        5,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      "spare_blocks": 158,
+      "spare_nonzero": [
+        [
+          2,
+          1
+        ],
+        [
+          8,
+          1
+        ]
+      ]
+    },
+    "translation_tests_passed": 7
+  },
+  "coverage_argument": "Before the first write of 1, the tape remains completely blank. Each start either follows a zero-writing cycle forever or reaches one of the seven representatives, on an otherwise identical blank tape up to head translation. A 2,000,000-step representative run therefore covers every configuration reachable from its original starts within 2,000,000 total steps, because the original nonnegative blank prefix only reduces the remaining suffix length. The exact public ready frame has 178 ones and hence cannot occur in a zero-write prefix or cycle. The saved parser admits that frame and uses only head-relative coordinates. Zero valid-shape frames in each representative log therefore excludes the exact translated public frame in this bounded search.",
+  "scope": "Finite recorded diagnostics plus an exact reduction of start-state choices; no new machine, no global impossibility claim, no proof that later initialization cannot succeed."
+}

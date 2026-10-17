@@ -1,0 +1,18 @@
+.PHONY: pdf quick verify searches clean
+
+pdf: report.pdf
+
+report.pdf: report.tex $(wildcard sections/*.tex)
+	latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+
+quick:
+	python3 tools/reproduce.py --quick
+
+verify:
+	python3 tools/reproduce.py --full
+
+searches:
+	python3 tools/reproduce.py --searches
+
+clean:
+	latexmk -c report.tex

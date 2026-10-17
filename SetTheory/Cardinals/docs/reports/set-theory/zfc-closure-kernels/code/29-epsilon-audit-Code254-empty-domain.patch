@@ -1,0 +1,18 @@
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean
+@@ -450,12 +450,13 @@
+ falsity code is derivable. -/
+ theorem c254_complete
+     (hnone : ∀ (D : Type) (mem : D → D → Prop), (∀ x, ¬ mem x x) →
+-      (∀ f, EncBundle f → ∀ e : Nat → D, Tarski.Sat mem e f) → False) :
++      (∀ f, EncBundle f → ∀ e : Nat → D, Tarski.Sat mem e f) →
++      (Nat → D) → False) :
+     C254 F := by
+   have hT : ThmG (rel 0 0) EncBundle (rel 0 0) := by
+     apply alias_complete (f := rel 0 0) (fun f hf => hf.1) trivial
+     intro D mem hirr hAx e
+-    exact (hnone D mem hirr hAx).elim
++    exact (hnone D mem hirr hAx e).elim
+   have := c254_of_thmG (fun f hf => by
+     obtain ⟨_, a, b, c, h1, h2, he⟩ := hf
+     rw [he]; exact C254.bundle a b c h1 h2) hT

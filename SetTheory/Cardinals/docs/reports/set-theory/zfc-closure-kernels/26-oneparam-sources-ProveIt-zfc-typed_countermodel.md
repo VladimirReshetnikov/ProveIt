@@ -1,0 +1,99 @@
+The incoming finite-sort obstruction retires the reduced raw C/G calculus as
+the intended consistency-search target. This is an ordinary mathematical
+finding, reviewed against the actual formula constructors; it has no Lean
+certificate yet. Its source is `zfc_consistency_machine_research.zip` in
+arrival `47f3a36029`, especially `sections/countermodel.tex`. The archive is
+preserved in Git, with intake provenance in the closure-kernel report.
+
+Assign variable label i its own nonempty domain of size d_i, where d_0=2 and
+d_(i+1)=d_i+2^(d_i). Diagonal membership is always false. Between different
+sorts, object 0 is empty and object 1 is universal; every higher sort also
+contains an exact representative of every subset of a lower sort. This is
+a semantics for the emitted numerical rules. Cross-variable substitution
+would identify domains that these rules allow to differ.
+
+Every label in matrix code c is less than c, including binder labels. The
+exceptional code 0 means Truth, and its implication collapse 0→0=0 is sound.
+The actual gate requires c distinct from a and b. Container C holds using
+universal objects; if a=b its diagonal guard is false. For collection G:
+
+- If a=b, choose the empty output: coverage has a false diagonal guard.
+- If b<c, represent the finite range in sort c exactly.
+- If b>c, freshness makes the matrix independent of b and c; choose the
+  universal or empty output according to whether a guarded witness exists.
+
+All retained logical rows, either original or dual rho6, atomic vacuity,
+modus ponens and generalization preserve validity. Target Rel(0,0) is false.
+Induction therefore excludes it from the abstract proof search. The finite
+domains, truth tables and search invariant are definable in ZFC, so the
+argument formalizes there without assuming Con(ZFC).
+
+This also covers the 250-state conjunction rewrite and the 248-state
+implicational-parameter/grammar rewrites: conjunction reassociation and
+commutation preserve truth, and the permuted logical schema has the same
+instance family. The later PSC-only row has a finite global range in its
+fresh output sort and is valid too. Even full same-variable specialization
+holds in this model; cross-variable universal instantiation fails.
+
+The literal tables have no proved simulation to this abstract enumerator.
+Consequently this finding is not an unconditional nonhalting theorem about
+any literal table. If ZFC proves the required simulation implication, it
+proves that table's nonhalting; consistent ZFC could then not also prove
+nonhalting equivalent to its own ordinary consistency statement. The
+ordinary one-sorted equality-free PSC and CP/GIC interpretations are
+unaffected: their full first-order logic includes the missing substitution.
+
+This supersedes the earlier plan to calibrate the unchanged reduced
+calculus. The state tables and exact regeneration evidence remain useful
+compiler benchmarks. Work toward a consistency machine must preserve the
+complete 253-state frontend or prove a replacement refutation interface.
+
+Source 16 (`9439d775aa`, batch 147) replaces membership code `3P(i,j)+1`
+by `3P(i,j)+4` and makes code 1 primitive Bottom. This also satisfies the
+hypotheses of the finite-sort argument. Each variable label in matrix c
+remains strictly below c (now checked for all codes by
+`Bottom3Syntax.decoded_label_lt`), and Bottom is interpreted as false.
+Neither the C/G formulas nor their freshness gate or logical rows change.
+The C/G/V label's V means the inherited atomic vacuity row, not a new
+substitution rule. Thus the 251-state genuine-Bottom C/G experiment and the
+historical 250 relative-Bottom control are both excluded as unchanged
+abstract consistency searches. Source 16's 252-state PSC experiment has its
+own explicit fixed-slot identity-quantifier countermodel. Its complete
+Hilbert reference checker is a different program and is not refuted by these
+models. The literal-table qualification above continues to apply.
+
+Source 17 (`5e5603303d`, batch 148) gives an ordinary strengthening to PA.
+For ambient n, use A(n)=product(i<n,d_i) mixed-radix assignments and build
+truth tables for all codes k≤n in increasing code order. Each table has A(n)
+bits; the complete packed array is below 2^((n+1)A(n)). Coordinate updates,
+finite quantifiers, C/G range witnesses and the support lemma are primitive
+recursive. Coherence under projection gives one predicate Val(k), evaluated
+in ambient dimension k, and makes GEN/MP validity preservation uniform.
+Induction on proof lines and on the abstract enumerator's current/cache/stack
+invariant proves non-refutation in PA. This is an explicit mathematical
+formalizability argument, not a delivered Lean theorem or PA proof object.
+
+Its general finite-range hull lemma explains why changing the PSC guard is
+insufficient. For distinct input/output labels i,j and fresh k>j with k≠i,
+represent the entire finite matrix range in sort k. If the matrix omits k,
+this witness validates both guarded closure and unrestricted support for
+*any* additional guard and any boundedness antecedent. Same-variable UI and
+primitive Bottom therefore leave this obstruction intact. A replacement
+frontend must enforce common-domain variable instantiation; the complete
+ground-clause route in [clausal_reference.md](clausal_reference.md) does so.
+
+Batch149 source18 independently formalizes a different, narrower PSC-only
+obstruction in its delivered `PSCIdentityObstruction.lean`: identity quantifiers,
+R(i,j) iff i>=2 and j=0, arbitrary matrices and hull labels k>=2. Its specified
+modal/same-name repairs and MP/GEN preserve validity while both primitive Bottom
+and R00 remain false. Five principal Lean4.32 audits use only `propext`.
+This formal result has no numeric-code or literal-machine adapter, and its
+negative C/G control is false. It does not replace the ordinary PA finite-sort
+argument above. Source18's older open C/G-calibration question is now historical.
+
+Source19 further shows that even fresh/injective renaming and signed atomic UI
+miss **composite colliding** UI. That separate counterinterpretation is not a
+PSC model. Its new complete shared-template checker and source18's complete
+binding-witness checker both permit the required identifications. Their full
+binary implementations and consistency endpoints remain open; see
+[the logical-engine continuation](logical_engine_completeness.md#batch149-composite-collisions-and-two-complete-references).

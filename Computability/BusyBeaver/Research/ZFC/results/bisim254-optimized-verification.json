@@ -1,0 +1,95 @@
+{
+  "status": "PASS: full 3,010-entry symmetric certificate and actual register-program endpoints",
+  "compiler": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+  "lean_version": "4.32.0",
+  "lean_num_threads": "0",
+  "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Bisim254.lean",
+  "source_sha256": "3f1495b78da8adaed4a12c0938c1e7d26fb4498731f5568eacd153df43eb07fc",
+  "source_bytes": 366902,
+  "source_byte_exact_to_actual_compiled_variant": true,
+  "output_olean": "/tmp/zfc-literal-tree-benchmark/cache/BusyBeaver/ZFC/Bisim254.olean",
+  "output_olean_sha256": "a47e64ba915c19bbe3f05991cd65f87f0ae5c3983f2233495791b6950f0e5a93",
+  "generator": "Computability/BusyBeaver/Research/ZFC/generate_bisim254.py",
+  "generator_sha256": "5af785a29421c7860d2b3ee0760054ab9b61585a6f66045eb2bcdee29baeeb0a",
+  "generator_default_check": "PASS: exact 3,010 entries in 16 chunks",
+  "generator_plain_mode": "PASS: byte-exact legacy plain module from 58d773ac24",
+  "actual_tree_source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ActualTree254.lean",
+  "actual_tree_source_sha256": "7f4a3782f4ce061478a233d15272c15f2b2aedab688f728f7e7511f186216e71",
+  "shared_actual_tree_identity_seconds": 53.53,
+  "full_build_wall_seconds": 555.41,
+  "full_build_user_seconds": 534.33,
+  "full_build_system_seconds": 17.42,
+  "full_build_maximum_rss_kbytes": 6899084,
+  "full_build_exit_code": 0,
+  "full_build_log": "\tCommand being timed: \"/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -o /tmp/zfc-literal-tree-benchmark/cache/BusyBeaver/ZFC/Bisim254.olean Bisim254LiteralShared.lean\"\n\tUser time (seconds): 534.33\n\tSystem time (seconds): 17.42\n\tPercent of CPU this job got: 99%\n\tElapsed (wall clock) time (h:mm:ss or m:ss): 9:15.41\n\tAverage shared text size (kbytes): 0\n\tAverage unshared data size (kbytes): 0\n\tAverage stack size (kbytes): 0\n\tAverage total size (kbytes): 0\n\tMaximum resident set size (kbytes): 6899084\n\tAverage resident set size (kbytes): 0\n\tMajor (requiring I/O) page faults: 1579\n\tMinor (reclaiming a frame) page faults: 5629757\n\tVoluntary context switches: 11648\n\tInvoluntary context switches: 14330\n\tSwaps: 0\n\tFile system inputs: 147760\n\tFile system outputs: 35880\n\tSocket messages sent: 0\n\tSocket messages received: 0\n\tSignals delivered: 0\n\tPage size (bytes): 4096\n\tExit status: 0\n",
+  "audit_final_wall_seconds": 0.54,
+  "audit_final_exit_code": 0,
+  "audit_reports": 9,
+  "callers_and_controls": 8,
+  "audit_source_sha256": "1fd1c27d26a97bd3111efc845f3be436882cfde0da27e44d61fee6aebeba49c4",
+  "audit_source": "import BusyBeaver.ZFC.Bisim254\nimport BusyBeaver.ZFC.NativeTheory254\nimport BusyBeaver.ZFC.QuotientZF0\nimport BusyBeaver.ZFC.DirtyProgram254\nimport BusyBeaver.ZFC.Permutation252Frame\nnamespace SetTheory.BusyBeaver.ZFC\nopen RegisterPath RMBisim Bisim254\n#print axioms t1_eq\n#print axioms t2_eq\n#print axioms start_ok\n#print axioms all_ok\n#print axioms start_ok'\n#print axioms all_ok'\n#print axioms prog254_halts_iff\n#print axioms literal_halts_iff\nexample (R : Registers) : Halts Prog254.program \u27e8[], R\u27e9 \u2194\n    Halts RMEquiv254.pathDag254 \u27e8[], R\u27e9 := prog254_halts_iff R\nexample : Halts Prog254.program Prog254.initial \u2194\n    BProv NativeTheory254.NativeAx [] Form.fBot :=\n  literal_halts_iff.trans NativeTheory254.c254_refutation_iff\nexample (h : BProv PSCCalibration.ZF0Ax [] Form.fBot) :\n    Halts Prog254.program Prog254.initial :=\n  literal_halts_iff.mpr (QuotientZF0.c254_of_zf0_refutation h)\n\ndef corruptPositive : CTree \u2192 CTree\n  | .empty => .empty\n  | .leaf (a, b, _, k) => .leaf (a, b, 3010, k)\n  | .branch n l r => .branch n (corruptPositive l) r\n\ndef corruptZero : CTree \u2192 CTree\n  | .empty => .empty\n  | .leaf (a, b, j, _) => .leaf (a, b, j, 3010)\n  | .branch n l r => .branch n (corruptZero l) r\n\n-- Both successor references of the actual first decrement entry are tested.\nexample : entryOk t1 t2 (corruptPositive cert) (1, 1, 3010, 2) = false := by decide +kernel\nexample : entryOk t1 t2 (corruptZero cert) (1, 1, 1, 3010) = false := by decide +kernel\nexample : RMBisim.decode 4 = [false, false] := by decide +kernel\nexample : RMBisim.decode 5 = [false, true] := by decide +kernel\n\nprivate theorem encoded_zero (i : Nat) :\n    L2.enc \u27e80, 0, 0, 0, 0, 0, 0, 0, 0\u27e9 i = 0 := by\n  rcases i with _ | i\n  \u00b7 rfl\n  rcases i with _ | i\n  \u00b7 rfl\n  rcases i with _ | i\n  \u00b7 rfl\n  rcases i with _ | i\n  \u00b7 rfl\n  rcases i with _ | i\n  \u00b7 rfl\n  rcases i with _ | i\n  \u00b7 rfl\n  rcases i with _ | i\n  \u00b7 rfl\n  rcases i with _ | i\n  \u00b7 rfl\n  rcases i with _ | i <;> rfl\n\ntheorem zero_literal_native :\n    Halts Prog254.program Permutation252Frame.zeroRoot \u2194\n      BProv NativeTheory254.NativeAx [] Form.fBot := by\n  have he : L2.enc \u27e80, 0, 0, 0, 0, 0, 0, 0, 0\u27e9 =\n      Permutation252Frame.zeroRoot.registers := funext encoded_zero\n  have h := (prog254_halts_iff (L2.enc \u27e80, 0, 0, 0, 0, 0, 0, 0, 0\u27e9)).trans\n    (DirtyProgram254.six_nonformula_path_iff 0 0 0 0 0 0)\n  simpa only [he, Permutation252Frame.zeroRoot] using h\n#print axioms zero_literal_native\nend SetTheory.BusyBeaver.ZFC\n",
+  "audit_output": "'SetTheory.BusyBeaver.ZFC.Bisim254.t1_eq' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Bisim254.t2_eq' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Bisim254.start_ok' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Bisim254.all_ok' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Bisim254.start_ok'' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Bisim254.all_ok'' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Bisim254.prog254_halts_iff' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Bisim254.literal_halts_iff' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.zero_literal_native' depends on axioms: [propext, Classical.choice, Quot.sound]\n\tCommand being timed: \"/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean FullLiteralAudit.lean\"\n\tUser time (seconds): 0.41\n\tSystem time (seconds): 0.16\n\tPercent of CPU this job got: 104%\n\tElapsed (wall clock) time (h:mm:ss or m:ss): 0:00.54\n\tAverage shared text size (kbytes): 0\n\tAverage unshared data size (kbytes): 0\n\tAverage stack size (kbytes): 0\n\tAverage total size (kbytes): 0\n\tMaximum resident set size (kbytes): 823360\n\tAverage resident set size (kbytes): 0\n\tMajor (requiring I/O) page faults: 27\n\tMinor (reclaiming a frame) page faults: 19600\n\tVoluntary context switches: 581\n\tInvoluntary context switches: 200\n\tSwaps: 0\n\tFile system inputs: 0\n\tFile system outputs: 8\n\tSocket messages sent: 0\n\tSocket messages received: 0\n\tSignals delivered: 0\n\tPage size (bytes): 4096\n\tExit status: 0\n",
+  "axioms_pure_bisimulation": [
+    "propext",
+    "Quot.sound"
+  ],
+  "axioms_literal_numeric_and_native_endpoint": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "relation_source_review": {
+    "pin": "58d773ac24d9454e41ba3bb87aa5bd7e96acdd35",
+    "scratch": "/tmp/zfc-bisim254-remote-review-u6mbxau6",
+    "generator_byte_exact": true,
+    "generator_stdout": "wrote /tmp/zfc-bisim254-remote-review-u6mbxau6/regenerated.lean: 3010 entries in 16 chunks",
+    "entries": 3010,
+    "all_successor_indices_bounded": true,
+    "max_pointer_lengths": [
+      32,
+      94
+    ],
+    "upstream_source_order_exact": true,
+    "upstream_related_pairs_equal": true,
+    "upstream_successor_relation_equal": true,
+    "sources": {
+      "Computability/BusyBeaver/Research/ZFC/generate_bisim254.py": "7671506b592a588d845c96d8993b9c9cd5a51fbc093276cccfd0462b53a05939",
+      "Computability/BusyBeaver/Research/ZFC/bisim254.py": "ff575f4d728333f0ebd1a4236014d13169b2eda081c5bc10f4d23be5d858958e",
+      "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Prog254.lean": "6e564bd1ba179b2d39fccc3b8c86a681ec0dd6529df9cfa2522500eef140cfde",
+      "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Dag254.lean": "e42a8658265b114a99f3550f979b95f1afc02a2f7d6483e1765d911891c05f52",
+      "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Bisim254.lean": "e68c449cdee056547908b0123149709ec494cf71f49aec8777a3526d54e064a7"
+    },
+    "proof_scope": "Same literalProg254 rootempty register-vectorhaltingiff219pathDAG, everyNatvector. Symmetric checker needsonekernelcheck; no binarytheorem. No Lean run performed inthisreview.",
+    "historical_stage": "Read-only source review before the later full local kernel check recorded at top level."
+  },
+  "literal_tree_source_review": {
+    "pin": "58d773ac24d9454e41ba3bb87aa5bd7e96acdd35",
+    "generated_literal_source": "/tmp/zfc-bisim254-remote-review-u6mbxau6/Bisim254-literal-trees.lean",
+    "generation_seconds": 0.4502076683565974,
+    "bytes": 533932,
+    "sha256": "a9891b3b8be2bd0ba9c39142147c9575f8470209e8f13cadc2b96811d0a299ab",
+    "literalTree_stats": [
+      {
+        "nodes": 6459,
+        "leaves": 6460,
+        "depth": 34
+      },
+      {
+        "nodes": 6459,
+        "leaves": 6460,
+        "depth": 96
+      }
+    ],
+    "literalTree_syntax_independently_parsed_and_equal_full_unfolding": true,
+    "all_3010_certificate_entries_unchanged": true,
+    "kernel_status": "NOT RUN: soleLean slot assigned child SymbolicPerm252. Literal-tree equalities and fullchunks still require kernel check.",
+    "performance_plan": "First explicit4.32 LEAN_NUM_THREADS=0 kernelcheck t1_eq,t2_eq andonechunk onfresh105dependencycache; iffast full16chunks; neverclaimplain39minauthorreportaslocalcheck. The writtenliteral-treesareprovedequalptreeonce, thenallpathwalksavoidrepeatingnumericnode-tablelookup.",
+    "historical_stage": "Initial source-only review, preceding the successful shared-literal build recorded at top level."
+  },
+  "historical_rejections": [
+    "Optionaloriginal--literal-trees tree-equalitydecideproofrejectedmissingDecidableEq; repairedbykernelrfl",
+    "Firstscratchauditdecode4/5resolvedunrelatedFOLdecode; qualifiedRMBisim.decode andserializedrerunPASS"
+  ],
+  "retired_duplicate": "results/path-bisim254-retired-incomplete.json; neverPASS",
+  "scope": "Every common infinite Nat register vector, empty IP: literal 6,459-row Prog254 halts iff the 219-node path DAG halts. Public initial nextproof2 iff C254 F; audited safe all-zero dirty root iff NativeAx refutation. No binary simulation or standard-ZFC consistency endpoint."
+}

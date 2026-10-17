@@ -1,0 +1,143 @@
+INDEPENDENT REVIEW OF THE PROPOSED TWELVE-AXIOM KERNEL
+
+Review status: mathematical review of the explicit axiom specification sent
+by the minimal-theories agent; no kernel proof assistant formalization.
+
+The specification has one domain; membership E; class incidence eps; empty
+constant e; inductive-set constant I; assignment evaluation V(s,j); update
+C(s,j,z); unordered Pair; Union; and Power.  Four assignment/class axioms
+(Change, NAND, Atom, Exists) accompany eight set axioms (Empty,
+Extensionality, Pair, Union, Power, Infinity, direct Separation, direct
+Collection).  This review concerns that precise specification.
+
+1. Lower interpretation
+
+The Change law permits an arbitrary finite list of variable slots to be
+assigned chosen values.  Distinct labels are required for distinct syntactic
+variables in a particular formula.  The set axioms imply an externally
+infinite domain, so such labels exist.  In particular e differs from I:
+Infinity gives E(e,I), whereas Empty rules out E(e,e).
+
+Atom gives the membership case of an induction on pure E-formulas.  Equality
+can be eliminated using Extensionality:
+  x=y iff forall z (E(z,x) iff E(z,y)).
+NAND is a complete Boolean basis, and Exists supplies existential binding by
+updating the relevant slot.  The resulting class t denotes a given finite
+pure E-formula for every assignment object s.  Change is exactly what makes
+the bound-variable step and preservation of unrelated parameters work.
+
+For phi(x,parameters), store the parameters in pairwise distinct slots of b,
+reserve e for x, and use the direct Separation instance with class t.
+For psi(x,y,parameters), reserve e and I for x and y; direct Collection gives
+a set containing some witness for every nonempty fiber over a set A.
+Applying Separation to that witness set gives the exact image of any
+functional relation, hence the usual Replacement scheme.
+
+The reduct therefore satisfies pure membership ZF WITHOUT Foundation and
+Choice.  Foundation must not be silently inserted.  Its absence causes no
+consistency-strength problem: the conventional relative-consistency
+transports for Foundation and Choice then give ordinary ZFC consistency.
+The manuscript should state and cite this final bridge explicitly.
+
+2. Upper expansion, including nonstandard set-theory models
+
+Assume Con(ZFC) in the ambient ZFC metatheory and take a countable model M of
+ZFC by completeness.  Use its actual domain as the kernel domain and its
+membership relation as E.  Interpret e by M's empty set and I by M's omega.
+Pair, Union and Power are the corresponding M-definable total functions.
+
+Define V and C from M's finite-partial-function coding, with the same
+normalization convention for both functions: an invalid map code denotes the
+empty map.  V(s,j) is its value at j, or e when absent.  C(s,j,z) overwrites
+the j entry after normalization.  Both functions are first-order definable
+over M.  M can regard some internally finite maps as nonstandardly large;
+the update/evaluation identities remain theorems true in M.  No external
+well-foundedness or omega-standardness of M is needed.
+
+In the ambient metatheory form Def(M), the collection of subsets of M
+definable in the pure E-language with a finite tuple of parameters.  It is
+countable and nonempty.  Choose a surjection q from M's domain onto Def(M)
+and let eps(s,a) mean s belongs to q(a).
+
+NAND closure follows from closure of definable sets under Boolean operations.
+Atom closure follows from definability of V.  For Exists, the preimage
+condition exists z eps(C(s,j,z),a) is definable over M because q(a) has some
+pure E-definition and C is definable over M.  Its extension therefore has a
+class code.  Direct Separation and direct Collection have E-definable fibers
+for the same reason, even for arbitrary b,t in the domain.  M satisfies the
+corresponding ordinary set-theory schemes, so these two finite kernel axioms
+hold in the expansion.
+
+3. Why this does not assume a stronger truth or comprehension theory
+
+The incidence relation is assembled using ambient satisfaction for the SET
+structure M.  That satisfaction relation is available in ZFC.  The kernel
+does not require any class code to be the internal syntax code of its own
+definition, and does not assert a global soundness or induction principle for
+arbitrary eps-formulas.  Consequently the construction is not an internal
+truth-predicate reflection principle for M.  The lower formula induction is
+restricted to pure E-formulas; extending it silently to the full kernel
+language would be an unjustified strengthening.
+
+The phrase 'externally definable' should be explained relative to the ambient
+metatheory.  Formalizability in ZFC uses the ambient set of finite formula
+codes and the satisfaction relation of M.  It does not require M to have
+standard natural numbers or a truth predicate for its own formulas.
+
+4. Precise consistency statement
+
+The two model constructions yield, within ordinary ambient ZFC:
+  Con(K12) iff Con(ZFC),
+once fixed recursive first-order proof predicates are selected and the
+completeness and Foundation/Choice relative-consistency theorems are used.
+This is a legitimate route to the requested internal ZFC equivalence for a
+verified finite-axiom proof-search machine.  It is not an emitted literal ZFC
+proof string or an already implemented primitive-recursive proof compiler.
+
+No hidden contradiction or extra comprehension requirement was found in the
+specified construction.  Required qualifications are: correct invalid-map
+normalization, distinct finite slot labels, pure-E formula scope, explicit
+Foundation/Choice bridge, and honest separation of this theorem from any
+unimplemented low-state machine compilation or proof-code artifact.
+
+5. Review of the completed 28-clause payload and search theorem
+
+The completed notes/finite_kernel_notes.md, finite_assignment_kernel.py, and
+generated clause text were inspected independently.  All 28 clause signs and
+Skolem dependencies match the twelve-axiom specification.  In particular:
+
+  - Extensionality uses two clauses imposing XOR on the two membership
+    values when the compared objects differ.  No false requirement is
+    imposed when they are equal.
+  - PowerWitness(a,x) witnesses a failed subset condition exactly when
+    x is not a member of Power(a).
+  - ExistsWitness(j,a,s) depends on the class, selector, and assignment.
+  - CollectWitness(a,b,t,x) need not depend on the antecedent witness y.
+    Over a nonempty domain, (exists y eta(y)) implies exists z good(z)
+    is equivalent to exists z forall y (eta(y) implies good(z)).
+    This explains the four-argument witness without a hidden strengthening.
+
+The ground feasibility checker enumerates equivalence relations on all
+observed ground subterms and enforces both function and predicate congruence.
+A satisfying partition extends to a total-function finite structure by
+assigning a default value to previously unobserved argument tuples.
+Allowing identifications such as Pair(e,e)=e at the purely ground-EUF level
+is correct; particular kernel ground instances can subsequently forbid them.
+An occurs check would be inappropriate here.
+
+The exhaustive-search theorem is valid: if all finite batches of ground
+instances are satisfiable, compactness gives a model of all ground instances;
+its substructure generated by constants satisfies every universal clause,
+because every element there is denoted by a ground term.  Thus searching for
+an infeasible finite batch is complete for refutation of this universal
+Skolem theory.  This proof does not assert that a whole-kernel search was
+executed, and it provides no numerical binary-machine state bound.
+
+6. Language and novelty scope
+
+The fixed scoped payload and fused direct set-existence interfaces are useful
+new artifacts relative to the inspected prior ProveIt reports.  No claim is
+made to historical priority for finite axiomatizations equiconsistent with
+ZFC.  'Equiconsistent presentation' is a more exact description than an
+unqualified 'conservative version' unless the intended conservativity language
+and base theory are separately specified.

@@ -1,0 +1,191 @@
+#!/usr/bin/env python3
+"""Generate BusyBeaver/ZFC/L2AxiomsEval254.lean: closed forms of axioms() nodes.
+
+Evaluating the composite effect of axioms() in one step duplicates terms
+exponentially before `unP (P x y) = (x, y)` can collapse them.  This script
+symbolically executes every node of the axioms() subtree on a generic record
+`st` (the macro semantics of L2Macros254, with stack pops simplified as soon
+as they meet a push) and emits, bottom-up,
+
+    theorem eN (st : AS) : fN st = ⟨closed form⟩
+
+each proved from its children's closed forms, so simplification happens at
+every step.  The simulator is untrusted: every closed form is checked by
+Lean against the actual definitions fN of L2Axioms254.
+
+Usage (from the repository root):
+    py -I Computability/BusyBeaver/Research/ZFC/generate_l2_axioms_eval.py
+"""
+
+from __future__ import annotations
+
+import re
+import sys
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parents[4]
+SOURCE = REPO / "lib/jeff-busy-beaver-zfc254/ZF/m254/coq/prog/Dag254.v"
+TARGET = REPO / "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2AxiomsEval254.lean"
+ROW = re.compile(r"\|\s*(\d+)\s*=>\s*\((E\w+(?:\s+\d+)?),\s*(E\w+(?:\s+\d+)?)\)\s*\(\*\s*(.*?)\s*\*\)")
+FIELDS = ["np", "tw", "ws", "ac", "p1", "p2", "s1", "s2", "pl"]
+
+# Symbolic expressions: ("var", name) | ("lit", n) | (op, args...)
+
+
+def show(e) -> str:
+    k = e[0]
+    if k == "var":
+        return e[1]
+    if k == "lit":
+        return str(e[1])
+    if k == "P":
+        return f"P {arg(e[1])} {arg(e[2])}"
+    if k in ("wim", "wel", "wal", "weq", "wa", "wex"):
+        return f"{k} {arg(e[1])} {arg(e[2])}"
+    if k == "wn":
+        return f"wn {arg(e[1])}"
+    if k == "fst":
+        return f"(Cantor.ofNat {arg(e[1])}).1"
+    if k == "snd":
+        return f"(Cantor.ofNat {arg(e[1])}).2"
+    if k == "add":
+        return f"{show(e[1])} + {arg(e[2])}"
+    if k == "gate":
+        return f"if {show(e[1])} = {show(e[2])} ∨ {show(e[1])} = {show(e[3])} then 0 else {show(e[4])}"
+    raise ValueError(e)
+
+
+def arg(e) -> str:
+    s = show(e)
+    return s if e[0] in ("var", "lit") or s.startswith("(") else f"({s})"
+
+
+def fst(e):
+    return e[1] if e[0] == "P" else ("fst", e)
+
+
+def snd(e):
+    return e[2] if e[0] == "P" else ("snd", e)
+
+
+def add(a, b):
+    if b == ("lit", 0):
+        return a
+    if a == ("lit", 0):
+        return b
+    return ("add", a, b)
+
+
+def macro(name, st):
+    st = dict(st)
+    if name == "pushF":
+        st["ws"], st["tw"] = ("P", st["tw"], st["ws"]), ("lit", 0)
+    elif name in ("par1F", "par2F", "par3F"):
+        src = {"par1F": "p1", "par2F": "p2", "par3F": "ac"}[name]
+        st["ws"], st["tw"] = ("P", st["tw"], st["ws"]), st[src]
+    elif name in ("consF", "welF", "walF", "weqF", "waF", "wexF"):
+        op = {"consF": "wim", "welF": "wel", "walF": "wal", "weqF": "weq", "waF": "wa", "wexF": "wex"}[name]
+        top, rest = fst(st["ws"]), snd(st["ws"])
+        st["tw"], st["ws"] = (op, top, st["tw"]), rest
+    elif name == "wnF":
+        st["tw"] = ("wn", st["tw"])
+    elif name == "readp2F":
+        x = fst(st["pl"])
+        st["pl"], st["p2"] = snd(st["pl"]), add(st["p2"], x)
+    elif name == "readTw":
+        x = fst(st["pl"])
+        st["pl"], st["tw"], st["s1"] = snd(st["pl"]), add(st["tw"], x), ("lit", 0)
+    elif name == "gateF":
+        st["tw"] = ("gate", st["ac"], st["p1"], st["p2"], st["tw"])
+        st["ac"], st["p1"], st["p2"] = ("lit", 0), ("lit", 0), ("lit", 0)
+    else:
+        raise ValueError(name)
+    return st
+
+
+LEAVES = {166: "par1F", 121: "par2F", 168: "par3F", 171: "pushF", 119: "consF", 181: "welF",
+          180: "walF", 182: "weqF", 218: "wnF", 178: "waF", 183: "wexF", 176: "readp2F",
+          71: "gateF"}
+
+
+def main() -> int:
+    text = SOURCE.read_text(encoding="utf-8")
+    nodes = {int(m.group(1)): (m.group(2), m.group(3), m.group(4)) for m in ROW.finditer(text)}
+
+    def child(e: str) -> int:
+        return int(re.fullmatch(r"ENode\s+(\d+)", e.strip()).group(1))
+
+    order: list[int] = []
+    seen: set[int] = set()
+
+    def visit(n: int) -> None:
+        if n in seen or n in LEAVES:
+            return
+        seen.add(n)
+        if n == 35:
+            visit(58)  # node 35 = read the literal into topwff, then node 58
+            order.append(35)
+            return
+        a, b, _ = nodes[n]
+        visit(child(a))
+        visit(child(b))
+        order.append(n)
+
+    visit(1)
+    generic = {f: ("var", f"st.{f}") for f in FIELDS}
+
+    def effect(n, st):
+        if n in LEAVES:
+            return macro(LEAVES[n], st)
+        if n == 35:
+            return effect(58, macro("readTw", st))
+        a, b, _ = nodes[n]
+        return effect(child(b), effect(child(a), st))
+
+    out = []
+    w = out.append
+    w("import BusyBeaver.ZFC.L2Axioms254")
+    w("")
+    w("/-!")
+    w("Closed forms of the `axioms()` nodes (L2, part 5).")
+    w("")
+    w("Generated by `Computability/BusyBeaver/Research/ZFC/generate_l2_axioms_eval.py`,")
+    w("whose symbolic simulator is untrusted: each closed form is checked against")
+    w("the definitions of `L2Axioms254`, bottom-up, so that `unP (P x y) = (x, y)`")
+    w("collapses at every step instead of after an exponential unfolding.")
+    w("-/")
+    w("")
+    w("namespace SetTheory.BusyBeaver.ZFC.L2")
+    w("")
+    w("open RMDag Dag254 Code254")
+    w("")
+    w("attribute [local irreducible] Code254.P")
+    w("")
+    w("set_option linter.unusedSimpArgs false")
+    w("")
+    for n in order:
+        res = effect(n, generic)
+        fields = ", ".join(show(res[f]) for f in FIELDS)
+        a, b, name = nodes[n]
+        w(f"/-- {name} -/")
+        w(f"theorem e{n} (st : AS) : f{n} st = ⟨{fields}⟩ := by")
+        if n == 35:
+            w("  simp only [f35, f46, e58, ofNat_P, Nat.zero_add]")
+        else:
+            w(f"  simp only [f{n}, {eqname(child(a))}, {eqname(child(b))}, ofNat_P, Nat.zero_add]")
+        w("")
+    w("end SetTheory.BusyBeaver.ZFC.L2")
+    w("")
+    TARGET.write_text("\n".join(out), encoding="utf-8", newline="\n")
+    print(f"wrote {TARGET}: {len(order)} closed forms")
+    return 0
+
+
+def eqname(n: int) -> str:
+    return {166: "par1F", 121: "par2F", 168: "par3F", 171: "pushF", 119: "consF", 181: "welF",
+            180: "walF", 182: "weqF", 218: "wnF", 178: "waF", 183: "wexF", 176: "readp2F",
+            71: "gateF"}.get(n, f"e{n}")
+
+
+if __name__ == "__main__":
+    sys.exit(main())

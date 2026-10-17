@@ -1,0 +1,32 @@
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiDerived.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiDerived.lean
+@@ -6,9 +6,10 @@
+ 
+ Everything here is relative to a hypothesis `hC` that the theorem predicate
+ `Thm Ax` is classical for `imp`/`bot` (K, S, Peirce and ex falso under MP).
+-`Lukasiewicz.lean` and `Tarski.classical` discharge that hypothesis from the
+-row `rho8` alone; keeping it abstract here separates the propositional search
+-certificates from the quantifier argument.
++`Lukasiewicz.lean` reconstructs K, S and Peirce from `rho8`. The separate
++`TarskiClassicalBridge.lean` derives ex falso using K, S and `rho6`, then
++assembles `Tarski.classical_from_rows`. Keeping the record abstract here
++separates the implicational proof certificates from the quantifier argument.
+ 
+ Main results:
+ 
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiComplete.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiComplete.lean
+@@ -27,9 +27,10 @@
+   using `spec` for the universal case; `cl` and `cl_equiv` move the target
+   formula and the closures of the theory axioms into the clean fragment.
+ 
+-The propositional basis enters only through the hypotheses `hC` and `hC0`
+-that the theorem predicates are classical; `Lukasiewicz.lean` derives them
+-from the row `rho8`.
++The propositional basis enters this module through explicit hypotheses
++`hC` and `hC0`. `TarskiCompleteClosed.lean` discharges both using the checked
++`Tarski.classical_from_rows`: K, S and Peirce come from `rho8`, while the
++primitive-falsity component additionally uses `rho6`. No machine row is added.
+ -/
+ 
+ namespace SetTheory.BusyBeaver.ZFC.Tarski

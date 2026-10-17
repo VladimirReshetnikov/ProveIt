@@ -36,6 +36,13 @@ import BusyBeaver.ZFC.TarskiFalsity
 import BusyBeaver.ZFC.OutgoingProfile
 import BusyBeaver.ZFC.Code254
 import BusyBeaver.ZFC.Enum254
+import BusyBeaver.ZFC.L2AxiomsEval254
+import BusyBeaver.ZFC.L2Root254
+import BusyBeaver.ZFC.RMEquiv
+import BusyBeaver.ZFC.RMEquiv254
+import BusyBeaver.ZFC.RMBisim
+import BusyBeaver.ZFC.ActualTree254
+import BusyBeaver.ZFC.Bisim254
 import BusyBeaver.ZFC.NamedNumeric254
 import BusyBeaver.ZFC.BootstrapFrame253
 import BusyBeaver.ZFC.Code254Containers
@@ -49,6 +56,55 @@ import BusyBeaver.ZFC.QuotientSeparation
 import BusyBeaver.ZFC.QuotientPower
 import BusyBeaver.ZFC.QuotientReplacement
 import BusyBeaver.ZFC.RegisterDecrement253
+
+import BusyBeaver.ZFC.QuotientBasic
+import BusyBeaver.ZFC.SingletonInfinity
+import BusyBeaver.ZFC.BreakSite253
+
+import BusyBeaver.ZFC.FiniteSets
+import BusyBeaver.ZFC.InductiveAttempts
+import BusyBeaver.ZFC.QuotientZF0
+import BusyBeaver.ZFC.RMDag
+import BusyBeaver.ZFC.Dag254
+import BusyBeaver.ZFC.L2Lib254
+import BusyBeaver.ZFC.L2Macros254
+import BusyBeaver.ZFC.L2Control254
+
+import BusyBeaver.ZFC.L2Axioms254
+import BusyBeaver.ZFC.DecodeFresh254
+import BusyBeaver.ZFC.NamedForm254
+import BusyBeaver.ZFC.DuplicateProfiles
+import BusyBeaver.ZFC.WritingRuns
+
+import BusyBeaver.ZFC.ZeroSite253
+
+import BusyBeaver.ZFC.EqualityGIC
+import BusyBeaver.ZFC.ProgramZF0
+import BusyBeaver.ZFC.QuotientCPGIC
+import BusyBeaver.ZFC.NativeDecoded254
+import BusyBeaver.ZFC.NativeTheory254
+import BusyBeaver.ZFC.EnumSafeStart254
+import BusyBeaver.ZFC.DirtyRoot254
+import BusyBeaver.ZFC.DirtyProgram254
+import BusyBeaver.ZFC.WellFoundedPart
+import BusyBeaver.ZFC.SeedInvariant254
+import BusyBeaver.ZFC.TablePerm252
+import BusyBeaver.ZFC.BootPerm252
+import BusyBeaver.ZFC.RegisterBoxesPerm252
+import BusyBeaver.ZFC.RegisterMarkPerm252
+import BusyBeaver.ZFC.RegisterIncrementPerm252
+import BusyBeaver.ZFC.RegisterDecrementPerm252
+import BusyBeaver.ZFC.Permutation252Frame
+import BusyBeaver.ZFC.BootstrapFramePerm252
+import BusyBeaver.ZFC.SymbolicPerm252
+import BusyBeaver.ZFC.SitePerm252
+import BusyBeaver.ZFC.RegisterPathClean
+import BusyBeaver.ZFC.Permutation252Simulation
+import BusyBeaver.ZFC.InstructionPerm252
+import BusyBeaver.ZFC.SiteCoverage
+import BusyBeaver.ZFC.RuntimePerm252
+import BusyBeaver.ZFC.RuntimeInstancePerm252
+import BusyBeaver.ZFC.Permutation252Program
 
 /-! Opt-in foundations for ZFC machine minimization. No end-to-end ZFC
 consistency theorem or state-count improvement is claimed by these imports. -/

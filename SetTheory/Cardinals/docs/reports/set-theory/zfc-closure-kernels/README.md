@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings, 16 October 2026. This report now reconciles twenty-five manuscripts.
+Intake findings, 16 October 2026. This report now reconciles thirty-six manuscripts.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -1750,3 +1750,454 @@ and preserves the empty-domain counterexample as an axiom-free theorem.
 Decoded bundles and literal encodable bundles remain distinct model theories;
 calibrating them with ZFC is still open. This later project correction is
 separate from the two incoming manuscripts' claims and their review cutoffs.
+
+
+## Batch 152: arity, proof engines and machine controls
+
+Intake findings, 16 October 2026. Arrival
+`da6dabcd8976acf94c4f3652ed3eeae5713b3d2a`, placement `b123527ff4`, adds nine
+continuations as local sources 26–34. These extend the host's explicit schema,
+proof-engine, initializer and runtime questions. The reconciliation-note option
+continues: the seeded base article, its labels and its PDF are unchanged.
+Every new article remains recoverable from its committed arrival archive;
+the dossiers below retain its results, alternate arguments and open questions.
+
+| Source / dossier | Archive | Primary ProveIt pin | Contribution |
+|---|---|---|---|
+| [26](intake-152-source-26.md) | `zfc_consistency_machine_report_20261016.zip` | `6ec2e80dbbe45a99b7812fb5757977307959a51e` | One-parameter EPSC plus a fixed adjunction axiom, parameter packing and represented exact hulls. |
+| [27](intake-152-source-27.md) | `zfc_consistency_machine_research_2026-10-16.zip` | `4747142d5d15213eb711bdadfa3cc7e769fcb7a7` | Same-size 253-state variant, shorter exact bootstrap, basis certificates and complete-logic compiler controls. |
+| [28](intake-152-source-28.md) | `zfc_contraction_research.zip` | `4747142d5d15213eb711bdadfa3cc7e769fcb7a7` | Complete signed-name calculus with explicit contraction and a reference search engine. |
+| [29](intake-152-source-29.md) | `zfc_epsilon_research.zip` | `d74c63b0c8d4f35597f1bd5976d941b9f104f94e` | Ground epsilon presentation, finite Boolean refutations, archived empty-domain repair and machine experiments. |
+| [30](intake-152-source-30.md) | `zfc_minimization_20261016.zip` | `4747142d5d15213eb711bdadfa3cc7e769fcb7a7` | Unsupported-closure obstruction, fixed schema emission and exhaustive bounded mutation families. |
+| [31](intake-152-source-31.md) | `zfc_small_machine_report_2026-10-16.zip` | `4747142d5d15213eb711bdadfa3cc7e769fcb7a7` | Default-last schema slots, dense scoped quantified-NAND codes and clean initializer control. |
+| [32](intake-152-source-32.md) | `zfc_small_machine_research.zip` | `4747142d5d15213eb711bdadfa3cc7e769fcb7a7` | Named-calculus bridges, internal-ZFC proof proposal, quotient obstructions and runtime-only 252 controls. |
+| [33](intake-152-source-33.md) | `zfc_small_machine_research_2026-10-16.zip` | `4747142d5d15213eb711bdadfa3cc7e769fcb7a7` | Inhabited raw subworld schema SR₂⁺, shared-witness equality tableau and initializer-reuse search. |
+| [34](intake-152-source-34.md) | `zfc_small_machine_research_20261016.zip` | `d74c63b0c8d4f35597f1bd5976d941b9f104f94e` | Finite assignment/class kernel FAK12 and shared-initializer exact quotient controls. |
+
+Source 29's machine work uses the earlier `6ec2e80d` parent; source 30 also
+compares a later `2f9c650` audit. Upstream machine/compiler pins and attribution
+are recorded separately in each dossier. Mira-Cult, Jeff, Wade and mira-emmy's
+prior 253 reduction remain credited; no new authorship of that baseline is
+implied by reproducing it.
+
+### Mathematical conclusions and their boundaries
+
+Source 26 proves the ordinary raw deductive equivalences
+`EPSC1 + AU ↔ EPSC1 + OPair ↔ EPSC2 ↔ EPSC_full`. AU is a fixed adjunction
+sentence, O is full incoming-and-outgoing observational equality, and all
+matrices remain equality-free with genuine Bottom and arbitrary internal
+binding. O-singletons turn outgoing inclusion into O; Kuratowski coordinates
+and finite tuples pack additional parameters without choosing representatives.
+The result does not show that EPSC1 alone suffices. Its separate
+`EPSC_k ↔ XFP_k` argument, for k at least one, constructs the intersection of
+all represented closed objects using a preliminary supported hull. Exactness
+follows by representing the active image. This is a full-schema equivalence,
+not a replacement of one isolated axiom instance or an assumption of an
+external powerset. Its incoming-only elimination rule cannot replace an
+outgoing occurrence of the hull witness. The support-free one-object
+self-loop countermodel and zero-parameter question are retained.
+
+Source 28 proves completeness of a signed-name equality-free proof engine
+with explicit up/down/swap/contraction operations. Fresh universal
+instantiation plus contraction recovers colliding instantiation. Its exact
+`|S| - |image|` contraction minimum concerns words in the stated generators,
+not arbitrary proof systems or Turing-machine lower bounds. Two-sided profile
+equality erasure calibrates CP plus the full GIC schema at the ordinary level;
+its genuine-Bottom reference uses no irreflexivity assumption. Four finite
+stream transducers with 11/11/13/11 control states implement local name
+operations only. They are not a compiled complete frontend or a binary
+consistency machine.
+
+Source 29's ground epsilon calculus combines critical formulas and EPSC
+matrices with two free slots. Closed epsilon terms name all parameters in the
+term model. Finite Boolean unsatisfiability of ground instances gives an
+ordinary semidecision characterization conditional on the inherited EPSC
+calibration. The reverse expansion uses the stated constructible-model
+argument. No low-state evaluator or Lean proof of this epsilon calibration is
+provided. Source 30 instead exhibits a regular-ordinal model of the proposed
+unsupported closure weakening; taking the regular ordinal omega-one requires
+no large-cardinal hypothesis. This refutes that deletion's intended strength,
+not the supported closure theories maintained here.
+
+Source 31's default-last scoped decoder retracts onto the specified four-slot
+fragment and transports certificates without changing their tree shape.
+Dense quantified-NAND coding is a bijection at positive scope; exceptional
+scope and code cases are handled separately. Its equality-free four-slot
+EPSC2 schema is distinct from the native-equality CP/GIC controls elsewhere.
+
+Source 33's SR₂⁺ is one joined schema with a shared world constant,
+native equality and three free slots, while bound-variable complexity is
+unrestricted. Its raw interpretation uses tuple coding and a bisimulation
+quotient of arbitrary transitive covers. It does not repeat the earlier
+invalid assumption that all ambient raw objects are well founded. Ordinary
+ZF without Foundation or Choice is recovered in the extensional subworld;
+effective finite reflection supplies the upper consistency comparison. The
+finite-pool signed tableau uses one common existential world witness; its
+total natural codec preserves that sharing. These are
+ordinary mathematical and reference-checker results, without a compiled state
+count or an internal proof-code translation.
+
+Source 34 gives FAK12, a finite assignment/class presentation. Its delivered
+Skolem form has 28 clauses and 62 literals, with two constants, 15 proper
+function symbols and two binary relations. Models use shared normalized finite
+maps for assignment evaluation/update V/C, a separate external enumeration of definable classes,
+genuine equality and distinct selector constants. Formula coding is restricted
+to the reduct language; the Collection witness has four arguments. The
+ordinary two-way model construction does not make this a finite
+axiomatization of ZFC in its original membership language. Ground reference
+checks and clause counts do not supply a small universal evaluator.
+
+Across these sources, a formula or clause count is a syntax metric. Schema
+recognition, proof rules, names, search order and evaluation must all be priced
+before it can be compared with a binary machine's working-state count.
+
+### Reproduced machine findings
+
+Source 27 changes four rows of the public machine while retaining 253 working
+states. Its blank bootstrap takes **312,935** steps, versus **312,975** for the
+baseline, and reaches exactly the same tape configuration. The ordinary
+same-halting argument uses all 8,391 affine instruction cases, the unchanged
+four register boxes and an independently checked 2,981-pair register relation.
+This is a useful same-size variant, not a new state record or a new kernel
+proof of blank non-halting. Its propositional certificates include the
+107/77/325 controls and a six-element counterinterpretation with 420 checked
+conditions. Two delivered adapters described by their author as uncompiled
+were independently compiled unchanged during intake; this updates their
+verification status without installing them over the current Lean development.
+
+Source 30's fixed-emission control has 283 states; its 1,272 actual compiles and
+selected 4,248-pair register certificate reproduce. Its 453,939 row mutations
+leave 707 bounded runtime survivors. A runtime survivor is not a successful
+blank bootstrap or a calibrated consistency-search machine. Source 31's
+29-state initializer yields a 315-state clean control over its 286-state
+runtime. This is a separately compiled layout, not a reduction of public253.
+Its full grammar replays reproduce the saved 268-state control. The timed MILP
+replay returns a 272-state incumbent rather than the delivered 270; both have
+independently valid register certificates. The source allows solver variation,
+and neither incumbent is an optimality result.
+
+Source 32 retains two uncalibrated spare-tail 252 runtimes and a rejected
+shortened detector. Bounded literal searches, absence of a prefix match and
+finite exact-quotient obstructions do not prove eventual halting or
+non-halting. Source 33 reproduces all 504 row witnesses and 8,391 affine cases;
+its 218,872-candidate initializer-reuse search finds no survivor. Its frozen
+full-logic controls have 268 and 269 states. Intake's full replay of its broader
+final protected-basis driver found a 268-state recipe (206 DAG nodes plus
+62 framework states), improving that retained 269 control without improving
+the global 268 comparison. The report explicitly distinguishes this broader
+driver from its historical search trajectory; this is new replay evidence,
+not an exact reproduction of the old trajectory.
+
+Source 34 regenerates 18 initializer controls and checks 36 raw/quotient
+whole-tape bootstraps. For the original 219-node word the new shared controls
+have 334/336 states; the full 206-node word gives 321/323 and the 202-node
+decoder gives 309/311. For the seed-zero original word, the previous raw341
+already quotients to338; the new raw337 quotients to334. Thus the advertised
+341-to334 combines four raw initializer states and three quotient states;
+quotient-to-quotient improvement is 338-to334. The analogous seed-two counts
+are 343-to340 and 339-to336. The public253 exact quotient still has 253 states.
+Seven states cannot be subtracted from it by transferring this comparison.
+
+The dossiers preserve all bounded searches, certificate mutations, rejected
+proposals and parameter choices, including the differing 53/55 protected-row
+conventions. Fuel exhaustion and symbolic-abstraction limits remain
+inconclusive. No global minimality result or newly calibrated sub253 table is
+claimed. The complete retained-word 268-state control remains the smallest of
+these separately compiled controls, above the attributed public253 benchmark.
+
+### Corrections, current Lean overlap and further work
+
+**Correction 152.1 (source 30, fixed-emission text).** The delivered assertion
+that decoded code0 is closed is false syntactically: its default is
+`Rel 0 0 → Rel 0 0`, which has free variable0. It is semantically valid, and
+the emitter's offset `c+2` is still fresh at c=0. The finite measurements and
+the freshness argument survive this correction. The original wording remains
+in the archive. No current repository claim needed a pre-placement retraction.
+
+Several gap claims describe older pins. The nonempty-domain correction to
+`Code254` and `Enum254` is already current. `Tarski.complete`, the checked
+Lukasiewicz basis and `NamedNumeric254.transport` already close the named
+propositional/translation gaps repeated by sources 27, 29 and 32. Archived
+Lean closures were rebuilt on separate copies with Lean 4.32.0; their axiom
+audits have no admitted theorem. They confer no verification on the Python
+engines, delivered Coq sketches or whole consistency claim. No Coq build was
+run and no archived patch was applied to project sources.
+
+Subsequent local proofs now give actual CP/GIC quotient Empty, Pair, Union,
+Power and ordinary Infinity. `QuotientZF0.quotient_zf0` assembles their
+Foundation/Choice-free theory, and its abstract-enumerator corollaries prove
+one direction toward Con(ZF0). `NamedForm254` and `DecodeFresh254` supply
+semantic translation and freshness for all decoded codes. `EqualityGIC`
+transfers the full formula schema under an explicit outgoing-faithfulness
+hypothesis. `DuplicateProfiles` shows why one cannot simply assert that every
+raw equality-free CP/GIC+IR model is already a decoded native-equality model:
+duplicated objects preserve the former but destroy required native singletons.
+That conditional counterexample does not refute an interpretation into a
+different model or an equiconsistency theorem.
+
+The exact binary bootstrap is now extended through the first zero instruction:
+`ZeroSite253.bootstrap_matches_rm331` identifies all cells after 313,429 steps
+with the actual RM331 configuration. Separate generic writing and break-site
+lemmas preserve arbitrary surrounding tape contexts. The merged L2 development
+also adds evaluation of the AX stack and its gate in the register-DAG layer;
+it is distinct from a full original-program/binary-runtime simulation. These
+post-pin advances are recorded in the project notes, with scoped Lean evidence.
+
+Open work includes the raw EPSC1-alone question; the new kernels' literal
+proof compilers; the remaining EPSC/raw-PSC and reverse decoded-model adapters;
+effective
+Foundation/Choice proof translations; complete enumerator/register/binary
+correspondence; and the internal-ZFC blank non-halting equivalence. The
+source-only internalization wrappers and historical Coq theorem references
+remain research proposals. No generic soundness of an arbitrary proof
+assistant is assumed. Mathematical equiconsistency alone does not complete
+the user's machine target.
+
+### Placement and reproduction
+
+All 1,209 extracted files (958 distinct blobs) were searched through Git
+history. There were 248 hit blobs in 108 matching commits; 55 candidate
+historical trees were inspected at their own commits. Borrowed code does not
+make any of these nine manuscripts a repeated intake. All 1,102 placed
+ancillary files match the fresh extraction and the placement commit's tree.
+The 107 manuscript TeX/Bib/PDF and top-level delivery README files remain in
+the committed archives. No source is superseded.
+
+The complete map is `data/intake-152-placement.json`. Prefixes26–34 follow
+the source table. Paths are flattened, long stems abbreviated with stable
+file ordinals, and delivered `.log` records renamed `.log.txt`; the longest
+path including `C:\ProveIt\` is 196 characters. Nested notices, scripts,
+Makefiles, audit notes and records retain their original names and relative
+layout assumptions in their text. They are preserved artifacts, not promises
+that the old paths exist in this flattened host. Ordinary Git ignores govern
+checksum files; no checksum or line-ending work was performed.
+
+Recover original layouts into fresh scratch before executing:
+
+```sh
+uv run --no-project python SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_152.py --prepare-only
+uv run --no-project python SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_152.py --run all
+```
+
+The helper's selected finite suites omit bulk manifest guards in memory while
+retaining functional table, clause and certificate checks. It does not invoke
+Lean, Coq, PDF builds, network access or an unbounded consistency search.
+Large bounded search replays and archived Lean checks have separate dossier
+evidence; they are not silently included in the quick helper.
+
+All nine delivered articles were independently built on scratch copies with
+three pdfLaTeX passes and rendered for visual review. Page counts are
+40/24/28/28/28/32/25/23/25. The dossiers record harmless underfull lines where
+present; no unresolved references, citations, duplicate labels or duplicate
+destinations remain. These builds check the incoming manuscripts, not a
+nonexistent merged article. Detailed command, finite-replay and PDF evidence
+is in `data/intake-152-source-*.json` and the nine dossiers above.
+
+## Batch 153: dirty starts, one-parameter separation and scanner boundaries
+
+Arrival `4e720ccbbfaa836b95be3b2f3f268a737b48c6d1` supplies two further
+continuations, placed by `6135ffef4b` as local sources 35–36. Both extend
+this report's theory and complete-machine questions. They are reconciled
+here under the same note option; the base article and every delivered file
+remain unchanged. The collection still has 290 reports and this host now
+has 36 sources. Neither delivery establishes a new sub-253 blank machine.
+
+| Source | Committed archive | ProveIt pin | Contribution |
+|---|---|---|---|
+| [35](intake-153-source-35.md) | `zfc_consistency_research_2026-10-16.zip` | `426592ce97e52d309bfb8f0132411556650b7ac1` | Checked arbitrary-cutoff enumeration and dirty-root absorption; same-count direction rewrite; incoming-row synthesis and short-gap diagnostics. |
+| [36](intake-153-source-36.md) | `zfc_small_machine_research_2026-10-16 (2).zip` | `2c74914bdfc98920ddcc3ff7c092cce10db4d709` | Ordinary EPSC1 counterinterpretation; reachable scanner obstruction; full outgoing-equality and grammar controls. |
+
+Both retain upstream pin `297ab8df7e5de329605c3875b4934643b371a5e3` and
+mira-emmy's public253 head `0d544f2a2e3c18f12278441a74b7879f31cbe856`.
+Machine attribution remains Mira-Cult, mira-emmy, Jeff Ketchersid and
+Andrew James Wade. Source and licence notices are retained. Their public
+PR status and CI observations are dated to the report audits; this intake
+does not assert a fresh upstream Coq build or current PR-status survey.
+
+### A wider exact initializer contract
+
+Source35 proves `EnumSafeStart254.safe_start_iff` for every six-field
+abstract enumerator state satisfying `Inv`. Its completeness direction
+requires no invariant: a numerical refutation forces halting from every
+state. A positive initial proof-list pointer drains or halts; cofinal
+padding of a compiled contradiction passes any numerical cutoff. The
+ordinary argument was already source09's “Tail universality”; the new
+contribution is its exact Lean formulation, not discovery of that argument.
+
+The separate `DirtyRoot254` theorem handles arbitrary initial selector and
+scratch registers at the actual 219-node structured root. In source order
+write the nine fields as `[N,T,W,A,D,H,X,Y,L]`. Let
+`(N',X',n)=(N+X+1,0,N)` when `L=0`, and `(N,X,L−1)` otherwise. With the
+actual Cantor pairing, set `(u,v)=unP(P(X',Y)+n)`. The virtual clean root is
+`[N',T,W,0,D,H,0,0,P(A+u,v)+1]`. Fetch133 followed by read174 takes both
+states to precisely `[N',T,W,A+u,D,H,0,0,v]`. The original scratch seed and
+additive selector are both necessary.
+
+`root_equiv` preserves every structured exit and the entire resulting
+register file; `iter_equiv` preserves repeated-root halting. Continue
+restarts use the common intermediate state. These exact continuation
+statements need no formula hypothesis. The consistency-search consequence
+retains theorem-valued `T,H` and `Good(W)`. Taking `T=W=H=0` leaves the
+other six fields unrestricted. Registers above8 are still the zero tail of
+`L2.enc`; this is not permission to change physical spare blocks, enter an
+interior PC, or leave an invalid binary tape frame.
+
+The archived 19-source closure freshly compiles with pinned Lean4.32.0:
+16 dependencies, two new theorem modules, one audit. All nine printed
+axiom reports use only `propext`, `Classical.choice`, `Quot.sound` (the
+padding bound needs no choice). Independent literal DAG-prefix execution
+passes 5,096 cases; three wrong-map controls are detected 4,645/792/4,048
+times. This finite regression supplements the universal Lean proof.
+
+### What one parameter cannot supply by the old interpretation
+
+Source36 constructs, in ambient ZFC, three normalized components generated
+from three disjoint two-cycles. The components meet in the pure class;
+every object has empty support or support in exactly one component.
+Normalization identifies singleton-base nodes with the corresponding cycle
+objects, retaining Extensionality. The interpreted relation is irreflexive
+but has two-cycles; ambient Foundation applies to codes, not to that relation.
+
+For an EPSC1 matrix with its sole parameter and input in one component,
+an off-component output would be moved to the third component by an
+automorphism fixing both. Those two outputs cannot share a subset bound.
+Every locally bounded fiber therefore stays in the input/parameter
+component. Exact fibers are unique ambient sets; Replacement collects them
+without choosing a family of arbitrary local bounds. Their positive omega
+iteration from the unique empty object supplies the literal closure and
+global support clauses. This works for each full first-order formula,
+with unrestricted bound variables and with or without logical equality.
+
+The interpretation also satisfies full Separation with arbitrary parameters,
+Empty Set, Union, global Power Set, Infinity, parameter-free Replacement,
+and the stated set-indexed graph Choice axiom. Choice uses only local
+Kuratowski pairs within the component of the given family. Cross-component
+objects have no common container, so Pairing fails. A specified two-parameter
+EPSC instance and a specified one-parameter Replacement instance also fail.
+Every object lies in the previous hereditary-saturation domain and incoming
+profile equality is actual identity; that particular `H/D` quotient is the
+whole counterinterpretation and still fails Pairing.
+
+This is a relative **deductive separation**, conditional on Con(ZFC).
+It neither proves strictly lower consistency strength for EPSC1 nor excludes
+a different interpretation of ZFC in it. Source26's EPSC1 plus fixed
+adjunction/observational Pairing equivalence remains intact. The pure class
+inside this example does not by itself provide an interpretation working
+in every EPSC1 model. Fixed-formula interpretation arguments supply the
+ordinary relative-consistency result; no uniform truth predicate or
+machine-checked arithmetic proof-code transformer is delivered.
+
+The finite diagnostics have7/20/760 objects. They explicitly fail full EPSC1:
+constant subset fibers have2/8/256 outputs while the largest available member
+sets have1/3/8. These are regression controls, not finite models of the schema.
+The cited Schindler–Schlicht parameter-elimination note explicitly retains
+Pairing; its theorem does not fill the absent cross-component Pairing step.
+
+### Exact machine findings and bounded controls
+
+Source35 changes exactly compact131/read1 from `0 L20` to `0 R22`. A
+standalone verifier recomputes3,530 abstract configurations and checks all12
+local windows. Old/new blocks take2/4 or3/5 steps to the same entire tape,
+state22 and head−2/−3. Positive progress and a blank-run window invariant
+justify ordinary blank-halting equivalence. This is a253-state variant,
+not a saving or speedup, and the Python certificate is not a Lean theorem.
+
+Its incoming-row family allows write, direction and target changes, with
+replacement blocks stopping before another modified row. That restriction
+makes local certificates compose. Radius6/7 each check266,156 alternatives;
+64 staged same-size variants add64,768, totaling597,080 transition-alternative
+checks. These are not597,080 different whole machines. No complete deletion
+passes. Independent R6 replay checks266,113 negative witnesses,43 positive
+alternatives comprising9,984 windows, and263 complete1,012-alternative sets.
+All597,080 regenerated decompressed ledger rows match delivery. No first
+failure is fuel exhaustion; spatial exits and changed-row barriers are
+conservative obstructions, not a state lower bound.
+
+The runtime252 diagnostic reproduces the full blank frame at999,186 binary
+steps, gap32, an interior PC and359 spares with four nonzero values. The
+first affine rejection at register instruction641 is not a literal collision:
+the reconstructed instruction reaches its intended endpoint in2,794 actual
+steps. A fixed-gap design model completes1,000,000 register instructions
+and124 local cases using the upstream register-box summaries. This is not
+a million literal binary steps, a safe-root endpoint, a proof of the formula
+invariant, or divergence. The dirty-root theorem cannot yet be applied to it.
+
+Source36 strengthens source32's prepared scanner counterexample by reaching
+the critical full frame from actual blank tape after1,011,713 transitions.
+The original253 table reaches the intended PC in476 more steps. Changing
+compact30/read0 to target32 and deleting31 reaches a different PC in556,
+without first visiting the expected frame. All398 one-cells, nine physical
+registers,370 spares and blank exterior are accounted for. This refutes the
+advertised instruction simulation of that edit, not ultimate blank-halting
+equivalence. Leaf zero-run bounds alone omit the instruction's phase bits.
+
+The radius6 macro audit checks63,756 ordered state pairs against335,369
+abstract configurations and accepts none. Projection removes1,604 radius5
+patterns across33 states. The outgoing-equality experiment actually compiles
+all432 recipes; its best complete-row control is290=228+62 states (580rows).
+Shifted constructors improve its own expanded control, but arbitrary numeric
+payload transport remains open. It is larger than the prior268 complete-word
+control. Four constructor controls total1,140 executions/570 distinct cases,
+plus1,197 pointed comparisons and two capture negative controls.
+
+The prior268 table reproduces with its4,533-pair register certificate and
+six rejected corruptions. Its binary simulation and original-to-revised
+conjunction transport remain separate. The new12,002 permutation grammars
+have minimum270, attained nine times; the268 incumbent is outside that
+family. Three million canonical-substring proposals retain268. Neither
+search proves optimality or yields a newly calibrated machine.
+
+### Current proofs, preservation and replay
+
+At intake, current `L2Root254.iter_iff` already supplies the clean
+DAG/enumerator bridge missing at source35's pin. `RMEquiv254` supplies the
+219-node path/structured bridge. `NativeTheory254` identifies numerical
+falsity with refutation of the explicit sealed CP/full-native-GIC/IR theory.
+The literal6,459-node program correspondence, general binary dispatch and
+runtime, Foundation/Choice comparison and internal-ZFC endpoint remain
+separate. The latest checked finite tape endpoint is RM331 at313,429 steps;
+the sources' earlier312,975/RM330 endpoint remains valid. No new ordinary
+class interpretation becomes formal merely by being placed here.
+
+Inventory found155 files and146 distinct Git blobs. History searches found51
+previously occurring blobs, inspecting all64 matching commits in their own
+trees. Shared dependencies and licences do not make these repeated manuscripts.
+Placement preserves144 ancillary files (75+69);11 manuscript TeX/PDF/top-level
+README files remain recoverable from the committed archives. Prefixes35-dirty
+and36-epsc1 flatten delivery paths; `.log` gains `.txt`. All staged blobs match
+fresh extraction; no case-insensitive collisions, maximum Windows path182.
+`data/intake-153-placement.json` is the complete rename map. Archived relative
+imports and delivery paths are retained; use recovered copies to reproduce.
+
+Two stale delivery references are preserved and corrected here: source35's
+`notes/THEORY-NOTES.md` names an absent legacy `verify_theory.py`; its actual
+portable build is `formal/build.py`. Source36's support-script docstring names
+absent `epsc1_separation.md`; the complete proof is `sections/one_parameter.tex`.
+No current repository assertion required retraction before placement.
+
+All advertised functional suites were run on separate copies. Known bulk
+manifest loops were omitted in memory; no manifest/line-ending audit or Coq
+build was performed. The source36 independent adapter omitted its whole
+identity routine; its three standalone table pins are also checked by the
+functional replay and retained explicitly by the helper below. Full source
+review, exact claims, commands, logs and comparison scopes are in both linked
+dossiers and `data/intake-153-source-{35,36}.json`. Both scratch PDFs rebuild
+in three pdfLaTeX passes to23 pages (18/23 embedded fonts), with zero warnings
+or boxes; relevant pages and the complete source36 contact sheet were viewed.
+The base article is unchanged; this reconciliation note produces no host PDF.
+
+Offline recovery and selected replay, from the repository root:
+
+```sh
+uv run --no-project python SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_153.py --prepare-only
+uv run --no-project python SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_153.py --run all
+```
+
+Add `--extended` for all bounded search regenerations. Add
+`--lean /path/to/lean-4.32.0/bin/lean` only to request the separate fresh
+19-source build. Default recovery and finite replay do not build Lean or Coq.
+Outputs go to fresh scratch outside the checkout. The original archives remain
+available at arrival4e720ccbbf; neither archived code nor placed evidence is
+modified by the helper. New initialized machines, other EPSC1 interpretations,
+interacting-row rewrites and effective proof-code transports remain research
+questions, with the argument sketches and limitations retained above.

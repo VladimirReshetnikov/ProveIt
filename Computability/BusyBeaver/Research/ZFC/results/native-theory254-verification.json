@@ -1,0 +1,105 @@
+{
+  "scope": "Exact refutation equivalence between Code254.C254 F and BProv of actual closed CP+all native-Form GIC+IR theory; composed with actual219-node structured program from nextproof2. No ZFC calibration, quotient IR, binary simulation or effective proof-code translation claim.",
+  "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NativeTheory254.lean",
+  "source_sha256": "69297da8a6ee8445ac36110a10b26ab190d57ffc5ef88801bf7288c9bacf7284",
+  "source_lines": 102,
+  "observed_head": "8cf840b8a26d002041e7a26dc9688ce7ce5fd751",
+  "dependency_cache": "/tmp/zfc-native90-integration-qm3yz_m4",
+  "output_cache": "/tmp/zfc-native-theory254-n893n1sz/cache",
+  "checks": [
+    {
+      "phase": "module",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-native-theory254-n893n1sz/cache/BusyBeaver/ZFC/NativeTheory254.olean",
+        "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NativeTheory254.lean"
+      ],
+      "cwd": "/home/codex/.codex/worktrees/ec20/Proofs",
+      "LEAN_PATH": "/tmp/zfc-native-theory254-n893n1sz/cache",
+      "returncode": 0,
+      "seconds": 0.234841319,
+      "actual_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)"
+    },
+    {
+      "phase": "audit",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "/tmp/zfc-native-theory254-n893n1sz/Audit.lean"
+      ],
+      "cwd": "/home/codex/.codex/worktrees/ec20/Proofs",
+      "LEAN_PATH": "/tmp/zfc-native-theory254-n893n1sz/cache",
+      "returncode": 0,
+      "seconds": 0.141504839,
+      "actual_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)"
+    }
+  ],
+  "axiom_audits": 8,
+  "callers": 3,
+  "audit_source": "import BusyBeaver.ZFC.NativeTheory254\n\nnamespace SetTheory.BusyBeaver.ZFC.NativeTheory254\nopen Form ProfileCollection NativeDecoded254\n\n#print axioms sentences_NativeAx\n#print axioms sat_irForm\n#print axioms models_NativeAx\n#print axioms decoded_of_native\n#print axioms native_of_encodable\n#print axioms c254_refutation_iff\n#print axioms program_halts_iff_native_refutation\n#print axioms native_consistency_iff_program_nonhalting\n\n-- The actual theory includes native equality matrices as closed axioms.\nexample : BProv NativeAx [] (sealF (ProfileSyntax.gicForm (.fEq 1 2))) :=\n  BProv_ax (Or.inr (Or.inl \u27e8.fEq 1 2, rfl\u27e9))\n\n-- A supplied nonempty model directly excludes actual structured-program halting.\nexample (D : Type) (mem : D \u2192 D \u2192 Prop) (v : Nat \u2192 D)\n    (h : \u2200 f, NativeAx f \u2192 Sat mem v f) :\n    \u00ac RMDag.IterHalts Dag254.dag254 (RMDag.upd (fun _ => 0) 0 2) := by\n  intro hh\n  exact soundness_BProv (program_halts_iff_native_refutation.mp hh) v h\n    (fun _ hNil => by cases hNil)\n\n-- The exact raw theory refutation yields numerical falsity and its actual DAG halt.\nexample (h : BProv NativeAx [] fBot) :\n    Code254.C254 Code254.F \u2227\n      RMDag.IterHalts Dag254.dag254 (RMDag.upd (fun _ => 0) 0 2) :=\n  \u27e8c254_refutation_iff.mpr h, program_halts_iff_native_refutation.mpr h\u27e9\n\nend SetTheory.BusyBeaver.ZFC.NativeTheory254\n",
+  "audited_axiom_sets": {
+    "sentences_NativeAx": [
+      "propext",
+      "Quot.sound"
+    ],
+    "sat_irForm": [],
+    "models_NativeAx": [
+      "propext",
+      "Quot.sound"
+    ],
+    "decoded_of_native": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "native_of_encodable": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "c254_refutation_iff": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "program_halts_iff_native_refutation": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "native_consistency_iff_program_nonhalting": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "success": true,
+  "source_compiled_first_attempt": true,
+  "audit_compiled_first_attempt": true,
+  "no_sorry_or_custom_axioms": true,
+  "axioms_union": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "theory_axioms": [
+    "sealF ProfileModel.containerForm",
+    "sealF (ProfileSyntax.gicForm phi) for every native actual Form phi",
+    "sealF (fAll (fImp (fMem 0 0) fBot))"
+  ],
+  "extra_Ext_Foundation_Choice_axioms": false,
+  "open_matrix_parameters": "Universally closed by sealF; models_NativeAx extracts every valuation.",
+  "model_nonempty": "Completeness and soundness receive explicit Nat\u2192D valuation; no no-model premise over empty domains.",
+  "directions": {
+    "numeric_to_native": "First-order sentence-theory completeness; every native model is a decoded numerical soundness model.",
+    "native_to_numeric": "Numeric completeness; every nonempty EncBundle model is a native theory model, then BProv soundness excludes native Bottom."
+  },
+  "program_semantics": "RMDag.IterHalts Dag254.dag254 (upd zero 0 2), using proved L2.program_halts_iff.",
+  "different_Prog254_or_binary_identified": false,
+  "ZFC_or_ZF0_calibration_proved": false,
+  "effective_proof_translator_produced": false,
+  "machine_changed": false,
+  "scratch": "/tmp/zfc-native-theory254-n893n1sz",
+  "grant_released": true,
+  "independent_review": "Fibers read entire source and note: sealed actual fullForm GIC, explicit valuations in both completeness directions, polarity, universe scope, unrestricted existing matrix adapter and actual219-DAG endpoint clean; no additional set axioms or binary claim."
+}

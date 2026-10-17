@@ -1,0 +1,71 @@
+{
+  "scope": "Scoped integration of three new source modules and umbrella; prior verified67 dependency cache reused, no fresh full closure or bootstrap rebuild.",
+  "lean_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+  "scratch": "/tmp/zfc-singleton-break-integration-0y_lh19q",
+  "dependency_cache": "/tmp/zfc-power-replacement-decrement-integration-l9dibtbd",
+  "default_source_units": 70,
+  "research_modules": 64,
+  "modules": [
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientBasic.lean",
+      "source_sha256": "966c269abe7552895d97cc943582db7f53cc5a487a59d695a0a84922fb8cc412",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-singleton-break-integration-0y_lh19q/BusyBeaver/ZFC/QuotientBasic.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientBasic.lean"
+      ],
+      "seconds": 0.429,
+      "returncode": 0,
+      "output": ""
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SingletonInfinity.lean",
+      "source_sha256": "aa6b90970f9a63eb5b4d7b878522f02f8531a82c44e398902df8892f2b042974",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-singleton-break-integration-0y_lh19q/BusyBeaver/ZFC/SingletonInfinity.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SingletonInfinity.lean"
+      ],
+      "seconds": 0.385,
+      "returncode": 0,
+      "output": ""
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BreakSite253.lean",
+      "source_sha256": "71f0750de0a7d55b005e68359ef9fb7aab0a6e513dfc24f361c9068b685c6687",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-singleton-break-integration-0y_lh19q/BusyBeaver/ZFC/BreakSite253.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BreakSite253.lean"
+      ],
+      "seconds": 1.061,
+      "returncode": 0,
+      "output": ""
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC.lean",
+      "source_sha256": "9e18c11b027ac8f81b15d2dd5db199c5ce8df14e30c03eb12004100c00fb34ef",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-singleton-break-integration-0y_lh19q/BusyBeaver/ZFC.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC.lean"
+      ],
+      "seconds": 0.489,
+      "returncode": 0,
+      "output": ""
+    }
+  ],
+  "audit": {
+    "source": "import BusyBeaver.ZFC\nopen SetTheory.BusyBeaver.ZFC\n#print axioms QuotientBasic.quotient_empty\n#print axioms QuotientBasic.quotient_pair_form\n#print axioms QuotientBasic.quotient_union_form\n#print axioms QuotientBasic.quotient_empty_singleton_container\n#print axioms SingletonInfinity.index_formula_induction\n#print axioms SingletonInfinity.quotient_index\n#print axioms BreakSite253.paired_break001\nexample {V : Type} (mem : V \u2192 V \u2192 Prop) (witness : V)\n    (h : ProfileModel.ModelsCPGIC mem) :\n    \u2203 e N, (\u2200 z, \u00ac QuotientModel.quotientMember mem witness h z e) \u2227\n      SingletonInfinity.Index (SingletonInfinity.quotientBase mem witness h) e N :=\n  SingletonInfinity.quotient_index mem witness h\n",
+    "command": [
+      "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "/tmp/zfc-singleton-break-integration-0y_lh19q/Audit.lean"
+    ],
+    "returncode": 0,
+    "output": "'SetTheory.BusyBeaver.ZFC.QuotientBasic.quotient_empty' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.QuotientBasic.quotient_pair_form' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.QuotientBasic.quotient_union_form' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.QuotientBasic.quotient_empty_singleton_container' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.SingletonInfinity.index_formula_induction' depends on axioms: [Classical.choice]\n'SetTheory.BusyBeaver.ZFC.SingletonInfinity.quotient_index' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.BreakSite253.paired_break001' depends on axioms: [propext, Quot.sound]\n"
+  }
+}
