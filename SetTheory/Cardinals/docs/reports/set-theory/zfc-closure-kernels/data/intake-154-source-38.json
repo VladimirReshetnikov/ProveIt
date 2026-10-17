@@ -1,0 +1,661 @@
+{
+  "batch": 154,
+  "manuscript": 2,
+  "local_source": 38,
+  "arrival": "61e77836565f63582561f54745f633d50efd9c7d",
+  "archive": "zfc_consistency_research_20261016.zip",
+  "repository_pin": "426592ce97e52d309bfb8f0132411556650b7ac1",
+  "placement": "d1636c9af8",
+  "review_scratch": "/tmp/zfc-intake-154-qc3_quah",
+  "original_package": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016",
+  "execution_copy": "/tmp/zfc-intake-154-qc3_quah/review/02",
+  "originals_modified": false,
+  "bulk_manifest_checks": false,
+  "line_ending_work": false,
+  "Coq_built": false,
+  "commands": [
+    {
+      "source": 2,
+      "name": "core",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "/tmp/zfc-intake-154-qc3_quah/source02-functional-only.py"
+      ],
+      "cwd": "/tmp/zfc-intake-154-qc3_quah/review/02",
+      "returncode": 1,
+      "seconds": 0.03001109231263399,
+      "log": "/tmp/zfc-intake-154-qc3_quah/source02-core.log",
+      "captured_output": "\nSTDERR:\n  File \"/tmp/zfc-intake-154-qc3_quah/source02-functional-only.py\", line 10\n    (p.parent/'intake-validation.json').write_text(json.dumps(result,indent=2)+'\n                                                                               ^\nSyntaxError: unterminated string literal (detected at line 10)\n"
+    },
+    {
+      "source": 2,
+      "name": "core-wrapper-fixed",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "/tmp/zfc-intake-154-qc3_quah/source02-functional-only.py"
+      ],
+      "cwd": "/tmp/zfc-intake-154-qc3_quah/review/02",
+      "returncode": 0,
+      "seconds": 10.4097722126171,
+      "log": "/tmp/zfc-intake-154-qc3_quah/source02-core-retry.log",
+      "review_harness_correction": "Initial wrapper newline quoting typo corrected; no delivered file changed.",
+      "captured_output": "SKIP: bulk pinned-source manifest verification per intake procedure\npublic253_invariant_macro_and_bootstrap ...\n  PASS (0.47 s)\npublic253_eight_rejection_tests ...\n  PASS (0.18 s)\nequational_kernel_tests ...\n  PASS (3.82 s)\ngrammar_independent_certificates_and_corruption_controls ...\n  PASS (5.04 s)\n{\n  \"scope\": \"All four advertised default functional suites; bulk source identity manifest skipped; no Lean/Coq build or optional search.\",\n  \"checks\": [\n    {\n      \"name\": \"public253_invariant_macro_and_bootstrap\",\n      \"cwd\": \"experiments/public253\",\n      \"command\": [\n        \"/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13\",\n        \"-B\",\n        \"check_certificate.py\"\n      ],\n      \"portable_command\": [\n        \"python\",\n        \"-B\",\n        \"check_certificate.py\"\n      ],\n      \"returncode\": 0,\n      \"stdout\": \"{\\n  \\\"status\\\": \\\"all certificate checks passed\\\",\\n  \\\"working_states_original\\\": 253,\\n  \\\"working_states_shortcut\\\": 253,\\n  \\\"separate_terminal\\\": 253,\\n  \\\"source_sha256\\\": \\\"84a21f714017c1d491008d86e9bd19c43cc6c5c9ae99a538b4f2314387827d95\\\",\\n  \\\"shortcut_sha256\\\": \\\"78dcbd5aa7709f349cb9c378f54909e316c27d448537cf2e9dce15811152c2a4\\\",\\n  \\\"radius\\\": 2,\\n  \\\"invariant_configurations\\\": 3530,\\n  \\\"abstract_closure_cases\\\": 7044,\\n  \\\"guarded_patterns\\\": [\\n    8,\\n    9,\\n    24,\\n    25\\n  ],\\n  \\\"macro_cases\\\": 8,\\n  \\\"source_boot_steps\\\": 312975,\\n  \\\"shortcut_boot_steps\\\": 312895,\\n  \\\"bootstrap_shortcut_uses\\\": 40,\\n  \\\"bootstrap_ones\\\": 178,\\n  \\\"bootstrap_configuration_sha256\\\": \\\"5f59972252d34cd6a0e4660a65e5ae7409381d00d2a0182e11830224ea77aa5b\\\",\\n  \\\"proof_assistant_kernel_checked\\\": false\\n}\\n\",\n      \"stderr\": \"\",\n      \"status\": \"PASS\",\n      \"structured_output\": {\n        \"status\": \"all certificate checks passed\",\n        \"working_states_original\": 253,\n        \"working_states_shortcut\": 253,\n        \"separate_terminal\": 253,\n        \"source_sha256\": \"84a21f714017c1d491008d86e9bd19c43cc6c5c9ae99a538b4f2314387827d95\",\n        \"shortcut_sha256\": \"78dcbd5aa7709f349cb9c378f54909e316c27d448537cf2e9dce15811152c2a4\",\n        \"radius\": 2,\n        \"invariant_configurations\": 3530,\n        \"abstract_closure_cases\": 7044,\n        \"guarded_patterns\": [\n          8,\n          9,\n          24,\n          25\n        ],\n        \"macro_cases\": 8,\n        \"source_boot_steps\": 312975,\n        \"shortcut_boot_steps\": 312895,\n        \"bootstrap_shortcut_uses\": 40,\n        \"bootstrap_ones\": 178,\n        \"bootstrap_configuration_sha256\": \"5f59972252d34cd6a0e4660a65e5ae7409381d00d2a0182e11830224ea77aa5b\",\n        \"proof_assistant_kernel_checked\": false\n      },\n      \"seconds\": 0.47187517397105694\n    },\n    {\n      \"name\": \"public253_eight_rejection_tests\",\n      \"cwd\": \"experiments/public253\",\n      \"command\": [\n        \"/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13\",\n        \"-B\",\n        \"test_certificate.py\"\n      ],\n      \"portable_command\": [\n        \"python\",\n        \"-B\",\n        \"test_certificate.py\"\n      ],\n      \"returncode\": 0,\n      \"stdout\": \"\",\n      \"stderr\": \"........\\n----------------------------------------------------------------------\\nRan 8 tests in 0.044s\\n\\nOK\\n\",\n      \"status\": \"PASS\",\n      \"seconds\": 0.18430661130696535\n    },\n    {\n      \"name\": \"equational_kernel_tests\",\n      \"cwd\": \"experiments/equational\",\n      \"command\": [\n        \"/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13\",\n        \"-B\",\n        \"test_cyclic_algebra.py\"\n      ],\n      \"portable_command\": [\n        \"python\",\n        \"-B\",\n        \"test_cyclic_algebra.py\"\n      ],\n      \"returncode\": 0,\n      \"stdout\": \"{\\n  \\\"status\\\": \\\"passed\\\",\\n  \\\"basis\\\": {\\n    \\\"equations\\\": 7,\\n    \\\"symbols\\\": 88\\n  },\\n  \\\"finite_models\\\": {\\n    \\\"finite_algebra_size\\\": 64,\\n    \\\"universal_identity_evaluations\\\": 270592,\\n    \\\"per_axiom\\\": {\\n      \\\"Sh1\\\": 262144,\\n      \\\"Rhom\\\": 4096,\\n      \\\"R3\\\": 64,\\n      \\\"Qext\\\": 64,\\n      \\\"Qadd\\\": 4096,\\n      \\\"Qcomp\\\": 64,\\n      \\\"Qrot\\\": 64\\n    },\\n    \\\"noncommuting_q_r_witness\\\": [\\n      0,\\n      1,\\n      0\\n    ],\\n    \\\"arbitrary_premise_counterexample_verified\\\": true\\n  },\\n  \\\"translation\\\": {\\n    \\\"translation_cases_three_distinct_closures\\\": 1200,\\n    \\\"base_boolean_algebra_size\\\": 256,\\n    \\\"all_three_product_coordinates_checked\\\": true\\n  },\\n  \\\"certificates\\\": {\\n    \\\"positive_chain_length\\\": 2,\\n    \\\"negative_certificates_rejected\\\": 10,\\n    \\\"malformed_ground_terms_rejected\\\": 7,\\n    \\\"coding_roundtrips_each\\\": 5000,\\n    \\\"first_search_witness\\\": 11\\n  },\\n  \\\"deep_terms\\\": {\\n    \\\"unary_depth\\\": 2000,\\n    \\\"recursive_call_limit_unchanged\\\": true,\\n    \\\"term_codec_context_and_certificates_passed\\\": true,\\n    \\\"cyclic_python_container_rejected\\\": true\\n  },\\n  \\\"limitation\\\": \\\"Finite checks are not a proof of the general theorem. No Con(ZFC) payload or Turing-machine compilation included.\\\"\\n}\\n\",\n      \"stderr\": \"\",\n      \"status\": \"PASS\",\n      \"structured_output\": {\n        \"status\": \"passed\",\n        \"basis\": {\n          \"equations\": 7,\n          \"symbols\": 88\n        },\n        \"finite_models\": {\n          \"finite_algebra_size\": 64,\n          \"universal_identity_evaluations\": 270592,\n          \"per_axiom\": {\n            \"Sh1\": 262144,\n            \"Rhom\": 4096,\n            \"R3\": 64,\n            \"Qext\": 64,\n            \"Qadd\": 4096,\n            \"Qcomp\": 64,\n            \"Qrot\": 64\n          },\n          \"noncommuting_q_r_witness\": [\n            0,\n            1,\n            0\n          ],\n          \"arbitrary_premise_counterexample_verified\": true\n        },\n        \"translation\": {\n          \"translation_cases_three_distinct_closures\": 1200,\n          \"base_boolean_algebra_size\": 256,\n          \"all_three_product_coordinates_checked\": true\n        },\n        \"certificates\": {\n          \"positive_chain_length\": 2,\n          \"negative_certificates_rejected\": 10,\n          \"malformed_ground_terms_rejected\": 7,\n          \"coding_roundtrips_each\": 5000,\n          \"first_search_witness\": 11\n        },\n        \"deep_terms\": {\n          \"unary_depth\": 2000,\n          \"recursive_call_limit_unchanged\": true,\n          \"term_codec_context_and_certificates_passed\": true,\n          \"cyclic_python_container_rejected\": true\n        },\n        \"limitation\": \"Finite checks are not a proof of the general theorem. No Con(ZFC) payload or Turing-machine compilation included.\"\n      },\n      \"seconds\": 3.8179213562980294\n    },\n    {\n      \"name\": \"grammar_independent_certificates_and_corruption_controls\",\n      \"cwd\": \"experiments/grammar\",\n      \"command\": [\n        \"/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13\",\n        \"-B\",\n        \"verify_certificates.py\"\n      ],\n      \"portable_command\": [\n        \"python\",\n        \"-B\",\n        \"verify_certificates.py\"\n      ],\n      \"returncode\": 0,\n      \"stdout\": \"{\\n  \\\"status\\\": \\\"PASS\\\",\\n  \\\"checks\\\": {\\n    \\\"grammar-baseline\\\": {\\n      \\\"verified\\\": true,\\n      \\\"reference_nodes\\\": 217,\\n      \\\"candidate_nodes\\\": 206,\\n      \\\"pairs\\\": 4533,\\n      \\\"instructions\\\": {\\n        \\\"EDecnz\\\": 1931,\\n        \\\"EInc\\\": 2601,\\n        \\\"EHalt\\\": 1\\n      },\\n      \\\"binary_TM_and_ZFC_endpoint_proved\\\": false,\\n      \\\"binary_table\\\": {\\n        \\\"working_states\\\": 268,\\n        \\\"transition_rows\\\": 536,\\n        \\\"separate_terminal\\\": 268,\\n        \\\"sha256\\\": \\\"07b7aa8db8f9fa0440f67db829fad116139409f182a52a3d0a5d92e867247b4a\\\",\\n        \\\"scope\\\": \\\"Literal-table structure and recorded hash only; no binary simulation proof.\\\"\\n      },\\n      \\\"reference_sha256\\\": \\\"a3c6729948f84d2d28beed5763b69244e988e7886fff244cdd27cec704a5d839\\\",\\n      \\\"candidate_sha256\\\": \\\"867295f3e9ded81c67626fe43655f06fce569b6a23cc3aca44d49d07937d443c\\\",\\n      \\\"certificate_sha256\\\": \\\"f0de97cbea2de4b76eb7b5a44880cb5c3d70c4fb6fdd5fad4b911c43ea3493b6\\\"\\n    },\\n    \\\"grammar-rotation\\\": {\\n      \\\"verified\\\": true,\\n      \\\"reference_nodes\\\": 217,\\n      \\\"candidate_nodes\\\": 206,\\n      \\\"pairs\\\": 4533,\\n      \\\"instructions\\\": {\\n        \\\"EDecnz\\\": 1931,\\n        \\\"EInc\\\": 2601,\\n        \\\"EHalt\\\": 1\\n      },\\n      \\\"binary_TM_and_ZFC_endpoint_proved\\\": false,\\n      \\\"binary_table\\\": {\\n        \\\"working_states\\\": 268,\\n        \\\"transition_rows\\\": 536,\\n        \\\"separate_terminal\\\": 268,\\n        \\\"sha256\\\": \\\"a29176b303a9a840a24b9f4e8af4c3d458b83abd4de4ba90818f25849e035363\\\",\\n        \\\"scope\\\": \\\"Literal-table structure and recorded hash only; no binary simulation proof.\\\"\\n      },\\n      \\\"reference_sha256\\\": \\\"c91c3c8aa1480cdfdf2b4276e39b765fbe6163401dbfc6155bb5a9d93021a93b\\\",\\n      \\\"candidate_sha256\\\": \\\"8b6439da9869cd1ed2d29b3aeda555ecb93f06fd2171c848312bf65f99e76d3f\\\",\\n      \\\"certificate_sha256\\\": \\\"66efe44d94cbdfa83e0e6a8316fd849e5d381e3f33a63f0919e458f37690894f\\\"\\n    },\\n    \\\"grammar-plateau\\\": {\\n      \\\"verified\\\": true,\\n      \\\"reference_nodes\\\": 217,\\n      \\\"candidate_nodes\\\": 206,\\n      \\\"pairs\\\": 4533,\\n      \\\"instructions\\\": {\\n        \\\"EDecnz\\\": 1931,\\n        \\\"EInc\\\": 2601,\\n        \\\"EHalt\\\": 1\\n      },\\n      \\\"binary_TM_and_ZFC_endpoint_proved\\\": false,\\n      \\\"binary_table\\\": {\\n        \\\"working_states\\\": 268,\\n        \\\"transition_rows\\\": 536,\\n        \\\"separate_terminal\\\": 268,\\n        \\\"sha256\\\": \\\"15b9f0c4756054537912ae7f4481dba2459180ff26a9ea1bbf59a6ba3cac112f\\\",\\n        \\\"scope\\\": \\\"Literal-table structure and recorded hash only; no binary simulation proof.\\\"\\n      },\\n      \\\"reference_sha256\\\": \\\"c91c3c8aa1480cdfdf2b4276e39b765fbe6163401dbfc6155bb5a9d93021a93b\\\",\\n      \\\"candidate_sha256\\\": \\\"e7184f5bfb21e0b626db6d6357cf2d8285dc2e5ffc13a845a9d0068350ae3f74\\\",\\n      \\\"certificate_sha256\\\": \\\"53ae68eb29eb4155dd868063109bf2a6768f0043035053f4581c1a38250d2a7c\\\"\\n    }\\n  },\\n  \\\"corruption_controls\\\": [\\n    {\\n      \\\"mutation\\\": \\\"wrong_operation\\\",\\n      \\\"rejected\\\": true\\n    },\\n    {\\n      \\\"mutation\\\": \\\"missing_pair\\\",\\n      \\\"rejected\\\": true\\n    },\\n    {\\n      \\\"mutation\\\": \\\"duplicate_pair\\\",\\n      \\\"rejected\\\": true\\n    },\\n    {\\n      \\\"mutation\\\": \\\"wrong_zero_successor\\\",\\n      \\\"rejected\\\": true\\n    },\\n    {\\n      \\\"mutation\\\": \\\"wrong_positive_successor\\\",\\n      \\\"rejected\\\": true\\n    },\\n    {\\n      \\\"mutation\\\": \\\"wrong_initial\\\",\\n      \\\"rejected\\\": true\\n    }\\n  ],\\n  \\\"searches_rerun\\\": false,\\n  \\\"compiler_executed\\\": false,\\n  \\\"kernel_proof_or_ZFC_endpoint\\\": false\\n}\\n\",\n      \"stderr\": \"\",\n      \"status\": \"PASS\",\n      \"structured_output\": {\n        \"status\": \"PASS\",\n        \"checks\": {\n          \"grammar-baseline\": {\n            \"verified\": true,\n            \"reference_nodes\": 217,\n            \"candidate_nodes\": 206,\n            \"pairs\": 4533,\n            \"instructions\": {\n              \"EDecnz\": 1931,\n              \"EInc\": 2601,\n              \"EHalt\": 1\n            },\n            \"binary_TM_and_ZFC_endpoint_proved\": false,\n            \"binary_table\": {\n              \"working_states\": 268,\n              \"transition_rows\": 536,\n              \"separate_terminal\": 268,\n              \"sha256\": \"07b7aa8db8f9fa0440f67db829fad116139409f182a52a3d0a5d92e867247b4a\",\n              \"scope\": \"Literal-table structure and recorded hash only; no binary simulation proof.\"\n            },\n            \"reference_sha256\": \"a3c6729948f84d2d28beed5763b69244e988e7886fff244cdd27cec704a5d839\",\n            \"candidate_sha256\": \"867295f3e9ded81c67626fe43655f06fce569b6a23cc3aca44d49d07937d443c\",\n            \"certificate_sha256\": \"f0de97cbea2de4b76eb7b5a44880cb5c3d70c4fb6fdd5fad4b911c43ea3493b6\"\n          },\n          \"grammar-rotation\": {\n            \"verified\": true,\n            \"reference_nodes\": 217,\n            \"candidate_nodes\": 206,\n            \"pairs\": 4533,\n            \"instructions\": {\n              \"EDecnz\": 1931,\n              \"EInc\": 2601,\n              \"EHalt\": 1\n            },\n            \"binary_TM_and_ZFC_endpoint_proved\": false,\n            \"binary_table\": {\n              \"working_states\": 268,\n              \"transition_rows\": 536,\n              \"separate_terminal\": 268,\n              \"sha256\": \"a29176b303a9a840a24b9f4e8af4c3d458b83abd4de4ba90818f25849e035363\",\n              \"scope\": \"Literal-table structure and recorded hash only; no binary simulation proof.\"\n            },\n            \"reference_sha256\": \"c91c3c8aa1480cdfdf2b4276e39b765fbe6163401dbfc6155bb5a9d93021a93b\",\n            \"candidate_sha256\": \"8b6439da9869cd1ed2d29b3aeda555ecb93f06fd2171c848312bf65f99e76d3f\",\n            \"certificate_sha256\": \"66efe44d94cbdfa83e0e6a8316fd849e5d381e3f33a63f0919e458f37690894f\"\n          },\n          \"grammar-plateau\": {\n            \"verified\": true,\n            \"reference_nodes\": 217,\n            \"candidate_nodes\": 206,\n            \"pairs\": 4533,\n            \"instructions\": {\n              \"EDecnz\": 1931,\n              \"EInc\": 2601,\n              \"EHalt\": 1\n            },\n            \"binary_TM_and_ZFC_endpoint_proved\": false,\n            \"binary_table\": {\n              \"working_states\": 268,\n              \"transition_rows\": 536,\n              \"separate_terminal\": 268,\n              \"sha256\": \"15b9f0c4756054537912ae7f4481dba2459180ff26a9ea1bbf59a6ba3cac112f\",\n              \"scope\": \"Literal-table structure and recorded hash only; no binary simulation proof.\"\n            },\n            \"reference_sha256\": \"c91c3c8aa1480cdfdf2b4276e39b765fbe6163401dbfc6155bb5a9d93021a93b\",\n            \"candidate_sha256\": \"e7184f5bfb21e0b626db6d6357cf2d8285dc2e5ffc13a845a9d0068350ae3f74\",\n            \"certificate_sha256\": \"53ae68eb29eb4155dd868063109bf2a6768f0043035053f4581c1a38250d2a7c\"\n          }\n        },\n        \"corruption_controls\": [\n          {\n            \"mutation\": \"wrong_operation\",\n            \"rejected\": true\n          },\n          {\n            \"mutation\": \"missing_pair\",\n            \"rejected\": true\n          },\n          {\n            \"mutation\": \"duplicate_pair\",\n            \"rejected\": true\n          },\n          {\n            \"mutation\": \"wrong_zero_successor\",\n            \"rejected\": true\n          },\n          {\n            \"mutation\": \"wrong_positive_successor\",\n            \"rejected\": true\n          },\n          {\n            \"mutation\": \"wrong_initial\",\n            \"rejected\": true\n          }\n        ],\n        \"searches_rerun\": false,\n        \"compiler_executed\": false,\n        \"kernel_proof_or_ZFC_endpoint\": false\n      },\n      \"seconds\": 5.041279466822743\n    }\n  ]\n}\n\nSTDERR:\n"
+    },
+    {
+      "source": 2,
+      "name": "edge",
+      "args": [
+        "/tmp/zfc-intake-154-qc3_quah/review/02/experiments/public253/searches/edge_redirect_search.py",
+        "/tmp/zfc-intake-154-qc3_quah/review/02/experiments/public253/source_zfc253.tm",
+        "--radius",
+        "6",
+        "--bound",
+        "64",
+        "--output",
+        "/tmp/zfc-intake-154-qc3_quah/source02-edge-replayed.json"
+      ],
+      "returncode": 0,
+      "seconds": 4.507727457210422,
+      "log": "/tmp/zfc-intake-154-qc3_quah/source02-edge.log",
+      "captured_output": "{\"radius\": 6, \"bound\": 64, \"abstract_configurations\": 335369, \"edge_replacement_attempts\": 65016, \"elapsed_seconds\": 4.416765363886952, \"input\": {\"sha256\": \"84a21f714017c1d491008d86e9bd19c43cc6c5c9ae99a538b4f2314387827d95\", \"working_states\": 253, \"start\": 0, \"halt\": 253}, \"script_sha256\": \"9593b6e2a98d128abc6b2ca19d0e4b7faa93d8c841038f8508fb76e634dccb95\"}\ncandidates: []\n\nSTDERR:\n"
+    },
+    {
+      "source": 2,
+      "name": "incoming",
+      "args": [
+        "/tmp/zfc-intake-154-qc3_quah/review/02/experiments/public253/searches/incoming_row_search.py",
+        "/tmp/zfc-intake-154-qc3_quah/review/02/experiments/public253/source_zfc253.tm",
+        "--radius",
+        "6",
+        "--bound",
+        "64",
+        "--output",
+        "/tmp/zfc-intake-154-qc3_quah/source02-incoming-replayed.json"
+      ],
+      "returncode": 0,
+      "seconds": 4.645384463481605,
+      "log": "/tmp/zfc-intake-154-qc3_quah/source02-incoming.log",
+      "captured_output": "{\"radius\": 6, \"bound\": 64, \"abstract_configurations\": 335369, \"row_replacement_attempts\": 260064, \"elapsed_seconds\": 4.557143205776811, \"input\": {\"sha256\": \"84a21f714017c1d491008d86e9bd19c43cc6c5c9ae99a538b4f2314387827d95\", \"working_states\": 253, \"start\": 0, \"halt\": 253}, \"script_sha256\": \"264debb7927ec2b3e149605f590e548ac11c5127318efd4bbd336178f9612f38\"}\ncandidates: []\n\nSTDERR:\n"
+    },
+    {
+      "source": 2,
+      "name": "shortcut",
+      "args": [
+        "/tmp/zfc-intake-154-qc3_quah/review/02/experiments/public253/searches/row_shortcuts.py",
+        "/tmp/zfc-intake-154-qc3_quah/review/02/experiments/public253/source_zfc253.tm",
+        "--radius",
+        "6",
+        "--bound",
+        "64",
+        "--output",
+        "/tmp/zfc-intake-154-qc3_quah/source02-shortcut-replayed.json"
+      ],
+      "returncode": 0,
+      "seconds": 0.5881610186770558,
+      "log": "/tmp/zfc-intake-154-qc3_quah/source02-shortcut.log",
+      "captured_output": "{\"radius\": 6, \"bound\": 64, \"abstract_configurations\": 335369, \"elapsed_seconds\": 0.5128240305930376, \"input\": {\"sha256\": \"84a21f714017c1d491008d86e9bd19c43cc6c5c9ae99a538b4f2314387827d95\", \"working_states\": 253, \"start\": 0, \"halt\": 253}, \"script_sha256\": \"0d6cef76ef0c3b0745f55cb5c7cef4c60a96f45981f90f2079932313154ab645\"}\ncandidates: [([60, 0], [0, 1, 51], [])]\n\nSTDERR:\n"
+    },
+    {
+      "source": 2,
+      "name": "shortcut-incoming",
+      "args": [
+        "/tmp/zfc-intake-154-qc3_quah/review/02/experiments/public253/searches/incoming_row_search.py",
+        "/tmp/zfc-intake-154-qc3_quah/review/02/experiments/public253/zfc253_shortcut.tm",
+        "--radius",
+        "6",
+        "--bound",
+        "64",
+        "--output",
+        "/tmp/zfc-intake-154-qc3_quah/source02-shortcut-incoming-replayed.json"
+      ],
+      "returncode": 0,
+      "seconds": 4.5723464069888,
+      "log": "/tmp/zfc-intake-154-qc3_quah/source02-shortcut-incoming.log",
+      "captured_output": "{\"radius\": 6, \"bound\": 64, \"abstract_configurations\": 333593, \"row_replacement_attempts\": 259056, \"elapsed_seconds\": 4.493926377035677, \"input\": {\"sha256\": \"78dcbd5aa7709f349cb9c378f54909e316c27d448537cf2e9dce15811152c2a4\", \"working_states\": 253, \"start\": 0, \"halt\": 253}, \"script_sha256\": \"264debb7927ec2b3e149605f590e548ac11c5127318efd4bbd336178f9612f38\"}\ncandidates: []\n\nSTDERR:\n"
+    },
+    {
+      "name": "baseline",
+      "command": [
+        "/tmp/zfc-intake-154-qc3_quah/review/02/experiments/grammar/research-inputs/Computability/BusyBeaver/Research/ZFC/layout_grammar_experiment.py",
+        "--output",
+        "/tmp/zfc-intake-154-qc3_quah/grammar-baseline",
+        "--start-seed",
+        "130",
+        "--seeds",
+        "1",
+        "--lanes",
+        "coarse",
+        "--exponents",
+        "4"
+      ],
+      "returncode": 0,
+      "seconds": 3.3774720365181565,
+      "log": "/tmp/zfc-intake-154-qc3_quah/source02-grammar-baseline.log",
+      "captured_output": "{\"minimum_states\": 268, \"lane\": \"coarse\", \"algorithm\": \"legacy\", \"exponent\": 4, \"seed\": 341}\n{\"minimum_states\": 268, \"lane\": \"coarse\", \"algorithm\": \"legacy\", \"exponent\": 4, \"seed\": 130}\n{\"lane\": \"coarse\", \"exponent\": 4, \"completed_DAGs\": 2, \"best_states\": 268, \"seconds\": 0.007043992169201374}\n{\n  \"winner\": {\n    \"lane\": \"coarse\",\n    \"algorithm\": \"legacy\",\n    \"exponent\": 4,\n    \"seed\": 130,\n    \"key\": [\n      268,\n      206,\n      27,\n      75,\n      \"coarse\",\n      \"legacy\",\n      4,\n      130\n    ]\n  },\n  \"working_states\": 268,\n  \"improves_source19_268\": false,\n  \"elapsed_seconds\": 3.1686700955033302\n}\n\nSTDERR:\n"
+    },
+    {
+      "name": "rotation",
+      "command": [
+        "/tmp/zfc-intake-154-qc3_quah/review/02/experiments/grammar/grammar_rotation_search.py",
+        "--output",
+        "/tmp/zfc-intake-154-qc3_quah/grammar-rotation",
+        "--steps",
+        "15000",
+        "--chains",
+        "4",
+        "--seed",
+        "20261016",
+        "--temperature",
+        "0.8",
+        "--restart-period",
+        "0"
+      ],
+      "returncode": 0,
+      "seconds": 74.44878787826747,
+      "log": "/tmp/zfc-intake-154-qc3_quah/source02-grammar-rotation.log",
+      "captured_output": "{\"new_best\": {\"chain\": 0, \"step\": 0, \"states\": 268, \"decision\": 206, \"dispatcher\": 7}, \"seconds\": 0.003780350089073181}\n{\"chain\": 0, \"best\": 268, \"current\": 276, \"trials\": 12566, \"seconds\": 18.14766453113407}\n{\"chain\": 1, \"best\": 268, \"current\": 274, \"trials\": 25090, \"seconds\": 37.072650576010346}\n{\"chain\": 2, \"best\": 268, \"current\": 280, \"trials\": 37630, \"seconds\": 54.68120434973389}\n{\"chain\": 3, \"best\": 268, \"current\": 277, \"trials\": 50193, \"seconds\": 73.04460924305022}\n{\n  \"best\": {\n    \"chain\": 0,\n    \"step\": 0,\n    \"states\": 268,\n    \"decision\": 206,\n    \"dispatcher\": 7\n  },\n  \"working_states\": 268,\n  \"decision_nodes\": 206,\n  \"framework_states\": 62,\n  \"exact_macro_word\": true,\n  \"source_upstream\": \"297ab8df7e5de329605c3875b4934643b371a5e3\",\n  \"proveit_pin\": \"426592ce97e52d309bfb8f0132411556650b7ac1\",\n  \"trials\": 50193,\n  \"accepted\": 31149,\n  \"rejected\": 19044,\n  \"chains\": 4,\n  \"steps\": 15000,\n  \"seed\": 20261016,\n  \"temperature\": 0.8,\n  \"restart_period\": 0,\n  \"histogram\": {\n    \"268\": 12,\n    \"269\": 41,\n    \"270\": 47,\n    \"271\": 44,\n    \"272\": 53,\n    \"273\": 68,\n    \"274\": 98,\n    \"275\": 149,\n    \"276\": 220,\n    \"277\": 1152,\n    \"278\": 1308,\n    \"279\": 1066,\n    \"280\": 2109,\n    \"281\": 2006,\n    \"282\": 1207,\n    \"283\": 1572,\n    \"284\": 1919,\n    \"285\": 1571,\n    \"286\": 1840,\n    \"287\": 2055,\n    \"288\": 2789,\n    \"289\": 2761,\n    \"290\": 2216,\n    \"291\": 2004,\n    \"292\": 2184,\n    \"293\": 2349,\n    \"294\": 2071,\n    \"295\": 1936,\n    \"296\": 2142,\n    \"297\": 2367,\n    \"298\": 2318,\n    \"299\": 1800,\n    \"300\": 1571,\n    \"301\": 1226,\n    \"302\": 670,\n    \"303\": 340,\n    \"304\": 181,\n    \"305\": 183,\n    \"306\": 109,\n    \"307\": 139,\n    \"308\": 98,\n    \"309\": 59,\n    \"310\": 68,\n    \"311\": 59,\n    \"312\": 16\n  },\n  \"seconds\": 74.28247269522399,\n  \"rm_bisimulation\": {\n    \"related_site_pairs\": 4533,\n    \"instruction_counts\": {\n      \"EDecnz\": 1931,\n      \"EInc\": 2601,\n      \"EHalt\": 1\n    },\n    \"old_unfolded_sites\": 6460,\n    \"new_unfolded_sites\": 6460,\n    \"old_max_path_length\": 94,\n    \"new_max_path_length\": 95,\n    \"old_max_contracted_control_steps\": 4,\n    \"new_max_contracted_control_steps\": 4,\n    \"all_reachable_operation_labels_match\": true,\n    \"both_decrement_branches_checked\": true\n  },\n  \"independent_check\": {\n    \"verified\": true,\n    \"reference_nodes\": 217,\n    \"candidate_nodes\": 206,\n    \"pairs\": 4533,\n    \"instructions\": {\n      \"EDecnz\": 1931,\n      \"EInc\": 2601,\n      \"EHalt\": 1\n    },\n    \"binary_TM_and_ZFC_endpoint_proved\": false\n  },\n  \"total_table_sha256\": \"a29176b303a9a840a24b9f4e8af4c3d458b83abd4de4ba90818f25849e035363\",\n  \"binary_compiler_or_ZFC_endpoint_proved\": false\n}\n\nSTDERR:\n"
+    },
+    {
+      "name": "plateau",
+      "command": [
+        "/tmp/zfc-intake-154-qc3_quah/review/02/experiments/grammar/grammar_rotation_search.py",
+        "--output",
+        "/tmp/zfc-intake-154-qc3_quah/grammar-plateau",
+        "--steps",
+        "20000",
+        "--chains",
+        "4",
+        "--seed",
+        "281",
+        "--temperature",
+        "0.08",
+        "--restart-period",
+        "5000"
+      ],
+      "returncode": 0,
+      "seconds": 92.33331688586622,
+      "log": "/tmp/zfc-intake-154-qc3_quah/source02-grammar-plateau.log",
+      "captured_output": "{\"new_best\": {\"chain\": 0, \"step\": 0, \"states\": 268, \"decision\": 206, \"dispatcher\": 7}, \"seconds\": 0.00363294780254364}\n{\"chain\": 0, \"best\": 268, \"current\": 268, \"trials\": 17133, \"seconds\": 22.201842301525176}\n{\"chain\": 1, \"best\": 268, \"current\": 268, \"trials\": 34345, \"seconds\": 44.32056472543627}\n{\"chain\": 2, \"best\": 268, \"current\": 268, \"trials\": 51642, \"seconds\": 66.59767744131386}\n{\"chain\": 3, \"best\": 268, \"current\": 268, \"trials\": 68784, \"seconds\": 90.01371072698385}\n{\n  \"best\": {\n    \"chain\": 0,\n    \"step\": 0,\n    \"states\": 268,\n    \"decision\": 206,\n    \"dispatcher\": 7\n  },\n  \"working_states\": 268,\n  \"decision_nodes\": 206,\n  \"framework_states\": 62,\n  \"exact_macro_word\": true,\n  \"source_upstream\": \"297ab8df7e5de329605c3875b4934643b371a5e3\",\n  \"proveit_pin\": \"426592ce97e52d309bfb8f0132411556650b7ac1\",\n  \"trials\": 68784,\n  \"accepted\": 24419,\n  \"rejected\": 44365,\n  \"chains\": 4,\n  \"steps\": 20000,\n  \"seed\": 281,\n  \"temperature\": 0.08,\n  \"restart_period\": 5000,\n  \"histogram\": {\n    \"268\": 24419,\n    \"269\": 38788,\n    \"270\": 5577\n  },\n  \"seconds\": 92.15559685230255,\n  \"rm_bisimulation\": {\n    \"related_site_pairs\": 4533,\n    \"instruction_counts\": {\n      \"EDecnz\": 1931,\n      \"EInc\": 2601,\n      \"EHalt\": 1\n    },\n    \"old_unfolded_sites\": 6460,\n    \"new_unfolded_sites\": 6460,\n    \"old_max_path_length\": 94,\n    \"new_max_path_length\": 95,\n    \"old_max_contracted_control_steps\": 4,\n    \"new_max_contracted_control_steps\": 4,\n    \"all_reachable_operation_labels_match\": true,\n    \"both_decrement_branches_checked\": true\n  },\n  \"independent_check\": {\n    \"verified\": true,\n    \"reference_nodes\": 217,\n    \"candidate_nodes\": 206,\n    \"pairs\": 4533,\n    \"instructions\": {\n      \"EDecnz\": 1931,\n      \"EInc\": 2601,\n      \"EHalt\": 1\n    },\n    \"binary_TM_and_ZFC_endpoint_proved\": false\n  },\n  \"total_table_sha256\": \"15b9f0c4756054537912ae7f4481dba2459180ff26a9ea1bbf59a6ba3cac112f\",\n  \"binary_compiler_or_ZFC_endpoint_proved\": false\n}\n\nSTDERR:\n"
+    }
+  ],
+  "pdf": {
+    "source": 2,
+    "main": "zfc_consistency_report",
+    "seconds": 3.337940488010645,
+    "codes": [
+      0,
+      0,
+      0
+    ],
+    "pdf": "/tmp/zfc-intake-154-qc3_quah/review/02/zfc_consistency_report.pdf",
+    "pdfinfo": "Title:           Toward a Smaller ZFC Consistency Machine\nSubject:         Consistency machines, formal verification, and equational proof search\nKeywords:        \nAuthor:          Research report prepared for Vladimir Reshetnikov\nCreator:         LaTeX with hyperref\nProducer:        pdfTeX-1.40.22\nCreationDate:    Fri Oct 16 19:19:44 2026 PDT\nModDate:         Fri Oct 16 19:19:44 2026 PDT\nCustom Metadata: yes\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           30\nEncrypted:       no\nPage size:       612 x 792 pts (letter)\nPage rot:        0\nFile size:       471668 bytes\nOptimized:       no\nPDF version:     1.5\n",
+    "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nTFRZDD+LMRomanCaps10-Regular         Type 1            Custom           yes yes yes    187  0\nBAUTOZ+LMRoman12-Bold                Type 1            Custom           yes yes yes    188  0\nZCYMXN+LMRoman12-Regular             Type 1            Custom           yes yes yes    189  0\nXAPUYP+LMRoman10-Bold                Type 1            Custom           yes yes yes    190  0\nVZNKKU+LMRoman10-Regular             Type 1            Custom           yes yes yes    191  0\nWQHVUR+LMRoman8-Regular              Type 1            Custom           yes yes yes    192  0\nYAILYL+LMMathItalic10-Regular        Type 1            Custom           yes yes yes    216  0\nNAQGUW+LMSans10-Regular              Type 1            Custom           yes yes yes    217  0\nXQJWYD+LMMathSymbols10-Regular       Type 1            Custom           yes yes yes    218  0\nVZNKKU+LMRoman10-Regular             Type 1            Custom           yes yes yes    219  0\nELNBTW+LMRoman7-Regular              Type 1            Custom           yes yes yes    220  0\nWQHVUR+LMRoman8-Regular              Type 1            Custom           yes yes yes    268  0\nDLEBLK+LMMono10-Regular              Type 1            Custom           yes yes yes    269  0\nEKPEOL+LMMathItalic8-Regular         Type 1            Custom           yes yes yes    293  0\nIKIKNU+LMRoman10-Italic              Type 1            Custom           yes yes yes    295  0\nSGLFFS+LMSans8-Regular               Type 1            Custom           yes yes yes    296  0\nDHILCR+MSBM10                        Type 1            Builtin          yes yes yes    319  0\nPWVZWC+LMMathExtension10-Regular     Type 1            Custom           yes yes yes    320  0\nYNDLSU+LMMathSymbols8-Regular        Type 1            Custom           yes yes yes    335  0\nVLNZNM+LMRoman6-Regular              Type 1            Custom           yes yes yes    430  0\nALJNKW+MSAM10                        Type 1            Builtin          yes yes yes    464  0\nVZNKKU+LMRoman10-Regular             Type 1            Custom           yes yes yes    473  0\n",
+    "warnings": [],
+    "visual_pages": [
+      1,
+      10
+    ],
+    "all_fonts_embedded": true
+  },
+  "functional_comparisons": [
+    {
+      "label": "38-edge",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/source02-edge-replayed.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016/experiments/public253/searches/edge-results-r6.json",
+      "comparison": "complete parsed record except timing"
+    },
+    {
+      "label": "38-incoming",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/source02-incoming-replayed.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016/experiments/public253/searches/incoming-results-r6.json",
+      "comparison": "complete parsed record except timing"
+    },
+    {
+      "label": "38-shortcut",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/source02-shortcut-replayed.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016/experiments/public253/searches/shortcut-results-r6.json",
+      "comparison": "complete parsed record except timing"
+    },
+    {
+      "label": "38-shortcut-incoming",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/source02-shortcut-incoming-replayed.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016/experiments/public253/searches/shortcut-incoming-results-r6.json",
+      "comparison": "complete parsed record except timing"
+    },
+    {
+      "label": "38-baseline-candidate.tm",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/grammar-baseline/candidate.tm",
+      "original": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016/experiments/grammar/grammar-baseline/candidate.tm",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "38-baseline-candidate.named.tm",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/grammar-baseline/candidate.named.tm",
+      "original": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016/experiments/grammar/grammar-baseline/candidate.named.tm",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "38-baseline-candidate_dag.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/grammar-baseline/candidate_dag.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016/experiments/grammar/grammar-baseline/candidate_dag.json",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "38-baseline-reference_dag.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/grammar-baseline/reference_dag.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016/experiments/grammar/grammar-baseline/reference_dag.json",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "38-baseline-rm_bisimulation.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/grammar-baseline/rm_bisimulation.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016/experiments/grammar/grammar-baseline/rm_bisimulation.json",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "38-baseline-labels.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/grammar-baseline/labels.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016/experiments/grammar/grammar-baseline/labels.json",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "38-baseline-results",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/grammar-baseline/results.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016/experiments/grammar/grammar-baseline/results.json",
+      "comparison": "complete parsed record except timing"
+    },
+    {
+      "label": "38-rotation-candidate.tm",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/grammar-rotation/candidate.tm",
+      "original": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016/experiments/grammar/grammar-rotation/candidate.tm",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "38-rotation-candidate.named.tm",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/grammar-rotation/candidate.named.tm",
+      "original": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016/experiments/grammar/grammar-rotation/candidate.named.tm",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "38-rotation-candidate_dag.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/grammar-rotation/candidate_dag.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016/experiments/grammar/grammar-rotation/candidate_dag.json",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "38-rotation-reference_dag.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/grammar-rotation/reference_dag.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016/experiments/grammar/grammar-rotation/reference_dag.json",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "38-rotation-rm_bisimulation.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/grammar-rotation/rm_bisimulation.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016/experiments/grammar/grammar-rotation/rm_bisimulation.json",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "38-rotation-labels.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/grammar-rotation/labels.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016/experiments/grammar/grammar-rotation/labels.json",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "38-rotation-results",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/grammar-rotation/results.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016/experiments/grammar/grammar-rotation/results.json",
+      "comparison": "all archived non-timing fields; two new recorded invocation fields independently match source provenance",
+      "extra_replayed_fields": {
+        "restart_period": 0,
+        "temperature": 0.8
+      },
+      "metadata_note": "Original results omit temperature/restart_period; delivered provenance explicitly supplies the same values."
+    },
+    {
+      "label": "38-plateau-candidate.tm",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/grammar-plateau/candidate.tm",
+      "original": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016/experiments/grammar/grammar-plateau/candidate.tm",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "38-plateau-candidate.named.tm",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/grammar-plateau/candidate.named.tm",
+      "original": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016/experiments/grammar/grammar-plateau/candidate.named.tm",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "38-plateau-candidate_dag.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/grammar-plateau/candidate_dag.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016/experiments/grammar/grammar-plateau/candidate_dag.json",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "38-plateau-reference_dag.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/grammar-plateau/reference_dag.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016/experiments/grammar/grammar-plateau/reference_dag.json",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "38-plateau-rm_bisimulation.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/grammar-plateau/rm_bisimulation.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016/experiments/grammar/grammar-plateau/rm_bisimulation.json",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "38-plateau-labels.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/grammar-plateau/labels.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016/experiments/grammar/grammar-plateau/labels.json",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "38-plateau-results",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/grammar-plateau/results.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/02/zfc_consistency_research_20261016/zfc_consistency_research_20261016/experiments/grammar/grammar-plateau/results.json",
+      "comparison": "complete parsed record except timing"
+    }
+  ],
+  "scope": "Ordinary mathematical review and specified finite functional checks; no new full consistency-machine theorem or minimality result",
+  "lean_status": "PASS fresh26source closure;14audits only propext/Classical.choice/Quot.sound",
+  "intake_harness_failure": {
+    "scope": "our initial wrapper newline typo, before any delivered code ran",
+    "corrected": true,
+    "failed_log": "/tmp/zfc-intake-154-qc3_quah/source02-core.log"
+  },
+  "shortcut_regeneration": {
+    "returncode": 0,
+    "seconds": 0.05134417396038771,
+    "exact_artifact_matches": {
+      "zfc253_shortcut.tm": true,
+      "invariant_radius2.json": true,
+      "bootstrap_endpoint.json": true
+    }
+  },
+  "lean_rebuild": {
+    "command": [
+      "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "-o",
+      "<fresh cache module>",
+      "<archived source>"
+    ],
+    "worker": [
+      "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+      "-B",
+      "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_154.py",
+      "_worker",
+      "38-lean",
+      "/tmp/zfc-intake-154-qc3_quah/review/02/formal/build.py"
+    ],
+    "returncode": 0,
+    "seconds": 22.911838456988335,
+    "log": "/tmp/zfc-intake-154-qc3_quah/source02-lean.log",
+    "source": "/tmp/zfc-intake-154-qc3_quah/review/02/formal",
+    "bulk_manifest_checks": "one original dependency manifest loop omitted in AST memory; zero blob-verified count",
+    "all_source_statements_unchanged": true,
+    "verification": {
+      "status": "PASS",
+      "scope": "Same-structure original decoded/encodable/native-CP-GIC model equivalence and abstract enumerator characterization; no binary machine or internal-ZFC theorem.",
+      "compiler": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "<cache module>",
+        "<source module>"
+      ],
+      "pinned_repository": "VladimirReshetnikov/ProveIt",
+      "pinned_commit": "426592ce97e52d309bfb8f0132411556650b7ac1",
+      "upstream_git_blobs_verified": 0,
+      "all_source_modules_recompiled": 26,
+      "module_count_expected": 26,
+      "total_compile_seconds": 22.745160764083266,
+      "new_source_sha256": {
+        "BusyBeaver/ZFC/ModelBridge254.lean": "e9ea10b793cf821aec8abf9a5969de17403acc72cfa002289df56436bea892db",
+        "BusyBeaver/ZFC/EnumModelBridge254.lean": "6c586bbd3999630da19712fb00d9843e75b567cc17d7c99ce985a1c8f3c88751",
+        "BusyBeaver/ZFC/ModelBridge254Checks.lean": "c404799981b179baaca30d237b113995d8ca777f17803e191614904c0d7aa9c2"
+      },
+      "allowed_axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "proof_audit_output": "'SetTheory.BusyBeaver.ZFC.ModelBridge254.decoded_bundle_named' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254.namedC_of_containers' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254.namedG_of_collection' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254.decoded_collection_of_encodable' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254.decoded_of_encodable' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254.modelsDecoded_iff_modelsEncodable' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254.modelsDecoded_iff_modelsNativeCPGIC' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254.refutation_iff_no_decoded_model' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254.refutation_iff_no_native_model' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n\n'SetTheory.BusyBeaver.ZFC.EnumModelBridge254.enum_halts_iff_no_decoded_model' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.EnumModelBridge254.enum_halts_iff_no_native_model' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n\n'SetTheory.BusyBeaver.ZFC.ModelBridge254Checks.zero_equal_labels' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254Checks.native_point' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254Checks.empty_equivalence' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n",
+      "logs": "dependency-build.json"
+    }
+  },
+  "lean_dependency_build": [
+    {
+      "path": "FirstOrder/Fol.lean",
+      "sha256": "84add1e8222f9f655e1dc252a826914623238b8e3e8169d18ed39f740b2bbacd",
+      "seconds": 1.5856850361451507,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "path": "BusyBeaver/ZFC/Kalmar.lean",
+      "sha256": "7e1bd77e6e26943476e941e68caaae06a556b29f1c508d7a63f5aaa9d8397143",
+      "seconds": 0.5745749501511455,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "path": "BusyBeaver/ZFC/TarskiCalculus.lean",
+      "sha256": "5c7079151e9deb06014deec4f03c3990cff96556d347b501d15106d895447e06",
+      "seconds": 0.6463153921067715,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "path": "BusyBeaver/ZFC/TarskiDerived.lean",
+      "sha256": "2a7edf1180e4553cb1990d45c1fe755aa74c3e86f5e9862181118470c1727178",
+      "seconds": 0.38250342663377523,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "path": "BusyBeaver/ZFC/TarskiLeibniz.lean",
+      "sha256": "45d8bbf29fbd7ee51ee08b4017f549a6e54120dc62728584ed8d8c11153a5df8",
+      "seconds": 0.9777445467188954,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "path": "BusyBeaver/ZFC/TarskiClean.lean",
+      "sha256": "6d06107dfc84bea7e8c42b484fecf718b41b964d95a26293767a6fc5db83cd36",
+      "seconds": 0.8639073520898819,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "path": "BusyBeaver/ZFC/TarskiComplete.lean",
+      "sha256": "be7b860d750bd176bb332e4d331c4bb67550ef41e98b330df7a5ebb298dbb7ae",
+      "seconds": 0.9693863363936543,
+      "returncode": 0,
+      "stdout": "/tmp/zfc-intake-154-qc3_quah/review/02/formal/src/BusyBeaver/ZFC/TarskiComplete.lean:282:0: warning: automatically included section variable(s) unused in theorem `SetTheory.BusyBeaver.ZFC.Tarski.gam_list`:\n  hC\n  hz\nconsider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:\n  omit hC hz in theorem ...\n\nNote: This linter can be disabled with `set_option linter.unusedSectionVars false`\n/tmp/zfc-intake-154-qc3_quah/review/02/formal/src/BusyBeaver/ZFC/TarskiComplete.lean:299:0: warning: automatically included section variable(s) unused in theorem `SetTheory.BusyBeaver.ZFC.Tarski.gam_complete`:\n  hC\n  hz\nconsider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:\n  omit hC hz in theorem ...\n\nNote: This linter can be disabled with `set_option linter.unusedSectionVars false`\n/tmp/zfc-intake-154-qc3_quah/review/02/formal/src/BusyBeaver/ZFC/TarskiComplete.lean:437:9: warning: Variable name `a1` is not explicitly referenced.\n\nThe binding can be removed (if unused) or named `_` (if used implicitly).\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\n/tmp/zfc-intake-154-qc3_quah/review/02/formal/src/BusyBeaver/ZFC/TarskiComplete.lean:437:12: warning: Variable name `b1` is not explicitly referenced.\n\nThe binding can be removed (if unused) or named `_` (if used implicitly).\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\n/tmp/zfc-intake-154-qc3_quah/review/02/formal/src/BusyBeaver/ZFC/TarskiComplete.lean:437:15: warning: Variable name `a2` is not explicitly referenced.\n\nThe binding can be removed (if unused) or named `_` (if used implicitly).\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\n/tmp/zfc-intake-154-qc3_quah/review/02/formal/src/BusyBeaver/ZFC/TarskiComplete.lean:437:18: warning: Variable name `b2` is not explicitly referenced.\n\nThe binding can be removed (if unused) or named `_` (if used implicitly).\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\n",
+      "stderr": ""
+    },
+    {
+      "path": "BusyBeaver/ZFC/Lukasiewicz.lean",
+      "sha256": "5bae5186d702414adc6f1f7006d241a48ef9f24e53de48c90f84394ce3c500d3",
+      "seconds": 0.48358525428920984,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "path": "BusyBeaver/ZFC/TarskiFalsity.lean",
+      "sha256": "22e29d3aabb45646110fa3d7c29c789a221cdb571c5078786a4f19a0ae797215",
+      "seconds": 0.4090885743498802,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "path": "BusyBeaver/ZFC/Code254.lean",
+      "sha256": "18311d4a28cba6778a0ba1a1ddee34f5c2dd5044a23958b63f46d0640be4e01e",
+      "seconds": 2.6665542377159,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "path": "BusyBeaver/ZFC/ProfileCongruence.lean",
+      "sha256": "e368b337567c8d316624f53ca13cc7700bf74de0257d9acc31783e355c95a86b",
+      "seconds": 0.4523696443066001,
+      "returncode": 0,
+      "stdout": "'SetTheory.BusyBeaver.ZFC.Profile.oneWay_iff_full' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Profile.sat_eraseEquality_congr' depends on axioms: [propext, Quot.sound]\n",
+      "stderr": ""
+    },
+    {
+      "path": "BusyBeaver/ZFC/ProfilePairs.lean",
+      "sha256": "cca62fc34f5c431ed48dd49a6349da7b6038380d79698d107ceb9e18a8102add",
+      "seconds": 0.29242494236677885,
+      "returncode": 0,
+      "stdout": "'SetTheory.BusyBeaver.ZFC.ProfilePairs.orderedPair_injective' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ProfilePairs.orderedPair_endpoint_congr' does not depend on any axioms\n",
+      "stderr": ""
+    },
+    {
+      "path": "BusyBeaver/ZFC/PositiveClosure.lean",
+      "sha256": "5cfa7e72c82fcb7d9f98d03e1c489d490ead15c5353ebebba68af5dab0a49676",
+      "seconds": 0.31043237913399935,
+      "returncode": 0,
+      "stdout": "'SetTheory.BusyBeaver.ZFC.PositiveClosure.constant_exact_of_instance' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.PositiveClosure.switch_subset_bounded' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.PositiveClosure.positive_decoder_cover' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.PositiveClosure.separation_of_instances' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.PositiveClosure.union_of_instances' depends on axioms: [propext, Classical.choice, Quot.sound]\n",
+      "stderr": ""
+    },
+    {
+      "path": "BusyBeaver/ZFC/ProfileCollection.lean",
+      "sha256": "c65afa1b9fe0da24c9574afe7c2167bd2a9aba033d63c7e337ec41fe12db2abb",
+      "seconds": 0.3147055357694626,
+      "returncode": 0,
+      "stdout": "'SetTheory.BusyBeaver.ZFC.ProfileCollection.pair_of_collection' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.ProfileCollection.orderedPairs_of_pairs' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.ProfileCollection.bisim_refl_of_collection' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ProfileCollection.eqv_symm_of_instances' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n",
+      "stderr": ""
+    },
+    {
+      "path": "BusyBeaver/ZFC/Code254Containers.lean",
+      "sha256": "a8b512cc35e3adbf9ca7cc5733cd19ac2aa4da653175690fec627f3477533cdb",
+      "seconds": 0.4086701702326536,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "path": "BusyBeaver/ZFC/DeepPositiveClosure.lean",
+      "sha256": "4174b82c10665bf1f7385b70c0e2cfc9bb61dbdd887d3bc19a57de42076bdccb",
+      "seconds": 0.37790616508573294,
+      "returncode": 0,
+      "stdout": "'SetTheory.BusyBeaver.ZFC.DeepPositiveClosure.sat_pscForm' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.DeepPositiveClosure.equalityFree_pscForm' does not depend on any axioms\n",
+      "stderr": ""
+    },
+    {
+      "path": "BusyBeaver/ZFC/ProfileSyntax.lean",
+      "sha256": "89ad80658825506770ba458f4d8df8296b8d6352936f156a299f14317160d8a9",
+      "seconds": 0.4164638724178076,
+      "returncode": 0,
+      "stdout": "'SetTheory.BusyBeaver.ZFC.ProfileSyntax.sat_orderedPairForm' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.ProfileSyntax.sat_gicForm' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.ProfileSyntax.equalityFree_orderedPairForm' does not depend on any axioms\n",
+      "stderr": ""
+    },
+    {
+      "path": "BusyBeaver/ZFC/ProfileModel.lean",
+      "sha256": "d31215ed6642ff1482640767a84f194ad898f7b1752dc5523948f6dfdd971aa3",
+      "seconds": 0.3474743654951453,
+      "returncode": 0,
+      "stdout": "'SetTheory.BusyBeaver.ZFC.ProfileModel.pairs_of_model' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.ProfileModel.eqv_refl_of_model' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ProfileModel.eqv_symm_of_model' depends on axioms: [propext, Classical.choice, Quot.sound]\n",
+      "stderr": ""
+    },
+    {
+      "path": "BusyBeaver/ZFC/Code254GIC.lean",
+      "sha256": "73532a1e8d516606453b7f29c66466b87e35d09c587e68b879c50faae1d81dab",
+      "seconds": 0.7832617918029428,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "path": "BusyBeaver/ZFC/Code254Models.lean",
+      "sha256": "c07eacc95775e7c5a5b2291008dbb4517718a6c187a5659dd9a35056196eb9ef",
+      "seconds": 0.28121499437838793,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "path": "BusyBeaver/ZFC/DecodeFresh254.lean",
+      "sha256": "10baa5fc8f2c440ee8a7ff5953c11ae83266a5390afd3121f891e356199e7b52",
+      "seconds": 0.5463425796478987,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "path": "BusyBeaver/ZFC/NamedForm254.lean",
+      "sha256": "41b2bbb7766df2b8eab0b6217b5ce7abd587183c2d1302c957a047f3c4a956fb",
+      "seconds": 0.3107776828110218,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "path": "BusyBeaver/ZFC/ModelBridge254.lean",
+      "sha256": "e9ea10b793cf821aec8abf9a5969de17403acc72cfa002289df56436bea892db",
+      "seconds": 0.4329154873266816,
+      "returncode": 0,
+      "stdout": "'SetTheory.BusyBeaver.ZFC.ModelBridge254.decoded_bundle_named' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254.namedC_of_containers' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254.namedG_of_collection' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254.decoded_collection_of_encodable' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254.decoded_of_encodable' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254.modelsDecoded_iff_modelsEncodable' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254.modelsDecoded_iff_modelsNativeCPGIC' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254.refutation_iff_no_decoded_model' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254.refutation_iff_no_native_model' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n",
+      "stderr": ""
+    },
+    {
+      "path": "BusyBeaver/ZFC/Enum254.lean",
+      "sha256": "e44edf445c97907c1adec57ebb41afb072a2fb1c67b1b2b4dc7911b3caaa79da",
+      "seconds": 7.39345564879477,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "path": "BusyBeaver/ZFC/EnumModelBridge254.lean",
+      "sha256": "6c586bbd3999630da19712fb00d9843e75b567cc17d7c99ce985a1c8f3c88751",
+      "seconds": 0.26082632690668106,
+      "returncode": 0,
+      "stdout": "'SetTheory.BusyBeaver.ZFC.EnumModelBridge254.enum_halts_iff_no_decoded_model' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.EnumModelBridge254.enum_halts_iff_no_native_model' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n",
+      "stderr": ""
+    },
+    {
+      "path": "BusyBeaver/ZFC/ModelBridge254Checks.lean",
+      "sha256": "c404799981b179baaca30d237b113995d8ca777f17803e191614904c0d7aa9c2",
+      "seconds": 0.25657407101243734,
+      "returncode": 0,
+      "stdout": "'SetTheory.BusyBeaver.ZFC.ModelBridge254Checks.zero_equal_labels' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254Checks.native_point' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254Checks.empty_equivalence' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n",
+      "stderr": ""
+    }
+  ]
+}

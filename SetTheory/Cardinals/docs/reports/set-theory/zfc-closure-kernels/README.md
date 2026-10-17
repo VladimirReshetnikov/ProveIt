@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings, 16 October 2026. This report now reconciles thirty-six manuscripts.
+Intake findings, 16 October 2026. This report now reconciles forty-one manuscripts.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -2201,3 +2201,192 @@ available at arrival4e720ccbbf; neither archived code nor placed evidence is
 modified by the helper. New initialized machines, other EPSC1 interpretations,
 interacting-row rewrites and effective proof-code transports remain research
 questions, with the argument sketches and limitations retained above.
+
+## Batch 154: finite fusion, unary Union and algebraic/assignment kernels
+
+Intake findings, 16 October 2026. Five pending manuscripts from three arrivals become sources 37–41,
+bringing this reconciliation to 41 manuscripts while the collection remains 290
+reports. Placement `d1636c9af8` preserves 351 ancillary files byte-identically
+under prefixes 37-fusion, 38-equation, 39-unary, 40-kernel and 41-cyclic. The 43 main
+TeX/section/bibliography/PDF/delivery-README files remain in the committed ZIPs.
+No source or earlier label is superseded; the base article remains unchanged.
+
+| Source | Archive and arrival | ProveIt comparison pin | Contribution and boundary |
+|---|---|---|---|
+| [37](intake-154-source-37.md) | `zfc_consistency_research_2026-10-16 (2).zip`, `61e7783656` | `426592ce97e52d309bfb8f0132411556650b7ac1` | Finite GIC/EPSC fusion; single-instance refutation-search specification; larger local windows and short-gap diagnostics. |
+| [38](intake-154-source-38.md) | `zfc_consistency_research_20261016.zip`, `61e7783656` | `426592ce97e52d309bfb8f0132411556650b7ac1` | Native decoded/encodable model bridge; guarded 253 shortcut; E7 cyclic validity frontend and complete ground rewrite reference; exact-word compiler controls. |
+| [39](intake-154-source-39.md) | `zfc_unary_closure_research.zip`, `61e7783656` | `2c74914bdfc98920ddcc3ff7c092cce10db4d709` | EPSC1 plus exact BinaryUnion; stronger support countermodel, support-deletion theorem and nonuniform entering-edge searches. |
+| [40](intake-154-source-40.md) | `zfc_finite_kernel_research.zip`, `3d731d8cf4` | `8cf840b8a26d002041e7a26dc9688ce7ce5fd751` | Finite assignment/class closure kernel, 15 universal clauses and complete ideal equality-aware ground search; bounded public 253 transition surgery. |
+| [41](intake-154-source-41.md) | `zfc_cyclic_algebra_research.zip`, `2b10c9072e` | `8cf840b8a26d002041e7a26dc9688ce7ce5fd751` | Cyclic E9/E8 algebra, exact restricted phase optimizers, explicit 14-sentence finite source and tagged Capture repair; expanded final target absent. |
+
+### Fusion changes the proof-search interface
+
+Source 37 proves in ordinary classical FOL over nonempty domains that every
+finite family of GIC instances fuses into one effectively constructed instance,
+with the false-matrix bootstrap included. No CP or IR premise is required.
+Fresh atomic selectors in a balanced unpadded tree give a matrix of size
+S+11n+13, with ceil(log2(n+2))+1 new parameters for n≥1. If the relation has
+no membership edge every GIC instance is true; otherwise an empty object and
+one edge realize all selector patterns. This case split closes the tempting
+missing-selector gap. Native-equality input matrices are allowed mathematically;
+the executable syntax implements only the equality-free sublanguage.
+
+EPSC has analogous atomic, Empty-selector and inhabited-selector versions,
+with sizes S+11n+19, S+17n+25 andS+29n+4. Their parameter budgets differ and
+do not preserve EPSC1/EPSC2. These are tree-node counts with label payload
+uncharged. Every candidate proof still chooses its own finite matrix; this
+is neither one fixed finite membership axiomatization nor a compiled proof
+search. The source's reflection obstruction explains that distinction.
+Its consistency-implication criterion requires a refutation translator whose
+totality/correctness the chosen base proves, without demanding a primitive-
+recursive runtime bound. Its two-model sandwich also permits different
+soundness/completeness model classes. Neither observation automatically
+internalizes a proof assistant in ZFC.
+
+### One parameter plus exact Union; coarse mixing still fails
+
+Source 39 proves an ordinary ZFC-level consistency calibration for EPSC1 plus
+one exact BinaryUnion sentence BU, with no separate Extensionality axiom.
+Unary full-profile singletons, a parameter-free twin decoder, raw transitive
+containers, raw Union, saturation and the fixed purity cut each respect the
+one-parameter budget. Exact profile-Pairing DP provides pure tuple coding;
+the supported guarded EPSC1 hull is already pure, and one-parameter saturation
+transfers full interpreted EPSC directly. Over EPSC1, BU and DP are deductively
+equivalent. Fusing the closed BU into every instance is equivalent to the
+separate repair because the false-matrix premise is valid. This remains an
+infinite recursive schema with unrestricted internal binders.
+
+The normalized hereditary-support interpretation strengthens source 36's
+negative result. It has full EPSC1, Extensionality, IR, least exact supported
+hulls and all finite coarse membership/subset/transitive bounds, yet bounded
+Pairing fails and the old H/Δ domain is the whole bad structure. A bilateral
+variant satisfies all finite acyclicity sentences. Deleting support permits
+full arbitrary-parameter closure in the same structure, without restoring
+Pairing. These are deductive obstructions, not lower consistency strength:
+the pure well-founded part still contains the ambient V, so a different
+universal internal-WF interpretation of bare EPSC1 remains open.
+
+BU costs 27 primitive tree/17 named DAG nodes, versus DP71/31. No compiler for
+the repaired theory or corresponding state saving is supplied. The finite
+52-node support diagnostic is explicitly not an EPSC model; it fails the
+constant Empty output instance. Its 132096 invariant relations and 350400
+prefixed comparisons test the group-action lemma, not the full interpretation.
+
+### A finite payload and two cyclic algebraic alternatives
+
+Source 40 packages full raw EPSC into a five-block assignment/class theory.
+Evaluation and coordinate update provide explicit infinitely many closed
+selectors; class NAND, atomic E-classes and existential classes represent
+arbitrary finite E-formulas with parameters stored in one descriptor. The
+closure matrix reads its class code from the original descriptor before
+updating input/output coordinates. The upper expansion uses a countably
+infinite set-coded ZFC model and externally coded E-definable classes; it
+assumes neither external well-foundedness nor expanded-language truth.
+
+The preferred fully expanded universal form has 15 clauses, 35 literals,
+174 term occurrences, 9 proper functions, 1 constant, 3 non-equality relations,
+maximum depth 3 and at most 4 universal variables per clause. It improves
+source 34's 28/62/244 payload. The alternatives trade 10 functions/163 terms,
+8 functions/188 terms/depth 4 and 6 functions/639 terms/depth 9. The free witness
+slice has an explicit collision-free address proof. These are logical
+payloads, with no new register program or binary state count. Ground search
+must include repeated substitutions, all instantiated subterms and genuine
+equality congruence, including f(c)=c. The ideal finite-stage procedure is
+complete; physical resource failures are never accepting refutations. No
+whole-kernel unbounded search was executed.
+
+Sources 38/41 compress three commuting complemented closures by one closure
+and a rotation of order 3. The cyclic product reflects empty-premise identities;
+arbitrary additional equational premises do not transfer. E7 uses NAND, q, r
+and seven equations; its 88-symbol convention includes 7 equality signs, hence
+81 both-side term nodes. E9 uses join, complement, c, r with 9 equations/75 term
+nodes. E8 combines complement and rotation, giving 8 equations/90 term nodes.
+These are distinct signatures and cost conventions; no state comparison
+follows. The optional r(p)=p is ground at one literal generator, not a schema.
+The E9/E8 phase optimizers are exact only in their declared ordered-tree
+phase grammars and use one global modal renaming for all equation sides.
+
+For calibration, source 38 uses the published 2013 full first-order-validity
+translation; source 41 uses the proved 2011 pairing-relative translation on a
+coded-model sentence. Both routes correctly translate the negated finite
+source as one query and then add one ground disequation. Primary statements
+were independently checked. Source 41 emits 14 intended Friedman NBG* sentences
+(752 formula nodes) and a 10182-node membership wrapper, including the tagged
+Capture-to-Collection repair already compatible with the earlier host audit.
+Its Russell tag excludes witness-code second components from the input set.
+This repairs a proof inference, not the global NBG* theorem or its axioms.
+Neither route emits the final translated ZFC-specific ground term or a binary
+backend. The algebraic bases alone have finite models.
+
+### Machine findings, current proofs and finite evidence
+
+Source 38 changes only public 253 compact 60/read 0 from 0 L45 to 0 R51. An
+inductive radius 2 invariant has 3530 state/window pairs and 7044 closure
+obligations, proving the necessary left-zero guard. One new step equals
+three old steps, with no intermediate halt; positive progress gives ordinary
+whole-run blank-halting equivalence. Forty uses shorten the bootstrap from
+312975 to 312895 moves, preserving state 33, head−17, all 178 one-cells and 158
+spares. The state count remains 253. The invariant checker, three regenerated
+artifacts and eight rejection tests pass; no new Lean shortcut proof is claimed.
+
+The four independent source 38 incoming/shortcut searches reproduce, with
+65016/260064/259056 alternative counts and no complete deletion. Its three
+full compiler runs reproduce the exact tables, DAGs, labels and 4533-pair
+certificates; 50193+68784 rotations stay at 268 states. The first results file
+omits two invocation fields that its provenance supplies; the regenerated
+fields agree. Exact dispatcher costs were charged. Source 39's four C++
+searches and regenerated radius 4/6 inventories match every non-timing field:
+102564 target-only/410256 whole-action choices per radius, zero deletions.
+Source 40's radius 20/128 and 10/32 searches each test 226688 alternatives with
+zero certified deletions; the larger catalog has 1176597 patterns. None is a
+machine lower bound or a semantic rejection of every failed candidate.
+
+Source 37's radius 6/7, max 512 searches check 63756 ordered state pairs and find
+no sufficient merge. Its 25173 short-gap symbolic cases pass; the billion-step
+negative blank run concerns the old identity-layout runtime 252 body, not the
+new register-permutation candidate. Both retain attributed upstream box
+oracles and their stated finite scope. Public 253/254 and Wade authorship
+remain with mira-emmy, Mira-Cult, Jeff and Wade.
+
+Current Lean already substantially closes source 38's advertised comparison
+gap: `NativeDecoded254.modelsDecoded_iff_modelsEncodable` and the sealed
+`NativeTheory254` use full native Form GIC, retain raw IR and explicit valuations.
+The source's empty-domain refinement does not rehabilitate equality-free raw
+CP/GIC as a native singleton theory; `DuplicateProfiles` still blocks that leap.
+Complete structured-root enumeration, dirty-root absorption and literal-program
+transport have also advanced since the pins. The new 252 candidate's exact
+82552-step clean bootstrap and box/executor/framing results belong to their
+separate current research sources. Foundation/Choice and the internally
+arithmetized ZFC endpoint are not inferred from these arrivals or finite tests.
+
+All five default functional suites and all advertised non-Coq bounded
+searches/regenerations pass on separate copies; source 40 exhausts 262404 relation
+pairs and all 15 clause round trips; source 41 reproduces all 9 finite jobs and
+phase-grammar oracles. Source 38's archived 26-module Lean closure freshly passes in 22.912s with
+absolute Lean 4.32.0; all 14 axiom probes contain only propext, Classical.choice
+and Quot.sound. This result remains separate from historical author evidence. No old integration patch is applied.
+The five scratch PDFs rebuild in three passes (25/30/26/31/24 pages), all fonts
+embedded, zero warnings/errors/boxes; selected theorem pages are visually clean.
+An initial source 38 intake-wrapper typo was corrected before submitted code
+ran; it is retained as a harness correction, not a delivery defect.
+
+Full dossiers `intake-154-source-{37..41}.md`, matching data files and the
+placement/history/PDF/functional-comparison records preserve all scopes.
+The collection still has 290 reports. The 351 copied ancillary files remain
+unchanged; prefixes flatten paths and `.log` gains `.txt`; the longest Windows
+checkout path is 163 characters. `data/intake-154-placement.json` maps every
+name. Relative paths inside delivered scripts/notes remain historical;
+recover the original package layout into scratch with the offline helper:
+
+```sh
+uv run --no-project python SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_154.py --prepare-only
+uv run --no-project python SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_154.py --run all
+```
+
+`--extended` adds the recorded machine/grammar searches;`--contexts` regenerates
+source 39's inventories;`--lean /absolute/path/to/lean` explicitly selects the
+archived source 38 build and must be serialized. Bulk provenance/checksum loops
+are omitted in memory, with functional identity/certificate assertions retained.
+No checksum manifests or line endings were checked or normalized. No delivered
+file, new state record, global optimality theorem, strict EPSC1 consistency
+separation, Coq rebuild or complete internal-ZFC endpoint is claimed.
