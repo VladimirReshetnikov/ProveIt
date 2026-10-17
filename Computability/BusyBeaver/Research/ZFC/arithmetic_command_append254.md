@@ -67,6 +67,10 @@ python -B Computability/BusyBeaver/Research/ZFC/check_arithmetic_command_append2
   --output /outside/new-empty-command-append-check
 ```
 
+The [command-block circuits](arithmetic_command_blocks254.md) now use this
+append graph to represent the actual leaf, MP and GEN command constructors.
+Their symbolic encodings agree with the existing compiler blocks.
+
 No compiler, scheduler or binary simulation theorem is inferred from these
 arithmetic operations. The next compiler uses a history of raw command words
 and the existing proof checker as a final validity gate; invalid public

@@ -227,7 +227,12 @@ now represent the raw tail and replacement functions in every IOpen model,
 with all-natural identification. The subsequent
 [represented concatenation](arithmetic_command_append254.md) now proves its
 exact recurrence at every internal index, all-Nat word agreement and actual
-PA unique totality. The compiler history remains the next step.
+PA unique totality. The [compiler-block circuits](arithmetic_command_blocks254.md)
+now represent all actual leaf, MP and GEN blocks using those operations,
+with symbolic equality to the existing command-list encoding on natural
+inputs. Their syntax and repetition counts are fixed external data; their
+numeric operands may be internal model elements. The compiler history
+remains the next step.
 
 The simpler compiler design keeps an unconditional history of raw compiled
 words and uses the already checked `ArithmeticHistory254.value` once as the

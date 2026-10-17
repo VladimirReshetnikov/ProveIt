@@ -71,6 +71,10 @@ and its internal execution contract remain the next arithmetic bridge.
 The [validator recurrence](arithmetic_history_recurrence254.md) also holds at
 all internal indices: accepted MP/GEN parents force acceptance of their actual
 child codes. Eleven reports and twelve generic callers pass.
+The [actual compiler-block circuits](arithmetic_command_blocks254.md) now have
+fixed arithmetic graphs and symbolic agreement with the existing command
+lists, including all leaf, MP and GEN blocks. Fifteen reports and twenty-five
+callers pass; internal command execution remains open.
 
 The [finite proof-template compiler](model_coded_core_compiler.md) now handles
 arbitrary internal free parameters by compiling the existing logical proof
