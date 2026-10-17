@@ -665,3 +665,10 @@ ordinals and naturals respectively to meet the Replacement interface.
 This supplies the semantic closure-point resource; final schema templates
 and their internal compiler/induction clients remain separate. The review
 of these upstream sources does not claim a local compiler rerun.
+
+The merged `4be44bc3fe` adds `LFinalSep.sepTemplate_provable`: totality and
+reflection for a placeholder predicate imply its Separation instance in L,
+at extended environments. A concrete satisfaction formula supplies the
+definable subset of a closed stage. The final Replacement template and the
+internal instantiation/induction driver are still needed before `hSchema`
+is discharged. This update records source review, without a local rerun.
