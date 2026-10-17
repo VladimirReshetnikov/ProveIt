@@ -181,6 +181,8 @@ facade is [`Lean/ZFCinPA.lean`](Lean/ZFCinPA.lean).
 | `LStepAnd` | the conjunction step: `and_step` for arbitrary relations (closure under the maximum gives closure under both components; the and-code reflects the conjunction by `satIn_and`) and `andTemplate_provable`, a theorem of the template theory over six placeholders |
 | `LStepBasic` | the disjunction step (`orTemplate`, by `satIn_or`), the negation step for negated atoms (`negTemplate`, code `c → ⊥`), and the constant bases `topBase`/`botBase` with the successor as reflection function |
 | `LStepAtom` | the atomic steps: if the numeral placeholders each define one natural number, the membership (equality) atom read at those environment slots, built literally from `EnvTransform`'s pieces, is reflected by the code `⟨0, ⟨a, b⟩⟩` (`⟨1, ⟨a, b⟩⟩`) with the successor as reflection function (`atom_step`, `atomTemplate_provable`) |
+| `LStepEx` | the mathematical core of the quantifier steps: the witness-bounding function (`Wit`, `WB`, `wb_exists`), earlier-stage bookkeeping at limits, and `ex_step`/`all_step` (codes `⟨7, c'⟩`, `⟨6, c'⟩` by `satIn_ex`/`satIn_all`) |
+| `LStepExT` | the quantifier templates: witness formulas (`hasWitS`, `anyWitS`, `witS`, `wbS`, `rkS`), `wb_tot` (in every template model the witness-bounding formula is a total function bounding witnesses, from Replacement for `rkS` over a power set of environments and Separation for `witS`), and `exTemplate_provable`/`allTemplate_provable` |
 
 ## Building
 
