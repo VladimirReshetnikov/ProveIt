@@ -187,7 +187,9 @@ translations remain to be supplied.
 The [represented set-schema constructors](../../../../Logic/Interpretability/ZFCinPA/model_coded_schema_axioms.md)
 now provide actual internal ZF/ZFC Separation and Replacement axiom proofs
 for every shift-fixed internal matrix of arity one or two. Eleven reports
-and ten callers pass. Closure for arbitrary free parameters remains open.
+and ten callers pass. This earlier checkpoint retains shift-fixedness;
+the later all-internal closing construction below removes that premise for
+universally closed schema axiom proofs.
 The subsequent lifted-PA client supplies the finite axiom witnesses itself.
 Its fresh five-module check passes nine reports and twenty callers, including
 specialization at matrices with internal free parameters.
@@ -1024,3 +1026,20 @@ returns across one actual unary block in exactly `value+2` steps, retaining
 both entire numeric halves through a recentered left-facing frame. Six
 entry/probe wrappers cover the three return families. Eleven reports and
 twelve callers pass with zero warnings.
+
+The [internal free-parameter closing construction](../../../../Logic/Interpretability/ZFCinPA/model_coded_free_closure.md)
+now handles every internal formula code, including nonstandard codes and
+arbitrary internal free labels. A binder-aware traversal proves shift-fixedness
+and exact reopening with the actual internal `bv` bound. The new closed-schema
+constructors yield literal ZF/ZFC Separation and Replacement axiom proof codes
+without a shift-fixedness premise on the matrix. Their separate fresh checks
+pass 15/15 and 13/13 reports/callers, with zero warnings. Specializing an internal
+number of closing binders back to the open body and the full PA consistency
+comparison remain open.
+
+
+The [internal zero-spare suffix shift](arithmetic_zero_spare_shift_perm252.md)
+retains the changing tape while increment shifts across an arbitrary internal
+zero-spare count. Its exact value+2*count+2-step endpoint and blank-tail turn
+pass three axiom reports and six callers with zero warnings. Complete
+increment/file framing and the internal runtime comparison remain separate.
