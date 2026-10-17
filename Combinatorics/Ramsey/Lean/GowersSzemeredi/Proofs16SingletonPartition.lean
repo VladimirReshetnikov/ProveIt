@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs16RecurrenceThreshold
+import GowersSzemeredi.Proofs05BoxPartition
 
 /-! # The singleton branch of the Section 16 local partition construction -/
 set_option autoImplicit false

@@ -10029,12 +10029,19 @@ declaration, structure field or namespace that no module it still sees declares
   generated version missed). Every module that names a moved declaration
   imports it: here only `Proofs16ExplicitBaseCase`. The real route went from
   569 modules and 117,466 lines to 565 and 116,570.
-- The other regions that need a few moves save 39 to 217 lines each, and would
-  each add one or two side modules. Some of the moved declarations have no user
-  at all, among them two deliberate dichotomies of Section 18
-  (`quadratic_explicit_cyclic_dichotomy`,
-  `section18_cyclic_dichotomy_holds_of_theorem_18_1`). These regions are left in
-  place. `Proofs16Basic`'s region shows the limit of text-based compensation:
+- Three of the regions that need a few moves then left as well:
+  `Proofs03ProgressionExistence`, `Proofs16CubicCapBound` and
+  `Proofs16RecurrenceThreshold`, 428 lines. They needed four declarations
+  moved, none of which has a user anywhere: the two deliberate dichotomies of
+  Section 18 (`quadratic_explicit_cyclic_dichotomy`,
+  `section18_cyclic_dichotomy_holds_of_theorem_18_1`),
+  `piece_cover_exponent_lower` and `section16_retiled_linearity_above_one`. They
+  are kept unchanged in four side modules. The real route went to 562 modules
+  and 116,042 lines. The region around `Proofs16LocalAffineLift` stays: the dead
+  route module `Proofs16GlobalAffineLift`, outside it, uses one of its moved
+  declarations, and the region of that module declares global simp lemmas
+  (`Proofs16CoordinateDirections`). The planner refuses both situations.
+  `Proofs16Basic`'s region shows the limit of text-based compensation:
   its moved declarations are named `….mono`, and `mono` occurs in many modules
   through dot notation, so the check cannot tell which modules use them.
 - Mostly-unused live modules are the other side of the same picture.
@@ -10044,6 +10051,32 @@ declaration, structure field or namespace that no module it still sees declares
   usually needs moves elsewhere: `Proofs16PolyPieceTwo` defines `polyPieceBudget`,
   which the printed dimension-two chain still uses (`evacuate_rank.py`, and
   `remap.txt` to simulate an evacuation).
+- *Section 13 stays, with both of its square chains.* Section 13 holds 13.5% of
+  the cone (9,500 lines in 89 modules). Its square extraction (`FejerSquareAt`,
+  `FejerOddSquareAt`) feeds the cubic localization of Section 17 and the degree-3
+  bases of both final envelope inductions. The bases come from two chains:
+  `envBound_three` (`EnvBound 3 62`, the explicit chain through the cubic
+  discrepancy partition) and `polyEnvBound_three_of_phase_partition`
+  (`PolyEnvBound 3 74`, the poly chain through `fejerSquareAt_poly`). In the
+  dominator tree of the cone (`dominators.py`), 2,990 cone lines lie under
+  `envBound_three` alone, in 20 modules nothing else needs, and 2,166 under the
+  poly base. Neither base replaces the other as they stand:
+  - `PolyEnvBound` carries no bound on the threshold `T`, and `EnvBound` needs
+    `T ≤ exp(exp((2/α)^(2^μ)))`. No lemma bounds the poly chain's thresholds yet.
+    Their shape (`positivePowerThreshold C 1 e` with `1/e ≈ p⁴·poly(1/α)`)
+    suggests the bound holds, with `p ≤ 2^(2^64)` entering only polynomially.
+  - The Theorem 18.2 envelope has little room for a larger base constant. The
+    tightest fit, `L + 0` at `j = 9`, is `genMuXK3 9 + 2·9 + 22 = 8,188 ≤
+    2^4·2^9 = 8,192`, and each unit of the base constant adds one to
+    `genMuXK3 j`. That fit leaves room for base constants up to 66 (the other
+    offsets and the closed form beyond `j = 14` are not yet checked at a larger
+    base); the poly base's 74 fails it (8,200).
+  - The explicit chain's `σ` is exponentially small, so it cannot give the
+    polynomial `σ⁻¹ ≤ (2/α)^(2^μ)` of `PolyEnvBound`.
+  So the poly chain could serve both inductions if its threshold is bounded
+  doubly exponentially at a small enough exponent. Its `β` is the explicit
+  chain's, and its `σ⁻¹ ≤ (2/α)^(2^74) ≤ exp((2/α)^(2^62))` already fits
+  `EnvBound 3 62`.
 
 `Proofs16PolynomialMultilinearCover.exists_all_scale_polynomial_multilinear_cover`
 composes the improved all-scale Lemma 16.9 with the rounded affine lift.

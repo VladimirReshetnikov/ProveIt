@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16GlobalLiftParameters
 import GowersSzemeredi.Proofs16WithLemma9
+import GowersSzemeredi.Proofs16ShortScale
 
 /-! The affine lift with an abstract slice provider.
 
