@@ -1,0 +1,26 @@
+{
+  "status": "PASS generic structural decoder coverage; actual 233 chunks not yet checked",
+  "compiler": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+  "lean_version": "4.32.0",
+  "lean_num_threads": "0",
+  "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SiteCoverage.lean",
+  "source_sha256": "643aa151328a65ba292214df01a933adc46408a468faabf273bf736457393cf4",
+  "source_bytes": 6558,
+  "source_check_wall_seconds": 0.48,
+  "source_check_peak_rss_kbytes": 506832,
+  "source_check_exit_code": 0,
+  "source_check_log": "\tCommand being timed: \"/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -o /tmp/zfc-site-coverage-check/cache/BusyBeaver/ZFC/SiteCoverage.olean Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SiteCoverage.lean\"\n\tUser time (seconds): 0.62\n\tSystem time (seconds): 0.07\n\tPercent of CPU this job got: 143%\n\tElapsed (wall clock) time (h:mm:ss or m:ss): 0:00.48\n\tAverage shared text size (kbytes): 0\n\tAverage unshared data size (kbytes): 0\n\tAverage stack size (kbytes): 0\n\tAverage total size (kbytes): 0\n\tMaximum resident set size (kbytes): 506832\n\tAverage resident set size (kbytes): 0\n\tMajor (requiring I/O) page faults: 2\n\tMinor (reclaiming a frame) page faults: 11677\n\tVoluntary context switches: 1230\n\tInvoluntary context switches: 996\n\tSwaps: 0\n\tFile system inputs: 80\n\tFile system outputs: 624\n\tSocket messages sent: 0\n\tSocket messages received: 0\n\tSignals delivered: 0\n\tPage size (bytes): 4096\n\tExit status: 0\n",
+  "audit_wall_seconds": 0.26,
+  "audit_exit_code": 0,
+  "axiom_reports": 7,
+  "callers": 3,
+  "axioms": [
+    "propext",
+    "Quot.sound"
+  ],
+  "audit_source": "import BusyBeaver.ZFC.SiteCoverage\nnamespace SetTheory.BusyBeaver.ZFC\nopen RegisterPath RMBisim SiteCoverage\n#print axioms allSites_join\n#print axioms allSites_sound\n#print axioms twalk_leafAt\n#print axioms allSites_twalk\n#print axioms allSites_total\n#print axioms allSites_walk\n#print axioms allSites_walk_total\nexample (test : List Bool \u2192 Edge \u2192 Bool) (t : Tree) (h : allSites test [] t = true)\n    (P : List Bool) (e : Edge) (d : Nat) (hw : twalk t P 0 = some (e, d)) :\n    test (consume P d) e = true := allSites_twalk test t h P e d hw\nexample (test : List Bool \u2192 Edge \u2192 Bool) (p : Program) (t : Tree)\n    (ht : ptree p = t) (h : allSites test [] t = true) (P : List Bool) :\n    \u2203 e d, walk p (p.nnodes + 1) p.root P 0 = some (e, d) :=\n  allSites_walk_total test p t ht h P\n-- The consumed path contains an implicit zero even when the input is empty.\nexample : LeafAt (.node (.leaf .halt) (.leaf (.inc 0))) (consume [] 1) .halt := by\n  have h := (twalk_leafAt (.node (.leaf .halt) (.leaf (.inc 0))) [] 0 .halt 1 rfl).2\n  simpa only [Nat.sub_zero, RMEquiv.consume_eq] using h\nend SetTheory.BusyBeaver.ZFC\n",
+  "audit_source_sha256": "0214a7480c131e8b7b53c75e393fa13c9d64fac878e9e550c41e797a761a7428",
+  "audit_log": "'SetTheory.BusyBeaver.ZFC.SiteCoverage.allSites_join' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.SiteCoverage.allSites_sound' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.SiteCoverage.twalk_leafAt' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.SiteCoverage.allSites_twalk' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.SiteCoverage.allSites_total' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.SiteCoverage.allSites_walk' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.SiteCoverage.allSites_walk_total' depends on axioms: [propext, Quot.sound]\n\tCommand being timed: \"/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean /tmp/zfc-site-coverage-check/Audit.lean\"\n\tUser time (seconds): 0.20\n\tSystem time (seconds): 0.06\n\tPercent of CPU this job got: 102%\n\tElapsed (wall clock) time (h:mm:ss or m:ss): 0:00.26\n\tAverage shared text size (kbytes): 0\n\tAverage unshared data size (kbytes): 0\n\tAverage stack size (kbytes): 0\n\tAverage total size (kbytes): 0\n\tMaximum resident set size (kbytes): 476512\n\tAverage resident set size (kbytes): 0\n\tMajor (requiring I/O) page faults: 0\n\tMinor (reclaiming a frame) page faults: 11237\n\tVoluntary context switches: 219\n\tInvoluntary context switches: 37\n\tSwaps: 0\n\tFile system inputs: 0\n\tFile system outputs: 8\n\tSocket messages sent: 0\n\tSocket messages received: 0\n\tSignals delivered: 0\n\tPage size (bytes): 4096\n\tExit status: 0\n",
+  "scope": "Generic complete-tree coverage, exact consumed-path transfer including zero padding, and total walk existence when all leaves check. No actual machine site checks, binary simulation, or consistency calibration are inferred.",
+  "cache": "/tmp/zfc-site-coverage-check/cache"
+}

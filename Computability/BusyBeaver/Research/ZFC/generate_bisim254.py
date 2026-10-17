@@ -6,12 +6,13 @@ a balanced certificate tree for `RMBisim.check_halts_iff`. The tree is split
 into chunks, each re-checked by the kernel in its own theorem, so no single
 kernel evaluation has to hold the whole computation.
 
-With `--literal-trees` both decoder trees are written out as terms and proved
-equal to `ptree` once, so the chunk checks walk explicit trees instead of
-re-evaluating node lookups.
+By default the literal program uses the shared, separately checked
+`ActualTree254`, and the DAG's unfolding is written out and identified by
+kernel definitional equality. `--plain` reproduces the older numerical-lookup
+version; `--literal-trees` writes both trees out directly.
 
 Usage (from the repository root):
-    py -I Computability/BusyBeaver/Research/ZFC/generate_bisim254.py [--literal-trees] [--out FILE]
+    python Computability/BusyBeaver/Research/ZFC/generate_bisim254.py [--plain | --literal-trees] [--check] [--out FILE]
 """
 
 from __future__ import annotations
@@ -102,9 +103,9 @@ def t2 : Tree :=
   {t2}
 
 /-- The written-out trees are the decoder trees (one kernel evaluation each). -/
-theorem t1_eq : ptree Prog254.program = t1 := by decide +kernel
+theorem t1_eq : ptree Prog254.program = t1 := by rfl
 
-theorem t2_eq : ptree RMEquiv254.pathDag254 = t2 := by decide +kernel
+theorem t2_eq : ptree RMEquiv254.pathDag254 = t2 := by rfl
 """
 
 FOOTER = """theorem all_ok : allC F cert = true := by
@@ -136,10 +137,18 @@ end SetTheory.BusyBeaver.ZFC.Bisim254
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--literal-trees", action="store_true",
-                    help="write both decoder trees out as terms (faster kernel check)")
+    modes = ap.add_mutually_exclusive_group()
+    modes.add_argument("--literal-trees", action="store_true",
+                       help="write both decoder trees out directly")
+    modes.add_argument("--plain", action="store_true",
+                       help="reproduce the original numerical-lookup version")
+    ap.add_argument("--check", action="store_true", help="require byte-exact existing output")
     ap.add_argument("--out", type=Path, default=TARGET)
     args = ap.parse_args()
+    if not __debug__:
+        ap.error("Assertions must remain enabled")
+    shared = not args.plain and not args.literal_trees
+    literal = not args.plain
 
     p254, dag = bisim254.Prog(bisim254.load_prog254()), bisim254.Prog(bisim254.load_dag254())
     entries = bisim254.build(p254, dag)
@@ -157,7 +166,7 @@ def main() -> int:
     top = split(0, n, CHUNK_DEPTH)
 
     out = [HEADER.replace("{n}", str(n)).replace("{chunks}", str(len(chunks)))]
-    if args.literal_trees:
+    if literal:
         out.append(TREES_LITERAL.replace("{t1}", literal_tree(p254.rows))
                    .replace("{t2}", literal_tree(dag.rows)))
         transfer = "rw [t1_eq, t2_eq]; exact"
@@ -173,14 +182,34 @@ def main() -> int:
         out.append(f"theorem ok{i} : allC F c{i} = true := by decide +kernel\n")
     oks = ", ".join(f"ok{i}" for i in range(len(chunks)))
     footer = FOOTER.replace("{oks}", oks).replace("{transfer}", transfer)
-    if not args.literal_trees:
+    if not literal:
         i = footer.index("theorem start_ok'")
         j = footer.index("/-- **The decoder tree")
         footer = footer[:i] + footer[j:]
         footer = footer.replace("start_ok' all_ok' R", "start_ok all_ok R")
     out.append(footer)
-    args.out.write_text("\n".join(out), encoding="utf-8", newline="\n")
-    print(f"wrote {args.out}: {n} entries in {len(chunks)} chunks")
+    source = "\n".join(out)
+    if shared:
+        # Keep the checked module byte-exact while factoring the literal tree
+        # into the independently reusable ActualTree254 data/proof module.
+        start = source.index("/-- The decoder tree of the literal program, written out. -/")
+        stop = source.index("/-- The decoder tree of the 219-node DAG, written out", start)
+        source = source[:start] + (
+            "/-- Reuse the independently checked literal6459-row decoder identity. -/\n"
+            "def t1 : Tree := ActualTree254.tree\n\n") + source[stop:]
+        source = source.replace("import BusyBeaver.ZFC.RMBisim",
+            "import BusyBeaver.ZFC.ActualTree254\nimport BusyBeaver.ZFC.RMBisim", 1)
+        source = source.replace("open RegisterPath RMBisim",
+            "open RegisterPath RMBisim\nset_option maxRecDepth 65536\nset_option maxHeartbeats 8000000", 1)
+        source = source.replace("theorem t1_eq : ptree Prog254.program = t1 := by rfl",
+            "theorem t1_eq : ptree Prog254.program = t1 := ActualTree254.tree_eq")
+    if args.check:
+        if args.out.read_bytes() != source.encode("utf-8"):
+            ap.error("Generated bisimulation source differs")
+        print(f"PASS: exact bisimulation source ({n} entries in {len(chunks)} chunks)")
+    else:
+        args.out.write_text(source, encoding="utf-8", newline="\n")
+        print(f"wrote {args.out}: {n} entries in {len(chunks)} chunks")
     return 0
 
 

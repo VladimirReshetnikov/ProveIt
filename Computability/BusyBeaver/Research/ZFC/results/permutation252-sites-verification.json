@@ -1,0 +1,53 @@
+{
+  "status": "PASS generic site soundness and 10 actual conditional cases",
+  "scope": "Generic site definitions/soundness plus eight actual leaf examples (10 conditional cases), including all three overflow cases. Complete 8391-case coverage and global binary simulation are separate pending obligations.",
+  "source_sha256": {
+    "BusyBeaver/ZFC/SitePerm252.lean": "fb1fd3e9788d0b0c7d76f5aff8b0572fc18dca7c16da0027160b71f0acbf269a",
+    "BusyBeaver/ZFC/SymbolicPerm252.lean": "d38b28fad549afee75309830be964149b2b72729c759500b86aea25e0a2d8648",
+    "BusyBeaver/ZFC/Permutation252Frame.lean": "63a3c9d9358a3a24edfef7889ffcc96d00f2aab3f2dd752c944c4f0e84236ae7",
+    "BusyBeaver/ZFC/BootstrapFramePerm252.lean": "fd1994f64a97df216d61050d7e41229a7a87d48d7b148806433311ee3adaf532"
+  },
+  "build": {
+    "command": [
+      "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "-o",
+      "/tmp/zfc-symbolic-perm252-zlcvvae7/cache/BusyBeaver/ZFC/SitePerm252.olean",
+      "BusyBeaver/ZFC/SitePerm252.lean"
+    ],
+    "cwd": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean",
+    "LEAN_PATH": "/tmp/zfc-symbolic-perm252-zlcvvae7/cache",
+    "LEAN_NUM_THREADS": "0",
+    "elapsed_seconds": 0.6622353056445718,
+    "exit_code": 0,
+    "source_sha256": "fb1fd3e9788d0b0c7d76f5aff8b0572fc18dca7c16da0027160b71f0acbf269a",
+    "output": "'SetTheory.BusyBeaver.ZFC.SitePerm252.runTo_sound' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.SitePerm252.runHalt_sound' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.SitePerm252.check_decnz' depends on axioms: [propext, Quot.sound]\n"
+  },
+  "audit": {
+    "command": [
+      "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "/tmp/zfc-site-perm252-audit.lean"
+    ],
+    "cwd": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean",
+    "LEAN_PATH": "/tmp/zfc-symbolic-perm252-zlcvvae7/cache",
+    "LEAN_NUM_THREADS": "0",
+    "elapsed_seconds": 2.1936145396903157,
+    "exit_code": 0,
+    "source_sha256": "9c0a0309d0c460911342cd9afc29519d54b18c271a1af683d269319631975727",
+    "source_text": "import BusyBeaver.ZFC.SitePerm252\nnamespace SetTheory.BusyBeaver.ZFC.SitePerm252\nset_option maxRecDepth 16384\nset_option maxHeartbeats 8000000\ntheorem zeroAndPositiveChecked : checkSite [false, false, false] (.decnz 8) = true := by decide +kernel\n#print axioms zeroAndPositiveChecked\ntheorem breakChecked : checkSite [false, false, true] (.brk 1) = true := by decide +kernel\n#print axioms breakChecked\ntheorem incrementChecked : checkSite [false, true, false, true, false] (.inc 8) = true := by decide +kernel\n#print axioms incrementChecked\ntheorem continueChecked : checkSite [false, true, false, true, true, true] (.cont 3) = true := by decide +kernel\n#print axioms continueChecked\ntheorem haltChecked : checkSite [true, true, true, false, true, false, false, true, false, true, true, false, true] (.halt) = true := by decide +kernel\n#print axioms haltChecked\ntheorem overflowBreak1Checked : checkSite [true, true, true, false, true, true] (.brk 1) = true := by decide +kernel\n#print axioms overflowBreak1Checked\ntheorem overflowBreak2Checked : checkSite [true, true, true, true, true, false, true, true, true] (.brk 1) = true := by decide +kernel\n#print axioms overflowBreak2Checked\ntheorem overflowDecChecked : checkSite [true, true, true, true, true, true, true, true, false] (.decnz 6) = true := by decide +kernel\n#print axioms overflowDecChecked\ntheorem invalidRegisterRejected : checkSite [false, true, false, true, false] (.inc 9) = false := by decide +kernel\ntheorem invalidLengthRejected : checkSite (List.replicate 41 false) .halt = false := by decide +kernel\ntheorem wrongLogicalRegisterRejected : checkSite [false, true, false, true, false] (.inc 7) = false := by decide +kernel\n#print axioms invalidRegisterRejected\n#print axioms invalidLengthRejected\n#print axioms wrongLogicalRegisterRejected\nend SetTheory.BusyBeaver.ZFC.SitePerm252\n",
+    "output": "'SetTheory.BusyBeaver.ZFC.SitePerm252.zeroAndPositiveChecked' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.SitePerm252.breakChecked' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.SitePerm252.incrementChecked' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.SitePerm252.continueChecked' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.SitePerm252.haltChecked' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.SitePerm252.overflowBreak1Checked' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.SitePerm252.overflowBreak2Checked' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.SitePerm252.overflowDecChecked' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.SitePerm252.invalidRegisterRejected' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.SitePerm252.invalidLengthRejected' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.SitePerm252.wrongLogicalRegisterRejected' depends on axioms: [propext, Quot.sound]\n"
+  },
+  "actual_leaf_examples": 8,
+  "conditional_cases": 10,
+  "overflow_cases": 3,
+  "rejection_checks": [
+    "register operand outside9",
+    "path length41 exceedsD0=40",
+    "actualincrementsite withwronglogicalregister"
+  ],
+  "axioms": [
+    "propext",
+    "Quot.sound"
+  ],
+  "dependency_scope": "Scoped build on source-verified105 baseline plus checked genericframe and optimizedSymbolic; no fresh full closure rebuild. See symbolic-perm252-verification.json and permutation252-frame-verification.json.",
+  "source_correction": "Initial compile rejected Bool.and_eq_true.mp; corrected to Lean4.32 Bool.and_eq_true_iff.mp/.mpr. No semantic change; only successful exactfinalsource recorded above."
+}
