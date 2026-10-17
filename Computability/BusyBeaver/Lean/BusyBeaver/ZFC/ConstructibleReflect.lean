@@ -1,4 +1,5 @@
 import BusyBeaver.ZFC.Constructible
+import BusyBeaver.ZFC.ZFRank
 
 /-!
 Reflection for the constructible hierarchy, inside a model of ZF.
@@ -236,5 +237,197 @@ theorem nsat_envSatF (H : ZFAxioms mem) (P : V → Prop) (C : Nat → NForm)
   | succ k =>
       simp only [envSlots, scons, show k < bound φ by omega, if_true]
       exact fillVals_val H E b hEb _ 0 ρ k (by omega) (by omega)
+
+/-! ## Sets of environments -/
+
+section Envs
+
+variable (H : ZFAxioms mem) (hP : ∀ a, ∃ p, ∀ x, mem x p ↔ Sub mem x a)
+include H hP
+
+/-- The internal environments over a set form a set. -/
+theorem envs_exists (T : V) : ∃ Es, ∀ E, mem E Es ↔ IsEnvOn H T E := by
+  let B := vcup H (omegaV H) T
+  obtain ⟨P1, hP1⟩ := hP B
+  obtain ⟨P2, hP2⟩ := hP P1
+  obtain ⟨P3, hP3⟩ := hP P2
+  obtain ⟨Es, hEs⟩ := sep_of H (fun E => IsEnvOn H T E) (envOnF 0 1) (fun _ => T)
+    (fun E => by rw [nsat_envOnF H]; rfl) P3
+  refine ⟨Es, fun E => ?_⟩
+  rw [hEs E]
+  refine ⟨fun h => h.2, fun h => ⟨(hP3 E).2 fun p hp => ?_, h⟩⟩
+  obtain ⟨n, y, hn, rfl⟩ := h.1.2.2 p hp
+  have hy : mem y T := h.2 n y hp
+  refine (hP2 _).2 fun q hq => (hP1 q).2 ?_
+  rcases (kpair_mem H n y q).1 hq with rfl | rfl
+  · intro z hz; rw [(vsingle_spec H n z).1 hz]; exact (vcup_spec H _ _ n).2 (Or.inl hn)
+  · intro z hz
+    rcases (vpair_spec H n y z).1 hz with rfl | rfl
+    · exact (vcup_spec H _ _ _).2 (Or.inl hn)
+    · exact (vcup_spec H _ _ _).2 (Or.inr hy)
+
+end Envs
+
+/-! ## Least witness stages -/
+
+section Witness
+
+variable (H : ZFAxioms mem) (hR : Regular mem) (hP : ∀ a, ∃ p, ∀ x, mem x p ↔ Sub mem x a)
+
+/-- Some `x ∈ L_c` satisfies `θ` in `L` at `x, E(0), E(1), …`. -/
+def Wit (θ : Form) (E c : V) : Prop :=
+  ∃ T x, IsL H hP c T ∧ mem x T ∧ CSat mem (InL H hP) (scons x (envVals H E)) θ
+
+/-- `c` is the least such stage. -/
+def LeastWit (θ : Form) (E c : V) : Prop :=
+  Ord mem c ∧ Wit H hP θ E c ∧ ∀ c', Ord mem c' → Wit H hP θ E c' → c = c' ∨ mem c c'
+
+/-- The named formula for `Wit` (names `c`, `E` below `10`; binders `10`, `11`, `50…`). -/
+noncomputable def witF (θ : Form) (c E : Nat) : NForm :=
+  .ex 10 (.ex 11 (.and (isStageF (defOp H hP) c 10) (.and (.mem 11 10)
+    (envSatF (inLF H hP) θ 11 E 50))))
+
+noncomputable def leastWitF (θ : Form) (c E : Nat) : NForm :=
+  .and (ordF c) (.and (witF H hP θ c E)
+    (.all 9 (.imp (.and (ordF 9) (witF H hP θ 9 E)) (.or (.eq c 9) (.mem c 9)))))
+
+theorem nsat_witF (θ : Form) {c E : Nat} (hc : c < 10) (hE : E < 10) (ρ : Nat → V) {A : V}
+    (hEnv : IsEnvOn H A (ρ E)) : NSat mem ρ (witF H hP θ c E) ↔ Wit H hP θ (ρ E) (ρ c) := by
+  simp only [witF, NSat, nsat_isStageF H (defOp H hP)]
+  refine exists_congr fun T => exists_congr fun x => ?_
+  have hEnv' : IsEnvOn H A (upd (upd ρ 10 T) 11 x E) := by
+    rw [upd_other _ _ (by omega), upd_other _ _ (by omega)]; exact hEnv
+  rw [nsat_envSatF H (InL H hP) (inLF H hP) (nsat_inLF H hP) θ (by omega) (by omega) _ hEnv']
+  simp (disch := omega) only [upd_same, upd_other]
+  rfl
+
+theorem nsat_leastWitF (θ : Form) {c E : Nat} (hc : c < 9) (hE : E < 9) (ρ : Nat → V) {A : V}
+    (hEnv : IsEnvOn H A (ρ E)) :
+    NSat mem ρ (leastWitF H hP θ c E) ↔ LeastWit H hP θ (ρ E) (ρ c) := by
+  simp only [leastWitF, NSat, nsat_ordF]
+  rw [nsat_witF H hP θ (by omega) (by omega) ρ hEnv]
+  refine and_congr_right fun _ => and_congr_right fun _ => forall_congr' fun c' => ?_
+  have hEnv' : IsEnvOn H A (upd ρ 9 c' E) := by rw [upd_other _ _ (by omega)]; exact hEnv
+  rw [nsat_witF H hP θ (by omega) (by omega) _ hEnv']
+  simp (disch := omega) only [upd_same, upd_other, and_imp]
+
+include hR in
+/-- The least witness stages over all environments on `T` form a set. -/
+theorem wst_exists (θ : Form) (T : V) :
+    ∃ W, ∀ z, mem z W ↔ ∃ E c, IsEnvOn H T E ∧ LeastWit H hP θ E c ∧ mem z c := by
+  obtain ⟨Es, hEs⟩ := envs_exists H hP T
+  obtain ⟨Cs, hCs⟩ := repl_of H (fun E c => IsEnvOn H T E ∧ LeastWit H hP θ E c)
+    (.and (envOnF 1 2) (leastWitF H hP θ 0 1)) (fun _ => T)
+    (fun E c => by
+      simp only [NSat, nsat_envOnF H]
+      simp (disch := omega) only [upd_same, upd_other]
+      refine and_congr_right fun hE => ?_
+      have hEnv : IsEnvOn H T (upd (upd (fun _ => T) 1 E) 0 c 1) := by
+        simp (disch := omega) only [upd_same, upd_other]; exact hE
+      rw [nsat_leastWitF H hP θ (c := 0) (E := 1) (by omega) (by omega) _ hEnv]
+      simp (disch := omega) only [upd_same, upd_other])
+    (fun E c1 c2 h1 h2 => ZFRank.least_unique H hR h1.2.1 h2.2.1 h1.2.2.2 h2.2.2.2 h1.2.2.1 h2.2.2.1) Es
+  refine ⟨vunion H Cs, fun z => ?_⟩
+  rw [vunion_spec H Cs z]
+  constructor
+  · rintro ⟨c, hzc, hc⟩
+    obtain ⟨E, hE, hE', hl⟩ := (hCs c).1 hc
+    exact ⟨E, c, hE', hl, hzc⟩
+  · rintro ⟨E, c, hE, hl, hzc⟩
+    exact ⟨c, hzc, (hCs c).2 ⟨E, (hEs E).2 hE, hE, hl⟩⟩
+
+end Witness
+
+/-! ## The closing step -/
+
+section Step
+
+variable (H : ZFAxioms mem) (hR : Regular mem) (hP : ∀ a, ∃ p, ∀ x, mem x p ↔ Sub mem x a)
+
+/-- `u = x ∪ ⋃ {least witness stages of the formulas of Θ over environments on `L_x`}`. -/
+def USpec (Θ : List Form) (x u : V) : Prop :=
+  ∀ z, mem z u ↔ (mem z x ∨ (Ord mem x ∧ ∃ θ ∈ Θ, ∃ T E c, IsL H hP x T ∧ IsEnvOn H T E ∧
+    LeastWit H hP θ E c ∧ mem z c))
+
+include hR in
+theorem uspec_exists (Θ : List Form) (x : V) : ∃ u, USpec H hP Θ x u := by
+  induction Θ with
+  | nil => exact ⟨x, fun z => by simp⟩
+  | cons θ Θ ih =>
+      obtain ⟨u, hu⟩ := ih
+      by_cases hx : Ord mem x
+      · obtain ⟨T, hT⟩ := isL_exists H hR hP hx
+        obtain ⟨W, hW⟩ := wst_exists H hR hP θ T
+        refine ⟨vcup H u W, fun z => ?_⟩
+        rw [vcup_spec H u W z, hu z, hW z]
+        constructor
+        · rintro ((h | ⟨-, θ', hθ', T', E, c, h⟩) | ⟨E, c, hE, hl, hz⟩)
+          · exact Or.inl h
+          · exact Or.inr ⟨hx, θ', List.mem_cons_of_mem _ hθ', T', E, c, h⟩
+          · exact Or.inr ⟨hx, θ, List.mem_cons_self .., T, E, c, hT, hE, hl, hz⟩
+        · rintro (h | ⟨-, θ', hθ', T', E, c, hT', hE, hl, hz⟩)
+          · exact Or.inl (Or.inl h)
+          · rcases List.mem_cons.1 hθ' with rfl | hθ'
+            · rw [isL_unique H hR hP hx hT' hT] at hE
+              exact Or.inr ⟨E, c, hE, hl, hz⟩
+            · exact Or.inl (Or.inr ⟨hx, θ', hθ', T', E, c, hT', hE, hl, hz⟩)
+      · exact ⟨u, fun z => by rw [hu z]; simp [hx]⟩
+
+omit hR in
+theorem uspec_unique {Θ : List Form} {x u u' : V} (h : USpec H hP Θ x u) (h' : USpec H hP Θ x u') :
+    u = u' :=
+  H.ext _ _ fun z => (h z).trans (h' z).symm
+
+/-- The disjunction over `Θ` in `USpec` (names: `z = 3`, `x = 1`, binders `4, 5, 6`). -/
+noncomputable def wstDisj : List Form → NForm
+  | [] => .bot
+  | θ :: Θ => .or (.ex 4 (.ex 5 (.ex 6 (.and (isStageF (defOp H hP) 1 4) (.and (envOnF 5 4)
+      (.and (leastWitF H hP θ 6 5) (.mem 3 6))))))) (wstDisj Θ)
+
+theorem nsat_wstDisj (Θ : List Form) (ρ : Nat → V) :
+    NSat mem ρ (wstDisj H hP Θ) ↔ ∃ θ ∈ Θ, ∃ T E c, IsL H hP (ρ 1) T ∧ IsEnvOn H T E ∧
+      LeastWit H hP θ E c ∧ mem (ρ 3) c := by
+  induction Θ with
+  | nil => simp [wstDisj, NSat]
+  | cons θ Θ ih =>
+      simp only [wstDisj, NSat, ih, List.mem_cons, exists_eq_or_imp]
+      refine or_congr ?_ Iff.rfl
+      simp only [nsat_isStageF H (defOp H hP), nsat_envOnF H]
+      refine exists_congr fun T => exists_congr fun E => exists_congr fun c => ?_
+      simp (disch := omega) only [upd_same, upd_other]
+      refine and_congr_right fun _ => and_congr_right fun hE => ?_
+      have hEnv : IsEnvOn H T (upd (upd (upd ρ 4 T) 5 E) 6 c 5) := by
+        simp (disch := omega) only [upd_same, upd_other]; exact hE
+      rw [nsat_leastWitF H hP θ (c := 6) (E := 5) (by omega) (by omega) _ hEnv]
+      simp (disch := omega) only [upd_same, upd_other]
+
+/-- `u = U(x)` (names `u`, `x` = `2`, `1`). -/
+noncomputable def uspecF (Θ : List Form) : NForm :=
+  .all 3 ((NForm.mem 3 2).iff (.or (.mem 3 1) (.and (ordF 1) (wstDisj H hP Θ))))
+
+theorem nsat_uspecF (Θ : List Form) (ρ : Nat → V) :
+    NSat mem ρ (uspecF H hP Θ) ↔ USpec H hP Θ (ρ 1) (ρ 2) := by
+  simp only [uspecF, NSat, nsat_iff, nsat_ordF, nsat_wstDisj H hP]
+  simp (disch := omega) only [upd_same, upd_other]
+  rfl
+
+/-- The closing step `G(x) = U(x) ∪ {U(x)}`. -/
+noncomputable def Gstep (hR : Regular mem) (Θ : List Form) (x : V) : V :=
+  vsucc H (uspec_exists H hR hP Θ x).choose
+
+/-- The graph of `Gstep` (output name `0`, input name `1`). -/
+noncomputable def gstepF (Θ : List Form) : NForm := .ex 2 (.and (uspecF H hP Θ) (succF 0 2))
+
+theorem nsat_gstepF (Θ : List Form) (ρ : Nat → V) (x y : V) :
+    NSat mem (upd (upd ρ 1 x) 0 y) (gstepF H hP Θ) ↔ y = Gstep H hP hR Θ x := by
+  simp only [gstepF, NSat, nsat_uspecF H hP, nsat_succF H]
+  simp (disch := omega) only [upd_same, upd_other]
+  constructor
+  · rintro ⟨u, hu, rfl⟩
+    rw [Gstep, uspec_unique H hP hu (uspec_exists H hR hP Θ x).choose_spec]
+  · rintro rfl
+    exact ⟨_, (uspec_exists H hR hP Θ x).choose_spec, rfl⟩
+
+end Step
 
 end SetTheory.BusyBeaver.ZFC.ConstructibleReflect
