@@ -83,6 +83,21 @@ these words at every internal proof code, then applies the original validator
 once at its public output. Twenty-eight reports and twenty-one callers pass.
 Its PA theorem asserts unique totality; execution and consistency transport
 remain open.
+The [quotation and nonemptiness adapters](arithmetic_proof_word_adapters254.md)
+give exact structural-compiler agreement on ordinary quoted proof trees,
+including invalid ones, and identify empty public outputs with validator
+rejection at every internal code. Separate audits pass two/eighteen and
+twelve/eighteen reports/callers.
+The [actual command-step graph](arithmetic_command_step254.md) agrees with
+`Enum254.cstep` on every natural command and represents its exact effects on
+every internal IOpen input. Replacing the rest pointer preserves that effect.
+The two audits pass seventeen/nineteen and three/four reports/callers.
+The [internal word interpreter](arithmetic_command_run254.md) now represents
+all internal time steps and proves termination on every coded word, with
+halt and successful completion kept distinct. Its twenty-five reports and
+thirty callers pass. PA proves unique totality of this evaluator; agreement
+with the existing natural executor, append execution and the accepted-proof
+compiler contract remain open.
 
 The [finite proof-template compiler](model_coded_core_compiler.md) now handles
 arbitrary internal free parameters by compiling the existing logical proof

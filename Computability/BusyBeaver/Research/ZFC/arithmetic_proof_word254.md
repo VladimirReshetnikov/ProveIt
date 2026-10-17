@@ -53,8 +53,10 @@ The fixed totality sentence says that every proof code has a unique output
 satisfying `compiledWordDef`. Arithmetic completeness is applied after
 establishing that sentence in every IΣ1 model. The standard-model theorem
 `compiledWord_nat_gate` identifies the validator gate with the existing
-natural checker; agreement of the entire raw word with the structural
-compiler is a separate subsequent adapter.
+natural checker. The subsequent [quotation and nonemptiness adapters](arithmetic_proof_word_adapters254.md)
+prove exact structural-compiler agreement on every ordinary quoted proof
+tree, including invalid trees, and the exact public zero/rejection
+equivalence at all internal proof codes.
 
 The [verification](results/arithmetic-proof-word254-verification.json) freshly
 checks both new modules and their audit, with twenty-eight axiom reports and
@@ -77,7 +79,7 @@ python -B Computability/BusyBeaver/Research/ZFC/check_arithmetic_proof_word254.p
   --output /outside/new-empty-proof-word-check
 ```
 
-The remaining obligations include full compiler agreement, accepted-proof
-execution, scheduler and binary-trace transport, and internal proof
+The remaining obligations include accepted-proof execution, scheduler and
+binary-trace transport, and internal proof
 transformations between C254 and ZFC. Unique totality alone establishes none
 of those comparisons and changes no machine state count.

@@ -1,0 +1,103 @@
+{
+  "status": "CLEAN independent mathematical/source review with exact replay identity audit",
+  "review_roles": {
+    "cstep": "BIC authored and compiled; root read entire initial source, final proof delta and full audit; child independently reviewed semantics.",
+    "rest_bridge": "Root authored draft; BIC independently reviewed, repaired only simplification and compiled; root reviewed final proof delta and complete source/audit."
+  },
+  "evidence": [
+    {
+      "path": "/tmp/zfc-command-step/run6/verification.json",
+      "sha256": "fed3f52ecfbed3fed1ad7793005d4cd15f1058ce8986a2862b6c27a32be4eab0",
+      "source_sha256": "ca0a9533e82d3de393459354269f49b756597b45305760fb284002eae1ea4d29",
+      "axiom_probes": 17,
+      "callers": 19,
+      "warnings": 0,
+      "root_rehashed_inputs": 38
+    },
+    {
+      "path": "/tmp/zfc-command-step-word/run3/verification.json",
+      "sha256": "dd550f60a3ddfa024ea6bd3349f7e1da05d448eb4433ad71d2e48f33a83d6cab",
+      "source_sha256": "f027ebdd4726d3dd98a49a3e10a5c86a9cd9331e3866131fc7358f2ee4658b1d",
+      "axiom_probes": 3,
+      "callers": 4,
+      "warnings": 0,
+      "root_rehashed_inputs": 46
+    }
+  ],
+  "findings": [],
+  "semantic_checks": [
+    "Working state P(t,P(s,P(d,h))); success shifts by1, output0 only means halt.",
+    "MP tests exact implication-code equality; failed MP preserves stack, sets top0, increments d and clears h. No checker positivity or predecessor condition.",
+    "DROP always pushes old top, copies h into top, retains h and increments d.",
+    "Only NIP with h1 halts; otherwise it pops literal Cantor stack projections and increments d.",
+    "AX retains both freshness gates, allows a=b and pushes all ten entries even when collision makes top0. The stack order matches actual Enum254.axStack.",
+    "Unbounded Sigma1 intermediate witnesses avoid spurious output-bound restrictions. All IOpen model elements are covered.",
+    "All-Nat agreement covers every actual Cmd and arbitrary rest/W, with explicit Foundation numeral dictionary conversion for NIP and AX.",
+    "Rest-pointer replacement preserves k,x,y,u for long commands; only unused y/u projections can change in short commands. Existing arithmetic discreteness supplies the complete short-tag cases."
+  ],
+  "proof_scope": {
+    "new_axioms": false,
+    "only_standard_axioms": true,
+    "all_internal_IOpen_inputs": true,
+    "external_finite_word_assumption": false,
+    "whole_word_execution": false,
+    "scheduler": false,
+    "PA_consistency_endpoint": false
+  },
+  "validation_scope": "Fresh cstep and bridge sources/audits checked in separate narrow runs. Cached project and external dependencies identified and reused. Current postcheck inputs and fresh objects independently rehashed by root.",
+  "additional_independent_review": {
+    "status": "CLEAN_READ_ONLY_MATHEMATICAL_AND_API_REVIEW",
+    "files": [
+      {
+        "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticCommandStep254.lean",
+        "snapshot": "/tmp/zfc-command-step-independent-review/snapshots/ArithmeticCommandStep254.lean",
+        "sha256": "ca0a9533e82d3de393459354269f49b756597b45305760fb284002eae1ea4d29",
+        "lines": 262
+      },
+      {
+        "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticCommandStepWord254.lean",
+        "snapshot": "/tmp/zfc-command-step-independent-review/snapshots/ArithmeticCommandStepWord254.lean",
+        "sha256": "f027ebdd4726d3dd98a49a3e10a5c86a9cd9331e3866131fc7358f2ee4658b1d",
+        "lines": 38
+      },
+      {
+        "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/arithmetic_command_step254_audit.lean",
+        "snapshot": "/tmp/zfc-command-step-independent-review/snapshots/arithmetic_command_step254_audit.lean",
+        "sha256": "3b13b808068d4d9c63e07fba3798ef06e06bb3edb6dad3aee8377738b6d5ef8d",
+        "lines": 72,
+        "probes": 17,
+        "callers": 19
+      },
+      {
+        "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/arithmetic_command_step_word254_audit.lean",
+        "snapshot": "/tmp/zfc-command-step-independent-review/snapshots/arithmetic_command_step_word254_audit.lean",
+        "sha256": "2268a25abe3cd77a1e0d81a64ad3a2ac0826c655ab3d03441daf6f328b397dbd",
+        "lines": 15,
+        "probes": 3,
+        "callers": 4
+      }
+    ],
+    "reviewer_build": false,
+    "issues": [],
+    "scope": "All internal IOpen model inputs for exact scalar command graph and rest-pointer independence; all-Nat adapter for every Cmd/rest/working state. No word execution, scheduler, accepted-proof or consistency endpoint."
+  },
+  "portable_checkers": {
+    "status": "PREPARED_NOT_BUILT",
+    "kernel_proofs_previously_checked_unchanged": true,
+    "root_reviewed_final_four_portability_guards": true,
+    "root_prepare_only_records": [
+      {
+        "path": "/tmp/zfc-command-step-maintained-preflight/verification.json",
+        "sha256": "69a0500dffd5449d38f4585891d3891d3d7338a9cb5f2fb3cd0ecaa2dcf33d21",
+        "checker_sha256": "f5ce4ab31bc43d9c8aa98f22e4e17317bf39be525acc18b37eb2f0446423b246",
+        "status": "PREPARED_NOT_BUILT"
+      },
+      {
+        "path": "/tmp/zfc-command-step-word-maintained-preflight/verification.json",
+        "sha256": "d746d859a5a6fbed25df6751a94873bdf5c56ca62ae2524390c7a9935a115010",
+        "checker_sha256": "04a0fabca060007b5ca61b0ec640c39596475c044a8236538d120be1d42e06d4",
+        "status": "PREPARED_NOT_BUILT"
+      }
+    ]
+  }
+}

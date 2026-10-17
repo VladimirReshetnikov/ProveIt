@@ -237,8 +237,8 @@ PA unique totality. The [compiler-block circuits](arithmetic_command_blocks254.m
 now represent all actual leaf, MP and GEN blocks using those operations,
 with symbolic equality to the existing command-list encoding on natural
 inputs. Their syntax and repetition counts are fixed external data; their
-numeric operands may be internal model elements. The compiler history
-remains the next step. The [internal word laws](arithmetic_command_word_laws254.md)
+numeric operands may be internal model elements.
+The [internal word laws](arithmetic_command_word_laws254.md)
 now prove exact replacement, right identity and associativity, without
 assuming an external finite-list interpretation of internal codes.
 
@@ -253,8 +253,25 @@ validity-conditional execution induction. The
 this MP/GEN validity inversion, including the actual child bounds and
 whole-tail GEN convention. The [word-history extension](arithmetic_proof_word254.md)
 now implements the unconditional row/history and final validator gate, with
-exact internal recurrence and PA-provable unique totality. Its full compiler
-agreement and execution contract remain to be proved.
+exact internal recurrence and PA-provable unique totality. The
+[quotation adapter](arithmetic_proof_word_adapters254.md) now proves agreement
+with the structural compiler on every ordinary finite quoted proof tree,
+including invalid trees. The accompanying all-internal nonemptiness theorem
+identifies empty public output exactly with rejection by the original
+validator. Its accepted-proof execution contract remains open.
+
+The [command-step graph](arithmetic_command_step254.md) now represents the
+exact MP, DROP, NIP and AX effects on every internal IOpen input, agrees with
+the actual `Enum254.cstep` on all ordinary inputs, and is invariant under
+rest-pointer replacement. Success is encoded as working-state code plus one;
+zero is reserved for a halting NIP. These facts supply the local command
+semantics needed for internal word execution and composition.
+The [internal iterator](arithmetic_command_run254.md) now has exact
+zero/successor and semigroup laws at every internal time. A pointwise Σ1
+induction proves that every shifted word halts or completes by the numerical
+bound given by its own code, with no bound on changing working registers.
+PA proves the resulting evaluator's unique totality. Its natural-executor
+adapter, append-execution law and accepted-proof contract remain open.
 
 The [numeric history-checker construction](code254_arithmetic_checker.md)
 specifies a concrete next adapter: represent the exact Cantor pairing and its
