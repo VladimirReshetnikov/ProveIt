@@ -43,9 +43,12 @@ The current arithmetic checkpoints are:
   has total, fixed arithmetic graphs with depth-sensitive variable labels.
   The [quantifier interface](../../../../Logic/Interpretability/ZFCinPA/validator_quantifier_core254.md)
   proves finite quantifier and vacuity laws, including a two-binder bridge
-  with four explicit vacuity premises. Environment/alpha induction and
-  source-proof translation remain open; arbitrary accepted proofs are not
-  assumed closed under variable renaming.
+  with four explicit vacuity premises. The [equality interface](../../../../Logic/Interpretability/ZFCinPA/validator_equality_core254.md)
+  supplies reflexivity, symmetry, transitivity and atomic congruence. The
+  [configurable environment encoder](../../../../Logic/Interpretability/ZFCinPA/validator_environment_labels254.md)
+  proves exact internal term, vector and formula SHIFT laws through nested
+  quantifiers. Opening, alpha equivalence and source-proof translation remain
+  open; arbitrary accepted proofs are not assumed closed under variable renaming.
 * [Both actual reads](arithmetic_control_read_template254.md) are checked on
   every internal register file with its scratch fields zero. They reach the
   actual dispatch control 38, retain the whole register file in their
@@ -55,7 +58,10 @@ The current arithmetic checkpoints are:
   arbitrary internal values. With both scratches zero, cache1 halts;
   otherwise NIP writes the two Cantor projections of WS to cache and WS,
   then returns to fetch. The AC2 dispatcher composition additionally clears
-  AC. DROP, MP and AX still need their complete actual-control contracts.
+  AC. The [pairing routines](arithmetic_control_pair254.md) now have terminating
+  all-internal contracts, including both actual DROP and MP occurrences and
+  whole-file preservation. DROP, MP and AX still need their complete
+  actual-control contracts.
 
 The remaining major steps are the reverse internal ZF-to-validator proof
 translation, the internal L-specific Separation/Replacement proofs, and the complete

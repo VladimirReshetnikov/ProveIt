@@ -2,12 +2,12 @@
 
 `ValidatorEnvironmentLabels254` gives fixed Sigma1 graphs and total arithmetic
 functions for internal free/bound environments and formula encoding. A missing
-free-variable entry uses label1. Prepending a label and taking the tail therefore
+free-variable entry uses label 1. Prepending a label and taking the tail therefore
 satisfy their exact lookup laws for every internal index, including out-of-range
 indices and the empty vector. Positivity and upper bounds have explicit premises.
 
 The represented encoder uses the HFS state [free,bound,fresh]. At a quantifier
-it pushes fresh onto the bound vector and increments fresh by2. Its raw equations
+it pushes fresh onto the bound vector and increments fresh by 2. Its raw equations
 allow arbitrary states and labels; no freshness or semantic correctness is inferred
 merely from these computations.
 
@@ -22,18 +22,18 @@ The equality holds through nested quantifiers. It does not rename a CProv proof
 or a bundled axiom. Opening a binder, paired-environment alpha equivalence, the
 source-proof compiler and encoded ZF axiom clients remain separate obligations.
 
-The source and focused audit passed39 named probes and28 callers, with only
+The source and focused audit passed 39 named probes and 28 callers, with only
 `propext`, `Classical.choice`, `Quot.sound` and zero warnings. Source checking took
-15.438seconds and the audit3.050seconds. The first source attempt failed at the
+15.438 seconds and the audit 3.050 seconds. The first source attempt failed at the
 empty-tail projection; adding `pi₂_zero` resolved it without changing limits.
 Both attempts and their exact source/driver snapshots are retained.
 
-The runner reuses the checked fixed encoder and its13 ancestors, four direct
-external source/object boundaries, and actual Init/Omega providers. All47 proof
+The runner reuses the checked fixed encoder and its 13 ancestors, four direct
+external source/object boundaries, and actual Init/Omega providers. All 47 proof
 inputs are rechecked. The source object is recorded before the audit and checked
 unchanged afterward. The available Foundation namespace mirror is not claimed
-independently attested in full. Each proof command uses one thread,4GiB, default
-options and a120-second bound; prerequisites are neither built nor downloaded.
+independently attested in full. Each proof command uses one thread, 4 GiB, default
+options and a 120-second bound; prerequisites are neither built nor downloaded.
 
 The portable guard changes only maintained source/audit defaults. Its default
 preparation performs no compiler or version call. The root reviewed the source,
