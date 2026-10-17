@@ -12,6 +12,10 @@ The later [constructor component](arithmetic_code254.md) implements fixed
 bounded graphs for all four base4 constructors and the rho1/tag3 payload
 branch, including exact all-natural compatibility. The full row selector,
 remaining branches and history graph are still open.
+The [fixed-template extension](arithmetic_templates254.md) now also implements
+rho2–8, the C and G components, and the full bundle, via a uniform finite-circuit
+graph compiler. Thus all eleven positive fixed-template graphs are checked.
+Their guarded row outputs, complete tag dispatch and history remain open.
 
 The Foundation gitlink is `32e1a0956a8622fad067328ca1959729a7634428`.
 The initial read-only plan recovered its source from the Git object database.
@@ -176,8 +180,9 @@ graph formulas would not suffice; the blueprint here is fixed once and for all.
 
 The Cantor arithmetic package with fixed Δ0 projection graphs and its
 standard-model compatibility lemma is now checked, as are the constructors
-and one axiom branch. Extend the fixed circuits and define the complete
-twelve-case row graph and one history blueprint. These are independent of Native/ZF/Choice
+and all positive fixed axiom templates. Define the complete twelve-case row
+graph, including rejection and both gates, and one history blueprint.
+These are independent of Native/ZF/Choice
 interpretations and do not require rebuilding their proof-code translations.
 
 The external checker-equivalence target is

@@ -107,6 +107,13 @@ actual numerical definitions on all natural inputs. Fresh checks of this module,
 Cantor and both audits pass56 axiom probes and47 callers. The remaining rule
 branches and history still require implementation; the core remains163 units.
 
+The [fixed-template extension](arithmetic_templates254.md) now covers rho2–8,
+both theory components and the complete original bundle. A reusable finite
+circuit compiler produces fixed bounded formulas and proves their correctness
+in every IOpen model. The three-module arithmetic chain passes97 axiom probes
+and83 callers. All positive template graphs are present; the gated twelve-case
+row function, history evaluation and internal proof/trace transport remain open.
+
 [Intake157/source50](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch157-canonical-term-certificates-for-the-full-calculus)
 adds exact quotation bounds and canonical constructor-only certificates for all
 twelve C254 rules, with both freshness gates and a fixed contradiction target.
