@@ -24,12 +24,14 @@ theorem Theorem182AtSharp.mono {c c' k : Nat} (h : Theorem182AtSharp c k) (hc : 
     Theorem182AtSharp c' k := fun delta N hδ hδ2 hN A hA hcard =>
   h delta N hδ hδ2 ((szemerediThresholdAt_mono hc hδ (by linarith)).trans hN) A hA hcard
 
-/-- **Theorem 18.2 with `L + 3` at every length `L ≤ 5`.** -/
-theorem theorem_18_2_L3_le_five {k : Nat} (hk : k ≤ 5) : Theorem182AtSharp 3 k := by
+/-- **Theorem 18.2 with `L + 3` at every length `L ≤ 5`**, from any degree-three base
+`EnvBound 3 62` (used at `L = 5`; the shorter lengths need none). -/
+theorem theorem_18_2_L3_le_five_of (h3 : EnvBound 3 62) {k : Nat} (hk : k ≤ 5) :
+    Theorem182AtSharp 3 k := by
   by_cases hk5 : k = 5
   · subst k
     exact theorem182AtSharp_of_envBound (L := 5) (μ := 62) (c := 3)
-      (by norm_num) envBound_three (by norm_num) (by norm_num) (by norm_num)
+      (by norm_num) h3 (by norm_num) (by norm_num) (by norm_num)
   intro delta N hδ hδhalf hN A hA hcard
   by_cases hk1 : k ≤ 1
   · have hNpos : (0 : Real) < N :=
@@ -59,5 +61,9 @@ theorem theorem_18_2_L3_le_five {k : Nat} (hk : k ≤ 5) : Theorem182AtSharp 3 k
   obtain ⟨a, d, hd, hmem⟩ := natural_four_term_explicit_tower delta N hδ hδhalf
     (hthreshold.trans hN) A hA hcard
   exact ⟨a, d, hd, fun i hi => hmem i (hi.trans_le hk4)⟩
+
+/-- **Theorem 18.2 with `L + 3` at every length `L ≤ 5`**, from the explicit base. -/
+theorem theorem_18_2_L3_le_five {k : Nat} (hk : k ≤ 5) : Theorem182AtSharp 3 k :=
+  theorem_18_2_L3_le_five_of envBound_three hk
 
 end LeanProofs.GowersSzemeredi
