@@ -91,3 +91,7 @@ import ZFCinPA.LStepAtomAudit
 import ZFCinPA.LStepEx
 import ZFCinPA.LStepExT
 import ZFCinPA.LStepExAudit
+import ZFCinPA.LIterate
+import ZFCinPA.LClosure
+import ZFCinPA.LFinalSep
+import ZFCinPA.LFinalSepAudit
