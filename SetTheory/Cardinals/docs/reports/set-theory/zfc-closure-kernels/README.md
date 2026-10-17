@@ -9,12 +9,13 @@ No merged PDF is built. These are ordinary mathematical arguments and finite
 regression checks. The deliveries confer no formal status; subsequent Lean
 results and their exact scope are listed below.
 
-The user's current machine target is an equivalence **provable in ZFC** between
+The user's machine target is an equivalence **provable in PA** between
 blank-tape non-halting and Con(ZFC), with fewer than 254 nonhalting states on a
-binary, two-way infinite, single tape. The initial sources discuss the stronger
-PA metatheory; later deliveries also address the ZFC target. Their missing
-proof compilers remain missing; changing our target
-does not turn their experiments into a formal equivalence proof.
+binary, two-way infinite, single tape. The maintained 252-state machine closes
+the external Lean comparison with Con(ZFC); its internal PA comparison remains
+open. Several deliveries instead discuss provability in ZFC. Those arguments
+are retained with their stated scope and do not relax the original PA request.
+This corrects the earlier description of the user's target as having changed.
 
 Batch 146 below supplies a countermodel to the entire intended raw
 C/G code calculus, including the variants behind the earlier 252/250/248
