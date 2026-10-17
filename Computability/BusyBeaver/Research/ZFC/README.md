@@ -996,3 +996,16 @@ Its measured complete control is299 working states after bounded sharing,
 before a ZFC-specific query and writer. The isolated171-state axiom emitter is
 a component count. This first complete control is larger than the existing
 runtime; it supplies a reproducible cost baseline for a different architecture.
+
+
+The [internal register-forward macro](arithmetic_register_forward_perm252.md)
+crosses one actual unary register block in exactly `value+2` internal steps,
+retaining both entire numeric tape halves. Three seek/probe pairs are tied to
+the frozen table. Its ten-report/twelve-caller fresh check passes with zero
+warnings; portable maintained preparation is recorded separately.
+
+The [MP dummy-push experiment](mp_dummy_push_partial_cost.md) removes one successful-MP
+helper occurrence while retaining the complete source calculus. Both tested
+raw compilers keep their original 281/341 state counts. The altered source
+has not yet been compiled through the optimized 252-state decoder; no new
+bound or lower bound follows from these partial cost controls.
