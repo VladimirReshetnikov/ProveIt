@@ -596,6 +596,27 @@ nonstandardly many free variables never need a nonstandard quantifier block.
   `K⟦s⟧ ↔ K` under it (two small generators by internal induction on `m` and
   on `K`); `relativize` commutes with the `∀^m` closure of `SchemaRecognizer`.
 
+**Progress (checked, standard axioms only).** The template toolkit
+(`LTemplate`: template theory with the full enlarged schemata, a universal
+axiom callback, `compileT`; `LPieces`; `LTransVal`: translated codes are `Σ₁`
+in the placeholder codes) and **every inductive step** are theorems of the
+template theory, over one six-placeholder language with the common conclusion
+`totS F₅ ⋏ reflS P₄ F₅`: `LStepAnd` (`⋏`), `LStepBasic` (`⋎`, negated atoms,
+`⊤`, `⊥`), `LStepAtom` (membership and equality atoms read through numeral
+placeholders), `LStepEx`/`LStepExT` (`∃`, `∀`, with the witness-bounding
+function obtained from Replacement and Separation in every template model).
+Two design refinements were forced on the way: `reflS` quantifies over
+environments on *earlier stages* (no finiteness argument is needed anywhere),
+and `EnvTransform`'s fixed pieces are embeddings of closed semisentences, so
+each template's definitional hypotheses translate to literal tautologies.
+
+**Remaining for `hSchema`**: (i) ω-iteration of a placeholder-defined class
+function (limit closure points are unbounded) and the final Separation and
+Replacement templates; (ii) the internal induction driver chaining the
+compiled templates at internal codes (definitional hypotheses as internal
+tautologies); (iii) the glue from `SchemaRecognizer` codes to
+`relativize`.
+
 Feeding `hSchema` into `ConstructibleInterpretation.provable_falsum_ZF_of_ZFC`
 and the result into the C254/ZF comparison then gives the Choice half of the
 PA endpoint.
