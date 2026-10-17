@@ -3,11 +3,10 @@
 Research inventory begun 16 October 2026 against
 `7b1e56dbc59f746695a7fb375546422f91de3a96`, updated with the explicitly linked
 Lean checks below. The full PA equivalence is still open. The represented
-checker and actual machine-run evaluator now have PA totality theorems,
-described near the end.
+checker and actual machine-run evaluator have PA totality theorems. The
+forward validator consistency implication is now also proved in IΣ₁ and PA.
 
-The original request requires an equivalence provable in **PA**. The stored
-goal record instead says ZFC; the original PA requirement remains our target.
+The request and active goal require an equivalence provable in **PA**.
 A Lean theorem comparing halting and `BProv` is an ordinary metatheorem until
 the intended arithmetic sentence and an object-theory proof are connected to
 it. Completing the PA version would also serve the ZFC requirement, after
@@ -18,7 +17,33 @@ Lean theorem for the literal 252-state machine: blank nonhalting iff Con(ZFC).
 It uses Choice in L and external first-order completeness. This discharges the
 external consistency comparison; it does not implement the represented proof
 translations or prove their correctness for every internal code in every PA
-model. Those obligations below remain.
+model. The remaining obligations are recorded below.
+
+The current arithmetic checkpoints are:
+
+* [Accepted-proof soundness](../../../../Logic/Interpretability/ZFCinPA/model_coded_decoder_accepted254.md)
+  sends every accepted internal numerical conclusion to an actual internal ZF
+  proof. It covers all twelve rows, both bundle gates and arbitrary
+  nonstandard proof codes, using Σ₁ order induction.
+* [The fixed forward sentences](../../../../Logic/Interpretability/ZFCinPA/validator_consistency_forward254.md)
+  have actual IΣ₁ and PA proofs:
+  `Con(ZF) → ¬∃code, value(code)=2` and
+  `Con(ZFC) → ¬∃code, value(code)=2`.
+  The all-internal soundness theorem supplies the model-wise premise before
+  arithmetic completeness is applied to these fixed sentences.
+* [Internal relative interpretation](internal_relativization_refresh.md)
+  now includes domain-side discharge and the function-free set-language
+  adapter. Actual interpreted-domain, nonemptiness and translated-axiom
+  proofs remain explicit.
+* [Both actual reads](arithmetic_control_read_template254.md) are checked on
+  every internal register file with its scratch fields zero. They reach the
+  actual dispatch control 38, retain the whole register file in their
+  endpoint, and give a positive internal logical runtime.
+
+The remaining major steps are the reverse internal ZF-to-validator proof
+translation, the L-specific ZFC-to-ZF axiom proofs, and the complete
+interpreter-to-Enum connection. The forward validator sentence alone does
+not yet imply the requested PA theorem about the literal binary machine.
 
 ## What is already available
 
