@@ -156,6 +156,14 @@ and equality with the blank evaluator, passing nineteen reports and twenty
 callers. The [arithmetic bootstrap theorem](arithmetic_bootstrap_perm252.md)
 transfers the checked 82,552-step prefix into every IΣ1 model and proves its
 fixed sentence in PA, passing eleven reports and thirteen callers.
+The [prefix-removal theorem](arithmetic_machine_prefix_perm252.md) now
+equates blank halting with halting from that exact bootstrap target in every
+IΣ1 model, passing four reports and six callers. The
+[internal tape-prefix algebra](arithmetic_tape_prefix254.md) and
+[actual binary scan](arithmetic_machine_scan_perm252.md) prove an unbounded
+endpoint for a literal table row at arbitrary internal lengths and entire
+tape halves. Their audits pass ten/ten and eight/eleven reports/callers.
+The complete internal register and dispatcher simulation remains open.
 
 The [finite proof-template compiler](model_coded_core_compiler.md) now handles
 arbitrary internal free parameters by compiling the existing logical proof

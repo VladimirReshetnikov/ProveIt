@@ -236,5 +236,69 @@
         ]
       }
     }
-  ]
+  ],
+  "late_portable_runner_review": {
+    "original_review": {
+      "path": "/tmp/zfc-arithmetic-bootstrap-publication/independent-runner-review.json",
+      "sha256": "ebacbc665977c98d0f02721d87a51345070636daa33278c39b03dd5a24c19739"
+    },
+    "review": {
+      "status": "CLEAN",
+      "scope": "Independent full source read of the portable Bootstrap guard, final exact-byte and provider review. No Lean source or audit run repeated; final portable records remain PREPARED_NOT_BUILT.",
+      "runner": {
+        "path": "/tmp/zfc-arithmetic-bootstrap-publication/check_arithmetic_bootstrap_perm252.py",
+        "sha256": "2ad9cfd27f7a2328495c4ff7483befe4e596863cdcf9eabc31e264a468fb3ccb"
+      },
+      "reviewed_preflights": [
+        {
+          "path": "/tmp/zfc-arithmetic-bootstrap-portable-maintained-prepared2/verification.json",
+          "sha256": "2969eea975d652fc476e02ddc2212515821cb5dcb163a08469fde141e492f7c9",
+          "status": "PREPARED_NOT_BUILT",
+          "hash_comparisons": 169,
+          "project_closure_count": 25,
+          "external_count": 5,
+          "toolchain_count": 1
+        },
+        {
+          "path": "/tmp/zfc-arithmetic-bootstrap-portable-full-record-prepared2/verification.json",
+          "sha256": "9251b5b125a5eff6fdb4b8cd0603313ed2bfcad2b5152cac8e7e0d29519b309f",
+          "status": "PREPARED_NOT_BUILT",
+          "hash_comparisons": 168,
+          "project_closure_count": 25,
+          "external_count": 5,
+          "toolchain_count": 1
+        }
+      ],
+      "original_checked_proof": {
+        "path": "/tmp/zfc-arithmetic-bootstrap/run4/verification.json",
+        "sha256": "a7e760c50478131c2b28771ca7d4e37f6c0b66c97b79b32c761f5fa5209ef3fa",
+        "named_axiom_probes": 11,
+        "callers": 13
+      },
+      "negative_controls": {
+        "path": "/tmp/zfc-arithmetic-bootstrap-publication/negative-controls.json",
+        "sha256": "d334a641fac387fc39790b8fa54c473b5c57c41020019066838ea28b8bfcc7af",
+        "scope": "Existing author controls examined, not independently rerun."
+      },
+      "hash_comparisons": 340,
+      "unique_hashed_paths": 134,
+      "checks": {
+        "omitted_from_published_summary": 340,
+        "full_data_in_hashed_original_review": true
+      },
+      "findings": [
+        "25 exact reused project modules are the 24-node arithmetic-machine provider closure plus the independently checked BootPerm252 object, all remapped to current repository sources.",
+        "Both compact-plus-full and direct full-record normalization are checked by final prepare-only records, not old-source reads.",
+        "Absoluteness is an explicitly new pinned source/object pair; it is not attributed to the machine-only record.",
+        "Four directly imported external providers plus the separately pinned transitive Seq provider are checked. First selected external and Omega objects, compiler, evidence, sources, snapshots, and helper/dependency manifest are captured before/after; fresh output ownership precedes record writes.",
+        "Frozen maintained default source/audit and ordered 11-probe/13-caller contract are enforced. A full run captures the new object immediately after source compilation and checks unchanged after audit.",
+        "Explicit Python -O rejection and nonempty-output guard are present. No dependency builds or downloads occur."
+      ],
+      "caveats": [
+        "The original proof run4 and the final portable guard are different driver bytes; portable preflights do not claim a fresh proof replay.",
+        "Existing dependency cache objects are identified and matched, not independently rebuilt or mathematically re-attested in this review.",
+        "This guard verifies a constant arithmetic bootstrap transport, not the complete internal binary-versus-enumerator refinement or PA consistency calibration."
+      ]
+    }
+  }
 }
