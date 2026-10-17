@@ -6,6 +6,13 @@ one-incoming-**action** ledger and the six excluded source guards from the
 independent phase analysis. The previously completed ledger selects exactly three recipes for this
 follow-up. The frozen table is unchanged.
 
+The [continued-mutant follow-up](continuation/README.md) now records literal
+100-million-move blank controls, complete startup-frame scans, and prepared
+examples that retain data in shifted fields and spares. It also identifies the
+stronger original-source relation `TW=p1+s1` at case8390. The original residual
+obstruction below concerns that original program, while the changed tables
+still need a new global interpretation and startup argument.
+
 ## Exact baseline and previous coverage
 
 The actual checked permutation252 old-label table has SHA256
