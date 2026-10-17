@@ -47,7 +47,7 @@ def main() -> None:
                         "Numeric254", "NamedNumeric254", "BootstrapFrame253", "Code254", "Code254Proof", "OutgoingProfile",
                         "Code254Containers", "ZipperRuns", "RegisterBoxes253", "Code254GIC",
                         "Code254Models", "NumericCode254", "RegisterMark253", "RegisterIncrement253",
-                        "Enum254", "Code254ProofCompiler", "QuotientSeparation", "QuotientPower", "QuotientReplacement",
+                        "Enum254", "Code254ProofCompiler", "Code254History", "QuotientSeparation", "QuotientPower", "QuotientReplacement",
                         "RegisterDecrement253", "QuotientBasic", "SingletonInfinity", "BreakSite253", "FiniteSets", "InductiveAttempts", "QuotientZF0",
                         "RMDag", "Dag254", "L2Lib254", "L2Macros254", "L2Control254", "L2Axioms254", "L2AxiomsEval254", "L2Root254", "RMEquiv", "RMEquiv254", "ProgramZF0", "DecodeFresh254", "NamedForm254",
                         "DuplicateProfiles", "WritingRuns", "ZeroSite253", "EqualityGIC", "QuotientCPGIC", "NativeDecoded254", "NativeTheory254",
