@@ -30,7 +30,7 @@ Choice and the external ZFC refutation comparison.
 proof-code and finite-trace bridge. The original PA request remains the target
 despite the later stored goal record saying ZFC.
 
-The latest [167-unit integration](results/binary-zfc252-integration-verification.json)
+The [167-unit integration](results/binary-zfc252-integration-verification.json)
 freshly checks both Choice/binary compositions and every affected consumer:
 seven modules, eighteen axiom reports and twelve callers, with 160 source- and
 object-matched previously checked imports. It extends the earlier
@@ -38,6 +38,14 @@ object-matched previously checked imports. It extends the earlier
 The final theorem retains no model, Choice, coverage or startup premise and
 uses only standard Lean axioms. The earlier checkpoints below document the
 steps leading to this result; their then-open Choice interfaces are now closed.
+
+The latest [168-unit integration](results/arithmetic-machine-perm252-integration-verification.json)
+adds the [exact numeric machine simulation](arithmetic_machine_perm252.md).
+Two natural-number tape halves agree with every cell of the actual blank run
+at every natural time, including the final halting write and move. The new
+module and umbrella pass fresh checks, with 166 source/object-matched imports
+reused; nineteen axiom probes and twenty-seven callers pass. Representing this
+run by a fixed arithmetic formula remains the next binary-side step.
 
 The complete binary endpoint passed a
 [153-unit source-verified integration](results/binary-perm252-integration-verification.json):
@@ -138,7 +146,7 @@ parameter-free bounded formulas work in every IOpen model and agree with the
 actual numerical definitions on all natural inputs. Fresh checks of this module,
 Cantor and both audits pass56 axiom probes and47 callers. The following extension
 adds the other positive templates. These arithmetic modules use separate
-Foundation/Mathlib dependencies and are outside the 167-unit core runner.
+Foundation/Mathlib dependencies and are outside the Std-only core runner.
 
 The [fixed-template extension](arithmetic_templates254.md) now covers rho2–8,
 both theory components and the complete original bundle. A reusable finite
@@ -437,6 +445,7 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `RawPSCModel.lean` | Raw PSC model indexed by `EqualityFreeForm`: named definable instances supply cover/Separation/Union, semantic saturation and purity-cut resources; guarded hull transfer retains explicit local-bound and invariance hypotheses. |
 | `Table253.lean` | Attributed literal mira-emmy 253-state table and actual first 1,024 blank-tape steps, checked by kernel reduction. |
 | `FiniteZipper.lean` | Generic zero-exterior tape representation; one-step and balanced-block simulation to the existing Core semantics, every integer tape read and earlier activity from an active endpoint. |
+| `ArithmeticMachinePerm252.lean` | Exact two-natural tape representation and all-time simulation of the actual Core blank run, with halting write/move and invalid state behavior explicit. Includes the frozen252 table binding; fixed first-order arithmetic run graphs remain separate. |
 | `Boot253.lean` | Full312,975-step actual blank bootstrap of the attributed253 table, state33/head−17 and complete tape frame including158 spare blocks; arbitrary runtime and consistency bridge remain open. |
 | `Table252.lean` | Literal experimental table, 252-state/504-row bounds, both halt edges and the normalized row, checked by kernel `decide`. |
 | `FormulaRPN.lean` | Three-constructor NAND formula syntax; exact prefix-token parsing in both directions; De Bruijn scope check and a closed semantic contradiction. |
@@ -532,7 +541,7 @@ Rebuild the dependency closure **serially from source**:
 uv run --no-project python Computability/BusyBeaver/Research/ZFC/check_lean.py
 ```
 
-This compiles 167 source units: first-order logic, set-theory dependencies,
+This compiles 168 source units: first-order logic, set-theory dependencies,
 `BusyBeaver.Core`, the research modules and the umbrella into a
 fresh scratch directory, without shared oleans or Lake's
 worker pool. [results/lean-verification.json](results/lean-verification.json)
@@ -778,13 +787,14 @@ without a new state bound or binary simulation theorem.
 
 ## Next proof and compiler work
 
-1. Represent the exact proof checker, proof-data compiler and finite binary
-   traces inside PA, and prove the required arithmetic comparison. The external
-   Lean nonhalting iff Con(ZFC) theorem does not settle this stronger requirement.
+1. Represent the proof-data translations and finite binary runs inside PA,
+   building on the represented checker and exact numeric machine simulation.
+   Prove the required arithmetic comparison; the external Lean nonhalting iff
+   Con(ZFC) theorem does not settle this stronger requirement.
 2. Continue minimizing complete machines. Alternative and artificial calculi
    remain eligible once their consistency comparison is justified; preserve
    the complete252 machine as the current implementation baseline.
-4. Preserve the finite-sort countermodel when evaluating reduced logical
+3. Preserve the finite-sort countermodel when evaluating reduced logical
    engines. A smaller compiled table without a sound consistency calibration
    does not establish the requested record.
 

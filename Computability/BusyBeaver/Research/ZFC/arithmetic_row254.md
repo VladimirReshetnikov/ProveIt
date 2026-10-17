@@ -43,7 +43,7 @@ The source emitted no warnings; only `propext`, `Classical.choice` and
 `Quot.sound` occur. The [independent review](results/arithmetic-row254-review.json)
 records the exact source and remaining boundaries.
 
-This is a separate Foundation/Mathlib lane, outside the 167-unit Std-only
+This is a separate Foundation/Mathlib lane, outside the Std-only
 runner. The maintained checker verifies the source and recorded object hashes
 of the twelve reused core dependencies, including the actual
 `Code254Proof` and `Code254History`; it neither builds nor downloads dependency

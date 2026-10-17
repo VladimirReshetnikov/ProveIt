@@ -117,6 +117,7 @@ import BusyBeaver.ZFC.DirtyProgram254
 import BusyBeaver.ZFC.WellFoundedPart
 import BusyBeaver.ZFC.SeedInvariant254
 import BusyBeaver.ZFC.TablePerm252
+import BusyBeaver.ZFC.ArithmeticMachinePerm252
 import BusyBeaver.ZFC.BootPerm252
 import BusyBeaver.ZFC.RegisterBoxesPerm252
 import BusyBeaver.ZFC.RegisterMarkPerm252

@@ -262,6 +262,14 @@ The fixed `totalitySentence` also has actual IΣ1 and PA derivations. This close
 checker representation and totality; internally coded proof and machine-trace
 translations remain open.
 
+The [numeric binary-machine adapter](arithmetic_machine_perm252.md) now gives
+an exact two-natural tape simulation of the frozen 252-state table. Its
+`numericRun_sound` theorem constrains the entire actual tape and head at every
+natural time; state zero is equivalent to actual halting, with the final write
+and move retained. This Std-only checkpoint closes the ordinary finite-data
+machine adapter. Its fixed arithmetic step/run graphs and correctness over
+all internal times still need the separate arithmetic representation layer.
+
 Intake157's [canonical term certificates](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch157-canonical-term-certificates-for-the-full-calculus)
 provide ordinary exact checker reductions and constructor-only derivations.
 Their small-witness and forward-equation arguments can guide internal sequence

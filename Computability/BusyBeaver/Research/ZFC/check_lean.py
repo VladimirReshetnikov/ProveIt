@@ -53,7 +53,7 @@ def main() -> None:
                         "DuplicateProfiles", "WritingRuns", "ZeroSite253", "EqualityGIC", "QuotientCPGIC", "NativeDecoded254", "NativeTheory254",
                         "EnumSafeStart254", "EnumStackBarrier254", "EnumStackCount254", "DirtyReset254", "DirtyRoot254", "DirtyProgram254", "WellFoundedPart", "SeedInvariant254", "RMBisim", "ActualTree254", "Bisim254", "NamedZF", "InternalOrd", "InternalRank", "ZFRank", "ZFNative", "WFRelativization", "WFModel", "WFTheory",
                         "TransRec", "ConstructibleDef", "Constructible", "ConstructibleReflect", "ConstructibleZF", "SatSupport", "ConstructibleAbs", "InternalWO", "OrderRec", "CodeOrder", "TupleOrder", "ConstructibleOrder", "ConstructibleChoice", "Endpoint254",
-                        "TablePerm252", "BootPerm252", "RegisterBoxesPerm252", "RegisterMarkPerm252",
+                        "TablePerm252", "ArithmeticMachinePerm252", "BootPerm252", "RegisterBoxesPerm252", "RegisterMarkPerm252",
                         "RegisterIncrementPerm252", "RegisterDecrementPerm252",
                         "Permutation252Frame", "BootstrapFramePerm252", "SymbolicPerm252", "SitePerm252",
                         "RegisterPathClean", "Permutation252Simulation", "InstructionPerm252",

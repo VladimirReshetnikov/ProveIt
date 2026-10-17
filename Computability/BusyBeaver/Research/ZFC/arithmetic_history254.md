@@ -57,7 +57,7 @@ internal iteration, all-input comparison, arithmetic totality sentence and
 runner. Verification records the exact source and cached-object identities;
 the only permitted Lean axioms are `propext`, `Classical.choice` and `Quot.sound`.
 
-This is the separate Foundation/Mathlib lane, outside the 167-unit Std-only
+This is the separate Foundation/Mathlib lane, outside the Std-only
 runner. Use the same pinned, already built dependencies and matching core cache
 as the preceding arithmetic adapters:
 
