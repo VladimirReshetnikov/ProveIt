@@ -1320,3 +1320,11 @@ iteration of free-variable shift on p. Arbitrary internal formula codes and
 free parameters are retained; six axiom probes and nine callers pass with
 standard axioms and zero warnings. This is the cancellation step for a proposed
 open-predicate template compiler. That compiler and Collection remain separate.
+
+The [finite-buffer proof-template compiler](../../../../Logic/Interpretability/ZFCinPA/buffered-template-proof-compiler.md)
+now passes seven axiom probes and nine callers with standard axioms and zero
+warnings. It handles both universal introduction and explicit SHIFT with an
+externally finite buffer, then cancels that buffer at a closed source conclusion.
+The interface admits arbitrary internal free parameters and actual axiom-proof
+callbacks. Concrete predicate-family laws and Collection callbacks remain to
+be instantiated; no internal ZFC comparison is inferred from this interface.
