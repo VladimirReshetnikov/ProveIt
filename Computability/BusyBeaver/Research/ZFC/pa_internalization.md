@@ -508,9 +508,47 @@ is now **checked** (standard axioms only), in
 **Remaining for the Choice transport in PA** (this lane, next): `hSchema`.
 An internal schema code is `∀^m (Fval K)` for an internal (possibly
 nonstandard) core `K` (`SchemaClosure.SchemaRecognizer`), so no finite
-template set covers it. The plan is a represented proof generator: by
-internal formula induction on `K`, produce an internal `𝗭𝗙`-derivation of
-the relativized instance from fixed templates (Lévy reflection for `L`:
-closure of `L` under the Gödel operations, absoluteness of `Δ₀` parts, and
-the reflection step at each quantifier). Feeding the result into the
-C254/ZF comparison then gives the Choice half of the PA endpoint.
+template set covers it: `L ⊨ Sep_K` is *not* a theorem of `ZF(P)` for an
+arbitrary predicate `P`, and needs an argument by internal induction on `K`.
+
+### Design of the `hSchema` generator (Claude lane)
+
+The invariant avoids relativization to `L_β`, diagonal intersections and
+parameter guards by putting ZF's *own* satisfaction relation for set-sized
+structures (`InternalSatTotality.SatIn`, whose Tarski clauses
+`satIn_memAtom` … `satIn_ex` hold semantically in every model of ZF for every
+code) into the induction, and by reading every variable from one assignment
+`s : ω → L_β` (`applyV`, `econs`), so that internal formulas with
+nonstandardly many free variables never need a nonstandard quantifier block.
+
+* `K⟦s⟧_d`: a represented transform (one `UformulaRec1` construction with the
+  depth `d` as its changing parameter) replacing bound `#k` by `s(k)` and free
+  `&i` by `s(d+i)`, each quantifier becoming a quantifier over `econs y s`;
+  atoms read entries through ZF numerals (Codex's numeral code builders).
+  `P_K(s) := (K^L)⟦s⟧_0`.
+* `D_K`: a represented class of ordinals (code builder over `K`):
+  limits for atoms, `D₁ ∩ D₂` for `⋏`/`⋎`, and `D' ∩ W(P')` for `∃`/`∀`,
+  where `W(P')` is the witness-reflection class of the matrix.
+* **Invariant** `Θ(K)`: `ZF ⊢ ∃c ∈ Fml. Club(D_K) ∧
+  ∀β ∈ D_K ∀s (env on L_β) (P_K(s) ↔ SatIn(L_β, c, s))`, together with the
+  locality law `s, s'` agree below `N` → `P_K(s) ↔ P_K(s')` that the
+  witness-closure argument needs.
+* Each inductive step is **one fixed template** over `ℒₛₑₜ` with placeholders
+  for the component predicates (`P'`, `D'`, numerals), proved semantically
+  from `SatIn`'s Tarski clauses and the constructible hierarchy of
+  `BusyBeaver.ZFC` in every template structure, and compiled at the internal
+  components by Codex's `OpenSetTemplateCompiler.compileOpenTemplate` (the
+  `CollectionTemplate254`/`CompiledCollection254` pattern). The internal
+  induction on `K` then only chains `Derivable` facts (Σ₁ induction on
+  `IsUFormula`).
+* **Final templates**: `Sep^L(P)` from `Θ` (choose `β ∈ D_K` above `a` and
+  the parameters: the separated set is `{x ∈ a | SatIn(L_β, c, x::s)}`,
+  definable over `L_β`, hence in `L_{β+1}`); `Repl^L(P)` from `Sep^L` and the
+  `P`-independent `Coll^L` template.
+* **Glue**: the assignment `s` with `s(i) = &i` (`i < m`) exists in ZF, and
+  `K⟦s⟧ ↔ K` under it (two small generators by internal induction on `m` and
+  on `K`); `relativize` commutes with the `∀^m` closure of `SchemaRecognizer`.
+
+Feeding `hSchema` into `ConstructibleInterpretation.provable_falsum_ZF_of_ZFC`
+and the result into the C254/ZF comparison then gives the Choice half of the
+PA endpoint.
