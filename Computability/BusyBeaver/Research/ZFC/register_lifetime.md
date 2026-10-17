@@ -167,3 +167,12 @@ uv run --no-project python Computability/BusyBeaver/Research/ZFC/register_lifeti
   --scratch /tmp/zfc-register-lifetime-replay \
   --output /tmp/zfc-register-lifetime-replay/results.json
 ```
+## Batch155 comparison
+
+Source46 in `SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels`
+uses future zero-register markers as temporary initializer counter bits and
+restores them before dispatch. Its complete299/300-state controls are reproduced;
+this lifetime reuse occurs during initialization and does not contradict the
+nine-live-interface observation above. Source45's22/24-control name transports
+are separate calculus interfaces whose complete backend costs remain unmeasured.
+

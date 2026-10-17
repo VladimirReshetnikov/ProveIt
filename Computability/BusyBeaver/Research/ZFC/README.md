@@ -202,6 +202,20 @@ unexpanded. These reports supply no strict EPSC1 consistency separation or
 new closed binary endpoint. Their preserved evidence and offline recovery are
 in the host's batch154 appendix and `code/reproduce_154.py`.
 
+Batch155 adds sources42–46 from `fab89c5d26` (placement `799bcd094d`,
+reconciliation `ed2953a68c`) to the
+[same host](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch155-dirty-stack-barrier-nine-function-kernels-and-transport-controls).
+The useful new initialization idea is an ordinary enumeration-order barrier
+that shields arbitrary old stacks at PL=NP=D=0. It calibrates the older
+unpermuted runtime252 table by a separate huge accelerated bootstrap; its four
+checked Lean components do not yet prove the actual-enumerator theorem.
+Finite nine-function kernels, unary BU deduction/support obstructions and
+22/24-control name transports are new compiler inputs. Complete measured
+265/271/299/300 controls do not beat the current252. All executable suites and
+bounded searches reproduce, with exact limits in the five dossiers and offline
+`code/reproduce_155.py`. The current closed permutation252/Con(ZF) endpoint
+remains distinct; Choice removal and internal PA proof remain open.
+
 [subset_only.md](subset_only.md) proves, at the mathematical level, that
 the membership arm can be removed from source 02's mixed local bound.
 A positive singleton-decoder hull covers the root's members without

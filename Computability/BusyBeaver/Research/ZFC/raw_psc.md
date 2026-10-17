@@ -349,3 +349,15 @@ theorem. The EPSC1 consistency question remains open to other interpretations;
 source26's EPSC1 plus adjunction/observational Pairing comparison is unchanged.
 Full proof, finite truncations that explicitly fail EPSC1, and review are in
 `SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-153-source-36.md`.
+# Batch155 finite and unary refinements
+
+Sources42/44 in `SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels`
+package full equality-free EPSC into finite assignment/class kernels with nine
+proper functions, retaining native or explicit equality for the auxiliary
+language. Their ordinary consistency arguments and ideal ground-search proofs
+are not yet Lean interpretations or small binary implementations. Source46
+proves raw deductive EPSC1+exact BinaryUnion ↔ EPSC1+profile adjunction ↔ full
+EPSC by one-parameter singletons, raw Union and observational tuple coding.
+Its fixed-dimensional support obstruction leaves invariant interpretations and
+the consistency strength of bare EPSC1 open. These refine the earlier theory
+interfaces without completing the full formal interpretation discussed above.

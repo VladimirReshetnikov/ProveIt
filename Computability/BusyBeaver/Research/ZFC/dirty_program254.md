@@ -108,3 +108,16 @@ Commands, exact caller source and audited axiom sets are recorded in
 source-verified 93-module dependency cache and compiled only the three new
 modules; it did not rerun the large blank bootstrap. The preserved intake
 reports and their evidence remain unchanged.
+# Later ordinary barrier from source42
+
+Batch155 source42 proves an additional sound-start family at exact
+PL=NP=D=0 with arbitrary TW, WS and cache, by injecting every marked NIP
+occurrence into an earlier DROP occurrence in the actual candidate order.
+This shields the old stack with a witnessed prefix of derived formulas even
+when that old stack contains the falsity code. The existing safe-start theorem
+above assumes its own formula/stack invariant; arbitrary-state completeness
+alone does not prove this stronger soundness statement. The report's four
+standalone Lean components leave actual-enumerator composition ordinary.
+See `SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-155-source-42.md`.
+Its huge accelerated bootstrap concerns the older unpermuted runtime252 table,
+not the current checked permutation252 table.
