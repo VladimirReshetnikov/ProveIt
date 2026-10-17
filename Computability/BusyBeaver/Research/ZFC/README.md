@@ -1345,3 +1345,13 @@ including free parameters, with no shift-fixedness condition. The two unchanged
 precursor modules, new client, and eight-probe/eight-caller audit pass with
 standard axioms. Two harmless style warnings are recorded. Actual target
 axiom-proof callbacks remain explicit; Collection and numerical G are separate.
+
+`ArithmeticControlSimulation254.lean` and
+[arithmetic_control_simulation254.md](arithmetic_control_simulation254.md) close
+the concrete local step/halt obligations for the represented numbered control
+program. In every `IΣ1` model, a valid `Related` frame reaches the exact live
+successor or actual binary halt after a positive internal clock. Invalid
+control0 is excluded and all physical-selector/source cases are calibrated.
+The focused check passed ten probes and ten callers with zero warnings, using
+84 matched project providers. Represented iteration, blank-entry composition
+and the internal L2/Enum connection remain separate obligations.
