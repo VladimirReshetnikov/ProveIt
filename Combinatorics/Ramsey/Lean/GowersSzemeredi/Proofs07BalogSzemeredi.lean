@@ -532,11 +532,7 @@ private lemma quadWitnesses_card_lower {G : Type*} [DecidableEq G]
           (Finset.mem_filter.mp (Finset.mem_filter.mp hbv).2).2
       rw [pow_two]
       exact mul_le_mul hru hrv (by positivity) (by positivity)
-    _ = _ := by
-      apply Finset.sum_congr rfl
-      intro b _
-      rw [Finset.card_product]
-      norm_cast
+    _ = _ := by norm_num
 
 private lemma fourReps_card_lower_of_good {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (c delta : Real)
@@ -760,10 +756,7 @@ private lemma eightReps_card_lower_of_core {G : Type*} [DecidableEq G]
   have hR0 : 0 ≤ R ^ 2 := sq_nonneg _
   have hKW : (3 : Real) / 5 *
         ((2 : Real) ^ (-(1 : Real) / 2) * delta ^ 6 * A.card) ≤
-      (W.card : Real) := by
-    calc
-      _ ≤ (3 : Real) / 5 * K.card := by gcongr
-      _ ≤ W.card := hW
+      (W.card : Real) := by linarith
   have hscale := mul_le_mul_of_nonneg_right hKW hR0
   have hoct := octWitnesses_card_lower A c delta hc V K i j
   have hmap : (octWitnesses A c delta V K i j).card ≤
@@ -841,9 +834,7 @@ theorem proposition_7_3_group_holds {G : Type*} [DecidableEq G]
     exact (div_le_div_of_nonneg_right hKstrong (by norm_num)).trans hLcard
   have hhalf : (1 / 2 : Real) ≤ (2 : Real) ^ (-(1 : Real) / 2) := by
     calc
-      (1 / 2 : Real) = (2 : Real) ^ (-1 : Real) := by
-        rw [Real.rpow_neg (by norm_num), Real.rpow_one]
-        norm_num
+      (1 / 2 : Real) = (2 : Real) ^ (-1 : Real) := by linarith
       _ ≤ (2 : Real) ^ (-(1 : Real) / 2) := by
         apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
         norm_num

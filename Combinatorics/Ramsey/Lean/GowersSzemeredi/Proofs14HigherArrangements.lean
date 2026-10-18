@@ -574,11 +574,7 @@ private lemma cor147_phase_norm_sq_sum_le {N k : Nat} [NeZero N]
       gcongr
       exact cor147_phase_norm_le B phi h u x
     _ = (N : Real) * ((N : Real) ^ k) ^ 2 := by simp
-    _ = (N : Real) ^ (2 * k + 1) := by
-      rw [← pow_mul]
-      have hmul : k * 2 = 2 * k := by omega
-      rw [hmul, pow_succ]
-      ring
+    _ = (N : Real) ^ (2 * k + 1) := by ring
 
 private lemma cor147_second_moment_le {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N) :
@@ -607,10 +603,7 @@ private lemma cor147_second_moment_le {N k : Nat} [NeZero N]
           (N : Real) ^ k *
               ((N : Real) ^ 1 *
                 ((N : Real) ^ 1 * (N : Real) ^ (2 * k + 1))) =
-            (N : Real) ^ (3 * k + 3) := by
-        rw [← pow_add, ← pow_add, ← pow_add]
-        congr 1
-        omega
+            (N : Real) ^ (3 * k + 3) := by ring
       simpa only [pow_one] using hcombine
 
 private lemma cor147_interpolation {X : Type*} [Fintype X]
@@ -621,10 +614,7 @@ private lemma cor147_interpolation {X : Type*} [Fintype X]
     (s := (Finset.univ : Finset X)) (p := (7 : Real)) (by norm_num)
     (fun i ↦ a i ^ 2) (fun i ↦ a i ^ 2)
     (fun i ↦ sq_nonneg (a i)) (fun i ↦ sq_nonneg (a i))
-  have hfour : (∑ i, a i ^ 2 * a i ^ 2) = ∑ i, a i ^ 4 := by
-    apply Finset.sum_congr rfl
-    intro i _
-    ring
+  have hfour : (∑ i, a i ^ 2 * a i ^ 2) = ∑ i, a i ^ 4 := by ring
   rw [hfour] at h
   norm_num [Real.rpow_natCast] at h
   ring_nf at h
@@ -702,18 +692,12 @@ theorem lemma_14_7_holds : lemma_14_7 := by
   have hS4lower : theta * (N : Real) ^ (5 * k + 5) ≤ S4 := by
     calc
       theta * (N : Real) ^ (5 * k + 5) =
-          (N : Real) ^ 2 * (theta * (N : Real) ^ (5 * k + 3)) := by
-        rw [show 5 * k + 5 = 2 + (5 * k + 3) by omega, pow_add]
-        ring
+          (N : Real) ^ 2 * (theta * (N : Real) ^ (5 * k + 3)) := by ring
       _ ≤ (N : Real) ^ 2 * respectedGeneralArrangementCount 2 B phi :=
         mul_le_mul_of_nonneg_left hpairs (by positivity)
       _ = S4 := hS4eq.symm
-  have hS2nonneg : 0 ≤ S2 := by
-    dsimp only [S2]
-    positivity
-  have hS16nonneg : 0 ≤ S16 := by
-    dsimp only [S16]
-    positivity
+  have hS2nonneg : 0 ≤ S2 := by positivity
+  have hS16nonneg : 0 ≤ S16 := by positivity
   have hmain :
       (theta * (N : Real) ^ (5 * k + 5)) ^ 7 ≤
         ((N : Real) ^ (3 * k + 3)) ^ 6 * S16 := by
@@ -721,9 +705,7 @@ theorem lemma_14_7_holds : lemma_14_7 := by
       (theta * (N : Real) ^ (5 * k + 5)) ^ 7 ≤ S4 ^ 7 :=
         pow_le_pow_left₀ (by positivity) hS4lower 7
       _ ≤ S2 ^ 6 * S16 := hinterpolation
-      _ ≤ ((N : Real) ^ (3 * k + 3)) ^ 6 * S16 := by
-        exact mul_le_mul_of_nonneg_right
-          (pow_le_pow_left₀ hS2nonneg hS2 6) hS16nonneg
+      _ ≤ ((N : Real) ^ (3 * k + 3)) ^ 6 * S16 := by gcongr
   have hfactor : 0 < (N : Real) ^ (18 * k + 20) := pow_pos hN _
   apply le_of_mul_le_mul_right ?_ hfactor
   have hlowerPower :
@@ -732,10 +714,7 @@ theorem lemma_14_7_holds : lemma_14_7 := by
         (theta * (N : Real) ^ (5 * k + 5)) ^ 7 := by
     have hcombine :
         (N : Real) ^ (17 * k + 15) * (N : Real) ^ (18 * k + 20) =
-          (N : Real) ^ ((5 * k + 5) * 7) := by
-      rw [← pow_add]
-      congr 1
-      omega
+          (N : Real) ^ ((5 * k + 5) * 7) := by ring
     calc
       (theta ^ 7 * (N : Real) ^ (17 * k + 15)) *
           (N : Real) ^ (18 * k + 20) =
@@ -751,10 +730,7 @@ theorem lemma_14_7_holds : lemma_14_7 := by
           (N : Real) ^ (18 * k + 20) := by
     have hcombine :
         (N : Real) ^ ((3 * k + 3) * 6) * (N : Real) ^ 2 =
-          (N : Real) ^ (18 * k + 20) := by
-      rw [← pow_add]
-      congr 1
-      omega
+          (N : Real) ^ (18 * k + 20) := by ring
     calc
       ((N : Real) ^ (3 * k + 3)) ^ 6 * S16 =
           (N : Real) ^ ((3 * k + 3) * 6) *

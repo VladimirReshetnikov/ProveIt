@@ -129,9 +129,7 @@ private lemma exists_balancedChunk_for_quotient {c m t : Nat}
         calc
           n * m + b = (b + (n - b)) * m + b := by rw [Nat.add_sub_of_le hbn]
           _ = b * m + (n - b) * m + b := by rw [Nat.add_mul]
-          _ = b * (m + 1) + (n - b) * m := by
-            rw [Nat.mul_add, Nat.mul_one]
-            omega
+          _ = b * (m + 1) + (n - b) * m := by linarith
       dsimp only [u]
       omega
     let j : Fin n := ⟨b + u / m, by
@@ -144,9 +142,7 @@ private lemma exists_balancedChunk_for_quotient {c m t : Nat}
       exact Nat.mod_lt _ hm
     · rw [balancedChunkStart_of_ge hbj]
       change t = (b + u / m) * m + b + u % m
-      have htu : t = b * (m + 1) + u := by
-        dsimp only [u]
-        omega
+      have htu : t = b * (m + 1) + u := by omega
       have hmod : u = u % m + m * (u / m) := (Nat.mod_add_div u m).symm
       calc
         t = b * (m + 1) + u := htu
@@ -865,9 +861,7 @@ def cor711Exponent (alpha : Real) (q : Nat) : Real :=
   (2 : Real) ^ (-(14 : Real)) * alpha ^ 2 * (q : Real)⁻¹
 
 private lemma two_rpow_neg_fourteen :
-    (2 : Real) ^ (-(14 : Real)) = 1 / 16384 := by
-  rw [Real.rpow_neg (by norm_num : (0 : Real) <= 2)]
-  norm_num
+    (2 : Real) ^ (-(14 : Real)) = 1 / 16384 := by linarith
 
 private lemma cor711Exponent_pos {q : Nat} {alpha : Real}
     (hq : 0 < q) (halpha : 0 < alpha) : 0 < cor711Exponent alpha q := by

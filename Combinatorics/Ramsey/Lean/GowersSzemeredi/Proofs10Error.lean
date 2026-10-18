@@ -246,9 +246,7 @@ private lemma restrictedPair_ite_eq_sum {N : Nat} {X : Type*}
     let d0 : ZMod N := D.index u - D.index x
     have hd0 : d0 ∈ B := hrel.2
     rw [Finset.sum_eq_single d0]
-    · have hu : D.index u = D.index x + d0 := by
-        dsimp only [d0]
-        abel
+    · have hu : D.index u = D.index x + d0 := by ring
       have hv : D.index v = D.index y + d0 := by
         dsimp only [d0]
         linear_combination hrel.1.symm
@@ -338,18 +336,12 @@ private lemma restrictedWeight_le_four_of_large {N : Nat} [NeZero N]
     (domainRestrictedDifferenceWeight D B u v : Real) ≤
       4 * domainRestrictedDifferenceWeight D B x y := by
   let L : Real := eta * alpha ^ 2 * M
-  have hL : 0 ≤ L := by
-    dsimp only [L]
-    positivity
+  have hL : 0 ≤ L := by positivity
   have hsigmaM : sigma * (M : Real) ≤ L := by
     dsimp only [L]
     exact mul_le_mul_of_nonneg_right hsigma (by positivity)
-  have hxlargeL : 5 * L ≤ (D.fibre (D.index x)).card := by
-    dsimp only [L]
-    simpa only [mul_assoc] using hxlarge
-  have hylargeL : 5 * L ≤ (D.fibre (D.index y)).card := by
-    dsimp only [L]
-    simpa only [mul_assoc] using hylarge
+  have hxlargeL : 5 * L ≤ (D.fibre (D.index x)).card := by linarith
+  have hylargeL : 5 * L ≤ (D.fibre (D.index y)).card := by linarith
   let d0 : ZMod N := D.index u - D.index x
   have hd0 : d0 ∈ B := hrel.2
   have hvIndex : D.index v - D.index y = d0 := hrel.1.symm
@@ -371,9 +363,7 @@ private lemma restrictedWeight_le_four_of_large {N : Nat} [NeZero N]
       have hyShift :
           |Ay - (D.fibre (D.index y)).card| ≤ L := by
         exact (hinvariant (D.index y) d hd).trans hsigmaM
-      have huxIndex : D.index u + d = (D.index x + d) + d0 := by
-        dsimp only [d0]
-        abel
+      have huxIndex : D.index u + d = (D.index x + d) + d0 := by ring
       have hvyIndex : D.index v + d = (D.index y + d) + d0 := by
         rw [show D.index v = D.index y + d0 by
           dsimp only [d0] at hvIndex ⊢
@@ -508,13 +498,9 @@ private lemma large_reverse_inv_sum_le_four {N : Nat} [NeZero N]
     have huvPosNat := restrictedWeight_pos_of_pair D B u v xy.1 xy.2 hrev
     have hxyPos : (0 : Real) < domainRestrictedDifferenceWeight D B xy.1 xy.2 := by
       exact_mod_cast hxyPosNat
-    have huvPos : (0 : Real) < buv := by
-      dsimp only [buv]
-      exact_mod_cast huvPosNat
+    have huvPos : (0 : Real) < buv := by positivity
     have hcross : (1 : Real) * (buv : Real) ≤
-        4 * domainRestrictedDifferenceWeight D B xy.1 xy.2 := by
-      dsimp only [buv]
-      simpa only [one_mul] using hcomp
+        4 * domainRestrictedDifferenceWeight D B xy.1 xy.2 := by linarith
     simp only [inv_eq_one_div]
     simpa only [div_eq_mul_inv, one_mul] using
       (div_le_div_iff₀ hxyPos huvPos).2 hcross
@@ -960,11 +946,7 @@ theorem lemma_10_2_holds : lemma_10_2 := by
   have hbad : (countWhere (AltPhiBad D phi) : Real) ≤ eta * Q := by
     dsimp only [Q]
     exact bad_additive_count_le D phi eta happrox
-  have hlargeQ : Lg ≤ 5 * eta * Q := by
-    calc
-      Lg ≤ 5 * (countWhere (AltPhiBad D phi) : Real) := hlarge
-      _ ≤ 5 * (eta * Q) := mul_le_mul_of_nonneg_left hbad (by norm_num)
-      _ = 5 * eta * Q := by ring
+  have hlargeQ : Lg ≤ 5 * eta * Q := by linarith
   have hS₁ : S₁ ≤ 5 * eta * alpha ^ 4 * M ^ 4 * N ^ 3 := by
     dsimp only [S₁]
     rw [Fintype.sum_prod_type]
@@ -973,12 +955,7 @@ theorem lemma_10_2_holds : lemma_10_2 := by
           if ¬LargeFibre D alpha eta M x
           then (domainDifferenceWeight D x y : Real) else 0) =
           ∑ x : X, if ¬LargeFibre D alpha eta M x
-            then ∑ y : X, (domainDifferenceWeight D x y : Real) else 0 := by
-        apply Finset.sum_congr rfl
-        intro x _
-        by_cases hx : ¬ LargeFibre D alpha eta M x
-        · simp only [if_pos hx]
-        · simp only [if_neg hx, Finset.sum_const_zero]
+            then ∑ y : X, (domainDifferenceWeight D x y : Real) else 0 := by norm_num
       _ ≤ 5 * eta * alpha ^ 4 * M ^ 4 * N ^ 3 :=
         small_first_weight_le D alpha eta M heta hbounds
   have hS₂ : S₂ ≤ 5 * eta * alpha ^ 4 * M ^ 4 * N ^ 3 := by
@@ -989,12 +966,7 @@ theorem lemma_10_2_holds : lemma_10_2 := by
           if ¬LargeFibre D alpha eta M y
           then (domainDifferenceWeight D x y : Real) else 0) =
           ∑ y : X, if ¬LargeFibre D alpha eta M y
-            then ∑ x : X, (domainDifferenceWeight D x y : Real) else 0 := by
-        apply Finset.sum_congr rfl
-        intro y _
-        by_cases hy : ¬ LargeFibre D alpha eta M y
-        · simp only [if_pos hy]
-        · simp only [if_neg hy, Finset.sum_const_zero]
+            then ∑ x : X, (domainDifferenceWeight D x y : Real) else 0 := by norm_num
       _ ≤ 5 * eta * alpha ^ 4 * M ^ 4 * N ^ 3 :=
         small_second_weight_le D alpha eta M heta hbounds
   have hQlower : alpha ^ 4 * M ^ 4 * N ^ 3 ≤ Q := by

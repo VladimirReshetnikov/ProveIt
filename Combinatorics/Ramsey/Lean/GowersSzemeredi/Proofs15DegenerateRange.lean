@@ -97,9 +97,7 @@ lemma lemma154_booleanWalshMoment_multilinear {N k : Nat} [NeZero N]
           apply Finset.prod_congr rfl
           intro x _
           by_cases hx : x ∈ A <;> simp [hx]
-        _ = ∏ x ∈ A, (y x + if e x then h x else 0) := by
-          rw [Finset.prod_ite]
-          simp
+        _ = ∏ x ∈ A, (y x + if e x then h x else 0) := by norm_num
     _ = ∑ e : Fin k → Bool, (eta e : ZMod N) *
           ∑ u : Fin k → Bool,
             ∏ i : Fin k,
@@ -153,11 +151,7 @@ lemma lemma154_parity_cube_sum {N k : Nat} [NeZero N]
       exact (Fintype.prod_sum (fun i (b : Bool) =>
         (if b then (-1 : ZMod N) else 1) *
           (y i + if b then h i else 0))).symm
-    _ = ∏ i : Fin k, (-h i) := by
-      apply Finset.prod_congr rfl
-      intro i _
-      rw [Fintype.sum_bool]
-      simp
+    _ = ∏ i : Fin k, (-h i) := by norm_num
     _ = (-1 : ZMod N) ^ k * ∏ i, h i := by
       have hconst : (-1 : ZMod N) ^ k = ∏ _i : Fin k, (-1 : ZMod N) := by
         simp
@@ -332,11 +326,7 @@ private lemma rangeDeg_linear_solutions_card_le {N : Nat} [NeZero N]
     Fintype.card (RangeDegLinearSolutions a) ≤
         Fintype.card ({t : I // t ≠ i} → ZMod N) :=
       Fintype.card_le_of_injective proj hinj
-    _ = N ^ (Fintype.card I - 1) := by
-      rw [Fintype.card_fun, ZMod.card]
-      congr 1
-      rw [Fintype.card_subtype_compl]
-      simp
+    _ = N ^ (Fintype.card I - 1) := by norm_num
 
 private abbrev RangeDegDoubleLinearSolutions {N : Nat} {I : Type*}
     [Fintype I] (a b : I → ZMod N) :=
@@ -867,9 +857,7 @@ private lemma rangeDeg_exceptional_coefficients_card_le (N m k d : Nat) :
         Fintype.card
           {c : RangeDegCoefficient m k d // c ≠ rangeDegZeroCoefficient m k d} :=
       Fintype.card_le_of_injective enc hinj
-    _ = Fintype.card (RangeDegCoefficient m k d) - 1 := by
-      rw [Fintype.card_subtype_compl]
-      simp
+    _ = Fintype.card (RangeDegCoefficient m k d) - 1 := by norm_num
     _ = (2 * m + 1) ^ (2 * d * 2 ^ k) - 1 := by
       rw [rangeDeg_coefficient_card]
 

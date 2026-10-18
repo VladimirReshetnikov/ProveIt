@@ -69,12 +69,7 @@ lemma lemma78_spectrum_card_bound {N : Nat} [NeZero N]
     norm_num
   have hscaled :
       (((section7Spectrum A alpha).card : Real) * lambda ^ 2) * (N : Real) ^ 2 <=
-        alpha * (N : Real) ^ 2 := by
-    calc
-      (((section7Spectrum A alpha).card : Real) * lambda ^ 2) * (N : Real) ^ 2 =
-          ((section7Spectrum A alpha).card : Real) * (lambda * N) ^ 2 := by ring
-      _ <= (N : Real) * (alpha * N) := hsumLower
-      _ = alpha * (N : Real) ^ 2 := by ring
+        alpha * (N : Real) ^ 2 := by linarith
   have hcancel : ((section7Spectrum A alpha).card : Real) * lambda ^ 2 <= alpha :=
     le_of_mul_le_mul_right hscaled (sq_pos_of_pos hN)
   have hraw : ((section7Spectrum A alpha).card : Real) <= alpha / lambda ^ 2 :=
@@ -147,10 +142,7 @@ private lemma lemma78_fourth_moment_upper {N : Nat} [NeZero N]
       (∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 4) =
           ∑ r : ZMod N,
             ‖fourier (indicator A) r‖ ^ 2 *
-              ‖fourier (indicator A) r‖ ^ 2 := by
-        apply Finset.sum_congr rfl
-        intro r _
-        ring
+              ‖fourier (indicator A) r‖ ^ 2 := by ring
       _ <= ∑ r : ZMod N,
           (A.card : Real) ^ 2 * ‖fourier (indicator A) r‖ ^ 2 := by
         gcongr with r
@@ -183,9 +175,7 @@ private lemma lemma78_small_spectrum_tail {N : Nat} [NeZero N]
       ‖fourier (indicator A) r‖ ^ 4 =
           ‖fourier (indicator A) r‖ ^ 2 *
             ‖fourier (indicator A) r‖ ^ 2 := by ring
-      _ <= (lambda * N) ^ 2 * ‖fourier (indicator A) r‖ ^ 2 := by
-        exact mul_le_mul_of_nonneg_right
-          (pow_le_pow_left₀ (norm_nonneg _) hrlt.le 2) (sq_nonneg _)
+      _ <= (lambda * N) ^ 2 * ‖fourier (indicator A) r‖ ^ 2 := by gcongr
   calc
     (∑ r ∈ (Finset.univ.filter fun r : ZMod N =>
         r ∉ section7Spectrum A alpha), ‖fourier (indicator A) r‖ ^ 4) <=
@@ -283,14 +273,7 @@ private lemma lemma78_weighted_phase_sum {N : Nat} [NeZero N]
           2 * ∑ r ∈ (Finset.univ.filter fun r : ZMod N => r ∉ K), F r :=
       add_le_add hmain htailPhase
     _ <= (alpha / 16) * (alpha ^ 3 * (N : Real) ^ 4) +
-          2 * (alpha * lambda ^ 2 * (N : Real) ^ 4) := by
-      apply add_le_add
-      · apply mul_le_mul_of_nonneg_left
-        · simpa [F] using htotal
-        · positivity
-      · apply mul_le_mul_of_nonneg_left
-        · simpa [F, K] using htail
-        · norm_num
+          2 * (alpha * lambda ^ 2 * (N : Real) ^ 4) := by gcongr
     _ = 3 * alpha * lambda ^ 2 * (N : Real) ^ 4 := by
       rw [lemma78_lambda_sq alpha lambda halpha hlambda]
       ring
@@ -335,12 +318,7 @@ private lemma lemma78_fourCorrelation_shift_bound {N : Nat} [NeZero N]
       gcongr
       exact norm_sum_le _ _
     _ = (N : Real)⁻¹ * ∑ r : ZMod N,
-        ‖fourier (indicator A) r‖ ^ 4 * ‖exponential (r * d) - 1‖ := by
-      congr 1
-      apply Finset.sum_congr rfl
-      intro r _
-      rw [norm_mul, Complex.norm_real, Real.norm_eq_abs,
-        abs_of_nonneg (by positivity)]
+        ‖fourier (indicator A) r‖ ^ 4 * ‖exponential (r * d) - 1‖ := by norm_num
     _ <= (N : Real)⁻¹ *
         (3 * alpha * lambda ^ 2 * (N : Real) ^ 4) := by
       gcongr
@@ -757,10 +735,7 @@ private lemma lemma78_constant_correlation_nonzero {N : Nat} [NeZero N]
     calc
       _ ≤ ∑ r : ZMod N, ‖((‖fourier (indicator A) r‖ ^ 4 : Real) : Complex) *
           (exponential (r * d) - 1)‖ := norm_sum_le _ _
-      _ = ∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 4 * ‖exponential (r * d) - 1‖ := by
-        apply Finset.sum_congr rfl
-        intro r _
-        rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by positivity)]
+      _ = ∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 4 * ‖exponential (r * d) - 1‖ := by norm_num
       _ ≤ _ := lemma78_constant_weighted_phase A alpha hα hcard d hd
   rw [bne_iff_ne]
   intro hdzero
@@ -875,9 +850,7 @@ theorem bohr_symmetric_multiples_subset {p : Nat} [NeZero p]
         simpa only [Int.ofNat_eq_natCast] using hjBounds.2
       have hcenter : centeredAbs (r * ((n : ZMod p) * d)) <=
           n * centeredAbs (r * d) := by
-        have hmul : r * ((n : ZMod p) * d) = n • (r * d) := by
-          simp [nsmul_eq_mul]
-          ring
+        have hmul : r * ((n : ZMod p) * d) = n • (r * d) := by ring
         rw [hmul]
         exact centeredAbs_nsmul_le n (r * d)
       calc
@@ -887,20 +860,14 @@ theorem bohr_symmetric_multiples_subset {p : Nat} [NeZero p]
         _ <= m * (rho / (m : Real) * p) := by gcongr
         _ = rho * p := hcollapse
   | negSucc n =>
-      have hn : n + 1 <= m := by
-        have := hjBounds.1
-        omega
+      have hn : n + 1 <= m := by omega
       have hcast : ((Int.negSucc n : Int) : ZMod p) * d =
-          -(((n + 1 : Nat) : ZMod p) * d) := by
-        push_cast
-        ring_nf
+          -(((n + 1 : Nat) : ZMod p) * d) := by push_cast; ring
       rw [hcast, mul_neg, centeredAbs_neg]
       have hcenter : centeredAbs (r * (((n + 1 : Nat) : ZMod p) * d)) <=
           (n + 1) * centeredAbs (r * d) := by
         have hmul : r * (((n + 1 : Nat) : ZMod p) * d) =
-            (n + 1) • (r * d) := by
-          simp [nsmul_eq_mul]
-          ring
+            (n + 1) • (r * d) := by push_cast; ring
         rw [hmul]
         exact centeredAbs_nsmul_le (n + 1) (r * d)
       calc

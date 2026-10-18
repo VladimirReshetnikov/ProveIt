@@ -90,9 +90,7 @@ private lemma extraction_restricted_ite_eq_sum {N : Nat} {X : Type*}
     let d₀ : ZMod N := D.index uv.1 - D.index x
     have hd₀ : d₀ ∈ B := hrel.2
     rw [Finset.sum_eq_single d₀]
-    · have hu : D.index uv.1 = D.index x + d₀ := by
-        dsimp only [d₀]
-        abel
+    · have hu : D.index uv.1 = D.index x + d₀ := by ring
       have hv : D.index uv.2 = D.index w + d₀ := by
         dsimp only [d₀]
         linear_combination hrel.1.symm
@@ -349,9 +347,7 @@ private lemma extraction_direction_good_almostEvery {N : Nat} [NeZero N]
     linarith
   have hwd₀Pos : 0 < ((D.fibre (D.index w + d₀)).card : Real) := by
     linarith
-  have hP₀Pos : 0 < P d₀ := by
-    dsimp only [P]
-    positivity
+  have hP₀Pos : 0 < P d₀ := by positivity
   have hbEq : (domainRestrictedDifferenceWeight D B x w : Real) =
       ∑ d ∈ B, P d := by
     rw [extraction_restrictedWeight_eq_sum]
@@ -756,9 +752,7 @@ theorem lemma_10_6_holds : lemma_10_6 := by
     rcases (mul_pos_iff.mp hetaRhoPositive) with h | h
     · exact h.1
     · exact (not_lt_of_ge heta h.1).elim
-  have ht : 0 < t := by
-    dsimp only [t]
-    exact Real.rpow_pos_of_pos hetaPos _
+  have ht : 0 < t := by positivity
   by_cases htLarge : 1 ≤ 10 * t
   · refine ⟨∅, fun _ => 0, ?_⟩
     refine ⟨Finset.empty_subset _, ?_, ?_⟩

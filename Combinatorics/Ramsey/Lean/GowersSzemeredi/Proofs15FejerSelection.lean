@@ -877,9 +877,7 @@ theorem fejer_scale_estimate_explicit (k : Nat) (alpha scale eta : Real) (hk : 1
     have h : (m : Real) + 1 ≤ N := (le_max_left _ _).trans hN
     have h' : (m : Real) < N := by linarith
     exact_mod_cast h'
-  have hN3 : 3 ≤ N := by
-    have h : (3 : Real) ≤ N := (le_max_left _ _).trans ((le_max_right _ _).trans hN)
-    exact_mod_cast h
+  have hN3 : 3 ≤ N := by linarith
   have hNbig : 2 * c0 / (scale * t) ≤ (N : Real) :=
     (le_max_right _ _).trans ((le_max_right _ _).trans hN)
   have hNpos : (0 : Real) < N := by exact_mod_cast (show 0 < N by omega)
@@ -894,11 +892,7 @@ theorem fejer_scale_estimate_explicit (k : Nat) (alpha scale eta : Real) (hk : 1
   have halpha1 : alpha ≤ 1 := by
     by_contra hlt
     push Not at hlt
-    have : alpha * G ≤ G := by
-      calc alpha * G = alpha * scale * (N : Real) ^ (17 * k + 15) := by rw [hG]; ring
-        _ ≤ _ := hrespected
-        _ ≤ _ := hrespLe
-        _ ≤ G := hgeneral
+    have : alpha * G ≤ G := by linarith
     linarith [mul_pos (sub_pos.mpr hlt) hG0]
   have hamin : min alpha 1 = alpha := min_eq_left halpha1
   have haeq : a = alpha * eta := by rw [ha, hamin]
@@ -953,9 +947,7 @@ theorem fejer_scale_estimate_explicit (k : Nat) (alpha scale eta : Real) (hk : 1
     have h' : (respectedGeneralArrangementCount 8 B phi : Real) ≤
         (fejerGoodNondegenerate m B phi).card + D := by
       rw [hD]; exact_mod_cast h
-    have : alpha * G ≤ respectedGeneralArrangementCount 8 B phi := by
-      calc alpha * G = alpha * scale * (N : Real) ^ (17 * k + 15) := by rw [hG]; ring
-        _ ≤ _ := hrespected
+    have : alpha * G ≤ respectedGeneralArrangementCount 8 B phi := by linarith
     linarith
   have hbadCard : ((fejerBadNondegenerate m B phi).card : Real) ≤ G := by
     have h : (fejerBadNondegenerate m B phi).card ≤ (selectionArrangements B).card := by
@@ -988,13 +980,7 @@ theorem fejer_scale_estimate_explicit (k : Nat) (alpha scale eta : Real) (hk : 1
     have hgoodTerm : eta * (alpha * G - D) * (t * (((T : Real) + 1) / 2)) ≤
         eta * (fejerGoodNondegenerate m B phi).card *
           (((((m : Real) + 1) ^ 2)⁻¹) ^ M *
-            (∑ j ∈ Finset.range T, ((m + 1 - j : Nat) : Real) ^ M)) := by
-      have h1 : eta * (alpha * G - D) ≤ eta * (fejerGoodNondegenerate m B phi).card :=
-        mul_le_mul_of_nonneg_left hgoodCard heta.le
-      calc eta * (alpha * G - D) * (t * (((T : Real) + 1) / 2))
-          ≤ eta * (fejerGoodNondegenerate m B phi).card * (t * (((T : Real) + 1) / 2)) :=
-            mul_le_mul_of_nonneg_right h1 hLnn
-        _ ≤ _ := mul_le_mul_of_nonneg_left hL (by positivity)
+            (∑ j ∈ Finset.range T, ((m + 1 - j : Nat) : Real) ^ M)) := by gcongr
     have hbadTerm : ((fejerBadNondegenerate m B phi).card : Real) * t ≤ G * t :=
       mul_le_mul_of_nonneg_right hbadCard ht0.le
     have htT : t * (((T : Real) + 1) / 2) ≤ 1 := by
