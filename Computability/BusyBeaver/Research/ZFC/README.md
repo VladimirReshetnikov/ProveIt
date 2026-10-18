@@ -1791,3 +1791,11 @@ the uncompiled draft is preserved. The [constructor at 327–354](arithmetic_con
 also passed its first run, with three probes and four callers and zero
 warnings. These finite occurrences retain arbitrary internal values and
 positive clocks; the remaining AX composition and PA endpoint stay open.
+
+The [accumulator push at controls 301–327](arithmetic_control_ax_ac_push254.md)
+now also has a checked internal contract: TW becomes oldAC, WS becomes
+`cantor(oldTW, oldWS)`, and the other seven coordinates are retained. Its
+copy/restore tail takes exactly `7*oldAC+2` steps with only S1 initially zero.
+Six axiom probes and eight typed callers passed with zero warnings. The proof
+reuses complete literal-source facts; the uncompiled earlier draft and the
+first actual attempt (named `run2`) are preserved without a performance claim.
