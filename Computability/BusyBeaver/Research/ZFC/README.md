@@ -1812,3 +1812,22 @@ sets TW to `wim(oldP1, oldAC)` and WS to `cantor(oldTW, oldWS)`, retaining
 the other seven coordinates. Its separate 301–354 contract changes only TW.
 Nine axiom probes and eleven typed callers passed on the first run, with
 zero warnings. The complete AX loop and the internal PA endpoint remain open.
+
+The [AX prefix through control 354](arithmetic_control_ax_third_imp254.md)
+now composes these contracts from the actual entry at 41. It retains the
+previous implication, GEN result and original TW/WS on the work stack, with
+the exact cache and PL changes. Seven probes and ten callers passed without
+warnings. The [next cache push, 354–380](arithmetic_control_ax_next_cache_push254.md)
+also has an all-internal contract and an exact `7*oldcache+2` copy-tail
+clock; six probes and eight callers passed without warnings.
+The [following AC push, 380–406](arithmetic_control_ax_next_ac_push254.md)
+has the corresponding whole-file contract and `7*oldAC+2` copy-tail clock,
+also with six probes and eight callers and zero warnings. The constructor
+at 406 remains a separate verification unit.
+
+[Structural catalogue lookup](arithmetic_control_source_rank254.md) supplies
+a reusable path-to-rank proof and two concrete source bindings at controls
+354 and 6423. Five probes and five callers passed after two explicit `rfl`
+steps closed residual `Option.map` goals. The original failed attempt is
+preserved. These two clients establish source bindings; they do not establish
+a general performance improvement or an execution contract.
