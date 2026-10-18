@@ -27,7 +27,9 @@ Whole-run and consistency proofs for this table remain in progress.
 Lean also checks the [initializer pulse invariant](prefix250_pulse.md) and
 [unbounded register operations](prefix250_boxes.md), including positive
 decrement’s boundary shift, zero decrement’s complete restoration and
-increment’s extra spare block. These are local execution theorems; the full
+increment’s extra spare block. The [nine register selectors](prefix250_mark.md)
+also have checked unbounded marking and return contracts. These are local
+execution theorems; the full
 250-state bootstrap and global simulation remain open.
 
 The [previous intake](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-158-159.md)
