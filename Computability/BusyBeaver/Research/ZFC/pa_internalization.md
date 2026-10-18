@@ -118,8 +118,11 @@ The current arithmetic checkpoints are:
   adding `first oldPL` to cache and replacing PL with `second oldPL`.
   Both fragments require initially zero scratch registers and preserve every
   other field, with positive internal runtimes. Their audits pass 16 probes
-  and 24 typed callers with zero warnings. The composed 41→136 theorem and
-  remaining AX bundle are still separate obligations.
+  and 24 typed callers with zero warnings. Their
+  [41→136 composition](arithmetic_control_ax_gen_read254.md) also passes nine
+  probes and eleven callers, preserving the original cache inside the GEN
+  result while updating cache and PL afterward. The remaining AX bundle is
+  still open.
 
 The remaining major steps are the reverse internal ZF-to-validator proof
 translation, the complete interpreter-to-Enum connection, and the unbounded

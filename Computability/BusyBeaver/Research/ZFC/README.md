@@ -1700,8 +1700,16 @@ reaches control 136 from 122, adds `first oldPL` to the old cache and sets PL to
 `second oldPL`, preserving the other seven fields. Both fragments have positive
 internal runtimes; their two audits passed 16 probes and 24 typed callers with
 zero warnings. Exact histories retain the pre-compilation rejections and legacy
-provider boundaries. The composed 41→136 theorem, remaining AX bundle,
-interpreter-to-Enum comparison and internal 245/246 binary PA endpoint are
-separate obligations.
+provider boundaries. The remaining AX bundle, interpreter-to-Enum comparison
+and internal 245/246 binary PA endpoint are separate obligations.
 
 The [maintained-defaults check](results/arithmetic-control-gen-read254-maintained-defaults-review.json) and [independent review](results/arithmetic-control-gen-read254-defaults-peer-review.json) verify the published GEN/read guards and all current inputs without rerunning Lean. The original successful proof records remain unchanged.
+
+The [composed AX prefix, controls 41–136](arithmetic_control_ax_gen_read254.md),
+now has a checked whole-file contract in every IΣ₁ model. TW uses the original
+cache in `wal oldP1 oldCache`; the subsequent read adds `first oldPL` to cache
+and replaces PL with `second oldPL`. WS becomes `cantor oldTW oldWS`, and the
+other five fields are preserved. Nine axiom probes and eleven typed callers
+pass with zero warnings. Both failed source attempts and their narrow repairs
+are preserved in the exact history. Full AX and the interpreter/PA endpoint
+remain open.
