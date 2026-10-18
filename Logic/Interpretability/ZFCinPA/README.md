@@ -198,6 +198,7 @@ facade is [`Lean/ZFCinPA.lean`](Lean/ZFCinPA.lean).
 | `LGlue2` | shift invariance of `envForm` (`shift_envForm`) and the specialization identity `QX_free` that turns a quantifier premise at level `j+1` into the binder case |
 | `LGlue3` | the atomic glue `glue_atom`: `𝗭𝗙 ⊢ ∀t (¬M_j t ∨ (&a R &b ↔ envForm 0 (&a R &b) (t)))` for `a, b < j` |
 | `LGlue4` | **the glue**: for every formula code `q` with free variables below `j`, `𝗭𝗙 ⊢ ∀t (¬M_j t ∨ (relativize domL q ↔ envForm 0 q (t)))` (`glue`, by `IsFormula.sigma1_structural_induction` under a complexity budget `j + complexity q ≤ C` that keeps the induction predicate `Σ₁`) |
+| `LFvBound` | free-variable bounds for schema cores: `bindFreeAt_subst_opening` (binding after an opening substitution recovers a shift-fixed body, hence `fvLt_subst_fvarVec`), `fvBound_subst` (a substitution by bound variables cannot hide free variables), and their readings on the two skeletons, `sep_core_bound` and `repl_core_bound` |
 
 ## Building
 
