@@ -76,6 +76,11 @@ soundness proofs. Their 15/15 and 12/13 theorem/client audits pass with zero
 warnings. Complete coverage of the actual decoder and final startup
 composition remain separate obligations.
 
+The [246 whole-tape frame adapters](prefix246_frame.md) connect symbolic
+execution to the logical register file while preserving the spare suffix and
+header distance. Fourteen theorem audits and fourteen callers pass; complete
+decoder coverage and startup composition remain separate.
+
 The [exact 250-state table](table_prefix250.md) is now checked in Lean: all 500
 actions, the state numbering, the unique halt edge and the incoming edges of
 the shared initializer. Its 40 named theorem audits and 40 callers pass.
