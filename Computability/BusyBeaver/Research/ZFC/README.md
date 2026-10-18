@@ -19,6 +19,17 @@ fatal defect within its scope. The exact-table Lean endpoint and its internal
 PA equivalence remain open. The different rejected250 scanner fold from the
 predecessor report does not refute this construction.
 
+The [exact 250-state table](table_prefix250.md) is now checked in Lean: all 500
+actions, the state numbering, the unique halt edge and the incoming edges of
+the shared initializer. Its 40 named theorem audits and 40 callers pass.
+Whole-run and consistency proofs for this table remain in progress.
+
+Lean also checks the [initializer pulse invariant](prefix250_pulse.md) and
+[unbounded register operations](prefix250_boxes.md), including positive
+decrement’s boundary shift, zero decrement’s complete restoration and
+increment’s extra spare block. These are local execution theorems; the full
+250-state bootstrap and global simulation remain open.
+
 The [previous intake](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-158-159.md)
 preserves five complete reports and one explicitly partial salvage, including
 cache-result MP, semantic seeds, countdowns and pairing-shift negation.
