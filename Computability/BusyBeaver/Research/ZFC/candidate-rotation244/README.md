@@ -29,7 +29,7 @@ The blank machine reaches the exact root frame after **407,931 transitions**: in
 | QT244 | Source loop rotation and decoder change | 26 | 6,459 / 8,390 | 407,931 |
 | [Combined243](../candidate-combined243/README.md) | Both changes, with the transfer hypotheses checked | 26 and 122 | 6,459 / 8,390 | 407,967 |
 
-The exact QT244 consistency endpoint has an ordinary proof and fresh Python certificate replay. **Its complete Lean consistency endpoint remains open.** The [relative Lean comparison](../combined243_simulation.md) checks the rotated and combined tables and proves that combined243 halts exactly when QT244 does. It does not close QT244's calibrated source bridge. The closed [compensated244 endpoint](../compensated244_binary.md) concerns a different table, and the internal [PA calibration](../pa_internalization.md) remains open.
+The exact QT244 consistency endpoint has an ordinary proof and fresh Python certificate replay. **Its complete Lean consistency endpoint remains open.** The [source calibration](../source_rotation244.md), [complete blank startup](../rotation244_bootstrap.md), [nine runtime units](../rotation244_runtime.md), and [exact source tree and startup frame](../rotation244_tree_frame.md) are now checked. Complete decoder-site coverage and final binary composition remain necessary. The [relative Lean comparison](../combined243_simulation.md) checks the rotated and combined tables and proves that combined243 halts exactly when QT244 does, so the eventual endpoint transfers to that 243-state table. The closed [compensated244 endpoint](../compensated244_binary.md) concerns a different table, and the internal [PA calibration](../pa_internalization.md) remains open.
 
 | Artifact | Meaning |
 | --- | --- |

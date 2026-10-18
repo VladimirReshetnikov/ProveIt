@@ -25,9 +25,12 @@ The [relative Lean theorem](../combined243_simulation.md) now checks this binary
 The [rotated source calibration](../source_rotation244.md) is now checked:
 the rotated register program halts exactly when ZF/ZFC has a refutation, from
 the established logical seed. Five source units pass 34 probes and 40 typed
-callers with zero warnings. The remaining external proof must connect the
-exact Rotation244 binary runtime and its blank initialization to that source
-seed. The checked blank-input equivalence then transfers the result to this
+callers with zero warnings. The exact
+[407,931-step Rotation244 startup](../rotation244_bootstrap.md),
+[nine runtime units](../rotation244_runtime.md), and
+[source tree and startup frame](../rotation244_tree_frame.md) are also checked.
+Complete decoder-site coverage and the final binary composition remain open.
+The checked blank-input equivalence then transfers the result to this
 243-state table; this route does not require a separate 243-state initialization
 proof. Internalizing the full argument in [PA](../pa_internalization.md)
 remains an additional obligation.
