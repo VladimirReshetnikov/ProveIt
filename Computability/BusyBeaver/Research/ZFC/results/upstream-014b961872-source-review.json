@@ -1,0 +1,118 @@
+{
+  "status": "SOURCE_ONLY_REVIEW_NO_OPEN_FINDINGS",
+  "introducing_commit": "014b9618729e6d3e8bbfe95eeb0fdfecae7e2d0d",
+  "root_sync": "573bc637e5",
+  "module": "LeanProofs.ZFCinPA.LPeel",
+  "source": {
+    "path": "/tmp/zfc-internal-lpeel-upstream-review/LPeel.lean",
+    "sha256": "c39052fb86ae21f4d8c9b28cb26fee8a294a43e2df96fa216cc19e86cc89bde0"
+  },
+  "source_lines": 332,
+  "source_matches_introducing_commit_and_current_tree": true,
+  "input_pins": {
+    "path": "/tmp/zfc-internal-lpeel-upstream-review/input-pins.json",
+    "sha256": "594b67974f22af9c0bb9cda67983db481dc40c500cf62218ffeb90274c3c8105"
+  },
+  "review_scope": [
+    "Read complete new332-line LPeel source and exact facade/README diff.",
+    "Compared actual declarations with current PA frontier, LGlue4 glue, LGlue1 MT_succ, LMatch, LFvBound, final schema templates, driver, SchemaRecognizer and exact hSchema signature."
+  ],
+  "declarations": [
+    {
+      "name": "IsEnv/common_stage/isEnv_econs/isEnv_base",
+      "lines": [
+        45,
+        49,
+        59,
+        68
+      ],
+      "scope": "Ordinary set-structure semantics: ZFAxioms plus Regular and the displayed powerset existence premise. IsEnv is over some ordinal L-stage; common-stage monotonicity extends any such environment by any constructible element. A constant environment at omega is functional and lies over a stage containing omega."
+    },
+    {
+      "name": "peelG_provable/finG_provable",
+      "lines": [
+        87,
+        133
+      ],
+      "scope": "Fixed standard derivations in templTheory8/arG and templTheory1/arF, from semantic validity in arbitrary ZF models. They do not assume hSchema or arbitrary-length matching existence."
+    },
+    {
+      "name": "pVal",
+      "line": 169,
+      "scope": "Internal code for forall t, not(Env(t) and M_k(t)) or X. Its Sigma1 function instance and PF conversions support represented proof induction."
+    },
+    {
+      "name": "QXE_free/peel_step",
+      "lines": [
+        195,
+        233
+      ],
+      "scope": "At arbitrary internal k,p with IsSemiformula1 p, represented proof of pVal(k+1,rel(free p)) gives represented proof of pVal(k,rel(all p)); uses MT_succ, internal generalization and compiled fixed peelG."
+    },
+    {
+      "name": "free_subst_qVec_fvarVec",
+      "line": 246,
+      "hypotheses": [
+        "IsSemiformula (k+1) B",
+        "shift B=B"
+      ],
+      "conclusion": "free(subst(qVec(fvarVec k))B)=subst(fvarVec(k+1))B. No standardness hypothesis on k,B."
+    },
+    {
+      "name": "peel",
+      "line": 269,
+      "ambient": [
+        "V : Type",
+        "ORingStructure V",
+        "V reduct models IΣ1"
+      ],
+      "parameters": "m,b : V, arbitrary internal elements",
+      "hypotheses": [
+        "IsSemiformula setLanguage m b",
+        "shift setLanguage b=b",
+        "Bootstrapping.Provable ZF (pVal m (rel(subst(fvarVec m)b)))"
+      ],
+      "conclusion": "Bootstrapping.Provable ZF (pVal0(rel(qqAlls b m)))",
+      "method": "Internal Sigma1 successor induction on i with i<=m, invariant pVal(m-i,rel(subst(fvarVec(m-i))(qqAlls b i))). Initial proof is a fixed external hypothesis; the induction target is represented provability, not an external Nat-indexed proof family."
+    },
+    {
+      "name": "peel_close",
+      "line": 306,
+      "ambient": "Same arbitrary IΣ1 model",
+      "hypotheses": [
+        "IsFormula setLanguage x",
+        "Bootstrapping.Provable ZF (pVal0 x)"
+      ],
+      "conclusion": "Bootstrapping.Provable ZF x",
+      "method": "Compile fixed nullary-placeholder finG, identify M0 with functionality, apply to the represented PF proof. No assumption x has no free variables beyond IsFormula, and no standard-code restriction."
+    }
+  ],
+  "frontier_effect": {
+    "matching_environment_gap": "No longer an independent prerequisite on this closure route. This is a bypass through universal peeling plus one functional base environment, not a new general internal exists-t matching theorem.",
+    "universal_closure": "Generic internal mechanism supplied at source level; do not list that induction as still missing.",
+    "base_not_proved": "peel explicitly assumes the opened-body pVal proof; neither peel nor peel_close combines the final Separation/Replacement templates with Θ/glue.",
+    "remaining": [
+      "Exact opened Separation/Replacement body pVal proofs from final templates plus driver/glue.",
+      "Replacement core depth-two opening/zero-level glue adapter remains; the shift-fixed opening lemma here does not directly solve that core with free parameters.",
+      "SchemaRecognizer extraction/typing and exact p=qqAlls b m identification.",
+      "Adapt final Provable rel(p) to hSchema Derivable with domSet0; empty side formulas are sufficient once the exact final formula proof is assembled.",
+      "Actual compilation and a focused axiom/caller audit for these new declarations."
+    ]
+  },
+  "evidence_limits": {
+    "compiler_execution": false,
+    "guard_or_checker_execution": false,
+    "version_query": false,
+    "dependency_build": false,
+    "maintained_edits": false,
+    "new_audit_in_introducing_commit": false,
+    "existing_LGlueAudit_probes_LPeel": false,
+    "global_hSchema_declared_here": false,
+    "PA_internal_endpoint_claimed": false
+  },
+  "issues": [],
+  "docdelta": {
+    "path": "/tmp/zfc-internal-lpeel-upstream-review/docdelta.md",
+    "sha256": "0f45e648261872ca489530f50286e1beb235555b9ce09348df78d66ed4ffece9"
+  }
+}

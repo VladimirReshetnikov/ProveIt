@@ -42,6 +42,10 @@ table, state numbering and 46 reusable core rows. All 64 theorem audits and
 next obligations. The [fast lookup](fast_table_routing245.md) also passes:
 two theorem audits and four typed callers prove equality with the literal
 machine, enabling faster reduction in subsequent execution proofs.
+The [exact register decoder](program_routing245.md) passes 11 theorem
+audits and 13 typed callers, proving its complete 6,460-leaf tree identity
+and execution semantics for arbitrary pointers and register values.
+The source-program bisimulation remains the next obligation at that layer.
 The checked components of the earlier
 [shared-carry 250 construction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-160.md)
 provide reusable proof infrastructure. Sources 58–59 contain the same

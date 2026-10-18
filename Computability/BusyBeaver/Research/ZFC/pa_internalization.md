@@ -222,9 +222,9 @@ uses the freed formula at matching length `j+1`. This budget can be chosen
 as `j + formulaComplexity q`, so it does not restrict formulas to standard
 codes or externally bounded complexity.
 The connective and quantifier clients now discharge the corresponding
-compiled-template premises. Matching-environment existence, the final
-Separation/Replacement combinations and the universal-closure/domain-side
-adapter to `hSchema` remain open. The
+compiled-template premises. At that stage, matching-environment existence,
+the final Separation/Replacement combinations and the universal-closure/domain-side
+adapter to `hSchema` remained open. The
 [pinned review](results/upstream-116aa35087-source-review.json) records source
 inspection of the new module and its ten-probe audit; this integration makes
 no fresh compilation or executed-audit claim.
@@ -239,15 +239,33 @@ skeletons then bounds their cores: `FvLt (m+1) (free K)` for Separation, and
 `IsSemiformula (m+2) (bindFreeAt 2 K)` for Replacement. The recognizer supplies
 the needed shift-fixed body, its level and the equality with the schema body,
 so these bounds require no restriction to standard formula codes.
-This closes the core-bound prerequisite at source level; matching-environment
-existence, the exact final schema combinations and the universal-closure/domain
-adapter to `hSchema` remain. The Replacement conclusion still needs its
-precise depth-two opening adapter for the zero-level glue interface.
+This closes the core-bound prerequisite at source level. At that stage,
+matching-environment existence, the exact final schema combinations and the
+universal-closure/domain adapter to `hSchema` remained. The Replacement
+conclusion still needs its precise depth-two opening adapter for the
+zero-level glue interface.
 This integration records source review only: the new module has not been
 compiled or axiom-audited in this review, and the existing `LGlueAudit` does
 not probe it.
 The [pinned source review](results/upstream-cc42edb254-source-review.json)
 records the internal quantifiers, exact recognizer premises and remaining adapters.
+
+Commit `014b9618729e6d3e8bbfe95eeb0fdfecae7e2d0d` adds
+[LPeel](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LPeel.lean).
+In every IΣ₁ model, `peel` turns an internal ZF proof of the opened-body
+statement `pVal m (rel (subst (fvarVec m) b))` into one of
+`pVal 0 (rel (qqAlls b m))`, for arbitrary internal `m,b`, assuming
+`IsSemiformula m b` and `shift b = b`. Its Σ₁ successor induction uses
+`peel_step`, the matching-code successor equation and a fixed template for
+extending a stage environment by a constructible element. `peel_close` then
+removes the zero-match antecedent using a functional base environment.
+This supplies the closure mechanism without separately constructing an
+environment matching every internal parameter tuple. The opened-body proof
+remains an explicit premise. The exact schema/template combinations,
+Replacement's depth-two opening adapter and final recognizer/domain-side
+integration remain. The [pinned review](results/upstream-014b961872-source-review.json)
+records source inspection only: no fresh compilation or executed axiom audit
+is claimed, and the existing `LGlueAudit` does not probe `LPeel`.
 
 ## What is already available
 
@@ -814,12 +832,17 @@ opened quantifier-premise identity; `LGlue3` supplies the atomic compiled-glue
 client. The merged `LGlue4` now supplies the remaining connective/quantifier
 clients and internal formula induction, as source-reviewed above. `LFvBound`
 adds the recognizer-derived core free-variable bounds, also source-reviewed.
-Replacement still needs the exact depth-two opening adapter. Still needed
-are existence of a suitable matching environment `t₀` with `t₀(i) = &i`,
-the final Separation/Replacement combinations, and the
-`SchemaRecognizer`/`relativize` universal-closure adapter. These must turn
-the compiled final templates into the internal derivability of every
-relativized Separation/Replacement instance, with its domain side formulas.
+`LPeel` supplies the internal universal-closure induction and zero-match
+discharge; constructing a matching environment for an arbitrary internal
+tuple is no longer a separate prerequisite on this route. The remaining
+work is to combine the final Separation/Replacement templates with the
+driver and glue to prove the exact opened-body `pVal` premises, including
+Replacement's depth-two core adapter. Then identify each recognized axiom
+with `qqAlls b m`, establish the required formula typing, and convert the
+resulting internal ZF proof to the `Derivable`/`domSet` conclusion required
+by `hSchema`. Empty domain side formulas suffice once that exact proof is
+obtained. These source-reviewed additions still require focused compilation
+and axiom/caller audits.
 
 Feeding `hSchema` into `ConstructibleInterpretation.provable_falsum_ZF_of_ZFC`
 and the result into the C254/ZF comparison then gives the Choice half of the
