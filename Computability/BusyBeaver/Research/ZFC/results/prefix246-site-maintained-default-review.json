@@ -1,0 +1,22 @@
+{
+  "status": "MAINTAINED_DEFAULT_PREPARATION_EXISTING_EVIDENCE_REVIEW",
+  "reviewer": "/root/review_upstream_reflection",
+  "scope": "Read-only existing root-run prepare-only record. Reviewer did not invoke checker, compiler, version query or dependency build.",
+  "record": {
+    "path": "/tmp/zfc-prefix246-lean/site/maintained-prepared/verification.json",
+    "sha256": "7e3957d51d9fb0515c8effd13cceea596db6a2e2024a3209c89c7bc174b1414e"
+  },
+  "current_inputs": 50,
+  "all_current_inputs_match": true,
+  "project_providers": 17,
+  "source_audit_exact_successful_bytes": true,
+  "source_override": false,
+  "audit_override": false,
+  "commands": [],
+  "fresh_modules": [],
+  "compiler_version_query_performed": false,
+  "exact_portable_changes": "Only source/audit default path expressions; all pins, provider selection and proof policy unchanged.",
+  "guard_sha256": "dd952d2d395e97388707936f7105ba8a1aeceddaa8764a1638ec3374cec0ff04",
+  "guard_diff": "--- \n+++ \n@@ -29,8 +29,8 @@\n R=a.repo.resolve();W=a.output.resolve()\n assert all(not pin.startswith('PENDING_') for pin,module in PARENTS.values()), 'Freeze exact successful parent record before preparation or proof run.'\n assert not W.is_relative_to(R) and (not W.exists() or not any(W.iterdir()))\n-S=a.source.resolve() if a.source else Path('/tmp/zfc-prefix246-lean/site/SitePrefix246.lean')\n-A=a.audit.resolve() if a.audit else Path('/tmp/zfc-prefix246-lean/site/Audit.lean')\n+S=a.source.resolve() if a.source else R / 'Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SitePrefix246.lean'\n+A=a.audit.resolve() if a.audit else Path(__file__).resolve().parent / 'prefix246_site_audit.lean'\n assert sha(S)==SOURCE_SHA and sha(A)==AUDIT_SHA\n MP=R/'Computability/BusyBeaver/Research/ZFC/results/arithmetic-control-mp254-verification.json'\n assert sha(MP)==MP_RECORD_SHA\n",
+  "findings": []
+}
