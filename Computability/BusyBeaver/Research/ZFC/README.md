@@ -60,6 +60,12 @@ canonical machine on every transition. It supports bounded kernel
 calculations for the new bootstrap and symbolic decoder without changing
 their machine semantics.
 
+The [nine 246-state register selectors](prefix246_mark.md) have checked
+unbounded marking and return contracts on the reduced selector table. Ten
+theorem audits and six client examples pass with no warnings.
+
+[First 1,024 steps of the 246-state machine](boot_prefix246_first.md) proves the exact blank-run state, head and entire tape, and supplies the checkpoint-composition lemma for the remaining bootstrap chain. The guarded source/audit run passed seven axiom probes and nine callers with zero warnings. The final 410,735-step startup and runtime/consistency endpoints remain separate.
+
 The [exact 250-state table](table_prefix250.md) is now checked in Lean: all 500
 actions, the state numbering, the unique halt edge and the incoming edges of
 the shared initializer. Its 40 named theorem audits and 40 callers pass.
