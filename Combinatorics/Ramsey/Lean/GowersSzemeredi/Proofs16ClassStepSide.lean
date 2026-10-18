@@ -77,6 +77,8 @@ theorem class_piece_of_subrelation (C : UniformClassWith k Thr Cnt Exp) (hk : 1 
     exact hsel x (hB'sub hx)
   exact class_piece_data C ht ht1 hg hg1 hNpiece Delta B' phi hgraph hBarr (hprodB.mono hB'sub)
 
+/-! ### The greedy decomposition -/
+
 /-- **Off a good set, a product relation is covered by `classPieces γ θ k` pieces.** -/
 theorem class_step_decomp (C : UniformClassWith k Thr Cnt Exp) (hk : 1 ≤ k)
     {theta gamma : Real} (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
@@ -128,6 +130,8 @@ theorem class_step_decomp (C : UniformClassWith k Thr Cnt Exp) (hk : 1 ≤ k)
   refine Finset.mem_biUnion.mpr ⟨⟨i.val, i.isLt.trans_le hqm⟩, Finset.mem_univ _, ?_⟩
   simp only [Q, dif_pos i.isLt]
   exact hi
+
+/-! ### The cover of the next class -/
 
 /-- **Any `n` relations covered by step pieces have one cover**, for any class. -/
 theorem class_step_cover_gen (C : UniformClassWith k Thr Cnt Exp) (hk : 1 ≤ k)

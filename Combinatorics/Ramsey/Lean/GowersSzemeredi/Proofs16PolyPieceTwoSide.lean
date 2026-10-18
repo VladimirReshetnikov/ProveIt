@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs16PolyPieceTwo
 import GowersSzemeredi.Proofs16PieceCoverWithRemainderSide
 import GowersSzemeredi.Proofs16SinglePieceGlobalSide
+import GowersSzemeredi.Proofs16VertexWithCoversSide
 
 /-! Declarations of `Proofs16PolyPieceTwo` that the final route does not use and that
 need modules outside it (moved here so that those modules can leave the route). -/

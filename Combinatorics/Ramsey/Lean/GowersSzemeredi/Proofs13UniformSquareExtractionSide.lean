@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs13UniformSquareExtraction
 import GowersSzemeredi.Proofs13UniformDensityRecurrenceSide
+import GowersSzemeredi.Proofs13UniformDensityBudgetsSide
 
 /-! Declarations of `Proofs13UniformSquareExtraction` that the final route does not use and that
 need modules outside it (moved here so that those modules can leave the route). -/

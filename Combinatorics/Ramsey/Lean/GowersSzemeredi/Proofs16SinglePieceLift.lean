@@ -42,8 +42,9 @@ remain valid. The inputs of `single_piece_lift`:
 * the retiled linearity bound, supplied by
   `exists_polynomial_retiled_linearity_profile`.
 
-`single_piece_lift` is in `Proofs16SinglePieceLiftSide`, outside the final
-route. -/
+`LocalMultilinearPieceAt.slice_localPieceFor`, `liftRemainderRho`,
+`liftRemainderWidth`, `single_piece_lift` and `vertex_providers_of_low` are in
+`Proofs16SinglePieceLiftSide`, outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -62,23 +63,6 @@ def lastSliceFace {N : Nat} (k : Nat) (x : ZMod N) : CoordinateFace N (k + 1) k 
     rcases Fin.eq_castSucc_or_eq_last j with ⟨i, rfl⟩ | rfl
     · exact ((hj i) rfl).elim
     · simp [appendCoordinate_eq_snoc]
-
-/-- **Slice providers.** The translated cross-section `h ↦ φ(x₀ + h, x)`
-has a provider from the dimension-`k` input. -/
-theorem LocalMultilinearPieceAt.slice_localPieceFor {N k : Nat} [NeZero N] [Fact N.Prime]
-    {gamma : Real} {c : Real → Real} {w : Real → Nat → Nat}
-    (hprov : LocalMultilinearPieceAt k gamma c w)
-    {B : Finset (Point N (k + 1))} {phi : Point N (k + 1) → ZMod N}
-    (hB : HasProductProperty B phi gamma) (x0 : Point N k) (x : ZMod N) :
-    LocalPieceFor c w (Finset.univ.filter fun h => appendCoordinate (h + x0) x ∈ B)
-      (fun h => phi (appendCoordinate (h + x0) x)) := by
-  set F := lastSliceFace k x
-  have h1 : LocalPieceFor c w (F.domain B) (F.pullback phi) :=
-    hprov.localPieceFor fun B' hB' => (hB.coordinateFace F).mono hB'
-  refine (h1.translate x0).congr ?_ (fun h => rfl)
-  ext h
-  simp only [Finset.mem_filter, Finset.mem_univ, true_and, CoordinateFace.mem_domain]
-  rfl
 
 /-- The spectrum relation has fibres of size at most `⌊δ⁻²⌋`. -/
 theorem section16SpectrumRelation_fibre_le {N k : Nat} [NeZero N]
@@ -150,44 +134,11 @@ theorem exists_short_parent_dense_cell {N k : Nat} [NeZero N] [Fact N.Prime] (hk
   rw [hstep] at hu
   exact hu.ne_zero
 
-/-- The density after the remainder step. -/
-def liftRemainderRho (C : Real → Real) (theta gamma : Real) (k : Nat) : Real :=
-  nestC (fun _ => C) (2 ^ k - 1) (section16ThetaTwo (section16ThetaOne theta gamma k))
-
-/-- The width after the remainder step. -/
-def liftRemainderWidth (C : Real → Real) (W : Real → Nat → Nat) (theta gamma : Real)
-    (k N : Nat) : Nat :=
-  nestW (fun _ => C) (fun _ => W) (2 ^ k - 1)
-    (section16ThetaTwo (section16ThetaOne theta gamma k)) N
-
 theorem appendCoordinate_add {N k : Nat} (a b : Point N k) (x y : ZMod N) :
     appendCoordinate a x + appendCoordinate b y = appendCoordinate (a + b) (x + y) := by
   funext i
   by_cases hi : i.val < k
   · simp [appendCoordinate, hi]
   · simp [appendCoordinate, hi]
-
-/-- **Vertex providers from lower-dimensional inputs.** If the inputs in
-dimensions `1, …, k` hold and `(C, W)` lies below every lifted parameter
-pair, then every non-top translated vertex has a `(C, W)` provider. -/
-theorem vertex_providers_of_low {N k : Nat} [NeZero N] [Fact N.Prime] {gamma : Real}
-    {cl : Nat → Real → Real} {wl : Nat → Real → Nat → Nat} {C : Real → Real}
-    {W : Real → Nat → Nat}
-    (hlow : ∀ l, 1 ≤ l → l ≤ k → LocalMultilinearPieceAt l gamma (cl l) (wl l))
-    (hcl : ∀ l t, 0 < t → t ≤ 1 → 0 < cl l t ∧ cl l t ≤ 1) (hwl : ∀ l t, Monotone (wl l t))
-    (hCle : ∀ l, 1 ≤ l → l ≤ k → ∀ t, C t ≤ (liftLastC^[k + 1 - l] (cl l)) t)
-    (hWle : ∀ l, 1 ≤ l → l ≤ k → ∀ t L, W t L ≤ (liftLastW^[k + 1 - l] (wl l)) t L)
-    {B : Finset (Point N (k + 1))} {phi : Point N (k + 1) → ZMod N}
-    (hB : HasProductProperty B phi gamma) :
-    ∀ (x0 : Point N k) (e : Fin k → Bool), e ≠ (fun _ => true) →
-      LocalPieceFor C W (vertexDomain B x0 e) (section16TranslatedVertex phi x0 e) := by
-  intro x0 e he
-  set l := (section16VertexDirections e).card
-  have hl1 : 1 ≤ l := Finset.card_pos.mpr ⟨_, section16VertexDirections_last e⟩
-  have hlk : l ≤ k := by
-    have := section16VertexDirections_card_lt he
-    omega
-  exact (LocalMultilinearPieceAt.vertex_localPieceFor e (hlow l hl1 hlk) (hcl l) (hwl l) hB
-    x0).mono (hCle l hl1 hlk) (hWle l hl1 hlk)
 
 end LeanProofs.GowersSzemeredi

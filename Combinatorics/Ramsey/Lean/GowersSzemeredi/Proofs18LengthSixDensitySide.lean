@@ -290,6 +290,8 @@ theorem lsEta_bounds {alpha : Real} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
     _ = X ^ (133 + (2 : Nat) ^ 601 + 2) := by rw [pow_add, pow_add]
     _ ≤ X ^ ((2 : Nat) ^ 602) := pow_le_pow_right₀ hX1 (by norm_num)
 
+/-! ### The density `β` -/
+
 /-- The density of the length-six discrepancy bound. -/
 def lsBeta (alpha : Real) : Real :=
   singlePieceEta sixQb (sixC sixQb alpha) alpha 2 *

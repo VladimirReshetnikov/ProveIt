@@ -48,6 +48,8 @@ theorem PowerUniformClass.theorem162At_tower {k : Nat} {V : Real} {dC dE dT : Na
   · intro gamma theta rho _ _ _ _ _ _
     rw [hbase]
 
+/-! ### Dimension two -/
+
 /-- A family of `n` relations, each in `polyTwoPieces γ θ` pieces, has at most
 `w^(2^84)` pieces. -/
 theorem nPieces_le_base {gamma theta : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta)

@@ -8,7 +8,9 @@ This module adapts the finite-union refinement from Lemma 16.8 to
 `ProperMultiplyLinear`.  Properness is carried as an invariant of every
 refinement cell, and the singleton probes used in the quantitative argument
 are genuine length-one boxes.
--/
+
+`BaseCase.properUnionClosure_holds` is in `Proofs16BaseCaseUnionSide`, outside
+the final route. -/
 
 set_option autoImplicit false
 
@@ -660,12 +662,6 @@ theorem properMultiplyLinear_finsetUnion {N d r : Nat} [NeZero N]
       exact Fin.elim0 i
     · intro j x _ hxH
       simp at hxH
-
-/-- The repaired finite-union closure used by the one-dimensional base-case
-assembly. -/
-theorem properUnionClosure_holds : ProperUnionClosure := by
-  intro N d r _ gamma s Gamma hr hs hGamma
-  exact properMultiplyLinear_finsetUnion gamma s hs Gamma hr hGamma
 
 private lemma isMultilinear_sum {N d r : Nat}
     (mu : Fin r → Point N d → ZMod N)

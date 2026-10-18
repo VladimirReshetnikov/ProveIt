@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs18CoverExponentsFejer
 import GowersSzemeredi.Proofs18CoverThresholdsSharp
 import GowersSzemeredi.Proofs18EnvelopeInduction
+import GowersSzemeredi.Proofs18TightClassesFejerSide
 
 /-! **Theorem 18.1 at `d + 6` and Theorem 18.2 / Corollary 18.7 at `L + 4`,
 from the recurrence profiles, under the Fejér θ₁** (Notes L.16d).

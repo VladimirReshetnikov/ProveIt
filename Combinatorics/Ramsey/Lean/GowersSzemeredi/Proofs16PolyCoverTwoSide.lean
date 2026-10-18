@@ -21,6 +21,8 @@ open BaseCase
 def polyTwoThreshold (theta gamma : Real) : Real :=
   max 3 (lemma156ExplicitThreshold 1 (theta / 2) gamma)
 
+/-! ### The extraction step and the large-modulus cover -/
+
 /-- Every sub-relation with a large projection contains a piece. -/
 theorem section16_poly_piece_two_of_subrelation
     {theta gamma : Real} (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)

@@ -13,6 +13,42 @@ namespace LeanProofs.GowersSzemeredi
 section
 open BaseCase
 
+def sStepY (k a D : Nat) : Nat := a * (stepP k + 1) + D * (stepP k + k + 6)
+
+def sQrW (k a D : Nat) : Nat := sStepY k a D * 2 ^ k
+
+def sSW (k a D : Nat) : Nat := sQrW k a D + stepP k + 8
+
+def sPbW (k a D : Nat) : Nat := a * (stepP k + sSW k a D + 1) + D * (stepP k + 5)
+
+/-- The parameter degree of the count of the next class. -/
+def sCountW (k a D : Nat) : Nat := stepP k + 1 + 2 * sSW k a D + 2 * sPbW k a D
+
+def sEbW (k a D : Nat) : Nat := a * (stepP k + 1) + D * (stepP k + 6)
+
+def sErW (k a D : Nat) : Nat := (sStepY k a D + 4) * 2 ^ k
+
+def sBqW (k a D : Nat) : Nat := 4 + (sEbW k a D + 1) * 2 ^ (k + 2)
+
+def sLW (k a D : Nat) : Nat := sBqW k a D + (sErW k a D + sEbW k a D)
+
+def sZW (k a D : Nat) : Nat := stepT k + a + sEbW k a D + 7
+
+/-- The parameter degree of the width exponent of the next class. -/
+def sExpW (k a D : Nat) : Nat := sZW k a D + sLW k a D + sPbW k a D + 6
+
+/-- The parameter degree of the next split class. -/
+def splitStepD (k a D : Nat) : Nat := sCountW k a D + sExpW k a D + stepThrDeg k D
+
+end
+
+end LeanProofs.GowersSzemeredi
+
+namespace LeanProofs.GowersSzemeredi
+
+section
+open BaseCase
+
 /-- **The remainder count, in two bases.** -/
 theorem split_Qr_le {k a D : Nat} (ha : 1 ≤ a) (hD : 1 ≤ D) {V V' : Real} (hV : 1 ≤ V)
     (hVV : V ≤ V') {theta gamma rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta)

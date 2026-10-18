@@ -116,6 +116,4 @@ theorem singlePieceEta_scalar_le {D alpha : Real} {k : Nat}
     _ ≤ D / (2 : Real) ^ (k + 1) := mul_le_of_le_one_right (by positivity) (pow_le_one₀ ha ha1)
     _ ≤ D := div_le_self hD (one_le_pow₀ (by norm_num))
 
-/-! ### The density `β` -/
-
 end LeanProofs.GowersSzemeredi

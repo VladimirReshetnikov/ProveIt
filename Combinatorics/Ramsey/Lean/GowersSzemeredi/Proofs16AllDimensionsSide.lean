@@ -19,6 +19,20 @@ namespace LeanProofs.GowersSzemeredi
 section
 open BaseCase
 
+theorem stepT_le_sq (k : Nat) : stepT k ≤ stepP k * stepP k := by
+  unfold stepT stepP
+  rw [← pow_add]
+  exact Nat.pow_le_pow_right (by norm_num) (by rw [pow_succ 2 (k + 5)]; omega)
+
+end
+
+end LeanProofs.GowersSzemeredi
+
+namespace LeanProofs.GowersSzemeredi
+
+section
+open BaseCase
+
 theorem stepP_ge9 (k : Nat) : k + 9 ≤ stepP k := by
   unfold stepP
   have h1 := two_pow_k5_ge k

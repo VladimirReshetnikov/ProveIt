@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs18UniformCovers
 import GowersSzemeredi.Proofs03FourFactorSymmetry
 import GowersSzemeredi.Proofs05Corollary58
+import GowersSzemeredi.Proofs18WidthPowerBoundsSide
 
 /-! Closed-form lift densities and widths for the single-piece step in any
 dimension (Notes L.7a, F3b).

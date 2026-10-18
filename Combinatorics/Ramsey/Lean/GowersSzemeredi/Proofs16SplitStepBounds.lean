@@ -21,9 +21,8 @@ exponent. The printed bounds are their instances at `(stepP k, stepT k)` (the
 width exponent on the diagonal), the Fejér ones (`Proofs16SplitStepFejer`) at
 `(fejerStepP k, fejerStepT k)`.
 
-`splitUniformClass_succ`, `split_Qr_le`, `split_count_le`, `split_exp_inv_le`
-and `split_samples_le` are in `Proofs16SplitStepBoundsSide`, outside the final
-route. -/
+The 17 declarations of this module that the final route does not use are in
+`Proofs16SplitStepBoundsSide`. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -177,19 +176,11 @@ theorem splitW_nonneg {V t g s : Real} (hV0 : 0 ≤ V) (hg : 0 < g) (ht : 0 < t)
 
 /-! ### The split degrees -/
 
-def sStepY (k a D : Nat) : Nat := a * (stepP k + 1) + D * (stepP k + k + 6)
 def sQrN (k a : Nat) : Nat := a * 2 ^ k
-def sQrW (k a D : Nat) : Nat := sStepY k a D * 2 ^ k
 def sSN (k a : Nat) : Nat := sQrN k a + 1
-def sSW (k a D : Nat) : Nat := sQrW k a D + stepP k + 8
 def sPbN (k a : Nat) : Nat := a * (sSN k a + 1)
-def sPbW (k a D : Nat) : Nat := a * (stepP k + sSW k a D + 1) + D * (stepP k + 5)
-
 /-- The family exponent of the count of the next class. -/
 def sCountN (k a : Nat) : Nat := 1 + 2 * sSN k a + 2 * sPbN k a
-
-/-- The parameter degree of the count of the next class. -/
-def sCountW (k a D : Nat) : Nat := stepP k + 1 + 2 * sSW k a D + 2 * sPbW k a D
 
 /-! ### The split degrees at any `(P, T)`
 
@@ -449,20 +440,11 @@ theorem split_count_le_W {k a D P m : Nat} {tS gS : Real} (ha : 1 ≤ a) (hD : 1
 
 /-! ### The width exponent -/
 
-def sEbW (k a D : Nat) : Nat := a * (stepP k + 1) + D * (stepP k + 6)
 def sErN (k a : Nat) : Nat := a * 2 ^ k
-def sErW (k a D : Nat) : Nat := (sStepY k a D + 4) * 2 ^ k
 def sBqN (k a : Nat) : Nat := a * 2 ^ (k + 2)
-def sBqW (k a D : Nat) : Nat := 4 + (sEbW k a D + 1) * 2 ^ (k + 2)
 def sLN (k a : Nat) : Nat := sBqN k a + (sErN k a + a)
-def sLW (k a D : Nat) : Nat := sBqW k a D + (sErW k a D + sEbW k a D)
-def sZW (k a D : Nat) : Nat := stepT k + a + sEbW k a D + 7
-
 /-- The family exponent of the width exponent of the next class. -/
 def sExpN (k a : Nat) : Nat := 1 + sLN k a + sPbN k a
-
-/-- The parameter degree of the width exponent of the next class. -/
-def sExpW (k a D : Nat) : Nat := sZW k a D + sLW k a D + sPbW k a D + 6
 
 theorem pow_le_exp_mul {x : Real} (hx : 0 < x) (m : Nat) : x ^ m ≤ Real.exp (m * x) := by
   rw [← Real.exp_log (pow_pos hx m)]
@@ -733,8 +715,5 @@ theorem split_exp_inv_le_W2 {k ac Dc ae De P T m : Nat}
 
 /-- The family exponent of the next split class. -/
 def splitStepA (k a : Nat) : Nat := sCountN k a + sExpN k a
-
-/-- The parameter degree of the next split class. -/
-def splitStepD (k a D : Nat) : Nat := sCountW k a D + sExpW k a D + stepThrDeg k D
 
 end LeanProofs.GowersSzemeredi
