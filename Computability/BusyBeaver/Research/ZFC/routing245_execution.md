@@ -3,8 +3,9 @@
 Five Lean modules prove that accepted instruction certificates describe actual
 execution of the literal 245-state machine, then compose those instruction
 segments into halting equivalence. The runtime theorem still requires complete
-site coverage and a related initial configuration. Discharging those premises
-for the actual routed program and blank tape remains separate work.
+site coverage and a related initial configuration. The
+[complete startup proof](routing245_bootstrap.md) now supplies the actual
+blank-run frame; complete coverage and final composition remain separate work.
 
 `RuntimeInstanceRouting245.register_halts_iff_binary` states, for any register
 program `p`, logical configuration `logical` and binary configuration `binary`,
@@ -65,8 +66,9 @@ caches are not included, and publication performs no proof replay.
 
 The [source-program bisimulation](bisim_routing245.md) and
 [local register operations](routing245_local.md) are already checked.
-Complete acceptance of all 8,391 guarded cases, the 407,915-step blank
-initialization, the closed 245-state binary consistency endpoint and PA
+The [407,915-step blank initialization](routing245_bootstrap.md) is now
+checked, including its complete runtime frame. Acceptance of all 8,391
+guarded cases, the closed 245-state binary consistency endpoint and PA
 internalization remain separate obligations. Attribution follows the
 [candidate notice](candidate-routing245/README.md): Mira-Cult's calculus and
 machine, Jeff Ketchersid's verification, Andrew James Wade's compiler framework,
