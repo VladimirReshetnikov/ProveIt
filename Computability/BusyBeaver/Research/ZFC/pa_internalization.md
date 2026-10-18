@@ -730,8 +730,9 @@ arithmetic proof obligation relating its finite traces to Con(ZFC).
 
 ## Proposed decomposition of the reverse ZF-to-validator translation
 
-*Proposal (Claude lane, 2026-10-17), for coordination; nothing below is
-implemented yet.* With `𝗣𝗔 ⊢ Con(ZF) ↔ Con(ZFC)` closed and the forward
+*Proposal (Claude lane, 2026-10-17), with the R1 theory-construction sources
+supplied in `f368d4ff11` on 18 October; the remaining obligations are below.*
+With `𝗣𝗔 ⊢ Con(ZF) ↔ Con(ZFC)` closed and the forward
 validator sentence `Con(ZF) → ¬∃code, value(code)=2` already proved, the
 remaining arithmetic comparison between ZF and the validator is the reverse
 implication: in every IΣ₁ model, `Provable 𝗭𝗙 ⊥ → CProv 1`. The external
@@ -763,6 +764,16 @@ splits into three pieces with a narrow interface:
    proving that the resulting set lies in the WF part. This reuses
    `LTemplate`'s compile-at-internal-codes pattern, with a template theory
    over `𝗡` in place of ZF.
+
+The supplied [NativeGicDelta1](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/NativeGicDelta1.lean)
+and [NativeTheory](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/NativeTheory.lean)
+define the Δ₁ schema recognizer and `NativeSet.nativeTheory`.
+`NativeSet.models_cpgic` supplies an external model bridge useful for R3.
+The [source review](results/upstream-native-theory-f368d4ff11-review.json)
+found no mathematical blocker; it did not run a fresh compiler or audit.
+R1's standard-proof sanity equivalence, arbitrary-internal GIC axiom
+introduction, and the R2/R3 internal translations remain open. The supplied
+five-probe audit has no typed callers.
 
 Composing (R3), (R2) and the forward sentence gives, in PA,
 `Con(ZF) ↔ ¬∃code, value(code)=2`, and with `LSchema` the same for ZFC.

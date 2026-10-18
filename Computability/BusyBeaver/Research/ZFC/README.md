@@ -1776,3 +1776,18 @@ and gives the exact remaining file, including both consumed PL components.
 Fourteen axiom probes and eighteen typed callers pass with zero warnings.
 The first source failure and its three-line definitional repair remain in
 the history. The subsequent AX work and the PA endpoint remain open.
+
+The [AX prefix through the second implication](arithmetic_control_ax_second_imp254.md)
+now extends this execution to control 275. It sets TW to
+`wim(wim(oldAC, first(second(oldPL))), oldP1)`, retaining the exact earlier
+WS, cache and PL effects and preserving the other five coordinates. Seven
+axiom probes and ten typed callers passed on the first run, with zero warnings.
+
+The [next parameter push at controls 275–301](arithmetic_control_ax_next_param_push254.md)
+has the same whole-file effect as the earlier push, together with the exact
+`7*oldP1+2` copy-tail clock. Six probes and eight callers passed without
+warnings. Its distinct exit instruction was corrected before compilation;
+the uncompiled draft is preserved. The [constructor at 327–354](arithmetic_control_ax_ac_constructor254.md)
+also passed its first run, with three probes and four callers and zero
+warnings. These finite occurrences retain arbitrary internal values and
+positive clocks; the remaining AX composition and PA endpoint stay open.
