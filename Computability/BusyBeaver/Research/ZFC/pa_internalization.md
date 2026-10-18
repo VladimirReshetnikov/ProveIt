@@ -37,7 +37,12 @@ The current arithmetic checkpoints are:
   adapter. The [constructible interpretation](../../../../Logic/Interpretability/ZFCinPA/constructible_interpretation.md)
   supplies the fixed L-domain formula, its nonemptiness, the quotation bridge,
   and the finite equality, fixed ZF and Choice axiom obligations. The uniform
-  internal Separation/Replacement hypothesis `hSchema` remains open.
+  internal Separation/Replacement hypothesis `hSchema` is discharged
+  (`LSchema.hSchema`, 2026-10-17), so the Choice transport is unconditional:
+  `𝗜𝚺₁ ⊢ Con(ZF) → Con(ZFC)` and `𝗣𝗔 ⊢ Con(ZF) → Con(ZFC)`
+  (`LSchema.iSigma1_proves_con_ZF_imp_con_ZFC`,
+  `LSchema.peano_proves_con_ZF_imp_con_ZFC`; axioms `propext`,
+  `Classical.choice`, `Quot.sound` only).
 * [Internal validator provability](../../../../Logic/Interpretability/ZFCinPA/validator_provability254.md)
   supplies the twelve literal rule closures and a classical propositional
   interface. The [formula encoder](../../../../Logic/Interpretability/ZFCinPA/validator_formula_encoder254.md)
@@ -825,7 +830,30 @@ function code is the translation of the template's own defining matrix, so
 every definitional hypothesis is the internal tautology `∀(A ↔ A)`. Atoms
 use `LNumOK.numOK` (every numeral chain defines one natural, in `𝗭𝗙`).
 
-**Remaining for `hSchema`** (superseding the historical next-step notes below):
+**`hSchema` is closed (2026-10-17).** `LSepBase.sep_obligation` and
+`LReplBase.repl_obligation` give, for every code recognized by `SepR` or
+`RepR`, an internal `𝗭𝗙`-proof of its relativization to `L` with empty
+domain side formulas; `LSchema.hSchema` feeds them to
+`ConstructibleInterpretation.provable_falsum_ZF_of_ZFC`, and completeness
+gives `𝗜𝚺₁ ⊢ Con(ZF) → Con(ZFC)` (`LSchema.iSigma1_proves_con_ZF_imp_con_ZFC`)
+and its `𝗣𝗔` corollary. The route:
+
+* separation: the L6 template `LSepBase.sepComb` combines the reflection
+  invariant (driver) with the glue premise `qPremise` at `m + 1` for
+  `free K`; the code identity `relSep_val` matches the translated body with
+  `relativize dL (sepBodyVal K)`;
+* replacement: the core is read at `x :: y :: t`, so the glue premise is
+  needed at level two; `LReplBase.qPremise2` obtains it from the glue at
+  `m + 2` for the twice-opened core and one more generalization
+  (`QX2_free`), and `replComb` places the relativized core in the binary
+  slot `F₁`;
+* both: `LFvBound` reads the core's free-variable bound off the recognizer
+  data, and `LPeel` peels the opened body back to `qqAlls b m` and closes
+  at zero matched variables with a functional environment.
+
+The paragraph below is the pre-closure plan, kept for history.
+
+**Remaining for `hSchema`** (historical, superseded by the paragraph above):
 the reflection driver producing `Θ` is already available. `LGlue1` provides
 matching functionality and slot reading; `LGlue2` supplies shift-fixity and the
 opened quantifier-premise identity; `LGlue3` supplies the atomic compiled-glue

@@ -114,4 +114,6 @@ import ZFCinPA.LGlueAudit
 import ZFCinPA.LFvBound
 import ZFCinPA.LPeel
 import ZFCinPA.LSepBase
+import ZFCinPA.LReplBase
+import ZFCinPA.LSchema
 import ZFCinPA.LSchemaAudit

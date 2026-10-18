@@ -1,6 +1,7 @@
-import ZFCinPA.LSepBase
+import ZFCinPA.LSchema
 
-/-! Axiom audit for the schema obligations (`LFvBound`, `LPeel`, `LSepBase`). -/
+/-! Axiom audit for the schema obligations and the choice transport
+(`LFvBound`, `LPeel`, `LSepBase`, `LReplBase`, `LSchema`). -/
 
 open LeanProofs.ZFCinPA
 
@@ -15,3 +16,14 @@ open LeanProofs.ZFCinPA
 #print axioms LSepBase.sepComb_provable
 #print axioms LSepBase.sep_base
 #print axioms LSepBase.sep_obligation
+#print axioms LReplBase.QX2_free
+#print axioms LReplBase.qPremise2
+#print axioms LReplBase.replComb_provable
+#print axioms LReplBase.repl_base
+#print axioms LReplBase.repl_obligation
+#print axioms LSchema.hSchema
+#print axioms LSchema.provable_falsum_ZF_of_ZFC
+#print axioms LSchema.iSigma1_proves_con_ZF_imp_con_ZFC
+#print axioms LSchema.peano_proves_con_ZF_imp_con_ZFC
+
+#check @LSchema.peano_proves_con_ZF_imp_con_ZFC
