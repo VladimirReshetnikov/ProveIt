@@ -1,4 +1,5 @@
 import ZFCinPA.InternalInterpretation
+import ZFCinPA.ConstructibleInterpretation
 import ZFCinPA.NativeTheory
 import BusyBeaver.ZFC.WFModel
 

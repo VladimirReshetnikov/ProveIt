@@ -1,0 +1,53 @@
+{
+  "status": "SOURCE_ONLY_TABLE_REVIEW_PASS",
+  "findings": [],
+  "units": [
+    {
+      "source": {
+        "path": "/tmp/zfc243-combined-lean/table-rotation/TableRotation244.lean",
+        "sha256": "6e8301757528cc7f4c167701b784b06861eecb454bcaef2c704065f527ef28f6"
+      },
+      "audit": {
+        "path": "/tmp/zfc243-combined-lean/table-rotation/Audit.lean",
+        "sha256": "e161482575e1a0f253574f74b6ac3f32e2413b979058b31a1ab0f4cf903dbcb1"
+      },
+      "inventory": {
+        "path": "/tmp/zfc243-combined-lean/table-rotation/source-inventory.json",
+        "sha256": "975bd4f3acd83ddfb2310c60e9425437c75c0ffcd04bf32b19d22d3df69201b2"
+      },
+      "probes": 7,
+      "callers": 7,
+      "actions": 488
+    },
+    {
+      "source": {
+        "path": "/tmp/zfc243-combined-lean/table-combined/TableCombined243.lean",
+        "sha256": "9a2266691bab69ce1940e8e88a238aa2d48696cba9625df5257f0ef8ef23546b"
+      },
+      "audit": {
+        "path": "/tmp/zfc243-combined-lean/table-combined/Audit.lean",
+        "sha256": "b88396df17a041fc418c45e5406ab72f3a7486081f924ffb06cf02086e37f639"
+      },
+      "inventory": {
+        "path": "/tmp/zfc243-combined-lean/table-combined/source-inventory.json",
+        "sha256": "0637a10c13fc26f19cb17c8a90d53ea4811f1ec7be3e43e918fffaa05aca26ea"
+      },
+      "probes": 53,
+      "callers": 6,
+      "actions": 486
+    }
+  ],
+  "reviewer_source": {
+    "path": "/tmp/zfc243-combined-lean/review_tables.py",
+    "sha256": "ab0da4ea63fe48c790e316300854fc9d6f78d63a58a9f4e1f7463d52a3bc87b6"
+  },
+  "checks": 2009,
+  "read_scope": "Full generator, both source definitions and theorem tails, complete audits, and every literal action/old-label mapping parsed independently. No compiler or supplied generator executed.",
+  "conclusions": [
+    "Exact488 Rotation actions and486 Combined actions agree with frozen candidate tables.",
+    "Embedding skips Rotation canonical112, exactly old122.",
+    "All local row facts,480 ordinary-action rows, checkpoint exclusions, and dependent-port API names agree.",
+    "No source/runtime/calibration or PA endpoint follows from table facts alone."
+  ],
+  "reviewer_role": "Independent table-source reviewer; author of dependent invariant/blocks/simulation ports, not table generator or table proof runner."
+}

@@ -1,0 +1,1 @@
+The complete source-only reductions and portable checkers are in ../grammar/historical_source/. They are optional research and do not certify the rejected binary patch. The rejected literal table is retained in ../rejected/deadloop244/. The actual QT244 machine and its independent source proof are in ../../machine/ and ../../code/.

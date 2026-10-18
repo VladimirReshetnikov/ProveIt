@@ -1,0 +1,416 @@
+Logical source research and independent review of an earlier rejected patch
+=======================================================================
+
+Scope and result
+----------------
+This note records the formalism branch of the investigation.  Its own changed
+axiom-source experiments did not establish a state bound below 245.  It also
+independently rejected an earlier shared-helper deletion, despite confirming
+that its dirty initial scratch value caused no logical gap.  The final report's
+separate QT rotation preserves the original theory and is supported by the
+runtime and source certificates in the main construction.
+
+The experimental sources, positive and negative propositional certificates,
+and ordinary mathematical transfer proofs are useful retained research.  They
+must not themselves be described as a successful 244-state reduction.  The
+earlier shared-helper proposal changed three additional occurrences of a helper
+and broke the logical gate; Section 7 records a concrete counterexample.  That
+rejection does not concern the different QT rotation in the main construction.
+
+Inputs and attribution
+----------------------
+ProveIt: fd1adfa19f8fe8da41444e3fa43b89a59d891067.
+Upstream busy-beaver: c132d7eae8158cd3a9850ea3eb7251158c3dd821, zf-254.
+The literal 219-node Dag254.v has SHA-256
+538ddaddd932058c2b319011126579d77783231f54331772377c05848a0599e3.
+It is byte-identical to the source used by the prior proof package.
+The source program is attributed by the repository to Mira-Cult, Jeff
+Ketchersid and Andrew James Wade.  formalism_reference/PROVENANCE.json pins
+every included original compiler, emitter, and specification file.
+
+We inspected the existing CP/GIC/bisimulation-quotient interpretation, equality
+deletion and label-twist obstructions, dual quantifier obstruction, finite-class
+and equational-generator proposals, axiom permutation searches, and the prior
+K/S/Peirce and K/B/Peirce controls.  These are not new claims of this submission.
+The complete upstream set-theoretic bridge is recorded in
+ZF/m254/coq/logic/Logic_ZFc254.v and ZF/m254/coq/settheory/S_main.v; the early
+scoping sections of design/logic.md should not be mistaken for its final status.
+
+1. Exact dirty-start absorption for the 244-state candidate
+---------------------------------------------------------
+Register order is [N,T,W,A,D,H,X,Y,L]: next proof, current formula, formula stack,
+selector, additive numeric parameter, cached formula, scratch1, scratch2,
+remaining proof list.  The separately checked binary initializer supplies
+
+    r = [3,0,0,0,3,0,35,0,0]
+
+at the genuine source root.  The following finite source fact is independent
+of the binary bootstrap and of the pruning invariant:
+
+    source_root(r) = [39,0,0,0,3,0,0,0,0], normally and without a halt.
+
+Proof.  The source root is the sequence 133;174;175;141.  With L=0, fetch133
+moves the old next-proof value into L, restores N through X, and increments N.
+Its exact dirty-input contract is L:=N_old, N:=N_old+X_old+1, X:=0.  Thus the
+first checkpoint is [39,0,0,0,3,0,0,0,3].  The selector read174 applies the
+source's dual Cantor inverse, unP(3)=(2,0); it produces selector 2 and list 0.
+The parameter read175 adds zero to D=3.  Selector 2 is NIP.  Since H=0 rather
+than the falsity code 1, it does not halt; popping W=0 gives cache 0 and stack 0.
+It clears its selector and temporary scratch.  This gives the stated result.
+
+formalism_dirty_seed.py checks this with two literal interpreters: structured
+recursion on the 219-node DAG and an independent flat instruction-path walk.
+They agree on all 182 primitive events and the complete final register file.
+The structured walk makes 289 edge calls.  There are no accelerated helpers,
+finite-matrix proxies, or probabilistic large-integer comparisons in this test.
+The output checkpoint and full primitive trace are supplied as JSON.
+
+The resulting abstract enumerator state, in [pl,np,tw,ws,d,h] order, is
+[0,39,0,0,3,0].  Its current formula, cache, and every stack entry are the truth
+code 0.  It therefore satisfies the exact soundness invariant.  Enumerating
+only candidates from 39 onward does not lose completeness: the existing safe-
+start theorem pads a reset command's unused fourth parameter to make a compiled
+refutation candidate exceed any initial cutoff.  The source then reaches that
+candidate unless it has already halted on a refutation.
+
+There is also an already proved direct route.  DirtyProgram254.six_nonformula_iff
+quantifies all six numerical control/scratch fields and fixes only T=W=H=0.
+Substituting N=3,A=0,D=3,X=35,Y=0,L=0 gives the exact source/native-refutation
+equivalence.  Its prerequisite DirtyRoot254.root_equiv is based on an explicit
+clean virtual state, which here is [39,0,0,0,3,0,0,0,4].  Both prefixes agree
+at the selector read.  The finite computation above makes the more concrete
+clean next-root route available too.
+
+The tiny caller formalism_DirtySeed244.lean names both existing structured and
+path source theorems for this seed.  It is supplied for integration, and has
+not been compiled in this scratch tree.  It does not purport to be the new
+binary table's Lean theorem.  A separate universal guarded-runtime comparison
+and a complete binary blank-tape frame remain necessary and are handled by the
+other branch of this investigation.  Physical spare blocks are not extra
+logical registers: the source's encoded register tail at indices >=9 is zero.
+
+2. A sound fusion of the three equality-congruence roots
+-----------------------------------------------------
+Write E(a,b) for equality and R(a,b) for membership.  After permuting the three
+universally ranged parameters, the old Euclidean, left-congruence and right-
+congruence rows have the common form
+
+    E(a,b) -> J7,   J7 = E(a,c) -> E(b,c);
+    E(a,b) -> J5,   J5 = R(a,c) -> R(b,c);
+    E(a,b) -> J3,   J3 = R(c,a) -> R(c,b).
+
+For any subset of two or all three rows, replace those rows by the single root
+
+    E(a,b) -> conjunction of the selected J's.
+
+All conjunction orders and both associations in the three-row case are valid.
+This does not drop a congruence requirement.  It puts the required conclusions
+inside a single output root, allowing later propositional proof commands to
+project them.  The old Łukasiewicz row rho8 and B6c row rho6 are kept verbatim.
+They yield the shared classical implicational calculus and explosion from F.
+
+Transfer proof.  In that common calculus, from E->Ji for each i, assume E and
+obtain every Ji by modus ponens.  Conjunction introduction and the propositional
+deduction theorem give E->(conjunction Ji).  Conversely, assume E, use the fused
+root, and project Ji; discharge E.  Only MP occurs under the assumption; no
+unrestricted generalization under hypotheses is used.  These derivations are
+uniform under all formula-code substitutions, including the truth alias 0,
+because they are identities of the common code-level propositional calculus.
+Changing the parameter names is harmless since all three natural parameters
+are independently enumerated.  Induction on a derivation translates either
+calculus to the other, with MP and GEN unchanged.  Their refutation predicates
+are therefore equivalent.
+
+formalism_fusions.py emits and symbolically checks 1368 different fine AX
+sources: 168 for each of the three two-row choices, and 864 for all three rows.
+Each is paired with either the old bundle or the previously proved mask-32
+double-negation simplification.  In all cases GEN uses the old cache before
+the read of b, the fourth parameter is read exactly once, and the original
+gate and cleanup are retained.  Every emitted root stack was independently
+symbolically reconstructed.  The unchanged source has fine AX length 1270;
+these sources have lengths 1269 or 1268 before the optional DNE normalization,
+and 1251 or 1250 after it.  These lengths are not TM state counts.
+
+The grammar branch seeded all 1368 exact sources.  Its best initial grammar
+cost was 134 charged productions (variant IDs 61 and 145), above the 128-
+production routing245 baseline.  Ten subsequent searches reached a best of
+133 productions for fusion 61 (mask1061 search output), as recorded in
+grammar_work/fusion_search_summary.json.  No improved machine bound is claimed
+for these fusions.
+
+3. Width-parametric proof enumeration
+------------------------------------
+The fusion changes the fixed number of output cells; this cannot be ignored.
+Here is the ordinary source bridge, applicable both to fusions and the split-
+bundle experiment below.  Suppose AX makes exactly N stack pushes: old current
+first, GEN of the old cache second, then N-2 additional theorem roots.  It
+leaves one final theorem root current, has the same four parameter reads, and
+clears D and H.  Assume a collision choice c=a forces that current to 0, and
+that all the remaining AX outputs are theorems whenever its old current and
+cache were theorems.  Original N=10; two-root fusion N=9; triple fusion N=8;
+four-way theory splitting with all eight logical rows has N=13.
+
+All unchanged commands use zero additive parameter except the displayed MP B
+and AX x fields.  NIP^k denotes k repetitions.  Every block contract allows
+an earlier halt, which is already sufficient for completeness.  Their normal
+result is exact and preserves the arbitrary retained tail S:
+
+* Discard = MP 1; AX(1;0,0,0); NIP^N.
+  From (T,S,0,0), MP fails since Imp(T,1)>0 and H=0.  Thus T becomes 0 and D=1.
+  AX has c=a=1, leaves current 0, and pushes N cells ending with the old 0 at
+  the bottom.  N pops leave S and cache 0; D was cleared by AX.
+
+* Current-root leaf = Discard; AX(parameters); NIP^N.
+
+* Root at depth j in the AX stack, 1<=j<=N-1:
+  Discard; AX(parameters); NIP^j; DROP; NIP^(N+1-j).
+  The first j pops put the desired root in H.  DROP makes it current and puts
+  the former current at the stack head.  The remaining pops remove that cell
+  and the N-j unused stack outputs, ending with the old truth cell in H.
+
+* GEN i = Build_H; DROP; NIP; AX(i;i,0,0); NIP^(N-1); DROP; NIP; NIP.
+  After the first DROP/NIP, H contains the proved formula H and the current is
+  0.  The AX collision sets its current to 0.  GEN(i,H) is at depth N-1.  The
+  two final pops discard the two truth cells, leaving GEN(i,H) current.
+
+* MP node = Build_A; DROP; Build_(A->B); NIP; DROP; NIP; MP B;
+  AX(B;0,0,0); NIP^N; DROP; NIP; NIP.
+  Immediately before MP B, current=A and cache=Imp(A,B); thus MP succeeds,
+  leaves B current and pushes one truth cell.  The cleanup AX has c=a=B and
+  current 0.  Its N pops recover the old B in cache, and the final DROP/NIP/NIP
+  restore B current while removing both truth cells.
+
+The START command AX(0;1,1,u) clears D/H from arbitrary retained input, and the
+same padding proof makes its code at least u.  The halt suffix DROP;NIP;NIP
+halts when current is F.  These contracts prove derivation-to-enumerator
+completeness by induction and the standard candidate-encoding argument.
+Soundness follows from the unchanged theoremhood invariant.  Neither proof
+establishes a binary runtime for a changed AX DAG: that is a distinct task.
+
+4. Split the CP/GIC/vacuity bundle into four gated outputs
+-------------------------------------------------------
+The original theory output is (C and G) and (VR and VE), with
+
+    VR = R(a,b) -> All(c,R(a,b));
+    VE = E(a,b) -> All(c,E(a,b)).
+
+Emit C, G, VR, VE as four consecutive roots instead.  In the common classical
+calculus these four axiom schemata and the original single bundle schema are
+interderivable by conjunction introduction and projection.  A source-level
+pitfall is the gate: each of the four outputs must be replaced by truth when
+c=a or c=b.  Merely retaining the original final-current gate is unsound.
+
+A safe implementation keeps VE last.  With the original numeric codec,
+E(a,b)=4P(a,b)+3>=3 and All(c,E)>=2.  Thus
+
+    VE = 4P(E(a,b), All(c,E(a,b))) > 0
+
+for every natural a,b,c.  Run the entire original gate and cleanup unchanged.
+It sets VE to 0 exactly in the invalid cases and leaves D,H,A,X,Y all zero.
+After that, test whether current is zero.  A positive result is restored and
+the routine exits.  On zero, perform a shared three-cell scrub:
+
+    pop and discard three stack heads; push truth 0 three times.
+
+All source unpair/push helpers now meet their zero-scratch preconditions.  The
+scrub has the universal contract
+
+    (0, P(x,P(y,P(z,S)))))  ->  (0, P(0,P(0,P(0,S)))))
+
+for every natural x,y,z,S, preserving all other registers.  It follows at once
+from three exact unpair identities followed by three exact pair identities.
+It is idempotent and does not change the number of stack outputs.  The AX
+therefore pushes exactly thirteen cells in every case.  For an invalid gate,
+all four theory outputs are truth.  For a valid gate, C,G,VR,VE are retained.
+
+Do not run this scrub inside the first old comparison branch: scratch2 still
+holds a copy of c for the second comparison there.  Waiting until the complete
+old tail has cleared the controls is essential.  The positive-VE sentinel also
+must remain last; an arbitrary formula root could numerically be truth 0.
+
+formalism_split_bundle.py creates four complete public-backend tables and
+independently reextracts every source decision edge.  These are matched cost
+controls including the public backend's initializer, not new consistency
+machines with closed binary correctness proofs:
+
+    original literal DAG              219 + 62 = 281 working states
+    faithfully re-emitted AX          219 + 62 = 281 working states
+    split with conditional scrub      228 + 62 = 290 working states
+    split with common-subsequence pass226 + 62 = 288 working states
+
+The original 281 control is the appropriate baseline for this compiler.  Its
+extra states must not be confused with routing245's 117+128 partition.  The
+public backend omitted one transition row, state '1.inc' reading 1.  Each
+table totalizes it to a direct halt without an additional working state, and
+records this explicitly; no new proof that this row is unreachable is claimed
+here.  The script tests 192 exact helper cases covering both gate outcomes,
+all small scratch contracts, positive-current preservation, and all nine
+registers.  Finite tests support the implementation, while the universal scrub
+proof above supplies its mathematical contract.
+
+The final matched control loses seven states.  It is still a concrete,
+reproducible source experiment, and removes the risk that a later researcher
+counts the three saved conjunction constructors without charging the gate.
+
+5. K/B/Peirce certificate and a stronger restricted-L obstruction
+---------------------------------------------------------------
+The compact Tarski--Bernays implicational basis is a known result, not a new
+axiomatization:
+
+    K: p -> (q -> p)
+    B: (p -> q) -> ((q -> r) -> (p -> r))
+    P: ((p -> q) -> p) -> p.
+
+Primary sources include Frank Pfenning, "Single Axioms in the Implicational
+Propositional Calculus", CADE 1988, official author PDF:
+https://www.cs.cmu.edu/~fp/papers/cade88.pdf
+and Wernhard/Bibel, "Investigations into Proof Structures", 2024:
+https://link.springer.com/article/10.1007/S10817-024-09711-8
+
+The previous source-search report measured a K/B/Peirce control but marked its
+logical replacement as an unproved exploratory control.  We supply a concrete
+shared 25-node condensed-detachment certificate (22 inferences from the three
+axioms) deriving both the original Lukasiewicz row
+
+    CCCpqrCCrpCsp
+
+and S = CCpCqrCCpqCpr.  C is prefix implication.  The verifier renames the two
+parents apart, unifies the major premise's antecedent with the minor premise,
+performs an occurs check, and checks the instantiated consequent exactly up
+to uniform variable names.  Thus the certificate can be expanded into MP and
+uniform-substitution derivations.  formalism_kbp_proof.txt is the certificate;
+formalism_verify.py independently replays it.  This fills the old proof gap
+without establishing a better state count.  The prior compiler measurements
+271 (K/B/P) and 272 (K/S/P) exceeded their own 268-state control.
+
+A further positive certificate is formalism_kbpf_proof.txt: 30 shared nodes,
+26 detachment steps from K, B, fixed-falsity Peirce PF=((p->F)->p)->p, and EFQ,
+deriving full Peirce and the original L.  EFQ is not another emitted row:
+put Q=exists i forall i A=(forall i (forall i A -> F))->F.  K gives F->Q,
+rho6 gives Q->A, and the B instance (F->Q)->((Q->A)->(F->A)) gives F->A by
+two MP steps.  This uses neither S nor an assumed deduction theorem.
+The reverse transfer specializes the old full Peirce at q=F.  The resulting
+replacement has exactly the same numerical theorem set as the old calculus.
+
+formalism_kbp_sources.py emits 1296 independent-label/order K/B/P sources,
+or, with --peirce-f, 648 K/B/PF sources.  Every one uses DNE mask32, has twelve
+AX pushes, retains GEN before the b read, and deletes the u read.  The exact
+fine lengths are 1303 and 1302.  These are symbolic lengths, not state counts;
+the companion grammar branch owns the actual charged-grammar measurements.
+The new three-field command codec pads a reset through its first additive
+field v+1 rather than a deleted fourth field.  Its candidate code is at least
+v, and it clears D,H before the arbitrary-input contradiction block.
+
+We also tested the tempting fourth-parameter elimination u:=F in the original
+L row.  There is a stronger obstruction than omitting all auxiliary classical
+principles: even adding K, I, explosion and double-negation elimination does
+not recover the classical implicational basis.  Use values {0,1,2,3}, only 3
+designated, F=0, and implication table
+
+      -> | 0 1 2 3
+      ---+--------
+       0 | 3 3 3 3
+       1 | 3 3 0 3
+       2 | 3 0 3 3
+       3 | 0 0 0 3.
+
+All K, I, EFQ, DNE and restricted-L instances are designated.  The same matrix
+also validates the restricted row with u equal to truth (value3), to a, or to
+c.  It respects Imp(truth,truth)=truth, including the numerical truth alias.
+Modus ponens
+preserves designation.  Peirce at p=1,q=2 and S at p=1,q=0,r=2 both evaluate
+to 0.  The verifier exhaustively checks every schema assignment (16,4,4,4,64
+respectively) and every MP pair.  This is a rigorous nonderivability result
+for that propositional basis.  It is not a countermodel to the full CP/GIC
+source, whose additional quantified/nonlogical axioms could prove more.
+
+Two further verified obstructions prevent misleading reductions of the new
+basis.  For B, full Peirce, PF, I, EFQ and DNE without K, use three values,
+F=0, truth=2, designated values {1,2}, and implication rows
+[[2,2,2],[0,2,0],[0,2,2]].  All those schemata and MP are sound, but K(p=2,q=1)
+has value0.  Allowing two designated values was essential to finding this
+obstruction.  For K,B,I,EFQ,DNE without Peirce, use rows
+[[2,2,2],[1,2,2],[0,1,2]], designated only2, F=0.  All listed schemata and MP
+are sound while PF(p=1) has value1.  Both matrices preserve the truth alias.
+These are propositional nonderivability results, not full CP/GIC models.
+
+6. Fresh-only binder generation has a real logical obstacle
+---------------------------------------------------------
+A suggested gate removal is to set c:=a+b+1+u and generate only theory roots
+whose binder exceeds both atomic labels.  Even if a sufficiently large c
+can encode padded GIC matrices, full vacuity does not follow just by saying
+"rename the variables".  A simple algebraic counterinterpretation explains
+the missing step.
+
+Let an assignment be x in Q^N.  Interpret label i by
+
+    f_i(x) = x_i + 2 sum_{k<i} x_k.
+
+Interpret equality as actual rational equality and membership by any chosen
+irreflexive binary relation R on Q.  Quantifier All(i,phi) varies the coordinate
+x_i while fixing the others.  Implication and F have their ordinary Boolean
+meanings, with F=false.  These quantifiers commute, distribute over implication,
+and satisfy exists-i forall-i phi -> phi.  GEN preserves universal validity.
+All equality-congruence rows hold pointwise.  Equality existence holds: for
+i<j, the coefficient of x_i in f_i-f_j is -1 and the coefficient of x_j is -1;
+either coordinate can be solved over Q.  The i=j case is tautological.
+
+If c>a+b, neither f_a nor f_b depends on x_c, so both restricted atomic-vacuity
+rows are valid.  Nevertheless unrestricted membership vacuity fails.  Take
+R(s,t) iff s=0 and t=1.  With x0=0,x1=0,x2=1, R(f1,f2) is true.  Varying the
+distinct binder x0 to 1 makes (f1,f2)=(2,3), so All(0,R(1,2)) is false.  Thus
+R(1,2)->All(0,R(1,2)) is not derivable from the eight logical rows plus fresh-
+only vacuity.  R is irreflexive, so the literal falsity atom R(0,0) remains
+false at every assignment.
+
+This counterinterpretation does not validate the full CP/GIC bundle and is
+not claimed to refute a future equiconsistency theorem for that restricted
+set theory.  Its precise consequence is that the existing complete first-order
+bridge cannot simply be reused.  A new CP/GIC-sensitive derivation of missing
+vacuity or a direct restricted-calculus interpretation would be required.
+
+7. Rejection of the globally shared-loop deletion
+------------------------------------------------
+The forced-zero loop is at source site 6316, in NIP's comparison of scratch1
+with the cached formula.  The proposed 244-state table removes a grammar rule
+for 'gm', where g drains X into H and m increments H.  The same body is reached
+at AX's first comparison (6282), AX's second comparison (6301), and the MP
+comparison (6426).  At these three additional sites X need not be zero.
+
+This is a semantic failure, not just a missing proof.  In the original literal
+DAG the relevant piece is node127 = (node207, Inc H), with node207 the draining
+loop.  Replace references to node127 by Inc H, which is the shared deletion's
+source effect.  Run the exact original AX tail
+
+    192;131;211;197;131
+
+from [N,T,W,A,D,H,X,Y,L]=[0,4,0,2,2,0,0,0,0].  These are valid pre-gate controls
+c=a=2,b=0; T=4 is an arbitrary positive payload.  The original tail returns all
+zero registers (the invalid payload is cleared).  The changed tail returns
+[0,4,0,0,0,0,0,0,0], retaining the payload.  The ordinary gate proof is uniform
+in the payload, so the same failure applies to the actual generated bundle.
+
+The reason is exact: when c>b, the first comparison now leaves X=c-b-1.  The
+saved c is then restored additively, so the second comparison tests 2c-b-1
+against a, rather than c against a.  For c=a=2,b=0 this tests 3 against 2 and
+fails to clear the collision.  Conversely c=3,a=5,b=0 spuriously clears a
+valid-gate payload.  This cannot be repaired by citing the single site's
+zero-scratch invariant or by the source's safe dirty-start theorem.
+
+Reproduction
+------------
+Run from a directory containing these files and formalism_reference/:
+
+    python formalism_verify.py
+    python formalism_dirty_seed.py
+    python formalism_fusions.py
+    python formalism_kbp_sources.py
+    python formalism_kbp_sources.py --peirce-f
+    python formalism_split_bundle.py
+    python formalism_shared_gate_counterexample.py
+
+The first two checks are small and use exact arithmetic only.  The other
+commands rebuild the experimental source lists, matched compiler controls,
+and the shared-gate rejection witnesses.  No
+claim in this note depends on a failed search exhausting an infinite space.
+No historical novelty or global optimality is asserted.

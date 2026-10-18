@@ -1,0 +1,94 @@
+--- /tmp/zfc243-combined-lean/invariant/check.py
++++ /tmp/zfc243-calibration-plan/check.py
+@@ -1,15 +1,16 @@
+ #!/usr/bin/env python3
+-"""Rotation244 local tape invariant; exact Core+Rotation244 and Init providers."""
++"""Two-row rotated logical program interface; five exact project providers and Init."""
+ from pathlib import Path
+ import argparse,hashlib,json,os,re,shutil,signal,subprocess,time
+-HERE=Path('/tmp/zfc243-combined-lean/invariant')
+-MODULE='BusyBeaver.ZFC.Rotation244Invariant'
+-PREFIX='SetTheory.BusyBeaver.ZFC.Rotation244Invariant.'
+-PROBES=['start_holds', 'initial_holds', 'step_holds', 'runFrom_holds', 'run_holds']
+-SOURCE_SHA='c697cfad7c70aecc3422f482161f7ffb43f6f0c39ee0c78cb6e56fdc70abb2da'
+-AUDIT_SHA='585b3b9dfd0af05323f4fa062bdb383fe0fed7aec6f8a8c0fa5d0ca22328882f'
+-BOUNDARY_SHA='ec223b4d5fd91a509e766d1e7d7df91af310affdf69a8d52f09cc79f658ffd92'
+-PARENT_SHA='339ac1eb684bf2b0e2dca81f6a5d693abf2f3fe7079d0c924e5cf2ab870f3466'
++HERE=Path('/tmp/zfc243-calibration-plan')
++MODULE='BusyBeaver.ZFC.ProgramRotation244'
++PREFIX='SetTheory.BusyBeaver.ZFC.ProgramRotation244.'
++PROBES=['program_root', 'program_nnodes', 'node5', 'node6', 'nodes_unmodified', 'original_loop_rows', 'parent_row']
++SOURCE_SHA='3bb25d3b5068dadd3f217b11c3fa10be0a86a5df04e3b50073413d03e8daa20a'
++AUDIT_SHA='cb2b88b7d578bc23a6df46225ec4268fca29006d82c191d9f5fae5c4684fed9c'
++BOUNDARY_SHA='833887311dcb5f705d0095b352214f88dba05934e42f02e2f1786d0366f48b5b'
++PARENT_SHA='1efd9f64fc8067e85518fc9968752a9a10f78cdeb4f24aa8dd9e8c58d2a53c71'
++PARENT_AUDIT_NAMES=['ProgramRouting245.program_root', 'ProgramRouting245.program_nnodes', 'ProgramRouting245.nodes_default', 'TreeRouting245.tree_eq_fuel', 'TreeRouting245.tree_eq', 'TreeRouting245.walk_eq_tree', 'TreeRouting245.step_eq_tree', 'TreeRouting245.leaf_count', 'TreeRouting245.node_count', 'TreeRouting245.depth_eq', 'TreeRouting245.halt_count']
+ STANDARD={'propext','Classical.choice','Quot.sound'}
+ sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+ rel=lambda m,s='.olean':Path(m.replace('.','/')).with_suffix(s)
+@@ -21,7 +22,7 @@
+     return [dict(name=n,axioms=sorted({x.strip()for x in a.split(',')if x.strip()}))for n,a in rr]
+ def main():
+     p=argparse.ArgumentParser(description=__doc__)
+-    p.add_argument('--source',type=Path,default=HERE/'Rotation244Invariant.lean')
++    p.add_argument('--source',type=Path,default=HERE/'ProgramRotation244.lean')
+     p.add_argument('--audit',type=Path,default=HERE/'Audit.lean')
+     p.add_argument('--boundary',type=Path,default=HERE/'boundary.json')
+     p.add_argument('--parent-evidence',type=Path)
+@@ -40,28 +41,31 @@
+     b=json.loads(B.read_text())
+     for q in b['static_inputs']:pin(q['path'],q['sha256'])
+     E=pin(a.parent_evidence or b['parent']['path'],PARENT_SHA);e=json.loads(E.read_text())
+-    require(b['parent']['sha256']==PARENT_SHA and e['status']=='PASS'and(e['named_axiom_probes'],e['callers'])==(7,7),'Wrong parent.')
++    require(b['parent']['sha256']==PARENT_SHA and e['status']=='PASS'and(e['named_axiom_probes'],e['callers'])==(11,13),'Wrong parent.')
+     require(e['before']==e['after']and e['all_input_provider_postchecks']and e['all_fresh_objects_unchanged_after_audit']and e['only_standard_axioms'],'Incomplete parent.')
+     require([q['label']for q in e['commands']]==['source','audit']and all(q['exit_code']==0 and not q.get('timed_out',False)for q in e['commands']),'Parent command failure.')
+     for k in ['source','audit']:pin(e[k]['snapshot'],e[k]['sha256'])
+     ns=re.findall(r'^#print axioms (\S+)$',Path(e['audit']['snapshot']).read_text(),re.M);rr=reports(e['commands'][1]['output'])
+-    require(len(ns)==7 and [q['name']for q in rr]==ns and all(set(q['axioms'])<=STANDARD for q in rr),'Parent raw reports.')
+-    require(imports(S)==['BusyBeaver.ZFC.TableRotation244']and imports(A)==[MODULE],'Imports changed.')
++    require(ns==PARENT_AUDIT_NAMES and 'open SetTheory.BusyBeaver.ZFC' in Path(e['audit']['snapshot']).read_text() and [q['name']for q in rr]==['SetTheory.BusyBeaver.ZFC.'+n for n in ns] and all(set(q['axioms'])<=STANDARD for q in rr),'Parent raw reports.')
++    require(len(re.findall(r'^example\b',Path(e['audit']['snapshot']).read_text(),re.M))==13,'Parent caller census.')
++    for c in e['commands']:
++        pin(c['log'],hashlib.sha256(c['output'].encode()).hexdigest())
++    require(imports(S)==['BusyBeaver.ZFC.ProgramRouting245']and imports(A)==[MODULE],'Imports changed.')
+     require(re.findall(r'^#print axioms (\S+)$',A.read_text(),re.M)==[PREFIX+n for n in PROBES],'Audit qualified names changed.')
+-    require(len(re.findall(r'^example\b',A.read_text(),re.M))==8,'Typed callers changed.')
++    require(len(re.findall(r'^example\b',A.read_text(),re.M))==7,'Typed callers changed.')
+     for p in [S,A]:
+         require(not re.search(r'\b(sorry|admit|native_decide)\b',p.read_text()),'Untrusted proof exit.')
+         require(not re.search(r'set_option\s+(maxHeartbeats|maxRecDepth)',p.read_text()),'Raised proof limits.')
+     reused=b['reused_modules'];tools=b['toolchain_providers'];projects={q['module']:q for q in reused}
+-    require(len(reused)==2 and set(projects)=={'BusyBeaver.Core','BusyBeaver.ZFC.TableRotation244'},'Wrong selected projects.')
++    require(len(reused)==5 and set(projects)=={'BusyBeaver.ZFC.RMEquiv', 'BusyBeaver.ZFC.ProgramRouting245', 'BusyBeaver.ZFC.RegisterPath', 'BusyBeaver.ZFC.RMBisim', 'BusyBeaver.ZFC.RMDag'},'Wrong selected projects.')
+     C=pin(b['compiler']['path'],b['compiler']['sha256']);require(b['compiler']==e['compiler'],'Different compiler.')
+     for q in reused:
+-        if q['module'] == 'BusyBeaver.ZFC.TableRotation244':
++        if q['module'] == 'BusyBeaver.ZFC.ProgramRouting245':
+             fs=e['fresh_modules'];require(len(fs)==1 and fs[0]['module']==q['module'],'Wrong fresh parent module.')
+             f=fs[0];require(q['source']==e['source']['path']and q['source_sha256']==e['source']['sha256']==f['source_sha256']and q['object']==f['path']and q['object_sha256']==f['sha256'],'Fresh parent identity mismatch.')
+             for k in ['source','object']:pin(q[k],q[k+'_sha256'])
+             require(e['source_object_recorded_before_audit']and all(e['source_pass_object'][k]==f[k]for k in ['module','path','sha256','source_sha256']),'Missing fresh pre-audit capture.')
+-            cap=e['fresh_first_provider_before_audit'];require(cap['module']==q['module']and Path(cap['path']).resolve()==Path(q['object']).resolve()and cap['sha256']==q['object_sha256'],'Wrong fresh first provider.')
++            cap=e['fresh_first_provider_before_audit'];require(cap['module']==q['module']and Path(cap['actual_first']).resolve()==Path(cap['resolved']).resolve()==Path(q['object']).resolve()and cap['sha256']==q['object_sha256'],'Wrong fresh first provider.')
+         else:
+             old=next(x for x in e['reused_modules']if x['module']==q['module']);require(q==old,'Changed selected parent pair.')
+             for k in ['source','object']:
+@@ -94,7 +98,7 @@
+             rows.append(dict(module=q['module'],actual_first=str(pp),sha256=sha(pp)))
+         return rows
+     actual=providers();env=dict(os.environ,LEAN_PATH=str(cache),LEAN_NUM_THREADS='1')
+-    r=dict(status='PREPARED_NOT_BUILT'if a.prepare_only else'RUNNING',prepare_only=a.prepare_only,scope='Local invariant at old68/81/167 on arbitrary Core finite-support tapes, preserved for every natural run duration. No calibration or machine comparison.',source=dict(path=str(S),sha256=SOURCE_SHA,snapshot=str(ss)),audit=dict(path=str(A),sha256=AUDIT_SHA,snapshot=str(aa)),boundary=dict(path=str(B),sha256=BOUNDARY_SHA),provider_evidence=[dict(path=str(E),sha256=PARENT_SHA)],compiler=b['compiler'],compiler_version_query_performed=False,reused_modules=reused,toolchain_providers=tools,actual_first_providers=actual,exact_project_import_closure=sorted(seen),exact_project_prerequisite_count=2,before=dict(tracked),commands=[],fresh_modules=[],LEAN_PATH=str(cache),LEAN_NUM_THREADS='1',memory_mebibytes=4096,shared_timeout_seconds=120,global_option_overrides=[],dependency_build=False,downloads=False,parent_scope=b['scope'])
++    r=dict(status='PREPARED_NOT_BUILT'if a.prepare_only else'RUNNING',prepare_only=a.prepare_only,scope='Exact two-row logical program override and local row equalities. No full-tree certificate, source halting transfer, binary simulation, or consistency calibration.',source=dict(path=str(S),sha256=SOURCE_SHA,snapshot=str(ss)),audit=dict(path=str(A),sha256=AUDIT_SHA,snapshot=str(aa)),boundary=dict(path=str(B),sha256=BOUNDARY_SHA),provider_evidence=[dict(path=str(E),sha256=PARENT_SHA)],compiler=b['compiler'],compiler_version_query_performed=False,reused_modules=reused,toolchain_providers=tools,actual_first_providers=actual,exact_project_import_closure=sorted(seen),exact_project_prerequisite_count=5,before=dict(tracked),commands=[],fresh_modules=[],LEAN_PATH=str(cache),LEAN_NUM_THREADS='1',memory_mebibytes=4096,shared_timeout_seconds=120,global_option_overrides=[],dependency_build=False,downloads=False,parent_scope=b['scope'])
+     def save():(W/'verification.json').write_text(json.dumps(r,indent=2)+'\n')
+     def post():
+         r['after']={p:sha(p)for p in tracked};require(r['before']==r['after']and providers()==actual,'Postcheck failed.')
+@@ -124,7 +128,7 @@
+         r.update(fresh_modules=[q],source_pass_object=dict(q,source_command_index=0),source_object_recorded_before_audit=True,fresh_first_provider_before_audit=dict(module=MODULE,path=str(first(MODULE)),sha256=sha(first(MODULE))))
+         require(first(MODULE)==obj.resolve(),'Fresh first provider mismatch.');save()
+         out=run('audit',aa);rr=reports(out);require([q['name']for q in rr]==[PREFIX+n for n in PROBES]and all(set(q['axioms'])<=STANDARD for q in rr),'Wrong actual reports.')
+-        post();r.update(status='PASS',named_axiom_probes=5,callers=8,axiom_reports=rr,only_standard_axioms=True,all_fresh_objects_unchanged_after_audit=True,warnings=sum(q['output'].count('warning:')for q in r['commands']))
++        post();r.update(status='PASS',named_axiom_probes=7,callers=7,axiom_reports=rr,only_standard_axioms=True,all_fresh_objects_unchanged_after_audit=True,warnings=sum(q['output'].count('warning:')for q in r['commands']))
+     except BaseException as ex:
+         r.update(status='FAIL',error=repr(ex))
+         try:post()

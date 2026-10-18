@@ -1,0 +1,21 @@
+PYTHON ?= python3
+
+.PHONY: verify verify-full verify-literal pdf table check-table
+
+verify:
+	$(PYTHON) -B code/verify_all.py
+
+verify-full:
+	$(PYTHON) -B code/verify_all.py --whole-frame --literal
+
+verify-literal:
+	$(PYTHON) -B code/verify_all.py --literal
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+
+table:
+	$(PYTHON) -B code/render_transition_table.py
+
+check-table:
+	$(PYTHON) -B code/render_transition_table.py --check

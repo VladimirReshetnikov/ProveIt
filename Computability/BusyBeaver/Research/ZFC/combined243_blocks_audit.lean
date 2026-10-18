@@ -1,0 +1,119 @@
+import BusyBeaver.ZFC.Combined243Blocks
+
+open SetTheory.BusyBeaver SetTheory.BusyBeaver.ZFC
+open SetTheory.BusyBeaver.ZFC.Combined243Blocks
+
+#print axioms SetTheory.BusyBeaver.ZFC.Combined243Blocks.enter122_from104_read0
+example (h : Int) (t : Tape)
+    (h0 : Tape.read t h = true)
+    (hp1 : Tape.read t (h + 1) = false) :
+    embedConfig243 (machineCombined243.runFrom (cfgNew 104 h t) 4) =
+      machineRotation244.runFrom (cfgOld 104 h t) 2 :=
+  enter122_from104_read0 h t h0 hp1
+
+#print axioms SetTheory.BusyBeaver.ZFC.Combined243Blocks.enter122_from104_read1
+example (h : Int) (t : Tape)
+    (h0 : Tape.read t h = true)
+    (hp1 : Tape.read t (h + 1) = true) :
+    embedConfig243 (machineCombined243.runFrom (cfgNew 104 h t) 2) =
+      machineRotation244.runFrom (cfgOld 104 h t) 2 :=
+  enter122_from104_read1 h t h0 hp1
+
+#print axioms SetTheory.BusyBeaver.ZFC.Combined243Blocks.enter122_from106_read0
+example (h : Int) (t : Tape)
+    (h0 : Tape.read t h = true)
+    (hp1 : Tape.read t (h + 1) = false) :
+    embedConfig243 (machineCombined243.runFrom (cfgNew 106 h t) 4) =
+      machineRotation244.runFrom (cfgOld 106 h t) 2 :=
+  enter122_from106_read0 h t h0 hp1
+
+#print axioms SetTheory.BusyBeaver.ZFC.Combined243Blocks.enter122_from106_read1
+example (h : Int) (t : Tape)
+    (h0 : Tape.read t h = true)
+    (hp1 : Tape.read t (h + 1) = true) :
+    embedConfig243 (machineCombined243.runFrom (cfgNew 106 h t) 2) =
+      machineRotation244.runFrom (cfgOld 106 h t) 2 :=
+  enter122_from106_read1 h t h0 hp1
+
+#print axioms SetTheory.BusyBeaver.ZFC.Combined243Blocks.repair167
+example (h : Int) (t : Tape)
+    (hm1 : Tape.read t (h - 1) = true)
+    (h0 : Tape.read t h = true) :
+    embedConfig243 (machineCombined243.runFrom (cfgNew 167 h t) 2) =
+      machineRotation244.runFrom (cfgOld 167 h t) 2 :=
+  repair167 h t hm1 h0
+
+#print axioms SetTheory.BusyBeaver.ZFC.Combined243Blocks.enter92_from81_zero
+example (h : Int) (t : Tape)
+    (hm1 : Tape.read t (h - 1) = false)
+    (h0 : Tape.read t h = true) :
+    embedConfig243 (machineCombined243.runFrom (cfgNew 81 h t) 2) =
+      machineRotation244.runFrom (cfgOld 81 h t) 2 :=
+  enter92_from81_zero h t hm1 h0
+
+#print axioms SetTheory.BusyBeaver.ZFC.Combined243Blocks.enter92_from81_one
+example (h : Int) (t : Tape)
+    (hm2 : Tape.read t (h - 2) = true)
+    (hm1 : Tape.read t (h - 1) = true)
+    (h0 : Tape.read t h = true) :
+    embedConfig243 (machineCombined243.runFrom (cfgNew 81 h t) 4) =
+      machineRotation244.runFrom (cfgOld 81 h t) 6 :=
+  enter92_from81_one h t hm2 hm1 h0
+
+
+#print axioms SetTheory.BusyBeaver.ZFC.Combined243Blocks.enter122_from104_read0_new_endpoint
+example (h : Int) (t : Tape)
+    (h0 : Tape.read t h = true)
+    (hp1 : Tape.read t (h + 1) = false) :
+    machineCombined243.runFrom (cfgNew 104 h t) 4 =
+      cfgNew 25 (h + 2) t :=
+  enter122_from104_read0_new_endpoint h t h0 hp1
+
+#print axioms SetTheory.BusyBeaver.ZFC.Combined243Blocks.enter122_from104_read1_new_endpoint
+example (h : Int) (t : Tape)
+    (h0 : Tape.read t h = true)
+    (hp1 : Tape.read t (h + 1) = true) :
+    machineCombined243.runFrom (cfgNew 104 h t) 2 =
+      cfgNew 66 (h + 2) t :=
+  enter122_from104_read1_new_endpoint h t h0 hp1
+
+#print axioms SetTheory.BusyBeaver.ZFC.Combined243Blocks.enter122_from106_read0_new_endpoint
+example (h : Int) (t : Tape)
+    (h0 : Tape.read t h = true)
+    (hp1 : Tape.read t (h + 1) = false) :
+    machineCombined243.runFrom (cfgNew 106 h t) 4 =
+      cfgNew 25 (h + 2) t :=
+  enter122_from106_read0_new_endpoint h t h0 hp1
+
+#print axioms SetTheory.BusyBeaver.ZFC.Combined243Blocks.enter122_from106_read1_new_endpoint
+example (h : Int) (t : Tape)
+    (h0 : Tape.read t h = true)
+    (hp1 : Tape.read t (h + 1) = true) :
+    machineCombined243.runFrom (cfgNew 106 h t) 2 =
+      cfgNew 66 (h + 2) t :=
+  enter122_from106_read1_new_endpoint h t h0 hp1
+
+#print axioms SetTheory.BusyBeaver.ZFC.Combined243Blocks.repair167_new_endpoint
+example (h : Int) (t : Tape)
+    (hm1 : Tape.read t (h - 1) = true)
+    (h0 : Tape.read t h = true) :
+    machineCombined243.runFrom (cfgNew 167 h t) 2 =
+      cfgNew 24 (h - 2) t :=
+  repair167_new_endpoint h t hm1 h0
+
+#print axioms SetTheory.BusyBeaver.ZFC.Combined243Blocks.enter92_from81_zero_new_endpoint
+example (h : Int) (t : Tape)
+    (hm1 : Tape.read t (h - 1) = false)
+    (h0 : Tape.read t h = true) :
+    machineCombined243.runFrom (cfgNew 81 h t) 2 =
+      cfgNew 107 (h - 2) t :=
+  enter92_from81_zero_new_endpoint h t hm1 h0
+
+#print axioms SetTheory.BusyBeaver.ZFC.Combined243Blocks.enter92_from81_one_new_endpoint
+example (h : Int) (t : Tape)
+    (hm2 : Tape.read t (h - 2) = true)
+    (hm1 : Tape.read t (h - 1) = true)
+    (h0 : Tape.read t h = true) :
+    machineCombined243.runFrom (cfgNew 81 h t) 4 =
+      cfgNew 2 (h - 2) (Tape.write (Tape.write t h false) (h - 1) false) :=
+  enter92_from81_one_new_endpoint h t hm2 hm1 h0

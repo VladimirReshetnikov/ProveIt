@@ -1,0 +1,82 @@
+{
+  "status": "PASS_RETAINED_LOCAL_EVIDENCE",
+  "purpose": "Separate permanent retention of detailed local/boot outputs and child streams that the portable driver removes with its TemporaryDirectory. Not another independent checker.",
+  "records": [
+    {
+      "name": "rebuild",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "rebuild_candidates.py"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "seconds": 0.06418075691908598,
+      "stdout": "/tmp/zfc244-root-replays/retained-local/rebuild-stdout.log",
+      "stderr": "/tmp/zfc244-root-replays/retained-local/rebuild-stderr.log"
+    },
+    {
+      "name": "direct",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "prove_contextual_fold.py"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "seconds": 0.06426005717366934,
+      "stdout": "/tmp/zfc244-root-replays/retained-local/direct-stdout.log",
+      "stderr": "/tmp/zfc244-root-replays/retained-local/direct-stderr.log"
+    },
+    {
+      "name": "independent",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "verify_local_stuttering.py",
+        "reference/zfc245_old.tm",
+        "candidate_1_244_old.tm",
+        "--output",
+        "retained-independent.json"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "seconds": 0.06414635572582483,
+      "stdout": "/tmp/zfc244-root-replays/retained-local/independent-stdout.log",
+      "stderr": "/tmp/zfc244-root-replays/retained-local/independent-stderr.log"
+    },
+    {
+      "name": "boot",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "check_new_boot.py",
+        "candidate_1_244_old.tm",
+        "retained-boot.json"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "seconds": 0.36462467070668936,
+      "stdout": "/tmp/zfc244-root-replays/retained-local/boot-stdout.log",
+      "stderr": "/tmp/zfc244-root-replays/retained-local/boot-stderr.log"
+    }
+  ],
+  "outputs_equal_delivered_records": [
+    [
+      "contextual_fold_proof.json",
+      "contextual_fold_proof.json"
+    ],
+    [
+      "retained-independent.json",
+      "local-stuttering-audit.json"
+    ],
+    [
+      "retained-boot.json",
+      "candidate_1_boot.json"
+    ]
+  ],
+  "all_three_reconstructed_variants_equal": true,
+  "source_files_unchanged": true,
+  "supplied_compiler_calls": 0,
+  "manifest_audit_performed": false
+}

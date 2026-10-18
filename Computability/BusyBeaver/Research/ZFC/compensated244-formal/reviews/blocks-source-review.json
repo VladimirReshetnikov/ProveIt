@@ -1,0 +1,53 @@
+{
+  "status": "SOURCE_AND_GUARD_REVIEW_PASS",
+  "findings": [],
+  "reviewer_role": "Independent source/API and guard reviewer; not proof/guard author.",
+  "reviewer_source": {
+    "path": "/tmp/zfc244-formal-unit-review/review_blocks_source.py",
+    "sha256": "871151aac81ce4730f19c99d6da96bab0b192bd6eb2a3efcb127123c96d4e93a"
+  },
+  "source": {
+    "path": "/tmp/zfc244-compensated-lean/blocks/Compensated244Blocks.lean",
+    "sha256": "ebdb4d2c44050bc1a0cfe4e1a4f4ece49b1650fd51eac423a81874f95eb12403"
+  },
+  "audit": {
+    "path": "/tmp/zfc244-compensated-lean/blocks/Audit.lean",
+    "sha256": "c17ee85c8940c0a63a8d6527f06aa194d98bfc9b4e048c8dae09a6d73605321d"
+  },
+  "guard": {
+    "path": "/tmp/zfc244-compensated-lean/blocks/check.py",
+    "sha256": "16e63d7ce24d471533213b48f480f491fda26d59d05f3fb6d6fedd81b4f01423"
+  },
+  "boundary": {
+    "path": "/tmp/zfc244-compensated-lean/blocks/boundary.json",
+    "sha256": "4ca65ceaf3634e745a8323e37505842377366fe892bbfac4e6fe64e2d35f4ca9"
+  },
+  "history_source": {
+    "path": "/tmp/zfc244-compensated-lean/blocks/history/unexecuted-seven-pair-draft/Compensated244Blocks.lean",
+    "sha256": "62795c7aab10a37f8012a97ba7d701d69a903fa8bc1d1b4a2c72f7239d65e85a"
+  },
+  "delta": {
+    "path": "/tmp/zfc244-compensated-lean/blocks/endpoint-wrapper.diff",
+    "sha256": "aefa3a014a664f2d751a8d99d2591a1e938d309ccac1908cdd9087cb0ceb9559"
+  },
+  "guard_delta": {
+    "path": "/tmp/zfc244-compensated-lean/blocks/guard-from-positive.diff",
+    "sha256": "41df36aac3ab19dde7157ea3813b4f9fc4cae1b7a97a04f823f679f91a5acf86"
+  },
+  "counts": {
+    "paired_equalities": 7,
+    "new_endpoint_wrappers": 7,
+    "probes": 14,
+    "callers": 14,
+    "project_providers": 3,
+    "toolchain_providers": 2
+  },
+  "review": [
+    "Full original seven-pair source and emitter read; exact tape writes and positive old/new durations match literal rows.",
+    "Complete successor diff and typed audit read. The original public seven equalities are unchanged; private proof simplification removes reflexive head rewrites and renames one unused hypothesis.",
+    "All seven endpoint wrappers directly reuse the private new-run calculations with identical premises and exact whole configurations.",
+    "Guard delta reuses the previously read bounded runner, selects exact actual table parent and its fresh pre-audit/first-provider object; 120 seconds shared, -j1, -M4096, default proof limits."
+  ],
+  "scope": "Arbitrary Core finite-support tape and head with explicit finite bit premises. Seven local pairs/endpoints only; no global halting-equivalence claim.",
+  "supplied_execution": false
+}

@@ -764,8 +764,10 @@ splits into three pieces with a narrow interface:
    `QuotientModel.memberForm 0 1`. The domain describes the internally
    well-founded part of the definable quotient: its minimal-element
    condition quantifies over represented sets, not arbitrary external
-   subsets. First quote these formulas and prove the core's `Good`
-   arity/shift conditions. Then prove native domain nonemptiness and
+   subsets. The [explicitly closed parameter](native_wf_closed_parameters.md)
+   now has checked `Good` arity/shift conditions in every IΣ₁ model.
+   Its identification with the semantic interpretation remains to be
+   checked. Then prove native domain nonemptiness and
    transport of every internal ZF axiom code, including interpreted
    equality axioms and nonstandard Separation/Replacement matrices.
    Existing semantic proofs and completeness can supply fixed ordinary
@@ -777,11 +779,33 @@ splits into three pieces with a narrow interface:
 
 The [source-only R3 review](results/upstream-internal-interpretation-ec37dd933a-review.json)
 records the exact supplied core and existing quotient/WF formulas. The
-core's set-language term premise is already supplied by
-`SetRelativization.isTerm_eq_fvar`. No fresh compiler audit of the new core
-is claimed here. A finite-fragment alternative would still need a uniform
+[reduced-import core](internal_interpretation_core.md) subsequently passed
+its source check and expanded audit: seven probes, thirteen typed callers,
+and zero warnings. Its public declarations are unchanged; the import repair
+adds a private arity lemma and redirects seven uses to it. The historical
+source and audit remain available. The set-language term
+premise is supplied by `SetRelativization.isTerm_eq_fvar`, while `Good`,
+domain nonemptiness and internal axiom transport remain hypotheses of the
+generic core. The separate closed-parameter audit passed seven probes and
+ten typed callers without warnings. Its quotation helper passed five
+probes and eight callers with two retained style warnings. These syntax
+results do not supply the remaining semantic or arbitrary-code transport
+steps.
+A finite-fragment alternative would still need a uniform
 transformation of arbitrary internal refutations; a result restricted to a
 proper definable cut would need an additional bridge to full consistency.
+
+The upstream [NativeFixed](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/NativeFixed.lean)
+now supplies source-level proofs for the interpreted equality and seven
+fixed ZF axioms, together with domain nonemptiness for `NativeInterp.PN`.
+Its [source/API review](results/upstream-native-fixed-b8b8397f3c-review.json)
+found no mathematical blocker; no fresh compiler or typed audit is claimed.
+`provable_domain` has the required nonemptiness shape in every IΣ₁ model.
+`provable_interp_fixed` still takes an ordinary sentence and external
+membership proof. Turning that result into a case split on arbitrary
+internal axiom codes, handling internal Separation/Replacement matrices,
+and identifying the checked closed parameter with `PN` remain separate
+obligations.
 
 The supplied [NativeGicDelta1](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/NativeGicDelta1.lean)
 and [NativeTheory](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/NativeTheory.lean)
@@ -792,6 +816,38 @@ found no mathematical blocker; it did not run a fresh compiler or audit.
 R1's standard-proof sanity equivalence, arbitrary-internal GIC axiom
 introduction, and the R2/R3 internal translations remain open. The supplied
 five-probe audit has no typed callers.
+
+**R3 closed (Claude lane, 18 October).**
+[`NativeSchema`](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/NativeSchema.lean)
+proves, in every IΣ₁ model, `Provable 𝗭𝗙 ⊥ → Provable nativeTheory ⊥`
+(`provable_falsum_native_of_ZF`), hence
+`𝗣𝗔 ⊢ Con(nativeTheory) → Con(𝗭𝗙)` (`peano_proves_con_native_imp_con_ZF`),
+with standard axioms only (`NativeSchemaAudit`). The internal axiom callback
+of `provable_falsum_of_interp` is discharged for every internal ZF code by a
+case split on the axiom class (`mem_ZF_class`): equality and fixed axioms by
+`NativeFixed`; Separation and Replacement at arbitrary, including
+nonstandard, cores by
+
+* `NTemplate`: `LTemplate` over `nativeTheory` with GIC, including GIC
+  introduction at every internal matrix (`nativeGicProof`) and the compiler
+  `compileN`;
+* `NTInterp.interp_translate`: `interp PN` commutes with template
+  translation, which settles every interpreted code identity at once;
+* `NativeSchemaSem`: two fixed template sentences
+  `intT(congruence of R) → intT(Separation/Replacement body for R)`, proved
+  in every template model through the domain structure `SD` and `eval_intT`
+  (GIC at `u ∈ x ∧ v = u ∧ R u`, respectively `u ∈ X ∧ D v ∧ R u v`, WF
+  closure, functionality up to bisimilarity);
+* quotient congruence of interpreted matrices: the congruence law of the
+  core is a theorem of pure equality logic (`SetCongruence.congruenceProof₁/₂`
+  over `𝗘𝗤`), transported to `nativeTheory` by `derivable_iSet`;
+* `NativePeel.peel`: guarded generalization over the nonstandard parameter
+  count.
+
+The parameter is `NativeInterp.PN` itself (`good_PN`), so no identification
+with the separately checked closed parameter is needed. The remaining
+arithmetic piece of the reverse comparison is (R2),
+`Provable nativeTheory ⊥ → CProv 1`.
 
 Composing (R3), (R2) and the forward sentence gives, in PA,
 `Con(ZF) ↔ ¬∃code, value(code)=2`, and with `LSchema` the same for ZFC.

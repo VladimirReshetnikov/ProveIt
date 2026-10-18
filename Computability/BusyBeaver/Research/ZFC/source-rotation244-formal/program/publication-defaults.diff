@@ -1,0 +1,25 @@
+--- executed-check.py
++++ maintained-check.py
+@@ -2,7 +2,8 @@
+ """Two-row rotated logical program interface; five exact project providers and Init."""
+ from pathlib import Path
+ import argparse,hashlib,json,os,re,shutil,signal,subprocess,time
+-HERE=Path('/tmp/zfc243-calibration-plan')
++HERE=Path(__file__).resolve().parent
++REPO=HERE.parents[3]
+ MODULE='BusyBeaver.ZFC.ProgramRotation244'
+ PREFIX='SetTheory.BusyBeaver.ZFC.ProgramRotation244.'
+ PROBES=['program_root', 'program_nnodes', 'node5', 'node6', 'nodes_unmodified', 'original_loop_rows', 'parent_row']
+@@ -22,9 +23,9 @@
+     return [dict(name=n,axioms=sorted({x.strip()for x in a.split(',')if x.strip()}))for n,a in rr]
+ def main():
+     p=argparse.ArgumentParser(description=__doc__)
+-    p.add_argument('--source',type=Path,default=HERE/'ProgramRotation244.lean')
+-    p.add_argument('--audit',type=Path,default=HERE/'Audit.lean')
+-    p.add_argument('--boundary',type=Path,default=HERE/'boundary.json')
++    p.add_argument('--source',type=Path,default=REPO/'Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProgramRotation244.lean')
++    p.add_argument('--audit',type=Path,default=HERE/'program_rotation244_audit.lean')
++    p.add_argument('--boundary',type=Path,default=HERE/'source-rotation244-formal/program/boundary.json')
+     p.add_argument('--parent-evidence',type=Path)
+     p.add_argument('--output',type=Path,required=True)
+     p.add_argument('--prepare-only',action='store_true')

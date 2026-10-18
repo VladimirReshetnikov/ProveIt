@@ -1,0 +1,25 @@
+--- check.py
++++ check_table_combined243.py
+@@ -2,7 +2,8 @@
+ """Exact Combined243 table/embedding; Core+Rotation244 with Init+Omega."""
+ from pathlib import Path
+ import argparse,hashlib,json,os,re,shutil,signal,subprocess,time
+-HERE=Path('/tmp/zfc243-combined-lean/table-combined')
++HERE=Path(__file__).resolve().parent
++REPO=HERE.parents[3]
+ MODULE='BusyBeaver.ZFC.TableCombined243'
+ PREFIX='SetTheory.BusyBeaver.ZFC.'
+ PROBES=['rawTableCombined243_size', 'rawTableCombined243_transition_count', 'embedState243_ne_deleted', 'embedState243_zero', 'embedConfig243_initial', 'combined243_common_action', 'combined243_common_next', 'foldRowRotation244_old20_true', 'foldRowRotation244_old24_true', 'foldRowRotation244_old37_true', 'foldRowRotation244_old55_true', 'foldRowRotation244_old66_true', 'foldRowRotation244_old81_true', 'foldRowRotation244_old92_false', 'foldRowRotation244_old92_true', 'foldRowRotation244_old104_true', 'foldRowRotation244_old106_true', 'foldRowRotation244_old107_true', 'foldRowRotation244_old122_false', 'foldRowRotation244_old122_true', 'foldRowRotation244_old125_false', 'foldRowRotation244_old151_true', 'foldRowRotation244_old167_true', 'foldRowCombined243_old20_true', 'foldRowCombined243_old24_true', 'foldRowCombined243_old37_true', 'foldRowCombined243_old55_true', 'foldRowCombined243_old66_true', 'foldRowCombined243_old81_true', 'foldRowCombined243_old92_false', 'foldRowCombined243_old92_true', 'foldRowCombined243_old104_true', 'foldRowCombined243_old106_true', 'foldRowCombined243_old107_true', 'foldRowCombined243_old125_false', 'foldRowCombined243_old151_true', 'foldRowCombined243_old167_true', 'embedState243_old2', 'embedState243_old20', 'embedState243_old24', 'embedState243_old25', 'embedState243_old37', 'embedState243_old55', 'embedState243_old66', 'embedState243_old81', 'embedState243_old92', 'embedState243_old95', 'embedState243_old104', 'embedState243_old106', 'embedState243_old107', 'embedState243_old125', 'embedState243_old151', 'embedState243_old167']
+@@ -21,9 +22,9 @@
+     return [dict(name=n,axioms=sorted({x.strip()for x in a.split(',')if x.strip()}))for n,a in rr]
+ def main():
+     p=argparse.ArgumentParser(description=__doc__)
+-    p.add_argument('--source',type=Path,default=HERE/'TableCombined243.lean')
+-    p.add_argument('--audit',type=Path,default=HERE/'Audit.lean')
+-    p.add_argument('--boundary',type=Path,default=HERE/'boundary.json')
++    p.add_argument('--source',type=Path,default=REPO/'Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TableCombined243.lean')
++    p.add_argument('--audit',type=Path,default=HERE/'table_combined243_audit.lean')
++    p.add_argument('--boundary',type=Path,default=HERE/'combined243-formal/table-combined/boundary.json')
+     p.add_argument('--parent-evidence',type=Path)
+     p.add_argument('--output',type=Path,required=True)
+     p.add_argument('--prepare-only',action='store_true')

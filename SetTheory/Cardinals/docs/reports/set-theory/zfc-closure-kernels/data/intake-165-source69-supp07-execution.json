@@ -1,0 +1,36 @@
+{
+  "key": "reference-independent-rebuild",
+  "status": "PASS",
+  "copy": "/tmp/zfc-intake-165-source69-supplemental-run1/reference-independent-rebuild/package",
+  "command": [
+    "python3",
+    "-B",
+    "code/independent_rebuild.py",
+    "--baseline",
+    "sources/prefix250_old.tm",
+    "--output",
+    "review-rebuilt246"
+  ],
+  "cwd": "/tmp/zfc-intake-165-source69-supplemental-run1/reference-independent-rebuild/package/reference/context246",
+  "seconds": 0.2145216828212142,
+  "exit_code": 0,
+  "timed_out": false,
+  "timeout_seconds": 120,
+  "scope": "Second table reconstruction and full blank support. Compare its two table outputs against delivered246 tables.",
+  "stdout": "/tmp/zfc-intake-165-source69-supplemental-run1/reference-independent-rebuild/stdout.log",
+  "stderr": "/tmp/zfc-intake-165-source69-supplemental-run1/reference-independent-rebuild/stderr.log",
+  "postchecks": [
+    {
+      "byte_equal": [
+        "review-rebuilt246/zfc_fold246_old.tm",
+        "machine/zfc_prefix246_old.tm"
+      ]
+    },
+    {
+      "byte_equal": [
+        "review-rebuilt246/zfc_fold246.tm",
+        "machine/zfc_prefix246.tm"
+      ]
+    }
+  ]
+}

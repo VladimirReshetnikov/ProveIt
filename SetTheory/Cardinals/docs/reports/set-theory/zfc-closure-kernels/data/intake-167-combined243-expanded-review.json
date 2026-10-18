@@ -1,0 +1,68 @@
+{
+  "status": "EXISTING_EXPANDED_REPLAY_EVIDENCE_REVIEW_PASS",
+  "findings": [],
+  "verification": {
+    "path": "/tmp/zfc243-root-replay/expanded-verification.json",
+    "sha256": "d0f9c97bf51e5b3ec6c0efe6813357606d2159e5e3914b82ba2f950be8106cbb"
+  },
+  "execution": {
+    "path": "/tmp/zfc243-root-replay/expanded-execution.json",
+    "sha256": "310985d374896a29b809828968337c4e6b215fdd080ee6c12949734a235d8d1e"
+  },
+  "result": {
+    "path": "/tmp/zfc243-root-replay/candidate/expanded-runtime.json",
+    "sha256": "55aaf983fcde02b9c86223b976ed4c482580c6f285759765fe27012bb22620c9"
+  },
+  "logs": [
+    {
+      "path": "/tmp/zfc243-root-replay/expanded.stdout.log",
+      "sha256": "e0cfd803f6c877fa7df90336afea0b71aa1dd76f270d9e8d2ad5d9cc993fb549"
+    },
+    {
+      "path": "/tmp/zfc243-root-replay/expanded.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "reviewer_source": {
+    "path": "/tmp/zfc243-root-replay/independent-review/review_expanded.py",
+    "sha256": "dfd7f7e9d655550c1bf580ce0a124d4c0705d281e6c21c9a62aa3f61e0fc0387"
+  },
+  "prior_quick_review": {
+    "path": "/tmp/zfc243-root-replay/independent-review/quick-review.json",
+    "sha256": "823b47789e4a122ce196dedc59f80500eba067fd9deaf8c0aedf91417bdd0f80"
+  },
+  "tracked_inputs": {
+    "/tmp/zfc243-root-replay/candidate/machine_old.tm": "4207fc3d1bb16f3c64c3cff0980eaa1486160c3f467aee7685740a39e3df7300",
+    "/tmp/zfc243-root-replay/candidate/machine.tm": "a3860fb49d6b96e58ead6293134f246d59b3958231cb56850273c4b8a8138791",
+    "/tmp/zfc243-root-replay/candidate/renumbering.json": "4a47f6d323aa460f6208e16babfd67919a27cc7ce7b9f34b33a71795723e630a",
+    "/tmp/zfc243-root-replay/candidate/sites_logical.json": "3ee984818f0bdfd2c4daae72aeb14340572e34d73f5cdb5616b6d29d78fcd7f4",
+    "/tmp/zfc243-root-replay/candidate/sites_physical.json": "ee14a4496cc216de7c242f5e652de47d455169d79856ba36bee3a4fc3d69d86a",
+    "/tmp/zfc243-root-replay/adapters/check_combined243_literal.py": "a4d50bf745986669160465f4674112b43c25da1e00b397e80622736ebc6e8ee4",
+    "/tmp/zfc243-root-replay/adapters/check_runtime_combined243.py": "36194a01234756eea08726179d30de92add0bcb2515b19a0f87d810698babcd7",
+    "/tmp/zfc243-root-replay/adapters/check_combined243_blank.py": "2f6c2df431c15312231019f9635601aeff0c6d1057c8ca042215ec1391c5190e",
+    "/tmp/zfc243-root-replay.py": "132d964d18f118848353a88249e6e816aa4b4d54fc66dbb9ed9bbaab0d3ab855"
+  },
+  "checks": 42270,
+  "results": {
+    "cases": 8390,
+    "symbolic_rules": 2314868,
+    "rows": 485,
+    "unused_row": [
+      27,
+      1
+    ],
+    "source_leaves": 6459,
+    "minimum_time_constant": 13,
+    "root_seconds": 509.284881060943,
+    "rules": {
+      "literal": 1987184,
+      "unary-induction": 322484,
+      "finite-list-induction": 5200
+    }
+  },
+  "input_scope": "Nine actual before/after/current tracked identities. All reference files from the prior independent current-pristine comparison were rehashed again. The root runner does not record historical before/after hashes for the full inherited reference tree; this review does not invent that capture.",
+  "source_review": "Read complete root runner, complete runtime adapter and inherited expanded case/step implementation. Adapter installs the exact candidate table, re-proves block/word rules, then invokes every logical leaf and both decrement branches with nine arbitrary naturals, gap>=64 and arbitrary nonempty finite spare suffix. No reduced limit or interval specialization selected.",
+  "limits": "Root600s wall-clock bound; inherited3000 symbolic-rule per-case limit unchanged. Existing ordinary symbolic induction evidence, not kernel replay or a new PA proof.",
+  "reviewer_role": "Independent adapter/existing-evidence reviewer; author of separate Lean ports and guards. Did not author adapters, root runner or actual replay.",
+  "supplied_execution": false
+}

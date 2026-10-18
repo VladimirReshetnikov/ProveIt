@@ -1,0 +1,172 @@
+% Body-only proof section for the final 244-state construction.
+\section{The transfer-plus-one rotation}
+\label{sec:qt-rotation}
+
+The useful reduction is a loop rotation in the proof enumerator.  It is
+valid for every register vector and needs no reachability invariant.
+The source already shares its transfer loop with its following increment;
+moving that increment to the beginning of each iteration allows the
+three-state local decoder to become a two-state decoder.  The complete
+runtime certificates are needed to confirm this saving because the
+machine also reuses source decoders as phase routers.
+
+\subsection{The exact source change}
+
+Let $N=R_0$ be the next-proof register and $X=R_6$ its scratch register.
+The old closed fragment has the following behavior:
+\begin{quote}
+While $X>0$, decrement $X$ and increment $N$.  After the loop,
+increment $N$ once more.
+\end{quote}
+The replacement performs the increment before the test:
+\begin{quote}
+Increment $N$.  If $X=0$, exit.  Otherwise decrement $X$ and repeat.
+\end{quote}
+The zero test here is a natural-register test: it leaves zero unchanged.
+This avoids any convention about signed arithmetic or a programming
+language's postfix decrement.
+
+In the literal source tree the fragment is rooted at
+$p=\texttt{011}$.  Its old and new leaf paths are
+\[
+\begin{array}{c|c|c@{\qquad}c|c|c}
+\multicolumn{3}{c}{\text{Old fragment}}&
+\multicolumn{3}{c}{\text{New fragment}}\\
+\text{site}&\text{path}&\text{instruction}&
+\text{site}&\text{path}&\text{instruction}\\\hline
+6&p00&\operatorname{dec}X&6&p0&\operatorname{inc}N\\
+7&p010&\operatorname{inc}N&7&p10&\operatorname{dec}X\\
+8&p011&\operatorname{continue}(2)&8&p11&\operatorname{continue}(2)\\
+9&p1&\operatorname{inc}N&&&
+\end{array}
+\]
+Thus four source leaves become three.  The complete program has 6,459
+source leaves and 8,390 guarded instruction cases.  These numbers count
+source instructions and proof obligations, not Turing-machine states.
+
+Writing $\mathsf{Node}$ for an ordered binary source node, the change is
+\[
+\begin{split}
+&\mathsf{Node}\bigl(
+ \mathsf{Node}(\operatorname{dec}X,
+   \mathsf{Node}(\operatorname{inc}N,\operatorname{continue}(2))),
+ \operatorname{inc}N\bigr)\\
+&\hspace{2em}\longmapsto
+ \mathsf{Node}\bigl(\operatorname{inc}N,
+   \mathsf{Node}(\operatorname{dec}X,\operatorname{continue}(2))\bigr).
+\end{split}
+\]
+This is a proved loop transformation, rather than a claim that arbitrary
+reassociation of break/continue trees preserves behavior.
+
+\subsection{A universal arithmetic proof}
+
+Suppose the entry values are $N=a$ and $X=b$, where $a,b\in\mathbb N$.
+Both fragments terminate with
+\[
+ N=a+b+1,\qquad X=0,
+\]
+and leave the other seven registers unchanged.  In fact, both execute
+exactly $3b+2$ source instructions.
+
+For $b=0$, the old fragment takes its zero branch and then increments
+$N$.  The new fragment increments $N$ and then takes its zero branch.
+They each execute two instructions and return the same register vector.
+
+For $b>0$, the old fragment executes a positive decrement of $X$, an
+increment of $N$, and a continue.  The new fragment executes the same
+increment and decrement in the opposite order, followed by a continue.
+The two arithmetic operations affect distinct registers and commute.
+After three instructions, both fragments return to their respective
+entry sites with $(N,X)=(a+1,b-1)$.  Induction on $b$ proves both the
+postcondition and the exact instruction count.  It also rules out an
+infinite execution confined to either fragment.
+
+The checker verifies these two cases symbolically over unbounded regions.
+In the first case, $X=0$; in the second, $X\geq1$.  Each register is an
+independent entry variable plus an integer offset.  The checker propagates
+the bounds needed to force each branch and compares the final offsets.
+The zero case gives $\Delta N=1$, and the positive case gives
+$\Delta N=1$, $\Delta X=-1$.  It does not substitute a finite selection of
+register values for this argument.
+
+An equivalent relation can be placed at the decrement instructions:
+at related old site 6 and new site 7, the new $N$ exceeds the old $N$ by
+one and all other registers agree.  A positive iteration preserves this
+relation.  The old fragment's final increment restores equality on exit.
+The equal-register relation at the two fragment entries is sufficient for
+the full context proof below.
+
+\subsection{The complete source context}
+
+Outside the four old fragment sites, old source site $i<6$ corresponds to
+new site $i$, and old site $i\geq10$ corresponds to new site $i-1$.
+The fragment entry is mapped from old site 6 to new site 6.  The checker
+reconstructs both complete binary trees and verifies all 8,385 successor
+edges outside the fragment, including their exact break and continue
+paths and implicit zero padding.  The only external edge entering the
+fragment is the zero branch of old site 2.  No external edge enters one
+of its interior instructions.
+
+Consequently runs may be compared at every outside instruction and at
+every fragment entry.  Outside the fragment, one instruction on each
+side has the same register effect and reaches corresponding sites.
+Inside it, the preceding induction supplies finite matching executions
+with identical exit registers.  The halt instruction is outside the
+fragment: old site 6324 becomes new site 6323.  Therefore, for every
+$r\in\mathbb N^9$,
+\[
+ \operatorname{Halts}(P_{245},r)
+ \quad\Longleftrightarrow\quad
+ \operatorname{Halts}(P_{\mathrm{rot}},r).
+\]
+The same argument preserves nonhalting.  There is no hidden divergence
+inside a fragment, since $X$ strictly decreases on every positive
+iteration and the zero case exits.
+
+All ingredients are arithmetic on finite instruction tables and natural
+registers, with induction on a natural number.  Thus this implication
+and its converse are ordinary theorems formalizable in ZFC.  No
+consistency assumption is used in proving the source equivalence.
+
+\subsection{Why the decoder saves one working state}
+
+In the old labels, the relevant decoder roles are 12, 17, and 26.
+Role 12 selects the transfer loop or its final increment.  Role 17
+selects the decrement or its two-instruction loop body, and role 26
+selects the body increment or the continue operation.
+The replacement uses role 12 to select the increment or the test/continue
+pair, and role 17 for that pair.  Role 26 is deleted.  In the old table,
+17 has only predecessor $(12,0)$ and 26 has only predecessor $(17,1)$;
+the transfer loop has no additional caller requiring the old role 26.
+
+The three changed retained transition rows are
+\[
+\begin{array}{c|c|c}
+\text{read row}&\text{old transition}&\text{new transition}\\\hline
+(12,0)&(0,R,17)&(0,R,18)\\
+(12,1)&(1,R,18)&(1,R,17)\\
+(17,1)&(1,R,26)&(0,L,20).
+\end{array}
+\]
+Both rows of state 26 are removed, and every other row is unchanged.
+The new first increment has path \texttt{0110}, ending in the same
+two bits \texttt{10} as the old loop increment \texttt{011010}.
+This observation suggests that the reused increment decoder is valid in
+its new context.  The complete symbolic runtime certificates, rather
+than that suffix observation alone, discharge the decoder and phase-router
+obligations for every source site and register valuation.
+
+\paragraph{Independent replay.}
+The self-contained script \path{check_qt_rotation.py} imports no
+compiler or inherited proof code.  It checks source-tree well-formedness,
+every surrounding control edge, both unbounded arithmetic cases, and
+the halt-site correspondence.  It also checks the alternative left
+association
+$\mathsf{Node}(\mathsf{Node}(\operatorname{inc}N,
+\operatorname{dec}X),\operatorname{continue}(1))$ at the source level;
+the delivered literal table uses the right association displayed above.
+The JSON certificate records the exact old and new source hashes and
+the symbolic branch traces.  This source proof is composed with the
+separate blank-tape bootstrap and full runtime proof for the 244-state
+table.

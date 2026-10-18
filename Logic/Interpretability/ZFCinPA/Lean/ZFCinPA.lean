@@ -123,3 +123,10 @@ import ZFCinPA.NativeTheoryAudit
 import ZFCinPA.InternalInterpretation
 import ZFCinPA.InternalInterpretationAudit
 import ZFCinPA.NativeInterp
+import ZFCinPA.NativeFixed
+import ZFCinPA.NTemplate
+import ZFCinPA.NTInterp
+import ZFCinPA.NativePeel
+import ZFCinPA.NativeSchemaSem
+import ZFCinPA.NativeSchema
+import ZFCinPA.NativeSchemaAudit

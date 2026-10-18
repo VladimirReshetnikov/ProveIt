@@ -1,4 +1,5 @@
-import ZFCinPA.LGlueCodes
+import ZFCinPA.SetRelativization
+import BoundedPAConsistency.InternalRelativization
 
 set_option autoImplicit false
 noncomputable section
@@ -40,6 +41,16 @@ open LeanProofs.BoundedPAConsistency.InternalRelativization
 open scoped LO.FirstOrder.Arithmetic
 
 variable {V : Type} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Literal relation arity, copied from `LDriver.isRel_set` to avoid that broad import. -/
+private theorem isRel_set {k R : V} (hR : (ℒₛₑₜ).IsRel k R) : k = 2 ∧ (R = 0 ∨ R = 1) := by
+  have hr' : V ⊧/![k, R] (LeanProofs.ZFCinPA.instLORDefinableSet.rel).val := hR
+  rw [show (LeanProofs.ZFCinPA.instLORDefinableSet.rel : 𝚺₀.Semisentence 2) =
+    .mkSigma “k r. (k = 2 ∧ r = 0) ∨ (k = 2 ∧ r = 1)” from rfl] at hr'
+  have hc : (k = 2 ∧ R = 0) ∨ (k = 2 ∧ R = 1) := by simpa using hr'
+  rcases hc with ⟨h1, h2⟩ | ⟨h1, h2⟩
+  · exact ⟨h1, Or.inl h2⟩
+  · exact ⟨h1, Or.inr h2⟩
 
 /-- The domain component of the parameter. -/
 abbrev dom (P : V) : V := π₁ P
@@ -158,11 +169,11 @@ lemma isSemiformula_interp (hP : Good P) {n p : V} :
   apply IsSemiformula.sigma1_structural_induction
   · definability
   · intro n k R v hR hv
-    obtain ⟨rfl, -⟩ := LDriver.isRel_set hR
+    obtain ⟨rfl, -⟩ := isRel_set hR
     rw [interp_rel hR hv.isUTerm]
     exact (hP.isAtom R).subst hv
   · intro n k R v hR hv
-    obtain ⟨rfl, -⟩ := LDriver.isRel_set hR
+    obtain ⟨rfl, -⟩ := isRel_set hR
     rw [interp_nrel hR hv.isUTerm]
     exact ((hP.isAtom R).subst hv).neg
   · simp
@@ -181,7 +192,7 @@ lemma interp_neg (hP : Good P) {n p : V} (hp : IsSemiformula ℒₛₑₜ n p) :
   · intro n k R v hR hv
     rw [interp_rel hR hv.isUTerm, neg_rel hR hv.isUTerm, interp_nrel hR hv.isUTerm]
   · intro n k R v hR hv
-    obtain ⟨rfl, -⟩ := LDriver.isRel_set hR
+    obtain ⟨rfl, -⟩ := isRel_set hR
     rw [interp_nrel hR hv.isUTerm, neg_nrel hR hv.isUTerm, interp_rel hR hv.isUTerm,
       ((hP.isAtom R).subst hv).isUFormula.neg_neg]
   · simp
@@ -211,11 +222,11 @@ lemma interp_shift (hP : Good P) {n p : V} (hp : IsSemiformula ℒₛₑₜ n p)
     (P := fun n p ↦ shift ℒₛₑₜ (interp P p) = interp P (shift ℒₛₑₜ p)) (by definability)
     ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ hp
   · intro n k R v hR hv
-    obtain ⟨rfl, -⟩ := LDriver.isRel_set hR
+    obtain ⟨rfl, -⟩ := isRel_set hR
     rw [interp_rel hR hv.isUTerm, shift_substs (hP.isAtom R) hv, hP.atomShift R,
       shift_rel hR hv.isUTerm, interp_rel hR hv.isUTerm.termShiftVec]
   · intro n k R v hR hv
-    obtain ⟨rfl, -⟩ := LDriver.isRel_set hR
+    obtain ⟨rfl, -⟩ := isRel_set hR
     rw [interp_nrel hR hv.isUTerm, shift_neg ((hP.isAtom R).subst hv), shift_substs (hP.isAtom R) hv,
       hP.atomShift R, shift_nrel hR hv.isUTerm, interp_nrel hR hv.isUTerm.termShiftVec]
   · simp
@@ -253,11 +264,11 @@ lemma interp_subst (hP : Good P) {n p : V} (hp : IsSemiformula ℒₛₑₜ n p)
   apply IsSemiformula.pi1_structural_induction ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ hp
   · definability
   · intro n k R v hR hv a w hw
-    obtain ⟨rfl, -⟩ := LDriver.isRel_set hR
+    obtain ⟨rfl, -⟩ := isRel_set hR
     rw [interp_rel hR hv.isUTerm, substs_substs (hP.isAtom R) hw hv, substs_rel hR hv.isUTerm,
       interp_rel hR (hw.termSubstVec hv).isUTerm]
   · intro n k R v hR hv a w hw
-    obtain ⟨rfl, -⟩ := LDriver.isRel_set hR
+    obtain ⟨rfl, -⟩ := isRel_set hR
     rw [interp_nrel hR hv.isUTerm, substs_neg ((hP.isAtom R).subst hv) hw,
       substs_substs (hP.isAtom R) hw hv, substs_nrel hR hv.isUTerm,
       interp_nrel hR (hw.termSubstVec hv).isUTerm]

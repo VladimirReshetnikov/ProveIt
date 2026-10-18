@@ -8,8 +8,8 @@ stronger theory, as clarified by the user on 17 October 2026. Each candidate
 must state the assumptions used for its two unprovability directions;
 consistency alone must not be confused with arithmetic soundness. The
 external Lean equivalence with Con(ZFC) is now proved for the exact
-[245-state machine](routing245_binary.md), improving the earlier checked
-246- and 252-state endpoints; its internal PA proof remains open.
+[244-state machine](compensated244_binary.md), improving the earlier checked
+245-, 246- and 252-state endpoints; its internal PA proof remains open.
 All new formal work uses Lean.
 An intended set-theoretic meaning is optional: any effectively presented
 theory or proof calculus is eligible once its consistency calibration is proved.
@@ -27,7 +27,30 @@ the lower bound needed for the independence argument; no absolute consistency
 proof is claimed. Require a concrete encoding benefit before increasing the
 benchmark strength.
 
-The active external Lean baseline is the
+The [combined **243-state candidate**](candidate-combined243/README.md) combines
+two compatible reductions of Routing245. The loop rotation from `d91a27b462`
+removes old state 26; the compensation from `248bc05936` removes old state 122.
+Every local invariant and block hypothesis of the compensation survives the
+rotation. The new table passes all 8,390 expanded runtime cases and 2,314,868
+symbolic rules, with its own exact 407,967-step blank initialization.
+[Lean proves its halting equivalence to the rotated 244-state table](combined243_simulation.md):
+five units pass 83 theorem probes and 39 typed callers, with zero warnings.
+The ordinary proof supports the same ZFC consistency calibration. The rotation's
+source/runtime connection still needs a complete Lean proof, so compensated244
+remains the smallest machine with a closed external Lean consistency endpoint.
+
+The compensated **244-state candidate** from `248bc05936` has passed the
+complete fresh 8,391-case symbolic runtime replay. Its
+[three Lean foundation units](compensated244_foundations.md) now check the
+exact table, the original-machine tape invariant and generic positive-block
+halting transport (62 theorem probes, 18 typed callers, zero warnings).
+The [seven local blocks and global simulation](compensated244_simulation.md)
+also pass18 probes and18 callers, proving exact blank halting equivalence
+with Routing245. The [closed ZF/ZFC endpoint](compensated244_binary.md) now
+passes six further probes and six callers with zero warnings; internal PA
+formalization remains open.
+
+The earlier external Lean baseline, reused by the 244 proof, is the
 [routed 245-state machine](candidate-routing245/README.md), from
 `8286787dd0`. It passes its complete executable suite, including all 8,391
 expanded whole-tape instruction cases and its 407,915-step exact blank prefix.
@@ -1822,8 +1845,17 @@ also has an all-internal contract and an exact `7*oldcache+2` copy-tail
 clock; six probes and eight callers passed without warnings.
 The [following AC push, 380–406](arithmetic_control_ax_next_ac_push254.md)
 has the corresponding whole-file contract and `7*oldAC+2` copy-tail clock,
-also with six probes and eight callers and zero warnings. The constructor
-at 406 remains a separate verification unit.
+also with six probes and eight callers and zero warnings. The
+[constructor at 406–433](arithmetic_control_ax_next_constructor254.md)
+now has its own checked whole-file contract, with three probes and four callers.
+Structural source witnesses resolved ten recursion-depth failures without
+changing its statements or proof limits; the failed attempt is preserved.
+The next two constructor occurrences,
+[433–460](arithmetic_control_ax_constructor433254.md) and
+[460–487](arithmetic_control_ax_constructor460254.md), also have checked
+whole-file contracts for arbitrary internal register files with zero
+scratch coordinates. Each passed three probes and four typed callers
+without warnings. Composing the surrounding AX branch remains open.
 
 [Structural catalogue lookup](arithmetic_control_source_rank254.md) supplies
 a reusable path-to-rank proof and two concrete source bindings at controls
@@ -1831,3 +1863,19 @@ a reusable path-to-rank proof and two concrete source bindings at controls
 steps closed residual `Option.map` goals. The original failed attempt is
 preserved. These two clients establish source bindings; they do not establish
 a general performance improvement or an execution contract.
+
+The [generic internal interpretation core](internal_interpretation_core.md)
+has passed a fresh source check and an expanded audit with seven probes,
+thirteen typed callers and zero warnings. It transports arbitrary internal
+derivations using defined equality and membership, assuming `Good`, domain
+nonemptiness and uniform internal axiom transport. The original source is
+preserved alongside the checked version with reduced imports.
+
+The [closed native quotient parameter](native_wf_closed_parameters.md)
+now satisfies `Good` in every IΣ₁ model: seven probes and ten typed callers
+passed without warnings. Its [quotation helper](raw_form_quotation.md)
+passed five probes and eight callers, retaining two style warnings.
+This establishes arity and shift invariance for the explicitly closed
+domain, equality and membership formulas. Identifying this parameter with
+the semantic interpretation, domain nonemptiness and uniform internal ZF
+axiom transport remain separate steps.

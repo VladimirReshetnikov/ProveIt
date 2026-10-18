@@ -1,0 +1,25 @@
+--- check.py
++++ check_rotation244_invariant.py
+@@ -2,7 +2,8 @@
+ """Rotation244 local tape invariant; exact Core+Rotation244 and Init providers."""
+ from pathlib import Path
+ import argparse,hashlib,json,os,re,shutil,signal,subprocess,time
+-HERE=Path('/tmp/zfc243-combined-lean/invariant')
++HERE=Path(__file__).resolve().parent
++REPO=HERE.parents[3]
+ MODULE='BusyBeaver.ZFC.Rotation244Invariant'
+ PREFIX='SetTheory.BusyBeaver.ZFC.Rotation244Invariant.'
+ PROBES=['start_holds', 'initial_holds', 'step_holds', 'runFrom_holds', 'run_holds']
+@@ -21,9 +22,9 @@
+     return [dict(name=n,axioms=sorted({x.strip()for x in a.split(',')if x.strip()}))for n,a in rr]
+ def main():
+     p=argparse.ArgumentParser(description=__doc__)
+-    p.add_argument('--source',type=Path,default=HERE/'Rotation244Invariant.lean')
+-    p.add_argument('--audit',type=Path,default=HERE/'Audit.lean')
+-    p.add_argument('--boundary',type=Path,default=HERE/'boundary.json')
++    p.add_argument('--source',type=Path,default=REPO/'Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Rotation244Invariant.lean')
++    p.add_argument('--audit',type=Path,default=HERE/'rotation244_invariant_audit.lean')
++    p.add_argument('--boundary',type=Path,default=HERE/'combined243-formal/invariant/boundary.json')
+     p.add_argument('--parent-evidence',type=Path)
+     p.add_argument('--output',type=Path,required=True)
+     p.add_argument('--prepare-only',action='store_true')

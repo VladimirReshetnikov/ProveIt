@@ -2903,6 +2903,79 @@ archive; all 294 original payloads remain recoverable. The complete fresh
 runtime suite passes, including 8,391 expanded symbolic cases, 490 rows,
 407,915 blank steps and 8,385 finite regressions. Four auxiliary and four
 historical checks also pass. Independent reviews find no substantive blocker
-within the ordinary mathematical proof's scope. The new table has no Lean
-endpoint or PA-internal equivalence yet; the exact 246-state external Lean
-endpoint remains the checked baseline. The six earlier archives remain queued.
+within the ordinary mathematical proof's scope. At that intake checkpoint the new table had no Lean
+endpoint or PA-internal equivalence, and the exact 246-state external Lean
+endpoint was the checked baseline. Six earlier archives remained queued then.
+The routed 245-state external Lean endpoint has since closed; PA remains open.
+
+
+Batch 165 adds source 69 from `36633bfe16` to
+[ZFC closure kernels](set-theory/zfc-closure-kernels/intake-165.md), now 69
+manuscripts and still 290 reports. Placement `500381f8f1` preserves 454
+ancillary files and 12 archive-only files; write `91b1c296b3` reconciles
+positive multi-instruction source blocks, numerical invariants, unused-workspace
+relations and exact rejection witnesses. The main 14 jobs and eight supplemental
+checks all pass. Recorded discovery searches retain their finite scopes and
+were not rerun. No smaller calibrated machine or new PA proof results.
+The current external Lean baseline is the different, fully checked routed
+245-state table, rather than the report's historical 246 reference or either
+of its rejected 245 tables. The exact reintroduced source 68 archive was also
+retired after all 273 original ancillary blobs were checked in their placement
+tree; it receives no new number. Eighteen other archives remained queued at
+the placement checkpoint. The base article and all delivered bytes remain unchanged; the
+collection manifest is rebuilt separately.
+
+
+Batch 166 adds source 70 from `248bc05936` to
+[ZFC closure kernels](set-theory/zfc-closure-kernels/intake-166.md), now 70
+manuscripts and still 290 reports. Placement `6619bd0002` preserves 170
+ancillary files, with 21 originals archive-only at collection placement;
+write `be13ec69d7` records the compensated 244-state reduction and its
+separate equational branch. Deleting old state 122 and changing four retained
+rows gives an ordinary all-tape halting proof against the exact routed
+245-state baseline. The portable replay and separate complete 8,391-case
+runtime replay pass, covering all 488 rows and the exact 407,951-step principal
+startup. The complete runtime replay takes 540.786 seconds and checks 2,315,075
+symbolic rules. A retained repeat of the local jobs preserves detailed outputs;
+it does not add an independent checker. The maintained candidate separately
+promotes exact table inputs and two ordinary proof fragments. At this intake
+checkpoint the closed 245-state external Lean endpoint supplies the baseline;
+intake does not establish a complete 244-state endpoint or internal PA
+calibration. Supplemental variants retain their delivered complete
+certificates. The 21-equation, 2,324-bit equational packet has no compiled
+binary machine. The base article and delivered files remain unchanged,
+18 other archives stay queued, and the catalogue is rebuilt separately.
+
+Subsequent formal status, 18 October 2026: the exact
+[244-state external Lean endpoint](../../../../Computability/BusyBeaver/Research/ZFC/compensated244_binary.md)
+now proves blank nonhalting equivalent to the stated ZF and ZFC consistency
+propositions. Its source and six-report/six-client audit pass without warnings.
+The internal PA derivation remains open; this does not assert unconditional
+nonhalting or absolute consistency.
+
+
+Batch 167 adds source 71 from `d91a27b462` to
+[ZFC closure kernels](set-theory/zfc-closure-kernels/intake-167.md), now 71
+manuscripts and still 290 reports. Placement `5513e77ff1` preserves 1,007
+ancillary files and 37 archive-only members; write `a41168bef8` records the
+loop rotation, complete ordinary proof and broader source-formalism research.
+Seven primary jobs and sixteen separate finite research checks pass on copies.
+The new 244-state table deletes old state 26; it has 6,459 source leaves,
+8,390 guarded cases, 2,312,438 expanded symbolic rules and an exact
+407,931-step blank prefix. The delivered auxiliary indentation defect is
+preserved; the primary expanded entrypoint is valid. Optional seed generation
+and discovery campaigns remain scoped and unexecuted.
+
+The different compensated fold deletes old state 122. Checking its complete
+local hypotheses against the rotated table permits a subsequent
+[243-state candidate](../../../../Computability/BusyBeaver/Research/ZFC/candidate-combined243/README.md).
+Its fresh expanded replay passes 8,390 cases and 2,314,868 rules, and its own
+blank prefix takes 407,967 transitions. Five Lean units prove its relative
+halting equivalence with rotation244, with 83 probes and 39 typed callers,
+all without warnings. The ordinary proof supports the same ZFC consistency
+calibration; the rotated source/runtime connection still needs a complete
+Lean proof. Compensated244 remains the smallest closed external Lean
+consistency endpoint, and internal PA calibration remains open. Neither
+incoming package supplied the combined table. The base article and all
+delivered files remain unchanged. Eighteen archives remained queued at
+placement; a later arrival brings the queue to nineteen.
