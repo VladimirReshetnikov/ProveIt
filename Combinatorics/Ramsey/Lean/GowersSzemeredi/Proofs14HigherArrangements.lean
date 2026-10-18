@@ -354,58 +354,18 @@ private lemma cor147_pair_orthogonality {N k d : Nat} [NeZero N]
       if cor147Good B phi h (a, b) then (N : Complex) ^ 2 else 0 := by
   by_cases ha : ∀ i, cor147CubeIn B h (a i) <;>
     by_cases hb : ∀ i, cor147CubeIn B h (b i)
-  · simp_rw [cor147_prod_fourierTerm, if_pos ha, if_pos hb,
-      star_exponential, ← exponential_add]
-    have hphase (u r : ZMod N) :
-        (-((∑ i, (a i).2) * r) +
-              (∑ i, cor147CubeValue phi h (a i)) * u) +
-            -(-((∑ i, (b i).2) * r) +
-              (∑ i, cor147CubeValue phi h (b i)) * u) =
-          ((∑ i, cor147CubeValue phi h (a i)) -
-              ∑ i, cor147CubeValue phi h (b i)) * u +
-            ((∑ i, (b i).2) - ∑ i, (a i).2) * r := by
-      ring
-    simp_rw [hphase, exponential_add]
-    calc
-      (∑ u : ZMod N, ∑ r : ZMod N,
-          exponential
-              (((∑ i, cor147CubeValue phi h (a i)) -
-                ∑ i, cor147CubeValue phi h (b i)) * u) *
-            exponential (((∑ i, (b i).2) - ∑ i, (a i).2) * r)) =
-          (∑ u : ZMod N,
-            exponential
-              (((∑ i, cor147CubeValue phi h (a i)) -
-                ∑ i, cor147CubeValue phi h (b i)) * u)) *
-          (∑ r : ZMod N,
-            exponential (((∑ i, (b i).2) - ∑ i, (a i).2) * r)) := by
-              simp_rw [← Finset.mul_sum]
-              rw [← Finset.sum_mul]
-      _ = if cor147Good B phi h (a, b) then (N : Complex) ^ 2 else 0 := by
-        rw [prop141_sum_exponential_mul, prop141_sum_exponential_mul]
-        by_cases hx : (∑ i, (a i).2) = ∑ i, (b i).2
-        · by_cases hv :
-              (∑ i, cor147CubeValue phi h (a i)) =
-                ∑ i, cor147CubeValue phi h (b i)
-          · simp [cor147Good, ha, hb, hx, hv, pow_two]
-          · have hdiff :
-                (∑ i, cor147CubeValue phi h (a i)) -
-                    ∑ i, cor147CubeValue phi h (b i) ≠ 0 :=
-              sub_ne_zero.mpr hv
-            simp [cor147Good, ha, hb, hx, hv, hdiff]
-        · have hdiff : (∑ i, (b i).2) - ∑ i, (a i).2 ≠ 0 :=
-            sub_ne_zero.mpr (Ne.symm hx)
-          by_cases hv :
-              (∑ i, cor147CubeValue phi h (a i)) =
-                ∑ i, cor147CubeValue phi h (b i)
-          · simp [cor147Good, ha, hb, hx, hv, hdiff]
-          · have hvdiff :
-                (∑ i, cor147CubeValue phi h (a i)) -
-                    ∑ i, cor147CubeValue phi h (b i) ≠ 0 :=
-              sub_ne_zero.mpr hv
-            simp [cor147Good, ha, hb, hx, hv, hdiff, hvdiff]
-  · simp [cor147_prod_fourierTerm, ha, hb, cor147Good]
-  · simp [cor147_prod_fourierTerm, ha, hb, cor147Good]
-  · simp [cor147_prod_fourierTerm, ha, hb, cor147Good]
+  · have hphase (u r : ZMod N) :
+        -((∑ i, (a i).2) * r) + (∑ i, cor147CubeValue phi h (a i)) * u +
+            -(-((∑ i, (b i).2) * r) + (∑ i, cor147CubeValue phi h (b i)) * u) =
+          ((∑ i, cor147CubeValue phi h (a i)) - ∑ i, cor147CubeValue phi h (b i)) * u +
+            -((∑ i, (a i).2) - ∑ i, (b i).2) * r := by ring
+    simp_rw [cor147_prod_fourierTerm, if_pos ha, if_pos hb, star_exponential,
+      ← exponential_add, hphase, exponential_add, ← Finset.sum_mul_sum,
+      prop141_sum_exponential_mul, neg_eq_zero, sub_eq_zero]
+    by_cases hx : ∑ i, (a i).2 = ∑ i, (b i).2 <;>
+      by_cases hv : ∑ i, cor147CubeValue phi h (a i) = ∑ i, cor147CubeValue phi h (b i) <;>
+      simp [cor147Good, ha, hb, hx, hv, pow_two]
+  all_goals simp [cor147_prod_fourierTerm, ha, hb, cor147Good]
 
 private lemma cor147_sum_pair {X Y M : Type*} [Fintype X] [Fintype Y]
     [AddCommMonoid M] (F : X × Y → M) :
@@ -455,93 +415,14 @@ private lemma cor147_moment_eq_count {N k d : Nat} [NeZero N]
     (∑ h : Point N k, ∑ u : ZMod N, ∑ r : ZMod N,
       ‖fourier (cor147Phase B phi h u) r‖ ^ (2 * d)) =
       (N : Real) ^ 2 * respectedGeneralArrangementCount d B phi := by
-  have hcomplex :
-      (((∑ h : Point N k, ∑ u : ZMod N, ∑ r : ZMod N,
-          ‖fourier (cor147Phase B phi h u) r‖ ^ (2 * d) : Real)) : Complex) =
-        (((N : Real) ^ 2 * countWhere
-          (fun hp : Point N k × cor147PairFamily N k d ↦
-            cor147Good B phi hp.1 hp.2) : Real) : Complex) := by
-    rw [Complex.ofReal_sum]
-    calc
-      (∑ h : Point N k,
-          (((∑ u : ZMod N, ∑ r : ZMod N,
-            ‖fourier (cor147Phase B phi h u) r‖ ^ (2 * d) : Real)) :
-              Complex)) =
-          ∑ h : Point N k, ∑ u : ZMod N, ∑ r : ZMod N,
-            ∑ a : Fin d → cor147Atom N k,
-              ∑ b : Fin d → cor147Atom N k,
-                (∏ i, cor147FourierTerm B phi h u r (a i)) *
-                  star (∏ i, cor147FourierTerm B phi h u r (b i)) := by
-            apply Finset.sum_congr rfl
-            intro h _
-            rw [Complex.ofReal_sum]
-            apply Finset.sum_congr rfl
-            intro u _
-            rw [Complex.ofReal_sum]
-            apply Finset.sum_congr rfl
-            intro r _
-            exact cor147_norm_power_expansion B phi h u r
-      _ = ∑ h : Point N k,
-          ∑ a : Fin d → cor147Atom N k,
-            ∑ b : Fin d → cor147Atom N k,
-              ∑ u : ZMod N, ∑ r : ZMod N,
-                (∏ i, cor147FourierTerm B phi h u r (a i)) *
-                  star (∏ i, cor147FourierTerm B phi h u r (b i)) := by
-            apply Finset.sum_congr rfl
-            intro h _
-            calc
-              (∑ u : ZMod N, ∑ r : ZMod N,
-                  ∑ a : Fin d → cor147Atom N k,
-                    ∑ b : Fin d → cor147Atom N k,
-                      (∏ i, cor147FourierTerm B phi h u r (a i)) *
-                        star (∏ i, cor147FourierTerm B phi h u r (b i))) =
-                ∑ u : ZMod N, ∑ a : Fin d → cor147Atom N k,
-                  ∑ b : Fin d → cor147Atom N k, ∑ r : ZMod N,
-                    (∏ i, cor147FourierTerm B phi h u r (a i)) *
-                      star (∏ i, cor147FourierTerm B phi h u r (b i)) := by
-                  apply Finset.sum_congr rfl
-                  intro u _
-                  rw [Finset.sum_comm]
-                  apply Finset.sum_congr rfl
-                  intro a _
-                  rw [Finset.sum_comm]
-              _ = ∑ a : Fin d → cor147Atom N k, ∑ u : ZMod N,
-                  ∑ b : Fin d → cor147Atom N k, ∑ r : ZMod N,
-                    (∏ i, cor147FourierTerm B phi h u r (a i)) *
-                      star (∏ i, cor147FourierTerm B phi h u r (b i)) := by
-                    rw [Finset.sum_comm]
-              _ = ∑ a : Fin d → cor147Atom N k,
-                  ∑ b : Fin d → cor147Atom N k,
-                    ∑ u : ZMod N, ∑ r : ZMod N,
-                      (∏ i, cor147FourierTerm B phi h u r (a i)) *
-                        star (∏ i, cor147FourierTerm B phi h u r (b i)) := by
-                  apply Finset.sum_congr rfl
-                  intro a _
-                  rw [Finset.sum_comm]
-      _ = ∑ h : Point N k,
-          ∑ a : Fin d → cor147Atom N k,
-            ∑ b : Fin d → cor147Atom N k,
-              if cor147Good B phi h (a, b) then (N : Complex) ^ 2 else 0 := by
-            apply Finset.sum_congr rfl
-            intro h _
-            apply Finset.sum_congr rfl
-            intro a _
-            apply Finset.sum_congr rfl
-            intro b _
-            exact cor147_pair_orthogonality B phi h a b
-      _ = ∑ hp : Point N k × cor147PairFamily N k d,
-          if cor147Good B phi hp.1 hp.2 then (N : Complex) ^ 2 else 0 := by
-            rw [cor147_sum_pair]
-            apply Finset.sum_congr rfl
-            intro h _
-            rw [cor147_sum_pair]
-      _ = (((N : Real) ^ 2 * countWhere
-          (fun hp : Point N k × cor147PairFamily N k d ↦
-            cor147Good B phi hp.1 hp.2) : Real) : Complex) := by
-            push_cast
-            exact cor147_sum_ite _ _
-  rw [cor147_good_count_eq B phi] at hcomplex
-  exact Complex.ofReal_injective hcomplex
+  apply Complex.ofReal_injective
+  rw [← cor147_good_count_eq B phi]
+  simp_rw [Complex.ofReal_sum, cor147_norm_power_expansion,
+    Finset.sum_comm (γ := ZMod N) (α := Fin d → cor147Atom N k),
+    cor147_pair_orthogonality]
+  push_cast
+  rw [← cor147_sum_ite]
+  simp only [cor147_sum_pair]
 
 private lemma cor147_phase_norm_le {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N)
@@ -664,89 +545,20 @@ private lemma cor147_moment_interpolation {N k : Nat} [NeZero N]
 
 theorem lemma_14_7_holds : lemma_14_7 := by
   intro N k _ theta B phi htheta hpairs
-  let S2 : Real :=
-    ∑ h : Point N k, ∑ u : ZMod N, ∑ r : ZMod N,
-      ‖fourier (cor147Phase B phi h u) r‖ ^ 2
-  let S4 : Real :=
-    ∑ h : Point N k, ∑ u : ZMod N, ∑ r : ZMod N,
-      ‖fourier (cor147Phase B phi h u) r‖ ^ 4
-  let S16 : Real :=
-    ∑ h : Point N k, ∑ u : ZMod N, ∑ r : ZMod N,
-      ‖fourier (cor147Phase B phi h u) r‖ ^ 16
-  have hN : 0 < (N : Real) := by
-    exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
-  have hS2 : S2 ≤ (N : Real) ^ (3 * k + 3) := by
-    dsimp only [S2]
-    exact cor147_second_moment_le B phi
-  have hS4eq :
-      S4 = (N : Real) ^ 2 * respectedGeneralArrangementCount 2 B phi := by
-    dsimp only [S4]
-    simpa using cor147_moment_eq_count (d := 2) B phi
-  have hS16eq :
-      S16 = (N : Real) ^ 2 * respectedGeneralArrangementCount 8 B phi := by
-    dsimp only [S16]
-    simpa using cor147_moment_eq_count (d := 8) B phi
-  have hinterpolation : S4 ^ 7 ≤ S2 ^ 6 * S16 := by
-    dsimp only [S4, S2, S16]
-    exact cor147_moment_interpolation B phi
-  have hS4lower : theta * (N : Real) ^ (5 * k + 5) ≤ S4 := by
-    calc
-      theta * (N : Real) ^ (5 * k + 5) =
-          (N : Real) ^ 2 * (theta * (N : Real) ^ (5 * k + 3)) := by ring
-      _ ≤ (N : Real) ^ 2 * respectedGeneralArrangementCount 2 B phi :=
-        mul_le_mul_of_nonneg_left hpairs (by positivity)
-      _ = S4 := hS4eq.symm
-  have hS2nonneg : 0 ≤ S2 := by positivity
-  have hS16nonneg : 0 ≤ S16 := by positivity
-  have hmain :
-      (theta * (N : Real) ^ (5 * k + 5)) ^ 7 ≤
-        ((N : Real) ^ (3 * k + 3)) ^ 6 * S16 := by
-    calc
-      (theta * (N : Real) ^ (5 * k + 5)) ^ 7 ≤ S4 ^ 7 :=
-        pow_le_pow_left₀ (by positivity) hS4lower 7
-      _ ≤ S2 ^ 6 * S16 := hinterpolation
-      _ ≤ ((N : Real) ^ (3 * k + 3)) ^ 6 * S16 := by gcongr
-  have hfactor : 0 < (N : Real) ^ (18 * k + 20) := pow_pos hN _
-  apply le_of_mul_le_mul_right ?_ hfactor
-  have hlowerPower :
-      (theta ^ 7 * (N : Real) ^ (17 * k + 15)) *
-          (N : Real) ^ (18 * k + 20) =
-        (theta * (N : Real) ^ (5 * k + 5)) ^ 7 := by
-    have hcombine :
-        (N : Real) ^ (17 * k + 15) * (N : Real) ^ (18 * k + 20) =
-          (N : Real) ^ ((5 * k + 5) * 7) := by ring
-    calc
-      (theta ^ 7 * (N : Real) ^ (17 * k + 15)) *
-          (N : Real) ^ (18 * k + 20) =
-        theta ^ 7 *
-          ((N : Real) ^ (17 * k + 15) * (N : Real) ^ (18 * k + 20)) := by
-            ring
-      _ = theta ^ 7 * (N : Real) ^ ((5 * k + 5) * 7) := by rw [hcombine]
-      _ = (theta * (N : Real) ^ (5 * k + 5)) ^ 7 := by
-        rw [mul_pow, pow_mul]
-  have hupperPower :
-      ((N : Real) ^ (3 * k + 3)) ^ 6 * S16 =
-        (respectedGeneralArrangementCount 8 B phi : Real) *
-          (N : Real) ^ (18 * k + 20) := by
-    have hcombine :
-        (N : Real) ^ ((3 * k + 3) * 6) * (N : Real) ^ 2 =
-          (N : Real) ^ (18 * k + 20) := by ring
-    calc
-      ((N : Real) ^ (3 * k + 3)) ^ 6 * S16 =
-          (N : Real) ^ ((3 * k + 3) * 6) *
-            ((N : Real) ^ 2 *
-              respectedGeneralArrangementCount 8 B phi) := by
-        rw [pow_mul, hS16eq]
-      _ = (respectedGeneralArrangementCount 8 B phi : Real) *
-          ((N : Real) ^ ((3 * k + 3) * 6) * (N : Real) ^ 2) := by ring
-      _ = (respectedGeneralArrangementCount 8 B phi : Real) *
-          (N : Real) ^ (18 * k + 20) := by rw [hcombine]
-  calc
-    (theta ^ 7 * (N : Real) ^ (17 * k + 15)) *
-        (N : Real) ^ (18 * k + 20) =
-      (theta * (N : Real) ^ (5 * k + 5)) ^ 7 := hlowerPower
-    _ ≤ ((N : Real) ^ (3 * k + 3)) ^ 6 * S16 := hmain
-    _ = (respectedGeneralArrangementCount 8 B phi : Real) *
-        (N : Real) ^ (18 * k + 20) := hupperPower
+  have hN : 0 < (N : Real) := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
+  have h4 := cor147_moment_eq_count (d := 2) B phi
+  have h16 := cor147_moment_eq_count (d := 8) B phi
+  norm_num at h4 h16
+  have hint := cor147_moment_interpolation B phi
+  rw [h4, h16] at hint
+  have hS2 := cor147_second_moment_le B phi
+  refine le_of_mul_le_mul_right ?_ (pow_pos hN (18 * k + 20))
+  calc theta ^ 7 * (N : Real) ^ (17 * k + 15) * (N : Real) ^ (18 * k + 20)
+      = ((N : Real) ^ 2 * (theta * (N : Real) ^ (5 * k + 3))) ^ 7 := by ring
+    _ ≤ ((N : Real) ^ 2 * respectedGeneralArrangementCount 2 B phi) ^ 7 := by gcongr
+    _ ≤ _ := hint
+    _ ≤ ((N : Real) ^ (3 * k + 3)) ^ 6 *
+        ((N : Real) ^ 2 * respectedGeneralArrangementCount 8 B phi) := by gcongr
+    _ = respectedGeneralArrangementCount 8 B phi * (N : Real) ^ (18 * k + 20) := by ring
 
 end LeanProofs.GowersSzemeredi

@@ -33,189 +33,67 @@ theorem signedWalsh_multiple_of_invariant {N k : Nat} [NeZero N]
       signedWalshMoment eta h y A = signedWalshMoment eta h z A) :
     IsModularMultiple eta (fun e => ∏ i, walshSign (N := N) (e i)) := by
   letI : Fact (Nat.Prime N) := ⟨hprime⟩
-  have hNgt : 2 < N := by
-    have hle := hprime.two_le
-    have hne : N ≠ 2 := by
-      intro hN
-      subst N
-      exact hodd.not_two_dvd_nat (dvd_refl 2)
-    omega
-  have htwo : (2 : ZMod N) ≠ 0 := by
-    intro hz
-    have hdvd : N ∣ 2 :=
-      (CharP.cast_eq_zero_iff (ZMod N) N 2).mp hz
-    exact (Nat.not_le_of_lt hNgt)
-      (Nat.le_of_dvd (by omega) hdvd)
-
-  have hflip : ∀ (e : Fin k → Bool) (j : Fin k),
+  have htwo : (2 : ZMod N) ≠ 0 :=
+    ((ZMod.isUnit_iff_coprime 2 N).mpr (Nat.coprime_two_left.mpr hodd)).ne_zero
+  -- Flipping coordinate `j` negates `eta`: at `y t` (coordinate `j` equal to `t`, every other
+  -- coordinate cancelling the vertices that differ from `e` there) the full moment only sees
+  -- the two vertices `e[j ↦ b]`; it is affine in `t` with slope
+  -- `(eta e[j ↦ false] + eta e[j ↦ true]) * K`, which constancy forces to vanish.
+  have hflip (e : Fin k → Bool) (j : Fin k) :
       (eta (Function.update e j false) : ZMod N) =
         -(eta (Function.update e j true) : ZMod N) := by
-    intro e j
-    let ef := Function.update e j false
-    let et := Function.update e j true
-    have heft : ef ≠ et := by
-      intro heq
-      have hj := congrFun heq j
-      simp [ef, et] at hj
-    let y : ZMod N → Point N k := fun t i =>
-      if i = j then t else walshSign (N := N) (e i) * h i
-    let term : ZMod N → (Fin k → Bool) → ZMod N := fun t u =>
-      (eta u : ZMod N) * ∏ i : Fin k,
-        (y t i + walshSign (N := N) (u i) * h i)
-
-    have houtside (u : Fin k → Bool) (huf : u ≠ ef) (hut : u ≠ et) :
-        ∃ i : Fin k, i ≠ j ∧ u i ≠ e i := by
-      by_contra hno
-      push Not at hno
-      by_cases huj : u j = false
-      · apply huf
-        funext i
-        by_cases hij : i = j
-        · subst i
-          simp [ef, huj]
-        · simp [ef, hij, hno i hij]
-      · have hujt : u j = true := by
-          cases huv : u j
-          · exact False.elim (huj huv)
-          · rfl
-        apply hut
-        funext i
-        by_cases hij : i = j
-        · subst i
-          simp [et, hujt]
-        · simp [et, hij, hno i hij]
-
-    have hterm_zero (t : ZMod N) (u : Fin k → Bool)
-        (huf : u ≠ ef) (hut : u ≠ et) : term t u = 0 := by
-      obtain ⟨i, hij, hui⟩ := houtside u huf hut
-      have hfactor :
-          y t i + walshSign (N := N) (u i) * h i = 0 := by
-        simp only [y, if_neg hij]
-        cases he : e i <;> cases hu : u i <;>
-          simp_all [walshSign]
-      have hp : (∏ a : Fin k,
-          (y t a + walshSign (N := N) (u a) * h a)) = 0 := by
-        exact Finset.prod_eq_zero (s := Finset.univ)
-          (Finset.mem_univ i) hfactor
-      simp only [term, hp, mul_zero]
-
-    have hreduce (t : ZMod N) :
-        signedWalshMoment eta h (y t) Finset.univ =
-          term t ef + term t et := by
-      unfold signedWalshMoment
-      change (∑ u : Fin k → Bool, term t u) =
-        term t ef + term t et
-      rw [← Finset.sum_pair heft]
-      symm
-      exact Finset.sum_subset (by simp) (fun u _ hu => by
-        simp only [Finset.mem_insert, Finset.mem_singleton,
-          not_or] at hu
-        exact hterm_zero t u hu.1 hu.2)
-
-    let K : ZMod N := ∏ i ∈ Finset.univ.erase j,
-      (2 : ZMod N) * walshSign (N := N) (e i) * h i
-    have hK : K ≠ 0 := by
-      unfold K
-      apply Finset.prod_ne_zero_iff.mpr
-      intro i _
-      exact mul_ne_zero
-        (mul_ne_zero htwo
-          (by cases e i <;> simp [walshSign]))
-        (hh i)
-
+    let y : ZMod N → Point N k := fun t i => if i = j then t else walshSign (N := N) (e i) * h i
+    let K : ZMod N := ∏ i ∈ univ.erase j, 2 * walshSign (N := N) (e i) * h i
+    have hK : K ≠ 0 := prod_ne_zero_iff.mpr fun i _ =>
+      mul_ne_zero (mul_ne_zero htwo (by cases e i <;> simp [walshSign])) (hh i)
     have hprod (t : ZMod N) (b : Bool) :
-        (∏ i : Fin k,
-          (y t i +
-            walshSign (N := N) ((Function.update e j b) i) *
-              h i)) =
+        ∏ i, (y t i + walshSign (N := N) (Function.update e j b i) * h i) =
           (t + walshSign (N := N) b * h j) * K := by
-      rw [← Finset.mul_prod_erase Finset.univ
-        (fun i : Fin k => y t i +
-          walshSign (N := N) ((Function.update e j b) i) *
-            h i)
-        (Finset.mem_univ j)]
-      congr 1
-      · simp [y]
-      · unfold K
-        apply Finset.prod_congr rfl
-        intro i hi
-        have hij : i ≠ j := Finset.ne_of_mem_erase hi
-        simp [y, hij]
+      rw [← mul_prod_erase _ _ (mem_univ j)]
+      refine congrArg₂ _ (by simp [y]) (prod_congr rfl fun i hi => ?_)
+      simp [y, ne_of_mem_erase hi]
+      ring
+    have hmom (t : ZMod N) : signedWalshMoment eta h (y t) univ =
+        (eta (Function.update e j false) * (t - h j) +
+          eta (Function.update e j true) * (t + h j)) * K := by
+      rw [signedWalshMoment, Fintype.sum_eq_add (Function.update e j false)
+        (Function.update e j true) (fun hft => by simpa using congrFun hft j), hprod, hprod]
+      · simp [walshSign]
         ring
-
-    have hmom := hinvariant Finset.univ (y 0) (y 1)
-    rw [hreduce 0, hreduce 1] at hmom
-    simp only [term, ef, et, hprod] at hmom
-    have hzero :
-        ((eta ef : ZMod N) + (eta et : ZMod N)) * K = 0 := by
-      linear_combination -hmom
-    have heta_sum :
-        (eta ef : ZMod N) + (eta et : ZMod N) = 0 :=
-      (mul_eq_zero.mp hzero).resolve_right hK
-    exact eq_neg_iff_add_eq_zero.mpr heta_sum
-
-  let uOf : Finset (Fin k) → (Fin k → Bool) := fun s i =>
-    if i ∈ s then false else true
-  have hu_insert (s : Finset (Fin k)) (j : Fin k)
-      (_ : j ∉ s) :
-      uOf (insert j s) =
-        Function.update (uOf s) j false := by
-    funext i
-    by_cases hij : i = j
-    · subst i
-      simp [uOf]
-    · simp [uOf, hij]
-  have hu_true (s : Finset (Fin k)) (j : Fin k)
-      (hjs : j ∉ s) :
-      Function.update (uOf s) j true = uOf s := by
-    rw [Function.update_eq_self_iff]
-    simp [uOf, hjs]
-  have heta_uOf (s : Finset (Fin k)) :
-      (eta (uOf s) : ZMod N) =
-        (-1 : ZMod N) ^ s.card *
-          (eta (uOf ∅) : ZMod N) := by
+      rintro u ⟨huf, hut⟩
+      obtain ⟨i, hij, hui⟩ : ∃ i, i ≠ j ∧ u i ≠ e i := by
+        by_contra! hno
+        cases hb : u j
+        · exact huf (Function.eq_update_iff.mpr ⟨hb, hno⟩)
+        · exact hut (Function.eq_update_iff.mpr ⟨hb, hno⟩)
+      refine mul_eq_zero_of_right _ (prod_eq_zero (mem_univ i) ?_)
+      simp only [y, if_neg hij]
+      revert hui
+      cases e i <;> cases u i <;> simp [walshSign]
+    have := hinvariant univ (y 0) (y 1)
+    rw [hmom, hmom] at this
+    apply mul_right_cancel₀ hK
+    linear_combination -this
+  -- hence `eta` at the vertex that is `false` exactly on `s` is `(-1)^|s|` times its value at
+  -- the all-`true` vertex, and so is the Walsh product
+  let uOf : Finset (Fin k) → Fin k → Bool := fun s i => i ∉ s
+  have key (s : Finset (Fin k)) :
+      (eta (uOf s) : ZMod N) = (-1) ^ s.card * (eta (uOf ∅) : ZMod N) := by
     induction s using Finset.induction with
     | empty => simp
     | @insert j s hjs ih =>
-        rw [hu_insert s j hjs, hflip (uOf s) j,
-          hu_true s j hjs, ih,
-          Finset.card_insert_of_notMem hjs, pow_succ]
+        have h1 : uOf (insert j s) = Function.update (uOf s) j false := by
+          funext i
+          by_cases hij : i = j <;> simp [uOf, hij]
+        have h2 : Function.update (uOf s) j true = uOf s := by simp [uOf, hjs]
+        rw [h1, hflip, h2, ih, card_insert_of_notMem hjs, pow_succ]
         ring
-
-  refine ⟨(eta (uOf ∅) : ZMod N), ?_⟩
-  intro e
-  let s : Finset (Fin k) :=
-    Finset.univ.filter fun i => e i = false
-  have hue : uOf s = e := by
-    funext i
-    cases he : e i <;> simp [uOf, s, he]
-  rw [← hue, heta_uOf]
-  have hsign :
-      (∏ i : Fin k, walshSign (N := N) (uOf s i)) =
-        (-1 : ZMod N) ^ s.card := by
-    calc
-      (∏ i : Fin k, walshSign (N := N) (uOf s i)) =
-          ∏ i : Fin k,
-            if i ∈ s then (-1 : ZMod N) else 1 := by
-        apply Finset.prod_congr rfl
-        intro i _
-        by_cases his : i ∈ s <;>
-          simp [uOf, his, walshSign]
-      _ = ∏ i ∈ s, (-1 : ZMod N) := by
-        rw [← Finset.prod_filter (s := Finset.univ)
-          (fun i : Fin k => i ∈ s)
-          (fun _ => (-1 : ZMod N))]
-        congr
-        ext i
-        simp [s]
-      _ = (-1 : ZMod N) ^ s.card := by simp
-  change
-    (-1 : ZMod N) ^ s.card *
-        (eta (uOf ∅) : ZMod N) =
-      (eta (uOf ∅) : ZMod N) *
-        ∏ i : Fin k, walshSign (N := N) (uOf s i)
-  rw [hsign]
-  ring
+  refine ⟨(eta (uOf ∅) : ZMod N), fun e => ?_⟩
+  obtain ⟨s, rfl⟩ : ∃ s, uOf s = e :=
+    ⟨univ.filter (e · = false), funext fun i => by simp [uOf]⟩
+  rw [key, mul_comm]
+  congr 1
+  simp [uOf, walshSign]
 
 theorem parityCharacter_eq_prod {N k : Nat}
     (e : Fin k → Bool) :
@@ -251,61 +129,16 @@ theorem booleanWalsh_multiple_of_invariant {N k : Nat} [NeZero N]
       booleanWalshMoment eta h y A = booleanWalshMoment eta h z A) :
     IsModularMultiple eta (parityCharacter (N := N)) := by
   letI : Fact (Nat.Prime N) := ⟨hprime⟩
-  have hNgt : 2 < N := by
-    have hle := hprime.two_le
-    have hne : N ≠ 2 := by
-      intro hN
-      subst N
-      exact hodd.not_two_dvd_nat (dvd_refl 2)
-    omega
-  have htwo : (2 : ZMod N) ≠ 0 := by
-    intro hz
-    have hdvd : N ∣ 2 :=
-      (CharP.cast_eq_zero_iff (ZMod N) N 2).mp hz
-    exact (Nat.not_le_of_lt hNgt)
-      (Nat.le_of_dvd (by omega) hdvd)
-  let hhalf : Point N k :=
-    fun i => h i / (2 : ZMod N)
-  have hhalf_ne : ∀ i, hhalf i ≠ 0 := by
-    exact fun i => div_ne_zero (hh i) htwo
-  have hcoord :
-      ∀ (y : Point N k) (i : Fin k) (b : Bool),
-        y i + walshSign (N := N) b * hhalf i =
-          (y i - hhalf i) + if b then h i else 0 := by
-    intro y i b
-    dsimp only [hhalf]
-    cases b <;> simp only [walshSign] <;> norm_num <;>
-      field_simp [htwo] <;> ring
-  have hmom :
-      ∀ (A : Finset (Fin k)) (y : Point N k),
-        signedWalshMoment eta hhalf y A =
-          booleanWalshMoment eta h
-            (fun i => y i - hhalf i) A := by
-    intro A y
-    unfold signedWalshMoment booleanWalshMoment
-    apply Finset.sum_congr rfl
-    intro e _
-    congr 1
-    apply Finset.prod_congr rfl
-    intro i _
-    exact hcoord y i (e i)
-  have hsigned :
-      ∀ (A : Finset (Fin k)) (y z : Point N k),
-        signedWalshMoment eta hhalf y A =
-          signedWalshMoment eta hhalf z A := by
-    intro A y z
-    rw [hmom A y, hmom A z]
-    exact hinvariant A _ _
-  obtain ⟨c, hc⟩ :=
-    signedWalsh_multiple_of_invariant hprime hodd hhalf eta hhalf_ne hsigned
-  refine ⟨c * (-1 : ZMod N) ^ k, ?_⟩
-  intro e
-  rw [hc e]
-  change
-    c * (∏ i : Fin k, walshSign (N := N) (e i)) =
-      c * (-1 : ZMod N) ^ k *
-        parityCharacter (N := N) e
-  rw [walshProduct_eq_parity]
-  ring
+  have htwo : (2 : ZMod N) ≠ 0 :=
+    ((ZMod.isUnit_iff_coprime 2 N).mpr (Nat.coprime_two_left.mpr hodd)).ne_zero
+  -- the sign cube of half the side lengths centred at `y` is the Boolean cube at `y - h / 2`
+  have hmom (A : Finset (Fin k)) (y : Point N k) :
+      signedWalshMoment eta (h · / 2) y A =
+        booleanWalshMoment eta h (fun i => y i - h i / 2) A := by
+    refine sum_congr rfl fun e _ => congrArg (_ * ·) (prod_congr rfl fun i _ => ?_)
+    cases e i <;> simp [walshSign] <;> field_simp <;> ring
+  obtain ⟨c, hc⟩ := signedWalsh_multiple_of_invariant hprime hodd (h · / 2) eta
+    (fun i => div_ne_zero (hh i) htwo) fun A y z => by rw [hmom, hmom]; exact hinvariant A _ _
+  exact ⟨c * (-1) ^ k, fun e => by rw [hc e, mul_assoc, ← walshProduct_eq_parity]⟩
 
 end LeanProofs.GowersSzemeredi

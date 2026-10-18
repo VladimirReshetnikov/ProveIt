@@ -24,11 +24,7 @@ private def cor146Embed {N k : Nat} (x : Point N k) (r : ZMod N) :
     Point N (k + 1) := Fin.snoc x r
 
 private lemma cor146_embed_eq_append {N k : Nat} (x : Point N k)
-    (r : ZMod N) : cor146Embed x r = appendCoordinate x r := by
-  funext i
-  cases i using Fin.lastCases with
-  | last => simp [cor146Embed, appendCoordinate]
-  | cast i => simp [cor146Embed, appendCoordinate]
+    (r : ZMod N) : cor146Embed x r = appendCoordinate x r := rfl
 
 private noncomputable def cor146Section {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) (r : ZMod N) : Finset (Point N k) := by
@@ -165,79 +161,31 @@ private lemma cor146_pair_first_moment {N k : Nat} [NeZero N]
     beta ^ (4 ^ k) * gamma ^ (2 * k * 4 ^ k) *
         (N : Real) ^ (3 * k + 1) ≤
       ∑ K : AxisCube N k, ∑ r : ZMod N, cor146Theta B phi K r := by
-  let a := 4 ^ k
-  let d : ZMod N → Real := fun r =>
-    (cor146Section B r).card / (N : Real) ^ k
-  let G : Real := gamma ^ (2 * k * a) * (N : Real) ^ (3 * k)
-  have hN : 0 < (N : Real) := by
-    exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
-  have ha : 1 ≤ a := by
-    dsimp only [a]
-    have : 0 < 4 ^ k := pow_pos (by omega) k
-    omega
-  have ha0 : a ≠ 0 := by omega
-  have hd_nonneg (r : ZMod N) : 0 ≤ d r := by
-    dsimp only [d]
-    positivity
-  have hsection (r : ZMod N) :
-      d r ^ a * G ≤
-        respectedCubePairCount (cor146Section B r) (cor146SectionPhi phi r) := by
-    by_cases hr : (cor146Section B r).card = 0
-    · have hdr : d r = 0 := by simp [d, hr]
-      rw [hdr, zero_pow (by omega), zero_mul]
-      positivity
-    · have hdr : 0 < d r := by
-        dsimp only [d]
-        exact div_pos (by exact_mod_cast Nat.pos_of_ne_zero hr) (pow_pos hN k)
-      have hdcard : ((cor146Section B r).card : Real) =
-          d r * (N : Real) ^ k := by
-        dsimp only [d]
-        field_simp
-      simpa only [a, G, mul_assoc] using
-        corollary_14_5_holds N k (d r) gamma (cor146Section B r)
-          (cor146SectionPhi phi r) hk hdr hgamma hgamma_one hdcard
-          (cor146_section_product_property B phi gamma hproduct r)
-  have hsections :
-      ∑ r : ZMod N, d r ^ a * G ≤
-        ∑ r : ZMod N,
-          (respectedCubePairCount (cor146Section B r)
-            (cor146SectionPhi phi r) : Real) := by
-    exact Finset.sum_le_sum fun r _ => hsection r
-  have hd_sum : ∑ r : ZMod N, d r = beta * N := by
-    simpa only [d] using cor146_sum_section_density beta B hcard
-  have hmean0 := pow_sum_div_card_le_sum_pow
-    (s := (Finset.univ : Finset (ZMod N))) (f := d)
-    (fun r _ => hd_nonneg r) (a - 1)
-  rw [Nat.sub_add_cancel ha] at hmean0
-  simp only [Finset.card_univ, ZMod.card] at hmean0
-  have hmean : beta ^ a * (N : Real) ≤ ∑ r : ZMod N, d r ^ a := by
-    calc
-      beta ^ a * (N : Real) = (beta * N) ^ a / (N : Real) ^ (a - 1) := by
-        apply (eq_div_iff (pow_ne_zero _ hN.ne')).2
-        rw [mul_pow]
-        calc
-          beta ^ a * (N : Real) * (N : Real) ^ (a - 1) =
-              beta ^ a * ((N : Real) ^ (a - 1) * N) := by ring
-          _ = beta ^ a * (N : Real) ^ a := by rw [pow_sub_one_mul ha0]
-      _ = (∑ r : ZMod N, d r) ^ a / (N : Real) ^ (a - 1) := by rw [hd_sum]
-      _ ≤ ∑ r : ZMod N, d r ^ a := hmean0
-  calc
-    beta ^ (4 ^ k) * gamma ^ (2 * k * 4 ^ k) *
-        (N : Real) ^ (3 * k + 1) =
-      (beta ^ a * (N : Real)) * G := by
-        dsimp only [a, G]
-        rw [pow_succ]
-        ring
-    _ ≤ (∑ r : ZMod N, d r ^ a) * G := by
+  have hN : 0 < (N : Real) := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
+  have ha0 : 4 ^ k ≠ 0 := by positivity
+  let d : ZMod N → Real := fun r => (cor146Section B r).card / (N : Real) ^ k
+  have hd_sum : ∑ r, d r = beta * N := cor146_sum_section_density beta B hcard
+  have hmean := pow_sum_div_card_le_sum_pow (s := Finset.univ) (f := d)
+    (fun r _ => by positivity) (4 ^ k - 1)
+  rw [Nat.sub_add_cancel (Nat.one_le_iff_ne_zero.2 ha0), hd_sum, Finset.card_univ, ZMod.card,
+    mul_pow, ← mul_pow_sub_one ha0 (N : Real), ← mul_assoc,
+    mul_div_cancel_right₀ _ (by positivity)] at hmean
+  calc beta ^ (4 ^ k) * gamma ^ (2 * k * 4 ^ k) * (N : Real) ^ (3 * k + 1)
+      = beta ^ 4 ^ k * N * (gamma ^ (2 * k * 4 ^ k) * (N : Real) ^ (3 * k)) := by ring
+    _ ≤ ∑ r, d r ^ 4 ^ k * (gamma ^ (2 * k * 4 ^ k) * (N : Real) ^ (3 * k)) := by
+      rw [← Finset.sum_mul]
       gcongr
-    _ = ∑ r : ZMod N, d r ^ a * G := by rw [Finset.sum_mul]
-    _ ≤ ∑ r : ZMod N,
-        (respectedCubePairCount (cor146Section B r)
-          (cor146SectionPhi phi r) : Real) := hsections
+    _ ≤ ∑ r, (respectedCubePairCount (cor146Section B r) (cor146SectionPhi phi r) : Real) := by
+      gcongr with r
+      rcases (show 0 ≤ d r by positivity).eq_or_lt with hr | hr
+      · rw [← hr, zero_pow ha0, zero_mul]
+        positivity
+      · simpa only [mul_assoc] using corollary_14_5_holds N k (d r) gamma _ _ hk hr hgamma
+          hgamma_one (div_mul_cancel₀ _ (by positivity)).symm
+          (cor146_section_product_property B phi gamma hproduct r)
     _ = ∑ K : AxisCube N k, ∑ r : ZMod N, cor146Theta B phi K r := by
-      simp_rw [cor146_pair_count_eq_sum]
-      simp only [Nat.cast_sum, cor146Theta]
-      rw [Finset.sum_comm]
+      simp only [cor146_pair_count_eq_sum, Nat.cast_sum, cor146Theta]
+      exact Finset.sum_comm
 
 private def cor146Average {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N)
@@ -254,52 +202,22 @@ private lemma cor146_average_fourth_moment {N k : Nat} [NeZero N]
     (beta ^ (4 ^ k) * gamma ^ (2 * k * 4 ^ k)) ^ 4 *
         (N : Real) ^ (6 * k) ≤
       ∑ K : AxisCube N k, (cor146Average B phi K) ^ 4 := by
-  let A := beta ^ (4 ^ k) * gamma ^ (2 * k * 4 ^ k)
-  let x : AxisCube N k → Real := cor146Average B phi
-  have hN : 0 < (N : Real) := by
-    exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
-  have hx_nonneg (K : AxisCube N k) : 0 ≤ x K := by
-    dsimp only [x, cor146Average, cor146Theta]
-    positivity
-  have hx_sum : ∑ K : AxisCube N k, x K =
-      (∑ K : AxisCube N k, ∑ r : ZMod N, cor146Theta B phi K r) / N := by
-    dsimp only [x, cor146Average]
-    rw [Finset.sum_div]
-  have hfirst' : A * (N : Real) ^ (3 * k) ≤
-      ∑ K : AxisCube N k, x K := by
-    rw [hx_sum]
-    apply (le_div_iff₀ hN).2
-    calc
-      A * (N : Real) ^ (3 * k) * N =
-          beta ^ (4 ^ k) * gamma ^ (2 * k * 4 ^ k) *
-            (N : Real) ^ (3 * k + 1) := by
-        dsimp only [A]
-        rw [pow_succ]
-        ring
-      _ ≤ ∑ K : AxisCube N k, ∑ r : ZMod N,
-          cor146Theta B phi K r := hfirst
-  have hmean := pow_sum_div_card_le_sum_pow
-    (s := (Finset.univ : Finset (AxisCube N k))) (f := x)
-    (fun K _ => hx_nonneg K) 3
+  have hN : 0 < (N : Real) := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
+  have hmean := pow_sum_div_card_le_sum_pow (s := Finset.univ) (f := cor146Average B phi)
+    (fun K _ => by unfold cor146Average cor146Theta; positivity) 3
   simp only [Finset.card_univ, cor146_axis_cube_card, Nat.cast_pow] at hmean
-  have hpow : (A * (N : Real) ^ (3 * k)) ^ 4 ≤
-      (∑ K : AxisCube N k, x K) ^ 4 := by
-    gcongr
-  calc
-    (beta ^ (4 ^ k) * gamma ^ (2 * k * 4 ^ k)) ^ 4 *
-        (N : Real) ^ (6 * k) =
-      (A * (N : Real) ^ (3 * k)) ^ 4 /
-        ((N : Real) ^ (2 * k)) ^ 3 := by
-      dsimp only [A]
-      field_simp
-      rw [← pow_mul, ← pow_mul, ← pow_add]
-      congr 1
-      omega
-    _ ≤ (∑ K : AxisCube N k, x K) ^ 4 /
-        ((N : Real) ^ (2 * k)) ^ 3 := by
-      exact div_le_div_of_nonneg_right hpow (by positivity)
-    _ ≤ ∑ K : AxisCube N k, x K ^ 4 := hmean
-    _ = ∑ K : AxisCube N k, (cor146Average B phi K) ^ 4 := by rfl
+  have hsum : beta ^ (4 ^ k) * gamma ^ (2 * k * 4 ^ k) * (N : Real) ^ (3 * k) ≤
+      ∑ K, cor146Average B phi K := by
+    simp only [cor146Average, ← Finset.sum_div]
+    rw [le_div_iff₀ hN, mul_assoc, ← pow_succ]
+    exact hfirst
+  calc (beta ^ (4 ^ k) * gamma ^ (2 * k * 4 ^ k)) ^ 4 * (N : Real) ^ (6 * k)
+      = (beta ^ (4 ^ k) * gamma ^ (2 * k * 4 ^ k) * (N : Real) ^ (3 * k)) ^ 4 /
+          ((N : Real) ^ (2 * k)) ^ 3 := by
+        rw [eq_div_iff (by positivity)]
+        ring
+    _ ≤ (∑ K, cor146Average B phi K) ^ 4 / ((N : Real) ^ (2 * k)) ^ 3 := by gcongr
+    _ ≤ _ := hmean
 
 private def cor146VertexEquiv (k : Nat) :
     Fin (Fintype.card (Fin k → Bool)) ≃ (Fin k → Bool) :=
@@ -357,73 +275,15 @@ private lemma cor146_energy_eq_fiber_count {N k : Nat} [NeZero N]
     weightedSimultaneousAdditiveEnergy (cor146ReferenceSection B K)
         (cor146Theta B phi K) (cor146Sigma phi K) =
       (countWhere (cor146FiberGood B phi K) : Nat) := by
-  classical
-  unfold weightedSimultaneousAdditiveEnergy
-  simp only [cor146Theta]
   rw [show countWhere (cor146FiberGood B phi K) =
-      countWhere (fun z : (Fin 4 → ZMod N) ×
-        (Fin 4 → AxisCube N k) =>
-        ((∀ t, z.1 t ∈ cor146ReferenceSection B K) ∧
-            IsAdditiveQuadruple z.1 ∧
-            ∀ i, IsAdditiveQuadruple
-              (fun t => cor146Sigma phi K i (z.1 t))) ∧
-          ∀ t, z.2 t ∈ cor146GoodSet B phi K (z.1 t)) by
-    apply countWhere_congr
-    intro z
-    rfl]
-  rw [show countWhere (fun z : (Fin 4 → ZMod N) ×
-      (Fin 4 → AxisCube N k) =>
-      ((∀ t, z.1 t ∈ cor146ReferenceSection B K) ∧
-          IsAdditiveQuadruple z.1 ∧
-          ∀ i, IsAdditiveQuadruple
-            (fun t => cor146Sigma phi K i (z.1 t))) ∧
-        ∀ t, z.2 t ∈ cor146GoodSet B phi K (z.1 t)) =
-      ∑ q : Fin 4 → ZMod N,
-        countWhere (fun f : Fin 4 → AxisCube N k =>
-          ((∀ t, q t ∈ cor146ReferenceSection B K) ∧
-              IsAdditiveQuadruple q ∧
-              ∀ i, IsAdditiveQuadruple
-                (fun t => cor146Sigma phi K i (q t))) ∧
-            ∀ t, f t ∈ cor146GoodSet B phi K (q t)) from
-    prop144_countWhere_prod
-      (X := Fin 4 → ZMod N) (Y := Fin 4 → AxisCube N k)
-      (fun q f =>
-        ((∀ t, q t ∈ cor146ReferenceSection B K) ∧
-            IsAdditiveQuadruple q ∧
-            ∀ i, IsAdditiveQuadruple
-              (fun t => cor146Sigma phi K i (q t))) ∧
-          ∀ t, f t ∈ cor146GoodSet B phi K (q t))]
-  simp only [Nat.cast_sum]
-  apply Fintype.sum_congr
-  intro q
-  by_cases hq : (∀ t, q t ∈ cor146ReferenceSection B K) ∧
-      IsAdditiveQuadruple q ∧
-      ∀ i, IsAdditiveQuadruple (fun t => cor146Sigma phi K i (q t))
-  · rw [if_pos hq]
-    have hcount : countWhere (fun f : Fin 4 → AxisCube N k =>
-        ((∀ t, q t ∈ cor146ReferenceSection B K) ∧
-            IsAdditiveQuadruple q ∧
-            ∀ i, IsAdditiveQuadruple
-              (fun t => cor146Sigma phi K i (q t))) ∧
-          ∀ t, f t ∈ cor146GoodSet B phi K (q t)) =
-        countWhere (fun f : Fin 4 → AxisCube N k =>
-          ∀ t, f t ∈ cor146GoodSet B phi K (q t)) := by
-      apply countWhere_congr
-      exact fun f => and_iff_right hq
-    rw [hcount, cor146_count_choices]
-    norm_cast
-  · rw [if_neg hq]
-    have hfalse : countWhere (fun f : Fin 4 → AxisCube N k =>
-        ((∀ t, q t ∈ cor146ReferenceSection B K) ∧
-            IsAdditiveQuadruple q ∧
-            ∀ i, IsAdditiveQuadruple
-              (fun t => cor146Sigma phi K i (q t))) ∧
-          ∀ t, f t ∈ cor146GoodSet B phi K (q t)) = 0 := by
-      unfold countWhere
-      rw [Finset.filter_congr_decidable]
-      simp [hq]
-    rw [hfalse]
-    norm_num
+      ∑ q, countWhere fun f => cor146FiberGood B phi K (q, f) from
+    prop144_countWhere_prod fun q f => cor146FiberGood B phi K (q, f)]
+  unfold weightedSimultaneousAdditiveEnergy
+  push_cast
+  refine Finset.sum_congr rfl fun q _ => ?_
+  split_ifs with hq
+  · simp [cor146FiberGood, cor146EnergyCondition, hq, cor146_count_choices, cor146Theta]
+  · simp [cor146FiberGood, cor146EnergyCondition, hq]
 
 private lemma cor146_theta_eq_zero_of_not_reference {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N)
@@ -457,48 +317,23 @@ private lemma cor146_product_lower {N k : Nat} [NeZero N]
   let p := Fintype.card (Fin k → Bool)
   let y : Fin p → Point N (k + 1) := fun i =>
     cor146Embed (K.vertex (cor146VertexEquiv k i)) 0
-  have h := hproduct p (Fin.last k) y (cor146ReferenceSection B K)
-    (cor146Theta B phi K) (fun _ => by
-      unfold cor146Theta
-      positivity)
   have hmem : ∀ (i : Fin p) x, x ∈ cor146ReferenceSection B K →
       replaceCoordinate (y i) (Fin.last k) x ∈ B := by
     intro i x hx
-    have hKin : K.IsIn (cor146Section B x) := by
-      simpa [cor146ReferenceSection] using hx
-    have hv := hKin (cor146VertexEquiv k i)
-    rw [show replaceCoordinate (y i) (Fin.last k) x =
-        cor146Embed (K.vertex (cor146VertexEquiv k i)) x by
-      simp only [y, cor146_replace_last]]
-    simpa [cor146Section] using hv
-  specialize h hmem
+    simp only [cor146ReferenceSection, cor146Section, AxisCube.IsIn, Finset.mem_filter,
+      Finset.mem_univ, true_and] at hx
+    simpa only [y, cor146_replace_last] using hx (cor146VertexEquiv k i)
+  have h := hproduct p (Fin.last k) y (cor146ReferenceSection B K)
+    (cor146Theta B phi K) (fun _ => by unfold cor146Theta; positivity) hmem
   have hsigma : (fun i => coordinateRestriction phi (y i) (Fin.last k)) =
       cor146Sigma phi K := by
     funext i x
     simp only [coordinateRestriction, y, cor146_replace_last, cor146Sigma]
-  rw [hsigma, cor146_energy_eq_fiber_count,
-    cor146_sum_theta_reference] at h
-  have hN : (N : Real) ≠ 0 := by exact_mod_cast (NeZero.ne N)
-  calc
-    gamma ^ (8 * 2 ^ k) * (N : Real) ^ 3 *
-        (cor146Average B phi K) ^ 4 =
-      gamma ^ (8 * p) * (N : Real)⁻¹ *
-        (∑ r : ZMod N, cor146Theta B phi K r) ^ 4 := by
-      rw [show p = 2 ^ k by exact cor146_vertex_card k]
-      unfold cor146Average
-      rw [div_pow]
-      have hinv : (N : Real) ^ 3 * ((N : Real) ^ 4)⁻¹ = (N : Real)⁻¹ := by
-        field_simp
-      rw [div_eq_mul_inv]
-      calc
-        gamma ^ (8 * 2 ^ k) * (N : Real) ^ 3 *
-            ((∑ r : ZMod N, cor146Theta B phi K r) ^ 4 *
-              ((N : Real) ^ 4)⁻¹) =
-          gamma ^ (8 * 2 ^ k) *
-            ((N : Real) ^ 3 * ((N : Real) ^ 4)⁻¹) *
-              (∑ r : ZMod N, cor146Theta B phi K r) ^ 4 := by ring
-        _ = _ := by rw [hinv]
-    _ ≤ ((countWhere (cor146FiberGood B phi K) : Nat) : Real) := h
+  rw [hsigma, cor146_energy_eq_fiber_count, cor146_sum_theta_reference] at h
+  have hN : (N : Real) ≠ 0 := by exact_mod_cast NeZero.ne N
+  refine le_of_eq_of_le ?_ h
+  rw [show p = 2 ^ k from cor146_vertex_card k, cor146Average]
+  field_simp
 
 private lemma cor146_additiveTuple_two_iff {G : Type*} [AddCommMonoid G]
     (q : Fin 4 → G) :
@@ -679,9 +514,7 @@ private lemma cor146_source_count_le {N k : Nat} [NeZero N]
           true_and] at hz hw
         exact cor146_augmented_injective B phi hz hw hzw
     _ = (Finset.univ.filter (fun R : GeneralArrangement N k 2 =>
-          R.IsIn B ∧ R.IsRespected phi)).card * N ^ k := by
-      rw [Finset.card_product]
-      simp [Point]
+          R.IsIn B ∧ R.IsRespected phi)).card * N ^ k := by norm_num
     _ = respectedGeneralArrangementCount 2 B phi * N ^ k := by
       congr 1
       unfold respectedGeneralArrangementCount countWhere
@@ -699,14 +532,9 @@ private lemma cor146_direct_constant_identity {N k : Nat} [NeZero N]
           (N : Real) ^ (6 * k)) := by
   have hfour : 4 ^ (k + 1) = 4 ^ k * 4 := by rw [pow_succ]
   have hgamma : 2 * k * 4 ^ (k + 1) + 8 * 2 ^ k =
-      (2 * k * 4 ^ k) * 4 + 8 * 2 ^ k := by
-    rw [hfour]
-    ring
+      (2 * k * 4 ^ k) * 4 + 8 * 2 ^ k := by ring
   have hNpow : (N : Real) ^ (5 * k + 3) * (N : Real) ^ k =
-      (N : Real) ^ 3 * (N : Real) ^ (6 * k) := by
-    rw [← pow_add, ← pow_add]
-    congr 1
-    omega
+      (N : Real) ^ 3 * (N : Real) ^ (6 * k) := by ring
   rw [hgamma, hfour, pow_add, pow_mul, pow_mul, mul_pow]
   calc
     (beta ^ 4 ^ k) ^ 4 *
@@ -735,49 +563,16 @@ private lemma cor146_direct_lower {N k : Nat} [NeZero N]
         gamma ^ (2 * k * 4 ^ (k + 1) + 8 * 2 ^ k) *
         (N : Real) ^ (5 * k + 3) ≤
       respectedGeneralArrangementCount 2 B phi := by
-  let H := gamma ^ (8 * 2 ^ k) * (N : Real) ^ 3
-  have hH : 0 ≤ H := by
-    dsimp only [H]
-    positivity
-  have hproducts : H *
-      (∑ K : AxisCube N k, (cor146Average B phi K) ^ 4) ≤
-      ∑ K : AxisCube N k,
-        ((countWhere (cor146FiberGood B phi K) : Nat) : Real) := by
-    rw [Finset.mul_sum]
-    exact Finset.sum_le_sum fun K _ => cor146_product_lower gamma B phi hproduct K
-  have hsource : H *
-      ((beta ^ (4 ^ k) * gamma ^ (2 * k * 4 ^ k)) ^ 4 *
-        (N : Real) ^ (6 * k)) ≤
-      ∑ K : AxisCube N k, countWhere (cor146FiberGood B phi K) := by
-    calc
-      H * ((beta ^ (4 ^ k) * gamma ^ (2 * k * 4 ^ k)) ^ 4 *
-          (N : Real) ^ (6 * k)) ≤
-        H * (∑ K : AxisCube N k, (cor146Average B phi K) ^ 4) :=
-          mul_le_mul_of_nonneg_left hfourth hH
-      _ ≤ ∑ K : AxisCube N k,
-          ((countWhere (cor146FiberGood B phi K) : Nat) : Real) := hproducts
-      _ = (∑ K : AxisCube N k,
-          countWhere (cor146FiberGood B phi K) : Nat) := by norm_cast
-  have hupper :
-      (∑ K : AxisCube N k,
-          countWhere (cor146FiberGood B phi K) : Real) ≤
-        (respectedGeneralArrangementCount 2 B phi : Nat) * (N : Real) ^ k := by
-    exact_mod_cast cor146_source_count_le B phi
-  have hN : 0 < (N : Real) := by
-    exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
-  have hNpow : 0 < (N : Real) ^ k := pow_pos hN k
-  apply le_of_mul_le_mul_right ?_ hNpow
-  exact calc
-    (beta ^ (4 ^ (k + 1)) *
-        gamma ^ (2 * k * 4 ^ (k + 1) + 8 * 2 ^ k) *
-        (N : Real) ^ (5 * k + 3)) * (N : Real) ^ k =
-      H * ((beta ^ (4 ^ k) * gamma ^ (2 * k * 4 ^ k)) ^ 4 *
-        (N : Real) ^ (6 * k)) := cor146_direct_constant_identity beta gamma
-    _ ≤ (∑ K : AxisCube N k,
-        countWhere (cor146FiberGood B phi K) : Real) := by
-          simpa only [Nat.cast_sum] using hsource
-    _ ≤ (respectedGeneralArrangementCount 2 B phi : Nat) *
-        (N : Real) ^ k := hupper
+  have hN : 0 < (N : Real) := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
+  refine le_of_mul_le_mul_right ?_ (pow_pos hN k)
+  rw [cor146_direct_constant_identity beta gamma]
+  calc _ ≤ ∑ K : AxisCube N k,
+        gamma ^ (8 * 2 ^ k) * (N : Real) ^ 3 * (cor146Average B phi K) ^ 4 := by
+        rw [← Finset.mul_sum]
+        gcongr
+    _ ≤ ∑ K : AxisCube N k, ((countWhere (cor146FiberGood B phi K) : Nat) : Real) :=
+        Finset.sum_le_sum fun K _ => cor146_product_lower gamma B phi hproduct K
+    _ ≤ _ := by exact_mod_cast cor146_source_count_le B phi
 
 private lemma cor146_gamma_exponent_le (k : Nat) (hk : 1 ≤ k) :
     2 * k * 4 ^ (k + 1) + 8 * 2 ^ k ≤ 3 * k * 4 ^ (k + 1) := by
@@ -818,9 +613,7 @@ theorem corollary_14_6_holds : corollary_14_6 := by
         (N : Real) ^ (5 * k + 3) ≤
       beta ^ (4 ^ (k + 1)) *
         gamma ^ (2 * k * 4 ^ (k + 1) + 8 * 2 ^ k) *
-        (N : Real) ^ (5 * k + 3) := by
-          exact mul_le_mul_of_nonneg_right
-            (mul_le_mul_of_nonneg_left hgamma_power hbeta_power) hN_power
+        (N : Real) ^ (5 * k + 3) := by gcongr
     _ ≤ (respectedGeneralArrangementCount 2 B phi : Real) := hdirect
 
 end LeanProofs.GowersSzemeredi

@@ -71,68 +71,18 @@ lemma lemma154_booleanWalshMoment_multilinear {N k : Nat} [NeZero N]
     (eta : (Fin k → Bool) → Int) (h : Point N k)
     (A : Finset (Fin k)) :
     IsMultilinear (fun y => booleanWalshMoment eta h y A) := by
-  refine ⟨lemma154BooleanCoefficient eta h A, ?_⟩
-  intro y
-  unfold booleanWalshMoment lemma154BooleanCoefficient
-  calc
-    (∑ e : Fin k → Bool, (eta e : ZMod N) *
-        ∏ i ∈ A, (y i + if e i then h i else 0)) =
-        ∑ e : Fin k → Bool, (eta e : ZMod N) *
-          ∏ i : Fin k,
-            ∑ b : Bool,
-              (if i ∈ A then
-                  if b then 1 else if e i then h i else 0
-                else if b then 0 else 1) *
-                (if b then y i else 1) := by
-      apply Finset.sum_congr rfl
-      intro e _
-      congr 1
-      simp only [Fintype.sum_bool, Bool.false_eq_true, if_false, if_true,
-        ite_mul, mul_ite, one_mul, zero_mul, mul_one]
-      symm
-      calc
-        (∏ x, ((if x ∈ A then y x else 0) +
-            if x ∈ A then (if e x then h x else 0) else 1)) =
-            ∏ x, if x ∈ A then y x + (if e x then h x else 0) else 1 := by
-          apply Finset.prod_congr rfl
-          intro x _
-          by_cases hx : x ∈ A <;> simp [hx]
-        _ = ∏ x ∈ A, (y x + if e x then h x else 0) := by norm_num
-    _ = ∑ e : Fin k → Bool, (eta e : ZMod N) *
-          ∑ u : Fin k → Bool,
-            ∏ i : Fin k,
-              (if i ∈ A then
-                  if u i then 1 else if e i then h i else 0
-                else if u i then 0 else 1) *
-                (if u i then y i else 1) := by
-      apply Finset.sum_congr rfl
-      intro e _
-      rw [Fintype.prod_sum]
-    _ = ∑ e : Fin k → Bool, ∑ u : Fin k → Bool,
-          (eta e : ZMod N) *
-            ∏ i : Fin k,
-              (if i ∈ A then
-                  if u i then 1 else if e i then h i else 0
-                else if u i then 0 else 1) *
-                (if u i then y i else 1) := by
-      apply Finset.sum_congr rfl
-      intro e _
-      rw [Finset.mul_sum]
-    _ = ∑ u : Fin k → Bool,
-          (∑ e : Fin k → Bool, (eta e : ZMod N) *
-            ∏ i : Fin k,
-              if i ∈ A then
-                if u i then 1 else if e i then h i else 0
-              else if u i then 0 else 1) *
-            ∏ i : Fin k, if u i then y i else 1 := by
-      rw [Finset.sum_comm]
-      apply Finset.sum_congr rfl
-      intro u _
-      rw [Finset.sum_mul]
-      apply Finset.sum_congr rfl
-      intro e _
-      rw [Finset.prod_mul_distrib]
-      ring
+  refine ⟨lemma154BooleanCoefficient eta h A, fun y => ?_⟩
+  -- expand each factor `y i + [e i] h i` (or `1` off `A`) as a sum over `u i ∈ {0, 1}`
+  have hfactor (e : Fin k → Bool) :
+      ∏ i ∈ A, (y i + if e i then h i else 0) =
+        ∏ i, ∑ b : Bool, (if i ∈ A then if b then 1 else if e i then h i else 0
+          else if b then 0 else 1) * (if b then y i else 1) := by
+    rw [← Fintype.prod_ite_mem]
+    refine prod_congr rfl fun i _ => ?_
+    by_cases hi : i ∈ A <;> simp [hi]
+  simp only [booleanWalshMoment, lemma154BooleanCoefficient, hfactor, Fintype.prod_sum,
+    mul_sum, sum_mul, prod_mul_distrib, mul_assoc]
+  exact sum_comm
 
 lemma lemma154_parity_cube_sum {N k : Nat} [NeZero N]
     (h y : Point N k) :
@@ -580,140 +530,60 @@ private lemma rangeDeg_case_one_card_le {N k d : Nat} [NeZero N]
     Fintype.card (RangeDegCoefficientSolutions N k d c) ≤
       k * N ^ ((2 * d + 1) * k + 2 * d - 2) := by
   letI : Fact N.Prime := ⟨hprime⟩
-  let proj : RangeDegCoefficientSolutions N k d c →
-      RangeDegCaseOneKey N k d j := fun R =>
-    ⟨R.1.side, ⟨R.1.crossSection, R.2.2.1⟩,
-      fun t => R.1.base t⟩
-  have hfiber : ∀ b : RangeDegCaseOneKey N k d j,
-      Fintype.card {R : RangeDegCoefficientSolutions N k d c // proj R = b} ≤
-        k * N ^ (k - 1) := by
-    intro b
-    by_cases hex : Nonempty
-        {R : RangeDegCoefficientSolutions N k d c // proj R = b}
-    · let R₀ := Classical.choice hex
-      have hside : ∀ i, b.1 i ≠ 0 := by
-        intro i
-        have hs : R₀.1.1.side = b.1 := congrArg (fun z => z.1) R₀.2
-        rw [← hs]
-        exact R₀.1.2.1 i
-      have hnotInvariant : ¬ ∀ (A : Finset (Fin k)) (y z : Point N k),
-          booleanWalshMoment (fun e => rangeDegEta c e j) b.1 y A =
-            booleanWalshMoment (fun e => rangeDegEta c e j) b.1 z A := by
-        intro hinvariant
-        apply hblock
-        exact booleanWalsh_multiple_of_invariant hprime hodd b.1
-          (fun e => rangeDegEta c e j) hside hinvariant
-      push Not at hnotInvariant
-      obtain ⟨A, y, z, hyz⟩ := hnotInvariant
-      let mu : Point N k → ZMod N := fun v =>
-        booleanWalshMoment (fun e => rangeDegEta c e j) b.1 v A
-      have hmuMultilinear : IsMultilinear mu :=
-        lemma154_booleanWalshMoment_multilinear _ _ _
-      have hmuNonconstant : ¬ ∃ a, ∀ v, mu v = a := by
-        rintro ⟨a, ha⟩
-        exact hyz ((ha y).trans (ha z).symm)
-      let enc : {R : RangeDegCoefficientSolutions N k d c // proj R = b} →
-          {v : Point N k // mu v = mu (R₀.1.1.base j)} := fun R => by
-        refine ⟨R.1.1.base j, ?_⟩
-        have hproj : proj R.1 = proj R₀.1 := R.2.trans R₀.2.symm
-        have hsideEq : R.1.1.side = R₀.1.1.side :=
-          congrArg (fun q => q.1) hproj
-        have htail : (fun t : {t : Fin (2 * d) // t ≠ j} => R.1.1.base t) =
-            (fun t : {t : Fin (2 * d) // t ≠ j} => R₀.1.1.base t) :=
-          congrArg (fun q => q.2.2) hproj
-        have hoff : ∀ t, t ≠ j →
-            booleanWalshMoment (fun e => rangeDegEta c e t) R.1.1.side
-                (R.1.1.base t) A =
-              booleanWalshMoment (fun e => rangeDegEta c e t) R₀.1.1.side
-                (R₀.1.1.base t) A := by
-          intro t ht
-          have htbase := congrFun htail
-            (⟨t, ht⟩ : {q : Fin (2 * d) // q ≠ j})
-          rw [hsideEq, htbase]
-        have hdiff := rangeDeg_sum_mul_sub_eq_one
-          (fun _ : Fin (2 * d) => (1 : ZMod N))
-          (fun t => booleanWalshMoment (fun e => rangeDegEta c e t)
-            R.1.1.side (R.1.1.base t) A)
-          (fun t => booleanWalshMoment (fun e => rangeDegEta c e t)
-            R₀.1.1.side (R₀.1.1.base t) A) j hoff
-        have hzeroR := R.1.2.2.2 (rangeDegLiftFinset A)
-        have hzeroR₀ := R₀.1.2.2.2 (rangeDegLiftFinset A)
-        rw [rangeDeg_arrangementMoment_lift] at hzeroR hzeroR₀
-        simp only [one_mul] at hdiff
-        rw [hzeroR, hzeroR₀, sub_self] at hdiff
-        have hsideRB : R.1.1.side = b.1 := congrArg (fun q => q.1) R.2
-        have hsideR₀B : R₀.1.1.side = b.1 := congrArg (fun q => q.1) R₀.2
-        rw [hsideRB, hsideR₀B] at hdiff
-        dsimp only [mu]
-        simpa only [one_mul] using sub_eq_zero.mp hdiff.symm
-      have henc : Function.Injective enc := by
-        intro R S hRS
-        apply Subtype.ext
-        apply Subtype.ext
-        have hproj : proj R.1 = proj S.1 := R.2.trans S.2.symm
-        have hsideEq := congrArg (fun q => q.1) hproj
-        have hcrossEq := congrArg (fun q => q.2.1) hproj
-        have htail := congrArg (fun q => q.2.2) hproj
-        have hbasej : R.1.1.base j = S.1.1.base j :=
-          congrArg Subtype.val hRS
-        apply Prod.ext
-        · exact hsideEq
-        · apply Prod.ext
-          · funext t
-            by_cases ht : t = j
-            · subst t
-              exact hbasej
-            · exact congrFun htail ⟨t, ht⟩
-          · exact congrArg Subtype.val hcrossEq
-      have hlevel := lemma_15_3_holds N k hprime mu (mu (R₀.1.1.base j))
-        hmuMultilinear hmuNonconstant
-      have hlevelReal :
-          (countWhere (fun v : Point N k => mu v = mu (R₀.1.1.base j)) : Real) ≤
-            k * (N : Real) ^ (k - 1) := hlevel.1.trans hlevel.2
-      have hlevelNat :
-          countWhere (fun v : Point N k => mu v = mu (R₀.1.1.base j)) ≤
-            k * N ^ (k - 1) := by exact_mod_cast hlevelReal
-      calc
-        Fintype.card {R : RangeDegCoefficientSolutions N k d c // proj R = b} ≤
-            Fintype.card {v : Point N k // mu v = mu (R₀.1.1.base j)} :=
-          Fintype.card_le_of_injective enc henc
-        _ = countWhere (fun v : Point N k => mu v = mu (R₀.1.1.base j)) :=
-          lemma154_level_subtype_card mu _
-        _ ≤ k * N ^ (k - 1) := hlevelNat
-    · haveI : IsEmpty
-          {R : RangeDegCoefficientSolutions N k d c // proj R = b} :=
-        ⟨fun R => hex ⟨R⟩⟩
-      simp
-  have htotal := lemma154_card_le_of_fiber_le proj (k * N ^ (k - 1)) hfiber
-  have hkey := rangeDeg_case_one_key_card_le (N := N) (k := k) hd j
-  calc
-    Fintype.card (RangeDegCoefficientSolutions N k d c) ≤
-        Fintype.card (RangeDegCaseOneKey N k d j) *
-          (k * N ^ (k - 1)) := htotal
-    _ ≤ (N ^ k * N ^ (2 * d - 1) * N ^ ((2 * d - 1) * k)) *
-          (k * N ^ (k - 1)) := Nat.mul_le_mul_right _ hkey
+  let proj : RangeDegCoefficientSolutions N k d c → RangeDegCaseOneKey N k d j := fun R =>
+    ⟨R.1.side, ⟨R.1.crossSection, R.2.2.1⟩, fun t => R.1.base t⟩
+  -- in a fibre of `proj` only `base j` varies, and it lies on a level set of a nonconstant
+  -- multilinear moment of block `j`
+  have hfiber (b : RangeDegCaseOneKey N k d j) :
+      Fintype.card {R // proj R = b} ≤ k * N ^ (k - 1) := by
+    obtain _ | ⟨⟨R₀⟩⟩ := isEmpty_or_nonempty {R // proj R = b}
+    · simp
+    have hside (R : {R // proj R = b}) : R.1.1.side = b.1 := congrArg Prod.fst R.2
+    have hbase (R : {R // proj R = b}) (t : Fin (2 * d)) (ht : t ≠ j) :
+        R.1.1.base t = b.2.2 ⟨t, ht⟩ := congrFun (congrArg (·.2.2) R.2) ⟨t, ht⟩
+    -- block `j` is no multiple of parity, so one of its moments is not constant (Cor. 15.2)
+    have := mt (booleanWalsh_multiple_of_invariant hprime hodd b.1 _ (hside R₀ ▸ R₀.1.2.1)) hblock
+    push Not at this
+    obtain ⟨A, y, z, hyz⟩ := this
+    let mu : Point N k → ZMod N := fun v =>
+      booleanWalshMoment (fun e => rangeDegEta c e j) b.1 v A
+    -- the lifted moment at `A` vanishes, and its blocks other than `j` are fixed in the fibre
+    have hlevel (R : {R // proj R = b}) : mu (R.1.1.base j) = mu (R₀.1.1.base j) := by
+      have h := rangeDeg_sum_mul_sub_eq_one (fun _ => (1 : ZMod N))
+        (fun t => booleanWalshMoment (fun e => rangeDegEta c e t) b.1 (R.1.1.base t) A)
+        (fun t => booleanWalshMoment (fun e => rangeDegEta c e t) b.1 (R₀.1.1.base t) A) j
+        fun t ht => by simp only [hbase R t ht, hbase R₀ t ht]
+      have hR := R.1.2.2.2 (rangeDegLiftFinset A)
+      have hR₀ := R₀.1.2.2.2 (rangeDegLiftFinset A)
+      simp only [rangeDeg_arrangementMoment_lift, hside] at hR hR₀
+      simp only [one_mul, hR, hR₀, sub_self] at h
+      exact sub_eq_zero.mp h.symm
+    have hcount := lemma_15_3_holds N k hprime mu (mu (R₀.1.1.base j))
+      (lemma154_booleanWalshMoment_multilinear _ _ _) fun ⟨a, ha⟩ => hyz ((ha y).trans (ha z).symm)
+    calc Fintype.card {R // proj R = b}
+        ≤ Fintype.card {v // mu v = mu (R₀.1.1.base j)} := by
+          refine Fintype.card_le_of_injective (fun R => ⟨R.1.1.base j, hlevel R⟩) fun R S hRS => ?_
+          refine Subtype.ext (Subtype.ext (Prod.ext ((hside R).trans (hside S).symm)
+            (Prod.ext (funext fun t => ?_) (congrArg (·.2.1.1) (R.2.trans S.2.symm) :))))
+          obtain rfl | ht := eq_or_ne t j
+          · exact (congrArg Subtype.val hRS :)
+          · exact (hbase R t ht).trans (hbase S t ht).symm
+      _ = countWhere fun v => mu v = mu (R₀.1.1.base j) := lemma154_level_subtype_card mu _
+      _ ≤ k * N ^ (k - 1) := by exact_mod_cast hcount.1.trans hcount.2
+  calc Fintype.card (RangeDegCoefficientSolutions N k d c)
+      ≤ Fintype.card (RangeDegCaseOneKey N k d j) * (k * N ^ (k - 1)) :=
+        lemma154_card_le_of_fiber_le proj _ hfiber
+    _ ≤ (N ^ k * N ^ (2 * d - 1) * N ^ ((2 * d - 1) * k)) * (k * N ^ (k - 1)) :=
+        Nat.mul_le_mul_right _ (rangeDeg_case_one_key_card_le hd j)
     _ = k * N ^ ((2 * d + 1) * k + 2 * d - 2) := by
-      have hmul : (2 * d + 1) * k = 2 * d * k + k := by ring
-      calc
-        (N ^ k * N ^ (2 * d - 1) * N ^ ((2 * d - 1) * k)) *
-              (k * N ^ (k - 1)) =
-            k * (N ^ k * N ^ (2 * d - 1) *
-              N ^ ((2 * d - 1) * k) * N ^ (k - 1)) := by ring
-        _ = k * N ^ (k + (2 * d - 1) + (2 * d - 1) * k + (k - 1)) := by
-          rw [pow_add, pow_add, pow_add]
-        _ = k * N ^ ((2 * d + 1) * k + 2 * d - 2) := by
-          congr 2
-          have hsubmul : (2 * d - 1) * k = 2 * d * k - k := by
-            rw [Nat.sub_mul]
-            simp
-          have hkle : k ≤ 2 * d * k := by
-            calc
-              k = 1 * k := by simp
-              _ ≤ (2 * d) * k := Nat.mul_le_mul_right k (by omega)
-          have hcancel : 2 * d * k - k + k = 2 * d * k :=
-            Nat.sub_add_cancel hkle
-          rw [hmul, hsubmul]
-          omega
+      rw [← pow_add, ← pow_add, mul_left_comm, ← pow_add]
+      have h1 : (2 * d - 1) * k + k = 2 * d * k := by
+        rw [← Nat.succ_mul]
+        congr 1
+        omega
+      have h2 : (2 * d + 1) * k = 2 * d * k + k := by ring
+      congr 2
+      omega
 
 private abbrev RangeDegCaseTwoKey {N k d : Nat} [NeZero N]
     (a s : Fin (2 * d) → ZMod N) :=
@@ -757,54 +627,27 @@ private lemma rangeDeg_case_two_card_le {N k d : Nat} [NeZero N]
   letI : Fact N.Prime := ⟨hprime⟩
   letI : Nonempty (Fin (2 * d)) := ⟨⟨0, by omega⟩⟩
   let a : Fin (2 * d) → ZMod N := rangeDegIndexSign
-  let s : Fin (2 * d) → ZMod N := fun j ↦ Classical.choose (hblocks j)
-  have hs : ∀ j e, (rangeDegEta c e j : ZMod N) =
-      s j * parityCharacter (N := N) e := by
-    intro j e
-    exact Classical.choose_spec (hblocks j) e
-  have ha : ∀ j, a j ≠ 0 := by
-    intro j
-    by_cases hj : (j : Nat) < d <;>
-      simp [a, rangeDegIndexSign, hj]
-  have hnotprop : ¬ ∃ q, ∀ j, s j = q * a j := by
-    rintro ⟨q, hq⟩
-    apply hexceptional
-    refine ⟨q, ?_⟩
+  choose s hs using hblocks
+  have ha (j : Fin (2 * d)) : a j ≠ 0 := by
+    by_cases hj : (j : Nat) < d <;> simp [a, rangeDegIndexSign, hj]
+  -- every block is `s j` times parity, and `s` is not proportional to the additivity signs
+  have hnotprop : ¬ ∃ q, ∀ j, s j = q * a j := fun ⟨q, hq⟩ => hexceptional ⟨q, by
     rintro ⟨e, j⟩
     rw [hs j e, hq j]
-    by_cases hj : (j : Nat) < d <;>
-      simp [a, rangeDegIndexSign, arrangementParityCoefficient, hj]
+    by_cases hj : (j : Nat) < d <;> simp [a, rangeDegIndexSign, arrangementParityCoefficient, hj]⟩
   obtain ⟨i, j, hij, hdet⟩ := rangeDeg_exists_det_pair a s ha hnotprop
-  let proj : RangeDegCoefficientSolutions N k d c →
-      RangeDegCaseTwoKey (N := N) (k := k) a s := fun R ↦ by
-    have hadd : ∑ t, a t * R.1.crossSection t = 0 :=
-      (rangeDeg_additive_iff R.1.crossSection).mp R.2.2.1
-    have hmoment := R.2.2.2 Finset.univ
-    rw [lemma154_full_moment_eq R.1 (rangeDegEta c) s hs] at hmoment
-    have hfactor : ((-1 : ZMod N) ^ k * ∏ t, R.1.side t) ≠ 0 := by
-      apply mul_ne_zero
-      · exact pow_ne_zero _ (neg_ne_zero.mpr one_ne_zero)
-      · exact Finset.prod_ne_zero_iff.mpr fun t _ ↦ R.2.1 t
-    have hsecond : ∑ t, s t * R.1.crossSection t = 0 :=
-      (mul_eq_zero.mp hmoment).resolve_left hfactor
-    exact ⟨R.1.side, R.1.base, ⟨R.1.crossSection, hadd, hsecond⟩⟩
-  have hinj : Function.Injective proj := by
-    intro R S hRS
-    apply Subtype.ext
-    have hside := congrArg (fun z ↦ z.1) hRS
-    have hbase := congrArg (fun z ↦ z.2.1) hRS
-    have hcross := congrArg (fun z ↦ z.2.2) hRS
-    change R.1.1 = S.1.1 at hside
-    change R.1.2.1 = S.1.2.1 at hbase
-    have hcross' := congrArg Subtype.val hcross
-    change R.1.2.2 = S.1.2.2 at hcross'
-    exact Prod.ext hside (Prod.ext hbase hcross')
-  calc
-    Fintype.card (RangeDegCoefficientSolutions N k d c) ≤
-        Fintype.card (RangeDegCaseTwoKey (N := N) (k := k) a s) :=
-      Fintype.card_le_of_injective proj hinj
-    _ ≤ N ^ ((2 * d + 1) * k + 2 * d - 2) :=
-      rangeDeg_case_two_key_card_le hd a s i j hij hdet
+  -- additivity and the full moment are two independent linear forms in the cross-section
+  let proj : RangeDegCoefficientSolutions N k d c → RangeDegCaseTwoKey (N := N) (k := k) a s :=
+    fun R ↦ ⟨R.1.side, R.1.base, R.1.crossSection, (rangeDeg_additive_iff _).mp R.2.2.1, by
+      have hmoment := R.2.2.2 univ
+      rw [lemma154_full_moment_eq R.1 (rangeDegEta c) s hs] at hmoment
+      exact (mul_eq_zero.mp hmoment).resolve_left (mul_ne_zero
+        (pow_ne_zero _ (neg_ne_zero.mpr one_ne_zero)) (prod_ne_zero_iff.mpr fun t _ ↦ R.2.1 t))⟩
+  calc Fintype.card (RangeDegCoefficientSolutions N k d c)
+      ≤ Fintype.card (RangeDegCaseTwoKey (N := N) (k := k) a s) :=
+        Fintype.card_le_of_injective proj fun R S h ↦ Subtype.ext (Prod.ext (congrArg Prod.fst h :)
+          (Prod.ext (congrArg (·.2.1) h :) (congrArg (·.2.2.1) h :)))
+    _ ≤ N ^ ((2 * d + 1) * k + 2 * d - 2) := rangeDeg_case_two_key_card_le hd a s i j hij hdet
     _ ≤ k * N ^ ((2 * d + 1) * k + 2 * d - 2) := Nat.le_mul_of_pos_left _ hk
 
 private lemma rangeDeg_coefficient_solutions_card_le {N k d : Nat} [NeZero N]

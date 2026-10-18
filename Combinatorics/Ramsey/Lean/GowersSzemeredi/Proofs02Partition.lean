@@ -116,19 +116,13 @@ private lemma chunk_index_unique {c L q : Nat}
   apply Fin.ext
   by_contra hjne
   rcases lt_or_gt_of_ne hjne with hjlt | hjgt
-  · have hjnotlast : (j : Nat) + 1 ≠ c / L := by
-      intro hj
-      have := j'.isLt
-      omega
+  · have hjnotlast : (j : Nat) + 1 ≠ c / L := by omega
     simp only [residueChunkLength, if_neg hjnotlast] at hi
     have hstep : ((j : Nat) + 1) * L ≤ (j' : Nat) * L :=
       Nat.mul_le_mul_right L hjlt
     rw [Nat.add_mul] at hstep
     omega
-  · have hjnotlast : (j' : Nat) + 1 ≠ c / L := by
-      intro hj
-      have := j.isLt
-      omega
+  · have hjnotlast : (j' : Nat) + 1 ≠ c / L := by omega
     simp only [residueChunkLength, if_neg hjnotlast] at hi'
     have hstep : ((j' : Nat) + 1) * L ≤ (j : Nat) * L :=
       Nat.mul_le_mul_right L hjgt
@@ -385,12 +379,8 @@ private lemma exists_small_image_step {N r s : Nat} (hN : 0 < N)
     Real.exists_int_int_abs_mul_sub_le xi ht
   let u : Nat := k.toNat
   have hku : (u : Int) = k := Int.toNat_of_nonneg hkpos.le
-  have hu : 0 < u := by
-    have hkupos : (0 : Int) < (u : Int) := by simpa only [hku] using hkpos
-    exact_mod_cast hkupos
-  have hut : u ≤ t := by
-    have : (u : Int) ≤ (t : Int) := by simpa only [hku] using hkt
-    exact_mod_cast this
+  have hu : 0 < u := by linarith
+  have hut : u ≤ t := by linarith
   let z : Int := k * (a.val : Int) - j * (N : Int)
   have hzcast : (z : ZMod N) = (u : ZMod N) * a := by
     dsimp only [z]
@@ -447,9 +437,7 @@ private lemma partitionRatio_quarter {N r s : Nat} (hN : 0 < N) :
       rw [partitionRatio_sq hN]
       have hN0 : (N : Real) ≠ 0 := by exact_mod_cast (Nat.ne_of_gt hN)
       field_simp
-    _ = Real.sqrt ((partitionRatio N r s / 4) ^ 2) := by
-      congr 1
-      ring
+    _ = Real.sqrt ((partitionRatio N r s / 4) ^ 2) := by ring
     _ = |partitionRatio N r s / 4| := Real.sqrt_sq_eq_abs _
     _ = partitionRatio N r s / 4 := abs_of_nonneg (by positivity)
 
@@ -493,9 +481,7 @@ theorem lemma_2_3_holds : lemma_2_3 := by
   by_cases hqsmall : q < 4
   · refine ⟨r, fun i => singletonNatAP i, singletonNatAP_partition r, ?_⟩
     intro j
-    have hsubset : (singletonNatAP (j : Nat)).carrier ⊆ Finset.range r := by
-      rw [singletonNatAP_carrier, Finset.singleton_subset_iff]
-      exact Finset.mem_range.mpr j.isLt
+    have hsubset : (singletonNatAP (j : Nat)).carrier ⊆ Finset.range r := by norm_num
     have hproper : (singletonNatAP (j : Nat)).IsProper := by
       constructor
       · simp [singletonNatAP]

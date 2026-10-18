@@ -492,9 +492,7 @@ private lemma section5_large_partition_count
       (1 - (polynomialPartitionConstant k : Real)⁻¹) := by
   let root : Real := (r : Real) ^
     (polynomialPartitionConstant k : Real)⁻¹
-  have hrootPos : 0 < root := by
-    dsimp only [root]
-    exact Real.rpow_pos_of_pos (by exact_mod_cast hr) _
+  have hrootPos : 0 < root := by positivity
   have hvTwoReal : (2 : Real) < v := by
     have : (2 : Real) ≤
         (r : Real) ^ (polynomialPartitionConstant k : Real)⁻¹ / 2 := by
@@ -625,9 +623,7 @@ theorem section5_efficient_diameter_refinement_of_corollary_5_6
       exact hcount0.trans (by
         simpa only [K] using mul_le_mul_of_nonneg_right hcutoffConstant hrootPos.le)
     intro j
-    have hcard : (R j).carrier.card = 1 := by
-      rw [hproper j]
-      rfl
+    have hcard : (R j).carrier.card = 1 := rfl
     obtain ⟨x, hx⟩ := Finset.card_eq_one.mp hcard
     rw [hx, Finset.image_singleton]
     refine ⟨0, ⟨phi x, ?_⟩, ?_⟩

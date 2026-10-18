@@ -88,64 +88,24 @@ private lemma popularSums_card_lower {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (c : Real) (hc : 0 < c)
     (henergy : c * (A.card : Real) ^ 3 ≤ Finset.addEnergy A A) :
     c * A.card / 2 ≤ (popularSums A c).card := by
-  by_cases hA : A = ∅
-  · subst A
-    simp [popularSums]
-  have hm : (0 : Real) < A.card := by exact_mod_cast (Finset.card_pos.mpr (Finset.nonempty_iff_ne_empty.mpr hA))
-  let D := popularSums A c
-  have hsplit :
-      (∑ x ∈ A + A, (sumRep A x : Real) ^ 2) =
-        ∑ x ∈ D, (sumRep A x : Real) ^ 2 +
-          ∑ x ∈ (A + A) \ D, (sumRep A x : Real) ^ 2 := by
-    rw [← Finset.sum_union (Finset.disjoint_sdiff : Disjoint D ((A + A) \ D))]
-    congr 1
-    exact (Finset.union_sdiff_of_subset (by
-      intro x hx
-      exact (Finset.mem_filter.mp hx).1 : D ⊆ A + A)).symm
-  have hpop :
-      (∑ x ∈ D, (sumRep A x : Real) ^ 2) ≤
-        D.card * (A.card : Real) ^ 2 := by
-    calc
-      _ ≤ ∑ _x ∈ D, (A.card : Real) ^ 2 := by
-        apply Finset.sum_le_sum
-        intro x _
-        gcongr
-        exact_mod_cast sumRep_le_card A x
-      _ = _ := by simp [mul_comm]
-  have hunpop :
-      (∑ x ∈ (A + A) \ D, (sumRep A x : Real) ^ 2) ≤
-        (c * A.card / 2) * ∑ x ∈ A + A, (sumRep A x : Real) := by
-    calc
-      _ ≤ ∑ x ∈ (A + A) \ D,
-          (c * A.card / 2) * sumRep A x := by
-        apply Finset.sum_le_sum
-        intro x hx
-        have hxnot : x ∉ D := (Finset.mem_sdiff.mp hx).2
-        have hlt : (sumRep A x : Real) < c * A.card / 2 := by
-          simpa only [D, popularSums, Finset.mem_filter,
-            (Finset.mem_sdiff.mp hx).1, true_and, not_le] using hxnot
-        rw [pow_two]
-        exact mul_le_mul_of_nonneg_right hlt.le (Nat.cast_nonneg _)
-      _ = (c * A.card / 2) *
-          ∑ x ∈ (A + A) \ D, (sumRep A x : Real) := by
-        rw [Finset.mul_sum]
-      _ ≤ (c * A.card / 2) *
-          ∑ x ∈ A + A, (sumRep A x : Real) := by
-        gcongr
-        exact Finset.sdiff_subset
-  have henergyR : c * (A.card : Real) ^ 3 ≤
-      ∑ x ∈ A + A, (sumRep A x : Real) ^ 2 := by
-    norm_cast at henergy ⊢
-    simpa only [energy_eq_sum_sumRep_sq, Nat.cast_sum, Nat.cast_pow] using henergy
-  have htotalR : (∑ x ∈ A + A, (sumRep A x : Real)) = A.card ^ 2 := by
-    exact_mod_cast sum_sumRep A
-  rw [hsplit] at henergyR
-  rw [htotalR] at hunpop
-  have hcombined : c * (A.card : Real) ^ 3 ≤
-      (D.card : Real) * (A.card : Real) ^ 2 +
-        (c * A.card / 2) * (A.card : Real) ^ 2 :=
-    henergyR.trans (add_le_add hpop hunpop)
-  dsimp only [D] at hcombined ⊢
+  rcases A.eq_empty_or_nonempty with rfl | hA
+  · simp [popularSums]
+  have hm : (0 : Real) < A.card := by exact_mod_cast hA.card_pos
+  rw [energy_eq_sum_sumRep_sq] at henergy
+  push_cast at henergy
+  -- a popular sum contributes at most `|A|^2`, an unpopular one at most `c |A| / 2` times `r(x)`
+  have h := henergy.trans (Finset.sum_le_sum fun x _ =>
+    show (sumRep A x : Real) ^ 2 ≤ (if c * A.card / 2 ≤ (sumRep A x : Real) then
+      (A.card : Real) ^ 2 else 0) + c * A.card / 2 * sumRep A x by
+    have hr : (sumRep A x : Real) ≤ A.card := by exact_mod_cast sumRep_le_card A x
+    have hr0 : (0 : Real) ≤ sumRep A x := Nat.cast_nonneg _
+    split_ifs with hx
+    · linarith [mul_le_mul hr hr hr0 hm.le,
+        mul_nonneg (by positivity : (0 : Real) ≤ c * A.card / 2) hr0]
+    · linarith [mul_le_mul_of_nonneg_right (not_le.mp hx).le hr0])
+  rw [Finset.sum_add_distrib, ← Finset.sum_filter, Finset.sum_const, ← Finset.mul_sum,
+    nsmul_eq_mul, ← Nat.cast_sum, sum_sumRep, Nat.cast_pow] at h
+  unfold popularSums
   nlinarith [sq_pos_of_pos hm]
 
 private lemma sum_popularNeighbors_card {G : Type*} [DecidableEq G]
@@ -199,71 +159,23 @@ private lemma highDegreeCenters_card_lower {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (c : Real) (hc : 0 < c)
     (henergy : c * (A.card : Real) ^ 3 ≤ Finset.addEnergy A A) :
     bsgDelta c * A.card ≤ (highDegreeCenters A c).card := by
-  by_cases hA : A = ∅
-  · subst A
-    simp [bsgDelta, highDegreeCenters]
-  have hm : (0 : Real) < A.card := by
-    exact_mod_cast Finset.card_pos.mpr (Finset.nonempty_iff_ne_empty.mpr hA)
-  have hcOne : c ≤ 1 := by
-    have hupper : (Finset.addEnergy A A : Real) ≤ (A.card : Real) ^ 3 := by
-      exact_mod_cast energy_le_card_cube A
-    have := henergy.trans hupper
-    nlinarith [pow_pos hm 3]
-  let V := highDegreeCenters A c
-  have hVsub : V ⊆ A := by
-    intro a ha
-    exact (Finset.mem_filter.mp ha).1
-  have hdeg (a : G) (ha : a ∈ A \ V) :
-      ((popularNeighbors A c a).card : Real) < bsgDelta c * A.card := by
-    have haA := (Finset.mem_sdiff.mp ha).1
-    have haV := (Finset.mem_sdiff.mp ha).2
-    simpa only [V, highDegreeCenters, Finset.mem_filter, haA, true_and, not_le]
-      using haV
-  have hdegMax (a : G) :
-      ((popularNeighbors A c a).card : Real) ≤ A.card := by
-    exact_mod_cast Finset.card_le_card (Finset.filter_subset _ _)
-  have hsplit :
-      (∑ a ∈ A, ((popularNeighbors A c a).card : Real)) =
-        ∑ a ∈ V, ((popularNeighbors A c a).card : Real) +
-          ∑ a ∈ A \ V, ((popularNeighbors A c a).card : Real) := by
-    rw [← Finset.sum_union (Finset.disjoint_sdiff : Disjoint V (A \ V))]
-    congr 1
-    exact (Finset.union_sdiff_of_subset hVsub).symm
-  have hupperV :
-      (∑ a ∈ V, ((popularNeighbors A c a).card : Real)) ≤
-        V.card * A.card := by
-    calc
-      _ ≤ ∑ _a ∈ V, (A.card : Real) := by
-        apply Finset.sum_le_sum
-        intro a _
-        exact hdegMax a
-      _ = _ := by simp [mul_comm]
-  have hupperOut :
-      (∑ a ∈ A \ V, ((popularNeighbors A c a).card : Real)) ≤
-        (A.card - V.card : Nat) * (bsgDelta c * A.card) := by
-    calc
-      _ ≤ ∑ _a ∈ A \ V, (bsgDelta c * A.card) := by
-        apply Finset.sum_le_sum
-        intro a ha
-        exact (hdeg a ha).le
-      _ = ((A \ V).card : Real) * (bsgDelta c * A.card) := by
-        simp [mul_comm]
-      _ = (A.card - V.card : Nat) * (bsgDelta c * A.card) := by
-        rw [Finset.card_sdiff, Finset.inter_eq_left.mpr hVsub]
-  have hlower := popular_edge_count_lower A c hc henergy
-  rw [hsplit] at hlower
-  have hcombined : c ^ 2 * (A.card : Real) ^ 2 / 4 ≤
-      (V.card : Real) * A.card +
-        ((A.card - V.card : Nat) : Real) * (bsgDelta c * A.card) :=
-    hlower.trans (add_le_add hupperV hupperOut)
-  have hcardSub : ((A.card - V.card : Nat) : Real) = A.card - V.card := by
-    rw [Nat.cast_sub (Finset.card_le_card hVsub)]
-  rw [hcardSub] at hcombined
-  dsimp only [V] at hcombined ⊢
-  unfold bsgDelta at hcombined ⊢
-  have hc0 : 0 ≤ c := hc.le
-  nlinarith [sq_nonneg c, sq_pos_of_pos hm,
-    mul_nonneg hc0 (sub_nonneg.mpr hcOne)]
+  rcases A.eq_empty_or_nonempty with rfl | hA
+  · simp [bsgDelta, highDegreeCenters]
+  have hm : (0 : Real) < A.card := by exact_mod_cast hA.card_pos
+  have hδ : 0 < bsgDelta c * A.card := mul_pos (div_pos (pow_pos hc 2) (by norm_num)) hm
+  -- a high-degree center has at most `|A|` neighbours, any other fewer than `δ |A|`
+  have h := (popular_edge_count_lower A c hc henergy).trans (Finset.sum_le_sum fun a _ =>
+    show ((popularNeighbors A c a).card : Real) ≤ (if bsgDelta c * A.card ≤
+      ((popularNeighbors A c a).card : Real) then (A.card : Real) else 0) +
+        bsgDelta c * A.card by
+    have : ((popularNeighbors A c a).card : Real) ≤ A.card := by
+      exact_mod_cast Finset.card_le_card (Finset.filter_subset _ _)
+    split_ifs <;> linarith)
+  rw [Finset.sum_add_distrib, ← Finset.sum_filter, Finset.sum_const, Finset.sum_const,
+    nsmul_eq_mul, nsmul_eq_mul] at h
+  unfold highDegreeCenters
+  unfold bsgDelta at h ⊢
+  nlinarith
 
 private def centerAt {G : Type*} [DecidableEq G] (V : Finset G)
     (i : Fin V.card) : G :=
@@ -330,61 +242,24 @@ private lemma highGoodDegree_card_lower {X I : Type*} [DecidableEq X]
       (goodPairCount A K threshold : Real)) :
     (K.card : Real) / 2 ≤ (highGoodDegree A K threshold).card := by
   classical
-  let L := highGoodDegree A K threshold
-  have hLsub : L ⊆ K := Finset.filter_subset _ _
-  have hdegMax (i : I) : (goodDegree A K threshold i : Real) ≤ K.card := by
-    unfold goodDegree
-    exact_mod_cast Finset.card_le_card (Finset.filter_subset _ _)
-  have hdegLow (i : I) (hi : i ∈ K \ L) :
-      (goodDegree A K threshold i : Real) < (4 : Real) / 5 * K.card := by
-    have hiK := (Finset.mem_sdiff.mp hi).1
-    have hiL := (Finset.mem_sdiff.mp hi).2
-    simpa only [L, highGoodDegree, Finset.mem_filter, hiK, true_and, not_le]
-      using hiL
-  have hsplit :
-      (∑ i ∈ K, (goodDegree A K threshold i : Real)) =
-        ∑ i ∈ L, (goodDegree A K threshold i : Real) +
-          ∑ i ∈ K \ L, (goodDegree A K threshold i : Real) := by
-    rw [← Finset.sum_union (Finset.disjoint_sdiff : Disjoint L (K \ L))]
-    congr 1
-    exact (Finset.union_sdiff_of_subset hLsub).symm
-  have hupperL :
-      (∑ i ∈ L, (goodDegree A K threshold i : Real)) ≤
-        L.card * K.card := by
-    calc
-      _ ≤ ∑ _i ∈ L, (K.card : Real) := by
-        apply Finset.sum_le_sum
-        intro i _
-        exact hdegMax i
-      _ = _ := by simp [mul_comm]
-  have hupperOut :
-      (∑ i ∈ K \ L, (goodDegree A K threshold i : Real)) ≤
-        ((K.card - L.card : Nat) : Real) * ((4 : Real) / 5 * K.card) := by
-    calc
-      _ ≤ ∑ _i ∈ K \ L, ((4 : Real) / 5 * K.card) := by
-        apply Finset.sum_le_sum
-        intro i hi
-        exact (hdegLow i hi).le
-      _ = ((K \ L).card : Real) * ((4 : Real) / 5 * K.card) := by
-        simp [mul_comm]
-      _ = _ := by
-        rw [Finset.card_sdiff, Finset.inter_eq_left.mpr hLsub]
-  have hsumR :
-      ((∑ i ∈ K, goodDegree A K threshold i : Nat) : Real) =
-        (goodPairCount A K threshold : Real) := by
-    exact_mod_cast sum_goodDegree_eq_pairCount A K threshold
-  have hdense' : (9 : Real) / 10 * (K.card : Real) ^ 2 ≤
+  rcases K.eq_empty_or_nonempty with rfl | hK
+  · simp
+  have hsum : (goodPairCount A K threshold : Real) =
       ∑ i ∈ K, (goodDegree A K threshold i : Real) := by
-    rw [← Nat.cast_sum, hsumR]
-    exact hdense
-  rw [hsplit] at hdense'
-  have hcombined : (9 : Real) / 10 * (K.card : Real) ^ 2 ≤
-      (L.card : Real) * K.card +
-        ((K.card - L.card : Nat) : Real) * ((4 : Real) / 5 * K.card) :=
-    hdense'.trans (add_le_add hupperL hupperOut)
-  rw [Nat.cast_sub (Finset.card_le_card hLsub)] at hcombined
-  dsimp only [L] at hcombined ⊢
-  nlinarith [sq_nonneg ((K.card : Nat) : Real)]
+    exact_mod_cast (sum_goodDegree_eq_pairCount A K threshold).symm
+  -- a degree is at most `|K|`, and below `4 |K| / 5` off `highGoodDegree`
+  have h := (hdense.trans_eq hsum).trans (Finset.sum_le_sum fun i _ =>
+    show (goodDegree A K threshold i : Real) ≤ (if (4 : Real) / 5 * K.card ≤
+      goodDegree A K threshold i then (K.card : Real) / 5 else 0) + 4 / 5 * K.card by
+    have : (goodDegree A K threshold i : Real) ≤ K.card := by
+      unfold goodDegree
+      exact_mod_cast Finset.card_le_card (Finset.filter_subset _ _)
+    split_ifs <;> linarith)
+  rw [Finset.sum_add_distrib, ← Finset.sum_filter, Finset.sum_const, Finset.sum_const,
+    nsmul_eq_mul, nsmul_eq_mul] at h
+  unfold highGoodDegree
+  have hk : (0 : Real) < K.card := by exact_mod_cast hK.card_pos
+  nlinarith
 
 private lemma bsg_delta_pos (c : Real) (hc : 0 < c) : 0 < bsgDelta c := by
   unfold bsgDelta
@@ -735,7 +610,7 @@ private lemma bsg_K_card_lower (Acard : Nat) (delta : Real)
 
 private lemma eightReps_card_lower_of_core {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (c delta : Real)
-    (hc : 0 < c) (hdelta : 0 < delta)
+    (hc : 0 < c)
     (V : Finset G) (K : Finset (Fin V.card))
     (hK : (2 : Real) ^ (-(1 : Real) / 2) * delta ^ 6 * A.card ≤ K.card)
     {i j : Fin V.card}
@@ -746,39 +621,16 @@ private lemma eightReps_card_lower_of_core {G : Type*} [DecidableEq G]
     (2 : Real) ^ (-(1 : Real) / 2) * delta ^ 10 * c ^ 4 *
         (A.card : Real) ^ 7 / 120 ≤
       (eightReps A (centerAt V i - centerAt V j)).card := by
-  let F := indexedNeighborhood A c V
-  let threshold := delta ^ 2 * A.card / 2
-  let W := goodIndexNeighbors F K threshold i ∩
-    goodIndexNeighbors F K threshold j
-  let R := delta ^ 2 * c ^ 2 * (A.card : Real) ^ 3 / 8
-  have hW : (3 : Real) / 5 * K.card ≤ W.card :=
-    common_goodIndexNeighbors_card_lower F K threshold hi hj
-  have hR0 : 0 ≤ R ^ 2 := sq_nonneg _
-  have hKW : (3 : Real) / 5 *
-        ((2 : Real) ^ (-(1 : Real) / 2) * delta ^ 6 * A.card) ≤
-      (W.card : Real) := by linarith
-  have hscale := mul_le_mul_of_nonneg_right hKW hR0
+  have hW := common_goodIndexNeighbors_card_lower _ K _ hi hj
   have hoct := octWitnesses_card_lower A c delta hc V K i j
-  have hmap : (octWitnesses A c delta V K i j).card ≤
-            (eightReps A (centerAt V i - centerAt V j)).card := by
-    exact Finset.card_le_card_of_injOn octWitnessTuple
-      (fun w hw => octWitnessTuple_mem A c delta V K i j w hw)
-      (octWitnessTuple_injOn A c delta V K i j)
-  have hmapR : ((octWitnesses A c delta V K i j).card : Real) ≤
-      (eightReps A (centerAt V i - centerAt V j)).card := by exact_mod_cast hmap
-  have hbase0 : 0 ≤ (2 : Real) ^ (-(1 : Real) / 2) *
-      delta ^ 10 * c ^ 4 * (A.card : Real) ^ 7 := by positivity
-  calc
-    (2 : Real) ^ (-(1 : Real) / 2) * delta ^ 10 * c ^ 4 *
-        (A.card : Real) ^ 7 / 120 ≤
-        ((3 : Real) / 5 *
-          ((2 : Real) ^ (-(1 : Real) / 2) * delta ^ 6 * A.card)) * R ^ 2 := by
-      dsimp only [R]
-      nlinarith
-    _ ≤ (W.card : Real) * R ^ 2 := hscale
-    _ ≤ (octWitnesses A c delta V K i j).card := by
-      simpa only [W, F, threshold, R] using hoct
-    _ ≤ (eightReps A (centerAt V i - centerAt V j)).card := hmapR
+  dsimp only at hoct
+  refine le_trans ?_ (hoct.trans (by
+    exact_mod_cast Finset.card_le_card_of_injOn octWitnessTuple
+      (octWitnessTuple_mem A c delta V K i j) (octWitnessTuple_injOn A c delta V K i j)))
+  have hR := sq_nonneg (delta ^ 2 * c ^ 2 * (A.card : Real) ^ 3 / 8)
+  linarith [mul_le_mul_of_nonneg_right hW hR, mul_le_mul_of_nonneg_right hK hR,
+    (by positivity : (0 : Real) ≤ (2 : Real) ^ (-(1 : Real) / 2) * c ^ 4 *
+      (A.card : Real) ^ 7 * delta ^ 10)]
 
 private lemma sum_eightReps_card_le {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A S : Finset G) :
@@ -799,129 +651,41 @@ theorem proposition_7_3_group_holds {G : Type*} [DecidableEq G]
       (2 : Real) ^ (-(20 : Real)) * c ^ 12 * A.card ≤ A''.card ∧
       ((A'' - A'').card : Real) ≤
         (2 : Real) ^ (38 : Nat) * c ^ (-(24 : Real)) * A.card := by
-  by_cases hAempty : A = ∅
-  · subst A
-    refine ⟨∅, by simp, ?_, ?_⟩
-    · simp
-    · simp
-  have hAnonempty : A.Nonempty := Finset.nonempty_iff_ne_empty.mpr hAempty
-  have hm : (0 : Real) < A.card := by exact_mod_cast hAnonempty.card_pos
-  let delta := bsgDelta c
+  rcases A.eq_empty_or_nonempty with rfl | hA
+  · exact ⟨∅, by simp, by simp, by simp⟩
+  have hm : (0 : Real) < A.card := by exact_mod_cast hA.card_pos
   let V := highDegreeCenters A c
-  let F := indexedNeighborhood A c V
   obtain ⟨K, hVcard, hKcard, hKdense⟩ := exists_bsg_drc_core A c hc henergy
-  let threshold := delta ^ 2 * A.card / 2
-  let L := highGoodDegree F K threshold
-  let A'' : Finset G := L.image (centerAt V)
-  have hdelta : 0 < delta := bsg_delta_pos c hc
-  have hKstrong :
-      (2 : Real) ^ (-(1 : Real) / 2) * delta ^ 6 * A.card ≤ K.card :=
-    bsg_K_card_lower A.card delta hdelta.le hVcard hKcard
-  have hLcard : (K.card : Real) / 2 ≤ L.card := by
-    apply highGoodDegree_card_lower F K threshold
-    simpa only [F, threshold, delta] using hKdense
-  have hAcard : A''.card = L.card := by
-    exact Finset.card_image_iff.mpr ((centerAt_injective V).injOn)
-  have hAsub : A'' ⊆ A := by
-    intro a ha
-    obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp ha
-    have hiV := centerAt_mem V i
-    exact (Finset.mem_filter.mp hiV).1
-  have hcoreCard :
-      ((2 : Real) ^ (-(1 : Real) / 2) * delta ^ 6 * A.card) / 2 ≤
-        A''.card := by
-    rw [hAcard]
-    exact (div_le_div_of_nonneg_right hKstrong (by norm_num)).trans hLcard
-  have hhalf : (1 / 2 : Real) ≤ (2 : Real) ^ (-(1 : Real) / 2) := by
-    calc
-      (1 / 2 : Real) = (2 : Real) ^ (-1 : Real) := by linarith
-      _ ≤ (2 : Real) ^ (-(1 : Real) / 2) := by
-        apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
-        norm_num
-  have hpublishedCard :
-      (2 : Real) ^ (-(20 : Real)) * c ^ 12 * A.card ≤ A''.card := by
-    apply (show (2 : Real) ^ (-(20 : Real)) * c ^ 12 * A.card ≤
-      ((2 : Real) ^ (-(1 : Real) / 2) * delta ^ 6 * A.card) / 2 by
-      calc
-        (2 : Real) ^ (-(20 : Real)) * c ^ 12 * A.card =
-            ((1 / 2 : Real) * delta ^ 6 * A.card) / 2 := by
-          dsimp only [delta, bsgDelta]
-          rw [Real.rpow_neg (by norm_num)]
-          norm_num
-          ring
-        _ ≤ ((2 : Real) ^ (-(1 : Real) / 2) * delta ^ 6 * A.card) / 2 := by
-          gcongr).trans
-    exact hcoreCard
-  refine ⟨A'', hAsub, hpublishedCard, ?_⟩
-  let D := A'' - A''
-  let repLower : Real :=
-    (2 : Real) ^ (-(1 : Real) / 2) * delta ^ 10 * c ^ 4 *
-      (A.card : Real) ^ 7 / 120
-  have hrep (x : G) (hx : x ∈ D) :
-      repLower ≤ (eightReps A x).card := by
-    have hx' : x ∈ A'' - A'' := hx
-    obtain ⟨u, hu, v, hv, huv⟩ := Finset.mem_sub.mp hx'
-    obtain ⟨i, hi, rfl⟩ := Finset.mem_image.mp hu
-    obtain ⟨j, hj, rfl⟩ := Finset.mem_image.mp hv
-    have hiL : i ∈ L := hi
-    have hjL : j ∈ L := hj
-    have hlower := eightReps_card_lower_of_core A c delta hc hdelta V K
-      hKstrong hiL hjL
-    dsimp only [repLower]
-    rw [← huv]
-    simpa only [F, threshold, L] using hlower
-  have hsumLower : (D.card : Real) * repLower ≤
-      ∑ x ∈ D, ((eightReps A x).card : Real) := by
-    calc
-      _ = ∑ _x ∈ D, repLower := by simp [mul_comm]
-      _ ≤ _ := by
-        exact Finset.sum_le_sum hrep
-  have hsumUpper :
-      ∑ x ∈ D, ((eightReps A x).card : Real) ≤ (A.card : Real) ^ 8 := by
-    exact_mod_cast sum_eightReps_card_le A D
-  have hcount : (D.card : Real) * repLower ≤ (A.card : Real) ^ 8 :=
-    hsumLower.trans hsumUpper
-  have hbase0 : 0 ≤ c ^ 24 * (A.card : Real) ^ 7 := by positivity
-  have hrepCoefficient :
-      (2 : Real) ^ (-(38 : Real)) * c ^ 24 * (A.card : Real) ^ 7 ≤
-        repLower := by
-    dsimp only [repLower, delta, bsgDelta]
-    rw [Real.rpow_neg (by norm_num)]
-    norm_num
-    nlinarith
-  have hcount' :
-      (D.card : Real) *
-          ((2 : Real) ^ (-(38 : Real)) * c ^ 24 * (A.card : Real) ^ 7) ≤
-        (A.card : Real) ^ 8 := by
-    exact (mul_le_mul_of_nonneg_left hrepCoefficient (Nat.cast_nonneg _)).trans hcount
-  have hm7 : 0 < (A.card : Real) ^ 7 := pow_pos hm _
-  have hcancel :
-      (D.card : Real) * (2 : Real) ^ (-(38 : Real)) * c ^ 24 ≤ A.card := by
-    apply le_of_mul_le_mul_right ?_ hm7
-    calc
-      ((D.card : Real) * (2 : Real) ^ (-(38 : Real)) * c ^ 24) *
-          (A.card : Real) ^ 7 =
-          (D.card : Real) *
-            ((2 : Real) ^ (-(38 : Real)) * c ^ 24 * (A.card : Real) ^ 7) := by ring
-      _ ≤ (A.card : Real) ^ 8 := hcount'
-      _ = (A.card : Real) * (A.card : Real) ^ 7 := by ring
-  have hc24 : 0 < c ^ 24 := pow_pos hc _
-  have hpow38 : (0 : Real) < (2 : Real) ^ (38 : Nat) := by positivity
-  have hcInv : c ^ (-(24 : Real)) = (c ^ 24)⁻¹ := by
-    rw [Real.rpow_neg hc.le]
-    congr 1
-    exact Real.rpow_natCast c 24
-  change (D.card : Real) ≤
-      (2 : Real) ^ (38 : Nat) * c ^ (-(24 : Real)) * A.card
-  rw [hcInv]
-  calc
-    (D.card : Real) = (2 : Real) ^ (38 : Nat) * (c ^ 24)⁻¹ *
-        ((D.card : Real) * (2 : Real) ^ (-(38 : Real)) * c ^ 24) := by
-      rw [Real.rpow_neg (by norm_num)]
-      norm_num
-      field_simp
-    _ ≤ (2 : Real) ^ (38 : Nat) * (c ^ 24)⁻¹ * A.card := by
-      gcongr
-    _ = _ := rfl
+  let L := highGoodDegree (indexedNeighborhood A c V) K (bsgDelta c ^ 2 * A.card / 2)
+  have hL : (K.card : Real) / 2 ≤ L.card := highGoodDegree_card_lower _ K _ hKdense
+  have hdelta := bsg_delta_pos c hc
+  have hK := bsg_K_card_lower A.card _ hdelta.le hVcard hKcard
+  have hhalf : (1 / 2 : Real) ≤ (2 : Real) ^ (-(1 : Real) / 2) :=
+    (show (1 / 2 : Real) = 2 ^ (-1 : Real) by norm_num).trans_le
+      (Real.rpow_le_rpow_of_exponent_le (by norm_num) (by norm_num))
+  refine ⟨L.image (centerAt V), Finset.image_subset_iff.2 fun i _ =>
+    (Finset.mem_filter.mp (centerAt_mem V i)).1, ?_, ?_⟩
+  · rw [Finset.card_image_of_injective _ (centerAt_injective V),
+      show (2 : Real) ^ (-(20 : Real)) = 1 / 1048576 by norm_num]
+    unfold bsgDelta at hK
+    linarith [mul_le_mul_of_nonneg_right hhalf
+      (by positivity : (0 : Real) ≤ (c ^ 2 / 8) ^ 6 * A.card)]
+  -- every difference has many representations, while there are only `|A|^8` in total
+  · set D := L.image (centerAt V) - L.image (centerAt V)
+    have hsum := Finset.card_nsmul_le_sum D (fun x => ((eightReps A x).card : Real))
+      ((2 : Real) ^ (-(1 : Real) / 2) * bsgDelta c ^ 10 * c ^ 4 * (A.card : Real) ^ 7 / 120)
+      fun x hx => by
+        obtain ⟨u, hu, v, hv, rfl⟩ := Finset.mem_sub.mp hx
+        obtain ⟨i, hi, rfl⟩ := Finset.mem_image.mp hu
+        obtain ⟨j, hj, rfl⟩ := Finset.mem_image.mp hv
+        exact eightReps_card_lower_of_core A c _ hc V K hK hi hj
+    have hup : ∑ x ∈ D, ((eightReps A x).card : Real) ≤ A.card ^ 8 := by
+      exact_mod_cast sum_eightReps_card_le A D
+    rw [nsmul_eq_mul, bsgDelta] at hsum
+    rw [Real.rpow_neg hc.le, Real.rpow_ofNat, mul_right_comm, ← div_eq_mul_inv,
+      le_div_iff₀ (pow_pos hc 24)]
+    refine le_of_mul_le_mul_right ?_ (pow_pos hm 7)
+    linarith [mul_le_mul_of_nonneg_right hhalf
+      (by positivity : (0 : Real) ≤ D.card * c ^ 24 * A.card ^ 7), pow_pos hm 8]
 
 end LeanProofs.GowersSzemeredi

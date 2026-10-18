@@ -89,9 +89,7 @@ private lemma card_multiples_in_real_Ioc (g h : Nat) (hg : 0 < g) (hgh : g ∣ h
       dsimp only [T]
       rw [Int.card_Ioc]
       have hfloor : ⌊A / g - (h / g : Nat)⌋ =
-          ⌊A / g⌋ - ((h / g : Nat) : Int) := by
-        simpa only [Int.cast_natCast] using
-          (Int.floor_sub_intCast (A / g) ((h / g : Nat) : Int))
+          ⌊A / g⌋ - ((h / g : Nat) : Int) := by norm_num
       rw [hfloor]
       simp only [sub_sub_cancel]
       exact Int.toNat_natCast _
@@ -275,9 +273,7 @@ theorem lemma_10_10_holds : lemma_10_10 := by
       simpa using (pow_le_one₀ (n := K.card) hbase hbaseOne)
     · have hNtwo : 2 ≤ N := by omega
       exact (lemma_7_7_holds N K delta hNtwo hdelta hdeltaOne).1
-  have hcNonneg : 0 ≤ c := by
-    dsimp only [c]
-    positivity
+  have hcNonneg : 0 ≤ c := by positivity
   have hcancel :
       delta ^ (-(K.card : Real)) * delta ^ (K.card : Nat) = 1 := by
     rw [← Real.rpow_natCast, ← Real.rpow_add hdelta]
@@ -486,9 +482,7 @@ lemma corollary_10_11_overlap {N : Nat} [NeZero N]
   have hdeltaPowLe : delta ^ k ≤ delta := by
     simpa only [pow_one] using
       pow_le_pow_of_le_one hdelta.le hdeltaOne (Nat.one_le_iff_ne_zero.mpr hk.ne')
-  have hzetaPos : 0 < zeta := by
-    dsimp only [zeta]
-    positivity
+  have hzetaPos : 0 < zeta := by positivity
   have hzetaLe : zeta ≤ delta := by
     calc
       zeta ≤ 1 * delta ^ k / k := by
@@ -537,9 +531,7 @@ theorem corollary_10_11_holds : corollary_10_11 := by
   let C : Finset (ZMod N) := bohr K zeta
   change C ⊆ B' - B' ∧ ∃ psi1 : ZMod N → ZMod N,
     FreimanHom 2 C psi1 ∧ InducesDifferenceMap B' C psi psi1
-  have hzetaPos : 0 < zeta := by
-    dsimp only [zeta]
-    positivity
+  have hzetaPos : 0 < zeta := by positivity
   have hBne : B.Nonempty := ⟨0, bohr_zero_mem K delta hdelta.le⟩
   have hCzero : (0 : ZMod N) ∈ C := bohr_zero_mem K zeta hzetaPos.le
   have hoverlap : ∀ d, d ∈ C →

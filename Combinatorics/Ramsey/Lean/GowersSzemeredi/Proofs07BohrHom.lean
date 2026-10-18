@@ -36,54 +36,23 @@ lemma lemma78_spectrum_card_bound {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (alpha : Real) (halpha : 0 < alpha)
     (hcard : (A.card : Real) = alpha * N) :
     ((section7Spectrum A alpha).card : Real) <= 16 * alpha ^ (-(2 : Real)) := by
-  let lambda : Real := alpha ^ ((3 : Real) / 2) / 4
-  have hlambda : 0 < lambda := by positivity
-  have hspectrum (r : ZMod N) (hr : r ∈ section7Spectrum A alpha) :
-      lambda * N <= ‖fourier (indicator A) r‖ := by
-    rw [section7Spectrum, largeFourierSpectrum, Finset.mem_filter] at hr
-    dsimp [lambda]
-    convert hr.2 using 1
-    ring
-  have hsumLower :
-      ((section7Spectrum A alpha).card : Real) * (lambda * N) ^ 2 <=
-        ∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 2 := by
-    calc
-      ((section7Spectrum A alpha).card : Real) * (lambda * N) ^ 2 =
-          ∑ _r ∈ section7Spectrum A alpha, (lambda * N) ^ 2 := by simp
-      _ <= ∑ r ∈ section7Spectrum A alpha,
-          ‖fourier (indicator A) r‖ ^ 2 := by
-        gcongr with r hr
-        exact hspectrum r hr
-      _ <= ∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 2 := by
-        exact Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _)
-          (fun _ _ _ => sq_nonneg _)
-  rw [lemma78_fourier_indicator_energy, hcard] at hsumLower
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hcalc : lambda ^ 2 = alpha ^ 3 / 16 := by
-    dsimp [lambda]
-    rw [div_pow]
-    have hpow : (alpha ^ ((3 : Real) / 2)) ^ (2 : Nat) = alpha ^ 3 := by
-      rw [← Real.rpow_natCast, ← Real.rpow_mul halpha.le]
-      norm_num
-    rw [hpow]
+  have ht : (alpha ^ ((3 : Real) / 2)) ^ 2 = alpha ^ 3 := by
+    rw [← Real.rpow_natCast, ← Real.rpow_mul halpha.le]
     norm_num
-  have hscaled :
-      (((section7Spectrum A alpha).card : Real) * lambda ^ 2) * (N : Real) ^ 2 <=
-        alpha * (N : Real) ^ 2 := by linarith
-  have hcancel : ((section7Spectrum A alpha).card : Real) * lambda ^ 2 <= alpha :=
-    le_of_mul_le_mul_right hscaled (sq_pos_of_pos hN)
-  have hraw : ((section7Spectrum A alpha).card : Real) <= alpha / lambda ^ 2 :=
-    (le_div_iff₀ (sq_pos_of_pos hlambda)).2 hcancel
-  calc
-    ((section7Spectrum A alpha).card : Real) <= alpha / lambda ^ 2 := hraw
-    _ = 16 * alpha ^ (-(2 : Real)) := by
-      rw [hcalc]
-      calc
-        alpha / (alpha ^ 3 / 16) = 16 / alpha ^ 2 := by
-          field_simp [ne_of_gt halpha]
-        _ = 16 * alpha ^ (-(2 : Real)) := by
-          rw [Real.rpow_neg halpha.le]
-          norm_num [Real.rpow_two, div_eq_mul_inv]
+  have hsum : ((section7Spectrum A alpha).card : Real) *
+      (alpha ^ ((3 : Real) / 2) * N / 4) ^ 2 ≤ alpha * (N : Real) ^ 2 := by
+    calc _ ≤ ∑ r ∈ section7Spectrum A alpha, ‖fourier (indicator A) r‖ ^ 2 := by
+          rw [← nsmul_eq_mul]
+          refine Finset.card_nsmul_le_sum _ _ _ fun r hr => ?_
+          gcongr
+          exact (Finset.mem_filter.mp hr).2
+      _ ≤ ∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 2 :=
+          Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) fun _ _ _ => by positivity
+      _ = alpha * (N : Real) ^ 2 := by rw [lemma78_fourier_indicator_energy, hcard]; ring
+  rw [div_pow, mul_pow, ht] at hsum
+  rw [Real.rpow_neg halpha.le, Real.rpow_two, ← div_eq_mul_inv, le_div_iff₀ (by positivity)]
+  exact le_of_mul_le_mul_right (by linarith) (by positivity : 0 < alpha * (N : Real) ^ 2)
 
 private def lemma78PairCorrelation {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) : ZMod N -> Complex :=
@@ -217,66 +186,32 @@ private lemma lemma78_weighted_phase_sum {N : Nat} [NeZero N]
         ‖fourier (indicator A) r‖ ^ 4 * ‖exponential (r * d) - 1‖) <=
       3 * alpha * lambda ^ 2 * (N : Real) ^ 4 := by
   let K := section7Spectrum A alpha
-  let w : ZMod N -> Real := fun r =>
-    ‖fourier (indicator A) r‖ ^ 4 * ‖exponential (r * d) - 1‖
-  let F : ZMod N -> Real := fun r => ‖fourier (indicator A) r‖ ^ 4
-  have hmain :
-      ∑ r ∈ (Finset.univ.filter fun r : ZMod N => r ∈ K), w r <=
-        (alpha / 16) * ∑ r : ZMod N, F r := by
-    calc
-      ∑ r ∈ (Finset.univ.filter fun r : ZMod N => r ∈ K), w r <=
-          ∑ r ∈ (Finset.univ.filter fun r : ZMod N => r ∈ K),
-            (alpha / 16) * F r := by
-        gcongr with r hr
-        dsimp [w, F]
-        rw [mul_comm (alpha / 16)]
-        apply mul_le_mul_of_nonneg_left
-        · exact lemma78_bohr_phase_bound A alpha d hd r
-            (by simpa [K] using (Finset.mem_filter.mp hr).2)
-        · positivity
-      _ = (alpha / 16) *
-          ∑ r ∈ (Finset.univ.filter fun r : ZMod N => r ∈ K), F r := by
-        rw [Finset.mul_sum]
-      _ <= (alpha / 16) * ∑ r : ZMod N, F r := by
-        apply mul_le_mul_of_nonneg_left
-        · exact Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _)
-            (fun _ _ _ => by positivity)
-        · positivity
-  have htailPhase :
-      ∑ r ∈ (Finset.univ.filter fun r : ZMod N => r ∉ K), w r <=
-        2 * ∑ r ∈ (Finset.univ.filter fun r : ZMod N => r ∉ K), F r := by
-    calc
-      ∑ r ∈ (Finset.univ.filter fun r : ZMod N => r ∉ K), w r <=
-          ∑ r ∈ (Finset.univ.filter fun r : ZMod N => r ∉ K), 2 * F r := by
-        gcongr with r _
-        dsimp [w, F]
-        nlinarith [norm_exponential_sub_one_le_two (r * d),
-          pow_nonneg (norm_nonneg (fourier (indicator A) r)) 4]
-      _ = 2 * ∑ r ∈ (Finset.univ.filter fun r : ZMod N => r ∉ K), F r := by
-        rw [Finset.mul_sum]
-  have htotal := lemma78_fourth_moment_upper A alpha hcard
+  let F := fun r : ZMod N ↦ ‖fourier (indicator A) r‖ ^ 4
+  let w := fun r : ZMod N ↦ F r * ‖exponential (r * d) - 1‖
+  have hmain : (∑ r ∈ Finset.univ.filter (fun r ↦ r ∈ K), w r) ≤
+      (alpha / 16) * ∑ r, F r := by
+    rw [Finset.mul_sum]
+    refine (Finset.sum_le_sum fun r hr => ?_).trans (Finset.sum_le_sum_of_subset_of_nonneg
+      (Finset.filter_subset _ _) fun _ _ _ ↦ by dsimp [F]; positivity)
+    rw [mul_comm (alpha / 16)]
+    exact mul_le_mul_of_nonneg_left
+      (lemma78_bohr_phase_bound A alpha d hd r (Finset.mem_filter.mp hr).2)
+      (by dsimp [F]; positivity)
+  have htailPhase : (∑ r ∈ Finset.univ.filter (fun r ↦ r ∉ K), w r) ≤
+      2 * ∑ r ∈ Finset.univ.filter (fun r ↦ r ∉ K), F r := by
+    rw [Finset.mul_sum]
+    refine Finset.sum_le_sum fun r _ => ?_
+    rw [mul_comm (2 : Real)]
+    exact mul_le_mul_of_nonneg_left (norm_exponential_sub_one_le_two (r * d))
+      (by dsimp [F]; positivity)
+  have htotal := mul_le_mul_of_nonneg_left (lemma78_fourth_moment_upper A alpha hcard)
+    (by positivity : (0 : Real) ≤ alpha / 16)
   have htail := lemma78_small_spectrum_tail A alpha lambda hlambda hcard
-  have hsplit :
-      (∑ r : ZMod N, w r) =
-        (∑ r ∈ (Finset.univ.filter fun r : ZMod N => r ∈ K), w r) +
-          ∑ r ∈ (Finset.univ.filter fun r : ZMod N => r ∉ K), w r := by
-    simpa only [Finset.mem_univ, true_and] using
-      (Finset.sum_filter_add_sum_filter_not (Finset.univ : Finset (ZMod N))
-        (fun r => r ∈ K) w).symm
-  rw [show (∑ r : ZMod N,
-      ‖fourier (indicator A) r‖ ^ 4 * ‖exponential (r * d) - 1‖) =
-      ∑ r : ZMod N, w r by rfl, hsplit]
-  calc
-    (∑ r ∈ (Finset.univ.filter fun r : ZMod N => r ∈ K), w r) +
-        ∑ r ∈ (Finset.univ.filter fun r : ZMod N => r ∉ K), w r <=
-        (alpha / 16) * ∑ r : ZMod N, F r +
-          2 * ∑ r ∈ (Finset.univ.filter fun r : ZMod N => r ∉ K), F r :=
-      add_le_add hmain htailPhase
-    _ <= (alpha / 16) * (alpha ^ 3 * (N : Real) ^ 4) +
-          2 * (alpha * lambda ^ 2 * (N : Real) ^ 4) := by gcongr
-    _ = 3 * alpha * lambda ^ 2 * (N : Real) ^ 4 := by
-      rw [lemma78_lambda_sq alpha lambda halpha hlambda]
-      ring
+  have hsplit := Finset.sum_filter_add_sum_filter_not (Finset.univ : Finset (ZMod N))
+    (fun r ↦ r ∈ K) w
+  rw [lemma78_lambda_sq alpha lambda halpha hlambda] at htail ⊢
+  change (∑ r, w r) ≤ _
+  linarith
 
 private lemma lemma78_fourCorrelation_sub_zero {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (d : ZMod N) :
@@ -832,50 +767,23 @@ theorem bohr_symmetric_multiples_subset {p : Nat} [NeZero p]
   intro z hz
   rw [symmetricMultiples, Finset.mem_image] at hz
   obtain ⟨j, hj, rfl⟩ := hz
-  rw [bohr, Finset.mem_filter]
-  refine ⟨Finset.mem_univ _, ?_⟩
-  intro r hr
-  rw [bohr, Finset.mem_filter] at hd
-  have hdr := hd.2 r hr
-  have hbase : 0 <= rho / (m : Real) * p := by positivity
-  have hcollapse : (m : Real) * (rho / (m : Real) * p) = rho * p := by
-    field_simp
-  have hjBounds : -(m : Int) <= j ∧ j <= (m : Int) := Finset.mem_Icc.mp hj
-  cases j with
-  | ofNat n =>
-      have hcastNat : ((Int.ofNat n : Int) : ZMod p) = (n : ZMod p) := by norm_num
-      rw [hcastNat]
-      have hn : n <= m := by
-        apply Int.ofNat_le.mp
-        simpa only [Int.ofNat_eq_natCast] using hjBounds.2
-      have hcenter : centeredAbs (r * ((n : ZMod p) * d)) <=
-          n * centeredAbs (r * d) := by
-        have hmul : r * ((n : ZMod p) * d) = n • (r * d) := by ring
-        rw [hmul]
-        exact centeredAbs_nsmul_le n (r * d)
-      calc
-        (centeredAbs (r * ((n : ZMod p) * d)) : Real) <=
-            n * centeredAbs (r * d) := by exact_mod_cast hcenter
-        _ <= n * (rho / (m : Real) * p) := by gcongr
-        _ <= m * (rho / (m : Real) * p) := by gcongr
-        _ = rho * p := hcollapse
-  | negSucc n =>
-      have hn : n + 1 <= m := by omega
-      have hcast : ((Int.negSucc n : Int) : ZMod p) * d =
-          -(((n + 1 : Nat) : ZMod p) * d) := by push_cast; ring
-      rw [hcast, mul_neg, centeredAbs_neg]
-      have hcenter : centeredAbs (r * (((n + 1 : Nat) : ZMod p) * d)) <=
-          (n + 1) * centeredAbs (r * d) := by
-        have hmul : r * (((n + 1 : Nat) : ZMod p) * d) =
-            (n + 1) • (r * d) := by push_cast; ring
-        rw [hmul]
-        exact centeredAbs_nsmul_le (n + 1) (r * d)
-      calc
-        (centeredAbs (r * (((n + 1 : Nat) : ZMod p) * d)) : Real) <=
-            (n + 1) * centeredAbs (r * d) := by exact_mod_cast hcenter
-        _ <= (n + 1) * (rho / (m : Real) * p) := by gcongr
-        _ <= m * (rho / (m : Real) * p) := mul_le_mul_of_nonneg_right (by exact_mod_cast hn) hbase
-        _ = rho * p := hcollapse
+  rw [bohr, Finset.mem_filter] at hd ⊢
+  refine ⟨Finset.mem_univ _, fun r hr => ?_⟩
+  have hjm := Finset.mem_Icc.mp hj
+  obtain ⟨n, hn, hcenter⟩ : ∃ n : Nat, n ≤ m ∧
+      centeredAbs (r * ((j : ZMod p) * d)) ≤ n * centeredAbs (r * d) := by
+    obtain ⟨n, rfl | rfl⟩ := Int.eq_nat_or_neg j
+    · exact ⟨n, by omega, by
+        simpa [nsmul_eq_mul, mul_left_comm] using centeredAbs_nsmul_le n (r * d)⟩
+    · exact ⟨n, by omega, by
+        simpa [nsmul_eq_mul, mul_left_comm, centeredAbs_neg] using centeredAbs_nsmul_le n (r * d)⟩
+  calc (centeredAbs (r * ((j : ZMod p) * d)) : Real) ≤ n * centeredAbs (r * d) := by
+        exact_mod_cast hcenter
+    _ ≤ n * (rho / m * p) := by
+        gcongr
+        exact hd.2 r hr
+    _ ≤ m * (rho / m * p) := by gcongr
+    _ = rho * p := by field_simp
 
 /-- A Freiman map vanishing at zero is additive along `{n d : n ≤ m}`. -/
 theorem generic_freiman_map_nat_multiple {p : Nat} {G : Type*}
@@ -922,45 +830,16 @@ theorem generic_freiman_map_int_multiple {p : Nat} {G : Type*}
     (hmem : symmetricMultiples d m ⊆ B) (j : Int)
     (hj : j ∈ Finset.Icc (-(m : Int)) (m : Int)) :
     psi ((j : ZMod p) * d) = j • psi d := by
-  have hzero : (0 : ZMod p) ∈ symmetricMultiples d m := by
-    rw [symmetricMultiples, Finset.mem_image]
-    refine ⟨0, Finset.mem_Icc.mpr ?_, by simp⟩
-    constructor <;> omega
-  have hpsi' : IsAddFreimanHom 2 (B : Set (ZMod p)) Set.univ psi := hpsi
-  cases j with
-  | ofNat n =>
-      have hn : n <= m := by
-        have := (Finset.mem_Icc.mp hj).2
-        apply Int.ofNat_le.mp
-        simpa only [Int.ofNat_eq_natCast] using this
-      simpa using generic_freiman_map_nat_multiple B psi hpsi hpsiZero d m hm hmem n hn
-  | negSucc n =>
-      have hn : n + 1 <= m := by
-        have := (Finset.mem_Icc.mp hj).1
-        omega
-      have hpos : (((n + 1 : Nat) : ZMod p) * d) ∈ symmetricMultiples d m := by
-        rw [symmetricMultiples, Finset.mem_image]
-        refine ⟨(n + 1 : Int), Finset.mem_Icc.mpr ?_, by simp⟩
-        constructor <;> omega
-      have hneg : (-(((n + 1 : Nat) : ZMod p) * d)) ∈
-          symmetricMultiples d m := by
-        rw [symmetricMultiples, Finset.mem_image]
-        refine ⟨Int.negSucc n, Finset.mem_Icc.mpr ?_, ?_⟩
-        · constructor <;> omega
-        · push_cast
-          ring
-      have hadd : -(((n + 1 : Nat) : ZMod p) * d) +
-          ((n + 1 : Nat) : ZMod p) * d = 0 + 0 := by ring
-      have hmap := hpsi'.add_eq_add (hmem hneg) (hmem hpos)
-        (hmem hzero) (hmem hzero) hadd
-      have hnat := generic_freiman_map_nat_multiple B psi hpsi hpsiZero
-        d m hm hmem (n + 1) hn
-      rw [hpsiZero, add_zero, hnat] at hmap
-      have hnegValue : psi (-(((n + 1 : Nat) : ZMod p) * d)) =
-          -((n + 1) • psi d) := eq_neg_of_add_eq_zero_left hmap
-      convert hnegValue using 1
-      · push_cast
-        ring_nf
-      · simp [add_nsmul]
+  have hjm := Finset.mem_Icc.mp hj
+  have hB (i : Int) (hi : -(m : Int) ≤ i ∧ i ≤ m) : (i : ZMod p) * d ∈ B :=
+    hmem (Finset.mem_image.mpr ⟨i, Finset.mem_Icc.mpr hi, rfl⟩)
+  obtain ⟨n, rfl | rfl⟩ := Int.eq_nat_or_neg j
+  · simpa using generic_freiman_map_nat_multiple B psi hpsi hpsiZero d m hm hmem n (by omega)
+  · have hmap := IsAddFreimanHom.add_eq_add hpsi (hB (-n) (by omega)) (hB n (by omega))
+      (hB 0 (by omega)) (hB 0 (by omega)) (by push_cast; ring)
+    simp only [Int.cast_zero, zero_mul, hpsiZero, add_zero, Int.cast_neg, Int.cast_natCast,
+      generic_freiman_map_nat_multiple B psi hpsi hpsiZero d m hm hmem n (by omega)] at hmap
+    rw [Int.cast_neg, Int.cast_natCast, neg_zsmul, natCast_zsmul]
+    exact eq_neg_of_add_eq_zero_left hmap
 
 end LeanProofs.GowersSzemeredi

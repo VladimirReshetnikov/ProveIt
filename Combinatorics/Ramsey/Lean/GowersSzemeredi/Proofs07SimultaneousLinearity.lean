@@ -100,55 +100,24 @@ private lemma exists_balancedChunk_for_quotient {c m t : Nat}
     exists j : Fin (c / m), exists i : Nat,
       i < balancedChunkLength m (c % m) j /\
       t = balancedChunkStart m (c % m) j + i := by
-  let n := c / m
-  let b := c % m
-  have hdecomp : c = n * m + b := by
-    simpa only [n, b, Nat.mul_comm] using (Nat.div_add_mod c m).symm
-  have hbn : b <= n := remainder_le_quotient hm hcm
-  by_cases hfront : t < b * (m + 1)
-  · let j : Fin n := ⟨t / (m + 1), by
-      have hmp : 0 < m + 1 := by omega
-      have hjb : t / (m + 1) < b := (Nat.div_lt_iff_lt_mul hmp).2 hfront
-      exact hjb.trans_le hbn⟩
-    let i := t % (m + 1)
-    have hjb : (j : Nat) < b := (Nat.div_lt_iff_lt_mul (by omega : 0 < m + 1)).2 hfront
-    refine ⟨j, i, ?_, ?_⟩
-    · rw [balancedChunkLength_of_lt hjb]
-      exact Nat.mod_lt _ (by omega)
-    · rw [balancedChunkStart_of_lt hjb]
-      dsimp only [i, j]
-      calc
-        t = t % (m + 1) + (m + 1) * (t / (m + 1)) :=
-          (Nat.mod_add_div t (m + 1)).symm
-        _ = (t / (m + 1)) * (m + 1) + t % (m + 1) := by ac_rfl
-  · have _ : b * (m + 1) <= t := Nat.le_of_not_gt hfront
-    let u := t - b * (m + 1)
-    have hu : u < (n - b) * m := by
-      have hrewrite : c = b * (m + 1) + (n - b) * m := by
-        rw [hdecomp]
-        calc
-          n * m + b = (b + (n - b)) * m + b := by rw [Nat.add_sub_of_le hbn]
-          _ = b * m + (n - b) * m + b := by rw [Nat.add_mul]
-          _ = b * (m + 1) + (n - b) * m := by linarith
-      dsimp only [u]
+  have hbn := remainder_le_quotient hm hcm
+  have hc := Nat.div_add_mod' c m
+  -- the first `c % m` chunks have `m + 1` terms, the remaining ones `m`
+  by_cases hfront : t < c % m * (m + 1)
+  · have hj : t / (m + 1) < c % m := (Nat.div_lt_iff_lt_mul (by omega)).2 hfront
+    exact ⟨⟨t / (m + 1), by omega⟩, t % (m + 1),
+      by rw [balancedChunkLength_of_lt hj]; exact Nat.mod_lt _ (by omega),
+      by rw [balancedChunkStart_of_lt hj, Nat.div_add_mod']⟩
+  · have hS : c % m * (m + 1) = c % m * m + c % m := Nat.mul_add_one _ _
+    have hbm := Nat.mul_le_mul_right m hbn
+    have hu : (t - c % m * (m + 1)) / m < c / m - c % m := by
+      rw [Nat.div_lt_iff_lt_mul hm, Nat.sub_mul]
       omega
-    let j : Fin n := ⟨b + u / m, by
-      have huq : u / m < n - b := (Nat.div_lt_iff_lt_mul hm).2 hu
-      omega⟩
-    let i := u % m
-    have hbj : b <= (j : Nat) := by simp [j]
-    refine ⟨j, i, ?_, ?_⟩
-    · rw [balancedChunkLength_of_ge hbj]
-      exact Nat.mod_lt _ hm
-    · rw [balancedChunkStart_of_ge hbj]
-      change t = (b + u / m) * m + b + u % m
-      have htu : t = b * (m + 1) + u := by omega
-      have hmod : u = u % m + m * (u / m) := (Nat.mod_add_div u m).symm
-      calc
-        t = b * (m + 1) + u := htu
-        _ = b * (m + 1) + (u % m + m * (u / m)) :=
-          congrArg (fun v => b * (m + 1) + v) hmod
-        _ = (b + u / m) * m + b + u % m := by ring
+    have hbj : c % m ≤ c % m + (t - c % m * (m + 1)) / m := Nat.le_add_right _ _
+    have := Nat.div_add_mod' (t - c % m * (m + 1)) m
+    exact ⟨⟨c % m + (t - c % m * (m + 1)) / m, by omega⟩, (t - c % m * (m + 1)) % m,
+      by rw [balancedChunkLength_of_ge hbj]; exact Nat.mod_lt _ hm,
+      by rw [balancedChunkStart_of_ge hbj, Nat.add_mul]; omega⟩
 
 private lemma balancedChunk_index_unique {c m t : Nat}
     (j j' : Fin (c / m)) (i i' : Nat)
@@ -252,99 +221,42 @@ private lemma balancedResidueChunkFamily_partition (R : IntAP) (d m : Nat)
     (hclass : forall a : Fin d,
       m * m <= residueClassLength R.length d a) :
     IsIntAPPartition (balancedResidueChunkFamily R d m) R := by
-  let E := Fintype.equivFin (BalancedResidueChunkIndex R.length d m)
-  constructor
-  · intro x
-    constructor
-    · intro hx
-      rw [IntAP.carrier] at hx
-      simp only [Finset.mem_image, Finset.mem_univ, true_and] at hx
-      obtain ⟨t, rfl⟩ := hx
-      let a : Fin d := ⟨(t : Nat) % d, Nat.mod_lt _ hd⟩
-      let u := (t : Nat) / d
-      have hu : u < residueClassLength R.length d a := by
-        rw [quotient_lt_residueClassLength hd a.isLt hdl]
-        dsimp only [a, u]
-        have htEq : (t : Nat) % d + ((t : Nat) / d) * d = t := by
-          simpa only [Nat.mul_comm] using Nat.mod_add_div (t : Nat) d
-        rw [htEq]
-        exact t.isLt
-      obtain ⟨j, i, hi, huRep⟩ :=
-        exists_balancedChunk_for_quotient hm (hclass a) hu
-      let z : BalancedResidueChunkIndex R.length d m := ⟨a, j⟩
-      refine ⟨E z, ?_⟩
-      change intAPPoint R t ∈
-        (balancedResidueChunkAP R d m ((Fintype.equivFin _).symm (E z))).carrier
-      have hEz : (Fintype.equivFin _).symm (E z) = z := by
-        simp only [E, Equiv.symm_apply_apply]
-      rw [hEz, balancedResidueChunkAP_mem_iff]
-      refine ⟨i, hi, ?_⟩
-      apply congrArg (intAPPoint R)
-      dsimp only [z]
-      calc
-        (t : Nat) = (t : Nat) % d + d * ((t : Nat) / d) :=
-          (Nat.mod_add_div (t : Nat) d).symm
-        _ = a + u * d := by simp only [a, u, Nat.mul_comm]
-        _ = a + (balancedChunkStart m
-            (residueClassLength R.length d a % m) j + i) * d := by
-          rw [huRep]
-    · rintro ⟨j, hj⟩
-      let z := E.symm j
-      change x ∈ (balancedResidueChunkAP R d m
-        ((Fintype.equivFin _).symm j)).carrier at hj
-      have hz : (Fintype.equivFin _).symm j = z := rfl
-      rw [hz, balancedResidueChunkAP_mem_iff] at hj
-      obtain ⟨i, hi, rfl⟩ := hj
-      rw [IntAP.carrier]
-      simp only [Finset.mem_image, Finset.mem_univ, true_and]
-      let t := z.1 + (balancedChunkStart m
-        (residueClassLength R.length d z.1 % m) z.2 + i) * d
-      have hq : balancedChunkStart m
-          (residueClassLength R.length d z.1 % m) z.2 + i <
-          residueClassLength R.length d z.1 :=
-        balancedChunk_quotient_lt hm (hclass z.1) z.2 i hi
-      have ht : t < R.length := by
-        dsimp only [t]
-        exact (quotient_lt_residueClassLength hd z.1.isLt hdl).1 hq
-      exact ⟨⟨t, ht⟩, rfl⟩
-  · intro j j' hjj'
-    rw [Finset.disjoint_left]
-    intro x hx hx'
-    let z := E.symm j
-    let z' := E.symm j'
-    change x ∈ (balancedResidueChunkAP R d m
-      ((Fintype.equivFin _).symm j)).carrier at hx
-    change x ∈ (balancedResidueChunkAP R d m
-      ((Fintype.equivFin _).symm j')).carrier at hx'
-    have hz : (Fintype.equivFin _).symm j = z := rfl
-    have hz' : (Fintype.equivFin _).symm j' = z' := rfl
-    rw [hz, balancedResidueChunkAP_mem_iff] at hx
-    rw [hz', balancedResidueChunkAP_mem_iff] at hx'
-    obtain ⟨i, hi, hxi⟩ := hx
+  refine ⟨fun x => ⟨fun hx => ?_, fun ⟨j, hj⟩ => ?_⟩, fun j j' hjj' => ?_⟩
+  · -- the term `t` of `R` lies in residue class `t % d`, at quotient `t / d`
+    simp only [IntAP.carrier, Finset.mem_image, Finset.mem_univ, true_and] at hx
+    obtain ⟨t, rfl⟩ := hx
+    have hu : (t : Nat) / d < residueClassLength R.length d (t % d) :=
+      (quotient_lt_residueClassLength hd (Nat.mod_lt _ hd) hdl).2
+        (by rw [Nat.mod_add_div']; exact t.isLt)
+    obtain ⟨j, i, hi, hu⟩ :=
+      exists_balancedChunk_for_quotient hm (hclass ⟨t % d, Nat.mod_lt _ hd⟩) hu
+    refine ⟨Fintype.equivFin (BalancedResidueChunkIndex R.length d m)
+      ⟨⟨t % d, Nat.mod_lt _ hd⟩, j⟩, ?_⟩
+    simp only [balancedResidueChunkFamily, Equiv.symm_apply_apply,
+      balancedResidueChunkAP_mem_iff]
+    exact ⟨i, hi, congrArg (intAPPoint R) (by rw [← hu, Nat.mod_add_div'])⟩
+  · simp only [balancedResidueChunkFamily, balancedResidueChunkAP_mem_iff] at hj
+    obtain ⟨i, hi, rfl⟩ := hj
+    simp only [IntAP.carrier, Finset.mem_image, Finset.mem_univ, true_and]
+    exact ⟨⟨_, (quotient_lt_residueClassLength hd (Fin.isLt _) hdl).1
+      (balancedChunk_quotient_lt hm (hclass _) _ i hi)⟩, rfl⟩
+  · -- a common point has one coordinate: its residue fixes the class, its quotient the chunk
+    refine Finset.disjoint_left.2 fun x hx hx' =>
+      bne_iff_ne.mp hjj' ((Fintype.equivFin _).symm.injective ?_)
+    simp only [balancedResidueChunkFamily, balancedResidueChunkAP_mem_iff] at hx hx'
+    obtain ⟨i, hi, rfl⟩ := hx
     obtain ⟨i', hi', hxi'⟩ := hx'
-    have hcoord := intAPPoint_injective R hRstep (hxi.symm.trans hxi')
-    have haVal : (z.1 : Nat) = (z'.1 : Nat) := by
-      have hmod := congrArg (fun y : Nat => y % d) hcoord
-      simpa only [Nat.add_mul_mod_self_right, Nat.mod_eq_of_lt z.1.isLt,
-        Nat.mod_eq_of_lt z'.1.isLt] using hmod
-    have ha : z.1 = z'.1 := Fin.ext haVal
-    rcases z with ⟨a, k⟩
-    rcases z' with ⟨a', k'⟩
-    dsimp only at ha
-    subst a'
-    have hquotMul :
-        (balancedChunkStart m (residueClassLength R.length d a % m) k + i) * d =
-        (balancedChunkStart m (residueClassLength R.length d a % m) k' + i') * d :=
-      Nat.add_left_cancel hcoord
-    have hquot :
-        balancedChunkStart m (residueClassLength R.length d a % m) k + i =
-        balancedChunkStart m (residueClassLength R.length d a % m) k' + i' :=
-      Nat.eq_of_mul_eq_mul_right hd hquotMul
-    have hk : k = k' := balancedChunk_index_unique k k' i i' hi hi' rfl hquot
-    subst k'
-    have hzEq : j = j' := by
-      exact E.symm.injective (hz.trans hz'.symm)
-    exact bne_iff_ne.mp hjj' hzEq
+    have hcoord := intAPPoint_injective R hRstep hxi'
+    generalize (Fintype.equivFin _).symm j = z at hi hcoord ⊢
+    generalize (Fintype.equivFin _).symm j' = z' at hi' hcoord ⊢
+    obtain ⟨a, k⟩ := z
+    obtain ⟨a', k'⟩ := z'
+    obtain rfl : a = a' := Fin.ext (by
+      simpa only [Nat.add_mul_mod_self_right, Nat.mod_eq_of_lt a.isLt,
+        Nat.mod_eq_of_lt a'.isLt] using congrArg (· % d) hcoord)
+    obtain rfl := balancedChunk_index_unique k k' i i' hi hi' rfl
+      (Nat.eq_of_mul_eq_mul_right hd (Nat.add_left_cancel hcoord))
+    rfl
 
 private lemma balancedResidueChunkFamily_properties (R : IntAP) (d m : Nat)
     (hRstep : 0 < R.step) (hd : 0 < d) :
@@ -501,44 +413,20 @@ private lemma modularCoordinateMap_freiman {p : Nat} {G : Type*}
     (hphi : FreimanHom 8 A phi) :
     FreimanHom 8 (modularCoordinateSet p R A)
       (modularCoordinateMap p R phi) := by
-  rw [FreimanHom]
-  constructor
-  · intro x _
-    exact Set.mem_univ _
-  · intro s t hsA htA hscard htcard hsum
-    have hsMem : forall x, x ∈ s -> x.val < R.length := by
-      intro x hx
-      exact (mem_modularCoordinateSet_iff R A (by omega) x).1 (hsA hx) |>.1
-    have htMem : forall x, x ∈ t -> x.val < R.length := by
-      intro x hx
-      exact (mem_modularCoordinateSet_iff R A (by omega) x).1 (htA hx) |>.1
-    have hvalSum := multiset_val_sum_eq_of_sum_eq s t hl hsMem htMem
-      hscard htcard hlp hsum
-    let sInt := s.map fun x => intAPPoint R x.val
-    let tInt := t.map fun x => intAPPoint R x.val
-    have hsIntA : forall x, x ∈ sInt -> x ∈ (A : Set Int) := by
-      intro x hx
-      rw [Multiset.mem_map] at hx
-      obtain ⟨z, hz, rfl⟩ := hx
-      exact (mem_modularCoordinateSet_iff R A (by omega) z).1 (hsA hz) |>.2
-    have htIntA : forall x, x ∈ tInt -> x ∈ (A : Set Int) := by
-      intro x hx
-      rw [Multiset.mem_map] at hx
-      obtain ⟨z, hz, rfl⟩ := hx
-      exact (mem_modularCoordinateSet_iff R A (by omega) z).1 (htA hz) |>.2
-    have hsIntCard : sInt.card = 8 := by simpa [sInt] using hscard
-    have htIntCard : tInt.card = 8 := by simpa [tInt] using htcard
-    have hvalSumInt :
-        (s.map fun x => (x.val : Int)).sum =
-          (t.map fun x => (x.val : Int)).sum := by
-      simpa using congrArg (fun n : Nat => (n : Int)) hvalSum
-    have hsIntSum : sInt.sum = tInt.sum := by
-      dsimp only [sInt, tInt]
-      rw [multiset_intAPPoint_sum, multiset_intAPPoint_sum, hscard, htcard,
-        hvalSumInt]
-    have himage := hphi.map_sum_eq_map_sum hsIntA htIntA hsIntCard htIntCard hsIntSum
-    simpa only [sInt, tInt, modularCoordinateMap, Multiset.map_map,
-      Function.comp_apply] using himage
+  have hmem := fun x hx => (mem_modularCoordinateSet_iff R A (by omega : R.length < p) x).1 hx
+  refine ⟨Set.mapsTo_univ _ _, ?_⟩
+  intro s t hsA htA hs ht hsum
+  -- coordinates below `R.length` do not wrap around: equal sums mod `p` are equal sums
+  have hvalInt : (s.map fun x => (x.val : Int)).sum = (t.map fun x => (x.val : Int)).sum := by
+    simpa using congrArg (fun n : Nat => (n : Int)) (multiset_val_sum_eq_of_sum_eq s t hl
+      (fun x hx => (hmem x (hsA hx)).1) (fun x hx => (hmem x (htA hx)).1) hs ht hlp hsum)
+  simpa only [modularCoordinateMap, Multiset.map_map, Function.comp_apply] using
+    hphi.map_sum_eq_map_sum (s := s.map fun x => intAPPoint R x.val)
+      (t := t.map fun x => intAPPoint R x.val)
+      (Multiset.forall_mem_map_iff.2 fun x hx => (hmem x (hsA hx)).2)
+      (Multiset.forall_mem_map_iff.2 fun x hx => (hmem x (htA hx)).2)
+      ((Multiset.card_map _ _).trans hs) ((Multiset.card_map _ _).trans ht)
+      (by rw [multiset_intAPPoint_sum, multiset_intAPPoint_sum, hs, ht, hvalInt])
 
 private lemma zero_mem_symmetricMultiples {p m : Nat} (d : ZMod p) :
     (0 : ZMod p) ∈ symmetricMultiples d m := by
@@ -562,100 +450,49 @@ private lemma balancedResidueChunkAP_linear {p N : Nat}
     (hshort : symmetricMultiples (d : ZMod p) m ⊆ B)
     (hAne : (modularCoordinateSet p R A).Nonempty) :
     IntAPLinearOn (balancedResidueChunkAP R d m z) A phi := by
-  let P := balancedResidueChunkAP R d m z
-  let base := z.1 + balancedChunkStart m
-    (residueClassLength R.length d z.1 % m) z.2 * d
-  let coord : Nat -> Nat := fun i => base + i * d
-  have hcoord_eq (i : Nat) :
-      P.start + (i * P.step : Nat) = intAPPoint R (coord i) := by
-    simp only [P, balancedResidueChunkAP, coord, base, intAPPoint]
-    push_cast
-    ring
-  have hcoord_lt (i : Fin P.length) : coord i < R.length := by
-    have hi : (i : Nat) < balancedChunkLength m
-        (residueClassLength R.length d z.1 % m) z.2 := i.isLt
-    have hq : balancedChunkStart m
-          (residueClassLength R.length d z.1 % m) z.2 + i <
-        residueClassLength R.length d z.1 :=
-      balancedChunk_quotient_lt hm hclass z.2 i hi
-    dsimp only [coord, base]
-    simpa only [Nat.add_mul, Nat.add_assoc] using
-      (quotient_lt_residueClassLength hd z.1.isLt hdl).1 hq
-  have hcoord_cast (i : Fin P.length) :
-      (((coord i : Nat) : ZMod p).val) = coord i :=
-    ZMod.val_natCast_of_lt ((hcoord_lt i).trans hlp)
-  have hcoord_mem (i : Fin P.length)
-      (hiA : P.start + ((i : Nat) * P.step : Nat) ∈ A) :
-      (coord i : ZMod p) ∈ modularCoordinateSet p R A := by
-    rw [mem_modularCoordinateSet_iff R A hlp, hcoord_cast]
-    exact ⟨hcoord_lt i, by simpa only [← hcoord_eq i] using hiA⟩
-  have hlength : P.length = m ∨ P.length = m + 1 := by
-    change balancedChunkLength m
-      (residueClassLength R.length d z.1 % m) z.2 = m ∨
-      balancedChunkLength m
-      (residueClassLength R.length d z.1 % m) z.2 = m + 1
-    unfold balancedChunkLength
-    split_ifs <;> simp_all
-  have hindex_le (i : Fin P.length) : (i : Nat) <= m := by
-    rcases hlength with hlen | hlen <;> omega
-  obtain ⟨a0, ha0⟩ := hAne
-  have hpsiZero : psi 0 = 0 := by
-    have hzeroB : a0 - a0 ∈ B := by
-      apply hshort
-      simpa using zero_mem_symmetricMultiples (p := p) (m := m) (d : ZMod p)
-    have hag := hagree a0 ha0 a0 ha0 hzeroB
-    simpa using hag.symm
-  by_cases hnonempty : exists r : Fin P.length,
-      P.start + ((r : Nat) * P.step : Nat) ∈ A
-  · obtain ⟨r, hrA⟩ := hnonempty
-    refine ⟨psi (d : ZMod p),
-      phi (P.start + ((r : Nat) * P.step : Nat)) -
-        (r : Nat) • psi (d : ZMod p), ?_⟩
-    intro i
-    dsimp only
-    intro hiA
-    have hiMem := hcoord_mem i hiA
-    have hrMem := hcoord_mem r hrA
-    let j : Int := (i : Int) - (r : Int)
-    have hjBounds : j ∈ Finset.Icc (-(m : Int)) (m : Int) := by
-      rw [Finset.mem_Icc]
-      dsimp only [j]
-      have hiLe : (i : Int) <= (m : Int) := by exact_mod_cast hindex_le i
-      have hrLe : (r : Int) <= (m : Int) := by exact_mod_cast hindex_le r
-      constructor <;> omega
-    have hdiff :
-        (coord i : ZMod p) - (coord r : ZMod p) =
-          (j : ZMod p) * (d : ZMod p) := by
-      dsimp only [coord, base, j]
+  set P := balancedResidueChunkAP R d m z with hP
+  -- the `i`-th term of `P` is the term of `R` with modular coordinate `c i`
+  let c : Nat → ZMod p := fun i => ((z.1 + (balancedChunkStart m
+    (residueClassLength R.length d z.1 % m) z.2 + i) * d : Nat) : ZMod p)
+  have hpt (i : Fin P.length) (hiA : P.start + ((i : Nat) * P.step : Nat) ∈ A) :
+      c i ∈ modularCoordinateSet p R A ∧
+        modularCoordinateMap p R phi (c i) = phi (P.start + ((i : Nat) * P.step : Nat)) := by
+    have hlt := (quotient_lt_residueClassLength hd z.1.isLt hdl).1
+      (balancedChunk_quotient_lt hm hclass z.2 i i.isLt)
+    have heq : P.start + ((i : Nat) * P.step : Nat) = intAPPoint R (z.1 +
+        (balancedChunkStart m (residueClassLength R.length d z.1 % m) z.2 + i) * d) := by
+      simp only [hP, balancedResidueChunkAP, intAPPoint]
       push_cast
       ring
-    have hdiffMem : (coord i : ZMod p) - (coord r : ZMod p) ∈ B := by
-      apply hshort
-      rw [symmetricMultiples, Finset.mem_image]
-      exact ⟨j, hjBounds, hdiff.symm⟩
-    have hag := hagree (coord i : ZMod p) hiMem
-      (coord r : ZMod p) hrMem hdiffMem
-    have hlin := generic_freiman_map_int_multiple B psi hpsi hpsiZero
-      (d : ZMod p) m hm hshort j hjBounds
-    dsimp only [modularCoordinateMap] at hag
-    rw [hcoord_cast i, hcoord_cast r, ← hcoord_eq i, ← hcoord_eq r,
-      hdiff, hlin] at hag
-    change phi (P.start + ↑i * P.step) =
-      psi (d : ZMod p) * (i : Nat) +
-        (phi (P.start + ↑r * P.step) - (r : Nat) • psi (d : ZMod p))
-    have hjSmul : j • psi (d : ZMod p) =
-        (i : Nat) • psi (d : ZMod p) - (r : Nat) • psi (d : ZMod p) := by
-      dsimp only [j]
-      rw [sub_zsmul]
-      simp [sub_eq_add_neg]
-    rw [hjSmul] at hag
-    simp only [nsmul_eq_mul] at hag ⊢
-    push_cast at hag ⊢
+    dsimp only [c, modularCoordinateMap]
+    rw [mem_modularCoordinateSet_iff R A hlp, ZMod.val_natCast_of_lt (hlt.trans hlp), ← heq]
+    exact ⟨⟨hlt, hiA⟩, rfl⟩
+  obtain ⟨a0, ha0⟩ := hAne
+  have hpsiZero : psi 0 = 0 := by
+    simpa using (hagree a0 ha0 a0 ha0
+      (by rw [sub_self]; exact hshort (zero_mem_symmetricMultiples _))).symm
+  have hlen : P.length ≤ m + 1 := by
+    simp only [hP, balancedResidueChunkAP, balancedChunkLength]
+    split_ifs <;> omega
+  by_cases hr : ∃ r : Fin P.length, P.start + ((r : Nat) * P.step : Nat) ∈ A
+  · obtain ⟨r, hrA⟩ := hr
+    refine ⟨psi d, phi (P.start + ((r : Nat) * P.step : Nat)) - (r : Nat) • psi d,
+      fun i hiA => ?_⟩
+    have := i.isLt
+    have := r.isLt
+    have hj : (i : Int) - r ∈ Finset.Icc (-(m : Int)) m :=
+      Finset.mem_Icc.2 ⟨by omega, by omega⟩
+    have hdiff : c i - c r = (((i : Int) - r : Int) : ZMod p) * d := by
+      simp only [c]
+      push_cast
+      ring
+    have hag := hagree _ (hpt i hiA).1 _ (hpt r hrA).1
+      (hshort (Finset.mem_image.2 ⟨_, hj, hdiff.symm⟩))
+    rw [(hpt i hiA).2, (hpt r hrA).2, hdiff, generic_freiman_map_int_multiple B psi hpsi
+      hpsiZero d m hm hshort _ hj] at hag
+    simp only [zsmul_eq_mul, nsmul_eq_mul, Int.cast_sub, Int.cast_natCast] at hag ⊢
     linear_combination hag
-  · refine ⟨0, 0, ?_⟩
-    intro i
-    dsimp only
-    exact fun hiA => (hnonempty ⟨i, hiA⟩).elim
+  · exact ⟨0, 0, fun i hiA => (hr ⟨i, hiA⟩).elim⟩
 
 attribute [simp] centeredAbs_neg
 
@@ -1006,8 +843,7 @@ theorem corollary_7_11_universal_budget (N q m : Nat) [NeZero N] (R : IntAP)
     obtain ⟨M, S, hp, hc, hd, hf⟩ := cor711_one_partition (N := N) R A hl hproper
     exact ⟨M, S, hp, hc, hd, fun phi _ ↦ hf phi⟩
   have hmTwo : 2 <= m := by omega
-  have halphaOne := cor711_alpha_le_one R A alpha hq hl hproper
-    hA
+  have hmReal : (2 : Real) ≤ m := by exact_mod_cast hmTwo
   obtain ⟨p, hpPrime, hpLower, hpUpper⟩ :=
     Nat.exists_prime_lt_and_le_two_mul (8 * R.length) (by omega)
   have hpUpper' : p <= 16 * R.length := by omega
@@ -1017,90 +853,40 @@ theorem corollary_7_11_universal_budget (N q m : Nat) [NeZero N] (R : IntAP)
       (hf : ∀ i, FreimanHom 8 (A i) (phi i)) (i : Fin q) :=
     cor711_spectrum_bound R A phi alpha hl halpha hproper.1 hpLower hpUpper'
       (fun i ↦ ⟨(hA i).1, (hA i).2, hf i⟩) i
-  have hzero : ∀ i, FreimanHom 8 (A i) (fun _ : Int ↦ (0 : ZMod N)) :=
-    fun _ ↦ isAddFreimanHom_const (Set.mem_univ _)
-  have hLcard : ((L.card : Nat) : Real) <=
-      4097 * q * alpha ^ (-(2 : Real)) := by
-    dsimp only [L]
-    exact cor711_spectrumUnion_card R A alpha hq halpha halphaOne
-      (fun i => (hspec (fun _ _ ↦ 0) hzero i).1)
-  have honeL : (1 : ZMod p) ∈ L := by
-    simp [L, cor711SpectrumUnion]
+  -- the spectra depend on the domains only, so the zero map bounds their union
+  have hLcard : (L.card : Real) ≤ 4097 * q * alpha ^ (-(2 : Real)) :=
+    cor711_spectrumUnion_card R A alpha hq halpha (cor711_alpha_le_one R A alpha hq hl hproper hA)
+      fun i => (hspec (fun _ _ ↦ 0) (fun _ ↦ isAddFreimanHom_const (Set.mem_univ _)) i).1
+  have honeL : (1 : ZMod p) ∈ L := Finset.mem_union_left _ (Finset.mem_singleton_self 1)
   have hLne : L.Nonempty := ⟨1, honeL⟩
-  have hLcardPosNat : 0 < L.card := Finset.card_pos.mpr hLne
-  have hLcardPos : (0 : Real) < L.card := by exact_mod_cast hLcardPosNat
+  -- a nonzero `d` in the Bohr set of radius `1 / (17 m^2)` gives the common step `|d|`
   let delta : Real := 1 / (17 * (m : Real) ^ 2)
-  have hdelta : 0 < delta := by unfold delta; positivity
-  have hdeltaOne : delta <= 1 := by
-    unfold delta
-    apply (div_le_one₀ (by positivity : (0 : Real) <
-      17 * (m : Real) ^ 2)).2
-    have hmReal : (2 : Real) <= m := by exact_mod_cast hmTwo
-    nlinarith
-  have hthreshold :
-      2 * (p : Real) ^ (-(1 / (L.card : Real))) < delta := by
-    unfold delta
-    exact cor711_bohr_nonzero_threshold hq hmTwo hl halpha (by omega)
-      hLcardPos hLcard hbudget
-  have hpTwo : 2 <= p := hpPrime.two_le
-  obtain ⟨_hcardBohr, hnonzero⟩ :=
-    lemma_7_7_holds p L delta hpTwo hdelta hdeltaOne
-  obtain ⟨d, hdBohr, hdne⟩ := hnonzero hLne hthreshold
+  obtain ⟨d, hdBohr, hdne⟩ := (lemma_7_7_holds p L delta hpPrime.two_le (by positivity)
+    ((div_le_one₀ (by positivity)).2 (by nlinarith [hmReal]))).2 hLne
+    (cor711_bohr_nonzero_threshold hq hmTwo hl halpha (by omega)
+      (by exact_mod_cast hLne.card_pos) hLcard hbudget)
   let D := centeredAbs d
-  have hDpos : 0 < D := by
-    apply Nat.pos_of_ne_zero
-    intro hzero
-    have hvalMin : d.valMinAbs = 0 := Int.natAbs_eq_zero.mp hzero
-    have hd0 : d = 0 := by simpa using (ZMod.valMinAbs_spec d 0).1 hvalMin |>.1
-    exact (bne_iff_ne.mp hdne) hd0
-  have hDsmall : D * (m * m) < R.length := by
-    dsimp only [D]
-    exact cor711_centered_step_small hm hpUpper'
-      L honeL d hdBohr
-  obtain ⟨hDle, hclasses⟩ := cor711_residueClass_large hm hDpos hDsmall
-  let M := Fintype.card (BalancedResidueChunkIndex R.length D m)
-  let S := balancedResidueChunkFamily R D m
-  refine ⟨M, S,
-    balancedResidueChunkFamily_partition R D m hproper.1 hDpos hDle hm hclasses,
+  have hDpos : 0 < D :=
+    Int.natAbs_pos.2 fun h => bne_iff_ne.mp hdne ((ZMod.valMinAbs_eq_zero d).1 h)
+  obtain ⟨hDle, hclasses⟩ := cor711_residueClass_large hm hDpos
+    (cor711_centered_step_small hm hpUpper' L honeL d hdBohr)
+  refine ⟨_, _, balancedResidueChunkFamily_partition R D m hproper.1 hDpos hDle hm hclasses,
     (balancedResidueChunkFamily_properties R D m hproper.1 hDpos).1,
-    (balancedResidueChunkFamily_properties R D m hproper.1 hDpos).2, ?_⟩
-  intro phi hf i j
-  let z := (Fintype.equivFin (BalancedResidueChunkIndex R.length D m)).symm j
-  obtain ⟨_hKi, hAmodNe, psi, hpsi, hagree⟩ := hspec phi hf i
-  let K := cor711Spectrum p R A i
-  have hKsub : K ⊆ L := by
-    intro r hr
-    simp only [L, cor711SpectrumUnion, Finset.mem_union, Finset.mem_singleton]
-    right
-    rw [Finset.mem_biUnion]
-    exact ⟨i, Finset.mem_univ i, hr⟩
+    (balancedResidueChunkFamily_properties R D m hproper.1 hDpos).2, fun phi hf i j => ?_⟩
+  obtain ⟨_, hAmodNe, psi, hpsi, hagree⟩ := hspec phi hf i
+  have hKsub : cor711Spectrum p R A i ⊆ L := fun r hr =>
+    Finset.mem_union_right _ (Finset.mem_biUnion.2 ⟨i, Finset.mem_univ i, hr⟩)
   have hdSigned : (D : ZMod p) ∈ bohr L delta := by
-    rcases natCast_centeredAbs_eq_or_neg d with hdCast | hdCast
-    · simpa only [D, hdCast] using hdBohr
-    · rw [hdCast]
-      rw [bohr, Finset.mem_filter] at hdBohr ⊢
-      refine ⟨Finset.mem_univ _, ?_⟩
-      intro r hr
-      simpa only [mul_neg, centeredAbs_neg] using hdBohr.2 r hr
-  have hradius : delta <= (1 / (8 * Real.pi)) / (m : Real) := by
-    have hmReal : (2 : Real) <= m := by exact_mod_cast hmTwo
-    unfold delta
+    rcases natCast_centeredAbs_eq_or_neg d with h | h <;> rw [h] <;>
+      simpa [bohr] using hdBohr
+  have hradius : delta ≤ 1 / (8 * Real.pi) / (m : Real) := by
     rw [div_div]
-    apply (div_le_div_iff₀ (by positivity : (0 : Real) < 17 * (m : Real) ^ 2)
-      (by positivity : (0 : Real) < 8 * Real.pi * m)).2
-    have hpi := Real.pi_lt_four
-    nlinarith
-  have hdKi : (D : ZMod p) ∈
-      bohr K (1 / (8 * Real.pi) / (m : Real)) :=
-    bohr_mono hKsub hradius hdSigned
-  have hshort : symmetricMultiples (D : ZMod p) m ⊆
-      bohr K (1 / (8 * Real.pi)) :=
-    bohr_symmetric_multiples_subset K (1 / (8 * Real.pi))
-      (by positivity) m hm (D : ZMod p) hdKi
-  change IntAPLinearOn (balancedResidueChunkAP R D m z) (A i) (phi i)
-  exact balancedResidueChunkAP_linear R (A i) (phi i) D m z hDpos hDle hm
-    (by omega : R.length < p) (hclasses z.1)
-    (bohr K (1 / (8 * Real.pi))) psi hpsi hagree hshort hAmodNe
+    exact (one_div_le_one_div (by positivity) (by positivity)).2
+      (by nlinarith [Real.pi_lt_four, hmReal])
+  exact balancedResidueChunkAP_linear R (A i) (phi i) D m ((Fintype.equivFin _).symm j)
+    hDpos hDle hm (by omega) (hclasses _) _ psi hpsi hagree
+    (bohr_symmetric_multiples_subset _ _ (by positivity) m hm _
+      (bohr_mono hKsub hradius hdSigned)) hAmodNe
 
 /-- The simultaneous partition construction under its direct numerical
 budget. This form allows integer targets slightly above the displayed power

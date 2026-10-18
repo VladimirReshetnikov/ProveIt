@@ -130,86 +130,49 @@ theorem stage135_phase_partition_at {N : Nat} [NeZero N] {K : Real} {p : Nat}
   have hP : D.P.IsProper := h134.2.2.1
   obtain ⟨m, hm⟩ : ∃ m : Nat, m = p * (D.q + 1) ^ 8 := ⟨_, rfl⟩
   have hm0 : 0 < m := by rw [hm]; positivity
-  have hmR : (m : Real) ≠ 0 := by exact_mod_cast hm0.ne'
-  have he' : stage135PolyExponent p D.q = (((4 * m ^ 2 : Nat) : Real))⁻¹ := by
-    unfold stage135PolyExponent
-    rw [hm]
-    push_cast
-    ring
-  have hepos : 0 < stage135PolyExponent p D.q := stage135PolyExponent_pos hp
-  have hPpos : 0 < D.P.length := by
-    by_contra hz
-    have hzero : D.P.length = 0 := by omega
-    rw [hzero, Nat.cast_zero, Real.zero_rpow hepos.ne'] at hscale
-    norm_num at hscale
+  have he : stage135PolyExponent p D.q = (((4 * m * m : Nat) : Real))⁻¹ := by
+    unfold stage135PolyExponent; rw [hm]; push_cast; ring
   have hP0 : (0 : Real) ≤ D.P.length := Nat.cast_nonneg _
   set y := (D.P.length : Real) ^ stage135PolyExponent p D.q with hy_def
-  have hypos : 0 < y := by linarith only [hscale]
-  have hX : (D.P.length : Real) ^ ((m : Real)⁻¹) = y ^ (4 * m) := by
-    rw [hy_def, ← Real.rpow_natCast, ← Real.rpow_mul hP0, he']
-    congr 1
-    push_cast
-    field_simp
-  obtain ⟨H, hH⟩ : ∃ H : Nat, H = Nat.floor ((D.P.length : Real) ^ ((m : Real)⁻¹)) := ⟨_, rfl⟩
-  have hHle : (H : Real) ≤ (D.P.length : Real) ^ ((m : Real)⁻¹) := by
-    rw [hH]
-    exact Nat.floor_le (by positivity)
-  have hHgt : (D.P.length : Real) ^ ((m : Real)⁻¹) < H + 1 := by
-    rw [hH]
-    exact Nat.lt_floor_add_one _
-  rw [hX] at hHgt
-  have hy4 : y ^ 4 ≤ y ^ (4 * m) := pow_le_pow_right₀ (by linarith only [hscale]) (by omega)
-  have hy3 : (2 : Real) ^ 3 ≤ y ^ 3 := pow_le_pow_left₀ (by norm_num) hscale.le 3
-  have hcube : 8 * y ≤ y ^ 4 := by nlinarith only [hy3, hypos]
-  have hH4 : 4 * y ≤ H := by nlinarith only [hy4, hcube, hHgt, hscale]
-  have hHposR : (0 : Real) < H := by linarith only [hH4, hypos]
-  have hHpos : 0 < H := by exact_mod_cast hHposR
-  have hH2 : 2 ≤ H := by
-    have : (2 : Real) ≤ H := by linarith only [hH4, hscale]
-    exact_mod_cast this
+  have hypos : 0 < y := by linarith
+  have hcube : 8 * y ≤ y ^ 4 := by
+    nlinarith [pow_le_pow_left₀ (by norm_num : (0 : Real) ≤ 2) hscale.le 3, hypos]
+  -- `H = ⌊|P| ^ (1 / m)⌋`, and `|P| ^ (1 / m) = y ^ (4 * m)`
+  obtain ⟨H, hH⟩ : ∃ H : Nat, H = ⌊y ^ (4 * m)⌋₊ := ⟨_, rfl⟩
+  have hHle : (H : Real) ≤ y ^ (4 * m) := by rw [hH]; exact Nat.floor_le (pow_nonneg hypos.le _)
+  have hHgt : y ^ (4 * m) < H + 1 := by rw [hH]; exact Nat.lt_floor_add_one _
+  have hH4 : 4 * y ≤ H := by
+    linarith [pow_le_pow_right₀ (by linarith : (1 : Real) ≤ y) (by omega : 4 ≤ 4 * m)]
+  have hHposR : (0 : Real) < H := by linarith
+  have hH2 : 2 ≤ H := by exact_mod_cast (show (2 : Real) ≤ H by linarith)
   have hKH : K * ((D.q : Real) + 1) ≤ H := by
     have hnat := stage135_poly_threshold_nat p D.q hp
     rw [← hm] at hnat
-    have hreal : (2 : Real) ^ p * ((D.q : Real) + 1) + 1 ≤ (2 : Real) ^ (4 * m) := by
-      exact_mod_cast hnat
-    have h2y : (2 : Real) ^ (4 * m) ≤ y ^ (4 * m) := pow_le_pow_left₀ (by norm_num) hscale.le _
-    have hKq : K * ((D.q : Real) + 1) ≤ (2 : Real) ^ p * ((D.q : Real) + 1) :=
-      mul_le_mul_of_nonneg_right hK (by positivity)
-    linarith only [hreal, h2y, hKq, hHgt]
-  have hHP : (H : Real) ^ (p * (D.q + 1) ^ 8) ≤ D.P.length := by
-    rw [← hm]
-    calc (H : Real) ^ m ≤ ((D.P.length : Real) ^ ((m : Real)⁻¹)) ^ m :=
-          pow_le_pow_left₀ (Nat.cast_nonneg _) hHle m
-      _ = D.P.length := Real.rpow_inv_natCast_pow hP0 hm0.ne'
+    have hreal : (2 : Real) ^ p * ((D.q : Real) + 1) + 1 ≤ 2 ^ (4 * m) := by exact_mod_cast hnat
+    linarith [pow_le_pow_left₀ (by norm_num : (0 : Real) ≤ 2) hscale.le (4 * m),
+      mul_le_mul_of_nonneg_right hK (by positivity : (0 : Real) ≤ D.q + 1)]
+  have hHP : (H : Real) ^ m ≤ D.P.length := by
+    calc (H : Real) ^ m ≤ (y ^ (4 * m)) ^ m := pow_le_pow_left₀ (Nat.cast_nonneg _) hHle m
+      _ = D.P.length := by
+        rw [← pow_mul, hy_def, he]; exact Real.rpow_inv_natCast_pow hP0 (by positivity)
   obtain ⟨M, Q, hpart, hproper, hlen, hsmall⟩ :=
-    hpp N D.q D.P hP D.a D.b H hHpos hKH hHP
-  have hM : 0 < M := by
-    rcases Nat.eq_zero_or_pos M with hM0 | hM
-    · subst hM0
-      have hsum := hpart.sum_card
-      rw [hP] at hsum
-      simp only [Finset.univ_eq_empty, Finset.sum_empty] at hsum
-      omega
-    · exact hM
-  obtain ⟨j, hj⟩ := stage135_select_weighted_cell S D Q hM hP h134.2.2.2.1 hpart hproper
+    hpp N D.q D.P hP D.a D.b H (by omega) hKH (hm ▸ hHP)
+  obtain ⟨x, hx⟩ : D.P.carrier.Nonempty := by
+    rw [← Finset.card_pos, hP]; exact_mod_cast (pow_pos hHposR m).trans_le hHP
+  obtain ⟨j₀, -⟩ := (hpart.1 x).1 hx
+  obtain ⟨j, hj⟩ := stage135_select_weighted_cell S D Q j₀.pos hP h134.2.2.2.1 hpart hproper
     h134.2.2.2.2.2.2.2.1
-  have hcount := stage135_critical_count_of_weight S D (Q j) (hproper j) hj
   have hQH : (H : Real) ≤ (Q j).length := by exact_mod_cast hlen j
   refine ⟨⟨Q j⟩, (Q j).step_ne_zero_of_proper (hproper j) (hH2.trans (hlen j)), hproper j,
-    hpart.cell_subset j, ?_, ?_, ?_⟩
+    hpart.cell_subset j, ?_, fun i h hh => ?_, ?_⟩
   · change y / 2 ≤ ((Q j).length : Real)
-    linarith only [hH4, hQH, hypos]
-  · intro i h hh
-    have hneg : (D.P.length : Real) ^ (-stage135PolyExponent p D.q) = y⁻¹ :=
-      Real.rpow_neg hP0 _
-    rw [hneg]
+    linarith
+  · rw [Real.rpow_neg hP0, ← hy_def]
     refine (hsmall i j h hh).trans (mul_le_mul_of_nonneg_right ?_ (Nat.cast_nonneg N))
     rw [div_le_iff₀ hHposR, inv_mul_eq_div, le_div_iff₀ hypos]
     exact hH4
-  · change S.alpha ^ 32 * ((Q j).length : Real) / 20 ≤ _
-    have hl0 : 0 ≤ S.alpha ^ 32 * ((Q j).length : Real) :=
-      mul_nonneg (pow_nonneg S.alpha_pos.le 32) (Nat.cast_nonneg _)
-    linarith only [hcount, hl0]
+  · exact (div_le_div_of_nonneg_left (by positivity) (by norm_num) (by norm_num)).trans
+      (stage135_critical_count_of_weight S D (Q j) (hproper j) hj)
 
 /-- **Lemma 13.5 with a polynomial exponent.** From a polynomial phase
 partition with `K ≤ 2^p`, every Stage 13.4 datum has a Stage 13.5 progression

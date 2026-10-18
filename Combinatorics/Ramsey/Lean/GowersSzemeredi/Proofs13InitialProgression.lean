@@ -583,53 +583,19 @@ private def lemma134ToArrangement {N : Nat} [NeZero N]
 private lemma lemma134ToArrangement_injective {N : Nat} [NeZero N]
     (A : Finset (Pair N)) : Function.Injective (lemma134ToArrangement A) := by
   intro p q hpq
-  have hR : lemma134CollisionArrangement p =
-      lemma134CollisionArrangement q := congrArg Subtype.val hpq
-  have hx : (lemma134CollisionArrangement p).x =
-      (lemma134CollisionArrangement q).x := congrArg DArrangement.x hR
-  have hy : (lemma134CollisionArrangement p).y =
-      (lemma134CollisionArrangement q).y := congrArg DArrangement.y hR
-  have hh : p.1.1.height = q.1.1.height := by
-    simpa [lemma134CollisionArrangement, DArrangement.height] using
-      congrArg DArrangement.height hR
-  have hpHeight : p.1.1.height = p.1.2.height :=
-    congrArg Prod.fst (lemma134_arrangementCollision_key_eq p)
-  have hqHeight : q.1.1.height = q.1.2.height :=
-    congrArg Prod.fst (lemma134_arrangementCollision_key_eq q)
+  have hR : lemma134CollisionArrangement p = lemma134CollisionArrangement q :=
+    congrArg Subtype.val hpq
+  have hh : p.1.1.height = q.1.1.height := congrArg DArrangement.height hR
+  -- the sixteen edges of `p` and of `q` coincide
+  have hget (j : Fin 16) : lemma134EdgeSixteenGet p.1 j = lemma134EdgeSixteenGet q.1 j :=
+    Subtype.ext (Prod.ext (Prod.ext (congrFun (congrArg DArrangement.x hR) j)
+      (congrFun (congrArg DArrangement.y hR) j))
+      ((lemma134EdgeSixteenGet_height p j).trans
+        (hh.trans (lemma134EdgeSixteenGet_height q j).symm)))
   apply Subtype.ext
-  apply Prod.ext
-  · apply lemma134EdgeEight.get_injective
-    funext i
-    apply Subtype.ext
-    apply Prod.ext
-    · apply Prod.ext
-      · simpa [lemma134CollisionArrangement, lemma134EdgeSixteenGet,
-          lemma134Edge.x, DArrangement.x] using
-          congrFun hx (Fin.castAdd 8 i)
-      · simpa [lemma134CollisionArrangement, lemma134EdgeSixteenGet,
-          lemma134Edge.y, DArrangement.y] using
-          congrFun hy (Fin.castAdd 8 i)
-    · change (p.1.1.get i).height = (q.1.1.get i).height
-      rw [p.1.1.get_height i, q.1.1.get_height i]
-      exact hh
-  · apply lemma134EdgeEight.get_injective
-    funext i
-    apply Subtype.ext
-    apply Prod.ext
-    · apply Prod.ext
-      · change (p.1.2.get i).x = (q.1.2.get i).x
-        have hxi := congrFun hx (Fin.natAdd 8 i)
-        change (lemma134EdgeSixteenGet p.1 (Fin.natAdd 8 i)).x =
-          (lemma134EdgeSixteenGet q.1 (Fin.natAdd 8 i)).x at hxi
-        simpa only [lemma134EdgeSixteenGet_natAdd] using hxi
-      · change (p.1.2.get i).y = (q.1.2.get i).y
-        have hyi := congrFun hy (Fin.natAdd 8 i)
-        change (lemma134EdgeSixteenGet p.1 (Fin.natAdd 8 i)).y =
-          (lemma134EdgeSixteenGet q.1 (Fin.natAdd 8 i)).y at hyi
-        simpa only [lemma134EdgeSixteenGet_natAdd] using hyi
-    · change (p.1.2.get i).height = (q.1.2.get i).height
-      rw [p.1.2.get_height i, q.1.2.get_height i]
-      exact hpHeight.symm.trans (hh.trans hqHeight)
+  apply Prod.ext <;> apply lemma134EdgeEight.get_injective <;> funext i
+  · simpa only [lemma134EdgeSixteenGet_castAdd] using hget (Fin.castAdd 8 i)
+  · simpa only [lemma134EdgeSixteenGet_natAdd] using hget (Fin.natAdd 8 i)
 
 private lemma lemma134_arrangement_collision_card_le {N : Nat} [NeZero N]
     (A : Finset (Pair N)) :
@@ -803,64 +769,30 @@ private lemma lemma134_good_univ_lower {N : Nat} [NeZero N]
     (arrangementCount 8 S.A : Real) / 2 ≤
       goodHeightWeight S Finset.univ := by
   classical
-  let good := Finset.univ.filter (IsGoodHeight S)
-  let bad := Finset.univ.filter fun h => ¬ IsGoodHeight S h
-  let C : Real := ∑ h : ZMod N, section13C S h
-  let G : Real := ∑ h : ZMod N, section13G S h
-  let Cbad : Real := ∑ h ∈ bad, section13C S h
-  let Cgood : Real := ∑ h ∈ good, section13C S h
-  have heta : 0 < S.eta := by
-    rw [S.eta_value]
-    positivity
-  have hGC (h : ZMod N) : (section13G S h : Real) ≤ section13C S h := by
-    exact_mod_cast lemma134_sectionG_le_C S h
-  have hbad (h : ZMod N) (hh : h ∈ bad) :
-      2 * S.eta * section13C S h ≤
-        (section13C S h : Real) - section13G S h := by
-    have hh' : ¬ IsGoodHeight S h := by
-      simpa [bad] using hh
-    have hlt := not_le.mp hh'
-    nlinarith
-  have hbadDeficit :
-      2 * S.eta * Cbad ≤ C - G := by
-    calc
-      2 * S.eta * Cbad =
-          ∑ h ∈ bad, 2 * S.eta * section13C S h := by
-        simp [Cbad, Finset.mul_sum]
-      _ ≤ ∑ h ∈ bad,
-          ((section13C S h : Real) - section13G S h) := by
-        exact Finset.sum_le_sum fun h hh => hbad h hh
-      _ ≤ ∑ h : ZMod N,
-          ((section13C S h : Real) - section13G S h) := by
-        apply Finset.sum_le_sum_of_subset_of_nonneg (by simp [bad])
-        intro h _ _
-        exact sub_nonneg.mpr (hGC h)
-      _ = C - G := by
-        simp [C, G, Finset.sum_sub_distrib]
-  have hmostly : (1 - S.eta) * C ≤ G := by
-    unfold C G
-    have hCtotal : (∑ h : ZMod N, (section13C S h : Real)) =
-        arrangementCount 8 S.A := by
-      exact_mod_cast lemma134_sectionC_total S
-    have hGtotal : (∑ h : ZMod N, (section13G S h : Real)) =
-        respectedArrangementCount 8 S.A S.phi := by
-      exact_mod_cast lemma134_sectionG_total S
-    rw [hCtotal, hGtotal]
-    exact S.mostly_respected
-  have htwice : 2 * Cbad ≤ C := by
-    apply le_of_mul_le_mul_left (a := S.eta)
-    · nlinarith
-    · exact heta
-  have hpartition : Cgood + Cbad = C := by
-    unfold Cgood Cbad C good bad
-    simp only [Finset.sum_filter_add_sum_filter_not]
-  have hgoodHalf : C / 2 ≤ Cgood := by nlinarith
-  have hCtotal : (∑ h : ZMod N, (section13C S h : Real)) =
-      arrangementCount 8 S.A := by
+  have heta : 0 < S.eta := by rw [S.eta_value]; positivity
+  have hm : (1 - S.eta) * arrangementCount 8 S.A ≤ respectedArrangementCount 8 S.A S.phi :=
+    S.mostly_respected
+  have hC : ∑ h : ZMod N, (section13C S h : Real) = arrangementCount 8 S.A := by
     exact_mod_cast lemma134_sectionC_total S
-  unfold C at hgoodHalf
-  rw [hCtotal] at hgoodHalf
-  simpa [Cgood, good, goodHeightWeight] using hgoodHalf
+  have hG : ∑ h : ZMod N, (section13G S h : Real) = respectedArrangementCount 8 S.A S.phi := by
+    exact_mod_cast lemma134_sectionG_total S
+  have hW : (goodHeightWeight S Finset.univ : Real) =
+      ∑ h, if IsGoodHeight S h then (section13C S h : Real) else 0 := by
+    simp [goodHeightWeight, Finset.sum_filter]
+  -- a bad height loses at least a `2 * eta` fraction of its arrangements
+  have hper (h : ZMod N) : 2 * S.eta * section13C S h ≤
+      2 * S.eta * (if IsGoodHeight S h then (section13C S h : Real) else 0) +
+        (section13C S h - section13G S h) := by
+    have hGC : (section13G S h : Real) ≤ section13C S h := by
+      exact_mod_cast lemma134_sectionG_le_C S h
+    split_ifs with hgood
+    · linarith
+    · linarith [not_le.mp hgood]
+  have hsum := Finset.sum_le_sum (s := Finset.univ) fun h _ => hper h
+  simp only [Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_sub_distrib, hC, hG] at hsum
+  rw [hW]
+  refine le_of_mul_le_mul_left ?_ heta
+  linarith
 
 private lemma lemma134_good_exceptional_lower {N : Nat} [NeZero N]
     (S : Section13Context N) (theta : Real) (G : Finset (ZMod N))
@@ -868,60 +800,26 @@ private lemma lemma134_good_exceptional_lower {N : Nat} [NeZero N]
     (hGcard : (1 - theta) * N ≤ G.card) :
     S.alpha ^ 32 * (N : Real) ^ 32 / 4 ≤ goodHeightWeight S G := by
   classical
-  let E : Finset (ZMod N) := Finset.univ \ G
-  have hpartitionCard : E.card + G.card = N := by
-    unfold E
-    rw [Finset.card_sdiff_add_card_eq_card (Finset.subset_univ G)]
-    simp [ZMod.card]
-  have hpartitionCardR : (E.card : Real) + G.card = N := by
-    exact_mod_cast hpartitionCard
-  have hEcard : (E.card : Real) ≤ theta * N := by
-    linarith
-  have hEweightNat : goodHeightWeight S E ≤ E.card * N ^ 31 := by
-    unfold goodHeightWeight
-    calc
-      (E.filter (IsGoodHeight S)).sum (section13C S) ≤
-          E.sum (section13C S) := by
-        apply Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _)
-        intro i _ _
-        omega
-      _ ≤ E.card • N ^ 31 :=
-        Finset.sum_le_card_nsmul E (section13C S) (N ^ 31)
-          (fun h _ => lemma134_sectionC_upper S h)
-      _ = E.card * N ^ 31 := by simp
-  have hEweight : (goodHeightWeight S E : Real) ≤
-      theta * (N : Real) ^ 32 := by
-    have hEweightR : (goodHeightWeight S E : Real) ≤
-        (E.card : Real) * (N : Real) ^ 31 := by
-      exact_mod_cast hEweightNat
-    calc
-      (goodHeightWeight S E : Real) ≤
-          (E.card : Real) * (N : Real) ^ 31 := hEweightR
-      _ ≤ (theta * N) * (N : Real) ^ 31 :=
-        mul_le_mul_of_nonneg_right hEcard (by positivity)
-      _ = theta * (N : Real) ^ 32 := by ring
-  have hdisj : Disjoint G E := Finset.disjoint_sdiff
-  have hunion : G ∪ E = Finset.univ := by
-    simp [E]
-  have hweightPartition :
-      goodHeightWeight S G + goodHeightWeight S E =
-        goodHeightWeight S Finset.univ := by
-    unfold goodHeightWeight
-    rw [← Finset.sum_union]
-    · rw [← Finset.filter_union, hunion]
-    · exact Disjoint.mono (Finset.filter_subset _ _)
-        (Finset.filter_subset _ _) hdisj
+  let g : ZMod N → Real := fun h => if IsGoodHeight S h then (section13C S h : Real) else 0
+  have hW (H : Finset (ZMod N)) : (goodHeightWeight S H : Real) = ∑ h ∈ H, g h := by
+    simp [g, goodHeightWeight, Finset.sum_filter]
+  -- the at most `theta * N` heights outside `G` carry at most `theta * N ^ 32`
+  have hE : ∑ h ∈ Finset.univ \ G, g h ≤ ((Finset.univ \ G).card : Real) * N ^ 31 := by
+    rw [← nsmul_eq_mul]
+    refine Finset.sum_le_card_nsmul _ _ _ fun h _ => ?_
+    simp only [g]
+    split_ifs
+    · exact_mod_cast lemma134_sectionC_upper S h
+    · positivity
+  have hcard : ((Finset.univ \ G).card : Real) + G.card = N := by
+    exact_mod_cast (Finset.card_sdiff_add_card_eq_card (Finset.subset_univ G)).trans (ZMod.card N)
   have huniv := lemma134_good_univ_lower S
-  have htotal := lemma134_arrangement_count_lower S
-  have hthetaLoss : theta * (N : Real) ^ 32 ≤
-      S.alpha ^ 32 * (N : Real) ^ 32 / 4 := by
-    nlinarith [mul_le_mul_of_nonneg_right hthetaBound
-      (show 0 ≤ (N : Real) ^ 32 by positivity)]
-  have hweightPartitionR :
-      (goodHeightWeight S G : Real) + goodHeightWeight S E =
-        goodHeightWeight S Finset.univ := by
-    exact_mod_cast hweightPartition
-  nlinarith
+  rw [hW, ← Finset.sum_sdiff (Finset.subset_univ G)] at huniv
+  rw [hW]
+  linarith [lemma134_arrangement_count_lower S,
+    mul_le_mul_of_nonneg_right (show ((Finset.univ \ G).card : Real) ≤ theta * N by linarith)
+      (by positivity : (0 : Real) ≤ (N : Real) ^ 31),
+    mul_le_mul_of_nonneg_right hthetaBound (by positivity : (0 : Real) ≤ (N : Real) ^ 32)]
 
 /-! ### The progression length and affine restrictions -/
 
@@ -1125,81 +1023,35 @@ private lemma lemma134_exists_common_step
   have htheta₁ : 0 < theta₁ := lemma134_thetaOne_pos theta htheta
   have hdelta : 0 < delta := by positivity
   have hdeltaOne : delta ≤ 1 := by
-    unfold delta
-    apply (div_le_one₀ (by positivity :
-      (0 : Real) < 32 * Real.pi * (l : Real))).2
-    have htheta₁One' : theta₁ ≤ 1 := htheta₁One
     have hlOne : (1 : Real) ≤ l := by exact_mod_cast hl
-    calc
-      theta₁ ≤ 1 := htheta₁One'
-      _ ≤ 32 * Real.pi * 1 := by nlinarith [Real.pi_gt_three]
-      _ ≤ 32 * Real.pi * (l : Real) :=
-        mul_le_mul_of_nonneg_left hlOne (by positivity)
+    rw [div_le_one₀ (by positivity)]
+    nlinarith [Real.pi_gt_three]
   by_cases hKempty : K = ∅
-  · refine ⟨1, ?_, one_ne_zero⟩
-    simp [K, hKempty, bohr]
-  · have hKne : K.Nonempty := Finset.nonempty_iff_ne_empty.mpr hKempty
-    have hKposNat : 0 < K.card := Finset.card_pos.mpr hKne
-    have hKpos : (0 : Real) < K.card := by exact_mod_cast hKposNat
-    have hKcard := lemma134_spectrum_union_card B sigma theta₁ htheta₁
-      hq₀q hBlarge hFreiman
-    have hthetaSq : 0 < theta₁ ^ 2 := sq_pos_of_pos htheta₁
-    have hnegPow : theta₁ ^ (-(2 : Real)) = (theta₁ ^ 2)⁻¹ := by
-      rw [show (-(2 : Real)) = -((2 : Nat) : Real) by norm_num,
-        Real.rpow_neg htheta₁.le, Real.rpow_natCast]
-    have hcardScaled : (K.card : Real) * theta₁ ^ 2 ≤
-        16 * (q : Real) := by
-      calc
-        (K.card : Real) * theta₁ ^ 2 ≤
-            (16 * (q : Real) * theta₁ ^ (-(2 : Real))) *
-              theta₁ ^ 2 :=
-          mul_le_mul_of_nonneg_right hKcard hthetaSq.le
-        _ = 16 * (q : Real) := by
-          rw [hnegPow]
-          field_simp
-    have hexponentCard : exponent ≤ ((K.card : Real))⁻¹ := by
-      unfold exponent
-      rw [← one_div]
-      apply (div_le_div_iff₀ (by positivity : (0 : Real) < 16 * q) hKpos).2
-      simpa only [one_mul, mul_comm] using hcardScaled
-    have hrpowMono :
-        (N : Real) ^ (-(((K.card : Nat) : Real)⁻¹)) ≤
-          (N : Real) ^ (-exponent) := by
-      apply Real.rpow_le_rpow_of_exponent_le
-      · exact_mod_cast (Fact.out : Nat.Prime N).one_le
-      · exact neg_le_neg hexponentCard
-    have hscale' : (l : Real) <
-        theta₁ / (64 * Real.pi) * (N : Real) ^ exponent := by
-      simpa only [lemma134Scale, theta₁, exponent] using hlScale
-    have htarget :
-        2 * (N : Real) ^ (-exponent) < delta := by
-      have hT : 0 < (N : Real) ^ exponent :=
-        Real.rpow_pos_of_pos (by exact_mod_cast NeZero.pos N) _
-      have hden : (0 : Real) < 32 * Real.pi * (l : Real) := by positivity
-      rw [Real.rpow_neg (by positivity : (0 : Real) ≤ N)]
-      change 2 * ((N : Real) ^ exponent)⁻¹ < theta₁ / _
-      rw [← div_eq_mul_inv]
-      apply (div_lt_div_iff₀ hT hden).2
-      calc
-        2 * (32 * Real.pi * (l : Real)) =
-            (64 * Real.pi) * (l : Real) := by ring
-        _ < (64 * Real.pi) *
-            (theta₁ / (64 * Real.pi) * (N : Real) ^ exponent) :=
-          mul_lt_mul_of_pos_left hscale' (by positivity)
-        _ = theta₁ * (N : Real) ^ exponent := by
-          field_simp
-    have hthreshold :
-        2 * (N : Real) ^
-            (-(1 / ((K.card : Nat) : Real))) < delta := by
-      have heq : -(1 / ((K.card : Nat) : Real)) =
-          -(((K.card : Nat) : Real)⁻¹) := by rw [one_div]
-      rw [heq]
-      exact (mul_le_mul_of_nonneg_left hrpowMono (by norm_num)).trans_lt htarget
-    obtain ⟨_, hnonzero⟩ := lemma_7_7_holds N K delta
-      (Fact.out : Nat.Prime N).two_le hdelta hdeltaOne
-    obtain ⟨d, hdK, hdne⟩ := hnonzero hKne hthreshold
-    exact ⟨d, by simpa only [K, delta, theta₁] using hdK,
-      bne_iff_ne.mp hdne⟩
+  · exact ⟨1, by simp [K, hKempty, bohr], one_ne_zero⟩
+  have hKne : K.Nonempty := Finset.nonempty_iff_ne_empty.mpr hKempty
+  have hKpos : (0 : Real) < K.card := by exact_mod_cast Finset.card_pos.mpr hKne
+  have hKcard := lemma134_spectrum_union_card B sigma theta₁ htheta₁ hq₀q hBlarge hFreiman
+  rw [Real.rpow_neg htheta₁.le, Real.rpow_two, ← div_eq_mul_inv,
+    le_div_iff₀ (by positivity)] at hKcard
+  -- `|K| ≤ 16 q / θ₁²` gives `exponent ≤ 1 / |K|`, and `l < scale` gives `2 N ^ (-exponent) < δ`
+  have hexponentCard : exponent ≤ 1 / (K.card : Real) := by
+    rw [div_le_div_iff₀ (by positivity) hKpos]
+    linarith
+  have hX : (0 : Real) < (N : Real) ^ exponent :=
+    Real.rpow_pos_of_pos (by exact_mod_cast NeZero.pos N) _
+  have hlX : l * (64 * Real.pi) < theta₁ * (N : Real) ^ exponent := by
+    rw [← lt_div_iff₀ (by positivity), mul_div_right_comm]
+    exact hlScale
+  have hmono : (N : Real) ^ (-(1 / (K.card : Real))) ≤ ((N : Real) ^ exponent)⁻¹ := by
+    rw [← Real.rpow_neg (Nat.cast_nonneg N)]
+    exact Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast (Fact.out : N.Prime).one_le)
+      (neg_le_neg hexponentCard)
+  have hstep : 2 * ((N : Real) ^ exponent)⁻¹ < delta := by
+    rw [← div_eq_mul_inv, div_lt_div_iff₀ hX (by positivity)]
+    linarith
+  obtain ⟨d, hdK, hdne⟩ := (lemma_7_7_holds N K delta (Fact.out : Nat.Prime N).two_le hdelta
+    hdeltaOne).2 hKne (by linarith)
+  exact ⟨d, hdK, bne_iff_ne.mp hdne⟩
 
 /-! ### Lemma 13.4 -/
 
@@ -1230,114 +1082,63 @@ theorem lemma134_at_graph_budget
     ∃ D : Stage134Data N, (D.q : Real) ≤ section13QBound theta ∧
       IsStage134DataAtRealBound S theta (budget D.q) D := by
   letI : Fact N.Prime := ⟨hprime⟩
-  obtain ⟨q₀, B, sigma, G, hGcard, hFreiman, hBlarge,
-      hq₀Bound, hcover⟩ :=
+  obtain ⟨q₀, B, sigma, G, hGcard, hFreiman, hBlarge, hq₀Bound, hcover⟩ :=
     corollary_13_3_holds N S.A theta hprime htheta
   let q := max 1 q₀
-  have hq : 0 < q := (by norm_num : 0 < 1).trans_le (Nat.le_max_left 1 q₀)
-  have hq₀q : q₀ ≤ q := Nat.le_max_right 1 q₀
+  have hq : 0 < q := by omega
+  have hq₀q : q₀ ≤ q := by omega
   have hqBound : (q : Real) ≤ section13QBound theta := by
-    have hOneBound := lemma134_qBound_one_le S theta htheta hthetaBound
     simpa only [q, Nat.cast_max, Nat.cast_one] using
-      (max_le hOneBound hq₀Bound)
-  have htheta₁ : 0 < section13ThetaOne theta :=
-    lemma134_thetaOne_pos theta htheta
-  have htheta₁One : section13ThetaOne theta ≤ 1 :=
-    lemma134_thetaOne_le_one S theta htheta hthetaBound
+      max_le (lemma134_qBound_one_le S theta htheta hthetaBound) hq₀Bound
+  have htheta₁ := lemma134_thetaOne_pos theta htheta
+  have htheta₁One := lemma134_thetaOne_le_one S theta htheta hthetaBound
   let Qbound : Real := budget q
   have hqQ : (q : Real) ≤ Qbound := hbudget q hq hqBound
   let scale : Real := section13ThetaOne theta / (64 * Real.pi) *
     (N : Real) ^ (section13ThetaOne theta ^ 2 / (16 * Qbound))
-  have hscaleNonneg : 0 ≤ scale := by positivity
-  have hscaleMono : scale ≤ lemma134Scale N theta q := by
-    unfold scale lemma134Scale
-    apply mul_le_mul_of_nonneg_left _ (by positivity)
-    apply Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hprime.one_le)
-    apply div_le_div_of_nonneg_left (sq_nonneg _) (by positivity)
-    exact mul_le_mul_of_nonneg_left hqQ (by norm_num)
+  have hscaleMono : scale ≤ lemma134Scale N theta q :=
+    mul_le_mul_of_nonneg_left (Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hprime.one_le)
+      (div_le_div_of_nonneg_left (sq_nonneg _) (by positivity) (by linarith))) (by positivity)
   let m : Nat := ⌊scale⌋₊
-  have hfloor : IsNatFloor scale m := (Nat.floor_eq_iff hscaleNonneg).mp rfl
+  have hfloor : IsNatFloor scale m := (Nat.floor_eq_iff (by positivity)).mp rfl
   by_cases hmSmall : m ≤ 1
-  · let P := lemma134EmptyProgression N
-    let D : Stage134Data N :=
-      { q := q, m := m, P := P, H := ∅, a := fun _ => 0, b := fun _ => 0 }
-    refine ⟨D, hqBound, hq, ?_, ?_, ?_, hqQ, hfloor, ?_, ?_, ?_⟩
-    · change (1 : ZMod N) != 0
-      exact bne_iff_ne.mpr one_ne_zero
-    · change (Finset.card ∅ : Nat) = 0
-      simp
-    · simp [D, P, lemma134EmptyProgression, ModAP.carrier]
-    · change 0 = m ∨ 0 + 1 = m
-      omega
-    · simp [goodHeightWeight, D, P, lemma134EmptyProgression]
-    · simp [D]
-  · have _ : 2 ≤ m := by omega
-    let l := m - 1
-    have hl : 0 < l := by dsimp [l]; omega
-    have hlm : l < m := by dsimp [l]; omega
-    have hlScale : (l : Real) < lemma134Scale N theta q :=
-      (show (l : Real) < m by exact_mod_cast hlm).trans_le (hfloor.1.trans hscaleMono)
-    have hmN : m ≤ N := by
-      have h := hfloor.1.trans (hscaleMono.trans
-        (lemma134_scale_le_modulus theta htheta htheta₁One hq))
-      exact_mod_cast h
-    have hlN : l ≤ N := (Nat.sub_le m 1).trans hmN
-    obtain ⟨d, hdBohr, hd⟩ := lemma134_exists_common_step B sigma theta htheta
-      htheta₁One hq hq₀q hl hlScale hBlarge hFreiman
-    obtain ⟨s, havg⟩ :=
-      lemma134_exists_progression_average S G d hd hlN
-    let P := lemma134Progression d s l
-    let H := P.carrier ∩ G
-    have hproper : P.IsProper := lemma134_progression_proper d s hd hlN
-    have hgoodG : S.alpha ^ 32 * (N : Real) ^ 32 / 4 ≤
-        goodHeightWeight S G :=
-      lemma134_good_exceptional_lower S theta G htheta hthetaBound hGcard
-    have hpFirst := lemma134_piece_affine_on_progression B sigma
-      (section13ThetaOne theta) hprime htheta₁ hl hBlarge hFreiman d s hdBohr
-    choose a₀ b₀ haffine using hpFirst
-    let a : Fin q → ZMod N := fun j =>
-      if hj : (j : Nat) < q₀ then a₀ ⟨j, hj⟩ else 0
-    let b : Fin q → ZMod N := fun j =>
-      if hj : (j : Nat) < q₀ then b₀ ⟨j, hj⟩ else 0
-    let D : Stage134Data N :=
-      { q := q
-        m := m
-        P := P
-        H := H
-        a := a
-        b := b }
-    refine ⟨D, hqBound, hq, ?_, hproper, ?_, hqQ, ?_, ?_, ?_, ?_⟩
-    · change d != 0
-      exact bne_iff_ne.mpr hd
-    · intro h hh
-      exact (Finset.mem_inter.mp hh).1
-    · exact hfloor
-    · right
-      change l + 1 = m
-      omega
-    · apply le_of_mul_le_mul_left (a := (N : Real))
-      · calc
-          (N : Real) *
-              (S.alpha ^ 32 * (N : Real) ^ 31 * (l : Real) / 8) =
-              (l : Real) * (S.alpha ^ 32 * (N : Real) ^ 32 / 8) := by ring
-          _ ≤ (l : Real) * (S.alpha ^ 32 * (N : Real) ^ 32 / 4) :=
-            mul_le_mul_of_nonneg_left
-              (div_le_div_of_nonneg_left (by positivity) (by norm_num) (by norm_num))
-              (Nat.cast_nonneg l)
-          _ ≤ (l : Real) * goodHeightWeight S G :=
-            mul_le_mul_of_nonneg_left hgoodG (Nat.cast_nonneg l)
-          _ ≤ (N : Real) * goodHeightWeight S H := by
-            simpa only [H, P] using havg
-      · exact_mod_cast NeZero.pos N
-    · intro h hh r hr
-      have hh' := Finset.mem_inter.mp hh
-      obtain ⟨i, hiB, hir⟩ := hcover h hh'.2 r hr
-      let j : Fin q := Fin.castLE hq₀q i
-      refine ⟨j, ?_⟩
-      have hsigma := haffine i h
-        (Finset.mem_inter.mpr ⟨hiB, hh'.1⟩)
-      rw [hir, hsigma]
-      simp [D, a, b, j, Fin.castLE]
+  · let D : Stage134Data N :=
+      { q := q, m := m, P := lemma134EmptyProgression N, H := ∅, a := fun _ => 0, b := fun _ => 0 }
+    exact ⟨D, hqBound, hq, bne_iff_ne.mpr one_ne_zero,
+      show (∅ : Finset (ZMod N)).card = 0 from Finset.card_empty, by simp [D], hqQ, hfloor,
+      show 0 = m ∨ 0 + 1 = m by omega, by simp [D, lemma134EmptyProgression, goodHeightWeight],
+      by simp [D]⟩
+  let l := m - 1
+  have hl : 0 < l := by omega
+  have hlScale : (l : Real) < lemma134Scale N theta q :=
+    (Nat.cast_lt.mpr (by omega : l < m)).trans_le (hfloor.1.trans hscaleMono)
+  have hmN : m ≤ N := by
+    exact_mod_cast hfloor.1.trans
+      (hscaleMono.trans (lemma134_scale_le_modulus theta htheta htheta₁One hq))
+  have hlN : l ≤ N := by omega
+  obtain ⟨d, hdBohr, hd⟩ := lemma134_exists_common_step B sigma theta htheta
+    htheta₁One hq hq₀q hl hlScale hBlarge hFreiman
+  obtain ⟨s, havg⟩ := lemma134_exists_progression_average S G d hd hlN
+  let P := lemma134Progression d s l
+  let H := P.carrier ∩ G
+  choose a₀ b₀ haffine using lemma134_piece_affine_on_progression B sigma
+    (section13ThetaOne theta) hprime htheta₁ hl hBlarge hFreiman d s hdBohr
+  let a : Fin q → ZMod N := fun j => if hj : (j : Nat) < q₀ then a₀ ⟨j, hj⟩ else 0
+  let b : Fin q → ZMod N := fun j => if hj : (j : Nat) < q₀ then b₀ ⟨j, hj⟩ else 0
+  let D : Stage134Data N := { q := q, m := m, P := P, H := H, a := a, b := b }
+  refine ⟨D, hqBound, hq, bne_iff_ne.mpr hd, lemma134_progression_proper d s hd hlN,
+    Finset.inter_subset_left, hqQ, hfloor, Or.inr (show l + 1 = m by omega), ?_, ?_⟩
+  · change S.alpha ^ 32 * (N : Real) ^ 31 * l / 8 ≤ goodHeightWeight S H
+    have hgoodG := lemma134_good_exceptional_lower S theta G htheta hthetaBound hGcard
+    refine le_of_mul_le_mul_left ?_ (show (0 : Real) < N by exact_mod_cast NeZero.pos N)
+    linarith [mul_le_mul_of_nonneg_left hgoodG (Nat.cast_nonneg l),
+      (by positivity : (0 : Real) ≤ l * (S.alpha ^ 32 * (N : Real) ^ 32))]
+  · intro h hh r hr
+    obtain ⟨hhP, hhG⟩ := Finset.mem_inter.mp hh
+    obtain ⟨i, hiB, rfl⟩ := hcover h hhG r hr
+    refine ⟨Fin.castLE hq₀q i, ?_⟩
+    rw [haffine i h (Finset.mem_inter.mpr ⟨hiB, hhP⟩)]
+    simp [D, a, b, Fin.castLE]
 
 /-- **Gowers, Lemma 13.4**, with the prime-modulus and quantitative
 `theta`-range hypotheses restored in the statement. -/

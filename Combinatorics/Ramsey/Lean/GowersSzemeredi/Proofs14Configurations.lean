@@ -203,21 +203,12 @@ private lemma prop144_build_injective {N n : Nat}
 private lemma prop144_update_cons_zero {n : Nat} {X : Type*}
     (a b : X) (f : Fin n → X) :
     Function.update (Fin.cons a f : Fin (n + 1) → X) 0 b =
-      (Fin.cons b f : Fin (n + 1) → X) := by
-  funext i
-  refine Fin.cases ?_ (fun i => ?_) i
-  · simp [Function.update]
-  · simp [Function.update]
+      (Fin.cons b f : Fin (n + 1) → X) := by norm_num
 
 private lemma prop144_update_cons_succ {n : Nat} {X : Type*}
     (a b : X) (f : Fin n → X) (j : Fin n) :
     Function.update (Fin.cons a f : Fin (n + 1) → X) j.succ b =
-      (Fin.cons a (Function.update f j b) : Fin (n + 1) → X) := by
-  funext i
-  refine Fin.cases ?_ (fun i => ?_) i
-  · simp only [Function.update, dif_neg (Ne.symm (Fin.succ_ne_zero j)),
-      Fin.cons_zero]
-  · simp [Function.update, Fin.succ_inj]
+      (Fin.cons a (Function.update f j b) : Fin (n + 1) → X) := by norm_num
 
 private lemma prop144_build_isRespected {N n : Nat} [NeZero N]
     (B : Finset (Point N (n + 1))) (phi : Point N (n + 1) → ZMod N)
@@ -458,83 +449,31 @@ private lemma prop144_first_moment {N n : Nat} [NeZero N]
         (N : Real) ^ (3 * n + 1) ≤
       ∑ L : CubeConfiguration N n,
         ((prop144GoodSet B phi L).card : Real) := by
-  let a := 4 ^ n
-  let d : ZMod N → Real := fun r =>
-    (prop144Section B r).card / (N : Real) ^ n
-  let G : Real := gamma ^ (2 * n * a) * (N : Real) ^ (3 * n)
-  have hN : 0 < (N : Real) := by
-    exact_mod_cast (Nat.pos_of_ne_zero (NeZero.ne N))
-  have ha : 1 ≤ a := by
-    dsimp only [a]
-    have : 0 < 4 ^ n := pow_pos (by omega) n
-    omega
-  have ha0 : a ≠ 0 := by omega
-  have hd_nonneg (r : ZMod N) : 0 ≤ d r := by
-    dsimp only [d]
-    positivity
-  have hsection (r : ZMod N) :
-      d r ^ a * G ≤
-        respectedConfigurationCount (prop144Section B r)
-          (prop144SectionPhi phi r) := by
-    by_cases hr : (prop144Section B r).card = 0
-    · have hdr : d r = 0 := by simp [d, hr]
-      rw [hdr, zero_pow (by omega), zero_mul]
-      positivity
-    · have hdr : 0 < d r := by
-        dsimp only [d]
-        exact div_pos (by exact_mod_cast Nat.pos_of_ne_zero hr) (pow_pos hN n)
-      have hdcard : ((prop144Section B r).card : Real) =
-          d r * (N : Real) ^ n := by
-        dsimp only [d]
-        field_simp
-      simpa only [a, G, mul_assoc] using
-        hind (d r) (prop144Section B r) (prop144SectionPhi phi r)
-          hdr hdcard (prop144_section_product_property B phi gamma hproduct r)
-  have hsections :
-      ∑ r : ZMod N, d r ^ a * G ≤
-        ∑ r : ZMod N,
-          (respectedConfigurationCount (prop144Section B r)
-            (prop144SectionPhi phi r) : Real) := by
-    exact Finset.sum_le_sum fun r _ => hsection r
-  have hd_sum : ∑ r : ZMod N, d r = beta * N := by
-    simpa only [d] using prop144_sum_section_density beta B hcard
-  have hmean0 := pow_sum_div_card_le_sum_pow
-    (s := (Finset.univ : Finset (ZMod N)))
-    (f := d) (fun r _ => hd_nonneg r) (a - 1)
-  have hmean : beta ^ a * (N : Real) ≤ ∑ r : ZMod N, d r ^ a := by
-    rw [Nat.sub_add_cancel ha] at hmean0
-    simp only [Finset.card_univ, ZMod.card] at hmean0
-    calc
-      beta ^ a * (N : Real) = (beta * N) ^ a / (N : Real) ^ (a - 1) := by
-        apply (eq_div_iff (pow_ne_zero _ hN.ne')).2
-        rw [mul_pow]
-        calc
-          beta ^ a * (N : Real) * (N : Real) ^ (a - 1) =
-              beta ^ a * ((N : Real) ^ (a - 1) * N) := by ring
-          _ = beta ^ a * (N : Real) ^ a := by
-            rw [pow_sub_one_mul ha0]
-      _ = (∑ r : ZMod N, d r) ^ a / (N : Real) ^ (a - 1) := by
-        rw [hd_sum]
-      _ ≤ ∑ r : ZMod N, d r ^ a := hmean0
-  have hG : 0 ≤ G := by
-    dsimp only [G]
-    rw [Nat.mul_assoc 2 n a, pow_mul]
-    positivity
-  calc
-    beta ^ (4 ^ n) * gamma ^ (2 * n * 4 ^ n) *
-        (N : Real) ^ (3 * n + 1) =
-        (beta ^ a * (N : Real)) * G := by
-      dsimp only [a, G]
-      rw [pow_succ]
-      ring
-    _ ≤ (∑ r : ZMod N, d r ^ a) * G :=
-      mul_le_mul_of_nonneg_right hmean hG
-    _ = ∑ r : ZMod N, d r ^ a * G := by rw [Finset.sum_mul]
-    _ ≤ ∑ r : ZMod N,
-          (respectedConfigurationCount (prop144Section B r)
-            (prop144SectionPhi phi r) : Real) := hsections
-    _ = ∑ L : CubeConfiguration N n,
-          ((prop144GoodSet B phi L).card : Real) := by
+  have hN : 0 < (N : Real) := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
+  have ha0 : 4 ^ n ≠ 0 := by positivity
+  let d : ZMod N → Real := fun r => (prop144Section B r).card / (N : Real) ^ n
+  have hd_sum : ∑ r, d r = beta * N := prop144_sum_section_density beta B hcard
+  have hmean := pow_sum_div_card_le_sum_pow (s := Finset.univ) (f := d)
+    (fun r _ => by positivity) (4 ^ n - 1)
+  rw [Nat.sub_add_cancel (Nat.one_le_iff_ne_zero.2 ha0), hd_sum, Finset.card_univ, ZMod.card,
+    mul_pow, ← mul_pow_sub_one ha0 (N : Real), ← mul_assoc,
+    mul_div_cancel_right₀ _ (by positivity)] at hmean
+  have hG : 0 ≤ gamma ^ (2 * n * 4 ^ n) * (N : Real) ^ (3 * n) :=
+    mul_nonneg (((even_two_mul n).mul_right _).pow_nonneg gamma) (by positivity)
+  calc beta ^ (4 ^ n) * gamma ^ (2 * n * 4 ^ n) * (N : Real) ^ (3 * n + 1)
+      = beta ^ 4 ^ n * N * (gamma ^ (2 * n * 4 ^ n) * (N : Real) ^ (3 * n)) := by ring
+    _ ≤ ∑ r, d r ^ 4 ^ n * (gamma ^ (2 * n * 4 ^ n) * (N : Real) ^ (3 * n)) := by
+      rw [← Finset.sum_mul]
+      exact mul_le_mul_of_nonneg_right hmean hG
+    _ ≤ ∑ r, (respectedConfigurationCount (prop144Section B r)
+          (prop144SectionPhi phi r) : Real) := by
+      gcongr with r
+      rcases (show 0 ≤ d r by positivity).eq_or_lt with hr | hr
+      · rw [← hr, zero_pow ha0, zero_mul]
+        positivity
+      · simpa only [mul_assoc] using hind (d r) _ _ hr (div_mul_cancel₀ _ (by positivity)).symm
+          (prop144_section_product_property B phi gamma hproduct r)
+    _ = ∑ L : CubeConfiguration N n, ((prop144GoodSet B phi L).card : Real) := by
       exact_mod_cast (prop144_sum_goodset_card B phi).symm
 
 private lemma prop144_fourth_moment {N n : Nat} [NeZero N]
@@ -554,9 +493,7 @@ private lemma prop144_fourth_moment {N n : Nat} [NeZero N]
     (prop144GoodSet B phi L).card
   have hN : 0 < (N : Real) := by
     exact_mod_cast (Nat.pos_of_ne_zero (NeZero.ne N))
-  have hm_nonneg (L : CubeConfiguration N n) : 0 ≤ m L := by
-    dsimp only [m]
-    positivity
+  have hm_nonneg (L : CubeConfiguration N n) : 0 ≤ m L := by positivity
   have hmean := pow_sum_div_card_le_sum_pow
     (s := (Finset.univ : Finset (CubeConfiguration N n)))
     (f := m) (fun L _ => hm_nonneg L) 3
@@ -607,13 +544,9 @@ private lemma prop144_constant_identity {N n : Nat} [NeZero N]
           (N : Real) ^ (3 * n + 1)) ^ 4 /
             ((N : Real) ^ (3 * n)) ^ 3) := by
   have hN : (N : Real) ≠ 0 := by exact_mod_cast (NeZero.ne N)
-  have hfour : 4 ^ (n + 1) = 4 * 4 ^ n := by
-    rw [pow_succ]
-    omega
+  have hfour : 4 ^ (n + 1) = 4 * 4 ^ n := by omega
   have hgamma : 2 * (n + 1) * 4 ^ (n + 1) =
-      8 * 4 ^ n + 4 * (2 * n * 4 ^ n) := by
-    rw [hfour]
-    ring
+      8 * 4 ^ n + 4 * (2 * n * 4 ^ n) := by ring
   rw [hgamma, hfour, pow_add]
   have hcomm (x : Nat) : 4 * x = x * 4 := by omega
   rw [hcomm (4 ^ n), pow_mul, hcomm (2 * n * 4 ^ n), pow_mul]
@@ -682,44 +615,15 @@ private lemma prop145_alternating_sum_eq_of_faces {N n : Nat} [NeZero N]
         (-1 : ZMod N) ^ boolWeight u * F₀ u) =
       ∑ u : Fin (n + 1) → Bool,
         (-1 : ZMod N) ^ boolWeight u * F₁ u := by
-  let E := Fin.insertNthEquiv (fun _ : Fin (n + 1) => Bool) j
-  calc
-    (∑ u : Fin (n + 1) → Bool,
-        (-1 : ZMod N) ^ boolWeight u * F₀ u) =
-      ∑ p : Bool × (Fin n → Bool),
-        (-1 : ZMod N) ^ boolWeight (E p) * F₀ (E p) := (E.sum_comp _).symm
-    _ = ∑ e : Fin n → Bool, ∑ b : Bool,
-        (-1 : ZMod N) ^ boolWeight (j.insertNth b e) *
-          F₀ (j.insertNth b e) := by
-      rw [Fintype.sum_prod_type, Finset.sum_comm]
-      rfl
-    _ = ∑ e : Fin n → Bool, ∑ b : Bool,
-        (-1 : ZMod N) ^ boolWeight (j.insertNth b e) *
-          F₁ (j.insertNth b e) := by
-      apply Fintype.sum_congr
-      intro e
-      rw [Fintype.sum_bool, Fintype.sum_bool]
-      have hfalse : (-1 : ZMod N) ^ boolWeight (j.insertNth false e) =
-          (-1 : ZMod N) ^ boolWeight e := by
-        rw [prop143_boolWeight_insertNth]
-        simp
-      have htrue : (-1 : ZMod N) ^ boolWeight (j.insertNth true e) =
-          -((-1 : ZMod N) ^ boolWeight e) := by
-        rw [prop143_boolWeight_insertNth]
-        simp only [if_true]
-        rw [show 1 + boolWeight e = boolWeight e + 1 by omega, pow_succ]
-        ring
-      rw [hfalse, htrue]
-      have hf := hface (j.insertNth false e)
-      simp only [Fin.update_insertNth] at hf
-      linear_combination (-1 : ZMod N) ^ boolWeight e * hf
-    _ = ∑ p : Bool × (Fin n → Bool),
-        (-1 : ZMod N) ^ boolWeight (E p) * F₁ (E p) := by
-      rw [Fintype.sum_prod_type, Finset.sum_comm]
-      rfl
-    _ = ∑ u : Fin (n + 1) → Bool,
-        (-1 : ZMod N) ^ boolWeight u * F₁ u :=
-      E.sum_comp (fun u => (-1 : ZMod N) ^ boolWeight u * F₁ u)
+  rw [← (Fin.insertNthEquiv (fun _ => Bool) j).sum_comp,
+    ← (Fin.insertNthEquiv (fun _ => Bool) j).sum_comp]
+  simp only [Fintype.sum_prod_type_right, Fintype.sum_bool, Fin.insertNthEquiv,
+    Equiv.coe_fn_mk]
+  refine Finset.sum_congr rfl fun e _ => ?_
+  have hf := hface (j.insertNth false e)
+  simp only [Fin.update_insertNth] at hf
+  simp [prop143_boolWeight_insertNth, pow_add]
+  linear_combination (-1 : ZMod N) ^ boolWeight e * hf
 
 private def prop145Slice {N k : Nat} (C : CubeConfiguration N k)
     (e : Fin k → Bool) : AxisCube N k :=

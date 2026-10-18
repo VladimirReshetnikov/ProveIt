@@ -205,12 +205,10 @@ private lemma lemma77_centeredAbs_sub_le {N m : Nat} [NeZero N]
   have hNnat : 0 < N := NeZero.pos N
   have hmreal : (0 : ℝ) < m := by exact_mod_cast hm
   have hdelta_m : 1 ≤ delta * (m : ℝ) := by
-    calc
-      1 = delta * delta⁻¹ := (mul_inv_cancel₀ hdelta.ne').symm
-      _ ≤ delta * (m : ℝ) := mul_le_mul_of_nonneg_left hm_lower hdelta.le
-  have hNm : (N : ℝ) / m ≤ delta * N := by
-    apply (div_le_iff₀ hmreal).2
-    nlinarith
+    rw [← mul_inv_cancel₀ hdelta.ne']
+    gcongr
+  have hNm : (N : ℝ) / m ≤ delta * N := (div_le_iff₀ hmreal).2 (by nlinarith)
+  -- two residues of one grid cell `[q N / m, (q + 1) N / m)` differ by less than `N / m`
   have ordered {a b : ZMod N} (hba : b.val ≤ a.val)
       (habin : a.val * m / N = b.val * m / N) :
       (centeredAbs (a - b) : ℝ) < (N : ℝ) / m := by
@@ -218,14 +216,10 @@ private lemma lemma77_centeredAbs_sub_le {N m : Nat} [NeZero N]
     have hhi : a.val * m < N * (q + 1) := by
       simpa only [q] using Nat.lt_mul_div_succ (a.val * m) hNnat
     have hlo : q * N ≤ b.val * m := by
-      calc
-        q * N = (a.val * m / N) * N := rfl
-        _ = (b.val * m / N) * N := by rw [habin]
-        _ ≤ b.val * m := Nat.div_mul_le_self _ _
-    have hhiR : (a.val : ℝ) * m < (N : ℝ) * ((q : ℝ) + 1) := by
-      exact_mod_cast hhi
-    have hloR : (q : ℝ) * N ≤ (b.val : ℝ) * m := by
-      exact_mod_cast hlo
+      rw [show q = b.val * m / N from habin]
+      exact Nat.div_mul_le_self _ _
+    have hhiR : (a.val : ℝ) * m < (N : ℝ) * ((q : ℝ) + 1) := by exact_mod_cast hhi
+    have hloR : (q : ℝ) * N ≤ (b.val : ℝ) * m := by exact_mod_cast hlo
     have hdiffR : ((a.val - b.val : Nat) : ℝ) * m < (N : ℝ) := by
       rw [Nat.cast_sub hba]
       nlinarith
@@ -233,15 +227,13 @@ private lemma lemma77_centeredAbs_sub_le {N m : Nat} [NeZero N]
       unfold centeredAbs
       rw [ZMod.valMinAbs_natAbs_eq_min, ZMod.val_sub hba]
       exact Nat.min_le_left _ _
-    have hcenterR : (centeredAbs (a - b) : ℝ) ≤ (a.val - b.val : Nat) := by
-      exact_mod_cast hcenterNat
-    exact (lt_div_iff₀ hmreal).2 ((mul_le_mul_of_nonneg_right hcenterR hmreal.le).trans_lt hdiffR)
+    exact (lt_div_iff₀ hmreal).2
+      ((mul_le_mul_of_nonneg_right (Nat.cast_le.mpr hcenterNat) hmreal.le).trans_lt hdiffR)
   rcases le_total y.val x.val with hyx | hxy
   · exact (ordered hyx hbin).le.trans hNm
-  · have hneg : centeredAbs (x - y) = centeredAbs (y - x) := by
+  · rw [show centeredAbs (x - y) = centeredAbs (y - x) by
       unfold centeredAbs
-      rw [show x - y = -(y - x) by abel, ZMod.natAbs_valMinAbs_neg]
-    rw [hneg]
+      rw [show x - y = -(y - x) by abel, ZMod.natAbs_valMinAbs_neg]]
     exact (ordered hxy hbin.symm).le.trans hNm
 
 /-- Lemma 5.4 is Mathlib's Dirichlet approximation theorem, with the resulting
@@ -278,72 +270,33 @@ theorem proposition_6_1_holds : proposition_6_1 := by
     ‖fourier (prop61G B phi u) r‖ ^ 4
   have hN : (0 : ℝ) < N := by exact_mod_cast NeZero.pos N
   have hN2 : (0 : ℝ) < (N : ℝ) ^ 2 := by positivity
-  have hN5 : (0 : ℝ) < (N : ℝ) ^ 5 := by positivity
+  -- `α N³ ≤ L1`; Cauchy--Schwarz gives `L1² ≤ N² L2`, hence `α² N⁴ ≤ L2`
   have hL1 : alpha * (N : ℝ) ^ 3 ≤ L1 := hlarge.trans <| by
     simpa only [L1, inner] using prop61_initial_bound f B phi hf
-  have hL1_nonneg : 0 ≤ L1 := by
-    dsimp only [L1]
-    positivity
-  have hbase_nonneg : 0 ≤ alpha * (N : ℝ) ^ 3 :=
-    mul_nonneg hAlpha.le (by positivity)
-  have hL1sq : (alpha * (N : ℝ) ^ 3) ^ 2 ≤ L1 ^ 2 :=
-    (sq_le_sq₀ hbase_nonneg hL1_nonneg).2 hL1
   have hCauchy1 : L1 ^ 2 ≤ (N : ℝ) ^ 2 * L2 := by
     simpa only [L1, L2] using
       (prop61_l1_cauchy (N := N) (fun u s => ‖inner u s‖))
-  have hL2 : alpha ^ 2 * (N : ℝ) ^ 4 ≤ L2 := by
-    apply le_of_mul_le_mul_left _ hN2
-    calc
-      (N : ℝ) ^ 2 * (alpha ^ 2 * (N : ℝ) ^ 4) =
-          (alpha * (N : ℝ) ^ 3) ^ 2 := by ring
-      _ ≤ L1 ^ 2 := hL1sq
-      _ ≤ (N : ℝ) ^ 2 * L2 := hCauchy1
+  have hL2 : alpha ^ 2 * (N : ℝ) ^ 4 ≤ L2 := le_of_mul_le_mul_left (by
+    linarith [mul_self_le_mul_self (by positivity) hL1]) hN2
+  -- `mixed = N L2 ≥ α² N⁵`; Cauchy--Schwarz gives `mixed² ≤ fourthF fourthG ≤ N⁵ fourthG`
   have hmixed_eq : mixed = (N : ℝ) * L2 := by
     simpa only [mixed, L2, inner] using prop61_mixed_eq_l2 f B phi
   have hmixed : alpha ^ 2 * (N : ℝ) ^ 5 ≤ mixed := by
-    calc
-      alpha ^ 2 * (N : ℝ) ^ 5 =
-          (N : ℝ) * (alpha ^ 2 * (N : ℝ) ^ 4) := by ring
-      _ ≤ (N : ℝ) * L2 := mul_le_mul_of_nonneg_left hL2 hN.le
-      _ = mixed := hmixed_eq.symm
+    linarith [mul_le_mul_of_nonneg_left hL2 hN.le]
   have hfourthF : fourthF ≤ (N : ℝ) ^ 5 := by
-    dsimp only [fourthF]
-    calc
-      (∑ u : ZMod N, ∑ r : ZMod N, ‖fourier (prop61F f u) r‖ ^ 4) ≤
-          ∑ _u : ZMod N, (N : ℝ) ^ 4 := by
-            apply Finset.sum_le_sum
-            intro u _
-            exact fourier_fourth_moment_le (prop61F f u) (prop61F_disc f hf u)
+    calc fourthF ≤ ∑ _u : ZMod N, (N : ℝ) ^ 4 := Finset.sum_le_sum fun u _ =>
+          fourier_fourth_moment_le (prop61F f u) (prop61F_disc f hf u)
       _ = (N : ℝ) ^ 5 := by simp; ring
-  have hmixed_nonneg : 0 ≤ mixed := by
-    dsimp only [mixed]
-    exact Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ =>
-      mul_nonneg (sq_nonneg _) (sq_nonneg _)
-  have hfourthG_nonneg : 0 ≤ fourthG := by
-    dsimp only [fourthG]
-    exact Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ =>
-      pow_nonneg (norm_nonneg _) 4
-  have hmixed_sq : (alpha ^ 2 * (N : ℝ) ^ 5) ^ 2 ≤ mixed ^ 2 := by
-    exact (sq_le_sq₀ (mul_nonneg (sq_nonneg _) (pow_nonneg hN.le 5)) hmixed_nonneg).2 hmixed
   have hglobal : mixed ^ 2 ≤ fourthF * fourthG := by
     simpa only [mixed, fourthF, fourthG] using prop61_global_cauchy f B phi
-  have hfourthG : alpha ^ 4 * (N : ℝ) ^ 5 ≤ fourthG := by
-    apply le_of_mul_le_mul_left _ hN5
-    calc
-      (N : ℝ) ^ 5 * (alpha ^ 4 * (N : ℝ) ^ 5) =
-          (alpha ^ 2 * (N : ℝ) ^ 5) ^ 2 := by ring
-      _ ≤ mixed ^ 2 := hmixed_sq
-      _ ≤ fourthF * fourthG := hglobal
-      _ ≤ (N : ℝ) ^ 5 * fourthG :=
-        mul_le_mul_of_nonneg_right hfourthF hfourthG_nonneg
+  have hfourthG : alpha ^ 4 * (N : ℝ) ^ 5 ≤ fourthG := le_of_mul_le_mul_left (by
+    linarith [mul_self_le_mul_self (by positivity) hmixed,
+      mul_le_mul_of_nonneg_right hfourthF (Finset.sum_nonneg fun _ _ =>
+        Finset.sum_nonneg fun _ _ => pow_nonneg (norm_nonneg _) 4 : (0 : ℝ) ≤ fourthG)])
+    (by positivity : (0 : ℝ) < (N : ℝ) ^ 5)
   have hfourthG_eq : fourthG = (N : ℝ) ^ 2 * phiAdditiveCount B phi := by
     simpa only [fourthG] using prop61_g_fourth_eq_count B phi
-  apply le_of_mul_le_mul_left _ hN2
-  calc
-    (N : ℝ) ^ 2 * (alpha ^ 4 * (N : ℝ) ^ 3) =
-        alpha ^ 4 * (N : ℝ) ^ 5 := by ring
-    _ ≤ fourthG := hfourthG
-    _ = (N : ℝ) ^ 2 * phiAdditiveCount B phi := hfourthG_eq
+  exact le_of_mul_le_mul_left (by linarith) hN2
 
 /-- Lemma 7.7 is the finite grid/pigeonhole proof of the standard Bohr-set
 cardinality bound. -/
@@ -452,94 +405,48 @@ private theorem almostEvery_swap_of_nonneg {X Y : Type*}
   let G : Finset X := U.filter good
   let H : Finset X := U.filter fun x => ¬good x
   change (1 - t) * U.card ≤ (G.card : ℝ)
-  by_cases ht_large : 1 ≤ t
-  · exact (mul_nonpos_of_nonpos_of_nonneg (sub_nonpos.mpr ht_large)
-      (Nat.cast_nonneg U.card)).trans (Nat.cast_nonneg G.card)
-  by_cases ht_zero : t = 0
-  · have htheta_zero : theta = 0 := by
-      exact (Real.sqrt_eq_zero htheta).mp (by simpa [t] using ht_zero)
-    have hQ : ∀ x, x ∈ U → ∀ y, y ∈ V → Q x y := by
-      intro x hx y hy
-      have hc := hcol y hy
-      have hcNat : U.card ≤ (U.filter fun x => Q x y).card := by
-        exact_mod_cast (by simpa [htheta_zero] using hc)
-      have heq : (U.filter fun x => Q x y) = U :=
-        Finset.eq_of_subset_of_card_le (Finset.filter_subset _ _) hcNat
-      have hxfilter : x ∈ U.filter (fun z => Q z y) := by
-        rw [heq]
-        exact hx
-      exact (Finset.mem_filter.mp hxfilter).2
-    have hGU : G = U := by
-      apply Finset.filter_eq_self.2
-      intro x hx
-      change (1 - t) * (V.card : ℝ) ≤ (row x : ℝ)
-      have hrow : row x = V.card := by
-        dsimp [row]
-        rw [Finset.filter_eq_self.2]
-        exact fun y hy => hQ x hx y hy
-      rw [hrow, ht_zero]
-      simp
-    rw [hGU, ht_zero]
-    simp
-  have ht_pos : 0 < t := lt_of_le_of_ne (by dsimp [t]; positivity) (Ne.symm ht_zero)
-  have htheta_sq : t ^ 2 = theta := by
-    dsimp [t]
-    exact Real.sq_sqrt htheta
+  have ht : 0 ≤ t := Real.sqrt_nonneg theta
+  have htheta_sq : t ^ 2 = theta := Real.sq_sqrt htheta
+  have htU : 0 ≤ t * U.card := mul_nonneg ht (Nat.cast_nonneg _)
   by_cases hV : V = ∅
   · subst V
     have hGU : G = U := by simp [G, good, row]
     rw [hGU]
-    nlinarith
-  have hVposNat : 0 < V.card := Finset.card_pos.mpr (Finset.nonempty_iff_ne_empty.mpr hV)
-  have hVpos : (0 : ℝ) < V.card := by exact_mod_cast hVposNat
+    linarith
+  have hVpos : (0 : ℝ) < V.card := by
+    exact_mod_cast Finset.card_pos.mpr (Finset.nonempty_iff_ne_empty.mpr hV)
   by_contra hgoal
   have hGlt : (G.card : ℝ) < (1 - t) * U.card := lt_of_not_ge hgoal
-  have hGHNat : G.card + H.card = U.card := by
-    simpa [G, H] using Finset.card_filter_add_card_filter_not (s := U) good
-  have hGH : (G.card : ℝ) + H.card = U.card := by exact_mod_cast hGHNat
-  have hlower :
-      (1 - theta) * U.card * V.card ≤ ∑ y ∈ V, (col y : ℝ) := by
+  have hGH : (G.card : ℝ) + H.card = U.card := by
+    exact_mod_cast Finset.card_filter_add_card_filter_not (s := U) good
+  have hHne : H.Nonempty := Finset.card_pos.mp <| by
+    have : (0 : ℝ) < H.card := by linarith
+    exact_mod_cast this
+  -- double counting: `(1 - θ) |U| |V| ≤ Σ_y col y = Σ_x row x < |G| |V| + |H| (1 - t) |V|`
+  have hlower : (1 - theta) * U.card * V.card ≤ ∑ y ∈ V, (col y : ℝ) := by
     calc
       _ = ∑ _y ∈ V, ((1 - theta) * U.card) := by simp; ring
-      _ ≤ ∑ y ∈ V, (col y : ℝ) := by
-        apply Finset.sum_le_sum
-        intro y hy
-        simpa [col] using hcol y hy
-  have hdouble :
-      (∑ y ∈ V, (col y : ℝ)) = ∑ x ∈ U, (row x : ℝ) := by
+      _ ≤ ∑ y ∈ V, (col y : ℝ) := Finset.sum_le_sum fun y hy => by simpa [col] using hcol y hy
+  have hdouble : (∑ y ∈ V, (col y : ℝ)) = ∑ x ∈ U, (row x : ℝ) := by
     dsimp [col, row]
     simp_rw [Finset.card_eq_sum_ones, Finset.sum_filter]
     push_cast
     rw [Finset.sum_comm]
   have hupper :
-      (∑ x ∈ U, (row x : ℝ)) ≤
-        (G.card : ℝ) * V.card + H.card * ((1 - t) * V.card) := by
+      (∑ x ∈ U, (row x : ℝ)) < (G.card : ℝ) * V.card + H.card * ((1 - t) * V.card) := by
     calc
-      _ = (∑ x ∈ U with good x, (row x : ℝ)) +
-          ∑ x ∈ U with ¬good x, (row x : ℝ) := by
-            exact (Finset.sum_filter_add_sum_filter_not U good
-              (fun x => (row x : ℝ))).symm
-      _ ≤ (∑ _x ∈ U with good _x, (V.card : ℝ)) +
-          ∑ _x ∈ U with ¬good _x, ((1 - t) * V.card) := by
-            apply add_le_add
-            · apply Finset.sum_le_sum
-              intro x _
-              exact_mod_cast Finset.card_filter_le V (Q x)
-            · apply Finset.sum_le_sum
-              intro x hx
-              exact le_of_lt (lt_of_not_ge (Finset.mem_filter.mp hx).2)
-      _ = (G.card : ℝ) * V.card + H.card * ((1 - t) * V.card) := by
-        simp [G, H]
-  have hpositive :
-      0 < (((1 - t) * (U.card : ℝ) - G.card) * t * V.card) := by
-    exact mul_pos (mul_pos (sub_pos.mpr hGlt) ht_pos) hVpos
-  have hid :
-      (1 - theta) * (U.card : ℝ) * V.card -
-          ((G.card : ℝ) * V.card + H.card * ((1 - t) * V.card)) =
-        ((1 - t) * U.card - G.card) * t * V.card := by
-    rw [← htheta_sq, ← hGH]
-    ring
-  nlinarith
+      _ = (∑ x ∈ U with good x, (row x : ℝ)) + ∑ x ∈ U with ¬good x, (row x : ℝ) :=
+          (Finset.sum_filter_add_sum_filter_not U good (fun x => (row x : ℝ))).symm
+      _ < (∑ _x ∈ U with good _x, (V.card : ℝ)) + ∑ _x ∈ U with ¬good _x, ((1 - t) * V.card) :=
+          add_lt_add_of_le_of_lt
+            (Finset.sum_le_sum fun x _ => by exact_mod_cast Finset.card_filter_le V (Q x))
+            (Finset.sum_lt_sum_of_nonempty hHne fun x hx =>
+              lt_of_not_ge (Finset.mem_filter.mp hx).2)
+      _ = (G.card : ℝ) * V.card + H.card * ((1 - t) * V.card) := by simp [G, H]
+  -- with `θ = t²` and `|H| = |U| - |G|` this says `t |V| ((1 - t) |U| - |G|) < 0`
+  rw [show (H.card : ℝ) = U.card - G.card by linarith] at hupper
+  rw [← htheta_sq] at hlower
+  linarith [mul_nonneg (mul_nonneg ht hVpos.le) (sub_pos.mpr hGlt).le]
 
 /-- Lemma 10.7 is the preceding finite Fubini--Markov interchange applied to
 the local difference relation. -/

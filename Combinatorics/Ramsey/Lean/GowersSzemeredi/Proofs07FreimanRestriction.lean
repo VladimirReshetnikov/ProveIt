@@ -408,9 +408,7 @@ theorem lemma_7_5_holds : lemma_7_5 := by
       simp at hy0
     by_cases hst : yt ≤ ys
     · let n := ys - yt
-      have hn0 : 0 < n := by
-        dsimp only [n]
-        omega
+      have hn0 : 0 < n := by omega
       have hn : n ≤ k * L := by omega
       obtain ⟨q, hq⟩ := cor75_coeff_rep_pos (N := N) hn0 hn
       have hbad := havoid q
@@ -422,9 +420,7 @@ theorem lemma_7_5_holds : lemma_7_5 := by
       ring
     · have hts : ys ≤ yt := by omega
       let n := yt - ys
-      have hn0 : 0 < n := by
-        dsimp only [n]
-        omega
+      have hn0 : 0 < n := by omega
       have hn : n ≤ k * L := by omega
       obtain ⟨q, hq⟩ := cor75_coeff_rep_neg (N := N) hn0 hn
       have hbad := havoid q
