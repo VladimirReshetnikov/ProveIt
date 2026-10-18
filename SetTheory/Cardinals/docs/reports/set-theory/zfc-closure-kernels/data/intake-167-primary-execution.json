@@ -1,0 +1,111 @@
+{
+  "jobs": [
+    {
+      "job": "construct",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc244-rotation-root-replay/copy/code/make_qt244.py",
+        "--reference",
+        "/tmp/zfc244-rotation-root-replay/copy/reference/baseline245",
+        "--output",
+        "/tmp/zfc244-rotation-root-replay/run1/built"
+      ],
+      "returncode": 0,
+      "timeout": false,
+      "seconds": 0.5150424586609006
+    },
+    {
+      "job": "source",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc244-rotation-root-replay/copy/code/check_qt_rotation.py",
+        "--reference",
+        "/tmp/zfc244-rotation-root-replay/copy/reference/baseline245",
+        "--output",
+        "/tmp/zfc244-rotation-root-replay/run1/source"
+      ],
+      "returncode": 0,
+      "timeout": false,
+      "seconds": 0.6698126904666424
+    },
+    {
+      "job": "blank",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc244-rotation-root-replay/copy/code/check_table_boot.py",
+        "--table",
+        "/tmp/zfc244-rotation-root-replay/run1/built/machine_old.tm",
+        "--baseline",
+        "/tmp/zfc244-rotation-root-replay/copy/reference/baseline245/certificate/machine_old.tm",
+        "--output",
+        "/tmp/zfc244-rotation-root-replay/run1/blank"
+      ],
+      "returncode": 0,
+      "timeout": false,
+      "seconds": 0.414948845282197
+    },
+    {
+      "job": "frames",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc244-rotation-root-replay/copy/code/check_frames.py",
+        "--machine",
+        "/tmp/zfc244-rotation-root-replay/run1/built",
+        "--output",
+        "/tmp/zfc244-rotation-root-replay/run1/frames.json"
+      ],
+      "returncode": 0,
+      "timeout": false,
+      "seconds": 0.16442475654184818
+    },
+    {
+      "job": "affine",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc244-rotation-root-replay/copy/code/check_runtime.py",
+        "--reference",
+        "/tmp/zfc244-rotation-root-replay/copy/reference/baseline245",
+        "--candidate",
+        "/tmp/zfc244-rotation-root-replay/run1/built"
+      ],
+      "returncode": 0,
+      "timeout": false,
+      "seconds": 2.818924894556403
+    },
+    {
+      "job": "literal",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc244-rotation-root-replay/copy/code/check_qt244_literal.py",
+        "--candidate",
+        "/tmp/zfc244-rotation-root-replay/run1/built"
+      ],
+      "returncode": 0,
+      "timeout": false,
+      "seconds": 3.7708111898973584
+    },
+    {
+      "job": "expanded",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc244-rotation-root-replay/copy/code/check_runtime.py",
+        "--reference",
+        "/tmp/zfc244-rotation-root-replay/copy/reference/baseline245",
+        "--candidate",
+        "/tmp/zfc244-rotation-root-replay/run1/built",
+        "--expanded"
+      ],
+      "returncode": 0,
+      "timeout": false,
+      "seconds": 518.0255299806595
+    }
+  ],
+  "scope": "Seven primary substantive jobs. Delivery checksum manifests, unrelated research searches and unchanged ancestor replay are omitted."
+}

@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings through 18 October 2026. This report now reconciles seventy manuscripts.
+Intake findings through 18 October 2026. This report now reconciles seventy-one manuscripts.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -11,9 +11,9 @@ results and their exact scope are listed below.
 
 The original machine target asks for an equivalence **provable in PA** between
 blank-tape non-halting and Con(ZFC), with fewer than 254 nonhalting states on a
-binary, two-way infinite, single tape. The maintained [routed 245-state machine](../../../../../../Computability/BusyBeaver/Research/ZFC/routing245_binary.md) closes
+binary, two-way infinite, single tape. The maintained [compensated 244-state machine](../../../../../../Computability/BusyBeaver/Research/ZFC/compensated244_binary.md) closes
 the external Lean comparison with Con(ZFC), improving the earlier checked
-246- and 252-state endpoints; its internal PA comparison remains open. Several deliveries discuss provability in ZFC instead, and retain that
+245-, 246- and 252-state endpoints; its internal PA comparison remains open. Several deliveries discuss provability in ZFC instead, and retain that
 stated scope. The user's later stronger-theory allowance is governed by the
 [current project criterion](../../../../../../Computability/BusyBeaver/Research/ZFC/README.md):
 assumptions must stay within well-understood benchmarks widely believed
@@ -155,6 +155,32 @@ and the separate [maintained candidate inputs](../../../../../../Computability/B
 The report keeps the original theory and attribution. It adds no unconditional
 consistency/nonhalting or minimality claim. The base article is unchanged and
 the collection remains 290 reports; eighteen other archives remain queued.
+
+Batch 167 adds [loop-rotation244 and its companion source research](intake-167.md)
+as source 71. Its exact source loop saves old state 26, independently of the
+compensated fold's old state 122. All seven primary checks pass, including the
+407,931-step blank prefix and 8,390-case expanded replay with 2,312,438 rules.
+Sixteen separate non-search auxiliary jobs also pass; the two optional selected
+seed regenerations and discovery searches remain unrun. Source/grammar and
+propositional negative results keep their stated scopes.
+
+| Source | Delivered archive | Reviewed contribution |
+| --- | --- | --- |
+| 71 | `zfc244-loop-rotation-20261018.zip` | Universal source loop rotation, exact 244 table and full runtime, fixed-width AX bridges, alternative bases, fusion/split controls, grammar research and scoped NIP reductions. |
+
+Placement `5513e77ff1` preserves 1,007 ancillary files unchanged, with 37
+archive-only members and all 1,044 recoverable. See [recovery and reproduction](intake-167-reproduction.md).
+The separately developed [combined243 candidate](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-combined243/README.md)
+combines both changes after checking the full compensation hypotheses. Its
+fresh 407,967-step startup, 8,390-case expanded replay and
+[relative Lean243↔QT244 theorem](../../../../../../Computability/BusyBeaver/Research/ZFC/combined243_simulation.md)
+are subsequent repository results, not a 243 table delivered in this ZIP.
+The ordinary consistency calibration is supported, but the complete 243 Lean
+consistency endpoint and internal PA theorem remain open. The already closed
+compensated244 external endpoint concerns a different machine. The delivered
+base article remains unchanged; the collection still has 290 reports.
+The placement checkpoint left eighteen other archives queued; the later raw-profile
+routing arrival `1590329560` brings that separate queue to nineteen.
 
 ## Sources, overlap and base
 

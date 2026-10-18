@@ -1,0 +1,185 @@
+{
+  "result": "PASS",
+  "K_B_Peirce": {
+    "initial_axioms": [
+      "CpCqp",
+      "CCpqCCqrCpr",
+      "CCCpqpp"
+    ],
+    "nodes": 25,
+    "detachment_steps": 22,
+    "targets": {
+      "CCCpqrCCrpCsp": 9035,
+      "CCpCqrCCpqCpr": 78582
+    },
+    "certificate": "formalism_kbp_proof.txt",
+    "result": "PASS"
+  },
+  "K_B_PeirceF_with_derived_EFQ": {
+    "initial_axioms": [
+      "CpCqp",
+      "CCpqCCqrCpr",
+      "CCCpFpp",
+      "CFp"
+    ],
+    "nodes": 30,
+    "detachment_steps": 26,
+    "targets": {
+      "CCCpqrCCrpCsp": 71460,
+      "CCCpqpp": 18655
+    },
+    "certificate": "formalism_kbpf_proof.txt",
+    "result": "PASS"
+  },
+  "restricted_L_obstruction": {
+    "implication": [
+      [
+        3,
+        3,
+        3,
+        3
+      ],
+      [
+        3,
+        3,
+        0,
+        3
+      ],
+      [
+        3,
+        0,
+        3,
+        3
+      ],
+      [
+        0,
+        0,
+        0,
+        3
+      ]
+    ],
+    "designated_values": [
+      3
+    ],
+    "falsity": 0,
+    "valid_schema_instances": {
+      "K": 16,
+      "I": 4,
+      "EFQ": 4,
+      "DNE": 4,
+      "L_u_F": 64,
+      "L_u_Truth": 64,
+      "L_u_a": 64,
+      "L_u_c": 64
+    },
+    "MP_pairs": 16,
+    "refuted": {
+      "Peirce": {
+        "arguments": [
+          1,
+          2
+        ],
+        "value": 0
+      },
+      "S": {
+        "arguments": [
+          1,
+          0,
+          2
+        ],
+        "value": 0
+      }
+    },
+    "scope": "Propositional basis only; not the full CP/GIC theory.",
+    "result": "PASS"
+  },
+  "additional_basis_obstructions": {
+    "K_not_redundant": {
+      "result": "PASS",
+      "implication": [
+        [
+          2,
+          2,
+          2
+        ],
+        [
+          0,
+          2,
+          0
+        ],
+        [
+          0,
+          2,
+          2
+        ]
+      ],
+      "designated_values": [
+        1,
+        2
+      ],
+      "falsity": 0,
+      "truth": 2,
+      "truth_alias_Imp_T_T_equals_T": true,
+      "valid_schema_instances": {
+        "B": 27,
+        "Peirce": 9,
+        "PeirceF": 3,
+        "I": 3,
+        "EFQ": 3,
+        "DNE": 3
+      },
+      "MP_pairs": 9,
+      "refuted": {
+        "schema": "K",
+        "arguments": [
+          2,
+          1
+        ],
+        "value": 0
+      },
+      "scope": "Propositional basis only; not the full CP/GIC source."
+    },
+    "DNE_does_not_replace_Peirce": {
+      "result": "PASS",
+      "implication": [
+        [
+          2,
+          2,
+          2
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ]
+      ],
+      "designated_values": [
+        2
+      ],
+      "falsity": 0,
+      "truth": 2,
+      "truth_alias_Imp_T_T_equals_T": true,
+      "valid_schema_instances": {
+        "K": 9,
+        "B": 27,
+        "I": 3,
+        "EFQ": 3,
+        "DNE": 3
+      },
+      "MP_pairs": 9,
+      "refuted": {
+        "schema": "PeirceF",
+        "arguments": [
+          1
+        ],
+        "value": 1
+      },
+      "scope": "Propositional basis only; not the full CP/GIC source."
+    }
+  }
+}
