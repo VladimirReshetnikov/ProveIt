@@ -1888,3 +1888,9 @@ nonhalting iff ZF/ZFC consistency. The exact binary runtime and blank-start
 connection remain open, as does internal PA formalization. See
 [source_rotation244.md](source_rotation244.md) for the actual records and the
 preserved one-unfold source repair; no new binary 243/244 endpoint is claimed.
+
+The [native GIC schema recognizer](native_gic_delta1.md) passed a fresh Lean
+source check and focused audit: seven probes, ten typed callers, zero warnings.
+It gives arithmetic recognition of GIC instances, including arbitrary
+internal codes. Translating native proofs into the validator remains an
+additional obligation for the PA consistency result.

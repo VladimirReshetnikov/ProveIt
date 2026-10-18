@@ -813,9 +813,12 @@ define the Δ₁ schema recognizer and `NativeSet.nativeTheory`.
 `NativeSet.models_cpgic` supplies an external model bridge useful for R3.
 The [source review](results/upstream-native-theory-f368d4ff11-review.json)
 found no mathematical blocker; it did not run a fresh compiler or audit.
-R1's standard-proof sanity equivalence, arbitrary-internal GIC axiom
-introduction, and the R2/R3 internal translations remain open. The supplied
-five-probe audit has no typed callers.
+A subsequent [focused recognizer check](native_gic_delta1.md) compiled the
+unchanged `NativeGicDelta1` and passed seven probes and ten typed callers
+with zero warnings. It covers arbitrary-internal schema recognition; it
+does not compile `NativeTheory` or prove the R2 translation into `CProv`.
+The original five-probe audit, which has no typed callers, is retained as
+history. The later R3 result is described below.
 
 **R3 closed (Claude lane, 18 October).**
 [`NativeSchema`](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/NativeSchema.lean)
