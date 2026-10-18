@@ -10265,6 +10265,33 @@ declaration, structure field or namespace that no module it still sees declares
   take the route from 474 to 397 modules but shorten it by only 36 lines, at
   214 rebuilds, and would delete 77 module names that audit files and records
   use. It is not done.
+  Folding only the 55 shells that the splits hollowed was tried as well:
+  placing each folded module's heading above its own declarations in a fold
+  chain needs delimited `section … end` blocks, and with them the fold adds
+  about 160 lines for 55 fewer modules. It was reverted.
+- *What the final theorems share.* The usage dump now also records, for each
+  of the 25 final theorems, the project declarations it reaches
+  (`roots_reach.txt`, `per_root.py`). They share one core: each Theorem 18.x
+  family reaches 65,000 to 68,000 of the cone's 68,500 lines, and no family
+  has more than 117 lines of its own (the polynomial Theorem 16.2 and
+  Corollary 16.11 reach 37,800, all shared). So no change of route around
+  particular final theorems can shorten the proof; only shorter proofs in the
+  core can.
+- *Shorter proofs in the core.* Four private lemmas bounded a nested sum by
+  Cauchy–Schwarz, `(Σ F)² ≤ |T|^m · Σ F²`, one summation variable at a time;
+  one `sq_sum_le_card_mul_sum_sq` over the product type `T × … × T` gives the
+  bound at once (`prop131_l1_cauchy`, `prop141_l1_cauchy`: 42 proof lines each,
+  now 6 and 8; `prop121_l1_cauchy`, `prop61_l1_cauchy`: 20 and 16, now 7 and
+  6). Fourteen descents `apply Finset.sum_le_sum; intro v _` (up to eight lines)
+  are one `gcongr with v₁ _ v₂ _ …` each (d9ef545: +40 −192). The cell-count
+  aggregation `section5_sum_rpow_le` is Hölder with weights 1 and exponents `K`
+  and `K/(K−1)` instead of Jensen with weights `1/M` and 40 lines undoing them,
+  and it no longer needs `0 < M` (727d8b4: +26 −65). The cone went from 68,990
+  to 68,798 lines and the real route to 85,757. Lemmas that use no project
+  constant (524 in the cone, 4,279 lines) can be reworked in a scratch file
+  that imports only Mathlib, compiled in seconds (`check_scratch.py`). The
+  linter finds little else: no unused variables in the cone, eight dead
+  tactics outside it (f0ae5da).
 
 `Proofs16PolynomialMultilinearCover.exists_all_scale_polynomial_multilinear_cover`
 composes the improved all-scale Lemma 16.9 with the rounded affine lift.
