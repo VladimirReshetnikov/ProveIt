@@ -1748,3 +1748,31 @@ zero. Six axiom probes and six typed callers passed without warnings. Both
 uncompiled source corrections, the first successful run and the exact 99-module
 provider closure are retained. The complete AX branch and PA endpoint remain
 open.
+
+The [actual AX parameter push at controls 222–248](arithmetic_control_ax_param_push254.md)
+sets TW to old P1 and WS to `cantor(oldTW, oldWS)`, preserving every other
+register in arbitrary IΣ₁ models with clean scratches. Its additive copy tail
+also has an exact internal clock. Six axiom probes and eight typed callers
+passed with zero warnings; the initial rewrite failure and its typed-wrapper
+repair are retained in the history.
+
+The [following implication constructor at controls 248–275](arithmetic_control_ax_constructor254.md)
+pops WS and sets TW to `wim(first(oldWS), oldTW)`. All other coordinates are
+preserved. The literal occurrence uses the checked generic constructor and
+passed three axiom probes and four typed callers on its first source/audit
+attempt, with zero warnings. These contracts are components of the remaining
+AX proof; they do not close the interpreter or internal binary PA endpoint.
+
+Their [parameter-push/constructor composition](arithmetic_control_ax_param_constructor254.md)
+now proves the entire 222→275 segment: TW becomes `wim(oldTW, oldP1)` and
+every other coordinate is restored, including all of WS. Five axiom probes
+and seven typed callers pass with zero warnings for arbitrary internal IΣ₁
+files and positive clocks.
+
+The [AX prefix through its first implication](arithmetic_control_ax_first_imp254.md)
+now composes the checked blocks from control 41 to 222. It constructs
+`wim(oldAC, first(second(oldPL)))`, records the preceding GEN result on WS,
+and gives the exact remaining file, including both consumed PL components.
+Fourteen axiom probes and eighteen typed callers pass with zero warnings.
+The first source failure and its three-line definitional repair remain in
+the history. The subsequent AX work and the PA endpoint remain open.
