@@ -1,0 +1,123 @@
+{
+  "status": "AUTHOR_FINAL_EVIDENCE_REVIEW",
+  "reviewer": "/root/drop_contract",
+  "scope": "Author source/evidence review plus separately attributed independent pre-repair source review; root executed and reviewed both attempts. No independent child review of final evidence is claimed.",
+  "successful_record": {
+    "path": "/tmp/zfc-prefix250-lean/boxes/run2/verification.json",
+    "sha256": "68624e0d456285c02175e95a9786d587a25aa6483dfab4af394988b3deb3478e"
+  },
+  "source": {
+    "path": "/tmp/zfc-prefix250-lean/boxes/Prefix250Boxes.lean",
+    "sha256": "9b49c86335eef38378418a7611bfa89ef3d5fd2f03e9db82babc5674fedb5657",
+    "snapshot": "/tmp/zfc-prefix250-lean/boxes/run2/sources/BusyBeaver/ZFC/Prefix250Boxes.lean"
+  },
+  "audit": {
+    "path": "/tmp/zfc-prefix250-lean/boxes/Audit.lean",
+    "sha256": "baae6aba32d000ae1f6bdf3fb61c8f5b4b4bd04c1f64a74625438f7e2b1e73f9",
+    "snapshot": "/tmp/zfc-prefix250-lean/boxes/run2/sources/Audit.lean"
+  },
+  "fresh_object": {
+    "module": "BusyBeaver.ZFC.Prefix250Boxes",
+    "path": "/tmp/zfc-prefix250-lean/boxes/run2/cache/BusyBeaver/ZFC/Prefix250Boxes.olean",
+    "sha256": "b8b78f621fea6923831b2afb8cf58235d867949121b05882eda78902b1e4b67c",
+    "source_sha256": "9b49c86335eef38378418a7611bfa89ef3d5fd2f03e9db82babc5674fedb5657"
+  },
+  "source_object_recorded_before_audit": true,
+  "current_input_comparisons": 28,
+  "all_current_inputs_match": true,
+  "logs_match_record": true,
+  "project_provider_count": 8,
+  "toolchain_boundaries": [
+    "Init",
+    "Lean.Elab.Tactic.Omega"
+  ],
+  "external_project_library_count": 0,
+  "named_axiom_probes": 14,
+  "callers": 19,
+  "observed_axioms": [
+    "Quot.sound",
+    "propext"
+  ],
+  "warnings_retained": {
+    "source": 7,
+    "audit": 0
+  },
+  "attempts": {
+    "1": {
+      "status": "FAIL",
+      "record_sha256": "2a2ef28535b8f9a1c494f435208f3bf7937b4961f52bbf72ab6bbfc4310219c5",
+      "snapshots": [
+        {
+          "name": "Prefix250Boxes.lean",
+          "sha256": "ffbeed4ca223a3e58b4670144aa11ff9cf0a896a83a1bfb74a7dcad5f29d17c6"
+        },
+        {
+          "name": "Audit.lean",
+          "sha256": "baae6aba32d000ae1f6bdf3fb61c8f5b4b4bd04c1f64a74625438f7e2b1e73f9"
+        },
+        {
+          "name": "check.py",
+          "sha256": "e040b1dc1e9bf5141041dc495da7f80a457ea24a70cc7fddc307e91eca887eef"
+        }
+      ]
+    },
+    "2": {
+      "status": "PASS",
+      "record_sha256": "68624e0d456285c02175e95a9786d587a25aa6483dfab4af394988b3deb3478e",
+      "snapshots": [
+        {
+          "name": "Prefix250Boxes.lean",
+          "sha256": "9b49c86335eef38378418a7611bfa89ef3d5fd2f03e9db82babc5674fedb5657"
+        },
+        {
+          "name": "Audit.lean",
+          "sha256": "baae6aba32d000ae1f6bdf3fb61c8f5b4b4bd04c1f64a74625438f7e2b1e73f9"
+        },
+        {
+          "name": "check.py",
+          "sha256": "0d87a97f90b5d95d09ef062773a582c35396e96b453b9c3d8d8717e27571c6a7"
+        }
+      ]
+    }
+  },
+  "repair_diff": "--- run1/Prefix250Boxes.lean\n+++ run2/Prefix250Boxes.lean\n@@ -319,7 +319,7 @@\n   | nil =>\n     simp only [width, registerBits, Nat.add_zero]\n     rw [zipRun_add _ _ a 6, scan_right _ _ _ rowPrefix250_old95_true, carry_end]\n-    simp only [List.append_nil, List.reverse_replicate, List.replicate_succ, List.cons_append]\n+    rw [List.append_nil, List.reverse_replicate, List.replicate_succ]\n     congr 1\n     omega\n   | cons v rest ih =>\n@@ -360,7 +360,7 @@\n     rowPrefix250_old63_true rowPrefix250_old63_false rowPrefix250_old48_true\n     _ hne returnZero rowPrefix250_old48_true]\n   simp only [registerBits_append, registerBits, List.replicate_succ,\n-    List.replicate_zero, List.nil_append, List.append_nil]\n+    List.replicate_zero, List.nil_append, List.append_nil, List.append_assoc]\n   congr 1\n   simp only [width_append, width]\n   omega\n",
+  "independent_pre_repair_source_review": {
+    "path": "/tmp/zfc-prefix250-lean/retiming/boxes-source-review.json",
+    "sha256": "72244a85f1170391e47bfb1aa97312e20118e0caeddb2d6b297c517989f497f9",
+    "record": {
+      "reviewer": "review_upstream_reflection",
+      "scope": "Independent source-only mathematical/API review of all 424 lines; no compiler, checker, version or supplied-code execution. No evidence audit claimed.",
+      "source": "/tmp/zfc-prefix250-lean/boxes/Prefix250Boxes.lean",
+      "source_sha256": "ffbeed4ca223a3e58b4670144aa11ff9cf0a896a83a1bfb74a7dcad5f29d17c6",
+      "findings": [],
+      "checked_conclusions": [
+        "carry_file is uniform in arbitrary prefix values, left context and terminal word; carryBits_snoc correctly realizes the one-cell right shift.",
+        "Positive decrement duration 2*width(pre)+4 preserves arbitrary remaining suffix, removes one selected unary one, and appends one true cell to the left context while shifting file boundary right one.",
+        "Zero decrement explicitly requires a following block, uses the exact three-step 01 pulse, restores target 01 and all crossed blocks, and returns in old112 in 2*width(pre)+7 steps.",
+        "Increment traverses arbitrary suffix values to implicit blank exterior, emits 011 as a value-one spare, then uses only generic table-parametric return scanner; duration 2*width(full file)+7 matches the two full traversals plus local endpoint work.",
+        "All three public Core contracts transfer exact zipper executions through ZipRep; no finite-window substitution for the full tape and no fixed-width or bounded-value restriction.",
+        "following_nonempty correctly derives the zero-case premise from selected physical index<9 and total file length>=10.",
+        "RegisterMarkPrefix250.mark_zip output is the same marked word required by all three boxes; entering seek/carry from old2/old6 remains an external dispatch/bridge obligation."
+      ],
+      "not_claimed": [
+        "Lean elaboration success",
+        "Compiler or dependency provenance review",
+        "Full instruction or dispatch simulation",
+        "Bootstrap",
+        "PA consistency equivalence"
+      ]
+    },
+    "does_not_review_final_evidence": true
+  },
+  "contracts_changed_by_repair": false,
+  "proof_options_increased": false,
+  "author_compiler_or_checker_execution": false,
+  "version_query": false,
+  "remaining": [
+    "symbolic executor port and all instruction certificates",
+    "nonempty-spare and gap frame transport",
+    "literal safe bootstrap in Lean",
+    "exact250 consistency endpoint",
+    "PA-internalized equivalence"
+  ]
+}
