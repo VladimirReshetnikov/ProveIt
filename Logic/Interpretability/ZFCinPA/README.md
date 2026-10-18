@@ -191,6 +191,13 @@ facade is [`Lean/ZFCinPA.lean`](Lean/ZFCinPA.lean).
 | `LNumOK` | `𝗭𝗙` proves that the numeral chain `numChainQ x` defines exactly one natural number, at every internal `x` (`numOK`, a `Σ₁` successor induction over two templates) |
 | `LDriverSteps` | every reflection step compiled at internal codes: `and_step`, `or_step`, `neg_step`, `top_base`, `bot_base`, `atom_step`, `ex_step`, `all_step` (premises `InvT`, conclusion `InvT` at the step's new function code) |
 | `LDriver` | **the driver**: for every internal semiformula code `p` of level `n`, `𝗭𝗙` proves the reflection invariant of `envForm n p` at some function code (`driver`, `driverT`), by `IsSemiformula.sigma1_structural_induction`; code identities `allT_val`, `exT_val`, `atomT_val_*` match `envForm`'s clauses |
+| `LGlueCodes` | code identities for opening binders: `envForm_free`, `bindFreeAt_open`; the free-variable bound `FvLt j q` (all free variables of `q` below `j`) and its propagation through `∧`, `∨`, atoms and `free` (`fvLt_free`, `fvLt_free_ex`) |
+| `LMatch` | the matching code `M_j` (`mVal`, `MT`): an internal formula saying an environment `t` carries `&0, …, &(j-1)` in its first `j` slots, built by `Σ₁` primitive recursion (`mVal_succ`) |
+| `LGlueT`, `LGlueT2` | the glue's step templates over the eight-placeholder language `GL`: functionality and slot lookup of matched environments, and one template per connective (`andG` … `exG`, `atomG`), each proved semantically |
+| `LGlue1` | `𝗭𝗙` proves that a matched environment is a function (`fun_MT`) whose slot `a` holds `&a` for every `a < j` (`slot_MT`) |
+| `LGlue2` | shift invariance of `envForm` (`shift_envForm`) and the specialization identity `QX_free` that turns a quantifier premise at level `j+1` into the binder case |
+| `LGlue3` | the atomic glue `glue_atom`: `𝗭𝗙 ⊢ ∀t (¬M_j t ∨ (&a R &b ↔ envForm 0 (&a R &b) (t)))` for `a, b < j` |
+| `LGlue4` | **the glue**: for every formula code `q` with free variables below `j`, `𝗭𝗙 ⊢ ∀t (¬M_j t ∨ (relativize domL q ↔ envForm 0 q (t)))` (`glue`, by `IsFormula.sigma1_structural_induction` under a complexity budget `j + complexity q ≤ C` that keeps the induction predicate `Σ₁`) |
 
 ## Building
 
