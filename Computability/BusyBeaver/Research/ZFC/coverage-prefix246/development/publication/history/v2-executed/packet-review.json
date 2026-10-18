@@ -1,0 +1,82 @@
+{
+  "status": "INDEPENDENT_ACTUAL_PACKET_REVIEW_WITH_TWO_PUBLICATION_FINDINGS",
+  "packet": "/tmp/zfc-prefix246-coverage-publication-final01",
+  "manifest_sha256": "b697676bf6147f1c3f823e5b8d80750ecfcc683c976898902b575644e86709a5",
+  "file_map_sha256": "38759e22a42e28a7407e374fa6b90d64195cd91d2edc30d369e12aa49ef7c0f8",
+  "mapped_files": 710,
+  "content_hashes": 706,
+  "artifact_and_mapping_checks": 3273,
+  "findings": [
+    {
+      "id": "P1",
+      "severity": "medium",
+      "title": "Publish the evidence files linked from the complete review receipt",
+      "missing": {
+        "full_binding_review": {
+          "path": "/tmp/zfc-prefix246-coverage-final-review/complete01/review.json",
+          "sha256": "1faead59677ef82a92eae8f93f78953a6e76248ca45c57383c5a2e5b8b9d8c01"
+        },
+        "reviewer_source": {
+          "path": "/tmp/zfc-prefix246-coverage-final-review/complete01/reviewer-source.py",
+          "sha256": "6262d81c8fe21617640f4ffb0051e38781d60d2a3f8a68d6fb3e122e58cdef22"
+        }
+      },
+      "reason": "The receipt is preserved exactly, but its full current-binding review and reviewer source exist only in scratch and have no content-registry or placement-map entries. The packet therefore does not preserve all evidence it explicitly links.",
+      "minimal_change": "Require and copy the two exact path/SHA descriptors, preserve their original aliases, and bind their published paths. Keep the existing receipt bytes unchanged."
+    },
+    {
+      "id": "P2",
+      "severity": "medium",
+      "title": "Make the documented source-generator command resolve after placement",
+      "document": "/tmp/zfc-prefix246-coverage-publication-final01/Computability/BusyBeaver/Research/ZFC/prefix246_coverage.md",
+      "documented_unmapped_path": "Computability/BusyBeaver/Research/ZFC/coverage-prefix246/programs/generate_sites_prefix246.py",
+      "actual_generator_binding": {
+        "path": "Computability/BusyBeaver/Research/ZFC/coverage-prefix246/development/generate_sites_prefix246.py",
+        "sha256": "811d2f59325933574518b7392ec6b14202f50a474ca15eb70cbbbf9c0b9e4a5a"
+      },
+      "reason": "Global dedup selected the earlier development/ copy, so programs/generate_sites_prefix246.py is absent although the scope note invokes it. Coordinator manifest-based lookups remain correct.",
+      "minimal_change": "Force the stable programs/ generator path as a byte-identical intentional alias, or rewrite the command to the actual mapped path."
+    }
+  ],
+  "verified": {
+    "all710_map_hashes": true,
+    "all_registry_paths_mapped": true,
+    "no_duplicate_targets": true,
+    "new_scratch_packet_only": true,
+    "no_olean_or_cache_payloads": true,
+    "all102_exact_sources_and_audits": true,
+    "all102_raw_success_records": true,
+    "all_historical_source_audit_bindings_and_aliases": true,
+    "all_raw_logs_and_actual_guard_bindings": true,
+    "representative_actual_vs_planned_guards": [
+      "BusyBeaver.ZFC.SitesPrefix246Chunk000",
+      "BusyBeaver.ZFC.SitesPrefix246Chunk042",
+      "BusyBeaver.ZFC.SitesPrefix246Chunk210"
+    ],
+    "final_convenience_record_exact": true,
+    "complete102_receipt_exact": true,
+    "initial_source_review_preserved": true,
+    "v2_source_review_preserved": true,
+    "raw79413_summary_recovery_and_root_report_preserved": true,
+    "pipeline_statuses": {
+      "PARTIAL_UNIT_LIMIT": 5,
+      "PREPARED_NO_EXECUTION": 1,
+      "PASS_COMPLETE_PLAN": 1,
+      "RUNNING": 1
+    },
+    "portable_guard_generator_one_template_path_change": true,
+    "coordinator_unchanged_reviewed_bytes": true,
+    "source_audit_default_adapter_is_source_only_here": true,
+    "unmapped_staging_files_only": [
+      "portable-guard-generator.diff",
+      "portable-guard-generator.py",
+      "file-map.json"
+    ]
+  },
+  "scope": "Actual packet byte/map/history and portable-program review. The two findings concern publication completeness/usability and do not invalidate the102 already reviewed source/audit proofs. Binary run and PA status are outside this packet review.",
+  "compiler_invoked": false,
+  "guard_invoked": false,
+  "supplied_checker_or_packer_invoked": false,
+  "version_queried": false,
+  "maintained_files_changed": false
+}

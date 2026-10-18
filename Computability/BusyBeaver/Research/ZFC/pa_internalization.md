@@ -12,9 +12,10 @@ the intended arithmetic sentence and an object-theory proof are connected to
 it. Completing the PA version would also serve the ZFC requirement, after
 checking the chosen arithmetic interpretation in ZFC.
 
-The [Choice calibration](choice_calibration254.md) now closes the external
-Lean theorem for the literal 252-state machine: blank nonhalting iff Con(ZFC).
-It uses Choice in L and external first-order completeness. This discharges the
+The [246-state endpoint](prefix246_binary.md) now closes the external Lean
+theorem for the exact contextual-fold machine: blank nonhalting iff Con(ZFC).
+It reuses the earlier [Choice calibration](choice_calibration254.md), including
+Choice in L and external first-order completeness. This discharges the
 external consistency comparison; it does not implement the represented proof
 translations or prove their correctness for every internal code in every PA
 model. The remaining obligations are recorded below.
@@ -104,14 +105,42 @@ translation, the internal L-specific Separation/Replacement proofs, and the comp
 interpreter-to-Enum connection. The forward validator sentence alone does
 not yet imply the requested PA theorem about the literal binary machine.
 
-The active binary target is now the exact 246-state candidate. Its table,
-logical seed, whole-tape instruction contracts and conditional runtime
-comparison have separate Lean checks; completing that external endpoint
-still does not supply an internal PA theorem.
+The active binary target is the exact 246-state machine. Its table, logical
+seed, whole-tape instruction contracts, complete decoder coverage and blank
+startup now compose into the checked external ZF/ZFC consistency endpoint.
+That theorem still does not supply an internal PA proof.
 The [fixed arithmetic lookup for its exact table](arithmetic_machine_graph_prefix246.md)
 is now checked in every IOpen model and agrees with all 492 typed transitions.
-The corresponding internal step/run, bootstrap and whole-runtime comparison
-remain separate from the checked 252-state arithmetic implementation.
+The [exact step graph](arithmetic_machine_step_prefix246.md) now defines the
+numeric operation on every IOpen configuration code, including inactive and
+invalid states. Its [fixed run graph](arithmetic_machine_run_prefix246.md)
+is total and unique at every internal IΣ1 time index; the separate Nat theorem
+compares every ordinary runtime to this literal binary machine. The
+[bootstrap transport](arithmetic_bootstrap_prefix246.md) proves the fixed
+410,735-step arithmetic startup sentence in IΣ1 and PA. Its numeral-transfer
+lemma applies to external natural times, not arbitrary internal times.
+The unbounded internal register/binary comparison still needs its own proof.
+
+The [arbitrary-start iterator](arithmetic_machine_run_from_prefix246.md)
+now has fixed Σ₁/Δ₁ graphs, totality, time-addition laws and whole-configuration
+halt absorption for every internal initial code and time in every IΣ1 model.
+The [prefix-removal theorem](arithmetic_machine_prefix_prefix246.md)
+proves halting equivalence before and after any internal prefix, including
+halting inside that prefix. Its `boot_halts_iff` specialization removes the
+checked 410,735-step startup using its complete numeric tape code. The two
+modules passed 23 axiom probes and 29 typed callers with zero warnings.
+This closes arithmetic startup removal; the post-startup register/binary
+simulation and its connection to the seeded scheduler remain open.
+
+The [seeded arithmetic scheduler](arithmetic_enumerator_seed246.md) now
+proves the validator/scheduler equivalence at candidate 3, pointer 0 and
+working fields `TW=WS=H=0,D=3`, in every IΣ1 model. Both proof-code and
+runtime witnesses range over all internal values. The represented refutation
+word has raw candidate at least 3, and the initial working state is certified
+even with `D=3`. The resulting fixed sentence has IΣ1 and PA proofs. This
+closes the arithmetic scheduler's seed adjustment; its identification with
+the exact246 binary run and the reverse ZF-to-validator proof translation
+remain open.
 
 Source review of the merged arithmetic work through `70f2e7a57b` identifies
 three further reusable pieces in `Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/`:
@@ -162,6 +191,19 @@ without a new compilation or axiom-audit claim; the reverse validator comparison
 and actual 246-state arithmetic runtime remain separate obligations. The
 [pinned source review](results/upstream-ccdebc892a-source-review.json) records
 the declarations and remaining obligations.
+
+Commit `e6b5769ba46ca018085414df212968273022531b` adds
+[LGlue3](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LGlue3.lean).
+`glue_atom` supplies the atomic compiled-glue client: for all internal
+indices `a,b < j` in any IΣ1 model, internal ZF proves that the membership
+or equality atom agrees with its environment encoding under `MT j`.
+It discharges the slot, numeral-correctness, functionality, uniqueness and
+atom-definition premises; `eAtomT_val` identifies the encoded atom body.
+The [independent source review](results/upstream-e6b5769ba4-source-review.json)
+finds no issue within that scope, without claiming a fresh compilation.
+The matching antecedent remains. General formula glue and its internal
+induction, matching-environment existence, and the schema closure/domain-side
+adapter to `hSchema` remain open.
 
 ## What is already available
 
@@ -724,8 +766,9 @@ use `LNumOK.numOK` (every numeral chain defines one natural, in `𝗭𝗙`).
 **Remaining for `hSchema`** (superseding the historical next-step notes below):
 the reflection driver producing `Θ` is already available. `LGlue1` provides
 matching functionality and slot reading; `LGlue2` supplies shift-fixity and the
-opened quantifier-premise identity. Still needed are the compiled glue steps
-and internal formula induction, existence of a suitable matching environment
+opened quantifier-premise identity; `LGlue3` supplies the atomic compiled-glue
+client. Still needed are the remaining compiled glue steps, constructor/code
+adapters and internal formula induction, existence of a suitable matching environment
 `t₀` with `t₀(i) = &i`, and the `SchemaRecognizer`/`relativize` closure adapter.
 These must turn the compiled final templates into the internal derivability
 of every relativized Separation/Replacement instance, with its domain side
