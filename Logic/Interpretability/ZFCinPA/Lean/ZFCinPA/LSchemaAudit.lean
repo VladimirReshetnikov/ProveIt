@@ -26,4 +26,8 @@ open LeanProofs.ZFCinPA
 #print axioms LSchema.iSigma1_proves_con_ZF_imp_con_ZFC
 #print axioms LSchema.peano_proves_con_ZF_imp_con_ZFC
 
+#print axioms LSchema.provable_falsum_ZFC_of_ZF
+#print axioms LSchema.peano_proves_con_ZF_iff_con_ZFC
+
 #check @LSchema.peano_proves_con_ZF_imp_con_ZFC
+#check @LSchema.peano_proves_con_ZF_iff_con_ZFC

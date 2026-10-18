@@ -42,7 +42,9 @@ The current arithmetic checkpoints are:
   `𝗜𝚺₁ ⊢ Con(ZF) → Con(ZFC)` and `𝗣𝗔 ⊢ Con(ZF) → Con(ZFC)`
   (`LSchema.iSigma1_proves_con_ZF_imp_con_ZFC`,
   `LSchema.peano_proves_con_ZF_imp_con_ZFC`; axioms `propext`,
-  `Classical.choice`, `Quot.sound` only).
+  `Classical.choice`, `Quot.sound` only). With the internal inclusion of
+  `𝗭𝗙`'s axiom class in `𝗭𝗙𝗖`'s, the ZFC/ZF pair is two-way:
+  `𝗣𝗔 ⊢ Con(ZF) ↔ Con(ZFC)` (`LSchema.peano_proves_con_ZF_iff_con_ZFC`).
 * [Internal validator provability](../../../../Logic/Interpretability/ZFCinPA/validator_provability254.md)
   supplies the twelve literal rule closures and a classical propositional
   interface. The [formula encoder](../../../../Logic/Interpretability/ZFCinPA/validator_formula_encoder254.md)
@@ -714,6 +716,49 @@ The manuscript follows the later goal record when calling PA stronger than
 requested; the original user request explicitly requires PA, and remains the
 target here. Avoiding arithmetic inside a future verifier does not remove the
 arithmetic proof obligation relating its finite traces to Con(ZFC).
+
+## Proposed decomposition of the reverse ZF-to-validator translation
+
+*Proposal (Claude lane, 2026-10-17), for coordination; nothing below is
+implemented yet.* With `𝗣𝗔 ⊢ Con(ZF) ↔ Con(ZFC)` closed and the forward
+validator sentence `Con(ZF) → ¬∃code, value(code)=2` already proved, the
+remaining arithmetic comparison between ZF and the validator is the reverse
+implication: in every IΣ₁ model, `Provable 𝗭𝗙 ⊥ → CProv 1`. The external
+proof (`WFTheory.c254_of_zf_refutation`) is semantic: the internally
+well-founded part of every CP/GIC quotient models ZF. A represented version
+splits into three pieces with a narrow interface:
+
+1. **(R1) The native theory as a Foundation theory.** A `Δ₁` theory `𝗡`
+   over `ℒₛₑₜ` mirroring `NativeTheory254.NativeAx`: the sealed container
+   axiom, the GIC instance at every formula (a schema, recognized like
+   `SepR`), and irreflexivity. External sanity check: for standard sentences,
+   `𝗡 ⊢ σ ↔ BProv NativeAx [] σ` through the existing completeness adapters.
+2. **(R2) Calculus translation (validator side).** In every IΣ₁ model,
+   `Provable 𝗡 ⊥ → CProv 1`: internal Foundation derivations from `𝗡` are
+   translated into C254 code proofs, using the configurable encoder,
+   opening, vacuity, alpha-transport and fresh-stream interfaces already
+   built for source-proof translation. Each GIC instance at an internal
+   matrix goes to the corresponding `bundle` instance.
+3. **(R3) The WF interpretation (set side).** In every IΣ₁ model,
+   `Provable 𝗭𝗙 ⊥ → Provable 𝗡 ⊥`, by
+   `InternalRelativization.provable_falsum_of_relativize` with target theory
+   `𝗡` and domain `δ` the internally well-founded part. Its obligations:
+   `𝗡 ⊢ ∃x δ(x)` and `𝗡 ⊢ σ^δ` for the finitely many fixed ZF axioms, by
+   completeness from `WFModel.quotient_models_ZF` (fixed sentences), and
+   the schema obligation at internal codes. Unlike the L case, no
+   reflection driver should be needed: Separation and Replacement in the
+   WF part come from the GIC instance at the internal relativized matrix
+   `φ^δ`, which is itself an axiom of `𝗡`, followed by one fixed template
+   proving that the resulting set lies in the WF part. This reuses
+   `LTemplate`'s compile-at-internal-codes pattern, with a template theory
+   over `𝗡` in place of ZF.
+
+Composing (R3), (R2) and the forward sentence gives, in PA,
+`Con(ZF) ↔ ¬∃code, value(code)=2`, and with `LSchema` the same for ZFC.
+The binary-machine side (exact246/routed245 runs against the arithmetic
+scheduler) is independent of all three. Proposed split: (R2) on the
+validator side, which owns the encoder; (R3) on the Claude lane; (R1) agreed
+first, since both depend on its exact shape.
 
 ## Claude lane: represented relativization (L-interpretation core)
 
