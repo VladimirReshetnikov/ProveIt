@@ -62,9 +62,7 @@ theorem lemma_10_3_holds : lemma_10_3 := by
     dsimp only [A]
     have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
     positivity
-  have hCnonneg : 0 ≤ C := by
-    dsimp only [C]
-    positivity
+  have hCnonneg : 0 ≤ C := by positivity
   have hbasic := lemma_10_1_holds N X D alpha M
     ⟨halpha, halphaOne, hM, hcard, hfibre⟩
   have hQmax (x : X) : Q x ≤ alpha ^ 2 * M ^ 3 * N ^ 2 := by
@@ -82,46 +80,23 @@ theorem lemma_10_3_holds : lemma_10_3 := by
       (∑ x : X, if ¬ good x then Q x else 0) ≤ A / 2 := by
     calc
       (∑ x : X, if ¬ good x then Q x else 0) ≤
-          ∑ x : X, if ¬ good x
-            then alpha ^ 2 * M ^ 3 * N ^ 2 else 0 := by
-        apply Finset.sum_le_sum
-        intro x _
-        by_cases hx : ¬ good x
-        · simp only [if_pos hx]
-          exact hQmax x
-        · simp [hx]
+          ∑ x : X, if ¬ good x then alpha ^ 2 * M ^ 3 * N ^ 2 else 0 :=
+        Finset.sum_le_sum fun x _ => by split_ifs; exacts [le_rfl, hQmax x]
       _ = (countWhere (fun x : X => ¬ good x) : Real) *
           (alpha ^ 2 * M ^ 3 * N ^ 2) := by
         rw [countWhere_cast_eq_sum_ite, Finset.sum_mul]
-        apply Finset.sum_congr rfl
-        intro x _
-        by_cases hx : ¬ good x <;> simp [hx]
-      _ ≤ (alpha ^ 2 * M * N / 2) *
-          (alpha ^ 2 * M ^ 3 * N ^ 2) := by
-        exact mul_le_mul_of_nonneg_right hsmallCard (by positivity)
+        exact Finset.sum_congr rfl fun x _ => by split_ifs <;> simp
+      _ ≤ (alpha ^ 2 * M * N / 2) * (alpha ^ 2 * M ^ 3 * N ^ 2) := by gcongr
       _ = A / 2 := by
         dsimp only [A]
         ring
   have hsplit : QT = QS + ∑ x : X, if ¬ good x then Q x else 0 := by
-    dsimp only [QT, QS, S]
-    calc
-      (∑ x : X, Q x) =
-          ∑ x ∈ (Finset.univ : Finset X), Q x := by simp
-      _ = (∑ x ∈ (Finset.univ : Finset X) with good x, Q x) +
-          ∑ x ∈ (Finset.univ : Finset X) with ¬ good x, Q x :=
-        (Finset.sum_filter_add_sum_filter_not
-          (Finset.univ : Finset X) good Q).symm
-      _ = (∑ x ∈ Finset.univ.filter good, Q x) +
-          ∑ x : X, if ¬ good x then Q x else 0 := by
-        simp only [Finset.sum_filter]
+    rw [← Finset.sum_filter]
+    exact (Finset.sum_filter_add_sum_filter_not _ good Q).symm
   have hQSlower : A / 2 ≤ QS := by
     linarith only [hQTlower, hbadWeight, hsplit]
-  have hSne : S.Nonempty := by
-    by_contra h
-    have hSempty : S = ∅ := Finset.not_nonempty_iff_eq_empty.mp h
-    have hQSzero : QS = 0 := by simp [QS, hSempty]
-    rw [hQSzero] at hQSlower
-    linarith only [hApos, hQSlower]
+  have hSne : S.Nonempty :=
+    Finset.nonempty_of_sum_ne_zero (lt_of_lt_of_le (half_pos hApos) hQSlower).ne'
   have hQTle : QT ≤ 2 * QS := by
     linarith only [hsplit, hbadWeight, hQSlower]
   have hEtotal :
@@ -129,83 +104,43 @@ theorem lemma_10_3_holds : lemma_10_3 := by
     dsimp only [E, QT, Q]
     simpa only [domainWeightedError, domainTotalWeight, Nat.cast_sum] using
       lemma_10_2_holds N X D phi B alpha M sigma eta hsetup' hsigma
-  have hESleTotal : ES ≤ ∑ x : X, E x := by
-    dsimp only [ES, S]
-    calc
-      (∑ x ∈ Finset.univ.filter good, E x) ≤
-          ∑ x ∈ (Finset.univ : Finset X), E x := by
-        apply Finset.sum_le_sum_of_subset_of_nonneg
-        · exact Finset.filter_subset _ _
-        · intro x _ _
-          exact hEnonneg x
-      _ = ∑ x : X, E x := by simp
+  have hESleTotal : ES ≤ ∑ x : X, E x :=
+    Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _) fun x _ _ => hEnonneg x
   have hESbound : ES ≤ 30 * eta * QS := by
-    calc
-      ES ≤ ∑ x : X, E x := hESleTotal
-      _ ≤ 15 * eta * QT := hEtotal
-      _ ≤ 15 * eta * (2 * QS) := mul_le_mul_of_nonneg_left hQTle (mul_nonneg (by norm_num) heta)
-      _ = 30 * eta * QS := by ring
-  have hScard : (S.card : Real) ≤ Fintype.card X := by
-    exact_mod_cast S.card_le_univ
+    linarith [mul_le_mul_of_nonneg_left hQTle heta]
   have hCcard : C * S.card ≤ A := by
     calc
-      C * S.card ≤ C * Fintype.card X :=
-        mul_le_mul_of_nonneg_left hScard hCnonneg
+      C * S.card ≤ C * Fintype.card X := by
+        gcongr
+        exact_mod_cast S.card_le_univ
       _ = A := by
         dsimp only [C, A]
         rw [hcard]
         ring
   by_cases hetaZero : eta = 0
-  · have hESzero : ES = 0 := by
-      have hESnonneg : 0 ≤ ES := by
-        dsimp only [ES]
-        apply Finset.sum_nonneg
-        intro x _
-        exact hEnonneg x
-      simpa only [hetaZero, mul_zero, zero_mul] using
-        le_antisymm (hESbound.trans (by simp [hetaZero])) hESnonneg
+  · have hESzero : ES = 0 :=
+      le_antisymm (by simpa [hetaZero] using hESbound) (Finset.sum_nonneg fun x _ => hEnonneg x)
     have hthresholdSum :
         (∑ _x ∈ S, C / 4) ≤ ∑ x ∈ S, Q x := by
-      calc
-        (∑ _x ∈ S, C / 4) = C * S.card / 4 := by
-          simp
-          ring
-        _ ≤ A / 4 := by linarith only [hCcard]
-        _ ≤ A / 2 := by linarith only [hApos]
-        _ ≤ QS := hQSlower
-        _ = ∑ x ∈ S, Q x := rfl
+      show _ ≤ QS
+      rw [Finset.sum_const, nsmul_eq_mul]
+      linarith only [hCcard, hApos, hQSlower]
     obtain ⟨x, hxS, hxQ⟩ :=
       Finset.exists_le_of_sum_le hSne hthresholdSum
-    have hxE : E x = 0 := by
-      have hxEle : E x ≤ ES := by
-        dsimp only [ES]
-        exact Finset.single_le_sum (fun y _ => hEnonneg y) hxS
-      exact le_antisymm (by linarith only [hxEle, hESzero]) (hEnonneg x)
-    refine ⟨x, ?_, ?_, ?_⟩
-    · exact (Finset.mem_filter.mp hxS).2
-    · exact hxQ
-    · dsimp only [E, Q] at hxE ⊢
-      simp [hetaZero, hxE]
+    have hxE : E x = 0 := le_antisymm (by
+      linarith only [show E x ≤ ES from Finset.single_le_sum (fun y _ => hEnonneg y) hxS,
+        hESzero]) (hEnonneg x)
+    refine ⟨x, (Finset.mem_filter.mp hxS).2, hxQ, ?_⟩
+    dsimp only [E, Q] at hxE ⊢
+    simp [hetaZero, hxE]
   · have hetaPos : 0 < eta := lt_of_le_of_ne heta (Ne.symm hetaZero)
     have haverage :
         (∑ _x ∈ S, 15 * eta * C) ≤
           ∑ x ∈ S, (60 * eta * Q x - E x) := by
-      calc
-        (∑ _x ∈ S, 15 * eta * C) = 15 * eta * (C * S.card) := by
-          simp
-          ring
-        _ ≤ 15 * eta * A := by
-          exact mul_le_mul_of_nonneg_left hCcard
-            (mul_nonneg (by norm_num) heta)
-        _ ≤ 30 * eta * QS := by
-          have hscale : 0 ≤ 30 * eta := mul_nonneg (by norm_num) heta
-          have h := mul_le_mul_of_nonneg_left hQSlower hscale
-          nlinarith only [h]
-        _ ≤ 60 * eta * QS - ES := by
-          linarith only [hESbound]
-        _ = ∑ x ∈ S, (60 * eta * Q x - E x) := by
-          dsimp only [QS, ES]
-          rw [Finset.sum_sub_distrib, ← Finset.mul_sum]
+      have hsum : ∑ x ∈ S, (60 * eta * Q x - E x) = 60 * eta * QS - ES := by
+        rw [Finset.sum_sub_distrib, ← Finset.mul_sum]
+      rw [hsum, Finset.sum_const, nsmul_eq_mul]
+      linarith [mul_le_mul_of_nonneg_left hCcard heta, mul_le_mul_of_nonneg_left hQSlower heta]
     obtain ⟨x, hxS, hx⟩ := Finset.exists_le_of_sum_le hSne haverage
     have hxE0 : 0 ≤ E x := hEnonneg x
     have hxQ : C / 4 ≤ Q x := by
@@ -215,9 +150,6 @@ theorem lemma_10_3_holds : lemma_10_3 := by
     have hxE : E x ≤ 60 * eta * Q x := by
       have hthreshold : 0 ≤ 15 * eta * C := by positivity
       linarith only [hx, hthreshold]
-    refine ⟨x, ?_, ?_, ?_⟩
-    · exact (Finset.mem_filter.mp hxS).2
-    · exact hxQ
-    · exact hxE
+    exact ⟨x, (Finset.mem_filter.mp hxS).2, hxQ, hxE⟩
 
 end LeanProofs.GowersSzemeredi

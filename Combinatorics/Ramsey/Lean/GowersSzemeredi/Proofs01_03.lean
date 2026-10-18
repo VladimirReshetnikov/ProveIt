@@ -58,17 +58,13 @@ private lemma fourier_correlation {N : Nat} [NeZero N]
             rw [sum_comm]
     _ = ∑ t : ZMod N, ∑ u : ZMod N,
           exponential (-((t - u) * r)) * (f t * star (g u)) := by
-            apply Finset.sum_congr rfl
-            intro t _
+            refine Finset.sum_congr rfl fun t _ => ?_
             rw [← (Equiv.subLeft t).sum_comp]
             simp only [Equiv.subLeft_apply, sub_sub_cancel]
     _ = ∑ t : ZMod N, ∑ u : ZMod N,
           (exponential (-(t * r)) * f t) *
             (exponential (u * r) * star (g u)) := by
-            apply Finset.sum_congr rfl
-            intro t _
-            apply Finset.sum_congr rfl
-            intro u _
+            refine Finset.sum_congr rfl fun t _ => Finset.sum_congr rfl fun u _ => ?_
             rw [show -((t - u) * r) = -(t * r) + u * r by ring, exponential_add]
             ring
     _ = (∑ t : ZMod N, exponential (-(t * r)) * f t) *
@@ -76,10 +72,7 @@ private lemma fourier_correlation {N : Nat} [NeZero N]
             simp only [star_sum, star_mul, star_exponential, neg_neg]
             simp_rw [mul_sum, sum_mul]
             conv_rhs => rw [sum_comm]
-            apply Finset.sum_congr rfl
-            intro t _
-            apply Finset.sum_congr rfl
-            intro u _
+            refine Finset.sum_congr rfl fun t _ => Finset.sum_congr rfl fun u _ => ?_
             ring
 
 /-- Fourier identity (1). -/
@@ -105,19 +98,14 @@ private lemma fourier_parseval {N : Nat} [NeZero N]
           (exponential (-(x * r)) * f x) *
             (star (g y) * exponential (y * r)) := by
               rw [sum_comm]
-              apply Finset.sum_congr rfl
-              intro x _
+              refine Finset.sum_congr rfl fun x _ => ?_
               rw [sum_comm]
     _ = ∑ x : ZMod N, ∑ y : ZMod N,
           (f x * star (g y)) *
             ∑ r : ZMod N, exponential ((y - x) * r) := by
-              apply Finset.sum_congr rfl
-              intro x _
-              apply Finset.sum_congr rfl
-              intro y _
+              refine Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_
               rw [mul_sum]
-              apply Finset.sum_congr rfl
-              intro r _
+              refine Finset.sum_congr rfl fun r _ => ?_
               have hchar :
                   exponential (-(x * r)) * exponential (y * r) =
                     exponential ((y - x) * r) := by
@@ -178,10 +166,7 @@ theorem fourier_fourth_moment_le {N : Nat} [NeZero N]
       (∑ r : ZMod N, ‖fourier h r‖ ^ 4) =
         (N : Real) * ∑ t : ZMod N, ‖correlation h h t‖ ^ 2 := by
     calc
-      _ = ∑ r : ZMod N, ‖fourier h r‖ ^ 2 * ‖fourier h r‖ ^ 2 := by
-        apply Finset.sum_congr rfl
-        intro r _
-        ring
+      _ = ∑ r : ZMod N, ‖fourier h r‖ ^ 2 * ‖fourier h r‖ ^ 2 := by ring
       _ = _ := by simpa [correlation] using lemma_2_1_holds N h h
   rw [hid]
   calc
@@ -205,20 +190,17 @@ private lemma correlation_energy_eq_quadruples {N : Nat} [NeZero N]
         ∑ t : ZMod N, (∑ s : ZMod N, f s * star (f (s - t))) *
           star (∑ u : ZMod N, f u * star (f (u - t))) := by
             rw [Complex.ofReal_sum]
-            apply Finset.sum_congr rfl
-            intro t _
+            refine Finset.sum_congr rfl fun t _ => ?_
             rw [Complex.star_def, Complex.mul_conj', ← Complex.ofReal_pow]
     _ = ∑ t : ZMod N, ∑ s : ZMod N, ∑ u : ZMod N,
           (f s * star (f (s - t))) * (f (u - t) * star (f u)) := by
-            apply Finset.sum_congr rfl
-            intro t _
+            refine Finset.sum_congr rfl fun t _ => ?_
             simp only [star_sum, star_mul, star_star]
             simp_rw [sum_mul, mul_sum]
     _ = ∑ s : ZMod N, ∑ b : ZMod N, ∑ u : ZMod N,
           (f s * star (f b)) * (f (u - (s - b)) * star (f u)) := by
             rw [sum_comm]
-            apply Finset.sum_congr rfl
-            intro s _
+            refine Finset.sum_congr rfl fun s _ => ?_
             rw [← (Equiv.subLeft s).sum_comp]
             simp only [Equiv.subLeft_apply, sub_sub_cancel]
     _ = ∑ q : Fin 4 → ZMod N,
@@ -228,12 +210,8 @@ private lemma correlation_energy_eq_quadruples {N : Nat} [NeZero N]
               rw [sum_fin_four]
               simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
                 Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons]
-              apply Finset.sum_congr rfl
-              intro a _
-              apply Finset.sum_congr rfl
-              intro b _
-              apply Finset.sum_congr rfl
-              intro c _
+              refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ =>
+                  Finset.sum_congr rfl fun c _ => ?_
               have hiff (d : ZMod N) : a - b = c - d ↔ d = c - (a - b) := by
                 constructor
                 · intro h
@@ -257,8 +235,7 @@ theorem identity_2_6_holds : identity_2_6 := by
         (N : Real) * ∑ t : ZMod N,
           ‖∑ s : ZMod N, f s * star (f (s - t))‖ ^ 2 := by
     convert h using 1
-    apply Finset.sum_congr rfl
-    intro r _
+    refine Finset.sum_congr rfl fun r _ => ?_
     ring
   rw [← correlation_energy_eq_quadruples]
   exact_mod_cast hr

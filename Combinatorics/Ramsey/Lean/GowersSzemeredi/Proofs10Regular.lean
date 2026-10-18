@@ -163,53 +163,23 @@ private lemma measureReal_productProbability_boundary_le {rho sigma a b : Real}
     ((intervalProbability rho).prod (intervalProbability rho)).real
         (normalizedBoundarySet rho sigma a b) ≤
       4 * sigma / (1 + 2 * rho) := by
-  let ν := intervalProbability rho
-  let μ := ν.prod ν
-  letI : IsProbabilityMeasure ν := intervalProbability_isProbability hrho
-  have hleft (c : Real) :
-      μ.real (Set.Icc c (c + sigma) ×ˢ Set.univ) ≤
-        sigma / (1 + 2 * rho) := by
-    dsimp only [μ]
-    rw [measureReal_prod_prod, probReal_univ, mul_one]
-    exact intervalProbability_Icc_length_le hrho hsigma
-  have hright (c : Real) :
-      μ.real (Set.univ ×ˢ Set.Icc c (c + sigma)) ≤
-        sigma / (1 + 2 * rho) := by
-    dsimp only [μ]
-    rw [measureReal_prod_prod, probReal_univ, one_mul]
-    exact intervalProbability_Icc_length_le hrho hsigma
-  change μ.real (normalizedBoundarySet rho sigma a b) ≤ _
-  unfold normalizedBoundarySet
-  calc
-    μ.real (((Set.Icc (a + rho - sigma) (a + rho) ×ˢ Set.univ) ∪
-        (Set.Icc (a - rho) (a - rho + sigma) ×ˢ Set.univ) ∪
-        (Set.univ ×ˢ Set.Icc (b + rho - sigma) (b + rho))) ∪
-        (Set.univ ×ˢ Set.Icc (b - rho) (b - rho + sigma))) ≤
-        μ.real ((Set.Icc (a + rho - sigma) (a + rho) ×ˢ Set.univ) ∪
-          (Set.Icc (a - rho) (a - rho + sigma) ×ˢ Set.univ) ∪
-          (Set.univ ×ˢ Set.Icc (b + rho - sigma) (b + rho))) +
-        μ.real (Set.univ ×ˢ Set.Icc (b - rho) (b - rho + sigma)) :=
-      measureReal_union_le _ _
-    _ ≤ (μ.real ((Set.Icc (a + rho - sigma) (a + rho) ×ˢ Set.univ) ∪
-          (Set.Icc (a - rho) (a - rho + sigma) ×ˢ Set.univ)) +
-        μ.real (Set.univ ×ˢ Set.Icc (b + rho - sigma) (b + rho))) +
-        μ.real (Set.univ ×ˢ Set.Icc (b - rho) (b - rho + sigma)) := by
-      gcongr
-      exact measureReal_union_le _ _
-    _ ≤ ((μ.real (Set.Icc (a + rho - sigma) (a + rho) ×ˢ Set.univ) +
-          μ.real (Set.Icc (a - rho) (a - rho + sigma) ×ˢ Set.univ)) +
-        μ.real (Set.univ ×ˢ Set.Icc (b + rho - sigma) (b + rho))) +
-        μ.real (Set.univ ×ˢ Set.Icc (b - rho) (b - rho + sigma)) := by
-      gcongr
-      exact measureReal_union_le _ _
-    _ ≤ ((sigma / (1 + 2 * rho) + sigma / (1 + 2 * rho)) +
-        sigma / (1 + 2 * rho)) + sigma / (1 + 2 * rho) := by
-      gcongr
-      · simpa only [sub_add_cancel] using hleft (a + rho - sigma)
-      · exact hleft (a - rho)
-      · simpa only [sub_add_cancel] using hright (b + rho - sigma)
-      · exact hright (b - rho)
-    _ = 4 * sigma / (1 + 2 * rho) := by ring
+  letI := intervalProbability_isProbability hrho
+  let μ := (intervalProbability rho).prod (intervalProbability rho)
+  have hU {s t : Set (Real × Real)} {x y : Real} (hs : μ.real s ≤ x) (ht : μ.real t ≤ y) :
+      μ.real (s ∪ t) ≤ x + y :=
+    (measureReal_union_le s t).trans (add_le_add hs ht)
+  have hl (c : Real) :
+      μ.real (Set.Icc c (c + sigma) ×ˢ Set.univ) ≤ sigma / (1 + 2 * rho) := by
+    simpa only [μ, measureReal_prod_prod, probReal_univ, mul_one] using
+      intervalProbability_Icc_length_le (a := c) hrho hsigma
+  have hr (c : Real) :
+      μ.real (Set.univ ×ˢ Set.Icc c (c + sigma)) ≤ sigma / (1 + 2 * rho) := by
+    simpa only [μ, measureReal_prod_prod, probReal_univ, one_mul] using
+      intervalProbability_Icc_length_le (a := c) hrho hsigma
+  have h1 := hl (a + rho - sigma)
+  have h3 := hr (b + rho - sigma)
+  rw [sub_add_cancel] at h1 h3
+  exact (hU (hU (hU h1 (hl (a - rho))) h3) (hr (b - rho))).trans_eq (by ring)
 
 private def qScale (alpha : Real) (M N : Nat) : Real :=
   alpha * M ^ 2 * N
@@ -330,70 +300,34 @@ private lemma almostEvery_of_weighted_error
     (hSprW : Spr ≤ ∑ y ∈ W, q y) :
     AlmostEvery (1 - 5 * eta ^ t) W
       (fun y => eps y ≤ 300 * eta ^ (1 - t)) := by
-  let r1 : Real := eta ^ t
   let r4 : Real := eta ^ (1 - t)
   let Bad : Finset X := W.filter fun y => ¬ eps y ≤ 300 * r4
-  have hr1 : 0 < r1 := by dsimp only [r1]; positivity
-  have hr4 : 0 < r4 := by dsimp only [r4]; positivity
-  have hrprod : r1 * r4 = eta := by
-    dsimp only [r1, r4]
+  have hprod : eta ^ t * r4 = eta := by
     rw [← Real.rpow_add heta]
     simp
-  have hsumQ : (∑ y ∈ W, q y) ≤ 2 * L * W.card := by
-    calc
-      (∑ y ∈ W, q y) ≤ ∑ _y ∈ W, 2 * L :=
-        Finset.sum_le_sum fun y hy => hqU y hy
-      _ = 2 * L * W.card := by simp [mul_comm]
-  have hsumE : (∑ y ∈ W, e y) ≤ 1440 * eta * L * W.card := by
-    calc
-      _ ≤ 720 * eta * Spr := hE
-      _ ≤ 720 * eta * (∑ y ∈ W, q y) := by gcongr
-      _ ≤ 720 * eta * (2 * L * W.card) := by gcongr
-      _ = _ := by ring
-  have hBadLower : 300 * r4 * L * Bad.card ≤ ∑ y ∈ Bad, e y := by
-    calc
-      _ = ∑ _y ∈ Bad, 300 * r4 * L := by simp [mul_comm]
-      _ ≤ ∑ y ∈ Bad, e y := by
-        apply Finset.sum_le_sum
-        intro y hy
-        have hyW := (Finset.mem_filter.mp hy).1
-        have hyBad := (Finset.mem_filter.mp hy).2
-        calc
-          _ ≤ eps y * L :=
-            mul_le_mul_of_nonneg_right (le_of_not_ge hyBad) hL.le
-          _ ≤ eps y * q y :=
-            mul_le_mul_of_nonneg_left (hqL y hyW) (heps y)
-          _ = e y := (heq y).symm
-  have hBadSum : (∑ y ∈ Bad, e y) ≤ ∑ y ∈ W, e y := by
-    apply Finset.sum_le_sum_of_subset_of_nonneg
-    · exact Finset.filter_subset _ _
-    · intro i hiW _
-      rw [heq]
-      exact mul_nonneg (heps i) (hL.le.trans (hqL i hiW))
-  have hBadCard : (Bad.card : Real) ≤ 5 * r1 * W.card := by
-    by_contra h
-    have hgt : 5 * r1 * W.card < (Bad.card : Real) := lt_of_not_ge h
-    have hstrict := mul_lt_mul_of_pos_left hgt
-      (show 0 < 300 * r4 * L by positivity)
-    have hchain : 300 * r4 * L * (5 * r1 * W.card) <
-        1440 * eta * L * W.card := by linarith
-    rw [show 300 * r4 * L * (5 * r1 * W.card) =
-        1500 * eta * L * W.card by rw [← hrprod]; ring] at hchain
-    have : 0 ≤ eta * L * W.card := by positivity
-    nlinarith
+  have hq : (∑ y ∈ W, q y) ≤ W.card * (2 * L) :=
+    (Finset.sum_le_card_nsmul W q (2 * L) hqU).trans_eq (nsmul_eq_mul _ _)
+  have hBad : (Bad.card : Real) * (300 * r4 * L) ≤ 720 * eta * (W.card * (2 * L)) := by
+    calc (Bad.card : Real) * (300 * r4 * L) ≤ ∑ y ∈ Bad, e y := by
+          rw [← nsmul_eq_mul]
+          refine Finset.card_nsmul_le_sum _ _ _ fun y hy => ?_
+          obtain ⟨hyW, hyBad⟩ := Finset.mem_filter.mp hy
+          rw [heq]
+          exact mul_le_mul (not_le.mp hyBad).le (hqL y hyW) hL.le (heps y)
+      _ ≤ ∑ y ∈ W, e y :=
+          Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _) fun y hy _ => by
+            rw [heq]; exact mul_nonneg (heps y) (hL.le.trans (hqL y hy))
+      _ ≤ 720 * eta * (W.card * (2 * L)) :=
+          hE.trans (mul_le_mul_of_nonneg_left (hSprW.trans hq) (by positivity))
+  have hBadCard : (Bad.card : Real) ≤ 5 * eta ^ t * W.card := by
+    refine le_of_mul_le_mul_right (hBad.trans ?_) (by positivity : (0 : Real) < 300 * r4 * L)
+    rw [show 5 * eta ^ t * (W.card : Real) * (300 * r4 * L) =
+      1500 * (eta ^ t * r4) * (L * W.card) by ring, hprod]
+    linarith [(by positivity : (0 : Real) ≤ eta * (L * W.card))]
+  have hpart : ((W.filter fun y => eps y ≤ 300 * r4).card : Real) + Bad.card = W.card := by
+    exact_mod_cast Finset.card_filter_add_card_filter_not (s := W) (fun y => eps y ≤ 300 * r4)
   unfold AlmostEvery
-  change (1 - 5 * r1) * W.card ≤
-    (((W.filter fun y => eps y ≤ 300 * r4).card : Nat) : Real)
-  have hpartition :
-      ((W.filter fun y => eps y ≤ 300 * r4).card : Real) + Bad.card =
-        W.card := by
-    dsimp only [Bad]
-    rw [← Nat.cast_add, ← Finset.card_union_of_disjoint]
-    · congr 2
-      ext y
-      simp only [Finset.mem_union, Finset.mem_filter]
-      tauto
-    · exact Finset.disjoint_filter_filter_not W W _
+  change (1 - 5 * eta ^ t) * W.card ≤ ((W.filter fun y => eps y ≤ 300 * r4).card : Real)
   linarith
 
 private lemma windowedSum_integrable {X : Type*}
@@ -482,199 +416,83 @@ private lemma exists_regular_parameters {X : Type*} [Fintype X]
         12 * T * windowedSum rho a b q U p ∧
       rho ^ 2 * S * boundaryCount rho sigma a b p ≤
         12 * sigma * (1 + 2 * rho) * T * windowedSum rho a b q U p := by
-  let ν := intervalProbability rho
-  let μ := ν.prod ν
+  let μ := (intervalProbability rho).prod (intervalProbability rho)
   let prob : Real := ((2 * rho) / (1 + 2 * rho)) ^ 2
-  let Spr : Real × Real → Real := windowedSum rho a b q U
-  let Ew : Real × Real → Real := windowedSum rho a b e Finset.univ
-  let Cw : Real × Real → Real := windowedSum rho a b (fun _ => 1) Finset.univ
-  let Cv : Real × Real → Real := boundaryCount rho sigma a b
-  let cE : Real := 1 / (720 * eta)
-  let cW : Real := S / (12 * T)
-  let cV : Real := rho ^ 2 * S / (12 * sigma * (1 + 2 * rho) * T)
-  let F : Real × Real → Real := fun p =>
-    Spr p - cE * Ew p - cW * Cw p - cV * Cv p
-  letI : IsProbabilityMeasure ν := intervalProbability_isProbability hrho
-  have hLpos : 0 < 1 + 2 * rho := by linarith
-  have hprob : 0 < prob := by positivity
-  have hSprInt : Integrable Spr μ := windowedSum_integrable rho a b q U μ
-  have hEwInt : Integrable Ew μ := windowedSum_integrable rho a b e Finset.univ μ
-  have hCwInt : Integrable Cw μ := windowedSum_integrable rho a b (fun _ => 1) Finset.univ μ
-  have hCvInt : Integrable Cv μ := by
-    exact show Integrable (boundaryCount rho sigma a b) μ by
-      unfold boundaryCount
-      apply integrable_finsetSum
-      intro y _
-      exact (integrable_const (1 : Real)).indicator
-        (measurableSet_normalizedBoundarySet rho sigma (a y) (b y))
-  have hFInt : Integrable F μ := by
-    dsimp only [F]
-    exact (((hSprInt.sub (hEwInt.const_mul cE)).sub
-      (hCwInt.const_mul cW)).sub (hCvInt.const_mul cV))
-  have hIntSpr : (∫ p, Spr p ∂μ) = prob * ∑ y ∈ U, q y := by
-    dsimp only [Spr, prob, μ, ν]
-    exact integral_windowedSum rho a b q U hrho ha hb
-  have hIntEw : (∫ p, Ew p ∂μ) = prob * ∑ y : X, e y := by
-    dsimp only [Ew, prob, μ, ν]
-    simpa using integral_windowedSum rho a b e Finset.univ hrho ha hb
+  let Spr := windowedSum rho a b q U
+  let Ew := windowedSum rho a b e Finset.univ
+  let Cw := windowedSum rho a b (fun _ => 1) Finset.univ
+  let Cv := boundaryCount rho sigma a b
+  letI := intervalProbability_isProbability hrho
+  have hSpr : Integrable Spr μ := windowedSum_integrable rho a b q U μ
+  have hEw : Integrable Ew μ := windowedSum_integrable rho a b e Finset.univ μ
+  have hCw : Integrable Cw μ := windowedSum_integrable rho a b (fun _ => 1) Finset.univ μ
+  have hCv : Integrable Cv μ := integrable_finsetSum _ fun y _ =>
+    (integrable_const (1 : Real)).indicator
+      (measurableSet_normalizedBoundarySet rho sigma (a y) (b y))
+  -- A point where `Spr - Ew/(720η) - S·Cw/(12T) - ρ²S·Cv/(12σ(1+2ρ)T)` is at least its mean.
+  have i1 := hEw.const_mul (720 * eta)⁻¹
+  have i2 := (hCw.const_mul S).const_mul (12 * T)⁻¹
+  have i3 := (hCv.const_mul (rho ^ 2 * S)).const_mul (12 * sigma * (1 + 2 * rho) * T)⁻¹
+  have h1 := hSpr.sub' i1
+  have h2 := h1.sub' i2
+  obtain ⟨p, hp⟩ := exists_integral_le (h2.sub' i3)
+  rw [integral_sub h2 i3, integral_sub h1 i2, integral_sub hSpr i1] at hp
+  simp only [integral_const_mul] at hp
+  have hIntSpr : (∫ p, Spr p ∂μ) = prob * ∑ y ∈ U, q y :=
+    integral_windowedSum rho a b q U hrho ha hb
+  have hIntEw : (∫ p, Ew p ∂μ) = prob * ∑ y : X, e y :=
+    integral_windowedSum rho a b e Finset.univ hrho ha hb
   have hIntCw : (∫ p, Cw p ∂μ) = prob * T := by
-    dsimp only [Cw, prob, μ, ν]
     rw [integral_windowedSum rho a b (fun _ => 1) Finset.univ hrho ha hb]
-    simp [hcard]
-  have hIntCv : (∫ p, Cv p ∂μ) ≤
-      4 * sigma / (1 + 2 * rho) * T := by
-    dsimp only [Cv, μ, ν]
-    simpa only [hcard] using integral_boundaryCount_le rho sigma a b hrho hsigma.le
-  have hcE : 0 ≤ cE := by positivity
-  have hcW : 0 ≤ cW := by positivity
-  have hcV : 0 ≤ cV := by positivity
-  have hSprLower : prob * (S / 2) ≤ ∫ p, Spr p ∂μ := by
-    rw [hIntSpr]
-    exact mul_le_mul_of_nonneg_left hU hprob.le
-  have hEpenalty : cE * (∫ p, Ew p ∂μ) ≤ prob * S / 12 := by
-    rw [hIntEw]
-    calc
-      cE * (prob * ∑ y : X, e y) ≤ cE * (prob * (60 * eta * S)) := by
-        gcongr
-      _ = prob * S / 12 := by
-        dsimp only [cE]
-        field_simp
-        ring
-  have hWpenalty : cW * (∫ p, Cw p ∂μ) = prob * S / 12 := by
-    rw [hIntCw]
-    dsimp only [cW]
-    field_simp
-  have hVpenalty : cV * (∫ p, Cv p ∂μ) ≤ prob * S / 12 := by
-    calc
-      cV * (∫ p, Cv p ∂μ) ≤
-          cV * (4 * sigma / (1 + 2 * rho) * T) :=
-        mul_le_mul_of_nonneg_left hIntCv hcV
-      _ = prob * S / 12 := by
-        dsimp only [cV, prob]
-        field_simp
-        ring
-  have hIntOne :
-      (∫ p, Spr p - cE * Ew p ∂μ) =
-        (∫ p, Spr p ∂μ) - cE * (∫ p, Ew p ∂μ) := by
-    calc
-      (∫ p, Spr p - cE * Ew p ∂μ) =
-          (∫ p, Spr p ∂μ) - ∫ p, cE * Ew p ∂μ :=
-        integral_sub hSprInt (hEwInt.const_mul cE)
-      _ = (∫ p, Spr p ∂μ) - cE * (∫ p, Ew p ∂μ) := by
-        rw [integral_const_mul]
-  have hIntTwo :
-      (∫ p, Spr p - cE * Ew p - cW * Cw p ∂μ) =
-        (∫ p, Spr p ∂μ) - cE * (∫ p, Ew p ∂μ) -
-          cW * (∫ p, Cw p ∂μ) := by
-    calc
-      (∫ p, Spr p - cE * Ew p - cW * Cw p ∂μ) =
-          (∫ p, Spr p - cE * Ew p ∂μ) - ∫ p, cW * Cw p ∂μ :=
-        integral_sub (hSprInt.sub (hEwInt.const_mul cE))
-          (hCwInt.const_mul cW)
-      _ = (∫ p, Spr p ∂μ) - cE * (∫ p, Ew p ∂μ) -
-          cW * (∫ p, Cw p ∂μ) := by
-        rw [hIntOne, integral_const_mul]
-  have hIntF :
-      (∫ p, F p ∂μ) = (∫ p, Spr p ∂μ) - cE * (∫ p, Ew p ∂μ) -
-        cW * (∫ p, Cw p ∂μ) - cV * (∫ p, Cv p ∂μ) := by
-    calc
-      (∫ p, F p ∂μ) =
-          (∫ p, Spr p - cE * Ew p - cW * Cw p - cV * Cv p ∂μ) := rfl
-      _ = (∫ p, Spr p - cE * Ew p - cW * Cw p ∂μ) -
-          ∫ p, cV * Cv p ∂μ :=
-        integral_sub ((hSprInt.sub (hEwInt.const_mul cE)).sub
-          (hCwInt.const_mul cW)) (hCvInt.const_mul cV)
-      _ = (∫ p, Spr p ∂μ) - cE * (∫ p, Ew p ∂μ) -
-          cW * (∫ p, Cw p ∂μ) - cV * (∫ p, Cv p ∂μ) := by
-        rw [hIntTwo, integral_const_mul]
-  have hAvgBase : prob * S / 4 ≤ ∫ p, F p ∂μ := by linarith
-  have hProbBase : rho ^ 2 * S / 4 ≤ prob * S / 4 := by
-    have hLsq : (1 + 2 * rho) ^ 2 ≤ 4 := by nlinarith [hLpos, hL]
-    have hprobLower : rho ^ 2 ≤ prob := by
-      dsimp only [prob]
-      rw [div_pow]
-      apply (le_div_iff₀ (sq_pos_of_pos hLpos)).2
-      nlinarith only [hLsq, sq_nonneg rho]
-    have hm := mul_le_mul_of_nonneg_right hprobLower hS.le
-    nlinarith only [hm]
-  obtain ⟨p, hp⟩ := MeasureTheory.exists_integral_le hFInt
-  have hpBase : rho ^ 2 * S / 4 ≤ F p := hProbBase.trans (hAvgBase.trans hp)
-  have hEw0 (p : Real × Real) : 0 ≤ Ew p := by
-    dsimp only [Ew, windowedSum]
-    apply Finset.sum_nonneg
-    intro y _
-    by_cases hy : p ∈ normalizedWindowSet rho (a y) (b y)
-    · simp [Set.indicator_of_mem hy, he y]
-    · simp [Set.indicator_of_notMem hy]
-  have hCw0 (p : Real × Real) : 0 ≤ Cw p := by
-    dsimp only [Cw, windowedSum]
-    apply Finset.sum_nonneg
-    intro y _
-    exact Set.indicator_nonneg (fun _ _ => zero_le_one) _
-  have hCv0 (p : Real × Real) : 0 ≤ Cv p := by
-    dsimp only [Cv, boundaryCount]
-    apply Finset.sum_nonneg
-    intro y _
-    exact Set.indicator_nonneg (fun _ _ => zero_le_one) _
-  have hbase0 : 0 ≤ rho ^ 2 * S / 4 := by positivity
-  have hEraw : cE * Ew p ≤ Spr p := by
-    dsimp only [F] at hpBase
-    nlinarith only [hpBase, hbase0, hcW, hcV, hCw0 p, hCv0 p]
-  have hCraw : cW * Cw p ≤ Spr p := by
-    dsimp only [F] at hpBase
-    nlinarith only [hpBase, hbase0, hcE, hcV, hEw0 p, hCv0 p]
-  have hVraw : cV * Cv p ≤ Spr p := by
-    dsimp only [F] at hpBase
-    nlinarith only [hpBase, hbase0, hcE, hcW, hEw0 p, hCw0 p]
-  refine ⟨p, hpBase.trans ?_, ?_, ?_, ?_⟩
-  · dsimp only [F]
-    nlinarith only [hcE, hcW, hcV, hEw0 p, hCw0 p, hCv0 p]
-  · dsimp only [cE] at hEraw
-    calc
-      Ew p = (720 * eta) * ((1 / (720 * eta)) * Ew p) := by
-        field_simp
-      _ ≤ (720 * eta) * Spr p :=
-        mul_le_mul_of_nonneg_left hEraw (by positivity)
-      _ = 720 * eta * Spr p := rfl
-  · dsimp only [cW] at hCraw
-    calc
-      S * Cw p = (12 * T) * ((S / (12 * T)) * Cw p) := by
-        field_simp
-      _ ≤ (12 * T) * Spr p :=
-        mul_le_mul_of_nonneg_left hCraw (by positivity)
-      _ = 12 * T * Spr p := rfl
-  · dsimp only [cV] at hVraw
-    calc
-      rho ^ 2 * S * Cv p =
-          (12 * sigma * (1 + 2 * rho) * T) *
-            ((rho ^ 2 * S / (12 * sigma * (1 + 2 * rho) * T)) * Cv p) := by
-        field_simp
-      _ ≤ (12 * sigma * (1 + 2 * rho) * T) * Spr p :=
-        mul_le_mul_of_nonneg_left hVraw (by positivity)
-      _ = 12 * sigma * (1 + 2 * rho) * T * Spr p := rfl
+    simp [prob, hcard]
+  have hIntCv : (∫ p, Cv p ∂μ) ≤ 4 * sigma / (1 + 2 * rho) * T :=
+    (integral_boundaryCount_le rho sigma a b hrho hsigma.le).trans_eq (by rw [hcard])
+  have hprob0 : 0 ≤ prob := by positivity
+  have hprob : rho ^ 2 ≤ prob :=
+    calc rho ^ 2 = (2 * rho / 2) ^ 2 := by ring
+      _ ≤ prob := pow_le_pow_left₀ (by positivity)
+          (div_le_div_of_nonneg_left (by positivity) (by positivity) hL) 2
+  have hEpen : (720 * eta)⁻¹ * (∫ p, Ew p ∂μ) ≤ prob * S / 12 := by
+    rw [hIntEw, inv_mul_le_iff₀ (by positivity)]
+    linarith [mul_le_mul_of_nonneg_left hE hprob0]
+  have hWpen : (12 * T)⁻¹ * (S * ∫ p, Cw p ∂μ) ≤ prob * S / 12 := by
+    rw [hIntCw, inv_mul_le_iff₀ (by positivity)]
+    linarith
+  have hVpen : (12 * sigma * (1 + 2 * rho) * T)⁻¹ * (rho ^ 2 * S * ∫ p, Cv p ∂μ) ≤
+      prob * S / 12 := by
+    rw [inv_mul_le_iff₀ (by positivity)]
+    calc rho ^ 2 * S * ∫ p, Cv p ∂μ ≤ rho ^ 2 * S * (4 * sigma / (1 + 2 * rho) * T) := by
+          gcongr
+      _ = _ := by dsimp only [prob]; field
+  have hEw0 : 0 ≤ Ew p := Finset.sum_nonneg fun y _ => Set.indicator_nonneg (fun _ _ => he y) _
+  have hCw0 : 0 ≤ Cw p :=
+    Finset.sum_nonneg fun y _ => Set.indicator_nonneg (fun _ _ => zero_le_one) _
+  have hCv0 : 0 ≤ Cv p :=
+    Finset.sum_nonneg fun y _ => Set.indicator_nonneg (fun _ _ => zero_le_one) _
+  have h0E : 0 ≤ (720 * eta)⁻¹ * Ew p := by positivity
+  have h0W : 0 ≤ (12 * T)⁻¹ * (S * Cw p) := by positivity
+  have h0V : 0 ≤ (12 * sigma * (1 + 2 * rho) * T)⁻¹ * (rho ^ 2 * S * Cv p) := by positivity
+  have hpF : rho ^ 2 * S / 4 ≤ Spr p - (720 * eta)⁻¹ * Ew p - (12 * T)⁻¹ * (S * Cw p) -
+      (12 * sigma * (1 + 2 * rho) * T)⁻¹ * (rho ^ 2 * S * Cv p) := by
+    linarith [mul_le_mul_of_nonneg_left hU hprob0, mul_le_mul_of_nonneg_right hprob hS.le]
+  have hbase : 0 ≤ rho ^ 2 * S / 4 := by positivity
+  exact ⟨p, by linarith, (inv_mul_le_iff₀ (by positivity)).mp (by linarith),
+    (inv_mul_le_iff₀ (by positivity)).mp (by linarith),
+    (inv_mul_le_iff₀ (by positivity)).mp (by linarith)⟩
 
 /-- **Gowers, Lemma 10.5.** -/
 theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
   classical
   intro N _ X _ _ D phi B alpha rho M sigma eta x hsetup hsigmaAlpha
     hanchor hrho hrhoAlpha hrhoAlphaSq hsigmaRho
-  rcases hsetup with
-    ⟨hbounds, hsigmaPos, heta, hetaOne, hsymmetric, hinvariant, happrox⟩
-  rcases hbounds with ⟨halpha, halphaOne, hM, hcard, hfibre⟩
-  rcases hanchor with ⟨_, hSanchor, hEanchor⟩
-  have hsetup' : Section10Setup D phi B alpha M sigma eta :=
-    ⟨⟨halpha, halphaOne, hM, hcard, hfibre⟩, hsigmaPos, heta, hetaOne,
-      hsymmetric, hinvariant, happrox⟩
+  obtain ⟨⟨halpha, halphaOne, hM, hcard, hfibre⟩, hsigmaPos, heta, -, hsymmetric, hinvariant, -⟩ :=
+    id hsetup
+  obtain ⟨-, hSanchor, hEanchor⟩ := hanchor
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   have hMreal : (0 : Real) < M := by exact_mod_cast hM
-  have hetaNe : eta ≠ 0 := by
-    intro heta0
-    subst eta
-    norm_num at hsigmaRho
-    linarith
-  have hetaPos : 0 < eta := lt_of_le_of_ne heta (Ne.symm hetaNe)
-  have hL : 1 + 2 * rho ≤ 2 := by
-    linarith
+  have hetaPos : 0 < eta := lt_of_le_of_ne heta fun h => by
+    subst h; norm_num at hsigmaRho; linarith
+  have hL : 1 + 2 * rho ≤ 2 := by linarith
   let K : Real := qScale alpha M N
   let T : Real := alpha * M * N
   let q : X → Real := fun y => domainDifferenceWeight D x y
@@ -685,455 +503,164 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
   let S : Real := domainTotalWeight D x
   let X' : Finset X := Finset.univ.filter fun y =>
     alpha ^ 2 * M / 8 ≤ (D.fibreSize y : Real)
-  have hK : 0 < K := by
-    dsimp only [K, qScale]
-    positivity
+  have hK : 0 < K := by simp only [K, qScale]; positivity
   have hT : 0 < T := by positivity
-  have hS : 0 < S := by
-    have hbase : 0 < alpha ^ 3 * M ^ 3 * N ^ 2 / 4 := by positivity
-    dsimp only [S]
-    exact hbase.trans_le hSanchor
-  have hbasic := lemma_10_1_holds N X D alpha M
-    ⟨halpha, halphaOne, hM, hcard, hfibre⟩
+  have hS : 0 < S :=
+    (by positivity : (0 : Real) < alpha ^ 3 * M ^ 3 * N ^ 2 / 4).trans_le hSanchor
   have hq (y : X) : 0 ≤ q y := by positivity
-  have hqUpper (y : X) : q y ≤ K := by
-    dsimp only [q, K, qScale]
-    exact hbasic.1 x y
-  have he (y : X) : 0 ≤ e y := by
-    dsimp only [e]
-    apply mul_nonneg
-    · unfold domainProportionateError
-      positivity
-    · positivity
-  have ha (y : X) : 0 ≤ a y ∧ a y ≤ 1 := by
-    dsimp only [a, normalizedQ]
-    constructor
-    · positivity
-    · rw [div_le_one hK]
-      exact hqUpper y
-  have hb (y : X) : 0 ≤ b y ∧ b y ≤ 1 := by
-    dsimp only [b, normalizedR]
-    constructor
-    · positivity
-    · rw [div_le_one hMreal]
-      exact_mod_cast hfibre (D.index y)
-  have hSsum : S = ∑ y : X, q y := by
-    dsimp only [S, q, domainTotalWeight]
-    rw [Nat.cast_sum]
-  have hEsum : (∑ y : X, e y) ≤ 60 * eta * S := by
-    dsimp only [e, S]
-    exact hEanchor
-  have hsmallCard :
-      (countWhere (fun y : X =>
-        ¬ alpha ^ 2 * M / 8 ≤ (D.fibreSize y : Real)) : Real) ≤
-          alpha ^ 2 * M * N / 8 :=
-    small_eighth_fibre_card_bound D alpha M
-  have hbadWeight :
-      (∑ y : X, if ¬ alpha ^ 2 * M / 8 ≤ (D.fibreSize y : Real)
-        then q y else 0) ≤ alpha ^ 3 * M ^ 3 * N ^ 2 / 8 := by
-    calc
-      (∑ y : X, if ¬ alpha ^ 2 * M / 8 ≤ (D.fibreSize y : Real)
-          then q y else 0) ≤
-          ∑ y : X, if ¬ alpha ^ 2 * M / 8 ≤ (D.fibreSize y : Real)
-            then K else 0 := by
-        apply Finset.sum_le_sum
-        intro y _
-        by_cases hy : ¬ alpha ^ 2 * M / 8 ≤ (D.fibreSize y : Real)
-        · rw [if_pos hy, if_pos hy]
-          exact hqUpper y
-        · rw [if_neg hy, if_neg hy]
-      _ = (countWhere (fun y : X =>
-          ¬ alpha ^ 2 * M / 8 ≤ (D.fibreSize y : Real)) : Real) * K := by
-        rw [countWhere_cast_eq_sum_ite, Finset.sum_mul]
-        apply Finset.sum_congr rfl
-        intro y _
-        split_ifs <;> simp
-      _ ≤ (alpha ^ 2 * M * N / 8) * K :=
-        mul_le_mul_of_nonneg_right hsmallCard hK.le
-      _ = alpha ^ 3 * M ^ 3 * N ^ 2 / 8 := by
-        dsimp only [K, qScale]
-        ring
-  have hsplit :
-      S = (∑ y ∈ X', q y) +
-        ∑ y : X, if ¬ alpha ^ 2 * M / 8 ≤ (D.fibreSize y : Real)
-          then q y else 0 := by
-    rw [hSsum]
-    dsimp only [X']
-    calc
-      (∑ y : X, q y) = ∑ y ∈ (Finset.univ : Finset X), q y := by simp
-      _ = (∑ y ∈ (Finset.univ : Finset X) with
-          alpha ^ 2 * M / 8 ≤ (D.fibreSize y : Real), q y) +
-          ∑ y ∈ (Finset.univ : Finset X) with
-            ¬ alpha ^ 2 * M / 8 ≤ (D.fibreSize y : Real), q y :=
-        (Finset.sum_filter_add_sum_filter_not (Finset.univ : Finset X)
-          (fun y => alpha ^ 2 * M / 8 ≤ (D.fibreSize y : Real)) q).symm
-      _ = (∑ y ∈ Finset.univ.filter
-          (fun y => alpha ^ 2 * M / 8 ≤ (D.fibreSize y : Real)), q y) +
-          ∑ y : X, if ¬ alpha ^ 2 * M / 8 ≤ (D.fibreSize y : Real)
-            then q y else 0 := by
-        simp only [Finset.sum_filter]
-  have hU : S / 2 ≤ ∑ y ∈ X', q y := by linarith
-  have hTcard : (Fintype.card X : Real) = T := hcard
-  obtain ⟨p, hSpr, hEw, hCw, hCv⟩ :=
-    exists_regular_parameters rho sigma eta S T a b q e X' hrho hL
-      hsigmaPos hetaPos hS hT ha hb hq he hU hEsum hTcard
-  let W : Finset X := (by
-       classical
-       exact Finset.univ.filter fun y =>
-         p ∈ normalizedWindowSet rho (normalizedQ D x alpha M y) (normalizedR D M y) : Finset X)
-  let V : Finset X := (by
-       classical
-       exact Finset.univ.filter fun y =>
-         p ∈ normalizedBoundarySet rho sigma
-           (normalizedQ D x alpha M y) (normalizedR D M y) : Finset X)
-  have hWfilter : windowFilter rho a b Finset.univ p = W := by
-    ext y
-    simp [windowFilter, W, a, b]
-  have hVfilter : boundaryFilter rho sigma a b p = V := by
-    ext y
-    simp [boundaryFilter, V, a, b]
-  have hSprFilter : windowFilter rho a b X' p =
-      X'.filter (fun y => y ∈ W) := by
-    ext y
-    simp [windowFilter, W, a, b]
-  have hSprEq : windowedSum rho a b q X' p =
-      ∑ y ∈ X'.filter (fun y => y ∈ W), q y := by
-    rw [windowedSum_eq_filter]
-    rw [hSprFilter]
-  have hEwEq : windowedSum rho a b e Finset.univ p =
-      ∑ y ∈ W, e y := by
-    rw [windowedSum_eq_filter]
-    rw [hWfilter]
-  have hCwEq : windowedSum rho a b (fun _ => 1) Finset.univ p = W.card := by
-    rw [windowedSum_eq_filter]
-    rw [hWfilter]
-    simp only [Finset.sum_const, nsmul_eq_mul, mul_one]
-  have hCvEq : boundaryCount rho sigma a b p = V.card := by
-    rw [boundaryCount_eq_card_filter]
-    rw [hVfilter]
-  rw [hSprEq] at hSpr hEw hCw hCv
-  rw [hEwEq] at hEw
-  rw [hCwEq] at hCw
-  rw [hCvEq] at hCv
-  have hmemW (y : X) : y ∈ W ↔
-      p ∈ normalizedWindowSet rho (a y) (b y) := by
-    simp [W, a, b]
-  have hmemV (y : X) : y ∈ V ↔
-      p ∈ normalizedBoundarySet rho sigma (a y) (b y) := by
-    simp [V, a, b]
+  have hqUpper (y : X) : q y ≤ K := (lemma_10_1_holds N X D alpha M hsetup.1).1 x y
+  have hε (y : X) : 0 ≤ domainProportionateError D phi B x y := by
+    unfold domainProportionateError; positivity
+  have he (y : X) : 0 ≤ e y := mul_nonneg (hε y) (hq y)
+  have ha (y : X) : 0 ≤ a y ∧ a y ≤ 1 :=
+    ⟨div_nonneg (hq y) hK.le, (div_le_one hK).2 (hqUpper y)⟩
+  have hb (y : X) : 0 ≤ b y ∧ b y ≤ 1 :=
+    ⟨div_nonneg (Nat.cast_nonneg _) hMreal.le,
+      (div_le_one hMreal).2 (by exact_mod_cast hfibre (D.index y))⟩
+  have hqScale (y : X) : q y = a y * K := (div_mul_cancel₀ _ hK.ne').symm
+  have hRScale (y : X) : (D.fibreSize y : Real) = b y * M := (div_mul_cancel₀ _ hMreal.ne').symm
+  have hSsum : S = ∑ y : X, q y := Nat.cast_sum _ _
+  -- The points in fibres smaller than `alpha^2 M / 8` carry at most half of `S`.
+  have hU : S / 2 ≤ ∑ y ∈ X', q y := by
+    have hbad : (∑ y : X, if ¬ alpha ^ 2 * M / 8 ≤ (D.fibreSize y : Real) then q y else 0) ≤
+        (countWhere fun y : X => ¬ alpha ^ 2 * M / 8 ≤ (D.fibreSize y : Real)) * K := by
+      rw [countWhere_cast_eq_sum_ite, Finset.sum_mul]
+      exact Finset.sum_le_sum fun y _ => by split_ifs <;> simp [hqUpper y]
+    have hsplit := Finset.sum_filter_add_sum_filter_not Finset.univ
+      (fun y : X => alpha ^ 2 * M / 8 ≤ (D.fibreSize y : Real)) q
+    rw [Finset.sum_filter (fun y : X => ¬ alpha ^ 2 * M / 8 ≤ (D.fibreSize y : Real))] at hsplit
+    have hsmall := mul_le_mul_of_nonneg_right (small_eighth_fibre_card_bound D alpha M) hK.le
+    have hK' : alpha ^ 2 * M * N / 8 * K = alpha ^ 3 * M ^ 3 * N ^ 2 / 8 := by
+      simp only [K, qScale]; ring
+    linarith
+  obtain ⟨p, hSpr, hEw, hCw, hCv⟩ := exists_regular_parameters rho sigma eta S T a b q e X'
+    hrho hL hsigmaPos hetaPos hS hT ha hb hq he hU hEanchor hcard
+  simp only [windowedSum_eq_filter, boundaryCount_eq_card_filter, Finset.sum_const,
+    nsmul_eq_mul, mul_one] at hSpr hEw hCw hCv
+  set W := windowFilter rho a b Finset.univ p
+  set V := boundaryFilter rho sigma a b p
+  set Wx := windowFilter rho a b X' p
+  have hmemW (y : X) : y ∈ W ↔ p ∈ normalizedWindowSet rho (a y) (b y) := by
+    simp [W, windowFilter]
+  have hmemV (y : X) : y ∈ V ↔ p ∈ normalizedBoundarySet rho sigma (a y) (b y) := by
+    simp [V, boundaryFilter]
   have hWbounds (y : X) (hy : y ∈ W) :
-      (a y - rho ≤ p.1 ∧ p.1 ≤ a y + rho) ∧
-      (b y - rho ≤ p.2 ∧ p.2 ≤ b y + rho) := by
-    simpa only [normalizedWindowSet, Set.mem_prod, Set.mem_Icc] using
-      (hmemW y).mp hy
-  have hqScale (y : X) : q y = a y * K := by
-    dsimp only [q, a, normalizedQ, K, qScale]
-    field_simp
-  have hRScale (y : X) : (D.fibreSize y : Real) = b y * M := by
-    dsimp only [b, normalizedR]
-    field_simp
-  have hSprLeW :
-      (∑ y ∈ X'.filter (fun y => y ∈ W), q y) ≤ ∑ y ∈ W, q y := by
-    apply Finset.sum_le_sum_of_subset_of_nonneg
-    · intro y hy
-      exact (Finset.mem_filter.mp hy).2
-    · intro y _ _
-      exact hq y
-  have hsumWLeK : (∑ y ∈ W, q y) ≤ W.card * K := by
-    calc
-      (∑ y ∈ W, q y) ≤ ∑ _y ∈ W, K := by
-        apply Finset.sum_le_sum
-        intro y _
-        exact hqUpper y
-      _ = W.card * K := by simp
-  have hSprStrong :
-      rho ^ 2 * alpha ^ 3 * M ^ 3 * N ^ 2 / 16 ≤
-        ∑ y ∈ X'.filter (fun y => y ∈ W), q y := by
-    calc
-      rho ^ 2 * alpha ^ 3 * M ^ 3 * N ^ 2 / 16 =
-          rho ^ 2 * (alpha ^ 3 * M ^ 3 * N ^ 2 / 4) / 4 := by ring
-      _ ≤ rho ^ 2 * S / 4 := by
-        gcongr
-      _ ≤ ∑ y ∈ X'.filter (fun y => y ∈ W), q y := hSpr
-  have hWcardLower :
-      rho ^ 2 * alpha ^ 2 * M * N / 16 ≤ (W.card : Real) := by
-    apply (mul_le_mul_iff_right₀ hK).mp
-    calc
-      K * (rho ^ 2 * alpha ^ 2 * M * N / 16) =
-          rho ^ 2 * alpha ^ 3 * M ^ 3 * N ^ 2 / 16 := by
-        dsimp only [K, qScale]
-        ring
-      _ ≤ ∑ y ∈ X'.filter (fun y => y ∈ W), q y := hSprStrong
-      _ ≤ ∑ y ∈ W, q y := hSprLeW
-      _ ≤ W.card * K := hsumWLeK
-      _ = K * W.card := by ring
-  have hWcardPos : 0 < (W.card : Real) :=
-    lt_of_lt_of_le (by positivity) hWcardLower
-  have hWnonempty : W.Nonempty := by
-    apply Finset.card_pos.mp
-    exact_mod_cast hWcardPos
-  have hsumWUpperCenter :
-      (∑ y ∈ W, q y) ≤ W.card * ((p.1 + rho) * K) := by
-    calc
-      (∑ y ∈ W, q y) ≤ ∑ _y ∈ W, (p.1 + rho) * K := by
-        apply Finset.sum_le_sum
-        intro y hy
-        rw [hqScale]
-        apply mul_le_mul_of_nonneg_right _ hK.le
-        linarith only [(hWbounds y hy).1.1]
-      _ = W.card * ((p.1 + rho) * K) := by simp
-  have hScenter : S ≤ 12 * T * (p.1 + rho) * K := by
-    have hmul : S * (W.card : Real) ≤
-        (12 * T * (p.1 + rho) * K) * W.card := by
-      calc
-        S * (W.card : Real) ≤
-            12 * T * ∑ y ∈ X'.filter (fun y => y ∈ W), q y := hCw
-        _ ≤ 12 * T * ∑ y ∈ W, q y := by
-          gcongr
-        _ ≤ 12 * T * (W.card * ((p.1 + rho) * K)) := by
-          gcongr
-        _ = (12 * T * (p.1 + rho) * K) * W.card := by ring
-    apply (mul_le_mul_iff_right₀ hWcardPos).mp
-    calc
-      (W.card : Real) * S = S * W.card := by ring
-      _ ≤ (12 * T * (p.1 + rho) * K) * W.card := hmul
-      _ = W.card * (12 * T * (p.1 + rho) * K) := by ring
+      (a y - rho ≤ p.1 ∧ p.1 ≤ a y + rho) ∧ (b y - rho ≤ p.2 ∧ p.2 ≤ b y + rho) :=
+    (hmemW y).mp hy
+  have hWx : Wx ⊆ W := Finset.filter_subset_filter _ (Finset.subset_univ _)
+  have hSprLeW : (∑ y ∈ Wx, q y) ≤ ∑ y ∈ W, q y :=
+    Finset.sum_le_sum_of_subset_of_nonneg hWx fun y _ _ => hq y
+  have hsumWLeK : (∑ y ∈ W, q y) ≤ W.card * K :=
+    (Finset.sum_le_card_nsmul _ _ _ fun y _ => hqUpper y).trans_eq (nsmul_eq_mul _ _)
+  have hWcardLower : rho ^ 2 * alpha ^ 2 * M * N / 16 ≤ (W.card : Real) := by
+    refine le_of_mul_le_mul_right ?_ hK
+    calc rho ^ 2 * alpha ^ 2 * M * N / 16 * K =
+          rho ^ 2 * (alpha ^ 3 * M ^ 3 * N ^ 2 / 4) / 4 := by simp only [K, qScale]; ring
+      _ ≤ rho ^ 2 * S / 4 := by gcongr
+      _ ≤ _ := hSpr.trans (hSprLeW.trans hsumWLeK)
+  have hWcardPos : (0 : Real) < W.card :=
+    (by positivity : (0 : Real) < rho ^ 2 * alpha ^ 2 * M * N / 16).trans_le hWcardLower
+  have hsumWUpper : (∑ y ∈ W, q y) ≤ W.card * ((p.1 + rho) * K) := by
+    rw [← nsmul_eq_mul]
+    refine Finset.sum_le_card_nsmul _ _ _ fun y hy => ?_
+    rw [hqScale]
+    exact mul_le_mul_of_nonneg_right (by linarith [(hWbounds y hy).1.1]) hK.le
   have hQcenter : alpha / 48 ≤ p.1 + rho := by
-    have hanchor' : (T * K) * (alpha / 4) ≤ S := by
-      calc
-        (T * K) * (alpha / 4) =
-            alpha ^ 3 * M ^ 3 * N ^ 2 / 4 := by
-          dsimp only [T, K, qScale]
-          ring
-        _ ≤ S := hSanchor
-    have hcancel : (T * K) * (alpha / 4) ≤
-        (T * K) * (12 * (p.1 + rho)) := by linarith
-    have := (mul_le_mul_iff_right₀ (mul_pos hT hK)).mp hcancel
+    have hScenter : S ≤ 12 * T * (p.1 + rho) * K := by
+      refine le_of_mul_le_mul_right ?_ hWcardPos
+      linarith [mul_le_mul_of_nonneg_left (hSprLeW.trans hsumWUpper)
+        (by positivity : (0 : Real) ≤ 12 * T)]
+    refine le_of_mul_le_mul_left ?_ (mul_pos hT hK)
+    have : T * K * (alpha / 4) = alpha ^ 3 * M ^ 3 * N ^ 2 / 4 := by
+      simp only [T, K, qScale]; ring
     linarith
-  have hQratio : (p.1 + rho) / 2 ≤ p.1 - rho := by
-    have : 4 * rho ≤ p.1 + rho := by linarith
-    linarith
+  have hQratio : (p.1 + rho) / 2 ≤ p.1 - rho := by linarith
   have hQlowerPos : 0 < p.1 - rho := by linarith
-  have hqVar : VariesByFactorAtMostTwo W
-      (fun y => domainDifferenceWeight D x y) := by
-    intro y hy z hz
-    have hay : a y ≤ p.1 + rho := by linarith only [(hWbounds y hy).1.1]
-    have haz : p.1 - rho ≤ a z := by linarith only [(hWbounds z hz).1.2]
-    have hreal : q y ≤ 2 * q z := by
-      rw [hqScale y, hqScale z]
-      calc
-        a y * K ≤ (2 * a z) * K :=
-          mul_le_mul_of_nonneg_right (by linarith only [hay, haz, hQratio]) hK.le
-        _ = 2 * (a z * K) := by ring
-    dsimp only [q] at hreal
-    exact_mod_cast hreal
-  have hXWnonempty : (X'.filter (fun y => y ∈ W)).Nonempty := by
-    by_contra hne
-    have hempty := Finset.not_nonempty_iff_eq_empty.mp hne
-    rw [hempty] at hSprStrong
-    simp only [Finset.sum_empty] at hSprStrong
-    have : 0 < rho ^ 2 * alpha ^ 3 * M ^ 3 * N ^ 2 / 16 := by
-      positivity
-    linarith
-  obtain ⟨y₀, hy₀⟩ := hXWnonempty
-  have hy₀X : y₀ ∈ X' := (Finset.mem_filter.mp hy₀).1
-  have hy₀W : y₀ ∈ W := (Finset.mem_filter.mp hy₀).2
+  obtain ⟨y₀, hy₀⟩ := Finset.nonempty_of_sum_ne_zero (lt_of_lt_of_le (by positivity) hSpr).ne'
   have hRcenter : alpha ^ 2 / 8 ≤ p.2 + rho := by
-    have hy₀good : alpha ^ 2 * M / 8 ≤ (D.fibreSize y₀ : Real) := by
-      simpa only [X', Finset.mem_filter, Finset.mem_univ, true_and] using hy₀X
-    have hby₀ : b y₀ ≤ p.2 + rho := by
-      linarith only [(hWbounds y₀ hy₀W).2.1]
-    have hscaled : alpha ^ 2 * (M : Real) / 8 ≤
-        (p.2 + rho) * M := by
-      calc
-        alpha ^ 2 * (M : Real) / 8 ≤ (D.fibreSize y₀ : Real) := hy₀good
-        _ = b y₀ * M := hRScale y₀
-        _ ≤ (p.2 + rho) * M := by gcongr
-    have hscaled' : (M : Real) * (alpha ^ 2 / 8) ≤
-        (M : Real) * (p.2 + rho) := by linarith
-    have := (mul_le_mul_iff_right₀ hMreal).mp hscaled'
-    linarith
-  have hRratio : (p.2 + rho) / 2 ≤ p.2 - rho := by
-    have : 4 * rho ≤ p.2 + rho := by linarith
-    linarith
-  have hRlower : alpha ^ 2 / 16 ≤ p.2 - rho := by
-    linarith only [hRcenter, hrhoAlphaSq]
-  have hRVar : VariesByFactorAtMostTwo W D.fibreSize := by
-    intro y hy z hz
-    have hby : b y ≤ p.2 + rho := by linarith only [(hWbounds y hy).2.1]
-    have hbz : p.2 - rho ≤ b z := by linarith only [(hWbounds z hz).2.2]
-    have hreal : (D.fibreSize y : Real) ≤ 2 * D.fibreSize z := by
-      rw [hRScale y, hRScale z]
-      calc
-        b y * M ≤ (2 * b z) * M :=
-          mul_le_mul_of_nonneg_right (by linarith only [hby, hbz, hRratio]) hMreal.le
-        _ = 2 * (b z * M) := by ring
-    exact_mod_cast hreal
-  have hRpointLower (y : X) (hy : y ∈ W) :
-      alpha ^ 2 * M / 16 ≤ (D.fibreSize y : Real) := by
-    rw [hRScale]
-    have hby : p.2 - rho ≤ b y := by linarith only [(hWbounds y hy).2.2]
-    have := mul_le_mul_of_nonneg_right (hRlower.trans hby) hMreal.le
-    simpa only [div_mul_eq_mul_div] using this
-  have hFibreSaturated : D.FibreSaturated W := by
-    intro y hy z hzy
-    apply (hmemW z).mpr
-    have hay : a z = a y := by
-      dsimp only [a, normalizedQ]
-      rw [differenceWeight_eq_of_index_eq D x z y hzy]
-    have hby : b z = b y := by
-      dsimp only [b, normalizedR]
-      rw [fibreSize_eq_of_index_eq D z y hzy]
-    rw [hay, hby]
-    exact (hmemW y).mp hy
-  let Lq : Real := (p.1 - rho) * K
-  have hLq : 0 < Lq := by positivity
-  have hqWindowLower (y : X) (hy : y ∈ W) : Lq ≤ q y := by
-    rw [hqScale]
-    dsimp only [Lq]
-    apply mul_le_mul_of_nonneg_right _ hK.le
-    linarith only [(hWbounds y hy).1.2]
-  have hqWindowUpper (y : X) (hy : y ∈ W) : q y ≤ 2 * Lq := by
-    rw [hqScale]
-    dsimp only [Lq]
-    have hay : a y ≤ p.1 + rho := by
-      linarith only [(hWbounds y hy).1.1]
-    calc
-      a y * K ≤ (p.1 + rho) * K :=
-        mul_le_mul_of_nonneg_right hay hK.le
-      _ ≤ (2 * (p.1 - rho)) * K := by
-        gcongr
-        linarith only [hQratio]
-      _ = 2 * ((p.1 - rho) * K) := by ring
-  have hErrorGood (t : Real) :
-      AlmostEvery (1 - 5 * eta ^ t) W
-        (fun y => domainProportionateError D phi B x y ≤
-          300 * eta ^ (1 - t)) := by
-    apply almostEvery_of_weighted_error W q
-      (fun y => domainProportionateError D phi B x y) e eta Lq
-      (∑ y ∈ X'.filter (fun y => y ∈ W), q y)
-      t hetaPos hLq
-    · intro y
-      rfl
-    · intro y
-      unfold domainProportionateError
-      positivity
-    · exact hqWindowLower
-    · exact hqWindowUpper
-    · exact hEw
-    · exact hSprLeW
-  have hSprLeS :
-      (∑ y ∈ X'.filter (fun y => y ∈ W), q y) ≤ S := by
-    calc
-      (∑ y ∈ X'.filter (fun y => y ∈ W), q y) ≤
-          ∑ y : X, q y := by
-        apply Finset.sum_le_sum_of_subset_of_nonneg
-        · exact fun y _ => Finset.mem_univ y
-        · intro y _ _
-          exact hq y
-      _ = S := hSsum.symm
-  have hBoundaryScaled : rho ^ 2 * (V.card : Real) ≤ 24 * sigma * T := by
-    apply (mul_le_mul_iff_right₀ hS).mp
-    calc
-      S * (rho ^ 2 * (V.card : Real)) =
-          rho ^ 2 * S * (V.card : Real) := by ring
-      _ ≤ 12 * sigma * (1 + 2 * rho) * T *
-          ∑ y ∈ X'.filter (fun y => y ∈ W), q y := hCv
-      _ ≤ 12 * sigma * 2 * T * S := by gcongr
-      _ = S * (24 * sigma * T) := by ring
-  have hVcardPre : (V.card : Real) ≤
-      eta * (rho ^ 2 * alpha * T / 16) := by
-    apply (mul_le_mul_iff_right₀ (sq_pos_of_pos hrho)).mp
-    calc
-      rho ^ 2 * (V.card : Real) ≤ 24 * sigma * T := hBoundaryScaled
-      _ ≤ 24 * (eta * rho ^ 4 * alpha / 384) * T := by
-        gcongr
-      _ = rho ^ 2 * (eta * (rho ^ 2 * alpha * T / 16)) := by ring
-  have hBaseT : rho ^ 2 * alpha * T / 16 ≤ (W.card : Real) := by linarith
-  have hVcard : (V.card : Real) ≤ eta * W.card :=
-    hVcardPre.trans (mul_le_mul_of_nonneg_left hBaseT heta)
+    refine le_of_mul_le_mul_right ?_ hMreal
+    have := mul_le_mul_of_nonneg_right
+      (show b y₀ ≤ p.2 + rho by linarith [(hWbounds y₀ (hWx hy₀)).2.1]) hMreal.le
+    linarith [hRScale y₀, (Finset.mem_filter.mp (Finset.mem_filter.mp hy₀).1).2]
+  have hRratio : (p.2 + rho) / 2 ≤ p.2 - rho := by linarith
+  have hRlower : alpha ^ 2 / 16 ≤ p.2 - rho := by linarith
+  have hRpointLower (y : X) (hy : y ∈ W) : alpha ^ 2 * M / 16 ≤ (D.fibreSize y : Real) := by
+    have := mul_le_mul_of_nonneg_right
+      (show alpha ^ 2 / 16 ≤ b y by linarith [(hWbounds y hy).2.2]) hMreal.le
+    linarith [hRScale y]
+  -- On `W`, a value `c y * L` with `c y` in a window of half-width `rho` around a centre `z`
+  -- with `(z + rho) / 2 ≤ z - rho` varies by a factor of at most two.
+  have hvar (f : X → Nat) (c : X → Real) (L z : Real) (hLpos : 0 < L)
+      (hf : ∀ y, (f y : Real) = c y * L) (hc : ∀ y ∈ W, c y - rho ≤ z ∧ z ≤ c y + rho)
+      (hz : (z + rho) / 2 ≤ z - rho) : VariesByFactorAtMostTwo W f := by
+    intro y hy w hw
+    have h : (f y : Real) ≤ 2 * f w := by
+      rw [hf, hf, ← mul_assoc]
+      exact mul_le_mul_of_nonneg_right (by linarith [(hc y hy).1, (hc w hw).2]) hLpos.le
+    exact_mod_cast h
+  have hFibreSaturated : D.FibreSaturated W := fun y hy z hzy => by
+    rw [hmemW] at hy ⊢
+    simpa only [a, b, normalizedQ, normalizedR, differenceWeight_eq_of_index_eq D x z y hzy,
+      fibreSize_eq_of_index_eq D z y hzy] using hy
+  have hqWin (y : X) (hy : y ∈ W) : (p.1 - rho) * K ≤ q y ∧ q y ≤ 2 * ((p.1 - rho) * K) := by
+    rw [hqScale, ← mul_assoc]
+    exact ⟨mul_le_mul_of_nonneg_right (by linarith [(hWbounds y hy).1.2]) hK.le,
+      mul_le_mul_of_nonneg_right (by linarith [(hWbounds y hy).1.1]) hK.le⟩
+  have hVcard : (V.card : Real) ≤ eta * W.card := by
+    have hSprLeS : (∑ y ∈ Wx, q y) ≤ S :=
+      (Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) fun y _ _ =>
+        hq y).trans_eq hSsum.symm
+    have h1 : 12 * sigma * (1 + 2 * rho) * T * ∑ y ∈ Wx, q y ≤ 12 * sigma * 2 * T * S := by
+      gcongr
+    have h2 : rho ^ 2 * V.card ≤ 24 * sigma * T := le_of_mul_le_mul_left (by linarith) hS
+    refine le_of_mul_le_mul_left ?_ (by positivity : (0 : Real) < rho ^ 2)
+    linarith [mul_le_mul_of_nonneg_right hsigmaRho hT.le,
+      mul_le_mul_of_nonneg_left hWcardLower (by positivity : (0 : Real) ≤ rho ^ 2 * eta)]
+  -- A point of `W \ V` has a partner in the `-d`-shifted fibre whose window still contains `p`.
   have hOverlap (d : ZMod N) (hd : d ∈ B) :
       (1 - eta) * W.card ≤ (W ∩ D.shift W d).card := by
     have hsub : W \ V ⊆ W ∩ D.shift W d := by
       intro y hy
-      have hyW : y ∈ W := (Finset.mem_sdiff.mp hy).1
-      have hyV : y ∉ V := (Finset.mem_sdiff.mp hy).2
-      have hyWin : p ∈ normalizedWindowSet rho (a y) (b y) :=
-        (hmemW y).mp hyW
-      have hyNotBoundary :
-          p ∉ normalizedBoundarySet rho sigma (a y) (b y) := by
-        exact fun hpV => hyV ((hmemV y).mpr hpV)
-      have hbFar : p.2 < b y + rho - sigma := by
-        by_contra h
-        apply hyNotBoundary
-        unfold normalizedBoundarySet
-        simp only [Set.mem_union, Set.mem_prod, Set.mem_Icc, Set.mem_univ,
-          and_true, true_and]
-        exact Or.inl (Or.inr ⟨by linarith, hyWin.2.2⟩)
-      have hbSigma : sigma < b y := by
-        linarith [sq_pos_of_pos halpha, hRlower]
-      have hRgt : sigma * M < (D.fibreSize y : Real) := by
-        dsimp only [b, normalizedR] at hbSigma
-        exact (lt_div_iff₀ hMreal).mp hbSigma
-      have hnegd : -d ∈ B := (hsymmetric d).mp hd
-      have hinvTarget := hinvariant (D.index y) (-d) hnegd
-      have htargetPosReal :
-          0 < ((D.fibre (D.index y - d)).card : Real) := by
-        have hindex : D.index y - d = D.index y + -d := by ring
-        rw [hindex]
-        unfold MultifunctionDomain.fibreSize at hRgt
-        rcases abs_le.mp hinvTarget with ⟨hinvL, _⟩
+      obtain ⟨hyW, hyV⟩ := Finset.mem_sdiff.mp hy
+      have hyWin := (hmemW y).mp hyW
+      have hyNB : p ∉ normalizedBoundarySet rho sigma (a y) (b y) := fun h =>
+        hyV ((hmemV y).mpr h)
+      have hbFar : p.2 < b y + rho - sigma :=
+        lt_of_not_ge fun h => hyNB (Or.inl (Or.inr ⟨Set.mem_univ _, h, hyWin.2.2⟩))
+      have htarget : (0 : Real) < (D.fibre (D.index y + -d)).card := by
+        have h1 := (abs_le.mp (hinvariant (D.index y) (-d) ((hsymmetric d).mp hd))).1
+        have h2 : sigma * M < ((D.fibre (D.index y)).card : Real) :=
+          (mul_lt_mul_of_pos_right (by linarith [sq_pos_of_pos halpha]) hMreal).trans_eq
+            (hRScale y).symm
         linarith
-      have htargetPos : 0 < (D.fibre (D.index y - d)).card := by
-        exact_mod_cast htargetPosReal
-      obtain ⟨z, hzFib⟩ := Finset.card_pos.mp htargetPos
-      have hzIndex : D.index z = D.index y - d := by
-        simpa [MultifunctionDomain.fibre] using hzFib
-      have hdyz : D.index y - D.index z ∈ B := by
-        have : D.index y - D.index z = d := by rw [hzIndex]; ring
-        rwa [this]
-      have hqRaw := lemma_10_4_holds N X D phi B alpha M sigma eta
-        hsetup' x z y hdyz
+      obtain ⟨z, hz⟩ := Finset.card_pos.mp (Nat.cast_pos.mp htarget)
+      have hyIndex : D.index y = D.index z + d := by
+        rw [(Finset.mem_filter.mp hz).2, neg_add_cancel_right]
       have hqClose : |a z - a y| ≤ sigma := by
         dsimp only [a, normalizedQ]
-        rw [← sub_div, abs_div, abs_of_pos hK, div_le_iff₀ hK]
-        calc
-          |(domainDifferenceWeight D x z : Real) -
-              domainDifferenceWeight D x y| =
-              |(domainDifferenceWeight D x y : Real) -
-                domainDifferenceWeight D x z| := abs_sub_comm _ _
-          _ ≤ sigma * alpha * M ^ 2 * N := hqRaw
-          _ = sigma * K := by dsimp only [K, qScale]; ring
-      have hinvR := hinvariant (D.index z) d hd
-      have hyIndex : D.index z + d = D.index y := by rw [hzIndex]; ring
-      have hRRaw :
-          |(D.fibreSize z : Real) - D.fibreSize y| ≤ sigma * M := by
-        unfold MultifunctionDomain.fibreSize
-        rw [← hyIndex]
-        simpa only [abs_sub_comm] using hinvR
+        rw [← sub_div, abs_div, abs_of_pos hK, div_le_iff₀ hK, abs_sub_comm]
+        refine (lemma_10_4_holds N X D phi B alpha M sigma eta hsetup x z y ?_).trans_eq
+          (by simp only [K, qScale]; ring)
+        rwa [hyIndex, add_sub_cancel_left]
       have hRClose : |b z - b y| ≤ sigma := by
-        dsimp only [b, normalizedR]
-        rw [← sub_div, abs_div, abs_of_pos hMreal, div_le_iff₀ hMreal]
-        simpa [mul_comm] using hRRaw
-      have hzWin := mem_normalizedWindow_of_close_of_not_boundary hyWin
-        hyNotBoundary hqClose hRClose
-      have hzW : z ∈ W := (hmemW z).mpr hzWin
-      have hyShift : y ∈ D.shift W d := by
-        simp only [MultifunctionDomain.shift, Finset.mem_filter,
-          Finset.mem_univ, true_and]
-        exact ⟨z, hzW, by rw [hzIndex]; ring⟩
-      exact Finset.mem_inter.mpr ⟨hyW, hyShift⟩
-    have hpart : ((W \ V).card : Real) + ((W ∩ V).card : Real) = W.card := by
-      exact_mod_cast Finset.card_sdiff_add_card_inter W V
-    have hinterV : ((W ∩ V).card : Real) ≤ V.card := by
-      exact_mod_cast Finset.card_le_card Finset.inter_subset_right
-    have hgood : (1 - eta) * W.card ≤ ((W \ V).card : Real) := by
-      linarith only [hVcard, hinterV, hpart]
-    exact hgood.trans (by exact_mod_cast Finset.card_le_card hsub)
-  refine ⟨W, ?_⟩
-  intro t
-  exact ⟨hFibreSaturated, hqVar, hErrorGood t, hWcardLower, hRVar,
-    hRpointLower, hOverlap⟩
+        dsimp only [b, normalizedR, MultifunctionDomain.fibreSize]
+        rw [← sub_div, abs_div, abs_of_pos hMreal, div_le_iff₀ hMreal, hyIndex, abs_sub_comm]
+        exact hinvariant (D.index z) d hd
+      exact Finset.mem_inter.mpr ⟨hyW, Finset.mem_filter.mpr ⟨Finset.mem_univ _, z,
+        (hmemW z).mpr (mem_normalizedWindow_of_close_of_not_boundary hyWin hyNB hqClose hRClose),
+        hyIndex⟩⟩
+    have h1 : (W.card : Real) ≤ (W \ V).card + V.card := by
+      exact_mod_cast Finset.card_le_card_sdiff_add_card
+    have h2 : ((W \ V).card : Real) ≤ (W ∩ D.shift W d).card := by
+      exact_mod_cast Finset.card_le_card hsub
+    linarith
+  refine ⟨W, fun t => ⟨hFibreSaturated,
+    hvar _ a K p.1 hK hqScale (fun y hy => (hWbounds y hy).1) hQratio,
+    almostEvery_of_weighted_error W q (fun y => domainProportionateError D phi B x y) e eta
+      ((p.1 - rho) * K) (∑ y ∈ Wx, q y) t hetaPos (mul_pos hQlowerPos hK) (fun _ => rfl) hε
+      (fun y hy => (hqWin y hy).1) (fun y hy => (hqWin y hy).2) hEw hSprLeW,
+    hWcardLower, hvar _ b M p.2 hMreal hRScale (fun y hy => (hWbounds y hy).2) hRratio,
+    hRpointLower, hOverlap⟩⟩
 
 /-- The fifth-power variant used in the downstream local-difference construction. -/
 theorem lemma_10_5_holds : lemma_10_5 := by

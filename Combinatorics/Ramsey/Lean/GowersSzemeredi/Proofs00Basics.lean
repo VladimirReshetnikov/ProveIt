@@ -133,10 +133,7 @@ lemma cor24_exponential_eq_exp_valMinAbs {N : Nat} [NeZero N]
     _ = Complex.exp (2 * Real.pi * Complex.I * (x.valMinAbs : Int) / N) :=
       ZMod.stdAddChar_coe x.valMinAbs
     _ = Complex.exp
-        (Complex.I * (2 * Real.pi * (x.valMinAbs : Real) / N : Real)) := by
-      congr 1
-      push_cast
-      ring
+        (Complex.I * (2 * Real.pi * (x.valMinAbs : Real) / N : Real)) := by push_cast; ring
 
 end
 
@@ -244,10 +241,7 @@ lemma lemma154_sum_mul_sub_eq_two {N : Nat} {I : Type*}
   rw [← Finset.sum_sub_distrib]
   calc
     (∑ t, (a t * x t - a t * y t)) =
-        ∑ t, a t * (x t - y t) := by
-      apply Finset.sum_congr rfl
-      intro t _
-      ring
+        ∑ t, a t * (x t - y t) := by ring
     _ = ∑ t ∈ ({i, j} : Finset I), a t * (x t - y t) := by
       symm
       apply Finset.sum_subset (by simp)
@@ -414,9 +408,7 @@ theorem lemma55_centeredAbs_intCast_le {N : Nat} [NeZero N] (i : Int) :
   cases i with
   | ofNat n => simpa using hnat n
   | negSucc n =>
-      have heq : ((Int.negSucc n : Int) : ZMod N) = -((n + 1 : Nat) : ZMod N) := by
-        push_cast
-        ring
+      have heq : ((Int.negSucc n : Int) : ZMod N) = -((n + 1 : Nat) : ZMod N) := by norm_num
       rw [heq, centeredAbs, ZMod.natAbs_valMinAbs_neg]
       exact hnat (n + 1)
 

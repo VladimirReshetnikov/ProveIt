@@ -309,17 +309,8 @@ theorem lemma_7_5_holds : lemma_7_5 := by
     intro z hz w hw hfirst
     have hzmem : z ∈ domain ∧ color z = a := by simpa [fiber] using hz
     have hwmem : w ∈ domain ∧ color w = a := by simpa [fiber] using hw
-    have hLltN : L + 1 ≤ N := by
-      have hdenom4 : 4 ≤ 4 * k * K.card := by
-        have hk1 : 1 ≤ k := by omega
-        have hK1 : 1 ≤ K.card := hK.card_pos
-        calc
-          4 = 4 * 1 * 1 := by norm_num
-          _ ≤ 4 * k * K.card := Nat.mul_le_mul (Nat.mul_le_mul_left 4 hk1) hK1
-      have : L < N := by
-        dsimp only [L]
-        exact Nat.div_lt_self (NeZero.pos N) (by omega)
-      omega
+    have hLltN : L + 1 ≤ N :=
+      Nat.div_lt_self (NeZero.pos N) (by have := hK.card_pos; nlinarith)
     have hmul : (z.2 : ZMod N) * d = (w.2 : ZMod N) * d := by
       have heq : phi z.1 - (z.2 : ZMod N) * d =
           phi w.1 - (w.2 : ZMod N) * d := by
@@ -329,21 +320,12 @@ theorem lemma_7_5_holds : lemma_7_5 := by
       rw [hfirst] at heq
       exact sub_right_injective heq
     have hcast : (z.2 : ZMod N) = (w.2 : ZMod N) := mul_right_cancel₀ hd hmul
-    have hzlt : z.2 < N := by
-      have := (Finset.mem_product.mp hzmem.1).2
-      simp only [Finset.mem_range] at this
-      omega
-    have hwlt : w.2 < N := by
-      have := (Finset.mem_product.mp hwmem.1).2
-      simp only [Finset.mem_range] at this
-      omega
-    exact Prod.ext hfirst (cor75_natCast_injective hzlt hwlt hcast)
+    exact Prod.ext hfirst (cor75_natCast_injective
+      ((Finset.mem_range.mp (Finset.mem_product.mp hzmem.1).2).trans_le hLltN)
+      ((Finset.mem_range.mp (Finset.mem_product.mp hwmem.1).2).trans_le hLltN) hcast)
   have hB'card : B'.card = fiber.card := Finset.card_image_iff.mpr hFiberInj
-  have hB'sub : B' ⊆ B := by
-    intro x hx
-    obtain ⟨z, hz, rfl⟩ := Finset.mem_image.mp hx
-    have hzdom : z ∈ domain := (Finset.mem_filter.mp hz).1
-    exact (Finset.mem_product.mp hzdom).1
+  have hB'sub : B' ⊆ B := Finset.image_subset_iff.mpr fun z hz =>
+    (Finset.mem_product.mp (Finset.mem_filter.mp hz).1).1
   have hfloor : N < (L + 1) * (4 * k * K.card) := (Nat.div_lt_iff_lt_mul hdenomPos).mp (by simp [L])
   have hscale : (N : Real) ≤ (L + 1) * (8 * (k : Real) * C ^ (4 * k)) := by
     have hfloorR : (N : Real) < (L + 1) * (4 * k * K.card) := by exact_mod_cast hfloor
@@ -380,66 +362,35 @@ theorem lemma_7_5_holds : lemma_7_5 := by
   have hFreiman : FreimanHom k B' phi := by
     refine ⟨fun _ _ => Set.mem_univ _, ?_⟩
     intro s t hsB' htB' hscard htcard hsum
-    have hsB : ∀ ⦃x⦄, x ∈ s → x ∈ B := fun x hx => hB'sub (hsB' hx)
-    have htB : ∀ ⦃x⦄, x ∈ t → x ∈ B := fun x hx => hB'sub (htB' hx)
-    have hsGraph : (s.map fun x => (x, phi x)).sum ∈ k • Gamma := by
-      have hm := cor75_multiset_sum_mem_nsmul Gamma
-        (s.map fun x => (x, phi x)) (by
+    -- the graph sum, the index sum and the phase sum of one side
+    have hside {u : Multiset (ZMod N)} (huB' : ∀ ⦃x⦄, x ∈ u → x ∈ (B' : Set (ZMod N)))
+        (hucard : Multiset.card u = k) :
+        (u.map fun x => (x, phi x)).sum ∈ k • Gamma ∧ (u.map idx).sum ≤ k * L ∧
+          (u.map phi).sum = k • a + ((u.map idx).sum : ZMod N) * d := by
+      refine ⟨?_, ?_, ?_⟩
+      · simpa [hucard] using cor75_multiset_sum_mem_nsmul Gamma (u.map fun x => (x, phi x)) (by
           intro p hp
           obtain ⟨x, hx, rfl⟩ := Multiset.mem_map.mp hp
-          exact (cor75_mem_functionGraph B phi _).2 ⟨hsB hx, rfl⟩)
-      simpa [hscard] using hm
-    have htGraph : (t.map fun x => (x, phi x)).sum ∈ k • Gamma := by
-      have hm := cor75_multiset_sum_mem_nsmul Gamma
-        (t.map fun x => (x, phi x)) (by
-          intro p hp
-          obtain ⟨x, hx, rfl⟩ := Multiset.mem_map.mp hp
-          exact (cor75_mem_functionGraph B phi _).2 ⟨htB hx, rfl⟩)
-      simpa [htcard] using hm
+          exact (cor75_mem_functionGraph B phi _).2 ⟨hB'sub (huB' hx), rfl⟩)
+      · simpa [Multiset.card_map, hucard] using Multiset.sum_le_card_nsmul (u.map idx) L (by
+          intro j hj
+          obtain ⟨x, hx, rfl⟩ := Multiset.mem_map.mp hj
+          exact hidxLe x (huB' hx))
+      · calc
+          (u.map phi).sum = (u.map fun x => a + (idx x : ZMod N) * d).sum := by
+            congr 1
+            exact Multiset.map_congr rfl fun x hx => hphiIdx x (huB' hx)
+          _ = (u.map fun _ => a).sum + (u.map fun x => (idx x : ZMod N) * d).sum :=
+            Multiset.sum_map_add
+          _ = k • a + ((u.map idx).sum : ZMod N) * d := by
+            rw [Multiset.sum_map_mul_right]
+            simp [hucard]
     let ys : Nat := (s.map idx).sum
     let yt : Nat := (t.map idx).sum
-    have hys : ys ≤ k * L := by
-      dsimp only [ys]
-      have hm := Multiset.sum_le_card_nsmul (s.map idx) L (by
-        intro j hj
-        obtain ⟨x, hx, rfl⟩ := Multiset.mem_map.mp hj
-        exact hidxLe x (hsB' hx))
-      simpa [Multiset.card_map, hscard] using hm
-    have hyt : yt ≤ k * L := by
-      dsimp only [yt]
-      have hm := Multiset.sum_le_card_nsmul (t.map idx) L (by
-        intro j hj
-        obtain ⟨x, hx, rfl⟩ := Multiset.mem_map.mp hj
-        exact hidxLe x (htB' hx))
-      simpa [Multiset.card_map, htcard] using hm
-    have hcastS : (s.map fun x => (idx x : ZMod N)).sum = (ys : ZMod N) := by
-      dsimp only [ys]
-      induction s using Multiset.induction_on <;> simp_all
-    have hcastT : (t.map fun x => (idx x : ZMod N)).sum = (yt : ZMod N) := by
-      dsimp only [yt]
-      induction t using Multiset.induction_on <;> simp_all
-    have hsPhi : (s.map phi).sum = k • a + (ys : ZMod N) * d := by
-      calc
-        (s.map phi).sum =
-            (s.map fun x => a + (idx x : ZMod N) * d).sum := by
-          congr 1
-          exact Multiset.map_congr rfl fun x hx => hphiIdx x (hsB' hx)
-        _ = (s.map fun _ => a).sum +
-            (s.map fun x => (idx x : ZMod N) * d).sum := Multiset.sum_map_add
-        _ = k • a + (ys : ZMod N) * d := by
-          rw [Multiset.sum_map_mul_right]
-          simpa [hscard] using congrArg (fun z : ZMod N => k • a + z * d) hcastS
-    have htPhi : (t.map phi).sum = k • a + (yt : ZMod N) * d := by
-      calc
-        (t.map phi).sum =
-            (t.map fun x => a + (idx x : ZMod N) * d).sum := by
-          congr 1
-          exact Multiset.map_congr rfl fun x hx => hphiIdx x (htB' hx)
-        _ = (t.map fun _ => a).sum +
-            (t.map fun x => (idx x : ZMod N) * d).sum := Multiset.sum_map_add
-        _ = k • a + (yt : ZMod N) * d := by
-          rw [Multiset.sum_map_mul_right]
-          simpa [htcard] using congrArg (fun z : ZMod N => k • a + z * d) hcastT
+    obtain ⟨hsGraph, hys, hsPhi⟩ :
+        _ ∧ ys ≤ k * L ∧ (s.map phi).sum = k • a + (ys : ZMod N) * d := hside hsB' hscard
+    obtain ⟨htGraph, hyt, htPhi⟩ :
+        _ ∧ yt ≤ k * L ∧ (t.map phi).sum = k • a + (yt : ZMod N) * d := hside htB' htcard
     by_contra hPhi
     let y : ZMod N := (s.map phi).sum - (t.map phi).sum
     have hy0 : y ≠ 0 := sub_ne_zero.mpr hPhi

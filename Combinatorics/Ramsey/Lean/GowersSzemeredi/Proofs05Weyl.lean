@@ -139,8 +139,7 @@ private lemma norm_sum_linear_phase_le (x c : Real) (n : Nat) :
       (∑ s ∈ range n, realExponential (x * s + c)) =
         realExponential c * ∑ s ∈ range n, (realExponential x) ^ s := by
     rw [Finset.mul_sum]
-    apply Finset.sum_congr rfl
-    intro s _
+    refine Finset.sum_congr rfl fun s _ => ?_
     rw [← realExponential_nat_mul, realExponential_add]
     ring_nf
   rw [hfactor, norm_mul, realExponential_norm, one_mul]
@@ -266,8 +265,7 @@ private lemma sum_mul_star_sum_eq_sum_correlation
           f p.1 * star (f p.2) := by
       exact (Finset.sum_fiberwise_of_maps_to hmaps _).symm
     _ = ∑ h ∈ d, finiteCorrelation s f h := by
-      apply Finset.sum_congr rfl
-      intro h _
+      refine Finset.sum_congr rfl fun h _ => ?_
       exact sum_difference_fiber_eq_correlation s f h
 
 private lemma norm_sum_sq_le_sum_norm_correlation
@@ -326,8 +324,7 @@ private lemma finiteCorrelation_realExponential_interval
         realExponential (phi (x + h) - phi x) := by
   unfold finiteCorrelation
   rw [filter_interval_add_mem]
-  apply Finset.sum_congr rfl
-  intro x _
+  refine Finset.sum_congr rfl fun x _ => ?_
   rw [star_realExponential, ← realExponential_add]
   congr 1
 
@@ -551,8 +548,7 @@ private lemma forwardDifference_pow_eq (k : Nat) (h : Int) :
   rw [Int.cast_add, add_pow, sum_range_succ]
   simp only [Nat.sub_self, pow_zero, Nat.choose_self, Nat.cast_one, mul_one]
   rw [add_sub_cancel_right]
-  apply Finset.sum_congr rfl
-  intro i _
+  refine Finset.sum_congr rfl fun i _ => ?_
   ring
 
 private lemma iteratedRealDifference_pow_eq_zero_of_lt (hs : List Int)
@@ -676,8 +672,7 @@ private lemma finiteDifferenceSum_monomial_le {alpha : Real} {k t : Nat}
             (iteratedRealDifference (fun z => alpha * (z : Real) ^ k) hs x)) =
         ∑ x ∈ Icc bounds.1 bounds.2,
           realExponential (slope * (x : Real) + c) := by
-    apply Finset.sum_congr rfl
-    intro x _
+    refine Finset.sum_congr rfl fun x _ => ?_
     rw [hphase]
   rw [hrewrite]
   exact (norm_sum_linear_phase_Icc_le slope c bounds.1 bounds.2).trans
@@ -901,8 +896,7 @@ private lemma sum_weylShiftRange_erase_zero_natAbs_le {t : Nat}
             calc
               (∑ h ∈ s.filter (fun h => h.natAbs = n), f h.natAbs) =
                   ∑ _h ∈ s.filter (fun h => h.natAbs = n), f n := by
-                apply Finset.sum_congr rfl
-                intro h hh
+                refine Finset.sum_congr rfl fun h hh => ?_
                 rw [(mem_filter.mp hh).2]
               _ = (s.filter (fun h => h.natAbs = n)).card * f n := by
                 simp]
@@ -1057,10 +1051,7 @@ private lemma positiveProductMajorantSum_eq_sum_lists
       simp only [positiveProductMajorantSum, listsIn, Finset.sum_map,
         Finset.sum_product]
       simp_rw [ih]
-      apply Finset.sum_congr rfl
-      intro h _
-      apply Finset.sum_congr rfl
-      intro l _
+      refine Finset.sum_congr rfl fun h _ => Finset.sum_congr rfl fun l _ => ?_
       apply congrArg (geometricSumMajorant t)
       have hprod : (listConsEmbedding Nat (h, l)).prod = h * l.prod := rfl
       rw [hprod]
@@ -1270,66 +1261,25 @@ private lemma positiveProductMajorantSum_grouped
             (alpha * (Nat.factorial k : Real) * n) := by
   rw [positiveProductMajorantSum_eq_sum_lists]
   simp_rw [Nat.cast_one, one_mul]
-  let s := listsIn (Icc 1 t) r
-  let u := Icc 1 (t ^ r)
-  have hmaps : ∀ l ∈ s, l.prod ∈ u := by
+  have hmaps : ∀ l ∈ listsIn (Icc 1 t) r, l.prod ∈ Icc 1 (t ^ r) := by
     intro l hl
     have hshape := (mem_listsIn_iff (Icc 1 t) r l).mp hl
-    dsimp only [u]
-    rw [mem_Icc]
-    constructor
-    · apply one_le_list_prod
-      intro x hx
-      exact (mem_Icc.mp (hshape.2 x hx)).1
-    · rw [← hshape.1]
-      apply list_prod_le_pow
-      intro x hx
-      exact (mem_Icc.mp (hshape.2 x hx)).2
-  rw [show (∑ l ∈ s,
-      geometricSumMajorant t
-        (alpha * (Nat.factorial k : Real) * l.prod)) =
-      ∑ n ∈ u, ∑ l ∈ s.filter (fun l => l.prod = n),
-        geometricSumMajorant t
-          (alpha * (Nat.factorial k : Real) * l.prod) by
-        exact (Finset.sum_fiberwise_of_maps_to hmaps _).symm]
-  apply Finset.sum_le_sum
-  intro n hn
+    refine mem_Icc.mpr ⟨one_le_list_prod fun x hx => (mem_Icc.mp (hshape.2 x hx)).1, ?_⟩
+    rw [← hshape.1]
+    exact list_prod_le_pow _ fun x hx => (mem_Icc.mp (hshape.2 x hx)).2
+  rw [← Finset.sum_fiberwise_of_maps_to hmaps]
+  refine Finset.sum_le_sum fun n hn => ?_
   have hn0 : n ≠ 0 := by
     have := (mem_Icc.mp hn).1
     omega
   calc
-    (∑ l ∈ s.filter (fun l => l.prod = n),
-        geometricSumMajorant t
-          (alpha * (Nat.factorial k : Real) * l.prod)) =
-        (boundedFactorizationLists r n t).card *
-          geometricSumMajorant t
-            (alpha * (Nat.factorial k : Real) * n) := by
-      change (∑ l ∈ boundedFactorizationLists r n t,
-        geometricSumMajorant t
-          (alpha * (Nat.factorial k : Real) * l.prod)) = _
-      simp only [boundedFactorizationLists]
-      calc
-        (∑ l ∈ boundedFactorizationLists r n t,
-            geometricSumMajorant t
-              (alpha * (Nat.factorial k : Real) * l.prod)) =
-            ∑ _l ∈ boundedFactorizationLists r n t,
-              geometricSumMajorant t
-                (alpha * (Nat.factorial k : Real) * n) := by
-          apply Finset.sum_congr rfl
-          intro l hl
-          rw [(mem_filter.mp hl).2]
-        _ = (boundedFactorizationLists r n t).card *
-              geometricSumMajorant t
-                (alpha * (Nat.factorial k : Real) * n) := by
-          simp
-    _ ≤ (n.divisors.card : Real) ^ r *
-          geometricSumMajorant t
-            (alpha * (Nat.factorial k : Real) * n) := by
-      have hcardReal :
-          ((boundedFactorizationLists r n t).card : Real) ≤
-            (n.divisors.card : Real) ^ r := by
-        exact_mod_cast boundedFactorizationLists_card_le r n t hn0
-      exact mul_le_mul_of_nonneg_right hcardReal
+    _ = ∑ _l ∈ boundedFactorizationLists r n t,
+          geometricSumMajorant t (alpha * (Nat.factorial k : Real) * n) :=
+      Finset.sum_congr rfl fun l hl => by rw [(mem_filter.mp hl).2]
+    _ ≤ _ := by
+      rw [Finset.sum_const, nsmul_eq_mul]
+      exact mul_le_mul_of_nonneg_right
+        (by exact_mod_cast boundedFactorizationLists_card_le r n t hn0)
         (geometricSumMajorant_nonneg _ _)
 
 /-! ## A rational reciprocal-distance sum
@@ -1633,46 +1583,19 @@ private lemma rationalBlock_phase_separated {a q : Int} {alpha : Real}
   dsimp only
   intro x hx y hy hxy
   have hqpos : 0 < q := lt_of_lt_of_le (by norm_num) hq
-  have hQ : (q.natAbs : Int) = q := by
-    rw [Int.natCast_natAbs, abs_of_pos hqpos]
   rw [rationalBlock, mem_filter] at hx hy
-  have hdiv : x / (q.natAbs / 2) = y / (q.natAbs / 2) := hx.2.trans hy.2.symm
-  have hLpos : 0 < q.natAbs / 2 := by
-    have hfourInt : (4 : Int) ≤ (q.natAbs : Int) := by
-      rw [hQ]
-      exact hq
-    have : 4 ≤ q.natAbs := by exact_mod_cast hfourInt
-    omega
-  have hshortNat : x.dist y < q.natAbs / 2 := by
+  have hLpos : 0 < q.natAbs / 2 := by omega
+  -- `x` and `y` lie in one block of length `|q| / 2`
+  have hshort : |(x : Int) - y| ≤ q / 2 := by
     have hxmod := Nat.mod_lt x hLpos
     have hymod := Nat.mod_lt y hLpos
     have hxdec := Nat.mod_add_div x (q.natAbs / 2)
     have hydec := Nat.mod_add_div y (q.natAbs / 2)
-    rw [hdiv] at hxdec
-    rcases le_total x y with hxyNat | hyxNat
-    · rw [Nat.dist_eq_sub_of_le hxyNat]
-      omega
-    · rw [Nat.dist_eq_sub_of_le_right hyxNat]
-      omega
-  have hdist : (x.dist y : Int) = |(x : Int) - y| := by
-    rcases le_total x y with hxyNat | hyxNat
-    · have hxyInt : (x : Int) ≤ (y : Int) := by exact_mod_cast hxyNat
-      rw [Nat.dist_eq_sub_of_le hxyNat, Nat.cast_sub hxyNat,
-        abs_of_nonpos (sub_nonpos.mpr hxyInt)]
-      ring
-    · have hyxInt : (y : Int) ≤ (x : Int) := by exact_mod_cast hyxNat
-      rw [Nat.dist_eq_sub_of_le_right hyxNat, Nat.cast_sub hyxNat,
-        abs_of_nonneg (sub_nonneg.mpr hyxInt)]
-  have hhalf : ((q.natAbs / 2 : Nat) : Int) = q / 2 := by
-    rw [Int.natCast_div, hQ]
-    norm_num
-  have hshort : |(x : Int) - y| ≤ q / 2 := by
-    have hcast : (x.dist y : Int) ≤ (q.natAbs / 2 : Nat) := by
-      exact_mod_cast hshortNat.le
-    simpa only [hdist, hhalf] using hcast
+    rw [hx.2.trans hy.2.symm] at hxdec
+    rw [abs_le]
+    omega
   have hQReal : (q.natAbs : Real) = (q : Real) := by
-    have hcast := congrArg (fun z : Int => (z : Real)) hQ
-    simpa only [Int.cast_natCast] using hcast
+    rw [Nat.cast_natAbs, Int.cast_abs, abs_of_pos (by exact_mod_cast hqpos)]
   simpa only [hQReal] using
     nearby_rational_phase_separated hqpos haq halpha hxy hshort
 

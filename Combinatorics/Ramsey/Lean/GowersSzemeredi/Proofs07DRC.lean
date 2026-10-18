@@ -210,9 +210,7 @@ private lemma sum_drcBadPairCount {X : Type*} [DecidableEq X] {n : Nat}
               if ((((A i ∩ A j).card : Nat) : Real) < delta ^ 2 * m / 2)
                 then (1 : Real) else 0
             else 0
-          else 0 := by
-    rw [Finset.sum_ite_irrel]
-    simp
+          else 0 := by norm_num
   simp_rw [hspread]
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
@@ -297,10 +295,7 @@ private lemma intersection_fifth_moment_lower {X : Type*} [DecidableEq X]
           (delta ^ 10 * (m : Real) ^ 5 * (n : Real) ^ 2) <=
         ((n : Real) ^ 2) ^ 4 *
           (∑ i : Fin n, ∑ j : Fin n,
-            (((A i ∩ A j).card : Nat) : Real) ^ 5) := by
-    calc
-      _ = (delta ^ 2 * (m : Real) * (n : Real) ^ 2) ^ 5 := by ring
-      _ <= _ := hcombined
+            (((A i ∩ A j).card : Nat) : Real) ^ 5) := by linarith
   exact le_of_mul_le_mul_left hmul (by positivity)
 
 private lemma exists_drc_sample {X : Type*} [DecidableEq X] {n m : Nat}
@@ -383,9 +378,7 @@ private lemma hasDenseIntersectionCore_of_score {X : Type*} [DecidableEq X]
     rw [← Real.rpow_natCast, ← Real.rpow_mul (by norm_num : (0 : Real) <= 2)]
     norm_num [Real.rpow_neg_one]
   let d : Real := (2 : Real) ^ (-(1 : Real) / 2) * delta ^ 5 * n
-  have hd : 0 <= d := by
-    dsimp [d]
-    positivity
+  have hd : 0 <= d := by positivity
   have hq : 0 <= q := by positivity
   have hd_sq : d ^ 2 <= q ^ 2 := by
     calc
@@ -456,10 +449,7 @@ private lemma intersection_sum_lower_of_card_lower {X : Type*} [DecidableEq X]
       (m : Real) * (delta ^ 2 * (m : Real) * (n : Real) ^ 2) <=
         (m : Real) *
           (∑ i : Fin n, ∑ j : Fin n,
-            (((A i ∩ A j).card : Nat) : Real)) := by
-    calc
-      _ = (delta * (m : Real) * (n : Real)) ^ 2 := by ring
-      _ <= _ := hcombined
+            (((A i ∩ A j).card : Nat) : Real)) := by linarith
   exact le_of_mul_le_mul_left hmul (by exact_mod_cast hm)
 
 private lemma hasDenseIntersectionCore_zero {X : Type*} [DecidableEq X]

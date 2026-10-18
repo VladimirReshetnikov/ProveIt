@@ -91,16 +91,10 @@ private lemma context_restrict_fibres {N : Nat} [NeZero N]
           tau * (N : Real) ^ 3 ≤
             ∑ y ∈ S x, ‖fourier (difference (g x) y) (psi x y)‖ ^ 2 := by
         calc
-          tau * (N : Real) ^ 3 =
-              (rho x * N) * (a * N) ^ 2 := by
-            dsimp only [tau]
+          tau * (N : Real) ^ 3 = ∑ _y ∈ S x, (a * N) ^ 2 := by
+            rw [Finset.sum_const, nsmul_eq_mul, hScard]
             ring
-          _ = (S x).card * (a * N) ^ 2 := by rw [← hScard]
-          _ = ∑ _y ∈ S x, (a * N) ^ 2 := by simp
-          _ ≤ ∑ y ∈ S x,
-              ‖fourier (difference (g x) y) (psi x y)‖ ^ 2 := by
-            exact Finset.sum_le_sum fun y hy ↦
-              pow_le_pow_left₀ (by positivity) (hlarge x y hy) 2
+          _ ≤ _ := Finset.sum_le_sum fun y hy ↦ pow_le_pow_left₀ (by positivity) (hlarge x y hy) 2
       have hadd := proposition_6_1_holds N tau (g x) (S x) (psi x)
         htau (hg x) hsum
       let gamma : Real := rho x * a ^ 8
@@ -133,8 +127,7 @@ private lemma context_restrict_fibres {N : Nat} [NeZero N]
   have hpieces :
       ∑ x : ZMod N,
           (2 : Real) ^ (-(1882 : Real)) * a ^ 9312 * rho x ^ 1165 * N ≤
-        ∑ x : ZMod N, ((T x).card : Real) := by
-    exact Finset.sum_le_sum fun x _ ↦ hTcard x
+        ∑ x : ZMod N, ((T x).card : Real) := Finset.sum_le_sum fun x _ ↦ hTcard x
   calc
     (2 : Real) ^ (-(1882 : Real)) * a ^ 9312 *
           ((∑ x : ZMod N, (S x).card / (N : Real)) / (N : Real)) ^ 1165 *
@@ -154,9 +147,7 @@ private lemma context_restrict_fibres {N : Nat} [NeZero N]
     _ = ∑ x : ZMod N,
           (2 : Real) ^ (-(1882 : Real)) * a ^ 9312 * rho x ^ 1165 * N := by
       rw [Finset.mul_sum]
-      apply Fintype.sum_congr
-      intro x
-      ac_rfl
+      exact Fintype.sum_congr _ _ fun x => by ring
     _ ≤ ∑ x : ZMod N, ((T x).card : Real) := hpieces
 
 private noncomputable def contextVerticalJoin {N : Nat} [NeZero N]

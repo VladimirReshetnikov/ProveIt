@@ -286,14 +286,10 @@ private lemma shiftExceptional_card_le {N : Nat} [NeZero N]
   classical
   let H := shiftExceptional D W d theta P
   by_cases hHempty : H = ∅
-  · rw [show (shiftExceptional D W d theta P).card = 0 by simp [H, hHempty]]
-    norm_num only [Nat.cast_zero]
-    have hWcard : (0 : Real) ≤ W.card := by positivity
-    exact mul_nonneg (Real.sqrt_nonneg theta) hWcard
+  · rw [show (shiftExceptional D W d theta P).card = 0 by simp [H, hHempty], Nat.cast_zero]
+    positivity
   have hHne : H.Nonempty := Finset.nonempty_iff_ne_empty.mpr hHempty
-  have hHW : H ⊆ W := by
-    intro w hw
-    exact (Finset.mem_inter.mp (Finset.mem_filter.mp hw).1).1
+  have hHW : H ⊆ W := fun w hw => (Finset.mem_inter.mp (Finset.mem_filter.mp hw).1).1
   have hWne : W.Nonempty := hHne.mono hHW
   let Rvals : Finset Nat := W.image D.fibreSize
   have hRne : Rvals.Nonempty := hWne.image _
@@ -320,10 +316,8 @@ private lemma shiftExceptional_card_le {N : Nat} [NeZero N]
       unfold MultifunctionDomain.fibreSize
       rw [huindex]
     have hm_target : (m : Real) ≤ (D.fibre (D.index w + d)).card := by
-      have hm_target_nat : m ≤ (D.fibre (D.index w + d)).card := by
-        rw [hcard_eq]
-        exact hm_le u huW
-      exact_mod_cast hm_target_nat
+      rw [hcard_eq]
+      exact_mod_cast hm_le u huW
     have hfail := (Finset.mem_filter.mp hw).2
     have hbad := bad_card_lt_of_not_almostEvery
       (2 * Real.sqrt theta) (D.fibre (D.index w + d)) P hfail
@@ -336,8 +330,7 @@ private lemma shiftExceptional_card_le {N : Nat} [NeZero N]
       (∑ w ∈ H, shiftedBadCount D d P w) =
           ∑ w ∈ H, (W.filter fun z =>
             D.index z - D.index w = d ∧ ¬ P z).card := by
-        apply Finset.sum_congr rfl
-        intro w hw
+        refine Finset.sum_congr rfl fun w hw => ?_
         rw [first_slice_eq_shiftedBadCount D hW d P]
         simpa [H, shiftExceptional, shiftEligible] using (Finset.mem_filter.mp hw).1
       _ ≤ ∑ w ∈ W, (W.filter fun z =>
@@ -370,37 +363,19 @@ private lemma shiftExceptional_card_le {N : Nat} [NeZero N]
         Finset.sum_le_sum fun z _ => second_slice_le D d P m hupper z
       _ = (W.filter fun z => ¬ P z).card * (2 * m) := by
         rw [Finset.card_filter, Finset.sum_mul]
-        apply Finset.sum_congr rfl
-        intro z _
+        refine Finset.sum_congr rfl fun z _ => ?_
         split <;> simp_all
   have hbadW := almostEvery_bad_card_le theta W P hP
   have hdeltaUpper :
       ((shiftBadPairs D W d P).card : Real) ≤
-        (theta * W.card) * (2 * m) := by
-    have hupperReal :
-        ((shiftBadPairs D W d P).card : Real) ≤
-          ((W.filter fun z => ¬ P z).card : Real) * (2 * m) := by
-      exact_mod_cast hdeltaUpperNat
-    exact hupperReal.trans
-      (mul_le_mul_of_nonneg_right hbadW (by positivity))
-  by_contra hcard
-  have hcardgt : Real.sqrt theta * W.card < (H.card : Real) := lt_of_not_ge hcard
-  have hfactorpos : 0 < 2 * Real.sqrt theta * (m : Real) := by positivity
-  have hcontra :
-      (Real.sqrt theta * W.card) * (2 * Real.sqrt theta * m) <
         (theta * W.card) * (2 * m) :=
-    (mul_lt_mul_of_pos_right hcardgt hfactorpos).trans
-      (hdeltaLower.trans_le hdeltaUpper)
-  have hsquare : (Real.sqrt theta) ^ 2 = theta := Real.sq_sqrt htheta.le
-  have heq :
-      (Real.sqrt theta * W.card) * (2 * Real.sqrt theta * m) =
-        (theta * W.card) * (2 * m) := by
-    calc
-      (Real.sqrt theta * W.card) * (2 * Real.sqrt theta * m) =
-          (Real.sqrt theta) ^ 2 * W.card * (2 * m) := by ring
-      _ = theta * W.card * (2 * m) := by rw [hsquare]
-  rw [heq] at hcontra
-  exact lt_irrefl _ hcontra
+    (show ((shiftBadPairs D W d P).card : Real) ≤ ((W.filter fun z => ¬ P z).card : Real) * (2 * m)
+      by exact_mod_cast hdeltaUpperNat).trans (mul_le_mul_of_nonneg_right hbadW (by positivity))
+  by_contra hcard
+  rw [← Real.sq_sqrt htheta.le] at hdeltaUpper
+  have := mul_lt_mul_of_pos_right (lt_of_not_ge hcard)
+    (by positivity : 0 < 2 * Real.sqrt theta * (m : Real))
+  linarith
 
 /-! ### Lemma 10.8 -/
 
@@ -619,10 +594,6 @@ theorem lemma_10_9_holds : lemma_10_9 := by
   rw [isAddFreimanHom_two]
   refine ⟨Set.mapsTo_univ _ _, ?_⟩
   intro d₁ hd₁ d₂ hd₂ d₃ hd₃ d₄ hd₄ hadd
-  change d₁ ∈ B' at hd₁
-  change d₂ ∈ B' at hd₂
-  change d₃ ∈ B' at hd₃
-  change d₄ ∈ B' at hd₄
   have hd₁B : d₁ ∈ B := hB'sub hd₁
   have hd₂B : d₂ ∈ B := hB'sub hd₂
   have hd₃B : d₃ ∈ B := hB'sub hd₃

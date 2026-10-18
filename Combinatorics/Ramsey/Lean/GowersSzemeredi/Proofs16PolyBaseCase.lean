@@ -45,9 +45,7 @@ section Parameters
 
 variable {q : Nat} {sigma : Real}
 
-theorem polyBase_loss_pos (hq : 0 < q) (hs : 0 < sigma) : 0 < sigma / (q : Real) := by
-  have : (0 : Real) < q := by exact_mod_cast hq
-  positivity
+theorem polyBase_loss_pos (hq : 0 < q) (hs : 0 < sigma) : 0 < sigma / (q : Real) := by positivity
 
 theorem polyBase_loss_le_one (hq : 0 < q) (hs1 : sigma ≤ 1) :
     sigma / (q : Real) ≤ 1 := by

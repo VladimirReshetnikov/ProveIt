@@ -120,101 +120,41 @@ theorem lemma_14_2_holds : lemma_14_2 := by
   cases k with
   | zero => exact Fin.elim0 j
   | succ n =>
-      let lambda := prop14RestrictedWeight E theta
-      let f' : Fin p → ZMod N → Complex :=
-        fun i => prop142Component f (y i) j
-      let sigma : Fin p → ZMod N → ZMod N :=
-        fun i => coordinateRestriction phi (y i) j
-      let T : Real := ∑ x ∈ E, theta x
       have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-      have hTnonneg : 0 ≤ T := by
-        dsimp only [T]
-        exact Finset.sum_nonneg fun _ _ => htheta _
-      change gamma ^ (8 * p) * (N : Real)⁻¹ * T ^ 4 ≤
-        weightedSimultaneousAdditiveEnergy E theta sigma
-      by_cases hTzero : T = 0
-      · rw [hTzero]
-        simp only [pow_succ, pow_zero, mul_zero]
-        unfold weightedSimultaneousAdditiveEnergy
-        apply Finset.sum_nonneg
-        intro q _
-        split_ifs
-        · exact Finset.prod_nonneg fun t _ => htheta (q t)
-        · exact le_rfl
-      · have _ : 0 < T := lt_of_le_of_ne hTnonneg (Ne.symm hTzero)
-        let alpha : Real := gamma ^ (2 * p) * (N : Real)⁻¹ * T
-        have halpha : 0 < alpha := by
-          dsimp only [alpha]
-          positivity
-        have hlambda : ∀ x, 0 ≤ lambda x := by
-          intro x
-          simp only [lambda, prop14RestrictedWeight]
-          split_ifs
-          · exact htheta x
-          · exact le_rfl
-        have hf' : ∀ i, DiscValued (f' i) := by
-          exact fun i => cubeDifference_discValued hf (j.removeNth (y i))
-        have hcoeff (i : Fin p) (x : ZMod N) (hx : x ∈ E) :
-            gamma * (N : Real) ≤
-              ‖fourier (difference (f' i) x) (sigma i x)‖ := by
-          rw [show difference (f' i) x =
-              cubeDifference f (replaceCoordinate (y i) j x) by
-            exact prop142_component_difference f (y i) j x]
-          exact hlarge _ (hmem i x hx)
-        have hprod (x : ZMod N) (hx : x ∈ E) :
-            (gamma * (N : Real)) ^ (2 * p) ≤
-              ∏ i : Fin p, ‖fourier (difference (f' i) x) (sigma i x)‖ ^ 2 := by
-          have hi (i : Fin p) :
-              (gamma * (N : Real)) ^ 2 ≤
-                ‖fourier (difference (f' i) x) (sigma i x)‖ ^ 2 :=
-            (sq_le_sq₀ (mul_nonneg hgamma.le hN.le) (norm_nonneg _)).2
-              (hcoeff i x hx)
-          calc
-            (gamma * (N : Real)) ^ (2 * p) =
-                ∏ _i : Fin p, (gamma * (N : Real)) ^ 2 := by
-                  simp only [Finset.prod_const, Finset.card_univ,
-                    Fintype.card_fin]
-                  rw [← pow_mul]
-            _ ≤ _ := Finset.prod_le_prod
-              (fun _ _ => pow_nonneg (mul_nonneg hgamma.le hN.le) 2)
-              (fun i _ => hi i)
-        have hinput :
-            alpha * (N : Real) ^ (2 * p + 1) ≤
-              ∑ x : ZMod N, lambda x *
-                ∏ i : Fin p,
-                  ‖fourier (difference (f' i) x) (sigma i x)‖ ^ 2 := by
-          calc
-            alpha * (N : Real) ^ (2 * p + 1) =
-                (∑ x : ZMod N, lambda x) *
-                  (gamma * (N : Real)) ^ (2 * p) := by
-                    have hlambda_sum : (∑ x : ZMod N, lambda x) = T := by
-                      simp [lambda, prop14RestrictedWeight, T]
-                    rw [hlambda_sum]
-                    dsimp only [alpha]
-                    field_simp
-                    ring
-            _ = ∑ x : ZMod N,
-                lambda x * (gamma * (N : Real)) ^ (2 * p) := by
-                  rw [Finset.sum_mul]
-            _ ≤ ∑ x : ZMod N, lambda x *
-                ∏ i : Fin p,
-                  ‖fourier (difference (f' i) x) (sigma i x)‖ ^ 2 := by
-                    apply Finset.sum_le_sum
-                    intro x _
-                    by_cases hx : x ∈ E
-                    · exact mul_le_mul_of_nonneg_left (hprod x hx) (hlambda x)
-                    · simp [lambda, prop14RestrictedWeight, hx]
-        have hresult := proposition_12_1_holds N p lambda f' sigma alpha
-          halpha hlambda hf' hinput
-        rw [prop14_restricted_weight_eq_energy E theta sigma] at hresult
-        calc
-          gamma ^ (8 * p) * (N : Real)⁻¹ * T ^ 4 =
-              alpha ^ 4 * (N : Real) ^ 3 := by
-                dsimp only [alpha]
-                field_simp
-                rw [← pow_mul]
-                ring
-          _ ≤ weightedSimultaneousAdditiveEnergy E theta sigma := hresult
+      rcases (Finset.sum_nonneg fun x _ => htheta x : 0 ≤ ∑ x ∈ E, theta x).eq_or_lt with hT | hT
+      · -- an empty weight: the energy is nonnegative
+        have h0 : 0 ≤ weightedSimultaneousAdditiveEnergy E theta
+            (fun i => coordinateRestriction phi (y i) j) :=
+          Finset.sum_nonneg fun q _ => by
+            split_ifs
+            exacts [Finset.prod_nonneg fun t _ => htheta _, le_rfl]
+        simpa [← hT] using h0
+      -- Proposition 12.1 for the components `x ↦ ∂_{y_i} f` with `α = γ^(2p)·T/N`
+      have hinput : gamma ^ (2 * p) * (N : Real)⁻¹ * (∑ x ∈ E, theta x) *
+            (N : Real) ^ (2 * p + 1) ≤
+          ∑ x, prop14RestrictedWeight E theta x * ∏ i : Fin p,
+            ‖fourier (difference (prop142Component f (y i) j) x)
+              (coordinateRestriction phi (y i) j x)‖ ^ 2 := by
+        calc _ = ∑ x ∈ E, theta x * ∏ _i : Fin p, (gamma * N) ^ 2 := by
+              rw [← Finset.sum_mul, Finset.prod_const, Finset.card_univ, Fintype.card_fin]
+              field_simp
+              ring
+          _ ≤ ∑ x ∈ E, theta x * ∏ i : Fin p,
+                ‖fourier (difference (prop142Component f (y i) j) x)
+                  (coordinateRestriction phi (y i) j x)‖ ^ 2 := by
+              gcongr with x hx i
+              · exact htheta x
+              rw [prop142_component_difference]
+              exact hlarge _ (hmem i x hx)
+          _ = _ := by simp [prop14RestrictedWeight, ite_mul]
+      have h := proposition_12_1_holds N p (prop14RestrictedWeight E theta)
+        (fun i => prop142Component f (y i) j) (fun i => coordinateRestriction phi (y i) j) _
+        (by positivity) (fun x => ite_nonneg (htheta x) le_rfl)
+        (fun i => cubeDifference_discValued hf (j.removeNth (y i))) hinput
+      rw [prop14_restricted_weight_eq_energy] at h
+      convert h using 1
+      field_simp
+      ring
 
 alias prop14_countWhere_eq_sum_ite := gcs_countWhere_eq_sum_ite
 
@@ -287,51 +227,18 @@ private lemma prop143_cube_product_eq {N n : Nat} [NeZero N]
       if Even (boolWeight e + (n + 1)) then w else star w) =
       prop143Component f z j u (a + h, b) *
         star (prop143Component f z j u (a, b)) := by
-  let F : (Fin (n + 1) → Bool) → Complex := fun e =>
-    let w := f (appendCoordinate
-      (fun i => (j.insertNth a u : Point N (n + 1)) i +
-        if e i then (replaceCoordinate z j h) i else 0) b)
-    if Even (boolWeight e + (n + 1)) then w else star w
-  calc
-    (∏ e : Fin (n + 1) → Bool,
-      let w := f (appendCoordinate
-        (fun i => (j.insertNth a u : Point N (n + 1)) i +
-          if e i then (replaceCoordinate z j h) i else 0) b)
-      if Even (boolWeight e + (n + 1)) then w else star w) =
-        ∏ be : Bool × (Fin n → Bool), F (j.insertNth be.1 be.2) := by
-          exact Fintype.prod_equiv
-            (Fin.insertNthEquiv (fun _ : Fin (n + 1) => Bool) j).symm
-            F (fun be => F (j.insertNth be.1 be.2)) (fun e =>
-              congrArg F
-                ((Fin.insertNthEquiv (fun _ : Fin (n + 1) => Bool) j).apply_symm_apply e).symm)
-    _ = (∏ e : Fin n → Bool, F (j.insertNth true e)) *
-        ∏ e : Fin n → Bool, F (j.insertNth false e) := by
-          rw [Fintype.prod_prod_type, Fintype.prod_bool]
-    _ = prop143Component f z j u (a + h, b) *
-        star (prop143Component f z j u (a, b)) := by
-      congr 1
-      · apply Finset.prod_congr rfl
-        intro e _
-        simp only [F]
-        rw [show (fun i => (j.insertNth a u : Point N (n + 1)) i +
-            if (j.insertNth true e : Fin (n + 1) → Bool) i then
-              (replaceCoordinate z j h) i else 0) =
-            j.insertNth (a + h)
-              (fun t => u t + if e t then (j.removeNth z) t else 0) by
-          simpa using prop143_vertex_insertNth z j u a h true e]
-        simp only [prop143_even_true]
-      · rw [prop143Component, star_prod]
-        apply Finset.prod_congr rfl
-        intro e _
-        simp only [F]
-        rw [show (fun i => (j.insertNth a u : Point N (n + 1)) i +
-            if (j.insertNth false e : Fin (n + 1) → Bool) i then
-              (replaceCoordinate z j h) i else 0) =
-            j.insertNth a
-              (fun t => u t + if e t then (j.removeNth z) t else 0) by
-          simpa using prop143_vertex_insertNth z j u a h false e]
-        simp only [prop143_even_false]
-        by_cases he : Even (boolWeight e + n) <;> simp [he]
+  -- split each vertex `e` at the coordinate `j` into its `j`th bit and the rest
+  rw [← Fintype.prod_bijective (fun be : Bool × (Fin n → Bool) =>
+      (j.insertNth be.1 be.2 : Fin (n + 1) → Bool))
+    (Fin.insertNthEquiv (fun _ : Fin (n + 1) => Bool) j).bijective _ _ fun _ => rfl,
+    Fintype.prod_prod_type, Fintype.prod_bool]
+  simp only [prop143Component, star_prod]
+  congr 1 <;> refine Finset.prod_congr rfl fun e _ => ?_
+  · rw [prop143_vertex_insertNth z j u a h true e, if_pos rfl]
+    simp only [prop143_even_true]
+  · rw [prop143_vertex_insertNth z j u a h false e]
+    simp only [prop143_even_false]
+    by_cases he : Even (boolWeight e + n) <;> simp [he]
 
 private lemma prop143_correlation_decomposition {N n : Nat} [NeZero N]
     (f : Point N (n + 2) → Complex) (z : Point N (n + 1))
@@ -435,185 +342,53 @@ theorem lemma_14_3_holds : lemma_14_3 := by
   cases k with
   | zero => exact Fin.elim0 j
   | succ n =>
-      let U := Point N n
-      let V := Fin p → U
-      let lambda := prop14RestrictedWeight E theta
-      let sigma : Fin p → ZMod N → ZMod N :=
-        fun i => coordinateRestriction phi (y i) j
-      let T : Real := ∑ x ∈ E, theta x
-      let C : V → Fin p → Pair N → Complex := fun v i =>
-        prop143Component f (y i) j (v i)
-      let S : V → Real := fun v =>
-        ∑ x : ZMod N, lambda x * ∏ i : Fin p,
-          ‖fourier (firstCoordinateCorrelation (C v i) x) (sigma i x)‖ ^ 2
       have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-      have hNn : (0 : Real) < (N : Real) ^ n := by positivity
-      have hTnonneg : 0 ≤ T := by
-        dsimp only [T]
-        exact Finset.sum_nonneg fun _ _ => htheta _
-      change gamma ^ (8 * p) * (N : Real)⁻¹ * T ^ 4 ≤
-        weightedSimultaneousAdditiveEnergy E theta sigma
-      by_cases hTzero : T = 0
-      · rw [hTzero]
-        simp only [pow_succ, pow_zero, mul_zero]
-        unfold weightedSimultaneousAdditiveEnergy
-        apply Finset.sum_nonneg
-        intro q _
-        split_ifs
-        · exact Finset.prod_nonneg fun t _ => htheta (q t)
-        · exact le_rfl
-      · have _ : 0 < T := lt_of_le_of_ne hTnonneg (Ne.symm hTzero)
-        have hcomponentSum (i : Fin p) (x : ZMod N) (hx : x ∈ E) :
-            gamma ^ 2 * (N : Real) ^ (n + 4) ≤
-              ∑ u : U,
-                ‖fourier (firstCoordinateCorrelation
-                  (prop143Component f (y i) j u) x) (sigma i x)‖ ^ 2 := by
-          have hnorm : gamma * (N : Real) ^ (n + 2) ≤
-              ‖fourier (higherCubeCorrelation f
-                (replaceCoordinate (y i) j x)) (sigma i x)‖ := by
-            simpa only [sigma, coordinateRestriction,
-              show n + 1 + 1 = n + 2 by omega] using
-              hlarge _ (hmem i x hx)
-          have hsq : (gamma * (N : Real) ^ (n + 2)) ^ 2 ≤
-              ‖fourier (higherCubeCorrelation f
-                (replaceCoordinate (y i) j x)) (sigma i x)‖ ^ 2 :=
-            (sq_le_sq₀ (mul_nonneg hgamma.le (by positivity))
-              (norm_nonneg _)).2 hnorm
-          have hupper := prop143_fourier_sq_le f (y i) j x (sigma i x)
-          apply le_of_mul_le_mul_left _ hNn
-          calc
-            (N : Real) ^ n *
-                (gamma ^ 2 * (N : Real) ^ (n + 4)) =
-                (gamma * (N : Real) ^ (n + 2)) ^ 2 := by
-                  rw [show (N : Real) ^ (n + 4) =
-                      (N : Real) ^ n * (N : Real) ^ 4 by rw [pow_add],
-                    show (N : Real) ^ (n + 2) =
-                      (N : Real) ^ n * (N : Real) ^ 2 by rw [pow_add]]
-                  ring
-            _ ≤ ‖fourier (higherCubeCorrelation f
-                (replaceCoordinate (y i) j x)) (sigma i x)‖ ^ 2 := hsq
-            _ ≤ (N : Real) ^ n * ∑ u : Point N n,
-                ‖fourier (firstCoordinateCorrelation
-                  (prop143Component f (y i) j u) x) (sigma i x)‖ ^ 2 :=
-              hupper
-        have hcomponentProd (x : ZMod N) (hx : x ∈ E) :
-            (gamma ^ 2 * (N : Real) ^ (n + 4)) ^ p ≤
-              ∏ i : Fin p, ∑ u : U,
-                ‖fourier (firstCoordinateCorrelation
-                  (prop143Component f (y i) j u) x) (sigma i x)‖ ^ 2 := by
-          calc
-            (gamma ^ 2 * (N : Real) ^ (n + 4)) ^ p =
-                ∏ _i : Fin p,
-                  (gamma ^ 2 * (N : Real) ^ (n + 4)) := by
-                    simp
-            _ ≤ _ := Finset.prod_le_prod
-              (fun _ _ => mul_nonneg (sq_nonneg _) (by positivity))
-              (fun i _ => hcomponentSum i x hx)
-        have htotalEq :
-            (∑ v : V, S v) = ∑ x : ZMod N, lambda x *
-              ∏ i : Fin p, ∑ u : U,
-                ‖fourier (firstCoordinateCorrelation
-                  (prop143Component f (y i) j u) x) (sigma i x)‖ ^ 2 := by
-          dsimp only [S, C]
-          rw [Finset.sum_comm]
-          apply Finset.sum_congr rfl
-          intro x _
-          rw [← Finset.mul_sum]
-          congr 1
-          exact (Fintype.prod_sum (fun i (u : U) =>
-            ‖fourier (firstCoordinateCorrelation
-              (prop143Component f (y i) j u) x) (sigma i x)‖ ^ 2)).symm
-        have hlambdaSum : (∑ x : ZMod N, lambda x) = T := by
-          simp [lambda, prop14RestrictedWeight, T]
-        have htotal :
-            T * (gamma ^ 2 * (N : Real) ^ (n + 4)) ^ p ≤
-              ∑ v : V, S v := by
-          calc
-            T * (gamma ^ 2 * (N : Real) ^ (n + 4)) ^ p =
-                (∑ x : ZMod N, lambda x) *
-                  (gamma ^ 2 * (N : Real) ^ (n + 4)) ^ p := by
-                    rw [hlambdaSum]
-            _ = ∑ x : ZMod N, lambda x *
-                (gamma ^ 2 * (N : Real) ^ (n + 4)) ^ p := by
-                  rw [Finset.sum_mul]
-            _ ≤ ∑ x : ZMod N, lambda x *
-                ∏ i : Fin p, ∑ u : U,
-                  ‖fourier (firstCoordinateCorrelation
-                    (prop143Component f (y i) j u) x) (sigma i x)‖ ^ 2 := by
-                      apply Finset.sum_le_sum
-                      intro x _
-                      by_cases hx : x ∈ E
-                      · exact mul_le_mul_of_nonneg_left
-                          (hcomponentProd x hx) (by
-                            simp [lambda, prop14RestrictedWeight, hx, htheta x])
-                      · simp [lambda, prop14RestrictedWeight, hx]
-            _ = ∑ v : V, S v := htotalEq.symm
-        let threshold : Real :=
-          gamma ^ (2 * p) * (N : Real) ^ (4 * p) * T
-        have hcardV : Fintype.card V = N ^ (n * p) := by
-          simp [V, U, Point, ← pow_mul]
-        have haverage : (∑ _v : V, threshold) ≤ ∑ v : V, S v := by
-          calc
-            (∑ _v : V, threshold) =
-                (N : Real) ^ (n * p) * threshold := by
-                  simp only [Finset.sum_const, Finset.card_univ, hcardV,
-                    nsmul_eq_mul]
-                  push_cast
-                  rfl
-            _ = T * (gamma ^ 2 * (N : Real) ^ (n + 4)) ^ p := by
-              dsimp only [threshold]
-              rw [mul_pow,
-                show (gamma ^ 2) ^ p = gamma ^ (2 * p) by rw [← pow_mul],
-                show ((N : Real) ^ (n + 4)) ^ p =
-                  (N : Real) ^ ((n + 4) * p) by rw [← pow_mul]]
-              rw [← show (N : Real) ^ (n * p) * (N : Real) ^ (4 * p) =
-                (N : Real) ^ ((n + 4) * p) by
-                  rw [← pow_add]
-                  congr 1
-                  ring]
+      have hT : 0 ≤ ∑ x ∈ E, theta x := Finset.sum_nonneg fun x _ => htheta x
+      -- at `x ∈ E`, the components on the `i`th line carry Fourier mass `γ²·N^(n+4)`
+      have hcomp (i : Fin p) (x : ZMod N) (hx : x ∈ E) :
+          gamma ^ 2 * (N : Real) ^ (n + 4) ≤ ∑ u : Point N n,
+            ‖fourier (firstCoordinateCorrelation (prop143Component f (y i) j u) x)
+              (coordinateRestriction phi (y i) j x)‖ ^ 2 := by
+        refine le_of_mul_le_mul_left ?_ (by positivity : (0 : Real) < N ^ n)
+        calc (N : Real) ^ n * (gamma ^ 2 * (N : Real) ^ (n + 4)) =
+              (gamma * (N : Real) ^ (n + 1 + 1)) ^ 2 := by ring
+          _ ≤ _ := pow_le_pow_left₀ (by positivity) (hlarge _ (hmem i x hx)) 2
+          _ ≤ _ := prop143_fourier_sq_le f (y i) j x _
+      -- averaging over the choices `v` of one component per line
+      have hV : (Fintype.card (Fin p → Point N n) : Real) = (N : Real) ^ (n * p) := by
+        simp [Point, ← pow_mul]
+      have hsum := calc
+        ∑ _v : Fin p → Point N n, gamma ^ (2 * p) * (N : Real) ^ (4 * p) * ∑ x ∈ E, theta x
+            = ∑ x ∈ E, theta x * ∏ _i : Fin p, gamma ^ 2 * (N : Real) ^ (n + 4) := by
+              rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hV, ← Finset.sum_mul,
+                Finset.prod_const, Finset.card_univ, Fintype.card_fin]
               ring
-            _ ≤ ∑ v : V, S v := htotal
-        have hVnonempty : (Finset.univ : Finset V).Nonempty :=
-          ⟨default, Finset.mem_univ _⟩
-        have haverage' :
-            (∑ _ ∈ (Finset.univ : Finset V), threshold) ≤
-              ∑ v ∈ (Finset.univ : Finset V), S v := by
-          simpa only [Finset.sum_filter, Finset.filter_true_of_mem] using haverage
-        obtain ⟨v, _, hv⟩ :=
-          Finset.exists_le_of_sum_le hVnonempty haverage'
-        let alpha : Real := gamma ^ (2 * p) * (N : Real)⁻¹ * T
-        have halpha : 0 < alpha := by
-          dsimp only [alpha]
-          positivity
-        have hlambda : ∀ x, 0 ≤ lambda x := by
-          intro x
-          simp only [lambda, prop14RestrictedWeight]
-          split_ifs
-          · exact htheta x
-          · exact le_rfl
-        have hCdisc : ∀ i, DiscValued (C v i) := by
-          exact fun i => prop143_component_disc f hf (y i) j (v i)
-        have hinput :
-            alpha * (N : Real) ^ (4 * p + 1) ≤
-              ∑ x : ZMod N, lambda x * ∏ i : Fin p,
-                ‖fourier (firstCoordinateCorrelation (C v i) x) (sigma i x)‖ ^ 2 := by
-          calc
-            alpha * (N : Real) ^ (4 * p + 1) = threshold := by
-              dsimp only [alpha, threshold]
-              field_simp
-              ring
-            _ ≤ S v := hv
-            _ = _ := by rfl
-        have hresult := proposition_14_1_holds N p lambda (C v) sigma alpha
-          halpha.le hlambda hCdisc hinput
-        rw [prop14_univ_restricted_energy_eq E theta sigma] at hresult
-        calc
-          gamma ^ (8 * p) * (N : Real)⁻¹ * T ^ 4 =
-              alpha ^ 4 * (N : Real) ^ 3 := by
-                dsimp only [alpha]
-                field_simp
-                rw [← pow_mul]
-                ring
-          _ ≤ weightedSimultaneousAdditiveEnergy E theta sigma := hresult
+          _ ≤ ∑ x ∈ E, theta x * ∏ i : Fin p, ∑ u : Point N n,
+                ‖fourier (firstCoordinateCorrelation (prop143Component f (y i) j u) x)
+                  (coordinateRestriction phi (y i) j x)‖ ^ 2 := by
+              gcongr with x hx i
+              · exact htheta x
+              exact hcomp i x hx
+          _ = ∑ x, prop14RestrictedWeight E theta x * ∏ i : Fin p, ∑ u : Point N n,
+                ‖fourier (firstCoordinateCorrelation (prop143Component f (y i) j u) x)
+                  (coordinateRestriction phi (y i) j x)‖ ^ 2 := by
+              simp [prop14RestrictedWeight, ite_mul]
+          _ = ∑ v : Fin p → Point N n, ∑ x, prop14RestrictedWeight E theta x * ∏ i : Fin p,
+                ‖fourier (firstCoordinateCorrelation (prop143Component f (y i) j (v i)) x)
+                  (coordinateRestriction phi (y i) j x)‖ ^ 2 := by
+              simp_rw [Fintype.prod_sum, Finset.mul_sum]
+              exact Finset.sum_comm
+      obtain ⟨v, -, hv⟩ := Finset.exists_le_of_sum_le Finset.univ_nonempty hsum
+      -- Proposition 14.1 for the components `v` with `α = γ^(2p)·T/N`
+      have h := proposition_14_1_holds N p (prop14RestrictedWeight E theta)
+        (fun i => prop143Component f (y i) j (v i)) (fun i => coordinateRestriction phi (y i) j)
+        (gamma ^ (2 * p) * (N : Real)⁻¹ * ∑ x ∈ E, theta x) (by positivity)
+        (fun x => ite_nonneg (htheta x) le_rfl)
+        (fun i => prop143_component_disc f hf (y i) j (v i))
+        (le_of_eq_of_le (by field_simp; ring) hv)
+      rw [prop14_univ_restricted_energy_eq] at h
+      convert h using 1
+      field_simp
+      ring
 
 end LeanProofs.GowersSzemeredi

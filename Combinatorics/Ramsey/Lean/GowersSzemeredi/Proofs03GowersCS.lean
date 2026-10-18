@@ -244,10 +244,7 @@ private lemma cubeForm_oneCoordinate_sq_le' {N d : Nat} [NeZero N]
         calc
           ‖∑ a : Point N n, A a * star (B a)‖ ≤
               ∑ a : Point N n, ‖A a * star (B a)‖ := norm_sum_le _ _
-          _ = ∑ a : Point N n, ‖A a‖ * ‖B a‖ := by
-            apply Finset.sum_congr rfl
-            intro a _
-            rw [norm_mul, norm_star]
+          _ = ∑ a : Point N n, ‖A a‖ * ‖B a‖ := by norm_num
       have hcs : (∑ a : Point N n, ‖A a‖ * ‖B a‖) ^ 2 ≤
           (∑ a : Point N n, ‖A a‖ ^ 2) *
             ∑ a : Point N n, ‖B a‖ ^ 2 := by
@@ -373,11 +370,7 @@ private lemma prefixProduct_power_le {N d n : Nat} [NeZero N]
 
 private lemma prefixFamily_zero {N d : Nat}
     (f : (Fin d → Bool) → ZMod N → Complex) (q : Fin 0 → Bool) :
-    prefixFamily f 0 q = f := by
-  funext e s
-  apply congrArg (fun v => f v s)
-  funext i
-  simp [overwritePrefix]
+    prefixFamily f 0 q = f := rfl
 
 private lemma prefixProduct_zero {N d : Nat} [NeZero N]
     (f : (Fin d → Bool) → ZMod N → Complex) :

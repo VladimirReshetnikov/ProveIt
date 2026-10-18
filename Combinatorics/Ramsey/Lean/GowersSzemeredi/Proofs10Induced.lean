@@ -98,13 +98,7 @@ theorem lemma_10_12_holds : lemma_10_12 := by
   let U : Finset (ZMod N) := B ∩ T
   let U' : Finset (ZMod N) := B' ∩ T'
   have hT'sub : T' ⊆ T := section10Translate_mono hlocal.1 c
-  have hU'sub : U' ⊆ U := by
-    intro x hx
-    change x ∈ B' ∩ T' at hx
-    change x ∈ B ∩ T
-    exact Finset.mem_inter.mpr
-      ⟨hlocal.1 (Finset.mem_inter.mp hx).1,
-        hT'sub (Finset.mem_inter.mp hx).2⟩
+  have hU'sub : U' ⊆ U := Finset.inter_subset_inter hlocal.1 hT'sub
   let E0 : Finset (ZMod N) := B \ B'
   let Ec : Finset (ZMod N) := T \ T'
   have hE0 : (E0.card : Real) ≤ theta * B.card := by
@@ -123,21 +117,12 @@ theorem lemma_10_12_holds : lemma_10_12 := by
     nlinarith [hlocal.2.1]
   have hdiffUsub : U \ U' ⊆ E0 ∪ Ec := by
     intro x hx
-    have hxU := (Finset.mem_sdiff.mp hx).1
-    have hxnot := (Finset.mem_sdiff.mp hx).2
-    have hxB : x ∈ B := (Finset.mem_inter.mp hxU).1
-    have hxT : x ∈ T := (Finset.mem_inter.mp hxU).2
-    by_cases hxB' : x ∈ B'
-    · have hxnotT' : x ∉ T' := by
-        exact fun hxT' => hxnot (Finset.mem_inter.mpr ⟨hxB', hxT'⟩)
-      exact Finset.mem_union.mpr (Or.inr (Finset.mem_sdiff.mpr ⟨hxT, hxnotT'⟩))
-    · exact Finset.mem_union.mpr (Or.inl (Finset.mem_sdiff.mpr ⟨hxB, hxB'⟩))
-  have hdiffUNat : (U \ U').card ≤ E0.card + Ec.card :=
-    (Finset.card_le_card hdiffUsub).trans (Finset.card_union_le E0 Ec)
+    simp only [U, U', E0, Ec, Finset.mem_sdiff, Finset.mem_inter, Finset.mem_union] at hx ⊢
+    tauto
   have hdiffU : ((U \ U').card : Real) ≤ 2 * theta * B.card := by
-    have hdiffUReal : ((U \ U').card : Real) ≤ E0.card + Ec.card := by
-      exact_mod_cast hdiffUNat
-    nlinarith
+    have : ((U \ U').card : Real) ≤ E0.card + Ec.card := by
+      exact_mod_cast (Finset.card_le_card hdiffUsub).trans (Finset.card_union_le E0 Ec)
+    linarith
   have hpartU : ((U \ U').card : Real) + U'.card = U.card := by
     exact_mod_cast Finset.card_sdiff_add_card_eq_card hU'sub
   have hU'lowerB : (5 / 8 : Real) * B.card ≤ U'.card := by
@@ -167,34 +152,16 @@ theorem lemma_10_12_holds : lemma_10_12 := by
     rw [show T'.card = B'.card by exact section10Translate_card B' c,
       show TG1.card = G1.card by exact section10Translate_card G1 c] at hpartReal
     nlinarith
-  have hHsub : H ⊆ U' := by
-    intro x hx
-    exact (Finset.mem_inter.mp (Finset.mem_inter.mp hx).1).1
+  have hHsub : H ⊆ U' := Finset.inter_subset_left.trans Finset.inter_subset_left
   have hdiffHsub : U' \ H ⊆ (B' \ G2) ∪ (T' \ TG1) := by
     intro x hx
-    have hxU' := (Finset.mem_sdiff.mp hx).1
-    have hxnot := (Finset.mem_sdiff.mp hx).2
-    have hxB' : x ∈ B' := (Finset.mem_inter.mp hxU').1
-    have hxT' : x ∈ T' := (Finset.mem_inter.mp hxU').2
-    by_cases hxG2 : x ∈ G2
-    · have hxnotTG1 : x ∉ TG1 := by
-        intro hxTG1
-        exact hxnot (Finset.mem_inter.mpr
-          ⟨Finset.mem_inter.mpr ⟨hxU', hxG2⟩, hxTG1⟩)
-      exact Finset.mem_union.mpr
-        (Or.inr (Finset.mem_sdiff.mpr ⟨hxT', hxnotTG1⟩))
-    · exact Finset.mem_union.mpr
-        (Or.inl (Finset.mem_sdiff.mpr ⟨hxB', hxG2⟩))
-  have hdiffHNat : (U' \ H).card ≤
-      (B' \ G2).card + (T' \ TG1).card := by
-    exact (Finset.card_le_card hdiffHsub).trans
-      (Finset.card_union_le (B' \ G2) (T' \ TG1))
+    simp only [U', H, Finset.mem_sdiff, Finset.mem_inter, Finset.mem_union] at hx ⊢
+    tauto
   have hdiffH : ((U' \ H).card : Real) ≤
       2 * Real.sqrt theta * B'.card := by
-    have hdiffHReal : ((U' \ H).card : Real) ≤
-        (B' \ G2).card + (T' \ TG1).card := by
-      exact_mod_cast hdiffHNat
-    nlinarith only [hdiffHReal, hG2def, hTG1def]
+    have : ((U' \ H).card : Real) ≤ (B' \ G2).card + (T' \ TG1).card := by
+      exact_mod_cast (Finset.card_le_card hdiffHsub).trans (Finset.card_union_le _ _)
+    linarith
   have hpartH : ((U' \ H).card : Real) + H.card = U'.card := by
     exact_mod_cast Finset.card_sdiff_add_card_eq_card hHsub
   have hHposReal : (0 : Real) < H.card := by

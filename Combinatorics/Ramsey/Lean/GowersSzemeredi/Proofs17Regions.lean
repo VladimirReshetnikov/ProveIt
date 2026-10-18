@@ -168,9 +168,7 @@ private lemma hyperplaneRegionCount_le {k m : Nat}
     apply Finset.sup_le
     intro s hs
     exact regionFamily_shattered_card_le H s (Finset.mem_shatterer.mp hs)
-  have hIic : Finset.Iic A.vcDim ⊆ Finset.Iic k := by
-    intro j hj
-    exact Finset.mem_Iic.mpr ((Finset.mem_Iic.mp hj).trans hvc)
+  have hIic : Finset.Iic A.vcDim ⊆ Finset.Iic k := by gcongr
   have hIicRange : Finset.Iic k = Finset.range (k + 1) := by
     ext j
     simp only [Finset.mem_Iic, Finset.mem_range]
@@ -382,12 +380,8 @@ private lemma stronglyShatters_regionFamily_of_card_le {k m : Nat}
     have hi : i ∉ s := (Finset.mem_sdiff.mp hiout).2
     dsimp only [gap]
     exact sub_ne_zero.mpr (hx0Outside i hi)
-  have htotalNonneg : 0 ≤ total := by
-    dsimp only [total]
-    positivity
-  have hepsPos : 0 < eps := by
-    dsimp only [eps]
-    positivity
+  have htotalNonneg : 0 ≤ total := by positivity
+  have hepsPos : 0 < eps := by positivity
   have hepsDen : eps * (1 + total) = 1 := by
     dsimp only [eps]
     field_simp

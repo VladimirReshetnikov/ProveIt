@@ -264,9 +264,7 @@ theorem splitCnt_controls {V : Real} (hV : 1 ≤ V) (a D : Nat) :
     have hsw : 0 ≤ splitW V theta gamma s := by
       unfold splitW
       exact mul_nonneg (by linarith) (div_nonneg (by norm_num) (by positivity))
-    have hnn' : ((n : Real) + 1) ≤ (n' : Real) + 1 := by
-      have : (n : Real) ≤ n' := by exact_mod_cast hnn
-      linarith
+    have hnn' : ((n : Real) + 1) ≤ (n' : Real) + 1 := by gcongr
     exact mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (by positivity) hnn' a) (pow_nonneg hsw _)
   refine ⟨hcnt1, ?_, hmono, ?_⟩
   · intro theta gamma n s ht ht1 hg hg1 hs hs1

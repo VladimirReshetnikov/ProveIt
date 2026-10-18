@@ -83,9 +83,7 @@ lemma uniformOfDegree_mono_parameter {N d : Nat} [NeZero N]
   exact hg.trans (mul_le_mul_of_nonneg_right h (pow_nonneg (by positivity) _))
 
 private lemma cubeDifference_one {N : Nat} (g : ZMod N → Complex)
-    (a : Point N 1) : cubeDifference g a = difference g (a 0) := by
-  funext s
-  simp only [cubeDifference, List.ofFn_succ, List.ofFn_zero, iteratedDifference]
+    (a : Point N 1) : cubeDifference g a = difference g (a 0) := rfl
 
 private lemma degreeOneEnergy_eq_correlation {N : Nat} [NeZero N]
     (g : ZMod N → Complex) :
@@ -232,17 +230,13 @@ private lemma higher_condition_i_iff_v_succ {N n : Nat} [NeZero N]
       F = (N : Real) * U := hmoment
       _ ≤ (N : Real) * (c * (N : Real) ^ (n + 3)) :=
         mul_le_mul_of_nonneg_left h hN.le
-      _ = c * (N : Real) ^ (n + 4) := by
-        rw [show n + 4 = 1 + (n + 3) by omega, pow_add]
-        ring
+      _ = c * (N : Real) ^ (n + 4) := by ring
   · intro h
     refine le_of_mul_le_mul_left ?_ hN
     calc
       (N : Real) * U = F := hmoment.symm
       _ ≤ c * (N : Real) ^ (n + 4) := h
-      _ = (N : Real) * (c * (N : Real) ^ (n + 3)) := by
-        rw [show n + 4 = 1 + (n + 3) by omega, pow_add]
-        ring
+      _ = (N : Real) * (c * (N : Real) ^ (n + 3)) := by ring
 
 private lemma sum_differenceUniformEnergy_eq_uniformEnergy {N n : Nat} [NeZero N]
     (g : ZMod N → Complex) :
@@ -379,9 +373,7 @@ private lemma higher_condition_i_iff_iv_succ {N n : Nat} [NeZero N]
         exact hlocal r
       _ = (∑ r, alpha r) * (N : Real) ^ (n + 2) := by rw [sum_mul]
       _ = (c * (N : Real)) * (N : Real) ^ (n + 2) := by rw [halphaSum]
-      _ = c * (N : Real) ^ (n + 3) := by
-        rw [show n + 3 = 1 + (n + 2) by omega, pow_add]
-        ring
+      _ = c * (N : Real) ^ (n + 3) := by ring
 
 private lemma higher_condition_iii_imp_vi_succ {N n : Nat} [NeZero N]
     (g : ZMod N → Complex) (c1 c2 : Real) (hc2 : 0 ≤ c2)
@@ -475,11 +467,7 @@ private lemma higher_condition_vi_imp_iii_succ {N n : Nat} [NeZero N]
       ring
     have hindicator :
         ∑ a : Point N n, (if a ∈ B then (1 : Real) else 0) =
-          (B.card : Real) := by
-      have hnat : B.card =
-          ∑ a : Point N n, if a ∈ B then (1 : Nat) else 0 :=
-        Finset.card_eq_sum_ite (Finset.subset_univ B)
-      exact_mod_cast hnat.symm
+          (B.card : Real) := by norm_num
     calc
       ∑ a : Point N n, alpha a ≤
           ∑ a : Point N n, (c2 + if a ∈ B then 1 else 0) :=

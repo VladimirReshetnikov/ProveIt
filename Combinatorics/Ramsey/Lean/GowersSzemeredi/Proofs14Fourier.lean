@@ -51,32 +51,22 @@ private lemma prop141_coeff_sq_expansion {N : Nat} [NeZero N]
           simp_rw [mul_sum, sum_mul]
           simp_rw [mul_sum]
           rw [Finset.sum_comm]
-          apply Finset.sum_congr rfl
-          intro y _
+          refine Finset.sum_congr rfl fun y _ => ?_
           rw [Finset.sum_comm]
     _ = ∑ y : ZMod N, ∑ x : ZMod N, ∑ u : ZMod N, ∑ w : ZMod N,
         (exponential (-(y * r)) *
           (f (x + h, y) * star (f (x, y)))) *
         ((f (w, y - u) * star (f (w + h, y - u))) *
           exponential ((y - u) * r)) := by
-            apply Finset.sum_congr rfl
-            intro y _
-            apply Finset.sum_congr rfl
-            intro x _
+            refine Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun x _ => ?_
             rw [← (Equiv.subLeft y).sum_comp]
             rfl
     _ = ∑ y : ZMod N, ∑ x : ZMod N, ∑ u : ZMod N, ∑ w : ZMod N,
         f (x + h, y) * star (f (x, y)) *
           star (f (w + h, y - u)) * f (w, y - u) *
             exponential (-(r * u)) := by
-              apply Finset.sum_congr rfl
-              intro y _
-              apply Finset.sum_congr rfl
-              intro x _
-              apply Finset.sum_congr rfl
-              intro u _
-              apply Finset.sum_congr rfl
-              intro w _
+              refine Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun x _ =>
+                  Finset.sum_congr rfl fun u _ => Finset.sum_congr rfl fun w _ => ?_
               have hphase :
                   exponential (-(y * r)) * exponential ((y - u) * r) =
                     exponential (-(r * u)) := by
@@ -109,97 +99,19 @@ private lemma prop141_energy_expansion {N p : Nat} [NeZero N]
           prop141Outer f y x u w *
             ∑ h : ZMod N, prop141InnerTerm lambda f sigma y x u w h := by
   rw [Complex.ofReal_sum]
-  calc
-    (∑ h : ZMod N,
-        ((lambda h * ∏ i : Fin p,
-          ‖fourier (firstCoordinateCorrelation (f i) h) (sigma i h)‖ ^ 2 :
-            Real) : Complex)) =
-        ∑ h : ZMod N, (lambda h : Complex) * ∏ i : Fin p,
-          ((‖fourier (firstCoordinateCorrelation (f i) h) (sigma i h)‖ ^ 2 :
-            Real) : Complex) := by
-              apply Finset.sum_congr rfl
-              intro h _
-              push_cast
-              rfl
-    _ = ∑ h : ZMod N, (lambda h : Complex) * ∏ i : Fin p,
-        ∑ y : ZMod N, ∑ x : ZMod N, ∑ u : ZMod N, ∑ w : ZMod N,
-          f i (x + h, y) * star (f i (x, y)) *
-            star (f i (w + h, y - u)) * f i (w, y - u) *
-              exponential (-(sigma i h * u)) := by
-                apply Finset.sum_congr rfl
-                intro h _
-                congr 1
-                apply Finset.prod_congr rfl
-                intro i _
-                rw [prop141_coeff_sq_expansion]
-    _ = ∑ h : ZMod N, (lambda h : Complex) *
-        ∑ y : Fin p → ZMod N, ∑ x : Fin p → ZMod N,
-          ∑ u : Fin p → ZMod N, ∑ w : Fin p → ZMod N,
-            ∏ i : Fin p,
-              f i (x i + h, y i) * star (f i (x i, y i)) *
-                star (f i (w i + h, y i - u i)) * f i (w i, y i - u i) *
-                  exponential (-(sigma i h * u i)) := by
-                    apply Finset.sum_congr rfl
-                    intro h _
-                    congr 1
-                    rw [Fintype.prod_sum]
-                    apply Finset.sum_congr rfl
-                    intro y _
-                    rw [Fintype.prod_sum]
-                    apply Finset.sum_congr rfl
-                    intro x _
-                    rw [Fintype.prod_sum]
-                    apply Finset.sum_congr rfl
-                    intro u _
-                    rw [Fintype.prod_sum]
-    _ = ∑ y : Fin p → ZMod N, ∑ x : Fin p → ZMod N,
-        ∑ u : Fin p → ZMod N, ∑ w : Fin p → ZMod N,
-          prop141Outer f y x u w *
-            ∑ h : ZMod N, prop141InnerTerm lambda f sigma y x u w h := by
-              simp_rw [Finset.mul_sum]
-              rw [Finset.sum_comm]
-              apply Finset.sum_congr rfl
-              intro y _
-              rw [Finset.sum_comm]
-              apply Finset.sum_congr rfl
-              intro x _
-              rw [Finset.sum_comm]
-              apply Finset.sum_congr rfl
-              intro u _
-              rw [Finset.sum_comm]
-              apply Finset.sum_congr rfl
-              intro w _
-              apply Finset.sum_congr rfl
-              intro h _
-              simp only [prop141Outer, prop141InnerTerm]
-              calc
-                (lambda h : Complex) * ∏ i : Fin p,
-                    f i (x i + h, y i) * star (f i (x i, y i)) *
-                      star (f i (w i + h, y i - u i)) *
-                        f i (w i, y i - u i) *
-                          exponential (-(sigma i h * u i)) =
-                    (lambda h : Complex) * ∏ i : Fin p,
-                      ((star (f i (x i, y i)) * f i (w i, y i - u i)) *
-                        (f i (x i + h, y i) *
-                          star (f i (w i + h, y i - u i)) *
-                            exponential (-(sigma i h * u i)))) := by
-                              congr 1
-                              apply Finset.prod_congr rfl
-                              intro i _
-                              ring
-                _ = (lambda h : Complex) *
-                    ((∏ i : Fin p,
-                      star (f i (x i, y i)) * f i (w i, y i - u i)) *
-                    ∏ i : Fin p, f i (x i + h, y i) *
-                      star (f i (w i + h, y i - u i)) *
-                        exponential (-(sigma i h * u i))) := by
-                          rw [Finset.prod_mul_distrib]
-                _ = (∏ i : Fin p,
-                      star (f i (x i, y i)) * f i (w i, y i - u i)) *
-                    ((lambda h : Complex) * ∏ i : Fin p,
-                      f i (x i + h, y i) *
-                        star (f i (w i + h, y i - u i)) *
-                          exponential (-(sigma i h * u i))) := by ring
+  simp_rw [Complex.ofReal_mul, Complex.ofReal_prod, prop141_coeff_sq_expansion, Fintype.prod_sum,
+    Finset.mul_sum]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun y _ => ?_
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun x _ => ?_
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun u _ => ?_
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun w _ => Finset.sum_congr rfl fun h _ => ?_
+  simp only [prop141Outer, prop141InnerTerm]
+  rw [mul_left_comm, ← Finset.prod_mul_distrib]
+  exact congrArg _ (Finset.prod_congr rfl fun i _ => by ring)
 
 private lemma prop141_outer_norm_le {N p : Nat}
     (f : Fin p → Pair N → Complex) (hf : ∀ i, DiscValued (f i))
@@ -315,8 +227,7 @@ private lemma prop141_correlation_eq {N p : Nat} [NeZero N]
   simp only [correlation]
   rw [← (prop141AddRightEquiv s).sum_comp]
   simp only [prop141AddRightEquiv_apply, add_sub_cancel_right]
-  apply Finset.sum_congr rfl
-  intro h _
+  refine Finset.sum_congr rfl fun h _ => ?_
   simp only [prop141A, prop121B, prop141InnerTerm, star_mul, star_prod,
     Complex.star_def, Complex.conj_ofReal, star_exponential]
   calc
@@ -339,8 +250,7 @@ private lemma prop141_correlation_eq {N p : Nat} [NeZero N]
         f i (s + x i + h, y i) * star (f i (s + w i + h, y i - u i)) *
           exponential (-(sigma i h * u i)) := by
             congr 1
-            apply Finset.prod_congr rfl
-            intro i _
+            refine Finset.prod_congr rfl fun i _ => ?_
             have hx : h + s + x i = s + x i + h := by ring
             have hw : h + s + w i = s + w i + h := by ring
             rw [hx, hw]
@@ -365,8 +275,7 @@ private lemma prop141_double_shift_sum {N p : Nat} [NeZero N]
   calc
     _ = ∑ _s : ZMod N, ∑ x : Fin p → ZMod N,
         ∑ w : Fin p → ZMod N, F x w := by
-          apply Finset.sum_congr rfl
-          intro s _
+          refine Finset.sum_congr rfl fun s _ => ?_
           calc
             (∑ x : Fin p → ZMod N, ∑ w : Fin p → ZMod N,
                 F (fun i => s + x i) (fun i => s + w i)) =
@@ -378,8 +287,7 @@ private lemma prop141_double_shift_sum {N p : Nat} [NeZero N]
                       (fun x => ∑ w : Fin p → ZMod N,
                         F x (fun i => s + w i)) (fun _ => rfl)
             _ = _ := by
-              apply Finset.sum_congr rfl
-              intro x _
+              refine Finset.sum_congr rfl fun x _ => ?_
               exact Fintype.sum_equiv (prop141VectorShiftEquiv (p := p) s)
                 (fun w => F x (fun i => s + w i)) (F x) (fun _ => rfl)
     _ = _ := by simp
@@ -400,89 +308,35 @@ private lemma prop141_mixed_eq_l2 {N p : Nat} [NeZero N]
   calc
     _ = ∑ y : U, ∑ x : U, ∑ u : U, ∑ w : U,
         (N : Real) * ∑ s : ZMod N,
-          ‖correlation (prop141A f y x u w) (prop121B lambda sigma u) s‖ ^ 2 := by
-            apply Finset.sum_congr rfl
-            intro y _
-            apply Finset.sum_congr rfl
-            intro x _
-            apply Finset.sum_congr rfl
-            intro u _
-            apply Finset.sum_congr rfl
-            intro w _
-            exact lemma_2_1_holds N (prop141A f y x u w)
-              (prop121B lambda sigma u)
-    _ = (N : Real) * ∑ y : U, ∑ x : U, ∑ u : U, ∑ w : U,
-        ∑ s : ZMod N,
-          ‖correlation (prop141A f y x u w) (prop121B lambda sigma u) s‖ ^ 2 := by
-            simp_rw [← Finset.mul_sum]
+          ‖correlation (prop141A f y x u w) (prop121B lambda sigma u) s‖ ^ 2 :=
+      Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl
+        fun u _ => Finset.sum_congr rfl fun w _ => lemma_2_1_holds N _ _
     _ = (N : Real) * ∑ y : U, ∑ x : U, ∑ u : U, ∑ w : U,
         ∑ s : ZMod N,
           ‖∑ h : ZMod N, prop141InnerTerm lambda f sigma y
             (fun i => s + x i) u (fun i => s + w i) h‖ ^ 2 := by
-              apply congrArg (fun t : Real => (N : Real) * t)
-              apply Finset.sum_congr rfl
-              intro y _
-              apply Finset.sum_congr rfl
-              intro x _
-              apply Finset.sum_congr rfl
-              intro u _
-              apply Finset.sum_congr rfl
-              intro w _
-              apply Finset.sum_congr rfl
-              intro s _
-              rw [prop141_correlation_eq]
+      simp_rw [← Finset.mul_sum, prop141_correlation_eq]
     _ = (N : Real) * ((N : Real) *
         ∑ y : U, ∑ x : U, ∑ u : U, ∑ w : U,
           ‖∑ h : ZMod N, prop141InnerTerm lambda f sigma y x u w h‖ ^ 2) := by
-            congr 1
-            calc
-              (∑ y : U, ∑ x : U, ∑ u : U, ∑ w : U,
-                  ∑ s : ZMod N,
-                    ‖∑ h : ZMod N, prop141InnerTerm lambda f sigma y
-                      (fun i => s + x i) u (fun i => s + w i) h‖ ^ 2) =
-                  ∑ y : U, ∑ u : U, ∑ s : ZMod N,
-                    ∑ x : U, ∑ w : U,
-                      ‖∑ h : ZMod N, prop141InnerTerm lambda f sigma y
-                        (fun i => s + x i) u (fun i => s + w i) h‖ ^ 2 := by
-                          apply Finset.sum_congr rfl
-                          intro y _
-                          rw [Finset.sum_comm]
-                          apply Finset.sum_congr rfl
-                          intro u _
-                          calc
-                            (∑ x : U, ∑ w : U, ∑ s : ZMod N,
-                                ‖∑ h : ZMod N,
-                                  prop141InnerTerm lambda f sigma y
-                                    (fun i => s + x i) u
-                                    (fun i => s + w i) h‖ ^ 2) =
-                                ∑ x : U, ∑ s : ZMod N, ∑ w : U,
-                                  ‖∑ h : ZMod N,
-                                    prop141InnerTerm lambda f sigma y
-                                      (fun i => s + x i) u
-                                      (fun i => s + w i) h‖ ^ 2 := by
-                                    apply Finset.sum_congr rfl
-                                    intro x _
-                                    exact Finset.sum_comm
-                            _ = _ := Finset.sum_comm
-              _ = ∑ y : U, ∑ u : U, (N : Real) * ∑ x : U, ∑ w : U,
-                  ‖∑ h : ZMod N, prop141InnerTerm lambda f sigma y x u w h‖ ^ 2 := by
-                    apply Finset.sum_congr rfl
-                    intro y _
-                    apply Finset.sum_congr rfl
-                    intro u _
-                    exact prop141_double_shift_sum (N := N) (p := p)
-                      (fun x w =>
-                        ‖∑ h : ZMod N,
-                          prop141InnerTerm lambda f sigma y x u w h‖ ^ 2)
-              _ = (N : Real) * ∑ y : U, ∑ u : U, ∑ x : U, ∑ w : U,
-                  ‖∑ h : ZMod N, prop141InnerTerm lambda f sigma y x u w h‖ ^ 2 := by
-                    simp_rw [← Finset.mul_sum]
-              _ = (N : Real) * ∑ y : U, ∑ x : U, ∑ u : U, ∑ w : U,
-                  ‖∑ h : ZMod N, prop141InnerTerm lambda f sigma y x u w h‖ ^ 2 := by
-                    apply congrArg (fun t : Real => (N : Real) * t)
-                    apply Finset.sum_congr rfl
-                    intro y _
-                    exact Finset.sum_comm
+      congr 1
+      calc
+        _ = ∑ y : U, ∑ u : U, ∑ s : ZMod N, ∑ x : U, ∑ w : U,
+              ‖∑ h : ZMod N, prop141InnerTerm lambda f sigma y
+                (fun i => s + x i) u (fun i => s + w i) h‖ ^ 2 := by
+          refine Finset.sum_congr rfl fun y _ => ?_
+          rw [Finset.sum_comm]
+          exact Finset.sum_congr rfl fun u _ =>
+            (Finset.sum_congr rfl fun x _ => Finset.sum_comm).trans Finset.sum_comm
+        _ = ∑ y : U, ∑ u : U, (N : Real) * ∑ x : U, ∑ w : U,
+              ‖∑ h : ZMod N, prop141InnerTerm lambda f sigma y x u w h‖ ^ 2 :=
+          Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun u _ =>
+            prop141_double_shift_sum (N := N) (p := p) (fun x w =>
+              ‖∑ h : ZMod N, prop141InnerTerm lambda f sigma y x u w h‖ ^ 2)
+        _ = _ := by
+          simp_rw [← Finset.mul_sum]
+          exact congrArg (fun t : Real => (N : Real) * t)
+            (Finset.sum_congr rfl fun y _ => Finset.sum_comm)
     _ = _ := by
       simp only [pow_two, mul_assoc]
       rfl
@@ -610,8 +464,7 @@ private lemma prop141_fourthB_total_eq_energy {N p : Nat} [NeZero N]
   calc
     _ = ∑ y : U, ∑ u : U, ∑ _x : U, ∑ _w : U,
         ∑ r : ZMod N, ‖fourier (prop121B lambda sigma u) r‖ ^ 4 := by
-          apply Finset.sum_congr rfl
-          intro y _
+          refine Finset.sum_congr rfl fun y _ => ?_
           exact Finset.sum_comm
     _ = ∑ u : U, ∑ _y : U, ∑ _x : U, ∑ _w : U,
         ∑ r : ZMod N, ‖fourier (prop121B lambda sigma u) r‖ ^ 4 :=

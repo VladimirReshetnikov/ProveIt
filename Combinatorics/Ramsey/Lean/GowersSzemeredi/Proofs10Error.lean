@@ -174,15 +174,6 @@ private abbrev RestrictedPair {N : Nat} {X : Type*}
   D.index uv.1 - D.index x = D.index uv.2 - D.index y ∧
     D.index uv.1 - D.index x ∈ B
 
-private lemma sum_mul_sum_mul {A C : Type*} [Fintype A] [Fintype C]
-    (f : A → Real) (g : C → Real) (r : Real) :
-    (∑ a, f a) * (∑ c, g c) * r =
-      ∑ a, ∑ c, f a * g c * r := by
-  rw [mul_assoc, Finset.sum_mul]
-  apply Finset.sum_congr rfl
-  intro a _
-  rw [← mul_assoc, Finset.mul_sum, Finset.sum_mul]
-
 private lemma weightedTerm_eq_sextuple_sum {N : Nat} {X : Type*}
     [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
     (phi : X → ZMod N) (B : Finset (ZMod N)) (x y : X) :
@@ -194,38 +185,10 @@ private lemma weightedTerm_eq_sextuple_sum {N : Nat} {X : Type*}
   change ((countWhere (RestrictedError D phi B x y) : Real) /
       (domainRestrictedDifferenceWeight D B x y : Real)) *
       (countWhere (DifferenceQuad D x y) : Real) = _
-  rw [countWhere_cast_eq_sum_ite, countWhere_cast_eq_sum_ite, div_eq_mul_inv]
-  calc
-    ((∑ uv : X × X, if RestrictedError D phi B x y uv then 1 else 0) *
-          (domainRestrictedDifferenceWeight D B x y : Real)⁻¹) *
-        (∑ zw : X × X, if DifferenceQuad D x y zw then 1 else 0) =
-        (∑ zw : X × X, if DifferenceQuad D x y zw then 1 else 0) *
-          (∑ uv : X × X, if RestrictedError D phi B x y uv then 1 else 0) *
-            (domainRestrictedDifferenceWeight D B x y : Real)⁻¹ := by ring
-    _ = ∑ zw : X × X, ∑ uv : X × X,
-          (if DifferenceQuad D x y zw then 1 else 0) *
-            (if RestrictedError D phi B x y uv then 1 else 0) *
-              (domainRestrictedDifferenceWeight D B x y : Real)⁻¹ := by
-      exact sum_mul_sum_mul _ _ _
-    _ = _ := by
-      apply Finset.sum_congr rfl
-      intro zw _
-      apply Finset.sum_congr rfl
-      intro uv _
-      by_cases hq : DifferenceQuad D x y zw
-      · by_cases he : RestrictedError D phi B x y uv
-        · rw [if_pos (And.intro hq he), if_pos hq, if_pos he]
-          norm_num
-        · rw [if_neg (fun h : DifferenceQuad D x y zw ∧
-            RestrictedError D phi B x y uv => he h.2), if_pos hq, if_neg he]
-          norm_num
-      · by_cases he : RestrictedError D phi B x y uv
-        · rw [if_neg (fun h : DifferenceQuad D x y zw ∧
-            RestrictedError D phi B x y uv => hq h.1), if_neg hq, if_pos he]
-          norm_num
-        · rw [if_neg (fun h : DifferenceQuad D x y zw ∧
-            RestrictedError D phi B x y uv => hq h.1), if_neg hq, if_neg he]
-          norm_num
+  rw [countWhere_cast_eq_sum_ite, countWhere_cast_eq_sum_ite, div_eq_mul_inv, Finset.sum_mul,
+    mul_comm, Fintype.sum_mul_sum]
+  refine Finset.sum_congr rfl fun zw _ => Finset.sum_congr rfl fun uv _ => ?_
+  simp only [ite_mul, one_mul, zero_mul, ite_and]
 
 lemma fibre_card_cast_eq_sum_ite {N : Nat} {X : Type*}
     [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X) (s : ZMod N) :
@@ -283,45 +246,9 @@ private lemma restrictedWeight_eq_sum_fibre {N : Nat} {X : Type*}
   unfold domainRestrictedDifferenceWeight
   change (countWhere (RestrictedPair D B x y) : Real) = _
   rw [countWhere_cast_eq_sum_ite, Fintype.sum_prod_type]
-  simp_rw [restrictedPair_ite_eq_sum]
-  calc
-    (∑ u : X, ∑ v : X, ∑ d ∈ B,
-        if D.index u = D.index x + d ∧ D.index v = D.index y + d
-        then (1 : Real) else 0) =
-        ∑ u : X, ∑ d ∈ B, ∑ v : X,
-          if D.index u = D.index x + d ∧ D.index v = D.index y + d
-          then 1 else 0 := by
-      apply Finset.sum_congr rfl
-      intro u _
-      rw [Finset.sum_comm]
-    _ = ∑ d ∈ B, ∑ u : X, ∑ v : X,
-          if D.index u = D.index x + d ∧ D.index v = D.index y + d
-          then 1 else 0 := by rw [Finset.sum_comm]
-    _ = _ := by
-      apply Finset.sum_congr rfl
-      intro d _
-      rw [fibre_card_cast_eq_sum_ite, fibre_card_cast_eq_sum_ite]
-      have hprod := sum_mul_sum_mul
-        (fun u : X => if D.index u = D.index x + d then (1 : Real) else 0)
-        (fun v : X => if D.index v = D.index y + d then (1 : Real) else 0) 1
-      calc
-        (∑ u : X, ∑ v : X,
-            if D.index u = D.index x + d ∧ D.index v = D.index y + d
-            then (1 : Real) else 0) =
-            ∑ u : X, ∑ v : X,
-              (if D.index u = D.index x + d then 1 else 0) *
-                (if D.index v = D.index y + d then 1 else 0) * 1 := by
-          apply Finset.sum_congr rfl
-          intro u _
-          apply Finset.sum_congr rfl
-          intro v _
-          by_cases hu : D.index u = D.index x + d <;>
-            by_cases hv : D.index v = D.index y + d <;>
-            simp [hu, hv]
-        _ = (∑ u : X, if D.index u = D.index x + d then 1 else 0) *
-              (∑ v : X, if D.index v = D.index y + d then 1 else 0) * 1 :=
-          hprod.symm
-        _ = _ := by ring
+  simp_rw [restrictedPair_ite_eq_sum, fibre_card_cast_eq_sum_ite, Fintype.sum_mul_sum, ite_and,
+    boole_mul]
+  exact Eq.trans (Finset.sum_congr rfl fun u _ => Finset.sum_comm) Finset.sum_comm
 
 private lemma restrictedWeight_le_four_of_large {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]
@@ -335,74 +262,25 @@ private lemma restrictedWeight_le_four_of_large {N : Nat} [NeZero N]
     (hrel : RestrictedPair D B x y (u, v)) :
     (domainRestrictedDifferenceWeight D B u v : Real) ≤
       4 * domainRestrictedDifferenceWeight D B x y := by
-  let L : Real := eta * alpha ^ 2 * M
-  have hL : 0 ≤ L := by positivity
-  have hsigmaM : sigma * (M : Real) ≤ L := by
-    dsimp only [L]
-    exact mul_le_mul_of_nonneg_right hsigma (by positivity)
-  have hxlargeL : 5 * L ≤ (D.fibre (D.index x)).card := by linarith
-  have hylargeL : 5 * L ≤ (D.fibre (D.index y)).card := by linarith
-  let d0 : ZMod N := D.index u - D.index x
-  have hd0 : d0 ∈ B := hrel.2
-  have hvIndex : D.index v - D.index y = d0 := hrel.1.symm
-  rw [restrictedWeight_eq_sum_fibre, restrictedWeight_eq_sum_fibre]
-  calc
-    (∑ d ∈ B, ((D.fibre (D.index u + d)).card : Real) *
-        (D.fibre (D.index v + d)).card) ≤
-        ∑ d ∈ B, 4 * (((D.fibre (D.index x + d)).card : Real) *
-          (D.fibre (D.index y + d)).card) := by
-      apply Finset.sum_le_sum
-      intro d hd
-      let Ax : Real := (D.fibre (D.index x + d)).card
-      let Ay : Real := (D.fibre (D.index y + d)).card
-      let Au : Real := (D.fibre (D.index u + d)).card
-      let Av : Real := (D.fibre (D.index v + d)).card
-      have hxShift :
-          |Ax - (D.fibre (D.index x)).card| ≤ L := by
-        exact (hinvariant (D.index x) d hd).trans hsigmaM
-      have hyShift :
-          |Ay - (D.fibre (D.index y)).card| ≤ L := by
-        exact (hinvariant (D.index y) d hd).trans hsigmaM
-      have huxIndex : D.index u + d = (D.index x + d) + d0 := by ring
-      have hvyIndex : D.index v + d = (D.index y + d) + d0 := by
-        rw [show D.index v = D.index y + d0 by
-          dsimp only [d0] at hvIndex ⊢
-          linear_combination hvIndex]
-        abel
-      have huxShift : |Au - Ax| ≤ L := by
-        dsimp only [Au, Ax]
-        rw [huxIndex]
-        exact (hinvariant (D.index x + d) d0 hd0).trans hsigmaM
-      have hvyShift : |Av - Ay| ≤ L := by
-        dsimp only [Av, Ay]
-        rw [hvyIndex]
-        exact (hinvariant (D.index y + d) d0 hd0).trans hsigmaM
-      have hLleAx : L ≤ Ax := by
-        have hxlow := (abs_le.mp hxShift).1
-        nlinarith only [hxlow, hxlargeL, hL]
-      have hLleAy : L ≤ Ay := by
-        have hylow := (abs_le.mp hyShift).1
-        nlinarith only [hylow, hylargeL, hL]
-      have hAu : Au ≤ 2 * Ax := by
-        have hupper := (abs_le.mp huxShift).2
-        nlinarith only [hupper, hLleAx]
-      have hAv : Av ≤ 2 * Ay := by
-        have hupper := (abs_le.mp hvyShift).2
-        nlinarith only [hupper, hLleAy]
-      have hAvNonneg : 0 ≤ Av := by
-        dsimp only [Av]
-        exact_mod_cast Nat.zero_le (D.fibre (D.index v + d)).card
-      have hAxNonneg : 0 ≤ Ax := by
-        dsimp only [Ax]
-        exact_mod_cast Nat.zero_le (D.fibre (D.index x + d)).card
-      have hprod : Au * Av ≤ (2 * Ax) * (2 * Ay) := by
-        exact mul_le_mul hAu hAv hAvNonneg
-          (mul_nonneg (by norm_num) hAxNonneg)
-      dsimp only [Au, Av, Ax, Ay] at hprod ⊢
-      nlinarith only [hprod]
-    _ = 4 * ∑ d ∈ B, ((D.fibre (D.index x + d)).card : Real) *
-        (D.fibre (D.index y + d)).card := by
-      rw [Finset.mul_sum]
+  obtain ⟨h1, h2⟩ : D.index u - D.index x = D.index v - D.index y ∧
+      D.index u - D.index x ∈ B := hrel
+  have hL : sigma * (M : Real) ≤ eta * alpha ^ 2 * M :=
+    mul_le_mul_of_nonneg_right hsigma (Nat.cast_nonneg _)
+  have hL0 : 0 ≤ eta * alpha ^ 2 * M := by positivity
+  rw [restrictedWeight_eq_sum_fibre, restrictedWeight_eq_sum_fibre, Finset.mul_sum]
+  refine Finset.sum_le_sum fun d hd => ?_
+  -- each of the four fibres moves by at most `eta * alpha ^ 2 * M` under the shifts
+  have hx := (abs_le.mp ((hinvariant (D.index x) d hd).trans hL)).1
+  have hy := (abs_le.mp ((hinvariant (D.index y) d hd).trans hL)).1
+  have hu := (abs_le.mp ((hinvariant (D.index x + d) _ h2).trans hL)).2
+  have hv := (abs_le.mp ((hinvariant (D.index y + d) _ h2).trans hL)).2
+  rw [show D.index x + d + (D.index u - D.index x) = D.index u + d by ring] at hu
+  rw [h1, show D.index y + d + (D.index v - D.index y) = D.index v + d by ring] at hv
+  have hAu : ((D.fibre (D.index u + d)).card : Real) ≤ 2 * (D.fibre (D.index x + d)).card := by
+    linarith
+  have hAv : ((D.fibre (D.index v + d)).card : Real) ≤ 2 * (D.fibre (D.index y + d)).card := by
+    linarith
+  linarith [mul_le_mul hAu hAv (Nat.cast_nonneg _) (by positivity)]
 
 private lemma restrictedError_inv_sum_le_one {N : Nat} {X : Type*}
     [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
@@ -476,67 +354,25 @@ private lemma large_reverse_inv_sum_le_four {N : Nat} [NeZero N]
       if LargeFibre D alpha eta M xy.1 ∧ LargeFibre D alpha eta M xy.2 ∧
           RestrictedPair D B xy.1 xy.2 (u, v)
       then (domainRestrictedDifferenceWeight D B xy.1 xy.2 : Real)⁻¹ else 0) ≤ 4 := by
-  let Eligible (xy : X × X) : Prop :=
-    LargeFibre D alpha eta M xy.1 ∧ LargeFibre D alpha eta M xy.2 ∧
-      RestrictedPair D B xy.1 xy.2 (u, v)
-  let c : Nat := countWhere Eligible
-  let buv : Nat := domainRestrictedDifferenceWeight D B u v
-  have hc : c ≤ buv := by
-    dsimp only [c, buv]
-    unfold domainRestrictedDifferenceWeight
-    apply countWhere_mono
-    intro xy hxy
-    exact restrictedPair_reverse D B hsymmetric xy.1 xy.2 u v hxy.2.2
-  have hcReal : (c : Real) ≤ buv := by exact_mod_cast hc
-  have hpoint (xy : X × X) (hxy : Eligible xy) :
-      (domainRestrictedDifferenceWeight D B xy.1 xy.2 : Real)⁻¹ ≤
-        4 * (buv : Real)⁻¹ := by
-    have hcomp := restrictedWeight_le_four_of_large D B alpha sigma eta M
-      heta hinvariant hsigma xy.1 xy.2 u v hxy.1 hxy.2.1 hxy.2.2
-    have hxyPosNat := restrictedWeight_pos_of_pair D B xy.1 xy.2 u v hxy.2.2
-    have hrev := restrictedPair_reverse D B hsymmetric xy.1 xy.2 u v hxy.2.2
-    have huvPosNat := restrictedWeight_pos_of_pair D B u v xy.1 xy.2 hrev
-    have hxyPos : (0 : Real) < domainRestrictedDifferenceWeight D B xy.1 xy.2 := by
-      exact_mod_cast hxyPosNat
-    have huvPos : (0 : Real) < buv := by positivity
-    have hcross : (1 : Real) * (buv : Real) ≤
-        4 * domainRestrictedDifferenceWeight D B xy.1 xy.2 := by linarith
-    simp only [inv_eq_one_div]
-    simpa only [div_eq_mul_inv, one_mul] using
-      (div_le_div_iff₀ hxyPos huvPos).2 hcross
-  have hsumPoint :
-      (∑ xy : X × X, if Eligible xy
-        then (domainRestrictedDifferenceWeight D B xy.1 xy.2 : Real)⁻¹ else 0) ≤
-      ∑ xy : X × X, if Eligible xy then 4 * (buv : Real)⁻¹ else 0 := by
-    apply Finset.sum_le_sum
-    intro xy _
-    by_cases hxy : Eligible xy
-    · simp only [if_pos hxy]
-      exact hpoint xy hxy
-    · simp [hxy]
-  have hccast : (c : Real) =
-      ∑ xy : X × X, if Eligible xy then 1 else 0 := by
-    dsimp only [c]
-    exact countWhere_cast_eq_sum_ite _
-  calc
-    (∑ xy : X × X,
-        if LargeFibre D alpha eta M xy.1 ∧ LargeFibre D alpha eta M xy.2 ∧
-            RestrictedPair D B xy.1 xy.2 (u, v)
-        then (domainRestrictedDifferenceWeight D B xy.1 xy.2 : Real)⁻¹ else 0) =
-        ∑ xy : X × X, if Eligible xy
-          then (domainRestrictedDifferenceWeight D B xy.1 xy.2 : Real)⁻¹ else 0 := rfl
-    _ ≤ ∑ xy : X × X, if Eligible xy then 4 * (buv : Real)⁻¹ else 0 := hsumPoint
-    _ = (c : Real) * (4 * (buv : Real)⁻¹) := by
-      rw [hccast, Finset.sum_mul]
-      apply Finset.sum_congr rfl
-      intro xy _
-      by_cases hxy : Eligible xy <;> simp [hxy]
-    _ ≤ (buv : Real) * (4 * (buv : Real)⁻¹) := mul_le_mul_of_nonneg_right hcReal (by positivity)
-    _ ≤ 4 := by
-      by_cases hbuv : buv = 0
-      · simp [hbuv]
-      · field_simp
-        norm_num
+  -- the eligible pairs inject into the restricted translates of `(u, v)`
+  have hc : countWhere (fun xy : X × X => LargeFibre D alpha eta M xy.1 ∧
+      LargeFibre D alpha eta M xy.2 ∧ RestrictedPair D B xy.1 xy.2 (u, v)) ≤
+      domainRestrictedDifferenceWeight D B u v :=
+    countWhere_mono fun xy hxy => restrictedPair_reverse D B hsymmetric xy.1 xy.2 u v hxy.2.2
+  rw [← Finset.sum_filter]
+  refine le_trans (Finset.sum_le_card_nsmul _ _
+    (4 * (domainRestrictedDifferenceWeight D B u v : Real)⁻¹) fun xy hxy => ?_) ?_
+  · obtain ⟨hx, hy, hrel⟩ := (Finset.mem_filter.mp hxy).2
+    have hpos : (0 : Real) < domainRestrictedDifferenceWeight D B u v := by
+      exact_mod_cast restrictedWeight_pos_of_pair D B u v xy.1 xy.2
+        (restrictedPair_reverse D B hsymmetric xy.1 xy.2 u v hrel)
+    have h4 := inv_anti₀ hpos (restrictedWeight_le_four_of_large D B alpha sigma eta M heta
+      hinvariant hsigma xy.1 xy.2 u v hx hy hrel)
+    rw [mul_inv] at h4
+    linarith
+  · rw [nsmul_eq_mul, ← countWhere_eq_card_filter, mul_left_comm, ← div_eq_mul_inv]
+    exact mul_le_of_le_one_right (by norm_num)
+      (div_le_one_of_le₀ (by exact_mod_cast hc) (Nat.cast_nonneg _))
 
 private lemma bad_left_or_bad_right {N : Nat} {X : Type*}
     (D : MultifunctionDomain N X) (phi : X → ZMod N)
@@ -587,11 +423,6 @@ private lemma sum_triple_rotate {A C E : Type*}
       apply Finset.sum_congr rfl
       intro e _
       rw [Finset.sum_comm]
-
-private lemma ite_ite_nonneg (P Q : Prop) [Decidable P] [Decidable Q]
-    (r : Real) (hr : 0 ≤ r) :
-    0 ≤ if P then (if Q then r else 0) else 0 := by
-  by_cases hP : P <;> by_cases hQ : Q <;> simp [hP, hQ, hr]
 
 private lemma left_contribution_le_bad {N : Nat} {X : Type*}
     [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
@@ -655,92 +486,26 @@ private lemma large_weighted_sum_le_five_bad {N : Nat} [NeZero N]
       then domainProportionateError D phi B xy.1 xy.2 *
         domainDifferenceWeight D xy.1 xy.2
       else 0) ≤ 5 * countWhere (AltPhiBad D phi) := by
-  calc
-    (∑ xy : X × X,
-        if LargeFibre D alpha eta M xy.1 ∧ LargeFibre D alpha eta M xy.2
-        then domainProportionateError D phi B xy.1 xy.2 *
-          domainDifferenceWeight D xy.1 xy.2
-        else 0) =
-        ∑ xy : X × X, ∑ zw : X × X, ∑ uv : X × X,
-          if (LargeFibre D alpha eta M xy.1 ∧ LargeFibre D alpha eta M xy.2) ∧
-              (DifferenceQuad D xy.1 xy.2 zw ∧
-                RestrictedError D phi B xy.1 xy.2 uv)
-          then (domainRestrictedDifferenceWeight D B xy.1 xy.2 : Real)⁻¹
-          else 0 := by
-      apply Finset.sum_congr rfl
-      intro xy _
-      by_cases hlarge : LargeFibre D alpha eta M xy.1 ∧
-          LargeFibre D alpha eta M xy.2
-      · rw [if_pos hlarge, weightedTerm_eq_sextuple_sum]
-        apply Finset.sum_congr rfl
-        intro zw _
-        apply Finset.sum_congr rfl
-        intro uv _
-        by_cases hq : DifferenceQuad D xy.1 xy.2 zw <;>
-          by_cases he : RestrictedError D phi B xy.1 xy.2 uv <;>
-          simp [hlarge, hq, he]
-      · simp [hlarge]
-    _ ≤ ∑ xy : X × X, ∑ zw : X × X, ∑ uv : X × X,
-          ((if LargeFibre D alpha eta M xy.1 ∧
-                LargeFibre D alpha eta M xy.2 ∧
-                AltPhiBad D phi ![xy.1, xy.2, zw.1, zw.2]
-            then if RestrictedError D phi B xy.1 xy.2 uv
-              then (domainRestrictedDifferenceWeight D B xy.1 xy.2 : Real)⁻¹
-              else 0
-            else 0) +
-          (if AltPhiBad D phi ![uv.1, uv.2, zw.1, zw.2]
-            then if LargeFibre D alpha eta M xy.1 ∧
-                LargeFibre D alpha eta M xy.2 ∧
-                RestrictedPair D B xy.1 xy.2 uv
-              then (domainRestrictedDifferenceWeight D B xy.1 xy.2 : Real)⁻¹
-              else 0
-            else 0)) := by
-      gcongr with xy _ zw _ uv _
-      by_cases hs :
-          (LargeFibre D alpha eta M xy.1 ∧ LargeFibre D alpha eta M xy.2) ∧
-            (DifferenceQuad D xy.1 xy.2 zw ∧
-              RestrictedError D phi B xy.1 xy.2 uv)
-      · rw [if_pos hs]
-        rcases bad_left_or_bad_right D phi B xy.1 xy.2 zw uv hs.2.1 hs.2.2 with
-          hleft | hright
-        · have houter : LargeFibre D alpha eta M xy.1 ∧
-              LargeFibre D alpha eta M xy.2 ∧
-              AltPhiBad D phi ![xy.1, xy.2, zw.1, zw.2] :=
-            ⟨hs.1.1, hs.1.2, hleft⟩
-          rw [if_pos houter, if_pos hs.2.2]
-          exact le_add_of_nonneg_right (ite_ite_nonneg _ _ _ (inv_nonneg.mpr (by positivity)))
-        · have hpair : RestrictedPair D B xy.1 xy.2 uv :=
-            ⟨hs.2.2.1, hs.2.2.2.1⟩
-          have hinner : LargeFibre D alpha eta M xy.1 ∧
-              LargeFibre D alpha eta M xy.2 ∧
-              RestrictedPair D B xy.1 xy.2 uv :=
-            ⟨hs.1.1, hs.1.2, hpair⟩
-          rw [if_pos hright, if_pos hinner]
-          exact le_add_of_nonneg_left (ite_ite_nonneg _ _ _ (inv_nonneg.mpr (by positivity)))
-      · rw [if_neg hs]
-        apply add_nonneg
-        · exact ite_ite_nonneg _ _ _ (inv_nonneg.mpr (by positivity))
-        · exact ite_ite_nonneg _ _ _ (inv_nonneg.mpr (by positivity))
-    _ = (∑ xy : X × X, ∑ zw : X × X, ∑ uv : X × X,
-          if LargeFibre D alpha eta M xy.1 ∧ LargeFibre D alpha eta M xy.2 ∧
-              AltPhiBad D phi ![xy.1, xy.2, zw.1, zw.2]
-          then if RestrictedError D phi B xy.1 xy.2 uv
-            then (domainRestrictedDifferenceWeight D B xy.1 xy.2 : Real)⁻¹ else 0
-          else 0) +
-        (∑ xy : X × X, ∑ zw : X × X, ∑ uv : X × X,
-          if AltPhiBad D phi ![uv.1, uv.2, zw.1, zw.2]
-          then if LargeFibre D alpha eta M xy.1 ∧ LargeFibre D alpha eta M xy.2 ∧
-              RestrictedPair D B xy.1 xy.2 uv
-            then (domainRestrictedDifferenceWeight D B xy.1 xy.2 : Real)⁻¹ else 0
-          else 0) := by
-      simp_rw [Finset.sum_add_distrib]
-    _ ≤ (countWhere (AltPhiBad D phi) : Real) +
-        4 * countWhere (AltPhiBad D phi) :=
-      add_le_add (left_contribution_le_bad D phi B alpha eta M)
-        (right_contribution_le_four_bad D phi B alpha sigma eta M heta
-          hsymmetric hinvariant hsigma)
-    _ = 5 * countWhere (AltPhiBad D phi) := by
-      nlinarith only
+  refine le_trans ?_ ((add_le_add (left_contribution_le_bad D phi B alpha eta M)
+    (right_contribution_le_four_bad D phi B alpha sigma eta M heta hsymmetric hinvariant
+      hsigma)).trans_eq (by ring))
+  simp_rw [← Finset.sum_add_distrib]
+  refine Finset.sum_le_sum fun xy _ => ?_
+  split_ifs with hlarge
+  · rw [weightedTerm_eq_sextuple_sum]
+    refine Finset.sum_le_sum fun zw _ => Finset.sum_le_sum fun uv _ => ?_
+    -- an error term is charged to the bad quadruple on its left or on its right
+    by_cases hs : DifferenceQuad D xy.1 xy.2 zw ∧ RestrictedError D phi B xy.1 xy.2 uv
+    · rw [if_pos hs]
+      rcases bad_left_or_bad_right D phi B xy.1 xy.2 zw uv hs.1 hs.2 with h | h
+      · rw [if_pos (And.intro hlarge.1 (And.intro hlarge.2 h)), if_pos hs.2]
+        exact le_add_of_nonneg_right (by positivity)
+      · rw [if_pos h,
+          if_pos (And.intro hlarge.1 (And.intro hlarge.2 (And.intro hs.2.1 hs.2.2.1)))]
+        exact le_add_of_nonneg_left (by positivity)
+    · rw [if_neg hs]
+      positivity
+  · positivity
 
 private lemma proportionateError_le_one {N : Nat} {X : Type*}
     [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
@@ -890,100 +655,27 @@ private lemma small_second_weight_le {N : Nat} [NeZero N]
 /-- **Gowers, Lemma 10.2.** -/
 theorem lemma_10_2_holds : lemma_10_2 := by
   intro N _ X _ _ D phi B alpha M sigma eta hsetup hsigma
-  rcases hsetup with
-    ⟨hbounds, _hsigmaPos, heta, _hetaOne, hsymmetric, hinvariant, happrox⟩
-  let Q : Real := ∑ x : X, ∑ y : X, (domainDifferenceWeight D x y : Real)
-  let Lg : Real := ∑ xy : X × X,
-    if LargeFibre D alpha eta M xy.1 ∧ LargeFibre D alpha eta M xy.2
-    then domainProportionateError D phi B xy.1 xy.2 *
-      domainDifferenceWeight D xy.1 xy.2
-    else 0
-  let S₁ : Real := ∑ xy : X × X,
-    if ¬ LargeFibre D alpha eta M xy.1
-    then (domainDifferenceWeight D xy.1 xy.2 : Real) else 0
-  let S₂ : Real := ∑ xy : X × X,
-    if ¬ LargeFibre D alpha eta M xy.2
-    then (domainDifferenceWeight D xy.1 xy.2 : Real) else 0
-  have hdecomp :
-      (∑ x : X, ∑ y : X, domainProportionateError D phi B x y *
-        domainDifferenceWeight D x y) ≤ Lg + S₁ + S₂ := by
-    calc
-      (∑ x : X, ∑ y : X, domainProportionateError D phi B x y *
-          domainDifferenceWeight D x y) =
-          ∑ xy : X × X, domainProportionateError D phi B xy.1 xy.2 *
-            domainDifferenceWeight D xy.1 xy.2 := by
-        rw [Fintype.sum_prod_type]
-      _ ≤ ∑ xy : X × X, (
-          ((if LargeFibre D alpha eta M xy.1 ∧ LargeFibre D alpha eta M xy.2
-            then domainProportionateError D phi B xy.1 xy.2 *
-              domainDifferenceWeight D xy.1 xy.2
-            else 0) +
-          (if ¬ LargeFibre D alpha eta M xy.1
-            then (domainDifferenceWeight D xy.1 xy.2 : Real) else 0)) +
-          (if ¬ LargeFibre D alpha eta M xy.2
-            then (domainDifferenceWeight D xy.1 xy.2 : Real) else 0)) := by
-        apply Finset.sum_le_sum
-        intro xy _
-        have hq : (0 : Real) ≤ domainDifferenceWeight D xy.1 xy.2 := by positivity
-        have hterm : domainProportionateError D phi B xy.1 xy.2 *
-            domainDifferenceWeight D xy.1 xy.2 ≤
-            domainDifferenceWeight D xy.1 xy.2 :=
-          mul_le_of_le_one_left hq (proportionateError_le_one D phi B xy.1 xy.2)
-        by_cases hx : LargeFibre D alpha eta M xy.1 <;>
-          by_cases hy : LargeFibre D alpha eta M xy.2
-        · simp [hx, hy]
-        · simpa [hx, hy] using hterm
-        · simpa [hx, hy] using hterm
-        · simp only [hx, hy, and_self, not_false_eq_true, if_false, if_true,
-            zero_add]
-          nlinarith only [hterm, hq]
-      _ = Lg + S₁ + S₂ := by
-        dsimp only [Lg, S₁, S₂]
-        simp_rw [Finset.sum_add_distrib]
-  have hlarge : Lg ≤ 5 * countWhere (AltPhiBad D phi) := by
-    exact large_weighted_sum_le_five_bad D phi B alpha sigma eta M heta hsymmetric
-      hinvariant hsigma
-  have hbad : (countWhere (AltPhiBad D phi) : Real) ≤ eta * Q := by
-    dsimp only [Q]
-    exact bad_additive_count_le D phi eta happrox
-  have hlargeQ : Lg ≤ 5 * eta * Q := by linarith
-  have hS₁ : S₁ ≤ 5 * eta * alpha ^ 4 * M ^ 4 * N ^ 3 := by
-    dsimp only [S₁]
-    rw [Fintype.sum_prod_type]
-    calc
-      (∑ x : X, ∑ y : X,
-          if ¬LargeFibre D alpha eta M x
-          then (domainDifferenceWeight D x y : Real) else 0) =
-          ∑ x : X, if ¬LargeFibre D alpha eta M x
-            then ∑ y : X, (domainDifferenceWeight D x y : Real) else 0 := by norm_num
-      _ ≤ 5 * eta * alpha ^ 4 * M ^ 4 * N ^ 3 :=
-        small_first_weight_le D alpha eta M heta hbounds
-  have hS₂ : S₂ ≤ 5 * eta * alpha ^ 4 * M ^ 4 * N ^ 3 := by
-    dsimp only [S₂]
-    rw [Fintype.sum_prod_type, Finset.sum_comm]
-    calc
-      (∑ y : X, ∑ x : X,
-          if ¬LargeFibre D alpha eta M y
-          then (domainDifferenceWeight D x y : Real) else 0) =
-          ∑ y : X, if ¬LargeFibre D alpha eta M y
-            then ∑ x : X, (domainDifferenceWeight D x y : Real) else 0 := by norm_num
-      _ ≤ 5 * eta * alpha ^ 4 * M ^ 4 * N ^ 3 :=
-        small_second_weight_le D alpha eta M heta hbounds
-  have hQlower : alpha ^ 4 * M ^ 4 * N ^ 3 ≤ Q := by
-    dsimp only [Q]
-    exact (lemma_10_1_holds N X D alpha M hbounds).2.2
-  have hscale : 0 ≤ 5 * eta := mul_nonneg (by norm_num) heta
-  have hsmallBase : 5 * eta * (alpha ^ 4 * M ^ 4 * N ^ 3) ≤
-      5 * eta * Q := mul_le_mul_of_nonneg_left hQlower hscale
-  have hS₁Q : S₁ ≤ 5 * eta * Q := hS₁.trans (by simpa only [mul_assoc] using hsmallBase)
-  have hS₂Q : S₂ ≤ 5 * eta * Q := hS₂.trans (by simpa only [mul_assoc] using hsmallBase)
-  change (∑ x : X, ∑ y : X, domainProportionateError D phi B x y *
-      domainDifferenceWeight D x y) ≤ 15 * eta * Q
-  calc
-    (∑ x : X, ∑ y : X, domainProportionateError D phi B x y *
-        domainDifferenceWeight D x y) ≤ Lg + S₁ + S₂ := hdecomp
-    _ ≤ (5 * eta * Q) + (5 * eta * Q) + (5 * eta * Q) :=
-      add_le_add (add_le_add hlargeQ hS₁Q) hS₂Q
-    _ = 15 * eta * Q := by ring
+  obtain ⟨hbounds, -, heta, -, hsymmetric, hinvariant, happrox⟩ := hsetup
+  have hL := large_weighted_sum_le_five_bad D phi B alpha sigma eta M heta hsymmetric
+    hinvariant hsigma
+  simp only [Fintype.sum_prod_type] at hL
+  -- split every term into its large-fibre part and two small-fibre parts
+  calc _ ≤ ∑ x : X, ∑ y : X, ((if ¬ LargeFibre D alpha eta M y
+          then (domainDifferenceWeight D x y : Real) else 0) +
+        ((if ¬ LargeFibre D alpha eta M x then (domainDifferenceWeight D x y : Real) else 0) +
+          if LargeFibre D alpha eta M x ∧ LargeFibre D alpha eta M y
+          then domainProportionateError D phi B x y * domainDifferenceWeight D x y else 0)) := by
+        gcongr with x _ y _
+        have hq : (0 : Real) ≤ domainDifferenceWeight D x y := by positivity
+        have := mul_le_of_le_one_left hq (proportionateError_le_one D phi B x y)
+        by_cases hx : LargeFibre D alpha eta M x <;> by_cases hy : LargeFibre D alpha eta M y <;>
+          simp [hx, hy] <;> linarith
+    _ ≤ _ := by
+        simp only [Finset.sum_add_distrib]
+        rw [Finset.sum_comm]
+        simp only [Finset.sum_ite_irrel, Finset.sum_const_zero]
+        linarith [small_first_weight_le D alpha eta M heta hbounds,
+          small_second_weight_le D alpha eta M heta hbounds, bad_additive_count_le D phi eta happrox,
+          mul_le_mul_of_nonneg_left (lemma_10_1_holds N X D alpha M hbounds).2.2 heta]
 
 end LeanProofs.GowersSzemeredi

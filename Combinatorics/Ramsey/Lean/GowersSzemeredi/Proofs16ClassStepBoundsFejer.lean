@@ -82,10 +82,7 @@ theorem classBudgetW_fejer_inv_le {gamma theta : Real} (k : Nat) (hg : 0 < gamma
       ≤ u ^ (k + 2) * (u ^ 32 * (u ^ (2 * F)) ^ 8) :=
         mul_le_mul hk2 (mul_le_mul h32 ht8 (by positivity) (pow_nonneg hupos.le _))
           (by positivity) (pow_nonneg hupos.le _)
-    _ = u ^ (k + 34 + 16 * F) := by
-        rw [← pow_mul, ← pow_add, ← pow_add]
-        congr 1
-        ring
+    _ = u ^ (k + 34 + 16 * F) := by ring
     _ ≤ u ^ (32 * F) := pow_le_pow_right₀ hu1 (by omega)
 
 theorem classDeltaW_fejer_inv_le {gamma theta : Real} (k : Nat) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
@@ -268,9 +265,7 @@ theorem fejerProductThreshold_le_gen {gamma theta : Real} {k : Nat} (hk : 1 ≤ 
     exact pow_le_pow_left₀ hmpos.le hm1 _
   have htpos : 0 < fejerLoss k a eta := by unfold fejerLoss; positivity
   have hc0pos : 0 ≤ fejerDegenerateConst k a eta := by unfold fejerDegenerateConst; positivity
-  have hfinal : 1 + k + (2 * e + 1) * 2 ^ (k + 4) ≤ fejerStepP k := by
-    have : e = 7 * 4 ^ (k + 1) + 21 * k * 4 ^ (k + 1) + k + 52 := by rw [he, hA, hG]
-    rw [this]; exact hexp
+  have hfinal : 1 + k + (2 * e + 1) * 2 ^ (k + 4) ≤ fejerStepP k := by linarith
   have he_le : e ≤ fejerStepP k := by
     have h1 : 1 ≤ 2 ^ (k + 4) := Nat.one_le_two_pow
     have h2 : e ≤ (2 * e + 1) * 2 ^ (k + 4) := by nlinarith

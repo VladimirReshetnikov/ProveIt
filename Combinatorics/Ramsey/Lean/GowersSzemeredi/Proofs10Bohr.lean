@@ -59,20 +59,12 @@ private lemma card_multiples_in_real_Ioc (g h : Nat) (hg : 0 < g) (hgh : g ∣ h
       (S : Set Nat) (T : Set Int) := by
     intro n hn
     have hnprops := hS n hn
-    have hnEq : n / g * g = n := Nat.div_mul_cancel hnprops.1
-    have hhEq : h / g * g = h := Nat.div_mul_cancel hgh
     have hgReal : (0 : Real) < g := by exact_mod_cast hg
-    have hnEqReal : ((n / g : Nat) : Real) * g = n := by exact_mod_cast hnEq
-    have hhEqReal : ((h / g : Nat) : Real) * g = h := by exact_mod_cast hhEq
-    have hnQuot : ((n / g : Nat) : Real) = (n : Real) / g := by
-      exact (eq_div_iff hgReal.ne').2 hnEqReal
-    have hhQuot : ((h / g : Nat) : Real) = (h : Real) / g := by
-      exact (eq_div_iff hgReal.ne').2 hhEqReal
+    have hnQuot : ((n / g : Nat) : Real) = (n : Real) / g := Nat.cast_div hnprops.1 hgReal.ne'
+    have hhQuot : ((h / g : Nat) : Real) = (h : Real) / g := Nat.cast_div hgh hgReal.ne'
     have hnLower : A / g - (h / g : Nat) < (n / g : Nat) := by
-      rw [hnQuot, hhQuot]
-      calc
-        A / g - h / g = (A - h) / g := by ring
-        _ < n / g := (div_lt_div_iff_of_pos_right hgReal).2 hnprops.2.1
+      rw [hnQuot, hhQuot, ← sub_div]
+      exact (div_lt_div_iff_of_pos_right hgReal).2 hnprops.2.1
     have hnUpper : ((n / g : Nat) : Real) ≤ A / g := by
       rw [hnQuot]
       exact (div_le_div_iff_of_pos_right hgReal).2 hnprops.2.2
@@ -191,15 +183,9 @@ private lemma frequencyBoundary_card_le {N : Nat} [NeZero N]
   have hV : V.card ≤ h / g :=
     card_multiples_in_real_Ioc g h hg hgh A V hVprops
   calc
-    (frequencyBoundary r d A).card = F.card := rfl
-    _ ≤ g * Y.card := hFY
-    _ ≤ g * (2 * V.card) := Nat.mul_le_mul_left g hYV
-    _ ≤ g * (2 * (h / g)) := Nat.mul_le_mul_left g (Nat.mul_le_mul_left 2 hV)
-    _ = 2 * h := by
-      calc
-        g * (2 * (h / g)) = 2 * ((h / g) * g) := by ac_rfl
-        _ = 2 * h := by rw [Nat.div_mul_cancel hgh]
-    _ = 2 * centeredAbs (r * d) := rfl
+    (frequencyBoundary r d A).card ≤ g * Y.card := hFY
+    _ ≤ g * (2 * (h / g)) := Nat.mul_le_mul_left g (hYV.trans (Nat.mul_le_mul_left 2 hV))
+    _ = 2 * centeredAbs (r * d) := by rw [mul_left_comm, Nat.mul_div_cancel' hgh]
 
 @[simp] private lemma mem_section10Translate_iff {N : Nat}
     (A : Finset (ZMod N)) (d x : ZMod N) :
@@ -406,9 +392,7 @@ private lemma exists_dense_bohr_chain {N : Nat}
     dsimp only [S₀₁₂]
     rw [hT₁card] at hinter
     nlinarith
-  have hS₀₁₂sub : S₀₁₂ ⊆ B := by
-    intro x hx
-    exact (Finset.mem_inter.mp (Finset.mem_inter.mp hx).1).1
+  have hS₀₁₂sub : S₀₁₂ ⊆ B := Finset.inter_subset_left.trans Finset.inter_subset_left
   have hS₀₃sub : S₀₃ ⊆ B := Finset.inter_subset_left
   have hU : (5 / 8 : Real) * B.card ≤ U.card := by
     have hinter := inter_card_lower_of_subsets S₀₁₂ S₀₃ B
@@ -457,37 +441,15 @@ private lemma exists_dense_bohr_chain {N : Nat}
   have hE₃ : (E₃.card : Real) ≤ (1 / 8 : Real) * B.card := hdeficit d₃
   have hdiffSub : U \ U' ⊆ ((E₀ ∪ E₁) ∪ E₁₂) ∪ E₃ := by
     intro x hx
-    have hxU := (Finset.mem_sdiff.mp hx).1
-    have hxNot := (Finset.mem_sdiff.mp hx).2
-    simp only [U, S₀₁₂, S₀₁, S₁₂, S₀₃,
-      Finset.mem_inter] at hxU
-    simp only [Finset.mem_union, E₀, E₁, E₁₂, E₃, Finset.mem_sdiff]
-    by_cases hx₀ : x ∈ B'
-    · by_cases hx₁ : x ∈ T₁'
-      · by_cases hx₁₂ : x ∈ T₁₂'
-        · by_cases hx₃ : x ∈ T₃'
-          · exact False.elim (hxNot (by
-              simp only [U', Finset.mem_inter]
-              exact ⟨⟨⟨hx₀, hx₁⟩, hx₁₂⟩, hx₃⟩))
-          · exact Or.inr ⟨hxU.2.2, hx₃⟩
-        · exact Or.inl (Or.inr ⟨hxU.1.2.2, hx₁₂⟩)
-      · exact Or.inl (Or.inl (Or.inr ⟨hxU.1.1.2, hx₁⟩))
-    · exact Or.inl (Or.inl (Or.inl ⟨hxU.1.1.1, hx₀⟩))
-  have hdiffNat : (U \ U').card ≤ E₀.card + E₁.card + E₁₂.card + E₃.card := by
-    calc
-      (U \ U').card ≤ (((E₀ ∪ E₁) ∪ E₁₂) ∪ E₃).card :=
-        Finset.card_le_card hdiffSub
-      _ ≤ ((E₀ ∪ E₁) ∪ E₁₂).card + E₃.card :=
-        Finset.card_union_le _ _
-      _ ≤ ((E₀ ∪ E₁).card + E₁₂.card) + E₃.card := Nat.add_le_add_right (Finset.card_union_le _ _) _
-      _ ≤ (E₀.card + E₁.card + E₁₂.card) + E₃.card := by
-        exact Nat.add_le_add_right
-          (Nat.add_le_add_right (Finset.card_union_le _ _) _) _
+    simp only [U, U', S₀₁₂, S₀₁, S₁₂, S₀₃, E₀, E₁, E₁₂, E₃, Finset.mem_sdiff, Finset.mem_inter,
+      Finset.mem_union] at hx ⊢
+    tauto
   have hdiff : ((U \ U').card : Real) ≤ (1 / 2 : Real) * B.card := by
-    have hdiffReal : ((U \ U').card : Real) ≤
-        E₀.card + E₁.card + E₁₂.card + E₃.card := by
-      exact_mod_cast hdiffNat
-    nlinarith
+    have : ((U \ U').card : Real) ≤ E₀.card + E₁.card + E₁₂.card + E₃.card := by
+      exact_mod_cast (Finset.card_le_card hdiffSub).trans ((Finset.card_union_le _ _).trans
+        (Nat.add_le_add_right ((Finset.card_union_le _ _).trans
+          (Nat.add_le_add_right (Finset.card_union_le _ _) _)) _))
+    linarith
   have hpartition : ((U \ U').card : Real) + U'.card = U.card := by
     exact_mod_cast Finset.card_sdiff_add_card_eq_card hU'sub
   have hBcardPos : (0 : Real) < B.card := by

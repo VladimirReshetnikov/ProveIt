@@ -46,18 +46,14 @@ private lemma prop121_coeff_sq_expansion {N : Nat} [NeZero N]
     _ = ∑ s : ZMod N, ∑ u : ZMod N,
           (exponential (-(s * r)) * (f s * star (f (s - k)))) *
             ((f (s - u - k) * star (f (s - u))) * exponential ((s - u) * r)) := by
-              apply Finset.sum_congr rfl
-              intro s _
+              refine Finset.sum_congr rfl fun s _ => ?_
               rw [← (Equiv.subLeft s).sum_comp]
               rfl
     _ = ∑ u : ZMod N, ∑ s : ZMod N,
           f s * star (f (s - u)) * star (f (s - k)) * f (s - k - u) *
             exponential (-(r * u)) := by
               rw [Finset.sum_comm]
-              apply Finset.sum_congr rfl
-              intro u _
-              apply Finset.sum_congr rfl
-              intro s _
+              refine Finset.sum_congr rfl fun u _ => Finset.sum_congr rfl fun s _ => ?_
               have hphase :
                   exponential (-(s * r)) * exponential ((s - u) * r) =
                     exponential (-(r * u)) := by
@@ -87,79 +83,15 @@ private lemma prop121_energy_expansion {N p : Nat} [NeZero N]
       ∑ u : Fin p → ZMod N, ∑ s : Fin p → ZMod N,
         prop121Outer f u s * ∑ k : ZMod N, prop121InnerTerm lambda f phi u s k := by
   rw [Complex.ofReal_sum]
-  calc
-    (∑ k : ZMod N,
-        ((lambda k * ∏ i : Fin p,
-          ‖fourier (difference (f i) k) (phi i k)‖ ^ 2 : Real) : Complex)) =
-        ∑ k : ZMod N, (lambda k : Complex) *
-          ∏ i : Fin p,
-            ((‖fourier (difference (f i) k) (phi i k)‖ ^ 2 : Real) : Complex) := by
-              apply Finset.sum_congr rfl
-              intro k _
-              push_cast
-              rfl
-    _ = ∑ k : ZMod N, (lambda k : Complex) *
-        ∏ i : Fin p, ∑ u : ZMod N, ∑ s : ZMod N,
-          f i s * star (f i (s - u)) * star (f i (s - k)) *
-            f i (s - k - u) * exponential (-(phi i k * u)) := by
-              apply Finset.sum_congr rfl
-              intro k _
-              congr 1
-              apply Finset.prod_congr rfl
-              intro i _
-              rw [prop121_coeff_sq_expansion]
-    _ = ∑ k : ZMod N, (lambda k : Complex) *
-        ∑ u : Fin p → ZMod N, ∑ s : Fin p → ZMod N,
-          ∏ i : Fin p,
-            (f i (s i) * star (f i (s i - u i)) *
-              star (f i (s i - k)) * f i (s i - k - u i) *
-                exponential (-(phi i k * u i))) := by
-              apply Finset.sum_congr rfl
-              intro k _
-              congr 1
-              rw [Fintype.prod_sum]
-              apply Finset.sum_congr rfl
-              intro u _
-              rw [Fintype.prod_sum]
-    _ = ∑ u : Fin p → ZMod N, ∑ s : Fin p → ZMod N,
-        prop121Outer f u s * ∑ k : ZMod N, prop121InnerTerm lambda f phi u s k := by
-              simp only [prop121Outer, prop121InnerTerm]
-              conv_lhs =>
-                enter [2, k]
-                rw [Finset.mul_sum]
-                enter [2, u]
-                rw [Finset.mul_sum]
-              rw [Finset.sum_comm]
-              apply Finset.sum_congr rfl
-              intro u _
-              rw [Finset.sum_comm]
-              apply Finset.sum_congr rfl
-              intro s _
-              rw [Finset.mul_sum]
-              apply Finset.sum_congr rfl
-              intro k _
-              calc
-                (lambda k : Complex) * ∏ i : Fin p,
-                    f i (s i) * star (f i (s i - u i)) *
-                      star (f i (s i - k)) * f i (s i - k - u i) *
-                        exponential (-(phi i k * u i)) =
-                    (lambda k : Complex) * ∏ i : Fin p,
-                      ((f i (s i) * star (f i (s i - u i))) *
-                        (star (f i (s i - k)) * f i (s i - k - u i) *
-                          exponential (-(phi i k * u i)))) := by
-                            congr 1
-                            apply Finset.prod_congr rfl
-                            intro i _
-                            ring
-                _ = (lambda k : Complex) *
-                    ((∏ i : Fin p, f i (s i) * star (f i (s i - u i))) *
-                      ∏ i : Fin p, star (f i (s i - k)) *
-                        f i (s i - k - u i) * exponential (-(phi i k * u i))) := by
-                          rw [Finset.prod_mul_distrib]
-                _ = (∏ i : Fin p, f i (s i) * star (f i (s i - u i))) *
-                    ((lambda k : Complex) * ∏ i : Fin p,
-                      star (f i (s i - k)) * f i (s i - k - u i) *
-                        exponential (-(phi i k * u i))) := by ring
+  simp_rw [Complex.ofReal_mul, Complex.ofReal_prod, prop121_coeff_sq_expansion, Fintype.prod_sum,
+    Finset.mul_sum]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun u _ => ?_
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun k _ => ?_
+  simp only [prop121Outer, prop121InnerTerm]
+  rw [mul_left_comm, ← Finset.prod_mul_distrib]
+  exact congrArg _ (Finset.prod_congr rfl fun i _ => by ring)
 
 private lemma prop121_outer_norm_le {N p : Nat}
     (f : Fin p → ZMod N → Complex) (hf : ∀ i, DiscValued (f i))
@@ -247,8 +179,7 @@ private lemma prop121_correlation_eq {N p : Nat} [NeZero N]
   rw [← (Equiv.subRight s).sum_comp]
   simp only [Equiv.subRight_apply, sub_neg_eq_add, sub_add_cancel, star_mul,
     star_prod, Complex.star_def, Complex.conj_ofReal, star_exponential]
-  apply Finset.sum_congr rfl
-  intro k _
+  refine Finset.sum_congr rfl fun k _ => ?_
   calc
     (∏ i : Fin p, star (f i (-v i - (k - s))) *
         f i (-v i - (k - s) - u i)) *
@@ -266,8 +197,7 @@ private lemma prop121_correlation_eq {N p : Nat} [NeZero N]
         star (f i (s - v i - k)) * f i (s - v i - k - u i) *
           exponential (-(phi i k * u i)) := by
             congr 1
-            apply Finset.prod_congr rfl
-            intro i _
+            refine Finset.prod_congr rfl fun i _ => ?_
             congr 1
             · ring
 
@@ -278,14 +208,11 @@ private lemma prop121_shift_sum {N p : Nat} [NeZero N]
   calc
     (∑ s : ZMod N, ∑ v : Fin p → ZMod N, F (fun i => s - v i)) =
         ∑ _s : ZMod N, ∑ x : Fin p → ZMod N, F x := by
-          apply Finset.sum_congr rfl
-          intro s _
+          refine Finset.sum_congr rfl fun s _ => ?_
           exact Fintype.sum_equiv
               ({ toFun v := fun i => s - v i
                  invFun v := fun i => s - v i
-                 left_inv v := by
-                   funext i
-                   ring
+                 left_inv v := by norm_num
                  right_inv v := by
                    funext i
                    ring } : (Fin p → ZMod N) ≃ (Fin p → ZMod N))
@@ -304,54 +231,35 @@ private lemma prop121_mixed_eq_l2 {N p : Nat} [NeZero N]
   calc
     _ = ∑ u : Fin p → ZMod N, ∑ v : Fin p → ZMod N,
         (N : Real) * ∑ t : ZMod N,
-          ‖correlation (prop121A f u v) (prop121B lambda phi u) t‖ ^ 2 := by
-            apply Finset.sum_congr rfl
-            intro u _
-            apply Finset.sum_congr rfl
-            intro v _
-            exact lemma_2_1_holds N (prop121A f u v) (prop121B lambda phi u)
+          ‖correlation (prop121A f u v) (prop121B lambda phi u) t‖ ^ 2 :=
+      Finset.sum_congr rfl fun u _ => Finset.sum_congr rfl fun v _ => lemma_2_1_holds N _ _
     _ = (N : Real) * ∑ u : Fin p → ZMod N, ∑ s : ZMod N,
         ∑ v : Fin p → ZMod N,
           ‖∑ k : ZMod N,
             prop121InnerTerm lambda f phi u (fun i => s - v i) k‖ ^ 2 := by
-              rw [Finset.mul_sum]
-              apply Finset.sum_congr rfl
-              intro u _
-              rw [← Finset.mul_sum]
-              congr 1
-              calc
-                (∑ v : Fin p → ZMod N, ∑ t : ZMod N,
-                    ‖correlation (prop121A f u v) (prop121B lambda phi u) t‖ ^ 2) =
-                    ∑ v : Fin p → ZMod N, ∑ s : ZMod N,
-                      ‖correlation (prop121A f u v)
-                        (prop121B lambda phi u) (-s)‖ ^ 2 := by
-                          apply Finset.sum_congr rfl
-                          intro v _
-                          symm
-                          exact Fintype.sum_equiv (Equiv.neg (ZMod N)) _ _
-                            (fun _ => rfl)
-                _ = ∑ s : ZMod N, ∑ v : Fin p → ZMod N,
-                    ‖∑ k : ZMod N,
-                      prop121InnerTerm lambda f phi u (fun i => s - v i) k‖ ^ 2 := by
-                        rw [Finset.sum_comm]
-                        apply Finset.sum_congr rfl
-                        intro s _
-                        apply Finset.sum_congr rfl
-                        intro v _
-                        rw [prop121_correlation_eq]
+      rw [Finset.mul_sum]
+      refine Finset.sum_congr rfl fun u _ => ?_
+      rw [← Finset.mul_sum]
+      congr 1
+      calc
+        _ = ∑ v : Fin p → ZMod N, ∑ s : ZMod N,
+              ‖correlation (prop121A f u v) (prop121B lambda phi u) (-s)‖ ^ 2 :=
+          Finset.sum_congr rfl fun v _ =>
+            (Fintype.sum_equiv (Equiv.neg (ZMod N)) _ _ fun _ => rfl).symm
+        _ = _ := by
+          rw [Finset.sum_comm]
+          simp_rw [prop121_correlation_eq]
     _ = (N : Real) * ∑ u : Fin p → ZMod N,
         ((N : Real) * ∑ x : Fin p → ZMod N,
           ‖∑ k : ZMod N, prop121InnerTerm lambda f phi u x k‖ ^ 2) := by
-            congr 1
-            apply Finset.sum_congr rfl
-            intro u _
-            exact prop121_shift_sum (N := N) (p := p)
-              (fun x => ‖∑ k : ZMod N, prop121InnerTerm lambda f phi u x k‖ ^ 2)
+      congr 1
+      exact Finset.sum_congr rfl fun u _ => prop121_shift_sum (N := N) (p := p)
+        (fun x => ‖∑ k : ZMod N, prop121InnerTerm lambda f phi u x k‖ ^ 2)
     _ = (N : Real) ^ 2 *
         ∑ u : Fin p → ZMod N, ∑ x : Fin p → ZMod N,
           ‖∑ k : ZMod N, prop121InnerTerm lambda f phi u x k‖ ^ 2 := by
-            rw [← Finset.mul_sum]
-            ring
+      rw [← Finset.mul_sum]
+      ring
 
 private lemma prop121A_disc {N p : Nat}
     (f : Fin p → ZMod N → Complex) (hf : ∀ i, DiscValued (f i))
@@ -423,8 +331,7 @@ private lemma prop121_b_product {N p : Nat} [NeZero N]
         ∏ i : Fin p, exponential
           ((phi i (q 0) - phi i (q 1) - phi i (q 2) + phi i (q 3)) * u i) := by
     rw [prop141_prod_four]
-    apply Finset.prod_congr rfl
-    intro i _
+    refine Finset.prod_congr rfl fun i _ => ?_
     rw [← exponential_add, ← exponential_add,
       ← exponential_add]
     congr 1
@@ -507,8 +414,7 @@ lemma prop121_fourthB_eq_weight {N p : Nat} [NeZero N]
                     prop121B lambda phi u (q 2)) *
                   prop121B lambda phi u (q 3)
               else 0 := by
-                apply Finset.sum_congr rfl
-                intro u _
+                refine Finset.sum_congr rfl fun u _ => ?_
                 exact identity_2_6_holds N (prop121B lambda phi u)
       _ = (N : Complex) * ∑ q : Fin 4 → ZMod N,
           if q 0 - q 1 = q 2 - q 3 then
@@ -521,8 +427,7 @@ lemma prop121_fourthB_eq_weight {N p : Nat} [NeZero N]
             rw [← Finset.mul_sum]
             congr 1
             rw [Finset.sum_comm]
-            apply Finset.sum_congr rfl
-            intro q _
+            refine Finset.sum_congr rfl fun q _ => ?_
             by_cases hadd : q 0 - q 1 = q 2 - q 3 <;> simp [hadd]
       _ = (N : Complex) * ∑ q : Fin 4 → ZMod N,
           if IsSimultaneouslyAdditive phi q then
@@ -531,8 +436,7 @@ lemma prop121_fourthB_eq_weight {N p : Nat} [NeZero N]
                 lambda (q 3)) : Real) : Complex)
           else 0 := by
             congr 1
-            apply Finset.sum_congr rfl
-            intro q _
+            refine Finset.sum_congr rfl fun q _ => ?_
             rw [prop121_sum_b_product]
             by_cases hadd : q 0 - q 1 = q 2 - q 3 <;>
               by_cases hphi : ∀ i,
@@ -546,8 +450,7 @@ lemma prop121_fourthB_eq_weight {N p : Nat} [NeZero N]
             else 0) := by
               congr 1
               rw [Finset.mul_sum]
-              apply Finset.sum_congr rfl
-              intro q _
+              refine Finset.sum_congr rfl fun q _ => ?_
               by_cases hq : IsSimultaneouslyAdditive phi q
               · rw [if_pos hq, if_pos hq]
                 push_cast
@@ -568,8 +471,7 @@ lemma prop121_fourthB_eq_weight {N p : Nat} [NeZero N]
                   lambda (q 0) * lambda (q 1) * lambda (q 2) * lambda (q 3)
                 else 0 : Real)) : Complex) by
                   rw [Complex.ofReal_sum]
-                  apply Finset.sum_congr rfl
-                  intro q _
+                  refine Finset.sum_congr rfl fun q _ => ?_
                   by_cases hq : IsSimultaneouslyAdditive phi q <;> simp [hq]]
             push_cast
             ring
@@ -615,9 +517,7 @@ theorem proposition_12_1_holds : proposition_12_1 := by
   have hN2p1 : (0 : Real) < (N : Real) ^ (2 * p + 1) := by positivity
   have hL1 : alpha * (N : Real) ^ (2 * p + 1) ≤ L1 := hlarge.trans <| by
     simpa only [L1] using prop121_initial_bound lambda f phi hlambda hf
-  have hL1_nonneg : 0 ≤ L1 := by
-    dsimp only [L1]
-    positivity
+  have hL1_nonneg : 0 ≤ L1 := by positivity
   have hbase_nonneg : 0 ≤ alpha * (N : Real) ^ (2 * p + 1) :=
     mul_nonneg hAlpha.le (by positivity)
   have hL1sq :
@@ -633,10 +533,7 @@ theorem proposition_12_1_holds : proposition_12_1 := by
     calc
       (N : Real) ^ (2 * p) *
           (alpha ^ 2 * (N : Real) ^ (2 * p + 2)) =
-          (alpha * (N : Real) ^ (2 * p + 1)) ^ 2 := by
-            rw [show 2 * p + 2 = 2 * p + 1 + 1 by omega,
-              pow_add, pow_succ]
-            ring
+          (alpha * (N : Real) ^ (2 * p + 1)) ^ 2 := by ring
       _ ≤ L1 ^ 2 := hL1sq
       _ ≤ (N : Real) ^ (2 * p) * L2 := hCauchy1
   have hmixed_eq : mixed = (N : Real) ^ 2 * L2 := by
@@ -645,27 +542,16 @@ theorem proposition_12_1_holds : proposition_12_1 := by
     calc
       alpha ^ 2 * (N : Real) ^ (2 * p + 4) =
           (N : Real) ^ 2 *
-            (alpha ^ 2 * (N : Real) ^ (2 * p + 2)) := by
-              rw [show 2 * p + 4 = 2 + (2 * p + 2) by omega, pow_add]
-              ring
+            (alpha ^ 2 * (N : Real) ^ (2 * p + 2)) := by ring
       _ ≤ (N : Real) ^ 2 * L2 :=
         mul_le_mul_of_nonneg_left hL2 (by positivity)
       _ = mixed := hmixed_eq.symm
   have hfourthA : fourthA ≤ (N : Real) ^ (2 * p + 4) := by
     simpa only [fourthA] using prop121_fourthA_le f hf
-  have hmixed_nonneg : 0 ≤ mixed := by
-    dsimp only [mixed]
-    exact Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ =>
-      Finset.sum_nonneg fun _ _ => mul_nonneg (sq_nonneg _) (sq_nonneg _)
-  have hfourthBuv_nonneg : 0 ≤ fourthBuv := by
-    dsimp only [fourthBuv]
-    exact Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ =>
-      Finset.sum_nonneg fun _ _ => pow_nonneg (norm_nonneg _) 4
+  have hmixed_nonneg : 0 ≤ mixed := by positivity
+  have hfourthBuv_nonneg : 0 ≤ fourthBuv := by positivity
   have hmixed_sq :
-      (alpha ^ 2 * (N : Real) ^ (2 * p + 4)) ^ 2 ≤ mixed ^ 2 := by
-    apply (sq_le_sq₀
-      (mul_nonneg (sq_nonneg _) (pow_nonneg hN.le _)) hmixed_nonneg).2
-    exact hmixed
+      (alpha ^ 2 * (N : Real) ^ (2 * p + 4)) ^ 2 ≤ mixed ^ 2 := by gcongr
   have hglobal : mixed ^ 2 ≤ fourthA * fourthBuv := by
     simpa only [mixed, fourthA, fourthBuv] using
       prop121_global_cauchy lambda f phi
@@ -698,18 +584,14 @@ theorem proposition_12_1_holds : proposition_12_1 := by
                   ((N : Real) ^ (p + 1) *
                     simultaneouslyAdditiveWeight lambda phi) =
                   (N : Real) ^ (p + (p + 1)) *
-                    simultaneouslyAdditiveWeight lambda phi := by
-                      rw [pow_add]
-                      ring
+                    simultaneouslyAdditiveWeight lambda phi := by ring
               _ = _ := by rw [show p + (p + 1) = 2 * p + 1 by omega]
   apply le_of_mul_le_mul_left _ hN2p1
   calc
     (N : Real) ^ (2 * p + 1) * (alpha ^ 4 * (N : Real) ^ 3) =
         alpha ^ 4 * (N : Real) ^ (2 * p + 4) := by
           calc
-            _ = alpha ^ 4 * (N : Real) ^ ((2 * p + 1) + 3) := by
-              rw [pow_add]
-              ring
+            _ = alpha ^ 4 * (N : Real) ^ ((2 * p + 1) + 3) := by ring
             _ = _ := by rw [show (2 * p + 1) + 3 = 2 * p + 4 by omega]
     _ ≤ fourthBuv := hfourthBuv
     _ = (N : Real) ^ (2 * p + 1) *

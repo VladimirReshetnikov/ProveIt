@@ -50,28 +50,24 @@ private lemma prop61_energy_expansion {N : Nat} [NeZero N]
           star (∑ t : ZMod N, exponential (-(t * phi k)) *
             (f t * star (f (t - k)))) := by
               rw [Complex.ofReal_sum]
-              apply Finset.sum_congr rfl
-              intro k _
+              refine Finset.sum_congr rfl fun k _ => ?_
               rw [Complex.star_def, Complex.mul_conj', ← Complex.ofReal_pow]
     _ = ∑ k ∈ B, ∑ s : ZMod N, ∑ t : ZMod N,
           (exponential (-(s * phi k)) * (f s * star (f (s - k)))) *
             ((f (t - k) * star (f t)) * exponential (t * phi k)) := by
-              apply Finset.sum_congr rfl
-              intro k _
+              refine Finset.sum_congr rfl fun k _ => ?_
               simp only [star_sum, star_mul, star_star, star_exponential, neg_neg]
               simp_rw [sum_mul, mul_sum]
     _ = ∑ s : ZMod N, ∑ t : ZMod N, ∑ k ∈ B,
           (exponential (-(s * phi k)) * (f s * star (f (s - k)))) *
             ((f (t - k) * star (f t)) * exponential (t * phi k)) := by
               rw [Finset.sum_comm]
-              apply Finset.sum_congr rfl
-              intro s _
+              refine Finset.sum_congr rfl fun s _ => ?_
               rw [Finset.sum_comm]
     _ = ∑ s : ZMod N, ∑ u : ZMod N, ∑ k ∈ B,
           (exponential (-(s * phi k)) * (f s * star (f (s - k)))) *
             ((f (s - u - k) * star (f (s - u))) * exponential ((s - u) * phi k)) := by
-              apply Finset.sum_congr rfl
-              intro s _
+              refine Finset.sum_congr rfl fun s _ => ?_
               rw [← (Equiv.subLeft s).sum_comp]
               rfl
     _ = ∑ u : ZMod N, ∑ s : ZMod N,
@@ -79,13 +75,9 @@ private lemma prop61_energy_expansion {N : Nat} [NeZero N]
             ∑ k ∈ B, star (f (s - k)) * f (s - k - u) *
               exponential (-(phi k * u)) := by
               rw [Finset.sum_comm]
-              apply Finset.sum_congr rfl
-              intro u _
-              apply Finset.sum_congr rfl
-              intro s _
+              refine Finset.sum_congr rfl fun u _ => Finset.sum_congr rfl fun s _ => ?_
               rw [Finset.mul_sum]
-              apply Finset.sum_congr rfl
-              intro k _
+              refine Finset.sum_congr rfl fun k _ => ?_
               have hphase :
                   exponential (-(s * phi k)) * exponential ((s - u) * phi k) =
                     exponential (-(phi k * u)) := by
@@ -164,15 +156,13 @@ private lemma prop61_mixed_eq_l2 {N : Nat} [NeZero N]
   calc
     _ = ∑ u : ZMod N, (N : ℝ) * ∑ t : ZMod N,
         ‖correlation (prop61F f u) (prop61G B phi u) t‖ ^ 2 := by
-          apply Finset.sum_congr rfl
-          intro u _
+          refine Finset.sum_congr rfl fun u _ => ?_
           exact lemma_2_1_holds N (prop61F f u) (prop61G B phi u)
     _ = (N : ℝ) * ∑ u : ZMod N, ∑ s : ZMod N,
         ‖∑ k ∈ B, star (f (s - k)) * f (s - k - u) *
           exponential (-(phi k * u))‖ ^ 2 := by
           rw [Finset.mul_sum]
-          apply Finset.sum_congr rfl
-          intro u _
+          refine Finset.sum_congr rfl fun u _ => ?_
           congr 1
           have hneg :
               (∑ t : ZMod N,
@@ -182,8 +172,7 @@ private lemma prop61_mixed_eq_l2 {N : Nat} [NeZero N]
             symm
             exact Fintype.sum_equiv (Equiv.neg (ZMod N)) _ _ fun _ => rfl
           rw [hneg]
-          apply Finset.sum_congr rfl
-          intro s _
+          refine Finset.sum_congr rfl fun s _ => ?_
           rw [prop61_correlation_eq]
 
 private lemma prop61F_disc {N : Nat} (f : ZMod N → Complex) (hf : DiscValued f)
@@ -414,26 +403,15 @@ theorem lemma_7_7_holds : lemma_7_7 := by
     exact_mod_cast hcountNat
   have hgrid : (delta / 2) * (m : ℝ) ≤ 1 := by
     calc
-      (delta / 2) * (m : ℝ) ≤ (delta / 2) * (2 * delta⁻¹) :=
-        mul_le_mul_of_nonneg_left hm_upper (by positivity)
+      (delta / 2) * (m : ℝ) ≤ (delta / 2) * (2 * delta⁻¹) := by gcongr
       _ = 1 := by field_simp
-  have hgrid_nonneg : 0 ≤ (delta / 2) * (m : ℝ) :=
-    mul_nonneg (by positivity) (by positivity)
-  have hgrid_pow : ((delta / 2) * (m : ℝ)) ^ K.card ≤ 1 := by
-    simpa using pow_le_pow_left₀ hgrid_nonneg hgrid K.card
   have hlower : (delta / 2) ^ K.card * (N : ℝ) ≤ #(bohr K delta) := by
     calc
       (delta / 2) ^ K.card * (N : ℝ) ≤
-          (delta / 2) ^ K.card *
-            ((#(bohr K delta) : ℝ) * (m : ℝ) ^ K.card) :=
-        mul_le_mul_of_nonneg_left hcount (pow_nonneg (by positivity) _)
-      _ = (#(bohr K delta) : ℝ) *
-          ((delta / 2) * (m : ℝ)) ^ K.card := by
-        rw [mul_pow]
-        ring
-      _ ≤ (#(bohr K delta) : ℝ) * 1 :=
-        mul_le_mul_of_nonneg_left hgrid_pow (Nat.cast_nonneg _)
-      _ = #(bohr K delta) := mul_one _
+          (delta / 2) ^ K.card * ((#(bohr K delta) : ℝ) * (m : ℝ) ^ K.card) := by gcongr
+      _ = (#(bohr K delta) : ℝ) * ((delta / 2) * (m : ℝ)) ^ K.card := by ring
+      _ ≤ #(bohr K delta) :=
+        mul_le_of_le_one_right (Nat.cast_nonneg _) (pow_le_one₀ (by positivity) hgrid)
   refine ⟨hlower, ?_⟩
   intro hK hthreshold
   have hk : 0 < K.card := Finset.card_pos.mpr hK
@@ -444,14 +422,8 @@ theorem lemma_7_7_holds : lemma_7_7 := by
     nlinarith
   have hrootpow :
       ((N : ℝ) ^ (-(1 / (K.card : ℝ)))) ^ K.card = (N : ℝ)⁻¹ := by
-    calc
-      ((N : ℝ) ^ (-(1 / (K.card : ℝ)))) ^ K.card =
-          (N : ℝ) ^ ((-(1 / (K.card : ℝ))) * (K.card : ℝ)) :=
-        (Real.rpow_mul_natCast hNreal.le _ _).symm
-      _ = (N : ℝ) ^ (-1 : ℝ) := by
-        congr 1
-        field_simp
-      _ = (N : ℝ)⁻¹ := Real.rpow_neg_one _
+    rw [← Real.rpow_mul_natCast hNreal.le, show -(1 / (K.card : ℝ)) * K.card = -1 by field_simp,
+      Real.rpow_neg_one]
   have hpowlt : (N : ℝ)⁻¹ < (delta / 2) ^ K.card := by
     rw [← hrootpow]
     exact pow_lt_pow_left₀ hrootlt (Real.rpow_nonneg hNreal.le _) hk_ne
@@ -461,13 +433,8 @@ theorem lemma_7_7_holds : lemma_7_7 := by
       _ < (delta / 2) ^ K.card * N := mul_lt_mul_of_pos_right hpowlt hNreal
   have hcardReal : (1 : ℝ) < #(bohr K delta) := hmass.trans_le hlower
   have hcard : 1 < #(bohr K delta) := by exact_mod_cast hcardReal
-  obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.mp hcard
-  by_cases ha0 : a = 0
-  · refine ⟨b, hb, ?_⟩
-    have hb0 : b ≠ 0 := fun h => hab (ha0.trans h.symm)
-    simpa using hb0
-  · refine ⟨a, ha, ?_⟩
-    simpa using ha0
+  obtain ⟨b, hb, hb0⟩ := Finset.exists_mem_ne hcard 0
+  exact ⟨b, hb, by simpa using hb0⟩
 
 /-- Finite Fubini--Markov interchange in the form used by Lemma 10.7. -/
 private theorem almostEvery_swap_of_nonneg {X Y : Type*}
@@ -602,8 +569,7 @@ lemma lemma78_fourier_indicator_energy {N : Nat} [NeZero N]
   calc
     (∑ x : ZMod N, ‖indicator A x‖ ^ 2) =
         ∑ x : ZMod N, if x ∈ A then (1 : Real) else 0 := by
-      apply Finset.sum_congr rfl
-      intro x _
+      refine Finset.sum_congr rfl fun x _ => ?_
       by_cases hx : x ∈ A <;> simp [indicator, hx]
     _ = A.card := by simp
 

@@ -203,8 +203,7 @@ private lemma weighted_fourier_energy_relation {N L : Nat} [NeZero N]
       simp
   rw [hright, mul_zero] at hparse
   rw [← hparse]
-  apply Finset.sum_congr rfl
-  intro r _
+  refine Finset.sum_congr rfl fun r _ => ?_
   rw [identity_2_1_holds N I I r]
   simp only [star_mul, star_star]
   congr 1
@@ -286,8 +285,7 @@ theorem weighted_missing_interval_fourier
       _ = ∑ r ∈ (Finset.univ.erase (0 : ZMod N)),
           ‖fourier (fun x => (w x : Complex)) r‖ *
             ‖fourier (indicator (centeredInterval N L)) r‖ ^ 2 := by
-        apply Finset.sum_congr rfl
-        intro r _
+        refine Finset.sum_congr rfl fun r _ => ?_
         simp only [term, norm_mul, Complex.norm_real, Real.norm_eq_abs]
         rw [abs_of_nonneg (sq_nonneg _)]
   by_contra hnot
@@ -498,8 +496,7 @@ lemma fourier_polynomialValueMultiplicity_eq_weylSum
       weylSum (-(a * r).valMinAbs / (N : Real)) k t := by
   rw [fourier_polynomialValueMultiplicity]
   unfold weylSum
-  apply Finset.sum_congr rfl
-  intro s _
+  refine Finset.sum_congr rfl fun s _ => ?_
   rw [exponential_polynomial_eq_realExponential]
 
 /-- The weighted missing-interval argument with the number of sampled

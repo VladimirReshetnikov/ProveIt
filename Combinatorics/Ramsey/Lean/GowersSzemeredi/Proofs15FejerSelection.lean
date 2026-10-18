@@ -411,51 +411,29 @@ private lemma fejerValidRelations_subset_diagonal {N k : Nat} [NeZero N]
   classical
   intro eps heps
   have hvalid := (Finset.mem_filter.mp heps).2
-  have hmom : ∀ A, arrangementMoment R (fun e j => fejerDigitInt (eps (e, j))) A = 0 := by
-    intro A
-    have h := hvalid (some A)
-    rw [fejerRelationInt_some] at h
-    exact h
-  have hmult : IsModularMultiple
-      (fun z : (Fin k → Bool) × Fin 16 => fejerDigitInt (eps (z.1, z.2)))
+  -- a valid pattern is a modular multiple `q·ε` of the parity pattern
+  obtain ⟨q, hq⟩ : IsModularMultiple (fun z => fejerDigitInt (eps z))
       (fun z => arrangementParityCoefficient (N := N) (d := 8) z.1 z.2) := by
     by_contra hnot
-    exact hnondeg ⟨fun e j => fejerDigitInt (eps (e, j)),
-      fun e j => fejerDigitInt_bound _, hnot, hmom⟩
-  obtain ⟨q, hq⟩ := hmult
-  have hnone := hvalid none
+    exact hnondeg ⟨fun e j => fejerDigitInt (eps (e, j)), fun e j => fejerDigitInt_bound _, hnot,
+      fun A => by simpa only [fejerRelationInt_some] using hvalid (some A)⟩
+  -- and `q = 0`, as the arrangement is not respected
   have hrel : fejerRelationInt (fun z => fejerDigitInt (eps z)) none phi R =
       q * fejerRelationInt fejerEtaZeroIdx none phi R := by
     unfold fejerRelationInt
     rw [Finset.mul_sum]
-    apply Finset.sum_congr rfl
-    rintro ⟨e, j⟩ _
-    have hz : ((fejerDigitInt (eps (e, j)) : Int) : ZMod N) =
-        q * arrangementParityCoefficient (N := N) (d := 8) e j := hq (e, j)
-    rw [hz]
-    simp only [fejerEtaZeroIdx]
-    rw [selectionEtaZero_cast]
+    refine Finset.sum_congr rfl fun z _ => ?_
+    rw [hq z, fejerEtaZeroIdx, selectionEtaZero_cast]
     ring
-  rw [hrel] at hnone
-  have hS : fejerRelationInt fejerEtaZeroIdx none phi R ≠ 0 := fun h =>
-    hbad ((fejerRelationInt_etaZero_none_eq_zero_iff phi R).mp h)
-  have hq0 : q = 0 := (mul_eq_zero.mp hnone).resolve_right hS
-  rw [Fintype.mem_piFinset]
-  intro z
-  rw [Finset.mem_filter]
-  refine ⟨Finset.mem_univ _, ?_⟩
-  have hz : ((fejerDigitInt (eps (z.1, z.2)) : Int) : ZMod N) =
-      q * arrangementParityCoefficient (N := N) (d := 8) z.1 z.2 := hq z
-  rw [hq0, zero_mul] at hz
-  have hdvd : (N : Int) ∣ fejerDigitInt (eps (z.1, z.2)) :=
-    (ZMod.intCast_zmod_eq_zero_iff_dvd _ N).mp hz
-  have hb := fejerDigitInt_bound (eps (z.1, z.2))
-  have habs : |fejerDigitInt (eps (z.1, z.2))| < (N : Int) := by
-    rw [abs_lt]
-    constructor <;> omega
-  have h0 := Int.eq_zero_of_abs_lt_dvd hdvd habs
-  simp only [Prod.mk.eta] at h0
-  unfold fejerDigitInt at h0
+  have hq0 : q = 0 := (mul_eq_zero.mp (hrel.symm.trans (hvalid none))).resolve_right
+    (mt (fejerRelationInt_etaZero_none_eq_zero_iff phi R).mp hbad)
+  -- so every digit value vanishes modulo `N > m`, hence vanishes
+  refine Fintype.mem_piFinset.mpr fun z => Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_⟩
+  have hz : ((fejerDigitInt (eps z) : Int) : ZMod N) = 0 := by rw [hq z, hq0, zero_mul]
+  have hb := fejerDigitInt_bound (eps z)
+  have h0 := Int.eq_zero_of_abs_lt_dvd ((ZMod.intCast_zmod_eq_zero_iff_dvd _ N).mp hz)
+    (abs_lt.mpr ⟨by omega, by omega⟩)
+  simp only [fejerDigitInt] at h0
   exact Fin.ext (by omega)
 
 private lemma fejer_diagonal_card {k : Nat} (m : Nat) :
@@ -505,49 +483,31 @@ private lemma fejer_ratio_sum_lower (M T : Nat) (hM : 1 ≤ M) (hT : 1 ≤ T) :
     ((T : Real) + 1) / 2 ≤
       ∑ j ∈ Finset.range T,
         (((M * T - j : Nat) : Real) / (M * T : Nat)) ^ M := by
-  have hMT : (0 : Real) < (M * T : Nat) := by positivity
-  have hterm : ∀ j ∈ Finset.range T,
+  have hM0 : (M : Real) ≠ 0 := by positivity
+  have hT0 : (T : Real) ≠ 0 := by positivity
+  -- Bernoulli: `1 − j/T = 1 + M·(−j/(MT)) ≤ (1 − j/(MT))^M`
+  have hterm (j : Nat) (hj : j ∈ Finset.range T) :
       1 - (j : Real) / T ≤ (((M * T - j : Nat) : Real) / (M * T : Nat)) ^ M := by
-    intro j hj
-    have hjT := Finset.mem_range.mp hj
-    have hjle : j ≤ M * T := hjT.le.trans (Nat.le_mul_of_pos_left T hM)
-    have hcast : ((M * T - j : Nat) : Real) = (M * T : Nat) - j := by
-      rw [Nat.cast_sub hjle]
-    have hfrac : ((M * T - j : Nat) : Real) / (M * T : Nat) =
-        1 + (-((j : Real) / (M * T : Nat))) := by
-      rw [hcast]
-      field_simp
-      ring
-    have hge : -2 ≤ -((j : Real) / (M * T : Nat)) := by
-      have : (j : Real) / (M * T : Nat) ≤ 1 := by
-        rw [div_le_one hMT]
-        exact_mod_cast hjle
-      linarith
-    have hbern := one_add_mul_le_pow hge M
-    rw [hfrac]
-    have hsimp : (1 : Real) + (M : Real) * -((j : Real) / (M * T : Nat)) =
-        1 - (j : Real) / T := by
-      push_cast
-      have hM0 : (M : Real) ≠ 0 := by positivity
-      have hT0 : (T : Real) ≠ 0 := by positivity
-      field_simp
-      ring
-    linarith [hbern, hsimp.symm.le, hsimp.le]
-  have hsum : ∑ j ∈ Finset.range T, (1 - (j : Real) / T) = ((T : Real) + 1) / 2 := by
-    have hid := Finset.sum_range_id_mul_two T
-    have hidR : (∑ j ∈ Finset.range T, (j : Real)) * 2 = (T : Real) * ((T : Real) - 1) := by
-      have h1 : ((T - 1 : Nat) : Real) = (T : Real) - 1 := by
-        rw [Nat.cast_sub hT]; simp
-      have := congrArg (fun n : Nat => (n : Real)) hid
-      push_cast at this
-      rw [h1] at this
-      exact this
-    rw [Finset.sum_sub_distrib, ← Finset.sum_div]
-    simp only [Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]
-    have hT0 : (T : Real) ≠ 0 := by positivity
-    field_simp
+    have hjle : j ≤ M * T := (Finset.mem_range.mp hj).le.trans (Nat.le_mul_of_pos_left T hM)
+    have hj1 : (j : Real) / (M * T) ≤ 1 :=
+      div_le_one_of_le₀ (by exact_mod_cast hjle) (by positivity)
+    calc 1 - (j : Real) / T = 1 + M * -((j : Real) / (M * T)) := by
+          rw [mul_neg, ← mul_div_assoc, mul_div_mul_left _ _ hM0]; ring
+      _ ≤ (1 + -((j : Real) / (M * T))) ^ M := one_add_mul_le_pow (by linarith) M
+      _ = _ := by
+          rw [Nat.cast_sub hjle, Nat.cast_mul, sub_div,
+            div_self (by positivity : (M : Real) * T ≠ 0)]
+          ring
+  -- and `∑_{j<T} (1 − j/T) = (T + 1)/2`
+  have hid : (∑ j ∈ Finset.range T, (j : Real)) * 2 = T * (T - 1) := by
+    have h := congrArg (fun n : Nat => (n : Real)) (Finset.sum_range_id_mul_two T)
+    push_cast [Nat.cast_sub hT] at h
     linarith
-  calc ((T : Real) + 1) / 2 = ∑ j ∈ Finset.range T, (1 - (j : Real) / T) := hsum.symm
+  calc ((T : Real) + 1) / 2 = ∑ j ∈ Finset.range T, (1 - (j : Real) / T) := by
+        rw [Finset.sum_sub_distrib, ← Finset.sum_div, Finset.sum_const, Finset.card_range,
+          nsmul_eq_mul, mul_one]
+        field_simp
+        linarith
     _ ≤ _ := Finset.sum_le_sum hterm
 
 /-! ## Degenerate arrangements and the carrier score -/
@@ -627,78 +587,43 @@ private lemma fejer_carrier_score_lower {N k : Nat} [NeZero N]
       ∑ R ∈ selectionBadArrangements B phi,
         ∏ z ∈ selectionCarrier R, fejerKernelWeight m C phi z := by
   classical
-  let badDeg := (selectionBadArrangements B phi).filter fun R ↦ R.IsDegenerateWithin m
-  have hp0 (z : Point N (k + 1)) : 0 ≤ fejerKernelWeight m C phi z := fejerKernelWeight_nonneg m C phi z
-  have hp1 (z : Point N (k + 1)) : fejerKernelWeight m C phi z ≤ 1 := fejerKernelWeight_le_one m C phi z
+  have hp0 (z : Point N (k + 1)) := fejerKernelWeight_nonneg m C phi z
+  -- on a non-degenerate arrangement the carrier product is the vertex product
   have hnd (R : GeneralArrangement N k 8) (h : ¬ R.IsDegenerateWithin m) :
-      ¬ R.IsDegenerate := fun hd => h (fejer_isDegenerateWithin_of_isDegenerate hm R hd)
-  have hgoodSub : fejerGoodNondegenerate m B phi ⊆ selectionGoodArrangements B phi :=
-    fun R hR ↦ (Finset.mem_filter.mp hR).1
-  have hgoodSum :
-      (∑ R ∈ fejerGoodNondegenerate m B phi,
-          ∏ z : selectionIndex k, fejerKernelWeight m C phi (selectionVertex R z)) ≤
-        ∑ R ∈ selectionGoodArrangements B phi,
-          ∏ z ∈ selectionCarrier R, fejerKernelWeight m C phi z := by
-    calc
-      (∑ R ∈ fejerGoodNondegenerate m B phi,
-          ∏ z : selectionIndex k, fejerKernelWeight m C phi (selectionVertex R z)) =
-          ∑ R ∈ fejerGoodNondegenerate m B phi,
-            ∏ z ∈ selectionCarrier R, fejerKernelWeight m C phi z := by
-        apply Finset.sum_congr rfl
-        intro R hR
-        symm
-        exact selectionCarrier_prod_of_nondegenerate hN R
-          (hnd R (Finset.mem_filter.mp hR).2) _
-      _ ≤ ∑ R ∈ selectionGoodArrangements B phi,
-          ∏ z ∈ selectionCarrier R, fejerKernelWeight m C phi z := by
-        apply Finset.sum_le_sum_of_subset_of_nonneg hgoodSub
-        intro R _ _
-        exact Finset.prod_nonneg fun z _ ↦ hp0 z
-  have hbadSplit :
-      (∑ R ∈ selectionBadArrangements B phi,
-          ∏ z ∈ selectionCarrier R, fejerKernelWeight m C phi z) =
-        (∑ R ∈ fejerBadNondegenerate m B phi,
-          ∏ z ∈ selectionCarrier R, fejerKernelWeight m C phi z) +
-        ∑ R ∈ badDeg, ∏ z ∈ selectionCarrier R, fejerKernelWeight m C phi z := by
-    rw [← Finset.sum_filter_add_sum_filter_not
-      (s := selectionBadArrangements B phi) (p := fun R ↦ ¬ R.IsDegenerateWithin m)]
-    simp [fejerBadNondegenerate, badDeg]
-  have hbadNondegenerateEq :
+      ∏ z ∈ selectionCarrier R, fejerKernelWeight m C phi z =
+        ∏ z : selectionIndex k, fejerKernelWeight m C phi (selectionVertex R z) :=
+    selectionCarrier_prod_of_nondegenerate hN R
+      (fun hd => h (fejer_isDegenerateWithin_of_isDegenerate hm R hd)) _
+  have hgood : (∑ R ∈ fejerGoodNondegenerate m B phi,
+        ∏ z : selectionIndex k, fejerKernelWeight m C phi (selectionVertex R z)) ≤
+      ∑ R ∈ selectionGoodArrangements B phi,
+        ∏ z ∈ selectionCarrier R, fejerKernelWeight m C phi z :=
+    calc _ = ∑ R ∈ fejerGoodNondegenerate m B phi,
+          ∏ z ∈ selectionCarrier R, fejerKernelWeight m C phi z :=
+          Finset.sum_congr rfl fun R hR => (hnd R (Finset.mem_filter.mp hR).2).symm
+      _ ≤ _ := Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _)
+          fun R _ _ => Finset.prod_nonneg fun z _ => hp0 z
+  -- the bad sum splits off its degenerate part, of weight at most the degenerate count
+  have hbad : (∑ R ∈ selectionBadArrangements B phi,
+        ∏ z ∈ selectionCarrier R, fejerKernelWeight m C phi z) ≤
       (∑ R ∈ fejerBadNondegenerate m B phi,
-          ∏ z ∈ selectionCarrier R, fejerKernelWeight m C phi z) =
-        ∑ R ∈ fejerBadNondegenerate m B phi,
-          ∏ z : selectionIndex k, fejerKernelWeight m C phi (selectionVertex R z) := by
-    apply Finset.sum_congr rfl
-    intro R hR
-    exact selectionCarrier_prod_of_nondegenerate hN R (hnd R (Finset.mem_filter.mp hR).2) _
-  have hbadDegenerateSum :
-      (∑ R ∈ badDeg, ∏ z ∈ selectionCarrier R, fejerKernelWeight m C phi z) ≤
-        degenerateGeneralArrangementCountWithin (N := N) (k := k) m 8 := by
-    have hterm :
-        (∑ R ∈ badDeg, ∏ z ∈ selectionCarrier R, fejerKernelWeight m C phi z) ≤
-          ∑ _R ∈ badDeg, (1 : Real) := by
-      apply Finset.sum_le_sum
-      intro R _
-      exact Finset.prod_le_one (fun z _ ↦ hp0 z) (fun z _ ↦ hp1 z)
-    have hsub : badDeg ⊆ fejerDegenerateFinset N k m := by
-      intro R hR
-      have hR' := Finset.mem_filter.mp hR
-      have hbadMem := Finset.mem_sdiff.mp hR'.1
-      have hIsIn : R.IsIn B := by
-        simpa [selectionArrangements] using hbadMem.1
-      simp [fejerDegenerateFinset, hIsIn.1, hR'.2]
-    calc
-      (∑ R ∈ badDeg, ∏ z ∈ selectionCarrier R, fejerKernelWeight m C phi z) ≤
-          ∑ _R ∈ badDeg, (1 : Real) := hterm
-      _ = (badDeg.card : Real) := by simp
-      _ ≤ (fejerDegenerateFinset N k m).card := by
-        exact_mod_cast Finset.card_le_card hsub
-      _ = degenerateGeneralArrangementCountWithin (N := N) (k := k) m 8 := by
-        norm_cast
-        exact fejerDegenerateFinset_card N k m
-  rw [hbadSplit, hbadNondegenerateEq]
-  have hgoodScaled := mul_le_mul_of_nonneg_left hgoodSum heta
-  nlinarith
+        ∏ z : selectionIndex k, fejerKernelWeight m C phi (selectionVertex R z)) +
+      degenerateGeneralArrangementCountWithin (N := N) (k := k) m 8 := by
+    rw [← Finset.sum_filter_add_sum_filter_not (selectionBadArrangements B phi)
+      fun R ↦ ¬ R.IsDegenerateWithin m]
+    gcongr ?_ + ?_
+    · exact le_of_eq (Finset.sum_congr rfl fun R hR => hnd R (Finset.mem_filter.mp hR).2)
+    · calc _ ≤ ∑ _R ∈ (selectionBadArrangements B phi).filter
+              (fun R ↦ ¬¬ R.IsDegenerateWithin m), (1 : Real) :=
+            Finset.sum_le_sum fun R _ => Finset.prod_le_one (fun z _ => hp0 z)
+              fun z _ => fejerKernelWeight_le_one m C phi z
+        _ ≤ _ := by
+            rw [Finset.sum_const, nsmul_one, ← fejerDegenerateFinset_card]
+            refine Nat.cast_le.mpr (Finset.card_le_card fun R hR => ?_)
+            obtain ⟨hRbad, hRdeg⟩ := Finset.mem_filter.mp hR
+            exact Finset.mem_filter.mpr ⟨Finset.mem_univ _,
+              (Finset.mem_filter.mp (Finset.mem_sdiff.mp hRbad).1).2.1, not_not.mp hRdeg⟩
+  linarith [mul_le_mul_of_nonneg_left hgood heta]
 
 /-- The phase average of the score over non-degenerate arrangements. -/
 private lemma fejer_phase_score_lower {N k : Nat} [NeZero N] [Fact N.Prime]
@@ -715,39 +640,18 @@ private lemma fejer_phase_score_lower {N k : Nat} [NeZero N] [Fact N.Prime]
         ∏ z : selectionIndex k, fejerKernelWeight m C phi (selectionVertex R z)) := by
   classical
   rw [Finset.expect_sub_distrib, ← Finset.mul_expect, Finset.expect_sum_comm,
-    Finset.expect_sum_comm]
-  have hgood : (fejerGoodNondegenerate m B phi).card *
-        (((((m : Real) + 1) ^ 2)⁻¹) ^ (2 ^ (k + 4)) *
-          (∑ j ∈ Finset.range T, ((m + 1 - j : Nat) : Real) ^ (2 ^ (k + 4)))) ≤
-      ∑ R ∈ fejerGoodNondegenerate m B phi, 𝔼 C : SelectionPhase N k,
-        ∏ z : selectionIndex k, fejerKernelWeight m C phi (selectionVertex R z) := by
-    rw [← nsmul_eq_mul, ← Finset.sum_const]
-    apply Finset.sum_le_sum
-    intro R hR
-    have hR' := Finset.mem_filter.mp hR
-    have hgoodData : R ∈ selectionArrangements B ∧ R.IsRespected phi := by
-      simpa [selectionGoodArrangements] using hR'.1
-    have hIsIn : R.IsIn B := by
-      simpa [selectionArrangements] using hgoodData.1
+    Finset.expect_sum_comm, mul_assoc, ← nsmul_eq_mul, ← nsmul_eq_mul, ← Finset.sum_const]
+  -- termwise: the good averages are large, the bad ones small
+  refine sub_le_sub (mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun R hR => ?_) heta)
+    (Finset.sum_le_card_nsmul _ _ _ fun R hR => ?_)
+  · obtain ⟨hRsel, hres⟩ := Finset.mem_filter.mp (Finset.mem_filter.mp hR).1
     rw [fejer_oneStage_average]
-    apply mul_le_mul_of_nonneg_left _ (by positivity)
-    have h := fejerValidRelations_card_good m T hT phi R (hIsIn.1) (hgoodData.2)
-    exact_mod_cast h
-  have hbad : (∑ R ∈ fejerBadNondegenerate m B phi, 𝔼 C : SelectionPhase N k,
-        ∏ z : selectionIndex k, fejerKernelWeight m C phi (selectionVertex R z)) ≤
-      (fejerBadNondegenerate m B phi).card * (((m : Real) + 1)⁻¹) ^ (2 ^ (k + 4)) := by
-    rw [← nsmul_eq_mul, ← Finset.sum_const]
-    apply Finset.sum_le_sum
-    intro R hR
-    have hR' := Finset.mem_filter.mp hR
-    have hbadMem := Finset.mem_sdiff.mp hR'.1
-    have hbadR : ¬ R.IsRespected phi := by
-      intro hrespect
-      apply hbadMem.2
-      simp [selectionGoodArrangements, hbadMem.1, hrespect]
-    exact fejer_bad_average_upper m hmN phi R hR'.2 hbadR
-  have hscaled := mul_le_mul_of_nonneg_left hgood heta
-  nlinarith
+    gcongr
+    exact_mod_cast fejerValidRelations_card_good m T hT phi R (Finset.mem_filter.mp hRsel).2.1 hres
+  · obtain ⟨hRbad, hnd⟩ := Finset.mem_filter.mp hR
+    obtain ⟨hRsel, hRgood⟩ := Finset.mem_sdiff.mp hRbad
+    exact fejer_bad_average_upper m hmN phi R hnd
+      fun hres => hRgood (Finset.mem_filter.mpr ⟨hRsel, hres⟩)
 
 /-! ## The Fejér restriction -/
 
@@ -759,48 +663,22 @@ def fejerSelectionExponent (k : Nat) : Nat := 2 ^ (k + 4) * (k + 6)
 private lemma fejer_loss_lower (k : Nat) (a : Real) (ha : 0 < a) (ha1 : a ≤ 1) :
     (a / 4) ^ fejerSelectionExponent k ≤
       (((2 ^ (k + 4) * ⌈6 / a⌉₊ : Nat) : Real)⁻¹) ^ (2 ^ (k + 4)) := by
-  set M : Nat := 2 ^ (k + 4) with hM
-  set T : Nat := ⌈6 / a⌉₊
-  have hT : (T : Real) ≤ 7 / a := by
-    have h1 : (T : Real) < 6 / a + 1 := Nat.ceil_lt_add_one (by positivity)
-    have h2 : (1 : Real) ≤ 1 / a := by rw [le_div_iff₀ ha]; linarith
-    linarith [show 6 / a + 1 ≤ 6 / a + 1 / a by linarith, show (6 : Real) / a + 1 / a = 7 / a by ring]
-  have hMR : ((M : Nat) : Real) = 2 ^ (k + 4) := by rw [hM]; push_cast; ring
-  have hMT : (((M * T : Nat) : Real)) ≤ 2 ^ (k + 7) / a := by
-    push_cast
-    rw [hMR]
-    calc (2 : Real) ^ (k + 4) * T ≤ 2 ^ (k + 4) * (7 / a) :=
-          mul_le_mul_of_nonneg_left hT (by positivity)
-      _ ≤ 2 ^ (k + 4) * (8 / a) := by
-          apply mul_le_mul_of_nonneg_left _ (by positivity)
-          exact div_le_div_of_nonneg_right (by norm_num) ha.le
-      _ = 2 ^ (k + 7) / a := by rw [show k + 7 = (k + 4) + 3 by ring, pow_add]; ring
-  have hMTpos : (0 : Real) < ((M * T : Nat) : Real) := by
-    push_cast; rw [hMR]; positivity
-  -- the base comparison: (a/4)^(k+6) ≤ a / 2^(k+7) ≤ 1/(M T)
-  have hbase : (a / 4) ^ (k + 6) ≤ (((M * T : Nat) : Real))⁻¹ := by
-    have h1 : (a / 4) ^ (k + 6) ≤ (a / 4) * (1 / 4) ^ (k + 5) := by
-      rw [show k + 6 = (k + 5) + 1 by ring, pow_succ, mul_comm]
-      apply mul_le_mul_of_nonneg_left _ (by positivity)
-      exact pow_le_pow_left₀ (by positivity) (by linarith) _
-    have h2 : (a / 4) * (1 / 4 : Real) ^ (k + 5) ≤ a / 2 ^ (k + 7) := by
-      have h4 : (4 : Real) ^ (k + 5) = 2 ^ (2 * (k + 5)) := by
-        rw [pow_mul]; norm_num
-      have h5 : (2 : Real) ^ (k + 7) ≤ 4 * 2 ^ (2 * (k + 5)) := by
-        calc (2 : Real) ^ (k + 7) ≤ 2 ^ (2 * (k + 5) + 2) :=
-              pow_le_pow_right₀ (by norm_num) (by omega)
-          _ = 4 * 2 ^ (2 * (k + 5)) := by rw [pow_add]; ring
-      rw [one_div_pow, h4]
-      rw [div_mul_div_comm, mul_one]
-      apply div_le_div_of_nonneg_left ha.le (by positivity) h5
-    have h3 : a / 2 ^ (k + 7) ≤ (((M * T : Nat) : Real))⁻¹ := by
-      rw [le_inv_comm₀ (by positivity) hMTpos]
-      calc ((M * T : Nat) : Real) ≤ 2 ^ (k + 7) / a := hMT
-        _ = (a / 2 ^ (k + 7))⁻¹ := by rw [inv_div]
+  -- `⌈6/a⌉·a < 6 + a ≤ 7`
+  have hc : (⌈6 / a⌉₊ : Real) * a ≤ 7 := by
+    have h := mul_lt_mul_of_pos_right (Nat.ceil_lt_add_one (show 0 ≤ 6 / a by positivity)) ha
+    rw [add_mul, div_mul_cancel₀ 6 ha.ne', one_mul] at h
     linarith
-  unfold fejerSelectionExponent
-  rw [← hM, mul_comm, pow_mul]
-  exact pow_le_pow_left₀ (by positivity) hbase M
+  have hp : (a / 4 * 2) ^ (k + 4) ≤ 1 := pow_le_one₀ (by positivity) (by linarith)
+  -- the base comparison `(a/4)^(k+6)·2^(k+4)·⌈6/a⌉ = (a/2)^(k+4)·(a/16)·(⌈6/a⌉·a) ≤ 7/16`
+  rw [fejerSelectionExponent, pow_mul' (a / 4) (2 ^ (k + 4)) (k + 6)]
+  gcongr
+  rw [inv_eq_one_div, le_div_iff₀ (by positivity)]
+  push_cast
+  calc (a / 4) ^ (k + 6) * (2 ^ (k + 4) * ⌈6 / a⌉₊)
+      = (a / 4 * 2) ^ (k + 4) * (a / 16) * (⌈6 / a⌉₊ * a) := by
+        rw [mul_pow (a / 4) 2 (k + 4)]; ring
+    _ ≤ 1 * (1 / 16) * 7 := by gcongr
+    _ ≤ 1 := by norm_num
 
 /-- The order `m` of the Fejér kernel: `m + 1 = 2^(k+4)·⌈6/(min(α,1)·η)⌉`. -/
 def fejerOrder (k : Nat) (alpha eta : Real) : Nat :=
@@ -842,231 +720,122 @@ theorem fejer_scale_estimate_explicit (k : Nat) (alpha scale eta : Real) (hk : 1
             generalArrangementCount 8 B' ∧
           (1 - eta) * generalArrangementCount 8 B' ≤
             respectedGeneralArrangementCount 8 B' phi := by
-  -- the order of the Fejér kernel
+  classical
+  -- the order of the Fejér kernel: `m + 1 = M·T` with `M = 2^(k+4)`, `T = ⌈6/a⌉`
   set M : Nat := 2 ^ (k + 4) with hM
-  have hM1 : 1 ≤ M := Nat.one_le_two_pow
-  have hM16 : 16 ≤ M := by
-    rw [hM]; calc 16 = 2 ^ 4 := by norm_num
-      _ ≤ 2 ^ (k + 4) := Nat.pow_le_pow_right (by norm_num) (by omega)
-  -- `α` may be taken at most one: otherwise the hypothesis is void
+  have hM2 : 1 < M := Nat.one_lt_two_pow (by omega)
   set a : Real := min alpha 1 * eta with ha
   have ha0 : 0 < a := by positivity
-  have ha1 : a ≤ 1 := by
-    have h := mul_le_mul (min_le_right alpha 1) heta_one heta.le zero_le_one
-    rw [one_mul] at h
-    exact h
+  have ha1 : a ≤ 1 := mul_le_one₀ (min_le_right _ _) heta.le heta_one
   set T : Nat := ⌈6 / a⌉₊ with hTdef
-  have hT1 : 1 ≤ T := by
-    rw [hTdef, Nat.one_le_ceil_iff]; positivity
+  have hT1 : 1 ≤ T := Nat.one_le_ceil_iff.mpr (by positivity)
   set m : Nat := M * T - 1 with hmdef
-  have hm1 : m + 1 = M * T := by
-    have : 1 ≤ M * T := Nat.one_le_iff_ne_zero.mpr (by positivity)
-    omega
-  have hMT : M ≤ M * T := Nat.le_mul_of_pos_right M hT1
+  have hMT := Nat.le_mul_of_pos_right M hT1
+  have hm1 : m + 1 = M * T := by omega
   have hm : 1 ≤ m := by omega
-  have hTm : T ≤ m + 1 := by rw [hm1]; exact Nat.le_mul_of_pos_left T hM1
+  have hTm : T ≤ m + 1 := by rw [hm1]; exact Nat.le_mul_of_pos_left T (by omega)
   set t : Real := (((m : Real) + 1)⁻¹) ^ M with htdef
   have ht0 : 0 < t := by positivity
-  set c0 : Real := (2 * (m : Real) + 1) ^ (2 * 8 * 2 ^ k) * k with hc0
+  set c0 : Real := (2 * (m : Real) + 1) ^ (2 * 8 * 2 ^ k) * k
   intro N _ hN hprime hodd B phi hu hrespected
   letI : Fact N.Prime := ⟨hprime⟩
-  have hthr : fejerExplicitThreshold k alpha scale eta =
-      max ((m : Real) + 1) (max 3 (2 * c0 / (scale * t))) := rfl
-  rw [hthr] at hN
-  have hmN : m < N := by
-    have h : (m : Real) + 1 ≤ N := (le_max_left _ _).trans hN
-    have h' : (m : Real) < N := by linarith
-    exact_mod_cast h'
-  have hN3 : 3 ≤ N := by linarith
-  have hNbig : 2 * c0 / (scale * t) ≤ (N : Real) :=
-    (le_max_right _ _).trans ((le_max_right _ _).trans hN)
-  have hNpos : (0 : Real) < N := by exact_mod_cast (show 0 < N by omega)
+  change max ((m : Real) + 1) (max 3 (2 * c0 / (scale * t))) ≤ N at hN
+  simp only [max_le_iff] at hN
+  obtain ⟨hmN, -, hNbig⟩ := hN
+  replace hmN : m < N := by exact_mod_cast (show (m : Real) < N by linarith)
+  have hNpos : (0 : Real) < N := Nat.cast_pos.mpr (NeZero.pos N)
   set G : Real := scale * (N : Real) ^ (17 * k + 15) with hG
-  have hG0 : 0 < G := mul_pos hscale (by positivity)
-  -- counts
-  have hgeneral : (generalArrangementCount 8 B : Real) ≤ G :=
-    hu
+  have hG0 : 0 < G := by positivity
+  -- `α ≤ 1`, since `αG` respected arrangements are among at most `G` ones; so `a = αη`
   have hrespLe : (respectedGeneralArrangementCount 8 B phi : Real) ≤
       generalArrangementCount 8 B := by
     exact_mod_cast selection_respected_le_arrangement B phi
-  have halpha1 : alpha ≤ 1 := by
-    by_contra hlt
-    push Not at hlt
-    have : alpha * G ≤ G := by linarith
-    linarith [mul_pos (sub_pos.mpr hlt) hG0]
-  have hamin : min alpha 1 = alpha := min_eq_left halpha1
-  have haeq : a = alpha * eta := by rw [ha, hamin]
-  -- the degenerate count
+  have halpha1 : alpha ≤ 1 := le_of_mul_le_mul_right (by linarith : alpha * G ≤ 1 * G) hG0
+  have haeq : a = alpha * eta := by rw [ha, min_eq_left halpha1]
+  -- the `m`-degenerate count `D ≤ c₀·N^(17k+14)`; above the threshold `2D ≤ tG`
   set D : Real := ((degenerateGeneralArrangementCountWithin (N := N) (k := k) m 8 : Nat) : Real)
     with hD
   have hD0 : 0 ≤ D := by positivity
-  have hDle : D ≤ c0 * (N : Real) ^ (17 * k + 14) := by
-    have h := degenerate_count_within_le N m k 8 hprime hodd hk (by norm_num)
-    have he : (2 * 8 + 1) * k + 2 * 8 - 2 = 17 * k + 14 := by omega
-    rw [he] at h
-    calc D ≤ _ := h
-      _ = c0 * (N : Real) ^ (17 * k + 14) := by rw [hc0]
   have hDsmall : 2 * D ≤ t * G := by
-    have h1 : 2 * c0 ≤ scale * t * N := by
-      have := (div_le_iff₀ (by positivity : (0 : Real) < scale * t)).mp hNbig
-      linarith
-    calc 2 * D ≤ 2 * (c0 * (N : Real) ^ (17 * k + 14)) := by linarith
-      _ = (2 * c0) * (N : Real) ^ (17 * k + 14) := by ring
-      _ ≤ (scale * t * N) * (N : Real) ^ (17 * k + 14) :=
-          mul_le_mul_of_nonneg_right h1 (by positivity)
-      _ = t * G := by rw [hG, show 17 * k + 15 = (17 * k + 14) + 1 by ring, pow_succ]; ring
-  -- the ratio
-  have hratio : ((T : Real) + 1) / 2 ≤
-      ∑ j ∈ Finset.range T, (((M * T - j : Nat) : Real) / (M * T : Nat)) ^ M :=
-    fejer_ratio_sum_lower M T hM1 hT1
+    have hDle := degenerate_count_within_le N m k 8 hprime hodd hk (by norm_num)
+    rw [show (2 * 8 + 1) * k + 2 * 8 - 2 = 17 * k + 14 by omega] at hDle
+    have h1 := (div_le_iff₀ (by positivity : (0 : Real) < scale * t)).mp hNbig
+    calc 2 * D ≤ 2 * c0 * (N : Real) ^ (17 * k + 14) := by linarith
+      _ ≤ N * (scale * t) * (N : Real) ^ (17 * k + 14) := by gcongr
+      _ = t * G := by rw [hG]; ring
+  -- Bernoulli: the good average weight is at least `t·(T+1)/2`, and `ηα(T+1)/2 ≥ 3`
   have hL : t * (((T : Real) + 1) / 2) ≤
       ((((m : Real) + 1) ^ 2)⁻¹) ^ M *
         (∑ j ∈ Finset.range T, ((m + 1 - j : Nat) : Real) ^ M) := by
-    have hmR : ((m : Real) + 1) = ((M * T : Nat) : Real) := by rw [← hm1]; push_cast; ring
-    have hrw : ((((m : Real) + 1) ^ 2)⁻¹) ^ M *
-          (∑ j ∈ Finset.range T, ((m + 1 - j : Nat) : Real) ^ M) =
-        t * ∑ j ∈ Finset.range T, (((M * T - j : Nat) : Real) / (M * T : Nat)) ^ M := by
-      rw [htdef, Finset.mul_sum, Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro j _
-      rw [hm1, ← hmR, div_pow, inv_pow, inv_pow, ← pow_mul]
-      field_simp
-      ring
-    rw [hrw]
-    exact mul_le_mul_of_nonneg_left hratio ht0.le
-  have hTa : 6 / (alpha * eta) ≤ T := by rw [← haeq]; exact Nat.le_ceil _
+    have hmR : (m : Real) + 1 = ((M * T : Nat) : Real) := by exact_mod_cast hm1
+    refine (mul_le_mul_of_nonneg_left (fejer_ratio_sum_lower M T (by omega) hT1)
+      ht0.le).trans_eq ?_
+    rw [htdef, hm1, hmR, Finset.mul_sum, Finset.mul_sum]
+    exact Finset.sum_congr rfl fun j _ => by ring
   have hgain : 3 ≤ eta * alpha * (((T : Real) + 1) / 2) := by
-    have h1 : 6 ≤ alpha * eta * T := by
-      have := (div_le_iff₀ (by positivity : (0 : Real) < alpha * eta)).mp hTa
-      linarith
+    have hTa : 6 / (alpha * eta) ≤ T := by rw [← haeq]; exact Nat.le_ceil _
+    have := (div_le_iff₀ (by positivity : (0 : Real) < alpha * eta)).mp hTa
     linarith [mul_pos halpha heta]
-  -- the phase average and the choice of the phase
+  have hP : t * (((T : Real) + 1) / 2) ≤ 1 := by
+    have h1 : t ≤ ((m : Real) + 1)⁻¹ := by
+      rw [htdef]
+      exact pow_le_of_le_one (by positivity)
+        (inv_le_one_of_one_le₀ (le_add_of_nonneg_left m.cast_nonneg)) (by omega)
+    have h2 : ((T : Real) + 1) / 2 ≤ (m : Real) + 1 := by
+      have : (T : Real) ≤ m + 1 := by exact_mod_cast hTm
+      have : (1 : Real) ≤ T := by exact_mod_cast hT1
+      linarith
+    calc t * (((T : Real) + 1) / 2) ≤ ((m : Real) + 1)⁻¹ * ((m : Real) + 1) := by gcongr
+      _ = 1 := inv_mul_cancel₀ (by positivity)
+  -- the non-degenerate good and bad counts
   have hgoodCard : alpha * G - D ≤ (fejerGoodNondegenerate m B phi).card := by
-    have h := fejerGoodNondegenerate_card_lower m B phi
-    rw [selectionGoodArrangements_card] at h
-    have h' : (respectedGeneralArrangementCount 8 B phi : Real) ≤
+    have h : (respectedGeneralArrangementCount 8 B phi : Real) ≤
         (fejerGoodNondegenerate m B phi).card + D := by
-      rw [hD]; exact_mod_cast h
-    have : alpha * G ≤ respectedGeneralArrangementCount 8 B phi := by linarith
+      rw [← selectionGoodArrangements_card, hD]
+      exact_mod_cast fejerGoodNondegenerate_card_lower m B phi
     linarith
   have hbadCard : ((fejerBadNondegenerate m B phi).card : Real) ≤ G := by
-    have h : (fejerBadNondegenerate m B phi).card ≤ (selectionArrangements B).card := by
-      classical
-      apply Finset.card_le_card
-      intro R hR
-      exact (Finset.mem_sdiff.mp (Finset.mem_filter.mp hR).1).1
-    rw [selectionArrangements_card] at h
-    calc ((fejerBadNondegenerate m B phi).card : Real) ≤ generalArrangementCount 8 B := by
-          exact_mod_cast h
-      _ ≤ G := hgeneral
-  have hphase : eta * (fejerGoodNondegenerate m B phi).card *
-        (((((m : Real) + 1) ^ 2)⁻¹) ^ M *
-          (∑ j ∈ Finset.range T, ((m + 1 - j : Nat) : Real) ^ M)) -
-      (fejerBadNondegenerate m B phi).card * t ≤
-    𝔼 C : SelectionPhase N k, (
-      eta * (∑ R ∈ fejerGoodNondegenerate m B phi,
-        ∏ z : selectionIndex k, fejerKernelWeight m C phi (selectionVertex R z)) -
-      ∑ R ∈ fejerBadNondegenerate m B phi,
-        ∏ z : selectionIndex k, fejerKernelWeight m C phi (selectionVertex R z)) :=
-    fejer_phase_score_lower (k := k) m T hTm hmN eta heta.le B phi
-  have hscore : eta * t * G + D ≤
-      𝔼 C : SelectionPhase N k, (
-        eta * (∑ R ∈ fejerGoodNondegenerate m B phi,
-          ∏ z : selectionIndex k, fejerKernelWeight m C phi (selectionVertex R z)) -
-        ∑ R ∈ fejerBadNondegenerate m B phi,
-          ∏ z : selectionIndex k, fejerKernelWeight m C phi (selectionVertex R z)) := by
-    refine le_trans ?_ hphase
-    have hLnn : 0 ≤ t * (((T : Real) + 1) / 2) := by positivity
-    have hgoodTerm : eta * (alpha * G - D) * (t * (((T : Real) + 1) / 2)) ≤
-        eta * (fejerGoodNondegenerate m B phi).card *
-          (((((m : Real) + 1) ^ 2)⁻¹) ^ M *
-            (∑ j ∈ Finset.range T, ((m + 1 - j : Nat) : Real) ^ M)) := by gcongr
-    have hbadTerm : ((fejerBadNondegenerate m B phi).card : Real) * t ≤ G * t :=
-      mul_le_mul_of_nonneg_right hbadCard ht0.le
-    have htT : t * (((T : Real) + 1) / 2) ≤ 1 := by
-      have hmT : ((m : Real) + 1) = (M : Real) * T := by
-        rw [show (M : Real) * T = ((M * T : Nat) : Real) by push_cast; ring, ← hm1]; push_cast; ring
-      have h1 : t ≤ ((m : Real) + 1)⁻¹ := by
-        rw [htdef]
-        exact pow_le_of_le_one (by positivity)
-          (inv_le_one_of_one_le₀ (by linarith [show (0 : Real) ≤ m by positivity]))
-          (by omega)
-      have h2 : ((T : Real) + 1) / 2 ≤ T := by
-        have : (1 : Real) ≤ T := by exact_mod_cast hT1
-        linarith
-      have h3 : ((m : Real) + 1)⁻¹ * T ≤ 1 := by
-        rw [hmT, mul_inv, mul_assoc, inv_mul_cancel₀ (by positivity : (T : Real) ≠ 0), mul_one]
-        exact inv_le_one_of_one_le₀ (by exact_mod_cast hM1)
-      calc t * (((T : Real) + 1) / 2) ≤ ((m : Real) + 1)⁻¹ * T :=
-            mul_le_mul h1 h2 (by positivity) (by positivity)
-        _ ≤ 1 := h3
-    have hmain : eta * t * G + D ≤
-        eta * (alpha * G - D) * (t * (((T : Real) + 1) / 2)) - G * t := by
-      have e2 : eta * D * (t * (((T : Real) + 1) / 2)) ≤ D := by
-        calc eta * D * (t * (((T : Real) + 1) / 2)) ≤ 1 * D * 1 :=
-              mul_le_mul (mul_le_mul_of_nonneg_right heta_one hD0) htT (by positivity)
-                (by positivity)
-          _ = D := by ring
-      have e3 : 3 * (t * G) ≤ (eta * alpha * (((T : Real) + 1) / 2)) * (t * G) :=
-        mul_le_mul_of_nonneg_right hgain (by positivity)
-      have e4 : eta * t * G ≤ t * G := by
-        have := mul_le_mul_of_nonneg_right heta_one (by positivity : (0 : Real) ≤ t * G)
-        linarith
-      linarith [mul_comm G t]
-    linarith
+    refine le_trans ?_ hu
+    rw [← selectionArrangements_card]
+    exact_mod_cast Finset.card_le_card
+      (fun R hR => (Finset.mem_sdiff.mp (Finset.mem_filter.mp hR).1).1 :
+        fejerBadNondegenerate m B phi ⊆ selectionArrangements B)
+  -- a phase `C` whose score is at least the phase average, which is at least `ηtG + D`
+  have hphase := fejer_phase_score_lower (k := k) m T hTm hmN eta heta.le B phi
+  rw [← hM, ← htdef] at hphase
+  have hgood : eta * (alpha * G - D) * (t * (((T : Real) + 1) / 2)) ≤
+      eta * (fejerGoodNondegenerate m B phi).card * ((((m : Real) + 1) ^ 2)⁻¹ ^ M *
+        (∑ j ∈ Finset.range T, ((m + 1 - j : Nat) : Real) ^ M)) := by gcongr
   obtain ⟨C, -, hC⟩ := Finset.exists_le_of_le_expect
-    (Finset.univ_nonempty : (Finset.univ : Finset (SelectionPhase N k)).Nonempty) hscore
+    (Finset.univ_nonempty : (Finset.univ : Finset (SelectionPhase N k)).Nonempty)
+    (le_trans (show eta * t * G + D ≤ _ by
+      linarith [mul_le_mul_of_nonneg_right hbadCard ht0.le,
+        mul_le_mul_of_nonneg_right hgain (by positivity : (0 : Real) ≤ t * G),
+        mul_le_mul (mul_le_mul_of_nonneg_right heta_one hD0) hP (by positivity) (by positivity),
+        mul_le_mul_of_nonneg_right heta_one (by positivity : (0 : Real) ≤ t * G)]) hphase)
+  -- the Bernoulli selection with the weights of `C`
   have hcarrier := fejer_carrier_score_lower (by omega) m hm eta heta.le B phi C
-  have hcarrierAverage :
-      eta * t * G ≤
-        eta * (∑ R ∈ selectionGoodArrangements B phi,
-          ∏ z ∈ selectionCarrier R, fejerKernelWeight m C phi z) -
-          ∑ R ∈ selectionBadArrangements B phi,
-            ∏ z ∈ selectionCarrier R, fejerKernelWeight m C phi z := by
-    linarith only [hC, hcarrier]
-  have hgoodCarrier : ∀ R ∈ selectionGoodArrangements B phi, selectionCarrier R ⊆ B := by
-    intro R hR
-    have hR' : R ∈ selectionArrangements B ∧ R.IsRespected phi := by
-      simpa [selectionGoodArrangements] using hR
-    have hIsIn : R.IsIn B := by simpa [selectionArrangements] using hR'.1
-    exact selectionCarrier_subset B R hIsIn
-  have hbadCarrier : ∀ R ∈ selectionBadArrangements B phi, selectionCarrier R ⊆ B := by
-    intro R hR
-    have hR' := Finset.mem_sdiff.mp hR
-    have hIsIn : R.IsIn B := by simpa [selectionArrangements] using hR'.1
-    exact selectionCarrier_subset B R hIsIn
-  obtain ⟨S, hSB, hS⟩ := _root_.LeanProofs.GowersSzemeredi.exists_subset_count_score B (fejerKernelWeight m C phi)
-    (fun z _ ↦ fejerKernelWeight_nonneg m C phi z) (fun z _ ↦ fejerKernelWeight_le_one m C phi z)
+  obtain ⟨S, hSB, hS⟩ := _root_.LeanProofs.GowersSzemeredi.exists_subset_count_score B
+    (fejerKernelWeight m C phi) (fun z _ ↦ fejerKernelWeight_nonneg m C phi z)
+    (fun z _ ↦ fejerKernelWeight_le_one m C phi z)
     (selectionGoodArrangements B phi) (selectionBadArrangements B phi) selectionCarrier
-    hgoodCarrier hbadCarrier eta (eta * t * G) hcarrierAverage
+    (fun R hR ↦ selectionCarrier_subset B R (Finset.mem_filter.mp (Finset.mem_filter.mp hR).1).2)
+    (fun R hR ↦ selectionCarrier_subset B R (Finset.mem_filter.mp (Finset.mem_sdiff.mp hR).1).2)
+    eta (eta * t * G) (by linarith only [hC, hcarrier])
   rw [selection_good_restrict_card B S phi hSB] at hS
-  have hsplitS := selection_good_bad_restrict_card B S phi hSB
-  rw [selection_good_restrict_card B S phi hSB] at hsplitS
-  set g : Real := ((respectedGeneralArrangementCount 8 S phi : Nat) : Real) with hg
-  set b : Real := ((((selectionBadArrangements B phi).filter fun R ↦ selectionCarrier R ⊆ S).card :
-    Nat) : Real) with hb
-  have hgen : (generalArrangementCount 8 S : Real) = g + b := by
-    rw [hg, hb]; exact_mod_cast hsplitS.symm
-  have hb0 : 0 ≤ b := by positivity
-  have hgLower : t * G ≤ g := by
-    have : eta * (t * G) ≤ eta * g := by linarith
-    exact le_of_mul_le_mul_left this heta
-  refine ⟨S, hSB, ?_, ?_⟩
-  · -- the loss
-    have hloss := fejer_loss_lower k (alpha * eta) (by positivity) (by rw [← haeq]; exact ha1)
-    have hTeq : ⌈6 / (alpha * eta)⌉₊ = T := by rw [hTdef, haeq]
-    rw [hTeq, ← hM, ← hm1] at hloss
-    have htEq : ((((m + 1 : Nat) : Real))⁻¹) ^ M = t := by rw [htdef]; push_cast; ring
-    rw [htEq] at hloss
-    calc (alpha * eta / 4) ^ fejerSelectionExponent k * scale * (N : Real) ^ (17 * k + 15)
-        = (alpha * eta / 4) ^ fejerSelectionExponent k * G := by rw [hG]; ring
-      _ ≤ t * G := mul_le_mul_of_nonneg_right hloss hG0.le
-      _ ≤ g := hgLower
-      _ ≤ g + b := by linarith
-      _ = _ := hgen.symm
-  · rw [hgen]
-    have hpos : 0 ≤ eta * t * G := by positivity
-    have hetab : 0 ≤ eta * b := mul_nonneg heta.le hb0
-    linarith
+  have hsplit := selection_good_bad_restrict_card B S phi hSB
+  rw [selection_good_restrict_card B S phi hSB] at hsplit
+  have hb0 : (0 : Real) ≤
+      ((selectionBadArrangements B phi).filter fun R ↦ selectionCarrier R ⊆ S).card :=
+    Nat.cast_nonneg _
+  have hgS : t * G ≤ respectedGeneralArrangementCount 8 S phi :=
+    le_of_mul_le_mul_left (by linarith) heta
+  -- the density loss `(αη/4)^(2^(k+4)·(k+6)) ≤ t`
+  have hloss := fejer_loss_lower k (alpha * eta) (by positivity) (haeq.symm.trans_le ha1)
+  rw [show ⌈6 / (alpha * eta)⌉₊ = T by rw [hTdef, haeq], ← hM, ← hm1, Nat.cast_succ,
+    ← htdef] at hloss
+  refine ⟨S, hSB, ?_, ?_⟩ <;> rw [← hsplit] <;> push_cast
+  · linarith [mul_le_mul_of_nonneg_right hloss hG0.le]
+  · linarith [mul_nonneg heta.le hb0, (by positivity : (0 : Real) ≤ eta * t * G)]
 
 end LeanProofs.GowersSzemeredi

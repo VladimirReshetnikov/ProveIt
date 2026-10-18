@@ -142,8 +142,7 @@ private lemma extraction_restrictedWeight_eq_sum {N : Nat} {X : Type*}
   rw [countWhere_eq_sum_ite]
   simp_rw [extraction_restricted_ite_eq_sum D B x w]
   rw [Finset.sum_comm]
-  apply Finset.sum_congr rfl
-  intro d _
+  refine Finset.sum_congr rfl fun d _ => ?_
   rw [← countWhere_eq_sum_ite]
   unfold countWhere
   rw [Finset.filter_congr_decidable]
@@ -164,8 +163,7 @@ private lemma extraction_errorCount_eq_sum {N : Nat} {X : Type*}
   rw [countWhere_eq_sum_ite]
   simp_rw [extraction_error_ite_eq_sum D phi B x w]
   rw [Finset.sum_comm]
-  apply Finset.sum_congr rfl
-  intro d _
+  refine Finset.sum_congr rfl fun d _ => ?_
   rw [← countWhere_eq_sum_ite]
   unfold countWhere extractionBadPairs
   rw [Finset.filter_congr_decidable]
@@ -485,15 +483,8 @@ private lemma extraction_directionGood_gives_mode {N : Nat} [NeZero N]
     have hgood' := hgood
     unfold extractionDirectionGood AlmostEvery at hgood'
     rw [Finset.filter_congr_decidable] at hgood'
-    have hcardProduct : ((A.product C).card : Real) =
-        (A.card : Real) * C.card := by
-      exact_mod_cast Finset.card_product A C
-    calc
-      (1 - 35 * t ^ 2) * (A.card : Real) * C.card =
-          (1 - 35 * t ^ 2) * ((A.product C).card : Real) := by
-        rw [hcardProduct]
-        ring
-      _ ≤ (E.card : Real) := by simpa only [A, C, E] using hgood'
+    rw [mul_assoc, ← Nat.cast_mul, ← Finset.card_product]
+    simpa only [A, C, E, Finset.product_eq_sprod] using hgood'
   have hEdgeUpperNat : E.card ≤ Am.card * C.card := by
     calc
       E.card = ∑ z ∈ C,
@@ -532,49 +523,24 @@ private lemma extraction_directionGood_gives_mode {N : Nat} [NeZero N]
     exact Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨hyAm.1, hzC⟩,
       fun heq => hzNe (heq ▸ hyAm.2)⟩
   have hrectangle : (Am.card : Real) * (C \ Cm).card ≤ Ebad.card := by
-    have hcard := Finset.card_le_card hrectangleSubset
-    have hcardReal : ((Am.product (C \ Cm)).card : Real) ≤ Ebad.card := by
-      exact_mod_cast hcard
-    have hcardProduct : ((Am.product (C \ Cm)).card : Real) =
-        (Am.card : Real) * (C \ Cm).card := by
-      exact_mod_cast Finset.card_product Am (C \ Cm)
-    rw [hcardProduct] at hcardReal
-    exact hcardReal
+    exact_mod_cast (Finset.card_product Am (C \ Cm)).symm.trans_le
+      (Finset.card_le_card hrectangleSubset)
   have hModeBad : (Am.card : Real) * (C \ Cm).card ≤
       35 * t ^ 2 * (A.card : Real) * C.card :=
     hrectangle.trans hBadEdgeUpper
   have hp : 0 < 1 - 35 * t ^ 2 := by
     nlinarith [mul_nonneg ht.le (sub_nonneg.mpr htUpper.le)]
-  have hmodeTimesBad :
-      (1 - 35 * t ^ 2) * (A.card : Real) * (C \ Cm).card ≤
-        35 * t ^ 2 * (A.card : Real) * C.card := by
-    calc
-      (1 - 35 * t ^ 2) * (A.card : Real) * (C \ Cm).card ≤
-          (Am.card : Real) * (C \ Cm).card := by gcongr
-      _ ≤ 35 * t ^ 2 * (A.card : Real) * C.card := hModeBad
   have hcancelA :
       (1 - 35 * t ^ 2) * ((C \ Cm).card : Real) ≤
         35 * t ^ 2 * C.card := by
-    apply le_of_mul_le_mul_left _ hanchorFibre
-    calc
-      (A.card : Real) * ((1 - 35 * t ^ 2) * (C \ Cm).card) =
-          (1 - 35 * t ^ 2) * A.card * (C \ Cm).card := by ring
-      _ ≤ 35 * t ^ 2 * A.card * C.card := hmodeTimesBad
-      _ = (A.card : Real) * (35 * t ^ 2 * C.card) := by ring
-  have htSq : t ^ 2 ≤ t / 10 := by
-    nlinarith [mul_nonneg ht.le (sub_nonneg.mpr htUpper.le)]
-  have htCube : t ^ 3 ≤ t / 100 := by
-    have hmul := mul_le_mul_of_nonneg_left htSq ht.le
-    nlinarith
+    refine le_of_mul_le_mul_left ?_ hanchorFibre
+    linarith [hModeBad, mul_le_mul_of_nonneg_right hModeLower (Nat.cast_nonneg (C \ Cm).card)]
   have hnumeric : 35 * t ^ 2 ≤ 10 * t * (1 - 35 * t ^ 2) := by
-    nlinarith
+    nlinarith [mul_nonneg ht.le (sub_nonneg.mpr htUpper.le),
+      mul_nonneg (sq_nonneg t) (sub_nonneg.mpr htUpper.le)]
   have htargetBad : ((C \ Cm).card : Real) ≤ 10 * t * C.card := by
-    apply le_of_mul_le_mul_left _ hp
-    calc
-      (1 - 35 * t ^ 2) * ((C \ Cm).card : Real) ≤
-          35 * t ^ 2 * C.card := hcancelA
-      _ ≤ (10 * t * (1 - 35 * t ^ 2)) * C.card := by gcongr
-      _ = (1 - 35 * t ^ 2) * (10 * t * C.card) := by ring
+    refine le_of_mul_le_mul_left ?_ hp
+    linarith [hcancelA, mul_le_mul_of_nonneg_right hnumeric (Nat.cast_nonneg C.card)]
   have hdiff : C \ Cm = C.filter fun z =>
       ¬ (phi z - phi w = extractionMode D phi x d) := by
     ext z

@@ -139,19 +139,13 @@ private theorem multiaffine_nonzero_count_lower {R : Type*} [Fintype R]
           _ = ∑ y : Fin k → R,
                 if q y ≠ 0 then Fintype.card R - 1 else 0 := by
             rw [countWhere_eq_sum_ite, Finset.sum_mul]
-            apply Finset.sum_congr rfl
-            intro y _
-            split <;> simp_all
+            exact Finset.sum_congr rfl fun y _ => by split <;> simp_all
           _ ≤ ∑ y : Fin k → R,
-              countWhere fun t : R => multiaffineEval c (Fin.cons t y) ≠ 0 := by
-            apply Finset.sum_le_sum
-            intro y _
-            by_cases hy : q y ≠ 0
-            · rw [if_pos hy]
-              have hcount := countWhere_affine_ne_zero (r y) (q y) hy
-              simpa only [heval] using hcount.ge
-            · rw [if_neg hy]
-              exact Nat.zero_le _
+              countWhere fun t : R => multiaffineEval c (Fin.cons t y) ≠ 0 :=
+            Finset.sum_le_sum fun y _ => by
+              split_ifs with hy
+              · simpa only [heval] using (countWhere_affine_ne_zero (r y) (q y) hy).ge
+              · exact Nat.zero_le _
       · have hqzero : ∀ y, q y = 0 := by simpa only [not_exists, not_ne_iff] using hq
         have hr : ∃ y, r y ≠ 0 := by
           obtain ⟨x, hx⟩ := hnonzero
@@ -172,27 +166,18 @@ private theorem multiaffine_nonzero_count_lower {R : Type*} [Fintype R]
           _ = ∑ y : Fin k → R,
                 if r y ≠ 0 then Fintype.card R else 0 := by
             rw [countWhere_eq_sum_ite, Finset.sum_mul]
-            apply Finset.sum_congr rfl
-            intro y _
-            split <;> simp_all
+            exact Finset.sum_congr rfl fun y _ => by split <;> simp_all
           _ ≤ ∑ y : Fin k → R,
-              countWhere fun t : R => multiaffineEval c (Fin.cons t y) ≠ 0 := by
-            apply Finset.sum_le_sum
-            intro y _
-            by_cases hy : r y ≠ 0
-            · rw [if_pos hy]
-              have hconst :
-                  countWhere (fun t : R => multiaffineEval c (Fin.cons t y) ≠ 0) =
-                    Fintype.card R := by
-                have hall (t : R) : multiaffineEval c (Fin.cons t y) ≠ 0 := by
+              countWhere fun t : R => multiaffineEval c (Fin.cons t y) ≠ 0 :=
+            Finset.sum_le_sum fun y _ => by
+              split_ifs with hy
+              · have hall (t : R) : multiaffineEval c (Fin.cons t y) ≠ 0 := by
                   rw [heval, hqzero y, mul_zero, add_zero]
                   exact hy
                 unfold countWhere
                 rw [Finset.filter_congr_decidable]
                 simp [hall]
-              exact hconst.ge
-            · rw [if_neg hy]
-              exact Nat.zero_le _
+              · exact Nat.zero_le _
 
 private def shiftedCoefficients {R : Type*} [Ring R] {k : Nat}
     (c : (Fin k → Bool) → R) (a : R) (e : Fin k → Bool) : R :=
@@ -268,8 +253,7 @@ theorem lemma_15_3_holds : lemma_15_3 := by
             ((if mu y = a then 1 else 0) + (if mu y ≠ a then 1 else 0)) := by
               rw [Finset.sum_add_distrib]
       _ = ∑ _y : Point N k, 1 := by
-        apply Finset.sum_congr rfl
-        intro y _
+        refine Finset.sum_congr rfl fun y _ => ?_
         by_cases hy : mu y = a <;> simp [hy]
       _ = N ^ k := by simp [Point, ZMod.card]
   have hlevelNat :

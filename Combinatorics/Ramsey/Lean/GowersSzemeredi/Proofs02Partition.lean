@@ -494,9 +494,7 @@ theorem lemma_2_3_holds : lemma_2_3 := by
   · refine ⟨r, fun i => singletonNatAP i, singletonNatAP_partition r, ?_⟩
     intro j
     have hsubset : (singletonNatAP (j : Nat)).carrier ⊆ Finset.range r := by
-      intro y hy
-      rw [singletonNatAP_carrier, Finset.mem_singleton] at hy
-      subst y
+      rw [singletonNatAP_carrier, Finset.singleton_subset_iff]
       exact Finset.mem_range.mpr j.isLt
     have hproper : (singletonNatAP (j : Nat)).IsProper := by
       constructor
@@ -530,13 +528,7 @@ theorem lemma_2_3_holds : lemma_2_3 := by
       simpa only [L] using Nat.floor_le (show 0 ≤ q / 2 by positivity)
     have hqhalfLt : q / 2 < (L : Real) + 1 := by
       simpa only [L] using Nat.lt_floor_add_one (q / 2)
-    have hLpos : 0 < L := by
-      have hLone : 1 ≤ L := by
-        dsimp only [L]
-        apply Nat.le_floor
-        norm_num
-        linarith
-      omega
+    have hLpos : 0 < L := Nat.le_floor (by norm_num; linarith)
     obtain ⟨u, hu, hut, hsmall⟩ :=
       exists_small_image_step hN hs hsN a hqfour
     have huReal : (u : Real) ≤ t := by exact_mod_cast hut
@@ -555,17 +547,9 @@ theorem lemma_2_3_holds : lemma_2_3 := by
     have hclass : ∀ z : Fin u, L ≤ residueClassLength r u z := by
       intro z
       have hzbound : (z : Nat) + (L - 1) * u < r := by
-        have hzlt : (z : Nat) < u := z.isLt
-        have hsplit : u + (L - 1) * u = L * u := by
-          calc
-            u + (L - 1) * u = (L - 1) * u + u := by ac_rfl
-            _ = ((L - 1) + 1) * u := by rw [Nat.add_mul, one_mul]
-            _ = L * u := by congr 1; omega
-        calc
-          (z : Nat) + (L - 1) * u < u + (L - 1) * u :=
-            Nat.add_lt_add_right hzlt _
-          _ = L * u := hsplit
-          _ ≤ r := hLu
+        have hsplit : (L - 1) * u + u = L * u := by rw [← add_one_mul, Nat.sub_add_cancel (show 1 ≤ L from hLpos)]
+        have := z.isLt
+        omega
       have hquot : L - 1 < residueClassLength r u z :=
         (quotient_lt_residueClassLength hu z.isLt hur).2 hzbound
       omega
