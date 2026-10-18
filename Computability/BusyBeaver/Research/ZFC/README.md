@@ -49,15 +49,16 @@ pass with no warnings. This is the finite table layer for the active target.
 The [246 logical seed](logical_seed246.md) is now calibrated in Lean:
 the unchanged register program started at `(3,0,0,0,3,0,0,0,0)` halts iff
 ZFC has a refutation. Seven theorem audits and seven client examples pass.
-The binary startup and simulation must still connect that program theorem
-to the literal blank-tape machine; the PA comparison remains open.
+The binary startup now reaches this exact logical seed. Complete decoder
+coverage and runtime composition must still connect the program theorem to
+the literal blank-tape machine; the PA comparison remains open.
 
 The [246 pulse contracts](prefix246_pulse.md) and
 [unbounded register operations](prefix246_boxes.md) now pass in Lean on the
 exact folded table. The proofs retain the whole tape, arbitrary natural
 register values, and the required spare suffix. Zero decrement restores the
 file; positive decrement shifts its boundary; increment adds a value-one
-spare. Complete decoder coverage and blank-start composition remain open.
+spare. Complete decoder coverage and whole-program composition remain open.
 
 The [246 fast lookup](fast_table_prefix246.md) is checked equal to the
 canonical machine on every transition. It supports bounded kernel
@@ -68,18 +69,29 @@ The [nine 246-state register selectors](prefix246_mark.md) have checked
 unbounded marking and return contracts on the reduced selector table. Ten
 theorem audits and six client examples pass with no warnings.
 
-[First 1,024 steps of the 246-state machine](boot_prefix246_first.md) proves the exact blank-run state, head and entire tape, and supplies the checkpoint-composition lemma for the remaining bootstrap chain. The guarded source/audit run passed seven axiom probes and nine callers with zero warnings. The final 410,735-step startup and runtime/consistency endpoints remain separate.
+[First 1,024 steps of the 246-state machine](boot_prefix246_first.md) proves the exact blank-run state, head and entire tape, and supplies the checkpoint-composition lemma for the bootstrap chain. The guarded source/audit run passed seven axiom probes and nine callers with zero warnings.
+
+[The exact 246-state bootstrap](boot_prefix246.md) is checked through all
+410,735 transitions from the blank tape. The final theorem fixes state 88,
+head −5 and every tape cell, and rules out earlier halting. Eight continuation
+modules compose with the checked first 1,024 steps and final 16,384-step block;
+the consolidated manifest preserves the exact records and independent review.
+
+The [246 bootstrap frame](prefix246_bootstrap_frame.md) identifies that entire
+tape with the calibrated logical seed, gap 181 and 167 spare registers of
+value one. Five theorem audits and five callers pass with no warnings. The
+history preserves the initial failed simplification and its one-line repair.
 
 The [246 symbolic executor](prefix246_symbolic.md) and
 [per-instruction interface](prefix246_site.md) now have checked whole-tape
 soundness proofs. Their 15/15 and 12/13 theorem/client audits pass with zero
-warnings. Complete coverage of the actual decoder and final startup
+warnings. Complete coverage of the actual decoder and final runtime
 composition remain separate obligations.
 
 The [246 whole-tape frame adapters](prefix246_frame.md) connect symbolic
 execution to the logical register file while preserving the spare suffix and
 header distance. Fourteen theorem audits and fourteen callers pass; complete
-decoder coverage and startup composition remain separate.
+decoder coverage and runtime composition remain separate.
 
 The [246 instruction composition](prefix246_instruction.md) implements
 every accepted logical instruction by a positive binary execution segment,
@@ -89,8 +101,8 @@ theorem audits and seven callers pass with no warnings.
 The [246 conditional runtime equivalence](prefix246_runtime.md) now proves
 both directions of register/binary halting from a related whole-tape frame
 and accepted decoder coverage. Eleven theorem audits and twelve callers pass
-with no warnings. The complete coverage certificate and blank startup must
-still discharge those explicit premises.
+with no warnings. The checked blank startup and its frame identification are
+available for composition; the complete coverage certificate remains open.
 
 The [exact 250-state table](table_prefix250.md) is now checked in Lean: all 500
 actions, the state numbering, the unique halt edge and the incoming edges of
