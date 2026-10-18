@@ -1,5 +1,7 @@
 import GowersSzemeredi.Proofs16SinglePieceRemainder
 import GowersSzemeredi.Proofs16PieceCalculusSide
+import GowersSzemeredi.Proofs16FaceInductionSide
+import GowersSzemeredi.Proofs16SinglePieceSectionsSide
 
 /-! The single-piece lift, step 4 (Notes L.1): the remainder half of a
 single-piece Lemma 16.9.

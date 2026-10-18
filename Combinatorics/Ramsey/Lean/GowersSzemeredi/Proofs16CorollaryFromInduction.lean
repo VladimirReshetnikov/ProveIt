@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs16FrequencySelection
 import GowersSzemeredi.Proofs16DenseMultilinearBox
 import GowersSzemeredi.Proofs16FaceInduction
 import GowersSzemeredi.Proofs08AffineFrequencyProgression
+import GowersSzemeredi.Proofs16FaceInductionSide
 
 /-! Corollary 16.11 from the corresponding dimension of Theorem 16.2.
 The corrected common exponent is retained exactly; the unproved induction

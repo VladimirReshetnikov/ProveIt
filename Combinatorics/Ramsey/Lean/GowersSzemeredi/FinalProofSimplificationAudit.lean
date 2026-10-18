@@ -25,6 +25,8 @@ import GowersSzemeredi.Proofs18FejerCubicTwistedDiscrepancySide
 import GowersSzemeredi.Proofs18IntervalUniformStoppingSide
 import GowersSzemeredi.Proofs17PhaseRemovalSide
 import GowersSzemeredi.Proofs18FejerSeedExponentsSide
+import GowersSzemeredi.Proofs13InitialProgressionSide
+import GowersSzemeredi.Proofs16UniformCoverTwoSplitSide
 
 open Lean Elab Command in
 run_cmd do

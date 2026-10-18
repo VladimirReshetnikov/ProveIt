@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs05FourierInterval
 import GowersSzemeredi.Proofs01_03
 import Mathlib.Analysis.PSeries
 import Mathlib.Data.Int.Lemmas
+import GowersSzemeredi.Proofs00BasicsSide
 
 /-!
 # A missing-interval Fourier coefficient

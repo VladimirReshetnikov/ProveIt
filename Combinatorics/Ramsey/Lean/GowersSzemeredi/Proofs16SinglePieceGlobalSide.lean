@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs16SinglePieceGlobal
 import GowersSzemeredi.Proofs16Lemma6Parameters
 import GowersSzemeredi.Proofs16DenseSelectionSide
 import GowersSzemeredi.Proofs16SinglePieceRemainderSide
+import GowersSzemeredi.Proofs16SinglePieceSectionsSide
 
 /-! Declarations of `Proofs16SinglePieceGlobal` that the final route does not use and that
 need modules outside it (moved here so that those modules can leave the route). -/
@@ -9,6 +10,70 @@ need modules outside it (moved here so that those modules can leave the route). 
 set_option autoImplicit false
 
 noncomputable section
+
+namespace LeanProofs.GowersSzemeredi
+
+section
+open Classical
+
+/-- **The single-piece lift from a remainder piece** of density `ρ1` and width `ω1`. -/
+theorem single_piece_lift_core_rem {k : Nat} (hk : 1 ≤ k) {delta zeta : Real}
+    (hz : 0 < zeta) (hz2 : zeta ≤ 1 / 2)
+    {Qc : Real → Real} {cR : Real → Real} {wR : Real → Nat → Nat}
+    {c : Real → Real} {w : Real → Nat → Nat}
+    (hcR : ∀ t, 0 < t → t ≤ 1 → 0 < cR t ∧ cR t ≤ 1) (hwR : ∀ t, Monotone (wR t))
+    (hc : ∀ t, 0 < t → t ≤ 1 → 0 < c t ∧ c t ≤ 1) (hw : ∀ t, Monotone (w t))
+    (eps : Nat → Real) (thr : Nat → Nat)
+    (hretile : ∀ q, Section16RetiledLinearityBound k q (eps q) (thr q))
+    {N : Nat} [NeZero N] [Fact N.Prime]
+    (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N)
+    (H : Finset (Point N k)) (Y : (h : Point N k) → Finset (Section16CubeElement B h))
+    (phiPrime : Point N k → ZMod N → ZMod N) (x0 : Point N k)
+    (hselection : Section16InducedSelection B phi H Y
+      (fun h => section16LargeSpectrum B h delta) zeta phiPrime)
+    (hid : Section16PhiOneIdentity (section16GoodDomain B H Y x0) phi x0 phiPrime)
+    (B1 : Finset (Point N (k + 1))) (hB1 : B1 ⊆ section16GoodDomain B H Y x0)
+    {theta2 : Real} (hθ₂pos : 0 < theta2) (hθ₂le : theta2 ≤ 1)
+    (hB1card : theta2 * (N : Real) ^ (k + 1) ≤ B1.card)
+    (ρ1 : Real) (hρ1 : 0 < ρ1 ∧ ρ1 ≤ 1) (ω1 : Nat)
+    (hrem : ∃ (R1 : Box N (k + 1)) (Mrem : Point N (k + 1) → ZMod N),
+      R1.IsProper ∧ ω1 ≤ R1.width ∧ IsMultilinear Mrem ∧
+      ρ1 * R1.carrier.card ≤
+        (B1.filter fun x => x ∈ R1.carrier ∧ section16PhiRemainder phi x0 x = Mrem x).card)
+    (DomG : Finset (Point N k))
+    (hcovG : LocalRelationCoverFor cR Qc wR DomG (section16SpectrumRelation B delta))
+    (hB1G : ∀ z ∈ B1, section16Init z ∈ DomG)
+    (DomS : ZMod N → Finset (Point N k))
+    (hsl : ∀ x, LocalPieceFor c w (DomS x) (fun h => phi (appendCoordinate (h + x0) x)))
+    (hB1S : ∀ z ∈ B1, section16Init z ∈ DomS (section16Last z))
+    (hL4 : 4 ≤ ω1)
+    (m : Nat) (hm1 : 1 ≤ m)
+    (hm : m ≤ wR (ρ1 / 2)
+      ⌈(ω1 : Real) / 8⌉₊)
+    (hpar : ∀ q : Nat, (q : Real) ≤ Qc (ρ1 / 2) →
+      thr q ≤ m ∧ 4 ≤ spectrumCellWidth zeta m (eps q) ∧
+      2 ≤ spectrumPieceRho cR (ρ1) ^ 3 *
+        spectrumCellWidth zeta m (eps q) ∧
+      2 ≤ w (c (singlePieceTheta (spectrumPieceRho cR (ρ1)) 1))
+        (w (singlePieceTheta (spectrumPieceRho cR (ρ1)) 1)
+          ⌈spectrumCellWidth zeta m (eps q) / 8⌉₊)) :
+    ∃ q : Nat, (q : Real) ≤ Qc (ρ1 / 2) ∧
+      ∃ (S : Box N (k + 1)) (mu : Point N (k + 1) → ZMod N),
+        S.IsProper ∧ IsMultilinear mu ∧
+        Nat.sqrt (w (c (singlePieceTheta
+            (spectrumPieceRho cR (ρ1)) 1))
+          (w (singlePieceTheta (spectrumPieceRho cR (ρ1)) 1)
+            ⌈spectrumCellWidth zeta m (eps q) / 8⌉₊) - 1) - 1 ≤ S.width ∧
+        singlePieceDensity c (spectrumPieceRho cR (ρ1)) 1 *
+            S.carrier.card ≤
+          (B.filter fun z => z ∈ S.carrier ∧ phi z = mu z).card :=
+  single_piece_lift_core_rem_scheme hk hz hz2 hcR hwR eps thr hretile (localPieceScheme c w hc hw) B
+    phi H Y phiPrime x0 hselection hid B1 hB1 hθ₂pos hθ₂le hB1card ρ1 hρ1 ω1 hrem DomG hcovG hB1G
+    DomS hsl hB1S hL4 m hm1 hm hpar
+
+end
+
+end LeanProofs.GowersSzemeredi
 
 namespace LeanProofs.GowersSzemeredi
 

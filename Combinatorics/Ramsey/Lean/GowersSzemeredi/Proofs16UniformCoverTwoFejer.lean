@@ -20,9 +20,9 @@ that no printed quantity survives:
   of the split-class recursion. This is inside the `2^48` of
   `split_pair_with_bounds_fourteen`, against the printed `2^132`.
 
-`powerUniformClass_two_fejer`, `splitUniformClass_two_fejer` and
-`uniTwoFejerExp_inv_le_power` are in `Proofs16UniformCoverTwoFejerSide`, outside
-the final route. -/
+`powerUniformClass_two_fejer`, `splitUniformClass_two_fejer`,
+`uniTwoFejerCount_le_power` and `uniTwoFejerExp_inv_le_power` are in
+`Proofs16UniformCoverTwoFejerSide`, outside the final route. -/
 set_option autoImplicit false
 set_option exponentiation.threshold 1024
 noncomputable section
@@ -118,23 +118,6 @@ theorem uniTwoFejerExp_pos {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q)
     0 < uniTwoFejerExp A Bq theta gamma M rho := by
   unfold uniTwoFejerExp
   exact famTwoCappedExponent_pos hB hrho
-
-theorem uniTwoFejerCount_le_power {gamma theta rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
-    (ht : 0 < theta) (ht1 : theta ≤ 1) (hr : 0 < rho) (hr1 : rho ≤ 1)
-    {w : Real} (hvw : 2 / (gamma * theta) ≤ w) (hrw : rho⁻¹ ≤ w)
-    {M : Nat} (hM : (M : Real) ≤ w ^ ((2 : Nat) ^ 38)) :
-    uniTwoFejerCount theta gamma M rho ≤ w ^ ((2 : Nat) ^ 43) := by
-  obtain ⟨hv2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
-  have hq := polyPieceFaceCountW_fejer_le_power hg hg1 ht ht1
-  set v := 2 / (gamma * theta) with hv
-  clear_value v
-  have hw2 : 2 ≤ w := hv2.trans hvw
-  have hv0 : 0 ≤ v := le_trans (by norm_num) hv2
-  -- both counts below `w^(2^38)`
-  have hq' : (polyPieceFaceCountW (fejerThetaOne theta gamma 1) gamma : Real) ≤ w ^ ((2 : Nat) ^ 38) :=
-    hq.trans (pow_le_pow_left₀ hv0 hvw _)
-  unfold uniTwoFejerCount
-  exact le_pow_mono hw2 (by norm_num) (famTwoCount_le_power hw2 hr hrw hM hq')
 
 theorem nPieces_le_base_fejer {gamma theta : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta)
     (ht1 : theta ≤ 1) {n : Nat} {w : Real} (hvw : 2 / (gamma * theta) ≤ w)

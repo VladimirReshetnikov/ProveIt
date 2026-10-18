@@ -1,4 +1,6 @@
 import GowersSzemeredi.Proofs16CubicCoverControls
+import GowersSzemeredi.Proofs16LocalizedCoverSide
+import GowersSzemeredi.Proofs16RegimeSplittingSide
 
 /-! Monomial controls are absorbed by the source's multiple multilinearity.
 

@@ -16,6 +16,32 @@ namespace LeanProofs.GowersSzemeredi
 section
 open BaseCase
 
+theorem uniTwoFejerCount_le_power {gamma theta rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
+    (ht : 0 < theta) (ht1 : theta ≤ 1) (hr : 0 < rho) (hr1 : rho ≤ 1)
+    {w : Real} (hvw : 2 / (gamma * theta) ≤ w) (hrw : rho⁻¹ ≤ w)
+    {M : Nat} (hM : (M : Real) ≤ w ^ ((2 : Nat) ^ 38)) :
+    uniTwoFejerCount theta gamma M rho ≤ w ^ ((2 : Nat) ^ 43) := by
+  obtain ⟨hv2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
+  have hq := polyPieceFaceCountW_fejer_le_power hg hg1 ht ht1
+  set v := 2 / (gamma * theta) with hv
+  clear_value v
+  have hw2 : 2 ≤ w := hv2.trans hvw
+  have hv0 : 0 ≤ v := le_trans (by norm_num) hv2
+  -- both counts below `w^(2^38)`
+  have hq' : (polyPieceFaceCountW (fejerThetaOne theta gamma 1) gamma : Real) ≤ w ^ ((2 : Nat) ^ 38) :=
+    hq.trans (pow_le_pow_left₀ hv0 hvw _)
+  unfold uniTwoFejerCount
+  exact le_pow_mono hw2 (by norm_num) (famTwoCount_le_power hw2 hr hrw hM hq')
+
+end
+
+end LeanProofs.GowersSzemeredi
+
+namespace LeanProofs.GowersSzemeredi
+
+section
+open BaseCase
+
 theorem uniTwoFejerExp_inv_le_power {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
     {gamma theta rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1)
     (hr : 0 < rho) (hr1 : rho ≤ 1)

@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs13CoefficientPartition
+import GowersSzemeredi.Proofs13CoefficientPartitionSide
 
 /-! Restore the geometric context stated immediately before Lemma 13.9.
 The conclusion, including its quantitative bounds, is unchanged. -/

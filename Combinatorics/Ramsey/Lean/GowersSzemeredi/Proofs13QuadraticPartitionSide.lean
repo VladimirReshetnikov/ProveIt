@@ -1,5 +1,7 @@
 import GowersSzemeredi.Proofs13QuadraticPartition
 import GowersSzemeredi.Proofs05FullPartitionSide
+import GowersSzemeredi.Proofs13EndpointDeletionSide
+import GowersSzemeredi.Proofs13QuadraticRecurrenceSide
 
 /-! Declarations of `Proofs13QuadraticPartition` that the final route does not use and that
 need modules outside it (moved here so that those modules can leave the route). -/

@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs16ClassPieceCover
 import GowersSzemeredi.Proofs16IntegerRelationOps
 import GowersSzemeredi.Proofs16IntegerFamilyPieceCover
 import GowersSzemeredi.Proofs03FourFactorSymmetry
+import GowersSzemeredi.Proofs16ClassPieceCoverSide
 
 /-! Integer cover certificates for the existing uniform relation classes.
 Their membership and decomposition records are unchanged. The additional

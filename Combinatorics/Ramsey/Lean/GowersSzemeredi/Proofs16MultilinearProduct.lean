@@ -2,7 +2,10 @@ import GowersSzemeredi.Proofs16ProductEndpoint
 import GowersSzemeredi.Proofs14Product
 
 /-! The converse endpoint: every multilinear graph has unit product property,
-with arbitrary nonnegative weights and arbitrarily many parallel lines. -/
+with arbitrary nonnegative weights and arbitrarily many parallel lines.
+
+`section16_unit_product_iff_multilinear` is in `Proofs16MultilinearProductSide`,
+outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 open scoped BigOperators
@@ -81,12 +84,5 @@ theorem IsMultilinear.unit_productProperty {N k : Nat} [NeZero N]
     {phi : Point N k → ZMod N} (h : IsMultilinear phi) :
     HasProductProperty Finset.univ phi 1 :=
   HasProductProperty.of_coordinate_linear phi h.linearOn_coordinate
-
-/-- Exact full-domain endpoint equivalence, independent of the quantitative
-induction and the invalid packaged branch-cover implication. -/
-theorem section16_unit_product_iff_multilinear {N k : Nat} [NeZero N] [Fact N.Prime]
-    (phi : Point N k → ZMod N) :
-    HasProductProperty Finset.univ phi 1 ↔ IsMultilinear phi :=
-  ⟨HasProductProperty.unit_multilinear, IsMultilinear.unit_productProperty⟩
 
 end LeanProofs.GowersSzemeredi

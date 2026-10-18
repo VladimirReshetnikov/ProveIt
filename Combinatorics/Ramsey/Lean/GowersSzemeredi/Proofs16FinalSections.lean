@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16GoodDomainTransport
+import GowersSzemeredi.Proofs16FaceInductionSide
 
 /-! The fixed-final-coordinate premise of Lemma 16.10 follows from the
 proper cross-sections of the actual structured pair and translation. -/

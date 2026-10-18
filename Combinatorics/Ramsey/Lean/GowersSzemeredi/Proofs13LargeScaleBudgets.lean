@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs13IntegerBudgets
 import GowersSzemeredi.Proofs13UniformEdgeModels
 import GowersSzemeredi.Proofs13BilinearExtraction
+import GowersSzemeredi.Proofs13ExponentMarginsSide
 
 /-! Large-N budgets for the Stage 13 extraction chain. The threshold is
 uniform over the preceding data, but is not given as an explicit numeral. -/

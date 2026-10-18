@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs05DiameterReserve
 import GowersSzemeredi.Proofs05Lemma9InductionSide
+import GowersSzemeredi.Proofs05Lemma9Side
 
 /-!
 # The quantitative scale schedule for Lemma 5.9

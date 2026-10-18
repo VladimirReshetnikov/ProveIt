@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16WithUnion
+import GowersSzemeredi.Proofs16LocalizedCoverSide
 
 /-! Finite unions of relations with arbitrary multiple-multilinearity controls.
 

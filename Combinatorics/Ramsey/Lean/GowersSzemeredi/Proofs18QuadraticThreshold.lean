@@ -2,7 +2,10 @@ import GowersSzemeredi.Proofs18QuadraticDensityIncrement
 
 /-! A closed starting threshold for the quadratic density increment.
 All constants are defined by finite arithmetic operations and real powers;
-no existential large-modulus witness is used by the quantitative theorem. -/
+no existential large-modulus witness is used by the quantitative theorem.
+
+`quadratic_nonuniformity_density_increment_explicit` is in
+`Proofs18QuadraticThresholdSide`, outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 open scoped BigOperators
@@ -91,24 +94,5 @@ theorem quadratic_nonuniformity_discrepancy_partition_explicit
   obtain ⟨hlarge, hbudget⟩ := quadraticDensityThreshold_power_bounds hα hαone hN
   exact quadratic_nonuniformity_discrepancy_partition_of_power_bounds alpha hα hαone N
     hlarge hbudget f hf hnot
-
-/-- Explicit-threshold quadratic density increment, without an assumed
-inverse theorem or an opaque sufficiently-large modulus. -/
-theorem quadratic_nonuniformity_density_increment_explicit
-    (alpha : Real) (hα : 0 < alpha) (hαone : alpha ≤ 1)
-    (N : Nat) [NeZero N] [Fact N.Prime] (hN : quadraticDensityThreshold alpha ≤ N)
-    (A : Finset (ZMod N)) (hnot : ¬ UniformSetOfDegree A alpha 2) :
-    ∃ P : ModAP N, P.IsProper ∧
-      quadraticDiscrepancyParameter alpha / 4 * (N : Real) ^ quadraticDiscrepancyExponent alpha ≤
-        (P.carrier.card : Real) ∧
-      (density A + quadraticDiscrepancyParameter alpha / 4) * P.carrier.card ≤ (A ∩ P.carrier).card := by
-  obtain ⟨M, P, hpart, hproper, havg, hdis⟩ :=
-    quadratic_nonuniformity_discrepancy_partition_explicit alpha hα hαone N hN
-      (balanced A) (balanced_discValued A) hnot
-  have hβ : 0 ≤ quadraticDiscrepancyParameter alpha := by
-    unfold quadraticDiscrepancyParameter
-    positivity
-  obtain ⟨j, hsize, hinc⟩ := density_increment_of_discrepancy_partition A P _ _ hβ hpart havg hdis
-  exact ⟨P j, hproper j, hsize, hinc⟩
 
 end LeanProofs.GowersSzemeredi

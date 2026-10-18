@@ -1,5 +1,5 @@
 import GowersSzemeredi.Proofs07AdditiveRestriction
-import GowersSzemeredi.Proofs16BaseCaseCore
+import GowersSzemeredi.Section16
 
 /-!
 # The one-dimensional additive restriction for Lemma 16.3

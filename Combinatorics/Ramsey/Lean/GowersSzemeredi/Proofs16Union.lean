@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs16Basic
 import GowersSzemeredi.Proofs16BaseCaseUnion
 import GowersSzemeredi.ProofInfrastructure
+import GowersSzemeredi.Proofs16BaseCaseUnionSide
 
 /-!
 # Auditing finite unions of multiply-linear relations

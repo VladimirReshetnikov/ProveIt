@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16BaseCaseCoarseCover
 import GowersSzemeredi.Proofs16BaseCaseLongBoxCover
+import GowersSzemeredi.Proofs16BaseCaseCore
 
 /-!
 # One extracted Freiman graph in the repaired base case

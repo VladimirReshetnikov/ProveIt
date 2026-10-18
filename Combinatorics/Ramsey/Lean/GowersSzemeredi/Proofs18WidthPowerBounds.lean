@@ -43,9 +43,8 @@ The thresholds are `exp(O(1/a))`, so their logarithms are polynomial in
 * `WidthPowerLB`, `coverWidth_powerLB`, `liftLastW_powerLB`,
   `WidthPowerLB.min`, `WidthPowerLB.mono_exponent`.
 
-`liftLastW_coverWidth_powerLB`, `liftLastW_powerLB`,
-`liftLastW_two_coverWidth_powerLB`, `sixEb_le_one` and `sixW_powerLB` are in
-`Proofs18WidthPowerBoundsSide`, outside the final route. -/
+The 14 declarations of this module that the final route does not use are in
+`Proofs18WidthPowerBoundsSide`. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -59,30 +58,6 @@ theorem rpow_le_comp {x y z a b : Real} (hx : 0 ≤ x) (hb : 0 ≤ b)
 /-- `w L ≥ L^a` for every `L ≥ L₀`. -/
 def WidthPowerLB (w : Nat → Nat) (a L0 : Real) : Prop :=
   ∀ L : Nat, L0 ≤ L → (L : Real) ^ a ≤ w L
-
-theorem WidthPowerLB.mono_threshold {w : Nat → Nat} {a L0 L1 : Real}
-    (h : WidthPowerLB w a L0) (hL : L0 ≤ L1) : WidthPowerLB w a L1 :=
-  fun L hL1 => h L (hL.trans hL1)
-
-/-- A smaller exponent, above threshold one. -/
-theorem WidthPowerLB.mono_exponent {w : Nat → Nat} {a b L0 : Real}
-    (h : WidthPowerLB w a L0) (hb : b ≤ a) (hL0 : 1 ≤ L0) : WidthPowerLB w b L0 := by
-  intro L hL
-  have h1 : (1 : Real) ≤ L := hL0.trans hL
-  exact (Real.rpow_le_rpow_of_exponent_le h1 hb).trans (h L hL)
-
-theorem WidthPowerLB.min {w v : Nat → Nat} {a b L0 L1 : Real}
-    (hw : WidthPowerLB w a L0) (hv : WidthPowerLB v b L1) (hL0 : 1 ≤ L0) :
-    WidthPowerLB (fun L => min (w L) (v L)) (min a b) (max L0 L1) := by
-  intro L hL
-  have hL0' : L0 ≤ L := (le_max_left _ _).trans hL
-  have hL1' : L1 ≤ L := (le_max_right _ _).trans hL
-  have h1 : (1 : Real) ≤ L := hL0.trans hL0'
-  have ha := (Real.rpow_le_rpow_of_exponent_le h1 (min_le_left a b)).trans (hw L hL0')
-  have hb := (Real.rpow_le_rpow_of_exponent_le h1 (min_le_right a b)).trans (hv L hL1')
-  show (L : Real) ^ (Min.min a b) ≤ ((Min.min (w L) (v L) : Nat) : Real)
-  rw [Nat.cast_min]
-  exact le_min ha hb
 
 theorem coverWidth_powerLB (E : Real → Real) (t : Real) (hE : 0 ≤ E (t / 2)) :
     WidthPowerLB (coverWidth E t) (E (t / 2)) 0 := by
@@ -151,52 +126,4 @@ theorem WidthPowerLB.comp {w v : Nat → Nat} {a b L0 L1 : Real}
   have hvw := hv (w L) (hLa.trans hwL)
   exact rpow_le_comp hLpos hb hwL hvw
 
-theorem section16CappedWidthExponent_le_one (e T : Real) :
-    section16CappedWidthExponent e T ≤ 1 := by
-  unfold section16CappedWidthExponent
-  refine (min_le_right _ _).trans ?_
-  have hM : (1 : Real) < max 2 T := lt_of_lt_of_le (by norm_num) (le_max_left _ _)
-  have hlog := Real.log_pos hM
-  rw [div_le_one hlog]
-  exact Real.log_le_log (by norm_num) (le_max_left _ _)
-
-/-- The exponent of `sixW` at `t`. -/
-def sixWExp (Eb : Nat → Real → Real → Real → Real) (alpha t : Real) : Real :=
-  min (Eb 1 (alpha / 2) (globalBudget alpha (alpha / 2) 2) (t / 2 / 2 / 2) / 4 / 4)
-    (Eb 2 (alpha / 2) (globalBudget alpha (alpha / 2) 2) (t / 2 / 2) / 4)
-
-/-- The threshold of `sixW` at `t`. -/
-def sixWThr (Eb : Nat → Real → Real → Real → Real) (alpha t : Real) : Real :=
-  let E1 := Eb 1 (alpha / 2) (globalBudget alpha (alpha / 2) 2) (t / 2 / 2 / 2)
-  let E2 := Eb 2 (alpha / 2) (globalBudget alpha (alpha / 2) 2) (t / 2 / 2)
-  max (max (8 * max (8 * 0 + 8) ((6 : Real) ^ (4 / E1)) + 8) ((6 : Real) ^ (4 / (E1 / 4))))
-    (max (8 * 0 + 8) ((6 : Real) ^ (4 / E2)))
-
-theorem one_le_sixWThr (Eb : Nat → Real → Real → Real → Real) (alpha t : Real) :
-    1 ≤ sixWThr Eb alpha t := by
-  unfold sixWThr
-  refine le_trans ?_ (le_max_left _ _)
-  refine le_trans ?_ (le_max_left _ _)
-  have : (8 : Real) ≤ max (8 * 0 + 8) ((6 : Real) ^ (4 / Eb 1 (alpha / 2)
-    (globalBudget alpha (alpha / 2) 2) (t / 2 / 2 / 2))) := by
-    refine le_trans ?_ (le_max_left _ _); norm_num
-  linarith
-
-theorem sixWExp_pos {Eb : Nat → Real → Real → Real → Real} {alpha t : Real}
-    (hE : ∀ l g u s, 0 < s → s ≤ 1 → 0 < Eb l g u s ∧ Eb l g u s ≤ 1)
-    (ht : 0 < t) (ht1 : t ≤ 1) : 0 < sixWExp Eb alpha t := by
-  have h1 := (hE 1 (alpha / 2) (globalBudget alpha (alpha / 2) 2) (t / 2 / 2 / 2)
-    (by positivity) (by linarith)).1
-  have h2 := (hE 2 (alpha / 2) (globalBudget alpha (alpha / 2) 2) (t / 2 / 2)
-    (by positivity) (by linarith)).1
-  unfold sixWExp
-  exact lt_min (by positivity) (by positivity)
-
-theorem sixWExp_le_one {Eb : Nat → Real → Real → Real → Real} {alpha t : Real}
-    (hE : ∀ l g u s, 0 < s → s ≤ 1 → 0 < Eb l g u s ∧ Eb l g u s ≤ 1)
-    (ht : 0 < t) (ht1 : t ≤ 1) : sixWExp Eb alpha t ≤ 1 := by
-  have h2 := (hE 2 (alpha / 2) (globalBudget alpha (alpha / 2) 2) (t / 2 / 2)
-    (by positivity) (by linarith)).2
-  unfold sixWExp
-  exact (min_le_right _ _).trans (by linarith)
 end LeanProofs.GowersSzemeredi

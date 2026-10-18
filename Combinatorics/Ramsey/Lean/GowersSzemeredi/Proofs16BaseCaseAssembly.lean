@@ -8,16 +8,9 @@ import Mathlib.NumberTheory.DiophantineApproximation.Basic
 /-!
 # Finite-family assembly for the repaired Lemma 16.3
 
-This module assembles the extracted finite family of Freiman graphs.  The only
-remaining input is the repaired finite-union closure, isolated as
-`ProperUnionClosure`; the Section 16 union theorem is intended to discharge it
-when the repaired catalogue is integrated.
-
-The assembly itself (`proper_lemma_16_3_of_unionClosure`) and the empty base case
-(`properMultiplyLinear_empty_base`) are in `Proofs16BaseCaseAssemblySide`: the final
-route does not use them, and they need `Proofs16BaseCaseSingleGraph` and its imports,
-which can then leave the route.
--/
+This module keeps `lemma163Alpha_le_gammaInvSq`; the rest of the development,
+with its description, is in `Proofs16BaseCaseAssemblySide`, outside the final
+route. -/
 
 set_option autoImplicit false
 set_option maxRecDepth 100000
@@ -28,18 +21,6 @@ open scoped BigOperators Pointwise ZMod
 open Finset
 
 namespace LeanProofs.GowersSzemeredi.BaseCase
-
-lemma properMultiplyLinear_downward {N k : Nat} [NeZero N]
-    {gamma r : Real} {Gamma Gamma' : Finset (Point N k × ZMod N)}
-    (hsub : Gamma' ⊆ Gamma) (hGamma : ProperMultiplyLinear gamma r Gamma) :
-    ProperMultiplyLinear gamma r Gamma' := by
-  intro eta heta hetaOne P hP
-  obtain ⟨M, q, H, Q, mu, hHsub, hHcard, hpart, hQproper, hq,
-      hwidth, hmu, hcover⟩ := hGamma eta heta hetaOne P hP
-  refine ⟨M, q, H, Q, mu, hHsub, hHcard, hpart, hQproper, hq,
-    hwidth, hmu, ?_⟩
-  intro j x hxQ hxH y hxy
-  exact hcover j x hxQ hxH y (hsub hxy)
 
 lemma lemma163Alpha_le_gammaInvSq {gamma theta : Real}
     (hgamma : 0 < gamma) (hgammaOne : gamma ≤ 1)
@@ -68,12 +49,5 @@ lemma lemma163Alpha_le_gammaInvSq {gamma theta : Real}
     have hsq : gamma ^ (2 : Nat) ≤ 1 := pow_le_one₀ hgamma.le hgammaOne
     exact (one_le_inv₀ (by positivity)).2 hsq
   exact halphaOne.trans hone
-
-/-- The repaired finite-union closure needed by the base-case assembly. -/
-def ProperUnionClosure : Prop :=
-  ∀ (N d r : Nat) [NeZero N] (gamma s : Real)
-      (Gamma : Fin r → Finset (Point N d × ZMod N)),
-    0 < r → 1 ≤ s → (∀ i, ProperMultiplyLinear gamma s (Gamma i)) →
-    ProperMultiplyLinear gamma ((r : Real) * s) (section16FinsetUnion Gamma)
 
 end LeanProofs.GowersSzemeredi.BaseCase

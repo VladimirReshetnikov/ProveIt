@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs13CoefficientPartition
 import GowersSzemeredi.Proofs08AffineFrequencyProgression
+import GowersSzemeredi.Proofs13CoefficientPartitionSide
 
 /-! A concrete prime-modulus obstruction to the former Lemma 13.9
 encoding. A singleton height progression and two-point column progression

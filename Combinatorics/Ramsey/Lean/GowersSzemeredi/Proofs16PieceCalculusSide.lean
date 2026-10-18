@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16PieceCalculus
+import GowersSzemeredi.Proofs16PermutedCoversSide
 
 /-! A calculus of local piece providers (the single-piece lift, Notes L.1,
 toward the remainder half of Lemma 16.9).

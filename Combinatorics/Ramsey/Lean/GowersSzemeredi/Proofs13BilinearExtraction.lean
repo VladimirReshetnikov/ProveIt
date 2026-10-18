@@ -1,6 +1,8 @@
 import GowersSzemeredi.Proofs13UniformEdgeModels
 import GowersSzemeredi.Proofs13CoefficientExtraction
 import GowersSzemeredi.Proofs13CompleteRowExtraction
+import GowersSzemeredi.Proofs13CoefficientPartitionSide
+import GowersSzemeredi.Proofs13UniformEdgeModelsSide
 
 /-! Assemble Stages 13.6--13.9 from the actual preceding data and explicit
 numerical budgets. No row subsets, affine partitions, or coefficient models

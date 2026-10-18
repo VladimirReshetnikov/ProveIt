@@ -1,5 +1,7 @@
 import GowersSzemeredi.Proofs16IntegerRelationLift
 import GowersSzemeredi.Proofs16FaceLifts
+import GowersSzemeredi.Proofs16FaceInductionSide
+import GowersSzemeredi.Proofs16PermutedCoversSide
 
 /-! Coordinate permutations and arbitrary-axis cylinders retain genuine
 integer boxes and the original cover controls, over any nonzero modulus. -/

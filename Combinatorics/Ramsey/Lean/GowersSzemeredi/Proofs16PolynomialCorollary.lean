@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16PolynomialStructure
+import GowersSzemeredi.Proofs18WidthPowerBoundsSide
 
 /-! **Corollary 16.11 with polynomial exponents** (Notes L.15j).
 

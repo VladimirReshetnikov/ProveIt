@@ -1,5 +1,7 @@
 import GowersSzemeredi.Proofs16AnchoredCover
 import GowersSzemeredi.Proofs16BaseCaseUnion
+import GowersSzemeredi.Proofs16AnchoredCoverSide
+import GowersSzemeredi.Proofs16BaseCaseUnionSide
 
 /-! # A common base partition for the sampled cross-sections
 

@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16CoordinateDirections
+import GowersSzemeredi.Proofs16PermutedCoversSide
 
 /-! Restrict simultaneously on every positive-dimensional proper coordinate
 face, paying at most one deletion budget per subset of ambient coordinates. -/

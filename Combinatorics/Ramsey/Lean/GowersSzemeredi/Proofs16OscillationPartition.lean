@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs16CellOscillation
 import GowersSzemeredi.Proofs16Slicing
 import GowersSzemeredi.Proofs05BoxTransport
+import GowersSzemeredi.Proofs16BaseCaseUnionSide
 
 /-! Oscillation partitions from the multilinear partition theorem.
 

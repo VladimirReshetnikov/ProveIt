@@ -17,8 +17,8 @@ The Fejér analogue of `Proofs18TightClasses`. The split classes of
 * `polyCoverAt_class23`: **the class cover in dimension `l` at degree
   `uDeg23 l`**, the input of the Section 18 envelope.
 
-`polyCoverAt_class23` is in `Proofs18TightClassesFejerSide`, outside the final
-route. -/
+`polyCoverAt_class23` and `split_pair_fejer_le_uDeg23` are in
+`Proofs18TightClassesFejerSide`, outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -76,38 +76,5 @@ theorem polyCoverAt_one_uniform_low {V : Real} (hV : 1 ≤ V) {D : Nat} (hD : 2 
 
 /-- The class degree in dimension `l` under the Fejér θ₁. -/
 def uDeg23 (l : Nat) : Nat := 2 ^ (23 * 2 ^ l)
-
-/-- The Fejér split degrees fit `uDeg23`. -/
-theorem split_pair_fejer_le_uDeg23 {l : Nat} (hl : 2 ≤ l) :
-    (splitPairWith splitSeedFejer splitSeedFejer l).1 +
-      (splitPairWith splitSeedFejer splitSeedFejer l).2 + l + 1 ≤ uDeg23 l := by
-  have h14 := split_pair_with_bounds 14 (seedA := splitSeedFejer) (seedD := splitSeedFejer)
-    Nat.one_le_two_pow Nat.one_le_two_pow
-    (by unfold splitSeedFejer; rw [← pow_add]; exact Nat.pow_le_pow_right (by norm_num) (by norm_num))
-    (by unfold splitSeedFejer; exact Nat.pow_le_pow_right (by norm_num) (by norm_num)) l hl
-  obtain ⟨-, -, hA, -⟩ := h14
-  have hD := split_pair_fejer_bound l hl
-  unfold uDeg23
-  set a := (splitPairWith splitSeedFejer splitSeedFejer l).1
-  set D := (splitPairWith splitSeedFejer splitSeedFejer l).2
-  set E := 2 ^ l with hEdef
-  have hE4 : 4 ≤ E := by
-    rw [hEdef]
-    calc 4 = 2 ^ 2 := by norm_num
-      _ ≤ 2 ^ l := Nat.pow_le_pow_right (by norm_num) hl
-  have ha : a ≤ 2 ^ (22 * E) := by
-    have h1 : a ≤ 2 ^ (14 * E) := le_trans (Nat.le_mul_of_pos_left _ (Nat.two_pow_pos _)) hA
-    exact h1.trans (Nat.pow_le_pow_right (by norm_num) (by omega))
-  have hl1 : l + 1 ≤ 2 ^ (22 * E) := by
-    have h1 : l + 1 ≤ 2 ^ (l + 1) := Nat.lt_two_pow_self.le
-    have h2 : l + 1 ≤ 22 * E := by
-      have := Nat.lt_two_pow_self (n := l); omega
-    exact h1.trans (Nat.pow_le_pow_right (by norm_num) h2)
-  have h4 : 4 * 2 ^ (22 * E) ≤ 2 ^ (23 * E) := by
-    rw [show 23 * E = 2 + 22 * E + (E - 2) by omega, pow_add, pow_add]
-    have : 1 ≤ 2 ^ (E - 2) := Nat.one_le_two_pow
-    calc 4 * 2 ^ (22 * E) = 2 ^ 2 * 2 ^ (22 * E) * 1 := by norm_num
-      _ ≤ 2 ^ 2 * 2 ^ (22 * E) * 2 ^ (E - 2) := Nat.mul_le_mul_left _ this
-  omega
 
 end LeanProofs.GowersSzemeredi

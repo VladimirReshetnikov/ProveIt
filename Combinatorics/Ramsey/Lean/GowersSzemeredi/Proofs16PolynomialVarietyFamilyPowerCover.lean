@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs16PolynomialMultilinearCover
 import GowersSzemeredi.Proofs16VarietyFamilyLiftControls
 import GowersSzemeredi.Proofs16VarietyFamilySlices
 import GowersSzemeredi.Proofs16CubicCommonBase
+import GowersSzemeredi.Proofs16RegimeSplittingSide
 
 /-! Pure-power three-dimensional covers from bounded families of variety pieces on slices.
 The polynomial line recurrence and the joint variety cover yield a

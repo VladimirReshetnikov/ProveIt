@@ -10,6 +10,54 @@ noncomputable section
 
 namespace LeanProofs.GowersSzemeredi
 
+section
+variable (Eb : Nat → Real → Real → Real → Real) (C : Real → Real) (alpha t : Real)
+
+/-- The exponent of the three-fold nested width. -/
+def lsNestExp : Real :=
+  sixWExp Eb alpha t * sixWExp Eb alpha (C t) * sixWExp Eb alpha (C (C t))
+
+/-- The threshold of the three-fold nested width. -/
+def lsNestThr : Real :=
+  max (max (sixWThr Eb alpha t) (sixWThr Eb alpha (C t) ^ (1 / sixWExp Eb alpha t)))
+    (sixWThr Eb alpha (C (C t)) ^ (1 / (sixWExp Eb alpha t * sixWExp Eb alpha (C t))))
+
+end
+
+end LeanProofs.GowersSzemeredi
+
+namespace LeanProofs.GowersSzemeredi
+
+theorem lsNestExp_pos {Eb : Nat → Real → Real → Real → Real} {C : Real → Real} {alpha t : Real}
+    (hE : ∀ l g u s, 0 < s → s ≤ 1 → 0 < Eb l g u s ∧ Eb l g u s ≤ 1)
+    (hC : ∀ u, 0 < u → u ≤ 1 → 0 < C u ∧ C u ≤ 1) (ht : 0 < t) (ht1 : t ≤ 1) :
+    0 < lsNestExp Eb C alpha t := by
+  obtain ⟨hc1, hc1'⟩ := hC t ht ht1
+  obtain ⟨hc2, hc2'⟩ := hC (C t) hc1 hc1'
+  unfold lsNestExp
+  exact mul_pos (mul_pos (sixWExp_pos hE ht ht1) (sixWExp_pos hE hc1 hc1'))
+    (sixWExp_pos hE hc2 hc2')
+
+theorem lsNestExp_le_one {Eb : Nat → Real → Real → Real → Real} {C : Real → Real} {alpha t : Real}
+    (hE : ∀ l g u s, 0 < s → s ≤ 1 → 0 < Eb l g u s ∧ Eb l g u s ≤ 1)
+    (hC : ∀ u, 0 < u → u ≤ 1 → 0 < C u ∧ C u ≤ 1) (ht : 0 < t) (ht1 : t ≤ 1) :
+    lsNestExp Eb C alpha t ≤ 1 := by
+  obtain ⟨hc1, hc1'⟩ := hC t ht ht1
+  obtain ⟨hc2, hc2'⟩ := hC (C t) hc1 hc1'
+  have a2 := sixWExp_pos (alpha := alpha) hE hc1 hc1'
+  have a3 := sixWExp_pos (alpha := alpha) hE hc2 hc2'
+  have b1 := sixWExp_le_one (alpha := alpha) hE ht ht1
+  have b2 := sixWExp_le_one (alpha := alpha) hE hc1 hc1'
+  have b3 := sixWExp_le_one (alpha := alpha) hE hc2 hc2'
+  unfold lsNestExp
+  have h12 : sixWExp Eb alpha t * sixWExp Eb alpha (C t) ≤ 1 :=
+    (mul_le_mul b1 b2 a2.le zero_le_one).trans (by norm_num)
+  exact (mul_le_mul h12 b3 a3.le zero_le_one).trans (by norm_num)
+
+end LeanProofs.GowersSzemeredi
+
+namespace LeanProofs.GowersSzemeredi
+
 theorem nestW_three_eq (C : Real → Real) (W : Real → Nat → Nat) (t : Real) (L : Nat) :
     nestW (fun _ => C) (fun _ => W) 3 t L = W (C (C t)) (W (C t) (W t L)) := rfl
 

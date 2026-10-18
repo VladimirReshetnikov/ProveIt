@@ -15,6 +15,46 @@ namespace LeanProofs.GowersSzemeredi
 section
 open BaseCase
 
+/-- Cover all sampled slices by one family rather than refining one slice
+at a time. The assumptions are concrete covers of individual sections. -/
+theorem section16_slice_provider_of_freiman_families {N q : Nat} [Fact N.Prime]
+    (hq : 0 < q) (B : Finset (Point N 2)) (phi : Point N 2 → ZMod N)
+    (D : ZMod N → Fin q → Finset (Point N 1))
+    (f : ZMod N → Fin q → Point N 1 → ZMod N)
+    (hfreiman : ∀ t i, FreimanHom 8 (pointOneDomain (D t i)) (pointOneMap (f t i)))
+    (hcover : ∀ t, partialGraph (section16FinalCoordinateSection B t)
+      (section16FinalCoordinateRestriction phi t) ⊆
+        section16FinsetUnion (fun i => partialGraph (D t i) (f t i))) :
+    Section16SliceProvider B phi
+      (fun r _ => ((3 * (max 1 r * q) : Nat) : Real))
+      (fun r => polyBaseExponent (max 1 r * q)) := by
+  intro r sample
+  let sample' : Fin (max 1 r) → ZMod N := fun i =>
+    if h : i.val < r then sample ⟨i.val, h⟩ else 0
+  let e : Fin (max 1 r) × Fin q ≃ Fin (max 1 r * q) := finProdFinEquiv
+  let D' := fun i : Fin (max 1 r * q) => D (sample' (e.symm i).1) (e.symm i).2
+  let f' := fun i : Fin (max 1 r * q) => f (sample' (e.symm i).1) (e.symm i).2
+  have hpos : 0 < max 1 r * q := Nat.mul_pos (by omega) hq
+  apply section16_freiman_family_poly_cover hpos D' f'
+    (fun i => hfreiman _ _) (section16StackedSlices B phi sample)
+  intro z hz
+  obtain ⟨i, -, hi⟩ := Finset.mem_biUnion.mp hz
+  obtain ⟨j, -, hj⟩ := Finset.mem_biUnion.mp (hcover (sample i) hi)
+  let i' : Fin (max 1 r) := ⟨i.val, lt_of_lt_of_le i.isLt (le_max_right _ _)⟩
+  have hs : sample' i' = sample i := by simp [sample', i', i.isLt]
+  apply Finset.mem_biUnion.mpr
+  refine ⟨e (i', j), Finset.mem_univ _, ?_⟩
+  simpa only [D', f', Equiv.symm_apply_apply, hs] using hj
+
+end
+
+end LeanProofs.GowersSzemeredi
+
+namespace LeanProofs.GowersSzemeredi
+
+section
+open BaseCase
+
 /-- Two-dimensional affine lifting with the concrete Freiman-family provider.
 Only the line-cover and individual-section Freiman-cover inputs remain. -/
 theorem section16_two_dimensional_cover_of_freiman_families

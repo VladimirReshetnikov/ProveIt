@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16EmbeddedLift
 import GowersSzemeredi.Proofs16PrefixLiftSide
+import GowersSzemeredi.Proofs16PermutedCoversSide
 
 /-! Declarations of `Proofs16EmbeddedLift` that the final route does not use and that
 need modules outside it (moved here so that those modules can leave the route). -/

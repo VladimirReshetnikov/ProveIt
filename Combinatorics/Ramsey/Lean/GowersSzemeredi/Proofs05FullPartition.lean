@@ -9,7 +9,8 @@ The degree induction uses residue classes of the recurrence step, removes the
 top coefficient after affine substitution, and reserves enough diameter for
 both summands. The integer budgets justify every rounding and threshold use.
 
-`lemma_5_9_holds` is in `Proofs05FullPartitionSide`, outside the final route. -/
+`corollary_5_7_holds`, `lemma_5_14_holds` and `lemma_5_9_holds` are in
+`Proofs05FullPartitionSide`, outside the final route. -/
 
 set_option autoImplicit false
 
@@ -83,13 +84,5 @@ theorem corollary_5_6_strong_diameter_holds : corollary_5_6_strong_diameter :=
 /-- Corollary 5.6, with the explicit recurrence-supported threshold. -/
 theorem corollary_5_6_holds : corollary_5_6 :=
   corollary_5_6_holds_of_strong_diameter corollary_5_6_strong_diameter_holds
-
-/-- Corollary 5.7: remove a polynomial phase on each target-length cell. -/
-theorem corollary_5_7_holds : corollary_5_7 :=
-  corollary_5_7_holds_of_corollary_5_6 corollary_5_6_holds
-
-/-- Lemma 5.14: global phase removal over an input progression partition. -/
-theorem lemma_5_14_holds : lemma_5_14 :=
-  lemma_5_14_holds_of_corollary_5_6 corollary_5_6_holds
 
 end LeanProofs.GowersSzemeredi

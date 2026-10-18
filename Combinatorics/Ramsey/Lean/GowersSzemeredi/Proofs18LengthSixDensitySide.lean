@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs18LengthSixDensity
 import GowersSzemeredi.Proofs18LengthSixCountsSide
 import GowersSzemeredi.Proofs18LengthSixScaleSide
+import GowersSzemeredi.Proofs18FejerIterationParametersSide
 
 /-! Declarations of `Proofs18LengthSixDensity` that the final route does not use and that
 need modules outside it (moved here so that those modules can leave the route). -/

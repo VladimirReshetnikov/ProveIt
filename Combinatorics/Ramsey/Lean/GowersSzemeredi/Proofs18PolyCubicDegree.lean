@@ -4,7 +4,7 @@ import GowersSzemeredi.Proofs18FejerReciprocalBudgets
 import GowersSzemeredi.Proofs18EnvelopeBounds
 import GowersSzemeredi.Proofs18TheoremOneDegrees
 
-/-! **Theorem 18.1 at degree three**, from a polynomial phase partition
+/-! **The polynomial degree-three base**, from a polynomial phase partition
 (Notes L.7c, P10a).
 
 `Theorem181At 3` asks for a discrepancy partition with parameter and
@@ -14,9 +14,10 @@ average-cell exponent at least `section18Exponent α 3 = α^(2^8192)`.
 * The corpus exponent is doubly exponential: its square exponent carries the
   catalogue row exponent `2^(−13Q)`.
 
-The module also supplies `PolyEnvBound`, its monotonicity and conversion
-to Theorem 18.1, and `polyEnvBound_three_of_phase_partition`. The printed
-degree-three theorem specializes this shared polynomial base.
+The module supplies `PolyEnvBound`, its monotonicity, and
+`polyEnvBound_three_of_phase_partition`. Its conversion to Theorem 18.1
+(`theorem181At_of_polyEnvBound`) and the printed degree-three theorem, which
+specializes this shared polynomial base, are in `Proofs18PolyCubicDegreeSide`.
 
 The same chain is the degree-three base of the Theorem 18.2 envelope
 (`envBound_three_of_phase_partition`, `EnvBound 3 62`). Its threshold is at
@@ -32,10 +33,11 @@ the density `δ = (α/2)^4207554485` of the corpus frequency graph
 * the two square factors contribute `2^42` and `2^45`;
 * the local count exponent contributes `2^59`.
 
-`theorem_18_1_three_of_phase_partition` takes the phase partition as a
-hypothesis. Its constants need `K ≤ 2^p` and `p ≤ 2^(2^64)`; since
-`ProgressionPhasePartition.mono` raises `p` freely, the explicit constants of
-`CommonDiffPartitionBoundAt 1` qualify (bridge). -/
+The printed theorem (`theorem_18_1_three_of_phase_partition`, outside the
+final route) takes the phase partition as a hypothesis. Its constants need
+`K ≤ 2^p` and `p ≤ 2^(2^64)`; since `ProgressionPhasePartition.mono` raises
+`p` freely, the explicit constants of `CommonDiffPartitionBoundAt 1` qualify
+(bridge). -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -297,15 +299,6 @@ theorem PolyEnvBound.mono {d μ μ' : Nat} (h : PolyEnvBound d μ) (hμ : μ ≤
   have hX := two_div_ge_two ha ha2
   exact ⟨b, s, T, hB, b0, b1, s0, s16, pw_mono hX bi hμ, pw_mono hX si hμ⟩
 
-/-- **Theorem 18.1 from a polynomial envelope** that fits `2^(d+10)`. -/
-theorem theorem181At_of_polyEnvBound {d μ : Nat} (h : PolyEnvBound d μ)
-    (hμ : μ + 1 ≤ 2 ^ (d + 10)) : Theorem181At d := by
-  apply Theorem181At.of_function_discrepancy
-  intro alpha ha ha2
-  obtain ⟨b, s, T, hB, b0, -, s0, -, bi, si⟩ := h alpha ha ha2
-  exact ⟨b, s, T, section18Exponent_le_of_inv_le ha ha2 b0 hμ bi,
-    section18Exponent_le_of_inv_le ha ha2 s0 hμ si, hB⟩
-
 /-! ### The threshold of the polynomial chain -/
 
 theorem positivePowerThreshold_anti {C D e e' : Real} (he : 0 < e) (hee : e ≤ e') :
@@ -448,13 +441,5 @@ theorem envBound_three_of_phase_partition {K : Real} {p : Nat}
   refine ⟨b, s, T, hB, b0, b1, s0, s16, pw_mono hX bi (by norm_num), ?_, hT⟩
   exact si.trans ((pow_two_pow_le_exp_pow_succ hX 74).trans
     (Real.exp_le_exp.mpr (pow_le_pow_right₀ (by linarith only [hX]) (by norm_num))))
-
-/-- **Theorem 18.1 at degree three**, from a polynomial phase partition of
-progressions with `K ≤ 2^p` and `p ≤ 2^(2^64)`. -/
-theorem theorem_18_1_three_of_phase_partition {K : Real} {p : Nat}
-    (hpp : ProgressionPhasePartition K p) (hp : 0 < p) (hK : K ≤ 2 ^ p)
-    (hpB : (p : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64)) : Theorem181At 3 := by
-  exact theorem181At_of_polyEnvBound
-    (polyEnvBound_three_of_phase_partition hpp hp hK hpB) (by norm_num)
 
 end LeanProofs.GowersSzemeredi
