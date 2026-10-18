@@ -1,0 +1,48 @@
+{
+  "status": "ROOT_INSTALLATION_AND_MAINTAINED_DEFAULT_PREPARATION_PASS",
+  "packet": {
+    "path": "/tmp/zfc-validator-native-gic-congruence-publication-packet1/map.json",
+    "sha256": "600e60336db10a88e61feb270549d67d8e4d3e30078c979392ff4e9acfccca76"
+  },
+  "actual_proof": {
+    "sha256": "2eff35a0f24acbd450ab2aa8554a3c8f9dd8e52a8b4888b85dbd0d689356a277",
+    "probes": 8,
+    "callers": 11,
+    "warnings": 0
+  },
+  "maintained_preparation": {
+    "path": "/tmp/zfc-validator-native-gic-congruence-maintained-prepared1/verification.json",
+    "sha256": "37beef8dae58f1abfed30394a64d836f156d99b93fc2cf4f60379c1bb098fd47",
+    "commands": [],
+    "fresh_modules": [],
+    "inputs": 84,
+    "providers": {
+      "projects": 22,
+      "external": 4,
+      "tools": 2
+    }
+  },
+  "note_update": "Only the publication-status paragraphs changed after the actual installed-default preparation. Original proposed note remains in lossless history.",
+  "files": {
+    "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorNativeGicCongruence254.lean": "e8f4c30a9d7a72f2bc71ccf910ef1c406768cc2096a8b44db9e8987ca12d3ace",
+    "Logic/Interpretability/ZFCinPA/validator_native_gic_congruence254_audit.lean": "5e1420dcffabb6c255026596192b88bda66abbac1dd68e7f895ce2870927472f",
+    "Logic/Interpretability/ZFCinPA/check_validator_native_gic_congruence254.py": "733e4ac7242fa3a585daa2a2d6ca8a66bf1be579276b29ad0d3daa07fa1d2f40",
+    "Logic/Interpretability/ZFCinPA/validator_native_gic_congruence254.md": "d8645de65d06cf3668092cfcad6733f1552059da7cdb87d05e527892e0c7f825",
+    "Logic/Interpretability/ZFCinPA/results/validator-native-gic-congruence254-verification.json": "2eff35a0f24acbd450ab2aa8554a3c8f9dd8e52a8b4888b85dbd0d689356a277",
+    "Logic/Interpretability/ZFCinPA/results/validator-native-gic-congruence254-boundary.json": "980f6c0d905b5dd1cfcd6b4a0cb688dbf45b925a71a7e913f8a0ce668fdf6f48",
+    "Logic/Interpretability/ZFCinPA/results/validator-native-gic-congruence254-review.json": "bbfa6df4c335dd2476cc41e84d9c334cb4ed392a3ba65b9671bd9421bb1b830b",
+    "Logic/Interpretability/ZFCinPA/results/validator-native-gic-congruence254-history.json": "b9b75a056c56b25b7c1f2c3d19d689970f5290c24bb9c52dabbb88c322635312",
+    "Logic/Interpretability/ZFCinPA/results/validator-native-gic-congruence254-publication.json": "ba725d8737c14bc791dc91fe74de59815ddbf3d703ad523c19eaeb1c90057328",
+    "Logic/Interpretability/ZFCinPA/results/validator-native-gic-congruence254-maintained-preparation.json": "37beef8dae58f1abfed30394a64d836f156d99b93fc2cf4f60379c1bb098fd47",
+    "Logic/Interpretability/ZFCinPA/results/validator-native-gic-congruence254-publication-peer.json": "3dd5cc323e03a4b85e0e1752555ba560429c1cea34971badd4d761e91d7600e2",
+    "Computability/BusyBeaver/Research/ZFC/pa_internalization.md": "fc66183a05adffea6960dad4a0279c2caa3f05f5a1f9df737be4f86de4e8ee8d"
+  },
+  "source_audit_boundary_unchanged": true,
+  "history_aliases_roundtripped": 36,
+  "scope": "Publishes prior actual fixed-label congruence proof; no additional Lean run, whole-cache attestation, full R2 or PA endpoint.",
+  "root_script": {
+    "path": "/tmp/zfc-validator-native-gic-congruence-close-publication-root.py",
+    "sha256": "46276176fbd6de29f6dd214276b87cf863187cc1438c030903d401e132539a73",
+    "text": "\"\"\"Close the existing PASS publication with root's installed-default preparation.\"\"\"\nfrom pathlib import Path\nimport hashlib, json, re, subprocess\n\nR = Path('/home/codex/.codex/worktrees/ec20/Proofs')\nL = Path('Logic/Interpretability/ZFCinPA')\nP = Path('/tmp/zfc-validator-native-gic-congruence-publication-packet1')\nV = Path('/tmp/zfc-validator-native-gic-congruence-maintained-prepared1/verification.json')\nPEER = Path('/tmp/zfc-validator-native-gic-congruence-publication-peer/review.json')\nO = Path('/tmp/zfc-validator-native-gic-congruence-publication-close1')\nsha = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()\nenc = lambda v: (json.dumps(v, indent=2, ensure_ascii=False)+'\\n').encode()\ndef git(*args): return subprocess.check_output(['git', *args], cwd=R)\n\nassert __debug__ and not O.exists() and not git('diff', '--cached', '--name-only')\nassert sha(P/'map.json') == '600e60336db10a88e61feb270549d67d8e4d3e30078c979392ff4e9acfccca76'\nassert sha(PEER) == '3dd5cc323e03a4b85e0e1752555ba560429c1cea34971badd4d761e91d7600e2'\nm = json.loads((P/'map.json').read_bytes())\nr = json.loads(V.read_bytes())\nassert r['status'] == 'PREPARED_NOT_BUILT' and r['prepare_only']\nassert r['commands'] == r['fresh_modules'] == []\nassert r['before'] == r['after'] and r['all_input_provider_postchecks']\nassert (len(r['before']), len(r['reused_modules']), len(r['providers']), len(r['toolchain_providers']), len(r['actual_first_providers'])) == (84,22,4,2,28)\nfor path, h in r['before'].items(): assert sha(path) == h, path\noriginal = json.loads((R/L/'results/validator-native-gic-congruence254-verification.json').read_bytes())\nfor key in ['reused_modules','providers','toolchain_providers','actual_first_providers','compiler','dependencies']:\n    assert r[key] == original[key], key\nfor key in ['source','audit','boundary']:\n    assert r[key]['sha256'] == original[key]['sha256']\n    assert Path(r[key]['path']).is_relative_to(R)\nassert r['source']['path'] == str(R/L/'Lean/ZFCinPA/ValidatorNativeGicCongruence254.lean')\nassert r['audit']['path'] == str(R/L/'validator_native_gic_congruence254_audit.lean')\nassert r['boundary']['path'] == str(R/L/'results/validator-native-gic-congruence254-boundary.json')\nnote = L/'validator_native_gic_congruence254.md'\npaths = [Path(item['target']) for item in m['files']]\nfor item in m['files']:\n    assert sha(item['source']) == item['sha256']\n    if Path(item['target']) != note: assert sha(R/item['target']) == item['sha256']\nhistory = json.loads((R/L/'results/validator-native-gic-congruence254-history.json').read_bytes())\nassert len(history['aliases']) == 36 and len(history['text_by_sha256']) == 32\nfor alias, row in history['aliases'].items():\n    assert history['text_by_sha256'][row['sha256']].encode() == Path(alias).read_bytes()\nadditions = {\n    L/'results/validator-native-gic-congruence254-maintained-preparation.json': V.read_bytes(),\n    L/'results/validator-native-gic-congruence254-publication-peer.json': PEER.read_bytes(),\n}\nfor path in additions: assert not (R/path).exists()\nO.mkdir()\nfor path, raw in additions.items(): (R/path).write_bytes(raw)\npaths += list(additions)\npaths += [Path('Computability/BusyBeaver/Research/ZFC/pa_internalization.md')]\nreceipt = {\n    'status': 'ROOT_INSTALLATION_AND_MAINTAINED_DEFAULT_PREPARATION_PASS',\n    'packet': {'path': str(P/'map.json'), 'sha256': sha(P/'map.json')},\n    'actual_proof': {'sha256': sha(R/L/'results/validator-native-gic-congruence254-verification.json'), 'probes': 8, 'callers': 11, 'warnings': 0},\n    'maintained_preparation': {'path': str(V), 'sha256': sha(V), 'commands': [], 'fresh_modules': [], 'inputs': 84, 'providers': {'projects':22, 'external':4, 'tools':2}},\n    'note_update': 'Only the publication-status paragraphs changed after the actual installed-default preparation. Original proposed note remains in lossless history.',\n    'files': {str(path): sha(R/path) for path in paths},\n    'source_audit_boundary_unchanged': True,\n    'history_aliases_roundtripped': 36,\n    'scope': 'Publishes prior actual fixed-label congruence proof; no additional Lean run, whole-cache attestation, full R2 or PA endpoint.',\n    'root_script': {'path': __file__, 'sha256': sha(__file__), 'text': Path(__file__).read_text()},\n}\ninstalled = L/'results/validator-native-gic-congruence254-installation.json'\nassert not (R/installed).exists()\n(R/installed).write_bytes(enc(receipt)); paths.append(installed)\nfor target in re.findall(r'\\]\\(([^)]+)\\)', (R/note).read_text()):\n    if '://' not in target: assert (R/note.parent/target.split('#')[0]).exists(), target\nsubprocess.run(['git', 'add', '--', *map(str, paths)], cwd=R, check=True)\nassert set(git('diff','--cached','--name-only','-z').decode().strip('\\0').split('\\0')) == set(map(str,paths))\nfor path in paths: assert git('show', ':'+str(path)) == (R/path).read_bytes()\n(O/'installation.json').write_bytes(enc(receipt))\nprint(json.dumps({'status': receipt['status'], 'files_staged':len(paths), 'inputs':84, 'proof_repeated':False}))\n"
+  }
+}

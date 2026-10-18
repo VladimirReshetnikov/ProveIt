@@ -871,6 +871,15 @@ passed with no warnings. This closes the literal bundle side conditions;
 the configurable Foundation-body encoding, arbitrary universal closure and
 internal derivation translation required by R2 remain open.
 
+[Fixed-label matrix congruence](../../../../Logic/Interpretability/ZFCinPA/validator_native_gic_congruence254.md)
+now transports both validator implications through the literal GIC circuit
+in every IΣ₁ model. It removes padding from the matrix while retaining the
+witness label `pad p`, and derives
+`CProv (wal 3 (internalGic 1 3 (pad p) p))` for every internal matrix value.
+Eight probes and eleven typed callers passed with zero warnings. Configurable
+native-body encoding, alpha identification, arbitrary universal closure and
+internal derivation translation remain separate R2 obligations.
+
 Composing (R3), (R2) and the forward sentence gives, in PA,
 `Con(ZF) ↔ ¬∃code, value(code)=2`, and with `LSchema` the same for ZFC.
 The binary-machine side (exact246/routed245 runs against the arithmetic
