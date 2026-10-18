@@ -87,6 +87,17 @@ passed its source and audit checks. It proves blank nonhalting equivalent to
 the stated ZF and ZFC consistency propositions. Internal PA calibration remains
 open.
 
+The [loop-rotation 244-state candidate](BusyBeaver/Research/ZFC/candidate-rotation244/README.md)
+from `d91a27b462` saves a different state. Combining it with the compensated fold
+gives a [243-state candidate](BusyBeaver/Research/ZFC/candidate-combined243/README.md).
+Its complete replay passes 8,390 cases and 2,314,868 symbolic rules, and its
+independently computed blank prefix has 407,967 transitions. Five Lean units
+prove exact halting equivalence between the rotated 244 and combined 243 tables
+(83 probes, 39 callers, zero warnings). The ordinary proof supports the ZFC
+consistency calibration; the rotation's source/runtime connection and the
+internal PA proof remain open in Lean. Compensated244 remains the smallest
+machine with the complete external Lean consistency endpoint.
+
 The score and time functions are distinct measures. The proved values
 `Sigma(2)=4`, `Sigma(3)=6`, `Sigma(4)=13` and `BB(2)=6`, `BB(3)=21`,
 `BB(4)=107` therefore intentionally differ.

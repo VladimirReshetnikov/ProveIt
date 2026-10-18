@@ -2952,3 +2952,30 @@ now proves blank nonhalting equivalent to the stated ZF and ZFC consistency
 propositions. Its source and six-report/six-client audit pass without warnings.
 The internal PA derivation remains open; this does not assert unconditional
 nonhalting or absolute consistency.
+
+
+Batch 167 adds source 71 from `d91a27b462` to
+[ZFC closure kernels](set-theory/zfc-closure-kernels/intake-167.md), now 71
+manuscripts and still 290 reports. Placement `5513e77ff1` preserves 1,007
+ancillary files and 37 archive-only members; write `a41168bef8` records the
+loop rotation, complete ordinary proof and broader source-formalism research.
+Seven primary jobs and sixteen separate finite research checks pass on copies.
+The new 244-state table deletes old state 26; it has 6,459 source leaves,
+8,390 guarded cases, 2,312,438 expanded symbolic rules and an exact
+407,931-step blank prefix. The delivered auxiliary indentation defect is
+preserved; the primary expanded entrypoint is valid. Optional seed generation
+and discovery campaigns remain scoped and unexecuted.
+
+The different compensated fold deletes old state 122. Checking its complete
+local hypotheses against the rotated table permits a subsequent
+[243-state candidate](../../../../Computability/BusyBeaver/Research/ZFC/candidate-combined243/README.md).
+Its fresh expanded replay passes 8,390 cases and 2,314,868 rules, and its own
+blank prefix takes 407,967 transitions. Five Lean units prove its relative
+halting equivalence with rotation244, with 83 probes and 39 typed callers,
+all without warnings. The ordinary proof supports the same ZFC consistency
+calibration; the rotated source/runtime connection still needs a complete
+Lean proof. Compensated244 remains the smallest closed external Lean
+consistency endpoint, and internal PA calibration remains open. Neither
+incoming package supplied the combined table. The base article and all
+delivered files remain unchanged. Eighteen archives remained queued at
+placement; a later arrival brings the queue to nineteen.
