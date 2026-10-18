@@ -1,0 +1,20 @@
+--- /tmp/zfc-routing245-lean/boxes/check-v2.py
++++ /tmp/zfc-routing245-lean/boxes/check-v3.py
+@@ -9,7 +9,7 @@
+ 
+ MODULE = 'BusyBeaver.ZFC.Routing245Boxes'
+ PREFIX = 'SetTheory.BusyBeaver.ZFC.Routing245Boxes.'
+-SOURCE_SHA = 'a9fc8de314aad422101ddc492044da1dbfd146dbd17cb119cc836e1c00a47de4'
++SOURCE_SHA = '5fda8586b4356485e0ddc6acbc359e68638d02c245e6bce13fafd552da293127'
+ AUDIT_SHA = '37f1334add4d128ef3df134903c9158584b2e1a60f53efcc6567e5841a1cd2f8'
+ PULSE_RECORD_SHA = 'c756bf41b8f2f778d0c6c21e8de0e54a3625cc69253607cb7e0f6fe1c3c605fb'
+ BOXES_RECORD_SHA = 'bd0671838ff39bbc6d3009c420858747b868988e17fe41b32e8e88ba8db8974a'
+@@ -40,7 +40,7 @@
+ W = a.output.resolve()
+ assert not W.is_relative_to(R) and (not W.exists() or not any(W.iterdir()))
+ assert PULSE_RECORD_SHA != 'PENDING_SUCCESSFUL_PULSE_RECORD', 'Freeze successful pulse evidence before preparation or compilation.'
+-S = a.source.resolve() if a.source else Path('/tmp/zfc-routing245-lean/boxes/Routing245Boxes.lean')
++S = a.source.resolve() if a.source else Path('/tmp/zfc-routing245-lean/boxes/source-v2/Routing245Boxes.lean')
+ A = a.audit.resolve() if a.audit else Path('/tmp/zfc-routing245-lean/boxes/Audit.lean')
+ assert sha(S) == SOURCE_SHA and sha(A) == AUDIT_SHA
+ E = a.pulse_evidence.resolve()

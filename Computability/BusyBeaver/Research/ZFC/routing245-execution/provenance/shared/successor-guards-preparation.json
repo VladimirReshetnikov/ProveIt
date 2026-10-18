@@ -1,0 +1,76 @@
+{
+  "status": "SOURCE_ONLY_PENDING_PARENTS",
+  "template": {
+    "path": "/tmp/zfc-routing245-lean/site/check-pending.py",
+    "sha256": "b5430ba40f0b9fc87492a1fadddeb4e3821dcbd0bc244204779663fd4c19e8b3"
+  },
+  "guards": [
+    {
+      "key": "instruction",
+      "module": "InstructionRouting245",
+      "guard": {
+        "path": "/tmp/zfc-routing245-lean/instruction/check-pending.py",
+        "sha256": "0b0d21d99fa64935fb385da54b664c950082fe2cd8e82003e07edd97a6c57dca"
+      },
+      "source": {
+        "path": "/tmp/zfc-routing245-lean/instruction/InstructionRouting245.lean",
+        "sha256": "c54757f87e012dd61dad43e237c3171749137557928aac526e84d79325ace84d"
+      },
+      "audit": {
+        "path": "/tmp/zfc-routing245-lean/instruction/Audit.lean",
+        "sha256": "71d67dddeda39450025a7be6e56ef63dace440ccb1258318ce4aba9403087208"
+      },
+      "legacy_evidence": "8893e5481a545dec0dbfb49cc64b1e6c00d7c4422ba2082243520982b3063469",
+      "parent": "PENDING_FRAME_PASS",
+      "project_providers": 22,
+      "named_probes": 7,
+      "typed_callers": 7,
+      "extra_providers": {},
+      "scope": "Positive whole-tape instruction segments, conditional on accepted sites; coverage, startup and PA remain separate."
+    },
+    {
+      "key": "runtime",
+      "module": "RuntimeInstanceRouting245",
+      "guard": {
+        "path": "/tmp/zfc-routing245-lean/runtime/check-pending.py",
+        "sha256": "620e98a78ba23c83dea1c10b95937d60a67198e4797ef4a86b0fa73c89799a40"
+      },
+      "source": {
+        "path": "/tmp/zfc-routing245-lean/runtime/RuntimeInstanceRouting245.lean",
+        "sha256": "b9978b797172ba16f18a9444a164f9bc8e70bd212f6031773df0ab52533336d1"
+      },
+      "audit": {
+        "path": "/tmp/zfc-routing245-lean/runtime/Audit.lean",
+        "sha256": "7b85d49b0f04096d373b7cee914982e6f2dbe1cd9fe701ef4d6ad2f7ffc0337a"
+      },
+      "legacy_evidence": "1965fff0430079cec4e3bb067a22ca05ef2d526fe97fae1e7c74fab1e7fa506f",
+      "parent": "PENDING_INSTRUCTION_PASS",
+      "project_providers": 26,
+      "named_probes": 11,
+      "typed_callers": 12,
+      "extra_providers": {
+        "BusyBeaver.ZFC.RuntimePerm252": [
+          "c8baf01d6af1a8ee740bb4627c6f69bf910e2be36c679d0329fcd87192800efd",
+          "68d822178179abf184e2082707057a33a340c0ad2e19d1a2d37c08c7d6039572"
+        ],
+        "BusyBeaver.ZFC.RMBisim": [
+          "68c28a182eed06c0f8d266f0d79d8f884f086228a4794da00da51cf02dbbb13b",
+          "ce485e7770d168e4f0d4adcb4708d9dce539aa42a87917f385259d897a510393"
+        ],
+        "BusyBeaver.ZFC.SiteCoverage": [
+          "643aa151328a65ba292214df01a933adc46408a468faabf273bf736457393cf4",
+          "8684c844151075479126abdd9515aa9515586e3d27a14f80d5182b5c9bc7fe91"
+        ]
+      },
+      "scope": "Whole-tape halting equivalence conditional on Covered or exact allSites acceptance; coverage, startup and PA remain separate."
+    }
+  ],
+  "shared_seconds": 120,
+  "lean_flags": [
+    "-j1",
+    "-M4096"
+  ],
+  "source_audit_bytes_unchanged": true,
+  "guard_execution": false,
+  "compiler_execution": false
+}

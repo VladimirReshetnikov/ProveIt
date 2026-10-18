@@ -1,0 +1,157 @@
+{
+  "actual_pass": {
+    "path": "/tmp/zfc-routing245-lean/program/run3/verification.json",
+    "sha256": "1efd9f64fc8067e85518fc9968752a9a10f78cdeb4f24aa8dd9e8c58d2a53c71",
+    "bytes": 16914
+  },
+  "independent_review": {
+    "path": "/tmp/zfc-routing245-lean/program/review/independent-run3-success-review.json",
+    "sha256": "2d32dc49d68bc1555f2753e1505e2f119acfe0274fb0faeeed1b3c5494f4015a",
+    "bytes": 27216
+  },
+  "original_executed_guard": {
+    "path": "/tmp/zfc-routing245-lean/program/check-v4.py",
+    "sha256": "13b6365587cd70b9b8066e9df14a68af723c5070894db4b1ee4393c72350b773",
+    "bytes": 17020
+  },
+  "portable_guard": {
+    "path": "/tmp/zfc-routing245-lean/program/publication/check_program_routing245.py",
+    "sha256": "6d6f321eb299d939c6766bdd740bde63fc5ccea116ba01061efb29e58b3a223e",
+    "bytes": 17083
+  },
+  "portable_defaults_only": true,
+  "all_proof_metadata_pins_unchanged": true,
+  "guard_default_substitutions": [
+    [
+      "REPO = Path('/home/codex/.codex/worktrees/ec20/Proofs')",
+      "REPO = HERE.parents[3]"
+    ],
+    [
+      "default=HERE/'generated-v4/ProgramRouting245.lean'",
+      "default=REPO/'Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProgramRouting245.lean'"
+    ],
+    [
+      "default=HERE/'generated-v4/Audit.lean'",
+      "default=HERE/'program_routing245_audit.lean'"
+    ],
+    [
+      "default=HERE/'prepare_source.py'",
+      "default=HERE/'program-routing245/provenance/prepare_source.py'"
+    ],
+    [
+      "default=HERE/'generated-v4/source-inventory.json'",
+      "default=HERE/'program-routing245/source-inventory.json'"
+    ],
+    [
+      "default=HERE/'generated-v4/program-data.json'",
+      "default=HERE/'program-routing245/program-data.json'"
+    ],
+    [
+      "default=HERE/'dependency-boundary-plan-v4.json'",
+      "default=HERE/'program-routing245/dependency-boundary-plan.json'"
+    ]
+  ],
+  "maintained_note_owned_by_root": true,
+  "separate_portable_emitter": {
+    "path": "/tmp/zfc-routing245-lean/program/generate_program_routing245.py",
+    "sha256": "1a5f488bf76a954a4d9ab648f5ce37edc5ab1690ffd2562f950c61693d1b60c6",
+    "bytes": 15446
+  },
+  "portable_emitter_root_reproduction": {
+    "path": "/tmp/zfc-routing245-lean/program/portable-generator-root-reproduction.json",
+    "sha256": "a53b7c1848676277edda2710a9342fbb96c8e4d74257936e8c976dba7992957e",
+    "bytes": 1005
+  },
+  "portable_emitter_independent_review": {
+    "path": "/tmp/zfc-routing245-lean/program/review/independent-portable-emitter-output-review.json",
+    "sha256": "655770f99eecca34ab56588bc9ca1279b76914633690f22f8a8a1f681d9300f1",
+    "bytes": 4189
+  },
+  "portable_guard_diff": "--- /tmp/zfc-routing245-lean/program/check-v4.py\n+++ /home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_program_routing245.py\n@@ -19,7 +19,7 @@\n import time\n \n HERE = Path(__file__).resolve().parent\n-REPO = Path('/home/codex/.codex/worktrees/ec20/Proofs')\n+REPO = HERE.parents[3]\n MODULE = 'BusyBeaver.ZFC.ProgramRouting245'\n PARENT_REL = 'Computability/BusyBeaver/Research/ZFC/results/prefix246-binary-verification.json'\n PINS = {'source': '060a95566e6162b845b3ee734b4134aefeeb3e9c079de705c2d094ca9119ef0b', 'audit': 'be532c16bdd69352d54bab98bb734eb21f276808ae8399e90b010e1890f9b0fa', 'generator': '6f0826a4388120972accee6c721087521b40cbd14e3fcb82a1057e73fb2e29dc', 'inventory': '1eb5ed5b2a330c5e31eb1cce6e048cdcfff759c396c25dc4210faf42c7abb8a8', 'certificate': '3beba79cc5d1d7f9e3fae6d18c22115b6ef73c29d5d3e69ba17a460fd4065db3', 'boundary': '9ff81e17d1d17e81035d7d743621d5204d4bc7ae5dbef8b46051beb96628d424', 'plain_input': 'f77a3fb9729382a0b8cd24d480639862b63ecb76bbc205542d1fc7077c025745', 'original_program': '6e564bd1ba179b2d39fccc3b8c86a681ec0dd6529df9cfa2522500eef140cfde', 'parent': '6f23d1ff40845704cc58fbd59e98388b1c2e5b9b42aeb519ef03e62796cdf6f2', 'compiler': 'e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550', 'init': 'd2e85d72099f9d869c9582aad5fb13079968d9d121ac6061e8326b00800b306e'}\n@@ -40,12 +40,12 @@\n def main():\n     ap=argparse.ArgumentParser(description=__doc__)\n     ap.add_argument('--repo',type=Path,default=REPO)\n-    ap.add_argument('--source',type=Path,default=HERE/'generated-v4/ProgramRouting245.lean')\n-    ap.add_argument('--audit',type=Path,default=HERE/'generated-v4/Audit.lean')\n-    ap.add_argument('--generator',type=Path,default=HERE/'prepare_source.py')\n-    ap.add_argument('--inventory',type=Path,default=HERE/'generated-v4/source-inventory.json')\n-    ap.add_argument('--certificate',type=Path,default=HERE/'generated-v4/program-data.json')\n-    ap.add_argument('--boundary',type=Path,default=HERE/'dependency-boundary-plan-v4.json')\n+    ap.add_argument('--source',type=Path,default=REPO/'Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProgramRouting245.lean')\n+    ap.add_argument('--audit',type=Path,default=HERE/'program_routing245_audit.lean')\n+    ap.add_argument('--generator',type=Path,default=HERE/'program-routing245/provenance/prepare_source.py')\n+    ap.add_argument('--inventory',type=Path,default=HERE/'program-routing245/source-inventory.json')\n+    ap.add_argument('--certificate',type=Path,default=HERE/'program-routing245/program-data.json')\n+    ap.add_argument('--boundary',type=Path,default=HERE/'program-routing245/dependency-boundary-plan.json')\n     ap.add_argument('--plain-input',type=Path)\n     ap.add_argument('--original-program',type=Path)\n     ap.add_argument('--parent',type=Path)\n",
+  "executed_emitter_preserved": {
+    "path": "/tmp/zfc-routing245-lean/program/prepare_source.py",
+    "sha256": "6f0826a4388120972accee6c721087521b40cbd14e3fcb82a1057e73fb2e29dc",
+    "bytes": 14695
+  },
+  "source_and_audit_unchanged_from_run3": true,
+  "history": {
+    "path": "/tmp/zfc-routing245-lean/program/publication/program-routing245-history.json",
+    "sha256": "07240e278799a9e1763e498ea1ed9c25dd9a70239ca113e76e65e588fbce75a1",
+    "bytes": 1877845
+  },
+  "history_text_paths": 191,
+  "history_distinct_blobs": 86,
+  "history_roundtrip_verified": true,
+  "compiled_artifacts_scope": "Objects are identified by historical paths and hashes, not included in lossless UTF-8 history.",
+  "files": [
+    {
+      "source": "/tmp/zfc-routing245-lean/program/publication/files/0/ProgramRouting245.lean",
+      "original": "/tmp/zfc-routing245-lean/program/generated-v4/ProgramRouting245.lean",
+      "destination": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProgramRouting245.lean",
+      "sha256": "060a95566e6162b845b3ee734b4134aefeeb3e9c079de705c2d094ca9119ef0b"
+    },
+    {
+      "source": "/tmp/zfc-routing245-lean/program/publication/files/1/program_routing245_audit.lean",
+      "original": "/tmp/zfc-routing245-lean/program/generated-v4/Audit.lean",
+      "destination": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/program_routing245_audit.lean",
+      "sha256": "be532c16bdd69352d54bab98bb734eb21f276808ae8399e90b010e1890f9b0fa"
+    },
+    {
+      "source": "/tmp/zfc-routing245-lean/program/publication/files/2/check_program_routing245.py",
+      "original": "/tmp/zfc-routing245-lean/program/publication/check_program_routing245.py",
+      "destination": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_program_routing245.py",
+      "sha256": "6d6f321eb299d939c6766bdd740bde63fc5ccea116ba01061efb29e58b3a223e"
+    },
+    {
+      "source": "/tmp/zfc-routing245-lean/program/publication/files/3/prepare_source.py",
+      "original": "/tmp/zfc-routing245-lean/program/prepare_source.py",
+      "destination": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/program-routing245/provenance/prepare_source.py",
+      "sha256": "6f0826a4388120972accee6c721087521b40cbd14e3fcb82a1057e73fb2e29dc"
+    },
+    {
+      "source": "/tmp/zfc-routing245-lean/program/publication/files/4/generate_program_routing245.py",
+      "original": "/tmp/zfc-routing245-lean/program/generate_program_routing245.py",
+      "destination": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/generate_program_routing245.py",
+      "sha256": "1a5f488bf76a954a4d9ab648f5ce37edc5ab1690ffd2562f950c61693d1b60c6"
+    },
+    {
+      "source": "/tmp/zfc-routing245-lean/program/publication/files/5/source-inventory.json",
+      "original": "/tmp/zfc-routing245-lean/program/generated-v4/source-inventory.json",
+      "destination": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/program-routing245/source-inventory.json",
+      "sha256": "1eb5ed5b2a330c5e31eb1cce6e048cdcfff759c396c25dc4210faf42c7abb8a8"
+    },
+    {
+      "source": "/tmp/zfc-routing245-lean/program/publication/files/6/program-data.json",
+      "original": "/tmp/zfc-routing245-lean/program/generated-v4/program-data.json",
+      "destination": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/program-routing245/program-data.json",
+      "sha256": "3beba79cc5d1d7f9e3fae6d18c22115b6ef73c29d5d3e69ba17a460fd4065db3"
+    },
+    {
+      "source": "/tmp/zfc-routing245-lean/program/publication/files/7/dependency-boundary-plan.json",
+      "original": "/tmp/zfc-routing245-lean/program/dependency-boundary-plan-v4.json",
+      "destination": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/program-routing245/dependency-boundary-plan.json",
+      "sha256": "9ff81e17d1d17e81035d7d743621d5204d4bc7ae5dbef8b46051beb96628d424"
+    },
+    {
+      "source": "/tmp/zfc-routing245-lean/program/publication/files/8/program-routing245-verification.json",
+      "original": "/tmp/zfc-routing245-lean/program/run3/verification.json",
+      "destination": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/results/program-routing245-verification.json",
+      "sha256": "1efd9f64fc8067e85518fc9968752a9a10f78cdeb4f24aa8dd9e8c58d2a53c71"
+    },
+    {
+      "source": "/tmp/zfc-routing245-lean/program/publication/files/9/program-routing245-review.json",
+      "original": "/tmp/zfc-routing245-lean/program/review/independent-run3-success-review.json",
+      "destination": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/results/program-routing245-review.json",
+      "sha256": "2d32dc49d68bc1555f2753e1505e2f119acfe0274fb0faeeed1b3c5494f4015a"
+    },
+    {
+      "source": "/tmp/zfc-routing245-lean/program/publication/program-routing245-history.json",
+      "destination": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/results/program-routing245-history.json",
+      "sha256": "07240e278799a9e1763e498ea1ed9c25dd9a70239ca113e76e65e588fbce75a1"
+    }
+  ],
+  "maintained_default_preparation": "Pending root-owned installation and separate preparation; no replay by packet author.",
+  "author_executed_compiler": false,
+  "author_executed_guard": false,
+  "author_modified_maintained_files": false
+}

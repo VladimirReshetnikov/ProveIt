@@ -37,7 +37,14 @@ The current arithmetic checkpoints are:
   adapter. The [constructible interpretation](../../../../Logic/Interpretability/ZFCinPA/constructible_interpretation.md)
   supplies the fixed L-domain formula, its nonemptiness, the quotation bridge,
   and the finite equality, fixed ZF and Choice axiom obligations. The uniform
-  internal Separation/Replacement hypothesis `hSchema` remains open.
+  internal Separation/Replacement hypothesis `hSchema` is discharged
+  (`LSchema.hSchema`, 2026-10-17), so the Choice transport is unconditional:
+  `𝗜𝚺₁ ⊢ Con(ZF) → Con(ZFC)` and `𝗣𝗔 ⊢ Con(ZF) → Con(ZFC)`
+  (`LSchema.iSigma1_proves_con_ZF_imp_con_ZFC`,
+  `LSchema.peano_proves_con_ZF_imp_con_ZFC`; axioms `propext`,
+  `Classical.choice`, `Quot.sound` only). With the internal inclusion of
+  `𝗭𝗙`'s axiom class in `𝗭𝗙𝗖`'s, the ZFC/ZF pair is two-way:
+  `𝗣𝗔 ⊢ Con(ZF) ↔ Con(ZFC)` (`LSchema.peano_proves_con_ZF_iff_con_ZFC`).
 * [Internal validator provability](../../../../Logic/Interpretability/ZFCinPA/validator_provability254.md)
   supplies the twelve literal rule closures and a classical propositional
   interface. The [formula encoder](../../../../Logic/Interpretability/ZFCinPA/validator_formula_encoder254.md)
@@ -104,11 +111,23 @@ The current arithmetic checkpoints are:
   all other fields. Its copy/restore tail has exact internal clock
   `7*cache+2`; the complete push assumes both scratch registers zero.
   Eight axiom probes and twelve callers pass with zero warnings. The
-  GEN constructor and remaining AX bundle are still open.
+  [GEN constructor](arithmetic_control_gen254.md) now reaches control 122 from
+  93; composed with both pushes, it reaches 122 from 41 with
+  TW=`wal oldP1 oldCache` and WS=`cantor oldTW oldWS`. The separate
+  [cache read](arithmetic_control_ax_read_cache254.md) reaches 136 from 122,
+  adding `first oldPL` to cache and replacing PL with `second oldPL`.
+  Both fragments require initially zero scratch registers and preserve every
+  other field, with positive internal runtimes. Their audits pass 16 probes
+  and 24 typed callers with zero warnings. Their
+  [41→136 composition](arithmetic_control_ax_gen_read254.md) also passes nine
+  probes and eleven callers, preserving the original cache inside the GEN
+  result while updating cache and PL afterward. The remaining AX bundle is
+  still open.
 
 The remaining major steps are the reverse internal ZF-to-validator proof
-translation, the internal L-specific Separation/Replacement proofs, and the complete
-interpreter-to-Enum connection. The forward validator sentence alone does
+translation, the complete interpreter-to-Enum connection, and the unbounded
+internal register/binary simulation. The internal L-specific schema proofs
+now close the Choice transport. The forward validator sentence alone does
 not yet imply the requested PA theorem about the literal binary machine.
 
 The active binary target is the exact 246-state machine. Its table, logical
@@ -222,9 +241,9 @@ uses the freed formula at matching length `j+1`. This budget can be chosen
 as `j + formulaComplexity q`, so it does not restrict formulas to standard
 codes or externally bounded complexity.
 The connective and quantifier clients now discharge the corresponding
-compiled-template premises. Matching-environment existence, the final
-Separation/Replacement combinations and the universal-closure/domain-side
-adapter to `hSchema` remain open. The
+compiled-template premises. At that stage, matching-environment existence,
+the final Separation/Replacement combinations and the universal-closure/domain-side
+adapter to `hSchema` remained open. The
 [pinned review](results/upstream-116aa35087-source-review.json) records source
 inspection of the new module and its ten-probe audit; this integration makes
 no fresh compilation or executed-audit claim.
@@ -239,15 +258,68 @@ skeletons then bounds their cores: `FvLt (m+1) (free K)` for Separation, and
 `IsSemiformula (m+2) (bindFreeAt 2 K)` for Replacement. The recognizer supplies
 the needed shift-fixed body, its level and the equality with the schema body,
 so these bounds require no restriction to standard formula codes.
-This closes the core-bound prerequisite at source level; matching-environment
-existence, the exact final schema combinations and the universal-closure/domain
-adapter to `hSchema` remain. The Replacement conclusion still needs its
-precise depth-two opening adapter for the zero-level glue interface.
+This closes the core-bound prerequisite at source level. At that stage,
+matching-environment existence, the exact final schema combinations and the
+universal-closure/domain adapter to `hSchema` remained. The Replacement
+conclusion still needs its precise depth-two opening adapter for the
+zero-level glue interface.
 This integration records source review only: the new module has not been
 compiled or axiom-audited in this review, and the existing `LGlueAudit` does
 not probe it.
 The [pinned source review](results/upstream-cc42edb254-source-review.json)
 records the internal quantifiers, exact recognizer premises and remaining adapters.
+
+Commit `014b9618729e6d3e8bbfe95eeb0fdfecae7e2d0d` adds
+[LPeel](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LPeel.lean).
+In every IΣ₁ model, `peel` turns an internal ZF proof of the opened-body
+statement `pVal m (rel (subst (fvarVec m) b))` into one of
+`pVal 0 (rel (qqAlls b m))`, for arbitrary internal `m,b`, assuming
+`IsSemiformula m b` and `shift b = b`. Its Σ₁ successor induction uses
+`peel_step`, the matching-code successor equation and a fixed template for
+extending a stage environment by a constructible element. `peel_close` then
+removes the zero-match antecedent using a functional base environment.
+This supplies the closure mechanism without separately constructing an
+environment matching every internal parameter tuple. The opened-body proof
+remains an explicit premise. At that stage, the exact schema/template
+combinations, Replacement's depth-two opening adapter and final
+recognizer/domain-side integration remained. The
+[pinned review](results/upstream-014b961872-source-review.json)
+records source inspection only: no fresh compilation or executed axiom audit
+is claimed, and the existing `LGlueAudit` does not probe `LPeel`.
+
+Commit `dd85eb4a47` adds
+[LSepBase](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LSepBase.lean).
+Its `sep_base` combines the final Separation template with the reflection
+driver and glue, obtaining the exact opened-body `pVal` proof. Then
+`sep_obligation` takes only `SepR p` and produces an internal
+`Provable ZF (rel p)` in every IΣ₁ model. The recognized code `p`, closure
+length `m`, matrix `b`, and core `K` are internal model elements. The proof
+derives the core free-variable bound from the recognizer and uses `peel`
+and `peel_close` for the arbitrary internal closure length. No matching
+environment existence or `hSchema` premise remains on this Separation route.
+At that stage, Replacement's level-two base/glue combination and the final
+membership/`Derivable`/`domSet` adapter remained. The
+[pinned review](results/upstream-dd85eb4a47-source-review.json) records source
+inspection only. The new `LSchemaAudit` lists 11 axiom probes, including
+`sep_obligation`, but supplies no typed callers; no fresh compilation or
+executed audit is claimed by this integration.
+
+Commit `11b8f3efb6`, merged through `de330b4037`, adds
+[LReplBase](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LReplBase.lean)
+and [LSchema](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LSchema.lean).
+The level-two glue reads the core at `x :: y :: t`; the compiled Replacement
+template and existing peel close every internally recognized `RepR` code.
+`LSchema.hSchema` combines both schemata, identifies their internal axiom
+classes with their recognizers, and takes the domain-side length to be zero.
+Consequently the internal refutation transfer has no schema premise. Arithmetic
+completeness yields `IΣ₁ ⊢ Con(ZF) → Con(ZFC)` and its PA corollary for the
+represented `Theory.consistent` sentences. All formula codes and closure
+lengths in the schema obligations range over the ambient arithmetic model.
+The [pinned source review](results/upstream-11b8f3efb6-source-review.json)
+finds no mathematical or API-scope issue. This review performs no fresh
+compilation or axiom audit: the upstream audit contains 20 axiom probes,
+one `#check`, and no typed caller examples. The closed Choice transport
+does not by itself close the validator/interpreter or binary-machine bridges.
 
 ## What is already available
 
@@ -656,6 +728,49 @@ requested; the original user request explicitly requires PA, and remains the
 target here. Avoiding arithmetic inside a future verifier does not remove the
 arithmetic proof obligation relating its finite traces to Con(ZFC).
 
+## Proposed decomposition of the reverse ZF-to-validator translation
+
+*Proposal (Claude lane, 2026-10-17), for coordination; nothing below is
+implemented yet.* With `𝗣𝗔 ⊢ Con(ZF) ↔ Con(ZFC)` closed and the forward
+validator sentence `Con(ZF) → ¬∃code, value(code)=2` already proved, the
+remaining arithmetic comparison between ZF and the validator is the reverse
+implication: in every IΣ₁ model, `Provable 𝗭𝗙 ⊥ → CProv 1`. The external
+proof (`WFTheory.c254_of_zf_refutation`) is semantic: the internally
+well-founded part of every CP/GIC quotient models ZF. A represented version
+splits into three pieces with a narrow interface:
+
+1. **(R1) The native theory as a Foundation theory.** A `Δ₁` theory `𝗡`
+   over `ℒₛₑₜ` mirroring `NativeTheory254.NativeAx`: the sealed container
+   axiom, the GIC instance at every formula (a schema, recognized like
+   `SepR`), and irreflexivity. External sanity check: for standard sentences,
+   `𝗡 ⊢ σ ↔ BProv NativeAx [] σ` through the existing completeness adapters.
+2. **(R2) Calculus translation (validator side).** In every IΣ₁ model,
+   `Provable 𝗡 ⊥ → CProv 1`: internal Foundation derivations from `𝗡` are
+   translated into C254 code proofs, using the configurable encoder,
+   opening, vacuity, alpha-transport and fresh-stream interfaces already
+   built for source-proof translation. Each GIC instance at an internal
+   matrix goes to the corresponding `bundle` instance.
+3. **(R3) The WF interpretation (set side).** In every IΣ₁ model,
+   `Provable 𝗭𝗙 ⊥ → Provable 𝗡 ⊥`, by
+   `InternalRelativization.provable_falsum_of_relativize` with target theory
+   `𝗡` and domain `δ` the internally well-founded part. Its obligations:
+   `𝗡 ⊢ ∃x δ(x)` and `𝗡 ⊢ σ^δ` for the finitely many fixed ZF axioms, by
+   completeness from `WFModel.quotient_models_ZF` (fixed sentences), and
+   the schema obligation at internal codes. Unlike the L case, no
+   reflection driver should be needed: Separation and Replacement in the
+   WF part come from the GIC instance at the internal relativized matrix
+   `φ^δ`, which is itself an axiom of `𝗡`, followed by one fixed template
+   proving that the resulting set lies in the WF part. This reuses
+   `LTemplate`'s compile-at-internal-codes pattern, with a template theory
+   over `𝗡` in place of ZF.
+
+Composing (R3), (R2) and the forward sentence gives, in PA,
+`Con(ZF) ↔ ¬∃code, value(code)=2`, and with `LSchema` the same for ZFC.
+The binary-machine side (exact246/routed245 runs against the arithmetic
+scheduler) is independent of all three. Proposed split: (R2) on the
+validator side, which owns the encoder; (R3) on the Claude lane; (R1) agreed
+first, since both depend on its exact shape.
+
 ## Claude lane: represented relativization (L-interpretation core)
 
 The ZFC-refutation → ZF-refutation direction (Choice) and the WF comparison
@@ -709,7 +824,8 @@ is now **checked** (standard axioms only), in
      separation or replacement axiom code `p` has an internal
      `𝗭𝗙`-derivation of `p^L` with side formulas.
 
-**Remaining for the Choice transport in PA** (this lane, next): `hSchema`.
+**Historical obstacle for the Choice transport in PA**, now discharged by
+`LSchema.hSchema`:
 An internal schema code is `∀^m (Fval K)` for an internal (possibly
 nonstandard) core `K` (`SchemaClosure.SchemaRecognizer`), so no finite
 template set covers it: `L ⊨ Sep_K` is *not* a theorem of `ZF(P)` for an
@@ -807,19 +923,47 @@ function code is the translation of the template's own defining matrix, so
 every definitional hypothesis is the internal tautology `∀(A ↔ A)`. Atoms
 use `LNumOK.numOK` (every numeral chain defines one natural, in `𝗭𝗙`).
 
-**Remaining for `hSchema`** (superseding the historical next-step notes below):
+**`hSchema` is closed (2026-10-17).** `LSepBase.sep_obligation` and
+`LReplBase.repl_obligation` give, for every code recognized by `SepR` or
+`RepR`, an internal `𝗭𝗙`-proof of its relativization to `L` with empty
+domain side formulas; `LSchema.hSchema` feeds them to
+`ConstructibleInterpretation.provable_falsum_ZF_of_ZFC`, and completeness
+gives `𝗜𝚺₁ ⊢ Con(ZF) → Con(ZFC)` (`LSchema.iSigma1_proves_con_ZF_imp_con_ZFC`)
+and its `𝗣𝗔` corollary. The route:
+
+* separation: the L6 template `LSepBase.sepComb` combines the reflection
+  invariant (driver) with the glue premise `qPremise` at `m + 1` for
+  `free K`; the code identity `relSep_val` matches the translated body with
+  `relativize dL (sepBodyVal K)`;
+* replacement: the core is read at `x :: y :: t`, so the glue premise is
+  needed at level two; `LReplBase.qPremise2` obtains it from the glue at
+  `m + 2` for the twice-opened core and one more generalization
+  (`QX2_free`), and `replComb` places the relativized core in the binary
+  slot `F₁`;
+* both: `LFvBound` reads the core's free-variable bound off the recognizer
+  data, and `LPeel` peels the opened body back to `qqAlls b m` and closes
+  at zero matched variables with a functional environment.
+
+The paragraph below is the pre-closure plan, kept for history.
+
+**Remaining for `hSchema`** (historical, superseded by the paragraph above):
 the reflection driver producing `Θ` is already available. `LGlue1` provides
 matching functionality and slot reading; `LGlue2` supplies shift-fixity and the
 opened quantifier-premise identity; `LGlue3` supplies the atomic compiled-glue
 client. The merged `LGlue4` now supplies the remaining connective/quantifier
 clients and internal formula induction, as source-reviewed above. `LFvBound`
 adds the recognizer-derived core free-variable bounds, also source-reviewed.
-Replacement still needs the exact depth-two opening adapter. Still needed
-are existence of a suitable matching environment `t₀` with `t₀(i) = &i`,
-the final Separation/Replacement combinations, and the
-`SchemaRecognizer`/`relativize` universal-closure adapter. These must turn
-the compiled final templates into the internal derivability of every
-relativized Separation/Replacement instance, with its domain side formulas.
+`LPeel` supplies the internal universal-closure induction and zero-match
+discharge; constructing a matching environment for an arbitrary internal
+tuple is no longer a separate prerequisite on this route. `LSepBase` now
+discharges the exact Separation opened-body premise and closes every internal
+recognized Separation code through `sep_obligation`. The remaining schema
+work is the Replacement depth-two core/glue adapter and its exact opened-body
+`pVal` proof, followed by recognizer typing and the same closure mechanism.
+The two schema proofs must then be connected to class membership and the
+`Derivable`/`domSet` conclusion required by `hSchema`. Empty domain side
+formulas suffice once each internal proof is obtained. These source-reviewed
+additions still require focused compilation and axiom/caller audits.
 
 Feeding `hSchema` into `ConstructibleInterpretation.provable_falsum_ZF_of_ZFC`
 and the result into the C254/ZF comparison then gives the Choice half of the

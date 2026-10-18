@@ -1,0 +1,11 @@
+--- /tmp/zfc-routing245-lean/frame/Routing245Simulation.lean
++++ /tmp/zfc-routing245-lean/frame/source-v2/Routing245Simulation.lean
+@@ -181,7 +181,7 @@
+   change RegisterBoxesPerm252.registerBits (decr (physOf r) (vregs R ++ spares)) = _
+   rw [decr_eq_write _ _ (by simp only [List.length_append, vregs_length]; omega),
+     nth_vregs_append_getD R spares r hr, update_vregs_append R spares r (R r).pred hr]
+-  simp only [Nat.pred_eq_sub_one, List.append_assoc, registerBits_eq]
++  simp only [Nat.pred_eq_sub_one, registerBits_eq]
+ 
+ theorem valid_none (R : Registers) (spares : List Nat) (hspares : spares ≠ []) :
+     Valid none (vregs R ++ spares) := by

@@ -38,10 +38,31 @@ open; the [intake record](../../../../SetTheory/Cardinals/docs/reports/set-theor
 preserves attribution, recovery, fresh results and scope.
 The first [245-state Lean unit](table_routing245.md) checks the exact 490-row
 table, state numbering and 46 reusable core rows. All 64 theorem audits and
-64 typed callers pass with zero warnings. Runtime and startup proofs are the
-next obligations. The [fast lookup](fast_table_routing245.md) also passes:
+64 typed callers pass with zero warnings. Complete coverage remains an
+obligation. The [fast lookup](fast_table_routing245.md) also passes:
 two theorem audits and four typed callers prove equality with the literal
 machine, enabling faster reduction in subsequent execution proofs.
+The [exact register decoder](program_routing245.md) passes 11 theorem
+audits and 13 typed callers, proving its complete 6,460-leaf tree identity
+and execution semantics for arbitrary pointers and register values.
+The [complete source-program bisimulation](bisim_routing245.md) now checks all
+3,013 certificate entries and proves halting equivalence with `Prog254` for
+every initial register function at empty pointers. Its 97 production modules
+pass 104 theorem probes and 201 typed callers, with zero warnings. Complete
+decoder coverage, the binary endpoint and PA internalization remain.
+The [local routing245 register operations](routing245_local.md) also pass:
+pulse, marking, increment and both decrement branches retain arbitrary values,
+finite contexts and complete-tape conclusions. Their three modules pass
+27 theorem probes and 29 callers with zero warnings in the selected runs.
+The [symbolic execution and runtime proofs](routing245_execution.md) pass
+59 theorem probes and 62 callers. They prove both halting directions under
+explicit complete-coverage and initial-frame premises, using the new full-tape
+64-cell frame. The selected runs have zero warnings.
+The [complete routing245 blank startup](routing245_bootstrap.md) now proves
+all 407,915 transitions and its exact full dispatch frame, including the
+calibrated logical seed and 167 spare blocks. Its eleven modules pass 80
+theorem probes and 111 callers with zero warnings. This discharges the
+initial-frame premise; complete coverage and the closed binary composition remain.
 The checked components of the earlier
 [shared-carry 250 construction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-160.md)
 provide reusable proof infrastructure. Sources 58–59 contain the same
@@ -1669,5 +1690,35 @@ retained. Its copy/restore tail takes exactly
 with the first push gives the full two-parameter prefix from control 41 to 93.
 Eight axiom probes and twelve typed callers pass with zero warnings; the
 failed first source attempt and explicit control-equality repair are preserved.
-The GEN constructor, later AX bundle and internal scheduler/binary comparison
+The [GEN constructor](arithmetic_control_gen254.md) now checks controls 93→122
+for arbitrary internal IΣ₁ files with both scratch registers zero. It replaces
+TW by `wal (first oldWS) oldTW`, advances WS to `second oldWS`, and preserves
+every other field. Composition with both parameter pushes reaches control 122
+from control 41, with TW=`wal oldP1 oldCache` and WS=`cantor oldTW oldWS`.
+The separately checked [cache read](arithmetic_control_ax_read_cache254.md)
+reaches control 136 from 122, adds `first oldPL` to the old cache and sets PL to
+`second oldPL`, preserving the other seven fields. Both fragments have positive
+internal runtimes; their two audits passed 16 probes and 24 typed callers with
+zero warnings. Exact histories retain the pre-compilation rejections and legacy
+provider boundaries. The remaining AX bundle, interpreter-to-Enum comparison
+and internal 245/246 binary PA endpoint are separate obligations.
+
+The [maintained-defaults check](results/arithmetic-control-gen-read254-maintained-defaults-review.json) and [independent review](results/arithmetic-control-gen-read254-defaults-peer-review.json) verify the published GEN/read guards and all current inputs without rerunning Lean. The original successful proof records remain unchanged.
+
+The [composed AX prefix, controls 41–136](arithmetic_control_ax_gen_read254.md),
+now has a checked whole-file contract in every IΣ₁ model. TW uses the original
+cache in `wal oldP1 oldCache`; the subsequent read adds `first oldPL` to cache
+and replaces PL with `second oldPL`. WS becomes `cantor oldTW oldWS`, and the
+other five fields are preserved. Nine axiom probes and eleven typed callers
+pass with zero warnings. Both failed source attempts and their narrow repairs
+are preserved in the exact history. Full AX and the interpreter/PA endpoint
 remain open.
+
+The [generic constructor and actual AX implication occurrence](arithmetic_control_constructor254.md)
+now have whole-file contracts for arbitrary internal IΣ₁ values. The actual
+195→222 block pops WS and constructs the tag-zero formula from its head and
+TW, preserving the other registers. The source and audit passed seven axiom
+probes and thirteen typed callers with zero warnings under the default proof
+limits. The original failed source attempt, finite-target repair and successful
+run are preserved. This closes one constructor fragment; complete AX and the
+internal binary-machine PA equivalence remain open.
