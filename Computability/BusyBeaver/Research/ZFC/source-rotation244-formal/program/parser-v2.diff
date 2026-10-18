@@ -1,0 +1,11 @@
+--- validate_dag.py
++++ validate_dag_v2.py
+@@ -52,7 +52,7 @@
+         if k=='node':
+             seen.add(v);uses[v].append(path)
+             edge(table[v][0],path+'0');edge(table[v][1],path+'1')
+-        else:leaves.append([path,labels[k],v if v is not None else 0])
++        else:leaves.append([path,labels[k],v])
+     edge(('node',202),'')
+     return leaves,uses,seen
+ old,olduses,oldseen=unfold(rows);new,newuses,newseen=unfold(modified)
