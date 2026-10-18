@@ -207,9 +207,27 @@ It discharges the slot, numeral-correctness, functionality, uniqueness and
 atom-definition premises; `eAtomT_val` identifies the encoded atom body.
 The [independent source review](results/upstream-e6b5769ba4-source-review.json)
 finds no issue within that scope, without claiming a fresh compilation.
-The matching antecedent remains. General formula glue and its internal
-induction, matching-environment existence, and the schema closure/domain-side
-adapter to `hSchema` remain open.
+The matching antecedent remains. At that stage, general formula glue and its
+internal induction, matching-environment existence, and the schema
+closure/domain-side adapter to `hSchema` remained open.
+
+Commit `116aa35087a8a37b57b3e07bb0de72a891218a35` adds
+[LGlue4](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LGlue4.lean).
+Its `glue` theorem supplies the general formula induction in every IΣ1 model:
+for an internal formula `q` with free variables below `j`, internal ZF proves
+that `relativize domL q` agrees with `envForm 0 q` under the matching
+antecedent `MT j`. The explicit budget `j + formulaComplexity q ≤ C` bounds
+the quantifier over `j`, keeping the induction predicate Σ₁; each binder
+uses the freed formula at matching length `j+1`. This budget can be chosen
+as `j + formulaComplexity q`, so it does not restrict formulas to standard
+codes or externally bounded complexity.
+The connective and quantifier clients now discharge the corresponding
+compiled-template premises. Matching-environment existence, the final
+Separation/Replacement combinations and the universal-closure/domain-side
+adapter to `hSchema` remain open. The
+[pinned review](results/upstream-116aa35087-source-review.json) records source
+inspection of the new module and its ten-probe audit; this integration makes
+no fresh compilation or executed-audit claim.
 
 ## What is already available
 
@@ -773,12 +791,13 @@ use `LNumOK.numOK` (every numeral chain defines one natural, in `𝗭𝗙`).
 the reflection driver producing `Θ` is already available. `LGlue1` provides
 matching functionality and slot reading; `LGlue2` supplies shift-fixity and the
 opened quantifier-premise identity; `LGlue3` supplies the atomic compiled-glue
-client. Still needed are the remaining compiled glue steps, constructor/code
-adapters and internal formula induction, existence of a suitable matching environment
-`t₀` with `t₀(i) = &i`, and the `SchemaRecognizer`/`relativize` closure adapter.
-These must turn the compiled final templates into the internal derivability
-of every relativized Separation/Replacement instance, with its domain side
-formulas.
+client. The merged `LGlue4` now supplies the remaining connective/quantifier
+clients and internal formula induction, as source-reviewed above. Still needed
+are existence of a suitable matching environment `t₀` with `t₀(i) = &i`,
+the final Separation/Replacement combinations, and the
+`SchemaRecognizer`/`relativize` universal-closure adapter. These must turn
+the compiled final templates into the internal derivability of every
+relativized Separation/Replacement instance, with its domain side formulas.
 
 Feeding `hSchema` into `ConstructibleInterpretation.provable_falsum_ZF_of_ZFC`
 and the result into the C254/ZF comparison then gives the Choice half of the
