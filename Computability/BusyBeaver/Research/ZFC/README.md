@@ -39,7 +39,9 @@ preserves attribution, recovery, fresh results and scope.
 The first [245-state Lean unit](table_routing245.md) checks the exact 490-row
 table, state numbering and 46 reusable core rows. All 64 theorem audits and
 64 typed callers pass with zero warnings. Runtime and startup proofs are the
-next obligations.
+next obligations. The [fast lookup](fast_table_routing245.md) also passes:
+two theorem audits and four typed callers prove equality with the literal
+machine, enabling faster reduction in subsequent execution proofs.
 The checked components of the earlier
 [shared-carry 250 construction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-160.md)
 provide reusable proof infrastructure. Sources 58–59 contain the same

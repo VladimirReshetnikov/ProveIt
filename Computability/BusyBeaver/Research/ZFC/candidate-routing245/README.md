@@ -15,7 +15,9 @@ closed external Lean baseline.
 The first [245-state Lean unit](../table_routing245.md) now checks the exact
 transition table, state numbering and 46 reusable core rows: 64 theorem
 audits and 64 typed callers pass with zero warnings. Runtime simulation and
-blank initialization still need their own Lean proofs.
+blank initialization still need their own Lean proofs. The
+[fast lookup](../fast_table_routing245.md) is also checked equal to the literal
+machine, with two theorem audits and four typed callers.
 
 | Artifact | Meaning |
 | --- | --- |
