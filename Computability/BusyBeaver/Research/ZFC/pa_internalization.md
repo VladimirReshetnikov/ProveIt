@@ -120,6 +120,16 @@ compares every ordinary runtime to this literal binary machine. The
 lemma applies to external natural times, not arbitrary internal times.
 The unbounded internal register/binary comparison still needs its own proof.
 
+The [seeded arithmetic scheduler](arithmetic_enumerator_seed246.md) now
+proves the validator/scheduler equivalence at candidate 3, pointer 0 and
+working fields `TW=WS=H=0,D=3`, in every IΣ1 model. Both proof-code and
+runtime witnesses range over all internal values. The represented refutation
+word has raw candidate at least 3, and the initial working state is certified
+even with `D=3`. The resulting fixed sentence has IΣ1 and PA proofs. This
+closes the arithmetic scheduler's seed adjustment; its identification with
+the exact246 binary run and the reverse ZF-to-validator proof translation
+remain open.
+
 Source review of the merged arithmetic work through `70f2e7a57b` identifies
 three further reusable pieces in `Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/`:
 `LGlueCodes.lean` proves environment opening/free-variable and binder code

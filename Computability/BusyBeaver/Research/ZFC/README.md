@@ -72,6 +72,14 @@ These three modules pass 28 axiom probes and 35 typed callers, with no final
 warnings. The unbounded internal register/binary simulation and the PA
 consistency equivalence remain open.
 
+The [seeded arithmetic scheduler](arithmetic_enumerator_seed246.md) now
+starts at candidate 3 with `TW=WS=H=0,D=3`, matching the required logical
+seed. In every IΣ1 model, an accepted refutation code exists iff this
+scheduler halts; its fixed sentence has IΣ1 and PA proofs. Ten axiom probes
+and eleven typed callers pass with zero final warnings. Identifying this
+internal scheduler with the binary run and with standard ZFC proof codes
+remains separate work.
+
 The [246 logical seed](logical_seed246.md) is now calibrated in Lean:
 the unchanged register program started at `(3,0,0,0,3,0,0,0,0)` halts iff
 ZFC has a refutation. Seven theorem audits and seven client examples pass.
