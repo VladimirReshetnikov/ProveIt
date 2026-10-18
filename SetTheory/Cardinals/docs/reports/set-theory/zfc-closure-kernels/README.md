@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings through 18 October 2026. This report now reconciles sixty-nine manuscripts.
+Intake findings through 18 October 2026. This report now reconciles seventy manuscripts.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -133,6 +133,28 @@ repeat receives no new number. The source 69 report studies an older 246
 reference. Its two rejected 245 tables are different from the now verified
 routed 245 machine. This intake adds no PA theorem or stronger theory.
 The base article remains unchanged, and the collection remains 290 reports.
+
+Batch 166 adds the [compensated 244-state reduction](intake-166.md) as source 70.
+The ordinary proof deletes old state 122 and changes four retained Routing245
+rows, preserving halting from the shared start on every binary tape. Both local
+checkers, the exact 407,951-step blank startup and the separate complete 8,391-case
+runtime replay pass; the latter checks 2,315,075 symbolic rules and all 488 rows.
+The existing 245-state external Lean endpoint remains the checked baseline at
+this intake checkpoint; a complete 244-state Lean endpoint and internal PA
+calibration remain open. The accompanying equational conversion has a complete
+2,324-bit packet but no compiled binary machine. Search scopes and supplemental
+variants remain distinct from the principal direct proof.
+
+| Source | Delivered archive | Reviewed contribution |
+| --- | --- | --- |
+| 70 | `zfc244-compensated-routing-20261018.zip` | Compensated one-state fold, direct all-tape halting proof, complete principal replay, exact startup and a separate equational backend. |
+
+Placement `6619bd0002` preserves 170 ancillary files unchanged; 21 originals
+remain archive-only, with all 191 members recoverable. See [recovery and replay](intake-166-reproduction.md)
+and the separate [maintained candidate inputs](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-compensated244/README.md).
+The report keeps the original theory and attribution. It adds no unconditional
+consistency/nonhalting or minimality claim. The base article is unchanged and
+the collection remains 290 reports; eighteen other archives remain queued.
 
 ## Sources, overlap and base
 

@@ -1,0 +1,35 @@
+{
+  "status": "PASS_GLOBAL_CONTEXTUAL_SIMULATION",
+  "old_table_sha256": "f8dbeacdad5fd89c57e3f240781324b09110be8e0ccdb838a9c710fb28d2a267",
+  "new_table_sha256": "d603bc3793ac9373f510a05d4e898f4ee7b4cac492821406a665554dca5c6daf",
+  "old_working_states": 245,
+  "new_working_states": 244,
+  "initial_state": 95,
+  "halt_state": 254,
+  "excluded_checkpoint_states": [
+    92,
+    122
+  ],
+  "ordinary_common_rows": 482,
+  "macro_entry_rows": [
+    [
+      81,
+      1
+    ],
+    [
+      104,
+      1
+    ],
+    [
+      106,
+      1
+    ],
+    [
+      167,
+      1
+    ]
+  ],
+  "theorem": "For every initial binary tape and head position, execution from state95 of these two exact tables has the same halting outcome.",
+  "justification": "Induct on old checkpoint visits using the globally inductive local tape condition. Each common step or guarded macro reaches an identical tape, head and checkpoint state in both machines. Old and new block clocks are positive and at most6, so either computation halts exactly when the other does.",
+  "proof_scope": "Finite Boolean implication enumeration plus literal finite-window identities; a mathematical proof checker, not a proof-assistant kernel endpoint."
+}
