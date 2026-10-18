@@ -124,75 +124,23 @@ private lemma lemma167_sum_good_lower {N k : Nat} [NeZero N]
     (htheta1 : 0 ≤ theta1) :
     section16ThetaTwo theta1 * (N : Real) ^ (2 * k + 1) ≤
       ∑ x0 : Point N k, (section16GoodInducedPairCount B H Y x0 : Real) := by
-  have hcoefficient :
-      0 ≤ (2 : Real) ^ (-(27 : Real)) * theta1 ^ 6 := by positivity
-  have htwo29 :
-      (2 : Real) ^ (-(29 : Real)) =
-        (2 : Real) ^ (-(27 : Real)) / 4 := by
-    norm_num [Real.rpow_neg, Real.rpow_natCast]
-  have hper (h : Point N k) (hh : h ∈ H) :
-      (2 : Real) ^ (-(29 : Real)) * theta1 ^ (7 : Nat) *
-          (N : Real) ^ (k + 1) ≤ (Y h).card := by
-    calc
-      (2 : Real) ^ (-(29 : Real)) * theta1 ^ (7 : Nat) *
-          (N : Real) ^ (k + 1) =
-          ((2 : Real) ^ (-(27 : Real)) * theta1 ^ 6) *
-            (theta1 / 4 * (N : Real) ^ (k + 1)) := by
-              rw [htwo29]
-              ring
-      _ ≤ ((2 : Real) ^ (-(27 : Real)) * theta1 ^ 6) *
-          (section16CubeDomain B h).card := mul_le_mul_of_nonneg_left (hX h hh) hcoefficient
-      _ ≤ (Y h).card := hY h hh
-  have hsumY :
-      (H.card : Real) *
-          ((2 : Real) ^ (-(29 : Real)) * theta1 ^ (7 : Nat) *
-            (N : Real) ^ (k + 1)) ≤
-        ∑ h ∈ H, ((Y h).card : Real) := by
-    calc
-      (H.card : Real) *
-          ((2 : Real) ^ (-(29 : Real)) * theta1 ^ 7 *
-            (N : Real) ^ (k + 1)) =
-          ∑ _h ∈ H,
-            ((2 : Real) ^ (-(29 : Real)) * theta1 ^ (7 : Nat) *
-              (N : Real) ^ (k + 1)) := by simp
-      _ ≤ ∑ h ∈ H, ((Y h).card : Real) := Finset.sum_le_sum fun h hh => hper h hh
-  have hperNonneg :
-      0 ≤ (2 : Real) ^ (-(29 : Real)) * theta1 ^ (7 : Nat) *
-        (N : Real) ^ (k + 1) := by positivity
-  have hproduct :
-      (theta1 / 8 * (N : Real) ^ k) *
-          ((2 : Real) ^ (-(29 : Real)) * theta1 ^ (7 : Nat) *
-            (N : Real) ^ (k + 1)) ≤
-        ∑ h ∈ H, ((Y h).card : Real) := by
-    exact (mul_le_mul_of_nonneg_right hH hperNonneg).trans hsumY
-  have hwitness :
-      ∑ h ∈ H, ((Y h).card : Real) ≤
-        ∑ x0 : Point N k,
-          (section16GoodInducedPairCount B H Y x0 : Real) := by
-    have hnat := lemma167_witness_le_good B H Y
-    rw [lemma167_witness_card, lemma167_good_card] at hnat
-    exact_mod_cast hnat
-  calc
-    section16ThetaTwo theta1 * (N : Real) ^ (2 * k + 1) =
-        (theta1 / 8 * (N : Real) ^ k) *
-          ((2 : Real) ^ (-(29 : Real)) * theta1 ^ (7 : Nat) *
-            (N : Real) ^ (k + 1)) := by
-      unfold section16ThetaTwo
-      have htwo32 :
-          (2 : Real) ^ (-(32 : Real)) =
-            (1 / 8) * (2 : Real) ^ (-(29 : Real)) := by
-        norm_num [Real.rpow_neg, Real.rpow_natCast]
-      have hNpow :
-          (N : Real) ^ (2 * k + 1) =
-            (N : Real) ^ k * (N : Real) ^ (k + 1) := by
-        rw [← pow_add]
-        congr 1
-        omega
-      rw [htwo32, hNpow]
-      ring
-    _ ≤ ∑ h ∈ H, ((Y h).card : Real) := hproduct
-    _ ≤ ∑ x0 : Point N k,
-        (section16GoodInducedPairCount B H Y x0 : Real) := hwitness
+  have hper : ∀ h ∈ H, (2 : Real) ^ (-(27 : Real)) * theta1 ^ 6 *
+      (theta1 / 4 * (N : Real) ^ (k + 1)) ≤ (Y h).card := fun h hh =>
+    (mul_le_mul_of_nonneg_left (hX h hh) (by positivity)).trans (hY h hh)
+  -- every selected cube is the witness of one good pair
+  have hwitness := lemma167_witness_le_good B H Y
+  rw [lemma167_witness_card, lemma167_good_card] at hwitness
+  calc section16ThetaTwo theta1 * (N : Real) ^ (2 * k + 1)
+      = theta1 / 8 * (N : Real) ^ k * ((2 : Real) ^ (-(27 : Real)) * theta1 ^ 6 *
+          (theta1 / 4 * (N : Real) ^ (k + 1))) := by
+        rw [section16ThetaTwo, show (2 : Real) ^ (-(32 : Real)) = 2 ^ (-(27 : Real)) / 32 by
+          norm_num [Real.rpow_neg, Real.rpow_natCast]]
+        ring
+    _ ≤ H.card * ((2 : Real) ^ (-(27 : Real)) * theta1 ^ 6 *
+          (theta1 / 4 * (N : Real) ^ (k + 1))) := by gcongr
+    _ ≤ ∑ h ∈ H, ((Y h).card : Real) := by
+        rw [← nsmul_eq_mul]; exact Finset.card_nsmul_le_sum H _ _ hper
+    _ ≤ _ := by exact_mod_cast hwitness
 
 private lemma lemma167_point_card {N k : Nat} [NeZero N] :
     Fintype.card (Point N k) = N ^ k := by

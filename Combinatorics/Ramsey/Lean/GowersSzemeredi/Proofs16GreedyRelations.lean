@@ -27,46 +27,31 @@ theorem section16_greedy_relation_decomposition {N k : Nat} [NeZero N]
   | h n ih =>
     by_cases hsmall : ((relationProjection Gamma).card : Real) < theta * (N : Real) ^ k
     · let J := Finset.univ \ relationProjection Gamma
-      refine ⟨0, Fin.elim0, J, (fun i => Fin.elim0 i), ?_, ?_, ?_⟩
-      · simp
+      refine ⟨0, Fin.elim0, J, (fun i => Fin.elim0 i), by simp, ?_, fun z hz => ?_⟩
       · have hc := Finset.card_sdiff_add_card_eq_card
           (Finset.subset_univ (relationProjection Gamma))
         have hsum : (J.card : Real) + (relationProjection Gamma).card = (N : Real) ^ k := by
           exact_mod_cast (by simpa [J, Point, ZMod.card] using hc)
         linarith
-      · intro z hz
-        have hmem := Finset.mem_filter.mp hz
-        have hp : z.1 ∈ relationProjection Gamma :=
-          Finset.mem_image.mpr ⟨z, hmem.1, rfl⟩
-        exact ((Finset.mem_sdiff.mp hmem.2).2 hp).elim
+      · have hmem := Finset.mem_filter.mp hz
+        exact ((Finset.mem_sdiff.mp hmem.2).2 (Finset.mem_image.mpr ⟨z, hmem.1, rfl⟩)).elim
     · obtain ⟨D, hD, hDmass, hDgood⟩ := hextract Gamma Finset.Subset.rfl (le_of_not_gt hsmall)
       have hDpos : 0 < D.card := by exact_mod_cast hmass.trans_le hDmass
-      have hcard : (Gamma \ D).card < n := by
-        have hc := Finset.card_sdiff_add_card_eq_card hD
-        omega
-      have he : ∀ Delta ⊆ Gamma \ D,
-          theta * (N : Real) ^ k ≤ (relationProjection Delta).card →
-          ∃ E ⊆ Delta, mass ≤ E.card ∧ Good E := by
-        intro Delta hDelta hh
-        exact hextract Delta (hDelta.trans Finset.sdiff_subset) hh
-      obtain ⟨q, G, J, hG, hq, hJ, hcover⟩ := ih _ hcard (Gamma \ D) he rfl
-      refine ⟨q + 1, Fin.cons D G, J, ?_, ?_, hJ, ?_⟩
-      · intro i
-        exact Fin.cases ⟨hD, hDgood⟩ (fun j => (⟨(hG j).1.trans Finset.sdiff_subset, (hG j).2⟩)) i
-      · have hc : ((Gamma \ D).card : Real) + D.card = Gamma.card := by
-          exact_mod_cast Finset.card_sdiff_add_card_eq_card hD
-        rw [hn] at hc
+      have hc := Finset.card_sdiff_add_card_eq_card hD
+      obtain ⟨q, G, J, hG, hq, hJ, hcover⟩ := ih _ (by omega) (Gamma \ D)
+        (fun Delta hDelta => hextract Delta (hDelta.trans Finset.sdiff_subset)) rfl
+      refine ⟨q + 1, Fin.cons D G, J, fun i => Fin.cases ⟨hD, hDgood⟩
+        (fun j => ⟨(hG j).1.trans Finset.sdiff_subset, (hG j).2⟩) i, ?_, hJ, fun z hz => ?_⟩
+      · have hc' : ((Gamma \ D).card : Real) + D.card = n := by exact_mod_cast hc.trans hn
         push_cast
-        nlinarith only [hc, hq, hDmass]
-      · intro z hz
-        have hm := Finset.mem_filter.mp hz
-        rw [section16FinsetUnion, Finset.mem_biUnion]
+        linarith
+      · rw [section16FinsetUnion, Finset.mem_biUnion]
         by_cases hzD : z ∈ D
         · exact ⟨0, Finset.mem_univ _, hzD⟩
-        · have hzRest : z ∈ restrictRelation (Gamma \ D) J :=
-            Finset.mem_filter.mpr ⟨Finset.mem_sdiff.mpr ⟨hm.1, hzD⟩, hm.2⟩
-          obtain ⟨i, _, hi⟩ := Finset.mem_biUnion.mp (hcover hzRest)
-          exact ⟨i.succ, Finset.mem_univ _, hi⟩
+        have hm := Finset.mem_filter.mp hz
+        obtain ⟨i, _, hi⟩ := Finset.mem_biUnion.mp
+          (hcover (Finset.mem_filter.mpr ⟨Finset.mem_sdiff.mpr ⟨hm.1, hzD⟩, hm.2⟩))
+        exact ⟨i.succ, Finset.mem_univ _, hi⟩
 
 /-- The relational product property passes to every remaining relation in
 the extraction process. -/

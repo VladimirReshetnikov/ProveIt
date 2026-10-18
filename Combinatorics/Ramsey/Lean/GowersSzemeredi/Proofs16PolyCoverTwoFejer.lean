@@ -85,47 +85,27 @@ theorem section16_poly_piece_two_of_subrelation_fejer
   -- a selection
   let phi : Point N 2 → ZMod N := fun x =>
     if h : ∃ y, (x, y) ∈ Delta then Classical.choose h else 0
-  have hsel : GraphContained (relationProjection Delta) phi Delta := by
-    intro x hx
+  have hsel : GraphContained (relationProjection Delta) phi Delta := fun x hx => by
     obtain ⟨z, hz, rfl⟩ := Finset.mem_image.mp hx
-    have hex : ∃ y, (z.1, y) ∈ Delta := ⟨z.2, by simpa using hz⟩
-    simp only [phi, dif_pos hex]
-    exact Classical.choose_spec hex
+    have hex : ∃ y, (z.1, y) ∈ Delta := ⟨z.2, hz⟩
+    simpa only [phi, dif_pos hex] using Classical.choose_spec hex
   have hprodB : HasProductProperty (relationProjection Delta) phi gamma :=
     (RelationProductProperty.mono hprod hDelta) _ phi hsel
   obtain ⟨hfa0, hfaS⟩ := fejerThetaOne_one_bounds ht ht1 hg hg1
   -- the Fejér Lemma 15.6 at β = θ/2
   have hN3 : (3 : Real) ≤ N := (le_max_left _ _).trans hN
-  have hNthr : fejerProductThreshold 1 (theta / 2) gamma ≤ N := (le_max_right _ _).trans hN
   have hprime : N.Prime := Fact.out
-  have hodd : Odd N := hprime.odd_of_ne_two (by
-    intro h2
-    rw [h2] at hN3
-    norm_num at hN3)
   have hβ : theta / 2 * (N : Real) ^ (1 + 1) ≤ (relationProjection Delta).card := by
-    have : (0 : Real) ≤ (N : Real) ^ 2 := by positivity
-    rw [show (1 + 1 : Nat) = 2 from rfl]
-    nlinarith
+    rw [show (1 + 1 : Nat) = 2 from rfl]; nlinarith [mul_nonneg ht.le (sq_nonneg (N : Real))]
   obtain ⟨B', hB'sub, harr1, harr2⟩ := fejer_product_of_density_lower_explicit 1 (theta / 2) gamma
-    le_rfl (by positivity) (by linarith) hg hg1 N hNthr hprime hodd
+    le_rfl (by positivity) (by linarith) hg hg1 N ((le_max_right _ _).trans hN) hprime
+    (hprime.odd_of_ne_two fun h2 => by rw [h2] at hN3; norm_num at hN3)
     (relationProjection Delta) phi hβ hprodB
   have hθ1 : fejerThetaOne theta gamma 1 = (theta / 2 * gamma / 2) ^ fejerProductExponent 1 := by
-    unfold fejerThetaOne
-    congr 1
-    ring
-  have hBarr : fejerThetaOne theta gamma 1 * (N : Real) ^ (17 * 1 + 15) ≤
-        generalArrangementCount 8 B' ∧
-      (1 - (2 : Real) ^ (-(44 : Real))) * generalArrangementCount 8 B' ≤
-        respectedGeneralArrangementCount 8 B' phi := by
-    refine ⟨?_, ?_⟩
-    · rw [hθ1]; exact harr1
-    · rw [two_rpow_neg_44]; exact harr2
-  have hgraph : partialGraph B' phi ⊆ Delta := by
-    intro z hz
-    obtain ⟨x, hx, rfl⟩ := Finset.mem_image.mp hz
-    exact hsel x (hB'sub hx)
+    unfold fejerThetaOne; congr 1; ring
   exact section16_poly_piece_two_data_with hfa0 hfaS (tightZeta_condition hfa0)
-    (tightZeta_pos_le_half hfa0 (by linarith)).1 hg hg1 Delta B' phi hgraph hBarr
-    (hprodB.mono hB'sub)
+    (tightZeta_pos_le_half hfa0 (by linarith)).1 hg hg1 Delta B' phi
+    (fun z hz => by obtain ⟨x, hx, rfl⟩ := Finset.mem_image.mp hz; exact hsel x (hB'sub hx))
+    ⟨hθ1 ▸ harr1, two_rpow_neg_44 ▸ harr2⟩ (hprodB.mono hB'sub)
 
 end LeanProofs.GowersSzemeredi

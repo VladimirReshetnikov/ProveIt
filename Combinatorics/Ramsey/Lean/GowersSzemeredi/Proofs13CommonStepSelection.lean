@@ -22,31 +22,21 @@ theorem cyclic_common_step_partition {N : Nat} [Fact N.Prime]
       ∀ j, (P j).step = d ∧ (P j).IsProper ∧
         ((P j).length = m ∨ (P j).length = m + 1) := by
   let R : ModAP N := { start := 0, step := d, length := N }
-  have hRuniv : R.carrier = Finset.univ := by
-    apply Finset.eq_univ_of_forall
-    intro x
-    apply Finset.mem_image.mpr
-    refine ⟨⟨(x / d).val, (x / d).val_lt⟩, Finset.mem_univ _, ?_⟩
-    change 0 + (((x / d).val : Nat) : ZMod N) * d = x
-    rw [zero_add, ZMod.natCast_zmod_val]
-    exact div_mul_cancel₀ x (bne_iff_ne.mp hd)
-  have hR : R.IsProper := by
+  have hRuniv : R.carrier = Finset.univ := Finset.eq_univ_of_forall fun x =>
+    Finset.mem_image.mpr ⟨⟨(x / d).val, (x / d).val_lt⟩, Finset.mem_univ _, by
+      change 0 + (((x / d).val : Nat) : ZMod N) * d = x
+      rw [zero_add, ZMod.natCast_zmod_val, div_mul_cancel₀ x (bne_iff_ne.mp hd)]⟩
+  let B := R.asBox
+  have hB : B.IsProper := fun _ ↦ by
     change R.carrier.card = N
     rw [hRuniv, Finset.card_univ, ZMod.card]
-  let B := R.asBox
-  have hB : B.IsProper := fun _ ↦ hR
-  have hwidth : B.width = N := BaseCase.boxOne_width B
-  have hsize' : m * m ≤ B.width := by rwa [hwidth]
+  have hsize' : m * m ≤ B.width := by rwa [BaseCase.boxOne_width B]
   let P : Fin (B.width / m) → ModAP N := fun j ↦ (BaseCase.coarseChildBox B m j).axis 0
-  refine ⟨B.width / m, P, ?_, ?_⟩
-  · have hpart := box_one_partition_axes B (fun j ↦ BaseCase.coarseChildBox B m j)
-      (BaseCase.coarseChildBox_partition B hB m hm hsize')
-    change IsPartition (fun j ↦ (P j).carrier) R.carrier at hpart
-    rwa [hRuniv] at hpart
-  · intro j
-    refine ⟨rfl, BaseCase.coarseChildBox_proper B hB m hm hsize' j 0, ?_⟩
-    dsimp only [P, BaseCase.coarseChildBox, BaseCase.coarseChunkLength]
-    split_ifs <;> simp
+  refine ⟨B.width / m, P, hRuniv ▸ box_one_partition_axes B (BaseCase.coarseChildBox B m)
+    (BaseCase.coarseChildBox_partition B hB m hm hsize'),
+    fun j ↦ ⟨rfl, BaseCase.coarseChildBox_proper B hB m hm hsize' j 0, ?_⟩⟩
+  dsimp only [P, BaseCase.coarseChildBox, BaseCase.coarseChunkLength]
+  split_ifs <;> simp
 
 /-- Two points of a progression of length at most `m+1` differ by one of
 its first `m` positive or negative step multiples. -/
@@ -104,32 +94,22 @@ theorem common_step_row_selection {N : Nat} [Fact N.Prime]
       delta * R.length * N * I.card ≤
         ∑ h ∈ I, ((Y h).filter fun z ↦ z.1 ∈ R.carrier).card := by
   obtain ⟨M, P, hP, hcell⟩ := cyclic_common_step_partition d hd m hm hsize
-  let C := I.sigma Y
-  have hcard : C.card = ∑ h ∈ I, (Y h).card := by simp [C]
-  have htotal : delta * (N : Real) ^ 2 * I.card ≤ C.card := by
-    rw [hcard, Nat.cast_sum]
-    calc
-      _ = ∑ _h ∈ I, delta * (N : Real) ^ 2 := by simp; ring
-      _ ≤ _ := Finset.sum_le_sum hmass
-  have hmass' : (delta * N * I.card) * (Finset.univ : Finset (ZMod N)).card ≤ C.card := by
-    rw [Finset.card_univ, ZMod.card]
-    nlinarith only [htotal]
-  obtain ⟨j, hj⟩ := exists_coordinate_filter_cell C Finset.univ
+  -- the rows over `I` carry total mass at least `delta N ^ 2 |I|`
+  have hmass' : (delta * N * I.card) * (Finset.univ : Finset (ZMod N)).card ≤
+      (I.sigma Y).card := by
+    have h := Finset.sum_le_sum hmass
+    rw [Finset.sum_const, nsmul_eq_mul] at h
+    rw [Finset.card_univ, ZMod.card, Finset.card_sigma, Nat.cast_sum]
+    linarith
+  obtain ⟨j, hj⟩ := exists_coordinate_filter_cell (I.sigma Y) Finset.univ
     (fun z : Sigma (fun _ : ZMod N ↦ Pair N) ↦ z.2.1)
     (fun j ↦ (P j).carrier) Finset.univ_nonempty hP (fun _ _ ↦ Finset.mem_univ _) hmass'
   obtain ⟨hstep, hproper, hlen⟩ := hcell j
-  have hlen' : (P j).length ≤ m + 1 := by rcases hlen with h | h <;> omega
-  refine ⟨P j, hstep, hproper, hlen, ?_, ?_⟩
-  · intro h hh
-    apply linearOnDomain_of_short_difference_rule (Y h) (fun z : Pair N ↦ z.1)
-      (phi h) (P j) m hlen'
-    simpa only [hstep] using hrule h hh
-  · have hPcard : (P j).carrier.card = (P j).length := hproper
-    have hfilter : (C.filter fun z ↦ z.2.1 ∈ (P j).carrier).card =
-        ∑ h ∈ I, ((Y h).filter fun z ↦ z.1 ∈ (P j).carrier).card := by
-      simp only [C, Finset.filter_sigma, Finset.card_sigma]
-    rw [hPcard, hfilter] at hj
-    nlinarith only [hj]
+  refine ⟨P j, hstep, hproper, hlen, fun h hh ↦ linearOnDomain_of_short_difference_rule (Y h)
+    _ (phi h) (P j) m (by omega) (by simpa only [hstep] using hrule h hh), ?_⟩
+  simp only [show (P j).carrier.card = (P j).length from hproper, Finset.filter_sigma,
+    Finset.card_sigma] at hj
+  nlinarith only [hj]
 
 /-- Assemble Stage 13.6 from its row models and explicit integer partition
 budgets, retaining the upper length bound needed by Lemma 13.9. -/
@@ -151,31 +131,19 @@ theorem lemma_13_6_of_short_difference_rules_with_length {N : Nat} [Fact N.Prime
   obtain ⟨R, hs, hp, hl, hlinear, hmass⟩ := common_step_row_selection
     (criticalHeights S D E) Y (verticalPhiDifference S.phi) E.Q.step m delta
     h135.1 hm hsize (fun h hh ↦ (hY h hh).2) hrule
-  have hmR : m ≤ R.length := by rcases hl with h | h <;> omega
-  have hRupper : R.length ≤ E.Q.length := by rcases hl with h | h <;> omega
-  have hRlower : section13Zeta S.alpha / 2 *
-      (N : Real) ^ ((1 : Real) / (2 : Real) ^ (13 * section13Q S.alpha)) ≤ R.length :=
-    hlower.trans (by exact_mod_cast hmR)
-  let F : Stage136Data N := ⟨R, Y⟩
-  have hI := h135.2.2.2.2.2
-  have hIweak : S.alpha ^ 32 * E.Q.length / 32 ≤ (criticalHeights S D E).card := by
-    linarith
-  refine ⟨F, ⟨hs, ?_, hp, hRlower, ?_, hmass, ?_⟩, hmR, hRupper⟩
-  · change R.step != 0
-    rw [hs]
-    exact h135.1
-  · intro h hh
-    exact ⟨(hY h hh).1, (hY h hh).2, hlinear h hh⟩
-  · change (2 : Real) ^ (-(48 : Int)) * S.alpha ^ 256 * E.Q.length * R.length * N ≤ _
-    calc
-      _ = delta * R.length * N * (S.alpha ^ 32 * E.Q.length / 32) := by
-        dsimp only [delta]
+  have hmR : m ≤ R.length := by omega
+  refine ⟨⟨R, Y⟩, ⟨hs, hs ▸ h135.1, hp, hlower.trans (by exact_mod_cast hmR),
+    fun h hh ↦ ⟨(hY h hh).1, (hY h hh).2, hlinear h hh⟩, hmass, ?_⟩, hmR,
+    show R.length ≤ E.Q.length by omega⟩
+  -- `|crit| ≥ α ^ 32 |Q| / 20 ≥ α ^ 32 |Q| / 32`, and `2 ^ -43 / 32 = 2 ^ -48`
+  calc (2 : Real) ^ (-(48 : Int)) * S.alpha ^ 256 * E.Q.length * R.length * N
+      = delta * R.length * N * (S.alpha ^ 32 * E.Q.length / 32) := by
         rw [show (256 : Nat) = 224 + 32 by omega, pow_add]
-        norm_num [zpow_neg]
+        norm_num [delta, zpow_neg]
         ring
-      _ ≤ delta * R.length * N * (criticalHeights S D E).card :=
-        mul_le_mul_of_nonneg_left hIweak (by dsimp [delta]; positivity)
-      _ ≤ _ := hmass
+    _ ≤ delta * R.length * N * (criticalHeights S D E).card :=
+        mul_le_mul_of_nonneg_left (by linarith [h135.2.2.2.2.2]) (by dsimp [delta]; positivity)
+    _ ≤ _ := hmass
 
 /-- The coordinate map for Section 13 edge differences, represented on
 lower-endpoint pairs. Only the selected subset enters the Bohr model. -/

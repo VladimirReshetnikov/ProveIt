@@ -36,37 +36,30 @@ theorem section13RecurrenceLengthThreshold_le_double_exp {delta : Real}
     (hδ : 0 < delta) (hδone : delta ≤ 1) {q : Nat} (hq : (q : Real) ≤ section13Q delta) :
     section13RecurrenceLengthThreshold delta q ≤ Real.exp (Real.exp (14 * section13Q delta)) := by
   let Q := section13Q delta
-  let e := (1 : Real) / (2 : Real) ^ (12 * q)
   have hQ : 512 ≤ Q := section13Q_ge_512 hδ hδone
-  have hQ0 : 0 ≤ Q := by linarith only [hQ]
-  have he : 0 < e := by dsimp [e]; positivity
-  have heI : e⁻¹ ≤ Real.exp (12 * Q) := by
-    simp only [e, one_div, inv_inv]
-    rw [← Real.rpow_natCast]
+  have hQexp : Q ≤ Real.exp Q := by linarith only [Real.add_one_le_exp Q]
+  have heI : ((1 : Real) / (2 : Real) ^ (12 * q))⁻¹ ≤ Real.exp (12 * Q) := by
+    rw [one_div, inv_inv, ← Real.rpow_natCast]
     exact (two_rpow_le_exp (Nat.cast_nonneg _)).trans
       (Real.exp_le_exp.mpr (by push_cast; linarith only [hq]))
-  have hQexp : Q ≤ Real.exp Q := by have h := Real.add_one_le_exp Q; linarith only [h]
-  have h1 : (1 : Real) ≤ Real.exp (1 * Q) := by rw [one_mul]; exact Real.one_le_exp_iff.mpr hQ0
-  have h8 : (8 : Real) ≤ Real.exp (1 * Q) := by rw [one_mul]; linarith only [hQ, hQexp]
-  have hC : 160 + 2 * delta ^ 32 ≤ Real.exp (1 * Q) := by
-    have hp := pow_le_one₀ hδ.le hδone (n := 32)
-    rw [one_mul]
-    linarith only [hp, hQ, hQexp]
   have hD : (delta ^ (32 : Nat))⁻¹ ≤ Real.exp (1 * Q) := by
     have hm := section13_monomial_le_Q hδ hδone (a := 0) (b := 32) (by norm_num) (by norm_num)
     simp only [pow_zero, one_mul, inv_pow] at hm
     simpa only [one_mul] using hm.trans hQexp
-  have hleft := positivePowerThreshold_le_double_exp (C := 8) zero_lt_one he.le hQ0
-    (by norm_num : (0 : Real) ≤ 1) (by norm_num : (0 : Real) ≤ 1) h8 (by simpa only [inv_one] using h1) heI
-  have hright := positivePowerThreshold_le_double_exp (C := 160 + 2 * delta ^ 32) (pow_pos hδ 32) he.le hQ0
-    (by norm_num : (0 : Real) ≤ 1) (by norm_num : (0 : Real) ≤ 1) hC hD heI
+  -- both power thresholds have `C, D⁻¹ ≤ e ^ Q` and `e⁻¹ ≤ e ^ (12 Q)`
+  have hleft := positivePowerThreshold_le_double_exp (C := 8) zero_lt_one (by positivity)
+    (by linarith) zero_le_one zero_le_one (by rw [one_mul]; linarith)
+    (by rw [inv_one]; linarith [Real.add_one_le_exp (1 * Q)]) heI
+  have hright := positivePowerThreshold_le_double_exp (C := 160 + 2 * delta ^ 32) (pow_pos hδ 32)
+    (by positivity) (by linarith) zero_le_one zero_le_one
+    (by rw [one_mul]; linarith [pow_le_one₀ (n := 32) hδ.le hδone]) hD heI
   norm_num only [show (1 + 1 + 12 : Real) = 14 by norm_num] at hleft hright
-  have hnat := simultaneous_quadratic_threshold_le_double_exp hQ hq
-  have hnat1 := (add_le_add hnat (le_refl (1 : Real))).trans (double_exp_add_one_le (by positivity : 0 ≤ 12 * Q))
   unfold section13RecurrenceLengthThreshold
   rw [Nat.cast_add, Nat.cast_one]
-  refine max_le (hnat1.trans ?_) (max_le hleft hright)
-  exact Real.exp_le_exp.mpr (Real.exp_le_exp.mpr (by linarith only [hQ]))
+  refine max_le ?_ (max_le hleft hright)
+  exact ((add_le_add (simultaneous_quadratic_threshold_le_double_exp hQ hq) le_rfl).trans
+    (double_exp_add_one_le (by positivity))).trans
+      (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr (by linarith only [hQ])))
 
 theorem section13InitialRecurrenceThreshold_le_double_exp {delta : Real}
     (hδ : 0 < delta) (hδone : delta ≤ 1) {q : Nat} (hq : (q : Real) ≤ section13Q delta) :
@@ -82,28 +75,21 @@ theorem section13InitialRecurrenceThreshold_le_double_exp {delta : Real}
     (section13_initial_coefficient_inv_le_Q_sq hδ hδone).trans (real_pow_le_exp_nat_mul hQ0 2)
   have huI : u⁻¹ ≤ Real.exp (4 * Q) :=
     (section13_initial_exponent_inv_le_Q_four hδ hδone hq).trans (real_pow_le_exp_nat_mul hQ0 4)
-  have hL := section13RecurrenceLengthThreshold_le_double_exp hδ hδone hq
-  have hL1 := (add_le_add hL (le_refl (1 : Real))).trans (double_exp_add_one_le (by positivity : 0 ≤ 14 * Q))
-  have hL2 := (add_le_add hL1 (le_refl (1 : Real))).trans (double_exp_add_one_le (by positivity : 0 ≤ 14 * Q + 1))
+  -- two rounding units cost `14 Q ↦ 14 Q + 2 ≤ 16 Q` inside the double exponential
   have hC : section13RecurrenceLengthThreshold delta q + 2 ≤ Real.exp (Real.exp (16 * Q)) := by
-    have hh : section13RecurrenceLengthThreshold delta q + 2 = section13RecurrenceLengthThreshold delta q + 1 + 1 := by ring
-    rw [hh]
-    exact hL2.trans (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr (by linarith only [hQ])))
-  have h := positivePowerThreshold_le_exp hd hu
-    (show 0 ≤ Real.exp (16 * Q) + 2 * Q by positivity) hC hdI huI
-  apply h.trans
-  apply Real.exp_le_exp.mpr
-  have hlin : 2 * Q ≤ Real.exp (16 * Q) := by
-    have h := Real.add_one_le_exp (16 * Q)
-    linarith only [h, hQ]
-  have htwo : (2 : Real) ≤ Real.exp Q := by
-    have h := Real.add_one_le_exp Q
-    linarith only [h, hQ]
+    have h1 := (add_le_add (section13RecurrenceLengthThreshold_le_double_exp hδ hδone hq)
+      le_rfl).trans (double_exp_add_one_le (by positivity : 0 ≤ 14 * Q))
+    have h2 := (add_le_add h1 le_rfl).trans (double_exp_add_one_le (by positivity : 0 ≤ 14 * Q + 1))
+    linarith [Real.exp_le_exp.mpr (Real.exp_le_exp.mpr (by linarith : 14 * Q + 1 + 1 ≤ 16 * Q))]
+  refine (positivePowerThreshold_le_exp hd hu (by positivity) hC hdI huI).trans
+    (Real.exp_le_exp.mpr ?_)
+  -- `(e ^ (16 Q) + 2 Q) e ^ (4 Q) ≤ e ^ Q e ^ (16 Q) e ^ (4 Q) = e ^ (21 Q)`
+  have htwo : (2 : Real) ≤ Real.exp Q := by linarith only [Real.add_one_le_exp Q, hQ]
   calc
-    _ ≤ (2 * Real.exp (16 * Q)) * Real.exp (4 * Q) :=
-      mul_le_mul_of_nonneg_right (by linarith only [hlin]) (Real.exp_pos _).le
-    _ ≤ (Real.exp Q * Real.exp (16 * Q)) * Real.exp (4 * Q) :=
-      mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right htwo (Real.exp_pos _).le) (Real.exp_pos _).le
+    _ ≤ (Real.exp Q * Real.exp (16 * Q)) * Real.exp (4 * Q) := by
+      gcongr
+      linarith only [Real.add_one_le_exp (16 * Q), hQ,
+        mul_le_mul_of_nonneg_right htwo (Real.exp_pos (16 * Q)).le]
     _ = _ := by rw [← Real.exp_add, ← Real.exp_add]; congr 1; ring
 
 theorem section13DensityRecurrenceThreshold_le_double_exp {delta : Real}
@@ -111,31 +97,21 @@ theorem section13DensityRecurrenceThreshold_le_double_exp {delta : Real}
     (section13DensityRecurrenceThreshold delta : Real) ≤ Real.exp (Real.exp (22 * section13Q delta)) := by
   let Q := section13Q delta
   have hQ : 512 ≤ Q := section13Q_ge_512 hδ hδone
-  have hb : 0 ≤ section13QBound (section10Lambda (delta ^ 32 / 16)) := by
-    unfold section13QBound section10Lambda
-    positivity
   unfold section13DensityRecurrenceThreshold
   rw [Nat.cast_max]
-  apply max_le
-  · have h := Real.add_one_le_exp (22 * Q)
-    have h' := Real.add_one_le_exp (Real.exp (22 * Q))
-    norm_num only [Nat.cast_ofNat]
-    linarith only [h, h', hQ]
-  · apply nat_cast_finset_sup_le _ _ (Real.exp_pos _).le
-    intro q hq
-    have hqN : q ≤ Nat.floor (section13QBound (section10Lambda (delta ^ 32 / 16))) := by
-      simp only [Finset.mem_range] at hq
-      omega
-    have hqQ : (q : Real) ≤ Q := by
-      have h := (Nat.cast_le.mpr hqN).trans (Nat.floor_le hb)
-      have h' := h.trans (section13_qBound_le_half_Q hδ hδone)
-      dsimp [Q]
-      linarith only [h', hQ]
-    have ht := section13InitialRecurrenceThreshold_le_double_exp hδ hδone hqQ
-    have ht0 : 0 ≤ section13InitialRecurrenceThreshold delta q :=
-      zero_le_one.trans (positivePowerThreshold_one_le _ _ _)
-    have hc := nat_ceil_le_double_exp_add_one (by positivity : 0 ≤ 21 * Q) ht0 ht
-    apply hc.trans
-    exact Real.exp_le_exp.mpr (Real.exp_le_exp.mpr (by dsimp [Q]; linarith only [hQ]))
+  refine max_le ?_ (nat_cast_finset_sup_le _ _ (Real.exp_pos _).le fun q hq => ?_)
+  · norm_num only [Nat.cast_ofNat]
+    linarith only [Real.add_one_le_exp (22 * Q), Real.add_one_le_exp (Real.exp (22 * Q)), hQ]
+  -- every admissible `q` is at most `Q`, and each ceiling costs one unit
+  have hqQ : (q : Real) ≤ Q := by
+    have h := ((Nat.cast_le.mpr (Nat.lt_add_one_iff.mp (Finset.mem_range.mp hq))).trans
+      (Nat.floor_le (by unfold section13QBound section10Lambda; positivity))).trans
+      (section13_qBound_le_half_Q hδ hδone)
+    linarith only [h, hQ]
+  have ht0 : 0 ≤ section13InitialRecurrenceThreshold delta q :=
+    zero_le_one.trans (positivePowerThreshold_one_le _ _ _)
+  refine (nat_ceil_le_double_exp_add_one (by positivity : 0 ≤ 21 * Q) ht0
+    (section13InitialRecurrenceThreshold_le_double_exp hδ hδone hqQ)).trans ?_
+  exact Real.exp_le_exp.mpr (Real.exp_le_exp.mpr (by linarith only [hQ]))
 
 end LeanProofs.GowersSzemeredi

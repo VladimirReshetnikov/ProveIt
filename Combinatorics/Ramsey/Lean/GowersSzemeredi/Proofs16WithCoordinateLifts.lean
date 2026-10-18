@@ -35,49 +35,24 @@ theorem with_lift_width_budget {a : Real} (ha : 0 < a) (ha1 : a ≤ 1) (m : Nat)
     (hlarge : 2 < (m : Real) ^ (a / 16)) :
     4 ≤ m ∧ 16 ≤ ((m : Real) / 8) ^ a ∧
       (m : Real) ^ (a / 16) ≤ Real.sqrt (((m : Real) / 8) ^ a) / 4 := by
-  have hm0 : (0 : Real) < m := by
-    by_contra h
-    have h0 : (m : Real) = 0 := le_antisymm (not_lt.mp h) (Nat.cast_nonneg _)
-    rw [h0, Real.zero_rpow (by positivity)] at hlarge
-    linarith
-  have hm1 : (1 : Real) ≤ m := by
-    have : 0 < m := by exact_mod_cast hm0
-    exact_mod_cast this
+  have hm0 : (0 : Real) ≤ m := Nat.cast_nonneg m
+  have hm1 : (1 : Real) ≤ m := Nat.one_le_cast.mpr (Nat.one_le_iff_ne_zero.mpr (by
+    rintro rfl; norm_num [Real.zero_rpow (by positivity : a / 16 ≠ 0)] at hlarge))
   set X := (m : Real) ^ (a / 16) with hXdef
   have hma : (m : Real) ^ a = X ^ 16 := by
-    rw [hXdef, ← Real.rpow_natCast, ← Real.rpow_mul hm0.le]
-    congr 1
-    push_cast
-    ring
+    rw [hXdef, ← Real.rpow_natCast, ← Real.rpow_mul hm0]; congr 1; push_cast; ring
   have hX16 : (2 : Real) ^ 16 < X ^ 16 := pow_lt_pow_left₀ hlarge (by norm_num) (by norm_num)
-  have hmle : (m : Real) ^ a ≤ m := by
-    simpa using Real.rpow_le_rpow_of_exponent_le hm1 ha1
+  have hX14 : (2 : Real) ^ 14 ≤ X ^ 14 := pow_le_pow_left₀ (by norm_num) hlarge.le 14
+  have hmle : (m : Real) ^ a ≤ m := by simpa using Real.rpow_le_rpow_of_exponent_le hm1 ha1
   have h8 : (8 : Real) ^ a ≤ 8 := by
     simpa using Real.rpow_le_rpow_of_exponent_le (by norm_num : (1 : Real) ≤ 8) ha1
-  have h8pos : (0 : Real) < (8 : Real) ^ a := by positivity
-  have hw : ((m : Real) / 8) ^ a = (m : Real) ^ a / (8 : Real) ^ a :=
-    Real.div_rpow hm0.le (by norm_num) a
   have hwX : X ^ 16 / 8 ≤ ((m : Real) / 8) ^ a := by
-    rw [hw, hma]
-    exact div_le_div_of_nonneg_left (by positivity) h8pos h8
-  refine ⟨?_, ?_, ?_⟩
-  · have : (4 : Real) ≤ m := by nlinarith
-    exact_mod_cast this
-  · nlinarith
-  · have hX2 : (2 : Real) < X := hlarge
-    have hX14 : (128 : Real) ≤ X ^ 14 := by
-      have h := pow_le_pow_left₀ (by norm_num : (0 : Real) ≤ 2) hX2.le 14
-      norm_num at h
-      linarith
-    rw [le_div_iff₀ (by norm_num : (0 : Real) < 4)]
-    apply Real.le_sqrt_of_sq_le
-    have hsq : (X * 4) ^ 2 = 16 * X ^ 2 := by ring
-    rw [hsq]
-    have h16 : 16 * X ^ 2 ≤ X ^ 16 / 8 := by
-      have : X ^ 16 = X ^ 14 * X ^ 2 := by ring
-      rw [this]
-      nlinarith
-    linarith
+    rw [Real.div_rpow hm0 (by norm_num : (0 : Real) ≤ 8), hma]
+    exact div_le_div_of_nonneg_left (by positivity) (by positivity) h8
+  refine ⟨by exact_mod_cast (show (4 : Real) ≤ m by linarith), by linarith, ?_⟩
+  rw [le_div_iff₀ (by norm_num : (0 : Real) < 4)]
+  apply Real.le_sqrt_of_sq_le
+  nlinarith [mul_le_mul_of_nonneg_right hX14 (sq_nonneg X), sq_nonneg X]
 
 /-- **An unused final coordinate, at every scale, for arbitrary controls.** -/
 theorem MultiplyLinearWith.lift_last {N k : Nat} [NeZero N] [Fact N.Prime]
@@ -89,62 +64,42 @@ theorem MultiplyLinearWith.lift_last {N k : Nat} [NeZero N] [Fact N.Prime]
       (partialGraph (lastProductSet B Finset.univ) (fun z => phi (section16Init z))) := by
   intro theta ht ht1 P hP
   obtain ⟨ha, ha1⟩ := hE theta ht ht1
-  have hA : 0 < Eb theta / 16 := by positivity
-  have hmass : (1 - theta) * (P.carrier.card : Real) ≤ P.carrier.card := by
-    nlinarith
+  have hmass : (1 - theta) * (P.carrier.card : Real) ≤ P.carrier.card :=
+    mul_le_of_le_one_left (Nat.cast_nonneg _) (by linarith)
   have hgraph : ∀ z y, (z, y) ∈ partialGraph (lastProductSet B Finset.univ)
       (fun z => phi (section16Init z)) → y = phi (section16Init z) ∧ section16Init z ∈ B := by
     intro z y hz
     obtain ⟨w, hw, hwy⟩ := Finset.mem_image.mp hz
     obtain ⟨rfl, rfl⟩ := Prod.mk.inj hwy
     exact ⟨rfl, (Finset.mem_filter.mp hw).2.1⟩
-  have h3 : (1 : Real) ≤ ((3 ^ (k + 1) : Nat) : Real) := by
-    exact_mod_cast Nat.one_le_pow _ _ (by norm_num)
   by_cases hsmall : (P.width : Real) ^ (Eb theta / 16) ≤ 2
   · by_cases htwo : 2 ≤ P.width
     · obtain ⟨M, Q, mu, hpart, hproper, hmu, hc⟩ :=
         section16_coarse_function_cover P hP (by omega) htwo (fun z => phi (section16Init z))
-      refine ⟨M, 3 ^ (k + 1), P.carrier, Q, mu, Finset.Subset.rfl, hmass, hpart,
-        fun j => (hproper j).1, le_max_right _ _, ?_, hmu, ?_⟩
-      · intro j
-        exact hsmall.trans (by exact_mod_cast (hproper j).2)
-      · intro j z hz _ y hy
-        rw [(hgraph z y hy).1]
-        exact hc j z hz
+      exact ⟨M, 3 ^ (k + 1), P.carrier, Q, mu, Finset.Subset.rfl, hmass, hpart,
+        fun j => (hproper j).1, le_max_right _ _,
+        fun j => hsmall.trans (by exact_mod_cast (hproper j).2), hmu,
+        fun j z hz _ y hy => (hgraph z y hy).1 ▸ hc j z hz⟩
     · obtain ⟨M, Q, mu, hpart, hproper, hmu, hc⟩ :=
         section16_singleton_function_cover P (by omega) (fun z => phi (section16Init z))
-      refine ⟨M, 1, P.carrier, Q, mu, Finset.Subset.rfl, hmass, hpart,
-        fun j => (hproper j).1, ?_, ?_, hmu, ?_⟩
-      · exact_mod_cast h3.trans (le_max_right _ _)
-      · intro j
-        rw [(hproper j).2, Nat.cast_one]
-        exact Real.rpow_le_one (Nat.cast_nonneg _)
-          (by exact_mod_cast (show P.width ≤ 1 by omega)) hA.le
-      · intro j z hz _ y hy
-        rw [(hgraph z y hy).1]
-        exact hc j z hz
-  · have hlarge : 2 < (P.width : Real) ^ (Eb theta / 16) := lt_of_not_ge hsmall
-    obtain ⟨hm4, hw16, hwidth⟩ := with_lift_width_budget ha ha1 P.width hlarge
+      refine ⟨M, 1, P.carrier, Q, mu, Finset.Subset.rfl, hmass, hpart, fun j => (hproper j).1,
+        le_max_of_le_right (Nat.cast_le.mpr (Nat.one_le_pow _ _ (by norm_num))), fun j => ?_,
+        hmu, fun j z hz _ y hy => (hgraph z y hy).1 ▸ hc j z hz⟩
+      rw [(hproper j).2, Nat.cast_one]
+      exact Real.rpow_le_one (Nat.cast_nonneg _) (by exact_mod_cast (show P.width ≤ 1 by omega))
+        (div_pos ha (by norm_num)).le
+  · obtain ⟨hm4, hw16, hwidth⟩ := with_lift_width_budget ha ha1 P.width (not_le.mp hsmall)
     obtain ⟨v, hv, hvfit, hvwidth⟩ := section16_lift_width_rounding hw16
-    let T := boxInit P
-    let I := P.axis (Fin.last k)
-    have hI : I.IsProper := hP _
-    have hmI : P.width ≤ I.length := P.width_le_axis_length _
-    obtain ⟨u, hu⟩ := I.step_isUnit_of_prime hI (by omega)
-    have hstep : I.step = T.commonDiff := P.axis_step _
+    have hmI := P.width_le_axis_length (Fin.last k)
+    obtain ⟨u, hu⟩ := (P.axis (Fin.last k)).step_isUnit_of_prime (hP _) (by omega)
     obtain ⟨q, G, M, Q, mu, hq, hG, hGm, hpart, hproper, hmu, hc⟩ :=
-      hML.unused_coordinate_cover theta ht ht1 (hQ theta ht ht1) ha.le T I
-        (boxInit_isProper P hP) hI hstep u hu.symm hk hm4 (boxInit_width P hk) hmI hv hvfit
-    have hprod : lastProductSet T.carrier I.carrier = P.carrier :=
-      (boxInit_last_product P).1.symm
-    rw [hprod] at hG hGm hpart
-    refine ⟨M, q, G, Q, mu, hG, hGm, hpart, fun j => (hproper j).1,
-      hq.trans (le_max_left _ _), fun j => ?_, hmu, ?_⟩
-    · exact hwidth.trans (hvwidth.trans (by exact_mod_cast (hproper j).2))
-    · intro j z hz hzG y hy
-      obtain ⟨hyval, hzB⟩ := hgraph z y hy
-      rw [hyval]
-      exact hc j z hz hzB hzG
+      hML.unused_coordinate_cover theta ht ht1 (hQ theta ht ht1) ha.le (boxInit P)
+        (P.axis (Fin.last k)) (boxInit_isProper P hP) (hP _) (P.axis_step _) u hu.symm hk hm4
+        (boxInit_width P hk) hmI hv hvfit
+    rw [show lastProductSet _ _ = P.carrier from (boxInit_last_product P).1.symm] at hG hGm hpart
+    exact ⟨M, q, G, Q, mu, hG, hGm, hpart, fun j => (hproper j).1, hq.trans (le_max_left _ _),
+      fun j => hwidth.trans (hvwidth.trans (by exact_mod_cast (hproper j).2)), hmu,
+      fun j z hz hzG y hy => (hgraph z y hy).1 ▸ hc j z hz (hgraph z y hy).2 hzG⟩
 
 theorem MultiplyLinearWith.coordinateReindex {N k : Nat} [NeZero N]
     {Qb Eb : Real → Real} {Gamma : Finset (Point N k × ZMod N)}
@@ -204,41 +159,24 @@ theorem MultiplyLinearWith.lift_prefix {N l d : Nat} [NeZero N] [Fact N.Prime]
   | succ d ih =>
     by_cases heq : l = d + 1
     · subst heq
-      have hB : prefixDomain hld B = B := by
-        ext z
-        simp
+      have hB : prefixDomain hld B = B := by ext; simp
       simp only [hB, coordinatePrefix_self, Nat.sub_self, pow_zero, div_one]
-      exact MultiplyLinearWith.weaken hML (fun s _ _ => le_max_left _ _) (fun s hs hs1 => (hE s hs hs1).1)
+      exact hML.weaken (fun s _ _ => le_max_left _ _) (fun s hs hs1 => (hE s hs hs1).1)
         (fun s _ _ => le_rfl)
     · have hld' : l ≤ d := by omega
-      have hIH := ih hld'
-      have hQ' : ∀ t, 0 < t → t ≤ 1 → 0 ≤ max (Qb t) ((3 ^ d : Nat) : Real) :=
-        fun t _ _ => le_trans (Nat.cast_nonneg _) (le_max_right _ _)
       have hE' : ∀ t, 0 < t → t ≤ 1 → 0 < Eb t / 16 ^ (d - l) ∧ Eb t / 16 ^ (d - l) ≤ 1 := by
         intro t ht ht1
         obtain ⟨h1, h2⟩ := hE t ht ht1
-        refine ⟨by positivity, ?_⟩
-        rw [div_le_one (by positivity)]
-        exact h2.trans (one_le_pow₀ (by norm_num))
-      have hp := hIH.lift_last hQ' hE' (by omega)
+        exact ⟨by positivity, (div_le_self h1.le (one_le_pow₀ (by norm_num))).trans h2⟩
+      have hp := (ih hld').lift_last (fun t _ _ => le_max_of_le_right (Nat.cast_nonneg _)) hE'
+        (by omega)
       have hdom : lastProductSet (prefixDomain hld' B) Finset.univ = prefixDomain hld B := by
-        ext z
-        simp only [lastProductSet, Finset.mem_filter, Finset.mem_univ, true_and,
-          and_true, mem_prefixDomain]
-        rfl
-      have hfun : (fun z : Point N (d + 1) => phi (coordinatePrefix hld' (section16Init z))) =
-          fun z => phi (coordinatePrefix hld z) := by abel
-      rw [hdom, hfun] at hp
-      refine MultiplyLinearWith.weaken hp ?_ ?_ ?_
-      · intro s _ _
-        apply max_le (max_le (le_max_left _ _) ?_) (le_max_right _ _)
-        exact le_trans (by exact_mod_cast Nat.pow_le_pow_right (by norm_num) (Nat.le_succ d))
-          (le_max_right _ _)
-      · intro s hs hs1
-        have := (hE s hs hs1).1
-        positivity
-      · intro s _ _
-        rw [show d + 1 - l = d - l + 1 by omega, pow_succ, div_div]
+        ext z; simp [lastProductSet]; rfl
+      rw [hdom] at hp
+      refine hp.weaken (fun s _ _ => ?_) (fun s hs hs1 => div_pos (hE s hs hs1).1 (by positivity))
+        (fun s _ _ => by rw [show d + 1 - l = d - l + 1 by omega, pow_succ, div_div])
+      exact max_le (max_le (le_max_left _ _) ((Nat.cast_le.mpr (Nat.pow_le_pow_right
+        (by norm_num) (Nat.le_succ d))).trans (le_max_right _ _))) (le_max_right _ _)
 
 /-- **Any embedded set of active coordinates, for arbitrary controls.** -/
 theorem MultiplyLinearWith.lift_embedding {N l d : Nat} [NeZero N] [Fact N.Prime]

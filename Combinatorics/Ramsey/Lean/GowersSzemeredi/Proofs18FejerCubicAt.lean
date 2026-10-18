@@ -63,33 +63,25 @@ theorem FejerOddSquareAt.twistedDiscrepancy {alpha e T₀ : Real} (h : FejerOddS
         fejerCubicTwistedDiscrepancyParameter alpha * N ≤
           ∑ j, ‖∑ x ∈ (R j).carrier, phaseTwist f phi x‖ := by
   let a := fejerCubicLocalQuadraticParameter alpha
-  let b := quadraticDiscrepancyParameter a
   let eta := (2 : Real) ^ (-(58 : Int)) * alpha ^ 2 * (alpha / 2) ^ ((2 : Nat) ^ 42)
   let T := max 4 (quadraticExponentialThreshold a)
   have ha : 0 < a := fejerCubicLocalQuadraticParameter_pos hα
-  have haone : a ≤ 1 := fejerCubicLocalQuadraticParameter_le_one hα.le hαone
-  have hb : 0 < b := by dsimp [b, quadraticDiscrepancyParameter]; positivity
-  obtain ⟨ht, htone⟩ := fejerCubicLocalCountExponent_bounds hα hαone
-  have hσ : 0 ≤ quadraticDiscrepancyExponent a := by
-    change 0 < quadraticDiscrepancyExponent a / 16 at ht
-    linarith only [ht]
-  have hσ16 : quadraticDiscrepancyExponent a ≤ 16 := by
-    change quadraticDiscrepancyExponent a / 16 ≤ 1 at htone
-    linarith only [htone]
+  obtain ⟨ht, htone⟩ : 0 < quadraticDiscrepancyExponent a / 16 ∧
+      quadraticDiscrepancyExponent a / 16 ≤ 1 := fejerCubicLocalCountExponent_bounds hα hαone
   have hparam : (eta / 2) / (2 * (2 + 2 : Nat) : Real) ^ (2 + 2) = a := by
     dsimp [eta, a, fejerCubicLocalQuadraticParameter]
     generalize (alpha / 2) ^ ((2 : Nat) ^ 42) = z
     norm_num
     ring
   have hbound : FunctionDiscrepancyBound 2
-      ((eta / 2) / (2 * (2 + 2 : Nat) : Real) ^ (2 + 2)) b
+      ((eta / 2) / (2 * (2 + 2 : Nat) : Real) ^ (2 + 2)) (quadraticDiscrepancyParameter a)
       (quadraticDiscrepancyExponent a) (quadraticExponentialThreshold a) := by
     rw [hparam]
-    exact quadratic_function_discrepancy_bound ha haone
+    exact quadratic_function_discrepancy_bound ha
+      (fejerCubicLocalQuadraticParameter_le_one hα.le hαone)
   intro N _ _ hN f hf hnot
-  have hNloc : T₀ ≤ (N : Real) := (le_max_left _ _).trans ((le_max_right _ _).trans hN)
   obtain ⟨phi, K, l, Q, hpoly, hQ, hproper, hlength, hupper, hfail⟩ :=
-    h.localized hα N hNloc f hf hnot
+    h.localized hα N ((le_max_left _ _).trans ((le_max_right _ _).trans hN)) f hf hnot
   have hlarge : 12 * max 2 T ≤ (N : Real) ^ e := by
     simpa only [one_mul] using positivePowerThreshold_spec zero_lt_one he
       ((le_max_right _ _).trans ((le_max_right _ _).trans hN) :
@@ -98,31 +90,27 @@ theorem FejerOddSquareAt.twistedDiscrepancy {alpha e T₀ : Real} (h : FejerOddS
   have hl : 2 ≤ l := by exact_mod_cast ((le_max_left 2 T).trans hlmax)
   have hT : quadraticExponentialThreshold a ≤ (l : Real) :=
     (le_max_right _ _).trans ((le_max_right 2 T).trans hlmax)
-  have hNreal : (256 : Real) ≤ N := (le_max_left _ _).trans hN
-  have hroot0 := Real.sqrt_nonneg (N : Real)
-  have hrootsq := Real.sq_sqrt (Nat.cast_nonneg N : (0 : Real) ≤ N)
-  have hroot : 4 ≤ Real.sqrt N := by nlinarith only [hNreal, hroot0, hrootsq]
-  have hrootprod := mul_nonneg hroot0 (sub_nonneg.mpr hroot)
+  -- `4 ≤ √N`, so a cell of length at most `√N` fits four times
+  have hroot : (4 : Real) ≤ Real.sqrt N :=
+    Real.le_sqrt_of_sq_le (by linarith [(le_max_left _ _).trans hN])
   have hgeom (i : Fin K) : l ≤ (Q i).length ∧ (Q i).length ≤ l + 1 ∧
       (2 + 2) * (Q i).length ≤ N := by
-    have hs : (4 : Real) * (Q i).length ≤ N := by nlinarith only [hupper i, hrootsq, hrootprod]
+    have hs : (4 : Real) * (Q i).length ≤ N := (mul_le_mul hroot (hupper i) (by positivity)
+      (by positivity)).trans_eq (Real.mul_self_sqrt (Nat.cast_nonneg _))
     have hs' : 4 * (Q i).length ≤ N := by exact_mod_cast hs
     rcases (hproper i).2 with hi | hi <;> omega
-  obtain ⟨J, R, hR, hp, hc, hd⟩ := hbound.localized_partition (by dsimp [eta]; positivity) hb.le hσ hσ16
-    (phaseTwist f phi) (phaseTwist_discValued hf phi) Q hQ (fun i => (hproper i).1)
-    hl hT (by omega) hgeom hfail
+  obtain ⟨J, R, hR, hp, hc, hd⟩ := hbound.localized_partition (by positivity)
+    (by unfold quadraticDiscrepancyParameter; positivity) (by linarith) (by linarith)
+    (phaseTwist f phi) (phaseTwist_discValued hf phi) Q hQ (fun i => (hproper i).1) hl hT
+    (by omega) hgeom hfail
   simp only [show (2 * (2 + 2 : Nat) : Real) = 8 by norm_num] at hc
-  refine ⟨phi, l, J, R, hpoly, hlength, hR, hp, hc, ?_⟩
-  have hmassparam : eta / 2 = fejerCubicLocalizedMassParameter alpha := by
+  have hmass : eta / 2 = fejerCubicLocalizedMassParameter alpha := by
     dsimp [eta, fejerCubicLocalizedMassParameter]
     generalize (alpha / 2) ^ ((2 : Nat) ^ 42) = z
     norm_num
     ring
-  have hmass : eta * b / 2 = fejerCubicTwistedDiscrepancyParameter alpha := by
-    change eta * b / 2 = fejerCubicLocalizedMassParameter alpha * b
-    rw [← hmassparam]
-    ring
-  simpa only [hmass] using hd
+  refine ⟨phi, l, J, R, hpoly, hlength, hR, hp, hc, ?_⟩
+  rwa [mul_div_right_comm, hmass] at hd
 
 /-- The common-cell-length count as a power of the modulus, at any exponent. -/
 theorem fejer_cubic_twisted_count_power_at {alpha e : Real} (hα : 0 < alpha)

@@ -18,76 +18,39 @@ theorem quadratic_iteration_log_budget {delta : Real} (hδ : 0 < delta) (hδone 
         |Real.log (intervalQuadraticLengthFactor delta)| ≤
       quadraticIterationLogBudgetConstant *
         (2 / intervalQuadraticUniformityParameter delta) ^ (25378984 : Nat) := by
-  let alpha := intervalQuadraticUniformityParameter delta
-  let u := 2 / alpha
-  let D := 4 + 6 * section5LocalRefinementConstant 2 1
-  let E := D + 8229
-  let C := 8 * section5LocalRefinementConstant 1 1
-  have hα : 0 < alpha := intervalQuadraticUniformityParameter_pos hδ
-  have hαone : alpha ≤ 1 := intervalQuadraticUniformityParameter_le_one hδ.le hδone
-  have hD : 0 < D := by dsimp [D]; have := section5LocalRefinementConstant_pos 2 1; positivity
-  have hC : 0 < C := by dsimp [C]; exact mul_pos (by norm_num) (section5LocalRefinementConstant_pos _ _)
-  have hu : 2 ≤ u := (le_div_iff₀ hα).mpr (by linarith)
-  have huone : 1 ≤ u := by linarith
-  have hupow : 1 ≤ u ^ (25378984 : Nat) := one_le_pow₀ huone
-  have huP : u ≤ u ^ (25378984 : Nat) := by
-    simpa only [pow_one] using pow_le_pow_right₀ huone (by norm_num : 1 ≤ 25378984)
-  obtain ⟨hτ, _, _, hc⟩ := quadratic_interval_parameters_inv_upper hα hαone
-  have hτP : (quadraticDiscrepancyParameter alpha)⁻¹ ≤ u ^ (25378984 : Nat) :=
-    hτ.trans (pow_le_pow_right₀ huone (by norm_num : 12381 ≤ 25378984))
-  have hd4 : (delta ^ 4)⁻¹ ≤ u := by
-    calc
-      _ ≤ alpha⁻¹ := (inv_le_inv₀ (pow_pos hδ 4) hα).mpr
-        (intervalQuadraticUniformityParameter_le_pow_four hδ.le hδone)
-      _ ≤ _ := by dsimp [u]; rw [div_eq_mul_inv]; nlinarith [inv_pos.mpr hα]
-  have hlin : E * u ^ (25378984 : Nat) ≤ Real.exp (E * u ^ (25378984 : Nat)) :=
-    (le_add_of_nonneg_right (by norm_num : (0 : Real) ≤ 1)).trans (Real.add_one_le_exp _)
-  have hT : intervalQuadraticStepThreshold delta ≤ Real.exp (E * u ^ (25378984 : Nat)) := by
-    unfold intervalQuadraticStepThreshold
-    apply max_le
-    · apply le_trans _ hlin
-      calc
-        (4 : Real) ≤ E := by dsimp [E]; linarith only [hD]
-        _ ≤ E * u ^ (25378984 : Nat) := le_mul_of_one_le_right
-          (by dsimp [E]; linarith only [hD]) hupow
-    · apply max_le
-      · change Real.exp (D * u ^ (25378984 : Nat)) ≤ _
-        apply Real.exp_le_exp.mpr
-        exact mul_le_mul_of_nonneg_right (by dsimp [E]; linarith) (by positivity)
-      · apply max_le
-        · calc
-            _ ≤ 32 * u ^ (25378984 : Nat) := by
-              rw [div_eq_mul_inv]
-              exact mul_le_mul_of_nonneg_left hτP (by norm_num)
-            _ ≤ E * u ^ (25378984 : Nat) :=
-              mul_le_mul_of_nonneg_right (by dsimp [E]; linarith) (by positivity)
-            _ ≤ _ := hlin
-        · calc
-            _ ≤ 8193 * u := by rw [div_eq_mul_inv]; exact mul_le_mul_of_nonneg_left hd4 (by norm_num)
-            _ ≤ 8193 * u ^ (25378984 : Nat) := mul_le_mul_of_nonneg_left huP (by norm_num)
-            _ ≤ E * u ^ (25378984 : Nat) :=
-              mul_le_mul_of_nonneg_right (by dsimp [E]; linarith) (by positivity)
-            _ ≤ _ := hlin
-  have hTfour : 4 ≤ intervalQuadraticStepThreshold delta := le_max_left _ _
-  have hlogT : Real.log (max 1 (intervalQuadraticStepThreshold delta)) ≤ E * u ^ (25378984 : Nat) := by
-    rw [max_eq_right (by linarith : 1 ≤ intervalQuadraticStepThreshold delta)]
-    exact (Real.log_le_iff_le_exp (by linarith)).mpr hT
+  have hα := intervalQuadraticUniformityParameter_pos hδ
+  have hαone := intervalQuadraticUniformityParameter_le_one hδ.le hδone
+  obtain ⟨hτ, -, -, hc⟩ := quadratic_interval_parameters_inv_upper hα hαone
   have hcpos := (intervalQuadratic_constants_pos hδ).2.2
-  have hcone : intervalQuadraticLengthFactor delta ≤ 1 := quadratic_interval_length_factor_le_one hα hαone
-  have hlogc : |Real.log (intervalQuadraticLengthFactor delta)| ≤ C * u ^ (25378984 : Nat) := by
-    calc
-      _ = -Real.log (intervalQuadraticLengthFactor delta) :=
-        abs_of_nonpos (Real.log_nonpos hcpos.le hcone)
-      _ = Real.log (intervalQuadraticLengthFactor delta)⁻¹ := (Real.log_inv _).symm
-      _ ≤ (intervalQuadraticLengthFactor delta)⁻¹ := Real.log_le_self (inv_nonneg.mpr hcpos.le)
-      _ ≤ C * u ^ (210541 : Nat) := hc
-      _ ≤ _ := mul_le_mul_of_nonneg_left
-        (pow_le_pow_right₀ huone (by norm_num : 210541 ≤ 25378984)) hC.le
-  change _ ≤ quadraticIterationLogBudgetConstant * u ^ (25378984 : Nat)
-  have heq : quadraticIterationLogBudgetConstant = 1 + E + C := by
-    dsimp [quadraticIterationLogBudgetConstant, E, D, C]
-    ring
-  rw [heq]
-  nlinarith only [hlogT, hlogc, hupow]
+  have hcone := quadratic_interval_length_factor_le_one hα hαone
+  have hu : 1 ≤ 2 / intervalQuadraticUniformityParameter delta :=
+    (le_div_iff₀ hα).mpr (by linarith)
+  have hd4 : (delta ^ 4)⁻¹ ≤ 2 / intervalQuadraticUniformityParameter delta := by
+    rw [← inv_div]
+    exact inv_anti₀ (by positivity)
+      (by linarith [intervalQuadraticUniformityParameter_le_pow_four hδ.le hδone])
+  have hS := section5LocalRefinementConstant_pos 2 1
+  have hC := section5LocalRefinementConstant_pos 1 1
+  unfold quadraticIterationLogBudgetConstant intervalQuadraticStepThreshold
+    quadraticExponentialThreshold
+  -- opaque `u = 2/α` and `P = u^25378984`, so that no tactic expands the power
+  generalize 2 / intervalQuadraticUniformityParameter delta = u at hu hd4 hτ hc ⊢
+  have hpow (n : Nat) (hn : n ≤ 25378984) : u ^ n ≤ u ^ 25378984 := pow_le_pow_right₀ hu hn
+  have hP : 1 ≤ u ^ 25378984 := one_le_pow₀ hu
+  generalize u ^ (25378984 : Nat) = P at hpow hP ⊢
+  have hSP := mul_nonneg hS.le (zero_le_one.trans hP)
+  have hE := Real.add_one_le_exp ((8233 + 6 * section5LocalRefinementConstant 2 1) * P)
+  calc _ ≤ 1 + (8233 + 6 * section5LocalRefinementConstant 2 1) * P +
+        8 * section5LocalRefinementConstant 1 1 * P := by
+        gcongr 1 + ?_ + ?_
+        · refine (Real.log_le_iff_le_exp (by positivity)).mpr (max_le (by linarith)
+            (max_le (by linarith) (max_le (Real.exp_le_exp.mpr ?_) (max_le ?_ ?_))))
+          · exact mul_le_mul_of_nonneg_right (by linarith) (zero_le_one.trans hP)
+          · rw [div_eq_mul_inv]; linarith [hτ.trans (hpow 12381 (by norm_num))]
+          · rw [div_eq_mul_inv]; linarith [hpow 1 (by norm_num)]
+        · rw [abs_of_nonpos (Real.log_nonpos hcpos.le hcone), ← Real.log_inv]
+          exact (Real.log_le_self (inv_nonneg.mpr hcpos.le)).trans (hc.trans
+            (mul_le_mul_of_nonneg_left (hpow _ (by norm_num)) (mul_pos (by norm_num) hC).le))
+    _ ≤ _ := by linarith
 
 end LeanProofs.GowersSzemeredi

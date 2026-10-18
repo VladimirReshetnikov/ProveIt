@@ -131,76 +131,31 @@ private lemma section16_maximal_graph_family {N : Nat} [NeZero N]
     simpa [candidateFamilies] using (Finset.mem_filter.mp hFmem).2
   refine ⟨F, hF, ?_, candidateFamily_card_bound hF⟩
   by_contra hsmall
-  have hlarge : theta * N ≤
-      (relationProjection (Gamma \ candidateUnion F)).card :=
-    le_of_not_gt hsmall
-  let Delta := Gamma \ candidateUnion F
-  let B := relationProjection Delta
-  let phi := relationSelection Delta
-  have hDeltaRelation : RelationProductProperty gamma Delta := by
-    intro A psi hA
-    apply hrelation A psi
-    intro x hx
-    exact Finset.sdiff_subset (hA x hx)
-  obtain ⟨C, hC⟩ := section16_product_restriction gamma theta hgamma
-    hgammaOne htheta hthetaOne hprime Delta hDeltaRelation B phi hlarge
-    (relationSelection_graph Delta)
-  have hCgraphDelta : candidateGraph C ⊆ Delta := by
-    intro z hz
-    rw [candidateGraph, partialGraph, Finset.mem_image] at hz
-    obtain ⟨x, hx, rfl⟩ := hz
+  -- a new large piece `C` inside the uncovered part `Γ \ ⋃ F`
+  obtain ⟨C, hC⟩ := section16_product_restriction gamma theta hgamma hgammaOne htheta
+    hthetaOne hprime (Gamma \ candidateUnion F)
+    (fun A psi hA => hrelation A psi fun x hx => Finset.sdiff_subset (hA x hx)) _ _
+    (le_of_not_gt hsmall) (relationSelection_graph _)
+  have hCsub : candidateGraph C ⊆ Gamma \ candidateUnion F := fun z hz => by
+    obtain ⟨x, hx, rfl⟩ := Finset.mem_image.mp hz
     exact hC.2.1 x hx
-  have hCgraphGamma : GraphContained C.1 C.2 Gamma := by
-    intro x hx
-    exact Finset.sdiff_subset (hC.2.1 x hx)
-  have hCorig : IsBaseCandidate Gamma (lemma163Alpha gamma theta) C :=
-    ⟨hC.1, hCgraphGamma, hC.2.2⟩
-  have hCnonempty : (candidateGraph C).Nonempty := by
-    have hCcardPosReal : (0 : Real) < C.1.card :=
-      (mul_pos (lemma163Alpha_pos hgamma htheta) (by exact_mod_cast NeZero.pos N)).trans_le
-        hC.1
-    have hCcardPos : 0 < C.1.card := by exact_mod_cast hCcardPosReal
-    obtain ⟨x, hx⟩ := Finset.card_pos.mp hCcardPos
-    exact ⟨(x, C.2 x), by
-      rw [candidateGraph, partialGraph, Finset.mem_image]
-      exact ⟨x, hx, rfl⟩⟩
-  have hCnot : C ∉ F := by
-    intro hCF
-    obtain ⟨z, hzC⟩ := hCnonempty
-    have hzDelta := hCgraphDelta hzC
-    have hzUnion : z ∈ candidateUnion F := by
-      rw [candidateUnion, Finset.mem_biUnion]
-      exact ⟨C, hCF, hzC⟩
-    exact (Finset.mem_sdiff.mp hzDelta).2 hzUnion
-  have hInsert : CandidateFamily Gamma (lemma163Alpha gamma theta) (insert C F) := by
-    constructor
-    · intro D hD
-      rw [Finset.mem_insert] at hD
-      rcases hD with rfl | hDF
-      · exact hCorig
-      · exact hF.1 D hDF
-    · intro D hD E hE hDE
-      rw [Finset.mem_insert] at hD hE
-      rcases hD with hDC | hDF
-      · subst D
-        rcases hE with hEC | hEF
-        · subst E
-          exact (hDE rfl).elim
-        · exact candidate_disjoint_of_subset_sdiff
-            (F := F) (Gamma := Gamma) (A := Delta) Finset.Subset.rfl C
-            hCgraphDelta E hEF
-      · rcases hE with hEC | hEF
-        · subst E
-          exact (candidate_disjoint_of_subset_sdiff
-            (F := F) (Gamma := Gamma) (A := Delta) Finset.Subset.rfl C
-            hCgraphDelta D hDF).symm
-        · exact hF.2 D hDF E hEF hDE
-  have hInsertMem : insert C F ∈
-      candidateFamilies Gamma (lemma163Alpha gamma theta) := by
-    simp [candidateFamilies, hInsert]
-  have hmax := hFmax (insert C F) hInsertMem
-  rw [Finset.card_insert_of_notMem hCnot] at hmax
-  omega
+  have hdisj := candidate_disjoint_of_subset_sdiff (F := F) Finset.Subset.rfl C hCsub
+  have hCne : (candidateGraph C).Nonempty := by
+    rw [candidateGraph, partialGraph, Finset.image_nonempty, ← Finset.card_pos]
+    exact_mod_cast (mul_pos (lemma163Alpha_pos hgamma htheta)
+      (by exact_mod_cast NeZero.pos N)).trans_le hC.1
+  have hCF : C ∉ F := fun h =>
+    hCne.ne_empty ((Finset.disjoint_self_iff_empty _).mp (hdisj C h))
+  -- so `insert C F` is a strictly larger candidate family
+  have hins : CandidateFamily Gamma (lemma163Alpha gamma theta) (insert C F) := by
+    refine ⟨fun D hD => ?_, fun D hD E hE hDE => ?_⟩
+    · rcases Finset.mem_insert.mp hD with rfl | hDF
+      exacts [⟨hC.1, fun x hx => Finset.sdiff_subset (hC.2.1 x hx), hC.2.2⟩, hF.1 D hDF]
+    · rcases Finset.mem_insert.mp hD with rfl | hDF <;>
+        rcases Finset.mem_insert.mp hE with rfl | hEF
+      exacts [(hDE rfl).elim, hdisj E hEF, (hdisj D hDF).symm, hF.2 D hDF E hEF hDE]
+  exact (Finset.card_lt_card (Finset.ssubset_insert hCF)).not_ge
+    (hFmax (insert C F) (by simp [candidateFamilies, hins]))
 
 private noncomputable def section16GoodBase {N : Nat} [NeZero N]
     (Gamma : Finset (Point N 1 × ZMod N)) (F : Finset (BaseCandidate N)) :

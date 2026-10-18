@@ -14,46 +14,31 @@ theorem exists_nonzero_small_multiples {N q L : Nat} [NeZero N]
     (a : Fin q → ZMod N) {e : Real} (he : 0 < e) (hqe : 2 * (q : Real) * e ≤ 1) :
     ∃ d : ZMod N, d != 0 ∧ ∀ i,
       (centeredAbs (a i * d) : Real) ≤ (L : Real) ^ (-e) * N := by
-  let delta := (L : Real) ^ (-e)
   have hL0 : (0 : Real) < L := by exact_mod_cast hL
   have hL1 : (1 : Real) ≤ L := by exact_mod_cast hL
-  have hdelta : 0 < delta := Real.rpow_pos_of_pos hL0 _
-  have hd1 : delta ≤ 1 := Real.rpow_le_one_of_one_le_of_nonpos hL1 (by linarith)
-  by_cases hhalf : (1 / 2 : Real) ≤ delta
-  · have hNne : N ≠ 1 := by omega
-    have hone : (1 : ZMod N) != 0 := bne_iff_ne.mpr (by
-      exact fun hz => hNne (ZMod.one_eq_zero_iff.mp hz))
-    refine ⟨1, hone, fun i => ?_⟩
-    exact (centeredAbs_le_half_modulus _).trans (by
-      have hb := mul_le_mul_of_nonneg_right hhalf (Nat.cast_nonneg N)
-      simpa only [one_div_mul_eq_div] using hb)
-  · have hsmall : delta < 1 / 2 := lt_of_not_ge hhalf
-    let K : Finset (ZMod N) := Finset.univ.image a
-    have hK : K.Nonempty := ⟨a ⟨0, hq⟩, Finset.mem_image.mpr ⟨⟨0, hq⟩, Finset.mem_univ _, rfl⟩⟩
-    have hc : 0 < (K.card : Real) := by exact_mod_cast Finset.card_pos.mpr hK
-    have hcard : (K.card : Real) ≤ q := by
-      exact_mod_cast (Finset.card_image_le.trans (le_of_eq (Finset.card_fin q)))
-    have hexp : 2 * e ≤ 1 / (K.card : Real) := by
-      apply (le_div_iff₀ hc).mpr
-      have h := mul_le_mul_of_nonneg_left hcard (show 0 ≤ 2 * e by positivity)
-      nlinarith only [h, hqe]
-    have hpow : (N : Real) ^ (-(1 / (K.card : Real))) ≤ delta ^ 2 := by
-      calc
-        _ ≤ (L : Real) ^ (-(1 / (K.card : Real))) :=
-          Real.rpow_le_rpow_of_nonpos hL0 (by exact_mod_cast hLN) (neg_nonpos.mpr (by positivity))
-        _ ≤ (L : Real) ^ (-(2 * e)) :=
-          Real.rpow_le_rpow_of_exponent_le hL1 (neg_le_neg hexp)
-        _ = delta ^ 2 := by
-          dsimp [delta]
-          rw [← Real.rpow_natCast, ← Real.rpow_mul hL0.le]
-          congr 1
-          push_cast
-          ring
-    have hthreshold : 2 * (N : Real) ^ (-(1 / (K.card : Real))) < delta := by
-      nlinarith only [hpow, hsmall, hdelta]
-    obtain ⟨d, hd, hdne⟩ := (lemma_7_7_holds N K delta hN hdelta hd1).2 hK hthreshold
-    refine ⟨d, hdne, fun i => ?_⟩
-    exact (Finset.mem_filter.mp hd).2 (a i) (Finset.mem_image.mpr ⟨i, Finset.mem_univ _, rfl⟩)
+  have hdelta : 0 < (L : Real) ^ (-e) := Real.rpow_pos_of_pos hL0 _
+  by_cases hhalf : (1 / 2 : Real) ≤ (L : Real) ^ (-e)
+  · -- the step `1` already has precision `1 / 2`
+    haveI : Fact (1 < N) := ⟨hN⟩
+    refine ⟨1, bne_iff_ne.mpr one_ne_zero, fun i => (centeredAbs_le_half_modulus _).trans ?_⟩
+    linarith [mul_le_mul_of_nonneg_right hhalf (Nat.cast_nonneg N : (0 : Real) ≤ N)]
+  let K : Finset (ZMod N) := Finset.univ.image a
+  have hK : K.Nonempty := ⟨a ⟨0, hq⟩, Finset.mem_image_of_mem a (Finset.mem_univ _)⟩
+  have hc : 0 < (K.card : Real) := by exact_mod_cast hK.card_pos
+  have hcard : (K.card : Real) ≤ q := by
+    exact_mod_cast Finset.card_image_le.trans (Finset.card_fin q).le
+  have hexp : 2 * e ≤ 1 / (K.card : Real) := (le_div_iff₀ hc).mpr (by
+    linarith [mul_le_mul_of_nonneg_left hcard (by positivity : (0 : Real) ≤ 2 * e)])
+  -- `N ^ (-1 / |K|) ≤ L ^ (-1 / |K|) ≤ L ^ (-2 e)`
+  have hpow : (N : Real) ^ (-(1 / (K.card : Real))) ≤ (L : Real) ^ (-e) * (L : Real) ^ (-e) := by
+    rw [← Real.rpow_add hL0]
+    exact (Real.rpow_le_rpow_of_nonpos hL0 (by exact_mod_cast hLN)
+      (neg_nonpos.mpr (by positivity))).trans (Real.rpow_le_rpow_of_exponent_le hL1 (by linarith))
+  obtain ⟨d, hd, hdne⟩ := (lemma_7_7_holds N K _ hN hdelta
+    (Real.rpow_le_one_of_one_le_of_nonpos hL1 (by linarith))).2 hK
+    (by linarith [mul_lt_mul_of_pos_left (lt_of_not_ge hhalf) hdelta])
+  exact ⟨d, hdne, fun i => (Finset.mem_filter.mp hd).2 (a i)
+    (Finset.mem_image_of_mem a (Finset.mem_univ i))⟩
 
 /-- Stage 13.5 data at a length exponent `eL` and a precision exponent `eP`. -/
 def IsStage135At {N : Nat} [NeZero N] (S : Section13Context N)
@@ -82,49 +67,33 @@ theorem stage135_singleton_at {N : Nat} [NeZero N]
     (hqe : 2 * (D.q : Real) * eP ≤ 1) (hscale : (D.P.length : Real) ^ eL ≤ 2) :
     ∃ E : Stage135Data N, IsStage135At S D E eL eP := by
   classical
-  have hP := h134.2.2.1
-  have hH := h134.2.2.2.1
-  have hw : S.alpha ^ 32 * (N : Real) ^ 31 * D.P.length / 8 ≤
-      (goodHeightWeight S (D.P.carrier ∩ D.H) : Real) := by
-    rw [Finset.inter_eq_right.mpr hH]
-    exact h134.2.2.2.2.2.2.2.1
-  have hc := stage135_critical_count_of_weight S D D.P hP hw
-  have hmass : 0 < S.alpha ^ 32 * (D.P.length : Real) / 16 :=
-    div_pos (mul_pos (pow_pos S.alpha_pos _) (by exact_mod_cast hL)) (by norm_num)
-  have hcard : 0 < (criticalHeights S D ⟨D.P⟩).card := by exact_mod_cast hmass.trans_le hc
-  obtain ⟨h, hh⟩ := Finset.card_pos.mp hcard
+  obtain ⟨hq, hstep, hP, hH, -, -, -, hw, -⟩ := h134
+  have hmass : 0 < S.alpha ^ 32 * (D.P.length : Real) / 16 := by
+    have := S.alpha_pos
+    positivity
+  obtain ⟨h, hh⟩ := Finset.card_pos.mp (Nat.cast_pos.mp (hmass.trans_le
+    (stage135_critical_count_of_weight S D D.P hP (by rwa [Finset.inter_eq_right.mpr hH]))))
   obtain ⟨hhPH, hhstrong⟩ := Finset.mem_filter.mp hh
   obtain ⟨hhP, hhH⟩ := Finset.mem_inter.mp hhPH
   have hNtwo : 2 ≤ N := by
-    by_contra hN
-    have hN1 : N = 1 := by have := NeZero.pos N; omega
-    subst N
-    exact (bne_iff_ne.mp h134.2.1) (Subsingleton.elim _ _)
-  have hLN : D.P.length ≤ N := by
-    rw [← hP]
-    simpa only [ZMod.card] using Finset.card_le_univ D.P.carrier
-  obtain ⟨d, hd, hsmall⟩ := exists_nonzero_small_multiples hNtwo h134.1 hL hLN
+    have := ZMod.nontrivial_iff.mp (nontrivial_of_ne _ _ (bne_iff_ne.mp hstep))
+    have := NeZero.ne N
+    omega
+  obtain ⟨d, hd, hsmall⟩ := exists_nonzero_small_multiples hNtwo hq hL
+    (by rw [← hP]; exact (Finset.card_le_univ _).trans_eq (ZMod.card N))
     (fun i => D.a i * h + D.b i) he hqe
+  -- the one-point progression `{h}` with step `d`
   let Q : ModAP N := ⟨h, d, 1⟩
   have hQ : Q.carrier = {h} := by simp [Q, ModAP.carrier]
-  have hproper : Q.IsProper := by change Q.carrier.card = 1; rw [hQ]; simp
-  have hcrit : criticalHeights S D ⟨Q⟩ = {h} := by
-    ext x
-    simp only [criticalHeights, hQ, Finset.mem_filter, Finset.mem_inter, Finset.mem_singleton]
-    exact ⟨fun hx => hx.1.1, fun hx => by subst x; exact ⟨⟨rfl, hhH⟩, hhstrong⟩⟩
-  refine ⟨⟨Q⟩, hd, hproper, ?_, ?_, ?_, ?_⟩
-  · rw [hQ]
-    exact Finset.singleton_subset_iff.mpr hhP
+  refine ⟨⟨Q⟩, hd, (by change Q.carrier.card = 1; rw [hQ, Finset.card_singleton]),
+    (by rw [hQ]; exact Finset.singleton_subset_iff.mpr hhP), ?_,
+    fun i x hx => (by rw [hQ, Finset.mem_singleton] at hx; subst x; exact hsmall i), ?_⟩
   · simp only [Q, Nat.cast_one]
     linarith only [hscale]
-  · intro i x hx
-    rw [hQ, Finset.mem_singleton] at hx
-    subst x
-    exact hsmall i
-  · rw [hcrit, Finset.card_singleton]
-    have ha : S.alpha ^ 32 ≤ 1 := pow_le_one₀ S.alpha_pos.le S.alpha_at_most_one
-    simp only [Q, Nat.cast_one, mul_one]
-    linarith only [ha]
+  · have h1 : (1 : Real) ≤ (criticalHeights S D ⟨Q⟩).card := by
+      exact_mod_cast Finset.card_pos.mpr ⟨h, by simp [criticalHeights, hQ, hhH, hhstrong]⟩
+    simp only [Q, Nat.cast_one, mul_one] at h1 ⊢
+    linarith only [h1, pow_le_one₀ (n := 32) S.alpha_pos.le S.alpha_at_most_one]
 
 /-- The entire singleton-scale case from the printed Lemma 13.5 proof.
 A simultaneous Bohr step replaces the unstated smallness argument. -/

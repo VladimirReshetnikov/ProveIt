@@ -120,53 +120,34 @@ theorem envBound_stepKx3 (P : GenParamsJT3) {μV μK μ : Nat} (H : P.CHyp μV �
   have hX := two_div_ge_two ha ha2
   -- everything that mentions `P.k`, before naming it
   obtain ⟨he0, he8, hei, hy0, hyle, hyi⟩ := P.yIn_boundsJT3 ha ha2 H.hV H.hVμ H.hμ0
-  have hy2 : P.yIn alpha ≤ 1 / 2 := hyle.trans ha2
-  obtain ⟨β, σ, T, hB, b0, b1, s0, s16, bi, si, Ti⟩ := hlow _ hy0 hy2
+  obtain ⟨β, σ, T, hB, b0, b1, s0, s16, bi, si, Ti⟩ := hlow _ hy0 (hyle.trans ha2)
   have hstep := P.inverse_step H.hV H.hK H.hp hk hcov hrec ha ha2 hB b0 s0 s16
   obtain ⟨hEl0, hEli⟩ := P.Eloc_inv_leJT3 H ha ha2
   obtain ⟨-, hEl2, -⟩ := P.Eloc_pos_le H.hV H.hp ha ha2
   have hTl := P.Tloc_le_expJT3 H hk ha ha2
   set k := P.k
-  set E := GenParamsJT3.expDegJT3 k P.μ0 μK
-  set Th := GenParamsJT3.threshDegJT3 k P.μ0 μK with hThdef
-  set dd := GenParamsJT3.densDegJT3 k P.μ0 with hdddef
-  set M1 := dd + 1 + μ with hM1def
-  have hETh : E + 4 ≤ Th := by rw [hThdef]; unfold GenParamsJT3.threshDegJT3; exact le_max_left _ _
+  set M1 := GenParamsJT3.densDegJT3 k P.μ0 + 1 + μ with hM1def
   obtain ⟨-, hYμ⟩ := input_scale_le (μ := μ) ha ha2 hy0 hyi
   have bi' : β⁻¹ ≤ (2 / alpha) ^ (2 ^ M1) := bi.trans hYμ
-  have si' : σ⁻¹ ≤ Real.exp ((2 / alpha) ^ (2 ^ M1)) := si.trans (Real.exp_le_exp.mpr hYμ)
-  have Ti' : T ≤ Real.exp (Real.exp ((2 / alpha) ^ (2 ^ M1))) :=
-    Ti.trans (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr hYμ))
   have hei' : (P.eta alpha)⁻¹ ≤ (2 / alpha) ^ (2 ^ M1) :=
-    pw_mono hX hei (by rw [hM1def, hdddef]; unfold GenParamsJT3.densDegJT3; omega)
+    pw_mono hX hei (by rw [hM1def]; unfold GenParamsJT3.densDegJT3; omega)
   have heta1 : P.eta alpha ≤ 1 := by linarith
   -- the localization exponent and `σ′`
   obtain ⟨σ0', σ16', σeq⟩ := sigma_step (d := k + 1) hEl0 hEl2 s0 s16
-  have h32P : 32 * (polynomialPartitionConstant (k + 1 + 1) : Real) ≤
-      (2 / alpha) ^ (2 ^ (partDeg k + 4)) :=
-    mul32_nat_le_pw hX (polyPartConst_le_sharp k)
-      (Nat.lt_two_pow_self (n := partDeg k + 4))
-  set S := max (max (partDeg k + 4) (E + 3) + 1) M1 + 1
-  have hσ' : (inverseStepExponent (k + 1) (P.Eloc alpha) σ)⁻¹ ≤
-      Real.exp ((2 / alpha) ^ (2 ^ S)) := by
+  have hσ' : (inverseStepExponent (k + 1) (P.Eloc alpha) σ)⁻¹ ≤ Real.exp ((2 / alpha) ^
+      (2 ^ (max (max (partDeg k + 4) (GenParamsJT3.expDegJT3 k P.μ0 μK + 3) + 1) M1 + 1))) := by
     rw [σeq]
-    have h1 := pw_mul' hX (inv_pos.mpr hEl0).le
-      h32P hEli
-    exact ex_mul' hX (inv_pos.mpr s0).le (ex_of_pw h1) si'
-  -- the thresholds
-  have hshort := short_thr_step_le hX (k := k) hEl0 hEli Ti' hTl
-  have hinv := inv_thr_le_ex_sharp hX (k := k) he0 heta1 b0 b1 hei' bi' s0 s16 σ0' hσ'
-  -- assemble
-  refine ⟨P.eta alpha * β / 4, _, _, hstep, div_pos (mul_pos he0 b0) (by norm_num), ?_, σ0', σ16',
-    ?_, ex_mono hX hσ' ?_, ?_⟩
-  · have : P.eta alpha * β ≤ 1 := mul_le_one₀ heta1 b0.le b1
-    linarith
-  · refine pw_mono hX (inv_mul_div_four_le_pw hX he0 b0 hei' bi') ?_
-    unfold envStepKTx3; rw [← hdddef]; omega
-  · unfold envStepKTx3; rw [← hdddef, ← hThdef]; omega
-  · refine max_le (dex_mono hX hshort ?_) (dex_mono hX hinv ?_)
-    · unfold envStepKTx3; rw [← hdddef, ← hThdef]; omega
-    · unfold envStepKTx3; rw [← hdddef, ← hThdef]; omega
+    exact ex_mul' hX (inv_pos.mpr s0).le (ex_of_pw (pw_mul' hX (inv_pos.mpr hEl0).le
+      (mul32_nat_le_pw hX (polyPartConst_le_sharp k) (Nat.lt_two_pow_self (n := partDeg k + 4)))
+      hEli)) (si.trans (Real.exp_le_exp.mpr hYμ))
+  -- assemble; the thresholds are the short localization and the phase refinement
+  refine ⟨P.eta alpha * β / 4, _, _, hstep, div_pos (mul_pos he0 b0) (by norm_num),
+    by linarith [mul_le_one₀ heta1 b0.le b1], σ0', σ16',
+    pw_mono hX (inv_mul_div_four_le_pw hX he0 b0 hei' bi') ?_, ex_mono hX hσ' ?_,
+    max_le (dex_mono hX (short_thr_step_le hX (k := k) hEl0 hEli
+      (Ti.trans (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr hYμ))) hTl) ?_)
+      (dex_mono hX (inv_thr_le_ex_sharp hX (k := k) he0 heta1 b0 b1 hei' bi' s0 s16 σ0' hσ') ?_)⟩
+  all_goals (unfold envStepKTx3 GenParamsJT3.threshDegJT3; omega)
 
 /-- The Theorem 18.2 envelope at the tight base budget, without the cubic branch. -/
 def genMuXK3 : Nat → Nat
@@ -259,41 +240,28 @@ theorem polyEnvBound_stepJT3 (P : GenParamsJT3) {μV μK μ : Nat} (H : P.CHyp �
   have hX := two_div_ge_two ha ha2
   -- the input parameter, the lower-degree bound, the step and `Eloc`
   obtain ⟨he0, he8, hei, hy0, hyle, hyi⟩ := P.yIn_boundsJT3 ha ha2 H.hV H.hVμ H.hμ0
-  have hy2 : P.yIn alpha ≤ 1 / 2 := hyle.trans ha2
-  obtain ⟨β, σ, T, hB, b0, b1, s0, s16, bi, si⟩ := hlow _ hy0 hy2
+  obtain ⟨β, σ, T, hB, b0, b1, s0, s16, bi, si⟩ := hlow _ hy0 (hyle.trans ha2)
   have hstep := P.inverse_step H.hV H.hK H.hp hk hcov hrec ha ha2 hB b0 s0 s16
   obtain ⟨hEl0, hEli⟩ := P.Eloc_inv_leJT3 H ha ha2
   obtain ⟨-, hEl2, -⟩ := P.Eloc_pos_le H.hV H.hp ha ha2
   set k := P.k
-  set E := GenParamsJT3.expDegJT3 k P.μ0 μK with hEdef
-  set dd := GenParamsJT3.densDegJT3 k P.μ0 with hdddef
-  set M1 := dd + 1 + μ with hM1def
+  set M1 := GenParamsJT3.densDegJT3 k P.μ0 + 1 + μ with hM1def
   obtain ⟨-, hYμ⟩ := input_scale_le (μ := μ) ha ha2 hy0 hyi
-  have bi' : β⁻¹ ≤ (2 / alpha) ^ (2 ^ M1) := bi.trans hYμ
-  have si' : σ⁻¹ ≤ (2 / alpha) ^ (2 ^ M1) := si.trans hYμ
   have hei' : (P.eta alpha)⁻¹ ≤ (2 / alpha) ^ (2 ^ M1) :=
-    pw_mono hX hei (by rw [hM1def, hdddef]; unfold GenParamsJT3.densDegJT3; omega)
+    pw_mono hX hei (by rw [hM1def]; unfold GenParamsJT3.densDegJT3; omega)
   have heta1 : P.eta alpha ≤ 1 := by linarith
   obtain ⟨σ0', σ16', σeq⟩ := sigma_step (d := k + 1) hEl0 hEl2 s0 s16
-  have h32P : 32 * (polynomialPartitionConstant (k + 1 + 1) : Real) ≤
-      (2 / alpha) ^ (2 ^ (k + 9)) :=
-    mul32_nat_le_pw hX
-      (by simpa only [show k + 1 + 1 + 1 = k + 3 by omega]
-        using polyPartConst_le (k + 1 + 1)) (four_sq_add_five_le k)
-  set S := max (max (k + 9) (E + 3) + 1) M1 + 1
-  have hσ' : (inverseStepExponent (k + 1) (P.Eloc alpha) σ)⁻¹ ≤ (2 / alpha) ^ (2 ^ S) := by
+  have hσ' : (inverseStepExponent (k + 1) (P.Eloc alpha) σ)⁻¹ ≤ (2 / alpha) ^
+      (2 ^ (max (max (k + 9) (GenParamsJT3.expDegJT3 k P.μ0 μK + 3) + 1) M1 + 1)) := by
     rw [σeq]
-    have h1 := pw_mul' hX (inv_pos.mpr hEl0).le
-      h32P hEli
-    exact pw_mul' hX (inv_pos.mpr s0).le h1 si'
+    exact pw_mul' hX (inv_pos.mpr s0).le (pw_mul' hX (inv_pos.mpr hEl0).le
+      (mul32_nat_le_pw hX (by simpa only [show k + 1 + 1 + 1 = k + 3 by omega]
+        using polyPartConst_le (k + 1 + 1)) (four_sq_add_five_le k)) hEli) (si.trans hYμ)
   -- assemble
-  refine ⟨P.eta alpha * β / 4, _, _, hstep, div_pos (mul_pos he0 b0) (by norm_num), ?_, σ0', σ16',
-    ?_, pw_mono hX hσ' ?_⟩
-  · have : P.eta alpha * β ≤ 1 := mul_le_one₀ heta1 b0.le b1
-    linarith
-  · refine pw_mono hX (inv_mul_div_four_le_pw hX he0 b0 hei' bi') ?_
-    unfold envStepJT3; rw [← hdddef]; omega
-  · unfold envStepJT3; rw [← hdddef, ← hEdef]; omega
+  refine ⟨P.eta alpha * β / 4, _, _, hstep, div_pos (mul_pos he0 b0) (by norm_num),
+    by linarith [mul_le_one₀ heta1 b0.le b1], σ0', σ16',
+    pw_mono hX (inv_mul_div_four_le_pw hX he0 b0 hei' (bi.trans hYμ)) ?_, pw_mono hX hσ' ?_⟩
+  all_goals (unfold envStepJT3; omega)
 
 /-- The Theorem 18.1 envelope at the tight base budget. -/
 def polyGenMuJT3 : Nat → Nat
@@ -457,46 +425,35 @@ theorem corollary_16_11_polynomial {k : Nat} (hk : 2 ≤ k) :
   have H : P.CHyp (tightMuW k) (genMuKZ k) := I.hyp hk
   have hQb : ∀ l g t s, 0 < s → s ≤ 1 → 1 ≤ uCount P.V (uDegT3 l) g t s :=
     fun l g t s _ _ => one_le_uCount P.V (uDegT3 l) g t s
-  have hretile : ∀ q, Section16RetiledLinearityBound P.k q (familyRecExp P.k P.p q)
-      (familyRecThr P.k P.K P.p q) :=
-    fun q => ((I.profile k (by omega)).retiled_family
-      (fun q => familyRecThr_pos (by have := I.two_le_Kc k; omega) q) q).single
   -- the two exponents
   obtain ⟨hEl0, hEli⟩ := P.Eloc_inv_leJT3 H ha ha2
   obtain ⟨-, -, hei, -, -, -⟩ := P.yIn_boundsJT3 ha ha2 H.hV H.hVμ H.hμ0
   set D := singlePieceGlobalDensityFJ (fun l => uCount P.V (uDegT3 l)) alpha (alpha / 2) P.k
   have hD0 : 0 < D := singlePieceGlobalDensityFJ_pos ha (by linarith) hQb
-  have heta0 : 0 < P.eta alpha := singlePieceEtaFJ_pos ha (by linarith) hQb
-  have hetaD : P.eta alpha ≤ D := singlePieceEtaFJ_le_density ha (by linarith) hD0.le
-  have hDi : D⁻¹ ≤ (2 / alpha) ^ (2 ^ (GenParamsJT3.expDegJT3 k (tightMu0Z k) (genMuKZ k) + 3)) := by
-    refine (inv_anti₀ heta0 hetaD).trans (pw_mono hX hei ?_)
-    show GenParamsJT3.rhoDegJT3 k (tightMu0Z k) + tDegT3 k + 10 ≤
-      GenParamsJT3.expDegJT3 k (tightMu0Z k) (genMuKZ k) + 3
-    unfold GenParamsJT3.expDegJT3
-    omega
+  have hDi : D⁻¹ ≤ (2 / alpha) ^ (2 ^ (GenParamsJT3.expDegJT3 k (tightMu0Z k) (genMuKZ k) + 3)) :=
+    (inv_anti₀ (singlePieceEtaFJ_pos ha (by linarith) hQb)
+      (singlePieceEtaFJ_le_density ha (by linarith) hD0.le)).trans (pw_mono hX hei
+        (show GenParamsJT3.rhoDegJT3 k (tightMu0Z k) + tDegT3 k + 10 ≤
+          GenParamsJT3.expDegJT3 k (tightMu0Z k) (genMuKZ k) + 3 by
+            unfold GenParamsJT3.expDegJT3; omega))
   refine ⟨min (P.Eloc alpha) D, lt_min hEl0 hD0, ?_, ⌈P.Tloc alpha⌉₊, ?_⟩
-  · rcases min_choice (P.Eloc alpha) D with h | h
-    · rw [h]; exact hEli
-    · rw [h]; exact hDi
+  · rcases min_choice (P.Eloc alpha) D with h | h <;> rw [h] <;> assumption
   · intro N _ _ hN f hf hnot
-    have hT : P.Tloc alpha ≤ N := (Nat.le_ceil _).trans (by exact_mod_cast hN)
-    obtain ⟨hodd, h15, -, m, hscale, hwide⟩ :=
-      P.modulus_conditions H.hV H.hK H.hp ha ha2 N hT
-    obtain ⟨q, hq, B, mu, -, hmu, hBw, hcount⟩ := single_piece_frequency_box_global_cover_fejer_joint
+    obtain ⟨hodd, h15, -, m, hscale, hwide⟩ := P.modulus_conditions H.hV H.hK H.hp ha ha2 N
+      ((Nat.le_ceil _).trans (by exact_mod_cast hN))
+    obtain ⟨q, hq, B, mu, -, hmu, hBw, hc⟩ := single_piece_frequency_box_global_cover_fejer_joint
       (Qb := fun l => uCount P.V (uDegT3 l)) (Eb := fun l => uExp P.V (uDegT3 l))
       (by show 1 ≤ k; omega) ha ha2 (I.covers k) hQb
       (fun l g t s _ _ => (uExp_pos_le P.V (uDegT3 l) g t s).1)
       (fun l g t s _ _ => (uExp_pos_le P.V (uDegT3 l) g t s).2)
-      (familyRecExp P.k P.p) (familyRecThr P.k P.K P.p) hretile hodd h15 m hscale f hf hnot
+      (familyRecExp P.k P.p) (familyRecThr P.k P.K P.p)
+      (fun q => ((I.profile k (by omega)).retiled_family
+        (fun q => familyRecThr_pos (by have := I.two_le_Kc k; omega) q) q).single)
+      hodd h15 m hscale f hf hnot
     have hN1 : (1 : Real) ≤ N := by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)
-    refine ⟨B, mu, hmu, ?_, ?_⟩
-    · calc (N : Real) ^ min (P.Eloc alpha) D ≤ (N : Real) ^ P.Eloc alpha :=
-            Real.rpow_le_rpow_of_exponent_le hN1 (min_le_left _ _)
-        _ ≤ _ := hwide q hq
-        _ ≤ B.width := by exact_mod_cast hBw
-    · calc min (P.Eloc alpha) D * B.carrier.card ≤ D * B.carrier.card :=
-            mul_le_mul_of_nonneg_right (min_le_right _ _) (Nat.cast_nonneg _)
-        _ ≤ _ := hcount
+    exact ⟨B, mu, hmu, ((Real.rpow_le_rpow_of_exponent_le hN1 (min_le_left _ _)).trans
+      (hwide q hq)).trans (by exact_mod_cast hBw),
+      (mul_le_mul_of_nonneg_right (min_le_right _ _) (Nat.cast_nonneg _)).trans hc⟩
 
 end FinalInputs
 
