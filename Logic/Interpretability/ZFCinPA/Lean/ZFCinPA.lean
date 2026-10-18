@@ -122,3 +122,4 @@ import ZFCinPA.NativeTheory
 import ZFCinPA.NativeTheoryAudit
 import ZFCinPA.InternalInterpretation
 import ZFCinPA.InternalInterpretationAudit
+import ZFCinPA.NativeInterp
