@@ -11,7 +11,8 @@ The source generator and independent parser compare all ordered paths,
 operations and operands with the delivered logical-site certificate. Logical
 register numbers and break/continue depths are preserved. Compared with the
 original program, 6,241 paths change while all ordered instructions remain
-the same. Their changed control flow still requires its own bisimulation proof.
+the same. Their changed control flow is now covered by the
+[complete source bisimulation](bisim_routing245.md).
 
 The Lean identity holds for every decoder fuel at least 51, including the
 actual program's fuel 204 and root 202. `walk_eq_tree` covers every finite
@@ -66,11 +67,10 @@ python3 -B check_program_routing245.py --output /tmp/routing245-program-prepared
 python3 -B check_program_routing245.py --output /tmp/routing245-program-checked
 ```
 
-The next source obligation is the delivered 3,013-pair bisimulation with
-`Prog254`, for arbitrary registers at the empty pointer. The binary runtime,
+The delivered 3,013-pair bisimulation with `Prog254` is now fully checked in
+Lean, proving equivalence for arbitrary registers at the empty pointer.
+The binary runtime,
 complete decoder coverage, 407,915-step blank startup and final 245-state
 consistency equivalence remain separate Lean obligations. PA internalization
 also remains open. Attribution and the ordinary executable verification are
 preserved in the [candidate documentation](candidate-routing245/README.md).
-The [first bisimulation checks](bisim_routing245_pilot.md) now pass for the
-initial segment and six selected entries; the complete certificate remains open.

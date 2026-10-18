@@ -266,11 +266,29 @@ extending a stage environment by a constructible element. `peel_close` then
 removes the zero-match antecedent using a functional base environment.
 This supplies the closure mechanism without separately constructing an
 environment matching every internal parameter tuple. The opened-body proof
-remains an explicit premise. The exact schema/template combinations,
-Replacement's depth-two opening adapter and final recognizer/domain-side
-integration remain. The [pinned review](results/upstream-014b961872-source-review.json)
+remains an explicit premise. At that stage, the exact schema/template
+combinations, Replacement's depth-two opening adapter and final
+recognizer/domain-side integration remained. The
+[pinned review](results/upstream-014b961872-source-review.json)
 records source inspection only: no fresh compilation or executed axiom audit
 is claimed, and the existing `LGlueAudit` does not probe `LPeel`.
+
+Commit `dd85eb4a47` adds
+[LSepBase](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LSepBase.lean).
+Its `sep_base` combines the final Separation template with the reflection
+driver and glue, obtaining the exact opened-body `pVal` proof. Then
+`sep_obligation` takes only `SepR p` and produces an internal
+`Provable ZF (rel p)` in every IΣ₁ model. The recognized code `p`, closure
+length `m`, matrix `b`, and core `K` are internal model elements. The proof
+derives the core free-variable bound from the recognizer and uses `peel`
+and `peel_close` for the arbitrary internal closure length. No matching
+environment existence or `hSchema` premise remains on this Separation route.
+Replacement's level-two base/glue combination and the final membership/
+`Derivable`/`domSet` adapter remain. The
+[pinned review](results/upstream-dd85eb4a47-source-review.json) records source
+inspection only. The new `LSchemaAudit` lists 11 axiom probes, including
+`sep_obligation`, but supplies no typed callers; no fresh compilation or
+executed audit is claimed by this integration.
 
 ## What is already available
 
@@ -862,15 +880,15 @@ clients and internal formula induction, as source-reviewed above. `LFvBound`
 adds the recognizer-derived core free-variable bounds, also source-reviewed.
 `LPeel` supplies the internal universal-closure induction and zero-match
 discharge; constructing a matching environment for an arbitrary internal
-tuple is no longer a separate prerequisite on this route. The remaining
-work is to combine the final Separation/Replacement templates with the
-driver and glue to prove the exact opened-body `pVal` premises, including
-Replacement's depth-two core adapter. Then identify each recognized axiom
-with `qqAlls b m`, establish the required formula typing, and convert the
-resulting internal ZF proof to the `Derivable`/`domSet` conclusion required
-by `hSchema`. Empty domain side formulas suffice once that exact proof is
-obtained. These source-reviewed additions still require focused compilation
-and axiom/caller audits.
+tuple is no longer a separate prerequisite on this route. `LSepBase` now
+discharges the exact Separation opened-body premise and closes every internal
+recognized Separation code through `sep_obligation`. The remaining schema
+work is the Replacement depth-two core/glue adapter and its exact opened-body
+`pVal` proof, followed by recognizer typing and the same closure mechanism.
+The two schema proofs must then be connected to class membership and the
+`Derivable`/`domSet` conclusion required by `hSchema`. Empty domain side
+formulas suffice once each internal proof is obtained. These source-reviewed
+additions still require focused compilation and axiom/caller audits.
 
 Feeding `hSchema` into `ConstructibleInterpretation.provable_falsum_ZF_of_ZFC`
 and the result into the C254/ZF comparison then gives the Choice half of the

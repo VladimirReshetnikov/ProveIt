@@ -1,0 +1,20 @@
+--- /tmp/zfc-routing245-lean/frame/check.py
++++ /tmp/zfc-routing245-lean/frame/check-v2.py
+@@ -9,7 +9,7 @@
+ import argparse,hashlib,json,os,re,shutil,subprocess,time
+ MODULE='BusyBeaver.ZFC.Routing245Simulation'
+ PREFIX='SetTheory.BusyBeaver.ZFC.Routing245Simulation.'
+-SOURCE_SHA='dea64229b0eb2b5438eb2b513a63bb92596b241107e8e40566709e1400b965a4'
++SOURCE_SHA='b2ae5e2db6d1f1d03b7c060e33e3ad14a01bcc2338d333eb4029318bcff479c5'
+ AUDIT_SHA='96f700e3d6c57f374a886a0017e14c524c31570c14f12d0d59ee579fa463a113'
+ LEGACY_SHA='8aef18790d7553f3f2c68899bae800d16adf6454979df56352c1a3ec9da394b8'
+ EXPECTED={'BusyBeaver.ZFC.RMDag': ('1acc3a55d22db81eb03748a7b58d2492d449999516bddae75cd39d886d7099c7', '2d61ba6510d4e61c15b72291cb0dd09ace1d6d720e20967202242e237fc8a2f4'), 'BusyBeaver.ZFC.RMEquiv': ('cc696ec1d000e9201506f652987d94ba17661114ba785b8dcb09b4f958a32a57', '85816422a56c65d1ebb9787ba9dc099b2618706781e43f86d65c9fda4fc06905'), 'BusyBeaver.ZFC.RegisterPathClean': ('5169528914a46b43bc8215967e921744c4594384da72991405ed75ac0ad7eb69', '7ee1f503f4aa44a089ddd950cc5fd767d0cff1e9987c898f59ac609e30039eb3')}
+@@ -32,7 +32,7 @@
+ sha=lambda f:hashlib.sha256(Path(f).read_bytes()).hexdigest()
+ R=a.repo.resolve();W=a.output.resolve()
+ assert not W.is_relative_to(R) and(not W.exists()or not any(W.iterdir()))
+-S=a.source.resolve()if a.source else HERE/'Routing245Simulation.lean'
++S=a.source.resolve()if a.source else HERE/'source-v2/Routing245Simulation.lean'
+ A=a.audit.resolve()if a.audit else HERE/'Audit.lean'
+ assert sha(S)==SOURCE_SHA and sha(A)==AUDIT_SHA
+ E0=a.legacy_evidence.resolve()if a.legacy_evidence else R/'Computability/BusyBeaver/Research/ZFC/results/prefix246-frame-verification.json'
