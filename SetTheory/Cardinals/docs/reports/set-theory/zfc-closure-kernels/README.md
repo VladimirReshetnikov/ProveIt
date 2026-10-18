@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings through 18 October 2026. This report now reconciles seventy-one manuscripts.
+Intake findings through 18 October 2026. This report now reconciles seventy-three manuscripts.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -181,6 +181,31 @@ compensated244 external endpoint concerns a different machine. The delivered
 base article remains unchanged; the collection still has 290 reports.
 The placement checkpoint left eighteen other archives queued; the later raw-profile
 routing arrival `1590329560` brings that separate queue to nineteen.
+
+Batch 168 adds [three 242-state folds and the primary 241-state reduction](intake-168.md)
+as Sources 72 and 73. The first gives three alternative local reductions of
+exact Combined243. The second composes the recommended fold with a synthesized
+two-row control merge, using the predecessor's left bit to distinguish roles.
+Their ordinary positive-block proofs preserve halting from the shared start
+for arbitrary head positions and function tapes. The unchanged QT source and
+all earlier attribution remain explicit.
+
+| Source | Delivered archive | Reviewed contribution |
+| --- | --- | --- |
+| 72 | `BusyBeaver_242_Research_2026-10-18.zip` | Three exact 242-state alternatives, all-tape local invariants and independent proofs, whole-frame runtime and full blank initialization. |
+| 73 | `BusyBeaver_241_Companion_2026-10-18.zip` | Exact 241-state predecessor-bit fold of primary 242, four positive block identities, complete startup and direct runtime certificates. |
+
+Placement `696c150e84` preserves 151 ancillary files with 12 archive-only
+members, all 163 recoverable. The [placement map](data/intake168-placement.json),
+[source dossiers](intake-168-source-72.md), [companion dossier](intake-168-source-73.md)
+and [recovery instructions](intake-168-reproduction.md) distinguish new and
+inherited material. The nested 242 ZIP is retained once as a dependency artifact.
+The host now has 73 sources and the collection remains 290 reports; 26 other
+ZIPs remain outside this batch. The source calibration has since passed in
+Lean, but complete Rotation244 binary coverage/composition and internal PA
+calibration remain pending. All 19 fresh substantive jobs pass, including five full 8,390-case runtime
+replays and the exact 408,419-step primary 241 startup. Ordinary, executable
+and proof-assistant scopes stay separate.
 
 ## Sources, overlap and base
 
