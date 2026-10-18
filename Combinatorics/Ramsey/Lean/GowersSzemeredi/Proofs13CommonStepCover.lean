@@ -78,26 +78,19 @@ theorem exists_dense_equal_product_cover {X Y I J : Type*}
     (hmass : delta * S.card * T.card ≤ D.card) :
     ∃ i j, delta / 4 * m * m ≤ (D ∩ (V i).product (W j)).card := by
   let C := fun z : I × J => D ∩ (V z.1).product (W z.2)
-  have hcover : D ⊆ Finset.univ.biUnion C := by
-    intro z hz
-    obtain ⟨hx, hy⟩ := Finset.mem_product.mp (hsub hz)
-    obtain ⟨i, hi⟩ := hV z.1 hx
-    obtain ⟨j, hj⟩ := hW z.2 hy
+  have hcount : D.card ≤ ∑ z : I × J, (C z).card := by
+    refine le_trans (Finset.card_le_card fun z hz => ?_) Finset.card_biUnion_le
+    obtain ⟨⟨i, hi⟩, j, hj⟩ := And.imp (hV z.1) (hW z.2) (Finset.mem_product.mp (hsub hz))
     exact Finset.mem_biUnion.mpr ⟨(i, j), Finset.mem_univ _,
       Finset.mem_inter.mpr ⟨hz, Finset.mem_product.mpr ⟨hi, hj⟩⟩⟩
-  have hcount : (D.card : Real) ≤ ∑ z : I × J, ((C z).card : Real) := by
-    exact_mod_cast (Finset.card_le_card hcover).trans Finset.card_biUnion_le
-  have hcap : Fintype.card (I × J) * m * m ≤ 4 * S.card * T.card := by
-    have h := Nat.mul_le_mul hcapV hcapW
-    rw [Fintype.card_prod]
-    nlinarith only [h]
-  have hcapR : (Fintype.card (I × J) : Real) * m * m ≤ 4 * S.card * T.card := by
-    exact_mod_cast hcap
-  have hsum : ∑ _z : I × J, delta / 4 * m * m ≤ ∑ z : I × J, ((C z).card : Real) := by
-    simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
-    have h := mul_le_mul_of_nonneg_left hcapR (div_nonneg hδ (by norm_num : (0 : Real) ≤ 4))
-    nlinarith only [h, hmass, hcount]
-  obtain ⟨z, _, hz⟩ := Finset.exists_le_of_sum_le (Finset.univ_nonempty) hsum
+  have hcap : ((Fintype.card I * m) * (Fintype.card J * m) : Real) ≤
+      (2 * S.card) * (2 * T.card) := by exact_mod_cast Nat.mul_le_mul hcapV hcapW
+  -- the `|I| |J|` cells carry at least `|D| ≥ δ |S| |T| ≥ |I| |J| δ m² / 4` in total
+  obtain ⟨z, -, hz⟩ := Finset.exists_le_of_sum_le Finset.univ_nonempty
+    (show ∑ _z : I × J, delta / 4 * m * m ≤ ∑ z : I × J, ((C z).card : Real) by
+      simp only [Finset.sum_const, Finset.card_univ, Fintype.card_prod, nsmul_eq_mul,
+        Nat.cast_mul, ← Nat.cast_sum]
+      linarith [mul_le_mul_of_nonneg_left hcap hδ, (Nat.cast_le (α := Real)).mpr hcount])
   exact ⟨z.1, z.2, hz⟩
 
 /-- An integer step ratio and the displayed fit condition suffice for an
@@ -121,28 +114,20 @@ theorem bilinear_square_of_integer_step_fit {N : Nat} [Fact N.Prime]
   let W : J → ModAP N := commonStepCoverCell T 1 m
   letI : Nonempty I := ⟨(⟨0, ht⟩, ⟨0, Nat.zero_lt_succ _⟩)⟩
   letI : Nonempty J := ⟨(⟨0, Nat.zero_lt_succ _⟩, ⟨0, Nat.zero_lt_succ _⟩)⟩
-  have hcapV : Fintype.card I * m ≤ 2 * S.carrier.card := by
-    rw [show S.carrier.card = S.length from hS]
-    simpa only [I, Fintype.card_prod, Fintype.card_fin] using commonStepCoverCell_capacity S.length t m hfit
-  have hcapW : Fintype.card J * m ≤ 2 * T.carrier.card := by
-    rw [show T.carrier.card = T.length from hT]
-    simpa only [J, Fintype.card_prod, Fintype.card_fin] using
-      commonStepCoverCell_capacity T.length 1 m (by simpa only [one_mul] using hmT)
+  obtain ⟨hS', hT'⟩ : S.carrier.card = S.length ∧ T.carrier.card = T.length := ⟨hS, hT⟩
   obtain ⟨i, j, hij⟩ := exists_dense_equal_product_cover S.carrier T.carrier D
     (fun i => (V i).carrier) (fun j => (W j).carrier) m delta hδ hsupport
     (fun _ hx => commonStepCoverCell_covers S ht hm hx)
-    (fun _ hx => commonStepCoverCell_covers T (by omega) hm hx) hcapV hcapW
-    (by simpa only [show S.carrier.card = S.length from hS,
-      show T.carrier.card = T.length from hT] using hmass)
-  have hmN : m ≤ N := hmT.trans (by
-    rw [← hT]
-    simpa only [ZMod.card] using Finset.card_le_univ T.carrier)
+    (fun _ hx => commonStepCoverCell_covers T Nat.one_pos hm hx)
+    (by simpa [I, hS'] using commonStepCoverCell_capacity S.length t m hfit)
+    (by simpa [J, hT'] using commonStepCoverCell_capacity T.length 1 m (by omega))
+    (by rwa [hS', hT'])
+  have hmN : m ≤ N := hmT.trans (hT'.symm.trans_le ((Finset.card_le_univ _).trans_eq (ZMod.card N)))
   have hVstep : (V i).step = T.step := hstepEq.symm
   have hWstep : (W j).step = T.step := by simp [W, commonStepCoverCell]
-  let E := D ∩ (V i).carrier.product (W j).carrier
-  refine ⟨V i, W j, E, hVstep, hWstep,
-    (V i).isProper_of_prime_step (by rwa [hVstep]) hmN,
-    (W j).isProper_of_prime_step (by rwa [hWstep]) hmN,
+  refine ⟨V i, W j, D ∩ (V i).carrier.product (W j).carrier, hVstep, hWstep,
+    (V i).isProper_of_prime_step (hVstep ▸ hstep) hmN,
+    (W j).isProper_of_prime_step (hWstep ▸ hstep) hmN,
     rfl, rfl, Finset.inter_subset_left, Finset.inter_subset_right, hij, ?_⟩
   obtain ⟨mu, hmu, hagree⟩ := hbilinear
   exact ⟨mu, hmu, fun z hz => hagree z (Finset.mem_inter.mp hz).1⟩

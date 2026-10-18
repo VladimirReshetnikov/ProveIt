@@ -268,30 +268,19 @@ private lemma lemma78_fourCorrelation_zero_lower {N : Nat} [NeZero N]
     4 * alpha * lambda ^ 2 * (N : Real) ^ 3 <=
       ‖lemma78FourCorrelation A 0‖ := by
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hsumNonneg :
-      0 <= ∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 4 := by positivity
-  have hzeroTerm :
-      (A.card : Real) ^ 4 <=
-        ∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 4 := by
-    have hmem : (0 : ZMod N) ∈ (Finset.univ : Finset (ZMod N)) := Finset.mem_univ _
-    have hsingle := Finset.single_le_sum
-      (fun r (_hr : r ∈ (Finset.univ : Finset (ZMod N))) =>
-        pow_nonneg (norm_nonneg (fourier (indicator A) r)) 4) hmem
-    simpa [fourier_indicator_zero] using hsingle
+  have hsum : 0 ≤ ∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 4 := by positivity
+  have hzero : (A.card : Real) ^ 4 ≤ ∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 4 := by
+    simpa [fourier_indicator_zero] using Finset.single_le_sum
+      (fun r (_ : r ∈ (Finset.univ : Finset (ZMod N))) ↦
+        pow_nonneg (norm_nonneg (fourier (indicator A) r)) 4) (Finset.mem_univ 0)
   rw [lemma78_fourCorrelation_inversion A 0]
-  have hzero : exponential (0 : ZMod N) = 1 :=
-    AddChar.map_zero_eq_one (ZMod.stdAddChar (N := N))
-  simp only [mul_zero, hzero, mul_one]
+  simp only [mul_zero, exponential_zero, mul_one]
   rw [← Complex.ofReal_sum, norm_mul, norm_inv, Complex.norm_natCast,
-    Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hsumNonneg]
-  have hlambdaSq := lemma78_lambda_sq alpha lambda halpha hlambda
-  have hmain :
-      4 * alpha * lambda ^ 2 * (N : Real) ^ 3 <=
-        (N : Real)⁻¹ * (A.card : Real) ^ 4 := by
-    rw [hlambdaSq, hcard]
-    field_simp [ne_of_gt hN]
-    nlinarith [sq_nonneg (alpha ^ 2 * (N : Real) ^ 2)]
-  exact hmain.trans (mul_le_mul_of_nonneg_left hzeroTerm (by positivity))
+    Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hsum]
+  refine le_trans ?_ (mul_le_mul_of_nonneg_left hzero (by positivity))
+  rw [lemma78_lambda_sq alpha lambda halpha hlambda, hcard]
+  field_simp [ne_of_gt hN]
+  nlinarith [sq_nonneg (alpha ^ 2 * (N : Real) ^ 2)]
 
 private lemma lemma78_fourCorrelation_ne_zero_of_mem_bohr {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (alpha : Real) (halpha : 0 < alpha)
@@ -345,45 +334,20 @@ private lemma lemma78_representation_of_fourCorrelation_ne_zero
     {N : Nat} [NeZero N] (A : Finset (ZMod N)) (d : ZMod N)
     (hne : lemma78FourCorrelation A d != 0) :
     Nonempty (Lemma78Representation A d) := by
+  -- a nonzero correlation has a nonzero term; a nonzero indicator value is a point of `A`
+  have hmem (z : ZMod N) (hz : indicator A z ≠ 0) : z ∈ A := by simpa [indicator] using hz
   rw [bne_iff_ne] at hne
   unfold lemma78FourCorrelation correlation at hne
-  obtain ⟨t, _htmem, ht⟩ := Finset.exists_ne_zero_of_sum_ne_zero hne
+  obtain ⟨t, -, ht⟩ := Finset.exists_ne_zero_of_sum_ne_zero hne
   rw [lemma78_pairCorrelation_star] at ht
-  have hleft : lemma78PairCorrelation A t != 0 := by
-    rw [bne_iff_ne]
-    intro hzero
-    simp [hzero] at ht
-  have hright : lemma78PairCorrelation A (t - d) != 0 := by
-    rw [bne_iff_ne]
-    intro hzero
-    simp [hzero] at ht
-  rw [bne_iff_ne] at hleft hright
-  unfold lemma78PairCorrelation correlation at hleft hright
-  simp only [lemma78_indicator_star] at hleft hright
-  obtain ⟨x, _hxmem, hx⟩ := Finset.exists_ne_zero_of_sum_ne_zero hleft
-  obtain ⟨y, _hymem, hy⟩ := Finset.exists_ne_zero_of_sum_ne_zero hright
-  have hAx : x ∈ A := by
-    by_contra hnot
-    simp [indicator, hnot] at hx
-  have hAxt : x - t ∈ A := by
-    by_contra hnot
-    simp [indicator, hnot] at hx
-  have hAy : y ∈ A := by
-    by_contra hnot
-    simp [indicator, hnot] at hy
-  have hAyd : y - (t - d) ∈ A := by
-    by_contra hnot
-    simp [indicator, hnot] at hy
-  exact ⟨{
-    a := x
-    b := x - t
-    c := y
-    e := y - (t - d)
-    ha := hAx
-    hb := hAxt
-    hc := hAy
-    he := hAyd
-    relation := by ring }⟩
+  obtain ⟨hl, hr⟩ := mul_ne_zero_iff.mp ht
+  unfold lemma78PairCorrelation correlation at hl hr
+  obtain ⟨x, -, hx⟩ := Finset.exists_ne_zero_of_sum_ne_zero hl
+  obtain ⟨y, -, hy⟩ := Finset.exists_ne_zero_of_sum_ne_zero hr
+  rw [lemma78_indicator_star] at hx hy
+  exact ⟨⟨x, x - t, y, y - (t - d), hmem _ (left_ne_zero_of_mul hx),
+    hmem _ (right_ne_zero_of_mul hx), hmem _ (left_ne_zero_of_mul hy),
+    hmem _ (right_ne_zero_of_mul hy), by ring⟩⟩
 
 private lemma lemma78_representation_of_mem_bohr {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (alpha : Real) (halpha : 0 < alpha)
@@ -399,56 +363,27 @@ private lemma lemma78_freiman8_fin_sum {N : Nat} {G : Type*}
     (hx : ∀ i, x i ∈ A) (hy : ∀ i, y i ∈ A)
     (hsum : (∑ i, x i) = ∑ i, y i) :
     (∑ i, phi (x i)) = ∑ i, phi (y i) := by
-  let sx : Multiset (ZMod N) := Multiset.map x (Finset.univ : Finset (Fin 8)).val
-  let sy : Multiset (ZMod N) := Multiset.map y (Finset.univ : Finset (Fin 8)).val
-  have hsA : ∀ ⦃z⦄, z ∈ sx -> z ∈ (A : Set (ZMod N)) := by
-    intro z hz
-    simp only [sx, Multiset.mem_map] at hz
-    obtain ⟨i, _hi, rfl⟩ := hz
-    exact hx i
-  have htA : ∀ ⦃z⦄, z ∈ sy -> z ∈ (A : Set (ZMod N)) := by
-    intro z hz
-    simp only [sy, Multiset.mem_map] at hz
-    obtain ⟨i, _hi, rfl⟩ := hz
-    exact hy i
-  have hsCard : sx.card = 8 := by simp [sx]
-  have htCard : sy.card = 8 := by simp [sy]
-  have hsEq : sx.sum = sy.sum := by
-    simpa [sx, sy, Fin.sum_univ_succ] using hsum
-  have hmap := hphi.map_sum_eq_map_sum hsA htA hsCard htCard hsEq
-  simpa [sx, sy, Fin.sum_univ_succ] using hmap
+  simpa [Fin.sum_univ_succ] using hphi.map_sum_eq_map_sum (s := Finset.univ.val.map x)
+    (t := Finset.univ.val.map y) (Multiset.forall_mem_map_iff.2 fun i _ => hx i)
+    (Multiset.forall_mem_map_iff.2 fun i _ => hy i) (by simp) (by simp)
+    (by simpa [Fin.sum_univ_succ] using hsum)
 
 private lemma lemma78_representation_value_wellDefined {N : Nat} {G : Type*}
     [AddCommGroup G] (A : Finset (ZMod N)) (phi : ZMod N -> G)
     (hphi : FreimanHom 8 A phi) {d : ZMod N}
     (q q' : Lemma78Representation A d) :
     q.value phi = q'.value phi := by
-  let x : Fin 8 -> ZMod N :=
-    ![q.a, q.e, q'.b, q'.c, q.a, q.a, q.a, q.a]
-  let y : Fin 8 -> ZMod N :=
-    ![q'.a, q'.e, q.b, q.c, q.a, q.a, q.a, q.a]
-  have hx : ∀ i, x i ∈ A := by
-    intro i
-    fin_cases i <;> simp [x, q.ha, q.he, q'.hb, q'.hc]
-  have hy : ∀ i, y i ∈ A := by
-    intro i
-    fin_cases i <;> simp [y, q.ha, q'.ha, q'.he, q.hb, q.hc]
-  have hsum : (∑ i, x i) = ∑ i, y i := by
-    simp [x, y, Fin.sum_univ_succ]
-    have hq := q.relation
-    have hq' := q'.relation
-    linear_combination hq - hq'
-  have himage := lemma78_freiman8_fin_sum A phi hphi x y hx hy hsum
-  simp [x, y, Fin.sum_univ_succ] at himage
+  -- `q.a + q.e + q'.b + q'.c = q'.a + q'.e + q.b + q.c`, padded by four copies of `q.a`
+  let x : Fin 8 -> ZMod N := ![q.a, q.e, q'.b, q'.c, q.a, q.a, q.a, q.a]
+  let y : Fin 8 -> ZMod N := ![q'.a, q'.e, q.b, q.c, q.a, q.a, q.a, q.a]
+  have h := lemma78_freiman8_fin_sum A phi hphi x y
+    (fun i => by fin_cases i <;> simp [x, q.ha, q.he, q'.hb, q'.hc])
+    (fun i => by fin_cases i <;> simp [y, q.ha, q'.ha, q'.he, q.hb, q.hc])
+    (by simp [x, y, Fin.sum_univ_succ]; linear_combination q.relation - q'.relation)
+  simp [x, y, Fin.sum_univ_succ] at h
   unfold Lemma78Representation.value
-  rw [show phi q.a + phi q.e - phi q.b - phi q.c =
-      (phi q.a + phi q.e) - (phi q.b + phi q.c) by abel]
-  rw [show phi q'.a + phi q'.e - phi q'.b - phi q'.c =
-      (phi q'.a + phi q'.e) - (phi q'.b + phi q'.c) by abel]
-  apply sub_eq_sub_iff_add_eq_add.mpr
-  apply add_right_cancel (b := 4 • phi q.a)
-  abel_nf at himage ⊢
-  exact himage
+  rw [← sub_eq_zero, ← sub_eq_zero.mpr h]
+  abel
 
 private lemma lemma78_representation_value_additive {N : Nat} {G : Type*}
     [AddCommGroup G] (A : Finset (ZMod N)) (phi : ZMod N -> G)
@@ -457,41 +392,20 @@ private lemma lemma78_representation_value_additive {N : Nat} {G : Type*}
     (q3 : Lemma78Representation A d3) (q4 : Lemma78Representation A d4)
     (hd : d1 + d2 = d3 + d4) :
     q1.value phi + q2.value phi = q3.value phi + q4.value phi := by
-  let x : Fin 8 -> ZMod N :=
-    ![q1.a, q1.e, q2.a, q2.e, q3.b, q3.c, q4.b, q4.c]
-  let y : Fin 8 -> ZMod N :=
-    ![q3.a, q3.e, q4.a, q4.e, q1.b, q1.c, q2.b, q2.c]
-  have hx : ∀ i, x i ∈ A := by
-    intro i
-    fin_cases i <;> simp [x, q1.ha, q1.he, q2.ha, q2.he,
-      q3.hb, q3.hc, q4.hb, q4.hc]
-  have hy : ∀ i, y i ∈ A := by
-    intro i
-    fin_cases i <;> simp [y, q3.ha, q3.he, q4.ha, q4.he,
-      q1.hb, q1.hc, q2.hb, q2.hc]
-  have hsum : (∑ i, x i) = ∑ i, y i := by
-    simp [x, y, Fin.sum_univ_succ]
-    have h1 := q1.relation
-    have h2 := q2.relation
-    have h3 := q3.relation
-    have h4 := q4.relation
-    linear_combination h1 + h2 - h3 - h4 + hd
-  have himage := lemma78_freiman8_fin_sum A phi hphi x y hx hy hsum
-  simp [x, y, Fin.sum_univ_succ] at himage
+  let x : Fin 8 -> ZMod N := ![q1.a, q1.e, q2.a, q2.e, q3.b, q3.c, q4.b, q4.c]
+  let y : Fin 8 -> ZMod N := ![q3.a, q3.e, q4.a, q4.e, q1.b, q1.c, q2.b, q2.c]
+  have h := lemma78_freiman8_fin_sum A phi hphi x y
+    (fun i => by
+      fin_cases i <;> simp [x, q1.ha, q1.he, q2.ha, q2.he, q3.hb, q3.hc, q4.hb, q4.hc])
+    (fun i => by
+      fin_cases i <;> simp [y, q3.ha, q3.he, q4.ha, q4.he, q1.hb, q1.hc, q2.hb, q2.hc])
+    (by
+      simp [x, y, Fin.sum_univ_succ]
+      linear_combination q1.relation + q2.relation - q3.relation - q4.relation + hd)
+  simp [x, y, Fin.sum_univ_succ] at h
   unfold Lemma78Representation.value
-  rw [show
-    (phi q1.a + phi q1.e - phi q1.b - phi q1.c) +
-        (phi q2.a + phi q2.e - phi q2.b - phi q2.c) =
-      (phi q1.a + phi q1.e + phi q2.a + phi q2.e) -
-        (phi q1.b + phi q1.c + phi q2.b + phi q2.c) by abel]
-  rw [show
-    (phi q3.a + phi q3.e - phi q3.b - phi q3.c) +
-        (phi q4.a + phi q4.e - phi q4.b - phi q4.c) =
-      (phi q3.a + phi q3.e + phi q4.a + phi q4.e) -
-        (phi q3.b + phi q3.c + phi q4.b + phi q4.c) by abel]
-  apply sub_eq_sub_iff_add_eq_add.mpr
-  abel_nf at himage ⊢
-  exact himage
+  rw [← sub_eq_zero, ← sub_eq_zero.mpr h]
+  abel
 
 private noncomputable def lemma78ChosenRepresentation {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (alpha : Real) (halpha : 0 < alpha)
@@ -516,29 +430,10 @@ lemma lemma78_induced_freiman {N : Nat} {G : Type*}
     FreimanHom 2 (bohr (section7Spectrum A alpha) (alpha / (32 * Real.pi)))
       (lemma78InducedMap A phi alpha halpha hcard) := by
   rw [FreimanHom, isAddFreimanHom_two]
-  constructor
-  · intro x _hx
-    exact Set.mem_univ _
-  · intro a ha b hb c hc d hd habcd
-    change a ∈ bohr (section7Spectrum A alpha) (alpha / (32 * Real.pi)) at ha
-    change b ∈ bohr (section7Spectrum A alpha) (alpha / (32 * Real.pi)) at hb
-    change c ∈ bohr (section7Spectrum A alpha) (alpha / (32 * Real.pi)) at hc
-    change d ∈ bohr (section7Spectrum A alpha) (alpha / (32 * Real.pi)) at hd
-    let qa := lemma78ChosenRepresentation A alpha halpha hcard a ha
-    let qb := lemma78ChosenRepresentation A alpha halpha hcard b hb
-    let qc := lemma78ChosenRepresentation A alpha halpha hcard c hc
-    let qd := lemma78ChosenRepresentation A alpha halpha hcard d hd
-    have hadd := lemma78_representation_value_additive A phi hphi qa qb qc qd habcd
-    have haMap : lemma78InducedMap A phi alpha halpha hcard a = qa.value phi := by
-      rw [lemma78InducedMap, dif_pos ha]
-    have hbMap : lemma78InducedMap A phi alpha halpha hcard b = qb.value phi := by
-      rw [lemma78InducedMap, dif_pos hb]
-    have hcMap : lemma78InducedMap A phi alpha halpha hcard c = qc.value phi := by
-      rw [lemma78InducedMap, dif_pos hc]
-    have hdMap : lemma78InducedMap A phi alpha halpha hcard d = qd.value phi := by
-      rw [lemma78InducedMap, dif_pos hd]
-    rw [haMap, hbMap, hcMap, hdMap]
-    exact hadd
+  refine ⟨Set.mapsTo_univ _ _, fun a ha b hb c hc d hd habcd => ?_⟩
+  rw [Finset.mem_coe] at ha hb hc hd
+  simp only [lemma78InducedMap, dif_pos ha, dif_pos hb, dif_pos hc, dif_pos hd]
+  exact lemma78_representation_value_additive A phi hphi _ _ _ _ habcd
 
 lemma lemma78_induced_agrees {N : Nat} {G : Type*}
     [NeZero N] [AddCommGroup G]
@@ -549,23 +444,10 @@ lemma lemma78_induced_agrees {N : Nat} {G : Type*}
     (hxy : x - y ∈ bohr (section7Spectrum A alpha)
       (alpha / (32 * Real.pi))) :
     phi x - phi y = lemma78InducedMap A phi alpha halpha hcard (x - y) := by
-  let q : Lemma78Representation A (x - y) := {
-    a := x
-    b := y
-    c := x
-    e := x
-    ha := hx
-    hb := hy
-    hc := hx
-    he := hx
-    relation := by ring }
-  let q' := lemma78ChosenRepresentation A alpha halpha hcard (x - y) hxy
-  have hvalue := lemma78_representation_value_wellDefined A phi hphi q q'
-  unfold lemma78InducedMap
-  rw [dif_pos hxy]
-  change phi x + phi x - phi y - phi x = q'.value phi at hvalue
-  abel_nf at hvalue ⊢
-  exact hvalue
+  rw [lemma78InducedMap, dif_pos hxy, ← lemma78_representation_value_wellDefined A phi hphi
+    (⟨x, y, x, x, hx, hy, hx, hx, by ring⟩ : Lemma78Representation A (x - y))]
+  simp only [Lemma78Representation.value]
+  abel
 
 /-- **Gowers, Lemma 7.8.** -/
 theorem lemma_7_8_holds : lemma_7_8 := by
@@ -613,32 +495,19 @@ private lemma lemma78_constant_weighted_phase {N : Nat} [NeZero N]
   let w := fun r : ZMod N ↦ F r * ‖exponential (r * d) - 1‖
   have hmain : (∑ r ∈ Finset.univ.filter (fun r ↦ r ∈ K), w r) ≤
       (1 / 4 : Real) * ∑ r, F r := by
-    calc
-      _ ≤ ∑ r ∈ Finset.univ.filter (fun r ↦ r ∈ K), (1 / 4 : Real) * F r := by
-        apply Finset.sum_le_sum
-        intro r hr
-        dsimp only [w]
-        rw [mul_comm (1 / 4 : Real)]
-        exact mul_le_mul_of_nonneg_left
-          (lemma78_constant_phase_bound A alpha d hd r (Finset.mem_filter.mp hr).2)
-          (by dsimp [F]; positivity)
-      _ = (1 / 4 : Real) * ∑ r ∈ Finset.univ.filter (fun r ↦ r ∈ K), F r := by
-        rw [Finset.mul_sum]
-      _ ≤ _ := mul_le_mul_of_nonneg_left
-        (Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _)
-          (fun _ _ _ ↦ by dsimp [F]; positivity)) (by norm_num)
+    rw [Finset.mul_sum]
+    refine (Finset.sum_le_sum fun r hr => ?_).trans (Finset.sum_le_sum_of_subset_of_nonneg
+      (Finset.filter_subset _ _) fun _ _ _ ↦ by dsimp [F]; positivity)
+    exact (mul_le_mul_of_nonneg_left (lemma78_constant_phase_bound A alpha d hd r
+      (Finset.mem_filter.mp hr).2) (by dsimp [F]; positivity)).trans_eq (mul_comm _ _)
   have htailPhase : (∑ r ∈ Finset.univ.filter (fun r ↦ r ∉ K), w r) ≤
       2 * ∑ r ∈ Finset.univ.filter (fun r ↦ r ∉ K), F r := by
     rw [Finset.mul_sum]
-    apply Finset.sum_le_sum
-    intro r _
-    dsimp only [w]
-    rw [mul_comm (2 : Real)]
-    exact mul_le_mul_of_nonneg_left (norm_exponential_sub_one_le_two (r * d))
-      (by dsimp [F]; positivity)
-  let lambda := alpha ^ ((3 : Real) / 2) / 4
-  have htail := lemma78_small_spectrum_tail A alpha lambda rfl hcard
-  rw [lemma78_lambda_sq alpha lambda hα rfl] at htail
+    exact Finset.sum_le_sum fun r _ => (mul_le_mul_of_nonneg_left
+      (norm_exponential_sub_one_le_two (r * d)) (by dsimp [F]; positivity)).trans_eq
+        (mul_comm _ _)
+  have htail := lemma78_small_spectrum_tail A alpha _ rfl hcard
+  rw [lemma78_lambda_sq alpha _ hα rfl] at htail
   have hzero := lemma78_fourth_moment_lower A
   rw [hcard] at hzero
   have hsplit := Finset.sum_filter_add_sum_filter_not (Finset.univ : Finset (ZMod N))
@@ -686,25 +555,17 @@ private lemma lemma78_induced_on_represented_domain {N : Nat} {G : Type*}
       ∀ x ∈ A, ∀ y ∈ A, x - y ∈ B → phi x - phi y = psi (x - y) := by
   let rep := fun d hd ↦ Classical.choice (hrep d hd)
   let psi := fun d ↦ if hd : d ∈ B then (rep d hd).value phi else 0
-  refine ⟨psi, ?_, ?_⟩
+  refine ⟨psi, ?_, fun x hx y hy hxy => ?_⟩
   · rw [FreimanHom, isAddFreimanHom_two]
-    refine ⟨Set.mapsTo_univ _ _, ?_⟩
-    intro a ha b hb c hc d hd habcd
-    change a ∈ B at ha
-    change b ∈ B at hb
-    change c ∈ B at hc
-    change d ∈ B at hd
-    have h := lemma78_representation_value_additive A phi hphi
-      (rep a ha) (rep b hb) (rep c hc) (rep d hd) habcd
-    simpa only [psi, dif_pos ha, dif_pos hb, dif_pos hc, dif_pos hd] using h
-  · intro x hx y hy hxy
-    let q : Lemma78Representation A (x - y) :=
-      ⟨x, y, x, x, hx, hy, hx, hx, by ring⟩
-    have h := lemma78_representation_value_wellDefined A phi hphi q (rep (x - y) hxy)
-    dsimp only [psi]
-    rw [dif_pos hxy]
-    change phi x + phi x - phi y - phi x = (rep (x - y) hxy).value phi at h
-    convert h using 1 <;> abel
+    refine ⟨Set.mapsTo_univ _ _, fun a ha b hb c hc d hd habcd => ?_⟩
+    rw [Finset.mem_coe] at ha hb hc hd
+    simp only [psi, dif_pos ha, dif_pos hb, dif_pos hc, dif_pos hd]
+    exact lemma78_representation_value_additive A phi hphi _ _ _ _ habcd
+  · simp only [psi, dif_pos hxy]
+    rw [← lemma78_representation_value_wellDefined A phi hphi
+      (⟨x, y, x, x, hx, hy, hx, hx, by ring⟩ : Lemma78Representation A (x - y))]
+    simp only [Lemma78Representation.value]
+    abel
 
 /-- A constant-radius strengthening of the Bogolyubov--Freiman lemma.
 Controlling the error relative to the actual fourth moment removes the
@@ -793,33 +654,17 @@ theorem generic_freiman_map_nat_multiple {p : Nat} {G : Type*}
     (d : ZMod p) (m : Nat) (hm : 0 < m)
     (hmem : symmetricMultiples d m ⊆ B) (n : Nat) (hn : n <= m) :
     psi ((n : ZMod p) * d) = n • psi d := by
-  have hzero : (0 : ZMod p) ∈ symmetricMultiples d m := by
-    rw [symmetricMultiples, Finset.mem_image]
-    refine ⟨0, Finset.mem_Icc.mpr ?_, by simp⟩
-    constructor <;> omega
-  have hd : d ∈ symmetricMultiples d m := by
-    rw [symmetricMultiples, Finset.mem_image]
-    refine ⟨1, Finset.mem_Icc.mpr ?_, by simp⟩
-    constructor <;> omega
-  have hpsi' : IsAddFreimanHom 2 (B : Set (ZMod p)) Set.univ psi := hpsi
+  have hB (i : Nat) (hi : i ≤ m) : (i : ZMod p) * d ∈ B :=
+    hmem (Finset.mem_image.mpr ⟨i, Finset.mem_Icc.mpr ⟨by omega, by omega⟩, by simp⟩)
   induction n with
   | zero => simpa using hpsiZero
   | succ n ih =>
-      have hn' : n <= m := Nat.le_trans (Nat.le_succ n) hn
-      have hnm : ((n : ZMod p) * d) ∈ symmetricMultiples d m := by
-        rw [symmetricMultiples, Finset.mem_image]
-        refine ⟨(n : Int), Finset.mem_Icc.mpr ?_, by simp⟩
-        constructor <;> omega
-      have hsucc : (((n + 1 : Nat) : ZMod p) * d) ∈ symmetricMultiples d m := by
-        rw [symmetricMultiples, Finset.mem_image]
-        refine ⟨(n + 1 : Int), Finset.mem_Icc.mpr ?_, by simp⟩
-        constructor <;> omega
-      have hadd : ((n + 1 : Nat) : ZMod p) * d + 0 =
-          (n : ZMod p) * d + d := by push_cast; ring
-      have hmap := hpsi'.add_eq_add (hmem hsucc) (hmem hzero)
-        (hmem hnm) (hmem hd) hadd
-      rw [hpsiZero, add_zero, ih hn'] at hmap
-      simpa only [add_nsmul, one_nsmul] using hmap
+      -- `(n + 1) d + 0 = n d + d`
+      have h := IsAddFreimanHom.add_eq_add hpsi (hB (n + 1) hn) (hB 0 (Nat.zero_le m))
+        (hB n (by omega)) (hB 1 hm) (by push_cast; ring)
+      rw [Nat.cast_zero, zero_mul, hpsiZero, add_zero, ih (by omega), Nat.cast_one,
+        one_mul] at h
+      exact h.trans (succ_nsmul (psi d) n).symm
 
 /-- A Freiman map vanishing at zero is `ℤ`-linear on `{j d : |j| ≤ m}`. -/
 theorem generic_freiman_map_int_multiple {p : Nat} {G : Type*}

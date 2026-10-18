@@ -95,36 +95,28 @@ theorem classDeltaW_fejer_inv_le {gamma theta : Real} (k : Nat) (hg : 0 < gamma)
   have hθi := fejerThetaOne_inv_le_gen k hg hg1 ht ht1
   have hF := fejerProductExponent_ge k
   have hF49 : 37 + (2 * fejerProductExponent k + 2) * 6 ≤ 32 * fejerProductExponent k := by
-    have : 49 ≤ 2 ^ (4 * k + 11) :=
-      le_trans (by norm_num) (Nat.pow_le_pow_right (n := 2) (by norm_num) (show 11 ≤ 4 * k + 11 by omega))
-    omega
+    have := Nat.lt_two_pow_self (n := 4 * k + 11); omega
   set t := fejerThetaOne theta gamma k
   set F := fejerProductExponent k
   set u := 2 / (gamma * theta) with hu
   clear_value u t F
-  have hupos : 0 < u := lt_of_lt_of_le (by norm_num) hu2
-  have hu1 : 1 ≤ u := le_trans (by norm_num) hu2
   have h4t : 4 / t ≤ u ^ (2 * F + 2) := by
     rw [div_eq_mul_inv, pow_add, mul_comm]
     exact mul_le_mul hθi (show (4 : Real) ≤ u ^ 2 by nlinarith only [hu2]) (by norm_num)
-      (pow_nonneg hupos.le _)
-  have h4t1 : 1 ≤ 4 / t := by rw [le_div_iff₀ h0]; linarith only [h1]
-  have hval : (section16Delta t)⁻¹ = (2 : Real) ^ (37 : Real) * (4 / t) ^ ((11 : Real) / 2) := by
-    unfold section16Delta
-    rw [mul_inv, Real.rpow_neg (by norm_num), inv_inv, ← Real.inv_rpow (by positivity), inv_div]
-  rw [hval]
-  have h37 : (2 : Real) ^ (37 : Real) ≤ u ^ 37 := by
-    rw [show (37 : Real) = ((37 : Nat) : Real) by norm_num, Real.rpow_natCast]
-    exact pow_le_pow_left₀ (by norm_num) hu2 37
+      (by positivity)
   have h6 : (4 / t) ^ ((11 : Real) / 2) ≤ (4 / t) ^ 6 := by
-    rw [show (4 / t) ^ 6 = (4 / t) ^ ((6 : Nat) : Real) by rw [Real.rpow_natCast]]
-    exact Real.rpow_le_rpow_of_exponent_le h4t1 (by norm_num)
-  calc (2 : Real) ^ (37 : Real) * (4 / t) ^ ((11 : Real) / 2)
-      ≤ u ^ 37 * (u ^ (2 * F + 2)) ^ 6 :=
-        mul_le_mul h37 (h6.trans (pow_le_pow_left₀ (by positivity) h4t 6))
-          (Real.rpow_nonneg (by positivity) _) (pow_nonneg hupos.le _)
-    _ = u ^ (37 + (2 * F + 2) * 6) := by rw [← pow_mul, ← pow_add]
-    _ ≤ u ^ (32 * F) := pow_le_pow_right₀ hu1 hF49
+    rw [← Real.rpow_natCast]
+    exact Real.rpow_le_rpow_of_exponent_le (by rw [le_div_iff₀ h0]; linarith only [h1])
+      (by norm_num)
+  have hval : (section16Delta t)⁻¹ = (2 : Real) ^ 37 * (4 / t) ^ ((11 : Real) / 2) := by
+    unfold section16Delta
+    rw [mul_inv, Real.rpow_neg (by norm_num), inv_inv, ← Real.inv_rpow (by positivity), inv_div,
+      Real.rpow_ofNat]
+  rw [hval]
+  calc (2 : Real) ^ 37 * (4 / t) ^ ((11 : Real) / 2)
+      ≤ u ^ 37 * (u ^ (2 * F + 2)) ^ 6 := by gcongr; exact h6.trans (by gcongr)
+    _ = u ^ (37 + (2 * F + 2) * 6) := by ring
+    _ ≤ u ^ (32 * F) := pow_le_pow_right₀ (by linarith) hF49
 
 theorem classPiecesFejer_le_gen {gamma theta : Real} (k : Nat) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
     (ht : 0 < theta) (ht1 : theta ≤ 1) :
@@ -187,105 +179,50 @@ theorem fejerProductThreshold_le_gen {gamma theta : Real} {k : Nat} (hk : 1 ≤ 
     fejerProductThreshold k (theta / 2) gamma ≤ (2 / (gamma * theta)) ^ fejerStepP k := by
   obtain ⟨hu2, -, -, h1, h2⟩ := prod_scale_basic hg hg1 ht ht1
   have hexp := fejer_threshold_exponent_le k
-  set u := 2 / (gamma * theta) with hu
-  clear_value u
-  have hu1 : 1 ≤ u := le_trans (by norm_num) hu2
-  have hupos : 0 < u := lt_of_lt_of_le (by norm_num) hu2
-  set A : Nat := 7 * 4 ^ (k + 1) with hA
-  set G : Nat := 21 * k * 4 ^ (k + 1) with hG
-  have hbase : (u ^ (A + G))⁻¹ ≤ (theta / 2) ^ A * gamma ^ G := by
-    have hp1 := pow_le_pow_left₀ (inv_pos.mpr hupos).le h1 A
-    have hp2 := pow_le_pow_left₀ (inv_pos.mpr hupos).le h2 G
-    calc (u ^ (A + G))⁻¹ = u⁻¹ ^ A * u⁻¹ ^ G := by rw [← pow_add, inv_pow]
-      _ ≤ _ := mul_le_mul hp1 hp2 (by positivity) (by positivity)
-  set a := (theta / 2) ^ A * gamma ^ G with ha
-  have hapos : 0 < a := lt_of_lt_of_le (by positivity) hbase
-  have ha1 : a ≤ 1 := by
-    rw [ha]
-    exact mul_le_one₀ (pow_le_one₀ (by positivity) (by linarith)) (by positivity)
-      (pow_le_one₀ hg.le hg1)
-  have hmin : min a 1 = a := min_eq_left ha1
-  set eta : Real := (2 : Real)⁻¹ ^ 44 with heta
-  have heta0 : 0 < eta := by rw [heta]; positivity
-  have h44 : (u ^ 44)⁻¹ ≤ eta := by
-    rw [heta, inv_pow]
-    exact inv_anti₀ (by positivity) (pow_le_pow_left₀ (by norm_num) hu2 44)
-  have hae : (u ^ (A + G + 44))⁻¹ ≤ a * eta := by
-    calc (u ^ (A + G + 44))⁻¹ = (u ^ (A + G))⁻¹ * (u ^ 44)⁻¹ := by rw [← mul_inv, ← pow_add]
-      _ ≤ a * eta := mul_le_mul hbase h44 (by positivity) hapos.le
-  have hsix : 6 / (min a 1 * eta) ≤ u ^ (A + G + 47) := by
-    rw [hmin, div_le_iff₀ (mul_pos hapos heta0)]
-    have h6 : (6 : Real) ≤ u ^ 3 := by nlinarith [pow_le_pow_left₀ (by norm_num : (0:Real) ≤ 2) hu2 3]
-    have hinv : 1 ≤ u ^ (A + G + 44) * (a * eta) := by
-      have := mul_le_mul_of_nonneg_left hae (pow_pos hupos (A + G + 44)).le
-      rwa [mul_inv_cancel₀ (pow_pos hupos _).ne'] at this
-    calc (6 : Real) ≤ u ^ 3 * 1 := by rw [mul_one]; exact h6
-      _ ≤ u ^ 3 * (u ^ (A + G + 44) * (a * eta)) := mul_le_mul_of_nonneg_left hinv (by positivity)
-      _ = u ^ (A + G + 47) * (a * eta) := by rw [← mul_assoc, ← pow_add]; ring_nf
-  have hT : ((⌈6 / (min a 1 * eta)⌉₊ : Nat) : Real) ≤ u ^ (A + G + 47 + 1) :=
-    ceil_le_pow_succ hu2 (by rw [hmin]; positivity) hsix
-  have hT1 : 1 ≤ ⌈6 / (min a 1 * eta)⌉₊ := by
-    rw [Nat.one_le_ceil_iff, hmin]; positivity
-  set e : Nat := A + G + k + 52 with he
-  have hm1 : ((fejerOrder k a eta : Nat) : Real) + 1 ≤ u ^ e := by
-    unfold fejerOrder
-    have hpos : 1 ≤ 2 ^ (k + 4) * ⌈6 / (min a 1 * eta)⌉₊ :=
-      Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by positivity) (by omega))
-    have hcast : ((2 ^ (k + 4) * ⌈6 / (min a 1 * eta)⌉₊ - 1 : Nat) : Real) + 1 =
-        (2 : Real) ^ (k + 4) * ((⌈6 / (min a 1 * eta)⌉₊ : Nat) : Real) := by
-      rw [Nat.cast_sub hpos]; push_cast; ring
-    rw [hcast]
-    calc (2 : Real) ^ (k + 4) * ((⌈6 / (min a 1 * eta)⌉₊ : Nat) : Real)
-        ≤ u ^ (k + 4) * u ^ (A + G + 47 + 1) :=
-          mul_le_mul (pow_le_pow_left₀ (by norm_num) hu2 _) hT (Nat.cast_nonneg _) (by positivity)
-      _ = u ^ e := by rw [← pow_add, he]; ring_nf
-  set m : Nat := fejerOrder k a eta with hmdef
-  have hmpos : (0 : Real) < (m : Real) + 1 := by positivity
-  have h2m : 2 * (m : Real) + 1 ≤ u ^ (e + 1) := by
-    calc 2 * (m : Real) + 1 ≤ 2 * ((m : Real) + 1) := by linarith
-      _ ≤ u * u ^ e := mul_le_mul hu2 hm1 hmpos.le hupos.le
-      _ = u ^ (e + 1) := by rw [← pow_succ']
-  have hkk : (k : Real) ≤ u ^ k := by
-    have h := (Nat.lt_two_pow_self (n := k)).le
-    calc (k : Real) ≤ (2 : Real) ^ k := by exact_mod_cast h
-      _ ≤ u ^ k := pow_le_pow_left₀ (by norm_num) hu2 _
-  have h16 : 2 * 8 * 2 ^ k = 2 ^ (k + 4) := by rw [pow_add]; ring
-  have hc0 : fejerDegenerateConst k a eta ≤ u ^ ((e + 1) * 2 ^ (k + 4) + k) := by
-    unfold fejerDegenerateConst
-    rw [← hmdef, h16]
-    have hp : (2 * (m : Real) + 1) ^ (2 ^ (k + 4)) ≤ u ^ ((e + 1) * 2 ^ (k + 4)) := by
-      rw [pow_mul]; exact pow_le_pow_left₀ (by positivity) h2m _
-    calc (2 * (m : Real) + 1) ^ (2 ^ (k + 4)) * (k : Real)
-        ≤ u ^ ((e + 1) * 2 ^ (k + 4)) * u ^ k :=
-          mul_le_mul hp hkk (Nat.cast_nonneg _) (by positivity)
-      _ = u ^ ((e + 1) * 2 ^ (k + 4) + k) := (pow_add _ _ _).symm
-  have htinv : (fejerLoss k a eta)⁻¹ ≤ u ^ (e * 2 ^ (k + 4)) := by
-    unfold fejerLoss
-    rw [← hmdef, inv_pow, inv_inv, pow_mul]
-    exact pow_le_pow_left₀ hmpos.le hm1 _
-  have htpos : 0 < fejerLoss k a eta := by unfold fejerLoss; positivity
-  have hc0pos : 0 ≤ fejerDegenerateConst k a eta := by unfold fejerDegenerateConst; positivity
-  have hfinal : 1 + k + (2 * e + 1) * 2 ^ (k + 4) ≤ fejerStepP k := by linarith
-  have he_le : e ≤ fejerStepP k := by
-    have h1 : 1 ≤ 2 ^ (k + 4) := Nat.one_le_two_pow
-    have h2 : e ≤ (2 * e + 1) * 2 ^ (k + 4) := by nlinarith
-    omega
   unfold fejerProductThreshold fejerExplicitThreshold
-  rw [← ha, ← heta, ← hmdef]
-  apply max_le
-  · exact hm1.trans (pow_le_pow_right₀ hu1 he_le)
-  · apply max_le
-    · have h3 : (3 : Real) ≤ u ^ 2 := by nlinarith [pow_le_pow_left₀ (by norm_num : (0:Real) ≤ 2) hu2 2]
-      have he2 : 2 ≤ e := by rw [he]; omega
-      exact h3.trans (pow_le_pow_right₀ hu1 (he2.trans he_le))
-    · rw [one_mul, div_eq_mul_inv]
-      calc 2 * fejerDegenerateConst k a eta * (fejerLoss k a eta)⁻¹
-          ≤ u * u ^ ((e + 1) * 2 ^ (k + 4) + k) * u ^ (e * 2 ^ (k + 4)) :=
-            mul_le_mul (mul_le_mul hu2 hc0 hc0pos hupos.le) htinv (inv_pos.mpr htpos).le
-              (by positivity)
-        _ = u ^ (1 + k + (2 * e + 1) * 2 ^ (k + 4)) := by
-            rw [← pow_succ', ← pow_add]; congr 1; ring
-        _ ≤ u ^ fejerStepP k := pow_le_pow_right₀ hu1 hfinal
+  set u := 2 / (gamma * theta)
+  clear_value u
+  have hu1 : 1 ≤ u := by linarith
+  set A : Nat := 7 * 4 ^ (k + 1)
+  set G : Nat := 21 * k * 4 ^ (k + 1)
+  set e : Nat := A + G + k + 52 with he
+  -- `α·η ≥ u^(-(A+G+44))` for `α = (θ/2)^A·γ^G ≤ 1` and `η = 2^(-44)`
+  have hae : u⁻¹ ^ (A + G + 44) ≤ (theta / 2) ^ A * gamma ^ G * (2 : Real)⁻¹ ^ 44 := by
+    rw [pow_add, pow_add]; gcongr
+  have ha1 : (theta / 2) ^ A * gamma ^ G ≤ 1 :=
+    mul_le_one₀ (pow_le_one₀ (by positivity) (by linarith)) (by positivity) (pow_le_one₀ hg.le hg1)
+  set a := (theta / 2) ^ A * gamma ^ G
+  set eta : Real := (2 : Real)⁻¹ ^ 44
+  set m := fejerOrder k a eta with hm
+  -- `m + 1 = 2^(k+4)·⌈6/(αη)⌉ ≤ u^e`
+  have hm1 : (m : Real) + 1 ≤ u ^ e := by
+    have h6 : (6 : Real) ≤ u ^ 3 := le_trans (by norm_num) (pow_le_pow_left₀ (by norm_num) hu2 3)
+    have hsix : 6 / (a * eta) ≤ u ^ (A + G + 47) :=
+      calc 6 / (a * eta) ≤ 6 / u⁻¹ ^ (A + G + 44) := by gcongr
+        _ = 6 * u ^ (A + G + 44) := by rw [inv_pow, div_inv_eq_mul]
+        _ ≤ u ^ 3 * u ^ (A + G + 44) := by gcongr
+        _ = u ^ (A + G + 47) := by ring
+    have hc : 0 < ⌈6 / (a * eta)⌉₊ := by positivity
+    rw [hm, fejerOrder, min_eq_left ha1, Nat.cast_pred (Nat.mul_pos (Nat.two_pow_pos (k + 4)) hc),
+      sub_add_cancel]
+    push_cast
+    calc (2 : Real) ^ (k + 4) * ⌈6 / (a * eta)⌉₊ ≤ u ^ (k + 4) * u ^ (A + G + 47 + 1) := by
+          gcongr; exact ceil_le_pow_succ hu2 (by positivity) hsix
+      _ = u ^ e := by rw [he]; ring
+  have h2m : 2 * (m : Real) + 1 ≤ u ^ (e + 1) := by
+    rw [pow_succ']; linarith [mul_le_mul hu2 hm1 (by positivity) (by positivity)]
+  have hkk : (k : Real) ≤ u ^ k :=
+    (by exact_mod_cast Nat.lt_two_pow_self.le : (k : Real) ≤ 2 ^ k).trans (by gcongr)
+  have hX := Nat.le_mul_of_pos_right (2 * e + 1) (Nat.two_pow_pos (k + 4))
+  refine max_le (hm1.trans (pow_le_pow_right₀ hu1 (by omega))) (max_le ?_ ?_)
+  · exact le_trans (by norm_num)
+      ((pow_le_pow_left₀ (by norm_num) hu2 2).trans (pow_le_pow_right₀ hu1 (by omega)))
+  · rw [fejerDegenerateConst, fejerLoss, ← hm, one_mul, inv_pow, div_inv_eq_mul,
+      show 2 * 8 * 2 ^ k = 2 ^ (k + 4) by ring]
+    calc 2 * ((2 * (m : Real) + 1) ^ 2 ^ (k + 4) * k) * ((m : Real) + 1) ^ 2 ^ (k + 4)
+        ≤ u * ((u ^ (e + 1)) ^ 2 ^ (k + 4) * u ^ k) * (u ^ e) ^ 2 ^ (k + 4) := by gcongr
+      _ = u ^ (1 + k + (2 * e + 1) * 2 ^ (k + 4)) := by ring
+      _ ≤ u ^ fejerStepP k := pow_le_pow_right₀ hu1 hexp
 
 /-- The tight radius at the Fejér density of dimension `k`: `0 < ζ′ ≤ 1` and
 `ζ′⁻¹ ≤ exp(u^(fejerStepT k))`. -/

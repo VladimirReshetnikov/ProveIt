@@ -26,66 +26,37 @@ theorem not_uniformOnPartition_nonuniform_cell_mass {N M k m : Nat} [NeZero N]
     ∑ a : Point N k, ‖∑ s : ZMod N, cubeDifference (restrictToCell (Q i).carrier f) a s‖ ^ 2
   let t : Real := beta / 2 * (m : Real) ^ (k + 2)
   let B : Finset (Fin M) := Finset.univ.filter (fun i => t < E i)
-  have ht : 0 ≤ t := by dsimp [t]; positivity
   have henergy : beta * (m : Real) ^ (k + 2) * M < ∑ i, E i := by
     unfold UniformOnPartition at hfail
     simp only [sum_cube_succ_eq_sum_norm_sq, Complex.ofReal_re] at hfail
     exact lt_of_not_ge hfail
-  have hE (i : Fin M) : E i ≤ (m : Real) ^ (k + 1) * (Q i).carrier.card := by
-    calc
-      E i ≤ ((Q i).carrier.card : Real) ^ (k + 2) :=
-        uniformEnergy_le_support_pow (restrictToCell_discValued hf _) _
-          (fun x hx => by simp [restrictToCell, hx])
-      _ = ((Q i).carrier.card : Real) ^ (k + 1) * (Q i).carrier.card := pow_succ _ _
-      _ ≤ _ := mul_le_mul_of_nonneg_right
-        (pow_le_pow_left₀ (by positivity) (by exact_mod_cast hsize i) _) (by positivity)
-  have hbound : (∑ i, E i) ≤ t * M + (m : Real) ^ (k + 1) *
-      ∑ i ∈ B, ((Q i).carrier.card : Real) := by
-    calc
-      _ ≤ ∑ i : Fin M, (t + if i ∈ B then (m : Real) ^ (k + 1) *
-          (Q i).carrier.card else 0) := by
-        apply Finset.sum_le_sum
-        intro i _
-        by_cases hi : i ∈ B
-        · rw [if_pos hi]
-          exact (hE i).trans (le_add_of_nonneg_left ht)
-        · rw [if_neg hi, add_zero]
-          exact le_of_not_gt (fun h => hi (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h⟩))
-      _ = _ := by
-        rw [Finset.sum_add_distrib]
-        simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
-        rw [← Finset.sum_filter]
-        have hfilter : Finset.univ.filter (fun i => i ∈ B) = B := by ext i; simp
-        rw [hfilter, ← Finset.mul_sum]
-        ring
-  have hmass : beta / 2 * ((m : Real) * M) <
-      ∑ i ∈ B, ((Q i).carrier.card : Real) := by
-    have hp : 0 < (m : Real) ^ (k + 1) := by positivity
-    apply (mul_lt_mul_iff_right₀ hp).mp
-    have heq : beta * (m : Real) ^ (k + 2) * M =
-        2 * t * M := by dsimp [t]; ring
-    have heq' : (m : Real) ^ (k + 1) * (beta / 2 * ((m : Real) * M)) = t * M := by
-      dsimp [t]
-      rw [pow_succ]
-      ring
-    rw [heq']
-    rw [heq] at henergy
+  -- a cell carries energy at most `t` outside `B` and at most `m^(k+1)·|Q i|` inside
+  have hbound : ∑ i, E i ≤
+      ∑ i, (t + if i ∈ B then (m : Real) ^ (k + 1) * (Q i).carrier.card else 0) := by
+    refine Finset.sum_le_sum fun i _ => ?_
+    split_ifs with hi
+    · refine le_add_of_nonneg_of_le (by positivity) ((uniformEnergy_le_support_pow
+        (restrictToCell_discValued hf _) (Q i).carrier fun x hx => by
+          simp [restrictToCell, hx]).trans ?_)
+      rw [pow_succ _ (k + 1)]
+      gcongr
+      exact_mod_cast hsize i
+    · simpa using not_lt.mp fun h => hi (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h⟩)
+  rw [Finset.sum_add_distrib, Finset.sum_const, Finset.sum_ite_mem, Finset.univ_inter,
+    ← Finset.mul_sum, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at hbound
+  have hmass : beta / 2 * ((m : Real) * M) < ∑ i ∈ B, ((Q i).carrier.card : Real) := by
+    refine lt_of_mul_lt_mul_left ?_ (by positivity : (0 : Real) ≤ (m : Real) ^ (k + 1))
+    have h : (m : Real) ^ (k + 2) = (m : Real) ^ (k + 1) * m := pow_succ _ _
+    simp only [t, h] at hbound henergy
     linarith
-  have htotal : (N : Real) ≤ (m : Real) * M := by
-    have h := Finset.sum_le_sum (fun i (_ : i ∈ (Finset.univ : Finset (Fin M))) => hsize i)
+  have htotal : (N : Real) ≤ m * M := by
+    have h := Finset.sum_le_card_nsmul Finset.univ _ m fun i _ => hsize i
     rw [hpart.sum_card] at h
-    have hn : N ≤ m * M := by simpa [mul_comm] using h
-    exact_mod_cast hn
-  refine ⟨B, (mul_le_mul_of_nonneg_left htotal (by positivity)).trans_lt hmass, ?_⟩
-  intro i hi hu
-  have hi' : t < E i := (Finset.mem_filter.mp hi).2
+    exact_mod_cast (by simpa [mul_comm] using h : N ≤ m * M)
+  refine ⟨B, (mul_le_mul_of_nonneg_left htotal (by positivity)).trans_lt hmass, fun i hi hu => ?_⟩
   have hNne : (N : Real) ≠ 0 := by exact_mod_cast NeZero.ne N
-  have hscale : (beta / 2 * ((m : Real) / N) ^ (k + 2)) * (N : Real) ^ (k + 2) = t := by
-    dsimp [t]
-    rw [div_pow]
-    field_simp
   unfold UniformOfDegree at hu
-  rw [hscale] at hu
-  exact not_lt_of_ge hu hi'
+  rw [div_pow, mul_assoc, div_mul_cancel₀ _ (pow_ne_zero _ hNne)] at hu
+  exact not_lt_of_ge hu (Finset.mem_filter.mp hi).2
 
 end LeanProofs.GowersSzemeredi

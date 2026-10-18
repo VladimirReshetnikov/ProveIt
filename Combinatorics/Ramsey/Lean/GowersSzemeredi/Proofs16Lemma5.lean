@@ -45,60 +45,46 @@ theorem section16_selected_side_model_with {N k : Nat} [NeZero N]
       HasBohrDifferenceModel (section16CubeMultifunctionDomain B h)
         (section16InducedCubeMap B h phi) (section16LargeSpectrum B h (section16Delta (t1)))
         (zeta) Y psi := by
-  let a := t1 / 4
   let D := section16CubeMultifunctionDomain B h
-  have ha : 0 < a := ha0
-  have haSmall : a ≤ 1 / 36 := haS
-  have hlow := section16_cube_card_lower B h a hcount
-  have hhigh := section16_cube_card_le B h
   have hN : 0 < N := NeZero.pos N
   obtain ⟨L, hML, _, hL, alpha, halpha, halpha0, halpha1, hcard⟩ :=
     domain_density_reparameterize (Fintype.card (Section16CubeElement B h)) N (N ^ k)
-      hN (pow_pos hN k) a ha haSmall
-      (by simpa only [section16CubeElement_card, pow_succ, Nat.cast_pow, mul_assoc] using hlow)
-      (by exact_mod_cast (by simpa only [section16CubeElement_card, pow_succ] using hhigh :
-        Fintype.card (Section16CubeElement B h) ≤ N ^ k * N))
+      hN (pow_pos hN k) _ ha0 haS
+      (by simpa only [section16CubeElement_card, pow_succ, Nat.cast_pow, mul_assoc] using
+        section16_cube_card_lower B h _ hcount)
+      (by exact_mod_cast (by simpa only [section16CubeElement_card, pow_succ] using
+        section16_cube_card_le B h : Fintype.card (Section16CubeElement B h) ≤ N ^ k * N))
   obtain ⟨_, _, Y, psi, hY, hmodel⟩ := theorem_10_13_holds N L
     (Section16CubeElement B h) D (section16InducedCubeMap B h phi) alpha
     halpha0 halpha1 hL (fun s => (section16CubeMultifunctionDomain_fibre_card_le B h s).trans hML)
     hcard happrox
   have htheta1 : 0 ≤ t1 := by linarith
-  have hc : (2 : Real) ^ (-(27 : Real)) * (t1) ^ 6 ≤ alpha ^ 6 / 20000 := by
-    calc
-      _ ≤ ((1 / 4 : Real) ^ (6 : Nat) / 20000) * (t1) ^ 6 :=
-        mul_le_mul_of_nonneg_right (by norm_num [Real.rpow_neg, Real.rpow_ofNat]) (pow_nonneg htheta1 6)
-      _ = a ^ 6 / 20000 := by dsimp [a]; ring
-      _ ≤ _ := div_le_div_of_nonneg_right (pow_le_pow_left₀ ha.le halpha 6) (by norm_num)
+  have hc : (2 : Real) ^ (-(27 : Real)) * t1 ^ 6 ≤ alpha ^ 6 / 20000 := calc
+    _ ≤ (1 / 4 : Real) ^ 6 / 20000 * t1 ^ 6 := by
+        gcongr; norm_num [Real.rpow_neg, Real.rpow_ofNat]
+    _ = (t1 / 4) ^ 6 / 20000 := by ring
+    _ ≤ _ := by gcongr
   refine ⟨Y, psi, ?_, ?_⟩
-  · rw [← section16CubeElement_card] at ⊢
-    calc
-      _ ≤ (alpha ^ 6 / 20000) * Fintype.card (Section16CubeElement B h) :=
-        mul_le_mul_of_nonneg_right hc (Nat.cast_nonneg _)
-      _ = alpha ^ 6 * Fintype.card (Section16CubeElement B h) / 20000 := by ring
-      _ ≤ Y.card := hY
-  · have hlam : section16Delta (t1) ≤ section10Lambda alpha := by
-      change (2 : Real) ^ (-(37 : Real)) * a ^ ((11 : Real) / 2) ≤ _
-      unfold section10Lambda
-      exact mul_le_mul_of_nonneg_left (Real.rpow_le_rpow ha.le halpha (by norm_num)) (by positivity)
-    have hthreshold : section16Delta (t1) * (N : Real) ^ (k + 1) ≤
-        section10Lambda alpha * L * N := by
-      rw [pow_succ, ← mul_assoc]
+  · rw [← section16CubeElement_card]
+    exact (mul_le_mul_of_nonneg_right hc (Nat.cast_nonneg _)).trans
+      (by rw [div_mul_eq_mul_div]; exact hY)
+  · have hlam : section16Delta t1 ≤ section10Lambda alpha :=
+      mul_le_mul_of_nonneg_left (Real.rpow_le_rpow ha0.le halpha (by norm_num)) (by positivity)
+    have hthreshold :
+        section16Delta t1 * (N : Real) ^ (k + 1) ≤ section10Lambda alpha * L * N := by
       have hMLr : (N : Real) ^ k ≤ L := by exact_mod_cast hML
-      have hlam0 : 0 ≤ section16Delta (t1) := by
-        unfold section16Delta; positivity
+      have hlam0 : 0 ≤ section16Delta t1 := by unfold section16Delta; positivity
+      rw [pow_succ, ← mul_assoc]
       gcongr
       exact hlam0.trans hlam
     have hK : domainLargeSpectrum D (section10Lambda alpha * L * N) ⊆
-        section16LargeSpectrum B h (section16Delta (t1)) := by
-      rw [section16_spectrum_eq_domain]
-      intro r hr
-      simp only [domainLargeSpectrum, Finset.mem_filter, Finset.mem_univ, true_and] at hr ⊢
+        section16LargeSpectrum B h (section16Delta t1) := fun r hr => by
+      simp only [section16_spectrum_eq_domain, domainLargeSpectrum, Finset.mem_filter,
+        Finset.mem_univ, true_and] at hr ⊢
       exact hthreshold.trans hr
-    apply hmodel.restrict_bohr
-    intro d hd
+    refine hmodel.restrict_bohr fun d hd => ?_
     simp only [bohr, Finset.mem_filter, Finset.mem_univ, true_and] at hd ⊢
-    intro r hr
-    exact (hd r (hK hr)).trans (mul_le_mul_of_nonneg_right
-      (hzeta alpha halpha halpha1) (Nat.cast_nonneg N))
+    exact fun r hr => (hd r (hK hr)).trans
+      (mul_le_mul_of_nonneg_right (hzeta alpha halpha halpha1) (Nat.cast_nonneg N))
 
 end LeanProofs.GowersSzemeredi

@@ -129,25 +129,12 @@ private lemma popular_edge_count_lower {G : Type*} [DecidableEq G]
       ∑ a ∈ A, ((popularNeighbors A c a).card : Real) := by
   rw [← Nat.cast_sum, sum_popularNeighbors_card]
   push_cast
-  have hterm : ∀ x ∈ popularSums A c,
-      c * A.card / 2 ≤ (sumRep A x : Real) := by
-    intro x hx
-    exact (Finset.mem_filter.mp hx).2
-  have hsum :
-      (popularSums A c).card * (c * A.card / 2) ≤
-        ∑ x ∈ popularSums A c, (sumRep A x : Real) := by
-    calc
-      _ = ∑ _x ∈ popularSums A c, (c * A.card / 2) := by
-        simp [mul_comm]
-      _ ≤ _ := by
-        exact Finset.sum_le_sum hterm
-  have hD := popularSums_card_lower A c hc henergy
-  have hthreshold : 0 ≤ c * (A.card : Real) / 2 := by positivity
-  calc
-    c ^ 2 * (A.card : Real) ^ 2 / 4 =
-        (c * A.card / 2) * (c * A.card / 2) := by ring
-    _ ≤ (popularSums A c).card * (c * A.card / 2) := mul_le_mul_of_nonneg_right hD hthreshold
-    _ ≤ _ := hsum
+  -- each of the at least `c |A| / 2` popular sums has at least `c |A| / 2` representations
+  have hsum := Finset.card_nsmul_le_sum (popularSums A c) (fun x => (sumRep A x : Real))
+    (c * A.card / 2) fun x hx => (Finset.mem_filter.mp hx).2
+  rw [nsmul_eq_mul] at hsum
+  nlinarith [mul_le_mul_of_nonneg_right (popularSums_card_lower A c hc henergy)
+    (by positivity : (0 : Real) ≤ c * A.card / 2)]
 
 private def bsgDelta (c : Real) : Real := c ^ 2 / 8
 
@@ -276,36 +263,24 @@ private lemma exists_bsg_drc_core {G : Type*} [DecidableEq G]
       (9 : Real) / 10 * (K.card : Real) ^ 2 ≤
         goodPairCount F K (bsgDelta c ^ 2 * A.card / 2) := by
   dsimp only
-  let V := highDegreeCenters A c
-  let F := indexedNeighborhood A c V
-  have hVcard : bsgDelta c * A.card ≤ V.card :=
-    highDegreeCenters_card_lower A c hc henergy
-  by_cases hA : A = ∅
-  · subst A
-    refine ⟨∅, ?_, ?_, ?_⟩ <;> simp [highDegreeCenters, bsgDelta,
-      goodPairCount]
-  have hAnonempty : A.Nonempty := Finset.nonempty_iff_ne_empty.mpr hA
+  rcases A.eq_empty_or_nonempty with rfl | hA
+  · exact ⟨∅, by simp, by simp [highDegreeCenters], by simp⟩
+  -- `c ≤ 1` since the energy is at most `|A| ^ 3`, so `δ = c ^ 2 / 8 ≤ 1` and Lemma 7.4 applies
+  have hm : (0 : Real) < A.card := by exact_mod_cast hA.card_pos
   have hc1 : c ≤ 1 := by
-    have hm : (0 : Real) < A.card := by exact_mod_cast hAnonempty.card_pos
-    have hupper : (Finset.addEnergy A A : Real) ≤ (A.card : Real) ^ 3 := by
+    have : (Finset.addEnergy A A : Real) ≤ (A.card : Real) ^ 3 := by
       exact_mod_cast energy_le_card_cube A
-    have := henergy.trans hupper
     nlinarith [pow_pos hm 3]
-  have hdelta0 := bsg_delta_pos c hc
   have hdelta1 : bsgDelta c ≤ 1 := by
     unfold bsgDelta
     nlinarith [sq_nonneg c, mul_nonneg hc.le (sub_nonneg.mpr hc1)]
-  have hFsub : ∀ i, F i ⊆ A := fun i => Finset.filter_subset _ _
-  have hFcard : ∀ i, bsgDelta c * A.card ≤ (F i).card := by
-    intro i
-    apply indexedNeighborhood_card_lower A c V
-    intro a ha
-    exact (Finset.mem_filter.mp ha).2
-  have hdrc := (lemma_7_4_holds G A.card V.card A F (bsgDelta c)
-    rfl hFsub hdelta0 hdelta1).2 hFcard
-  obtain ⟨K, hKcard, hKgood⟩ := hdrc
-  refine ⟨K, hVcard, hKcard, ?_⟩
-  simpa only [goodPairCount, goodIntersection, largeIntersectionPairCount] using hKgood
+  obtain ⟨K, hKcard, hKgood⟩ := (lemma_7_4_holds G A.card _ A
+    (indexedNeighborhood A c (highDegreeCenters A c)) (bsgDelta c) rfl
+    (fun _ => Finset.filter_subset _ _) (bsg_delta_pos c hc) hdelta1).2
+    (indexedNeighborhood_card_lower A c (highDegreeCenters A c)
+      fun _ ha => (Finset.mem_filter.mp ha).2)
+  exact ⟨K, highDegreeCenters_card_lower A c hc henergy, hKcard, by
+    simpa only [goodPairCount, goodIntersection, largeIntersectionPairCount] using hKgood⟩
 
 private noncomputable def sumRepPairs {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (x : G) : Finset (G × G) := by
@@ -338,50 +313,26 @@ private lemma quadWitnessTuple_mem {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (c : Real) (u v : G)
     (w : QuadWitness G) (hwmem : w ∈ quadWitnesses A c u v) :
     quadWitnessTuple w ∈ fourReps A (u - v) := by
-  have hw := Finset.mem_sigma.mp hwmem
-  have hpq := Finset.mem_product.mp hw.2
-  have hp := Finset.mem_filter.mp hpq.1
-  have hq := Finset.mem_filter.mp hpq.2
-  simp only [fourReps, Finset.mem_filter, Fintype.mem_piFinset]
-  constructor
-  · intro i
-    fin_cases i <;>
-      simp [quadWitnessTuple] <;>
-      first | exact (Finset.mem_product.mp hp.1).1
-            | exact (Finset.mem_product.mp hp.1).2
-            | exact (Finset.mem_product.mp hq.1).1
-            | exact (Finset.mem_product.mp hq.1).2
-  · simp [quadWitnessTuple]
-    calc
-      w.2.1.1 + w.2.1.2 - w.2.2.1 - w.2.2.2 =
-          (u + w.1) - (w.2.2.1 + w.2.2.2) := by rw [hp.2]; abel
-      _ = (u + w.1) - (v + w.1) := by rw [hq.2]
-      _ = u - v := by abel
+  obtain ⟨b, ⟨p1, p2⟩, ⟨q1, q2⟩⟩ := w
+  simp only [quadWitnesses, sumRepPairs, Finset.mem_sigma, Finset.mem_product,
+    Finset.mem_filter] at hwmem
+  obtain ⟨-, ⟨⟨hp1, hp2⟩, hp⟩, ⟨hq1, hq2⟩, hq⟩ := hwmem
+  refine Finset.mem_filter.mpr ⟨Fintype.mem_piFinset.mpr fun i => ?_, ?_⟩
+  · fin_cases i <;> simp [quadWitnessTuple, hp1, hp2, hq1, hq2]
+  · show p1 + p2 - q1 - q2 = u - v
+    rw [sub_sub, hp, hq, add_sub_add_right_eq_sub]
 
 private lemma quadWitnessTuple_injOn {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (c : Real) (u v : G) :
     Set.InjOn quadWitnessTuple (quadWitnesses A c u v : Set (QuadWitness G)) := by
-  intro w hwmem z hzmem h
-  have h0 := congrFun h 0
-  have h1 := congrFun h 1
-  have h2 := congrFun h 2
-  have h3 := congrFun h 3
-  simp [quadWitnessTuple] at h0 h1 h2 h3
-  have hw := Finset.mem_sigma.mp hwmem
-  have hz := Finset.mem_sigma.mp hzmem
-  have hwp := (Finset.mem_filter.mp (Finset.mem_product.mp hw.2).1).2
-  have hzp := (Finset.mem_filter.mp (Finset.mem_product.mp hz.2).1).2
-  have hb : w.1 = z.1 := by
-    apply add_left_cancel (a := u)
-    calc
-      u + w.1 = w.2.1.1 + w.2.1.2 := hwp.symm
-      _ = z.2.1.1 + z.2.1.2 := by rw [h0, h1]
-      _ = u + z.1 := hzp
-  apply Sigma.ext hb
-  rw [heq_iff_eq]
-  apply Prod.ext
-  · exact Prod.ext h0 h1
-  · exact Prod.ext h2 h3
+  rintro ⟨b, ⟨p1, p2⟩, ⟨q1, q2⟩⟩ hw ⟨b', ⟨p1', p2'⟩, ⟨q1', q2'⟩⟩ hw' h
+  obtain ⟨rfl, rfl, rfl, rfl⟩ : p1 = p1' ∧ p2 = p2' ∧ q1 = q1' ∧ q2 = q2' :=
+    ⟨congrFun h 0, congrFun h 1, congrFun h 2, congrFun h 3⟩
+  -- the centre is determined by `p1 + p2 = u + b`
+  obtain rfl : b = b' := add_left_cancel
+    ((Finset.mem_filter.mp (Finset.mem_product.mp (Finset.mem_sigma.mp hw).2).1).2.symm.trans
+      (Finset.mem_filter.mp (Finset.mem_product.mp (Finset.mem_sigma.mp hw').2).1).2)
+  rfl
 
 private lemma quadWitnesses_card_lower {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (c : Real) (hc : 0 < c) (u v : G) :
@@ -416,33 +367,17 @@ private lemma fourReps_card_lower_of_good {G : Type*} [DecidableEq G]
       ((popularNeighbors A c u ∩ popularNeighbors A c v).card : Real)) :
     delta ^ 2 * c ^ 2 * (A.card : Real) ^ 3 / 8 ≤
       (fourReps A (u - v)).card := by
-  have hfactor : 0 ≤ (c * (A.card : Real) / 2) ^ 2 := sq_nonneg _
-  have hw := quadWitnesses_card_lower A c hc u v
-  have hscale := mul_le_mul_of_nonneg_right hgood hfactor
-  have hcard : (quadWitnesses A c u v).card ≤ (fourReps A (u - v)).card := by
-    exact Finset.card_le_card_of_injOn quadWitnessTuple
-      (fun w hw => quadWitnessTuple_mem A c u v w hw)
-      (quadWitnessTuple_injOn A c u v)
-  have hcardR : ((quadWitnesses A c u v).card : Real) ≤
-      (fourReps A (u - v)).card := by exact_mod_cast hcard
-  calc
-    delta ^ 2 * c ^ 2 * (A.card : Real) ^ 3 / 8 =
-        (delta ^ 2 * A.card / 2) * (c * A.card / 2) ^ 2 := by ring
-    _ ≤ ((popularNeighbors A c u ∩ popularNeighbors A c v).card : Real) *
-        (c * A.card / 2) ^ 2 := hscale
-    _ ≤ (quadWitnesses A c u v).card := hw
-    _ ≤ (fourReps A (u - v)).card := hcardR
+  have hcard : ((quadWitnesses A c u v).card : Real) ≤ (fourReps A (u - v)).card := by
+    exact_mod_cast Finset.card_le_card_of_injOn quadWitnessTuple
+      (quadWitnessTuple_mem A c u v) (quadWitnessTuple_injOn A c u v)
+  linarith [quadWitnesses_card_lower A c hc u v,
+    mul_le_mul_of_nonneg_right hgood (sq_nonneg (c * (A.card : Real) / 2))]
 
 private noncomputable def goodIndexNeighbors {X I : Type*} [DecidableEq X]
     [DecidableEq I] (A : I → Finset X) (K : Finset I)
     (threshold : Real) (i : I) : Finset I := by
   classical
   exact K.filter fun j => goodIntersection A threshold i j
-
-@[simp] private lemma card_goodIndexNeighbors {X I : Type*} [DecidableEq X]
-    [DecidableEq I] (A : I → Finset X) (K : Finset I)
-    (threshold : Real) (i : I) :
-    (goodIndexNeighbors A K threshold i).card = goodDegree A K threshold i := rfl
 
 private lemma common_goodIndexNeighbors_card_lower {X I : Type*}
     [DecidableEq X] [DecidableEq I] (A : I → Finset X)
@@ -453,24 +388,17 @@ private lemma common_goodIndexNeighbors_card_lower {X I : Type*}
       ((goodIndexNeighbors A K threshold i ∩
         goodIndexNeighbors A K threshold j).card : Real) := by
   classical
-  let Gi := goodIndexNeighbors A K threshold i
-  let Gj := goodIndexNeighbors A K threshold j
-  have hGi : (4 : Real) / 5 * K.card ≤ Gi.card := by
-    simpa only [highGoodDegree, Finset.mem_filter, card_goodIndexNeighbors,
-      Gi] using (Finset.mem_filter.mp hi).2
-  have hGj : (4 : Real) / 5 * K.card ≤ Gj.card := by
-    simpa only [highGoodDegree, Finset.mem_filter, card_goodIndexNeighbors,
-      Gj] using (Finset.mem_filter.mp hj).2
-  have hGisub : Gi ⊆ K := Finset.filter_subset _ _
-  have hGjsub : Gj ⊆ K := Finset.filter_subset _ _
-  have hunion : (Gi ∪ Gj).card ≤ K.card :=
-    Finset.card_le_card (Finset.union_subset hGisub hGjsub)
-  have hcardId := Finset.card_union_add_card_inter Gi Gj
-  have hcardR : (Gi.card : Real) + Gj.card =
-      (Gi ∪ Gj).card + (Gi ∩ Gj).card := by exact_mod_cast hcardId.symm
-  have hunionR : ((Gi ∪ Gj).card : Real) ≤ K.card := by exact_mod_cast hunion
-  dsimp only [Gi, Gj] at hGi hGj hcardR ⊢
-  nlinarith
+  -- `|Gi ∩ Gj| = |Gi| + |Gj| - |Gi ∪ Gj| ≥ 4 |K| / 5 + 4 |K| / 5 - |K|`
+  set Gi := goodIndexNeighbors A K threshold i
+  set Gj := goodIndexNeighbors A K threshold j
+  have hGi : (4 : Real) / 5 * K.card ≤ Gi.card := (Finset.mem_filter.mp hi).2
+  have hGj : (4 : Real) / 5 * K.card ≤ Gj.card := (Finset.mem_filter.mp hj).2
+  have hU : ((Gi ∪ Gj).card : Real) ≤ K.card := Nat.cast_le.mpr <|
+    Finset.card_le_card (Finset.union_subset (Finset.filter_subset _ _)
+      (Finset.filter_subset _ _))
+  have hI : ((Gi ∪ Gj).card : Real) + (Gi ∩ Gj).card = Gi.card + Gj.card := by
+    exact_mod_cast Finset.card_union_add_card_inter Gi Gj
+  linarith
 
 private noncomputable def eightReps {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (x : G) : Finset (Fin 8 → G) := by
@@ -501,58 +429,31 @@ private lemma octWitnessTuple_mem {G : Type*} [DecidableEq G]
     (w : OctWitness (Fin V.card) G)
     (hwmem : w ∈ octWitnesses A c delta V K i j) :
     octWitnessTuple w ∈ eightReps A (centerAt V i - centerAt V j) := by
-  have hw := Finset.mem_sigma.mp hwmem
-  have hqr := Finset.mem_product.mp hw.2
-  have hq := Finset.mem_filter.mp hqr.1
-  have hr := Finset.mem_filter.mp hqr.2
-  simp only [eightReps, Finset.mem_filter, Fintype.mem_piFinset]
-  constructor
-  · intro a
-    refine Fin.addCases (m := 4) (n := 4) ?_ ?_ a
-    · intro x
-      simpa only [octWitnessTuple, Fin.append_left] using
-        (Fintype.mem_piFinset.mp hq.1 x)
-    · intro x
-      simpa only [octWitnessTuple, Fin.append_right] using
-        (Fintype.mem_piFinset.mp hr.1 x)
-  · change
-      (w.2.1 0 + w.2.1 1 - w.2.1 2 - w.2.1 3) -
-        (w.2.2 0 + w.2.2 1 - w.2.2 2 - w.2.2 3) =
-          centerAt V i - centerAt V j
-    rw [hq.2, hr.2]
-    abel
+  obtain ⟨t, q, r⟩ := w
+  simp only [octWitnesses, fourReps, Finset.mem_sigma, Finset.mem_product, Finset.mem_filter,
+    Fintype.mem_piFinset] at hwmem
+  obtain ⟨-, ⟨hqA, hq⟩, hrA, hr⟩ := hwmem
+  refine Finset.mem_filter.mpr ⟨Fintype.mem_piFinset.mpr fun a => ?_, ?_⟩
+  · refine Fin.addCases (m := 4) (n := 4) (fun x => ?_) (fun x => ?_) a <;>
+      simp only [octWitnessTuple, Fin.append_left, Fin.append_right, hqA, hrA]
+  · show q 0 + q 1 - q 2 - q 3 - (r 0 + r 1 - r 2 - r 3) = centerAt V i - centerAt V j
+    rw [hq, hr, sub_sub_sub_cancel_right]
 
 private lemma octWitnessTuple_injOn {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (c delta : Real)
     (V : Finset G) (K : Finset (Fin V.card)) (i j : Fin V.card) :
     Set.InjOn octWitnessTuple
       (octWitnesses A c delta V K i j : Set (OctWitness (Fin V.card) G)) := by
-  intro w hwmem z hzmem h
-  have hq : w.2.1 = z.2.1 := by
-    funext a
-    have ha := congrFun h (Fin.castAdd 4 a)
-    simpa only [octWitnessTuple, Fin.append_left] using ha
-  have hr : w.2.2 = z.2.2 := by
-    funext a
-    have ha := congrFun h (Fin.natAdd 4 a)
-    simpa only [octWitnessTuple, Fin.append_right] using ha
-  have hw := Finset.mem_sigma.mp hwmem
-  have hz := Finset.mem_sigma.mp hzmem
-  have hwq := (Finset.mem_filter.mp (Finset.mem_product.mp hw.2).1).2
-  have hzq := (Finset.mem_filter.mp (Finset.mem_product.mp hz.2).1).2
-  have htcenter : centerAt V w.1 = centerAt V z.1 := by
-    have hd : centerAt V i - centerAt V w.1 =
-        centerAt V i - centerAt V z.1 := by
-      calc
-        centerAt V i - centerAt V w.1 =
-            w.2.1 0 + w.2.1 1 - w.2.1 2 - w.2.1 3 := hwq.symm
-        _ = z.2.1 0 + z.2.1 1 - z.2.1 2 - z.2.1 3 := by rw [hq]
-        _ = centerAt V i - centerAt V z.1 := hzq
-    exact sub_right_inj.mp hd
-  have ht : w.1 = z.1 := centerAt_injective V htcenter
-  apply Sigma.ext ht
-  rw [heq_iff_eq]
-  exact Prod.ext hq hr
+  rintro ⟨t, q, r⟩ hw ⟨t', q', r'⟩ hw' h
+  obtain rfl : q = q' := funext fun a => by
+    simpa only [octWitnessTuple, Fin.append_left] using congrFun h (Fin.castAdd 4 a)
+  obtain rfl : r = r' := funext fun a => by
+    simpa only [octWitnessTuple, Fin.append_right] using congrFun h (Fin.natAdd 4 a)
+  -- the centre is determined by `q 0 + q 1 - q 2 - q 3 = centerAt V i - centerAt V t`
+  obtain rfl : t = t' := centerAt_injective V (sub_right_inj.mp
+    ((Finset.mem_filter.mp (Finset.mem_product.mp (Finset.mem_sigma.mp hw).2).1).2.symm.trans
+      (Finset.mem_filter.mp (Finset.mem_product.mp (Finset.mem_sigma.mp hw').2).1).2))
+  rfl
 
 private lemma octWitnesses_card_lower {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (c delta : Real) (hc : 0 < c)
@@ -565,34 +466,15 @@ private lemma octWitnesses_card_lower {G : Type*} [DecidableEq G]
       (octWitnesses A c delta V K i j).card := by
   classical
   dsimp only
-  let F := indexedNeighborhood A c V
-  let threshold := delta ^ 2 * A.card / 2
-  let W := goodIndexNeighbors F K threshold i ∩
-    goodIndexNeighbors F K threshold j
-  rw [octWitnesses, Finset.card_sigma]
-  push_cast
-  calc
-    _ = ∑ _t ∈ W,
-        (delta ^ 2 * c ^ 2 * (A.card : Real) ^ 3 / 8) ^ 2 := by
-      simp [W, F, threshold, mul_comm]
-    _ ≤ ∑ t ∈ W,
-        ((fourReps A (centerAt V i - centerAt V t)).card : Real) *
-          (fourReps A (centerAt V j - centerAt V t)).card := by
-      apply Finset.sum_le_sum
-      intro t ht
-      have hti := (Finset.mem_filter.mp (Finset.mem_inter.mp ht).1).2
-      have htj := (Finset.mem_filter.mp (Finset.mem_inter.mp ht).2).2
-      have hqi := fourReps_card_lower_of_good A c delta hc
-        (centerAt V i) (centerAt V t) hti
-      have hqj := fourReps_card_lower_of_good A c delta hc
-        (centerAt V j) (centerAt V t) htj
-      rw [pow_two]
-      exact mul_le_mul hqi hqj (by positivity) (by positivity)
-    _ = _ := by
-      apply Finset.sum_congr rfl
-      intro t _
-      rw [Finset.card_product]
-      norm_cast
+  -- every common good neighbour `t` carries two fibres of `fourReps`
+  rw [octWitnesses, Finset.card_sigma, Nat.cast_sum, ← nsmul_eq_mul]
+  refine Finset.card_nsmul_le_sum _ _ _ fun t ht => ?_
+  rw [Finset.card_product, Nat.cast_mul, pow_two]
+  exact mul_le_mul
+    (fourReps_card_lower_of_good A c delta hc (centerAt V i) (centerAt V t)
+      (Finset.mem_filter.mp (Finset.mem_inter.mp ht).1).2)
+    (fourReps_card_lower_of_good A c delta hc (centerAt V j) (centerAt V t)
+      (Finset.mem_filter.mp (Finset.mem_inter.mp ht).2).2) (by positivity) (by positivity)
 
 private lemma bsg_K_card_lower (Acard : Nat) (delta : Real)
     (hdelta : 0 ≤ delta) {Vcard Kcard : Nat}

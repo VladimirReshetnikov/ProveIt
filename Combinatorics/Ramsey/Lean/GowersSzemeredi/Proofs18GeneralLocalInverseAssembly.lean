@@ -37,25 +37,15 @@ theorem FunctionDiscrepancyBound.selected_prime_model_partition
       beta * (∑ i ∈ B, ((Q i).carrier.card : Real)) ≤ ∑ j, ‖∑ x ∈ (R j).carrier, f x‖ := by
   let t := sigma / 16
   let D := localInverseAssemblyConstant ratio sigma
-  have ht : 0 ≤ t := by dsimp [t]; positivity
-  have htone : t ≤ 1 := by dsimp [t]; linarith only [hσ16]
+  have ht : 0 ≤ t := by positivity
+  have htone : t ≤ 1 := by dsimp only [t]; linarith
   have hD : 1 ≤ D := le_max_left _ _
-  have hD0 : 0 ≤ D := zero_le_one.trans hD
   have hC : 0 < boundaryRefinementConstant (1 / 16) := section5LocalRefinementConstant_pos _ _
   have hlone : (1 : Real) ≤ l := by exact_mod_cast hl
-  have hlpos : (0 : Real) < l := zero_lt_one.trans_le hlone
   have hli' (i : Fin K) : (l : Real) ≤ (Q i).carrier.card := by
     rw [hproper i]
     exact_mod_cast hli i
-  let budget : Fin K → Real := fun i => D * (Q i).carrier.card / (l : Real) ^ t
-  have hbudget (i : Fin K) : 1 ≤ budget i := by
-    calc
-      _ ≤ ((Q i).carrier.card : Real) / (l : Real) ^ t := one_le_linear_scale hlone (hli' i) htone
-      _ ≤ _ := by
-        dsimp [budget]
-        exact div_le_div_of_nonneg_right
-          (by nlinarith only [mul_le_mul_of_nonneg_right hD (Nat.cast_nonneg (Q i).carrier.card)])
-          (Real.rpow_nonneg (Nat.cast_nonneg _) _)
+  let budget : Fin K → Real := fun i => D * ((Q i).carrier.card / (l : Real) ^ t)
   have hlocal (i : Fin K) (hi : i ∈ B) : ∃ J : Nat, ∃ R : Fin J → ModAP N,
       IsPartition (fun j => (R j).carrier) (Q i).carrier ∧
       (∀ j, (R j).IsProper) ∧ (J : Real) ≤ budget i ∧
@@ -66,32 +56,25 @@ theorem FunctionDiscrepancyBound.selected_prime_model_partition
     obtain ⟨J, R, hR, hRproper, hcount, hdis⟩ :=
       hbound.progression_partition (Q i) (hproper i) hMfour hMlow hT f hf hnon
     have hMreal : (M : Real) ≤ ratio * (Q i).carrier.card := by rwa [hproper i]
-    have hpower : (M : Real) ^ (1 - t) ≤ ratio ^ (1 - t) * ((Q i).carrier.card : Real) ^ (1 - t) := by
-      rw [← Real.mul_rpow hratio (Nat.cast_nonneg _)]
-      exact Real.rpow_le_rpow (Nat.cast_nonneg _) hMreal (by linarith only [htone])
-    refine ⟨J, R, hR, hRproper, ?_, ?_⟩
-    · calc
-        (J : Real) ≤ 2 * boundaryRefinementConstant (1 / 16) * (M : Real) ^ (1 - t) := hcount
-        _ ≤ 2 * boundaryRefinementConstant (1 / 16) *
-            (ratio ^ (1 - t) * ((Q i).carrier.card : Real) ^ (1 - t)) :=
-          mul_le_mul_of_nonneg_left hpower (by positivity)
-        _ ≤ D * ((Q i).carrier.card : Real) ^ (1 - t) := by
-          rw [← mul_assoc]
-          exact mul_le_mul_of_nonneg_right (le_max_right _ _) (Real.rpow_nonneg (Nat.cast_nonneg _) _)
-        _ ≤ D * (((Q i).carrier.card : Real) / (l : Real) ^ t) :=
-          mul_le_mul_of_nonneg_left (rpow_count_le_linear_scale hlpos (hli' i) ht) hD0
-        _ = budget i := by dsimp [budget]; ring
-    · apply le_trans _ hdis
-      apply mul_le_mul_of_nonneg_left _ hβ
-      rw [hproper i]
-      exact_mod_cast hMlow
+    refine ⟨J, R, hR, hRproper, ?_,
+      (mul_le_mul_of_nonneg_left (by rw [hproper i]; exact_mod_cast hMlow) hβ).trans hdis⟩
+    calc (J : Real)
+        ≤ 2 * boundaryRefinementConstant (1 / 16) * (ratio * (Q i).carrier.card) ^ (1 - t) :=
+          hcount.trans (mul_le_mul_of_nonneg_left
+            (Real.rpow_le_rpow (Nat.cast_nonneg _) hMreal (by linarith)) (by positivity))
+      _ = 2 * boundaryRefinementConstant (1 / 16) * ratio ^ (1 - t) *
+          ((Q i).carrier.card : Real) ^ (1 - t) := by
+          rw [Real.mul_rpow hratio (Nat.cast_nonneg _)]; ring
+      _ ≤ D * ((Q i).carrier.card / (l : Real) ^ t) :=
+          mul_le_mul (le_max_right _ _) (rpow_count_le_linear_scale (by linarith) (hli' i) ht)
+            (by positivity) (zero_le_one.trans hD)
   obtain ⟨J, R, hR, _, hRproper, hcount, hdis⟩ := selected_discrepancy_refinement
-    Q f B budget beta hQ hproper hbudget hlocal
-  refine ⟨J, R, hR, hRproper, ?_, hdis⟩
-  apply hcount.trans_eq
-  dsimp [budget]
-  rw [← Finset.sum_div, ← Finset.mul_sum, ← Nat.cast_sum, hQ.sum_card]
-  simp [D, t]
+    Q f B budget beta hQ hproper
+    (fun i => one_le_mul_of_one_le_of_one_le hD (one_le_linear_scale hlone (hli' i) htone)) hlocal
+  refine ⟨J, R, hR, hRproper, hcount.trans_eq ?_, hdis⟩
+  dsimp only [budget]
+  rw [← Finset.mul_sum, ← Finset.sum_div, ← Nat.cast_sum, hQ.sum_card]
+  simp [D, t, mul_div_assoc]
 
 /-- A localized uniformity obstruction supplies the selected prime models
 and their mass automatically, in any degree. The only inverse hypothesis

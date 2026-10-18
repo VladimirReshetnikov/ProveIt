@@ -71,49 +71,40 @@ theorem Section16SampledOrAnchoredOn.compressed_multilinear_cover {N k r p : Nat
     let raw : C → Point N (k + 1) → ZMod N := fun c =>
       section16TwoAnchorLift (sample ⟨c.1.2.val, c.1.2.isLt.trans c.1.1.isLt⟩)
         (sample c.1.1) (mu ⟨c.1.2.val, c.1.2.isLt.trans c.1.1.isLt⟩ c.2.1) (mu c.1.1 c.2.2)
-    have hraw : ∀ c, IsMultilinear (raw c) := fun c => section16TwoAnchorLift_multilinear _ _ (hmu _ _) (hmu _ _)
     have hcount : Fintype.card C ≤ section16CompressedCandidateCount r p := by
-      dsimp only [C]
-      rw [Fintype.card_prod, Fintype.card_prod, section16AnchorPair_card, Fintype.card_fin]
-      simpa only [section16CompressedCandidateCount, mul_assoc] using (le_max_right p (r.choose 2 * p * p))
+      simp only [C, Fintype.card_prod, section16AnchorPair_card, Fintype.card_fin, ← mul_assoc]
+      exact le_max_right _ _
     let family := fun i => raw ((Fintype.equivFin C).symm i)
-    refine ⟨padMultilinearFamily family _, padMultilinearFamily_isMultilinear _ (fun _ => hraw _), ?_⟩
-    intro h hh x hxD hxF
-    have hex : ∃ c : C, phi (appendCoordinate h x) = raw c (appendCoordinate h x) := by
-      rcases hrecovered h x hxD hxF with hxK | ⟨i, rfl⟩
-      · obtain ⟨i, j, hiD, hjD, hiK, hjK, hij, heq⟩ := hanchor h x hxD hxK
-        obtain ⟨u, hu⟩ := hcover h hh i hiD (hK hiK)
-        obtain ⟨v, hv⟩ := hcover h hh j hjD (hK hjK)
-        obtain ⟨c, hc⟩ := section16_sorted_interpolant sample mu hij u v
-        refine ⟨c, ?_⟩
-        rw [heq, hu, hv]
-        simpa only [raw, section16TwoAnchorLift, appendCoordinate_eq_snoc, Fin.init_snoc, Fin.snoc_last]
-          using congrFun hc (appendCoordinate h x)
-      · obtain ⟨u, hu⟩ := hcover h hh i hxD hxF
-        obtain ⟨j, hij⟩ : ∃ j, sample i ≠ sample j := by
-          obtain ⟨a, b, hab⟩ := hdistinct
-          by_cases hi : sample i = sample a
-          · exact ⟨b, hi ▸ hab⟩
-          · exact ⟨a, hi⟩
-        obtain ⟨c, hc⟩ := section16_sorted_interpolant sample mu hij u u
-        exact ⟨c, hu.trans ((section16TwoAnchorLift_left hij _ _ h).symm.trans (congrFun hc _))⟩
-    apply padMultilinearFamily_covers _ hcount _ _
-    obtain ⟨c, hc⟩ := hex
-    exact ⟨(Fintype.equivFin C) c, by simpa [family] using hc⟩
-  · let i0 : Fin r := ⟨0, hr⟩
-    have heq (i : Fin r) : sample i = sample i0 := by
-      by_contra hne
-      exact hdistinct ⟨i, i0, hne⟩
+    refine ⟨padMultilinearFamily family _, padMultilinearFamily_isMultilinear _
+      (fun _ => section16TwoAnchorLift_multilinear _ _ (hmu _ _) (hmu _ _)),
+      fun h hh x hxD hxF => padMultilinearFamily_covers _ hcount _ _ ?_⟩
+    suffices ∃ c : C, phi (appendCoordinate h x) = raw c (appendCoordinate h x) by
+      obtain ⟨c, hc⟩ := this
+      exact ⟨Fintype.equivFin C c, by simpa [family] using hc⟩
+    rcases hrecovered h x hxD hxF with hxK | ⟨i, rfl⟩
+    · obtain ⟨i, j, hiD, hjD, hiK, hjK, hij, heq⟩ := hanchor h x hxD hxK
+      obtain ⟨u, hu⟩ := hcover h hh i hiD (hK hiK)
+      obtain ⟨v, hv⟩ := hcover h hh j hjD (hK hjK)
+      obtain ⟨c, hc⟩ := section16_sorted_interpolant sample mu hij u v
+      refine ⟨c, ?_⟩
+      rw [heq, hu, hv]
+      simpa only [raw, section16TwoAnchorLift, appendCoordinate_eq_snoc, Fin.init_snoc,
+        Fin.snoc_last] using congrFun hc (appendCoordinate h x)
+    · obtain ⟨u, hu⟩ := hcover h hh i hxD hxF
+      obtain ⟨j, hij⟩ : ∃ j, sample i ≠ sample j := by
+        by_contra! hall; obtain ⟨a, b, hab⟩ := hdistinct; exact hab ((hall a).symm.trans (hall b))
+      obtain ⟨c, hc⟩ := section16_sorted_interpolant sample mu hij u u
+      exact ⟨c, hu.trans ((section16TwoAnchorLift_left hij _ _ h).symm.trans (congrFun hc _))⟩
+  · simp only [not_exists, ne_eq, not_not] at hdistinct
+    let i0 : Fin r := ⟨0, hr⟩
     let family : Fin p → Point N (k + 1) → ZMod N := fun u z => mu i0 u (Fin.init z)
     refine ⟨padMultilinearFamily family _, padMultilinearFamily_isMultilinear _
-      (fun u => (hmu i0 u).lift_last), ?_⟩
-    intro h hh x hxD hxF
+      (fun u => (hmu i0 u).lift_last), fun h hh x hxD hxF => ?_⟩
     rcases hrecovered h x hxD hxF with hxK | ⟨i, rfl⟩
-    · obtain ⟨i, j, _, _, _, _, hij, _⟩ := hanchor h x hxD hxK
-      exact (hij ((heq i).trans (heq j).symm)).elim
-    · rw [heq i] at hxD hxF ⊢
+    · obtain ⟨i, j, -, -, -, -, hij, -⟩ := hanchor h x hxD hxK; exact (hij (hdistinct i j)).elim
+    · rw [hdistinct i i0] at hxD hxF ⊢
       obtain ⟨u, hu⟩ := hcover h hh i0 hxD hxF
-      apply padMultilinearFamily_covers _ (le_max_left _ _) _ _
-      exact ⟨u, by simpa [family, appendCoordinate_eq_snoc] using hu⟩
+      exact padMultilinearFamily_covers _ (le_max_left _ _) _ _
+        ⟨u, by simpa [family, appendCoordinate_eq_snoc] using hu⟩
 
 end LeanProofs.GowersSzemeredi

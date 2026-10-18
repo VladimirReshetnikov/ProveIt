@@ -170,10 +170,6 @@ private def boolFinsetEquiv (k : Nat) : (Fin k → Bool) ≃ Finset (Fin k) wher
 @[simp] private lemma boolSupport_equiv_apply {k : Nat} (e : Fin k → Bool) :
     boolFinsetEquiv k e = boolSupport e := rfl
 
-@[simp] private lemma boolSupport_equiv_symm_apply {k : Nat} (S : Finset (Fin k)) :
-    boolSupport ((boolFinsetEquiv k).symm S) = S :=
-  (boolFinsetEquiv k).apply_symm_apply S
-
 @[simp] private lemma boolFinsetEquiv_symm_support {k : Nat} (e : Fin k → Bool) :
     (boolFinsetEquiv k).symm (boolSupport e) = e :=
   (boolFinsetEquiv k).symm_apply_apply e
@@ -247,78 +243,23 @@ private lemma signedCubeSum_polarization {N k : Nat} [NeZero N] [Fact N.Prime]
     signedCubeSum
         (fun e => polarizationPhase c (boolSupport e)) s x =
       ∑ e : Fin k → Bool, c e * ∏ i, if e i then x i else 1 := by
-  let F : Finset (Fin k) := Finset.univ
-  calc
-    signedCubeSum (fun e => polarizationPhase c (boolSupport e)) s x =
-        ∑ e : Fin k → Bool,
-          (-1 : ZMod N) ^ (boolSupport e).card *
-            polarizationPhase c (boolSupport e)
-              (s - ∑ i ∈ boolSupport e, x i) := by
-      unfold signedCubeSum
-      refine Finset.sum_congr rfl fun e _ => ?_
-      rw [parityTerm_eq_negOnePow, ← boolSupport_card, cubeArgument,
-        ← boolSupport_sum]
-    _ = ∑ E : Finset (Fin k),
-          (-1 : ZMod N) ^ E.card *
-            polarizationPhase c E (s - ∑ i ∈ E, x i) := by
-      exact (boolFinsetEquiv k).sum_comp (fun E =>
-        (-1 : ZMod N) ^ E.card *
-          polarizationPhase c E (s - ∑ i ∈ E, x i))
-    _ = ∑ E ∈ F.powerset,
-          (-1 : ZMod N) ^ E.card *
-            polarizationPhase c E (s - ∑ i ∈ E, x i) := by
-      simp [F]
-    _ = ∑ E ∈ F.powerset, ∑ U ∈ F.powerset,
-          if E ⊆ U then
-            (-1 : ZMod N) ^ E.card * polarizationCoefficient c U *
-              (s - ∑ i ∈ E, x i) ^ U.card
-          else 0 := by
-      refine Finset.sum_congr rfl fun E _ => ?_
-      rw [polarizationPhase, mul_sum]
-      refine Finset.sum_congr rfl fun U _ => ?_
-      split_ifs <;> ring
-    _ = ∑ U ∈ F.powerset, ∑ E ∈ F.powerset,
-          if E ⊆ U then
-            (-1 : ZMod N) ^ E.card * polarizationCoefficient c U *
-              (s - ∑ i ∈ E, x i) ^ U.card
-          else 0 := by
-      rw [Finset.sum_comm]
-    _ = ∑ U ∈ F.powerset, ∑ E ∈ U.powerset,
-          (-1 : ZMod N) ^ E.card * polarizationCoefficient c U *
-            (s - ∑ i ∈ E, x i) ^ U.card := by
-      refine Finset.sum_congr rfl fun U hU => ?_
-      apply sum_if_subset_powerset F U (mem_powerset.mp hU)
-    _ = ∑ U ∈ F.powerset,
-          c ((boolFinsetEquiv k).symm U) * ∏ i ∈ U, x i := by
-      refine Finset.sum_congr rfl fun U _ => ?_
-      calc
-        (∑ E ∈ U.powerset,
-            (-1 : ZMod N) ^ E.card * polarizationCoefficient c U *
-              (s - ∑ i ∈ E, x i) ^ U.card) =
-            polarizationCoefficient c U *
-              (∑ E ∈ U.powerset,
-                (-1 : ZMod N) ^ E.card *
-                  (s - ∑ i ∈ E, x i) ^ U.card) := by
-          rw [Finset.mul_sum]
-          refine Finset.sum_congr rfl fun E _ => ?_
-          ring
-        _ = polarizationCoefficient c U *
-            (((U.card.factorial : Nat) : ZMod N) * ∏ i ∈ U, x i) := by
-          rw [powersetDifference_pow]
-        _ = c ((boolFinsetEquiv k).symm U) * ∏ i ∈ U, x i := by
-          rw [← mul_assoc, polarizationCoefficient_mul_factorial c hkfac U]
+  -- both sides are sums over pairs of supports `E ⊆ U`
+  calc signedCubeSum (fun e => polarizationPhase c (boolSupport e)) s x
+      = ∑ E : Finset (Fin k), ∑ U : Finset (Fin k), if E ⊆ U then
+          polarizationCoefficient c U * ((-1) ^ E.card * (s - ∑ i ∈ E, x i) ^ U.card) else 0 := by
+        rw [signedCubeSum, ← (boolFinsetEquiv k).sum_comp]
+        refine Finset.sum_congr rfl fun e _ => ?_
+        rw [boolSupport_equiv_apply, parityTerm_eq_negOnePow, ← boolSupport_card, cubeArgument,
+          ← boolSupport_sum, polarizationPhase, powerset_univ, mul_sum]
+        exact Finset.sum_congr rfl fun U _ => by split_ifs <;> ring
+    _ = ∑ U : Finset (Fin k), c ((boolFinsetEquiv k).symm U) * ∏ i ∈ U, x i := by
+        rw [sum_comm]
+        refine Finset.sum_congr rfl fun U _ => ?_
+        rw [← powerset_univ, sum_if_subset_powerset _ U (subset_univ U), ← mul_sum,
+          powersetDifference_pow, ← mul_assoc, polarizationCoefficient_mul_factorial c hkfac U]
     _ = ∑ e : Fin k → Bool, c e * ∏ i, if e i then x i else 1 := by
-      rw [show F.powerset = Finset.univ by simp [F]]
-      calc
-        (∑ U : Finset (Fin k),
-            c ((boolFinsetEquiv k).symm U) * ∏ i ∈ U, x i) =
-            ∑ e : Fin k → Bool,
-              c e * ∏ i ∈ boolSupport e, x i := by
-          simpa using ((boolFinsetEquiv k).sum_comp (fun U =>
-            c ((boolFinsetEquiv k).symm U) * ∏ i ∈ U, x i)).symm
-        _ = ∑ e : Fin k → Bool, c e * ∏ i, if e i then x i else 1 := by
-          refine Finset.sum_congr rfl fun e _ => ?_
-          rw [boolSupport_prod]
+        rw [← (boolFinsetEquiv k).sum_comp]
+        simp only [boolSupport_equiv_apply, boolFinsetEquiv_symm_support, boolSupport_prod]
 
 /-- **Gowers, Lemma 17.1.** Every multiaffine frequency is the alternating
 cube sum of one-variable polynomial phases of degree at most `k`. -/

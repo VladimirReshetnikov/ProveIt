@@ -153,52 +153,28 @@ theorem schmidt_base_formula_le_gen (C e c : Nat) (hC : (C : Real) ≤ 2 ^ c) :
     2 + 121 * Real.exp 10 + (10 + 8 * Real.exp (4 * Real.pi + 1)) *
         (1 + 2 * Real.exp Real.pi * (C : Real) * (8 : Real) ^ e) +
       ((15 * (e + 1) + 23 : Nat) : Real) ≤ 2 ^ (c + 3 * e + 35) := by
-  have he1 : Real.exp 1 ≤ 3 := Real.exp_one_lt_d9.le.trans (by norm_num)
-  have hexp : ∀ n : Nat, Real.exp n ≤ 3 ^ n := fun n => by
-    rw [← Real.exp_one_rpow, Real.rpow_natCast]
-    exact pow_le_pow_left₀ (Real.exp_pos 1).le he1 n
-  have h10 : Real.exp 10 ≤ 3 ^ 10 := by exact_mod_cast hexp 10
-  have h14 : Real.exp (4 * Real.pi + 1) ≤ 3 ^ 14 := by
-    have hpi := Real.pi_lt_d2
-    calc Real.exp (4 * Real.pi + 1) ≤ Real.exp 14 := Real.exp_le_exp.mpr (by linarith)
-      _ ≤ 3 ^ 14 := by exact_mod_cast hexp 14
-  have h4 : Real.exp Real.pi ≤ 81 := by
-    have hpi := Real.pi_lt_d2
-    calc Real.exp Real.pi ≤ Real.exp 4 := Real.exp_le_exp.mpr (by linarith)
-      _ ≤ 3 ^ 4 := by exact_mod_cast hexp 4
-      _ = 81 := by norm_num
+  have hexp (x : Real) (n : Nat) (h : x ≤ n) : Real.exp x ≤ 3 ^ n :=
+    (Real.exp_le_exp.mpr h).trans ((Real.exp_one_pow n).symm.trans_le
+      (pow_le_pow_left₀ (Real.exp_pos 1).le (Real.exp_one_lt_d9.le.trans (by norm_num)) n))
+  have hpi := Real.pi_lt_d2
+  have h10 := hexp 10 10 (by norm_num)
+  have h14 := hexp (4 * Real.pi + 1) 14 (by push_cast; linarith)
   set X : Real := (2 : Real) ^ (c + 3 * e) with hXdef
   have hX1 : 1 ≤ X := one_le_pow₀ (by norm_num)
-  have h8e : (8 : Real) ^ e = 2 ^ (3 * e) := by
-    rw [show (8 : Real) = 2 ^ 3 by norm_num, ← pow_mul]
   have hCe : (C : Real) * 8 ^ e ≤ X := by
-    rw [h8e, hXdef, pow_add]
-    exact mul_le_mul_of_nonneg_right hC (by positivity)
-  have hEe : ((15 * (e + 1) + 23 : Nat) : Real) ≤ 64 * X := by
-    have hlin : 15 * (e + 1) + 23 ≤ 64 * 2 ^ e := by
-      have : e < 2 ^ e := Nat.lt_two_pow_self
-      omega
-    have hc1 : ((15 * (e + 1) + 23 : Nat) : Real) ≤ 64 * (2 : Real) ^ e := by exact_mod_cast hlin
-    have hc2 : (2 : Real) ^ e ≤ X := by
-      rw [hXdef]; exact pow_le_pow_right₀ (by norm_num) (by omega)
-    linarith
-  have hinner : 1 + 2 * Real.exp Real.pi * (C : Real) * (8 : Real) ^ e ≤ 256 * X := by
-    have : 2 * Real.exp Real.pi * (C : Real) * (8 : Real) ^ e ≤ 162 * X := by
-      calc 2 * Real.exp Real.pi * (C : Real) * (8 : Real) ^ e
-          = 2 * Real.exp Real.pi * ((C : Real) * 8 ^ e) := by ring
-        _ ≤ 2 * 81 * X := mul_le_mul (by linarith) hCe (by positivity) (by norm_num)
-        _ = 162 * X := by ring
-    linarith
-  have houter : 10 + 8 * Real.exp (4 * Real.pi + 1) ≤ 2 ^ 26 := by
-    have : (10 : Real) + 8 * 3 ^ 14 ≤ 2 ^ 26 := by norm_num
-    linarith
-  have hprod : (10 + 8 * Real.exp (4 * Real.pi + 1)) *
-      (1 + 2 * Real.exp Real.pi * (C : Real) * (8 : Real) ^ e) ≤ 2 ^ 26 * (256 * X) :=
-    mul_le_mul houter hinner (by positivity) (by positivity)
-  have hgoal : (2 : Real) ^ (c + 3 * e + 35) = X * 2 ^ 35 := by rw [hXdef, pow_add]
-  rw [hgoal]
-  nlinarith
-
+    rw [hXdef, pow_add, pow_mul]
+    exact mul_le_mul hC (by norm_num) (by positivity) (by positivity)
+  have he : ((e + 1 : Nat) : Real) ≤ 2 ^ e := by exact_mod_cast Nat.lt_two_pow_self (n := e)
+  have he' : (2 : Real) ^ e ≤ X := by
+    rw [hXdef]; exact pow_le_pow_right₀ (by norm_num) (by omega)
+  have hin := mul_le_mul (hexp Real.pi 4 (by push_cast; linarith)) hCe (by positivity)
+    (by positivity)
+  have hprod := mul_le_mul (show 10 + 8 * Real.exp (4 * Real.pi + 1) ≤ 2 ^ 26 by linarith)
+    (show 1 + 2 * Real.exp Real.pi * (C : Real) * 8 ^ e ≤ 1 + 2 * 81 * X by linarith)
+    (by positivity) (by positivity)
+  rw [pow_add, ← hXdef]
+  push_cast at he ⊢
+  linarith
 
 /-! ### The family-lemma constants -/
 
@@ -288,67 +264,37 @@ theorem family_constants_poly_le (k : Nat) {MK : Real} {MP Pu : Nat}
     (hMP : MP ≤ (2 * (k + 1 + 1) * Pu + 4) ^ (2 ^ (k + 1))) :
     ((⌈MK⌉₊ : Nat) : Real) + (((k + 1) * MP : Nat) : Real) ≤
       2 ^ ((2 : Nat) ^ (4 * k + 16)) := by
-  set E := schmidtKExp k
-  have hE := schmidtKExp_le k
-  have hPB := schmidtPBnd_le k
-  have hkA : k + 1 ≤ 2 ^ k := Nat.lt_two_pow_self
-  have hKc : ⌈MK⌉₊ ≤ 2 ^ (E + k + 2) := by
-    have : MK ≤ ((2 ^ (E + k + 2) : Nat) : Real) := by push_cast; exact hMK
-    exact (Nat.ceil_le).mpr this
-  have hPu' : Pu ≤ 2 ^ (5 * k + 17) := by
-    have h1 : (k + 1) * schmidtPBnd k ≤ 2 ^ k * 2 ^ (4 * k + 16) := Nat.mul_le_mul hkA hPB
-    have h2 : 2 ^ k * 2 ^ (4 * k + 16) = 2 ^ (5 * k + 16) := by rw [← pow_add]; ring_nf
-    have h3 : 2 ^ (5 * k + 17) = 2 ^ (5 * k + 16) * 2 := by rw [pow_succ]
-    have h4 : 1 ≤ 2 ^ (5 * k + 16) := Nat.one_le_two_pow
-    omega
-  have hinner : 2 * (k + 1 + 1) * Pu + 4 ≤ 2 ^ (6 * k + 20) := by
-    have h1 : 2 * (k + 1 + 1) ≤ 2 ^ (k + 2) := by
-      have h := Nat.lt_two_pow_self (n := k + 1)
-      rw [show k + 2 = (k + 1) + 1 by ring, pow_succ]; omega
-    have h2 : 2 * (k + 1 + 1) * Pu ≤ 2 ^ (k + 2) * 2 ^ (5 * k + 17) := Nat.mul_le_mul h1 hPu'
-    have h3 : 2 ^ (k + 2) * 2 ^ (5 * k + 17) = 2 ^ (6 * k + 19) := by rw [← pow_add]; ring_nf
-    have h4 : 2 ^ (6 * k + 20) = 2 ^ (6 * k + 19) * 2 := by rw [pow_succ]
-    have h5 : 4 ≤ 2 ^ (6 * k + 19) := by
-      calc 4 = 2 ^ 2 := by norm_num
-        _ ≤ 2 ^ (6 * k + 19) := Nat.pow_le_pow_right (by norm_num) (by omega)
+  have hp {a b : Nat} (h : a ≤ b) : 2 ^ a ≤ 2 ^ b := Nat.pow_le_pow_right Nat.zero_lt_two h
+  have hk (n : Nat) : n + 1 ≤ 2 ^ n := Nat.lt_two_pow_self
+  have hin : 2 * (k + 1 + 1) * Pu + 4 ≤ 2 ^ (6 * k + 20) := by
+    have h1 := Nat.mul_le_mul (Nat.mul_le_mul_left 2 (hk (k + 1)))
+      (hPu.trans (Nat.add_le_add_left (Nat.mul_le_mul (hk k) (schmidtPBnd_le k)) 1))
+    have h2 : 2 * 2 ^ (k + 1) * (1 + 2 ^ k * 2 ^ (4 * k + 16)) =
+        4 * 2 ^ k + 2 ^ (6 * k + 18) := by ring
+    have h3 : 2 ^ (6 * k + 20) = 4 * 2 ^ (6 * k + 18) := by ring
+    have h4 : 8 * 2 ^ k ≤ 2 ^ (6 * k + 18) :=
+      (by ring : 8 * 2 ^ k = 2 ^ (k + 3)).trans_le (hp (by omega))
+    have := hk k
     omega
   have hMP' : (k + 1) * MP ≤ 2 ^ (k + (6 * k + 20) * 2 ^ (k + 1)) := by
-    have h1 : MP ≤ 2 ^ ((6 * k + 20) * 2 ^ (k + 1)) :=
-      hMP.trans ((Nat.pow_le_pow_left hinner _).trans (le_of_eq (by rw [← pow_mul])))
-    calc (k + 1) * MP ≤ 2 ^ k * 2 ^ ((6 * k + 20) * 2 ^ (k + 1)) := Nat.mul_le_mul hkA h1
-      _ = 2 ^ (k + (6 * k + 20) * 2 ^ (k + 1)) := by rw [← pow_add]
-  have hP14 : k + 2 ≤ 2 ^ (4 * k + 14) := by
-    have h1 : k + 2 < 2 ^ (k + 2) := Nat.lt_two_pow_self
-    have h2 : 2 ^ (k + 2) ≤ 2 ^ (4 * k + 14) := Nat.pow_le_pow_right (by norm_num) (by omega)
-    omega
-  have hexp1 : E + k + 2 ≤ 2 ^ (4 * k + 14) + 2 ^ (4 * k + 14) := by omega
-  have hexp2 : k + (6 * k + 20) * 2 ^ (k + 1) ≤ 2 ^ (4 * k + 14) + 2 ^ (4 * k + 14) := by
+    rw [pow_add, pow_mul]
+    exact Nat.mul_le_mul (hk k) (hMP.trans (Nat.pow_le_pow_left hin _))
+  have hT := hk (4 * k + 14)
+  have hexp : k + (6 * k + 20) * 2 ^ (k + 1) ≤ 2 * 2 ^ (4 * k + 14) := by
     have h1 : 6 * k + 20 ≤ 2 ^ (k + 5) := by
-      have : k < 2 ^ k := Nat.lt_two_pow_self
-      have h32 : 2 ^ (k + 5) = 2 ^ k * 32 := by rw [pow_add]; norm_num
+      have : 2 ^ (k + 5) = 32 * 2 ^ k := by ring
+      have := hk k
       omega
-    have h2 : (6 * k + 20) * 2 ^ (k + 1) ≤ 2 ^ (k + 5) * 2 ^ (k + 1) := Nat.mul_le_mul_right _ h1
-    have h3 : 2 ^ (k + 5) * 2 ^ (k + 1) = 2 ^ (2 * k + 6) := by rw [← pow_add]; ring_nf
-    have h4 : 2 ^ (2 * k + 6) ≤ 2 ^ (4 * k + 14) := Nat.pow_le_pow_right (by norm_num) (by omega)
-    have h5 : k ≤ 2 ^ (4 * k + 14) := by omega
-    calc k + (6 * k + 20) * 2 ^ (k + 1) ≤ 2 ^ (4 * k + 14) + 2 ^ (2 * k + 6) := by
-          rw [← h3]; exact Nat.add_le_add h5 h2
-      _ ≤ 2 ^ (4 * k + 14) + 2 ^ (4 * k + 14) := Nat.add_le_add_left h4 _
-  have hsum : ⌈MK⌉₊ + (k + 1) * MP ≤ 2 ^ (2 ^ (4 * k + 14) + 2 ^ (4 * k + 14) + 1) := by
-    have hA := hKc.trans (Nat.pow_le_pow_right (by norm_num) hexp1)
-    have hB := hMP'.trans (Nat.pow_le_pow_right (by norm_num) hexp2)
-    rw [pow_succ]
+    have h2 := Nat.mul_le_mul_right (2 ^ (k + 1)) h1
+    have h3 : 2 ^ (k + 5) * 2 ^ (k + 1) = 2 ^ (2 * k + 6) := by ring
+    have h4 := hp (show 2 * k + 6 ≤ 4 * k + 14 by omega)
     omega
-  have hfin : 2 ^ (2 ^ (4 * k + 14) + 2 ^ (4 * k + 14) + 1) ≤ 2 ^ (2 ^ (4 * k + 16)) := by
-    apply Nat.pow_le_pow_right (by norm_num)
-    have h1 : 2 ^ (4 * k + 16) = 4 * 2 ^ (4 * k + 14) := by
-      rw [show 4 * k + 16 = (4 * k + 14) + 2 by ring, pow_add]; ring
-    have h2 : 1 ≤ 2 ^ (4 * k + 14) := Nat.one_le_two_pow
-    omega
-  have hcast : ((⌈MK⌉₊ + (k + 1) * MP : Nat) : Real) ≤ ((2 ^ (2 ^ (4 * k + 16)) : Nat) : Real) := by
-    exact_mod_cast hsum.trans hfin
-  push_cast at hcast ⊢
-  exact hcast
+  have hE : schmidtKExp k + k + 2 ≤ 2 * 2 ^ (4 * k + 14) := by have := schmidtKExp_le k; omega
+  have hKc : ⌈MK⌉₊ ≤ 2 ^ (schmidtKExp k + k + 2) := Nat.ceil_le.mpr (by exact_mod_cast hMK)
+  have hsum := Nat.add_le_add (hKc.trans (hp hE)) (hMP'.trans (hp hexp))
+  rw [← two_mul, ← pow_succ'] at hsum
+  have h16 : 2 ^ (4 * k + 16) = 4 * 2 ^ (4 * k + 14) := by ring
+  exact_mod_cast hsum.trans (hp (show 2 * 2 ^ (4 * k + 14) + 1 ≤ 2 ^ (4 * k + 16) by omega))
 
 /-- **The family-lemma constants are at most `2^(2^(2^(k+5)))`**, given the
 shapes the Schmidt layer produces. -/

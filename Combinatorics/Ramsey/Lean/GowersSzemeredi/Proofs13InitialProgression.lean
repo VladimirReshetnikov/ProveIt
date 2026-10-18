@@ -154,42 +154,10 @@ private lemma lemma134_goodWeight_inter_sum {N l : Nat} [NeZero N]
         ((lemma134Progression d s l).carrier ∩ G) : Real)) =
       l * goodHeightWeight S G := by
   classical
-  unfold goodHeightWeight
-  have hfilter (s : ZMod N) :
-      (((lemma134Progression d s l).carrier ∩ G).filter
-        (IsGoodHeight S)) =
-      (G.filter (IsGoodHeight S)).filter fun h =>
-        h ∈ (lemma134Progression d s l).carrier := by
-    ext h
-    simp only [Finset.mem_filter, Finset.mem_inter]
-    tauto
-  simp_rw [hfilter]
-  calc
-    (∑ s : ZMod N,
-        (↑(((G.filter (IsGoodHeight S)).filter fun h =>
-          h ∈ (lemma134Progression d s l).carrier).sum
-            (section13C S)) : Real)) =
-        ∑ s : ZMod N, ∑ h ∈ G.filter (IsGoodHeight S),
-          if h ∈ (lemma134Progression d s l).carrier then
-            (section13C S h : Real) else 0 := by
-      apply Finset.sum_congr rfl
-      intro s _
-      norm_cast
-      rw [Finset.sum_filter]
-    _ = ∑ h ∈ G.filter (IsGoodHeight S),
-        ∑ s : ZMod N,
-          if h ∈ (lemma134Progression d s l).carrier then
-            (section13C S h : Real) else 0 := by
-      rw [Finset.sum_comm]
-    _ = ∑ h ∈ G.filter (IsGoodHeight S),
-        (l : Real) * section13C S h := by
-      apply Finset.sum_congr rfl
-      intro h _
-      exact lemma134_sum_indicator_progression d h hd hlN _
-    _ = (l : Real) *
-        ((G.filter (IsGoodHeight S)).sum (section13C S) : Nat) := by
-      rw [← Finset.mul_sum]
-      norm_cast
+  simp only [goodHeightWeight, Nat.cast_sum, Finset.inter_comm _ G, ← Finset.filter_inter,
+    ← Finset.sum_ite_mem, Nat.cast_ite, Nat.cast_zero]
+  rw [Finset.sum_comm, Finset.mul_sum]
+  exact Finset.sum_congr rfl fun h _ => lemma134_sum_indicator_progression d h hd hlN _
 
 private lemma lemma134_exists_progression_average {N l : Nat} [NeZero N]
     [Fact N.Prime] (S : Section13Context N) (G : Finset (ZMod N))
@@ -248,30 +216,19 @@ private lemma lemma134_collision_lower {X Y : Type*}
     [Fintype X] [Fintype Y] [DecidableEq Y] (f : X → Y) :
     (Fintype.card X : Real) ^ 2 ≤
       Fintype.card Y * (lemma134CollisionSet f).card := by
-  let c : Y → Real := fun y => Fintype.card (lemma134Fiber f y)
-  have hsource : (Fintype.card X : Real) = ∑ y : Y, c y := by
-    have hcard := Fintype.card_congr (Equiv.sigmaFiberEquiv f).symm
-    rw [Fintype.card_sigma] at hcard
-    rw [hcard]
-    simp only [c, Nat.cast_sum]
-  have hcollision :
-      (Fintype.card (lemma134Collision f) : Real) =
-        ∑ y : Y, (c y) ^ 2 := by
-    have hcard := Fintype.card_congr (lemma134_collisionEquiv f)
-    rw [Fintype.card_sigma] at hcard
-    simp only [Fintype.card_prod] at hcard
-    rw [hcard]
-    simp only [c, Nat.cast_sum, Nat.cast_mul, pow_two]
-  have hcollisionSet :
-      (lemma134CollisionSet f).card =
-        Fintype.card (lemma134Collision f) := by
+  have hX := Fintype.card_congr (Equiv.sigmaFiberEquiv f).symm
+  have hC := Fintype.card_congr (lemma134_collisionEquiv f)
+  rw [Fintype.card_sigma] at hX hC
+  simp only [Fintype.card_prod, ← sq] at hC
+  have hset : (lemma134CollisionSet f).card = Fintype.card (lemma134Collision f) := by
     unfold lemma134CollisionSet
     rw [Finset.filter_congr_decidable]
     exact (Fintype.card_subtype fun p : X × X => f p.1 = f p.2).symm
-  have hcs := sq_sum_le_card_mul_sum_sq
-    (s := (Finset.univ : Finset Y)) (f := c)
-  rw [hcollisionSet]
-  simpa [hsource, hcollision] using hcs
+  -- Cauchy--Schwarz over the fibres, in `ℕ`
+  have key : Fintype.card X ^ 2 ≤ Fintype.card Y * (lemma134CollisionSet f).card := by
+    rw [hset, hC, hX]
+    exact sq_sum_le_card_mul_sum_sq
+  exact_mod_cast key
 
 /-! We apply the collision bound three times to vertical edges.  The nested
 types below are respectively pairs, quadruples, and octuples of edges of one
@@ -356,41 +313,17 @@ private lemma lemma134_edge_eight_lower {N : Nat} [NeZero N]
     (A : Finset (Pair N)) :
     (Fintype.card (lemma134Edge A) : Real) ^ 8 ≤
       (N : Real) ^ 7 * Fintype.card (lemma134EdgeEight A) := by
-  let e : Real := Fintype.card (lemma134Edge A)
-  let e₂ : Real := Fintype.card (lemma134EdgeTwo A)
-  let e₄ : Real := Fintype.card (lemma134EdgeFour A)
-  let e₈ : Real := Fintype.card (lemma134EdgeEight A)
-  have h₂ : e ^ 2 ≤ N * e₂ := by
-    simpa only [e, e₂, Fintype.card_coe, ZMod.card] using
-      lemma134_collision_lower (lemma134Edge.height (A := A))
-  have h₄ : e₂ ^ 2 ≤ N * e₄ := by
-    simpa only [e₂, e₄, Fintype.card_coe, ZMod.card] using
-      lemma134_collision_lower (lemma134EdgeTwo.height (A := A))
-  have h₈ : e₄ ^ 2 ≤ N * e₈ := by
-    simpa only [e₄, e₈, Fintype.card_coe, ZMod.card] using
-      lemma134_collision_lower (lemma134EdgeFour.height (A := A))
-  have he : 0 ≤ e := by positivity
-  have hN : 0 ≤ (N : Real) := by positivity
-  have hsquare₂ : (e ^ 2) ^ 2 ≤ (N * e₂) ^ 2 :=
-    pow_le_pow_left₀ (sq_nonneg e) h₂ 2
-  have heFour : e ^ 4 ≤ N ^ 3 * e₄ := by
-    calc
-      e ^ 4 = (e ^ 2) ^ 2 := by ring
-      _ ≤ (N * e₂) ^ 2 := hsquare₂
-      _ = N ^ 2 * e₂ ^ 2 := by ring
-      _ ≤ N ^ 2 * (N * e₄) :=
-        mul_le_mul_of_nonneg_left h₄ (sq_nonneg (N : Real))
-      _ = N ^ 3 * e₄ := by ring
-  have hsquare₄ : (e ^ 4) ^ 2 ≤ (N ^ 3 * e₄) ^ 2 :=
-    pow_le_pow_left₀ (pow_nonneg he 4) heFour 2
-  change e ^ 8 ≤ N ^ 7 * e₈
-  calc
-    e ^ 8 = (e ^ 4) ^ 2 := by ring
-    _ ≤ (N ^ 3 * e₄) ^ 2 := hsquare₄
-    _ = N ^ 6 * e₄ ^ 2 := by ring
-    _ ≤ N ^ 6 * (N * e₈) :=
-      mul_le_mul_of_nonneg_left h₈ (pow_nonneg hN 6)
-    _ = N ^ 7 * e₈ := by ring
+  have h₂ := lemma134_collision_lower (lemma134Edge.height (A := A))
+  have h₄ := lemma134_collision_lower (lemma134EdgeTwo.height (A := A))
+  have h₈ := lemma134_collision_lower (lemma134EdgeFour.height (A := A))
+  simp only [Fintype.card_coe, ZMod.card] at h₂ h₄ h₈ ⊢
+  -- `e ^ 4 ≤ N ^ 3 * e₄`, then square once more and apply `h₈`
+  have h₄' : (Fintype.card (lemma134Edge A) : Real) ^ 4 ≤
+      N ^ 3 * (lemma134CollisionSet (lemma134EdgeTwo.height (A := A))).card := by
+    linarith [pow_le_pow_left₀ (by positivity) h₂ 2,
+      mul_le_mul_of_nonneg_left h₄ (sq_nonneg (N : Real))]
+  linarith [pow_le_pow_left₀ (by positivity) h₄' 2,
+    mul_le_mul_of_nonneg_left h₈ (pow_nonneg (Nat.cast_nonneg N : (0 : Real) ≤ N) 6)]
 
 private def lemma134EdgeTwo.get {N : Nat} [NeZero N]
     {A : Finset (Pair N)} (e : lemma134EdgeTwo A) :
@@ -450,26 +383,13 @@ private lemma lemma134EdgeEight.get_injective {N : Nat} [NeZero N]
     {A : Finset (Pair N)} :
     Function.Injective (lemma134EdgeEight.get (A := A)) := by
   intro e e' h
-  apply Subtype.ext
-  apply Prod.ext <;> apply Subtype.ext
-  · apply Prod.ext <;> apply Subtype.ext <;> apply Prod.ext
-    · simpa [lemma134EdgeEight.get, lemma134EdgeFour.get,
-        lemma134EdgeTwo.get] using congrFun h 0
-    · simpa [lemma134EdgeEight.get, lemma134EdgeFour.get,
-        lemma134EdgeTwo.get] using congrFun h 1
-    · simpa [lemma134EdgeEight.get, lemma134EdgeFour.get,
-        lemma134EdgeTwo.get] using congrFun h 2
-    · simpa [lemma134EdgeEight.get, lemma134EdgeFour.get,
-        lemma134EdgeTwo.get] using congrFun h 3
-  · apply Prod.ext <;> apply Subtype.ext <;> apply Prod.ext
-    · simpa [lemma134EdgeEight.get, lemma134EdgeFour.get,
-        lemma134EdgeTwo.get] using congrFun h 4
-    · simpa [lemma134EdgeEight.get, lemma134EdgeFour.get,
-        lemma134EdgeTwo.get] using congrFun h 5
-    · simpa [lemma134EdgeEight.get, lemma134EdgeFour.get,
-        lemma134EdgeTwo.get] using congrFun h 6
-    · simpa [lemma134EdgeEight.get, lemma134EdgeFour.get,
-        lemma134EdgeTwo.get] using congrFun h 7
+  -- the eight entries of `get` are the eight leaves of the nested pairs
+  have h' := congrFun h
+  exact Subtype.ext (Prod.ext
+    (Subtype.ext (Prod.ext (Subtype.ext (Prod.ext (h' 0) (h' 1)))
+      (Subtype.ext (Prod.ext (h' 2) (h' 3)))))
+    (Subtype.ext (Prod.ext (Subtype.ext (Prod.ext (h' 4) (h' 5)))
+      (Subtype.ext (Prod.ext (h' 6) (h' 7))))))
 
 private def lemma134EdgeEight.key {N : Nat} [NeZero N]
     {A : Finset (Pair N)} (e : lemma134EdgeEight A) :
@@ -614,36 +534,16 @@ private lemma lemma134_arrangement_count_lower_card {N : Nat} [NeZero N]
     (A : Finset (Pair N)) :
     (A.card : Real) ^ 32 ≤
       (N : Real) ^ 32 * arrangementCount 8 A := by
-  let e : Real := Fintype.card (lemma134Edge A)
-  let e₈ : Real := Fintype.card (lemma134EdgeEight A)
-  let c : Real := Fintype.card (lemma134ArrangementCollision A)
-  have hA : (A.card : Real) ^ 2 ≤ N * e := by
-    simpa only [e] using lemma134_edge_card_lower A
-  have hE : e ^ 8 ≤ N ^ 7 * e₈ := by
-    simpa only [e, e₈] using lemma134_edge_eight_lower A
-  have hC : e₈ ^ 2 ≤ N ^ 2 * c := by
-    simpa only [e₈, c] using lemma134_arrangement_collision_lower A
-  have hcountNat := lemma134_arrangement_collision_card_le A
-  have hcount : c ≤ (arrangementCount 8 A : Real) := by
-    dsimp only [c]
-    exact Nat.cast_le.mpr hcountNat
-  have hA16 : ((A.card : Real) ^ 2) ^ 16 ≤ (N * e) ^ 16 :=
-    pow_le_pow_left₀ (sq_nonneg (A.card : Real)) hA 16
-  have hE2 : (e ^ 8) ^ 2 ≤ (N ^ 7 * e₈) ^ 2 :=
-    pow_le_pow_left₀ (pow_nonneg (by positivity : 0 ≤ e) 8) hE 2
-  have hN : 0 ≤ (N : Real) := by positivity
-  calc
-    (A.card : Real) ^ 32 = ((A.card : Real) ^ 2) ^ 16 := by ring
-    _ ≤ (N * e) ^ 16 := hA16
-    _ = N ^ 16 * (e ^ 8) ^ 2 := by ring
-    _ ≤ N ^ 16 * (N ^ 7 * e₈) ^ 2 :=
-      mul_le_mul_of_nonneg_left hE2 (pow_nonneg hN 16)
-    _ = N ^ 30 * e₈ ^ 2 := by ring
-    _ ≤ N ^ 30 * (N ^ 2 * c) :=
-      mul_le_mul_of_nonneg_left hC (pow_nonneg hN 30)
-    _ = N ^ 32 * c := by ring
-    _ ≤ N ^ 32 * arrangementCount 8 A :=
-      mul_le_mul_of_nonneg_left hcount (pow_nonneg hN 32)
+  have hN : (0 : Real) ≤ N := Nat.cast_nonneg N
+  have hcount : (Fintype.card (lemma134ArrangementCollision A) : Real) ≤
+      arrangementCount 8 A := by
+    exact_mod_cast lemma134_arrangement_collision_card_le A
+  -- `|A| ^ 32 ≤ N ^ 16 e ^ 16 ≤ N ^ 30 e₈ ^ 2 ≤ N ^ 32 c ≤ N ^ 32 * count`
+  linarith [pow_le_pow_left₀ (by positivity) (lemma134_edge_card_lower A) 16,
+    mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by positivity) (lemma134_edge_eight_lower A) 2)
+      (pow_nonneg hN 16),
+    mul_le_mul_of_nonneg_left (lemma134_arrangement_collision_lower A) (pow_nonneg hN 30),
+    mul_le_mul_of_nonneg_left hcount (pow_nonneg hN 32)]
 
 private lemma lemma134_arrangement_count_lower {N : Nat} [NeZero N]
     (S : Section13Context N) :
@@ -827,34 +727,16 @@ private lemma lemma134_scale_le_modulus {N q : Nat} [NeZero N]
     (theta : Real) (htheta : 0 < theta)
     (htheta₁One : section13ThetaOne theta ≤ 1) (hq : 0 < q) :
     lemma134Scale N theta q ≤ N := by
-  let theta₁ := section13ThetaOne theta
-  let exponent : Real := theta₁ ^ 2 / (16 * (q : Real))
-  have htheta₁ : 0 < theta₁ := lemma134_thetaOne_pos theta htheta
-  have hthetaSq : theta₁ ^ 2 ≤ 1 := by
-    nlinarith [sq_nonneg (theta₁ - 1)]
-  have hqOne : (1 : Real) ≤ q := by exact_mod_cast hq
-  have hden : (0 : Real) < 16 * (q : Real) := by positivity
-  have hexponentOne : exponent ≤ 1 := by
-    unfold exponent
-    apply (div_le_one₀ hden).2
-    nlinarith
-  have hNOne : (1 : Real) ≤ N := by exact_mod_cast NeZero.pos N
-  have hrpow : (N : Real) ^ exponent ≤ N := by
-    calc
-      (N : Real) ^ exponent ≤ (N : Real) ^ (1 : Real) :=
-        Real.rpow_le_rpow_of_exponent_le hNOne hexponentOne
-      _ = N := by rw [Real.rpow_one]
-  have hcoefficient : theta₁ / (64 * Real.pi) ≤ 1 := by
-    apply (div_le_one₀ (by positivity : (0 : Real) < 64 * Real.pi)).2
-    nlinarith [Real.pi_gt_three]
+  have htheta₁ := lemma134_thetaOne_pos theta htheta
+  have hq₁ : (1 : Real) ≤ q := by exact_mod_cast hq
+  have hsq := pow_le_one₀ (n := 2) htheta₁.le htheta₁One
   unfold lemma134Scale
-  change theta₁ / (64 * Real.pi) * (N : Real) ^ exponent ≤ N
-  calc
-    theta₁ / (64 * Real.pi) * (N : Real) ^ exponent ≤
-        1 * (N : Real) :=
-      mul_le_mul hcoefficient hrpow (Real.rpow_nonneg (by positivity) _)
-        (by norm_num)
-    _ = N := one_mul _
+  -- the coefficient and the exponent are both at most one
+  calc _ ≤ 1 * (N : Real) ^ (1 : Real) :=
+        mul_le_mul ((div_le_one₀ (by positivity)).mpr (by linarith [Real.pi_gt_three]))
+          (Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast NeZero.pos N)
+            ((div_le_one₀ (by positivity)).mpr (by linarith))) (by positivity) zero_le_one
+    _ = N := by rw [one_mul, Real.rpow_one]
 
 private lemma lemma134_progression_difference {N l : Nat}
     (d s x y : ZMod N)
@@ -908,17 +790,9 @@ private lemma lemma134_individual_bohr {N q₀ l : Nat} [NeZero N]
       (lemma134Density (B i) / (32 * Real.pi * l)) := by
   have hbeta := lemma134_density_lower (B i) theta₁ htheta₁ (hBlarge i)
   rw [bohr, Finset.mem_filter] at hd ⊢
-  refine ⟨Finset.mem_univ _, ?_⟩
-  intro r hr
-  have hrUnion : r ∈ lemma134SpectrumUnion B := by
-    unfold lemma134SpectrumUnion
-    exact Finset.mem_biUnion.mpr ⟨i, Finset.mem_univ _, hr⟩
-  have hdr := hd.2 r hrUnion
-  calc
-    (centeredAbs (r * d) : Real) ≤
-        theta₁ / (32 * Real.pi * (l : Real)) * N := hdr
-    _ ≤ lemma134Density (B i) / (32 * Real.pi * (l : Real)) * N := by
-      gcongr
+  refine ⟨hd.1, fun r hr =>
+    (hd.2 r (Finset.mem_biUnion.mpr ⟨i, Finset.mem_univ _, hr⟩)).trans ?_⟩
+  gcongr
 
 private lemma lemma134_piece_affine_on_progression
     {N q₀ l : Nat} [NeZero N]
@@ -933,26 +807,17 @@ private lemma lemma134_piece_affine_on_progression
     ∀ i : Fin q₀, ∃ a b : ZMod N,
       ∀ h, h ∈ B i ∩ (lemma134Progression d s l).carrier →
         sigma i h = a * h + b := by
-  letI : Fact N.Prime := ⟨hprime⟩
   intro i
   have hbeta := lemma134_density_lower (B i) theta₁ htheta₁ (hBlarge i)
-  have hbetaPos : 0 < lemma134Density (B i) := htheta₁.trans_le hbeta
-  have hd' := lemma134_individual_bohr B theta₁ htheta₁ hl hBlarge d hd i
-  obtain ⟨c, hc⟩ := corollary_7_9_holds N (B i) (sigma i)
-    (lemma134Density (B i)) hprime hbetaPos (lemma134_density_card (B i))
-    (hFreiman i) l hl d hd'
-  by_cases hnonempty : (B i ∩ (lemma134Progression d s l).carrier).Nonempty
-  · obtain ⟨y, hy⟩ := hnonempty
-    refine ⟨c, sigma i y - c * y, ?_⟩
-    intro x hx
-    have hx' := Finset.mem_inter.mp hx
-    have hy' := Finset.mem_inter.mp hy
-    have hxy := hc x hx'.1 y hy'.1
-      (lemma134_progression_difference d s x y hx'.2 hy'.2)
-    linear_combination hxy
-  · refine ⟨0, 0, ?_⟩
-    intro h hh
-    exact (hnonempty ⟨h, hh⟩).elim
+  obtain ⟨c, hc⟩ := corollary_7_9_holds N (B i) (sigma i) _ hprime (htheta₁.trans_le hbeta)
+    (lemma134_density_card (B i)) (hFreiman i) l hl d
+    (lemma134_individual_bohr B theta₁ htheta₁ hl hBlarge d hd i)
+  by_cases hne : (B i ∩ (lemma134Progression d s l).carrier).Nonempty
+  · obtain ⟨y, hy⟩ := hne
+    refine ⟨c, sigma i y - c * y, fun x hx => ?_⟩
+    rw [Finset.mem_inter] at hx hy
+    linear_combination hc x hx.1 y hy.1 (lemma134_progression_difference d s x y hx.2 hy.2)
+  · exact ⟨0, 0, fun h hh => (hne ⟨h, hh⟩).elim⟩
 
 /-! ### A common Bohr step for the Freiman cover -/
 
@@ -966,39 +831,19 @@ private lemma lemma134_spectrum_union_card
     (hFreiman : ∀ i, FreimanHom 8 (B i) (sigma i)) :
     ((lemma134SpectrumUnion B).card : Real) ≤
       16 * q * theta₁ ^ (-(2 : Real)) := by
-  have hper (i : Fin q₀) :
-      ((section7Spectrum (B i) (lemma134Density (B i))).card : Real) ≤
-        16 * theta₁ ^ (-(2 : Real)) := by
-    have hbeta := lemma134_density_lower (B i) theta₁ htheta₁ (hBlarge i)
-    have hbetaPos : 0 < lemma134Density (B i) := htheta₁.trans_le hbeta
-    have hK := (lemma_7_8_holds N (B i) (sigma i)
-      (lemma134Density (B i)) hbetaPos (lemma134_density_card (B i))
-      (hFreiman i)).1
-    calc
-      ((section7Spectrum (B i) (lemma134Density (B i))).card : Real) ≤
-          16 * lemma134Density (B i) ^ (-(2 : Real)) := hK
-      _ ≤ 16 * theta₁ ^ (-(2 : Real)) := by
-        exact mul_le_mul_of_nonneg_left
-          (Real.rpow_le_rpow_of_nonpos htheta₁ hbeta
-            (by norm_num : -(2 : Real) ≤ 0)) (by norm_num)
-  have hcardNat : (lemma134SpectrumUnion B).card ≤
-      ∑ i : Fin q₀,
-        (section7Spectrum (B i) (lemma134Density (B i))).card := by
-    exact Finset.card_biUnion_le
-  have hcardReal : ((lemma134SpectrumUnion B).card : Real) ≤
-      ∑ i : Fin q₀,
-        ((section7Spectrum (B i) (lemma134Density (B i))).card : Real) := by
-    exact_mod_cast hcardNat
-  calc
-    ((lemma134SpectrumUnion B).card : Real) ≤
-        ∑ i : Fin q₀,
-          ((section7Spectrum (B i) (lemma134Density (B i))).card : Real) :=
-      hcardReal
-    _ ≤ ∑ _i : Fin q₀, 16 * theta₁ ^ (-(2 : Real)) := Finset.sum_le_sum fun i _ => hper i
-    _ = (q₀ : Real) * (16 * theta₁ ^ (-(2 : Real))) := by simp
-    _ ≤ (q : Real) * (16 * theta₁ ^ (-(2 : Real))) := by
-      gcongr
-    _ = 16 * q * theta₁ ^ (-(2 : Real)) := by ring
+  calc ((lemma134SpectrumUnion B).card : Real)
+      ≤ ∑ i : Fin q₀, ((section7Spectrum (B i) (lemma134Density (B i))).card : Real) := by
+        exact_mod_cast Finset.card_biUnion_le
+    _ ≤ ∑ _i : Fin q₀, 16 * theta₁ ^ (-(2 : Real)) := by
+        refine Finset.sum_le_sum fun i _ => ?_
+        have hbeta := lemma134_density_lower (B i) theta₁ htheta₁ (hBlarge i)
+        exact (lemma_7_8_holds N (B i) (sigma i) _ (htheta₁.trans_le hbeta)
+          (lemma134_density_card (B i)) (hFreiman i)).1.trans (mul_le_mul_of_nonneg_left
+            (Real.rpow_le_rpow_of_nonpos htheta₁ hbeta (by norm_num)) (by norm_num))
+    _ = 16 * q₀ * theta₁ ^ (-(2 : Real)) := by
+        rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+        ring
+    _ ≤ 16 * q * theta₁ ^ (-(2 : Real)) := by gcongr
 
 private lemma lemma134_exists_common_step
     {N q₀ q l : Nat} [NeZero N] [Fact N.Prime]

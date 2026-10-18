@@ -125,29 +125,16 @@ private lemma balancedChunk_index_unique {c m t : Nat}
     (hi' : i' < balancedChunkLength m (c % m) j')
     (ht : t = balancedChunkStart m (c % m) j + i)
     (ht' : t = balancedChunkStart m (c % m) j' + i') : j = j' := by
-  apply Fin.ext
-  by_contra hne
-  rcases lt_or_gt_of_ne hne with hjj' | hj'j
-  · have hlt : t < balancedChunkStart m (c % m) j' := by
-      calc
-        t = balancedChunkStart m (c % m) j + i := ht
-        _ < balancedChunkStart m (c % m) j +
-            balancedChunkLength m (c % m) j := Nat.add_lt_add_left hi _
-        _ = balancedChunkStart m (c % m) ((j : Nat) + 1) :=
-          balancedChunk_end _ _ _
-        _ <= balancedChunkStart m (c % m) j' :=
-          balancedChunkStart_mono (Nat.succ_le_iff.mpr hjj')
-    omega
-  · have hlt : t < balancedChunkStart m (c % m) j := by
-      calc
-        t = balancedChunkStart m (c % m) j' + i' := ht'
-        _ < balancedChunkStart m (c % m) j' +
-            balancedChunkLength m (c % m) j' := Nat.add_lt_add_left hi' _
-        _ = balancedChunkStart m (c % m) ((j' : Nat) + 1) :=
-          balancedChunk_end _ _ _
-        _ <= balancedChunkStart m (c % m) j :=
-          balancedChunkStart_mono (Nat.succ_le_iff.mpr hj'j)
-    omega
+  -- a term of chunk `k` lies below the start of every later chunk
+  have hlt {k k' : Fin (c / m)} (hk : (k : Nat) < k') {l : Nat}
+      (hl : l < balancedChunkLength m (c % m) k) :
+      balancedChunkStart m (c % m) k + l < balancedChunkStart m (c % m) k' :=
+    (Nat.add_lt_add_left hl _).trans_le
+      ((balancedChunk_end _ _ _).trans_le (balancedChunkStart_mono (Nat.succ_le_of_lt hk)))
+  rcases lt_trichotomy (j : Nat) j' with h | h | h
+  · exact absurd (hlt h hi) (by omega)
+  · exact Fin.ext h
+  · exact absurd (hlt h hi') (by omega)
 
 private abbrev BalancedResidueChunkIndex (r d m : Nat) :=
   Sigma fun a : Fin d => Fin (residueClassLength r d a / m)
@@ -180,21 +167,15 @@ private lemma balancedResidueChunkAP_mem_iff (R : IntAP) (d m : Nat)
         x = intAPPoint R
           (z.1 + (balancedChunkStart m
             (residueClassLength R.length d z.1 % m) z.2 + i) * d) := by
-  rw [IntAP.carrier]
-  constructor
-  · intro hx
-    simp only [Finset.mem_image, Finset.mem_univ, true_and] at hx
-    obtain ⟨i, rfl⟩ := hx
-    refine ⟨i, i.isLt, ?_⟩
+  -- the `i`-th term of the chunk is the term of `R` with index `a + (start + i) d`
+  have key (i : Nat) : (balancedResidueChunkAP R d m z).start +
+      ((i * (balancedResidueChunkAP R d m z).step : Nat) : Int) = intAPPoint R (z.1 +
+        (balancedChunkStart m (residueClassLength R.length d z.1 % m) z.2 + i) * d) := by
     simp only [balancedResidueChunkAP, intAPPoint]
     push_cast
     ring
-  · rintro ⟨i, hi, rfl⟩
-    simp only [Finset.mem_image, Finset.mem_univ, true_and]
-    refine ⟨⟨i, hi⟩, ?_⟩
-    simp only [balancedResidueChunkAP, intAPPoint]
-    push_cast
-    ring
+  simp only [IntAP.carrier, Finset.mem_image, Finset.mem_univ, true_and, key]
+  exact ⟨fun ⟨i, hi⟩ => ⟨i, i.isLt, hi.symm⟩, fun ⟨i, hi, hx⟩ => ⟨⟨i, hi⟩, hx.symm⟩⟩
 
 private lemma balancedResidueChunkAP_isProper (R : IntAP) (d m : Nat)
     (hRstep : 0 < R.step) (hd : 0 < d)
@@ -265,21 +246,10 @@ private lemma balancedResidueChunkFamily_properties (R : IntAP) (d m : Nat)
         (balancedResidueChunkFamily R d m j).length = m + 1)) /\
     (exists step : Nat, 0 < step /\
       forall j, (balancedResidueChunkFamily R d m j).step = step) := by
-  constructor
-  · intro j
-    let z := (Fintype.equivFin (BalancedResidueChunkIndex R.length d m)).symm j
-    constructor
-    · change (balancedResidueChunkAP R d m z).IsProper
-      exact balancedResidueChunkAP_isProper R d m hRstep hd z
-    · change balancedChunkLength m
-          (residueClassLength R.length d z.1 % m) z.2 = m \/
-        balancedChunkLength m
-          (residueClassLength R.length d z.1 % m) z.2 = m + 1
-      unfold balancedChunkLength
-      split_ifs <;> simp_all
-  · refine ⟨d * R.step, Nat.mul_pos hd hRstep, ?_⟩
-    intro j
-    rfl
+  refine ⟨fun j => ⟨balancedResidueChunkAP_isProper R d m hRstep hd _, ?_⟩,
+    d * R.step, Nat.mul_pos hd hRstep, fun _ => rfl⟩
+  simp only [balancedResidueChunkFamily, balancedResidueChunkAP, balancedChunkLength]
+  split_ifs <;> simp
 
 private def intAPCoordinateSet (R : IntAP) (A : Finset Int) : Finset Nat :=
   (Finset.range R.length).filter fun j => intAPPoint R j ∈ A
@@ -579,33 +549,15 @@ private lemma cor711_one_partition {N q : Nat} [NeZero N]
         ((S j).length = 1 \/ (S j).length = 1 + 1)) /\
       (exists d : Nat, 0 < d /\ forall j, (S j).step = d) /\
       (forall phi : Fin q → Int → ZMod N, forall i j, IntAPLinearOn (S j) (A i) (phi i)) := by
-  let d := R.length
-  have hd : 0 < d := hl
-  have hclass : forall a : Fin d,
-      1 * 1 <= residueClassLength R.length d a := by
-    intro a
-    have : 0 < residueClassLength R.length d a :=
-      (quotient_lt_residueClassLength hd a.isLt le_rfl).2 (by
-        simpa only [zero_mul, add_zero] using a.isLt)
-    omega
-  let M := Fintype.card (BalancedResidueChunkIndex R.length d 1)
-  let S := balancedResidueChunkFamily R d 1
-  refine ⟨M, S, balancedResidueChunkFamily_partition R d 1
-    hproper.1 hd le_rfl (by omega) hclass, ?_, ?_, ?_⟩
-  · exact (balancedResidueChunkFamily_properties R d 1 hproper.1 hd).1
-  · exact (balancedResidueChunkFamily_properties R d 1 hproper.1 hd).2
-  · intro phi i j
-    let z := (Fintype.equivFin (BalancedResidueChunkIndex R.length d 1)).symm j
-    have hlen : (S j).length = 1 := by
-      change balancedChunkLength 1
-        (residueClassLength R.length d z.1 % 1) z.2 = 1
-      rw [Nat.mod_one, balancedChunkLength_of_ge (Nat.zero_le _)]
-    refine ⟨0, phi i (S j).start, ?_⟩
-    intro k
-    dsimp only
-    intro _
-    have hk : (k : Nat) = 0 := by omega
-    simp [hk]
+  -- with step `R.length` every residue class, hence every cell, is a single term
+  have hprop := balancedResidueChunkFamily_properties R R.length 1 hproper.1 hl
+  refine ⟨_, _, balancedResidueChunkFamily_partition R R.length 1 hproper.1 hl le_rfl
+    Nat.one_pos (fun _ => by simp [residueClassLength]), hprop.1, hprop.2,
+    fun phi i j => ⟨0, phi i (balancedResidueChunkFamily R R.length 1 j).start, fun k _ => ?_⟩⟩
+  have hlen : (balancedResidueChunkFamily R R.length 1 j).length = 1 := by
+    simp [balancedResidueChunkFamily, balancedResidueChunkAP, balancedChunkLength, Nat.mod_one]
+  have hk : (k : Nat) = 0 := by omega
+  simp [hk]
 
 private lemma cor711_spectrum_bound {p N q : Nat} [NeZero p] [NeZero N]
     (R : IntAP) (A : Fin q -> Finset Int) (phi : Fin q -> Int -> ZMod N)
@@ -628,27 +580,18 @@ private lemma cor711_spectrum_bound {p N q : Nat} [NeZero p] [NeZero N]
               (1 / (8 * Real.pi)) ->
             modularCoordinateMap p R (phi i) x -
                 modularCoordinateMap p R (phi i) y = psi (x - y) := by
-  have hlp : R.length < p := by omega
-  have hbetaLower := cor711_density_lower R A alpha halpha hRstep hlp
+  have hbetaLower := cor711_density_lower R A alpha halpha hRstep (by omega)
     hpUpper (fun i => ⟨(hA i).1, (hA i).2.1⟩) i
-  have hbeta : 0 < cor711Density p R (A i) := by nlinarith
-  have hfreiman : FreimanHom 8 (modularCoordinateSet p R (A i))
-      (modularCoordinateMap p R (phi i)) :=
-    modularCoordinateMap_freiman R (A i) (phi i) hl h8lp (hA i).2.2
+  have hbeta : 0 < cor711Density p R (A i) := by linarith
   have hmain := lemma_7_8_constant_radius (G := ZMod N) p
     (modularCoordinateSet p R (A i)) (modularCoordinateMap p R (phi i))
-    (cor711Density p R (A i)) hbeta (cor711_density_card R (A i)) hfreiman
+    (cor711Density p R (A i)) hbeta (cor711_density_card R (A i))
+    (modularCoordinateMap_freiman R (A i) (phi i) hl h8lp (hA i).2.2)
   dsimp only [cor711Spectrum] at hmain ⊢
-  refine ⟨hmain.1.trans ?_, ?_, hmain.2⟩
-  · have hinv := rpow_neg_two_le_scaled halpha hbeta hbetaLower
-    nlinarith
-  · have hcardPosReal : (0 : Real) <
-        (modularCoordinateSet p R (A i)).card := by
-      rw [cor711_density_card R (A i)]
-      exact mul_pos hbeta (by exact_mod_cast NeZero.pos p)
-    have hcardPos : 0 < (modularCoordinateSet p R (A i)).card := by
-      exact_mod_cast hcardPosReal
-    exact Finset.card_pos.mp hcardPos
+  refine ⟨hmain.1.trans (by linarith [rpow_neg_two_le_scaled halpha hbeta hbetaLower]), ?_,
+    hmain.2⟩
+  rw [← Finset.card_pos, ← Nat.cast_pos (α := Real), cor711_density_card R (A i)]
+  exact mul_pos hbeta (by exact_mod_cast NeZero.pos p)
 
 private lemma cor711_spectrumUnion_card {p q : Nat} [NeZero p]
     (R : IntAP) (A : Fin q -> Finset Int) (alpha : Real)
@@ -657,41 +600,19 @@ private lemma cor711_spectrumUnion_card {p q : Nat} [NeZero p]
       4096 * alpha ^ (-(2 : Real))) :
     ((cor711SpectrumUnion p R A).card : Real) <=
       4097 * q * alpha ^ (-(2 : Real)) := by
-  let U := Finset.univ.biUnion (cor711Spectrum p R A)
-  have hunionNat : (cor711SpectrumUnion p R A).card <= 1 + U.card := by
-    calc
-      (cor711SpectrumUnion p R A).card <= ({1} : Finset (ZMod p)).card + U.card :=
-        Finset.card_union_le _ _
-      _ = 1 + U.card := by simp
-  have hbiNat : U.card <= ∑ i : Fin q, (cor711Spectrum p R A i).card := by
-    dsimp only [U]
-    simpa only [Finset.sum_const_zero, Finset.sum_attach] using
-      (Finset.card_biUnion_le (s := (Finset.univ : Finset (Fin q)))
-        (t := cor711Spectrum p R A))
-  have hunionReal : ((cor711SpectrumUnion p R A).card : Real) <=
-      1 + (U.card : Real) := by exact_mod_cast hunionNat
-  have hbiReal : (U.card : Real) <=
-      ∑ i : Fin q, ((cor711Spectrum p R A i).card : Real) := by
-    exact_mod_cast hbiNat
-  have hsum : (∑ i : Fin q, ((cor711Spectrum p R A i).card : Real)) <=
-      ∑ _i : Fin q, 4096 * alpha ^ (-(2 : Real)) := by
-    exact Finset.sum_le_sum fun i _ => hK i
-  have halphaPow : 1 <= alpha ^ (-(2 : Real)) := by
-    rw [Real.rpow_neg halpha.le, Real.rpow_two]
-    apply (one_le_inv₀ (sq_pos_of_pos halpha)).2
-    nlinarith [sq_nonneg (1 - alpha)]
-  calc
-    ((cor711SpectrumUnion p R A).card : Real) <= 1 + (U.card : Real) :=
-      hunionReal
-    _ <= 1 + ∑ i : Fin q, ((cor711Spectrum p R A i).card : Real) := by
-      gcongr
-    _ <= 1 + ∑ _i : Fin q, 4096 * alpha ^ (-(2 : Real)) := by
-      gcongr
-    _ = 1 + (q : Real) * (4096 * alpha ^ (-(2 : Real))) := by simp
-    _ <= 4097 * q * alpha ^ (-(2 : Real)) := by
-      have hqReal : (1 : Real) <= q := by exact_mod_cast hq
-      nlinarith [mul_le_mul hqReal halphaPow (by norm_num : (0 : Real) <= 1)
-        (by positivity : (0 : Real) <= q)]
+  -- `|{1} ∪ ⋃ K_i| ≤ 1 + ∑ |K_i| ≤ 1 + 4096 q α⁻²`, and `1 ≤ q α⁻²`
+  have hcard : (cor711SpectrumUnion p R A).card ≤ 1 + ∑ i, (cor711Spectrum p R A i).card := by
+    unfold cor711SpectrumUnion
+    exact (Finset.card_union_le _ _).trans
+      (Nat.add_le_add (Finset.card_singleton _).le Finset.card_biUnion_le)
+  have hcardR : ((cor711SpectrumUnion p R A).card : Real) ≤
+      1 + ∑ i, ((cor711Spectrum p R A i).card : Real) := by exact_mod_cast hcard
+  have hsum := Finset.sum_le_sum fun i (_ : i ∈ Finset.univ) => hK i
+  rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at hsum
+  have hpow : 1 ≤ alpha ^ (-(2 : Real)) :=
+    Real.one_le_rpow_of_pos_of_le_one_of_nonpos halpha halphaOne (by norm_num)
+  have hq1 : (1 : Real) ≤ q := by exact_mod_cast hq
+  nlinarith [mul_le_mul hq1 hpow zero_le_one (by positivity : (0 : Real) ≤ q)]
 
 /-- The quantitative exponent in Corollary 7.11. -/
 def cor711Exponent (alpha : Real) (q : Nat) : Real :=
@@ -734,35 +655,17 @@ private lemma cor711_bohr_nonzero_threshold {p q m l : Nat}
       (l : Real) ^ ((23 / 6) * cor711Exponent alpha q)) :
     2 * (p : Real) ^ (-(1 / Kcard)) <
       1 / (17 * (m : Real) ^ 2) := by
-  let e := (23 / 6) * cor711Exponent alpha q
-  have he : 0 < e := mul_pos (by norm_num) (cor711Exponent_pos hq halpha)
+  have he := mul_pos (by norm_num : (0 : Real) < 23 / 6) (cor711Exponent_pos hq halpha)
   have hlReal : (0 : Real) < l := by exact_mod_cast hl
-  have hpReal : (1 : Real) < p := by exact_mod_cast (show 1 < p by omega)
-  have hlpReal : (l : Real) <= p := by exact_mod_cast hlp.le
-  have hrecip : e < 1 / Kcard :=
-    cor711_scaled_exponent_lt_inv_card hq halpha hKpos hKcard
-  have hpExponent : (p : Real) ^ (-(1 / Kcard)) <
-      (p : Real) ^ (-e) := by
-    apply Real.rpow_lt_rpow_of_exponent_lt hpReal
-    linarith
-  have hpToL : (p : Real) ^ (-e) <= (l : Real) ^ (-e) := by
-    rw [Real.rpow_neg (by positivity : (0 : Real) <= p), Real.rpow_neg hlReal.le]
-    apply (inv_le_inv₀ (Real.rpow_pos_of_pos (zero_lt_one.trans hpReal) e)
-      (Real.rpow_pos_of_pos hlReal e)).2
-    exact Real.rpow_le_rpow hlReal.le hlpReal he.le
-  have hLpos : 0 < (l : Real) ^ e := Real.rpow_pos_of_pos hlReal _
-  have hlPower : (l : Real) ^ (-e) * (m : Real) ^ 2 ≤ 1 / 34 := by
-    rw [Real.rpow_neg hlReal.le, mul_comm, ← div_eq_mul_inv]
-    apply (div_le_div_iff₀ hLpos (by norm_num : (0 : Real) < 34)).2
-    nlinarith only [hbudget]
-  have hcore : (p : Real) ^ (-(1 / Kcard)) * (m : Real) ^ 2 < 1 / 34 := by
-    calc
-      _ < (p : Real) ^ (-e) * (m : Real) ^ 2 :=
-        mul_lt_mul_of_pos_right hpExponent (by positivity)
-      _ <= (l : Real) ^ (-e) * (m : Real) ^ 2 := by gcongr
-      _ ≤ 1 / 34 := hlPower
-  apply (lt_div_iff₀ (by positivity : 0 < 17 * (m : Real) ^ 2)).2
-  nlinarith only [hcore]
+  have hp : (1 : Real) < p := by exact_mod_cast (show 1 < p by omega)
+  have hlp' : (l : Real) ≤ p := by exact_mod_cast hlp.le
+  -- `p ^ (-1 / K) < p ^ (-e) ≤ l ^ (-e) = (l ^ e)⁻¹ ≤ (34 m ^ 2)⁻¹` for `e = 23 / 6 * exponent`
+  have hpl := (Real.rpow_lt_rpow_of_exponent_lt hp
+    (neg_lt_neg (cor711_scaled_exponent_lt_inv_card hq halpha hKpos hKcard))).trans_le
+    (Real.rpow_le_rpow_of_nonpos hlReal hlp' (neg_nonpos.mpr he.le))
+  rw [Real.rpow_neg hlReal.le] at hpl
+  have h17 : (1 : Real) / (17 * (m : Real) ^ 2) = 2 * (34 * (m : Real) ^ 2)⁻¹ := by ring
+  linarith [inv_anti₀ (by positivity) hbudget]
 
 private lemma cor711_centered_step_small {p m l : Nat} [NeZero p]
     (hm : 0 < m) (hpUpper : p <= 16 * l)
@@ -915,20 +818,14 @@ theorem corollary_7_11_of_budget (N q m : Nat) [NeZero N] (R : IntAP)
       (R.length : Real) ^ (3 * cor711Exponent alpha q)) :
     Cor711Conclusion m R A phi := by
   apply corollary_7_11_constant_budget N q m R A phi alpha hq hm halpha hl hproper hA
-  have hαone := cor711_alpha_le_one R A alpha hq hl hproper
-    (fun i => ⟨(hA i).1, (hA i).2.1⟩)
+  have hαone := cor711_alpha_le_one R A alpha hq hl hproper fun i => ⟨(hA i).1, (hA i).2.1⟩
   have hcoef : 34 ≤ 1024 * Real.pi / alpha := by
-    apply (le_div_iff₀ halpha).2
-    have := Real.pi_gt_three
-    nlinarith
-  calc
-    _ ≤ (1024 * Real.pi / alpha) * (m : Real) ^ 2 :=
-      mul_le_mul_of_nonneg_right hcoef (sq_nonneg _)
-    _ ≤ (R.length : Real) ^ (3 * cor711Exponent alpha q) := hbudget
-    _ ≤ (R.length : Real) ^ ((23 / 6) * cor711Exponent alpha q) := by
-      apply Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hl)
-      have := cor711Exponent_pos hq halpha
-      linarith
+    rw [le_div_iff₀ halpha]
+    linarith [Real.pi_gt_three]
+  calc _ ≤ (1024 * Real.pi / alpha) * (m : Real) ^ 2 := by gcongr
+    _ ≤ (R.length : Real) ^ ((23 / 6) * cor711Exponent alpha q) :=
+      hbudget.trans (Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hl)
+        (by linarith [cor711Exponent_pos hq halpha]))
 
 /-- The corrected finite form of Corollary 7.11, including the lower-size
 hypothesis required by the nonzero Bohr-neighborhood argument. -/
