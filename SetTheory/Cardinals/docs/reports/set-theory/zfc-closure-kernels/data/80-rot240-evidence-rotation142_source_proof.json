@@ -1,0 +1,109 @@
+{
+  "status": "SOURCE_CONTEXT_ROTATION142_PASS",
+  "old_source_sha256": "3ee984818f0bdfd2c4daae72aeb14340572e34d73f5cdb5616b6d29d78fcd7f4",
+  "new_source_sha256": "74b1e7f73cc3ffe7761e36ab2d57a26e0ba34d3ac624f2472799e6ac41d5a51d",
+  "old_leaves": 6459,
+  "new_leaves": 6455,
+  "old_guarded_cases": 8390,
+  "new_guarded_cases": 8386,
+  "outside_guarded_edges": 8370,
+  "macro_count": 4,
+  "macros": [
+    {
+      "root": "11101001001011000011",
+      "old_entry": "1110100100101100001100",
+      "new_entry": "111010010010110000110",
+      "common_exit": "1110100100101100010",
+      "outside_incoming": [
+        [
+          "111010010010110000100",
+          false
+        ]
+      ],
+      "zero_case": {
+        "old_steps": 2,
+        "new_steps": 2,
+        "post": "R5=a+1,R6=0"
+      },
+      "positive_case": {
+        "old_steps": 3,
+        "new_steps": 3,
+        "recurrence": "(a,b)->(a+1,b-1); b>=1"
+      },
+      "induction": "Both terminate for every a,b in N with R5=a+b+1,R6=0, other registers unchanged, in3b+2 source instructions."
+    },
+    {
+      "root": "1110100100101110011",
+      "old_entry": "111010010010111001100",
+      "new_entry": "11101001001011100110",
+      "common_exit": "111010010010111010",
+      "outside_incoming": [
+        [
+          "11101001001011100100",
+          false
+        ]
+      ],
+      "zero_case": {
+        "old_steps": 2,
+        "new_steps": 2,
+        "post": "R5=a+1,R6=0"
+      },
+      "positive_case": {
+        "old_steps": 3,
+        "new_steps": 3,
+        "recurrence": "(a,b)->(a+1,b-1); b>=1"
+      },
+      "induction": "Both terminate for every a,b in N with R5=a+b+1,R6=0, other registers unchanged, in3b+2 source instructions."
+    },
+    {
+      "root": "1110100101100011",
+      "old_entry": "111010010110001100",
+      "new_entry": "11101001011000110",
+      "common_exit": "111010010110010",
+      "outside_incoming": [
+        [
+          "11101001011000100",
+          false
+        ]
+      ],
+      "zero_case": {
+        "old_steps": 2,
+        "new_steps": 2,
+        "post": "R5=a+1,R6=0"
+      },
+      "positive_case": {
+        "old_steps": 3,
+        "new_steps": 3,
+        "recurrence": "(a,b)->(a+1,b-1); b>=1"
+      },
+      "induction": "Both terminate for every a,b in N with R5=a+b+1,R6=0, other registers unchanged, in3b+2 source instructions."
+    },
+    {
+      "root": "111110011",
+      "old_entry": "11111001100",
+      "new_entry": "1111100110",
+      "common_exit": "11111010",
+      "outside_incoming": [
+        [
+          "1111100100",
+          false
+        ]
+      ],
+      "zero_case": {
+        "old_steps": 2,
+        "new_steps": 2,
+        "post": "R5=a+1,R6=0"
+      },
+      "positive_case": {
+        "old_steps": 3,
+        "new_steps": 3,
+        "recurrence": "(a,b)->(a+1,b-1); b>=1"
+      },
+      "induction": "Both terminate for every a,b in N with R5=a+b+1,R6=0, other registers unchanged, in3b+2 source instructions."
+    }
+  ],
+  "arbitrary_registers": true,
+  "no_outside_entry_to_macro_interiors": true,
+  "halt_unchanged": true,
+  "global_theorem": "At the empty source pointer, old and new programs halt equivalently for every natural9-register file. Compare equal files at outside leaves and corresponding macro entries. Natural induction gives finite macro exits; all surrounding guarded edges agree. No source consistency or blank-reachability premise is used."
+}
