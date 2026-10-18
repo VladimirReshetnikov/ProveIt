@@ -180,9 +180,14 @@ def F₅ : Semisentence L6 2 := .rel (placeholderRel (5 : Fin 6)) ![#0, #1]
 /-- `P₄` is the conjunction of `P₀` and `P₂`. -/
 def andDefP : Sentence L6 := “∀ t, !P₄ t ↔ !P₀ t ∧ !P₂ t”
 
-/-- `F₅` is the maximum (union) of `F₁` and `F₃`. -/
-def maxDefF : Sentence L6 :=
-  “∀ a, ∀ g, !F₅ a g ↔ ∃ g₁, ∃ g₂, !F₁ a g₁ ∧ !F₃ a g₂ ∧ ∀ z, z ∈ g ↔ z ∈ g₁ ∨ z ∈ g₂”
+/-- The maximum (union) of `F₁` and `F₃`, as a binary matrix. -/
+def maxRHS : Semisentence L6 2 :=
+  “a g. ∃ g₁, ∃ g₂, !F₁ a g₁ ∧ !F₃ a g₂ ∧ ∀ z, z ∈ g ↔ z ∈ g₁ ∨ z ∈ g₂”
+
+/-- `F₅` is the maximum (union) of `F₁` and `F₃`. The matrix is named so that,
+at internal codes, choosing `F₅` to be the translation of `maxRHS` turns this
+hypothesis into a literal tautology. -/
+def maxDefF : Sentence L6 := “∀ a, ∀ g, !F₅ a g ↔ !maxRHS a g”
 
 /-- **The conjunction template.** -/
 def andTemplate : Sentence L6 :=
@@ -199,12 +204,19 @@ theorem models_andDefP :
       P₀.Eval ![t] Empty.elim ∧ P₂.Eval ![t] Empty.elim := by
   simp [models_iff, andDefP]
 
+omit [Nonempty M] [Structure.Eq L6 M] in
+theorem eval_maxRHS (a g : M) :
+    maxRHS.Eval ![a, g] Empty.elim ↔
+      ∃ g₁ g₂, F₁.Eval ![a, g₁] Empty.elim ∧ F₃.Eval ![a, g₂] Empty.elim ∧
+        ∀ z, z ∈ g ↔ z ∈ g₁ ∨ z ∈ g₂ := by
+  simp [maxRHS]
+
 omit [Structure.Eq L6 M] in
 theorem models_maxDefF :
     M↓[L6] ⊧ maxDefF ↔ ∀ a g : M, F₅.Eval ![a, g] Empty.elim ↔
       ∃ g₁ g₂, F₁.Eval ![a, g₁] Empty.elim ∧ F₃.Eval ![a, g₂] Empty.elim ∧
         ∀ z, z ∈ g ↔ z ∈ g₁ ∨ z ∈ g₂ := by
-  simp [models_iff, maxDefF]
+  simp [models_iff, maxDefF, eval_maxRHS]
 
 end Models
 
