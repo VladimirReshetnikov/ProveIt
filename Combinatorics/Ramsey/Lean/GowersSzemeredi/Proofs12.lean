@@ -211,10 +211,7 @@ private lemma prop121_initial_bound {N p : Nat} [NeZero N]
             exact norm_sum_le _ _
     _ ≤ ∑ u : Fin p → ZMod N, ∑ s : Fin p → ZMod N,
         ‖∑ k : ZMod N, prop121InnerTerm lambda f phi u s k‖ := by
-            apply Finset.sum_le_sum
-            intro u _
-            apply Finset.sum_le_sum
-            intro s _
+            gcongr with u _ s _
             rw [norm_mul]
             exact (mul_le_of_le_one_left (norm_nonneg _)
               (prop121_outer_norm_le f hf u s))
@@ -224,25 +221,12 @@ private lemma prop121_l1_cauchy {N p : Nat} [NeZero N]
     (∑ u : Fin p → ZMod N, ∑ s : Fin p → ZMod N, F u s) ^ 2 ≤
       (N : Real) ^ (2 * p) *
         ∑ u : Fin p → ZMod N, ∑ s : Fin p → ZMod N, (F u s) ^ 2 := by
-  have hcard : Fintype.card (Fin p → ZMod N) = N ^ p := by simp
-  calc
-    (∑ u : Fin p → ZMod N, ∑ s : Fin p → ZMod N, F u s) ^ 2 ≤
-        (N : Real) ^ p *
-          ∑ u : Fin p → ZMod N, (∑ s : Fin p → ZMod N, F u s) ^ 2 := by
-            simpa only [Finset.card_univ, hcard, Nat.cast_pow, Nat.cast_ofNat] using
-              (sq_sum_le_card_mul_sum_sq
-                (s := (Finset.univ : Finset (Fin p → ZMod N)))
-                (f := fun u => ∑ s, F u s))
-    _ ≤ (N : Real) ^ p * ∑ u : Fin p → ZMod N,
-        ((N : Real) ^ p * ∑ s : Fin p → ZMod N, (F u s) ^ 2) := by
-          gcongr with u
-          simpa only [Finset.card_univ, hcard, Nat.cast_pow, Nat.cast_ofNat] using
-            (sq_sum_le_card_mul_sum_sq
-              (s := (Finset.univ : Finset (Fin p → ZMod N))) (f := F u))
-    _ = (N : Real) ^ (2 * p) *
-        ∑ u : Fin p → ZMod N, ∑ s : Fin p → ZMod N, (F u s) ^ 2 := by
-          rw [← Finset.mul_sum]
-          ring
+  have h := sq_sum_le_card_mul_sum_sq
+    (s := (Finset.univ : Finset ((Fin p → ZMod N) × (Fin p → ZMod N)))) (f := fun q => F q.1 q.2)
+  simp only [Finset.card_univ, Fintype.card_prod, Fintype.card_fun, Fintype.card_fin, ZMod.card,
+    Fintype.sum_prod_type] at h
+  calc _ ≤ _ := h
+    _ = _ := by push_cast; ring
 
 private def prop121A {N p : Nat} (f : Fin p → ZMod N → Complex)
     (u v : Fin p → ZMod N) (x : ZMod N) : Complex :=
@@ -392,10 +376,7 @@ private lemma prop121_fourthA_le {N p : Nat} [NeZero N]
   calc
     _ ≤ ∑ _u : Fin p → ZMod N, ∑ _v : Fin p → ZMod N,
         (N : Real) ^ 4 := by
-          apply Finset.sum_le_sum
-          intro u _
-          apply Finset.sum_le_sum
-          intro v _
+          gcongr with u _ v _
           exact fourier_fourth_moment_le (prop121A f u v) (prop121A_disc f hf u v)
     _ = (N : Real) ^ (2 * p + 4) := by
           simp only [Finset.sum_const, Finset.card_univ, hcard, nsmul_eq_mul]

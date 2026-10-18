@@ -618,10 +618,7 @@ private lemma left_contribution_le_bad {N : Nat} {X : Type*}
         then (domainRestrictedDifferenceWeight D B xy.1 xy.2 : Real)⁻¹ else 0
       else 0) ≤ countWhere (AltPhiBad D phi) := by
   rw [bad_count_eq_pair_pair_sum]
-  apply Finset.sum_le_sum
-  intro xy _
-  apply Finset.sum_le_sum
-  intro zw _
+  gcongr with xy _ zw _
   by_cases houter : LargeFibre D alpha eta M xy.1 ∧
       LargeFibre D alpha eta M xy.2 ∧
       AltPhiBad D phi ![xy.1, xy.2, zw.1, zw.2]
@@ -712,12 +709,7 @@ private lemma large_weighted_sum_le_five_bad {N : Nat} [NeZero N]
               then (domainRestrictedDifferenceWeight D B xy.1 xy.2 : Real)⁻¹
               else 0
             else 0)) := by
-      apply Finset.sum_le_sum
-      intro xy _
-      apply Finset.sum_le_sum
-      intro zw _
-      apply Finset.sum_le_sum
-      intro uv _
+      gcongr with xy _ zw _ uv _
       by_cases hs :
           (LargeFibre D alpha eta M xy.1 ∧ LargeFibre D alpha eta M xy.2) ∧
             (DifferenceQuad D xy.1 xy.2 zw ∧

@@ -98,12 +98,7 @@ private lemma theorem1013_quad_fibre_cap {N M : Nat} [NeZero N]
     (∑ a : X, ∑ b : X, ∑ c : X, ∑ d : X,
         if (theorem1013QuadDomain D).index ![a, b, c, d] = s then 1 else 0) ≤
         ∑ _a : X, ∑ _b : X, ∑ _c : X, M := by
-      apply Finset.sum_le_sum
-      intro a _
-      apply Finset.sum_le_sum
-      intro b _
-      apply Finset.sum_le_sum
-      intro c _
+      gcongr with a _ b _ c _
       exact hone a b c
     _ = M * Fintype.card X ^ 3 := by
       simp

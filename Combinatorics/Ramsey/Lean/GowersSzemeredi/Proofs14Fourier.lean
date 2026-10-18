@@ -257,33 +257,18 @@ private lemma prop141_initial_bound {N p : Nat} [NeZero N]
         ∑ u : Fin p → ZMod N,
           ‖∑ w : Fin p → ZMod N, prop141Outer f y x u w *
             ∑ h : ZMod N, prop141InnerTerm lambda f sigma y x u w h‖ := by
-              apply Finset.sum_le_sum
-              intro y _
-              apply Finset.sum_le_sum
-              intro x _
+              gcongr with y _ x _
               exact norm_sum_le _ _
     _ ≤ ∑ y : Fin p → ZMod N, ∑ x : Fin p → ZMod N,
         ∑ u : Fin p → ZMod N, ∑ w : Fin p → ZMod N,
           ‖prop141Outer f y x u w *
             ∑ h : ZMod N, prop141InnerTerm lambda f sigma y x u w h‖ := by
-              apply Finset.sum_le_sum
-              intro y _
-              apply Finset.sum_le_sum
-              intro x _
-              apply Finset.sum_le_sum
-              intro u _
+              gcongr with y _ x _ u _
               exact norm_sum_le _ _
     _ ≤ ∑ y : Fin p → ZMod N, ∑ x : Fin p → ZMod N,
         ∑ u : Fin p → ZMod N, ∑ w : Fin p → ZMod N,
           ‖∑ h : ZMod N, prop141InnerTerm lambda f sigma y x u w h‖ := by
-            apply Finset.sum_le_sum
-            intro y _
-            apply Finset.sum_le_sum
-            intro x _
-            apply Finset.sum_le_sum
-            intro u _
-            apply Finset.sum_le_sum
-            intro w _
+            gcongr with y _ x _ u _ w _
             rw [norm_mul]
             exact mul_le_of_le_one_left (norm_nonneg _)
               (prop141_outer_norm_le f hf y x u w)
@@ -298,48 +283,14 @@ private lemma prop141_l1_cauchy {N p : Nat} [NeZero N]
         ∑ y : Fin p → ZMod N, ∑ x : Fin p → ZMod N,
           ∑ u : Fin p → ZMod N, ∑ w : Fin p → ZMod N,
             (F y x u w) ^ 2 := by
-  let U := Fin p → ZMod N
-  have hcard : Fintype.card U = N ^ p := by simp [U]
-  calc
-    _ ≤ (N : Real) ^ p * ∑ y : U,
-        (∑ x : U, ∑ u : U, ∑ w : U, F y x u w) ^ 2 := by
-          simpa only [U, Finset.card_univ, hcard, Nat.cast_pow] using
-            (sq_sum_le_card_mul_sum_sq
-              (s := (Finset.univ : Finset U))
-              (f := fun y => ∑ x : U, ∑ u : U, ∑ w : U, F y x u w))
-    _ ≤ (N : Real) ^ p * ∑ y : U, (N : Real) ^ p * ∑ x : U,
-        (∑ u : U, ∑ w : U, F y x u w) ^ 2 := by
-          gcongr with y
-          simpa only [Finset.card_univ, hcard, Nat.cast_pow] using
-            (sq_sum_le_card_mul_sum_sq
-              (s := (Finset.univ : Finset U))
-              (f := fun x => ∑ u : U, ∑ w : U, F y x u w))
-    _ ≤ (N : Real) ^ p * ∑ y : U, (N : Real) ^ p * ∑ x : U,
-        (N : Real) ^ p * ∑ u : U, (∑ w : U, F y x u w) ^ 2 := by
-          gcongr with y _
-          simpa only [Finset.card_univ, hcard, Nat.cast_pow] using
-            (sq_sum_le_card_mul_sum_sq
-              (s := (Finset.univ : Finset U))
-              (f := fun u => ∑ w : U, F y x u w))
-    _ ≤ (N : Real) ^ p * ∑ y : U, (N : Real) ^ p * ∑ x : U,
-        (N : Real) ^ p * ∑ u : U, (N : Real) ^ p * ∑ w : U,
-          (F y x u w) ^ 2 := by
-            apply mul_le_mul_of_nonneg_left _ (by positivity)
-            apply Finset.sum_le_sum
-            intro y _
-            apply mul_le_mul_of_nonneg_left _ (by positivity)
-            apply Finset.sum_le_sum
-            intro x _
-            apply mul_le_mul_of_nonneg_left _ (by positivity)
-            apply Finset.sum_le_sum
-            intro u _
-            simpa only [Finset.card_univ, hcard, Nat.cast_pow] using
-              (sq_sum_le_card_mul_sum_sq
-                (s := (Finset.univ : Finset U)) (f := F y x u))
-    _ = _ := by
-      simp_rw [← Finset.mul_sum]
-      rw [show 4 * p = p + p + p + p by omega, pow_add, pow_add, pow_add]
-      ring
+  have h := sq_sum_le_card_mul_sum_sq
+    (s := (Finset.univ : Finset ((Fin p → ZMod N) × (Fin p → ZMod N) × (Fin p → ZMod N) ×
+      (Fin p → ZMod N))))
+    (f := fun q => F q.1 q.2.1 q.2.2.1 q.2.2.2)
+  simp only [Finset.card_univ, Fintype.card_prod, Fintype.card_fun, Fintype.card_fin, ZMod.card,
+    Fintype.sum_prod_type] at h
+  calc _ ≤ _ := h
+    _ = _ := by push_cast; ring
 
 private def prop141A {N p : Nat} (f : Fin p → Pair N → Complex)
     (y x u w : Fin p → ZMod N) (s : ZMod N) : Complex :=
@@ -562,14 +513,7 @@ private lemma prop141_fourthA_le {N p : Nat} [NeZero N]
   calc
     _ ≤ ∑ _y : U, ∑ _x : U, ∑ _u : U, ∑ _w : U,
         (N : Real) ^ 4 := by
-          apply Finset.sum_le_sum
-          intro y _
-          apply Finset.sum_le_sum
-          intro x _
-          apply Finset.sum_le_sum
-          intro u _
-          apply Finset.sum_le_sum
-          intro w _
+          gcongr with y _ x _ u _ w _
           exact fourier_fourth_moment_le (prop141A f y x u w)
             (prop141A_disc f hf y x u w)
     _ = (N : Real) ^ (4 * p + 4) := by

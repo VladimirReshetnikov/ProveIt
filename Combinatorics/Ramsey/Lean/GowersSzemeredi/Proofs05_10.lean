@@ -121,10 +121,7 @@ private lemma prop61_initial_bound {N : Nat} [NeZero N]
             intro u _
             exact norm_sum_le _ _
     _ ≤ ∑ u : ZMod N, ∑ s : ZMod N, ‖inner u s‖ := by
-            apply Finset.sum_le_sum
-            intro u _
-            apply Finset.sum_le_sum
-            intro s _
+            gcongr with u _ s _
             rw [norm_mul, norm_mul, norm_star]
             have hs := hf s
             have hsu := hf (s - u)
@@ -136,21 +133,11 @@ private lemma prop61_initial_bound {N : Nat} [NeZero N]
 private lemma prop61_l1_cauchy {N : Nat} [NeZero N] (F : ZMod N → ZMod N → ℝ) :
     (∑ u : ZMod N, ∑ s : ZMod N, F u s) ^ 2 ≤
       (N : ℝ) ^ 2 * ∑ u : ZMod N, ∑ s : ZMod N, (F u s) ^ 2 := by
-  calc
-    (∑ u : ZMod N, ∑ s : ZMod N, F u s) ^ 2 ≤
-        (N : ℝ) * ∑ u : ZMod N, (∑ s : ZMod N, F u s) ^ 2 := by
-          simpa only [Finset.card_univ, ZMod.card, Nat.cast_ofNat] using
-            (sq_sum_le_card_mul_sum_sq
-              (s := (Finset.univ : Finset (ZMod N))) (f := fun u => ∑ s, F u s))
-    _ ≤ (N : ℝ) * ∑ u : ZMod N,
-        ((N : ℝ) * ∑ s : ZMod N, (F u s) ^ 2) := by
-          gcongr with u
-          simpa only [Finset.card_univ, ZMod.card, Nat.cast_ofNat] using
-            (sq_sum_le_card_mul_sum_sq
-              (s := (Finset.univ : Finset (ZMod N))) (f := F u))
-    _ = (N : ℝ) ^ 2 * ∑ u : ZMod N, ∑ s : ZMod N, (F u s) ^ 2 := by
-          rw [← Finset.mul_sum]
-          ring
+  have h := sq_sum_le_card_mul_sum_sq
+    (s := (Finset.univ : Finset (ZMod N × ZMod N))) (f := fun q => F q.1 q.2)
+  simp only [Finset.card_univ, Fintype.card_prod, ZMod.card, Fintype.sum_prod_type] at h
+  calc _ ≤ _ := h
+    _ = _ := by push_cast; ring
 
 private def prop61F {N : Nat} (f : ZMod N → Complex) (u x : ZMod N) : Complex :=
   star (f (-x)) * f (-x - u)

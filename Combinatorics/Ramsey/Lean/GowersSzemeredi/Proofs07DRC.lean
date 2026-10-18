@@ -326,10 +326,7 @@ private lemma exists_drc_sample {X : Type*} [DecidableEq X] {n m : Nat}
     calc
       _ <= ∑ _i : Fin n, ∑ _j : Fin n,
           (delta ^ 2 * (m : Real) / 2) ^ 5 := by
-        apply Finset.sum_le_sum
-        intro i _
-        apply Finset.sum_le_sum
-        intro j _
+        gcongr with i _ j _
         by_cases hbad :
             ((((A i ∩ A j).card : Nat) : Real) < delta ^ 2 * m / 2)
         · rw [if_pos hbad]

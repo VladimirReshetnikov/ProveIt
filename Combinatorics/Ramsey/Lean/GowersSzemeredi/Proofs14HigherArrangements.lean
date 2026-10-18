@@ -598,12 +598,8 @@ private lemma cor147_second_moment_le {N k : Nat} [NeZero N]
           exact identity_2_3_holds N (cor147Phase B phi h u)
     _ ≤ ∑ _h : Point N k, ∑ _u : ZMod N,
         (N : Real) * (N : Real) ^ (2 * k + 1) := by
-          apply Finset.sum_le_sum
-          intro h _
-          apply Finset.sum_le_sum
-          intro u _
-          exact mul_le_mul_of_nonneg_left
-            (cor147_phase_norm_sq_sum_le B phi h u) hN
+          gcongr with h _ u _
+          exact cor147_phase_norm_sq_sum_le B phi h u
     _ = (N : Real) ^ (3 * k + 3) := by
       simp only [Finset.sum_const, Finset.card_univ, ZMod.card,
         Fintype.card_fun, Fintype.card_fin, nsmul_eq_mul, Nat.cast_pow]
