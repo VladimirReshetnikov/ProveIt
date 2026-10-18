@@ -1,0 +1,24 @@
+{
+  "status": "INDEPENDENT_SOURCE_ONLY_HELPER_REVIEW",
+  "reviewer": "/root/opening_encoder",
+  "helper": {
+    "path": "/tmp/zfc-intake-163/replay_67_proposed.py",
+    "sha256": "959afb8117584dbd98f3090fb2ad93b92072eb491a49ea91b8bc9e2abb5d7819"
+  },
+  "source_review": {
+    "path": "/tmp/zfc-intake-163/review-67.md",
+    "sha256": "88008ddb02094e08bc85dafc516ac3cb2acf4779fc71efa4294dcc747f817288"
+  },
+  "reviewed": "Complete helper source and final evidence-flag repair; source API matches eight previously reviewed substantive commands.",
+  "findings": [],
+  "resolved_finding": "The initial replayed=true flag was changed to planned=true/replayed=false, with actual replayed=true set only after successful stage execution and final19661-rejection postcheck. This avoids claiming execution on early FAIL.",
+  "checks": [
+    "New disposable copied packet; original delivery remains untouched.",
+    "Compressed incoming ledger is expanded only in the copy.",
+    "Exactly eight principal jobs, each bounded120seconds, with assertions and Python bytecode disabled.",
+    "No delivery manifest, solver discovery, external build or proof compiler.",
+    "Regenerated canonical table compared byte-for-byte with copied primary table; exact semantic table identity and all principal case counts checked.",
+    "Incoming partition remains coverage-only; three-row affine rejection replay does not become a TM lower bound."
+  ],
+  "execution_here": false
+}

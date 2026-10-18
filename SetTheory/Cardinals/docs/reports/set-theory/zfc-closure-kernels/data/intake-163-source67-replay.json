@@ -1,0 +1,185 @@
+{
+  "status": "PASS",
+  "source": 67,
+  "source_package": "/tmp/zfc-intake-163/zfc-under246/zfc-under246-research-20261018",
+  "working_package": "/tmp/zfc-intake-163/replay67-run1/package",
+  "checksum_manifests_checked": false,
+  "line_endings_checked": false,
+  "compiler_invoked": false,
+  "new_search_run": false,
+  "reference_full_suite_replayed": false,
+  "incoming_partition_rejection_premises_replayed": false,
+  "three_row_affine_rejections_replay_planned": true,
+  "three_row_affine_rejections_replayed": true,
+  "decompressed_ledger_sha256": "1a4f4f02876df1ae4328bf9f2870f108281cc388ab71170dbf3ca0ce74708bc8",
+  "input_scripts": [
+    {
+      "path": "research/agent_logic/verify_reassociation.py",
+      "sha256": "ac82629f4475dbbf9700c5e73f952fb50bc5f53cbbad9401069c58893957e507"
+    },
+    {
+      "path": "research/agent_logic/verify_rotated246.py",
+      "sha256": "c78f34b53d1990ce996508a8bc6fa75ecbc931c6d9a42a6e31e14fd7ff7265df"
+    },
+    {
+      "path": "research/agent_state/check_compensating_partition.py",
+      "sha256": "6fd1f7f54bf8ae3ae3def8a2591108073ec4e0611923e32dfd7873bc8b66e8be"
+    },
+    {
+      "path": "research/agent_logic/abstract_cfg.py",
+      "sha256": "28ed70aef759eee31ff471938683c3c6334dc68595d0c5c9901477dcbeb850a0"
+    },
+    {
+      "path": "research/agent_logic/specialized_axiom_countermodel.py",
+      "sha256": "eec808da240f1d54c72c8c0543161fb2b42553e49a4d3e52f9467ea6a3531d7e"
+    },
+    {
+      "path": "research/agent_state/check_oracle_counterexample.py",
+      "sha256": "57d972a95527aa3bac39cb71fdb2d4e0d5f80db24821eb98aa50ee537211effb"
+    },
+    {
+      "path": "research/root_search/literal_rebracket_counterexample.py",
+      "sha256": "cb9dbd5563a810bb5a8618ddb4c33bba2836b0cf11c3cfe223820be327acd6f1"
+    },
+    {
+      "path": "research/agent_state/rebracket/check_synthesis201_certificate.py",
+      "sha256": "5429072fa84fec146c98d1ba1b7c14ae1c54133ba3a05a648a63dbf2f368ad76"
+    }
+  ],
+  "commands": [
+    {
+      "label": "201-node source bisimulation",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "research/agent_logic/verify_reassociation.py"
+      ],
+      "cwd": "/tmp/zfc-intake-163/replay67-run1/package",
+      "timeout_seconds": 120,
+      "returncode": 0,
+      "seconds": 0.8994611306115985,
+      "stdout": "/tmp/zfc-intake-163/replay67-run1/01.stdout.txt",
+      "stderr": "/tmp/zfc-intake-163/replay67-run1/01.stderr.txt",
+      "stdout_sha256": "0afc28ca81462109147837c9e7ae5700b83c9b04c0c3d9aa2e9722077557763a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "alternate246 complete certificate",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "research/agent_logic/verify_rotated246.py"
+      ],
+      "cwd": "/tmp/zfc-intake-163/replay67-run1/package",
+      "timeout_seconds": 120,
+      "returncode": 0,
+      "seconds": 3.530272861942649,
+      "stdout": "/tmp/zfc-intake-163/replay67-run1/02.stdout.txt",
+      "stderr": "/tmp/zfc-intake-163/replay67-run1/02.stderr.txt",
+      "stdout_sha256": "47cf55e42c9b8f0b34ad11465d533647dbc862218b926cc6e796e988b1fcaa78",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "incoming-action partition coverage only",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "research/agent_state/check_compensating_partition.py"
+      ],
+      "cwd": "/tmp/zfc-intake-163/replay67-run1/package",
+      "timeout_seconds": 120,
+      "returncode": 0,
+      "seconds": 1.854463977739215,
+      "stdout": "/tmp/zfc-intake-163/replay67-run1/03.stdout.txt",
+      "stderr": "/tmp/zfc-intake-163/replay67-run1/03.stderr.txt",
+      "stdout_sha256": "a7e37d3f5a65e9a782297b1302c3df54bd94fc23099a1153df4099ab58a27bb2",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "dirty-root abstract post-fixpoint",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "research/agent_logic/abstract_cfg.py",
+        "--K",
+        "8"
+      ],
+      "cwd": "/tmp/zfc-intake-163/replay67-run1/package",
+      "timeout_seconds": 120,
+      "returncode": 0,
+      "seconds": 0.6427309410646558,
+      "stdout": "/tmp/zfc-intake-163/replay67-run1/04.stdout.txt",
+      "stderr": "/tmp/zfc-intake-163/replay67-run1/04.stderr.txt",
+      "stdout_sha256": "b971255865a23e20991798b9e41a96a9b24a5f3da6653c6ab3eefcb54955da1c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "propositional axiom-specialization countermodel",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "research/agent_logic/specialized_axiom_countermodel.py"
+      ],
+      "cwd": "/tmp/zfc-intake-163/replay67-run1/package",
+      "timeout_seconds": 120,
+      "returncode": 0,
+      "seconds": 0.0251484215259552,
+      "stdout": "/tmp/zfc-intake-163/replay67-run1/05.stdout.txt",
+      "stderr": "/tmp/zfc-intake-163/replay67-run1/05.stderr.txt",
+      "stdout_sha256": "23ca4e3bc57775e43eaffb0c17ae9debd795302918794c7cced001e336165f3e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "opaque-macro graph and tape counterexample",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "research/agent_state/check_oracle_counterexample.py"
+      ],
+      "cwd": "/tmp/zfc-intake-163/replay67-run1/package",
+      "timeout_seconds": 120,
+      "returncode": 0,
+      "seconds": 0.15567809622734785,
+      "stdout": "/tmp/zfc-intake-163/replay67-run1/06.stdout.txt",
+      "stderr": "/tmp/zfc-intake-163/replay67-run1/06.stderr.txt",
+      "stdout_sha256": "09762f0682e631c2ed411e4dea4d37cc4c37a6d01d563559092245517404c704",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "bad245 first-complete-frame counterexample",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "research/root_search/literal_rebracket_counterexample.py"
+      ],
+      "cwd": "/tmp/zfc-intake-163/replay67-run1/package",
+      "timeout_seconds": 120,
+      "returncode": 0,
+      "seconds": 0.11252304259687662,
+      "stdout": "/tmp/zfc-intake-163/replay67-run1/07.stdout.txt",
+      "stderr": "/tmp/zfc-intake-163/replay67-run1/07.stderr.txt",
+      "stdout_sha256": "2883748a53e4033647fb42c8e79b0f51eabf8ab14de522e02631e81e7b03d0e3",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "three-row partition and all affine rejection leaves",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "research/agent_state/rebracket/check_synthesis201_certificate.py",
+        "--replay"
+      ],
+      "cwd": "/tmp/zfc-intake-163/replay67-run1/package",
+      "timeout_seconds": 120,
+      "returncode": 0,
+      "seconds": 10.070537649095058,
+      "stdout": "/tmp/zfc-intake-163/replay67-run1/08.stdout.txt",
+      "stderr": "/tmp/zfc-intake-163/replay67-run1/08.stderr.txt",
+      "stdout_sha256": "0ab6a4ce547d5a03e40054f6f994f7f61a64b308031e5a7b59e8ee376e8c4402",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "canonical_machine_sha256": "15254535ae4bed3755944a3d11666df60b8e3b36c3b101ef8869ece28db38cc2",
+  "regenerated_primary_bytes_equal": true,
+  "scope": "Source DAG equivalence and alternate246 executable certificate; no complete sub246 machine or new Lean/PA endpoint. Incoming-action partition is coverage-only; three-row rejection replay is bounded affine-proof-system rejection, not a general TM lower bound."
+}

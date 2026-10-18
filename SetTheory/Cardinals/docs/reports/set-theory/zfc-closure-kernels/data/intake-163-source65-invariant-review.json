@@ -1,0 +1,65 @@
+{
+  "status": "SOURCE_ONLY_INDEPENDENT_INVARIANT_REVIEW",
+  "reviewer": "/root/review_upstream_reflection",
+  "batch": 163,
+  "local_source": 65,
+  "arrival_commit": "8e012a51d6e7fdad4d903089536427a813009a4f",
+  "archive_sha256": "623b0c71a7f60ce994be67fc01b21e0d3e1a33bf93725ff92410938fc583e3c5",
+  "scope": "Read full 156-line invariant verifier and alternative README, manuscript lines185-241, generator README and parser/transfer implementation; compare with maintained path semantics. No supplied verifier/generator/suite, proof compiler or version query executed. Only reviewer-owned literal-row comparison and hashing performed.",
+  "artifact_pins": {
+    "/tmp/zfc-intake-163/zfc-beyond246-research-20261018/zfc-beyond246/alternative/verify_invariant.py": "e5c789569137a1236566302a7e838372a7c263b6ee3cf326a9a28f54e1c370d3",
+    "/tmp/zfc-intake-163/zfc-beyond246-research-20261018/zfc-beyond246/alternative/README.md": "d10f0cd167b05a69c78af16e3302ff2700d7bce202d7104701ee35e41bed8947",
+    "/tmp/zfc-intake-163/zfc-beyond246-research-20261018/zfc-beyond246/sections/main.tex": "aa45ff50da4670d006e6cb959d8fdebba9988f23c0a165dcb9f659913b0c96bc",
+    "/tmp/zfc-intake-163/zfc-beyond246-research-20261018/zfc-beyond246/alternative/reference/Prog254.v": "1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746",
+    "/tmp/zfc-intake-163/zfc-beyond246-research-20261018/zfc-beyond246/alternative/certificates/product-invariant.json": "a81c1b36b4f4fc2fbb2a59b585f307daae226a5e29ecadf928cc0faf0a03c2e5",
+    "/tmp/zfc-intake-163/zfc-beyond246-research-20261018/zfc-beyond246/alternative/certificates/disjunctive-invariant-3.zlib": "7a3fd0d164e0116c6e6c5228c5c6058a0cff1a5d572693b06115bb7f01b47fae",
+    "/tmp/zfc-intake-163/zfc-beyond246-research-20261018/zfc-beyond246/alternative/results/invariant-verification.json": "6a29af1850714477c4144ba45f5499ae15ffa6921220a24310b0c75c5738cc99",
+    "/tmp/zfc-intake-163/zfc-beyond246-research-20261018/zfc-beyond246/alternative/generators/README.md": "c6150e0d9fe07d77e36cae7fce6c35a475d0603a1e7a1ae465fe400c9541edd0",
+    "/tmp/zfc-intake-163/zfc-beyond246-research-20261018/zfc-beyond246/alternative/generators/reachable_guards.py": "d46b16ddc735d871f97c93d11a5e2c5641195be38694bd58c7fe74367f63ab38"
+  },
+  "repository_pins": {
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Prog254.lean": "6e564bd1ba179b2d39fccc3b8c86a681ec0dd6529df9cfa2522500eef140cfde",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterPath.lean": "a1457f32034eb4da50c8755610a366805260aac711424bba8b516ccab4e5b879",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterPathClean.lean": "5169528914a46b43bc8215967e921744c4594384da72991405ed75ac0ad7eb69"
+  },
+  "literal_binding": {
+    "coq_rows": 6459,
+    "lean_rows": 6459,
+    "all_rows_in_same_order_equal_under_constructor_renaming": true,
+    "program_sha256": "1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746"
+  },
+  "soundness_assessment": [
+    "The source parser pins the complete literal program, rejects unparsed row content, visits each decoder node exactly once, and requires the full node/leaf census. All generated guarded edges use the consumed leaf path; carry retains cleared zeros, drop consumes the stated number of matching symbols, and decode adds zeros while rejecting a discarded nonzero suffix.",
+    "The product domain uses nonempty masks over zero, one and at-least-two. Its increment and guarded decrement images contain exactly the possible category outcomes; unchanged registers retain their masks. Initial inclusion plus every feasible successor inclusion supports ordinary induction for all execution lengths and register magnitudes.",
+    "The product initial family is N,A,D,X,Y,L arbitrary naturals and T=W=H=0. It is strictly broader than the relational initial family.",
+    "The relational bitset encodes every admitted category vector in base3. Width/padding checks exclude invalid codes. Increment changes only a digit below2; positive decrement of category2 branches to both category1 and2. Initialization covers all concrete N,D>=2 with the other seven fields zero, including N=D=3.",
+    "Halt has no successor obligation; counting its guard as enabled does not prove any actual halting execution. Rejecting exactly six abstract guards proves their concrete unreachability from the corresponding family, assuming the certificate checker passes."
+  ],
+  "excluded_case_indices": [
+    8202,
+    8203,
+    8204,
+    8358,
+    8359,
+    8360
+  ],
+  "reported_not_replayed_counts": {
+    "product_admitted_sites": 6456,
+    "product_feasible_guards": 8385,
+    "product_nonhalting_edges": 8384,
+    "relational_admitted_site_vectors": 7725633,
+    "relational_checked_successor_edges": 8669994
+  },
+  "limits": [
+    "This source-only review does not assert a fresh certificate PASS; the included PASS JSON is inherited evidence pending root replay.",
+    "Closure and initial inclusion establish an inductive overapproximation. The verifier does not establish leastness of the abstract fixed point or concrete reachability of every admitted site/vector. The manuscript explicitly retains both distinctions.",
+    "No additional guard exclusions, state deletion, machine below246, state lower bound, Lean endpoint, or PA-internal correctness theorem follows. The 472/492-row binary footprint assertion is outside this numerical verifier and requires the separate affine audit.",
+    "Refined cutoff results have no retained independent certificates here; treat them as diagnostics."
+  ],
+  "next_useful_step": "A small Lean category-transfer lemma plus an imported finite product-mask closure certificate can give the six exclusions for all generic six-numerical roots via RegisterPath induction. It is much smaller than formalizing the 7.7-million-vector relational certificate and yields the same exclusions. Use a richer phase/arithmetic invariant only when it changes an actual transition contract; these exclusions alone do not save a row.",
+  "reproduction_notes": [
+    "Root-only replay on a separate copy: python3 -B alternative/verify_invariant.py; add --relational for the compressed certificate. The path is relative to the package root, and the script writes alternative/results/invariant-verification.json.",
+    "Assertions are required; main rejects optimized Python. No third-party dependency is imported by this verifier."
+  ],
+  "findings": []
+}
