@@ -41,46 +41,20 @@ private lemma prop131_coeff_sq_expansion {N : Nat} [NeZero N]
         prop131Outer f u x y y' *
           (f (x, y' + h) * star (f (x - u, y + h)) *
             exponential (-(u * r))) := by
-  simp only [fourier, verticalCorrelation, ZMod.dft_apply, smul_eq_mul]
-  calc
-    ((‖∑ x : ZMod N, exponential (-(x * r)) *
-        ∑ y : ZMod N, f (x, y + h) * star (f (x, y))‖ ^ 2 : Real) : Complex) =
-        (∑ x : ZMod N, exponential (-(x * r)) *
-          ∑ y : ZMod N, f (x, y + h) * star (f (x, y))) *
-        star (∑ t : ZMod N, exponential (-(t * r)) *
-          ∑ z : ZMod N, f (t, z + h) * star (f (t, z))) := by
-            rw [Complex.star_def, Complex.mul_conj', ← Complex.ofReal_pow]
-    _ = ∑ x : ZMod N, ∑ y : ZMod N, ∑ t : ZMod N, ∑ z : ZMod N,
-        (exponential (-(x * r)) * (f (x, y + h) * star (f (x, y)))) *
-          ((f (t, z) * star (f (t, z + h))) * exponential (t * r)) := by
-            simp only [star_sum, star_mul, star_star, star_exponential,
-              neg_neg]
-            simp_rw [mul_sum, sum_mul]
-            simp_rw [mul_sum]
-            rw [Finset.sum_comm]
-            refine Finset.sum_congr rfl fun x _ => ?_
-            rw [Finset.sum_comm]
-    _ = ∑ x : ZMod N, ∑ y : ZMod N, ∑ u : ZMod N, ∑ z : ZMod N,
-        (exponential (-(x * r)) * (f (x, y + h) * star (f (x, y)))) *
-          ((f (x - u, z) * star (f (x - u, z + h))) *
-            exponential ((x - u) * r)) := by
-              refine Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_
-              rw [← (Equiv.subLeft x).sum_comp]
-              rfl
-    _ = ∑ x : ZMod N, ∑ y' : ZMod N, ∑ u : ZMod N, ∑ y : ZMod N,
-        prop131Outer f u x y y' *
-          (f (x, y' + h) * star (f (x - u, y + h)) *
-            exponential (-(u * r))) := by
-              refine Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y' _ =>
-                  Finset.sum_congr rfl fun u _ => Finset.sum_congr rfl fun y _ => ?_
-              have hphase :
-                  exponential (-(x * r)) * exponential ((x - u) * r) =
-                    exponential (-(u * r)) := by
-                rw [← exponential_add]
-                congr 1
-                ring
-              rw [prop131Outer, ← hphase]
-              ring
+  have hF (g : ZMod N → Complex) :
+      fourier g r = ∑ s : ZMod N, exponential (-(s * r)) * g s := ZMod.dft_apply g r
+  -- `‖ĝ r‖² = ĝ r * star (ĝ r)` is a double sum over `(x, t)`; substitute `t = x - u`
+  rw [Complex.ofReal_pow, ← Complex.mul_conj', ← Complex.star_def, hF, star_sum,
+    Finset.sum_mul_sum]
+  refine Finset.sum_congr rfl fun x _ => ?_
+  rw [← (Equiv.subLeft x).sum_comp, Finset.sum_comm]
+  refine Finset.sum_congr rfl fun u _ => ?_
+  rw [show -(u * r) = -(x * r) + (x - u) * r by ring, exponential_add]
+  simp only [verticalCorrelation, prop131Outer, Equiv.subLeft_apply, star_mul, star_sum,
+    star_star, star_exponential, neg_neg, Finset.mul_sum, Finset.sum_mul]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun y' _ => Finset.sum_congr rfl fun y _ => ?_
+  ring
 
 private lemma prop131_energy_expansion {N : Nat} [NeZero N]
     (f : Pair N → Complex) (B : Finset (ZMod N))
@@ -117,50 +91,14 @@ private lemma prop131_initial_bound {N : Nat} [NeZero N]
     (∑ h ∈ B, ‖fourier (verticalCorrelation f h) (sigma h)‖ ^ 2) ≤
       ∑ x : ZMod N, ∑ y' : ZMod N, ∑ u : ZMod N, ∑ y : ZMod N,
         ‖∑ h ∈ B, prop131InnerTerm f sigma u x y y' h‖ := by
-  let energy : Real :=
-    ∑ h ∈ B, ‖fourier (verticalCorrelation f h) (sigma h)‖ ^ 2
-  have henergy : 0 ≤ energy := by
-    dsimp only [energy]
+  have henergy : 0 ≤ ∑ h ∈ B, ‖fourier (verticalCorrelation f h) (sigma h)‖ ^ 2 := by
     positivity
-  calc
-    (∑ h ∈ B, ‖fourier (verticalCorrelation f h) (sigma h)‖ ^ 2) =
-        ‖((energy : Real) : Complex)‖ := by
-          rw [Complex.norm_real, Real.norm_of_nonneg henergy]
-    _ = ‖∑ x : ZMod N, ∑ y' : ZMod N, ∑ u : ZMod N, ∑ y : ZMod N,
-        prop131Outer f u x y y' *
-          ∑ h ∈ B, prop131InnerTerm f sigma u x y y' h‖ := by
-            rw [prop131_energy_expansion f B sigma]
-    _ ≤ ∑ x : ZMod N,
-        ‖∑ y' : ZMod N, ∑ u : ZMod N, ∑ y : ZMod N,
-          prop131Outer f u x y y' *
-            ∑ h ∈ B, prop131InnerTerm f sigma u x y y' h‖ :=
-              norm_sum_le _ _
-    _ ≤ ∑ x : ZMod N, ∑ y' : ZMod N,
-        ‖∑ u : ZMod N, ∑ y : ZMod N,
-          prop131Outer f u x y y' *
-            ∑ h ∈ B, prop131InnerTerm f sigma u x y y' h‖ := by
-              gcongr with x
-              exact norm_sum_le _ _
-    _ ≤ ∑ x : ZMod N, ∑ y' : ZMod N, ∑ u : ZMod N,
-        ‖∑ y : ZMod N, prop131Outer f u x y y' *
-          ∑ h ∈ B, prop131InnerTerm f sigma u x y y' h‖ := by
-            gcongr with x _
-            exact norm_sum_le _ _
-    _ ≤ ∑ x : ZMod N, ∑ y' : ZMod N, ∑ u : ZMod N, ∑ y : ZMod N,
-        ‖prop131Outer f u x y y' *
-          ∑ h ∈ B, prop131InnerTerm f sigma u x y y' h‖ := by
-            gcongr with x _ u
-            exact norm_sum_le _ _
-    _ ≤ ∑ x : ZMod N, ∑ y' : ZMod N, ∑ u : ZMod N, ∑ y : ZMod N,
-        ‖∑ h ∈ B, prop131InnerTerm f sigma u x y y' h‖ := by
-          apply Finset.sum_le_sum
-          intro x _
-          apply Finset.sum_le_sum
-          intro y' _
-          gcongr with u _ y _
-          rw [norm_mul]
-          exact mul_le_of_le_one_left (norm_nonneg _)
-            (prop131_outer_norm_le f hf u x y y')
+  rw [← Real.norm_of_nonneg henergy, ← Complex.norm_real, prop131_energy_expansion f B sigma]
+  refine (norm_sum_le _ _).trans <| Finset.sum_le_sum fun x _ => (norm_sum_le _ _).trans <|
+    Finset.sum_le_sum fun y' _ => (norm_sum_le _ _).trans <| Finset.sum_le_sum fun u _ =>
+      (norm_sum_le _ _).trans <| Finset.sum_le_sum fun y _ => ?_
+  rw [norm_mul]
+  exact mul_le_of_le_one_left (norm_nonneg _) (prop131_outer_norm_le f hf u x y y')
 
 private lemma prop131_l1_cauchy {N : Nat} [NeZero N]
     (F : ZMod N → ZMod N → ZMod N → ZMod N → Real) :
@@ -314,91 +252,38 @@ private lemma prop131_global_cauchy {N : Nat} [NeZero N]
 correlation identity, and character orthogonality. -/
 theorem lemma_13_1_holds : lemma_13_1 := by
   intro N _ f B sigma alpha hAlpha hf hlarge
-  let L1 : Real :=
-    ∑ x : ZMod N, ∑ y' : ZMod N, ∑ u : ZMod N, ∑ y : ZMod N,
-      ‖∑ h ∈ B, prop131InnerTerm f sigma u x y y' h‖
-  let L2 : Real :=
-    ∑ x : ZMod N, ∑ y' : ZMod N, ∑ u : ZMod N, ∑ y : ZMod N,
-      ‖∑ h ∈ B, prop131InnerTerm f sigma u x y y' h‖ ^ 2
-  let mixed : Real :=
-    ∑ u : ZMod N, ∑ x : ZMod N, ∑ w : ZMod N, ∑ r : ZMod N,
-      ‖fourier (prop131A f u x w) r‖ ^ 2 *
-        ‖fourier (prop61G B sigma u) r‖ ^ 2
-  let fourthA : Real :=
-    ∑ u : ZMod N, ∑ x : ZMod N, ∑ w : ZMod N, ∑ r : ZMod N,
-      ‖fourier (prop131A f u x w) r‖ ^ 4
-  let fourthG : Real :=
-    ∑ u : ZMod N, ∑ _x : ZMod N, ∑ _w : ZMod N, ∑ r : ZMod N,
-      ‖fourier (prop61G B sigma u) r‖ ^ 4
+  let L1 : Real := ∑ x : ZMod N, ∑ y' : ZMod N, ∑ u : ZMod N, ∑ y : ZMod N,
+    ‖∑ h ∈ B, prop131InnerTerm f sigma u x y y' h‖
+  let L2 : Real := ∑ x : ZMod N, ∑ y' : ZMod N, ∑ u : ZMod N, ∑ y : ZMod N,
+    ‖∑ h ∈ B, prop131InnerTerm f sigma u x y y' h‖ ^ 2
+  let mixed : Real := ∑ u : ZMod N, ∑ x : ZMod N, ∑ w : ZMod N, ∑ r : ZMod N,
+    ‖fourier (prop131A f u x w) r‖ ^ 2 * ‖fourier (prop61G B sigma u) r‖ ^ 2
+  let fourthA : Real := ∑ u : ZMod N, ∑ x : ZMod N, ∑ w : ZMod N, ∑ r : ZMod N,
+    ‖fourier (prop131A f u x w) r‖ ^ 4
+  let fourthG : Real := ∑ u : ZMod N, ∑ _x : ZMod N, ∑ _w : ZMod N, ∑ r : ZMod N,
+    ‖fourier (prop61G B sigma u) r‖ ^ 4
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hN4 : (0 : Real) < (N : Real) ^ 4 := by positivity
-  have hN7 : (0 : Real) < (N : Real) ^ 7 := by positivity
-  have hL1 : alpha * (N : Real) ^ 5 ≤ L1 := hlarge.trans <| by
-    simpa only [L1] using prop131_initial_bound f B sigma hf
-  have hL1_nonneg : 0 ≤ L1 := by
-    dsimp only [L1]
-    exact Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ =>
-      Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _
-  have hbase_nonneg : 0 ≤ alpha * (N : Real) ^ 5 :=
-    mul_nonneg hAlpha.le (by positivity)
-  have hL1sq : (alpha * (N : Real) ^ 5) ^ 2 ≤ L1 ^ 2 :=
-    (sq_le_sq₀ hbase_nonneg hL1_nonneg).2 hL1
-  have hCauchy1 : L1 ^ 2 ≤ (N : Real) ^ 4 * L2 := by
-    simpa only [L1, L2] using
-      (prop131_l1_cauchy (N := N)
-        (fun x y' u y =>
-          ‖∑ h ∈ B, prop131InnerTerm f sigma u x y y' h‖))
-  have hL2 : alpha ^ 2 * (N : Real) ^ 6 ≤ L2 := by
-    apply le_of_mul_le_mul_left _ hN4
-    calc
-      (N : Real) ^ 4 * (alpha ^ 2 * (N : Real) ^ 6) =
-          (alpha * (N : Real) ^ 5) ^ 2 := by ring
-      _ ≤ L1 ^ 2 := hL1sq
-      _ ≤ (N : Real) ^ 4 * L2 := hCauchy1
-  have hmixed_eq : mixed = (N : Real) * L2 := by
-    simpa only [mixed, L2] using prop131_mixed_eq_l2 f B sigma
+  -- `α N⁵ ≤ L1`; Cauchy--Schwarz gives `L1² ≤ N⁴ L2`, hence `α² N⁶ ≤ L2`
+  have hL1 : alpha * (N : Real) ^ 5 ≤ L1 := hlarge.trans (prop131_initial_bound f B sigma hf)
+  have hCauchy1 : L1 ^ 2 ≤ (N : Real) ^ 4 * L2 :=
+    prop131_l1_cauchy fun x y' u y => ‖∑ h ∈ B, prop131InnerTerm f sigma u x y y' h‖
+  have hL2 : alpha ^ 2 * (N : Real) ^ 6 ≤ L2 := le_of_mul_le_mul_left (by
+    linarith [mul_self_le_mul_self (by positivity) hL1]) (by positivity : (0 : Real) < N ^ 4)
+  -- `mixed = N L2 ≥ α² N⁷`; Cauchy--Schwarz gives `mixed² ≤ fourthA fourthG ≤ N⁷ fourthG`
+  have hmixed_eq : mixed = (N : Real) * L2 := prop131_mixed_eq_l2 f B sigma
   have hmixed : alpha ^ 2 * (N : Real) ^ 7 ≤ mixed := by
-    calc
-      alpha ^ 2 * (N : Real) ^ 7 =
-          (N : Real) * (alpha ^ 2 * (N : Real) ^ 6) := by ring
-      _ ≤ (N : Real) * L2 := mul_le_mul_of_nonneg_left hL2 hN.le
-      _ = mixed := hmixed_eq.symm
-  have hfourthA : fourthA ≤ (N : Real) ^ 7 := by
-    simpa only [fourthA] using prop131_fourthA_le f hf
-  have hmixed_nonneg : 0 ≤ mixed := by
-    dsimp only [mixed]
-    exact Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ =>
-      Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ =>
-        mul_nonneg (sq_nonneg _) (sq_nonneg _)
-  have hfourthG_nonneg : 0 ≤ fourthG := by
-    dsimp only [fourthG]
-    exact Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ =>
-      Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ =>
-        pow_nonneg (norm_nonneg _) 4
-  have hmixed_sq : (alpha ^ 2 * (N : Real) ^ 7) ^ 2 ≤ mixed ^ 2 := by
-    apply (sq_le_sq₀
-      (mul_nonneg (sq_nonneg _) (pow_nonneg hN.le 7)) hmixed_nonneg).2
-    exact hmixed
-  have hglobal : mixed ^ 2 ≤ fourthA * fourthG := by
-    simpa only [mixed, fourthA, fourthG] using prop131_global_cauchy f B sigma
-  have hfourthG : alpha ^ 4 * (N : Real) ^ 7 ≤ fourthG := by
-    apply le_of_mul_le_mul_left _ hN7
-    calc
-      (N : Real) ^ 7 * (alpha ^ 4 * (N : Real) ^ 7) =
-          (alpha ^ 2 * (N : Real) ^ 7) ^ 2 := by ring
-      _ ≤ mixed ^ 2 := hmixed_sq
-      _ ≤ fourthA * fourthG := hglobal
-      _ ≤ (N : Real) ^ 7 * fourthG :=
-        mul_le_mul_of_nonneg_right hfourthA hfourthG_nonneg
-  have hfourthG_eq :
-      fourthG = (N : Real) ^ 4 * phiAdditiveCount B sigma := by
-    simpa only [fourthG] using prop131_fourthG_eq_count B sigma
-  apply le_of_mul_le_mul_left _ hN4
-  calc
-    (N : Real) ^ 4 * (alpha ^ 4 * (N : Real) ^ 3) =
-        alpha ^ 4 * (N : Real) ^ 7 := by ring
-    _ ≤ fourthG := hfourthG
-    _ = (N : Real) ^ 4 * phiAdditiveCount B sigma := hfourthG_eq
+    linarith [mul_le_mul_of_nonneg_left hL2 hN.le]
+  have hfourthA : fourthA ≤ (N : Real) ^ 7 := prop131_fourthA_le f hf
+  have hglobal : mixed ^ 2 ≤ fourthA * fourthG := prop131_global_cauchy f B sigma
+  have hfourthG : alpha ^ 4 * (N : Real) ^ 7 ≤ fourthG := le_of_mul_le_mul_left (by
+    linarith [mul_self_le_mul_self (by positivity) hmixed,
+      mul_le_mul_of_nonneg_right hfourthA (Finset.sum_nonneg fun _ _ => Finset.sum_nonneg
+        fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ =>
+          pow_nonneg (norm_nonneg _) 4 : (0 : Real) ≤ fourthG)])
+    (by positivity : (0 : Real) < N ^ 7)
+  have hfourthG_eq : fourthG = (N : Real) ^ 4 * phiAdditiveCount B sigma :=
+    prop131_fourthG_eq_count B sigma
+  exact le_of_mul_le_mul_left (by linarith) (by positivity : (0 : Real) < N ^ 4)
 
 private def prop132Indicator {N : Nat} (A : Finset (Pair N)) :
     Pair N → Complex :=

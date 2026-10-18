@@ -55,8 +55,7 @@ theorem commonStepCoverCell_covers {N : Nat} (P : ModAP N) {t m : Nat}
     (k.val : ZMod N) * ((t : ZMod N) * P.step) = _
   calc
     _ = P.start + ((a.val + b.val * m * t + k.val * t : Nat) : ZMod N) * P.step := by
-      push_cast
-      ring
+      push_cast; ring
     _ = _ := by rw [heq]
 
 /-- If one block fits inside the source length, the total padded capacity

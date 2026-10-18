@@ -93,67 +93,29 @@ theorem linearPatternTail_energy {N n : Nat} [NeZero N]
         ‖∑ r : ZMod N, linearPatternTailProduct c f s r‖ ^ 2) ≤
       ∑ u : ZMod N, ‖linearPatternAverage (linearPatternTailCoefficients c) (linearPatternTailDifference c f u)‖ := by
   let T : ZMod N → ZMod N → Complex := linearPatternTailProduct c f
-  have henergy :
-      ((∑ s : ZMod N, ‖∑ r : ZMod N, T s r‖ ^ 2 : Real) : Complex) =
-        ∑ u : ZMod N, linearPatternAverage (linearPatternTailCoefficients c) (linearPatternTailDifference c f u) := by
-    calc
-      ((∑ s : ZMod N, ‖∑ r : ZMod N, T s r‖ ^ 2 : Real) : Complex) =
-          ∑ s : ZMod N,
-            (∑ r : ZMod N, T s r) * star (∑ t : ZMod N, T s t) := by
-        push_cast
-        apply Finset.sum_congr rfl
-        intro s _
-        exact (Complex.mul_conj' _).symm
-      _ = ∑ s : ZMod N, ∑ r : ZMod N, ∑ t : ZMod N,
-            T s r * star (T s t) := by
-        apply Finset.sum_congr rfl
-        intro s _
-        rw [star_sum, Finset.sum_mul]
-        apply Finset.sum_congr rfl
-        intro r _
-        rw [Finset.mul_sum]
-      _ = ∑ r : ZMod N, ∑ u : ZMod N, ∑ s : ZMod N,
-            T s r * star (T s (r + u)) := by
-        rw [Finset.sum_comm]
-        apply Finset.sum_congr rfl
-        intro r _
-        calc
-          (∑ s : ZMod N, ∑ t : ZMod N, T s r * star (T s t)) =
-              ∑ s : ZMod N, ∑ u : ZMod N,
-                T s r * star (T s (r + u)) := by
-            apply Finset.sum_congr rfl
-            intro s _
-            exact (Equiv.sum_comp (Equiv.addLeft r)
-              (fun t : ZMod N ↦ T s r * star (T s t))).symm
-          _ = ∑ u : ZMod N, ∑ s : ZMod N,
-                T s r * star (T s (r + u)) := by rw [Finset.sum_comm]
-      _ = ∑ u : ZMod N,
-          linearPatternAverage (linearPatternTailCoefficients c) (linearPatternTailDifference c f u) := by
-        rw [Finset.sum_comm]
-        apply Finset.sum_congr rfl
-        intro u _
-        unfold linearPatternAverage
-        apply Finset.sum_congr rfl
-        intro r _
-        apply Finset.sum_congr rfl
-        intro s _
-        simp only [T, linearPatternTailProduct, linearPatternTailDifference,
-          difference, star_prod]
-        rw [← Finset.prod_mul_distrib]
-        apply Finset.prod_congr rfl
-        intro i _
-        congr 2
-        ring
-  calc
-    (∑ s : ZMod N, ‖∑ r : ZMod N, linearPatternTailProduct c f s r‖ ^ 2) =
-        ‖∑ u : ZMod N,
-          linearPatternAverage (linearPatternTailCoefficients c) (linearPatternTailDifference c f u)‖ := by
-      rw [← henergy]
-      simp only [T]
-      rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg]
-      positivity
-    _ ≤ ∑ u : ZMod N, ‖linearPatternAverage (linearPatternTailCoefficients c) (linearPatternTailDifference c f u)‖ :=
-      norm_sum_le _ _
+  -- each difference average is a shifted autocorrelation of `T`
+  have hA (u : ZMod N) : linearPatternAverage (linearPatternTailCoefficients c)
+      (linearPatternTailDifference c f u) = ∑ r, ∑ s, T s r * star (T s (r + u)) := by
+    simp only [linearPatternAverage, linearPatternTailDifference, difference, T,
+      linearPatternTailProduct, star_prod, ← Finset.prod_mul_distrib, mul_add, sub_sub]
+  -- so the averages add up to `∑ₛ |∑ᵣ T s r|²` (substitute `t = r + u`)
+  have henergy : ∑ u, linearPatternAverage (linearPatternTailCoefficients c)
+      (linearPatternTailDifference c f u) = ((∑ s, ‖∑ r, T s r‖ ^ 2 : Real) : Complex) := by
+    calc _ = ∑ r, ∑ s, ∑ u, T s r * star (T s (r + u)) := by
+          simp_rw [hA]
+          rw [Finset.sum_comm]
+          exact Finset.sum_congr rfl fun r _ => Finset.sum_comm
+      _ = ∑ r, ∑ s, T s r * star (∑ t, T s t) := by
+          refine Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun s _ => ?_
+          rw [star_sum, Finset.mul_sum]
+          exact Fintype.sum_equiv (Equiv.addLeft r) _ _ fun _ => rfl
+      _ = _ := by
+          rw [Finset.sum_comm]
+          push_cast
+          refine Finset.sum_congr rfl fun s _ => ?_
+          rw [← Finset.sum_mul, Complex.star_def, Complex.mul_conj']
+  refine Eq.trans_le ?_ (norm_sum_le _ _)
+  rw [henergy, Complex.norm_of_nonneg (Finset.sum_nonneg fun s _ => sq_nonneg ‖∑ r, T s r‖)]
 
 theorem linearPattern_cauchy_step {N n : Nat} [NeZero N]
     (c : Fin (n + 1) → ZMod N) (f : Fin (n + 1) → ZMod N → Complex) (hf : DiscValued (f 0)) :

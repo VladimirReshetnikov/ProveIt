@@ -33,32 +33,25 @@ theorem section13Zeta_inv_le_spectral_exp {delta : Real}
   let K := section13K delta
   have ht : 1 ≤ t := (one_le_inv₀ hδ).mpr hδone
   have ht0 : 0 ≤ t := zero_le_one.trans ht
-  have hK : 0 ≤ K := by dsimp [K, section13K]; positivity
   have hKi : K = (2 : Real) ^ (114 : Nat) * t ^ (320 : Nat) := by
     simp only [K, section13K, t, zpow_neg, zpow_ofNat, inv_pow]
+  have hK : 0 ≤ K := by rw [hKi]; positivity
   have hbudget : 228 * K + 1152 * K * t ≤ section13Q delta := by
     have hpoly : 228 * K + 1152 * K * t ≤ (2 : Real) ^ (125 : Nat) * t ^ (321 : Nat) := by
-      have hp := mul_le_mul_of_nonneg_left ht (by positivity : 0 ≤ 228 * K)
-      rw [hKi] at hp ⊢
-      rw [show (321 : Nat) = 320 + 1 by omega, pow_succ t 320]
-      have hc : (1380 : Real) * (2 : Real) ^ (114 : Nat) ≤ (2 : Real) ^ (125 : Nat) := by norm_num
-      have hh := mul_le_mul_of_nonneg_right hc (mul_nonneg (pow_nonneg ht0 320) ht0)
-      nlinarith only [hp, hh]
+      rw [hKi]
+      linarith [mul_le_mul_of_nonneg_left ht (pow_nonneg ht0 320), pow_nonneg ht0 321]
     exact hpoly.trans (section13_monomial_le_Q hδ hδone (by norm_num) (by norm_num))
   calc
     _ = (2 : Real) ^ (228 * K) * t ^ (576 * K) := by
-      unfold section13Zeta
-      rw [mul_inv_rev, ← Real.rpow_neg (by norm_num : (0 : Real) ≤ 2), neg_neg,
-        ← Real.inv_rpow hδ.le]
-      exact mul_comm _ _
+      rw [section13Zeta, mul_inv, ← Real.rpow_neg zero_le_two, neg_neg, ← Real.inv_rpow hδ.le]
     _ ≤ (2 : Real) ^ (228 * K) * ((2 : Real) ^ (2 * t)) ^ (576 * K) :=
-      mul_le_mul_of_nonneg_left (Real.rpow_le_rpow ht0 (le_two_rpow_two_mul ht0) (mul_nonneg (by norm_num) hK))
-        (Real.rpow_nonneg (by norm_num) _)
+      mul_le_mul_of_nonneg_left (Real.rpow_le_rpow ht0 (le_two_rpow_two_mul ht0)
+        (mul_nonneg (by norm_num) hK)) (Real.rpow_nonneg zero_le_two _)
     _ = (2 : Real) ^ (228 * K + 1152 * K * t) := by
-      rw [← Real.rpow_mul (by norm_num : (0 : Real) ≤ 2), ← Real.rpow_add (by norm_num : (0 : Real) < 2)]
+      rw [← Real.rpow_mul zero_le_two, ← Real.rpow_add two_pos]
       congr 1
       ring
-    _ ≤ _ := Real.rpow_le_rpow_of_exponent_le (by norm_num) hbudget
+    _ ≤ _ := Real.rpow_le_rpow_of_exponent_le one_le_two hbudget
 
 /-- The ceiling in the Section 10 spectral parameter costs only a factor two
 relative to the fixed Section 13 polynomial spectral bound. -/
@@ -90,54 +83,31 @@ theorem section10Zeta_inv_le_spectral_exp {delta : Real}
   let t := delta⁻¹
   let u := delta ^ 32 / 16
   let k := section10SpectrumParameter u
-  let K := section13K delta
   have ht : 1 ≤ t := (one_le_inv₀ hδ).mpr hδone
   have ht0 : 0 ≤ t := zero_le_one.trans ht
-  have hu : 0 < u := by dsimp [u]; positivity
-  have hK : 0 ≤ K := by dsimp [K, section13K]; positivity
-  have hKi : K = (2 : Real) ^ (114 : Nat) * t ^ (320 : Nat) := by
-    simp only [K, section13K, t, zpow_neg, zpow_ofNat, inv_pow]
-  have hui : u⁻¹ = 16 * t ^ (32 : Nat) := by
-    dsimp [u, t]
-    rw [inv_div, div_eq_mul_inv, inv_pow]
-  have hk : (k : Real) ≤ 2 * K := section10SpectrumParameter_le_two_section13K hδ hδone
-  have hk0 : (0 : Real) ≤ k := Nat.cast_nonneg _
+  have hk : (k : Real) ≤ 2 * ((2 : Real) ^ (114 : Nat) * t ^ (320 : Nat)) := by
+    simpa only [section13K, t, zpow_neg, zpow_ofNat, inv_pow] using
+      section10SpectrumParameter_le_two_section13K hδ hδone
   have hbudget : 157 * (k : Real) + 36 * k * u⁻¹ ≤ section13Q delta := by
-    have hfirst : 157 * (k : Real) + 36 * k * u⁻¹ ≤ 314 * K + 1152 * K * t ^ (32 : Nat) := by
-      have h1 := mul_le_mul_of_nonneg_left hk (by norm_num : (0 : Real) ≤ 157)
-      have h2 := mul_le_mul_of_nonneg_right hk (by positivity : 0 ≤ 36 * u⁻¹)
-      rw [hui] at h2 ⊢
-      nlinarith only [h1, h2]
-    have ht32 : 1 ≤ t ^ (32 : Nat) := one_le_pow₀ ht
-    have hpoly : 314 * K + 1152 * K * t ^ (32 : Nat) ≤
-        (2 : Real) ^ (125 : Nat) * t ^ (352 : Nat) := by
-      have hp := mul_le_mul_of_nonneg_left ht32 (mul_nonneg (by norm_num : (0 : Real) ≤ 314) hK)
-      rw [hKi] at hp ⊢
-      rw [show (352 : Nat) = 320 + 32 by omega, pow_add]
-      have hc : (1466 : Real) * (2 : Real) ^ (114 : Nat) ≤ (2 : Real) ^ (125 : Nat) := by norm_num
-      have hh := mul_le_mul_of_nonneg_right hc (mul_nonneg (pow_nonneg ht0 320) (pow_nonneg ht0 32))
-      nlinarith only [hp, hh]
-    exact hfirst.trans (hpoly.trans (section13_monomial_le_Q hδ hδone (by norm_num) (by norm_num)))
+    have hpoly : 157 * (k : Real) + 36 * k * u⁻¹ ≤ (2 : Real) ^ (125 : Nat) * t ^ (352 : Nat) := by
+      rw [show u⁻¹ = 16 * t ^ (32 : Nat) by
+        simp only [u, t]; rw [inv_div, div_eq_mul_inv, inv_pow]]
+      linarith [mul_le_mul_of_nonneg_right hk (pow_nonneg ht0 32),
+        pow_le_pow_right₀ ht (show 320 ≤ 352 by norm_num), pow_nonneg ht0 352]
+    exact hpoly.trans (section13_monomial_le_Q hδ hδone (by norm_num) (by norm_num))
   calc
     _ = (k : Real) * (2 : Real) ^ (155 * (k : Real)) * (u⁻¹) ^ (18 * k) := by
-      change ((2 : Real) ^ (-(155 : Real) * (k : Real)) * u ^ (18 * k) / (k : Real))⁻¹ = _
-      rw [inv_div, div_eq_mul_inv, mul_inv_rev, ← inv_pow,
-        ← Real.rpow_neg (by norm_num : (0 : Real) ≤ 2)]
-      have hh : -(-(155 : Real) * (k : Real)) = 155 * (k : Real) := by ring
-      rw [hh]
-      ring
+      dsimp only [section10Zeta]
+      rw [inv_div, div_eq_mul_inv, mul_inv, ← inv_pow, ← Real.rpow_neg zero_le_two, neg_mul,
+        neg_neg, mul_assoc]
     _ ≤ (2 : Real) ^ (2 * (k : Real)) * (2 : Real) ^ (155 * (k : Real)) *
         ((2 : Real) ^ (2 * u⁻¹)) ^ (18 * k) := by
-      apply mul_le_mul _ (pow_le_pow_left₀ (inv_nonneg.mpr hu.le)
-        (le_two_rpow_two_mul (inv_nonneg.mpr hu.le)) _) (by positivity) (by positivity)
-      exact mul_le_mul_of_nonneg_right (le_two_rpow_two_mul hk0) (Real.rpow_nonneg (by norm_num) _)
+      gcongr <;> exact le_two_rpow_two_mul (by positivity)
     _ = (2 : Real) ^ (157 * (k : Real) + 36 * k * u⁻¹) := by
-      rw [← Real.rpow_mul_natCast (by norm_num : (0 : Real) ≤ 2),
-        ← Real.rpow_add (by norm_num : (0 : Real) < 2),
-        ← Real.rpow_add (by norm_num : (0 : Real) < 2)]
+      rw [← Real.rpow_mul_natCast zero_le_two, ← Real.rpow_add two_pos, ← Real.rpow_add two_pos]
       congr 1
       push_cast
       ring
-    _ ≤ _ := Real.rpow_le_rpow_of_exponent_le (by norm_num) hbudget
+    _ ≤ _ := Real.rpow_le_rpow_of_exponent_le one_le_two hbudget
 
 end LeanProofs.GowersSzemeredi

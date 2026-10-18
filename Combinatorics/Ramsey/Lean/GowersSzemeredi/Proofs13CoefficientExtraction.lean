@@ -27,67 +27,39 @@ theorem lemma_13_8_with_domain {N : Nat} [Fact N.Prime]
   classical
   rcases hG with ⟨_, hproper, _, _, hB, hrel, habs, hlinear⟩
   have hcard : G.S.carrier.card = G.S.length := hproper
-  let I := criticalHeights S D E
   let δ : Real := (2 : Real) ^ (-(43 : Int)) * S.alpha ^ 224
   let β : Real := (2 : Real) ^ (-(48 : Int)) * S.alpha ^ 256
   let K : Real := (2 : Real) ^ (-(135 : Int)) * S.alpha ^ 704
-  have hα : 0 < S.alpha := S.alpha_pos
-  have hδ : 0 < δ := by dsimp [δ]; positivity
-  have hβ : 0 < β := by dsimp [β]; positivity
-  have hK : 0 < K := by dsimp [K]; positivity
-  have hcancel : K * ((2 : Real) ^ 135 * S.alpha ^ (-(704 : Int))) = 1 := by
-    dsimp [K]
-    norm_num [zpow_neg, zpow_natCast]
-    field_simp
+  have hα := S.alpha_pos
   have hwidth : 1 ≤ K * G.S.length := by
-    calc
-      1 = K * ((2 : Real) ^ 135 * S.alpha ^ (-(704 : Int))) := hcancel.symm
-      _ ≤ _ := mul_le_mul_of_nonneg_left hsize hK.le
-  have hn : 0 < G.S.length := by
-    by_contra hn
-    have hz : G.S.length = 0 := by omega
-    simp only [hz, Nat.cast_zero, mul_zero] at hwidth
-    norm_num at hwidth
+    rw [zpow_neg, zpow_ofNat, mul_inv_le_iff₀ (by positivity)] at hsize
+    simp only [K, zpow_neg, zpow_ofNat]
+    linarith
   have hS : G.S.carrier.Nonempty := by
-    apply Finset.card_pos.mp
-    simpa only [hcard] using hn
+    rw [← Finset.card_pos, hcard, Nat.pos_iff_ne_zero]
+    rintro h
+    norm_num [h] at hwidth
   have hD : δ ^ 2 * β = 2 * K := by
-    dsimp [δ, β, K]
-    norm_num [zpow_neg, zpow_natCast]
+    simp only [δ, β, K, zpow_neg, zpow_ofNat]
     ring
-  have hrow := exists_translated_row_coefficients G.S.carrier I G.B G.y S.phi
-    (fun z hz ↦ (Finset.mem_product.mp (hB hz)).1) hlinear
+  have hrow := exists_translated_row_coefficients G.S.carrier (criticalHeights S D E) G.B G.y
+    S.phi (fun z hz ↦ (Finset.mem_product.mp (hB hz)).1) hlinear
   by_cases hm : E.Q.length = 0
   · obtain ⟨a, c, hrow⟩ := hrow
-    refine ⟨⟨a, c, ∅, ∅⟩, hrow, Finset.empty_subset _, ?_, ?_, ?_⟩
-    · simpa only [FreimanHom, Finset.coe_empty] using
-        (isAddFreimanHom_empty (n := 8) (B := Set.univ) (f := fun h ↦ (a h, c h)))
-    · simp
-    · simp [hm]
+    refine ⟨⟨a, c, ∅, ∅⟩, hrow, Finset.empty_subset _, ?_, by simp, by simp [hm]⟩
+    simpa only [FreimanHom, Finset.coe_empty] using
+      (isAddFreimanHom_empty (n := 8) (B := Set.univ) (f := fun h ↦ (a h, c h)))
   have hmpos : (0 : Real) < E.Q.length := by exact_mod_cast Nat.pos_of_ne_zero hm
-  have hIm : (I.card : Real) ≤ E.Q.length := by
-    have hi : I ⊆ E.Q.carrier := fun h hh ↦
-      (Finset.mem_inter.mp (Finset.mem_filter.mp hh).1).1
-    have hq : E.Q.carrier.card ≤ E.Q.length := by
-      unfold ModAP.carrier
-      simpa only [Finset.card_univ, Fintype.card_fin] using
-        (Finset.card_image_le (s := (Finset.univ : Finset (Fin E.Q.length)))
-          (f := fun i : Fin E.Q.length ↦ E.Q.start + (i : Nat) * E.Q.step))
-    exact_mod_cast (Finset.card_le_card hi).trans hq
+  have hIm : ((criticalHeights S D E).card : Real) ≤ E.Q.length := by
+    exact_mod_cast (Finset.card_le_card ((Finset.filter_subset _ _).trans
+      Finset.inter_subset_left)).trans (Finset.card_image_le.trans (Finset.card_fin _).le)
   obtain ⟨a, c, J, hrow, hJI, hfreiman, hmass⟩ :=
-    exists_freiman_common_rows_of_two_densities S G.S.carrier I G.B G.y hS hBA hB
-      hlinear hδ hβ hmpos hIm
-      (by simpa only [hcard] using hrel)
-      (by simpa only [hcard] using habs)
-      (by rw [hD, hcard]; nlinarith)
-  refine ⟨⟨a, c, J, G.B.filter fun z ↦ z.2 - G.y ∈ J⟩,
-    hrow, hJI, hfreiman, rfl, ?_⟩
-  change K * E.Q.length * G.S.length ≤ _
-  rw [hD, hcard] at hmass
-  have hround : K * E.Q.length * G.S.length ≤
-      E.Q.length * (2 * K * G.S.length - 1) := by
-    nlinarith [mul_le_mul_of_nonneg_left hwidth hmpos.le]
-  exact hround.trans hmass
+    exists_freiman_common_rows_of_two_densities (δ := δ) (β := β) S G.S.carrier _ G.B G.y hS
+      hBA hB hlinear (by positivity) (by positivity) hmpos hIm (by simpa only [hcard] using hrel)
+      (by simpa only [hcard] using habs) (by rw [hD, hcard]; linarith)
+  refine ⟨⟨a, c, J, _⟩, hrow, hJI, hfreiman, rfl, le_trans ?_ hmass⟩
+  rw [hD, hcard]
+  linarith [mul_le_mul_of_nonneg_left hwidth hmpos.le]
 
 /-- The repaired catalogue statement, with all quantitative selection and
 coefficient-extraction obligations discharged. -/

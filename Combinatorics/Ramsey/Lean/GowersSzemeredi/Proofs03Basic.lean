@@ -27,8 +27,7 @@ lemma sum_difference_eq_norm_sum_sq {N : Nat} [NeZero N]
       rw [sum_comm]
       rfl
     _ = ∑ s : ZMod N, ∑ u : ZMod N, g s * star (g u) := by
-      apply Finset.sum_congr rfl
-      intro s _
+      refine Finset.sum_congr rfl fun s _ => ?_
       simpa [Equiv.subLeft_apply] using
         (Equiv.sum_comp (Equiv.subLeft s) (fun u => g s * star (g u)))
     _ = (∑ s : ZMod N, g s) * star (∑ u : ZMod N, g u) := by
@@ -68,15 +67,11 @@ lemma sum_cube_succ_eq_sum_norm_sq {N n : Nat} [NeZero N]
     _ = ∑ a : Point N n, ∑ r : ZMod N, ∑ s : ZMod N,
           difference (cubeDifference f a) r s := by
       rw [sum_comm]
-      apply Finset.sum_congr rfl
-      intro a _
-      apply Finset.sum_congr rfl
-      intro r _
+      refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun r _ => ?_
       simp only [cubeDifference_cons]
     _ = ∑ a : Point N n,
           ((‖∑ s : ZMod N, cubeDifference f a s‖ ^ 2 : Real) : Complex) := by
-      apply Finset.sum_congr rfl
-      intro a _
+      refine Finset.sum_congr rfl fun a _ => ?_
       exact sum_difference_eq_norm_sum_sq _
     _ = ((∑ a : Point N n, ‖∑ s : ZMod N, cubeDifference f a s‖ ^ 2 : Real) :
           Complex) := by
@@ -139,9 +134,7 @@ theorem lemma_3_4_holds : lemma_3_4 := by
         previousUniformEnergy_sq_le f
       _ ≤ (N : Real) ^ (n + 1) * (alpha * (N : Real) ^ (n + 3)) :=
         mul_le_mul_of_nonneg_left hUniform (pow_nonneg hN.le _)
-      _ = alpha * (N : Real) ^ (2 * (n + 2)) := by
-        rw [show 2 * (n + 2) = (n + 1) + (n + 3) by omega, pow_add]
-        ring
+      _ = alpha * (N : Real) ^ (2 * (n + 2)) := by ring
   apply le_of_pow_le_pow_left₀ (by norm_num : (2 : Nat) ≠ 0)
     (mul_nonneg hroot_nonneg (pow_nonneg hN.le _))
   calc

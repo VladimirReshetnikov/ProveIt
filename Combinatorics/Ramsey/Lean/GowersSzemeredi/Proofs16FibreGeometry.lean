@@ -8,11 +8,7 @@ namespace LeanProofs.GowersSzemeredi
 
 /-- The paper's appended-coordinate map is the canonical final-coordinate map. -/
 theorem appendCoordinate_eq_snoc {N k : Nat} (x : Point N k) (y : ZMod N) :
-    appendCoordinate x y = Fin.snoc x y := by
-  funext i
-  refine Fin.lastCases ?_ (fun j => ?_) i
-  · simp [appendCoordinate]
-  · simp [appendCoordinate, j.isLt]
+    appendCoordinate x y = Fin.snoc x y := by abel
 
 @[simp] theorem section16Init_appendCoordinate {N k : Nat} (x : Point N k) (y : ZMod N) :
     section16Init (appendCoordinate x y) = x := by

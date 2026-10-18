@@ -34,8 +34,7 @@ theorem linearPatternAverage_two_factor {N : Nat} [NeZero N] [Fact N.Prime]
     linearPatternAverage c f = (∑ s, f 0 s) * (∑ t, f 1 t) := by
   have hd : c 1 - c 0 ≠ 0 := sub_ne_zero.mpr (fun h => by simpa using hc h)
   rw [linearPatternAverage_split, Finset.sum_mul]
-  apply Finset.sum_congr rfl
-  intro s _
+  refine Finset.sum_congr rfl fun s _ => ?_
   congr 1
   simp only [linearPatternTailProduct, Fin.prod_univ_one, linearPatternTailCoefficients]
   exact Equiv.sum_comp ((Equiv.mulLeft₀ (c 1 - c 0) hd).trans (Equiv.subLeft s)) (f 1)

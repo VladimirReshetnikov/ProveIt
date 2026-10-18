@@ -53,17 +53,13 @@ lemma prop172_fourier_sq {N : Nat} [NeZero N]
     _ = ∑ s : ZMod N, ∑ y : ZMod N,
         (exponential (-(s * r)) * g s) *
           (star (g (s - y)) * exponential ((s - y) * r)) := by
-      apply Finset.sum_congr rfl
-      intro s _
+      refine Finset.sum_congr rfl fun s _ => ?_
       rw [← (Equiv.subLeft s).sum_comp]
       rfl
     _ = ∑ y : ZMod N, ∑ s : ZMod N,
         difference g y s * exponential (-(y * r)) := by
       rw [Finset.sum_comm]
-      apply Finset.sum_congr rfl
-      intro y _
-      apply Finset.sum_congr rfl
-      intro s _
+      refine Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun s _ => ?_
       have hphase :
           exponential (-(s * r)) * exponential ((s - y) * r) =
             exponential (-(y * r)) := by
@@ -110,8 +106,7 @@ lemma prop172_multilinear_cons {N k : Nat}
       rfl
     _ = ∑ e : Fin k → Bool, T (Fin.cons true e) := by
       rw [Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro e _
+      refine Finset.sum_congr rfl fun e _ => ?_
       rw [htrue]
     _ = ∑ e : Fin k → Bool, T (Fin.cons true e) +
         ∑ e : Fin k → Bool, T (Fin.cons false e) := by
@@ -221,10 +216,7 @@ theorem constant_cubeForm_eq_sum_cubeDifference {N d : Nat} [NeZero N]
     cubeForm (d := d) (fun (_ : Fin d → Bool) => g) =
       ∑ x : Point N d, ∑ s : ZMod N, cubeDifference g x s := by
   unfold cubeForm
-  apply Finset.sum_congr rfl
-  intro x _
-  apply Finset.sum_congr rfl
-  intro s _
+  refine Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun s _ => ?_
   exact (prop172_cubeDifference_product g x s).symm
 
 /-- A cube difference is the product of its parity-conjugated vertices. -/

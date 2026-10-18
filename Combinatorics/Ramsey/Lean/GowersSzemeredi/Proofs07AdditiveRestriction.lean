@@ -106,9 +106,7 @@ theorem corollary_7_6_holds : corollary_7_6 := by
   refine ⟨B, hBB1.trans hB1sub, ?_, hFreiman⟩
   let D : Real := 8 * (8 : Real) * C ^ (4 * 8)
   have hDpos : 0 < D := by positivity
-  have hBsize' : (B1.card : Real) / D ≤ B.card := by
-    norm_num [D] at hBsize ⊢
-    exact hBsize
+  have hBsize' : (B1.card : Real) / D ≤ B.card := by omega
   have hB1lower :
       (2 : Real) ^ (-(20 : Real)) * gamma ^ (12 : Nat) * (alpha * N) ≤ B1.card := by
     rw [← hGamma0card, hB1card]

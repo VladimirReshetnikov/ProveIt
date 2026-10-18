@@ -96,71 +96,21 @@ private lemma cubeForm_eq_halfInner {N n : Nat} [NeZero N]
       ∑ a : Point N n,
         (∑ s : ZMod N, gcsHalf f j false a s) *
           star (∑ t : ZMod N, gcsHalf f j true a t) := by
-  let Q : Point N (n + 1) → Complex := fun x =>
-    ∑ s : ZMod N,
-      ∏ e : Fin (n + 1) → Bool,
-        parityConj e (f e (cubeArgument s x e))
-  calc
-    cubeForm f = ∑ x : Point N (n + 1), Q x := by rfl
-    _ = ∑ p : ZMod N × Point N n, Q (j.insertNth p.1 p.2) := by
-      exact Fintype.sum_equiv
-        (Fin.insertNthEquiv (fun _ : Fin (n + 1) => ZMod N) j).symm
-        Q (fun p => Q (j.insertNth p.1 p.2)) (fun x =>
-          congrArg Q
-            ((Fin.insertNthEquiv (fun _ : Fin (n + 1) => ZMod N) j).apply_symm_apply x).symm)
-    _ = ∑ r : ZMod N, ∑ a : Point N n,
-        ∑ s : ZMod N,
-          ∏ e : Fin (n + 1) → Bool,
-            parityConj e
-              (f e (cubeArgument s (j.insertNth r a) e)) := by
-      rw [Fintype.sum_prod_type]
-    _ = ∑ a : Point N n, ∑ r : ZMod N, ∑ s : ZMod N,
+  -- split each vertex product by the value of coordinate `j`
+  have key (a : Point N n) (r s : ZMod N) :
+      ∏ e : Fin (n + 1) → Bool, parityConj e (f e (cubeArgument s (j.insertNth r a) e)) =
         gcsHalf f j false a s * star (gcsHalf f j true a (s - r)) := by
-      rw [Finset.sum_comm]
-      apply Finset.sum_congr rfl
-      intro a _
-      apply Finset.sum_congr rfl
-      intro r _
-      apply Finset.sum_congr rfl
-      intro s _
-      let T : (Fin (n + 1) → Bool) → Complex := fun e =>
-        parityConj e (f e (cubeArgument s (j.insertNth r a) e))
-      calc
-        (∏ e : Fin (n + 1) → Bool,
-          parityConj e (f e (cubeArgument s (j.insertNth r a) e))) =
-            ∏ be : Bool × (Fin n → Bool), T (j.insertNth be.1 be.2) := by
-          exact Fintype.prod_equiv
-            (Fin.insertNthEquiv (fun _ : Fin (n + 1) => Bool) j).symm
-            T (fun be => T (j.insertNth be.1 be.2)) (fun e =>
-              congrArg T
-                ((Fin.insertNthEquiv (fun _ : Fin (n + 1) => Bool) j).apply_symm_apply e).symm)
-        _ = (∏ e : Fin n → Bool, T (j.insertNth true e)) *
-            ∏ e : Fin n → Bool, T (j.insertNth false e) := by
-          rw [Fintype.prod_prod_type, Fintype.prod_bool]
-        _ = star (gcsHalf f j true a (s - r)) * gcsHalf f j false a s := by
-          congr 1
-          · rw [gcsHalf, star_prod]
-            apply Finset.prod_congr rfl
-            intro e _
-            simp only [T]
-            rw [gcs_cubeArgument_insertNth]
-            simp only [if_true]
-            rw [gcs_parityConj_insert_true]
-          · rw [gcsHalf]
-            apply Finset.prod_congr rfl
-            intro e _
-            simp only [T]
-            rw [gcs_cubeArgument_insertNth]
-            simp only [Bool.false_eq_true, if_false, sub_zero]
-            rw [gcs_parityConj_insert_false]
-        _ = gcsHalf f j false a s * star (gcsHalf f j true a (s - r)) :=
-          mul_comm _ _
-    _ = ∑ a : Point N n,
-        (∑ s : ZMod N, gcsHalf f j false a s) *
-          star (∑ t : ZMod N, gcsHalf f j true a t) := by
-      apply Finset.sum_congr rfl
-      intro a _
-      exact gcs_mixedCorrelation _ _
+    rw [← (Fin.insertNthEquiv (fun _ => Bool) j).prod_comp, Fintype.prod_prod_type,
+      Fintype.prod_bool, mul_comm]
+    simp only [Fin.insertNthEquiv, Equiv.coe_fn_mk, gcs_cubeArgument_insertNth,
+      gcs_parityConj_insert_true, gcs_parityConj_insert_false, gcsHalf, star_prod, if_true,
+      Bool.false_eq_true, if_false, sub_zero]
+  -- and split each point `x` into its coordinate `r = x j` and the remaining coordinates `a`
+  rw [cubeForm, ← (Fin.insertNthEquiv (fun _ => ZMod N) j).sum_comp, Fintype.sum_prod_type,
+    sum_comm]
+  refine sum_congr rfl fun a _ => ?_
+  simp only [Fin.insertNthEquiv, Equiv.coe_fn_mk, key]
+  exact gcs_mixedCorrelation _ _
 
 /-- Duplicate one face-function across both values of coordinate `j`. -/
 private def duplicateCoordinate {N n : Nat}
@@ -227,38 +177,16 @@ private lemma cubeForm_oneCoordinate_sq_le' {N d : Nat} [NeZero N]
   cases d with
   | zero => exact Fin.elim0 j
   | succ n =>
-      have hdup (b : Bool) :
-          duplicateAt f j b = duplicateCoordinate f j b := by
+      have hdup (b : Bool) : duplicateAt f j b = duplicateCoordinate f j b := by
         funext e s
         simp only [duplicateAt, duplicateCoordinate, Fin.insertNth_removeNth]
-      rw [hdup false, hdup true]
-      -- One coordinate of the Gowers--Cauchy--Schwarz iteration.
-      let A : Point N n → Complex := fun a =>
-        ∑ s : ZMod N, gcsHalf f j false a s
-      let B : Point N n → Complex := fun a =>
-        ∑ s : ZMod N, gcsHalf f j true a s
-      have hform : cubeForm f = ∑ a : Point N n, A a * star (B a) := by
-        simpa [A, B] using cubeForm_eq_halfInner f j
-      have htriangle : ‖cubeForm f‖ ≤ ∑ a : Point N n, ‖A a‖ * ‖B a‖ := by
-        rw [hform]
-        calc
-          ‖∑ a : Point N n, A a * star (B a)‖ ≤
-              ∑ a : Point N n, ‖A a * star (B a)‖ := norm_sum_le _ _
-          _ = ∑ a : Point N n, ‖A a‖ * ‖B a‖ := by norm_num
-      have hcs : (∑ a : Point N n, ‖A a‖ * ‖B a‖) ^ 2 ≤
-          (∑ a : Point N n, ‖A a‖ ^ 2) *
-            ∑ a : Point N n, ‖B a‖ ^ 2 := by
-        simpa using sum_mul_sq_le_sq_mul_sq
-          (Finset.univ : Finset (Point N n)) (fun a => ‖A a‖) (fun a => ‖B a‖)
-      calc
-        ‖cubeForm f‖ ^ 2 ≤ (∑ a : Point N n, ‖A a‖ * ‖B a‖) ^ 2 :=
-          pow_le_pow_left₀ (norm_nonneg _) htriangle 2
-        _ ≤ (∑ a : Point N n, ‖A a‖ ^ 2) *
-            ∑ a : Point N n, ‖B a‖ ^ 2 := hcs
-        _ = ‖cubeForm (duplicateCoordinate f j false)‖ *
-            ‖cubeForm (duplicateCoordinate f j true)‖ := by
-          rw [norm_cubeForm_duplicateCoordinate, norm_cubeForm_duplicateCoordinate]
-          simp only [A, B, gcsFaceEnergy]
+      -- one Gowers--Cauchy--Schwarz step: the triangle inequality, then Cauchy--Schwarz in `a`
+      rw [hdup, hdup, norm_cubeForm_duplicateCoordinate, norm_cubeForm_duplicateCoordinate,
+        gcsFaceEnergy, gcsFaceEnergy, cubeForm_eq_halfInner f j]
+      refine le_trans ?_ (sum_mul_sq_le_sq_mul_sq univ (fun a => ‖∑ s, gcsHalf f j false a s‖)
+        fun a => ‖∑ s, gcsHalf f j true a s‖)
+      gcongr
+      exact (norm_sum_le _ _).trans_eq (by simp only [norm_mul, norm_star])
 
 /-- Overwrite the first `n` coordinates of a Boolean cube vertex. -/
 private def overwritePrefix {d : Nat} (n : Nat) (q : Fin n → Bool)
@@ -305,49 +233,12 @@ private def prefixProduct {N d : Nat} [NeZero N]
 private lemma prefixProduct_sq_le_succ {N d n : Nat} [NeZero N]
     (f : (Fin d → Bool) → ZMod N → Complex) (hn : n < d) :
     prefixProduct f n ^ 2 ≤ prefixProduct f (n + 1) := by
-  unfold prefixProduct
-  rw [← Finset.prod_pow]
-  calc
-    (∏ q : Fin n → Bool, ‖cubeForm (prefixFamily f n q)‖ ^ 2) ≤
-        ∏ q : Fin n → Bool,
-          (‖cubeForm (duplicateAt (prefixFamily f n q)
-              (⟨n, hn⟩ : Fin d) false)‖ *
-            ‖cubeForm (duplicateAt (prefixFamily f n q)
-              (⟨n, hn⟩ : Fin d) true)‖) := by
-      apply Finset.prod_le_prod
-      · intro q _
-        exact sq_nonneg _
-      · intro q _
-        exact cubeForm_oneCoordinate_sq_le' (prefixFamily f n q) ⟨n, hn⟩
-    _ = ∏ q : Fin n → Bool,
-          (‖cubeForm (prefixFamily f (n + 1) (Fin.snoc q false))‖ *
-            ‖cubeForm (prefixFamily f (n + 1) (Fin.snoc q true))‖) := by
-      apply Finset.prod_congr rfl
-      intro q _
-      rw [duplicate_prefixFamily, duplicate_prefixFamily]
-    _ = (∏ q : Fin n → Bool,
-          ‖cubeForm (prefixFamily f (n + 1) (Fin.snoc q false))‖) *
-        ∏ q : Fin n → Bool,
-          ‖cubeForm (prefixFamily f (n + 1) (Fin.snoc q true))‖ := by
-      rw [Finset.prod_mul_distrib]
-    _ = ∏ r : Fin (n + 1) → Bool,
-          ‖cubeForm (prefixFamily f (n + 1) r)‖ := by
-      let T : (Fin (n + 1) → Bool) → Real := fun r =>
-        ‖cubeForm (prefixFamily f (n + 1) r)‖
-      symm
-      calc
-        (∏ r : Fin (n + 1) → Bool, T r) =
-            ∏ p : Bool × (Fin n → Bool), T (Fin.snoc p.2 p.1) := by
-          exact Fintype.prod_equiv
-            (Fin.snocEquiv (fun _ : Fin (n + 1) => Bool)).symm
-            T (fun p => T (Fin.snoc p.2 p.1)) (fun r =>
-              congrArg T
-                ((Fin.snocEquiv (fun _ : Fin (n + 1) => Bool)).apply_symm_apply r).symm)
-        _ = (∏ q : Fin n → Bool, T (Fin.snoc q true)) *
-            ∏ q : Fin n → Bool, T (Fin.snoc q false) := by
-          rw [Fintype.prod_prod_type, Fintype.prod_bool]
-        _ = (∏ q : Fin n → Bool, T (Fin.snoc q false)) *
-            ∏ q : Fin n → Bool, T (Fin.snoc q true) := mul_comm _ _
+  -- split the `(n + 1)`-prefixes by their last face choice, then use one CS step per prefix
+  rw [prefixProduct, prefixProduct, ← (Fin.snocEquiv fun _ => Bool).prod_comp,
+    Fintype.prod_prod_type, Fintype.prod_bool, ← prod_mul_distrib, ← prod_pow]
+  refine prod_le_prod (fun q _ => sq_nonneg _) fun q _ => ?_
+  simp only [Fin.snocEquiv, Equiv.coe_fn_mk, ← duplicate_prefixFamily hn]
+  exact (cubeForm_oneCoordinate_sq_le' _ _).trans_eq (mul_comm _ _)
 
 private lemma prefixProduct_power_le {N d n : Nat} [NeZero N]
     (f : (Fin d → Bool) → ZMod N → Complex) (hn : n ≤ d) :

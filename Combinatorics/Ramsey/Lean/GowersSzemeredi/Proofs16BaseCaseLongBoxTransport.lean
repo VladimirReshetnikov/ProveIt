@@ -118,10 +118,7 @@ lemma boxOneIndex_freiman {N : Nat} [NeZero N]
   let f : Int → ZMod N := fun z =>
     (P.axis 0).start + (z : ZMod N) * (P.axis 0).step
   have hpoint (z : Int) :
-      (pointOneEquiv N).symm (f z) = boxOneIntPoint P z := by
-    funext i
-    fin_cases i
-    rfl
+      (pointOneEquiv N).symm (f z) = boxOneIntPoint P z := by abel
   have hf : IsAddFreimanHom 8 (boxOneIndexDomain P B : Set Int)
       (pointOneDomain B : Set (ZMod N)) f := by
     refine ⟨?_, ?_⟩
@@ -147,10 +144,7 @@ lemma boxOneIndex_freiman {N : Nat} [NeZero N]
       have hcast : ((s.sum : Int) : ZMod N) = (t.sum : ZMod N) := by rw [hsum]
       rw [hsum_f s, hsum_f t, hsc, htc, hcast]
   have hcomp := hphi.comp hf
-  have hfun : pointOneMap phi ∘ f = boxOneIndexMap P phi := by
-    funext z
-    change phi ((pointOneEquiv N).symm (f z)) = phi (boxOneIntPoint P z)
-    exact congrArg phi (hpoint z)
+  have hfun : pointOneMap phi ∘ f = boxOneIndexMap P phi := by abel
   rw [hfun] at hcomp
   rw [FreimanHom]
   exact hcomp
@@ -350,9 +344,7 @@ lemma indexCellAffine_value {N : Nat} [Fact N.Prime]
           ((S.start + ((i : Nat) * S.step : Nat) : Int) : ZMod N) *
             (P.axis 0).step -
         ((P.axis 0).start + (S.start : ZMod N) * (P.axis 0).step) =
-      (i : ZMod N) * ((S.step : ZMod N) * (P.axis 0).step) := by
-    push_cast
-    ring
+      (i : ZMod N) * ((S.step : ZMod N) * (P.axis 0).step) := by push_cast; ring
   rw [hcoord]
   change a * d⁻¹ * ((i : ZMod N) * d) + b = a * (i : Nat) + b
   calc

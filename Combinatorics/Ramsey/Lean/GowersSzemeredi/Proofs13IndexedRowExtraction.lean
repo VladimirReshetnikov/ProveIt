@@ -20,23 +20,16 @@ theorem lemma_13_7_with_step_span {N : Nat} [Fact N.Prime]
         t * (G.S.length - 1) < F.R.length := by
   have hR := stage136_progression_nonempty S D E F hF
   have hRcard : F.R.carrier.card = F.R.length := hF.2.2.1
-  have hRlen : 0 < F.R.length := by simpa only [hRcard] using hR.card_pos
   have hY := hF.2.2.2.2.1
   obtain ⟨y, hy₁, hy₂⟩ := stage136_exists_base_row S D E F hF
-  have hdense : (2 : Real) ^ (-(43 : Int)) * S.alpha ^ 224 * F.R.length ≤
-      (F.R.carrier.filter fun x ↦ (x, y) ∈ S.A).card := by
-    have h := stage137_base_row_density S.A F.R.carrier (criticalHeights S D E)
-      F.Y y hI (fun h hh ↦ (hY h hh).1)
-      (δ := (2 : Real) ^ (-(43 : Int)) * S.alpha ^ 224)
-      (by simpa only [hRcard] using hy₁)
-    simpa only [hRcard] using h
   let delta : Real := (2 : Real) ^ (-(43 : Int)) * S.alpha ^ 224
-  let A := F.R.carrier.filter fun x ↦ (x, y) ∈ S.A
-  have hα := S.alpha_pos
-  have hδ : 0 < delta := mul_pos (zpow_pos (by norm_num) _) (pow_pos hα _)
+  have hdense : delta * F.R.length ≤ (F.R.carrier.filter fun x ↦ (x, y) ∈ S.A).card := by
+    simpa only [hRcard] using stage137_base_row_density S.A F.R.carrier (criticalHeights S D E)
+      F.Y y hI (fun h hh ↦ (hY h hh).1) (δ := delta) (by simpa only [hRcard] using hy₁)
   obtain ⟨q, P, hP, hcell, t, ht, hspan⟩ := corollary_7_11_universal_modular_with_step_span
-    N F.R A delta hF.2.2.1 hRlen hδ (Finset.filter_subset _ _) hdense
-    (by simpa only [delta, stage137_partition_exponent] using hlarge)
+    N F.R _ delta hF.2.2.1 (by simpa only [hRcard] using hR.card_pos)
+    (mul_pos (zpow_pos (by norm_num) _) (pow_pos S.alpha_pos _)) (Finset.filter_subset _ _)
+    hdense (by simpa only [delta, stage137_partition_exponent] using hlarge)
   obtain ⟨i, hi₁, hi₂⟩ := exists_stage137_partition_cell_two_bounds
     F.R.carrier (criticalHeights S D E) (fun i ↦ (P i).carrier) F.Y y hR hP
     (b₁ := (2 : Real) ^ (-(43 : Int)) * S.alpha ^ 224 * (criticalHeights S D E).card)
@@ -44,24 +37,22 @@ theorem lemma_13_7_with_step_span {N : Nat} [Fact N.Prime]
     (by simpa only [hRcard, mul_assoc, mul_left_comm, mul_comm] using hy₁)
     (by simpa only [hRcard] using hy₂)
   obtain ⟨hstep, hproper, hlength, hlinear⟩ := hcell i
-  have hbase : LinearOn ((P i).carrier.filter fun x ↦ (x, y) ∈ S.A)
-      (fun x ↦ S.phi (x, y)) := by
-    obtain ⟨a, b, hab⟩ := hlinear (fun x ↦ S.phi (x, y))
-      (section13_base_row_freiman S F.R.carrier y)
-    refine ⟨a, b, fun x hx => ?_⟩
-    obtain ⟨hxP, hxA⟩ := Finset.mem_filter.mp hx
-    exact hab x (Finset.mem_filter.mpr
-      ⟨hxP, Finset.mem_filter.mpr ⟨hP.cell_subset i hxP, hxA⟩⟩)
+  -- the base row is affine on the selected cell
+  obtain ⟨a, b, hab⟩ := hlinear _ (section13_base_row_freiman S F.R.carrier y)
+  have hbase : LinearOn ((P i).carrier.filter fun x ↦ (x, y) ∈ S.A) (fun x ↦ S.phi (x, y)) :=
+    ⟨a, b, fun x hx => hab x (by
+      simp only [Finset.mem_filter] at hx ⊢
+      exact ⟨hx.1, hP.cell_subset i hx.1, hx.2⟩)⟩
   have hcard : (P i).carrier.card = (P i).length := hproper
   let B := stage137UpperEndpoints (P i).carrier (criticalHeights S D E) F.Y y
-  refine ⟨⟨y, P i, B⟩, ⟨?_, ?_⟩, t, ht, (hspan i).1, (hspan i).2⟩
-  · refine ⟨hstep, hproper, hP.cell_subset i, ?_, Finset.filter_subset _ _, ?_, ?_, ?_⟩
-    · simpa only [delta, stage137_partition_exponent] using hlength
-    · simpa only [hcard, mul_assoc, mul_left_comm, mul_comm] using hi₁
-    · simpa only [hcard] using hi₂
-    · exact stage137UpperEndpoints_rows_linear S.A S.phi F.R.carrier (P i).carrier
-        (criticalHeights S D E) F.Y y (hP.cell_subset i)
-        (fun h hh ↦ (hY h hh).1) hbase (fun h hh ↦ (hY h hh).2.2)
+  refine ⟨⟨y, P i, B⟩, ⟨⟨hstep, hproper, hP.cell_subset i, ?_, Finset.filter_subset _ _, ?_, ?_,
+    ?_⟩, ?_⟩, t, ht, (hspan i).1, (hspan i).2⟩
+  · simpa only [delta, stage137_partition_exponent] using hlength
+  · simpa only [hcard, mul_assoc, mul_left_comm, mul_comm] using hi₁
+  · simpa only [hcard] using hi₂
+  · exact stage137UpperEndpoints_rows_linear S.A S.phi F.R.carrier (P i).carrier
+      (criticalHeights S D E) F.Y y (hP.cell_subset i) (fun h hh ↦ (hY h hh).1) hbase
+      (fun h hh ↦ (hY h hh).2.2)
   · exact stage137UpperEndpoints_subset_domain S.A (P i).carrier
       (criticalHeights S D E) F.Y y (fun h hh ↦ (hY h hh).1)
 

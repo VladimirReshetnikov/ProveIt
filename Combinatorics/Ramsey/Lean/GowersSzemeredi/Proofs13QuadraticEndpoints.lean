@@ -66,45 +66,27 @@ theorem stage135_full_cell_small_affine_of_pairwise {N : Nat} [NeZero N]
     (centeredAbs ((a * h + b) * Q.step) : Real) ≤ 4 * s := by
   obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hh
   have hi := i.isLt
-  have hmem (j : Nat) (hj : j < Q.length) : Q.start + (j : ZMod N) * Q.step ∈ Q.carrier :=
-    Finset.mem_image.mpr ⟨⟨j, hj⟩, Finset.mem_univ _, rfl⟩
-  by_cases hi0 : i.val = 0
-  · have h0 := hmem 0 (by omega)
-    have h1 := hmem 1 (by omega)
-    have h2 := hmem 2 (by omega)
-    simp only [hi0, Nat.cast_zero, zero_mul, add_zero]
-    apply stage135_forward_small_affine_of_pairwise hprime hodd Q.carrier a b Q.start Q.step hpair
-    · simpa using h0
-    · simpa using h1
-    · simpa using h2
-  · by_cases hlast : i.val + 1 = Q.length
-    · have hb1 : Q.start + (i.val : ZMod N) * Q.step + -Q.step ∈ Q.carrier := by
-        convert hmem (i.val - 1) (by omega) using 1
-        rw [Nat.cast_sub (by omega : 1 ≤ i.val)]
-        push_cast
-        ring
-      have hb2 : Q.start + (i.val : ZMod N) * Q.step + 2 * -Q.step ∈ Q.carrier := by
-        convert hmem (i.val - 2) (by omega) using 1
-        rw [Nat.cast_sub (by omega : 2 ≤ i.val)]
-        push_cast
-        ring
-      have hb := stage135_forward_small_affine_of_pairwise hprime hodd Q.carrier a b
-        (Q.start + (i.val : ZMod N) * Q.step) (-Q.step) hpair (hmem i.val hi) hb1 hb2
-      simpa only [mul_neg, centeredAbs_neg] using hb
-    · have hInt : Q.start + (i.val : ZMod N) * Q.step ∈ Q.interior.carrier := by
-        apply Finset.mem_image.mpr
-        refine ⟨⟨i.val - 1, by dsimp [ModAP.interior]; omega⟩, Finset.mem_univ _, ?_⟩
-        dsimp [ModAP.interior]
-        rw [Nat.cast_sub (by omega : 1 ≤ i.val)]
-        push_cast
-        ring
-      obtain ⟨_, hp, hm⟩ := Q.interior_neighbors hInt
-      have hid := stage135Quadratic_symmetric_difference hprime hodd
-        (modInterval N 0 N) a b (Q.start + (i.val : ZMod N) * Q.step) Q.step
-      simp only [stage135Quadratic, stage135ModPoint, modInterval, mul_one, zero_add] at hid
-      change stage135AmbientQuadratic a b _ - stage135AmbientQuadratic a b _ = _ at hid
-      rw [← hid]
-      exact (hpair _ hp _ hm).trans (by linarith)
+  have hmem (j : Nat) (hj : j < Q.length) {x : ZMod N}
+      (hx : Q.start + (j : ZMod N) * Q.step = x) : x ∈ Q.carrier :=
+    Finset.mem_image.mpr ⟨⟨j, hj⟩, Finset.mem_univ _, hx⟩
+  have hfwd (d : ZMod N) := stage135_forward_small_affine_of_pairwise hprime hodd Q.carrier a b
+    (Q.start + (i.val : ZMod N) * Q.step) d hpair (hmem i hi rfl)
+  -- forward differences, then backward differences, then the middle of a three-term cell
+  by_cases hf : i.val + 2 < Q.length
+  · exact hfwd _ (hmem (i.val + 1) (by omega) (by push_cast; ring))
+      (hmem (i.val + 2) (by omega) (by push_cast; ring))
+  by_cases hb : 2 ≤ i.val
+  · simpa only [mul_neg, centeredAbs_neg] using hfwd (-Q.step)
+      (hmem (i.val - 1) (by omega) (by rw [Nat.cast_sub (by omega)]; push_cast; ring))
+      (hmem (i.val - 2) (by omega) (by rw [Nat.cast_sub hb]; push_cast; ring))
+  have hid := stage135Quadratic_symmetric_difference hprime hodd
+    (modInterval N 0 N) a b (Q.start + (i.val : ZMod N) * Q.step) Q.step
+  simp only [stage135Quadratic, stage135ModPoint, modInterval, mul_one, zero_add] at hid
+  change stage135AmbientQuadratic a b _ - stage135AmbientQuadratic a b _ = _ at hid
+  rw [← hid]
+  refine (hpair _ (hmem (i.val + 1) (by omega) (by push_cast; ring)) _
+    (hmem (i.val - 1) (by omega) (by rw [Nat.cast_sub (by omega)]; push_cast; ring))).trans ?_
+  linarith
 
  theorem stage135_forward_small_affine {N : Nat} [NeZero N]
     (hprime : N.Prime) (hodd : N != 2) (A : Finset (ZMod N)) (a b h d : ZMod N)

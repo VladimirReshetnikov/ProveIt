@@ -147,96 +147,40 @@ private lemma higher_condition_i_iff_ii {N d : Nat} [NeZero N]
   unfold UniformOfDegree higherUniformConditionii
   rw [hreal]
 
+/-- Local energies `0 ≤ e x ≤ D` have total at most `B * D` exactly when they are bounded by
+`alpha x * D` for weights `alpha x ∈ [0, 1]` of total at most `B`. -/
+private lemma sum_le_iff_exists_weights {X : Type*} [Fintype X] (e : X → Real) {B D : Real}
+    (hD : 0 < D) (he : ∀ x, 0 ≤ e x ∧ e x ≤ D) :
+    ∑ x, e x ≤ B * D ↔ ∃ alpha : X → Real, (∀ x, 0 ≤ alpha x ∧ alpha x ≤ 1) ∧
+      ∑ x, alpha x ≤ B ∧ ∀ x, e x ≤ alpha x * D := by
+  refine ⟨fun h => ⟨fun x => e x / D, fun x => ⟨div_nonneg (he x).1 hD.le,
+    (div_le_one hD).2 (he x).2⟩, ?_, fun x => (div_mul_cancel₀ _ hD.ne').ge⟩, ?_⟩
+  · rwa [← sum_div, div_le_iff₀ hD]
+  · rintro ⟨alpha, -, hsum, hle⟩
+    calc ∑ x, e x ≤ ∑ x, alpha x * D := sum_le_sum fun x _ => hle x
+      _ ≤ B * D := by rw [← sum_mul]; exact mul_le_mul_of_nonneg_right hsum hD.le
+
 private lemma higher_condition_i_iff_iii_succ {N n : Nat} [NeZero N]
     (g : ZMod N → Complex) (hg : DiscValued g) (c : Real) :
     UniformOfDegree g c (n + 1) ↔ higherUniformConditioniii g c (n + 1) := by
-  let e : Point N n → Real := fun a =>
-    ∑ b : Point N 1,
-      ‖∑ s : ZMod N, cubeDifference (cubeDifference g a) b s‖ ^ 2
-  have henergy : ∑ a : Point N n, e a =
-      ∑ b : Point N (n + 1), ‖∑ s : ZMod N, cubeDifference g b s‖ ^ 2 :=
-    sum_localDegreeOneEnergy_eq_uniformEnergy g
-  have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  constructor
-  · intro hUniform
-    let alpha : Point N n → Real := fun a => e a / (N : Real) ^ 3
-    refine ⟨alpha, ?_, ?_, ?_⟩
-    · intro a
-      have he_nonneg : 0 ≤ e a := Finset.sum_nonneg fun b _ => sq_nonneg _
-      have hlocal := discValued_uniform_one (d := 1)
-        (cubeDifference_discValued hg a)
-      change e a ≤ 1 * (N : Real) ^ 3 at hlocal
-      exact ⟨div_nonneg he_nonneg (pow_nonneg hN.le _),
-        (div_le_one (pow_pos hN 3)).mpr (by simpa using hlocal)⟩
-    · change (∑ a : Point N n, alpha a) ≤ c * (N : Real) ^ n
-      calc
-        ∑ a : Point N n, alpha a =
-            (∑ a : Point N n, e a) / (N : Real) ^ 3 := by
-          simp only [alpha, sum_div]
-        _ = (∑ b : Point N (n + 1),
-              ‖∑ s : ZMod N, cubeDifference g b s‖ ^ 2) /
-                (N : Real) ^ 3 := by rw [henergy]
-        _ ≤ (c * (N : Real) ^ (n + 3)) / (N : Real) ^ 3 :=
-          div_le_div_of_nonneg_right hUniform (pow_nonneg hN.le _)
-        _ = c * (N : Real) ^ n := by
-          rw [pow_add]
-          field_simp
-    · intro a
-      unfold UniformOfDegree
-      change e a ≤ alpha a * (N : Real) ^ 3
-      simp only [alpha]
-      rw [div_mul_cancel₀]
-      exact pow_ne_zero _ hN.ne'
-  · rintro ⟨alpha, _halpha, hsum, hlocal⟩
-    unfold UniformOfDegree at hlocal ⊢
-    rw [← henergy]
-    calc
-      ∑ a : Point N n, e a ≤
-          ∑ a : Point N n, alpha a * (N : Real) ^ 3 := by
-        apply Finset.sum_le_sum
-        intro a _
-        exact hlocal a
-      _ = (∑ a : Point N n, alpha a) * (N : Real) ^ 3 := by
-        rw [sum_mul]
-      _ ≤ (c * (N : Real) ^ n) * (N : Real) ^ 3 :=
-        mul_le_mul_of_nonneg_right hsum (pow_nonneg hN.le _)
-      _ = c * (N : Real) ^ (n + 3) := by rw [pow_add]; ring
+  have hN := NeZero.pos N
+  -- split the energy over the first `n` differences; each local energy is at most `N ^ 3`
+  rw [UniformOfDegree, ← sum_localDegreeOneEnergy_eq_uniformEnergy, higherUniformConditioniii,
+    Nat.add_sub_cancel, show c * (N : Real) ^ (n + 1 + 2) = c * N ^ n * N ^ 3 by ring]
+  exact sum_le_iff_exists_weights _ (by positivity) fun a =>
+    ⟨sum_nonneg fun _ _ => sq_nonneg _, by
+      simpa [UniformOfDegree] using
+        discValued_uniform_one (d := 1) (cubeDifference_discValued hg a)⟩
 
 private lemma higher_condition_i_iff_v_succ {N n : Nat} [NeZero N]
     (g : ZMod N → Complex) (c : Real) :
     UniformOfDegree g c (n + 1) ↔ higherUniformConditionv g c (n + 1) := by
-  let U := ∑ b : Point N (n + 1),
-    ‖∑ s : ZMod N, cubeDifference g b s‖ ^ 2
-  let F := ∑ a : Point N n, ∑ r : ZMod N,
-    ‖fourier (cubeDifference g a) r‖ ^ 4
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hmoment : F = (N : Real) * U := by
-    calc
-      F = ∑ a : Point N n, (N : Real) *
-          ∑ b : Point N 1,
-            ‖∑ s : ZMod N, cubeDifference (cubeDifference g a) b s‖ ^ 2 := by
-        apply Finset.sum_congr rfl
-        intro a _
-        exact fourthMoment_eq_degreeOneEnergy _
-      _ = (N : Real) * ∑ a : Point N n, ∑ b : Point N 1,
-          ‖∑ s : ZMod N, cubeDifference (cubeDifference g a) b s‖ ^ 2 := by
-        rw [mul_sum]
-      _ = (N : Real) * U := by
-        rw [sum_localDegreeOneEnergy_eq_uniformEnergy]
-  change U ≤ c * (N : Real) ^ (n + 3) ↔ F ≤ c * (N : Real) ^ (n + 4)
-  constructor
-  · intro h
-    calc
-      F = (N : Real) * U := hmoment
-      _ ≤ (N : Real) * (c * (N : Real) ^ (n + 3)) :=
-        mul_le_mul_of_nonneg_left h hN.le
-      _ = c * (N : Real) ^ (n + 4) := by ring
-  · intro h
-    refine le_of_mul_le_mul_left ?_ hN
-    calc
-      (N : Real) * U = F := hmoment.symm
-      _ ≤ c * (N : Real) ^ (n + 4) := h
-      _ = (N : Real) * (c * (N : Real) ^ (n + 3)) := by ring
+  -- the fourth moment is `N` times the uniformity energy
+  rw [UniformOfDegree, higherUniformConditionv, Nat.add_sub_cancel,
+    show c * (N : Real) ^ (n + 1 + 3) = N * (c * N ^ (n + 1 + 2)) by ring]
+  simp_rw [fourthMoment_eq_degreeOneEnergy, ← mul_sum, sum_localDegreeOneEnergy_eq_uniformEnergy]
+  exact (mul_le_mul_iff_right₀ hN).symm
 
 private lemma sum_differenceUniformEnergy_eq_uniformEnergy {N n : Nat} [NeZero N]
     (g : ZMod N → Complex) :
@@ -271,166 +215,63 @@ private lemma exists_bounded_extension_sum {N : Nat} [NeZero N]
       (∀ r, 0 ≤ alpha r ∧ alpha r ≤ 1) ∧
       (∑ r, alpha r) = c * (N : Real) ∧
       ∀ r, beta r ≤ alpha r := by
-  let S := ∑ r, beta r
-  have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hSN : S ≤ (N : Real) := by
-    calc
-      S ≤ ∑ _r : ZMod N, (1 : Real) :=
-        Finset.sum_le_sum fun r _ => (hbeta r).2
-      _ = (N : Real) := by simp [ZMod.card]
-  by_cases heq : S = (N : Real)
-  · refine ⟨beta, hbeta, ?_, fun r => le_rfl⟩
-    apply le_antisymm
-    · exact hsum
-    · calc
-        c * (N : Real) ≤ 1 * (N : Real) :=
-          mul_le_mul_of_nonneg_right hc1 hN.le
-        _ = S := by rw [heq]; ring
-  · have hSlt : S < (N : Real) := lt_of_le_of_ne hSN heq
-    have hden : 0 < (N : Real) - S := sub_pos.mpr hSlt
-    let t := (c * (N : Real) - S) / ((N : Real) - S)
-    have ht0 : 0 ≤ t := div_nonneg (sub_nonneg.mpr hsum) hden.le
-    have ht1 : t ≤ 1 := by
-      apply (div_le_one hden).mpr
-      nlinarith [mul_le_mul_of_nonneg_right hc1 hN.le]
-    let alpha : ZMod N → Real := fun r => beta r + t * (1 - beta r)
-    refine ⟨alpha, ?_, ?_, ?_⟩
-    · intro r
-      have hgap : 0 ≤ 1 - beta r := sub_nonneg.mpr (hbeta r).2
-      have hinc : 0 ≤ t * (1 - beta r) := mul_nonneg ht0 hgap
-      have hremain : 0 ≤ (1 - t) * (1 - beta r) :=
-        mul_nonneg (sub_nonneg.mpr ht1) hgap
-      constructor
-      · exact add_nonneg (hbeta r).1 hinc
-      · dsimp [alpha]
-        nlinarith
-    · calc
-        ∑ r, alpha r = S + t * ((N : Real) - S) := by
-          simp only [alpha, sum_add_distrib]
-          rw [← mul_sum]
-          simp only [sum_sub_distrib, sum_const, card_univ, ZMod.card,
-            nsmul_eq_mul]
-          ring
-        _ = c * (N : Real) := by
-          dsimp [t]
-          field_simp [ne_of_gt hden]
-          ring
-    · intro r
-      dsimp [alpha]
-      exact le_add_of_nonneg_right
-        (mul_nonneg ht0 (sub_nonneg.mpr (hbeta r).2))
+  have hN1 : ∑ _r : ZMod N, (1 : Real) = N := by simp [ZMod.card]
+  have hSN : ∑ r, beta r ≤ N := (sum_le_sum fun r _ => (hbeta r).2).trans_eq hN1
+  have hcN : c * N ≤ N := mul_le_of_le_one_left (Nat.cast_nonneg N) hc1
+  have hgap : ∀ r, 0 ≤ 1 - beta r := fun r => sub_nonneg.2 (hbeta r).2
+  -- raise every weight by the same fraction `t` of its gap to `1` (`t = 0` if `∑ beta = N`)
+  let t := (c * N - ∑ r, beta r) / (N - ∑ r, beta r)
+  have ht0 : 0 ≤ t := div_nonneg (by linarith) (by linarith)
+  have ht1 : t ≤ 1 := div_le_one_of_le₀ (by linarith) (by linarith)
+  have htS : t * (N - ∑ r, beta r) = c * N - ∑ r, beta r :=
+    div_mul_cancel_of_imp fun h => by linarith
+  refine ⟨fun r => beta r + t * (1 - beta r), fun r => ⟨add_nonneg (hbeta r).1
+    (mul_nonneg ht0 (hgap r)), le_sub_iff_add_le'.1 (mul_le_of_le_one_left (hgap r) ht1)⟩, ?_,
+    fun r => le_add_of_nonneg_right (mul_nonneg ht0 (hgap r))⟩
+  rw [sum_add_distrib, ← mul_sum, sum_sub_distrib, hN1]
+  linear_combination htS
 
 private lemma higher_condition_i_iff_iv_succ {N n : Nat} [NeZero N]
     (g : ZMod N → Complex) (hg : DiscValued g) (c : Real)
     (hc0 : 0 ≤ c) (hc1 : c ≤ 1) :
     UniformOfDegree g c (n + 1) ↔ higherUniformConditioniv g c (n + 1) := by
-  let e : ZMod N → Real := fun r =>
-    ∑ a : Point N n,
-      ‖∑ s : ZMod N, cubeDifference (difference g r) a s‖ ^ 2
-  let U := ∑ b : Point N (n + 1),
-    ‖∑ s : ZMod N, cubeDifference g b s‖ ^ 2
-  have henergy : ∑ r, e r = U :=
-    sum_differenceUniformEnergy_eq_uniformEnergy g
-  have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  constructor
-  · intro hUniform
-    let beta : ZMod N → Real := fun r => e r / (N : Real) ^ (n + 2)
-    have hbeta : ∀ r, 0 ≤ beta r ∧ beta r ≤ 1 := by
-      intro r
-      have he0 : 0 ≤ e r := Finset.sum_nonneg fun a _ => sq_nonneg _
-      have hone := discValued_uniform_one (d := n) (difference_discValued hg r)
-      change e r ≤ 1 * (N : Real) ^ (n + 2) at hone
-      exact ⟨div_nonneg he0 (pow_nonneg hN.le _),
-        (div_le_one (pow_pos hN _)).mpr (by simpa using hone)⟩
-    have hbetaSum : (∑ r, beta r) ≤ c * (N : Real) := by
-      calc
-        ∑ r, beta r = (∑ r, e r) / (N : Real) ^ (n + 2) := by
-          simp only [beta, sum_div]
-        _ = U / (N : Real) ^ (n + 2) := by rw [henergy]
-        _ ≤ (c * (N : Real) ^ (n + 3)) / (N : Real) ^ (n + 2) :=
-          div_le_div_of_nonneg_right hUniform (pow_nonneg hN.le _)
-        _ = c * (N : Real) := by
-          rw [show n + 3 = (n + 2) + 1 by omega, pow_add]
-          field_simp
-    obtain ⟨alpha, halpha, halphaSum, hbetaAlpha⟩ :=
-      exists_bounded_extension_sum beta hbeta c hc0 hc1 hbetaSum
-    refine ⟨alpha, halpha, halphaSum, ?_⟩
-    intro r
-    apply uniformOfDegree_mono_parameter (hbetaAlpha r)
-    unfold UniformOfDegree
-    change e r ≤ beta r * (N : Real) ^ (n + 2)
-    simp only [beta]
-    rw [div_mul_cancel₀]
-    exact pow_ne_zero _ hN.ne'
-  · rintro ⟨alpha, _halpha, halphaSum, hlocal⟩
-    unfold UniformOfDegree at hlocal ⊢
-    change U ≤ c * (N : Real) ^ (n + 3)
-    rw [← henergy]
-    calc
-      ∑ r, e r ≤ ∑ r, alpha r * (N : Real) ^ (n + 2) := by
-        apply Finset.sum_le_sum
-        intro r _
-        exact hlocal r
-      _ = (∑ r, alpha r) * (N : Real) ^ (n + 2) := by rw [sum_mul]
-      _ = (c * (N : Real)) * (N : Real) ^ (n + 2) := by rw [halphaSum]
-      _ = c * (N : Real) ^ (n + 3) := by ring
+  have hD : (0 : Real) < (N : Real) ^ (n + 2) := by have := NeZero.pos N; positivity
+  -- split the energy over the first difference; each local energy is at most `N ^ (n + 2)`
+  rw [UniformOfDegree, ← sum_differenceUniformEnergy_eq_uniformEnergy, higherUniformConditioniv,
+    Nat.add_sub_cancel, show c * (N : Real) ^ (n + 1 + 2) = c * N * N ^ (n + 2) by ring,
+    sum_le_iff_exists_weights _ hD]
+  · -- weights of total at most `c * N` extend to weights of total exactly `c * N`
+    refine ⟨fun ⟨beta, hbeta, hsum, hle⟩ => ?_, fun ⟨alpha, halpha, hsum, hle⟩ =>
+      ⟨alpha, halpha, hsum.le, hle⟩⟩
+    obtain ⟨alpha, halpha, hsum', hba⟩ := exists_bounded_extension_sum beta hbeta c hc0 hc1 hsum
+    exact ⟨alpha, halpha, hsum', fun r =>
+      (hle r).trans (mul_le_mul_of_nonneg_right (hba r) hD.le)⟩
+  · exact fun r => ⟨sum_nonneg fun _ _ => sq_nonneg _, by
+      simpa [UniformOfDegree] using
+        discValued_uniform_one (d := n) (difference_discValued hg r)⟩
 
 private lemma higher_condition_iii_imp_vi_succ {N n : Nat} [NeZero N]
     (g : ZMod N → Complex) (c1 c2 : Real) (hc2 : 0 ≤ c2)
     (hc : c1 ≤ c2 ^ 2) (hiii : higherUniformConditioniii g c1 (n + 1)) :
     higherUniformConditionvi g c2 (n + 1) := by
   classical
+  rw [higherUniformConditioniii, Nat.add_sub_cancel] at hiii
   obtain ⟨alpha, halpha, hsum, hlocal⟩ := hiii
-  unfold higherUniformConditionvi countWhere
-  simp only [Nat.add_sub_cancel]
-  rw [Finset.filter_congr_decidable]
-  set B := (Finset.univ : Finset (Point N n)).filter (fun a =>
-    ¬ UniformOfDegree (cubeDifference g a) c2 1) with _
-  change (B.card : Real) ≤ c2 * (N : Real) ^ n
-  by_cases hc20 : c2 = 0
-  · have hsum0 : (∑ a, alpha a) = 0 := by
-      apply le_antisymm
-      · calc
-          ∑ a, alpha a ≤ c1 * (N : Real) ^ n := hsum
-          _ ≤ 0 * (N : Real) ^ n :=
-            mul_le_mul_of_nonneg_right (by simpa [hc20] using hc) (by positivity)
-          _ = 0 := by ring
-      · exact Finset.sum_nonneg fun a _ => (halpha a).1
-    have halpha0 (a : Point N n) : alpha a = 0 := by
-      apply le_antisymm
-      · calc
-          alpha a ≤ ∑ x : Point N n, alpha x := by
-            simpa using (Finset.single_le_sum
-              (s := (Finset.univ : Finset (Point N n)))
-              (f := alpha) (fun x _ => (halpha x).1) (Finset.mem_univ a))
-          _ = 0 := hsum0
-      · exact (halpha a).1
-    have hB : B = ∅ := by
-      ext a
-      simp only [B, Finset.mem_filter, Finset.mem_univ, true_and, Finset.notMem_empty,
-        iff_false]
-      exact fun hnot => hnot (by simpa [hc20, halpha0 a] using hlocal a)
-    simp [hB, hc20]
-  · have hc2pos : 0 < c2 := lt_of_le_of_ne hc2 (Ne.symm hc20)
-    have hbad (a : Point N n) (ha : a ∈ B) : c2 ≤ alpha a := by
-      by_contra hnot
-      have hle : alpha a ≤ c2 := le_of_not_ge hnot
-      exact (Finset.mem_filter.mp ha).2
-        (uniformOfDegree_mono_parameter hle (hlocal a))
-    have hweighted : c2 * (B.card : Real) ≤ c1 * (N : Real) ^ n := by
-      calc
-        c2 * (B.card : Real) = ∑ _a ∈ B, c2 := by simp [mul_comm]
-        _ ≤ ∑ a ∈ B, alpha a := Finset.sum_le_sum hbad
-        _ ≤ ∑ a : Point N n, alpha a :=
-          Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _)
-            (fun a _ _ => (halpha a).1)
-        _ ≤ c1 * (N : Real) ^ n := hsum
-    refine le_of_mul_le_mul_left ?_ hc2pos
-    calc
-      c2 * (B.card : Real) ≤ c1 * (N : Real) ^ n := hweighted
-      _ ≤ c2 ^ 2 * (N : Real) ^ n :=
-        mul_le_mul_of_nonneg_right hc (by positivity)
-      _ = c2 * (c2 * (N : Real) ^ n) := by ring
+  rw [higherUniformConditionvi, Nat.add_sub_cancel, countWhere, Finset.filter_congr_decidable]
+  set B := (Finset.univ : Finset (Point N n)).filter
+    fun a => ¬UniformOfDegree (cubeDifference g a) c2 1
+  -- a bad `a` has weight `alpha a > c2`, so `c2 * |B| < ∑ alpha ≤ c2 ^ 2 * N ^ n` unless `B = ∅`
+  rcases B.eq_empty_or_nonempty with hB | hB
+  · rw [hB, Finset.card_empty, Nat.cast_zero]
+    positivity
+  have hbad : ∀ a ∈ B, c2 < alpha a := fun a ha => lt_of_not_ge fun h =>
+    (Finset.mem_filter.1 ha).2 (uniformOfDegree_mono_parameter h (hlocal a))
+  have h := (Finset.sum_lt_sum_of_nonempty hB hbad).trans_le
+    ((Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _)
+      fun a _ _ => (halpha a).1).trans hsum)
+  rw [sum_const, nsmul_eq_mul] at h
+  refine (lt_of_mul_lt_mul_left ?_ hc2).le
+  nlinarith [mul_le_mul_of_nonneg_right hc (pow_nonneg (Nat.cast_nonneg N) n)]
 
 private lemma higher_condition_vi_imp_iii_succ {N n : Nat} [NeZero N]
     (g : ZMod N → Complex) (hg : DiscValued g) (c1 c2 : Real)
@@ -438,52 +279,24 @@ private lemma higher_condition_vi_imp_iii_succ {N n : Nat} [NeZero N]
     (hvi : higherUniformConditionvi g c2 (n + 1)) :
     higherUniformConditioniii g c1 (n + 1) := by
   classical
-  unfold higherUniformConditionvi countWhere at hvi
-  simp only [Nat.add_sub_cancel] at hvi
-  rw [Finset.filter_congr_decidable] at hvi
-  set B := (Finset.univ : Finset (Point N n)).filter (fun a ↦
-    ¬ UniformOfDegree (cubeDifference g a) c2 1) with _
-  change (B.card : Real) ≤ c2 * (N : Real) ^ n at hvi
-  unfold higherUniformConditioniii
-  rw [show n + 1 - 1 = n by omega]
-  let alpha : Point N n → Real := fun a ↦
-    if UniformOfDegree (cubeDifference g a) c2 1 then c2 else 1
-  refine ⟨alpha, ?_, ?_, ?_⟩
-  · intro a
-    by_cases ha : UniformOfDegree (cubeDifference g a) c2 1
-    · simp [alpha, ha, hc20, hc21]
-    · simp [alpha, ha]
-  · have halphaBound (a : Point N n) :
-        alpha a ≤ c2 + if a ∈ B then 1 else 0 := by
-      by_cases ha : UniformOfDegree (cubeDifference g a) c2 1
-      · simp [alpha, ha, B]
-      · simp only [alpha, ha, if_false, B, Finset.mem_filter,
-          Finset.mem_univ, true_and, not_false_eq_true, if_true]
-        linarith
-    have hpointCard : Fintype.card (Point N n) = N ^ n := by
-      simp [Point, ZMod.card]
-    have hconst : ∑ _a : Point N n, c2 = c2 * (N : Real) ^ n := by
-      simp only [sum_const, card_univ, nsmul_eq_mul, hpointCard, Nat.cast_pow]
-      ring
-    have hindicator :
-        ∑ a : Point N n, (if a ∈ B then (1 : Real) else 0) =
-          (B.card : Real) := by norm_num
-    calc
-      ∑ a : Point N n, alpha a ≤
-          ∑ a : Point N n, (c2 + if a ∈ B then 1 else 0) :=
-        Finset.sum_le_sum fun a _ ↦ halphaBound a
-      _ = c2 * (N : Real) ^ n + (B.card : Real) := by
-        rw [sum_add_distrib, hconst, hindicator]
-      _ ≤ c2 * (N : Real) ^ n + c2 * (N : Real) ^ n :=
-        add_le_add le_rfl hvi
-      _ = 2 * c2 * (N : Real) ^ n := by ring
-      _ ≤ c1 * (N : Real) ^ n :=
-        mul_le_mul_of_nonneg_right hc (by positivity)
-  · intro a
-    by_cases ha : UniformOfDegree (cubeDifference g a) c2 1
-    · simp [alpha, ha]
-    · simpa [alpha, ha] using
-        (discValued_uniform_one (d := 1) (cubeDifference_discValued hg a))
+  rw [higherUniformConditionvi, Nat.add_sub_cancel, countWhere_eq_sum_ite] at hvi
+  push_cast at hvi
+  rw [higherUniformConditioniii, Nat.add_sub_cancel]
+  -- weight `c2` on the uniform `a` and `1` on the others
+  refine ⟨fun a => if UniformOfDegree (cubeDifference g a) c2 1 then c2 else 1, fun a => ?_, ?_,
+    fun a => ?_⟩
+  · beta_reduce
+    split_ifs <;> constructor <;> linarith
+  · have hcard : ∑ _a : Point N n, c2 = c2 * (N : Real) ^ n := by simp [ZMod.card, mul_comm]
+    calc ∑ a, (if UniformOfDegree (cubeDifference g a) c2 1 then c2 else 1)
+        ≤ ∑ a, (c2 + if ¬UniformOfDegree (cubeDifference g a) c2 1 then 1 else 0) :=
+          sum_le_sum fun a _ => by split_ifs <;> linarith
+      _ ≤ c1 * (N : Real) ^ n := by
+          rw [sum_add_distrib, hcard]
+          linarith [mul_le_mul_of_nonneg_right hc (pow_nonneg (Nat.cast_nonneg N) n)]
+  · beta_reduce
+    split_ifs with h
+    exacts [h, discValued_uniform_one (cubeDifference_discValued hg a)]
 
 private lemma higher_condition_vi_imp_vii_succ {N n : Nat} [NeZero N]
     (g : ZMod N → Complex) (hg : DiscValued g) (c2 c3 : Real)
@@ -491,38 +304,20 @@ private lemma higher_condition_vi_imp_vii_succ {N n : Nat} [NeZero N]
     (hroot : c2 ^ ((1 : Real) / 4) < c3)
     (hvi : higherUniformConditionvi g c2 (n + 1)) :
     higherUniformConditionvii g c3 (n + 1) := by
-  have hc2root : c2 ≤ c2 ^ ((1 : Real) / 4) := by
-    have h := Real.rpow_le_rpow_of_exponent_ge' hc20 hc21
-      (by norm_num : (0 : Real) ≤ 1 / 4) (by norm_num : (1 : Real) / 4 ≤ 1)
-    simpa only [Real.rpow_one] using h
-  have hc23 : c2 ≤ c3 := hc2root.trans hroot.le
-  let P : Point N n → Prop := fun a ↦
-    ∃ r : ZMod N, c3 * N ≤ ‖fourier (cubeDifference g a) r‖
-  let Q : Point N n → Prop := fun a ↦
-    ¬ UniformOfDegree (cubeDifference g a) c2 1
-  have hPQ : ∀ a, P a → Q a := by
-    intro a ha hUniform
-    obtain ⟨r, hr⟩ := ha
-    have hdisc := cubeDifference_discValued hg a
-    have hi : uniformCondition2i (cubeDifference g a) c2 :=
-      (degreeOne_uniform_iff_condition2i _ _).mp hUniform
-    rcases lemma_2_2_holds N (cubeDifference g a) hdisc c2
-        (c2 ^ ((1 : Real) / 4)) 0 with ⟨_, hi_iii, hiii_iv, _, _, _⟩
-    have hiv : uniformCondition2iv (cubeDifference g a)
-        (c2 ^ ((1 : Real) / 4)) := hiii_iv le_rfl (hi_iii.mp hi)
-    have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-    have hstrict : c2 ^ ((1 : Real) / 4) * (N : Real) < c3 * N :=
-      mul_lt_mul_of_pos_right hroot hN
-    exact (not_lt_of_ge hr) ((hiv r).trans_lt hstrict)
-  unfold higherUniformConditionvi at hvi
-  unfold higherUniformConditionvii
-  simp only [Nat.add_sub_cancel]
-  calc
-    (countWhere P : Real) ≤ (countWhere Q : Nat) := by
-      exact_mod_cast countWhere_mono hPQ
-    _ ≤ c2 * (N : Real) ^ n := hvi
-    _ ≤ c3 * (N : Real) ^ n :=
-      mul_le_mul_of_nonneg_right hc23 (by positivity)
+  have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
+  -- a degree-one `c2`-uniform difference has all Fourier coefficients at most `c2 ^ (1/4) * N`
+  -- (Lemma 2.2, (i) ⇒ (iii) ⇒ (iv)), so a coefficient `≥ c3 * N` makes it non-uniform
+  have hPQ : ∀ a : Point N n, (∃ r, c3 * N ≤ ‖fourier (cubeDifference g a) r‖) →
+      ¬UniformOfDegree (cubeDifference g a) c2 1 := by
+    rintro a ⟨r, hr⟩ hU
+    obtain ⟨-, hi_iii, hiii_iv, -⟩ :=
+      lemma_2_2_holds N _ (cubeDifference_discValued hg a) c2 (c2 ^ ((1 : Real) / 4)) 0
+    exact (hr.trans (hiii_iv le_rfl (hi_iii.1 ((degreeOne_uniform_iff_condition2i _ _).1 hU))
+      r)).not_gt (mul_lt_mul_of_pos_right hroot hN)
+  rw [higherUniformConditionvi, Nat.add_sub_cancel] at hvi
+  rw [higherUniformConditionvii, Nat.add_sub_cancel]
+  exact (Nat.cast_le.2 (countWhere_mono hPQ)).trans (hvi.trans (mul_le_mul_of_nonneg_right
+    ((Real.self_le_rpow_of_le_one hc20 hc21 (by norm_num)).trans hroot.le) (by positivity)))
 
 private lemma higher_condition_vii_imp_vi_succ {N n : Nat} [NeZero N]
     (g : ZMod N → Complex) (hg : DiscValued g) (c2 c3 : Real)
@@ -530,36 +325,20 @@ private lemma higher_condition_vii_imp_vi_succ {N n : Nat} [NeZero N]
     (hc32 : c3 ≤ c2)
     (hvii : higherUniformConditionvii g c3 (n + 1)) :
     higherUniformConditionvi g c2 (n + 1) := by
-  have hc3self : c3 ^ 2 ≤ c3 := by
-    nlinarith [mul_nonneg hc30 (sub_nonneg.mpr hc31)]
-  have hc3sq : c3 ^ 2 ≤ c2 := hc3self.trans hc32
-  let P : Point N n → Prop := fun a ↦
-    ¬ UniformOfDegree (cubeDifference g a) c2 1
-  let Q : Point N n → Prop := fun a ↦
-    ∃ r : ZMod N, c3 * N ≤ ‖fourier (cubeDifference g a) r‖
-  have hPQ : ∀ a, P a → Q a := by
-    intro a ha
+  -- Fourier coefficients all below `c3 * N` give degree-one `c2`-uniformity, as `c3 ^ 2 ≤ c2`
+  -- (Lemma 2.2, (iv) ⇒ (iii) ⇒ (i))
+  have hPQ : ∀ a : Point N n, ¬UniformOfDegree (cubeDifference g a) c2 1 →
+      ∃ r, c3 * N ≤ ‖fourier (cubeDifference g a) r‖ := fun a ha => by
     by_contra hnot
-    have hsmall : ∀ r : ZMod N,
-        ‖fourier (cubeDifference g a) r‖ < c3 * N := by
-      exact fun r => lt_of_not_ge (fun hr ↦ hnot ⟨r, hr⟩)
-    have hdisc := cubeDifference_discValued hg a
-    rcases lemma_2_2_holds N (cubeDifference g a) hdisc c2 c3 0 with
-      ⟨_, hi_iii, _, hiv_iii, _, _⟩
-    have hiv : uniformCondition2iv (cubeDifference g a) c3 :=
-      fun r ↦ (hsmall r).le
-    have hi : uniformCondition2i (cubeDifference g a) c2 :=
-      hi_iii.mpr (hiv_iii hc3sq hiv)
-    exact ha ((degreeOne_uniform_iff_condition2i _ _).mpr hi)
-  unfold higherUniformConditionvii at hvii
-  unfold higherUniformConditionvi
-  simp only [Nat.add_sub_cancel]
-  calc
-    (countWhere P : Real) ≤ (countWhere Q : Nat) := by
-      exact_mod_cast countWhere_mono hPQ
-    _ ≤ c3 * (N : Real) ^ n := hvii
-    _ ≤ c2 * (N : Real) ^ n :=
-      mul_le_mul_of_nonneg_right hc32 (by positivity)
+    simp only [not_exists, not_le] at hnot
+    obtain ⟨-, hi_iii, -, hiv_iii, -⟩ :=
+      lemma_2_2_holds N _ (cubeDifference_discValued hg a) c2 c3 0
+    exact ha ((degreeOne_uniform_iff_condition2i _ _).2 (hi_iii.2 (hiv_iii
+      (by nlinarith [mul_nonneg hc30 (sub_nonneg.2 hc31)]) fun r => (hnot r).le)))
+  rw [higherUniformConditionvii, Nat.add_sub_cancel] at hvii
+  rw [higherUniformConditionvi, Nat.add_sub_cancel]
+  exact (Nat.cast_le.2 (countWhere_mono hPQ)).trans
+    (hvii.trans (mul_le_mul_of_nonneg_right hc32 (by positivity)))
 
 /-- **Gowers, Lemma 3.1.** The seven higher-uniformity formulations are
 equivalent up to the quantitative parameter losses stated in the paper. -/

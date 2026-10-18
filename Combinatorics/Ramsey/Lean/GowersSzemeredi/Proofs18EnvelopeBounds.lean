@@ -180,9 +180,7 @@ theorem short_thr_le {X : Real} (hX : 2 ≤ X) {d : Nat} {e c T Tl : Real} {m a 
   have hP := positivePowerThreshold_one_le_double_exp he0.le hC (ex_of_pw heI)
   have hsum : X ^ (2 ^ max m j) + 1 + X ^ (2 ^ a) ≤ X ^ (2 ^ (M + 2)) := by
     have h := one_add_pw_add_pw_le hX (max m j) a
-    have hle : max (max m j) a + 2 ≤ M + 2 := by
-      have : max (max m j) a ≤ M := max_le (le_max_left _ _) ((le_max_left a t).trans (le_max_right _ _))
-      omega
+    have hle : max (max m j) a + 2 ≤ M + 2 := by omega
     refine le_trans (by linarith) (h.trans (pow_le_pow_right₀ (le_trans (by norm_num) hX)
       (Nat.pow_le_pow_right (by norm_num) hle)))
   unfold shortLocalizationThreshold

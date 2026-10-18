@@ -64,91 +64,36 @@ private lemma context_restrict_fibres {N : Nat} [NeZero N]
           (N : Real) ^ 2 ≤
         ∑ x : ZMod N, ((T x).card : Real) := by
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hN0 : (N : Real) ≠ 0 := hN.ne'
   let rho : ZMod N → Real := fun x ↦ (S x).card / (N : Real)
-  have hrho_nonneg (x : ZMod N) : 0 ≤ rho x := by
-    dsimp only [rho]
-    positivity
-  have hpiece : ∀ x, ∃ T : Finset (ZMod N),
-      T ⊆ S x ∧
-      (2 : Real) ^ (-(1882 : Real)) * a ^ 9312 *
-          rho x ^ 1165 * (N : Real) ≤ (T.card : Real) ∧
+  have hScard (x : ZMod N) : ((S x).card : Real) = rho x * N := (div_mul_cancel₀ _ hN.ne').symm
+  -- in each fibre: Proposition 6.1 at density `ρ a²`, then Corollary 7.6 with `γ = ρ a⁸`
+  have hpiece (x : ZMod N) : ∃ T : Finset (ZMod N), T ⊆ S x ∧
+      (2 : Real) ^ (-(1882 : Real)) * a ^ 9312 * rho x ^ 1165 * N ≤ T.card ∧
       FreimanHom 8 T (psi x) := by
-    intro x
-    by_cases hx0 : (S x).card = 0
-    · refine ⟨∅, Finset.empty_subset _, ?_, ?_⟩
-      · simp [rho, hx0]
-      · simp [FreimanHom]
-    · have hrho : 0 < rho x := by
-        dsimp only [rho]
-        exact div_pos (by exact_mod_cast Nat.pos_of_ne_zero hx0) hN
-      have hScard : ((S x).card : Real) = rho x * N := by
-        dsimp only [rho]
-        field_simp [hN0]
-      let tau : Real := rho x * a ^ 2
-      have htau : 0 < tau := mul_pos hrho (pow_pos ha 2)
-      have hsum :
-          tau * (N : Real) ^ 3 ≤
-            ∑ y ∈ S x, ‖fourier (difference (g x) y) (psi x y)‖ ^ 2 := by
-        calc
-          tau * (N : Real) ^ 3 = ∑ _y ∈ S x, (a * N) ^ 2 := by
-            rw [Finset.sum_const, nsmul_eq_mul, hScard]
-            ring
-          _ ≤ _ := Finset.sum_le_sum fun y hy ↦ pow_le_pow_left₀ (by positivity) (hlarge x y hy) 2
-      have hadd := proposition_6_1_holds N tau (g x) (S x) (psi x)
-        htau (hg x) hsum
-      let gamma : Real := rho x * a ^ 8
-      have hgamma : 0 < gamma := mul_pos hrho (pow_pos ha 8)
-      have hquad :
-          gamma * (rho x * N) ^ 3 ≤ phiAdditiveCount (S x) (psi x) := by
-        calc
-          gamma * (rho x * N) ^ 3 = tau ^ 4 * (N : Real) ^ 3 := by
-            dsimp only [gamma, tau]
-            ring
-          _ ≤ (phiAdditiveCount (S x) (psi x) : Real) := hadd
-      obtain ⟨T, hTsub, hTcard, hTfreiman⟩ :=
-        corollary_7_6_holds N (S x) (psi x) (rho x) gamma hprime hrho hgamma
-          hScard hquad
-      refine ⟨T, hTsub, ?_, hTfreiman⟩
-      calc
-        (2 : Real) ^ (-(1882 : Real)) * a ^ 9312 * rho x ^ 1165 *
-              (N : Real) =
-            (2 : Real) ^ (-(1882 : Real)) * gamma ^ 1164 * rho x *
-              (N : Real) := by
-          dsimp only [gamma]
+    rcases Nat.eq_zero_or_pos (S x).card with hx0 | hx0
+    · exact ⟨∅, Finset.empty_subset _, by simp [rho, hx0], by simp [FreimanHom]⟩
+    have hrho : 0 < rho x := div_pos (by exact_mod_cast hx0) hN
+    have hadd := proposition_6_1_holds N (rho x * a ^ 2) (g x) (S x) (psi x)
+      (mul_pos hrho (pow_pos ha 2)) (hg x) <| calc
+        rho x * a ^ 2 * (N : Real) ^ 3 = ∑ _y ∈ S x, (a * N) ^ 2 := by
+          rw [Finset.sum_const, nsmul_eq_mul, hScard]
           ring
-        _ ≤ (T.card : Real) := hTcard
+        _ ≤ _ := Finset.sum_le_sum fun y hy ↦ pow_le_pow_left₀ (by positivity) (hlarge x y hy) 2
+    obtain ⟨T, hTsub, hTcard, hTfreiman⟩ := corollary_7_6_holds N (S x) (psi x) (rho x)
+      (rho x * a ^ 8) hprime hrho (mul_pos hrho (pow_pos ha 8)) (hScard x) (by linarith)
+    exact ⟨T, hTsub, hTcard.trans_eq' (by ring), hTfreiman⟩
   choose T hTsub hTcard hTfreiman using hpiece
   refine ⟨T, hTsub, hTfreiman, ?_⟩
-  have hmean := pow_sum_div_card_le_sum_pow
-    (s := (Finset.univ : Finset (ZMod N))) (f := rho)
-    (fun x _ ↦ hrho_nonneg x) 1164
+  -- average the fibre bounds with the power-mean inequality
+  have hmean := pow_sum_div_card_le_sum_pow (s := Finset.univ) (f := rho)
+    (fun x _ ↦ div_nonneg (Nat.cast_nonneg _) hN.le) 1164
   simp only [Finset.card_univ, ZMod.card, Nat.reduceAdd] at hmean
-  have hpieces :
-      ∑ x : ZMod N,
-          (2 : Real) ^ (-(1882 : Real)) * a ^ 9312 * rho x ^ 1165 * N ≤
-        ∑ x : ZMod N, ((T x).card : Real) := Finset.sum_le_sum fun x _ ↦ hTcard x
-  calc
-    (2 : Real) ^ (-(1882 : Real)) * a ^ 9312 *
-          ((∑ x : ZMod N, (S x).card / (N : Real)) / (N : Real)) ^ 1165 *
-          (N : Real) ^ 2 =
-        ((2 : Real) ^ (-(1882 : Real)) * a ^ 9312 * N) *
-          ((∑ x : ZMod N, rho x) ^ 1165 / (N : Real) ^ 1164) := by
-      have hrhoSum :
-          (∑ x : ZMod N, (S x).card / (N : Real)) =
-            ∑ x : ZMod N, rho x := by rfl
-      rw [hrhoSum]
-      exact context_density_moment_identity
-        ((2 : Real) ^ (-(1882 : Real)) * a ^ 9312)
-        (∑ x : ZMod N, rho x) (N : Real) hN0
-    _ ≤ ((2 : Real) ^ (-(1882 : Real)) * a ^ 9312 * N) *
-          ∑ x : ZMod N, rho x ^ 1165 := by
-      exact mul_le_mul_of_nonneg_left hmean (by positivity)
-    _ = ∑ x : ZMod N,
-          (2 : Real) ^ (-(1882 : Real)) * a ^ 9312 * rho x ^ 1165 * N := by
+  calc _ = (2 : Real) ^ (-(1882 : Real)) * a ^ 9312 * N *
+        ((∑ x, rho x) ^ 1165 / (N : Real) ^ 1164) := context_density_moment_identity _ _ _ hN.ne'
+    _ ≤ (2 : Real) ^ (-(1882 : Real)) * a ^ 9312 * N * ∑ x, rho x ^ 1165 := by gcongr
+    _ ≤ _ := by
       rw [Finset.mul_sum]
-      exact Fintype.sum_congr _ _ fun x => by ring
-    _ ≤ ∑ x : ZMod N, ((T x).card : Real) := hpieces
+      exact Finset.sum_le_sum fun x _ => (hTcard x).trans_eq' (by ring)
 
 private noncomputable def contextVerticalJoin {N : Nat} [NeZero N]
     (T : ZMod N → Finset (ZMod N)) : Finset (Pair N) :=
@@ -194,32 +139,15 @@ private lemma context_vertical_restriction {N : Nat} [NeZero N]
         B'.card ∧
       ∀ x, FreimanHom 8 (verticalSection B' x) (fun y ↦ phi (x, y)) := by
   obtain ⟨T, hTsub, hTfreiman, hTcard⟩ := context_restrict_fibres hprime a ha
-    (fun x ↦ verticalSection B x) (fun x ↦ difference f x)
-    (fun x y ↦ phi (x, y)) (fun x ↦ difference_discValued hf x) (by
-      intro x y hy
-      have hxy : (x, y) ∈ B := by simpa [verticalSection] using hy
+    (verticalSection B) (difference f) (fun x y ↦ phi (x, y)) (difference_discValued hf)
+    fun x y hy => by
       simpa only [secondDifferenceFourier, secondDifference] using
-        hlarge (x, y) hxy)
-  let B' := contextVerticalJoin T
-  refine ⟨B', ?_, ?_, ?_⟩
-  · intro z hz
-    have hzT : z.2 ∈ T z.1 := by simpa [B', contextVerticalJoin] using hz
-    simpa [verticalSection] using hTsub z.1 hzT
-  · have hsumReal :
-        ∑ x : ZMod N, ((verticalSection B x).card : Real) = B.card := by
-      exact_mod_cast context_sum_vertical_card B
-    have hcardReal : (B'.card : Real) =
-        ∑ x : ZMod N, ((T x).card : Real) := by
-      exact_mod_cast context_vertical_join_card T
-    have hdensity : (B.card : Real) / (N : Real) ^ 2 =
-        (∑ x : ZMod N, (verticalSection B x).card / (N : Real)) /
-          (N : Real) := by
-      rw [← Finset.sum_div, hsumReal]
-      field_simp [show (N : Real) ≠ 0 by exact_mod_cast NeZero.ne N]
-    simpa only [← hdensity, ← hcardReal] using hTcard
-  · intro x
-    rw [context_vertical_join_section]
-    exact hTfreiman x
+        hlarge (x, y) (by simpa [verticalSection] using hy)
+  rw [← Finset.sum_div, div_div, ← sq, ← Nat.cast_sum, context_sum_vertical_card, ← Nat.cast_sum,
+    ← context_vertical_join_card] at hTcard
+  refine ⟨contextVerticalJoin T, fun z hz => ?_, hTcard, fun x => ?_⟩
+  · simpa [verticalSection] using hTsub z.1 (by simpa [contextVerticalJoin] using hz)
+  · simpa only [context_vertical_join_section] using hTfreiman x
 
 private lemma context_horizontal_restriction {N : Nat} [NeZero N]
     (hprime : Nat.Prime N) (a : Real) (ha : 0 < a)
@@ -233,34 +161,15 @@ private lemma context_horizontal_restriction {N : Nat} [NeZero N]
         B'.card ∧
       ∀ y, FreimanHom 8 (horizontalSection B' y) (fun x ↦ phi (x, y)) := by
   obtain ⟨T, hTsub, hTfreiman, hTcard⟩ := context_restrict_fibres hprime a ha
-    (fun y ↦ horizontalSection B y) (fun y ↦ difference f y)
-    (fun y x ↦ phi (x, y)) (fun y ↦ difference_discValued hf y) (by
-      intro y x hx
-      have hxy : (x, y) ∈ B := by simpa [horizontalSection] using hx
-      have h := hlarge (x, y) hxy
-      unfold secondDifferenceFourier secondDifference at h
-      rw [difference_comm f x y] at h
-      exact h)
-  let B' := contextHorizontalJoin T
-  refine ⟨B', ?_, ?_, ?_⟩
-  · intro z hz
-    have hzT : z.1 ∈ T z.2 := by simpa [B', contextHorizontalJoin] using hz
-    simpa [horizontalSection] using hTsub z.2 hzT
-  · have hsumReal :
-        ∑ y : ZMod N, ((horizontalSection B y).card : Real) = B.card := by
-      exact_mod_cast context_sum_horizontal_card B
-    have hcardReal : (B'.card : Real) =
-        ∑ y : ZMod N, ((T y).card : Real) := by
-      exact_mod_cast context_horizontal_join_card T
-    have hdensity : (B.card : Real) / (N : Real) ^ 2 =
-        (∑ y : ZMod N, (horizontalSection B y).card / (N : Real)) /
-          (N : Real) := by
-      rw [← Finset.sum_div, hsumReal]
-      field_simp [show (N : Real) ≠ 0 by exact_mod_cast NeZero.ne N]
-    simpa only [← hdensity, ← hcardReal] using hTcard
-  · intro y
-    rw [context_horizontal_join_section]
-    exact hTfreiman y
+    (horizontalSection B) (difference f) (fun y x ↦ phi (x, y)) (difference_discValued hf)
+    fun y x hx => by
+      simpa only [secondDifferenceFourier, secondDifference, difference_comm f x y] using
+        hlarge (x, y) (by simpa [horizontalSection] using hx)
+  rw [← Finset.sum_div, div_div, ← sq, ← Nat.cast_sum, context_sum_horizontal_card,
+    ← Nat.cast_sum, ← context_horizontal_join_card] at hTcard
+  refine ⟨contextHorizontalJoin T, fun z hz => ?_, hTcard, fun y => ?_⟩
+  · simpa [horizontalSection] using hTsub z.2 (by simpa [contextHorizontalJoin] using hz)
+  · simpa only [context_horizontal_join_section] using hTfreiman y
 
 private lemma context_cor76_constant_lower (a : Real) (ha : 0 ≤ a)
     (haHalf : a ≤ 1 / 2) :
@@ -349,75 +258,41 @@ theorem section13_prepared_frequency_graph {N : Nat} [NeZero N] [Fact N.Prime]
       SeparatelyFreimanEight A phi ∧
       ∀ z, z ∈ A → (alpha / 2) * N ≤ ‖secondDifferenceFourier f z.1 z.2 (phi z)‖ := by
   let a : Real := alpha / 2
-  have ha : 0 < a := by dsimp only [a]; positivity
-  have haHalf : a ≤ 1 / 2 := by dsimp only [a]; nlinarith
+  have ha : 0 < a := by positivity
+  have haHalf : a ≤ 1 / 2 := by dsimp only [a]; linarith
   have haOne : a ≤ 1 := haHalf.trans (by norm_num)
-  have hprime : Nat.Prime N := Fact.out
-  have hNreal : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hN2 : 0 < (N : Real) ^ 2 := pow_pos hNreal 2
-  obtain ⟨hi_ii, hii_iii, _hii_iv, _hi_v, _hiii_vi, hvi_iii,
-      _hvi_vii, hvii_vi⟩ :=
-    lemma_3_1_holds N 3 f (by omega) hf alpha a a
-      halpha.le halphaOne ha.le haOne ha.le haOne
-  have hnotvii : ¬ higherUniformConditionvii f a 3 := by
-    intro hvii
-    have hvi := hvii_vi (le_refl a) hvii
-    have hiii := hvi_iii (by dsimp only [a]; ring_nf; exact le_rfl) hvi
-    exact hnotUniform (hi_ii.mpr (hii_iii.mpr hiii))
-  let P : Point N 2 → Prop := fun x ↦
-    ∃ r : ZMod N, a * N ≤ ‖fourier (cubeDifference f x) r‖
-  have hcount : a * (N : Real) ^ 2 < (countWhere P : Real) := by
-    unfold higherUniformConditionvii at hnotvii
-    simp only [Nat.reduceSub] at hnotvii
-    exact lt_of_not_ge hnotvii
+  have hN2 : 0 < (N : Real) ^ 2 := pow_pos (Nat.cast_pos.mpr (NeZero.pos N)) 2
+  obtain ⟨hi_ii, hii_iii, -, -, -, hvi_iii, -, hvii_vi⟩ := lemma_3_1_holds N 3 f (by omega) hf
+    alpha a a halpha.le halphaOne ha.le haOne ha.le haOne
+  have hnotvii : ¬ higherUniformConditionvii f a 3 := fun hvii => hnotUniform
+    (hi_ii.mpr (hii_iii.mpr (hvi_iii (by dsimp only [a]; linarith) (hvii_vi le_rfl hvii))))
+  -- `A0`: the pairs whose second difference has a large Fourier coefficient
+  let P : Point N 2 → Prop := fun x ↦ ∃ r : ZMod N, a * N ≤ ‖fourier (cubeDifference f x) r‖
   let good : Pair N → Prop := fun z ↦ P (contextSwapEquiv N z)
   let A0 : Finset (Pair N) := Finset.univ.filter good
-  have hcountEq : countWhere P = A0.card := by
-    calc
-      countWhere P = countWhere (fun z : Pair N ↦ P (contextSwapEquiv N z)) :=
-        feature_countWhere_equiv (contextSwapEquiv N) P
-      _ = A0.card := by
-        unfold A0 countWhere
-        apply congrArg Finset.card
-        ext z
-        simp [good]
   have hA0card : a * (N : Real) ^ 2 ≤ A0.card := by
-    rw [hcountEq] at hcount
-    exact hcount.le
-  let phi : Pair N → ZMod N := fun z ↦
-    if hz : good z then Classical.choose hz else 0
+    have h : countWhere P = A0.card := by
+      rw [feature_countWhere_equiv (contextSwapEquiv N) P, countWhere,
+        Finset.filter_congr_decidable]
+    rw [← h]
+    exact (lt_of_not_ge hnotvii).le
+  let phi : Pair N → ZMod N := fun z ↦ if hz : good z then Classical.choose hz else 0
   have hphi (z : Pair N) (hz : z ∈ A0) :
       a * N ≤ ‖secondDifferenceFourier f z.1 z.2 (phi z)‖ := by
-    have hzgood : good z := by simpa [A0] using hz
-    have hzlarge := Classical.choose_spec hzgood
-    unfold secondDifferenceFourier
-    rw [← context_cubeDifference_eq f z]
-    simpa only [phi, dif_pos hzgood] using hzlarge
+    have hzgood : good z := (Finset.mem_filter.mp hz).2
+    rw [secondDifferenceFourier, ← context_cubeDifference_eq f z]
+    simpa only [phi, dif_pos hzgood] using Classical.choose_spec hzgood
+  -- restrict vertically, then horizontally, tracking the density exponent
   obtain ⟨B1, hB1sub, hB1raw, hB1vertical⟩ :=
-    context_vertical_restriction hprime a ha f hf A0 phi hphi
-  have hA0density : a ≤ (A0.card : Real) / (N : Real) ^ 2 :=
-    (le_div_iff₀ hN2).2 hA0card
-  have hB1coefficient := context_restriction_coefficient (e := 1) ha.le haHalf
-    (by simpa only [pow_one] using hA0density)
-  have hB1card : a ^ 12359 * (N : Real) ^ 2 ≤ B1.card :=
-    (mul_le_mul_of_nonneg_right hB1coefficient hN2.le).trans hB1raw
-  have hB1density : a ^ 12359 ≤ (B1.card : Real) / (N : Real) ^ 2 :=
-    (le_div_iff₀ hN2).2 hB1card
-  have hB1large (z : Pair N) (hz : z ∈ B1) :
-      a * N ≤ ‖secondDifferenceFourier f z.1 z.2 (phi z)‖ :=
-    hphi z (hB1sub hz)
+    context_vertical_restriction Fact.out a ha f hf A0 phi hphi
+  have hB1 : a ^ 12359 ≤ (B1.card : Real) / (N : Real) ^ 2 := (le_div_iff₀ hN2).2
+    ((mul_le_mul_of_nonneg_right (context_restriction_coefficient (e := 1) ha.le haHalf
+      ((pow_one a).trans_le ((le_div_iff₀ hN2).2 hA0card))) hN2.le).trans hB1raw)
   obtain ⟨B2, hB2sub, hB2raw, hB2horizontal⟩ :=
-    context_horizontal_restriction hprime a ha f hf B1 phi hB1large
-  have hB2coefficient := context_restriction_coefficient ha.le haHalf hB1density
-  refine ⟨B2, phi, (mul_le_mul_of_nonneg_right hB2coefficient hN2.le).trans hB2raw,
-    ⟨?_, hB2horizontal⟩, ?_⟩
-  · intro x
-    have hsec : (↑(verticalSection B2 x) : Set (ZMod N)) ⊆ ↑(verticalSection B1 x) := by
-      intro y hy
-      have hyB2 : (x, y) ∈ B2 := by simpa [verticalSection] using hy
-      simpa [verticalSection] using hB2sub hyB2
-    exact IsAddFreimanHom.subset hsec (hB1vertical x) (Set.mapsTo_univ _ _)
-  · intro z hz
-    exact hB1large z (hB2sub hz)
+    context_horizontal_restriction Fact.out a ha f hf B1 phi fun z hz => hphi z (hB1sub hz)
+  refine ⟨B2, phi, (mul_le_mul_of_nonneg_right (context_restriction_coefficient ha.le haHalf hB1)
+    hN2.le).trans hB2raw, ⟨fun x => ?_, hB2horizontal⟩, fun z hz => hphi z (hB1sub (hB2sub hz))⟩
+  refine IsAddFreimanHom.subset (fun y hy => ?_) (hB1vertical x) (Set.mapsTo_univ _ _)
+  simpa [verticalSection] using hB2sub (by simpa [verticalSection] using hy)
 
 end LeanProofs.GowersSzemeredi

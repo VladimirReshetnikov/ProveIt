@@ -227,9 +227,7 @@ theorem MultiplyLinearWith.lift_prefix {N l d : Nat} [NeZero N] [Fact N.Prime]
           and_true, mem_prefixDomain]
         rfl
       have hfun : (fun z : Point N (d + 1) => phi (coordinatePrefix hld' (section16Init z))) =
-          fun z => phi (coordinatePrefix hld z) := by
-        funext z
-        rfl
+          fun z => phi (coordinatePrefix hld z) := by abel
       rw [hdom, hfun] at hp
       refine MultiplyLinearWith.weaken hp ?_ ?_ ?_
       · intro s _ _

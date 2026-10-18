@@ -30,38 +30,30 @@ theorem bilinear_square_of_short_parent_partition {N : Nat} [Fact N.Prime]
       E ⊆ C ∧ E ⊆ V.carrier.product W.carrier ∧
       delta / 4 * V.length * W.length ≤ E.card ∧ BilinearOn E phi := by
   have hQcard : Q.carrier.card = Q.length := hQ
-  have hQne : Q.carrier.Nonempty := Finset.card_pos.mp (by simpa only [hQcard] using hQpos)
   obtain ⟨j, hj⟩ := exists_coordinate_filter_cell C Q.carrier (fun z => z.2 - y)
-    (fun j => (T j).carrier) hQne hpart (fun z hz => hJ (hsupport z hz).2)
-    (b := delta * S.length) (by simpa only [hQcard] using hmass)
+    (fun j => (T j).carrier) (Finset.card_pos.mp (by omega)) hpart
+    (fun z hz => hJ (hsupport z hz).2) (b := delta * S.length) (by simpa only [hQcard] using hmass)
+  obtain ⟨hTp, hTpos, hlong, hshort, hTstep⟩ := hcell j
+  have hTcard : (T j).carrier.card = (T j).length := hTp
+  -- localize the coefficient domain and the cell to the selected parent `T j`
   let J' := J ∩ (T j).carrier
   let C' := C.filter fun z => z.2 - y ∈ (T j).carrier
   have hJsub : J' ⊆ J := Finset.inter_subset_left
-  have hJparent : J' ⊆ (T j).carrier := Finset.inter_subset_right
-  have hCsub : C' ⊆ C := Finset.filter_subset _ _
-  have hCsupport : ∀ z ∈ C', z.1 ∈ S.carrier ∧ z.2 - y ∈ J' := by
-    intro z hz
+  have hCsupport : ∀ z ∈ C', z.1 ∈ S.carrier ∧ z.2 - y ∈ J' := fun z hz => by
     obtain ⟨hzC, hzT⟩ := Finset.mem_filter.mp hz
     exact ⟨(hsupport z hzC).1, Finset.mem_inter.mpr ⟨(hsupport z hzC).2, hzT⟩⟩
-  have hCmass : delta * S.length * (T j).length ≤ C'.card := by
-    simpa only [show (T j).carrier.card = (T j).length from (hcell j).1] using hj
-  have hb' : FreimanHom 8 J' b :=
-    IsAddFreimanHom.subset hJsub hb (Set.mapsTo_univ _ _)
-  have hc' : FreimanHom 8 J' c :=
-    IsAddFreimanHom.subset hJsub hc (Set.mapsTo_univ _ _)
-  have hshort : (T j).length ≤ S.length := (hcell j).2.2.2.1
-  have hlong : L ≤ (T j).length := (hcell j).2.2.1
   have he : 0 < cor711Exponent delta 1 := by unfold cor711Exponent; positivity
-  have hlargeT : 8 ≤ ((T j).length : Real) ^ cor711Exponent delta 1 := hlarge.trans
-    (Real.rpow_le_rpow (Nat.cast_nonneg _) (by exact_mod_cast hlong) he.le)
   obtain ⟨V, W, E, hVs, hstepVW, hV, hW, hVl, hwidth, hEC, hbox, hEmass, hbil⟩ :=
-    bilinear_square_from_short_parent S (T j) J' C' y phi b c delta hS hSpos
-      (hcell j).1 (hcell j).2.1 (hcell j).2.2.2.2 hshort
-      hδ hδone hJparent hCsupport hCmass (fun z hz => hrow z (hCsub hz)) hb' hc' hlargeT
-  refine ⟨V, W, E, hVs, hstepVW, hV, hW, hVl, ?_, hEC.trans hCsub, hbox, hEmass, hbil⟩
-  have hp := Real.rpow_le_rpow (Nat.cast_nonneg L)
-    (show (L : Real) ≤ (T j).length by exact_mod_cast hlong)
-    (div_nonneg he.le (by norm_num : (0 : Real) ≤ 2))
+    bilinear_square_from_short_parent S (T j) J' C' y phi b c delta hS hSpos hTp hTpos hTstep
+      hshort hδ hδone Finset.inter_subset_right hCsupport (by simpa only [hTcard] using hj)
+      (fun z hz => hrow z (Finset.mem_filter.mp hz).1)
+      (IsAddFreimanHom.subset hJsub hb (Set.mapsTo_univ _ _))
+      (IsAddFreimanHom.subset hJsub hc (Set.mapsTo_univ _ _))
+      (hlarge.trans (Real.rpow_le_rpow (Nat.cast_nonneg _) (by exact_mod_cast hlong) he.le))
+  refine ⟨V, W, E, hVs, hstepVW, hV, hW, hVl, ?_, hEC.trans (Finset.filter_subset _ _), hbox,
+    hEmass, hbil⟩
+  have hp := Real.rpow_le_rpow (Nat.cast_nonneg L) (show (L : Real) ≤ (T j).length by
+    exact_mod_cast hlong) (div_nonneg he.le (by norm_num : (0 : Real) ≤ 2))
   linarith only [hp, hwidth]
 
 /-- The integer span bound suffices to partition heights into parents whose

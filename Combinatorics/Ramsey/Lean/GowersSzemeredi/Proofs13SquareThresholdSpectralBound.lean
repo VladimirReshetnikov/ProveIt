@@ -31,78 +31,49 @@ theorem section13_square_thresholds_le_spectral_double_exp {delta : Real}
     let W := (2 : Real) ^ 135 * delta ^ (-(704 : Int))
     max (squareScaleThreshold c e f g W) (squarePowerThreshold c e f g) ≤
       Real.exp (Real.exp (112 * section13Q delta)) := by
-  dsimp only
-  let Q := section13Q delta
-  let A := 16 * Q
-  let c := section13Zeta delta / 2
-  let e := (1 : Real) / (2 : Real) ^ (13 * Q)
-  let f := (2 : Real) ^ (-(100 : Int)) * delta ^ 448
-  let g := cor711Exponent ((2 : Real) ^ (-(135 : Int)) * delta ^ 704) 1
-  let W := (2 : Real) ^ 135 * delta ^ (-(704 : Int))
-  have hQ : 4 ≤ Q := by
-    have h := section13_monomial_le_Q hδ hδone (a := 2) (b := 0) (by norm_num) (by norm_num)
-    norm_num at h
-    exact h
-  have hQ0 : 0 ≤ Q := by linarith only [hQ]
-  have hA : 4 ≤ A := by dsimp [A]; linarith only [hQ]
-  have hQexp : Q ≤ Real.exp A := by
-    have h := Real.add_one_le_exp A
-    dsimp [A] at h ⊢
-    linarith only [h, hQ]
-  have hc : 0 < c := by dsimp [c, section13Zeta]; positivity
-  have he : 0 < e := by dsimp [e]; positivity
-  have hf : 0 < f := by dsimp [f]; positivity
-  have hg : 0 < g := by dsimp [g, cor711Exponent]; positivity
-  have hf1 : f ≤ 1 := by
-    dsimp [f]
-    exact (mul_le_mul_of_nonneg_left (pow_le_one₀ hδ.le hδone (n := 448)) (by positivity)).trans (by norm_num)
+  intro c e f g W
+  set Q := section13Q delta with hQdef
+  have hQ : 1 ≤ Q := by
+    simpa using section13_monomial_le_Q hδ hδone (a := 0) (b := 0) (by norm_num) (by norm_num)
+  -- every reciprocal parameter is a monomial in `1/δ`, hence at most `Q ≤ exp (16 Q)`
+  have hmono (a b : Nat) (ha : a ≤ 2 ^ 20) (hb : b ≤ 2 ^ 21) :
+      ((2 : Real) ^ (-(a : Int)) * delta ^ b)⁻¹ ≤ Real.exp (16 * Q) := by
+    rw [mul_inv, zpow_neg, inv_inv, zpow_natCast, ← inv_pow]
+    exact (section13_monomial_le_Q hδ hδone ha hb).trans
+      (by linarith [Real.add_one_le_exp (16 * Q)])
+  have hζ : 0 < section13Zeta delta := by unfold section13Zeta; positivity
   have hgform : g = (2 : Real) ^ (-(284 : Int)) * delta ^ (1408 : Nat) := by
     dsimp [g, cor711Exponent]
     norm_num [Real.rpow_neg, zpow_neg, zpow_ofNat, mul_pow, ← pow_mul]
     ring
+  have hf1 : f ≤ 1 :=
+    (mul_le_mul_of_nonneg_left (pow_le_one₀ hδ.le hδone) (by positivity)).trans (by norm_num)
   have hg1 : g ≤ 1 := by
     rw [hgform]
-    exact (mul_le_mul_of_nonneg_left (pow_le_one₀ hδ.le hδone (n := 1408)) (by positivity)).trans (by norm_num)
-  have hcI : c⁻¹ ≤ Real.exp A := by
-    have hz := (section13Zeta_inv_le_spectral_exp hδ hδone).trans (two_rpow_le_exp hQ0)
-    have htwo : (2 : Real) ≤ Real.exp Q := (by norm_num : (2 : Real) ≤ 8).trans (eight_le_exp_of_four_le hQ)
-    calc
-      _ = 2 * (section13Zeta delta)⁻¹ := by dsimp [c]; rw [inv_div, div_eq_mul_inv]
-      _ ≤ Real.exp Q * Real.exp Q := mul_le_mul htwo hz (by unfold section13Zeta; positivity) (Real.exp_pos _).le
-      _ = Real.exp (2 * Q) := by rw [← Real.exp_add]; congr 1; ring
-      _ ≤ _ := Real.exp_le_exp.mpr (by dsimp [A]; linarith only [hQ])
-  have heI : e⁻¹ ≤ Real.exp A := by
+    exact (mul_le_mul_of_nonneg_left (pow_le_one₀ hδ.le hδone) (by positivity)).trans (by norm_num)
+  have hcI : c⁻¹ ≤ Real.exp (16 * Q) := by
+    have hc : c⁻¹ = 2 * (section13Zeta delta)⁻¹ := by simp only [c]; rw [inv_div, div_eq_mul_inv]
+    rw [hc, show 16 * Q = Q + 15 * Q by ring, Real.exp_add]
+    exact mul_le_mul (by linarith [Real.add_one_le_exp Q])
+      ((section13Zeta_inv_le_spectral_exp hδ hδone).trans ((two_rpow_le_exp (by linarith)).trans
+        (Real.exp_le_exp.mpr (by linarith)))) (inv_nonneg.mpr hζ.le) (Real.exp_pos _).le
+  have heI : e⁻¹ ≤ Real.exp (16 * Q) := by
     simp only [e, one_div, inv_inv]
-    exact (two_rpow_le_exp (by positivity : 0 ≤ 13 * Q)).trans
-      (Real.exp_le_exp.mpr (by dsimp [A]; linarith only [hQ]))
-  have hfI : f⁻¹ ≤ Real.exp A := by
-    have hh : f⁻¹ = (2 : Real) ^ (100 : Nat) * (delta⁻¹) ^ (448 : Nat) := by
-      dsimp [f]
-      simp only [mul_inv_rev, zpow_neg, inv_inv, zpow_ofNat, inv_pow]
-      exact mul_comm _ _
-    rw [hh]
-    exact (section13_monomial_le_Q hδ hδone (by norm_num) (by norm_num)).trans hQexp
-  have hgI : g⁻¹ ≤ Real.exp A := by
-    rw [hgform]
-    have hh : ((2 : Real) ^ (-(284 : Int)) * delta ^ (1408 : Nat))⁻¹ =
-        (2 : Real) ^ (284 : Nat) * (delta⁻¹) ^ (1408 : Nat) := by
-      simp only [mul_inv_rev, zpow_neg, inv_inv, zpow_ofNat, inv_pow]
-      exact mul_comm _ _
-    rw [hh]
-    exact (section13_monomial_le_Q hδ hδone (by norm_num) (by norm_num)).trans hQexp
-  have hW : W ≤ Real.exp A := by
-    have hh : W = (2 : Real) ^ (135 : Nat) * (delta⁻¹) ^ (704 : Nat) := by
-      simp only [W, zpow_neg, zpow_ofNat, inv_pow]
-    rw [hh]
-    exact (section13_monomial_le_Q hδ hδone (by norm_num) (by norm_num)).trans hQexp
-  have hs := squareScaleThreshold_le_double_exp hc he hf hg hg1 hA hcI heI hfI hgI hW
-  have hp := squarePowerThreshold_le_double_exp hc he hf hf1 hg hg1 hA hcI heI hfI hgI
-  change max (squareScaleThreshold c e f g W) (squarePowerThreshold c e f g) ≤ _
-  apply max_le
-  · apply hs.trans
-    apply Real.exp_le_exp.mpr (Real.exp_le_exp.mpr _)
-    dsimp [A, Q]
-    linarith only [hQ]
-  · convert hp using 1 <;> congr 2 <;> dsimp [A, Q] <;> ring
+    exact (two_rpow_le_exp (by positivity)).trans (Real.exp_le_exp.mpr (by linarith))
+  have hfI : f⁻¹ ≤ Real.exp (16 * Q) := hmono 100 448 (by norm_num) (by norm_num)
+  have hgI : g⁻¹ ≤ Real.exp (16 * Q) := by
+    rw [hgform]; exact hmono 284 1408 (by norm_num) (by norm_num)
+  have hW : W ≤ Real.exp (16 * Q) := by
+    convert hmono 135 704 (by norm_num) (by norm_num) using 1
+    simp only [W, mul_inv, zpow_neg, inv_inv, zpow_natCast, zpow_ofNat]
+  have hc : 0 < c := half_pos hζ
+  have he : 0 < e := by positivity
+  have hf : 0 < f := by positivity
+  have hg : 0 < g := by rw [hgform]; positivity
+  have hA : 4 ≤ 16 * Q := by linarith
+  refine max_le ((squareScaleThreshold_le_double_exp hc he hf hg hg1 hA hcI heI hfI hgI hW).trans
+    (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr (by linarith))))
+    ((squarePowerThreshold_le_double_exp hc he hf hf1 hg hg1 hA hcI heI hfI hgI).trans_eq ?_)
+  ring_nf
 
 end LeanProofs.GowersSzemeredi

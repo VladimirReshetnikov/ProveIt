@@ -125,8 +125,7 @@ private lemma section16TupleArrangement_cubeValue {N k d : Nat} [NeZero N]
     (section16TupleArrangement h x).cubeValue phi j =
       section16InducedCubeMap B h phi (x j) := by
   unfold GeneralArrangement.cubeValue section16InducedCubeMap
-  apply Finset.sum_congr rfl
-  intro e _
+  refine Finset.sum_congr rfl fun e _ => ?_
   rw [section16TupleArrangement_vertex]
 
 private def section16ArrangementCubeElement {N k d : Nat} [NeZero N]

@@ -49,11 +49,7 @@ private lemma lemma122_pointSet_card {N : Nat} [NeZero N]
 private lemma lemma122_cubeDifference_eq {N : Nat}
     (f : ZMod N → Complex) (z : Pair N) :
     cubeDifference f (lemma122SwapEquiv N z) =
-      secondDifference f z.1 z.2 := by
-  change cubeDifference f (Fin.cons z.2 (Fin.cons z.1 (fun i ↦ Fin.elim0 i))) =
-    secondDifference f z.1 z.2
-  rw [cubeDifference_cons, cubeDifference_cons]
-  simp only [cubeDifference, List.ofFn_zero, iteratedDifference, secondDifference]
+      secondDifference f z.1 z.2 := by abel
 
 lemma lemma122_fourier_norm_le {N : Nat} [NeZero N]
     (g : ZMod N → Complex) (hg : DiscValued g) (r : ZMod N) :

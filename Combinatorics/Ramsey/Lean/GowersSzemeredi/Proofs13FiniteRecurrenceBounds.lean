@@ -40,50 +40,37 @@ theorem lemma_13_5_prime_large_case {N : Nat} [NeZero N] (hprime : N.Prime)
     ∃ E : Stage135Data N, IsStage135Data S D E ∧
       Nat.floor ((D.P.length : Real) ^ ((1 : Real) / (2 : Real) ^ (11 * D.q))) ≤ E.Q.length ∧
       S.alpha ^ 32 * E.Q.length / 16 ≤ (criticalHeights S D E).card := by
-  have hsmall := not_le.mpr hlargeCase
   have hq : 1 ≤ D.q := h134.1
   have hP : D.P.IsProper := h134.2.2.1
-  have hPpos : 0 < D.P.length := by
-    by_contra hz
-    have hzero : D.P.length = 0 := by omega
-    simp only [hzero, Nat.cast_zero, Real.zero_rpow (by positivity :
-      (1 : Real) / 2 ^ (12 * D.q) ≠ 0)] at hsmall
-    norm_num at hsmall
-  have hPr : (1 : Real) ≤ D.P.length := by exact_mod_cast hPpos
+  have hPpos : 0 < D.P.length := Nat.pos_of_ne_zero fun hz => by
+    rw [hz, Nat.cast_zero, Real.zero_rpow (by positivity : (1 : Real) / 2 ^ (12 * D.q) ≠ 0)]
+      at hlargeCase
+    norm_num at hlargeCase
   have h12 : (2 : Real) ^ (12 * D.q) = (4096 : Real) ^ D.q := by rw [pow_mul]; norm_num
   have h11 : (2 : Real) ^ (11 * D.q) = (2048 : Real) ^ D.q := by rw [pow_mul]; norm_num
-  have hlarge : 2 < (D.P.length : Real) ^ ((4096 : Real) ^ D.q)⁻¹ := by
-    simpa only [h12, one_div] using lt_of_not_ge hsmall
   let U := Nat.floor ((D.P.length : Real) ^ ((2048 : Real) ^ D.q)⁻¹)
-  obtain ⟨hUfour, hbudgetR, hlength, hscale⟩ := quadratic_family_floor_scale hPr hq hlarge
-  change 4 ≤ U at hUfour
-  change (quadraticFamilyBudget D.q U : Real) ≤ D.P.length at hbudgetR
+  obtain ⟨hUfour, hbudgetR, hlength, hscale⟩ := quadratic_family_floor_scale
+    (by exact_mod_cast hPpos : (1 : Real) ≤ D.P.length) hq
+    (by simpa only [h12, one_div] using hlargeCase)
   have hbudget : quadraticFamilyBudget D.q U ≤ D.P.length := Nat.cast_le.mp hbudgetR
+  -- `N ≥ |P| ≥ U ≥ 4`, so `N ≠ 2`
   have hPN : D.P.length ≤ N := by
     rw [← hP]
     simpa only [ZMod.card] using Finset.card_le_univ D.P.carrier
   have hUL : U ≤ D.P.length := (quadraticFamilyBudget_ge D.q U).trans hbudget
-  have hodd : N != 2 := by apply bne_iff_ne.mpr; omega
+  have hodd : N != 2 := bne_iff_ne.mpr (by omega)
   obtain ⟨M, Q, hpart, hQ⟩ := quadratic_family_phase_localization D.P
     (fun i => stage135AmbientQuadratic (D.a i) (D.b i)) U hP
     (fun i => stage135AmbientQuadratic_polynomial (D.a i) (D.b i)) (by omega) hbudget
-  have hM : 0 < M := by
-    have hcard : 0 < D.P.carrier.card := by rw [hP]; exact hPpos
-    obtain ⟨x, hx⟩ := Finset.card_pos.mp hcard
-    obtain ⟨i, _⟩ := (hpart.1 x).mp hx
-    exact Nat.zero_lt_of_lt i.isLt
-  obtain ⟨j, hj⟩ := stage135_select_weighted_cell S D Q hM hP h134.2.2.2.1
+  obtain ⟨x, hx⟩ : D.P.carrier.Nonempty := Finset.card_pos.mp (by rw [hP]; exact hPpos)
+  obtain ⟨j0, -⟩ := (hpart.1 x).mp hx
+  obtain ⟨j, hj⟩ := stage135_select_weighted_cell S D Q j0.pos hP h134.2.2.2.1
     hpart (fun j => (hQ j).1) h134.2.2.2.2.2.2.2.1
-  have hselected := stage135_of_phase_cell hprime hodd S D (Q j) (hQ j).1
-    (modAP_step_ne_zero_of_proper_length _ (hQ j).1 (by have := (hQ j).2.1; omega))
-    (hpart.cell_subset j) (by have := (hQ j).2.1; omega) U (by omega) (by
-      rw [h12, one_div]
-      exact hlength.trans (Nat.cast_le.mpr (hQ j).2.1))
-      (by simpa only [h11, one_div] using hscale) hj (by
-        intro i
-        obtain ⟨z, _, hz⟩ := (hQ j).2.2 i
-        exact ⟨z, hz⟩)
-  refine ⟨⟨Q j⟩, hselected.1, ?_, hselected.2⟩
-  simpa only [h11, one_div] using (hQ j).2.1
+  obtain ⟨hQp, hQU, hQphase⟩ := hQ j
+  have hselected := stage135_of_phase_cell hprime hodd S D (Q j) hQp
+    (modAP_step_ne_zero_of_proper_length _ hQp (by omega)) (hpart.cell_subset j) (by omega) U
+    (by omega) (by rw [h12, one_div]; exact hlength.trans (Nat.cast_le.mpr hQU))
+    (by simpa only [h11, one_div] using hscale) hj fun i => (hQphase i).imp fun _ hz => hz.2
+  exact ⟨⟨Q j⟩, hselected.1, by simpa only [h11, one_div] using hQU, hselected.2⟩
 
 end LeanProofs.GowersSzemeredi

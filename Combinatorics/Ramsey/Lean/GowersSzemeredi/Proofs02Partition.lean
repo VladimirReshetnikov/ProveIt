@@ -73,40 +73,18 @@ private lemma exists_chunk_for_quotient {c L q : Nat}
     (hL : 0 < L) (hLc : L ≤ c) (hq : q < c) :
     ∃ j : Fin (c / L), ∃ i : Nat,
       i < residueChunkLength c L (c / L) j ∧ q = j * L + i := by
-  let n := c / L
-  have hn : 0 < n := Nat.div_pos hLc hL
-  by_cases hfront : q < n * L
-  · let j : Fin n := ⟨q / L, (Nat.div_lt_iff_lt_mul hL).2 hfront⟩
-    refine ⟨j, q % L, ?_, ?_⟩
-    · have hmod : q % L < L := Nat.mod_lt q hL
-      exact lt_of_lt_of_le hmod (residueChunkLength_ge (c := c) (L := L)
-        (n := n) (j := j))
-    · dsimp only [j, n]
-      calc
-        q = q % L + L * (q / L) := (Nat.mod_add_div q L).symm
-        _ = (q / L) * L + q % L := by ac_rfl
-  · have _ : n * L ≤ q := Nat.le_of_not_gt hfront
-    let j : Fin n := ⟨n - 1, by omega⟩
-    let i := q - (n - 1) * L
-    refine ⟨j, i, ?_, ?_⟩
-    · have hjlast : (j : Nat) + 1 = n := by
-        change n - 1 + 1 = n
-        omega
-      change i < residueChunkLength c L n j
-      simp only [residueChunkLength, hjlast, if_true]
-      have hdiv := Nat.div_add_mod c L
-      change i < L + c % L
-      dsimp only [i]
-      rw [Nat.mul_comm L n] at hdiv
-      have hnstep : n * L = (n - 1) * L + L := by
-        calc
-          n * L = ((n - 1) + 1) * L := by rw [Nat.sub_add_cancel hn]
-          _ = (n - 1) * L + L := by rw [Nat.add_mul, one_mul]
-      omega
-    · have hpre : (n - 1) * L ≤ n * L :=
-        Nat.mul_le_mul_right L (Nat.sub_le n 1)
-      change q = (n - 1) * L + (q - (n - 1) * L)
-      omega
+  have hn : 1 ≤ c / L := Nat.div_pos hLc hL
+  by_cases hfront : q / L < c / L
+  · exact ⟨⟨q / L, hfront⟩, q % L, (Nat.mod_lt q hL).trans_le residueChunkLength_ge,
+      (Nat.div_add_mod' q L).symm⟩
+  -- otherwise `q` lies in the last chunk, which also absorbs the remainder `c % L`
+  have hc := Nat.div_add_mod' c L
+  have hqL := (Nat.le_div_iff_mul_le hL).1 (not_lt.1 hfront)
+  have hstep : (c / L - 1) * L + L = c / L * L := by
+    rw [← add_one_mul, Nat.sub_add_cancel hn]
+  refine ⟨⟨c / L - 1, by omega⟩, q - (c / L - 1) * L, ?_, by dsimp only; omega⟩
+  simp only [residueChunkLength, Nat.sub_add_cancel hn, if_true]
+  omega
 
 private lemma chunk_index_unique {c L q : Nat}
     (j j' : Fin (c / L)) (i i' : Nat)
@@ -172,162 +150,62 @@ private lemma residueChunkFamily_partition {r u L : Nat}
     (hu : 0 < u) (hur : u ≤ r) (hL : 0 < L)
     (hclass : ∀ a : Fin u, L ≤ residueClassLength r u a) :
     IsNatAPPartition (residueChunkFamily r u L) (Finset.range r) := by
-  let E := Fintype.equivFin (ResidueChunkIndex r u L)
-  constructor
-  · intro x
-    constructor
-    · intro hx
-      have hxr : x < r := Finset.mem_range.mp hx
-      let a : Fin u := ⟨x % u, Nat.mod_lt x hu⟩
-      let q := x / u
-      have hq : q < residueClassLength r u a := by
-        rw [quotient_lt_residueClassLength hu a.isLt hur]
-        dsimp only [a, q]
-        calc
-          x % u + (x / u) * u = x := by
-            simpa only [Nat.mul_comm] using Nat.mod_add_div x u
-          _ < r := hxr
-      obtain ⟨j, i, hi, hqrep⟩ :=
-        exists_chunk_for_quotient hL (hclass a) hq
-      let z : ResidueChunkIndex r u L := ⟨a, j⟩
-      refine ⟨E z, ?_⟩
-      change x ∈ (residueChunkAP r u L
-        ((Fintype.equivFin _).symm (E z))).carrier
-      have hez : (Fintype.equivFin _).symm (E z) = z := by
-        simp only [E, Equiv.symm_apply_apply]
-      rw [hez, residueChunkAP_mem_iff]
-      refine ⟨i, hi, ?_⟩
-      dsimp only [z]
-      calc
-        x = x % u + u * (x / u) := (Nat.mod_add_div x u).symm
-        _ = a + q * u := by simp only [a, q, Nat.mul_comm]
-        _ = a + (j * L + i) * u := by rw [hqrep]
-    · rintro ⟨z, hz⟩
-      let w := E.symm z
-      change x ∈ (residueChunkAP r u L ((Fintype.equivFin _).symm z)).carrier at hz
-      have hzw : (Fintype.equivFin _).symm z = w := by rfl
-      rw [hzw, residueChunkAP_mem_iff] at hz
-      obtain ⟨i, hi, rfl⟩ := hz
-      apply Finset.mem_range.mpr
-      rw [← quotient_lt_residueClassLength hu w.1.isLt hur]
-      exact chunk_quotient_lt w.2 i hi
-  · intro z z' hzz'
-    rw [Finset.disjoint_left]
-    intro x hx hx'
-    let w := E.symm z
-    let w' := E.symm z'
-    change x ∈ (residueChunkAP r u L ((Fintype.equivFin _).symm z)).carrier at hx
-    change x ∈ (residueChunkAP r u L ((Fintype.equivFin _).symm z')).carrier at hx'
-    have hzw : (Fintype.equivFin _).symm z = w := by rfl
-    have hzw' : (Fintype.equivFin _).symm z' = w' := by rfl
-    rw [hzw, residueChunkAP_mem_iff] at hx
-    rw [hzw', residueChunkAP_mem_iff] at hx'
+  refine ⟨fun x => ⟨fun hx => ?_, ?_⟩, fun z z' hzz' => Finset.disjoint_left.2 fun x hx hx' => ?_⟩
+  · -- `x` lies in chunk `j` of its residue class `a`
+    let a : Fin u := ⟨x % u, Nat.mod_lt x hu⟩
+    obtain ⟨j, i, hi, hq⟩ := exists_chunk_for_quotient hL (hclass a)
+      ((quotient_lt_residueClassLength hu a.isLt hur).2
+        ((Nat.mod_add_div' x u).trans_lt (Finset.mem_range.mp hx)))
+    refine ⟨Fintype.equivFin (ResidueChunkIndex r u L) ⟨a, j⟩, ?_⟩
+    simp only [residueChunkFamily, Equiv.symm_apply_apply, residueChunkAP_mem_iff]
+    exact ⟨i, hi, by rw [← hq]; exact (Nat.mod_add_div' x u).symm⟩
+  · rintro ⟨z, hz⟩
+    simp only [residueChunkFamily, residueChunkAP_mem_iff] at hz
+    obtain ⟨i, hi, rfl⟩ := hz
+    exact Finset.mem_range.2 ((quotient_lt_residueClassLength hu (Fin.isLt _) hur).1
+      (chunk_quotient_lt _ i hi))
+  · -- a common point has the same residue class and the same quotient in both chunks
+    rcases hw : (Fintype.equivFin (ResidueChunkIndex r u L)).symm z with ⟨a, j⟩
+    rcases hw' : (Fintype.equivFin (ResidueChunkIndex r u L)).symm z' with ⟨a', j'⟩
+    simp only [residueChunkFamily, hw, hw', residueChunkAP_mem_iff] at hx hx'
     obtain ⟨i, hi, hxi⟩ := hx
     obtain ⟨i', hi', hxi'⟩ := hx'
-    have haVal : (w.1 : Nat) = (w'.1 : Nat) := by
-      have hm := congrArg (fun y : Nat => y % u) (hxi.symm.trans hxi')
-      simpa only [Nat.add_mul_mod_self_right,
-        Nat.mod_eq_of_lt w.1.isLt, Nat.mod_eq_of_lt w'.1.isLt] using hm
-    have ha : w.1 = w'.1 := Fin.ext haVal
-    rcases w with ⟨a, j⟩
-    rcases w' with ⟨a', j'⟩
-    dsimp only at ha
-    subst a'
-    have hqmul : (j * L + i) * u = (j' * L + i') * u := Nat.add_left_cancel (hxi.symm.trans hxi')
-    have hq : j * L + i = j' * L + i' :=
-      Nat.eq_of_mul_eq_mul_right hu hqmul
-    have hj : j = j' := chunk_index_unique j j' i i' hi hi' rfl hq
-    subst j'
-    have hzEq : z = z' := by
-      exact E.symm.injective (hzw.trans hzw'.symm)
-    exact bne_iff_ne.mp hzz' hzEq
+    have h := hxi.symm.trans hxi'
+    obtain rfl : a = a' := Fin.ext (by
+      simpa only [Nat.add_mul_mod_self_right, Nat.mod_eq_of_lt a.isLt,
+        Nat.mod_eq_of_lt a'.isLt] using congrArg (· % u) h)
+    obtain rfl := chunk_index_unique j j' i i' hi hi' rfl
+      (Nat.eq_of_mul_eq_mul_right hu (Nat.add_left_cancel h))
+    exact bne_iff_ne.mp hzz' ((Fintype.equivFin _).symm.injective (hw.trans hw'.symm))
 
 private lemma linear_image_diameter {N r s : Nat} [NeZero N]
     (phi : Nat → ZMod N) (a b : ZMod N)
     (hphi : ∀ x, x < r → phi x = a * (x : Nat) + b)
     (P : NatAP) (hP : P.carrier ⊆ Finset.range r)
-    (hPpos : 0 < P.length)
     (hdiam : (P.length - 1) * centeredAbs (a * (P.step : ZMod N)) ≤ s) :
     diameterAtMost (P.carrier.image phi) s := by
-  let d : ZMod N := a * (P.step : ZMod N)
-  let base : ZMod N := a * (P.start : ZMod N) + b
-  let h : Nat := centeredAbs d
-  have hcast := ZMod.natCast_natAbs_valMinAbs d
-  by_cases hdval : d.val ≤ N / 2
-  · have hhcast : (h : ZMod N) = d := by
-      simpa only [h, centeredAbs, hdval, if_true] using hcast
-    refine ⟨base, ?_⟩
-    intro y hy
-    rw [Finset.mem_image] at hy
-    obtain ⟨x, hxP, rfl⟩ := hy
-    rw [NatAP.carrier] at hxP
-    simp only [Finset.mem_image, Finset.mem_univ, true_and] at hxP
+  -- it suffices to write every image point as `c + k * |a * step|` with `k ≤ length - 1`
+  suffices H : ∃ c : ZMod N, ∀ i < P.length, ∃ k ≤ P.length - 1,
+      c + ((k * centeredAbs (a * (P.step : ZMod N)) : Nat) : ZMod N) =
+        a * ((P.start + i * P.step : Nat) : ZMod N) + b by
+    obtain ⟨c, hc⟩ := H
+    refine ⟨c, fun y hy => ?_⟩
+    obtain ⟨x, hxP, rfl⟩ := Finset.mem_image.1 hy
+    have hxr := Finset.mem_range.1 (hP hxP)
+    simp only [NatAP.carrier, Finset.mem_image, Finset.mem_univ, true_and] at hxP
     obtain ⟨i, rfl⟩ := hxP
-    have hiLe : (i : Nat) ≤ P.length - 1 := by omega
-    let j : Nat := (i : Nat) * h
-    have hjLe : j ≤ s := by
-      have hmul := Nat.mul_le_mul_right h hiLe
-      change (i : Nat) * h ≤ s
-      exact hmul.trans hdiam
-    change phi (P.start + (i : Nat) * P.step) ∈
-      (modInterval N base (s + 1)).carrier
-    rw [ModAP.carrier]
-    simp only [Finset.mem_image, Finset.mem_univ, true_and]
-    refine ⟨⟨j, ?_⟩, ?_⟩
-    · change j < s + 1
-      omega
-    have hxRange : P.start + (i : Nat) * P.step < r :=
-      Finset.mem_range.mp (hP (by
-        rw [NatAP.carrier]
-        simp only [Finset.mem_image, Finset.mem_univ, true_and]
-        exact ⟨i, rfl⟩))
-    rw [hphi _ hxRange]
-    change base + (j : ZMod N) * 1 =
-      a * (↑(P.start + (i : Nat) * P.step) : ZMod N) + b
+    obtain ⟨k, hk, hck⟩ := hc i i.isLt
+    simp only [ModAP.carrier, modInterval, Finset.mem_image, Finset.mem_univ, true_and, mul_one,
+      hphi _ hxr]
+    exact ⟨⟨_, Nat.lt_succ_of_le ((Nat.mul_le_mul_right _ hk).trans hdiam)⟩, hck⟩
+  have hcast : (centeredAbs (a * (P.step : ZMod N)) : ZMod N) = _ :=
+    ZMod.natCast_natAbs_valMinAbs (a * (P.step : ZMod N))
+  split_ifs at hcast
+  · exact ⟨a * P.start + b, fun i hi => ⟨i, by omega, by push_cast [hcast]; ring⟩⟩
+  · refine ⟨a * P.start + b + ((P.length - 1 : Nat) : ZMod N) * (a * P.step),
+      fun i hi => ⟨P.length - 1 - i, Nat.sub_le _ _, ?_⟩⟩
+    rw [Nat.cast_mul, hcast, Nat.cast_sub (show i ≤ P.length - 1 by omega)]
     push_cast
-    rw [show (j : ZMod N) = (i : Nat) * d by
-      simp only [j, Nat.cast_mul, hhcast]]
-    simp only [mul_one, d, base]
-    ring
-  · have hhcast : (h : ZMod N) = -d := by
-      simpa only [h, centeredAbs, hdval, if_false] using hcast
-    let start : ZMod N := base + (P.length - 1 : Nat) * d
-    refine ⟨start, ?_⟩
-    intro y hy
-    rw [Finset.mem_image] at hy
-    obtain ⟨x, hxP, rfl⟩ := hy
-    rw [NatAP.carrier] at hxP
-    simp only [Finset.mem_image, Finset.mem_univ, true_and] at hxP
-    obtain ⟨i, rfl⟩ := hxP
-    have hiLe : (i : Nat) ≤ P.length - 1 := by omega
-    let j : Nat := (P.length - 1 - (i : Nat)) * h
-    have hjLe : j ≤ s := by
-      have hsub : P.length - 1 - (i : Nat) ≤ P.length - 1 := Nat.sub_le _ _
-      have hmul := Nat.mul_le_mul_right h hsub
-      change (P.length - 1 - (i : Nat)) * h ≤ s
-      exact hmul.trans hdiam
-    change phi (P.start + (i : Nat) * P.step) ∈
-      (modInterval N start (s + 1)).carrier
-    rw [ModAP.carrier]
-    simp only [Finset.mem_image, Finset.mem_univ, true_and]
-    refine ⟨⟨j, ?_⟩, ?_⟩
-    · change j < s + 1
-      omega
-    have hxRange : P.start + (i : Nat) * P.step < r :=
-      Finset.mem_range.mp (hP (by
-        rw [NatAP.carrier]
-        simp only [Finset.mem_image, Finset.mem_univ, true_and]
-        exact ⟨i, rfl⟩))
-    rw [hphi _ hxRange]
-    change start + (j : ZMod N) * 1 =
-      a * (↑(P.start + (i : Nat) * P.step) : ZMod N) + b
-    push_cast
-    have hjcast : (j : ZMod N) =
-        (P.length - 1 - (i : Nat) : Nat) * (-d) := by
-      simp only [j, Nat.cast_mul, hhcast]
-    rw [hjcast]
-    simp only [mul_one, start, d, base]
-    rw [Nat.cast_sub hiLe]
     ring
 
 private def partitionRatio (N r s : Nat) : Real :=
@@ -365,52 +243,23 @@ private lemma exists_small_image_step {N r s : Nat} (hN : 0 < N)
       (centeredAbs ((u : ZMod N) * a) : Real) ≤
         (N : Real) / (t + 1) := by
   letI : NeZero N := ⟨Nat.ne_of_gt hN⟩
-  let q := partitionRatio N r s
-  let x := approximationRatio N r s
-  let t := Nat.ceil x
-  have hqx : q ≤ x := partitionRatio_le_approximationRatio hN hs hsN
-  have hx4 : (4 : Real) ≤ x := hq.trans hqx
-  have hxt : x ≤ (t : Real) := Nat.le_ceil x
-  have ht4 : 4 ≤ t := by exact_mod_cast hx4.trans hxt
-  have ht : 0 < t := by omega
+  intro t
   have hNreal : (0 : Real) < N := by exact_mod_cast hN
-  let xi : Real := (a.val : Real) / N
-  obtain ⟨j, k, hkpos, hkt, happ⟩ :=
-    Real.exists_int_int_abs_mul_sub_le xi ht
-  let u : Nat := k.toNat
-  have hku : (u : Int) = k := Int.toNat_of_nonneg hkpos.le
-  have hu : 0 < u := by linarith
-  have hut : u ≤ t := by linarith
-  let z : Int := k * (a.val : Int) - j * (N : Int)
-  have hzcast : (z : ZMod N) = (u : ZMod N) * a := by
-    dsimp only [z]
-    rw [Int.cast_sub, Int.cast_mul, Int.cast_mul]
-    simp only [hku.symm, Int.cast_natCast, ZMod.natCast_self, mul_zero, sub_zero]
-    rw [ZMod.natCast_zmod_val]
-  have hzdiv : (z : Real) / N = (k : Real) * xi - j := by
-    dsimp only [z, xi]
-    push_cast
-    field_simp
-  have hzabs : |(z : Real)| ≤ (N : Real) / (t + 1) := by
-    rw [← hzdiv, abs_div, abs_of_pos hNreal, div_le_iff₀ hNreal] at happ
-    calc
-      |(z : Real)| ≤ 1 / ((t : Real) + 1) * N := happ
-      _ = (N : Real) / (t + 1) := by ring
-  have hzhalf : |(z : Real)| < (N : Real) / 2 := by
-    refine hzabs.trans_lt ?_
-    exact div_lt_div_of_pos_left hNreal (by norm_num) (by exact_mod_cast (show 2 < t + 1 by omega))
-  have hzinterval : z * 2 ∈ Set.Ioc (-(N : Int)) N := by
-    have hzreal := (abs_lt.mp hzhalf)
-    have hlow : -(N : Real) < (z : Real) * 2 := by nlinarith [hzreal.1]
-    have hupp : (z : Real) * 2 ≤ N := by nlinarith [hzreal.2]
-    constructor
-    · exact_mod_cast hlow
-    · exact_mod_cast hupp
-  have hzmin : ((u : ZMod N) * a).valMinAbs = z :=
-    (ZMod.valMinAbs_spec _ _).2 ⟨hzcast.symm, hzinterval⟩
-  refine ⟨u, hu, hut, ?_⟩
-  rw [centeredAbs, hzmin]
-  simpa only [x, t, ← Int.cast_abs, Int.abs_eq_natAbs, Int.cast_natCast] using hzabs
+  have ht : 0 < t :=
+    Nat.ceil_pos.2 (by linarith [partitionRatio_le_approximationRatio (r := r) hN hs hsN])
+  -- Dirichlet: `u * (a.val / N)` is within `1 / (t + 1)` of an integer `j`
+  obtain ⟨u, hu, hut, happ⟩ := Real.exists_nat_abs_mul_sub_round_le ((a.val : Real) / N) ht
+  generalize round ((u : Real) * (a.val / N)) = j at happ
+  -- so `u * a` has the representative `u * a.val - j * N`, whose size is at most `N / (t + 1)`
+  have hz : ((u * a.val - j * N : Int) : ZMod N) = (u : ZMod N) * a := by simp
+  have hle := ZMod.natAbs_min_of_le_div_two N _ _ ((ZMod.coe_valMinAbs _).trans hz.symm)
+    (ZMod.natAbs_valMinAbs_le _)
+  refine ⟨u, hu, hut, (Nat.cast_le.2 hle).trans ?_⟩
+  rw [Nat.cast_natAbs, Int.cast_abs]
+  push_cast
+  rw [show (u * a.val - j * N : Real) = N * (u * (a.val / N) - j) by field_simp, abs_mul,
+    abs_of_pos hNreal]
+  exact (mul_le_mul_of_nonneg_left happ hNreal.le).trans_eq (mul_one_div _ _)
 
 private lemma partitionRatio_sq {N r s : Nat} (hN : 0 < N) :
     partitionRatio N r s ^ 2 = (r : Real) * s / N := by
@@ -471,135 +320,65 @@ theorem lemma_2_3_holds : lemma_2_3 := by
   letI : NeZero N := ⟨Nat.ne_of_gt hN⟩
   let q := partitionRatio N r s
   have hqnonneg : 0 ≤ q := Real.sqrt_nonneg _
-  have hqpos : 0 < q := partitionRatio_pos hN hr hs
-  have hqone : 1 ≤ partitionRatio N r s := by
-    have hNreal : (0 : Real) < N := by exact_mod_cast hN
-    rw [partitionRatio, Real.one_le_sqrt]
-    apply (le_div_iff₀ hNreal).2
-    have hrsReal : (N : Real) ≤ (r : Real) * s := by exact_mod_cast hrs
-    simpa only [one_mul] using hrsReal
   by_cases hqsmall : q < 4
-  · refine ⟨r, fun i => singletonNatAP i, singletonNatAP_partition r, ?_⟩
-    intro j
-    have hsubset : (singletonNatAP (j : Nat)).carrier ⊆ Finset.range r := by norm_num
-    have hproper : (singletonNatAP (j : Nat)).IsProper := by
-      constructor
-      · simp [singletonNatAP]
-      · rw [singletonNatAP_carrier]
-        simp [singletonNatAP]
-    have hdiam : diameterAtMost
-        ((singletonNatAP (j : Nat)).carrier.image phi) s :=
-      linear_image_diameter phi a b hphi _ hsubset (by simp [singletonNatAP])
-        (by simp [singletonNatAP])
-    have hlower : Real.sqrt ((r : Real) * s / (16 * N)) ≤
-        (singletonNatAP (j : Nat)).length := by
-      rw [partitionRatio_quarter hN]
-      have : q / 4 ≤ (1 : Real) := by linarith
-      simpa only [singletonNatAP, q, Nat.cast_one] using this
-    have hupper : ((singletonNatAP (j : Nat)).length : Real) ≤
-        Real.sqrt ((r : Real) * s / N) := by
-      simpa only [singletonNatAP, q, partitionRatio, Nat.cast_one] using hqone
-    exact ⟨hproper, hdiam, hlower, hupper⟩
-  · have hqfour : (4 : Real) ≤ q := le_of_not_gt hqsmall
-    let x := approximationRatio N r s
-    let t := Nat.ceil x
-    let L := Nat.floor (q / 2)
-    have hxpos : 0 < x := approximationRatio_pos hN hr hs
-    have hqx : q ≤ x := partitionRatio_le_approximationRatio hN hs hsN
-    have hxt : x ≤ (t : Real) := by
-      simpa only [t] using Nat.le_ceil x
-    have htlt : (t : Real) < x + 1 := by
-      simpa only [t] using Nat.ceil_lt_add_one hxpos.le
-    have hLle : (L : Real) ≤ q / 2 := by
-      simpa only [L] using Nat.floor_le (show 0 ≤ q / 2 by positivity)
-    have hqhalfLt : q / 2 < (L : Real) + 1 := by
-      simpa only [L] using Nat.lt_floor_add_one (q / 2)
-    have hLpos : 0 < L := Nat.le_floor (by norm_num; linarith)
-    obtain ⟨u, hu, hut, hsmall⟩ :=
-      exists_small_image_step hN hs hsN a hqfour
-    have huReal : (u : Real) ≤ t := by exact_mod_cast hut
-    have huX : (u : Real) ≤ x + 1 := huReal.trans htlt.le
-    have hLuReal : (L : Real) * u ≤ r := by
-      calc
-        (L : Real) * u ≤ (q / 2) * (x + 1) := mul_le_mul hLle huX (by positivity) (by positivity)
-        _ ≤ q * x := by
-          have hxone : (1 : Real) ≤ x := by linarith
-          nlinarith [mul_nonneg hqnonneg (sub_nonneg.mpr hxone)]
-        _ = r := ratio_product hN hs
-    have hLu : L * u ≤ r := by exact_mod_cast hLuReal
-    have hur : u ≤ r := by
-      have : u ≤ L * u := by nlinarith
-      exact this.trans hLu
-    have hclass : ∀ z : Fin u, L ≤ residueClassLength r u z := by
-      intro z
-      have hzbound : (z : Nat) + (L - 1) * u < r := by
-        have hsplit : (L - 1) * u + u = L * u := by rw [← add_one_mul, Nat.sub_add_cancel (show 1 ≤ L from hLpos)]
-        have := z.isLt
-        omega
-      have hquot : L - 1 < residueClassLength r u z :=
-        (quotient_lt_residueClassLength hu z.isLt hur).2 hzbound
-      omega
-    have hpart := residueChunkFamily_partition hu hur hLpos hclass
-    refine ⟨Fintype.card (ResidueChunkIndex r u L),
-      residueChunkFamily r u L, hpart, ?_⟩
-    intro j
-    let P := residueChunkFamily r u L j
-    have hPproper : P.IsProper := by
-      change (residueChunkAP r u L ((Fintype.equivFin _).symm j)).IsProper
-      exact residueChunkAP_isProper hu _
-    have hPge : L ≤ P.length := by
-      change L ≤ residueChunkLength
-        (residueClassLength r u ((Fintype.equivFin _).symm j).1) L
-        (residueClassLength r u ((Fintype.equivFin _).symm j).1 / L)
-        ((Fintype.equivFin _).symm j).2
-      exact residueChunkLength_ge
-    have hPlt : P.length < 2 * L := by
-      change residueChunkLength
-        (residueClassLength r u ((Fintype.equivFin _).symm j).1) L
-        (residueClassLength r u ((Fintype.equivFin _).symm j).1 / L)
-        ((Fintype.equivFin _).symm j).2 < 2 * L
-      exact residueChunkLength_lt_two_mul hLpos
-    have hqQuarterLeL : q / 4 ≤ (L : Real) := by
-      nlinarith
-    have hPgeReal : (L : Real) ≤ P.length := by exact_mod_cast hPge
-    have hPltReal : (P.length : Real) < 2 * L := by exact_mod_cast hPlt
-    have htwoLLe : (2 : Real) * L ≤ q := by nlinarith
-    have hPleQ : (P.length : Real) ≤ q :=
-      le_of_lt (hPltReal.trans_le htwoLLe)
-    have hPsubset : P.carrier ⊆ Finset.range r := by
-      intro y hy
-      exact (hpart.1 y).2 ⟨j, hy⟩
-    have hstep : (centeredAbs (a * (P.step : ZMod N)) : Real) ≤
-        (N : Real) / (t + 1) := by
-      simpa only [P, residueChunkFamily, residueChunkAP, mul_comm, t, x] using hsmall
-    have hfrac : (N : Real) / (t + 1) ≤ (N : Real) / x := by
-      apply div_le_div_of_nonneg_left (Nat.cast_nonneg N) hxpos
+  · -- small ratio: the singleton partition
+    refine ⟨r, fun i => singletonNatAP i, singletonNatAP_partition r, fun j =>
+      ⟨singletonNatAP_isProper j, linear_image_diameter phi a b hphi _ (by simp)
+        (by simp [singletonNatAP]), ?_, ?_⟩⟩
+    · rw [partitionRatio_quarter hN]
+      simp only [singletonNatAP, Nat.cast_one]
+      show q / 4 ≤ 1
       linarith
-    have hdiamReal :
-        (((P.length - 1) * centeredAbs (a * (P.step : ZMod N)) : Nat) : Real) ≤ s := by
-      rw [Nat.cast_mul]
-      calc
-        ((P.length - 1 : Nat) : Real) *
-              (centeredAbs (a * (P.step : ZMod N)) : Real) ≤
-            (P.length : Real) * ((N : Real) / (t + 1)) := by
-          exact mul_le_mul (by exact_mod_cast (Nat.sub_le P.length 1)) hstep
-            (Nat.cast_nonneg _) (Nat.cast_nonneg _)
-        _ ≤ q * ((N : Real) / (t + 1)) :=
-          mul_le_mul_of_nonneg_right hPleQ (by positivity)
-        _ ≤ q * ((N : Real) / x) :=
-          mul_le_mul_of_nonneg_left hfrac hqnonneg
-        _ = q * N / x := by ring
-        _ = s := ratio_scaled_quotient hN hr hs
-    have hdiamNat :
-        (P.length - 1) * centeredAbs (a * (P.step : ZMod N)) ≤ s := by
-      exact_mod_cast hdiamReal
-    have hPdiam : diameterAtMost (P.carrier.image phi) s :=
-      linear_image_diameter phi a b hphi P hPsubset
-        (lt_of_lt_of_le hLpos hPge) hdiamNat
-    have hlower : Real.sqrt ((r : Real) * s / (16 * N)) ≤ P.length := by
-      rw [partitionRatio_quarter hN]
-      exact hqQuarterLeL.trans hPgeReal
-    have hupper : (P.length : Real) ≤ Real.sqrt ((r : Real) * s / N) := hPleQ
-    exact ⟨hPproper, hPdiam, hlower, hupper⟩
+    · simp only [singletonNatAP, Nat.cast_one]
+      exact Real.one_le_sqrt.2 ((one_le_div (by positivity)).2 (by exact_mod_cast hrs))
+  -- large ratio: chunks of length `L = ⌊q / 2⌋` in the residue classes of a small step `u`
+  have hq4 : (4 : Real) ≤ q := le_of_not_gt hqsmall
+  let x := approximationRatio N r s
+  let L := Nat.floor (q / 2)
+  have hxpos : 0 < x := approximationRatio_pos hN hr hs
+  have hqx : q ≤ x := partitionRatio_le_approximationRatio hN hs hsN
+  have hLle : (L : Real) ≤ q / 2 := Nat.floor_le (by positivity)
+  have hqL : q / 2 < (L : Real) + 1 := Nat.lt_floor_add_one (q / 2)
+  have hLpos : 0 < L := Nat.floor_pos.2 (by linarith)
+  obtain ⟨u, hu, hut, hsmall⟩ := exists_small_image_step hN hs hsN a hq4
+  have hLu : L * u ≤ r := by
+    have hu' : (u : Real) ≤ x + 1 :=
+      (Nat.cast_le.2 hut).trans (Nat.ceil_lt_add_one hxpos.le).le
+    have : (L : Real) * u ≤ q * x := by
+      linarith [mul_le_mul hLle hu' (by positivity) (by positivity),
+        mul_le_mul_of_nonneg_left (show (1 : Real) ≤ x by linarith) hqnonneg]
+    exact_mod_cast this.trans_eq (ratio_product hN hs)
+  have hur : u ≤ r := (Nat.le_mul_of_pos_left u hLpos).trans hLu
+  have hsplit : (L - 1) * u + u = L * u := by
+    rw [← add_one_mul, Nat.sub_add_cancel (show 1 ≤ L from hLpos)]
+  have hclass : ∀ z : Fin u, L ≤ residueClassLength r u z := fun z => by
+    have := z.isLt
+    have := (quotient_lt_residueClassLength (q := L - 1) hu z.isLt hur).2 (by omega)
+    omega
+  have hpart := residueChunkFamily_partition hu hur hLpos hclass
+  have hstep : (centeredAbs (a * (u : ZMod N)) : Real) ≤ N / x := by
+    rw [mul_comm]
+    exact hsmall.trans (div_le_div_of_nonneg_left (by positivity) hxpos
+      ((Nat.le_ceil _).trans (le_add_of_nonneg_right zero_le_one)))
+  refine ⟨_, residueChunkFamily r u L, hpart, fun j => ?_⟩
+  let P := residueChunkFamily r u L j
+  have hPlen : L ≤ P.length ∧ P.length < 2 * L := by
+    simp only [P, residueChunkFamily, residueChunkAP]
+    exact ⟨residueChunkLength_ge, residueChunkLength_lt_two_mul hLpos⟩
+  have hPq : (P.length : Real) ≤ q := by
+    have : (P.length : Real) < 2 * L := by exact_mod_cast hPlen.2
+    linarith
+  -- the image of `P` has diameter at most `(length - 1) * |a * u| ≤ q * N / x = s`
+  have hdiam : ((P.length - 1 : Nat) : Real) * centeredAbs (a * (u : ZMod N)) ≤ s :=
+    (mul_le_mul ((Nat.cast_le.2 (Nat.sub_le _ 1)).trans hPq) hstep (by positivity)
+      hqnonneg).trans_eq ((mul_div_assoc' _ _ _).trans (ratio_scaled_quotient hN hr hs))
+  refine ⟨residueChunkAP_isProper hu _, linear_image_diameter phi a b hphi P
+    (fun y hy => (hpart.1 y).2 ⟨j, hy⟩) (by exact_mod_cast hdiam),
+    ?_, hPq⟩
+  rw [partitionRatio_quarter hN]
+  have : (L : Real) ≤ P.length := by exact_mod_cast hPlen.1
+  have : (1 : Real) ≤ L := by exact_mod_cast hLpos
+  show q / 4 ≤ (P.length : Real)
+  linarith
 
 end LeanProofs.GowersSzemeredi

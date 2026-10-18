@@ -17,20 +17,12 @@ noncomputable section
 
 namespace LeanProofs.GowersSzemeredi
 
-section
-
-open scoped BigOperators Pointwise ZMod ComplexConjugate
+open scoped BigOperators Pointwise ZMod ComplexConjugate Combinatorics.Additive
 open Finset
 
 lemma exponential_add {N : Nat} [NeZero N] (x y : ZMod N) :
     exponential (x + y) = exponential x * exponential y := by
   exact AddChar.map_add_eq_mul (ZMod.stdAddChar (N := N)) x y
-
-end
-
-section
-
-open scoped BigOperators
 
 theorem fejer_expect_exponential_mul {N : Nat} [NeZero N] (x : ZMod N) :
     (𝔼 u : ZMod N, exponential (x * u)) = if x = 0 then 1 else 0 := by
@@ -39,24 +31,10 @@ theorem fejer_expect_exponential_mul {N : Nat} [NeZero N] (x : ZMod N) :
   rw [Finset.expect_eq_sum_div_card, Finset.card_univ, ZMod.card, hs]
   split_ifs <;> simp [NeZero.ne N]
 
-end
-
-section
-
-open scoped BigOperators Pointwise ZMod ComplexConjugate
-open Finset
-
 lemma star_exponential {N : Nat} [NeZero N] (x : ZMod N) :
     star (exponential x) = exponential (-x) := by
   simpa only [exponential, starRingEnd_apply] using
     (AddChar.map_neg_eq_conj (ZMod.stdAddChar (N := N)) x).symm
-
-end
-
-section
-
-open scoped BigOperators ZMod
-open Finset
 
 lemma gcs_countWhere_eq_sum_ite {X : Type*} [Fintype X]
     (P : X → Prop) :
@@ -65,13 +43,6 @@ lemma gcs_countWhere_eq_sum_ite {X : Type*} [Fintype X]
   classical
   unfold countWhere
   simp
-
-end
-
-section
-
-open scoped BigOperators ZMod
-open Finset
 
 lemma gcs_boolWeight_insertNth {n : Nat}
     (j : Fin (n + 1)) (b : Bool) (e : Fin n → Bool) :
@@ -116,13 +87,6 @@ lemma gcs_boolWeight_insertNth {n : Nat}
       intro i _
       exact (hind _).symm
 
-end
-
-section
-
-open scoped BigOperators ZMod
-open Finset
-
 lemma cor24_exponential_eq_exp_valMinAbs {N : Nat} [NeZero N]
     (x : ZMod N) :
     exponential x =
@@ -134,13 +98,6 @@ lemma cor24_exponential_eq_exp_valMinAbs {N : Nat} [NeZero N]
       ZMod.stdAddChar_coe x.valMinAbs
     _ = Complex.exp
         (Complex.I * (2 * Real.pi * (x.valMinAbs : Real) / N : Real)) := by push_cast; ring
-
-end
-
-section
-
-open scoped BigOperators Pointwise ZMod
-open Finset
 
 private def lemma134Left : Finset (Fin 16) :=
   Finset.univ.filter fun i => (i : Nat) < 8
@@ -195,13 +152,6 @@ lemma lemma134_additive_ext {N : Nat}
       exact Finset.sum_erase_add _ _ lemma134_zero_mem_left
     _ = (∑ i ∈ lemma134Left.erase 0, x i) + y 0 := by rw [hleft]
 
-end
-
-section
-
-open scoped BigOperators Pointwise ZMod
-open Finset
-
 lemma fejer_prod_exponential {N : Nat} [NeZero N]
     {I : Type*} [Fintype I] (f : I → ZMod N) :
     ∏ i, exponential (f i) = exponential (∑ i, f i) := by
@@ -213,24 +163,10 @@ lemma fejer_prod_exponential {N : Nat} [NeZero N]
       rw [Finset.sum_insert hi, exponential_add,
         Finset.prod_insert hi, ih]
 
-end
-
-section
-
-open scoped BigOperators Pointwise ZMod Combinatorics.Additive
-open Finset
-
 lemma fejer_sum_exponential_mul {N : Nat} [NeZero N] (x : ZMod N) :
     ∑ u : ZMod N, exponential (x * u) = if x = 0 then (N : Complex) else 0 := by
   simpa [exponential, mul_comm] using
     AddChar.sum_mulShift x (ZMod.isPrimitive_stdAddChar N)
-
-end
-
-section
-
-open scoped BigOperators Pointwise ZMod
-open Finset
 
 lemma lemma154_sum_mul_sub_eq_two {N : Nat} {I : Type*}
     [Fintype I] [DecidableEq I] (a x y : I → ZMod N) (i j : I)
@@ -257,23 +193,9 @@ lemma lemma154_sum_mul_sub_eq_two {N : Nat} {I : Type*}
       rw [hoff t hti htj, sub_self, mul_zero]
     _ = a i * (x i - y i) + a j * (x j - y j) := by simp [hij]
 
-end
-
-section
-
-open scoped BigOperators ZMod
-open Finset
-
 lemma cor57_norm_exponential {N : Nat} [NeZero N]
     (x : ZMod N) : ‖exponential x‖ = 1 := by
   exact AddChar.norm_apply (ZMod.stdAddChar (N := N)) x
-
-end
-
-section
-
-open scoped BigOperators Pointwise ZMod
-open Finset
 
 lemma prop121_vector_orthogonality {N p : Nat} [NeZero N]
     (x : Fin p → ZMod N) :
@@ -297,13 +219,6 @@ lemma prop121_vector_orthogonality {N p : Nat} [NeZero N]
             obtain ⟨i, hi⟩ := h
             exact ⟨i, Finset.mem_univ i, if_neg hi⟩
 
-end
-
-section
-
-open scoped BigOperators Pointwise ZMod
-open Finset
-
 lemma rangeDeg_exists_det_pair {N : Nat} [NeZero N] [Fact N.Prime]
     {I : Type*} [Fintype I] [DecidableEq I] [Nonempty I]
     (a b : I → ZMod N) (ha : ∀ i, a i ≠ 0)
@@ -324,13 +239,6 @@ lemma rangeDeg_exists_det_pair {N : Nat} [NeZero N] [Fact N.Prime]
   field_simp [ha i0]
   simpa [mul_comm] using sub_eq_zero.mp hdet
 
-end
-
-section
-
-open scoped BigOperators Pointwise ZMod
-open Finset
-
 lemma lemma154_card_le_of_fiber_le {A B : Type*}
     [Fintype A] [Fintype B] [DecidableEq B] (f : A → B) (k : Nat)
     (h : ∀ b, Fintype.card {a : A // f a = b} ≤ k) :
@@ -340,13 +248,6 @@ lemma lemma154_card_le_of_fiber_le {A B : Type*}
     (∑ b : B, Fintype.card {a : A // f a = b}) ≤ ∑ _ : B, k :=
       Finset.sum_le_sum fun b _ ↦ h b
     _ = Fintype.card B * k := by simp
-
-end
-
-section
-
-open scoped BigOperators ZMod
-open Finset
 
 lemma fourier_indicator_norm_le_card {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (r : ZMod N) :
@@ -363,13 +264,6 @@ lemma fourier_indicator_norm_le_card {N : Nat} [NeZero N]
       by_cases hx : x ∈ A <;> simp [indicator, hx]
     _ = A.card := by simp
 
-end
-
-section
-
-open scoped BigOperators ZMod
-open Finset
-
 lemma sum_range_pow_le_two_mul_pow (n d : Nat) (hn : 2 ≤ n) :
     (∑ j ∈ Finset.range (d + 1), n ^ j) ≤ 2 * n ^ d := by
   induction d with
@@ -385,20 +279,9 @@ lemma sum_range_pow_le_two_mul_pow (n d : Nat) (hn : 2 ≤ n) :
         _ ≤ n ^ (d + 1) + n ^ (d + 1) := Nat.add_le_add_right hstep _
         _ = 2 * n ^ (d + 1) := by omega
 
-end
-
-section
-
-open scoped BigOperators Pointwise ZMod ComplexConjugate
-open Finset
-
 lemma exponential_zero {N : Nat} [NeZero N] :
     exponential (0 : ZMod N) = 1 := by
   exact AddChar.map_zero_eq_one (ZMod.stdAddChar (N := N))
-
-end
-
-section
 
 theorem lemma55_centeredAbs_intCast_le {N : Nat} [NeZero N] (i : Int) :
     centeredAbs (i : ZMod N) ≤ i.natAbs := by
@@ -412,12 +295,6 @@ theorem lemma55_centeredAbs_intCast_le {N : Nat} [NeZero N] (i : Int) :
       rw [heq, centeredAbs, ZMod.natAbs_valMinAbs_neg]
       exact hnat (n + 1)
 
-end
-
-section
-
-open scoped BigOperators
-
 lemma feature_countWhere_equiv {X Y : Type*} [Fintype X] [Fintype Y]
     (e : X ≃ Y) (P : Y → Prop) :
     countWhere P = countWhere (fun x ↦ P (e x)) := by
@@ -425,24 +302,10 @@ lemma feature_countWhere_equiv {X Y : Type*} [Fintype X] [Fintype Y]
   simp_rw [gcs_countWhere_eq_sum_ite]
   exact (e.sum_comp (fun y ↦ if P y then 1 else 0)).symm
 
-end
-
-section
-
-open scoped BigOperators ZMod
-open Finset
-
 lemma fourier_indicator_zero {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) : fourier (indicator A) 0 = (A.card : Complex) := by
   classical
   simp [fourier, ZMod.dft_apply, indicator]
-
-end
-
-section
-
-open scoped BigOperators Pointwise ZMod
-open Finset
 
 lemma natCast_centeredAbs_eq_or_neg {N : Nat} [NeZero N]
     (r : ZMod N) : (centeredAbs r : ZMod N) = r ∨
@@ -453,13 +316,6 @@ lemma natCast_centeredAbs_eq_or_neg {N : Nat} [NeZero N]
   · exact Or.inl hcast
   · exact Or.inr hcast
 
-end
-
-section
-
-open scoped BigOperators Pointwise ZMod
-open Finset
-
 lemma lemma154_level_subtype_card {N k : Nat} [NeZero N]
     (mu : Point N k → ZMod N) (a : ZMod N) :
     Fintype.card {y : Point N k // mu y = a} =
@@ -469,13 +325,6 @@ lemma lemma154_level_subtype_card {N k : Nat} [NeZero N]
   rw [Finset.filter_congr_decidable]
   exact Fintype.card_subtype (fun y : Point N k => mu y = a)
 
-end
-
-section
-
-open scoped BigOperators ZMod
-open Finset
-
 lemma countWhere_eq_sum_ite {T : Type*} [Fintype T]
     (P : T → Prop) [DecidablePred P] :
     countWhere P = ∑ x : T, if P x then 1 else 0 := by
@@ -483,13 +332,6 @@ lemma countWhere_eq_sum_ite {T : Type*} [Fintype T]
   unfold countWhere
   rw [Finset.filter_congr_decidable]
   simp
-
-end
-
-section
-
-open scoped BigOperators Pointwise ZMod
-open Finset
 
 lemma context_countWhere_prod {X Y : Type*} [Fintype X] [Fintype Y]
     (P : X → Y → Prop) :
@@ -499,24 +341,10 @@ lemma context_countWhere_prod {X Y : Type*} [Fintype X] [Fintype Y]
   simp_rw [gcs_countWhere_eq_sum_ite]
   rw [Fintype.sum_prod_type]
 
-end
-
-section
-
-open scoped BigOperators ZMod
-open Finset
-
 lemma lemma78_indicator_star {N : Nat}
     (A : Finset (ZMod N)) (x : ZMod N) : star (indicator A x) = indicator A x := by
   classical
   by_cases hx : x ∈ A <;> simp [indicator, hx]
-
-end
-
-section
-
-open scoped BigOperators Pointwise ZMod
-open Finset
 
 lemma modInterval_one_carrier {N : Nat} (t : ZMod N) :
     (modInterval N t 1).carrier = {t} := by
@@ -524,34 +352,11 @@ lemma modInterval_one_carrier {N : Nat} (t : ZMod N) :
   ext x
   simp [modInterval, ModAP.carrier]
 
-end
-
-section
-
-open scoped BigOperators Pointwise ZMod
-open Finset
-
-lemma prop141_prod_four {p : Nat} (a b c d : Fin p → Complex) :
-    (∏ i, a i) * (∏ i, b i) * (∏ i, c i) * (∏ i, d i) =
-      ∏ i, a i * b i * c i * d i := by
-  symm
-  simp only [Finset.prod_mul_distrib]
-
-end
-
-section
-
 /-- A constant `c ≤ 2^n` is at most `w^n` for `w ≥ 2`. -/
 theorem const_le_pow {w c : Real} {n : Nat} (hw : 2 ≤ w) (hc : c ≤ 2 ^ n) : c ≤ w ^ n :=
   hc.trans (pow_le_pow_left₀ (by norm_num) hw n)
 
-end
-
-section
-
 theorem centeredAbs_neg {N : Nat} [NeZero N] (x : ZMod N) :
     centeredAbs (-x) = centeredAbs x := ZMod.natAbs_valMinAbs_neg x
-
-end
 
 end LeanProofs.GowersSzemeredi

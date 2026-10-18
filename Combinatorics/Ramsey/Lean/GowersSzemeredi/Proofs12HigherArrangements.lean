@@ -185,55 +185,14 @@ private lemma lemma123_pairToArrangement_injective_on {N : Nat}
     (hPQ : lemma123PairToArrangement P =
       lemma123PairToArrangement Q) :
     P = Q := by
-  have hx := congrArg DArrangement.x hPQ
-  have hy := congrArg DArrangement.y hPQ
-  have hh := congrArg DArrangement.height hPQ
-  have hP1x : P.1.x = Q.1.x := by
-    simpa [lemma123PairToArrangement, DArrangement.x] using congrFun hx 0
-  have hP2x : P.2.x = Q.2.x := by
-    simpa [lemma123PairToArrangement, DArrangement.x] using congrFun hx 3
-  have hP1y : P.1.y = Q.1.y := by
-    simpa [lemma123PairToArrangement, DArrangement.y] using congrFun hy 0
-  have hP1y' : P.1.y' = Q.1.y' := by
-    simpa [lemma123PairToArrangement, DArrangement.y] using congrFun hy 2
-  have hP2y : P.2.y = Q.2.y := by
-    simpa [lemma123PairToArrangement, DArrangement.y] using congrFun hy 3
-  have hP2y' : P.2.y' = Q.2.y' := by
-    simpa [lemma123PairToArrangement, DArrangement.y] using congrFun hy 1
-  have hP1width : P.1.width = Q.1.width := by
-    have hsum : P.1.x + P.1.width = Q.1.x + Q.1.width := by
-      simpa [lemma123PairToArrangement, DArrangement.x] using congrFun hx 2
-    rw [hP1x] at hsum
-    exact add_left_cancel hsum
-  have hP2width : P.2.width = Q.2.width := by
-    have hsum : P.2.x + P.2.width = Q.2.x + Q.2.width := by
-      simpa [lemma123PairToArrangement, DArrangement.x] using congrFun hx 1
-    rw [hP2x] at hsum
-    exact add_left_cancel hsum
-  have hP1height : P.1.height = Q.1.height := by
-    simpa [lemma123PairToArrangement, DArrangement.height] using hh
-  have hP2height : P.2.height = Q.2.height := by
-    calc
-      P.2.height = P.1.height := hP.symm
-      _ = Q.1.height := hP1height
-      _ = Q.2.height := hQ
-  have hfirst : P.1 = Q.1 := by
-    funext i
-    fin_cases i
-    · exact hP1x
-    · exact hP1y
-    · exact hP1y'
-    · exact hP1width
-    · exact hP1height
-  have hsecond : P.2 = Q.2 := by
-    funext i
-    fin_cases i
-    · exact hP2x
-    · exact hP2y
-    · exact hP2y'
-    · exact hP2width
-    · exact hP2height
-  exact Prod.ext hfirst hsecond
+  simp only [lemma123PairToArrangement, VerticalParallelogram.x, VerticalParallelogram.y,
+    VerticalParallelogram.y', VerticalParallelogram.width, VerticalParallelogram.height,
+    Prod.mk.injEq, Matrix.vecCons_inj, and_true] at hPQ
+  obtain ⟨⟨hx1, hw2, hw1, hx2⟩, ⟨hy1, hy2', hy1', hy2⟩, hh⟩ := hPQ
+  rw [hx1, add_right_inj] at hw1
+  rw [hx2, add_right_inj] at hw2
+  refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> fin_cases i <;>
+    first | assumption | exact hP.symm.trans (hh.trans hQ)
 
 private lemma lemma123_pairToArrangement_good {N : Nat} [NeZero N]
     (B : Finset (Pair N)) (phi : Pair N → ZMod N)
@@ -243,63 +202,17 @@ private lemma lemma123_pairToArrangement_good {N : Nat} [NeZero N]
       P.1.value phi = P.2.value phi) :
     (lemma123PairToArrangement P).IsIn B ∧
       (lemma123PairToArrangement P).IsRespected phi := by
-  rcases hP with ⟨hfirstIn, hsecondIn, hwidth, hheight, hvalue⟩
-  have h10 : (P.1.x, P.1.y) ∈ B := by
-    apply hfirstIn
-    simp [VerticalParallelogram.carrier]
-  have h11 : (P.1.x, P.1.y + P.1.height) ∈ B := by
-    apply hfirstIn
-    simp [VerticalParallelogram.carrier]
-  have h12 : (P.1.x + P.1.width, P.1.y') ∈ B := by
-    apply hfirstIn
-    simp [VerticalParallelogram.carrier]
-  have h13 : (P.1.x + P.1.width, P.1.y' + P.1.height) ∈ B := by
-    apply hfirstIn
-    simp [VerticalParallelogram.carrier]
-  have h20 : (P.2.x, P.2.y) ∈ B := by
-    apply hsecondIn
-    simp [VerticalParallelogram.carrier]
-  have h21 : (P.2.x, P.2.y + P.2.height) ∈ B := by
-    apply hsecondIn
-    simp [VerticalParallelogram.carrier]
-  have h22 : (P.2.x + P.2.width, P.2.y') ∈ B := by
-    apply hsecondIn
-    simp [VerticalParallelogram.carrier]
-  have h23 : (P.2.x + P.2.width, P.2.y' + P.2.height) ∈ B := by
-    apply hsecondIn
-    simp [VerticalParallelogram.carrier]
-  constructor
-  · unfold DArrangement.IsIn
-    constructor
-    · apply (lemma122_additiveTuple_two_iff _).mpr
-      change P.1.x + (P.2.x + P.2.width) =
-        (P.1.x + P.1.width) + P.2.x
-      rw [hwidth]
-      abel
-    · intro i
-      fin_cases i
-      · simpa [lemma123PairToArrangement, DArrangement.x,
-          DArrangement.y, DArrangement.height] using And.intro h10 h11
-      · rw [← hheight] at h23
-        simpa [lemma123PairToArrangement, DArrangement.x,
-          DArrangement.y, DArrangement.height] using And.intro h22 h23
-      · simpa [lemma123PairToArrangement, DArrangement.x,
-          DArrangement.y, DArrangement.height] using And.intro h12 h13
-      · rw [← hheight] at h21
-        simpa [lemma123PairToArrangement, DArrangement.x,
-          DArrangement.y, DArrangement.height] using And.intro h20 h21
-  · unfold DArrangement.IsRespected
-    apply (lemma122_additiveTuple_two_iff _).mpr
-    change
-      (phi (P.1.x, P.1.y + P.1.height) - phi (P.1.x, P.1.y)) +
-          (phi (P.2.x + P.2.width, P.2.y' + P.1.height) -
-            phi (P.2.x + P.2.width, P.2.y')) =
-        (phi (P.1.x + P.1.width, P.1.y' + P.1.height) -
-            phi (P.1.x + P.1.width, P.1.y')) +
-          (phi (P.2.x, P.2.y + P.1.height) - phi (P.2.x, P.2.y))
-    unfold VerticalParallelogram.value at hvalue
-    rw [← hheight] at hvalue
-    linear_combination -hvalue
+  obtain ⟨h1, h2, hwidth, hheight, hvalue⟩ := hP
+  simp only [VerticalParallelogram.IsIn, VerticalParallelogram.carrier, Finset.insert_subset_iff,
+    Finset.singleton_subset_iff, ← hheight] at h1 h2
+  simp only [VerticalParallelogram.value, ← hheight] at hvalue
+  refine ⟨⟨(lemma122_additiveTuple_two_iff _).mpr ?_, fun i => ?_⟩,
+    (lemma122_additiveTuple_two_iff _).mpr ?_⟩ <;>
+    simp only [lemma123PairToArrangement, DArrangement.x, DArrangement.y, DArrangement.height,
+      Matrix.cons_val]
+  · linear_combination -hwidth
+  · fin_cases i <;> simp [h1, h2]
+  · linear_combination -hvalue
 
 private lemma lemma123_parallelogram_count_le {N : Nat} [NeZero N]
     (B : Finset (Pair N)) (phi : Pair N → ZMod N) :

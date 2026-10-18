@@ -75,12 +75,9 @@ private lemma int_Ico_zpow_sum_eq (M : Nat) (q : Complex) (hq : q ≠ 0) :
     (∑ x ∈ Finset.Ico (-(M : Int)) (M : Int), q ^ x) =
       q ^ (-(M : Int)) * ∑ i ∈ Finset.range (2 * M), q ^ i := by
   rw [Int.Ico_eq_finset_map, Finset.sum_map]
-  have hlen : ((M : Int) - -(M : Int)).toNat = 2 * M := by
-    simp only [sub_neg_eq_add]
-    omega
+  have hlen : ((M : Int) - -(M : Int)).toNat = 2 * M := by omega
   rw [hlen, Finset.mul_sum]
-  apply Finset.sum_congr rfl
-  intro i _
+  refine Finset.sum_congr rfl fun i _ => ?_
   change q ^ (-(M : Int) + (i : Int)) = q ^ (-(M : Int)) * q ^ i
   rw [zpow_add₀ hq, zpow_natCast]
 
@@ -111,16 +108,11 @@ private lemma stdAddChar_neg_eq_exp_valMinAbs {N : Nat} [NeZero N]
     ZMod.stdAddChar (-r) =
       Complex.exp (Complex.I * (-(2 * Real.pi * (r.valMinAbs : Real) / N) : Real)) := by
   calc
-    ZMod.stdAddChar (-r) = ZMod.stdAddChar ((-r.valMinAbs : Int) : ZMod N) := by
-      congr 1
-      simp
+    ZMod.stdAddChar (-r) = ZMod.stdAddChar ((-r.valMinAbs : Int) : ZMod N) := by norm_num
     _ = Complex.exp (2 * Real.pi * Complex.I * (-r.valMinAbs : Int) / N) :=
       ZMod.stdAddChar_coe (-r.valMinAbs)
     _ = Complex.exp (Complex.I *
-        (-(2 * Real.pi * (r.valMinAbs : Real) / N) : Real)) := by
-      congr 1
-      push_cast
-      ring
+        (-(2 * Real.pi * (r.valMinAbs : Real) / N) : Real)) := by push_cast; ring
 
 /-- Jordan's inequality gives a uniform lower bound for the denominator in a
 finite geometric character sum. -/

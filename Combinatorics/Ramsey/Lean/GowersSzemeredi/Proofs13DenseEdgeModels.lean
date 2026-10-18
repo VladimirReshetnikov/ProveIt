@@ -20,41 +20,20 @@ theorem section13_dense_normalization {beta : Real} (hβ : 1 / 6 < beta) :
   refine ⟨hk, (le_div_iff₀ hkreal).mpr ?_, (div_le_iff₀ hkreal).mpr ?_⟩ <;>
     linarith only [hβ, hlower, hupper]
 
-/-- The small-edge-density case only needs the edge density at most 1/6;
-the original context may have any density at most one. -/
-theorem section13_small_edge_model {N : Nat} [NeZero N]
-    (S : Section13Context N) (h : ZMod N) (hh : IsStrongHeight S h)
-    (hβsixth : section13EdgeDensity S h ≤ 1 / 6) :
-    let beta := section13EdgeDensity S h
-    let K := domainLargeSpectrum (section13VerticalDomain S.A h)
-      (section10Lambda beta * N * N)
-    ∃ Y : Finset (Pair N), ∃ psi : ZMod N → ZMod N,
-      Y ⊆ verticalEdgeDomain S.A h ∧
-      (2 : Real) ^ (-(43 : Int)) * S.alpha ^ 224 * (N : Real) ^ 2 ≤ Y.card ∧
-      HasBohrDifferenceModel (section13EdgeIndexDomain N) (verticalPhiDifference S.phi h)
-        K (section10Zeta beta) Y psi := by
-  have hbounds := section13_edge_density_bounds S h hh
-  obtain ⟨Y, psi, hsub, hmass, hmodel⟩ := section13_good_height_bohr_model S h hh.2
-    (section13EdgeDensity S h) hbounds.1 hβsixth (section13_edge_density_card S h)
-  refine ⟨Y, psi, hsub, ?_, hmodel⟩
-  let a : Real := S.alpha ^ 32 / 16
-  have ha : 0 ≤ a := by dsimp [a]; positivity
-  have hpow : a ^ 6 ≤ section13EdgeDensity S h ^ 6 := pow_le_pow_left₀ ha hbounds.2.1 6
-  have hedge : a * (N : Real) ^ 2 ≤ (verticalEdgeDomain S.A h).card :=
-    section13_strong_height_edge_density S h hh
-  have hproduct : a ^ 6 * (a * (N : Real) ^ 2) ≤
-      section13EdgeDensity S h ^ 6 * (verticalEdgeDomain S.A h).card :=
-    mul_le_mul hpow hedge (by positivity) (by positivity)
-  have hpower : a ^ 6 * a = S.alpha ^ 224 / (2 : Real) ^ 28 := by dsimp [a]; ring
-  calc
-    _ ≤ (S.alpha ^ 224 / (2 : Real) ^ 28) * (N : Real) ^ 2 / 20000 := by
-      norm_num [zpow_neg]
-      have hnonneg := mul_nonneg (pow_nonneg S.alpha_pos.le 224) (sq_nonneg (N : Real))
-      nlinarith only [hnonneg]
-    _ = a ^ 6 * (a * (N : Real) ^ 2) / 20000 := by rw [← hpower]; ring
-    _ ≤ section13EdgeDensity S h ^ 6 * (verticalEdgeDomain S.A h).card / 20000 :=
-      div_le_div_of_nonneg_right hproduct (by norm_num)
-    _ ≤ Y.card := hmass
+/-- A selected mass `b ^ 6 * |E| / 20000` with `alpha ^ 32 / 16 ≤ b` is at least
+`2^-43 alpha^224 N^2`. -/
+private theorem section13_edge_model_mass {N : Nat} [NeZero N]
+    (S : Section13Context N) (h : ZMod N) (hh : IsStrongHeight S h) {b : Real}
+    (hb : S.alpha ^ 32 / 16 ≤ b) :
+    (2 : Real) ^ (-(43 : Int)) * S.alpha ^ 224 * (N : Real) ^ 2 ≤
+      b ^ 6 * (verticalEdgeDomain S.A h).card / 20000 := by
+  calc (2 : Real) ^ (-(43 : Int)) * S.alpha ^ 224 * (N : Real) ^ 2
+      ≤ (S.alpha ^ 32 / 16) ^ 6 * (S.alpha ^ 32 / 16 * (N : Real) ^ 2) / 20000 := by
+        rw [zpow_neg, zpow_ofNat]
+        linarith [(by positivity : (0 : Real) ≤ S.alpha ^ 224 * (N : Real) ^ 2)]
+    _ ≤ _ := by
+        gcongr
+        exact section13_strong_height_edge_density S h hh
 
 /-- Uniform strong-height Bohr models for every ambient density at most one.
 The spectrum, radius, and selected mass are unchanged from the small-density
@@ -68,71 +47,24 @@ theorem section13_uniform_height_model_all_densities {N : Nat} [NeZero N]
       (2 : Real) ^ (-(43 : Int)) * S.alpha ^ 224 * (N : Real) ^ 2 ≤ Y.card ∧
       HasBohrDifferenceModel (section13EdgeIndexDomain N) (verticalPhiDifference S.phi h)
         K (section10Zeta a) Y psi := by
-  let a : Real := S.alpha ^ 32 / 16
-  let beta := section13EdgeDensity S h
   have hbounds := section13_edge_density_bounds S h hh
-  have ha : 0 < a := div_pos (pow_pos S.alpha_pos _) (by norm_num)
-  have hβ : 0 < beta := hbounds.1
-  have hβone : beta ≤ 1 := hbounds.2.2.trans S.alpha_at_most_one
-  by_cases hsmall : beta ≤ 1 / 6
-  · obtain ⟨Y, psi, hY, hmass, hmodel⟩ := section13_small_edge_model S h hh hsmall
-    refine ⟨Y, psi, hY, hmass, ?_⟩
-    apply bohr_difference_model_restrict _ _ _ _ _ _ _ _ hmodel
-    apply bohr_domain_mono ?_ (section10Zeta_mono ha hbounds.2.1 hβone)
-    intro r hr
-    apply Finset.mem_filter.mpr
-    refine ⟨Finset.mem_univ _, ?_⟩
-    have hlam : section10Lambda a ≤ section10Lambda beta := by
-      unfold section10Lambda
-      exact mul_le_mul_of_nonneg_left (Real.rpow_le_rpow ha.le hbounds.2.1 (by norm_num)) (by positivity)
-    exact (mul_le_mul_of_nonneg_right
-      (mul_le_mul_of_nonneg_right hlam (Nat.cast_nonneg N)) (Nat.cast_nonneg N)).trans
-        (Finset.mem_filter.mp hr).2
-  · have hdense : 1 / 6 < beta := lt_of_not_ge hsmall
-    let k := Nat.ceil (6 * beta)
-    let b := beta / k
-    obtain ⟨hk, hbmin, hbmax⟩ := section13_dense_normalization hdense
-    have hkR : (0 : Real) < k := by exact_mod_cast hk
-    have hb : 0 < b := div_pos hβ hkR
-    have hab : a ≤ b := by
-      have hpow := pow_le_one₀ S.alpha_pos.le S.alpha_at_most_one (n := 32)
-      dsimp [a]
-      linarith only [hpow, hbmin]
-    have hcap : N ≤ k * N := by nlinarith only [hk]
-    have hcard : ((verticalEdgeDomain S.A h).card : Real) = b * (k * N : Nat) * N := by
-      rw [section13_edge_density_card]
-      dsimp [b, beta]
-      push_cast
-      field_simp
-    obtain ⟨Y, psi, hY, hmass, hmodel⟩ := section13_good_height_model_with_cap S h hh.2
-      (k * N) hcap b hb hbmax hcard
-    refine ⟨Y, psi, hY, ?_, ?_⟩
-    · have hpow := pow_le_pow_left₀ (by norm_num : (0 : Real) ≤ 1 / 12) hbmin 6
-      have hprod : (1 / 12 : Real) ^ 6 * (1 / 6) ≤ b ^ 6 * beta :=
-        mul_le_mul hpow hdense.le (by norm_num) (pow_nonneg hb.le _)
-      have hαpow := pow_le_one₀ S.alpha_pos.le S.alpha_at_most_one (n := 224)
-      have hcoeff : (2 : Real) ^ (-(43 : Int)) * S.alpha ^ 224 ≤ b ^ 6 * beta / 20000 := by
-        norm_num [zpow_neg] at hprod ⊢
-        nlinarith only [hprod, hαpow]
-      calc
-        _ ≤ b ^ 6 * beta / 20000 * (N : Real) ^ 2 := mul_le_mul_of_nonneg_right hcoeff (sq_nonneg _)
-        _ = b ^ 6 * (verticalEdgeDomain S.A h).card / 20000 := by
-          rw [section13_edge_density_card]
-          dsimp [beta]
-          ring
-        _ ≤ Y.card := hmass
-    · apply bohr_difference_model_restrict _ _ _ _ _ _ _ _ hmodel
-      apply bohr_domain_mono ?_ (section10Zeta_mono ha hab (hbmax.trans (by norm_num)))
-      intro r hr
-      apply Finset.mem_filter.mpr
-      refine ⟨Finset.mem_univ _, ?_⟩
-      have hlam : section10Lambda a ≤ section10Lambda b := by
-        unfold section10Lambda
-        exact mul_le_mul_of_nonneg_left (Real.rpow_le_rpow ha.le hab (by norm_num)) (by positivity)
-      have hcapR : (N : Real) ≤ (k * N : Nat) := by exact_mod_cast hcap
-      have hlampos : 0 ≤ section10Lambda b := by unfold section10Lambda; positivity
-      exact (mul_le_mul_of_nonneg_right
-        (mul_le_mul hlam hcapR (Nat.cast_nonneg _) hlampos) (Nat.cast_nonneg N)).trans
-          (Finset.mem_filter.mp hr).2
+  have ha : 0 < S.alpha ^ 32 / 16 := div_pos (pow_pos S.alpha_pos _) (by norm_num)
+  obtain ⟨k, hk, hab, hb6⟩ : ∃ k : Nat, 0 < k ∧
+      S.alpha ^ 32 / 16 ≤ section13EdgeDensity S h / k ∧ section13EdgeDensity S h / k ≤ 1 / 6 := by
+    by_cases hsmall : section13EdgeDensity S h ≤ 1 / 6
+    · exact ⟨1, one_pos, by simpa using hbounds.2.1, by simpa using hsmall⟩
+    obtain ⟨hk, hbmin, hbmax⟩ := section13_dense_normalization (lt_of_not_ge hsmall)
+    refine ⟨_, hk, le_trans ?_ hbmin, hbmax⟩
+    linarith [pow_le_one₀ S.alpha_pos.le S.alpha_at_most_one (n := 32)]
+  have hb : 0 < section13EdgeDensity S h / k := ha.trans_le hab
+  have hcap : N ≤ k * N := Nat.le_mul_of_pos_left N hk
+  obtain ⟨Y, psi, hY, hmass, hmodel⟩ := section13_good_height_model_with_cap S h hh.2 (k * N)
+    hcap _ hb hb6 (by rw [section13_edge_density_card]; push_cast; field_simp)
+  refine ⟨Y, psi, hY, (section13_edge_model_mass S h hh hab).trans hmass,
+    bohr_difference_model_restrict _ _ _ _ _ _ _ _ hmodel (bohr_domain_mono (fun r hr => ?_)
+      (section10Zeta_mono ha hab (hb6.trans (by norm_num))))⟩
+  refine Finset.mem_filter.mpr ⟨Finset.mem_univ _, le_trans ?_ (Finset.mem_filter.mp hr).2⟩
+  unfold section10Lambda
+  gcongr
 
 end LeanProofs.GowersSzemeredi

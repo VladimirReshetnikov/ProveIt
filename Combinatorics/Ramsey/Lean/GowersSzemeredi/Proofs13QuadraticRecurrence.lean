@@ -119,83 +119,28 @@ theorem stage135_critical_count_of_weight {N : Nat} [NeZero N]
     S.alpha ^ 32 * Q.length / 16 ≤
       (criticalHeights S D ⟨Q⟩).card := by
   classical
-  change S.alpha ^ 32 * Q.length / 16 ≤
-    (((Q.carrier ∩ D.H).filter (IsStrongHeight S)).card : Real)
   let G := (Q.carrier ∩ D.H).filter (IsGoodHeight S)
-  let K := G.filter fun h =>
-    S.alpha ^ 32 * (N : Real) ^ 31 / 16 ≤ section13C S h
-  have hNpos : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hNpow : (0 : Real) < (N : Real) ^ 31 := pow_pos hNpos 31
-  have hthresholdNonneg :
-      0 ≤ S.alpha ^ 32 * (N : Real) ^ 31 / 16 := by positivity
-  have hsumUpper : (goodHeightWeight S (Q.carrier ∩ D.H) : Real) ≤
-      (K.card : Real) * (N : Real) ^ 31 +
-        S.alpha ^ 32 * (N : Real) ^ 31 / 16 * Q.length := by
-    unfold goodHeightWeight
-    change ((G.sum (section13C S) : Nat) : Real) ≤ _
-    rw [Nat.cast_sum]
-    calc
-      ∑ h ∈ G, (section13C S h : Real) ≤
-          ∑ h ∈ G, if h ∈ K then (N : Real) ^ 31
-            else S.alpha ^ 32 * (N : Real) ^ 31 / 16 := by
-        apply Finset.sum_le_sum
-        intro h hh
-        by_cases hk : h ∈ K
-        · rw [if_pos hk]
-          have hc : ((section13C S h : Nat) : Real) ≤
-              ((N ^ 31 : Nat) : Real) := by
-            exact_mod_cast stage135_sectionC_upper S h
-          simpa only [Nat.cast_pow] using hc
-        · rw [if_neg hk]
-          have hnot : ¬ S.alpha ^ 32 * (N : Real) ^ 31 / 16 ≤
-              section13C S h := by
-            exact fun hs => hk (Finset.mem_filter.mpr ⟨hh, hs⟩)
-          exact le_of_lt (lt_of_not_ge hnot)
-      _ ≤ (K.card : Real) * (N : Real) ^ 31 +
-          (G.card : Real) *
-            (S.alpha ^ 32 * (N : Real) ^ 31 / 16) := by
-        calc
-          (∑ h ∈ G, if h ∈ K then (N : Real) ^ 31
-              else S.alpha ^ 32 * (N : Real) ^ 31 / 16) ≤
-              (∑ h ∈ G, if h ∈ K then (N : Real) ^ 31 else 0) +
-                ∑ _h ∈ G, S.alpha ^ 32 * (N : Real) ^ 31 / 16 := by
-            rw [← Finset.sum_add_distrib]
-            apply Finset.sum_le_sum
-            intro h _
-            by_cases hk : h ∈ K <;> simp [hk, hthresholdNonneg]
-          _ = _ := by
-            have hKG : K ⊆ G := Finset.filter_subset _ _
-            rw [Finset.sum_ite_mem, Finset.inter_eq_right.mpr hKG]
-            simp only [Finset.sum_const, nsmul_eq_mul]
-      _ ≤ (K.card : Real) * (N : Real) ^ 31 +
-          S.alpha ^ 32 * (N : Real) ^ 31 / 16 * Q.length := by
-        have hGQ : G.card ≤ Q.length := by
-          calc
-            G.card ≤ (Q.carrier ∩ D.H).card := Finset.card_filter_le _ _
-            _ ≤ Q.carrier.card := Finset.card_le_card (Finset.inter_subset_left)
-            _ = Q.length := hQproper
-        have hGQreal : (G.card : Real) ≤ Q.length := by exact_mod_cast hGQ
-        calc
-          (K.card : Real) * (N : Real) ^ 31 +
-              (G.card : Real) *
-                (S.alpha ^ 32 * (N : Real) ^ 31 / 16) ≤
-              (K.card : Real) * (N : Real) ^ 31 +
-                Q.length *
-                  (S.alpha ^ 32 * (N : Real) ^ 31 / 16) := by
-            gcongr
-          _ = _ := by ring
-  have hKlower : S.alpha ^ 32 * Q.length / 16 ≤ (K.card : Real) := by
-    have hmul :
-        (S.alpha ^ 32 * Q.length / 16) * (N : Real) ^ 31 ≤
-          (K.card : Real) * (N : Real) ^ 31 := by
-      nlinarith
-    exact le_of_mul_le_mul_right hmul hNpow
-  have hKcritical : K =
-      (Q.carrier ∩ D.H).filter (IsStrongHeight S) := by
+  let p := fun h => S.alpha ^ 32 * (N : Real) ^ 31 / 16 ≤ section13C S h
+  have hK : criticalHeights S D ⟨Q⟩ = G.filter p := by
     ext h
-    simp only [K, G, Finset.mem_filter, IsStrongHeight]
+    simp only [criticalHeights, G, p, Finset.mem_filter, IsStrongHeight]
     tauto
-  rw [← hKcritical]
-  exact hKlower
+  have hw : (goodHeightWeight S (Q.carrier ∩ D.H) : Real) =
+      ∑ h ∈ G.filter p, (section13C S h : Real) +
+        ∑ h ∈ G.filter (¬p ·), (section13C S h : Real) := by
+    rw [Finset.sum_filter_add_sum_filter_not]
+    exact Nat.cast_sum _ _
+  have h1 := Finset.sum_le_card_nsmul (G.filter p) (fun h => (section13C S h : Real))
+    ((N : Real) ^ 31) fun h _ => by exact_mod_cast stage135_sectionC_upper S h
+  have h2 := Finset.sum_le_card_nsmul (G.filter (¬p ·)) (fun h => (section13C S h : Real))
+    (S.alpha ^ 32 * (N : Real) ^ 31 / 16) fun h hh => (not_le.mp (Finset.mem_filter.mp hh).2).le
+  have hG : ((G.filter (¬p ·)).card : Real) ≤ Q.length := by
+    exact_mod_cast ((Finset.card_filter_le _ _).trans (Finset.card_filter_le _ _)).trans
+      ((Finset.card_le_card Finset.inter_subset_left).trans (le_of_eq hQproper))
+  rw [nsmul_eq_mul] at h1 h2
+  rw [hK]
+  refine le_of_mul_le_mul_right ?_ (pow_pos (Nat.cast_pos.mpr (NeZero.pos N)) 31)
+  linarith [mul_le_mul_of_nonneg_right hG
+    (by positivity : (0 : Real) ≤ S.alpha ^ 32 * (N : Real) ^ 31 / 16)]
 
 end LeanProofs.GowersSzemeredi
