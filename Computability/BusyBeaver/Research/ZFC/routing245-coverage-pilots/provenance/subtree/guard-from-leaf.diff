@@ -1,0 +1,215 @@
+--- checked-leaf/check-pilots.py
++++ subtrees/check-subtrees.py
+@@ -1,8 +1,9 @@
+ #!/usr/bin/env python3
+-"""Serial routing245 leaf measurements, each with a shared120-second source/audit budget.
+-
+-Uses exact successful SiteRouting245 and ProgramRouting245 providers. Each leaf
+-proves actual-tree linkage and acceptance at fuel4000; CD includes both guards.
++"""Serial routing245 subtree measurements, each with a shared120-second source/audit budget.
++
++Uses exact successful SiteRouting245 and ProgramRouting245 providers plus the
++checked generic SiteCoverage provider. Each actual-tree subtree retains its full
++reverse prefix and checks fuel4000, including both CD guards.
+ No complete coverage, bootstrap or PA endpoint is claimed. No dependency build,
+ download or compiler/version call in prepare-only. Existing caches are required.
+ """
+@@ -10,18 +11,22 @@
+ import argparse, hashlib, json, os, re, shutil, subprocess, time
+ 
+ HERE=Path(__file__).resolve().parent
+-MANIFEST_SHA='032d42a2d8d8de138482b025d7759d725139a3ed056ed25213b3af61a2e2e5f1'
+-GENERATOR_SHA='178c3e081ce28d4c684da47c84cb40407d148aeeeb3031a416c565d262468cc4'
++MANIFEST_SHA='c861f4b83dd94980edaece32b92c74f5a7e876d3c920ece6a616e7fd8d6cf60b'
++GENERATOR_SHA='146176f7f6cc8c53d673e8d3a544e3af865b5cfbe2442e7dd871a293a751fca1'
++BOUNDARY_SHA='b4a29c4fcc41e07cfb8c8117e5efd3e6754d6148ba3c37f53a86481369bb0e4d'
++COVERAGE_EVIDENCE=('Computability/BusyBeaver/Research/ZFC/results/prefix246-runtime-verification.json',
++ '1965fff0430079cec4e3bb067a22ca05ef2d526fe97fae1e7c74fab1e7fa506f')
+ PARENTS={
+  'site':('/tmp/zfc-routing245-lean/site/run1/verification.json','c50747f277b2b9d9f732240e031fb9ef7d494bec5e4f9f24a1b5522ce124e746','BusyBeaver.ZFC.SiteRouting245',12,13),
+  'program':('Computability/BusyBeaver/Research/ZFC/results/program-routing245-verification.json','1efd9f64fc8067e85518fc9968752a9a10f78cdeb4f24aa8dd9e8c58d2a53c71','BusyBeaver.ZFC.ProgramRouting245',11,13),
+ }
+ COMPILER_SHA='e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550'
+ TOOLS={'Init':'d2e85d72099f9d869c9582aad5fb13079968d9d121ac6061e8326b00800b306e','Lean.Elab.Tactic.Omega':'eb766bae1ab40110a853c7cca853e36e1f4aece010a09fa4dd9b1b48116953fe'}
+-ORDER=[1704,1609,1703,1705,1720,4730,6324]
+-EXPECTED_CASES={1704:(51,'CI',1,1,3),1705:(51,'CC',2,1,3),1609:(42,'CD',2,2,5),1703:(50,'CD',6,2,5),1720:(47,'CB',1,1,3),4730:(35,'CC',2,1,3),6324:(13,'CH',None,1,3)}
+-DIRECT=['BusyBeaver.ZFC.ProgramRouting245','BusyBeaver.ZFC.SiteRouting245']
+-PROBES=['actual_leaf','site_checked']
++ORDER=[70,174,0]
++EXPECTED_CUTS={70:('1110100100101011010101000110111010111001',1684,1717,33,43,11),
++ 174:('111010010010101101010101111111',4684,4731,47,61,11),0:('0',0,10,10,13,5)}
++DIRECT=['BusyBeaver.ZFC.ProgramRouting245','BusyBeaver.ZFC.SiteCoverage','BusyBeaver.ZFC.SiteRouting245']
++PROBES=['checked']
+ TIMEOUT=120
+ 
+ def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+@@ -34,17 +39,18 @@
+ def run_unit(args,plan,unit,work):
+  repo=args.repo.resolve();manifest=args.manifest.resolve();generator=args.generator.resolve()
+  module=unit['module'];prefix='SetTheory.BusyBeaver.ZFC.'+module.rsplit('.',1)[1]+'.'
+- i=unit['site_index'];depth,opcode,operand,guards,callers=EXPECTED_CASES[i]
++ i=unit['index'];path,lo,hi,leaves,guards,height=EXPECTED_CUTS[i];callers=2
+  need(not work.exists() and not work.is_relative_to(repo),'Use a fresh external unit output.')
+- need(module==f'BusyBeaver.ZFC.SitesRouting245Pilot{i:04d}' and unit['depth']==depth and
+-      unit['opcode']==opcode and unit['operand']==operand and unit['guards']==guards and
+-      unit['probes']==2 and unit['callers']==callers and unit['imports']==DIRECT,'Unit descriptor differs.')
++ need(module==f'BusyBeaver.ZFC.SitesRouting245CutPilot{i:03d}' and
++      tuple(unit[k] for k in ('path','lo','hi','leaves','guards','height'))==(path,lo,hi,leaves,guards,height) and
++      unit['probes']==1 and unit['callers']==callers and unit['imports']==DIRECT,'Unit descriptor differs.')
+  source=Path(unit['source']['path']).resolve();audit=Path(unit['audit']['path']).resolve()
+- inputs=[Path(__file__).resolve(),manifest,generator]
++ boundary=HERE/'boundary-plan.json';need(sha(boundary)==BOUNDARY_SHA,'Changed boundary inventory.')
++ inputs=[Path(__file__).resolve(),manifest,generator,boundary]
+  for entry in plan['inputs']:
+   p=Path(entry['path']).resolve();need(sha(p)==entry['sha256'],'Changed selected metadata input '+str(p));inputs.append(p)
+- # Revalidate every frozen pilot source/audit, even when selecting one leaf.
+- for entry in plan['pilots']:
++ # Revalidate every frozen source/audit, even when selecting one subtree.
++ for entry in plan['selected_units']:
+   for role in ('source','audit'):
+    p=Path(entry[role]['path']).resolve();need(sha(p)==entry[role]['sha256'],'Changed pilot '+str(p));inputs.append(p)
+  need(sha(manifest)==MANIFEST_SHA and sha(generator)==GENERATOR_SHA,'Changed pilot manifest/emitter.')
+@@ -56,10 +62,14 @@
+  for text in (st,at):
+   need(not re.search(r'\b(sorry|admit|native_decide)\b|^axiom\s',text,re.M),'Forbidden proof shortcut.')
+   need(not re.search(r'set_option\s+(maxHeartbeats|maxRecDepth)',text),'Keep default proof limits.')
+- expected_path='['+', '.join('true' if b=='1' else 'false' for b in unit['path'])+']'
+- expected_edge='.halt' if opcode=='CH' else '.'+{'CI':'inc','CD':'decnz','CB':'brk','CC':'cont'}[opcode]+' '+str(operand)
+- need(f'def path : List Bool := {expected_path}\n' in st and f'def instruction : Edge := {expected_edge}\n' in st,
+-      'Literal source case differs from manifest.')
++ literal=lambda bits:'['+', '.join('true' if b=='1' else 'false' for b in bits)+']'
++ expected_path=literal(path);reverse_path=literal(path[::-1])
++ goal=f'allSites SiteRouting245.checkSite {reverse_path}\n      (descend TreeRouting245.tree {expected_path}) = true'
++ need(f'theorem checked :\n    {goal} := by\n  decide +kernel\n' in st,'Exact subtree proposition/proof differs.')
++ need(f'example : {goal} := checked' in at and
++      f'(hl : LeafAt (descend TreeRouting245.tree {expected_path}) Q e)' in at and
++      f'SiteRouting245.checkSite ({reverse_path}.reverse ++ Q) e = true :=' in at and
++      f'allSites_sound SiteRouting245.checkSite hl {reverse_path} checked' in at,'Typed subtree audit clients differ.')
+  selected={};evidence={};summaries=[];compiler=None;version=None;tool_pins={}
+  def add(q,e):
+   m=q['module'];s=Path(q['source']).resolve();o=Path(q['object']).resolve()
+@@ -111,6 +121,31 @@
+    tool_pins[t['module']]=t['object_sha256']
+   for ref in parent.get('provider_evidence',parent.get('parent_evidence',[])):
+    p=Path(ref['path']).resolve();need(sha(p)==ref['sha256'],'Parent provenance record changed.');evidence[str(p)]=ref['sha256'];inputs.append(p)
++ # Select only the checked generic SiteCoverage pair from this older record.
++ # Its unrelated Prefix246 runtime providers are neither imported nor promoted.
++ e=args.coverage_evidence.resolve();need(sha(e)==COVERAGE_EVIDENCE[1],'Changed generic coverage evidence.')
++ parent=json.loads(e.read_text());evidence[str(e)]=COVERAGE_EVIDENCE[1];inputs.append(e)
++ need(parent['status']=='PASS' and parent['prepare_only'] is False and parent['only_standard_axioms'] is True and
++      parent['all_input_provider_postchecks'] is True and parent['all_fresh_objects_unchanged_after_audit'] is True and
++      parent['source_object_recorded_before_audit'] is True and parent['before']==parent['after'] and
++      (parent['named_axiom_probes'],parent['callers'])==(11,12),'Incomplete generic coverage provider evidence.')
++ need([q['label'] for q in parent['commands']]==['source','audit'] and
++      all(q['exit_code']==0 and not q.get('timed_out',False) for q in parent['commands']),'Generic evidence command failure.')
++ need(Path(parent['compiler']['path']).resolve()==compiler and parent['compiler']['sha256']==COMPILER_SHA and
++      parent['compiler']['version']==version,'Generic provider compiler differs.')
++ rows=[q for q in parent['reused_modules'] if q['module']=='BusyBeaver.ZFC.SiteCoverage']
++ actuals=[q for q in parent['actual_first_providers'] if q['module']=='BusyBeaver.ZFC.SiteCoverage']
++ need(len(rows)==len(actuals)==1,'Generic coverage provider missing or duplicated.')
++ q=rows[0];actual=actuals[0]
++ for k in ('source','object'):
++  need(parent['before'][q[k]]==parent['after'][q[k]]==q[k+'_sha256'],'Generic provider pre/post binding differs.')
++ need(actual['sha256']==q['object_sha256'] and first_path(actual)==Path(q['object']).resolve(),'Generic actual provider differs.')
++ add(q,e);summaries.append(dict(label='generic_coverage',evidence=str(e),module=q['module'],reused_provider_only=True,
++                               source_sha256=q['source_sha256'],object_sha256=q['object_sha256']))
++ expected={q['module']:q for q in json.loads(boundary.read_text())['providers']}
++ need(set(expected)==set(selected),'Provider set differs from frozen boundary inventory.')
++ for m,q in selected.items():
++  need(all(q[k]==expected[m][k] for k in ('source','source_sha256','object','object_sha256')),'Provider inventory differs '+m)
+  need(tool_pins==TOOLS,'Exact Init/Omega tool boundary differs.')
+  site_source=Path(selected['BusyBeaver.ZFC.SiteRouting245']['source'])
+  need(re.search(r'^def minDistance : Nat := 64$',site_source.read_text(),re.M) and
+@@ -124,7 +159,7 @@
+    else:visit(n)
+   visiting.remove(m);closure.append(m)
+  for m in DIRECT:visit(m)
+- need(set(closure)==set(selected) and len(closure)==22,'Exact22-project closure differs.')
++ need(set(closure)==set(selected) and len(closure)==23,'Exact23-project closure differs.')
+  need(tool_names==set(TOOLS),'Unexpected tool boundary.')
+  toolroot=compiler.parent.parent/'lib/lean'
+  inputs.append(compiler)
+@@ -152,14 +187,14 @@
+  inputs.extend([ss,aa]);inputs=list(dict.fromkeys(p.resolve() for p in inputs));before={str(p):sha(p) for p in inputs}
+  env=dict(os.environ,LEAN_PATH=str(cache),LEAN_NUM_THREADS='1',LEAN_SYSROOT=str(compiler.parent.parent),PYTHONDONTWRITEBYTECODE='1')
+  record=dict(status='PREPARED_NOT_BUILT' if args.prepare_only else 'RUNNING',prepare_only=args.prepare_only,scope=__doc__,
+-  leaf_index=i,path_bits=unit['path'],depth=depth,opcode=opcode,operand=operand,guard_cases=guards,site_fuel=4000,margin=64,
++  cut_index=i,path_bits=path,leaf_interval=[lo,hi],leaf_count=leaves,subtree_height=height,guard_cases=guards,site_fuel=4000,margin=64,
+   compiler=dict(path=str(compiler),version=version,sha256=sha(compiler),compiler_version_query_performed=False),compiler_version_query_performed=False,
+   source_overridden=False,audit_overridden=False,source=dict(path=str(source),sha256=sha(source),snapshot=str(ss)),audit=dict(path=str(audit),sha256=sha(audit),snapshot=str(aa)),
+-  manifest=descriptor(manifest),generator=descriptor(generator),provider_evidence=[dict(path=p,sha256=h) for p,h in evidence.items()],parent_summaries=summaries,
+-  reused_modules=[selected[m] for m in closure],exact_project_import_closure=True,project_module_count=22,external_project_boundaries=[],
++  manifest=descriptor(manifest),generator=descriptor(generator),boundary_inventory=descriptor(boundary),provider_evidence=[dict(path=p,sha256=h) for p,h in evidence.items()],parent_summaries=summaries,
++  reused_modules=[selected[m] for m in closure],exact_project_import_closure=True,project_module_count=23,external_project_boundaries=[],
+   toolchain_providers=tools,actual_first_providers=actual,actual_direct_tool_imports=sorted(tool_names),before=before,commands=[],fresh_modules=[],LEAN_PATH=str(cache),
+   dependency_build=False,downloads=False,per_command_timeout_seconds=TIMEOUT,shared_wall_seconds=TIMEOUT,
+-  limits=dict(threads=1,memory_mebibytes=4096,shared_wall_seconds=120,proof_limits='Lean defaults'),expected_named_axiom_probes=2,expected_callers=callers)
++  limits=dict(threads=1,memory_mebibytes=4096,shared_wall_seconds=120,proof_limits='Lean defaults'),expected_named_axiom_probes=1,expected_callers=callers)
+  def save():(work/'verification.json').write_text(json.dumps(record,indent=2)+'\n')
+  def post():
+   record['after']={str(p):sha(p) for p in inputs};need(record['after']==before,'Input/provider changed.')
+@@ -201,7 +236,7 @@
+   record['actual_axiom_sets']=axioms;save()
+   need(all(set(q['axioms'])<={'propext','Classical.choice','Quot.sound'} for q in axioms),'Unexpected axioms.')
+   post();need(sha(obj)==fresh['sha256'] and first(module).resolve()==obj.resolve(),'Fresh object changed during audit.')
+-  record.update(status='PASS',all_fresh_objects_unchanged_after_audit=True,named_axiom_probes=2,callers=callers,only_standard_axioms=True,
++  record.update(status='PASS',all_fresh_objects_unchanged_after_audit=True,named_axiom_probes=1,callers=callers,only_standard_axioms=True,
+                 warnings={q['label']:q['output'].count('warning:') for q in record['commands']})
+  except Exception as ex:
+   record.update(status='FAIL',error=str(ex))
+@@ -213,36 +248,41 @@
+ def main():
+  ap=argparse.ArgumentParser(description=__doc__)
+  ap.add_argument('--repo',type=Path,required=True)
+- ap.add_argument('--manifest',type=Path,default=HERE/'pilot-plan.json')
+- ap.add_argument('--generator',type=Path,default=HERE/'prepare_pilots.py')
++ ap.add_argument('--manifest',type=Path,default=HERE/'subtree-plan.json')
++ ap.add_argument('--generator',type=Path,default=HERE/'prepare_subtrees.py')
+  ap.add_argument('--site-evidence',type=Path,default=Path(PARENTS['site'][0]))
+  ap.add_argument('--program-evidence',type=Path)
+- choose=ap.add_mutually_exclusive_group();choose.add_argument('--leaf',type=int,action='append',choices=ORDER);choose.add_argument('--all',action='store_true')
++ ap.add_argument('--coverage-evidence',type=Path)
++ choose=ap.add_mutually_exclusive_group();choose.add_argument('--cut',type=int,action='append',choices=ORDER);choose.add_argument('--all',action='store_true')
+  ap.add_argument('--output',type=Path,required=True);ap.add_argument('--prepare-only',action='store_true');args=ap.parse_args()
+  if not __debug__:ap.error('Python assertions must remain enabled.')
+  if args.program_evidence is None:args.program_evidence=args.repo/PARENTS['program'][0]
++ if args.coverage_evidence is None:args.coverage_evidence=args.repo/COVERAGE_EVIDENCE[0]
+  repo=args.repo.resolve();work=args.output.resolve()
+  need(not work.is_relative_to(repo) and (not work.exists() or not any(work.iterdir())),'Use a new/empty external output.')
+  need(sha(args.manifest)==MANIFEST_SHA and sha(args.generator)==GENERATOR_SHA,'Changed manifest or source emitter.')
+- plan=json.loads(args.manifest.read_text());units={u['site_index']:u for u in plan['pilots']}
+- need(len(units)==len(plan['pilots'])==7 and set(units)==set(ORDER) and plan['pilot_guard_cases']==9,'Exact pilot set differs.')
+- need(plan['measurement_policy']==dict(independent_unit_timeout_seconds=120,source_and_audit_share_budget=True,threads=1,memory_mib=4096,proof_limits='default',site_fuel=4000,header_margin=64),'Measurement policy differs.')
+- keys=ORDER if args.all else args.leaf or [ORDER[0]];need(len(set(keys))==len(keys),'Duplicate leaf selection.')
++ plan=json.loads(args.manifest.read_text());units={u['index']:u for u in plan['selected_units']}
++ need(len(units)==len(plan['selected_units'])==3 and set(units)==set(ORDER) and plan['preferred_order']==ORDER and
++      plan['total_selected_leaves']==90 and plan['total_selected_guards']==117 and plan['probes']==3 and plan['callers']==6,
++      'Exact subtree set differs.')
++ need(plan['proof_policy']==dict(each_source_audit_shared_seconds=120,threads=1,memory_mib=4096,proof_limits='defaults') and
++      plan['site_fuel']==4000 and plan['header_margin']==64,'Measurement policy differs.')
++ keys=ORDER if args.all else args.cut or [ORDER[0]];need(len(set(keys))==len(keys),'Duplicate subtree selection.')
+  work.mkdir(parents=True,exist_ok=True)
+  batch=dict(status='RUNNING',prepare_only=args.prepare_only,guard=descriptor(Path(__file__).resolve()),manifest=descriptor(args.manifest.resolve()),
+-            selected_leaf_indices=keys,frozen_full_order=ORDER,completed_units=[],failed_leaf=None,serial=True,shared_wall_seconds_per_unit=120,
+-            compiler_version_query_performed=False,dependency_build=False,downloads=False,scope='Only selected measured leaves; no all-sites or endpoint claim.')
++            selected_cut_indices=keys,frozen_full_order=ORDER,completed_units=[],failed_cut=None,serial=True,shared_wall_seconds_per_unit=120,
++            compiler_version_query_performed=False,dependency_build=False,downloads=False,scope='Only selected actual-tree subtrees; no complete all-sites or endpoint claim.')
+  def save():(work/'batch.json').write_text(json.dumps(batch,indent=2)+'\n')
+  save()
+  try:
+   for i in keys:
+-   output=work/f'case{i:04d}';result=run_unit(args,plan,units[i],output)
++   output=work/f'cut{i:03d}';result=run_unit(args,plan,units[i],output)
+    need(result['status']==('PREPARED_NOT_BUILT' if args.prepare_only else 'PASS'),'Incomplete unit cannot be accepted.')
+-   batch['completed_units'].append(dict(leaf_index=i,status=result['status'],record=descriptor(output/'verification.json')));save()
+-  batch['status']='PREPARED_NOT_BUILT' if args.prepare_only else 'PASS_SELECTED_PILOTS'
++   batch['completed_units'].append(dict(cut_index=i,status=result['status'],record=descriptor(output/'verification.json')));save()
++  batch['status']='PREPARED_NOT_BUILT' if args.prepare_only else 'PASS_SELECTED_SUBTREES'
+  except Exception as ex:
+-  record=work/f'case{i:04d}'/'verification.json'
+-  batch.update(status='FAIL',failed_leaf=i,error=str(ex),failed_record=descriptor(record) if record.is_file() else None,
++  record=work/f'cut{i:03d}'/'verification.json'
++  batch.update(status='FAIL',failed_cut=i,error=str(ex),failed_record=descriptor(record) if record.is_file() else None,
+                failure_stage='RECORDED_UNIT_FAILURE' if record.is_file() else 'PREPARATION_REJECTED_BEFORE_COMPILER')
+   save();raise
+  save();print(work/'batch.json')
