@@ -86,6 +86,12 @@ every accepted logical instruction by a positive binary execution segment,
 preserving the complete dispatch frame and nonempty spares. Its seven
 theorem audits and seven callers pass with no warnings.
 
+The [246 conditional runtime equivalence](prefix246_runtime.md) now proves
+both directions of register/binary halting from a related whole-tape frame
+and accepted decoder coverage. Eleven theorem audits and twelve callers pass
+with no warnings. The complete coverage certificate and blank startup must
+still discharge those explicit premises.
+
 The [exact 250-state table](table_prefix250.md) is now checked in Lean: all 500
 actions, the state numbering, the unique halt edge and the incoming edges of
 the shared initializer. Its 40 named theorem audits and 40 callers pass.
