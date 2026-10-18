@@ -1722,3 +1722,12 @@ probes and thirteen typed callers with zero warnings under the default proof
 limits. The original failed source attempt, finite-target repair and successful
 run are preserved. This closes one constructor fragment; complete AX and the
 internal binary-machine PA equivalence remain open.
+
+The [actual AX read at controls 181–195](arithmetic_control_ax_read_tw254.md)
+now adds the first PL component to arbitrary old TW and advances PL to its
+second component, preserving the other seven registers. Its positive runtime
+and complete file contract hold in every IΣ₁ model with clean scratch
+registers. Seven axiom probes and twelve typed callers passed without warnings.
+The exact history retains the uncompiled initial draft and proactive finite
+target repair; the first actual source/audit run passed. Composition with
+the surrounding AX fragments is a separate obligation.
