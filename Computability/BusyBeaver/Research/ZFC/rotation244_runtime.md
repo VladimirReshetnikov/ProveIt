@@ -51,9 +51,9 @@ or simulation.
 
 The [407,931-step blank startup](rotation244_bootstrap.md) and
 [source consistency calibration](source_rotation244.md) are already checked.
-The exact rotated decoder tree, all 8,390 site guard cases and the checked
-identification of that startup with the logical frame remain to be supplied.
-They will discharge the conditional runtime theorem before the checked
+The [exact rotated decoder tree and startup-frame identification](rotation244_tree_frame.md)
+are now checked as well. Complete coverage of all 8,390 site guard cases
+remains to be supplied. It will discharge the remaining runtime hypothesis before the checked
 [Combined243 equivalence](combined243_simulation.md) transfers the result to
 243 states. The compensated244 machine remains the smallest closed external
 Lean consistency endpoint. Internal PA formalization remains separate.

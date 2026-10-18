@@ -51,8 +51,9 @@ Publication performs no new proof or simulation run.
 For the 243-state goal, this startup supplies the binary checkpoint that
 must be identified with the [calibrated rotation source seed](source_rotation244.md).
 The [rotation runtime contracts](rotation244_runtime.md) are also checked.
-Complete decoder coverage, checked dispatch-frame identification and final
-binary composition remain pending. The existing
+The [exact decoder tree and dispatch-frame identification](rotation244_tree_frame.md)
+are now checked as well. Complete decoder-site coverage and final binary
+composition remain pending. The existing
 [Combined243/Rotation244 equivalence](combined243_simulation.md) can then
 transfer the completed rotation endpoint to the exact 243-state machine.
 The compensated244 machine remains the smallest closed external Lean

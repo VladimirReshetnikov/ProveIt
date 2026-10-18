@@ -1,0 +1,5 @@
+These two existing Lean PASSES establish the exact rotated source tree and complete blank-start frame. Complete decoder coverage and final binary calibration remain separate. No internal PA endpoint is claimed.
+
+Original guards retain exact historical scratch/provider paths and actual parent records; no portable-default wrapper is supplied. The tree emitter and its Audit-template.lean are preserved together; --repo and a fresh external --output are required to generate source, which then needs fresh kernel checking. No proof, simulation, generator, version query or dependency build is performed by this packager. All selected cached provider pairs were checked, but are not copied, so this is not a clean-checkout rebuild.
+
+Every UTF-8 history alias is recoverable as history.blobs[sha256].utf8 encoded as UTF-8. Compiled files and cache symlinks have explicit exclusion records. Source-only pending labels and the independent pilot-author receipt retain their original scope. The peer receipt's pilot emitter is included solely as provenance, not as another proved unit.

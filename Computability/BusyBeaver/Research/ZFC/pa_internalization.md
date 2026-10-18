@@ -136,8 +136,9 @@ Its checked equivalence to Rotation244, the
 [calibrated rotation source](source_rotation244.md) and the
 [407,931-step rotation bootstrap](rotation244_bootstrap.md) supply separate
 external components. The [rotation runtime contracts](rotation244_runtime.md)
-are checked; complete coverage and checked full-frame composition remain
-pending. Compensated244 is still the smallest
+and [exact source tree/startup frame](rotation244_tree_frame.md) are checked.
+Complete decoder-site coverage and final binary composition remain pending.
+Compensated244 is still the smallest
 closed external Lean endpoint. The arithmetic table and startup results below
 concern the earlier 246-state machine. Transferring those results to the active
 binary target and proving the all-internal comparison remain obligations.
