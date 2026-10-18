@@ -47,6 +47,11 @@ soundness theorem for the complete infinite tape. Its 14 theorem audits and
 positive literal runs; complete instruction coverage and global composition
 remain in progress.
 
+The [per-instruction soundness interface](prefix250_site.md) now preserves
+the independent gap changes from positive decrement and PC overflow. Its
+12 theorem audits and 13 client examples pass. Checking every original
+instruction against that interface remains the next coverage obligation.
+
 The [previous intake](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-158-159.md)
 preserves five complete reports and one explicitly partial salvage, including
 cache-result MP, semantic seeds, countdowns and pairing-shift negation.
