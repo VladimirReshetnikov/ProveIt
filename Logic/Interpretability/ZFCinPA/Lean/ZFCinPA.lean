@@ -117,3 +117,6 @@ import ZFCinPA.LSepBase
 import ZFCinPA.LReplBase
 import ZFCinPA.LSchema
 import ZFCinPA.LSchemaAudit
+import ZFCinPA.NativeGicDelta1
+import ZFCinPA.NativeTheory
+import ZFCinPA.NativeTheoryAudit
