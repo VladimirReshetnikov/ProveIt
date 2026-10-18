@@ -1,0 +1,343 @@
+{
+  "status": "ANCILLARY_SOURCE_INVENTORY_AND_SCOPE_REVIEW_COMPLETE",
+  "archive_root": "/tmp/zfc245-8286787-review/extracted/zfc245-proof-20261018",
+  "scope": {
+    "all_four_entry_point_sources_read": true,
+    "support_affine_domain_and_source_graph_read": true,
+    "axiom_permutation_note_read": true,
+    "historical_results_inspected": true,
+    "supplied_code_executed": false,
+    "checker_or_compiler_execution": false,
+    "checksum_manifest_validation": false,
+    "maintained_edits": false,
+    "not_fresh_validation": true
+  },
+  "role": "All four investigations concern separate possibilities or restrictions around the original program. The final245 candidate retains the original AX word and logical theory; none of these results is a premise of its successful runtime/source certificate.",
+  "investigations": [
+    {
+      "name": "Eight-row axiom permutation witness translation",
+      "entry_point": "research/architecture/verify_permutation_selectors.py",
+      "claim": "For every permutation pi, k_pi(j)=9-pos_pi(j) selects the desired axiom row; the replacement leaf block has25 commands and54 encoded fields. Generic stack/list reasoning gives a primitive-recursive derivation-witness translation, preserving high-level completeness.",
+      "source_inspection": "The script enumerates all8! orders and8 selectors each, models the bottom-to-top symbolic stack, checks selected row/cache/old-stack endpoint and fixed length arithmetic. The note separately retains GEN, bundle, DISCARD, MP cleanup, the fourth Lukasiewicz parameter and theory bridge.",
+      "historical_result": {
+        "status": "PASS",
+        "permutations": 40320,
+        "selector_cases": 322560,
+        "commands_per_leaf": 25,
+        "encoded_fields_per_leaf": 54
+      },
+      "limits": [
+        "The generic derivation induction is an ordinary stated argument; the script checks a finite symbolic stack model.",
+        "No binary compiler/runtime theorem or arbitrary-candidate-number bijection is proved.",
+        "Correct row builders must still preserve scalar parameters/scratches and move the unique u read correctly."
+      ],
+      "command_on_run_copy": "python3 -B research/architecture/verify_permutation_selectors.py",
+      "writes": "Always overwrites research/architecture/results/permutation_selector_results.json on that run copy; stdout also reports JSON."
+    },
+    {
+      "name": "Exact AX word resegmentation and fixed-dictionary optimum",
+      "entry_point": "research/architecture/verify_semantic_resegmentation.py",
+      "claim": "The original702-call AX word and proposed533-call word expand to the same1270 finest closed AST tokens. Bellman dynamic programming gives minimum533 calls in the fixed44-atom vocabulary.",
+      "source_inspection": "The checker derives closedness/finest expansion directly from the226-node AST, ignoring a supplied expansion map. It checks equality tag=implication plus three increments, word equality, all dictionary cuts for the optimum, original-word collision absence, orientation-checked grammar closure and seed cost.",
+      "historical_result": {
+        "status": "PASS",
+        "ast_nodes": 226,
+        "dictionary_atoms": 44,
+        "AX_fine_tokens": 1270,
+        "old_calls": 702,
+        "new_calls": 533,
+        "minimum_calls_fixed_dictionary": 533,
+        "mandatory_original_grammar_closure": 51,
+        "original_AX_private_rules": 76,
+        "new_seed_rules": 147
+      },
+      "limits": [
+        "533 is a call-count optimum in a fixed vocabulary, not a state lower bound or a proved smaller machine.",
+        "The147-rule seed is worse than the old127-rule grammar.",
+        "The51-rule mandatory closure is relative to retaining original entry/used-bootstrap grammar structure, not an unconditional lower bound over new decompositions.",
+        "The final245 machine does not use the533-call AX spelling."
+      ],
+      "command_on_run_copy": "python3 -B research/architecture/verify_semantic_resegmentation.py --write-report <fresh-report-path>",
+      "writes": "Only the optional named report; otherwise stdout."
+    },
+    {
+      "name": "Finite-field affine register/header/gap resources",
+      "entry_point": "research/architecture/verify_affine_resources.py",
+      "claim": "For p=2,3,5,7,12 finite affine closures have6456 nonempty abstract sites and the same six exclusions. With absolute header H and spare count K, the exact fiber over register space A_i is H+sum(r)-K=15 mod p; with relative distance d and K it is A_i×F_p².",
+      "source_inspection": "source_graph independently parses the pinned6459-node original Prog254, checks all8391 transitions and natural-category invariant. Domain implements canonical homogeneous affine spaces, affine intersection, hull and translation. Positive decrement is not incorrectly restricted to nonzero residues. Header and gap updates distinguish all three pointer-overflow cases. Fiber checking compares projections, dimensions and the conservation equation.",
+      "historical_result": {
+        "status": "PASS",
+        "primes": [
+          2,
+          3,
+          5,
+          7
+        ],
+        "closures": 12,
+        "source_sites": 6460,
+        "nonempty_abstract_sites": 6456,
+        "guards": 8391,
+        "excluded_indices": [
+          8202,
+          8203,
+          8204,
+          8358,
+          8359,
+          8360
+        ],
+        "nonhalting_edges": 8384,
+        "overflow_indices": [
+          8267,
+          8356,
+          8387
+        ],
+        "least_affine_closures_regenerated": true,
+        "reported_seconds": 28.14167431899841
+      },
+      "root_scope": "Natural-category closure covers arbitrary N,A,D,X,Y,L with T=W=H=0. The affine worklist starts at the actual numeric seed(3,0,0,0,3,0,0,0,0), absolute header176 or relative distance181, and167 spare blocks.",
+      "limits": [
+        "Without --recompute, only root containment, closure, exclusions and fibers are checked. Leastness requires the optional worklist regeneration equality.",
+        "Leastness is only in the stated reduced affine abstract interpretation. It does not show every abstract point is concretely reachable.",
+        "The result is for the original control graph and Prefix246 resource interpretation; no new245-path invariant is asserted.",
+        "No new exclusions are obtained and no obstruction to nonlinear invariants or alternative representations follows."
+      ],
+      "command_on_run_copy": "python3 -B research/architecture/verify_affine_resources.py --recompute --write-report <fresh-report-path>",
+      "writes": "Only the optional named report; reads12 compressed certificates. --recompute does not overwrite certificates."
+    },
+    {
+      "name": "Finite propositional obstructions to restricting the fourth Lukasiewicz parameter",
+      "entry_point": "research/propositional/check_propositional_obstructions.py",
+      "claim": "One three-valued implication matrix validates L(u=F), ex falso and DNE but refutes K at(1,1). A second validates identity,K,ex falso,DNE and all three identified-parameter variants L(u=a/b/c), but refutes S at(1,1,0). Both preserve modus ponens at their designated value2.",
+      "source_inspection": "The checker exhausts all valuations of each listed finite-arity axiom and all9 modus-ponens pairs per matrix, then checks the explicit bad valuation. It does not interpret quantifiers, membership, CP or GIC.",
+      "historical_result": {
+        "status": "PASS",
+        "matrix_count": 2,
+        "matrix_size": 3,
+        "designation": [
+          2
+        ],
+        "falsity": 0,
+        "refuted_K_value": 1,
+        "refuted_S_value": 1
+      },
+      "limits": [
+        "This is incompleteness of exactly the listed propositional axiom bases.",
+        "It is not a countermodel of the full modified CP/GIC theory and proves no failure of equiconsistency with ZFC."
+      ],
+      "command_on_run_copy": "python3 -B research/propositional/check_propositional_obstructions.py",
+      "writes": "Stdout only; preserve it as a fresh report."
+    }
+  ],
+  "execution_guidance": "Run on a separate copy with normal assertions enabled, never -O. These standard-library entry points need no manifest wrapper, network, compiler, solver or proof assistant. Only root is authorized to execute them in this task.",
+  "static_binding_comparisons": [
+    {
+      "left": "research/architecture/reference/Prog254.v",
+      "right": "reference/source/Prog254.v",
+      "byte_identical": true
+    },
+    {
+      "left": "research/architecture/reference/closed-sequence-grammar-next22.json",
+      "right": "inputs/closed-sequence-grammar-next22.json",
+      "byte_identical": true
+    },
+    {
+      "left": "research/architecture/reference/semantic-symbols.json",
+      "right": "inputs/semantic-symbols.json",
+      "byte_identical": true
+    },
+    {
+      "left": "research/architecture/reference/semantic.txt",
+      "right": "inputs/semantic.txt",
+      "byte_identical": true
+    },
+    {
+      "left": "research/architecture/reference/bootstrap246.json",
+      "right": "reference/bootstrap/bootstrap.json",
+      "byte_identical": true
+    }
+  ],
+  "pins": [
+    {
+      "path": "research/architecture/README.txt",
+      "sha256": "cdabe4b6b26aeb9a9b5cab22c1b376449ae9a538b4e8d4e2f8a2f10a5b193eed",
+      "bytes": 4362
+    },
+    {
+      "path": "research/architecture/axiom_permutation_lemma.md",
+      "sha256": "fec00c4cd339acd2e6f02a6d3e24af72fa988af50d98d1877e2e61251b976983",
+      "bytes": 5531
+    },
+    {
+      "path": "research/architecture/verify_permutation_selectors.py",
+      "sha256": "0aaf07d4c03b052920626ab598b7e564ef584db44ef828aeb479c9051548f8d6",
+      "bytes": 1661
+    },
+    {
+      "path": "research/architecture/verify_semantic_resegmentation.py",
+      "sha256": "9c5397c5d3080cea281e363cd744c9678f974f60cb11d1774fc5a18167bb9426",
+      "bytes": 6648
+    },
+    {
+      "path": "research/architecture/verify_affine_resources.py",
+      "sha256": "e78fda2d4b3c3b9d64240fc12bfefe024df109886d50787271b1d046ee1d8418",
+      "bytes": 7275
+    },
+    {
+      "path": "research/architecture/affine_domain.py",
+      "sha256": "632a99e5e60417bd8c4aa26a7c80817d225f89f672d0005faa4e92300e08ed39",
+      "bytes": 2092
+    },
+    {
+      "path": "research/architecture/source_graph.py",
+      "sha256": "7bcc7ecd3927038ea8a982107ade4fcfd964d37f677c876f2c6469df0033ffdd",
+      "bytes": 4380
+    },
+    {
+      "path": "research/propositional/check_propositional_obstructions.py",
+      "sha256": "c0dc4c39c1c1756265f5174d8203c3fc24073b7f7de6b28f09a7449bbd15bf3d",
+      "bytes": 2590
+    },
+    {
+      "path": "research/architecture/AX_seed.json",
+      "sha256": "3dc756b649634da976b1ff58b60e0c09fdba895f29caba2e1d3d9b016ba6c09e",
+      "bytes": 36156
+    },
+    {
+      "path": "research/architecture/AX_minimal_atoms.txt",
+      "sha256": "61cddf9f599c0ef0f489021d3a61d814a18eca2216392999ff2fd20c2ffe7201",
+      "bytes": 534
+    },
+    {
+      "path": "research/architecture/semantic_rows.json",
+      "sha256": "6bd1da1d6f06e7e20a5ae84c969a74cb0c32c5be127534dfd5454f46e3516ddb",
+      "bytes": 12139
+    },
+    {
+      "path": "research/architecture/results/permutation_selector_results.json",
+      "sha256": "66cd210016906500f970ac1921b2ba7bab998cba77a30ca04793b364b02e2ff3",
+      "bytes": 301
+    },
+    {
+      "path": "research/architecture/results/semantic_resegmentation_check.json",
+      "sha256": "ebe82703ab8e6905230ce583d73f8b2da0fe65b41bef2afd64d460df1b4a47aa",
+      "bytes": 937
+    },
+    {
+      "path": "research/architecture/results/affine_resource_check.json",
+      "sha256": "af6433982f1b05423e319ad54d243a53e83d04d3f35da7f1ca679bd0e24c01af",
+      "bytes": 7711
+    },
+    {
+      "path": "research/propositional/propositional_obstructions.json",
+      "sha256": "cf6a1a04cb83f724742673123d94c14148a5e2deac82777635feb343c14650c1",
+      "bytes": 1585
+    },
+    {
+      "path": "research/architecture/certificates/gap-invariant-f2.json.zlib",
+      "sha256": "5d8ecac7182da88fdef89934bbe6fa26abee862a6a6b03d5814b1d164f860c75",
+      "bytes": 11383
+    },
+    {
+      "path": "research/architecture/certificates/gap-invariant-f3.json.zlib",
+      "sha256": "ab360c2a46d69d7980de4732cb43a455e1c4abd1222a0d8c4d8a423bdfa292a1",
+      "bytes": 11343
+    },
+    {
+      "path": "research/architecture/certificates/gap-invariant-f5.json.zlib",
+      "sha256": "d86554f3414a5ffc4a11cd0063633ab706a48cf992c6b9bca995e2b9d0039653",
+      "bytes": 11344
+    },
+    {
+      "path": "research/architecture/certificates/gap-invariant-f7.json.zlib",
+      "sha256": "1ba52cdfaa6aa2840f80fc73db6ba26129ead37d8d59bdb5a32c32659a0bf6d5",
+      "bytes": 11344
+    },
+    {
+      "path": "research/architecture/certificates/invariant-f2.json.zlib",
+      "sha256": "c0ae965fe674bbe9c1cb9214fe189f63c486a8ca99ef48c9e52adbc64a2f64b8",
+      "bytes": 8600
+    },
+    {
+      "path": "research/architecture/certificates/invariant-f3.json.zlib",
+      "sha256": "a88ded1a1887286327addd1dabfd83548d81f3c54c1bd5cccf2af37c4f336fd6",
+      "bytes": 8290
+    },
+    {
+      "path": "research/architecture/certificates/invariant-f5.json.zlib",
+      "sha256": "2f5e019dce255f53d2e1b63d29f2a56c2b1f51537f49d54cd1d98f8b62948630",
+      "bytes": 8291
+    },
+    {
+      "path": "research/architecture/certificates/invariant-f7.json.zlib",
+      "sha256": "6cfa6fdc014ed14bd353a2568fad835723ffbb28cd1f8ab7f53225f02df57113",
+      "bytes": 8291
+    },
+    {
+      "path": "research/architecture/certificates/resource-invariant-f2.json.zlib",
+      "sha256": "cb7d2ad9f226ab146b8315d78936f4a7674b231889a7c49a136b20fdc4285599",
+      "bytes": 11121
+    },
+    {
+      "path": "research/architecture/certificates/resource-invariant-f3.json.zlib",
+      "sha256": "400fb6273d42ece07f09346b1f313c15f9bbf38cc10a0b4234ff40dfe2f632e5",
+      "bytes": 11334
+    },
+    {
+      "path": "research/architecture/certificates/resource-invariant-f5.json.zlib",
+      "sha256": "ae8215b13ebc4efd1fed101064e2f14d3f7ab9b4ea9b4e548d18b6e7e8a99166",
+      "bytes": 11329
+    },
+    {
+      "path": "research/architecture/certificates/resource-invariant-f7.json.zlib",
+      "sha256": "2b8d5283893a8eb327ac2f992258500b5e884bffd9a163641176f085f47760b3",
+      "bytes": 11329
+    },
+    {
+      "path": "research/architecture/reference/Codes254.v",
+      "sha256": "fc9f8fc2732f920cef220514528480bc13d7f3ed2f90976b81e6d89c13967eae",
+      "bytes": 5947
+    },
+    {
+      "path": "research/architecture/reference/Enum254.v",
+      "sha256": "dfa101348f3d41b92f4a9ba69dadf83dad33cc96c52210293e09cb0c59d795d9",
+      "bytes": 3184
+    },
+    {
+      "path": "research/architecture/reference/L1_Comp254.v",
+      "sha256": "7dfa583a29b2e2e08b00775fe610f65f6db1841a818c3cb61792060699c66e7f",
+      "bytes": 14177
+    },
+    {
+      "path": "research/architecture/reference/Prog254.v",
+      "sha256": "1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746",
+      "bytes": 181946
+    },
+    {
+      "path": "research/architecture/reference/bootstrap246.json",
+      "sha256": "b00fcea15821c759a0b7789c698b5e78c3dd92ca76fa44fb73392def9c32b9d0",
+      "bytes": 39750
+    },
+    {
+      "path": "research/architecture/reference/closed-sequence-grammar-next22.json",
+      "sha256": "3d7798e924a9e5d56594d29e8a5c46bf1e9affc3f23fa4e6a1695499112fac19",
+      "bytes": 197426
+    },
+    {
+      "path": "research/architecture/reference/product-invariant.json",
+      "sha256": "a81c1b36b4f4fc2fbb2a59b585f307daae226a5e29ecadf928cc0faf0a03c2e5",
+      "bytes": 129477
+    },
+    {
+      "path": "research/architecture/reference/semantic-symbols.json",
+      "sha256": "4e77c352494a3e18d143776a1b5ffca1a2e7d234aba0c2560a41982339395fdd",
+      "bytes": 691
+    },
+    {
+      "path": "research/architecture/reference/semantic.txt",
+      "sha256": "6f685f37ada81ace12e5ebd8b28b836794d6fc340199b0cd4ab4862f76591622",
+      "bytes": 7683
+    }
+  ],
+  "findings": [],
+  "review_limit": "No obvious source/scope defect found; this is an inventory and source review, not fresh recomputation of the finite/permutation/affine claims."
+}

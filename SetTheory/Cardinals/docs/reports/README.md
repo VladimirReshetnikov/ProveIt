@@ -2893,3 +2893,16 @@ its separate 952,763,904-assignment affine family replays 19,661 leaves. These
 are scoped checker results, not global state lower bounds. The original PA
 proof goal and current exact-table Lean work remain separate. Stronger target
 theories must meet the [project's benchmark requirement](../../../../Computability/BusyBeaver/Research/ZFC/README.md).
+
+
+Batch 164 prioritizes `8286787dd0` as source 68 of
+[ZFC closure kernels](set-theory/zfc-closure-kernels/intake-164.md), now 68
+manuscripts in the same host and still 290 collection reports. Placement
+`46e8518e0e` preserves 273 ancillary files and retires only the 245-state
+archive; all 294 original payloads remain recoverable. The complete fresh
+runtime suite passes, including 8,391 expanded symbolic cases, 490 rows,
+407,915 blank steps and 8,385 finite regressions. Four auxiliary and four
+historical checks also pass. Independent reviews find no substantive blocker
+within the ordinary mathematical proof's scope. The new table has no Lean
+endpoint or PA-internal equivalence yet; the exact 246-state external Lean
+endpoint remains the checked baseline. The six earlier archives remain queued.

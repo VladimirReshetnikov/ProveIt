@@ -229,6 +229,26 @@ adapter to `hSchema` remain open. The
 inspection of the new module and its ten-probe audit; this integration makes
 no fresh compilation or executed-audit claim.
 
+Commit `cc42edb2547a0d14c31bab552e629412ad6440f2` adds
+[LFvBound](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LFvBound.lean).
+In every IΣ₁ model, opening a shift-fixed internal body and binding its free
+variables back recovers that body. This derives the free-variable bound on
+its opened instance. A second internal induction transfers such a bound back
+through a bound-variable substitution. Reading the Separation and Replacement
+skeletons then bounds their cores: `FvLt (m+1) (free K)` for Separation, and
+`IsSemiformula (m+2) (bindFreeAt 2 K)` for Replacement. The recognizer supplies
+the needed shift-fixed body, its level and the equality with the schema body,
+so these bounds require no restriction to standard formula codes.
+This closes the core-bound prerequisite at source level; matching-environment
+existence, the exact final schema combinations and the universal-closure/domain
+adapter to `hSchema` remain. The Replacement conclusion still needs its
+precise depth-two opening adapter for the zero-level glue interface.
+This integration records source review only: the new module has not been
+compiled or axiom-audited in this review, and the existing `LGlueAudit` does
+not probe it.
+The [pinned source review](results/upstream-cc42edb254-source-review.json)
+records the internal quantifiers, exact recognizer premises and remaining adapters.
+
 ## What is already available
 
 The following declarations identify mathematical inputs, not represented
@@ -792,7 +812,9 @@ the reflection driver producing `Θ` is already available. `LGlue1` provides
 matching functionality and slot reading; `LGlue2` supplies shift-fixity and the
 opened quantifier-premise identity; `LGlue3` supplies the atomic compiled-glue
 client. The merged `LGlue4` now supplies the remaining connective/quantifier
-clients and internal formula induction, as source-reviewed above. Still needed
+clients and internal formula induction, as source-reviewed above. `LFvBound`
+adds the recognizer-derived core free-variable bounds, also source-reviewed.
+Replacement still needs the exact depth-two opening adapter. Still needed
 are existence of a suitable matching environment `t₀` with `t₀(i) = &i`,
 the final Separation/Replacement combinations, and the
 `SchemaRecognizer`/`relativize` universal-closure adapter. These must turn
