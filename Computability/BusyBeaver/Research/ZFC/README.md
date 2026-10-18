@@ -62,6 +62,11 @@ in Lean, with a complete tape description and a reusable checkpoint
 composition theorem. This is a finite prefix; the full 585,431-step startup
 still needs its remaining checked segments and final frame identification.
 
+The [instruction composition](prefix250_instruction.md) now proves that
+every accepted logical instruction has a positive binary execution and
+preserves the complete dispatch frame with nonempty spares. Its seven theorem
+audits and seven client examples pass. The all-sites premise remains open.
+
 The [previous intake](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-158-159.md)
 preserves five complete reports and one explicitly partial salvage, including
 cache-result MP, semantic seeds, countdowns and pairing-shift negation.
