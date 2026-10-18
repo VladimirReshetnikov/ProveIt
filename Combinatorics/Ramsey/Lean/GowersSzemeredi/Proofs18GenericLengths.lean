@@ -52,10 +52,10 @@ theorem stdHyp_of_profiles (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k) (hp : 
   have hV1 := one_le_classV Kc pc k
   have hVb := classV_bound Kc pc hconst hk
   have hKr : (Kc k : Real) ≤ 2 ^ (2 ^ genMuK k) := by
-    have := hconst k; unfold genMuK; push_cast at this ⊢
+    have := hconst k; unfold genMuK
     linarith [Nat.cast_nonneg (α := Real) (pc k)]
   have hpr : (pc k : Real) ≤ 2 ^ (2 ^ genMuK k) := by
-    have := hconst k; unfold genMuK; push_cast at this ⊢
+    have := hconst k; unfold genMuK
     linarith [Nat.cast_nonneg (α := Real) (Kc k)]
   refine ⟨hV1, ?_, le_rfl, le_rfl, ?_, ?_, hK k, ?_, hp k, ?_⟩
   · -- `V ≤ 2·V ≤ 2^(2^(2^(k+6)) − 1) ≤ 2^(2^(2^(k+6)))`

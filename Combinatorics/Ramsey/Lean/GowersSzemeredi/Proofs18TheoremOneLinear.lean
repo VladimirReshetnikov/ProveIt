@@ -45,10 +45,7 @@ theorem fourier_eq_sum_phaseTwist {N : Nat} [NeZero N] (f : ZMod N → Complex) 
   apply Finset.sum_congr rfl
   intro x _
   simp only [phaseTwist, exponential, smul_eq_mul]
-  first
-    | (rw [mul_comm x r, mul_comm]; done)
-    | (rw [mul_comm x r]; ring)
-    | ring_nf
+  rw [mul_comm x r, mul_comm]
 
 /-- **Theorem 18.1 at degree one.** -/
 theorem theorem_18_1_degree_one : Theorem181At 1 := by
