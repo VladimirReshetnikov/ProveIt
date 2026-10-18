@@ -2818,3 +2818,27 @@ formalization and the PA equivalence are unfinished; the maintained 252 external
 Lean endpoint remains established. No nonhalting or consistency claim follows
 from finite simulation alone. The base article/delivered PDFs are unchanged;
 portable recovery, fresh evidence and full source reviews are preserved.
+
+
+Batch 161 adds two manuscripts as sources 60–61 of
+[ZFC closure kernels](set-theory/zfc-closure-kernels/intake-161.md), now 61 sources
+and still 290 reports. Placement `c5d81a0d28` preserves 263 ancillary files and
+retires two committed archives; 20 main/delivery files remain recoverable.
+The reconciliation in `120b8a92dc` includes independent source reviews, exact
+replay evidence and portable recovery instructions.
+
+Source 60 gives a general relative-consistency seed criterion, a full two-atom
+strictness argument and two 255-state arithmetic controls. Its thirteen
+substantive jobs pass; recorded search coverage is distinguished from fresh
+search replay. Source 61 removes three selector/return states from the shared-carry
+250 construction, yielding a 247-working-state candidate with the original
+proof-search program. All seven checks pass, including 8,391 guarded cases and
+its own 741,241-step complete blank startup. The intermediate 248→247 quotient
+does not justify the preceding edit of the 250 machine or replace that startup.
+
+The maintained 252-state external Lean equivalence with Con(ZFC) remains
+established. Subsequent exact 250 table, pulse, selector, register-box and symbolic
+execution lemmas are reusable components; neither the 250 nor 247 complete
+binary endpoint is claimed here. The user's equivalence provable inside PA
+remains open. Delivered articles and PDFs, the base article, original attribution
+and all partial-search limitations remain unchanged.

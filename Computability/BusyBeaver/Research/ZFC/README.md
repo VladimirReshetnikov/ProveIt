@@ -12,12 +12,19 @@ cost measure that decides whether a candidate improves the baseline.
 
 The active focus is verifying and formalizing the
 [shared-carry 250 construction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-160.md).
-The two latest submissions contain the same 250-state table. All 8391 guarded
+Sources 58–59 contain the same 250-state table. All 8391 guarded
 instruction cases, its 585,431-step complete blank startup and all nine stronger
 audit jobs pass on fresh copies. Independent ordinary-proof review found no
 fatal defect within its scope. The exact-table Lean endpoint and its internal
 PA equivalence remain open. The different rejected250 scanner fold from the
 predecessor report does not refute this construction.
+
+The [247-state selector reduction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-161.md)
+removes three further states. Its seven executable checks and separate
+741,241-step blank startup pass. Independent review found no mathematical
+blocker in the ordinary argument; its exact-table Lean and internal PA
+endpoints remain open. The same intake preserves broader semantic-seed
+criteria and two 255-state research controls.
 
 The [exact 250-state table](table_prefix250.md) is now checked in Lean: all 500
 actions, the state numbering, the unique halt edge and the incoming edges of
