@@ -1,0 +1,5 @@
+Exact Rotation244 fast lookup and 407,931-step blank prefix
+
+All listed units are existing source/audit PASSES under default proof limits, one thread,4,096MiB and a shared120-second budget per unit. The final literal includes the complete tape and its actual exterior-zero padding. The calibrated runtime frame and binary consistency endpoint are separate obligations. Combined243Simulation transfers a proved rotation endpoint to the243-state machine; this bootstrap packet does not itself claim that endpoint or a PA result.
+
+Original guards and generators retain historical scratch/provider paths. Normal Lean imports are maintained, but no clean-checkout guard replay or compiled cache is promised. Every captured UTF-8 alias is recoverable as history.blobs[sha256].utf8 encoded as UTF-8. Excluded objects and symlinks are explicitly listed. Historical uncompiled inventory labels and pending variants remain unchanged; actual selected records are separate. The builder invokes no proof, simulation, supplied verifier or version command.

@@ -12,10 +12,11 @@ the intended arithmetic sentence and an object-theory proof are connected to
 it. Completing the PA version would also serve the ZFC requirement, after
 checking the chosen arithmetic interpretation in ZFC.
 
-The [245-state endpoint](routing245_binary.md) now closes the external Lean
-theorem for the exact routed machine: blank nonhalting iff Con(ZFC).
-It reuses the earlier [Choice calibration](choice_calibration254.md), including
-Choice in L and external first-order completeness. This discharges the
+The [compensated244 endpoint](compensated244_binary.md) is the current closed
+external Lean baseline: blank nonhalting iff Con(ZFC). It extends the earlier
+[245-state endpoint](routing245_binary.md), which reuses the
+[Choice calibration](choice_calibration254.md), including Choice in L and
+external first-order completeness. This discharges the
 external consistency comparison; it does not implement the represented proof
 translations or prove their correctness for every internal code in every PA
 model. The remaining obligations are recorded below.
@@ -130,12 +131,15 @@ internal register/binary simulation. The internal L-specific schema proofs
 now close the Choice transport. The forward validator sentence alone does
 not yet imply the requested PA theorem about the literal binary machine.
 
-The active binary target is the exact 245-state machine. Its complete
-coverage and 407,915-step blank startup now compose into the checked external
-ZF/ZFC consistency endpoint. That theorem still does not supply an internal
-PA proof. The arithmetic table and startup results below concern the earlier
-246-state machine; transferring them to the routed 245-state machine remains
-an obligation.
+The active binary target is the [combined243 machine](candidate-combined243/README.md).
+Its checked equivalence to Rotation244, the
+[calibrated rotation source](source_rotation244.md) and the
+[407,931-step rotation bootstrap](rotation244_bootstrap.md) supply separate
+external components. The rotation runtime, complete coverage and checked
+full-frame composition remain pending; compensated244 is still the smallest
+closed external Lean endpoint. The arithmetic table and startup results below
+concern the earlier 246-state machine. Transferring those results to the active
+binary target and proving the all-internal comparison remain obligations.
 The [fixed arithmetic lookup for the 246-state table](arithmetic_machine_graph_prefix246.md)
 is now checked in every IOpen model and agrees with all 492 typed transitions.
 The [exact step graph](arithmetic_machine_step_prefix246.md) now defines the

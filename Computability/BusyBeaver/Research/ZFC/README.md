@@ -35,9 +35,19 @@ rotation. The new table passes all 8,390 expanded runtime cases and 2,314,868
 symbolic rules, with its own exact 407,967-step blank initialization.
 [Lean proves its halting equivalence to the rotated 244-state table](combined243_simulation.md):
 five units pass 83 theorem probes and 39 typed callers, with zero warnings.
-The ordinary proof supports the same ZFC consistency calibration. The rotation's
-source/runtime connection still needs a complete Lean proof, so compensated244
-remains the smallest machine with a closed external Lean consistency endpoint.
+The ordinary proof supports the same ZFC consistency calibration. The
+compensated244 machine remains the smallest closed external Lean consistency
+endpoint while the rotation binary connection is completed.
+
+The [exact Rotation244 blank startup](rotation244_bootstrap.md) now proves
+all 407,931 transitions and the complete final tape: state 87, head −5,
+351 one cells and 167 value-one spare registers. Its fast lookup, first
+checkpoint and ten continuation modules pass 76 theorem probes and 111
+typed callers with zero warnings. The
+[rotated source and logical calibration](source_rotation244.md) are also
+checked. Completing the rotation runtime, decoder coverage and checked
+full-frame composition remains necessary before the relative binary
+equivalence closes the 243-state endpoint; PA internalization remains open.
 
 The compensated **244-state candidate** from `248bc05936` has passed the
 complete fresh 8,391-case symbolic runtime replay. Its

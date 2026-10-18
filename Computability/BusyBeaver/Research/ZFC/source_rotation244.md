@@ -62,12 +62,14 @@ python3 -B check_source_rotation244.py --output /tmp/rotation-source-actual
 python3 -B check_calibrated_rotation244.py --output /tmp/rotation-calibrated-actual
 ```
 
-The binary Rotation244 runtime and exact blank initialization still need a
-Lean connection to this source seed. The checked
+The [exact Rotation244 blank startup](rotation244_bootstrap.md) now proves
+all 407,931 transitions and the complete final tape. Its checked dispatch-frame
+identification, binary runtime and decoder coverage must still connect that
+checkpoint to this source seed. The checked
 [Combined243/Rotation244 binary equivalence](combined243_simulation.md)
-remains relative until that connection is supplied. These source theorems
-therefore do not close a new 243/244 binary consistency endpoint. Internal PA
-formalization remains open. The source transformation retains the original
+remains relative until that connection is supplied. These source and startup
+theorems therefore do not yet close a new 243/244 binary consistency endpoint.
+Internal PA formalization remains open. The source transformation retains the original
 Mira-Cult program lineage, Jeff Ketchersid's calibration and Andrew James
 Wade's structured register semantics, together with the preceding ProveIt
 source and routing work.
