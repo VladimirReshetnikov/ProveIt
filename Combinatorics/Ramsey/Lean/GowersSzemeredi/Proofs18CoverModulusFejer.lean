@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs18CoverModulus
 import GowersSzemeredi.Proofs18SinglePieceCoverInverseFejer
 import GowersSzemeredi.Proofs18TightClassesFejer
 import GowersSzemeredi.Proofs18FejerEnvelopeBase
+import GowersSzemeredi.Proofs18SinglePieceCoverInverseFejerSide
 
 /-! **The scale conditions of the Section 18 step under the Fejér θ₁**
 (Notes L.16d).
@@ -16,8 +17,6 @@ the class covers at degree `uDeg23 l` in place of `uDeg68 l`. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
-
-/-! ### The cover remainder width at density `t1` -/
 
 /-! ### The parameters -/
 

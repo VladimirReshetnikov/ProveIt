@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs16PartJSlices
 import GowersSzemeredi.Proofs16CubicRelationDecomposition
 import GowersSzemeredi.Proofs16DimensionTwo
+import GowersSzemeredi.Proofs16WithUnionSide
 
 /-! Part J: dimension-three pieces from the stackable structure input.
 

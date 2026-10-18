@@ -22,8 +22,6 @@ noncomputable section
 namespace LeanProofs.GowersSzemeredi
 open BaseCase
 
-/-! ### The exponential calculus -/
-
 /-! ### The lift thresholds -/
 
 /-- The lift threshold `sixWThr` from the inverse width exponents. -/
@@ -122,7 +120,6 @@ theorem lsMThr_le_exp {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1) {alpha : Real}
   · rw [one_div]
     exact (rpow_le_exp_pow (m := 6) hX2 (by norm_num) (const_le_exp_pow hX2 (by norm_num))
       (inv_pos.mpr n0).le ni).trans (exp_pow_mono hX2 (by norm_num))
-
 
 /-! ### The modulus requirement -/
 

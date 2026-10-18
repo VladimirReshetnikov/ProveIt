@@ -10,6 +10,13 @@ noncomputable section
 
 namespace LeanProofs.GowersSzemeredi
 
+theorem nestW_three_eq (C : Real → Real) (W : Real → Nat → Nat) (t : Real) (L : Nat) :
+    nestW (fun _ => C) (fun _ => W) 3 t L = W (C (C t)) (W (C t) (W t L)) := rfl
+
+end LeanProofs.GowersSzemeredi
+
+namespace LeanProofs.GowersSzemeredi
+
 /-- **The nested lift width is a power above an explicit threshold.** -/
 theorem lsNest_powerLB {Eb : Nat → Real → Real → Real → Real} {C : Real → Real} {alpha t : Real}
     (hE : ∀ l g u s, 0 < s → s ≤ 1 → 0 < Eb l g u s ∧ Eb l g u s ≤ 1)

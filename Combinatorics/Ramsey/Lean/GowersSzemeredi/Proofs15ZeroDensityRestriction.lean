@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs14ZeroProductArrangements
 import GowersSzemeredi.Proofs15LowerDensityRestriction
+import GowersSzemeredi.Proofs15ProductToRestrictionSide
 
 /-! The missing height-zero case of density-uniform product restriction.
 Together with the higher-dimensional argument this covers every natural k. -/

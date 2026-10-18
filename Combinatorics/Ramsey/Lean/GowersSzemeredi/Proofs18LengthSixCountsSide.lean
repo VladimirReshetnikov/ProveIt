@@ -74,6 +74,8 @@ theorem polyTwoPieces_le_power {gamma theta : Real} (hg : 0 < gamma) (hg1 : gamm
     _ = u ^ (2 + (2 : Nat) ^ 69) := (pow_add _ _ _).symm
     _ ≤ u ^ ((2 : Nat) ^ 70) := pow_le_pow_right₀ hu1 (by norm_num)
 
+/-! ### Lemma 15.6's threshold -/
+
 /-- A reciprocal-power lower bound on the selection density bounds Lemma 15.6's
 threshold. The constants 46 and 2 absorb the fixed selection margin. -/
 theorem lemma156ExplicitThreshold_le_power_of_selection_base
@@ -178,6 +180,8 @@ theorem polyTwoFamCount_le_power {gamma theta rho : Real} (hg : 0 < gamma) (hg1 
     hq.trans (pow_le_pow_left₀ hv0 hvw _)
   unfold polyTwoFamCount
   exact le_pow_mono hw2 (by norm_num) (famTwoCount_le_power hw2 hr hrw hm' hq')
+
+/-! ### The counts of the length-six route -/
 
 /-- `polyTwoQb γ θ ρ ≤ (2/(γθρ))^(2^90)`. -/
 theorem polyTwoQb_le_power {gamma theta rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)

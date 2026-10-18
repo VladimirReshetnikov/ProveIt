@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs15Restriction
+import GowersSzemeredi.Proofs15RestrictionSide
 
 /-! The explicit largeness condition displayed in the corrected Lemma 15.5. -/
 

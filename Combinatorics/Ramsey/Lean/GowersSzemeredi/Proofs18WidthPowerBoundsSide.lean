@@ -11,6 +11,72 @@ noncomputable section
 
 namespace LeanProofs.GowersSzemeredi
 
+/-- **One unused-coordinate step**: `L^a` becomes `L^(a/4)`. -/
+theorem liftLastW_powerLB {w : Real → Nat → Nat} {t a L0 : Real} (ha : 0 < a) (ha1 : a ≤ 1)
+    (hL00 : 0 ≤ L0) (h : WidthPowerLB (w (t / 2)) a L0) :
+    WidthPowerLB (liftLastW w t) (a / 4) (max (8 * L0 + 8) ((6 : Real) ^ (4 / a))) := by
+  intro L hL
+  have hL8 : 8 * L0 + 8 ≤ (L : Real) := (le_max_left _ _).trans hL
+  have hL6 : (6 : Real) ^ (4 / a) ≤ L := (le_max_right _ _).trans hL
+  have hLpos : (0 : Real) < L := by linarith
+  have hL4 : 4 ≤ L := by
+    have : (4 : Real) ≤ L := by linarith
+    exact_mod_cast this
+  unfold liftLastW
+  rw [if_pos hL4]
+  -- the inner width
+  set L' := ⌈(L : Real) / 8⌉₊
+  have hL'ge : (L : Real) / 8 ≤ L' := Nat.le_ceil _
+  have hL'0 : L0 ≤ (L' : Real) := by linarith
+  have hw := h L' hL'0
+  have hpow8 : ((L : Real) / 8) ^ a ≤ (L' : Real) ^ a :=
+    Real.rpow_le_rpow (by positivity) hL'ge ha.le
+  -- the power x = L^(a/4)
+  set x := (L : Real) ^ (a / 4) with hx
+  have hx6 : 6 ≤ x := by
+    have h1 : ((6 : Real) ^ (4 / a)) ^ (a / 4) ≤ (L : Real) ^ (a / 4) :=
+      Real.rpow_le_rpow (by positivity) hL6 (by positivity)
+    rw [← Real.rpow_mul (by norm_num), show 4 / a * (a / 4) = 1 by field_simp,
+      Real.rpow_one] at h1
+    exact h1
+  have hx4 : x ^ 4 = (L : Real) ^ a := by
+    rw [hx, ← Real.rpow_natCast, ← Real.rpow_mul hLpos.le]
+    congr 1
+    push_cast
+    ring
+  have h8a : (8 : Real) ^ a ≤ 8 := by
+    simpa only [Real.rpow_one] using
+      Real.rpow_le_rpow_of_exponent_le (by norm_num : (1 : Real) ≤ 8) ha1
+  have hdiv : (L : Real) ^ a / 8 ≤ ((L : Real) / 8) ^ a := by
+    rw [Real.div_rpow hLpos.le (by norm_num)]
+    exact div_le_div_of_nonneg_left (by positivity) (by positivity) h8a
+  have hn : x ^ 4 / 8 ≤ (w (t / 2) L' : Real) := by
+    rw [hx4]
+    exact hdiv.trans (hpow8.trans hw)
+  exact nat_sqrt_pred_pred_ge hx6 hn
+
+/-- One lift of a cover width. -/
+theorem liftLastW_coverWidth_powerLB {E : Real → Real} {t : Real}
+    (hE : 0 < E (t / 2 / 2)) (hE1 : E (t / 2 / 2) ≤ 1) :
+    WidthPowerLB (liftLastW (coverWidth E) t) (E (t / 2 / 2) / 4)
+      (max (8 * 0 + 8) ((6 : Real) ^ (4 / E (t / 2 / 2)))) :=
+  liftLastW_powerLB hE hE1 le_rfl (coverWidth_powerLB E (t / 2) hE.le)
+
+/-- Two lifts of a cover width. -/
+theorem liftLastW_two_coverWidth_powerLB {E : Real → Real} {t : Real}
+    (hE : 0 < E (t / 2 / 2 / 2)) (hE1 : E (t / 2 / 2 / 2) ≤ 1) :
+    WidthPowerLB ((liftLastW^[2] (coverWidth E)) t) (E (t / 2 / 2 / 2) / 4 / 4)
+      (max (8 * max (8 * 0 + 8) ((6 : Real) ^ (4 / E (t / 2 / 2 / 2))) + 8)
+        ((6 : Real) ^ (4 / (E (t / 2 / 2 / 2) / 4)))) := by
+  have h1 := liftLastW_coverWidth_powerLB (E := E) (t := t / 2) hE hE1
+  have hrw : (liftLastW^[2] (coverWidth E)) t = liftLastW (liftLastW (coverWidth E)) t := rfl
+  rw [hrw]
+  exact liftLastW_powerLB (by positivity) (by linarith) (by positivity) h1
+
+end LeanProofs.GowersSzemeredi
+
+namespace LeanProofs.GowersSzemeredi
+
 theorem sixEb_le_one {A Bq : Nat → Real} (l : Nat) (g t s : Real) (hs : 0 < s) (hs1 : s ≤ 1) :
     sixEb A Bq l g t s ≤ 1 := by
   unfold sixEb

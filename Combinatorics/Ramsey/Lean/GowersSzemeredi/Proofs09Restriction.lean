@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs09Moments
 import GowersSzemeredi.Proofs15Restriction
+import GowersSzemeredi.Proofs15RestrictionSide
 
 /-!
 # Random restriction for approximate homomorphisms

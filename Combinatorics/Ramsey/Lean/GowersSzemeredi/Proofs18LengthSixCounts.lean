@@ -156,8 +156,6 @@ theorem polyPieceBudget_inv_le_power {gamma theta : Real} (hg : 0 < gamma) (hg1 
   have := inv_anti₀ (inv_pos.mpr (pow_pos hupos _)) h
   rwa [inv_inv] at this
 
-/-! ### Lemma 15.6's threshold -/
-
 /-! ### The family count
 
 Below `w ≥ 2` is an abstract base; every count is bounded by `w^e` with an
@@ -291,7 +289,5 @@ theorem famTwoCount_le_power {w rho : Real} {m q a b : Nat} (hw : 2 ≤ w)
     rw [Nat.cast_mul]
     exact const_mul_le_pow hw (Nat.cast_nonneg _) (by norm_num) (Nat.cast_nonneg _) hm
   exact le_pow_mono hw (by omega) h9
-
-/-! ### The counts of the length-six route -/
 
 end LeanProofs.GowersSzemeredi

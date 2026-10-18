@@ -25,9 +25,8 @@ with `θ′ = θ₂/2^(k+2)` (`classBudget`). So the piece keeps mass `θ′`.
 parameters (Notes L.16d); at the printed values the budgets are the printed
 ones by `rfl`, and `class_piece_data` is the instance.
 
-`classBudget_pos_le` is in `Proofs16ClassPiecesSide`, outside the final route.
-
-`class_piece_data` is in `Proofs16ClassPiecesSide`, outside the final route. -/
+`classBudget_pos_le` and `class_piece_data` are in `Proofs16ClassPiecesSide`,
+outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 open scoped BigOperators

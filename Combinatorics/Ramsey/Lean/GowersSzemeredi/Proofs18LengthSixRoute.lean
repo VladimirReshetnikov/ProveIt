@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs18SinglePieceInverse
 import GowersSzemeredi.Proofs16PolyCoverTwo
 import GowersSzemeredi.Proofs16PolyCoverTwoSide
+import GowersSzemeredi.Proofs16FamilyLemma6Side
 
 /-! The degree-four inverse theorem from the polynomial recurrence alone.
 

@@ -127,8 +127,6 @@ theorem UniformCovers.mono {k k' : Nat} {V V' : Real} {D D' : Nat} (hV : 1 ≤ V
     UniformCovers k' V' D' :=
   fun l hl1 hlk => (h l hl1 (hlk.trans hk)).uniform_mono hV hVV hD
 
-/-! ### Dimension one -/
-
 /-! ### Every dimension up to `k` -/
 
 theorem classV_mono (Kc pc : Nat → Nat) {j k : Nat} (h : j ≤ k) :

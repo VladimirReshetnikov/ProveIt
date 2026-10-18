@@ -19,8 +19,6 @@ set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
 
-/-! ### The uniform count at any scale -/
-
 /-! ### The nest decreases -/
 
 theorem genC_le_self {X : Real} (hX : 1 ≤ X) {a b : Nat} (hb : 1 ≤ b) (c : Real → Real) (k : Nat)

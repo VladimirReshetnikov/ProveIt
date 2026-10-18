@@ -180,8 +180,6 @@ theorem two_rpow_neg_44 : (2 : Real) ^ (-(44 : Real)) = (2 : Real)⁻¹ ^ 44 := 
     zpow_neg, inv_pow]
   norm_num
 
-/-! ### The extraction step and the large-modulus cover -/
-
 /-! ### `PolyCoverAt 2` -/
 
 theorem polyTwoFamExp_pos {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q)

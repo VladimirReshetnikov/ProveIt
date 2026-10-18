@@ -205,6 +205,4 @@ theorem PowerUniformClass.polyCoverAt {k : Nat} {V : Real} {dC dE dT : Nat}
     · intro rho hr hr1
       exact (uniformBase_small_controls hV hg hg1 ht ht1 hr hr1 hDT).2
 
-/-! ### Dimension two -/
-
 end LeanProofs.GowersSzemeredi

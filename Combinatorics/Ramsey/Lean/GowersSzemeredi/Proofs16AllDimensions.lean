@@ -19,7 +19,7 @@ Lemma 16.6 in every dimension (Notes L.6, E6).
 * `corollary_16_11_of_family_lemmas`: `corollary_16_11`.
 
 `classDeg_add_le`, `corollary_16_11_of_family_lemmas`, `powerUniformClass_all`,
-`stepP_ge9`, `step_degree_closed`, `step_degrees_le`,
+`stepP_ge9`, `stepT_le_sq`, `step_degree_closed`, `step_degrees_le`,
 `theorem_16_2_of_family_lemmas` and `theorem_16_2_of_profiles_all` are in
 `Proofs16AllDimensionsSide`, outside the final route. -/
 set_option autoImplicit false
@@ -29,11 +29,6 @@ namespace LeanProofs.GowersSzemeredi
 open BaseCase
 
 /-! ### The degree recursion -/
-
-theorem stepT_le_sq (k : Nat) : stepT k ≤ stepP k * stepP k := by
-  unfold stepT stepP
-  rw [← pow_add]
-  exact Nat.pow_le_pow_right (by norm_num) (by rw [pow_succ 2 (k + 5)]; omega)
 
 /-- The degree of the uniform class in dimension `k`: `2^(2^(2^(k+5)))`. -/
 def classDeg (k : Nat) : Nat := 2 ^ (2 ^ (2 ^ (k + 5)))

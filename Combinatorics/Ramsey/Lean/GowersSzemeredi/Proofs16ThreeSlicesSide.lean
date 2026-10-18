@@ -17,6 +17,8 @@ namespace LeanProofs.GowersSzemeredi
 section
 open BaseCase
 
+/-! ### The slice decomposition -/
+
 /-- **Every section decomposes into pieces of the uniform class.** -/
 theorem section16_slice_decomposition_three
     {theta gamma : Real} (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
