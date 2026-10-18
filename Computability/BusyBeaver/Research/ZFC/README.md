@@ -42,6 +42,12 @@ The [exact 246-state table](table_prefix246.md) is now checked in Lean:
 selector and folded-pulse rows. Its 47 theorem audits and 47 client examples
 pass with no warnings. This is the finite table layer for the active target.
 
+The [246 logical seed](logical_seed246.md) is now calibrated in Lean:
+the unchanged register program started at `(3,0,0,0,3,0,0,0,0)` halts iff
+ZFC has a refutation. Seven theorem audits and seven client examples pass.
+The binary startup and simulation must still connect that program theorem
+to the literal blank-tape machine; the PA comparison remains open.
+
 The [exact 250-state table](table_prefix250.md) is now checked in Lean: all 500
 actions, the state numbering, the unique halt edge and the incoming edges of
 the shared initializer. Its 40 named theorem audits and 40 callers pass.
