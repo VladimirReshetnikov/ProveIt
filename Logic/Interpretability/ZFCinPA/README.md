@@ -210,6 +210,7 @@ facade is [`Lean/ZFCinPA.lean`](Lean/ZFCinPA.lean).
 | `InternalInterpretation` | represented interpretations of `ℒₛₑₜ` with defined atoms (for R3): `interp P` with `P = ⟪d, ⟪a₌, a∈⟫⟫` substitutes atom arguments into fixed meanings and guards quantifiers by `d`; commutation with negation, shift, substitution and `free`; derivation transport `derivable_iSet` and `provable_falsum_of_interp` (`Prov_T(⊥) → Prov_U(⊥)` from `U ⊢ ∃x δ(x)` and the interpreted `T`-axioms), reusing `InternalRelativization`'s domain side formulas |
 | `InternalInterpretationAudit` | axiom audit for `InternalInterpretation` |
 | `NativeInterp` | **R3, the WF interpretation of `𝗭𝗙` in the native theory**: closed sentences `domS` (class well-founded in the bisimulation quotient), `eqS` (bisimilarity) and `memS` (membership up to bisimilarity) from the native forms via `toSet`; the meta interpretation `intF` and `eval_intF` (in every model of `nativeTheory`, `intF φ` at domain elements ↔ `φ` at their classes in the well-founded part of the quotient); the parameter `PN` with `good_PN`, and `quote_intF` (`⌜intF φ⌝ = interp PN ⌜φ⌝`) |
+| `NativeFixed` | R3, fixed axioms: `fixed_models` (a set structure with the six-field bundle, power sets and regularity satisfies `𝗘𝗤` and the seven fixed axioms), the bundle for the well-founded part of the quotient, `native_proves_intF` and `native_proves_domain` by completeness, and internally `provable_interp_fixed` / `provable_domain` (via `quote_intF_sentence`) |
 
 ## Building
 
