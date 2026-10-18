@@ -39,14 +39,14 @@ general substitution but have no new binary state bound. A separate 268-state
 control retains all original logical rows; two delivered standalone Lean files
 prove narrow binding/obstruction results, not checker or compiler correctness. The
 [Lean minimization project](BusyBeaver/Research/ZFC/README.md) now checks the
-external equivalence between the exact 252-state machine's blank nonhalting
-and Con(ZFC). The user's target remains an equivalence provable inside PA.
+external equivalence between the exact routed 245-state machine's blank
+nonhalting and Con(ZFC), improving its earlier 246- and 252-state endpoints. The user's target remains an equivalence provable inside PA.
 The [batch 162 reconciliation](../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-162.md)
 adds another audit of the identical 247 table and a 246-state candidate with
 one further contextual pulse fold. Its nine main checks and two additional
 audits pass, including its own complete 410,735-step blank startup. The
-ordinary proof and executable evidence do not yet supply an exact-table Lean
-endpoint. Earlier relative-consistency seed criteria remain in
+ordinary proof and executable evidence did not supply an exact-table Lean
+endpoint at that intake checkpoint; the maintained 246 endpoint has since closed. Earlier relative-consistency seed criteria remain in
 [batch 161](../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-161.md).
 
 The [batch 163 reconciliation](../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-163.md)
@@ -57,8 +57,15 @@ The 201-node result is a source DAG count, and no complete sub-246 machine is
 established. The [current project criterion](BusyBeaver/Research/ZFC/README.md)
 allows stronger target theories within well-understood, widely accepted
 consistency benchmarks, with an explicit upper bound as well as the lower bound
-to ZF. These intake findings and the separately checked exact246 proof components
+to ZF. These intake findings and the separately checked binary endpoints
 do not by themselves discharge the internal PA comparison.
+
+The [batch 165 reconciliation](../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-165.md)
+adds positive multi-instruction source blocks, numerical invariants and a
+whole-frame relation that forgets unused workspace. Its 14 main jobs and eight
+supplemental checks pass; scoped discovery results remain inherited. It provides
+no smaller calibrated machine or new Lean theorem. Its two rejected 245 tables
+are distinct from the maintained routed 245 endpoint.
 
 The score and time functions are distinct measures. The proved values
 `Sigma(2)=4`, `Sigma(3)=6`, `Sigma(4)=13` and `BB(2)=6`, `BB(3)=21`,
@@ -74,9 +81,11 @@ Unlike the rest of this topic it admits eight published results with `admit`;
 its README lists them.
 
 [ZFC machine minimization](BusyBeaver/Research/ZFC/README.md) retains the
-attributed literal 254-state baseline and its checked 252-state successor.
+attributed literal 254-state baseline and the checked 252-, 246- and routed
+245-state external successors.
 The shared-carry 250 construction now has checked local table, pulse, marking,
 register-operation, symbolic-execution, per-site and whole-tape frame lemmas.
-Complete simulation and startup for the new 250, 247 and 246 tables, and the
-internal PA comparison, remain open.
+The exact 246 and routed 245 tables now have complete external simulations
+and blank startups. The displayed local 250 results, separate 247 candidate,
+and internally provable PA comparison retain their stated limits.
 The proofs are an opt-in `BusyBeaver.ZFC` surface.
