@@ -10,11 +10,18 @@ theory or proof calculus is eligible once its consistency calibration is proved.
 The complete compiled search, including its data and initialization, is the
 cost measure that decides whether a candidate improves the baseline.
 
-The [latest intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-158-159.md)
-preserves five complete reports and one explicitly partial salvage. Useful new
-interfaces include cache-result MP, semantic seeds and matrix countdowns; the
-recovered negation identity fits the checked Pair/Scale4 components. These
-reports establish no smaller machine and leave the internal PA endpoint open.
+The active focus is verifying and formalizing the
+[shared-carry 250 construction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-160.md).
+The two latest submissions contain the same 250-state table. All 8391 guarded
+instruction cases, its 585,431-step complete blank startup and all nine stronger
+audit jobs pass on fresh copies. Independent ordinary-proof review found no
+fatal defect within its scope. The exact-table Lean endpoint and its internal
+PA equivalence remain open. The different rejected250 scanner fold from the
+predecessor report does not refute this construction.
+
+The [previous intake](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-158-159.md)
+preserves five complete reports and one explicitly partial salvage, including
+cache-result MP, semantic seeds, countdowns and pairing-shift negation.
 
 The [252-state register-permutation machine](candidate-permutation252/README.md)
 now has a [closed ZFC endpoint](choice_calibration254.md): its literal blank-tape

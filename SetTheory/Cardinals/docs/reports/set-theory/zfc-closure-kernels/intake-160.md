@@ -175,7 +175,7 @@ strengthened frame, regenerated site proofs, complete startup, and final
 composition. Internal PA proof translation remains separate unfinished work.
 The delivered ZFC-provability claim does not relax the user's PA target.
 
-Unconditional nonhalting, consistency of ZFC, state minimality and a249-state
+Unconditional nonhalting, consistency of ZFC, state minimality and a 249-state
 solution are not established. Under consistency, Gödel's theorem rules out a
 ZFC proof of the indicated nonhalting statement; full two-sided independence
 requires an additional appropriate soundness assumption. Priority caveats and

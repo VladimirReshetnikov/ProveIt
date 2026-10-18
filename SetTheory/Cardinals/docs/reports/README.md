@@ -2800,3 +2800,21 @@ checks omitted and no Lean/Coq build. Independent source and reconciliation
 reviews preserve the original PA-provability goal, the closed external ZFC
 comparison and the still-open internal PA endpoint. The collection manifest
 was rebuilt and visually checked; delivered reports/PDFs were not rewritten.
+
+
+Batch 160 adds three manuscripts as sources57–59 of
+[ZFC closure kernels](set-theory/zfc-closure-kernels/intake-160.md), now 59 sources
+and still 290 reports. Placement `f7ba71df2d` preserves 633 ancillary files and
+retires three committed archives; 22 main/delivery files remain recoverable.
+The reconciliation in `034ce1421b` keeps all proof scopes and attribution.
+
+Sources58–59 deliver the same 250-working-state machine, using shared carry,
+rollback, a nonempty spare suffix and pulse initialization. All 8391 guarded
+instruction cases and the 585,431-step complete blank prefix reproduce; all nine
+stronger audit jobs pass. Independent ordinary-proof review found no fatal
+defect within scope. Source 57's phase-dependent 252 predecessor and concrete
+refutation of a different250 scanner fold remain distinct. Exact 250 Lean
+formalization and the PA equivalence are unfinished; the maintained 252 external
+Lean endpoint remains established. No nonhalting or consistency claim follows
+from finite simulation alone. The base article/delivered PDFs are unchanged;
+portable recovery, fresh evidence and full source reviews are preserved.

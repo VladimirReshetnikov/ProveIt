@@ -29,10 +29,10 @@ use the standard library; no dependency download or proof compiler is needed.
 
 These are observed outer runtimes, not performance guarantees. The root used
 180 seconds for source57 and 120 seconds for each later package. Each run
-completed with exit0. Source57 remains a252-state construction; source58/59
-are the same250-state machine. No full checksum-manifest suite was run.
+completed with exit 0. Source 57 remains a 252-state construction; sources 58/59
+are the same 250-state machine. No full checksum-manifest suite was run.
 
-Source57's [record](data/intake-160-source57-replay-record.json) and
+Source 57's [record](data/intake-160-source57-replay-record.json) and
 [summary](data/intake-160-source57-replay-summary.json) bind the commands.
 Fresh phase, source rewrite, NIP, projected-GEN, baseline and regenerated MP0
 certificate results and all twelve job logs have `data/intake-160-source57-`
@@ -40,7 +40,7 @@ prefixes. The supplied source57 search journals retain their completed/partial
 status; the extended run does not rerun every research search.
 The positive-transfer driver does not fail its process on a reported semantic
 failure, so its [actual result](data/intake-160-source57-positive-transfer.json)
-was inspected separately: `passed=true`, all17325 cases passed, no failures.
+was inspected separately: `passed=true`, all 17,325 cases passed, no failures.
 The regenerated MP0 rows and segment relation are also preserved under the
 `data/intake-160-source57-mp-source-mapping-` prefix.
 
@@ -56,15 +56,15 @@ Source59's [record](data/intake-160-source59-replay.json),
 [nine-check summary](data/intake-160-source59-fresh-verification-summary.json)
 and [comparison](data/intake-160-source59-replay-comparison.json) record:
 
-- Exact reconstruction:250 working states,500 rows,6459 source nodes,6460 leaves.
+- Exact reconstruction: 250 working states, 500 rows, 6,459 source nodes, 6,460 leaves.
 - Four block, three macro and nine marking induction templates.
-- All8391 guarded instructions; at least13 literal steps per case.
-- All24 unchanged marking rows and all9 selectors.
-- Full source-token consumption,342 oracle controls and full-width PC agreement.
-- Dual sparse/dense585431-step blank startup,438 one-cells and210 spares.
-- Four local retiming cases and584942 equal complete-tape cutpoints.
-- 33564 literal instructions,14197744 transitions.
-- 16200 literal macros,8359100 transitions.
+- All 8,391 guarded instructions; at least 13 literal steps per case.
+- All 24 unchanged marking rows and all 9 selectors.
+- Full source-token consumption, 342 oracle controls and full-width PC agreement.
+- Dual sparse/dense 585,431-step blank startup, 438 one-cells and 210 spares.
+- Four local retiming cases and 584,942 equal complete-tape cutpoints.
+- 33,564 literal instructions, 14,197,744 transitions.
+- 16,200 literal macros, 8,359,100 transitions.
 
 The nine substantive JSONs agree byte-for-byte with delivery except three
 timing values: `elapsed_seconds` in instructions, and `seconds` in the two
