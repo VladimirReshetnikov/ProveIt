@@ -89,68 +89,45 @@ theorem section16_synchronized_compressed_cover_family
     hslice.short_parent_cover ε hε hε1 hPb hEb T I hT hI hk hm hmT hmI
   let e := section5NatFlattenEquiv n
   let R' := boxFlatten n R
-  have hR'part : IsBoxPartition R' T := boxFlatten_partition T P n R hPpart hRpart
   have hfit (j : Fin (∑ a, n a)) : v ^ 2 ≤ (R' j).width - 1 := by
-    have h := hvscale.trans (hRwidth (e.symm j).1 (e.symm j).2)
-    have h' : v ^ 2 + 1 ≤ (R' j).width := by exact_mod_cast h
+    have h : v ^ 2 + 1 ≤ (R' j).width := by
+      exact_mod_cast hvscale.trans (hRwidth (e.symm j).1 (e.symm j).2)
     omega
-  have hne (j : Fin (∑ a, n a)) : (R' j).carrier.Nonempty := by
-    apply Box.carrier_nonempty_of_axis_pos
-    intro a
-    have hw := (R' j).width_le_axis_length a
-    have hf := hfit j
-    have hv2 : 1 ≤ v ^ 2 := by nlinarith
-    omega
+  have hne (j : Fin (∑ a, n a)) : (R' j).carrier.Nonempty :=
+    (R' j).carrier_nonempty_of_axis_pos fun a => lt_of_lt_of_le
+      (by have := hfit j; have := Nat.one_le_pow 2 v hv; omega) ((R' j).width_le_axis_length a)
   let axis : Fin k := ⟨0, hk⟩
   let parent := fun j : Fin (∑ a, n a) => (P (e.symm j).1).axis axis
-  have hsub (j : Fin (∑ a, n a)) : ((R' j).axis axis).carrier ⊆ (parent j).carrier :=
-    (R' j).axis_carrier_subset_of_carrier_subset (P (e.symm j).1) (hne j)
-      (IsPartition.cell_subset (hRpart (e.symm j).1) (e.symm j).2) axis
   have hparentstep (j : Fin (∑ a, n a)) : (parent j).step = (↑u : ZMod N) := by
     dsimp only [parent]
     rw [(P _).axis_step, hPstep, ← hstep, hu]
-  have hparallel (j : Fin (∑ a, n a)) : I.step = (parent j).step := by
-    rw [hparentstep, hu]
-  have hlift : ∀ (a : ι) (j : Fin (∑ a, n a)),
-      ∃ nu : Fin (section16CompressedCandidateCount r p) → Point N (k + 1) → ZMod N,
-        (∀ ij, IsMultilinear (nu ij)) ∧
-        ∀ h ∈ H ∩ (R' j).carrier, ∀ x, appendCoordinate h x ∈ D a →
-          appendCoordinate h x ∈ F a →
-            ∃ ij, phi a (appendCoordinate h x) = nu ij (appendCoordinate h x) := by
-    intro a j
-    apply (ha a).compressed_multilinear_cover hr (H ∩ (R' j).carrier)
-      (fun _ => mu (e.symm j).1 (e.symm j).2) (fun _ => hmu _ _)
-    intro h hh i hi _
-    obtain ⟨hhH, hhR⟩ := Finset.mem_inter.mp hh
-    exact hc (e.symm j).1 (e.symm j).2 h hhR hhH (phi a (appendCoordinate h (sample a i)))
-      (hGs a h i hi)
+  -- every member interpolates its own candidates on every cell
+  have hlift (a : ι) (j : Fin (∑ a, n a)) :=
+    (ha a).compressed_multilinear_cover hr (H ∩ (R' j).carrier)
+      (fun _ => mu (e.symm j).1 (e.symm j).2) (fun _ => hmu _ _) fun h hh i hi _ =>
+        hc (e.symm j).1 (e.symm j).2 h (Finset.mem_inter.mp hh).2 (Finset.mem_inter.mp hh).1 _
+          (hGs a h i hi)
   choose nu hnu hcov using hlift
   let G := F' ∩ lastProductSet H I.carrier
   have hprod := lastProductSet_good_mass T.carrier H I.carrier ε hH hHm
-  have hGmass := good_intersection_mass (lastProductSet T.carrier I.carrier) F'
-    (lastProductSet H I.carrier) η ε hF hprod.1 hFm hprod.2
-  let nuAll : Fin (∑ a, n a) → ι × Fin (section16CompressedCandidateCount r p) →
-      Point N (k + 1) → ZMod N := fun j c => nu c.1 j c.2
   have hcover : ∀ a j z, section16Init z ∈ (R' j).carrier → z ∈ D a →
-      z ∈ (fun _ : ι => G) a → ∃ c, phi a z = nuAll j c z := by
+      z ∈ (fun _ : ι => G) a → ∃ c : ι × _, phi a z = nu c.1 j c.2 z := by
     intro a j z hzR hzD hzG
     obtain ⟨hzF, hzH⟩ := Finset.mem_inter.mp hzG
-    have hhH := (Finset.mem_filter.mp hzH).2.1
-    have hd : appendCoordinate (section16Init z) (section16Last z) ∈ D a := by
-      simpa only [appendCoordinate_init_last] using hzD
-    have hf : appendCoordinate (section16Init z) (section16Last z) ∈ F a := by
-      simpa only [appendCoordinate_init_last] using hF'c a hzF
-    obtain ⟨ij, hij⟩ := hcov a j (section16Init z)
-      (Finset.mem_inter.mpr ⟨hhH, hzR⟩) (section16Last z) hd hf
-    refine ⟨(a, ij), ?_⟩
-    simpa only [appendCoordinate_init_last] using hij
+    rw [← appendCoordinate_init_last z] at hzD hzF ⊢
+    obtain ⟨ij, hij⟩ := hcov a j _ (Finset.mem_inter.mpr ⟨(Finset.mem_filter.mp hzH).2.1, hzR⟩)
+      _ hzD (hF'c a hzF)
+    exact ⟨(a, ij), hij⟩
   obtain ⟨L, S, nu', hSpart, hSproper, hnu', hc'⟩ := section16_synchronize_base_cover_family
-    T I hI R' hR'part (fun j => hRproper _ _) parent axis (fun _ => u)
-    hparentstep hparallel hsub (fun j => (hPaxes (e.symm j).1 axis).2.1)
-    (fun j => (hPaxes (e.symm j).1 axis).2.2) hv hfit D (fun _ => G) phi nuAll
-    (fun j c => hnu c.1 j c.2) hcover
-  exact ⟨p, G, L, S, nu', hp, Finset.inter_subset_left, hGmass, hSpart, hSproper, hnu',
-    fun a j z hz hzD hzG => hc' a j z hz hzD hzG⟩
+    T I hI R' (boxFlatten_partition T P n R hPpart hRpart) (fun j => hRproper _ _) parent axis
+    (fun _ => u) hparentstep (fun j => by rw [hparentstep, hu])
+    (fun j => (R' j).axis_carrier_subset_of_carrier_subset (P (e.symm j).1) (hne j)
+      (IsPartition.cell_subset (hRpart (e.symm j).1) (e.symm j).2) axis)
+    (fun j => (hPaxes (e.symm j).1 axis).2.1) (fun j => (hPaxes (e.symm j).1 axis).2.2) hv hfit
+    D (fun _ => G) phi (fun j (c : ι × _) => nu c.1 j c.2) (fun j (c : ι × _) => hnu c.1 j c.2)
+    hcover
+  exact ⟨p, G, L, S, nu', hp, Finset.inter_subset_left, good_intersection_mass _ F' _ η ε hF
+    hprod.1 hFm hprod.2, hSpart, hSproper, hnu', hc'⟩
 
 /-- Finitely many good sets inside one set lose at most the sum of their
 losses. -/
@@ -213,72 +190,47 @@ theorem section16_local_affine_lift_family {N k q r m v : Nat} [Fact N.Prime]
       ∀ a j z, z ∈ (S j).carrier → z ∈ D a → z ∈ G → ∃ c, phi a z = nu j c z := by
   let T := boxInit P
   let I := P.axis (Fin.last k)
-  have hT : T.IsProper := boxInit_isProper P hP
   have hI : I.IsProper := hP (Fin.last k)
-  have hmT : m ≤ T.width := hmP.trans (boxInit_width P hk)
   have hmI : m ≤ I.length := hmP.trans (P.width_le_axis_length (Fin.last k))
-  have hInonempty : I.carrier.Nonempty := by
-    apply Finset.card_pos.mp
-    rw [show I.carrier.card = I.length from hI]
-    omega
   have hprod : IsLastCoordinateBoxProduct P T I := boxInit_last_product P
   have hcarrier : P.carrier = lastProductSet T.carrier I.carrier := hprod.1
   obtain ⟨u, hu⟩ := I.step_isUnit_of_prime hI (by omega)
-  have hstep : I.step = T.commonDiff := P.axis_step (Fin.last k)
+  -- each member's recovered set, at the loss `τ' = τ / max 1 |ι|`
   set Mι : Nat := max 1 (Fintype.card ι)
-  have hMpos : (0 : ℝ) < Mι := by
-    have : 0 < Mι := lt_of_lt_of_le Nat.zero_lt_one (le_max_left _ _)
-    exact_mod_cast this
-  have hM1 : (1 : ℝ) ≤ Mι := by
-    have : 1 ≤ Mι := le_max_left _ _
-    exact_mod_cast this
-  have hcardM : (Fintype.card ι : ℝ) ≤ Mι := by
-    have : Fintype.card ι ≤ Mι := le_max_right _ _
-    exact_mod_cast this
+  have hMpos : (0 : ℝ) < Mι := by positivity
+  have hcardM : (Fintype.card ι : ℝ) ≤ Mι := by exact_mod_cast le_max_right 1 (Fintype.card ι)
   set τ' := τ / Mι with hτ'def
   have hτ' : 0 < τ' := div_pos hτ hMpos
-  have hτ'1 : τ' ≤ 1 := by
-    rw [hτ'def, div_le_one hMpos]; linarith
   have hr' : 6 * (q : ℝ) ≤ (r : ℝ) * τ' := by
     rw [hτ'def, mul_div_assoc', le_div_iff₀ hMpos]
     linarith
-  have hrpos : 0 < r := by
-    by_contra hz
-    have hz' : r = 0 := by omega
-    have hq' : (0 : ℝ) < q := by exact_mod_cast hq
-    simp only [hz', Nat.cast_zero, zero_mul] at hr'
-    linarith
-  have hrec : ∀ a : ι, ∃ (sample : Fin r → ZMod N) (F : Finset (Point N (k + 1))),
-      (∀ i, sample i ∈ I.carrier) ∧ F ⊆ P.carrier ∧
-      (1 - 2 * τ') * (P.carrier.card : ℝ) ≤ F.card ∧
-      Section16SampledOrAnchoredOn (D a) (phi a) sample F := fun a =>
-    section16_box_recovered_good_set P T I hprod hInonempty (D a) (phi a) (ell a)
-      (fun h _ i => hell a h i) (fun h hh x hx hz =>
-        hcover a h x (by
-          rw [appendCoordinate_eq_snoc]
-          exact (hprod.mem_snoc h x).mpr ⟨hh, hx⟩) hz) τ' hq hτ' hτ'1 hr'
-  choose sample F _ hF hFm ha using hrec
+  have hrpos : 0 < r :=
+    Nat.cast_pos.mp (by nlinarith [(by exact_mod_cast hq : (0 : ℝ) < q)] : (0 : ℝ) < r)
+  choose sample F _ hF hFm ha using fun a =>
+    section16_box_recovered_good_set P T I hprod
+      (Finset.card_pos.mp (by rw [show I.carrier.card = I.length from hI]; omega))
+      (D a) (phi a) (ell a) (fun h _ i => hell a h i) (fun h hh x hx hz =>
+        hcover a h x (by rw [appendCoordinate_eq_snoc]; exact (hprod.mem_snoc h x).mpr ⟨hh, hx⟩)
+          hz) τ' hq hτ' (div_le_one_of_le₀ (hτ1.trans (by exact_mod_cast le_max_left 1 _))
+            hMpos.le) hr'
+  -- their common part loses at most `|ι|·2τ' ≤ 2τ`
   obtain ⟨hF'sub, hF'm⟩ := good_finite_intersection_mass P.carrier F (2 * τ') hF hFm
   set F' := P.carrier.filter fun z => ∀ a, z ∈ F a
-  have hF'c : ∀ a, F' ⊆ F a := fun a z hz => (Finset.mem_filter.mp hz).2 a
-  have hloss : (Fintype.card ι : ℝ) * (2 * τ') ≤ 2 * τ := by
-    rw [hτ'def]
-    have h1 : (Fintype.card ι : ℝ) * (2 * (τ / Mι)) = 2 * τ * ((Fintype.card ι : ℝ) / Mι) := by
-      ring
-    rw [h1]
-    have h2 : (Fintype.card ι : ℝ) / Mι ≤ 1 := (div_le_one hMpos).mpr hcardM
-    nlinarith
+  have hloss : (Fintype.card ι : ℝ) * (2 * τ') ≤ 2 * τ :=
+    calc (Fintype.card ι : ℝ) * (2 * τ') = 2 * τ * (Fintype.card ι / Mι) := by rw [hτ'def]; ring
+      _ ≤ 2 * τ * 1 := by gcongr; exact div_le_one_of_le₀ hcardM hMpos.le
+      _ = 2 * τ := mul_one _
   have hF'm2 : (1 - 2 * τ) * (P.carrier.card : ℝ) ≤ F'.card := by
-    nlinarith
+    linarith [mul_le_mul_of_nonneg_right hloss (Nat.cast_nonneg (α := ℝ) P.carrier.card)]
   obtain ⟨p, G, L, S, nu, hp, hG, hGm, hSpart, hSproper, hnu, hc⟩ :=
     section16_synchronized_compressed_cover_family ha (hslice sample) (hGs sample) hrpos
-      ε hε hε1 hPb hEb T I hT hI hstep u hu.symm hk hm hmT hmI hv hvscale (2 * τ) F' hF'c
-      (hcarrier ▸ hF'sub) (hcarrier ▸ hF'm2)
-  refine ⟨p, G, L, S, nu, hp, hG.trans hF'sub, ?_, ?_, hSproper, hnu, hc⟩
-  · simpa only [← hcarrier] using hGm
-  · change IsPartition (fun j => (S j).carrier) P.carrier
-    rw [hcarrier]
-    exact hSpart
+      ε hε hε1 hPb hEb T I (boxInit_isProper P hP) hI (P.axis_step (Fin.last k)) u hu.symm hk hm
+      (hmP.trans (boxInit_width P hk)) hmI hv hvscale (2 * τ) F'
+      (fun a z hz => (Finset.mem_filter.mp hz).2 a) (hcarrier ▸ hF'sub) (hcarrier ▸ hF'm2)
+  refine ⟨p, G, L, S, nu, hp, hG.trans hF'sub, by simpa only [← hcarrier] using hGm, ?_,
+    hSproper, hnu, hc⟩
+  rw [IsBoxPartition, hcarrier]
+  exact hSpart
 
 /-- **The family local lift at every scale.** -/
 theorem section16_local_affine_lift_all_scales_family {N k q r m : Nat} [Fact N.Prime]
@@ -310,36 +262,28 @@ theorem section16_local_affine_lift_all_scales_family {N k q r m : Nat} [Fact N.
   by_cases hw : 16 ≤ w
   · have hm : 4 ≤ m := by
       by_contra hm
-      have hm' : (m : ℝ) ≤ 3 := by exact_mod_cast (by omega : m ≤ 3)
-      have hbase : (m : ℝ) / 8 ≤ 1 := by linarith
-      have hw1 : w ≤ 1 := Real.rpow_le_one (by positivity) hbase hEb.le
+      have hw1 : w ≤ 1 := Real.rpow_le_one (by positivity)
+        (by rw [div_le_one (by norm_num)]; exact_mod_cast (by omega : m ≤ 8)) hEb.le
       linarith
     obtain ⟨v, hv, hvscale, hvwidth⟩ := section16_lift_width_rounding hw
     obtain ⟨p, G, L, S, nu, hp, hG, hGm, hpart, hproper, hnu, hc⟩ :=
       section16_local_affine_lift_family P hP hk hm hmP D phi Pb Eb Gs hslice hGs
         ell hell hcover τ ε hq hτ hτ1 hε hε1 (by linarith) hEb.le hr hv hvscale
-    refine ⟨p, G, L, S, nu, hp, hG, hGm, hpart, ?_, hnu, hc⟩
-    intro j
-    refine ⟨(hproper j).1, hvwidth.trans ?_⟩
-    exact_mod_cast (hproper j).2
-  · have hw0 : 0 ≤ w := Real.rpow_nonneg (by positivity) _
+    exact ⟨p, G, L, S, nu, hp, hG, hGm, hpart,
+      fun j => ⟨(hproper j).1, hvwidth.trans (by exact_mod_cast (hproper j).2)⟩, hnu, hc⟩
+  · -- below the threshold, single points
+    have hw0 : 0 ≤ w := Real.rpow_nonneg (by positivity) _
     have hwidth : Real.sqrt w / 4 ≤ 1 := by
-      have hsquare := Real.sq_sqrt hw0
-      have hs0 := Real.sqrt_nonneg w
-      nlinarith [not_le.mp hw]
+      nlinarith [Real.sq_sqrt hw0, Real.sqrt_nonneg w, not_le.mp hw]
     obtain ⟨L, x, hpart⟩ := box_singleton_partition P
     refine ⟨1, P.carrier, L, fun j => pointSingletonBox (x j),
-      fun j c _ => phi c.1 (x j), by simpa using hPb, Finset.Subset.rfl, ?_, hpart, ?_,
-      fun j _ => isMultilinear_constant _, ?_⟩
-    · nlinarith
-    · intro j
-      refine ⟨pointSingletonBox_isProper _, ?_⟩
-      simpa only [pointSingletonBox_width (by omega : 0 < k + 1), Nat.cast_one] using hwidth
-    · intro a j z hz _ _
-      have hz' : z = x j := by
-        simpa only [pointSingletonBox_carrier, Finset.mem_singleton] using hz
-      exact ⟨(a, ⟨0, by unfold section16CompressedCandidateCount; omega⟩),
-        congrArg (phi a) hz'⟩
+      fun j c _ => phi c.1 (x j), by simpa using hPb, Finset.Subset.rfl,
+      mul_le_of_le_one_left (Nat.cast_nonneg _) (by linarith), hpart,
+      fun j => ⟨pointSingletonBox_isProper _, by
+        simpa only [pointSingletonBox_width (by omega : 0 < k + 1), Nat.cast_one] using hwidth⟩,
+      fun j _ => isMultilinear_constant _, fun a j z hz _ _ => ?_⟩
+    obtain rfl : z = x j := by simpa only [pointSingletonBox_carrier, Finset.mem_singleton] using hz
+    exact ⟨(a, ⟨0, by unfold section16CompressedCandidateCount; omega⟩), rfl⟩
 
 /-- The line-cover conclusion of Lemma 16.9 for a family: one partition,
 and per-member lines on every cell. -/

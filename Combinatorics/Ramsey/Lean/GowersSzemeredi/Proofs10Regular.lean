@@ -404,7 +404,7 @@ private lemma exists_regular_parameters {X : Type*} [Fintype X]
     (hrho : 0 < rho) (hL : 1 + 2 * rho ≤ 2)
     (hsigma : 0 < sigma) (heta : 0 < eta) (hS : 0 < S) (hT : 0 < T)
     (ha : ∀ y, 0 ≤ a y ∧ a y ≤ 1) (hb : ∀ y, 0 ≤ b y ∧ b y ≤ 1)
-    (hq : ∀ y, 0 ≤ q y) (he : ∀ y, 0 ≤ e y)
+    (he : ∀ y, 0 ≤ e y)
     (hU : S / 2 ≤ ∑ y ∈ U, q y)
     (hE : (∑ y : X, e y) ≤ 60 * eta * S)
     (hcard : (Fintype.card X : Real) = T) :
@@ -511,12 +511,6 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
   have hqUpper (y : X) : q y ≤ K := (lemma_10_1_holds N X D alpha M hsetup.1).1 x y
   have hε (y : X) : 0 ≤ domainProportionateError D phi B x y := by
     unfold domainProportionateError; positivity
-  have he (y : X) : 0 ≤ e y := mul_nonneg (hε y) (hq y)
-  have ha (y : X) : 0 ≤ a y ∧ a y ≤ 1 :=
-    ⟨div_nonneg (hq y) hK.le, (div_le_one hK).2 (hqUpper y)⟩
-  have hb (y : X) : 0 ≤ b y ∧ b y ≤ 1 :=
-    ⟨div_nonneg (Nat.cast_nonneg _) hMreal.le,
-      (div_le_one hMreal).2 (by exact_mod_cast hfibre (D.index y))⟩
   have hqScale (y : X) : q y = a y * K := (div_mul_cancel₀ _ hK.ne').symm
   have hRScale (y : X) : (D.fibreSize y : Real) = b y * M := (div_mul_cancel₀ _ hMreal.ne').symm
   have hSsum : S = ∑ y : X, q y := Nat.cast_sum _ _
@@ -534,7 +528,11 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
       simp only [K, qScale]; ring
     linarith
   obtain ⟨p, hSpr, hEw, hCw, hCv⟩ := exists_regular_parameters rho sigma eta S T a b q e X'
-    hrho hL hsigmaPos hetaPos hS hT ha hb hq he hU hEanchor hcard
+    hrho hL hsigmaPos hetaPos hS hT
+    (fun y => ⟨div_nonneg (hq y) hK.le, (div_le_one hK).2 (hqUpper y)⟩)
+    (fun y => ⟨div_nonneg (Nat.cast_nonneg _) hMreal.le,
+      (div_le_one hMreal).2 (by exact_mod_cast hfibre (D.index y))⟩)
+    (fun y => mul_nonneg (hε y) (hq y)) hU hEanchor hcard
   simp only [windowedSum_eq_filter, boundaryCount_eq_card_filter, Finset.sum_const,
     nsmul_eq_mul, mul_one] at hSpr hEw hCw hCv
   set W := windowFilter rho a b Finset.univ p
@@ -542,40 +540,34 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
   set Wx := windowFilter rho a b X' p
   have hmemW (y : X) : y ∈ W ↔ p ∈ normalizedWindowSet rho (a y) (b y) := by
     simp [W, windowFilter]
-  have hmemV (y : X) : y ∈ V ↔ p ∈ normalizedBoundarySet rho sigma (a y) (b y) := by
-    simp [V, boundaryFilter]
   have hWbounds (y : X) (hy : y ∈ W) :
       (a y - rho ≤ p.1 ∧ p.1 ≤ a y + rho) ∧ (b y - rho ≤ p.2 ∧ p.2 ≤ b y + rho) :=
     (hmemW y).mp hy
   have hWx : Wx ⊆ W := Finset.filter_subset_filter _ (Finset.subset_univ _)
   have hSprLeW : (∑ y ∈ Wx, q y) ≤ ∑ y ∈ W, q y :=
     Finset.sum_le_sum_of_subset_of_nonneg hWx fun y _ _ => hq y
-  have hsumWLeK : (∑ y ∈ W, q y) ≤ W.card * K :=
-    (Finset.sum_le_card_nsmul _ _ _ fun y _ => hqUpper y).trans_eq (nsmul_eq_mul _ _)
   have hWcardLower : rho ^ 2 * alpha ^ 2 * M * N / 16 ≤ (W.card : Real) := by
     refine le_of_mul_le_mul_right ?_ hK
     calc rho ^ 2 * alpha ^ 2 * M * N / 16 * K =
           rho ^ 2 * (alpha ^ 3 * M ^ 3 * N ^ 2 / 4) / 4 := by simp only [K, qScale]; ring
       _ ≤ rho ^ 2 * S / 4 := by gcongr
-      _ ≤ _ := hSpr.trans (hSprLeW.trans hsumWLeK)
+      _ ≤ _ := hSpr.trans (hSprLeW.trans ((Finset.sum_le_card_nsmul _ _ _ fun y _ =>
+          hqUpper y).trans_eq (nsmul_eq_mul _ _)))
   have hWcardPos : (0 : Real) < W.card :=
     (by positivity : (0 : Real) < rho ^ 2 * alpha ^ 2 * M * N / 16).trans_le hWcardLower
-  have hsumWUpper : (∑ y ∈ W, q y) ≤ W.card * ((p.1 + rho) * K) := by
-    rw [← nsmul_eq_mul]
-    refine Finset.sum_le_card_nsmul _ _ _ fun y hy => ?_
-    rw [hqScale]
-    exact mul_le_mul_of_nonneg_right (by linarith [(hWbounds y hy).1.1]) hK.le
+  have hsumWUpper : (∑ y ∈ W, q y) ≤ W.card * ((p.1 + rho) * K) :=
+    (Finset.sum_le_card_nsmul _ _ _ fun y hy => (hqScale y).trans_le
+      (mul_le_mul_of_nonneg_right (by linarith [(hWbounds y hy).1.1]) hK.le)).trans_eq
+        (nsmul_eq_mul _ _)
   have hQcenter : alpha / 48 ≤ p.1 + rho := by
     have hScenter : S ≤ 12 * T * (p.1 + rho) * K := by
       refine le_of_mul_le_mul_right ?_ hWcardPos
       linarith [mul_le_mul_of_nonneg_left (hSprLeW.trans hsumWUpper)
         (by positivity : (0 : Real) ≤ 12 * T)]
     refine le_of_mul_le_mul_left ?_ (mul_pos hT hK)
-    have : T * K * (alpha / 4) = alpha ^ 3 * M ^ 3 * N ^ 2 / 4 := by
-      simp only [T, K, qScale]; ring
-    linarith
+    linarith [show T * K * (alpha / 4) = alpha ^ 3 * M ^ 3 * N ^ 2 / 4 by
+      simp only [T, K, qScale]; ring]
   have hQratio : (p.1 + rho) / 2 ≤ p.1 - rho := by linarith
-  have hQlowerPos : 0 < p.1 - rho := by linarith
   obtain ⟨y₀, hy₀⟩ := Finset.nonempty_of_sum_ne_zero (lt_of_lt_of_le (by positivity) hSpr).ne'
   have hRcenter : alpha ^ 2 / 8 ≤ p.2 + rho := by
     refine le_of_mul_le_mul_right ?_ hMreal
@@ -584,20 +576,15 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
     linarith [hRScale y₀, (Finset.mem_filter.mp (Finset.mem_filter.mp hy₀).1).2]
   have hRratio : (p.2 + rho) / 2 ≤ p.2 - rho := by linarith
   have hRlower : alpha ^ 2 / 16 ≤ p.2 - rho := by linarith
-  have hRpointLower (y : X) (hy : y ∈ W) : alpha ^ 2 * M / 16 ≤ (D.fibreSize y : Real) := by
-    have := mul_le_mul_of_nonneg_right
-      (show alpha ^ 2 / 16 ≤ b y by linarith [(hWbounds y hy).2.2]) hMreal.le
-    linarith [hRScale y]
-  -- On `W`, a value `c y * L` with `c y` in a window of half-width `rho` around a centre `z`
-  -- with `(z + rho) / 2 ≤ z - rho` varies by a factor of at most two.
-  have hvar (f : X → Nat) (c : X → Real) (L z : Real) (hLpos : 0 < L)
-      (hf : ∀ y, (f y : Real) = c y * L) (hc : ∀ y ∈ W, c y - rho ≤ z ∧ z ≤ c y + rho)
-      (hz : (z + rho) / 2 ≤ z - rho) : VariesByFactorAtMostTwo W f := by
-    intro y hy w hw
-    have h : (f y : Real) ≤ 2 * f w := by
-      rw [hf, hf, ← mul_assoc]
-      exact mul_le_mul_of_nonneg_right (by linarith [(hc y hy).1, (hc w hw).2]) hLpos.le
-    exact_mod_cast h
+  -- on `W` both `q` and `R` take values in intervals `[L, 2 L]`
+  have hRWin (y : X) (hy : y ∈ W) : (p.2 - rho) * M ≤ D.fibreSize y ∧
+      (D.fibreSize y : Real) ≤ 2 * ((p.2 - rho) * M) := by
+    rw [hRScale, ← mul_assoc]
+    exact ⟨mul_le_mul_of_nonneg_right (by linarith [(hWbounds y hy).2.2]) hMreal.le,
+      mul_le_mul_of_nonneg_right (by linarith [(hWbounds y hy).2.1]) hMreal.le⟩
+  have hvar (f : X → Nat) (L : Real) (hf : ∀ y ∈ W, L ≤ f y ∧ (f y : Real) ≤ 2 * L) :
+      VariesByFactorAtMostTwo W f := fun y hy w hw => (Nat.cast_le (α := Real)).mp (by
+    push_cast; linarith [(hf y hy).2, (hf w hw).1])
   have hFibreSaturated : D.FibreSaturated W := fun y hy z hzy => by
     rw [hmemW] at hy ⊢
     simpa only [a, b, normalizedQ, normalizedR, differenceWeight_eq_of_index_eq D x z y hzy,
@@ -607,9 +594,7 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
     exact ⟨mul_le_mul_of_nonneg_right (by linarith [(hWbounds y hy).1.2]) hK.le,
       mul_le_mul_of_nonneg_right (by linarith [(hWbounds y hy).1.1]) hK.le⟩
   have hVcard : (V.card : Real) ≤ eta * W.card := by
-    have hSprLeS : (∑ y ∈ Wx, q y) ≤ S :=
-      (Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) fun y _ _ =>
-        hq y).trans_eq hSsum.symm
+    have hSprLeS : (∑ y ∈ Wx, q y) ≤ S := (Finset.sum_le_univ_sum_of_nonneg hq).trans_eq hSsum.symm
     have h1 : 12 * sigma * (1 + 2 * rho) * T * ∑ y ∈ Wx, q y ≤ 12 * sigma * 2 * T * S := by
       gcongr
     have h2 : rho ^ 2 * V.card ≤ 24 * sigma * T := le_of_mul_le_mul_left (by linarith) hS
@@ -624,7 +609,7 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
       obtain ⟨hyW, hyV⟩ := Finset.mem_sdiff.mp hy
       have hyWin := (hmemW y).mp hyW
       have hyNB : p ∉ normalizedBoundarySet rho sigma (a y) (b y) := fun h =>
-        hyV ((hmemV y).mpr h)
+        hyV (by simpa [V, boundaryFilter] using h)
       have hbFar : p.2 < b y + rho - sigma :=
         lt_of_not_ge fun h => hyNB (Or.inl (Or.inr ⟨Set.mem_univ _, h, hyWin.2.2⟩))
       have htarget : (0 : Real) < (D.fibre (D.index y + -d)).card := by
@@ -649,18 +634,16 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
       exact Finset.mem_inter.mpr ⟨hyW, Finset.mem_filter.mpr ⟨Finset.mem_univ _, z,
         (hmemW z).mpr (mem_normalizedWindow_of_close_of_not_boundary hyWin hyNB hqClose hRClose),
         hyIndex⟩⟩
-    have h1 : (W.card : Real) ≤ (W \ V).card + V.card := by
-      exact_mod_cast Finset.card_le_card_sdiff_add_card
-    have h2 : ((W \ V).card : Real) ≤ (W ∩ D.shift W d).card := by
-      exact_mod_cast Finset.card_le_card hsub
+    have h : (W.card : Real) ≤ (W ∩ D.shift W d).card + V.card := by
+      exact_mod_cast Finset.card_le_card_sdiff_add_card.trans (Nat.add_le_add_right
+        (Finset.card_le_card hsub) _)
     linarith
-  refine ⟨W, fun t => ⟨hFibreSaturated,
-    hvar _ a K p.1 hK hqScale (fun y hy => (hWbounds y hy).1) hQratio,
+  refine ⟨W, fun t => ⟨hFibreSaturated, hvar _ _ hqWin,
     almostEvery_of_weighted_error W q (fun y => domainProportionateError D phi B x y) e eta
-      ((p.1 - rho) * K) (∑ y ∈ Wx, q y) t hetaPos (mul_pos hQlowerPos hK) (fun _ => rfl) hε
+      ((p.1 - rho) * K) (∑ y ∈ Wx, q y) t hetaPos (mul_pos (by linarith) hK) (fun _ => rfl) hε
       (fun y hy => (hqWin y hy).1) (fun y hy => (hqWin y hy).2) hEw hSprLeW,
-    hWcardLower, hvar _ b M p.2 hMreal hRScale (fun y hy => (hWbounds y hy).2) hRratio,
-    hRpointLower, hOverlap⟩⟩
+    hWcardLower, hvar _ _ hRWin, fun y hy => by
+      linarith [(hRWin y hy).1, mul_le_mul_of_nonneg_right hRlower hMreal.le], hOverlap⟩⟩
 
 /-- The fifth-power variant used in the downstream local-difference construction. -/
 theorem lemma_10_5_holds : lemma_10_5 := by

@@ -154,57 +154,24 @@ theorem theorem10_13_zeta_le_parameterRadius (alpha : Real)
     let k := section10SpectrumParameter alpha
     section10Zeta alpha ≤
       (2 : Real) ^ (-((k : Real) + 4)) * section10BohrRadius alpha ^ k / k := by
-  dsimp only
-  let k := section10SpectrumParameter alpha
-  let a : Real := (2 : Real) ^ (-(150 : Real)) * alpha ^ (18 : Nat)
-  have hboundPos : 0 < section10SpectrumBound alpha := by
-    unfold section10SpectrumBound
-    positivity
-  have hk : 0 < k := by
-    dsimp [k, section10SpectrumParameter]
-    exact Nat.ceil_pos.mpr hboundPos
-  have hkReal : (1 : Real) ≤ k := by exact_mod_cast hk
-  have haPos : 0 < a := by
-    dsimp [a]
-    positivity
-  have hae : a ≤ section10BohrRadius alpha :=
-    theorem1013Parameters_bohr_radius_lower alpha halpha
-  have hcoeff :
-      (2 : Real) ^ (-(155 : Real) * (k : Real)) ≤
-        (2 : Real) ^ (-((k : Real) + 4)) *
-          ((2 : Real) ^ (-(150 : Real))) ^ k := by
-    rw [← Real.rpow_natCast,
-      ← Real.rpow_mul (show (0 : Real) ≤ 2 by norm_num),
+  intro k
+  have hk : (1 : Real) ≤ k := by
+    have : 0 < section10SpectrumBound alpha := by unfold section10SpectrumBound; positivity
+    exact_mod_cast Nat.ceil_pos.mpr this
+  -- `2 ^ (-155 k) ≤ 2 ^ (-(k + 4)) * (2 ^ (-150)) ^ k` because `k ≥ 1`
+  have hcoeff : (2 : Real) ^ (-(155 : Real) * k) ≤
+      (2 : Real) ^ (-((k : Real) + 4)) * ((2 : Real) ^ (-(150 : Real))) ^ k := by
+    rw [← Real.rpow_natCast, ← Real.rpow_mul (show (0 : Real) ≤ 2 by norm_num),
       ← Real.rpow_add (show (0 : Real) < 2 by norm_num)]
-    apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
-    nlinarith
-  have halphaPow :
-      (alpha ^ (18 : Nat)) ^ k = alpha ^ (18 * k) := by
-    rw [pow_mul]
-  have hcoarse :
-      (2 : Real) ^ (-(155 : Real) * (k : Real)) * alpha ^ (18 * k) ≤
-        (2 : Real) ^ (-((k : Real) + 4)) * a ^ k := by
-    calc
-      (2 : Real) ^ (-(155 : Real) * (k : Real)) * alpha ^ (18 * k) ≤
-          ((2 : Real) ^ (-((k : Real) + 4)) *
-            ((2 : Real) ^ (-(150 : Real))) ^ k) * alpha ^ (18 * k) := by
-        gcongr
-      _ = (2 : Real) ^ (-((k : Real) + 4)) * a ^ k := by
-        dsimp [a]
-        rw [mul_pow, halphaPow]
-        ring
-  have hpow : a ^ k ≤ section10BohrRadius alpha ^ k :=
-    pow_le_pow_left₀ haPos.le hae k
-  unfold section10Zeta
-  dsimp only [section10SpectrumParameter] at k ⊢
-  change
-    (2 : Real) ^ (-(155 : Real) * (k : Real)) * alpha ^ (18 * k) / k ≤
-      (2 : Real) ^ (-((k : Real) + 4)) * section10BohrRadius alpha ^ k / k
-  calc
-    (2 : Real) ^ (-(155 : Real) * (k : Real)) * alpha ^ (18 * k) / k ≤
-        ((2 : Real) ^ (-((k : Real) + 4)) * a ^ k) / k := by gcongr
+    exact Real.rpow_le_rpow_of_exponent_le (by norm_num) (by linarith)
+  calc section10Zeta alpha = (2 : Real) ^ (-(155 : Real) * k) * alpha ^ (18 * k) / k := rfl
     _ ≤ (2 : Real) ^ (-((k : Real) + 4)) *
-        section10BohrRadius alpha ^ k / k := by gcongr
+        ((2 : Real) ^ (-(150 : Real)) * alpha ^ 18) ^ k / k := by
+      rw [mul_pow, pow_mul, ← mul_assoc]
+      gcongr
+    _ ≤ _ := by
+      gcongr
+      exact theorem1013Parameters_bohr_radius_lower alpha halpha
 
 /-- The ceiling-based `zeta` is small enough for Corollary 10.11 at the
 actual, nonempty large-spectrum cardinality. -/
@@ -216,46 +183,14 @@ theorem theorem10_13_zeta_le_actualSpectrumRadius {N : Nat} [NeZero N]
     section10Zeta alpha ≤
       (2 : Real) ^ (-((K.card : Real) + 4)) *
         section10BohrRadius alpha ^ K.card / K.card := by
-  let k := section10SpectrumParameter alpha
-  have hnPos : 0 < K.card := Finset.card_pos.mpr hK
-  have hnPosReal : (0 : Real) < K.card := by exact_mod_cast hnPos
-  have hnLeReal : (K.card : Real) ≤ k := by
-    exact hKcard.trans (by
-      dsimp [k, section10SpectrumParameter]
-      exact Nat.le_ceil (section10SpectrumBound alpha))
-  have hnLe : K.card ≤ k := by exact_mod_cast hnLeReal
-  have hkPos : (0 : Real) < k := hnPosReal.trans_le hnLeReal
-  have hepsilonPos : 0 < section10BohrRadius alpha :=
-    theorem10_13_bohrRadius_pos alpha halpha
-  have hepsilonOne : section10BohrRadius alpha ≤ 1 :=
-    theorem10_13_bohrRadius_le_one alpha halpha halphaSixth
-  have htwo :
-      (2 : Real) ^ (-((k : Real) + 4)) ≤
-        (2 : Real) ^ (-((K.card : Real) + 4)) := by
-    apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
-    nlinarith
-  have hepsilonPow :
-      section10BohrRadius alpha ^ k ≤
-        section10BohrRadius alpha ^ K.card :=
-    pow_le_pow_of_le_one hepsilonPos.le hepsilonOne hnLe
-  have hnumerator :
-      (2 : Real) ^ (-((k : Real) + 4)) * section10BohrRadius alpha ^ k ≤
-        (2 : Real) ^ (-((K.card : Real) + 4)) *
-          section10BohrRadius alpha ^ K.card := by
-    gcongr
-  have hnumeratorNonneg :
-      0 ≤ (2 : Real) ^ (-((K.card : Real) + 4)) *
-        section10BohrRadius alpha ^ K.card := by positivity
-  calc
-    section10Zeta alpha ≤
-        (2 : Real) ^ (-((k : Real) + 4)) *
-          section10BohrRadius alpha ^ k / k := by
-      simpa only [k] using theorem10_13_zeta_le_parameterRadius alpha halpha
-    _ ≤ (2 : Real) ^ (-((K.card : Real) + 4)) *
-          section10BohrRadius alpha ^ K.card / k := by
-      exact div_le_div_of_nonneg_right hnumerator hkPos.le
-    _ ≤ (2 : Real) ^ (-((K.card : Real) + 4)) *
-          section10BohrRadius alpha ^ K.card / K.card := by
-      exact div_le_div_of_nonneg_left hnumeratorNonneg hnPosReal hnLeReal
+  -- the bound at the ceiling parameter `k ≥ |K|` is antitone in `k`
+  have hn : (0 : Real) < K.card := by exact_mod_cast hK.card_pos
+  have hnk : (K.card : Real) ≤ section10SpectrumParameter alpha := hKcard.trans (Nat.le_ceil _)
+  have hε := theorem10_13_bohrRadius_pos alpha halpha
+  refine (theorem10_13_zeta_le_parameterRadius alpha halpha).trans ?_
+  gcongr ?_ * ?_ / ?_
+  · exact Real.rpow_le_rpow_of_exponent_le (by norm_num) (by linarith)
+  · exact pow_le_pow_of_le_one hε.le (theorem10_13_bohrRadius_le_one alpha halpha halphaSixth)
+      (by exact_mod_cast hnk)
 
 end LeanProofs.GowersSzemeredi

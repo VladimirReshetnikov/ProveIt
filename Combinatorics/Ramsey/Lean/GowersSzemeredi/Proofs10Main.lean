@@ -223,38 +223,17 @@ private lemma theorem1013_quad_fibre_function {N : Nat} [NeZero N]
       correlation
         (correlation (domainFibreCountFunction D) (domainFibreCountFunction D))
         (correlation (domainFibreCountFunction D) (domainFibreCountFunction D)) s := by
-  have hcard :
-      ((theorem1013QuadDomain D).fibre s).card =
-        ((theorem1013DifferenceDomain (theorem1013DifferenceDomain D)).fibre s).card := by
-    unfold MultifunctionDomain.fibre
-    apply Finset.card_equiv
-        ({ toFun q := ((q 0, q 1), (q 2, q 3))
-           invFun q := ![q.1.1, q.1.2, q.2.1, q.2.2]
-           left_inv q := by
-             funext i
-             fin_cases i <;> rfl
-           right_inv q := by
-             rcases q with ⟨⟨a, b⟩, ⟨c, d⟩⟩
-             rfl } : Theorem1013Quad X ≃ (X × X) × (X × X))
-    intro q
-    simp [theorem1013QuadDomain, theorem1013DifferenceDomain]
+  -- a quadruple `q` is the pair of pairs `((q 0, q 1), (q 2, q 3))`
+  have hcard : ((theorem1013QuadDomain D).fibre s).card =
+      ((theorem1013DifferenceDomain (theorem1013DifferenceDomain D)).fibre s).card := by
+    refine Finset.card_equiv ((theorem1013FinFourEquiv X).trans
+      (Equiv.prodAssoc X X (X × X)).symm) fun q => ?_
+    simp [MultifunctionDomain.fibre, theorem1013QuadDomain, theorem1013DifferenceDomain,
+      theorem1013FinFourEquiv]
     constructor <;> intro h <;> rw [← h] <;> abel
-  change
-    (((theorem1013QuadDomain D).fibre s).card : Complex) = _
-  rw [hcard]
-  change domainFibreCountFunction
-      (theorem1013DifferenceDomain (theorem1013DifferenceDomain D)) s = _
-  calc
-    domainFibreCountFunction
-        (theorem1013DifferenceDomain (theorem1013DifferenceDomain D)) s =
-        correlation
-          (domainFibreCountFunction (theorem1013DifferenceDomain D))
-          (domainFibreCountFunction (theorem1013DifferenceDomain D)) s :=
-      theorem1013_difference_fibre_function (theorem1013DifferenceDomain D) s
-    _ = _ := by
-      apply congrArg (fun f : ZMod N → Complex ↦ correlation f f s)
-      funext t
-      exact theorem1013_difference_fibre_function D t
+  change (((theorem1013QuadDomain D).fibre s).card : Complex) = _
+  rw [hcard, ← funext (theorem1013_difference_fibre_function D)]
+  exact theorem1013_difference_fibre_function _ s
 
 private lemma theorem1013_quad_fourier {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]
@@ -443,22 +422,18 @@ private lemma theorem1013_weighted_phase_sum {N M : Nat} [NeZero N]
   have hepsilon := theorem10_13_bohrRadius_pos alpha halpha
   have htail := theorem1013_small_spectrum_tail D alpha hfibre hcard
   dsimp only at htail
-  have h4 : alpha ^ (-(4 : Real)) = (alpha ^ 4)⁻¹ := by
-    rw [Real.rpow_neg halpha.le]
-    norm_num [Real.rpow_natCast]
   have hbound : section10SpectrumBound alpha * ((alpha * M * N) ^ 4 *
       (2 * Real.pi * section10BohrRadius alpha)) =
       2 * alpha * section10Lambda alpha ^ 2 * M ^ 4 * N ^ 4 := by
-    rw [theorem1013_spectrum_bound_eq alpha halpha, section10BohrRadius, h4]
+    rw [theorem1013_spectrum_bound_eq alpha halpha, section10BohrRadius,
+      Real.rpow_neg halpha.le, Real.rpow_ofNat]
     field_simp [ne_of_gt halpha, ne_of_gt hlambda, Real.pi_ne_zero]
+  have hK := theorem10_13_spectrum_bound D alpha halpha hM hfibre hcard
+  set K := domainLargeSpectrum D (section10Lambda alpha * M * N)
   -- on the large spectrum use the Bohr phase bound, off it the trivial bound `2`
-  rw [← Finset.sum_filter_add_sum_filter_not Finset.univ
-    (· ∈ domainLargeSpectrum D (section10Lambda alpha * M * N))]
-  calc _ ≤ ∑ _r ∈ domainLargeSpectrum D (section10Lambda alpha * M * N),
-        (alpha * M * N) ^ 4 * (2 * Real.pi * section10BohrRadius alpha) +
-      ∑ r ∈ Finset.univ.filter (· ∉ domainLargeSpectrum D (section10Lambda alpha * M * N)),
-        2 * ‖fourier (domainFibreCountFunction D) r‖ ^ 4 := by
-        rw [Finset.filter_univ_mem]
+  rw [← Finset.sum_filter_add_sum_filter_not Finset.univ (· ∈ K), Finset.filter_univ_mem]
+  calc _ ≤ ∑ _r ∈ K, (alpha * M * N) ^ 4 * (2 * Real.pi * section10BohrRadius alpha) +
+        ∑ r ∈ Finset.univ.filter (· ∉ K), 2 * ‖fourier (domainFibreCountFunction D) r‖ ^ 4 := by
         refine add_le_add (Finset.sum_le_sum fun r hr ↦ ?_) (Finset.sum_le_sum fun r _ ↦ ?_)
         · exact mul_le_mul (pow_le_pow_left₀ (norm_nonneg _)
             (by simpa [hcard] using theorem1013_fourier_norm_le_card D r) 4)
@@ -467,10 +442,8 @@ private lemma theorem1013_weighted_phase_sum {N M : Nat} [NeZero N]
             pow_nonneg (norm_nonneg (fourier (domainFibreCountFunction D) r)) 4]
     _ ≤ _ := by
         rw [Finset.sum_const, nsmul_eq_mul, ← Finset.mul_sum]
-        linarith [mul_le_mul_of_nonneg_right
-          (theorem10_13_spectrum_bound D alpha halpha hM hfibre hcard)
-          (by positivity : (0 : Real) ≤
-            (alpha * M * N) ^ 4 * (2 * Real.pi * section10BohrRadius alpha))]
+        linarith [mul_le_mul_of_nonneg_right hK (by positivity : (0 : Real) ≤
+          (alpha * M * N) ^ 4 * (2 * Real.pi * section10BohrRadius alpha))]
 
 private lemma theorem1013_quad_shift_fourier {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]
@@ -895,7 +868,6 @@ theorem theorem_10_13_power_five_holds : theorem_10_13_power_five := by
   let K : Finset (ZMod N) :=
     domainLargeSpectrum D (section10Lambda alpha * M * N)
   let epsilon : Real := section10BohrRadius alpha
-  let zeta : Real := section10Zeta alpha
   let B : Finset (ZMod N) := bohr K epsilon
   let L : Nat := M * Fintype.card X ^ 3
   let eta : Real := theorem1013Eta
@@ -920,13 +892,10 @@ theorem theorem_10_13_power_five_holds : theorem_10_13_power_five := by
       hsetup hanchor hregular hrho.2.2
       (theorem1013_sigma_le_extraction alpha halpha halphaSixth)
   change IsSection10LocalDifferenceModel D₄ phi₄ W B B' psi theta at hlocal
-  have hWnonempty : W.Nonempty := by
-    have hL : (0 : Real) < L := by exact_mod_cast hsetup.1.2.2.1
-    have := hrho.1
-    exact Finset.card_pos.mp (by exact_mod_cast (by positivity :
-      (0 : Real) < rho ^ 2 * alpha ^ 2 * L * N / 16).trans_le hregular.2.2.2.1)
+  have hL : (0 : Real) < L := by exact_mod_cast hsetup.1.2.2.1
+  have hWnonempty : W.Nonempty := Finset.card_pos.mp (Nat.cast_pos.mp (lt_of_lt_of_le
+    (by have := hrho.1; positivity) hregular.2.2.2.1))
   have hsqrt : 6 * Real.sqrt theta < 1 := theorem1013_theta_small
-  have htheta : theta ≤ 1 / 8 := theorem1013_theta_le_eighth
   -- Lemma 10.9, Corollary 10.11 and Lemma 10.12
   have hpsi : FreimanHom 2 B' psi :=
     lemma_10_9_holds N (Theorem1013Quad X) D₄ phi₄ W B B' psi eta hWnonempty
@@ -935,25 +904,16 @@ theorem theorem_10_13_power_five_holds : theorem_10_13_power_five := by
   have hK : K.Nonempty := theorem10_13_largeSpectrum_nonempty D alpha halpha halphaSixth hcard
   have hepsilon : 0 < epsilon := theorem10_13_bohrRadius_pos alpha halpha
   have hepsilonOne : epsilon ≤ 1 := theorem10_13_bohrRadius_le_one alpha halpha halphaSixth
-  have hBdense : (7 / 8 : Real) * B.card ≤ B'.card :=
-    le_trans (mul_le_mul_of_nonneg_right (by linarith) (Nat.cast_nonneg _)) hlocal.2.1
   obtain ⟨-, psi₁, hpsi₁, hinduced⟩ := corollary_10_11_holds N K epsilon hK hepsilon
-    hepsilonOne B' psi hlocal.1 hBdense hpsi
+    hepsilonOne B' psi hlocal.1 (le_trans (mul_le_mul_of_nonneg_right (by linarith
+      [(theorem1013_theta_le_eighth : theta ≤ 1 / 8)]) (Nat.cast_nonneg _)) hlocal.2.1) hpsi
   have hdiff := lemma_10_12_holds N (Theorem1013Quad X) D₄ phi₄
     K epsilon theta W B' psi psi₁ hK hepsilon hepsilonOne (by linarith)
-    (fun w hw d hd ↦ section10_regular_translated_fibre_nonempty D₄ phi₄ B alpha sigma eta
-      rho x W hsetup hregular (theorem1013_sigma_lt_fibre alpha halpha halphaSixth) w hw d
-      (hlocal.1 hd))
+    (fun w hw d hd ↦ section10_regular_translated_fibre_nonempty _ _ _ _ _ _ _ _ _ hsetup
+      hregular (theorem1013_sigma_lt_fibre alpha halpha halphaSixth) w hw d (hlocal.1 hd))
     hlocal hpsi₁ hinduced
-  let zeta₀ : Real := (2 : Real) ^ (-((K.card : Real) + 4)) *
-    epsilon ^ K.card / K.card
-  let C₀ : Finset (ZMod N) := bohr K zeta₀
-  let W₁ : Finset (Theorem1013Quad X) :=
-    section10RegularSet D₄ phi₄ W B' psi theta
-  change ∀ w₁, w₁ ∈ W₁ → ∀ w₂, w₂ ∈ W₁ →
-    D₄.index w₁ - D₄.index w₂ ∈ C₀ →
-      phi₄ w₁ - phi₄ w₂ = psi₁ (D₄.index w₁ - D₄.index w₂) at hdiff
   -- by Lemma 10.7, `W₁` is most of `W`; `Y` is the slice of `W₁` over a popular tail
+  let W₁ : Finset (Theorem1013Quad X) := section10RegularSet D₄ phi₄ W B' psi theta
   have hW₁lower : (1 - Real.sqrt theta) * (W.card : Real) ≤ W₁.card :=
     lemma_10_7_holds N (Theorem1013Quad X) D₄ phi₄ W B B' psi eta hlocal
   have hXpos : (0 : Real) < Fintype.card X := by rw [hcard]; positivity
@@ -962,35 +922,32 @@ theorem theorem_10_13_power_five_holds : theorem_10_13_power_five := by
   have hYlarge : alpha ^ 5 * Fintype.card X / 20000 ≤ (theorem1013Slice W₁ p).card := by
     rw [theorem1013_slice_card]
     refine le_of_mul_le_mul_right ?_ (pow_pos hXpos 3)
-    have hbase : 0 ≤ alpha ^ 9 * (M : Real) ^ 4 * N ^ 4 := by positivity
     calc alpha ^ 5 * Fintype.card X / 20000 * (Fintype.card X : Real) ^ 3 ≤
         (5 / 6 : Real) * (rho ^ 2 * alpha ^ 2 * L * N / 16) := by
           simp only [rho, theorem1013Rho, L, Nat.cast_mul, Nat.cast_pow, hcard]
-          linarith
+          linarith [(by positivity : 0 ≤ alpha ^ 9 * (M : Real) ^ 4 * N ^ 4)]
       _ ≤ (1 - Real.sqrt theta) * W.card :=
           mul_le_mul (by linarith) hregular.2.2.2.1 (by positivity) (by linarith)
       _ ≤ W₁.card := hW₁lower
       _ ≤ _ := hp.trans_eq (mul_comm _ _)
-  -- the difference model on `W₁` restricts to the slice
-  have hzetaActual : zeta ≤ zeta₀ :=
-    theorem10_13_zeta_le_actualSpectrumRadius alpha halpha halphaSixth K
-      (theorem10_13_spectrum_bound D alpha halpha hM hfibre hcard) hK
-  have hCsubFinal : bohr K zeta ⊆ C₀ := fun c hc ↦ by
-    simp only [C₀, bohr, Finset.mem_filter, Finset.mem_univ, true_and] at hc ⊢
+  -- the difference model on `W₁` restricts to the slice: `zeta` is small enough for `|K|`
+  have hzeta := theorem10_13_zeta_le_actualSpectrumRadius alpha halpha halphaSixth K
+    (theorem10_13_spectrum_bound D alpha halpha hM hfibre hcard) hK
+  have hCsub : bohr K (section10Zeta alpha) ⊆
+      bohr K ((2 : Real) ^ (-((K.card : Real) + 4)) * epsilon ^ K.card / K.card) := fun c hc ↦ by
+    simp only [bohr, Finset.mem_filter, Finset.mem_univ, true_and] at hc ⊢
     exact fun r hr ↦ (hc r hr).trans (by gcongr)
   refine ⟨theorem1013Slice W₁ p, psi₁, hYlarge,
-    IsAddFreimanHom.subset (Finset.coe_subset.mpr hCsubFinal) hpsi₁ (Set.mapsTo_univ _ _),
+    IsAddFreimanHom.subset (Finset.coe_subset.mpr hCsub) hpsi₁ (Set.mapsTo_univ _ _),
     fun y hy z hz hyz ↦ ?_⟩
+  have hhead (f : X → ZMod N) : (f y - f p.1 - f p.2.1 + f p.2.2) -
+      (f z - f p.1 - f p.2.1 + f p.2.2) = f y - f z := by abel
   have hindex : D₄.index (theorem1013OfHead p y) - D₄.index (theorem1013OfHead p z) =
-      D.index y - D.index z := by
-    dsimp only [D₄, theorem1013QuadDomain, theorem1013OfHead]
-    simp [sub_eq_add_neg]
+      D.index y - D.index z := hhead D.index
   have hphase : phi₄ (theorem1013OfHead p y) - phi₄ (theorem1013OfHead p z) =
-      phi y - phi z := by
-    dsimp only [phi₄, theorem1013QuadPhase, theorem1013OfHead]
-    simp [sub_eq_add_neg]
+      phi y - phi z := hhead phi
   have h := hdiff _ (theorem1013_of_head_mem W₁ p y hy) _ (theorem1013_of_head_mem W₁ p z hz)
-    (by rw [hindex]; exact hCsubFinal hyz)
+    (hindex ▸ hCsub hyz)
   rwa [hindex, hphase] at h
 
 /-- The original corrected catalogue statement follows from the stronger

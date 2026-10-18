@@ -99,66 +99,50 @@ theorem section16_rounded_recurrence_scale {m b E : Nat} {a zeta : Real}
   have hmpos : (0 : Real) < m := zero_lt_one.trans_le hmR
   have hbR : (2 : Real) ≤ b := by exact_mod_cast hb
   have hEone : (1 : Real) ≤ E := by exact_mod_cast hE
-  let x : Real := (m : Real) ^ (a / (4 * E))
+  set x : Real := (m : Real) ^ (a / (4 * E)) with hx
   have hxpos : 0 < x := Real.rpow_pos_of_pos hmpos _
-  change 1 < (zeta / (4 * b)) * x at hlarge
-  have hden : (0 : Real) < 4 * b := by positivity
-  have hscaled : 4 * (b : Real) < zeta * x := by
-    have h := mul_lt_mul_of_pos_right hlarge hden
-    have heq : (zeta / (4 * (b : Real)) * x) * (4 * b) = zeta * x := by field_simp
-    simpa only [one_mul, heq] using h
-  have hzx : zeta * x ≤ (1 / 2) * x := mul_le_mul_of_nonneg_right hzHalf hxpos.le
-  have hbx : (b : Real) ≤ x := by nlinarith
+  -- `8b < x`, as `1 < ζx/(4b)` and `ζ ≤ 1/2`
+  have h8b : 8 * (b : Real) < x := by
+    rw [div_mul_eq_mul_div, lt_div_iff₀ (by positivity), one_mul] at hlarge
+    linarith [mul_le_mul_of_nonneg_right hzHalf hxpos.le]
+  -- the scale `n = ⌈x⌉^(2E)`
   let H : Nat := Nat.ceil x
   have hxH : x ≤ (H : Real) := Nat.le_ceil x
   have hH : 0 < H := Nat.ceil_pos.mpr hxpos
   have hHbound : (H : Real) ≤ x ^ 2 / 8 := by
-    have hc : (H : Real) ≤ x + 1 := (Nat.ceil_lt_add_one hxpos.le).le
-    nlinarith
+    have hc : (H : Real) < x + 1 := Nat.ceil_lt_add_one hxpos.le
+    nlinarith [mul_lt_mul_of_pos_right h8b hxpos, mul_le_mul_of_nonneg_right hbR hxpos.le]
   have hxpow : x ^ (4 * E) = (m : Real) ^ a := by
-    dsimp only [x]
-    rw [← Real.rpow_natCast, ← Real.rpow_mul hmpos.le]
+    rw [hx, ← Real.rpow_natCast, ← Real.rpow_mul hmpos.le]
     congr 1
     push_cast
     exact div_mul_cancel₀ _ (by positivity)
-  let n : Nat := H ^ (2 * E)
-  have hn : 0 < n := pow_pos hH _
-  have h8a : (8 : Real) ^ a ≤ 8 := by
-    simpa only [Real.rpow_one] using
-      Real.rpow_le_rpow_of_exponent_le (by norm_num : (1 : Real) ≤ 8) ha1
-  have h8E : (8 : Real) ≤ (8 : Real) ^ (2 * E) := by
-    simpa only [pow_one] using pow_le_pow_right₀ (by norm_num : (1 : Real) ≤ 8)
-      (by omega : 1 ≤ 2 * E)
+  set n : Nat := H ^ (2 * E) with hn_def
   have hnscale : (n : Real) ≤ ((m : Real) / 8) ^ a := by
     rw [Real.div_rpow hmpos.le (by norm_num : (0 : Real) ≤ 8)]
-    calc
-      (n : Real) = (H : Real) ^ (2 * E) := by simp only [n, Nat.cast_pow]
+    calc (n : Real) = (H : Real) ^ (2 * E) := by rw [hn_def, Nat.cast_pow]
       _ ≤ (x ^ 2 / 8) ^ (2 * E) := pow_le_pow_left₀ (Nat.cast_nonneg H) hHbound _
       _ = (m : Real) ^ a / (8 : Real) ^ (2 * E) := by
         rw [div_pow, ← pow_mul, show 2 * (2 * E) = 4 * E by omega, hxpow]
       _ ≤ (m : Real) ^ a / (8 : Real) ^ a :=
-        div_le_div_of_nonneg_left (Real.rpow_nonneg hmpos.le _)
-          (Real.rpow_pos_of_pos (by norm_num : (0 : Real) < 8) _) (h8a.trans h8E)
-  have hbH : b ≤ H := by exact_mod_cast hbx.trans hxH
+        div_le_div_of_nonneg_left (Real.rpow_nonneg hmpos.le _) (by positivity)
+          ((Real.rpow_le_rpow_of_exponent_le (by norm_num) ha1).trans
+            (by rw [Real.rpow_one]; exact le_self_pow₀ (by norm_num) (by omega)))
   have hthreshold : b ^ E ≤ n :=
-    (Nat.pow_le_pow_left hbH _).trans (Nat.pow_le_pow_right hH (by omega : E ≤ 2 * E))
+    (Nat.pow_le_pow_left (by exact_mod_cast (show (b : Real) ≤ H by linarith)) _).trans
+      (Nat.pow_le_pow_right hH (by omega : E ≤ 2 * E))
+  -- `x ≤ m`, so `m ≥ 16`
   have hxle : x ≤ (m : Real) := by
-    have he : a / (4 * (E : Real)) ≤ 1 := (div_le_iff₀ (by positivity)).mpr (by nlinarith)
-    simpa only [Real.rpow_one] using Real.rpow_le_rpow_of_exponent_le hmR he
-  have hm4 : 4 ≤ m := by
-    have h : (4 : Real) ≤ m := by linarith
-    exact_mod_cast h
+    simpa only [Real.rpow_one] using Real.rpow_le_rpow_of_exponent_le hmR
+      (div_le_one_of_le₀ (by linarith) (by positivity) : a / (4 * (E : Real)) ≤ 1)
   have hnroot : (n : Real) ^ ((E : Real)⁻¹) = (H : Real) ^ 2 := by
-    dsimp only [n]
-    rw [Nat.cast_pow, ← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg H), ← Real.rpow_natCast]
-    congr 1
-    push_cast
-    field_simp
-  refine ⟨n, hm4, hn, hnscale, hthreshold, ?_⟩
+    rw [hn_def, Nat.cast_pow, pow_mul]
+    exact Real.pow_rpow_inv_natCast (by positivity) (by omega)
+  refine ⟨n, by exact_mod_cast (show (4 : Real) ≤ m by linarith), pow_pos hH _, hnscale,
+    hthreshold, ?_⟩
   rw [hnroot, Real.sqrt_sq (Nat.cast_nonneg H)]
-  have hfactor : zeta / (4 * (b : Real)) ≤ zeta / 2 :=
-    div_le_div_of_nonneg_left hz.le (by norm_num) (by nlinarith)
-  exact mul_le_mul hfactor hxH hxpos.le (by positivity)
+  exact mul_le_mul (div_le_div_of_nonneg_left hz.le (by norm_num) (by linarith)) hxH hxpos.le
+    (by positivity)
 
 /-- **Lemma 16.6 for abstract members, at every scale.** -/
 def AbstractFamilyLemma166At (k : Nat) (W : Nat → Nat → Real → Real → Real) : Prop :=
@@ -197,117 +181,79 @@ theorem abstractFamilyLemma166At_of (k : Nat) {C p : Nat} (hC : 2 ≤ C) (hp : 0
   let b := C * (q + 1)
   let E := 2 * (p * (q + 1) ^ (2 * (2 ^ (k + 1))))
   let l := section16PowerWidth (familyWidthPrefactor C) (familyWidthDivisor k p) m q (Eb sigma) zeta
-  have hlval : l = (zeta / (4 * (b : Real))) * (m : Real) ^ (Eb sigma / (4 * (E : Real))) := rfl
   by_cases hl : l ≤ 1
-  · obtain ⟨M, x, hpart⟩ := box_singleton_partition P
+  · -- below the threshold, single points
+    obtain ⟨M, x, hpart⟩ := box_singleton_partition P
     refine ⟨Q.carrier, M, fun j => pointSingletonBox (x j),
       (fun j => boxInit (pointSingletonBox (x j))),
-      (fun j => (pointSingletonBox (x j)).axis (Fin.last k)), Finset.Subset.refl _, ?_, hpart,
-      fun j => pointSingletonBox_isProper _,
-      (fun j => boxInit_last_product (pointSingletonBox (x j))), ?_, ?_⟩
-    · have _ : (0 : Real) ≤ Q.carrier.card := Nat.cast_nonneg _
-      nlinarith
-    · intro j
-      simpa only [pointSingletonBox_width (by omega : 0 < k + 1), Nat.cast_one] using hl
-    · intro c j h _ _ _
-      apply LinearOn.of_subset_singleton _ _ ((x j) (Fin.last k))
-      intro y hy
-      simpa only [pointSingletonBox_axis_carrier] using (Finset.mem_inter.mp hy).1
-  · have hlarge : 1 < l := lt_of_not_ge hl
-    have hb : 2 ≤ b := hC.trans (Nat.le_mul_of_pos_right C (by omega))
+      (fun j => (pointSingletonBox (x j)).axis (Fin.last k)), Finset.Subset.refl _,
+      mul_le_of_le_one_left (Nat.cast_nonneg _) (by linarith), hpart,
+      fun j => pointSingletonBox_isProper _, fun j => boxInit_last_product _, fun j => ?_,
+      fun c j h _ _ _ => LinearOn.of_subset_singleton _ _ _
+        (Finset.inter_subset_left.trans (pointSingletonBox_axis_carrier _ _).subset)⟩
+    simpa only [pointSingletonBox_width (by omega : 0 < k + 1), Nat.cast_one] using hl
+  · have hb : 2 ≤ b := hC.trans (Nat.le_mul_of_pos_right C (by omega))
     have hE : 0 < E := by dsimp [E]; positivity
-    rw [hlval] at hlarge
+    have hlarge : 1 < (zeta / (4 * (b : Real))) * (m : Real) ^ (Eb sigma / (4 * (E : Real))) :=
+      lt_of_not_ge hl
     have hm : 1 ≤ m := by
       by_contra hm
-      have hm0 : m = 0 := by omega
-      have he : 0 < Eb sigma / (4 * (E : Real)) := by positivity
-      rw [hm0, Nat.cast_zero, Real.zero_rpow he.ne', mul_zero] at hlarge
+      have he : Eb sigma / (4 * (E : Real)) ≠ 0 := by positivity
+      rw [show m = 0 by omega, Nat.cast_zero, Real.zero_rpow he, mul_zero] at hlarge
       norm_num at hlarge
     obtain ⟨n, hm4, hn, hnscale, hnthreshold, htarget⟩ :=
       section16_rounded_recurrence_scale hm hb hE ha ha1 hz hzHalf hlarge
-    have hwidthpos : 0 < P.width := by omega
-    have hcanon := hproduct.canonical_factors hwidthpos
+    -- one short-parent cover of `Γ` over the base `Q' = boxInit P`
     let Q' := boxInit P
     let I' := P.axis (Fin.last k)
-    have hQ' : Q'.IsProper := boxInit_isProper P hP
     have hI' : I'.IsProper := hP (Fin.last k)
-    have hmQ' : m ≤ Q'.width := hmP.trans (boxInit_width P (by omega))
-    have hmI' : m ≤ I'.length := hmP.trans (P.width_le_axis_length (Fin.last k))
+    have hmI' : m ≤ I'.length := hmP.trans (P.width_le_axis_length _)
     obtain ⟨u, hu⟩ := I'.step_isUnit_of_prime hI' (by omega)
-    have hu' : I'.step = (↑u : ZMod N) := hu.symm
     have hstep : I'.step = Q'.commonDiff := P.axis_step (Fin.last k)
     obtain ⟨q', G, bb, Bp, cnt, R, mu, hq', hGsub, hGmass, hBpart, _,
         hBaxes, hBstep, hRpart, hRproper, hRwidth, hmu, hcover⟩ :=
-      hML.short_parent_cover sigma hs hs1 hQ ha.le Q' I' hQ' hI' (by omega) hm4 hmQ' hmI'
+      hML.short_parent_cover sigma hs hs1 hQ ha.le Q' I' (boxInit_isProper P hP) hI' (by omega)
+        hm4 (hmP.trans (boxInit_width P (by omega))) hmI'
     have hq'q : q' ≤ q := Nat.le_floor hq'
-    have hthreshold : familyRecThr k C p q' ≤ n :=
-      (familyRecThr_mono (by omega) hq'q).trans hnthreshold
     let lcell := (zeta / 2) * Real.sqrt ((n : Real) ^ familyRecExp k p q')
     have htarget' : (zeta / (4 * (b : Real))) * (m : Real) ^ (Eb sigma / (4 * (E : Real))) ≤
-        lcell := by
-      refine htarget.trans ?_
-      apply mul_le_mul_of_nonneg_left _ (by positivity)
-      apply Real.sqrt_le_sqrt
-      have hn1 : (1 : Real) ≤ n := by exact_mod_cast hn
-      have hEq : ((E : Nat) : Real)⁻¹ = familyRecExp k p q := rfl
-      rw [hEq]
-      exact Real.rpow_le_rpow_of_exponent_le hn1 (familyRecExp_antitone hp hq'q)
-    have hlcell : 1 < lcell := hlarge.trans_le htarget'
+        lcell := htarget.trans (mul_le_mul_of_nonneg_left (Real.sqrt_le_sqrt
+          (Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hn) (familyRecExp_antitone hp hq'q)))
+          (by positivity))
+    -- the retiled family bound on every cell `R' j`
     let e := section5NatFlattenEquiv cnt
     let R' := boxFlatten cnt R
-    have hR'part : IsBoxPartition R' Q' := boxFlatten_partition Q' Bp cnt R hBpart hRpart
     let i : Fin k := ⟨0, by omega⟩
     have hnR (j : Fin (∑ z, cnt z)) : n ≤ (R' j).width := by
       exact_mod_cast hnscale.trans (hRwidth (e.symm j).1 (e.symm j).2)
-    have hne (j : Fin (∑ z, cnt z)) : (R' j).carrier.Nonempty := by
-      apply Box.carrier_nonempty_of_axis_pos
-      exact fun z => hn.trans_le ((hnR j).trans ((R' j).width_le_axis_length z))
-    have hsub (j : Fin (∑ z, cnt z)) :
-        ((R' j).axis i).carrier ⊆ ((Bp (e.symm j).1).axis i).carrier :=
-      (R' j).axis_carrier_subset_of_carrier_subset (Bp (e.symm j).1) (hne j)
-        (IsPartition.cell_subset (hRpart (e.symm j).1) (e.symm j).2) i
-    have hBunit (j : Fin (∑ z, cnt z)) :
-        ((Bp (e.symm j).1).axis i).step = (↑u : ZMod N) := by
-      rw [(Bp _).axis_step, hBstep, ← hstep, hu']
-    have hIparallel (j : Fin (∑ z, cnt z)) : I'.step = ((Bp (e.symm j).1).axis i).step := by
-      rw [(Bp _).axis_step, hBstep, hstep]
-    have hlocal (j : Fin (∑ z, cnt z)) :
-        ∃ M : Nat, ∃ S : Fin M → Box N (k + 1), ∃ T : Fin M → Box N k,
-          ∃ J : Fin M → ModAP N,
-          IsPartition (fun z => (S z).carrier) (lastProductSet (R' j).carrier I'.carrier) ∧
-          (∀ z, (S z).IsProper ∧ lcell ≤ (S z).width) ∧
-          (∀ z, IsLastCoordinateBoxProduct (S z) (T z) (J z)) ∧
-          ∀ c z x, x ∈ (T z).carrier → x ∈ G ∩ H1 c →
-            LinearOn ((J z).carrier ∩ A c x) (f c x) := by
-      apply hfam q' N n (R' j) ((Bp (e.symm j).1).axis i) I' i u
-        (hRproper _ _) hI' (hBunit j) (hIparallel j) (hsub j)
-        (hBaxes _ i).2.1 (hBaxes _ i).2.2 (mu (e.symm j).1 (e.symm j).2)
-        (hmu _ _) hthreshold (hnR j) ι K (fun c => G ∩ H1 c) A f zeta hz hzHalf
-      · intro c x hx hxGH r hr
-        exact hcover (e.symm j).1 (e.symm j).2 x hx (Finset.mem_inter.mp hxGH).1 r
-          (hfreq c x (Finset.mem_inter.mp hxGH).2 r hr)
-      · intro c x hxGH v hv J hJ hd
-        exact hlinear c x (Finset.mem_inter.mp hxGH).2 v hv J hJ hd
-      · exact hlcell
-    choose L S T J hSpart hSproper hSproduct hSlin using hlocal
+    choose L S T J hSpart hSproper hSproduct hSlin using fun j : Fin (∑ z, cnt z) =>
+      hfam q' N n (R' j) ((Bp (e.symm j).1).axis i) I' i u (hRproper _ _) hI'
+        (by rw [(Bp _).axis_step, hBstep, ← hstep, ← hu])
+        (by rw [(Bp _).axis_step, hBstep, hstep])
+        ((R' j).axis_carrier_subset_of_carrier_subset (Bp (e.symm j).1)
+          ((R' j).carrier_nonempty_of_axis_pos fun z =>
+            hn.trans_le ((hnR j).trans ((R' j).width_le_axis_length z)))
+          (IsPartition.cell_subset (hRpart (e.symm j).1) (e.symm j).2) i)
+        (hBaxes _ i).2.1 (hBaxes _ i).2.2 (mu (e.symm j).1 (e.symm j).2) (hmu _ _)
+        ((familyRecThr_mono (by omega) hq'q).trans hnthreshold) (hnR j) ι K (fun c => G ∩ H1 c)
+        A f zeta hz hzHalf (fun c x hx hxGH r hr => hcover (e.symm j).1 (e.symm j).2 x hx
+          (Finset.mem_inter.mp hxGH).1 r (hfreq c x (Finset.mem_inter.mp hxGH).2 r hr))
+        (fun c x hxGH => hlinear c x (Finset.mem_inter.mp hxGH).2) (hlarge.trans_le htarget')
     let fidx := section5NatFlattenEquiv L
+    have hcanon := hproduct.canonical_factors (by omega : 0 < P.width)
+    refine ⟨G, ∑ j, L j, boxFlatten L S, (fun j => T (fidx.symm j).1 (fidx.symm j).2),
+      (fun j => J (fidx.symm j).1 (fidx.symm j).2), by simpa only [Q', hcanon.1] using hGsub,
+      by simpa only [Q', hcanon.1] using hGmass, ?_, fun j => (hSproper _ _).1,
+      fun j => hSproduct _ _,
+      fun j => htarget'.trans (hSproper (fidx.symm j).1 (fidx.symm j).2).2,
+      fun c j h hhG hhH hhT =>
+        hSlin (fidx.symm j).1 c (fidx.symm j).2 h hhT (Finset.mem_inter.mpr ⟨hhG, hhH⟩)⟩
     have hpartQ : IsPartition (fun z => (boxFlatten L S z).carrier)
         (lastProductSet Q'.carrier I'.carrier) :=
       finsetPartition_flatten L (fun j => lastProductSet (R' j).carrier I'.carrier)
         (lastProductSet Q'.carrier I'.carrier) (fun j z => (S j z).carrier)
-        (lastProductSet_partition _ _ _ hR'part) hSpart
-    refine ⟨G, ∑ j, L j, boxFlatten L S,
-      (fun j => T (fidx.symm j).1 (fidx.symm j).2),
-      (fun j => J (fidx.symm j).1 (fidx.symm j).2), ?_, ?_, ?_,
-      (fun j => (hSproper _ _).1), (fun j => hSproduct _ _), ?_, ?_⟩
-    · simpa only [Q', hcanon.1] using hGsub
-    · simpa only [Q', hcanon.1] using hGmass
-    · change IsPartition (fun j => (boxFlatten L S j).carrier) P.carrier
-      simpa only [(boxInit_last_product P).1, lastProductSet, Q', I'] using hpartQ
-    · intro j
-      have hw := (hSproper (fidx.symm j).1 (fidx.symm j).2).2
-      exact (le_of_eq hlval).trans (htarget'.trans hw)
-    · intro c j h hhG hhH hhT
-      exact hSlin (fidx.symm j).1 c (fidx.symm j).2 h hhT (Finset.mem_inter.mpr ⟨hhG, hhH⟩)
+        (lastProductSet_partition _ _ _ (boxFlatten_partition Q' Bp cnt R hBpart hRpart)) hSpart
+    change IsPartition (fun j => (boxFlatten L S j).carrier) P.carrier
+    simpa only [(boxInit_last_product P).1, lastProductSet, Q', I'] using hpartQ
 
 end LeanProofs.GowersSzemeredi

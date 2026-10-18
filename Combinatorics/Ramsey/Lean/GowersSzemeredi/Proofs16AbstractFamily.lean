@@ -63,75 +63,52 @@ theorem abstractFamilyLemma169At_of (k : Nat) {W : Nat → Nat → Real → Real
   have hsHalf1 : sigma / 2 ≤ 1 := by linarith
   obtain ⟨M, qGamma, F, R, mu, hFsub, hFmass, hRpart, hRproper, hqGamma,
       hRwidth, hmu, hremCover⟩ := hrem (sigma / 2) hsHalf hsHalf1 P hP
+  -- Lemma 16.6 on every cell `R j` of the remainder cover
   have hlocal (j : Fin M) := hlemma6 N (R j).width hk zeta (sigma / 2) hz hzHalf
     hsHalf hsHalf1 Qb Eb hQ ha ha1 Gamma hML ι H1 K A f hfreq hlinear
     (R j) (boxInit (R j)) ((R j).axis (Fin.last k)) (hRproper j) (boxInit_last_product (R j)) le_rfl
   choose G L S T J hGsub hGmass hSpart hSproper hSproduct hSwidth hSlin using hlocal
-  let qDelta := Nat.floor (Qb (sigma / 2))
   have hwidth (j : Fin M) (a : Fin (L j)) :
-      W m qDelta (Er (sigma / 2) * Eb (sigma / 2)) zeta ≤ (S j a).width := by
-    have hcell : (m : Real) ^ (Er (sigma / 2)) ≤ (R j).width :=
-      (Real.rpow_le_rpow (Nat.cast_nonneg m) (by exact_mod_cast hmP) hEr).trans (hRwidth j)
-    exact (hW m (R j).width qDelta (Eb (sigma / 2)) (Er (sigma / 2)) zeta hz.le ha.le hEr
-      hcell).trans (hSwidth j a)
+      W m ⌊Qb (sigma / 2)⌋₊ (Er (sigma / 2) * Eb (sigma / 2)) zeta ≤ (S j a).width :=
+    (hW m (R j).width _ _ _ zeta hz.le ha.le hEr ((Real.rpow_le_rpow (Nat.cast_nonneg m)
+      (by exact_mod_cast hmP) hEr).trans (hRwidth j))).trans (hSwidth j a)
+  -- the good set: `F` and the good fibres `G j` of every cell
   let U (j : Fin M) := lastProductSet (G j) ((R j).axis (Fin.last k)).carrier
   have hU (j : Fin M) : U j ⊆ (R j).carrier ∧
       (1 - sigma / 2) * ((R j).carrier.card : Real) ≤ (U j).card := by
     have h := lastProductSet_good_mass (boxInit (R j)).carrier (G j)
       ((R j).axis (Fin.last k)).carrier (sigma / 2) (hGsub j) (hGmass j)
     simpa only [U, (boxInit_last_product (R j)).1, lastProductSet] using h
-  let V := Finset.univ.biUnion U
   have hV := IsPartition.good_union hRpart U (sigma / 2) (fun j => (hU j).1) (fun j => (hU j).2)
-  let E := F ∩ V
-  have hEsub : E ⊆ P.carrier := Finset.Subset.trans Finset.inter_subset_left hFsub
-  have hEmass : (1 - sigma) * (P.carrier.card : Real) ≤ E.card := by
-    have h := good_intersection_mass P.carrier F V (sigma / 2) (sigma / 2) hFsub hV.1 hFmass hV.2
-    convert h using 1; ring
-  have hext (c : ι) (j : Fin M) (a : Fin (L j)) (h : Point N k) :
-      ∃ ell : ZMod N → ZMod N, LinearOn Finset.univ ell ∧
-        (h ∈ G j ∧ h ∈ H1 c ∧ h ∈ (T j a).carrier →
-          ∀ x ∈ (J j a).carrier ∩ A c h, f c h x = ell x) :=
-    conditional_affine_extension _ _ _ (fun hh => hSlin j c a h hh.1 hh.2.1 hh.2.2)
-  choose ell hell hellEq using hext
+  -- the lines: affine extensions of the fibres `f c h`
+  choose ell hell hellEq using fun (c : ι) (j : Fin M) (a : Fin (L j)) (h : Point N k) =>
+    conditional_affine_extension (h ∈ G j ∧ h ∈ H1 c ∧ h ∈ (T j a).carrier) _ _
+      fun hh => hSlin j c a h hh.1 hh.2.1 hh.2.2
   let e := section5NatFlattenEquiv L
-  let lines (c : ι) (j : Fin M) (a : Fin (L j)) (h : Point N k) (i : Fin qGamma) (x : ZMod N) :=
-    (-1 : ZMod N) ^ k * ell c j a h x + mu j i (appendCoordinate h x)
-  refine ⟨qGamma, hqGamma, E, ∑ j, L j, boxFlatten L S,
-    (fun a => T (e.symm a).1 (e.symm a).2),
-    (fun a => J (e.symm a).1 (e.symm a).2),
-    (fun c a => lines c (e.symm a).1 (e.symm a).2), hEsub, hEmass,
-    boxFlatten_partition P R L S hRpart hSpart, (fun a => hSproper _ _), ?_, ?_, ?_, ?_⟩
-  · intro a
-    exact hSproduct _ _
-  · intro a
-    exact hwidth _ _
-  · intro c a h i
-    exact affine_plus_multilinear_fibres (mu (e.symm a).1) (hmu (e.symm a).1) h
-      (ell c (e.symm a).1 (e.symm a).2 h) (hell _ _ _ _) ((-1 : ZMod N) ^ k) i
-  · intro c a h x hhT hzD hzE hzS
-    let j := (e.symm a).1
-    let b := (e.symm a).2
-    change appendCoordinate h x ∈ (S j b).carrier at hzS
-    have hzR : appendCoordinate h x ∈ (R j).carrier := IsPartition.cell_subset (hSpart j) b hzS
-    have hzF : appendCoordinate h x ∈ F := (Finset.mem_inter.mp hzE).1
-    have hzV : appendCoordinate h x ∈ V := (Finset.mem_inter.mp hzE).2
-    have hzU := (IsPartition.good_union_mem_iff hRpart U (fun j => (hU j).1) j hzR).mp hzV
-    have hhG : h ∈ G j := by
-      have h := (Finset.mem_filter.mp hzU).2.1
-      simpa only [section16Init_appendCoordinate] using h
-    have hdomain := hdom c _ hzD
-    simp only [section16Init_appendCoordinate, section16Last_appendCoordinate] at hdomain
-    have hxJ : x ∈ (J j b).carrier := by
-      have h := ((hSproduct j b).mem_snoc h x).mp (by simpa only [appendCoordinate_eq_snoc] using hzS)
-      exact h.2
-    have hphi := hellEq c j b h ⟨hhG, hdomain.1, hhT⟩ x (Finset.mem_inter.mpr ⟨hxJ, hdomain.2⟩)
-    obtain ⟨i, hi⟩ := hremCover j (appendCoordinate h x) hzR hzF _ (hGr c _ hzD)
-    refine ⟨i, ?_⟩
-    have hidz := hid c _ hzD
-    simp only [section16Init_appendCoordinate, section16Last_appendCoordinate] at hidz
-    change _ = lines c j b h i x
-    dsimp only [lines]
-    rw [hidz, hphi, hi]
+  refine ⟨qGamma, hqGamma, F ∩ Finset.univ.biUnion U, ∑ j, L j, boxFlatten L S,
+    (fun a => T (e.symm a).1 (e.symm a).2), (fun a => J (e.symm a).1 (e.symm a).2),
+    (fun c a h i x => (-1 : ZMod N) ^ k * ell c (e.symm a).1 (e.symm a).2 h x +
+      mu (e.symm a).1 i (appendCoordinate h x)), Finset.inter_subset_left.trans hFsub,
+    by linarith [good_intersection_mass P.carrier F _ _ _ hFsub hV.1 hFmass hV.2],
+    boxFlatten_partition P R L S hRpart hSpart, fun a => hSproper _ _, fun a => hSproduct _ _,
+    fun a => hwidth _ _, fun c a h i => affine_plus_multilinear_fibres (mu (e.symm a).1)
+      (hmu (e.symm a).1) h (ell c (e.symm a).1 (e.symm a).2 h) (hell _ _ _ _) ((-1) ^ k) i, ?_⟩
+  intro c a h x hhT hzD hzE hzS
+  change appendCoordinate h x ∈ (S (e.symm a).1 (e.symm a).2).carrier at hzS
+  have hzR : appendCoordinate h x ∈ (R (e.symm a).1).carrier :=
+    (hSpart (e.symm a).1).cell_subset (e.symm a).2 hzS
+  have hzU := (IsPartition.good_union_mem_iff hRpart U (fun j => (hU j).1) _ hzR).mp
+    (Finset.mem_inter.mp hzE).2
+  have hdomain := hdom c _ hzD
+  have hidz := hid c _ hzD
+  simp only [section16Init_appendCoordinate, section16Last_appendCoordinate] at hdomain hidz
+  have hxJ := ((hSproduct (e.symm a).1 (e.symm a).2).mem_snoc h x).mp
+    (by simpa only [appendCoordinate_eq_snoc] using hzS)
+  obtain ⟨i, hi⟩ := hremCover _ _ hzR (Finset.mem_inter.mp hzE).1 _ (hGr c _ hzD)
+  refine ⟨i, ?_⟩
+  rw [hidz, hellEq c (e.symm a).1 (e.symm a).2 h ⟨by simpa only [section16Init_appendCoordinate]
+    using (Finset.mem_filter.mp hzU).2.1, hdomain.1, hhT⟩ x
+    (Finset.mem_inter.mpr ⟨hxJ.2, hdomain.2⟩), hi]
 
 /-- **The large-box profile of a family of abstract pieces.** -/
 theorem abstract_family_piece_large_box_profile {k : Nat} (hk : 1 ≤ k)
@@ -169,77 +146,44 @@ theorem abstract_family_piece_large_box_profile {k : Nat} (hk : 1 ≤ k)
           (pieceLineExponent Bq Qb Eb Er rho) (famPieceSliceExponent Qr Es (Fintype.card ι) rho)) := by
   intro rho hrho hrho1 P hP hlarge
   let sigma := rho / 4
-  have hs : 0 < sigma := by dsimp [sigma]; positivity
+  have hs : 0 < sigma := by positivity
   have hs1 : sigma ≤ 1 := by dsimp [sigma]; linarith
   have hhalf : sigma / 2 = rho / 8 := by dsimp [sigma]; ring
-  have h8 : 0 < rho / 8 := by positivity
-  have h81 : rho / 8 ≤ 1 := by linarith
-  obtain ⟨hQ, ha, ha1⟩ := hQb (rho / 8) h8 h81
-  have hEr8 := hEr (rho / 8) h8 h81
-  have hsub := abstractFamilyLemma169At_of k (section16PowerWidth_transfer hA hB) hlemma6
-  obtain ⟨qGamma, hqGamma, hcover⟩ := hsub N P.width hk zeta sigma hz hzHalf hs hs1
+  obtain ⟨hQ, ha, ha1⟩ := hQb (rho / 8) (by positivity) (by linarith)
+  have hEr8 := hEr (rho / 8) (by positivity) (by linarith)
+  -- the abstract Lemma 16.9 at `σ = ρ/4`, then the rounded global lift
+  obtain ⟨qGamma, hqGamma, hcover⟩ := abstractFamilyLemma169At_of k
+    (section16PowerWidth_transfer hA hB) hlemma6 N P.width hk zeta sigma hz hzHalf hs hs1
     Qb Eb Qr Er (by rw [hhalf]; exact hQ) (by rw [hhalf]; exact ha) (by rw [hhalf]; exact ha1)
     (by rw [hhalf]; exact hEr8.le) Gamma hML Gr hrem ι H1 K Adom f D phi rem
     hfreq hlinear hdom hid hGr P hP le_rfl
   rw [hhalf] at hcover hqGamma
   let l := section16PowerWidth A Bq P.width ⌊Qb (rho / 8)⌋₊ (Er (rho / 8) * Eb (rho / 8)) zeta
-  have hl : 0 ≤ l := by
-    have := hA ⌊Qb (rho / 8)⌋₊
-    dsimp only [l, section16PowerWidth]
-    positivity
   obtain ⟨n, Hc, L, Q, mu, hn, hH, hmass, hpart, hproper, hw, hmu, hcov⟩ :=
-    hcover.global_affine_lift_rounded_family Gs hslice hGs hranges (by omega) hl
+    hcover.global_affine_lift_rounded_family Gs hslice hGs hranges (by omega)
+      (mul_nonneg (div_nonneg hz.le (hA _).le) (Real.rpow_nonneg (Nat.cast_nonneg _) _) : 0 ≤ l)
       sigma sigma hs hs1 hs hs1
+  -- the `r` samples of the lift are at most `S`, the samples of the envelope
   set r := ⌈6 * (max 1 qGamma : Real) * ((max 1 (Fintype.card ι) : Nat) : Real) / sigma⌉₊
     with hr
   set S := famPieceSamples Qr (Fintype.card ι) rho with hS
-  have hrS : r ≤ S := by
-    rw [hr, hS, famPieceSamples]
-    apply Nat.ceil_mono
-    apply div_le_div_of_nonneg_right _ hs.le
-    apply mul_le_mul_of_nonneg_right _ (Nat.cast_nonneg _)
-    apply mul_le_mul_of_nonneg_left _ (by norm_num)
-    exact max_le_max le_rfl hqGamma
-  have hSpos : 0 < S := famPieceSamples_pos hrho
-  obtain ⟨hPbS, hEsS, _⟩ := hranges S sigma hSpos hs hs1
+  have hrS : r ≤ S := Nat.ceil_mono (div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_right
+    (mul_le_mul_of_nonneg_left (max_le_max le_rfl hqGamma) (by norm_num)) (Nat.cast_nonneg _))
+    hs.le)
+  obtain ⟨hPbS, hEsS, _⟩ := hranges S sigma (famPieceSamples_pos hrho) hs hs1
   have hPbr : Pb r sigma ≤ Pb S sigma := hPb sigma hrS
-  have hEsr : Es S sigma ≤ Es r sigma := hEs sigma hs hrS
-  have hrpos : 0 < r := by
-    rw [hr]
-    apply Nat.ceil_pos.mpr
-    positivity
-  have hPbr1 := (hranges r sigma hrpos hs hs1).1
-  have he : 0 < pieceLineExponent Bq Qb Eb Er rho := by
-    have := hB ⌊Qb (rho / 8)⌋₊
-    unfold pieceLineExponent
-    positivity
-  have hzA : 0 < pieceWidthScale A Qb zeta rho := by
-    have := hA ⌊Qb (rho / 8)⌋₊
-    unfold pieceWidthScale
-    positivity
-  have hlpow : pieceWidthScale A Qb zeta rho * (P.width : Real) ^ pieceLineExponent Bq Qb Eb Er rho
-      ≤ l := le_of_eq rfl
-  obtain ⟨hbase, hpow⟩ := section16_rounded_power_width hzA he hEsS hlpow hlarge
-  refine ⟨L, n, Hc, Q, mu, hH, ?_, hpart, hproper, ?_, ?_, hmu, ?_⟩
+  have hPbr1 := (hranges r sigma (Nat.ceil_pos.mpr (by positivity)) hs hs1).1
+  obtain ⟨hbase, hpow⟩ := section16_rounded_power_width (l := l) (div_pos hz (hA _))
+    (div_pos (mul_pos hEr8 ha) (hB _)) hEsS le_rfl hlarge
+  refine ⟨L, n, Hc, Q, mu, hH, ?_, hpart, hproper, ?_, fun j => hpow.trans (le_trans
+    (div_le_div_of_nonneg_right (Real.sqrt_le_sqrt (Real.rpow_le_rpow_of_exponent_le hbase
+      (hEs sigma hs hrS))) (by norm_num)) (hw j)), hmu, ?_⟩
   · have hm : 1 - sigma - 2 * sigma - sigma = 1 - rho := by dsimp [sigma]; ring
     simpa only [hm] using hmass
-  · refine hn.trans ?_
-    unfold famPieceGraphBound
-    apply mul_le_mul_of_nonneg_left _ (Nat.cast_nonneg _)
-    refine max_le_max hPbr ?_
-    have hch : ((r.choose 2 : Nat) : Real) ≤ ((S.choose 2 : Nat) : Real) := by
-      exact_mod_cast Nat.choose_le_choose 2 hrS
+  · refine hn.trans (mul_le_mul_of_nonneg_left (max_le_max hPbr ?_) (Nat.cast_nonneg _))
     have h0 : (0 : Real) ≤ Pb r sigma := zero_le_one.trans hPbr1
-    calc ((r.choose 2 : Nat) : Real) * Pb r sigma * Pb r sigma
-        ≤ ((S.choose 2 : Nat) : Real) * Pb S sigma * Pb S sigma := by
-          apply mul_le_mul (mul_le_mul hch hPbr h0 (Nat.cast_nonneg _)) hPbr h0
-          exact mul_nonneg (Nat.cast_nonneg _) (zero_le_one.trans hPbS)
-      _ = _ := rfl
-  · intro j
-    refine hpow.trans (le_trans ?_ (hw j))
-    apply div_le_div_of_nonneg_right _ (by norm_num)
-    apply Real.sqrt_le_sqrt
-    exact Real.rpow_le_rpow_of_exponent_le hbase hEsr
+    exact mul_le_mul (mul_le_mul (by exact_mod_cast Nat.choose_le_choose 2 hrS) hPbr h0
+      (Nat.cast_nonneg _)) hPbr h0 (mul_nonneg (Nat.cast_nonneg _) (zero_le_one.trans hPbS))
   · intro j x hx hh y hxy
     obtain ⟨c, -, hc⟩ := Finset.mem_biUnion.mp hxy
     obtain ⟨z, hz, heq⟩ := Finset.mem_image.mp hc
@@ -282,23 +226,13 @@ theorem abstract_family_piece_cover_with {k : Nat} (hk : 1 ≤ k)
           (pieceLineExponent Bq Qb Eb Er rho) (famPieceSliceExponent Qr Es (Fintype.card ι) rho)))
       (Finset.univ.biUnion fun c => partialGraph (D c) (phi c)) := by
   have hpos (rho : Real) (hrho : 0 < rho) (hrho1 : rho ≤ 1) :
-      0 < pieceLineExponent Bq Qb Eb Er rho * famPieceSliceExponent Qr Es (Fintype.card ι) rho / 4 := by
-    have h8 : 0 < rho / 8 := by positivity
-    have h81 : rho / 8 ≤ 1 := by linarith
-    have hEb := (hQb (rho / 8) h8 h81).2.1
-    have hEr8 := hEr (rho / 8) h8 h81
-    have hBq := hB ⌊Qb (rho / 8)⌋₊
-    have hEs' := (hranges (famPieceSamples Qr (Fintype.card ι) rho) (rho / 4)
-      (famPieceSamples_pos hrho) (by positivity) (by linarith)).2.1
-    unfold pieceLineExponent famPieceSliceExponent
-    positivity
+      0 < pieceLineExponent Bq Qb Eb Er rho *
+        famPieceSliceExponent Qr Es (Fintype.card ι) rho / 4 :=
+    div_pos (mul_pos (div_pos (mul_pos (hEr _ (by positivity) (by linarith))
+      (hQb _ (by positivity) (by linarith)).2.1) (hB _))
+      (hranges _ _ (famPieceSamples_pos hrho) (by positivity) (by linarith)).2.1) four_pos
   exact multiplyLinearWith_of_large_box_covers (by omega : 0 < k + 1) (Fintype.card ι)
-    (card_biUnion_partialGraph_fiber_le D phi)
-    (fun rho => famPieceGraphBound Qr Pb (Fintype.card ι) rho)
-    (fun rho => pieceLineExponent Bq Qb Eb Er rho * famPieceSliceExponent Qr Es (Fintype.card ι) rho / 4)
-    (fun rho => section16RoundedPowerThreshold
-      (pieceWidthScale A Qb zeta rho)
-      (pieceLineExponent Bq Qb Eb Er rho) (famPieceSliceExponent Qr Es (Fintype.card ι) rho)) hpos
+    (card_biUnion_partialGraph_fiber_le D phi) _ _ _ hpos
     (abstract_family_piece_large_box_profile hk hA hB hlemma6 hz hzHalf hQb hEr hML hrem
       hfreq hlinear hdom hid hGr Gs hslice hGs hranges hPb hEs)
 

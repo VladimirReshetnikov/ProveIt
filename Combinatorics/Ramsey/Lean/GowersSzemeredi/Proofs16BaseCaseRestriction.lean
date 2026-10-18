@@ -131,127 +131,45 @@ lemma section16_product_restriction {N : Nat} [NeZero N]
     (hBlarge : theta * N ≤ B.card)
     (hgraph : GraphContained B phi Gamma) :
     ∃ C : BaseCandidate N, IsBaseCandidate Gamma (lemma163Alpha gamma theta) C := by
+  have hNpos : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   let beta : Real := (B.card : Real) / N
-  have hNposNat : 0 < N := NeZero.pos N
-  have hNpos : (0 : Real) < N := by exact_mod_cast hNposNat
-  have hbeta : 0 < beta := by
-    dsimp only [beta]
-    have hBpos : (0 : Real) < B.card :=
-      (mul_pos htheta hNpos).trans_le hBlarge
-    positivity
-  have hbetaLower : theta ≤ beta := by
-    dsimp only [beta]
-    exact (le_div_iff₀ hNpos).2 hBlarge
-  have hBcard : (B.card : Real) = beta * N := by
-    dsimp only [beta]
+  have hbetaLower : theta ≤ beta := (le_div_iff₀ hNpos).2 hBlarge
+  have hbeta : 0 < beta := htheta.trans_le hbetaLower
+  have hBcard : (B.card : Real) = beta * N := (div_mul_cancel₀ _ hNpos.ne').symm
+  -- Corollary 7.6 on the one-dimensional additive input
+  have hadd : (gamma ^ (8 : Nat) * beta) * (beta * N) ^ 3 ≤
+      phiAdditiveCount (pointOneDomain B) (pointOneMap phi) := by
+    refine le_of_eq_of_le ?_ (productProperty_one_additive gamma B phi (hrelation B phi hgraph))
+    rw [hBcard]
     field_simp [hNpos.ne']
-  have hproduct := hrelation B phi hgraph
-  have hadd0 := productProperty_one_additive gamma B phi hproduct
-  have hadd :
-      (gamma ^ (8 : Nat) * beta) * (beta * N) ^ 3 ≤
-        phiAdditiveCount (pointOneDomain B) (pointOneMap phi) := by
-    calc
-      (gamma ^ (8 : Nat) * beta) * (beta * N) ^ 3 =
-          gamma ^ (8 : Nat) * (N : Real)⁻¹ * (B.card : Real) ^ 4 := by
-        rw [hBcard]
-        field_simp [hNpos.ne']
-      _ ≤ _ := hadd0
   obtain ⟨A, hAB, hAsize, hAfreiman⟩ :=
     corollary_7_6_holds N (pointOneDomain B) (pointOneMap phi) beta
-      (gamma ^ (8 : Nat) * beta) hprime hbeta
-      (mul_pos (pow_pos hgamma 8) hbeta)
+      (gamma ^ (8 : Nat) * beta) hprime hbeta (mul_pos (pow_pos hgamma 8) hbeta)
       (by simpa [pointOneDomain_card] using hBcard) hadd
-  let B' : Finset (Point N 1) :=
-    A.map (pointOneEquiv N).symm.toEmbedding
-  have hB'card : B'.card = A.card := by simp [B']
-  have hB'sub : B' ⊆ B := by
-    intro x hx
-    dsimp only [B'] at hx
-    rw [Finset.mem_map] at hx
-    obtain ⟨z, hzA, hzx⟩ := hx
-    have hzB := (mem_pointOneDomain B z).1 (hAB hzA)
-    subst x
-    change (pointOneEquiv N).symm z ∈ B
-    exact hzB
-  have hB'graph : GraphContained B' phi Gamma := by
-    intro x hx
-    exact hgraph x (hB'sub hx)
+  -- the extracted set, back in `Point N 1`
+  let B' : Finset (Point N 1) := A.map (pointOneEquiv N).symm.toEmbedding
+  have hB'card : B'.card = A.card := Finset.card_map _
+  have hB'sub : B' ⊆ B := fun x hx => by
+    obtain ⟨z, hzA, rfl⟩ := Finset.mem_map.mp hx
+    exact (mem_pointOneDomain B z).1 (hAB hzA)
+  -- `α ≤ 2^(-1882) (γ⁸β)^1164 β`, since `γ, θ ≤ 1` and `θ ≤ β`
+  have hpow : (gamma * theta) ^ 10000 ≤ (gamma ^ 8 * beta) ^ 1164 * beta :=
+    calc (gamma * theta) ^ 10000 = gamma ^ 10000 * theta ^ 10000 := mul_pow _ _ _
+      _ ≤ gamma ^ 9312 * beta ^ 1165 :=
+        mul_le_mul (pow_le_pow_of_le_one hgamma.le hgammaOne (by norm_num))
+          ((pow_le_pow_of_le_one htheta.le hthetaOne (by norm_num)).trans
+            (pow_le_pow_left₀ htheta.le hbetaLower _)) (by positivity) (by positivity)
+      _ = (gamma ^ 8 * beta) ^ 1164 * beta := by ring
   have hsize : lemma163Alpha gamma theta * N ≤ B'.card := by
     rw [hB'card]
-    calc
-      lemma163Alpha gamma theta * N ≤
-          (2 : Real) ^ (-(1882 : Real)) *
-            (gamma ^ (8 : Nat) * beta) ^ (1164 : Nat) * beta * N := by
-        unfold lemma163Alpha
-        have hgammaNonneg : 0 ≤ gamma := hgamma.le
-        have hthetaNonneg : 0 ≤ theta := htheta.le
-        have htwo : (2 : Real) ^ (-(2000 : Real)) ≤
-            (2 : Real) ^ (-(1882 : Real)) := by
-          exact Real.rpow_le_rpow_of_exponent_le (by norm_num) (by norm_num)
-        have hgammaPow : gamma ^ (10000 : Nat) ≤ gamma ^ (9312 : Nat) :=
-          pow_le_pow_of_le_one hgamma.le hgammaOne (by omega)
-        have hthetaPow : theta ^ (10000 : Nat) ≤ beta ^ (1165 : Nat) := by
-          calc
-            theta ^ (10000 : Nat) ≤ theta ^ (1165 : Nat) :=
-              pow_le_pow_of_le_one htheta.le hthetaOne (by omega)
-            _ ≤ beta ^ (1165 : Nat) :=
-              pow_le_pow_left₀ hthetaNonneg hbetaLower 1165
-        have hgammaNested : gamma ^ (9312 : Nat) =
-            (gamma ^ (8 : Nat)) ^ (1164 : Nat) := by
-          simpa only [Nat.reduceMul] using (pow_mul gamma 8 1164)
-        have hbetaSucc : beta ^ (1165 : Nat) =
-            beta ^ (1164 : Nat) * beta := by
-          simpa only [Nat.reduceAdd] using (pow_succ beta 1164)
-        have hgammaPow' : gamma ^ (10000 : Nat) ≤
-            (gamma ^ (8 : Nat)) ^ (1164 : Nat) :=
-          hgammaPow.trans_eq hgammaNested
-        have hthetaPow' : theta ^ (10000 : Nat) ≤
-            beta ^ (1164 : Nat) * beta :=
-          hthetaPow.trans_eq hbetaSucc
-        have hproduct :
-            (2 : Real) ^ (-(2000 : Real)) *
-                (gamma ^ (10000 : Nat) * theta ^ (10000 : Nat)) ≤
-              (2 : Real) ^ (-(1882 : Real)) *
-                ((gamma ^ (8 : Nat)) ^ (1164 : Nat) *
-                  (beta ^ (1164 : Nat) * beta)) := by
-          exact mul_le_mul htwo
-            (mul_le_mul hgammaPow' hthetaPow'
-              (pow_nonneg hthetaNonneg 10000)
-              (pow_nonneg (pow_nonneg hgammaNonneg 8) 1164))
-            (mul_nonneg (pow_nonneg hgammaNonneg 10000)
-              (pow_nonneg hthetaNonneg 10000))
-            (Real.rpow_nonneg (by norm_num : (0 : Real) ≤ 2) (-(1882 : Real)))
-        calc
-          (2 : Real) ^ (-(2000 : Real)) * (gamma * theta) ^ (10000 : Nat) * N =
-              (2 : Real) ^ (-(2000 : Real)) *
-                (gamma ^ (10000 : Nat) * theta ^ (10000 : Nat)) * N := by
-            rw [mul_pow]
-          _ ≤ (2 : Real) ^ (-(1882 : Real)) *
-                ((gamma ^ (8 : Nat)) ^ (1164 : Nat) *
-                  (beta ^ (1164 : Nat) * beta)) * N :=
-            mul_le_mul_of_nonneg_right hproduct (by positivity)
-          _ = (2 : Real) ^ (-(1882 : Real)) *
-                (gamma ^ (8 : Nat) * beta) ^ (1164 : Nat) * beta * N := by
-            rw [mul_pow]
-            ac_rfl
+    calc lemma163Alpha gamma theta * N
+        ≤ 2 ^ (-(1882 : Real)) * ((gamma ^ 8 * beta) ^ 1164 * beta) * N :=
+          mul_le_mul_of_nonneg_right (mul_le_mul (Real.rpow_le_rpow_of_exponent_le (by norm_num)
+            (by norm_num)) hpow (by positivity) (by positivity)) hNpos.le
+      _ = 2 ^ (-(1882 : Real)) * (gamma ^ 8 * beta) ^ 1164 * beta * N := by ring
       _ ≤ A.card := hAsize
-  refine ⟨(B', phi), hsize, hB'graph, ?_⟩
-  have hdomain : pointOneDomain B' = A := by
-    apply Finset.Subset.antisymm
-    · intro z hz
-      rw [pointOneDomain, Finset.mem_map] at hz
-      obtain ⟨x, hx, rfl⟩ := hz
-      dsimp only [B'] at hx
-      rw [Finset.mem_map] at hx
-      obtain ⟨a, ha, rfl⟩ := hx
-      simpa using ha
-    · intro z hz
-      rw [pointOneDomain, Finset.mem_map]
-      refine ⟨(pointOneEquiv N).symm z, ?_, by simp⟩
-      dsimp only [B']
-      rw [Finset.mem_map]
-      exact ⟨z, hz, rfl⟩
-  rw [hdomain]
+  refine ⟨(B', phi), hsize, fun x hx => hgraph x (hB'sub hx), ?_⟩
+  rw [show pointOneDomain B' = A by ext z; simp [B']]
   exact hAfreiman
 
 @[simp] lemma candidateGraph_card {N : Nat} [NeZero N]

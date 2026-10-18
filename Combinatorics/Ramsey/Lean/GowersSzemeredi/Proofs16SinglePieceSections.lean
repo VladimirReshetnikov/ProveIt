@@ -102,40 +102,27 @@ theorem popular_fibres (T : Finset A) (J : Finset (ZMod N)) (W : Finset (A × ZM
     (hW : W ⊆ T ×ˢ J) (hJ : 0 < J.card) {t : Real} (ht : 0 ≤ t)
     (hWc : 2 * t * T.card * J.card ≤ W.card) :
     t * T.card ≤ (T.filter fun h => t * J.card ≤ (W.filter fun p => p.1 = h).card).card := by
-  set f : A → Real := fun h => ((W.filter fun p => p.1 = h).card : Real) with hf
-  set H := T.filter fun h => t * J.card ≤ f h with hH
+  let f : A → Real := fun h => ((W.filter fun p => p.1 = h).card : Real)
   have hsum : (W.card : Real) = ∑ h ∈ T, f h := by
     rw [Finset.card_eq_sum_card_fiberwise (f := Prod.fst)
       (fun p hp => (Finset.mem_product.mp (hW hp)).1)]
     push_cast; rfl
-  have hfib : ∀ h, f h ≤ J.card := by
-    intro h
-    simp only [hf]
-    have hc : (W.filter fun p => p.1 = h).card ≤ J.card := by
-      refine Finset.card_le_card_of_injOn (fun p : A × ZMod N => p.2) ?_ ?_
-      · intro p hp
-        exact (Finset.mem_product.mp (hW (Finset.mem_filter.mp hp).1)).2
-      · intro p hp p' hp' he
-        have e1 : p.1 = h := (Finset.mem_filter.mp hp).2
-        have e2 : p'.1 = h := (Finset.mem_filter.mp hp').2
-        exact Prod.ext (e1.trans e2.symm) he
-    exact_mod_cast hc
-  have hsplit := Finset.sum_filter_add_sum_filter_not T (fun h => t * J.card ≤ f h) f
-  have h1 : ∑ h ∈ H, f h ≤ H.card * J.card := by
-    calc ∑ h ∈ H, f h ≤ ∑ _h ∈ H, (J.card : Real) := Finset.sum_le_sum fun h _ => hfib h
-      _ = _ := by rw [Finset.sum_const, nsmul_eq_mul]
-  have h2 : ∑ h ∈ T.filter (fun h => ¬ t * J.card ≤ f h), f h ≤ T.card * (t * J.card) := by
-    calc ∑ h ∈ T.filter (fun h => ¬ t * J.card ≤ f h), f h
-        ≤ ∑ _h ∈ T.filter (fun h => ¬ t * J.card ≤ f h), t * (J.card : Real) :=
-          Finset.sum_le_sum fun h hh => le_of_lt (not_le.mp (Finset.mem_filter.mp hh).2)
-      _ ≤ ∑ _h ∈ T, t * (J.card : Real) :=
-          Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _)
-            (fun _ _ _ => by positivity)
-      _ = _ := by rw [Finset.sum_const, nsmul_eq_mul]
-  have hJR : (0 : Real) < J.card := by exact_mod_cast hJ
-  have hmain : t * T.card * J.card ≤ H.card * J.card := by
-    nlinarith
-  exact le_of_mul_le_mul_right hmain hJR
+  rw [← Finset.sum_filter_add_sum_filter_not T fun h => t * J.card ≤ f h] at hsum
+  -- popular fibres have at most `|J|` points, the others fewer than `t|J|`
+  have h1 := Finset.sum_le_card_nsmul (T.filter fun h => t * J.card ≤ f h) f J.card fun h _ =>
+    show ((W.filter fun p => p.1 = h).card : Real) ≤ J.card from Nat.cast_le.mpr <|
+      Finset.card_le_card_of_injOn Prod.snd
+        (fun p hp => (Finset.mem_product.mp (hW (Finset.mem_filter.mp hp).1)).2)
+        fun p hp p' hp' he =>
+          Prod.ext ((Finset.mem_filter.mp hp).2.trans (Finset.mem_filter.mp hp').2.symm) he
+  have h2 := Finset.sum_le_card_nsmul (T.filter fun h => ¬ t * J.card ≤ f h) f (t * J.card)
+    fun h hh => (not_le.mp (Finset.mem_filter.mp hh).2).le
+  have h3 : ((T.filter fun h => ¬ t * J.card ≤ f h).card : Real) ≤ T.card := by
+    exact_mod_cast Finset.card_filter_le _ _
+  rw [nsmul_eq_mul] at h1 h2
+  have hmain : t * T.card * J.card ≤ (T.filter fun h => t * J.card ≤ f h).card * J.card := by
+    linarith [mul_le_mul_of_nonneg_right h3 (by positivity : (0 : Real) ≤ t * J.card)]
+  exact le_of_mul_le_mul_right hmain (by exact_mod_cast hJ)
 
 /-- Fibres of size `≥ t|J|` over `H` give `|H|·t|J|` points. -/
 theorem fibre_sum_ge (W : Finset (A × ZMod N)) (H : Finset A) {s : Real}
@@ -245,40 +232,28 @@ theorem single_piece_on_line_cell_of_scheme {k q : Nat} (hk : 0 < k)
   have hθ1le : θ1 ≤ 1 := singlePieceTheta_le_one hθ hθ1 hq
   have hqR : (1 : Real) ≤ q := by exact_mod_cast hq
   have hJcard : J.carrier.card = J.length := hJ
-  have hJpos : (0 : Real) < J.carrier.card := by
-    rw [hJcard]
-    have h0 : (0 : Real) < theta ^ 3 * J.length := by nlinarith
-    exact pos_of_mul_pos_right h0 (by positivity)
+  have hJpos : (0 : Real) < J.carrier.card := by rw [hJcard]; nlinarith [pow_pos hθ 3]
   have hTpos : (0 : Real) < T.carrier.card := by exact_mod_cast hTne.card_pos
-  -- 1. one anchor pair
-  have hDne : D.Nonempty := by
-    rw [← Finset.card_pos]
-    have : (0 : Real) < D.card := lt_of_lt_of_le (by positivity) hDc
-    exact_mod_cast this
-  obtain ⟨a, ha, b, hb, hcap⟩ := exists_anchor_pair_capture T.carrier J.carrier D hD hDne cls
-  set W := anchorCapture D cls a b with hWdef
+  -- 1. one anchor pair, capturing `W` with `|W| ≥ 2θ₁|T||J|`
+  obtain ⟨a, ha, b, hb, hcap⟩ := exists_anchor_pair_capture T.carrier J.carrier D hD
+    (Finset.card_pos.mp (by exact_mod_cast (by positivity : (0 : Real) <
+      theta * T.carrier.card * J.carrier.card).trans_le hDc)) cls
+  set W := anchorCapture D cls a b
   have hWD : W ⊆ D := Finset.filter_subset _ _
-  have hDle : (D.card : Real) ≤ T.carrier.card * J.carrier.card := by
-    exact_mod_cast (Finset.card_le_card hD).trans (Finset.card_product _ _).le
-  have hWc : 2 * θ1 * T.carrier.card * J.carrier.card ≤ W.card := by
-    have h := capture_density hθ hqR hTpos hJpos hDc hDle hcap (by rw [hJcard]; exact hJq)
-    calc 2 * θ1 * (T.carrier.card : Real) * J.carrier.card =
-        theta ^ 3 / (2 * q ^ 2) * T.carrier.card * J.carrier.card := by
-          rw [hθ1def, singlePieceTheta]; ring
-      _ ≤ _ := h
-  -- 2. popular fibres
+  have hWc : 2 * θ1 * T.carrier.card * J.carrier.card ≤ W.card :=
+    (le_of_eq (by rw [hθ1def, singlePieceTheta]; ring)).trans <| capture_density hθ hqR hTpos
+      hJpos hDc (by exact_mod_cast (Finset.card_le_card hD).trans (Finset.card_product _ _).le)
+      hcap (by rw [hJcard]; exact hJq)
+  -- 2. popular fibres: `θ₁|T|` base points carry `θ₁|J|` captured points each
   set H1 := T.carrier.filter fun h =>
-    θ1 * J.carrier.card ≤ ((W.filter fun p => p.1 = h).card : Real) with hH1def
+    θ1 * J.carrier.card ≤ ((W.filter fun p => p.1 = h).card : Real)
   have hH1 : θ1 * T.carrier.card ≤ H1.card :=
     popular_fibres T.carrier J.carrier W (hWD.trans hD) (by exact_mod_cast hJpos) hθ1pos.le hWc
   have hslice : ∀ h ∈ H1, (h, a) ∈ D ∧ (h, b) ∈ D := by
     intro h hh
-    have hpos : 0 < (W.filter fun p => p.1 = h).card := by
-      have h1 := (Finset.mem_filter.mp hh).2
-      have : (0 : Real) < (W.filter fun p => p.1 = h).card :=
-        lt_of_lt_of_le (by positivity) h1
-      exact_mod_cast this
-    obtain ⟨p, hp⟩ := Finset.card_pos.mp hpos
+    obtain ⟨p, hp⟩ : (W.filter fun p => p.1 = h).Nonempty := Finset.card_pos.mp <| by
+      exact_mod_cast (by positivity : (0 : Real) < θ1 * J.carrier.card).trans_le
+        (Finset.mem_filter.mp hh).2
     obtain ⟨hpW, rfl⟩ := Finset.mem_filter.mp hp
     obtain ⟨-, -, hpa, hpb⟩ := Finset.mem_filter.mp hpW
     exact ⟨(Finset.mem_filter.mp hpa).1, (Finset.mem_filter.mp hpb).1⟩
@@ -288,95 +263,57 @@ theorem single_piece_on_line_cell_of_scheme {k q : Nat} (hk : 0 < k)
       (fun h hh => hDom _ (hslice h hh).1) (fun h hh => hDom _ (hslice h hh).2) hH1
       (hsl a ha) (hsl b hb)
   set H3 := H1.filter fun x => x ∈ R2.carrier ∧ phi (x, a) = mua x ∧ phi (x, b) = mub x
-    with hH3def
   have hR2c : Sc.dens θ1 * R2.carrier.card ≤ H3.card := hR2c
   have hR2two : 2 ≤ R2.width := hwidth.trans hR2width
   -- 4. reconstruction on the doubly agreeing fibres
   set mu := section16TwoAnchorLift a b mua mub with hmudef
-  have hmu : IsMultilinear mu := section16TwoAnchorLift_multilinear a b hmua hmub
-  set G := W.filter fun p => p.1 ∈ H3 with hGdef
+  set G := W.filter fun p => p.1 ∈ H3
   have hGagree : ∀ p ∈ G, phi p = mu (appendCoordinate p.1 p.2) := by
     intro p hp
     obtain ⟨hpW, hpH3⟩ := Finset.mem_filter.mp hp
     obtain ⟨-, -, ha', hb'⟩ := Finset.mem_filter.mp hpH3
-    have hne : a ≠ b := (Finset.mem_filter.mp hpW).2.1
+    have : a - b ≠ 0 := sub_ne_zero.mpr (Finset.mem_filter.mp hpW).2.1
     rw [anchor_reconstruction D cls phi ell hell hphi hpW, ha', hb']
     simp only [hmudef, section16TwoAnchorLift, appendCoordinate_eq_snoc, Fin.init_snoc,
       Fin.snoc_last]
-    have : a - b ≠ 0 := sub_ne_zero.mpr hne
     field_simp
     ring
-  have hGcard : Sc.dens θ1 * R2.carrier.card * (θ1 * J.carrier.card) ≤ G.card := by
-    have h := fibre_sum_ge W H3 (s := θ1 * J.carrier.card) fun h hh =>
-      (Finset.mem_filter.mp (Finset.filter_subset _ _ hh)).2
-    exact (mul_le_mul_of_nonneg_right hR2c (by positivity)).trans h
-  -- 5. synchronized retiling of `R2 × J`
+  have hGcard : Sc.dens θ1 * R2.carrier.card * (θ1 * J.carrier.card) ≤ G.card :=
+    (mul_le_mul_of_nonneg_right hR2c (by positivity)).trans <| fibre_sum_ge W H3
+      (s := θ1 * J.carrier.card) fun h hh => (Finset.mem_filter.mp (Finset.filter_subset _ _ hh)).2
+  -- 5. synchronized retiling of `R2 × J`; one cell carries its share of `G`
   set i : Fin k := ⟨0, hk⟩
   have hR2ne : R2.carrier.Nonempty :=
     R2.carrier_nonempty_of_axis_pos fun j => lt_of_lt_of_le (by omega) (R2.width_le_axis_length j)
-  have hsub : (R2.axis i).carrier ⊆ (T.axis i).carrier :=
-    R2.axis_carrier_subset_of_carrier_subset T hR2ne hR2T i
-  set v := Nat.sqrt (R2.width - 1)
-  have hv : 1 ≤ v := Nat.le_sqrt.mpr (by omega)
-  have hfit : v ^ 2 ≤ R2.width - 1 := Nat.sqrt_le' _
   obtain ⟨M, S, I, hSpart, hSprop, hSprod, -⟩ :=
     box_product_tiling_of_contained_axis R2 (T.axis i) J i (Units.mk0 T.commonDiff hTd) hR2 hJ
-      (by rw [Units.val_mk0, T.axis_step i]) (hJstep.trans (T.axis_step i).symm) hsub hshort
-      hTJ hv hfit
-  -- the agreement points split along the cells
-  have hGin : ∀ p ∈ G, appendCoordinate p.1 p.2 ∈ lastProductSet R2.carrier J.carrier := by
+      (by rw [Units.val_mk0, T.axis_step i]) (hJstep.trans (T.axis_step i).symm)
+      (R2.axis_carrier_subset_of_carrier_subset T hR2ne hR2T i) hshort hTJ
+      (Nat.le_sqrt.mpr (by omega)) (Nat.sqrt_le' _)
+  let Z : Fin M → Finset (Point N k × ZMod N) := fun j => D.filter fun p =>
+    appendCoordinate p.1 p.2 ∈ (S j).carrier ∧ phi p = mu (appendCoordinate p.1 p.2)
+  have hsub : G ⊆ Finset.univ.biUnion Z := by
     intro p hp
     obtain ⟨hpW, hpH3⟩ := Finset.mem_filter.mp hp
-    simp only [lastProductSet, Finset.mem_filter, Finset.mem_univ, true_and,
-      section16Init_appendCoordinate, section16Last_appendCoordinate]
-    exact ⟨(Finset.mem_filter.mp hpH3).2.1, (Finset.mem_product.mp (hD (hWD hpW))).2⟩
-  let Gj : Fin M → Finset (Point N k × ZMod N) := fun j =>
-    G.filter fun p => appendCoordinate p.1 p.2 ∈ (S j).carrier
-  have hGpart : IsPartition Gj G := by
-    refine ⟨fun p => ⟨fun hp => ?_, fun ⟨j, hj⟩ => (Finset.mem_filter.mp hj).1⟩, ?_⟩
-    · obtain ⟨j, hj⟩ := (hSpart.1 _).mp (hGin p hp)
-      exact ⟨j, Finset.mem_filter.mpr ⟨hp, hj⟩⟩
-    · intro j j' hjj'
-      refine Finset.disjoint_left.mpr fun p hp hp' => ?_
-      exact Finset.disjoint_left.mp (hSpart.2 j j' hjj') (Finset.mem_filter.mp hp).2
-        (Finset.mem_filter.mp hp').2
-  have hGsum : ∑ j, ((Gj j).card : Real) = G.card := by exact_mod_cast hGpart.sum_card
+    obtain ⟨j, hj⟩ := (hSpart.1 (appendCoordinate p.1 p.2)).mp <| by
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and, section16Init_appendCoordinate,
+        section16Last_appendCoordinate]
+      exact ⟨(Finset.mem_filter.mp hpH3).2.1, (Finset.mem_product.mp (hD (hWD hpW))).2⟩
+    exact Finset.mem_biUnion.mpr
+      ⟨j, Finset.mem_univ _, Finset.mem_filter.mpr ⟨hWD hpW, hj, hGagree p hp⟩⟩
+  have hZ : (G.card : Real) ≤ ∑ j, ((Z j).card : Real) := by
+    exact_mod_cast (Finset.card_le_card hsub).trans Finset.card_biUnion_le
   have hSsum : ∑ j, ((S j).carrier.card : Real) = R2.carrier.card * J.carrier.card := by
-    have h := hSpart.sum_card
-    have h' : (Finset.univ.filter fun x : Point N (k + 1) =>
-        section16Init x ∈ R2.carrier ∧ section16Last x ∈ J.carrier).card =
-        R2.carrier.card * J.carrier.card := lastProductSet_card R2.carrier J.carrier
-    rw [h'] at h
-    exact_mod_cast h
-  have hMne : (Finset.univ : Finset (Fin M)).Nonempty := by
-    have hRpos : (0 : Real) < R2.carrier.card := by exact_mod_cast hR2ne.card_pos
-    have hc2pos := Sc.dens_pos θ1 hθ1pos hθ1le
-    have hGpos : 0 < G.card := by
-      have : (0 : Real) < G.card :=
-        lt_of_lt_of_le (mul_pos (mul_pos hc2pos hRpos) (mul_pos hθ1pos hJpos)) hGcard
-      exact_mod_cast this
-    obtain ⟨p, hp⟩ := Finset.card_pos.mp hGpos
-    obtain ⟨j, -⟩ := (hSpart.1 _).mp (hGin p hp)
-    exact ⟨j, Finset.mem_univ j⟩
-  have hle : ∑ j, θ1 * Sc.dens θ1 * (S j).carrier.card ≤ ∑ j, ((Gj j).card : Real) := by
-    rw [← Finset.mul_sum, hSsum, hGsum]
-    calc θ1 * Sc.dens θ1 * (R2.carrier.card * J.carrier.card) =
-        Sc.dens θ1 * R2.carrier.card * (θ1 * J.carrier.card) := by ring
-      _ ≤ _ := hGcard
-  obtain ⟨j, -, hj⟩ := Finset.exists_le_of_sum_le hMne hle
-  refine ⟨S j, R2, I j, mu, (hSprop j).1, hSprod j, hR2T, ?_, ?_, hmu, ?_⟩
-  · intro x hx
-    have hx' := IsPartition.cell_subset hSpart j hx
-    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hx'
-    simp only [lastProductSet, Finset.mem_filter, Finset.mem_univ, true_and]
-    exact ⟨hR2T hx'.1, hx'.2⟩
-  · have hsq : Nat.sqrt (Sc.wid θ1 T.width - 1) ≤ v :=
-      Nat.sqrt_le_sqrt (Nat.sub_le_sub_right hR2width 1)
-    have := (hSprop j).2
-    omega
-  · refine hj.trans ?_
-    exact_mod_cast Finset.card_le_card fun p hp => by
-      obtain ⟨hpG, hpS⟩ := Finset.mem_filter.mp hp
-      exact Finset.mem_filter.mpr ⟨hWD (Finset.mem_filter.mp hpG).1, hpS, hGagree p hpG⟩
+    exact_mod_cast hSpart.sum_card.trans (lastProductSet_card R2.carrier J.carrier)
+  have hle : ∑ j, θ1 * Sc.dens θ1 * (S j).carrier.card ≤ ∑ j, ((Z j).card : Real) := by
+    rw [← Finset.mul_sum, hSsum]
+    linarith
+  obtain ⟨j, -, hj⟩ := Finset.exists_le_of_sum_le (Finset.nonempty_of_sum_ne_zero
+    (hSsum.trans_ne (mul_pos (by exact_mod_cast hR2ne.card_pos) hJpos).ne')) hle
+  refine ⟨S j, R2, I j, mu, (hSprop j).1, hSprod j, hR2T, (hSpart.cell_subset j).trans
+    fun x hx => ?_, (Nat.sub_le_sub_right (Nat.sqrt_le_sqrt (Nat.sub_le_sub_right hR2width 1))
+      1).trans (hSprop j).2, section16TwoAnchorLift_multilinear a b hmua hmub, hj⟩
+  exact Finset.mem_filter.mpr
+    ⟨Finset.mem_univ _, hR2T (Finset.mem_filter.mp hx).2.1, (Finset.mem_filter.mp hx).2.2⟩
 
 end LeanProofs.GowersSzemeredi

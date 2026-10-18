@@ -204,38 +204,8 @@ private lemma restrictedPair_ite_eq_sum {N : Nat} {X : Type*}
       ∑ d ∈ B,
         if D.index u = D.index x + d ∧ D.index v = D.index y + d
         then 1 else 0 := by
-  by_cases hrel : RestrictedPair D B x y (u, v)
-  · rw [if_pos hrel]
-    let d0 : ZMod N := D.index u - D.index x
-    have hd0 : d0 ∈ B := hrel.2
-    rw [Finset.sum_eq_single d0]
-    · have hu : D.index u = D.index x + d0 := by ring
-      have hv : D.index v = D.index y + d0 := by
-        dsimp only [d0]
-        linear_combination hrel.1.symm
-      simp [hu, hv]
-    · intro d _ hdne
-      rw [if_neg]
-      intro huv
-      apply hdne
-      dsimp only [d0]
-      linear_combination huv.1.symm
-    · exact fun hd0not => (hd0not hd0).elim
-  · rw [if_neg hrel]
-    symm
-    apply Finset.sum_eq_zero
-    intro d hd
-    rw [if_neg]
-    intro huv
-    apply hrel
-    constructor
-    · rw [huv.1, huv.2]
-      abel
-    · have hu : D.index u - D.index x = d := by
-        rw [huv.1]
-        abel
-      rw [hu]
-      exact hd
+  simp_rw [RestrictedPair, ← sub_eq_iff_eq_add', ite_and, Finset.sum_ite_eq]
+  by_cases h : D.index u - D.index x ∈ B <;> simp [h, eq_comm]
 
 private lemma restrictedWeight_eq_sum_fibre {N : Nat} {X : Type*}
     [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
@@ -287,36 +257,11 @@ private lemma restrictedError_inv_sum_le_one {N : Nat} {X : Type*}
     (phi : X → ZMod N) (B : Finset (ZMod N)) (x y : X) :
     (∑ uv : X × X, if RestrictedError D phi B x y uv
       then (domainRestrictedDifferenceWeight D B x y : Real)⁻¹ else 0) ≤ 1 := by
-  let e : Nat := countWhere (RestrictedError D phi B x y)
-  let b : Nat := domainRestrictedDifferenceWeight D B x y
-  have heb : e ≤ b := by
-    dsimp only [e, b]
-    unfold domainRestrictedDifferenceWeight
-    apply countWhere_mono
-    intro uv huv
-    exact ⟨huv.1, huv.2.1⟩
-  have hebReal : (e : Real) ≤ b := by exact_mod_cast heb
-  have hecast : (e : Real) =
-      ∑ uv : X × X, if RestrictedError D phi B x y uv then 1 else 0 := by
-    dsimp only [e]
-    exact countWhere_cast_eq_sum_ite _
-  calc
-    (∑ uv : X × X, if RestrictedError D phi B x y uv
-        then (domainRestrictedDifferenceWeight D B x y : Real)⁻¹ else 0) =
-        (e : Real) * (b : Real)⁻¹ := by
-      rw [hecast]
-      dsimp only [b]
-      rw [Finset.sum_mul]
-      apply Finset.sum_congr rfl
-      intro uv _
-      by_cases huv : RestrictedError D phi B x y uv <;> simp [huv]
-    _ ≤ (b : Real) * (b : Real)⁻¹ :=
-      mul_le_mul_of_nonneg_right hebReal (inv_nonneg.mpr (by positivity))
-    _ ≤ 1 := by
-      by_cases hb : b = 0
-      · simp [hb]
-      · rw [mul_inv_cancel₀]
-        exact_mod_cast hb
+  -- the sum is `e / b`, and the error pairs are among the `b` restricted pairs
+  rw [← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul, ← countWhere_eq_card_filter,
+    ← div_eq_mul_inv]
+  exact div_le_one_of_le₀ (Nat.cast_le.mpr (countWhere_mono fun uv huv => ⟨huv.1, huv.2.1⟩))
+    (Nat.cast_nonneg _)
 
 private abbrev LargeFibre {N : Nat} {X : Type*} [Fintype X] [DecidableEq X]
     (D : MultifunctionDomain N X) (alpha eta : Real) (M : Nat) (x : X) : Prop :=

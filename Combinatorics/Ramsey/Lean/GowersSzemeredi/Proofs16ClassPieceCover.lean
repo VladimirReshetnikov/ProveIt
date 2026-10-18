@@ -124,7 +124,6 @@ theorem class_piece_family_cover_gen {k : Nat} (hk : 1 ≤ k) {Thr : Real → Re
           (pieceLineExponent Bq (Cnt thS gS n) (Exp thS gS n) (clsEr Exp k n thF gF) rho)
           (famPieceSliceExponent (clsQr Cnt k n thF gF) (clsEs Exp n thF gF) n rho)))
       (Finset.univ.biUnion fun c => partialGraph (P c).D (P c).phi) := by
-  have hk0 : 0 < k := hk
   set nv := classVertexNum k
   have hnvc : nv + 1 = (otherVertices k).card := classVertexNum_succ hk
   let ev : Fin (nv + 1) ≃ {e // e ∈ otherVertices k} :=
@@ -134,16 +133,13 @@ theorem class_piece_family_cover_gen {k : Nat} (hk : 1 ≤ k) {Thr : Real → Re
   have hML : MultiplyLinearWith (Cnt thS gS n) (Exp thS gS n) Gs0 :=
     C.cover thS gS htS htS1 hgS hgS1 N n _ fun c => (P c).spec_U
   have hQb : ∀ s, 0 < s → s ≤ 1 →
-      0 ≤ Cnt thS gS n s ∧ 0 < Exp thS gS n s ∧ Exp thS gS n s ≤ 1 := by
-    intro s hs hs1
-    exact ⟨le_trans zero_le_one (hCnt _ _ _ _ htS htS1 hgS hgS1 hs hs1),
+      0 ≤ Cnt thS gS n s ∧ 0 < Exp thS gS n s ∧ Exp thS gS n s ≤ 1 := fun s hs hs1 =>
+    ⟨zero_le_one.trans (hCnt _ _ _ _ htS htS1 hgS hgS1 hs hs1),
       hExp _ _ _ _ htS htS1 hgS hgS1 hs hs1⟩
-  have hfreq : ∀ c, ∀ x ∈ (P c).H1, ∀ r ∈ (P c).K x, (x, r) ∈ Gs0 := by
-    intro c x hx r hr
-    refine Finset.mem_biUnion.mpr ⟨c, Finset.mem_univ _, ?_⟩
-    unfold pieceSpecRel
-    exact Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨hx, Finset.mem_univ _⟩, hr⟩
-  -- 2. the remainder
+  have hfreq : ∀ c, ∀ x ∈ (P c).H1, ∀ r ∈ (P c).K x, (x, r) ∈ Gs0 := fun c x hx r hr =>
+    Finset.mem_biUnion.mpr ⟨c, Finset.mem_univ _,
+      Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨hx, Finset.mem_univ _⟩, hr⟩⟩
+  -- 2. the remainder: a signed sum of the cylinders over the face relations
   let face : Fin (nv + 1) → Finset (Point N k × ZMod N) := fun s =>
     Finset.univ.biUnion fun c => pieceFaceRel (P c).D (P c).G (ev s).1
   let sgn : Fin (nv + 1) → ZMod N := fun s => -((-1 : ZMod N) ^ (k + boolWeight (ev s).1))
@@ -153,45 +149,22 @@ theorem class_piece_family_cover_gen {k : Nat} (hk : 1 ≤ k) {Thr : Real → Re
   have hfacefib : ∀ s (y : Point N k), ((face s).filter fun z => z.1 = y).card ≤ n := by
     intro s y
     rw [Finset.filter_biUnion]
-    refine Finset.card_biUnion_le.trans ?_
-    calc ∑ c : Fin n, ((pieceFaceRel (P c).D (P c).G (ev s).1).filter fun z => z.1 = y).card
-        ≤ ∑ _c : Fin n, 1 := Finset.sum_le_sum fun c _ => pieceFaceRel_fiber_le_one _ _ _ y
-      _ = n := by simp
-  have hcylML : ∀ s, MultiplyLinearWith
-      (fun rho => max (Cnt thF gF n rho) ((3 ^ (k + 1) * n : Nat) : Real))
-      (fun rho => Exp thF gF n rho / 16)
-      (relationScale (sgn s) (cylAt (vertexDrop (ev s).1) (face s))) := by
-    intro s
-    refine MultiplyLinearWith.relationScale ?_ (sgn s)
-    refine (hfaceML s).cylAt n (hfacefib s) ?_ ?_ hk0 _
-    · intro t ht ht1
-      exact le_trans zero_le_one (hCnt _ _ _ _ htF htF1 hgF hgF1 ht ht1)
-    · intro t ht ht1
-      exact hExp _ _ _ _ htF htF1 hgF hgF1 ht ht1
-  have hrem : MultiplyLinearWith (clsQr Cnt k n thF gF) (clsEr Exp k n thF gF) Gr := by
-    have h := MultiplyLinearWith.relSumFin nv (Gamma := fun s =>
-      relationScale (sgn s) (cylAt (vertexDrop (ev s).1) (face s)))
+    exact Finset.card_biUnion_le.trans ((Finset.sum_le_card_nsmul _ _ 1 fun c _ =>
+      pieceFaceRel_fiber_le_one _ _ _ y).trans (by simp))
+  have hrem : MultiplyLinearWith (clsQr Cnt k n thF gF) (clsEr Exp k n thF gF) Gr :=
+    MultiplyLinearWith.relSumFin nv
       (Q := fun _ rho => max (Cnt thF gF n rho) ((3 ^ (k + 1) * n : Nat) : Real))
-      (E := fun _ rho => Exp thF gF n rho / 16) hcylML
-      (fun _ s _ _ => le_max_of_le_right (Nat.cast_nonneg _)) (by
-        intro _ s hs hs1
-        exact div_nonneg (hExp _ _ _ _ htF htF1 hgF hgF1 hs hs1).1.le (by norm_num))
-    exact h
-  have hEr : ∀ s, 0 < s → s ≤ 1 → 0 < clsEr Exp k n thF gF s := by
-    intro s hs hs1
-    unfold clsEr
-    refine Finset.prod_pos fun i _ => ?_
-    have hn1 : (0 : Real) < (nv : Real) + 1 := by
-      have := Nat.cast_nonneg (α := Real) nv; linarith
-    have hs' : 0 < s / ((nv : Real) + 1) := div_pos hs hn1
-    have hs1' : s / ((nv : Real) + 1) ≤ 1 := by
-      rw [div_le_one hn1]
-      have : (0 : Real) ≤ nv := Nat.cast_nonneg _
-      linarith
-    exact div_pos (hExp _ _ _ _ htF htF1 hgF hgF1 hs' hs1').1 (by norm_num)
-  have hid : ∀ c, ∀ z ∈ (P c).D,
-      (P c).phi z = (-1 : ZMod N) ^ k * (P c).f (section16Init z) (section16Last z) +
-        classRem (P c).G z := fun c => (P c).ident
+      (E := fun _ rho => Exp thF gF n rho / 16)
+      (fun s => ((hfaceML s).cylAt n (hfacefib s)
+        (fun t ht ht1 => zero_le_one.trans (hCnt _ _ _ _ htF htF1 hgF hgF1 ht ht1))
+        (fun t ht ht1 => hExp _ _ _ _ htF htF1 hgF hgF1 ht ht1) hk
+        (vertexDrop (ev s).1)).relationScale (sgn s))
+      (fun _ s _ _ => le_max_of_le_right (Nat.cast_nonneg _))
+      (fun _ s hs hs1 => div_nonneg (hExp _ _ _ _ htF htF1 hgF hgF1 hs hs1).1.le (by norm_num))
+  have hEr : ∀ s, 0 < s → s ≤ 1 → 0 < clsEr Exp k n thF gF s := fun s hs hs1 =>
+    Finset.prod_pos fun _ _ => div_pos (hExp _ _ _ _ htF htF1 hgF hgF1 (by positivity)
+      (div_le_one_of_le₀ (hs1.trans (le_add_of_nonneg_left (Nat.cast_nonneg _)))
+        (by positivity))).1 (by norm_num)
   have hGr : ∀ c, ∀ z ∈ (P c).D, (z, classRem (P c).G z) ∈ Gr := by
     intro c z hz
     have hsum : classRem (P c).G z =
@@ -202,12 +175,10 @@ theorem class_piece_family_cover_gen {k : Nat} (hk : 1 ≤ k) {Thr : Real → Re
       simp only [sgn]
       ring
     rw [hsum]
-    refine mem_relSumFin nv _ _ fun s => ?_
-    refine Finset.mem_image.mpr ⟨(z, (P c).G (ev s).1 (dropAt (vertexDrop (ev s).1) z)), ?_, rfl⟩
-    refine mem_cylAt.mpr ?_
-    exact Finset.mem_biUnion.mpr ⟨c, Finset.mem_univ _,
-      Finset.mem_image.mpr ⟨z, hz, rfl⟩⟩
-  -- 3. the slices
+    exact mem_relSumFin nv _ _ fun s => Finset.mem_image.mpr
+      ⟨(z, (P c).G (ev s).1 (dropAt (vertexDrop (ev s).1) z)), mem_cylAt.mpr
+        (Finset.mem_biUnion.mpr ⟨c, Finset.mem_univ _, Finset.mem_image.mpr ⟨z, hz, rfl⟩⟩), rfl⟩
+  -- 3. the slices: `r` sampled slices of the `n` pieces are `n·r` class members
   let sliceG : (r : Nat) → (Fin n → Fin r → ZMod N) → Fin (n * r) → Finset (Point N k × ZMod N) :=
     fun r sample j =>
       partialGraph (section16FinalCoordinateSection (P (finProdFinEquiv.symm j).1).D
@@ -217,44 +188,28 @@ theorem class_piece_family_cover_gen {k : Nat} (hk : 1 ≤ k) {Thr : Real → Re
   let Gs : (r : Nat) → (Fin n → Fin r → ZMod N) → Finset (Point N k × ZMod N) :=
     fun r sample => Finset.univ.biUnion (sliceG r sample)
   have hslice : ∀ r sample, MultiplyLinearWith (clsPb Cnt n thF gF r)
-      (clsEs Exp n thF gF r) (Gs r sample) := by
-    intro r sample
-    have h := C.cover thF gF htF htF1 hgF hgF1 N (n * r) (sliceG r sample)
-      (fun j => (P _).slice_U _)
-    refine h.weaken ?_ ?_ ?_
-    · intro s hs _
-      unfold clsPb
-      rw [abs_of_pos hs]
-    · intro s hs hs1
-      unfold clsEs
-      rw [abs_of_pos hs]
-      exact (hExp _ _ _ _ htF htF1 hgF hgF1 hs hs1).1
-    · intro s hs _
-      unfold clsEs
-      rw [abs_of_pos hs]
+      (clsEs Exp n thF gF r) (Gs r sample) := fun r sample =>
+    (C.cover thF gF htF htF1 hgF hgF1 N (n * r) (sliceG r sample) fun j => (P _).slice_U _).weaken
+      (fun s hs _ => by unfold clsPb; rw [abs_of_pos hs])
+      (fun s hs hs1 => by
+        unfold clsEs; rw [abs_of_pos hs]; exact (hExp _ _ _ _ htF htF1 hgF hgF1 hs hs1).1)
+      (fun s hs _ => by unfold clsEs; rw [abs_of_pos hs])
   have hGs : ∀ r sample c h i, appendCoordinate h (sample c i) ∈ (P c).D →
       (h, (P c).phi (appendCoordinate h (sample c i))) ∈ Gs r sample := by
     intro r sample c h i hmem
     refine Finset.mem_biUnion.mpr ⟨finProdFinEquiv (c, i), Finset.mem_univ _, ?_⟩
     simp only [sliceG, Equiv.symm_apply_apply]
-    refine Finset.mem_image.mpr ⟨h, ?_, rfl⟩
-    unfold section16FinalCoordinateSection
-    exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hmem⟩
-  have hranges : Section16SliceProviderRanges (clsPb Cnt n thF gF) (clsEs Exp n thF gF) := by
-    intro r eps _ he he1
-    unfold clsPb clsEs
-    rw [abs_of_pos he]
-    exact ⟨hCnt _ _ _ _ htF htF1 hgF hgF1 he he1, hExp _ _ _ _ htF htF1 hgF hgF1 he he1⟩
-  have hPb : ∀ eps, Monotone fun r => clsPb Cnt n thF gF r eps := by
-    intro eps r r' hrr
-    unfold clsPb
-    exact hCntMono thF gF |eps| htF htF1 hgF hgF1 (abs_nonneg _) (Nat.mul_le_mul_left n hrr)
-  have hEs : ∀ eps, 0 < eps → Antitone fun r => clsEs Exp n thF gF r eps := by
-    intro eps he r r' hrr
-    unfold clsEs
-    exact hExpAnti thF gF |eps| htF htF1 hgF hgF1 (abs_pos.mpr he.ne') (Nat.mul_le_mul_left n hrr)
+    exact Finset.mem_image.mpr ⟨h, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hmem⟩, rfl⟩
+  have hranges : Section16SliceProviderRanges (clsPb Cnt n thF gF) (clsEs Exp n thF gF) :=
+    fun r eps _ he he1 => by
+      unfold clsPb clsEs; rw [abs_of_pos he]
+      exact ⟨hCnt _ _ _ _ htF htF1 hgF hgF1 he he1, hExp _ _ _ _ htF htF1 hgF hgF1 he he1⟩
   have h := abstract_family_piece_cover_with hk hA hB hlemma6 hz hzHalf hQb hEr hML hrem hfreq
-    (fun c => (P c).linear) (fun c => (P c).dom) hid hGr Gs hslice hGs hranges hPb hEs
+    (fun c => (P c).linear) (fun c => (P c).dom) (fun c => (P c).ident) hGr Gs hslice hGs hranges
+    (fun eps r r' hrr => hCntMono thF gF |eps| htF htF1 hgF hgF1 (abs_nonneg _)
+      (Nat.mul_le_mul_left n hrr))
+    (fun eps he r r' hrr => hExpAnti thF gF |eps| htF htF1 hgF hgF1 (abs_pos.mpr he.ne')
+      (Nat.mul_le_mul_left n hrr))
   simpa only [Fintype.card_fin] using h
 
 end LeanProofs.GowersSzemeredi
