@@ -1,0 +1,109 @@
+{
+  "status": "PASS",
+  "full_symbolic_recomputed": false,
+  "seconds": 9.410359515000891,
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "scope": "Ordinary finite and induction checks; no new Lean/Rocq kernel endpoint.",
+  "checks": [
+    {
+      "label": "Pristine upstream manifest",
+      "command": [
+        "/workspace/scratch/d9ddd67cc7d8/output/zfc-below246-research/reference/context246/code/check_hashes.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.026015218998509226,
+      "stdout": "RELEASE INTEGRITY PASS: 105 file hashes match\n",
+      "stderr": ""
+    },
+    {
+      "label": "Inherited complete verification",
+      "command": [
+        "/tmp/zfc-baseline-check-9c586afw/context246/code/verify_all.py"
+      ],
+      "returncode": 0,
+      "seconds": 7.4660884410004655,
+      "stdout": "code/rebuild_machines.py --check PASS\ncode/check_folds.py PASS\ncode/render_table.py --check PASS\ncode/check_macro_inductions.py PASS\ncode/review_affine_source.py --program sources/Prog254.v --sites sources/prior/instruction-sites-physical.json --table machine/zfc_prefix246_old.tm --checker sources/prior/prefix_affine.py --output results/affine-source-review.json PASS\ncode/check_bootstrap.py PASS\ncode/check_literal_instructions.py --program sources/Prog254.v --table machine/zfc_prefix246_old.tm --output results/literal-instructions.json PASS\ncode/check_local_contracts.py PASS\ncode/check_prefix_boxes.py PASS\nALL PREFIX246 CHECKS PASS\n",
+      "stderr": ""
+    },
+    {
+      "label": "Generate and close interval certificate",
+      "command": [
+        "code/abstract_program.py"
+      ],
+      "returncode": 0,
+      "seconds": 1.1643128520008759,
+      "stdout": "{\n  \"counts\": {\n    \"reachable_sites\": 6456,\n    \"zero_cases\": 1931,\n    \"positive_cases\": 1929,\n    \"other_cases\": 4525,\n    \"unreachable_sites\": 4,\n    \"guarded_cases\": 8385\n  },\n  \"updates\": 148409,\n  \"forced_branches\": [\n    {\n      \"index\": 6316,\n      \"pc\": \"111010010110001100\",\n      \"register\": 6,\n      \"value\": [\n        0,\n        0\n      ],\n      \"possible\": \"zero\"\n    },\n    {\n      \"index\": 6434,\n      \"pc\": \"111111000\",\n      \"register\": 1,\n      \"value\": [\n        0,\n        0\n      ],\n      \"possible\": \"zero\"\n    }\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "label": "Independent exact interval images",
+      "command": [
+        "audit/verify_interval_independent.py",
+        "results/interval-invariants.json"
+      ],
+      "returncode": 0,
+      "seconds": 0.18833097300012014,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"reachable_sites\": 6456,\n  \"closure_edges\": 8384,\n  \"method\": \"Exact interval images, unbounded integer endpoints, independent Jeff RM path semantics\",\n  \"all_unreachable_mutation\": \"REJECTED\",\n  \"missing_live_successor_mutation\": \"REJECTED\",\n  \"invariant_sha256\": \"75b626c0853cb3afd1a75ce33f79041c59fe740d0811075a3dd8d7478be07a8e\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "label": "Universal local core and integration obstruction",
+      "command": [
+        "search/reductions/code/check_shared_core.py",
+        "--baseline",
+        "/workspace/scratch/d9ddd67cc7d8/output/zfc-below246-research/reference/context246",
+        "--output",
+        "/workspace/scratch/d9ddd67cc7d8/output/zfc-below246-research/results/shared-core-recheck.json"
+      ],
+      "returncode": 0,
+      "seconds": 0.07303143700119108,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"result_kind\": \"Universal local arithmetic identities plus a proved integration obstruction\",\n  \"zfc_consistency_machine\": false,\n  \"proof_assistant_endpoint\": false,\n  \"edits\": {\n    \"remove\": [\n      255\n    ],\n    \"75/0\": [\n      0,\n      \"R\",\n      63\n    ],\n    \"48/0\": [\n      1,\n      \"L\",\n      131\n    ]\n  },\n  \"working_table_states\": 245,\n  \"new_local_arithmetic_state_count\": 9,\n  \"arithmetic_states\": [\n    48,\n    63,\n    73,\n    75,\n    83,\n    95,\n    109,\n    112,\n    131\n  ],\n  \"closed_left_moving_states\": [\n    48,\n    63,\n    112,\n    131\n  ],\n  \"blank_prefix_enters_trap_after\": 3,\n  \"blank_prefix\": [\n    [\n      95,\n      0,\n      0,\n      1,\n      \"R\",\n      109\n    ],\n    [\n      109,\n      1,\n      0,\n      0,\n      \"R\",\n      75\n    ],\n    [\n      75,\n      2,\n      0,\n      0,\n      \"R\",\n      63\n    ]\n  ],\n  \"global_consequence\": \"The modified table from state95 never halts, by induction on this closed SCC; it does not implement the proof-search program.\"\n}\npositive_decrement PASS 4+2*width_pre\nzero_decrement PASS 7+2*width_pre\nincrement_append_zero PASS 11+2*width_pre+2*width_suf+2*x\n",
+      "stderr": ""
+    },
+    {
+      "label": "Literal scanner first-return witness",
+      "command": [
+        "search/scanner/scanner_search.py",
+        "--obstruction-only",
+        "--output",
+        "/workspace/scratch/d9ddd67cc7d8/output/zfc-below246-research/results/scanner-recheck"
+      ],
+      "returncode": 0,
+      "seconds": 0.05618793300163816,
+      "stdout": "Exact 185-step wrong-marker trace and path census reproduced.\n",
+      "stderr": ""
+    },
+    {
+      "label": "Register-program bisimulation only",
+      "command": [
+        "search/decoder/check_bisimulation_certificate.py",
+        "search/decoder/rotation178_bisimulation.json",
+        "search/decoder/rotation178_sites_logical.json"
+      ],
+      "returncode": 0,
+      "seconds": 0.2435953040003369,
+      "stdout": "{\"status\": \"PASS\", \"scope\": \"Register programs only; no TM table claim\", \"pairs\": 2985, \"edges\": 5968, \"halt_pairs\": 1}\n",
+      "stderr": ""
+    },
+    {
+      "label": "All saved abstract grammar certificates",
+      "command": [
+        "search/grammar/code/validate_grammars.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.06646764899778645,
+      "stdout": "[\n  {\n    \"file\": \"physical-best.json\",\n    \"abstract_validation\": \"PASS\",\n    \"tm_correctness\": \"NOT_ESTABLISHED\",\n    \"rules\": 126,\n    \"seed\": 7351,\n    \"proposals\": 5532133,\n    \"terminal_orientation_guards\": false,\n    \"commuting_word_keys\": false\n  },\n  {\n    \"file\": \"semantic-best.json\",\n    \"abstract_validation\": \"PASS\",\n    \"tm_correctness\": \"NOT_ESTABLISHED\",\n    \"rules\": 126,\n    \"seed\": 1943,\n    \"proposals\": 6032012,\n    \"terminal_orientation_guards\": true,\n    \"commuting_word_keys\": false,\n    \"search_AST_properties\": {\n      \"leading_zeros\": 6,\n      \"maximum_zero_run\": 12,\n      \"depth\": 46\n    }\n  },\n  {\n    \"file\": \"semantic-best2.json\",\n    \"abstract_validation\": \"PASS\",\n    \"tm_correctness\": \"NOT_ESTABLISHED\",\n    \"rules\": 126,\n    \"seed\": 127654,\n    \"proposals\": 5881361,\n    \"terminal_orientation_guards\": true,\n    \"commuting_word_keys\": false,\n    \"search_AST_properties\": {\n      \"leading_zeros\": 3,\n      \"maximum_zero_run\": 13,\n      \"depth\": 44\n    }\n  },\n  {\n    \"file\": \"semantic-context-best.json\",\n    \"abstract_validation\": \"PASS\",\n    \"tm_correctness\": \"NOT_ESTABLISHED\",\n    \"rules\": 127,\n    \"seed\": 73623,\n    \"proposals\": 3522732,\n    \"terminal_orientation_guards\": true,\n    \"commuting_word_keys\": false,\n    \"search_AST_properties\": {\n      \"leading_zeros\": 6,\n      \"maximum_zero_run\": 7,\n      \"depth\": 40\n    },\n    \"partial_projection_constraints_checked\": 18,\n    \"conservative_depth_guard\": 40\n  },\n  {\n    \"file\": \"semantic-scan-best.json\",\n    \"abstract_validation\": \"PASS\",\n    \"tm_correctness\": \"NOT_ESTABLISHED\",\n    \"rules\": 127,\n    \"seed\": 113219,\n    \"proposals\": 2516448,\n    \"terminal_orientation_guards\": true,\n    \"commuting_word_keys\": false,\n    \"search_AST_properties\": {\n      \"leading_zeros\": 5,\n      \"maximum_zero_run\": 7,\n      \"depth\": 39\n    },\n    \"partial_projection_constraints_checked\": 18,\n    \"conservative_depth_guard\": 40\n  },\n  {\n    \"file\": \"commutation-best.json\",\n    \"abstract_validation\": \"PASS\",\n    \"tm_correctness\": \"NOT_ESTABLISHED\",\n    \"rules\": 127,\n    \"seed\": 551023,\n    \"proposals\": 3189935,\n    \"terminal_orientation_guards\": true,\n    \"commuting_word_keys\": true,\n    \"search_AST_properties\": {\n      \"leading_zeros\": 5,\n      \"maximum_zero_run\": 7,\n      \"depth\": 39\n    },\n    \"partial_projection_constraints_checked\": 18,\n    \"conservative_depth_guard\": 40\n  },\n  {\n    \"file\": \"semantic-wide-best.json\",\n    \"abstract_validation\": \"PASS\",\n    \"tm_correctness\": \"NOT_ESTABLISHED\",\n    \"rules\": 127,\n    \"seed\": 635311,\n    \"proposals\": 3447017,\n    \"terminal_orientation_guards\": true,\n    \"commuting_word_keys\": false,\n    \"search_AST_properties\": {\n      \"leading_zeros\": 4,\n      \"maximum_zero_run\": 7,\n      \"depth\": 47\n    },\n    \"partial_projection_constraints_checked\": 22,\n    \"conservative_depth_guard\": 64\n  }\n]\n",
+      "stderr": ""
+    },
+    {
+      "label": "Rejected rotation bootstrap and bounded witness",
+      "command": [
+        "search/grammar/code/replay_rejected_rotation.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.1117236479985877,
+      "stdout": "{\n  \"status\": \"REJECTED_PROPOSAL_ONLY\",\n  \"baseline_rotated_table_sha256\": \"84d95bf7201ed988c8b7e801531ba7a9bfaa603edb59967ab949fc243b25b7a4\",\n  \"additional_edit\": \"218/0=0 L 178\",\n  \"instruction_rejection\": {\n    \"status\": \"BOUNDED_LITERAL_INSTRUCTION_REJECTED\",\n    \"steps\": 2292,\n    \"dispatcher_visits\": 16,\n    \"pc\": \"11101001001010100010110000\",\n    \"logical_operation\": \"CD2/zero\",\n    \"head_at_entry\": 0,\n    \"header_at_entry\": 40,\n    \"physical_registers\": [\n      0,\n      3,\n      6,\n      2,\n      5,\n      1,\n      4,\n      0,\n      3\n    ],\n    \"spares\": [\n      0\n    ],\n    \"expected_pc\": \"1110100100101010001011001\",\n    \"actual_head\": 0,\n    \"wrong_ones\": [\n      26,\n      27,\n      28,\n      29,\n      30,\n      31,\n      32,\n      33,\n      34,\n      35,\n      36,\n      37,\n      38,\n      39,\n      41,\n      48,\n      83,\n      86,\n      88,\n      89,\n      91,\n      92\n    ],\n    \"missing_ones\": [\n      24,\n      45,\n      50,\n      51\n    ]\n  },\n  \"scope\": \"Finite evidence and bounded rejection; no assertion about blank-tape halting or a valid 245-state replacement.\"\n}\n",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+"""Check delivered support records, concrete witnesses, and baseline interface."""
+from hashlib import sha256
+import json
+from pathlib import Path
+import fold_search as f
+import sentinel_counterexamples as sentinel
+import check_literal_instructions as lit
+
+def main():
+    assert __debug__, 'Run with assertions enabled.'
+    actual=sha256((f.BASE/'machine/zfc_prefix246_old.tm').read_bytes()).hexdigest()
+    assert actual=='303911c554284c49ce09042d8127feba4da260baae766e32260034aa3bdb82ee'
+    reference=f.verify(f.OLD)
+    assert reference['instructions']['cases']==8391
+    expected=[sentinel.witness(245,58,{74}),sentinel.witness(244,41,{58,74})]
+    assert expected==json.loads((f.ROOT/'sentinel-counterexamples.json').read_text())
+    table=lit.read_table(f.BASE/'machine/zfc_prefix246_old.tm')
+    steps,_,_=lit.run_case(table,'111010010010000000','CD',1,[0]*9,[0],0,40)
+    assert steps==386
+    uniform=json.loads((f.ROOT/'fold-search-uniformNone.json').read_text())
+    assert uniform['candidates']==671 and uniform['found']==[]
+    mixed=json.loads((f.ROOT/'merge-search-summary.json').read_text())
+    assert mixed['candidate_count']==120540 and mixed['full_literal_pass_count']==0
+    assert mixed['baseline_pairs_exercised']==492 and mixed['maximum_baseline_steps']==558
+    conjugacy=json.loads((f.ROOT/'conjugacy-search-summary.json').read_text())
+    assert conjugacy['candidate_count']==120540 and conjugacy['full_literal_pass_count']==0
+    assert conjugacy['inferred_maps']==73000 and conjugacy['inferred_bijections']==71161
+    two=json.loads((f.ROOT/'twoaction-search-summary.json').read_text())
+    assert len(two['states'])==46 and two['pruned_mass']==44539776 and two['survivors']==0
+    assert two['probe_fuel_per_case']==2000 and two['full_survivor_fuel_per_case']==20000
+    assert all(row['planned']==968256 and row['pruned']+row['survivors']==968256 for row in two['states'])
+    assert sum(row['pruned'] for row in two['states'])==two['pruned_mass']
+    assert sum(row['nodes'] for row in two['states'])==two['total_nodes']
+    assert sum(row['checks'] for row in two['states'])==two['total_checks']
+    manifest=f.ROOT/'SUPPORT_SHA256SUMS'
+    if manifest.exists():
+        for line in manifest.read_text().splitlines():
+            digest,path=line.split('  ',1)
+            assert sha256((f.ROOT/path).read_bytes()).hexdigest()==digest,path
+    print('SUPPORT CHECKS PASS: baseline8391, literal false-sentinel witnesses, exact family counts, and delivered-byte manifest.')
+
+if __name__=='__main__':main()

@@ -1,0 +1,289 @@
+{
+  "base_table": "context246/zfc-context246/machine/zfc_prefix246_old.tm",
+  "removed_state": 255,
+  "available_target_states": 245,
+  "row_assignments": 980,
+  "literal_step_bound": 2000,
+  "scratch_tape_cells": 2304,
+  "left_interface_restriction": "The local simulation never visits a coordinate less than -1.",
+  "proof_scope": "Bounded synthesis search. Rejection includes fuel/interface failure and is not an impossibility theorem.",
+  "strict_increment": "Preserve every old block except incrementing the selected primary; permit any valid finite appended spare suffix, including empty.",
+  "loose_increment": "Preserve all primary blocks except incrementing the selected primary; allow the old final spare to be replaced by any finite nonempty valid spare list.",
+  "runs": [
+    {
+      "mode": "10975",
+      "loose": false,
+      "recipes": 960400,
+      "smallest_zero_pass": 981,
+      "smallest_zero_and_increment_pass": 0,
+      "seconds": 8.74489
+    },
+    {
+      "mode": "75both",
+      "loose": false,
+      "recipes": 960400,
+      "smallest_zero_pass": 983,
+      "smallest_zero_and_increment_pass": 0,
+      "seconds": 9.98224
+    },
+    {
+      "mode": "triple",
+      "loose": false,
+      "recipes": 3841600,
+      "smallest_zero_pass": 2947,
+      "smallest_zero_and_increment_pass": 0,
+      "seconds": 42.0234
+    },
+    {
+      "mode": "10975",
+      "loose": true,
+      "recipes": 960400,
+      "smallest_zero_pass": 981,
+      "smallest_zero_and_increment_pass": 0,
+      "seconds": 9.95012
+    },
+    {
+      "mode": "75both",
+      "loose": true,
+      "recipes": 960400,
+      "smallest_zero_pass": 983,
+      "smallest_zero_and_increment_pass": 0,
+      "seconds": 12.1196
+    },
+    {
+      "mode": "triple",
+      "loose": true,
+      "recipes": 3841600,
+      "smallest_zero_pass": 2947,
+      "smallest_zero_and_increment_pass": 0,
+      "seconds": 72.1947
+    },
+    {
+      "mode": "inc83",
+      "loose": true,
+      "core_recipes": 3841600,
+      "smallest_zero_pass": 2947,
+      "decrement_sample_survivors": 4,
+      "entry83_recipes": 3920,
+      "smallest_zero_and_increment_pass": 0,
+      "seconds": 72.9092
+    }
+  ],
+  "triple_search_reduction": "The only original incoming edge to75 is109/0. If109/0 targets another state, modifications to75/0 and75/1 are unreachable from the decrement/increment entry states and cannot repair an already rejected10975 case. Therefore only the4write/move assignments to109/0 targeting75 need new triple enumeration.",
+  "inc83_scope": "First retain core triples that pass all10zero/positive cases while83/0 is unchanged; then test each of980choices for83/0. This is not an exhaustive arbitrary four-row search.",
+  "decrement_sample_cores": [
+    [
+      [
+        109,
+        0,
+        0,
+        1,
+        75
+      ],
+      [
+        75,
+        0,
+        0,
+        -1,
+        112
+      ],
+      [
+        75,
+        1,
+        1,
+        -1,
+        63
+      ]
+    ],
+    [
+      [
+        109,
+        0,
+        0,
+        1,
+        75
+      ],
+      [
+        75,
+        0,
+        0,
+        -1,
+        112
+      ],
+      [
+        75,
+        1,
+        1,
+        -1,
+        131
+      ]
+    ],
+    [
+      [
+        109,
+        0,
+        0,
+        1,
+        75
+      ],
+      [
+        75,
+        0,
+        1,
+        1,
+        75
+      ],
+      [
+        75,
+        1,
+        1,
+        -1,
+        131
+      ]
+    ],
+    [
+      [
+        109,
+        0,
+        0,
+        1,
+        75
+      ],
+      [
+        75,
+        0,
+        0,
+        -1,
+        112
+      ],
+      [
+        75,
+        1,
+        1,
+        1,
+        63
+      ]
+    ]
+  ],
+  "partial_universal_result": {
+    "edits": [
+      [
+        75,
+        0,
+        0,
+        -1,
+        112
+      ]
+    ],
+    "delete": 255,
+    "positive_decrement": "PASS, ordinary symbolic-induction proof, duration2*width(prefix)+4",
+    "zero_decrement": "PASS, ordinary symbolic-induction proof, duration2*width(prefix)+5",
+    "increment": "FAIL; this is not a complete machine candidate"
+  },
+  "zero_flag_family": {
+    "removed_state": 131,
+    "fixed_edits": [
+      [
+        75,
+        0,
+        0,
+        1,
+        255
+      ],
+      [
+        255,
+        1,
+        1,
+        -1,
+        63
+      ],
+      [
+        48,
+        0,
+        0,
+        -1,
+        112
+      ],
+      [
+        112,
+        0,
+        1,
+        1,
+        10
+      ]
+    ],
+    "varied_rows": [
+      [
+        255,
+        0
+      ],
+      [
+        112,
+        1
+      ]
+    ],
+    "assignments_per_row": 980,
+    "recipes_per_spare_contract": 960400,
+    "whole_instruction_fixtures": 90,
+    "fuel": 5000,
+    "maximum_wrong_dispatch_returns": 15,
+    "strict": {
+      "first_increment_and_positive_decrement_pass": 5,
+      "also_zero_decrement_pass": 0
+    },
+    "loose": {
+      "first_increment_and_positive_decrement_pass": 1987,
+      "also_zero_decrement_pass": 0
+    },
+    "loose_frame": "Expected PC and all nine primary values, expected header or header+1, any nonempty valid spare suffix.",
+    "scope": "Bounded literal filters, not impossibility results."
+  },
+  "branch83_family": {
+    "removed_state": 255,
+    "fixed_edits": [
+      [
+        75,
+        0,
+        0,
+        -1,
+        112
+      ],
+      [
+        48,
+        0,
+        1,
+        -1,
+        131
+      ],
+      [
+        131,
+        0,
+        0,
+        1,
+        7
+      ]
+    ],
+    "varied_row": [
+      83,
+      0
+    ],
+    "result": {
+      "recipes": 980,
+      "loose_spares": true,
+      "staged_pass_counts": [
+        980,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "survivors": [],
+      "scope": "Bounded local filter; not an impossibility theorem."
+    },
+    "additional_context_obstruction": "The48/0 replacement is only an identity when the left neighbor is0; valid CI0111 has neighbor1 at step362."
+  }
+}
