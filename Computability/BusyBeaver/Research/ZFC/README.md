@@ -1822,8 +1822,11 @@ also has an all-internal contract and an exact `7*oldcache+2` copy-tail
 clock; six probes and eight callers passed without warnings.
 The [following AC push, 380–406](arithmetic_control_ax_next_ac_push254.md)
 has the corresponding whole-file contract and `7*oldAC+2` copy-tail clock,
-also with six probes and eight callers and zero warnings. The constructor
-at 406 remains a separate verification unit.
+also with six probes and eight callers and zero warnings. The
+[constructor at 406–433](arithmetic_control_ax_next_constructor254.md)
+now has its own checked whole-file contract, with three probes and four callers.
+Structural source witnesses resolved ten recursion-depth failures without
+changing its statements or proof limits; the failed attempt is preserved.
 
 [Structural catalogue lookup](arithmetic_control_source_rank254.md) supplies
 a reusable path-to-rank proof and two concrete source bindings at controls
