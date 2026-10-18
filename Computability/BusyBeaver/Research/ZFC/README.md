@@ -27,6 +27,14 @@ the lower bound needed for the independence argument; no absolute consistency
 proof is claimed. Require a concrete encoding benefit before increasing the
 benchmark strength.
 
+The compensated **244-state candidate** from `248bc05936` has passed the
+complete fresh 8,391-case symbolic runtime replay. Its
+[three Lean foundation units](compensated244_foundations.md) now check the
+exact table, the original-machine tape invariant and generic positive-block
+halting transport (62 theorem probes, 18 typed callers, zero warnings).
+The concrete local-block/global simulation and complete 244-state endpoint
+are in progress; these components do not yet replace the closed 245 endpoint.
+
 The active external Lean baseline is the
 [routed 245-state machine](candidate-routing245/README.md), from
 `8286787dd0`. It passes its complete executable suite, including all 8,391

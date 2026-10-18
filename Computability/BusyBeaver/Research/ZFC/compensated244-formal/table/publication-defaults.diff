@@ -1,0 +1,25 @@
+--- actual-executed-check.py
++++ maintained-check.py
+@@ -2,7 +2,8 @@
+ """Exact compensated244 table+embedding; Core+TableRouting245 only, no builds."""
+ from pathlib import Path
+ import argparse,hashlib,json,os,re,shutil,signal,subprocess,time
+-HERE=Path('/tmp/zfc244-compensated-lean/table')
++HERE=Path(__file__).resolve().parent
++REPO=HERE.parents[3]
+ MODULE='BusyBeaver.ZFC.TableCompensated244'
+ PREFIX='SetTheory.BusyBeaver.ZFC.'
+ PROBES=['rawTableCompensated244_size', 'rawTableCompensated244_transition_count', 'embedState244_ne_deleted', 'embedState244_zero', 'embedConfig244_initial', 'compensated244_common_action', 'compensated244_common_next', 'foldRowRouting245_old20_true', 'foldRowRouting245_old24_true', 'foldRowRouting245_old37_true', 'foldRowRouting245_old55_true', 'foldRowRouting245_old66_true', 'foldRowRouting245_old81_true', 'foldRowRouting245_old92_false', 'foldRowRouting245_old92_true', 'foldRowRouting245_old104_true', 'foldRowRouting245_old106_true', 'foldRowRouting245_old107_true', 'foldRowRouting245_old122_false', 'foldRowRouting245_old122_true', 'foldRowRouting245_old125_false', 'foldRowRouting245_old151_true', 'foldRowRouting245_old167_true', 'foldRowCompensated244_old20_true', 'foldRowCompensated244_old24_true', 'foldRowCompensated244_old37_true', 'foldRowCompensated244_old55_true', 'foldRowCompensated244_old66_true', 'foldRowCompensated244_old81_true', 'foldRowCompensated244_old92_false', 'foldRowCompensated244_old92_true', 'foldRowCompensated244_old104_true', 'foldRowCompensated244_old106_true', 'foldRowCompensated244_old107_true', 'foldRowCompensated244_old125_false', 'foldRowCompensated244_old151_true', 'foldRowCompensated244_old167_true', 'embedState244_old2', 'embedState244_old20', 'embedState244_old24', 'embedState244_old25', 'embedState244_old37', 'embedState244_old55', 'embedState244_old66', 'embedState244_old81', 'embedState244_old92', 'embedState244_old95', 'embedState244_old104', 'embedState244_old106', 'embedState244_old107', 'embedState244_old125', 'embedState244_old151', 'embedState244_old167']
+@@ -21,9 +22,9 @@
+     return [dict(name=n,axioms=sorted({x.strip()for x in a.split(',')if x.strip()}))for n,a in rr]
+ def main():
+     p=argparse.ArgumentParser(description=__doc__)
+-    p.add_argument('--source',type=Path,default=HERE/'TableCompensated244.lean')
+-    p.add_argument('--audit',type=Path,default=HERE/'Audit.lean')
+-    p.add_argument('--boundary',type=Path,default=HERE/'boundary.json')
++    p.add_argument('--source',type=Path,default=REPO/'Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TableCompensated244.lean')
++    p.add_argument('--audit',type=Path,default=HERE/'table_compensated244_audit.lean')
++    p.add_argument('--boundary',type=Path,default=HERE/'compensated244-formal/table/boundary.json')
+     p.add_argument('--parent-evidence',type=Path)
+     p.add_argument('--output',type=Path,required=True)
+     p.add_argument('--prepare-only',action='store_true')
