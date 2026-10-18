@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs15FejerProduct
+import GowersSzemeredi.Proofs15FejerSelectionSide
 
 /-! Declarations of `Proofs15FejerProduct` that the final route does not use (moved here so
 that the route keeps only what it uses). -/

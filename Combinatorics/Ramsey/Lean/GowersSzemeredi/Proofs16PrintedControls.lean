@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs16GlobalCoverProviders
 import GowersSzemeredi.Proofs16CubicCoverControls
 import GowersSzemeredi.Proofs16CoverParameterMonotonicity
 import GowersSzemeredi.Proofs16RegimeSplitting
+import GowersSzemeredi.Proofs16RegimeSplittingSide
 
 /-! Polynomial controls lie inside the printed controls of Theorem 16.2
 (Notes L.5, D5).

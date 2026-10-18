@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs05MultilinearBudgets
+import GowersSzemeredi.Proofs05MultilinearStepSide
 
 /-! # The complete multilinear height induction on proper boxes -/
 set_option autoImplicit false

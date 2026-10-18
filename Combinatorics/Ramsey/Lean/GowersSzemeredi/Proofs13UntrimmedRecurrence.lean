@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs13UntrimmedSelection
 import GowersSzemeredi.Proofs05QuarterDiameterPartition
+import GowersSzemeredi.Proofs13QuadraticRecurrenceSide
 
 /-! Lemma 13.5 with no endpoint-deletion budget. The entire selected cell
 is retained, giving strong-height density alpha^32/16 instead of /20. -/

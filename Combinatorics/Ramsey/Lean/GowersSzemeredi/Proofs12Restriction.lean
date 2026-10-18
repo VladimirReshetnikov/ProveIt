@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs12BernoulliSelection
 import GowersSzemeredi.Proofs12Amplification
+import GowersSzemeredi.Proofs00BasicsSide
 
 /-!
 # The random restriction in Gowers's Lemma 12.5

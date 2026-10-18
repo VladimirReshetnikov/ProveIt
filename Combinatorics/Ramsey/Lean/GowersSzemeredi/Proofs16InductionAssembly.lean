@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs16GreedyRelations
 import GowersSzemeredi.Proofs16Union
 import GowersSzemeredi.Proofs16GlobalGraphCover
 import GowersSzemeredi.Proofs16CoverParameterMonotonicity
+import GowersSzemeredi.Proofs16FaceInductionSide
 
 /-! Closing Theorem 16.2 from a large unit-multiply-linear piece.
 The conclusion is the exact catalogue type, conditional on the unresolved

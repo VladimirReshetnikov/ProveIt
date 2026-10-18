@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs18RelativeBalance
 import GowersSzemeredi.Proofs18QuadraticDichotomy
 import GowersSzemeredi.Proofs05Corollary58
+import GowersSzemeredi.Proofs18RelativeBalanceSide
 
 /-! The explicit quadratic increment for density relative to a support. -/
 set_option autoImplicit false

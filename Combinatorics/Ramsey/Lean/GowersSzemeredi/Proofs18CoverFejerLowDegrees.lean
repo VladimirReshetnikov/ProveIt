@@ -4,6 +4,7 @@ import GowersSzemeredi.Proofs05Corollary58
 import GowersSzemeredi.Proofs05HighCorrelationAssembly
 import GowersSzemeredi.Proofs05HighCorrelationScale
 import GowersSzemeredi.Proofs05ThresholdFreeScale
+import GowersSzemeredi.Proofs16FaceInductionSide
 
 /-! **Theorem 18.1 with offset six in degrees zero through three.**
 

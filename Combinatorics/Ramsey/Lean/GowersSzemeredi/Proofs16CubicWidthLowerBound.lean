@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16CubicScalarWidth
 import GowersSzemeredi.Proofs16CubicSampleBudget
+import GowersSzemeredi.Proofs16RegimeSplittingSide
 
 /-! Apply the scalar estimate to the spectrum, sampling, and slice counts
 of the constructed two-dimensional cover. -/

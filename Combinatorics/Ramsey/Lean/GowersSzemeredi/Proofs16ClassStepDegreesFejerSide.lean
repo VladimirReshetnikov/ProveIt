@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16ClassStepDegreesFejer
 import GowersSzemeredi.Proofs16ClassStepDegreesSide
+import GowersSzemeredi.Proofs16ClassStepFejerSide
 
 /-! Declarations of `Proofs16ClassStepDegreesFejer` that the final route does not use and that
 need modules outside it (moved here so that those modules can leave the route). -/

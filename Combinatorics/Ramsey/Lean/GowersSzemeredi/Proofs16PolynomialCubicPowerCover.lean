@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16PolynomialMultilinearCover
 import GowersSzemeredi.Proofs16CubicUniformControls
+import GowersSzemeredi.Proofs16RegimeSplittingSide
 
 /-! Pure-power multilinear covers with polynomial spectrum-count loss.
 

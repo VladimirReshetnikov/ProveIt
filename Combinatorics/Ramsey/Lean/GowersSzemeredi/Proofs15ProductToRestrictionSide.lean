@@ -13,6 +13,94 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
+private lemma lemma156_linear_le_vertex (k : Nat) :
+    4 * k + 10 ≤ 2 ^ (k + 4) := by
+  induction k with
+  | zero => norm_num
+  | succ k ih =>
+      rw [show k + 1 + 4 = (k + 4) + 1 by omega, pow_succ]
+      omega
+
+private lemma lemma156_scale_ratio_bound (k : Nat) :
+    2 ^ (3 * k + 7) * arrangementSelectionExponent k ≤
+      2 ^ (2 ^ (k + 5)) := by
+  unfold arrangementSelectionExponent
+  rw [← pow_add]
+  apply Nat.pow_le_pow_right (by norm_num)
+  have hlinear := lemma156_linear_le_vertex k
+  have hdouble : 2 * 2 ^ (k + 4) = 2 ^ (k + 5) := by
+    calc
+      2 * 2 ^ (k + 4) = 2 ^ (k + 4) * 2 := Nat.mul_comm _ _
+      _ = 2 ^ ((k + 4) + 1) := (pow_succ 2 (k + 4)).symm
+      _ = 2 ^ (k + 5) := by congr 1
+  rw [← hdouble]
+  omega
+
+lemma lemma156_beta_total_exponent (k : Nat) (hk : 1 ≤ k) :
+    7 * 4 ^ (k + 1) * arrangementSelectionExponent k + 15 ≤
+      2 ^ (2 ^ (k + 5)) := by
+  let S := arrangementSelectionExponent k
+  let R := 2 ^ (3 * k + 7)
+  have hS : 1 ≤ S := by
+    dsimp only [S, arrangementSelectionExponent]
+    exact Nat.one_le_pow _ 2 (by norm_num)
+  have hbase := lemma156_beta_base_exponent k hk
+  have hfirst : 7 * 4 ^ (k + 1) * S + 15 ≤
+      (7 * 4 ^ (k + 1) + 15) * S := by
+    nlinarith
+  calc
+    7 * 4 ^ (k + 1) * arrangementSelectionExponent k + 15 ≤
+        (7 * 4 ^ (k + 1) + 15) * S := hfirst
+    _ ≤ R * S := Nat.mul_le_mul_right S hbase
+    _ ≤ 2 ^ (2 ^ (k + 5)) := lemma156_scale_ratio_bound k
+
+lemma lemma156_gamma_total_exponent (k : Nat) :
+    21 * k * 4 ^ (k + 1) * arrangementSelectionExponent k ≤
+      2 ^ (2 ^ (k + 5)) := by
+  exact (Nat.mul_le_mul_right _ (lemma156_gamma_base_exponent k)).trans
+    (lemma156_scale_ratio_bound k)
+
+lemma lemma156_constant_total_exponent (k : Nat) :
+    46 * arrangementSelectionExponent k ≤ 2 ^ (2 ^ (k + 5)) := by
+  exact (Nat.mul_le_mul_right _ (lemma156_constant_base_exponent k)).trans
+    (lemma156_scale_ratio_bound k)
+
+theorem lemma156_coefficient_without_density_factor (k : Nat) (hk : 1 ≤ k)
+    {beta gamma : Real} (hb : 0 < beta) (hb1 : beta ≤ 1)
+    (hg : 0 < gamma) (hg1 : gamma ≤ 1) :
+    (beta * gamma / 2) ^ (2 ^ (2 ^ (k + 5))) ≤
+      (beta ^ (7 * 4 ^ (k + 1)) * gamma ^ (21 * k * 4 ^ (k + 1)) *
+        ((2 : Real)⁻¹ ^ 44) / 4) ^ arrangementSelectionExponent k := by
+  let A := 7 * 4 ^ (k + 1)
+  let G := 21 * k * 4 ^ (k + 1)
+  let S := arrangementSelectionExponent k
+  let T := 2 ^ (2 ^ (k + 5))
+  have hbeta : A * S ≤ T := by
+    have h := lemma156_beta_total_exponent k hk
+    dsimp [A, S, T]
+    omega
+  have hgamma : G * S ≤ T := lemma156_gamma_total_exponent k
+  have hconstant : 46 * S ≤ T := lemma156_constant_total_exponent k
+  have hbp : beta ^ T ≤ beta ^ (A * S) := pow_le_pow_of_le_one hb.le hb1 hbeta
+  have hgp : gamma ^ T ≤ gamma ^ (G * S) := pow_le_pow_of_le_one hg.le hg1 hgamma
+  have hcp : ((2 : Real)⁻¹) ^ T ≤ ((2 : Real)⁻¹) ^ (46 * S) :=
+    pow_le_pow_of_le_one (by norm_num) (by norm_num) hconstant
+  have hnum : (2 : Real)⁻¹ ^ 44 / 4 = (2 : Real)⁻¹ ^ 46 := by norm_num
+  calc
+    (beta * gamma / 2) ^ T = beta ^ T * gamma ^ T * ((2 : Real)⁻¹) ^ T := by
+      rw [div_eq_mul_inv, mul_pow, mul_pow]
+    _ ≤ beta ^ (A * S) * gamma ^ (G * S) * ((2 : Real)⁻¹) ^ (46 * S) := by
+      exact mul_le_mul (mul_le_mul hbp hgp (by positivity) (by positivity))
+        hcp (by positivity) (by positivity)
+    _ = (beta ^ A * gamma ^ G * ((2 : Real)⁻¹ ^ 44) / 4) ^ S := by
+      rw [show beta ^ A * gamma ^ G * ((2 : Real)⁻¹ ^ 44) / 4 =
+        (beta ^ A * gamma ^ G) * ((2 : Real)⁻¹ ^ 44 / 4) by ring, hnum,
+        mul_pow, mul_pow, ← pow_mul, ← pow_mul, ← pow_mul]
+
+end LeanProofs.GowersSzemeredi
+
+namespace LeanProofs.GowersSzemeredi
+
 theorem lemma_15_6_of_density_lower (k : Nat) (beta gamma : Real)
     (hk : 1 ≤ k) (hb : 0 < beta) (hb1 : beta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1) :
     ∃ N0 : Nat, ∀ (N : Nat) [NeZero N], N0 ≤ N → N.Prime → Odd N →

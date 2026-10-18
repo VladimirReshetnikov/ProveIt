@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs18FejerIterationParameters
 import GowersSzemeredi.Proofs18DensityIterationExponentialBudget
 import GowersSzemeredi.Proofs18FiveTermUniformityParameters
 import GowersSzemeredi.Proofs18FejerFiveTerm
+import GowersSzemeredi.Proofs18FejerIterationParametersSide
 
 /-! A fixed-power double-exponential bound for the complete five-term
 iteration, with all density dependence and constants included. -/

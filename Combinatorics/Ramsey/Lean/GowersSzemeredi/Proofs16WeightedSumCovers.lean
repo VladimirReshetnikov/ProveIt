@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16BaseCaseUnion
 import GowersSzemeredi.Proofs16Interpolation
+import GowersSzemeredi.Proofs16BaseCaseUnionSide
 
 /-! Scalar multiples and finite nonempty sums of multiply-linear partial
 functions. These retain the exact sum parameter used in Section 16. -/

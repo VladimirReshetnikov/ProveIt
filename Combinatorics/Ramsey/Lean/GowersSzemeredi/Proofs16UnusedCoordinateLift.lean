@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs16UnusedCoordinateCover
 import GowersSzemeredi.Proofs16CoarseFunctionCover
 import GowersSzemeredi.Proofs16UnusedCoordinateBudget
 import GowersSzemeredi.Proofs16BaseCaseZero
+import GowersSzemeredi.Proofs16UnusedCoordinateCoverSide
 
 /-! All-scale lifting across an unused coordinate, with the actual ambient
 control functions. A sufficient lower bound on the iteration parameter

@@ -4,6 +4,7 @@ import GowersSzemeredi.Proofs16DenseSelectionSide
 import GowersSzemeredi.Proofs16ProductAnchors
 import GowersSzemeredi.Proofs16SynchronizedCover
 import GowersSzemeredi.Proofs16SinglePieceRemainderSide
+import GowersSzemeredi.Proofs16SinglePieceSpectrumSide
 
 /-! Declarations of `Proofs16SinglePieceLift` that the final route does not use and that
 need modules outside it (moved here so that those modules can leave the route). -/

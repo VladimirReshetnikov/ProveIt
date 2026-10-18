@@ -3,6 +3,7 @@ import GowersSzemeredi.Proofs16FreimanSliceExtraction
 import GowersSzemeredi.Proofs16GoodDomainTransport
 import GowersSzemeredi.Proofs16CubicStructuredCover
 import GowersSzemeredi.Proofs16FinalSections
+import GowersSzemeredi.Proofs16WithLiftSide
 
 /-! Part J: final-coordinate slices covered by a stackable class.
 

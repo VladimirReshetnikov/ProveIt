@@ -1,27 +1,8 @@
 import GowersSzemeredi.Proofs18FejerSeedCounts
 
-/-! **The dimension-two cover's controls under the Fejér θ₁ and the tight
-radius** (Notes L.16d).
-
-The Fejér analogue of the length-six count and exponent bounds, in the base
-`w = 2/(γθρ)`:
-* `polyTwoFejerFamCount_le_power`: `≤ w^(2^43)` (printed `2^89`);
-* `polyTwoFejerQb_le_power`: `≤ w^(2^44)` (printed `2^90`);
-* `polyTwoFejerFamExp_inv_le_power`: `≤ w^(2^46)` (printed `2^130`);
-* `polyTwoFejerEb_inv_le_power`: `≤ w^(2^46)` (printed `2^132`).
-
-The printed width exponent was dominated by the Bohr radius
-(`ζ⁻¹ ≤ exp(w^(2^128))`). Under the tight radius
-(`tightZeta_fejer_one_bounds`: `ζ′⁻¹ ≤ exp(u^(2^40))`, from
-`s′ ≤ u^(22E+105)`) the counts dominate. So the dimension-two seed of the
-split-class recursion has degree about `2^46`, inside the `2^48` of
-`split_pair_with_bounds_fourteen`.
-
-The proofs are the corpus proofs with the new exponents, copied by a script
-with a guard that no printed quantity survives.
-
-`polyTwoFejerEb_inv_le_power` and `polyTwoFejerFamExp_inv_le_power` are in
-`Proofs18FejerSeedExponentsSide`, outside the final route. -/
+/-! This module keeps `tightZeta_fejer_one_bounds`; the rest of the development,
+with its description, is in `Proofs18FejerSeedExponentsSide`, outside the final
+route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -60,50 +41,5 @@ theorem tightZeta_fejer_one_bounds {gamma theta : Real} (hg : 0 < gamma) (hg1 : 
     _ ≤ Real.exp (u ^ (22 * fejerProductExponent 1 + 105)) := Real.exp_le_exp.mpr hs
     _ ≤ Real.exp (u ^ ((2 : Nat) ^ 40)) :=
         Real.exp_le_exp.mpr (pow_le_pow_right₀ hu1 hE)
-
-theorem polyTwoFejerFamCount_le_power {gamma theta rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
-    (ht : 0 < theta) (ht1 : theta ≤ 1) (hr : 0 < rho) (hr1 : rho ≤ 1) :
-    polyTwoFejerFamCount theta gamma rho ≤ (2 / (gamma * theta * rho)) ^ ((2 : Nat) ^ 43) := by
-  obtain ⟨hv2, hvw, hrw⟩ := prod_scale_radius_bounds hg hg1 ht ht1 hr hr1
-  have hm := polyTwoFejerPieces_le_power hg hg1 ht ht1
-  have hq := polyPieceFaceCountW_fejer_le_power hg hg1 ht ht1
-  set v := 2 / (gamma * theta) with hv
-  set w := 2 / (gamma * theta * rho) with hw
-  clear_value v w
-  have hw2 : 2 ≤ w := hv2.trans hvw
-  have hv0 : 0 ≤ v := le_trans (by norm_num) hv2
-  -- both counts below `w^(2^38)`
-  have hm' : (polyTwoFejerPieces gamma theta : Real) ≤ w ^ ((2 : Nat) ^ 38) :=
-    le_pow_mono hw2 (by norm_num) (hm.trans (pow_le_pow_left₀ hv0 hvw _))
-  have hq' : (polyPieceFaceCountW (fejerThetaOne theta gamma 1) gamma : Real) ≤ w ^ ((2 : Nat) ^ 38) :=
-    hq.trans (pow_le_pow_left₀ hv0 hvw _)
-  unfold polyTwoFejerFamCount
-  exact le_pow_mono hw2 (by norm_num) (famTwoCount_le_power hw2 hr hrw hm' hq')
-
-/-! ### The counts of the length-six route -/
-
-/-- `polyTwoFejerQb γ θ ρ ≤ (2/(γθρ))^(2^44)`. -/
-theorem polyTwoFejerQb_le_power {gamma theta rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
-    (ht : 0 < theta) (ht1 : theta ≤ 1) (hr : 0 < rho) (hr1 : rho ≤ 1) :
-    polyTwoFejerQb gamma theta rho ≤ (2 / (gamma * theta * rho)) ^ ((2 : Nat) ^ 44) := by
-  obtain ⟨hv2, hvw, -⟩ := prod_scale_radius_bounds hg hg1 ht ht1 hr hr1
-  have hthr3 : (3 : Real) ≤ polyTwoFejerThreshold theta gamma := by
-    unfold polyTwoFejerThreshold; exact le_max_left _ _
-  have hthr := polyTwoFejerThreshold_le_power hg hg1 ht ht1
-  have hfam := polyTwoFejerFamCount_le_power hg hg1 ht ht1 hr hr1
-  set v := 2 / (gamma * theta) with hv
-  set w := 2 / (gamma * theta * rho) with hw
-  clear_value v w
-  have hw2 : 2 ≤ w := hv2.trans hvw
-  have hv0 : 0 ≤ v := le_trans (by norm_num) hv2
-  have hthr' : polyTwoFejerThreshold theta gamma ≤ w ^ ((2 : Nat) ^ 15) :=
-    hthr.trans (pow_le_pow_left₀ hv0 hvw _)
-  have hceil := ceil_le_pow_succ hw2 (le_trans (by norm_num) hthr3) hthr'
-  unfold polyTwoFejerQb
-  apply max_le
-  · exact le_pow_mono hw2 (by norm_num) hfam
-  · rw [Nat.cast_mul]
-    exact le_pow_mono hw2 (by norm_num)
-      (const_mul_le_pow (j := 4) hw2 (Nat.cast_nonneg _) (by norm_num) (Nat.cast_nonneg _) hceil)
 
 end LeanProofs.GowersSzemeredi

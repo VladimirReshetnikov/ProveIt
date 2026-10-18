@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs13SharpEdgeDensity
 import GowersSzemeredi.Proofs13PrintedRowBounds
 import GowersSzemeredi.Proofs13SmallRowScale
 import GowersSzemeredi.Proofs13TenRowBudgets
+import GowersSzemeredi.Proofs13CommonStepSelectionSide
 
 /-! The original printed Lemma 13.6 masses from the actual preceding data
 throughout the small-density range, without an additional modulus threshold.

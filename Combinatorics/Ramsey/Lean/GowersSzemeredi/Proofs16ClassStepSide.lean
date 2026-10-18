@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs16ClassStep
 import GowersSzemeredi.Proofs15ExplicitThresholds
 import GowersSzemeredi.Proofs16ClassPiecesSide
+import GowersSzemeredi.Proofs16ClassPieceCoverSide
 
 /-! Declarations of `Proofs16ClassStep` that the final route does not use and that
 need modules outside it (moved here so that those modules can leave the route). -/

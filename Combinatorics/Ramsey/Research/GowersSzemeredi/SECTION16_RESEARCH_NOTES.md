@@ -10191,6 +10191,49 @@ declaration, structure field or namespace that no module it still sees declares
   round for the same side module; each now has one. Many route modules are now
   a few lines long (45 have at most 23 lines of code), which makes them
   candidates for folding into their importers.
+- *Second split, sixth detach.* The split of the 50 live route modules with at
+  least 60 unused lines moved 326 declarations of 70 modules to 70 side modules
+  (48 new). It needed three more planner rules:
+  - Fields and constructors are separate constants (`S.f`, `S.mk`) without a
+    block of their own, so a split kept every structure, and with it every
+    declaration using one. They now follow their type, moves go by whole
+    declarations, and a type stays when any of its parts is used.
+  - A private instance moves, like a private simp lemma, only together with a
+    private declaration its statement names (`selectionZeroRelationSolutionsFintype`
+    with the private `abbrev SelectionZeroRelationSolutions`).
+  - A bridge cannot name another module's private declarations, not even by dot
+    notation, so the bridge-name rule now applies to public names only; a
+    public `T.foo` passes with `--allow-bridge-name` once every `.foo` of the
+    bridges is seen to have another receiver.
+  So the private structure `ProperUnionRefinement` of `Proofs16BaseCaseUnion`
+  and the 24 declarations around it moved, and `Proofs16BaseCaseUnion` keeps
+  only `isMultilinear_const`. Four dead modules then needed no further moves and
+  left the route: `Proofs15SelectionMargin`, `Proofs15DegenerateArrangements`,
+  `Proofs16BaseCaseCore` (its two simp lemmas are about its own private
+  definition, allowed by hand) and `Proofs16Basic` (its `….mono` moves:
+  `MultiplyLinearFunction.mono`, `ProperCrossSectionsMultiplyLinear.mono`; the
+  bridges' `.mono` receivers are a progression phase partition and the
+  `Theorem18xAtSharp` statements). Cutting `Proofs15Restriction`'s imports of
+  the two Section 15 modules cost it two Mathlib modules
+  (`Mathlib.Algebra.Order.Ring.Abs`, `Mathlib.Data.Fin.Tuple.Finset`), restored
+  at the cut point; `restore_names.py` added one side-to-side import the planner
+  missed. The real route went from 478 modules and 94,899 lines to 474 and
+  88,046. Only `Proofs05IntegerRepresentatives` is dead now: its moves would
+  edit the statement module `Section05`.
+- *A bare `end` is a command too.* The block finder ended a declaration at the
+  next top-level item, and took `end ` (with a space) for one, but not the bare
+  `end` of an unnamed section. In `Proofs00Basics`, whose sections are unnamed,
+  six moved lemmas each took their section's `end` along: the module was left
+  with unclosed sections and its side module with stray `end`s (the build
+  stopped at `end LeanProofs.GowersSzemeredi`: "the current section is
+  unnamed"). Both files were rebuilt from HEAD with the corrected finder, and
+  `scope_check.py` (every `end` closes the innermost open scope, by name) is a
+  gate. A side module also has to repeat its source's local attributes:
+  `Proofs16DistinctSampling` declares `attribute [local instance]
+  Classical.propDecidable` in its header, and its side module, which the planner
+  gave only the header's `open` lines, could not find `DecidablePred` instances.
+  The planner now copies header-level `attribute [local …]` lines too; no other
+  side module lacked one of its source's.
 
 `Proofs16PolynomialMultilinearCover.exists_all_scale_polynomial_multilinear_cover`
 composes the improved all-scale Lemma 16.9 with the rounded affine lift.

@@ -3,6 +3,7 @@ import GowersSzemeredi.Proofs16IntervalWordGeometry
 import GowersSzemeredi.Proofs16SinglePieceSpectrum
 import GowersSzemeredi.Proofs16EqualSideBoxCover
 import Mathlib.Data.Nat.Prime.Infinite
+import GowersSzemeredi.Proofs16SinglePieceSpectrumSide
 
 /-! Ambient-normalized product property on small coordinate sections.
 

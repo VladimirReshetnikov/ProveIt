@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs16Basic
+import GowersSzemeredi.Section16
 
 /-! The finite extraction argument at the end of Theorem 16.2.
 The large-piece premise is explicit; no lifting or quantitative absorption

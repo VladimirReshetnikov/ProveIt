@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs16ThreeSlices
 import GowersSzemeredi.Proofs16ThreeCylinders
 import GowersSzemeredi.Proofs16ThreeSlicesSide
+import GowersSzemeredi.Proofs18WidthPowerBoundsSide
 
 /-! **The simultaneous cover of finitely many dimension-three pieces**
 (Notes L.5, D4).

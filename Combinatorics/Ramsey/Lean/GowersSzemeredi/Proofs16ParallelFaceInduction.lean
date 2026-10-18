@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16ParallelFaces
+import GowersSzemeredi.Proofs16FaceInductionSide
 
 /-! Simultaneous pruning of all parallel coordinate faces, with one
 ambient-volume deletion budget and a uniform prime threshold. -/

@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16IntegerBaseCover
 import GowersSzemeredi.Proofs16BaseFamilyPowerBound
+import GowersSzemeredi.Proofs16RegimeSplittingSide
 
 /-! The genuine cubic base cover implies the printed dimension-one controls.
 The source iteration budget absorbs the fixed family size with room to spare. -/

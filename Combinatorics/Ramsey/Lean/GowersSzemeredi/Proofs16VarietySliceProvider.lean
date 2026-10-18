@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs16VarietyPieceFamilyCover
 import GowersSzemeredi.Proofs16VarietyStructureSide
 import GowersSzemeredi.Proofs16WithLift
+import GowersSzemeredi.Proofs16WithLiftSide
 
 /-! The variety-piece class supplies the general slice-provider interface.
 The hypothesis asks for structured data for each slice. The shared cover

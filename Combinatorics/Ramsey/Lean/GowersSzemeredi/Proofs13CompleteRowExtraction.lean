@@ -1,5 +1,7 @@
 import GowersSzemeredi.Proofs07NinePointLinearity
 import GowersSzemeredi.Proofs13LargeScaleExtraction
+import GowersSzemeredi.Proofs07NinePointLinearitySide
+import GowersSzemeredi.Proofs13PartitionSelectionSide
 
 /-! Complete the corrected prime-modulus Lemma 13.7, without any lower-scale
 hypothesis. Both density lower bounds and original-domain containment are

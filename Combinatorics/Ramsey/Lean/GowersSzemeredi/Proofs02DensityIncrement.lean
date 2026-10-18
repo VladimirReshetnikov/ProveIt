@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs02PhasePartition
 import GowersSzemeredi.ProofInfrastructure
+import GowersSzemeredi.Proofs00BasicsSide
 
 /-!
 # Fourier density increments in Gowers's Section 2

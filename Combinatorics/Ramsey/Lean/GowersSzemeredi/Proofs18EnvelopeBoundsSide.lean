@@ -1,6 +1,8 @@
 import GowersSzemeredi.Proofs18EnvelopeBounds
 import GowersSzemeredi.Proofs18FejerCubicDiscrepancySide
 import GowersSzemeredi.Proofs18StructuralInverseParameters
+import GowersSzemeredi.Proofs18FejerIterationParametersSide
+import GowersSzemeredi.Proofs18WidthPowerBoundsSide
 
 /-! Declarations of `Proofs18EnvelopeBounds` that the final route does not use and that
 need modules outside it (moved here so that those modules can leave the route). -/

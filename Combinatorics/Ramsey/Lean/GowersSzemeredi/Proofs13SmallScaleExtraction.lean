@@ -1,5 +1,7 @@
 import GowersSzemeredi.Proofs07ShortLinearity
 import GowersSzemeredi.Proofs13PartitionSelection
+import GowersSzemeredi.Proofs07ShortLinearitySide
+import GowersSzemeredi.Proofs13PartitionSelectionSide
 
 /-!
 # The small-target case of Lemma 13.7

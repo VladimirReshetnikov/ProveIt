@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs05Lemma14
 import GowersSzemeredi.Proofs03ProgressionCount
+import GowersSzemeredi.Proofs00BasicsSide
 
 /-!
 # The scale issue in Corollary 5.8

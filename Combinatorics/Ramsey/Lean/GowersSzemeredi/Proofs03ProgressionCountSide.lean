@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs03ProgressionCount
 import GowersSzemeredi.Proofs03ProgressionAverage
+import GowersSzemeredi.Proofs00BasicsSide
 
 /-! Declarations of `Proofs03ProgressionCount` that the final route does not use and that
 need modules outside it (moved here so that those modules can leave the route). -/

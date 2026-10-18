@@ -3,7 +3,10 @@ import GowersSzemeredi.Proofs16GoodDomainTransport
 
 /-! Transport fixed Freiman families into the common-base good domain.
 The original section families survive both translation and deletion; their
-count is independent of the inner loss in the later affine lift. -/
+count is independent of the inner loss in the later affine lift.
+
+`Section16FinalFreimanFamilies.cubic_slice_provider` is in
+`Proofs16FreimanFinalSectionsSide`, outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -49,15 +52,5 @@ theorem Section16FinalFreimanFamilies.good_domain {N q : Nat} [NeZero N]
       ite_true, ← Pi.add_def, add_comm] using hv
   apply Finset.mem_image.mpr
   refine ⟨y + x0, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hb⟩, by simp⟩
-
-/-- Concrete section-family witnesses discharge the cubic slice provider. -/
-theorem Section16FinalFreimanFamilies.cubic_slice_provider {N q : Nat} [Fact N.Prime]
-    {B : Finset (Point N 2)} {phi : Point N 2 → ZMod N}
-    (h : Section16FinalFreimanFamilies q B phi) (hq : 0 < q) :
-    Section16SliceProvider B phi
-      (fun r _ => ((3 * (max 1 r * q) : Nat) : Real))
-      (fun r => cubicBaseExponent (max 1 r * q)) := by
-  choose D f hf hc using h
-  exact section16_cubic_slice_provider_of_freiman_families hq B phi D f hf hc
 
 end LeanProofs.GowersSzemeredi
