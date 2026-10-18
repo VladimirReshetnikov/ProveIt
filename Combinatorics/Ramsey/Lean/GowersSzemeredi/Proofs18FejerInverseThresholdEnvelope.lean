@@ -16,42 +16,29 @@ theorem fejerCubicDiscrepancyExponent_inv_le_exp {alpha : Real}
     (fejerCubicDiscrepancyExponent alpha)⁻¹ ≤
       Real.exp ((2 / alpha) ^ ((2 : Nat) ^ 61)) := by
   let x := 2 / alpha
-  let e := fejerCubicLocalizationExponent alpha
-  let t := fejerCubicLocalCountExponent alpha
   have hx : 2 ≤ x := (le_div_iff₀ hα).mpr (by linarith only [hαone])
-  have hx0 : 0 ≤ x := by linarith only [hx]
   have hx1 : 1 ≤ x := by linarith only [hx]
-  have he : 0 < e := by dsimp [e, fejerCubicLocalizationExponent]; positivity
-  have ht : 0 < t := (fejerCubicLocalCountExponent_bounds hα hαone).1
-  have hK : 2 * (polynomialPartitionConstant 3 : Real) ≤ x ^ (23 : Nat) := by
-    exact (by norm_num [polynomialPartitionConstant] : 2 * (polynomialPartitionConstant 3 : Real) ≤ (2 : Real) ^ (23 : Nat)).trans
-      (pow_le_pow_left₀ (by norm_num) hx _)
-  have hpoly : (2 * (polynomialPartitionConstant 3 : Real)) * t⁻¹ ≤ x ^ ((2 : Nat) ^ 60) := by
-    calc
-      _ ≤ x ^ (23 : Nat) * x ^ ((2 : Nat) ^ 59) :=
-        mul_le_mul hK (fejerCubicLocalCountExponent_inv_le_power hα hαone) (inv_nonneg.mpr ht.le) (pow_nonneg hx0 _)
-      _ = x ^ (23 + (2 : Nat) ^ 59) := (pow_add _ _ _).symm
-      _ ≤ _ := pow_le_pow_right₀ hx1 (by norm_num)
-  have heI : e⁻¹ ≤ Real.exp (x ^ ((2 : Nat) ^ 60)) :=
+  have he : 0 < fejerCubicLocalizationExponent alpha := Real.rpow_pos_of_pos (by norm_num) _
+  have ht := (fejerCubicLocalCountExponent_bounds hα hαone).1
+  have hK : 2 * (polynomialPartitionConstant 3 : Real) ≤ x ^ (23 : Nat) :=
+    (by norm_num [polynomialPartitionConstant] : 2 * (polynomialPartitionConstant 3 : Real) ≤
+      (2 : Real) ^ (23 : Nat)).trans (pow_le_pow_left₀ (by norm_num) hx _)
+  have hpoly : 2 * (polynomialPartitionConstant 3 : Real) * (fejerCubicLocalCountExponent alpha)⁻¹ ≤
+      x ^ ((2 : Nat) ^ 60) :=
+    (mul_le_mul hK (fejerCubicLocalCountExponent_inv_le_power hα hαone) (inv_nonneg.mpr ht.le)
+      (by positivity)).trans ((pow_add _ _ _).symm.trans_le (pow_le_pow_right₀ hx1 (by norm_num)))
+  have heI : (fejerCubicLocalizationExponent alpha)⁻¹ ≤ Real.exp (x ^ ((2 : Nat) ^ 60)) :=
     (fejerCubicLocalizationExponent_inv_le_exp hα).trans
-      (Real.exp_le_exp.mpr (pow_le_pow_right₀ hx1 (by norm_num : (2 : Nat) ^ 53 ≤ (2 : Nat) ^ 60)))
-  have hlin : x ^ ((2 : Nat) ^ 60) ≤ Real.exp (x ^ ((2 : Nat) ^ 60)) := by
-    have h := Real.add_one_le_exp (x ^ ((2 : Nat) ^ 60))
-    linarith only [h]
-  change ((e * t) / (2 * (polynomialPartitionConstant 3 : Real)))⁻¹ ≤ _
-  rw [inv_div, div_eq_mul_inv, mul_inv_rev, ← mul_assoc]
-  calc
-    _ ≤ x ^ ((2 : Nat) ^ 60) * Real.exp (x ^ ((2 : Nat) ^ 60)) :=
-      mul_le_mul hpoly heI (inv_nonneg.mpr he.le) (pow_nonneg hx0 _)
-    _ ≤ Real.exp (x ^ ((2 : Nat) ^ 60)) * Real.exp (x ^ ((2 : Nat) ^ 60)) :=
-      mul_le_mul_of_nonneg_right hlin (Real.exp_pos _).le
-    _ = Real.exp (2 * x ^ ((2 : Nat) ^ 60)) := by rw [← Real.exp_add]; congr 1; ring
-    _ ≤ _ := by
-      apply Real.exp_le_exp.mpr
-      calc
-        _ ≤ x * x ^ ((2 : Nat) ^ 60) := mul_le_mul_of_nonneg_right hx (pow_nonneg hx0 _)
-        _ = x ^ ((2 : Nat) ^ 60 + 1) := (pow_succ' _ _).symm
-        _ ≤ _ := pow_le_pow_right₀ hx1 (by norm_num)
+      (Real.exp_le_exp.mpr (pow_le_pow_right₀ hx1 (by norm_num)))
+  have hY : 2 ≤ x ^ ((2 : Nat) ^ 60) := hx.trans (le_self_pow₀ hx1 (by positivity))
+  rw [fejerCubicDiscrepancyExponent, inv_div, div_eq_mul_inv, mul_inv_rev, ← mul_assoc]
+  calc _ ≤ x ^ ((2 : Nat) ^ 60) * Real.exp (x ^ ((2 : Nat) ^ 60)) :=
+        mul_le_mul hpoly heI (inv_nonneg.mpr he.le) (by positivity)
+    _ ≤ Real.exp (x ^ ((2 : Nat) ^ 60)) * Real.exp (x ^ ((2 : Nat) ^ 60)) := by
+        gcongr; linarith only [Real.add_one_le_exp (x ^ ((2 : Nat) ^ 60))]
+    _ ≤ Real.exp (x ^ ((2 : Nat) ^ 61)) := by
+        rw [← Real.exp_add, ← two_mul, pow_succ 2 60, pow_mul, sq]
+        gcongr
 
 set_option exponentiation.threshold 2048 in
 /-- The variable cubic phase-refinement constant is polynomial in the
@@ -64,15 +51,11 @@ theorem fejerCubicPhaseRefinementConstant_le_power {alpha : Real}
   let D := fejerCubicTwistedCountConstant alpha
   let K := polynomialPartitionConstant 3
   have hx : 2 ≤ x := (le_div_iff₀ hα).mpr (by linarith only [hαone])
-  have hx0 : 0 ≤ x := by linarith only [hx]
   have hx1 : 1 ≤ x := by linarith only [hx]
-  have hb : 0 < beta := by
-    have h := fejerCubicDiscrepancyParameter_pos hα
-    change 0 < beta / 2 at h
-    linarith only [h]
-  have hβle : fejerCubicDiscrepancyParameter alpha ≤ beta := div_le_self hb.le (by norm_num)
+  have hb : 0 < beta :=
+    (div_pos_iff_of_pos_right two_pos).mp (fejerCubicDiscrepancyParameter_pos hα)
   have hβI : beta⁻¹ ≤ x ^ ((2 : Nat) ^ 59) :=
-    (inv_anti₀ (fejerCubicDiscrepancyParameter_pos hα) hβle).trans
+    (inv_anti₀ (fejerCubicDiscrepancyParameter_pos hα) (div_le_self hb.le (by norm_num))).trans
       (fejerCubicDiscrepancyParameter_inv_le_power hα hαone)
   have hC := section5LocalRefinementConstant_le_scaled 3 beta (x ^ ((2 : Nat) ^ 59))
     hb (one_le_pow₀ hx1) hβI
@@ -81,23 +64,20 @@ theorem fejerCubicPhaseRefinementConstant_le_power {alpha : Real}
       (pow_le_pow_left₀ (by norm_num) hx _)
   have hD : D ≤ x ^ ((2 : Nat) ^ 1084) :=
     (fejerCubicTwistedCountConstant_upper hα hαone).trans (pow_le_pow_left₀ (by norm_num) hx _)
-  have hD0 : 0 ≤ D := by dsimp [D, fejerCubicTwistedCountConstant, fejerCubicLocalCountConstant]; positivity
+  have hD0 : 0 ≤ D := by
+    dsimp [D, fejerCubicTwistedCountConstant, fejerCubicLocalCountConstant]; positivity
   have hKpos : (0 : Real) < K := by norm_num [K, polynomialPartitionConstant]
-  have hKi : (K : Real)⁻¹ ≤ 1 := inv_le_one_of_one_le₀ (by norm_num [K, polynomialPartitionConstant])
-  have hroot : D ^ (K : Real)⁻¹ ≤ x ^ ((2 : Nat) ^ 1084) := by
-    calc
-      _ ≤ (x ^ ((2 : Nat) ^ 1084)) ^ (K : Real)⁻¹ := Real.rpow_le_rpow hD0 hD (inv_nonneg.mpr hKpos.le)
-      _ ≤ _ := by
-        simpa only [Real.rpow_one] using Real.rpow_le_rpow_of_exponent_le (one_le_pow₀ hx1) hKi
+  have hKi : (K : Real)⁻¹ ≤ 1 :=
+    inv_le_one_of_one_le₀ (by norm_num [K, polynomialPartitionConstant])
+  have hroot : D ^ (K : Real)⁻¹ ≤ x ^ ((2 : Nat) ^ 1084) :=
+    (Real.rpow_le_rpow hD0 hD (inv_nonneg.mpr hKpos.le)).trans
+      ((Real.rpow_le_rpow_of_exponent_le (one_le_pow₀ hx1) hKi).trans_eq (Real.rpow_one _))
   change section5LocalRefinementConstant 3 beta * D ^ (K : Real)⁻¹ ≤ _
-  calc
-    _ ≤ (section5LocalRefinementConstant 3 1 * (x ^ ((2 : Nat) ^ 59)) ^ K) * x ^ ((2 : Nat) ^ 1084) :=
-      mul_le_mul hC hroot (Real.rpow_nonneg hD0 _)
-        (mul_nonneg (section5LocalRefinementConstant_pos 3 1).le (pow_nonneg (pow_nonneg hx0 _) _))
-    _ ≤ (x ^ ((2 : Nat) ^ 1082) * (x ^ ((2 : Nat) ^ 59)) ^ K) * x ^ ((2 : Nat) ^ 1084) :=
-      mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hCfixed (by positivity)) (pow_nonneg hx0 _)
+  calc _ ≤ x ^ ((2 : Nat) ^ 1082) * (x ^ ((2 : Nat) ^ 59)) ^ K * x ^ ((2 : Nat) ^ 1084) :=
+        mul_le_mul (hC.trans (mul_le_mul_of_nonneg_right hCfixed (by positivity))) hroot
+          (Real.rpow_nonneg hD0 _) (by positivity)
     _ = x ^ ((2 : Nat) ^ 1082 + (2 : Nat) ^ 59 * K + (2 : Nat) ^ 1084) := by
-      rw [← pow_mul, ← pow_add, ← pow_add]
+        rw [← pow_mul, ← pow_add, ← pow_add]
     _ ≤ _ := pow_le_pow_right₀ hx1 (by norm_num [K, polynomialPartitionConstant])
 
 set_option exponentiation.threshold 2048 in
@@ -109,22 +89,18 @@ theorem fejerCubicInverseThreshold_le_double_exp {alpha : Real}
   let x := 2 / alpha
   have hx : 2 ≤ x := (le_div_iff₀ hα).mpr (by linarith only [hαone])
   have hx1 : 1 ≤ x := by linarith only [hx]
-  have hC : fejerCubicPhaseRefinementConstant alpha ≤ Real.exp (x ^ ((2 : Nat) ^ 61)) :=
+  have hC : fejerCubicPhaseRefinementConstant alpha ≤ Real.exp (Real.exp (x ^ ((2 : Nat) ^ 61))) :=
     (fejerCubicPhaseRefinementConstant_le_power hα hαone).trans
       ((pow_two_pow_le_exp_pow_succ hx 1085).trans (Real.exp_le_exp.mpr
-        (pow_le_pow_right₀ hx1 (by norm_num : (1086 : Nat) ≤ (2 : Nat) ^ 61))))
-  have hp := positivePowerThreshold_one_le_double_exp
-    (fejerCubicDiscrepancyExponent_pos hα hαone).le
-    (hC.trans (Real.exp_le_exp.mpr ((Real.add_one_le_exp (x ^ ((2 : Nat) ^ 61))).trans' (by linarith only))))
-    (fejerCubicDiscrepancyExponent_inv_le_exp hα hαone)
+        ((pow_le_pow_right₀ hx1 (by norm_num : 1085 + 1 ≤ (2 : Nat) ^ 61)).trans
+          (by linarith only [Real.add_one_le_exp (x ^ ((2 : Nat) ^ 61))]))))
   have hinner : x ^ ((2 : Nat) ^ 61) + x ^ ((2 : Nat) ^ 61) ≤ x ^ ((2 : Nat) ^ 62) := by
-    have h := pow_le_pow_right₀ hx1 (by norm_num : (2 : Nat) ^ 61 + 1 ≤ (2 : Nat) ^ 62)
-    rw [pow_succ'] at h
-    nlinarith only [h, hx, pow_nonneg (by linarith only [hx] : 0 ≤ x) ((2 : Nat) ^ 61)]
-  unfold fejerCubicInverseThreshold
-  refine max_le ?_ (hp.trans (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr hinner)))
-  exact (fejerCubicTwistedThreshold_le_double_exp_sharp hα hαone).trans
-    (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr
-      (pow_le_pow_right₀ hx1 (by norm_num : (2 : Nat) ^ 55 ≤ (2 : Nat) ^ 62))))
+    rw [← two_mul, pow_succ 2 61, pow_mul, sq]
+    exact mul_le_mul_of_nonneg_right (hx.trans (le_self_pow₀ hx1 (by positivity))) (by positivity)
+  exact max_le ((fejerCubicTwistedThreshold_le_double_exp_sharp hα hαone).trans
+    (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr (pow_le_pow_right₀ hx1 (by norm_num)))))
+    ((positivePowerThreshold_one_le_double_exp (fejerCubicDiscrepancyExponent_pos hα hαone).le hC
+      (fejerCubicDiscrepancyExponent_inv_le_exp hα hαone)).trans
+      (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr hinner)))
 
 end LeanProofs.GowersSzemeredi

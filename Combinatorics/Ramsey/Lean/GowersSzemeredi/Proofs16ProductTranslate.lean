@@ -25,25 +25,12 @@ theorem weightedSimultaneousAdditiveEnergy_translate {N p : Nat} [NeZero N]
     weightedSimultaneousAdditiveEnergy (E.image fun x => x - c) (fun x => theta (x + c))
       (fun i x => psi i (x + c)) = weightedSimultaneousAdditiveEnergy E theta psi := by
   unfold weightedSimultaneousAdditiveEnergy
-  refine Fintype.sum_equiv (Equiv.addRight (fun _ : Fin 4 => c)) _ _ ?_
-  intro q
+  refine Fintype.sum_equiv (Equiv.addRight (fun _ : Fin 4 => c)) _ _ fun q => ?_
   have hmem : (∀ t, q t ∈ E.image fun x => x - c) ↔ ∀ t, q t + c ∈ E := by
-    refine forall_congr' fun t => ?_
-    constructor
-    · intro h
-      obtain ⟨x, hx, hxq⟩ := Finset.mem_image.mp h
-      rw [← hxq, sub_add_cancel]
-      exact hx
-    · intro h
-      exact Finset.mem_image.mpr ⟨q t + c, h, add_sub_cancel_right _ _⟩
+    simp [sub_eq_iff_eq_add]
   have hq : IsAdditiveQuadruple q ↔ IsAdditiveQuadruple (fun t => q t + c) := by
-    unfold IsAdditiveQuadruple
-    constructor
-    · intro h; simp only; rw [show q 0 + c + (q 1 + c) = (q 0 + q 1) + c + c by ring, h]; ring
-    · intro h
-      have h' : q 0 + q 1 + c + c = q 2 + q 3 + c + c := by
-        simp only at h; linear_combination h
-      exact add_right_cancel (add_right_cancel h')
+    simp only [IsAdditiveQuadruple]
+    constructor <;> intro h <;> linear_combination h
   simp only [Equiv.coe_addRight, Pi.add_apply]
   by_cases hc : (∀ t, q t ∈ E.image fun x => x - c) ∧ IsAdditiveQuadruple q ∧
       ∀ i, IsAdditiveQuadruple (fun t => psi i (q t + c))
@@ -65,31 +52,19 @@ theorem HasProductProperty.translate {N k : Nat} [NeZero N] {B : Finset (Point N
     (t : Point N k) :
     HasProductProperty (B.image fun x => x + t) (fun x => phi (x - t)) gamma := by
   intro p j y E theta htheta hE
-  have hE' : ∀ i x, x ∈ E.image (fun x => x - t j) →
-      replaceCoordinate (y i - t) j x ∈ B := by
-    intro i x hx
-    obtain ⟨x', hx', rfl⟩ := Finset.mem_image.mp hx
-    rw [replaceCoordinate_sub]
-    obtain ⟨b, hb, hbeq⟩ := Finset.mem_image.mp (hE i x' hx')
-    rw [← hbeq, add_sub_cancel_right]
-    exact hb
   have hh := h p j (fun i => y i - t) (E.image fun x => x - t j) (fun x => theta (x + t j))
-    (fun x => htheta _) hE'
-  have hsum : ∑ x ∈ E.image (fun x => x - t j), theta (x + t j) = ∑ x ∈ E, theta x := by
-    rw [Finset.sum_image (fun a _ b _ hab => sub_left_injective hab)]
-    simp
-  rw [hsum] at hh
-  have henergy := weightedSimultaneousAdditiveEnergy_translate E theta
-    (fun i => coordinateRestriction (fun x => phi (x - t)) (y i) j) (t j)
+    (fun x => htheta _) fun i x hx => by
+      obtain ⟨x', hx', rfl⟩ := Finset.mem_image.mp hx
+      obtain ⟨b, hb, hbeq⟩ := Finset.mem_image.mp (hE i x' hx')
+      rwa [replaceCoordinate_sub, ← hbeq, add_sub_cancel_right]
+  rw [Finset.sum_image fun a _ b _ hab => sub_left_injective hab] at hh
+  simp only [sub_add_cancel] at hh
   have hfun : (fun i x => coordinateRestriction (fun x => phi (x - t)) (y i) j (x + t j)) =
       fun i => coordinateRestriction phi (y i - t) j := by
     funext i x
-    unfold coordinateRestriction
-    show phi (replaceCoordinate (y i) j (x + t j) - t) = _
+    simp only [coordinateRestriction]
     rw [← replaceCoordinate_sub (y i) t j (x + t j), add_sub_cancel_right]
-  rw [hfun] at henergy
-  rw [← henergy]
-  exact hh
+  rwa [← weightedSimultaneousAdditiveEnergy_translate E theta _ (t j), hfun]
 
 /-- **The relation product property is invariant under base translation.** -/
 theorem RelationProductProperty.translate {N k : Nat} [NeZero N] {gamma : Real}
@@ -100,23 +75,13 @@ theorem RelationProductProperty.translate {N k : Nat} [NeZero N] {gamma : Real}
   have hC' : GraphContained (C.image fun x => x - t) (fun x => phi (x + t)) Gamma := by
     intro x hx
     obtain ⟨x', hx', rfl⟩ := Finset.mem_image.mp hx
-    obtain ⟨z, hz, hzeq⟩ := Finset.mem_image.mp (hC x' hx')
-    obtain ⟨h1, h2⟩ := Prod.mk.inj hzeq
-    show (x' - t, phi (x' - t + t)) ∈ Gamma
-    rw [sub_add_cancel, ← h2]
-    have : (x' - t, z.2) = z := Prod.ext (by rw [← h1, add_sub_cancel_right]) rfl
-    rw [this]
-    exact hz
+    obtain ⟨⟨a, b⟩, hz, hzeq⟩ := Finset.mem_image.mp (hC x' hx')
+    simp only [Prod.mk.injEq] at hzeq
+    obtain ⟨rfl, rfl⟩ := hzeq
+    simpa using hz
   have hp := (h _ _ hC').translate t
-  have himg : (C.image fun x => x - t).image (fun x => x + t) = C := by
-    rw [Finset.image_image]
-    have hid : ((fun x : Point N k => x + t) ∘ fun x => x - t) = id := by
-      funext x; simp
-    rw [hid, Finset.image_id]
-  rw [himg] at hp
-  refine hp.congr_on ?_
-  intro x _
-  show phi (x - t + t) = phi x
-  rw [sub_add_cancel]
+  rw [show (C.image fun x => x - t).image (fun x => x + t) = C by
+    simp [Finset.image_image, Function.comp_def]] at hp
+  exact hp.congr_on fun x _ => by simp
 
 end LeanProofs.GowersSzemeredi

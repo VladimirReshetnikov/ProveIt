@@ -48,26 +48,8 @@ private def weightedCenteredCode {N : Nat} (r : ZMod N) : Nat × Bool :=
 private lemma weightedCenteredCode_injective {N : Nat} :
     Function.Injective (weightedCenteredCode (N := N)) := by
   intro a b hab
-  have habs : a.valMinAbs.natAbs = b.valMinAbs.natAbs := by
-    simpa only [weightedCenteredCode, centeredAbs] using congrArg Prod.fst hab
-  have hsign : decide (0 ≤ a.valMinAbs) = decide (0 ≤ b.valMinAbs) := by
-    simpa only [weightedCenteredCode] using congrArg Prod.snd hab
-  apply ZMod.injective_valMinAbs
-  by_cases ha : 0 ≤ a.valMinAbs
-  · have hb : 0 ≤ b.valMinAbs := by
-      have : decide (0 ≤ b.valMinAbs) = true := by
-        rw [← hsign]
-        simp [ha]
-      simpa using this
-    exact (Int.natAbs_inj_of_nonneg_of_nonneg ha hb).mp habs
-  · have ha' : a.valMinAbs ≤ 0 := (lt_of_not_ge ha).le
-    have hb : b.valMinAbs ≤ 0 := by
-      have : decide (0 ≤ b.valMinAbs) = false := by
-        rw [← hsign]
-        simp [ha]
-      have : ¬ 0 ≤ b.valMinAbs := by simpa using this
-      exact (lt_of_not_ge this).le
-    exact (Int.natAbs_inj_of_nonpos_of_nonpos ha' hb).mp habs
+  simp only [weightedCenteredCode, centeredAbs, Prod.mk.injEq, decide_eq_decide] at hab
+  exact ZMod.injective_valMinAbs (by omega)
 
 private lemma weighted_centered_reciprocal_sq_tail {N K : Nat} [NeZero N]
     (hK : 0 < K) :
@@ -395,26 +377,14 @@ theorem polynomial_missing_interval_witness_at_scale
       (centeredAbs r : Real) ≤ (N : Real) ^ 2 / (M : Real) ^ 2 ∧
       (u : Real) * M / (4 * N) ≤
         ‖weylSum (-(a * r).valMinAbs / (N : Real)) k u‖ := by
-  have hN : 1 < N := lt_of_lt_of_le (by omega : 1 < u) huN
-  let w : ZMod N → Nat := polynomialValueMultiplicity k u a
-  have hmass : ∑ x : ZMod N, w x = u :=
-    polynomialValueMultiplicity_mass a
-  have havoid : ∀ s ∈ Finset.Icc 1 u,
-      ((s : ZMod N) ^ k) * a ∉ centeredInterval N M := by
-    intro s hs hscentered
-    have hsBounds := Finset.mem_Icc.mp hs
-    have habsNat := centeredAbs_le_of_mem_centeredInterval hMN hscentered
-    have habsReal :
-        (centeredAbs (((s : ZMod N) ^ k) * a) : Real) ≤ M := by
-      exact_mod_cast habsNat
-    exact (not_lt_of_ge (habsReal.trans hMscale))
-      (hno s hsBounds.1 hsBounds.2)
-  have hzero : ∀ x ∈ centeredInterval N M, w x = 0 :=
-    polynomialValueMultiplicity_zero_of_avoids a havoid
-  obtain ⟨r, hr0, hrsize, hrlarge⟩ :=
-    weighted_missing_interval_fourier N M u w hN hM hMeven hMN hmass hzero
-  refine ⟨r, hr0, hrsize, ?_⟩
-  rwa [fourier_polynomialValueMultiplicity_eq_weylSum] at hrlarge
+  have havoid (s : Nat) (hs : s ∈ Finset.Icc 1 u) :
+      ((s : ZMod N) ^ k) * a ∉ centeredInterval N M := fun hsc =>
+    (hno s (Finset.mem_Icc.mp hs).1 (Finset.mem_Icc.mp hs).2).not_ge <|
+      (Nat.cast_le.mpr (centeredAbs_le_of_mem_centeredInterval hMN hsc)).trans hMscale
+  simpa only [fourier_polynomialValueMultiplicity_eq_weylSum] using
+    weighted_missing_interval_fourier N M u (polynomialValueMultiplicity k u a) (by omega) hM
+      hMeven hMN (polynomialValueMultiplicity_mass a)
+      (polynomialValueMultiplicity_zero_of_avoids a havoid)
 
 lemma twice_floor_quarter_bounds {x : Real} (hx : 8 ≤ x) :
     let M := 2 * Nat.floor (x / 4)
@@ -461,33 +431,15 @@ lemma recurrenceScale_eight_le {k t N : Nat}
     (hk : 2 ≤ k) (ht : weylThreshold k ≤ t) (htN : t ≤ N) :
     8 ≤ (t : Real) ^
       (-(((k : Real) * (2 : Real) ^ (k + 1))⁻¹)) * N := by
-  let gamma : Real := ((k : Real) * (2 : Real) ^ (k + 1))⁻¹
-  have ht64Nat : 64 ≤ t := (weylThreshold_sixtyFour_le hk).trans ht
-  have ht64 : (64 : Real) ≤ t := by exact_mod_cast ht64Nat
-  have htOne : (1 : Real) ≤ t := by linarith
-  have htPos : (0 : Real) < t := by linarith
-  have hgamma : gamma ≤ 1 / 2 := recurrenceExponent_le_half hk
-  have hexponent : (1 / 2 : Real) ≤ 1 - gamma := by linarith
-  have hsqrt : (8 : Real) ≤ (t : Real) ^ (1 / 2 : Real) := by
-    calc
-      (8 : Real) = Real.sqrt 64 := by
-        rw [show (64 : Real) = (8 : Real) ^ 2 by norm_num,
-          Real.sqrt_sq (by norm_num)]
-      _ ≤ Real.sqrt (t : Real) := Real.sqrt_le_sqrt ht64
-      _ = (t : Real) ^ (1 / 2 : Real) := Real.sqrt_eq_rpow (t : Real)
-  have hpow : (t : Real) ^ (1 / 2 : Real) ≤ (t : Real) ^ (1 - gamma) :=
-    Real.rpow_le_rpow_of_exponent_le htOne hexponent
-  have hcombine :
-      (t : Real) ^ (1 - gamma) = (t : Real) ^ (-gamma) * t := by
-    rw [show 1 - gamma = -gamma + 1 by ring,
-      Real.rpow_add htPos, Real.rpow_one]
-  have htNReal : (t : Real) ≤ N := by exact_mod_cast htN
-  calc
-    (8 : Real) ≤ (t : Real) ^ (1 / 2 : Real) := hsqrt
-    _ ≤ (t : Real) ^ (1 - gamma) := hpow
-    _ = (t : Real) ^ (-gamma) * t := hcombine
-    _ ≤ (t : Real) ^ (-gamma) * N := by
-      gcongr
+  have ht64 : (64 : Real) ≤ t := by exact_mod_cast (weylThreshold_sixtyFour_le hk).trans ht
+  have h8 : (8 : Real) ≤ (t : Real) ^ (1 / 2 : Real) := by
+    rw [← Real.sqrt_eq_rpow, Real.le_sqrt' (by norm_num : (0 : Real) < 8)]; linarith
+  calc (8 : Real) ≤ (t : Real) ^ (1 - ((k : Real) * 2 ^ (k + 1))⁻¹) :=
+        h8.trans (Real.rpow_le_rpow_of_exponent_le (by linarith)
+          (by linarith [recurrenceExponent_le_half hk]))
+    _ = (t : Real) ^ (-((k : Real) * 2 ^ (k + 1))⁻¹) * t := by
+        rw [sub_eq_neg_add, Real.rpow_add (by linarith : (0 : Real) < t), Real.rpow_one]
+    _ ≤ _ := mul_le_mul_of_nonneg_left (by exact_mod_cast htN) (by positivity)
 
 lemma recurrenceScale_le_N {k t N : Nat} (ht : 1 ≤ t) :
     (t : Real) ^
@@ -558,24 +510,10 @@ lemma lemma55_threshold_root {k t D E : Nat}
     (hD : 0 < D) (hDE : D * E ≤ 2 ^ (40 * k ^ 3))
     (ht : weylThreshold k ≤ t) :
     (2 : Real) ^ E ≤ (t : Real) ^ ((D : Real)⁻¹) := by
-  let H := 2 ^ (40 * k ^ 3)
-  have hDReal : (0 : Real) < D := by exact_mod_cast hD
-  have hbase : ((2 ^ H : Nat) : Real) ≤ t := by
-    dsimp only [H]
-    exact_mod_cast (show 2 ^ (2 ^ (40 * k ^ 3)) ≤ t by
-      simpa only [weylThreshold] using ht)
-  calc
-    (2 : Real) ^ E ≤
-        ((2 : Real) ^ H) ^ ((D : Real)⁻¹) := by
-      rw [← Real.rpow_natCast,
-        ← Real.rpow_natCast_mul (by norm_num : (0 : Real) ≤ 2)]
-      apply Real.rpow_le_rpow_of_exponent_le one_le_two
-      rw [mul_comm (H : Real) ((D : Real)⁻¹), le_inv_mul_iff₀ hDReal]
-      exact_mod_cast hDE
-    _ ≤ (t : Real) ^ ((D : Real)⁻¹) := by
-      apply Real.rpow_le_rpow (by positivity)
-      · simpa only [Nat.cast_pow, Nat.cast_ofNat] using hbase
-      · positivity
+  refine (Real.le_rpow_inv_iff_of_pos (by positivity) (by positivity)
+    (by exact_mod_cast hD)).mpr ?_
+  rw [Real.rpow_natCast, ← pow_mul']
+  exact_mod_cast (Nat.pow_le_pow_right two_pos hDE).trans ht
 
 /-- The two constant absorptions needed by the square-root variant. -/
 private lemma lemma55_sqrt_threshold_gamma_gap {k u : Nat} (hk : 2 ≤ k)
@@ -650,23 +588,10 @@ private lemma lemma55_sqrt_exponent_budget {k : Nat} (hk : 2 ≤ k) :
           (k : Real)⁻¹) * (k - 1) ≤
       1 - 2 * (((k : Real) * (2 : Real) ^ (k + 1))⁻¹) := by
   have hkReal : (0 : Real) < k := by positivity
-  have hpowNat : 4 * (4 * k - 2) ≤ 3 * 2 ^ (k + 1) := by
-    induction k, hk using Nat.le_induction with
-    | base => norm_num
-    | succ k hk ih =>
-        calc
-          4 * (4 * (k + 1) - 2) ≤ 2 * (4 * (4 * k - 2)) := by omega
-          _ ≤ 2 * (3 * 2 ^ (k + 1)) :=
-            Nat.mul_le_mul_left 2 (ih (by positivity))
-          _ = 3 * 2 ^ ((k + 1) + 1) := by rw [pow_succ]; ring
-  have hpowReal :
-      4 * (4 * (k : Real) - 2) ≤ 3 * (2 : Real) ^ (k + 1) := by
-    have hsubCast : ((4 * k - 2 : Nat) : Real) = 4 * (k : Real) - 2 := by
-      rw [Nat.cast_sub (by omega : 2 ≤ 4 * k)]
-      push_cast
-      ring
-    rw [← hsubCast]
-    exact_mod_cast hpowNat
+  have hpowReal : 4 * (4 * (k : Real) - 2) ≤ 3 * (2 : Real) ^ (k + 1) := by
+    obtain ⟨j, rfl⟩ : ∃ j, k = j + 2 := ⟨k - 2, by omega⟩
+    have : (j : Real) + 1 ≤ 2 ^ j := by exact_mod_cast Nat.lt_two_pow_self (n := j)
+    push_cast; rw [pow_succ, pow_succ, pow_succ]; linarith
   have hpowPos : (0 : Real) < (2 : Real) ^ (k + 1) := by positivity
   field_simp [ne_of_gt hkReal, ne_of_gt hpowPos]
   nlinarith

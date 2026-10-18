@@ -34,42 +34,26 @@ theorem FunctionDiscrepancyBound.full_interval_partition
   obtain ⟨K, S, hS, _, hSproper, hcount, hdiam, hnorm⟩ :=
     small_diameter_partition_refinement Q (1 / 16) (by norm_num) hQ hQproper
   have hdiamNat (i : Fin K) : diameterAtMost (S i).carrier (Nat.floor ((1 / 16 : Real) * N)) := by
-    obtain ⟨d, hd, hdb⟩ := hdiam i
-    obtain ⟨a, ha⟩ := hd
-    refine ⟨a, ha.trans ?_⟩
-    intro x hx
-    obtain ⟨j, _, hj⟩ := Finset.mem_image.mp hx
-    have hjd : (j : Nat) < d + 1 := j.isLt
-    apply Finset.mem_image.mpr
-    exact ⟨⟨j, by change (j : Nat) < Nat.floor ((1 / 16 : Real) * N) + 1; have := Nat.le_floor hdb; omega⟩, Finset.mem_univ _, hj⟩
+    obtain ⟨d, ⟨a, ha⟩, hdb⟩ := hdiam i
+    refine ⟨a, ha.trans fun x hx => ?_⟩
+    obtain ⟨j, -, hj⟩ := Finset.mem_image.mp hx
+    exact Finset.mem_image.mpr
+      ⟨Fin.castLE (Nat.succ_le_succ (Nat.le_floor hdb)) j, Finset.mem_univ _, hj⟩
   obtain ⟨J, R, hJ, hR, hRproper, htransport⟩ := small_diameter_partition_interval_unwrap
     S hS hSproper hL hdiamNat (sixteenth_diameter_short hN)
   have hNr : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hM := section18_partition_index_nonempty (fun i => (Q i).carrier) hQ
-  have hMbound : (M : Real) ≤ (N : Real) ^ (1 - sigma) := by
-    rw [hQ.averageCellSize_univ] at havg
-    have hm := (le_div_iff₀ (show (0 : Real) < M by exact_mod_cast hM)).mp havg
-    rw [Real.rpow_sub hNr, Real.rpow_one]
-    apply (le_div_iff₀ (Real.rpow_pos_of_pos hNr sigma)).2
-    simpa only [mul_comm] using hm
-  have hKbound : (K : Real) ≤ boundaryRefinementConstant (1 / 16) * (N : Real) ^ (1 - sigma / 16) := by
-    calc
-      _ ≤ boundaryRefinementConstant (1 / 16) * (M : Real) ^ (1 / 16 : Real) *
-          (N : Real) ^ (15 / 16 : Real) := hcount
-      _ ≤ boundaryRefinementConstant (1 / 16) *
-          ((N : Real) ^ (1 - sigma)) ^ (1 / 16 : Real) * (N : Real) ^ (15 / 16 : Real) :=
-        mul_le_mul_of_nonneg_right
-          (mul_le_mul_of_nonneg_left (Real.rpow_le_rpow (Nat.cast_nonneg _) hMbound (by norm_num))
-            (section5LocalRefinementConstant_pos _ _).le) (Real.rpow_nonneg hNr.le _)
-      _ = _ := by
-        rw [← Real.rpow_mul hNr.le, mul_assoc, ← Real.rpow_add hNr]
-        congr 2
-        ring
+  have hC : 0 < boundaryRefinementConstant (1 / 16) := section5LocalRefinementConstant_pos _ _
+  rw [hQ.averageCellSize_univ,
+    le_div_iff₀' (Nat.cast_pos.mpr (section18_partition_index_nonempty _ hQ))] at havg
+  have hKbound : (K : Real) ≤ boundaryRefinementConstant (1 / 16) * N ^ (1 - sigma / 16) := by
+    refine hcount.trans ?_
+    rw [show 1 - sigma / 16 = (1 - sigma) * (1 / 16) + 15 / 16 by ring, Real.rpow_add hNr,
+      Real.rpow_mul hNr.le, ← mul_assoc]
+    gcongr
+    rw [Real.rpow_sub hNr, Real.rpow_one, le_div_iff₀ (by positivity)]
+    exact havg
   refine ⟨J, R, hR, hRproper, ?_, (hdis.trans (hnorm f)).trans (htransport f hsupp)⟩
   rw [hJ, Nat.cast_mul, Nat.cast_ofNat]
-  calc
-    _ ≤ 2 * (boundaryRefinementConstant (1 / 16) * (N : Real) ^ (1 - sigma / 16)) :=
-      mul_le_mul_of_nonneg_left hKbound (by norm_num)
-    _ = _ := by ring
+  linarith
 
 end LeanProofs.GowersSzemeredi

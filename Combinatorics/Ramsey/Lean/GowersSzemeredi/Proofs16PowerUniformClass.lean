@@ -77,41 +77,17 @@ theorem uniformBase_facts {V : Real} (hV : 1 ≤ V) (n : Nat) {theta gamma rho :
       V * (2 / (gamma * theta)) ≤ uniformBase V n theta gamma rho ∧
       2 ≤ uniformBase V n theta gamma rho := by
   obtain ⟨hu2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
-  have hri : 1 ≤ rho⁻¹ := one_le_inv₀ hr |>.mpr hr1
-  have hsplit : 2 / (gamma * theta * rho) = 2 / (gamma * theta) * rho⁻¹ := by
-    field_simp
-  set u := 2 / (gamma * theta) with hu
-  clear_value u
-  have hn1 : (1 : Real) ≤ (n : Real) + 1 := by
-    have : (0 : Real) ≤ n := Nat.cast_nonneg n
-    linarith
-  have hnV : (1 : Real) ≤ ((n : Real) + 1) * V := one_le_mul_of_one_le_of_one_le hn1 hV
-  have hur : u ≤ u * rho⁻¹ := le_mul_of_one_le_right (by linarith) hri
-  have hw : u * rho⁻¹ ≤ uniformBase V n theta gamma rho := by
-    unfold uniformBase
-    rw [hsplit]
-    exact le_mul_of_one_le_left (by positivity) hnV
-  have hVu : V * u ≤ uniformBase V n theta gamma rho := by
-    unfold uniformBase
-    rw [hsplit]
-    have h1 : V * u ≤ ((n : Real) + 1) * V * u := by
-      rw [mul_assoc]
-      exact le_mul_of_one_le_left (mul_nonneg (by linarith) (by linarith)) hn1
-    calc V * u ≤ ((n : Real) + 1) * V * u := h1
-      _ ≤ ((n : Real) + 1) * V * (u * rho⁻¹) :=
-        mul_le_mul_of_nonneg_left hur (by positivity)
-  have hnw : (n : Real) + 1 ≤ uniformBase V n theta gamma rho := by
-    have h1 : (n : Real) + 1 ≤ ((n : Real) + 1) * V := le_mul_of_one_le_right (by linarith) hV
-    have h2 : ((n : Real) + 1) * V ≤ ((n : Real) + 1) * V * u :=
-      le_mul_of_one_le_right (by positivity) (by linarith)
-    have h3 : ((n : Real) + 1) * V * u ≤ uniformBase V n theta gamma rho := by
-      unfold uniformBase
-      rw [hsplit]
-      exact mul_le_mul_of_nonneg_left hur (by positivity)
-    linarith
-  refine ⟨hur.trans hw, ?_, hnw, hVu, hu2.trans (hur.trans hw)⟩
-  have : rho⁻¹ ≤ u * rho⁻¹ := le_mul_of_one_le_left (by positivity) (by linarith)
-  exact this.trans hw
+  have hn1 : (1 : Real) ≤ (n : Real) + 1 := by linarith [(Nat.cast_nonneg n : (0 : Real) ≤ n)]
+  rw [uniformBase, ← div_div 2 (gamma * theta) rho, div_eq_mul_inv (2 / (gamma * theta)) rho]
+  set u := 2 / (gamma * theta)
+  have hud : u ≤ u * rho⁻¹ := le_mul_of_one_le_right (by linarith) (one_le_inv₀ hr |>.mpr hr1)
+  have hw : u * rho⁻¹ ≤ ((n : Real) + 1) * V * (u * rho⁻¹) :=
+    le_mul_of_one_le_left (by positivity) (one_le_mul_of_one_le_of_one_le hn1 hV)
+  refine ⟨hud.trans hw, (le_mul_of_one_le_left (by positivity) (by linarith)).trans hw,
+    (le_mul_of_one_le_right (by linarith) hV).trans
+      (le_mul_of_one_le_right (by positivity) (by linarith)),
+    mul_le_mul (le_mul_of_one_le_left (by linarith) hn1) hud (by linarith) (by positivity),
+    hu2.trans (hud.trans hw)⟩
 
 /-- The coarse count and capped width fit the same uniform power budget. -/
 theorem uniformBase_small_controls {V gamma theta rho : Real} (hV : 1 ≤ V)
@@ -123,33 +99,27 @@ theorem uniformBase_small_controls {V gamma theta rho : Real} (hV : 1 ≤ V)
         section16CappedWidthExponent (uniformBase V 1 theta gamma rho ^ D)⁻¹
           ((V * (2 / (gamma * theta))) ^ dT) := by
   obtain ⟨hu2, huw, -⟩ := prod_scale_radius_bounds hg hg1 ht ht1 hr hr1
-  have hVW := mul_le_mul hV (hu2.trans huw)
-    (by norm_num : (0 : Real) ≤ 2) (by linarith only [hV] : 0 ≤ V)
   have hw3 : 3 ≤ uniformBase V 1 theta gamma rho := by
-    unfold uniformBase
-    norm_num only [Nat.cast_one]
-    nlinarith only [hVW]
+    unfold uniformBase; norm_num only [Nat.cast_one]
+    nlinarith only [mul_le_mul hV (hu2.trans huw) zero_le_two
+      (by linarith only [hV] : (0 : Real) ≤ V)]
   obtain ⟨-, -, -, hbase, hw2⟩ := uniformBase_facts hV 1 hg hg1 ht ht1 hr hr1
   set w := uniformBase V 1 theta gamma rho
-  have hw1 : 1 ≤ w := le_trans (by norm_num) hw2
-  have hw0 : 0 ≤ w := zero_le_one.trans hw1
   have hb0 : 0 ≤ V * (2 / (gamma * theta)) :=
     mul_nonneg (zero_le_one.trans hV) (div_pos (by norm_num) (mul_pos hg ht)).le
   have hT := pow_le_pow_left₀ hb0 hbase dT
   constructor
-  · have hceil := ceil_le_pow_succ hw2 (pow_nonneg hb0 dT) hT
-    rw [Nat.cast_mul, Nat.cast_pow]
-    calc (3 : Real) ^ k * (⌈(V * (2 / (gamma * theta))) ^ dT⌉₊ : Real)
-        ≤ w ^ k * w ^ (dT + 1) :=
-          mul_le_mul (pow_le_pow_left₀ (by norm_num) hw3 k) hceil
-            (Nat.cast_nonneg _) (pow_nonneg hw0 _)
-      _ = w ^ (dT + k + 1) := by rw [← pow_add]; congr 1 <;> omega
-      _ ≤ w ^ D := pow_le_pow_right₀ hw1 hDT
+  · rw [Nat.cast_mul, Nat.cast_pow]
+    calc (3 : Real) ^ k * ⌈(V * (2 / (gamma * theta))) ^ dT⌉₊ ≤ w ^ k * w ^ (dT + 1) :=
+          mul_le_mul (pow_le_pow_left₀ (by norm_num) hw3 k)
+            (ceil_le_pow_succ hw2 (pow_nonneg hb0 dT) hT) (Nat.cast_nonneg _)
+            (pow_nonneg (by linarith) _)
+      _ = w ^ (dT + k + 1) := by ring
+      _ ≤ w ^ D := pow_le_pow_right₀ (by linarith) hDT
   · have he : 0 < (w ^ D)⁻¹ := inv_pos.mpr (pow_pos (lt_of_lt_of_le (by norm_num) hw2) _)
-    have hcap := capped_inv_le_pow (r := D) (n := dT) hw2 he
-      (by simpa only [inv_inv] using (le_rfl : w ^ D ≤ w ^ D)) (le_exp_pow_of_le_pow hT) (by omega)
-    have h := inv_anti₀ (inv_pos.mpr (section16CappedWidthExponent_pos he)) hcap
-    simpa only [inv_inv] using h
+    simpa only [inv_inv] using inv_anti₀ (inv_pos.mpr (section16CappedWidthExponent_pos he))
+      (capped_inv_le_pow (r := D) (n := dT) hw2 he (inv_inv _).le (le_exp_pow_of_le_pow hT)
+        (by omega))
 
 theorem restrictRelation_univ {N k : Nat} [NeZero N] (Gamma : Finset (Point N k × ZMod N)) :
     restrictRelation Gamma Finset.univ = Gamma := by
@@ -165,44 +135,24 @@ theorem PowerUniformClass.polyCoverAt {k : Nat} {V : Real} {dC dE dT : Nat}
     PolyCoverAt k (fun gamma theta rho => uniformBase V 1 theta gamma rho ^ D)
       (fun gamma theta rho => (uniformBase V 1 theta gamma rho ^ D)⁻¹) := by
   intro N _ _ gamma theta hg hg1 ht ht1 Gamma hsize hprod
-  have hfacts := fun rho (hr : 0 < rho) (hr1 : rho ≤ 1) =>
-    uniformBase_facts hV 1 hg hg1 ht ht1 hr hr1
+  have hw2 (rho : Real) (hr : 0 < rho) (hr1 : rho ≤ 1) : 2 ≤ uniformBase V 1 theta gamma rho :=
+    (uniformBase_facts hV 1 hg hg1 ht ht1 hr hr1).2.2.2.2
+  have hpos (rho : Real) (hr : 0 < rho) (hr1 : rho ≤ 1) :
+      0 < (uniformBase V 1 theta gamma rho ^ D)⁻¹ := by
+    have := hw2 rho hr hr1; positivity
   by_cases hN : (V * (2 / (gamma * theta))) ^ dT ≤ (N : Real)
   · obtain ⟨J, hJ, hU⟩ := C.decomp theta gamma ht ht1 hg hg1 N hN Gamma hsize hprod
-    refine ⟨J, hJ, ?_⟩
-    have hcov := C.cover theta gamma ht ht1 hg hg1 N 1 (fun _ => restrictRelation Gamma J)
-      (fun _ => hU)
-    refine (hcov.subset ?_).weaken ?_ ?_ ?_
-    · intro z hz
-      exact Finset.mem_biUnion.mpr ⟨0, Finset.mem_univ _, hz⟩
-    · intro rho hr hr1
-      exact pow_le_pow_right₀ (le_trans (by norm_num) (hfacts rho hr hr1).2.2.2.2) hDC
-    · intro rho hr _
-      have := (hfacts rho hr (by assumption)).2.2.2.2
-      positivity
-    · intro rho hr hr1
-      have hw2 := (hfacts rho hr hr1).2.2.2.2
-      exact inv_anti₀ (pow_pos (by linarith) _)
-        (pow_le_pow_right₀ (by linarith) hDE)
-  · have hNlt : (N : Real) < (V * (2 / (gamma * theta))) ^ dT := lt_of_not_ge hN
-    refine ⟨Finset.univ, ?_, ?_⟩
-    · have hc : ((Finset.univ : Finset (Point N k)).card : Real) = (N : Real) ^ k := by
-        simp [Point, ZMod.card]
-      rw [hc]
-      have : (0 : Real) ≤ (N : Real) ^ k := by positivity
-      nlinarith
-    have hcov := multiplyLinearWith_of_small_modulus hk hNlt
-      (restrictRelation Gamma Finset.univ)
-      (fun rho => uniformBase V 1 theta gamma rho ^ D)
-      (fun rho => (uniformBase V 1 theta gamma rho ^ D)⁻¹)
-      (fun s hs hs1 => by have := (hfacts s hs hs1).2.2.2.2; positivity)
-    refine hcov.weaken ?_ ?_ ?_
-    · intro rho hr hr1
-      exact max_le le_rfl (uniformBase_small_controls hV hg hg1 ht ht1 hr hr1 hDT).1
-    · intro rho hr hr1
-      have := (hfacts rho hr hr1).2.2.2.2
-      positivity
-    · intro rho hr hr1
-      exact (uniformBase_small_controls hV hg hg1 ht ht1 hr hr1 hDT).2
+    refine ⟨J, hJ, ((C.cover theta gamma ht ht1 hg hg1 N 1 (fun _ => restrictRelation Gamma J)
+      fun _ => hU).subset fun z hz => Finset.mem_biUnion.mpr ⟨0, Finset.mem_univ _, hz⟩).weaken
+      (fun rho hr hr1 => pow_le_pow_right₀ (by linarith [hw2 rho hr hr1]) hDC) hpos
+      fun rho hr hr1 => inv_anti₀ (pow_pos (by linarith [hw2 rho hr hr1]) _)
+        (pow_le_pow_right₀ (by linarith [hw2 rho hr hr1]) hDE)⟩
+  · refine ⟨Finset.univ, ?_, (multiplyLinearWith_of_small_modulus hk (lt_of_not_ge hN)
+      (restrictRelation Gamma Finset.univ) (fun rho => uniformBase V 1 theta gamma rho ^ D)
+      (fun rho => (uniformBase V 1 theta gamma rho ^ D)⁻¹) hpos).weaken
+      (fun rho hr hr1 => max_le le_rfl (uniformBase_small_controls hV hg hg1 ht ht1 hr hr1 hDT).1)
+      hpos fun rho hr hr1 => (uniformBase_small_controls hV hg hg1 ht ht1 hr hr1 hDT).2⟩
+    simpa [Point, ZMod.card] using mul_le_of_le_one_left
+      (by positivity : (0 : Real) ≤ (N : Real) ^ k) (by linarith : 1 - theta ≤ 1)
 
 end LeanProofs.GowersSzemeredi

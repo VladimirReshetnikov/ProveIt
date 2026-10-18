@@ -95,28 +95,12 @@ private lemma prop144_build_vertex {N n : Nat} (L : CubeConfiguration N n)
     (e₀ u₀ : Bool) (e u : Fin n → Bool) :
     (prop144Build L q).vertex (Fin.cons e₀ e) (Fin.cons u₀ u) =
       Fin.cons (prop144QuadCoordinate q e₀ u₀) (L.vertex e u) := by
+  unfold IsAdditiveQuadruple at hq
   funext i
-  refine Fin.cases ?_ (fun i => ?_) i
-  · cases e₀ <;> cases u₀
-    · simp [prop144Build, CubeConfiguration.vertex, CubeConfiguration.base,
-        CubeConfiguration.firstSide, CubeConfiguration.secondSide,
-        prop144QuadCoordinate]
-    · simp [prop144Build, CubeConfiguration.vertex, CubeConfiguration.base,
-        CubeConfiguration.firstSide, CubeConfiguration.secondSide,
-        prop144QuadCoordinate]
-    · simp [prop144Build, CubeConfiguration.vertex, CubeConfiguration.base,
-        CubeConfiguration.firstSide, CubeConfiguration.secondSide,
-        prop144QuadCoordinate]
-    · simp only [prop144Build, CubeConfiguration.vertex,
-        CubeConfiguration.base, CubeConfiguration.firstSide,
-        CubeConfiguration.secondSide, Fin.cons_zero, if_true,
-        prop144QuadCoordinate]
-      change q 0 + (q 2 - q 0) + (q 3 - q 0) = q 1
-      rw [show q 0 + (q 2 - q 0) + (q 3 - q 0) = q 2 + q 3 - q 0 by abel, ← hq]
-      abel
-  · simp [prop144Build, CubeConfiguration.vertex, CubeConfiguration.base,
-      CubeConfiguration.firstSide, CubeConfiguration.secondSide,
-      prop144QuadCoordinate]
+  refine Fin.cases ?_ (fun i => ?_) i <;> cases e₀ <;> cases u₀ <;>
+    simp [prop144Build, CubeConfiguration.vertex, CubeConfiguration.base,
+      CubeConfiguration.firstSide, CubeConfiguration.secondSide, prop144QuadCoordinate]
+  linear_combination -hq
 
 private def prop144Sigma {N n : Nat}
     (phi : Point N (n + 1) → ZMod N) (L : CubeConfiguration N n)
@@ -165,40 +149,14 @@ private lemma prop144_build_injective {N n : Nat}
     {L L' : CubeConfiguration N n} {q q' : Fin 4 → ZMod N}
     (hq : IsAdditiveQuadruple q) (hq' : IsAdditiveQuadruple q')
     (h : prop144Build L q = prop144Build L' q') : L = L' ∧ q = q' := by
-  have hb := congrArg CubeConfiguration.base h
-  have hg := congrArg CubeConfiguration.firstSide h
-  have hh := congrArg CubeConfiguration.secondSide h
-  have hq0 : q 0 = q' 0 := congrFun hb 0
-  have hbase : L.base = L'.base := by
-    funext i
-    exact congrFun hb i.succ
-  have hghead : q 2 - q 0 = q' 2 - q' 0 := congrFun hg 0
-  have hfirst : L.firstSide = L'.firstSide := by
-    funext i
-    exact congrFun hg i.succ
-  have hhhead : q 3 - q 0 = q' 3 - q' 0 := congrFun hh 0
-  have hsecond : L.secondSide = L'.secondSide := by
-    funext i
-    exact congrFun hh i.succ
-  have hq2 : q 2 = q' 2 := by
-    rw [hq0] at hghead
-    exact sub_left_injective hghead
-  have hq3 : q 3 = q' 3 := by
-    rw [hq0] at hhhead
-    exact sub_left_injective hhhead
-  have hq1 : q 1 = q' 1 := by
-    have hleft : q 0 + q 1 = q' 0 + q' 1 := by
-      rw [hq, hq', hq2, hq3]
-    rw [hq0] at hleft
-    exact add_left_cancel hleft
-  constructor
-  · exact Prod.ext hbase (Prod.ext hfirst hsecond)
-  · funext t
-    fin_cases t
-    · exact hq0
-    · exact hq1
-    · exact hq2
-    · exact hq3
+  simp only [prop144Build, Prod.mk.injEq, Fin.cons_inj] at h
+  obtain ⟨⟨h0, hb⟩, ⟨h2, hf⟩, h3, hs⟩ := h
+  unfold IsAdditiveQuadruple at hq hq'
+  have h1 : q 1 = q' 1 := by linear_combination hq - hq' + h2 + h3 + h0
+  have h2' : q 2 = q' 2 := by linear_combination h2 + h0
+  have h3' : q 3 = q' 3 := by linear_combination h3 + h0
+  refine ⟨Prod.ext hb (Prod.ext hf hs), funext fun t => ?_⟩
+  fin_cases t <;> assumption
 
 private lemma prop144_update_cons_zero {n : Nat} {X : Type*}
     (a b : X) (f : Fin n → X) :
@@ -216,36 +174,14 @@ private lemma prop144_build_isRespected {N n : Nat} [NeZero N]
     (hq : prop144GoodQuad B phi L q) :
     (prop144Build L q).IsRespected phi := by
   intro j e u
-  let e₀ := e 0
-  let u₀ := u 0
-  let e' := Fin.tail e
-  let u' := Fin.tail u
-  have he : e = Fin.cons e₀ e' := by
-    funext i
-    refine Fin.cases ?_ (fun i => ?_) i <;> rfl
-  have hu : u = Fin.cons u₀ u' := by
-    funext i
-    refine Fin.cases ?_ (fun i => ?_) i <;> rfl
-  rw [he, hu]
+  rw [← Fin.cons_self_tail e, ← Fin.cons_self_tail u]
   refine Fin.cases ?_ (fun j => ?_) j
-  · rw [prop144_update_cons_zero, prop144_update_cons_zero,
-      prop144_update_cons_zero, prop144_update_cons_zero,
-      prop144_build_vertex L q hq.2.1,
-      prop144_build_vertex L q hq.2.1,
-      prop144_build_vertex L q hq.2.1,
-      prop144_build_vertex L q hq.2.1]
-    let i := (prop144IndexEquiv n).symm (e', u')
-    have hi := hq.2.2 i
-    simpa [IsAdditiveQuadruple, prop144Sigma, i,
-      prop144QuadCoordinate] using hi
-  · rw [prop144_update_cons_succ, prop144_update_cons_succ,
-      prop144_update_cons_succ, prop144_update_cons_succ,
-      prop144_build_vertex L q hq.2.1,
-      prop144_build_vertex L q hq.2.1,
-      prop144_build_vertex L q hq.2.1,
-      prop144_build_vertex L q hq.2.1]
-    have hgood := prop144_good_of_coordinate B phi L q hq.1 e₀ u₀
-    simpa [prop144SectionPhi] using hgood.2 j e' u'
+  · simp only [prop144_update_cons_zero, prop144_build_vertex L q hq.2.1]
+    simpa [IsAdditiveQuadruple, prop144Sigma, prop144QuadCoordinate] using
+      hq.2.2 ((prop144IndexEquiv n).symm (Fin.tail e, Fin.tail u))
+  · simp only [prop144_update_cons_succ, prop144_build_vertex L q hq.2.1]
+    simpa [prop144SectionPhi] using
+      (prop144_good_of_coordinate B phi L q hq.1 (e 0) (u 0)).2 j (Fin.tail e) (Fin.tail u)
 
 private lemma prop144_energy_eq_count {N n : Nat} [NeZero N]
     (B : Finset (Point N (n + 1))) (phi : Point N (n + 1) → ZMod N)
@@ -254,21 +190,7 @@ private lemma prop144_energy_eq_count {N n : Nat} [NeZero N]
         (fun _ => (1 : Real)) (prop144Sigma phi L) =
       (countWhere (prop144GoodQuad B phi L) : Nat) := by
   classical
-  unfold weightedSimultaneousAdditiveEnergy prop144GoodQuad
-  rw [show
-      (∑ q : Fin 4 → ZMod N,
-        if (∀ t, q t ∈ prop144GoodSet B phi L) ∧
-            IsAdditiveQuadruple q ∧
-            ∀ i, IsAdditiveQuadruple
-              (fun t => prop144Sigma phi L i (q t)) then
-          ∏ _t : Fin 4, (1 : Real) else 0) =
-        ∑ q : Fin 4 → ZMod N,
-          if (∀ t, q t ∈ prop144GoodSet B phi L) ∧
-              IsAdditiveQuadruple q ∧
-              ∀ i, IsAdditiveQuadruple
-                (fun t => prop144Sigma phi L i (q t)) then
-            (1 : Real) else 0 by simp]
-  unfold countWhere
+  unfold weightedSimultaneousAdditiveEnergy prop144GoodQuad countWhere
   rw [Finset.filter_congr_decidable]
   simp
 
@@ -281,28 +203,18 @@ private lemma prop144_product_lower {N n : Nat} [NeZero N]
       (countWhere (prop144GoodQuad B phi L) : Nat) := by
   let p := Fintype.card (prop144VertexIndex n)
   let y : Fin p → Point N (n + 1) := fun i =>
-    let eu := prop144IndexEquiv n i
-    Fin.cons 0 (L.vertex eu.1 eu.2)
-  have h := hproduct p 0 y (prop144GoodSet B phi L) (fun _ => 1)
-    (fun _ => by positivity)
-  have hmem : ∀ (i : Fin p) x, x ∈ prop144GoodSet B phi L →
+    Fin.cons 0 (L.vertex (prop144IndexEquiv n i).1 (prop144IndexEquiv n i).2)
+  have hmem (i : Fin p) (x) (hx : x ∈ prop144GoodSet B phi L) :
       replaceCoordinate (y i) 0 x ∈ B := by
-    intro i x hx
-    have hgood : prop144GoodAt B phi L x := by
-      simpa [prop144GoodSet] using hx
-    let eu := prop144IndexEquiv n i
-    have hin := hgood.1 eu.1 eu.2
-    rw [show replaceCoordinate (y i) 0 x =
-        Fin.cons x (L.vertex eu.1 eu.2) by
-      simp only [y, eu, replaceCoordinate, prop144_update_cons_zero]]
-    simpa [prop144Section] using hin
-  specialize h hmem
-  have hsigma :
-      (fun i => coordinateRestriction phi (y i) 0) = prop144Sigma phi L := by
+    simp only [prop144GoodSet, prop144GoodAt, Finset.mem_filter, Finset.mem_univ,
+      true_and] at hx
+    simp only [y, replaceCoordinate, prop144_update_cons_zero]
+    simpa [prop144Section] using hx.1 (prop144IndexEquiv n i).1 (prop144IndexEquiv n i).2
+  have h := hproduct p 0 y _ (fun _ => 1) (fun _ => zero_le_one) hmem
+  have hsigma : (fun i => coordinateRestriction phi (y i) 0) = prop144Sigma phi L := by
     funext i x
-    let _ := prop144IndexEquiv n i
-    simp only [coordinateRestriction, y, replaceCoordinate,
-      prop144_update_cons_zero, prop144Sigma]
+    simp only [coordinateRestriction, y, replaceCoordinate, prop144_update_cons_zero,
+      prop144Sigma]
   rw [hsigma, prop144_energy_eq_count] at h
   simpa only [p, prop144_index_card, Finset.sum_const_zero,
     Finset.sum_const, nsmul_eq_mul, one_mul, mul_one, Nat.cast_pow,
@@ -408,30 +320,17 @@ private lemma prop144_zero_dim {N : Nat} [NeZero N]
     beta ^ (4 ^ 0) * gamma ^ (2 * 0 * 4 ^ 0) *
         (N : Real) ^ (3 * 0) ≤ respectedConfigurationCount B phi := by
   classical
-  have hbeta_card : (B.card : Real) = beta := by simpa using hcard
-  have hcard_pos : 0 < B.card := by exact_mod_cast hbeta_card.symm ▸ hbeta
-  have hcard_le : B.card ≤ 1 := by
-    simpa [Point] using B.card_le_univ
-  have hcard_one : B.card = 1 := by omega
-  have hB : B = Finset.univ := by
-    apply B.card_eq_iff_eq_univ.mp
-    simpa [Point] using hcard_one
-  have hbeta_one : beta = 1 := by
-    rw [← hbeta_card, hcard_one]
-    norm_num
-  rw [hbeta_one]
+  have hb : (B.card : Real) = beta := by simpa using hcard
+  have hB : B = Finset.univ := (Finset.card_pos.mp (by exact_mod_cast hb.symm ▸ hbeta)).eq_univ
+  have hle : B.card ≤ 1 := by simpa [Point] using B.card_le_univ
+  have hone : 1 ≤ respectedConfigurationCount B phi := by
+    unfold respectedConfigurationCount countWhere
+    rw [Finset.filter_congr_decidable]
+    exact Finset.one_le_card.mpr ⟨default, Finset.mem_filter.mpr ⟨Finset.mem_univ _,
+      fun e u => hB ▸ Finset.mem_univ _, fun j => j.elim0⟩⟩
   norm_num
-  unfold respectedConfigurationCount countWhere
-  apply Finset.one_le_card.mpr
-  refine ⟨default, ?_⟩
-  rw [Finset.filter_congr_decidable]
-  rw [Finset.mem_filter]
-  refine ⟨Finset.mem_univ _, ?_, ?_⟩
-  · intro e u
-    rw [hB]
-    exact Finset.mem_univ _
-  · intro j
-    exact Fin.elim0 j
+  rw [← hb]
+  exact_mod_cast hle.trans hone
 
 private lemma prop144_first_moment {N n : Nat} [NeZero N]
     (beta gamma : Real) (B : Finset (Point N (n + 1)))
@@ -576,30 +475,13 @@ private theorem prop144_all_dimensions :
       exact prop144_zero_dim beta gamma B phi hbeta hcard
   | succ n ih =>
       intro N _ beta gamma B phi hbeta hgamma hcard hproduct
-      have hfirst := prop144_first_moment beta gamma B phi
-        hcard hproduct (fun beta' B' phi' hbeta' hcard' hproduct' =>
-          ih N beta' gamma B' phi' hbeta' hgamma hcard' hproduct')
-      have hfourth := prop144_fourth_moment beta gamma B phi hbeta hgamma hfirst
-      have hfactor : 0 ≤ gamma ^ (8 * 4 ^ n) * (N : Real)⁻¹ := by
-        positivity
-      calc
-        beta ^ (4 ^ (n + 1)) *
-            gamma ^ (2 * (n + 1) * 4 ^ (n + 1)) *
-            (N : Real) ^ (3 * (n + 1)) =
-          gamma ^ (8 * 4 ^ n) * (N : Real)⁻¹ *
-            ((beta ^ (4 ^ n) * gamma ^ (2 * n * 4 ^ n) *
-              (N : Real) ^ (3 * n + 1)) ^ 4 /
-                ((N : Real) ^ (3 * n)) ^ 3) :=
-          prop144_constant_identity beta gamma
-        _ ≤ gamma ^ (8 * 4 ^ n) * (N : Real)⁻¹ *
-            (∑ L : CubeConfiguration N n,
-              ((prop144GoodSet B phi L).card : Real) ^ 4) :=
-          mul_le_mul_of_nonneg_left hfourth hfactor
-        _ ≤ ∑ L : CubeConfiguration N n,
-            (countWhere (prop144GoodQuad B phi L) : Real) :=
-          prop144_sum_product_lower gamma B phi hproduct
-        _ ≤ respectedConfigurationCount B phi := by
-          exact_mod_cast prop144_sum_goodquad_le B phi
+      have hfourth := prop144_fourth_moment beta gamma B phi hbeta hgamma
+        (prop144_first_moment beta gamma B phi hcard hproduct fun beta' B' phi' hb hc hp =>
+          ih N beta' gamma B' phi' hb hgamma hc hp)
+      rw [prop144_constant_identity beta gamma]
+      refine (mul_le_mul_of_nonneg_left hfourth (by positivity)).trans
+        ((prop144_sum_product_lower gamma B phi hproduct).trans ?_)
+      exact_mod_cast prop144_sum_goodquad_le B phi
 
 /-- **Lemma 14.4.** Product property gives many respected configurations. -/
 theorem lemma_14_4_holds : lemma_14_4 := by
@@ -686,29 +568,16 @@ private lemma prop145_slice_end_values {N n : Nat} [NeZero N]
     (hrespect : C.IsRespected phi) :
     (prop145Slice C (fun _ => false)).value phi =
       (prop145Slice C (fun _ => true)).value phi := by
-  have hpath : ∀ m, m ≤ n + 1 →
-      (prop145Slice C (prop145Prefix (k := n + 1) 0)).value phi =
-        (prop145Slice C (prop145Prefix (k := n + 1) m)).value phi := by
-    intro m hm
+  have hpath (m : Nat) (hm : m ≤ n + 1) :
+      (prop145Slice C (prop145Prefix 0)).value phi =
+        (prop145Slice C (prop145Prefix m)).value phi := by
     induction m with
     | zero => rfl
     | succ m ih =>
-        have hmk : m < n + 1 := by omega
-        calc
-          (prop145Slice C (prop145Prefix (k := n + 1) 0)).value phi =
-              (prop145Slice C (prop145Prefix (k := n + 1) m)).value phi :=
-            ih (by omega)
-          _ = (prop145Slice C
-              (Function.update (prop145Prefix (k := n + 1) m)
-                ⟨m, hmk⟩ false)).value phi := by
-            rw [prop145_prefix_update_false hmk]
-          _ = (prop145Slice C
-              (Function.update (prop145Prefix (k := n + 1) m)
-                ⟨m, hmk⟩ true)).value phi :=
-            prop145_slice_value_update C phi hrespect ⟨m, hmk⟩ _
-          _ = (prop145Slice C
-              (prop145Prefix (k := n + 1) (m + 1))).value phi := by
-            rw [prop145_prefix_update_true hmk]
+        have hmk : m < n + 1 := hm
+        have h := prop145_slice_value_update C phi hrespect ⟨m, hmk⟩ (prop145Prefix m)
+        rw [prop145_prefix_update_false hmk, prop145_prefix_update_true hmk] at h
+        exact (ih (by omega)).trans h
   simpa only [prop145_prefix_zero, prop145_prefix_full] using hpath (n + 1) le_rfl
 
 private def prop145Pair {N k : Nat} (C : CubeConfiguration N k) :
@@ -727,18 +596,9 @@ private lemma prop145_pair_good {N n : Nat} [NeZero N]
     ext <;> simp [prop145Pair, prop145Slice]
   have hsecond : (prop145Pair C).2 = prop145Slice C (fun _ => true) := by
     ext <;> simp [prop145Pair, prop145Slice]
-  constructor
-  · intro u
-    rw [hfirst, prop145_slice_vertex]
-    exact hC.1 (fun _ => false) u
-  constructor
-  · intro u
-    rw [hsecond, prop145_slice_vertex]
-    exact hC.1 (fun _ => true) u
-  constructor
-  · rfl
-  · rw [hfirst, hsecond]
-    exact prop145_slice_end_values C phi hC.2
+  rw [hfirst, hsecond]
+  exact ⟨hC.1 (fun _ => false), hC.1 (fun _ => true), rfl,
+    prop145_slice_end_values C phi hC.2⟩
 
 private lemma prop145_pair_injective {N k : Nat}
     {C D : CubeConfiguration N k} (h : prop145Pair C = prop145Pair D) :

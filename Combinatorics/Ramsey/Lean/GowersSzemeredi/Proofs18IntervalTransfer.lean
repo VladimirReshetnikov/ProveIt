@@ -28,64 +28,36 @@ theorem hasNatAP_of_short_modular_sequence {N n k : Nat}
       (f i : ZMod N) = a + (i : ZMod N) * d) :
     HasNatAP A k := by
   by_cases hk : k ≤ 1
-  · by_cases hk0 : k = 0
-    · subst k
-      exact ⟨0, 1, by omega, by omega⟩
-    · have hk1 : k = 1 := by omega
-      refine ⟨f 0, 1, by omega, ?_⟩
-      intro i hi
-      have hi0 : i = 0 := by omega
-      simpa [hi0] using (hf 0 (by omega)).1
+  · refine ⟨f 0, 1, one_pos, fun i hi => ?_⟩
+    obtain rfl : i = 0 := by omega
+    simpa using (hf 0 hi).1
   have h0 := hf 0 (by omega)
   have h1 := hf 1 (by omega)
-  have hne : f 0 ≠ f 1 := by
-    intro heq
-    have heq' := congrArg (fun x : Nat => (x : ZMod N)) heq
-    rw [h0.2.2, h1.2.2] at heq'
-    simp only [Nat.cast_zero, Nat.cast_one, zero_mul, one_mul, add_zero] at heq'
-    exact hd (add_left_cancel (heq'.symm.trans (add_zero a).symm))
-  have hstep (i : Nat) (hi : i + 1 < k) :
-      f (i + 1) + f 0 = f i + f 1 := by
-    have hfi := hf i (by omega)
-    have hfi1 := hf (i + 1) hi
-    have heq : ((f (i + 1) + f 0 : Nat) : ZMod N) =
-        ((f i + f 1 : Nat) : ZMod N) := by
-      push_cast
-      rw [hfi1.2.2, h0.2.2, hfi.2.2, h1.2.2]
-      push_cast
-      ring
-    have hl : f (i + 1) + f 0 < N := by omega
-    have hr : f i + f 1 < N := by omega
-    have hmod := (ZMod.natCast_eq_natCast_iff' _ _ N).mp heq
-    simpa only [Nat.mod_eq_of_lt hl, Nat.mod_eq_of_lt hr] using hmod
+  have hne : f 0 ≠ f 1 := fun heq => hd (by
+    simpa [h0.2.2, h1.2.2] using congrArg (Nat.cast : Nat → ZMod N) heq)
+  have hstep (i : Nat) (hi : i + 1 < k) : f (i + 1) + f 0 = f i + f 1 := by
+    have hi0 := hf i (by omega)
+    have hi1 := hf (i + 1) hi
+    refine ((ZMod.natCast_eq_natCast_iff _ _ N).mp ?_).eq_of_lt_of_lt (by omega) (by omega)
+    push_cast
+    rw [hi1.2.2, h0.2.2, hi0.2.2, h1.2.2]
+    push_cast
+    ring
   rcases lt_or_gt_of_ne hne with hinc | hdec
-  · have hformula (i : Nat) (hi : i < k) :
-        f i = f 0 + i * (f 1 - f 0) := by
-      induction i with
-      | zero => simp
-      | succ i ih =>
-        have hrec := hstep i hi
-        have hind := ih (by omega)
-        rw [Nat.succ_mul]
-        omega
-    refine ⟨f 0, f 1 - f 0, by omega, ?_⟩
-    intro i hi
-    rw [← hformula i hi]
-    exact (hf i hi).1
-  · have hformula (i : Nat) (hi : i < k) :
-        f (k - 1 - i) = f (k - 1) + i * (f 0 - f 1) := by
-      induction i with
-      | zero => simp
-      | succ i ih =>
-        have hindex : k - 1 - (i + 1) + 1 = k - 1 - i := by omega
-        have hrec := hstep (k - 1 - (i + 1)) (by omega)
-        rw [hindex] at hrec
-        have hind := ih (by omega)
-        rw [Nat.succ_mul]
-        omega
-    refine ⟨f (k - 1), f 0 - f 1, by omega, ?_⟩
-    intro i hi
-    rw [← hformula i hi]
-    exact (hf (k - 1 - i) (by omega)).1
+  · refine ⟨f 0, f 1 - f 0, by omega, fun i hi => ?_⟩
+    suffices f i = f 0 + i * (f 1 - f 0) from this ▸ (hf i hi).1
+    induction i with
+    | zero => simp
+    | succ i ih => have := hstep i hi; have := ih (by omega); rw [Nat.succ_mul]; omega
+  · refine ⟨f (k - 1), f 0 - f 1, by omega, fun i hi => ?_⟩
+    suffices f (k - 1 - i) = f (k - 1) + i * (f 0 - f 1) from this ▸ (hf _ (by omega)).1
+    induction i with
+    | zero => simp
+    | succ i ih =>
+      have := hstep (k - 1 - (i + 1)) (by omega)
+      rw [show k - 1 - (i + 1) + 1 = k - 1 - i by omega] at this
+      have := ih (by omega)
+      rw [Nat.succ_mul]
+      omega
 
 end LeanProofs.GowersSzemeredi

@@ -60,44 +60,32 @@ theorem MultiplyLinearWith.relation_lift_last {N k : Nat} [NeZero N] [Fact N.Pri
       (fun t => Eb t / 16) (lastLiftRelation Λ) := by
   intro theta ht ht1 P hP
   obtain ⟨ha, ha1⟩ := hE theta ht ht1
-  have hA : 0 < Eb theta / 16 := by positivity
-  have hmass : (1 - theta) * (P.carrier.card : Real) ≤ P.carrier.card := by
-    nlinarith
   by_cases hsmall : (P.width : Real) ^ (Eb theta / 16) ≤ 2
   · obtain ⟨L, R, mu, hpart, hproper, hw, hmu, hcov⟩ :=
       section16_coarse_relation_cover (by omega : 0 < k + 1) (lastLiftRelation Λ) M
         (lastLiftRelation_fiber_le hfib) P hP
-    refine ⟨L, 3 ^ (k + 1) * M, P.carrier, R, mu, Finset.Subset.rfl, hmass, hpart, hproper,
-      le_max_right _ _, ?_, hmu, fun j x hx _ y hy => hcov j x hx y hy⟩
-    intro j
-    have hmin : (P.width : Real) ^ (Eb theta / 16) ≤ ((min 2 P.width : Nat) : Real) := by
-      rcases Nat.lt_or_ge P.width 2 with hlt | hge
-      · rw [min_eq_right hlt.le]
-        interval_cases _ : P.width
-        · simp [Real.zero_rpow hA.ne']
-        · simp
-      · rw [min_eq_left hge]
-        exact_mod_cast hsmall
-    exact hmin.trans (by exact_mod_cast hw j)
-  · have hlarge : 2 < (P.width : Real) ^ (Eb theta / 16) := lt_of_not_ge hsmall
-    obtain ⟨hm4, hw16, hwidth⟩ := with_lift_width_budget ha ha1 P.width hlarge
+    refine ⟨L, 3 ^ (k + 1) * M, P.carrier, R, mu, Finset.Subset.rfl,
+      mul_le_of_le_one_left (Nat.cast_nonneg _) (by linarith), hpart, hproper, le_max_right _ _,
+      fun j => le_trans ?_ (Nat.cast_le.mpr (hw j)), hmu, fun j x hx _ y hy => hcov j x hx y hy⟩
+    rcases Nat.lt_or_ge P.width 2 with hlt | hge
+    · rw [min_eq_right hlt.le]
+      interval_cases _ : P.width
+      · simp [Real.zero_rpow (by positivity : Eb theta / 16 ≠ 0)]
+      · simp
+    · simpa [min_eq_left hge] using hsmall
+  · obtain ⟨hm4, hw16, hwidth⟩ := with_lift_width_budget ha ha1 P.width (lt_of_not_ge hsmall)
     obtain ⟨v, hv, hvfit, hvwidth⟩ := section16_lift_width_rounding hw16
-    let T := boxInit P
-    let I := P.axis (Fin.last k)
-    have hI : I.IsProper := hP _
-    have hmI : P.width ≤ I.length := P.width_le_axis_length _
-    obtain ⟨u, hu⟩ := I.step_isUnit_of_prime hI (by omega)
-    have hstep : I.step = T.commonDiff := P.axis_step _
+    have hI : (P.axis (Fin.last k)).IsProper := hP _
+    have hmI := P.width_le_axis_length (Fin.last k)
+    obtain ⟨u, hu⟩ := (P.axis (Fin.last k)).step_isUnit_of_prime hI (by omega)
     obtain ⟨q, G, M', Q, mu, hq, hG, hGm, hpart, hproper, hmu, hc⟩ :=
-      hML.relation_unused_coordinate_cover theta ht ht1 (hQ theta ht ht1) ha.le T I
-        (boxInit_isProper P hP) hI hstep u hu.symm hk hm4 (boxInit_width P hk) hmI hv hvfit
-    have hprod : lastProductSet T.carrier I.carrier = P.carrier :=
-      (boxInit_last_product P).1.symm
-    rw [hprod] at hG hGm hpart
-    refine ⟨M', q, G, Q, mu, hG, hGm, hpart, fun j => (hproper j).1,
-      hq.trans (le_max_left _ _), fun j => ?_, hmu, ?_⟩
-    · exact hwidth.trans (hvwidth.trans (by exact_mod_cast (hproper j).2))
-    · intro j z hz hzG y hy
-      exact hc j z hz hzG y (mem_lastLiftRelation.mp hy)
+      hML.relation_unused_coordinate_cover theta ht ht1 (hQ theta ht ht1) ha.le (boxInit P) _
+        (boxInit_isProper P hP) hI (P.axis_step _) u hu.symm hk hm4 (boxInit_width P hk) hmI hv
+        hvfit
+    rw [show lastProductSet (boxInit P).carrier (P.axis (Fin.last k)).carrier = P.carrier from
+      (boxInit_last_product P).1.symm] at hG hGm hpart
+    exact ⟨M', q, G, Q, mu, hG, hGm, hpart, fun j => (hproper j).1, hq.trans (le_max_left _ _),
+      fun j => hwidth.trans (hvwidth.trans (by exact_mod_cast (hproper j).2)), hmu,
+      fun j z hz hzG y hy => hc j z hz hzG y (mem_lastLiftRelation.mp hy)⟩
 
 end LeanProofs.GowersSzemeredi

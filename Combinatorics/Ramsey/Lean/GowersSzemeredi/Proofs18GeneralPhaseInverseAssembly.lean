@@ -36,50 +36,34 @@ theorem polynomial_phase_inverse_partition {N K k : Nat} [NeZero N]
       (∀ j, (R j).IsProper) ∧
       (N : Real) ^ phaseInverseExponent k e ≤ averageCellSize (fun j => (R j).carrier) ∧
       (beta / 2) * N ≤ ∑ j, ‖∑ x ∈ (R j).carrier, f x‖ := by
-  let q : Real := (polynomialPartitionConstant k : Real)⁻¹
-  let C := phaseInverseConstant k beta D
-  let s := phaseInverseExponent k e
-  have hK : 0 < (polynomialPartitionConstant k : Real) := by
-    unfold polynomialPartitionConstant
-    positivity
-  have hs : 0 < s := by dsimp [s, phaseInverseExponent]; positivity
-  have hq : 0 < q := by dsimp [q]; positivity
-  have heq : s = e * q / 2 := by dsimp [s, q, phaseInverseExponent]; ring
   obtain ⟨J, R, hR, _, hRproper, hJ, hdisR⟩ := variable_polynomial_phase_refinement
     Q phi f beta hk hβ hpoly hf hQ hdis
   have hNr : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hJ' : (J : Real) ≤ C * (N : Real) ^ (1 - e * q) := by
-    calc
-      _ ≤ section5LocalRefinementConstant k beta * (K : Real) ^ q * (N : Real) ^ (1 - q) := hJ
-      _ ≤ section5LocalRefinementConstant k beta * (D * (N : Real) ^ (1 - e)) ^ q * (N : Real) ^ (1 - q) :=
-        mul_le_mul_of_nonneg_right
-          (mul_le_mul_of_nonneg_left (Real.rpow_le_rpow (Nat.cast_nonneg _) hcount hq.le)
-            (section5LocalRefinementConstant_pos _ _).le) (Real.rpow_nonneg hNr.le _)
-      _ = _ := by
-        rw [Real.mul_rpow hD.le (Real.rpow_nonneg hNr.le _), ← Real.rpow_mul hNr.le]
-        have hp : (N : Real) ^ ((1 - e) * q) * (N : Real) ^ (1 - q) = (N : Real) ^ (1 - e * q) := by
-          rw [← Real.rpow_add hNr]
-          congr 1
-          ring
-        change (section5LocalRefinementConstant k beta * (D ^ q * (N : Real) ^ ((1 - e) * q))) *
-          (N : Real) ^ (1 - q) = (section5LocalRefinementConstant k beta * D ^ q) * (N : Real) ^ (1 - e * q)
-        rw [← hp]
-        ring
-  have hCbound : C ≤ (N : Real) ^ s := by
-    simpa only [one_mul] using positivePowerThreshold_spec (C := C) zero_lt_one hs hN
-  have hJbound : (J : Real) ≤ (N : Real) ^ (1 - s) := by
-    calc
-      _ ≤ C * (N : Real) ^ (1 - e * q) := hJ'
-      _ ≤ (N : Real) ^ s * (N : Real) ^ (1 - e * q) :=
-        mul_le_mul_of_nonneg_right hCbound (Real.rpow_nonneg hNr.le _)
-      _ = _ := by rw [← Real.rpow_add hNr]; congr 1; linarith only [heq]
-  have hJpos := section18_partition_index_nonempty (fun j => (R j).carrier) hR
+  have hq : 0 < (polynomialPartitionConstant k : Real)⁻¹ := by
+    unfold polynomialPartitionConstant; positivity
+  have hs : 0 < phaseInverseExponent k e := by
+    unfold phaseInverseExponent polynomialPartitionConstant; positivity
+  have heq : 2 * phaseInverseExponent k e + (1 - e) * (polynomialPartitionConstant k : Real)⁻¹ +
+      (1 - (polynomialPartitionConstant k : Real)⁻¹) = 1 := by
+    unfold phaseInverseExponent; ring
+  have hC := positivePowerThreshold_spec zero_lt_one hs hN
+  rw [one_mul, phaseInverseConstant] at hC
+  have hC₀ := section5LocalRefinementConstant_pos k beta
   refine ⟨J, R, hR, hRproper, ?_, hdisR⟩
-  rw [hR.averageCellSize_univ]
-  apply (le_div_iff₀ (show (0 : Real) < J by exact_mod_cast hJpos)).2
-  calc
-    _ ≤ (N : Real) ^ s * (N : Real) ^ (1 - s) :=
-      mul_le_mul_of_nonneg_left hJbound (Real.rpow_nonneg hNr.le _)
-    _ = N := by rw [← Real.rpow_add hNr, show s + (1 - s) = 1 by ring, Real.rpow_one]
+  rw [hR.averageCellSize_univ,
+    le_div_iff₀ (Nat.cast_pos.mpr (section18_partition_index_nonempty _ hR))]
+  generalize phaseInverseExponent k e = s at hs hC heq ⊢
+  generalize (polynomialPartitionConstant k : Real)⁻¹ = q at hq hJ hC heq
+  generalize section5LocalRefinementConstant k beta = C₀ at hC₀ hJ hC
+  calc (N : Real) ^ s * J ≤ N ^ s * (C₀ * (D * N ^ (1 - e)) ^ q * N ^ (1 - q)) := by
+        gcongr; exact hJ.trans (by gcongr)
+    _ = C₀ * D ^ q * (N ^ s * N ^ ((1 - e) * q + (1 - q))) := by
+        rw [Real.mul_rpow hD.le (Real.rpow_nonneg hNr.le _), ← Real.rpow_mul hNr.le,
+          Real.rpow_add hNr]
+        ring
+    _ ≤ N ^ s * (N ^ s * N ^ ((1 - e) * q + (1 - q))) := by gcongr
+    _ = N := by
+        rw [← Real.rpow_add hNr, ← Real.rpow_add hNr,
+          show s + (s + ((1 - e) * q + (1 - q))) = 1 by linarith, Real.rpow_one]
 
 end LeanProofs.GowersSzemeredi

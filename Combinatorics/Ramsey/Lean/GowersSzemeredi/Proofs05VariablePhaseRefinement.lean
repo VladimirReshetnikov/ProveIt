@@ -25,38 +25,22 @@ theorem variable_polynomial_phase_refinement {N M k : Nat} [NeZero N]
         (M : Real) ^ (polynomialPartitionConstant k : Real)⁻¹ *
         (N : Real) ^ (1 - (polynomialPartitionConstant k : Real)⁻¹) ∧
       (alpha / 2) * N ≤ ∑ j, ‖∑ s ∈ (R j).carrier, f s‖ := by
-  have hM : 0 < M := by
-    obtain ⟨i, _⟩ := (hQ.1 (0 : ZMod N)).mp (Finset.mem_univ _)
-    exact Nat.zero_lt_of_lt i.isLt
   have hcards : ∑ i, (Q i).carrier.card = N := by
     simpa only [Finset.card_univ, ZMod.card] using hQ.sum_card
   choose L R hpart hproper hcount herror using fun i : Fin M ↦
     section5_efficient_local_phase_refinement_arbitrary_of_corollary_5_6
       corollary_5_6_holds (Q i) (phi i) alpha hk (hphi i) hα
-  refine ⟨∑ i, L i, section5Flatten L R,
-    section5Flatten_partition Q L R hQ hpart,
-    section5Flatten_refinement Q L R hQ hpart,
-    section5Flatten_isProper L R hproper, ?_, ?_⟩
+  refine ⟨∑ i, L i, section5Flatten L R, section5Flatten_partition Q L R hQ hpart,
+    section5Flatten_refinement Q L R hQ hpart, section5Flatten_isProper L R hproper, ?_, ?_⟩
   · have hK : 0 < polynomialPartitionConstant k := by unfold polynomialPartitionConstant; positivity
-    have hjensen := section5_sum_rpow_le hK (fun i ↦ (Q i).carrier.card) hcards
-    rw [Nat.cast_sum]
-    calc
-      _ ≤ ∑ i, section5LocalRefinementConstant k alpha *
-          ((Q i).carrier.card : Real) ^ (1 - (polynomialPartitionConstant k : Real)⁻¹) :=
-        Finset.sum_le_sum fun i _ ↦ hcount i
-      _ = section5LocalRefinementConstant k alpha *
-          ∑ i, ((Q i).carrier.card : Real) ^ (1 - (polynomialPartitionConstant k : Real)⁻¹) :=
-        (Finset.mul_sum _ _ _).symm
-      _ ≤ section5LocalRefinementConstant k alpha *
-          ((M : Real) ^ (polynomialPartitionConstant k : Real)⁻¹ *
-            (N : Real) ^ (1 - (polynomialPartitionConstant k : Real)⁻¹)) :=
-        mul_le_mul_of_nonneg_left hjensen (section5LocalRefinementConstant_pos k alpha).le
-      _ = _ := by ring
-  · have hsum := Finset.sum_le_sum (fun i (_ : i ∈ (Finset.univ : Finset (Fin M))) ↦ herror i f hf)
-    have hcardsR : ∑ i, ((Q i).carrier.card : Real) = N := by exact_mod_cast hcards
-    rw [Finset.sum_add_distrib, ← Finset.mul_sum, hcardsR] at hsum
-    rw [section5Flatten_sum L R (fun P ↦ ‖∑ s ∈ P.carrier, f s‖)]
-    linarith only [hphase, hsum]
+    rw [Nat.cast_sum, mul_assoc]
+    refine (Finset.sum_le_sum fun i _ ↦ hcount i).trans ?_
+    rw [← Finset.mul_sum]
+    exact mul_le_mul_of_nonneg_left (section5_sum_rpow_le hK _ hcards)
+      (section5LocalRefinementConstant_pos k alpha).le
+  · have hsum := Finset.sum_le_sum fun i (_ : i ∈ (Finset.univ : Finset (Fin M))) ↦ herror i f hf
+    rw [Finset.sum_add_distrib, ← Finset.mul_sum, ← Nat.cast_sum, hcards] at hsum
+    linarith only [hphase, hsum, section5Flatten_sum L R fun P ↦ ‖∑ s ∈ P.carrier, f s‖]
 
 /-- Adding a linear polynomial preserves every positive degree bound. -/
 theorem PolynomialOn.add_linear {N k : Nat} {S : Finset (ZMod N)}

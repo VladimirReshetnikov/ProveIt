@@ -210,31 +210,19 @@ theorem split_step_gen {k a D a' D' P T e s : Nat}
     (hP : P ≤ 2 ^ (5 * k + 20)) (hT : T ≤ 2 ^ (5 * k + 19)) :
     2 ^ (k + 1 + 6) * a' ≤ 2 ^ (2 * e) ∧ D' ≤ 2 ^ (2 * e + s + (5 * k + 22)) := by
   constructor
-  · calc 2 ^ (k + 1 + 6) * a' ≤ 2 ^ (k + 1 + 6) * (2 ^ (k + 5) * (a * a)) :=
-          Nat.mul_le_mul_left _ ha'
-      _ = (2 ^ (k + 6) * a) * (2 ^ (k + 6) * a) := by ring
-      _ ≤ 2 ^ e * 2 ^ e := Nat.mul_le_mul hA hA
-      _ = 2 ^ (2 * e) := by rw [← pow_add, two_mul]
-  · set X := 2 ^ e with hXdef
-    set Y := 2 ^ (e + s) with hYdef
-    set Z := 2 ^ (5 * k + 19) with hZdef
-    have haX : a ≤ X := le_trans (Nat.le_mul_of_pos_left a (Nat.two_pow_pos _)) hA
-    have hXY : X ≤ Y := Nat.pow_le_pow_right (by norm_num) (by omega)
-    have hsum : a + D ≤ 2 * Y := by omega
-    have e20 : 2 ^ (5 * k + 20) = 2 * Z := by
-      rw [hZdef, show 5 * k + 20 = (5 * k + 19) + 1 by ring, pow_succ]; ring
-    have hX1 : 1 ≤ X := Nat.one_le_two_pow
-    have hY1 : 1 ≤ Y := Nat.one_le_two_pow
-    have hprod : 8 * Z * X * Y = 2 ^ (2 * e + s + (5 * k + 22)) := by
-      rw [hXdef, hYdef, hZdef, show 2 * e + s + (5 * k + 22) = e + (e + s) + ((5 * k + 19) + 3) by ring,
-        pow_add, pow_add, pow_add]
-      ring
-    calc D' ≤ 2 ^ (k + 6) * (a * (a + D)) * P + T := hD'
-      _ = (2 ^ (k + 6) * a) * (a + D) * P + T := by ring
-      _ ≤ X * (2 * Y) * (2 * Z) + Z :=
-          Nat.add_le_add (Nat.mul_le_mul (Nat.mul_le_mul hA hsum) (e20 ▸ hP)) hT
-      _ ≤ 8 * Z * X * Y := split_step_arith _ _ _ hX1 hY1
-      _ = _ := hprod
+  · calc 2 ^ (k + 1 + 6) * a' ≤ (2 ^ (k + 6) * a) * (2 ^ (k + 6) * a) :=
+          (Nat.mul_le_mul_left _ ha').trans_eq (by ring)
+      _ ≤ 2 ^ (2 * e) := (Nat.mul_le_mul hA hA).trans_eq (by rw [← pow_add, two_mul])
+  · have hXY : 2 ^ e ≤ 2 ^ (e + s) := Nat.pow_le_pow_right (by norm_num) (by omega)
+    have hsum : a + D ≤ 2 * 2 ^ (e + s) := by
+      have := le_trans (Nat.le_mul_of_pos_left a (Nat.two_pow_pos (k + 6))) hA
+      omega
+    have hP' : P ≤ 2 * 2 ^ (5 * k + 19) := hP.trans_eq (by ring)
+    calc D' ≤ 2 ^ (k + 6) * a * (a + D) * P + T := hD'.trans_eq (by ring)
+      _ ≤ 2 ^ e * (2 * 2 ^ (e + s)) * (2 * 2 ^ (5 * k + 19)) + 2 ^ (5 * k + 19) := by gcongr
+      _ ≤ 8 * 2 ^ (5 * k + 19) * 2 ^ e * 2 ^ (e + s) :=
+          split_step_arith _ _ _ Nat.one_le_two_pow Nat.one_le_two_pow
+      _ = 2 ^ (2 * e + s + (5 * k + 22)) := by ring
 
 end LeanProofs.GowersSzemeredi
 
@@ -302,37 +290,24 @@ theorem splitUniformClass2_succ_fejer {k : Nat} (hk : 1 ≤ k) {V : Real} (hV : 
     cover := ?_ }⟩
   · intro theta gamma ht ht1 hg hg1 N _ _ hN Gamma hsize hprod
     obtain ⟨hu2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
-    have hVu : 1 ≤ V' * (2 / (gamma * theta)) :=
-      one_le_mul_of_one_le_of_one_le (hV.trans hVV) (le_trans (by norm_num) hu2)
-    have hN' : classStepThrFejer (fun theta gamma => (V * (2 / (gamma * theta))) ^ Dc) theta gamma k ≤ N := by
-      rw [← classStepThresholdFejer_eq]
-      refine (step_thr_le_fejer hk hV hVV hg hg1 ht ht1).trans (le_trans ?_ hN)
-      exact pow_le_pow_right₀ hVu (le_max_right _ _)
-    obtain ⟨J, hJ, P, hP⟩ := class_step_decomp_fejer C hk ht ht1 hg hg1 hN' Gamma hsize hprod
-    exact ⟨J, hJ, P, hP⟩
+    refine class_step_decomp_fejer C hk ht ht1 hg hg1
+      ((step_thr_le_fejer hk hV hVV hg hg1 ht ht1).trans (le_trans ?_ hN)) Gamma hsize hprod
+    exact pow_le_pow_right₀ (one_le_mul_of_one_le_of_one_le (hV.trans hVV)
+      (le_trans (by norm_num) hu2)) (le_max_right _ _)
   · intro theta gamma ht ht1 hg hg1 N _ _ n Gamma hU
     choose P hP using hU
-    have h := class_step_cover_gen_fejer C hk hCnt hExp hCntMono hExpAnti (familyWidthPrefactor_pos hK)
-      (familyWidthDivisor_pos hp) hlemma6 ht ht1 hg hg1 Gamma P hP
-    refine h.weaken ?_ ?_ ?_
-    · intro rho hr hr1
-      have hc := split_count_le_fejer (k := k) hac hDc hV hVV hg hg1 ht ht1 hr hr1 n
-      obtain ⟨hw2, -, -, -, -⟩ := split_w_facts hV hVV hg hg1 ht ht1 hr hr1
-      have hν : (1 : Real) ≤ (n : Real) + 1 := by
-        have := Nat.cast_nonneg (α := Real) n; linarith
-      exact hc.trans (tb_mono hν (by linarith) le_rfl (le_max_left _ _))
-    · intro rho hr hr1
-      obtain ⟨hw2, -, -, -, -⟩ := split_w_facts hV hVV hg hg1 ht ht1 hr hr1
-      have hν : (1 : Real) ≤ (n : Real) + 1 := by
-        have := Nat.cast_nonneg (α := Real) n; linarith
-      exact inv_pos.mpr (lt_of_lt_of_le zero_lt_one (tb_one_le hν (by linarith)))
-    · intro rho hr hr1
-      obtain ⟨he0, hei⟩ := split_exp_inv_le_fejer2 (k := k) hac hDc hae hDe hV hVV hK hp hKV hpV
+    have hν : (1 : Real) ≤ (n : Real) + 1 := le_add_of_nonneg_left (Nat.cast_nonneg n)
+    refine (class_step_cover_gen_fejer C hk hCnt hExp hCntMono hExpAnti
+      (familyWidthPrefactor_pos hK) (familyWidthDivisor_pos hp) hlemma6 ht ht1 hg hg1 Gamma P
+      hP).weaken (fun rho hr hr1 => ?_) (fun rho hr hr1 => ?_) (fun rho hr hr1 => ?_)
+    · obtain ⟨hw2, -⟩ := split_w_facts hV hVV hg hg1 ht ht1 hr hr1
+      exact (split_count_le_fejer (k := k) hac hDc hV hVV hg hg1 ht ht1 hr hr1 n).trans
+        (tb_mono hν (by linarith) le_rfl (le_max_left _ _))
+    · obtain ⟨hw2, -⟩ := split_w_facts hV hVV hg hg1 ht ht1 hr hr1
+      positivity
+    · obtain ⟨he0, hei⟩ := split_exp_inv_le_fejer2 (k := k) hac hDc hae hDe hV hVV hK hp hKV hpV
         hg hg1 ht ht1 hr hr1 n
-      obtain ⟨_, -, -, -, -⟩ := split_w_facts hV hVV hg hg1 ht ht1 hr hr1
-      have h2 := inv_anti₀ (inv_pos.mpr he0) hei
-      rw [inv_inv] at h2
-      exact h2
+      exact inv_le_of_inv_le₀ he0 hei
 
 /-- One two-track step on `((ac, Dc), (ae, De))`. -/
 def splitQuadStep (k : Nat) (x : (Nat × Nat) × (Nat × Nat)) : (Nat × Nat) × (Nat × Nat) :=
@@ -380,37 +355,25 @@ theorem splitUniformClass2_two_tight {K1 p1 : Nat} (hK1 : 1 ≤ K1) (hp1 : 0 < p
     cover := ?_ }⟩
   · intro theta gamma ht ht1 hg hg1 N _ _ hN Gamma hsize hprod
     obtain ⟨hu2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
-    have hVu : 1 ≤ V * (2 / (gamma * theta)) :=
-      one_le_mul_of_one_le_of_one_le hV (le_trans (by norm_num) hu2)
-    have hthr : polyTwoFejerThreshold theta gamma ≤ N := by
-      refine (polyTwoFejerThreshold_le_power hg hg1 ht ht1).trans (le_trans ?_ hN)
-      refine (pow_le_pow_left₀ (by linarith only [hu2])
-        (le_mul_of_one_le_left (by linarith only [hu2]) hV) _).trans ?_
-      exact pow_le_pow_right₀ hVu (Nat.pow_le_pow_right (by norm_num) (by norm_num))
-    obtain ⟨J, hJ, P, hP⟩ := section16_poly_piece_decomposition_two_fejer ht ht1 hg hg1 hthr Gamma
-      hsize hprod
-    exact ⟨J, hJ, P, hP⟩
+    refine section16_poly_piece_decomposition_two_fejer ht ht1 hg hg1
+      ((polyTwoFejerThreshold_le_power hg hg1 ht ht1).trans (le_trans ?_ hN)) Gamma hsize hprod
+    refine (pow_le_pow_left₀ (by linarith only [hu2])
+      (le_mul_of_one_le_left (by linarith only [hu2]) hV) _).trans ?_
+    exact pow_le_pow_right₀ (one_le_mul_of_one_le_of_one_le hV (le_trans (by norm_num) hu2))
+      (by norm_num)
   · intro theta gamma ht ht1 hg hg1 N _ _ n Gamma hU
     choose P hP using hU
     have hcov := section16_uniform_cover_two_fejer (familyWidthPrefactor_pos hK1)
       (familyWidthDivisor_pos hp1) hlemma6 ht ht1 hg hg1 Gamma (fun _ => Finset.univ) P
       (fun i => by rw [restrictRelation_univ]; exact hP i)
-    have hsub : Finset.univ.biUnion Gamma ⊆
-        Finset.univ.biUnion fun i => restrictRelation (Gamma i) Finset.univ := by
-      simp only [restrictRelation_univ]; exact le_rfl
-    refine (hcov.subset hsub).weaken ?_ ?_ ?_
-    · intro rho hr hr1
-      exact uniTwoFejerCount_le_split_tight hV hg hg1 ht ht1 hr hr1 n
-    · intro rho hr hr1
-      obtain ⟨hW2, -, -, -⟩ := splitW_facts hV hg hg1 ht ht1 hr hr1
-      positivity
-    · intro rho hr hr1
-      have h := uniTwoFejerExp_inv_le_split hV (by omega : 0 < K1) hp1 hKV hpV hg hg1 ht ht1 hr hr1 n
-      have h0 := uniTwoFejerExp_pos (A := familyWidthPrefactor K1) (Bq := familyWidthDivisor 1 p1)
-        (familyWidthDivisor_pos (k := 1) hp1)
-        (theta := theta) (gamma := gamma) (n * polyTwoFejerPieces gamma theta) hr
-      have := inv_anti₀ (inv_pos.mpr h0) h
-      rwa [inv_inv] at this
+    simp only [restrictRelation_univ] at hcov
+    refine hcov.weaken
+      (fun rho hr hr1 => uniTwoFejerCount_le_split_tight hV hg hg1 ht ht1 hr hr1 n)
+      (fun rho hr hr1 => ?_) fun rho hr hr1 => inv_le_of_inv_le₀
+        (uniTwoFejerExp_pos (familyWidthDivisor_pos hp1) _ hr)
+        (uniTwoFejerExp_inv_le_split hV (by omega) hp1 hKV hpV hg hg1 ht ht1 hr hr1 n)
+    obtain ⟨hW2, -⟩ := splitW_facts hV hg hg1 ht ht1 hr hr1
+    positivity
 
 end LeanProofs.GowersSzemeredi
 

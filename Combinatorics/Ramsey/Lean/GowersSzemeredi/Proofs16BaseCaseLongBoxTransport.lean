@@ -76,39 +76,14 @@ lemma boxOneIntPoint_injective_on_indexAP {N : Nat} [NeZero N]
 lemma boxOneIndexDomain_card {N : Nat} [NeZero N]
     (P : Box N 1) (hP : P.IsProper) (B : Finset (Point N 1)) :
     (boxOneIndexDomain P B).card = (B ∩ P.carrier).card := by
-  let f := boxOneIntPoint P
-  have hinj : Set.InjOn f (boxOneIndexDomain P B) :=
-    (boxOneIntPoint_injective_on_indexAP P hP).mono
-      (fun z hz => (Finset.mem_filter.mp hz).1)
-  have himage : (boxOneIndexDomain P B).image f = B ∩ P.carrier := by
-    ext x
-    constructor
-    · intro hx
-      obtain ⟨z, hz, rfl⟩ := Finset.mem_image.mp hx
-      have hz' := Finset.mem_filter.mp hz
-      refine Finset.mem_inter.mpr ⟨hz'.2, ?_⟩
-      rw [boxOne_carrier_eq_image]
-      rw [IntAP.carrier] at hz'
-      obtain ⟨i, _hi, hiz⟩ := Finset.mem_image.mp hz'.1
-      apply Finset.mem_image.mpr
-      refine ⟨i, Finset.mem_univ i, ?_⟩
-      simpa [f, boxOneIndexAP, boxOneIntPoint_of_nat] using
-        congrArg (boxOneIntPoint P) hiz
-    · intro hx
-      have hx' := Finset.mem_inter.mp hx
-      rw [boxOne_carrier_eq_image] at hx'
-      obtain ⟨i, _hi, hix⟩ := Finset.mem_image.mp hx'.2
-      rw [Finset.mem_image]
-      refine ⟨(i : Int), ?_, ?_⟩
-      · rw [boxOneIndexDomain, Finset.mem_filter]
-        constructor
-        · rw [IntAP.carrier]
-          exact Finset.mem_image.mpr (⟨i, Finset.mem_univ i, by simp [boxOneIndexAP]⟩)
-        · simpa [f, boxOneIntPoint_of_nat, hix] using hx'.1
-      · simpa [f, boxOneIntPoint_of_nat] using hix
-  rw [← himage, Finset.card_image_iff.mpr]
-  intro x hx y hy hxy
-  exact hinj hx hy hxy
+  have himg : P.carrier = (boxOneIndexAP P).carrier.image (boxOneIntPoint P) := by
+    rw [boxOne_carrier_eq_image, IntAP.carrier, Finset.image_image]
+    exact Finset.image_congr fun i _ => by simp [boxOneIndexAP, boxOneIntPoint_of_nat]
+  rw [Finset.inter_comm, himg, ← Finset.filter_mem_eq_inter, Finset.filter_image,
+    Finset.card_image_of_injOn]
+  · rfl
+  · exact (boxOneIntPoint_injective_on_indexAP P hP).mono
+      (Finset.coe_subset.2 (Finset.filter_subset _ _))
 
 lemma boxOneIndex_freiman {N : Nat} [NeZero N]
     (P : Box N 1) (B : Finset (Point N 1))
@@ -165,32 +140,12 @@ lemma indexCellBox_carrier {N : Nat} [NeZero N]
     (P : Box N 1) (S : IntAP) :
     (indexCellBox P S).carrier = S.carrier.image (boxOneIntPoint P) := by
   ext x
-  simp only [Box.carrier, indexCellBox, Finset.mem_filter, Finset.mem_univ,
-    true_and, ModAP.carrier, IntAP.carrier, Finset.mem_image]
-  constructor
-  · intro hx
-    obtain ⟨i, hi⟩ := hx 0
-    let z : Int := S.start + ((i : Nat) * S.step : Nat)
-    refine ⟨z, ⟨i, rfl⟩, ?_⟩
-    apply funext
-    intro j
-    fin_cases j
-    calc
-      boxOneIntPoint P z 0 =
-          (P.axis 0).start +
-            ((S.start : ZMod N) + (i : Nat) * (S.step : ZMod N)) *
-              (P.axis 0).step := by
-        simp [z, boxOneIntPoint, Nat.cast_mul]
-      _ = ((indexCellBox P S).axis 0).start +
-          (i : Nat) * ((indexCellBox P S).axis 0).step := by
-        simp [indexCellBox]
-        ring
-      _ = x 0 := hi
-  · rintro ⟨z, ⟨i, rfl⟩, rfl⟩ j
-    fin_cases j
-    refine ⟨i, ?_⟩
-    simp [boxOneIntPoint, Nat.cast_mul]
-    ring
+  simp only [Box.carrier, indexCellBox, ModAP.carrier, IntAP.carrier, Finset.mem_filter,
+    Finset.mem_univ, true_and, Finset.mem_image, Fin.forall_fin_one, exists_exists_eq_and,
+    boxOneIntPoint, funext_iff]
+  refine exists_congr fun i => ?_
+  push_cast
+  constructor <;> intro h <;> rw [← h] <;> ring
 
 lemma indexCellBox_proper {N : Nat} [NeZero N]
     (P : Box N 1) (hP : P.IsProper) (S : IntAP)
@@ -211,90 +166,23 @@ lemma indexCells_partition {N M : Nat} [NeZero N]
     (P : Box N 1) (hP : P.IsProper) (S : Fin M → IntAP)
     (hS : IsIntAPPartition S (boxOneIndexAP P)) :
     IsBoxPartition (fun j => indexCellBox P (S j)) P := by
-  constructor
-  · intro x
-    constructor
-    · intro hx
-      rw [boxOne_carrier_eq_image] at hx
-      obtain ⟨i, _hi, hix⟩ := Finset.mem_image.mp hx
-      let z : Int := i
-      have hzR : z ∈ (boxOneIndexAP P).carrier := by
-        rw [IntAP.carrier]
-        exact Finset.mem_image.mpr (⟨i, Finset.mem_univ i, by simp [z, boxOneIndexAP]⟩)
-      obtain ⟨j, hzS⟩ := (hS.1 z).mp hzR
-      refine ⟨j, ?_⟩
-      change x ∈ (indexCellBox P (S j)).carrier
-      rw [indexCellBox_carrier]
-      apply Finset.mem_image.mpr
-      exact ⟨z, hzS, by simpa [z, boxOneIntPoint_of_nat] using hix⟩
-    · rintro ⟨j, hxj⟩
-      change x ∈ (indexCellBox P (S j)).carrier at hxj
-      rw [indexCellBox_carrier] at hxj
-      obtain ⟨z, hzS, hzx⟩ := Finset.mem_image.mp hxj
-      have hzR := hS.cell_subset j hzS
-      rw [IntAP.carrier] at hzR
-      obtain ⟨i, _hi, hiz⟩ := Finset.mem_image.mp hzR
-      rw [boxOne_carrier_eq_image]
-      apply Finset.mem_image.mpr
-      refine ⟨i, Finset.mem_univ i, ?_⟩
-      have hiz' : (i : Int) = z := by
-        simpa [boxOneIndexAP] using hiz
-      calc
-        boxOnePoint P i = boxOneIntPoint P i := (boxOneIntPoint_of_nat P i).symm
-        _ = boxOneIntPoint P z := congrArg (boxOneIntPoint P) hiz'
-        _ = x := hzx
-  · intro i j hij
-    rw [Finset.disjoint_left]
-    intro x hxi hxj
-    change x ∈ (indexCellBox P (S i)).carrier at hxi
-    change x ∈ (indexCellBox P (S j)).carrier at hxj
-    rw [indexCellBox_carrier] at hxi hxj
-    obtain ⟨z, hzS, hzx⟩ := Finset.mem_image.mp hxi
-    obtain ⟨w, hwS, hwx⟩ := Finset.mem_image.mp hxj
-    have hzR := hS.cell_subset i hzS
-    have hwR := hS.cell_subset j hwS
-    have hzw : z = w := boxOneIntPoint_injective_on_indexAP P hP hzR hwR
-      (hzx.trans hwx.symm)
-    subst w
-    exact Finset.disjoint_left.mp (hS.2 i j hij) hzS hwS
+  have himg : P.carrier = (boxOneIndexAP P).carrier.image (boxOneIntPoint P) := by
+    rw [boxOne_carrier_eq_image, IntAP.carrier, Finset.image_image]
+    exact Finset.image_congr fun i _ => by simp [boxOneIndexAP, boxOneIntPoint_of_nat]
+  refine ⟨fun x => ?_, fun i j hij => ?_⟩
+  · simp only [himg, indexCellBox_carrier, Finset.mem_image, hS.1]
+    exact ⟨fun ⟨z, ⟨j, hz⟩, h⟩ => ⟨j, z, hz, h⟩, fun ⟨j, z, hz, h⟩ => ⟨z, ⟨j, hz⟩, h⟩⟩
+  · simp only [indexCellBox_carrier, Finset.disjoint_left, Finset.mem_image]
+    rintro x ⟨z, hz, rfl⟩ ⟨w, hw, hwz⟩
+    obtain rfl := boxOneIntPoint_injective_on_indexAP P hP (hS.cell_subset j hw)
+      (hS.cell_subset i hz) hwz
+    exact Finset.disjoint_left.mp (hS.2 i j hij) hz hw
 
 lemma isMultilinear_affine_one {N : Nat} (a b : ZMod N) :
     IsMultilinear (fun x : Point N 1 => a * x 0 + b) := by
-  let e0 : Fin 1 → Bool := fun _ => false
-  let e1 : Fin 1 → Bool := fun _ => true
-  refine ⟨fun e => if e = e0 then b else if e = e1 then a else 0, ?_⟩
-  intro x
-  have he (e : Fin 1 → Bool) : e = e0 ∨ e = e1 := by
-    by_cases h : e 0 = false
-    · left
-      funext i
-      fin_cases i
-      exact h
-    · right
-      funext i
-      fin_cases i
-      simpa using h
-  have he10 : e1 ≠ e0 := by
-    intro h
-    have h0 := congrFun h 0
-    simp [e0, e1] at h0
-  rw [← Finset.sum_erase_add Finset.univ
-    (fun e => (if e = e0 then b else if e = e1 then a else 0) *
-      ∏ i, (if e i then x i else 1)) (Finset.mem_univ e0)]
-  have hrest :
-      ∑ e ∈ (Finset.univ.erase e0),
-          (if e = e0 then b else if e = e1 then a else 0) *
-            ∏ i, (if e i then x i else 1) = a * x 0 := by
-    rw [Finset.sum_eq_single e1]
-    · simp [e0, e1, he10]
-    · intro e heMem hne
-      have he' := he e
-      rcases he' with he0 | he1
-      · exact ((Finset.mem_erase.mp heMem).1 he0).elim
-      · exact (hne he1).elim
-    · simp [e0, e1, he10]
-  rw [hrest]
-  simp [e0]
+  refine ⟨fun e => if e 0 then a else b, fun x => ?_⟩
+  rw [← (Equiv.funUnique (Fin 1) Bool).symm.sum_comp]
+  simp
 
 lemma proper_modAP_step_ne_zero_of_two_le {N : Nat}
     (P : ModAP N) (hP : P.IsProper) (hL : 2 ≤ P.length) : P.step ≠ 0 := by

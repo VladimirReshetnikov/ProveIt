@@ -145,35 +145,11 @@ lemma lemma154_full_moment_eq {N k d : Nat} [NeZero N]
       ((-1 : ZMod N) ^ k * ∏ i, R.side i) *
         ∑ j, s j * R.crossSection j := by
   unfold arrangementMoment
-  rw [Finset.sum_comm]
-  calc
-    (∑ j : Fin (2 * d), ∑ e : Fin k → Bool,
-        (eta e j : ZMod N) * ∏ i ∈ Finset.univ, R.vertex e j i) =
-        ∑ j : Fin (2 * d), ∑ e : Fin k → Bool,
-          (s j * parityCharacter (N := N) e) *
-            ((∏ i : Fin k,
-              (R.base j i + if e i then R.side i else 0)) *
-                R.crossSection j) := by
-      apply Finset.sum_congr rfl
-      intro j _
-      apply Finset.sum_congr rfl
-      intro e _
-      rw [hs j e, lemma154_vertex_product_univ]
-    _ = ∑ j : Fin (2 * d),
-          (s j * R.crossSection j) *
-            ((-1 : ZMod N) ^ k * ∏ i, R.side i) := by
-      apply Finset.sum_congr rfl
-      intro j _
-      rw [← lemma154_parity_cube_sum R.side (R.base j), Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro e _
-      ring
-    _ = ((-1 : ZMod N) ^ k * ∏ i, R.side i) *
-          ∑ j, s j * R.crossSection j := by
-      rw [Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro j _
-      ring
+  rw [Finset.sum_comm, Finset.mul_sum]
+  refine Finset.sum_congr rfl fun j _ => ?_
+  simp_rw [hs j, lemma154_vertex_product_univ]
+  rw [← lemma154_parity_cube_sum R.side (R.base j), Finset.sum_mul]
+  exact Finset.sum_congr rfl fun e _ => by ring
 
 /-- A `d`-arrangement is **`m`-degenerate** when it has a dependence with
 integer coefficients in `[−m, m]` other than a modular scalar multiple of the
@@ -291,42 +267,23 @@ private lemma rangeDeg_double_linear_solutions_card_le {N : Nat} [NeZero N]
       N ^ (Fintype.card I - 2) := by
   let proj : RangeDegDoubleLinearSolutions a b →
       ({t : I // t ≠ i ∧ t ≠ j} → ZMod N) := fun x t => x.1 t
-  have hinj : Function.Injective proj := by
-    intro x y hxy
-    apply Subtype.ext
-    funext t
-    have hoff : ∀ s, s ≠ i → s ≠ j → x.1 s = y.1 s := by
-      intro s hsi hsj
-      exact congrFun hxy ⟨s, hsi, hsj⟩
-    have haDiff := lemma154_sum_mul_sub_eq_two a x.1 y.1 i j hij hoff
-    have hbDiff := lemma154_sum_mul_sub_eq_two b x.1 y.1 i j hij hoff
-    rw [x.2.1, y.2.1, sub_self] at haDiff
-    rw [x.2.2, y.2.2, sub_self] at hbDiff
-    have ha : a i * (x.1 i - y.1 i) + a j * (x.1 j - y.1 j) = 0 :=
-      haDiff.symm
-    have hb : b i * (x.1 i - y.1 i) + b j * (x.1 j - y.1 j) = 0 :=
-      hbDiff.symm
-    have hi : x.1 i - y.1 i = 0 := by
-      have hmul : (a i * b j - a j * b i) * (x.1 i - y.1 i) = 0 := by
-        linear_combination b j * ha - a j * hb
-      exact (mul_eq_zero.mp hmul).resolve_left hdet
-    have hj : x.1 j - y.1 j = 0 := by
-      have hmul : (a i * b j - a j * b i) * (x.1 j - y.1 j) = 0 := by
-        linear_combination a i * hb - b i * ha
-      exact (mul_eq_zero.mp hmul).resolve_left hdet
-    by_cases hti : t = i
-    · subst t
-      exact sub_eq_zero.mp hi
-    by_cases htj : t = j
-    · subst t
-      exact sub_eq_zero.mp hj
-    exact hoff t hti htj
-  calc
-    Fintype.card (RangeDegDoubleLinearSolutions a b) ≤
-        Fintype.card ({t : I // t ≠ i ∧ t ≠ j} → ZMod N) :=
-      Fintype.card_le_of_injective proj hinj
-    _ = N ^ (Fintype.card I - 2) := by
-      rw [Fintype.card_fun, ZMod.card, lemma154_double_except_card i j hij]
+  refine (Fintype.card_le_of_injective proj fun x y hxy =>
+    Subtype.ext (funext fun t => ?_)).trans_eq
+      (by rw [Fintype.card_fun, ZMod.card, lemma154_double_except_card i j hij])
+  have hoff (s : I) (hsi : s ≠ i) (hsj : s ≠ j) : x.1 s = y.1 s := congrFun hxy ⟨s, hsi, hsj⟩
+  have ha := lemma154_sum_mul_sub_eq_two a x.1 y.1 i j hij hoff
+  have hb := lemma154_sum_mul_sub_eq_two b x.1 y.1 i j hij hoff
+  rw [x.2.1, y.2.1, sub_self] at ha
+  rw [x.2.2, y.2.2, sub_self] at hb
+  by_cases hti : t = i
+  · subst t
+    exact sub_eq_zero.mp ((mul_eq_zero.mp (by linear_combination a j * hb - b j * ha :
+      (a i * b j - a j * b i) * (x.1 i - y.1 i) = 0)).resolve_left hdet)
+  by_cases htj : t = j
+  · subst t
+    exact sub_eq_zero.mp ((mul_eq_zero.mp (by linear_combination b i * ha - a i * hb :
+      (a i * b j - a j * b i) * (x.1 j - y.1 j) = 0)).resolve_left hdet)
+  exact hoff t hti htj
 
 private abbrev RangeDegAdditiveCrossSections (N d : Nat) :=
   {r : Fin (2 * d) → ZMod N // IsAdditiveTuple r}
@@ -399,53 +356,37 @@ private lemma rangeDeg_zero_side_at_card_le {N k d : Nat}
     [NeZero N] [Fact N.Prime] (hd : 1 ≤ d) (i : Fin k) :
     Fintype.card (RangeDegZeroSideAt N k d i) ≤
       N ^ (k - 1) * N ^ (2 * d * k) * N ^ (2 * d - 1) := by
-  let proj : RangeDegZeroSideAt N k d i → RangeDegZeroSideCode N k d i :=
-    fun R => ⟨fun t => R.1.side t, R.1.base, ⟨R.1.crossSection, R.2.1⟩⟩
-  have hinj : Function.Injective proj := by
-    intro R S hRS
-    apply Subtype.ext
-    have htail := congrArg Prod.fst hRS
-    have hbase := congrArg (fun z => z.2.1) hRS
-    have hcross := congrArg (fun z => z.2.2) hRS
-    apply Prod.ext
-    · funext t
-      by_cases hti : t = i
-      · subst t
-        exact R.2.2.trans S.2.2.symm
-      · exact congrFun htail ⟨t, hti⟩
-    · apply Prod.ext
-      · exact hbase
-      · exact congrArg Subtype.val hcross
-  exact (Fintype.card_le_of_injective proj hinj).trans
-    (rangeDeg_zero_side_code_card_le hd i)
+  refine (Fintype.card_le_of_injective (fun R : RangeDegZeroSideAt N k d i =>
+    (⟨fun t => R.1.side t, R.1.base, R.1.crossSection, R.2.1⟩ : RangeDegZeroSideCode N k d i))
+    fun R S h => ?_).trans (rangeDeg_zero_side_code_card_le hd i)
+  simp only [Prod.mk.injEq, Subtype.mk.injEq] at h
+  obtain ⟨hs, hb, hc⟩ := h
+  refine Subtype.ext (Prod.ext (funext fun t => ?_) (Prod.ext hb hc))
+  by_cases hti : t = i
+  · subst t
+    exact R.2.2.trans S.2.2.symm
+  · exact congrFun hs ⟨t, hti⟩
+
+/-- Counting through an injection into a sigma type whose fibres have at most `B` elements
+(shared by `rangeDeg_zero_side_card_le` and `rangeDeg_nonzero_degenerate_card_le`). -/
+private lemma rangeDeg_card_le_of_sigma {α ι : Type*} [Fintype α] [Fintype ι]
+    {β : ι → Type*} [∀ i, Fintype (β i)] (f : α → Σ i, β i) (hf : Function.Injective f)
+    {B : Nat} (hB : ∀ i, Fintype.card (β i) ≤ B) :
+    Fintype.card α ≤ Fintype.card ι * B :=
+  (Fintype.card_le_of_injective f hf).trans <| by
+    simpa [Fintype.card_sigma] using Finset.sum_le_sum fun i (_ : i ∈ Finset.univ) => hB i
 
 private lemma rangeDeg_zero_side_card_le {N k d : Nat}
     [NeZero N] [Fact N.Prime] (hk : 1 ≤ k) (hd : 1 ≤ d) :
     Fintype.card (RangeDegZeroSideArrangements N k d) ≤
       k * N ^ ((2 * d + 1) * k + 2 * d - 2) := by
-  let enc : RangeDegZeroSideArrangements N k d →
-      Σ i : Fin k, RangeDegZeroSideAt N k d i := fun R => by
-    let i : Fin k := Classical.choose R.2.2
-    exact ⟨i, R.1, R.2.1, Classical.choose_spec R.2.2⟩
-  have hinj : Function.Injective enc := by
-    intro R S hRS
-    exact Subtype.ext (congrArg (fun z => z.2.1) hRS)
-  calc
-    Fintype.card (RangeDegZeroSideArrangements N k d) ≤
-        Fintype.card (Σ i : Fin k, RangeDegZeroSideAt N k d i) :=
-      Fintype.card_le_of_injective enc hinj
-    _ = ∑ i : Fin k, Fintype.card (RangeDegZeroSideAt N k d i) :=
-      Fintype.card_sigma
-    _ ≤ ∑ _i : Fin k,
-        N ^ (k - 1) * N ^ (2 * d * k) * N ^ (2 * d - 1) := by
-      exact Finset.sum_le_sum fun i _ => rangeDeg_zero_side_at_card_le hd i
-    _ = k * N ^ ((2 * d + 1) * k + 2 * d - 2) := by
-      simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
-      rw [← pow_add, ← pow_add]
-      congr 2
-      have hmul : (2 * d + 1) * k = 2 * d * k + k := by ring
-      rw [hmul]
-      omega
+  have h := rangeDeg_card_le_of_sigma (β := RangeDegZeroSideAt N k d)
+    (fun R : RangeDegZeroSideArrangements N k d =>
+      ⟨Classical.choose R.2.2, R.1, R.2.1, Classical.choose_spec R.2.2⟩)
+    (fun R S h => Subtype.ext (congrArg (·.2.1) h)) (rangeDeg_zero_side_at_card_le hd)
+  rw [Fintype.card_fin, ← pow_add, ← pow_add] at h
+  have : (2 * d + 1) * k = 2 * d * k + k := by ring
+  exact h.trans_eq (by congr 2; omega)
 
 private noncomputable def rangeDegLiftFinset {k : Nat}
     (A : Finset (Fin k)) : Finset (Fin (k + 1)) :=
@@ -597,24 +538,13 @@ private lemma rangeDeg_case_two_key_card_le {N k d : Nat} [NeZero N]
     Fintype.card (RangeDegCaseTwoKey (N := N) (k := k) a s) ≤
       N ^ ((2 * d + 1) * k + 2 * d - 2) := by
   have hcross := rangeDeg_double_linear_solutions_card_le a s i j hij hdet
-  calc
-    Fintype.card (RangeDegCaseTwoKey (N := N) (k := k) a s) =
-        N ^ k * N ^ (2 * d * k) *
-          Fintype.card (RangeDegDoubleLinearSolutions a s) := by
-      simp only [RangeDegCaseTwoKey, Fintype.card_prod, Point,
-        Fintype.card_fun, Fintype.card_fin, ZMod.card]
-      rw [show (N ^ k) ^ (2 * d) = N ^ (2 * d * k) by
-        rw [← pow_mul]
-        congr 1
-        ring]
-      ring
-    _ ≤ N ^ k * N ^ (2 * d * k) * N ^ (2 * d - 2) := Nat.mul_le_mul_left _ (by simpa using hcross)
-    _ = N ^ ((2 * d + 1) * k + 2 * d - 2) := by
-      rw [← pow_add, ← pow_add]
-      congr 1
-      have hmul : (2 * d + 1) * k = 2 * d * k + k := by ring
-      rw [hmul]
-      omega
+  have he : (2 * d + 1) * k + 2 * d - 2 = k + (k * (2 * d) + (2 * d - 2)) := by
+    have : (2 * d + 1) * k = k * (2 * d) + k := by ring
+    omega
+  simp only [RangeDegCaseTwoKey, Fintype.card_prod, Point, Fintype.card_fun, Fintype.card_fin,
+    ZMod.card, ← pow_mul] at hcross ⊢
+  rw [he, pow_add, pow_add]
+  exact Nat.mul_le_mul_left _ (Nat.mul_le_mul_left _ hcross)
 
 private lemma rangeDeg_case_two_card_le {N k d : Nat} [NeZero N]
     (hprime : N.Prime) (hk : 1 ≤ k) (hd : 1 ≤ d)
@@ -709,23 +639,12 @@ private lemma rangeDeg_degenerate_witness {N k d : Nat} [NeZero N]
     ∃ c : RangeDegCoefficient m k d,
       rangeDegExceptional (N := N) c ∧
         ∀ A : Finset (Fin (k + 1)), arrangementMoment R (rangeDegEta c) A = 0 := by
-  rcases hdeg with ⟨eta, heta, hnot, hmoment⟩
-  let c := rangeDegEncodeCoefficient m eta
-  have hceta : rangeDegEta c = eta := by
-    funext e j
-    exact rangeDeg_encode_value eta heta e j
-  have hcexceptional : rangeDegExceptional (N := N) c := by
-    intro hmultiple
-    apply hnot
-    rcases hmultiple with ⟨q, hq⟩
-    refine ⟨q, ?_⟩
-    rintro ⟨e, j⟩
-    calc
-      (eta e j : ZMod N) = (rangeDegEta c e j : ZMod N) := by
-        exact congrArg (fun z : Int ↦ (z : ZMod N))
-          (congrFun (congrFun hceta e) j).symm
-      _ = q * arrangementParityCoefficient (N := N) e j := hq (e, j)
-  exact ⟨c, hcexceptional, fun A ↦ by simpa only [hceta] using hmoment A⟩
+  obtain ⟨eta, heta, hnot, hmoment⟩ := hdeg
+  have hceta : rangeDegEta (rangeDegEncodeCoefficient m eta) = eta :=
+    funext fun e => funext fun j => rangeDeg_encode_value eta heta e j
+  refine ⟨rangeDegEncodeCoefficient m eta, ?_, by rwa [hceta]⟩
+  unfold rangeDegExceptional
+  rwa [hceta]
 
 private abbrev RangeDegNonzeroDegenerateArrangements
     (N m k d : Nat) [NeZero N] :=
@@ -744,35 +663,15 @@ private lemma rangeDeg_nonzero_degenerate_card_le {N k d : Nat} [NeZero N]
     (hprime : N.Prime) (hodd : Odd N) (hk : 1 ≤ k) (hd : 1 ≤ d) :
     Fintype.card (RangeDegNonzeroDegenerateArrangements N m k d) ≤
       ((2 * m + 1) ^ (2 * d * 2 ^ k) - 1) *
-        (k * N ^ ((2 * d + 1) * k + 2 * d - 2)) := by
-  let enc : RangeDegNonzeroDegenerateArrangements N m k d →
-      Σ c : RangeDegExceptionalCoefficients N m k d,
-        RangeDegCoefficientSolutions N k d c.1 := fun R ↦ by
-    let w := rangeDeg_degenerate_witness R.1 R.2.2.1
-    let c := Classical.choose w
-    have hc := Classical.choose_spec w
-    exact ⟨⟨c, hc.1⟩, ⟨R.1, R.2.2.2, R.2.1, hc.2⟩⟩
-  have hinj : Function.Injective enc := by
-    intro R S hRS
-    exact Subtype.ext (congrArg (fun z ↦ z.2.1) hRS)
-  have hcoeff := rangeDeg_exceptional_coefficients_card_le N m k d
-  calc
-    Fintype.card (RangeDegNonzeroDegenerateArrangements N m k d) ≤
-        Fintype.card (Σ c : RangeDegExceptionalCoefficients N m k d,
-          RangeDegCoefficientSolutions N k d c.1) :=
-      Fintype.card_le_of_injective enc hinj
-    _ = ∑ c : RangeDegExceptionalCoefficients N m k d,
-          Fintype.card (RangeDegCoefficientSolutions N k d c.1) :=
-      Fintype.card_sigma
-    _ ≤ ∑ _c : RangeDegExceptionalCoefficients N m k d,
-          k * N ^ ((2 * d + 1) * k + 2 * d - 2) := by
-      exact Finset.sum_le_sum fun c _ ↦
-        rangeDeg_coefficient_solutions_card_le hprime hodd hk hd c.1 c.2
-    _ = Fintype.card (RangeDegExceptionalCoefficients N m k d) *
-          (k * N ^ ((2 * d + 1) * k + 2 * d - 2)) := by simp
-    _ ≤ ((2 * m + 1) ^ (2 * d * 2 ^ k) - 1) *
-          (k * N ^ ((2 * d + 1) * k + 2 * d - 2)) :=
-      Nat.mul_le_mul_right _ hcoeff
+        (k * N ^ ((2 * d + 1) * k + 2 * d - 2)) :=
+  (rangeDeg_card_le_of_sigma (β := fun c : RangeDegExceptionalCoefficients N m k d =>
+      RangeDegCoefficientSolutions N k d c.1)
+    (fun R : RangeDegNonzeroDegenerateArrangements N m k d =>
+      have w := Classical.choose_spec (rangeDeg_degenerate_witness R.1 R.2.2.1)
+      ⟨⟨_, w.1⟩, R.1, R.2.2.2, R.2.1, w.2⟩)
+    (fun _ _ h => Subtype.ext (congrArg (·.2.1) h))
+    fun c => rangeDeg_coefficient_solutions_card_le hprime hodd hk hd c.1 c.2).trans
+    (Nat.mul_le_mul_right _ (rangeDeg_exceptional_coefficients_card_le N m k d))
 
 private abbrev RangeDegDegenerateArrangements
     (N m k d : Nat) [NeZero N] :=
@@ -801,47 +700,21 @@ private lemma rangeDeg_degenerate_card_le {N k d : Nat} [NeZero N]
     Fintype.card (RangeDegDegenerateArrangements N m k d) ≤
       (2 * m + 1) ^ (2 * d * 2 ^ k) *
         (k * N ^ ((2 * d + 1) * k + 2 * d - 2)) := by
+  haveI : Fact N.Prime := ⟨hprime⟩
   let enc : RangeDegDegenerateArrangements N m k d →
-      RangeDegZeroSideArrangements N k d ⊕
-        RangeDegNonzeroDegenerateArrangements N m k d := fun R ↦ by
-    by_cases hzero : ∃ i, R.1.side i = 0
-    · exact Sum.inl ⟨R.1, R.2.1, hzero⟩
-    · have hnonzero : ∀ i, R.1.side i ≠ 0 := by
-        intro i hi
-        exact hzero ⟨i, hi⟩
-      exact Sum.inr ⟨R.1, R.2.1, R.2.2, hnonzero⟩
-  let recover : RangeDegZeroSideArrangements N k d ⊕
-      RangeDegNonzeroDegenerateArrangements N m k d →
-      GeneralArrangement N k d :=
-    Sum.elim (fun z ↦ z.1) (fun z ↦ z.1)
-  have hrecover (R : RangeDegDegenerateArrangements N m k d) :
-      recover (enc R) = R.1 := by
-    dsimp only [recover, enc]
+      RangeDegZeroSideArrangements N k d ⊕ RangeDegNonzeroDegenerateArrangements N m k d :=
+    fun R ↦ if h : ∃ i, R.1.side i = 0 then .inl ⟨R.1, R.2.1, h⟩
+      else .inr ⟨R.1, R.2.1, R.2.2, fun i hi ↦ h ⟨i, hi⟩⟩
+  have hval (R) : Sum.elim (·.1) (·.1) (enc R) = R.1 := by
+    dsimp only [enc]
     split <;> rfl
-  have hinj : Function.Injective enc := by
-    intro R S hRS
-    exact Subtype.ext ((hrecover R).symm.trans ((congrArg recover hRS).trans (hrecover S)))
-  letI : Fact N.Prime := ⟨hprime⟩
-  have hzero := rangeDeg_zero_side_card_le (N := N) hk hd
-  have hnonzero := rangeDeg_nonzero_degenerate_card_le (m := m) hprime hodd hk hd
-  let Q := (2 * m + 1) ^ (2 * d * 2 ^ k)
-  let X := k * N ^ ((2 * d + 1) * k + 2 * d - 2)
-  have hQ : 1 ≤ Q := by
-    dsimp only [Q]
-    exact Nat.one_le_pow _ _ (by omega)
-  calc
-    Fintype.card (RangeDegDegenerateArrangements N m k d) ≤
-        Fintype.card (RangeDegZeroSideArrangements N k d ⊕
-          RangeDegNonzeroDegenerateArrangements N m k d) :=
-      Fintype.card_le_of_injective enc hinj
-    _ = Fintype.card (RangeDegZeroSideArrangements N k d) +
-          Fintype.card (RangeDegNonzeroDegenerateArrangements N m k d) := by simp
-    _ ≤ X + (Q - 1) * X := Nat.add_le_add hzero hnonzero
-    _ = Q * X := by
-      calc
-        X + (Q - 1) * X = 1 * X + (Q - 1) * X := by rw [one_mul]
-        _ = (1 + (Q - 1)) * X := (Nat.add_mul _ _ _).symm
-        _ = Q * X := by rw [Nat.add_sub_of_le hQ]
+  have hQ : 1 ≤ (2 * m + 1) ^ (2 * d * 2 ^ k) := Nat.one_le_pow _ _ (by omega)
+  refine (Fintype.card_le_of_injective enc fun R S h ↦ Subtype.ext ((hval R).symm.trans
+    ((congrArg (Sum.elim (·.1) (·.1)) h).trans (hval S)))).trans ?_
+  rw [Fintype.card_sum]
+  refine (Nat.add_le_add (rangeDeg_zero_side_card_le (N := N) hk hd)
+    (rangeDeg_nonzero_degenerate_card_le (m := m) hprime hodd hk hd)).trans_eq ?_
+  rw [add_comm, ← add_one_mul, Nat.sub_add_cancel hQ]
 
 /-- **Lemma 15.4 for coefficients in `[−m, m]`.** -/
 theorem degenerate_count_within_le (N m k d : Nat) [NeZero N] (hprime : N.Prime)

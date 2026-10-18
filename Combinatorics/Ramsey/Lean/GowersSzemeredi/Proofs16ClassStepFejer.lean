@@ -151,47 +151,24 @@ theorem class_step_decomp_fejer (C : UniformClassWith k Thr Cnt Exp) (hk : 1 ≤
     ∃ J : Finset (Point N (k + 1)), (1 - theta) * (N : Real) ^ (k + 1) ≤ J.card ∧
       ∃ P : Fin (classPiecesFejer gamma theta k) → StepPieceFejer C N theta gamma,
         restrictRelation Gamma J ⊆ stepPieceFejerGraphs C P := by
-  obtain ⟨hθ'pos, hθ'le⟩ := classBudgetW_pos_le k (fejerThetaOne_bounds k ht ht1 hg hg1).1 (fejerThetaOne_bounds k ht ht1 hg hg1).2
-  set θ' := classBudgetW (fejerThetaOne theta gamma k) k
-  let Good : Finset (Point N (k + 1) × ZMod N) → Prop := fun G =>
-    ∃ P : ClassPiece C Gamma (tightZeta (fejerThetaOne theta gamma k / 4)) θ' θ' (section16Delta (fejerThetaOne theta gamma k)) θ'
-      gamma, G = partialGraph P.D P.phi
-  have hmass : 0 < θ' * (N : Real) ^ (k + 1) := by
-    have : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-    positivity
-  obtain ⟨q, G, J, hG, hq, hJ, hcov⟩ := section16_greedy_relation_decomposition Good theta
-    (θ' * (N : Real) ^ (k + 1)) hmass Gamma (by
-      intro Delta hDelta hproj
+  obtain ⟨h0, h1⟩ := fejerThetaOne_bounds k ht ht1 hg hg1
+  obtain ⟨hθ'pos, -⟩ := classBudgetW_pos_le k h0 h1
+  have hN0 : (0 : Real) < N := by exact_mod_cast NeZero.pos N
+  obtain ⟨q, G, J, hG, hq, hJ, hcov⟩ := section16_greedy_relation_decomposition
+    (fun G => ∃ P : StepPieceFejer C N theta gamma, G = partialGraph P.D P.phi) theta
+    (classBudgetW (fejerThetaOne theta gamma k) k * (N : Real) ^ (k + 1)) (by positivity) Gamma
+    fun Delta hDelta hproj => by
       obtain ⟨P⟩ := class_piece_of_subrelation_fejer C hk ht ht1 hg hg1 hN hprod Delta hDelta hproj
-      refine ⟨partialGraph P.D P.phi, P.graph_sub, ?_, ⟨P.widen C hDelta, rfl⟩⟩
-      rw [partialGraph_card]
-      exact P.card_ge)
-  set m := classPiecesFejer gamma theta k with hmdef
-  have hqm : q ≤ m := by
-    rw [hmdef, classPiecesFejer]
-    apply Nat.le_floor
-    have hNpos : (0 : Real) < (N : Real) ^ (k + 1) := by
-      have : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-      positivity
-    have h1 : (q : Real) * (θ' * (N : Real) ^ (k + 1)) ≤ gamma ^ (-(2 : Int)) * (N : Real) ^ (k + 1) :=
-      hq.trans hsize
-    rw [le_div_iff₀ hθ'pos]
-    have h2 : (q : Real) * θ' * (N : Real) ^ (k + 1) ≤ gamma ^ (-(2 : Int)) * (N : Real) ^ (k + 1) := by
-      linarith [h1]
-    exact le_of_mul_le_mul_right h2 hNpos
+      exact ⟨_, P.graph_sub, by rw [partialGraph_card]; exact P.card_ge,
+        (P.toMassZero C).widen C (Finset.subset_univ _), rfl⟩
+  have hqm : q ≤ classPiecesFejer gamma theta k := Nat.le_floor <| (le_div_iff₀ hθ'pos).2 <|
+    le_of_mul_le_mul_right (by linarith [hq.trans hsize]) (pow_pos hN0 (k + 1))
   choose P hPG using fun i => (hG i).2
-  let Q : Fin m → StepPieceFejer C N theta gamma := fun j =>
-    if h : j.val < q then ((P ⟨j.val, h⟩).toMassZero C).widen C (Finset.subset_univ _)
-    else ClassPiece.empty C _ _ _ _ _ _
-  refine ⟨J, hJ, Q, ?_⟩
-  intro z hz'
-  have hz1 := hcov hz'
-  unfold section16FinsetUnion at hz1
-  obtain ⟨i, -, hi⟩ := Finset.mem_biUnion.mp hz1
-  rw [hPG i] at hi
-  refine Finset.mem_biUnion.mpr ⟨⟨i.val, i.isLt.trans_le hqm⟩, Finset.mem_univ _, ?_⟩
-  simp only [Q, dif_pos i.isLt]
-  exact hi
+  refine ⟨J, hJ, fun j => if h : j.val < q then P ⟨j, h⟩ else ClassPiece.empty C _ _ _ _ _ _,
+    fun z hz => ?_⟩
+  obtain ⟨i, -, hi⟩ := Finset.mem_biUnion.mp (hcov hz)
+  refine Finset.mem_biUnion.mpr ⟨⟨i, i.isLt.trans_le hqm⟩, Finset.mem_univ _, ?_⟩
+  simpa [i.isLt, hPG i] using hi
 
 /-! ### The cover of the next class -/
 
@@ -226,20 +203,15 @@ theorem class_step_cover_gen_fejer (C : UniformClassWith k Thr Cnt Exp) (hk : 1 
           (pieceLineExponent Bq (Cnt tS gS M) (Exp tS gS M) (clsEr Exp k M tS gamma) rho)
           (famPieceSliceExponent (clsQr Cnt k M tS gamma) (clsEs Exp M tS gamma) M rho)))
       (Finset.univ.biUnion Gamma) := by
-  intro M tS gS
-  obtain ⟨htS, htS1⟩ := classBudgetW_pos_le k (fejerThetaOne_bounds k ht ht1 hg hg1).1 (fejerThetaOne_bounds k ht ht1 hg hg1).2
-  obtain ⟨-, -, hgS, hgS1⟩ := section16_theta_delta_bounds_with (fejerThetaOne_bounds k ht ht1 hg hg1).1 (fejerThetaOne_bounds k ht ht1 hg hg1).2
-  obtain ⟨hz, hzHalf⟩ := tightZeta_pos_le_half (fejerThetaOne_bounds k ht ht1 hg hg1).1 (by linarith [(fejerThetaOne_bounds k ht ht1 hg hg1).2])
-  let R : Fin M → StepPieceFejer C N theta gamma := fun c =>
-    P (finProdFinEquiv.symm c).1 (finProdFinEquiv.symm c).2
-  have hfam := class_piece_family_cover_gen hk C hCnt hExp hCntMono hExpAnti hA hB hlemma6 hz
-    hzHalf htS htS1 hgS hgS1 htS htS1 hg hg1 R
-  refine MultiplyLinearWith.subset hfam ?_
-  intro z hz'
+  obtain ⟨h0, h1⟩ := fejerThetaOne_bounds k ht ht1 hg hg1
+  obtain ⟨htS, htS1⟩ := classBudgetW_pos_le k h0 h1
+  obtain ⟨-, -, hgS, hgS1⟩ := section16_theta_delta_bounds_with h0 h1
+  obtain ⟨hz, hzHalf⟩ := tightZeta_pos_le_half h0 (by linarith)
+  refine (class_piece_family_cover_gen hk C hCnt hExp hCntMono hExpAnti hA hB hlemma6 hz hzHalf
+    htS htS1 hgS hgS1 htS htS1 hg hg1 fun c =>
+      P (finProdFinEquiv.symm c).1 (finProdFinEquiv.symm c).2).subset fun z hz' => ?_
   obtain ⟨i, -, hi⟩ := Finset.mem_biUnion.mp hz'
   obtain ⟨c, -, hc⟩ := Finset.mem_biUnion.mp (hP i hi)
-  refine Finset.mem_biUnion.mpr ⟨finProdFinEquiv (i, c), Finset.mem_univ _, ?_⟩
-  simp only [R, Equiv.symm_apply_apply]
-  exact hc
+  exact Finset.mem_biUnion.mpr ⟨finProdFinEquiv (i, c), Finset.mem_univ _, by simpa using hc⟩
 
 end LeanProofs.GowersSzemeredi

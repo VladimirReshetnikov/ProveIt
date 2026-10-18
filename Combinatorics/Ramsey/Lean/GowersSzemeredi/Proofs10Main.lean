@@ -455,15 +455,11 @@ private lemma theorem1013_quad_shift_fourier {N : Nat} [NeZero N]
           exponential (r * s) * (exponential (r * d) - 1) := by
   let h := domainFibreCountFunction (theorem1013QuadDomain D)
   change h (s + d) - h s = _
-  rw [identity_2_4_holds N h (s + d), identity_2_4_holds N h s, ← mul_sub, ← Finset.sum_sub_distrib]
-  apply congrArg ((N : Complex)⁻¹ * ·)
-  apply Finset.sum_congr rfl
-  intro r _
-  rw [theorem1013_quad_fourier]
-  have hexp : exponential (r * (s + d)) =
-      exponential (r * s) * exponential (r * d) := by
-    rw [show r * (s + d) = r * s + r * d by ring, exponential_add]
-  rw [hexp]
+  rw [identity_2_4_holds N h (s + d), identity_2_4_holds N h s, ← mul_sub,
+    ← Finset.sum_sub_distrib]
+  congr 1
+  refine Finset.sum_congr rfl fun r _ => ?_
+  rw [theorem1013_quad_fourier, mul_add, exponential_add]
   ring
 
 private lemma theorem1013_quad_shift_bound {N M : Nat} [NeZero N]
@@ -508,16 +504,9 @@ private lemma theorem1013_quad_invariant {N M : Nat} [NeZero N]
         (section10BohrRadius alpha))
       (theorem1013Sigma alpha * (M * Fintype.card X ^ 3)) := by
   intro s d hd
-  have h := theorem1013_quad_shift_bound D alpha halpha hM hfibre hcard s d hd
-  calc
-    |(((theorem1013QuadDomain D).fibre (s + d)).card : Real) -
-        ((theorem1013QuadDomain D).fibre s).card| ≤
-        4 * alpha * section10Lambda alpha ^ 2 *
-          (M : Real) ^ 4 * (N : Real) ^ 3 := h
-    _ = theorem1013Sigma alpha * (M * Fintype.card X ^ 3) := by
-      unfold theorem1013Sigma
-      rw [hcard]
-      field_simp [ne_of_gt halpha]
+  refine (theorem1013_quad_shift_bound D alpha halpha hM hfibre hcard s d hd).trans_eq ?_
+  rw [theorem1013Sigma, hcard]
+  field_simp [ne_of_gt halpha]
 
 @[simp] private lemma theorem1013_centeredAbs_neg {N : Nat} [NeZero N]
     (x : ZMod N) : centeredAbs (-x) = centeredAbs x := by
@@ -551,19 +540,14 @@ private lemma theorem1013_quad_setup {N M : Nat} [NeZero N]
       (bohr (domainLargeSpectrum D (section10Lambda alpha * M * N))
         (section10BohrRadius alpha)) alpha
       (M * Fintype.card X ^ 3) (theorem1013Sigma alpha)
-      ((2 : Real) ^ (-(43 : Real))) := by
-  refine ⟨theorem1013_quad_domain_bounds D alpha halpha (by linarith) hM hfibre hcard,
-    ?_, ?_, ?_, theorem1013_bohr_symmetric _ _, ?_, ?_⟩
-  · unfold theorem1013Sigma section10Lambda
-    positivity
-  · positivity
-  · calc
-      (2 : Real) ^ (-(43 : Real)) ≤ (2 : Real) ^ (0 : Real) :=
-        Real.rpow_le_rpow_of_exponent_le (by norm_num) (by norm_num)
-      _ = 1 := by norm_num
-  · simpa only [Nat.cast_mul, Nat.cast_pow] using
-      theorem1013_quad_invariant D alpha halpha hM hfibre hcard
-  · exact theorem1013_quad_approx_hom D phi _ happrox
+      ((2 : Real) ^ (-(43 : Real))) :=
+  ⟨theorem1013_quad_domain_bounds D alpha halpha (by linarith) hM hfibre hcard,
+    by unfold theorem1013Sigma section10Lambda; positivity, by positivity,
+    Real.rpow_le_one_of_one_le_of_nonpos (by norm_num) (by norm_num),
+    theorem1013_bohr_symmetric _ _,
+    by simpa only [Nat.cast_mul, Nat.cast_pow] using
+        theorem1013_quad_invariant D alpha halpha hM hfibre hcard,
+    theorem1013_quad_approx_hom D phi _ happrox⟩
 
 private def theorem1013Eta : Real := (2 : Real) ^ (-(43 : Real))
 
@@ -574,35 +558,15 @@ private def theorem1013Theta : Real :=
 
 private lemma theorem1013_theta_small :
     6 * Real.sqrt theorem1013Theta < 1 := by
-  have heta : 0 < theorem1013Eta := by
-    unfold theorem1013Eta
-    positivity
-  have hpow :
-      (theorem1013Eta ^ ((1 : Real) / 5)) ^ (5 : Nat) = theorem1013Eta := by
-    have h := Real.rpow_mul_natCast heta.le ((1 : Real) / 5) 5
-    calc
-      (theorem1013Eta ^ ((1 : Real) / 5)) ^ (5 : Nat) =
-          theorem1013Eta ^ ((1 : Real) / 5 * (5 : Nat)) := h.symm
-      _ = theorem1013Eta := by norm_num [Real.rpow_one]
-  have hthetaPow : theorem1013Theta ^ (5 : Nat) =
-      100000 * theorem1013Eta := by
-    unfold theorem1013Theta
-    rw [mul_pow, hpow]
+  have heta : 0 ≤ theorem1013Eta := by unfold theorem1013Eta; positivity
+  have h5 : theorem1013Theta ^ 5 = 100000 * theorem1013Eta := by
+    rw [theorem1013Theta, mul_pow, ← Real.rpow_mul_natCast heta]
     norm_num
-  have hcompare :
-      theorem1013Theta ^ (5 : Nat) < (1 / 36 : Real) ^ (5 : Nat) := by
-    rw [hthetaPow]
-    unfold theorem1013Eta
-    rw [Real.rpow_neg (by norm_num : (0 : Real) ≤ 2)]
-    norm_num [Real.rpow_natCast]
-  have htheta : theorem1013Theta < 1 / 36 := lt_of_pow_lt_pow_left₀ 5 (by norm_num) hcompare
-  have hthetaNonneg : 0 ≤ theorem1013Theta := by
-    unfold theorem1013Theta
-    positivity
-  have hsquare : (Real.sqrt theorem1013Theta) ^ 2 = theorem1013Theta :=
-    Real.sq_sqrt hthetaNonneg
-  have hsqrtNonneg := Real.sqrt_nonneg theorem1013Theta
-  nlinarith
+  have htheta : theorem1013Theta < 1 / 36 := lt_of_pow_lt_pow_left₀ 5 (by norm_num) (by
+    rw [h5, theorem1013Eta, Real.rpow_neg (by norm_num : (0 : Real) ≤ 2)]
+    norm_num [Real.rpow_natCast])
+  linarith [(Real.sqrt_lt' (x := theorem1013Theta) (by norm_num : (0 : Real) < 1 / 6)).mpr
+    (by linarith)]
 
 private lemma theorem1013_theta_le_eighth :
     theorem1013Theta ≤ 1 / 8 := by
@@ -637,23 +601,9 @@ private lemma theorem1013_rho_bounds (alpha : Real)
 private lemma theorem1013_sigma_le_eta_alpha_sq (alpha : Real)
     (halpha : 0 < alpha) (halphaSixth : alpha ≤ 1 / 6) :
     theorem1013Sigma alpha ≤ theorem1013Eta * alpha ^ 2 := by
-  have halphaOne : alpha ≤ 1 := by linarith
-  have hpow : alpha ^ (9 : Nat) ≤ alpha ^ 2 := by
-    calc
-      alpha ^ (9 : Nat) = alpha ^ 2 * alpha ^ 7 := by ring
-      _ ≤ alpha ^ 2 * 1 := by
-        gcongr
-        exact pow_le_one₀ halpha.le halphaOne
-      _ = alpha ^ 2 := by ring
-  rw [theorem1013_sigma_eq alpha halpha]
-  unfold theorem1013Eta
-  calc
-    (2 : Real) ^ (-(72 : Real)) * alpha ^ (9 : Nat) ≤
-        (2 : Real) ^ (-(72 : Real)) * alpha ^ 2 := by gcongr
-    _ ≤ (2 : Real) ^ (-(43 : Real)) * alpha ^ 2 := by
-      exact mul_le_mul_of_nonneg_right
-        (Real.rpow_le_rpow_of_exponent_le (by norm_num) (by norm_num))
-        (sq_nonneg alpha)
+  rw [theorem1013_sigma_eq alpha halpha, theorem1013Eta]
+  exact mul_le_mul (Real.rpow_le_rpow_of_exponent_le (by norm_num) (by norm_num))
+    (pow_le_pow_of_le_one halpha.le (by linarith) (by norm_num)) (by positivity) (by positivity)
 
 private lemma theorem1013_sigma_le_regular (alpha : Real)
     (halpha : 0 < alpha) (_halphaSixth : alpha ≤ 1 / 6) :
@@ -690,23 +640,11 @@ private lemma theorem1013_sigma_le_extraction (alpha : Real)
 private lemma theorem1013_sigma_lt_fibre (alpha : Real)
     (halpha : 0 < alpha) (halphaSixth : alpha ≤ 1 / 6) :
     theorem1013Sigma alpha < alpha ^ 2 / 16 := by
-  have halphaOne : alpha ≤ 1 := by linarith
-  have hpow : alpha ^ (9 : Nat) ≤ alpha ^ 2 := by
-    calc
-      alpha ^ (9 : Nat) = alpha ^ 2 * alpha ^ 7 := by ring
-      _ ≤ alpha ^ 2 * 1 := by
-        gcongr
-        exact pow_le_one₀ halpha.le halphaOne
-      _ = alpha ^ 2 := by ring
-  rw [theorem1013_sigma_eq alpha halpha]
-  calc
-    (2 : Real) ^ (-(72 : Real)) * alpha ^ (9 : Nat) ≤
-        (2 : Real) ^ (-(72 : Real)) * alpha ^ 2 := by gcongr
-    _ < (1 / 16 : Real) * alpha ^ 2 := by
-      apply mul_lt_mul_of_pos_right _ (sq_pos_of_pos halpha)
-      rw [Real.rpow_neg (by norm_num : (0 : Real) ≤ 2)]
-      norm_num [Real.rpow_natCast]
-    _ = alpha ^ 2 / 16 := by ring
+  have h : theorem1013Eta < 1 / 16 := by
+    rw [theorem1013Eta, Real.rpow_neg (by norm_num : (0 : Real) ≤ 2)]
+    norm_num [Real.rpow_natCast]
+  linarith [theorem1013_sigma_le_eta_alpha_sq alpha halpha halphaSixth,
+    mul_lt_mul_of_pos_right h (sq_pos_of_pos halpha)]
 
 private lemma section10_regular_translated_fibre_nonempty {N M : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]
@@ -719,26 +657,11 @@ private lemma section10_regular_translated_fibre_nonempty {N M : Nat} [NeZero N]
     ∀ w, w ∈ W → ∀ d, d ∈ B → (D.fibre (D.index w + d)).Nonempty := by
   intro w hw d hd
   rcases hsetup with ⟨hbounds, _, _, _, _, hinvariant, _⟩
-  rcases hregular with ⟨_, _, _, _, _, hfibreLower, _⟩
   have hM : (0 : Real) < M := by exact_mod_cast hbounds.2.2.1
-  have hinv := hinvariant (D.index w) d hd
   have hsource : alpha ^ 2 * M / 16 ≤ (D.fibre (D.index w)).card := by
-    simpa only [MultifunctionDomain.fibreSize] using hfibreLower w hw
+    simpa only [MultifunctionDomain.fibreSize] using hregular.2.2.2.2.2.1 w hw
   have htarget : (0 : Real) < (D.fibre (D.index w + d)).card := by
-    have hinv' :
-        |((D.fibre (D.index w)).card : Real) -
-            (D.fibre (D.index w + d)).card| ≤ sigma * M := by
-      simpa only [abs_sub_comm] using hinv
-    have hdiff :
-        ((D.fibre (D.index w)).card : Real) -
-            (D.fibre (D.index w + d)).card ≤ sigma * M := by
-      exact (le_abs_self _).trans hinv'
-    have hsigmam : sigma * M < alpha ^ 2 * M / 16 := by
-      calc
-        sigma * M < (alpha ^ 2 / 16) * M :=
-          mul_lt_mul_of_pos_right hsigma hM
-        _ = alpha ^ 2 * M / 16 := by ring
-    nlinarith
+    linarith [(abs_le.mp (hinvariant (D.index w) d hd)).1, mul_lt_mul_of_pos_right hsigma hM]
   exact Finset.card_pos.mp (by exact_mod_cast htarget)
 
 private lemma section10_regular_shift_regular {N M : Nat} [NeZero N]
@@ -762,32 +685,17 @@ private lemma theorem1013_exists_large_tail_fibre {X : Type*}
     ∃ p : X × X × X,
       (W.card : Real) ≤ (Fintype.card X : Real) ^ 3 *
         ((W.filter fun q ↦ theorem1013Tail q = p).card : Real) := by
-  let T : Finset (X × X × X) := Finset.univ
-  let F : X × X × X → Finset (Theorem1013Quad X) := fun p ↦
-    W.filter fun q ↦ theorem1013Tail q = p
-  have hT : T.Nonempty := Finset.univ_nonempty
-  have hTcard : (T.card : Real) = (Fintype.card X : Real) ^ 3 := by
-    dsimp [T]
+  have hX : (0 : Real) < Fintype.card X := Nat.cast_pos.mpr Fintype.card_pos
+  have hT : ((Finset.univ : Finset (X × X × X)).card : Real) = (Fintype.card X : Real) ^ 3 := by
     simp [Fintype.card_prod]
     ring
-  have hTcardPos : (0 : Real) < T.card := by positivity
-  have hsumNat : (∑ p ∈ T, (F p).card) = W.card := by
-    exact (Finset.card_eq_sum_card_fiberwise (s := W) (t := T)
-      (f := theorem1013Tail) (by simp [T])).symm
-  have hsum : (∑ p ∈ T, ((F p).card : Real)) = W.card := by
-    exact_mod_cast hsumNat
-  have havg :
-      (∑ _p ∈ T, (W.card : Real) / T.card) ≤
-        ∑ p ∈ T, ((F p).card : Real) := by
-    rw [hsum]
-    simp only [Finset.sum_const, nsmul_eq_mul]
-    field_simp [ne_of_gt hTcardPos]
-    rfl
-  obtain ⟨p, _, hp⟩ := Finset.exists_le_of_sum_le hT havg
-  refine ⟨p, ?_⟩
-  have hp' : (W.card : Real) ≤ (T.card : Real) * (F p).card :=
-    by simpa only [mul_comm] using (div_le_iff₀ hTcardPos).mp hp
-  simpa only [hTcard, F] using hp'
+  obtain ⟨p, -, hp⟩ := Finset.exists_le_of_sum_le Finset.univ_nonempty
+    (f := fun _ => (W.card : Real) / Fintype.card X ^ 3)
+    (g := fun p => ((W.filter fun q ↦ theorem1013Tail q = p).card : Real)) (le_of_eq (by
+      rw [Finset.sum_const, nsmul_eq_mul, hT, mul_div_cancel₀ _ (pow_ne_zero 3 hX.ne'),
+        ← Nat.cast_sum, ← Finset.card_eq_sum_card_fiberwise (s := W) (t := Finset.univ)
+          (f := theorem1013Tail) fun q _ => Finset.mem_univ _]))
+  exact ⟨p, (div_le_iff₀' (pow_pos hX 3)).mp hp⟩
 
 private noncomputable def theorem1013Slice {X : Type*} [DecidableEq X]
     (W : Finset (Theorem1013Quad X)) (p : X × X × X) : Finset X :=
@@ -818,23 +726,12 @@ private lemma theorem1013_slice_card {X : Type*} [Fintype X] [DecidableEq X]
     (W : Finset (Theorem1013Quad X)) (p : X × X × X) :
     (theorem1013Slice W p).card =
       (W.filter fun q ↦ theorem1013Tail q = p).card := by
-  unfold theorem1013Slice
-  apply Finset.card_image_iff.mpr
-  intro q₁ hq₁ q₂ hq₂ hzero
-  have ht₁ := (Finset.mem_filter.mp hq₁).2
-  have ht₂ := (Finset.mem_filter.mp hq₂).2
-  have ht : theorem1013Tail q₁ = theorem1013Tail q₂ := ht₁.trans ht₂.symm
-  change (q₁ 1, q₁ 2, q₁ 3) = (q₂ 1, q₂ 2, q₂ 3) at ht
-  have hone : q₁ 1 = q₂ 1 := congrArg Prod.fst ht
-  have htail : (q₁ 2, q₁ 3) = (q₂ 2, q₂ 3) := congrArg Prod.snd ht
-  have htwo : q₁ 2 = q₂ 2 := congrArg Prod.fst htail
-  have hthree : q₁ 3 = q₂ 3 := congrArg Prod.snd htail
+  refine Finset.card_image_of_injOn fun q₁ hq₁ q₂ hq₂ hzero => ?_
+  have ht := (Finset.mem_filter.mp hq₁).2.trans (Finset.mem_filter.mp hq₂).2.symm
+  simp only [theorem1013Tail, Prod.mk.injEq] at ht
   funext i
   fin_cases i
-  · exact hzero
-  · exact hone
-  · exact htwo
-  · exact hthree
+  exacts [hzero, ht.1, ht.2.1, ht.2.2]
 
 /-- The proof-supported local model retains five powers of the density.
 The denominator and every spectrum and Bohr parameter are unchanged. -/

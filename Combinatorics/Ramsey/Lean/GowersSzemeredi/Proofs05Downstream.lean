@@ -80,12 +80,6 @@ theorem section5Transport_carrier {N : Nat} (P : ModAP N) (R : NatAP) :
     push_cast
     ring
 
-theorem section5Transport_subset {N : Nat} (P : ModAP N) (R : NatAP)
-    (hR : R.carrier ⊆ Finset.range P.length) :
-    (section5Transport P R).carrier ⊆ P.carrier := by
-  rw [section5Transport_carrier, section5_carrier_eq_image_range]
-  exact Finset.image_mono _ hR
-
 theorem section5IndexPoint_injective_on_range {N : Nat} [NeZero N]
     (P : ModAP N) (hP : P.IsProper) :
     Set.InjOn (section5IndexPoint P) (Finset.range P.length : Set Nat) := by

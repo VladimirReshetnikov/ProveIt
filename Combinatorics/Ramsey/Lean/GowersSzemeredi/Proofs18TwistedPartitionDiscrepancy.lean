@@ -13,7 +13,7 @@ degree, retains the whole partition, and applies to complex functions. -/
 theorem twisted_partition_nonuniformity_discrepancy {N M k m : Nat} [NeZero N]
     (Q : Fin M → ModAP N) (phi : ZMod N → ZMod N)
     (f : ZMod N → Complex) (beta : Real)
-    (hk : 1 ≤ k) (hβ : 0 < beta) (hm : 0 < m)
+    (hk : 1 ≤ k) (hβ : 0 < beta)
     (hphi : PolynomialOn k Finset.univ phi) (hf : DiscValued f)
     (hQ : IsPartition (fun i ↦ (Q i).carrier) Finset.univ)
     (hsize : ∀ i, (Q i).carrier.card ≤ m)
@@ -27,7 +27,7 @@ theorem twisted_partition_nonuniformity_discrepancy {N M k m : Nat} [NeZero N]
         (N : Real) ^ (1 - (polynomialPartitionConstant k : Real)⁻¹) ∧
       (beta / 2) * N ≤ ∑ j, ‖∑ s ∈ (R j).carrier, f s‖ := by
   obtain ⟨r, hr⟩ := partition_linear_nonuniformity_fourier_bias (phaseTwist f phi) Q beta
-    (phaseTwist_discValued hf phi) hβ.le hm hQ hsize hfail
+    (phaseTwist_discValued hf phi) hβ.le hQ hsize hfail
   have hbias : beta * N ≤ ∑ i, ‖∑ s ∈ (Q i).carrier,
       f s * exponential (-(phi s + r i * s))‖ := by
     simpa only [phaseTwist_mul_linear] using hr.le

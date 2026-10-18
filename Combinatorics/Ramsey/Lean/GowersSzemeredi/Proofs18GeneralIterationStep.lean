@@ -26,50 +26,38 @@ theorem FunctionDiscrepancyBound.interval_density_step
       (intervalDiscrepancyStepThreshold k delta tau T) := by
   intro L hL B d hd hcard
   let alpha := intervalUniformityParameter delta k
-  have hα : 0 < alpha := intervalUniformityParameter_pos hδ (by omega : 0 < k)
-  obtain ⟨hkLr, hexp, hscale, hlarge⟩ : (k : Real) ≤ L ∧
-      T ≤ L ∧ 32 / tau ≤ L ∧ (512 * (k : Real) ^ 2 + 1) / delta ^ k ≤ L := by
-    simpa only [intervalDiscrepancyStepThreshold, max_le_iff] using hL
+  simp only [intervalDiscrepancyStepThreshold, max_le_iff] at hL
+  obtain ⟨hkLr, hexp, hscale, hlarge⟩ := hL
   have hkL : k ≤ L := by exact_mod_cast hkLr
-  have hLpos : (0 : Real) < L := by exact_mod_cast (show 0 < L by omega)
+  have hLpos : (0 : Real) < L := Nat.cast_pos.mpr (by omega)
   have hC : 0 < boundaryRefinementConstant (tau / 64) := section5LocalRefinementConstant_pos _ _
   obtain ⟨N, hNprime, hNlower, hNupper⟩ := Nat.exists_prime_lt_and_le_two_mul (2 * L) (by omega)
   letI : NeZero N := ⟨hNprime.ne_zero⟩
   letI : Fact N.Prime := ⟨hNprime⟩
   have hLN : (L : Real) ≤ N := by exact_mod_cast (by omega : L ≤ N)
   let D : Real := B.card / (L : Real)
-  have hDcard : (B.card : Real) = D * L := by dsimp [D]; field_simp
+  have hDcard : (B.card : Real) = D * L := (div_mul_cancel₀ _ hLpos.ne').symm
   have hdD : d ≤ D := (le_div_iff₀ hLpos).mpr hcard
   have hδD : delta ≤ D := hd.trans hdD
-  have hDone : D ≤ 1 := by
-    apply (div_le_one hLpos).mpr
+  have hDone : D ≤ 1 := (div_le_one hLpos).mpr <| by
     exact_mod_cast (show B.card ≤ L by simpa using Finset.card_le_univ B)
   have hDpow : delta ^ k ≤ D ^ k := pow_le_pow_left₀ hδ.le hδD k
   by_cases hu : UniformOfDegree (intervalExtension N (finiteIntervalBalance B D)) alpha (k - 2)
   · left
-    apply interval_relative_uniform_hasNatAP hk hNlower hkL (by omega) B D alpha
-      (hδ.le.trans hδD) hDone hα.le
-    · exact (intervalUniformityParameter_count_error hδ.le (by omega : 0 < k)).le.trans
-        (div_le_div_of_nonneg_right hDpow (by positivity))
-    · have hb := (div_le_iff₀ (pow_pos hδ k)).mp hlarge
-      have hm := mul_le_mul hDpow hLN (Nat.cast_nonneg _) (pow_nonneg (hδ.le.trans hδD) k)
-      nlinarith
-    · exact hu
+    refine interval_relative_uniform_hasNatAP hk hNlower hkL (by omega) B D alpha
+      (hδ.le.trans hδD) hDone (intervalUniformityParameter_pos hδ (by omega)).le
+      ((intervalUniformityParameter_count_error hδ.le (by omega)).le.trans
+        (div_le_div_of_nonneg_right hDpow (by positivity))) ?_ hu
+    linarith [(div_le_iff₀ (pow_pos hδ k)).mp hlarge,
+      mul_le_mul hDpow hLN (Nat.cast_nonneg _) (pow_nonneg (hδ.le.trans hδD) k)]
   · right
     have hscaleN : 32 ≤ tau * N := by
-      have hs := (div_le_iff₀ hτ).mp hscale
-      have hm := mul_le_mul_of_nonneg_left hLN hτ.le
-      nlinarith
-    obtain ⟨Q, hQ, _, hsize, hinc⟩ := hbound.natural_interval_increment
-      hτ N L hNlower (hexp.trans hLN) hscaleN B D
-      (hδ.le.trans hδD) hDone hDcard hu
-    refine ⟨Q.length, Q.pullback (B.image Fin.val), ?_, ?_, Q.hasNatAP_of_pullback hQ _⟩
-    · apply le_trans _ hsize
-      exact mul_le_mul_of_nonneg_left
-        (Real.rpow_le_rpow (Nat.cast_nonneg _) hLN (by positivity : 0 ≤ sigma / 16))
-        (by positivity : 0 ≤ tau / (8 * boundaryRefinementConstant (tau / 64)))
-    · rw [Q.card_pullback hQ]
-      apply le_trans _ hinc
-      exact mul_le_mul_of_nonneg_right (by change d + tau / 8 ≤ D + tau / 8; linarith) (Nat.cast_nonneg _)
+      linarith [(div_le_iff₀ hτ).mp hscale, mul_le_mul_of_nonneg_left hLN hτ.le]
+    obtain ⟨Q, hQ, _, hsize, hinc⟩ := hbound.natural_interval_increment hτ N L hNlower
+      (hexp.trans hLN) hscaleN B D (hδ.le.trans hδD) hDone hDcard hu
+    refine ⟨Q.length, Q.pullback (B.image Fin.val), le_trans (by gcongr) hsize, ?_,
+      Q.hasNatAP_of_pullback hQ _⟩
+    rw [Q.card_pullback hQ]
+    exact le_trans (by gcongr) hinc
 
 end LeanProofs.GowersSzemeredi

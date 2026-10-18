@@ -139,23 +139,15 @@ theorem single_piece_frequency_box_global_cover_fejer_joint {k : Nat} (hk : 1 �
     section16_large_frequency_graph (k := k + 1) alpha ha ha1 f hf hnot
   obtain ⟨B', hB'B, harr1, harr2⟩ := fejer_product_of_density_lower_explicit k (alpha / 2)
     (alpha / 2) hk hg hg1 hg hg1 N hN (Fact.out : N.Prime) hodd B phi hBmass hprod
-  have hθ1 := fejerThetaOne_half_eq alpha (alpha / 2) k
-  have hB : fejerThetaOne alpha (alpha / 2) k * (N : Real) ^ (17 * k + 15) ≤
-        generalArrangementCount 8 B' ∧
-      (1 - (2 : Real) ^ (-(44 : Real))) * generalArrangementCount 8 B' ≤
-        respectedGeneralArrangementCount 8 B' phi := by
-    refine ⟨?_, ?_⟩
-    · rw [hθ1]; exact harr1
-    · rw [← two_inv_pow_44_eq_rpow]; exact harr2
-  obtain ⟨q, hq, S, mu, hS, hmu, hSw, hcount⟩ := single_piece_lift_global_cover_fejer_joint hk ha ha1 hg hg1
-    hcov hQb hEb hEb1 eps thr hretile B' phi hB (hprod.mono hB'B) m hscale
+  obtain ⟨q, hq, S, mu, hS, hmu, hSw, hcount⟩ := single_piece_lift_global_cover_fejer_joint hk ha
+    ha1 hg hg1 hcov hQb hEb hEb1 eps thr hretile B' phi
+    ⟨by rw [fejerThetaOne_half_eq]; exact harr1, by rw [← two_inv_pow_44_eq_rpow]; exact harr2⟩
+    (hprod.mono hB'B) m hscale
   refine ⟨q, hq, S, mu, hS, hmu, hSw, hcount.trans ?_⟩
   unfold section16LargeMultilinearFrequencyCount countWhere
   exact_mod_cast Finset.card_le_card fun z hz => by
     obtain ⟨hzB', hzS, hzmu⟩ := Finset.mem_filter.mp hz
-    refine Finset.mem_filter.mpr ⟨Finset.mem_univ _, hzS, ?_⟩
-    rw [← hzmu]
-    exact hfreq z (hB'B hzB')
+    exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hzS, hzmu ▸ hfreq z (hB'B hzB')⟩
 
 /-- The localization parameter of the single-piece route. -/
 def singlePieceEtaFJ (Qb : Nat → Real → Real → Real → Real) (alpha : Real)

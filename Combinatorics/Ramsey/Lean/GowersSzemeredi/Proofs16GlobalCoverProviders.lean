@@ -83,45 +83,26 @@ theorem MultiplyLinearWith.localRelationCoverFor {N k : Nat} [NeZero N]
   obtain ⟨M, q, G, Q, mu, hGP, hGc, hQpart, hQprop, hq, hQw, hmu, hcov⟩ :=
     hML (theta / 2) (by positivity) (by linarith) P hP
   have hHG := dense_inter_good hHP hGP hHc hGc
+  have hE := hEb (theta / 2) (by positivity) (by linarith)
   rcases (H ∩ G).eq_empty_or_nonempty with h0 | hne
   · -- an empty dense part forces an empty box of width zero
     rw [h0, Finset.card_empty, Nat.cast_zero] at hHG
-    have hP0 : (P.carrier.card : Real) = 0 := by
-      by_contra hne0
-      have : (0 : Real) < theta / 2 * P.carrier.card := by positivity
-      linarith
-    have hPe : P.carrier = ∅ := Finset.card_eq_zero.mp (by exact_mod_cast hP0)
-    have hw0 : P.width = 0 := by
-      by_contra hw
-      have hne' := P.carrier_nonempty_of_axis_pos fun i =>
-        lt_of_lt_of_le (Nat.pos_of_ne_zero hw) (P.width_le_axis_length i)
-      rw [hPe] at hne'
-      exact Finset.not_nonempty_empty hne'
-    have hQ0 : (0 : Real) ≤ Qb (theta / 2) := le_trans (Nat.cast_nonneg _) hq
+    have hP0 : P.carrier.card = 0 := Nat.eq_zero_of_not_pos fun hc =>
+      by linarith [mul_pos hθ (Nat.cast_pos.mpr hc : (0 : Real) < P.carrier.card)]
+    have hw0 : P.width = 0 := Nat.eq_zero_of_not_pos fun hw => (Finset.card_pos.mpr
+      (P.carrier_nonempty_of_axis_pos fun i => hw.trans_le (P.width_le_axis_length i))).ne' hP0
     refine ⟨P, ∅, 0, fun _ _ => 0, hP, Finset.Subset.refl _, ?_, Finset.empty_subset _,
-      Finset.empty_subset _, ?_, by simpa using hQ0, fun i => i.elim0,
-      fun h hh => absurd hh (Finset.notMem_empty h)⟩
-    · rw [hw0]
-      unfold coverWidth
-      rw [Nat.cast_zero, max_eq_right (hEb _ (by positivity) (by linarith)).le,
-        Real.zero_rpow (hEb _ (by positivity) (by linarith)).ne']
-      simp
-    · rw [hP0, mul_zero, Finset.card_empty, Nat.cast_zero]
+      Finset.empty_subset _, by simp [hP0], (Nat.cast_le.2 (Nat.zero_le q)).trans hq,
+      fun i => i.elim0, fun h hh => absurd hh (Finset.notMem_empty h)⟩
+    simp [hw0, coverWidth, Real.zero_rpow (lt_max_of_lt_right (b := 0) hE).ne']
   · obtain ⟨j, hj⟩ := exists_dense_cell (fun j => (Q j).carrier) _ hQpart (H ∩ G) id
       (fun x hx => hGP (Finset.mem_inter.mp hx).2) hne hHG
     refine ⟨Q j, (H ∩ G).filter fun x => id x ∈ (Q j).carrier, q, mu j, hQprop j,
-      IsPartition.cell_subset hQpart j, ?_, ?_, ?_, hj, hq, hmu j, ?_⟩
-    · unfold coverWidth
-      rw [max_eq_right (hEb _ (by positivity) (by linarith)).le]
-      exact Nat.ceil_le.mpr (hQw j)
-    · intro x hx; exact (Finset.mem_inter.mp (Finset.mem_filter.mp hx).1).1
-    · intro x hx; exact (Finset.mem_filter.mp hx).2
-    · intro h hh y hy
-      obtain ⟨hhHG, hhQ⟩ := Finset.mem_filter.mp hh
-      obtain ⟨hhH, hhG⟩ := Finset.mem_inter.mp hhHG
-      refine hcov j h hhQ hhG y ?_
-      simp only [restrictRelation, Finset.mem_filter]
-      exact ⟨hy, hHJ hhH⟩
+      IsPartition.cell_subset hQpart j, Nat.ceil_le.mpr (by rw [max_eq_right hE.le]; exact hQw j),
+      (Finset.filter_subset _ _).trans Finset.inter_subset_left,
+      fun x hx => (Finset.mem_filter.mp hx).2, hj, hq, hmu j, fun h hh y hy => ?_⟩
+    simp only [Finset.mem_filter, Finset.mem_inter] at hh
+    exact hcov j h hh.2 hh.1.2 y (by simpa [restrictRelation] using And.intro hy (hHJ hh.1.1))
 
 /-- The fibre of a translated coordinate selection has `N^(n-l)` points. -/
 theorem card_fibre_selected {N n l : Nat} [NeZero N] (f : Fin l ↪ Fin n) (c y : Point N l) :
@@ -130,29 +111,16 @@ theorem card_fibre_selected {N n l : Nat} [NeZero N] (f : Fin l ↪ Fin n) (c y 
   let e : {z : Point N n // (fun i => z (f i) + c i) = y} ≃
       ({j : Fin n // j ∉ Set.range f} → ZMod N) :=
     { toFun := fun z j => z.1 j.1
-      invFun := fun g => ⟨fun j => if h : ∃ i, f i = j then y h.choose - c h.choose
-          else g ⟨j, fun ⟨i, hi⟩ => h ⟨i, hi⟩⟩, by
-        funext i
-        have h : ∃ i', f i' = f i := ⟨i, rfl⟩
-        simp only [dif_pos h]
-        have hi : h.choose = i := f.injective h.choose_spec
-        rw [hi]
-        ring⟩
-      left_inv := by
-        rintro ⟨z, hz⟩
-        apply Subtype.ext
-        funext j
-        show (if h : ∃ i, f i = j then y h.choose - c h.choose else z j) = z j
-        split_ifs with h
-        · have h1 : z (f h.choose) + c h.choose = y h.choose := congrFun hz h.choose
-          rw [← h1, h.choose_spec]
-          ring
-        · rfl
-      right_inv := by
-        intro g
-        funext j
-        simp only
-        rw [dif_neg (fun ⟨i, hi⟩ => j.2 ⟨i, hi⟩)] }
+      invFun := fun g => ⟨Function.extend f (y - c) fun j =>
+          if h : j ∈ Set.range f then 0 else g ⟨j, h⟩,
+        funext fun i => by simp [f.injective.extend_apply]⟩
+      left_inv := fun z => Subtype.ext <| funext fun j => by
+        by_cases hj : j ∈ Set.range f
+        · obtain ⟨i, rfl⟩ := hj
+          simp [f.injective.extend_apply, ← z.2]
+        · simp only [Function.extend_apply' _ _ _ (Set.mem_range.not.mp hj), dif_neg hj]
+      right_inv := fun g => funext fun j => by
+        simp only [Function.extend_apply' _ _ _ (Set.mem_range.not.mp j.2), dif_neg j.2] }
   rw [← Fintype.card_subtype, Fintype.card_congr e, Fintype.card_fun, ZMod.card]
   congr 1
   rw [Fintype.card_subtype_compl, Fintype.card_fin, Set.card_range_of_injective f.injective,
@@ -189,7 +157,7 @@ theorem card_filter_selected_not_mem_le {N n l : Nat} [NeZero N] (f : Fin l ↪ 
   have hSle : S.card ≤ N ^ l := by
     have := Finset.card_le_univ S
     rwa [hcard] at this
-  rw [heq, hcompl, Finset.card_univ_diff, hcard]
+  rw [heq, hcompl, Finset.card_univ_sdiff, hcard]
   push_cast [hSle]
   have hpow : (N : Real) ^ n = (N : Real) ^ l * (N : Real) ^ (n - l) := by
     rw [← pow_add]; congr 1; omega

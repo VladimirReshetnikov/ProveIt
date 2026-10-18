@@ -250,29 +250,16 @@ theorem uniform_baseC_recipPowerLB_of_budget {alpha V B : Real} {D μV b μ0 : N
   have hX := two_div_ge_two ha ha2
   have hc := GenParams.slice_const_le_deg ha ha2 hV hVμ hB0 h7 hBi hμ0
   intro s hs hs1
-  have hs2 : 0 < s / 2 := half_pos hs
-  have hs21 : s / 2 ≤ 1 := by linarith
-  have hg : 0 < alpha / 2 := half_pos ha
-  have hg1 : alpha / 2 ≤ 1 := by linarith
   have hQ1 := one_le_uCount V D (alpha / 2) B (s / 2)
-  have hQ0 : 0 < uCount V D (alpha / 2) B (s / 2) := lt_of_lt_of_le zero_lt_one hQ1
-  have hQeq := uCount_eq hV D hg hg1 hB0 hB1 hs2 hs21
+  have hQeq := uCount_eq hV D (half_pos ha) (by linarith) hB0 hB1 (half_pos hs) (by linarith)
   rw [GenParams.uniformBase_slice V ha hB0 hs] at hQeq
-  show 0 < s / 2 / uCount V D (alpha / 2) B (s / 2) ∧
-    s / 2 / uCount V D (alpha / 2) B (s / 2) ≤ 1 ∧
-    (s / 2 / uCount V D (alpha / 2) B (s / 2))⁻¹ ≤
-      (2 / alpha) ^ (D * 2 ^ μ0 + 1) * s⁻¹ ^ (D + 1)
-  refine ⟨div_pos hs2 hQ0, (div_le_one hQ0).mpr (by linarith), ?_⟩
+  dsimp only
+  refine ⟨div_pos (half_pos hs) (zero_lt_one.trans_le hQ1),
+    (div_le_one (zero_lt_one.trans_le hQ1)).mpr (by linarith), ?_⟩
   rw [inv_div, hQeq]
   set X := 2 / alpha
-  have hsi : 0 ≤ s⁻¹ := (inv_pos.mpr hs).le
-  have hcs : 8 * V * X * B⁻¹ * s⁻¹ ≤ X ^ (2 ^ μ0) * s⁻¹ := mul_le_mul_of_nonneg_right hc hsi
-  have hpow := pow_le_pow_left₀ (by positivity) hcs D
-  have h2X : (2 : Real) ≤ X ^ 1 := by rw [pow_one]; exact hX
-  calc (8 * V * X * B⁻¹ * s⁻¹) ^ D / (s / 2) = 2 * (s⁻¹ * (8 * V * X * B⁻¹ * s⁻¹) ^ D) := by
-        rw [div_eq_mul_inv, inv_div]; ring
-    _ ≤ X ^ 1 * (s⁻¹ * (X ^ (2 ^ μ0) * s⁻¹) ^ D) :=
-        mul_le_mul h2X (mul_le_mul_of_nonneg_left hpow hsi) (by positivity) (by positivity)
+  calc (8 * V * X * B⁻¹ * s⁻¹) ^ D / (s / 2) = 2 * s⁻¹ * (8 * V * X * B⁻¹ * s⁻¹) ^ D := by ring
+    _ ≤ X * s⁻¹ * (X ^ (2 ^ μ0) * s⁻¹) ^ D := by gcongr
     _ = X ^ (D * 2 ^ μ0 + 1) * s⁻¹ ^ (D + 1) := by ring
 
 namespace GenParams
@@ -338,44 +325,24 @@ theorem eta_step_of_cube_le {alpha d : Real} {k m : Nat} (ha : 0 < alpha) (ha2 :
       ((2 : Real) ^ (-(2 * ((k + 1) + 1) ^ 3 : Int)) * (d / (2 : Real) ^ (k + 1) * alpha ^ 2 / 4))⁻¹ ≤
         (2 / alpha) ^ (2 ^ (m + 1)) := by
   have hX := two_div_ge_two ha ha2
-  have hX1 : (1 : Real) ≤ 2 / alpha := by linarith
   have hz : ((2 : Real) ^ (-(2 * ((k + 1) + 1) ^ 3 : Int)))⁻¹ = 2 ^ (2 * (k + 2) ^ 3) := by
     rw [zpow_neg, inv_inv, show (2 * ((k + 1) + 1) ^ 3 : Int) = ((2 * (k + 2) ^ 3 : Nat) : Int) by
       push_cast; ring, zpow_natCast]
-  have hz0 : 0 < (2 : Real) ^ (-(2 * ((k + 1) + 1) ^ 3 : Int)) := zpow_pos (by norm_num) _
   have hz1 : (2 : Real) ^ (-(2 * ((k + 1) + 1) ^ 3 : Int)) ≤ 1 :=
     zpow_le_one_of_nonpos₀ (by norm_num) (neg_nonpos.mpr (by positivity))
-  have h2k : (2 : Real) ≤ 2 ^ (k + 1) := by
-    simpa using pow_le_pow_right₀ (a := (2 : Real)) (by norm_num) (show 1 ≤ k + 1 by omega)
-  have hin0 : 0 < d / (2 : Real) ^ (k + 1) * alpha ^ 2 / 4 :=
-    div_pos (mul_pos (div_pos hd0 (by positivity)) (pow_pos ha 2)) (by norm_num)
-  refine ⟨mul_pos hz0 hin0, ?_, ?_⟩
-  · have h1 : d / (2 : Real) ^ (k + 1) ≤ 1 / 2 := by
-      rw [div_le_iff₀ (by positivity)]; nlinarith
-    have h2 : alpha ^ 2 ≤ alpha / 2 := by nlinarith
-    have h3 : d / (2 : Real) ^ (k + 1) * alpha ^ 2 ≤ 1 / 2 * (alpha / 2) :=
-      mul_le_mul h1 h2 (by positivity) (by norm_num)
-    have h4 : d / (2 : Real) ^ (k + 1) * alpha ^ 2 / 4 ≤ alpha / 8 := by linarith
-    calc (2 : Real) ^ (-(2 * ((k + 1) + 1) ^ 3 : Int)) * (d / (2 : Real) ^ (k + 1) * alpha ^ 2 / 4)
-        ≤ 1 * (alpha / 8) := mul_le_mul hz1 h4 hin0.le zero_le_one
-      _ = alpha / 8 := one_mul _
-  · rw [mul_inv, hz]
-    have hval : (d / (2 : Real) ^ (k + 1) * alpha ^ 2 / 4)⁻¹ =
-        (2 : Real) ^ (k + 1) * (2 / alpha) ^ 2 * d⁻¹ := by
-      field_simp; ring
-    rw [hval]
-    have hc : (2 : Real) ^ (2 * (k + 2) ^ 3) * ((2 : Real) ^ (k + 1) * (2 / alpha) ^ 2) ≤
-        (2 / alpha) ^ (2 ^ m) := by
-      calc (2 : Real) ^ (2 * (k + 2) ^ 3) * ((2 : Real) ^ (k + 1) * (2 / alpha) ^ 2)
-          ≤ (2 / alpha) ^ (2 * (k + 2) ^ 3) * ((2 / alpha) ^ (k + 1) * (2 / alpha) ^ 2) :=
-            mul_le_mul (pow_le_pow_left₀ (by norm_num) hX _)
-              (mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (by norm_num) hX _) (by positivity))
-              (by positivity) (by positivity)
-        _ = (2 / alpha) ^ (2 * (k + 2) ^ 3 + k + 3) := by rw [← pow_add, ← pow_add]; ring_nf
-        _ ≤ (2 / alpha) ^ (2 ^ m) := pow_le_pow_right₀ hX1 hcube
-    calc (2 : Real) ^ (2 * (k + 2) ^ 3) * ((2 : Real) ^ (k + 1) * (2 / alpha) ^ 2 * d⁻¹)
-        = (2 : Real) ^ (2 * (k + 2) ^ 3) * ((2 : Real) ^ (k + 1) * (2 / alpha) ^ 2) * d⁻¹ := by ring
-      _ ≤ (2 / alpha) ^ (2 ^ (m + 1)) := pw_mul hX (inv_pos.mpr hd0).le hc hdi
+  have h2k : (2 : Real) ≤ 2 ^ (k + 1) := le_self_pow₀ (by norm_num) (by omega)
+  have hin0 : 0 < d / (2 : Real) ^ (k + 1) * alpha ^ 2 / 4 := by positivity
+  refine ⟨by positivity, ?_, ?_⟩
+  · have h1 : d / (2 : Real) ^ (k + 1) ≤ 1 / 2 := by rw [div_le_iff₀ (by positivity)]; nlinarith
+    have h3 := mul_le_mul h1 (by nlinarith : alpha ^ 2 ≤ alpha / 2) (by positivity) (by norm_num)
+    exact (mul_le_mul hz1 (by linarith) hin0.le zero_le_one).trans_eq (one_mul _)
+  · rw [mul_inv, hz, show (d / (2 : Real) ^ (k + 1) * alpha ^ 2 / 4)⁻¹ =
+      (2 : Real) ^ (k + 1) * (2 / alpha) ^ 2 * d⁻¹ by field_simp; ring, ← mul_assoc, ← mul_assoc]
+    refine pw_mul hX (inv_pos.mpr hd0).le ?_ hdi
+    calc (2 : Real) ^ (2 * (k + 2) ^ 3) * 2 ^ (k + 1) * (2 / alpha) ^ 2
+        ≤ (2 / alpha) ^ (2 * (k + 2) ^ 3) * (2 / alpha) ^ (k + 1) * (2 / alpha) ^ 2 := by gcongr
+      _ ≤ (2 / alpha) ^ (2 ^ m) := by
+          rw [← pow_add, ← pow_add]; exact pow_le_pow_right₀ (one_le_two.trans hX) (by omega)
 
 /-- The η-to-input estimate under its exact scalar denominator condition. -/
 theorem yIn_step_of_den_le {alpha e : Real} {k m : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)

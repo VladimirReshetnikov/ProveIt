@@ -37,30 +37,19 @@ theorem FunctionDiscrepancyBound.of_short_polynomial_localization
   intro N _ _ hN f hf hnot
   obtain ⟨phi, K, l, Q, hpoly, hpart, hproper, hlength, hupper, hfail⟩ :=
     hlocal N ((le_max_left _ _).trans hN) f hf hnot
-  have hlarge : c * max 2 T ≤ (N : Real) ^ e := by
+  have hlmax : max 2 T ≤ (l : Real) := ((le_div_iff₀' hc).mpr (by
     simpa only [one_mul] using positivePowerThreshold_spec zero_lt_one he
-      ((le_max_right _ _).trans ((le_max_right _ _).trans hN) :
-        positivePowerThreshold (c * max 2 T) 1 e ≤ (N : Real))
-  have hlmax : max 2 T ≤ (l : Real) := by
-    apply le_trans _ hlength
-    exact (le_div_iff₀ hc).mpr (by simpa only [mul_comm] using hlarge)
-  have hl : 2 ≤ l := by exact_mod_cast ((le_max_left 2 T).trans hlmax)
-  have hlT : T ≤ (l : Real) := (le_max_right 2 T).trans hlmax
-  have hNreal : ((degree + 2 : Nat) : Real) ^ (2 : Nat) ≤ N :=
-    (le_max_left _ _).trans ((le_max_right _ _).trans hN)
-  have hroot0 := Real.sqrt_nonneg (N : Real)
-  have hrootsq := Real.sq_sqrt (Nat.cast_nonneg N : (0 : Real) ≤ N)
-  have hk0 : (0 : Real) ≤ (degree + 2 : Nat) := Nat.cast_nonneg _
-  have hroot : ((degree + 2 : Nat) : Real) ≤ Real.sqrt N := by
-    nlinarith only [hNreal, hroot0, hrootsq, hk0]
-  have hrootprod := mul_nonneg hroot0 (sub_nonneg.mpr hroot)
-  have hrootupper : ((degree + 2 : Nat) : Real) * Real.sqrt N ≤ (N : Real) := by
-    nlinarith only [hrootsq, hrootprod]
-  refine ⟨phi, K, l, l + 1, Q, hpoly, hpart, fun i => (hproper i).1, hl, hlT, by omega, ?_, hlength, hfail⟩
-  intro i
+      ((le_max_right _ _).trans ((le_max_right _ _).trans hN)))).trans hlength
+  have hroot := Real.le_sqrt_of_sq_le ((le_max_left _ _).trans ((le_max_right _ _).trans hN) :
+    ((degree + 2 : Nat) : Real) ^ (2 : Nat) ≤ N)
+  have hrootupper : ((degree + 2 : Nat) : Real) * Real.sqrt N ≤ N :=
+    (mul_le_mul_of_nonneg_right hroot (Real.sqrt_nonneg _)).trans_eq
+      (Real.mul_self_sqrt (Nat.cast_nonneg N))
+  refine ⟨phi, K, l, l + 1, Q, hpoly, hpart, fun i => (hproper i).1,
+    by exact_mod_cast (le_max_left 2 T).trans hlmax, (le_max_right 2 T).trans hlmax, by omega,
+    fun i => ?_, hlength, hfail⟩
   have hs : (degree + 2) * (Q i).length ≤ N := by
-    have h := (mul_le_mul_of_nonneg_left (hupper i) hk0).trans hrootupper
-    exact_mod_cast h
+    exact_mod_cast (mul_le_mul_of_nonneg_left (hupper i) (Nat.cast_nonneg _)).trans hrootupper
   rcases (hproper i).2 with hi | hi <;> exact ⟨by omega, by omega, hs⟩
 
 end LeanProofs.GowersSzemeredi
