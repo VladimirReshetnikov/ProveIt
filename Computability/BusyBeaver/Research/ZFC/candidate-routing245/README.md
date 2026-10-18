@@ -18,6 +18,11 @@ audits and 64 typed callers pass with zero warnings. Runtime simulation and
 blank initialization still need their own Lean proofs. The
 [fast lookup](../fast_table_routing245.md) is also checked equal to the literal
 machine, with two theorem audits and four typed callers.
+The [exact register decoder](../program_routing245.md) now also passes
+11 theorem audits and 13 typed callers: its shared representation unfolds
+to all 6,460 instruction leaves and preserves consumed-pointer semantics
+for arbitrary register values. Its bisimulation with the original program
+remains a separate obligation.
 
 | Artifact | Meaning |
 | --- | --- |
