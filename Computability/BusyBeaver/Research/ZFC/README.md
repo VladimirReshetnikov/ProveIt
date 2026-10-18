@@ -1690,5 +1690,18 @@ retained. Its copy/restore tail takes exactly
 with the first push gives the full two-parameter prefix from control 41 to 93.
 Eight axiom probes and twelve typed callers pass with zero warnings; the
 failed first source attempt and explicit control-equality repair are preserved.
-The GEN constructor, later AX bundle and internal scheduler/binary comparison
-remain open.
+The [GEN constructor](arithmetic_control_gen254.md) now checks controls 93→122
+for arbitrary internal IΣ₁ files with both scratch registers zero. It replaces
+TW by `wal (first oldWS) oldTW`, advances WS to `second oldWS`, and preserves
+every other field. Composition with both parameter pushes reaches control 122
+from control 41, with TW=`wal oldP1 oldCache` and WS=`cantor oldTW oldWS`.
+The separately checked [cache read](arithmetic_control_ax_read_cache254.md)
+reaches control 136 from 122, adds `first oldPL` to the old cache and sets PL to
+`second oldPL`, preserving the other seven fields. Both fragments have positive
+internal runtimes; their two audits passed 16 probes and 24 typed callers with
+zero warnings. Exact histories retain the pre-compilation rejections and legacy
+provider boundaries. The composed 41→136 theorem, remaining AX bundle,
+interpreter-to-Enum comparison and internal 245/246 binary PA endpoint are
+separate obligations.
+
+The [maintained-defaults check](results/arithmetic-control-gen-read254-maintained-defaults-review.json) and [independent review](results/arithmetic-control-gen-read254-defaults-peer-review.json) verify the published GEN/read guards and all current inputs without rerunning Lean. The original successful proof records remain unchanged.

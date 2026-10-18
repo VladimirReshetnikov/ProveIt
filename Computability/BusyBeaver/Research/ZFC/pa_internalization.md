@@ -111,7 +111,15 @@ The current arithmetic checkpoints are:
   all other fields. Its copy/restore tail has exact internal clock
   `7*cache+2`; the complete push assumes both scratch registers zero.
   Eight axiom probes and twelve callers pass with zero warnings. The
-  GEN constructor and remaining AX bundle are still open.
+  [GEN constructor](arithmetic_control_gen254.md) now reaches control 122 from
+  93; composed with both pushes, it reaches 122 from 41 with
+  TW=`wal oldP1 oldCache` and WS=`cantor oldTW oldWS`. The separate
+  [cache read](arithmetic_control_ax_read_cache254.md) reaches 136 from 122,
+  adding `first oldPL` to cache and replacing PL with `second oldPL`.
+  Both fragments require initially zero scratch registers and preserve every
+  other field, with positive internal runtimes. Their audits pass 16 probes
+  and 24 typed callers with zero warnings. The composed 41→136 theorem and
+  remaining AX bundle are still separate obligations.
 
 The remaining major steps are the reverse internal ZF-to-validator proof
 translation, the complete interpreter-to-Enum connection, and the unbounded
