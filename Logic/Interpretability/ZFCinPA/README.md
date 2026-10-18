@@ -207,6 +207,8 @@ facade is [`Lean/ZFCinPA.lean`](Lean/ZFCinPA.lean).
 | `NativeGicDelta1` | the native global-image collection schema over `ℒₛₑₜ` (`∀a ∃b (∀y∈b ∃x ψ(x,y)) ∧ (∀x∈a (∃y ψ(x,y) → ∃y∈b ψ(x,y)))` for every core `ψ`), its typed/raw code bodies, `𝚺₁` graph, recognizer `GicR` and `gicTheory_delta1` |
 | `NativeTheory` | **R1, the native theory as a `Δ₁` Foundation theory**: `nativeTheory = 𝗘𝗤 ℒₛₑₜ ∪ {containerAx, irAx} ∪ gicTheory` (container and irreflexivity are `toSet` translations of `NativeTheory254`'s forms); every model is an irreflexive native CP/GIC model (`models_cpgic`, via `eval_toSet`) |
 | `NativeTheoryAudit` | axiom audit for `NativeGicDelta1`, `NativeTheory` |
+| `InternalInterpretation` | represented interpretations of `ℒₛₑₜ` with defined atoms (for R3): `interp P` with `P = ⟪d, ⟪a₌, a∈⟫⟫` substitutes atom arguments into fixed meanings and guards quantifiers by `d`; commutation with negation, shift, substitution and `free`; derivation transport `derivable_iSet` and `provable_falsum_of_interp` (`Prov_T(⊥) → Prov_U(⊥)` from `U ⊢ ∃x δ(x)` and the interpreted `T`-axioms), reusing `InternalRelativization`'s domain side formulas |
+| `InternalInterpretationAudit` | axiom audit for `InternalInterpretation` |
 
 ## Building
 

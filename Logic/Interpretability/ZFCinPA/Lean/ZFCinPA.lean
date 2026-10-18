@@ -120,3 +120,5 @@ import ZFCinPA.LSchemaAudit
 import ZFCinPA.NativeGicDelta1
 import ZFCinPA.NativeTheory
 import ZFCinPA.NativeTheoryAudit
+import ZFCinPA.InternalInterpretation
+import ZFCinPA.InternalInterpretationAudit
