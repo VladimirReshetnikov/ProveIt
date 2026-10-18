@@ -1,0 +1,141 @@
+{
+  "status": "PASS_SOURCE_ONLY_HISTORICAL_CHECK_PREFLIGHT",
+  "jobs": [
+    {
+      "name": "safe-lifetime",
+      "argv": [
+        "python3",
+        "-B",
+        "code/state_reduction/safe_lifetime_witness.py",
+        "--program",
+        "reference/source/Prog254.v",
+        "--dag",
+        "reference/source/Dag254.v",
+        "--output",
+        "<fresh>/safe-lifetime.json"
+      ],
+      "timeout_seconds": 120,
+      "scope": "Two specific theorem-safe roots reach pairwise-distinct nine-register phases in both literal path and structured DAG interpreters; no blank reachability or state lower bound."
+    },
+    {
+      "name": "historical-leaf-map",
+      "argv": [
+        "python3",
+        "-B",
+        "code/state_reduction/map_reassociated_leaf.py",
+        "results/state_reduction/gradient-repaired.json",
+        "1110100100101011101010101110000000",
+        "--inputs",
+        "reference/grammar",
+        "--metadata",
+        "reference/interval/instruction-metadata.json",
+        "--output",
+        "<fresh>/gradient-leaf.json"
+      ],
+      "timeout_seconds": 120,
+      "scope": "Exact ordered6460 leaf labels and one address/metadata correspondence; no dynamic equivalence or runtime rejection."
+    },
+    {
+      "name": "historical-zero7-grammar",
+      "argv": [
+        "python3",
+        "-B",
+        "code/state_reduction/check_route_grammar.py",
+        "results/state_reduction/gradient-repaired.json",
+        "--inputs",
+        "reference/grammar",
+        "--bootstrap-lock",
+        "inputs/state_reduction/bootstrap-lock54.txt",
+        "--output",
+        "<fresh>/zero7-grammar.json"
+      ],
+      "timeout_seconds": 120,
+      "scope": "128-rule abstract grammar, zero-run7/depth49; not a successful shortened-scanner runtime certificate."
+    },
+    {
+      "name": "historical-zero6-k129-grammar",
+      "argv": [
+        "python3",
+        "-B",
+        "code/state_reduction/check_route_grammar.py",
+        "results/state_reduction/gradient-zero6-k129.json",
+        "--inputs",
+        "reference/grammar",
+        "--bootstrap-lock",
+        "inputs/state_reduction/bootstrap-lock54.txt",
+        "--output",
+        "<fresh>/zero6-k129-grammar.json"
+      ],
+      "timeout_seconds": 120,
+      "scope": "129-rule abstract positive control, zero-run6/depth49; not the final128-rule245 table."
+    }
+  ],
+  "entrypoints_read_in_full": true,
+  "standard_library_only": true,
+  "required_writes": "Only each explicit named output; no bytecode with -B; copies required to preserve original payload.",
+  "no_manifest_checks": true,
+  "not_part_of_final245_driver": true,
+  "discovery_search_excluded": true,
+  "stale_abstract_framework_count": "check_route_grammar emits hardcoded118 framework roles; working_states_if_realized is246 for128 rules and247 for129 rules, without scanner deletion. Preserve and label abstract.",
+  "safe_trace_fuel": "Each path and structured interpreter bounded at2000000 source instructions; delivered traces13517 each, not fresh recomputation.",
+  "pins": [
+    {
+      "path": "code/state_reduction/safe_lifetime_witness.py",
+      "sha256": "c79abc8373365859fd34b8d873ddab4c0ff0ba2ba5ffdcd8a7114d15cd904494"
+    },
+    {
+      "path": "code/state_reduction/map_reassociated_leaf.py",
+      "sha256": "6d4339f6a75746f2c0115fef2e8f1aa10051e8bc2a971eaccfb0ee9aa8a0fe84"
+    },
+    {
+      "path": "code/state_reduction/check_route_grammar.py",
+      "sha256": "7e1c2e73a9065b95509ec6e1f3b3ec2708f28ed207cc62e912aca00534651776"
+    },
+    {
+      "path": "reference/source/Prog254.v",
+      "sha256": "1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746"
+    },
+    {
+      "path": "reference/source/Dag254.v",
+      "sha256": "538ddaddd932058c2b319011126579d77783231f54331772377c05848a0599e3"
+    },
+    {
+      "path": "reference/grammar/closed-sequence-grammar-next22.json",
+      "sha256": "3d7798e924a9e5d56594d29e8a5c46bf1e9affc3f23fa4e6a1695499112fac19"
+    },
+    {
+      "path": "reference/grammar/semantic-symbols.json",
+      "sha256": "4e77c352494a3e18d143776a1b5ffca1a2e7d234aba0c2560a41982339395fdd"
+    },
+    {
+      "path": "reference/grammar/semantic.txt",
+      "sha256": "6f685f37ada81ace12e5ebd8b28b836794d6fc340199b0cd4ab4862f76591622"
+    },
+    {
+      "path": "reference/interval/instruction-metadata.json",
+      "sha256": "03badc975e6efad04ded6401399147c6aa6d3efeadde2c6a1ce440ee8dc6e729"
+    },
+    {
+      "path": "results/state_reduction/gradient-repaired.json",
+      "sha256": "3b3dad07b637f99d662708b80541ec91c4bfa2ac59ef39634bf0185faafe556a"
+    },
+    {
+      "path": "results/state_reduction/gradient-zero6-k129.json",
+      "sha256": "125711d8e7e8c30f3aa84fbe30ddf13c2092e7e86beed7961f5736f5114999c8"
+    },
+    {
+      "path": "inputs/state_reduction/bootstrap-lock54.txt",
+      "sha256": "a0604dd2350cb5be9ff22987f6654919a90f0aade2ae411c9525c0f0e9e9d8da"
+    },
+    {
+      "path": "results/state_reduction/safe-lifetime-witness.json",
+      "sha256": "fb9fbbbbd956899fb1e47827bc1f135cb2cb1bb66ec357b510307f65509e5bd6"
+    },
+    {
+      "path": "results/state_reduction/gradient-last-zero-leaf.json",
+      "sha256": "2fdb62a93c0765ad8c8b6797c1c234bede703595db10c3a21a4f55a150f99bae"
+    }
+  ],
+  "reviewer_execution": false,
+  "findings": []
+}

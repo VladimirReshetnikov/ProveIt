@@ -1,0 +1,131 @@
+{
+  "status": "PASS",
+  "delivery_hashes_checked": 224,
+  "full_baseline_replay": true,
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "seconds": 25.01825147999989,
+  "commands": [
+    {
+      "label": "Pristine baseline integrity",
+      "command": [
+        "code/check_hashes.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.06345198199960578,
+      "stdout": "RELEASE INTEGRITY PASS: 105 file hashes match\n",
+      "stderr": ""
+    },
+    {
+      "label": "Full nine-stage baseline suite",
+      "command": [
+        "code/verify_all.py"
+      ],
+      "returncode": 0,
+      "seconds": 16.21484266399966,
+      "stdout": "code/rebuild_machines.py --check PASS\ncode/check_folds.py PASS\ncode/render_table.py --check PASS\ncode/check_macro_inductions.py PASS\ncode/review_affine_source.py --program sources/Prog254.v --sites sources/prior/instruction-sites-physical.json --table machine/zfc_prefix246_old.tm --checker sources/prior/prefix_affine.py --output results/affine-source-review.json PASS\ncode/check_bootstrap.py PASS\ncode/check_literal_instructions.py --program sources/Prog254.v --table machine/zfc_prefix246_old.tm --output results/literal-instructions.json PASS\ncode/check_local_contracts.py PASS\ncode/check_prefix_boxes.py PASS\nALL PREFIX246 CHECKS PASS\n",
+      "stderr": ""
+    },
+    {
+      "label": "Partial245 universal decrements and increment counterexample",
+      "command": [
+        "experiments/tail/verify_decrement245.py",
+        "--base",
+        "/tmp/zfc-below246-replay-47pxid1c/baseline/context246",
+        "--output-dir",
+        "/tmp/zfc-below246-replay-47pxid1c/experiments/tail"
+      ],
+      "returncode": 0,
+      "seconds": 0.0850080820000585,
+      "stdout": "{\n  \"status\": \"PARTIAL_RESULT\",\n  \"states\": 245,\n  \"positive_steps\": \"4+2*width_prefix\",\n  \"zero_steps\": \"5+2*width_prefix\",\n  \"arbitrary_left_and_right_exteriors\": true,\n  \"increment_expected\": {\n    \"state\": 48,\n    \"head\": -1,\n    \"ones\": [\n      -1,\n      1,\n      2,\n      4,\n      6,\n      7\n    ],\n    \"steps\": 15\n  },\n  \"increment_first_return\": {\n    \"step\": 16,\n    \"state\": 48,\n    \"head\": -4,\n    \"ones\": [\n      -2,\n      0,\n      1,\n      3,\n      5\n    ]\n  }\n}\n",
+      "stderr": ""
+    },
+    {
+      "label": "Partial244 universal arithmetic contracts",
+      "command": [
+        "experiments/forward/prove_forward_carry.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.21985940800004755,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"status_of_machine\": \"INCOMPLETE; conditional branch collision\",\n  \"working_states\": 244,\n  \"edited_rows\": {\n    \"255/0\": [\n      1,\n      \"L\",\n      63\n    ],\n    \"255/1\": [\n      0,\n      \"R\",\n      95\n    ]\n  },\n  \"removed_states\": [\n    112,\n    131\n  ],\n  \"baseline_sha256\": \"303911c554284c49ce09042d8127feba4da260baae766e32260034aa3bdb82ee\",\n  \"kernel_status\": \"Ordinary symbolic-induction checker; no proof-assistant kernel endpoint.\",\n  \"word_identity\": {\n    \"status\": \"PASS\",\n    \"induction\": \"finite lists of arbitrary natural numbers\",\n    \"base\": \"C([])1 = 1B([])\",\n    \"cons\": \"C(v)C(A)1 = C(v)1B(A) = 1B(v)B(A)\",\n    \"identity\": \"C(A)1 = 1B(A)\",\n    \"reverse_identity\": \"1rev(C(A)) = rev(B(A))1\"\n  }\n}\npositive_decrement 4+2*width_pre 0\nzero_forward_carry 14+2*width_pre+2*width_suf+2*y 0\nincrement 11+2*width_pre+2*width_suf+2*x -1\n",
+      "stderr": ""
+    },
+    {
+      "label": "Partial244 exact configuration collisions",
+      "command": [
+        "experiments/forward/check_collision.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.1178371200003312,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"examples\": [\n    {\n      \"name\": \"smallest_nonempty_suffix\",\n      \"zero_steps\": 14,\n      \"positive_steps\": 4,\n      \"endpoint\": {\n        \"state\": 48,\n        \"head\": 0,\n        \"ones\": [\n          -3,\n          -2,\n          -1,\n          0,\n          2,\n          4,\n          6,\n          7\n        ]\n      }\n    },\n    {\n      \"name\": \"nine_primary_registers_plus_spares\",\n      \"zero_steps\": 46,\n      \"positive_steps\": 4,\n      \"endpoint\": {\n        \"state\": 48,\n        \"head\": 0,\n        \"ones\": [\n          -3,\n          -2,\n          -1,\n          0,\n          2,\n          4,\n          6,\n          8,\n          10,\n          12,\n          14,\n          16,\n          18,\n          20,\n          22,\n          23\n        ]\n      }\n    },\n    {\n      \"name\": \"nine_primary_registers_all_spares_one\",\n      \"zero_steps\": 48,\n      \"positive_steps\": 4,\n      \"endpoint\": {\n        \"state\": 48,\n        \"head\": 0,\n        \"ones\": [\n          -3,\n          -2,\n          -1,\n          0,\n          2,\n          4,\n          6,\n          8,\n          10,\n          12,\n          14,\n          16,\n          18,\n          20,\n          21,\n          23,\n          24\n        ]\n      }\n    }\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "label": "Return-context counterexample",
+      "command": [
+        "experiments/runtime/verify_return_counterexample.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.06377975200121,
+      "stdout": "{\"output\": \"return-counterexample.json\", \"witness_after_steps\": 362, \"state\": 48, \"head\": 4, \"baseline_instruction_steps\": 470, \"baseline_endpoint\": [7, 3], \"patched_endpoint\": [112, 1]}\n",
+      "stderr": ""
+    },
+    {
+      "label": "Universal detector caller partition",
+      "command": [
+        "experiments/tail/audit_detector_entry.py",
+        "--base",
+        "/tmp/zfc-below246-replay-47pxid1c/baseline/context246",
+        "--output",
+        "/tmp/zfc-below246-replay-47pxid1c/experiments/tail/detector-entry-audit.json"
+      ],
+      "returncode": 0,
+      "seconds": 3.695514123000976,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"instruction_cases\": 8391,\n  \"instruction_cases_with_entry\": 8390,\n  \"entries\": 191434,\n  \"input_partition\": {\n    \"long_at_least_nine_known_zeros\": 21316,\n    \"short_0\": 94986,\n    \"short_1\": 62841,\n    \"short_2\": 7511,\n    \"short_3\": 3277,\n    \"short_4\": 1045,\n    \"short_5\": 330,\n    \"short_6\": 92,\n    \"short_7\": 36\n  },\n  \"exact_baseline_sha256\": \"303911c554284c49ce09042d8127feba4da260baae766e32260034aa3bdb82ee\",\n  \"inherited_affine_source_sha256\": \"083f884e6de87a85381ebc6b28c23d02a9f0731e67c3d77e26ed9ea4544cd08e\",\n  \"unchanged_induction_support_rows\": 42,\n  \"entry_guard\": \"At state6, tape(+1)=0 and tape(+2)=1. Either the first leftward1 is at distance0..7, or every cell -8..0 is known0.\",\n  \"scope\": \"All arbitrary-parameter instruction frames covered by the inherited affine and register-induction proof. Blank startup remains a separate finite check.\",\n  \"proof_status\": \"Ordinary exact symbolic execution with checked unary/list induction dependencies; no new proof-assistant kernel theorem.\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "label": "Independent detector replay: detector_n8_t8_wNone_fix0_nowrite0_seed0_left-7_exit-8_head-8.json",
+      "command": [
+        "experiments/decoder/verify_detector.py",
+        "/tmp/zfc-below246-replay-47pxid1c/experiments/counter/detector_n8_t8_wNone_fix0_nowrite0_seed0_left-7_exit-8_head-8.json"
+      ],
+      "returncode": 0,
+      "seconds": 0.04713233500115166,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"model_sha256\": \"facc21d13c2c53006b5e899b315496640a1d651f8c9701245e760ea711fe78c5\",\n  \"states\": 8,\n  \"source_step_bound\": 8,\n  \"contracts\": 9,\n  \"proof_scope\": \"Finite exact traces with no reads outside their known word; arbitrary exterior transport follows by literal induction. The local proof stops at the stated exit before any further read.\"\n}\ndurations [1, 2, 5, 4, 5, 8, 7, 8, 8]\nwrote /tmp/zfc-below246-replay-47pxid1c/experiments/decoder/detector-replay-detector_n8_t8_wNone_fix0_nowrite0_seed0_left-7_exit-8_head-8.json\n",
+      "stderr": ""
+    },
+    {
+      "label": "Independent detector replay: result_n8_t8_wNone.json",
+      "command": [
+        "experiments/decoder/verify_detector.py",
+        "/tmp/zfc-below246-replay-47pxid1c/experiments/counter/result_n8_t8_wNone.json"
+      ],
+      "returncode": 0,
+      "seconds": 0.07723800099847722,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"model_sha256\": \"ce4ac75cc5fcc0f1f6235b36f1fba7d7e2ee893272da61c02a5ece41c3f81159\",\n  \"states\": 8,\n  \"source_step_bound\": 8,\n  \"contracts\": 9,\n  \"proof_scope\": \"Finite exact traces with no reads outside their known word; arbitrary exterior transport follows by literal induction. The local proof stops at the stated exit before any further read.\"\n}\ndurations [1, 2, 7, 8, 7, 8, 7, 8, 8]\nwrote /tmp/zfc-below246-replay-47pxid1c/experiments/decoder/detector-replay-result_n8_t8_wNone.json\n",
+      "stderr": ""
+    },
+    {
+      "label": "Alternate246 inherited induction support",
+      "command": [
+        "experiments/decoder/audit_detector_support.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.042670488999647205,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"baseline_sha256\": \"303911c554284c49ce09042d8127feba4da260baae766e32260034aa3bdb82ee\",\n  \"table_sha256\": \"2e4c60cf14947c9ebb8e4bf999f9cd0ac995d09d16bb8b84e5c2fba922f79b1b\",\n  \"support_rows\": 42,\n  \"theorem_count\": 16,\n  \"state6_read1\": [\n    1,\n    \"L\",\n    4\n  ],\n  \"scope\": \"Literal transition transport for all four block, three register-macro, and nine marking induction traces. Full instruction contracts and blank startup are checked separately.\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "label": "Alternate246 all instruction contracts and exact blank prefix",
+      "command": [
+        "experiments/decoder/verify_alternate.py"
+      ],
+      "returncode": 0,
+      "seconds": 4.20249787099965,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"working_states\": 246,\n  \"instruction_cases\": 8391,\n  \"bootstrap_steps\": 409449,\n  \"complete_tape_matches_recorded_bootstrap\": true,\n  \"logical_values\": [\n    3,\n    0,\n    0,\n    0,\n    3,\n    0,\n    0,\n    0,\n    0\n  ],\n  \"table_sha256\": \"2e4c60cf14947c9ebb8e4bf999f9cd0ac995d09d16bb8b84e5c2fba922f79b1b\",\n  \"proof_status\": \"Ordinary symbolic and finite checks; no new kernel endpoint.\"\n}\n",
+      "stderr": ""
+    }
+  ],
+  "result": "No complete sub-246 machine obtained. Partial local results and alternate246 reverified.",
+  "proof_status": "Ordinary symbolic-induction and literal checks; no fresh Lean/Rocq kernel build."
+}

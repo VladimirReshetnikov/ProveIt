@@ -1,0 +1,12 @@
+[
+  {
+    "path": "code/verify_all.py",
+    "only_change": "Skip delivery manifest validation; retain exact semantic input bindings and all substantive checks",
+    "diff": "--- delivered/code/verify_all.py\n+++ run-copy/code/verify_all.py\n@@ -37,15 +37,8 @@\n     if out.exists() and any(out.iterdir()):\n         raise ValueError(\"The output directory must be empty; frozen results are never overwritten.\")\n     out.mkdir(parents=True, exist_ok=True)\n-    inventory = ROOT / \"SHA256SUMS\"\n     checked = 0\n-    for line in inventory.read_text().splitlines():\n-        expected, rel = line.split(\"  \", 1)\n-        path = ROOT / rel\n-        assert path.is_relative_to(ROOT) and path.is_file(), rel\n-        assert digest(path) == expected, (\"Artifact hash mismatch\", rel)\n-        checked += 1\n-    print(f\"PASS: {checked} delivered file hashes.\", flush=True)\n+    print(\"SKIPPED: delivery checksum manifests, per repository intake policy.\", flush=True)\n \n     env = os.environ.copy()\n     env[\"PYTHONDONTWRITEBYTECODE\"] = \"1\"\n"
+  },
+  {
+    "path": "code/verify.py",
+    "only_change": "Skip delivery manifest validation; retain exact semantic input bindings and all substantive checks",
+    "diff": "--- delivered/code/verify.py\n+++ run-copy/code/verify.py\n@@ -35,9 +35,7 @@\n     out.mkdir(parents=True,exist_ok=True)\n     parameterization=check_parameterization()\n     (out/'parameterization.json').write_text(json.dumps(parameterization,indent=2)+'\\n')\n-    manifest=json.loads((ROOT/'manifest.json').read_text())\n-    for rel,expected in manifest['sha256'].items():\n-        assert digest(ROOT/rel)==expected,('Artifact hash mismatch',rel)\n+    # Delivery checksum manifest intentionally not checked during intake.\n \n     def run(name,arguments):\n         log=out/(name+'.log')\n"
+  }
+]

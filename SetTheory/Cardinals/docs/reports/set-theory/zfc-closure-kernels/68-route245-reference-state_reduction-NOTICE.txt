@@ -1,0 +1,51 @@
+Research experiment prepared on 18 October 2026 for the ProveIt investigation.
+
+The exact ZFC source program, its native calculus, and the original machine
+are by Mira-Cult. Jeff Ketchersid supplied the upstream verification,
+including Prog254.v and Dag254.v. Andrew James Wade supplied the compiler
+framework. The table used here is the already submitted ProveIt 246-state
+contextual-fold candidate, whose attribution is unchanged.
+
+safe_lifetime_witness.py and make_resource_merge_cases.py are new experiment
+drivers. The literal source programs retain their existing upstream license
+and attribution. resource_merge_search.cpp is adapted from context/merge_search.cpp
+in the prior zfc-beyond246 incoming archive. The new screen changes the finite
+fixture resources to 167 value-one spare blocks and header distance 181, uses
+the retained 8,385 interval fixtures, and increases the represented tape window.
+It does not claim a new mutation family, a new candidate machine, a proof of
+minimality, or a new consistency equivalence.
+
+Reproduction of the witness:
+python3 -B safe_lifetime_witness.py --dag PATH/TO/Dag254.v
+
+The default Prog254.v is included. Expected source program SHA256:
+1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746
+Expected Dag254.v SHA256:
+538ddaddd932058c2b319011126579d77783231f54331772377c05848a0599e3
+
+Reproduction of the new finite merge screen from its included fixture file:
+g++ -O3 -std=c++17 resource_merge_search.cpp -o resource_merge_search
+./resource_merge_search resource-merge-cases.txt
+
+The executable writes merge-search-summary.json and merge-survivors.txt in
+the current directory. The expected full survivor count is zero. The fixture
+generator and source hashes are retained in resource-merge-cases.json; it uses
+instruction-metadata.json from the prior below246_v2 interval experiment and
+check_literal_instructions.py from the inherited 246-state reference. No new
+unbounded or proof-assistant check of modified machines is asserted.
+
+Routing search additions:
+anneal_routes_v1.cpp and its v2, scan, scan_gradient and zero6 variants adapt
+search/grammar/code/anneal5.cpp from the prior below246_v2 incoming archive.
+They add independently movable folded-entry routes, synthesized router-only
+words, bootstrap locks, direct existing-child cuts, and zero-run objectives.
+A local input adds the original state177 lookup word as an initial pure
+router. The goal remains heuristic search; unsuccessful runs do not prove a
+lower bound. check_route_grammar.py is a separate Python grammar audit.
+
+check_short_scan_boot.py, short_scan_boot_lemma.tex,
+map_reassociated_leaf.py, prepare_route_inputs.py, and
+repair_scanner_grammar.py are new experiment artifacts. The successful
+407915-move bootstrap of the shortened scanner is not claimed to validate
+its ordinary instruction behavior. STATE_REDUCTION_REPRODUCE.md gives the
+curated archive-relative reproduction commands.

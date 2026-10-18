@@ -2869,3 +2869,40 @@ remain reusable. The new tables' complete Lean endpoints and the user's
 PA-internal equivalence remain open. Delivered sources, base article and
 attribution are unchanged. Optional searches were not rerun, and the stale
 `build246.py` reference is corrected only in the reconciliation.
+
+
+Batch 163 adds four manuscripts as sources 64–67 of
+[ZFC closure kernels](set-theory/zfc-closure-kernels/intake-163.md), now 67 sources
+and still 290 collection reports. Placement `47507759e7` preserves 1,190 ancillary
+files and retires four committed archives; 70 manuscript/delivery files remain
+recoverable. Reconciliation `f106867a74` preserves independent reviews, exact
+recovery and scoped fresh evidence, with all delivered/base files unchanged.
+
+The reports add arithmetic contracts, theorem-valued/prepared-frame witnesses,
+numerical invariants and source transformations. Source 64's alternate detector
+and source 67's six-row decoder repair are different 246-state tables, with
+409,449-step and 410,735-step complete startups respectively. Source 67's
+201-node source rewrite is not a state record; its accepted alternate machine
+compiles a simpler 202-node rewrite. No complete sub-246 construction follows.
+
+Thirty substantive jobs pass (10, 5, 7 and 8 by source). One additional source 66
+full symbolic replay times out at its explicit 360-second cap, with no observable
+partial case count; its delivered complete result remains inherited. Source
+67's 42,486,984-assignment partition check does not replay rejection premises;
+its separate 952,763,904-assignment affine family replays 19,661 leaves. These
+are scoped checker results, not global state lower bounds. The original PA
+proof goal and current exact-table Lean work remain separate. Stronger target
+theories must meet the [project's benchmark requirement](../../../../Computability/BusyBeaver/Research/ZFC/README.md).
+
+
+Batch 164 prioritizes `8286787dd0` as source 68 of
+[ZFC closure kernels](set-theory/zfc-closure-kernels/intake-164.md), now 68
+manuscripts in the same host and still 290 collection reports. Placement
+`46e8518e0e` preserves 273 ancillary files and retires only the 245-state
+archive; all 294 original payloads remain recoverable. The complete fresh
+runtime suite passes, including 8,391 expanded symbolic cases, 490 rows,
+407,915 blank steps and 8,385 finite regressions. Four auxiliary and four
+historical checks also pass. Independent reviews find no substantive blocker
+within the ordinary mathematical proof's scope. The new table has no Lean
+endpoint or PA-internal equivalence yet; the exact 246-state external Lean
+endpoint remains the checked baseline. The six earlier archives remain queued.

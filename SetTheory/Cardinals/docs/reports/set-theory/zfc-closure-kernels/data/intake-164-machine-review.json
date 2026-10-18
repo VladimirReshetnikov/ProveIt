@@ -1,0 +1,73 @@
+{
+  "status": "SOURCE_AND_STATIC_BINDING_REVIEW_COMPLETE_NO_MACHINE_BLOCKER_FOUND",
+  "archive_root": "/tmp/zfc245-8286787-review/extracted/zfc245-proof-20261018",
+  "scope": {
+    "supplied_programs_executed": false,
+    "compiler_or_checker_executed": false,
+    "transition_trace_replayed": false,
+    "symbolic_proof_replayed": false,
+    "checksum_manifests_checked": false,
+    "maintained_files_edited": false,
+    "reviewer_owned_static_parser_run": true,
+    "not_full_validation": true
+  },
+  "metadata": {
+    "path": "/tmp/zfc245-8286787-review/machine-review/metadata.json",
+    "sha256": "47130e9d148d231acfa82ce6a93b7d35758a4d9d697b8113d4d597bc03fc8c16",
+    "parser_path": "/tmp/zfc245-8286787-review/machine-review/inspect_metadata.py",
+    "parser_sha256": "fca639053cda532224b9bedad817268f75646d8e8dcf245bb335bcf3d884478f"
+  },
+  "main_observations": [
+    "The delivered old-label table has 245 working states and 490 complete binary rows; its exact canonical renumbering has start 0, dispatcher 88 and separate target-only halt 245. Canonical/old table and renumbering copies in certificate/ are byte-identical. The displayed TeX table also matches all 490 canonical rows.",
+    "The archive baseline is byte-identical to the maintained verified prefix246 old-label table. The new working-label set is that baseline minus 247, with 104 changed common rows. Labels 74 and 177 are reused, not removed labels. The saving is the role accounting 119+127 to 117+128.",
+    "All 490 new literal rows match a reviewer-owned static reconstruction from the allocation, grammar and retained framework. Only four retained framework rows differ: 58/0 now goes to 84, 153/1 and 159/0 to 157, and 218/0 to 86. All other changes are grammar-role rows (including reused 74/177).",
+    "The grammar JSON itself retains framework_states=118 and lacks short_scan=true. The exact delivered table additionally requires the --short-scan flag; code/verify.py supplies it together with --padding 64. This is an explicit construction parameter, not an inconsistency in the emitted table.",
+    "The source grammar original AST matches the maintained ActualTree254 tree including all old paths; the new source preserves all 6460 ordered operations and arguments. Exactly 6241 leaf addresses change. Therefore existing246 finite path coverage cannot be copied without a new tree/grammar proof.",
+    "The new tree has 6459 internal nodes, depth51, maximum zero run6 and 8391 guarded cases. Static allocation confirms 84 retained old words (77 same parses,7 changed),43 absent old words and44 new words.",
+    "The supplied final bootstrap endpoint has exactly the baseline351 one-positions, the same logical seed(3,0,0,0,3,0,0,0,0), and167 value-one spare blocks. The candidate time407915 differs from410735 by2820=2*1410. This review compares endpoint records and local argument only; it does not replay either trace."
+  ],
+  "startup_and_control_assessment": [
+    "The local scanner contraction is correct under all three zero-cell premises: old58/0;74/0;84/0 and new58/0 have the same entire tape, state84 and head x-1. The check_short_scan_boot script applies this to the scanner-shortened baseline; it does not itself validate the full reassociated245 table.",
+    "The final-table binding is supplied separately by build.sparse_boot and check_candidate_boot, which parse the actual constructed old-label table, compare sparse/dense runs and all one-cells, and compare to the baseline endpoint. verify.py hard-pins the reconstructed canonical and old tables before subsequent runtime calls.",
+    "The 54 immediate-projection bootstrap locks are checked by separate frame-composition/grammar checks. The historical local-routing record explicitly has zero boot-lock rows checked; its status alone is insufficient for bootstrap transfer. The README identifies this distinction.",
+    "Forced one/two-bit routing uses both predecessor bit values, preserving writes, duration and head. The closed-atom escape bounds address break/continue association, and the separately regenerated 3013-pair/6024-edge source bisimulation checks actual control behavior rather than inferring it solely from leaf equality.",
+    "The main proof uses total header distance64+n, not merely trailing zeros. It retains full successor width and overflow; n increases by positive-decrement+overflow. Source depth51 fits, minimum constant padding13 is recorded, and nonempty spare suffix is retained with INC appending[1]."
+  ],
+  "checker_binding_assessment": [
+    "verify.py compares seven regenerated certificate files byte-for-byte, pins both literal table hashes, then calls audit_existing_machine on that actual table and generated physical sites.",
+    "audit_existing_machine resets the imported induction tables and reruns block, word, macro and marking proofs against the supplied table before admitting affine macro oracles. Its standalone source-sites input still assumes a separately established source correspondence; the combined driver supplies that correspondence.",
+    "The reviewer independently confirmed the three exact source-text parameterization transforms: affine engine, affine case driver, and whole-frame engine. Changes are the declared matched padding, input-depth guards, import path and output metadata; symbolic inference bodies remain inherited.",
+    "The optional whole-frame invocation includes --all-values, --table and --sites; all-values resets all nine old interval bounds to arbitrary naturals. The original interval certificate is still validated, but its restrictions are not premises of the alternative-tree all-values cases.",
+    "The all-values program validates a complete prefix-free alternative tree and the physical/logical map, but requires a separately proved program equivalence. It expands primary blocks and arbitrary nonempty spare lists, using shared inherited block/list induction primitives. It is separately structured corroboration, not a distinct proof kernel.",
+    "The 1000/3000 symbolic-rule limits reject unclosed certificates; they do not bound quantified natural register/gap/list values. A --limit invocation can report PASS_LIMITED and is unsuitable as complete coverage; the combined full driver requires complete=true and8391 cases.",
+    "The frozen full-symbolic record binds the exact old-table and physical-sites hashes and records8391 cases,2312645 rules,490 distinct rows and minimum13 steps. These are inspected historical claims, not newly reproduced execution results."
+  ],
+  "proof_status": "No transition/startup/allocation/binding defect was found in the reviewed source. The package remains an ordinary mathematical/executable-certificate claim for this exact245 table, with no newly checked Lean endpoint or PA-internal comparison. Fresh supplied-checker replay and a kernel port remain separate.",
+  "findings": [],
+  "extra_static_checks": {
+    "displayed_tex_rows_equal_canonical": 490,
+    "recorded_whole_frame_rows": 490,
+    "recorded_whole_frame_cases": 8391,
+    "whole_frame_hashes_match_files": true
+  },
+  "not_in_scope": [
+    "Fresh all8391 symbolic instruction proof validation",
+    "Full independent reproof of the inherited block/list symbolic engine",
+    "Logical theory-calibration audit",
+    "Claim of a completed PA equivalence"
+  ],
+  "source_pins_additional": [
+    {
+      "path": "machine/transition-table.tex",
+      "sha256": "4d433852f04f0eb4a5e7afff558b865b9510e81a3031793c084c909bd5e782ec"
+    },
+    {
+      "path": "code/render_transition_table.py",
+      "sha256": "6cfa51c63a1000520183ab5f8578e4c92fbbe69768b684144ef87dce250f8e75"
+    },
+    {
+      "path": "reference/jeff/ZF/m254/tools/prog/rmpath.py",
+      "sha256": "60c4aedada21259ecfe00f4862e4ce370bf5421129ce3f32b72c16d2f9759dea"
+    }
+  ]
+}

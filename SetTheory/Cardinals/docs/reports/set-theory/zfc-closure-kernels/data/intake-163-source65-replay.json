@@ -1,0 +1,105 @@
+{
+  "status": "PASS",
+  "source": 65,
+  "source_package": "/tmp/zfc-intake-163/zfc-beyond246-research-20261018/zfc-beyond246",
+  "working_package": "/tmp/zfc-intake-163/replay65-run1/package",
+  "checksum_manifests_checked": false,
+  "line_endings_checked": false,
+  "compiler_invoked": false,
+  "new_search_run": false,
+  "one_incoming_journal_replayed": true,
+  "reference_full_suite_replayed": false,
+  "adapters": [
+    {
+      "original": "/tmp/zfc-intake-163/replay65-run1/package/context/check_support.py",
+      "original_sha256": "dcdceb8be7ca4643dcbc6727c243b9311dcf774d086fb9f83c267260d70b87fb",
+      "adapter": "/tmp/zfc-intake-163/replay65-run1/package/context/review_check_support_no_manifests.py",
+      "adapter_sha256": "4ca79e8fa702380e6ea015f670e87d97abb9c198ace06f846f9ab0af0454614c",
+      "change": "Only checksum-manifest loop and corresponding status wording omitted; delivered source unchanged."
+    }
+  ],
+  "commands": [
+    {
+      "label": "fresh baseline macro dependencies",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "code/check_macro_inductions.py"
+      ],
+      "cwd": "/tmp/zfc-intake-163/replay65-run1/package/baseline246/zfc-context246",
+      "returncode": 0,
+      "seconds": 0.08690114971250296,
+      "stdout": "/tmp/zfc-intake-163/replay65-run1/01.stdout.txt",
+      "stderr": "/tmp/zfc-intake-163/replay65-run1/01.stderr.txt",
+      "stdout_sha256": "c029d54d80af5c7b804c5892fb2fc5a706457548c930a02c4d7d61f7b76721ca",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "8391 support, saved domains and SAT positive control",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "code/check_saved_results.py",
+        "--replay-ledger",
+        "--output",
+        "/tmp/zfc-intake-163/replay65-run1/saved-results.json"
+      ],
+      "cwd": "/tmp/zfc-intake-163/replay65-run1/package",
+      "returncode": 0,
+      "seconds": 68.06091041583568,
+      "stdout": "/tmp/zfc-intake-163/replay65-run1/02.stdout.txt",
+      "stderr": "/tmp/zfc-intake-163/replay65-run1/02.stderr.txt",
+      "stdout_sha256": "1b563e71f29b4858d4f61a70f48286499bdc30bcec979365090df67d846f90ec",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "prepared source-phase and scanner witnesses",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "audit/verify_audit.py",
+        "--output",
+        "/tmp/zfc-intake-163/replay65-run1/audit"
+      ],
+      "cwd": "/tmp/zfc-intake-163/replay65-run1/package",
+      "returncode": 0,
+      "seconds": 0.18472389318048954,
+      "stdout": "/tmp/zfc-intake-163/replay65-run1/03.stdout.txt",
+      "stderr": "/tmp/zfc-intake-163/replay65-run1/03.stderr.txt",
+      "stdout_sha256": "673d0cac228246973c7a3b1efdddc8a28c933c2dfedd95f8f58918323080c459",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "context derived macros and saved counts",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake-163/replay65-run1/package/context/review_check_support_no_manifests.py"
+      ],
+      "cwd": "/tmp/zfc-intake-163/replay65-run1/package/context",
+      "returncode": 0,
+      "seconds": 3.0755252251401544,
+      "stdout": "/tmp/zfc-intake-163/replay65-run1/04.stdout.txt",
+      "stderr": "/tmp/zfc-intake-163/replay65-run1/04.stderr.txt",
+      "stdout_sha256": "df8e46b2404a2776f1bb71aec2cce81035a877989b1495c984dd94a6edd4530d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "product and relational inductive closure",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "alternative/verify_invariant.py",
+        "--relational"
+      ],
+      "cwd": "/tmp/zfc-intake-163/replay65-run1/package",
+      "returncode": 0,
+      "seconds": 24.34685296099633,
+      "stdout": "/tmp/zfc-intake-163/replay65-run1/05.stdout.txt",
+      "stderr": "/tmp/zfc-intake-163/replay65-run1/05.stderr.txt",
+      "stdout_sha256": "0c9d05300d0dbd1f71b2c04ecdf4bcbdf33afdff3d3e0f95c2c58b9f17760ef2",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "scope": "Fresh reviewed certificate/witness jobs only. Preserved search summaries are scoped records, not replayed searches or lower-bound proofs. No Lean/Rocq endpoint."
+}

@@ -1,0 +1,22 @@
+{
+  "status": "INDEPENDENT_MAINTAINED_DEFAULT_REVIEW",
+  "scope": "Existing root preparation only; reviewer did not invoke guard/compiler/version. Exact successful source/audit and allowed portable-path differences checked.",
+  "record": {
+    "path": "/tmp/zfc-prefix246-lean/seed/maintained-prepared/verification.json",
+    "sha256": "341094faf70cf67fca5c352d307435ad9891b3b0a0e003380972751826fef26c"
+  },
+  "successful_record_sha256": "62794af09088f09c0fb11fd1940773e5f3d25f60f26bcd68e86a1475297435eb",
+  "current_inputs": 197,
+  "all_current_hashes_match": true,
+  "commands": [],
+  "fresh_modules": [],
+  "compiler_version_query_performed": false,
+  "source_audit_equal_successful_bytes": true,
+  "guard_sha256": "6466537fe8459d79c84c01622598fc6c04e4a918ae8acfd6a60d108b446823a8",
+  "guard_changes": "Only four path substitutions: repo discovery, source default, audit default and bindings path.",
+  "guard_diff": "--- \n+++ \n@@ -4,7 +4,7 @@\n import argparse, hashlib, json, os, re, shutil, subprocess, time\n \n HERE=Path(__file__).resolve().parent\n-REPO=Path('/home/codex/.codex/worktrees/ec20/Proofs')\n+REPO=HERE.parents[3]\n BINDINGS_SHA='45bb30063fd7cb35885944620bcfc1e6dfcb64c34ebed01df20ccabaf3b15c7a'\n def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()\n def need(b,msg):\n@@ -14,11 +14,11 @@\n def main():\n     ap=argparse.ArgumentParser(description=__doc__)\n     ap.add_argument('--output',type=Path,required=True)\n-    ap.add_argument('--source',type=Path,default=HERE/'LogicalSeed246.lean')\n-    ap.add_argument('--audit',type=Path,default=HERE/'Audit.lean')\n+    ap.add_argument('--source',type=Path,default=REPO/'Computability/BusyBeaver/Lean/BusyBeaver/ZFC/LogicalSeed246.lean')\n+    ap.add_argument('--audit',type=Path,default=HERE/'logical_seed246_audit.lean')\n     ap.add_argument('--prepare-only',action='store_true');a=ap.parse_args()\n     W=a.output.resolve();need(not W.is_relative_to(REPO) and (not W.exists()or not any(W.iterdir())),'Fresh external output required.')\n-    B=HERE/'bindings.json';need(sha(B)==BINDINGS_SHA,'Bindings changed.');cfg=json.loads(B.read_text())\n+    B=HERE/'results/prefix246-logical-seed-bindings.json';need(sha(B)==BINDINGS_SHA,'Bindings changed.');cfg=json.loads(B.read_text())\n     S=a.source.resolve();A=a.audit.resolve();E=Path(cfg['evidence']['path']);C=Path(cfg['compiler']['path'])\n     for p,h in [(S,cfg['source_sha256']),(A,cfg['audit_sha256']),(E,cfg['evidence']['sha256']),(C,cfg['compiler']['sha256'])]:need(sha(p)==h,'Input changed: '+str(p))\n     prior=json.loads(E.read_text())\n",
+  "project_providers": 94,
+  "actual_first_providers_match": true,
+  "override_evidence": "Guard does not record override flags. Resolved source/audit paths equal maintained defaults; root reported the invocation as defaults-only.",
+  "findings": []
+}

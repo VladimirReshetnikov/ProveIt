@@ -1,0 +1,31 @@
+--- v2-executed/build_packet.py
++++ v3/build_packet.py
+@@ -181,7 +181,7 @@
+   q=B/dirname/filename
+   if q.exists():support.append(add(q,DEST/'plans'/dirname/filename))
+  planned=dict(generation=add(gf,DEST/'plans/grouped/generation.json'),pipeline=add(mf,DEST/'plans/grouped/pipeline-manifest.json'))
+- programs={name:add(B/name,DEST/'programs'/name)for name in ['generate_sites_prefix246.py','prepare_plan_guards.py','run_pipeline.py']}
++ programs={name:add(B/name,DEST/'programs'/name,force=True)for name in ['generate_sites_prefix246.py','prepare_plan_guards.py','run_pipeline.py']}
+  programs['coverage-guard-template.py']=add(a.template,DEST/'programs/coverage-guard-template.py')
+  portable=O/'portable-guard-generator.py';old=(B/'prepare_plan_guards.py').read_text();needle="Path('/tmp/zfc-prefix250-lean/coverage/check.py')";need(old.count(needle)==1,'Template lookup changed.')
+  portable.write_text(old.replace(needle,"Path(__file__).with_name('coverage-guard-template.py')"));programs['portable_guard_generator']=add(portable,DEST/'programs/prepare_plan_guards_portable.py')
+@@ -190,6 +190,11 @@
+  programs['coordinator_source']=add(H/'portable_coverage.py',DEST/'programs/portable_coverage.py')
+  programs['coordinator']=add(H/'portable_coverage.py',Z/'check_prefix246_sites.py',force=True);programs['packet_builder']=add(Path(__file__).resolve(),DEST/'programs/build_packet.py')
+  review_binding=add(review,DEST/'reviews/complete-existing-evidence-review.json')
++ review_support={}
++ for key,name in [('full_binding_review','complete-binding-review.json'),('reviewer_source','complete-reviewer-source.py')]:
++  descriptor=rd[key];path=Path(descriptor['path']).resolve()
++  need(sha(path)==descriptor['sha256'],'Complete-review supporting artifact changed: '+key)
++  review_support[key]=add(path,DEST/'reviews'/name)
+  scope_doc=add(H/'prefix246_coverage.md',Z/'prefix246_coverage.md')
+  programs['scope_doc_source']=add(H/'prefix246_coverage.md',DEST/'programs/prefix246_coverage.md',force=True)
+  for name in ['plan.md','publication-plan.json','endpoint-freeze.json','independent-plan-review.json','PACKER-REVIEW.md']:
+@@ -204,6 +209,7 @@
+  for p,h in current.items():need(sha(p)==h,'Input changed during packaging: '+p)
+  content={h:dict(published_paths=v['published_paths'],original_aliases=sorted(v['original_aliases']))for h,v in sorted(registry.items())}
+  result=dict(status='EXACT_COMPLETED_COVERAGE_EVIDENCE_PACKET',target='machinePrefix246',canonical_table_sha256='89cda615b3ea9fcac07ad6b08e0351faa34841a56935b6f5846d3920f13bc0fc',module_count=102,named_axiom_probes=468,typed_callers=468,mathematical_counts={k:generation[k]for k in ['nodes','leaves','guard_cases','decoder_depth','chunks','joins']},final_theorem='SetTheory.BusyBeaver.ZFC.SitesPrefix246.all_sites',scope='Closed coverage for every actual decoder path; final Binary calibration and PA internalization are separate.',units=entries,plans=planned,site_parent=site_binding,final_verification=final_binding,complete_review=review_binding,scope_doc=scope_doc,programs=programs,attempt_history=attempts,pipeline_history=pipeline_entries,supporting_history=support,terminal_pipeline=dict(original_path=str(tp),sha256=sha(tp)),content_registry=content,all_selected_current_inputs_rechecked=True,current_input_paths=len(current),objects_not_published=True,compiler_invoked=False,guard_invoked=False,version_queried=False,provisional_history_note='The immutable50-PASS recovery receipt and later progress/reuse receipts are retained as historical progress; none is the publication gate.',cache_boundary='Exact existing MP/Site project objects and toolchain caches remain prerequisites. Raw historical JSON is never rewritten into a fresh evidence claim.')
++ result['complete_review_support']=review_support
+  mp=O/'manifest.json';dump(mp,result);filemap.append(dict(source=str(mp),target=str(R/DEST/'manifest.json'),sha256=sha(mp)));dump(O/'file-map.json',filemap)
+  print(json.dumps(dict(files=len(filemap),manifest_sha256=sha(mp),file_map_sha256=sha(O/'file-map.json'),complete_modules=102),indent=2))
+ if __name__=='__main__':main()

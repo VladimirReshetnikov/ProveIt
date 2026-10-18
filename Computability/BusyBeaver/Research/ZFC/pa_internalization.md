@@ -12,9 +12,10 @@ the intended arithmetic sentence and an object-theory proof are connected to
 it. Completing the PA version would also serve the ZFC requirement, after
 checking the chosen arithmetic interpretation in ZFC.
 
-The [Choice calibration](choice_calibration254.md) now closes the external
-Lean theorem for the literal 252-state machine: blank nonhalting iff Con(ZFC).
-It uses Choice in L and external first-order completeness. This discharges the
+The [246-state endpoint](prefix246_binary.md) now closes the external Lean
+theorem for the exact contextual-fold machine: blank nonhalting iff Con(ZFC).
+It reuses the earlier [Choice calibration](choice_calibration254.md), including
+Choice in L and external first-order completeness. This discharges the
 external consistency comparison; it does not implement the represented proof
 translations or prove their correctness for every internal code in every PA
 model. The remaining obligations are recorded below.
@@ -95,12 +96,158 @@ The current arithmetic checkpoints are:
   now composes the actual constructor, fourfold transfer and comparison tail.
   It returns to fetch, sets TW to param1 and pushes a zero on success, clears
   TW and preserves WS on failure, and clears cache in both cases. Its AC0
-  dispatch composition is also checked. AX remains open.
+  dispatch composition is also checked. The [first AX parameter push and
+  classifier](arithmetic_control_ax_prefix254.md) now have all-internal
+  whole-file contracts. The [second AX parameter push](arithmetic_control_ax_cache_push254.md)
+  now covers controls 67–93 and composes both pushes from control 41.
+  It puts the old cache in TW and saves the previous TW on WS, preserving
+  all other fields. Its copy/restore tail has exact internal clock
+  `7*cache+2`; the complete push assumes both scratch registers zero.
+  Eight axiom probes and twelve callers pass with zero warnings. The
+  GEN constructor and remaining AX bundle are still open.
 
 The remaining major steps are the reverse internal ZF-to-validator proof
 translation, the internal L-specific Separation/Replacement proofs, and the complete
 interpreter-to-Enum connection. The forward validator sentence alone does
 not yet imply the requested PA theorem about the literal binary machine.
+
+The active binary target is the exact 246-state machine. Its table, logical
+seed, whole-tape instruction contracts, complete decoder coverage and blank
+startup now compose into the checked external ZF/ZFC consistency endpoint.
+That theorem still does not supply an internal PA proof.
+The [fixed arithmetic lookup for its exact table](arithmetic_machine_graph_prefix246.md)
+is now checked in every IOpen model and agrees with all 492 typed transitions.
+The [exact step graph](arithmetic_machine_step_prefix246.md) now defines the
+numeric operation on every IOpen configuration code, including inactive and
+invalid states. Its [fixed run graph](arithmetic_machine_run_prefix246.md)
+is total and unique at every internal IΣ1 time index; the separate Nat theorem
+compares every ordinary runtime to this literal binary machine. The
+[bootstrap transport](arithmetic_bootstrap_prefix246.md) proves the fixed
+410,735-step arithmetic startup sentence in IΣ1 and PA. Its numeral-transfer
+lemma applies to external natural times, not arbitrary internal times.
+The unbounded internal register/binary comparison still needs its own proof.
+
+The [arbitrary-start iterator](arithmetic_machine_run_from_prefix246.md)
+now has fixed Σ₁/Δ₁ graphs, totality, time-addition laws and whole-configuration
+halt absorption for every internal initial code and time in every IΣ1 model.
+The [prefix-removal theorem](arithmetic_machine_prefix_prefix246.md)
+proves halting equivalence before and after any internal prefix, including
+halting inside that prefix. Its `boot_halts_iff` specialization removes the
+checked 410,735-step startup using its complete numeric tape code. The two
+modules passed 23 axiom probes and 29 typed callers with zero warnings.
+This closes arithmetic startup removal; the post-startup register/binary
+simulation and its connection to the seeded scheduler remain open.
+
+The [seeded arithmetic scheduler](arithmetic_enumerator_seed246.md) now
+proves the validator/scheduler equivalence at candidate 3, pointer 0 and
+working fields `TW=WS=H=0,D=3`, in every IΣ1 model. Both proof-code and
+runtime witnesses range over all internal values. The represented refutation
+word has raw candidate at least 3, and the initial working state is certified
+even with `D=3`. The resulting fixed sentence has IΣ1 and PA proofs. This
+closes the arithmetic scheduler's seed adjustment; its identification with
+the exact246 binary run and the reverse ZF-to-validator proof translation
+remain open.
+
+Source review of the merged arithmetic work through `70f2e7a57b` identifies
+three further reusable pieces in `Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/`:
+`LGlueCodes.lean` proves environment opening/free-variable and binder code
+identities for arbitrary internal formulas; `LMatch.lean` supplies the
+primitive-recursive, Sigma-one-definable matching formula `MT(j)` and its
+zero/successor equations for every internal index; `LGlueT.lean` contains
+`funTemplate_provable`, `slot0Template_provable` and
+`slotSTemplate_provable`. These fixed templates prove functionality and
+slot-reading steps and can be instantiated by the existing internal
+`compileT_provable` interface. This paragraph records source inspection,
+not a new compiler run of those upstream files.
+
+Commit `2285ff6c00107552a50b988fc71a56a7f2df9b88` adds
+[LGlueT2](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LGlueT2.lean),
+with fixed-template derivability for the Boolean constructors, quantifiers,
+and equality/membership atoms. These templates can be specialized at typed
+internal formula codes, including nonstandard codes, using
+`LTemplate.compileT_provable`; their explicit premises must still be discharged.
+
+Commit `ce89d875857e59e147becd7f34a7c5ea8d18180b` adds
+[LGlue1](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LGlue1.lean),
+closing internal matching functionality and slot reading. `fun_MT` gives an
+internal ZF proof of functionality for every internal matching length `j`;
+`slot_MT` gives the corresponding reading of every slot `a < j`. Both use
+represented Sigma-one induction in an arbitrary IΣ1 model, with explicit
+formula-code and shift/substitution identities. The numeral-naturalness
+premise is discharged by the existing `LNumOK.numOK`.
+
+Commit `ccdebc892a922881b299455c53bb75c32d3e2ae4` adds
+[LGlue2](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LGlue2.lean).
+`shift_envForm` proves `shift (envForm n p) = envForm n p` for every
+internal semiformula code and depth in an arbitrary IΣ1 model, including
+nonstandard codes. The transformed predicate retains its bound environment
+slot; the identity concerns free-variable shifting. `tr_gS`, `tr_qHyp`,
+`tr_relAll` and `tr_envAll` identify the translated glue and universal-step
+templates. `QX_free` identifies the opened quantifier premise with the
+successor matching clause; with `LGlue1.MT_succ`, the matching length becomes
+`j + 1`. Its sole extra premise, that the environment predicate is shift-fixed,
+is supplied by `shift_envForm`.
+
+These are code identities needed to assemble the internal glue derivation.
+This module does not yet declare the general `glue` theorem, matching-environment
+existence or `hSchema`. Specializing the template derivations, completing the
+free-based formula induction and connecting matching environments to the
+relativized schema closures remain. This update records source review only,
+without a new compilation or axiom-audit claim; the reverse validator comparison
+and actual 246-state arithmetic runtime remain separate obligations. The
+[pinned source review](results/upstream-ccdebc892a-source-review.json) records
+the declarations and remaining obligations.
+
+Commit `e6b5769ba46ca018085414df212968273022531b` adds
+[LGlue3](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LGlue3.lean).
+`glue_atom` supplies the atomic compiled-glue client: for all internal
+indices `a,b < j` in any IΣ1 model, internal ZF proves that the membership
+or equality atom agrees with its environment encoding under `MT j`.
+It discharges the slot, numeral-correctness, functionality, uniqueness and
+atom-definition premises; `eAtomT_val` identifies the encoded atom body.
+The [independent source review](results/upstream-e6b5769ba4-source-review.json)
+finds no issue within that scope, without claiming a fresh compilation.
+The matching antecedent remains. At that stage, general formula glue and its
+internal induction, matching-environment existence, and the schema
+closure/domain-side adapter to `hSchema` remained open.
+
+Commit `116aa35087a8a37b57b3e07bb0de72a891218a35` adds
+[LGlue4](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LGlue4.lean).
+Its `glue` theorem supplies the general formula induction in every IΣ1 model:
+for an internal formula `q` with free variables below `j`, internal ZF proves
+that `relativize domL q` agrees with `envForm 0 q` under the matching
+antecedent `MT j`. The explicit budget `j + formulaComplexity q ≤ C` bounds
+the quantifier over `j`, keeping the induction predicate Σ₁; each binder
+uses the freed formula at matching length `j+1`. This budget can be chosen
+as `j + formulaComplexity q`, so it does not restrict formulas to standard
+codes or externally bounded complexity.
+The connective and quantifier clients now discharge the corresponding
+compiled-template premises. Matching-environment existence, the final
+Separation/Replacement combinations and the universal-closure/domain-side
+adapter to `hSchema` remain open. The
+[pinned review](results/upstream-116aa35087-source-review.json) records source
+inspection of the new module and its ten-probe audit; this integration makes
+no fresh compilation or executed-audit claim.
+
+Commit `cc42edb2547a0d14c31bab552e629412ad6440f2` adds
+[LFvBound](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LFvBound.lean).
+In every IΣ₁ model, opening a shift-fixed internal body and binding its free
+variables back recovers that body. This derives the free-variable bound on
+its opened instance. A second internal induction transfers such a bound back
+through a bound-variable substitution. Reading the Separation and Replacement
+skeletons then bounds their cores: `FvLt (m+1) (free K)` for Separation, and
+`IsSemiformula (m+2) (bindFreeAt 2 K)` for Replacement. The recognizer supplies
+the needed shift-fixed body, its level and the equality with the schema body,
+so these bounds require no restriction to standard formula codes.
+This closes the core-bound prerequisite at source level; matching-environment
+existence, the exact final schema combinations and the universal-closure/domain
+adapter to `hSchema` remain. The Replacement conclusion still needs its
+precise depth-two opening adapter for the zero-level glue interface.
+This integration records source review only: the new module has not been
+compiled or axiom-audited in this review, and the existing `LGlueAudit` does
+not probe it.
+The [pinned source review](results/upstream-cc42edb254-source-review.json)
+records the internal quantifiers, exact recognizer premises and remaining adapters.
 
 ## What is already available
 
@@ -584,8 +731,9 @@ nonstandardly many free variables never need a nonstandard quantifier block.
   atoms read entries through ZF numerals (Codex's numeral code builders).
   **Checked** as `ZFCinPA/EnvTransform.lean` (`envForm d K`, its equations,
   and `isSemiformula_envForm`: the output has bound-variable arity at most
-  one). The latter typing theorem alone does not assert absence of free
-  variables; the required free-variable/shift laws remain separate.
+  one). The typing theorem alone does not assert absence of free variables;
+  `LGlue2.shift_envForm` now supplies shift-fixity for every internal code.
+  `LGlueCodes.envForm_free` separately identifies opening with a depth change.
 * Reflecting stages are the limit **closure points of a function** `f_K`
   (a placeholder-definable graph, existentially supplied by the induction):
   successor for atoms, `max(f₁, f₂)` for `⋏`/`⋎` (closure points of the
@@ -659,14 +807,19 @@ function code is the translation of the template's own defining matrix, so
 every definitional hypothesis is the internal tautology `∀(A ↔ A)`. Atoms
 use `LNumOK.numOK` (every numeral chain defines one natural, in `𝗭𝗙`).
 
-**Remaining for `hSchema`** (superseding item (ii) below): (ii) ~~the internal induction driver chaining the
-compiled step templates at internal codes (definitional hypotheses as
-internal tautologies), producing `Θ` for `envForm 1 φ` / `envForm 2 ψ`;
-(iii) the glue from `SchemaRecognizer` codes to `relativize`: an
-environment `t₀` with `t₀(i) = &i`, `φ^L ↔ envForm 1 φ (z :: t₀)` by
-internal induction on `φ`, and `relativize` commuting with the `∀^m`
-closure, so that the compiled final templates yield the relativized schema
-instances.
+**Remaining for `hSchema`** (superseding the historical next-step notes below):
+the reflection driver producing `Θ` is already available. `LGlue1` provides
+matching functionality and slot reading; `LGlue2` supplies shift-fixity and the
+opened quantifier-premise identity; `LGlue3` supplies the atomic compiled-glue
+client. The merged `LGlue4` now supplies the remaining connective/quantifier
+clients and internal formula induction, as source-reviewed above. `LFvBound`
+adds the recognizer-derived core free-variable bounds, also source-reviewed.
+Replacement still needs the exact depth-two opening adapter. Still needed
+are existence of a suitable matching environment `t₀` with `t₀(i) = &i`,
+the final Separation/Replacement combinations, and the
+`SchemaRecognizer`/`relativize` universal-closure adapter. These must turn
+the compiled final templates into the internal derivability of every
+relativized Separation/Replacement instance, with its domain side formulas.
 
 Feeding `hSchema` into `ConstructibleInterpretation.provable_falsum_ZF_of_ZFC`
 and the result into the C254/ZF comparison then gives the Choice half of the

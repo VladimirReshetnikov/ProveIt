@@ -1,0 +1,86 @@
+{
+  "scope": "Four historical substantive checks; no discovery or merge search",
+  "status": "PASS",
+  "jobs": [
+    {
+      "name": "safe-lifetime",
+      "command": [
+        "python3",
+        "-B",
+        "code/state_reduction/safe_lifetime_witness.py",
+        "--program",
+        "reference/source/Prog254.v",
+        "--dag",
+        "reference/source/Dag254.v",
+        "--output",
+        "/tmp/zfc245-8286787-review/fresh-history/safe-lifetime.json"
+      ],
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.3147397795692086,
+      "status": "PASS"
+    },
+    {
+      "name": "gradient-leaf",
+      "command": [
+        "python3",
+        "-B",
+        "code/state_reduction/map_reassociated_leaf.py",
+        "results/state_reduction/gradient-repaired.json",
+        "1110100100101011101010101110000000",
+        "--inputs",
+        "reference/grammar",
+        "--metadata",
+        "reference/interval/instruction-metadata.json",
+        "--output",
+        "/tmp/zfc245-8286787-review/fresh-history/gradient-leaf.json"
+      ],
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.11444815620779991,
+      "status": "PASS"
+    },
+    {
+      "name": "gradient-seven-zero",
+      "command": [
+        "python3",
+        "-B",
+        "code/state_reduction/check_route_grammar.py",
+        "results/state_reduction/gradient-repaired.json",
+        "--inputs",
+        "reference/grammar",
+        "--bootstrap-lock",
+        "inputs/state_reduction/bootstrap-lock54.txt",
+        "--output",
+        "/tmp/zfc245-8286787-review/fresh-history/gradient-seven-zero.json"
+      ],
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.06946424394845963,
+      "status": "PASS"
+    },
+    {
+      "name": "gradient-six-zero-k129",
+      "command": [
+        "python3",
+        "-B",
+        "code/state_reduction/check_route_grammar.py",
+        "results/state_reduction/gradient-zero6-k129.json",
+        "--inputs",
+        "reference/grammar",
+        "--bootstrap-lock",
+        "inputs/state_reduction/bootstrap-lock54.txt",
+        "--output",
+        "/tmp/zfc245-8286787-review/fresh-history/gradient-six-zero-k129.json"
+      ],
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.06438107509166002,
+      "status": "PASS"
+    }
+  ]
+}

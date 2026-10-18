@@ -1,0 +1,63 @@
+{
+  "scope": "Four ancillary substantive verification suites; copy only, no discovery search or checksum manifests",
+  "status": "PASS",
+  "jobs": [
+    {
+      "name": "permutation-selectors",
+      "command": [
+        "python3",
+        "-B",
+        "research/architecture/verify_permutation_selectors.py"
+      ],
+      "timeout_seconds": 180,
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.8656247379258275,
+      "status": "PASS"
+    },
+    {
+      "name": "semantic-resegmentation",
+      "command": [
+        "python3",
+        "-B",
+        "research/architecture/verify_semantic_resegmentation.py",
+        "--write-report",
+        "/tmp/zfc245-8286787-review/fresh-aux/semantic.json"
+      ],
+      "timeout_seconds": 180,
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.06421957816928625,
+      "status": "PASS"
+    },
+    {
+      "name": "affine-resources",
+      "command": [
+        "python3",
+        "-B",
+        "research/architecture/verify_affine_resources.py",
+        "--recompute",
+        "--write-report",
+        "/tmp/zfc245-8286787-review/fresh-aux/affine.json"
+      ],
+      "timeout_seconds": 180,
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 45.101191093213856,
+      "status": "PASS"
+    },
+    {
+      "name": "propositional-obstructions",
+      "command": [
+        "python3",
+        "-B",
+        "research/propositional/check_propositional_obstructions.py"
+      ],
+      "timeout_seconds": 180,
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.03202153742313385,
+      "status": "PASS"
+    }
+  ]
+}

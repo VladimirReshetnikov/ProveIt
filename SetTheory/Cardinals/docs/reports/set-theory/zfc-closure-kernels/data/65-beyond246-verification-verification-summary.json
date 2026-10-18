@@ -1,0 +1,79 @@
+{
+  "status": "PASS",
+  "seconds": 130.15180119199977,
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "one_incoming_journal_replayed": true,
+  "reference_suite_replayed": true,
+  "new_sub246_machine_claimed": false,
+  "scope": "Finite witness replays, checked inductive certificates and bounded-search records; not a proof-assistant build or state lower bound.",
+  "checks": [
+    {
+      "check": "baseline246/zfc-context246/SHA256SUMS",
+      "status": "PASS",
+      "files": 105
+    },
+    {
+      "check": "alternative/SHA256SUMS",
+      "status": "PASS",
+      "files": 16
+    },
+    {
+      "check": "new saved results, domain coverage and solver positive control",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "code/check_saved_results.py",
+        "--replay-ledger",
+        "--output",
+        "/workspace/scratch/a44bacacb733/output/zfc-beyond246/verification/saved-results.json"
+      ],
+      "returncode": 0,
+      "seconds": 69.01623249600016,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"baseline_cases\": 8391,\n  \"macro_support_rows\": 42,\n  \"literal_rows\": 472,\n  \"excluded_only_literal_rows\": 0,\n  \"combined_rows\": 492,\n  \"one_incoming\": {\n    \"recipes\": 130872,\n    \"deleted_states\": 133,\n    \"coverage\": \"complete\",\n    \"all_recorded_failures_replayed\": true,\n    \"rejection_categories\": {\n      \"other_checker_rejection\": 104092,\n      \"fuel\": 26780\n    }\n  },\n  \"two_incoming\": {\n    \"literal_complete_recipes\": 44539776,\n    \"literal_states\": 46,\n    \"affine_complete_recipes\": 13555584,\n    \"affine_unfinished_state\": 82,\n    \"affine_unfinished_pruned_mass\": 286277\n  },\n  \"detector\": {\n    \"positive_control\": \"nine-state nine-step model independently replayed\",\n    \"solver_reported_unsat_horizons\": [\n      11,\n      13\n    ],\n    \"unresolved_horizons\": [\n      17,\n      32\n    ],\n    \"scope\": \"Explicit local reachable-state template and finite horizons; no general lower bound\"\n  },\n  \"seconds\": 68.39849392399992\n}\n",
+      "stderr": ""
+    },
+    {
+      "check": "independent literal prepared-phase and return-origin witnesses",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "audit/verify_audit.py",
+        "--output",
+        "/workspace/scratch/a44bacacb733/output/zfc-beyond246/verification/audit"
+      ],
+      "returncode": 0,
+      "seconds": 0.566047749000063,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"scope\": \"Finite prepared-tape obstructions only\",\n  \"source_register_steps_after_fetch\": 220,\n  \"state204_small_phase_halt_steps\": 12808,\n  \"state204_large_phase_halt_steps\": 10232,\n  \"detector_baseline_exact_endpoint_steps\": 1514,\n  \"detector_false_dispatches\": [\n    {\n      \"states\": 245,\n      \"steps\": 749,\n      \"head\": 11\n    },\n    {\n      \"states\": 244,\n      \"steps\": 355,\n      \"head\": 11\n    }\n  ],\n  \"all_final_tapes_checked_independently\": true,\n  \"new_sub246_consistency_machine_claimed\": false\n}\n",
+      "stderr": ""
+    },
+    {
+      "check": "context support, 8391-case affine reference and small scanner witnesses",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "check_support.py"
+      ],
+      "returncode": 0,
+      "seconds": 3.0140951219982526,
+      "stdout": "SUPPORT CHECKS PASS: baseline8391, literal false-sentinel witnesses, exact family counts, and delivered-byte manifest.\n",
+      "stderr": ""
+    },
+    {
+      "check": "independent product and relational invariants",
+      "status": "PASS",
+      "seconds": 41.83182880400091
+    },
+    {
+      "check": "complete inherited reference suite in temporary copy",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "code/verify_all.py"
+      ],
+      "returncode": 0,
+      "seconds": 15.673173830999076,
+      "stdout": "code/rebuild_machines.py --check PASS\ncode/check_folds.py PASS\ncode/render_table.py --check PASS\ncode/check_macro_inductions.py PASS\ncode/review_affine_source.py --program sources/Prog254.v --sites sources/prior/instruction-sites-physical.json --table machine/zfc_prefix246_old.tm --checker sources/prior/prefix_affine.py --output results/affine-source-review.json PASS\ncode/check_bootstrap.py PASS\ncode/check_literal_instructions.py --program sources/Prog254.v --table machine/zfc_prefix246_old.tm --output results/literal-instructions.json PASS\ncode/check_local_contracts.py PASS\ncode/check_prefix_boxes.py PASS\nALL PREFIX246 CHECKS PASS\n",
+      "stderr": ""
+    }
+  ]
+}

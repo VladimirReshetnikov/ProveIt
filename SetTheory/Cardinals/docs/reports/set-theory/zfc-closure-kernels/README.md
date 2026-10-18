@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings, 17 October 2026. This report now reconciles sixty-three manuscripts.
+Intake findings, 17 October 2026. This report now reconciles sixty-eight manuscripts.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -9,13 +9,19 @@ No merged PDF is built. These are ordinary mathematical arguments and finite
 regression checks. The deliveries confer no formal status; subsequent Lean
 results and their exact scope are listed below.
 
-The user's machine target is an equivalence **provable in PA** between
+The original machine target asks for an equivalence **provable in PA** between
 blank-tape non-halting and Con(ZFC), with fewer than 254 nonhalting states on a
-binary, two-way infinite, single tape. The maintained 252-state machine closes
-the external Lean comparison with Con(ZFC); its internal PA comparison remains
-open. Several deliveries instead discuss provability in ZFC. Those arguments
-are retained with their stated scope and do not relax the original PA request.
-This corrects the earlier description of the user's target as having changed.
+binary, two-way infinite, single tape. The maintained 246-state machine closes
+the external Lean comparison with Con(ZFC), improving the earlier checked
+252-state endpoint; its internal PA comparison remains open. Several deliveries discuss provability in ZFC instead, and retain that
+stated scope. The user's later stronger-theory allowance is governed by the
+[current project criterion](../../../../../../Computability/BusyBeaver/Research/ZFC/README.md):
+assumptions must stay within well-understood benchmarks widely believed
+consistent. An artificial calculus T needs an accepted benchmark S and proofs
+of Con(S) → Con(T) → Con(ZF), with the formalization base stated. This upper
+bound and a concrete encoding benefit are required before increasing the
+benchmark strength; no absolute consistency proof or completed PA comparison
+is inferred from the allowance.
 
 Batch 146 below supplies a countermodel to the entire intended raw
 C/G code calculus, including the variants behind the earlier 252/250/248
@@ -61,10 +67,49 @@ reduction](intake-162.md) as sources 62–63. All seven checks of the additional
 247 report pass. The 246 candidate removes one further pulse state and changes
 the blank start; its nine main checks and two additional audits pass, including
 its separate 410,735-step complete startup. Independent ordinary-proof reviews
-found no mathematical blocker within their scopes. Exact 246 Lean verification
-and equivalence inside PA remain open. The optional-search bound discrepancy
+found no mathematical blocker within their scopes. At that intake checkpoint exact 246 Lean verification
+and equivalence inside PA remained open; the external Lean endpoint has since
+closed, while PA internalization remains open. The optional-search bound discrepancy
 and stale bootstrap filename are preserved with explicit corrections in the
 reconciliation. See the [reproduction instructions](intake-162-reproduction.md).
+
+Batch 163 adds [four reduction studies](intake-163.md) as sources 64–67.
+They provide local arithmetic identities, stronger prepared-frame obstructions,
+numerical invariants, source rewrites and two different alternate 246-state
+tables. No complete sub-246 machine is established. Thirty substantive jobs
+pass; an additional source 66 full symbolic replay times out at its explicit
+360-second cap, leaving its delivered complete result inherited. The source
+67 201-node result concerns a source DAG, while its alternate 246-state machine
+compiles a different 202-node rewrite. Its all-case and complete-startup
+certificate freshly passes.
+
+| Source | Delivered archive | Reviewed contribution |
+| --- | --- | --- |
+| 64 | `zfc-below246-research-20261018.zip` | Decrement-only 245 core, 244 branch collision and alternate 246 detector; ten jobs pass. |
+| 65 | `zfc-beyond246-research-20261018.zip` | Theorem-valued/prepared-frame obstructions, two numerical invariant families and scoped searches; five jobs pass. |
+| 66 | `zfc-below246-research-20261018 (2).zip` | Local arithmetic trap, source bisimulation and compiler-context failures; seven jobs pass and the full symbolic replay times out. |
+| 67 | `zfc-under246-research-20261018.zip` | 201-node source rewrite, alternate 246-state decoder repair and separate partition/rejection certificates; eight jobs pass. |
+
+Placement `47507759e7` preserves all 1,190 ancillary files; 70 manuscript and
+delivery files remain recoverable from the four retired arrival archives.
+The collection still has 290 reports. [Recovery and replay instructions](intake-163-reproduction.md)
+preserve exact original names, fresh/inherited evidence, failed attempts and
+attribution. These intake findings confer no new Lean/PA endpoint. The project's
+exact 246-state formalization and its evolving proof-status ledger remain
+separate from the alternate tables and the earlier intake checkpoints above.
+
+Batch 164 prioritizes the [routed 245-state candidate](intake-164.md) from
+`8286787dd0` as source 68. Joint grammar, special-entry and scanner optimization
+gives 117 framework roles plus 128 grammar roles, retaining the original
+proof-search theory. The complete fresh suite passes: all 8,391 universal
+whole-frame cases, exact 407,915-step blank initialization, and 8,385 finite
+literal regressions. Four supplemental and four historical checks also pass.
+Independent ordinary-proof reviews find no substantive blocker. The candidate
+has no new exact-table Lean endpoint or internal PA proof; the closed 246-state
+external theorem remains the checked baseline. Placement `46e8518e0e` retains
+273 ancillary files, with 21 files recoverable only from the committed archive.
+See [recovery and execution scope](intake-164-reproduction.md). Six older queued
+archives remain pending; their scratch source numbers were provisional.
 
 ## Sources, overlap and base
 

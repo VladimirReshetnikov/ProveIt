@@ -1,0 +1,50 @@
+{
+  "status": "MAINTAINED_DEFAULT_PREPARATION_AND_PUBLICATION_EXISTING_EVIDENCE_REVIEW",
+  "reviewer": "/root/review_upstream_reflection",
+  "scope": "Read-only review of existing root-run prepare-only record and the eight published artifacts. Reviewer invoked no guard, compiler, version query, generator or dependency build.",
+  "record": {
+    "path": "/tmp/zfc-prefix246-lean/bootstrap-frame/maintained-prepared/verification.json",
+    "sha256": "cadb5dbdc1b0c54d32084aacc536bb6f621790ee45b0c1989dc548e0e23a335c"
+  },
+  "current_inputs": 239,
+  "all_current_inputs_match": true,
+  "project_providers": 113,
+  "toolchain_boundaries": [
+    "Init",
+    "Lean.Elab.Tactic.Omega"
+  ],
+  "source_audit_exact_successful_bytes": true,
+  "source_override": false,
+  "audit_override": false,
+  "commands": [],
+  "fresh_modules": [],
+  "compiler_version_query_performed": false,
+  "all_parent_records_use_published_paths": true,
+  "parent_records": [
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/bootstrap-prefix246/attempts/group08/run1/verification.json",
+      "sha256": "a0edda1d5159aedc681950fb27ceaaad9c9bdd93aa3e879011272f0fcc7fbc9f"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/results/prefix246-logical-seed-verification.json",
+      "sha256": "62794af09088f09c0fb11fd1940773e5f3d25f60f26bcd68e86a1475297435eb"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/results/prefix246-frame-verification.json",
+      "sha256": "8aef18790d7553f3f2c68899bae800d16adf6454979df56352c1a3ec9da394b8"
+    }
+  ],
+  "exact_portable_changes": "Only source/audit default path expressions; all pins, provider selection and proof policy unchanged.",
+  "guard_sha256": "74e4b06e28230b7d2ea8a5b7fa075867ab0cbd0ec5d861c0f332b8515d31bd16",
+  "guard_diff": "--- \n+++ \n@@ -28,8 +28,8 @@\n sha=lambda f:hashlib.sha256(Path(f).read_bytes()).hexdigest()\n R=a.repo.resolve();W=a.output.resolve()\n assert not W.is_relative_to(R) and (not W.exists() or not any(W.iterdir()))\n-S=a.source.resolve() if a.source else Path('/tmp/zfc-prefix246-lean/bootstrap-frame/BootstrapFrame246.lean')\n-A=a.audit.resolve() if a.audit else Path('/tmp/zfc-prefix246-lean/bootstrap-frame/Audit.lean')\n+S=a.source.resolve() if a.source else R / 'Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BootstrapFrame246.lean'\n+A=a.audit.resolve() if a.audit else Path(__file__).resolve().parent / 'prefix246_bootstrap_frame_audit.lean'\n assert sha(S)==SOURCE_SHA and sha(A)==AUDIT_SHA\n imports=lambda q:re.findall(r'^import\\s+([A-Za-z0-9_.]+)\\s*$',Path(q).read_text(),re.M)\n assert imports(S)==['BusyBeaver.ZFC.BootPrefix246Chunk008','BusyBeaver.ZFC.Permutation252Frame','BusyBeaver.ZFC.LogicalSeed246']\n",
+  "publication": {
+    "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/results/prefix246-bootstrap-frame-publication.json",
+    "sha256": "7d514a50e68702ac4c293e04b34a24c4eb4053a6237ab9ad3f1bf8a6bf019814",
+    "all_seven_payload_hashes_match": true,
+    "including_publication_metadata_files": 8,
+    "both_original_records_and_snapshots_retained_exactly": true,
+    "all_original_development_records_retained_exactly": true
+  },
+  "scope_limit": "Prepare-only is deliberately unbuilt: no new source object, audit execution or proof PASS is inferred from it. The separately reviewed run2 supplies proof evidence.",
+  "findings": []
+}

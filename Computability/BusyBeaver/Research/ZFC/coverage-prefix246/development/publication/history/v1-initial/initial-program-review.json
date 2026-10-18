@@ -1,0 +1,142 @@
+{
+  "status": "SOURCE_ONLY_INDEPENDENT_REVIEW_WITH_TWO_HISTORY_CONTRACT_FINDINGS",
+  "scope": "Full source review of the prospective packet builder/coordinator and their exact runner/guard-generator interaction. This is not a completed coverage evidence review or an execution result.",
+  "source_pins": {
+    "/tmp/zfc-prefix246-lean/coverage/publication-design/build_packet.py": "cc304aa120bb16aafb1ed6330fd3595ceafedd262dfee0be6da1f50060f03d00",
+    "/tmp/zfc-prefix246-lean/coverage/publication-design/portable_coverage.py": "7bf3fa743c78464324deb25f50efa38a7c6e634663a5e851a4e4cf466eac381b",
+    "/tmp/zfc-prefix246-lean/coverage/publication-design/PACKER-REVIEW.md": "63d413dfda6e8216c47c1c517dedf0ec3b9f4974dd21c1255eb473d5c219df71",
+    "/tmp/zfc-prefix246-lean/coverage/publication-design/program-source-manifest.json": "981b961d3547d6d25f2de7170929b0e3eee97c7d77cd54a7d872ff8cc47d92b9",
+    "/tmp/zfc-prefix246-lean/coverage/publication-design/prefix246_coverage.md": "f348a3d0fde1953f8e4f739bae12369b3f5f1a056258b0a5c85436fd9bdcb8c7",
+    "/tmp/zfc-prefix246-lean/coverage/run_pipeline.py": "7c981425f97a6c32fd7b8489b54c58061606f17e1a278a5a26d53c8d2fd99e4f",
+    "/tmp/zfc-prefix246-lean/coverage/prepare_plan_guards.py": "fcf74ff3d2e352ba0faf2a8533e45a9cce9855e3aea206e603e45a829aee272f",
+    "/tmp/zfc-prefix246-lean/coverage/guards-four/pipeline-manifest.json": "9ee21ec2c106e88f01b1613588dc65b0cdd1f12e04abcd13abc8fbaabb151b09",
+    "/tmp/zfc-prefix246-lean/coverage/plan-four/generation.json": "174870fefd527465036748bd5649f9acde8dcfad3a46e8ee33884c888507e223",
+    "/tmp/zfc-prefix246-lean/coverage/recovery-after-session79413/recovery-review.json": "489a13fa02e83342c824fa9dee64f133b8d65e188d2edadd8d25577e13588a5d",
+    "/tmp/zfc-prefix246-lean/coverage/recovery-after-session79413/root-observation.json": "53676ad3f4ac0d67012b5bb8b9b038dbfb0c104e13ec52cbd7815ffb60e7157d",
+    "/tmp/zfc-prefix246-lean/coverage/grouped-four-reuse060-review.json": "d83c6551a2177a3a58df57098193ab74cb592a32d843ff05564679e367464e6a"
+  },
+  "syntax_check": "Reviewer-owned ast.parse only; neither publication program imported or invoked.",
+  "findings": [
+    {
+      "id": "H1",
+      "severity": "medium",
+      "file": "/tmp/zfc-prefix246-lean/coverage/publication-design/build_packet.py",
+      "lines": [
+        119,
+        139
+      ],
+      "title": "Require exact historical source/audit bytes for every nonselected attempt",
+      "evidence": "The attempt loop copies extant local files, but resolves recorded historical hashes only for .py inputs. It records source/audit metadata without requiring the original or snapshot hash to exist. A missing or changed failed source/audit snapshot can therefore escape the stated all-history completeness gate. Selected PASS bytes are checked separately and are not affected.",
+      "minimal_change": "For each historical source/audit field present, resolve its recorded SHA through original/snapshot or preserved history, require equality, publish the exact bytes with original aliases, and record those explicit bindings. Retain raw records unchanged.",
+      "observed_loss": false
+    },
+    {
+      "id": "H2",
+      "severity": "medium",
+      "file": "/tmp/zfc-prefix246-lean/coverage/publication-design/build_packet.py",
+      "lines": [
+        89,
+        101,
+        131,
+        145
+      ],
+      "title": "Account for attempts rejected before verification.json exists",
+      "evidence": "Only verification.json directories are recursively archived. Existing non-stale pipeline attempts are not required to have a proof record or an explicit no-record classification; only direct driver/dependency files beside pipeline.json are retained. Thus a terminal precompiler rejection can leave nested output unaccounted for by the stated attempt-history completeness gate.",
+      "minimal_change": "For every pipeline attempt, bind an existing raw proof record, or explicitly classify and preserve all available output as a precompiler/no-verification attempt from the actual driver status and logs; reject unexplained omissions. Never fabricate verification.json or a compiler invocation.",
+      "observed_loss": false
+    }
+  ],
+  "positive_checks": [
+    "The complete102-module final gate cannot be met by the provisional60-PASS receipt: it requires terminal full-plan PASS, all102 selected records and a separately pinned complete existing-evidence review.",
+    "Current selected PASS bindings include source/audit originals and snapshots, before/after hashes, actual first providers, source-before-audit fresh object, raw logs, probe order and compiler identity.",
+    "The final125-provider import DFS contains all101 generated ancestors, tied to selected record source/object hashes; the final fresh module is the102nd generated module.",
+    "The final source names SitePrefix246.checkSite and ActualTree254.tree, imports Join014, and proves both actual-walk corollaries. Generation metadata matches current ActualTree254 source hash.",
+    "Global content dedup compares bytes and keeps original aliases; forced coordinator/final-record convenience copies preserve their explicit paths. Planned and executed representative guards are separately bound even when dedup uses aliases.",
+    "The exact stale79413 RUNNING summary is accepted only by its frozen recovery identity; its15 recorded completions and16 attempts are not rewritten. Batch048 has a separate raw PASS record; no missing driver exit is invented.",
+    "The packet builder has no subprocess, compiler, version, guard or dependency-build invocation and requires a new output outside both repository and input history.",
+    "Coordinator stage-only runs no child; prepare-only calls exact guards only with --prepare-only, verifies empty commands/fresh objects and no version/build calls, and preserves installed source/audit defaults.",
+    "Coordinator guard adaptations are exactly two literal default-path replacements with normalized-AST equality and explicit diffs; raw historical manifests remain unmodified.",
+    "Normal replay delegates to the preserved serial runner with finite unit/wall limits; actual guard proof limits remain shared120s, -j1 and -M4096, and the runner terminates the child process group on its execution deadline. Preliminary hashing is not claimed to be included in that proof deadline."
+  ],
+  "representative_bindings": [
+    {
+      "module": "BusyBeaver.ZFC.SitesPrefix246Chunk000",
+      "record": "/tmp/zfc-prefix246-lean/coverage/cut000-run1/verification.json",
+      "sha256": "862381728b14725c8069afd301df28949b220f76af908150a4c76ef97c822fdc",
+      "source_and_audit_equal_plan": true,
+      "actual_guard": {
+        "path": "/tmp/zfc-prefix246-lean/coverage/representatives/check-cut000.py",
+        "sha256": "3b088ef61123b13d9c0fff6ef4e05fbccadafa596f56bcd8a63cde6099192001"
+      },
+      "planned_guard": {
+        "path": "/tmp/zfc-prefix246-lean/coverage/guards-four/SitesPrefix246Chunk000.check.py",
+        "sha256": "0a2edf9d9a06a69826b104cb8417a5dfae85a38c914b78b9e25dafe6714880e9"
+      }
+    },
+    {
+      "module": "BusyBeaver.ZFC.SitesPrefix246Chunk042",
+      "record": "/tmp/zfc-prefix246-lean/coverage/cut042-run1/verification.json",
+      "sha256": "db073c989b2f9ad27c48918149875e68a08a8c5071d7015034831af2eba269e2",
+      "source_and_audit_equal_plan": true,
+      "actual_guard": {
+        "path": "/tmp/zfc-prefix246-lean/coverage/representatives/check-cut042.py",
+        "sha256": "321cdc8636246f2744f64e179112b282d42104bb8fc48258ee5e52cfd2e52707"
+      },
+      "planned_guard": {
+        "path": "/tmp/zfc-prefix246-lean/coverage/guards-four/SitesPrefix246Chunk042.check.py",
+        "sha256": "a9be27e93752bb285de06e09ecd231c5d466d220e67a7b14a33f681c98e4ff61"
+      }
+    },
+    {
+      "module": "BusyBeaver.ZFC.SitesPrefix246Chunk210",
+      "record": "/tmp/zfc-prefix246-lean/coverage/cut210-run1/verification.json",
+      "sha256": "0583dc55970be326a3f4c0354668477be2af83af1f86456c11e295df3136a924",
+      "source_and_audit_equal_plan": true,
+      "actual_guard": {
+        "path": "/tmp/zfc-prefix246-lean/coverage/representatives/check-cut210.py",
+        "sha256": "af4971892c995a7911d8fe2100545b9a669ad4902f97ce542f7027f49b0d68e8"
+      },
+      "planned_guard": {
+        "path": "/tmp/zfc-prefix246-lean/coverage/guards-four/SitesPrefix246Chunk210.check.py",
+        "sha256": "4777a13a8fce753ac48844078fc58024def7c12f06656dc766bea2d0f33c505b"
+      }
+    }
+  ],
+  "decoder_binding": {
+    "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ActualTree254.lean",
+    "sha256": "7f4a3782f4ce061478a233d15272c15f2b2aedab688f728f7e7511f186216e71",
+    "counts": {
+      "nodes": 6459,
+      "leaves": 6460,
+      "guard_cases": 8391,
+      "decoder_depth": 34,
+      "chunks": 233,
+      "joins": 232
+    },
+    "units": 102,
+    "probes": 468,
+    "callers": 468
+  },
+  "recovery_binding": {
+    "pipeline": "/tmp/zfc-prefix246-lean/coverage/grouped-four-remaining068/pipeline.json",
+    "pipeline_sha256": "94f2b1e84464f7b07455c4654ba1a1ade3647d287cbb4ec76cb38d040497d23a",
+    "raw_status": "RUNNING",
+    "attempts": 16,
+    "recorded_completions": 15,
+    "batch048_record": "/tmp/zfc-prefix246-lean/coverage/grouped-four-remaining068/SitesPrefix246Batch048/verification.json",
+    "batch048_sha256": "dc9898b804431dd83f3a98d83901097777b87099d6d4e0b19d77be38c293e50a",
+    "batch048_status": "PASS",
+    "cause": "undetermined; root report retained as report"
+  },
+  "observed_scan": "An earlier read-only census during the active continuation found62 PASS records and one active RUNNING record, and no missing verification.json among then-existing pipeline attempts. This moving census is neither a frozen progress receipt nor a final evidence audit.",
+  "limits": [
+    "No publication program, supplied guard/checker, Lean/compiler/version query or dependency build was run.",
+    "No maintained file or Git state was changed.",
+    "No final packet, completed102-module coverage or Binary/PA endpoint is asserted.",
+    "Historical-proof validity was sampled only to verify archival design; no full current-input audit of all active records was performed."
+  ],
+  "compiler_invoked": false,
+  "guard_invoked": false,
+  "version_queried": false,
+  "maintained_files_changed": false
+}

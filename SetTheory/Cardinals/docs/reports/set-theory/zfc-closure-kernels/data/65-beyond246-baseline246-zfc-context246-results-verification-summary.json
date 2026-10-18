@@ -1,0 +1,125 @@
+{
+  "status": "PASS",
+  "seconds": 16.523402243999953,
+  "commands": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "code/rebuild_machines.py",
+        "--check"
+      ],
+      "returncode": 0,
+      "seconds": 0.09707511400119984,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"working_states\": 246,\n  \"binary_rows\": 492,\n  \"baseline_sha256\": \"939f99d602c8f7057517c4369279de99e30827050fc743581df83f26aaf1b713\",\n  \"program_sha256\": \"1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746\",\n  \"source_tree_nodes\": 6459,\n  \"instruction_sites\": 6460,\n  \"guarded_instruction_cases\": 8391,\n  \"removed_old_states\": [\n    0,\n    1,\n    3,\n    43,\n    59,\n    85,\n    97\n  ],\n  \"changed_retained_rows\": 6,\n  \"added_rows\": 2,\n  \"start_old\": 95,\n  \"halt_old\": 254,\n  \"halt_canonical\": 246,\n  \"final_old_sha256\": \"303911c554284c49ce09042d8127feba4da260baae766e32260034aa3bdb82ee\",\n  \"final_canonical_sha256\": \"89cda615b3ea9fcac07ad6b08e0351faa34841a56935b6f5846d3920f13bc0fc\",\n  \"physical_of_logical\": [\n    6,\n    2,\n    0,\n    4,\n    3,\n    7,\n    8,\n    5,\n    1\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "code/check_folds.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.09308327100006863,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"contextual_quotient_pairs\": 494,\n  \"excluded_pairs\": [\n    [\n      0,\n      0\n    ],\n    [\n      1,\n      0\n    ],\n    [\n      1,\n      1\n    ],\n    [\n      3,\n      0\n    ],\n    [\n      3,\n      1\n    ],\n    [\n      97,\n      0\n    ]\n  ],\n  \"incoming_edges\": {\n    \"0\": [\n      [\n        60,\n        0\n      ]\n    ],\n    \"1\": [\n      [\n        0,\n        0\n      ],\n      [\n        1,\n        1\n      ],\n      [\n        3,\n        1\n      ]\n    ],\n    \"3\": [\n      [\n        1,\n        0\n      ]\n    ],\n    \"97\": [\n      [\n        255,\n        0\n      ]\n    ],\n    \"255\": [\n      [\n        75,\n        0\n      ]\n    ]\n  },\n  \"graph_reachable_working_states\": 246,\n  \"independent_construction_matches\": true,\n  \"exact_lean_source_snapshots\": 32,\n  \"proof_scope\": \"494 exact commuting rows; the universal domain restrictions are proved from register shape and the preceding write, not sampled.\",\n  \"new_proof_assistant_endpoint\": false\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "code/render_table.py",
+        "--check"
+      ],
+      "returncode": 0,
+      "seconds": 0.0713194210002257,
+      "stdout": "PASS canonical table appendix: 246 rows / 492 transitions\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "code/check_macro_inductions.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.1284877680009231,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"exact_table_sha256\": \"303911c554284c49ce09042d8127feba4da260baae766e32260034aa3bdb82ee\",\n  \"proof_scope\": \"All finite register lists with a selected primary followed by a block; arbitrary register values and left context.\",\n  \"kernel_status\": \"Mathematical induction checker; not a proof-assistant kernel endpoint.\",\n  \"word_identity\": {\n    \"status\": \"PASS\",\n    \"induction\": \"finite lists of arbitrary natural numbers\",\n    \"base\": \"C([])1 = 1B([])\",\n    \"cons\": \"C(v)C(A)1 = C(v)1B(A) = 1B(v)B(A)\",\n    \"identity\": \"C(A)1 = 1B(A)\",\n    \"reverse_identity\": \"1rev(C(A)) = rev(B(A))1\"\n  },\n  \"sound_rules\": [\n    \"literal table row\",\n    \"unary self-loop induction\",\n    \"structural finite-block-list induction\",\n    \"concatenation and reversal identities\"\n  ]\n}\nseek73_block PASS steps=2+1*v head=2+1*v\ncarry95_block PASS steps=2+1*v head=2+1*v\nreturn48_block PASS steps=2+1*v head=-2+-1*v\nrollback112_block PASS steps=2+1*v head=-2+-1*v\npositive_decrement PASS steps=4+2*width_pre head=0\nzero_decrement PASS steps=7+2*width_pre head=-1\nincrement PASS steps=11+2*width_pre+2*width_suf+2*x head=-1\nmark_0 PASS steps=3 head=-1\nmark_1 PASS steps=7+2*r0 head=-1\nmark_2 PASS steps=11+2*r0+2*r1 head=-1\nmark_3 PASS steps=15+2*r0+2*r1+2*r2 head=-1\nmark_4 PASS steps=19+2*r0+2*r1+2*r2+2*r3 head=-1\nmark_5 PASS steps=23+2*r0+2*r1+2*r2+2*r3+2*r4 head=-1\nmark_6 PASS steps=27+2*r0+2*r1+2*r2+2*r3+2*r4+2*r5 head=-1\nmark_7 PASS steps=31+2*r0+2*r1+2*r2+2*r3+2*r4+2*r5+2*r6 head=-1\nmark_8 PASS steps=35+2*r0+2*r1+2*r2+2*r3+2*r4+2*r5+2*r6+2*r7 head=-1\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "code/review_affine_source.py",
+        "--program",
+        "sources/Prog254.v",
+        "--sites",
+        "sources/prior/instruction-sites-physical.json",
+        "--table",
+        "machine/zfc_prefix246_old.tm",
+        "--checker",
+        "sources/prior/prefix_affine.py",
+        "--output",
+        "results/affine-source-review.json"
+      ],
+      "returncode": 0,
+      "seconds": 3.1753756559992325,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"source_pin\": \"e0b512a63e2c1ca6a1698fa437b8568f1643ff6b\",\n  \"program_sha256\": \"1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746\",\n  \"program_github_blob\": \"254106e2b20762ddd89b2fad4765af5248d41469\",\n  \"table_sha256\": \"303911c554284c49ce09042d8127feba4da260baae766e32260034aa3bdb82ee\",\n  \"affine_checker_sha256\": \"083f884e6de87a85381ebc6b28c23d02a9f0731e67c3d77e26ed9ea4544cd08e\",\n  \"cached_sites_sha256\": \"dc6853f57bc48b834c2a635a82dfad8e344dd324ca11ef8e70ae2f36d66be357\",\n  \"fully_consumed_source_tokens\": true,\n  \"node_count\": 6459,\n  \"rooted_forward_full_binary_tree\": true,\n  \"source_site_count\": 6460,\n  \"source_sites_equal_cached_exactly\": true,\n  \"minimum_leaf_depth\": 3,\n  \"maximum_leaf_depth\": 34,\n  \"physical_register_map\": [\n    6,\n    2,\n    0,\n    4,\n    3,\n    7,\n    8,\n    5,\n    1\n  ],\n  \"oracle_guard_checks\": 342,\n  \"universal_guarded_recheck\": {\n    \"cases\": 8391,\n    \"by_operation\": {\n      \"CD/zero\": 1931,\n      \"CD/positive\": 1931,\n      \"CB\": 128,\n      \"CI\": 2601,\n      \"CC\": 1799,\n      \"CH\": 1\n    },\n    \"target_paths_keep_all_overflow_and_trailing_zero_cells\": true,\n    \"overflow_cases\": 3,\n    \"minimum_literal_steps\": 13,\n    \"max_rules\": 497,\n    \"rule_counts\": {\n      \"literal\": 1868409,\n      \"peel_right\": 17458,\n      \"recenter\": 864252,\n      \"scan_right\": 25980,\n      \"peel_left\": 6463,\n      \"scan_left\": 25980,\n      \"pad_left\": 83903,\n      \"box\": 12926,\n      \"literal_box_boundary\": 6591\n    }\n  }\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "code/check_bootstrap.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.5555248529999517,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"table_sha256\": \"303911c554284c49ce09042d8127feba4da260baae766e32260034aa3bdb82ee\",\n  \"start_state\": 95,\n  \"blank_steps\": 410735,\n  \"exit_state\": 96,\n  \"head\": -5,\n  \"marker\": -6,\n  \"header\": 176,\n  \"header_distance\": 181,\n  \"pc\": \"\",\n  \"physical_registers\": [\n    0,\n    0,\n    0,\n    3,\n    0,\n    0,\n    3,\n    0,\n    0\n  ],\n  \"logical_registers\": [\n    3,\n    0,\n    0,\n    0,\n    3,\n    0,\n    0,\n    0,\n    0\n  ],\n  \"spare_count\": 167,\n  \"one_count\": 351,\n  \"all_other_cells_zero\": true,\n  \"seconds\": 0.19750718900104403\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "code/check_literal_instructions.py",
+        "--program",
+        "sources/Prog254.v",
+        "--table",
+        "machine/zfc_prefix246_old.tm",
+        "--output",
+        "results/literal-instructions.json"
+      ],
+      "returncode": 0,
+      "seconds": 8.427476599999864,
+      "stdout": "suite 0 cases 8391 literal_steps 3146892\nsuite 1 cases 16782 literal_steps 6365960\nsuite 3 cases 25173 literal_steps 10013330\nsuite 9 cases 33564 literal_steps 14197744\n{\n  \"status\": \"PASS\",\n  \"finite_only\": true,\n  \"unbounded_proof\": false,\n  \"cases\": 33564,\n  \"suites\": [\n    [\n      0,\n      0,\n      [\n        0\n      ]\n    ],\n    [\n      1,\n      1,\n      [\n        1\n      ]\n    ],\n    [\n      3,\n      7,\n      [\n        2,\n        0,\n        3\n      ]\n    ],\n    [\n      9,\n      19,\n      [\n        0,\n        1\n      ]\n    ]\n  ],\n  \"literal_steps\": 14197744,\n  \"maximum_case_steps\": 742,\n  \"max_intermediate_dispatch_visits\": 2,\n  \"transition_pairs_used\": 492,\n  \"zero_rollback_positive_shift_increment_tail\": true,\n  \"used_97_read1\": false,\n  \"used_initializer_97_read0\": false,\n  \"seconds\": 8.358683776001271,\n  \"source_hashes\": {\n    \"sources/Prog254.v\": \"1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746\"\n  },\n  \"table_source\": \"machine/zfc_prefix246_old.tm\",\n  \"table_sha256\": \"303911c554284c49ce09042d8127feba4da260baae766e32260034aa3bdb82ee\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "code/check_local_contracts.py"
+      ],
+      "returncode": 0,
+      "seconds": 3.5569922659997246,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"finite_only\": true,\n  \"unbounded_proof\": false,\n  \"counts\": {\n    \"increment\": 5400,\n    \"positive_decrement\": 5400,\n    \"zero_decrement\": 5400\n  },\n  \"total_cases\": 16200,\n  \"literal_steps\": 8359100,\n  \"arbitrary_left_context_samples\": true,\n  \"positive_values_up_to\": 199,\n  \"normal_values_up_to\": 69,\n  \"spare_lengths\": [\n    1,\n    2,\n    3,\n    4,\n    5,\n    6,\n    7\n  ],\n  \"exact_times\": {\n    \"increment\": \"2 width(vs)+7\",\n    \"positive_decrement\": \"2 width(pre)+4\",\n    \"zero_decrement\": \"2 width(pre)+7\"\n  },\n  \"pulse_variant\": false,\n  \"used_97_read1\": false,\n  \"used_initializer_97_read0\": false,\n  \"seconds\": 3.4853425640012574,\n  \"table_sha256\": \"303911c554284c49ce09042d8127feba4da260baae766e32260034aa3bdb82ee\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "code/check_prefix_boxes.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.41802190899943525,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"seed\": 20261017,\n  \"samples\": {\n    \"mark\": 900,\n    \"inc\": 900,\n    \"dec0\": 900,\n    \"decp\": 900\n  },\n  \"maximum_literal_steps\": 249,\n  \"boot_row_97_read0_absent_from_macro_traces\": true,\n  \"elapsed_seconds\": 0.3471962210005586,\n  \"scope\": \"Finite randomized literal regression checks, independent of the algebraic proofs.\"\n}\n",
+      "stderr": ""
+    }
+  ],
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "scope": "Finite computational proof checks and literal audits; the symbolic induction rules are reviewed mathematics, not a Lean/Rocq kernel."
+}

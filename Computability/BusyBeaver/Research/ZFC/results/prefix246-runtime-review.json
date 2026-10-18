@@ -1,0 +1,136 @@
+{
+  "status": "AUTHOR_FINAL_EXISTING_EVIDENCE_REVIEW",
+  "reviewer": "/root/review_upstream_reflection",
+  "scope": "Author read full source/audit/guard and inspected existing root execution. Root independently reads and executes. No compiler/checker/version invocation by author.",
+  "record": {
+    "path": "/tmp/zfc-prefix246-lean/runtime/run1/verification.json",
+    "sha256": "1965fff0430079cec4e3bb067a22ca05ef2d526fe97fae1e7c74fab1e7fa506f"
+  },
+  "source": {
+    "path": "/tmp/zfc-prefix246-lean/runtime/RuntimeInstancePrefix246.lean",
+    "sha256": "f698845e32f546f4937a6d5ae819dd16c0975280c7b6f470f27ddb593ffa7bdb",
+    "snapshot": "/tmp/zfc-prefix246-lean/runtime/run1/sources/BusyBeaver/ZFC/RuntimeInstancePrefix246.lean"
+  },
+  "audit": {
+    "path": "/tmp/zfc-prefix246-lean/runtime/Audit.lean",
+    "sha256": "a421611e674ddc0bed525317634fdf1566a091737f9b22e9dfd561a12cc4d8c4",
+    "snapshot": "/tmp/zfc-prefix246-lean/runtime/run1/sources/Audit.lean"
+  },
+  "guard_sha256": "3124b59d8b0e5f8e785f09988ce47db71d369da69161c7e9f548395d4f8a304c",
+  "current_inputs": 71,
+  "all_current_input_hashes_match": true,
+  "project_providers": 26,
+  "toolchain_boundaries": [
+    "Init",
+    "Lean.Elab.Tactic.Omega"
+  ],
+  "import_closure_recomputed": true,
+  "all_actual_first_providers_match": true,
+  "fresh_source_object": {
+    "module": "BusyBeaver.ZFC.RuntimeInstancePrefix246",
+    "path": "/tmp/zfc-prefix246-lean/runtime/run1/cache/BusyBeaver/ZFC/RuntimeInstancePrefix246.olean",
+    "sha256": "f9492b344fc718712bcaf9e75e7cbdd282afaa85bcd48cbd3edab4f9224c1241",
+    "source_sha256": "f698845e32f546f4937a6d5ae819dd16c0975280c7b6f470f27ddb593ffa7bdb"
+  },
+  "source_object_saved_before_audit": true,
+  "named_axiom_probes": 11,
+  "typed_callers": 12,
+  "axioms": [
+    {
+      "name": "SetTheory.BusyBeaver.ZFC.RuntimeInstancePrefix246.covered_of_allSites",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "SetTheory.BusyBeaver.ZFC.RuntimeInstancePrefix246.related_active",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "SetTheory.BusyBeaver.ZFC.RuntimeInstancePrefix246.clean_suffix",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "SetTheory.BusyBeaver.ZFC.RuntimeInstancePrefix246.source_from_walk",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "SetTheory.BusyBeaver.ZFC.RuntimeInstancePrefix246.related_step",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "SetTheory.BusyBeaver.ZFC.RuntimeInstancePrefix246.stopped_terminal",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "SetTheory.BusyBeaver.ZFC.RuntimeInstancePrefix246.related_halt",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "SetTheory.BusyBeaver.ZFC.RuntimeInstancePrefix246.positive_simulation",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "SetTheory.BusyBeaver.ZFC.RuntimeInstancePrefix246.partialRun_eq_registerRun",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "name": "SetTheory.BusyBeaver.ZFC.RuntimeInstancePrefix246.register_halts_iff_binary",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "name": "SetTheory.BusyBeaver.ZFC.RuntimeInstancePrefix246.allSites_halts_iff_binary",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "warnings": {
+    "source": 0,
+    "audit": 0
+  },
+  "elapsed_seconds": {
+    "source": 0.6208990840241313,
+    "audit": 0.4765702411532402
+  },
+  "history": "Sole source/audit attempt passed; archive assembled after success from exact run snapshots and recorded guard bytes. No failed attempt or repair for this unit.",
+  "findings": [],
+  "mathematical_observations": [
+    "Related retains clean PC, complete dispatch frame and an explicitly nonempty spare suffix. Every checked instruction preserves this relation through a strictly positive segment.",
+    "Covered supplies total decoding and accepted checkSite evidence for every path. covered_of_allSites derives it from the structurally checked entire program tree.",
+    "A failed logical step is classified as a genuine halt only using the explicit coverage premise; internal-node leaves are rejected.",
+    "Both halting directions use the general PositiveSimulation theorem, whose finite prefix argument uses positive segment lengths; no scheduling fairness assumption is imported."
+  ],
+  "scope_boundaries": [
+    "Runtime equivalence is conditional on Covered or an allSites theorem and an initial Related frame.",
+    "No closed actual-tree acceptance, actual blank startup, binary consistency endpoint or PA internalization is supplied by this module."
+  ]
+}

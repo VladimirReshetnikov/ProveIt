@@ -1,17 +1,47 @@
 # Smaller machines for Con(ZFC)
 
 The goal is a binary, single-tape machine with fewer than 254 nonhalting
-states whose blank-tape nonhalting is provably in **PA** equivalent to
-Con(ZFC), as originally requested. The external Lean equivalence is now proved
-for a 252-state machine; its internal PA proof remains open. All new formal
-work uses Lean.
+states whose halting status is independent of ZF. The original target was
+blank-tape nonhalting provably in **PA** equivalent to Con(ZFC). The search
+now also permits equivalence to consistency of an effectively axiomatized
+stronger theory, as clarified by the user on 17 October 2026. Each candidate
+must state the assumptions used for its two unprovability directions;
+consistency alone must not be confused with arithmetic soundness. The
+external Lean equivalence with Con(ZFC) is now proved for the exact
+[246-state machine](prefix246_binary.md), improving the earlier checked
+252-state endpoint; its internal PA proof remains open. All new formal work uses Lean.
 An intended set-theoretic meaning is optional: any effectively presented
 theory or proof calculus is eligible once its consistency calibration is proved.
 The complete compiled search, including its data and initialization, is the
 cost measure that decides whether a candidate improves the baseline.
 
-The active focus is verifying and formalizing the
-[246-state contextual-fold candidate](candidate-prefix246/README.md).
+Stronger targets must stay within well-understood assumptions widely believed
+to be consistent (user clarification, 17 October 2026). Preferred benchmarks
+are finite consistency iterations over ZF/ZFC and standard inaccessible-cardinal
+assumptions. A shorter encoding alone does not justify an unfamiliar increase
+in consistency strength. For an artificial calculus T, identify an accepted
+benchmark S and prove both Con(S) → Con(T) and Con(T) → Con(ZF), with the
+formalization base stated. This supplies a consistency upper bound as well as
+the lower bound needed for the independence argument; no absolute consistency
+proof is claimed. Require a concrete encoding benefit before increasing the
+benchmark strength.
+
+The active formal baseline is the
+[246-state contextual-fold machine](candidate-prefix246/README.md).
+The new [routed 245-state candidate](candidate-routing245/README.md), from
+`8286787dd0`, passes its complete executable suite, including all 8,391
+expanded whole-tape instruction cases and its 407,915-step exact blank prefix.
+Joint source-grammar, special-entry and scanner optimization saves the state
+while preserving the original theory. Independent ordinary-proof reviews find
+no substantive blocker. Its exact Lean endpoint and internal PA proof remain
+open; the [intake record](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-164.md)
+preserves attribution, recovery, fresh results and scope.
+The first [245-state Lean unit](table_routing245.md) checks the exact 490-row
+table, state numbering and 46 reusable core rows. All 64 theorem audits and
+64 typed callers pass with zero warnings. Runtime and startup proofs are the
+next obligations. The [fast lookup](fast_table_routing245.md) also passes:
+two theorem audits and four typed callers prove equality with the literal
+machine, enabling faster reduction in subsequent execution proofs.
 The checked components of the earlier
 [shared-carry 250 construction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-160.md)
 provide reusable proof infrastructure. Sources 58–59 contain the same
@@ -34,8 +64,118 @@ removes one more pulse state and supplies a separate 410,735-step blank
 startup. All nine main checks and two additional audits pass. The
 [batch 162 review](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-162.md)
 also preserves a further audit of the identical 247 table. Independent review
-found no mathematical blocker within the ordinary-proof scope; exact-machine
-Lean endpoints and the equivalence proved inside PA remain open.
+found no mathematical blocker within the ordinary-proof scope. The exact-machine
+external Lean endpoint is now checked; the equivalence proved inside PA remains open.
+
+The [closed 246-state endpoint](prefix246_binary.md) proves that the literal
+blank machine halts iff ZF has a refutation, and iff ZFC has a refutation.
+Negation gives both consistency equivalences. Nine axiom probes and nine
+typed callers pass with zero warnings. The statements retain no coverage,
+startup or model premise. This is an external Lean theorem; it neither
+asserts unconditional nonhalting nor completes the PA internalization.
+
+The [exact 246-state table](table_prefix246.md) is now checked in Lean:
+492 transitions, the state numbering, the unique halt action, and the
+selector and folded-pulse rows. Its 47 theorem audits and 47 client examples
+pass with no warnings. This is the finite table layer for the active target.
+
+The [exact 246 arithmetic lookup](arithmetic_machine_graph_prefix246.md)
+now represents those 492 actions by a fixed bounded arithmetic formula in
+every IOpen model. Eight theorem audits and eight typed callers pass with no
+warnings, including the terminal write and movement.
+
+The [exact arithmetic step](arithmetic_machine_step_prefix246.md) and
+[run graph](arithmetic_machine_run_prefix246.md) now cover all encoded
+configurations and every internal IΣ1 time index. The standard natural-number
+graph agrees with every actual blank runtime. The
+[finite startup transfer](arithmetic_bootstrap_prefix246.md) proves in IΣ1
+and PA the fixed arithmetic sentence for the complete 410,735-step bootstrap.
+These three modules pass 28 axiom probes and 35 typed callers, with no final
+warnings. The unbounded internal register/binary simulation and the PA
+consistency equivalence remain open.
+
+The [arbitrary-start arithmetic run](arithmetic_machine_run_from_prefix246.md)
+and [prefix-removal theorem](arithmetic_machine_prefix_prefix246.md) now
+allow any internal initial configuration and prefix time in every IΣ1 model.
+Whole-configuration halt absorption handles halting inside the prefix. The
+checked 410,735-step startup can therefore be removed from the internal
+halting condition. These two modules pass 23 axiom probes and 29 typed
+callers with zero warnings; identifying the resulting run with the register
+interpreter and seeded scheduler remains open.
+
+The [seeded arithmetic scheduler](arithmetic_enumerator_seed246.md) now
+starts at candidate 3 with `TW=WS=H=0,D=3`, matching the required logical
+seed. In every IΣ1 model, an accepted refutation code exists iff this
+scheduler halts; its fixed sentence has IΣ1 and PA proofs. Ten axiom probes
+and eleven typed callers pass with zero final warnings. Identifying this
+internal scheduler with the binary run and with standard ZFC proof codes
+remains separate work.
+
+The [246 logical seed](logical_seed246.md) is now calibrated in Lean:
+the unchanged register program started at `(3,0,0,0,3,0,0,0,0)` halts iff
+ZFC has a refutation. Seven theorem audits and seven client examples pass.
+The binary startup reaches this exact logical seed. Complete decoder coverage
+and runtime composition now connect the program theorem to the literal
+blank-tape machine; the PA comparison remains open.
+
+The [246 pulse contracts](prefix246_pulse.md) and
+[unbounded register operations](prefix246_boxes.md) now pass in Lean on the
+exact folded table. The proofs retain the whole tape, arbitrary natural
+register values, and the required spare suffix. Zero decrement restores the
+file; positive decrement shifts its boundary; increment adds a value-one
+spare. These contracts are used by the checked decoder coverage and whole-program
+composition.
+
+The [246 fast lookup](fast_table_prefix246.md) is checked equal to the
+canonical machine on every transition. It supports bounded kernel
+calculations for the new bootstrap and symbolic decoder without changing
+their machine semantics.
+
+The [nine 246-state register selectors](prefix246_mark.md) have checked
+unbounded marking and return contracts on the reduced selector table. Ten
+theorem audits and six client examples pass with no warnings.
+
+[First 1,024 steps of the 246-state machine](boot_prefix246_first.md) proves the exact blank-run state, head and entire tape, and supplies the checkpoint-composition lemma for the bootstrap chain. The guarded source/audit run passed seven axiom probes and nine callers with zero warnings.
+
+[The exact 246-state bootstrap](boot_prefix246.md) is checked through all
+410,735 transitions from the blank tape. The final theorem fixes state 88,
+head −5 and every tape cell, and rules out earlier halting. Eight continuation
+modules compose with the checked first 1,024 steps and final 16,384-step block;
+the consolidated manifest preserves the exact records and independent review.
+
+The [246 bootstrap frame](prefix246_bootstrap_frame.md) identifies that entire
+tape with the calibrated logical seed, gap 181 and 167 spare registers of
+value one. Five theorem audits and five callers pass with no warnings. The
+history preserves the initial failed simplification and its one-line repair.
+
+The [246 symbolic executor](prefix246_symbolic.md) and
+[per-instruction interface](prefix246_site.md) now have checked whole-tape
+soundness proofs. Their 15/15 and 12/13 theorem/client audits pass with zero
+warnings. The complete coverage and final runtime composition are checked
+separately below and in the closed endpoint.
+
+The [246 whole-tape frame adapters](prefix246_frame.md) connect symbolic
+execution to the logical register file while preserving the spare suffix and
+header distance. Fourteen theorem audits and fourteen callers pass. The complete
+decoder coverage and runtime composition use these adapters.
+
+The [246 instruction composition](prefix246_instruction.md) implements
+every accepted logical instruction by a positive binary execution segment,
+preserving the complete dispatch frame and nonempty spares. Its seven
+theorem audits and seven callers pass with no warnings.
+
+The [246 conditional runtime equivalence](prefix246_runtime.md) now proves
+both directions of register/binary halting from a related whole-tape frame
+and accepted decoder coverage. Eleven theorem audits and twelve callers pass
+with no warnings. The checked blank startup, its frame identification and
+complete decoder coverage now discharge those premises in the closed endpoint.
+
+The [complete 246-state decoder coverage](prefix246_coverage.md) proves the
+actual-tree theorem for all 6,460 leaves and 8,391 guarded cases, including
+every finite program-counter list and its zero-padding behavior. All 102
+modules pass 468 axiom probes and 468 typed callers with zero warnings.
+The published evidence preserves the interrupted coordinator and its recovery,
+the earlier representative guards, and the complete independent review.
 
 The [exact 250-state table](table_prefix250.md) is now checked in Lean: all 500
 actions, the state numbering, the unique halt edge and the incoming edges of
@@ -1512,3 +1652,22 @@ constructor and success-push composition remain open.
 `ArithmeticControlUnpairCore254` proves the actual short MP unpair and its composition with the initial parameter push in every IΣ₁ model. Entry6367→6404 restores the original WS, puts old TW in scratch1 and param1 in TW, and preserves all other fields under clean scratch registers. The source passed; one audit projection was repaired and the audit-only continuation passed 12 probes/18 callers with zero warnings, reusing the originally recorded source object without rebuilding it. Full MP's constructor middle remains open in this module. See [the proof note](arithmetic_control_unpair_core254.md).
 
 `ArithmeticControlMP254` now proves the complete actual MP branch and its AC=0 dispatch composition in every IΣ₁ model under clean scratch registers. Success sets TW to param1 and pushes the required zero filler on WS; failure clears TW and preserves WS. Both cases clear cache and preserve the remaining fields. The repaired source and unchanged audit passed 12 probes/22 callers with zero warnings; the original failed source attempt and scoped independent reviews are retained. AX and the complete internal interpreter/Enum/PA endpoint remain open. See [the proof note](arithmetic_control_mp254.md).
+
+The [actual AX prefix](arithmetic_control_ax_prefix254.md) now checks its first
+parameter push and opcode classifier in arbitrary IΣ₁ models, preserving the
+whole register file with the specified updates and positive clocks. Seven
+theorem audits and eight typed callers pass with no warnings. The complete AX
+bundle and interpreter-to-scheduler comparison remain open; its inherited
+binary relation still concerns the earlier 252-state implementation.
+
+The [second AX parameter push](arithmetic_control_ax_cache_push254.md) now
+checks actual controls 67–92 through entry 93 for arbitrary internal IΣ₁
+register values with both scratch registers initially zero. It saves TW on
+WS, copies the cache into TW and restores the cache; every other field is
+retained. Its copy/restore tail takes exactly
+`7*cache+2` logical instructions with only scratch1 initially zero. Composition
+with the first push gives the full two-parameter prefix from control 41 to 93.
+Eight axiom probes and twelve typed callers pass with zero warnings; the
+failed first source attempt and explicit control-equality repair are preserved.
+The GEN constructor, later AX bundle and internal scheduler/binary comparison
+remain open.
