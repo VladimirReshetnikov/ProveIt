@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings, 17 October 2026. This report now reconciles sixty-one manuscripts.
+Intake findings, 17 October 2026. This report now reconciles sixty-three manuscripts.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -55,6 +55,16 @@ unbounded register operations and selectors, and balanced table lookup in
 yet close its global simulation, blank startup or consistency endpoint.
 The 247-state candidate needs its own table and startup proof; its ordinary
 argument does not supply the requested equivalence inside PA.
+
+Batch 162 adds [another audit of the same 247 table and a further 246-state
+reduction](intake-162.md) as sources 62–63. All seven checks of the additional
+247 report pass. The 246 candidate removes one further pulse state and changes
+the blank start; its nine main checks and two additional audits pass, including
+its separate 410,735-step complete startup. Independent ordinary-proof reviews
+found no mathematical blocker within their scopes. Exact 246 Lean verification
+and equivalence inside PA remain open. The optional-search bound discrepancy
+and stale bootstrap filename are preserved with explicit corrections in the
+reconciliation. See the [reproduction instructions](intake-162-reproduction.md).
 
 ## Sources, overlap and base
 

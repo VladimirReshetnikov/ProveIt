@@ -41,10 +41,13 @@ prove narrow binding/obstruction results, not checker or compiler correctness. T
 [Lean minimization project](BusyBeaver/Research/ZFC/README.md) now checks the
 external equivalence between the exact 252-state machine's blank nonhalting
 and Con(ZFC). The user's target remains an equivalence provable inside PA.
-The [batch 161 reconciliation](../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-161.md)
-adds relative-consistency seed criteria and a 247-state candidate, with all seven
-executable checks and its new complete blank startup reproduced. Its ordinary
-proof and executable evidence do not yet supply an exact-table Lean endpoint.
+The [batch 162 reconciliation](../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-162.md)
+adds another audit of the identical 247 table and a 246-state candidate with
+one further contextual pulse fold. Its nine main checks and two additional
+audits pass, including its own complete 410,735-step blank startup. The
+ordinary proof and executable evidence do not yet supply an exact-table Lean
+endpoint. Earlier relative-consistency seed criteria remain in
+[batch 161](../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-161.md).
 
 The score and time functions are distinct measures. The proved values
 `Sigma(2)=4`, `Sigma(3)=6`, `Sigma(4)=13` and `BB(2)=6`, `BB(3)=21`,
@@ -62,6 +65,7 @@ its README lists them.
 [ZFC machine minimization](BusyBeaver/Research/ZFC/README.md) retains the
 attributed literal 254-state baseline and its checked 252-state successor.
 The shared-carry 250 construction now has checked local table, pulse, marking,
-register-operation and symbolic-execution lemmas. Complete simulation and startup
-for the new 250 and 247 tables, and the internal PA comparison, remain open.
+register-operation, symbolic-execution, per-site and whole-tape frame lemmas.
+Complete simulation and startup for the new 250, 247 and 246 tables, and the
+internal PA comparison, remain open.
 The proofs are an opt-in `BusyBeaver.ZFC` surface.

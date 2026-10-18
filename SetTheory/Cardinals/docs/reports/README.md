@@ -2842,3 +2842,30 @@ execution lemmas are reusable components; neither the 250 nor 247 complete
 binary endpoint is claimed here. The user's equivalence provable inside PA
 remains open. Delivered articles and PDFs, the base article, original attribution
 and all partial-search limitations remain unchanged.
+
+
+Batch 162 adds two manuscripts as sources 62–63 of
+[ZFC closure kernels](set-theory/zfc-closure-kernels/intake-162.md), now 63 sources
+and still 290 reports. Placement `a1dc32a6fd` preserves 155 ancillary files and
+retires two committed arrival archives; 14 manuscripts, printed tables and
+delivery files remain recoverable. Reconciliation `46eaab4fd3` preserves exact
+recovery maps, independent source reviews and fresh replay evidence.
+
+Source 62 contains source 61's identical 247-state table. It adds a comparison
+of all 6,459 upstream register-program rows with the retained Lean literal
+tree and independent marking/bootstrap audits. Its seven checks pass; its
+smaller finite regression suite supplements the earlier, larger suite.
+Source 63 folds the pulse helper, removes old state 97 and uses old 95 as the
+blank start, yielding a 246-working-state candidate. All nine main checks and
+two additional audits pass, including all 8,391 guarded cases and a complete
+410,735-step startup into the same safe logical root as the 247 candidate.
+The restricted quotient excludes the former blank start, so that new startup
+is an essential separate check.
+
+Independent review found no mathematical blocker within the ordinary-proof
+scope. The exact 252-state external Lean equivalence remains established;
+checked local 250 table, operation, symbolic, site and whole-tape frame lemmas
+remain reusable. The new tables' complete Lean endpoints and the user's
+PA-internal equivalence remain open. Delivered sources, base article and
+attribution are unchanged. Optional searches were not rerun, and the stale
+`build246.py` reference is corrected only in the reconciliation.

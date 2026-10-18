@@ -11,8 +11,11 @@ The complete compiled search, including its data and initialization, is the
 cost measure that decides whether a candidate improves the baseline.
 
 The active focus is verifying and formalizing the
-[shared-carry 250 construction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-160.md).
-Sources 58–59 contain the same 250-state table. All 8391 guarded
+[246-state contextual-fold candidate](candidate-prefix246/README.md).
+The checked components of the earlier
+[shared-carry 250 construction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-160.md)
+provide reusable proof infrastructure. Sources 58–59 contain the same
+250-state table. All 8391 guarded
 instruction cases, its 585,431-step complete blank startup and all nine stronger
 audit jobs pass on fresh copies. Independent ordinary-proof review found no
 fatal defect within its scope. The exact-table Lean endpoint and its internal
@@ -25,6 +28,14 @@ removes three further states. Its seven executable checks and separate
 blocker in the ordinary argument; its exact-table Lean and internal PA
 endpoints remain open. The same intake preserves broader semantic-seed
 criteria and two 255-state research controls.
+
+The [246-state contextual-fold candidate](candidate-prefix246/README.md)
+removes one more pulse state and supplies a separate 410,735-step blank
+startup. All nine main checks and two additional audits pass. The
+[batch 162 review](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-162.md)
+also preserves a further audit of the identical 247 table. Independent review
+found no mathematical blocker within the ordinary-proof scope; exact-machine
+Lean endpoints and the equivalence proved inside PA remain open.
 
 The [exact 250-state table](table_prefix250.md) is now checked in Lean: all 500
 actions, the state numbering, the unique halt edge and the incoming edges of
@@ -51,6 +62,28 @@ The [per-instruction soundness interface](prefix250_site.md) now preserves
 the independent gap changes from positive decrement and PC overflow. Its
 12 theorem audits and 13 client examples pass. Checking every original
 instruction against that interface remains the next coverage obligation.
+
+The [whole-tape frame adapters](prefix250_frame.md) now connect those
+symbolic endpoints to the logical register file and preserve the changed
+spare suffix and header distance. Fourteen theorem audits and fourteen
+client examples pass; complete runtime composition remains in progress.
+
+The [first 1,024 blank-tape steps](boot_prefix250_first.md) are now checked
+in Lean, with a complete tape description and a reusable checkpoint
+composition theorem. This is a finite prefix; the full 585,431-step startup
+still needs its remaining checked segments and final frame identification.
+
+The [instruction composition](prefix250_instruction.md) now proves that
+every accepted logical instruction has a positive binary execution and
+preserves the complete dispatch frame with nonempty spares. Its seven theorem
+audits and seven client examples pass. The all-sites premise remains open.
+
+The [conditional runtime equivalence](prefix250_runtime.md) now connects
+the 250-state instruction adapter to both directions of register/binary
+halting, from a related whole frame and assuming site coverage. Its eleven
+theorem audits and twelve client examples pass with no warnings. This proof
+provides a template for the active 246-state target; complete coverage and
+blank initialization for that exact table remain separate obligations.
 
 The [previous intake](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-158-159.md)
 preserves five complete reports and one explicitly partial salvage, including
