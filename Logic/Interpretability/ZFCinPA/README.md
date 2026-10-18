@@ -442,3 +442,10 @@ and ten typed callers passed without warnings after a one-line numeric
 proof repair. Identifying this literal instance with the Foundation encoding,
 closing arbitrary parameter lists and translating native derivations remain
 separate obligations for the PA consistency result.
+
+[Simultaneous internal substitution](../../../Computability/BusyBeaver/Research/ZFC/validator_environment_substitution254.md)
+now has an exact encoding identity for arbitrary internally typed substitution
+vectors. Its two-slot clients cover swapped variables and repeated labels,
+as needed for the native GIC matrix. Nine probes and eleven typed callers
+passed with zero warnings. Formula/proof transport and the consistency
+endpoint remain separate obligations.

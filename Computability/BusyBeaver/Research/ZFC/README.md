@@ -1906,3 +1906,9 @@ source check and focused audit: seven probes, ten typed callers, zero warnings.
 It gives arithmetic recognition of GIC instances, including arbitrary
 internal codes. Translating native proofs into the validator remains an
 additional obligation for the PA consistency result.
+
+The [simultaneous-substitution bridge](validator_environment_substitution254.md)
+also passed nine probes and eleven typed callers without warnings. It proves
+the exact configurable-encoder identity for arbitrary internal substitution
+vectors, including swapped and repeated two-slot replacements. Native axiom
+and derivation transport remain to be supplied.
