@@ -1,0 +1,303 @@
+{
+  "status": "UNIVERSAL_SOURCE_ROTATION_AND_FRAME_COMPOSITION_PASS",
+  "old_sites_sha256": "f77a3fb9729382a0b8cd24d480639862b63ecb76bbc205542d1fc7077c025745",
+  "new_sites_sha256": "3ee984818f0bdfd2c4daae72aeb14340572e34d73f5cdb5616b6d29d78fcd7f4",
+  "logical_physical_permutation": [
+    6,
+    2,
+    0,
+    4,
+    3,
+    7,
+    8,
+    5,
+    1
+  ],
+  "source_leaves": 6459,
+  "guarded_cases": 8390,
+  "maximum_depth": 51,
+  "source_context": {
+    "checked_outside_edges": 8385,
+    "sole_external_entry": [
+      [
+        2,
+        false,
+        6,
+        2,
+        6
+      ]
+    ],
+    "halt_correspondence": [
+      [
+        6324,
+        6323
+      ]
+    ],
+    "no_outside_interior_entry": true,
+    "root_correspondence": true
+  },
+  "symbolic_iteration_cases": [
+    {
+      "positive": false,
+      "old_trace": [
+        {
+          "site": 6,
+          "operation": "CD",
+          "register_or_depth": 6,
+          "positive": false,
+          "next": 9,
+          "offsets": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "site": 9,
+          "operation": "CI",
+          "register_or_depth": 0,
+          "positive": false,
+          "next": 10,
+          "offsets": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "new_trace": [
+        {
+          "site": 6,
+          "operation": "CI",
+          "register_or_depth": 0,
+          "positive": false,
+          "next": 7,
+          "offsets": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "site": 7,
+          "operation": "CD",
+          "register_or_depth": 6,
+          "positive": false,
+          "next": 9,
+          "offsets": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "endpoint_old": 10,
+      "endpoint_new": 9,
+      "offsets": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "positive": true,
+      "old_trace": [
+        {
+          "site": 6,
+          "operation": "CD",
+          "register_or_depth": 6,
+          "positive": true,
+          "next": 7,
+          "offsets": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            -1,
+            0,
+            0
+          ]
+        },
+        {
+          "site": 7,
+          "operation": "CI",
+          "register_or_depth": 0,
+          "positive": false,
+          "next": 8,
+          "offsets": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            -1,
+            0,
+            0
+          ]
+        },
+        {
+          "site": 8,
+          "operation": "CC",
+          "register_or_depth": 2,
+          "positive": false,
+          "next": 6,
+          "offsets": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            -1,
+            0,
+            0
+          ]
+        }
+      ],
+      "new_trace": [
+        {
+          "site": 6,
+          "operation": "CI",
+          "register_or_depth": 0,
+          "positive": false,
+          "next": 7,
+          "offsets": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "site": 7,
+          "operation": "CD",
+          "register_or_depth": 6,
+          "positive": true,
+          "next": 8,
+          "offsets": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            -1,
+            0,
+            0
+          ]
+        },
+        {
+          "site": 8,
+          "operation": "CC",
+          "register_or_depth": 2,
+          "positive": false,
+          "next": 6,
+          "offsets": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            -1,
+            0,
+            0
+          ]
+        }
+      ],
+      "endpoint_old": 6,
+      "endpoint_new": 6,
+      "offsets": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -1,
+        0,
+        0
+      ]
+    }
+  ],
+  "arithmetic_induction": {
+    "entry": "N=a, X=b, any other seven natural registers",
+    "zero_case": "Both take2 instructions, N+=1 and exit",
+    "positive_case": "Both take3 instructions, N+=1, X-=1, return to corresponding entry",
+    "exit": "N=a+b+1, X=0; all other registers preserved",
+    "exact_source_time": "3*b+2",
+    "termination": "Natural induction on b; no infinite fragment execution"
+  },
+  "original_to_routed_bisimulation": {
+    "status": "TWO_WAY_REGISTER_BISIMULATION_PASS",
+    "reachable_guarded_pairs": 3013,
+    "checked_guard_edges": 6024,
+    "halt_pairs": 1,
+    "maximum_pure_segment_instructions": 5,
+    "initial_increment_effects": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "both_halting_directions": true,
+    "all_natural_register_vectors": true,
+    "proof_method": "Finite closed guarded relation, equal terminating pure-segment effects, same decrement register and both guards, same halt outcome; mathematical induction on guarded execution"
+  },
+  "frame_closure": {
+    "nonhalting_guarded_successors": 8389,
+    "gap_extra_histogram": {
+      "0": 6455,
+      "1": 1934
+    },
+    "carry_cases": 3,
+    "arbitrary_gap": "64+n, n natural",
+    "nonempty_spare_preserved": true,
+    "whole_pointer_tape_equivalence": true
+  },
+  "proof": "Outside fragments, corresponding source steps have identical guarded register effects and successor. Every possible fragment entry is matched and the terminating natural-number induction supplies identical exit registers. The sole halt corresponds. This is two-way root halting equivalence for all natural register vectors, without any consistency or source-reachability premise.",
+  "limitation": "Independent ordinary mathematical evidence, no freshly checked proof-assistant endpoint. The inherited original source consistency calibration is not reproved here."
+}

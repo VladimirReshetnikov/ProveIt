@@ -1,0 +1,157 @@
+{
+  "status": "FINAL_RELEASE_VALIDATED",
+  "date": "2026-10-18",
+  "release_files": {
+    "zip": "BusyBeaver_242_Research_2026-10-18.zip",
+    "zip_bytes": 1012958,
+    "zip_sha256": "c9f2d7571b5ca6beae6591b6d6db299d733834df7f861145799019fedf43e22d",
+    "manifest_sha256": "1b10257e6455d493e392416355fd7ba87a8a70b4e64c4de58b3665ed9bee2cf4",
+    "manifest_files": 117,
+    "pdf": "BusyBeaver_242_Reductions.pdf",
+    "pdf_bytes": 275630,
+    "pdf_sha256": "d0aa340ab245fe242f9717af49ad047a0af03f4a30b469228b4f0e24c95c09c3",
+    "pdf_pages": 7,
+    "pdf_visual_QA": "All seven page images inspected; no overflow/clipping/missing glyphs"
+  },
+  "fresh_extraction_replay_file": "FINAL_EXTRACTION_REPLAY.json",
+  "fresh_extraction_replay_sha256": "1ff33f40474ec555535a160acfdeba5d37bd0e23fd5138bd78b68736f39f0d84",
+  "fresh_extraction_result": {
+    "status": "FULL_FRESH_REPLAY_PASS",
+    "manifest_files_checked": 117,
+    "all_three_canonical_serializations_equivalent": true,
+    "root_all_tape_checks": 7696,
+    "common_guard_checks": 7640,
+    "concrete_crosschecks_per_candidate": 133,
+    "universal_runs": [
+      {
+        "candidate": 1,
+        "status": "UNIVERSAL_MATHEMATICAL_PASS",
+        "cases": 8390,
+        "symbolic_steps": 2314880,
+        "minimum_duration": 13,
+        "cases_exact_match": true
+      },
+      {
+        "candidate": 2,
+        "status": "UNIVERSAL_MATHEMATICAL_PASS",
+        "cases": 8390,
+        "symbolic_steps": 2318402,
+        "minimum_duration": 13,
+        "cases_exact_match": true
+      },
+      {
+        "candidate": 3,
+        "status": "UNIVERSAL_MATHEMATICAL_PASS",
+        "cases": 8390,
+        "symbolic_steps": 2314880,
+        "minimum_duration": 13,
+        "cases_exact_match": true
+      },
+      {
+        "candidate": 0,
+        "status": "UNIVERSAL_MATHEMATICAL_PASS",
+        "cases": 8390,
+        "symbolic_steps": 2314868,
+        "minimum_duration": 13,
+        "cases_exact_match": true
+      }
+    ],
+    "jobs": [
+      {
+        "script": "root-proof/fold15_local_proof.py",
+        "returncode": 0,
+        "seconds": 0.037
+      },
+      {
+        "script": "local-proof/prove_local_folds.py",
+        "returncode": 0,
+        "seconds": 0.058
+      },
+      {
+        "script": "runtime/check_local_blocks_independent.py",
+        "returncode": 0,
+        "seconds": 0.068
+      },
+      {
+        "script": "runtime/check_boots.py",
+        "returncode": 0,
+        "seconds": 0.86
+      },
+      {
+        "script": "baseline243/independent-runtime/check_table_and_boot.py",
+        "returncode": 0,
+        "seconds": 0.285
+      },
+      {
+        "script": "baseline243/independent-runtime/check_local_compensation.py",
+        "returncode": 0,
+        "seconds": 0.053
+      },
+      {
+        "script": "baseline243/independent-runtime/check_source_rotation.py",
+        "returncode": 0,
+        "seconds": 0.346
+      },
+      {
+        "script": "runtime/crosscheck_instantiation.py",
+        "returncode": 0,
+        "seconds": 2.8
+      },
+      {
+        "script": "runtime/crosscheck_instantiation.py",
+        "returncode": 0,
+        "seconds": 2.584
+      },
+      {
+        "script": "runtime/crosscheck_instantiation.py",
+        "returncode": 0,
+        "seconds": 2.672
+      },
+      {
+        "script": "runtime/run_symbolic_checked.py",
+        "returncode": 0,
+        "seconds": 353.632
+      },
+      {
+        "script": "runtime/run_symbolic_checked.py",
+        "returncode": 0,
+        "seconds": 417.699
+      },
+      {
+        "script": "runtime/run_symbolic_checked.py",
+        "returncode": 0,
+        "seconds": 384.463
+      },
+      {
+        "script": "baseline243/independent-runtime/run_symbolic_checked.py",
+        "returncode": 0,
+        "seconds": 394.953
+      }
+    ],
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "optimization": 0,
+    "seconds": 421.45,
+    "scope": "Fresh execution of own finite local proof, exact whole-tape bootstrap, source closure and unbounded runtime induction; not proof-assistant or independent source-theory calibration"
+  },
+  "additional_release_QA": [
+    {
+      "name": "optimized Python rejected before proof execution",
+      "status": "PASS",
+      "exit_code": 1
+    },
+    {
+      "name": "modified canonical transition rejected by manifest",
+      "status": "PASS",
+      "exit_code": 1
+    },
+    {
+      "name": "principal exact clock formula on blank prefix",
+      "status": "PASS",
+      "old_steps": 407967,
+      "old_visits_15_0": 6,
+      "new_steps": 407979
+    }
+  ],
+  "scope": "Own exact-ZIP fresh replay, ordinary mathematical proof certificates, and rendered PDF QA. Independent source-theory calibration and new proof-assistant endpoint are not claimed.",
+  "archive_unchanged_after_replay": true
+}
