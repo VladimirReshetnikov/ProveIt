@@ -32,6 +32,8 @@ also have checked unbounded marking and return contracts. These are local
 execution theorems; the full
 250-state bootstrap and global simulation remain open.
 
+The [balanced prefix250 lookup](fast_table_prefix250.md) is now checked equal to the exact canonical table on all 500 actions. Its first source/audit run passed with two ordered probes, four client examples and zero warnings; the finite transition equality is axiom-free and complete machine equality uses only `Quot.sound`. This reusable calculation layer contains no bootstrap or consistency endpoint. [Exact evidence](results/fast-table-prefix250-verification.json) and [preserved history plus independent review](results/fast-table-prefix250-history.json) bind its source, generator and actual providers.
+
 The [previous intake](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-158-159.md)
 preserves five complete reports and one explicitly partial salvage, including
 cache-result MP, semantic seeds, countdowns and pairing-shift negation.
