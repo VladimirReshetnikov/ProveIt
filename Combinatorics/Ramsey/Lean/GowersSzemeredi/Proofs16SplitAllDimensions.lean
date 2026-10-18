@@ -1,26 +1,12 @@
 import GowersSzemeredi.Proofs16SplitStepBounds
 import GowersSzemeredi.Proofs16AllDimensions
 
-/-! Split uniform classes in every dimension, with `O(2^k)` logarithms
-(Notes L.7, F3a).
+/-! Degree bounds for the split step (Notes L.7, F3a): `splitStepA_le`, the
+polynomial `split_degree_poly` behind the parameter-degree bound, and the
+dimension-two seed `splitSeed = 2^132`.
 
-* `splitStepA_le`: `splitStepA k a ≤ 2^(k+5)·a²`.
-* `splitStepD_le`: `splitStepD k a D ≤ 2^(k+6)·a(a+D)·P + T`, with
-  `P = stepP k` and `T = stepT k`. There is no `D²` term: the parameter degree
-  enters the next class linearly, multiplied by `a` and `P`.
-* `split_invariant_succ`: the step preserves the invariants
-  `2^(k+6)·a_k ≤ 2^(35·2^k)` and `D_k ≤ 2^(75·2^k)`. At `k = 2` they hold for
-  `a = D = 2^132`.
-* `splitPair k = (a_k, D_k)`: the degrees, with `split_pair_bounds`.
-* `splitUniformClass_all`: a split class in every dimension `k ≥ 2`.
-
-So `log a_k ≤ 35·2^k` and `log D_k ≤ 75·2^k`, against `k·2^(k+6)` for the
-power classes of Notes L.6. This is the budget Theorem 18.2 at every length
-needs (Notes L.7).
-
-`splitStepD_le`, `splitUniformClass_all`, `split_invariant_succ` and
-`split_pair_bounds` are in `Proofs16SplitAllDimensionsSide`, outside the final
-route. -/
+The split classes in every dimension (`splitUniformClass_all`) are in
+`Proofs16SplitAllDimensionsSide`, outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -94,25 +80,9 @@ theorem split_degree_poly {a D P A A4 T k Y SW PbW CW EbW ErW BqW LW ZW EW Th : 
     rw [hTh]; nlinarith only [e1, hDS, hsP, hPQ, hkP, Nat.mul_le_mul_right P hDS]
   nlinarith only [hC, hE', hTh', hQR]
 
-/-! ### The invariants -/
-
 /-! ### Every dimension -/
 
 /-- The seed degree at dimension `2`. -/
 def splitSeed : Nat := 2 ^ 132
-
-/-- The degrees `(a_k, D_k)` of the split class in dimension `k`; constant
-below dimension `2`. -/
-def splitPair : Nat → Nat × Nat
-  | 0 => (splitSeed, splitSeed)
-  | k + 1 => if k < 2 then (splitSeed, splitSeed)
-      else (splitStepA k (splitPair k).1, splitStepD k (splitPair k).1 (splitPair k).2)
-
-theorem splitPair_two : splitPair 2 = (splitSeed, splitSeed) := by
-  rw [splitPair, if_pos (by norm_num)]
-
-theorem splitPair_succ {k : Nat} (hk : 2 ≤ k) :
-    splitPair (k + 1) = (splitStepA k (splitPair k).1, splitStepD k (splitPair k).1 (splitPair k).2) := by
-  rw [splitPair, if_neg (by omega)]
 
 end LeanProofs.GowersSzemeredi

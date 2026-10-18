@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16SplitUniformClass
 import GowersSzemeredi.Proofs16PowerUniformClassSide
+import GowersSzemeredi.Proofs16ClassStepDegreesSide
 
 /-! Declarations of `Proofs16SplitUniformClass` that the final route does not use and that
 need modules outside it (moved here so that those modules can leave the route). -/

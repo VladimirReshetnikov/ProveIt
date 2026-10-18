@@ -96,6 +96,8 @@ import GowersSzemeredi.Proofs18CoverExplicit
 import Lean.Util.CollectAxioms
 import GowersSzemeredi.Proofs16Lemma1Side
 import GowersSzemeredi.Proofs05_10Side
+import GowersSzemeredi.Proofs05PolynomialPartitionSide
+import GowersSzemeredi.Proofs17PhaseRemovalSide
 
 /-! Production audit of every numbered statement in the source catalogue.
 Each selected declaration must be a theorem of precisely the corresponding

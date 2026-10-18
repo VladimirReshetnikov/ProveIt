@@ -30,7 +30,10 @@ The seed is the dimension-two base. Under the Fejér θ₁ its counts are about
 is about `2^35` to `2^40`: inside the `2^48` of the `c = 14` instance. By
 the envelope model (`models/model_tight_s.py`) a class constant up to 25
 gives Theorem 18.1 at `d + 6` and Theorem 18.2 at `L + 4`. Proving the seed
-bound is the dimension-two part of the propagation (Notes L.16c). -/
+bound is the dimension-two part of the propagation (Notes L.16c).
+
+`splitStepDWith_stepP` is in `Proofs16SplitFejerDegreesSide`, outside the final
+route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -54,12 +57,6 @@ def wThrDeg (P D : Nat) : Nat := D * (P + 2) + P + 2
 (`splitStepDWith_stepP`). -/
 def splitStepDWith (P T k a D : Nat) : Nat :=
   wCountW P k a D + wExpW P T k a D + wThrDeg P D
-
-theorem splitStepDWith_stepP (k a D : Nat) :
-    splitStepDWith (stepP k) (stepT k) k a D = splitStepD k a D := by
-  unfold splitStepDWith wCountW wExpW wThrDeg wZW wLW wBqW wErW wEbW wPbW wSW wStepY
-    splitStepD sCountW sExpW stepThrDeg sZW sLW sBqW sErW sEbW sPbW sSW sQrW sStepY
-  rfl
 
 theorem splitStepDWith_le {P T k a D : Nat} (ha : 1 ≤ a) (hD : 1 ≤ D) (hP : k + 9 ≤ P) :
     splitStepDWith P T k a D ≤ 2 ^ (k + 6) * (a * (a + D)) * P + T := by

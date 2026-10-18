@@ -14,6 +14,8 @@ namespace LeanProofs.GowersSzemeredi
 section
 open BaseCase
 
+/-! ### Dimension one -/
+
 /-- **Dimension one with the uniform control**, at any `D ≥ 2^132`. -/
 theorem polyCoverAt_one_uniform {V : Real} (hV : 1 ≤ V) {D : Nat} (hD : 2 ^ 132 ≤ D) :
     PolyCoverAt 1 (uCount V D) (uExp V D) := by

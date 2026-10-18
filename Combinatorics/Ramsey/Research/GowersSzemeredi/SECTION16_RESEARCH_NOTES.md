@@ -10143,6 +10143,54 @@ declaration, structure field or namespace that no module it still sees declares
   `Proofs16BaseCaseCore`'s moves need a private structure; `Proofs16Basic`'s
   moves are named `….mono`, which the final module also mentions. The real
   route went to 478 modules and 102,403 lines.
+- *Splitting mostly-unused route modules.* A detach moves only what a dead
+  region needs, so a live module keeps all its unused declarations. With
+  `--split U`, the planner also moves every declaration of the live module `U`
+  that the final theorems do not use, closed under use: whatever a staying
+  declaration uses stays, and so does a declaration that needs a staying
+  private instance or structure. Declarations with attributes stay, except
+  private simp lemmas about private declarations that move too (they can fire
+  only on terms containing those). So does every declaration whose last name
+  component a bridge mentions, since a bridge may name it by dot notation; the
+  planner previously refused the whole plan instead. On 15 modules this moved
+  377 declarations of 32 route modules to 32 side modules (22 of them new),
+  among them the finite audit model of the live Lemma 10.6
+  (`lemma_10_6_counterexample`, about 1,000 lines), the counterexample to the
+  former exact-cell Corollary 5.6, the printed `lemma_15_5_holds`,
+  `lemma_15_6_holds` and `proposition_17_2_holds`, the explicit-degree class
+  step `powerUniformClass_succ` and the split classes in every dimension. 21
+  private helpers of `Proofs15Restriction` and `Proofs05PolynomialPartition`
+  that staying declarations use became public. The real route went from
+  102,403 to 94,902 lines with the same 478 modules.
+- *Auxiliary constants the planners did not know.* Lean generates `f._f`
+  (structural recursion), `f._unary` (well-founded recursion) and
+  `f._abel_N_M` (the `abel` tactic), and makes the matcher equations and
+  splitters of a public `f` private (`_private.….f.match_1.splitter`). The
+  first three were taken for source declarations, whose text the planner then
+  could not find; the last looked like private helpers that a move would have
+  to make public. All four now follow their base declaration. The build found
+  one more gap: the drag-along of private helpers moved `selectionTarget`
+  while `attribute [irreducible] selectionTarget` stayed. The attribute line
+  now follows the definition into `Proofs15RestrictionSide`, the drag-along
+  keeps whatever such a command names, and `cmd_names_check.py` (every
+  `attribute`, `alias` and `export` target resolves in its module's closure)
+  is a gate.
+- *Moves orphan their headings.* A moved section leaves its heading behind.
+  `orphan_sections.py` reports a heading with no declaration before the next
+  heading of the same or a higher level: 35 across the corpus, from this split
+  and the earlier detaches. `fix_orphans.py` moved 28 to the side modules,
+  above the first declaration of their old section; 6 headed sections that
+  were already empty before the first detach and were deleted; 1 is a remark,
+  not a heading, and stays. A docstring separated from its declaration by a
+  blank line stayed behind too: Lean attaches it across the blank line, the
+  block finder did not. The build caught it (`powerUniformClass_two_fejer`);
+  `foldlib.blocks` now attaches such docstrings, and `orphan_docstrings.py`
+  (every `/-- … -/` is followed by a declaration) is a gate. Ten modules kept a third of their declarations or
+  less. Their descriptions moved into the headers of their side modules, and
+  they got docs of what they keep. Nine docs had one pointer paragraph per
+  round for the same side module; each now has one. Many route modules are now
+  a few lines long (45 have at most 23 lines of code), which makes them
+  candidates for folding into their importers.
 
 `Proofs16PolynomialMultilinearCover.exists_all_scale_polynomial_multilinear_cover`
 composes the improved all-scale Lemma 16.9 with the rounded affine lift.

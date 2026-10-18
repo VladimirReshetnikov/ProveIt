@@ -15,7 +15,10 @@ The Fejér analogue of `Proofs18TightClasses`. The split classes of
   dimension-two exponent; in dimension one the count is at most `w^(2^15)`
   and the inverse exponent at most `w^(2^17)`;
 * `polyCoverAt_class23`: **the class cover in dimension `l` at degree
-  `uDeg23 l`**, the input of the Section 18 envelope. -/
+  `uDeg23 l`**, the input of the Section 18 envelope.
+
+`polyCoverAt_class23` is in `Proofs18TightClassesFejerSide`, outside the final
+route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -106,30 +109,5 @@ theorem split_pair_fejer_le_uDeg23 {l : Nat} (hl : 2 ≤ l) :
     calc 4 * 2 ^ (22 * E) = 2 ^ 2 * 2 ^ (22 * E) * 1 := by norm_num
       _ ≤ 2 ^ 2 * 2 ^ (22 * E) * 2 ^ (E - 2) := Nat.mul_le_mul_left _ this
   omega
-
-/-- **The class cover in dimension `l` at degree `uDeg23 l`.** -/
-theorem polyCoverAt_class23 (Kc pc : Nat → Nat) (hK : ∀ k, 1 ≤ Kc k) (hp : ∀ k, 0 < pc k)
-    (hlem : ∀ k, 1 ≤ k → AbstractFamilyLemma166At k
-      (section16PowerWidth (familyWidthPrefactor (Kc k)) (familyWidthDivisor k (pc k))))
-    {l : Nat} (hl1 : 1 ≤ l) :
-    PolyCoverAt l (uCount (classV Kc pc l) (uDeg23 l)) (uExp (classV Kc pc l) (uDeg23 l)) := by
-  have hVl := one_le_classV Kc pc l
-  rcases Nat.lt_or_ge l 2 with hl | hl
-  · obtain rfl : l = 1 := by omega
-    refine polyCoverAt_one_uniform_low hVl ?_
-    unfold uDeg23
-    exact Nat.pow_le_pow_right (by norm_num) (by norm_num)
-  · obtain ⟨C⟩ := splitUniformClass_all_fejer Kc pc hK hp hlem l hl
-    have hfit := split_pair_fejer_le_uDeg23 hl
-    have P0 := (C.toPower hVl).polyCoverAt (by omega) hVl (D := uDeg23 l) (by omega) (by omega)
-      (by omega)
-    refine P0.weaken ?_ ?_ ?_
-    · intro g t s hg hg1 ht ht1 hs hs1
-      rw [uCount_eq hVl _ hg hg1 ht ht1 hs hs1]
-    · intro g t s _ _ _ _ _ _
-      exact (uExp_pos_le _ _ g t s).1
-    · intro g t s hg hg1 ht ht1 hs hs1
-      show (uCount _ _ g t s)⁻¹ ≤ _
-      rw [uCount_eq hVl _ hg hg1 ht ht1 hs hs1]
 
 end LeanProofs.GowersSzemeredi

@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs16PolyPieceTwoData
 import GowersSzemeredi.Proofs16UniformCoverTwo
 import GowersSzemeredi.Proofs16WithSum
+import GowersSzemeredi.Proofs16WithUnionSide
 
 /-! Cylinders in dimension three and the three-term remainder (Notes L.5, D2).
 

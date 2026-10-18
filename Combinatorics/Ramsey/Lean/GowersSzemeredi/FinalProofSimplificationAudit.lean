@@ -23,6 +23,8 @@ import GowersSzemeredi.Proofs16Lemma9
 import GowersSzemeredi.Proofs16WidthMonotonicity
 import GowersSzemeredi.Proofs18FejerCubicTwistedDiscrepancySide
 import GowersSzemeredi.Proofs18IntervalUniformStoppingSide
+import GowersSzemeredi.Proofs17PhaseRemovalSide
+import GowersSzemeredi.Proofs18FejerSeedExponentsSide
 
 open Lean Elab Command in
 run_cmd do

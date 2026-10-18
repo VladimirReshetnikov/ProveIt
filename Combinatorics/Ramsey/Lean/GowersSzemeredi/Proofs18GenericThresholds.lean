@@ -80,8 +80,6 @@ theorem genNestThr_le_exp {X : Real} (hX : 2 ≤ X) {E : Real → Real} {k : Nat
     rw [one_div]
     exact ex_rpow hX hW1 (hA r (by omega)) (inv_pos.mpr n0).le hBr
 
-/-! ### The recurrence threshold -/
-
 /-! ### Lemma 15.6's threshold -/
 
 namespace GenParams

@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16SinglePieceRemainder
+import GowersSzemeredi.Proofs16SinglePieceRemainderSide
 
 /-! The graded remainder piece (Notes L.10, G1).
 

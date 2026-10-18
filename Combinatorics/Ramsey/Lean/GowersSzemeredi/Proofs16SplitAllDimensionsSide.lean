@@ -3,12 +3,52 @@ import GowersSzemeredi.Proofs16AllDimensionsSide
 import GowersSzemeredi.Proofs16SplitStepBoundsSide
 import GowersSzemeredi.Proofs16SplitUniformClassSide
 
-/-! Declarations of `Proofs16SplitAllDimensions` that the final route does not use and that
-need modules outside it (moved here so that those modules can leave the route). -/
+/-! Split uniform classes in every dimension, with `O(2^k)` logarithms
+(Notes L.7, F3a).
+
+* `splitStepA_le`: `splitStepA k a ≤ 2^(k+5)·a²`.
+* `splitStepD_le`: `splitStepD k a D ≤ 2^(k+6)·a(a+D)·P + T`, with
+  `P = stepP k` and `T = stepT k`. There is no `D²` term: the parameter degree
+  enters the next class linearly, multiplied by `a` and `P`.
+* `split_invariant_succ`: the step preserves the invariants
+  `2^(k+6)·a_k ≤ 2^(35·2^k)` and `D_k ≤ 2^(75·2^k)`. At `k = 2` they hold for
+  `a = D = 2^132`.
+* `splitPair k = (a_k, D_k)`: the degrees, with `split_pair_bounds`.
+* `splitUniformClass_all`: a split class in every dimension `k ≥ 2`.
+
+So `log a_k ≤ 35·2^k` and `log D_k ≤ 75·2^k`, against `k·2^(k+6)` for the
+power classes of Notes L.6. This is the budget Theorem 18.2 at every length
+needs (Notes L.7).
+
+Moved here from `Proofs16SplitAllDimensions`, which keeps only what the final
+route uses. -/
 
 set_option autoImplicit false
 
 noncomputable section
+
+namespace LeanProofs.GowersSzemeredi
+
+section
+open BaseCase
+
+/-- The degrees `(a_k, D_k)` of the split class in dimension `k`; constant
+below dimension `2`. -/
+def splitPair : Nat → Nat × Nat
+  | 0 => (splitSeed, splitSeed)
+  | k + 1 => if k < 2 then (splitSeed, splitSeed)
+      else (splitStepA k (splitPair k).1, splitStepD k (splitPair k).1 (splitPair k).2)
+
+theorem splitPair_two : splitPair 2 = (splitSeed, splitSeed) := by
+  rw [splitPair, if_pos (by norm_num)]
+
+theorem splitPair_succ {k : Nat} (hk : 2 ≤ k) :
+    splitPair (k + 1) = (splitStepA k (splitPair k).1, splitStepD k (splitPair k).1 (splitPair k).2) := by
+  rw [splitPair, if_neg (by omega)]
+
+end
+
+end LeanProofs.GowersSzemeredi
 
 namespace LeanProofs.GowersSzemeredi
 
@@ -26,6 +66,8 @@ theorem splitStepD_le {k a D : Nat} (ha : 1 ≤ a) (hD : 1 ≤ D) :
     ha hD Nat.one_le_two_pow (stepP_ge9 k) h4 rfl rfl rfl rfl rfl rfl rfl rfl rfl rfl rfl
   rw [h6]
   exact h
+
+/-! ### The invariants -/
 
 theorem split_invariant_succ {k a D : Nat} (ha : 1 ≤ a) (hD : 1 ≤ D)
     (hA : 2 ^ (k + 6) * a ≤ 2 ^ (35 * 2 ^ k)) (hDb : D ≤ 2 ^ (75 * 2 ^ k)) :

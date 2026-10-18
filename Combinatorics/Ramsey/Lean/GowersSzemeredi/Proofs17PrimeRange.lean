@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs17PhaseRemoval
+import GowersSzemeredi.Proofs17PhaseRemovalSide
 
 /-! The prime-range statements require no separate factorial-unit premise.
 The characteristic restriction remains explicit; this does not assert the

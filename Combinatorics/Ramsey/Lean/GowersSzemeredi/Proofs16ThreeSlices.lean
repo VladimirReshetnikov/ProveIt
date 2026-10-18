@@ -47,8 +47,6 @@ theorem HasProductProperty.final_section {N k : Nat} [NeZero N] {gamma : Real}
   rw [hdom, hfun] at h
   exact h
 
-/-! ### The slice decomposition -/
-
 /-! ### The stacked slice provider -/
 
 /-- The base of the slice envelopes. -/

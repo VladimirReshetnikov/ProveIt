@@ -141,8 +141,6 @@ theorem lemma_5_9_one_polynomial_holds_of_corollary_5_6
   subst i
   simpa only [pow_one] using hdiameter j
 
-/-! ## Diameter slack in the degree-induction calculation -/
-
 /-! ## The threshold-rounding budget -/
 
 private theorem pow_add_exponent_le_add_one_pow (T K : Nat) (hT : 1 <= T) :

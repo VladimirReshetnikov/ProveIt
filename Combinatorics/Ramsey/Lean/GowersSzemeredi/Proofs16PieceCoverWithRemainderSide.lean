@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs16PieceCoverWithRemainder
 import GowersSzemeredi.Proofs16CubicCapBound
 import GowersSzemeredi.Proofs16RoundedPowerWidth
 import GowersSzemeredi.Proofs16WithLiftSide
+import GowersSzemeredi.Proofs16Lemma9WithRemainderSide
 
 /-! Declarations of `Proofs16PieceCoverWithRemainder` that the final route does not use and that
 need modules outside it (moved here so that those modules can leave the route). -/

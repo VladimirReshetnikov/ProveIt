@@ -105,8 +105,4 @@ theorem thetaOne_half_eq (theta gamma : Real) (k : Nat) :
   congr 1
   ring
 
-/-! ### The greedy decomposition -/
-
-/-! ### The cover of the next class -/
-
 end LeanProofs.GowersSzemeredi

@@ -15,7 +15,9 @@ The first step is the nested lift width
 The parameters of the route, `lsNest_powerLB`, `ls_modulus_conditions` and
 `length_six_function_discrepancy` are in `Proofs18LengthSixScaleSide`
 (`sixW_powerLB` in `Proofs18WidthPowerBoundsSide`), outside the final route.
-This module keeps the widths and exponents that the final route uses. -/
+This module keeps the widths and exponents that the final route uses.
+
+`nestW_three_eq` is in `Proofs18LengthSixScaleSide`, outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -34,9 +36,6 @@ def lsNestThr : Real :=
     (sixWThr Eb alpha (C (C t)) ^ (1 / (sixWExp Eb alpha t * sixWExp Eb alpha (C t))))
 
 end Nest
-
-theorem nestW_three_eq (C : Real → Real) (W : Real → Nat → Nat) (t : Real) (L : Nat) :
-    nestW (fun _ => C) (fun _ => W) 3 t L = W (C (C t)) (W (C t) (W t L)) := rfl
 
 theorem lsNestExp_pos {Eb : Nat → Real → Real → Real → Real} {C : Real → Real} {alpha t : Real}
     (hE : ∀ l g u s, 0 < s → s ≤ 1 → 0 < Eb l g u s ∧ Eb l g u s ≤ 1)
