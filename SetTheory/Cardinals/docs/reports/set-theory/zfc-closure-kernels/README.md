@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings, 17 October 2026. This report now reconciles fifty-nine manuscripts.
+Intake findings, 17 October 2026. This report now reconciles sixty-one manuscripts.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -36,10 +36,25 @@ Batch 160 adds [the prefix-carry250 construction and stronger audit](intake-160.
 as sources57–59. The two250-state packages contain the same exact table.
 All requested checks pass, including8391 symbolic cases and the585431-step
 complete blank prefix. Independent ordinary-proof review found no fatal defect
-within its scope. Exact-table Lean verification and the internal PA equivalence
+within its scope. The complete exact-table Lean endpoint and the internal PA equivalence
 remain open; the already checked252 endpoint is unchanged. The earlier rejected
 250 scanner fold in source57 is a different machine. See the [reproduction and
 recovery instructions](intake-160-reproduction.md).
+
+Batch 161 adds [semantic seeds and the 247-state selector reduction](intake-161.md)
+as sources 60–61. The 247-state candidate retains the original proof-search
+program; all seven executable checks pass, including its new 741,241-step
+complete startup. Independent ordinary-proof review found no mathematical
+blocker within its scope. The source 60 replay also passes its thirteen
+component jobs, with search coverage distinguished from full search replay.
+See the [reproduction and recovery instructions](intake-161-reproduction.md).
+
+Subsequent Lean work checks the exact 250-state table, shared-carry pulse,
+unbounded register operations and selectors, and balanced table lookup in
+`Computability/BusyBeaver/Lean/BusyBeaver/ZFC/`. These local theorems do not
+yet close its global simulation, blank startup or consistency endpoint.
+The 247-state candidate needs its own table and startup proof; its ordinary
+argument does not supply the requested equivalence inside PA.
 
 ## Sources, overlap and base
 
