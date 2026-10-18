@@ -1,0 +1,119 @@
+{
+  "status": "EXISTING_QUICK_REPRODUCTION_METADATA_REVIEW_PASS",
+  "reviewer_role": "Author of the reproduction helper and candidate adapters; this is a packaging/raw-evidence review, not an independent semantic proof.",
+  "reviewer_source": {
+    "path": "/tmp/zfc243-portable-reproduction/review_quick.py",
+    "sha256": "2f22c797139b16fbf97fc9c1a40987e385bb3c3c92ab3c1561971827709a4d3e"
+  },
+  "verification": {
+    "path": "/tmp/combined243-portable-quick/verification.json",
+    "sha256": "450b804a5a3d36d9ee0e1c98d1e72aad5dc1a4f2d8da618148e72edfba1d91a6"
+  },
+  "checked_input_count": 600,
+  "commands": [
+    {
+      "label": "blank",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-I",
+        "-B",
+        "/tmp/combined243-portable-quick/adapters/check_combined243_blank.py",
+        "--table",
+        "/tmp/combined243-portable-quick/candidate/machine_old.tm",
+        "--baseline",
+        "/tmp/combined243-portable-quick/reference/certificate/machine_old.tm",
+        "--reference",
+        "/tmp/combined243-portable-quick/reference",
+        "--output",
+        "/tmp/combined243-portable-quick/blank"
+      ],
+      "seconds": 0.8154626805335283,
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "timed_out": false,
+      "interrupted": null,
+      "stdout": {
+        "path": "/tmp/combined243-portable-quick/blank.stdout.log",
+        "sha256": "f167b0b5533b0518e9e9c4dea9d670ea4688377b42e5cf2fb5b26d8e21382916"
+      },
+      "stderr": {
+        "path": "/tmp/combined243-portable-quick/blank.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "label": "affine",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-I",
+        "-B",
+        "/tmp/combined243-portable-quick/adapters/check_runtime_combined243.py",
+        "--reference",
+        "/tmp/combined243-portable-quick/reference",
+        "--candidate",
+        "/tmp/combined243-portable-quick/candidate"
+      ],
+      "seconds": 2.921307237818837,
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "timed_out": false,
+      "interrupted": null,
+      "stdout": {
+        "path": "/tmp/combined243-portable-quick/affine.stdout.log",
+        "sha256": "ffa2f909d8823d6c3e246afec87c08513938a35ac6bb3f6730c1cf03a74c15fa"
+      },
+      "stderr": {
+        "path": "/tmp/combined243-portable-quick/affine.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "label": "literal",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-I",
+        "-B",
+        "/tmp/combined243-portable-quick/adapters/check_combined243_literal.py",
+        "--candidate",
+        "/tmp/combined243-portable-quick/candidate"
+      ],
+      "seconds": 3.5701797110959888,
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "timed_out": false,
+      "interrupted": null,
+      "stdout": {
+        "path": "/tmp/combined243-portable-quick/literal.stdout.log",
+        "sha256": "cb289036ea341364b0463457e572065a800fcc2a35c67c4f4bdfd95ac7933cbd"
+      },
+      "stderr": {
+        "path": "/tmp/combined243-portable-quick/literal.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "results": {
+    "blank": {
+      "path": "/tmp/combined243-portable-quick/blank/independent-blank.json",
+      "sha256": "c2e56276229ccab983a84a6694d48e160d0eb4d43380410c2262979c0246b788"
+    },
+    "affine": {
+      "path": "/tmp/combined243-portable-quick/candidate/affine-runtime.json",
+      "sha256": "fd2fb81118f2efae01c2f8018d148bec314b0f4318532aed9cda8d85618a8894"
+    },
+    "literal": {
+      "path": "/tmp/combined243-portable-quick/candidate/literal-regression.json",
+      "sha256": "413478f8e9216b5e74d76b66e7bbf9d83cfe12509481bd5e00cf4cf31fca8dc3"
+    },
+    "literal_cases": {
+      "path": "/tmp/combined243-portable-quick/candidate/literal-regression-cases.json.gz",
+      "sha256": "8f031e98bae9757bee8e05185a84001b73618cf322fb44ad7467e4a6b6aae0de"
+    }
+  },
+  "blank_steps": 407967,
+  "cases": 8390,
+  "literal_steps": 6473394,
+  "expanded_replayed": false,
+  "scope": "Fresh external input-copy/default-path reproduction of blank/affine/finite literal checks. Previous expanded result is separate. No source-loop theorem, Lean endpoint or PA claim.",
+  "findings": []
+}
