@@ -2769,3 +2769,103 @@ obstruction concern a specified prepared representation, not blank reachability
 or a universal state lower bound. Both25-page source PDFs rebuild cleanly and
 receive visual review. The offline helper recovers all67 original files and
 replays the finite checks without modifying delivered files.
+
+
+Batches158–159 add five complete manuscripts and one explicitly salvaged partial
+manuscript as sources51–56 of [ZFC closure kernels](set-theory/zfc-closure-kernels),
+now56 sources and still290 collection reports. Placements `78b528440a` and
+`901dd50056` preserve1133 ancillary files;40 article/section/PDF/delivery files
+remain recoverable from the committed arrival archives. The reconciliation is
+in `98baa6b001`, with full source reviews and portable recovery tools.
+The base article is unchanged.
+
+The useful additions are parity-complete geometric scheduling, no-filler and
+cache-result MP contracts, exact HF semantic seeds, role-allocation/progress
+certificates, completed and partial incoming-action searches, affine-code cost
+bounds and181 conditional binary-countdown contracts. The cache-result machine
+has252 states and a newly reproduced707393-step safe blank bootstrap; it is a
+different research variant without the maintained machine's Lean certification.
+All138 countdown candidates fail later cases. No sub252 solution is delivered.
+Repeated target2 and fold families are counted once; diagnostic rejection is
+not a semantic state lower bound.
+
+The damaged negation archive supplies327 complete local payloads but lacks its
+ZIP directory, independent theory checkers and four partition journals. At the
+user's explicit request it was salvaged rather than left waiting for impossible
+replacement. All32 available journals pass partition audits covering32514048 recipes, with
+explicitly incomplete overall coverage. Available255-state finite controls pass; the full verifier fails
+on missing source. All missing/unverified claims and partial-domain limits are
+retained. Every executed suite ran on an external copy, with manifest-only
+checks omitted and no Lean/Coq build. Independent source and reconciliation
+reviews preserve the original PA-provability goal, the closed external ZFC
+comparison and the still-open internal PA endpoint. The collection manifest
+was rebuilt and visually checked; delivered reports/PDFs were not rewritten.
+
+
+Batch 160 adds three manuscripts as sources57–59 of
+[ZFC closure kernels](set-theory/zfc-closure-kernels/intake-160.md), now 59 sources
+and still 290 reports. Placement `f7ba71df2d` preserves 633 ancillary files and
+retires three committed archives; 22 main/delivery files remain recoverable.
+The reconciliation in `034ce1421b` keeps all proof scopes and attribution.
+
+Sources58–59 deliver the same 250-working-state machine, using shared carry,
+rollback, a nonempty spare suffix and pulse initialization. All 8391 guarded
+instruction cases and the 585,431-step complete blank prefix reproduce; all nine
+stronger audit jobs pass. Independent ordinary-proof review found no fatal
+defect within scope. Source 57's phase-dependent 252 predecessor and concrete
+refutation of a different250 scanner fold remain distinct. Exact 250 Lean
+formalization and the PA equivalence are unfinished; the maintained 252 external
+Lean endpoint remains established. No nonhalting or consistency claim follows
+from finite simulation alone. The base article/delivered PDFs are unchanged;
+portable recovery, fresh evidence and full source reviews are preserved.
+
+
+Batch 161 adds two manuscripts as sources 60–61 of
+[ZFC closure kernels](set-theory/zfc-closure-kernels/intake-161.md), now 61 sources
+and still 290 reports. Placement `c5d81a0d28` preserves 263 ancillary files and
+retires two committed archives; 20 main/delivery files remain recoverable.
+The reconciliation in `120b8a92dc` includes independent source reviews, exact
+replay evidence and portable recovery instructions.
+
+Source 60 gives a general relative-consistency seed criterion, a full two-atom
+strictness argument and two 255-state arithmetic controls. Its thirteen
+substantive jobs pass; recorded search coverage is distinguished from fresh
+search replay. Source 61 removes three selector/return states from the shared-carry
+250 construction, yielding a 247-working-state candidate with the original
+proof-search program. All seven checks pass, including 8,391 guarded cases and
+its own 741,241-step complete blank startup. The intermediate 248→247 quotient
+does not justify the preceding edit of the 250 machine or replace that startup.
+
+The maintained 252-state external Lean equivalence with Con(ZFC) remains
+established. Subsequent exact 250 table, pulse, selector, register-box and symbolic
+execution lemmas are reusable components; neither the 250 nor 247 complete
+binary endpoint is claimed here. The user's equivalence provable inside PA
+remains open. Delivered articles and PDFs, the base article, original attribution
+and all partial-search limitations remain unchanged.
+
+
+Batch 162 adds two manuscripts as sources 62–63 of
+[ZFC closure kernels](set-theory/zfc-closure-kernels/intake-162.md), now 63 sources
+and still 290 reports. Placement `a1dc32a6fd` preserves 155 ancillary files and
+retires two committed arrival archives; 14 manuscripts, printed tables and
+delivery files remain recoverable. Reconciliation `46eaab4fd3` preserves exact
+recovery maps, independent source reviews and fresh replay evidence.
+
+Source 62 contains source 61's identical 247-state table. It adds a comparison
+of all 6,459 upstream register-program rows with the retained Lean literal
+tree and independent marking/bootstrap audits. Its seven checks pass; its
+smaller finite regression suite supplements the earlier, larger suite.
+Source 63 folds the pulse helper, removes old state 97 and uses old 95 as the
+blank start, yielding a 246-working-state candidate. All nine main checks and
+two additional audits pass, including all 8,391 guarded cases and a complete
+410,735-step startup into the same safe logical root as the 247 candidate.
+The restricted quotient excludes the former blank start, so that new startup
+is an essential separate check.
+
+Independent review found no mathematical blocker within the ordinary-proof
+scope. The exact 252-state external Lean equivalence remains established;
+checked local 250 table, operation, symbolic, site and whole-tape frame lemmas
+remain reusable. The new tables' complete Lean endpoints and the user's
+PA-internal equivalence remain open. Delivered sources, base article and
+attribution are unchanged. Optional searches were not rerun, and the stale
+`build246.py` reference is corrected only in the reconciliation.

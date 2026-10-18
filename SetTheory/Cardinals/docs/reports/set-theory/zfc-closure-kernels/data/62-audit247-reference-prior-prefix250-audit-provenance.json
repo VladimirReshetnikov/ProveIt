@@ -1,0 +1,697 @@
+{
+  "schema_version": 1,
+  "title": "A 250-state ZFC consistency machine: prefix carry, rollback, and a pulse initializer",
+  "report_date": "2026-10-17",
+  "prepared_for": "Vladimir Reshetnikov and the ProveIt project",
+  "artifact_kind": "Research construction with an ordinary mathematical proof and executable certificates",
+  "primary_deliverables": [
+    "report.tex",
+    "report.pdf",
+    "machine/zfc_prefix250.tm",
+    "machine/zfc_prefix250_old.tm",
+    "code/verify.py"
+  ],
+  "claim": {
+    "working_states": 250,
+    "statement": "ZFC proves: nonhalting of the exact blank-tape machine iff Con(ZFC).",
+    "proof_method": "Universal word-induction identities, finite symbolic certificates, complete-frame simulation, and the identified inherited set-coded native/ZF/ZFC calibration.",
+    "new_exact_table_lean_or_rocq_kernel_endpoint": false,
+    "inherited_proof_assistant_dependency_closure_rebuilt": false,
+    "serialized_first_order_zfc_derivation_supplied": false,
+    "internal_pa_proof_code_formalization_supplied": false,
+    "unconditional_nonhalting_or_zfc_consistency_proved": false,
+    "minimality_or_worldwide_priority_claim": false
+  },
+  "machine": {
+    "alphabet": [
+      0,
+      1
+    ],
+    "blank_symbol": 0,
+    "tapes": 1,
+    "tape_index_set": "integers",
+    "initial_head": 0,
+    "initial_tape": "identically zero",
+    "moves": [
+      "L",
+      "R"
+    ],
+    "working_states": 250,
+    "transition_rows": 500,
+    "halting_transition_count": 1,
+    "halting_semantics": "Perform the final write and move into the separate halt label; halted execution is absorbing.",
+    "canonical": {
+      "path": "machine/zfc_prefix250.tm",
+      "start": 0,
+      "working_labels": "0..249",
+      "halt": 250,
+      "sha256": "0626819c4842f224001e7685366d8061897a7bc9470c015129a1d1cf22efb36e"
+    },
+    "original_labels": {
+      "path": "machine/zfc_prefix250_old.tm",
+      "start": 97,
+      "working_labels": "({0,...,253} minus {5,8,43,59,85}) union {255}",
+      "halt": 254,
+      "sha256": "fd455304bad82a6da7ab83149352d0b1db27557582c4cc6312de003c96ff4e43"
+    },
+    "renumbering": {
+      "path": "machine/renumbering.json",
+      "sha256": "ecfd4cd23ab90a4050189b21a79b1fc6a33e5e8d70ad47d9b5416afa056f222a"
+    },
+    "sole_halting_row_original_labels": [
+      77,
+      1,
+      1,
+      "R",
+      254
+    ],
+    "physical_of_logical": [
+      6,
+      2,
+      0,
+      4,
+      3,
+      7,
+      8,
+      5,
+      1
+    ],
+    "logical_register_order": [
+      "N",
+      "T",
+      "W",
+      "A",
+      "D",
+      "H",
+      "X",
+      "Y",
+      "L"
+    ],
+    "rebuild": {
+      "baseline": "sources/baseline252_old.tm",
+      "baseline_sha256": "939f99d602c8f7057517c4369279de99e30827050fc743581df83f26aaf1b713",
+      "remove_states": [
+        43,
+        59,
+        85
+      ],
+      "changed_surviving_rows": 7,
+      "new_state": 255,
+      "new_rows": 2,
+      "patch_rows": [
+        [
+          30,
+          1,
+          0,
+          "R",
+          95
+        ],
+        [
+          75,
+          0,
+          1,
+          "R",
+          255
+        ],
+        [
+          75,
+          1,
+          1,
+          "L",
+          63
+        ],
+        [
+          97,
+          0,
+          1,
+          "R",
+          83
+        ],
+        [
+          97,
+          1,
+          1,
+          "L",
+          131
+        ],
+        [
+          109,
+          0,
+          0,
+          "R",
+          75
+        ],
+        [
+          131,
+          0,
+          0,
+          "L",
+          48
+        ],
+        [
+          255,
+          0,
+          1,
+          "L",
+          97
+        ],
+        [
+          255,
+          1,
+          1,
+          "L",
+          131
+        ]
+      ],
+      "unchanged_other_surviving_rows": true
+    },
+    "bootstrap": {
+      "literal_steps": 585431,
+      "state_original_label": 96,
+      "head": -3,
+      "marker": -4,
+      "header": 225,
+      "head_to_header": 228,
+      "program_counter": [],
+      "physical_primary": [
+        0,
+        2,
+        0,
+        4,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "logical_primary": [
+        1,
+        0,
+        0,
+        0,
+        4,
+        0,
+        0,
+        0,
+        2
+      ],
+      "spare_blocks": 210,
+      "each_spare_value": 1,
+      "one_cells": 438,
+      "last_one_coordinate": 880,
+      "all_other_cells_zero": true,
+      "complete_support_record": "results/pulse-bootstrap.json"
+    }
+  },
+  "source_revisions": {
+    "proveit": {
+      "repository": "VladimirReshetnikov/ProveIt",
+      "commit": "80e26b89e905bf3e5dfc322befdc1c6eaf25a109",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/tree/80e26b89e905bf3e5dfc322befdc1c6eaf25a109",
+      "baseline_path": "Computability/BusyBeaver/Research/ZFC/candidate-permutation252/zfc_permutation252_old.tm",
+      "maintained_source_identity_record": "results/current-source-audit.json",
+      "verified_source_count": 56,
+      "verification_kind": "Byte-for-byte Git blob identity against the pinned public source, not a Lean/Rocq build."
+    },
+    "upstream_requested_branch": {
+      "repository": "jeff87654/busy-beaver",
+      "branch": "zf-254",
+      "commit": "c132d7eae8158cd3a9850ea3eb7251158c3dd821",
+      "path": "ZF/m254",
+      "url": "https://github.com/jeff87654/busy-beaver/tree/c132d7eae8158cd3a9850ea3eb7251158c3dd821/ZF/m254"
+    },
+    "proveit_attributed_upstream_import": {
+      "repository": "jeff87654/busy-beaver",
+      "commit": "297ab8df7e5de329605c3875b4934643b371a5e3",
+      "program_path": "ZF/m254/coq/tm/Prog254.v",
+      "packaged_program": "sources/Prog254.v",
+      "program_sha256": "1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746"
+    },
+    "public_253_reduction": {
+      "author": "mira-emmy",
+      "pull_request": "https://github.com/jeff87654/busy-beaver/pull/20",
+      "head_commit": "0d544f2a2e3c18f12278441a74b7879f31cbe856"
+    },
+    "prior_working_baseline": {
+      "repository": "VladimirReshetnikov/ProveIt",
+      "commit": "a3f06a2059dd786ad385079106454efb84b87d3c",
+      "status": "Historical baseline pin recorded in the recovered working sources; their input table matches the current pinned table."
+    },
+    "busy_beaver_wiki": {
+      "title": "Logical independence",
+      "revision": 9106,
+      "url": "https://wiki.bbchallenge.org/w/index.php?title=Logical_independence&oldid=9106",
+      "accessed": "2026-10-17",
+      "role": "Public historical overview; exact artifacts and proofs are identified by repository pins."
+    }
+  },
+  "attribution": [
+    {
+      "name": "Mira-Cult",
+      "contribution": "Original compact calculus and 254-state machine."
+    },
+    {
+      "name": "Jeff Ketchersid (jeff87654)",
+      "contribution": "Upstream verification and attributed symbolic machinery."
+    },
+    {
+      "name": "Andrew James Wade",
+      "contribution": "Compiler framework and public backend."
+    },
+    {
+      "name": "mira-emmy",
+      "contribution": "Public 253-state reduction inherited by permutation252."
+    },
+    {
+      "name": "ProveIt contributors",
+      "contribution": "Physical register permutation, attributed source-27 strict affine checker, Lean developments, and native/ZF/ZFC calibration."
+    },
+    {
+      "name": "Earlier prefix250 working research for this task",
+      "contribution": "Recovered prefix-carry, zero rollback, spare convention, pulse-retimed table, prototype, and local manuscript. No discovery-in-this-audit claim."
+    },
+    {
+      "name": "This report and independent audit",
+      "contribution": "Pinned reconstruction; symbolic induction checks; independent marking, full-PC, and retiming reviews; complete-frame and set-coded ZFC proof composition; reproducible research packaging."
+    }
+  ],
+  "recovered_work": {
+    "directory": "sources/prior/",
+    "status": "Prior working material, not asserted to have been a public publication.",
+    "preserved_provenance": "sources/prior/provenance.json",
+    "interpretation_of_historical_attribution": "First-person or contemporaneous discovery wording in preserved prior sources refers to that earlier working investigation.",
+    "files": [
+      "sources/prior/check_prefix_affine.py",
+      "sources/prior/instruction-sites-physical.json",
+      "sources/prior/prefix_affine.py",
+      "sources/prior/prefix_carry_lemmas.tex",
+      "sources/prior/prefix_shift_prototype.py",
+      "sources/prior/provenance.json"
+    ]
+  },
+  "proof_scope": {
+    "uniform_register_contracts": "All natural primary values, complete exterior contexts, and finite block lists; the zero branch requires a following block.",
+    "global_spare_invariant": "Nonempty finite spare suffix; increment appends [1], all other operations preserve it.",
+    "header_distance_invariant": "Total head-to-header distance at least 40; positive decrement and PC overflow each add one.",
+    "complete_decoder": {
+      "nodes": 6459,
+      "leaves": 6460,
+      "guarded_cases": 8391,
+      "maximum_leaf_depth": 34,
+      "minimum_literal_progress": 13
+    },
+    "logical_root": "Bisim254.prog254_halts_iff followed by DirtyProgram254.path_halts_iff for logical [1,0,0,0,4,0,0,0,2].",
+    "calibration": "Code254.C254(F) iff native CP/all-Form-GIC/IR refutation iff ZF refutation iff ZFC refutation.",
+    "zfc_internal_reading": "Set-coded syntax and finite traces; first-order Henkin completeness for countable theories; set quotient and internally well-founded subdomain; the internal constructible subdomain of a set model.",
+    "no_external_well_founded_or_transitive_model_assumption": true,
+    "no_generic_lean_to_zfc_translation_claim": true,
+    "finite_regressions_are_secondary": true,
+    "proof_assistant_reference_sources": "sources/lean/",
+    "complete_proof_assistant_dependency_closure_bundled": false
+  },
+  "reproduction": {
+    "main_command": "python3 -B code/verify.py",
+    "pdf_command": "make pdf",
+    "requirements": "Python 3 standard library; for PDF, pdfLaTeX and the TeX packages listed in report.tex.",
+    "network_required": false,
+    "search_required": false,
+    "python_assertions_required": true,
+    "consolidated_result": "results/verification-summary.json",
+    "included_run_status": "PASS",
+    "included_run_completed_checks": 9,
+    "included_run_passed_checks": 9,
+    "included_run_started_utc": "2026-10-17T23:21:01.794426+00:00",
+    "included_run_finished_utc": "2026-10-17T23:21:30.320089+00:00",
+    "included_run_python_version": "3.12.14",
+    "check_names": [
+      "exact_reconstruction",
+      "macro_inductions",
+      "guarded_instructions",
+      "independent_marking",
+      "full_source_and_full_pc",
+      "pulse_and_dual_bootstrap",
+      "independent_retiming",
+      "literal_instructions",
+      "literal_macros"
+    ],
+    "result_hashes": "The included verification-summary.json records the exact script and result digests of its run; rerunning updates result timestamps and timings."
+  },
+  "license_boundary": {
+    "notices": [
+      "licenses/LICENSE.ProveIt",
+      "licenses/LICENSE.Wade",
+      "sources/research/upstream-attribution.md"
+    ],
+    "statement": "Preserve inherited authorship and applicable notices. The upstream snapshot is not relicensed by this package or by ProveIt's blanket grant."
+  },
+  "integration_next_steps": [
+    "Incorporate as the exact 250-state research construction and its auditable certificates.",
+    "Port the new register lemmas, nonempty-spare frame, and one-cell boundary effect into the maintained binary proof framework.",
+    "Regenerate and kernel-check all instruction certificates and the literal blank prefix for this exact table.",
+    "Compose the existing general dirty-root and native/ZF/ZFC endpoints with the new binary proofs.",
+    "Treat internal PA proof-code formalization and any state-minimality investigation as separate work."
+  ],
+  "content_hash_scope": "Actual packaged bytes for frozen machine artifacts, verifier code, retained sources and notices, this README and Makefile, and the current-source identity record. Report layout/PDF and regenerated timing-bearing results are outside this source-identity manifest; verification-summary.json records result digests for its run.",
+  "sha256_files": {
+    "Makefile": {
+      "sha256": "3ca590b70c3036a610f1bbae309ddde49168055e707f903a28009d5a18896498",
+      "bytes": 392
+    },
+    "README.md": {
+      "sha256": "974dead9ed010ff7a9de1119b6d9da2efd41d1e80f043e35035728a5c0fc23d2",
+      "bytes": 10261
+    },
+    "code/affine_engine.py": {
+      "sha256": "8c029463048fb544608dec93b6bba772ab21250377b8fbb2763cbab4f1ee35e7",
+      "bytes": 4498
+    },
+    "code/audit_marking_transport.py": {
+      "sha256": "ebd563da99188defd7f66da7e5aafdc65228370addcca73b3f780a749b373895",
+      "bytes": 3231
+    },
+    "code/check_candidate250.py": {
+      "sha256": "db9ec7f92aa49092f07d3dc0b8dbc0845cc1b777018abec68731811df1f5a5d4",
+      "bytes": 5894
+    },
+    "code/check_instructions.py": {
+      "sha256": "fe532e4f7c2e6e104a42cd09793f7e4b1637fc3ebd0c7919b21b634fccde14b2",
+      "bytes": 3839
+    },
+    "code/check_literal_instructions.py": {
+      "sha256": "8ab1f70ed03ccd00432cbd00d47a613b6c79bc1353bc2eb5a01ab345c6d05756",
+      "bytes": 6217
+    },
+    "code/check_literal_macros.py": {
+      "sha256": "43bb797855693fb9462894b03f4f864c230fd06d92d57b16b21e0095866a0bf4",
+      "bytes": 3737
+    },
+    "code/check_local_contracts.py": {
+      "sha256": "15609c31428bc8e3c4f822ebe006789b9fd2fec0245bf5be0143b1600666e642",
+      "bytes": 3643
+    },
+    "code/check_macro_inductions.py": {
+      "sha256": "3484c0be3aaf34bd3677c0cc727eaba8655efd358f9338192a88be0d9c89ad8d",
+      "bytes": 13734
+    },
+    "code/check_pulse_boot.py": {
+      "sha256": "1f6ef693bfe407954534b1ad885737e94a3127448cf49c11144d2f41a7690d9c",
+      "bytes": 5359
+    },
+    "code/rebuild_machines.py": {
+      "sha256": "4acfcd3f36cb5dcace50a3c56c8fcf2103931e257c95f894ba0fa3e80b81b2aa",
+      "bytes": 6153
+    },
+    "code/review_affine_source.py": {
+      "sha256": "4765f93dbf42418775c4cac3ebf7476ab3467d51ca489207b75969c1c3ba4ebd",
+      "bytes": 10045
+    },
+    "code/verify.py": {
+      "sha256": "7bb26e1713519d045beb36e1253d006ce7a8d8efd0b04a15cad14c2bd7d430c6",
+      "bytes": 9155
+    },
+    "code/verify_retiming_independent.py": {
+      "sha256": "9313262cea715fb5f92cf0a26bb103577152581561790ddacb3780bfca57e636",
+      "bytes": 9118
+    },
+    "licenses/LICENSE.ProveIt": {
+      "sha256": "460d4fb6f45fd89278ba881d4b70e8bd1b7df223ee907e758342c2f9989f789d",
+      "bytes": 923
+    },
+    "licenses/LICENSE.Wade": {
+      "sha256": "c1dffee77db98625debe39b47538e1d2f3b7956cbc7bcd6ed9363701b2177cfa",
+      "bytes": 912
+    },
+    "machine/renumbering.json": {
+      "sha256": "ecfd4cd23ab90a4050189b21a79b1fc6a33e5e8d70ad47d9b5416afa056f222a",
+      "bytes": 6072
+    },
+    "machine/zfc_prefix250.tm": {
+      "sha256": "0626819c4842f224001e7685366d8061897a7bc9470c015129a1d1cf22efb36e",
+      "bytes": 6513
+    },
+    "machine/zfc_prefix250_old.tm": {
+      "sha256": "fd455304bad82a6da7ab83149352d0b1db27557582c4cc6312de003c96ff4e43",
+      "bytes": 6536
+    },
+    "results/current-source-audit.json": {
+      "sha256": "1965dd758437220cd0423c3440bea6889648ad4c9daf4b89d535f80c5717d54c",
+      "bytes": 17870
+    },
+    "sources/Prog254.v": {
+      "sha256": "1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746",
+      "bytes": 181946
+    },
+    "sources/baseline252_old.tm": {
+      "sha256": "939f99d602c8f7057517c4369279de99e30827050fc743581df83f26aaf1b713",
+      "bytes": 6579
+    },
+    "sources/lean/BinaryPerm252.lean": {
+      "sha256": "8c8cc03377b76107e86dc077e1493f906669e9e8439acb2650543601ab3b0e2d",
+      "bytes": 5793
+    },
+    "sources/lean/BinaryZFC252.lean": {
+      "sha256": "1d025e7c4af792783e635cec270686180ce5d237274fc6b0f0ba5b7c3a6683d1",
+      "bytes": 1389
+    },
+    "sources/lean/Bisim254.lean": {
+      "sha256": "3f1495b78da8adaed4a12c0938c1e7d26fb4498731f5568eacd153df43eb07fc",
+      "bytes": 366902
+    },
+    "sources/lean/ChoiceCalibration254.lean": {
+      "sha256": "c161c1b12599a6f60929fdc66f47dcfc77d78a12adf5ca8e2ca46c9e144787ae",
+      "bytes": 3617
+    },
+    "sources/lean/Code254.lean": {
+      "sha256": "18311d4a28cba6778a0ba1a1ddee34f5c2dd5044a23958b63f46d0640be4e01e",
+      "bytes": 19775
+    },
+    "sources/lean/Code254Proof.lean": {
+      "sha256": "7bb8daf0f1c0965d22f2f16bbb1898d60cfb79f9a6feabe8ab38b3f69b3bc6d1",
+      "bytes": 9760
+    },
+    "sources/lean/ConstructibleAbs.lean": {
+      "sha256": "9899be5219d6dd729e4fbd575fc4ab1e5e385aa83b76b0ecd6f03d5ab5494d24",
+      "bytes": 52100
+    },
+    "sources/lean/ConstructibleChoice.lean": {
+      "sha256": "8531c16f2b08365a69f4a7c505431ad36abeb13dbf9f39132cbb13d4fa61ff64",
+      "bytes": 2356
+    },
+    "sources/lean/ConstructibleOrder.lean": {
+      "sha256": "399fabe52b0998e9ec41e7f9f21d819ef9ba11cb6ecc5f944ac59a81ac11dd74",
+      "bytes": 28426
+    },
+    "sources/lean/ConstructibleZF.lean": {
+      "sha256": "8d6802f21c12b9e31b8a7ba2738200cabbc5b8ce73cb9cd4bfe40663ef40b76c",
+      "bytes": 18455
+    },
+    "sources/lean/Dag254.lean": {
+      "sha256": "e42a8658265b114a99f3550f979b95f1afc02a2f7d6483e1765d911891c05f52",
+      "bytes": 13425
+    },
+    "sources/lean/DirtyProgram254.lean": {
+      "sha256": "17ad4165bb08cd54e5824a8b59ab3564df43ff189ee9972a547a50edbc2719e4",
+      "bytes": 4513
+    },
+    "sources/lean/DirtyRoot254.lean": {
+      "sha256": "d6d9a500a5428e375ba987116e8fd103e9a0f41e92dffb70d5377dc93e374b30",
+      "bytes": 7789
+    },
+    "sources/lean/Enum254.lean": {
+      "sha256": "e44edf445c97907c1adec57ebb41afb072a2fb1c67b1b2b4dc7911b3caaa79da",
+      "bytes": 29375
+    },
+    "sources/lean/EnumSafeStart254.lean": {
+      "sha256": "22cab829c0f37919dd9bb7f28efdc658eeaeee687c84a817f0b082c9d5080dfe",
+      "bytes": 5613
+    },
+    "sources/lean/InstructionPerm252.lean": {
+      "sha256": "f2cde238b50a6de751b628e5d0abfbf68789b04d8ff424f9390a0f47f984b34e",
+      "bytes": 5583
+    },
+    "sources/lean/L2Root254.lean": {
+      "sha256": "20b2ef7733a0d85c5248ee598b5386f42ad46319a003488fb63bfacb7f737e9f",
+      "bytes": 13887
+    },
+    "sources/lean/NativeDecoded254.lean": {
+      "sha256": "1de8f92797fe31fc19a602bf799522bfbc65f91232946ff2cb0befe2206be9b1",
+      "bytes": 9908
+    },
+    "sources/lean/NativeTheory254.lean": {
+      "sha256": "69297da8a6ee8445ac36110a10b26ab190d57ffc5ef88801bf7288c9bacf7284",
+      "bytes": 4531
+    },
+    "sources/lean/Permutation252Frame.lean": {
+      "sha256": "63a3c9d9358a3a24edfef7889ffcc96d00f2aab3f2dd752c944c4f0e84236ae7",
+      "bytes": 6653
+    },
+    "sources/lean/Permutation252Program.lean": {
+      "sha256": "41f137e245505b4ea4cdbd689e9c13e451901b8c76b034142493edd20ad384ac",
+      "bytes": 1794
+    },
+    "sources/lean/Permutation252Simulation.lean": {
+      "sha256": "5590a1e70606a35d54173533460d0fef3a855162487ace0999fcea60e0c56b7f",
+      "bytes": 8727
+    },
+    "sources/lean/ProfileCollection.lean": {
+      "sha256": "c65afa1b9fe0da24c9574afe7c2167bd2a9aba033d63c7e337ec41fe12db2abb",
+      "bytes": 8949
+    },
+    "sources/lean/ProfileModel.lean": {
+      "sha256": "d31215ed6642ff1482640767a84f194ad898f7b1752dc5523948f6dfdd971aa3",
+      "bytes": 6812
+    },
+    "sources/lean/ProfileSyntax.lean": {
+      "sha256": "89ad80658825506770ba458f4d8df8296b8d6352936f156a299f14317160d8a9",
+      "bytes": 9125
+    },
+    "sources/lean/Prog254.lean": {
+      "sha256": "6e564bd1ba179b2d39fccc3b8c86a681ec0dd6529df9cfa2522500eef140cfde",
+      "bytes": 224257
+    },
+    "sources/lean/QuotientPower.lean": {
+      "sha256": "d911fcca763a0e8a1e2b6e85e2222ac62c2ae92d8c7177991d8f2a1e2563235e",
+      "bytes": 3269
+    },
+    "sources/lean/QuotientZF0.lean": {
+      "sha256": "8819382e2f33d307754e1899d82a9834cb140b89780c5e6693a50d0660ba0ee4",
+      "bytes": 4723
+    },
+    "sources/lean/RMDag.lean": {
+      "sha256": "1acc3a55d22db81eb03748a7b58d2492d449999516bddae75cd39d886d7099c7",
+      "bytes": 17209
+    },
+    "sources/lean/RMEquiv254.lean": {
+      "sha256": "390a2a12cb10e56c57750b9c451ea5dcbcdb290d66af94f707ec79c663a52bd5",
+      "bytes": 3910
+    },
+    "sources/lean/RegisterBoxesPerm252.lean": {
+      "sha256": "da0a5c460aba89b9d46dc794fad70a98ac441238ed26c5f7287fa4797a0bd5e7",
+      "bytes": 12450
+    },
+    "sources/lean/RegisterMarkPerm252.lean": {
+      "sha256": "c646007b54f2d32242f593a60eb770834f3e085a03ee60beb1275aebb796ce41",
+      "bytes": 10885
+    },
+    "sources/lean/RegisterPath.lean": {
+      "sha256": "a1457f32034eb4da50c8755610a366805260aac711424bba8b516ccab4e5b879",
+      "bytes": 7073
+    },
+    "sources/lean/RegisterPathClean.lean": {
+      "sha256": "5169528914a46b43bc8215967e921744c4594384da72991405ed75ac0ad7eb69",
+      "bytes": 16085
+    },
+    "sources/lean/RuntimePerm252.lean": {
+      "sha256": "c8baf01d6af1a8ee740bb4627c6f69bf910e2be36c679d0329fcd87192800efd",
+      "bytes": 6581
+    },
+    "sources/lean/SiteCoverage.lean": {
+      "sha256": "643aa151328a65ba292214df01a933adc46408a468faabf273bf736457393cf4",
+      "bytes": 6558
+    },
+    "sources/lean/SitePerm252.lean": {
+      "sha256": "fb1fd3e9788d0b0c7d76f5aff8b0572fc18dca7c16da0027160b71f0acbf269a",
+      "bytes": 6065
+    },
+    "sources/lean/SymbolicPerm252.lean": {
+      "sha256": "d38b28fad549afee75309830be964149b2b72729c759500b86aea25e0a2d8648",
+      "bytes": 35712
+    },
+    "sources/lean/WFModel.lean": {
+      "sha256": "b0b7bfae8e6c4069c9a20e2a7459e2d9be827f888456bd41ec5e818e72bfff69",
+      "bytes": 9949
+    },
+    "sources/lean/WFRelativization.lean": {
+      "sha256": "fccff4d33c0fa673c92e8f7a1c852d4d639d6ddf155421301ae78a9877963a1d",
+      "bytes": 6858
+    },
+    "sources/lean/WFTheory.lean": {
+      "sha256": "72969cd2d53f616816a83a36ae625b79adbcbecc2fd2fb1c0951a7801f747164",
+      "bytes": 2316
+    },
+    "sources/lean/WellFoundedPart.lean": {
+      "sha256": "5318ce188d0753181fba355ab45ca08cb9823160f00691be63d4ce4e1655e08b",
+      "bytes": 11546
+    },
+    "sources/lean/ZFNative.lean": {
+      "sha256": "78eb9a09da0d3b04b494b479fda1b5a352637bc6442e468fbcb022508e1c8385",
+      "bytes": 4503
+    },
+    "sources/lean/ZFRank.lean": {
+      "sha256": "cb48b517067a57d99bf528c9694b14168fb88db5b5d5a710f0855d333be7a858",
+      "bytes": 15645
+    },
+    "sources/prior/check_prefix_affine.py": {
+      "sha256": "e68ff5d459ce0113a5bca907d83f6e02595b60961a372812dca732a322060be4",
+      "bytes": 2263
+    },
+    "sources/prior/instruction-sites-physical.json": {
+      "sha256": "dc6853f57bc48b834c2a635a82dfad8e344dd324ca11ef8e70ae2f36d66be357",
+      "bytes": 252185
+    },
+    "sources/prior/prefix_affine.py": {
+      "sha256": "083f884e6de87a85381ebc6b28c23d02a9f0731e67c3d77e26ed9ea4544cd08e",
+      "bytes": 4342
+    },
+    "sources/prior/prefix_carry_lemmas.tex": {
+      "sha256": "6201a9d8e3bc950ffb822679100f9fcaad02cc981827d4aed982e18f1805c096",
+      "bytes": 21673
+    },
+    "sources/prior/prefix_shift_prototype.py": {
+      "sha256": "9648735212532eb57714df201897e21d9fcb4e08bb486088064e0f228d785e79",
+      "bytes": 6265
+    },
+    "sources/prior/provenance.json": {
+      "sha256": "ed177dace414b53055c9a57ca3553845161b8415518247d9a9e17044d0e3a16a",
+      "bytes": 933
+    },
+    "sources/research/binary_perm252.md": {
+      "sha256": "5cac51761ea0f91796f30d622480284fc1d70e90b12cc7bf97692d8a9488e6de",
+      "bytes": 3830
+    },
+    "sources/research/candidate252-README.md": {
+      "sha256": "b10c7271c93bf3cfb57a7ed148b36fb6714a3ca4efd82d1d87ccc61c75b58235",
+      "bytes": 9163
+    },
+    "sources/research/choice_calibration254.md": {
+      "sha256": "85d5d1af0d5d120872baea6f0e693ab8be3297854fe8b976b871c4a2f994e3c8",
+      "bytes": 3755
+    },
+    "sources/research/dirty_program254.md": {
+      "sha256": "e94c383e3991ccaba071321e87d90bf6a9b09333da1d6983ce8a3d986292097f",
+      "bytes": 6180
+    },
+    "sources/research/foundation_choice_route.md": {
+      "sha256": "213e2ed243bda8390d9fb1a6072208c7babd1fd614b1ce8658042f506e5d748b",
+      "bytes": 6767
+    },
+    "sources/research/logical_engine_completeness.md": {
+      "sha256": "7b71417e11ec41271dcb71786a48ce443909f3e037ecbe1baa56ed0ba4911212",
+      "bytes": 22128
+    },
+    "sources/research/native_decoded254.md": {
+      "sha256": "c6fe2294011ebda96ace8c279fd510f902b3c294f8a5a29a745d4c44ad9c6c4a",
+      "bytes": 5014
+    },
+    "sources/research/native_theory254.md": {
+      "sha256": "fe0a30554e9ffb3f7c07948d9b478adc921a5424f7c7c8e7d5aeec5e7190f420",
+      "bytes": 3750
+    },
+    "sources/research/permutation252_frame.md": {
+      "sha256": "47a259bc1f05d5273f3452cdbb5796d9cb02d1c7851ad30c77391e2f09afd2c5",
+      "bytes": 4978
+    },
+    "sources/research/permutation252_runtime.md": {
+      "sha256": "15909a2a45b475f3ae9b95d6d13308f1b9d28e2e704d41f7c439cf3047f241c1",
+      "bytes": 3859
+    },
+    "sources/research/permutation252_simulation.md": {
+      "sha256": "aec0085ccf4301cc2ed9cce72e39ff6d53144f59f308977423b61ebb3a5a80ce",
+      "bytes": 3336
+    },
+    "sources/research/upstream-attribution.md": {
+      "sha256": "24c9e8107fd10e331256c14c6835227c1069a8fca02a8fa80023b51282964229",
+      "bytes": 6184
+    }
+  }
+}

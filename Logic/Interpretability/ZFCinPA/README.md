@@ -186,6 +186,11 @@ facade is [`Lean/ZFCinPA.lean`](Lean/ZFCinPA.lean).
 | `LIterate` | ω-iteration of a class function on ordinals inside any ZF model: the successor-closure step `HStep`, finite chains (`Chain`, `chain_exists` by restricted ω-induction, `chain_agree`), and `orbit_closure` (the union of the orbit is a nonzero limit closed under the function), with every Separation/Replacement use an explicit hypothesis |
 | `LClosure` | `LIterate` inside template models: L6 formulas for steps, chains, images and orbits with their readings, and `closure_point` (if `F₅` is total on ordinals, limits closed under `F₅` are unbounded), discharging the resources by `sep_iff`/`repl_iff` |
 | `LFinalSep` | the final Separation template: `sep_final` (a reflected predicate cuts a definable subset of a closed stage `L_β`, hence a constructible set, by `inL_of_definable` and `inL_sep`) and `sepTemplate_provable`: `totS F₅ ⋏ reflS P₄ F₅ → ` `L`-separation for `P₄` at extended environments |
+| `LFinalRepl` | the final Replacement template: `env_patch` (an environment agreeing with `t` below `n` and carrying `X` at slot `n`), `repl_final` (the image is bounded in a stage by `stage_bound`; at a closed limit `β` the image is cut out of `L_β` by the code `∃x (x ∈ v_{n+2} ∧ c)`, where `n` is a support bound of the reflecting code `c` (`SatSupport.sat_support`), so no code shift is needed) and `replTemplate_provable`: `totS F₅ ⋏ reflS P₄ F₅ → ` `L`-replacement for `P₄` at `x :: y :: t` |
+| `LDriverBase` | the driver's vocabulary: the six-slot tuple `K6`, the translated invariant `InvT P F = TotT F ⋏ ReflT P F`, pair lemmas identifying translated hypotheses at every slot pair, closed forms of all definitional hypotheses, `NoPh`/`translate_noPh` (placeholder-free formulas translate independently of the tuple), and the tautologies `all_iff_self`/`all₂_iff_self` |
+| `LNumOK` | `𝗭𝗙` proves that the numeral chain `numChainQ x` defines exactly one natural number, at every internal `x` (`numOK`, a `Σ₁` successor induction over two templates) |
+| `LDriverSteps` | every reflection step compiled at internal codes: `and_step`, `or_step`, `neg_step`, `top_base`, `bot_base`, `atom_step`, `ex_step`, `all_step` (premises `InvT`, conclusion `InvT` at the step's new function code) |
+| `LDriver` | **the driver**: for every internal semiformula code `p` of level `n`, `𝗭𝗙` proves the reflection invariant of `envForm n p` at some function code (`driver`, `driverT`), by `IsSemiformula.sigma1_structural_induction`; code identities `allT_val`, `exT_val`, `atomT_val_*` match `envForm`'s clauses |
 
 ## Building
 
@@ -375,3 +380,31 @@ explicit avoidance of both equal-length bound stacks. The represented-prefix
 proof uses Σ1 induction in IΣ1 and passed three probes and seven callers with
 standard axioms and zero warnings. Both cross-body vacuity resources remain
 explicit; the formula alpha induction and source-proof compiler remain open.
+
+[Internal alpha transport](validator_environment_alpha254.md) now constructs
+both implication proofs between configurable encodings of every internal source
+formula, under the same represented bound-stack equality context. It uses Π2
+induction in IΣ2 and explicit disjoint future streams avoiding the free labels,
+fallback1 and both old stacks. The first check passed 18 probes and 22 callers
+with standard axioms; three source linter warnings remain. Concrete stream
+selection, source-proof compilation and the reverse consistency endpoint
+remain open; that compiler can use the configurable encoder directly.
+
+[Concrete fresh-stream selection](validator_environment_streams254.md) now
+compares configurable encodings at any two free-safe binder starts, including
+overlapping starts `s` and `s+2`. A fixed Σ0 opposite-parity selector above the
+numeric vector bound supplies the intermediate stream for composition. The
+first check passed 14 probes and 18 callers with standard axioms, retaining
+four source and two audit linter warnings. The configurable encoder can serve
+the remaining source-proof compiler directly; source-rule transport, ZF axiom
+reconstruction and the reverse consistency endpoint remain open.
+
+[Internal source instantiation](validator_environment_instantiation254.md)
+now identifies the configurable encoding of actual `substs1` with the body
+encoding whose bound slot carries the substituted term's interpreted label.
+The identity covers every internally typed term in the function-free set
+language, including fallback labels, using Π1 structural induction in IΣ1.
+The first check passed 12 axiom probes and 16 callers with standard axioms;
+one unused-variable audit warning is retained. This supplies the syntax
+identity for the source existential rule; its proof-rule transport and the
+reverse consistency compiler remain separate.

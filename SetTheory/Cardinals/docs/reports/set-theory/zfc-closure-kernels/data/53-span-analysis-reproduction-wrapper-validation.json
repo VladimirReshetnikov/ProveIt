@@ -1,0 +1,268 @@
+{
+  "status": "PASS",
+  "scope": "Integration checks of the portable wrapper against the staged package. No large timed partial family was rerun.",
+  "commands": {
+    "baseline": {
+      "status": "PASS",
+      "source_record_sha256": "a1f1acb845b612ceb8da951b1819fbddecb1c99d9adef377b4ee9cf3bf94eeda",
+      "subprocesses": [
+        {
+          "label": "baseline-audit",
+          "returncode": 0,
+          "elapsed_seconds": 2.0099289909999243
+        }
+      ],
+      "checks": [
+        {
+          "check": "baseline finite audit",
+          "status": "PASS",
+          "working_states": 252,
+          "rows": 504,
+          "blank_steps": 82552,
+          "affine_cases": 8391
+        }
+      ]
+    },
+    "semantics": {
+      "status": "PASS",
+      "source_record_sha256": "f5a9a281bb6a94551cf3450bebc2849ebf430296ae6fa8c6f29e9cd28a5fe4b6",
+      "subprocesses": [
+        {
+          "label": "mp-birth",
+          "returncode": 0,
+          "elapsed_seconds": 19.062352251999982
+        },
+        {
+          "label": "deterministic-mp",
+          "returncode": 0,
+          "elapsed_seconds": 4.305445006999889
+        }
+      ],
+      "checks": [
+        {
+          "check": "semantics/mp_birth_results/results.json",
+          "status": "PASS",
+          "excluded_metadata_fields": [
+            "source_sha256"
+          ]
+        },
+        {
+          "check": "semantics/mp_birth_results/baseline-dag.json",
+          "sha256": "fb67ec1bf888c8400b14b64787cf54193f3681a51a4c37680fd1ff0f78857ac5",
+          "status": "PASS"
+        },
+        {
+          "check": "semantics/mp_birth_results/baseline.tm",
+          "sha256": "b25b51795586757aa3b52e1aa4d732f5d3a2b69c80f47098c3328889fcd49914",
+          "status": "PASS"
+        },
+        {
+          "check": "semantics/mp_birth_results/param_no_dummy-dag.json",
+          "sha256": "efc7437822982da2e438e1cabdff93ac904f3614931c74f0031699951276b19b",
+          "status": "PASS"
+        },
+        {
+          "check": "semantics/mp_birth_results/param_no_dummy.tm",
+          "sha256": "04573b82c7e17ebe10f0284aec5c8b83dd71409acce7c56e98a60de36be52647",
+          "status": "PASS"
+        },
+        {
+          "check": "semantics/mp_birth_results/param_preserve-dag.json",
+          "sha256": "ee4c23d950e81f83a20f91123538f246a751b4cee129eccfbe8f6970a9096d0f",
+          "status": "PASS"
+        },
+        {
+          "check": "semantics/mp_birth_results/param_preserve.tm",
+          "sha256": "ae750534c22e56e8305c60d471285afd8a095af22353dca2b6eaef205327c8fc",
+          "status": "PASS"
+        },
+        {
+          "check": "semantics/mp_birth_results/top_no_dummy-dag.json",
+          "sha256": "56bea504aadda1e866d7e1254bff104a07b007654bbbdfcf994b037e50b81bc1",
+          "status": "PASS"
+        },
+        {
+          "check": "semantics/mp_birth_results/top_no_dummy.tm",
+          "sha256": "9cc4a20cad7cd91dca067557ef0047743931e9aa769fba348a3d5c1fd87bbc68",
+          "status": "PASS"
+        },
+        {
+          "check": "semantics/mp_birth_results/top_preserve-dag.json",
+          "sha256": "73ce9f71ccd15af89fb9c583e76afa6c0334f0726175a4e0471dee5324ab2593",
+          "status": "PASS"
+        },
+        {
+          "check": "semantics/mp_birth_results/top_preserve.tm",
+          "sha256": "acbd7f82da447944f1b8dc4a345fc71e90388a04687f2ed7b01678d5830963d2",
+          "status": "PASS"
+        },
+        {
+          "check": "semantics/deterministic_mp_results/results.json",
+          "status": "PASS",
+          "excluded_metadata_fields": [
+            "source_sha256"
+          ]
+        },
+        {
+          "check": "semantics/deterministic_mp_results/deterministic_birth-dag.json",
+          "sha256": "f71f4c1706232f25a350f319177485e8eee9b16524bc22cc6f1b87dcd455deb8",
+          "status": "PASS"
+        },
+        {
+          "check": "semantics/deterministic_mp_results/deterministic_birth.tm",
+          "sha256": "14dc51e31a061e81f37e12a65d13849632b3c724eced84ad1bca4613f51029ab",
+          "status": "PASS"
+        },
+        {
+          "check": "semantics/deterministic_mp_results/deterministic_nip_halt-dag.json",
+          "sha256": "d11b556bceb5f71c756c587b93c1e0a263597fcf8352d998d0a8883496584602",
+          "status": "PASS"
+        },
+        {
+          "check": "semantics/deterministic_mp_results/deterministic_nip_halt.tm",
+          "sha256": "b7eed0f5673df298bc1551c5cf67dbcf2641fff869c8e49a0806cb107fd622fa",
+          "status": "PASS"
+        }
+      ]
+    },
+    "variant": {
+      "status": "PASS",
+      "source_record_sha256": "aff367ce4f0f0194522002dbe26277e1e56b0f719ff4998208ed3c55e3266f44",
+      "subprocesses": [
+        {
+          "label": "prepare-variant",
+          "returncode": 0,
+          "elapsed_seconds": 4.916067341000144
+        },
+        {
+          "label": "compile-variant_fold_search",
+          "returncode": 0,
+          "elapsed_seconds": 2.6722201659999882
+        },
+        {
+          "label": "variant-folds",
+          "returncode": 0,
+          "elapsed_seconds": 0.5554102139999486
+        }
+      ],
+      "checks": [
+        {
+          "check": "machine_search/variant_data/baseline.tm",
+          "sha256": "d4315d78269a81ae25e9b1d5eaf9cb9b5c855602a723f4fcb6e444f97a3e27db",
+          "status": "PASS"
+        },
+        {
+          "check": "machine_search/variant_data/cases.tsv",
+          "sha256": "3098eff1160b3e8c1f1b358c10c4e3834b5625c3a2c496fed1aacfe817aca649",
+          "status": "PASS"
+        },
+        {
+          "check": "machine_search/variant_data/folds.tsv",
+          "sha256": "440f1fb1a9c13f548bee08ee1b02fccb5e65b14a77c5b70d5f06f77c1166d31b",
+          "status": "PASS"
+        },
+        {
+          "check": "machine_search/variant_data/source_cases.json",
+          "sha256": "5d4560c51d56402e62052619c86a37aa5ef5173781703d23dc18a83fad3b53a3",
+          "status": "PASS"
+        },
+        {
+          "check": "machine_search/variant_data/preparation.json",
+          "sha256": "342217319029e4cda29a9ba50ee4c8fbcf5a6f49a9fe3844c7652711883b6be3",
+          "status": "PASS"
+        },
+        {
+          "check": "254-state tag-swap runtime uniform-fold ledger",
+          "sha256": "6f0c9975f067af006280482b4c38df628f7e240b7b8dcbb0bb5a4ce30e9ccb3e",
+          "status": "PASS"
+        },
+        {
+          "check": "machine_search/variant_folds.summary.json",
+          "status": "PASS",
+          "excluded_metadata_fields": [
+            "elapsed_seconds"
+          ]
+        }
+      ]
+    },
+    "searches": {
+      "status": "PASS",
+      "source_record_sha256": "57e933f822730d2af0f7f94722bf159cdfa18004ee0ec8d7f261f5a742a23ed3",
+      "subprocesses": [
+        {
+          "label": "prepare-actions",
+          "returncode": 0,
+          "elapsed_seconds": 11.348006056000031
+        },
+        {
+          "label": "compile-action_search",
+          "returncode": 0,
+          "elapsed_seconds": 2.1425167850002254
+        },
+        {
+          "label": "target2",
+          "returncode": 0,
+          "elapsed_seconds": 2.137248263999936
+        },
+        {
+          "label": "audit-target2",
+          "returncode": 0,
+          "elapsed_seconds": 4.954427697000028
+        }
+      ],
+      "checks": [
+        {
+          "check": "machine_search/action_data/baseline.tm",
+          "sha256": "939f99d602c8f7057517c4369279de99e30827050fc743581df83f26aaf1b713",
+          "status": "PASS"
+        },
+        {
+          "check": "machine_search/action_data/cases.tsv",
+          "sha256": "38a73ab4c60747da7cf03e419380623ef752b5c10bd7555312f1d471b7964f98",
+          "status": "PASS"
+        },
+        {
+          "check": "machine_search/action_data/family.tsv",
+          "sha256": "da275608d08b89237f1a38f3e4ccce4bc1e6d928688c43ca4cda1782d5fa426a",
+          "status": "PASS"
+        },
+        {
+          "check": "machine_search/action_data/preparation.json",
+          "sha256": "325e5c2fb3dbb974127959a8908ccf98292c1e35b3b0ef15fecb497b8d7c369f",
+          "status": "PASS"
+        },
+        {
+          "check": "target2 deterministic ledger",
+          "sha256": "61f087bfb195eebf3d65cbf8860859c936201a134b123884116cceac88dd3ce8",
+          "status": "PASS"
+        },
+        {
+          "check": "machine_search/target_control.audit.json",
+          "status": "PASS",
+          "excluded_metadata_fields": []
+        }
+      ],
+      "families": [
+        "target2"
+      ]
+    }
+  },
+  "focused_controls": {
+    "valid_checksum_manifest": "PASS",
+    "corrupted_checksum_rejected": "PASS",
+    "output_inside_package_rejected": "PASS",
+    "optimized_python_rejected": "PASS",
+    "python_syntax_and_help": "PASS",
+    "full_searches_dry_run": "PASS",
+    "tightened_semantic_input_hash_comparison_on_full_rerun_outputs": "PASS"
+  },
+  "not_tested_in_this_record": [
+    "codecs",
+    "phase",
+    "searches action2",
+    "searches target3",
+    "full package checksum manifest before final staging"
+  ],
+  "initial_full_branch_wrapper_sha256": "3875780a3246a3f28d0a00d3fd3192e95d502fcd6a22b739131ac65fc583bebf",
+  "wrapper_sha256": "27a25621730d8124f158f994d22850e2a9f84c984c725658f0a386fa878733ba"
+}

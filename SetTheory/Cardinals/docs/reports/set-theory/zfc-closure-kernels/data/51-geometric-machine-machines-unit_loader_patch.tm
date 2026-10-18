@@ -1,0 +1,17 @@
+# Prepared-frame transducer PATCH, not a standalone total machine
+27 1 0 L 302
+33 0 0 R 305
+300 0 1 L 27
+300 1 0 R 308
+302 0 0 L 303
+302 1 1 L 302
+303 0 1 L 33
+303 1 1 L 303
+305 0 0 R 306
+305 1 1 R 305
+306 0 0 L 307
+306 1 1 R 306
+307 0 1 L 7
+307 1 1 R 300
+308 0 1 R 308
+308 1 1 R 300

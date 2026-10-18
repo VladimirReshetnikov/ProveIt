@@ -1,0 +1,356 @@
+{
+  "schema_version": 1,
+  "title": "A 247-state Turing machine for ZFC consistency",
+  "prepared_for": "Vladimir Reshetnikov and the ProveIt project",
+  "dates": {
+    "sources_inspected": "2026-10-17",
+    "report_completed_utc": "2026-10-18"
+  },
+  "claim": {
+    "statement": "ZFC proves that nonhalting of the exact blank-tape machine is equivalent to Con(ZFC).",
+    "proof_method": "Ordinary mathematical proof: universal register identities, exhaustive finite symbolic instruction certificates, a complete blank bootstrap, whole-frame induction, and identified inherited native/ZF/ZFC calibration.",
+    "working_states": 247,
+    "new_lean_or_rocq_kernel_endpoint": false,
+    "inherited_proof_assistant_dependency_closure_rebuilt": false,
+    "complete_proof_assistant_dependency_closure_bundled": false,
+    "serialized_first_order_zfc_derivation_supplied": false,
+    "internal_pa_formalization_supplied": false,
+    "unconditional_nonhalting_or_zfc_consistency_proved": false,
+    "state_minimality_or_worldwide_priority_claim": false,
+    "independent_review_scope": "Separately implemented automated checks and a separate automated mathematical review within this investigation; not external peer review."
+  },
+  "machine": {
+    "alphabet": [
+      0,
+      1
+    ],
+    "blank": 0,
+    "tapes": 1,
+    "tape_index_set": "integers",
+    "initial_head": 0,
+    "initial_tape": "all zero",
+    "moves": [
+      "L",
+      "R"
+    ],
+    "working_states": 247,
+    "transition_rows": 494,
+    "halting_transition_count": 1,
+    "halting_semantics": "Execute the final write and move into the separate halt label; subsequent execution is absorbing.",
+    "canonical": {
+      "path": "machine/zfc_prefix247.tm",
+      "start": 0,
+      "working_labels": "0..246",
+      "halt": 247,
+      "dispatch": 89,
+      "sha256": "58bbbda620daf6d4d62f486db05f54d0dccb8373c080c1b5a0b26533e7a3a669"
+    },
+    "original_labels": {
+      "path": "machine/zfc_prefix247_old.tm",
+      "start": 97,
+      "working_labels": "({0,...,253} minus {0,1,3,5,8,43,59,85}) union {255}",
+      "halt": 254,
+      "dispatch": 96,
+      "sha256": "0d37614f3caf37139b0be127837630539224acd1c45d748cf5704abfc3230b42"
+    },
+    "renumbering": "machine/renumbering.json",
+    "sole_halting_row_original_labels": [
+      77,
+      1,
+      1,
+      "R",
+      254
+    ],
+    "physical_of_logical": [
+      6,
+      2,
+      0,
+      4,
+      3,
+      7,
+      8,
+      5,
+      1
+    ],
+    "logical_register_order": [
+      "N",
+      "T",
+      "W",
+      "A",
+      "D",
+      "H",
+      "X",
+      "Y",
+      "L"
+    ],
+    "reduction_from250": {
+      "source": "reference/prefix250_old.tm",
+      "removed_states": [
+        0,
+        1,
+        3
+      ],
+      "changed_surviving_rows": [
+        {
+          "state": 60,
+          "read": 0,
+          "before": [
+            0,
+            "R",
+            0
+          ],
+          "after": [
+            0,
+            "R",
+            20
+          ]
+        }
+      ],
+      "initializer_unchanged": [
+        97,
+        0,
+        1,
+        "R",
+        83
+      ],
+      "all_other_surviving_rows_unchanged": true
+    },
+    "bootstrap": {
+      "literal_steps": 741241,
+      "state_original": 96,
+      "state_canonical": 89,
+      "head": -5,
+      "marker": -6,
+      "header": 245,
+      "head_to_header_distance": 250,
+      "program_counter": [],
+      "physical_primary": [
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        3,
+        0,
+        0
+      ],
+      "logical_primary": [
+        3,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0
+      ],
+      "spare_blocks": 235,
+      "each_spare_value": 1,
+      "one_cells": 487,
+      "last_one_coordinate": 974,
+      "all_other_cells_zero": true,
+      "initializer_row_uses": 1,
+      "complete_support_record": "results/bootstrap-canonical.json",
+      "separate_dense_replay": "results/bootstrap-independent.json"
+    }
+  },
+  "source_revisions": {
+    "proveit": {
+      "repository": "VladimirReshetnikov/ProveIt",
+      "commit": "e0b512a63e2c1ca6a1698fa437b8568f1643ff6b",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/tree/e0b512a63e2c1ca6a1698fa437b8568f1643ff6b",
+      "baseline_path": "Computability/BusyBeaver/Research/ZFC/candidate-permutation252/zfc_permutation252_old.tm"
+    },
+    "prefix250_construction": {
+      "repository": "VladimirReshetnikov/ProveIt",
+      "commit": "e0b512a63e2c1ca6a1698fa437b8568f1643ff6b",
+      "path": "docs/incoming/zfc-prefix250.zip"
+    },
+    "prefix250_audit": {
+      "repository": "VladimirReshetnikov/ProveIt",
+      "commit": "e0b512a63e2c1ca6a1698fa437b8568f1643ff6b",
+      "path": "docs/incoming/zfc-prefix250-audit-20261017.zip",
+      "archive_root": "zfc-prefix250-report/",
+      "historical_source_pin_in_retained_metadata": "80e26b89e905bf3e5dfc322befdc1c6eaf25a109"
+    },
+    "requested_upstream_branch": {
+      "repository": "jeff87654/busy-beaver",
+      "branch": "zf-254",
+      "commit": "c132d7eae8158cd3a9850ea3eb7251158c3dd821",
+      "path": "ZF/m254",
+      "url": "https://github.com/jeff87654/busy-beaver/tree/c132d7eae8158cd3a9850ea3eb7251158c3dd821/ZF/m254"
+    },
+    "attributed_upstream_import": {
+      "repository": "jeff87654/busy-beaver",
+      "commit": "297ab8df7e5de329605c3875b4934643b371a5e3",
+      "program_path": "ZF/m254/coq/tm/Prog254.v"
+    },
+    "public_253_reduction": {
+      "author": "mira-emmy",
+      "pull_request": "https://github.com/jeff87654/busy-beaver/pull/20",
+      "head_commit": "0d544f2a2e3c18f12278441a74b7879f31cbe856"
+    },
+    "busy_beaver_wiki": {
+      "title": "Logical independence",
+      "revision": 9106,
+      "url": "https://wiki.bbchallenge.org/w/index.php?title=Logical_independence&oldid=9106",
+      "accessed": "2026-10-17"
+    }
+  },
+  "retained_inputs": {
+    "reference/baseline252_old.tm": {
+      "sha256": "939f99d602c8f7057517c4369279de99e30827050fc743581df83f26aaf1b713",
+      "role": "Pinned original-label permutation252 machine."
+    },
+    "reference/prefix250_old.tm": {
+      "sha256": "fd455304bad82a6da7ab83149352d0b1db27557582c4cc6312de003c96ff4e43",
+      "role": "Exact predecessor table from the incoming prefix250 audit."
+    },
+    "reference/Prog254.v": {
+      "sha256": "1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746",
+      "bytes": 181946,
+      "role": "Full, unchanged attributed upstream program source, not an extracted site cache. The complete source tree is reparsed for every symbolic audit.",
+      "decoder_nodes": 6459,
+      "leaves": 6460,
+      "guarded_cases": 8391,
+      "maximum_leaf_depth": 34
+    },
+    "reference/lean/": {
+      "role": "Selected maintained theorem-interface snapshots from the ProveIt pin; reference material, not a complete independently buildable Lean project.",
+      "source_directory": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC",
+      "files": [
+        "Bisim254.lean",
+        "ChoiceCalibration254.lean",
+        "DirtyProgram254.lean",
+        "L2Lib254.lean",
+        "NativeTheory254.lean",
+        "Prog254.lean",
+        "RegisterPath.lean",
+        "RegisterPathClean.lean",
+        "SiteCoverage.lean",
+        "WFTheory.lean"
+      ]
+    },
+    "reference/upstream-attribution.md": {
+      "role": "Historical import attribution; its inventories, links and build-status statements refer to the original vendored layout."
+    },
+    "reference/prior/prefix250-audit-provenance.json": {
+      "role": "Historical metadata about the predecessor archive, not an inventory or manifest of this package."
+    },
+    "reference/prior/prefix250-audit-README.md": {
+      "role": "Historical predecessor README; its relative links belong to the original archive."
+    }
+  },
+  "verifier_lineage": [
+    {
+      "current": "code/affine_engine.py",
+      "status": "Byte-for-byte unchanged from the prefix250 audit.",
+      "source_archive": "docs/incoming/zfc-prefix250-audit-20261017.zip",
+      "source_member": "zfc-prefix250-report/code/affine_engine.py",
+      "retained_predecessor": "reference/prior/affine_engine250.py",
+      "sha256": "8c029463048fb544608dec93b6bba772ab21250377b8fbb2763cbab4f1ee35e7",
+      "earlier_lineage": "Prefix adaptation of the ProveIt attributed source-27 strict affine checker and upstream M253.SymExec rules.",
+      "historical_comment_mapping": "The inherited mentions of provenance.json, source27, and macro_induction_proof.tex refer to the predecessor layout. Current provenance is PROVENANCE.json; current proof is report.tex with sections/macro_proofs.tex and sections/reduction_and_calibration.tex."
+    },
+    {
+      "current": "code/check_macro_inductions.py",
+      "status": "Inherited induction checker; only the import changes from rebuild_machines to the current exact-table builder build_machine.",
+      "source_archive": "docs/incoming/zfc-prefix250-audit-20261017.zip",
+      "source_member": "zfc-prefix250-report/code/check_macro_inductions.py",
+      "retained_predecessor": "reference/prior/check_macro_inductions250.py",
+      "predecessor_sha256": "3484c0be3aaf34bd3677c0cc727eaba8655efd358f9338192a88be0d9c89ad8d"
+    },
+    {
+      "current": "code/check_instructions.py",
+      "status": "Adapted instruction driver, using the final table builder and a fresh complete parse of the full Prog254.v.",
+      "source_archive": "docs/incoming/zfc-prefix250-audit-20261017.zip",
+      "source_member": "zfc-prefix250-report/code/check_instructions.py"
+    },
+    {
+      "current": "code/check_literal_instructions.py",
+      "status": "Adapted separately executing literal regression checker; updated table binding and the disclosed finite test suite.",
+      "source_archive": "docs/incoming/zfc-prefix250-audit-20261017.zip",
+      "source_member": "zfc-prefix250-report/code/check_literal_instructions.py"
+    },
+    {
+      "current": [
+        "code/build_machine.py",
+        "code/check_marking_independent.py",
+        "code/check_boot_canonical.py",
+        "code/check_boot_independent.py",
+        "code/verify.py"
+      ],
+      "status": "New package reconstruction and orchestration or separately implemented checks for this exact reduction; the inherited machine recipe and predecessor mathematics retain their attribution."
+    }
+  ],
+  "attribution": [
+    {
+      "name": "Mira-Cult",
+      "contribution": "Original compact calculus and 254-state machine."
+    },
+    {
+      "name": "Jeff Ketchersid (jeff87654)",
+      "contribution": "Upstream formal verification and associated program and symbolic machinery."
+    },
+    {
+      "name": "Andrew James Wade",
+      "contribution": "Compiler framework and public backend."
+    },
+    {
+      "name": "mira-emmy",
+      "contribution": "Public 253-state reduction."
+    },
+    {
+      "name": "ProveIt contributors",
+      "contribution": "Physical register permutation, source-27 affine development, Lean developments, and native/ZF/ZFC calibration."
+    },
+    {
+      "name": "Earlier prefix250 research and audit",
+      "contribution": "Prefix carry, zero rollback, spare-block convention, pulse retiming, and inherited checking machinery."
+    },
+    {
+      "name": "This contribution",
+      "contribution": "Guarded reuse of state 20, removal of states 0,1,3, new safe bootstrap, 247-state proof composition, and reproducible new or adapted checks."
+    }
+  ],
+  "reproduction": {
+    "requirements": "Python 3.10 or later with only its standard library. PDF rebuilding additionally needs latexmk, pdfLaTeX and the packages in report.tex.",
+    "main_command": "python3 -B code/verify.py",
+    "default_behavior": "Run all seven checks in a temporary copy and preserve delivered files.",
+    "refresh_command": "python3 -B code/verify.py --in-place",
+    "pdf_command": "make pdf",
+    "network_required": false,
+    "exploration_required": false,
+    "python_assertions_required": true,
+    "consolidated_result": "results/verification.json",
+    "included_status": "PASS",
+    "included_passed_checks": 7,
+    "included_python_version": "3.12.14",
+    "check_names": [
+      "reconstruction",
+      "universal_macro_inductions",
+      "all_symbolic_instructions",
+      "independent_marking",
+      "canonical_sparse_bootstrap",
+      "independent_dense_bootstrap",
+      "independent_literal_instructions"
+    ],
+    "finite_literal_regression": {
+      "cases": 8391,
+      "transitions": 3647370
+    },
+    "optional_exploration": "exploration/README.md"
+  },
+  "license_boundary": {
+    "notices": [
+      "NOTICE.md",
+      "licenses/LICENSE.ProveIt",
+      "licenses/LICENSE.Wade",
+      "reference/upstream-attribution.md"
+    ],
+    "statement": "Preserve inherited authorship and applicable notices. This package does not relicense the upstream machine or verification material under a blanket grant."
+  },
+  "content_hash_scope": "The hashes in this file identify frozen machine and retained input bytes. Timing-bearing verification results may change on an in-place rerun."
+}

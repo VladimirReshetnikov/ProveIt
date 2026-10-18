@@ -1,0 +1,10 @@
+.PHONY: verify verify-extended pdf
+
+verify:
+	python3 verify_research.py
+
+verify-extended:
+	python3 verify_research.py --extended
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=report report/prefix_shift_research.tex

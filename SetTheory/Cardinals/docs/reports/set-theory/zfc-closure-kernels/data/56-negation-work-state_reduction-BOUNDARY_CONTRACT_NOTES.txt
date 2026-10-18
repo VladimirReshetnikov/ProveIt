@@ -1,0 +1,280 @@
+STATE-REDUCTION EXPERIMENTS: PROOF BOUNDARIES AND REPRODUCTION
+===========================================================
+
+Pinned repository
+-----------------
+VladimirReshetnikov/ProveIt, commit
+43026ff42f0939f09b9e95495248cfadcad38e38.
+
+The reference old-label table is candidate-permutation252/
+zfc_permutation252_old.tm, SHA256
+939f99d602c8f7057517c4369279de99e30827050fc743581df83f26aaf1b713.
+It has 252 working states, start 64, dispatch 96 and halt 254. The logical
+register to physical register map is (6,2,0,4,3,7,8,5,1). We preserve the 55
+supporting rows of the four original register-box contracts in every new
+uniform or two-incoming action search. The separate Box mixed-row experiment
+does alter supporting rows and therefore has a weaker, conditional status.
+
+Outcome
+-------
+No table with fewer than 252 states was obtained in these experiments. The
+new deliverables are broader executable sufficient contracts, independent
+finite-control and coverage audits, and closure of an unfinished finite
+incoming-action search. Negative diagnostic outcomes are not counterexamples
+to semantic equivalence, lower bounds on state count, or proofs of minimality.
+
+1. Forgetting the amount of unused zero space
+-------------------------------------------
+At an instruction boundary, the original symbolic executor represents a
+complete frame: dispatch state 96, a left marker and blank left exterior,
+a finite PC word, an affine zero run, a header, and an opaque register box
+with its spare/frame convention. The input parameter n ranges over every
+nonnegative integer and the head-to-header distance is n+40.
+
+Suppose a successful exit has the same intended PC, register effect, and
+complete exterior/frame, while its head-to-header distance is
+
+    d'(n) = a*n + c + k,
+
+where k is the length of its finite PC prefix, a and c are integers, a>=0,
+and c+k>=40. The output can serve as another input frame by choosing
+
+    n' = a*n+c+k-40 >= 0.
+
+This is enough for induction over source instructions. It is unnecessary to
+preserve n, or even to prove n'>=n. This observation widens endpoint acceptance
+without changing the symbolic execution rules. It does not allow damage to
+the PC, left exterior, header, primary registers, or spare convention.
+
+gap_contract.py implements the conservative affine inequalities above after
+canonicalization. It is used only in comparisons, never to modify an execution
+configuration. All 8,391 original guarded cases and the exact 82,552-step
+blank bootstrap pass this contract. All 55,471 eligible uniform deletion
+recipes fail the finite search with this wider endpoint and fuel 1,000.
+
+2. Normalizing silent control instructions
+-----------------------------------------
+CB and CC only alter the finite control path. They do not change logical
+registers. Following them in the fixed register program always reaches an
+increment, decrement, or halt after at most four jumps. There are 1,927 silent
+leaves among 6,460 source leaves. Let N(p) be the next visible-action leaf and
+rho(p) the number of silent jumps before it. Thus 0<=rho(p)<=4, with rho(p)=0
+exactly at visible-action leaves.
+
+The visible-action graph has 4,533 vertices. Its coarsest finite bisimulation
+preserving command, logical register, and the ordered zero/positive successor
+classes has 4,530 classes. The three doubleton classes are:
+
+  {11101001001011111111101100, 1111101100}
+  {11101001011110,             1110101110}
+  {111010010111110,            11101011110}
+
+Every other class is a singleton. This graph result was already explored in
+the repository's source-48 continuation work. The present contribution is an
+actual boundary matcher and mutation search that accepts by those classes,
+plus an independent reconstruction/audit. The general ranked-stuttering idea
+should also be attributed to that earlier continuation work, not claimed as
+an entirely new theorem.
+
+3. Ranked boundary simulation criterion
+--------------------------------------
+The following is a sufficient semantic criterion. Its hypotheses must be
+proved for a proposed binary table; finite failure of a checker is not a
+disproof of the hypotheses.
+
+Assume the blank bootstrap reaches a complete frame representing the intended
+zero-register source start, with header distance at least 40. At every source
+leaf p, for every permitted register vector, spare frame and gap:
+
+  (a) If p is CI or a selected CD branch, the binary machine performs a
+      positive finite segment with the prescribed register effect. It reaches
+      another complete dispatch frame p' with gap at least 40 and
+
+          [N(p')] = [N(source_successor(p))].
+
+      Here brackets mean the action-bisimulation class. The output may still
+      have a silent suffix; rho(p') may be any value from 0 to 4.
+
+  (b) If p is CB or CC, the binary machine performs a positive finite segment
+      with no register effect. It reaches a complete dispatch frame p' with
+      gap at least 40, the same normalized action class, and
+
+          rho(p') < rho(p).
+
+  (c) If p is halt, the binary machine reaches its halt state after finitely
+      many steps. No nonhalt segment in (a) or (b) enters halt prematurely.
+
+Then the binary machine halts exactly when the source register machine does.
+
+Proof. The finite action quotient preserves the command and relevant register
+at each class, so related source configurations with the same register vector
+choose the same guarded branch and enter the same successor class. At a
+binary boundary with a silent source leaf, clause (b) preserves that class
+and the register vector while strictly decreasing a natural-number rank.
+After at most four such segments, a visible-action boundary is reached.
+Clause (a) then implements exactly the next action and reestablishes the
+relation at its successor class. Repeat. Every segment is finite and positive,
+so there is neither infinite silent stuttering nor a collapsed infinite trace.
+If the source reaches a halt class, clause (c) makes the binary execution
+halt. Conversely, binary halting cannot occur within a nonhalt segment, and a
+halt class has the halt command at every representative, so binary halting
+implies source halting. The gap argument in section 1 permits composition
+without preserving unused space. The whole-frame condition permits no hidden
+tape differences to accumulate.
+
+ranked_contract.py implements these endpoint conditions. ranked_fold_search.py
+retains all 8,391 original guarded cases and changes only the strict executor's
+terminal predicate. The attributed four Box rules and all literal/symbolic
+execution rules remain unchanged. The original table passes all cases and
+the exact blank bootstrap. All 55,471 uniform folds fail this finite ranked
+screen with fuel 3,000.
+
+audit_ranked_contract.py independently reconstructs source control using the
+repository's length-preserving RegisterPath transcription. It checks the
+1,927 silent ranks, all 4,533 visible vertices, and all 4,530 class labels and
+successor signatures. Matcher controls accept all 8,390 nonhalt source-successor
+frames, reject all 8,390 otherwise matching frames with gap 39, and reject all
+1,927 silent self-stutters. This is an ordinary executable audit, not a new
+Lean or Coq theorem.
+
+4. Reachable phase exclusions and the quotient caveat
+--------------------------------------------------
+An additional action-to-action screen omits four visible guarded cases that
+the repository's zeroRoot phase invariant excludes. The other two excluded
+cases are silent and disappear into normalization. This produces 6,460 visible
+guarded cases; the unrestricted action-to-action suite has 6,464 cases. Both
+uniform-fold searches yield no survivor.
+
+The phase-restricted screen still uses exact normalized action PCs. Its
+site-specific invariants must NOT simply be combined with the quotient
+matcher. A modified execution can use another representative of a class;
+an invariant at the original source site need not hold there. Either retain
+all guards at every allowed representative or prove a relation/invariant
+saturated over the classes. The actual ranked search retains every original
+guard and avoids this problem.
+
+5. Complete degree-two incoming-action family
+--------------------------------------------
+For one eligible deleted state with exactly two external incoming rows,
+each incoming row may independently choose either write symbol, either
+direction, and any of the 251 surviving working states or halt as target:
+
+    2 * 2 * (251+1) = 1,008 actions per row;
+    1,008^2 = 1,016,064 joint recipes per deleted state.
+
+The preserved 55 Box rows are checked literally. There are 46 eligible deleted
+states in the archived source-50 family. Its previous run completed ten whole
+domains and 684,710 recipes of state 68, leaving 35,893,594 recipes unexamined.
+
+The present run completes all 36 formerly unfinished domains. It evaluates
+36,578,304 concrete completions through 1,922,292 lazy partial-assignment nodes
+and 4,551,506 completed affine diagnostics. The 684,710 previously covered
+state-68 recipes overlap. Therefore exactly 35,893,594 additional distinct
+recipes are covered, and the archived ten complete domains plus the fresh 36
+complete domains cover all 46,738,944 recipes. There is no survivor.
+
+Only the fresh 36 domains use the wider gap>=40 contract. The archived ten
+complete domains use the exact original affine gap. A failure to reach the
+wider endpoint within the same fuel also fails the narrower exact endpoint,
+so the combined evidence closes the exact source-50 family. It does not show
+that all 46 domains fail the wider gap screen.
+
+The lazy search intercepts an unassigned incoming row before looking up its
+transition. Every concrete child restarts the diagnostic. A failed partial
+assignment prunes all its 1,008^(2-assigned_rows) completions only when the
+failure occurred without reading any still-unknown row. The journal records
+the complete disjoint search partition. audit_degree2_partition.py uses no
+search-driver import; it independently reconstructs action order, stack,
+subtree weights and final frontier for all 36 domains.
+
+The independent audit detected an incomplete state-215 journal tail: 10,810
+records where the result declared 11,089. That entire domain was rerun and
+the replacement journal passed. The original incomplete file is preserved
+separately for transparency and contributes no accepted coverage. It need not
+be shipped in the main research packet; the scope summary records the repair.
+
+scope_summary.json is generated from archived and fresh results, checking all
+result hashes against degree2_partition_audit.json. It prevents double counting
+of state 68, and prevents adding the five uniform search counts as if they
+were five disjoint families.
+
+6. Independent audit of the direct-negation 258-state table
+---------------------------------------------------------
+audit_modified_source.py is independent of the emitter and fold search. It
+accepts an explicit source DAG and ordinary binary table, reconstructs all
+paths and carry/strip successors, verifies all table rows and protected Box
+rows, and runs literal execution with complete tape equality.
+
+The snapshot direct_negation_audit/machine_258.tm has SHA256
+a7d5ab7715eac5a05560e46bca570be7ab7e604ebe6e0600efc3dea874e01d2b.
+The source snapshot has SHA256
+ddae947b76909a6802a4c4f554685b18874878b6fe764be4e270991b14124907.
+Its 203-node DAG expands to 5,650 leaves and 7,311 guarded cases, maximum
+consumed depth 34. All 7,310 nonhalt successors are clean and closed. All
+7,311 attributed affine contracts pass, with minimum 13 literal rules and
+maximum 494 symbolic rules per case. All 55 Box rows equal the reference.
+
+The exact blank run reaches the expected whole zeroRoot frame after 82,552
+steps. Every guarded case was then tested by literal rows at three complete
+frames: gaps 40, 57 and 97, distinct primary value patterns, and spare tails
+[], [0,2,0], and [2,1,3], with the tested decrement register set to satisfy
+its guard. All 21,933 tests pass, totaling 11,255,066 microsteps, maximum 1,024
+microsteps per case. Every nonhalt test compares the entire finite support
+of the output tape. All 258 working states are graph-reachable.
+
+These are finite compiler/frame facts conditional on the original unbounded
+Box contracts. They do not prove the high-level source rewrite, a new kernel
+compiler simulation, or a sub-252 result.
+
+Reproduction
+------------
+Use Python 3 with assertions enabled and a local ProveIt checkout at the pin.
+No network access is needed. New experiments should use external scratch.
+
+The original drivers retain their tested bytes. Some contain the session's
+absolute BASE path. replay.py stages copies, substitutes only that path
+literal, records original and configured hashes in relocation.json, and runs
+the requested script against an explicit checkout. For example:
+
+  python3 -B replay.py --repo /path/to/ProveIt --work /tmp/rank-replay \
+    --script audit_ranked_contract.py
+
+  python3 -B replay.py --repo /path/to/ProveIt --work /tmp/state143-replay \
+    --script two_action_search.py -- --dead 143 --gap-flexible --seconds 900
+
+  python3 -B replay.py --repo /path/to/ProveIt --work /tmp/ranked-search \
+    --script ranked_fold_search.py -- --seconds 900 --affine-fuel 3000
+
+The relocation workflow was exercised with the independent ranked audit.
+The portable modified-source audit accepts its paths directly:
+
+  python3 -B audit_modified_source.py --repo /path/to/ProveIt \
+    --source direct_negation_audit/source.json \
+    --table direct_negation_audit/machine_258.tm \
+    --output /tmp/modified-audit.json
+
+To replay the degree-two search partition:
+
+  python3 -B audit_degree2_partition.py two_action_*_gap.json \
+    --output /tmp/partition-audit.json
+
+The partition auditor accepts a sibling .jsonl or .jsonl.gz journal. Compressed
+journals may be distributed instead of the much larger plain journals.
+
+Subsequent concrete improvement: 255 states
+------------------------------------------
+The later snapshot direct_negation_255_audit/machine_255.tm has 255 working
+states, 510 total binary rows, and SHA256
+b4931a8d2edcb4d17bf890b22c602ea76d644643e400166e10a764d3bb087495.
+It uses the same direct-negation source snapshot as the 258-state audit.
+The independent checker again passes all 7,311 affine cases, all 55 preserved
+Box rows, and the exact 82,552-step full-tape blank bootstrap. All 21,933
+literal guarded-frame tests pass: 11,257,202 microsteps in total, maximum
+1,024 per test. These tests and the bootstrap exercise all 510 transition
+rows. All 255 states are graph-reachable. The minimum literal-rule count is
+13, maximum affine-rule count 494. The earlier 258-state snapshot remains
+in the packet for attribution; latest_concrete_audit.json identifies this
+newer audited table. It is still three states larger than the 252 baseline
+and does not meet the requested sub-252 target. The same finite/conditional
+proof boundary applies. Its entry includes ARTIFACT_SCOPE.json and a portable
+REPRODUCE.txt command.

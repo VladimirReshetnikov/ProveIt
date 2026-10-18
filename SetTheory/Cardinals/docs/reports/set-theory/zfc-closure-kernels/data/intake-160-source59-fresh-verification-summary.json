@@ -1,0 +1,274 @@
+{
+  "status": "PASS",
+  "started_utc": "2026-10-17T23:42:18.223672+00:00",
+  "python_version": "3.13.14",
+  "assertions_enabled": true,
+  "entry_point": "python -B code/verify.py",
+  "expected_check_count": 9,
+  "checks": [
+    {
+      "name": "exact_reconstruction",
+      "command": [
+        "python",
+        "-B",
+        "code/rebuild_machines.py",
+        "--check"
+      ],
+      "result_file": "results/rebuild.json",
+      "exit_code": 0,
+      "status": "PASS",
+      "seconds": 0.091031,
+      "metrics": {
+        "working_states": 250,
+        "binary_rows": 500,
+        "source_tree_nodes": 6459,
+        "instruction_sites": 6460,
+        "guarded_instruction_cases": 8391,
+        "final_old_sha256": "fd455304bad82a6da7ab83149352d0b1db27557582c4cc6312de003c96ff4e43",
+        "final_canonical_sha256": "0626819c4842f224001e7685366d8061897a7bc9470c015129a1d1cf22efb36e"
+      },
+      "result_sha256": "0659edc8b5c31a1f7571ecf25a4b3f808f0b5b5313b59e88c1eac53f10df40e1",
+      "script_sha256": "4acfcd3f36cb5dcace50a3c56c8fcf2103931e257c95f894ba0fa3e80b81b2aa"
+    },
+    {
+      "name": "macro_inductions",
+      "command": [
+        "python",
+        "-B",
+        "code/check_macro_inductions.py"
+      ],
+      "result_file": "results/macro-inductions.json",
+      "exit_code": 0,
+      "status": "PASS",
+      "seconds": 0.085359,
+      "metrics": {
+        "block_theorems": 4,
+        "macro_theorems": 3,
+        "marking_theorems": 9,
+        "unbounded_register_parameters": true,
+        "macro_steps": {
+          "positive_decrement": "4+2*width_pre",
+          "zero_decrement": "7+2*width_pre",
+          "increment": "11+2*width_pre+2*width_suf+2*x"
+        }
+      },
+      "result_sha256": "a293a92c3781531a3ea68b479f22bf967dab45162319d099764e16385ebbbd33",
+      "script_sha256": "3484c0be3aaf34bd3677c0cc727eaba8655efd358f9338192a88be0d9c89ad8d"
+    },
+    {
+      "name": "guarded_instructions",
+      "command": [
+        "python",
+        "-B",
+        "code/check_instructions.py"
+      ],
+      "result_file": "results/instructions.json",
+      "exit_code": 0,
+      "status": "PASS",
+      "seconds": 2.445166,
+      "metrics": {
+        "cases": 8391,
+        "source_rows": 6459,
+        "instruction_sites": 6460,
+        "minimum_literal_steps_per_case": 13,
+        "max_rules_per_case": 497
+      },
+      "result_sha256": "3d1f62c3999d475e9054b37e8b76cb510f09472d36b9a1abf0e094e355705d86",
+      "script_sha256": "fe532e4f7c2e6e104a42cd09793f7e4b1637fc3ebd0c7919b21b634fccde14b2"
+    },
+    {
+      "name": "independent_marking",
+      "command": [
+        "python",
+        "-B",
+        "code/audit_marking_transport.py",
+        "--baseline",
+        "sources/baseline252_old.tm",
+        "--candidate",
+        "machine/zfc_prefix250_old.tm",
+        "--output",
+        "results/marking-transport.json"
+      ],
+      "result_file": "results/marking-transport.json",
+      "exit_code": 0,
+      "status": "PASS",
+      "seconds": 0.038548,
+      "metrics": {
+        "unchanged_footprint_rows": 24,
+        "symbolic_physical_positions": 9,
+        "duration": "2 * width(prefix) + 3",
+        "finite_sampling_used_for_unbounded_claim": false
+      },
+      "result_sha256": "088bc53334878acef51f3890780aa8642f62b7f444aeda22f116ec74dc4b8eaa",
+      "script_sha256": "ebd563da99188defd7f66da7e5aafdc65228370addcca73b3f780a749b373895"
+    },
+    {
+      "name": "full_source_and_full_pc",
+      "command": [
+        "python",
+        "-B",
+        "code/review_affine_source.py",
+        "--program",
+        "sources/Prog254.v",
+        "--sites",
+        "sources/prior/instruction-sites-physical.json",
+        "--table",
+        "machine/zfc_prefix250_old.tm",
+        "--checker",
+        "code/affine_engine.py",
+        "--output",
+        "results/affine-source-review.json"
+      ],
+      "result_file": "results/affine-source-review.json",
+      "exit_code": 0,
+      "status": "PASS",
+      "seconds": 2.786524,
+      "metrics": {
+        "source_nodes": 6459,
+        "source_leaves": 6460,
+        "fully_consumed_source_tokens": true,
+        "oracle_guard_checks": 342,
+        "guarded_cases": 8391,
+        "full_target_pc_preserved": true,
+        "site_numbering": "physical",
+        "site_source": "sources/prior/instruction-sites-physical.json"
+      },
+      "result_sha256": "f4ccd71f2db9da125164f323447840d8852628aed7f478214d499591bfa9f9cf",
+      "script_sha256": "4765f93dbf42418775c4cac3ebf7476ab3467d51ca489207b75969c1c3ba4ebd"
+    },
+    {
+      "name": "pulse_and_dual_bootstrap",
+      "command": [
+        "python",
+        "-B",
+        "code/check_pulse_boot.py"
+      ],
+      "result_file": "results/pulse-bootstrap.json",
+      "exit_code": 0,
+      "status": "PASS",
+      "seconds": 0.759158,
+      "metrics": {
+        "bootstrap_steps": 585431,
+        "dual_sparse_dense_agreement": true,
+        "gap": 228,
+        "logical_primary": [
+          1,
+          0,
+          0,
+          0,
+          4,
+          0,
+          0,
+          0,
+          2
+        ],
+        "spare_count": 210,
+        "one_count": 438,
+        "all_other_cells_zero": true
+      },
+      "result_sha256": "57ac6a1b28826a15ec76ddb7e0adbff7fe8c12dcc121f9824db6dfe8087b9cdd",
+      "script_sha256": "1f6ef693bfe407954534b1ad885737e94a3127448cf49c11144d2f41a7690d9c"
+    },
+    {
+      "name": "independent_retiming",
+      "command": [
+        "python",
+        "-B",
+        "code/verify_retiming_independent.py",
+        "--table",
+        "machine/zfc_prefix250_old.tm",
+        "--output",
+        "results/retiming-independent.json"
+      ],
+      "result_file": "results/retiming-independent.json",
+      "exit_code": 0,
+      "status": "PASS",
+      "seconds": 13.088875,
+      "metrics": {
+        "local_cases": 4,
+        "blank_steps": 585431,
+        "compared_cutpoints": 584942,
+        "complete_tapes_equal_at_every_cutpoint": true,
+        "postinitial_core_steps": 585430
+      },
+      "result_sha256": "ca0c0705665819816cf63a6091ff0649f7f1df5710f177dbc97a5d37213759e9",
+      "script_sha256": "9313262cea715fb5f92cf0a26bb103577152581561790ddacb3780bfca57e636"
+    },
+    {
+      "name": "literal_instructions",
+      "command": [
+        "python",
+        "-B",
+        "code/check_literal_instructions.py",
+        "--baseline",
+        "sources/baseline252_old.tm",
+        "--program",
+        "sources/Prog254.v",
+        "--table",
+        "machine/zfc_prefix250_old.tm",
+        "--output",
+        "results/literal-instructions.json"
+      ],
+      "result_file": "results/literal-instructions.json",
+      "exit_code": 0,
+      "status": "PASS",
+      "seconds": 4.338799,
+      "metrics": {
+        "cases": 33564,
+        "literal_steps": 14197744,
+        "maximum_case_steps": 742,
+        "transition_pairs_used": 494,
+        "finite_only": true,
+        "unbounded_proof": false
+      },
+      "result_sha256": "e148ee4376fdd6bec36a9d6c008b952aad0a312e99dbf83f4b43697f0f9eb139",
+      "script_sha256": "8ab1f70ed03ccd00432cbd00d47a613b6c79bc1353bc2eb5a01ab345c6d05756"
+    },
+    {
+      "name": "literal_macros",
+      "command": [
+        "python",
+        "-B",
+        "code/check_literal_macros.py",
+        "--table",
+        "machine/zfc_prefix250_old.tm",
+        "--output",
+        "results/literal-macros.json"
+      ],
+      "result_file": "results/literal-macros.json",
+      "exit_code": 0,
+      "status": "PASS",
+      "seconds": 3.62546,
+      "metrics": {
+        "total_cases": 16200,
+        "literal_steps": 8359100,
+        "counts": {
+          "increment": 5400,
+          "positive_decrement": 5400,
+          "zero_decrement": 5400
+        },
+        "finite_only": true,
+        "unbounded_proof": false
+      },
+      "result_sha256": "cf71811ae402171ccc760f8aaa1fc5dca70a040b9b7d82bf2356121c9d5be592",
+      "script_sha256": "43bb797855693fb9462894b03f4f864c230fd06d92d57b16b21e0095866a0bf4"
+    }
+  ],
+  "scope": "Packaged reconstruction, universal induction templates, independent symbolic audits, exact finite bootstraps, and secondary literal regressions.",
+  "proof_assistant_kernel_rebuilt": false,
+  "logical_calibration_kernel_rebuilt": false,
+  "nonhalting_inferred_from_finite_execution": false,
+  "finished_utc": "2026-10-17T23:42:45.484690+00:00",
+  "total_seconds": 27.261034,
+  "completed_check_count": 9,
+  "passed_check_count": 9,
+  "packaged_input_hashes": {
+    "sources/baseline252_old.tm": "939f99d602c8f7057517c4369279de99e30827050fc743581df83f26aaf1b713",
+    "sources/Prog254.v": "1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746",
+    "sources/prior/instruction-sites-physical.json": "dc6853f57bc48b834c2a635a82dfad8e344dd324ca11ef8e70ae2f36d66be357",
+    "machine/zfc_prefix250_old.tm": "fd455304bad82a6da7ab83149352d0b1db27557582c4cc6312de003c96ff4e43",
+    "machine/zfc_prefix250.tm": "0626819c4842f224001e7685366d8061897a7bc9470c015129a1d1cf22efb36e",
+    "machine/renumbering.json": "ecfd4cd23ab90a4050189b21a79b1fc6a33e5e8d70ad47d9b5416afa056f222a",
+    "code/affine_engine.py": "8c029463048fb544608dec93b6bba772ab21250377b8fbb2763cbab4f1ee35e7"
+  }
+}

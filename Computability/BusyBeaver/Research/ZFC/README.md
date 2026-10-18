@@ -10,6 +10,85 @@ theory or proof calculus is eligible once its consistency calibration is proved.
 The complete compiled search, including its data and initialization, is the
 cost measure that decides whether a candidate improves the baseline.
 
+The active focus is verifying and formalizing the
+[246-state contextual-fold candidate](candidate-prefix246/README.md).
+The checked components of the earlier
+[shared-carry 250 construction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-160.md)
+provide reusable proof infrastructure. Sources 58–59 contain the same
+250-state table. All 8391 guarded
+instruction cases, its 585,431-step complete blank startup and all nine stronger
+audit jobs pass on fresh copies. Independent ordinary-proof review found no
+fatal defect within its scope. The exact-table Lean endpoint and its internal
+PA equivalence remain open. The different rejected250 scanner fold from the
+predecessor report does not refute this construction.
+
+The [247-state selector reduction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-161.md)
+removes three further states. Its seven executable checks and separate
+741,241-step blank startup pass. Independent review found no mathematical
+blocker in the ordinary argument; its exact-table Lean and internal PA
+endpoints remain open. The same intake preserves broader semantic-seed
+criteria and two 255-state research controls.
+
+The [246-state contextual-fold candidate](candidate-prefix246/README.md)
+removes one more pulse state and supplies a separate 410,735-step blank
+startup. All nine main checks and two additional audits pass. The
+[batch 162 review](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-162.md)
+also preserves a further audit of the identical 247 table. Independent review
+found no mathematical blocker within the ordinary-proof scope; exact-machine
+Lean endpoints and the equivalence proved inside PA remain open.
+
+The [exact 250-state table](table_prefix250.md) is now checked in Lean: all 500
+actions, the state numbering, the unique halt edge and the incoming edges of
+the shared initializer. Its 40 named theorem audits and 40 callers pass.
+Whole-run and consistency proofs for this table remain in progress.
+
+Lean also checks the [initializer pulse invariant](prefix250_pulse.md) and
+[unbounded register operations](prefix250_boxes.md), including positive
+decrement’s boundary shift, zero decrement’s complete restoration and
+increment’s extra spare block. The [nine register selectors](prefix250_mark.md)
+also have checked unbounded marking and return contracts. These are local
+execution theorems; the full
+250-state bootstrap and global simulation remain open.
+
+The [balanced prefix250 lookup](fast_table_prefix250.md) is now checked equal to the exact canonical table on all 500 actions. Its first source/audit run passed with two ordered probes, four client examples and zero warnings; the finite transition equality is axiom-free and complete machine equality uses only `Quot.sound`. This reusable calculation layer contains no bootstrap or consistency endpoint. [Exact evidence](results/fast-table-prefix250-verification.json) and [preserved history plus independent review](results/fast-table-prefix250-history.json) bind its source, generator and actual providers.
+
+The [prefix250 symbolic executor](prefix250_symbolic.md) now has a checked
+soundness theorem for the complete infinite tape. Its 14 theorem audits and
+14 client examples pass with no warnings. Accepted symbolic traces justify
+positive literal runs; complete instruction coverage and global composition
+remain in progress.
+
+The [per-instruction soundness interface](prefix250_site.md) now preserves
+the independent gap changes from positive decrement and PC overflow. Its
+12 theorem audits and 13 client examples pass. Checking every original
+instruction against that interface remains the next coverage obligation.
+
+The [whole-tape frame adapters](prefix250_frame.md) now connect those
+symbolic endpoints to the logical register file and preserve the changed
+spare suffix and header distance. Fourteen theorem audits and fourteen
+client examples pass; complete runtime composition remains in progress.
+
+The [first 1,024 blank-tape steps](boot_prefix250_first.md) are now checked
+in Lean, with a complete tape description and a reusable checkpoint
+composition theorem. This is a finite prefix; the full 585,431-step startup
+still needs its remaining checked segments and final frame identification.
+
+The [instruction composition](prefix250_instruction.md) now proves that
+every accepted logical instruction has a positive binary execution and
+preserves the complete dispatch frame with nonempty spares. Its seven theorem
+audits and seven client examples pass. The all-sites premise remains open.
+
+The [conditional runtime equivalence](prefix250_runtime.md) now connects
+the 250-state instruction adapter to both directions of register/binary
+halting, from a related whole frame and assuming site coverage. Its eleven
+theorem audits and twelve client examples pass with no warnings. This proof
+provides a template for the active 246-state target; complete coverage and
+blank initialization for that exact table remain separate obligations.
+
+The [previous intake](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-158-159.md)
+preserves five complete reports and one explicitly partial salvage, including
+cache-result MP, semantic seeds, countdowns and pairing-shift negation.
+
 The [252-state register-permutation machine](candidate-permutation252/README.md)
 now has a [closed ZFC endpoint](choice_calibration254.md): its literal blank-tape
 nonhalting is equivalent to consistency of ZFC. The proof passes through the
@@ -1429,3 +1508,7 @@ probes and 18 callers with standard axioms and no warnings. The full MP
 constructor and success-push composition remain open.
 
 `ArithmeticControlParamPush254` now proves both actual MP parameter pushes and the complete comparison-to-fetch tail in every model of IΣ₁. Each push requires scratch1=scratch2=0, sets TW to param1 and WS to cantor(old TW, old WS), and preserves every other field. The copy/restore sub-block takes exactly 7*param1+2 logical steps. The tail requires only scratch2=0 and returns to fetch in both comparison cases. The first guarded source/audit check passed 12 axiom probes and 22 callers with no warnings; the short unpair and constructor sequence needed for full MP remain open. See [the proof note](arithmetic_control_param_push254.md).
+
+`ArithmeticControlUnpairCore254` proves the actual short MP unpair and its composition with the initial parameter push in every IΣ₁ model. Entry6367→6404 restores the original WS, puts old TW in scratch1 and param1 in TW, and preserves all other fields under clean scratch registers. The source passed; one audit projection was repaired and the audit-only continuation passed 12 probes/18 callers with zero warnings, reusing the originally recorded source object without rebuilding it. Full MP's constructor middle remains open in this module. See [the proof note](arithmetic_control_unpair_core254.md).
+
+`ArithmeticControlMP254` now proves the complete actual MP branch and its AC=0 dispatch composition in every IΣ₁ model under clean scratch registers. Success sets TW to param1 and pushes the required zero filler on WS; failure clears TW and preserves WS. Both cases clear cache and preserve the remaining fields. The repaired source and unchanged audit passed 12 probes/22 callers with zero warnings; the original failed source attempt and scoped independent reviews are retained. AX and the complete internal interpreter/Enum/PA endpoint remain open. See [the proof note](arithmetic_control_mp254.md).

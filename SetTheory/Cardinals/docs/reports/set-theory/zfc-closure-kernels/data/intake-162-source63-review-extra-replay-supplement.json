@@ -1,0 +1,114 @@
+{
+  "scope": "Static review of two additional actual root executions; reviewer reran no supplied code/compiler. Frozen source and main-replay review records remain unchanged.",
+  "root_extra_record": {
+    "path": "/tmp/zfc-intake-8cdc55ff92/extra-replay.json",
+    "sha256": "9c10b9d13cb2b9d618aac560e414a6ccac02caf6ab43b6cd7caa94c0dd522aab"
+  },
+  "commands": [
+    {
+      "command": [
+        "python3",
+        "-B",
+        "reviews/audit246.py",
+        "reviews/prior250"
+      ],
+      "cwd": "/tmp/zfc-intake-8cdc55ff92/extra-run",
+      "exit_code": 0,
+      "seconds": 3.5325219770893455
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "code/independent_rebuild.py",
+        "--baseline",
+        "sources/prefix250_old.tm",
+        "--output",
+        "/tmp/zfc-intake-8cdc55ff92/independent-rebuild"
+      ],
+      "cwd": "/tmp/zfc-intake-8cdc55ff92/extra-run",
+      "exit_code": 0,
+      "seconds": 0.20439671073108912
+    }
+  ],
+  "unchanged_inputs": [
+    {
+      "path": "/tmp/zfc-intake-8cdc55ff92/extra-run/reviews/audit246.py",
+      "sha256": "54bc2dada2ffa86e28bb5614f334499ec701b35a830f0430d83c120044d84b82"
+    },
+    {
+      "path": "/tmp/zfc-intake-8cdc55ff92/extra-run/code/independent_rebuild.py",
+      "sha256": "871ac5423e98e836cdc81779c8de1627b336984dd932efb007871f7321c11500"
+    },
+    {
+      "path": "/tmp/zfc-intake-8cdc55ff92/extra-run/sources/prefix250_old.tm",
+      "sha256": "fd455304bad82a6da7ab83149352d0b1db27557582c4cc6312de003c96ff4e43"
+    },
+    {
+      "path": "/tmp/zfc-intake-8cdc55ff92/extra-run/reviews/prior250/ATTRIBUTION.md",
+      "sha256": "0b1e43ea4e18853534b9ed6e5066891a0bf2c6b30839ee5c098dd3d04d77cae6"
+    },
+    {
+      "path": "/tmp/zfc-intake-8cdc55ff92/extra-run/reviews/prior250/sources/baseline252_old.tm",
+      "sha256": "939f99d602c8f7057517c4369279de99e30827050fc743581df83f26aaf1b713"
+    },
+    {
+      "path": "/tmp/zfc-intake-8cdc55ff92/extra-run/reviews/prior250/sources/Prog254.v",
+      "sha256": "1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746"
+    },
+    {
+      "path": "/tmp/zfc-intake-8cdc55ff92/extra-run/reviews/prior250/licenses/LICENSE.ProveIt",
+      "sha256": "460d4fb6f45fd89278ba881d4b70e8bd1b7df223ee907e758342c2f9989f789d"
+    },
+    {
+      "path": "/tmp/zfc-intake-8cdc55ff92/extra-run/reviews/prior250/licenses/LICENSE.Wade",
+      "sha256": "c1dffee77db98625debe39b47538e1d2f3b7956cbc7bcd6ed9363701b2177cfa"
+    },
+    {
+      "path": "/tmp/zfc-intake-8cdc55ff92/extra-run/reviews/prior250/code/check_macro_inductions.py",
+      "sha256": "3484c0be3aaf34bd3677c0cc727eaba8655efd358f9338192a88be0d9c89ad8d"
+    },
+    {
+      "path": "/tmp/zfc-intake-8cdc55ff92/extra-run/reviews/prior250/code/check_instructions.py",
+      "sha256": "fe532e4f7c2e6e104a42cd09793f7e4b1637fc3ebd0c7919b21b634fccde14b2"
+    },
+    {
+      "path": "/tmp/zfc-intake-8cdc55ff92/extra-run/reviews/prior250/code/rebuild_machines.py",
+      "sha256": "4acfcd3f36cb5dcace50a3c56c8fcf2103931e257c95f894ba0fa3e80b81b2aa"
+    },
+    {
+      "path": "/tmp/zfc-intake-8cdc55ff92/extra-run/reviews/prior250/code/affine_engine.py",
+      "sha256": "8c029463048fb544608dec93b6bba772ab21250377b8fbb2763cbab4f1ee35e7"
+    }
+  ],
+  "fresh_results": [
+    {
+      "path": "/tmp/zfc-intake-8cdc55ff92/extra-run/reviews/audit246-results.json",
+      "sha256": "8a3010a075e571d00dc143dbbffc873c2a9e580448eabaa3f9208cebedade7f2"
+    },
+    {
+      "path": "/tmp/zfc-intake-8cdc55ff92/independent-rebuild/renumbering-and-table-audit.json",
+      "sha256": "bb8ab2144c81bf1ba32364a66d11fdeab3d1833c008e4352d59b55b4b64241c3"
+    },
+    {
+      "path": "/tmp/zfc-intake-8cdc55ff92/independent-rebuild/independent-bootstrap-audit.json",
+      "sha256": "7c36846b9ee0d228659aa6a6d24e17e83886d8315a04130ec33ffc487639ede7"
+    }
+  ],
+  "checks": [
+    "Both commands exited zero with empty stderr.",
+    "The independent theory audit reproduces delivered JSON exactly.",
+    "Both independently rebuilt table files match delivered canonical/old bytes exactly.",
+    "Whole bootstrap one-cell support agrees across main suite, independent audit and independent rebuild."
+  ],
+  "source_only_review": {
+    "path": "/tmp/zfc-intake-8cdc55ff92/review63.json",
+    "sha256": "7a8bee5bb3d2e1a9716c5765d986c6a2eb48c53a5bd197a823765f48fd07a3a4"
+  },
+  "main_replay_review": {
+    "path": "/tmp/zfc-intake-8cdc55ff92/review63-root-main-replay-supplement.json",
+    "sha256": "91d0c33a177acdc8e3d6beac32f41d515851e9aeb0730be712df311f1edc0828"
+  },
+  "findings": [],
+  "limits": "These additional audits reuse the inherited symbolic engines and prove no new Lean/ZFC/PA object endpoint."
+}

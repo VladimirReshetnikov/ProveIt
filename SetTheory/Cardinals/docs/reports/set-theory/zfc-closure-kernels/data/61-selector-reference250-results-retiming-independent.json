@@ -1,0 +1,288 @@
+{
+  "status": "PASS",
+  "table_sha256": "fd455304bad82a6da7ab83149352d0b1db27557582c4cc6312de003c96ff4e43",
+  "working_states": 250,
+  "transition_rows": 500,
+  "local_cases": [
+    {
+      "input": [
+        0,
+        0
+      ],
+      "steps": 3,
+      "output_state": 131,
+      "relative_head": -1,
+      "output_cells": [
+        1,
+        1
+      ],
+      "pulse_trace": [
+        [
+          75,
+          0,
+          0,
+          1,
+          1,
+          255
+        ],
+        [
+          255,
+          1,
+          0,
+          1,
+          -1,
+          97
+        ],
+        [
+          97,
+          0,
+          1,
+          1,
+          -1,
+          131
+        ]
+      ],
+      "core_trace": [
+        [
+          75,
+          0,
+          0,
+          0,
+          1,
+          255
+        ],
+        [
+          255,
+          1,
+          0,
+          1,
+          -1,
+          112
+        ],
+        [
+          112,
+          0,
+          0,
+          1,
+          -1,
+          131
+        ]
+      ]
+    },
+    {
+      "input": [
+        0,
+        1
+      ],
+      "steps": 3,
+      "output_state": 112,
+      "relative_head": -1,
+      "output_cells": [
+        0,
+        1
+      ],
+      "pulse_trace": [
+        [
+          75,
+          0,
+          0,
+          1,
+          1,
+          255
+        ],
+        [
+          255,
+          1,
+          1,
+          1,
+          -1,
+          131
+        ],
+        [
+          131,
+          0,
+          1,
+          0,
+          -1,
+          112
+        ]
+      ],
+      "core_trace": [
+        [
+          75,
+          0,
+          0,
+          0,
+          1,
+          255
+        ],
+        [
+          255,
+          1,
+          1,
+          1,
+          -1,
+          97
+        ],
+        [
+          97,
+          0,
+          0,
+          0,
+          -1,
+          112
+        ]
+      ]
+    },
+    {
+      "input": [
+        1,
+        0
+      ],
+      "steps": 1,
+      "output_state": 63,
+      "relative_head": -1,
+      "output_cells": [
+        1,
+        0
+      ],
+      "pulse_trace": [
+        [
+          75,
+          0,
+          1,
+          1,
+          -1,
+          63
+        ]
+      ],
+      "core_trace": [
+        [
+          75,
+          0,
+          1,
+          1,
+          -1,
+          63
+        ]
+      ]
+    },
+    {
+      "input": [
+        1,
+        1
+      ],
+      "steps": 1,
+      "output_state": 63,
+      "relative_head": -1,
+      "output_cells": [
+        1,
+        1
+      ],
+      "pulse_trace": [
+        [
+          75,
+          0,
+          1,
+          1,
+          -1,
+          63
+        ]
+      ],
+      "core_trace": [
+        [
+          75,
+          0,
+          1,
+          1,
+          -1,
+          63
+        ]
+      ]
+    }
+  ],
+  "graph_premises": {
+    "pulse_incoming97": [
+      [
+        255,
+        0
+      ]
+    ],
+    "pulse_incoming255": [
+      [
+        75,
+        0
+      ]
+    ],
+    "core_incoming97": [
+      [
+        97,
+        1
+      ],
+      [
+        255,
+        1
+      ]
+    ],
+    "core_incoming255": [
+      [
+        75,
+        0
+      ]
+    ],
+    "unchanged_outside_rows": 495,
+    "internal_states": [
+      97,
+      255
+    ],
+    "macro_entry": 75,
+    "macro_exits": [
+      63,
+      112,
+      131
+    ]
+  },
+  "bootstrap": {
+    "actual_blank_steps": 585431,
+    "postinitial_core_steps": 585430,
+    "compared_cutpoints": 584942,
+    "one_step_blocks": 584698,
+    "three_step_blocks": 244,
+    "initializer_row_uses": 1,
+    "runtime97_read1_uses": 217,
+    "endpoint_state": 96,
+    "endpoint_head": -3,
+    "marker": -4,
+    "header": 225,
+    "gap": 228,
+    "physical": [
+      0,
+      2,
+      0,
+      4,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "logical": [
+      1,
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      2
+    ],
+    "spare_count": 210,
+    "spare_value": 1,
+    "exact_one_count": 438,
+    "last_one": 880,
+    "all_other_cells_blank": true,
+    "complete_tapes_equal_at_every_cutpoint": true
+  },
+  "interpretation": "Universal local finite case split plus graph premises; the companion note proves the unbounded cutpoint induction. No proof assistant or logical-calibration check is claimed."
+}

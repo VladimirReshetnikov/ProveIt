@@ -1,0 +1,18 @@
+PYTHON ?= python3
+LATEXMK ?= latexmk
+
+.PHONY: all pdf verify verify-in-place clean
+
+all: pdf
+
+pdf:
+	$(LATEXMK) -pdf -interaction=nonstopmode -halt-on-error report.tex
+
+verify:
+	$(PYTHON) -B code/verify.py
+
+verify-in-place:
+	$(PYTHON) -B code/verify.py --in-place
+
+clean:
+	$(LATEXMK) -c report.tex

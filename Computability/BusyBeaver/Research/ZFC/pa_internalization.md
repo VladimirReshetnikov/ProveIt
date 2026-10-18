@@ -58,9 +58,17 @@ The current arithmetic checkpoints are:
   supplies coordinate projection and the binder-cons interface. Its
   [vacuity theorem](../../../../Logic/Interpretability/ZFCinPA/validator_equality_context_vacuity254.md)
   derives both context-vacuity resources from avoidance of equal-length
-  stacks, using Σ₁ induction in IΣ₁. Alpha equivalence and source-proof
-  translation remain open; arbitrary accepted
-  proofs are not assumed closed under variable renaming.
+  stacks, using Σ₁ induction in IΣ₁. The
+  [alpha transport](../../../../Logic/Interpretability/ZFCinPA/validator_environment_alpha254.md)
+  now proves both implications between encodings of every internal formula
+  under the same equality context, using Π₂ induction in IΣ₂ and explicit
+  disjoint fresh streams. [Concrete stream selection](../../../../Logic/Interpretability/ZFCinPA/validator_environment_streams254.md)
+  now compares encodings at any two free-safe starts, including overlapping
+  starts `s` and `s+2`, through a represented opposite-parity intermediate.
+  Source-proof translation remains open and can use the configurable encoder
+  directly, since its falsity code is already `1`; comparison with the earlier
+  fixed encoder is optional. Arbitrary accepted proofs are not assumed closed
+  under variable renaming.
 * [Both actual reads](arithmetic_control_read_template254.md) are checked on
   every internal register file with its scratch fields zero. They reach the
   actual dispatch control 38, retain the whole register file in their
@@ -80,9 +88,14 @@ The current arithmetic checkpoints are:
   exact internal logical clock `3*a+2*distance(a,b)+2`. Both
   [MP parameter pushes and the comparison-to-fetch tail](arithmetic_control_param_push254.md)
   are now checked. Each push preserves param1 while setting TW to param1
-  and WS to the pair of the original TW and WS. The short unpair and
-  constructor sequence still need contracts and composition into full MP;
-  AX also remains open.
+  and WS to the pair of the original TW and WS. The
+  [short MP unpair](arithmetic_control_unpair_core254.md) and its composition
+  with the initial push now restore the original WS, put old TW in scratch1,
+  and put param1 in TW. The [complete MP branch](arithmetic_control_mp254.md)
+  now composes the actual constructor, fourfold transfer and comparison tail.
+  It returns to fetch, sets TW to param1 and pushes a zero on success, clears
+  TW and preserves WS on failure, and clears cache in both cases. Its AC0
+  dispatch composition is also checked. AX remains open.
 
 The remaining major steps are the reverse internal ZF-to-validator proof
 translation, the internal L-specific Separation/Replacement proofs, and the complete
@@ -626,12 +639,34 @@ environments on *earlier stages* (no finiteness argument is needed anywhere),
 and `EnvTransform`'s fixed pieces are embeddings of closed semisentences, so
 each template's definitional hypotheses translate to literal tautologies.
 
-**Remaining for `hSchema`**: (i) ω-iteration of a placeholder-defined class
-function (limit closure points are unbounded) and the final Separation and
-Replacement templates; (ii) the internal induction driver chaining the
-compiled templates at internal codes (definitional hypotheses as internal
-tautologies); (iii) the glue from `SchemaRecognizer` codes to
-`relativize`.
+**Final templates (checked).** `LIterate`/`LClosure` prove, in every template
+model, that limits closed under a total `F₅` are unbounded (ω-iteration with
+every Separation/Replacement use discharged by `sep_iff`/`repl_iff`).
+`LFinalSep.sepTemplate_provable` and `LFinalRepl.replTemplate_provable` turn
+the invariant `totS F₅ ⋏ reflS P₄ F₅` into `L`-separation for `P₄` at
+`z :: t` and `L`-replacement for `P₄` at `x :: y :: t` (the slot orders of
+the schema matrices `φ z` and `ψ x y`), for every environment `t` over a
+stage. Replacement needs no code-level shift: the image is bounded in a
+stage, and the domain `X` is stored at a slot `n` beyond a support bound of
+the reflecting code (`SatSupport.sat_support`) by patching the environment.
+
+**Driver (checked).** `LDriver.driver`: for every internal semiformula code
+`p` of level `n` (nonstandard included), some function code `f` makes
+`𝗭𝗙 ⊢ totS f ⋏ reflS (envForm n p) f`. The induction is Foundation's
+`IsSemiformula.sigma1_structural_induction`, whose binder level is exactly
+`envForm`'s depth; each case is one compiled step (`LDriverSteps`) whose new
+function code is the translation of the template's own defining matrix, so
+every definitional hypothesis is the internal tautology `∀(A ↔ A)`. Atoms
+use `LNumOK.numOK` (every numeral chain defines one natural, in `𝗭𝗙`).
+
+**Remaining for `hSchema`** (superseding item (ii) below): (ii) ~~the internal induction driver chaining the
+compiled step templates at internal codes (definitional hypotheses as
+internal tautologies), producing `Θ` for `envForm 1 φ` / `envForm 2 ψ`;
+(iii) the glue from `SchemaRecognizer` codes to `relativize`: an
+environment `t₀` with `t₀(i) = &i`, `φ^L ↔ envForm 1 φ (z :: t₀)` by
+internal induction on `φ`, and `relativize` commuting with the `∀^m`
+closure, so that the compiled final templates yield the relativized schema
+instances.
 
 Feeding `hSchema` into `ConstructibleInterpretation.provable_falsum_ZF_of_ZFC`
 and the result into the C254/ZF comparison then gives the Choice half of the
@@ -657,3 +692,10 @@ ordinals and naturals respectively to meet the Replacement interface.
 This supplies the semantic closure-point resource; final schema templates
 and their internal compiler/induction clients remain separate. The review
 of these upstream sources does not claim a local compiler rerun.
+
+The merged `4be44bc3fe` adds `LFinalSep.sepTemplate_provable`: totality and
+reflection for a placeholder predicate imply its Separation instance in L,
+at extended environments. A concrete satisfaction formula supplies the
+definable subset of a closed stage. The final Replacement template and the
+internal instantiation/induction driver are still needed before `hSchema`
+is discharged. This update records source review, without a local rerun.

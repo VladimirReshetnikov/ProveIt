@@ -9,11 +9,11 @@ Safe st = C254 st.tw ∧ C254 st.p2 ∧ Enum254.Good st.ws.
 
 The fields are `[N,T,W,A,D,H,X,Y,L]`. A valid whole root frame with this
 condition is enough for `DirtyProgram254.iter_halts_iff` and its path-program
-corollary. It need not have `N=2` or have all nine fields zero. The prepared
-literal `Prog254` versus path-DAG adapter would transport any such common
-register vector once its concrete 3,010-entry kernel check completes.
-That compiler check is still pending; no compiled literal-program bridge is
-claimed here. The generic statement supplies no binary frame theorem.
+corollary. It need not have `N=2` or have all nine fields zero. The checked
+`Bisim254.prog254_halts_iff` transports every common register vector between
+literal `Prog254` and the path DAG at empty instruction pointers. Its full
+3,010-entry kernel check has passed; see
+[the verification record](results/bisim254-optimized-verification.json). The generic statement supplies no binary frame theorem.
 
 A small family needs no equality derivation. Code 0 is `C254.truth`, and
 `C254.gen i` closes any theorem code under `wal i`. In particular,
@@ -35,8 +35,7 @@ This is a directly provable finite relaxation of a zero-only initialization
 screen. The proof-list constructor's extra 1 does not belong to the formula
 stack. For example, stack 1 contains the falsity code 1 and is unsafe under
 numerical consistency. The small positive instances `Good 3`, `Good 9`,
-`Good 18` and `Good 21` are also prepared as callers for the pending
-path-certificate audit.
+`Good 18` and `Good 21` follow from the same construction.
 The checked `SeedInvariant254.lean` module supplies a larger certificate family,
 including numerical equality reflexivity via the actual Tarski-to-numerical
 proof adapter (`eq_refl_code`). This smaller family uses only truth
