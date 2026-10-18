@@ -1,0 +1,185 @@
+{
+  "status": "PASS",
+  "finished_utc": "2026-10-18T00:14:15.024859+00:00",
+  "python_version": "3.13.14",
+  "assertions_enabled": true,
+  "elapsed_seconds": 17.203538,
+  "checks": [
+    {
+      "name": "inherited_252_to_250_reconstruction",
+      "status": "PASS"
+    },
+    {
+      "name": "complete_report_transition_table",
+      "status": "PASS",
+      "seconds": 0.044912,
+      "command": [
+        "python3",
+        "-B",
+        "code/build_table.py",
+        "--check"
+      ]
+    },
+    {
+      "name": "dual_literal_bootstrap_and_table_quotient",
+      "status": "PASS",
+      "seconds": 0.549027,
+      "command": [
+        "python3",
+        "-B",
+        "code/audit247.py",
+        "--source",
+        "reference250/machine/zfc_prefix250_old.tm",
+        "--output",
+        "/tmp/prefix247-verify-b2gb50k_"
+      ]
+    },
+    {
+      "name": "unbounded_macro_inductions_and_all_instruction_cases",
+      "status": "PASS",
+      "seconds": 4.591723,
+      "command": [
+        "python3",
+        "-B",
+        "code/verify_runtime247.py",
+        "--reference250",
+        "reference250",
+        "--candidate247",
+        "machine/zfc_prefix247_old.tm",
+        "--output",
+        "results"
+      ]
+    },
+    {
+      "name": "independent_full_source_and_full_pc",
+      "status": "PASS",
+      "seconds": 3.132442,
+      "command": [
+        "python3",
+        "-B",
+        "code/check_full_source247.py",
+        "--program",
+        "reference250/sources/Prog254.v",
+        "--sites",
+        "reference250/sources/prior/instruction-sites-physical.json",
+        "--table",
+        "machine/zfc_prefix247_old.tm",
+        "--checker",
+        "reference250/code/affine_engine.py",
+        "--output",
+        "results/full-source247.json"
+      ]
+    },
+    {
+      "name": "finite_literal_instruction_regressions",
+      "status": "PASS",
+      "seconds": 5.148762,
+      "command": [
+        "python3",
+        "-B",
+        "reference250/code/check_literal_instructions.py",
+        "--baseline",
+        "reference250/sources/baseline252_old.tm",
+        "--program",
+        "reference250/sources/Prog254.v",
+        "--table",
+        "machine/zfc_prefix247_old.tm",
+        "--output",
+        "results/literal-instructions247.json"
+      ]
+    },
+    {
+      "name": "finite_literal_arithmetic_regressions",
+      "status": "PASS",
+      "seconds": 3.724184,
+      "command": [
+        "python3",
+        "-B",
+        "reference250/code/check_literal_macros.py",
+        "--table",
+        "machine/zfc_prefix247_old.tm",
+        "--output",
+        "results/literal-macros247.json"
+      ]
+    }
+  ],
+  "exact_machine": {
+    "working_states": 247,
+    "binary_rows": 494,
+    "start": 0,
+    "halt": 247,
+    "old_start": 97,
+    "old_halt": 254,
+    "canonical_dispatch": 89,
+    "sha256": "58bbbda620daf6d4d62f486db05f54d0dccb8373c080c1b5a0b26533e7a3a669"
+  },
+  "bootstrap": {
+    "steps": 741241,
+    "dual_simulators": true,
+    "head": -5,
+    "marker": -6,
+    "header": 245,
+    "gap": 250,
+    "primary": [
+      3,
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0
+    ],
+    "spares": 235,
+    "one_cells": 487,
+    "entire_tape_checked": true
+  },
+  "universal_checks": {
+    "block_inductions": 4,
+    "arithmetic_macros": 3,
+    "selector_macros": 9,
+    "source_nodes": 6459,
+    "source_leaves": 6460,
+    "guarded_cases": 8391,
+    "minimum_literal_progress": 13,
+    "deleted_state_lookups": 0,
+    "full_source_and_full_pc": {
+      "cases": 8391,
+      "by_operation": {
+        "CD/zero": 1931,
+        "CD/positive": 1931,
+        "CB": 128,
+        "CI": 2601,
+        "CC": 1799,
+        "CH": 1
+      },
+      "target_paths_keep_all_overflow_and_trailing_zero_cells": true,
+      "overflow_cases": 3,
+      "minimum_literal_steps": 13,
+      "max_rules": 497,
+      "rule_counts": {
+        "literal": 1868409,
+        "peel_right": 17458,
+        "recenter": 864252,
+        "scan_right": 25980,
+        "peel_left": 6463,
+        "scan_left": 25980,
+        "pad_left": 83903,
+        "box": 12926,
+        "literal_box_boundary": 6591
+      }
+    }
+  },
+  "finite_regressions": {
+    "instruction_cases": 33564,
+    "instruction_steps": 14197744,
+    "arithmetic_cases": 16200,
+    "arithmetic_steps": 8359100
+  },
+  "proof_assistant_endpoint_checked": false,
+  "logical_dependency_closure_rebuilt": false,
+  "serialized_zfc_derivation_supplied": false,
+  "pa_internal_proof_supplied": false,
+  "nonhalting_inferred_from_finite_testing": false
+}

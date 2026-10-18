@@ -38,9 +38,13 @@ ground-clause, binding-witness and shared-template tableau references restore
 general substitution but have no new binary state bound. A separate 268-state
 control retains all original logical rows; two delivered standalone Lean files
 prove narrow binding/obstruction results, not checker or compiler correctness. The
-[Lean minimization project](BusyBeaver/Research/ZFC/README.md) checks subset-PSC
-calibration and specific quotient, coding and table lemmas. Its current
-target remains an internal ZFC proof of a sub-254 blank-tape halting equivalence.
+[Lean minimization project](BusyBeaver/Research/ZFC/README.md) now checks the
+external equivalence between the exact 252-state machine's blank nonhalting
+and Con(ZFC). The user's target remains an equivalence provable inside PA.
+The [batch 161 reconciliation](../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-161.md)
+adds relative-consistency seed criteria and a 247-state candidate, with all seven
+executable checks and its new complete blank startup reproduced. Its ordinary
+proof and executable evidence do not yet supply an exact-table Lean endpoint.
 
 The score and time functions are distinct measures. The proved values
 `Sigma(2)=4`, `Sigma(3)=6`, `Sigma(4)=13` and `BB(2)=6`, `BB(3)=21`,
@@ -55,8 +59,9 @@ coarse hyperdegrees) are a second Lean library of the Turing-degree project,
 Unlike the rest of this topic it admits eight published results with `admit`;
 its README lists them.
 
-[ZFC machine minimization](BusyBeaver/Research/ZFC/README.md) adds Lean
-closure and codec lemmas, the literal 254-state baseline, and a certified
-obstruction to exact state quotients, with executable coding/compiler
-experiments. A smaller verified machine and its end-to-end ZFC theorem
-remain open. The new proofs are an opt-in `BusyBeaver.ZFC` surface.
+[ZFC machine minimization](BusyBeaver/Research/ZFC/README.md) retains the
+attributed literal 254-state baseline and its checked 252-state successor.
+The shared-carry 250 construction now has checked local table, pulse, marking,
+register-operation and symbolic-execution lemmas. Complete simulation and startup
+for the new 250 and 247 tables, and the internal PA comparison, remain open.
+The proofs are an opt-in `BusyBeaver.ZFC` surface.

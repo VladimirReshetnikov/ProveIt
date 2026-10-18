@@ -1,0 +1,300 @@
+{
+  "status": "ROOT_REPLAY_EVIDENCE_REVIEWED",
+  "independent_review_unchanged": true,
+  "root_executed": true,
+  "reviewer_rerun": false,
+  "outer": {
+    "exit_code": 0,
+    "seconds": 17.250345847569406,
+    "command": [
+      "python3",
+      "-B",
+      "code/verify.py"
+    ],
+    "cwd": "/tmp/zfc-intake-161/run61",
+    "scope": "Fresh executable suite; no Lean invocation or checksum-manifest check."
+  },
+  "seven_checks": [
+    {
+      "name": "inherited_252_to_250_reconstruction",
+      "status": "PASS"
+    },
+    {
+      "name": "complete_report_transition_table",
+      "status": "PASS",
+      "seconds": 0.044912,
+      "command": [
+        "python3",
+        "-B",
+        "code/build_table.py",
+        "--check"
+      ]
+    },
+    {
+      "name": "dual_literal_bootstrap_and_table_quotient",
+      "status": "PASS",
+      "seconds": 0.549027,
+      "command": [
+        "python3",
+        "-B",
+        "code/audit247.py",
+        "--source",
+        "reference250/machine/zfc_prefix250_old.tm",
+        "--output",
+        "/tmp/prefix247-verify-b2gb50k_"
+      ]
+    },
+    {
+      "name": "unbounded_macro_inductions_and_all_instruction_cases",
+      "status": "PASS",
+      "seconds": 4.591723,
+      "command": [
+        "python3",
+        "-B",
+        "code/verify_runtime247.py",
+        "--reference250",
+        "reference250",
+        "--candidate247",
+        "machine/zfc_prefix247_old.tm",
+        "--output",
+        "results"
+      ]
+    },
+    {
+      "name": "independent_full_source_and_full_pc",
+      "status": "PASS",
+      "seconds": 3.132442,
+      "command": [
+        "python3",
+        "-B",
+        "code/check_full_source247.py",
+        "--program",
+        "reference250/sources/Prog254.v",
+        "--sites",
+        "reference250/sources/prior/instruction-sites-physical.json",
+        "--table",
+        "machine/zfc_prefix247_old.tm",
+        "--checker",
+        "reference250/code/affine_engine.py",
+        "--output",
+        "results/full-source247.json"
+      ]
+    },
+    {
+      "name": "finite_literal_instruction_regressions",
+      "status": "PASS",
+      "seconds": 5.148762,
+      "command": [
+        "python3",
+        "-B",
+        "reference250/code/check_literal_instructions.py",
+        "--baseline",
+        "reference250/sources/baseline252_old.tm",
+        "--program",
+        "reference250/sources/Prog254.v",
+        "--table",
+        "machine/zfc_prefix247_old.tm",
+        "--output",
+        "results/literal-instructions247.json"
+      ]
+    },
+    {
+      "name": "finite_literal_arithmetic_regressions",
+      "status": "PASS",
+      "seconds": 3.724184,
+      "command": [
+        "python3",
+        "-B",
+        "reference250/code/check_literal_macros.py",
+        "--table",
+        "machine/zfc_prefix247_old.tm",
+        "--output",
+        "results/literal-macros247.json"
+      ]
+    }
+  ],
+  "exact_machine": {
+    "working_states": 247,
+    "binary_rows": 494,
+    "start": 0,
+    "halt": 247,
+    "old_start": 97,
+    "old_halt": 254,
+    "canonical_dispatch": 89,
+    "sha256": "58bbbda620daf6d4d62f486db05f54d0dccb8373c080c1b5a0b26533e7a3a669"
+  },
+  "bootstrap": {
+    "steps": 741241,
+    "dual_simulators": true,
+    "head": -5,
+    "marker": -6,
+    "header": 245,
+    "gap": 250,
+    "primary": [
+      3,
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0
+    ],
+    "spares": 235,
+    "one_cells": 487,
+    "entire_tape_checked": true
+  },
+  "proof_assistant_endpoint_checked": false,
+  "pa_internal_proof_supplied": false,
+  "reviewed_code_identity": [
+    {
+      "path": "/tmp/zfc-intake-161/run61/code/verify.py",
+      "sha256": "6b280a4f2e85cf4260cd136da673364c4ba89f0d474c2bfc944e892291e2fe4d",
+      "same_reviewed_source": true
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/code/build_table.py",
+      "sha256": "9cb742f01f92f528834b63ce253a24aa3556360a70b02896ce30bf06034da043",
+      "same_reviewed_source": true
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/code/check_full_source247.py",
+      "sha256": "d956a3a150ab87082467366f8a3848c2bf2bc77712847d0437a94947fd430f8b",
+      "same_reviewed_source": true
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/code/audit247.py",
+      "sha256": "c01b5e8c66965e4377c44920658f9703088af2b86f301931fc7f36afff931c5b",
+      "same_reviewed_source": true
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/code/verify_runtime247.py",
+      "sha256": "99f286fa3d6933d75483ae15d56a2d2a55eec28b21cf6b30033bccc0244c3077",
+      "same_reviewed_source": true
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/reference250/code/check_literal_instructions.py",
+      "sha256": "8ab1f70ed03ccd00432cbd00d47a613b6c79bc1353bc2eb5a01ab345c6d05756",
+      "same_reviewed_source": true
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/reference250/code/verify.py",
+      "sha256": "7bb26e1713519d045beb36e1253d006ce7a8d8efd0b04a15cad14c2bd7d430c6",
+      "same_reviewed_source": true
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/reference250/code/check_literal_macros.py",
+      "sha256": "43bb797855693fb9462894b03f4f864c230fd06d92d57b16b21e0095866a0bf4",
+      "same_reviewed_source": true
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/reference250/code/verify_retiming_independent.py",
+      "sha256": "9313262cea715fb5f92cf0a26bb103577152581561790ddacb3780bfca57e636",
+      "same_reviewed_source": true
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/reference250/code/check_macro_inductions.py",
+      "sha256": "3484c0be3aaf34bd3677c0cc727eaba8655efd358f9338192a88be0d9c89ad8d",
+      "same_reviewed_source": true
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/reference250/code/review_affine_source.py",
+      "sha256": "4765f93dbf42418775c4cac3ebf7476ab3467d51ca489207b75969c1c3ba4ebd",
+      "same_reviewed_source": true
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/reference250/code/audit_marking_transport.py",
+      "sha256": "ebd563da99188defd7f66da7e5aafdc65228370addcca73b3f780a749b373895",
+      "same_reviewed_source": true
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/reference250/code/check_candidate250.py",
+      "sha256": "db9ec7f92aa49092f07d3dc0b8dbc0845cc1b777018abec68731811df1f5a5d4",
+      "same_reviewed_source": true
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/reference250/code/check_instructions.py",
+      "sha256": "fe532e4f7c2e6e104a42cd09793f7e4b1637fc3ebd0c7919b21b634fccde14b2",
+      "same_reviewed_source": true
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/reference250/code/rebuild_machines.py",
+      "sha256": "4acfcd3f36cb5dcace50a3c56c8fcf2103931e257c95f894ba0fa3e80b81b2aa",
+      "same_reviewed_source": true
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/reference250/code/affine_engine.py",
+      "sha256": "8c029463048fb544608dec93b6bba772ab21250377b8fbb2763cbab4f1ee35e7",
+      "same_reviewed_source": true
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/reference250/code/check_pulse_boot.py",
+      "sha256": "1f6ef693bfe407954534b1ad885737e94a3127448cf49c11144d2f41a7690d9c",
+      "same_reviewed_source": true
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/reference250/code/check_local_contracts.py",
+      "sha256": "15609c31428bc8e3c4f822ebe006789b9fd2fec0245bf5be0143b1600666e642",
+      "same_reviewed_source": true
+    }
+  ],
+  "records": [
+    {
+      "path": "/tmp/zfc-intake-161/run61-replay.json",
+      "sha256": "d46723505b745fa031883034e12c01808bf7009e8b0a990908271c219a413d02"
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61_driver.py",
+      "sha256": "983af241ccd042baea932384b8ab050dc7885c040a5d4d82b960fb4962a1dfa1"
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61-stdout.log",
+      "sha256": "e4e3ec524af910c5100e7a4649b5a16857cd39d3690a80682e4ddcba2ccd2610"
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/results/bootstrap247-row-visits.json",
+      "sha256": "e6df8d7db23f736e0b8a1cb5a7d053f7b9ce610ffe2630abe6ffe8a7ce0d042b"
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/results/bootstrap247.json",
+      "sha256": "149b1eafd19ad6bbe4cea45e5cafe265620ce669a819aa625510606956e5067a"
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/results/full-source247.json",
+      "sha256": "9880355c59cadfe9158b7f76e436858d803be570f84a5a8713ab168b01c03fa3"
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/results/independent-review247.json",
+      "sha256": "3a49afd29c13beca80adfdb8e32a7b723d83f7ec784459dde6e6203b2830c590"
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/results/literal-instructions247.json",
+      "sha256": "c35c4d3a5f7c7878a64eb51fab3850ef2b8a5530fffd5b52f60fb03a348b374e"
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/results/literal-macros247.json",
+      "sha256": "43d3aa379dcd181af46be512427b4ade832eb976220804ca9b2bf0b661637620"
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/results/macro_inductions247.json",
+      "sha256": "b8442e89955d9bd291779117864633d7df30899bd38ff293d30f2e01946481cf"
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/results/runtime247_cases.jsonl",
+      "sha256": "c3d33f046a20a4fa0799182b208c46a499366cf67d9c00d4c3dd10b6653d8974"
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/results/runtime247_result.json",
+      "sha256": "3f38d5b4988e88e9806fdb66ad02a317fc954c11a9a0c195a36977297023d2b7"
+    },
+    {
+      "path": "/tmp/zfc-intake-161/run61/results/verification-summary.json",
+      "sha256": "8ea26217019bb9a6c20f608f76824e8570f3a0ff3079620f240c6358996bcc84"
+    }
+  ]
+}

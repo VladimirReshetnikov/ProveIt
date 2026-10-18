@@ -1,0 +1,123 @@
+{
+  "status": "INDEPENDENT_SOURCE_AND_FINAL_EVIDENCE_REVIEW",
+  "reviewer": "/root/drop_contract",
+  "scope": "Complete165-line source and audit read, earlier source compatibility record, one-line audit repair, and successful evidence reviewed. Source author is reflection reviewer; root executed proofs. This reviewer ran no compiler/checker/version query.",
+  "successful_record": {
+    "path": "/tmp/zfc-prefix250-lean/retiming/mark/run2/verification.json",
+    "sha256": "5140723f74774c3cce3fa38eee2c8fd0d61d4382cacda3d6078c05bc0695b6d6"
+  },
+  "source": {
+    "path": "/tmp/zfc-prefix250-lean/retiming/mark/RegisterMarkPrefix250.lean",
+    "sha256": "76feb52843e7fd4e87a6da020e8116049cf5d2809be6013f6e020991c6d62ad7",
+    "snapshot": "/tmp/zfc-prefix250-lean/retiming/mark/run2/sources/BusyBeaver/ZFC/RegisterMarkPrefix250.lean"
+  },
+  "audit": {
+    "path": "/tmp/zfc-prefix250-lean/retiming/mark/Audit.lean",
+    "sha256": "56a8e69f49e853a54836b6b917ed900041773e159856fc0620ddbbb9cdb2798f",
+    "snapshot": "/tmp/zfc-prefix250-lean/retiming/mark/run2/sources/Audit.lean"
+  },
+  "fresh_object": {
+    "module": "BusyBeaver.ZFC.RegisterMarkPrefix250",
+    "path": "/tmp/zfc-prefix250-lean/retiming/mark/run2/cache/BusyBeaver/ZFC/RegisterMarkPrefix250.olean",
+    "sha256": "778cf0e4c2ca8b7b54391d0848a9dfa4839f8a53315296506d380dce6ae0ab98",
+    "source_sha256": "76feb52843e7fd4e87a6da020e8116049cf5d2809be6013f6e020991c6d62ad7"
+  },
+  "source_object_recorded_before_audit": true,
+  "current_input_comparisons": 25,
+  "all_current_inputs_match": true,
+  "logs_match_record": true,
+  "project_provider_count": 7,
+  "toolchain_boundaries": [
+    "Init",
+    "Lean.Elab.Tactic.Omega"
+  ],
+  "external_project_library_count": 0,
+  "named_axiom_probes": 8,
+  "callers": 4,
+  "observed_axioms": [
+    "Quot.sound",
+    "propext"
+  ],
+  "warnings": {
+    "source": 0,
+    "audit": 0
+  },
+  "attempts": {
+    "1": {
+      "status": "FAIL",
+      "record_sha256": "e11ff927ec49b10d114c8ac5cbc15d91d8cc53782aedad35b222c82f87965805",
+      "snapshots": [
+        {
+          "name": "RegisterMarkPrefix250.lean",
+          "sha256": "76feb52843e7fd4e87a6da020e8116049cf5d2809be6013f6e020991c6d62ad7"
+        },
+        {
+          "name": "Audit.lean",
+          "sha256": "a9534bf863a422e7370d7502e6440fe10d4e2f725b585cc1b9f76cb929b26252"
+        },
+        {
+          "name": "check.py",
+          "sha256": "3582819f2a7a5af7e10328ae557c146ba6ef38b3a38a5de719288b6c7f9b4649"
+        }
+      ]
+    },
+    "2": {
+      "status": "PASS",
+      "record_sha256": "5140723f74774c3cce3fa38eee2c8fd0d61d4382cacda3d6078c05bc0695b6d6",
+      "snapshots": [
+        {
+          "name": "RegisterMarkPrefix250.lean",
+          "sha256": "76feb52843e7fd4e87a6da020e8116049cf5d2809be6013f6e020991c6d62ad7"
+        },
+        {
+          "name": "Audit.lean",
+          "sha256": "56a8e69f49e853a54836b6b917ed900041773e159856fc0620ddbbb9cdb2798f"
+        },
+        {
+          "name": "check.py",
+          "sha256": "8f684fe2dfc18beb31cfd98c57a0e6e25eb9c62f0881a3118fa89db058c8d0a9"
+        }
+      ]
+    }
+  },
+  "source_unchanged_across_attempts": true,
+  "original_source_pass_before_failed_audit_retained": true,
+  "original_source_not_reused_as_audit_only_run": true,
+  "audit_repair": "Added if_true to the first caller simp list; after refl simplification its proposition had normalized to True. No statement changed.",
+  "source_compatibility_review": {
+    "sha256": "65a3f276899fce2b5a973176d1623b26e52a20a2ffeabffc03c1ff07434d60a3",
+    "record": {
+      "status": "SOURCE_ONLY_COMPATIBILITY_REVIEW",
+      "reviewer": "/root/drop_contract",
+      "files": [
+        {
+          "path": "/tmp/zfc-prefix250-lean/retiming/mark/RegisterMarkPrefix250.lean",
+          "sha256": "76feb52843e7fd4e87a6da020e8116049cf5d2809be6013f6e020991c6d62ad7",
+          "lines": 165
+        },
+        {
+          "path": "/tmp/zfc-prefix250-lean/retiming/mark/Audit.lean",
+          "sha256": "a9534bf863a422e7370d7502e6440fe10d4e2f725b585cc1b9f76cb929b26252",
+          "lines": 48
+        }
+      ],
+      "scope": "Read complete marking source and audit; compare actual selector/return rows and public word/file/Core endpoints with Prefix250Boxes unpadded interfaces. No execution or evidence review.",
+      "findings": [
+        "Physical selectors60,44,31,56,38,40,28,64,69 and mark/return states0,2,4,6 agree with the unchanged marking path.",
+        "mark_word allows arbitrary terminal suffix; mark_zip and mark are exactly unpadded and preserve the full arbitrary finite spare suffix, matching Prefix250Boxes.",
+        "Runtime2*width(pre)+3 and old2/old6 exits are explicit, with prefix index<9.",
+        "The only old252 runtime helper applied is the generic return_end instantiated with machinePrefix250 and independently asserted250 row facts.",
+        "No mathematical or interface blocker found; actual Lean elaboration and parent evidence remain root-owned and not claimed here."
+      ],
+      "compiler_executed": false,
+      "version_queried": false,
+      "guard_executed": false
+    }
+  },
+  "remaining": [
+    "symbolic executor and instruction contracts",
+    "runtime frame invariant and bootstrap",
+    "exact250 consistency endpoint",
+    "PA-internalized equivalence"
+  ]
+}

@@ -12,12 +12,19 @@ cost measure that decides whether a candidate improves the baseline.
 
 The active focus is verifying and formalizing the
 [shared-carry 250 construction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-160.md).
-The two latest submissions contain the same 250-state table. All 8391 guarded
+Sources 58–59 contain the same 250-state table. All 8391 guarded
 instruction cases, its 585,431-step complete blank startup and all nine stronger
 audit jobs pass on fresh copies. Independent ordinary-proof review found no
 fatal defect within its scope. The exact-table Lean endpoint and its internal
 PA equivalence remain open. The different rejected250 scanner fold from the
 predecessor report does not refute this construction.
+
+The [247-state selector reduction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-161.md)
+removes three further states. Its seven executable checks and separate
+741,241-step blank startup pass. Independent review found no mathematical
+blocker in the ordinary argument; its exact-table Lean and internal PA
+endpoints remain open. The same intake preserves broader semantic-seed
+criteria and two 255-state research controls.
 
 The [exact 250-state table](table_prefix250.md) is now checked in Lean: all 500
 actions, the state numbering, the unique halt edge and the incoming edges of
@@ -27,8 +34,23 @@ Whole-run and consistency proofs for this table remain in progress.
 Lean also checks the [initializer pulse invariant](prefix250_pulse.md) and
 [unbounded register operations](prefix250_boxes.md), including positive
 decrement’s boundary shift, zero decrement’s complete restoration and
-increment’s extra spare block. These are local execution theorems; the full
+increment’s extra spare block. The [nine register selectors](prefix250_mark.md)
+also have checked unbounded marking and return contracts. These are local
+execution theorems; the full
 250-state bootstrap and global simulation remain open.
+
+The [balanced prefix250 lookup](fast_table_prefix250.md) is now checked equal to the exact canonical table on all 500 actions. Its first source/audit run passed with two ordered probes, four client examples and zero warnings; the finite transition equality is axiom-free and complete machine equality uses only `Quot.sound`. This reusable calculation layer contains no bootstrap or consistency endpoint. [Exact evidence](results/fast-table-prefix250-verification.json) and [preserved history plus independent review](results/fast-table-prefix250-history.json) bind its source, generator and actual providers.
+
+The [prefix250 symbolic executor](prefix250_symbolic.md) now has a checked
+soundness theorem for the complete infinite tape. Its 14 theorem audits and
+14 client examples pass with no warnings. Accepted symbolic traces justify
+positive literal runs; complete instruction coverage and global composition
+remain in progress.
+
+The [per-instruction soundness interface](prefix250_site.md) now preserves
+the independent gap changes from positive decrement and PC overflow. Its
+12 theorem audits and 13 client examples pass. Checking every original
+instruction against that interface remains the next coverage obligation.
 
 The [previous intake](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-158-159.md)
 preserves five complete reports and one explicitly partial salvage, including
