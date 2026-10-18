@@ -434,3 +434,11 @@ The first check passed 12 axiom probes and 16 callers with standard axioms;
 one unused-variable audit warning is retained. This supplies the syntax
 identity for the source existential rule; its proof-rule transport and the
 reverse consistency compiler remain separate.
+
+[Literal internal GIC introduction](validator_native_gic254.md) now extracts
+the validator’s container/GIC bundle and proves a padded GIC instance for
+every internal matrix value, including zero, in every IΣ₁ model. Eight probes
+and ten typed callers passed without warnings after a one-line numeric
+proof repair. Identifying this literal instance with the Foundation encoding,
+closing arbitrary parameter lists and translating native derivations remain
+separate obligations for the PA consistency result.

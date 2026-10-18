@@ -852,6 +852,13 @@ with the separately checked closed parameter is needed. The remaining
 arithmetic piece of the reverse comparison is (R2),
 `Provable nativeTheory ⊥ → CProv 1`.
 
+The [literal GIC introduction](../../../../Logic/Interpretability/ZFCinPA/validator_native_gic254.md)
+now supplies a validator proof for every internal matrix value after
+double-negation padding, including zero: eight probes and ten typed callers
+passed with no warnings. This closes the literal bundle side conditions;
+the configurable Foundation-body encoding, arbitrary universal closure and
+internal derivation translation required by R2 remain open.
+
 Composing (R3), (R2) and the forward sentence gives, in PA,
 `Con(ZF) ↔ ¬∃code, value(code)=2`, and with `LSchema` the same for ZFC.
 The binary-machine side (exact246/routed245 runs against the arithmetic
