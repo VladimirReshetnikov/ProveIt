@@ -1,10 +1,14 @@
 # Smaller machines for Con(ZFC)
 
 The goal is a binary, single-tape machine with fewer than 254 nonhalting
-states whose blank-tape nonhalting is provably in **PA** equivalent to
-Con(ZFC), as originally requested. The external Lean equivalence is now proved
-for a 252-state machine; its internal PA proof remains open. All new formal
-work uses Lean.
+states whose halting status is independent of ZF. The original target was
+blank-tape nonhalting provably in **PA** equivalent to Con(ZFC). The search
+now also permits equivalence to consistency of an effectively axiomatized
+stronger theory, as clarified by the user on 17 October 2026. Each candidate
+must state the assumptions used for its two unprovability directions;
+consistency alone must not be confused with arithmetic soundness. The
+external Lean equivalence with Con(ZFC) is now proved for a 252-state
+machine; its internal PA proof remains open. All new formal work uses Lean.
 An intended set-theoretic meaning is optional: any effectively presented
 theory or proof calculus is eligible once its consistency calibration is proved.
 The complete compiled search, including its data and initialization, is the
