@@ -14,8 +14,8 @@ closed external Lean baseline.
 
 The first [245-state Lean unit](../table_routing245.md) now checks the exact
 transition table, state numbering and 46 reusable core rows: 64 theorem
-audits and 64 typed callers pass with zero warnings. Runtime simulation and
-blank initialization still need their own Lean proofs. The
+audits and 64 typed callers pass with zero warnings. Complete coverage and
+blank initialization remain separate obligations. The
 [fast lookup](../fast_table_routing245.md) is also checked equal to the literal
 machine, with two theorem audits and four typed callers.
 The [exact register decoder](../program_routing245.md) now also passes
@@ -26,11 +26,15 @@ for arbitrary register values. The
 certificate entries and proves halting equivalence with the original program
 for every initial register function at empty pointers. Its 97 production
 modules pass 104 theorem probes and 201 typed callers, with zero warnings.
-The binary runtime, complete decoder coverage and blank startup still need
-their own Lean proofs.
+Complete decoder coverage and blank startup still need their own Lean proofs.
 The [local register operations](../routing245_local.md) now pass 27 theorem
 probes and 29 callers: pulse, marking, increment and both decrement branches
 are checked for arbitrary values and finite contexts, preserving the full tape.
+The [symbolic execution and runtime proofs](../routing245_execution.md) pass
+59 theorem probes and 62 callers, with zero warnings in the selected runs.
+They prove halting equivalence under explicit complete-coverage and initial-frame
+premises, retaining the entire tape in a new 64-cell dispatch frame. The actual
+coverage and blank-start proofs are needed to close the binary endpoint.
 
 | Artifact | Meaning |
 | --- | --- |

@@ -38,8 +38,8 @@ open; the [intake record](../../../../SetTheory/Cardinals/docs/reports/set-theor
 preserves attribution, recovery, fresh results and scope.
 The first [245-state Lean unit](table_routing245.md) checks the exact 490-row
 table, state numbering and 46 reusable core rows. All 64 theorem audits and
-64 typed callers pass with zero warnings. Runtime and startup proofs are the
-next obligations. The [fast lookup](fast_table_routing245.md) also passes:
+64 typed callers pass with zero warnings. Complete coverage and startup remain
+obligations. The [fast lookup](fast_table_routing245.md) also passes:
 two theorem audits and four typed callers prove equality with the literal
 machine, enabling faster reduction in subsequent execution proofs.
 The [exact register decoder](program_routing245.md) passes 11 theorem
@@ -48,12 +48,17 @@ and execution semantics for arbitrary pointers and register values.
 The [complete source-program bisimulation](bisim_routing245.md) now checks all
 3,013 certificate entries and proves halting equivalence with `Prog254` for
 every initial register function at empty pointers. Its 97 production modules
-pass 104 theorem probes and 201 typed callers, with zero warnings. Binary
-runtime, complete decoder coverage, blank startup and PA internalization remain.
+pass 104 theorem probes and 201 typed callers, with zero warnings. Complete
+decoder coverage, blank startup, the binary endpoint and PA internalization remain.
 The [local routing245 register operations](routing245_local.md) also pass:
 pulse, marking, increment and both decrement branches retain arbitrary values,
 finite contexts and complete-tape conclusions. Their three modules pass
 27 theorem probes and 29 callers with zero warnings in the selected runs.
+The [symbolic execution and runtime proofs](routing245_execution.md) pass
+59 theorem probes and 62 callers. They prove both halting directions under
+explicit complete-coverage and initial-frame premises, using the new full-tape
+64-cell frame. The selected runs have zero warnings; coverage and blank startup
+still need to discharge those premises for the actual candidate.
 The checked components of the earlier
 [shared-carry 250 construction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-160.md)
 provide reusable proof infrastructure. Sources 58–59 contain the same

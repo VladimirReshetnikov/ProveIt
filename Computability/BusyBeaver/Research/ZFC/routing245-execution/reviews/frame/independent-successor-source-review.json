@@ -1,0 +1,95 @@
+{
+  "status": "SOURCE_ONLY_REVIEW_CLEAN",
+  "units": [
+    {
+      "module": "Routing245Simulation",
+      "source": {
+        "path": "/tmp/zfc-routing245-lean/frame/Routing245Simulation.lean",
+        "sha256": "dea64229b0eb2b5438eb2b513a63bb92596b241107e8e40566709e1400b965a4"
+      },
+      "audit": {
+        "path": "/tmp/zfc-routing245-lean/frame/Audit.lean",
+        "sha256": "96f700e3d6c57f374a886a0017e14c524c31570c14f12d0d59ee579fa463a113"
+      },
+      "checked_template": {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Prefix246Simulation.lean",
+        "sha256": "249c6c95d6550a8078f1b3462439fe7e7c4804a748e549b6b3aaf8aab6c2786a"
+      },
+      "probes": 14,
+      "callers": 15,
+      "proof_body_normalization": "Exact after namespace/state-count/margin/frame-name port, excluding the new frame definition."
+    },
+    {
+      "module": "InstructionRouting245",
+      "source": {
+        "path": "/tmp/zfc-routing245-lean/instruction/InstructionRouting245.lean",
+        "sha256": "c54757f87e012dd61dad43e237c3171749137557928aac526e84d79325ace84d"
+      },
+      "audit": {
+        "path": "/tmp/zfc-routing245-lean/instruction/Audit.lean",
+        "sha256": "71d67dddeda39450025a7be6e56ef63dace440ccb1258318ce4aba9403087208"
+      },
+      "checked_template": {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InstructionPrefix246.lean",
+        "sha256": "ec777c8cf810999e4e1b69b3a9adec8ba66e014c218d03c74bc654d9f1cc86dd"
+      },
+      "probes": 7,
+      "callers": 7,
+      "proof_body_normalization": "Exact after namespace/state-count/margin/frame-name port, excluding the new frame definition."
+    },
+    {
+      "module": "RuntimeInstanceRouting245",
+      "source": {
+        "path": "/tmp/zfc-routing245-lean/runtime/RuntimeInstanceRouting245.lean",
+        "sha256": "b9978b797172ba16f18a9444a164f9bc8e70bd212f6031773df0ab52533336d1"
+      },
+      "audit": {
+        "path": "/tmp/zfc-routing245-lean/runtime/Audit.lean",
+        "sha256": "7b85d49b0f04096d373b7cee914982e6f2dbe1cd9fe701ef4d6ad2f7ffc0337a"
+      },
+      "checked_template": {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RuntimeInstancePrefix246.lean",
+        "sha256": "f698845e32f546f4937a6d5ae819dd16c0975280c7b6f470f27ddb593ffa7bdb"
+      },
+      "probes": 11,
+      "callers": 12,
+      "proof_body_normalization": "Exact after namespace/state-count/margin/frame-name port, excluding the new frame definition."
+    }
+  ],
+  "reference_bindings": [
+    {
+      "path": "/tmp/zfc-routing245-lean/site/SiteRouting245.lean",
+      "sha256": "d05562d7a17c58a45089903977a074ea36559d39a2c5f854d63af5874c951021"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Permutation252Frame.lean",
+      "sha256": "63a3c9d9358a3a24edfef7889ffcc96d00f2aab3f2dd752c944c4f0e84236ae7"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RuntimePerm252.lean",
+      "sha256": "c8baf01d6af1a8ee740bb4627c6f69bf910e2be36c679d0329fcd87192800efd"
+    },
+    {
+      "path": "/tmp/zfc-routing245-lean/frame/boundary-plan.json",
+      "sha256": "ce6e7005225d806f53c5fcd564e172ac19b8bf2df03701446a3fa857aa508938"
+    },
+    {
+      "path": "/tmp/zfc-routing245-lean/instruction/boundary-plan.json",
+      "sha256": "bb2219fd2c5aec943bb8993a3e4ca319813c30c1be81cabd63bfd87e57ed3741"
+    },
+    {
+      "path": "/tmp/zfc-routing245-lean/runtime/boundary-plan.json",
+      "sha256": "502b815d8a3159f1001987abc55e29eb91089f04f1ada655eabb75a3184f9737"
+    }
+  ],
+  "findings": [],
+  "reasoning": [
+    "DispatchFrame64 has exactly the generic whole-tape dispatch layout and LogicalTailZero condition, with 64 instead of40 as the only predicate change. The historical definition is untouched.",
+    "source_represents uses the frame budget and consumed-prefix length bound to justify both natural subtractions; the all-zero stored suffix supports gap consumption even when the consumed prefix extends beyond the explicit path.",
+    "target_frame preserves arbitrary padding, register values and complete spare suffix; the operation-dependent overflow/extra cell arithmetic restores the64 budget.",
+    "Instruction branches retain a positive concrete segment; increment appends a value-one spare and positive decrement changes the selected primary while retaining arbitrary spare values. No finite-value bound appears.",
+    "Runtime Covered quantifies over every logical path and supplies decoding plus accepted site checks. Stopped-terminal rejects failed decoding/internal nodes rather than assuming every failed logical step means halt.",
+    "Both halting directions reuse the generic positive simulation and absorbing halt semantics. The allSites theorem still requires exact tree identity and whole-tree acceptance. No all-sites result, blank startup, closed binary equivalence, or PA theorem is supplied here."
+  ],
+  "scope": "Read full three sources and audits plus supplied diffs, exact generic frame and positive simulation APIs, and Site minDistance/checker definitions. Static normalization and census only; no source elaboration, guard execution, compiler/version calls, or provider-evidence acceptance. Prospective object-null boundary plans remain unbuilt and are not execution evidence."
+}
