@@ -1722,3 +1722,29 @@ probes and thirteen typed callers with zero warnings under the default proof
 limits. The original failed source attempt, finite-target repair and successful
 run are preserved. This closes one constructor fragment; complete AX and the
 internal binary-machine PA equivalence remain open.
+
+The [actual AX read at controls 181–195](arithmetic_control_ax_read_tw254.md)
+now adds the first PL component to arbitrary old TW and advances PL to its
+second component, preserving the other seven registers. Its positive runtime
+and complete file contract hold in every IΣ₁ model with clean scratch
+registers. Seven axiom probes and twelve typed callers passed without warnings.
+The exact history retains the uncompiled initial draft and proactive finite
+target repair; the first actual source/audit run passed. Composition with
+the surrounding AX fragments is a separate obligation.
+
+The [generic copy-and-restore contract](arithmetic_control_copy_back254.md)
+adds an argument register to TW and restores the argument in exactly
+`7*oldArgument+2` internal steps, requiring only scratch1 to start at zero.
+Its composition with a clean push sets TW to the argument and pushes old TW
+onto WS. Five axiom probes and nine typed callers passed without warnings;
+the initial two-coordinate proof failure and explicit rewrite repair remain
+in the history. Concrete AX occurrences require their own literal bindings.
+
+The [actual AX argument push and following plain push](arithmetic_control_ax_argument_push254.md)
+now bind controls 136→162→181 to those generic contracts. Their composition
+sets TW to zero and WS to `cantor(oldAC, cantor(oldTW, oldWS))`, preserving
+every other register, for arbitrary internal IΣ₁ files with both scratches
+zero. Six axiom probes and six typed callers passed without warnings. Both
+uncompiled source corrections, the first successful run and the exact 99-module
+provider closure are retained. The complete AX branch and PA endpoint remain
+open.
