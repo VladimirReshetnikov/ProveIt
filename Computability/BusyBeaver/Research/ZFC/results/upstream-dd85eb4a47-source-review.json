@@ -1,0 +1,136 @@
+{
+  "status": "SOURCE_ONLY_REVIEW_NO_MATHEMATICAL_SCOPE_FINDINGS",
+  "introducing_commit": "dd85eb4a47ca68ad23979653699b7d615e030470",
+  "arrival_commit": "3bb5f109a4d0400abd56d27fe1665be39c32abd4",
+  "scope": "Full new LSepBase and LSchemaAudit source, full final Separation template, and focused existing glue, peel, support-bound, recognizer, Replacement-template and hSchema interfaces. No fresh compiler, proof checker, version query, supplied checker, dependency build or maintained-file edit.",
+  "source_pins": [
+    {
+      "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LSepBase.lean",
+      "sha256": "827e63b1d5cdb40ae84920ce8340a9fdfafc359e18dcac0794333a7a4ec5cbc4",
+      "bytes": 11291,
+      "lines": 234,
+      "same_as_introducing_commit": true
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LSchemaAudit.lean",
+      "sha256": "cf634c3211817a41785258b53ef56c22af22a87af6971e0411857a1d1d3c5aa8",
+      "bytes": 529,
+      "lines": 17,
+      "same_as_introducing_commit": true
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LFinalSep.lean",
+      "sha256": "98b243fba11ce23bb264199190098df9c26a7b99bf6f66b702d9cfe8ad78fb8e",
+      "bytes": 7807,
+      "lines": 157,
+      "same_as_introducing_commit": true
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LFinalRepl.lean",
+      "sha256": "5bd9f9a5692a6e1df91c4c4492401039808803bb8307ecb7a6ccec6f9036e24d",
+      "bytes": 17350,
+      "lines": 335,
+      "same_as_introducing_commit": true
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LGlue4.lean",
+      "sha256": "a63c7016c18091550141c4447f34015f4a70647a0f7c36a1762b6c3aed91549a",
+      "bytes": 18850,
+      "lines": 368,
+      "same_as_introducing_commit": true
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LPeel.lean",
+      "sha256": "c39052fb86ae21f4d8c9b28cb26fee8a294a43e2df96fa216cc19e86cc89bde0",
+      "bytes": 15396,
+      "lines": 332,
+      "same_as_introducing_commit": true
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LFvBound.lean",
+      "sha256": "786196f7968c41550a12ca2c1a80ce1cc7e096e70aa94f016b94d1d1e860b237",
+      "bytes": 18268,
+      "lines": 341,
+      "same_as_introducing_commit": true
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/SchemaClosure.lean",
+      "sha256": "64ec54b2c206d7b8ed77ce04f45af9c35625c31c06c784aedc5ac233fd18bec4",
+      "bytes": 14922,
+      "lines": 266,
+      "same_as_introducing_commit": true
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/SeparationDelta1.lean",
+      "sha256": "695c4365853fe4500bde5978633aa0696716fe07dee639d75fe7e92995dda1a2",
+      "bytes": 12020,
+      "lines": 266,
+      "same_as_introducing_commit": true
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ReplacementDelta1.lean",
+      "sha256": "6653c8cf532e53212633d953a25e12e4b97465be2f5112ce4cda56f41e040454",
+      "bytes": 16319,
+      "lines": 357,
+      "same_as_introducing_commit": true
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ConstructibleInterpretation.lean",
+      "sha256": "965a7e999b810337fcd5278aa3569c430cd5311edff969995a69106e4eccf007",
+      "bytes": 29989,
+      "lines": 630,
+      "same_as_introducing_commit": true
+    }
+  ],
+  "new_declarations": [
+    {
+      "name": "LSepBase.sepComb_provable",
+      "line": 52,
+      "contract": "templTheory 6 ar6 proves the fixed sepComb template. Consumes the reflection invariant and QX-style premise; its semantic proof uses the already-proved final Separation template and functionality of an environment over a stage."
+    },
+    {
+      "name": "LSepBase.relSep_val",
+      "line": 172,
+      "contract": "For any internal level-one K and typed template substitution with slot 2 equal to rel K, the compiled body code is rel (sepBodyVal K)."
+    },
+    {
+      "name": "LSepBase.sepConcl_val",
+      "line": 197,
+      "contract": "Also identifying slot 0 with mVal m yields the exact pVal m (rel (sepBodyVal K)) conclusion."
+    },
+    {
+      "name": "LSepBase.sep_base",
+      "line": 205,
+      "contract": "For internal m,K, IsSemiformula set 1 K and FvLt (m+1) (free K) imply Provable ZF (pVal m (rel (sepBodyVal K))). The proof chooses its own glue budget C=m+1+complexity(free K), then combines qPremise and driverT via the fixed compiled template."
+    },
+    {
+      "name": "LSepBase.sep_obligation",
+      "line": 220,
+      "contract": "For every internal p, SepR p implies Provable ZF (rel p). No separate formula-typing, external-standardness, reflection, matching-existence, consistency or hSchema premise."
+    }
+  ],
+  "internal_scope": {
+    "ambient": "V : Type with ORingStructure V and V models IΣ₁",
+    "internal_variables": "p,m,b,K and proof witnesses range over V; no restriction to Nat or standard formula codes.",
+    "closure": "Recognizer identifies p=qqAlls b m, proves b typed at internal depth m and shift-fixed, and identifies subst(fvarVec m)b=sepBodyVal K. LFvBound supplies support; LPeel.peel uses internal Sigma1 successor induction over i:V up to m, then peel_close discharges pVal 0.",
+    "fixed_standard_layer": "Finite template arities and typed helper n,k:Nat are fixed presentation arities. They do not restrict the internal recognizer parameter count m.",
+    "semantic_vs_internal": "Semantic ZF models occur only in proving the fixed standard sepComb theorem, subsequently compiled into internal syntactic proofs. The all-internal Sep conclusion is not inferred merely from standard quoted instances."
+  },
+  "remaining_obligations": [
+    "Replacement: construct the depth-two opening/glue premise with the correct x::y::t slot order, compile a combination using LFinalRepl.replTemplate_provable and LDriver.driverT, and prove the exact opened pVal base for repBodyVal K. LFvBound.repl_core_bound and the general glue/peel infrastructure already exist.",
+    "Replacement recognizer: use RepR to identify the exact closed code and typing, then apply existing peel and peel_close to obtain Provable ZF (rel p). No new general internal universal-closure induction is suggested.",
+    "hSchema interface: connect separationTheory/replacementTheory internal Δ₁Class membership to the concrete recognizers, assemble both branches, and convert exact internal Provable into Derivable of insert(rel p)(domSet dL 0). The existing standard_obligation demonstrates the empty domSet 0 and toDerivable pattern, but this new module does not define that adapter.",
+    "Apply the completed hSchema to ConstructibleInterpretation.provable_falsum_ZF_of_ZFC, then the existing C254/ZF comparison; this commit alone does not state a closed PA consistency or binary-machine endpoint.",
+    "Focused current-toolchain compilation and executed axiom/caller verification are not provided by this source review."
+  ],
+  "audit": {
+    "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LSchemaAudit.lean",
+    "print_axioms_directives": 11,
+    "typed_callers": 0,
+    "executed_in_this_review": false,
+    "upstream_commit_claim": "Commit message claims only propext, Classical.choice and Quot.sound. This review does not turn that claim or the unexecuted directives into a fresh observed axiom result."
+  },
+  "findings": [],
+  "frontier_correction": "The current Remaining for hSchema paragraph must no longer list Separation opened-body combination, recognized-code typing or universal closure as open mathematical work. Replacement and the final hSchema interface remain. Historical LPeel-stage notes may remain explicitly historical.",
+  "limits": "Source review assesses mathematical/API scope and visible dependencies, not Lean elaboration, compiled provider identities or actual axiom sets."
+}
