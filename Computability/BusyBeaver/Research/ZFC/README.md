@@ -11,8 +11,11 @@ The complete compiled search, including its data and initialization, is the
 cost measure that decides whether a candidate improves the baseline.
 
 The active focus is verifying and formalizing the
-[shared-carry 250 construction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-160.md).
-Sources 58–59 contain the same 250-state table. All 8391 guarded
+[246-state contextual-fold candidate](candidate-prefix246/README.md).
+The checked components of the earlier
+[shared-carry 250 construction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-160.md)
+provide reusable proof infrastructure. Sources 58–59 contain the same
+250-state table. All 8391 guarded
 instruction cases, its 585,431-step complete blank startup and all nine stronger
 audit jobs pass on fresh copies. Independent ordinary-proof review found no
 fatal defect within its scope. The exact-table Lean endpoint and its internal
@@ -74,6 +77,13 @@ The [instruction composition](prefix250_instruction.md) now proves that
 every accepted logical instruction has a positive binary execution and
 preserves the complete dispatch frame with nonempty spares. Its seven theorem
 audits and seven client examples pass. The all-sites premise remains open.
+
+The [conditional runtime equivalence](prefix250_runtime.md) now connects
+the 250-state instruction adapter to both directions of register/binary
+halting, from a related whole frame and assuming site coverage. Its eleven
+theorem audits and twelve client examples pass with no warnings. This proof
+provides a template for the active 246-state target; complete coverage and
+blank initialization for that exact table remain separate obligations.
 
 The [previous intake](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-158-159.md)
 preserves five complete reports and one explicitly partial salvage, including
