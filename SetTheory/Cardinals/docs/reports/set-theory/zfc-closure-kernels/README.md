@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings through 18 October 2026. This report now reconciles seventy-three manuscripts.
+Intake findings through 18 October 2026. This report now reconciles seventy-nine manuscripts.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -206,6 +206,15 @@ Lean, but complete Rotation244 binary coverage/composition and internal PA
 calibration remain pending. All 19 fresh substantive jobs pass, including five full 8,390-case runtime
 replays and the exact 408,419-step primary 241 startup. Ordinary, executable
 and proof-assistant scopes stay separate.
+
+## Sources 74–79: six equivalent 242 tables and a joint 1,750-bit packet
+
+Batch 169 adds six reports from `d584512002`, all pinned to `e58338db7545909907e07a7603e8eb88625c527a`. Their complete 242-state tables are primary 242A, either literally or under the single retained-state rename 15→27. Composing with Source 73's predecessor-bit fold gives the existing 241 table; these six reports do not supply independent savings that can be added to obtain 240.
+
+The [reconciliation](intake-169.md) and six source dossiers retain different ordinary proofs, a function-tape Lean relative proof with explicit raised limits, semantic acceptance/MP improvements, bounded source and scanner experiments, selector dispatch, membership elimination/truth fusion and a native stack frontend. The new joint packet combines Sources 77 and 78: root's fresh copied-input check and independent output review establish **1,750 complete bits, 21 equations and four-bit opcodes**, 18 bits below the delivered detour packet. This is an encoding improvement with an ordinary inherited-calibration argument, not a smaller binary machine or internal PA endpoint.
+
+The six supplied verification suites were not rerun. Exact state isomorphism reuses the prior batch168 primary-A/241 machine evidence; changed-source experiments retain their own unrefreshed scope. The base article and PDF and all delivered bytes stay unchanged. See [recovery/reproduction](intake-169-reproduction.md), [the joint proof and evidence boundary](intake-169-joint-proof.md), and the complete [placement map](data/intake169-placement.json). Placement `c3339d150f` retired only the six batch ZIPs. Fresh recovery restored all 1,387 originals and matched all 1,301 ancillary occurrences to 687 maintained targets; twenty older ZIPs remain queued.
+
 
 ## Sources, overlap and base
 
