@@ -7,6 +7,12 @@ its stated scope. All nine primary checks and two additional audits pass on
 fresh copies. **Its exact-machine Lean endpoint and equivalence proved inside
 PA remain open.** The checked 252-state endpoint refers to a different table.
 
+The exact candidate now has checked arithmetic [step](../arithmetic_machine_step_prefix246.md)
+and [run](../arithmetic_machine_run_prefix246.md) graphs. The
+[finite startup sentence](../arithmetic_bootstrap_prefix246.md) for its complete
+410,735-step bootstrap is proved in IΣ1 and PA. These components leave the
+unbounded internal simulation and consistency equivalence open.
+
 | Artifact | State conventions | Identity |
 | --- | --- | --- |
 | [Canonical table](zfc_prefix246.tm) | 246 working states 0–245; start 0; dispatch 88; separate halt 246 | SHA256 `89cda615b3ea9fcac07ad6b08e0351faa34841a56935b6f5846d3920f13bc0fc` |

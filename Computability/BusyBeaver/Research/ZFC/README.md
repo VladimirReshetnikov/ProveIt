@@ -60,8 +60,17 @@ pass with no warnings. This is the finite table layer for the active target.
 The [exact 246 arithmetic lookup](arithmetic_machine_graph_prefix246.md)
 now represents those 492 actions by a fixed bounded arithmetic formula in
 every IOpen model. Eight theorem audits and eight typed callers pass with no
-warnings, including the terminal write and movement. Internal step/run
-simulation and the PA consistency endpoint remain separate obligations.
+warnings, including the terminal write and movement.
+
+The [exact arithmetic step](arithmetic_machine_step_prefix246.md) and
+[run graph](arithmetic_machine_run_prefix246.md) now cover all encoded
+configurations and every internal IΣ1 time index. The standard natural-number
+graph agrees with every actual blank runtime. The
+[finite startup transfer](arithmetic_bootstrap_prefix246.md) proves in IΣ1
+and PA the fixed arithmetic sentence for the complete 410,735-step bootstrap.
+These three modules pass 28 axiom probes and 35 typed callers, with no final
+warnings. The unbounded internal register/binary simulation and the PA
+consistency equivalence remain open.
 
 The [246 logical seed](logical_seed246.md) is now calibrated in Lean:
 the unchanged register program started at `(3,0,0,0,3,0,0,0,0)` halts iff

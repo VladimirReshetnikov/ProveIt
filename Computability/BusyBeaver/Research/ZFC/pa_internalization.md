@@ -110,8 +110,15 @@ comparison have separate Lean checks; completing that external endpoint
 still does not supply an internal PA theorem.
 The [fixed arithmetic lookup for its exact table](arithmetic_machine_graph_prefix246.md)
 is now checked in every IOpen model and agrees with all 492 typed transitions.
-The corresponding internal step/run, bootstrap and whole-runtime comparison
-remain separate from the checked 252-state arithmetic implementation.
+The [exact step graph](arithmetic_machine_step_prefix246.md) now defines the
+numeric operation on every IOpen configuration code, including inactive and
+invalid states. Its [fixed run graph](arithmetic_machine_run_prefix246.md)
+is total and unique at every internal IΣ1 time index; the separate Nat theorem
+compares every ordinary runtime to this literal binary machine. The
+[bootstrap transport](arithmetic_bootstrap_prefix246.md) proves the fixed
+410,735-step arithmetic startup sentence in IΣ1 and PA. Its numeral-transfer
+lemma applies to external natural times, not arbitrary internal times.
+The unbounded internal register/binary comparison still needs its own proof.
 
 Source review of the merged arithmetic work through `70f2e7a57b` identifies
 three further reusable pieces in `Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/`:
