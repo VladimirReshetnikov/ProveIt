@@ -46,7 +46,7 @@ theorem lemma_5_14_holds_of_corollary_5_6
       positivity
     have hcards : ∑ i, (Q i).carrier.card = N := by
       simpa only [Finset.card_univ, ZMod.card] using IsPartition.sum_card hQ
-    have hjensen := section5_sum_rpow_le hM hK
+    have hjensen := section5_sum_rpow_le hK
       (fun i ↦ (Q i).carrier.card) hcards
     have hlocalCount :
         ((∑ i, L i : Nat) : Real) ≤

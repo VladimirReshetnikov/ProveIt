@@ -38,7 +38,7 @@ theorem variable_polynomial_phase_refinement {N M k : Nat} [NeZero N]
     section5Flatten_refinement Q L R hQ hpart,
     section5Flatten_isProper L R hproper, ?_, ?_⟩
   · have hK : 0 < polynomialPartitionConstant k := by unfold polynomialPartitionConstant; positivity
-    have hjensen := section5_sum_rpow_le hM hK (fun i ↦ (Q i).carrier.card) hcards
+    have hjensen := section5_sum_rpow_le hK (fun i ↦ (Q i).carrier.card) hcards
     rw [Nat.cast_sum]
     calc
       _ ≤ ∑ i, section5LocalRefinementConstant k alpha *

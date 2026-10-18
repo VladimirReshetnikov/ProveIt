@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs05Downstream
 import Mathlib.Analysis.Convex.Jensen
 import Mathlib.Analysis.Convex.SpecificFunctions.Pow
 import Mathlib.Data.Fintype.EquivFin
+import Mathlib.Analysis.MeanInequalities
 
 /-!
 # Global polynomial phase removal (Lemma 5.14)
@@ -119,71 +120,31 @@ theorem section5Flatten_sum {N M : Nat} (L : Fin M → Nat)
 
 /-! ### The global cell-count estimate -/
 
-/-- Jensen's inequality in exactly the form needed to aggregate local cell
-counts. -/
-theorem section5_sum_rpow_le {M N K : Nat} (hM : 0 < M) (hK : 0 < K)
+/-- Hölder's inequality (weights `1`, exponents `K` and `K / (K - 1)`) in exactly the form needed
+to aggregate local cell counts. -/
+theorem section5_sum_rpow_le {M N K : Nat} (hK : 0 < K)
     (m : Fin M → Nat) (hsum : ∑ i, m i = N) :
     ∑ i, (m i : Real) ^ (1 - (K : Real)⁻¹) ≤
       (M : Real) ^ (K : Real)⁻¹ *
         (N : Real) ^ (1 - (K : Real)⁻¹) := by
-  let q : Real := (K : Real)⁻¹
-  let p : Real := 1 - q
-  have hKreal : (0 : Real) < K := by exact_mod_cast hK
-  have hKone : (1 : Real) ≤ K := by exact_mod_cast hK
-  have hq0 : 0 ≤ q := (inv_pos.mpr hKreal).le
-  have hq1 : q ≤ 1 := inv_le_one_of_one_le₀ hKone
-  have hp0 : 0 ≤ p := by dsimp only [p]; linarith
-  have hp1 : p ≤ 1 := by dsimp only [p]; linarith
-  have hMreal : (0 : Real) < M := by exact_mod_cast hM
-  have hweights : ∑ _i : Fin M, (M : Real)⁻¹ = 1 := by
-    simp [ne_of_gt hMreal]
-  have hsumReal : ∑ i, (m i : Real) = (N : Real) := by
-    exact_mod_cast hsum
-  have hjensen := (Real.concaveOn_rpow hp0 hp1).le_map_sum
-    (t := (Finset.univ : Finset (Fin M)))
-    (w := fun _i : Fin M ↦ (M : Real)⁻¹)
-    (p := fun i : Fin M ↦ (m i : Real))
-    (fun _i _hi ↦ (inv_pos.mpr hMreal).le) hweights
-    (fun i _hi ↦ (show (0 : Real) ≤ m i by positivity))
-  have hjensen' :
-      (M : Real)⁻¹ * ∑ i, (m i : Real) ^ p ≤
-        ((M : Real)⁻¹ * (N : Real)) ^ p := by
-    simpa only [smul_eq_mul, Function.comp_apply, ← Finset.mul_sum, hsumReal]
-      using hjensen
-  have hscaled :
-      ∑ i, (m i : Real) ^ p ≤
-        (M : Real) * ((M : Real)⁻¹ * (N : Real)) ^ p := by
-    calc
-      ∑ i, (m i : Real) ^ p =
-          (M : Real) * ((M : Real)⁻¹ * ∑ i, (m i : Real) ^ p) := by
-        field_simp
-      _ ≤ (M : Real) * ((M : Real)⁻¹ * (N : Real)) ^ p :=
-        mul_le_mul_of_nonneg_left hjensen' hMreal.le
-  calc
-    ∑ i, (m i : Real) ^ (1 - (K : Real)⁻¹) =
-        ∑ i, (m i : Real) ^ p := by rfl
-    _ ≤ (M : Real) * ((M : Real)⁻¹ * (N : Real)) ^ p := hscaled
-    _ = (M : Real) ^ q * (N : Real) ^ p := by
-      rw [Real.mul_rpow (inv_nonneg.mpr hMreal.le)
-        (show (0 : Real) ≤ N by positivity), Real.inv_rpow hMreal.le]
-      have hMpow :
-          (M : Real) * ((M : Real) ^ p)⁻¹ = (M : Real) ^ q := by
-        calc
-          (M : Real) * ((M : Real) ^ p)⁻¹ =
-              (M : Real) ^ (1 : Real) * (M : Real) ^ (-p) := by
-            rw [Real.rpow_one, Real.rpow_neg hMreal.le]
-          _ = (M : Real) ^ ((1 : Real) + (-p)) :=
-            (Real.rpow_add hMreal 1 (-p)).symm
-          _ = (M : Real) ^ q := by
-            congr 1
-            dsimp only [p, q]
-            ring
-      calc
-        (M : Real) * (((M : Real) ^ p)⁻¹ * (N : Real) ^ p) =
-            ((M : Real) * ((M : Real) ^ p)⁻¹) * (N : Real) ^ p := by
-          ring
-        _ = (M : Real) ^ q * (N : Real) ^ p := by rw [hMpow]
-    _ = (M : Real) ^ (K : Real)⁻¹ *
-        (N : Real) ^ (1 - (K : Real)⁻¹) := by rfl
+  rcases Nat.lt_or_ge 1 K with hK1 | hK1
+  · have hKr : (1 : Real) < K := by exact_mod_cast hK1
+    have h := Real.inner_le_Lp_mul_Lq_of_nonneg (s := univ) (Real.HolderConjugate.conjExponent hKr)
+      (f := fun _ => (1 : Real)) (g := fun i => (m i : Real) ^ (1 - (K : Real)⁻¹))
+      (fun _ _ => zero_le_one) (fun i _ => by positivity)
+    have hK1r : (K : Real) - 1 ≠ 0 := by linarith
+    have he : (1 - (K : Real)⁻¹) * Real.conjExponent K = 1 := by
+      unfold Real.conjExponent; field_simp
+    have hq : 1 / Real.conjExponent K = 1 - (K : Real)⁻¹ := by
+      unfold Real.conjExponent; field_simp
+    simp only [one_mul, Real.one_rpow, sum_const, card_univ, Fintype.card_fin, nsmul_eq_mul,
+      mul_one, ← Real.rpow_mul (Nat.cast_nonneg _), he, Real.rpow_one] at h
+    calc _ ≤ _ := h
+      _ = _ := by
+        rw [hq, one_div]
+        exact_mod_cast congrArg (fun x : Nat => (M : Real) ^ (K : Real)⁻¹ *
+          (x : Real) ^ (1 - (K : Real)⁻¹)) hsum
+  · obtain rfl : K = 1 := by omega
+    simp
 
 end LeanProofs.GowersSzemeredi

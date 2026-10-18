@@ -124,7 +124,7 @@ theorem small_diameter_partition_refinement {N M : Nat} [NeZero N]
   refine ⟨∑ i, L i, section5Flatten L R, section5Flatten_partition Q L R hQ hpart,
     section5Flatten_refinement Q L R hQ hpart, section5Flatten_isProper L R hRproper, ?_, ?_, ?_⟩
   · have hcards : ∑ i, (Q i).carrier.card = N := by simpa using hQ.sum_card
-    have hjensen := section5_sum_rpow_le hM (by omega : 0 < 16) (fun i ↦ (Q i).carrier.card) hcards
+    have hjensen := section5_sum_rpow_le (by omega : 0 < 16) (fun i ↦ (Q i).carrier.card) hcards
     norm_num only [Nat.cast_ofNat] at hjensen
     rw [Nat.cast_sum]
     calc
