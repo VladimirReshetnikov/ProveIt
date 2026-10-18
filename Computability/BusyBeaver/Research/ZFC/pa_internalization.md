@@ -817,6 +817,38 @@ R1's standard-proof sanity equivalence, arbitrary-internal GIC axiom
 introduction, and the R2/R3 internal translations remain open. The supplied
 five-probe audit has no typed callers.
 
+**R3 closed (Claude lane, 18 October).**
+[`NativeSchema`](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/NativeSchema.lean)
+proves, in every IΣ₁ model, `Provable 𝗭𝗙 ⊥ → Provable nativeTheory ⊥`
+(`provable_falsum_native_of_ZF`), hence
+`𝗣𝗔 ⊢ Con(nativeTheory) → Con(𝗭𝗙)` (`peano_proves_con_native_imp_con_ZF`),
+with standard axioms only (`NativeSchemaAudit`). The internal axiom callback
+of `provable_falsum_of_interp` is discharged for every internal ZF code by a
+case split on the axiom class (`mem_ZF_class`): equality and fixed axioms by
+`NativeFixed`; Separation and Replacement at arbitrary, including
+nonstandard, cores by
+
+* `NTemplate`: `LTemplate` over `nativeTheory` with GIC, including GIC
+  introduction at every internal matrix (`nativeGicProof`) and the compiler
+  `compileN`;
+* `NTInterp.interp_translate`: `interp PN` commutes with template
+  translation, which settles every interpreted code identity at once;
+* `NativeSchemaSem`: two fixed template sentences
+  `intT(congruence of R) → intT(Separation/Replacement body for R)`, proved
+  in every template model through the domain structure `SD` and `eval_intT`
+  (GIC at `u ∈ x ∧ v = u ∧ R u`, respectively `u ∈ X ∧ D v ∧ R u v`, WF
+  closure, functionality up to bisimilarity);
+* quotient congruence of interpreted matrices: the congruence law of the
+  core is a theorem of pure equality logic (`SetCongruence.congruenceProof₁/₂`
+  over `𝗘𝗤`), transported to `nativeTheory` by `derivable_iSet`;
+* `NativePeel.peel`: guarded generalization over the nonstandard parameter
+  count.
+
+The parameter is `NativeInterp.PN` itself (`good_PN`), so no identification
+with the separately checked closed parameter is needed. The remaining
+arithmetic piece of the reverse comparison is (R2),
+`Provable nativeTheory ⊥ → CProv 1`.
+
 Composing (R3), (R2) and the forward sentence gives, in PA,
 `Con(ZF) ↔ ¬∃code, value(code)=2`, and with `LSchema` the same for ZFC.
 The binary-machine side (exact246/routed245 runs against the arithmetic
