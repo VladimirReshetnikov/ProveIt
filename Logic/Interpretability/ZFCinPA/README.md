@@ -200,6 +200,8 @@ facade is [`Lean/ZFCinPA.lean`](Lean/ZFCinPA.lean).
 | `LGlue4` | **the glue**: for every formula code `q` with free variables below `j`, `𝗭𝗙 ⊢ ∀t (¬M_j t ∨ (relativize domL q ↔ envForm 0 q (t)))` (`glue`, by `IsFormula.sigma1_structural_induction` under a complexity budget `j + complexity q ≤ C` that keeps the induction predicate `Σ₁`) |
 | `LFvBound` | free-variable bounds for schema cores: `bindFreeAt_subst_opening` (binding after an opening substitution recovers a shift-fixed body, hence `fvLt_subst_fvarVec`), `fvBound_subst` (a substitution by bound variables cannot hide free variables), and their readings on the two skeletons, `sep_core_bound` and `repl_core_bound` |
 | `LPeel` | the peel from an opened schema body to its relativized closure: in every model of `𝗭𝗙` an environment extends by any constructible element (`isEnv_econs`) and a functional one exists (`isEnv_base`); the step template `peelG` generalizes the freed premise (`QXE_free`) one binder at a time (`peel_step`, `free_subst_qVec_fvarVec`), the `Σ₁` induction `peel` reaches zero matched variables, and the nullary-placeholder template `finG` closes (`peel_close`) |
+| `LSepBase` | **the separation obligation**: the `L6` template `sepComb` (the reflection invariant and the glue premise give the relativized separation body at every matched environment; its semantics reuses `LFinalSep.sepTemplate_provable` by soundness), typed relativization lemmas (`relT_*`), the code identity `relSep_val`, `sep_base` (driver + glue + compiled template), and `sep_obligation`: every code recognized by `SepR` has a `𝗭𝗙`-proof of its relativization to `L` |
+| `LSchemaAudit` | axiom audit for `LFvBound`, `LPeel`, `LSepBase` |
 
 ## Building
 

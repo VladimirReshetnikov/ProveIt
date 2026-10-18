@@ -113,3 +113,5 @@ import ZFCinPA.LGlue4
 import ZFCinPA.LGlueAudit
 import ZFCinPA.LFvBound
 import ZFCinPA.LPeel
+import ZFCinPA.LSepBase
+import ZFCinPA.LSchemaAudit
