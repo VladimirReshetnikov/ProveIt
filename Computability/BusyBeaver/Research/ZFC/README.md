@@ -34,6 +34,12 @@ execution theorems; the full
 
 The [balanced prefix250 lookup](fast_table_prefix250.md) is now checked equal to the exact canonical table on all 500 actions. Its first source/audit run passed with two ordered probes, four client examples and zero warnings; the finite transition equality is axiom-free and complete machine equality uses only `Quot.sound`. This reusable calculation layer contains no bootstrap or consistency endpoint. [Exact evidence](results/fast-table-prefix250-verification.json) and [preserved history plus independent review](results/fast-table-prefix250-history.json) bind its source, generator and actual providers.
 
+The [prefix250 symbolic executor](prefix250_symbolic.md) now has a checked
+soundness theorem for the complete infinite tape. Its 14 theorem audits and
+14 client examples pass with no warnings. Accepted symbolic traces justify
+positive literal runs; complete instruction coverage and global composition
+remain in progress.
+
 The [previous intake](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-158-159.md)
 preserves five complete reports and one explicitly partial salvage, including
 cache-result MP, semantic seeds, countdowns and pairing-shift negation.
