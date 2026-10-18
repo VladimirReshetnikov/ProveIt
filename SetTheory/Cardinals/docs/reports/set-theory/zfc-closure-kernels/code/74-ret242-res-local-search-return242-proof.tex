@@ -1,0 +1,157 @@
+\section{A two-row reduction from 243 to 242 working states}
+
+All labels in this section are inherited labels, rather than consecutive
+canonical state numbers.  Let $M$ be the exact combined243 machine at commit
+\texttt{e58338db7545909907e07a7603e8eb88625c527a}.  Delete state $15$ and make
+the following two changes to retained rows:
+\[
+\begin{array}{c|c|c|c}
+\text{state}&\text{read}&\text{old action}&\text{new action}\\\hline
+11&0&(0,R,15)&(0,R,27)\\
+27&1&(1,R,39)&(1,R,22).
+\end{array}
+\]
+The two deleted rows are $15/0=(0,R,21)$ and $15/1=(1,R,22)$.
+Every other row is unchanged.  Thus the new machine $N$ has exactly $242$
+working states, $484$ total binary rows, initial state $95$, and the same
+separate halt target $254$.  No row targets deleted state $15$.
+
+The saving reuses the unused one branch of state $27$.  Its zero branch
+returns to an earlier tape bit and then resumes forward decoding.  Every
+entry that formerly used state $15$ supplies the required earlier zero.
+The result is a table transformation, without changing the proof-search
+source, register permutation, tape representation, or bootstrap program.
+
+\subsection{The invariant}
+
+For an old-machine configuration $(q,h,T)$ define $I$ by
+\[
+q\in\{15,18,47,65\}\ \Longrightarrow\ T(h-1)=0,
+\qquad
+q=27\ \Longrightarrow\ T(h)=0.
+\]
+This holds at state $95$ for every head position and every tape.  The complete
+incoming-row inventory for the constrained states is
+\[
+\begin{array}{c|l}
+\text{target}&\text{incoming rows}\\\hline
+15&11/0=(0,R,15)\\
+18&12/0=(0,R,18),\quad148/0=(0,R,18)\\
+47&33/0=(0,R,47),\quad144/0=(0,R,47),\quad167/0=(0,R,47)\\
+65&51/0=(0,R,65),\quad81/0=(0,R,65)\\
+27&18/0=(0,L,27),\quad47/0=(0,L,27),\quad65/0=(0,L,27).
+\end{array}
+\]
+An entry into any of $15,18,47,65$ writes zero and moves right, which proves
+the required left-zero assertion directly.  An entry into $27$ moves left
+from one of $18,47,65$, whose cell immediately left is zero by $I$.  The
+write occurs at the departed cell and cannot change that zero.  Every other
+target imposes no condition.  Consequently $I$ is preserved by every old
+transition.  This is a finite syntactic induction, valid for arbitrary
+initial tapes at state $95$; it uses no source-program reachability claim.
+
+\subsection{The two exceptional blocks}
+
+Use all old states except $15$ as comparison checkpoints, with complete
+equality of head position and the entire tape.  An old checkpoint at state
+$27$ can read only zero by $I$, and the zero transition of $27$ is unchanged.
+The only admissible retained row needing a longer comparison is $11/0$.
+
+Suppose this row is entered at head position $h$, so $T(h)=0$.
+If $T(h+1)=1$, both machines take two transitions and finish at state $22$
+with head $h+2$, preserving the entire tape:
+\[
+M:\quad11\longrightarrow15\longrightarrow22,
+\qquad
+N:\quad11\longrightarrow27\longrightarrow22.
+\]
+If $T(h+1)=0$, the old machine takes two transitions
+\[
+M:\quad(11,h)\longrightarrow(15,h+1)\longrightarrow(21,h+2),
+\]
+and the new machine takes four:
+\[
+N:\quad(11,h)\longrightarrow(27,h+1)\longrightarrow(32,h)
+\longrightarrow(45,h+1)\longrightarrow(21,h+2).
+\]
+The rows used by the last three new transitions are
+$27/0=(0,L,32)$, $32/0=(0,R,45)$, and $45/0=(0,R,21)$.
+Only cells $h,h+1$ are read or written.  Both are zero in this case and
+remain zero, so the whole tape and the endpoint configuration agree for
+every assignment to every other cell.  Both clocks are strictly positive.
+
+Every other admissible row out of a checkpoint has exactly the same action
+in the two tables and cannot enter deleted state $15$.  The changed row
+$27/1$ is inadmissible on the old side by $I$.  The only old row targeting
+$15$ is precisely the exceptional row $11/0$.  These assertions are checked
+against every row, not inferred from a sample execution.
+
+\subsection{Global theorem}
+
+\paragraph{Theorem.}
+For every binary tape $T:\mathbb Z\to\{0,1\}$ and every head $h$, $M$
+halts from $(95,h,T)$ if and only if $N$ halts from $(95,h,T)$.
+
+\paragraph{Proof.}
+Start with the equal checkpoint configurations in state $95$.  They satisfy
+$I$ on the old side.  At an ordinary admissible row use its equal one-step
+transitions.  At $11/0$ use the complete two-sided block selected by
+$T(h+1)$.  Each block finishes at an equal checkpoint, and the old invariant
+holds there because it holds after each old literal transition.  Induction
+therefore constructs matching checkpoint computations of both machines.
+Every block is finite; the old clock is either one or two, and the new
+clock is one, two, or four.  Hence an infinite checkpoint computation
+accounts for infinitely many steps on both sides.  A finite halting
+computation can only finish at the common halt checkpoint, because no
+exceptional block enters the halt state in its interior.  Thus one machine
+halts exactly when the other does.\hfill$\square$
+
+The argument is elementary and can be formalized using finite sequences of
+configurations and induction on natural numbers.  In particular its usual
+arithmetization is provable in PA.  This report supplies an ordinary proof
+and a Python checker of its finite premises, not an already kernel-checked
+Lean or PA proof artifact.  Composing the theorem with the inherited
+ordinary combined243 calibration gives
+\[
+\mathrm{ZFC}\vdash
+\bigl(\neg\operatorname{Halt}(N)\leftrightarrow
+       \operatorname{Con}(\mathrm{ZFC})\bigr).
+\]
+No consistency assumption is needed for the equivalence theorem.  Actual
+nonhalting is conditional on consistency, and no absolute consistency or
+two-sided independence claim is asserted here.
+
+\subsection{Exact time and space relation}
+
+For any matching finite computation ending at a checkpoint, let $n$ be the
+old number of transitions and let $b$ count its visits to $11/0$ for which
+the following tape cell is zero.  The new number is exactly $n+2b$.
+Every other comparison block has equal old and new lengths.  In particular,
+if either machine halts, their halting times $n,n'$ satisfy
+\[
+n'=n+2b,\qquad n\leq n'\leq2n.
+\]
+The longer block visits no new position: both machines visit precisely
+$\{h,h+1,h+2\}$ in that block.  Consequently the sets of head positions
+visited up to matching checkpoints are equal, as are their finite minimum
+and maximum positions when these exist.
+
+For the prescribed blank bootstrap, the old computation has exactly six
+longer-block entries.  Independent execution gives $407\,967$ old and
+$407\,979$ new transitions; both reach the same full root frame, with
+$351$ one-cells, head $-5$, and physical registers
+$(0,0,0,3,0,0,3,0,0)$.  Both traces visit head positions from $-15$ to $701$.
+The numerical relation agrees with $407\,979=407\,967+2\cdot6$.
+
+\subsection{Reproducible evidence}
+
+The accompanying \texttt{verify\_return242.py} checks exact table hashes,
+totality, the full incoming inventory proving $I$, both universal finite
+block identities, and every ordinary-row condition.  In its symbolic
+calculation, an unconstrained tape cell may never be read; unmentioned cells
+are preserved by construction.  Thus those local checks quantify over all
+completions of the partial tape, rather than testing a bounded collection
+of complete input tapes.  A separate sparse blank replay verifies that the
+old and new bootstraps reach precisely equal prescribed root-frame configurations.
+The blank replay is supplementary finite evidence and is not a replacement
+for the global induction proof.

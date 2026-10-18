@@ -1,0 +1,416 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\Native}{\mathsf{NativeAx}}
+\newcommand{\MP}{\mathsf{MP}}
+\title{Semantic targets and a tag-independent inference rule\\
+for the existing consistency-search calculus}
+\author{Research notes prepared for Vladimir Reshetnikov's ProveIt project}
+\date{18 October 2026}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Two changes to the existing proof-search source are justified without changing
+its set theory or its formula codec. First, the halting test may recognize every
+membership atom, rather than only the distinguished self-membership atom.
+Second, modus ponens may ignore the outer constructor tag of its cached premise,
+provided the two encoded fields still match the current theorem and the proposed
+conclusion. The latter change is sound specifically at theorem boundaries;
+ordinary quantifier elimination handles the universal tag, and the native
+container and irreflexivity axioms handle the equality tag. The existing concrete
+proof-producing command blocks remain complete. These are ordinary mathematical
+source-level results, with finite semantic controls, not measured state savings,
+new binary tables, checked Lean theorems, or a completed PA internalization.
+\end{abstract}
+
+\section{Exact setting and relationship to prior work}
+
+The inspected repository is ProveIt at commit
+\texttt{e58338db7545909907e07a7603e8eb88625c527a}.
+The combined243 baseline uses the original complete numerical calculus, with
+native equality, the CP/GIC bundle, and both freshness gates. Its ordinary
+ZFC consistency calibration is retained separately from its relative Lean
+machine comparison and the unfinished internal arithmetic endpoint
+\cite{combined,native}.
+
+Let
+\[
+ P(a,b)=\frac{(a+b)(a+b+1)}2+b.
+\]
+The formula constructors are
+\[
+ \begin{array}{ll}
+ I(a,b)=4P(a,b),& R(i,j)=4P(i,j)+1,\\
+ Q(i,a)=4P(i,a)+2,& E(i,j)=4P(i,j)+3.
+ \end{array}
+\]
+They mean implication, membership, universal quantification, and equality,
+respectively. The distinguished contradiction is
+\(F=1=R(0,0)\). Code zero has the stipulated truth meaning; it is not parsed
+by infinitely unfolding the equation \(0=I(0,0)\).
+All positive codes have their actual finite decoded meaning, including code
+fields that serve as variable names.
+
+The native first-order theory consists of the transitive power-bounding
+container sentence CP, the full GIC schema with arbitrary finite parameters
+and logical equality, and irreflexivity
+\(\forall x\,\neg(x\in x)\). Its axioms are sentences. In particular CP entails
+the elementary hosting consequence
+\[
+ \forall x\,\exists y\;(x\in y).                    \tag{Host}
+\]
+The original compiler and proof invariant are attributed to Mira-Cult, Jeff
+Ketchersid and contributors, Andrew James Wade, and the maintained ProveIt
+development. The present notes do not replace their source calibration.
+
+Earlier repository results include changes to successful-MP result placement,
+dummy-stack elimination, shared comparisons, a specialized test for the
+single cache value one, and decoding a cached implication before testing its
+antecedent \cite{cachemp,dummy,decoded}. The two changes below instead use
+semantic restrictions on which \emph{whole formulas can be theorems}. They were
+not found in the inspected relevant notes. This is a scoped comparison with the
+repository, not a claim of historical priority in proof theory or compilation.
+
+\section{Every atomic membership theorem is a refutation}
+
+Write \(M\models_* A\) when a decoded formula \(A\) is true in \(M\) under every
+assignment of its free names. The distinction between this condition and truth
+at one chosen assignment is essential.
+
+\begin{lemma}[Atomic membership]
+Let \(M\) be a nonempty irreflexive membership structure. For all variable
+indices \(i,j\), \(M\not\models_* R(i,j)\).
+\end{lemma}
+\begin{proof}
+Choose any object \(u\) of the domain and give every variable name the value
+\(u\). The atom becomes \(u\in u\), which is false. This includes both
+\(i=j\) and \(i\ne j\); no empty-set axiom, extensionality, container axiom,
+Foundation, or Choice is needed.
+\end{proof}
+
+Consequently a derivation of \(R(i,j)\) from a sentence theory containing
+irreflexivity gives an ordinary finite refutation. A direct syntactic route
+generalizes the free names, instantiates them by one common fresh name, and
+combines the resulting diagonal membership atom with irreflexivity. Coincident
+indices are handled by one generalization instead of two. Renaming every symbol
+of an arbitrary proof to one name is not a sound substitute for this argument:
+it may capture variables inside the proof.
+
+Define the numerical target set
+\[
+ \mathcal B=\{h\in\mathbb N:h\equiv1\pmod4\}.
+\]
+It contains \(F\), and every member decodes to one of the atoms covered by the
+lemma. Keep every command unchanged except that NIP halts when its incoming
+cache lies in \(\mathcal B\). On all other inputs it performs the original
+cache clear and stack pop.
+
+\begin{theorem}[Expanded NIP target]
+From an initialization satisfying the original theorem invariant and its
+original completeness interface, the changed source enumerator halts exactly
+when the original source enumerator halts. In particular it has the same
+ordinary ZFC consistency calibration.
+\end{theorem}
+\begin{proof}
+Before the first newly accepted halt, the two computations coincide literally
+at command boundaries. If the old computation halts, the new computation
+either has already halted or reaches the same cache value \(F\) and halts.
+Conversely, at any new halt the cached formula is a theorem by the inherited
+invariant. The lemma turns that atomic theorem into a refutation; original
+proof-search completeness therefore gives halting of the old enumerator.
+All arguments concern finite traces and finite proofs and can be carried out
+inside ZFC. No consistency assumption is needed as a hypothesis of the
+equivalence theorem.
+\end{proof}
+
+This is not equality of NIP effects on arbitrary register files: for example,
+cache value five causes an immediate new halt and an ordinary old NIP step.
+Likewise the statement does not justify changing arbitrary binary rows merely
+because their intended register names look related. A concrete changed machine
+would need its own runtime proof and a counted blank initialization.
+
+\subsection{A complete scalar implementation, with honest costs}
+
+The cache can be consumed by a four-test cycle:
+\begin{quote}\ttfamily
+repeat:\\
+\quad if H=0: go to POP; otherwise decrement H\\
+\quad if H=0: HALT; otherwise decrement H\\
+\quad if H=0: go to POP; otherwise decrement H\\
+\quad if H=0: go to POP; otherwise decrement H\\
+\quad return to repeat.
+\end{quote}
+Every nonhalting exit has \(H=0\), so the original pop can follow with its
+original scratch assumptions. The loop performs exactly \(h\) successful
+decrements and one failing zero test. Its control has four residue positions
+and needs no arithmetic scratch register. The current specialized NIP call has
+an increment of scratch1, a comparison wrapper, and a halt wrapper, while the
+generic comparison and clear loops are shared with other commands. Therefore
+those shared states cannot all be deducted from the machine budget. Four
+residue controls may cost more than the present singleton check. No binary
+state improvement is claimed from this implementation.
+
+\section{Ignoring the cached outer tag in modus ponens}
+
+The original MP command, with proposed conclusion \(b=d+x\), tests
+\(H=I(T,b)\). Replace that test by
+\[
+       \left\lfloor\frac H4\right\rfloor=P(T,b).        \tag{TMP}
+\]
+Keep the original success and failure effects, including the dummy truth push
+on success, the additive parameter, and the cache clear. The condition accepts
+the four possible formulas \(I(T,b),R(T,b),Q(T,b),E(T,b)\).
+
+\begin{lemma}[A nontrivial domain]
+Every nonempty model of CP and irreflexivity contains two distinct objects.
+\end{lemma}
+\begin{proof}
+Choose \(u\). Hosting gives \(v\) with \(u\in v\). If \(u=v\), irreflexivity
+would be violated. Thus \(u\ne v\).
+\end{proof}
+
+\begin{theorem}[Tag-independent theorem inference]
+Let \(M\) be an irreflexive membership structure with at least two objects.
+If \(M\models_* T\), \(M\models_* H\), and (TMP) holds, then
+\(M\models_* b\).
+\end{theorem}
+\begin{proof}
+Use Euclidean division to write \(H=4P(T,b)+r\), where \(0\le r<4\).
+\begin{itemize}
+\item If \(r=0\) and \(H>0\), the cached formula is \(T\to b\), so ordinary
+modus ponens gives the assertion. If \(H=0\), then \(P(T,b)=0\) forces
+\(T=b=0\), and the conclusion is the stipulated truth code.
+\item If \(r=1\), the cache is the atomic membership formula
+\(v_T\in v_b\). The preceding atomic lemma contradicts its validity under
+every assignment. Thus this case cannot occur for the stated semantic inputs.
+\item If \(r=2\), the cache is \(\forall v_T\,b\). For an arbitrary
+assignment \(e\), instantiate its universal quantifier at \(e(T)\); the
+updated assignment is \(e\) itself. Hence \(b\) is true at every assignment.
+There is no freshness restriction between the index \(T\) and the formula
+code \(b\).
+\item If \(r=3\), the cache is \(v_T=v_b\). If the numerical indices differ,
+assign two distinct domain objects to these two names. This contradicts
+validity under all assignments. Therefore \(T=b\) as natural numbers, and
+the desired formula is the already valid current formula.
+\end{itemize}
+\end{proof}
+
+This is a theorem-level admissible inference, not the assertion that the
+formula \((T\land E(T,b))\to b\) is a tautology. At one assignment distinct
+variable names may have equal values. For example take current truth code
+\(T=0\), proposed contradiction \(b=1\), and cache \(E(0,1)=11\). Under an
+assignment giving names zero and one the same value, both premises are true
+and the conclusion is false in an irreflexive structure. Only the stronger
+all-assignment premise rules this out.
+
+The two-object premise is also indispensable. In the singleton structure with
+empty membership, both code zero and \(E(0,1)=11\) are valid, while \(F=1\)
+is not. That structure is excluded by CP. Thus the equality case cannot be
+justified by citing irreflexivity alone or by dropping the source's set theory.
+
+\subsection{The existing command compiler remains complete}
+
+The original source has a concrete compiler from numerical derivations to
+command blocks. The important issue is that a compiler can intentionally use
+a \emph{failed} MP to clear a register; merely accepting every old successful
+MP would not prove preservation of that compiler.
+
+The exact inspected \texttt{Enum254.lean} defines
+\[
+ \mathrm{discard}=[\MP(1),\mathrm{AX}(1,0,0,0)]
+                         \mathbin{+\!+}\mathrm{NIP}(0)^{10}.
+\]
+Its interface starts with cache zero and additive parameter zero. The first
+MP still fails under (TMP), for
+\[
+ \lfloor0/4\rfloor=0<P(T,1).
+\]
+It therefore has exactly the old clearing and stack effect, for every initial
+current formula \(T\) and every stack. AX and the following pops are unchanged.
+Every MP in the remaining inductive proof blocks is an intended successful
+comparison against the exact implication \(I(A,B)\), so it is still accepted
+with exactly the original result and stack effect. The leaf, generalization,
+and MP blocks consequently retain their original strong contracts, by the
+same structural induction. Initial AX still clears the arbitrary additive
+parameter and cache before a proof block. Command packing, pointer descent,
+candidate enumeration, and next-candidate preservation have not changed.
+
+\begin{corollary}[A complete alternative source]
+Replace only the MP comparison by (TMP), leaving NIP's original test unchanged.
+From the calibrated source initialization, the new enumerator halts if and
+only if \(\Native\) is inconsistent, and hence has the inherited ordinary
+ZFC consistency calibration.
+\end{corollary}
+\begin{proof}
+If \(\Native\) is consistent, ordinary first-order completeness supplies a
+nonempty set-coded model. CP makes it nontrivial. Maintain validity under all
+assignments for the current formula, cached formula, and every stack element.
+The theorem proves the only changed invariant step. A NIP halt would make
+\(F\) valid, contradicting irreflexivity.
+
+If \(\Native\) is inconsistent, the old calibrated numerical calculus has a
+finite refutation. The preceding inspection of its concrete proof compiler
+shows that the same blocks still construct that refutation in the changed
+source, unless an earlier legitimate halt occurs. The unchanged fair candidate
+enumeration reaches a halting block. These two directions are ordinary proofs
+inside ZFC; they do not require external well-foundedness of a model.
+\end{proof}
+
+The rule can also be combined with the expanded NIP target. The extra early
+halts remain justified, and the old compiler's discarded AX rows have outer
+implication or universal tags, never membership tags.
+
+For concrete implementation one can compare \(P(T,b)\) with a quotient of the
+consumed cache, or compare \(4P(T,b)\) with the cache and accept residuals zero
+through three. The former removes one formula-scaling occurrence but adds
+quotient control; the latter extends a shared comparison and may require a
+separate caller. Neither representation is free, and no compiler result or
+new binary transition table is supplied here.
+
+\subsection{A more concrete implementation: remove decoded-MP tag rejection}
+
+Source57 already proposes a fully calibrated alternative that decodes a cached
+implication, compares its antecedent with the current theorem, and returns its
+decoded consequent without a dummy push \cite{decoded}. It explicitly rejects
+the three non-implication tags. Its quotient is computed by consuming the cache
+in groups of four and running the existing Cantor inverse-walk body once per
+complete group. In that design exhaustion at the first decrement position
+means a valid tag; exhaustion at any other position takes an invalid-tag
+cleanup path.
+
+The new inference theorem permits \emph{all four exhaustion positions to take
+the same normal exit}. Let \((a,b)=P^{-1}(\lfloor H/4\rfloor)\). Return the
+decoded consequent \(b\) if \(a=T\), otherwise return truth zero, preserving
+the source's additive parameter. The group-drain loop consumes any incomplete
+last group without invoking another inverse-walk body, so its output is exactly
+the inverse pair of the quotient, for every cache value. No residue needs to
+be stored. The original source57 moves the current theorem into the emptied
+cache, compares it with the decoded antecedent, and transfers the saved
+consequent to the current slot on equality; those operations still apply.
+
+Soundness is precisely the tag-independent theorem on the matching branch,
+and truth on the other branch. Source57's existing proof-producing blocks
+remain complete: their successful calls supply genuine implications, while
+normalization with cache zero returns current zero in both its matching and
+nonmatching cases and leaves the underlying stack unchanged. This credits
+the decoded-MP representation and its proof-block repair to the earlier work.
+The new contribution is the justification for deleting its invalid-tag branch.
+Whether that branch deletion frees an actual binary control state requires
+compilation, runtime checking, and a new counted initializer; none is supplied
+by this note.
+
+\section{An exact restriction on odd theorem codes}
+
+The same argument gives a useful semantic invariant stronger than the single
+forbidden residue class. In every irreflexive structure with at least two
+objects, an odd formula code is valid under every assignment precisely when
+it is a reflexive equality atom. In the exact numerical codec this means
+\[
+ n\text{ odd and }M\models_* n
+ \quad\Longleftrightarrow\quad
+ \exists i\in\mathbb N\;n=4P(i,i)+3=8i(i+1)+3.
+\]
+In particular every valid odd code is congruent to three modulo sixteen;
+that residue condition alone is not sufficient. Applied to the source theorem
+invariant under consistency, this describes \emph{all} possible odd theorem
+codes. Without a consistency assumption, any derivation of an odd code outside
+the displayed family gives a refutation instead. A future minimizer could use
+this arithmetic invariant, but proving that a concrete control state contains
+a theorem code remains part of its correctness obligation.
+
+\section{Effective proofs, internalization, and finite evidence}
+
+The mathematical proofs use only finite syntactic manipulations, ordinary
+first-order soundness/completeness on set-coded structures, and finite source
+traces. They establish ZFC-formalizable source results. In a conventional
+effective Hilbert or sequent calculus, the displayed direct derivations for
+membership, universal elimination, and off-diagonal equality provide
+primitive-recursive transformations of supplied \emph{native first-order}
+proofs. The equality case uses one fixed native proof that two distinct objects
+exist, then generalizes and instantiates the two distinct names.
+
+No implemented arithmetic translator from the exact C254 proof codec through
+those native proofs and back is provided. The repository's semantic
+completeness bridges alone are not an implemented primitive-recursive
+translator. In particular these notes do not supply a PA proof of the complete
+new machine equivalence, a serialized internal ZFC derivation, or a new kernel
+proof. A concrete binary implementation must also bind its exact table,
+positive-progress runtime simulation, and complete blank initialization.
+
+The independent program \texttt{semantic\_targets.py} uses exact integers and
+the stated zero alias. Its completed controls record:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Control&Cases\\
+\midrule
+Cantor round trips&10,000\\
+Atomic targets in nonempty irreflexive structures&4,416\\
+Odd-code validity characterization&8,704\\
+Tag-independent MP instances&156,672\\
+Of these, instances with valid premises&17,204\\
+Complete scalar residue-drain controls&10,000\\
+\bottomrule
+\end{tabular}
+\end{center}
+The model checks exhaust irreflexive relations on the stated carriers of sizes
+one, two, or three, and quantify over every assignment of the finitely many
+names occurring in each tested formula. They are controls for the semantic
+lemmas, not finite models of CP/GIC and not evidence for consistency strength.
+The singleton and single-assignment counterexamples ensure the two necessary
+hypotheses are actually tested. Nontrivial accepted new MP examples are
+\((T,b,H)=(0,3,38)\) and \((3,3,99)\); both produce the theorem code three,
+where the old exact-implication comparison would return zero.
+
+\section{Alternative theory routes: what the audit supports}
+
+The repository already has ordinary calibrations of raw equality-free PSC,
+two-parameter EPSC, EPSC1 with exact BinaryUnion, finite assignment/class
+kernels, and the equational encoding of finite universal clauses
+\cite{raw,unary,equational}. These results should not be presented as newly
+discovered routes. The one-parameter schema alone remains open: known support
+models block raw Pairing, even with finite common transitive bounds, while
+their internally pure parts prevent interpreting that separation as a
+consistency-strength lower bound.
+
+Existing complete theory controls do not justify a smaller-state claim. For
+example the retained functional subset-closure experiment costs 347 working
+states in its measured backend, against its 320-state subset-bound control;
+its foundational calibration is simpler than its implementation
+\cite{functional}. The recent finite equational packet has 2,324 bits before
+its contextual-rewriting interpreter and initializer, and its smaller displayed
+axiom count does not imply a smaller machine \cite{equational}.
+The present two source results avoid these costs by retaining the calibrated
+theory, all logical rules, and the existing formula code. Their actual state
+cost is nevertheless an open engineering question.
+
+\begin{thebibliography}{9}
+\bibitem{combined} ProveIt, \emph{Combined 243-state candidate}, pinned repository
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e58338db7545909907e07a7603e8eb88625c527a/Computability/BusyBeaver/Research/ZFC/candidate-combined243/README.md}{README}.
+\bibitem{native} ProveIt, \emph{An explicit first-order theory for the structured
+program}, \href{https://github.com/VladimirReshetnikov/ProveIt/blob/e58338db7545909907e07a7603e8eb88625c527a/Computability/BusyBeaver/Research/ZFC/native_theory254.md}{native theory interface}.
+\bibitem{cachemp} ProveIt closure-kernel intake, \emph{Source54: cache-result
+modus ponens}, \href{https://github.com/VladimirReshetnikov/ProveIt/blob/e58338db7545909907e07a7603e8eb88625c527a/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-158-source-54.md}{source54 review}.
+\bibitem{dummy} ProveIt, \emph{Removing the successful-MP dummy push},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e58338db7545909907e07a7603e8eb88625c527a/Computability/BusyBeaver/Research/ZFC/mp_dummy_push_partial_cost.md}{measured control}.
+\bibitem{raw} ProveIt, \emph{Raw PSC: hereditary-saturation interpretation and
+formalization}, \href{https://github.com/VladimirReshetnikov/ProveIt/blob/e58338db7545909907e07a7603e8eb88625c527a/Computability/BusyBeaver/Research/ZFC/raw_psc.md}{calibration and scope}.
+\bibitem{unary} ProveIt, \emph{EPSC1 and an internally well-founded interpretation:
+the remaining gap}, \href{https://github.com/VladimirReshetnikov/ProveIt/blob/e58338db7545909907e07a7603e8eb88625c527a/Computability/BusyBeaver/Research/ZFC/epsc1_wf_frontier.md}{one-parameter frontier}.
+\bibitem{equational} ProveIt, \emph{Batch166: a compensated 244-state reduction},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e58338db7545909907e07a7603e8eb88625c527a/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-166.md}{equational branch and measured packet}.
+\bibitem{functional} ProveIt, \emph{A functional subset-closure alternative: a
+negative compiler result}, \href{https://github.com/VladimirReshetnikov/ProveIt/blob/e58338db7545909907e07a7603e8eb88625c527a/Computability/BusyBeaver/Research/ZFC/functional_subset_closure.md}{complete comparison}.
+\bibitem{decoded} ProveIt source57, \emph{Two further source routes and an
+explicit boundary}, section2,
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e58338db7545909907e07a7603e8eb88625c527a/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/57-prefix-logic_audit-further_semantic_routes.md}{decoded-cache MP and its fused implementation plan}.
+\end{thebibliography}
+\end{document}

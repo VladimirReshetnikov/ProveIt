@@ -1,0 +1,29 @@
+{
+  "status": "PASS_RECORDED_DRIVER_COMPARISON_AND_REFERENCE_BINDING",
+  "changes": "Archive-relative baseline path, delivered machine filenames, and explicit assertion-mode rejection only; no replay algorithm changes.",
+  "expanded_reference_file_count": 291,
+  "expanded_reference_inputs_byte_identical": true,
+  "drivers": [
+    {
+      "executed_driver": "evidence/executed-drivers/verify_borrowed_return.py",
+      "executed_sha256": "99adeb95589e0f39b940a641b39d773d50a51194f1815c23bd6048fec360da93",
+      "portable_driver": "code/build_and_audit.py",
+      "portable_sha256": "1b7455c32abc84357798e2acd166af38434b5a2b6f12f8ec6fa17780cfce2e68",
+      "diff": "--- verify_borrowed_return.py\n+++ build_and_audit.py\n@@ -9,7 +9,7 @@\n from pathlib import Path\n \n BASE_SHA = '4207fc3d1bb16f3c64c3cff0980eaa1486160c3f467aee7685740a39e3df7300'\n-BASE = Path(__file__).resolve().parent / 'proveit/Computability/BusyBeaver/Research/ZFC/candidate-combined243/zfc_combined243_old.tm'\n+BASE = Path(__file__).resolve().parents[1] / 'reference/combined243/zfc_combined243_old.tm'\n \n def read(path):\n     t = {}\n@@ -100,11 +100,11 @@\n                 limitation='The ordinary induction argument in the report is part of the proof; the Python audit does not certify the inherited consistency calibration.')\n \n def main():\n+    if not __debug__: raise RuntimeError('Python assertions must remain enabled.')\n     ap = argparse.ArgumentParser()\n     ap.add_argument('--baseline', type=Path, default=BASE)\n     ap.add_argument('--output', type=Path, required=True)\n     a = ap.parse_args()\n-    assert __debug__, 'Assertions must be enabled.'\n     assert hashlib.sha256(a.baseline.read_bytes()).hexdigest() == BASE_SHA\n     old, start = read(a.baseline)\n     assert start == 95\n@@ -114,16 +114,16 @@\n     evidence = audit(old, new)\n     a.output.mkdir(parents=True, exist_ok=True)\n     raw = encode(new, 95)\n-    (a.output / 'machine_old.tm').write_text(raw)\n+    (a.output / 'zfc_return242_old.tm').write_text(raw)\n     order = [95] + sorted({q for q, b in new} - {95})\n     mapping = {q: i for i, q in enumerate(order)} | {254: len(order)}\n     canonical = {(mapping[q], b): (w, d, mapping[r]) for (q, b), (w, d, r) in new.items()}\n     text = encode(canonical, 0)\n-    (a.output / 'machine.tm').write_text(text)\n+    (a.output / 'zfc_return242.tm').write_text(text)\n     (a.output / 'renumbering.json').write_text(json.dumps(dict(old_to_canonical=mapping, canonical_to_old=order), indent=2) + '\\n')\n     # Re-read the actual written objects and check the bijection in both ways.\n-    newread, newstart = read(a.output / 'machine_old.tm')\n-    canread, canstart = read(a.output / 'machine.tm')\n+    newread, newstart = read(a.output / 'zfc_return242_old.tm')\n+    canread, canstart = read(a.output / 'zfc_return242.tm')\n     assert newread == new and newstart == 95 and canread == canonical and canstart == 0\n     inverse = {v: k for k, v in mapping.items()}\n     assert {(inverse[q], b): (w, d, inverse[r]) for (q, b), (w, d, r) in canread.items()} == new\n"
+    },
+    {
+      "executed_driver": "evidence/executed-drivers/check_execution242.py",
+      "executed_sha256": "1bf6ee96da7ecdca768502e8283623fbe98905498981042d3edb2292c8e8f18f",
+      "portable_driver": "code/check_execution.py",
+      "portable_sha256": "90c31ff760f8a9a08373bccd6f43de7dc6234e274a58aec54f2b91c862d7bd1d",
+      "diff": "--- check_execution242.py\n+++ check_execution.py\n@@ -79,13 +79,13 @@\n     return q,h-origin,{i-origin for i,b in enumerate(tape) if b}\n \n def main():\n-    assert __debug__, 'Assertions must be enabled.'\n+    if not __debug__: raise RuntimeError('Python assertions must remain enabled.')\n     ap = argparse.ArgumentParser()\n     ap.add_argument('--candidate',type=Path,required=True)\n     ap.add_argument('--output',type=Path,required=True)\n     a = ap.parse_args()\n     a.output.mkdir(parents=True,exist_ok=True)\n-    raw, canonical = a.candidate/'machine_old.tm',a.candidate/'machine.tm'\n+    raw, canonical = a.candidate/'zfc_return242_old.tm',a.candidate/'zfc_return242.tm'\n     source = a.candidate/'sites_logical.json'\n     assert sha256(raw.read_bytes()).hexdigest() == TABLE_SHA\n     assert sha256(canonical.read_bytes()).hexdigest() == CANONICAL_SHA\n"
+    },
+    {
+      "executed_driver": "evidence/executed-drivers/replay_return242.py",
+      "executed_sha256": "0d2ec43db68e7398e07724b887a8ba2b46859b8685e66d68e0b7b9f021264695",
+      "portable_driver": "code/check_expanded.py",
+      "portable_sha256": "379fe971ae0e05863271d4dd6179054a91a32e52d78cf6f0d88ad8f88abe52af",
+      "diff": "--- replay_return242.py\n+++ check_expanded.py\n@@ -13,7 +13,7 @@\n SOURCE_SHA = '3ee984818f0bdfd2c4daae72aeb14340572e34d73f5cdb5616b6d29d78fcd7f4'\n \n def main():\n-    assert __debug__, 'Assertions must be enabled.'\n+    if not __debug__: raise RuntimeError('Python assertions must remain enabled.')\n     ap = argparse.ArgumentParser()\n     ap.add_argument('--reference', type=Path, required=True)\n     ap.add_argument('--candidate', type=Path, required=True)\n@@ -22,7 +22,7 @@\n     reference, candidate = a.reference.resolve(), a.candidate.resolve()\n     before = {str(p.relative_to(reference)): sha256(p.read_bytes()).hexdigest()\n               for p in sorted(reference.rglob('*')) if p.is_file() and '__pycache__' not in p.parts}\n-    tp, sp = candidate / 'machine_old.tm', candidate / 'sites_logical.json'\n+    tp, sp = candidate / 'zfc_return242_old.tm', candidate / 'sites_logical.json'\n     assert sha256(tp.read_bytes()).hexdigest() == TABLE_SHA\n     assert sha256(sp.read_bytes()).hexdigest() == SOURCE_SHA\n     sys.path.insert(0, str(reference / 'code'))\n"
+    }
+  ]
+}

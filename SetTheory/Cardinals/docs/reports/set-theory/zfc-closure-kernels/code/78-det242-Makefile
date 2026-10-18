@@ -1,0 +1,15 @@
+PYTHON ?= python3
+LATEX ?= pdflatex
+
+.PHONY: verify expanded pdf
+
+verify:
+	$(PYTHON) -B code/verify_all.py
+
+expanded:
+	$(PYTHON) -B code/verify_all.py --expanded
+
+pdf:
+	$(PYTHON) -B code/build_machine.py --write-tex
+	$(LATEX) -interaction=nonstopmode -halt-on-error report.tex
+	$(LATEX) -interaction=nonstopmode -halt-on-error report.tex

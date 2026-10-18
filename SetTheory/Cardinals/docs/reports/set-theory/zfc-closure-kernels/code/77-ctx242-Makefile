@@ -1,0 +1,8 @@
+.PHONY: pdf verify
+
+pdf:
+	pdflatex -halt-on-error -interaction=nonstopmode report.tex
+	pdflatex -halt-on-error -interaction=nonstopmode report.tex
+
+verify:
+	python3 -B code/reproduce.py --output ../zfc242-verification

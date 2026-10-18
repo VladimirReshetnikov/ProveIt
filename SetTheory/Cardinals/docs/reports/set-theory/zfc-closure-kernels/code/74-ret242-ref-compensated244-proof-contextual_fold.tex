@@ -1,0 +1,193 @@
+\section{A context-dependent fold from 245 to 244 states}
+\label{sec:contextual-fold}
+
+Let $M$ be the old-label Routing245 table, with initial state $95$ and
+target-only halt state $254$.  Construct $M'$ by deleting state $122$ and
+making exactly the following four changes to retained transition rows:
+\begin{center}
+\begin{tabular}{ccll}
+\hline
+State & Read & Original $(\text{write},\text{move},\text{target})$
+                 & Replacement\\
+\hline
+$92$  & $1$ & $(1,L,24)$  & $(1,R,66)$\\
+$104$ & $1$ & $(1,R,122)$ & $(1,R,92)$\\
+$106$ & $1$ & $(1,R,122)$ & $(1,R,92)$\\
+$167$ & $1$ & $(1,L,92)$  & $(1,L,151)$\\
+\hline
+\end{tabular}
+\end{center}
+The deleted rows are $(122,0)\mapsto(0,R,25)$ and
+$(122,1)\mapsto(1,R,66)$.  No other row is changed.
+Consequently $M'$ has exactly $244$ working states, $488$ binary rows, and
+the same unique halt target.  The initial state remains $95$.
+
+The reduction is not a claim that states $92$ and $122$ have the same
+behavior on arbitrary configurations.  Their entry contexts provide the
+missing information.  In particular, an entry into state $122$ always
+leaves a $1$ immediately to the left of the head.  The replacement can
+consult that bit and return to the same position after two extra steps.
+The row at $(167,1)$ is rerouted to an already existing backward branch so
+that its former use of $(92,1)$ remains intact.
+
+\subsection{An inductive condition on the original computation}
+
+For a configuration $(q,h,T)$, where $T:\mathbb Z\to\{0,1\}$ is its tape,
+define the condition $I$ by the following implications:
+\[
+\begin{aligned}
+ q\in\{68,122,167\}&\quad\Longrightarrow\quad T(h-1)=1,\\
+ q=81\ \text{and}\ T(h-1)=1
+     &\quad\Longrightarrow\quad T(h-2)=1.
+\end{aligned}
+\]
+This condition holds for every configuration whose state is $95$,
+irrespective of its head position and tape.
+
+It is preserved by every original transition.  Here is the complete
+incoming-edge inventory for its four constrained states:
+\begin{center}
+\begin{tabular}{cl}
+\hline
+Target & Incoming rows of $M$\\
+\hline
+$68$  & $(52,1)\mapsto(1,R,68)$;
+         $(123,1)\mapsto(1,R,68)$\\
+$81$  & $(68,1)\mapsto(1,R,81)$;
+         $(123,0)\mapsto(0,R,81)$\\
+$122$ & $(104,1)\mapsto(1,R,122)$;
+         $(106,1)\mapsto(1,R,122)$\\
+$167$ & $(145,1)\mapsto(1,R,167)$;
+         $(148,1)\mapsto(1,R,167)$\\
+\hline
+\end{tabular}
+\end{center}
+For targets $68,122,167$, the required bit is precisely the $1$ just
+written by the incoming transition.  An entry into $81$ from $123$ writes
+$0$ immediately to the left, making the antecedent false.  An entry from
+$68$ writes the first required $1$ and inherits the second from $I$ at
+state $68$.  All other target states impose no condition.  This proves
+inductiveness without assumptions about source instructions, register
+values, spare blocks, or the size of a header gap.
+
+\subsection{Seven finite identities in arbitrary tape contexts}
+
+Use all states other than $92$ and $122$ as permissible checkpoint
+states. At a paired checkpoint take the whole prescribed block below;
+intermediate visits to permissible states need not themselves be paired.  Except for four
+entry rows, every original transition out of a checkpoint is an identical
+replacement transition and reaches another checkpoint or the common halt
+target.  The four exceptional entry rows are
+$(104,1),(106,1),(167,1),(81,1)$.
+
+For an entry at head position $h$, the following finite calculations give
+equal endpoint state, head, and entire tape in the two machines.  Cells
+outside the indicated windows are never read or written by the
+calculations.  All statements therefore hold with arbitrary left and
+right tape contexts.
+
+\paragraph{The two former entries into state $122$.}
+Let $q\in\{104,106\}$ and suppose $T(h)=1$.  If $T(h+1)=1$, the two
+computations reach state $66$ at $h+2$ in two steps each and preserve the
+tape.  If $T(h+1)=0$, the original computation reaches state $25$ at $h+2$
+in two steps.  The replacement takes four steps:
+\[
+ q \xrightarrow{1}92\xrightarrow{0}107
+   \xrightarrow{1}125\xrightarrow{0}25.
+\]
+Its head positions after these steps are respectively
+$h+1,h,h+1,h+2$.  The visited bits are $1,0,1,0$, and every write restores
+the bit just read.  Thus the complete endpoint agrees.  The third step
+uses the $1$ written at $h$ by the first step; it needs no additional
+invariant premise.  Splitting the two entry states and the two following
+bits gives four finite identities.
+
+\paragraph{The repaired entry from $167$.}
+If $q=167$ and $T(h)=1$, condition $I$ gives $T(h-1)=1$.  The old two-step
+path is $167,92,24$, and the new two-step path is $167,151,24$.
+The relevant rows of $92$ in $M$ and $151$ in $M'$ both read $1$, write
+$1$, move left, and enter $24$.  Both calculations therefore preserve
+the tape and finish at state $24$ with head $h-2$.
+
+\paragraph{The entry from $81$ with a preceding zero.}
+If $q=81$, $T(h)=1$, and $T(h-1)=0$, both machines use
+$81,92,107$, preserve the tape, and finish at head $h-2$ in two steps.
+The unchanged zero branch of state $92$ suffices.
+
+\paragraph{The entry from $81$ with a preceding one.}
+If $q=81$ and $T(h)=T(h-1)=1$, condition $I$ gives $T(h-2)=1$.
+The old state sequence is
+\[
+ 81,92,24,37,55,20,2,
+\]
+and the new state sequence is
+\[
+ 81,92,66,20,2.
+\]
+The old calculation takes six transitions; the new calculation takes
+four.  Both finish in state $2$ at $h-2$.  Both change exactly the cells
+$h-1$ and $h$ from $1$ to $0$, leaving $T(h-2)=1$ and every other cell
+unchanged.  This is the only finite identity that uses the two-cell
+implication at state $81$.
+
+\subsection{Global halting equivalence}
+
+\paragraph{Theorem.}
+For every binary tape $T$ and head position $h$, the computations of $M$
+and $M'$ started in $(95,h,T)$ have the same halting outcome.
+
+\paragraph{Proof.}
+State $95$ is a checkpoint and satisfies $I$ vacuously.  Follow the
+original computation from one selected checkpoint to the next, using
+the prescribed complete block at each exceptional entry.  At an ordinary
+entry both machines make the same one-step transition.  At one of the
+four exceptional entries, the appropriate finite identity above produces
+an identical checkpoint configuration in both machines.  The original
+condition $I$ remains true because it is invariant under each original
+literal step.  Induction thus gives identical paired checkpoint
+configurations for as long as the computation continues.
+
+Every block consumes between one and six original steps and between one
+and four replacement steps.  Hence infinitely many blocks consume
+unbounded time in both computations.  No exceptional block contains a
+halt state, and all ordinary halting transitions agree.  A halt in either
+machine therefore occurs exactly when the other machine halts.  This
+proves both directions, including nonhalting preservation.\hfill$\square$
+
+This theorem applies directly to the all-zero tape.  It transfers any
+proved calibration of Routing245 to the new exact table without changing
+the encoded source program or the logical theory.  In particular, from
+the established Routing245 theorem one obtains
+\[
+ \mathrm{ZFC}\vdash
+ \neg\operatorname{Halt}(M',0^{\mathbb Z})
+ \ \longleftrightarrow\ \operatorname{Con}(\mathrm{ZFC}).
+\]
+The finite transition equalities and induction on numerical computation
+prefixes give an arithmetically formalizable reduction; a newly checked
+Lean or Rocq endpoint for $M'$ is a separate artifact and is not asserted
+by the Python proof checker.
+
+\subsection{Exact executable evidence}
+
+The portable checker \texttt{prove\_contextual\_fold.py} checks the exact
+four-row patch and state inventory, verifies the complete predecessor
+lists, checks the local Boolean invariant, and replays the seven finite
+identities while rejecting any read outside the represented window.
+The invariant implication uses only offsets $-3,-2,-1,0,1$; exhaustive
+Boolean evaluation of that finite formula is a universal verification,
+independent of any bounded run of the machine.
+
+The checker verifies $482$ common one-step rows and seven exceptional
+window cases.  Its evidence is in \texttt{contextual\_fold\_proof.json}.
+This certificate has a substantially smaller conceptual scope than a
+complete register-program interpreter proof: it proves a direct
+simulation between two fixed Turing machines.
+
+An additional independent sparse/dense replay gives the same complete
+Routing245 root frame after $407\,951$ steps of $M'$.  Its head is $-5$,
+its header is at $176$, the physical register vector is
+$(0,0,0,3,0,0,3,0,0)$, and its spare list contains $167$ values equal to
+$1$.  There are exactly $351$ one-cells.  This finite initialization is
+consistent with the global simulation theorem, although the theorem
+does not depend on the initialization calculation.

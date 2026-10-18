@@ -1,0 +1,106 @@
+INDEPENDENT ORDINARY-PROOF REVIEW: DETOUR242
+
+Conclusion: PASS. No mathematical obstruction was found in the exact local
+reduction. The relative halting equivalence holds from inherited state 95
+for every initial head position and every binary tape. It does not need a
+blank-run screen, an interpreter invariant or a complete runtime replay as an
+additional premise.
+
+Exact canonical candidate SHA256:
+ef8c07f372c76a73c021f51801f16f28f1e4ca5ead2d4ce6780c2a245a0db245
+Inherited candidate SHA256:
+c8ef2f44d25fee6813164cc59ec05061799397da8cf7f0ea7baab63d32d76e02
+Combined243 baseline SHA256:
+4207fc3d1bb16f3c64c3cff0980eaa1486160c3f467aee7685740a39e3df7300
+
+1. Literal artifact
+
+The candidate deletes exactly old state 27, redirects every target 27 to 15,
+and changes old 15/read0 to write0, moveL, state32. The only changed retained
+rows are (15,0), (18,0), (47,0), (65,0). There are 242 working states and 484
+binary rows. All moves are left/right. Inherited start/halt are 95/254;
+canonical start/halt are 0/242. The supplied renumbering is a bijection and
+matches all 484 canonical rows. The halt label has no outgoing rows.
+
+2. The required invariant is unconditional from state 95
+
+Complete old incoming inventories are:
+
+  15: (11,0).
+  18: (12,0), (148,0).
+  47: (33,0), (144,0), (167,0).
+  65: (51,0), (81,0).
+
+Every listed row writes 0 and moves right. Consequently, at every reached
+old control in {15,18,47,65}, the cell immediately left of the head is 0.
+The assertion is vacuous at start95; the incoming inventory proves its
+preservation independently of every other tape cell.
+
+The only incoming rows to old27 are (18,0), (47,0), (65,0), each writing0 and
+moving left. Each lands on the preceding zero just established. Thus every
+reached old27 reads0, and (27,1) is unreachable on arbitrary initial tapes
+from95. This establishes the premise missing from the earlier conditional
+version of the local argument.
+
+3. A complete positive-block simulation
+
+Let kappa map old27 to new15 and fix every other label, including halt254.
+At comparison boundaries, the tapes and heads agree and new control is kappa
+of old control.
+
+For old15/read0, the invariant gives zeros at head offsets -1 and0. The old
+one-step 0R21 is replaced by:
+
+  new15/read0: write0, moveL, state32;
+  new32/read0: write0, moveR, state45;
+  new45/read0: write0, moveR, state21.
+
+Both endpoints are state21, head+1, with the entire tape unchanged. The two
+interior controls are nonhalting. No exterior tape cell is inspected.
+
+For old27/read0, new15/read0 is literally the same transition, 0L32. For every
+other old row except the proved-unreachable (27,1), the corresponding new row
+agrees under kappa. In particular the three incoming redirects preserve the
+mapped comparison relation after one step. The independent checker covers
+484 mapped one-step cases and the one three-step case.
+
+The shared new control15 may represent either old15 or old27. The proof must
+use the old control to choose the block duration; it does so. Injectivity of
+kappa is unnecessary.
+
+4. Converse halting and clocks
+
+Let A(n) count old15/read0 transitions among the first n old steps. The aligned
+new time is tau(n)=n+2*A(n), so n<=tau(n)<=3*n. A counts OLD15/read0; counting
+all new15/read0 occurrences would be incorrect because some represent old27.
+
+An old first halt at n gives the new first halt at tau(n). Conversely, suppose
+the new machine first halts at time m while the old machine has not halted by
+m. The first m old transitions generate a candidate prefix of length tau(m)
+>=m, with no halt at any boundary or inside any block. That contradicts the
+candidate halt at m. This proves both halting directions without an unproved
+reverse simulation or a zero-duration stuttering argument.
+
+The argument consists of a finite table inventory, local tape facts and
+induction on coded computations. It supports the ordinary relative theorem;
+it does not by itself serialize a proof in Lean/Rocq or close the inherited
+source-to-Con(ZFC) formalization.
+
+5. Independent verification and scope
+
+The fresh review script uses its own parser, literal comparisons and symbolic
+overlay executor; it imports neither the construction script nor the local
+checker. Unmentioned tape cells are opaque independent symbols, so it rejects
+an unexpected exterior read. It independently checks all three table hashes,
+counts, totality, the exact patch, the incoming inventories, the 485 reachable
+row cases, intermediate controls and the complete renumbering.
+
+Reproduce from the extracted package root:
+
+  python alternative_formalisms/review_detour242.py --package .
+
+The recorded machine-readable result is detour242_review.json. Blank startup
+timing, the old source-to-Con(ZFC) calibration and any proof-assistant claim
+are outside this audit's independently replayed scope. They do not become
+verified merely because the local reduction passes. No counterexample or
+clock/renumbering/progress gap was found within the reviewed scope.

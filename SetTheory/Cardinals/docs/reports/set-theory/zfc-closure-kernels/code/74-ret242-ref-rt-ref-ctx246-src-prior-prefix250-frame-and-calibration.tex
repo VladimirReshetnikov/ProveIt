@@ -1,0 +1,562 @@
+% Proof-audit section for the recovered prefix250 construction.
+% Requires amsmath, amssymb, and hyperref in the enclosing document.
+% Audited against ProveIt 80e26b89e905bf3e5dfc322befdc1c6eaf25a109.
+\section{Whole-frame simulation and the ZFC equivalence}
+\label{sec:frame-calibration}
+
+This section supplies the unbounded composition argument for the retimed
+250-state table.  It uses the three new register-operation identities
+proved in the local-contract section, the unchanged register-marking
+identity, and the exhaustive symbolic instruction certificate.  Finite
+literal runs provide an independent check of the identities and of the
+bootstrap.  They do not replace the induction arguments.
+
+All numerical state labels in this section are original labels.  The
+machine starts at state~97 on the blank tape; its recurrent dispatch
+state is~96.  Its original-label transition file has SHA-256
+\begin{quote}\small\ttfamily
+fd455304bad82a6da7ab83149352d0b1db27557582c4cc6312de003c96ff4e43.
+\end{quote}
+The 250-state count includes the initializer.  The construction and
+the preceding shift/pulse investigation are credited separately from
+this independent proof audit.
+
+\subsection{The complete recurrent invariant}
+
+Let $R:\mathbb N\to\mathbb N$ be the logical register file, in the order
+$(N,T,W,A,D,H,X,Y,L)$ on indices $0,\ldots,8$, with
+$R(i)=0$ for $i\ge9$.  The physical primary list is
+\[
+ V(R)=(R(2),R(8),R(1),R(4),R(3),R(7),R(0),R(5),R(6)).
+\]
+Thus the physical positions of the nine logical registers are
+$(6,2,0,4,3,7,8,5,1)$, exactly as in permutation252.  Write
+$B(v)=0\,1^{v+1}$ and extend $B$ by concatenation to finite lists.
+
+A recurrent frame consists of an integer head position $h$, a finite
+program-counter word $P$, a natural header distance $d$, the primary
+registers $R$, and a \emph{nonempty finite} spare list $S$.  Its complete
+infinite tape is
+\[
+ 0^{\mathbb Z_{<h-1}}\;1\;P\;0^{d-|P|}\;1\;B(V(R)S)\;0^\omega,
+ \qquad d\ge40,\quad |P|\le d.
+\]
+The left marker is at $h-1$, the header is at $h+d$, and the first
+register separator is at $h+d+1$.  The head is at $h$ and the state
+is~96.  This notation specifies every tape cell; it does not allow
+unexamined nonzero data beyond a finite window.  Trailing zeros in a
+finite representation of either exterior are immaterial.
+
+The lower bound concerns the \emph{total distance from the head to the
+header}.  In the original Lean definition
+\code{Permutation252Frame.DispatchFrame}, the equivalent bound is
+$40\le |P|+\mathit{gap}$, not $40\le\mathit{gap}$.  At an empty
+root, these numbers coincide.  The value~40 is the sufficient bound
+used by the complete instruction certificate; no optimality claim
+is made for that margin.
+
+There is one additional, essential program-counter invariant.  Extend
+$P$ by zeros on the right and follow the literal register decoder to a
+leaf.  If that leaf consumes $\ell$ bits, every bit of $P$ at an index
+$\ge\ell$ is zero.  This is the predicate
+\code{RegisterPathClean.Clean}.  It holds for the empty word, and
+\code{RegisterPathClean.step\_clean} proves that every successful
+logical step produces it.  In particular, an arbitrary bit string
+that happens to fit physically before the header is not automatically
+a valid recurrent source frame.
+
+The physical spare suffix and the zero logical tail have different
+meanings.  The decoder selects only one of the first nine physical
+blocks.  A nonzero spare is not the value of a logical register with
+index at least~9.  The encoding $R(i)=0$ beyond~8 is maintained by
+logical updates to indices below~9; the physical suffix $S$ is retained
+as tape data with its own invariant.
+
+\subsection{Why every legal dispatch is covered by a leaf certificate}
+
+The inherited literal program has 6,459 binary decoder nodes and 6,460
+leaves.  Every leaf path has length at most~34.  The new symbolic
+certificate covers every leaf, and both guards at every decrement
+leaf, for 8,391 cases in total.  Tree completeness must be verified
+as well as the case count: an omitted decoder branch cannot be
+silently treated as a halt.  The inherited interfaces
+\code{SiteCoverage.allSites\_walk\_total} and
+\code{SiteCoverage.allSites\_walk} express precisely these two
+requirements.
+
+For a logical word $P$ and its consumed depth $\ell$, put
+\[
+ Q=\operatorname{take}_{\ell}(P0^\omega),\qquad n=d-40.
+\]
+The clean-path invariant and $\ell\le34\le40\le d$ give the literal
+finite-word identity
+\[
+ P\,0^{d-|P|}=Q\,0^{d-\ell}
+                =Q\,0^{n+40-|Q|}.
+\tag{1}\label{eq:clean-rebase250}
+\]
+If $|P|<\ell$, the missing consumed bits come from the existing gap.
+If $|P|>\ell$, the removed bits are zero by cleanliness.  This proves
+that the complete binary source tape is exactly the source tape of the
+appropriate leaf certificate.  It is the ordinary word argument
+formalized in \code{RegisterPathClean.gap\_consume} and
+\code{Permutation252Simulation.source\_represents}; the new table
+does not change that argument.
+
+There is a second harmless representation issue at the output.  The
+Python certificate writes an incremented path only through its last
+remaining one, whereas \code{RegisterPath.incPath} retains the
+erased trailing zeros.  Both encode the same zero-padded word.  For
+example, $0101$ and $010100$ have the same bit at every position after
+zero extension.  Moving the omitted zeros into the gap leaves the
+complete tape unchanged.  On carry overflow the logical successor is
+an all-zero word of its old length; its physical empty-word
+representation has the same zero-padded bits.  Equation~\eqref{eq:clean-rebase250}
+therefore handles both source and target representations without
+changing the register program.
+
+\subsection{The symbolic certificate is uniform, not a numerical sample}
+
+The symbolic tape contains literal bits, uniform runs of lengths
+$an+c$ with $a,c\ge0$, and one register-file object.  Put $U=V(R)$.
+The latter has
+exactly one of the states: unchanged, marked at a specified physical
+register, incremented there, or decremented there.  Its meanings in
+this construction are
+\[
+\begin{array}{c|l}
+\text{effect}&\text{complete represented register file}\\\hline
+\text{unchanged}&B(US)\\
+\text{increment at physical }r&B((U[r\mapsto U_r+1])\,(S\concat[1]))\\
+\text{positive decrement at physical }r&B((U[r\mapsto U_r-1])\,S).
+\end{array}
+\]
+Here a logical instruction selecting $i$ marks physical position
+$r=\pi(i)$ for the permutation stated above.  The positive decrement
+has the additional one-cell movement of the
+register-file boundary established by its local identity.
+
+Each rule has an elementary interpretation on complete tapes.
+A literal rule is the specified transition.  Peeling a run uses
+$an+c=1+(an+c-1)$ only when $c>0$, so it is valid also when $n=0$.
+A scan rule is induction on the actual length of a uniform run, and
+is permitted only for the indicated self-loop and direction.
+Recentring the zipper, deleting a provably empty run, and padding
+the blank exterior change the representation, not the configuration.
+Adjacent uniform segments are merged by addition of their lengths.
+The register-file rules are exactly the four stated marking and
+operation contracts; a decrement rule additionally checks that its
+guard names the same physical register as the marked block.
+
+Consequently induction on an accepted symbolic execution gives, for
+\emph{every} $n\ge0$, every natural-valued primary register vector
+satisfying its named guard, and every nonempty finite spare list, a
+finite literal run with exactly the stated complete output frame.
+The single-effect representation prevents a register update from being
+silently reapplied.  An unrecognized boundary case or a run whose
+nonzero length cannot be justified is rejected by the checker.
+
+The clock supplied by a scan can be zero, so positivity is checked
+separately.  Every accepted instruction/guard certificate contains
+at least 13 literal transitions.  All other rules denote
+nonnegative-length computations.  Thus every nonhalting logical
+step has a strictly positive finite binary duration, for all
+parameter values.  This claim follows from the rule interpretation
+and the finite certificate, not from the sizes used in regression
+tests.  The Python checker is not itself a Lean or Rocq kernel
+checker; its mathematical rule-soundness proof is part of the
+ordinary proof supplied here.
+
+\subsection{Preservation of distance, spares, and primary values}
+
+Let $\delta$ be~1 exactly for a positive decrement and~0 otherwise.
+Let $\varepsilon$ be~1 exactly when the program-counter update carries
+past the left marker, and~0 otherwise.  The complete instruction
+certificate establishes the endpoint coordinates
+\[
+ h'=h-\varepsilon,\qquad
+ d'=d+\delta+\varepsilon.
+\tag{2}\label{eq:distance-update250}
+\]
+Thus the absolute header coordinate changes by $\delta$:
+$h'+d'=h+d+\delta$.  A positive decrement moves the register file
+right by one; an overflow moves the left marker and dispatch head
+left by one.  The two changes are accounted for separately.
+
+For an increment, the selected primary value increases by one and
+$S'=S\concat[1]$.  For a positive decrement the selected primary value
+decreases by one and $S'=S$.  For a zero decrement, break, or
+continue, the primary vector and spare list are unchanged.  The
+program-counter words are precisely the inherited Wade semantics:
+increment advances its consumed path; positive decrement does the
+same; zero decrement performs a one-level break; break strips
+through the designated number of zero bits and then advances;
+continue strips through the designated number of one bits.
+
+Equations~\eqref{eq:clean-rebase250} and
+\eqref{eq:distance-update250} restore a recurrent frame for the
+logical successor.  The distance stays at least~40.  The spare list
+stays nonempty, and actually grows only on increment.  Its values
+need not be bounded or zero.  At every decrement of the last
+primary block, a following block is therefore present.  This last
+condition is necessary for the zero-decrement rollback probe: with
+no following block it can take the end-of-file branch instead.
+The new invariant is thus slightly stronger than the arbitrary,
+possibly empty spare invariant of permutation252, and is proved
+inductive here.  No finite reserve can be exhausted by a long run.
+
+Logical updates preserve $R(i)=0$ for all $i\ge9$, because every
+selected logical register lies below~9.  The permutation and its
+inverse ensure that the actual primary block modified is the
+intended logical register.  These finite index identities are
+already expressed by \code{Permutation252Frame.nth\_vregs\_append},
+\code{update\_vregs\_append}, and \code{tail\_update}.
+
+The relevant boundary is a \emph{complete dispatch frame}, not merely
+the numerical state~96.  A local decoder execution may revisit
+state~96 before it has restored that frame.  The certificate seeks
+the whole target configuration, so these intermediate visits do
+not produce false logical steps.
+
+\subsection{Unbounded halting equivalence from positive segments}
+
+Let $\mathcal R(a,c)$ mean that the binary configuration $c$ has the
+complete recurrent frame for the clean logical register
+configuration $a$.  The preceding results give four facts:
+\begin{enumerate}
+\item If $\mathcal R(a,c)$, then $c$ is active, in state~96.
+\item If the logical step is $a\mapsto b$ and $\mathcal R(a,c)$,
+there is $k>0$ such that $\mathcal R(b,M^k(c))$.
+\item If the logical step has no successor, full decoder coverage
+implies that its decoded leaf is a literal halt leaf.
+\item From a related literal halt leaf, a finite binary segment
+executes the designated halting transition.
+\end{enumerate}
+The final write and head movement of that transition are retained.
+Afterward the semantics is absorbing.
+
+The forward implication is finite induction: compose the positive
+segments along a logical run reaching a halt leaf, then compose the
+literal halting segment.  This yields a finite binary halt witness.
+
+For the reverse implication, a particularly direct proof is strong
+induction on a binary halting time $t$.  Suppose
+$\mathcal R(a,c)$ and $M^t(c)$ is halted.  If the logical step has no
+successor, fact~3 supplies the logical halt.  Otherwise choose the
+segment of fact~2, of length $k>0$, reaching an active related
+configuration $c'$.  Necessarily $k<t$: if $k\ge t$, absorption of
+the halt would make $c'$ halted.  The remaining binary run from
+$c'$ halts after $t-k<t$ steps.  Apply the induction hypothesis and
+prepend the one logical step.  This establishes
+\[
+ \mathcal R(a,c)\ \Longrightarrow\
+ \left[\begin{aligned}
+ &\bigl(a\text{ reaches a logical halt leaf}\bigr)\\
+ &\qquad\longleftrightarrow
+ \bigl(c\text{ eventually halts under }M\bigr)
+ \end{aligned}\right].
+\tag{3}\label{eq:global250}
+\]
+No uniform clock bound, infinite choice of segments, or unproved
+fairness principle is involved.  The generic argument is already
+kernel checked in \code{RuntimePerm252.PositiveSimulation},
+\code{binary\_to\_abstract}, and \code{halts\_iff}; its
+instantiation for the new table uses the new contracts and frame.
+
+\subsection{The verified blank prefix enters an admitted dirty root}
+
+The literal blank run reaches its recorded complete frame at
+585,431 transitions:
+\[
+ q=96,\quad h=-3,\quad d=228,\quad P=[],\qquad S=[1]^{210}.
+\]
+Its physical primaries are $(0,2,0,4,0,0,1,0,0)$, so
+\[
+ R_*=(N,T,W,A,D,H,X,Y,L)=(1,0,0,0,4,0,0,0,2).
+\tag{4}\label{eq:dirty-root250}
+\]
+The marker is at $-4$, the header at~225, and there are 438 one-cells.
+The published finite support lists all of them, with every other
+cell blank.  The empty program counter is clean, $228\ge40$, and
+the 210 spare blocks are nonempty, so every clause of
+$\mathcal R(\langle[],R_*\rangle,c_*)$ holds.
+
+The dirty-start theorem does not require the six numerical fields
+$N,A,D,X,Y,L$ to vanish.  It requires the formula invariant
+\[
+ C_{254}(T)\ \wedge\ C_{254}(H)\ \wedge\operatorname{Good}(W).
+\]
+Here $T=H=0$ are the known truth code, and $W=0$ is the empty stack.
+The exact witnesses are \code{Code254.C254.truth},
+\code{Code254.C254.truth}, and \code{Enum254.good\_zero}.
+The nonzero fields $N=1$, $D=4$, and $L=2$ therefore create no
+unproved soundness obligation.
+
+For clarity, the inherited root comparison is the composition
+\[
+\begin{split}
+ \operatorname{Halts}_{\rm Prog254}([],R_*)
+ &\longleftrightarrow
+   \operatorname{Halts}_{\rm pathDag254}([],R_*)\\
+ &\longleftrightarrow C_{254}(F),\qquad F=1.
+\end{split}
+\tag{5}\label{eq:root-calibration250}
+\]
+The first line is
+\code{Bisim254.prog254\_halts\_iff R}, valid for every register
+file $R$.  The second is
+\code{DirtyProgram254.path\_halts\_iff}, applied to
+\code{L2.enc} of the nine-field state in
+\eqref{eq:dirty-root250}.  It is not an application of a theorem
+restricted to the older zero root or to the public $N=2$ start.
+
+The dirty theorem uses an explicit absorption map:
+\code{DirtyRoot254.virtual} makes scratch and accumulator fields
+clean while preserving the continuation after the first fetch and
+read routines.  Its theorem
+\code{DirtyRoot254.stage\_virtual} proves equality of those
+continuations.  The formula fields are preserved by
+\code{virtual\_formulas}.  Completeness from an arbitrary
+candidate counter is proved by
+\code{EnumSafeStart254.complete\_from}: a padded refutation
+program can be chosen with code above the current counter, and
+every later candidate is reached unless an earlier candidate
+already halts.  Thus no possible refutation is lost by starting
+with $N=1$ or with a nonzero list pointer.
+
+Adding or removing an actual finite prefix preserves eventual
+halting for an absorbing machine.  Combining the blank prefix,
+\eqref{eq:global250}, and \eqref{eq:root-calibration250} gives
+\[
+ \operatorname{Halt}(M_{250},\mathrm{blank})
+ \longleftrightarrow C_{254}(F).
+\tag{6}\label{eq:binary-code250}
+\]
+The right side is a finite numerical derivability predicate.
+\code{Code254Proof.c254\_iff\_checked} additionally represents it
+as the existence of a natural proof code accepted by the exact
+finite checker.  This is an inherited theorem, not a newly
+assumed equivalence between an informal calculus and ZFC.
+
+\subsection{Ordinary ZFC proof of the calibration}
+
+Write $\operatorname{Ref}_T$ for the existence of a finite formal
+refutation in a fixed recursive presentation of $T$, and
+$\operatorname{Con}(T)=\neg\operatorname{Ref}_T$.  Fix the native
+theory $T_{\rm nat}$ to be exactly
+\code{NativeTheory254.NativeAx}: universal closures of CP,
+every native-formula GIC instance, and raw irreflexivity.
+The GIC scheme ranges over first-order formulas.  It is not an
+axiom quantifying over every external binary relation.
+
+The inherited mathematical calibration consists of
+\[
+ C_{254}(F)
+ \longleftrightarrow \operatorname{Ref}_{T_{\rm nat}}
+ \longleftrightarrow \operatorname{Ref}_{\rm ZF}
+ \longleftrightarrow \operatorname{Ref}_{\rm ZFC}.
+\tag{7}\label{eq:native-zfc250}
+\]
+The exact endpoints are
+\code{NativeTheory254.c254\_refutation\_iff},
+\code{WFTheory.native\_refutation\_iff\_zf} (or
+\code{WFTheory.c254\_refutation\_iff\_zf} for the direct code
+comparison), and
+\code{ChoiceCalibration254.zf\_refutation\_iff\_zfc}.
+The independently composed endpoint
+\code{ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation}
+is used by \code{BinaryZFC252}.
+
+Here is the set-theoretic reading that makes the strength of
+\eqref{eq:native-zfc250} precise.  Work \emph{inside ZFC} and code
+syntax and proofs by finite sequences of natural numbers.  Each
+theory is a set of first-order sentences in a countable language.
+First-order soundness and the Henkin completeness construction
+are theorems of ZFC for such coded theories.  In particular,
+consistency supplies a nonempty set-coded model, which can be
+taken countable; it supplies neither a transitive model nor an
+externally well-founded model.
+
+For the native-to-ZF comparison, the two model constructions used
+by the inherited proof can be performed on those sets:
+\begin{enumerate}
+\item Every ZF model satisfies the native axioms.  Raw
+irreflexivity follows from Foundation.  Suitable internal limit
+rank segments supply the containers.  The internally derived
+Collection scheme supplies the literal GIC instances.  These
+are the contents of \code{ZFNative.native\_of\_zf}, based on
+\code{ZFRank.containers} and \code{ZFRank.collection}.
+Consequently a native refutation rules out all ZF models, and
+completeness gives a ZF refutation.
+\item From a native model, its CP/GIC reduct supplies the
+bisimulation quotient used in \code{QuotientZF0}.  As a
+quotient of a set this is again a set.  The quotient has the
+required extensional ZF axioms without Foundation, together
+with the actual power-set construction.  Its \emph{internally}
+well-founded subdomain supplies Foundation and retains the
+remaining axioms.  This is
+\code{WFModel.quotient\_models\_ZF}; its nonemptiness is
+\code{WellFoundedPart.quotient\_domain\_nonempty}.
+Thus a ZF refutation rules out all native models, and
+completeness gives a native refutation.
+\end{enumerate}
+
+The word ``internally'' is indispensable in item~2.  In the
+quotient model $(D,E)$, the predicate is
+\[
+\begin{split}
+ \operatorname{WF}_E(x)\;\Longleftrightarrow\;
+ \exists t\in D\;[\;&xEt\ \wedge\ t\text{ is }E\text{-transitive}\\
+ &\wedge\ \forall s\in D\,
+   (s\subseteq_E t\ \wedge\ s\ne_E\varnothing
+      \Rightarrow s\text{ has an }E\text{-minimal member})].
+\end{split}
+\]
+This is one first-order formula, explicitly defined as
+\code{WellFoundedPart.wfForm}; the subset quantifier ranges
+over elements represented in $D$.  It is not external
+well-foundedness of $E$.  Separation in the metatheory forms
+$\{x\in D:\operatorname{WF}_E(x)\}$.  The specific GIC witness
+instance proves closure under sets of such elements.  The
+relativized Separation and Replacement schemes are handled by
+explicit formula translations in \code{WFRelativization}
+and \code{WFModel.domain\_replacement}.  Infinity is
+obtained by separating this predicate from an internal
+inductive set.  No assumption of full Collection in an
+arbitrary ZF-without-Foundation model is being substituted.
+
+For ZF versus ZFC, inclusion of the ZF axioms in ZFC gives one
+refutation direction.  For the other, assume a ZFC refutation
+and suppose ZF were consistent.  Henkin completeness gives
+a set model $\mathcal A$ of ZF.  Form its internal constructible
+subdomain
+\[
+ L^{\mathcal A}=\{a\in |\mathcal A|:
+                       \mathcal A\models a\in L\}.
+\]
+It is a subset of the set $|\mathcal A|$, even though
+$\mathcal A$ regards its own $L$ as a class.  The usual
+constructible-hierarchy proofs establish, uniformly for
+first-order formula codes, that this induced structure
+satisfies ZF and Choice.  In the pinned development these are
+\code{ConstructibleZF.L\_models\_ZF},
+\code{ConstructibleAbs.vEqL}, and
+\code{ConstructibleOrder.choice\_of\_VL}, composed in
+\code{ChoiceCalibration254.constructible\_models\_ZFC}.
+There is an explicit inhabitant, supplied by
+\code{constructible\_nonempty}.  Soundness contradicts the
+assumed ZFC refutation.  Classical logic therefore gives a ZF
+refutation.
+
+All structures in this argument are set coded.  Their
+satisfaction predicates are defined by recursion on finite
+formula syntax; this is satisfaction for \emph{set structures},
+not a truth predicate for the entire universe.  Quotients,
+definable subdomains, and finite formula translations are
+ordinary ZFC constructions.  Uniform induction on formula
+codes handles the axiom schemes.  The internally ill-founded
+or nonstandard nature of a Henkin model creates no extra
+premise: all the interpreted predicates are evaluated in
+that model and all formula inductions are performed in the
+metatheory.  This gives an ordinary ZFC proof of
+\eqref{eq:native-zfc250}, with the inherited interpretation
+lemmas as its identified mathematical ingredients.
+
+The machine part is simpler to internalize at this strength.
+Finite binary tapes, register files, paths, run segments, and
+proof trees are sets coded by finite sequences of natural
+numbers.  The transition function and the finite trace
+predicate are primitive-recursive operations.  The local
+word identities use induction on finite block lists; the
+symbolic rule proof uses induction on a finite execution;
+the global reverse direction uses induction on a natural
+halting time.  ZFC proves these inductions and the required
+recursions.  The specific bootstrap and all-sites certificate
+are finite computational equalities for the displayed
+tables.  Thus equations~\eqref{eq:binary-code250} and
+\eqref{eq:native-zfc250} compose in ZFC to give
+\[
+ \boxed{\quad
+ \mathrm{ZFC}\ \vdash\
+ \left[\neg\operatorname{Halt}(M_{250},\mathrm{blank})
+ \ \longleftrightarrow\ \operatorname{Con}(\mathrm{ZFC})\right].
+ \quad}
+\tag{8}\label{eq:target250}
+\]
+Neither direction assumes that ZFC is consistent.  The proof
+establishes an equivalence, not either side of it in isolation.
+
+\subsection{Proof status and reproducibility boundary}
+
+The claim in \eqref{eq:target250} is an ordinary mathematical
+proof with explicit finite computational certificates and
+inherited interpretation lemmas.  The inherited permutation252
+endpoint has an external Lean proof according to its pinned
+repository verification records.  This audit does not claim
+to have rebuilt that dependency closure.  The new 250-state
+endpoint has not been delivered as a closed Lean or Rocq
+theorem, nor as a serialized first-order ZFC derivation.
+
+In particular, a Lean axiom report containing only
+\code{propext}, \code{Classical.choice}, and
+\code{Quot.sound} is not an automatic translation of an
+arbitrary universe-polymorphic Lean proof into ZFC.  The
+ZFC claim above rests on the specific set-coded mathematical
+argument, with countable completeness and set-sized model
+constructions, not on such a general translation.  The
+repository's stronger internal PA proof-code and finite-trace
+formalization goal remains a separate task.
+
+Under the additional metatheoretic hypothesis
+$\operatorname{Con}(\mathrm{ZFC})$, the machine does not
+halt, and G\"odel's second incompleteness theorem prevents
+ZFC from proving its nonhalting.  To infer full two-sided
+independence by also excluding a ZFC proof of the false
+existential halting assertion, one can assume
+$\Sigma_1$-soundness.  Consistency alone does not generally
+exclude a theory proving its own inconsistency.  These
+independence qualifications do not change
+\eqref{eq:target250}.
+
+\subsection{Pinned source interfaces}
+
+All ProveIt paths in the following list are relative to
+\code{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/}, at
+commit
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/80e26b89e905bf3e5dfc322befdc1c6eaf25a109/Computability/BusyBeaver/Lean/BusyBeaver/ZFC}{\code{80e26b89e905bf3e5dfc322befdc1c6eaf25a109}}.
+The exact table and source hashes should accompany the
+machine package so that later repository changes do not
+silently alter the dependencies.
+\begin{itemize}
+\item \code{RegisterPath.lean},
+\code{RegisterPathClean.lean},
+\code{SiteCoverage.lean}: literal path semantics,
+clean-path preservation, and complete leaf coverage.
+\item \code{Permutation252Frame.lean},
+\code{Permutation252Simulation.lean},
+\code{RuntimePerm252.lean}: register placement,
+complete-tape source rebasing, and positive-segment
+halting reflection.  The frame is strengthened here by
+requiring a nonempty spare suffix.
+\item \code{Bisim254.lean},
+\code{DirtyRoot254.lean},
+\code{DirtyProgram254.lean},
+\code{EnumSafeStart254.lean}: literal decoder to
+219-node DAG, scratch absorption, safe dirty roots,
+and completeness from arbitrary candidate counters.
+\item \code{Code254Proof.lean},
+\code{NativeTheory254.lean}: the finite numerical
+proof checker and the exact CP/all-Form-GIC/IR theory.
+\item \code{ZFNative.lean},
+\code{WellFoundedPart.lean},
+\code{WFRelativization.lean},
+\code{WFModel.lean}, \code{WFTheory.lean}:
+the two native/ZF model directions, with the internal
+well-founded predicate and the literal scheme translations.
+\item \code{ConstructibleChoice.lean},
+\code{ChoiceCalibration254.lean},
+and \code{BinaryZFC252.lean}.
+These supply constructible-subdomain
+Choice and the two independently composed external
+ZFC consistency comparisons for the inherited machine.
+\end{itemize}

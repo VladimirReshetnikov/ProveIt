@@ -1,0 +1,258 @@
+{
+  "status": "PASS_UNIVERSAL_LOCAL_TRANSFER",
+  "baseline_sha256": "4207fc3d1bb16f3c64c3cff0980eaa1486160c3f467aee7685740a39e3df7300",
+  "old_table_sha256": "6b700aa713418cfe347a6ff2d0a92de7c31810d1cf69814b4684c7fb463876a0",
+  "canonical_sha256": "64ddeb2c01c3e9c7feffaffaad87266a270716c9307892a0445bf869b988984d",
+  "states": 242,
+  "rows": 484,
+  "old_start": 95,
+  "old_halt": 254,
+  "canonical_start": 0,
+  "canonical_halt": 242,
+  "canonical_dispatcher": 86,
+  "deleted_states": [
+    15
+  ],
+  "edits": [
+    [
+      11,
+      0,
+      [
+        0,
+        1,
+        15
+      ],
+      [
+        0,
+        1,
+        27
+      ]
+    ],
+    [
+      27,
+      1,
+      [
+        1,
+        1,
+        39
+      ],
+      [
+        1,
+        1,
+        22
+      ]
+    ]
+  ],
+  "incoming": {
+    "15": [
+      [
+        11,
+        0,
+        0,
+        1
+      ]
+    ],
+    "18": [
+      [
+        12,
+        0,
+        0,
+        1
+      ],
+      [
+        148,
+        0,
+        0,
+        1
+      ]
+    ],
+    "27": [
+      [
+        18,
+        0,
+        0,
+        -1
+      ],
+      [
+        47,
+        0,
+        0,
+        -1
+      ],
+      [
+        65,
+        0,
+        0,
+        -1
+      ]
+    ],
+    "47": [
+      [
+        33,
+        0,
+        0,
+        1
+      ],
+      [
+        144,
+        0,
+        0,
+        1
+      ],
+      [
+        167,
+        0,
+        0,
+        1
+      ]
+    ],
+    "65": [
+      [
+        51,
+        0,
+        0,
+        1
+      ],
+      [
+        81,
+        0,
+        0,
+        1
+      ]
+    ]
+  },
+  "invariant": "q in {18,47,65} implies T(h-1)=0; q=27 implies T(h)=0",
+  "invariant_boolean_cases": 7712,
+  "invariant_window": [
+    -2,
+    -1,
+    0,
+    1,
+    2
+  ],
+  "ordinary_row_count": 482,
+  "blocks": [
+    {
+      "next_bit": 0,
+      "old_steps": 2,
+      "new_steps": 4,
+      "old_trace": [
+        [
+          11,
+          0,
+          0,
+          0,
+          1,
+          15
+        ],
+        [
+          15,
+          1,
+          0,
+          0,
+          1,
+          21
+        ]
+      ],
+      "new_trace": [
+        [
+          11,
+          0,
+          0,
+          0,
+          1,
+          27
+        ],
+        [
+          27,
+          1,
+          0,
+          0,
+          -1,
+          32
+        ],
+        [
+          32,
+          0,
+          0,
+          0,
+          1,
+          45
+        ],
+        [
+          45,
+          1,
+          0,
+          0,
+          1,
+          21
+        ]
+      ],
+      "endpoint_state": 21,
+      "endpoint_head": 2,
+      "tape_unchanged": true,
+      "reads_within": [
+        0,
+        1
+      ]
+    },
+    {
+      "next_bit": 1,
+      "old_steps": 2,
+      "new_steps": 2,
+      "old_trace": [
+        [
+          11,
+          0,
+          0,
+          0,
+          1,
+          15
+        ],
+        [
+          15,
+          1,
+          1,
+          1,
+          1,
+          22
+        ]
+      ],
+      "new_trace": [
+        [
+          11,
+          0,
+          0,
+          0,
+          1,
+          27
+        ],
+        [
+          27,
+          1,
+          1,
+          1,
+          1,
+          22
+        ]
+      ],
+      "endpoint_state": 22,
+      "endpoint_head": 2,
+      "tape_unchanged": true,
+      "reads_within": [
+        0,
+        1
+      ]
+    }
+  ],
+  "old_clock_bounds": [
+    1,
+    2
+  ],
+  "new_clock_bounds": [
+    1,
+    4
+  ],
+  "theorem": "For every head h and arbitrary binary tape T, old and new have the same halting outcome from (95,h,T).",
+  "scope": "Universal finite-premise checker for the accompanying ordinary proof; not a proof-assistant kernel and not a consistency proof."
+}

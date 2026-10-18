@@ -1,0 +1,152 @@
+\section{Independent audit of the 244-state fold}
+\label{sec:independent-local-audit}
+
+This section gives an independent proof review of candidate~1.  Its checker,
+\texttt{verify\_local\_stuttering.py}, reads only the two literal transition
+tables.  It does not import the searcher, the decoder compiler, a register
+interpreter, or the symbolic frame checker.  The input Routing245 table is
+pinned by SHA-256
+\begin{center}\small\ttfamily
+f8dbeacdad5fd89c57e3f240781324b09110be8e0ccdb838a9c710fb28d2a267
+\end{center}
+and the verified candidate table has SHA-256
+\begin{center}\small\ttfamily
+d603bc3793ac9373f510a05d4e898f4ee7b4cac492821406a665554dca5c6daf.
+\end{center}
+These are the old-label tables: their common initial state is $95$, and
+their common target-only halt state is $254$.
+
+\subsection{What is checked independently}
+
+The old machine $M$ has $245$ working states.  The new machine $N$ deletes
+state $122$ and changes precisely four retained rows:
+\[
+\begin{array}{c|c|c}
+\text{row}&M&N\\ \hline
+(92,1)&(1,L,24)&(1,R,66)\\
+(104,1)&(1,R,122)&(1,R,92)\\
+(106,1)&(1,R,122)&(1,R,92)\\
+(167,1)&(1,L,92)&(1,L,151).
+\end{array}
+\]
+Both rows at $122$ are deleted.  The literal inventories therefore give
+$244$ working states and $488$ rows for $N$.
+
+At comparison boundaries, use identical configurations $(q,h,T)$ of the
+two machines, with $q\notin\{92,122\}$.  Impose the local condition
+\[
+\begin{aligned}
+q=68&\ \Longrightarrow\ T(h-1)=1,\\
+q=81&\ \Longrightarrow\
+  \bigl(T(h-1)=0\ \lor\ [T(h-2)=T(h-1)=1]\bigr),\\
+q=167&\ \Longrightarrow\ T(h-1)=1.
+\end{aligned}
+\tag{I}
+\]
+The condition is vacuous at state $95$, for every tape and head position.
+The complete incoming-edge lists for its three constrained states are the
+same in both tables:
+\[
+\begin{array}{c|l}
+68&(52,1)\mapsto(1,R,68),\quad(123,1)\mapsto(1,R,68)\\
+81&(68,1)\mapsto(1,R,81),\quad(123,0)\mapsto(0,R,81)\\
+167&(145,1)\mapsto(1,R,167),\quad(148,1)\mapsto(1,R,167).
+\end{array}
+\]
+The first and third rows establish the required left-hand $1$ by a literal
+write.  In the middle row, the entry from $123$ writes the left-hand $0$;
+the entry from $68$ writes the nearest $1$ and inherits the next $1$ from
+condition~(I).  This proves preservation of~(I) by ordinary comparison
+steps.  No condition concerning a register value or a source instruction
+is used.
+
+There are $482$ ordinary rows: every row out of a boundary state except
+$(81,1),(104,1),(106,1),(167,1)$.  The checker verifies that all $482$ rows
+are identical and that none enters $92$ or $122$.  All other boundary
+exits are covered by the following seven local calculations.  Coordinates
+are relative to the starting head; unspecified cells are arbitrary.
+\[
+\begin{array}{c|l|c|c|c|l}
+q&\text{fixed input cells}&\text{old steps}&\text{new steps}
+  &\text{endpoint }(q',h')&\text{changed cells}\\ \hline
+104&T(0)=1,\ T(1)=0&2&4&(25,2)&\text{none}\\
+104&T(0)=1,\ T(1)=1&2&2&(66,2)&\text{none}\\
+106&T(0)=1,\ T(1)=0&2&4&(25,2)&\text{none}\\
+106&T(0)=1,\ T(1)=1&2&2&(66,2)&\text{none}\\
+167&T(-1)=T(0)=1&2&2&(24,-2)&\text{none}\\
+81&T(-1)=0,\ T(0)=1&2&2&(107,-2)&\text{none}\\
+81&T(-2)=T(-1)=T(0)=1&6&4&(2,-2)&T(-1),T(0):1\mapsto0.
+\end{array}
+\tag{L}
+\]
+In each row, the two executions finish in the same state, at the same
+head position, with the same entire tape.  The checker rejects a trace
+that reads any cell outside its fixed input window.  Thus this is an
+exact verification for arbitrary exterior tape contexts, rather than
+testing a finite collection of complete tapes.
+
+The two input cases for each of $104$ and $106$ exhaust the binary value
+of $T(1)$.  The two cases at $81$ exhaust condition~(I).  The case at $167$
+uses precisely its condition in~(I).  Every endpoint in~(L) satisfies~(I)
+vacuously and is a comparison boundary.  This establishes a positive
+stuttering relation without needing comparisons at intermediate states
+$107$, $125$, or $151$ visited by one of the short detours.
+
+\subsection{Halting equivalence and time accounting}
+
+\paragraph{Theorem.}
+For every function $T:\mathbb Z\to\{0,1\}$ and every head position $h$,
+$M$ started in $(95,h,T)$ halts if and only if $N$ started in the same
+configuration halts.
+
+\paragraph{Proof.}
+Start with the common state $95$, where~(I) holds.  At every boundary,
+take an ordinary common step or the applicable row of~(L).  The endpoints
+coincide exactly, remain boundaries, and satisfy~(I).  Induction constructs
+paired boundary configurations.  Every block takes at least one step in
+each machine; its lengths are at most six old steps and four new steps.
+No exceptional block contains the halt state.  Ordinary halting steps
+are identical.  Therefore a finite halt in one run occurs at the common
+endpoint of a finite sequence of blocks in both runs.  If the block
+sequence is infinite, its two positive clocks are unbounded, so both
+runs are nonhalting.\hfill$\square$
+
+The argument is independent of the old machine's blank initialization.
+Consequently it transfers the old machine's consistency calibration to
+the exact new table by composition.  A kernel-checked endpoint for the
+new literal table is not claimed by this standalone Python checker.
+
+\paragraph{Corollary (exact clock difference).}
+If the common computation halts, let $A$ count its comparison blocks
+that start at $104$ or $106$ with the next bit $0$, and let $B$ count its
+blocks that start at $81$ with the two preceding bits $11$.  If
+$t_M,t_N$ are the two complete halting times, then
+\[
+ t_N=t_M+2A-2B,
+ \qquad \frac23 t_M\leq t_N\leq 2t_M.
+\]
+Indeed, exactly the $A$ blocks add two steps and exactly the $B$ blocks
+remove two steps.  Every individual block satisfies
+$2\ell_M\leq3\ell_N$ and $\ell_N\leq2\ell_M$; summing gives the bounds.
+These are statements about complete halting runs, not about alignment
+of arbitrary individual microsteps.
+
+For the blank tape, both halting predicates are arithmetical.  The
+proof uses finite case checks and induction over coded finite
+computations, so its blank-tape specialization can be formalized in PA.
+There is no reliance on second-order quantification over all tapes for
+that arithmetical specialization.  To see explicitly that the reverse
+direction also uses finite reasoning, an alleged new halt within $t$
+steps can be compared against an old prefix of $6t$ steps.  Unless the
+old machine has already halted, this prefix supplies at least $t$
+positive comparison blocks, whose new counterpart reaches time at least
+$t$ without a halt, a contradiction.
+
+\subsection{Audit conclusion}
+
+The independent checker passed all seven exceptional local identities
+and all $482$ ordinary rows.  Its local executions contain $18$ old and
+$20$ new literal transitions in total.  Its complete output is
+\texttt{local-stuttering-audit.json}.  The checks support a direct theorem
+between the two exact Turing machines; they do not depend on the larger
+register-frame certificate or on bounded numerical experiments.

@@ -1,0 +1,100 @@
+{
+  "status": "PASS_INDEPENDENT_FINAL_FORMAL_REVIEW",
+  "scope": "Narrow mathematical and source audit of the packaged relative Lean proof; no recompilation and no package mutation.",
+  "reviewed_sources_sha256": {
+    "Tables242.lean": "107d1921e08fa44ba717d2acd03a28cdb2772fe37414cd0fac9f8c11fbb2b93a",
+    "BlockSimulation.lean": "49f5d4493cff8899a5712019066f5ea41579bfc5a75846b4e074fb4efecf7f6e",
+    "Reduction242.lean": "a271a090352be56e496df48a0126042383ef4bd1f720259216a12d66b2ed53e3",
+    "Audit242.lean": "4a22510cb034f418e8bc72bbc4cc562cdffa301a54e8272906a98b03c4cab246"
+  },
+  "reviewed_root_replay_sha256": "aeca54e5d3fdd82bc6920061bb159b592f502bb14b0f00059a3e0c9a9e0b8bdd",
+  "source_files_match_root_replay": true,
+  "independent_literal_binding": {
+    "array_slots_each": 256,
+    "old_binary_rows": 486,
+    "new_binary_rows": 484,
+    "old_working_states": 243,
+    "new_working_states": 242,
+    "working_label_255_present_both": true,
+    "unique_nonworking_transition_target": 254,
+    "tables_equal_packaged_tm_files": true,
+    "deleted_rows": [
+      [
+        15,
+        0
+      ],
+      [
+        15,
+        1
+      ]
+    ],
+    "changed_retained_rows": [
+      [
+        11,
+        0
+      ],
+      [
+        27,
+        1
+      ]
+    ]
+  },
+  "theorems_reviewed": [
+    {
+      "name": "PositiveBlocks.transport / halting_iff",
+      "result": "PASS",
+      "reason": "Induction on the finite halting witness is sound. For k > 0, k+n = (n+1)+(k-1); absorbing terminal configurations ensure terminality after passing the original halting time. Each direction uses the corresponding strictly positive clock. Reversing the blocks supplies the reverse implication without an infinite-run or zero-progress assumption."
+    },
+    {
+      "name": "BranchBorrow242.invariant_step / invariant_run",
+      "result": "PASS",
+      "reason": "The invariant concerns the old machine only. Every predecessor of states 18, 47 and 65 writes zero and moves right; every predecessor of 27 moves left from one of those controls. The former head cell and its left neighbor are distinct in Int."
+    },
+    {
+      "name": "BranchBorrow242.exceptional_zero / exceptional_one",
+      "result": "PASS",
+      "reason": "The exact 2/4 and 2/2 executions preserve the entire function tape. The zero case rereads only offsets 0 and 1. The functional update identities are proved using extensional equality, not a finite tape representation."
+    },
+    {
+      "name": "BranchBorrow242.matching_blocks / checkpoint_halting_iff",
+      "result": "PASS",
+      "reason": "Checkpoints impose Inv and exclude state 15. Ordinary rows are equal under these conditions and cannot enter 15. Exceptional blocks return to states 21 or 22, restore the checkpoint conditions, and have positive clocks."
+    },
+    {
+      "name": "BranchBorrow242.start95_halting_iff",
+      "result": "PASS",
+      "reason": "The theorem universally quantifies head : Int and tape : Int -> Bool. It has no consistency assumption, finite-support assumption, input-frame assumption or external invariant premise; the checkpoint condition is proved directly at state 95."
+    },
+    {
+      "name": "BranchBorrow242.blank_halting_iff / blank_nonhalting_iff",
+      "result": "PASS",
+      "reason": "The blank theorem specializes the arbitrary function-tape theorem, and nonhalting equivalence is obtained by propositional negation of that proved equivalence."
+    },
+    {
+      "name": "BranchBorrow242.calibration_transfer",
+      "result": "PASS_CONDITIONAL_TRANSFER_ONLY",
+      "reason": "C : Prop and old_calibration are explicit theorem arguments. The relative equivalence is proved before this theorem and does not depend on old_calibration. No Con(ZFC) definition or predecessor source/calculus calibration theorem is imported."
+    }
+  ],
+  "root_replay_review": {
+    "lean_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+    "axiom_probes": 18,
+    "typed_callers": 13,
+    "warnings": 0,
+    "exit_codes_all_zero": true,
+    "permitted_observed_axioms": [
+      "propext",
+      "Quot.sound"
+    ],
+    "custom_axioms_observed": false,
+    "sorry_or_admit_or_native_decide_found": false
+  },
+  "semantic_scope_notes": [
+    "The Lean units use inherited labels and terminal control 254. Canonical renumbering is supplied by the separate exact finite artifact binding.",
+    "For undefined Nat controls, step is a fixed point rather than a halt. The exact table binding verifies that the only nonworking transition target is the designated terminal 254, so this totalization does not change the valid start-95 machine behavior.",
+    "The four Lean units establish a relative machine theorem. They do not alone provide the full ZFC consistency calibration or the predecessor source/calculus endpoint."
+  ],
+  "open_issues": [],
+  "recompiled_during_this_review": false,
+  "package_files_modified_during_this_review": false
+}

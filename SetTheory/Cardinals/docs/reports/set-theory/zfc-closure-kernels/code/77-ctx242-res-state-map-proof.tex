@@ -1,0 +1,58 @@
+\section{A direct state-map formulation}
+\label{sec:direct-state-map}
+
+The return fold also admits a stepwise formulation with an exact time
+change. Define the state map $f$ by $f(27)=15$ and $f(q)=q$ otherwise,
+and extend it to configurations without changing the head or tape.
+Strengthen the old-machine invariant to
+\[
+ J(q,h,\tau)\ \Longleftrightarrow\
+ \bigl(q\in\{15,18,47,65\}\Rightarrow\tau(h-1)=0\bigr)
+ \ \land\
+ \bigl(q=27\Rightarrow\tau(h)=0\bigr).
+\]
+The first conjunct was established by the incoming write-zero/right
+inventory. The only entries to $27$ are the read-zero left moves from
+$18$, $47$, and $65$; the first conjunct therefore establishes the
+second at every such entry. Both conjuncts are initially vacuous at
+state $95$. Thus $J$ is inductive for the old machine.
+
+For every old transition row other than $(15,0)$ and $(27,1)$, the exact
+finite table identity is
+\[
+ \delta_N(f(q),b)=(w,d,f(r))
+ \qquad\text{whenever}\qquad
+ \delta_O(q,b)=(w,d,r).
+\]
+There are $484$ such row identities. The row $(27,1)$ is infeasible by
+$J$. The remaining row $(15,0)$ is implemented by the three-step
+return block through $32$ and $45$, using the two adjacent zero cells
+provided by $J$ and the read-zero guard. Therefore one old step from any
+reachable configuration has exactly the same mapped full endpoint
+after one new step, except that old $(15,0)$ takes three new steps.
+Neither of the two intermediate states in this longer block is halting.
+
+For an old run prefix of length $n$, let $k(n)$ count its transitions
+using row $(15,0)$, and set
+\[
+ \theta(n)=n+2k(n).
+\]
+Induction on $n$ proves
+\[
+ \operatorname{Run}_N\bigl(\theta(n),f(c_0)\bigr)
+ =f\bigl(\operatorname{Run}_O(n,c_0)\bigr)
+\]
+whenever the old run has not halted before step $n$. Because
+$\theta(n+1)-\theta(n)$ is either one or three, this aligns unbounded
+runs as well as finite prefixes. The state map preserves and reflects
+halt, and the inserted states are nonhalting. Thus either both machines
+halt or neither does. If the old machine halts after exactly $T$ steps,
+then the new machine halts after exactly
+\[
+ T+2k(T),\qquad\text{in particular}\qquad
+ T\le T_{\rm new}\le3T.
+\]
+This exact time-change theorem holds for every initial tape and head
+at the shared start state $95$. Its proof is independent of the logical
+consistency calibration. It is an alternative proof of the same binary
+machine comparison, not an additional state reduction.

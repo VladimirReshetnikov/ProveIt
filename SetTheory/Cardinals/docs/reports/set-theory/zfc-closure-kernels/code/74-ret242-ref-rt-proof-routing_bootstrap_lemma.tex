@@ -1,0 +1,245 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,hyperref}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}[lemma]{Proposition}
+\newtheorem{theorem}[lemma]{Theorem}
+\newcommand{\Word}[1]{W_{#1}}
+\title{Transparent decoder routing and an exact bootstrap lock}
+\author{Research note for the ProveIt Busy Beaver investigation}
+\date{18 October 2026}
+\begin{document}
+\maketitle
+
+\paragraph{Scope.}
+This note concerns the old-label Prefix246 table with SHA-256
+\texttt{303911c554284c49ce09042d8127feba4da260baae766e32260034aa3bdb82ee}.
+The pinned repository is ProveIt commit
+\texttt{c6bf052c70bbbafba8c39370a6a2d123f57cd2c1}.
+It establishes local transformation lemmas and an exact finite bootstrap
+invariant. A satisfying grammar is not, by itself, a complete machine
+correctness certificate.
+
+\section{Grammar states and transparent projections}
+
+Let a semantic word be a nonempty word over the 44 context-labelled atomic
+programs in the inherited grammar instance. A rule $w=(u,v)$ has $w=uv$ and
+is implemented by one binary Turing-machine state with transitions
+\[
+  0\mapsto 0R\,\operatorname{entry}(u),\qquad
+  1\mapsto 1R\,\operatorname{entry}(v).
+\]
+Every such transition preserves the tape cell it reads. Define the partial
+projection $P_G(w,\epsilon)=w$ and
+$P_G(w,b\alpha)=P_G(w_b,\alpha)$ when $w$ has the rule
+$(w_0,w_1)$. A projection is undefined if it enters an atom before exhausting
+its path. Distinct semantic words use distinct grammar states; context-labelled
+atoms may share a physical state only as prescribed by the input instance.
+
+The words are sequences of \emph{closed} atomic programs. This qualification
+matters: the underlying register language has structured break and continue
+operations, so arbitrary tree association is not automatically sound. For a
+tree $t$, the static escape bounds are
+\[
+ b(\operatorname{node}(u,v))=\max(b(u)-1,b(v),0),\qquad
+ c(\operatorname{node}(u,v))=\max(c(u),c(v)-1,0).
+\]
+A decrement leaf has break bound~1; a break-$k$ or continue-$k$ leaf has the
+corresponding bound~$k$; other bounds are zero. Direct recomputation gives
+$(b,c)=(0,0)$ for all 44 atoms and both children of each of the 127 original
+sequence states. Accordingly, their ordinary sequential composition has the
+usual associativity law. This justifies the abstract word algebra; it does not
+replace the tape-level decoder checks.
+
+\begin{lemma}[Forced-prefix routing]
+Suppose a caller at head position $h$ reads $b$, writes $d$, moves left,
+and enters a transparent decoder. Let $x$ be the arbitrary tape bit at $h-1$.
+Suppose its old route follows a word $\alpha_x$ of length one or two, where
+$\alpha_x$ is the corresponding prefix of $xd$, and ends at a specified
+semantic word or atom $v_x$.
+
+Replace the caller's target by an active grammar word $w$ such that
+$P_G(w,\alpha_x)=v_x$ for both $x=0,1$. Then the new and old routes take
+exactly $1+|\alpha_x|$ steps, have the same tape after the block, and end at
+head position $h-1+|\alpha_x|$. Their endpoint states represent the same
+specified word or context-labelled atom. If that endpoint retains its old
+state label, the two endpoint configurations are literally identical.
+\end{lemma}
+
+\begin{proof}
+After the caller's step, the head is at $h-1$, the bit there is $x$, and the
+bit at $h$ is $d$. Each subsequent decoder step preserves its current bit
+and moves one cell right. Thus the only bits read are the specified prefix
+of $xd$; no assumption about the remainder of the tape is used. The
+projection equations give the endpoint after exactly the stipulated number
+of steps. The statement about tape, head position and retained endpoint
+labels follows directly.
+\end{proof}
+
+\section{Removing the fixed routing role of state 177}
+
+The literal table has precisely the following incoming edges to state~177:
+\[
+ 153:\;1\mapsto 1L177,\qquad
+ 159:\;0\mapsto 0L177.
+\]
+Its two outgoing edges are $0\mapsto0R175$ and $1\mapsto1R207$.
+The relevant children are
+\[
+ 175=(113,105),\qquad 207=(213,231).
+\]
+Here $\Word q$ denotes the semantic word of old sequence state~$q$.
+
+\begin{proposition}[Eliminating a fixed router]
+Choose active grammar words $U,V$ satisfying
+\[
+\begin{array}{ll}
+ P_G(U,01)=\Word{105}, & P_G(U,11)=\Word{231},\\
+ P_G(V,00)=\Word{113}, & P_G(V,10)=\Word{213}.
+\end{array}
+\]
+Retarget $153/1$ to $U$ and $159/0$ to $V$, retaining their writes and
+leftward moves. The fixed routing implementation at state~177 is then
+unnecessary. Each replaced block has three steps and satisfies the preceding
+lemma on every tape. State~177 has no other incoming edge.
+\end{proposition}
+
+The original table has 127 sequence states and 119 remaining working states.
+After this change, a grammar with $K$ active rules therefore costs
+$118+K$ working states, provided every unchanged external entry has an active
+target and all erased incoming edges are discharged. In particular, $K=127$
+would give 245 states. A new grammar state may reuse numeric label~177;
+the saving concerns its fixed implementation role, not a prohibition on
+reusing its label. The original external entry requirements at~175 and~207
+come only from~177; their other incoming edges are from replaceable sequence
+states.
+
+\section{A bootstrap lock that leaves 100 sequence states unfixed}
+
+Two independent exact interpreters---a sparse set tape and a dense array
+tape with array-indexed transition rows---were run for $410735$ steps from
+the blank tape and start state~95. They agree on the endpoint, every
+surviving one-cell, and every used transition count. The complete derivation
+is reproducible by \texttt{generate\_bootstrap\_lock.py}; its output is
+\texttt{bootstrap\_lock.json}.
+
+The trace uses 55 distinct sequence rows from 28 sequence states. Its only
+uses of caller rows eligible for the transparent rerouting transformation are
+\[
+\begin{array}{c|c|c|r}
+\text{caller/read}&x&\alpha_x&\text{occurrences}\\\hline
+78/0&1&10&6\\
+92/1&0&0&12\\
+92/1&1&1&3\\
+151/1&0&0&21
+\end{array}
+\]
+The endpoints are respectively old states~123, 36, 37 and~36. State~177
+and its two incoming caller rows are not used in this bootstrap.
+
+Treat each listed caller occurrence together with its one or two following
+transparent transitions as a block. Excluding these block interiors leaves
+54 distinct sequence rows from 27 states: only old row $89/1$ disappears
+from the set of distinct required rows. These 54 rows comprise both rows of
+each of 27 original grammar states. Thus 100 of the original 127 sequence
+states are not directly fixed by this lock.
+
+\begin{theorem}[Exact block-aware bootstrap lock]
+Consider an assembled grammar machine satisfying all of the following:
+every unchanged framework row is retained; every new grammar state has its
+transparent two-row implementation; all rerouting blocks used by the
+baseline bootstrap satisfy the forced-prefix lemma; and, for each of the
+54 listed sequence rows $(q,b)$, the word $\Word q$ is active with
+\[
+ P_G(\Word q,b)=\text{the original semantic child word of row }(q,b).
+\]
+Allocate every retained original semantic word to its original state label,
+and allocate new words injectively without colliding with unchanged states.
+Then the new machine has exactly the baseline configuration after $410735$
+steps from the blank tape.
+\end{theorem}
+
+\begin{proof}
+Partition the independently replayed baseline trace into the stated
+rerouting blocks and singleton steps outside those blocks. At a singleton
+framework step the row is unchanged. At a singleton sequence step the lock
+forces the same original child word. Rule closure forces any non-atomic
+child to remain active, and label-preserving allocation therefore forces
+the same literal successor state; an atomic child already uses its fixed
+physical state. Thus this singleton step preserves equality of complete
+configurations.
+
+At a rerouting block the lemma preserves tape, head position and duration.
+The actual endpoints~123, 36 and~37 retain their old state labels: state~123
+is among the locked sequence states, while~36 and~37 are unchanged atomic
+states. Thus equality holds again at the block's end. Induction over the
+finite partition proves equality at its final cut. The trace ends at the
+dispatcher, outside every block interior, so the final cut is exactly step
+$410735$ in both machines.
+\end{proof}
+
+The resulting configuration has dispatcher state~96, head~$-5$, marker~$-6$,
+header~176, an empty instruction pointer and header distance~181. The nine
+physical registers are
+\[
+ (0,0,0,3,0,0,3,0,0),
+\]
+and the logical registers $(N,T,W,A,D,H,X,Y,L)$ are
+$(3,0,0,0,3,0,0,0,0)$. There are exactly 167 spare blocks, all of value~1,
+and 351 one-cells in total; every other cell is blank. This supplies the
+same concrete root seed as the reviewed Prefix246 construction.
+
+\section{An optional shortened scanner}
+
+The framework contains the transparent-on-zero block
+\[
+ 58:\;0\mapsto0L74,\qquad
+ 74:\;0\mapsto0L84,\qquad
+ 84:\;0\mapsto0R84.
+\]
+If the three visited cells are zero, these three steps can be replaced by
+the single transition $58:\;0\mapsto0L84$: tape, final head position and
+final state are identical. State~74 has only the incoming edge $58/0$, so
+its fixed scanner role can then be removed.
+
+The fresh baseline replay has exactly 1410 occurrences of this three-step
+block; in every occurrence, all three required cells are zero. It never
+uses row $74/1$. The generator also independently replays the shortened
+table with a dense tape for exactly
+\[
+ 410735-2\cdot1410=407915
+\]
+steps and obtains precisely the same complete root frame.
+
+\begin{proposition}[Bootstrap lock with scanner shortening]
+Under the block-aware bootstrap theorem's conditions, additionally remove
+the fixed scanner state~74 and replace row $58/0$ by $0L84$. Then the
+same complete root frame is reached at step~407915. The working-state
+count is $118+K$ without the router-177 elimination, or $117+K$ with it.
+\end{proposition}
+
+\begin{proof}
+Include the 1410 guarded three-step scanner occurrences in the finite trace
+partition used above. They do not overlap the decoder routing blocks.
+Each has the same complete endpoint after one new step instead of three
+old steps. Induction over the partition therefore preserves the endpoint
+and subtracts exactly $2\cdot1410$ from its time. Both state-count equations
+follow by counting the removed fixed implementation roles.
+\end{proof}
+
+This is an exact finite \emph{bootstrap} statement. The shorter scanner is
+known to fail some instructions of the original source. A proposed repair
+must reduce the source zero-run bound and pass every guarded instruction
+simulation against the \emph{actual shortened table}. A six-zero grammar
+bound is a search constraint, not a substitute for that runtime proof.
+
+\paragraph{Remaining obligations for a new small machine.}
+The bootstrap lock protects the blank start, and the routing equations
+protect the affected local decoder entries. The emitted whole machine must
+still pass the complete register-program correspondence and all instruction
+simulation checks, including the zero-run scanner condition and the macro
+contracts used by symbolic replay. Finite-pool unsatisfiability is only an
+obstruction within the specified search family. It is not a lower bound
+on the number of states in machines deciding the target consistency problem.
+
+\end{document}
