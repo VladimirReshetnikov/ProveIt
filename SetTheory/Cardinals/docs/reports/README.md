@@ -2924,3 +2924,31 @@ retired after all 273 original ancillary blobs were checked in their placement
 tree; it receives no new number. Eighteen other archives remained queued at
 the placement checkpoint. The base article and all delivered bytes remain unchanged; the
 collection manifest is rebuilt separately.
+
+
+Batch 166 adds source 70 from `248bc05936` to
+[ZFC closure kernels](set-theory/zfc-closure-kernels/intake-166.md), now 70
+manuscripts and still 290 reports. Placement `6619bd0002` preserves 170
+ancillary files, with 21 originals archive-only at collection placement;
+write `be13ec69d7` records the compensated 244-state reduction and its
+separate equational branch. Deleting old state 122 and changing four retained
+rows gives an ordinary all-tape halting proof against the exact routed
+245-state baseline. The portable replay and separate complete 8,391-case
+runtime replay pass, covering all 488 rows and the exact 407,951-step principal
+startup. The complete runtime replay takes 540.786 seconds and checks 2,315,075
+symbolic rules. A retained repeat of the local jobs preserves detailed outputs;
+it does not add an independent checker. The maintained candidate separately
+promotes exact table inputs and two ordinary proof fragments. At this intake
+checkpoint the closed 245-state external Lean endpoint supplies the baseline;
+intake does not establish a complete 244-state endpoint or internal PA
+calibration. Supplemental variants retain their delivered complete
+certificates. The 21-equation, 2,324-bit equational packet has no compiled
+binary machine. The base article and delivered files remain unchanged,
+18 other archives stay queued, and the catalogue is rebuilt separately.
+
+Subsequent formal status, 18 October 2026: the exact
+[244-state external Lean endpoint](../../../../Computability/BusyBeaver/Research/ZFC/compensated244_binary.md)
+now proves blank nonhalting equivalent to the stated ZF and ZFC consistency
+propositions. Its source and six-report/six-client audit pass without warnings.
+The internal PA derivation remains open; this does not assert unconditional
+nonhalting or absolute consistency.

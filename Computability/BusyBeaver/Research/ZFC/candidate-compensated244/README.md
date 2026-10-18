@@ -6,7 +6,7 @@ The ordinary mathematical proof supports **ZFC ⊢ (¬Halt(M244) ↔ Con(ZFC))**
 
 The root's fresh portable replay passes both independently implemented local checkers, reconstructs all three delivered variants and checks the exact principal blank startup. The default symbolic dependency smoke test covers one case. A separate complete fresh replay also passes all **8,391** universally guarded cases, **2,315,075** symbolic rules and all **488** rows in **540.786 seconds**, with positive duration at least 13. Every complete output field matches the delivered certificate except elapsed time.
 
-**No complete 244-state Lean endpoint or object-language PA calibration is claimed here.** The [245-state endpoint](../routing245_binary.md) remains the checked external Lean baseline. The new local reduction is accompanied by an arithmetic formalizability argument, while the full internal PA proof remains [open](../pa_internalization.md). A generic simulation theorem alone does not discharge this table's invariant and local-transition obligations.
+The [complete 244-state Lean endpoint](../compensated244_binary.md) now proves blank-tape halting equivalent to ZF/ZFC refutation, and nonhalting equivalent to the corresponding consistency statements. Six theorem audits and six typed callers pass with zero warnings. The exact table, local tape invariant, all seven comparison blocks and their global halting equivalence are checked before composing with the [245-state endpoint](../routing245_binary.md). **These are closed external Lean theorems; the full proof inside PA remains [open](../pa_internalization.md).**
 
 | Artifact | Meaning |
 | --- | --- |
