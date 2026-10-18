@@ -72,7 +72,9 @@ hashes identify the actual runs; compiled caches are excluded from publication.
 This discharges the initial-frame premise of the
 [conditional runtime theorem](routing245_execution.md). Complete decoder
 coverage and its composition into the closed binary consistency endpoint
-remain separate. The internal PA equivalence also remains open. Attribution
-follows the [candidate notice](candidate-routing245/README.md): Mira-Cult,
+are now checked separately in [coverage](routing245_coverage.md) and
+[the final endpoint](routing245_binary.md). The internal PA equivalence
+remains open. Attribution follows the
+[candidate notice](candidate-routing245/README.md): Mira-Cult,
 Jeff Ketchersid, Andrew James Wade, and the subsequent ProveIt reductions
 and formalization.

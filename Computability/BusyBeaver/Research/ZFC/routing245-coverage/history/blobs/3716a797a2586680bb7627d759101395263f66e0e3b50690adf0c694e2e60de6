@@ -1,0 +1,255 @@
+#!/usr/bin/env python3
+"""Stage complete current-v3 coverage evidence; no proof or supplied program execution.
+Every historical UTF-8 byte is stored once in a standalone content-addressed file.
+Requires all226 actual modules and an independently pinned complete review.
+"""
+from pathlib import Path
+import argparse,hashlib,json,re
+
+ROOT=Path('/home/codex/.codex/worktrees/ec20/Proofs')
+BASE=Path('/tmp/zfc-routing245-lean/coverage-production')
+PILOTS=BASE.parent/'coverage-subtree-pilots'
+MANIFEST=BASE/'v3/sources/generation.json'
+MANIFEST_SHA='ca70be3402b6a0b1c33708970ac6400bcba7843382dd43e77fe09c9523e7db6b'
+GUARD=BASE/'v3/check-production-v3.py'
+GUARD_SHA='8b86edb49eb4bf9e8f82e6e5f10d012671a804bb4bd8743ab55d710bf3082ec5'
+FINAL='BusyBeaver.ZFC.SitesRouting245'
+RESEARCH=Path('Computability/BusyBeaver/Research/ZFC')
+FAMILY=RESEARCH/'routing245-coverage'
+LEAN=Path('Computability/BusyBeaver/Lean')
+ALLOWED={'propext','Quot.sound','Classical.choice'}
+COMPILED={'.olean','.ilean','.ir','.o','.c','.pyc','.so','.a'}
+
+
+def need(value,message):
+ if not value:raise ValueError(message)
+
+def digest(data):return hashlib.sha256(data).hexdigest()
+def sha(path):return digest(Path(path).read_bytes())
+def descriptor(path):return dict(path=str(Path(path).resolve()),sha256=sha(path))
+def encoded(value):return (json.dumps(value,indent=2)+'\n').encode()
+def imports(path):return re.findall(r'^import (\S+)',Path(path).read_text(),re.M)
+
+
+class Builder:
+ def __init__(self,args):
+  self.args=args;self.output=args.output.resolve();self.pins={};self.mapping={};self.aliases={};self.blobs={};self.exclusions=[];self.history_records=[];self.history_batches=[];self.prerequisites=[]
+  self.hash_cache={};self.selected={};self.selected_data={};self.batch_refs={}
+  need(__debug__,'Assertions must remain enabled.')
+  need(not self.output.exists(),'Use a new, absent output directory.')
+  need(not self.output.is_relative_to(ROOT)and all(not self.output.is_relative_to(p)and not p.is_relative_to(self.output)for p in (BASE,PILOTS)),'Output must be external to repository and history roots.')
+  self.pin(MANIFEST,MANIFEST_SHA);self.pin(GUARD,GUARD_SHA);self.plan=json.loads(MANIFEST.read_text())
+  p=self.plan;need((len(p['units']),len(p['reused_units']),p['complete_probes'],p['complete_callers'])==(209,17,476,479),'Wrong frozen family.')
+  self.units={u['module']:dict(u,origin='v3',source_path=MANIFEST.parent/u['source'],audit_path=MANIFEST.parent/u['audit'])for u in p['units']}
+  for u in p['reused_units']:
+   m=u['full_module'];need(m not in self.units,'Duplicate module.')
+   self.units[m]=dict(module=m,origin=u['origin'],source_path=Path(u['source']['path']),audit_path=Path(u['audit']['path']),source_sha256=u['source']['sha256'],audit_sha256=u['audit']['sha256'],probes=u['probes'],callers=u['callers'],record=u['record'])
+  need(len(self.units)==226,'Wrong total module census.')
+  for m,u in self.units.items():
+   need(re.fullmatch(r'BusyBeaver\.ZFC\.[A-Za-z0-9_]+',m)is not None,'Unsafe module name.')
+   for role in ('source','audit'):self.pin(u[role+'_path'],u[role+'_sha256'])
+  for q in p['inputs']+[p['generator']]:self.pin(q['path'],q['sha256'])
+
+ def pin(self,path,expected):
+  path=Path(path).absolute();key=str(path)
+  if key in self.pins:need(self.pins[key]==expected,'Conflicting input identity '+key)
+  else:
+   need(sha(path)==expected,'Changed input '+key);self.pins[key]=expected
+  return path
+
+ def read(self,ref):
+  p=self.pin(ref['path'],ref['sha256']);return json.loads(p.read_text())
+
+ def add_record(self,module,ref):
+  need(module in self.units,'Unexpected selected module '+module)
+  canonical=dict(path=str(Path(ref['path']).resolve()),sha256=ref['sha256'])
+  if module in self.selected:need(self.selected[module]==canonical,'Conflicting selected records '+module)
+  else:self.selected[module]=canonical
+
+ def collect_batch(self,ref,top=False):
+  d=self.read(ref);key=str(Path(ref['path']).resolve())
+  if key in self.batch_refs:return
+  self.batch_refs[key]=dict(path=key,sha256=ref['sha256'])
+  need(d['manifest']['sha256']==MANIFEST_SHA and d['prepare_only']is False,'Wrong/prepared batch.')
+  need(d['status']in {'PASS_COMPLETE_COVERAGE','PASS_SELECTED_UNITS','FAIL'},'Nonterminal selected batch.')
+  if top:
+   need(d['status']=='PASS_COMPLETE_COVERAGE'and d.get('active_unit')is None and d.get('failed_unit')is None,'A complete successful batch is required.')
+   need((d['complete_generated_units'],d['complete_probes'],d['complete_callers'])==(209,476,479),'Incomplete final batch census.')
+   self.top_batch=d
+  for q in d['prior_batches']:self.collect_batch(q)
+  for row in d['completed_units']:
+   idx=row['unit_index'];need(0<=idx<209 and self.plan['units'][idx]['module']==row['module']and row['status']=='PASS','Wrong batch unit.')
+   self.add_record(row['module'],row['record'])
+  if d['status']=='FAIL':need(d.get('failed_record')is not None,'Unclassified no-record batch failure: supply a separately reviewed successor design.')
+
+ def validate(self,module,ref):
+  u=self.units[module];r=self.read(ref)
+  need(r['status']=='PASS'and r['prepare_only']is False and r['before']==r['after'],'Incomplete selected record '+module)
+  need((r['named_axiom_probes'],r['callers'])==(u['probes'],u['callers']),'Audit census mismatch.')
+  need(r['warnings']=={'source':0,'audit':0},'Selected warnings require explicit successor review.')
+  for flag in ('all_input_provider_postchecks','all_fresh_objects_unchanged_after_audit','source_object_recorded_before_audit','only_standard_axioms','exact_project_import_closure'):need(r[flag],'Missing proof gate '+flag)
+  need(r['limits']==dict(threads=1,memory_mebibytes=4096,shared_wall_seconds=120,proof_limits='Lean defaults'),'Changed proof limits.')
+  for flag in ('dependency_build','downloads','compiler_version_query_performed'):need(r[flag]is False,'Unexpected execution capability.')
+  need(r['site_fuel']==4000 and r['margin']==64,'Wrong site configuration.')
+  for p,h in r['before'].items():self.pin(p,h)
+  for role in ('source','audit'):
+   q=r[role];need(q['sha256']==u[role+'_sha256'],'Wrong selected '+role)
+   self.pin(q['path'],q['sha256']);self.pin(q['snapshot'],q['sha256'])
+  commands=r['commands'];need([c['label']for c in commands]==['source','audit'],'Wrong command sequence.')
+  for c in commands:
+   need(c['exit_code']==0 and not c.get('timed_out',False)and not c.get('interrupted',False)and c['command'][1:3]==['-j1','-M4096'],'Failed/changed command.')
+   self.pin(c['log'],digest(c['output'].encode()));need('warning:'not in c['output'],'Unrecorded raw warning.')
+  need(sum(c['seconds']for c in commands)<120,'Shared deadline exceeded.')
+  audit=Path(r['audit']['path']).read_text();names=re.findall(r'^#print axioms (\S+)$',audit,re.M)
+  reports=re.findall(r"'([^']+)'\s+(?:depends on axioms:\s*\[([^\]]*)\]|does not depend on any axioms)",commands[1]['output'],re.S)
+  sets=[dict(name=n,axioms=[a.strip()for a in aa.split(',')if a.strip()])for n,aa in reports]
+  need(sets==r['actual_axiom_sets']and[n for n,aa in reports]==names and len(sets)==u['probes']and all(set(q['axioms'])<=ALLOWED for q in sets),'Raw axiom reports differ.')
+  need(len(re.findall(r'^example\b',audit,re.M))==u['callers'],'Typed caller census differs.')
+  fresh=r['fresh_modules'];need(len(fresh)==1,'Wrong fresh module count.');f=fresh[0]
+  need(f['module']==module and f['source_sha256']==u['source_sha256'],'Wrong source/object binding.')
+  self.pin(f['path'],f['sha256']);need(all(f[k]==r['source_pass_object'][k]for k in ('module','path','sha256','source_sha256'))and r['source_pass_object']['source_command_index']==0,'Pre-audit object differs.')
+  first=r['fresh_first_provider_before_audit'];need(first['module']==module and first['sha256']==f['sha256']and Path(first.get('actual_first',first.get('path'))).resolve()==Path(f['path']).resolve(),'Fresh actual provider differs.')
+  providers={q['module']:q for q in r['reused_modules']};need(len(providers)==r['project_module_count'],'Repeated provider module.')
+  cache_roots=[Path(p)for p in r['LEAN_PATH'].split(':')];tools={q['module']:q for q in r['toolchain_providers']};closure=set();visiting=set();tool_names={'Init'}
+  def visit(path):
+   for m in imports(path):
+    if not m.startswith('BusyBeaver.'):
+     need(m in tools,'Unexpected non-project import '+m);tool_names.add(m);continue
+    need(m in providers and m not in visiting,'Missing/cyclic provider '+m)
+    if m in closure:continue
+    visiting.add(m);visit(providers[m]['source']);visiting.remove(m);closure.add(m)
+  visit(r['source']['path']);need(closure==set(providers)and tool_names==set(tools),'Incorrect exact import closure.')
+  for m,q in providers.items():
+   for k in ('source','object'):self.pin(q[k],q[k+'_sha256'])
+   a=[x for x in r['actual_first_providers']if x['module']==m];need(len(a)==1,'Missing actual provider.');a=a[0]
+   need(a['sha256']==q['object_sha256']and Path(a['actual_first']).resolve()==Path(q['object']).resolve(),'Wrong actual provider pair.')
+   rel=Path(*m.split('.')).with_suffix('.olean');paths=[p/rel for p in cache_roots if(p/rel).is_file()]
+   need(paths and paths[0].resolve()==Path(q['object']).resolve(),'Current first cache provider differs.')
+  for q in tools.values():self.pin(q['object'],q['object_sha256']);need(Path(q['actual_first']).resolve()==Path(q['object']).resolve(),'Wrong tool provider.')
+  if u['origin']=='pilot':need('preparation'not in r,'Unexpected pilot schema; review first.')
+  else:
+   prep=self.read(r['preparation']);need(prep['status']=='PREPARED_NOT_BUILT'and prep['prepare_only']and prep['commands']==[]and prep['fresh_modules']==[]and prep['before']==prep['after']and prep['all_input_provider_postchecks'],'Invalid preparation.')
+   for p,h in prep['before'].items():self.pin(p,h)
+   for k in ('source','audit','manifest','reused_modules','actual_first_providers'):need(prep[k]==r[k],'Preparation binding changed '+k)
+  self.selected_data[module]=r
+
+ def verify_complete(self):
+  self.collect_batch(dict(path=str(self.args.complete_batch.resolve()),sha256=self.args.complete_batch_sha),top=True)
+  for u in self.plan['reused_units']:self.add_record(u['full_module'],u['record'])
+  need(set(self.selected)==set(self.units),'Missing selected successful modules.')
+  for module in self.units:self.validate(module,self.selected[module])
+  final=self.selected_data[FINAL];need(final['project_module_count']==248 and self.top_batch['final_record']==self.selected[FINAL],'Wrong final record/closure.')
+  providers={q['module']:q for q in final['reused_modules']}
+  for m,r in self.selected_data.items():
+   if m==FINAL:continue
+   f=r['fresh_modules'][0];need(m in providers and providers[m]['source_sha256']==r['source']['sha256']and providers[m]['object_sha256']==f['sha256'],'Final theorem used a different selected ancestor '+m)
+  ref=dict(path=str(self.args.complete_review.resolve()),sha256=self.args.complete_review_sha);review=self.read(ref)
+  need(review['status']=='CLEAN_COMPLETE_ROUTING245_COVERAGE_EXISTING_EVIDENCE_REVIEW'and review['findings']==[],'No clean independent complete review.')
+  need(review['manifest']['sha256']==MANIFEST_SHA and(review['probes'],review['callers'])==(476,479),'Review scope differs.')
+  want={m:(q['path'],q['sha256'])for m,q in self.selected.items()}
+  got={q['module']:(str(Path(q['path']).resolve()),q['sha256'])for q in review['selected_records']}
+  need(len(review['selected_records'])==226 and got==want,'Independent review does not cover every exact record.')
+  need(review['final_record']['module']==FINAL and(review['final_record']['path'],review['final_record']['sha256'])==want[FINAL],'Review final record differs.')
+  for k in ('all_selected_current_inputs_checked','all_selected_actual_providers_checked','all_fresh_objects_recorded_before_audit'):need(review[k]is True,'Incomplete independent review '+k)
+  need(bool(review['reviewer_role']),'Reviewer role missing.');self.review=review;self.review_ref=ref
+  for q in review['supporting_artifacts']:self.pin(q['path'],q['sha256'])
+
+ def map_file(self,path,target):
+  path=Path(path);data=path.read_bytes();self.map_bytes(data,target,origin=str(path.absolute()))
+
+ def map_bytes(self,data,target,origin=None):
+  target=Path(target);need(not target.is_absolute()and'..'not in target.parts,'Unsafe target.')
+  h=digest(data);key=str(target)
+  if key in self.mapping:need(self.mapping[key]['sha256']==h,'Conflicting mapped bytes.');return
+  maintained=ROOT/target;existing=maintained.exists();need(not existing or maintained.is_file()and sha(maintained)==h,'Conflicting maintained target '+key)
+  out=self.output/'files'/target;out.parent.mkdir(parents=True,exist_ok=True);out.write_bytes(data)
+  self.mapping[key]=dict(source=str(out),target=key,sha256=h,bytes=len(data),existing_identical=existing,origin=origin)
+
+ def archive(self,path):
+  p=Path(path).absolute();key=str(p)
+  if key in self.aliases:return
+  data=p.read_bytes();decoded=data.decode('utf-8');need(decoded.encode('utf-8')==data,'UTF-8 roundtrip failed.')
+  h=digest(data);target=FAMILY/'history/blobs'/h
+  if h not in self.blobs:self.map_bytes(data,target,origin=key);self.blobs[h]=dict(target=str(target),bytes=len(data))
+  self.aliases[key]=dict(sha256=h,bytes=len(data),target=str(target))
+
+ def historical_record(self,p,r):
+  if not('source'in r and'audit'in r and'commands'in r and'before'in r):return
+  need(r.get('status')not in {'RUNNING','SOURCE_RUNNING','AUDIT_RUNNING'},'Live historical proof record '+str(p))
+  for role in ('source','audit'):
+   q=r[role];snapshot=Path(q['snapshot']);need(snapshot.is_file()and sha(snapshot)==q['sha256'],'Missing historical '+role+' bytes '+str(p));self.archive(snapshot)
+  for c in r['commands']:
+   log=Path(c['log']);need(log.is_file()and log.read_bytes()==c['output'].encode(),'Historical log differs '+str(p));self.archive(log)
+  self.history_records.append(dict(path=str(p),sha256=sha(p),status=r['status'],commands=[c['label']for c in r['commands']],selected=any(q['path']==str(p.resolve())for q in self.selected.values())))
+
+ def capture_history(self):
+  visited_records=set();visited_batches=set()
+  for root in (BASE,PILOTS):
+   for p in sorted(root.rglob('*')):
+    if p.is_symlink():
+     self.exclusions.append(dict(path=str(p),kind='symlink_not_copied',target=str(p.resolve()),sha256=sha(p)if p.is_file()else None));continue
+    if not p.is_file():continue
+    if p.suffix in COMPILED or any(x in {'cache','__pycache__'}for x in p.relative_to(root).parts):
+     self.exclusions.append(dict(path=str(p),kind='compiled_or_cache_not_copied',bytes=p.stat().st_size,sha256=sha(p)));continue
+    self.archive(p)
+    if p.suffix!='.json':continue
+    d=json.loads(p.read_text());h=sha(p)
+    if not isinstance(d,dict):continue
+    if p.name in {'verification.json','preparation.json'}and h not in visited_records:self.historical_record(p,d);visited_records.add(h)
+    if p.name=='batch.json'and'completed_units'in d and h not in visited_batches:
+     visited_batches.add(h);need(d.get('status')!='RUNNING','Live historical batch '+str(p))
+     for row in d['completed_units']:
+      ref=row['record'];q=Path(ref['path']);need(q.is_file()and sha(q)==ref['sha256'],'Missing historical completed record.');self.archive(q)
+     if d.get('failed_unit')is not None:
+      ref=d.get('failed_record');need(ref is not None,'Unclassified failed attempt without verification: explicit reviewed successor required.')
+      q=Path(ref['path']);need(q.is_file()and sha(q)==ref['sha256'],'Missing failed attempt.');self.archive(q)
+     self.history_batches.append(dict(path=str(p),sha256=h,status=d['status'],completed=len(d['completed_units']),failed_unit=d.get('failed_unit')))
+  # Do not lose an independent review merely because it lies outside captured roots.
+  for q in [self.review_ref]+self.review['supporting_artifacts']:self.archive(q['path'])
+  required=[(BASE/'all-run1/unit013/verification.json','59e6ab1764a0062e4d272d0c6bf8af0ed7aba370eb3dab020eaeaa446bfe6a12'),(BASE/'v2/cut42-run1/unit000/verification.json','e4c402e883fe27e58e7caba2542a51adfee9cf97a33fdcc293b4fff8e723bab5')]
+  for p,h in required:need(str(p)in self.aliases and self.aliases[str(p)]['sha256']==h,'Required failed history omitted.')
+  for module,r in self.selected_data.items():
+   for p in [self.selected[module]['path'],r['source']['snapshot'],r['audit']['snapshot']]+[c['log']for c in r['commands']]:need(str(Path(p).absolute())in self.aliases,'Selected historical bytes omitted.')
+  index=dict(status='EXACT_TEXT_HISTORY_NO_COMPILED_OBJECTS',aliases=self.aliases,blobs=self.blobs,compiled_exclusions=self.exclusions,historical_records=self.history_records,historical_batches=self.history_batches,selected_record_index=self.selected,original_statuses_preserved=True,external_review_artifacts=self.review['supporting_artifacts'])
+  self.map_bytes(encoded(index),FAMILY/'history.json')
+
+ def stage(self):
+  self.verify_complete();self.output.mkdir(parents=True)
+  for m,u in self.units.items():
+   short=m.rsplit('.',1)[1];r=self.selected_data[m];target=LEAN/Path(*m.split('.')).with_suffix('.lean')
+   if u['origin']=='pilot':
+    need((ROOT/target).is_file()and sha(ROOT/target)==u['source_sha256'],'Maintained pilot prerequisite differs.')
+    self.prerequisites.append(dict(module=m,target=str(target),sha256=u['source_sha256'],record=self.selected[m]))
+   else:self.map_file(u['source_path'],target)
+   self.map_file(u['audit_path'],FAMILY/'audits'/(short+'.lean'))
+   self.map_file(self.selected[m]['path'],FAMILY/'records'/(short+'.json'))
+   for c in r['commands']:self.map_file(c['log'],FAMILY/'logs'/short/(c['label']+'.log'))
+  self.map_file(self.selected[FINAL]['path'],RESEARCH/'results/routing245-coverage-verification.json')
+  self.map_file(self.review_ref['path'],FAMILY/'review/complete-review.json')
+  registry=[]
+  for i,q in enumerate(self.review['supporting_artifacts']):
+   target=FAMILY/'review/support'/f'{i:03d}-{Path(q["path"]).name}';self.map_file(q['path'],target);registry.append(dict(original=q,mapped=str(target)))
+  self.map_bytes(encoded(registry),FAMILY/'review/support-registry.json')
+  for label,folder in [('v1',BASE),('v2',BASE/'v2'),('v3',BASE/'v3')]:
+   self.map_file(folder/'sources/generation.json',FAMILY/'provenance'/label/'generation.json')
+   for p in sorted(folder.glob('*.py')):self.map_file(p,FAMILY/'provenance'/label/p.name)
+  self.capture_history()
+  times=[r['commands']for r in self.selected_data.values()];publication=dict(status='COMPLETE_COVERAGE_PACKET_FROM_ACTUAL_PASSES',manifest=descriptor(MANIFEST),complete_batch=descriptor(self.args.complete_batch),independent_review=self.review_ref,reviewer_role=self.review['reviewer_role'],selected_modules=226,newly_mapped_sources=223,existing_pilot_sources=self.prerequisites,probes=476,callers=479,warnings=0,final_projects=248,final_record=self.selected[FINAL],selected_records=self.selected,source_seconds=sum(c[0]['seconds']for c in times),audit_seconds=sum(c[1]['seconds']for c in times),history_aliases=len(self.aliases),history_blobs=len(self.blobs),unique_history_bytes=sum(q['bytes']for q in self.blobs.values()),history_alias_bytes=sum(q['bytes']for q in self.aliases.values()),files={k:q['sha256']for k,q in self.mapping.items()},no_proof_guard_generator_or_version_execution=True,no_compiled_objects_copied=True,scope='Complete closed coverage of the actual routed245 program at all instruction pointers. Separate runtime/blank endpoint and PA equivalence are outside this packet.',reproduction='Original guard/generator bytes retained as provenance; their historical compiler caches are prerequisites. No clean-checkout dependency rebuild is certified.')
+  self.map_bytes(encoded(publication),RESEARCH/'results/routing245-coverage-publication.json')
+  # Every selected current byte must remain fixed throughout staging.
+  for path,h in self.pins.items():need(sha(path)==h,'Input changed during staging '+path)
+  for q in self.mapping.values():need(sha(q['source'])==q['sha256'],'Mapped bytes changed.')
+  for alias,q in self.aliases.items():need(sha(self.output/'files'/q['target'])==q['sha256'],'History roundtrip mismatch.')
+  result=dict(status='SCRATCH_COMPLETE_PACKET_READY_NOT_PLACED',builder=descriptor(__file__),files=list(self.mapping.values()),existing_prerequisites=self.prerequisites,selected_modules=226,probes=476,callers=479,history_aliases=len(self.aliases),history_blobs=len(self.blobs),files_are_standalone=True,compiled_objects_copied=False)
+  (self.output/'map.json').write_bytes(encoded(result));print(json.dumps(dict(map=descriptor(self.output/'map.json'),files=len(self.mapping),history_aliases=len(self.aliases),history_blobs=len(self.blobs)),indent=2))
+
+
+def main():
+ ap=argparse.ArgumentParser(description=__doc__)
+ ap.add_argument('--complete-batch',type=Path,required=True);ap.add_argument('--complete-batch-sha',required=True)
+ ap.add_argument('--complete-review',type=Path,required=True);ap.add_argument('--complete-review-sha',required=True)
+ ap.add_argument('--output',type=Path,required=True)
+ Builder(ap.parse_args()).stage()
+
+
+if __name__=='__main__':main()

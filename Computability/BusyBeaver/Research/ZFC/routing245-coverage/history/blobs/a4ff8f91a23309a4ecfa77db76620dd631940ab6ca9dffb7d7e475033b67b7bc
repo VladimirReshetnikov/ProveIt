@@ -1,0 +1,57 @@
+"""Static closeout plan inventory only. No complete-proof receipt is constructed."""
+from pathlib import Path
+import ast,collections,hashlib,json,re
+BASE=Path('/tmp/zfc-routing245-lean');C=BASE/'coverage-production';V=C/'v4';D=C/'publication-design/final-v4-closeout'
+sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest();desc=lambda p:dict(path=str(p),sha256=sha(p))
+mp=V/'sources/generation.json';m=json.loads(mp.read_text());assert sha(mp)=='b79fe539f343ca2f8979ada70f534f2ee08fb2361598a87f39c1e410fe6c32bc'
+g=V/'check-production-v4.py';assert sha(g)=='c37473de1eacb7a47a397e49bbff9b0bed9eeb1efbebea21f3c0835ecf42f7b5'
+builder=C/'publication-design/build_packet.py';assert sha(builder)=='b76debc93bfbf032ca3c2d9b3f8bd1fa160370e5a9c9495b564e797728557ed1'
+assert len(m['units'])==599 and len(m['reused_units'])==25
+assert(sum(u['probes']for u in m['units']),sum(u['callers']for u in m['units']))==(905,905)
+assert(sum(u['probes']for u in m['reused_units']),sum(u['callers']for u in m['reused_units']))==(53,56)
+ordered=['refined49-run1','batch024-run1','batch048-run1','batch072-run1','batch096-run1','batch120-run1','batch144-run1','batch192-run1','batch264-run1','batch288-run1']
+covered=[];batches=[]
+for n in ordered:
+ p=V/n/'batch.json';b=json.loads(p.read_text());assert b['status']=='PASS_SELECTED_UNITS'and not b['prepare_only']and b['manifest']['sha256']==sha(mp)and b['guard']['sha256']==sha(g)
+ rows=b['completed_units'];indices=[q['unit_index']for q in rows];assert indices==b['selected_unit_indices']
+ for q in rows:assert q['status']=='PASS'and q['module']==m['units'][q['unit_index']]['module']
+ covered+=indices;batches.append(dict(**desc(p),range=[indices[0],indices[-1]],units=len(rows),status=b['status'],record_validation_scope='Terminal batch/index binding read only; complete closeout must independently validate every underlying record and current provider.'))
+assert covered==list(range(292))
+parents={'runtime':BASE/'runtime/run1/verification.json','bootstrap':BASE/'bootstrap-frame/run1/verification.json','bisim':BASE/'source-bisim-production/final-run1/verification.json'}
+pool={};known_parents=[]
+def add(mod,path,h,obj=None,oh=None):
+ row=dict(source=str(path),source_sha256=h,object=obj,object_sha256=oh)
+ if mod in pool:
+  assert pool[mod]['source_sha256']==h,mod
+  if obj and pool[mod]['object']:assert pool[mod]['object_sha256']==oh,mod
+  elif obj:pool[mod]=row
+ else:pool[mod]=row
+for label,p in parents.items():
+ e=json.loads(p.read_text());assert e['status']=='PASS';known_parents.append(dict(label=label,record=desc(p),source=e['source'],fresh=e['fresh_modules'][0],probes=e['named_axiom_probes'],callers=e['callers']))
+ for q in e['reused_modules']:add(q['module'],q['source'],q['source_sha256'],q['object'],q['object_sha256'])
+ f,=e['fresh_modules'];add(f['module'],e['source']['path'],f['source_sha256'],f['path'],f['sha256'])
+e=json.loads((V/'refined49-run1/unit000/verification.json').read_text())
+for q in e['reused_modules']:add(q['module'],q['source'],q['source_sha256'],q['object'],q['object_sha256'])
+for u in m['reused_units']:
+ p=Path(u['record']['path']);assert sha(p)==u['record']['sha256'];e=json.loads(p.read_text());assert e['status']=='PASS';f,=e['fresh_modules'];add(u['full_module'],u['source']['path'],u['source']['sha256'],f['path'],f['sha256'])
+for u in m['units']:
+ assert sha(mp.parent/u['source'])==u['source_sha256']and sha(mp.parent/u['audit'])==u['audit_sha256']
+ add(u['module'],mp.parent/u['source'],u['source_sha256'])
+def closure(path):
+ seen=set();tools={'Init'}
+ def walk(p):
+  for mod in re.findall(r'^import\s+(\S+)',Path(p).read_text(),re.M):
+   if mod.startswith(('Init','Lean.','Std.')):tools.add(mod);continue
+   if mod not in seen:
+    assert mod in pool,mod;seen.add(mod);walk(pool[mod]['source'])
+ walk(path);return seen,tools
+endpoint=BASE/'endpoint/BinaryRouting245.lean';audit=endpoint.parent/'Audit.lean';oldguard=endpoint.parent/'check-pending.py'
+endmods,tools=closure(endpoint);finalmods,tools2=closure(mp.parent/m['units'][-1]['source']);assert len(endmods)==851 and len(finalmods)==646 and tools==tools2=={'Init','Lean.Elab.Tactic.Omega'}
+for mod in endmods:assert sha(pool[mod]['source'])==pool[mod]['source_sha256'],mod
+cfg=next(ast.literal_eval(n.value)for n in ast.parse(oldguard.read_text()).body if isinstance(n,ast.Assign)and any(isinstance(x,ast.Name)and x.id=='CFG'for x in n.targets));assert len(cfg['expected_modules'])==330
+missing=sorted(endmods-set(cfg['expected_modules']));removed=sorted(set(cfg['expected_modules'])-endmods)
+failures=[]
+for rel,h in [('all-run1/unit013/verification.json','59e6ab1764a0062e4d272d0c6bf8af0ed7aba370eb3dab020eaeaa446bfe6a12'),('v2/cut42-run1/unit000/verification.json','e4c402e883fe27e58e7caba2542a51adfee9cf97a33fdcc293b4fff8e723bab5'),('v3/remaining-run1/unit008/verification.json','c000fe17683398cfedc53f5d692fa556087d5974f0316d1b96d13ee40ac173cc')]:
+ p=C/rel;assert sha(p)==h;e=json.loads(p.read_text());assert e['status']=='FAIL';failures.append(dict(**desc(p),commands=[{k:q[k]for k in ['label','exit_code','timed_out']}for q in e['commands']]))
+inventory=dict(status='SOURCE_ONLY_FINAL_V4_CLOSEOUT_PLAN_PENDING_FINAL_PASS',manifest=desc(mp),guard=desc(g),builder=desc(builder),builder_peer_review=desc(C/'publication-design/independent-dynamic-builder-review.json'),terminal_prior_batches=batches,terminal_prior_indices=[0,291],pending_final_batch=dict(path=str(V/'final307-run1/batch.json'),sha256=None,expected_indices=[292,598],expected_units=307,required_terminal_status='PASS_COMPLETE_COVERAGE'),final_record=dict(path=str(V/'final307-run1/unit598/verification.json'),sha256=None,module='BusyBeaver.ZFC.SitesRouting245',source_sha256=m['units'][-1]['source_sha256'],audit_sha256=m['units'][-1]['audit_sha256'],probes=3,callers=3),census=dict(new_modules=599,reused_modules=25,selected_modules=624,new_probes=905,new_callers=905,reused_probes=53,reused_callers=56,complete_probes=958,complete_callers=961,leaves=6460,guards=8391,decoder_depth=51,final_sites_project_ancestors=646,endpoint_project_ancestors=851),reused_by_origin=dict(collections.Counter(u['origin']for u in m['reused_units'])),mandatory_failed_history=failures,known_endpoint_parents=known_parents,endpoint_source=desc(endpoint),endpoint_audit=desc(audit),historical_endpoint_guard=desc(oldguard),historical_endpoint_projects=330,prospective_endpoint_modules=sorted(endmods),prospective_endpoint_sources={k:{n:q[n]for n in ['source','source_sha256']}for k,q in sorted(pool.items())if k in endmods},endpoint_module_delta=dict(added=missing,removed=removed),pending_object_policy='No future generated object digest or final PASS assigned. Prospective source closure is independently derived; actual guard must derive all object pairs from final successful parent records and rehash them.',root_only_execution=True,no_generator_guard_compiler_builder_execution=True)
+q=D/'closeout-inventory.json';assert not q.exists();q.write_text(json.dumps(inventory,indent=2)+'\n');print(q,sha(q),len(missing),len(removed))

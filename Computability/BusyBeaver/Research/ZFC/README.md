@@ -8,8 +8,9 @@ stronger theory, as clarified by the user on 17 October 2026. Each candidate
 must state the assumptions used for its two unprovability directions;
 consistency alone must not be confused with arithmetic soundness. The
 external Lean equivalence with Con(ZFC) is now proved for the exact
-[246-state machine](prefix246_binary.md), improving the earlier checked
-252-state endpoint; its internal PA proof remains open. All new formal work uses Lean.
+[245-state machine](routing245_binary.md), improving the earlier checked
+246- and 252-state endpoints; its internal PA proof remains open.
+All new formal work uses Lean.
 An intended set-theoretic meaning is optional: any effectively presented
 theory or proof calculus is eligible once its consistency calibration is proved.
 The complete compiled search, including its data and initialization, is the
@@ -26,20 +27,21 @@ the lower bound needed for the independence argument; no absolute consistency
 proof is claimed. Require a concrete encoding benefit before increasing the
 benchmark strength.
 
-The active formal baseline is the
-[246-state contextual-fold machine](candidate-prefix246/README.md).
-The new [routed 245-state candidate](candidate-routing245/README.md), from
-`8286787dd0`, passes its complete executable suite, including all 8,391
+The active external Lean baseline is the
+[routed 245-state machine](candidate-routing245/README.md), from
+`8286787dd0`. It passes its complete executable suite, including all 8,391
 expanded whole-tape instruction cases and its 407,915-step exact blank prefix.
 Joint source-grammar, special-entry and scanner optimization saves the state
 while preserving the original theory. Independent ordinary-proof reviews find
-no substantive blocker. Its exact Lean endpoint and internal PA proof remain
-open; the [intake record](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-164.md)
+no substantive blocker. Its [closed Lean endpoint](routing245_binary.md)
+proves blank-tape halting equivalent to ZF/ZFC refutation and nonhalting
+equivalent to the corresponding consistency statements. Eleven axiom probes
+and eleven typed callers pass with zero warnings. The internal PA proof
+remains open; the [intake record](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-164.md)
 preserves attribution, recovery, fresh results and scope.
 The first [245-state Lean unit](table_routing245.md) checks the exact 490-row
 table, state numbering and 46 reusable core rows. All 64 theorem audits and
-64 typed callers pass with zero warnings. Complete coverage remains an
-obligation. The [fast lookup](fast_table_routing245.md) also passes:
+64 typed callers pass with zero warnings. The [fast lookup](fast_table_routing245.md) also passes:
 two theorem audits and four typed callers prove equality with the literal
 machine, enabling faster reduction in subsequent execution proofs.
 The [exact register decoder](program_routing245.md) passes 11 theorem
@@ -48,8 +50,10 @@ and execution semantics for arbitrary pointers and register values.
 The [complete source-program bisimulation](bisim_routing245.md) now checks all
 3,013 certificate entries and proves halting equivalence with `Prog254` for
 every initial register function at empty pointers. Its 97 production modules
-pass 104 theorem probes and 201 typed callers, with zero warnings. Complete
-decoder coverage, the binary endpoint and PA internalization remain.
+pass 104 theorem probes and 201 typed callers, with zero warnings.
+The [complete decoder coverage proof](routing245_coverage.md) checks all
+6,460 leaves and 8,391 guard cases: 624 selected modules, 958 axiom probes
+and 961 typed callers, with zero warnings.
 The [local routing245 register operations](routing245_local.md) also pass:
 pulse, marking, increment and both decrement branches retain arbitrary values,
 finite contexts and complete-tape conclusions. Their three modules pass
@@ -62,7 +66,10 @@ The [complete routing245 blank startup](routing245_bootstrap.md) now proves
 all 407,915 transitions and its exact full dispatch frame, including the
 calibrated logical seed and 167 spare blocks. Its eleven modules pass 80
 theorem probes and 111 callers with zero warnings. This discharges the
-initial-frame premise; complete coverage and the closed binary composition remain.
+initial-frame premise; the closed binary composition now joins it with
+complete coverage and runtime simulation. The
+[246-state contextual-fold machine](candidate-prefix246/README.md) remains
+available as the earlier external Lean baseline.
 The checked components of the earlier
 [shared-carry 250 construction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-160.md)
 provide reusable proof infrastructure. Sources 58–59 contain the same
@@ -1722,3 +1729,105 @@ probes and thirteen typed callers with zero warnings under the default proof
 limits. The original failed source attempt, finite-target repair and successful
 run are preserved. This closes one constructor fragment; complete AX and the
 internal binary-machine PA equivalence remain open.
+
+The [actual AX read at controls 181–195](arithmetic_control_ax_read_tw254.md)
+now adds the first PL component to arbitrary old TW and advances PL to its
+second component, preserving the other seven registers. Its positive runtime
+and complete file contract hold in every IΣ₁ model with clean scratch
+registers. Seven axiom probes and twelve typed callers passed without warnings.
+The exact history retains the uncompiled initial draft and proactive finite
+target repair; the first actual source/audit run passed. Composition with
+the surrounding AX fragments is a separate obligation.
+
+The [generic copy-and-restore contract](arithmetic_control_copy_back254.md)
+adds an argument register to TW and restores the argument in exactly
+`7*oldArgument+2` internal steps, requiring only scratch1 to start at zero.
+Its composition with a clean push sets TW to the argument and pushes old TW
+onto WS. Five axiom probes and nine typed callers passed without warnings;
+the initial two-coordinate proof failure and explicit rewrite repair remain
+in the history. Concrete AX occurrences require their own literal bindings.
+
+The [actual AX argument push and following plain push](arithmetic_control_ax_argument_push254.md)
+now bind controls 136→162→181 to those generic contracts. Their composition
+sets TW to zero and WS to `cantor(oldAC, cantor(oldTW, oldWS))`, preserving
+every other register, for arbitrary internal IΣ₁ files with both scratches
+zero. Six axiom probes and six typed callers passed without warnings. Both
+uncompiled source corrections, the first successful run and the exact 99-module
+provider closure are retained. The complete AX branch and PA endpoint remain
+open.
+
+The [actual AX parameter push at controls 222–248](arithmetic_control_ax_param_push254.md)
+sets TW to old P1 and WS to `cantor(oldTW, oldWS)`, preserving every other
+register in arbitrary IΣ₁ models with clean scratches. Its additive copy tail
+also has an exact internal clock. Six axiom probes and eight typed callers
+passed with zero warnings; the initial rewrite failure and its typed-wrapper
+repair are retained in the history.
+
+The [following implication constructor at controls 248–275](arithmetic_control_ax_constructor254.md)
+pops WS and sets TW to `wim(first(oldWS), oldTW)`. All other coordinates are
+preserved. The literal occurrence uses the checked generic constructor and
+passed three axiom probes and four typed callers on its first source/audit
+attempt, with zero warnings. These contracts are components of the remaining
+AX proof; they do not close the interpreter or internal binary PA endpoint.
+
+Their [parameter-push/constructor composition](arithmetic_control_ax_param_constructor254.md)
+now proves the entire 222→275 segment: TW becomes `wim(oldTW, oldP1)` and
+every other coordinate is restored, including all of WS. Five axiom probes
+and seven typed callers pass with zero warnings for arbitrary internal IΣ₁
+files and positive clocks.
+
+The [AX prefix through its first implication](arithmetic_control_ax_first_imp254.md)
+now composes the checked blocks from control 41 to 222. It constructs
+`wim(oldAC, first(second(oldPL)))`, records the preceding GEN result on WS,
+and gives the exact remaining file, including both consumed PL components.
+Fourteen axiom probes and eighteen typed callers pass with zero warnings.
+The first source failure and its three-line definitional repair remain in
+the history. The subsequent AX work and the PA endpoint remain open.
+
+The [AX prefix through the second implication](arithmetic_control_ax_second_imp254.md)
+now extends this execution to control 275. It sets TW to
+`wim(wim(oldAC, first(second(oldPL))), oldP1)`, retaining the exact earlier
+WS, cache and PL effects and preserving the other five coordinates. Seven
+axiom probes and ten typed callers passed on the first run, with zero warnings.
+
+The [next parameter push at controls 275–301](arithmetic_control_ax_next_param_push254.md)
+has the same whole-file effect as the earlier push, together with the exact
+`7*oldP1+2` copy-tail clock. Six probes and eight callers passed without
+warnings. Its distinct exit instruction was corrected before compilation;
+the uncompiled draft is preserved. The [constructor at 327–354](arithmetic_control_ax_ac_constructor254.md)
+also passed its first run, with three probes and four callers and zero
+warnings. These finite occurrences retain arbitrary internal values and
+positive clocks; the remaining AX composition and PA endpoint stay open.
+
+The [accumulator push at controls 301–327](arithmetic_control_ax_ac_push254.md)
+now also has a checked internal contract: TW becomes oldAC, WS becomes
+`cantor(oldTW, oldWS)`, and the other seven coordinates are retained. Its
+copy/restore tail takes exactly `7*oldAC+2` steps with only S1 initially zero.
+Six axiom probes and eight typed callers passed with zero warnings. The proof
+reuses complete literal-source facts; the uncompiled earlier draft and the
+first actual attempt (named `run2`) are preserved without a performance claim.
+
+The [composed implication at controls 275–354](arithmetic_control_ax_next_imp254.md)
+sets TW to `wim(oldP1, oldAC)` and WS to `cantor(oldTW, oldWS)`, retaining
+the other seven coordinates. Its separate 301–354 contract changes only TW.
+Nine axiom probes and eleven typed callers passed on the first run, with
+zero warnings. The complete AX loop and the internal PA endpoint remain open.
+
+The [AX prefix through control 354](arithmetic_control_ax_third_imp254.md)
+now composes these contracts from the actual entry at 41. It retains the
+previous implication, GEN result and original TW/WS on the work stack, with
+the exact cache and PL changes. Seven probes and ten callers passed without
+warnings. The [next cache push, 354–380](arithmetic_control_ax_next_cache_push254.md)
+also has an all-internal contract and an exact `7*oldcache+2` copy-tail
+clock; six probes and eight callers passed without warnings.
+The [following AC push, 380–406](arithmetic_control_ax_next_ac_push254.md)
+has the corresponding whole-file contract and `7*oldAC+2` copy-tail clock,
+also with six probes and eight callers and zero warnings. The constructor
+at 406 remains a separate verification unit.
+
+[Structural catalogue lookup](arithmetic_control_source_rank254.md) supplies
+a reusable path-to-rank proof and two concrete source bindings at controls
+354 and 6423. Five probes and five callers passed after two explicit `rfl`
+steps closed residual `Option.map` goals. The original failed attempt is
+preserved. These two clients establish source bindings; they do not establish
+a general performance improvement or an execution contract.

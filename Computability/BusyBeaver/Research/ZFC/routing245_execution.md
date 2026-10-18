@@ -5,7 +5,9 @@ execution of the literal 245-state machine, then compose those instruction
 segments into halting equivalence. The runtime theorem still requires complete
 site coverage and a related initial configuration. The
 [complete startup proof](routing245_bootstrap.md) now supplies the actual
-blank-run frame; complete coverage and final composition remain separate work.
+blank-run frame. The [complete coverage proof](routing245_coverage.md) and
+[final composition](routing245_binary.md) now discharge these premises for
+the literal blank-start machine.
 
 `RuntimeInstanceRouting245.register_halts_iff_binary` states, for any register
 program `p`, logical configuration `logical` and binary configuration `binary`,
@@ -18,7 +20,8 @@ Covered p → Related p logical binary →
 The `allSites_halts_iff_binary` client obtains `Covered p` from an exact tree
 identity and successful `SiteCoverage.allSites` check. Neither theorem assumes
 a bound on register values or total runtime. The accepted-site and initial-frame
-premises remain explicit; this is not yet the closed blank-tape endpoint.
+premises remain explicit in this reusable runtime theorem; the closed
+blank-tape endpoint supplies both proofs.
 
 | Layer | Checked contract | Probes / callers | Source / audit seconds |
 | --- | --- | ---: | ---: |
@@ -68,8 +71,9 @@ The [source-program bisimulation](bisim_routing245.md) and
 [local register operations](routing245_local.md) are already checked.
 The [407,915-step blank initialization](routing245_bootstrap.md) is now
 checked, including its complete runtime frame. Acceptance of all 8,391
-guarded cases, the closed 245-state binary consistency endpoint and PA
-internalization remain separate obligations. Attribution follows the
+guarded cases is proved by [complete coverage](routing245_coverage.md), and
+the [closed binary endpoint](routing245_binary.md) composes these results.
+PA internalization remains open. Attribution follows the
 [candidate notice](candidate-routing245/README.md): Mira-Cult's calculus and
 machine, Jeff Ketchersid's verification, Andrew James Wade's compiler framework,
 and the subsequent ProveIt reductions and formalization.

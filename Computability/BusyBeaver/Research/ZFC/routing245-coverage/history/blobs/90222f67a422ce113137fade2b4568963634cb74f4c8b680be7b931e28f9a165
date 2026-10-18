@@ -1,0 +1,102 @@
+--- /tmp/zfc-routing245-lean/coverage-production/v3/check-production-v3.py
++++ /tmp/zfc-routing245-lean/coverage-production/v4/check-production-v4.template.py
+@@ -1,8 +1,8 @@
+ #!/usr/bin/env python3
+ """Serial exact245 production coverage, one shared120s source/audit budget per unit.
+-Pins the complete209-unit refined source manifest. Direct imports select exact
+-already successful parents; three measured pilots and thirteen original successful
+-batch modules and passed cut43 are reused without proof replay. Both failures are retained.
++Pins the complete599-unit cap32-refined source manifest. Direct imports select exact
++already successful parents; three pilots, thirteen original batches, passed cut43,
++and eight v3 successes are reused without proof replay. All three failures remain.
+ Every unit saves a PREPARED_NOT_BUILT receipt before source execution, then fresh
+ object before audit. Stop on first failure; resume only in a new output directory
+ with explicit previous batch records. No dependency builds, downloads, compiler
+@@ -12,8 +12,8 @@
+ import argparse, hashlib, json, os, re, shutil, signal, subprocess, time
+ 
+ HERE=Path(__file__).resolve().parent
+-MANIFEST_SHA='ca70be3402b6a0b1c33708970ac6400bcba7843382dd43e77fe09c9523e7db6b'
+-GENERATOR_SHA='2c385ee00333bc4dec8a3b257ff7042de309368140f8b8eb536a6bce06e82f21'
++MANIFEST_SHA=None  # Pin only after root emits and reviews the v4 manifest.
++GENERATOR_SHA='bc9245452974a3d068c32a47108e8d4eb384ad0126b519c5c62e2431ff523b88'
+ BOUNDARY_SHA='b4a29c4fcc41e07cfb8c8117e5efd3e6754d6148ba3c37f53a86481369bb0e4d'
+ COVERAGE_EVIDENCE=('Computability/BusyBeaver/Research/ZFC/results/prefix246-runtime-verification.json',
+  '1965fff0430079cec4e3bb067a22ca05ef2d526fe97fae1e7c74fab1e7fa506f')
+@@ -45,7 +45,7 @@
+  inputs=[Path(__file__).resolve(),manifest,generator,boundary]
+  for entry in plan['inputs']:
+   p=Path(entry['path']).resolve();need(sha(p)==entry['sha256'],'Changed selected metadata input '+str(p));inputs.append(p)
+- # All418 generated source/audit files remain bound, even for a selected range.
++ # All1198 generated source/audit files remain bound, even for a selected range.
+  for entry in plan['units']:
+   for role in ('source','audit'):
+    p=(manifest.parent/entry[role]).resolve();need(sha(p)==entry[role+'_sha256'],'Changed generated '+str(p));inputs.append(p)
+@@ -304,8 +304,8 @@
+ def main():
+  ap=argparse.ArgumentParser(description=__doc__)
+  ap.add_argument('--repo',type=Path,required=True)
+- ap.add_argument('--manifest',type=Path,default=Path('/tmp/zfc-routing245-lean/coverage-production/v3/sources/generation.json'))
+- ap.add_argument('--generator',type=Path,default=HERE/'generate_sites_routing245_v3.py')
++ ap.add_argument('--manifest',type=Path,default=HERE/'sources/generation.json')
++ ap.add_argument('--generator',type=Path,default=HERE/'generate_sites_routing245_v4.py')
+  ap.add_argument('--site-evidence',type=Path,default=Path(PARENTS['site'][0]))
+  ap.add_argument('--program-evidence',type=Path);ap.add_argument('--coverage-evidence',type=Path)
+  ap.add_argument('--start',type=int,default=0);ap.add_argument('--count',type=int,default=1)
+@@ -318,24 +318,26 @@
+  need(not work.is_relative_to(repo) and(not work.exists()or not any(work.iterdir())),'Use a fresh external batch output.')
+  need(sha(args.manifest)==MANIFEST_SHA and sha(args.generator)==GENERATOR_SHA,'Changed exact production manifest/emitter.')
+  plan=json.loads(args.manifest.read_text());units=plan['units'];modules=[u['module'] for u in units]
+- need(len(modules)==len(set(modules))==209 and plan['chunks']==236 and plan['joins']==235 and
++ need(len(modules)==len(set(modules))==599 and plan['chunks']==236 and plan['joins']==235 and
+       plan['leaves']==6460 and plan['guard_cases']==8391 and plan['decoder_depth']==51 and
++      plan['max_guards_per_new_closed_proof']==32 and plan['effective_frontier_cuts']==478 and plan['effective_binary_joins']==477 and
+       (plan['max_guards_per_cut'],plan['max_cuts_per_module'],plan['max_batch_guards'],plan['joins_per_module'])==(64,1,64,16) and
+-      (plan['generated_probes'],plan['generated_callers'],plan['complete_probes'],plan['complete_callers'])==(431,431,476,479),'Wrong complete production plan.')
+- need(args.start>=0 and args.count>0 and args.start+args.count<=209,'Invalid selected range.')
++      (plan['generated_probes'],plan['generated_callers'],plan['complete_probes'],plan['complete_callers'])==(905,905,958,961),'Wrong complete production plan.')
++ need(args.start>=0 and args.count>0 and args.start+args.count<=599,'Invalid selected range.')
+  keys=list(range(args.start,args.start+args.count));available={};prior_refs=[]
+  for u in plan['reused_units']:
+   ref=u['record'];successful_receipt(plan,u['full_module'],ref);available[u['full_module']]=ref
+- need(len(available)==17 and sum(u['origin']=='pilot' for u in plan['reused_units'])==3 and
++ need(len(available)==25 and sum(u['origin']=='pilot' for u in plan['reused_units'])==3 and
+       sum(u['origin']=='original_production' for u in plan['reused_units'])==13 and
+       sum(u['origin']=='v2_single_cut' and u['cuts']==[43] for u in plan['reused_units'])==1 and
+-      sum(u['probes'] for u in plan['reused_units'])==45 and sum(u['callers'] for u in plan['reused_units'])==48,
+-      'Require exact three pilots, thirteen passed original batches, and passed cut43.')
++      sorted(u['original_unit_index'] for u in plan['reused_units'] if u['origin']=='v3_production')==list(range(8)) and
++      sum(u['probes'] for u in plan['reused_units'])==53 and sum(u['callers'] for u in plan['reused_units'])==56,
++      'Require exact three pilots, thirteen original batches, passed cut43, and eight v3 successes.')
+  for file in args.prior_batch:
+   file=file.resolve();d=json.loads(file.read_text());prior_refs.append(descriptor(file))
+   need(d['manifest']['sha256']==MANIFEST_SHA and d['prepare_only'] is False,'Wrong or prepared prior batch.')
+   for row in d['completed_units']:
+-   i=row['unit_index'];need(0<=i<209 and modules[i]==row['module'] and row['status']=='PASS','Invalid prior unit.')
++   i=row['unit_index'];need(0<=i<599 and modules[i]==row['module'] and row['status']=='PASS','Invalid prior unit.')
+    ref=row['record'];successful_receipt(plan,row['module'],ref)
+    if row['module'] in available:need(available[row['module']]['sha256']==ref['sha256'],'Conflicting successful records for one module.')
+    else:available[row['module']]=ref
+@@ -345,9 +347,10 @@
+             selected_unit_indices=keys,prior_batches=prior_refs,pilot_reuse=[u['record'] for u in plan['reused_units'] if u['origin']=='pilot'],
+             original_batch_reuse=[u['record'] for u in plan['reused_units'] if u['origin']=='original_production'],
+             v2_cut_reuse=[u['record'] for u in plan['reused_units'] if u['origin']=='v2_single_cut'],
++            v3_unit_reuse=[u['record'] for u in plan['reused_units'] if u['origin']=='v3_production'],
+             completed_units=[],failed_unit=None,serial=True,shared_wall_seconds_per_unit=120,
+             compiler_version_query_performed=False,dependency_build=False,downloads=False,
+-            scope='Exact selected closed coverage units. A complete coverage claim requires all209 actual refined units plus three actual pilots, thirteen actual original batches, and actual passed cut43; no bootstrap or PA claim.')
++            scope='Exact selected closed coverage units. A complete coverage claim requires all599 actual cap32-refined units plus three actual pilots, thirteen actual original batches, actual passed cut43, and eight actual v3 units; no bootstrap or PA claim.')
+  def save():
+   tmp=work/'batch.json.tmp';tmp.write_text(json.dumps(batch,indent=2)+'\n');tmp.replace(work/'batch.json')
+  save()
+@@ -365,8 +368,8 @@
+   batch.update(status='PREPARED_NOT_BUILT' if args.prepare_only else 'PASS_SELECTED_UNITS',active_unit=None)
+   if not args.prepare_only and all(m in available for m in modules):
+    for m in modules:successful_receipt(plan,m,available[m])
+-   batch.update(status='PASS_COMPLETE_COVERAGE',complete_generated_units=209,reused_pilot_units=3,reused_original_batch_units=13,reused_v2_cut_units=1,
+-                complete_probes=476,complete_callers=479,final_record=available['BusyBeaver.ZFC.SitesRouting245'])
++   batch.update(status='PASS_COMPLETE_COVERAGE',complete_generated_units=599,reused_pilot_units=3,reused_original_batch_units=13,reused_v2_cut_units=1,reused_v3_units=8,
++                complete_probes=958,complete_callers=961,final_record=available['BusyBeaver.ZFC.SitesRouting245'])
+  except BaseException as ex:
+   record=work/f'unit{i:03d}'/'verification.json'
+   batch.update(status='FAIL',failed_unit=i,error=f'{type(ex).__name__}: {ex}',failed_record=descriptor(record) if record.is_file() else None,

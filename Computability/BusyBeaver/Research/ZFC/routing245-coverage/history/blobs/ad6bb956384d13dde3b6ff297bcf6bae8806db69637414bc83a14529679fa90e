@@ -1,0 +1,68 @@
+--- preserved-draft1/check-production.py
++++ check-production.py
+@@ -8,7 +8,7 @@
+ version query, automatic repair, enlarged proof limits, or proof parallelism.
+ """
+ from pathlib import Path
+-import argparse, hashlib, json, os, re, shutil, subprocess, time
++import argparse, hashlib, json, os, re, shutil, signal, subprocess, time
+ 
+ HERE=Path(__file__).resolve().parent
+ MANIFEST_SHA='acc22343a70173e143ccf7cef76c9c7dfa7632b2526d3ca5735cb7d582062f24'
+@@ -212,17 +212,23 @@
+    if obj is not None:cmd+=['-o',str(obj)]
+    cmd+=[str(path)];began=time.monotonic();remaining=deadline-began
+    need(remaining>0,'Shared proof wall budget exhausted.')
+-   timed_out=False
+-   try:
+-    result=subprocess.run(cmd,cwd=snap,env=env,text=True,capture_output=True,timeout=remaining)
+-    output,code=result.stdout+result.stderr,result.returncode
+-   except subprocess.TimeoutExpired as ex:
+-    decode=lambda x:x.decode(errors='replace') if isinstance(x,bytes) else x or ''
+-    output,code=decode(ex.stdout)+decode(ex.stderr)+'\nTIMEOUT\n',None;timed_out=True
+-   log=work/(label+'.log');log.write_text(output)
+-   record['commands'].append(dict(label=label,command=cmd,cwd=str(snap),seconds=time.monotonic()-began,exit_code=code,
+-                                  timed_out=timed_out,log=str(log),output=output));save()
+-   need(code==0 and 'sorryAx' not in output and "declaration uses 'sorry'" not in output,label+' failed; inspect '+str(log))
++   timed_out=False;log=work/(label+'.log');failure=None
++   with log.open('wb') as out:
++    process=subprocess.Popen(cmd,cwd=snap,env=env,stdout=out,stderr=subprocess.STDOUT,start_new_session=True)
++    record['active_command']=dict(label=label,command=cmd,pid=process.pid,log=str(log));save()
++    try:code=process.wait(timeout=remaining)
++    except subprocess.TimeoutExpired:
++     if process.poll() is None:os.killpg(process.pid,signal.SIGKILL)
++     code=process.wait();timed_out=True;out.write(b'\nTIMEOUT\n')
++    except BaseException as ex:
++     if process.poll() is None:os.killpg(process.pid,signal.SIGKILL)
++     code=process.wait();failure=ex
++   output=log.read_text(errors='replace')
++   record['commands'].append(dict(label=label,command=cmd,cwd=str(snap),pid=process.pid,seconds=time.monotonic()-began,exit_code=code,
++                                  timed_out=timed_out,interrupted=failure is not None,log=str(log),output=output))
++   record['active_command']=None;save()
++   if failure is not None:raise failure
++   need(code==0 and not timed_out and 'sorryAx' not in output and "declaration uses 'sorry'" not in output,label+' failed; inspect '+str(log))
+    return output
+   obj=cache/Path(module.replace('.','/')).with_suffix('.olean')
+   run('source',ss,obj);need(obj.is_file() and not obj.is_symlink(),'Fresh source object missing.')
+@@ -236,7 +242,8 @@
+   axioms=[dict(name=n,axioms=[x.strip() for x in block.split(',') if x.strip()]) for n,block in reports]
+   record['actual_axiom_sets']=axioms;save()
+   need(all(set(q['axioms'])<={'propext','Classical.choice','Quot.sound'} for q in axioms),'Unexpected axioms.')
+-  post();need(sha(obj)==fresh['sha256'] and first(module).resolve()==obj.resolve(),'Fresh object changed during audit.')
++  post();need(sha(preparation)==record['preparation']['sha256'],'Preparation receipt changed.')
++  need(sha(obj)==fresh['sha256'] and first(module).resolve()==obj.resolve(),'Fresh object changed during audit.')
+   record.update(status='PASS',all_fresh_objects_unchanged_after_audit=True,named_axiom_probes=len(probes),callers=callers,only_standard_axioms=True,
+                 warnings={q['label']:q['output'].count('warning:') for q in record['commands']})
+  except BaseException as ex:
+@@ -281,6 +288,11 @@
+  actual=d['fresh_first_provider_before_audit']
+  need(sha(f['path'])==f['sha256']==actual['sha256'] and first_path(actual)==Path(f['path']).resolve() and
+       actual['module']==module and f['source_sha256']==u['source_sha256'],'Prior fresh object differs.')
++ if not u.get('pilot'):
++  pr=d['preparation'];need(sha(pr['path'])==pr['sha256'],'Preparation receipt changed.')
++  prep=json.loads(Path(pr['path']).read_text())
++  need(prep['status']=='PREPARED_NOT_BUILT' and prep['prepare_only'] is True and prep['commands']==[] and prep['fresh_modules']==[] and
++       prep['before']==prep['after']==d['before'] and prep['all_input_provider_postchecks'],'Invalid pre-proof preparation receipt.')
+  prefix='SetTheory.BusyBeaver.ZFC.'+module.rsplit('.',1)[1]+'.' if u.get('pilot') else 'SetTheory.BusyBeaver.ZFC.SitesRouting245.'
+  reports=re.findall(r"'([^']+)'\s+(?:depends on axioms:\s*\[([^\]]*)\]|does not depend on any axioms)",d['commands'][1]['output'],re.S)
+  parsed=[dict(name=n,axioms=[x.strip() for x in block.split(',') if x.strip()]) for n,block in reports]

@@ -1,0 +1,33 @@
+import BusyBeaver.ZFC.ProgramRouting245
+import BusyBeaver.ZFC.SiteCoverage
+import BusyBeaver.ZFC.SiteRouting245
+import BusyBeaver.ZFC.SitesRouting245Join014
+
+/-!
+Closed coverage of the exact routed245 instruction tree. Every new cut is a
+kernel decision about the imported actual subtree with its complete reverse
+prefix; every composition requires both actual children. The three measured
+pilot modules and thirteen passed original batches are reused directly. No external coverage premise, native proof
+evaluation, or enlarged proof limits. Grouping changes only file boundaries.
+Adapted from the maintained permutation252/prefix246 coverage generators,
+preserving Mira-Cult, Jeff Ketchersid and Wade's program/simulation attribution.
+-/
+namespace SetTheory.BusyBeaver.ZFC.SitesRouting245
+open RegisterPath RMBisim SiteCoverage
+
+/-- All6460 leaves and8391 guards of the actual routed decoder. -/
+theorem all_sites : allSites SiteRouting245.checkSite [] TreeRouting245.tree = true :=
+  SetTheory.BusyBeaver.ZFC.SitesRouting245.join_234
+
+theorem actual_walk_checked (P : List Bool) (e : Edge) (d : Nat)
+    (hw : walk ProgramRouting245.program (ProgramRouting245.program.nnodes + 1) ProgramRouting245.program.root P 0 = some (e,d)) :
+    SiteRouting245.checkSite (consume P d) e = true :=
+  allSites_walk SiteRouting245.checkSite ProgramRouting245.program TreeRouting245.tree
+    TreeRouting245.tree_eq all_sites P e d hw
+
+theorem actual_walk_exists (P : List Bool) :
+    ∃ e d, walk ProgramRouting245.program (ProgramRouting245.program.nnodes + 1) ProgramRouting245.program.root P 0 = some (e,d) :=
+  allSites_walk_total SiteRouting245.checkSite ProgramRouting245.program TreeRouting245.tree
+    TreeRouting245.tree_eq all_sites P
+
+end SetTheory.BusyBeaver.ZFC.SitesRouting245

@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Future independently checked complete routing245 v4 coverage receipt; schema only",
+  "description": "This file is a schema, not a result. Cross-field identity, unique-module, actual record/provider/raw-log and current-byte checks in plan.md remain mandatory.",
+  "type": "object",
+  "required": [
+    "status",
+    "findings",
+    "manifest",
+    "probes",
+    "callers",
+    "final_projects",
+    "selected_records",
+    "final_record",
+    "all_selected_current_inputs_checked",
+    "all_selected_actual_providers_checked",
+    "all_fresh_objects_recorded_before_audit",
+    "reviewer_role",
+    "supporting_artifacts"
+  ],
+  "properties": {
+    "status": {
+      "const": "CLEAN_COMPLETE_ROUTING245_COVERAGE_EXISTING_EVIDENCE_REVIEW"
+    },
+    "findings": {
+      "type": "array",
+      "maxItems": 0
+    },
+    "manifest": {
+      "type": "object",
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "probes": {
+      "const": 958
+    },
+    "callers": {
+      "const": 961
+    },
+    "final_projects": {
+      "const": 646
+    },
+    "selected_records": {
+      "type": "array",
+      "minItems": 624,
+      "maxItems": 624,
+      "items": {
+        "type": "object",
+        "required": [
+          "module",
+          "path",
+          "sha256"
+        ],
+        "properties": {
+          "module": {
+            "type": "string",
+            "pattern": "^BusyBeaver\\.ZFC\\.[A-Za-z0-9_]+$"
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^/"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    "final_record": {
+      "type": "object",
+      "required": [
+        "module",
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "module": {
+          "type": "string",
+          "pattern": "^BusyBeaver\\.ZFC\\.[A-Za-z0-9_]+$"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "all_selected_current_inputs_checked": {
+      "const": true
+    },
+    "all_selected_actual_providers_checked": {
+      "const": true
+    },
+    "all_fresh_objects_recorded_before_audit": {
+      "const": true
+    },
+    "reviewer_role": {
+      "type": "string",
+      "minLength": 1
+    },
+    "supporting_artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "sha256"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "pattern": "^/"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    }
+  }
+}

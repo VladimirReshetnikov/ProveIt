@@ -1,0 +1,105 @@
+"""Independent v4 source/generated-family review; no delivered program is executed."""
+from pathlib import Path
+import ast,hashlib,json,re
+B=Path('/tmp/zfc-routing245-lean/coverage-production/v4');V=B.parent/'v3';D=B/'sources';checks=0;pins={}
+sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def ck(v,m='v4 mismatch'):
+ global checks
+ assert v,m;checks+=1
+def pin(p,h):
+ p=Path(p);ck(sha(p)==h,str(p));pins[str(p)]=h
+norm=lambda s:re.sub(r'\s+','',re.sub(r'/\-.*?\-/','',s,flags=re.S))
+bits=lambda p:'['+', '.join('true'if c=='1'else'false'for c in p)+']'
+goal=lambda p:f'allSites SiteRouting245.checkSite {bits(p[::-1])} (descend TreeRouting245.tree {bits(p)}) = true'
+N='SetTheory.BusyBeaver.ZFC.SitesRouting245';base=['BusyBeaver.ZFC.ProgramRouting245','BusyBeaver.ZFC.SiteCoverage','BusyBeaver.ZFC.SiteRouting245']
+pin(B/'generate_sites_routing245_v4.py','bc9245452974a3d068c32a47108e8d4eb384ad0126b519c5c62e2431ff523b88');pin(B/'check-production-v4.template.py','999aa88e416b7b7da36c510aad558fb740cecd3fb001206ac748d54de9bb77fd');pin(B/'freeze_guard_v4.py','c0b7b932186841a4056dad20c83e276429e9cfbb4f53caee28795dfe586721ce6')
+pin(V/'independent-refinement-review.json','ad7adbec7b4263c0f7d7829cb540ec698834d9fc9f5d535b5768b9dd72ffc8a2');pin(V/'independent-refinement-actual-review.json','b36326b3da5f177e86fdf3022e9f9ad0fb2f02c936d04e03e386056d1196ccd4')
+old=json.loads((V/'sources/generation.json').read_text());g=json.loads((D/'generation.json').read_text());pin(D/'generation.json',sha(D/'generation.json'))
+for q in g['inputs']+[g['generator']]:pin(q['path'],q['sha256'])
+ck(g['reused_units'][:17]==old['reused_units']);ck(g['cut_frontier']==old['cut_frontier']and g['join_plan']==old['join_plan'])
+# Exact actual DAG expansion and bottom-up interval/guard census.
+program=next(Path(q['path'])for q in g['inputs']if q['path'].endswith('/ProgramRouting245.lean'))
+pat=r'^private def row(\d{3}) : Row := \((\(\.[a-z]+ \d+\)|\.halt), (\(\.[a-z]+ \d+\)|\.halt)\)$'
+rows={int(m[1]):(m[2],m[3])for m in re.finditer(pat,program.read_text(),re.M)};ck(set(rows)==set(range(203)));leaves=[]
+def walk(n,p):
+ for bit,s in zip('01',rows[n]):
+  t=s.strip('()').removeprefix('.').split();k=t[0];v=int(t[1])if len(t)>1 else None
+  if k=='node':ck(0<=v<n);walk(v,p+bit)
+  else:ck(k in ['inc','decnz','brk','cont','halt']);leaves.append((p+bit,k,v))
+walk(202,'');ck(len(leaves)==6460)
+certificate=next(Path(q['path'])for q in g['inputs']if q['path'].endswith('sites_logical.json'));kind={'inc':'CI','decnz':'CD','brk':'CB','cont':'CC','halt':'CH'}
+ck([[p,kind[k],v]for p,k,v in leaves]==json.loads(certificate.read_text()))
+leaf={p:(i,k)for i,(p,k,v)in enumerate(leaves)};meta={}
+def measure(p):
+ if p in leaf:
+  i,k=leaf[p];q=dict(lo=i,hi=i+1,nodes=0,leaves=1,guards=2 if k=='decnz'else 1,height=0)
+ else:
+  a,b=measure(p+'0'),measure(p+'1');ck(a['hi']==b['lo']);q=dict(lo=a['lo'],hi=b['hi'],nodes=1+a['nodes']+b['nodes'],leaves=a['leaves']+b['leaves'],guards=a['guards']+b['guards'],height=1+max(a['height'],b['height']))
+ meta[p]=q;return q
+ck(measure('')==dict(lo=0,hi=6460,nodes=6459,leaves=6460,guards=8391,height=51))
+# New reused units bind all eight actual prior successes and their unbuilt preparations.
+for index,u in enumerate(g['reused_units'][17:]):
+ ck(u['origin']=='v3_production'and u['original_unit_index']==index and u['full_module']==old['units'][index]['module'])
+ ref=u['record'];pin(ref['path'],ref['sha256']);r=json.loads(Path(ref['path']).read_text());ck(r['status']=='PASS'and not r['prepare_only']and r['before']==r['after']and r['warnings']=={'source':0,'audit':0})
+ for p,h in r['before'].items():pin(p,h)
+ for role in ['source','audit']:
+  q=r[role];pin(q['path'],q['sha256']);pin(q['snapshot'],q['sha256']);ck(q['sha256']==old['units'][index][role+'_sha256']==u[role]['sha256'])
+ f,=r['fresh_modules'];pin(f['path'],f['sha256']);ck(f['sha256']==u['fresh_object']['sha256']and all(f[k]==r['source_pass_object'][k]for k in ['module','path','sha256','source_sha256']))
+ ck([c['label']for c in r['commands']]==['source','audit'])
+ for c in r['commands']:ck(c['exit_code']==0 and not c['timed_out']and Path(c['log']).read_text()==c['output'])
+ q=r['preparation'];pin(q['path'],q['sha256']);pd=json.loads(Path(q['path']).read_text());ck(pd['status']=='PREPARED_NOT_BUILT'and pd['commands']==[]and pd['fresh_modules']==[]and pd['before']==pd['after']==r['before'])
+ ck(r['actual_axiom_sets']==[dict(name=N+'.'+n,axioms=['propext','Quot.sound'])for n in old['units'][index]['probe_names']])
+# Independently rebuild every remaining cut partition and both-child joins.
+expected=[];refs=[];existing={u['full_module']for u in g['reused_units']};newby={u['module']:u for u in g['units']}
+header=lambda im:'\n'.join('import '+m for m in im)+'\nnamespace '+N+'\nopen RegisterPath RMBisim SiteCoverage\n'
+footer='\nend '+N
+
+def check_source(module,body,names,paths,im):
+ u=newby[module];pin(D/u['source'],u['source_sha256']);pin(D/u['audit'],u['audit_sha256'])
+ ck(norm((D/u['source']).read_text())==norm(header(im)+body+footer),'source '+module)
+ au='import '+module+'\nopen SetTheory.BusyBeaver SetTheory.BusyBeaver.ZFC\nopen RegisterPath RMBisim SiteCoverage SitesRouting245\n'+'\n'.join('#print axioms '+N+'.'+n for n in names)+'\n'+'\n'.join('example : '+goal(p)+' := '+n for n,p in zip(names,paths))
+ ck(norm((D/u['audit']).read_text())==norm(au),'audit '+module);ck(u['probe_names']==names and u['probes']==u['callers']==len(names)and u['imports']==im)
+ ck(all(m in existing or m in base for m in im));existing.add(module);expected.append(module)
+
+for u in old['units'][8:]:
+ if u['kind']!='closed_cuts'or u['guards']<=32:
+  q=newby[u['module']];ck(q==u);expected.append(u['module']);existing.add(u['module'])
+  for role in ['source','audit']:pin(D/u[role],u[role+'_sha256']);ck((D/u[role]).read_bytes()==(V/'sources'/u[role]).read_bytes())
+  continue
+ i=u['cuts'][0];p=old['cut_frontier'][i]['path'];parts=[];joins=[]
+ def split(q):
+  if meta[q]['guards']<=32:
+   j=len(parts);parts.append(dict(index=j,path=q,**meta[q],module=f'SitesRouting245Cut{i:03d}Part{j:03d}',name=f'part_{i}_{j}'));return parts[-1]['name']
+  l,r=split(q+'0'),split(q+'1');j=len(joins);n=f'block_{i}'if q==p else f'refine_{i}_{j}';joins.append(dict(index=j,path=q,left=l,right=r,name=n));return n
+ ck(split(p)==f'block_{i}');ck(2<=len(parts)<=3 and len(joins)==len(parts)-1)
+ ref=next(x for x in g['refinements']if x['original_cut']==i);ck(ref['parts']==parts and ref['joins']==joins);refs.append(ref)
+ for part in parts:
+  check_source('BusyBeaver.ZFC.'+part['module'],f'theorem {part["name"]} : {goal(part["path"])} := by decide +kernel',[part['name']],[part['path']],base)
+ im=base+['BusyBeaver.ZFC.'+x['module']for x in parts];body=''
+ for j in joins:
+  q=j['path'];body+=f'theorem {j["name"]} : {goal(q)} := allSites_join SiteRouting245.checkSite {bits(q[::-1])} (descend TreeRouting245.tree {bits(q+"0")}) (descend TreeRouting245.tree {bits(q+"1")}) {N}.{j["left"]} {N}.{j["right"]}\n'
+ check_source(u['module'],body,[j['name']for j in joins],[j['path']for j in joins],im)
+ck(expected==[u['module']for u in g['units']]and len(expected)==len(set(expected))==599)
+ck(len(refs)==157 and sum(len(x['parts'])for x in refs)==398 and sum(len(x['joins'])for x in refs)==241)
+ck((g['generated_probes'],g['generated_callers'],g['complete_probes'],g['complete_callers'])==(905,905,958,961))
+ck(sum(u['probes']for u in g['units'])==905 and sum(u['callers']for u in g['units'])==905)
+ck(sum(u['probes']for u in g['reused_units'])==53 and sum(u['callers']for u in g['reused_units'])==56)
+ck(g['effective_frontier_cuts']==478 and g['effective_binary_joins']==477)
+# All proof/provider functions remain identical; only main's census/origin metadata changed.
+functions=lambda p:{n.name:ast.dump(n,include_attributes=False)for n in ast.parse(Path(p).read_text()).body if isinstance(n,ast.FunctionDef)}
+a,b=functions(V/'check-production-v3.py'),functions(B/'check-production-v4.template.py');ck(a.keys()==b.keys())
+for n in a:
+ if n!='main':ck(a[n]==b[n],n)
+t=(B/'check-production-v4.template.py').read_text();want=t.replace('MANIFEST_SHA=None  # Pin only after root emits and reviews the v4 manifest.','MANIFEST_SHA='+repr(sha(D/'generation.json'))).replace("default=HERE/'sources/generation.json'",'default=Path('+repr(str(D/'generation.json'))+')')
+ck((B/'check-production-v4.py').read_text()==want);pin(B/'check-production-v4.py',sha(B/'check-production-v4.py'))
+# Root preparation is unbuilt and cannot be a successful coverage record.
+pp=B/'prepared-first/unit000/verification.json';pd=json.loads(pp.read_text());pin(pp,sha(pp));ck(pd['status']=='PREPARED_NOT_BUILT'and pd['prepare_only']and pd['commands']==[]and pd['fresh_modules']==[]and pd['before']==pd['after']and pd['all_input_provider_postchecks'])
+for p,h in pd['before'].items():pin(p,h)
+ck(pd['module']==g['units'][0]['module']and pd['project_module_count']==23 and pd['expected_named_axiom_probes']==pd['expected_callers']==1)
+# The third raw failure is retained as a non-timeout source diagnostic, no audit/object.
+f=V/'remaining-run1/unit008/verification.json';pin(f,'c000fe17683398cfedc53f5d692fa556087d5974f0316d1b96d13ee40ac173cc');fd=json.loads(f.read_text());ck(fd['status']=='FAIL'and fd['fresh_modules']==[]and len(fd['commands'])==1 and fd['commands'][0]['exit_code']==1 and not fd['commands'][0]['timed_out'])
+c=fd['commands'][0];ck(Path(c['log']).read_text()==c['output']and'Error pretty printing: maximum recursion depth has been reached'in c['output'])
+for p in (B/'history-v3').rglob('*'):
+ if p.is_file()and not p.is_symlink()and p.suffix not in {'.olean','.ilean','.ir'}:pin(p,sha(p))
+out=dict(status='CLEAN_V4_SOURCE_GENERATED_FAMILY_AND_PREPARATION_REVIEW',findings=[],checks=checks,reviewer_script_sha256=sha(__file__),manifest=dict(path=str(D/'generation.json'),sha256=sha(D/'generation.json')),guard=dict(path=str(B/'check-production-v4.py'),sha256=sha(B/'check-production-v4.py')),prepared=dict(path=str(pp),sha256=sha(pp),inputs=len(pd['before']),projects=23),current_pins=pins,census=dict(new_modules=599,reused_modules=25,total_modules=624,new_probes=905,new_callers=905,complete_probes=958,complete_callers=961,prospective_final_projects=646,small_parts=398,refined_original_cuts=157,local_joins=241),semantics='Independent exact203-row tree expansion, full6460 ordered leaves, all remaining cap32 partitions and both-child structural joins reconstructed, all1198 generated source/audit files checked. Smaller cuts and all outer joins/final remain byte-identical. Exact eight successful v3 source/object records and preparations reused.',limitations=['No actual v4 proof is claimed by this source/generated/preparation review.','A maximum32-guard check is an implementation choice, not a proof that every future elaboration will fit the unchanged default limits.','Complete coverage and external binary/PA endpoints remain separate actual proof obligations.'],no_delivered_program_or_compiler_or_guard_execution=True)
+p=B/'independent-source-family-review.json';ck(not p.exists());p.write_text(json.dumps(out,indent=2)+'\n');print(p,sha(p),checks)
