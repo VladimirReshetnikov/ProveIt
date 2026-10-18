@@ -49,6 +49,17 @@ ordinary proof and executable evidence do not yet supply an exact-table Lean
 endpoint. Earlier relative-consistency seed criteria remain in
 [batch 161](../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-161.md).
 
+The [batch 163 reconciliation](../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-163.md)
+adds source rewrites, arithmetic contracts, stronger prepared-frame obstructions
+and two different alternate 246-state tables. Thirty substantive checks pass;
+one additional full symbolic replay times out, leaving that result inherited.
+The 201-node result is a source DAG count, and no complete sub-246 machine is
+established. The [current project criterion](BusyBeaver/Research/ZFC/README.md)
+allows stronger target theories within well-understood, widely accepted
+consistency benchmarks, with an explicit upper bound as well as the lower bound
+to ZF. These intake findings and the separately checked exact246 proof components
+do not by themselves discharge the internal PA comparison.
+
 The score and time functions are distinct measures. The proved values
 `Sigma(2)=4`, `Sigma(3)=6`, `Sigma(4)=13` and `BB(2)=6`, `BB(3)=21`,
 `BB(4)=107` therefore intentionally differ.
