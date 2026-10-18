@@ -23,6 +23,9 @@ The [exact register decoder](../program_routing245.md) now also passes
 to all 6,460 instruction leaves and preserves consumed-pointer semantics
 for arbitrary register values. Its bisimulation with the original program
 remains a separate obligation.
+The [first source-bisimulation checks](../bisim_routing245_pilot.md) pass for
+the initial segment and six entries of the full 3,013-pair certificate.
+Checking and assembling every entry remains open.
 
 | Artifact | Meaning |
 | --- | --- |

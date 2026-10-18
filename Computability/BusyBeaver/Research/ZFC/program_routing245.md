@@ -72,3 +72,5 @@ complete decoder coverage, 407,915-step blank startup and final 245-state
 consistency equivalence remain separate Lean obligations. PA internalization
 also remains open. Attribution and the ordinary executable verification are
 preserved in the [candidate documentation](candidate-routing245/README.md).
+The [first bisimulation checks](bisim_routing245_pilot.md) now pass for the
+initial segment and six selected entries; the complete certificate remains open.
