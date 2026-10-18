@@ -119,13 +119,29 @@ slot-reading steps and can be instantiated by the existing internal
 `compileT_provable` interface. This paragraph records source inspection,
 not a new compiler run of those upstream files.
 
-The next connecting work is to instantiate the templates at `MT(j)`, prove
-the exact translated code identities, and carry out internal induction for
-functionality and slot reading. The general `envForm`/`relativize` equivalence
-and the uniform constructible Separation/Replacement obligation `hSchema`
-remain open. None of these source additions by itself closes the reverse
-ZF-to-validator translation or the arithmetic proof for the actual 246-state
-binary machine.
+Commit `2285ff6c00107552a50b988fc71a56a7f2df9b88` adds
+[LGlueT2](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LGlueT2.lean),
+with fixed-template derivability for the Boolean constructors, quantifiers,
+and equality/membership atoms. These templates can be specialized at typed
+internal formula codes, including nonstandard codes, using
+`LTemplate.compileT_provable`; their explicit premises must still be discharged.
+
+Commit `ce89d875857e59e147becd7f34a7c5ea8d18180b` adds
+[LGlue1](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LGlue1.lean),
+closing internal matching functionality and slot reading. `fun_MT` gives an
+internal ZF proof of functionality for every internal matching length `j`;
+`slot_MT` gives the corresponding reading of every slot `a < j`. Both use
+represented Sigma-one induction in an arbitrary IΣ1 model, with explicit
+formula-code and shift/substitution identities. The numeral-naturalness
+premise is discharged by the existing `LNumOK.numOK`.
+
+The next connecting work is to specialize the atom/connective/quantifier
+templates, assemble the general `envForm`/`relativize` equivalence, supply
+matching-environment existence, and connect these to the uniform constructible
+Separation/Replacement obligation `hSchema`. These updates record source
+review, without a fresh compilation claim. They do not by themselves close
+the reverse ZF-to-validator translation or the arithmetic proof for the actual
+246-state binary machine.
 
 ## What is already available
 
