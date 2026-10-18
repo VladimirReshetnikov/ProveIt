@@ -1,0 +1,21 @@
+import BusyBeaver.ZFC.SitesRouting245Batch015
+
+open SetTheory.BusyBeaver SetTheory.BusyBeaver.ZFC
+open RegisterPath RMBisim SiteCoverage SitesRouting245
+
+#print axioms SetTheory.BusyBeaver.ZFC.SitesRouting245.block_47
+#print axioms SetTheory.BusyBeaver.ZFC.SitesRouting245.block_48
+#print axioms SetTheory.BusyBeaver.ZFC.SitesRouting245.block_49
+#print axioms SetTheory.BusyBeaver.ZFC.SitesRouting245.block_50
+
+example : allSites SiteRouting245.checkSite [true, true, false, true, false, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, false, true, false, true, true]) = true := block_47
+
+example : allSites SiteRouting245.checkSite [false, true, true, false, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, false, true, true, false]) = true := block_48
+
+example : allSites SiteRouting245.checkSite [false, false, true, true, true, false, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, false, true, true, true, false, false]) = true := block_49
+
+example : allSites SiteRouting245.checkSite [true, false, true, true, true, false, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, false, true, true, true, false, true]) = true := block_50

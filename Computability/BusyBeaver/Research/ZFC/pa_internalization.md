@@ -12,8 +12,8 @@ the intended arithmetic sentence and an object-theory proof are connected to
 it. Completing the PA version would also serve the ZFC requirement, after
 checking the chosen arithmetic interpretation in ZFC.
 
-The [246-state endpoint](prefix246_binary.md) now closes the external Lean
-theorem for the exact contextual-fold machine: blank nonhalting iff Con(ZFC).
+The [245-state endpoint](routing245_binary.md) now closes the external Lean
+theorem for the exact routed machine: blank nonhalting iff Con(ZFC).
 It reuses the earlier [Choice calibration](choice_calibration254.md), including
 Choice in L and external first-order completeness. This discharges the
 external consistency comparison; it does not implement the represented proof
@@ -130,11 +130,13 @@ internal register/binary simulation. The internal L-specific schema proofs
 now close the Choice transport. The forward validator sentence alone does
 not yet imply the requested PA theorem about the literal binary machine.
 
-The active binary target is the exact 246-state machine. Its table, logical
-seed, whole-tape instruction contracts, complete decoder coverage and blank
-startup now compose into the checked external ZF/ZFC consistency endpoint.
-That theorem still does not supply an internal PA proof.
-The [fixed arithmetic lookup for its exact table](arithmetic_machine_graph_prefix246.md)
+The active binary target is the exact 245-state machine. Its complete
+coverage and 407,915-step blank startup now compose into the checked external
+ZF/ZFC consistency endpoint. That theorem still does not supply an internal
+PA proof. The arithmetic table and startup results below concern the earlier
+246-state machine; transferring them to the routed 245-state machine remains
+an obligation.
+The [fixed arithmetic lookup for the 246-state table](arithmetic_machine_graph_prefix246.md)
 is now checked in every IOpen model and agrees with all 492 typed transitions.
 The [exact step graph](arithmetic_machine_step_prefix246.md) now defines the
 numeric operation on every IOpen configuration code, including inactive and
@@ -731,7 +733,8 @@ arithmetic proof obligation relating its finite traces to Con(ZFC).
 ## Proposed decomposition of the reverse ZF-to-validator translation
 
 *Proposal (Claude lane, 2026-10-17), with the R1 theory-construction sources
-supplied in `f368d4ff11` on 18 October; the remaining obligations are below.*
+supplied in `f368d4ff11` and the generic R3 interpretation core supplied in
+`ec37dd933a` on 18 October; the remaining obligations are below.*
 With `𝗣𝗔 ⊢ Con(ZF) ↔ Con(ZFC)` closed and the forward
 validator sentence `Con(ZF) → ¬∃code, value(code)=2` already proved, the
 remaining arithmetic comparison between ZF and the validator is the reverse
@@ -753,17 +756,32 @@ splits into three pieces with a narrow interface:
    matrix goes to the corresponding `bundle` instance.
 3. **(R3) The WF interpretation (set side).** In every IΣ₁ model,
    `Provable 𝗭𝗙 ⊥ → Provable 𝗡 ⊥`, by
-   `InternalRelativization.provable_falsum_of_relativize` with target theory
-   `𝗡` and domain `δ` the internally well-founded part. Its obligations:
-   `𝗡 ⊢ ∃x δ(x)` and `𝗡 ⊢ σ^δ` for the finitely many fixed ZF axioms, by
-   completeness from `WFModel.quotient_models_ZF` (fixed sentences), and
-   the schema obligation at internal codes. Unlike the L case, no
-   reflection driver should be needed: Separation and Replacement in the
-   WF part come from the GIC instance at the internal relativized matrix
-   `φ^δ`, which is itself an axiom of `𝗡`, followed by one fixed template
-   proving that the resulting set lies in the WF part. This reuses
-   `LTemplate`'s compile-at-internal-codes pattern, with a template theory
-   over `𝗡` in place of ZF.
+   `InternalInterpretation.provable_falsum_of_interp` with target theory
+   `𝗡`. This core permits defined equality and membership. Concrete raw
+   formulas are available: domain
+   `QuotientModel.translate (WellFoundedPart.wfForm 0)`, equality
+   `ProfileSyntax.eqvForm 0 1`, and membership
+   `QuotientModel.memberForm 0 1`. The domain describes the internally
+   well-founded part of the definable quotient: its minimal-element
+   condition quantifies over represented sets, not arbitrary external
+   subsets. First quote these formulas and prove the core's `Good`
+   arity/shift conditions. Then prove native domain nonemptiness and
+   transport of every internal ZF axiom code, including interpreted
+   equality axioms and nonstandard Separation/Replacement matrices.
+   Existing semantic proofs and completeness can supply fixed ordinary
+   sentences; they do not discharge this uniform internal-code callback.
+   A native adaptation of `LTemplate`'s proof-template compiler must
+   supply GIC introduction and preserve quotient congruence for its
+   interpreted matrix placeholders. The generic core alone does not
+   establish these obligations.
+
+The [source-only R3 review](results/upstream-internal-interpretation-ec37dd933a-review.json)
+records the exact supplied core and existing quotient/WF formulas. The
+core's set-language term premise is already supplied by
+`SetRelativization.isTerm_eq_fvar`. No fresh compiler audit of the new core
+is claimed here. A finite-fragment alternative would still need a uniform
+transformation of arbitrary internal refutations; a result restricted to a
+proper definable cut would need an additional bridge to full consistency.
 
 The supplied [NativeGicDelta1](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/NativeGicDelta1.lean)
 and [NativeTheory](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/NativeTheory.lean)

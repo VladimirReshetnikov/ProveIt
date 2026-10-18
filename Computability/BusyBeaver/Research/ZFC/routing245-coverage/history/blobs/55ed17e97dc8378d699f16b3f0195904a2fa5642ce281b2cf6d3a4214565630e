@@ -1,0 +1,163 @@
+--- v1/generate_sites_routing245.py
++++ v2/generate_sites_routing245_v2.py
+@@ -5,7 +5,8 @@
+ logical certificate. Each new cut is a closed kernel decision about the imported
+ TreeRouting245.tree; every join requires both actual children. Three measured
+ pilot propositions/objects are imported directly, without aliases or replay.
+-The default grouping is prospective until root accepts measured pilot costs.
++The successor preserves the entire cap64 frontier and reuses thirteen successful
++original batch modules; every remaining cut gets its own fresh module.
+ """
+ from __future__ import annotations
+ import argparse,hashlib,json,re
+@@ -17,6 +18,10 @@
+ SITE_SHA='d05562d7a17c58a45089903977a074ea36559d39a2c5f854d63af5874c951021'
+ COVERAGE_SHA='643aa151328a65ba292214df01a933adc46408a468faabf273bf736457393cf4'
+ PILOT_PLAN_SHA='c861f4b83dd94980edaece32b92c74f5a7e876d3c920ece6a616e7fd8d6cf60b'
++OLD_MANIFEST_SHA='acc22343a70173e143ccf7cef76c9c7dfa7632b2526d3ca5735cb7d582062f24'
++OLD_BATCH_SHA='46c14a9f5225cfb93abbe7d07afe98239e974710ea1045638f6fbbfcb222e62c'
++OLD_GUARD_SHA='1d9e00af15d18ea684c2afe28aa31a62a9f0f52f1d000159d158755e7683f66b'
++OLD_GENERATOR_SHA='c428e2878845b0af2fd87c479b7fbb0d7beb4a35b4dab311fecc193175a34fb8'
+ BASE_IMPORTS=['ProgramRouting245','SiteCoverage','SiteRouting245']
+ NS='SetTheory.BusyBeaver.ZFC.SitesRouting245'
+ PILOTS={0:('0',0,10,10,13,5),70:('1110100100101011010101000110111010111001',1684,1717,33,43,11),
+@@ -100,12 +105,65 @@
+                     source_seconds=d['commands'][0]['seconds'],audit_seconds=d['commands'][1]['seconds'])
+     return out
+ 
++def checked_old_batches(manifest_path,batch_path):
++    """Retain only the exact thirteen complete source+audit passes; never replay them."""
++    need(sha(manifest_path)==OLD_MANIFEST_SHA and sha(batch_path)==OLD_BATCH_SHA,'Original plan/run changed.')
++    old=json.loads(manifest_path.read_text());batch=json.loads(batch_path.read_text())
++    root_review=manifest_path.parent.parent/'root-first13-and-timeout-review.json'
++    need(sha(root_review)=='4b18e3573f9c65196399f5c2367d1eee7904137a6f09074de067bebd52d3d53a','Root evidence review changed.')
++    review=json.loads(root_review.read_text());need(review['status']=='CHECKED_13_ACTUAL_PASSES_AND_PRESERVED_TIMEOUT' and
++         review['batch']['sha256']==OLD_BATCH_SHA and review['plan']['sha256']==OLD_MANIFEST_SHA,'Root review binding differs.')
++    need(batch['status']=='FAIL' and batch['prepare_only']is False and batch['failed_unit']==13 and
++         batch['manifest']['sha256']==OLD_MANIFEST_SHA and batch['guard']['sha256']==OLD_GUARD_SHA,'Wrong interrupted original run.')
++    need(sha(batch['guard']['path'])==OLD_GUARD_SHA and sha(old['generator']['path'])==OLD_GENERATOR_SHA,'Original programs changed.')
++    for u in old['units']:
++        for role in ('source','audit'):
++            need(sha(manifest_path.parent/u[role])==u[role+'_sha256'],'Original full source/audit family changed.')
++    failed=batch['failed_record'];need(sha(failed['path'])==failed['sha256'],'Original failed record changed.')
++    f=json.loads(Path(failed['path']).read_text());need(f['status']=='FAIL' and f['fresh_modules']==[] and
++        len(f['commands'])==1 and f['commands'][0]['label']=='source' and f['commands'][0]['timed_out'] and
++        f['commands'][0]['exit_code']!=0,'Original timeout scope differs.')
++    need(Path(f['commands'][0]['log']).read_text()==f['commands'][0]['output']=='\nTIMEOUT\n','Original timeout log changed.')
++    need([x['unit_index']for x in batch['completed_units']]==list(range(13)),'Wrong original complete successes.')
++    out={}
++    for row in batch['completed_units']:
++        i=row['unit_index'];u=old['units'][i];ref=row['record'];p=Path(ref['path']).resolve()
++        need(row['module']==u['module'] and row['status']=='PASS' and sha(p)==ref['sha256'],'Original complete record differs.')
++        d=json.loads(p.read_text());need(d['status']=='PASS' and d['prepare_only']is False and
++            d['before']==d['after'] and all(d[k]for k in ('only_standard_axioms','all_input_provider_postchecks',
++                'all_fresh_objects_unchanged_after_audit','source_object_recorded_before_audit')),'Incomplete original record.')
++        need((d['named_axiom_probes'],d['callers'])==(u['probes'],u['callers']),'Original audit census differs.')
++        need([c['label']for c in d['commands']]==['source','audit'] and all(c['exit_code']==0 and not c.get('timed_out',False)for c in d['commands']),'Original command failed.')
++        for c in d['commands']:need(Path(c['log']).read_text()==c['output'],'Original raw log differs.')
++        for p0,h in d['before'].items():need(sha(p0)==h,'Original input changed '+p0)
++        for role in ('source','audit'):
++            q=d[role];need(sha(q['path'])==sha(q['snapshot'])==q['sha256']==u[role+'_sha256'],'Original source/audit binding differs.')
++        fs=d['fresh_modules'];need(len(fs)==1 and fs[0]['module']==u['module'],'Wrong original fresh module.')
++        fresh=fs[0];need(all(fresh[k]==d['source_pass_object'][k]for k in ('module','path','sha256','source_sha256')),'Original pre-audit object differs.')
++        actual=d['fresh_first_provider_before_audit'];ap=actual.get('actual_first',actual.get('path'))
++        need(Path(ap).resolve()==Path(fresh['path']).resolve() and actual['module']==u['module'] and
++             sha(ap)==fresh['sha256']==actual['sha256'],'Original actual provider differs.')
++        prep=d['preparation'];need(sha(prep['path'])==prep['sha256'],'Original preparation changed.')
++        r=dict(module=u['module'].rsplit('.',1)[1],full_module=u['module'],record=desc(p),
++               source=desc(d['source']['path']),audit=desc(d['audit']['path']),fresh_object=desc(fresh['path']),
++               source_sha256=fresh['source_sha256'],probes=u['probes'],callers=u['callers'],
++               probe_names=u['probe_names'],origin='original_production',original_unit_index=i,cuts=u['cuts'],
++               proof_replay=False,source_seconds=d['commands'][0]['seconds'],audit_seconds=d['commands'][1]['seconds'])
++        for ci in u['cuts']:
++            need(ci not in out,'Repeated original cut.')
++            c=old['cut_frontier'][ci];need(c['module']==r['module'] and not c['reused'],'Original cut binding differs.')
++            expected='theorem block_'+str(ci)+' :\n    '+goal(c['path'])+' := by decide +kernel'
++            need(expected in Path(r['source']['path']).read_text(),'Original successful cut proposition differs.')
++            out[ci]=dict(r,theorem=NS+'.block_'+str(ci))
++    need(set(out)==set(range(1,42)),'Original passes must cover exactly cuts1..41.')
++    return out,old,[desc(manifest_path),desc(batch_path),desc(Path(batch['guard']['path'])),desc(Path(old['generator']['path'])),desc(Path(failed['path'])),desc(root_review)]
++
+ def header(extra):
+     return ''.join('import BusyBeaver.ZFC.'+m+'\n'for m in dict.fromkeys(BASE_IMPORTS+extra))+'''\n/-!
+ Closed coverage of the exact routed245 instruction tree. Every new cut is a
+ kernel decision about the imported actual subtree with its complete reverse
+ prefix; every composition requires both actual children. The three measured
+-pilot modules are reused directly. No external coverage premise, native proof
++pilot modules and thirteen passed original batches are reused directly. No external coverage premise, native proof
+ evaluation, or enlarged proof limits. Grouping changes only file boundaries.
+ Adapted from the maintained permutation252/prefix246 coverage generators,
+ preserving Mira-Cult, Jeff Ketchersid and Wade's program/simulation attribution.
+@@ -118,9 +176,13 @@
+     for p,g in zip(probes,goals):s+='\nexample : '+g+' := '+p+'\n'
+     return s
+ 
+-def build_plan(repo,pilot_plan,pilot_records,cap=64,joins_per_module=16,cuts_per_module=4,max_batch_guards=128):
++def build_plan(repo,pilot_plan,pilot_records,original_manifest,original_batch,cap=64,joins_per_module=16,cuts_per_module=1,max_batch_guards=64):
+     need(cap==64,'Pilot reuse is tied to the exact cap64 frontier.')
+     meta,sites,inputs=routed_tree(repo);reused=checked_pilots(pilot_plan,pilot_records)
++    for r in reused.values():r.update(origin='pilot',probe_names=['checked'])
++    successful,old,old_inputs=checked_old_batches(original_manifest,original_batch)
++    need(not(set(reused)&set(successful)),'Pilot/original cut overlap.')
++    reused.update(successful)
+     cuts=[];joins=[]
+     def split(p):
+         if meta[p]['guards']<=cap:
+@@ -131,7 +193,9 @@
+     need(sum(c['leaves']for c in cuts)==6460 and sum(c['guards']for c in cuts)==8391,'Incomplete cut coverage.')
+     need(all(a['hi']==b['lo']for a,b in zip(cuts,cuts[1:])),'Cut intervals do not partition leaves.')
+     for i,r in reused.items():
+-        c=cuts[i];need(tuple(c[k]for k in ('path','lo','hi','leaves','guards','height'))==PILOTS[i],'Reused cut no longer matches.')
++        c=cuts[i]
++        expected=PILOTS[i] if r['origin']=='pilot' else tuple(old['cut_frontier'][i][k]for k in ('path','lo','hi','leaves','guards','height'))
++        need(tuple(c[k]for k in ('path','lo','hi','leaves','guards','height'))==expected,'Reused cut no longer matches.')
+         c.update(module=r['module'],theorem=r['theorem'],reused=True)
+     batches=[];current=[];guard_sum=0
+     def flush():
+@@ -143,7 +207,7 @@
+         current.append(c);guard_sum+=c['guards']
+     flush()
+     for i,cs in enumerate(batches):
+-        module=f'SitesRouting245Batch{i:03d}'
++        module=f"SitesRouting245Cut{cs[0]['index']:03d}"
+         for c in cs:c['module']=module
+     files={};units=[]
+     def unit(module,source,probes,goals,metadata,aud=None):
+@@ -203,26 +267,29 @@
+   actual_walk_exists P
+ '''
+     unit('SitesRouting245',text,['all_sites','actual_walk_checked','actual_walk_exists'],['closed root','typed checked walk','typed total walk'],dict(kind='closed_final'),finalaudit)
+-    need(sum(u['probes']for u in units)==471 and sum(u['callers']for u in units)==471,'Wrong generated theorem/audit census.')
++    need(len(units)==208 and sum(u['probes']for u in units)==430 and sum(u['callers']for u in units)==430,'Wrong generated theorem/audit census.')
++    reused_modules=list({r['full_module']:r for r in reused.values()}.values())
++    need(len(reused_modules)==16 and sum(r['probes']for r in reused_modules)==44 and sum(r['callers']for r in reused_modules)==47,'Wrong actual reuse census.')
+     report=dict(status='GENERATED_SOURCE_ONLY_UNBUILT',generator=desc(Path(__file__)),compiler_or_version_called=False,
+-                inputs=inputs+[desc(pilot_plan),desc(pilot_records)],program_source_sha256=PROGRAM_SHA,nodes=6459,leaves=6460,guard_cases=8391,
++                inputs=inputs+[desc(pilot_plan),desc(pilot_records)]+old_inputs,program_source_sha256=PROGRAM_SHA,nodes=6459,leaves=6460,guard_cases=8391,
+                 decoder_depth=51,max_guards_per_cut=cap,joins_per_module=joins_per_module,max_cuts_per_module=cuts_per_module,max_batch_guards=max_batch_guards,
+-                chunks=236,joins=235,generated_units=len(units),reused_units=list(reused.values()),reused_unit_count=3,
+-                complete_probes=474,complete_callers=477,generated_probes=471,generated_callers=471,
++                chunks=236,joins=235,generated_units=len(units),reused_units=reused_modules,reused_unit_count=16,
++                complete_probes=474,complete_callers=477,generated_probes=430,generated_callers=430,
+                 cut_frontier=cuts,join_plan=joins,units=units,root=root,
+                 leaf_opcode_counts=dict(Counter(k for _,k,_ in sites)),
+-                scope='Exact routed-tree closed checks and both-child joins. Direct reuse of three actual successful pilot propositions/objects. Complete all-sites proof and typed arbitrary-pointer walk clients require every generated unit to pass. No bootstrap or PA endpoint claim.')
++                scope='Exact routed-tree closed checks and both-child joins. Direct reuse of three actual successful pilots and thirteen original successful batch modules, covering44 cut propositions. Complete all-sites proof and typed arbitrary-pointer walk clients require every generated unit to pass. No bootstrap or PA endpoint claim.')
+     return files,report
+ 
+ def main():
+     p=argparse.ArgumentParser(description=__doc__)
+     p.add_argument('--repo',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
+     p.add_argument('--pilot-plan',type=Path,required=True);p.add_argument('--pilot-records',type=Path,required=True)
++    p.add_argument('--original-manifest',type=Path,required=True);p.add_argument('--original-batch',type=Path,required=True)
+     p.add_argument('--max-guards',type=int,default=64);p.add_argument('--joins-per-module',type=int,default=16)
+-    p.add_argument('--cuts-per-module',type=int,default=4);p.add_argument('--max-batch-guards',type=int,default=128);a=p.parse_args()
+-    need(__debug__ and a.max_guards==64 and 1<=a.joins_per_module<=32 and 1<=a.cuts_per_module<=16 and 64<=a.max_batch_guards<=512,'Invalid grouping.')
++    p.add_argument('--cuts-per-module',type=int,default=1);p.add_argument('--max-batch-guards',type=int,default=64);a=p.parse_args()
++    need(__debug__ and a.max_guards==64 and a.joins_per_module==16 and a.cuts_per_module==1 and a.max_batch_guards==64,'Invalid grouping.')
+     repo=a.repo.resolve();out=a.output.resolve();need(not out.is_relative_to(repo) and(not out.exists()or not any(out.iterdir())),'Use fresh external output.')
+-    files,report=build_plan(repo,a.pilot_plan.resolve(),a.pilot_records.resolve(),a.max_guards,a.joins_per_module,a.cuts_per_module,a.max_batch_guards)
++    files,report=build_plan(repo,a.pilot_plan.resolve(),a.pilot_records.resolve(),a.original_manifest.resolve(),a.original_batch.resolve(),a.max_guards,a.joins_per_module,a.cuts_per_module,a.max_batch_guards)
+     out.mkdir(parents=True,exist_ok=True)
+     for name,data in files.items():(out/name).write_bytes(data)
+     (out/'generation.json').write_text(json.dumps(report,indent=2)+'\n')

@@ -1,0 +1,12 @@
+--- frozen/review_complete.py
++++ successor/review_complete_v2.py
+@@ -236,6 +236,9 @@
+         for match in re.finditer(r'^private def row(\d+) : Row := \(\(\.(\w+)(?: (\d+))?\), \(\.(\w+)(?: (\d+))?\)\)$', src, re.M):
+             i, left, a, right, b = match.groups()
+             rows[int(i)] = ((left, int(a) if a else None), (right, int(b) if b else None))
++        halt_rows = re.findall(r'^private def row(\d+) : Row := \(\(\.node (\d+)\), \.halt\)$', src, re.M)
++        self.require(halt_rows == [('186', '175')] and 186 not in rows, 'Exact unparenthesized halt row')
++        rows[186] = (('node', 175), ('halt', None))
+         self.require(set(rows) == set(range(203)), 'Independent 203-row parse')
+         self.require(re.search(r'^  root := 202$', src, re.M) and re.search(r'^def tree : Tree := t202$', src, re.M), 'Actual decoder root')
+         self.tree = {}

@@ -1,0 +1,17 @@
+import BusyBeaver.ZFC.SitesRouting245Batch021
+
+open SetTheory.BusyBeaver SetTheory.BusyBeaver.ZFC
+open RegisterPath RMBisim SiteCoverage SitesRouting245
+
+#print axioms SetTheory.BusyBeaver.ZFC.SitesRouting245.block_67
+#print axioms SetTheory.BusyBeaver.ZFC.SitesRouting245.block_68
+#print axioms SetTheory.BusyBeaver.ZFC.SitesRouting245.block_69
+
+example : allSites SiteRouting245.checkSite [false, false, true, true, false, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, false, true, true, false, false]) = true := block_67
+
+example : allSites SiteRouting245.checkSite [true, false, true, true, false, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, false, true, true, false, true]) = true := block_68
+
+example : allSites SiteRouting245.checkSite [false, false, false, true, true, true, false, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, false, true, true, true, false, false, false]) = true := block_69

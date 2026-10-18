@@ -1,0 +1,17 @@
+import BusyBeaver.ZFC.SitesRouting245Batch014
+
+open SetTheory.BusyBeaver SetTheory.BusyBeaver.ZFC
+open RegisterPath RMBisim SiteCoverage SitesRouting245
+
+#print axioms SetTheory.BusyBeaver.ZFC.SitesRouting245.block_44
+#print axioms SetTheory.BusyBeaver.ZFC.SitesRouting245.block_45
+#print axioms SetTheory.BusyBeaver.ZFC.SitesRouting245.block_46
+
+example : allSites SiteRouting245.checkSite [false, false, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, false, false]) = true := block_44
+
+example : allSites SiteRouting245.checkSite [false, false, true, false, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, false, true, false, false]) = true := block_45
+
+example : allSites SiteRouting245.checkSite [false, true, false, true, false, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, false, true, false, true, false]) = true := block_46

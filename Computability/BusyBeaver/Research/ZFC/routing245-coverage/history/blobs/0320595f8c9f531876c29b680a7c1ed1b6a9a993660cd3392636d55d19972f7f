@@ -1,0 +1,154 @@
+import BusyBeaver.ZFC.ProgramRouting245
+import BusyBeaver.ZFC.SiteCoverage
+import BusyBeaver.ZFC.SiteRouting245
+import BusyBeaver.ZFC.SitesRouting245Batch021
+import BusyBeaver.ZFC.SitesRouting245CutPilot070
+import BusyBeaver.ZFC.SitesRouting245Batch022
+import BusyBeaver.ZFC.SitesRouting245Join002
+import BusyBeaver.ZFC.SitesRouting245Batch019
+import BusyBeaver.ZFC.SitesRouting245Batch023
+import BusyBeaver.ZFC.SitesRouting245Batch024
+import BusyBeaver.ZFC.SitesRouting245Batch025
+
+/-!
+Closed coverage of the exact routed245 instruction tree. Every new cut is a
+kernel decision about the imported actual subtree with its complete reverse
+prefix; every composition requires both actual children. The three measured
+pilot modules are reused directly. No external coverage premise, native proof
+evaluation, or enlarged proof limits. Grouping changes only file boundaries.
+Adapted from the maintained permutation252/prefix246 coverage generators,
+preserving Mira-Cult, Jeff Ketchersid and Wade's program/simulation attribution.
+-/
+namespace SetTheory.BusyBeaver.ZFC.SitesRouting245
+open RegisterPath RMBisim SiteCoverage
+
+theorem join_48 :
+    allSites SiteRouting245.checkSite [false, false, true, true, true, false, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, false, true, true, true, false, false]) = true :=
+  allSites_join SiteRouting245.checkSite [false, false, true, true, true, false, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, false, true, true, true, false, false, false])
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, false, true, true, true, false, false, true])
+    SetTheory.BusyBeaver.ZFC.SitesRouting245.block_69 SetTheory.BusyBeaver.ZFC.SitesRouting245CutPilot070.checked
+
+theorem join_49 :
+    allSites SiteRouting245.checkSite [false, true, true, true, false, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, false, true, true, true, false]) = true :=
+  allSites_join SiteRouting245.checkSite [false, true, true, true, false, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, false, true, true, true, false, false])
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, false, true, true, true, false, true])
+    SetTheory.BusyBeaver.ZFC.SitesRouting245.join_48 SetTheory.BusyBeaver.ZFC.SitesRouting245.block_71
+
+theorem join_50 :
+    allSites SiteRouting245.checkSite [true, true, true, false, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, false, true, true, true]) = true :=
+  allSites_join SiteRouting245.checkSite [true, true, true, false, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, false, true, true, true, false])
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, false, true, true, true, true])
+    SetTheory.BusyBeaver.ZFC.SitesRouting245.join_49 SetTheory.BusyBeaver.ZFC.SitesRouting245.block_72
+
+theorem join_51 :
+    allSites SiteRouting245.checkSite [true, true, false, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, false, true, true]) = true :=
+  allSites_join SiteRouting245.checkSite [true, true, false, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, false, true, true, false])
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, false, true, true, true])
+    SetTheory.BusyBeaver.ZFC.SitesRouting245.join_47 SetTheory.BusyBeaver.ZFC.SitesRouting245.join_50
+
+theorem join_52 :
+    allSites SiteRouting245.checkSite [true, false, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, false, true]) = true :=
+  allSites_join SiteRouting245.checkSite [true, false, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, false, true, false])
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, false, true, true])
+    SetTheory.BusyBeaver.ZFC.SitesRouting245.join_46 SetTheory.BusyBeaver.ZFC.SitesRouting245.join_51
+
+theorem join_53 :
+    allSites SiteRouting245.checkSite [false, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, false]) = true :=
+  allSites_join SiteRouting245.checkSite [false, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, false, false])
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, false, true])
+    SetTheory.BusyBeaver.ZFC.SitesRouting245.block_63 SetTheory.BusyBeaver.ZFC.SitesRouting245.join_52
+
+theorem join_54 :
+    allSites SiteRouting245.checkSite [true, false, false, true, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, false, false, true]) = true :=
+  allSites_join SiteRouting245.checkSite [true, false, false, true, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, false, false, true, false])
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, false, false, true, true])
+    SetTheory.BusyBeaver.ZFC.SitesRouting245.block_74 SetTheory.BusyBeaver.ZFC.SitesRouting245.block_75
+
+theorem join_55 :
+    allSites SiteRouting245.checkSite [false, false, true, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, false, false]) = true :=
+  allSites_join SiteRouting245.checkSite [false, false, true, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, false, false, false])
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, false, false, true])
+    SetTheory.BusyBeaver.ZFC.SitesRouting245.block_73 SetTheory.BusyBeaver.ZFC.SitesRouting245.join_54
+
+theorem join_56 :
+    allSites SiteRouting245.checkSite [false, true, false, true, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, false, true, false]) = true :=
+  allSites_join SiteRouting245.checkSite [false, true, false, true, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, false, true, false, false])
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, false, true, false, true])
+    SetTheory.BusyBeaver.ZFC.SitesRouting245.block_76 SetTheory.BusyBeaver.ZFC.SitesRouting245.block_77
+
+theorem join_57 :
+    allSites SiteRouting245.checkSite [true, false, true, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, false, true]) = true :=
+  allSites_join SiteRouting245.checkSite [true, false, true, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, false, true, false])
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, false, true, true])
+    SetTheory.BusyBeaver.ZFC.SitesRouting245.join_56 SetTheory.BusyBeaver.ZFC.SitesRouting245.block_78
+
+theorem join_58 :
+    allSites SiteRouting245.checkSite [false, true, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, false]) = true :=
+  allSites_join SiteRouting245.checkSite [false, true, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, false, false])
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, false, true])
+    SetTheory.BusyBeaver.ZFC.SitesRouting245.join_55 SetTheory.BusyBeaver.ZFC.SitesRouting245.join_57
+
+theorem join_59 :
+    allSites SiteRouting245.checkSite [false, false, true, true, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, true, false, false]) = true :=
+  allSites_join SiteRouting245.checkSite [false, false, true, true, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, true, false, false, false])
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, true, false, false, true])
+    SetTheory.BusyBeaver.ZFC.SitesRouting245.block_79 SetTheory.BusyBeaver.ZFC.SitesRouting245.block_80
+
+theorem join_60 :
+    allSites SiteRouting245.checkSite [false, true, true, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, true, false]) = true :=
+  allSites_join SiteRouting245.checkSite [false, true, true, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, true, false, false])
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, true, false, true])
+    SetTheory.BusyBeaver.ZFC.SitesRouting245.join_59 SetTheory.BusyBeaver.ZFC.SitesRouting245.block_81
+
+theorem join_61 :
+    allSites SiteRouting245.checkSite [true, true, true, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, true, true]) = true :=
+  allSites_join SiteRouting245.checkSite [true, true, true, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, true, true, false])
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, true, true, true])
+    SetTheory.BusyBeaver.ZFC.SitesRouting245.block_82 SetTheory.BusyBeaver.ZFC.SitesRouting245.block_83
+
+theorem join_62 :
+    allSites SiteRouting245.checkSite [true, true, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, true]) = true :=
+  allSites_join SiteRouting245.checkSite [true, true, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, true, false])
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, true, true])
+    SetTheory.BusyBeaver.ZFC.SitesRouting245.join_60 SetTheory.BusyBeaver.ZFC.SitesRouting245.join_61
+
+theorem join_63 :
+    allSites SiteRouting245.checkSite [true, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true]) = true :=
+  allSites_join SiteRouting245.checkSite [true, true, false, true, true, true, false, true, true, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, false])
+    (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, true, true, false, true, true, true, false, true, true, true])
+    SetTheory.BusyBeaver.ZFC.SitesRouting245.join_58 SetTheory.BusyBeaver.ZFC.SitesRouting245.join_62
+
+
+end SetTheory.BusyBeaver.ZFC.SitesRouting245

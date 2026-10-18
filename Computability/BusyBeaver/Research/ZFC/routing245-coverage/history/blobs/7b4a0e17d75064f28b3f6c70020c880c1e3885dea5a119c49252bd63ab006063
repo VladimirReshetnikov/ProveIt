@@ -1,0 +1,54 @@
+# Staging the exact mapped proof logs
+
+This is a publication-staging supplement only. The coverage builder, proof
+family, complete-review script and repository ignore rules remain unchanged.
+No staging command, builder or proof program was executed for this note.
+
+There is no applicable instruction forbidding explicit staging of the mapped
+Lean source/audit logs. The repository's `.gitignore:61` contains `*.log` under
+“Logs and operating-system metadata”; `git check-ignore -v` confirms that this
+rule reaches both proposed coverage log paths. No ancestor `AGENTS.md` applies
+to `Computability/BusyBeaver/Research/ZFC/` in this checkout. The instruction in
+`docs/incoming/README.md:435–436` to omit `.log` files concerns auxiliary files
+from building a report with LaTeX. These files are recorded Lean proof evidence,
+and that same incoming catalogue records explicit force-adds of substantive run
+logs. The publication task already authorizes preserving the exact raw evidence.
+
+The frozen builder maps each selected module's two raw logs to
+`Computability/BusyBeaver/Research/ZFC/routing245-coverage/logs/<module>/source.log`
+and `audit.log`. Its content-addressed history may reference those mapped paths
+as the canonical copy of identical bytes. A log embedded in a verification JSON
+does not repair a missing file at a mapped/history-referenced path.
+
+After the complete actual receipt and packet have passed their gates, root should:
+
+1. Pin the actual packet map hash, verify every installed mapped byte, and derive
+   the `.log` staging list strictly from that exact map. Reject absolute targets,
+   traversal, targets outside the coverage family, and any target/hash mismatch.
+   The expected selected-log count is 624 × 2 = 1,248; these are map entries,
+   including empty source logs, rather than a filesystem glob.
+2. Write only those repository-relative mapped paths to a temporary NUL-separated
+   pathspec file outside the repository. Explicitly force-add that exact list:
+
+   ```sh
+   git --literal-pathspecs add -f \
+     --pathspec-from-file=/tmp/routing245-mapped-logs.nul \
+     --pathspec-file-nul
+   ```
+
+   Root creates the temporary file from the reviewed map. This command is a
+   recipe, not evidence that staging has happened. Do not use `git add -f .`, a
+   directory-wide force-add, or broaden `.gitignore` to include unrelated logs.
+3. Stage the other exact mapped targets and separately reviewed publication
+   notes/receipts. Check the Git index, not only the working tree: every mapped
+   target must be tracked/staged with bytes whose SHA256 equals its map entry.
+   Reconstruct every history alias through its mapped destination and verify its
+   digest from the staged bytes. This detects ignored-file omissions and any
+   attribute/filter transformation before committing.
+4. Keep compiled objects, caches and excluded symlinks outside the publication,
+   as the frozen map and history specify. Include this supplement or an exact
+   pointer in the separate publication review; do not rewrite the frozen builder
+   or pretend its original map already includes a later supplement.
+
+The explicit force-add is limited to authorized, hash-reviewed evidence paths.
+It requires no additional user approval under the existing publication request.

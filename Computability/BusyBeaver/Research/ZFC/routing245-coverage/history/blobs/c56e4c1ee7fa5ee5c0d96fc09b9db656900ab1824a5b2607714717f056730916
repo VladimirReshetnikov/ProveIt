@@ -1,0 +1,37 @@
+# Coverage successor after the recorded unit013 timeout
+
+The original run established thirteen complete source/audit passes, covering cuts 1–41: 960 leaves and 1,251 guards. Their source times ranged from 7.68 to 47.28 seconds. Unit013 grouped cut42 (47 leaves, 61 guards) and cut43 (26 leaves, 34 guards); its source command was killed at the 120-second budget and produced only `TIMEOUT`. No audit or fresh source object was accepted. The log does not identify the cost of either individual cut.
+
+The successor retains the exact 236-cut frontier, every cut proposition, all 235 both-child joins, and the three final coverage/walk statements. It reuses the thirteen successful original batch modules directly, along with the three measured pilot modules. Each of the remaining 192 cuts receives its own module. The fifteen join modules and final module then yield 208 new units. Complete coverage still has 474 named probes and 477 typed callers: 430/430 new and 44/47 reused. The seven earlier leaf pilots remain separate exploratory evidence.
+
+All original files and evidence remain untouched. `history-v1/` additionally preserves the full 200-file source/audit family, original generator and guard, timeout source/audit snapshots, preparation, failed record and raw log. `predecessor-history.json` pins the original records and copies. The root's `root-first13-and-timeout-review.json` is copied and pinned as an input to the successor generator. `history-draft1/` retains the unexecuted proposal before that review was added as an explicit input.
+
+`generator-v2.diff` shows the exact source-emitter delta. `guard-v2.diff` shows the strict guard delta. The execution policy remains one source/audit pair sharing 120 seconds, `-j1 -M4096`, default proof limits, Site fuel 4,000 and margin 64. Source objects must be fresh and captured before the audit. Existing successful records are validated against original source/audit hashes, current provider hashes, raw logs and pre-audit objects. Original production modules retain their existing namespace and preparation requirements; pilots retain their own namespace and older receipt shape. No successful module is recompiled.
+
+The first new unit is `SitesRouting245Cut042`; the second is `SitesRouting245Cut043`. Check those separately before launching the remaining schedule. If an individual cut times out, preserve that attempt and subdivide that actual subtree in a further successor. This proposal does not assert that every single-cut check will fit the budget.
+
+The generator, guard template and pin adaptor have only been parsed and source-reviewed by the author. None has been invoked. The template deliberately has a missing manifest pin and cannot accept a proof run. The root should emit sources, inspect the resulting manifest and first two units, then run the metadata-only pin adaptor. The root remains the sole proof executor.
+
+Proposed root source-emission command:
+
+```sh
+python3 -B /tmp/zfc-routing245-lean/coverage-production/v2/generate_sites_routing245_v2.py \
+  --repo /home/codex/.codex/worktrees/ec20/Proofs \
+  --output /tmp/zfc-routing245-lean/coverage-production/v2/sources \
+  --pilot-plan /tmp/zfc-routing245-lean/coverage-subtree-pilots/subtree-plan.json \
+  --pilot-records /tmp/zfc-routing245-lean/coverage-production/pilot-records.json \
+  --original-manifest /tmp/zfc-routing245-lean/coverage-production/sources/generation.json \
+  --original-batch /tmp/zfc-routing245-lean/coverage-production/all-run1/batch.json
+```
+
+Proposed root guard-pin command after source inspection:
+
+```sh
+python3 -B /tmp/zfc-routing245-lean/coverage-production/v2/freeze_guard_v2.py \
+  --manifest /tmp/zfc-routing245-lean/coverage-production/v2/sources/generation.json \
+  --output /tmp/zfc-routing245-lean/coverage-production/v2/check-production-v2.py
+```
+
+The installed guard takes the same `--repo`, `--start`, `--count`, `--prepare-only`, `--prior-batch` and fresh external `--output` arguments as its predecessor. Start/count `0/1` measures cut42; `1/1` measures cut43. The original thirteen successful batches and three pilots are mandatory pinned reuse entries, so they do not require a prior-batch argument. New v2 proof batches must be supplied explicitly through `--prior-batch` when resuming. Every attempt gets a new output directory, and a failed or partial record is never promoted.
+
+Expected selected project closures are 23 for a fresh cut and 246 for the final structural assembly. These are prospective source-derived counts; only an actual prepared record can confirm the final selected providers. There is no new complete-coverage, binary endpoint, bootstrap, or PA claim in this source-only proposal.

@@ -8,8 +8,9 @@ stronger theory, as clarified by the user on 17 October 2026. Each candidate
 must state the assumptions used for its two unprovability directions;
 consistency alone must not be confused with arithmetic soundness. The
 external Lean equivalence with Con(ZFC) is now proved for the exact
-[246-state machine](prefix246_binary.md), improving the earlier checked
-252-state endpoint; its internal PA proof remains open. All new formal work uses Lean.
+[245-state machine](routing245_binary.md), improving the earlier checked
+246- and 252-state endpoints; its internal PA proof remains open.
+All new formal work uses Lean.
 An intended set-theoretic meaning is optional: any effectively presented
 theory or proof calculus is eligible once its consistency calibration is proved.
 The complete compiled search, including its data and initialization, is the
@@ -26,20 +27,21 @@ the lower bound needed for the independence argument; no absolute consistency
 proof is claimed. Require a concrete encoding benefit before increasing the
 benchmark strength.
 
-The active formal baseline is the
-[246-state contextual-fold machine](candidate-prefix246/README.md).
-The new [routed 245-state candidate](candidate-routing245/README.md), from
-`8286787dd0`, passes its complete executable suite, including all 8,391
+The active external Lean baseline is the
+[routed 245-state machine](candidate-routing245/README.md), from
+`8286787dd0`. It passes its complete executable suite, including all 8,391
 expanded whole-tape instruction cases and its 407,915-step exact blank prefix.
 Joint source-grammar, special-entry and scanner optimization saves the state
 while preserving the original theory. Independent ordinary-proof reviews find
-no substantive blocker. Its exact Lean endpoint and internal PA proof remain
-open; the [intake record](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-164.md)
+no substantive blocker. Its [closed Lean endpoint](routing245_binary.md)
+proves blank-tape halting equivalent to ZF/ZFC refutation and nonhalting
+equivalent to the corresponding consistency statements. Eleven axiom probes
+and eleven typed callers pass with zero warnings. The internal PA proof
+remains open; the [intake record](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-164.md)
 preserves attribution, recovery, fresh results and scope.
 The first [245-state Lean unit](table_routing245.md) checks the exact 490-row
 table, state numbering and 46 reusable core rows. All 64 theorem audits and
-64 typed callers pass with zero warnings. Complete coverage remains an
-obligation. The [fast lookup](fast_table_routing245.md) also passes:
+64 typed callers pass with zero warnings. The [fast lookup](fast_table_routing245.md) also passes:
 two theorem audits and four typed callers prove equality with the literal
 machine, enabling faster reduction in subsequent execution proofs.
 The [exact register decoder](program_routing245.md) passes 11 theorem
@@ -48,8 +50,10 @@ and execution semantics for arbitrary pointers and register values.
 The [complete source-program bisimulation](bisim_routing245.md) now checks all
 3,013 certificate entries and proves halting equivalence with `Prog254` for
 every initial register function at empty pointers. Its 97 production modules
-pass 104 theorem probes and 201 typed callers, with zero warnings. Complete
-decoder coverage, the binary endpoint and PA internalization remain.
+pass 104 theorem probes and 201 typed callers, with zero warnings.
+The [complete decoder coverage proof](routing245_coverage.md) checks all
+6,460 leaves and 8,391 guard cases: 624 selected modules, 958 axiom probes
+and 961 typed callers, with zero warnings.
 The [local routing245 register operations](routing245_local.md) also pass:
 pulse, marking, increment and both decrement branches retain arbitrary values,
 finite contexts and complete-tape conclusions. Their three modules pass
@@ -62,7 +66,10 @@ The [complete routing245 blank startup](routing245_bootstrap.md) now proves
 all 407,915 transitions and its exact full dispatch frame, including the
 calibrated logical seed and 167 spare blocks. Its eleven modules pass 80
 theorem probes and 111 callers with zero warnings. This discharges the
-initial-frame premise; complete coverage and the closed binary composition remain.
+initial-frame premise; the closed binary composition now joins it with
+complete coverage and runtime simulation. The
+[246-state contextual-fold machine](candidate-prefix246/README.md) remains
+available as the earlier external Lean baseline.
 The checked components of the earlier
 [shared-carry 250 construction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-160.md)
 provide reusable proof infrastructure. Sources 58–59 contain the same
@@ -1799,3 +1806,9 @@ copy/restore tail takes exactly `7*oldAC+2` steps with only S1 initially zero.
 Six axiom probes and eight typed callers passed with zero warnings. The proof
 reuses complete literal-source facts; the uncompiled earlier draft and the
 first actual attempt (named `run2`) are preserved without a performance claim.
+
+The [composed implication at controls 275–354](arithmetic_control_ax_next_imp254.md)
+sets TW to `wim(oldP1, oldAC)` and WS to `cantor(oldTW, oldWS)`, retaining
+the other seven coordinates. Its separate 301–354 contract changes only TW.
+Nine axiom probes and eleven typed callers passed on the first run, with
+zero warnings. The complete AX loop and the internal PA endpoint remain open.

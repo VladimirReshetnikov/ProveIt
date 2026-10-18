@@ -1,0 +1,18 @@
+--- /tmp/zfc-routing245-lean/coverage-production/v4/root_review_batch.py
++++ /tmp/zfc-routing245-lean/coverage-production/v4/root_review_final_batch.py
+@@ -1,7 +1,7 @@
+ from pathlib import Path
+ import json,hashlib,sys
+ H=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+-p=Path(sys.argv[1]);d=json.loads(p.read_text());assert d['status']=='PASS_SELECTED_UNITS' and not d['prepare_only'] and d['failed_unit'] is None
++p=Path(sys.argv[1]);d=json.loads(p.read_text());assert d['status']=='PASS_COMPLETE_COVERAGE' and not d['prepare_only'] and d['failed_unit'] is None
+ seen={};checks=0;probes=callers=0;times=[];records=[]
+ for row in d['completed_units']:
+  ref=row['record'];assert H(ref['path'])==ref['sha256'];v=json.loads(Path(ref['path']).read_text());assert v['status']=='PASS' and not v['prepare_only']
+@@ -28,5 +28,5 @@
+  assert all(set(a['axioms'])<={'propext','Classical.choice','Quot.sound'} for a in v['actual_axiom_sets'])
+  assert v['named_axiom_probes']==v['expected_named_axiom_probes']==len(v['actual_axiom_sets']) and v['callers']==v['expected_callers']
+  probes+=v['named_axiom_probes'];callers+=v['callers'];times.append(sum(c['seconds'] for c in v['commands']));records.append(ref)
+-out={'status':'CLEAN_SELECTED_ROUTING245_BATCH_ROOT_REVIEW','batch':{'path':str(p),'sha256':H(p)},'unit_indices':[x['unit_index'] for x in d['completed_units']],'records':records,'input_hash_references_checked':checks,'unique_input_paths_checked':len(seen),'named_axiom_probes':probes,'callers':callers,'max_shared_seconds':max(times),'total_shared_seconds':sum(times),'findings':[],'scope':'Exact selected actual units only. Complete routing coverage remains unclaimed.'}
++out={'status':'CLEAN_SELECTED_ROUTING245_BATCH_ROOT_REVIEW','batch':{'path':str(p),'sha256':H(p)},'unit_indices':[x['unit_index'] for x in d['completed_units']],'records':records,'input_hash_references_checked':checks,'unique_input_paths_checked':len(seen),'named_axiom_probes':probes,'callers':callers,'max_shared_seconds':max(times),'total_shared_seconds':sum(times),'findings':[],'scope':'Root review of the final selected307 actual units. The complete624-unit aggregate is reviewed independently; this receipt alone is scoped to these307 units.'}
+ q=p.parent/'root-review.json';q.write_text(json.dumps(out,indent=2)+'\n');print(q,H(q),len(records),'units',probes,'probes',callers,'callers')

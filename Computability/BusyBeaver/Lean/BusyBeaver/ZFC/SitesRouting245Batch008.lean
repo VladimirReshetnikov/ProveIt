@@ -1,0 +1,38 @@
+import BusyBeaver.ZFC.ProgramRouting245
+import BusyBeaver.ZFC.SiteCoverage
+import BusyBeaver.ZFC.SiteRouting245
+
+/-!
+Closed coverage of the exact routed245 instruction tree. Every new cut is a
+kernel decision about the imported actual subtree with its complete reverse
+prefix; every composition requires both actual children. The three measured
+pilot modules are reused directly. No external coverage premise, native proof
+evaluation, or enlarged proof limits. Grouping changes only file boundaries.
+Adapted from the maintained permutation252/prefix246 coverage generators,
+preserving Mira-Cult, Jeff Ketchersid and Wade's program/simulation attribution.
+-/
+namespace SetTheory.BusyBeaver.ZFC.SitesRouting245
+open RegisterPath RMBisim SiteCoverage
+
+/-- Cut 26: 45 leaves / 59 guards. -/
+theorem block_26 :
+    allSites SiteRouting245.checkSite [false, false, true, true, true, false, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, false, true, true, true, false, false]) = true := by decide +kernel
+
+/-- Cut 27: 7 leaves / 9 guards. -/
+theorem block_27 :
+    allSites SiteRouting245.checkSite [true, false, true, true, true, false, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, false, true, true, true, false, true]) = true := by decide +kernel
+
+/-- Cut 28: 28 leaves / 36 guards. -/
+theorem block_28 :
+    allSites SiteRouting245.checkSite [true, true, true, true, false, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, false, true, true, true, true]) = true := by decide +kernel
+
+/-- Cut 29: 2 leaves / 2 guards. -/
+theorem block_29 :
+    allSites SiteRouting245.checkSite [false, false, false, false, false, true, false, true, false, true, false, true, true, false, true, false, true, false, false, true, false, false, true, false, true, true, true]
+      (descend TreeRouting245.tree [true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, true, false, true, false, true, false, true, false, false, false, false, false]) = true := by decide +kernel
+
+
+end SetTheory.BusyBeaver.ZFC.SitesRouting245
