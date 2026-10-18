@@ -14,6 +14,17 @@ theory or proof calculus is eligible once its consistency calibration is proved.
 The complete compiled search, including its data and initialization, is the
 cost measure that decides whether a candidate improves the baseline.
 
+Stronger targets must stay within well-understood assumptions widely believed
+to be consistent (user clarification, 17 October 2026). Preferred benchmarks
+are finite consistency iterations over ZF/ZFC and standard inaccessible-cardinal
+assumptions. A shorter encoding alone does not justify an unfamiliar increase
+in consistency strength. For an artificial calculus T, identify an accepted
+benchmark S and prove both Con(S) → Con(T) and Con(T) → Con(ZF), with the
+formalization base stated. This supplies a consistency upper bound as well as
+the lower bound needed for the independence argument; no absolute consistency
+proof is claimed. Require a concrete encoding benefit before increasing the
+benchmark strength.
+
 The active focus is verifying and formalizing the
 [246-state contextual-fold candidate](candidate-prefix246/README.md).
 The checked components of the earlier
