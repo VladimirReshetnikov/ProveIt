@@ -1,0 +1,8 @@
+PYTHON ?= python3
+
+.PHONY: verify pdf
+verify:
+	$(PYTHON) -B code/verify.py
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex

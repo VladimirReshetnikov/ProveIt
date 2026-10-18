@@ -1,0 +1,370 @@
+{
+  "schema_version": 1,
+  "title": "Three states from one selector redirect: a 247-state ZFC consistency machine",
+  "report_date": "2026-10-17",
+  "packaged_utc": "2026-10-18T00:02:31.357271+00:00",
+  "prepared_for": "Vladimir Reshetnikov and the ProveIt project",
+  "artifact_kind": "Research construction with a conventional mathematical proof and executable certificates",
+  "primary_deliverables": [
+    "report.tex",
+    "report.pdf",
+    "machine/zfc_prefix247.tm",
+    "machine/zfc_prefix247_old.tm",
+    "code/verify.py"
+  ],
+  "claim": {
+    "statement": "ZFC proves: the exact 247-working-state binary machine does not halt from its blank initial configuration iff Con(ZFC).",
+    "working_states": 247,
+    "proof_method": "Universal word and finite-list induction, all guarded symbolic instruction cases, complete-frame simulation, exact blank startup, safe-root enumerator completeness, and the specifically identified set-coded native/ZF/ZFC interpretation.",
+    "new_exact_table_lean_or_rocq_kernel_endpoint": false,
+    "inherited_proof_assistant_dependency_closure_rebuilt": false,
+    "serialized_first_order_zfc_derivation_supplied": false,
+    "internal_pa_proof_code_formalization_supplied": false,
+    "unconditional_nonhalting_or_zfc_consistency_proved": false,
+    "minimality_or_worldwide_priority_claim": false
+  },
+  "machine": {
+    "alphabet": [
+      0,
+      1
+    ],
+    "blank_symbol": 0,
+    "tapes": 1,
+    "tape_index_set": "integers",
+    "initial_head": 0,
+    "initial_tape": "identically zero",
+    "moves": [
+      "L",
+      "R"
+    ],
+    "working_states": 247,
+    "transition_rows": 494,
+    "halting_transition_count": 1,
+    "halting_semantics": "Perform the final write and move into the separate halt label; halted execution is absorbing.",
+    "canonical": {
+      "path": "machine/zfc_prefix247.tm",
+      "start": 0,
+      "dispatcher": 89,
+      "working_labels": "0..246",
+      "halt": 247,
+      "sha256": "58bbbda620daf6d4d62f486db05f54d0dccb8373c080c1b5a0b26533e7a3a669"
+    },
+    "original_labels": {
+      "path": "machine/zfc_prefix247_old.tm",
+      "start": 97,
+      "dispatcher": 96,
+      "working_labels": "({0,...,253} minus {0,1,3,5,8,43,59,85}) union {255}",
+      "halt": 254,
+      "sha256": "0d37614f3caf37139b0be127837630539224acd1c45d748cf5704abfc3230b42"
+    },
+    "renumbering": "machine/renumbering247.json",
+    "sole_halting_row_original_labels": [
+      77,
+      1,
+      1,
+      "R",
+      254
+    ],
+    "sole_halting_row_canonical": [
+      71,
+      1,
+      1,
+      "R",
+      247
+    ],
+    "physical_of_logical": [
+      6,
+      2,
+      0,
+      4,
+      3,
+      7,
+      8,
+      5,
+      1
+    ],
+    "logical_register_order": [
+      "N",
+      "T",
+      "W",
+      "A",
+      "D",
+      "H",
+      "X",
+      "Y",
+      "L"
+    ],
+    "rebuild_from250": {
+      "baseline": "reference250/machine/zfc_prefix250_old.tm",
+      "baseline_sha256": "fd455304bad82a6da7ab83149352d0b1db27557582c4cc6312de003c96ff4e43",
+      "remove_states": [
+        0,
+        1,
+        3
+      ],
+      "only_changed_surviving_row": {
+        "before": [
+          60,
+          0,
+          0,
+          "R",
+          0
+        ],
+        "after": [
+          60,
+          0,
+          0,
+          "R",
+          20
+        ]
+      },
+      "start_and_halt_unchanged": true
+    },
+    "intermediate248": {
+      "description": "Delete states 1 and 3 and replace state 0/read-zero by (1,L,2); identify state 0 with 20. The intermediate-to-final quotient is exact on every tape. The modification of Prefix250 is justified on valid recurrent frames, and the final blank startup is checked separately.",
+      "quotient_rows_checked": 496,
+      "original_labels_sha256": "ec1b2f74a07a82537fb93fcd9945584cde3a03d0b8fc5d0c674b5c6858b2ccea"
+    }
+  },
+  "bootstrap": {
+    "literal_steps": 741241,
+    "old_state": 96,
+    "canonical_state": 89,
+    "head": -5,
+    "marker": -6,
+    "header": 245,
+    "head_to_header_distance": 250,
+    "extra_gap_above40": 210,
+    "program_counter": "",
+    "physical_primary": [
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      3,
+      0,
+      0
+    ],
+    "logical_primary": [
+      3,
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0
+    ],
+    "spare_blocks": 235,
+    "all_spare_values": 1,
+    "one_cells": 487,
+    "rightmost_one": 974,
+    "complete_one_cell_support": "{-6,245,247,249,251,253,254,255,256,258,260,262,263,264,265,267,269} union {271+3j,272+3j : 0 <= j < 235}; every other integer cell is zero.",
+    "independent_literal_interpreters": [
+      "original-label sparse set",
+      "canonical-label dense bytearray"
+    ],
+    "record": "results/bootstrap247.json"
+  },
+  "source_revisions": {
+    "proveit": {
+      "repository": "VladimirReshetnikov/ProveIt",
+      "commit": "e0b512a63e2c1ca6a1698fa437b8568f1643ff6b",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/tree/e0b512a63e2c1ca6a1698fa437b8568f1643ff6b",
+      "maintained_binary_baseline": "Computability/BusyBeaver/Research/ZFC/candidate-permutation252",
+      "incoming": "docs/incoming",
+      "separate_source_identity_record": "results/current-source-audit.json",
+      "source_identity_file_count": 12,
+      "identity_check_scope": "Source identity only; not a kernel rebuild and not rerun by the offline verifier."
+    },
+    "preserved_prefix250_audit": {
+      "incoming_filename": "zfc-prefix250-audit-20261017.zip",
+      "packaged_directory": "reference250/",
+      "preserved_unchanged": true,
+      "proveit_commit": "80e26b89e905bf3e5dfc322befdc1c6eaf25a109",
+      "provenance": "reference250/PROVENANCE.json",
+      "historical_results_scope": "The preserved reports and results in reference250 concern the earlier 250-state machine."
+    },
+    "earlier_prefix250_working_report": {
+      "incoming_filename": "zfc-prefix250.zip",
+      "working_source_commit": "a3f06a2059dd786ad385079106454efb84b87d3c",
+      "role": "Earlier carry, rollback, spare suffix and pulse initializer construction; dependencies needed for reproduction are retained in reference250."
+    },
+    "upstream_requested_branch": {
+      "repository": "jeff87654/busy-beaver",
+      "branch": "zf-254",
+      "commit": "c132d7eae8158cd3a9850ea3eb7251158c3dd821",
+      "path": "ZF/m254",
+      "url": "https://github.com/jeff87654/busy-beaver/tree/c132d7eae8158cd3a9850ea3eb7251158c3dd821/ZF/m254"
+    },
+    "proveit_attributed_upstream_import": {
+      "repository": "jeff87654/busy-beaver",
+      "commit": "297ab8df7e5de329605c3875b4934643b371a5e3",
+      "program_path": "ZF/m254/coq/tm/Prog254.v",
+      "packaged_program": "reference250/sources/Prog254.v",
+      "program_sha256": "1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746"
+    },
+    "public_253_reduction": {
+      "author": "mira-emmy",
+      "pull_request": "https://github.com/jeff87654/busy-beaver/pull/20",
+      "head_commit": "0d544f2a2e3c18f12278441a74b7879f31cbe856"
+    },
+    "public_historical_overview": {
+      "url": "https://wiki.bbchallenge.org/wiki/Logical_independence",
+      "accessed": "2026-10-17",
+      "role": "Prior-art orientation; exact machine and proof identities are taken from pinned repositories."
+    }
+  },
+  "proof_scope": {
+    "complete_frame": "Old state 96 at h, one marker at h-1, a clean PC of length at most d, d >= 40, nine physical primary blocks, a nonempty finite spare suffix, and entirely blank exteriors.",
+    "unbounded_register_contracts": "All nonnegative primary values, every nonnegative extra header gap, and every finite nonempty spare suffix. The zero-decrement branch always has a following block.",
+    "spare_invariant": "Increment appends value 1; other instructions preserve the nonempty suffix.",
+    "logical_root": "toAS(0,3,0,0,3,0) = (3,0,0,0,3,0,0,0,0).",
+    "simple_safe_root_specialization": "EnumSafeStart254.zero_formula_start_iff 0 3 3, through L2.iter_iff, RMEquiv254.path_halts_iff_iter, and Bisim254.prog254_halts_iff.",
+    "second_safe_root_specialization": "DirtyProgram254.six_nonformula_path_iff 3 0 3 0 0 0.",
+    "nonzero_counter_completeness": "EnumSafeStart254.complete_from and pad_code_ge pad a refutation to a candidate code at least the current counter.",
+    "logical_calibration": "NativeTheory254.c254_refutation_iff; WFTheory.native_refutation_iff_zf; ChoiceCalibration254.zf_refutation_iff_zfc, also ConstructibleChoice.zf_refutation_iff_zfc_refutation.",
+    "zfc_internal_reading": "Finite syntax, finite traces, natural and list induction; set-coded Henkin completeness; native-model bisimulation quotient and internally well-founded definable subdomain; internal constructible subdomain of a set model.",
+    "external_transitive_or_well_founded_model_assumed": false,
+    "generic_lean_to_zfc_translation_claim": false,
+    "complete_proof_assistant_dependency_closure_bundled": false,
+    "finite_regressions_are_secondary": true,
+    "positive_time_reflection": "Each returning macro segment takes at least 13 literal steps; reverse halting reflection is induction on binary halting time."
+  },
+  "verification": {
+    "consolidated_record": "results/verification-summary.json",
+    "included_run": {
+      "status": "PASS",
+      "checks": 7,
+      "finished_utc": "2026-10-17T23:52:46.356761+00:00",
+      "elapsed_seconds": 14.446516,
+      "python_version": "3.12.14"
+    },
+    "check_names": [
+      "inherited_252_to_250_reconstruction",
+      "complete_report_transition_table",
+      "dual_literal_bootstrap_and_table_quotient",
+      "unbounded_macro_inductions_and_all_instruction_cases",
+      "independent_full_source_and_full_pc",
+      "finite_literal_instruction_regressions",
+      "finite_literal_arithmetic_regressions"
+    ],
+    "universal_checks": {
+      "block_inductions": 4,
+      "arithmetic_macros": 3,
+      "selector_macros": 9,
+      "source_nodes": 6459,
+      "source_leaves": 6460,
+      "guarded_cases": 8391,
+      "minimum_literal_progress": 13,
+      "deleted_state_lookups": 0,
+      "full_source_and_full_pc": {
+        "cases": 8391,
+        "by_operation": {
+          "CD/zero": 1931,
+          "CD/positive": 1931,
+          "CB": 128,
+          "CI": 2601,
+          "CC": 1799,
+          "CH": 1
+        },
+        "target_paths_keep_all_overflow_and_trailing_zero_cells": true,
+        "overflow_cases": 3,
+        "minimum_literal_steps": 13,
+        "max_rules": 497,
+        "rule_counts": {
+          "literal": 1868409,
+          "peel_right": 17458,
+          "recenter": 864252,
+          "scan_right": 25980,
+          "peel_left": 6463,
+          "scan_left": 25980,
+          "pad_left": 83903,
+          "box": 12926,
+          "literal_box_boundary": 6591
+        }
+      }
+    },
+    "finite_regressions": {
+      "instruction_cases": 33564,
+      "instruction_steps": 14197744,
+      "arithmetic_cases": 16200,
+      "arithmetic_steps": 8359100
+    },
+    "independent_review_record": "results/independent-review247.json",
+    "independent_review_path_convention": "The independent review preserves original research-workspace paths and hashes. Packaged Python files have portability and strict dependency checks added; the final delivered versions are exercised by code/verify.py.",
+    "report_build_record": "results/report-build.json"
+  },
+  "reproduction": {
+    "main_command": "python3 -B code/verify.py",
+    "pdf_command": "latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex",
+    "python_requirements": "Python 3.10 or later, standard library only, assertions enabled.",
+    "pdf_requirements": "pdfLaTeX, latexmk, and the packages listed in report.tex.",
+    "network_required": false,
+    "search_required": false,
+    "preserves_reference250": true,
+    "writes_fresh_results_to": "results/"
+  },
+  "contribution": {
+    "new": [
+      "Selector target 60/read-zero redirected to existing state 20.",
+      "Deletion of states 0, 1 and 3 with an exact intermediate quotient.",
+      "New 741241-transition blank startup and complete safe root.",
+      "Universal new-table marking and runtime checks, independent full-source and full-PC audit, and safe-root proof composition.",
+      "Complete report and reproducible artifact package."
+    ],
+    "inherited": [
+      "Original 254-state machine and compact native calculus.",
+      "Public 253-state reduction, physical register permutation252 and strict affine checks.",
+      "Prefix carry, zero rollback, nonempty spare convention and pulse initializer of Prefix250.",
+      "Literal proof-search program and native/ZF/ZFC logical calibration."
+    ]
+  },
+  "attribution": [
+    {
+      "name": "Mira-Cult",
+      "contribution": "Original compact calculus and 254-state machine."
+    },
+    {
+      "name": "Jeff Ketchersid (jeff87654)",
+      "contribution": "Upstream verification and attributed symbolic machinery."
+    },
+    {
+      "name": "Andrew James Wade",
+      "contribution": "Compiler framework and public backend."
+    },
+    {
+      "name": "mira-emmy",
+      "contribution": "Public 253-state reduction inherited by permutation252."
+    },
+    {
+      "name": "ProveIt contributors",
+      "contribution": "Physical register permutation, attributed source-27 strict affine checker, Lean developments, and native/ZF/ZFC calibration."
+    },
+    {
+      "name": "Earlier prefix250 working research for this task",
+      "contribution": "Recovered prefix-carry, zero rollback, spare convention, pulse-retimed table, prototype, and local manuscript. No discovery-in-this-audit claim."
+    },
+    {
+      "name": "This Prefix247 research contribution",
+      "contribution": "The new selector reuse, three-state deletion, exact quotient, blank startup, mathematical proof and new-table verification."
+    }
+  ],
+  "license_boundary": {
+    "notices": [
+      "sources/ProveIt-LICENSE.txt",
+      "reference250/licenses/LICENSE.ProveIt",
+      "reference250/licenses/LICENSE.Wade",
+      "reference250/sources/research/upstream-attribution.md"
+    ],
+    "statement": "Retain inherited authorship and applicable notices. This package does not relicense the upstream snapshot."
+  },
+  "integration_next_steps": [
+    "Incorporate the 247-state research construction, report and certificates.",
+    "If a new kernel-checked endpoint is required, port the new marking and runtime lemmas, full-frame simulation and exact blank startup, then compose the existing safe-root and native/ZF/ZFC interfaces.",
+    "Keep stronger PA-internal proof-code formalization and state-minimality questions separate."
+  ]
+}

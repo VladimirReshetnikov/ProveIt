@@ -1,0 +1,136 @@
+{
+  "scope": "Portable executable integration; imported Box contracts assumed; no new kernel theorem or sub252 machine; full search traces not all replayed.",
+  "python": "3.12.14",
+  "manifest": {
+    "status": "not_present_during_assembly"
+  },
+  "compound_coverage": {
+    "status": "PASS",
+    "recipes": 55471,
+    "trace_replayed": false
+  },
+  "altered_bootstraps": [
+    {
+      "table": "prefill255",
+      "status": "PASS",
+      "sha256": "463067a5a42476c8efeacb296d83df69b7366b0d1894a4e11f418840e79fb0fb",
+      "steps": 82552,
+      "one_cells": 77
+    },
+    {
+      "table": "direct255",
+      "status": "PASS",
+      "sha256": "120fb2885194f45b08c8586161683bab103e506d3d3db6f71a3634a024e2ebc8",
+      "steps": 82552,
+      "one_cells": 77
+    }
+  ],
+  "checks": [
+    {
+      "name": "baseline",
+      "status": "PASS",
+      "script": "code/verify_baseline.py",
+      "script_sha256": "08f447e62bee5f71bb4f4b418453d56f0ae171537ab4b8a261838e21c8ee2616",
+      "seconds": 0.333,
+      "output_sha256": "bd58f4420008c0c48b3c086cf810348563d3f554d2f8f54d78e12ff10da58bba"
+    },
+    {
+      "name": "direct255-fusion-coverage",
+      "status": "PASS",
+      "script": "fusion/verify_direct_coverage.py",
+      "script_sha256": "77ed2d04b14dea690fc8c14677b416a6d26e32a8fd4f4c408ea37f6338d8a9a2",
+      "seconds": 4.554,
+      "output_sha256": "da4fa8bacd802939f664918cac52364579bf41396e171e7e9c7a9746e2464750"
+    },
+    {
+      "name": "direct255-runtime",
+      "status": "PASS",
+      "script": "fusion/verify_runtime.py",
+      "script_sha256": "db25f59da9ba52fa74c271cee2108b393e5312d6b2b94ae260cb161f359235bd",
+      "seconds": 3.08,
+      "output_sha256": "f521f62d48b9d41068bb8441407c5c2d8144be6036ac7091e4e380a91facfec8"
+    },
+    {
+      "name": "fusion252-coverage",
+      "status": "PASS",
+      "script": "fusion/verify_coverage.py",
+      "script_sha256": "bba37054f7b56e7d9e4f42bcb851f1f2d2cc6adc597d7e9308b0827740e3c6c6",
+      "seconds": 0.847,
+      "output_sha256": "79993b9cc8821c7e85cb01107cc2a5db7270499956778b90f2a18d3992185a25"
+    },
+    {
+      "name": "fusion252-phase-replay",
+      "status": "PASS",
+      "script": "fusion/phase_followup.py",
+      "script_sha256": "b31bee28b528207e500925118856c33f7df837b0bf3ef0817b39369a2823304d",
+      "seconds": 10.777,
+      "output_sha256": "ba8e121345d83812f849b3f805fb373a919e931e0e41cc2c44d3fa8dc0e60774"
+    },
+    {
+      "name": "negation-macros",
+      "status": "PASS",
+      "script": "negation/verify.py",
+      "script_sha256": "9d9c1b2f46a464fbaf051e98be8b27640eb7761067640ce5e7478b67f07f6c8c",
+      "seconds": 1.936,
+      "output_sha256": "8c3eaf3b0563b7b4198e8bcc3370389bdb96978d5b59e2829d2c98f2b01ebd6b"
+    },
+    {
+      "name": "prefill255-runtime",
+      "status": "PASS",
+      "script": "negation/verify_runtime.py",
+      "script_sha256": "0dacea15e4071f32699b59f8952a48fb2ab84c565a34bf04563ffd0b83d49603",
+      "seconds": 19.756,
+      "output_sha256": "0d9d9df25437562bf9800f0a17f8a3db97bb51cc009f92306aba5f6ff8b0a79e"
+    },
+    {
+      "name": "scanner-layout-replay",
+      "status": "PASS",
+      "script": "exploratory/verify_layouts.py",
+      "script_sha256": "da1dc43f71cfddb8c1df30471a64d05327179259773d5820f6be80302b812d26",
+      "seconds": 4.966,
+      "output_sha256": "b38228e02189c79c9c7fd31d6c77171252c6ec9c73eb2593dc464e5d714ee31c"
+    },
+    {
+      "name": "semantic-seeds",
+      "status": "PASS",
+      "script": "code/semantic_seeds.py",
+      "script_sha256": "a9691f2a35f830c159376d244111d264eb4fbbbb8f2fe8f7d72382a5cbdcb7dc",
+      "seconds": 2.36,
+      "output_sha256": "843ff6a9fe17acaf8f4eae1c8c01a67ce2a09e7a518e7a88596cd0aadd16043e"
+    },
+    {
+      "name": "zones-1",
+      "status": "PASS",
+      "script": "code/verify_zones.py",
+      "script_sha256": "7a436a2f54b4d009ed0eaff0327e70df29b920861e78d0879f612f8086e6a154",
+      "seconds": 2.274,
+      "output_sha256": "81ba3565196fb90d8d61b287dcfb0a83ceac4112782aca3baf89159d1801ac91"
+    },
+    {
+      "name": "zones-2",
+      "status": "PASS",
+      "script": "code/verify_zones.py",
+      "script_sha256": "7a436a2f54b4d009ed0eaff0327e70df29b920861e78d0879f612f8086e6a154",
+      "seconds": 2.862,
+      "output_sha256": "38bc1e7db786204a0eb705c9614eb5c5131f2a3fed8637994d89508185f27e12"
+    },
+    {
+      "name": "zones-32",
+      "status": "PASS",
+      "script": "code/verify_zones.py",
+      "script_sha256": "7a436a2f54b4d009ed0eaff0327e70df29b920861e78d0879f612f8086e6a154",
+      "seconds": 2.839,
+      "output_sha256": "3ed0c70820229de08315bb634fb2012f201415cec552dc937bbc0abfce3ff373"
+    },
+    {
+      "name": "zones-8",
+      "status": "PASS",
+      "script": "code/verify_zones.py",
+      "script_sha256": "7a436a2f54b4d009ed0eaff0327e70df29b920861e78d0879f612f8086e6a154",
+      "seconds": 3.443,
+      "output_sha256": "8e7a4d405b8e56138cb41244f82ee1197597f5586d1bcec8486acebf8e01b5dd"
+    }
+  ],
+  "status": "PASS",
+  "seconds": 21.354
+}

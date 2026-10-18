@@ -1,0 +1,19 @@
+PYTHON ?= python3
+LATEX ?= pdflatex
+LATEX_FLAGS ?= -interaction=nonstopmode -halt-on-error -file-line-error
+
+.PHONY: all verify pdf clean
+
+all: verify pdf
+
+verify:
+	$(PYTHON) -B code/verify.py
+
+pdf: report.pdf
+
+report.pdf: report.tex $(wildcard sections/*.tex)
+	$(LATEX) $(LATEX_FLAGS) report.tex
+	$(LATEX) $(LATEX_FLAGS) report.tex
+
+clean:
+	rm -f report.aux report.log report.out report.toc
