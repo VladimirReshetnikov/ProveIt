@@ -114,8 +114,9 @@ The current arithmetic checkpoints are:
   GEN constructor and remaining AX bundle are still open.
 
 The remaining major steps are the reverse internal ZF-to-validator proof
-translation, the internal L-specific Separation/Replacement proofs, and the complete
-interpreter-to-Enum connection. The forward validator sentence alone does
+translation, the complete interpreter-to-Enum connection, and the unbounded
+internal register/binary simulation. The internal L-specific schema proofs
+now close the Choice transport. The forward validator sentence alone does
 not yet imply the requested PA theorem about the literal binary machine.
 
 The active binary target is the exact 246-state machine. Its table, logical
@@ -285,12 +286,29 @@ length `m`, matrix `b`, and core `K` are internal model elements. The proof
 derives the core free-variable bound from the recognizer and uses `peel`
 and `peel_close` for the arbitrary internal closure length. No matching
 environment existence or `hSchema` premise remains on this Separation route.
-Replacement's level-two base/glue combination and the final membership/
-`Derivable`/`domSet` adapter remain. The
+At that stage, Replacement's level-two base/glue combination and the final
+membership/`Derivable`/`domSet` adapter remained. The
 [pinned review](results/upstream-dd85eb4a47-source-review.json) records source
 inspection only. The new `LSchemaAudit` lists 11 axiom probes, including
 `sep_obligation`, but supplies no typed callers; no fresh compilation or
 executed audit is claimed by this integration.
+
+Commit `11b8f3efb6`, merged through `de330b4037`, adds
+[LReplBase](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LReplBase.lean)
+and [LSchema](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LSchema.lean).
+The level-two glue reads the core at `x :: y :: t`; the compiled Replacement
+template and existing peel close every internally recognized `RepR` code.
+`LSchema.hSchema` combines both schemata, identifies their internal axiom
+classes with their recognizers, and takes the domain-side length to be zero.
+Consequently the internal refutation transfer has no schema premise. Arithmetic
+completeness yields `IΣ₁ ⊢ Con(ZF) → Con(ZFC)` and its PA corollary for the
+represented `Theory.consistent` sentences. All formula codes and closure
+lengths in the schema obligations range over the ambient arithmetic model.
+The [pinned source review](results/upstream-11b8f3efb6-source-review.json)
+finds no mathematical or API-scope issue. This review performs no fresh
+compilation or axiom audit: the upstream audit contains 20 axiom probes,
+one `#check`, and no typed caller examples. The closed Choice transport
+does not by itself close the validator/interpreter or binary-machine bridges.
 
 ## What is already available
 
@@ -752,7 +770,8 @@ is now **checked** (standard axioms only), in
      separation or replacement axiom code `p` has an internal
      `𝗭𝗙`-derivation of `p^L` with side formulas.
 
-**Remaining for the Choice transport in PA** (this lane, next): `hSchema`.
+**Historical obstacle for the Choice transport in PA**, now discharged by
+`LSchema.hSchema`:
 An internal schema code is `∀^m (Fval K)` for an internal (possibly
 nonstandard) core `K` (`SchemaClosure.SchemaRecognizer`), so no finite
 template set covers it: `L ⊨ Sep_K` is *not* a theorem of `ZF(P)` for an
