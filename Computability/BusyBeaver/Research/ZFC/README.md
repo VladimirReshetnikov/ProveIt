@@ -26,6 +26,14 @@ blocker in the ordinary argument; its exact-table Lean and internal PA
 endpoints remain open. The same intake preserves broader semantic-seed
 criteria and two 255-state research controls.
 
+The [246-state contextual-fold candidate](candidate-prefix246/README.md)
+removes one more pulse state and supplies a separate 410,735-step blank
+startup. All nine main checks and two additional audits pass. The
+[batch 162 review](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-162.md)
+also preserves a further audit of the identical 247 table. Independent review
+found no mathematical blocker within the ordinary-proof scope; exact-machine
+Lean endpoints and the equivalence proved inside PA remain open.
+
 The [exact 250-state table](table_prefix250.md) is now checked in Lean: all 500
 actions, the state numbering, the unique halt edge and the incoming edges of
 the shared initializer. Its 40 named theorem audits and 40 callers pass.
