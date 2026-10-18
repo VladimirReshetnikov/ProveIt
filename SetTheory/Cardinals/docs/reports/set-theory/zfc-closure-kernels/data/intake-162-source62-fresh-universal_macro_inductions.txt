@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "exact_table_sha256": "0d37614f3caf37139b0be127837630539224acd1c45d748cf5704abfc3230b42",
+  "proof_scope": "All finite register lists with a selected primary followed by a block; arbitrary register values and left context.",
+  "kernel_status": "Mathematical induction checker; not a proof-assistant kernel endpoint.",
+  "word_identity": {
+    "status": "PASS",
+    "induction": "finite lists of arbitrary natural numbers",
+    "base": "C([])1 = 1B([])",
+    "cons": "C(v)C(A)1 = C(v)1B(A) = 1B(v)B(A)",
+    "identity": "C(A)1 = 1B(A)",
+    "reverse_identity": "1rev(C(A)) = rev(B(A))1"
+  },
+  "sound_rules": [
+    "literal table row",
+    "unary self-loop induction",
+    "structural finite-block-list induction",
+    "concatenation and reversal identities"
+  ]
+}
+seek73_block PASS steps=2+1*v head=2+1*v
+carry95_block PASS steps=2+1*v head=2+1*v
+return48_block PASS steps=2+1*v head=-2+-1*v
+rollback112_block PASS steps=2+1*v head=-2+-1*v
+positive_decrement PASS steps=4+2*width_pre head=0
+zero_decrement PASS steps=7+2*width_pre head=-1
+increment PASS steps=11+2*width_pre+2*width_suf+2*x head=-1
+mark_0 PASS steps=3 head=-1
+mark_1 PASS steps=7+2*r0 head=-1
+mark_2 PASS steps=11+2*r0+2*r1 head=-1
+mark_3 PASS steps=15+2*r0+2*r1+2*r2 head=-1
+mark_4 PASS steps=19+2*r0+2*r1+2*r2+2*r3 head=-1
+mark_5 PASS steps=23+2*r0+2*r1+2*r2+2*r3+2*r4 head=-1
+mark_6 PASS steps=27+2*r0+2*r1+2*r2+2*r3+2*r4+2*r5 head=-1
+mark_7 PASS steps=31+2*r0+2*r1+2*r2+2*r3+2*r4+2*r5+2*r6 head=-1
+mark_8 PASS steps=35+2*r0+2*r1+2*r2+2*r3+2*r4+2*r5+2*r6+2*r7 head=-1
