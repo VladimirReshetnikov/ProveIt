@@ -55,6 +55,11 @@ register values, and the required spare suffix. Zero decrement restores the
 file; positive decrement shifts its boundary; increment adds a value-one
 spare. Complete decoder coverage and blank-start composition remain open.
 
+The [246 fast lookup](fast_table_prefix246.md) is checked equal to the
+canonical machine on every transition. It supports bounded kernel
+calculations for the new bootstrap and symbolic decoder without changing
+their machine semantics.
+
 The [exact 250-state table](table_prefix250.md) is now checked in Lean: all 500
 actions, the state numbering, the unique halt edge and the incoming edges of
 the shared initializer. Its 40 named theorem audits and 40 callers pass.
