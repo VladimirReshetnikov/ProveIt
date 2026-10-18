@@ -37,6 +37,11 @@ also preserves a further audit of the identical 247 table. Independent review
 found no mathematical blocker within the ordinary-proof scope; exact-machine
 Lean endpoints and the equivalence proved inside PA remain open.
 
+The [exact 246-state table](table_prefix246.md) is now checked in Lean:
+492 transitions, the state numbering, the unique halt action, and the
+selector and folded-pulse rows. Its 47 theorem audits and 47 client examples
+pass with no warnings. This is the finite table layer for the active target.
+
 The [exact 250-state table](table_prefix250.md) is now checked in Lean: all 500
 actions, the state numbering, the unique halt edge and the incoming edges of
 the shared initializer. Its 40 named theorem audits and 40 callers pass.
