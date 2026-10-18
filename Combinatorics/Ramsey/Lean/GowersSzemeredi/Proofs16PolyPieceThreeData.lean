@@ -60,24 +60,14 @@ a `PolyPieceThreeData` of `Γ` of mass `3θ′`, where `θ′ = θ₂/8`
 All the data is then rebuilt in the original frame `w = origPt x₀ z`.
 
 `origPt_eq_add`, `origPt_injective`, `phiOne_eq_origPt`,
-`section16_poly_piece_three_data` and `threeThreshold` are in
-`Proofs16PolyPieceThreeDataSide`, outside the final route. -/
+`section16_poly_piece_three_data`, `threeBudget`, `threeDelta`, `threeFaceCount`
+and `threeThreshold` are in `Proofs16PolyPieceThreeDataSide`, outside the final
+route. -/
 set_option autoImplicit false
 noncomputable section
 open scoped BigOperators
 namespace LeanProofs.GowersSzemeredi
 open BaseCase
-
-/-- The deletion budget of a three-dimensional piece: `θ₂/8`. -/
-def threeBudget (theta gamma : Real) : Real :=
-  section16ThetaTwo (section16ThetaOne theta gamma 2) / 8
-
-/-- The spectrum parameter `δ(θ₁)` at `k = 2`. -/
-def threeDelta (theta gamma : Real) : Real := section16Delta (section16ThetaOne theta gamma 2)
-
-/-- The Freiman count of the last-coordinate face. -/
-def threeFaceCount (theta gamma : Real) : Nat :=
-  section16BaseFamilyBound gamma (threeBudget theta gamma)
 
 theorem card_point_le_pow {N : Nat} [NeZero N] (k : Nat) (S : Finset (Point N k)) :
     (S.card : Real) ≤ (N : Real) ^ k := by

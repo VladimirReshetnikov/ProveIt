@@ -1,6 +1,8 @@
 import GowersSzemeredi.Proofs16FreimanVarietyUniform
 import GowersSzemeredi.Proofs16DeepAgreement
 import GowersSzemeredi.Proofs16CubicStructuredCover
+import GowersSzemeredi.Proofs16PowerCoverTransportSide
+import GowersSzemeredi.Proofs16TranslationsSide
 
 /-! A uniform cover consequence of the deep-agreement structure hypothesis.
 

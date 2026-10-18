@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs13OddFourierSquare
 import GowersSzemeredi.Proofs13FourierBoxTransport
 import GowersSzemeredi.Proofs17LocalizedPhaseRemoval
 import GowersSzemeredi.Proofs17PartitionEnergy
+import GowersSzemeredi.Proofs17PartitionEnergySide
 
 /-! The complete Section 13 extraction supplies the hypotheses of localized
 cubic phase removal, without assuming a bilinear square or its geometry. -/

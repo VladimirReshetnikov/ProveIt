@@ -13,6 +13,19 @@ noncomputable section
 
 namespace LeanProofs.GowersSzemeredi
 
+/-- The partition constant, including the factor 32 in the inverse exponent. -/
+theorem polyPartConst_mul32_le_pw {X : Real} (hX : 2 ≤ X) (k : Nat) :
+    32 * (polynomialPartitionConstant (k + 1 + 1) : Real) ≤
+      X ^ (2 ^ (4 * (k + 3) ^ 2 + 4)) :=
+  mul32_nat_le_pw hX
+    (by simpa only [show k + 1 + 1 + 1 = k + 3 by omega]
+      using polyPartConst_le (k + 1 + 1))
+    (Nat.lt_two_pow_self (n := 4 * (k + 3) ^ 2 + 4))
+
+end LeanProofs.GowersSzemeredi
+
+namespace LeanProofs.GowersSzemeredi
+
 /-- **Degree three**, from the Fejér cubic bound. -/
 theorem envBound_three : EnvBound 3 62 := by
   intro alpha ha ha2

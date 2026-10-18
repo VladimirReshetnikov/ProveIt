@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs13AllScaleStage139
 import GowersSzemeredi.Proofs13BilinearRestriction
+import GowersSzemeredi.Proofs13CommonStepCoverSide
 
 /-! Square extraction from the geometry retained by the actual constructions,
 including the tiny height cells used for short columns. -/

@@ -20,7 +20,11 @@ dimension two each comes from `PolyCoverAt 1`, off a global deletion:
 * `card_translated_slice_bad_le`: the translated points that miss `B*`
   number at most `θN²`.
 * `cubicSlice_count_monotone` and `cubicSlice_exponent_antitone`: the
-  cubic slice controls are monotone in the sample size. -/
+  cubic slice controls are monotone in the sample size.
+
+`Section16FinalFreimanFamilies.of_translate`, `cubicSlice_count_monotone` and
+`cubicSlice_exponent_antitone` are in `Proofs16PolyPieceTwoInputsSide`, outside
+the final route. -/
 set_option autoImplicit false
 noncomputable section
 open scoped BigOperators
@@ -80,30 +84,6 @@ theorem section16_final_freiman_families_of_product {N : Nat} [Fact N.Prime]
   have hy' := (Finset.mem_filter.mp (Finset.mem_filter.mp hy).2).2
   simpa only [section16Init_appendCoordinate, section16Last_appendCoordinate] using hy'
 
-/-- The families of `φ` on `B*` give families of `φ₁` on any domain whose
-translated points lie in `B*`. -/
-theorem Section16FinalFreimanFamilies.of_translate {N q : Nat} [NeZero N]
-    {Bs : Finset (Point N 2)} {phi : Point N 2 → ZMod N}
-    (h : Section16FinalFreimanFamilies q Bs phi) (x0 : Point N 1)
-    (D : Finset (Point N 2))
-    (hD : ∀ z ∈ D, appendCoordinate (section16Init z + x0) (section16Last z) ∈ Bs) :
-    Section16FinalFreimanFamilies q D (section16PhiOne phi x0) := by
-  intro t
-  have hp := (h t).translate (-x0)
-  have heq : (fun y => section16FinalCoordinateRestriction phi t (y - -x0)) =
-      section16FinalCoordinateRestriction (section16PhiOne phi x0) t := by
-    funext y
-    simp [section16FinalCoordinateRestriction, section16PhiOne,
-      section16Init_appendCoordinate, section16Last_appendCoordinate, sub_neg_eq_add, add_comm]
-    rfl
-  rw [heq] at hp
-  apply hp.mono
-  intro y hy
-  have hb := hD _ (Finset.mem_filter.mp hy).2
-  simp only [section16Init_appendCoordinate, section16Last_appendCoordinate] at hb
-  apply Finset.mem_image.mpr
-  refine ⟨y + x0, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hb⟩, by simp⟩
-
 /-- The translated points of a slice-pruned set that miss it are sparse, in
 every dimension. -/
 theorem card_translated_slice_bad_le_succ {N k : Nat} [NeZero N] {theta : Real}
@@ -160,21 +140,5 @@ theorem card_translated_slice_bad_le {N : Nat} [NeZero N] {theta : Real}
           section16Init z + x0 ∉ C (section16Last z)).card : Real) ≤
       theta * (N : Real) ^ 2 := by
   simpa using card_translated_slice_bad_le_succ (k := 1) B C hC (fun t => by simpa using hcard t) x0
-
-theorem cubicSlice_count_monotone (q : Nat) :
-    Monotone (fun r : Nat => ((3 * (max 1 r * q) : Nat) : Real)) := by
-  intro r r' hrr
-  dsimp only
-  exact_mod_cast Nat.mul_le_mul_left 3 (Nat.mul_le_mul_right q (max_le_max le_rfl hrr))
-
-theorem cubicSlice_exponent_antitone {q : Nat} (hq : 0 < q) {eps : Real} (heps : 0 < eps) :
-    Antitone (fun r : Nat => cubicBaseExponent (max 1 r * q) eps) := by
-  intro r r' hrr
-  dsimp only
-  unfold cubicBaseExponent
-  have hle : ((max 1 r * q : Nat) : Real) ≤ ((max 1 r' * q : Nat) : Real) := by
-    exact_mod_cast Nat.mul_le_mul_right q (max_le_max le_rfl hrr)
-  apply div_le_div_of_nonneg_left (by positivity) (by positivity)
-  exact pow_le_pow_left₀ (by positivity) hle 4
 
 end LeanProofs.GowersSzemeredi

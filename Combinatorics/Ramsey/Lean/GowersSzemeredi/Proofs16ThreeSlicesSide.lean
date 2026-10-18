@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs16ThreeSlices
 import GowersSzemeredi.Proofs16PolyCoverTwoSide
 import GowersSzemeredi.Proofs16UniformCoverTwoBounds
 import GowersSzemeredi.Proofs16WithLiftSide
+import GowersSzemeredi.Proofs16PowerCoverTransportSide
 
 /-! The slices of a three-dimensional piece (Notes L.5, D2).
 

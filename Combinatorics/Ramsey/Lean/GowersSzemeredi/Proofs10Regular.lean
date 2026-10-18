@@ -11,7 +11,9 @@ import Mathlib.Probability.ConditionalProbability
 
 This module proves Lemma 10.5 by averaging translated rectangular windows in
 the normalized `(q,R)` plane.
--/
+
+`lemma_10_5_original_sqrt_holds` is in `Proofs10RegularSide`, outside the final
+route. -/
 
 set_option autoImplicit false
 
@@ -1187,13 +1189,5 @@ theorem lemma_10_5_holds : lemma_10_5 := by
   have ht : (1 : Real) - 1 / 5 = 4 / 5 := by norm_num
   simpa only [IsSection10RegularComponentAt, IsSection10RegularComponent, ht]
     using hW (1 / 5)
-
-/-- The original square-root clause is valid under the same inherited setup. -/
-theorem lemma_10_5_original_sqrt_holds : lemma_10_5_original_sqrt := by
-  intro N _ X _ _ D phi B alpha rho M sigma eta x hsetup hsigmaAlpha
-    hanchor hrho hrhoAlpha hrhoAlphaSq hsigmaRho
-  obtain ⟨W, hW⟩ := lemma_10_5_all_tradeoffs_holds N X D phi B alpha rho M
-    sigma eta x hsetup hsigmaAlpha hanchor hrho hrhoAlpha hrhoAlphaSq hsigmaRho
-  exact ⟨W, hW (1 / 2)⟩
 
 end LeanProofs.GowersSzemeredi

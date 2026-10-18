@@ -23,6 +23,7 @@ enters through `AllScaleLemma166WidthAt` at the power width
 `section16PolynomialLinearityWidth` is this form, with `A`, `B` polynomial
 in the spectrum count.
 
+`pieceGraphBound`, `pieceSamples_pos`, `pieceSliceExponent`,
 `section16_piece_cover_with` and `section16_piece_large_box_profile` are in
 `Proofs16PieceCoverWithRemainderSide`, outside the final route. -/
 set_option autoImplicit false
@@ -45,28 +46,12 @@ theorem section16PowerWidth_transfer {A Bq : Nat → Real}
 def pieceSamples (Qr : Real → Real) (rho : Real) : Nat :=
   ⌈6 * max 1 (Qr (rho / 8)) / (rho / 4)⌉₊
 
-/-- The graph count of the piece cover at loss `ρ`. -/
-def pieceGraphBound (Qr : Real → Real) (Pb : Nat → Real → Real) (rho : Real) : Real :=
-  max (Pb (pieceSamples Qr rho) (rho / 4))
-    (((pieceSamples Qr rho).choose 2 : Nat) * Pb (pieceSamples Qr rho) (rho / 4) *
-      Pb (pieceSamples Qr rho) (rho / 4))
-
 /-- The line exponent: the remainder and spectrum exponents through the power width. -/
 def pieceLineExponent (Bq : Nat → Real) (Qb Eb Er : Real → Real) (rho : Real) : Real :=
   Er (rho / 8) * Eb (rho / 8) / Bq ⌊Qb (rho / 8)⌋₊
 
-/-- The slice exponent at the sample bound. -/
-def pieceSliceExponent (Qr : Real → Real) (Es : Nat → Real → Real) (rho : Real) : Real :=
-  Es (pieceSamples Qr rho) (rho / 4)
-
 /-- The prefactor of the power width at loss `ρ`. -/
 def pieceWidthScale (A : Nat → Real) (Qb : Real → Real) (zeta rho : Real) : Real :=
   zeta / A ⌊Qb (rho / 8)⌋₊
-
-theorem pieceSamples_pos {Qr : Real → Real} {rho : Real} (hrho : 0 < rho) :
-    0 < pieceSamples Qr rho := by
-  unfold pieceSamples
-  apply Nat.ceil_pos.mpr
-  positivity
 
 end LeanProofs.GowersSzemeredi

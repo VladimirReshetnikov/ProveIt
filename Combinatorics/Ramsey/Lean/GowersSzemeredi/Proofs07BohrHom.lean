@@ -11,7 +11,9 @@ This module proves Gowers's Lemma 7.8.  The analytic part truncates the
 Fourier inversion formula for the fourfold difference count to the large
 spectrum.  The algebraic part uses the order-eight Freiman hypothesis to
 make the induced map on `2A-2A` well defined and additive.
--/
+
+`lemma78_alpha_le_one` and `lemma_7_8_group_holds` are in `Proofs07BohrHomSide`,
+outside the final route. -/
 
 set_option autoImplicit false
 
@@ -30,7 +32,7 @@ attribute [simp] cor57_norm_exponential
 
 attribute [simp] lemma78_indicator_star
 
-private lemma lemma78_spectrum_card_bound {N : Nat} [NeZero N]
+lemma lemma78_spectrum_card_bound {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (alpha : Real) (halpha : 0 < alpha)
     (hcard : (A.card : Real) = alpha * N) :
     ((section7Spectrum A alpha).card : Real) <= 16 * alpha ^ (-(2 : Real)) := by
@@ -131,15 +133,6 @@ private lemma lemma78_bohr_phase_bound {N : Nat} [NeZero N]
   (bohr_phase_bound _ _ d hd r hr).trans_eq (by
     rw [show 2 * Real.pi * (alpha / (32 * Real.pi)) = alpha / 16 * (Real.pi / Real.pi) by ring,
       div_self Real.pi_ne_zero, mul_one])
-
-private lemma lemma78_alpha_le_one {N : Nat} [NeZero N]
-    (A : Finset (ZMod N)) (alpha : Real)
-    (hcard : (A.card : Real) = alpha * N) : alpha <= 1 := by
-  have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hcardN : (A.card : Real) <= N := by
-    exact_mod_cast (by simpa only [ZMod.card] using A.card_le_univ)
-  rw [hcard] at hcardN
-  nlinarith
 
 private lemma lemma78_fourth_moment_upper {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (alpha : Real)
@@ -594,7 +587,7 @@ private noncomputable def lemma78ChosenRepresentation {N : Nat} [NeZero N]
     Lemma78Representation A d :=
   Classical.choice (lemma78_representation_of_mem_bohr A alpha halpha hcard d hd)
 
-private noncomputable def lemma78InducedMap {N : Nat} {G : Type*}
+noncomputable def lemma78InducedMap {N : Nat} {G : Type*}
     [NeZero N] [AddCommGroup G] (A : Finset (ZMod N)) (phi : ZMod N -> G)
     (alpha : Real) (halpha : 0 < alpha)
     (hcard : (A.card : Real) = alpha * N) : ZMod N -> G :=
@@ -602,7 +595,7 @@ private noncomputable def lemma78InducedMap {N : Nat} {G : Type*}
     then (lemma78ChosenRepresentation A alpha halpha hcard d hd).value phi
     else 0
 
-private lemma lemma78_induced_freiman {N : Nat} {G : Type*}
+lemma lemma78_induced_freiman {N : Nat} {G : Type*}
     [NeZero N] [AddCommGroup G]
     (A : Finset (ZMod N)) (phi : ZMod N -> G)
     (alpha : Real) (halpha : 0 < alpha)
@@ -634,7 +627,7 @@ private lemma lemma78_induced_freiman {N : Nat} {G : Type*}
     rw [haMap, hbMap, hcMap, hdMap]
     exact hadd
 
-private lemma lemma78_induced_agrees {N : Nat} {G : Type*}
+lemma lemma78_induced_agrees {N : Nat} {G : Type*}
     [NeZero N] [AddCommGroup G]
     (A : Finset (ZMod N)) (phi : ZMod N -> G)
     (alpha : Real) (halpha : 0 < alpha)
@@ -660,28 +653,6 @@ private lemma lemma78_induced_agrees {N : Nat} {G : Type*}
   change phi x + phi x - phi y - phi x = q'.value phi at hvalue
   abel_nf at hvalue ⊢
   exact hvalue
-
-/-- The general-abelian-codomain form of Lemma 7.8 mentioned immediately
-after its proof in the paper.  The Bohr neighborhood lives in the cyclic
-domain; the induced Freiman map may take values in any additive commutative
-group. -/
-theorem lemma_7_8_group_holds {G : Type*} [AddCommGroup G]
-    (N : Nat) [NeZero N] (A : Finset (ZMod N))
-    (phi : ZMod N -> G) (alpha : Real) (halpha : 0 < alpha)
-    (hcard : (A.card : Real) = alpha * N) (hphi : FreimanHom 8 A phi) :
-    let K := section7Spectrum A alpha
-    (K.card : Real) <= 16 * alpha ^ (-(2 : Real)) /\
-      exists psi : ZMod N -> G,
-        FreimanHom 2 (bohr K (alpha / (32 * Real.pi))) psi /\
-        forall x, x ∈ A -> forall y, y ∈ A ->
-          x - y ∈ bohr K (alpha / (32 * Real.pi)) ->
-          phi x - phi y = psi (x - y) := by
-  dsimp only
-  constructor
-  · exact lemma78_spectrum_card_bound A alpha halpha hcard
-  · exact ⟨lemma78InducedMap A phi alpha halpha hcard,
-      lemma78_induced_freiman A phi alpha halpha hcard hphi,
-      lemma78_induced_agrees A phi alpha halpha hcard hphi⟩
 
 /-- **Gowers, Lemma 7.8.** -/
 theorem lemma_7_8_holds : lemma_7_8 := by

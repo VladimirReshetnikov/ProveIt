@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16UniformCoverTwoFejer
 import GowersSzemeredi.Proofs16ClassStepDegreesSide
+import GowersSzemeredi.Proofs16SplitUniformClassSide
 
 /-! Declarations of `Proofs16UniformCoverTwoFejer` that the final route does not use and that
 need modules outside it (moved here so that those modules can leave the route). -/
@@ -10,6 +11,32 @@ set_option exponentiation.threshold 1024
 noncomputable section
 
 open scoped BigOperators
+
+namespace LeanProofs.GowersSzemeredi
+
+section
+open BaseCase
+
+theorem nPieces_le_base_fejer {gamma theta : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta)
+    (ht1 : theta ≤ 1) {n : Nat} {w : Real} (hvw : 2 / (gamma * theta) ≤ w)
+    (hnw : (n : Real) + 1 ≤ w) (hw2 : 2 ≤ w) :
+    ((n * polyTwoFejerPieces gamma theta : Nat) : Real) ≤ w ^ ((2 : Nat) ^ 38) := by
+  have hm := polyTwoFejerPieces_le_power hg hg1 ht ht1
+  obtain ⟨hu2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
+  have hw1 : 1 ≤ w := by linarith only [hw2]
+  have hmw : (polyTwoFejerPieces gamma theta : Real) ≤ w ^ ((2 : Nat) ^ 24) :=
+    hm.trans (pow_le_pow_left₀ (by linarith only [hu2]) hvw _)
+  have hn : (n : Real) ≤ w := by linarith only [hnw]
+  calc ((n * polyTwoFejerPieces gamma theta : Nat) : Real)
+      = (n : Real) * (polyTwoFejerPieces gamma theta : Real) := by push_cast; ring
+    _ ≤ w * w ^ ((2 : Nat) ^ 24) :=
+        mul_le_mul hn hmw (Nat.cast_nonneg _) (by linarith only [hw2])
+    _ = w ^ ((2 : Nat) ^ 24 + 1) := by rw [pow_succ]; ring
+    _ ≤ w ^ ((2 : Nat) ^ 38) := pow_le_pow_right₀ hw1 (by norm_num)
+
+end
+
+end LeanProofs.GowersSzemeredi
 
 namespace LeanProofs.GowersSzemeredi
 

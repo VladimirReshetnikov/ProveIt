@@ -3,7 +3,10 @@ import GowersSzemeredi.Proofs12Amplification
 
 /-! Propagate uniform Fejer purification through the prepared frequency
 graph. The retained density exponent is 4,207,554,485, with the exact
-mostly-respected and Fourier hypotheses required for square extraction. -/
+mostly-respected and Fourier hypotheses required for square extraction.
+
+`section13_fejer_frequency_graph` is in `Proofs13FejerFrequencyGraphSide`,
+outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -95,15 +98,5 @@ theorem section13_fejer_frequency_graph_explicit (alpha : Real) (halpha : 0 < al
     have ht := hfourier z (hAU hz)
     convert ht using 1
     ring
-
-theorem section13_fejer_frequency_graph (alpha : Real) (halpha : 0 < alpha) (halpha1 : alpha ≤ 1) :
-    ∃ N₀ : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N₀ ≤ N →
-      ∀ f : ZMod N → Complex, DiscValued f → ¬ UniformOfDegree f alpha 3 →
-      ∃ A : Finset (Pair N), ∃ phi : Pair N → ZMod N,
-        (alpha / 2) ^ (4207554485 : Nat) * (N : Real) ^ 2 ≤ A.card ∧
-        SeparatelyFreimanEight A phi ∧ MostlyRespectsEight A phi ((2 : Real) ^ (-(44 : Int))) ∧
-        ∀ z, z ∈ A → alpha * N / 2 ≤ ‖secondDifferenceFourier f z.1 z.2 (phi z)‖ := by
-  exact ⟨section13FrequencyGraphThreshold alpha,
-    section13_fejer_frequency_graph_explicit alpha halpha halpha1⟩
 
 end LeanProofs.GowersSzemeredi

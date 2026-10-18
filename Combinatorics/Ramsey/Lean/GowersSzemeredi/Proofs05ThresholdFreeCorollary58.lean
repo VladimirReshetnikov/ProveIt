@@ -4,6 +4,7 @@ import GowersSzemeredi.Proofs05HighCorrelationScale
 import GowersSzemeredi.Proofs05ThresholdFreeScale
 import GowersSzemeredi.Proofs05AffineLocalization
 import GowersSzemeredi.Proofs05QuadraticLocalization
+import GowersSzemeredi.Proofs05ThresholdFreeCorollarySide
 
 /-! Corollary 5.8 from threshold-free polynomial localization, and its degree-one and degree-two specializations. Kept apart from the localization modules so that the final route does not import the high-correlation branches. -/
 

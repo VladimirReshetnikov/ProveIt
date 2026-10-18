@@ -3,7 +3,8 @@ import GowersSzemeredi.Proofs13FejerExplicitExponent
 
 /-! Odd Fourier-square extraction above a completely explicit modulus.
 
-`theorem_13_12_fejer_odd_square_explicit` is in `Proofs13FejerOddSquareSide`,
+`section13_fejer_explicit_exponent_bounds` and
+`theorem_13_12_fejer_odd_square_explicit` are in `Proofs13FejerOddSquareSide`,
 outside the final route. -/
 set_option autoImplicit false
 noncomputable section
@@ -66,17 +67,6 @@ theorem FejerSquareAt.oddSquare {alpha e T : Real} (h : FejerSquareAt alpha e T)
   · intro z hz
     rw [← hagree z (hD (hBD hz))]
     exact hfourier z (hBD hz)
-
-/-- The explicit Fourier extraction exponent lies in (0,1/2]. -/
-theorem section13_fejer_explicit_exponent_bounds {alpha : Real}
-    (hα : 0 < alpha) (hαone : alpha ≤ 1) :
-    0 < (1 / 2 : Real) ^ ((2 / alpha) ^ ((2 : Nat) ^ 53)) ∧
-      (1 / 2 : Real) ^ ((2 / alpha) ^ ((2 : Nat) ^ 53)) ≤ 1 / 2 := by
-  refine ⟨Real.rpow_pos_of_pos (by norm_num) _, ?_⟩
-  have ht : (1 : Real) ≤ 2 / alpha := (le_div_iff₀ hα).mpr (by linarith only [hαone])
-  have hexp := one_le_pow₀ ht (n := (2 : Nat) ^ 53)
-  simpa only [Real.rpow_one] using Real.rpow_le_rpow_of_exponent_ge
-    (by norm_num : (0 : Real) < 1 / 2) (by norm_num : (1 / 2 : Real) ≤ 1) hexp
 
 def section13FejerOddSquareThreshold (alpha : Real) : Real :=
   max (section13FourierThreshold alpha)

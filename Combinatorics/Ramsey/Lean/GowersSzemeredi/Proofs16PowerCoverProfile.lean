@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs16PowerCoverTransport
 import GowersSzemeredi.Proofs16GoodGraphGeometry
 import GowersSzemeredi.Proofs16ContextualPowerCover
 import GowersSzemeredi.Proofs16LargePieceMass
+import GowersSzemeredi.Proofs16PowerCoverTransportSide
 
 /-! The actual contextual lift supplies a uniform cover profile for one
 large subrelation. Its graph budget, power, and threshold remain explicit. -/

@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs10Regular
 import GowersSzemeredi.Proofs12SourceScope
 import Lean.Util.CollectAxioms
+import GowersSzemeredi.Proofs10RegularSide
 
 example : LeanProofs.GowersSzemeredi.lemma_10_5_original_sqrt :=
   LeanProofs.GowersSzemeredi.lemma_10_5_original_sqrt_holds

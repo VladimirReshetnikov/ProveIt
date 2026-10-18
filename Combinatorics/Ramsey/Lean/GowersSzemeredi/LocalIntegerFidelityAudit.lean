@@ -2,6 +2,7 @@ import GowersSzemeredi.RetiledIntegerFidelityAudit
 import GowersSzemeredi.Proofs16IntegerFamilyLemma6
 import GowersSzemeredi.Proofs16IntegerLossRange
 import Lean.Util.CollectAxioms
+import GowersSzemeredi.Proofs16BoxGeometrySide
 
 /-! Genuine short-parent covers and the abstract family Lemma 16.6.
 The literal uncapped loss assertion is refuted separately from these proofs. -/

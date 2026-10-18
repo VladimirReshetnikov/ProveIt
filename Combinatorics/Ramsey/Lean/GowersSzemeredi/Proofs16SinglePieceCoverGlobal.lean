@@ -21,7 +21,8 @@ The `…W` parameters and `single_piece_lift_global_cover_with` take `(t1, ζ)`
 as parameters (Notes L.16d); at the printed values they are the printed ones
 by `rfl`, and `single_piece_lift_global_cover` is the instance.
 
-`coverPrec_pos_le`, `coverRho1_pos_le`, `globalTheta2_pos_le`,
+`coverCount`, `coverCount_pos`, `coverPrec_pos_le`, `coverRemWidth`,
+`coverRho1`, `coverRho1_pos_le`, `globalTheta2_pos_le`, `one_le_coverCount`,
 `single_piece_lift_global_cover` and `single_piece_lift_global_cover_with` are
 in `Proofs16SinglePieceCoverGlobalSide`, outside the final route. -/
 set_option autoImplicit false
@@ -32,39 +33,11 @@ open Classical
 /-- The common precision of the vertex covers, `θ₂/2^(k+1)`. -/
 def coverPrec (theta gamma : Real) (k : Nat) : Real := globalTheta2 theta gamma k / 2 ^ (k + 1)
 
-/-- The product of the vertex cover counts. -/
-def coverCount (Qb : Nat → Real → Real → Real → Real) (theta gamma : Real) (k : Nat) : Real :=
-  ∏ e ∈ Finset.univ.filter (fun e : Fin k → Bool => e ≠ fun _ => true),
-    max (Qb (section16VertexDirections e).card gamma (globalBudget theta gamma k)
-      (coverPrec theta gamma k)) ((3 ^ (k + 1) : Nat) : Real)
-
-/-- The remainder density from joint vertex covers. -/
-def coverRho1 (Qb : Nat → Real → Real → Real → Real) (theta gamma : Real) (k : Nat) : Real :=
-  globalTheta2 theta gamma k / 2 / coverCount Qb theta gamma k
-
 /-- The exponent of the remainder width from joint vertex covers. -/
 def coverExp (Eb : Nat → Real → Real → Real → Real) (theta gamma : Real) (k : Nat) : Real :=
   ∏ e ∈ Finset.univ.filter (fun e : Fin k → Bool => e ≠ fun _ => true),
     Eb (section16VertexDirections e).card gamma (globalBudget theta gamma k)
       (coverPrec theta gamma k) / 16 ^ (k + 1 - (section16VertexDirections e).card)
-
-/-- The remainder width from joint vertex covers. -/
-def coverRemWidth (Eb : Nat → Real → Real → Real → Real) (theta gamma : Real) (k N : Nat) : Nat :=
-  ⌈(N : Real) ^ coverExp Eb theta gamma k⌉₊
-
-theorem coverCount_pos (Qb : Nat → Real → Real → Real → Real) (_hQb : ∀ l g t s, 0 < s → s ≤ 1 → 1 ≤ Qb l g t s)
-    (theta gamma : Real) (k : Nat) : 0 < coverCount Qb theta gamma k := by
-  unfold coverCount
-  refine Finset.prod_pos fun e _ => lt_of_lt_of_le ?_ (le_max_right _ _)
-  positivity
-
-theorem one_le_coverCount (Qb : Nat → Real → Real → Real → Real)
-    (theta gamma : Real) (k : Nat) : 1 ≤ coverCount Qb theta gamma k := by
-  unfold coverCount
-  calc (1 : Real) = ∏ _e ∈ Finset.univ.filter (fun e : Fin k → Bool => e ≠ fun _ => true),
-        (1 : Real) := by simp
-    _ ≤ _ := Finset.prod_le_prod (fun _ _ => zero_le_one) fun e _ => le_trans
-        (by exact_mod_cast Nat.one_le_pow _ _ (by norm_num)) (le_max_right _ _)
 
 /-- The deletion budget of each good set at density `t1`: `θ₂(t1)/(2(2^k+1))`. -/
 def globalBudgetW (t1 : Real) (k : Nat) : Real := section16ThetaTwo t1 / (2 * (2 ^ k + 1))

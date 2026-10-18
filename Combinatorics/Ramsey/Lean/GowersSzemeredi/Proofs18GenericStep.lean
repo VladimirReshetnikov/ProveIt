@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs18GenericModulus
+import GowersSzemeredi.Proofs18UniformCoversSide
 
 /-! The single-piece inverse step in any dimension (Notes L.7a, F3b).
 

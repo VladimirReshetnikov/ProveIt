@@ -25,8 +25,8 @@ with `θ′ = θ₂/2^(k+2)` (`classBudget`). So the piece keeps mass `θ′`.
 parameters (Notes L.16d); at the printed values the budgets are the printed
 ones by `rfl`, and `class_piece_data` is the instance.
 
-`classBudget_pos_le` and `class_piece_data` are in `Proofs16ClassPiecesSide`,
-outside the final route. -/
+`classBudget_pos_le`, `classDelta`, `classPieceThr`, `classPieceThreshold` and
+`class_piece_data` are in `Proofs16ClassPiecesSide`, outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 open scoped BigOperators
@@ -140,20 +140,6 @@ structure ClassPiece {k : Nat} {Thr : Real → Real → Real} {Cnt Exp : Real �
 /-- The deletion budget of a `(k+1)`-dimensional piece: `θ₂/2^(k+2)`. -/
 def classBudget (theta gamma : Real) (k : Nat) : Real :=
   section16ThetaTwo (section16ThetaOne theta gamma k) / 2 ^ (k + 2)
-
-/-- The spectrum parameter `δ(θ₁)`. -/
-def classDelta (theta gamma : Real) (k : Nat) : Real :=
-  section16Delta (section16ThetaOne theta gamma k)
-
-/-- The class thresholds a piece needs: spectra at `(θ′, δ)`, faces and slices at `(θ′, γ)`. -/
-def classPieceThr (Thr : Real → Real → Real) (theta gamma : Real) (k : Nat) : Real :=
-  max (Thr (classBudget theta gamma k) (classDelta theta gamma k))
-    (Thr (classBudget theta gamma k) gamma)
-
-/-- The class thresholds of a piece, for power controls. -/
-def classPieceThreshold (V : Real) (dT : Nat) (theta gamma : Real) (k : Nat) : Real :=
-  max ((V * (2 / (classDelta theta gamma k * classBudget theta gamma k))) ^ dT)
-    ((V * (2 / (gamma * classBudget theta gamma k))) ^ dT)
 
 /-! ### Deletions -/
 

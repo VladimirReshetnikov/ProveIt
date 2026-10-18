@@ -6,6 +6,7 @@ import GowersSzemeredi.Proofs16AbstractFamily
 import GowersSzemeredi.Proofs16PolyCoverTwo
 import GowersSzemeredi.Proofs16PolyCoverTwoSide
 import GowersSzemeredi.Proofs16Lemma9WithRemainderSide
+import GowersSzemeredi.Proofs16FamilyLemma6Side
 
 /-! The polynomial all-scale Lemma 16.9 with arbitrary remainder controls.
 

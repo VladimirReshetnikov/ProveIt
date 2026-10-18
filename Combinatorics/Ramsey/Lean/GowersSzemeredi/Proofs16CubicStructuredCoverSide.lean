@@ -4,6 +4,7 @@ import GowersSzemeredi.Proofs16CubicCommonBase
 import GowersSzemeredi.Proofs16CubicStructuredExtraction
 import GowersSzemeredi.Proofs16GoodGraphGeometry
 import GowersSzemeredi.Proofs16FreimanFinalSectionsSide
+import GowersSzemeredi.Proofs16PowerCoverTransportSide
 
 /-! Declarations of `Proofs16CubicStructuredCover` that the final route does not use and that
 need modules outside it (moved here so that those modules can leave the route). -/

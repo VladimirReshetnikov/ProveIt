@@ -10,7 +10,8 @@ import GowersSzemeredi.Proofs18ShortLocalizationInverse
 threshold. The degree-three base, power estimates and localization thresholds
 are shared by the generic iteration and the final proof routes.
 
-`envBound_three` is in `Proofs18EnvelopeBoundsSide`, outside the final route. -/
+`envBound_three` and `polyPartConst_mul32_le_pw` are in
+`Proofs18EnvelopeBoundsSide`, outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -46,15 +47,6 @@ theorem polyPartConst_le (d : Nat) : polynomialPartitionConstant d ≤ 2 ^ (4 * 
         Nat.mul_le_mul_right _ hf2
     _ = 2 ^ (2 * (d * d) + (d + 1) ^ 2) := by rw [← pow_add]
     _ ≤ 2 ^ (4 * (d + 1) ^ 2) := Nat.pow_le_pow_right (by norm_num) (by nlinarith)
-
-/-- The partition constant, including the factor 32 in the inverse exponent. -/
-theorem polyPartConst_mul32_le_pw {X : Real} (hX : 2 ≤ X) (k : Nat) :
-    32 * (polynomialPartitionConstant (k + 1 + 1) : Real) ≤
-      X ^ (2 ^ (4 * (k + 3) ^ 2 + 4)) :=
-  mul32_nat_le_pw hX
-    (by simpa only [show k + 1 + 1 + 1 = k + 3 by omega]
-      using polyPartConst_le (k + 1 + 1))
-    (Nat.lt_two_pow_self (n := 4 * (k + 3) ^ 2 + 4))
 
 /-- The refinement constant at scale one in degree `d ≥ 1`. -/
 theorem s5_one_le {d : Nat} (hd : 1 ≤ d) :

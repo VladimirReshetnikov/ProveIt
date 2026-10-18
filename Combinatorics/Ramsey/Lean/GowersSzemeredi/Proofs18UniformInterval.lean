@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs03ProgressionExistence
 import GowersSzemeredi.Proofs18AffineTransfer
 import GowersSzemeredi.Proofs18AffineTransferSide
+import GowersSzemeredi.Proofs18IntervalTransferSide
 
 /-!
 # The uniform stopping cases for Section 18

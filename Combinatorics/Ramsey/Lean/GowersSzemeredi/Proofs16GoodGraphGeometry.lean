@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16GoodDomainTransport
+import GowersSzemeredi.Proofs16GoodDomainTransportSide
 
 /-! The selected common-base graph has an exact mass-preserving realization
 inside the original relation, independently of its eventual cover bounds. -/

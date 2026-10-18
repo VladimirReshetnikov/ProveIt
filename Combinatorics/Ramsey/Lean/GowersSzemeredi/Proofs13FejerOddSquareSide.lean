@@ -10,6 +10,21 @@ noncomputable section
 
 namespace LeanProofs.GowersSzemeredi
 
+/-- The explicit Fourier extraction exponent lies in (0,1/2]. -/
+theorem section13_fejer_explicit_exponent_bounds {alpha : Real}
+    (hα : 0 < alpha) (hαone : alpha ≤ 1) :
+    0 < (1 / 2 : Real) ^ ((2 / alpha) ^ ((2 : Nat) ^ 53)) ∧
+      (1 / 2 : Real) ^ ((2 / alpha) ^ ((2 : Nat) ^ 53)) ≤ 1 / 2 := by
+  refine ⟨Real.rpow_pos_of_pos (by norm_num) _, ?_⟩
+  have ht : (1 : Real) ≤ 2 / alpha := (le_div_iff₀ hα).mpr (by linarith only [hαone])
+  have hexp := one_le_pow₀ ht (n := (2 : Nat) ^ 53)
+  simpa only [Real.rpow_one] using Real.rpow_le_rpow_of_exponent_ge
+    (by norm_num : (0 : Real) < 1 / 2) (by norm_num : (1 / 2 : Real) ≤ 1) hexp
+
+end LeanProofs.GowersSzemeredi
+
+namespace LeanProofs.GowersSzemeredi
+
 theorem theorem_13_12_fejer_odd_square_explicit :
     ∀ alpha : Real, 0 < alpha → alpha ≤ 1 →
       ∀ (N : Nat) [NeZero N] [Fact N.Prime], section13FejerOddSquareThreshold alpha ≤ N →

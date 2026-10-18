@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs16ShortScale
 import GowersSzemeredi.Proofs16Lemma1
 import GowersSzemeredi.Proofs16ShortProduct
+import GowersSzemeredi.Proofs16ShortScaleSide
 
 /-! # Recovering the multilinear threshold from the non-singleton width -/
 set_option autoImplicit false

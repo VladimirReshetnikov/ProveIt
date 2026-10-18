@@ -1,7 +1,10 @@
 import GowersSzemeredi.Proofs13ExplicitPowerThreshold
 
 /-! Exponential envelopes for the finite positive-power thresholds. These
-bounds separate the logarithmic numerator cost from the inverse exponent. -/
+bounds separate the logarithmic numerator cost from the inverse exponent.
+
+`positivePowerThreshold_le_exp_power` is in
+`Proofs13ThresholdExponentialEnvelopeSide`, outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -28,30 +31,6 @@ theorem positivePowerThreshold_le_exp {C D e A B E : Real}
       Real.rpow_le_rpow (le_trans zero_le_one (le_max_left _ _)) hbase hEi0
     _ = Real.exp ((A + B) * e⁻¹) := (Real.exp_mul _ _).symm
     _ ≤ _ := Real.exp_le_exp.mpr (mul_le_mul_of_nonneg_left hEi hAB)
-
-/-- Polynomial reciprocal bounds give a single-exponential envelope for
-one growth threshold; this also covers its zero-exponent finite-sup term. -/
-theorem positivePowerThreshold_le_exp_power {C D e x : Real} {a b r : Nat}
-    (hx : 1 ≤ x) (hD : 0 < D) (he : 0 ≤ e)
-    (hC : C ≤ x ^ a) (hDi : D⁻¹ ≤ x ^ b) (hEi : e⁻¹ ≤ x ^ r) :
-    positivePowerThreshold C D e ≤ Real.exp ((a + b : Nat) * x ^ (r + 1)) := by
-  have hx0 : 0 < x := zero_lt_one.trans_le hx
-  have hlog : 0 ≤ Real.log x := Real.log_nonneg hx
-  have hClog : C ≤ Real.exp ((a : Real) * Real.log x) := by
-    rw [mul_comm, Real.exp_mul, Real.exp_log hx0, Real.rpow_natCast]
-    exact hC
-  have hDlog : D⁻¹ ≤ Real.exp ((b : Real) * Real.log x) := by
-    rw [mul_comm, Real.exp_mul, Real.exp_log hx0, Real.rpow_natCast]
-    exact hDi
-  have h := positivePowerThreshold_le_exp hD he (by positivity) hClog hDlog hEi
-  apply h.trans
-  apply Real.exp_le_exp.mpr
-  have hlogx : Real.log x ≤ x := (Real.log_le_sub_one_of_pos hx0).trans (by linarith only [hx])
-  calc
-    _ = ((a + b : Nat) : Real) * Real.log x * x ^ r := by push_cast; ring
-    _ ≤ ((a + b : Nat) : Real) * x * x ^ r :=
-      mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hlogx (Nat.cast_nonneg _)) (by positivity)
-    _ = _ := by rw [pow_succ]; ring
 
 /-- Exponential input budgets yield a double-exponential threshold with
 an additive budget in its inner exponent. -/

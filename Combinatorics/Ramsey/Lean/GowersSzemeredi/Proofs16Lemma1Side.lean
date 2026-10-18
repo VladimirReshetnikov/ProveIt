@@ -10,6 +10,24 @@ noncomputable section
 
 namespace LeanProofs.GowersSzemeredi
 
+theorem section16K_eq_multilinear (k : Nat) :
+    section16K k = multilinearPartitionConstant (k + 1) := by
+  unfold section16K multilinearPartitionConstant
+  rfl
+
+theorem section16WidthThreshold_eq_multilinear (k q : Nat) :
+    section16WidthThreshold k q = multilinearPartitionThreshold (k + 1) q := by
+  simp only [section16WidthThreshold, multilinearPartitionThreshold, section16K_eq_multilinear]
+
+theorem section16RecurrenceExponent_eq_multilinear (k q : Nat) :
+    section16RecurrenceExponent k q = multilinearPartitionExponent (k + 1) q := by
+  simp only [section16RecurrenceExponent, multilinearPartitionExponent,
+    section16K_eq_multilinear, zpow_neg, zpow_natCast]
+
+end LeanProofs.GowersSzemeredi
+
+namespace LeanProofs.GowersSzemeredi
+
 /-- Proper version of Lemma 16.1, with the same explicit exponent and
 rounding-safe threshold as simultaneous multilinear partitioning. -/
 theorem proper_lemma_16_1 (N k q m : Nat) [NeZero N] (P : Box N k)

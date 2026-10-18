@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16BaseCaseCoarsePartition
 import GowersSzemeredi.Proofs16BaseCaseQuantitative
+import GowersSzemeredi.Proofs16BaseCaseCoarsePartitionSide
 
 /-!
 # The short-box graph cover for Lemma 16.3

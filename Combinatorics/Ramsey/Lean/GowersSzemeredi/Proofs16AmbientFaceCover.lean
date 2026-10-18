@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs16EmbeddedLift
 import GowersSzemeredi.Proofs16Translations
 import GowersSzemeredi.Proofs16EmbeddedLiftSide
 import GowersSzemeredi.Proofs16UnusedCoordinateParameter
+import GowersSzemeredi.Proofs16TranslationsSide
 
 /-! Genuine proper-face covers extend to ambient coordinate retractions.
 The selected domain may be restricted arbitrarily as long as its retracted

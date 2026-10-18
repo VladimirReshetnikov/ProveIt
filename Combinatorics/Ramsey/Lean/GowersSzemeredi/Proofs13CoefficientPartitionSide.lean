@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs13CoefficientPartition
+import GowersSzemeredi.Proofs07UniversalPartitionSide
 
 /-! Declarations of `Proofs13CoefficientPartition` that the final route does not use (moved here so
 that the route keeps only what it uses). -/

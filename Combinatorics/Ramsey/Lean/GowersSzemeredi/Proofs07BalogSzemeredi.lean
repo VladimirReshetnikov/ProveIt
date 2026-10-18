@@ -3,11 +3,14 @@ import GowersSzemeredi.Proofs07DRC
 /-!
 # The quantitative Balog--Szemeredi reduction
 
-This module proves Proposition 7.3.  We use popular *sums* rather than the
-popular differences in the paper; additive energy has the same fibre-square
-description, while the resulting graph is automatically symmetric.  The
-dependent-random-choice input is `lemma_7_4_holds`.
--/
+This module develops Proposition 7.3, whose assembled form
+`proposition_7_3_holds` is in `Proofs07BalogSzemerediSide`.  We use popular
+*sums* rather than the popular differences in the paper; additive energy has the
+same fibre-square description, while the resulting graph is automatically
+symmetric.  The dependent-random-choice input is `lemma_7_4_holds`.
+
+`proposition_7_3_holds` is in `Proofs07BalogSzemerediSide`, outside the final
+route. -/
 
 set_option autoImplicit false
 
@@ -929,11 +932,5 @@ theorem proposition_7_3_group_holds {G : Type*} [DecidableEq G]
     _ ≤ (2 : Real) ^ (38 : Nat) * (c ^ 24)⁻¹ * A.card := by
       gcongr
     _ = _ := rfl
-
-/-- **Gowers, Proposition 7.3.** Large additive energy contains a large
-subset with quantitatively small difference set. -/
-theorem proposition_7_3_holds : proposition_7_3 := by
-  intro n A c hc henergy
-  exact proposition_7_3_group_holds A c hc henergy
 
 end LeanProofs.GowersSzemeredi

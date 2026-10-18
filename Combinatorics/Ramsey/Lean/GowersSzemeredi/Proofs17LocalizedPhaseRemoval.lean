@@ -9,10 +9,16 @@ import Mathlib.Data.Finset.DenselyOrdered
 /-!
 # Localized polynomial phase removal
 
-This file proves Proposition 17.7.  The proof includes the balanced modular
-interval partition and the sharper count of floor-affine patterns modulo
-constant translations that are used in the localized argument.
--/
+This file develops Proposition 17.7, whose assembled form
+`proposition_17_7_holds` is in `Proofs17LocalizedPhaseRemovalSide`.  The proof
+includes the balanced modular interval partition and the sharper count of
+floor-affine patterns modulo constant translations that are used in the
+localized argument.
+
+`prop177Monomial`, `prop177Monomial_cons`, `prop177_affineEquiv_apply`,
+`prop177_balancedCell_partition`, `prop177_boundary_zero` and
+`proposition_17_7_holds` are in `Proofs17LocalizedPhaseRemovalSide`, outside the
+final route. -/
 
 set_option autoImplicit false
 
@@ -448,12 +454,12 @@ private theorem prop177_exists_normalized_mod_patterns (k M : Nat)
 
 /-! ### Balanced modular interval partitions -/
 
-private def prop177CellWidth (N M : Nat) : Real := (N : Real) / M
+def prop177CellWidth (N M : Nat) : Real := (N : Real) / M
 
-private def prop177Boundary (N M i : Nat) : Nat :=
+def prop177Boundary (N M i : Nat) : Nat :=
   Nat.ceil ((i : Real) * prop177CellWidth N M)
 
-private def prop177BalancedCell (N M : Nat) (i : Fin M) : ModAP N :=
+def prop177BalancedCell (N M : Nat) (i : Fin M) : ModAP N :=
   modInterval N (prop177Boundary N M i : ZMod N)
     (prop177Boundary N M (i + 1) - prop177Boundary N M i)
 
@@ -461,10 +467,6 @@ private lemma prop177_width_pos {N M : Nat} (hN : 0 < N) (hM : 0 < M) :
     0 < prop177CellWidth N M := by
   unfold prop177CellWidth
   positivity
-
-private lemma prop177_boundary_zero (N M : Nat) :
-    prop177Boundary N M 0 = 0 := by
-  simp [prop177Boundary, prop177CellWidth]
 
 private lemma prop177_boundary_end {N M : Nat} (hM : 0 < M) :
     prop177Boundary N M M = N := by
@@ -520,7 +522,7 @@ private lemma prop177_balancedCell_mem_iff {N M : Nat} [NeZero N]
     exact prop177_boundary_le_N hN hM (Nat.succ_le_iff.mpr i.isLt)
   rw [prop177BalancedCell, prop177_modInterval_mem_iff_val hend, Nat.add_sub_of_le hmono]
 
-private def prop177CellIndex {N M : Nat} [NeZero N]
+def prop177CellIndex {N M : Nat} [NeZero N]
     (hM : 0 < M) (x : ZMod N) : Fin M :=
   ⟨Nat.floor ((x.val : Real) / prop177CellWidth N M), by
     apply (Nat.floor_lt' hM.ne').mpr
@@ -561,26 +563,10 @@ private lemma prop177_cellIndex_spec {N M : Nat} [NeZero N]
       norm_num only [Nat.cast_add, Nat.cast_one] at h
       exact h
 
-private lemma prop177_balancedCell_mem_iff_index {N M : Nat} [NeZero N]
+lemma prop177_balancedCell_mem_iff_index {N M : Nat} [NeZero N]
     (hM : 0 < M) (i : Fin M) (x : ZMod N) :
     x ∈ (prop177BalancedCell N M i).carrier ↔ prop177CellIndex hM x = i := by
   rw [prop177_balancedCell_mem_iff hM, prop177_cellIndex_spec]
-
-private lemma prop177_balancedCell_partition {N M : Nat} [NeZero N]
-    (hM : 0 < M) :
-    IsPartition (fun i : Fin M => (prop177BalancedCell N M i).carrier)
-      Finset.univ := by
-  constructor
-  · intro x
-    simp only [Finset.mem_univ, true_iff]
-    exact ⟨prop177CellIndex hM x,
-      (prop177_balancedCell_mem_iff_index hM _ _).mpr rfl⟩
-  · intro i j hij
-    rw [Finset.disjoint_left]
-    intro x hxi hxj
-    have hi := (prop177_balancedCell_mem_iff_index hM i x).mp hxi
-    have hj := (prop177_balancedCell_mem_iff_index hM j x).mp hxj
-    exact bne_iff_ne.mp hij (hi.symm.trans hj)
 
 private lemma prop177_balancedCell_isProper {N M : Nat} [NeZero N]
     (hM : 0 < M) (i : Fin M) : (prop177BalancedCell N M i).IsProper := by
@@ -1349,15 +1335,6 @@ private lemma prop177_mixedEnergy_expansion {N k : Nat} [NeZero N]
             parityConj E (H (Fin.tail E) (cubeArgument s z E))) *
               exponential (-(z 0 * tau (Fin.tail z))))).symm
 
-private def prop177Monomial {N k : Nat} (e : Fin k → Bool)
-    (x : Point N k) : ZMod N := ∏ i, if e i then x i else 1
-
-private lemma prop177Monomial_cons {N k : Nat} (b : Bool)
-    (e : Fin k → Bool) (z : Point N (k + 1)) :
-    prop177Monomial (Fin.cons b e) z =
-      (if b then z 0 else 1) * prop177Monomial e (Fin.tail z) := by
-  simp [prop177Monomial, Fin.prod_univ_succ, Fin.tail]
-
 private def prop177TailOffset {N k : Nat} (r : Point N k)
     (E : Fin (k + 1) → Bool) : ZMod N :=
   ∑ i, if (Fin.tail E) i then r i else 0
@@ -1959,13 +1936,9 @@ private lemma prop177_mapCell_mem_iff {N : Nat} [NeZero N]
     refine ⟨i, ?_⟩
     ring
 
-private def prop177AffineEquiv {N : Nat} [NeZero N] [Fact N.Prime]
+def prop177AffineEquiv {N : Nat} [NeZero N] [Fact N.Prime]
     (d offset : ZMod N) (hd : d ≠ 0) : ZMod N ≃ ZMod N :=
   (Equiv.mulLeft₀ d hd).trans (Equiv.subRight offset)
-
-private lemma prop177_affineEquiv_apply {N : Nat} [NeZero N] [Fact N.Prime]
-    (d offset : ZMod N) (hd : d ≠ 0) (u : ZMod N) :
-    prop177AffineEquiv d offset hd u = d * u - offset := rfl
 
 private lemma prop177_cubeArgument_affine {N q : Nat}
     (d offset : ZMod N) (s : ZMod N) (x : Point N q)
@@ -2622,13 +2595,5 @@ theorem proposition_17_7_with_upper :
     obtain ⟨h, rfl⟩ := hm
     exact prop177_large_branch f P sigma alpha halpha hk hlarge haxes hd
       hmsqrt hf hsigma henergy
-
-/-- **Gowers, Proposition 17.7.** The catalogue conclusion follows from
- the stronger construction, retaining its original statement. -/
-theorem proposition_17_7_holds : proposition_17_7 := by
-  intro N k m _ _ f P sigma alpha hα hk hm hwidth haxes hd hmsqrt hf hsigma henergy
-  obtain ⟨phi, M, l, Q, hpoly, hpart, hproper, hlower, _, hfail⟩ :=
-    proposition_17_7_with_upper N k m f P sigma alpha hα hk hm hwidth haxes hd hmsqrt hf hsigma henergy
-  exact ⟨phi, M, l, Q, hpoly, hpart, hproper, hlower, hfail⟩
 
 end LeanProofs.GowersSzemeredi

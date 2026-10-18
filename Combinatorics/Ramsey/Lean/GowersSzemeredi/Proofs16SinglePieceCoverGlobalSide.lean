@@ -13,6 +13,43 @@ namespace LeanProofs.GowersSzemeredi
 section
 open Classical
 
+/-- The product of the vertex cover counts. -/
+def coverCount (Qb : Nat → Real → Real → Real → Real) (theta gamma : Real) (k : Nat) : Real :=
+  ∏ e ∈ Finset.univ.filter (fun e : Fin k → Bool => e ≠ fun _ => true),
+    max (Qb (section16VertexDirections e).card gamma (globalBudget theta gamma k)
+      (coverPrec theta gamma k)) ((3 ^ (k + 1) : Nat) : Real)
+
+/-- The remainder density from joint vertex covers. -/
+def coverRho1 (Qb : Nat → Real → Real → Real → Real) (theta gamma : Real) (k : Nat) : Real :=
+  globalTheta2 theta gamma k / 2 / coverCount Qb theta gamma k
+
+/-- The remainder width from joint vertex covers. -/
+def coverRemWidth (Eb : Nat → Real → Real → Real → Real) (theta gamma : Real) (k N : Nat) : Nat :=
+  ⌈(N : Real) ^ coverExp Eb theta gamma k⌉₊
+
+theorem coverCount_pos (Qb : Nat → Real → Real → Real → Real) (_hQb : ∀ l g t s, 0 < s → s ≤ 1 → 1 ≤ Qb l g t s)
+    (theta gamma : Real) (k : Nat) : 0 < coverCount Qb theta gamma k := by
+  unfold coverCount
+  refine Finset.prod_pos fun e _ => lt_of_lt_of_le ?_ (le_max_right _ _)
+  positivity
+
+theorem one_le_coverCount (Qb : Nat → Real → Real → Real → Real)
+    (theta gamma : Real) (k : Nat) : 1 ≤ coverCount Qb theta gamma k := by
+  unfold coverCount
+  calc (1 : Real) = ∏ _e ∈ Finset.univ.filter (fun e : Fin k → Bool => e ≠ fun _ => true),
+        (1 : Real) := by simp
+    _ ≤ _ := Finset.prod_le_prod (fun _ _ => zero_le_one) fun e _ => le_trans
+        (by exact_mod_cast Nat.one_le_pow _ _ (by norm_num)) (le_max_right _ _)
+
+end
+
+end LeanProofs.GowersSzemeredi
+
+namespace LeanProofs.GowersSzemeredi
+
+section
+open Classical
+
 /-- **The single-piece lift from global-to-local covers, with the remainder
 from the jointly composed vertex covers.** -/
 theorem single_piece_lift_global_cover_with {k : Nat} (hk : 1 ≤ k) {t1 zeta gamma : Real}

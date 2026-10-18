@@ -37,7 +37,10 @@ The printed theorem (`theorem_18_1_three_of_phase_partition`, outside the
 final route) takes the phase partition as a hypothesis. Its constants need
 `K ≤ 2^p` and `p ≤ 2^(2^64)`; since `ProgressionPhasePartition.mono` raises
 `p` freely, the explicit constants of `CommonDiffPartitionBoundAt 1` qualify
-(bridge). -/
+(bridge).
+
+`section18Exponent_le_of_inv_le` is in `Proofs18PolyCubicDegreeSide`, outside
+the final route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -228,28 +231,6 @@ theorem section13PolySquareExponent_bounds (hX : 2 ≤ X) {delta : Real} (hδ : 
     exact pw_mono hX hall (by norm_num)
 
 end Envelope
-
-/-- `section18Exponent α k ≤ x` once `x⁻¹ ≤ (2/α)^(2^μ)` with `μ + 1 ≤ 2^(k+10)`. -/
-theorem section18Exponent_le_of_inv_le {alpha : Real} (hα : 0 < alpha) (hα2 : alpha ≤ 1 / 2)
-    {x : Real} (hx : 0 < x) {μ k : Nat} (hμ : μ + 1 ≤ 2 ^ (k + 10))
-    (hxinv : x⁻¹ ≤ (2 / alpha) ^ (2 ^ μ)) : section18Exponent alpha k ≤ x := by
-  have hαone : alpha ≤ 1 := by linarith only [hα2]
-  unfold section18Exponent
-  have h1 : alpha ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 10))) ≤ alpha ^ (2 ^ (μ + 1)) :=
-    pow_le_pow_of_le_one hα.le hαone (Nat.pow_le_pow_right (by norm_num) hμ)
-  have h2 : alpha ^ (2 ^ (μ + 1)) = (alpha ^ 2) ^ (2 ^ μ) := by
-    rw [pow_succ, mul_comm (2 ^ μ) 2, pow_mul]
-  have h3 : (alpha ^ 2) ^ (2 ^ μ) ≤ (alpha / 2) ^ (2 ^ μ) :=
-    pow_le_pow_left₀ (by positivity) (by nlinarith only [hα, hα2]) _
-  have h4 : (alpha / 2) ^ (2 ^ μ) = ((2 / alpha) ^ (2 ^ μ))⁻¹ := by rw [← inv_pow, inv_div]
-  have h5 : ((2 / alpha) ^ (2 ^ μ))⁻¹ ≤ x := by
-    have h := inv_anti₀ (inv_pos.mpr hx) hxinv
-    rwa [inv_inv] at h
-  calc _ ≤ alpha ^ (2 ^ (μ + 1)) := h1
-    _ = (alpha ^ 2) ^ (2 ^ μ) := h2
-    _ ≤ (alpha / 2) ^ (2 ^ μ) := h3
-    _ = ((2 / alpha) ^ (2 ^ μ))⁻¹ := h4
-    _ ≤ x := h5
 
 /-- The degree-three discrepancy exponent at the polynomial square exponent:
 `σ⁻¹ ≤ (2/α)^(2^74)`. -/

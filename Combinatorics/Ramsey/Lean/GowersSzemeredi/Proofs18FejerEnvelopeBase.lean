@@ -24,7 +24,12 @@ The first two items are in `Proofs18FejerEnvelopeBaseSide`, outside the final
 route.
 
 The envelope then changes only through the class degree (`uDeg23` in place
-of `uDeg68`). -/
+of `uDeg68`).
+
+`fejerProductExponent_le_printed`, `fejer_theta_ge_printed`,
+`lemma156_gen_le_fejer`, `section16Delta_mono`, `section16ThetaOne_le_fejer` and
+`section16ThetaTwo_mono` are in `Proofs18FejerEnvelopeBaseSide`, outside the
+final route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -57,65 +62,13 @@ theorem coverRemWidthW_powerLB (Eb : Nat → Real → Real → Real → Real) (t
     WidthPowerLB (fun L => coverRemWidthW Eb t1 gamma k L) (coverExpW Eb t1 gamma k) 1 :=
   fun _ _ => Nat.le_ceil _
 
-theorem fejerProductExponent_le_printed (k : Nat) :
-    fejerProductExponent k ≤ (2 : Nat) ^ ((2 : Nat) ^ (k + 5)) := by
-  refine (fejerProductExponent_le k).trans (Nat.pow_le_pow_right (by norm_num) ?_)
-  have h1 : k + 1 ≤ 2 ^ k := Nat.lt_two_pow_self
-  have h2 : 2 ^ (k + 5) = 32 * 2 ^ k := by rw [pow_add]; ring
-  omega
-
-/-- **The Fejér density is at least the printed one.** -/
-theorem section16ThetaOne_le_fejer {theta gamma : Real} (k : Nat) (ht : 0 < theta)
-    (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1) :
-    section16ThetaOne theta gamma k ≤ fejerThetaOne theta gamma k := by
-  unfold section16ThetaOne fejerThetaOne
-  have h0 : 0 ≤ theta * gamma / 4 := by positivity
-  have h1 : theta * gamma / 4 ≤ 1 := by nlinarith
-  exact pow_le_pow_of_le_one h0 h1 (fejerProductExponent_le_printed k)
-
-theorem section16ThetaTwo_mono {s t : Real} (hs : 0 ≤ s) (hst : s ≤ t) :
-    section16ThetaTwo s ≤ section16ThetaTwo t := by
-  unfold section16ThetaTwo
-  exact mul_le_mul_of_nonneg_left (pow_le_pow_left₀ hs hst 8) (by positivity)
-
-theorem section16Delta_mono {s t : Real} (hs : 0 ≤ s) (hst : s ≤ t) :
-    section16Delta s ≤ section16Delta t := by
-  unfold section16Delta
-  exact mul_le_mul_of_nonneg_left
-    (Real.rpow_le_rpow (div_nonneg hs (by norm_num)) (div_le_div_of_nonneg_right hst (by norm_num))
-      (by norm_num)) (by positivity)
-
 section Fixed
 
 variable {alpha : Real}
 
-theorem fejer_theta_ge_printed (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
-    section16ThetaOne alpha (alpha / 2) k ≤ fejerThetaOne alpha (alpha / 2) k :=
-  section16ThetaOne_le_fejer k ha (by linarith) (half_pos ha) (by linarith)
-
 theorem fejer_alpha_bounds (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
     0 < fejerThetaOne alpha (alpha / 2) k / 4 ∧ fejerThetaOne alpha (alpha / 2) k / 4 ≤ 1 / 36 :=
   fejerThetaOne_bounds k ha (by linarith) (half_pos ha) (by linarith)
-
-/-- **The Fejér Lemma 15.6 threshold in the printed slot.** -/
-theorem lemma156_gen_le_fejer {k : Nat} (hk : 1 ≤ k) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
-    fejerProductThreshold k (alpha / 2) (alpha / 2) ≤
-      (2 / alpha) ^ (2 ^ (2 ^ (k + 4) + 4 * k + 13)) := by
-  have ha1 : alpha ≤ 1 := by linarith
-  have hX := two_div_ge_two ha ha2
-  have h := fejerProductThreshold_le_gen (gamma := alpha / 2) (theta := alpha) hk (half_pos ha)
-    (by linarith) ha ha1
-  have hu : 2 / (alpha / 2 * alpha) = (2 / alpha) ^ 2 := by field_simp
-  rw [hu, ← pow_mul] at h
-  refine h.trans (pow_le_pow_right₀ (le_trans (by norm_num) hX) ?_)
-  have hP := fejerStepP_le k
-  have hk2 : 5 * k + 21 ≤ 2 ^ (k + 4) + 4 * k + 13 := by
-    have h1 : k + 1 ≤ 2 ^ k := Nat.lt_two_pow_self
-    have h16 : 2 ^ (k + 4) = 16 * 2 ^ k := by rw [pow_add]; ring
-    omega
-  calc 2 * fejerStepP k ≤ 2 * 2 ^ (5 * k + 20) := Nat.mul_le_mul_left 2 hP
-    _ = 2 ^ (5 * k + 21) := by rw [pow_succ]; ring
-    _ ≤ _ := Nat.pow_le_pow_right (by norm_num) hk2
 
 /-- The base slice density at the Fejér budget (`GenParams.baseC` with
 `globalBudgetW` in place of `globalBudget`). -/

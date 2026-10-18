@@ -16,6 +16,26 @@ namespace LeanProofs.GowersSzemeredi
 section
 open BaseCase
 
+/-- The deletion budget of a three-dimensional piece: `θ₂/8`. -/
+def threeBudget (theta gamma : Real) : Real :=
+  section16ThetaTwo (section16ThetaOne theta gamma 2) / 8
+
+/-- The spectrum parameter `δ(θ₁)` at `k = 2`. -/
+def threeDelta (theta gamma : Real) : Real := section16Delta (section16ThetaOne theta gamma 2)
+
+/-- The Freiman count of the last-coordinate face. -/
+def threeFaceCount (theta gamma : Real) : Nat :=
+  section16BaseFamilyBound gamma (threeBudget theta gamma)
+
+end
+
+end LeanProofs.GowersSzemeredi
+
+namespace LeanProofs.GowersSzemeredi
+
+section
+open BaseCase
+
 /-- The modulus threshold of a three-dimensional piece. -/
 def threeThreshold (theta gamma : Real) : Real :=
   max (polyTwoThreshold (threeBudget theta gamma) (threeDelta theta gamma))

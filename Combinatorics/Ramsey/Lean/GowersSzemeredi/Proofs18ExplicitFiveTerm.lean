@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs18ExplicitCubicDiscrepancy
 import GowersSzemeredi.Proofs18GeneralIteration
 import GowersSzemeredi.Proofs03FourFactorSymmetry
+import GowersSzemeredi.Proofs18GeneralIntervalStoppingSide
 
 /-! A closed five-term Szemerédi threshold from the constructed cubic inverse theorem.
 No comparison with the paper's numerical five-term bound is asserted here. -/

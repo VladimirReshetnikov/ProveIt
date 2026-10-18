@@ -8,7 +8,9 @@ This module isolates the elementary geometry used in the short-box branch of
 the repaired base case.  A proper one-dimensional modular box is enumerated by
 its progression index, then split into consecutive proper child boxes whose
 lengths differ by at most one.
--/
+
+`BaseCase.isMultilinear_const_one` is in `Proofs16BaseCaseCoarsePartitionSide`,
+outside the final route. -/
 
 set_option autoImplicit false
 set_option maxRecDepth 100000
@@ -206,17 +208,6 @@ lemma coarseChildBox_partition {N : Nat} [NeZero N]
       · exact hxi.trans hxi'.symm
     have := coarseChunk_unique j j' i i' i.isLt i'.isLt rfl hindex
     exact (bne_iff_ne.mp hjj') this
-
-lemma isMultilinear_const_one {N : Nat} (c : ZMod N) :
-    IsMultilinear (fun _ : Point N 1 => c) := by
-  let e0 : Fin 1 → Bool := fun _ => false
-  refine ⟨fun e => if e = e0 then c else 0, ?_⟩
-  intro x
-  rw [Finset.sum_eq_single e0]
-  · simp [e0]
-  · intro e _ hne
-    simp [hne]
-  · simp
 
 lemma mem_partialGraph_one {N : Nat} [NeZero N]
     (B : Finset (Point N 1)) (phi : Point N 1 → ZMod N)

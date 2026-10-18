@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16Lemma9WithRemainder
+import GowersSzemeredi.Proofs16ShortScaleSide
 
 /-! Lemma 16.9 at every scale with arbitrary remainder controls, for an
 abstract linearity width.

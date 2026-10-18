@@ -6,6 +6,7 @@ import GowersSzemeredi.Proofs18CoverVanDerWaerden
 import GowersSzemeredi.Proofs18CoverHeadline
 import GowersSzemeredi.Proofs16PolynomialStructure
 import GowersSzemeredi.Proofs16PolynomialCorollary
+import GowersSzemeredi.Proofs18CoverSharperLowDegreesSide
 
 /-! **Theorem 18.1 in every degree with exponent `α^(2^(2^(d+7)))`** (Notes L.15c).
 

@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs13QuadraticEndpoints
 import GowersSzemeredi.Proofs13QuadraticPartition
+import GowersSzemeredi.Proofs13QuadraticEndpointsSide
 
 /-! Weighted quadratic selection with the entire selected progression
 retained. A factor-four diameter reserve replaces the density-dependent

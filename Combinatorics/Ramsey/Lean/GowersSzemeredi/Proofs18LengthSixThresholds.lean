@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs18LengthSixParameters
 import GowersSzemeredi.Proofs18ExponentialCalculus
+import GowersSzemeredi.Proofs18ExponentialCalculusSide
 
 /-! The local threshold of the length-six route is single exponential.
 

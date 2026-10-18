@@ -2,7 +2,10 @@ import GowersSzemeredi.Proofs18GeneralProgressionExistence
 import GowersSzemeredi.Proofs18IntervalUniformStopping
 
 /-! Relative-uniform stopping on integer intervals at every progression
-length. The explicit constants specialize to the existing four-term bound. -/
+length. The explicit constants specialize to the existing four-term bound.
+
+`intervalUniformityParameter_le_one` is in
+`Proofs18GeneralIntervalStoppingSide`, outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 open scoped BigOperators
@@ -51,17 +54,6 @@ theorem intervalUniformityParameter_pos {delta : Real} {k : Nat}
     (hδ : 0 < delta) (hk : 0 < k) : 0 < intervalUniformityParameter delta k := by
   unfold intervalUniformityParameter
   positivity
-
-theorem intervalUniformityParameter_le_one {delta : Real} {k : Nat}
-    (hδ : 0 ≤ delta) (hδone : delta ≤ 1) (hk : 0 < k) :
-    intervalUniformityParameter delta k ≤ 1 := by
-  have hkR : (1 : Real) ≤ k := by exact_mod_cast hk
-  have hp : delta ^ k ≤ 1 := pow_le_one₀ hδ hδone
-  have hden : (1 : Real) ≤ 512 * (k : Real) ^ 3 := by
-    have hh : (1 : Real) ≤ (k : Real) ^ 3 := one_le_pow₀ hkR
-    linarith
-  apply pow_le_one₀ (by positivity)
-  exact (div_le_one (by positivity : (0 : Real) < 512 * (k : Real) ^ 3)).mpr (hp.trans hden)
 
 theorem intervalUniformityParameter_count_error {delta : Real} {k : Nat}
     (hδ : 0 ≤ delta) (hk : 0 < k) :

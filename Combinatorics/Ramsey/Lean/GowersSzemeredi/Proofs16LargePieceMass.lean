@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs16GoodDomainTransport
 import GowersSzemeredi.Proofs16RadiusComparison
 import GowersSzemeredi.Proofs16CoverParameterMonotonicity
+import GowersSzemeredi.Proofs16GoodDomainTransportSide
 
 /-! The common-base density meets the mass budget required by the final
 finite extraction, including the corrected density constants. -/

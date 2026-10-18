@@ -15,7 +15,10 @@ width exponent:
 The last two are in `Proofs18UniformCoversSide`, outside the final route.
 
 One control for every dimension makes the lift densities and widths of the
-step closed forms in `(V, D, k)`. -/
+step closed forms in `(V, D, k)`.
+
+`uDeg` and `uExp_mono_rho` are in `Proofs18UniformCoversSide`, outside the final
+route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -89,24 +92,6 @@ theorem uCount_eq {V : Real} (hV : 1 ≤ V) (D : Nat) {gamma theta rho : Real}
   unfold uCount
   exact max_eq_right (one_le_pow₀ (by linarith))
 
-/-- `uCount` decreases in `ρ`, so `uExp` increases. -/
-theorem uExp_mono_rho {V : Real} (hV : 1 ≤ V) (D : Nat) {gamma theta : Real}
-    (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1) :
-    ∀ s s', 0 < s → s ≤ s' → s' ≤ 1 → uExp V D gamma theta s ≤ uExp V D gamma theta s' := by
-  intro s s' hs hss hs1
-  have hs' : 0 < s' := lt_of_lt_of_le hs hss
-  have hle : uCount V D gamma theta s' ≤ uCount V D gamma theta s := by
-    rw [uCount_eq hV D hg hg1 ht ht1 hs' hs1, uCount_eq hV D hg hg1 ht ht1 hs (hss.trans hs1)]
-    have h2 := uniformBase_two_le hV 1 ht ht1 hg hg1 hs' hs1
-    refine pow_le_pow_left₀ (by linarith) ?_ D
-    unfold uniformBase
-    have hgt : 0 < gamma * theta := mul_pos hg ht
-    have hdiv : 2 / (gamma * theta * s') ≤ 2 / (gamma * theta * s) :=
-      div_le_div_of_nonneg_left (by norm_num) (mul_pos hgt hs)
-        (mul_le_mul_of_nonneg_left hss hgt.le)
-    exact mul_le_mul_of_nonneg_left hdiv (by positivity)
-  exact inv_anti₀ (lt_of_lt_of_le zero_lt_one (one_le_uCount V D gamma theta s')) hle
-
 theorem uExp_anti {V V' : Real} (hV : 1 ≤ V) (hVV : V ≤ V') {D D' : Nat} (hD : D ≤ D')
     {gamma theta rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1)
     (hr : 0 < rho) (hr1 : rho ≤ 1) :
@@ -134,8 +119,5 @@ theorem classV_mono (Kc pc : Nat → Nat) {j k : Nat} (h : j ≤ k) :
   induction h with
   | refl => exact le_rfl
   | step _ ih => exact ih.trans (classV_le_succ Kc pc _)
-
-/-- The uniform degree in dimension `k`. -/
-def uDeg (k : Nat) : Nat := 2 ^ (76 * 2 ^ k)
 
 end LeanProofs.GowersSzemeredi

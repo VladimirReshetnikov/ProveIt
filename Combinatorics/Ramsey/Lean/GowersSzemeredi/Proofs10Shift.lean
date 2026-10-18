@@ -4,10 +4,13 @@ import GowersSzemeredi.ProofInfrastructure
 /-!
 # Shifting almost-everywhere properties in Section 10
 
-This file proves the double-counting shift lemma used to construct the local
+This file develops the double-counting shift lemma (Lemma 10.8, whose assembled
+form `lemma_10_8_holds` is in `Proofs10ShiftSide`) used to construct the local
 Freiman homomorphism.  The proof uses the fibre saturation and symmetry
 hypotheses recorded in `IsSection10ShiftRegular`.
--/
+
+`fibreSize_eq_of_index_eq` and `lemma_10_8_holds` are in `Proofs10ShiftSide`,
+outside the final route. -/
 
 set_option autoImplicit false
 
@@ -22,12 +25,6 @@ namespace LeanProofs.GowersSzemeredi
     {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
     (s : ZMod N) (x : X) : x ∈ D.fibre s ↔ D.index x = s := by
   simp [MultifunctionDomain.fibre]
-
-private lemma fibreSize_eq_of_index_eq {N : Nat} [NeZero N]
-    {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
-    {x y : X} (hxy : D.index x = D.index y) :
-    D.fibreSize x = D.fibreSize y := by
-  simp only [MultifunctionDomain.fibreSize, hxy]
 
 private lemma fibre_subset_of_saturated {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
@@ -107,7 +104,7 @@ private lemma almostEvery_of_bad_card_le {X : Type*} [DecidableEq X]
   rw [Finset.filter_congr_decidable]
   nlinarith
 
-private lemma almostEvery_mono {X : Type*} [DecidableEq X]
+lemma almostEvery_mono {X : Type*} [DecidableEq X]
     (p : Real) (U : Finset X) (P Q : X → Prop)
     (hP : AlmostEvery p U P) (hPQ : ∀ x, x ∈ U → P x → Q x) :
     AlmostEvery p U Q := by
@@ -265,7 +262,7 @@ private lemma second_slice_le {N : Nat} [NeZero N]
     have hzP : P z := not_not.mp hzbad
     simp [hzP]
 
-private def shiftEligible {N : Nat} [NeZero N]
+def shiftEligible {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
     (W : Finset X) (d : ZMod N) : Finset X :=
   W ∩ D.shift W (-d)
@@ -409,7 +406,7 @@ private lemma shiftExceptional_card_le {N : Nat} [NeZero N]
 
 /-- The double count actually retains membership in the large overlap set;
 this stronger form is what the two-step argument for Lemma 10.9 uses. -/
-private lemma shift_almostEvery_eligible {N : Nat} [NeZero N]
+lemma shift_almostEvery_eligible {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
     (W : Finset X) (B : Finset (ZMod N)) (eta theta : Real) (P : X → Prop)
     (hregular : IsSection10ShiftRegular D W B eta) (htheta : 0 < theta)
@@ -453,15 +450,6 @@ private lemma shift_almostEvery_eligible {N : Nat} [NeZero N]
     ((W.filter fun w => w ∈ shiftEligible D W d ∧ Q w).card : Real)
   rw [hgoodEq]
   nlinarith
-
-theorem lemma_10_8_holds : lemma_10_8 := by
-  intro N _ X _ _ D W B eta theta P hregular htheta hP d hd
-  exact almostEvery_mono (1 - Real.sqrt theta - eta) W
-    (fun w => w ∈ shiftEligible D W d ∧
-      AlmostEvery (1 - 2 * Real.sqrt theta) (D.fibre (D.index w + d)) P)
-    (fun w => AlmostEvery (1 - 2 * Real.sqrt theta) (D.fibre (D.index w + d)) P)
-    (shift_almostEvery_eligible D W B eta theta P hregular htheta hP d hd)
-    (fun _ _ h => h.2)
 
 /-! ### Lemma 10.9 -/
 

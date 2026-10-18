@@ -17,7 +17,10 @@ patterns changes, from `3^(2d·2^k)` to `(2m+1)^(2d·2^k)`:
 
 At `m = 1` this is the printed Lemma 15.4 (`isDegenerateWithin_one_iff`);
 `Proofs15DegenerateArrangements` derives `lemma_15_4_holds` from it. The
-helpers `lemma154_*` do not depend on the coefficient alphabet. -/
+helpers `lemma154_*` do not depend on the coefficient alphabet.
+
+`isDegenerateWithin_one_iff` is in `Proofs15DegenerateRangeSide`, outside the
+final route. -/
 
 set_option autoImplicit false
 set_option maxRecDepth 10000
@@ -244,21 +247,6 @@ def GeneralArrangement.IsDegenerateWithin {N k d : Nat} [NeZero N] (m : Nat)
 def degenerateGeneralArrangementCountWithin {N k : Nat} [NeZero N] (m d : Nat) : Nat :=
   countWhere fun R : GeneralArrangement N k d =>
     IsAdditiveTuple R.crossSection ∧ R.IsDegenerateWithin m
-
-theorem isDegenerateWithin_one_iff {N k d : Nat} [NeZero N]
-    (R : GeneralArrangement N k d) : R.IsDegenerateWithin 1 ↔ R.IsDegenerate := by
-  constructor
-  · rintro ⟨eta, hb, hn, hm⟩
-    refine ⟨eta, ?_, hn, hm⟩
-    rintro ⟨e, j⟩
-    have := hb e j
-    push_cast at this
-    show eta e j = -1 ∨ eta e j = 0 ∨ eta e j = 1
-    omega
-  · rintro ⟨eta, ht, hn, hm⟩
-    refine ⟨eta, ?_, hn, hm⟩
-    intro e j
-    rcases ht (e, j) with h | h | h <;> simp only at h <;> rw [h] <;> norm_num
 
 variable {m : Nat}
 

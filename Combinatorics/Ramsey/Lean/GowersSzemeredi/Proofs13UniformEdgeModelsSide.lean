@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs13UniformEdgeModels
 import GowersSzemeredi.Proofs13CommonStepSelectionSide
+import GowersSzemeredi.Proofs13EdgeDensitySide
 
 /-! Declarations of `Proofs13UniformEdgeModels` that the final route does not use (moved here so
 that the route keeps only what it uses). -/

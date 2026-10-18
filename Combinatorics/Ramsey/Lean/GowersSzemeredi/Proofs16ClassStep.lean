@@ -20,9 +20,10 @@ So the relations covered by `classPieces γ θ k` step pieces form the next
 uniform class, with the raw controls of the family cover. E5 bounds those
 controls by powers.
 
-`classStepThr`, `classStepThreshold`, `classStepThreshold_eq`,
-`class_piece_of_subrelation`, `class_step_cover`, `class_step_cover_gen` and
-`class_step_decomp` are in `Proofs16ClassStepSide`, outside the final route. -/
+`StepPiece`, `classPieces`, `classStepThr`, `classStepThreshold`,
+`classStepThreshold_eq`, `class_piece_of_subrelation`, `class_step_cover`,
+`class_step_cover_gen`, `class_step_decomp`, `stepPieceGraphs` and
+`thetaOne_half_eq` are in `Proofs16ClassStepSide`, outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 open scoped BigOperators
@@ -80,29 +81,5 @@ def ClassPiece.empty (C : UniformClassWith k Thr Cnt Exp) {N : Nat} [NeZero N]
         (section16FinalCoordinateRestriction (0 : Point N (k + 1) → ZMod N) t) = ∅ := by
       ext z; simp [partialGraph, section16FinalCoordinateSection]
     rw [h]; exact C.empty N thF gF
-
-/-! ### Parameters of the step -/
-
-/-- Pieces per relation: `⌊γ⁻²/θ′⌋`. -/
-def classPieces (gamma theta : Real) (k : Nat) : Nat :=
-  ⌊gamma ^ (-(2 : Int)) / classBudget theta gamma k⌋₊
-
-/-- The pieces of the next class: relative to the universal relation, mass `0`. -/
-abbrev StepPiece (C : UniformClassWith k Thr Cnt Exp) (N : Nat) [NeZero N] (theta gamma : Real) :=
-  ClassPiece C (Finset.univ : Finset (Point N (k + 1) × ZMod N)) (section16Zeta theta gamma k) 0
-    (classBudget theta gamma k) (classDelta theta gamma k) (classBudget theta gamma k) gamma
-
-/-- The graph of a family of step pieces. -/
-def stepPieceGraphs (C : UniformClassWith k Thr Cnt Exp) {N : Nat} [NeZero N] {theta gamma : Real}
-    {m : Nat} (P : Fin m → StepPiece C N theta gamma) : Finset (Point N (k + 1) × ZMod N) :=
-  Finset.univ.biUnion fun c => partialGraph (P c).D (P c).phi
-
-/-! ### One piece of a sub-relation -/
-
-theorem thetaOne_half_eq (theta gamma : Real) (k : Nat) :
-    section16ThetaOne theta gamma k = (theta / 2 * gamma / 2) ^ (2 ^ (2 ^ (k + 5))) := by
-  unfold section16ThetaOne
-  congr 1
-  ring
 
 end LeanProofs.GowersSzemeredi

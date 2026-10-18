@@ -13,6 +13,26 @@ noncomputable section
 
 namespace LeanProofs.GowersSzemeredi
 
+/-- The graph count of the piece cover at loss `ρ`. -/
+def pieceGraphBound (Qr : Real → Real) (Pb : Nat → Real → Real) (rho : Real) : Real :=
+  max (Pb (pieceSamples Qr rho) (rho / 4))
+    (((pieceSamples Qr rho).choose 2 : Nat) * Pb (pieceSamples Qr rho) (rho / 4) *
+      Pb (pieceSamples Qr rho) (rho / 4))
+
+/-- The slice exponent at the sample bound. -/
+def pieceSliceExponent (Qr : Real → Real) (Es : Nat → Real → Real) (rho : Real) : Real :=
+  Es (pieceSamples Qr rho) (rho / 4)
+
+theorem pieceSamples_pos {Qr : Real → Real} {rho : Real} (hrho : 0 < rho) :
+    0 < pieceSamples Qr rho := by
+  unfold pieceSamples
+  apply Nat.ceil_pos.mpr
+  positivity
+
+end LeanProofs.GowersSzemeredi
+
+namespace LeanProofs.GowersSzemeredi
+
 /-- **The large-box profile of one piece.** -/
 theorem section16_piece_large_box_profile {k : Nat} (hk : 1 ≤ k)
     {A Bq : Nat → Real} (hA : ∀ q, 0 < A q) (hB : ∀ q, 0 < Bq q)

@@ -5,6 +5,7 @@ import GowersSzemeredi.Proofs16VertexIdentity
 import GowersSzemeredi.Proofs16DenseSelectionSide
 import GowersSzemeredi.Proofs16SpectrumInductionSide
 import GowersSzemeredi.Proofs16FaceInductionSide
+import GowersSzemeredi.Proofs16CommonBaseSide
 
 /-! Construct the common witnesses entering Lemmas 16.6--16.10 from the
 structured pair and the preceding-dimensional induction. -/

@@ -2,18 +2,14 @@ import GowersSzemeredi.Section16
 
 /-! Coordinate-face transport for the inductive dichotomy in Lemma 16.4.
 The product property depends only on the partial function and is inherited
-by every coordinate cross-section. -/
+by every coordinate cross-section.
+
+`CoordinateFace.domain_mono` and `CoordinateFace.map_injective` are in
+`Proofs16CoordinateFacesSide`, outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 open scoped BigOperators
 namespace LeanProofs.GowersSzemeredi
-
-theorem CoordinateFace.map_injective {N d l : Nat} (F : CoordinateFace N d l) :
-    Function.Injective F.map := by
-  intro x y hxy
-  funext i
-  have h := congrFun hxy (F.free i)
-  simpa only [F.map_free] using h
 
 theorem CoordinateFace.map_replaceCoordinate {N d l : Nat} (F : CoordinateFace N d l)
     (x : Point N l) (j : Fin l) (a : ZMod N) :
@@ -30,12 +26,6 @@ theorem CoordinateFace.map_replaceCoordinate {N d l : Nat} (F : CoordinateFace N
     (F : CoordinateFace N d l) (B : Finset (Point N d)) (x : Point N l) :
     x ∈ F.domain B ↔ F.map x ∈ B := by
   simp [CoordinateFace.domain]
-
-theorem CoordinateFace.domain_mono {N d l : Nat} [NeZero N]
-    (F : CoordinateFace N d l) {B C : Finset (Point N d)} (hBC : B ⊆ C) :
-    F.domain B ⊆ F.domain C := by
-  intro x hx
-  exact (F.mem_domain C x).mpr (hBC ((F.mem_domain B x).mp hx))
 
 theorem weightedSimultaneousAdditiveEnergy_congr_on {N p : Nat} [NeZero N]
     (E : Finset (ZMod N)) (theta : ZMod N → Real)

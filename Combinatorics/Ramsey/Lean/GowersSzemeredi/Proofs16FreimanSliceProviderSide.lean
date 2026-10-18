@@ -15,6 +15,27 @@ namespace LeanProofs.GowersSzemeredi
 section
 open BaseCase
 
+/-- The concrete family controls satisfy every numerical range used by the
+parametric affine lift, including for an empty sampled family. -/
+theorem section16_freiman_slice_provider_ranges {q : Nat} (hq : 0 < q) :
+    Section16SliceProviderRanges
+      (fun r _ => ((3 * (max 1 r * q) : Nat) : Real))
+      (fun r => polyBaseExponent (max 1 r * q)) := by
+  intro r sigma _hr hs hs1
+  have hp : 0 < max 1 r * q := Nat.mul_pos (by omega) hq
+  refine ⟨?_, polyBaseExponent_pos hp hs hs1, polyBaseExponent_le_one hp hs hs1⟩
+  change (1 : Real) ≤ ((3 * (max 1 r * q) : Nat) : Real)
+  exact_mod_cast (show 1 ≤ 3 * (max 1 r * q) by omega)
+
+end
+
+end LeanProofs.GowersSzemeredi
+
+namespace LeanProofs.GowersSzemeredi
+
+section
+open BaseCase
+
 /-- Cover all sampled slices by one family rather than refining one slice
 at a time. The assumptions are concrete covers of individual sections. -/
 theorem section16_slice_provider_of_freiman_families {N q : Nat} [Fact N.Prime]

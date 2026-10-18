@@ -8,7 +8,9 @@ progression whose representatives all lie in `[1,n]`, with `2*n < N`, lifts
 to an ordinary progression.  Its integer common difference may be negative;
 reversing the order gives the positive difference required by `HasNatAP`.
 No primality assumption or quantitative density-increment input is needed.
--/
+
+`hasNatAP_of_hasModAP_image` is in `Proofs18IntervalTransferSide`, outside the
+final route. -/
 
 set_option autoImplicit false
 
@@ -85,23 +87,5 @@ theorem hasNatAP_of_short_modular_sequence {N n k : Nat}
     intro i hi
     rw [← hformula i hi]
     exact (hf (k - 1 - i) (by omega)).1
-
-/-- The no-wrap transfer needed to turn the prime-cyclic conclusion of
-Corollary 3.6 into a progression in the original integer set. -/
-theorem hasNatAP_of_hasModAP_image {N n k : Nat} [NeZero N]
-    (A : Finset Nat) (hA : A ⊆ Finset.Icc 1 n) (hsize : 2 * n < N)
-    (hAP : HasModAP (A.image fun x : Nat => (x : ZMod N)) k) :
-    HasNatAP A k := by
-  obtain ⟨a, d, hd, hAP⟩ := hAP
-  apply hasNatAP_of_short_modular_sequence A (fun i => (a + (i : ZMod N) * d).val)
-    a d (bne_iff_ne.mp hd) hsize
-  intro i hi
-  obtain ⟨x, hx, hxeq⟩ := Finset.mem_image.mp (hAP i hi)
-  have hxn := (Finset.mem_Icc.mp (hA hx)).2
-  have hxN : x < N := by omega
-  have hval : (a + (i : ZMod N) * d).val = x := by
-    rw [← hxeq, ZMod.val_natCast_of_lt hxN]
-  rw [hval]
-  exact ⟨hx, hxn, hxeq⟩
 
 end LeanProofs.GowersSzemeredi

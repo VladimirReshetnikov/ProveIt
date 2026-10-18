@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs16ClassStep
 import GowersSzemeredi.Proofs15ExplicitThresholds
 import GowersSzemeredi.Proofs16ClassPiecesSide
 import GowersSzemeredi.Proofs16ClassPieceCoverSide
+import GowersSzemeredi.Proofs16ShortScaleSide
 
 /-! Declarations of `Proofs16ClassStep` that the final route does not use and that
 need modules outside it (moved here so that those modules can leave the route). -/
@@ -11,6 +12,40 @@ set_option autoImplicit false
 noncomputable section
 
 open scoped BigOperators
+
+namespace LeanProofs.GowersSzemeredi
+
+section
+open BaseCase
+variable {k : Nat} {Thr : Real → Real → Real} {Cnt Exp : Real → Real → Nat → Real → Real}
+
+/-! ### Parameters of the step -/
+
+/-- Pieces per relation: `⌊γ⁻²/θ′⌋`. -/
+def classPieces (gamma theta : Real) (k : Nat) : Nat :=
+  ⌊gamma ^ (-(2 : Int)) / classBudget theta gamma k⌋₊
+
+/-- The pieces of the next class: relative to the universal relation, mass `0`. -/
+abbrev StepPiece (C : UniformClassWith k Thr Cnt Exp) (N : Nat) [NeZero N] (theta gamma : Real) :=
+  ClassPiece C (Finset.univ : Finset (Point N (k + 1) × ZMod N)) (section16Zeta theta gamma k) 0
+    (classBudget theta gamma k) (classDelta theta gamma k) (classBudget theta gamma k) gamma
+
+/-- The graph of a family of step pieces. -/
+def stepPieceGraphs (C : UniformClassWith k Thr Cnt Exp) {N : Nat} [NeZero N] {theta gamma : Real}
+    {m : Nat} (P : Fin m → StepPiece C N theta gamma) : Finset (Point N (k + 1) × ZMod N) :=
+  Finset.univ.biUnion fun c => partialGraph (P c).D (P c).phi
+
+/-! ### One piece of a sub-relation -/
+
+theorem thetaOne_half_eq (theta gamma : Real) (k : Nat) :
+    section16ThetaOne theta gamma k = (theta / 2 * gamma / 2) ^ (2 ^ (2 ^ (k + 5))) := by
+  unfold section16ThetaOne
+  congr 1
+  ring
+
+end
+
+end LeanProofs.GowersSzemeredi
 
 namespace LeanProofs.GowersSzemeredi
 

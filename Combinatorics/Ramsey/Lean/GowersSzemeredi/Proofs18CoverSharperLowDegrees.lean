@@ -2,10 +2,17 @@ import GowersSzemeredi.Proofs18SharpInterfaces
 
 /-! **Theorem 18.1 in degrees zero through three with offset four.**
 
-The low-degree corpus bounds prove the strongest offset-four instance once.
-The older offset-seven interface is obtained by monotonicity; the Fejér
-low-degree module likewise derives offset six. Degree three uses the
-polynomial base envelope and a progression phase partition. -/
+The low-degree corpus bounds prove the strongest offset-four instance once. The
+Fejér low-degree module derives offset six from it by monotonicity, and so does
+the older offset-seven interface (in `Proofs18CoverSharperLowDegreesSide`,
+listed below). Degree three uses the polynomial base envelope and a progression
+phase partition.
+
+`section18ExponentAt7_two_le_quadraticDiscrepancyExponent`,
+`section18ExponentAt7_two_le_quadraticDiscrepancyParameter`,
+`theorem_18_1_d7_degree_one`, `theorem_18_1_d7_degree_two`,
+`theorem_18_1_d7_degree_zero` and `theorem_18_1_d7_three_of_phase_partition` are
+in `Proofs18CoverSharperLowDegreesSide`, outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 open scoped BigOperators
@@ -84,37 +91,5 @@ theorem theorem_18_1_d4_three_of_phase_partition
     Theorem181AtSharp 4 3 :=
   theorem181AtSharp_of_polyEnvBound (polyEnvBound_three_of_phase_partition hpp hpφ hKφ hpφB)
     (by norm_num)
-
-
-/-! The older offset-seven interface follows from the offset-four result. -/
-
-theorem theorem_18_1_d7_degree_zero : Theorem181AtSharp 7 0 :=
-  theorem_18_1_d4_degree_zero.mono (by norm_num)
-
-theorem section18ExponentAt7_two_le_quadraticDiscrepancyParameter {alpha : Real}
-    (hα : 0 < alpha) (hα2 : alpha ≤ 1 / 2) :
-    section18ExponentAt 7 alpha 2 ≤ quadraticDiscrepancyParameter alpha := by
-  exact (section18ExponentAt_antitone (by norm_num : 4 ≤ 7) hα.le (by linarith)).trans
-    (section18ExponentAt4_two_le_quadraticDiscrepancyParameter hα hα2)
-
-theorem section18ExponentAt7_two_le_quadraticDiscrepancyExponent {alpha : Real}
-    (hα : 0 < alpha) (hα2 : alpha ≤ 1 / 2) :
-    section18ExponentAt 7 alpha 2 ≤ quadraticDiscrepancyExponent alpha := by
-  exact (section18ExponentAt_antitone (by norm_num : 4 ≤ 7) hα.le (by linarith)).trans
-    (section18ExponentAt4_two_le_quadraticDiscrepancyExponent hα hα2)
-
-theorem theorem_18_1_d7_degree_two : Theorem181AtSharp 7 2 :=
-  theorem_18_1_d4_degree_two.mono (by norm_num)
-
-theorem theorem_18_1_d7_degree_one : Theorem181AtSharp 7 1 :=
-  theorem_18_1_d4_degree_one.mono (by norm_num)
-
-/-- **Theorem 18.1 at degree three with exponent `α^(2^(2^10))`**, from a phase
-partition. -/
-theorem theorem_18_1_d7_three_of_phase_partition
-    {Kφ : Real} {pφ : Nat} (hpp : ProgressionPhasePartition Kφ pφ) (hpφ : 0 < pφ)
-    (hKφ : Kφ ≤ 2 ^ pφ) (hpφB : (pφ : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64)) :
-    Theorem181AtSharp 7 3 :=
-  (theorem_18_1_d4_three_of_phase_partition hpp hpφ hKφ hpφB).mono (by norm_num)
 
 end LeanProofs.GowersSzemeredi

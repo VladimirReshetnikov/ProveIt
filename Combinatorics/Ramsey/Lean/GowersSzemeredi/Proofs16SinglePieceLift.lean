@@ -43,8 +43,9 @@ remain valid. The inputs of `single_piece_lift`:
   `exists_polynomial_retiled_linearity_profile`.
 
 `LocalMultilinearPieceAt.slice_localPieceFor`, `liftRemainderRho`,
-`liftRemainderWidth`, `single_piece_lift` and `vertex_providers_of_low` are in
-`Proofs16SinglePieceLiftSide`, outside the final route. -/
+`liftRemainderWidth`, `section16SpectrumRelation_fibre_le`, `single_piece_lift`
+and `vertex_providers_of_low` are in `Proofs16SinglePieceLiftSide`, outside the
+final route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -63,24 +64,6 @@ def lastSliceFace {N : Nat} (k : Nat) (x : ZMod N) : CoordinateFace N (k + 1) k 
     rcases Fin.eq_castSucc_or_eq_last j with ⟨i, rfl⟩ | rfl
     · exact ((hj i) rfl).elim
     · simp [appendCoordinate_eq_snoc]
-
-/-- The spectrum relation has fibres of size at most `⌊δ⁻²⌋`. -/
-theorem section16SpectrumRelation_fibre_le {N k : Nat} [NeZero N]
-    (B : Finset (Point N (k + 1))) {delta : Real} (hd : 0 < delta) (h : Point N k) :
-    ((section16SpectrumRelation B delta).filter fun z => z.1 = h).card ≤
-      ⌊delta ^ (-(2 : Int))⌋₊ := by
-  have heq : ((section16SpectrumRelation B delta).filter fun z => z.1 = h) =
-      (section16LargeSpectrum B h delta).image fun r => (h, r) := by
-    ext z
-    simp only [section16SpectrumRelation, Finset.mem_filter, Finset.mem_univ, true_and,
-      Finset.mem_image]
-    constructor
-    · rintro ⟨hz, rfl⟩
-      exact ⟨z.2, hz, rfl⟩
-    · rintro ⟨r, hr, rfl⟩
-      exact ⟨hr, rfl⟩
-  rw [heq, Finset.card_image_of_injective _ (fun r r' hrr => (Prod.mk.inj hrr).2)]
-  exact Nat.le_floor (section16_large_spectrum_card B h hd)
 
 /-- The full box of `(ℤ/N)^d`. -/
 def fullSpaceBox (N d : Nat) : Box N d where

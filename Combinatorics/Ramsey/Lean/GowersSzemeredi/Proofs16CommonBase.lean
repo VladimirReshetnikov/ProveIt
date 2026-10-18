@@ -5,11 +5,13 @@ import GowersSzemeredi.Proofs00Basics
 /-!
 # A common cube base in Gowers's Section 16
 
-This module proves Lemma 16.7.  The proof is the finite double-counting
-argument from the paper: every selected cube contributes its base and final
-cross-section to exactly one good pair, and averaging over all bases selects a
-base supporting the required number of pairs.
--/
+This module develops Lemma 16.7, whose assembled form `lemma_16_7_holds` is in
+`Proofs16CommonBaseSide`.  The proof is the finite double-counting argument from
+the paper: every selected cube contributes its base and final cross-section to
+exactly one good pair, and averaging over all bases selects a base supporting
+the required number of pairs.
+
+`lemma_16_7_holds` is in `Proofs16CommonBaseSide`, outside the final route. -/
 
 set_option autoImplicit false
 
@@ -250,18 +252,5 @@ theorem lemma_16_7_with {N k : Nat} [NeZero N] (t1 zeta : Real) (ht1 : 0 ≤ t1)
   refine ⟨x0, hx0, ?_⟩
   intro z hz
   exact lemma167_value_of_good B phi H1 Y phiPrime hselection.1 x0 z hz
-
-/-- **Gowers, Lemma 16.7.** -/
-theorem lemma_16_7_holds : lemma_16_7 := by
-  unfold lemma_16_7
-  intro N k _ theta gamma B phi H1 Y phiPrime
-  dsimp only
-  intro hH hX hY hselection
-  let theta1 := section16ThetaOne theta gamma k
-  have htheta1 : 0 ≤ theta1 := by
-    dsimp only [theta1, section16ThetaOne]
-    exact (Nat.even_pow.mpr ⟨even_two, by positivity⟩).pow_nonneg _
-  exact lemma_16_7_with theta1 (section16Zeta theta gamma k) htheta1
-    B phi H1 Y phiPrime hH hX hY hselection
 
 end LeanProofs.GowersSzemeredi

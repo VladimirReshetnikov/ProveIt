@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs15DegenerateRange
+import GowersSzemeredi.Proofs15DegenerateRangeSide
 
 /-!
 # Degenerate higher-dimensional arrangements

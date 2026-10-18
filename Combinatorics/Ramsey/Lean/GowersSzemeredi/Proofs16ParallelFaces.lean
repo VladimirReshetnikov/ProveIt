@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16FaceInduction
+import GowersSzemeredi.Proofs16CoordinateFacesSide
 
 /-! Parallel coordinate faces form an exact partition. Local restrictions
 can therefore be assembled without overcounting their deletion losses. -/

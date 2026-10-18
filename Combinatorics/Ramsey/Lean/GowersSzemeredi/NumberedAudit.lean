@@ -98,6 +98,8 @@ import GowersSzemeredi.Proofs16Lemma1Side
 import GowersSzemeredi.Proofs05_10Side
 import GowersSzemeredi.Proofs05PolynomialPartitionSide
 import GowersSzemeredi.Proofs17PhaseRemovalSide
+import GowersSzemeredi.Proofs10ShiftSide
+import GowersSzemeredi.Proofs17LocalizedPhaseRemovalSide
 
 /-! Production audit of every numbered statement in the source catalogue.
 Each selected declaration must be a theorem of precisely the corresponding

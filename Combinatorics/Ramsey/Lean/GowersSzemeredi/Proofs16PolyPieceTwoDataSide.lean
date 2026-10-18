@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16PolyPieceTwoData
 import GowersSzemeredi.Proofs16Lemma5Side
+import GowersSzemeredi.Proofs16PolyPieceTwoSide
 
 /-! Declarations of `Proofs16PolyPieceTwoData` that the final route does not use and that
 need modules outside it (moved here so that those modules can leave the route). -/

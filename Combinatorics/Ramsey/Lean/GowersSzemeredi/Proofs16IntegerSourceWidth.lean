@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16FamilyLemma6
+import GowersSzemeredi.Proofs16FamilyLemma6Side
 
 /-! Comparing the polynomial integer-family width with the source's
 exponentially small width. Padding the graph budget absorbs the polynomial

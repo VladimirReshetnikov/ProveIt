@@ -2,6 +2,8 @@ import GowersSzemeredi.Proofs16PolyCoverTwo
 import GowersSzemeredi.Proofs15ExplicitThresholds
 import GowersSzemeredi.Proofs16SinglePieceGlobalSide
 import GowersSzemeredi.Proofs16PolyPieceTwoDataSide
+import GowersSzemeredi.Proofs16PolyPieceTwoSide
+import GowersSzemeredi.Proofs16ShortScaleSide
 
 /-! Declarations of `Proofs16PolyCoverTwo` that the final route does not use and that
 need modules outside it (moved here so that those modules can leave the route). -/
@@ -11,6 +13,47 @@ set_option autoImplicit false
 noncomputable section
 
 open scoped BigOperators
+
+namespace LeanProofs.GowersSzemeredi
+
+section
+open BaseCase
+
+/-- The number of pieces: `⌊γ⁻²/(5θ′)⌋`. -/
+def polyTwoPieces (gamma theta : Real) : Nat :=
+  ⌊gamma ^ (-(2 : Int)) / (5 * polyPieceBudget theta gamma)⌋₊
+
+/-- The graph count of the family cover for a relation. -/
+def polyTwoFamCount (theta gamma : Real) : Real → Real :=
+  fun rho => max (famPieceGraphBound (famTwoQr (polyTwoPieces gamma theta) (polyPieceFaceCount theta gamma))
+      (famTwoPb (polyTwoPieces gamma theta) (polyPieceFaceCount theta gamma))
+      (polyTwoPieces gamma theta) rho)
+    ((3 ^ (1 + 1) * polyTwoPieces gamma theta : Nat) : Real)
+
+/-- The width exponent of the family cover for a relation. -/
+def polyTwoFamExp (A Bq : Nat → Real) (theta gamma : Real) : Real → Real :=
+  fun rho =>
+    let m := polyTwoPieces gamma theta
+    let qs := polyPieceSpecCount theta gamma
+    let qf := polyPieceFaceCount theta gamma
+    section16CappedWidthExponent
+      (pieceLineExponent Bq (famTwoQb m qs) (famTwoEb m qs) (famTwoEr m qf) rho *
+        famPieceSliceExponent (famTwoQr m qf) (famTwoEs m qf) m rho / 4)
+      (section16RoundedPowerThreshold (pieceWidthScale A (famTwoQb m qs) (section16Zeta theta gamma 1) rho)
+        (pieceLineExponent Bq (famTwoQb m qs) (famTwoEb m qs) (famTwoEr m qf) rho)
+        (famPieceSliceExponent (famTwoQr m qf) (famTwoEs m qf) m rho))
+
+/-! ### `PolyCoverAt 2` -/
+
+theorem polyTwoFamExp_pos {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q)
+    {theta gamma : Real} {rho : Real} (hrho : 0 < rho) :
+    0 < polyTwoFamExp A Bq theta gamma rho := by
+  unfold polyTwoFamExp
+  exact famTwoCappedExponent_pos hB hrho
+
+end
+
+end LeanProofs.GowersSzemeredi
 
 namespace LeanProofs.GowersSzemeredi
 

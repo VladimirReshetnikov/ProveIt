@@ -1,5 +1,7 @@
 import GowersSzemeredi.Proofs18CoverPaddedFinal
 import GowersSzemeredi.Proofs01QuantitativeHeadline
+import GowersSzemeredi.Proofs01QuantitativeHeadlineSide
+import GowersSzemeredi.Proofs18ConsequencesSide
 
 /-! Gowers's final quantitative theorem with its original bounds.
 

@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16FaceInduction
 import GowersSzemeredi.Proofs16Basic
+import GowersSzemeredi.Proofs16CoordinateFacesSide
 
 /-! Applying the lower-dimensional induction hypothesis to a partial
 function and to any one of its coordinate faces, with exact deletion loss.

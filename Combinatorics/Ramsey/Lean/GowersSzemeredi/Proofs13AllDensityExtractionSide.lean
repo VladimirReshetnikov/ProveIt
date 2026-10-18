@@ -1,12 +1,48 @@
 import GowersSzemeredi.Proofs13AllDensityExtraction
 import GowersSzemeredi.Proofs13LargeScaleBudgets
 
-/-! Declarations of `Proofs13AllDensityExtraction` that the final route does not use and that
-need modules outside it (moved here so that those modules can leave the route). -/
+/-! Stage 13.6 without an ambient-density restriction. Adaptive edge fibre
+normalization preserves every previously checked constant and exponent.
+
+Moved here from `Proofs13AllDensityExtraction`, which keeps only what the final
+route uses. -/
 
 set_option autoImplicit false
 
 noncomputable section
+
+namespace LeanProofs.GowersSzemeredi
+
+/-- Construct Stage 13.6 from the initial stages and numerical budgets at
+all densities allowed by Section13Context. -/
+theorem lemma_13_6_from_initial_stages_all_densities_with_length {N : Nat} [Fact N.Prime]
+    (S : Section13Context N) (D : Stage134Data N) (E : Stage135Data N) (m : Nat)
+    (h134 : IsStage134Data S (section10Lambda (S.alpha ^ 32 / 16)) D)
+    (h135 : IsStage135Data S D E)
+    (hm : 0 < m) (hsize : m * m ≤ N) (hupper : m + 1 ≤ E.Q.length)
+    (hlower : section13Zeta S.alpha / 2 *
+      (N : Real) ^ ((1 : Real) / (2 : Real) ^ (13 * section13Q S.alpha)) ≤ m)
+    (hbudget : (D.P.length : Real) ^ (-((1 : Real) / (2 : Real) ^ (11 * D.q))) ≤
+      section10Zeta (S.alpha ^ 32 / 16) / m) :
+    ∃ F : Stage136Data N, IsStage136Data S D E F ∧ m ≤ F.R.length ∧ F.R.length ≤ E.Q.length :=
+  lemma_13_6_from_initial_stages_at S D E m _ h134 h135 h135.2.2.2.2.1 hm hsize hupper hlower
+    hbudget
+
+theorem lemma_13_6_from_initial_stages_all_densities {N : Nat} [Fact N.Prime]
+    (S : Section13Context N) (D : Stage134Data N) (E : Stage135Data N) (m : Nat)
+    (h134 : IsStage134Data S (section10Lambda (S.alpha ^ 32 / 16)) D)
+    (h135 : IsStage135Data S D E)
+    (hm : 0 < m) (hsize : m * m ≤ N) (hupper : m + 1 ≤ E.Q.length)
+    (hlower : section13Zeta S.alpha / 2 *
+      (N : Real) ^ ((1 : Real) / (2 : Real) ^ (13 * section13Q S.alpha)) ≤ m)
+    (hbudget : (D.P.length : Real) ^ (-((1 : Real) / (2 : Real) ^ (11 * D.q))) ≤
+      section10Zeta (S.alpha ^ 32 / 16) / m) :
+    ∃ F : Stage136Data N, IsStage136Data S D E F ∧ F.R.length ≤ E.Q.length  := by
+  obtain ⟨F, hF, _, hupper⟩ := lemma_13_6_from_initial_stages_all_densities_with_length
+    S D E m h134 h135 hm hsize hupper hlower hbudget
+  exact ⟨F, hF, hupper⟩
+
+end LeanProofs.GowersSzemeredi
 
 namespace LeanProofs.GowersSzemeredi
 

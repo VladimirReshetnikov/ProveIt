@@ -2,7 +2,10 @@ import GowersSzemeredi.Proofs18QuadraticDiscrepancy
 import GowersSzemeredi.Proofs18BoundaryRefinement
 import GowersSzemeredi.Proofs05Downstream
 
-/-! Cubic inverse parameters retaining the stronger Fejer exponents 53 and 42. -/
+/-! Cubic inverse parameters retaining the stronger Fejer exponents 53 and 42.
+
+`fejer_cubic_twisted_count_power` is in `Proofs18FejerCubicParametersSide`,
+outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -76,16 +79,5 @@ theorem fejerCubicDiscrepancyParameter_pos {alpha : Real} (hα : 0 < alpha) :
   unfold fejerCubicDiscrepancyParameter fejerCubicTwistedDiscrepancyParameter
     fejerCubicLocalizedMassParameter quadraticDiscrepancyParameter
   positivity
-
-/-- Convert the common-cell-length count to a power of the old modulus. -/
-theorem fejer_cubic_twisted_count_power {alpha : Real} (hα : 0 < alpha) (hαone : alpha ≤ 1)
-    {N l J : Nat} [NeZero N]
-    (hl : (N : Real) ^ fejerCubicLocalizationExponent alpha / 12 ≤ l)
-    (hcount : (J : Real) ≤ fejerCubicLocalCountConstant alpha * N / (l : Real) ^ fejerCubicLocalCountExponent alpha) :
-    (J : Real) ≤ fejerCubicTwistedCountConstant alpha *
-      (N : Real) ^ (1 - fejerCubicLocalizationExponent alpha * fejerCubicLocalCountExponent alpha) := by
-  exact partition_count_power_of_length (fejerCubicLocalCountExponent_bounds hα hαone).1.le
-    (zero_le_one.trans (le_max_left _ _)) (by norm_num) hl hcount
-
 
 end LeanProofs.GowersSzemeredi

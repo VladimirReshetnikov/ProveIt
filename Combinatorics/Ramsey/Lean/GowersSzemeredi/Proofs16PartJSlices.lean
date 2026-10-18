@@ -4,6 +4,8 @@ import GowersSzemeredi.Proofs16GoodDomainTransport
 import GowersSzemeredi.Proofs16CubicStructuredCover
 import GowersSzemeredi.Proofs16FinalSections
 import GowersSzemeredi.Proofs16WithLiftSide
+import GowersSzemeredi.Proofs16FreimanFamilyRestrictionSide
+import GowersSzemeredi.Proofs16PowerCoverTransportSide
 
 /-! Part J: final-coordinate slices covered by a stackable class.
 

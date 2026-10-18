@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs13CompleteSquareExtraction
 import GowersSzemeredi.Proofs13AllDensityExtractionSide
 import GowersSzemeredi.Proofs13LargeScaleRecurrenceSide
+import GowersSzemeredi.Proofs13SquareScaleSide
 
 /-! Declarations of `Proofs13CompleteSquareExtraction` that the final route does not use and that
 need modules outside it (moved here so that those modules can leave the route). -/

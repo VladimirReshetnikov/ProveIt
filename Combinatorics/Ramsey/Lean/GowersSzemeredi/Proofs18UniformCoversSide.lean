@@ -14,6 +14,36 @@ namespace LeanProofs.GowersSzemeredi
 section
 open BaseCase
 
+/-- `uCount` decreases in `ρ`, so `uExp` increases. -/
+theorem uExp_mono_rho {V : Real} (hV : 1 ≤ V) (D : Nat) {gamma theta : Real}
+    (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1) :
+    ∀ s s', 0 < s → s ≤ s' → s' ≤ 1 → uExp V D gamma theta s ≤ uExp V D gamma theta s' := by
+  intro s s' hs hss hs1
+  have hs' : 0 < s' := lt_of_lt_of_le hs hss
+  have hle : uCount V D gamma theta s' ≤ uCount V D gamma theta s := by
+    rw [uCount_eq hV D hg hg1 ht ht1 hs' hs1, uCount_eq hV D hg hg1 ht ht1 hs (hss.trans hs1)]
+    have h2 := uniformBase_two_le hV 1 ht ht1 hg hg1 hs' hs1
+    refine pow_le_pow_left₀ (by linarith) ?_ D
+    unfold uniformBase
+    have hgt : 0 < gamma * theta := mul_pos hg ht
+    have hdiv : 2 / (gamma * theta * s') ≤ 2 / (gamma * theta * s) :=
+      div_le_div_of_nonneg_left (by norm_num) (mul_pos hgt hs)
+        (mul_le_mul_of_nonneg_left hss hgt.le)
+    exact mul_le_mul_of_nonneg_left hdiv (by positivity)
+  exact inv_anti₀ (lt_of_lt_of_le zero_lt_one (one_le_uCount V D gamma theta s')) hle
+
+/-- The uniform degree in dimension `k`. -/
+def uDeg (k : Nat) : Nat := 2 ^ (76 * 2 ^ k)
+
+end
+
+end LeanProofs.GowersSzemeredi
+
+namespace LeanProofs.GowersSzemeredi
+
+section
+open BaseCase
+
 /-! ### Dimension one -/
 
 /-- **Dimension one with the uniform control**, at any `D ≥ 2^132`. -/

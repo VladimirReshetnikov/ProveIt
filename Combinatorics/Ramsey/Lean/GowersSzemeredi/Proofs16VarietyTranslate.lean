@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16CellOscillation
 import GowersSzemeredi.Proofs16Translations
+import GowersSzemeredi.Proofs16TranslationsSide
 
 /-! Translating the variety route to `φ`'s own graph.
 

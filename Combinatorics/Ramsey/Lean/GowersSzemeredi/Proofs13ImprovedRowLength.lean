@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs13TenRowBudgets
 import GowersSzemeredi.Proofs13SmallRowScale
 import GowersSzemeredi.Proofs13AllDensityExtraction
+import GowersSzemeredi.Proofs13AllDensityExtractionSide
 
 /-! Improve Lemma 13.6's length exponent from 13Q to 10Q, preserving its
 common step, all density conclusions, and the upper length when Q is nonempty. -/

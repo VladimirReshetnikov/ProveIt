@@ -3,6 +3,7 @@ import GowersSzemeredi.Proofs18GeneralIteration
 import GowersSzemeredi.Proofs03FourFactorSymmetry
 import GowersSzemeredi.Proofs05Corollary58
 import GowersSzemeredi.Proofs18FejerCubicDiscrepancySide
+import GowersSzemeredi.Proofs18GeneralIntervalStoppingSide
 
 /-! A closed five-term Szemerédi threshold from the constructed cubic inverse theorem.
 The numerical comparison with the source is proved in Proofs18FiveTermSourceThreshold. -/

@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs18CubicDiscrepancy
 import GowersSzemeredi.Proofs18GeneralIteration
 import GowersSzemeredi.Proofs03FourFactorSymmetry
+import GowersSzemeredi.Proofs18GeneralIntervalStoppingSide
 
 /-! The constructed cubic inverse theorem discharges the five-term density
 iteration input. Its remaining existential modulus threshold is kept visible. -/

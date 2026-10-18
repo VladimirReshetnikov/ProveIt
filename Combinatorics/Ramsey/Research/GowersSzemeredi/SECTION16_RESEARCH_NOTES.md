@@ -10234,6 +10234,37 @@ declaration, structure field or namespace that no module it still sees declares
   gave only the header's `open` lines, could not find `DecidablePred` instances.
   The planner now copies header-level `attribute [local …]` lines too; no other
   side module lacked one of its source's.
+- *Third split.* The split of the 93 route modules with at least 10 unused
+  lines moved 170 declarations of 87 modules to 87 side modules (61 new; two
+  more went back, see below). Among them are printed exact companions that the
+  final route uses in other forms: `proposition_7_3_holds`,
+  `lemma_7_8_group_holds`, `lemma_10_8_holds`, `lemma_16_7_holds`,
+  `proposition_17_7_holds`, `corollary_18_7_holds_of_theorem_18_2` and
+  `theorem_1_2_holds_of_theorem_18_2`. 19 private helpers of five modules that
+  staying declarations use became public. The real route went from 88,046 to
+  85,948 lines. Declarations the final theorems do not use now hold 559 lines
+  of the route: 120 in `Proofs05IntegerRepresentatives`, which the statement
+  module `Section05` imports, the rest pinned by attributes, bridge names,
+  text-only uses and what staying declarations need.
+- *A dependency without a trace.* The usage dump records the constants of proof
+  terms, and Lean can need a declaration that no term contains: `simp only [foo]`
+  with a lemma `foo` proved by `rfl` rewrites definitionally. The split moved two
+  such lemmas, `cor147_arrangement_cubeValue` (private, used in its own module)
+  and `section5_modIndexPoint_natCast` (used by `Proofs05AffineLocalization`,
+  which no move touched and the local build therefore never recompiled: only the
+  full build would have failed). Both are back in their modules. The planner
+  now also follows the text: a staying declaration keeps what its text names,
+  the drag-along leaves helpers that staying text names, and a public
+  declaration with a corpus-unique name stays when another route module
+  mentions it. `self_mentions.py` (a module still mentions a name it declared
+  and no longer sees) and `unique_mentions.py` (a side-module name with a unique
+  last component, mentioned outside its closure) are gates.
+- *Shells.* Folding the route modules of at most 25 lines of code into an
+  importer (`fold_shells.py`: same-header folds go into the host's body, others
+  into a scope-exact `section`; importers repointed; the facade updated) would
+  take the route from 474 to 397 modules but shorten it by only 36 lines, at
+  214 rebuilds, and would delete 77 module names that audit files and records
+  use. It is not done.
 
 `Proofs16PolynomialMultilinearCover.exists_all_scale_polynomial_multilinear_cover`
 composes the improved all-scale Lemma 16.9 with the rounded affine lift.

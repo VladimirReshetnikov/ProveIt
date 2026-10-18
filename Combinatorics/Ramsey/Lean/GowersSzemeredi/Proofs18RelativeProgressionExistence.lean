@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs18RelativeProgressionCount
 import GowersSzemeredi.Proofs18GeneralRelativeCount
+import GowersSzemeredi.Proofs18GeneralRelativeCountSide
 
 /-! Integer-valued four-term counts and the relative-uniform stopping rule.
 Constant progressions are included in the count and explicitly removed. -/

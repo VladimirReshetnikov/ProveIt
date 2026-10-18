@@ -13,6 +13,25 @@ namespace LeanProofs.GowersSzemeredi
 section
 open BaseCase
 
+theorem section16_cubic_slice_provider_ranges {q : Nat} (hq : 0 < q) :
+    Section16SliceProviderRanges
+      (fun r _ => ((3 * (max 1 r * q) : Nat) : Real))
+      (fun r => cubicBaseExponent (max 1 r * q)) := by
+  intro r s _hr hs hs1
+  have hp : 0 < max 1 r * q := Nat.mul_pos (by omega) hq
+  refine ⟨?_, cubicBaseExponent_pos hp hs, cubicBaseExponent_le_one hp hs hs1⟩
+  change (1 : Real) ≤ ((3 * (max 1 r * q) : Nat) : Real)
+  exact_mod_cast (show 1 ≤ 3 * (max 1 r * q) by omega)
+
+end
+
+end LeanProofs.GowersSzemeredi
+
+namespace LeanProofs.GowersSzemeredi
+
+section
+open BaseCase
+
 /-- Concrete sampled-slice covers with graph count independent of the loss
 and an explicit cubic exponent. -/
 theorem section16_cubic_slice_provider_of_freiman_families {N q : Nat} [Fact N.Prime]

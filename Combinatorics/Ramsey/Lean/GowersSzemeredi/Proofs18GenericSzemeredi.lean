@@ -13,7 +13,10 @@ import GowersSzemeredi.Proofs18SingleLengthStatements
   iteration is at most `exp(exp(X^(2^(μ+9))))` when the degree-`(L−2)` bound
   has envelope `μ`.
 * `theorem182At_of_envBound`: `EnvBound (L−2) μ` gives `Theorem182At L`
-  once `μ + 2L + 14 ≤ 2^(L+9)`. -/
+  once `μ + 2L + 14 ≤ 2^(L+9)`.
+
+`double_exp_le_szemerediThreshold` and `theorem182At_of_envBound` are in
+`Proofs18GenericSzemerediSide`, outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -260,19 +263,5 @@ theorem theorem182AtSharp_of_envBound {L μ c : Nat} (hL : 3 ≤ L) (henv : EnvB
   have hsrc := double_exp_le_szemerediThresholdAt (by omega : 1 ≤ L) hδ hδhalf hfit
   exact FunctionDiscrepancyBound.natural_szemeredi_closed (k := L) (by omega) hδ b0 s0 hB N
     ((hclosed.trans hsrc).trans hN) A hA hcard
-
-/-! ### The printed threshold as the offset-nine specialization -/
-
-theorem double_exp_le_szemerediThreshold {L μ : Nat} (hL : 1 ≤ L) {delta : Real}
-    (hδ : 0 < delta) (hδhalf : delta ≤ 1 / 2) (hfit : μ + 2 * L + 14 ≤ 2 ^ (L + 9)) :
-    Real.exp (Real.exp ((2 / intervalUniformityParameter delta L) ^ (2 ^ (μ + 9)))) ≤
-      szemerediThreshold delta L :=
-  double_exp_le_szemerediThresholdAt (c := 9) hL hδ hδhalf hfit
-
-/-- **Theorem 18.2 at length `L` from a degree-`(L−2)` envelope.** -/
-theorem theorem182At_of_envBound {L μ : Nat} (hL : 3 ≤ L) (henv : EnvBound (L - 2) μ)
-    (hμ : 42 ≤ μ) (hLμ : 4 * L + 20 ≤ 2 ^ μ) (hfit : μ + 2 * L + 14 ≤ 2 ^ (L + 9)) :
-    Theorem182At L :=
-  theorem182AtSharp_of_envBound (c := 9) hL henv hμ hLμ hfit
 
 end LeanProofs.GowersSzemeredi

@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs18QuadraticDoubleExponential
 import GowersSzemeredi.Proofs03FourFactorSymmetry
 import GowersSzemeredi.Proofs05Corollary58
 import GowersSzemeredi.Sections08_09
+import GowersSzemeredi.Proofs18QuadraticDoubleExponentialSide
 
 /-! The quantitative four-term theorem in its exact catalogue form. The
 large-density case avoids trying to absorb constants into powers at delta=1. -/

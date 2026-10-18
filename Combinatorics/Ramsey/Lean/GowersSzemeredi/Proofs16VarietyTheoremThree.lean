@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs16VarietyBudgetedPiece
 import GowersSzemeredi.Proofs05WeylConstantBounds
 import GowersSzemeredi.Proofs16VarietyEventualThree
+import GowersSzemeredi.Proofs05WeylConstantBoundsSide
 
 /-! Theorem 16.2 and Corollary 16.11 in dimension three from deep variety structure.
 

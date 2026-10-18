@@ -4,6 +4,7 @@ import GowersSzemeredi.Proofs16SinglePieceSpectrum
 import GowersSzemeredi.Proofs16EqualSideBoxCover
 import Mathlib.Data.Nat.Prime.Infinite
 import GowersSzemeredi.Proofs16SinglePieceSpectrumSide
+import GowersSzemeredi.Proofs16MultilinearProductSide
 
 /-! Ambient-normalized product property on small coordinate sections.
 

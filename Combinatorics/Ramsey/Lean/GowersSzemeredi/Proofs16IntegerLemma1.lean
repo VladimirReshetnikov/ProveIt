@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs05IntegerMultilinearIteration
 import GowersSzemeredi.Proofs16IntegerSlicing
 import GowersSzemeredi.Proofs16Lemma1
 import GowersSzemeredi.Proofs16MultilinearLift
+import GowersSzemeredi.Proofs16Lemma1Side
 
 /-! Genuine integer-box lift, simultaneous partition and slicing for
 Lemma 16.1, retaining every numerical budget. -/

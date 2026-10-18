@@ -3,6 +3,8 @@ import GowersSzemeredi.Proofs16Lemma6Parameters
 import GowersSzemeredi.Proofs16DenseSelectionSide
 import GowersSzemeredi.Proofs16SinglePieceRemainderSide
 import GowersSzemeredi.Proofs16SinglePieceSectionsSide
+import GowersSzemeredi.Proofs16CommonBaseSide
+import GowersSzemeredi.Proofs16GlobalCoverProvidersSide
 
 /-! Declarations of `Proofs16SinglePieceGlobal` that the final route does not use and that
 need modules outside it (moved here so that those modules can leave the route). -/

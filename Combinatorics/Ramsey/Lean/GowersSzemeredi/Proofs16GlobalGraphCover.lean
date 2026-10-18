@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs16LiftAllScales
 import GowersSzemeredi.Proofs16BaseCaseZero
 import GowersSzemeredi.Proofs16FibreGeometry
+import GowersSzemeredi.Proofs16LiftAllScalesSide
 
 /-! Global multilinear graphs satisfy every admissible positive cover
 parameter. In particular, an arbitrary function of the final coordinate

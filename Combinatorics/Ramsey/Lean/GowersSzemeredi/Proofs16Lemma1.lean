@@ -3,7 +3,9 @@ import Mathlib.Algebra.BigOperators.Ring.Finset
 
 /-! # Small common-difference products via a multilinear lift and slice
 
-`lemma_16_1_holds` and `proper_lemma_16_1` are in `Proofs16Lemma1Side`, outside
+`lemma_16_1_holds`, `proper_lemma_16_1`, `section16K_eq_multilinear`,
+`section16RecurrenceExponent_eq_multilinear` and
+`section16WidthThreshold_eq_multilinear` are in `Proofs16Lemma1Side`, outside
 the final route. -/
 set_option autoImplicit false
 noncomputable section
@@ -19,20 +21,6 @@ theorem IsMultilinear.mul_new_coordinate {N k : Nat}
   dsimp only
   rw [hc, ← (Fin.consEquiv (fun _ : Fin (k + 1) => Bool)).sum_comp, Fintype.sum_prod_type]
   simp [Fin.consEquiv, Fin.prod_univ_succ, Fin.tail, Finset.mul_sum, mul_comm, mul_left_comm]
-
-theorem section16K_eq_multilinear (k : Nat) :
-    section16K k = multilinearPartitionConstant (k + 1) := by
-  unfold section16K multilinearPartitionConstant
-  rfl
-
-theorem section16WidthThreshold_eq_multilinear (k q : Nat) :
-    section16WidthThreshold k q = multilinearPartitionThreshold (k + 1) q := by
-  simp only [section16WidthThreshold, multilinearPartitionThreshold, section16K_eq_multilinear]
-
-theorem section16RecurrenceExponent_eq_multilinear (k q : Nat) :
-    section16RecurrenceExponent k q = multilinearPartitionExponent (k + 1) q := by
-  simp only [section16RecurrenceExponent, multilinearPartitionExponent,
-    section16K_eq_multilinear, zpow_neg, zpow_natCast]
 
 /-- A diameter estimate for the lifted function bounds its first-coordinate
 increment, even when the selected slice lies at the final progression index. -/

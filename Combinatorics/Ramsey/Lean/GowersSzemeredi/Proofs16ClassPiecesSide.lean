@@ -16,6 +16,29 @@ namespace LeanProofs.GowersSzemeredi
 section
 open BaseCase
 
+/-- The spectrum parameter `δ(θ₁)`. -/
+def classDelta (theta gamma : Real) (k : Nat) : Real :=
+  section16Delta (section16ThetaOne theta gamma k)
+
+/-- The class thresholds a piece needs: spectra at `(θ′, δ)`, faces and slices at `(θ′, γ)`. -/
+def classPieceThr (Thr : Real → Real → Real) (theta gamma : Real) (k : Nat) : Real :=
+  max (Thr (classBudget theta gamma k) (classDelta theta gamma k))
+    (Thr (classBudget theta gamma k) gamma)
+
+/-- The class thresholds of a piece, for power controls. -/
+def classPieceThreshold (V : Real) (dT : Nat) (theta gamma : Real) (k : Nat) : Real :=
+  max ((V * (2 / (classDelta theta gamma k * classBudget theta gamma k))) ^ dT)
+    ((V * (2 / (gamma * classBudget theta gamma k))) ^ dT)
+
+end
+
+end LeanProofs.GowersSzemeredi
+
+namespace LeanProofs.GowersSzemeredi
+
+section
+open BaseCase
+
 /-- **One `(k+1)`-dimensional piece over a uniform class**, from Lemma 15.6's
 arrangements and the product property. -/
 theorem class_piece_data {k : Nat} {Thr : Real → Real → Real}

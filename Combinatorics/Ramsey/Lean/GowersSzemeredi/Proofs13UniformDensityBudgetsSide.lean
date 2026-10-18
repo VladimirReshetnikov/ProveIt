@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs13UniformDensityBudgets
 import GowersSzemeredi.Proofs13UniformDensityParametersSide
+import GowersSzemeredi.Proofs13AllDensityExtractionSide
 
 /-! Bohr-model integer budgets uniform over the actual density.
 

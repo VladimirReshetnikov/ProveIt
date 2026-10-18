@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs18RothThresholdBounds
 import GowersSzemeredi.Proofs02Roth
 import GowersSzemeredi.Proofs18SingleLengthStatements
 import GowersSzemeredi.Proofs18FiveTermSourceThreshold
+import GowersSzemeredi.Proofs18QuadraticSourceThresholdSide
 
 /-! Theorem 18.2 and Corollary 18.7 at every length up to five.
 

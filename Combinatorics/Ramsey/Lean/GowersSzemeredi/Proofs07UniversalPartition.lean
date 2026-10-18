@@ -2,7 +2,10 @@ import GowersSzemeredi.Proofs07IndexedPartition
 
 /-! A single domain-dependent affine partition works for every Freiman map.
 This gives simultaneous affine formulas for vector-valued maps without
-charging one spectrum or one exponent loss for each coordinate. -/
+charging one spectrum or one exponent loss for each coordinate.
+
+`corollary_7_11_pair_modular` is in `Proofs07UniversalPartitionSide`, outside
+the final route. -/
 
 set_option autoImplicit false
 noncomputable section
@@ -100,24 +103,5 @@ theorem corollary_7_11_all_scales_universal (N : Nat) [Fact N.Prime]
     apply linearOn_nine_point_progression R _ phi hR (by omega) (Finset.filter_subset _ _)
     exact IsAddFreimanHom.subset
       (fun x hx ↦ (Finset.mem_filter.mp hx).2) hphi (Set.mapsTo_univ _ _)
-
-/-- Two coefficient maps share the single-domain exponent, rather than
-losing a factor two from treating them as two independent spectra. -/
-theorem corollary_7_11_pair_modular (N : Nat) [Fact N.Prime]
-    (R : ModAP N) (A : Finset (ZMod N)) (a c : ZMod N → ZMod N) (alpha : Real)
-    (hR : R.IsProper) (hstep : R.step != 0) (hl : 0 < R.length)
-    (hα : 0 < alpha) (hαone : alpha ≤ 1)
-    (hA : A ⊆ R.carrier) (hdensity : alpha * R.length ≤ A.card)
-    (ha : FreimanHom 8 A a) (hc : FreimanHom 8 A c) :
-    ∃ M : Nat, ∃ Q : Fin M → ModAP N,
-      IsPartition (fun j ↦ (Q j).carrier) R.carrier ∧
-      ∀ j, (Q j).step != 0 ∧ (Q j).IsProper ∧
-        (R.length : Real) ^ cor711Exponent alpha 1 ≤ (Q j).length ∧
-        LinearOn ((Q j).carrier.filter fun x ↦ x ∈ A) a ∧
-        LinearOn ((Q j).carrier.filter fun x ↦ x ∈ A) c := by
-  obtain ⟨M, Q, hp, hcell⟩ :=
-    corollary_7_11_all_scales_universal N R A alpha hR hstep hl hα hαone hA hdensity
-  exact ⟨M, Q, hp, fun j ↦ ⟨(hcell j).1, (hcell j).2.1, (hcell j).2.2.1,
-    (hcell j).2.2.2 a ha, (hcell j).2.2.2 c hc⟩⟩
 
 end LeanProofs.GowersSzemeredi

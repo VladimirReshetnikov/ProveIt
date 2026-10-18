@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs07BalogSzemeredi
 import GowersSzemeredi.Proofs07FreimanGAP
 import OAI.Combinatorics.Progressions.Lattices.FreimanAffineBox
+import GowersSzemeredi.Proofs07BalogSzemerediSide
 
 /-!
 # Theorems 7.1 and 7.2: Freiman's theorem and the Balog–Szemerédi theorem

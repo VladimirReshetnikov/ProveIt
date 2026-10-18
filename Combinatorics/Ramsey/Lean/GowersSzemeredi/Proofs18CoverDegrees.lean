@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs18CoverBudget
 import GowersSzemeredi.Proofs18PolyDegrees
 import GowersSzemeredi.Proofs18GenericLengths
 import GowersSzemeredi.Proofs18EnvelopeInduction
+import GowersSzemeredi.Proofs18EnvelopeInductionSide
 
 /-! **Theorem 18.1, Theorem 18.2 and Corollary 18.7 in every degree and
 length**, from the recurrence profiles, with the joint-cover remainder

@@ -25,7 +25,8 @@ The only input is `AbstractFamilyLemma166At 1` at the polynomial power
 width. The heavy bridge supplies it from the polynomial recurrence
 (`exists_abstract_family_lemma_16_6`).
 
-`polyCoverAt_two_of_family_lemma6`, `polyTwoEb`, `polyTwoQb`,
+`polyCoverAt_two_of_family_lemma6`, `polyTwoEb`, `polyTwoFamCount`,
+`polyTwoFamExp`, `polyTwoFamExp_pos`, `polyTwoPieces`, `polyTwoQb`,
 `polyTwoThreshold`, `section16_poly_cover_two_large` and
 `section16_poly_piece_two_of_subrelation` are in `Proofs16PolyCoverTwoSide`,
 outside the final route. -/
@@ -151,41 +152,9 @@ theorem section16_poly_piece_two_decomposition_of_extract
 
 /-! ### Parameters -/
 
-/-- The number of pieces: `⌊γ⁻²/(5θ′)⌋`. -/
-def polyTwoPieces (gamma theta : Real) : Nat :=
-  ⌊gamma ^ (-(2 : Int)) / (5 * polyPieceBudget theta gamma)⌋₊
-
-/-- The graph count of the family cover for a relation. -/
-def polyTwoFamCount (theta gamma : Real) : Real → Real :=
-  fun rho => max (famPieceGraphBound (famTwoQr (polyTwoPieces gamma theta) (polyPieceFaceCount theta gamma))
-      (famTwoPb (polyTwoPieces gamma theta) (polyPieceFaceCount theta gamma))
-      (polyTwoPieces gamma theta) rho)
-    ((3 ^ (1 + 1) * polyTwoPieces gamma theta : Nat) : Real)
-
-/-- The width exponent of the family cover for a relation. -/
-def polyTwoFamExp (A Bq : Nat → Real) (theta gamma : Real) : Real → Real :=
-  fun rho =>
-    let m := polyTwoPieces gamma theta
-    let qs := polyPieceSpecCount theta gamma
-    let qf := polyPieceFaceCount theta gamma
-    section16CappedWidthExponent
-      (pieceLineExponent Bq (famTwoQb m qs) (famTwoEb m qs) (famTwoEr m qf) rho *
-        famPieceSliceExponent (famTwoQr m qf) (famTwoEs m qf) m rho / 4)
-      (section16RoundedPowerThreshold (pieceWidthScale A (famTwoQb m qs) (section16Zeta theta gamma 1) rho)
-        (pieceLineExponent Bq (famTwoQb m qs) (famTwoEb m qs) (famTwoEr m qf) rho)
-        (famPieceSliceExponent (famTwoQr m qf) (famTwoEs m qf) m rho))
-
 theorem two_rpow_neg_44 : (2 : Real) ^ (-(44 : Real)) = (2 : Real)⁻¹ ^ 44 := by
   rw [show (-(44 : Real)) = ((-44 : Int) : Real) by norm_num, Real.rpow_intCast,
     zpow_neg, inv_pow]
   norm_num
-
-/-! ### `PolyCoverAt 2` -/
-
-theorem polyTwoFamExp_pos {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q)
-    {theta gamma : Real} {rho : Real} (hrho : 0 < rho) :
-    0 < polyTwoFamExp A Bq theta gamma rho := by
-  unfold polyTwoFamExp
-  exact famTwoCappedExponent_pos hB hrho
 
 end LeanProofs.GowersSzemeredi

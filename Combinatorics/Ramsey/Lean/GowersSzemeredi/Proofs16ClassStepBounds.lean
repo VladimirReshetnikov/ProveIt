@@ -3,6 +3,7 @@ import GowersSzemeredi.Proofs18LengthSixCounts
 import GowersSzemeredi.Proofs16ClassPiecesSide
 import GowersSzemeredi.Proofs15ExplicitThresholds
 import GowersSzemeredi.Proofs18LengthSixCountsSide
+import GowersSzemeredi.Proofs16ClassStepSide
 
 /-! Power bounds for the step of route (II), in every dimension (Notes L.6, E5).
 

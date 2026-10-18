@@ -1,0 +1,61 @@
+import GowersSzemeredi.Proofs05WeylConstantBounds
+
+/-! Numerical bounds for the Weyl budget constants of degrees one to three.
+
+`Proofs05ExplicitSchmidtRecurrence` names the Schmidt recurrence constants
+through `A_j = (weylBudgetPolynomial j).eval 1` and
+`d_j = natDegree (weylBudgetPolynomial j) + 1`. A budget comparison needs
+upper bounds on them; these are crude but explicit:
+* `weylBudgetPolynomial_eval_one_lt`: `A_j < 2^192` for `j ≤ 2`;
+* `weylBudgetPolynomial_natDegree_lt`: `natDegree < 256` for `j ≤ 2`.
+
+The degree bound avoids degree bookkeeping through `comp` and `pow`: a nonzero
+polynomial over `ℕ` has `2^natDegree ≤ P(2)` (`two_pow_natDegree_le_eval_two`),
+and `P(2) = weylBudget j 2` is a computable natural number. This module imports
+only `WeylStepScales` from the port, so it is checked locally.
+
+Moved here from `Proofs05WeylConstantBounds`, which keeps only what the final
+route uses. -/
+
+set_option autoImplicit false
+
+noncomputable section
+
+namespace LeanProofs.GowersSzemeredi
+
+section
+open Polynomial
+
+theorem weylBudget_two_lt (j : Nat) (hj : j ≤ 2) :
+    OAI.Erdos3.weylBudget j 2 < 2 ^ 128 * 2 ^ 128 := by
+  interval_cases j <;>
+    simp only [OAI.Erdos3.weylBudget, OAI.Erdos3.weylNextBudget] <;> norm_num
+
+/-- **The Weyl coefficient sum is below `2^192` in degrees one to three.** -/
+theorem weylBudgetPolynomial_eval_one_lt (j : Nat) (hj : j ≤ 2) :
+    (OAI.Erdos3.weylBudgetPolynomial j).eval 1 < 2 ^ 192 := by
+  rw [OAI.Erdos3.weylBudgetPolynomial_eval]
+  interval_cases j <;>
+    simp only [OAI.Erdos3.weylBudget, OAI.Erdos3.weylNextBudget] <;> norm_num
+
+/-- **The Weyl budget polynomial has degree below `256` in degrees one to three.** -/
+theorem weylBudgetPolynomial_natDegree_lt (j : Nat) (hj : j ≤ 2) :
+    (OAI.Erdos3.weylBudgetPolynomial j).natDegree < 256 := by
+  have hne : OAI.Erdos3.weylBudgetPolynomial j ≠ 0 := by
+    intro h
+    have h1 := OAI.Erdos3.weylBudgetPolynomial_eval j 1
+    rw [h, eval_zero] at h1
+    exact (OAI.Erdos3.weylBudget_pos j (by decide : 0 < 1)).ne' h1.symm
+  have hle := two_pow_natDegree_le_eval_two _ hne
+  rw [OAI.Erdos3.weylBudgetPolynomial_eval] at hle
+  have hlt := hle.trans_lt (weylBudget_two_lt j hj)
+  by_contra hge
+  push_neg at hge
+  have h256 : (2 : Nat) ^ 128 * 2 ^ 128 ≤ 2 ^ (OAI.Erdos3.weylBudgetPolynomial j).natDegree := by
+    rw [← pow_add]
+    exact Nat.pow_le_pow_right (by norm_num) hge
+  omega
+
+end
+
+end LeanProofs.GowersSzemeredi

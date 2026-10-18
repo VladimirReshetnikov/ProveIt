@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16SlabProductProperty
 import GowersSzemeredi.Proofs16CoordinateFaces
+import GowersSzemeredi.Proofs16SlabProductPropertySide
 
 /-! Short interval slabs supply genuine unit-product examples for arbitrary
 bounded-alphabet words. The explicit sufficient support budget is 4*L*R<=N. -/

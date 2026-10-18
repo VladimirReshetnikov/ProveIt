@@ -9,7 +9,9 @@ Fourier transform of the weighted collection of constituent cubes.  Its
 fourth and sixteenth moments count respected `2`- and `8`-arrangements,
 respectively.  Parseval and the interpolation inequality of Lemma 9.1 then
 give the claimed seventh-power lower bound.
--/
+
+`cor147_arrangement_vertex` is in `Proofs14HigherArrangementsSide`, outside the
+final route. -/
 
 set_option autoImplicit false
 
@@ -23,14 +25,14 @@ namespace LeanProofs.GowersSzemeredi
 local instance cor147PropDecidable (p : Prop) : Decidable p :=
   Classical.propDecidable p
 
-private abbrev cor147Atom (N k : Nat) := Point N k × ZMod N
+abbrev cor147Atom (N k : Nat) := Point N k × ZMod N
 
 private def cor147CubeIn {N k : Nat}
     (B : Finset (Point N (k + 1))) (h : Point N k)
     (z : cor147Atom N k) : Prop :=
   ∀ e, appendCoordinate (AxisCube.vertex (z.1, h) e) z.2 ∈ B
 
-private def cor147CubeValue {N k : Nat} [NeZero N]
+def cor147CubeValue {N k : Nat} [NeZero N]
   (phi : Point N (k + 1) → ZMod N) (h : Point N k)
     (z : cor147Atom N k) : ZMod N :=
   ∑ e : Fin k → Bool, (-1 : ZMod N) ^ boolWeight e *
@@ -63,7 +65,7 @@ private lemma cor147_ofReal_norm_even_pow (z : Complex) (d : Nat) :
       norm_cast
     _ = z ^ d * star z ^ d := by rw [mul_pow]
 
-private def cor147PairEquiv (d : Nat) (G : Type*) :
+def cor147PairEquiv (d : Nat) (G : Type*) :
     ((Fin d → G) × (Fin d → G)) ≃ (Fin (2 * d) → G) :=
   (Fin.appendEquiv d d).trans
     ((finCongr (Nat.two_mul d).symm).arrowCongr (Equiv.refl G))
@@ -212,7 +214,7 @@ private lemma cor147_all_pair_iff {G : Type*} (d : Nat) (P : G → Prop)
     · obtain ⟨i, rfl⟩ := cor147_rightIndex_surj d j (by omega)
       simpa using hb i
 
-private abbrev cor147PairFamily (N k d : Nat) :=
+abbrev cor147PairFamily (N k d : Nat) :=
   (Fin d → cor147Atom N k) × (Fin d → cor147Atom N k)
 
 private def cor147Good {N k d : Nat} [NeZero N]
@@ -224,7 +226,7 @@ private def cor147Good {N k d : Nat} [NeZero N]
   (∑ i, cor147CubeValue phi h (p.1 i)) =
     ∑ i, cor147CubeValue phi h (p.2 i)
 
-private def cor147ArrangementEquiv (N k d : Nat) :
+def cor147ArrangementEquiv (N k d : Nat) :
     (Point N k × cor147PairFamily N k d) ≃ GeneralArrangement N k d :=
   (Equiv.refl (Point N k)).prodCongr
     ((cor147PairEquiv d (cor147Atom N k)).trans
@@ -244,15 +246,6 @@ private def cor147ArrangementEquiv (N k d : Nat) :
     (h : Point N k) (p : cor147PairFamily N k d) (j : Fin (2 * d)) :
     (cor147ArrangementEquiv N k d (h, p)).crossSection j =
       (cor147PairEquiv d (cor147Atom N k) p j).2 := rfl
-
-private lemma cor147_arrangement_vertex {N k d : Nat}
-    (h : Point N k) (p : cor147PairFamily N k d)
-    (e : Fin k → Bool) (j : Fin (2 * d)) :
-    (cor147ArrangementEquiv N k d (h, p)).vertex e j =
-      appendCoordinate
-        (AxisCube.vertex
-          ((cor147PairEquiv d (cor147Atom N k) p j).1, h) e)
-        (cor147PairEquiv d (cor147Atom N k) p j).2 := rfl
 
 private lemma cor147_arrangement_cubeValue {N k d : Nat} [NeZero N]
     (phi : Point N (k + 1) → ZMod N) (h : Point N k)

@@ -16,6 +16,56 @@ namespace LeanProofs.GowersSzemeredi
 section
 open BaseCase
 
+/-- One unused coordinate: `liftLastC c θ = θ/2 · c(θ/2)`. -/
+theorem RecipPowerLB.liftLastC {X : Real} {c : Real → Real} {a b : Nat} (hX : 2 ≤ X)
+    (h : RecipPowerLB X c a b) : RecipPowerLB X (liftLastC c) (a + b + 1) (b + 1) := by
+  intro s hs hs1
+  have hs2 : 0 < s / 2 := half_pos hs
+  have hs21 : s / 2 ≤ 1 := by linarith only [hs1]
+  obtain ⟨h0, h1, h2⟩ := h (s / 2) hs2 hs21
+  have hinv2 : (s / 2)⁻¹ = 2 * s⁻¹ := by rw [inv_div, div_eq_mul_inv]
+  rw [hinv2] at h2
+  unfold LeanProofs.GowersSzemeredi.liftLastC
+  refine ⟨mul_pos hs2 h0, ?_, ?_⟩
+  · calc s / 2 * c (s / 2) ≤ 1 * 1 := mul_le_mul hs21 h1 h0.le zero_le_one
+      _ = 1 := one_mul 1
+  · rw [mul_inv, hinv2]
+    calc 2 * s⁻¹ * (c (s / 2))⁻¹ ≤ 2 * s⁻¹ * (X ^ a * (2 * s⁻¹) ^ b) :=
+          mul_le_mul_of_nonneg_left h2 (by positivity)
+      _ = 2 ^ (b + 1) * (X ^ a * s⁻¹ ^ (b + 1)) := by ring
+      _ ≤ X ^ (b + 1) * (X ^ a * s⁻¹ ^ (b + 1)) :=
+          mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (by norm_num) hX _) (by positivity)
+      _ = X ^ (a + b + 1) * s⁻¹ ^ (b + 1) := by ring
+
+theorem RecipPowerLB.inf {X : Real} {c1 c2 : Real → Real} {a b : Nat}
+    (h1 : RecipPowerLB X c1 a b) (h2 : RecipPowerLB X c2 a b) :
+    RecipPowerLB X (fun t => min (c1 t) (c2 t)) a b := by
+  intro s hs hs1
+  obtain ⟨p1, q1, r1⟩ := h1 s hs hs1
+  obtain ⟨p2, _, r2⟩ := h2 s hs hs1
+  show 0 < min (c1 s) (c2 s) ∧ min (c1 s) (c2 s) ≤ 1 ∧
+    (min (c1 s) (c2 s))⁻¹ ≤ X ^ a * s⁻¹ ^ b
+  refine ⟨lt_min p1 p2, (min_le_left _ _).trans q1, ?_⟩
+  rcases min_choice (c1 s) (c2 s) with h | h
+  · rw [h]; exact r1
+  · rw [h]; exact r2
+
+/-! ### The lift densities -/
+
+/-- `2/((α/2) B (s/2)) = 4 X B⁻¹ s⁻¹` for `X = 2/α`. -/
+theorem two_div_half_budget_half {alpha B s : Real} (ha : 0 < alpha) (hB : 0 < B) (hs : 0 < s) :
+    2 / (alpha / 2 * B * (s / 2)) = 4 * (2 / alpha) * B⁻¹ * s⁻¹ := by
+  field_simp; ring
+
+end
+
+end LeanProofs.GowersSzemeredi
+
+namespace LeanProofs.GowersSzemeredi
+
+section
+open BaseCase
+
 /-- `θ₂ = θ₂(θ₁(α, α/2, 2))` is at least `X^(-(32 + 24·2^128))`. -/
 theorem lsThetaTwo_bounds {alpha : Real} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
     0 < section16ThetaTwo (section16ThetaOne alpha (alpha / 2) 2) ∧

@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs18EnvelopeBounds
 import GowersSzemeredi.Proofs18GenericThresholds
+import GowersSzemeredi.Proofs18EnvelopeBoundsSide
 
 /-! Discrepancy bounds in every degree, with power-of-two envelopes
 (Notes L.7a, F3d).

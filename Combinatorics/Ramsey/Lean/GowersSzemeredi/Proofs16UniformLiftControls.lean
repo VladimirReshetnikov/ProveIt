@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16UniformLiftParameters
+import GowersSzemeredi.Proofs16CompressedCandidateBoundsSide
 
 /-! Replace the graph counts selected inside Lemma 16.9 by uniform ceilings
 without losing control of the interpolation budget or width exponent. -/

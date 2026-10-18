@@ -16,7 +16,9 @@ bound, and transports the resulting partition of natural indices back to
 The final density and refinement arguments are kept conditional on the one
 remaining analytic input, `corollary_5_6`, so that they cannot accidentally
 hide the outstanding Weyl-recurrence theorem.
--/
+
+`section5_local_phase_refinement_of_corollary_5_6` is in
+`Proofs05DownstreamSide`, outside the final route. -/
 
 set_option autoImplicit false
 
@@ -410,7 +412,7 @@ theorem section5_local_diameter_refinement_of_corollary_5_6
 /-- A partition of `P` into cells whose `phi`-images have diameter at most
 `η·N/(4π)` changes a disc-valued sum by at most `η/2·|P|` under the phase
 `exponential (-phi)`. -/
-private lemma section5_phase_error_of_diameter {N L : Nat} [NeZero N]
+lemma section5_phase_error_of_diameter {N L : Nat} [NeZero N]
     (P : Finset (ZMod N)) (R : Fin L → Finset (ZMod N)) (phi : ZMod N → ZMod N) (eta : Real)
     (hrefine : IsPartition R P)
     (hdiam : ∀ j, diameterAtMostReal ((R j).image phi) (eta * N / (4 * Real.pi)))
@@ -434,35 +436,6 @@ private lemma section5_phase_error_of_diameter {N L : Nat} [NeZero N]
       Finset.sum_le_sum fun j _ => hcell j
     _ = (∑ j, ‖∑ s ∈ R j, f s‖) + eta / 2 * P.card := by
       rw [Finset.sum_add_distrib, ← Finset.mul_sum, ← Nat.cast_sum, IsPartition.sum_card hrefine]
-
-/-!
-The strengthened local form used in the proof of Lemma 5.14.  Unlike
-Corollary 5.7, it retains the additive error estimate before a lower bound on
-the original correlation is substituted.
--/
-theorem section5_local_phase_refinement_of_corollary_5_6
-    (h56 : corollary_5_6) {N k v : Nat} [NeZero N]
-    (P : ModAP N) (phi : ZMod N → ZMod N) (eta : Real)
-    (hP : P.IsProper) (hk : 1 ≤ k)
-    (hphi : PolynomialOn k Finset.univ phi) (heta : 0 < eta)
-    (hlarge : max (polynomialPartitionThreshold k : Real)
-        ((4 * Real.pi / eta) ^ polynomialPartitionConstant k) < P.length)
-    (hv : 1 ≤ v)
-    (hvupper : (v : Real) ≤
-      (P.length : Real) ^ (polynomialPartitionConstant k : Real)⁻¹) :
-    ∃ L : Nat, ∃ R : Fin L → ModAP N,
-      IsPartition (fun j => (R j).carrier) P.carrier ∧
-      (∀ j, (R j).IsProper ∧ 0 < (R j).length ∧
-        ((R j).length = v - 1 ∨ (R j).length = v)) ∧
-      ∀ f : ZMod N → Complex, DiscValued f →
-        ‖∑ s ∈ P.carrier, f s * exponential (-(phi s))‖ ≤
-          (∑ j, ‖∑ s ∈ (R j).carrier, f s‖) +
-            eta / 2 * P.carrier.card := by
-  obtain ⟨L, R, hrefine, hRproper, hdiam⟩ :=
-    section5_local_diameter_refinement_of_corollary_5_6 h56 P phi eta hP hk hphi heta hlarge hv
-      hvupper
-  exact ⟨L, R, hrefine, hRproper,
-    section5_phase_error_of_diameter P.carrier _ phi eta hrefine hdiam⟩
 
 /-! ### An efficient local refinement with a uniform constant -/
 

@@ -21,8 +21,8 @@ Both logarithms stay `O(2^k)`, which Theorem 18.2 at every length needs
 * `SplitUniformClass.toPower`: a split class is a power class at degree
   `a + D`.
 
-`splitUniformClass_two` is in `Proofs16SplitUniformClassSide`, outside the final
-route. -/
+`PowerUniformClass.toSplit` and `splitUniformClass_two` are in
+`Proofs16SplitUniformClassSide`, outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -107,22 +107,5 @@ def SplitUniformClass.toPower {k : Nat} {V : Real} {a D : Nat} (C : SplitUniform
               (splitW V theta gamma rho ^ a * splitW V theta gamma rho ^ D) :=
             mul_le_mul h1 h2 (by positivity) (by positivity)
         _ = _ := by ring
-
-/-- **A power class at one degree is a split class** at that degree:
-`uniformBase^d = (n+1)^d · W^d`. -/
-def PowerUniformClass.toSplit {k : Nat} {V : Real} {d : Nat} (C : PowerUniformClass k V d d d) :
-    SplitUniformClass k V d d where
-  U := C.U
-  mono := C.mono
-  empty := C.empty
-  decomp := C.decomp
-  cover := by
-    intro theta gamma ht ht1 hg hg1 N _ _ n Gamma hU
-    have h := C.cover theta gamma ht ht1 hg hg1 N n Gamma hU
-    have hfun : ∀ rho, uniformBase V n theta gamma rho ^ d =
-        ((n : Real) + 1) ^ d * splitW V theta gamma rho ^ d := fun rho => by
-      rw [uniformBase_eq_split, mul_pow]
-    simp only [hfun] at h
-    exact h
 
 end LeanProofs.GowersSzemeredi
