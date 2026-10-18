@@ -16,72 +16,36 @@ theorem modular_monomial_of_rational_approximation {N k q : Nat} [NeZero N]
     let p := centeredAbs r * q
     (centeredAbs (((p : ZMod N) ^ k) * a) : Real) ≤
       ((N : Real) / T) * (p : Real) ^ (k - 1) := by
-  let p := centeredAbs r * q
-  let c := (a * r).valMinAbs
-  let e0 : Int := -c * q - b * N
+  intro p
+  let e0 : Int := -(a * r).valMinAbs * q - b * N
   let E : Int := e0 * (p : Int) ^ (k - 1)
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   have hqr : (0 : Real) < q := by exact_mod_cast hq
-  have hfraction : (-(a * r).valMinAbs : Real) / N - (b : Real) / q =
-      (e0 : Real) / ((N : Real) * q) := by
-    dsimp [e0, c]
-    push_cast
-    field_simp
+  -- the approximation error is `e0 / (N q)`, so `|e0| ≤ N / T`
   have he0 : |(e0 : Real)| ≤ (N : Real) / T := by
-    rw [hfraction, abs_div, abs_of_pos (mul_pos hN hqr)] at happrox
-    have h := (div_le_iff₀ (mul_pos hN hqr)).mp happrox
-    have heq : ((q : Real) * T)⁻¹ * ((N : Real) * q) = (N : Real) / T := by
+    have h : (-(a * r).valMinAbs : Real) / N - (b : Real) / q = (e0 : Real) / (N * q) := by
+      push_cast [e0]
       field_simp
-    exact h.trans_eq heq
-  have hE : (E.natAbs : Real) ≤ ((N : Real) / T) * (p : Real) ^ (k - 1) := by
-    have heq : (E.natAbs : Real) = |(e0 : Real)| * (p : Real) ^ (k - 1) := by
-      have hcast : (E.natAbs : Real) = |(E : Real)| := by
-        calc
-          _ = ((E.natAbs : Int) : Real) := (Int.cast_natCast E.natAbs).symm
-          _ = ((|E| : Int) : Real) := congrArg (fun z : Int => (z : Real))
-            (show (E.natAbs : Int) = |E| by rw [Int.abs_eq_natAbs])
-          _ = _ := by rw [Int.cast_abs]
-      rw [hcast]
-      dsimp [E]
-      push_cast
-      rw [abs_mul, abs_pow, abs_of_nonneg (by positivity : (0 : Real) ≤ p)]
-    rw [heq]
-    exact mul_le_mul_of_nonneg_right he0 (by positivity)
-  have hcCast : (c : ZMod N) = a * r := ZMod.coe_valMinAbs _
-  have hECast : (E : ZMod N) =
-      (-(a * r) * (q : ZMod N)) * (p : ZMod N) ^ (k - 1) := by
-    dsimp [E, e0]
-    push_cast
-    rw [hcCast]
-    simp
-  have hpCast : (p : ZMod N) = (centeredAbs r : ZMod N) * q := by
-    simp only [p, Nat.cast_mul]
-  have hpPow : (p : ZMod N) ^ k = (p : ZMod N) ^ (k - 1) * p := by
-    calc
-      _ = (p : ZMod N) ^ ((k - 1) + 1) := congrArg _ (by omega : k = (k - 1) + 1)
-      _ = _ := pow_succ _ _
-  have hsign : (centeredAbs r : ZMod N) = r ∨ (centeredAbs r : ZMod N) = -r := by
-    have h := ZMod.natCast_natAbs_valMinAbs r
-    unfold centeredAbs
-    split at h
-    · exact Or.inl h
-    · exact Or.inr h
-  have htarget : ((p : ZMod N) ^ k) * a = (E : ZMod N) ∨
-      ((p : ZMod N) ^ k) * a = -(E : ZMod N) := by
-    rcases hsign with hs | hs
-    · right
-      rw [hpPow, hECast, hpCast, hs]
-      ring
-    · left
-      rw [hpPow, hECast, hpCast, hs]
-      ring
+    rw [h, abs_div, abs_of_pos (mul_pos hN hqr), div_le_iff₀ (mul_pos hN hqr)] at happrox
+    exact happrox.trans_eq (by field_simp)
+  -- in `ZMod N`, `p ^ k a = ∓E` according to the sign of the centered lift of `r`
+  have hE : (E : ZMod N) = -(a * r) * q * (p : ZMod N) ^ (k - 1) := by
+    simp [E, e0, ZMod.coe_valMinAbs]
+  have hP : (p : ZMod N) ^ k = (p : ZMod N) ^ (k - 1) * ((centeredAbs r : ZMod N) * q) := by
+    rw [← Nat.cast_mul]
+    exact (pow_sub_one_mul (by omega) _).symm
   have hcenter : centeredAbs (((p : ZMod N) ^ k) * a) ≤ E.natAbs := by
-    rcases htarget with h | h
-    · rw [h]
+    rcases natCast_centeredAbs_eq_or_neg r with hs | hs <;> rw [hP, hs]
+    · rw [show (p : ZMod N) ^ (k - 1) * (r * q) * a = -(E : ZMod N) by rw [hE]; ring,
+        centeredAbs, ZMod.natAbs_valMinAbs_neg]
       exact recurrence_centeredAbs_intCast_le E
-    · rw [h, centeredAbs, ZMod.natAbs_valMinAbs_neg]
+    · rw [show (p : ZMod N) ^ (k - 1) * (-r * q) * a = (E : ZMod N) by rw [hE]; ring]
       exact recurrence_centeredAbs_intCast_le E
-  exact (show (centeredAbs (((p : ZMod N) ^ k) * a) : Real) ≤ E.natAbs by
-    exact_mod_cast hcenter).trans hE
+  calc (centeredAbs (((p : ZMod N) ^ k) * a) : Real) ≤ E.natAbs := by exact_mod_cast hcenter
+    _ = |(e0 : Real)| * (p : Real) ^ (k - 1) := by
+        rw [Nat.cast_natAbs, Int.cast_abs]
+        push_cast [E]
+        rw [abs_mul, abs_pow, Nat.abs_cast]
+    _ ≤ _ := by gcongr
 
 end LeanProofs.GowersSzemeredi

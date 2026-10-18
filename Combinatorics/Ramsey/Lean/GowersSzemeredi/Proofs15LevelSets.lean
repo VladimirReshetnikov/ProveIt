@@ -30,52 +30,18 @@ private lemma multiaffineEval_succ {R : Type*} [CommSemiring R] {k : Nat}
     multiaffineEval c x =
       multiaffineEval (fun e => c (Fin.cons false e)) (Fin.tail x) +
         x 0 * multiaffineEval (fun e => c (Fin.cons true e)) (Fin.tail x) := by
-  let e := Fin.consEquiv (fun _ : Fin (k + 1) => Bool)
-  rw [multiaffineEval]
-  calc
-    (∑ u : Fin (k + 1) → Bool,
-        c u * ∏ i, if u i = true then x i else 1) =
-        ∑ p : Bool × (Fin k → Bool),
-          c (e p) * ∏ i, if e p i = true then x i else 1 :=
-      (e.sum_comp _).symm
-    _ = ∑ b : Bool, ∑ u : Fin k → Bool,
-          c (Fin.cons b u) * ∏ i,
-            if (Fin.cons b u : Fin (k + 1) → Bool) i = true then x i else 1 := by
-      rw [Fintype.sum_prod_type]
-      apply Fintype.sum_congr
-      intro b
-      apply Fintype.sum_congr
-      intro u
-      change (c (Fin.cons b u) * ∏ i,
-        if (Fin.cons b u : Fin (k + 1) → Bool) i = true then x i else 1) = _
-      rfl
-    _ = multiaffineEval (fun u => c (Fin.cons false u)) (Fin.tail x) +
-        x 0 * multiaffineEval (fun u => c (Fin.cons true u)) (Fin.tail x) := by
-      simp only [Fintype.sum_bool, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ,
-        Fin.tail, multiaffineEval, Bool.false_eq_true, if_false, if_true]
-      rw [Finset.mul_sum, add_comm]
-      congr 1 <;> simp only [one_mul, mul_assoc, mul_comm]
+  rw [multiaffineEval, ← (Fin.consEquiv fun _ => Bool).sum_comp, Fintype.sum_prod_type,
+    Fintype.sum_bool, add_comm]
+  simp only [Fin.consEquiv_apply, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ, Fin.tail,
+    multiaffineEval, Bool.false_eq_true, if_false, if_true, one_mul, Finset.mul_sum]
+  congr 1
+  exact Finset.sum_congr rfl fun u _ => mul_left_comm _ _ _
 
 private lemma countWhere_pi_succ {R : Type*} [Fintype R] {k : Nat}
     (P : (Fin (k + 1) → R) → Prop) [DecidablePred P] :
     countWhere P = ∑ y : Fin k → R, countWhere fun t : R => P (Fin.cons t y) := by
-  simp_rw [countWhere_eq_sum_ite]
-  let e := Fin.consEquiv (fun _ : Fin (k + 1) => R)
-  calc
-    (∑ x : Fin (k + 1) → R, if P x then 1 else 0) =
-        ∑ p : R × (Fin k → R), if P (e p) then 1 else 0 :=
-      (e.sum_comp _).symm
-    _ = ∑ t : R, ∑ y : Fin k → R,
-        if P (Fin.cons t y) then 1 else 0 := by
-      rw [Fintype.sum_prod_type]
-      apply Fintype.sum_congr
-      intro t
-      apply Fintype.sum_congr
-      intro y
-      change (if P (Fin.cons t y) then 1 else 0) = _
-      rfl
-    _ = ∑ y : Fin k → R, ∑ t : R,
-        if P (Fin.cons t y) then 1 else 0 := by rw [Finset.sum_comm]
+  rw [feature_countWhere_equiv ((Equiv.prodComm _ _).trans (Fin.consEquiv fun _ => R)) P]
+  exact context_countWhere_prod fun y t => P (Fin.cons t y)
 
 private lemma countWhere_affine_ne_zero {R : Type*} [Fintype R]
     [Field R] [DecidableEq R] (a b : R) (hb : b ≠ 0) :
@@ -108,76 +74,46 @@ private theorem multiaffine_nonzero_count_lower {R : Type*} [Fintype R]
   intro k
   induction k with
   | zero =>
-      intro c hnonzero
-      obtain ⟨x, hx⟩ := hnonzero
-      have hall (y : Fin 0 → R) : multiaffineEval c y ≠ 0 := by
-        simpa only [Subsingleton.elim y x] using hx
-      rw [pow_zero]
+      rintro c ⟨x, hx⟩
       unfold countWhere
       rw [Finset.filter_congr_decidable]
-      simp [hall]
+      exact Finset.one_le_card.mpr ⟨x, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hx⟩⟩
   | succ k ih =>
       intro c hnonzero
-      let c0 : (Fin k → Bool) → R := fun e => c (Fin.cons false e)
-      let c1 : (Fin k → Bool) → R := fun e => c (Fin.cons true e)
-      let r : (Fin k → R) → R := fun y => multiaffineEval c0 y
-      let q : (Fin k → R) → R := fun y => multiaffineEval c1 y
-      have heval (t : R) (y : Fin k → R) :
-          multiaffineEval c (Fin.cons t y) = r y + t * q y := by
-        simpa only [r, q, c0, c1, Fin.tail_cons, Fin.cons_zero] using
-          multiaffineEval_succ c (Fin.cons t y)
+      have heval (t : R) (y : Fin k → R) : multiaffineEval c (Fin.cons t y) =
+          multiaffineEval (fun e => c (Fin.cons false e)) y +
+            t * multiaffineEval (fun e => c (Fin.cons true e)) y := by
+        simpa only [Fin.tail_cons, Fin.cons_zero] using multiaffineEval_succ c (Fin.cons t y)
+      -- a nonzero coefficient row `b` (the `true` row unless it vanishes) such that over each
+      -- `y` where row `b` is nonzero, the fibre `t ↦ (t, y)` has `|R| - 1` nonzero points
+      obtain ⟨b, hb, hfib⟩ : ∃ b : Bool,
+          (∃ y, multiaffineEval (fun e => c (Fin.cons b e)) y ≠ 0) ∧
+          ∀ y, multiaffineEval (fun e => c (Fin.cons b e)) y ≠ 0 →
+            Fintype.card R - 1 ≤
+              countWhere fun t : R => multiaffineEval c (Fin.cons t y) ≠ 0 := by
+        by_cases hq : ∃ y, multiaffineEval (fun e => c (Fin.cons true e)) y ≠ 0
+        · refine ⟨true, hq, fun y hy => ?_⟩
+          have h := countWhere_affine_ne_zero
+            (multiaffineEval (fun e => c (Fin.cons false e)) y) _ hy
+          simpa only [heval] using h.ge
+        push Not at hq
+        refine ⟨false, ?_, fun y hy => ?_⟩
+        · obtain ⟨x, hx⟩ := hnonzero
+          refine ⟨Fin.tail x, fun h => hx ?_⟩
+          rw [← Fin.cons_self_tail x, heval, hq, mul_zero, add_zero, h]
+        · have hall (t : R) : multiaffineEval c (Fin.cons t y) ≠ 0 := by
+            rw [heval, hq, mul_zero, add_zero]
+            exact hy
+          unfold countWhere
+          rw [Finset.filter_congr_decidable]
+          simp [hall]
       rw [pow_succ, countWhere_pi_succ]
-      by_cases hq : ∃ y, q y ≠ 0
-      · have ihq : (Fintype.card R - 1) ^ k ≤
-            countWhere fun y : Fin k → R => q y ≠ 0 := by
-          simpa only [q] using ih c1 hq
-        calc
-          (Fintype.card R - 1) ^ k * (Fintype.card R - 1) ≤
-              countWhere (fun y : Fin k → R => q y ≠ 0) *
-                (Fintype.card R - 1) :=
-            Nat.mul_le_mul_right _ ihq
-          _ = ∑ y : Fin k → R,
-                if q y ≠ 0 then Fintype.card R - 1 else 0 := by
-            rw [countWhere_eq_sum_ite, Finset.sum_mul]
-            exact Finset.sum_congr rfl fun y _ => by split <;> simp_all
-          _ ≤ ∑ y : Fin k → R,
-              countWhere fun t : R => multiaffineEval c (Fin.cons t y) ≠ 0 :=
-            Finset.sum_le_sum fun y _ => by
-              split_ifs with hy
-              · simpa only [heval] using (countWhere_affine_ne_zero (r y) (q y) hy).ge
-              · exact Nat.zero_le _
-      · have hqzero : ∀ y, q y = 0 := by simpa only [not_exists, not_ne_iff] using hq
-        have hr : ∃ y, r y ≠ 0 := by
-          obtain ⟨x, hx⟩ := hnonzero
-          refine ⟨Fin.tail x, ?_⟩
-          have hs := heval (x 0) (Fin.tail x)
-          rw [Fin.cons_self_tail, hqzero (Fin.tail x), mul_zero, add_zero] at hs
-          exact fun hzero => hx (hs.trans hzero)
-        have ihr : (Fintype.card R - 1) ^ k ≤
-            countWhere fun y : Fin k → R => r y ≠ 0 := by
-          simpa only [r] using ih c0 hr
-        calc
-          (Fintype.card R - 1) ^ k * (Fintype.card R - 1) ≤
-              countWhere (fun y : Fin k → R => r y ≠ 0) *
-                (Fintype.card R - 1) :=
-            Nat.mul_le_mul_right _ ihr
-          _ ≤ countWhere (fun y : Fin k → R => r y ≠ 0) * Fintype.card R :=
-            Nat.mul_le_mul_left _ (Nat.sub_le _ _)
-          _ = ∑ y : Fin k → R,
-                if r y ≠ 0 then Fintype.card R else 0 := by
-            rw [countWhere_eq_sum_ite, Finset.sum_mul]
-            exact Finset.sum_congr rfl fun y _ => by split <;> simp_all
-          _ ≤ ∑ y : Fin k → R,
-              countWhere fun t : R => multiaffineEval c (Fin.cons t y) ≠ 0 :=
-            Finset.sum_le_sum fun y _ => by
-              split_ifs with hy
-              · have hall (t : R) : multiaffineEval c (Fin.cons t y) ≠ 0 := by
-                  rw [heval, hqzero y, mul_zero, add_zero]
-                  exact hy
-                unfold countWhere
-                rw [Finset.filter_congr_decidable]
-                simp [hall]
-              · exact Nat.zero_le _
+      refine (Nat.mul_le_mul_right _ (ih _ hb)).trans ?_
+      rw [countWhere_eq_sum_ite, Finset.sum_mul]
+      exact Finset.sum_le_sum fun y _ => by
+        split_ifs with hy
+        · simpa using hfib y hy
+        · simp
 
 private def shiftedCoefficients {R : Type*} [Ring R] {k : Nat}
     (c : (Fin k → Bool) → R) (a : R) (e : Fin k → Bool) : R :=
@@ -215,57 +151,23 @@ private lemma real_pow_sub_pred_pow_le (N k : Nat) (hN : 1 ≤ N) :
 /-- Lemma 15.3: a nonconstant multiaffine polynomial over the prime field
 has at most `N^k - (N-1)^k` points in any one fibre. -/
 theorem lemma_15_3_holds : lemma_15_3 := by
-  intro N k _ hprime mu a hmultilinear hnconstant
-  letI : Fact N.Prime := ⟨hprime⟩
-  obtain ⟨c, hc⟩ := hmultilinear
-  have hmu (x : Point N k) : mu x = multiaffineEval c x := by
-    simpa only [multiaffineEval] using hc x
-  let c' : (Fin k → Bool) → ZMod N := shiftedCoefficients c a
-  have heval (x : Point N k) : multiaffineEval c' x = mu x - a := by
-    change multiaffineEval (shiftedCoefficients c a) x = mu x - a
-    rw [multiaffineEval_shifted, ← hmu]
-  have hnonzero : ∃ x : Point N k, multiaffineEval c' x ≠ 0 := by
-    by_contra hzero
-    push Not at hzero
-    apply hnconstant
-    exact ⟨a, fun x => (sub_eq_zero.mp ((heval x).symm.trans (hzero x)))⟩
-  have hnonzeroCount :
-      (N - 1) ^ k ≤ countWhere fun x : Point N k => mu x ≠ a := by
-    have hgrid := multiaffine_nonzero_count_lower k c' hnonzero
-    have hcard : Fintype.card (ZMod N) = N := ZMod.card N
-    rw [hcard] at hgrid
-    calc
-      (N - 1) ^ k ≤
-          countWhere fun x : Point N k => multiaffineEval c' x ≠ 0 := hgrid
-      _ = countWhere fun x : Point N k => mu x ≠ a := by
-        unfold countWhere
-        rw [Finset.filter_congr_decidable, Finset.filter_congr_decidable]
-        apply congrArg Finset.card
-        ext x
-        simp only [Finset.mem_filter, Finset.mem_univ, true_and, heval, sub_ne_zero]
+  rintro N k _ hprime mu a ⟨c, hc⟩ hnconstant
+  haveI := Fact.mk hprime
+  -- `mu - a` is multiaffine with the shifted coefficients, and not identically zero
+  have heval (x : Point N k) : multiaffineEval (shiftedCoefficients c a) x = mu x - a := by
+    rw [multiaffineEval_shifted, hc x, multiaffineEval]
+  have hgrid : (N - 1) ^ k ≤ countWhere fun x : Point N k => mu x ≠ a := by
+    simpa only [heval, sub_ne_zero, ZMod.card] using
+      multiaffine_nonzero_count_lower k (shiftedCoefficients c a) (by
+        by_contra! hzero
+        exact hnconstant ⟨a, fun x => sub_eq_zero.mp ((heval x).symm.trans (hzero x))⟩)
+  -- the fibre and its complement partition `Point N k`
   have hpartition : countWhere (fun y : Point N k => mu y = a) +
-              countWhere (fun y : Point N k => mu y ≠ a) = N ^ k := by
-    simp_rw [countWhere_eq_sum_ite]
-    calc
-      (∑ y : Point N k, if mu y = a then 1 else 0) +
-            (∑ y : Point N k, if mu y ≠ a then 1 else 0) =
-          ∑ y : Point N k,
-            ((if mu y = a then 1 else 0) + (if mu y ≠ a then 1 else 0)) := by
-              rw [Finset.sum_add_distrib]
-      _ = ∑ _y : Point N k, 1 := by
-        refine Finset.sum_congr rfl fun y _ => ?_
-        by_cases hy : mu y = a <;> simp [hy]
-      _ = N ^ k := by simp [Point, ZMod.card]
-  have hlevelNat :
-      countWhere (fun x : Point N k => mu x = a) ≤ N ^ k - (N - 1) ^ k := by
-    omega
-  have hpowNat : (N - 1) ^ k ≤ N ^ k := Nat.pow_le_pow_left (Nat.sub_le N 1) k
-  constructor
-  · calc
-      (countWhere (fun x : Point N k => mu x = a) : Real) ≤
-          ((N ^ k - (N - 1) ^ k : Nat) : Real) := by exact_mod_cast hlevelNat
-      _ = (N : Real) ^ k - (N - 1 : Nat) ^ k := by
-        rw [Nat.cast_sub hpowNat, Nat.cast_pow, Nat.cast_pow]
-  · exact real_pow_sub_pred_pow_le N k hprime.one_le
+      countWhere (fun y : Point N k => mu y ≠ a) = N ^ k := by
+    rw [countWhere_eq_sum_ite, countWhere_eq_sum_ite, ← Finset.sum_add_distrib]
+    simp [ite_add_ite, Point, ZMod.card]
+  refine ⟨?_, real_pow_sub_pred_pow_le N k hprime.one_le⟩
+  rw [le_sub_iff_add_le]
+  exact_mod_cast (show countWhere (fun y : Point N k => mu y = a) + (N - 1) ^ k ≤ N ^ k by omega)
 
 end LeanProofs.GowersSzemeredi

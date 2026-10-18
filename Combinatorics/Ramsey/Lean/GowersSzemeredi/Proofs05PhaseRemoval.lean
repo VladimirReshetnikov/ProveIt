@@ -73,58 +73,27 @@ lemma cor57_cell_norm_le {N : Nat} [NeZero N]
       ‖∑ s ∈ S, f (s : ZMod N)‖ + alpha / 2 * S.card := by
   obtain ⟨d, ⟨a, hsubset⟩, hdscale⟩ := hdiam
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
+  -- every phase on the cell is within `alpha / 2` of `e(-a)`
   have hphase (s : Nat) (hs : s ∈ S) :
       ‖exponential (-(phi (s : ZMod N))) - exponential (-a)‖ ≤ alpha / 2 := by
-    have himage : phi (s : ZMod N) ∈
-        S.image (fun x : Nat => phi (x : ZMod N)) :=
-      Finset.mem_image.mpr ⟨s, hs, rfl⟩
-    calc
-      _ ≤ 2 * Real.pi * d / N :=
-        cor57_phase_close_of_mem_interval a _ (hsubset himage)
-      _ ≤ 2 * Real.pi * scale / N := by gcongr
-      _ ≤ alpha / 2 := by
-        have hpi : (0 : Real) < 4 * Real.pi := by positivity
-        have hscaled : scale * (4 * Real.pi) ≤ alpha * N :=
-          (le_div_iff₀ hpi).1 hscale
-        apply (div_le_iff₀ hN).2
-        nlinarith [Real.pi_pos]
-  let twisted := ∑ s ∈ S,
-    f (s : ZMod N) * exponential (-(phi (s : ZMod N)))
-  let plain := ∑ s ∈ S, f (s : ZMod N)
-  let err := ∑ s ∈ S,
-    f (s : ZMod N) *
-      (exponential (-(phi (s : ZMod N))) - exponential (-a))
-  have hdecomp : twisted = exponential (-a) * plain + err := by
-    dsimp only [twisted, plain, err]
-    rw [Finset.mul_sum, ← Finset.sum_add_distrib]
-    apply Finset.sum_congr rfl
-    intro s _
-    ring
-  have herr : ‖err‖ ≤ alpha / 2 * S.card := by
-    dsimp only [err]
-    calc
-      _ ≤ ∑ s ∈ S,
-          ‖f (s : ZMod N) *
-            (exponential (-(phi (s : ZMod N))) - exponential (-a))‖ :=
-        norm_sum_le _ _
-      _ ≤ ∑ _s ∈ S, alpha / 2 := by
-        apply Finset.sum_le_sum
-        intro s hs
+    refine (cor57_phase_close_of_mem_interval a _
+      (hsubset (Finset.mem_image_of_mem _ hs))).trans ?_
+    rw [div_le_iff₀ hN]
+    rw [le_div_iff₀ (by positivity)] at hscale
+    linarith [mul_le_mul_of_nonneg_left hdscale Real.pi_pos.le]
+  calc ‖∑ s ∈ S, f (s : ZMod N) * exponential (-(phi (s : ZMod N)))‖ =
+        ‖exponential (-a) * ∑ s ∈ S, f (s : ZMod N) + ∑ s ∈ S,
+          f (s : ZMod N) * (exponential (-(phi (s : ZMod N))) - exponential (-a))‖ := by
+        rw [Finset.mul_sum, ← Finset.sum_add_distrib]
+        exact congrArg _ (Finset.sum_congr rfl fun s _ => by ring)
+    _ ≤ ‖∑ s ∈ S, f (s : ZMod N)‖ + ∑ s ∈ S,
+          ‖f (s : ZMod N) * (exponential (-(phi (s : ZMod N))) - exponential (-a))‖ :=
+        (norm_add_le _ _).trans (add_le_add (by rw [norm_mul, cor57_norm_exponential, one_mul])
+          (norm_sum_le _ _))
+    _ ≤ ‖∑ s ∈ S, f (s : ZMod N)‖ + ∑ _s ∈ S, alpha / 2 := by
+        gcongr with s hs
         rw [norm_mul]
-        calc
-          ‖f (s : ZMod N)‖ *
-              ‖exponential (-(phi (s : ZMod N))) - exponential (-a)‖ ≤
-              1 * (alpha / 2) :=
-            mul_le_mul (hf _) (hphase s hs) (norm_nonneg _) (by norm_num)
-          _ = alpha / 2 := one_mul _
-      _ = alpha / 2 * S.card := by simp [mul_comm]
-  change ‖twisted‖ ≤ ‖plain‖ + alpha / 2 * S.card
-  rw [hdecomp]
-  calc
-    ‖exponential (-a) * plain + err‖ ≤
-        ‖exponential (-a) * plain‖ + ‖err‖ := norm_add_le _ _
-    _ ≤ ‖plain‖ + alpha / 2 * S.card := by
-      rw [norm_mul, cor57_norm_exponential, one_mul]
-      gcongr
+        exact (mul_le_mul (hf _) (hphase s hs) (norm_nonneg _) zero_le_one).trans_eq (one_mul _)
+    _ = _ := by simp [mul_comm]
 
 end LeanProofs.GowersSzemeredi

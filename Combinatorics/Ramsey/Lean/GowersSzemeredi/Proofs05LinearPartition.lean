@@ -25,61 +25,34 @@ private theorem linear_target_scale {N r v : Nat} (u : Real)
       (s : Real) ≤ (N : Real) / u ∧
       (v : Real) ^ 2 ≤ Real.sqrt ((r : Real) * s / (16 * N)) := by
   have hu0 : 0 < u := by linarith
-  have hu1 : 1 ≤ u := by linarith
-  have hu4 : 0 < u ^ 4 := pow_pos hu0 _
-  have hu4one : 1 ≤ u ^ 4 := one_le_pow₀ hu1
-  have hu4N : u ^ 4 ≤ (N : Real) := by
-    calc
-      u ^ 4 ≤ u ^ 8 := pow_le_pow_right₀ hu1 (by omega)
-      _ = r := hr.symm
-      _ ≤ N := by exact_mod_cast hrN
-  have hN : (0 : Real) < N := hu4.trans_le hu4N
-  have ht : 1 ≤ (N : Real) / u ^ 4 := (le_div_iff₀ hu4).2 (by simpa using hu4N)
-  let s := Nat.ceil ((N : Real) / u ^ 4)
-  have hslo : (N : Real) / u ^ 4 ≤ s := Nat.le_ceil _
-  have hshi : (s : Real) ≤ 2 * ((N : Real) / u ^ 4) := by
-    have h := Nat.ceil_lt_add_one (show 0 ≤ (N : Real) / u ^ 4 by positivity)
-    change (s : Real) < (N : Real) / u ^ 4 + 1 at h
-    linarith
-  have hspos : 0 < s := by
-    have hs : (0 : Real) < s := lt_of_lt_of_le (by positivity) hslo
-    exact_mod_cast hs
-  have hsN : s ≤ N := by
-    apply Nat.ceil_le.mpr
-    apply (div_le_iff₀ hu4).2
-    nlinarith
   have hu2 : 16 ≤ u ^ 2 := by nlinarith
-  have hu16 : 16 * u ^ 2 ≤ u ^ 4 := by nlinarith [sq_nonneg (u ^ 2 - 16)]
-  have htwoU : 2 * u ≤ u ^ 4 := by nlinarith [sq_nonneg (u - 4)]
-  have hsdiam : (s : Real) ≤ (N : Real) / u := by
-    apply hshi.trans
-    apply (le_div_iff₀ hu0).2
-    have hscaled := mul_le_mul_of_nonneg_left htwoU (div_nonneg hN.le hu4.le)
-    calc
-      (2 * ((N : Real) / u ^ 4)) * u = ((N : Real) / u ^ 4) * (2 * u) := by ring
-      _ ≤ ((N : Real) / u ^ 4) * u ^ 4 := hscaled
-      _ = N := div_mul_cancel₀ _ hu4.ne'
-  have hscale : u ^ 4 * (N : Real) ≤ (r : Real) * s := by
-    have h := (div_le_iff₀ hu4).mp hslo
-    have hmul := mul_le_mul_of_nonneg_left h hu4.le
-    calc
-      u ^ 4 * (N : Real) ≤ u ^ 4 * ((s : Real) * u ^ 4) := hmul
-      _ = (r : Real) * s := by rw [hr]; ring
-  have hrs : N ≤ r * s := by
-    have h : (N : Real) ≤ (r : Real) * s := by nlinarith
-    exact_mod_cast h
-  have hv4 : ((v : Real) ^ 2) ^ 2 ≤ u ^ 2 :=
-    pow_le_pow_left₀ (sq_nonneg _) hv 2
-  have hlen : (v : Real) ^ 2 ≤ Real.sqrt ((r : Real) * s / (16 * N)) := by
-    apply Real.le_sqrt_of_sq_le
-    apply (le_div_iff₀ (by positivity : (0 : Real) < 16 * N)).2
-    calc
-      ((v : Real) ^ 2) ^ 2 * (16 * N) ≤ u ^ 2 * (16 * N) :=
-        mul_le_mul_of_nonneg_right hv4 (by positivity)
-      _ = (16 * u ^ 2) * N := by ring
-      _ ≤ u ^ 4 * N := mul_le_mul_of_nonneg_right hu16 hN.le
-      _ ≤ (r : Real) * s := hscale
-  exact ⟨s, hspos, hsN, hrs, hsdiam, hlen⟩
+  have hu16 : 16 * u ^ 2 ≤ u ^ 4 := by linarith [mul_le_mul_of_nonneg_right hu2 (sq_nonneg u)]
+  have htwoU : 2 * u ≤ u ^ 4 := by nlinarith [mul_le_mul_of_nonneg_left hu hu0.le]
+  have hN : u ^ 4 * u ^ 4 ≤ N := by
+    rw [show u ^ 4 * u ^ 4 = r by rw [hr]; ring]
+    exact_mod_cast hrN
+  have hN0 : (0 : Real) < N := (by positivity : (0 : Real) < u ^ 4 * u ^ 4).trans_le hN
+  -- `s = ⌈x⌉` with `x = N / u⁴ ≥ u⁴`, so `x ≤ s < x + 1 ≤ 2x`
+  set x : Real := N / u ^ 4
+  have hxu : x * u ^ 4 = N := div_mul_cancel₀ _ (by positivity)
+  have hx : u ^ 4 ≤ x := (le_div_iff₀ (by positivity)).mpr hN
+  have hx0 : 0 ≤ x := by linarith
+  obtain ⟨s, hslo, hshi⟩ : ∃ s : Nat, x ≤ s ∧ (s : Real) < x + 1 :=
+    ⟨⌈x⌉₊, Nat.le_ceil x, Nat.ceil_lt_add_one hx0⟩
+  have hscale : u ^ 4 * N ≤ r * s := by
+    rw [hr, ← hxu]
+    linarith [mul_le_mul_of_nonneg_left hslo (by positivity : (0 : Real) ≤ u ^ 8)]
+  refine ⟨s, by exact_mod_cast (show (0 : Real) < s by linarith), ?_, ?_, ?_, ?_⟩
+  · exact_mod_cast (show (s : Real) ≤ N by
+      linarith [mul_le_mul_of_nonneg_left (show (2 : Real) ≤ u ^ 4 by linarith) hx0])
+  · exact_mod_cast (show (N : Real) ≤ r * s by
+      linarith [mul_le_mul_of_nonneg_right (show (1 : Real) ≤ u ^ 4 by linarith) hN0.le])
+  · rw [le_div_iff₀ hu0]
+    linarith [mul_le_mul_of_nonneg_right (show (s : Real) ≤ 2 * x by linarith) hu0.le,
+      mul_le_mul_of_nonneg_left htwoU hx0]
+  · refine Real.le_sqrt_of_sq_le ((le_div_iff₀ (by positivity)).mpr ?_)
+    linarith [mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (sq_nonneg _) hv 2)
+      (by positivity : (0 : Real) ≤ 16 * N), mul_le_mul_of_nonneg_right hu16 hN0.le]
 
 /-- The linear partition, with prescribed target lengths and the stronger
 r^(-1/8) diameter, already holds above the modest threshold 65536. -/
@@ -96,39 +69,28 @@ theorem section5_strong_linear_partition (N r v : Nat) [NeZero N]
         ((r : Real) ^ (-((1 : Real) / 8)) * N) := by
   have hr : 0 < r := by omega
   have hr0 : (0 : Real) < r := by exact_mod_cast hr
-  let u : Real := (r : Real) ^ ((1 : Real) / 8)
-  have hu : 4 ≤ u := by
-    have hbase : (4 : Real) ^ (8 : Nat) ≤ r := by exact_mod_cast hrlarge
-    have h := Real.rpow_le_rpow (by positivity) hbase (by norm_num : (0 : Real) ≤ 1 / 8)
-    have hfour : ((4 : Real) ^ (8 : Nat)) ^ ((1 : Real) / 8) = 4 := by
-      rw [← Real.rpow_natCast, ← Real.rpow_mul (by norm_num)]
-      norm_num
-    simpa only [hfour, u] using h
+  -- the diameter scale `u = r^(1/8) ≥ 4`, with `r = u^8` and `v² ≤ u`
+  set u : Real := (r : Real) ^ ((1 : Real) / 8) with hudef
   have hu8 : (r : Real) = u ^ 8 := by
-    dsimp only [u]
-    rw [← Real.rpow_natCast, ← Real.rpow_mul hr0.le]
+    rw [hudef, ← Real.rpow_natCast, ← Real.rpow_mul hr0.le]
     norm_num
+  have hu : 4 ≤ u := (pow_le_pow_iff_left₀ (by norm_num) (by positivity) (by norm_num : 8 ≠ 0)).mp
+    (by rw [← hu8]; exact_mod_cast hrlarge)
   have hvu : (v : Real) ^ 2 ≤ u := by
-    have h := pow_le_pow_left₀ (Nat.cast_nonneg v) hvupper 2
-    have heq : ((r : Real) ^ ((1 : Real) / 16)) ^ (2 : Nat) = u := by
-      rw [← Real.rpow_natCast, ← Real.rpow_mul hr0.le]
-      norm_num [u]
-    exact h.trans_eq heq
+    calc (v : Real) ^ 2 ≤ ((r : Real) ^ ((1 : Real) / 16)) ^ 2 := by gcongr
+      _ = u := by rw [hudef, ← Real.rpow_natCast, ← Real.rpow_mul hr0.le]; norm_num
   obtain ⟨s, hs, hsN, hrs, hsdiam, hlen⟩ := linear_target_scale u hu hu8 hrN hvu
+  -- the linear partition at scale `s`, then the target-length refinement
   have hlin : NatToZModLinear r (fun x : Nat => phi (x : ZMod N)) := by
     obtain ⟨c, hc⟩ := hphi
-    refine ⟨c 1, c 0, ?_⟩
-    intro x _
-    simpa [Fin.sum_univ_two, add_comm] using hc (x : ZMod N) (Finset.mem_univ _)
+    exact ⟨c 1, c 0, fun x _ => by
+      simpa [Fin.sum_univ_two, add_comm] using hc (x : ZMod N) (Finset.mem_univ _)⟩
   obtain ⟨m, Q, hQpart, hQcells⟩ :=
     lemma_2_3_holds N r s (NeZero.pos N) hr hs hrN hsN hrs _ hlin
-  have hlong (j : Fin m) : v ^ 2 ≤ (Q j).length := by
-    have h := hlen.trans (hQcells j).2.2.1
-    exact_mod_cast h
   obtain ⟨M, P, hM, hpart, hcells, hsub⟩ :=
-    section5_refine_target_lengths Q hr hv hQpart (fun j => (hQcells j).1) hlong
-  refine ⟨M, P, hM, hpart, hcells, ?_⟩
-  intro j
+    section5_refine_target_lengths Q hr hv hQpart (fun j => (hQcells j).1)
+      fun j => by exact_mod_cast hlen.trans (hQcells j).2.2.1
+  refine ⟨M, P, hM, hpart, hcells, fun j => ?_⟩
   obtain ⟨i, hi⟩ := hsub j
   obtain ⟨a, ha⟩ := (hQcells i).2.1
   refine ⟨s, ⟨a, (Finset.image_mono _ hi).trans ha⟩, hsdiam.trans_eq ?_⟩

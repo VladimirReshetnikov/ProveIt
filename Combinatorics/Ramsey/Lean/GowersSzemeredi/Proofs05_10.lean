@@ -39,53 +39,24 @@ private lemma prop61_energy_expansion {N : Nat} [NeZero N]
         f s * star (f (s - u)) *
           ∑ k ∈ B, star (f (s - k)) * f (s - k - u) *
             exponential (-(phi k * u)) := by
-  simp only [fourier, difference, ZMod.dft_apply, smul_eq_mul]
-  calc
-    (((∑ k ∈ B,
-        ‖∑ s : ZMod N, exponential (-(s * phi k)) *
-          (f s * star (f (s - k)))‖ ^ 2 : ℝ)) : Complex) =
-        ∑ k ∈ B,
-          (∑ s : ZMod N, exponential (-(s * phi k)) *
-            (f s * star (f (s - k)))) *
-          star (∑ t : ZMod N, exponential (-(t * phi k)) *
-            (f t * star (f (t - k)))) := by
-              rw [Complex.ofReal_sum]
-              refine Finset.sum_congr rfl fun k _ => ?_
-              rw [Complex.star_def, Complex.mul_conj', ← Complex.ofReal_pow]
-    _ = ∑ k ∈ B, ∑ s : ZMod N, ∑ t : ZMod N,
-          (exponential (-(s * phi k)) * (f s * star (f (s - k)))) *
-            ((f (t - k) * star (f t)) * exponential (t * phi k)) := by
-              refine Finset.sum_congr rfl fun k _ => ?_
-              simp only [star_sum, star_mul, star_star, star_exponential, neg_neg]
-              simp_rw [sum_mul, mul_sum]
-    _ = ∑ s : ZMod N, ∑ t : ZMod N, ∑ k ∈ B,
-          (exponential (-(s * phi k)) * (f s * star (f (s - k)))) *
-            ((f (t - k) * star (f t)) * exponential (t * phi k)) := by
-              rw [Finset.sum_comm]
-              refine Finset.sum_congr rfl fun s _ => ?_
-              rw [Finset.sum_comm]
-    _ = ∑ s : ZMod N, ∑ u : ZMod N, ∑ k ∈ B,
-          (exponential (-(s * phi k)) * (f s * star (f (s - k)))) *
-            ((f (s - u - k) * star (f (s - u))) * exponential ((s - u) * phi k)) := by
-              refine Finset.sum_congr rfl fun s _ => ?_
-              rw [← (Equiv.subLeft s).sum_comp]
-              rfl
-    _ = ∑ u : ZMod N, ∑ s : ZMod N,
-          f s * star (f (s - u)) *
-            ∑ k ∈ B, star (f (s - k)) * f (s - k - u) *
-              exponential (-(phi k * u)) := by
-              rw [Finset.sum_comm]
-              refine Finset.sum_congr rfl fun u _ => Finset.sum_congr rfl fun s _ => ?_
-              rw [Finset.mul_sum]
-              refine Finset.sum_congr rfl fun k _ => ?_
-              have hphase :
-                  exponential (-(s * phi k)) * exponential ((s - u) * phi k) =
-                    exponential (-(phi k * u)) := by
-                rw [← exponential_add]
-                congr 1
-                ring
-              rw [← hphase]
-              ring
+  have hF (k : ZMod N) : fourier (difference f k) (phi k) =
+      ∑ s, exponential (-(s * phi k)) * (f s * star (f (s - k))) := rfl
+  -- expand `|F k|² = F k · star (F k)`, then substitute `t = s - u` in the second factor
+  simp_rw [hF, Complex.ofReal_sum, Complex.ofReal_pow, ← Complex.mul_conj', starRingEnd_apply,
+    star_sum, star_mul', star_star, star_exponential, neg_neg, Finset.sum_mul_sum, Finset.mul_sum]
+  rw [Finset.sum_comm]
+  conv_rhs => rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun s _ => ?_
+  conv_rhs => rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun k _ => ?_
+  rw [← (Equiv.subLeft s).sum_comp]
+  refine Finset.sum_congr rfl fun u _ => ?_
+  have he : exponential (-(s * phi k)) * exponential ((s - u) * phi k) =
+      exponential (-(phi k * u)) := by
+    rw [← exponential_add]
+    ring_nf
+  rw [Equiv.subLeft_apply, sub_right_comm s u k, ← he]
+  ring
 
 private lemma prop61_initial_bound {N : Nat} [NeZero N]
     (f : ZMod N → Complex) (B : Finset (ZMod N)) (phi : ZMod N → ZMod N)
@@ -94,33 +65,12 @@ private lemma prop61_initial_bound {N : Nat} [NeZero N]
       ∑ u : ZMod N, ∑ s : ZMod N,
         ‖∑ k ∈ B, star (f (s - k)) * f (s - k - u) *
           exponential (-(phi k * u))‖ := by
-  let inner : ZMod N → ZMod N → Complex := fun u s =>
-    ∑ k ∈ B, star (f (s - k)) * f (s - k - u) * exponential (-(phi k * u))
-  have hnonneg : 0 ≤ ∑ k ∈ B, ‖fourier (difference f k) (phi k)‖ ^ 2 :=
-    Finset.sum_nonneg fun _ _ => sq_nonneg _
-  calc
-    (∑ k ∈ B, ‖fourier (difference f k) (phi k)‖ ^ 2) =
-        ‖(((∑ k ∈ B, ‖fourier (difference f k) (phi k)‖ ^ 2 : ℝ)) : Complex)‖ := by
-          rw [Complex.norm_real, Real.norm_of_nonneg hnonneg]
-    _ = ‖∑ u : ZMod N, ∑ s : ZMod N,
-          f s * star (f (s - u)) * inner u s‖ := by
-            rw [prop61_energy_expansion f B phi]
-    _ ≤ ∑ u : ZMod N, ‖∑ s : ZMod N,
-          f s * star (f (s - u)) * inner u s‖ := norm_sum_le _ _
-    _ ≤ ∑ u : ZMod N, ∑ s : ZMod N,
-          ‖f s * star (f (s - u)) * inner u s‖ := by
-            apply Finset.sum_le_sum
-            intro u _
-            exact norm_sum_le _ _
-    _ ≤ ∑ u : ZMod N, ∑ s : ZMod N, ‖inner u s‖ := by
-            gcongr with u _ s _
-            rw [norm_mul, norm_mul, norm_star]
-            have hs := hf s
-            have hsu := hf (s - u)
-            calc
-              ‖f s‖ * ‖f (s - u)‖ * ‖inner u s‖ ≤ 1 * 1 * ‖inner u s‖ := by
-                gcongr
-              _ = ‖inner u s‖ := by ring
+  rw [← Real.norm_of_nonneg (Finset.sum_nonneg fun _ _ => sq_nonneg _), ← Complex.norm_real,
+    prop61_energy_expansion f B phi]
+  refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun u _ => (norm_sum_le _ _).trans
+    (Finset.sum_le_sum fun s _ => ?_))
+  rw [norm_mul, norm_mul, norm_star]
+  exact mul_le_of_le_one_left (norm_nonneg _) (mul_le_one₀ (hf s) (norm_nonneg _) (hf (s - u)))
 
 private lemma prop61_l1_cauchy {N : Nat} [NeZero N] (F : ZMod N → ZMod N → ℝ) :
     (∑ u : ZMod N, ∑ s : ZMod N, F u s) ^ 2 ≤
@@ -302,90 +252,49 @@ theorem proposition_6_1_holds : proposition_6_1 := by
 cardinality bound. -/
 theorem lemma_7_7_holds : lemma_7_7 := by
   intro N _ K delta _ hdelta hdelta_one
-  let m : Nat := ⌈delta⁻¹⌉₊
-  have hm : 0 < m := by
-    dsimp only [m]
-    exact Nat.ceil_pos.mpr (inv_pos.mpr hdelta)
-  have hm_lower : delta⁻¹ ≤ (m : ℝ) := by
-    dsimp only [m]
-    exact Nat.le_ceil _
-  have hone_le_inv : (1 : ℝ) ≤ delta⁻¹ := (one_le_inv₀ hdelta).2 hdelta_one
-  have hm_upper : (m : ℝ) ≤ 2 * delta⁻¹ := by
-    have hceil := Nat.ceil_lt_add_one (inv_nonneg.mpr hdelta.le)
-    dsimp only [m]
-    linarith
+  -- the grid size `m = ⌈1/δ⌉ ∈ [1/δ, 2/δ]`
+  obtain ⟨m, hm, hm_lower, hm_upper⟩ : ∃ m : Nat, 0 < m ∧ delta⁻¹ ≤ m ∧ (m : ℝ) ≤ 2 * delta⁻¹ :=
+    ⟨⌈delta⁻¹⌉₊, Nat.ceil_pos.mpr (inv_pos.mpr hdelta), Nat.le_ceil _, by
+      linarith [Nat.ceil_lt_add_one (inv_nonneg.mpr hdelta.le), (one_le_inv₀ hdelta).2 hdelta_one]⟩
+  -- the grid cell of `d` has the coordinates `⌊(r d) m / N⌋`, `r ∈ K`
   let gridCode : ZMod N → ((r : ↑K) → Fin m) := fun d r =>
-    ⟨(r.1 * d).val * m / N, by
-      apply (Nat.div_lt_iff_lt_mul (NeZero.pos N)).2
-      calc
-        (r.1 * d).val * m < N * m :=
-          (Nat.mul_lt_mul_right hm).2 (r.1 * d).val_lt
-        _ = m * N := Nat.mul_comm _ _⟩
+    ⟨(r.1 * d).val * m / N, Nat.div_lt_of_lt_mul (Nat.mul_lt_mul_of_pos_right (r.1 * d).val_lt hm)⟩
+  -- a cell translated by one of its points lies in the Bohr set
   have hfiber_le (c : (r : ↑K) → Fin m) :
       #(Finset.univ.filter fun d : ZMod N => gridCode d = c) ≤ #(bohr K delta) := by
-    let fiber : Finset (ZMod N) := Finset.univ.filter fun d => gridCode d = c
-    change #fiber ≤ #(bohr K delta)
-    by_cases hnonempty : fiber.Nonempty
-    · obtain ⟨a, ha⟩ := hnonempty
-      refine Finset.card_le_card_of_injOn (fun d => d - a) ?_ ?_
-      · intro d hd
-        have hda : gridCode d = gridCode a := by
-          have hd' := (Finset.mem_filter.mp hd).2
-          have ha' := (Finset.mem_filter.mp ha).2
-          exact hd'.trans ha'.symm
-        change d - a ∈ bohr K delta
-        unfold bohr
-        simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-        intro r hr
-        have hcoord := congrArg Fin.val (congrFun hda ⟨r, hr⟩)
-        dsimp only [gridCode] at hcoord
-        rw [mul_sub]
-        exact lemma77_centeredAbs_sub_le hdelta hm hm_lower hcoord
-      · intro d _ e _ hde
-        exact sub_left_injective hde
-    · rw [(Finset.not_nonempty_iff_eq_empty.mp hnonempty)]
-      exact Nat.zero_le _
-  have hcountNat : N ≤ #(bohr K delta) * m ^ K.card := by
-    have hcount := Finset.card_le_mul_card_image_of_maps_to
-      (s := (Finset.univ : Finset (ZMod N)))
-      (t := (Finset.univ : Finset ((r : ↑K) → Fin m)))
-      (f := gridCode) (fun _ _ => Finset.mem_univ _) #(bohr K delta)
-      (fun c _ => hfiber_le c)
-    simpa using hcount
-  have hcount : (N : ℝ) ≤ (#(bohr K delta) : ℝ) * (m : ℝ) ^ K.card := by
-    exact_mod_cast hcountNat
+    rcases Finset.eq_empty_or_nonempty (Finset.univ.filter fun d : ZMod N => gridCode d = c)
+      with h | ⟨a, ha⟩
+    · simp [h]
+    refine Finset.card_le_card_of_injOn (· - a) (fun d hd => ?_)
+      fun d _ e _ hde => sub_left_injective hde
+    have hda := (Finset.mem_filter.mp hd).2.trans (Finset.mem_filter.mp ha).2.symm
+    simp only [Finset.mem_coe, bohr, Finset.mem_filter, Finset.mem_univ, true_and, mul_sub]
+    exact fun r hr => lemma77_centeredAbs_sub_le hdelta hm hm_lower
+      (congrArg Fin.val (congrFun hda ⟨r, hr⟩))
+  have hcount : N ≤ #(bohr K delta) * m ^ K.card := by
+    simpa using Finset.card_le_mul_card_image_of_maps_to (s := (Finset.univ : Finset (ZMod N)))
+      (t := Finset.univ) (f := gridCode) (fun _ _ => Finset.mem_univ _) _ fun c _ => hfiber_le c
   have hgrid : (delta / 2) * (m : ℝ) ≤ 1 := by
-    calc
-      (delta / 2) * (m : ℝ) ≤ (delta / 2) * (2 * delta⁻¹) := by gcongr
-      _ = 1 := by field_simp
+    linarith [mul_le_mul_of_nonneg_left hm_upper hdelta.le, mul_inv_cancel₀ hdelta.ne']
   have hlower : (delta / 2) ^ K.card * (N : ℝ) ≤ #(bohr K delta) := by
-    calc
-      (delta / 2) ^ K.card * (N : ℝ) ≤
-          (delta / 2) ^ K.card * ((#(bohr K delta) : ℝ) * (m : ℝ) ^ K.card) := by gcongr
+    calc (delta / 2) ^ K.card * (N : ℝ)
+        ≤ (delta / 2) ^ K.card * ((#(bohr K delta) : ℝ) * (m : ℝ) ^ K.card) := by
+          gcongr; exact_mod_cast hcount
       _ = (#(bohr K delta) : ℝ) * ((delta / 2) * (m : ℝ)) ^ K.card := by ring
       _ ≤ #(bohr K delta) :=
         mul_le_of_le_one_right (Nat.cast_nonneg _) (pow_le_one₀ (by positivity) hgrid)
-  refine ⟨hlower, ?_⟩
-  intro hK hthreshold
-  have hk : 0 < K.card := Finset.card_pos.mpr hK
-  have hk_ne : K.card ≠ 0 := hk.ne'
+  refine ⟨hlower, fun hK hthreshold => ?_⟩
+  -- above the threshold `(δ/2)^|K| N > 1`, so the Bohr set has a nonzero element
+  have hk_ne : K.card ≠ 0 := (Finset.card_pos.mpr hK).ne'
   have hNreal : (0 : ℝ) < N := by exact_mod_cast NeZero.pos N
-  have hrootlt :
-      (N : ℝ) ^ (-(1 / (K.card : ℝ))) < delta / 2 := by
-    nlinarith
-  have hrootpow :
-      ((N : ℝ) ^ (-(1 / (K.card : ℝ)))) ^ K.card = (N : ℝ)⁻¹ := by
+  have hrootpow : ((N : ℝ) ^ (-(1 / (K.card : ℝ)))) ^ K.card = (N : ℝ)⁻¹ := by
     rw [← Real.rpow_mul_natCast hNreal.le, show -(1 / (K.card : ℝ)) * K.card = -1 by field_simp,
       Real.rpow_neg_one]
   have hpowlt : (N : ℝ)⁻¹ < (delta / 2) ^ K.card := by
     rw [← hrootpow]
-    exact pow_lt_pow_left₀ hrootlt (Real.rpow_nonneg hNreal.le _) hk_ne
-  have hmass : (1 : ℝ) < (delta / 2) ^ K.card * N := by
-    calc
-      (1 : ℝ) = (N : ℝ)⁻¹ * N := (inv_mul_cancel₀ hNreal.ne').symm
-      _ < (delta / 2) ^ K.card * N := mul_lt_mul_of_pos_right hpowlt hNreal
-  have hcardReal : (1 : ℝ) < #(bohr K delta) := hmass.trans_le hlower
-  have hcard : 1 < #(bohr K delta) := by exact_mod_cast hcardReal
+    exact pow_lt_pow_left₀ (by linarith) (Real.rpow_nonneg hNreal.le _) hk_ne
+  have hcard : 1 < #(bohr K delta) := by
+    exact_mod_cast ((inv_lt_iff_one_lt_mul₀ hNreal).mp hpowlt).trans_le hlower
   obtain ⟨b, hb, hb0⟩ := Finset.exists_mem_ne hcard 0
   exact ⟨b, hb, by simpa using hb0⟩
 

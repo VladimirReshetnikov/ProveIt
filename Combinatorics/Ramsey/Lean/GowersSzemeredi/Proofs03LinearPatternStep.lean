@@ -73,16 +73,13 @@ theorem linearPatternAverage_split {N n : Nat} [NeZero N]
     (Equiv.sum_comp (Equiv.addRight (c 0 * r)) (fun s => ∏ i, f i (s - c i * r))).symm
   simp_rw [hshift]
   rw [Finset.sum_comm]
-  apply Finset.sum_congr rfl
-  intro s _
+  refine Finset.sum_congr rfl fun s _ => ?_
   rw [Finset.mul_sum]
-  apply Finset.sum_congr rfl
-  intro r _
+  refine Finset.sum_congr rfl fun r _ => ?_
   rw [Fin.prod_univ_succ]
   simp only [add_sub_cancel_right]
   congr 1
-  apply Finset.prod_congr rfl
-  intro i _
+  refine Finset.prod_congr rfl fun i _ => ?_
   congr 1
   dsimp [linearPatternTailCoefficients]
   ring

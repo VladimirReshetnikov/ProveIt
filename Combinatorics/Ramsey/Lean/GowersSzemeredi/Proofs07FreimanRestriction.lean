@@ -114,133 +114,66 @@ private lemma cor75_verticalFiber_bound {N k : Nat} [NeZero N] [Fact N.Prime]
     let S := k • Gamma - k • Gamma
     let K := (Finset.univ : Finset (ZMod N)).filter fun y => (0, y) ∈ S
     (K.card : Real) ≤ C ^ (4 * k) := by
-  dsimp only
-  let Gamma := functionGraph B phi
-  let S := k • Gamma - k • Gamma
-  let T := (2 * k) • Gamma - (2 * k) • Gamma
-  let K := (Finset.univ : Finset (ZMod N)).filter fun y => (0, y) ∈ S
-  have hGammaCard : Gamma.card = B.card := cor75_card_functionGraph B phi
-  have hGamma : Gamma.Nonempty := by
-    obtain ⟨b, hb⟩ := hB
-    exact ⟨(b, phi b), (cor75_mem_functionGraph B phi _).2 ⟨hb, rfl⟩⟩
-  have hGammaPosR : (0 : Real) < Gamma.card := by exact_mod_cast hGamma.card_pos
-  have hPR := Finset.pluennecke_ruzsa_inequality_nsmul_sub_nsmul_sub
-    hGamma Gamma (2 * k) (2 * k)
-  have hPRR : (T.card : Real) ≤
-      ((((Gamma - Gamma).card : Real) / Gamma.card) ^ (4 * k)) * Gamma.card := by
-    dsimp only [T]
-    have hcast : (((((2 * k) • Gamma - (2 * k) • Gamma).card : NNRat) : Real)) ≤
-        (((((Gamma - Gamma).card : NNRat) / Gamma.card) ^
-          ((2 * k) + (2 * k))) * Gamma.card : NNRat) := by
-      exact_mod_cast hPR
-    norm_num at hcast ⊢
-    simpa only [show 2 * k + 2 * k = 4 * k by omega] using hcast
-  have hratio : (((Gamma - Gamma).card : Real) / Gamma.card) ≤ C := by
-    apply (div_le_iff₀ hGammaPosR).2
-    simpa [Gamma] using hsmall
-  have hratio0 : 0 ≤ (((Gamma - Gamma).card : Real) / Gamma.card) := by positivity
-  have hTbound : (T.card : Real) ≤ C ^ (4 * k) * Gamma.card := by
-    calc
-      (T.card : Real) ≤
-          (((Gamma - Gamma).card : Real) / Gamma.card) ^ (4 * k) * Gamma.card := hPRR
-      _ ≤ C ^ (4 * k) * Gamma.card := by
-        gcongr
+  intro Gamma S K
   obtain ⟨b0, hb0⟩ := hB
-  let gamma0 : ZMod N × ZMod N := (b0, phi b0)
-  let F : ZMod N × ZMod N → ZMod N × ZMod N := fun p =>
-    ((p.2, phi p.2) - gamma0) - (0, p.1)
-  have hMaps : Set.MapsTo F (↑(K ×ˢ B)) (↑T) := by
-    intro p hp
-    rw [Finset.mem_coe, Finset.mem_product] at hp
-    have hGraphP : (p.2, phi p.2) ∈ Gamma := (cor75_mem_functionGraph B phi _).2 ⟨hp.2, rfl⟩
-    have hGraph0 : gamma0 ∈ Gamma := (cor75_mem_functionGraph B phi _).2 ⟨hb0, rfl⟩
-    have hz : (p.2, phi p.2) - gamma0 ∈ S := cor75_sub_mem_nsmul_sub_nsmul Gamma hGraphP hGraph0 hk
-    have hy : (0, p.1) ∈ S := by
-      simpa [K] using hp.1
-    have hd := cor75_sub_mem_double_nsmul Gamma hz hy
-    change F p ∈ T
-    simpa only [F, T, show k + k = 2 * k by omega] using hd
-  have hInj : Set.InjOn F (↑(K ×ˢ B)) := by
-    intro p hp q hq heq
-    rw [Finset.mem_coe, Finset.mem_product] at hp hq
-    have hfirst := congrArg (fun z : ZMod N × ZMod N => z.1) heq
-    have hpq : p.2 = q.2 := by
-      dsimp only [F, gamma0] at hfirst
-      simp only [Prod.fst_sub, sub_zero] at hfirst
-      exact sub_left_injective hfirst
-    have hsecond := congrArg (fun z : ZMod N × ZMod N => z.2) heq
-    dsimp only [F, gamma0] at hsecond
-    simp only [Prod.snd_sub] at hsecond
-    rw [hpq] at hsecond
-    have : p.1 = q.1 := sub_right_injective hsecond
-    exact Prod.ext this hpq
-  have hcardInj : (K ×ˢ B).card ≤ T.card :=
-    Finset.card_le_card_of_injOn F hMaps hInj
-  have hcardInjR : (K.card : Real) * B.card ≤ T.card := by
-    exact_mod_cast (by simpa using hcardInj)
-  rw [hGammaCard] at hTbound
-  have hBPosR : (0 : Real) < B.card := by
-    exact_mod_cast (Finset.card_pos.mpr ⟨b0, hb0⟩)
-  nlinarith
+  have hg (b : ZMod N) (hb : b ∈ B) : (b, phi b) ∈ Gamma :=
+    (cor75_mem_functionGraph B phi _).2 ⟨hb, rfl⟩
+  have hGB : (Gamma.card : Real) = B.card := by exact_mod_cast cor75_card_functionGraph B phi
+  have hB0 : (0 : Real) < B.card := by exact_mod_cast Finset.card_pos.mpr ⟨b0, hb0⟩
+  -- `(y, b) ↦ (b, phi b) - (b0, phi b0) - (0, y)` injects `K ×ˢ B` into `2k Γ - 2k Γ`
+  have hinj : K.card * B.card ≤ ((2 * k) • Gamma - (2 * k) • Gamma).card := by
+    rw [← Finset.card_product]
+    refine Finset.card_le_card_of_injOn (fun p => (p.2, phi p.2) - (b0, phi b0) - (0, p.1))
+      (fun p hp => ?_) fun p _ q _ h => ?_
+    · rw [Finset.mem_coe, Finset.mem_product] at hp
+      simpa only [two_mul, Finset.mem_coe] using cor75_sub_mem_double_nsmul Gamma
+        (cor75_sub_mem_nsmul_sub_nsmul Gamma (hg _ hp.2) (hg b0 hb0) hk)
+        (Finset.mem_filter.mp hp.1).2
+    · simp only [Prod.ext_iff, Prod.fst_sub, Prod.snd_sub, sub_zero, sub_left_inj] at h ⊢
+      obtain ⟨h1, h2⟩ := h
+      rw [h1, sub_right_inj] at h2
+      exact ⟨h2, h1⟩
+  -- Plünnecke-Ruzsa bounds `2k Γ - 2k Γ`
+  have hPR := NNRat.cast_mono (K := Real)
+    (Finset.pluennecke_ruzsa_inequality_nsmul_sub_nsmul_sub ⟨_, hg b0 hb0⟩ Gamma (2 * k) (2 * k))
+  push_cast [hGB] at hPR
+  have hratio : ((Gamma - Gamma).card : Real) / B.card ≤ C := by
+    rw [div_le_iff₀ hB0, ← hGB]
+    exact hsmall
+  refine le_of_mul_le_mul_right ?_ hB0
+  calc (K.card : Real) * B.card ≤ ((2 * k) • Gamma - (2 * k) • Gamma).card := by
+        exact_mod_cast hinj
+    _ ≤ (((Gamma - Gamma).card : Real) / B.card) ^ (2 * k + 2 * k) * B.card := hPR
+    _ ≤ C ^ (4 * k) * B.card := by
+        rw [show 2 * k + 2 * k = 4 * k by ring]
+        gcongr
 
 private lemma cor75_exists_good_d {N k L : Nat} [NeZero N] [Fact N.Prime]
     (K : Finset (ZMod N)) (hk : 0 < k) (hK : K.Nonempty)
     (hsize : 4 * k * K.card * L ≤ N) :
     ∃ d : ZMod N, d ≠ 0 ∧
       ∀ q : Bool × Fin (k * L), cor75Coeff N (k * L) q * d ∉ K := by
-  have hprime := Fact.out (p := Nat.Prime N)
-  have hN2 : 2 ≤ N := hprime.two_le
-  have hTLT : k * L < N := by
-    have hKpos : 0 < K.card := hK.card_pos
-    by_cases hL : L = 0
-    · simp [hL]
-      exact NeZero.pos N
-    · have _ : 0 < L := Nat.pos_of_ne_zero hL
-      nlinarith
-  by_contra hgood
-  have hall : ∀ d : ZMod N, d ≠ 0 →
-      ∃ q : Bool × Fin (k * L), cor75Coeff N (k * L) q * d ∈ K := by
-    intro d hd
-    by_contra hnone
-    apply hgood
-    refine ⟨d, hd, ?_⟩
-    intro q hq
-    exact hnone ⟨q, hq⟩
-  let D0 := {d : ZMod N // d ∈ (Finset.univ.erase 0 : Finset (ZMod N))}
-  let Q := Bool × Fin (k * L)
-  have hd0ne (d : D0) : (d : ZMod N) ≠ 0 := Finset.ne_of_mem_erase d.property
-  choose q hq using fun d : D0 => hall d (hd0ne d)
-  let target := Q × {w : ZMod N // w ∈ K}
-  let F : D0 → target := fun d =>
-    (q d, ⟨cor75Coeff N (k * L) (q d) * (d : ZMod N), hq d⟩)
-  have hFInj : Function.Injective F := by
-    intro d e hde
-    have hqeq : q d = q e := congrArg Prod.fst hde
-    have hweq := congrArg (fun z : target => (z.2 : ZMod N)) hde
-    dsimp only [F] at hweq
-    rw [hqeq] at hweq
-    have hc := cor75_coeff_ne_zero hTLT (q e)
-    exact Subtype.ext (mul_left_cancel₀ hc hweq)
-  have hcards := Fintype.card_le_of_injective F hFInj
-  have hD0card : Fintype.card D0 = N - 1 := by
-    dsimp only [D0]
-    rw [Fintype.card_coe]
-    simp [ZMod.card]
-  have htargetCard : Fintype.card target = 2 * (k * L) * K.card := by
-    dsimp only [target, Q]
-    simp [Fintype.card_prod, Fintype.card_coe]
-  rw [hD0card, htargetCard] at hcards
-  have hhalf : 2 * (2 * (k * L) * K.card) ≤ N := by
-    nlinarith
-  by_cases hL : L = 0
-  · simp [hL] at hcards
-    omega
-  · have hq2 : 2 ≤ 2 * (k * L) * K.card := by
-      have hKpos := hK.card_pos
-      have hLpos := Nat.pos_of_ne_zero hL
-      have : 0 < (k * L) * K.card := Nat.mul_pos (Nat.mul_pos hk hLpos) hKpos
-      simpa only [one_mul, Nat.mul_assoc] using Nat.mul_le_mul_left 2 this
-    omega
+  rcases Nat.eq_zero_or_pos L with rfl | hL
+  · exact ⟨1, one_ne_zero, fun q => absurd q.2.isLt (by simp)⟩
+  have hkL : 0 < k * L := Nat.mul_pos hk hL
+  have hTLT : k * L < N := by nlinarith [hK.card_pos]
+  haveI : NeZero (k * L) := ⟨hkL.ne'⟩
+  -- otherwise each `d ≠ 0` has a coefficient `q d` with `c (q d) * d ∈ K`, and
+  -- `d ↦ (q d, c (q d) * d)` injects the `N - 1` nonzero residues into `Q ×ˢ K`
+  by_contra! hgood
+  choose! q hq using hgood
+  have hinj := Finset.card_le_card_of_injOn (s := Finset.univ.erase (0 : ZMod N))
+    (t := Finset.univ ×ˢ K) (fun d => (q d, cor75Coeff N (k * L) (q d) * d))
+    (fun d hd => Finset.mem_coe.mpr (Finset.mem_product.mpr
+      ⟨Finset.mem_univ _, hq d (Finset.ne_of_mem_erase hd)⟩))
+    fun d _ e _ h => by
+      obtain ⟨h1, h2⟩ := Prod.mk.inj h
+      rw [h1] at h2
+      exact mul_left_cancel₀ (cor75_coeff_ne_zero hTLT (q e)) h2
+  have hcard : N - 1 ≤ 2 * (k * L) * K.card := by simpa [ZMod.card] using hinj
+  have h4 : 2 * (2 * (k * L) * K.card) ≤ N := by linarith
+  have h2 : 2 ≤ 2 * (k * L) * K.card := by nlinarith [hK.card_pos]
+  omega
 
 private lemma cor75_coeff_rep_pos {N k L n : Nat} [NeZero N]
     (hn0 : 0 < n) (hn : n ≤ k * L) :
@@ -258,178 +191,82 @@ private lemma cor75_coeff_rep_neg {N k L n : Nat} [NeZero N]
 theorem lemma_7_5_holds : lemma_7_5 := by
   intro N k _ B phi C hprime hk hC hsmall
   letI : Fact N.Prime := ⟨hprime⟩
-  by_cases hB : B.Nonempty
-  swap
-  · refine ⟨∅, Finset.empty_subset _, ?_, ?_⟩
-    · simp [Finset.not_nonempty_iff_eq_empty.mp hB]
-    · simp [FreimanHom]
+  rcases B.eq_empty_or_nonempty with rfl | ⟨b0, hb0⟩
+  · exact ⟨∅, Finset.empty_subset _, by simp, by simp [FreimanHom]⟩
   let Gamma := functionGraph B phi
   let S := k • Gamma - k • Gamma
   let K := (Finset.univ : Finset (ZMod N)).filter fun y => (0, y) ∈ S
-  have hKbound : (K.card : Real) ≤ C ^ (4 * k) := by
-    simpa only [Gamma, S, K] using
-      cor75_verticalFiber_bound B phi C hB hk hC hsmall
-  have hGamma : Gamma.Nonempty := by
-    obtain ⟨b, hb⟩ := hB
-    exact ⟨(b, phi b), (cor75_mem_functionGraph B phi _).2 ⟨hb, rfl⟩⟩
-  have hK : K.Nonempty := by
-    obtain ⟨g, hg⟩ := hGamma
-    have hzero : ((0 : ZMod N), (0 : ZMod N)) ∈ S := by
-      have := cor75_sub_mem_nsmul_sub_nsmul Gamma hg hg hk
-      change (0 : ZMod N × ZMod N) ∈ S
-      simpa only [S, sub_self] using this
-    refine ⟨0, ?_⟩
-    simp only [K, Finset.mem_filter, Finset.mem_univ, true_and]
-    exact hzero
-  have hKposR : (0 : Real) < K.card := by exact_mod_cast hK.card_pos
+  have hKbound : (K.card : Real) ≤ C ^ (4 * k) :=
+    cor75_verticalFiber_bound B phi C ⟨b0, hb0⟩ hk hC hsmall
+  have hg0 : (b0, phi b0) ∈ Gamma := (cor75_mem_functionGraph B phi _).2 ⟨hb0, rfl⟩
+  have h00 := cor75_sub_mem_nsmul_sub_nsmul Gamma hg0 hg0 hk
+  rw [sub_self] at h00
+  have hK : K.Nonempty := ⟨0, Finset.mem_filter.mpr ⟨Finset.mem_univ _, h00⟩⟩
+  -- a step `d` whose multiples `c * d` with `0 < |c| ≤ k * L` all avoid `K`
   let L := N / (4 * k * K.card)
   have hdenomPos : 0 < 4 * k * K.card := by positivity
-  have hsize : 4 * k * K.card * L ≤ N := by
-    simpa [L, Nat.mul_comm, Nat.mul_left_comm, Nat.mul_assoc] using
-      Nat.div_mul_le_self N (4 * k * K.card)
-  obtain ⟨d, hd, havoid⟩ := cor75_exists_good_d K hk hK hsize
-  let domain : Finset (ZMod N × Nat) := B ×ˢ Finset.range (L + 1)
-  let color : ZMod N × Nat → ZMod N := fun z => phi z.1 - (z.2 : ZMod N) * d
-  let average : Real := (B.card : Real) * (L + 1) / N
-  have hNpos : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have havgHyp : ((Finset.univ : Finset (ZMod N)).card : Nat) • average ≤
-      ∑ _ ∈ domain, (1 : Real) := by
-    simp [average, domain, ZMod.card]
-    field_simp [ne_of_gt hNpos]
-    norm_num
-  obtain ⟨a, _ha, ha⟩ := Finset.exists_le_sum_fiber_of_maps_to_of_nsmul_le_sum
-    (s := domain) (t := (Finset.univ : Finset (ZMod N)))
-    (f := color) (w := fun _ => (1 : Real)) (b := average)
-    (fun _ _ => Finset.mem_univ _) Finset.univ_nonempty havgHyp
-  let fiber := domain.filter fun z => color z = a
-  have haFiber : average ≤ (fiber.card : Real) := by
-    simpa [fiber] using ha
+  obtain ⟨d, hd, havoid⟩ := cor75_exists_good_d (L := L) K hk hK (Nat.mul_div_le N _)
+  -- pigeonhole: a fiber of `(x, j) ↦ phi x - j * d` on `B ×ˢ [0, L]` is large
+  have hD : (0 : Real) < 8 * k * C ^ (4 * k) := by positivity
+  have hscale : (N : Real) ≤ (L + 1) * (8 * k * C ^ (4 * k)) := by
+    have hfloor : (N : Real) < (L + 1) * (4 * k * K.card) := by
+      exact_mod_cast (Nat.div_lt_iff_lt_mul hdenomPos).mp (Nat.lt_add_one L)
+    linarith [mul_le_mul_of_nonneg_left hKbound (by positivity : (0 : Real) ≤ (L + 1) * (4 * k)),
+      (by positivity : (0 : Real) ≤ (L + 1) * (4 * k) * C ^ (4 * k))]
+  obtain ⟨a, -, ha⟩ := Finset.exists_le_card_fiber_of_nsmul_le_card_of_maps_to
+    (s := B ×ˢ Finset.range (L + 1)) (f := fun z => phi z.1 - (z.2 : ZMod N) * d)
+    (fun _ _ => Finset.mem_univ _) Finset.univ_nonempty
+    (b := (B.card : Real) / (8 * k * C ^ (4 * k))) (by
+      rw [Finset.card_univ, ZMod.card, nsmul_eq_mul, mul_div_assoc', div_le_iff₀ hD,
+        Finset.card_product, Finset.card_range]
+      push_cast
+      linarith [mul_le_mul_of_nonneg_left hscale (Nat.cast_nonneg (α := Real) B.card)])
+  let fiber := (B ×ˢ Finset.range (L + 1)).filter fun z => phi z.1 - (z.2 : ZMod N) * d = a
   let B' := fiber.image Prod.fst
-  have hFiberInj : Set.InjOn (fun z : ZMod N × Nat => z.1) (↑fiber) := by
-    intro z hz w hw hfirst
-    have hzmem : z ∈ domain ∧ color z = a := by simpa [fiber] using hz
-    have hwmem : w ∈ domain ∧ color w = a := by simpa [fiber] using hw
-    have hLltN : L + 1 ≤ N :=
-      Nat.div_lt_self (NeZero.pos N) (by have := hK.card_pos; nlinarith)
-    have hmul : (z.2 : ZMod N) * d = (w.2 : ZMod N) * d := by
-      have heq : phi z.1 - (z.2 : ZMod N) * d =
-          phi w.1 - (w.2 : ZMod N) * d := by
-        dsimp only [color] at hzmem hwmem
-        exact hzmem.2.trans hwmem.2.symm
-      change z.1 = w.1 at hfirst
-      rw [hfirst] at heq
-      exact sub_right_injective heq
-    have hcast : (z.2 : ZMod N) = (w.2 : ZMod N) := mul_right_cancel₀ hd hmul
-    exact Prod.ext hfirst (cor75_natCast_injective
-      ((Finset.mem_range.mp (Finset.mem_product.mp hzmem.1).2).trans_le hLltN)
-      ((Finset.mem_range.mp (Finset.mem_product.mp hwmem.1).2).trans_le hLltN) hcast)
-  have hB'card : B'.card = fiber.card := Finset.card_image_iff.mpr hFiberInj
+  have hLN : L + 1 ≤ N := Nat.div_lt_self (NeZero.pos N) (by nlinarith [hK.card_pos])
+  have hB'card : B'.card = fiber.card := Finset.card_image_of_injOn <| by
+    rintro ⟨x, i⟩ hz ⟨y, j⟩ hw (rfl : x = y)
+    simp only [fiber, Finset.mem_coe, Finset.mem_filter, Finset.mem_product,
+      Finset.mem_range] at hz hw
+    exact Prod.ext rfl (cor75_natCast_injective (hz.1.2.trans_le hLN) (hw.1.2.trans_le hLN)
+      (mul_right_cancel₀ hd (sub_right_injective (hz.2.trans hw.2.symm))))
   have hB'sub : B' ⊆ B := Finset.image_subset_iff.mpr fun z hz =>
     (Finset.mem_product.mp (Finset.mem_filter.mp hz).1).1
-  have hfloor : N < (L + 1) * (4 * k * K.card) := (Nat.div_lt_iff_lt_mul hdenomPos).mp (by simp [L])
-  have hscale : (N : Real) ≤ (L + 1) * (8 * (k : Real) * C ^ (4 * k)) := by
-    have hfloorR : (N : Real) < (L + 1) * (4 * k * K.card) := by exact_mod_cast hfloor
-    nlinarith
-  have hsizeB : (B.card : Real) / (8 * (k : Real) * C ^ (4 * k)) ≤ B'.card := by
-    rw [hB'card]
-    apply le_trans ?_ haFiber
-    dsimp only [average]
-    have hdenR : 0 < 8 * (k : Real) * C ^ (4 * k) := by positivity
-    apply (div_le_div_iff₀ hdenR hNpos).2
-    have hmul := mul_le_mul_of_nonneg_left hscale
-      (show (0 : Real) ≤ B.card by positivity)
-    nlinarith
   have hB'mem (x : ZMod N) (hx : x ∈ B') :
       ∃ j : Nat, j ≤ L ∧ phi x = a + (j : ZMod N) * d := by
-    obtain ⟨z, hz, hzx⟩ := Finset.mem_image.mp hx
-    have hz' := Finset.mem_filter.mp hz
-    have hzrange := (Finset.mem_product.mp hz'.1).2
-    refine ⟨z.2, by simpa using hzrange, ?_⟩
-    dsimp only [color] at hz'
-    rw [← hzx]
-    exact (sub_eq_iff_eq_add).mp hz'.2
-  let idx : ZMod N → Nat := fun x => if hx : x ∈ B' then
-    Classical.choose (hB'mem x hx) else 0
-  have hidxLe (x : ZMod N) (hx : x ∈ B') : idx x ≤ L := by
-    dsimp only [idx]
-    rw [dif_pos hx]
-    exact (Classical.choose_spec (hB'mem x hx)).1
-  have hphiIdx (x : ZMod N) (hx : x ∈ B') :
-      phi x = a + (idx x : ZMod N) * d := by
-    dsimp only [idx]
-    rw [dif_pos hx]
-    exact (Classical.choose_spec (hB'mem x hx)).2
-  have hFreiman : FreimanHom k B' phi := by
-    refine ⟨fun _ _ => Set.mem_univ _, ?_⟩
-    intro s t hsB' htB' hscard htcard hsum
-    -- the graph sum, the index sum and the phase sum of one side
-    have hside {u : Multiset (ZMod N)} (huB' : ∀ ⦃x⦄, x ∈ u → x ∈ (B' : Set (ZMod N)))
-        (hucard : Multiset.card u = k) :
-        (u.map fun x => (x, phi x)).sum ∈ k • Gamma ∧ (u.map idx).sum ≤ k * L ∧
-          (u.map phi).sum = k • a + ((u.map idx).sum : ZMod N) * d := by
-      refine ⟨?_, ?_, ?_⟩
-      · simpa [hucard] using cor75_multiset_sum_mem_nsmul Gamma (u.map fun x => (x, phi x)) (by
-          intro p hp
-          obtain ⟨x, hx, rfl⟩ := Multiset.mem_map.mp hp
-          exact (cor75_mem_functionGraph B phi _).2 ⟨hB'sub (huB' hx), rfl⟩)
-      · simpa [Multiset.card_map, hucard] using Multiset.sum_le_card_nsmul (u.map idx) L (by
-          intro j hj
-          obtain ⟨x, hx, rfl⟩ := Multiset.mem_map.mp hj
-          exact hidxLe x (huB' hx))
-      · calc
-          (u.map phi).sum = (u.map fun x => a + (idx x : ZMod N) * d).sum := by
-            congr 1
-            exact Multiset.map_congr rfl fun x hx => hphiIdx x (huB' hx)
-          _ = (u.map fun _ => a).sum + (u.map fun x => (idx x : ZMod N) * d).sum :=
-            Multiset.sum_map_add
-          _ = k • a + ((u.map idx).sum : ZMod N) * d := by
-            rw [Multiset.sum_map_mul_right]
-            simp [hucard]
-    let ys : Nat := (s.map idx).sum
-    let yt : Nat := (t.map idx).sum
-    obtain ⟨hsGraph, hys, hsPhi⟩ :
-        _ ∧ ys ≤ k * L ∧ (s.map phi).sum = k • a + (ys : ZMod N) * d := hside hsB' hscard
-    obtain ⟨htGraph, hyt, htPhi⟩ :
-        _ ∧ yt ≤ k * L ∧ (t.map phi).sum = k • a + (yt : ZMod N) * d := hside htB' htcard
-    by_contra hPhi
-    let y : ZMod N := (s.map phi).sum - (t.map phi).sum
-    have hy0 : y ≠ 0 := sub_ne_zero.mpr hPhi
-    have hyPair : (0, y) ∈ S := by
-      have hm := Finset.sub_mem_sub hsGraph htGraph
-      rw [cor75_multiset_graph_sum phi s, cor75_multiset_graph_sum phi t] at hm
-      simpa [S, y, hsum] using hm
-    have hyK : y ∈ K := by
-      simpa [K] using hyPair
-    dsimp only [y] at hy0 hyK
-    rw [hsPhi, htPhi] at hy0 hyK
-    have hysyt : ys ≠ yt := by
-      intro heq
-      rw [heq] at hy0
-      simp at hy0
-    by_cases hst : yt ≤ ys
-    · let n := ys - yt
-      have hn0 : 0 < n := by omega
-      have hn : n ≤ k * L := by omega
-      obtain ⟨q, hq⟩ := cor75_coeff_rep_pos (N := N) hn0 hn
-      have hbad := havoid q
-      apply hbad
-      rw [hq]
-      convert hyK using 1
-      dsimp only [n]
-      rw [Nat.cast_sub hst]
-      ring
-    · have hts : ys ≤ yt := by omega
-      let n := yt - ys
-      have hn0 : 0 < n := by omega
-      have hn : n ≤ k * L := by omega
-      obtain ⟨q, hq⟩ := cor75_coeff_rep_neg (N := N) hn0 hn
-      have hbad := havoid q
-      apply hbad
-      rw [hq]
-      convert hyK using 1
-      dsimp only [n]
-      rw [Nat.cast_sub hts]
-      ring
-  exact ⟨B', hB'sub, hsizeB, hFreiman⟩
+    obtain ⟨⟨y, j⟩, hz, rfl⟩ := Finset.mem_image.mp hx
+    simp only [fiber, Finset.mem_filter, Finset.mem_product, Finset.mem_range] at hz
+    exact ⟨j, Nat.le_of_lt_succ hz.1.2, sub_eq_iff_eq_add.mp hz.2⟩
+  choose! idx hidxLe hphiIdx using hB'mem
+  refine ⟨B', hB'sub, by rw [hB'card]; exact ha, fun _ _ => Set.mem_univ _,
+    fun s t hsB' htB' hscard htcard hsum => ?_⟩
+  -- the graph sum, the index sum and the phase sum of one side
+  have hside {u : Multiset (ZMod N)} (huB' : ∀ ⦃x⦄, x ∈ u → x ∈ (B' : Set (ZMod N)))
+      (hucard : Multiset.card u = k) :
+      (u.map fun x => (x, phi x)).sum ∈ k • Gamma ∧ (u.map idx).sum ≤ k * L ∧
+        (u.map phi).sum = k • a + ((u.map idx).sum : ZMod N) * d := by
+    refine ⟨?_, ?_, ?_⟩
+    · simpa [hucard] using cor75_multiset_sum_mem_nsmul Gamma (u.map fun x => (x, phi x))
+        (Multiset.forall_mem_map_iff.mpr fun x hx =>
+          (cor75_mem_functionGraph B phi _).2 ⟨hB'sub (huB' hx), rfl⟩)
+    · simpa [hucard] using Multiset.sum_le_card_nsmul (u.map idx) L
+        (Multiset.forall_mem_map_iff.mpr fun x hx => hidxLe x (huB' hx))
+    · rw [Multiset.map_congr rfl fun x hx => hphiIdx x (huB' hx), Multiset.sum_map_add,
+        Multiset.sum_map_mul_right]
+      simp [hucard]
+  obtain ⟨hsG, hys, hsPhi⟩ := hside hsB' hscard
+  obtain ⟨htG, hyt, htPhi⟩ := hside htB' htcard
+  -- the phase sums differ by a multiple `c * d ∈ K` with `|c| ≤ k * L`, which forces `c = 0`
+  have hyK : (s.map phi).sum - (t.map phi).sum ∈ K := by
+    simpa [K, S, hsum, cor75_multiset_graph_sum] using Finset.sub_mem_sub hsG htG
+  rw [hsPhi, htPhi] at hyK ⊢
+  obtain h | h | h := lt_trichotomy (s.map idx).sum (t.map idx).sum
+  · obtain ⟨q, hq⟩ := cor75_coeff_rep_neg (N := N) (k := k) (L := L) (Nat.sub_pos_of_lt h)
+      (by omega)
+    exact (havoid q (by rw [hq]; convert hyK using 1; rw [Nat.cast_sub h.le]; ring)).elim
+  · rw [h]
+  · obtain ⟨q, hq⟩ := cor75_coeff_rep_pos (N := N) (k := k) (L := L) (Nat.sub_pos_of_lt h)
+      (by omega)
+    exact (havoid q (by rw [hq]; convert hyK using 1; rw [Nat.cast_sub h.le]; ring)).elim
 
 end LeanProofs.GowersSzemeredi

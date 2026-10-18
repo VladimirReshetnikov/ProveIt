@@ -21,61 +21,43 @@ theorem quadratic_phase_localization {N L : Nat} [NeZero N]
       ∀ j, (S j).IsProper ∧ L ≤ (S j).length ∧ ‖z j‖ = 1 ∧
         ∀ x, x ∈ (S j).carrier → ‖exponential (-(phi x)) - z j‖ ≤ 1 / (4 * L) := by
   let H := quadraticLocalizationChunk L
-  let R := quadraticLocalizationPrecision L
-  let T := 2 ^ 256 * R ^ 16
-  have hH : 1 ≤ H := by
-    dsimp [H, quadraticLocalizationChunk]
-    have : 1 ≤ (2 * L) ^ 3 := one_le_pow₀ (by omega)
-    omega
-  have hR : 2 ≤ R := quadraticLocalization_precision_ge_two hL
-  have hbudget : T * (H + 1) ^ 2 ≤ P.length := hsize
-  have hT : T ≤ P.length := by
-    calc
-      T = T * 1 := (Nat.mul_one T).symm
-      _ ≤ T * (H + 1) ^ 2 := Nat.mul_le_mul_left T (one_le_pow₀ (by omega))
-      _ ≤ _ := hbudget
+  have hH : 1 ≤ H :=
+    Nat.one_le_iff_ne_zero.mpr (by simp only [H, quadraticLocalizationChunk]; positivity)
+  have hT : 2 ^ 256 * quadraticLocalizationPrecision L ^ 16 ≤ P.length :=
+    (Nat.le_mul_of_pos_right _ (by positivity)).trans hsize
   have hPN : P.length ≤ N := by
     rw [← hP]
     simpa only [ZMod.card] using P.carrier.card_le_univ
-  let f : ZMod N → ZMod N := fun x => phi (section5ModIndexPoint P x)
-  have hf : PolynomialOn 2 Finset.univ f := polynomialOn_section5ModIndexPoint P phi hphi
-  obtain ⟨a, ha⟩ := polynomialOn_affine_degree_drop f hf
-  obtain ⟨p, hp, hpT, hrec⟩ := quadratic_recurrence a hR (hT.trans hPN)
+  obtain ⟨a, ha⟩ := polynomialOn_affine_degree_drop _
+    (polynomialOn_section5ModIndexPoint P phi hphi)
+  obtain ⟨p, hp, hpT, hrec⟩ :=
+    quadratic_recurrence a (quadraticLocalization_precision_ge_two hL) (hT.trans hPN)
   obtain ⟨M, Q, _, hQpart, hQcells, hQstep⟩ := section5_residue_target_partition
     P.length p (H + 1) (by omega) (by omega)
-    ((Nat.mul_le_mul_right ((H + 1) ^ 2) hpT).trans hbudget)
-  let C : Fin M → ModAP N := fun i => section5Transport P (Q i)
-  have hCpart : IsPartition (fun i => (C i).carrier) P.carrier :=
-    section5Transport_partition P Q hP hQpart
+    ((Nat.mul_le_mul_right ((H + 1) ^ 2) hpT).trans hsize)
+  -- localize on each transported cell of length `H` or `H + 1`, then flatten
   have hlocal (i : Fin M) :
       ∃ m : Nat, ∃ S : Fin m → ModAP N, ∃ z : Fin m → Complex,
-        IsPartition (fun j => (S j).carrier) (C i).carrier ∧
+        IsPartition (fun j => (S j).carrier) (section5Transport P (Q i)).carrier ∧
         ∀ j, (S j).IsProper ∧ L ≤ (S j).length ∧ ‖z j‖ = 1 ∧
           ∀ x, x ∈ (S j).carrier → ‖exponential (-(phi x)) - z j‖ ≤ 1 / (4 * L) := by
-    have hC : (C i).IsProper := section5Transport_isProper P (Q i) hP
-      (hQcells i).1 (hQpart.cell_subset i)
-    have hlength : (C i).length = H ∨ (C i).length = H + 1 := by
-      simpa only [C, section5Transport_length, Nat.add_sub_cancel] using (hQcells i).2.2
+    have hlength : (section5Transport P (Q i)).length = H ∨
+        (section5Transport P (Q i)).length = H + 1 := by
+      simpa only [section5Transport_length, Nat.add_sub_cancel] using (hQcells i).2.2
     obtain ⟨psi, hpsi, hsplit⟩ := ha ((Q i).start : ZMod N) (p : ZMod N)
-    apply quadratic_chunk_phase_localization (C i) phi psi (a * (p : ZMod N) ^ 2)
-      hC hpsi hL (by omega) (by omega)
-    · simpa only [mul_comm] using hrec.le
-    · intro t
-      have heq : section5ModIndexPoint (C i) t =
-          section5ModIndexPoint P ((Q i).start + t * (p : ZMod N)) := by
-        dsimp [C, section5Transport, section5ModIndexPoint, section5IndexPoint]
-        rw [hQstep i]
-        ring
-      rw [heq]
-      exact hsplit t
+    refine quadratic_chunk_phase_localization _ phi psi (a * (p : ZMod N) ^ 2)
+      (section5Transport_isProper P (Q i) hP (hQcells i).1 (hQpart.cell_subset i)) hpsi hL
+      (by omega) (by omega) (by simpa only [mul_comm] using hrec.le) fun t => ?_
+    rw [← hsplit t]
+    dsimp [section5Transport, section5ModIndexPoint, section5IndexPoint]
+    rw [hQstep i]
+    ring_nf
   choose m S z hpart hcells using hlocal
   let e := section5NatFlattenEquiv m
-  refine ⟨∑ i, m i, (fun j => let v := e.symm j; S v.1 v.2),
-    (fun j => let v := e.symm j; z v.1 v.2), ?_, ?_⟩
-  · exact finsetPartition_flatten m (fun i => (C i).carrier) P.carrier
-      (fun i j => (S i j).carrier) hCpart hpart
-  · intro j
-    exact hcells (e.symm j).1 (e.symm j).2
+  exact ⟨∑ i, m i, fun j => S (e.symm j).1 (e.symm j).2, fun j => z (e.symm j).1 (e.symm j).2,
+    finsetPartition_flatten m _ P.carrier (fun i j => (S i j).carrier)
+      (section5Transport_partition P Q hP hQpart) hpart,
+    fun j => hcells (e.symm j).1 (e.symm j).2⟩
 
 theorem thresholdFreePolynomialLocalization_two : ThresholdFreePolynomialLocalization 2 := by
   intro N _ P phi L hP hphi hL hsize

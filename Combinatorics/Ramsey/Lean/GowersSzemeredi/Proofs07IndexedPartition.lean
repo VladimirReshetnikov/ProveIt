@@ -47,13 +47,8 @@ theorem corollary_7_11_universal_modular_with_step_span (N : Nat) [Fact N.Prime]
   have hP : P.IsProper := fun _ ↦ hR
   have hwidth : P.width = R.length := BaseCase.boxOne_width P
   have hUlength : U.length = R.length := hwidth
-  have hBsub : B ⊆ P.carrier := by
-    intro x hx
-    apply Finset.mem_filter.mpr
-    refine ⟨Finset.mem_univ _, ?_⟩
-    intro i
-    fin_cases i
-    exact hA ((mem_liftScalarDomain A x).mp hx)
+  have hBsub : B ⊆ P.carrier := fun x hx ↦ Finset.mem_filter.mpr ⟨Finset.mem_univ _,
+    fun i ↦ by fin_cases i; exact hA ((mem_liftScalarDomain A x).mp hx)⟩
   have hCcard : C.card = A.card := by
     rw [BaseCase.boxOneIndexDomain_card P hP B, Finset.inter_eq_left.mpr hBsub]
     simp [B, liftScalarDomain]
@@ -61,13 +56,8 @@ theorem corollary_7_11_universal_modular_with_step_span (N : Nat) [Fact N.Prime]
     ext x
     rw [BaseCase.mem_pointOneDomain]
     simp [B, BaseCase.pointOneEquiv]
-  have hCfreiman (phi : ZMod N → ZMod N) (hfreiman : FreimanHom 8 A phi) :
-      FreimanHom 8 C (BaseCase.boxOneIndexMap P (fun x ↦ phi (x 0))) := by
-    apply BaseCase.boxOneIndex_freiman
-    change FreimanHom 8 (BaseCase.pointOneDomain B) phi
-    rw [hBdomain]
-    exact hfreiman
-  obtain ⟨M, T, hTpart, hTcell, hTstep, hTlinear⟩ :=
+  -- the integer partition of the index interval, transported to cells of `R`
+  obtain ⟨M, T, hTpart, hTcell, ⟨d, hd, hTd⟩, hTlinear⟩ :=
     corollary_7_11_universal_real_lower_bound N 1 U (fun _ ↦ C) alpha
       (by norm_num) hα (by simpa only [hUlength] using hl)
       (BaseCase.boxOneIndexAP_proper P)
@@ -77,40 +67,21 @@ theorem corollary_7_11_universal_modular_with_step_span (N : Nat) [Fact N.Prime]
   let Q : Fin M → ModAP N := fun j ↦ (BaseCase.indexCellBox P (T j)).axis 0
   have hQproper (j : Fin M) : (Q j).IsProper :=
     BaseCase.indexCellBox_proper P hP (T j) (hTcell j).1 (hTpart.cell_subset j) 0
-  have hXtwo : (2 : Real) < (R.length : Real) ^ cor711Exponent alpha 1 := by
-    linarith only [hlarge]
+  have hTlen (j : Fin M) : (R.length : Real) ^ cor711Exponent alpha 1 ≤ (T j).length := by
+    simpa only [hUlength] using (hTcell j).2
+  have hT2 (j : Fin M) : 2 < (T j).length := by
+    exact_mod_cast (show (2 : Real) < (T j).length by linarith [hTlen j])
   have hQstep (j : Fin M) : (Q j).step ≠ 0 :=
-    BaseCase.proper_modAP_step_ne_zero_of_two_le (Q j) (hQproper j) (by
-      have hlen : (2 : Real) < (T j).length :=
-        hXtwo.trans_le (by simpa only [hUlength] using (hTcell j).2)
-      have hlenNat : 2 < (T j).length := by exact_mod_cast hlen
-      change 2 ≤ (T j).length
-      omega)
-  refine ⟨M, Q, ?_, ?_, ?_⟩
-  · exact box_one_partition_axes P (fun j ↦ BaseCase.indexCellBox P (T j))
-      (BaseCase.indexCells_partition P hP T hTpart)
-  · intro j
-    refine ⟨bne_iff_ne.mpr (hQstep j), hQproper j, ?_, ?_⟩
-    · exact (show (R.length : Real) ^ cor711Exponent alpha 1 ≤ (T j).length by
-        simpa only [hUlength] using (hTcell j).2)
-    · intro phi hfreiman
-      exact indexCell_scalar_linear P (T j) A phi (hTpart.cell_subset j) (hQstep j)
-        (hTlinear (fun _ ↦ BaseCase.boxOneIndexMap P (fun x ↦ phi (x 0)))
-          (fun _ ↦ hCfreiman phi hfreiman) (0 : Fin 1) j)
-
-  · obtain ⟨d, hd, hTd⟩ := hTstep
-    refine ⟨d, hd, fun j => ⟨?_, ?_⟩⟩
-    · change ((T j).step : ZMod N) * R.step = (d : ZMod N) * R.step
-      rw [hTd j]
-    · have hlen : 0 < (T j).length := by
-        have hpos : (0 : Real) < (T j).length :=
-          (Real.rpow_pos_of_pos (by exact_mod_cast hl : (0 : Real) < R.length) _).trans_le
-            (by simpa only [hUlength] using (hTcell j).2)
-        exact_mod_cast hpos
-      have hsub : (T j).carrier ⊆ ({ start := 0, step := 1, length := R.length } : IntAP).carrier := by
-        simpa only [U, BaseCase.boxOneIndexAP, hwidth] using hTpart.cell_subset j
-      have hspan := intAP_step_span_in_interval (T j) R.length hlen hsub
-      rw [hTd j] at hspan
-      exact hspan
+    BaseCase.proper_modAP_step_ne_zero_of_two_le (Q j) (hQproper j) (hT2 j).le
+  refine ⟨M, Q, box_one_partition_axes P (fun j ↦ BaseCase.indexCellBox P (T j))
+      (BaseCase.indexCells_partition P hP T hTpart), fun j ↦ ⟨bne_iff_ne.mpr (hQstep j),
+      hQproper j, hTlen j, fun phi hfreiman ↦ ?_⟩, d, hd, fun j ↦ ⟨?_, ?_⟩⟩
+  · exact indexCell_scalar_linear P (T j) A phi (hTpart.cell_subset j) (hQstep j)
+      (hTlinear (fun _ ↦ BaseCase.boxOneIndexMap P (fun x ↦ phi (x 0)))
+        (fun _ ↦ BaseCase.boxOneIndex_freiman P B _ (by rw [hBdomain]; exact hfreiman)) 0 j)
+  · exact congrArg (fun s : Nat ↦ (s : ZMod N) * R.step) (hTd j)
+  · have hspan := intAP_step_span_in_interval (T j) R.length (Nat.zero_lt_of_lt (hT2 j))
+      (by simpa only [U, BaseCase.boxOneIndexAP, hwidth] using hTpart.cell_subset j)
+    rwa [hTd j] at hspan
 
 end LeanProofs.GowersSzemeredi

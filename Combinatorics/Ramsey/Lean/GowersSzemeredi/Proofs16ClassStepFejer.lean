@@ -119,9 +119,7 @@ theorem class_piece_of_subrelation_fejer (C : UniformClassWith k Thr Cnt Exp) (h
     intro h2
     rw [h2] at hN3
     norm_num at hN3)
-  have hβ : theta / 2 * (N : Real) ^ (k + 1) ≤ (relationProjection Delta).card := by
-    have : (0 : Real) ≤ (N : Real) ^ (k + 1) := by positivity
-    nlinarith
+  have hβ : theta / 2 * (N : Real) ^ (k + 1) ≤ (relationProjection Delta).card := by linarith
   obtain ⟨hfa0, hfaS⟩ := fejerThetaOne_bounds k ht ht1 hg hg1
   obtain ⟨B', hB'sub, harr1, harr2⟩ := fejer_product_of_density_lower_explicit k (theta / 2) gamma
     hk (by positivity) (by linarith) hg hg1 N hNthr hprime hodd

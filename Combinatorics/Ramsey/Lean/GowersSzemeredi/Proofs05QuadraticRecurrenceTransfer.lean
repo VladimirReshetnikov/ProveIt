@@ -20,44 +20,28 @@ theorem quadratic_recurrence_of_weyl_witness {N R q : Nat} [NeZero N]
     ∃ p : Nat, 1 ≤ p ∧ p ≤ 2 ^ 256 * R ^ 16 ∧
       (centeredAbs (((p : ZMod N) ^ 2) * a) : Real) < (N : Real) / R := by
   have hRr : (2 : Real) ≤ R := by exact_mod_cast hR
-  have hR0 : (0 : Real) < R := by linarith
   have hqr : (0 : Real) < q := by exact_mod_cast hq
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hT : 0 < quadraticRecurrenceSample R := by
-    unfold quadraticRecurrenceSample
-    positivity
-  have hs : 0 < centeredAbs r := by
-    apply Nat.pos_of_ne_zero
-    intro hz
-    have hv : r.valMinAbs = 0 := Int.natAbs_eq_zero.mp hz
-    exact hr ((ZMod.valMinAbs_eq_zero r).mp hv)
-  let p := centeredAbs r * q
-  have hp : 1 ≤ p := Nat.one_le_iff_ne_zero.mpr (by dsimp [p]; positivity)
-  have hqb := quadraticRecurrence_denominator_bound hRr hqr hweyl
-  have hpb : (p : Real) < quadraticRecurrenceSample R / (R : Real) ^ 2 := by
-    simpa only [p, Nat.cast_mul] using
-      quadraticRecurrence_witness_budget hRr hrsize hqr.le hqb
-  have hRone : (1 : Real) ≤ (R : Real) ^ 2 := one_le_pow₀ (by linarith)
-  have hpT : (p : Real) < quadraticRecurrenceSample R :=
-    hpb.trans_le ((div_le_iff₀ (by positivity)).mpr
-      (by nlinarith [mul_le_mul_of_nonneg_left hRone hT.le]))
-  have hpNat : p ≤ 2 ^ 256 * R ^ 16 := by
-    have hc : (p : Real) ≤ ((2 ^ 256 * R ^ 16 : Nat) : Real) := by
+  have hT : 0 < quadraticRecurrenceSample R := by unfold quadraticRecurrenceSample; positivity
+  have hs : 0 < centeredAbs r := Int.natAbs_pos.mpr (mt (ZMod.valMinAbs_eq_zero r).mp hr)
+  -- the witness `p = |r| q` satisfies `p < T / R² ≤ T / R ≤ T`, `T` the sample length
+  have hpb : ((centeredAbs r * q : Nat) : Real) < quadraticRecurrenceSample R / (R : Real) ^ 2 := by
+    simpa only [Nat.cast_mul] using quadraticRecurrence_witness_budget hRr hrsize hqr.le
+      (quadraticRecurrence_denominator_bound hRr hqr hweyl)
+  have hpR : ((centeredAbs r * q : Nat) : Real) < quadraticRecurrenceSample R / R :=
+    hpb.trans_le (div_le_div_of_nonneg_left hT.le (by positivity)
+      (by linarith [mul_le_mul_of_nonneg_left hRr (by positivity : (0 : Real) ≤ R)]))
+  refine ⟨centeredAbs r * q, Nat.one_le_iff_ne_zero.mpr (by positivity), ?_, ?_⟩
+  · have hc : ((centeredAbs r * q : Nat) : Real) ≤ ((2 ^ 256 * R ^ 16 : Nat) : Real) := by
       rw [quadraticRecurrenceSample_natCast]
-      exact hpT.le
+      exact (hpR.trans_le (div_le_self hT.le (by linarith))).le
     exact_mod_cast hc
-  have hcenter : (centeredAbs (((p : ZMod N) ^ 2) * a) : Real) ≤
-      ((N : Real) / quadraticRecurrenceSample R) * (p : Real) := by
-    simpa only [Nat.reduceSub, pow_one] using
+  · have hcenter :=
       modular_monomial_of_rational_approximation (k := 2) a r b (by omega) hq hT happrox
-  refine ⟨p, hp, hpNat, hcenter.trans_lt ?_⟩
-  have hpR : (p : Real) < quadraticRecurrenceSample R / R := by
-    apply hpb.trans_le
-    apply div_le_div_of_nonneg_left hT.le hR0
-    nlinarith
-  calc
-    _ < ((N : Real) / quadraticRecurrenceSample R) * (quadraticRecurrenceSample R / R) :=
-      mul_lt_mul_of_pos_left hpR (by positivity)
-    _ = (N : Real) / R := by field_simp
+    simp only [Nat.reduceSub, pow_one] at hcenter
+    calc _ ≤ (N : Real) / quadraticRecurrenceSample R * (centeredAbs r * q : Nat) := hcenter
+      _ < (N : Real) / quadraticRecurrenceSample R * (quadraticRecurrenceSample R / R) :=
+        mul_lt_mul_of_pos_left hpR (by positivity)
+      _ = (N : Real) / R := by field_simp
 
 end LeanProofs.GowersSzemeredi

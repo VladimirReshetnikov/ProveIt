@@ -76,77 +76,53 @@ theorem section5_strong_partition_degree_step {k : Nat} (hk : 1 ≤ k)
         ((r : Real) ^ (-(2 * (polynomialPartitionConstant (k + 1) : Real)⁻¹)) * N) := by
   obtain ⟨a, hdecompose⟩ := polynomialOn_affine_degree_drop phi hphi
   obtain ⟨p, hp, hp2, hrec⟩ :=
-    lemma_5_5_square_root_auxiliary_holds (k + 1) r N (by omega)
-      hthreshold.le hrN a
-  have hpu : p * u ^ 2 ≤ r := by
-    nlinarith
+    lemma_5_5_square_root_auxiliary_holds (k + 1) r N (by omega) hthreshold.le hrN a
   obtain ⟨m, Q, hm, hQpart, hQcells, hQstep⟩ :=
-    section5_residue_target_partition r p u (by omega) hu hpu
+    section5_residue_target_partition r p u (by omega) hu (by nlinarith)
   choose psi hpsi hidentity using
     fun i : Fin m => hdecompose ((Q i).start : ZMod N) (p : ZMod N)
-  have hQN (i : Fin m) : (Q i).length ≤ N := by
-    calc
-      (Q i).length = (Q i).carrier.card := (hQcells i).1.2.symm
-      _ ≤ (Finset.range r).card := Finset.card_le_card (IsPartition.cell_subset hQpart i)
-      _ = r := Finset.card_range r
-      _ ≤ N := hrN
+  have hQN (i : Fin m) : (Q i).length ≤ N :=
+    ((hQcells i).1.2.symm.trans_le (Finset.card_le_card (hQpart.cell_subset i))).trans
+      ((Finset.card_range r).le.trans hrN)
+  -- refine each coarse cell by the lower-degree partition of its lower-order part
   choose L R hL hRpart hRcells hRdiam using fun i : Fin m =>
     hprev N (Q i).length v (psi i) (hpsi i)
       (hscale (Q i).length (hQcells i).2.2).1 (hQN i) hv
       (hscale (Q i).length (hQcells i).2.2).2.1
   let T (i : Fin m) (j : Fin (L i)) := section5NatTransport (Q i) (R i j)
-  have hTpart (i : Fin m) : IsNatAPPartition (T i) (Q i).carrier :=
-    section5NatTransport_partition (Q i) (R i) (hQcells i).1 (hRpart i)
-  have hTcells (i : Fin m) (j : Fin (L i)) :
-      (T i j).IsProper ∧ 0 < (T i j).length ∧
-        ((T i j).length = v - 1 ∨ (T i j).length = v) :=
-    ⟨section5NatTransport_isProper (Q i) (R i j) (hQcells i).1 (hRcells i j).1,
-      (hRcells i j).2⟩
   have hTdiam (i : Fin m) (j : Fin (L i)) :
       diameterAtMostReal ((T i j).carrier.image fun x : Nat => phi (x : ZMod N))
         ((r : Real) ^ (-(2 * (polynomialPartitionConstant (k + 1) : Real)⁻¹)) * N) := by
     let b : ZMod N := a * (p : ZMod N) ^ (k + 1)
-    have hrec' : (centeredAbs b : Real) ≤
-        (r : Real) ^ (-(((k + 1 : Nat) : Real) * (2 : Real) ^ (k + 1 + 1))⁻¹) * N := by
-      simpa only [b, mul_comm] using hrec
-    have hsubset : (R i j).carrier ⊆ Finset.range u := by
-      apply (IsPartition.cell_subset (hRpart i) j).trans
-      apply Finset.range_mono
-      rcases (hQcells i).2.2 with h | h <;> omega
+    -- the top-degree term `b t ^ (k + 1)` contributes at most the degree-step error
     have hmono : diameterAtMostReal
         ((R i j).carrier.image fun t : Nat => b * (t : ZMod N) ^ (k + 1))
         (polynomialDegreeStepError r u (k + 1) * N) := by
-      refine ⟨u ^ (k + 1) * centeredAbs b,
-        diameterAtMost_monomial (R i j).carrier hsubset b, ?_⟩
-      have h := mul_le_mul_of_nonneg_left hrec' (by positivity : (0 : Real) ≤ (u : Real) ^ (k + 1))
-      simpa only [Nat.cast_mul, Nat.cast_pow, polynomialDegreeStepError, mul_assoc] using h
-    have hsum := diameterAtMostReal_add_image (R i j).carrier
-      (fun t : Nat => b * (t : ZMod N) ^ (k + 1)) (fun t : Nat => psi i (t : ZMod N))
-      hmono (hRdiam i j)
+      refine ⟨_, diameterAtMost_monomial (u := u) (R i j).carrier ((hRpart i).cell_subset j |>.trans
+        (Finset.range_mono (by rcases (hQcells i).2.2 with h | h <;> omega))) b, ?_⟩
+      rw [polynomialDegreeStepError, mul_assoc, Nat.cast_mul, Nat.cast_pow]
+      gcongr
+      simpa only [b, mul_comm] using hrec
     have himage : (T i j).carrier.image (fun x : Nat => phi (x : ZMod N)) =
         (R i j).carrier.image (fun t : Nat => b * (t : ZMod N) ^ (k + 1) + psi i (t : ZMod N)) := by
       rw [show T i j = section5NatTransport (Q i) (R i j) from rfl,
         section5NatTransport_carrier, Finset.image_image]
       apply Finset.image_congr
       intro t _
-      change phi (section5NatIndexPoint (Q i) t : ZMod N) =
-        b * (t : ZMod N) ^ (k + 1) + psi i (t : ZMod N)
+      change phi (section5NatIndexPoint (Q i) t : ZMod N) = _
       rw [section5NatIndexPoint_cast, hQstep, hidentity]
+    obtain ⟨d, hd, hds⟩ := diameterAtMostReal_add_image _ _ _ hmono (hRdiam i j)
     rw [himage]
-    obtain ⟨d, hd, hds⟩ := hsum
     refine ⟨d, hd, hds.trans ?_⟩
     simpa only [add_mul] using mul_le_mul_of_nonneg_right
       (hscale (Q i).length (hQcells i).2.2).2.2 (Nat.cast_nonneg N)
-  have hsumL : 0 < ∑ i, L i := by
-    let i : Fin m := ⟨0, hm⟩
-    exact (hL i).trans_le (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (mem_univ i))
-  refine ⟨∑ i, L i, section5NatFlatten L T, hsumL,
-    section5NatFlatten_partition Q _ L T hQpart hTpart, ?_, ?_⟩
-  · intro j
-    let z := (section5NatFlattenEquiv L).symm j
-    exact hTcells z.1 z.2
-  · intro j
-    let z := (section5NatFlattenEquiv L).symm j
-    exact hTdiam z.1 z.2
+  let e := section5NatFlattenEquiv L
+  exact ⟨∑ i, L i, section5NatFlatten L T,
+    (hL ⟨0, hm⟩).trans_le (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (mem_univ _)),
+    section5NatFlatten_partition Q _ L T hQpart fun i =>
+      section5NatTransport_partition (Q i) (R i) (hQcells i).1 (hRpart i),
+    fun j => ⟨section5NatTransport_isProper _ _ (hQcells (e.symm j).1).1
+      (hRcells (e.symm j).1 (e.symm j).2).1, (hRcells (e.symm j).1 (e.symm j).2).2⟩,
+    fun j => hTdiam (e.symm j).1 (e.symm j).2⟩
 
 end LeanProofs.GowersSzemeredi

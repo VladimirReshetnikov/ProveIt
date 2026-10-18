@@ -21,30 +21,19 @@ private lemma freiman_index_interpolation {N : Nat} [Fact N.Prime]
   let S := Multiset.replicate (c - a) (s + b * d)
   let T := Multiset.replicate (b - a) (s + c * d) +
     Multiset.replicate (c - b) (s + a * d)
-  have hS : ∀ ⦃x⦄, x ∈ S → x ∈ (A : Set (ZMod N)) := by
-    intro x hx
-    have := (Multiset.mem_replicate.mp hx).2
-    change x ∈ A
-    rw [this]
+  have hS : ∀ ⦃x⦄, x ∈ S → x ∈ (A : Set (ZMod N)) := fun x hx => by
+    rw [Multiset.eq_of_mem_replicate hx]
     exact hb
-  have hT : ∀ ⦃x⦄, x ∈ T → x ∈ (A : Set (ZMod N)) := by
-    intro x hx
-    rcases Multiset.mem_add.mp hx with hx | hx
-    · have := (Multiset.mem_replicate.mp hx).2
-      change x ∈ A
-      rw [this]
-      exact hc
-    · have := (Multiset.mem_replicate.mp hx).2
-      change x ∈ A
-      rw [this]
-      exact ha
-  have hcardS : S.card = c - a := by simp [S]
+  have hT : ∀ ⦃x⦄, x ∈ T → x ∈ (A : Set (ZMod N)) := fun x hx => by
+    rcases Multiset.mem_add.mp hx with hx | hx <;> rw [Multiset.eq_of_mem_replicate hx]
+    exacts [hc, ha]
   have hcardT : T.card = c - a := by simp [T]; omega
   have hsum : S.sum = T.sum := by
     simp only [S, T, Multiset.sum_add, Multiset.sum_replicate, nsmul_eq_mul]
     push_cast [Nat.cast_sub (hab.trans hbc), Nat.cast_sub hab, Nat.cast_sub hbc]
     ring
-  have h := (IsAddFreimanHom.mono hca hphi).map_sum_eq_map_sum hS hT hcardS hcardT hsum
+  have h := (IsAddFreimanHom.mono hca hphi).map_sum_eq_map_sum hS hT
+    (Multiset.card_replicate _ _) hcardT hsum
   simpa only [S, T, Multiset.map_replicate, Multiset.map_add, Multiset.sum_add,
     Multiset.sum_replicate, nsmul_eq_mul] using h
 
@@ -56,67 +45,43 @@ theorem linearOn_nine_point_progression {N : Nat} [Fact N.Prime]
     (hphi : FreimanHom 8 A phi) : LinearOn A phi := by
   by_cases htwo : A.card ≤ 2
   · exact linearOn_of_card_le_two A phi htwo
+  -- the indices of the points of `A`, with their extremes `lo < hi`
   let I : Finset (Fin P.length) := Finset.univ.filter
     (fun i ↦ P.start + (i : Nat) * P.step ∈ A)
-  have hI : I.Nonempty := by
-    have hne : A.Nonempty := Finset.card_pos.mp (by omega)
-    obtain ⟨x, hx⟩ := hne
-    obtain ⟨i, _, hi⟩ := Finset.mem_image.mp (hA hx)
-    exact ⟨i, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hi ▸ hx⟩⟩
-  let lo := I.min' hI
-  let hi := I.max' hI
-  have hlo : lo ∈ I := Finset.min'_mem _ _
-  have hhi : hi ∈ I := Finset.max'_mem _ _
-  have hloA : P.start + (lo : Nat) * P.step ∈ A := (Finset.mem_filter.mp hlo).2
-  have hhiA : P.start + (hi : Nat) * P.step ∈ A := (Finset.mem_filter.mp hhi).2
-  have hdistinct : lo ≠ hi := by
-    intro heq
-    have hsingle : A.card ≤ 1 := by
-      apply Finset.card_le_one.mpr
-      intro x hx y hy
-      obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp (hA hx)
-      obtain ⟨j, _, rfl⟩ := Finset.mem_image.mp (hA hy)
-      have hiI : i ∈ I := Finset.mem_filter.mpr ⟨Finset.mem_univ _, hx⟩
-      have hjI : j ∈ I := Finset.mem_filter.mpr ⟨Finset.mem_univ _, hy⟩
-      have hil : lo ≤ i := Finset.min'_le _ _ hiI
-      have hih : i ≤ hi := Finset.le_max' _ _ hiI
-      have hjl : lo ≤ j := Finset.min'_le _ _ hjI
-      have hjh : j ≤ hi := Finset.le_max' _ _ hjI
-      have hij : i = j := by omega
-      rw [hij]
+  have hAI : A ⊆ I.image fun i : Fin P.length ↦ P.start + (i : Nat) * P.step := fun x hx ↦ by
+    obtain ⟨i, -, rfl⟩ := Finset.mem_image.mp (hA hx)
+    exact Finset.mem_image_of_mem _ (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hx⟩)
+  have hI : 1 < I.card := by
+    have := (Finset.card_le_card hAI).trans Finset.card_image_le
     omega
+  have hIne : I.Nonempty := Finset.card_pos.mp (by omega)
+  let lo := I.min' hIne
+  let hi := I.max' hIne
+  have hlt : lo < hi := Finset.min'_lt_max'_of_card I hI
+  let x0 := P.start + (lo : Nat) * P.step
+  let x1 := P.start + (hi : Nat) * P.step
   have hcard : (Finset.univ.image
       (fun i : Fin P.length ↦ P.start + (i : Nat) * P.step)).card =
       (Finset.univ : Finset (Fin P.length)).card := by
     simpa only [ModAP.IsProper, ModAP.carrier, Finset.card_univ, Fintype.card_fin] using hP
-  have hinj := Finset.card_image_iff.mp hcard
-  have hne : P.start + (hi : Nat) * P.step -
-      (P.start + (lo : Nat) * P.step) ≠ 0 := by
-    intro hz
-    have hh := hinj (Finset.mem_univ hi) (Finset.mem_univ lo) (sub_eq_zero.mp hz)
-    exact hdistinct hh.symm
-  let a := (phi (P.start + (hi : Nat) * P.step) -
-    phi (P.start + (lo : Nat) * P.step)) /
-    (P.start + (hi : Nat) * P.step - (P.start + (lo : Nat) * P.step))
-  let b := phi (P.start + (lo : Nat) * P.step) -
-    a * (P.start + (lo : Nat) * P.step)
-  refine ⟨a, b, ?_⟩
-  intro x hx
+  have hne : x1 - x0 ≠ 0 := fun hz ↦ hlt.ne' (Finset.card_image_iff.mp hcard
+    (Finset.mem_univ hi) (Finset.mem_univ lo) (sub_eq_zero.mp hz))
+  -- the affine map through the two extreme points
+  let a := (phi x1 - phi x0) / (x1 - x0)
+  have ha : a * (x1 - x0) = phi x1 - phi x0 := div_mul_cancel₀ _ hne
+  refine ⟨a, phi x0 - a * x0, fun x hx ↦ ?_⟩
   obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp (hA hx)
   have hiI : i ∈ I := Finset.mem_filter.mpr ⟨Finset.mem_univ _, hx⟩
   have hli : (lo : Nat) ≤ i := Finset.min'_le _ _ hiI
   have hih : (i : Nat) ≤ hi := Finset.le_max' _ _ hiI
-  have hrel := freiman_index_interpolation A phi hphi P.start P.step lo i hi
-    hli hih (by have := hi.isLt; omega) hloA hx hhiA
+  have hrel := freiman_index_interpolation A phi hphi P.start P.step lo i hi hli hih
+    (by have := hi.isLt; omega) (Finset.mem_filter.mp (I.min'_mem hIne)).2 hx
+    (Finset.mem_filter.mp (I.max'_mem hIne)).2
   push_cast [Nat.cast_sub (hli.trans hih), Nat.cast_sub hli, Nat.cast_sub hih] at hrel
-  have ha : a * (P.start + (hi : Nat) * P.step -
-      (P.start + (lo : Nat) * P.step)) =
-      phi (P.start + (hi : Nat) * P.step) -
-        phi (P.start + (lo : Nat) * P.step) := div_mul_cancel₀ _ hne
   apply mul_left_cancel₀ hne
-  dsimp only [b]
+  dsimp only [x0, x1] at ha ⊢
   linear_combination P.step * hrel -
-    (P.start + (i : Nat) * P.step - (P.start + (lo : Nat) * P.step)) * ha
+    (((i : Nat) : ZMod N) - ((lo : Nat) : ZMod N)) * P.step * ha
 
 /-- Uniform upper bound for the one-map partition exponent. -/
 theorem cor711_single_exponent_bounds {alpha : Real} (hα : 0 < alpha) (hαone : alpha ≤ 1) :
