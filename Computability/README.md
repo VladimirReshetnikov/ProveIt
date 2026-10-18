@@ -98,6 +98,17 @@ consistency calibration; the rotation's source/runtime connection and the
 internal PA proof remain open in Lean. Compensated244 remains the smallest
 machine with the complete external Lean consistency endpoint.
 
+The [batch 168 reconciliation](../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-168.md)
+records the 241-state candidate's ordinary proof and fresh replay: 19 jobs,
+including five complete 8,390-case universal runs; primary 241 has 2,319,442
+symbolic rules, 482 rows and exact 408,419-step startup. The
+[six-report comparison in batch 169](../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-169.md)
+identifies all six later 242 tables with primary A, up to one state rename,
+so their composition gives the existing 241 candidate. A fresh joint
+equational packet has **1,750 complete bits**, without supplying a further
+binary-state bound or internal PA endpoint. Compensated244 remains the
+closed external Lean baseline while the 241 consistency endpoint is completed.
+
 The score and time functions are distinct measures. The proved values
 `Sigma(2)=4`, `Sigma(3)=6`, `Sigma(4)=13` and `BB(2)=6`, `BB(3)=21`,
 `BB(4)=107` therefore intentionally differ.

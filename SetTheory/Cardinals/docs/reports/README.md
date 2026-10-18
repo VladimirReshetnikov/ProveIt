@@ -2979,3 +2979,33 @@ consistency endpoint, and internal PA calibration remains open. Neither
 incoming package supplied the combined table. The base article and all
 delivered files remain unchanged. Eighteen archives remained queued at
 placement; a later arrival brings the queue to nineteen.
+
+
+Batch 168 adds sources 72–73 from `8c41b1fb7d` to
+[ZFC closure kernels](set-theory/zfc-closure-kernels/intake-168.md).
+Placement `696c150e84` and write `f58c9394c0` preserve 151 ancillary files
+and 12 archive-only members, all 163 recoverable. The three 242-state folds
+are alternatives. The recommended primary A combines with a predecessor-bit
+fold to produce the [241-state candidate](../../../../Computability/BusyBeaver/Research/ZFC/candidate-fold241/README.md).
+All 19 fresh substantive jobs pass, including five complete 8,390-case
+universal runs for A, B, C, inherited 243 and primary 241. The latter covers
+2,319,442 symbolic rules and all 482 rows, with exact 408,419-step startup.
+The ordinary all-tape proof and runtime replay remain distinct from a complete
+Lean consistency endpoint and the still-open internal PA equivalence.
+
+Batch 169 adds six sources 74–79 from `d584512002` to the
+[same report](set-theory/zfc-closure-kernels/intake-169.md), now **79 sources**
+and still **290 reports**. Placement `c3339d150f` and write `c3efb44b50`
+account for 1,387 originals: 440 new ancillary files, 830 existing aliases,
+31 batch aliases and 86 archive-only members. Fresh recovery matches all
+1,301 ancillary occurrences to 687 maintained targets. All six reported
+242-state tables are primary A, literally or under the retained-state rename
+15 to 27; adding the 17/39 fold gives the existing 241 table, not 240.
+The six supplied suites were not rerun; exact isomorphism reuses earlier
+machine evidence. Distinct semantic, compiler and equational ideas remain
+credited. A subsequent joint selector-dispatch/detour packet passes fresh
+finite checks at **1,750 complete bits**, 21 equations and four-bit opcodes,
+18 bits below the delivered detour packet. This supplies no new binary-state
+bound or PA theorem. Twenty older ZIPs remain queued after the six retirements.
+The base article and delivered bytes are unchanged; the catalogue PDF is
+built and visually reviewed separately.
