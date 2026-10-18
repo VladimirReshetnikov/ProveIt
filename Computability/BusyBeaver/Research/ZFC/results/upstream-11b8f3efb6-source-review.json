@@ -1,0 +1,95 @@
+{
+  "status": "SOURCE_ONLY_REVIEW_NO_MATHEMATICAL_SCOPE_FINDINGS",
+  "introducing_commit": "11b8f3efb68fdb081fc1498d8869a0c9d23871e8",
+  "arrival_commit": "de330b403717b333c2f9a167321bb007c33a1068",
+  "scope": "Full new LReplBase and LSchema sources, audit and facade delta; focused existing ConstructibleInterpretation schema interface and LPeel closure. Prior source review of LSepBase, LFinalRepl and support/glue infrastructure is retained separately. No compiler, supplied checker, dependency rebuild, version query or axiom audit executed.",
+  "source_pins": [
+    {
+      "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LReplBase.lean",
+      "sha256": "fac57e6be174fcc95c4d20e216b7b4220440defca8abc02a31002b08f046024e",
+      "bytes": 19868,
+      "lines": 396,
+      "same_as_introducing_commit": true
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LSchema.lean",
+      "sha256": "6cbf056e29c995030a98b0268255b780a65384265bccc945c69f2ba190cabb50",
+      "bytes": 3897,
+      "lines": 89,
+      "same_as_introducing_commit": true
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LSchemaAudit.lean",
+      "sha256": "504bf0435fc36686ef07cb6e02055dce33d185f1c9f8d6dcacb7bfdbe62f7db8",
+      "bytes": 997,
+      "lines": 29,
+      "same_as_introducing_commit": true
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LSepBase.lean",
+      "sha256": "827e63b1d5cdb40ae84920ce8340a9fdfafc359e18dcac0794333a7a4ec5cbc4",
+      "bytes": 11291,
+      "lines": 234,
+      "same_as_introducing_commit": true
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LPeel.lean",
+      "sha256": "c39052fb86ae21f4d8c9b28cb26fee8a294a43e2df96fa216cc19e86cc89bde0",
+      "bytes": 15396,
+      "lines": 332,
+      "same_as_introducing_commit": true
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LFinalRepl.lean",
+      "sha256": "5bd9f9a5692a6e1df91c4c4492401039808803bb8307ecb7a6ccec6f9036e24d",
+      "bytes": 17350,
+      "lines": 335,
+      "same_as_introducing_commit": true
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ConstructibleInterpretation.lean",
+      "sha256": "965a7e999b810337fcd5278aa3569c430cd5311edff969995a69106e4eccf007",
+      "bytes": 29989,
+      "lines": 630,
+      "same_as_introducing_commit": true
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA.lean",
+      "sha256": "560f55705541b13dbfd8192381aabd4a7dab06400333103ea74f16a04465acea",
+      "bytes": 3686,
+      "lines": 119,
+      "same_as_introducing_commit": true
+    }
+  ],
+  "internal_scope": {
+    "ambient": "Every ORingStructure V satisfying IΣ₁.",
+    "variables": "p,m,b,K range over V, including nonstandard formula codes and closure lengths. Fixed template arities over Nat do not restrict those parameters.",
+    "replacement": "qPremise2 opens the level-two core, applies the existing glue at matching length m+2, then generalizes via QX2_free. replComb uses the existing final Replacement template through soundness, preserving x::y::t order. replConcl_val identifies the exact relativized repBodyVal; repl_obligation derives support from RepR and applies peel and peel_close.",
+    "schema_adapter": "Internal Δ₁Class membership iff SepR/RepR; both obligations give Provable ZF(rel p). hSchema chooses m=0, proves domSet dL 0 empty, and converts via toDerivable. No external standardness, matching environment, hSchema or consistency assumption remains.",
+    "choice_transport": "ConstructibleInterpretation.provable_falsum_ZF_of_ZFC is supplied with the closed hSchema. consistent_ZFC_of_ZF negates refutation transfer. Arithmetic completeness gives an actual IΣ₁ derivability statement and weakening gives its PA corollary."
+  },
+  "new_endpoints": [
+    "LSchema.hSchema",
+    "LSchema.provable_falsum_ZF_of_ZFC",
+    "LSchema.consistent_ZFC_of_ZF",
+    "LSchema.iSigma1_proves_con_ZF_imp_con_ZFC",
+    "LSchema.peano_proves_con_ZF_imp_con_ZFC"
+  ],
+  "audit": {
+    "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LSchemaAudit.lean",
+    "print_axioms_directives": 20,
+    "check_directives": 1,
+    "typed_callers": 0,
+    "executed_in_this_review": false,
+    "upstream_claim": "Upstream commit reports facade compilation and only propext, Classical.choice, Quot.sound. No new observed axiom or provider claim is made by this review."
+  },
+  "findings": [],
+  "remaining_obligations": [
+    "Fresh scoped compilation and typed-client evidence for these new units are separate from this source review.",
+    "Reverse internal ZF-to-validator proof translation.",
+    "Complete internal interpreter-to-Enum connection, including pending GEN and AX control compositions.",
+    "Unbounded internal register/binary simulation and composition into the exact-machine PA consistency endpoint."
+  ],
+  "limits": "Source review only; not proof elaboration or current compiled-provider verification. Choice transport does not imply the complete machine theorem.",
+  "prior_review": "Computability/BusyBeaver/Research/ZFC/results/upstream-dd85eb4a47-source-review.json"
+}
