@@ -2,8 +2,10 @@
 
 Lean checks the exact two tables and proves that the combined 243-state machine
 halts from blank tape if and only if the loop-rotation 244-state machine does.
-This is a relative machine equivalence. Calibration of this rotation table to
-ZF refutation remains a separate Lean obligation, as does internalization in PA.
+This is a relative machine equivalence. The rotated register program's
+[source calibration](source_rotation244.md) to ZF/ZFC refutation is checked.
+Connecting this exact rotation table's runtime and blank initialization to
+that source seed remains a separate Lean obligation, as does internalization in PA.
 The already checked [compensated 244-state endpoint](compensated244_binary.md)
 uses a different 244-state table.
 
