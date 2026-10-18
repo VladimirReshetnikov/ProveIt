@@ -204,6 +204,9 @@ facade is [`Lean/ZFCinPA.lean`](Lean/ZFCinPA.lean).
 | `LReplBase` | **the replacement obligation**: the level-two glue premise `qPremise2` (glue at `m + 2` for the twice-opened core, `qPremise` at `m + 1`, and one more generalization by `QX2_free`), the `L6` template `replComb` (relativized core in the binary slot `F₁`; semantics reuses `LFinalRepl.replTemplate_provable`), the code identities `relReplA_val`/`relReplB_val`, `repl_base`, and `repl_obligation` for every code recognized by `RepR` |
 | `LSchema` | **choice transport, unconditional**: `hSchema` from the two obligations, `provable_falsum_ZF_of_ZFC` in every model of `𝗜𝚺₁`, and by completeness `𝗜𝚺₁ ⊢ Con(𝗭𝗙) → Con(𝗭𝗙𝗖)` (`iSigma1_proves_con_ZF_imp_con_ZFC`) and `𝗣𝗔 ⊢ Con(𝗭𝗙) → Con(𝗭𝗙𝗖)` (`peano_proves_con_ZF_imp_con_ZFC`); with the internal inclusion `zf_subset_zfc`, the two-way `𝗣𝗔 ⊢ Con(𝗭𝗙) ↔ Con(𝗭𝗙𝗖)` (`peano_proves_con_ZF_iff_con_ZFC`) |
 | `LSchemaAudit` | axiom audit for `LFvBound`, `LPeel`, `LSepBase`, `LReplBase`, `LSchema` (`propext`, `Classical.choice`, `Quot.sound` only) |
+| `NativeGicDelta1` | the native global-image collection schema over `ℒₛₑₜ` (`∀a ∃b (∀y∈b ∃x ψ(x,y)) ∧ (∀x∈a (∃y ψ(x,y) → ∃y∈b ψ(x,y)))` for every core `ψ`), its typed/raw code bodies, `𝚺₁` graph, recognizer `GicR` and `gicTheory_delta1` |
+| `NativeTheory` | **R1, the native theory as a `Δ₁` Foundation theory**: `nativeTheory = 𝗘𝗤 ℒₛₑₜ ∪ {containerAx, irAx} ∪ gicTheory` (container and irreflexivity are `toSet` translations of `NativeTheory254`'s forms); every model is an irreflexive native CP/GIC model (`models_cpgic`, via `eval_toSet`) |
+| `NativeTheoryAudit` | axiom audit for `NativeGicDelta1`, `NativeTheory` |
 
 ## Building
 
