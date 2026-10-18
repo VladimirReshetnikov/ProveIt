@@ -95,7 +95,9 @@ The current arithmetic checkpoints are:
   now composes the actual constructor, fourfold transfer and comparison tail.
   It returns to fetch, sets TW to param1 and pushes a zero on success, clears
   TW and preserves WS on failure, and clears cache in both cases. Its AC0
-  dispatch composition is also checked. AX remains open.
+  dispatch composition is also checked. The [first AX parameter push and
+  classifier](arithmetic_control_ax_prefix254.md) now have all-internal
+  whole-file contracts; the remaining AX bundle is still open.
 
 The remaining major steps are the reverse internal ZF-to-validator proof
 translation, the internal L-specific Separation/Replacement proofs, and the complete
@@ -106,6 +108,10 @@ The active binary target is now the exact 246-state candidate. Its table,
 logical seed, whole-tape instruction contracts and conditional runtime
 comparison have separate Lean checks; completing that external endpoint
 still does not supply an internal PA theorem.
+The [fixed arithmetic lookup for its exact table](arithmetic_machine_graph_prefix246.md)
+is now checked in every IOpen model and agrees with all 492 typed transitions.
+The corresponding internal step/run, bootstrap and whole-runtime comparison
+remain separate from the checked 252-state arithmetic implementation.
 
 Source review of the merged arithmetic work through `70f2e7a57b` identifies
 three further reusable pieces in `Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/`:

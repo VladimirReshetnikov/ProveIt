@@ -57,6 +57,12 @@ The [exact 246-state table](table_prefix246.md) is now checked in Lean:
 selector and folded-pulse rows. Its 47 theorem audits and 47 client examples
 pass with no warnings. This is the finite table layer for the active target.
 
+The [exact 246 arithmetic lookup](arithmetic_machine_graph_prefix246.md)
+now represents those 492 actions by a fixed bounded arithmetic formula in
+every IOpen model. Eight theorem audits and eight typed callers pass with no
+warnings, including the terminal write and movement. Internal step/run
+simulation and the PA consistency endpoint remain separate obligations.
+
 The [246 logical seed](logical_seed246.md) is now calibrated in Lean:
 the unchanged register program started at `(3,0,0,0,3,0,0,0,0)` halts iff
 ZFC has a refutation. Seven theorem audits and seven client examples pass.
@@ -1590,3 +1596,10 @@ constructor and success-push composition remain open.
 `ArithmeticControlUnpairCore254` proves the actual short MP unpair and its composition with the initial parameter push in every IΣ₁ model. Entry6367→6404 restores the original WS, puts old TW in scratch1 and param1 in TW, and preserves all other fields under clean scratch registers. The source passed; one audit projection was repaired and the audit-only continuation passed 12 probes/18 callers with zero warnings, reusing the originally recorded source object without rebuilding it. Full MP's constructor middle remains open in this module. See [the proof note](arithmetic_control_unpair_core254.md).
 
 `ArithmeticControlMP254` now proves the complete actual MP branch and its AC=0 dispatch composition in every IΣ₁ model under clean scratch registers. Success sets TW to param1 and pushes the required zero filler on WS; failure clears TW and preserves WS. Both cases clear cache and preserve the remaining fields. The repaired source and unchanged audit passed 12 probes/22 callers with zero warnings; the original failed source attempt and scoped independent reviews are retained. AX and the complete internal interpreter/Enum/PA endpoint remain open. See [the proof note](arithmetic_control_mp254.md).
+
+The [actual AX prefix](arithmetic_control_ax_prefix254.md) now checks its first
+parameter push and opcode classifier in arbitrary IΣ₁ models, preserving the
+whole register file with the specified updates and positive clocks. Seven
+theorem audits and eight typed callers pass with no warnings. The complete AX
+bundle and interpreter-to-scheduler comparison remain open; its inherited
+binary relation still concerns the earlier 252-state implementation.
