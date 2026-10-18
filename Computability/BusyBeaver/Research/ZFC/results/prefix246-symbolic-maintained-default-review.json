@@ -1,0 +1,22 @@
+{
+  "status": "MAINTAINED_DEFAULT_PREPARATION_EXISTING_EVIDENCE_REVIEW",
+  "reviewer": "/root/review_upstream_reflection",
+  "scope": "Read-only existing root-run prepare-only record. Reviewer did not invoke checker, compiler, version query or dependency build.",
+  "record": {
+    "path": "/tmp/zfc-prefix246-lean/symbolic/maintained-prepared/verification.json",
+    "sha256": "0090bceb92c8533366cfc1c176b4f751c3367b72328bac0f6de7bc58c57c168a"
+  },
+  "current_inputs": 41,
+  "all_current_inputs_match": true,
+  "project_providers": 12,
+  "source_audit_exact_successful_bytes": true,
+  "source_override": false,
+  "audit_override": false,
+  "commands": [],
+  "fresh_modules": [],
+  "compiler_version_query_performed": false,
+  "exact_portable_changes": "Only source/audit default path expressions; all pins, provider selection and proof policy unchanged.",
+  "guard_sha256": "775426ab426d9d9905617d80e2dcb0d36680b56e3f5c98eeb6d17175f97d664a",
+  "guard_diff": "--- \n+++ \n@@ -31,8 +31,8 @@\n sha=lambda f:hashlib.sha256(Path(f).read_bytes()).hexdigest()\n R=a.repo.resolve();W=a.output.resolve()\n assert not W.is_relative_to(R) and (not W.exists() or not any(W.iterdir()))\n-S=a.source.resolve() if a.source else Path('/tmp/zfc-prefix246-lean/symbolic/SymbolicPrefix246.lean')\n-A=a.audit.resolve() if a.audit else Path('/tmp/zfc-prefix246-lean/symbolic/Audit.lean')\n+S=a.source.resolve() if a.source else R / 'Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SymbolicPrefix246.lean'\n+A=a.audit.resolve() if a.audit else Path(__file__).resolve().parent / 'prefix246_symbolic_audit.lean'\n assert sha(S)==SOURCE_SHA and sha(A)==AUDIT_SHA\n MP=R/'Computability/BusyBeaver/Research/ZFC/results/arithmetic-control-mp254-verification.json'\n assert sha(MP)==MP_RECORD_SHA\n",
+  "findings": []
+}

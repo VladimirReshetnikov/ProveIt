@@ -1,0 +1,23 @@
+{
+  "status": "AUTHOR_MAINTAINED_DEFAULT_REVIEW",
+  "scope": "Existing root preparation only; author did not invoke guard/compiler/version.",
+  "record": {
+    "path": "/tmp/zfc-prefix246-lean/boxes/maintained-prepared/verification.json",
+    "sha256": "24fd1958fc9bd93e3faf5fadaf91d97685f628c523093e3b9a3eb2fffbe4d71a"
+  },
+  "successful_record_sha256": "bd0671838ff39bbc6d3009c420858747b868988e17fe41b32e8e88ba8db8974a",
+  "current_inputs": 28,
+  "all_current_hashes_match": true,
+  "commands": [],
+  "fresh_modules": [],
+  "compiler_version_query_performed": false,
+  "source_overridden": false,
+  "audit_overridden": false,
+  "source_audit_equal_successful_bytes": true,
+  "guard_sha256": "6213c14b8d492163e9738b65e0b3f136c1a0f70f1cb028cdb843745ea2227d59",
+  "guard_changes": "Exactly two source/audit default paths.",
+  "guard_diff": "--- \n+++ \n@@ -40,8 +40,8 @@\n W = a.output.resolve()\n assert not W.is_relative_to(R) and (not W.exists() or not any(W.iterdir()))\n assert PULSE_RECORD_SHA != 'PENDING_SUCCESSFUL_PULSE_RECORD', 'Freeze successful pulse evidence before preparation or compilation.'\n-S = a.source.resolve() if a.source else Path('/tmp/zfc-prefix246-lean/boxes/Prefix246Boxes.lean')\n-A = a.audit.resolve() if a.audit else Path('/tmp/zfc-prefix246-lean/boxes/Audit.lean')\n+S = a.source.resolve() if a.source else R / 'Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Prefix246Boxes.lean'\n+A = a.audit.resolve() if a.audit else Path(__file__).resolve().parent / 'prefix246_boxes_audit.lean'\n assert sha(S) == SOURCE_SHA and sha(A) == AUDIT_SHA\n E = a.pulse_evidence.resolve()\n MP = R / 'Computability/BusyBeaver/Research/ZFC/results/arithmetic-control-mp254-verification.json'\n",
+  "project_providers": 8,
+  "actual_first_providers_match": true,
+  "findings": []
+}

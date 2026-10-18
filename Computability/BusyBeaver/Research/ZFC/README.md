@@ -37,6 +37,41 @@ also preserves a further audit of the identical 247 table. Independent review
 found no mathematical blocker within the ordinary-proof scope; exact-machine
 Lean endpoints and the equivalence proved inside PA remain open.
 
+The [exact 246-state table](table_prefix246.md) is now checked in Lean:
+492 transitions, the state numbering, the unique halt action, and the
+selector and folded-pulse rows. Its 47 theorem audits and 47 client examples
+pass with no warnings. This is the finite table layer for the active target.
+
+The [246 logical seed](logical_seed246.md) is now calibrated in Lean:
+the unchanged register program started at `(3,0,0,0,3,0,0,0,0)` halts iff
+ZFC has a refutation. Seven theorem audits and seven client examples pass.
+The binary startup and simulation must still connect that program theorem
+to the literal blank-tape machine; the PA comparison remains open.
+
+The [246 pulse contracts](prefix246_pulse.md) and
+[unbounded register operations](prefix246_boxes.md) now pass in Lean on the
+exact folded table. The proofs retain the whole tape, arbitrary natural
+register values, and the required spare suffix. Zero decrement restores the
+file; positive decrement shifts its boundary; increment adds a value-one
+spare. Complete decoder coverage and blank-start composition remain open.
+
+The [246 fast lookup](fast_table_prefix246.md) is checked equal to the
+canonical machine on every transition. It supports bounded kernel
+calculations for the new bootstrap and symbolic decoder without changing
+their machine semantics.
+
+The [nine 246-state register selectors](prefix246_mark.md) have checked
+unbounded marking and return contracts on the reduced selector table. Ten
+theorem audits and six client examples pass with no warnings.
+
+[First 1,024 steps of the 246-state machine](boot_prefix246_first.md) proves the exact blank-run state, head and entire tape, and supplies the checkpoint-composition lemma for the remaining bootstrap chain. The guarded source/audit run passed seven axiom probes and nine callers with zero warnings. The final 410,735-step startup and runtime/consistency endpoints remain separate.
+
+The [246 symbolic executor](prefix246_symbolic.md) and
+[per-instruction interface](prefix246_site.md) now have checked whole-tape
+soundness proofs. Their 15/15 and 12/13 theorem/client audits pass with zero
+warnings. Complete coverage of the actual decoder and final startup
+composition remain separate obligations.
+
 The [exact 250-state table](table_prefix250.md) is now checked in Lean: all 500
 actions, the state numbering, the unique halt edge and the incoming edges of
 the shared initializer. Its 40 named theorem audits and 40 callers pass.
