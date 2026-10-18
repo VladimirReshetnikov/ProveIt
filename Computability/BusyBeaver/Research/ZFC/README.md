@@ -50,6 +50,10 @@ The [complete source-program bisimulation](bisim_routing245.md) now checks all
 every initial register function at empty pointers. Its 97 production modules
 pass 104 theorem probes and 201 typed callers, with zero warnings. Binary
 runtime, complete decoder coverage, blank startup and PA internalization remain.
+The [local routing245 register operations](routing245_local.md) also pass:
+pulse, marking, increment and both decrement branches retain arbitrary values,
+finite contexts and complete-tape conclusions. Their three modules pass
+27 theorem probes and 29 callers with zero warnings in the selected runs.
 The checked components of the earlier
 [shared-carry 250 construction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-160.md)
 provide reusable proof infrastructure. Sources 58–59 contain the same

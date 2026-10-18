@@ -28,6 +28,9 @@ for every initial register function at empty pointers. Its 97 production
 modules pass 104 theorem probes and 201 typed callers, with zero warnings.
 The binary runtime, complete decoder coverage and blank startup still need
 their own Lean proofs.
+The [local register operations](../routing245_local.md) now pass 27 theorem
+probes and 29 callers: pulse, marking, increment and both decrement branches
+are checked for arbitrary values and finite contexts, preserving the full tape.
 
 | Artifact | Meaning |
 | --- | --- |

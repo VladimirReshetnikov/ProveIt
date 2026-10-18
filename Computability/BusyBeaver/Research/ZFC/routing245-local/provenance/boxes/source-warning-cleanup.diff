@@ -1,0 +1,38 @@
+--- /tmp/zfc-routing245-lean/boxes/Routing245Boxes.lean
++++ /tmp/zfc-routing245-lean/boxes/source-v2/Routing245Boxes.lean
+@@ -159,7 +159,7 @@
+   simp only [List.replicate_succ, List.cons_append]
+   rw [zipRun_first, step_left _ _ _ _ _ _ _ _ rowRouting245_old75_true,
+     leftAt_cons, return_separator, leftAt_cons]
+-  simp only [registerBits_append, registerBits, List.cons_append, List.append_assoc]
++  simp only [registerBits_append, registerBits]
+   congr 1
+   omega
+ 
+@@ -226,7 +226,7 @@
+   simp only [registerBits]
+   rw [zipRun_add, zero_restore, rollback_file]
+   simp only [registerBits_append, registerBits, List.replicate_zero,
+-    List.nil_append, List.cons_append, List.append_assoc]
++    List.nil_append]
+   congr 1
+   omega
+ 
+@@ -321,7 +321,7 @@
+     congr 1
+     omega
+   | cons v rest ih =>
+-    simp only [width, registerBits, List.cons_append, List.append_assoc]
++    simp only [width, registerBits]
+     rw [show a + (v + 2 + width rest) + 6 = a + (2 + (v + width rest + 6)) by omega,
+       zipRun_add, scan_right _ _ _ rowRouting245_old95_true,
+       zipRun_add, carry_separator, ih]
+@@ -358,7 +358,7 @@
+     rowRouting245_old63_true rowRouting245_old63_false rowRouting245_old48_true
+     _ hne returnZero rowRouting245_old48_true]
+   simp only [registerBits_append, registerBits, List.replicate_succ,
+-    List.replicate_zero, List.nil_append, List.append_nil, List.append_assoc]
++    List.replicate_zero, List.append_nil, List.append_assoc]
+   congr 1
+   simp only [width_append, width]
+   omega
