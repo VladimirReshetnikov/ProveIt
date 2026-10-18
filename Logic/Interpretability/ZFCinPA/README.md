@@ -449,3 +449,11 @@ vectors. Its two-slot clients cover swapped variables and repeated labels,
 as needed for the native GIC matrix. Nine probes and eleven typed callers
 passed with zero warnings. Formula/proof transport and the consistency
 endpoint remain separate obligations.
+
+[Native GIC matrix slots](validator_native_gic_slots254.md) identify the
+support and coverage substitution orders for every internally typed matrix.
+Odd labels supply vacancy for the even padding code under IΣ₂, and the
+literal padded validator GIC instance is provable. Eight probes and ten typed
+callers passed with zero warnings after a two-line proof repair. The complete
+encoded native body and its universal closure remain open. This helper serves
+the unchanged logical source of the 241-state candidate as well.

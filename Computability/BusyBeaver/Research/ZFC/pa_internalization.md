@@ -78,6 +78,12 @@ The current arithmetic checkpoints are:
   directly, since its falsity code is already `1`; comparison with the earlier
   fixed encoder is optional. Arbitrary accepted proofs are not assumed closed
   under variable renaming.
+  [Native GIC matrix slots](../../../../Logic/Interpretability/ZFCinPA/validator_native_gic_slots254.md)
+  now identify both internal substitution orders and derive padded-matrix
+  vacancy from odd labels under IΣ₂. The literal padded GIC instance passed
+  eight probes and ten typed callers with zero warnings. Complete native-body
+  encoding and universal closure remain separate; the unchanged logical
+  source makes these results reusable for the 241-state candidate.
 * [Both actual reads](arithmetic_control_read_template254.md) are checked on
   every internal register file with its scratch fields zero. They reach the
   actual dispatch control 38, retain the whole register file in their
