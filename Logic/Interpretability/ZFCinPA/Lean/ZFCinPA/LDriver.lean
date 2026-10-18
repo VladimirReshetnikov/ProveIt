@@ -151,4 +151,117 @@ theorem subst_bvar0_val (P : SF V 1) {m : ℕ} (w : SemitermVec V ℒₛₑₜ 1
   rw [hv]
   exact h1
 
+theorem quote_neg_val {n : ℕ} (φ : SetTheorySemiproposition n) :
+    (⌜∼φ⌝ : V) = neg ℒₛₑₜ (⌜φ⌝ : V) := by
+  rw [Semiformula.quote_def, Semiformula.quote_def]
+  exact congrArg Bootstrapping.Semiformula.val (Semiformula.typedQuote_neg (V := V) φ)
+
+/-- A predicate placeholder read at `#0` under further binders keeps its code. -/
+theorem tr_P₀sub_val (Ks : (i : Fin 6) → SF V (ar6 i)) {m : ℕ} :
+    (translateFormula Ks (Rewriting.emb
+      ((P₀ : Semisentence L6 1) ⇜ ![(#0 : Semiterm L6 Empty (m + 1))]))).val = (Ks 0).val := by
+  rw [Rewriting.emb_subst_eq_subst_emb, translateFormula_subst, subst_bvar0_val _ _ rfl]
+  simp [P₀]
+
+theorem tr_P₂sub_val (Ks : (i : Fin 6) → SF V (ar6 i)) {m : ℕ} :
+    (translateFormula Ks (Rewriting.emb
+      ((P₂ : Semisentence L6 1) ⇜ ![(#0 : Semiterm L6 Empty (m + 1))]))).val = (Ks 2).val := by
+  rw [Rewriting.emb_subst_eq_subst_emb, translateFormula_subst, subst_bvar0_val _ _ rfl]
+  simp [P₂]
+
+/-- The universal body is `envForm`'s universal clause. -/
+theorem allT_val (P : SF V 1) :
+    (AllT P).val = ^∀ ^∀ ((⌜∼econsP⌝ : V) ^⋎ ((⌜∼domYP⌝ : V) ^⋎ P.val)) := by
+  simp [AllT, allBody, translateFormula, econsP, domYP]
+  refine ⟨?_, ?_, tr_P₀sub_val _⟩
+  · rw [quote_neg_val]; rfl
+  · rw [quote_neg_val]; rfl
+
+/-- The existential body is `envForm`'s existential clause. -/
+theorem exT_val (P : SF V 1) :
+    (ExT P).val = ^∃ ^∃ ((⌜econsP⌝ : V) ^⋏ ((⌜domYP⌝ : V) ^⋏ P.val)) := by
+  simp [ExT, exBody, translateFormula, econsP, domYP]
+  exact ⟨rfl, rfl, tr_P₀sub_val _⟩
+
+/-- The membership-atom body is `envForm`'s atom at a nonzero relation code. -/
+theorem atomT_val_mem (a b R : V) (hR : R ≠ 0) :
+    (AtomT false (numChainQ a) (numChainQ b)).val = atomCode R a b := by
+  simp [AtomT, memAtomBody, translateFormula, atomCode, hR]
+  refine ⟨⟨tr_P₀sub_val _, ?_⟩, ⟨tr_P₂sub_val _, ?_⟩, ?_⟩
+  · unfold appXCode; rw [coe_toNat_eq_quote]; rfl
+  · unfold appYCode; rw [coe_toNat_eq_quote]; rfl
+  · unfold memXYCode; rw [coe_toNat_eq_quote]; rfl
+
+/-- The equality-atom body is `envForm`'s atom at relation code `0`. -/
+theorem atomT_val_eq (a b : V) :
+    (AtomT true (numChainQ a) (numChainQ b)).val = atomCode 0 a b := by
+  simp [AtomT, eqAtomBody, translateFormula, atomCode]
+  refine ⟨⟨tr_P₀sub_val _, ?_⟩, ⟨tr_P₂sub_val _, ?_⟩, ?_⟩
+  · unfold appXCode; rw [coe_toNat_eq_quote]; rfl
+  · unfold appYCode; rw [coe_toNat_eq_quote]; rfl
+  · unfold eqXYCode; rw [coe_toNat_eq_quote]; rfl
+
+/-! ## The induction -/
+
+theorem isRel_set {k R : V} (hR : (ℒₛₑₜ).IsRel k R) : k = 2 ∧ (R = 0 ∨ R = 1) := by
+  have hr' : V ⊧/![k, R] (LeanProofs.ZFCinPA.instLORDefinableSet.rel).val := hR
+  rw [show (LeanProofs.ZFCinPA.instLORDefinableSet.rel : 𝚺₀.Semisentence 2) =
+    .mkSigma “k r. (k = 2 ∧ r = 0) ∨ (k = 2 ∧ r = 1)” from rfl] at hr'
+  have hc : (k = 2 ∧ R = 0) ∨ (k = 2 ∧ R = 1) := by simpa using hr'
+  rcases hc with ⟨h1, h2⟩ | ⟨h1, h2⟩
+  · exact ⟨h1, Or.inl h2⟩
+  · exact ⟨h1, Or.inr h2⟩
+
+/-- **The driver**: for every internal semiformula code `p` of level `n`, some
+function code `f` makes the reflection invariant of `envForm n p` an internal
+`𝗭𝗙` theorem. -/
+theorem driver {n p : V} (hp : IsSemiformula ℒₛₑₜ n p) : Θ n p := by
+  refine IsSemiformula.sigma1_structural_induction (L := ℒₛₑₜ) (P := Θ) Θ_definable
+    ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ hp
+  · intro n k R v hR hv
+    obtain ⟨rfl, hR01⟩ := isRel_set hR
+    have hrel := envForm_rel (d := n) hR hv.isUTerm
+    rcases hR01 with rfl | rfl
+    · exact Θ_of_typed (AtomT true (numChainQ (idx n v.[0])) (numChainQ (idx n v.[1])))
+        (by rw [atomT_val_eq, hrel, atomOf]) _
+        (atom_step true _ _ (LNumOK.numOK _) (LNumOK.numOK _))
+    · exact Θ_of_typed (AtomT false (numChainQ (idx n v.[0])) (numChainQ (idx n v.[1])))
+        (by rw [atomT_val_mem _ _ 1 _root_.one_ne_zero, hrel, atomOf]) _
+        (atom_step false _ _ (LNumOK.numOK _) (LNumOK.numOK _))
+  · intro n k R v hR hv
+    obtain ⟨rfl, hR01⟩ := isRel_set hR
+    have hrel := envForm_nrel (d := n) hR hv.isUTerm
+    rcases hR01 with rfl | rfl
+    · exact Θ_of_typed (∼AtomT true (numChainQ (idx n v.[0])) (numChainQ (idx n v.[1])))
+        (by rw [Bootstrapping.Semiformula.val_neg, atomT_val_eq, hrel, atomOf]) _
+        (neg_step _ _ (atom_step true _ _ (LNumOK.numOK _) (LNumOK.numOK _)))
+    · exact Θ_of_typed (∼AtomT false (numChainQ (idx n v.[0])) (numChainQ (idx n v.[1])))
+        (by rw [Bootstrapping.Semiformula.val_neg, atomT_val_mem _ _ 1 _root_.one_ne_zero, hrel, atomOf]) _
+        (neg_step _ _ (atom_step false _ _ (LNumOK.numOK _) (LNumOK.numOK _)))
+  · intro n
+    exact Θ_of_typed ⊤ (by simp) _ top_base
+  · intro n
+    exact Θ_of_typed ⊥ (by simp) _ bot_base
+  · intro n p q hp hq h₁ h₂
+    obtain ⟨F₁', hF₁⟩ := typed_of_Θ hp h₁
+    obtain ⟨F₃', hF₃⟩ := typed_of_Θ hq h₂
+    exact Θ_of_typed _ (by simp [envFormT, envForm_and hp.isUFormula hq.isUFormula]) _
+      (and_step _ _ _ _ hF₁ hF₃)
+  · intro n p q hp hq h₁ h₂
+    obtain ⟨F₁', hF₁⟩ := typed_of_Θ hp h₁
+    obtain ⟨F₃', hF₃⟩ := typed_of_Θ hq h₂
+    exact Θ_of_typed _ (by simp [envFormT, envForm_or hp.isUFormula hq.isUFormula]) _
+      (or_step _ _ _ _ hF₁ hF₃)
+  · intro n p hp ih
+    obtain ⟨F₁', hF₁⟩ := typed_of_Θ hp ih
+    exact Θ_of_typed _ (by rw [allT_val, envForm_all hp.isUFormula]; rfl) _ (all_step _ _ hF₁)
+  · intro n p hp ih
+    obtain ⟨F₁', hF₁⟩ := typed_of_Θ hp ih
+    exact Θ_of_typed _ (by rw [exT_val, envForm_exs hp.isUFormula]; rfl) _ (ex_step _ _ hF₁)
+
+/-- The driver, typed: the invariant of `envForm n p` at some function code. -/
+theorem driverT {n p : V} (hp : IsSemiformula ℒₛₑₜ n p) :
+    ∃ F : SF V 2, (𝗭𝗙 : SetTheory).internalize V ⊢ InvT (envFormT n hp) F :=
+  typed_of_Θ hp (driver hp)
+
 end LeanProofs.ZFCinPA.LDriver
