@@ -45,7 +45,11 @@ machine, enabling faster reduction in subsequent execution proofs.
 The [exact register decoder](program_routing245.md) passes 11 theorem
 audits and 13 typed callers, proving its complete 6,460-leaf tree identity
 and execution semantics for arbitrary pointers and register values.
-The source-program bisimulation remains the next obligation at that layer.
+The [complete source-program bisimulation](bisim_routing245.md) now checks all
+3,013 certificate entries and proves halting equivalence with `Prog254` for
+every initial register function at empty pointers. Its 97 production modules
+pass 104 theorem probes and 201 typed callers, with zero warnings. Binary
+runtime, complete decoder coverage, blank startup and PA internalization remain.
 The checked components of the earlier
 [shared-carry 250 construction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-160.md)
 provide reusable proof infrastructure. Sources 58–59 contain the same

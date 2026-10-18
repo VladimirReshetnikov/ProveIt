@@ -1,5 +1,8 @@
 # First checked source-bisimulation entries for routing245
 
+The [complete certificate and source-program equivalence](bisim_routing245.md)
+are now checked. This note records the earlier pilot and its narrower scope.
+
 [BisimRouting245Pilot.lean](../../Lean/BusyBeaver/ZFC/BisimRouting245Pilot.lean)
 contains the complete delivered 3,013-pair certificate and checks seven finite
 obligations against the original `Prog254` tree and the
@@ -56,7 +59,8 @@ The [publication record](results/bisim-routing245-pilot-publication.json)
 binds maintained files to the actual run. The
 [maintained-path check](results/bisim-routing245-pilot-maintained-publication.json)
 confirms those installed files and preparation without replaying Lean.
-Full source bisimulation, binary
-simulation, blank startup and the 245-state consistency endpoint remain
-separate obligations. Original-machine and submission attribution remains
+The subsequent [complete source bisimulation](bisim_routing245.md) discharges
+the remaining certificate entries. Binary simulation, blank startup and the
+245-state consistency endpoint remain separate obligations.
+Original-machine and submission attribution remains
 in the [candidate documentation](candidate-routing245/README.md).

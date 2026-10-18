@@ -21,11 +21,13 @@ machine, with two theorem audits and four typed callers.
 The [exact register decoder](../program_routing245.md) now also passes
 11 theorem audits and 13 typed callers: its shared representation unfolds
 to all 6,460 instruction leaves and preserves consumed-pointer semantics
-for arbitrary register values. Its bisimulation with the original program
-remains a separate obligation.
-The [first source-bisimulation checks](../bisim_routing245_pilot.md) pass for
-the initial segment and six entries of the full 3,013-pair certificate.
-Checking and assembling every entry remains open.
+for arbitrary register values. The
+[complete source bisimulation](../bisim_routing245.md) now checks all 3,013
+certificate entries and proves halting equivalence with the original program
+for every initial register function at empty pointers. Its 97 production
+modules pass 104 theorem probes and 201 typed callers, with zero warnings.
+The binary runtime, complete decoder coverage and blank startup still need
+their own Lean proofs.
 
 | Artifact | Meaning |
 | --- | --- |
