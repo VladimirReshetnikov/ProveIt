@@ -1,0 +1,11 @@
+--- prepare_plan_guards.py
++++ prepare_plan_guards_portable.py
+@@ -12,7 +12,7 @@
+ sitepin='PENDING_EXACT_SITE246_PASS'
+ if a.site_evidence:
+  j=json.loads(a.site_evidence.read_text());assert j['status']=='PASS' and j['fresh_modules'][0]['module']=='BusyBeaver.ZFC.SitePrefix246';sitepin=sha(a.site_evidence)
+-base=Path('/tmp/zfc-prefix250-lean/coverage/check.py').read_text().replace('Prefix250','Prefix246').replace('exact250','exact246')
++base=Path(__file__).with_name('coverage-guard-template.py').read_text().replace('Prefix250','Prefix246').replace('exact250','exact246')
+ def ancestors(m):
+  ans=set()
+  for n in by_module[m]['imports']:

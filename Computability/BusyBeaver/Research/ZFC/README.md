@@ -7,8 +7,9 @@ now also permits equivalence to consistency of an effectively axiomatized
 stronger theory, as clarified by the user on 17 October 2026. Each candidate
 must state the assumptions used for its two unprovability directions;
 consistency alone must not be confused with arithmetic soundness. The
-external Lean equivalence with Con(ZFC) is now proved for a 252-state
-machine; its internal PA proof remains open. All new formal work uses Lean.
+external Lean equivalence with Con(ZFC) is now proved for the exact
+[246-state machine](prefix246_binary.md), improving the earlier checked
+252-state endpoint; its internal PA proof remains open. All new formal work uses Lean.
 An intended set-theoretic meaning is optional: any effectively presented
 theory or proof calculus is eligible once its consistency calibration is proved.
 The complete compiled search, including its data and initialization, is the
@@ -49,8 +50,15 @@ removes one more pulse state and supplies a separate 410,735-step blank
 startup. All nine main checks and two additional audits pass. The
 [batch 162 review](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-162.md)
 also preserves a further audit of the identical 247 table. Independent review
-found no mathematical blocker within the ordinary-proof scope; exact-machine
-Lean endpoints and the equivalence proved inside PA remain open.
+found no mathematical blocker within the ordinary-proof scope. The exact-machine
+external Lean endpoint is now checked; the equivalence proved inside PA remains open.
+
+The [closed 246-state endpoint](prefix246_binary.md) proves that the literal
+blank machine halts iff ZF has a refutation, and iff ZFC has a refutation.
+Negation gives both consistency equivalences. Nine axiom probes and nine
+typed callers pass with zero warnings. The statements retain no coverage,
+startup or model premise. This is an external Lean theorem; it neither
+asserts unconditional nonhalting nor completes the PA internalization.
 
 The [exact 246-state table](table_prefix246.md) is now checked in Lean:
 492 transitions, the state numbering, the unique halt action, and the
@@ -83,16 +91,17 @@ remains separate work.
 The [246 logical seed](logical_seed246.md) is now calibrated in Lean:
 the unchanged register program started at `(3,0,0,0,3,0,0,0,0)` halts iff
 ZFC has a refutation. Seven theorem audits and seven client examples pass.
-The binary startup now reaches this exact logical seed. Complete decoder
-coverage and runtime composition must still connect the program theorem to
-the literal blank-tape machine; the PA comparison remains open.
+The binary startup reaches this exact logical seed. Complete decoder coverage
+and runtime composition now connect the program theorem to the literal
+blank-tape machine; the PA comparison remains open.
 
 The [246 pulse contracts](prefix246_pulse.md) and
 [unbounded register operations](prefix246_boxes.md) now pass in Lean on the
 exact folded table. The proofs retain the whole tape, arbitrary natural
 register values, and the required spare suffix. Zero decrement restores the
 file; positive decrement shifts its boundary; increment adds a value-one
-spare. Complete decoder coverage and whole-program composition remain open.
+spare. These contracts are used by the checked decoder coverage and whole-program
+composition.
 
 The [246 fast lookup](fast_table_prefix246.md) is checked equal to the
 canonical machine on every transition. It supports bounded kernel
@@ -119,13 +128,13 @@ history preserves the initial failed simplification and its one-line repair.
 The [246 symbolic executor](prefix246_symbolic.md) and
 [per-instruction interface](prefix246_site.md) now have checked whole-tape
 soundness proofs. Their 15/15 and 12/13 theorem/client audits pass with zero
-warnings. Complete coverage of the actual decoder and final runtime
-composition remain separate obligations.
+warnings. The complete coverage and final runtime composition are checked
+separately below and in the closed endpoint.
 
 The [246 whole-tape frame adapters](prefix246_frame.md) connect symbolic
 execution to the logical register file while preserving the spare suffix and
-header distance. Fourteen theorem audits and fourteen callers pass; complete
-decoder coverage and runtime composition remain separate.
+header distance. Fourteen theorem audits and fourteen callers pass. The complete
+decoder coverage and runtime composition use these adapters.
 
 The [246 instruction composition](prefix246_instruction.md) implements
 every accepted logical instruction by a positive binary execution segment,
@@ -135,8 +144,15 @@ theorem audits and seven callers pass with no warnings.
 The [246 conditional runtime equivalence](prefix246_runtime.md) now proves
 both directions of register/binary halting from a related whole-tape frame
 and accepted decoder coverage. Eleven theorem audits and twelve callers pass
-with no warnings. The checked blank startup and its frame identification are
-available for composition; the complete coverage certificate remains open.
+with no warnings. The checked blank startup, its frame identification and
+complete decoder coverage now discharge those premises in the closed endpoint.
+
+The [complete 246-state decoder coverage](prefix246_coverage.md) proves the
+actual-tree theorem for all 6,460 leaves and 8,391 guarded cases, including
+every finite program-counter list and its zero-padding behavior. All 102
+modules pass 468 axiom probes and 468 typed callers with zero warnings.
+The published evidence preserves the interrupted coordinator and its recovery,
+the earlier representative guards, and the complete independent review.
 
 The [exact 250-state table](table_prefix250.md) is now checked in Lean: all 500
 actions, the state numbering, the unique halt edge and the incoming edges of

@@ -1,0 +1,124 @@
+--- v1/build_packet.py
++++ v2/build_packet.py
+@@ -97,7 +97,17 @@
+   d=json.loads(p.read_text());stale=d['status']=='RUNNING'
+   if stale:
+    need(p.resolve()==Path(json.loads(recovery.read_text())['pipeline']['path']).resolve()and sha(p)==json.loads(recovery.read_text())['pipeline']['sha256'],'Unclassified interrupted runner.')
+-   need(all(str(Path(x['output'])/'verification.json')in scanned for x in d['attempts']),'Interrupted runner has unresolved attempt.')
++  # Apply the attempt-completeness gate to every pipeline, not just stale ones.
++  # No absent record is inferred to mean precompiler failure: that would need a
++  # separately reviewed evidence-based classification, which this version rejects.
++  for x in d['attempts']:
++   out=Path(x['output']).resolve();v=out/'verification.json'
++   need(out.is_relative_to(B)and str(v)in scanned,'Attempt lacks an archived verification record; explicit no-record classification required: '+str(out))
++   need(x['status']!='RUNNING'or stale,'Unclassified RUNNING attempt in terminal pipeline: '+str(out))
++   if 'record'in x:
++    need(Path(x['record']['path']).resolve()==v and sha(v)==x['record']['sha256'],'Pipeline attempt record binding differs: '+str(out))
++   if 'log'in x:
++    log=Path(x['log']).resolve();need(log.is_relative_to(B)and sha(log)==x['log_sha256'],'Pipeline driver-log binding differs: '+str(log))
+   pipelines.append((p,d,stale))
+  # Read everything first, then copy. No original run/source is ever changed.
+  O.mkdir();registry={};filemap=[]
+@@ -136,13 +146,31 @@
+   for old,h in d.get('before',{}).items():
+    if old.endswith('.py'):
+     q=historical(old,h);guard_bindings.append(add(q,DEST/'attempts'/p.parent.relative_to(B)/('executed-'+h[:16]+'.py'),[old]))
+-  attempts.append(dict(original_record=pstr,status=d['status'],selected=any(p==s for s,x in selected.values()),record=add(p,DEST/'attempts'/p.relative_to(B)),files=files,executed_guard_bindings=guard_bindings,source=d.get('source'),audit=d.get('audit'),fresh_modules=d.get('fresh_modules',[])))
++  proof_bindings={}
++  for kind in ['source','audit']:
++   if kind not in d:continue
++   q=d[kind];h=q['sha256'];need(re.fullmatch('[0-9a-f]{64}',h)is not None,'Malformed historical proof hash.')
++   aliases=[q['path']]+([q['snapshot']]if q.get('snapshot')else[])
++   for old in aliases:
++    if old in d.get('before',{}):need(d['before'][old]==h,'Conflicting historical proof identities: '+old)
++   exact=next((Path(old)for old in reversed(aliases)if Path(old).is_file()and sha(old)==h),None)
++   if exact is None:exact=historical(q['path'],h)
++   need(sha(exact)==h,'Historical proof-byte resolution differs.')
++   proof_bindings[kind]=add(exact,DEST/'attempts'/p.parent.relative_to(B)/('recorded-'+kind+'-'+h[:16]+'.lean'),aliases)
++  attempts.append(dict(original_record=pstr,status=d['status'],selected=any(p==s for s,x in selected.values()),record=add(p,DEST/'attempts'/p.relative_to(B)),files=files,executed_guard_bindings=guard_bindings,recorded_proof_bindings=proof_bindings,source=d.get('source'),audit=d.get('audit'),fresh_modules=d.get('fresh_modules',[])))
+  pipeline_entries=[]
+  for p,d,stale in pipelines:
+   files=[add(p,DEST/'pipelines'/p.relative_to(B))]
+   for q in sorted(p.parent.glob('*')):
+    if q.is_file()and(q.name.endswith('.driver.log')or q.name.endswith('.dependencies.json')):files.append(add(q,DEST/'pipelines'/q.relative_to(B)))
+-  pipeline_entries.append(dict(record=files[0],raw_status=d['status'],stale_interrupted_history=stale,files=files))
++  bound_attempts=[]
++  for x in d['attempts']:
++   v=Path(x['output']).resolve()/'verification.json'
++   binding=dict(module=x['module'],raw_attempt_status=x['status'],verification_status=scanned[str(v)]['status'],verification=add(v,DEST/'attempts'/v.relative_to(B)))
++   if 'log'in x:
++    log=Path(x['log']).resolve();binding['driver_log']=add(log,DEST/'pipelines'/log.relative_to(B))
++   bound_attempts.append(binding)
++  pipeline_entries.append(dict(record=files[0],raw_status=d['status'],stale_interrupted_history=stale,attempt_bindings=bound_attempts,files=files))
+  support=[]
+  for q in sorted(B.iterdir()):
+   if q.is_file()and q.suffix in text_suffixes:support.append(add(q,DEST/'development'/q.name))
+@@ -167,6 +195,8 @@
+  for name in ['plan.md','publication-plan.json','endpoint-freeze.json','independent-plan-review.json','PACKER-REVIEW.md']:
+   q=H/name
+   if q.exists():support.append(add(q,DEST/'development/publication'/name))
++ for q in sorted((H/'history').rglob('*')):
++  if q.is_file()and q.suffix in text_suffixes:support.append(add(q,DEST/'development/publication'/q.relative_to(H)))
+  final_binding=add(fp,Z/'results/prefix246-sites-verification.json',force=True)
+  # The selected actual records bind fixed Site and MP parents; preserve exact evidence aliases.
+  site=Path(plan['site_evidence']);need(sha(site)==plan['site_evidence_sha256'],'Site parent changed.')
+--- v1/PACKER-REVIEW.md
++++ v2/PACKER-REVIEW.md
+@@ -3,7 +3,8 @@
+ `build_packet.py` and `portable_coverage.py` are source-only drafts. Neither has
+ been executed, imported or tested by running its entry point. Python AST parsing
+ is the only syntax validation. No final packet or final PASS has been emitted.
+-The existing60-PASS receipt is provisional;42 units remain at this handoff.
++The existing60-PASS receipt remains a historical provisional baseline; later
++progress does not weaken the complete102-module publication gate.
+ 
+ Before execution, review both complete files and their interaction with the exact
+ preserved `run_pipeline.py` and per-unit guards. The existing plan receipt
+@@ -22,6 +23,19 @@
+ - preservation of all run/attempt history, including raw failures, prior source
+   snapshots and actual executed guards. Any unresolved RUNNING proof record or
+   unclassified RUNNING coordinator blocks publication.
++
++For every historical record that contains source/audit metadata, the builder
++requires its exact recorded hash to resolve through the original path, snapshot
++or retained historical bytes. Explicit `recorded_proof_bindings` and all original
++path aliases identify the recovered bytes; copying whatever files happen to be
++present in an attempt directory is insufficient.
++
++Every attempt in every pipeline must bind an archived `verification.json`.
++Recorded driver-log paths/hashes and any recorded child-reference hash are also
++checked. This version rejects all missing-record attempts, including any possible
++precompiler rejection. Such a case requires a separately reviewed evidence-based
++classification and builder extension; neither a proof invocation nor a missing
++verification record is invented. Existing raw attempt statuses remain unchanged.
+ 
+ The only classified stale RUNNING coordinator currently allowed is session79413's
+ preserved record. Its16 child proof records reached PASS, while the parent recorded
+@@ -47,6 +61,11 @@
+ in that same receipt or linked immutable review. If adapting another complete
+ review format, write a separate accurate binding receipt; never relabel a
+ source-only review as completed execution evidence.
++
++The initial unexecuted publication programs and independent review are preserved
++under `history/v1-initial/`. The successor addresses findings H1/H2 by checking
++historical proof-byte bindings and all pipeline-attempt records. The coordinator
++is unchanged. Both versions and the original review are archived by the packet.
+ 
+ Root's future no-proof packet invocation is:
+ 
+--- v1/prefix246_coverage.md
++++ v2/prefix246_coverage.md
+@@ -9,9 +9,10 @@
+ `SetTheory.BusyBeaver.ZFC.SitesPrefix246.all_sites`.
+ `actual_walk_checked` and `actual_walk_exists` apply to every finite PC list,
+ including the decoder's zero-padding behavior. The checked site-execution
+-soundness is imported explicitly. The separate `BinaryPrefix246` theorem
+-combines this coverage with runtime simulation, the complete 410,735-step blank
+-bootstrap and logical calibration. This coverage packet alone does not assert
++soundness is imported explicitly. The separate `BinaryPrefix246` endpoint is
++intended to combine this coverage with runtime simulation, the complete
++410,735-step blank bootstrap and logical calibration; its check status is tracked
++separately. This coverage packet alone does not assert
+ an internal PA consistency equivalence or unconditional nonhalting.
+ 
+ Read the [publication manifest](coverage-prefix246/manifest.json) and the

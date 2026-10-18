@@ -12,9 +12,10 @@ the intended arithmetic sentence and an object-theory proof are connected to
 it. Completing the PA version would also serve the ZFC requirement, after
 checking the chosen arithmetic interpretation in ZFC.
 
-The [Choice calibration](choice_calibration254.md) now closes the external
-Lean theorem for the literal 252-state machine: blank nonhalting iff Con(ZFC).
-It uses Choice in L and external first-order completeness. This discharges the
+The [246-state endpoint](prefix246_binary.md) now closes the external Lean
+theorem for the exact contextual-fold machine: blank nonhalting iff Con(ZFC).
+It reuses the earlier [Choice calibration](choice_calibration254.md), including
+Choice in L and external first-order completeness. This discharges the
 external consistency comparison; it does not implement the represented proof
 translations or prove their correctness for every internal code in every PA
 model. The remaining obligations are recorded below.
@@ -104,10 +105,10 @@ translation, the internal L-specific Separation/Replacement proofs, and the comp
 interpreter-to-Enum connection. The forward validator sentence alone does
 not yet imply the requested PA theorem about the literal binary machine.
 
-The active binary target is now the exact 246-state candidate. Its table,
-logical seed, whole-tape instruction contracts and conditional runtime
-comparison have separate Lean checks; completing that external endpoint
-still does not supply an internal PA theorem.
+The active binary target is the exact 246-state machine. Its table, logical
+seed, whole-tape instruction contracts, complete decoder coverage and blank
+startup now compose into the checked external ZF/ZFC consistency endpoint.
+That theorem still does not supply an internal PA proof.
 The [fixed arithmetic lookup for its exact table](arithmetic_machine_graph_prefix246.md)
 is now checked in every IOpen model and agrees with all 492 typed transitions.
 The [exact step graph](arithmetic_machine_step_prefix246.md) now defines the

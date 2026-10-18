@@ -4,8 +4,16 @@ This directory freezes the exact candidate from
 [`8cdc55ff92`](https://github.com/VladimirReshetnikov/ProveIt/commit/8cdc55ff9281b0aaba49bf74b0b225d57f12b893).
 Independent review found no mathematical blocker in the ordinary proof within
 its stated scope. All nine primary checks and two additional audits pass on
-fresh copies. **Its exact-machine Lean endpoint and equivalence proved inside
-PA remain open.** The checked 252-state endpoint refers to a different table.
+fresh copies. **Its [exact-machine external Lean endpoint](../prefix246_binary.md)
+is now checked. The equivalence proved inside PA remains open.** The earlier
+checked 252-state endpoint refers to a different table.
+
+The closed theorem proves blank halting iff ZF has a refutation, and iff ZFC
+has a refutation. Its nonhalting equivalences follow by negation. Complete
+[decoder coverage](../prefix246_coverage.md), the entire blank startup and
+whole-tape runtime simulation supply every premise. The final nine axiom
+probes and nine typed callers pass with zero warnings; coverage separately
+passes 468 probes and 468 callers across 102 modules.
 
 The exact candidate now has checked arithmetic [step](../arithmetic_machine_step_prefix246.md)
 and [run](../arithmetic_machine_run_prefix246.md) graphs. The
@@ -22,8 +30,8 @@ unbounded internal simulation and consistency equivalence open.
 The machine has one two-way infinite binary tape, initially all zero, with
 head at coordinate zero. Every transition writes a bit and moves left or
 right, including the final transition into halt. Initialization uses the
-counted working states. The intended theorem is blank-tape nonhalting iff
-Con(ZFC); the report gives an ordinary argument in ZFC, while the project's
+counted working states. The checked external theorem is blank-tape nonhalting
+iff Con(ZFC); the report gives an ordinary argument in ZFC, while the project's
 stronger PA objective remains unfinished.
 
 Relative to the previously reviewed 247 table, it removes old state 97,
