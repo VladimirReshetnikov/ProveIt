@@ -1827,6 +1827,12 @@ also with six probes and eight callers and zero warnings. The
 now has its own checked whole-file contract, with three probes and four callers.
 Structural source witnesses resolved ten recursion-depth failures without
 changing its statements or proof limits; the failed attempt is preserved.
+The next two constructor occurrences,
+[433–460](arithmetic_control_ax_constructor433254.md) and
+[460–487](arithmetic_control_ax_constructor460254.md), also have checked
+whole-file contracts for arbitrary internal register files with zero
+scratch coordinates. Each passed three probes and four typed callers
+without warnings. Composing the surrounding AX branch remains open.
 
 [Structural catalogue lookup](arithmetic_control_source_rank254.md) supplies
 a reusable path-to-rank proof and two concrete source bindings at controls

@@ -795,6 +795,18 @@ A finite-fragment alternative would still need a uniform
 transformation of arbitrary internal refutations; a result restricted to a
 proper definable cut would need an additional bridge to full consistency.
 
+The upstream [NativeFixed](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/NativeFixed.lean)
+now supplies source-level proofs for the interpreted equality and seven
+fixed ZF axioms, together with domain nonemptiness for `NativeInterp.PN`.
+Its [source/API review](results/upstream-native-fixed-b8b8397f3c-review.json)
+found no mathematical blocker; no fresh compiler or typed audit is claimed.
+`provable_domain` has the required nonemptiness shape in every IΣ₁ model.
+`provable_interp_fixed` still takes an ordinary sentence and external
+membership proof. Turning that result into a case split on arbitrary
+internal axiom codes, handling internal Separation/Replacement matrices,
+and identifying the checked closed parameter with `PN` remain separate
+obligations.
+
 The supplied [NativeGicDelta1](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/NativeGicDelta1.lean)
 and [NativeTheory](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/NativeTheory.lean)
 define the Δ₁ schema recognizer and `NativeSet.nativeTheory`.
