@@ -1645,3 +1645,15 @@ whole register file with the specified updates and positive clocks. Seven
 theorem audits and eight typed callers pass with no warnings. The complete AX
 bundle and interpreter-to-scheduler comparison remain open; its inherited
 binary relation still concerns the earlier 252-state implementation.
+
+The [second AX parameter push](arithmetic_control_ax_cache_push254.md) now
+checks actual controls 67–92 through entry 93 for arbitrary internal IΣ₁
+register values with both scratch registers initially zero. It saves TW on
+WS, copies the cache into TW and restores the cache; every other field is
+retained. Its copy/restore tail takes exactly
+`7*cache+2` logical instructions with only scratch1 initially zero. Composition
+with the first push gives the full two-parameter prefix from control 41 to 93.
+Eight axiom probes and twelve typed callers pass with zero warnings; the
+failed first source attempt and explicit control-equality repair are preserved.
+The GEN constructor, later AX bundle and internal scheduler/binary comparison
+remain open.

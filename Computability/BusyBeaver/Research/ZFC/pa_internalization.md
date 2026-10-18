@@ -98,7 +98,13 @@ The current arithmetic checkpoints are:
   TW and preserves WS on failure, and clears cache in both cases. Its AC0
   dispatch composition is also checked. The [first AX parameter push and
   classifier](arithmetic_control_ax_prefix254.md) now have all-internal
-  whole-file contracts; the remaining AX bundle is still open.
+  whole-file contracts. The [second AX parameter push](arithmetic_control_ax_cache_push254.md)
+  now covers controls 67–93 and composes both pushes from control 41.
+  It puts the old cache in TW and saves the previous TW on WS, preserving
+  all other fields. Its copy/restore tail has exact internal clock
+  `7*cache+2`; the complete push assumes both scratch registers zero.
+  Eight axiom probes and twelve callers pass with zero warnings. The
+  GEN constructor and remaining AX bundle are still open.
 
 The remaining major steps are the reverse internal ZF-to-validator proof
 translation, the internal L-specific Separation/Replacement proofs, and the complete
