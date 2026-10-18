@@ -80,6 +80,15 @@ These three modules pass 28 axiom probes and 35 typed callers, with no final
 warnings. The unbounded internal register/binary simulation and the PA
 consistency equivalence remain open.
 
+The [arbitrary-start arithmetic run](arithmetic_machine_run_from_prefix246.md)
+and [prefix-removal theorem](arithmetic_machine_prefix_prefix246.md) now
+allow any internal initial configuration and prefix time in every IΣ1 model.
+Whole-configuration halt absorption handles halting inside the prefix. The
+checked 410,735-step startup can therefore be removed from the internal
+halting condition. These two modules pass 23 axiom probes and 29 typed
+callers with zero warnings; identifying the resulting run with the register
+interpreter and seeded scheduler remains open.
+
 The [seeded arithmetic scheduler](arithmetic_enumerator_seed246.md) now
 starts at candidate 3 with `TW=WS=H=0,D=3`, matching the required logical
 seed. In every IΣ1 model, an accepted refutation code exists iff this

@@ -121,6 +121,17 @@ compares every ordinary runtime to this literal binary machine. The
 lemma applies to external natural times, not arbitrary internal times.
 The unbounded internal register/binary comparison still needs its own proof.
 
+The [arbitrary-start iterator](arithmetic_machine_run_from_prefix246.md)
+now has fixed Σ₁/Δ₁ graphs, totality, time-addition laws and whole-configuration
+halt absorption for every internal initial code and time in every IΣ1 model.
+The [prefix-removal theorem](arithmetic_machine_prefix_prefix246.md)
+proves halting equivalence before and after any internal prefix, including
+halting inside that prefix. Its `boot_halts_iff` specialization removes the
+checked 410,735-step startup using its complete numeric tape code. The two
+modules passed 23 axiom probes and 29 typed callers with zero warnings.
+This closes arithmetic startup removal; the post-startup register/binary
+simulation and its connection to the seeded scheduler remain open.
+
 The [seeded arithmetic scheduler](arithmetic_enumerator_seed246.md) now
 proves the validator/scheduler equivalence at candidate 3, pointer 0 and
 working fields `TW=WS=H=0,D=3`, in every IΣ1 model. Both proof-code and
