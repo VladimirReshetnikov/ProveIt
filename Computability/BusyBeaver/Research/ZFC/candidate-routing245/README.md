@@ -12,6 +12,11 @@ substantive blocker. **The exact 245-state Lean endpoint and the proof inside
 PA remain open.** The [246-state machine](../prefix246_binary.md) remains the
 closed external Lean baseline.
 
+The first [245-state Lean unit](../table_routing245.md) now checks the exact
+transition table, state numbering and 46 reusable core rows: 64 theorem
+audits and 64 typed callers pass with zero warnings. Runtime simulation and
+blank initialization still need their own Lean proofs.
+
 | Artifact | Meaning |
 | --- | --- |
 | [zfc_routing245.tm](zfc_routing245.tm) | Canonical table: working states 0–244, start 0, dispatcher 88, halt 245; 490 rows. |
