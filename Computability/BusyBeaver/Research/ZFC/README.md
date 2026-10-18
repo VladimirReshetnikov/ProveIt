@@ -26,8 +26,16 @@ the lower bound needed for the independence argument; no absolute consistency
 proof is claimed. Require a concrete encoding benefit before increasing the
 benchmark strength.
 
-The active focus is verifying and formalizing the
-[246-state contextual-fold candidate](candidate-prefix246/README.md).
+The active formal baseline is the
+[246-state contextual-fold machine](candidate-prefix246/README.md).
+The new [routed 245-state candidate](candidate-routing245/README.md), from
+`8286787dd0`, passes its complete executable suite, including all 8,391
+expanded whole-tape instruction cases and its 407,915-step exact blank prefix.
+Joint source-grammar, special-entry and scanner optimization saves the state
+while preserving the original theory. Independent ordinary-proof reviews find
+no substantive blocker. Its exact Lean endpoint and internal PA proof remain
+open; the [intake record](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-164.md)
+preserves attribution, recovery, fresh results and scope.
 The checked components of the earlier
 [shared-carry 250 construction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-160.md)
 provide reusable proof infrastructure. Sources 58–59 contain the same
