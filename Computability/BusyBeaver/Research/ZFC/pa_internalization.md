@@ -141,13 +141,27 @@ represented Sigma-one induction in an arbitrary IΣ1 model, with explicit
 formula-code and shift/substitution identities. The numeral-naturalness
 premise is discharged by the existing `LNumOK.numOK`.
 
-The next connecting work is to specialize the atom/connective/quantifier
-templates, assemble the general `envForm`/`relativize` equivalence, supply
-matching-environment existence, and connect these to the uniform constructible
-Separation/Replacement obligation `hSchema`. These updates record source
-review, without a fresh compilation claim. They do not by themselves close
-the reverse ZF-to-validator translation or the arithmetic proof for the actual
-246-state binary machine.
+Commit `ccdebc892a922881b299455c53bb75c32d3e2ae4` adds
+[LGlue2](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LGlue2.lean).
+`shift_envForm` proves `shift (envForm n p) = envForm n p` for every
+internal semiformula code and depth in an arbitrary IΣ1 model, including
+nonstandard codes. The transformed predicate retains its bound environment
+slot; the identity concerns free-variable shifting. `tr_gS`, `tr_qHyp`,
+`tr_relAll` and `tr_envAll` identify the translated glue and universal-step
+templates. `QX_free` identifies the opened quantifier premise with the
+successor matching clause; with `LGlue1.MT_succ`, the matching length becomes
+`j + 1`. Its sole extra premise, that the environment predicate is shift-fixed,
+is supplied by `shift_envForm`.
+
+These are code identities needed to assemble the internal glue derivation.
+This module does not yet declare the general `glue` theorem, matching-environment
+existence or `hSchema`. Specializing the template derivations, completing the
+free-based formula induction and connecting matching environments to the
+relativized schema closures remain. This update records source review only,
+without a new compilation or axiom-audit claim; the reverse validator comparison
+and actual 246-state arithmetic runtime remain separate obligations. The
+[pinned source review](results/upstream-ccdebc892a-source-review.json) records
+the declarations and remaining obligations.
 
 ## What is already available
 
@@ -631,8 +645,9 @@ nonstandardly many free variables never need a nonstandard quantifier block.
   atoms read entries through ZF numerals (Codex's numeral code builders).
   **Checked** as `ZFCinPA/EnvTransform.lean` (`envForm d K`, its equations,
   and `isSemiformula_envForm`: the output has bound-variable arity at most
-  one). The latter typing theorem alone does not assert absence of free
-  variables; the required free-variable/shift laws remain separate.
+  one). The typing theorem alone does not assert absence of free variables;
+  `LGlue2.shift_envForm` now supplies shift-fixity for every internal code.
+  `LGlueCodes.envForm_free` separately identifies opening with a depth change.
 * Reflecting stages are the limit **closure points of a function** `f_K`
   (a placeholder-definable graph, existentially supplied by the induction):
   successor for atoms, `max(f₁, f₂)` for `⋏`/`⋎` (closure points of the
@@ -706,14 +721,15 @@ function code is the translation of the template's own defining matrix, so
 every definitional hypothesis is the internal tautology `∀(A ↔ A)`. Atoms
 use `LNumOK.numOK` (every numeral chain defines one natural, in `𝗭𝗙`).
 
-**Remaining for `hSchema`** (superseding item (ii) below): (ii) ~~the internal induction driver chaining the
-compiled step templates at internal codes (definitional hypotheses as
-internal tautologies), producing `Θ` for `envForm 1 φ` / `envForm 2 ψ`;
-(iii) the glue from `SchemaRecognizer` codes to `relativize`: an
-environment `t₀` with `t₀(i) = &i`, `φ^L ↔ envForm 1 φ (z :: t₀)` by
-internal induction on `φ`, and `relativize` commuting with the `∀^m`
-closure, so that the compiled final templates yield the relativized schema
-instances.
+**Remaining for `hSchema`** (superseding the historical next-step notes below):
+the reflection driver producing `Θ` is already available. `LGlue1` provides
+matching functionality and slot reading; `LGlue2` supplies shift-fixity and the
+opened quantifier-premise identity. Still needed are the compiled glue steps
+and internal formula induction, existence of a suitable matching environment
+`t₀` with `t₀(i) = &i`, and the `SchemaRecognizer`/`relativize` closure adapter.
+These must turn the compiled final templates into the internal derivability
+of every relativized Separation/Replacement instance, with its domain side
+formulas.
 
 Feeding `hSchema` into `ConstructibleInterpretation.provable_falsum_ZF_of_ZFC`
 and the result into the C254/ZF comparison then gives the Choice half of the
