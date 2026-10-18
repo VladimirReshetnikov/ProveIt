@@ -1739,3 +1739,12 @@ Its composition with a clean push sets TW to the argument and pushes old TW
 onto WS. Five axiom probes and nine typed callers passed without warnings;
 the initial two-coordinate proof failure and explicit rewrite repair remain
 in the history. Concrete AX occurrences require their own literal bindings.
+
+The [actual AX argument push and following plain push](arithmetic_control_ax_argument_push254.md)
+now bind controls 136→162→181 to those generic contracts. Their composition
+sets TW to zero and WS to `cantor(oldAC, cantor(oldTW, oldWS))`, preserving
+every other register, for arbitrary internal IΣ₁ files with both scratches
+zero. Six axiom probes and six typed callers passed without warnings. Both
+uncompiled source corrections, the first successful run and the exact 99-module
+provider closure are retained. The complete AX branch and PA endpoint remain
+open.
