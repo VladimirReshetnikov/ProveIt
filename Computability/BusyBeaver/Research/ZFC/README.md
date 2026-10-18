@@ -1713,3 +1713,12 @@ other five fields are preserved. Nine axiom probes and eleven typed callers
 pass with zero warnings. Both failed source attempts and their narrow repairs
 are preserved in the exact history. Full AX and the interpreter/PA endpoint
 remain open.
+
+The [generic constructor and actual AX implication occurrence](arithmetic_control_constructor254.md)
+now have whole-file contracts for arbitrary internal IΣ₁ values. The actual
+195→222 block pops WS and constructs the tag-zero formula from its head and
+TW, preserving the other registers. The source and audit passed seven axiom
+probes and thirteen typed callers with zero warnings under the default proof
+limits. The original failed source attempt, finite-target repair and successful
+run are preserved. This closes one constructor fragment; complete AX and the
+internal binary-machine PA equivalence remain open.
