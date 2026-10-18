@@ -82,44 +82,23 @@ theorem section16_good_sidelengths_with {N k : Nat} [NeZero N]
   let C (h : Point N k) : Real := section16ArrangementCountAtSide 8 B h
   let G (h : Point N k) : Real := section16RespectedArrangementCountAtSide 8 B phi h
   let H := Finset.univ.filter fun h => (1 - 2 * eta) * C h ≤ G h ∧ t ≤ C h
-  have heta : 0 < eta := by dsimp [eta]; positivity
-  have ht : 0 ≤ t := by dsimp [t]; exact mul_nonneg (div_nonneg ht1 (by norm_num)) (by positivity)
   have hC : (∑ h, C h) = generalArrangementCount 8 B := by
-    dsimp [C]
-    rw [← Nat.cast_sum, section16_sum_arrangementCountAtSide]
+    simp only [C, ← Nat.cast_sum, section16_sum_arrangementCountAtSide]
   have hG : (∑ h, G h) = respectedGeneralArrangementCount 8 B phi := by
-    dsimp [G]
-    rw [← Nat.cast_sum, section16_sum_respectedArrangementCountAtSide]
-  have hGC (h : Point N k) : G h ≤ C h := by
-    apply Nat.cast_le.mpr
-    apply Finset.card_le_card
-    intro R hR
-    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hR ⊢
-    exact ⟨hR.1, hR.2.1⟩
-  have hrespect : (1 - eta) * ∑ h, C h ≤ ∑ h, G h := by
-    rw [hC, hG]
-    exact hB.2
-  have hmass := weighted_good_large_mass C G eta t heta ht hGC hrespect
-  have htotal : t1 * (N : Real) ^ (17 * k + 15) ≤ ∑ h, C h := by
-    rw [hC]
-    exact hB.1
-  have hcard : Fintype.card (Point N k) = N ^ k := by simp [Point, ZMod.card]
-  have hbudget : (Fintype.card (Point N k) : Real) * t =
-      t1 / 4 * (N : Real) ^ (17 * k + 15) := by
-    rw [hcard, Nat.cast_pow]
-    dsimp [t]
-    rw [show 17 * k + 15 = k + (16 * k + 15) by omega, pow_add]
-    ring
-  refine ⟨H, ?_, ?_⟩
+    simp only [G, ← Nat.cast_sum, section16_sum_respectedArrangementCountAtSide]
+  have hGC (h : Point N k) : G h ≤ C h := Nat.cast_le.mpr (Finset.card_le_card fun R hR => by
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hR ⊢; exact ⟨hR.1, hR.2.1⟩)
+  have hmass := weighted_good_large_mass C G eta t (by positivity) (by positivity) hGC
+    (by rw [hC, hG]; exact hB.2)
+  have hbudget : (Fintype.card (Point N k) : Real) * t = t1 / 4 * (N : Real) ^ (17 * k + 15) := by
+    rw [show Fintype.card (Point N k) = N ^ k by simp [Point, ZMod.card]]
+    dsimp only [t]; push_cast; ring
+  refine ⟨H, ?_, fun h hh => ?_⟩
   · change _ ≤ ∑ h ∈ H, C h
     simp only [H, Finset.sum_filter]
-    rw [hbudget] at hmass
-    linarith
-  · intro h hh
-    have hgood : (1 - 2 * eta) * C h ≤ G h ∧ t ≤ C h := by simpa [H] using hh
-    refine ⟨hgood.2, section16_domainApproxHomOfOrder_of_arrangementCounts B h phi _ ?_⟩
+    linarith [hB.1]
+  · have hgood : (1 - 2 * eta) * C h ≤ G h ∧ t ≤ C h := by simpa [H] using hh
     have he : 2 * eta = (2 : Real) ^ (-(43 : Real)) := by norm_num [eta, Real.rpow_neg]
-    rw [← he]
-    exact hgood.1
+    exact ⟨hgood.2, section16_domainApproxHomOfOrder_of_arrangementCounts B h phi _ (he ▸ hgood.1)⟩
 
 end LeanProofs.GowersSzemeredi

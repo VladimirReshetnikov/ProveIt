@@ -81,51 +81,34 @@ theorem MultiplyLinearWith.relationSum {N k : Nat} [NeZero N]
       (fun s => E1 (lam * s) * E2 ((1 - lam) * s)) (relationSum Gamma1 Gamma2) := by
   intro s hs hs1 P hP
   have ha : 0 < lam * s := mul_pos hl hs
-  have ha1 : lam * s ≤ 1 := by nlinarith [mul_le_mul_of_nonneg_right hl1.le hs.le]
   have hb : 0 < (1 - lam) * s := mul_pos (by linarith) hs
-  have hb1 : (1 - lam) * s ≤ 1 := by nlinarith [mul_pos hl hs]
+  have hb1 : (1 - lam) * s ≤ 1 := mul_le_one₀ (by linarith) hs.le hs1
   obtain ⟨M1, q1, H1, B, nu, hH1sub, hH1mass, hBpart, hBproper, hq1, hBwidth, hnu, hcov1⟩ :=
-    h1 (lam * s) ha ha1 P hP
+    h1 (lam * s) ha (mul_le_one₀ hl1.le hs.le hs1) P hP
   obtain ⟨q2, G, L, R, mu, hq2, hGsub, hGmass, hRpart, hRproper, hRwidth, hmu, hcov2⟩ :=
     h2.on_partition ((1 - lam) * s) hb hb1 (hQ2 _ hb hb1) P B hBpart hBproper
   let e := section5NatFlattenEquiv L
   refine ⟨∑ j, L j, q1 * q2, H1 ∩ G, boxFlatten L R,
     fun j => sumMultilinearFamily (nu (e.symm j).1) (mu (e.symm j).1 (e.symm j).2),
-    ?_, ?_, boxFlatten_partition P B L R hBpart hRpart, ?_, ?_, ?_, ?_, ?_⟩
-  · exact Finset.inter_subset_left.trans hH1sub
-  · have hsub : H1 ∪ G ⊆ P.carrier := Finset.union_subset hH1sub hGsub
-    have hcu : ((H1 ∪ G).card : Real) ≤ P.carrier.card := by
-      exact_mod_cast Finset.card_le_card hsub
+    Finset.inter_subset_left.trans hH1sub, ?_, boxFlatten_partition P B L R hBpart hRpart,
+    fun j => hRproper _ _, ?_, fun j => ?_,
+    fun j i => sumMultilinearFamily_isMultilinear _ _ (hnu _) (hmu _ _) i, ?_⟩
+  · have hcu : ((H1 ∪ G).card : Real) ≤ P.carrier.card := by
+      exact_mod_cast Finset.card_le_card (Finset.union_subset hH1sub hGsub)
     have hui : ((H1 ∪ G).card : Real) + (H1 ∩ G).card = H1.card + G.card := by
       exact_mod_cast Finset.card_union_add_card_inter H1 G
-    have key : (1 - s) * (P.carrier.card : Real) =
-        (1 - lam * s) * P.carrier.card + (1 - (1 - lam) * s) * P.carrier.card -
-          P.carrier.card := by ring
-    rw [key]
     linarith
-  · intro j
-    exact hRproper (e.symm j).1 (e.symm j).2
-  · show ((q1 * q2 : Nat) : Real) ≤ Q1 (lam * s) * Q2 ((1 - lam) * s)
-    push_cast
+  · push_cast
     exact mul_le_mul hq1 hq2 (Nat.cast_nonneg _) ((Nat.cast_nonneg _).trans hq1)
-  · intro j
-    show (P.width : Real) ^ (E1 (lam * s) * E2 ((1 - lam) * s)) ≤
-      ((R (e.symm j).1 (e.symm j).2).width : Real)
-    rw [Real.rpow_mul (Nat.cast_nonneg _)]
-    exact (Real.rpow_le_rpow (Real.rpow_nonneg (Nat.cast_nonneg _) _) (hBwidth _)
-      (hE2 _ hb hb1)).trans (hRwidth _ _)
-  · intro j i
-    exact sumMultilinearFamily_isMultilinear _ _ (hnu _) (hmu _ _) i
+  · exact (Real.rpow_mul (Nat.cast_nonneg _) _ _).trans_le ((Real.rpow_le_rpow
+      (Real.rpow_nonneg (Nat.cast_nonneg _) _) (hBwidth _) (hE2 _ hb hb1)).trans (hRwidth _ _))
   · intro j x hx hxH y hxy
-    have hxR : x ∈ (R (e.symm j).1 (e.symm j).2).carrier := hx
-    have hxB : x ∈ (B (e.symm j).1).carrier := IsPartition.cell_subset (hRpart _) _ hxR
+    have hxB : x ∈ (B (e.symm j).1).carrier := IsPartition.cell_subset (hRpart _) _ hx
     obtain ⟨y1, y2, hy1, hy2, rfl⟩ := mem_relationSum hxy
     obtain ⟨a, ha⟩ := hcov1 _ x hxB (Finset.mem_inter.mp hxH).1 y1 hy1
-    obtain ⟨b, hb⟩ := hcov2 _ _ x hxR (Finset.mem_inter.mp hxH).2 y2 hy2
-    refine ⟨finProdFinEquiv (a, b), ?_⟩
-    show y1 + y2 = sumMultilinearFamily (nu (e.symm j).1) (mu (e.symm j).1 (e.symm j).2)
-      (finProdFinEquiv (a, b)) x
-    rw [sumMultilinearFamily_pair, ← ha, ← hb]
+    obtain ⟨b, hb⟩ := hcov2 _ _ x hx (Finset.mem_inter.mp hxH).2 y2 hy2
+    exact ⟨finProdFinEquiv (a, b),
+      (congrArg₂ (· + ·) ha hb).trans (sumMultilinearFamily_pair _ _ a b x).symm⟩
 
 /-- Multiplying the values by a constant keeps the controls. -/
 def relationScale {N k : Nat} [NeZero N] (c : ZMod N) (Gamma : Finset (Point N k × ZMod N)) :

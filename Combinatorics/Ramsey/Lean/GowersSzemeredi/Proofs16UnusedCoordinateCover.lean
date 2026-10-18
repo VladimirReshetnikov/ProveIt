@@ -40,52 +40,34 @@ theorem MultiplyLinearWith.relation_unused_coordinate_cover {N k m v : Nat} [NeZ
     hML.short_parent_cover epsilon he he1 hQ hE T I hT hI hk hm hmT hmI
   let e := section5NatFlattenEquiv n
   let R' := boxFlatten n R
-  have hR'part : IsBoxPartition R' T := boxFlatten_partition T P n R hPpart hRpart
-  have hvfit (j : Fin (∑ a, n a)) : v ^ 2 ≤ (R' j).width - 1 := by
-    have hh := hfit.trans (hRwidth (e.symm j).1 (e.symm j).2)
-    have hh' : v ^ 2 + 1 ≤ (R' j).width := by exact_mod_cast hh
-    omega
-  have hne (j : Fin (∑ a, n a)) : (R' j).carrier.Nonempty := by
-    apply Box.carrier_nonempty_of_axis_pos
-    intro a
-    have hw := (R' j).width_le_axis_length a
-    have hh := hvfit j
-    have hv2 : 1 ≤ v ^ 2 := by nlinarith
-    omega
+  have hvfit (j : Fin (∑ a, n a)) : v ^ 2 ≤ (R' j).width - 1 :=
+    Nat.le_sub_of_add_le (by exact_mod_cast hfit.trans (hRwidth (e.symm j).1 (e.symm j).2))
+  have hne (j : Fin (∑ a, n a)) : (R' j).carrier.Nonempty :=
+    (R' j).carrier_nonempty_of_axis_pos fun a => by
+      have := (R' j).width_le_axis_length a
+      have := hvfit j
+      have := Nat.one_le_pow 2 v hv
+      omega
   let axis : Fin k := ⟨0, hk⟩
   let parent := fun j : Fin (∑ a, n a) => (P (e.symm j).1).axis axis
-  have hsub (j : Fin (∑ a, n a)) : ((R' j).axis axis).carrier ⊆ (parent j).carrier :=
-    (R' j).axis_carrier_subset_of_carrier_subset (P (e.symm j).1) (hne j)
-      (IsPartition.cell_subset (hRpart (e.symm j).1) (e.symm j).2) axis
-  have hparentstep (j : Fin (∑ a, n a)) : (parent j).step = (↑u : ZMod N) := by
-    dsimp only [parent]
-    rw [(P _).axis_step, hPstep, ← hstep, hu]
-  have hparallel (j : Fin (∑ a, n a)) : I.step = (parent j).step := by
-    rw [hparentstep, hu]
+  have hparentstep (j : Fin (∑ a, n a)) : (parent j).step = (↑u : ZMod N) :=
+    ((P _).axis_step axis).trans ((hPstep _).trans (hstep.symm.trans hu))
   let G := lastProductSet H I.carrier
   let D : ZMod N → Finset (Point N (k + 1)) := fun y =>
     Finset.univ.filter fun z => (section16Init z, y) ∈ Λ
-  let nu := fun j : Fin (∑ a, n a) => fun i : Fin q =>
-    fun z : Point N (k + 1) => mu (e.symm j).1 (e.symm j).2 i (section16Init z)
-  have hnu : ∀ j i, IsMultilinear (nu j i) := by
-    intro j i
-    exact (hmu (e.symm j).1 (e.symm j).2 i).lift_last
-  have hcover : ∀ (y : ZMod N) j z, section16Init z ∈ (R' j).carrier → z ∈ D y →
-      z ∈ (fun _ : ZMod N => G) y → ∃ i, (fun (y : ZMod N) (_ : Point N (k + 1)) => y) y z =
-        nu j i z := by
-    intro y j z hzR hzD hzG
-    have hzΛ := (Finset.mem_filter.mp hzD).2
-    have hzH := (Finset.mem_filter.mp hzG).2.1
-    exact hc (e.symm j).1 (e.symm j).2 (section16Init z) hzR hzH y hzΛ
   obtain ⟨L, S, nu', hSpart, hSproper, hnu', hc'⟩ := section16_synchronize_base_cover_family
-    T I hI R' hR'part (fun j => hRproper _ _) parent axis (fun _ => u)
-    hparentstep hparallel hsub (fun j => (hPaxes (e.symm j).1 axis).2.1)
-    (fun j => (hPaxes (e.symm j).1 axis).2.2) hv hvfit D (fun _ => G)
-    (fun (y : ZMod N) (_ : Point N (k + 1)) => y) nu hnu hcover
+    T I hI R' (boxFlatten_partition T P n R hPpart hRpart) (fun j => hRproper _ _) parent axis
+    (fun _ => u) hparentstep (fun j => hu.trans (hparentstep j).symm)
+    (fun j => (R' j).axis_carrier_subset_of_carrier_subset (P (e.symm j).1) (hne j)
+      (IsPartition.cell_subset (hRpart (e.symm j).1) (e.symm j).2) axis)
+    (fun j => (hPaxes (e.symm j).1 axis).2.1) (fun j => (hPaxes (e.symm j).1 axis).2.2) hv hvfit
+    D (fun _ => G) (fun y _ => y) (fun j i z => mu (e.symm j).1 (e.symm j).2 i (section16Init z))
+    (fun j i => (hmu (e.symm j).1 (e.symm j).2 i).lift_last)
+    (fun y j z hzR hzD hzG => hc (e.symm j).1 (e.symm j).2 (section16Init z) hzR
+      (Finset.mem_filter.mp hzG).2.1 y (Finset.mem_filter.mp hzD).2)
   obtain ⟨hG, hGm⟩ := lastProductSet_good_mass T.carrier H I.carrier epsilon hH hHm
-  refine ⟨q, G, L, S, nu', hq, hG, hGm, hSpart, hSproper, hnu', ?_⟩
-  intro j z hz hzG y hy
-  exact hc' y j z hz (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hy⟩) hzG
+  exact ⟨q, G, L, S, nu', hq, hG, hGm, hSpart, hSproper, hnu',
+    fun j z hz hzG y hy => hc' y j z hz (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hy⟩) hzG⟩
 
 /-- **Synchronized retiling across one unused final coordinate**, for
 arbitrary controls. -/

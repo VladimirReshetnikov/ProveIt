@@ -104,46 +104,31 @@ theorem section16_poly_family_two_cover
           (famPieceSliceExponent (famTwoQr m qr) (famTwoEs m ql) m rho)))
       (Finset.univ.biUnion fun c => partialGraph (P c).D (P c).phi) := by
   -- spectra
-  set Gspec := Finset.univ.biUnion fun c : Fin m =>
-    ((P c).H1 ×ˢ (Finset.univ : Finset (ZMod N))).filter fun z => z.2 ∈ (P c).K z.1 with _
-  have hspec : RelFreimanCover (m * qs + 1) Gspec :=
-    (relFreimanCover_union _ (fun c => (P c).spec)).pad (Nat.le_succ _)
-  have hMLspec : MultiplyLinearWith (famTwoQb m qs) (famTwoEb m qs) Gspec :=
-    hspec.cubic_cover (Nat.succ_pos _)
+  have hMLspec : MultiplyLinearWith (famTwoQb m qs) (famTwoEb m qs) _ :=
+    ((relFreimanCover_union _ fun c => (P c).spec).pad (Nat.le_succ _)).cubic_cover
+      (Nat.succ_pos _)
   -- remainders
-  set Λ := Finset.univ.biUnion fun c : Fin m =>
-    (P c).D.image fun w => (lastPt w, (P c).rem w) with _
-  have hrem1 : RelFreimanCover (m * qr + 1) Λ :=
-    (relFreimanCover_union _ (fun c => (P c).remc)).pad (Nat.le_succ _)
-  have hMLrem := (hrem1.cubic_cover (Nat.succ_pos _)).last_cylinder (m * qr + 1)
-    hrem1.fiber_le (fun t _ _ => by positivity)
-    (fun t ht ht1 => ⟨cubicBaseExponent_pos (Nat.succ_pos _) ht,
-      cubicBaseExponent_le_one (Nat.succ_pos _) ht ht1⟩)
-  have hMLrem' : MultiplyLinearWith (famTwoQr m qr) (famTwoEr m qr) (lastCylinder Λ) := hMLrem
+  have hrem1 : RelFreimanCover (m * qr + 1) _ :=
+    (relFreimanCover_union _ fun c => (P c).remc).pad (Nat.le_succ _)
+  have hMLrem : MultiplyLinearWith (famTwoQr m qr) (famTwoEr m qr) (lastCylinder _) :=
+    (hrem1.cubic_cover (Nat.succ_pos _)).last_cylinder (m * qr + 1) hrem1.fiber_le
+      (fun t _ _ => by positivity) fun t ht ht1 => ⟨cubicBaseExponent_pos (Nat.succ_pos _) ht,
+        cubicBaseExponent_le_one (Nat.succ_pos _) ht ht1⟩
   -- stacked slices
   let Gs : (r : Nat) → (Fin m → Fin r → ZMod N) → Finset (Point N 1 × ZMod N) :=
     fun r sample => Finset.univ.biUnion fun c =>
       section16StackedSlices (P c).D (P c).phi (sample c)
-  have hslice : ∀ r sample, MultiplyLinearWith (famTwoPb m ql r) (famTwoEs m ql r) (Gs r sample) := by
-    intro r sample
-    have h := (relFreimanCover_union _ (fun c => stackedSlices_relFreimanCover (P c).slices
-      (sample c))).pad (Nat.le_succ (m * (r * ql)))
-    exact h.cubic_cover (Nat.succ_pos _)
-  have hGs : ∀ r sample c h i, appendCoordinate h (sample c i) ∈ (P c).D →
-      (h, (P c).phi (appendCoordinate h (sample c i))) ∈ Gs r sample := by
-    intro r sample c h i hi
-    exact Finset.mem_biUnion.mpr ⟨c, Finset.mem_univ _, section16StackedSlices_mem h i hi⟩
+  have hslice : ∀ r sample, MultiplyLinearWith (famTwoPb m ql r) (famTwoEs m ql r) (Gs r sample) :=
+    fun r sample => ((relFreimanCover_union _ fun c => stackedSlices_relFreimanCover (P c).slices
+      (sample c)).pad (Nat.le_succ _)).cubic_cover (Nat.succ_pos _)
   have hQb : ∀ s, 0 < s → s ≤ 1 → 0 ≤ famTwoQb m qs s ∧ 0 < famTwoEb m qs s ∧
       famTwoEb m qs s ≤ 1 := fun s hs hs1 =>
     ⟨Nat.cast_nonneg _, cubicBaseExponent_pos (Nat.succ_pos _) hs,
       cubicBaseExponent_le_one (Nat.succ_pos _) hs hs1⟩
-  have hEr : ∀ s, 0 < s → s ≤ 1 → 0 < famTwoEr m qr s := by
-    intro s hs _
-    have := cubicBaseExponent_pos (Nat.succ_pos (m * qr)) hs
-    simp only [famTwoEr]
-    positivity
+  have hEr : ∀ s, 0 < s → s ≤ 1 → 0 < famTwoEr m qr s := fun s hs _ =>
+    div_pos (cubicBaseExponent_pos (Nat.succ_pos _) hs) (by norm_num)
   have hcover := abstract_family_piece_cover_with (k := 1) le_rfl hA hB hlemma6 hz hzHalf hQb hEr
-    hMLspec hMLrem' (ι := Fin m) (H1 := fun c => (P c).H1) (K := fun c => (P c).K)
+    hMLspec hMLrem (ι := Fin m) (H1 := fun c => (P c).H1) (K := fun c => (P c).K)
     (Adom := fun c => (P c).A) (f := fun c => (P c).f) (D := fun c => (P c).D)
     (phi := fun c => (P c).phi) (rem := fun c => (P c).rem)
     (fun c x hx r hr => Finset.mem_biUnion.mpr ⟨c, Finset.mem_univ _,
@@ -151,7 +136,9 @@ theorem section16_poly_family_two_cover
     (fun c => (P c).linear) (fun c => (P c).dom) (fun c => (P c).ident)
     (fun c z hz => mem_lastCylinder.mpr (Finset.mem_biUnion.mpr ⟨c, Finset.mem_univ _,
       Finset.mem_image.mpr ⟨z, hz, rfl⟩⟩))
-    Gs hslice hGs (famTwo_slice_ranges m ql) (fun ε => famTwoPb_monotone m ql ε)
+    Gs hslice (fun r sample c h i hi => Finset.mem_biUnion.mpr
+      ⟨c, Finset.mem_univ _, section16StackedSlices_mem h i hi⟩)
+    (famTwo_slice_ranges m ql) (fun ε => famTwoPb_monotone m ql ε)
     (fun ε hε => famTwoEs_antitone m ql hε)
   simpa only [Fintype.card_fin] using hcover
 

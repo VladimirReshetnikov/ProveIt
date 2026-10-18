@@ -72,74 +72,45 @@ theorem inv_thr_le_ex_of_partition_bound {X : Real} (hX : 2 ≤ X) {k q : Nat} {
   have hb : 0 < η * β / 2 := by positivity
   have hbi : (η * β / 2)⁻¹ ≤ X ^ (2 ^ (M + 2)) := by
     rw [show (η * β / 2)⁻¹ = 2 * (η⁻¹ * β⁻¹) by field_simp]
-    have h1 := pw_mul hX (inv_pos.mpr hβ0).le hηi hβi
-    exact pw_mul' hX (by positivity) (hX.trans (pw_X hX M)) h1 |>.trans
-      (pw_mono hX le_rfl (by omega))
-  have hb1 : 1 ≤ (η * β / 2)⁻¹ := by
-    rw [one_le_inv₀ hb]
-    have : η * β ≤ 1 := mul_le_one₀ hη1 hβ0.le hβ1
-    linarith
-  have hscaled := section5LocalRefinementConstant_le_scaled (k + 1 + 1) (η * β / 2)
-    (η * β / 2)⁻¹ hb hb1 le_rfl
-  have hs5 : section5LocalRefinementConstant (k + 1 + 1) 1 ≤ Real.exp (X ^ (2 ^ (k + 11))) :=
-    (s5_one_le (d := k + 1 + 1) (by omega)).trans (two_tower_le_ex hX (forty_cube_le k))
-  have hpow : ((η * β / 2)⁻¹) ^ polynomialPartitionConstant (k + 1 + 1) ≤
-      X ^ (2 ^ (M + 2 + q)) :=
-    pw_pow hX (inv_pos.mpr hb).le hbi hpart
+    exact (pw_mul' hX (by positivity) (hX.trans (pw_X hX M))
+      (pw_mul hX (inv_pos.mpr hβ0).le hηi hβi)).trans (pw_mono hX le_rfl (by omega))
+  have hb1 : 1 ≤ (η * β / 2)⁻¹ := (one_le_inv₀ hb).mpr (by linarith [mul_le_one₀ hη1 hβ0.le hβ1])
   have hR : section5LocalRefinementConstant (k + 1 + 1) (η * β / 2) ≤
       Real.exp (X ^ (2 ^ (max (k + 11) (M + 2 + q) + 1))) :=
-    hscaled.trans (ex_mul' hX (pow_nonneg (inv_pos.mpr hb).le _) hs5 (ex_of_pw hpow))
+    (section5LocalRefinementConstant_le_scaled (k + 1 + 1) _ _ hb hb1 le_rfl).trans
+      (ex_mul' hX (pow_nonneg (inv_pos.mpr hb).le _)
+        ((s5_one_le (d := k + 1 + 1) (by omega)).trans (two_tower_le_ex hX (forty_cube_le k)))
+        (ex_of_pw (pw_pow hX (inv_pos.mpr hb).le hbi hpart)))
   -- the count constant
-  have hσ16 : σ / 16 ≤ 1 := by linarith
-  have hσ16' : 0 ≤ σ / 16 := by positivity
   have hr1 : (1 : Real) ≤ 2 * ((k + 1 + 2 : Nat) : Real) := by push_cast; linarith
   have hc1 : (1 : Real) ≤ 6 * ((k + 1 : Nat) : Real) := by push_cast; linarith
-  have hrpow : (2 * ((k + 1 + 2 : Nat) : Real)) ^ (1 - σ / 16) ≤
-      2 * ((k + 1 + 2 : Nat) : Real) :=
-    Real.rpow_le_self_of_one_le hr1 (by linarith)
-  have hcpow : (6 * ((k + 1 : Nat) : Real)) ^ (σ / 16) ≤
-      6 * ((k + 1 : Nat) : Real) := Real.rpow_le_self_of_one_le hc1 hσ16
-  have hB0 : 0 ≤ boundaryRefinementConstant (1 / 16) := (section5LocalRefinementConstant_pos _ _).le
-  have hr : 2 * ((k + 1 + 2 : Nat) : Real) ≤ X ^ (2 ^ (k + 3)) := by
-    have := small_nat_le_pw hX (k := k) (c := 2 * (k + 1 + 2)) (by omega)
-    push_cast at this ⊢; linarith
-  have hc : 6 * ((k + 1 : Nat) : Real) ≤ X ^ (2 ^ (k + 3)) := by
-    have := small_nat_le_pw hX (k := k) (c := 6 * (k + 1)) (by omega)
-    push_cast at this ⊢; linarith
-  have hBe : boundaryRefinementConstant (1 / 16) ≤ Real.exp (X ^ (2 ^ 11)) :=
-    cubic_boundary_refinement_constant_upper.trans (two_tower_le_ex hX (by norm_num))
-  have h2e : (2 : Real) ≤ Real.exp (X ^ (2 ^ 0)) :=
-    ex_of_pw (hX.trans (pw_X hX 0))
+  have hr : (2 * ((k + 1 + 2 : Nat) : Real)) ^ (1 - σ / 16) ≤ X ^ (2 ^ (k + 3)) :=
+    (Real.rpow_le_self_of_one_le hr1 (by linarith)).trans
+      (by exact_mod_cast small_nat_le_pw hX (k := k) (c := 2 * (k + 1 + 2)) (by omega))
+  have hc : (6 * ((k + 1 : Nat) : Real)) ^ (σ / 16) ≤ X ^ (2 ^ (k + 3)) :=
+    (Real.rpow_le_self_of_one_le hc1 (by linarith)).trans
+      (by exact_mod_cast small_nat_le_pw hX (k := k) (c := 6 * (k + 1)) (by omega))
   have h2B : 2 * boundaryRefinementConstant (1 / 16) ≤ Real.exp (X ^ (2 ^ (max 0 11 + 1))) :=
-    ex_mul' hX hB0 h2e hBe
+    ex_mul' hX (section5LocalRefinementConstant_pos _ _).le (ex_of_pw (hX.trans (pw_X hX 0)))
+      (cubic_boundary_refinement_constant_upper.trans (two_tower_le_ex hX (by norm_num)))
   have hD : inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ ≤
       Real.exp (X ^ (2 ^ (k + 14))) := by
     unfold inverseStepCountConstant localInverseAssemblyConstant
-    have hmax : max 1 (2 * boundaryRefinementConstant (1 / 16) *
-        (2 * ((k + 1 + 2 : Nat) : Real)) ^ (1 - σ / 16)) ≤
-        Real.exp (X ^ (2 ^ (max (max 0 11 + 1) (k + 3) + 1))) :=
-      max_le (Real.one_le_exp (by positivity)) (ex_mul' hX (Real.rpow_nonneg (by linarith) _) h2B
-        (ex_of_pw (hrpow.trans hr)))
-    have := ex_mul' hX (Real.rpow_nonneg (by linarith) _) hmax (ex_of_pw (hcpow.trans hc))
-    exact ex_mono hX this (by omega)
-  have hD1 : 1 ≤ inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ := by
-    unfold inverseStepCountConstant localInverseAssemblyConstant
-    exact one_le_mul_of_one_le_of_one_le (le_max_left _ _) (Real.one_le_rpow hc1 hσ16')
+    exact ex_mono hX (ex_mul' hX (Real.rpow_nonneg (by positivity) _)
+      (max_le (Real.one_le_exp (by positivity))
+        (ex_mul' hX (Real.rpow_nonneg (by positivity) _) h2B (ex_of_pw hr)))
+      (ex_of_pw hc)) (by omega)
+  have hD1 : 1 ≤ inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ :=
+    one_le_mul_of_one_le_of_one_le (le_max_left _ _) (Real.one_le_rpow hc1 (by positivity))
   have hP1 : (1 : Real) ≤ polynomialPartitionConstant (k + 1 + 1) := by
     exact_mod_cast polyPartConst_pos (k + 1 + 1)
-  have hDp : (inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ) ^
-      ((polynomialPartitionConstant (k + 1 + 1) : Real))⁻¹ ≤
-      inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ :=
-    Real.rpow_le_self_of_one_le hD1 (inv_le_one_of_one_le₀ hP1)
   have hPIC : phaseInverseConstant (k + 1 + 1) (η * β / 2)
       (inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ) ≤
-      Real.exp (X ^ (2 ^ (max (max (M + q + 4) (k + 16)) s))) := by
-    unfold phaseInverseConstant
-    have := ex_mul' hX (Real.rpow_nonneg (le_trans zero_le_one hD1) _) hR (hDp.trans hD)
-    exact ex_mono hX this (by omega)
-  unfold inverseStepThreshold
-  have hppt := positivePowerThreshold_one_le_double_exp hσ'0.le (le_exp_exp_of_le_exp hPIC) hσ'
-  refine hppt.trans (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr ?_))
+      Real.exp (X ^ (2 ^ (max (max (M + q + 4) (k + 16)) s))) :=
+    ex_mono hX (ex_mul' hX (Real.rpow_nonneg (zero_le_one.trans hD1) _) hR
+      ((Real.rpow_le_self_of_one_le hD1 (inv_le_one_of_one_le₀ hP1)).trans hD)) (by omega)
+  refine (positivePowerThreshold_one_le_double_exp hσ'0.le (le_exp_exp_of_le_exp hPIC) hσ').trans
+    (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr ?_))
   exact pw_add hX (pw_mono hX le_rfl le_rfl) (pw_mono hX le_rfl (le_max_right _ s))
 
 end LeanProofs.GowersSzemeredi

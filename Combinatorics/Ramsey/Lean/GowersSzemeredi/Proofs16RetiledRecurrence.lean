@@ -68,45 +68,25 @@ theorem proper_retiled_product_of_recurrence {N k q v : Nat} [NeZero N]
       ∀ a j x, x ∈ (T j).carrier →
         (centeredAbs (mu a x * (J j).step) : Real) ≤
           error * N := by
-  obtain ⟨M, R, hpart, hproper, hwidth, hsmall⟩ :=
-    hrec
-  have hfit (j : Fin M) : v ^ 2 ≤ (R j).width - 1 := by
-    have h := hvscale.trans (hwidth j)
-    have h' : v ^ 2 + 1 ≤ (R j).width := by exact_mod_cast h
-    omega
-  have hnonempty (j : Fin M) : (R j).carrier.Nonempty := by
-    apply Box.carrier_nonempty_of_axis_pos
-    intro a
-    have h := (R j).width_le_axis_length a
-    have h' := hfit j
-    have hv2 : 1 ≤ v ^ 2 := one_le_pow₀ (by omega)
-    omega
-  have hsub' (j : Fin M) : ((R j).axis i).carrier ⊆ B.carrier :=
-    Finset.Subset.trans ((R j).axis_carrier_subset_of_carrier_subset P (hnonempty j)
-      (IsPartition.cell_subset hpart j) i) hsub
+  obtain ⟨M, R, hpart, hproper, hwidth, hsmall⟩ := hrec
+  have hw (j : Fin M) : v ^ 2 + 1 ≤ (R j).width := by exact_mod_cast hvscale.trans (hwidth j)
+  have hsub' (j : Fin M) : ((R j).axis i).carrier ⊆ B.carrier := by
+    refine ((R j).axis_carrier_subset_of_carrier_subset P ((R j).carrier_nonempty_of_axis_pos
+      fun a => ?_) (hpart.cell_subset j) i).trans hsub
+    have := (R j).width_le_axis_length a; have := hw j; omega
   choose L S J hSpart hSprop hSproduct hJlength using fun j =>
     box_product_tiling_of_contained_axis (R j) B I i u (hproper j) hI hBstep hIstep
-      (hsub' j) hshort hL (by omega : 1 ≤ v) (hfit j)
+      (hsub' j) hshort hL (by omega : 1 ≤ v) (by have := hw j; omega)
   let e := section5NatFlattenEquiv L
   refine ⟨∑ j, L j, boxFlatten L S, (fun j => R (e.symm j).1),
     (fun j => J (e.symm j).1 (e.symm j).2),
     finsetPartition_flatten L (fun j => lastProductSet (R j).carrier I.carrier)
       (lastProductSet P.carrier I.carrier) (fun j a => (S j a).carrier)
-      (lastProductSet_partition _ _ _ hpart) hSpart, ?_, ?_, ?_, ?_, ?_⟩
-  · intro j
-    exact hSprop _ _
-  · intro j
-    exact hSproduct _ _
-  · intro j
-    exact IsPartition.cell_subset hpart _
-  · intro j
-    have h := hJlength (e.symm j).1 (e.symm j).2
-    change 0 < (J (e.symm j).1 (e.symm j).2).length ∧
-      (J (e.symm j).1 (e.symm j).2).length ≤ v
-    exact ⟨h.1, by rcases h.2 with h | h <;> omega⟩
-  · intro a j x hx
-    have hp := hSproduct (e.symm j).1 (e.symm j).2
-    rw [hp.2.2, hp.2.1]
-    exact hsmall a _ x hx
+      (lastProductSet_partition _ _ _ hpart) hSpart, fun j => hSprop _ _,
+    fun j => hSproduct _ _, fun j => hpart.cell_subset _, fun j => (hJlength _ _).imp_right
+      fun h => h.elim (fun h => h.trans_le (Nat.sub_le v 1)) Nat.le_of_eq, fun a j x hx => ?_⟩
+  obtain ⟨-, h1, h2⟩ := hSproduct (e.symm j).1 (e.symm j).2
+  rw [h2, h1]
+  exact hsmall a _ x hx
 
 end LeanProofs.GowersSzemeredi

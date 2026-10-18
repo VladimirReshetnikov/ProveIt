@@ -40,6 +40,13 @@ def JointCoverOn {N d : Nat} [NeZero N] {ι : Type*} (E : Finset ι)
       ∀ j x, x ∈ (Q j).carrier → x ∈ G → (∀ e ∈ E, x ∈ Dom e) →
         ∃ i, ∀ e ∈ E, f e x = mu j i e x
 
+/-- Two subsets of `S` meet in at least `|G| + |G'| - |S|` points. -/
+private lemma card_add_card_le_card_inter_add {X : Type*} [DecidableEq X] {G G' S : Finset X}
+    (hG : G ⊆ S) (hG' : G' ⊆ S) : (G.card : Real) + G'.card ≤ (G ∩ G').card + S.card := by
+  have h1 := Finset.card_union_add_card_inter G G'
+  have h2 := Finset.card_le_card (Finset.union_subset hG hG')
+  exact_mod_cast (by omega : G.card + G'.card ≤ (G ∩ G').card + S.card)
+
 /-- **Covers compose additively.** -/
 theorem joint_cover_on {N d : Nat} [NeZero N] {ι : Type*} [DecidableEq ι]
     (Dom : ι → Finset (Point N d)) (f : ι → Point N d → ZMod N)
@@ -54,74 +61,47 @@ theorem joint_cover_on {N d : Nat} [NeZero N] {ι : Type*} [DecidableEq ι]
   induction E using Finset.induction_on with
   | empty =>
     intro _ _ _ _ P hP
-    have hself : IsBoxPartition (fun _ : Fin 1 => P) P := by
-      refine ⟨fun x => ⟨fun h => ⟨0, h⟩, fun ⟨_, h⟩ => h⟩, fun i j hij => ?_⟩
-      simp [Subsingleton.elim i j] at hij
-    refine ⟨1, 1, P.carrier, fun _ => P, fun _ _ _ _ => 0, Finset.Subset.refl _, ?_,
-      hself, fun _ => hP, by simp, fun _ => by simp, fun _ _ e he => by simp at he,
+    refine ⟨1, 1, P.carrier, fun _ => P, fun _ _ _ _ => 0, subset_rfl, by simp,
+      ⟨fun x => ⟨fun h => ⟨0, h⟩, fun ⟨_, h⟩ => h⟩, fun i j hij => ?_⟩, fun _ => hP, by simp,
+      fun _ => by simp, fun _ _ e he => by simp at he,
       fun _ x _ _ _ => ⟨0, fun e he => by simp at he⟩⟩
-    simp
+    simp [Subsingleton.elim i j] at hij
   | insert a E ha ih =>
     intro hML hθ hQ hEb P hP
-    have hML' : ∀ e ∈ E, MultiplyLinearWith (Qb e) (Eb e) (partialGraph (Dom e) (f e)) :=
-      fun e he => hML e (Finset.mem_insert_of_mem he)
+    simp only [Finset.forall_mem_insert] at hML hθ hQ hEb
     obtain ⟨M, q, G, Q, mu, hGP, hGm, hQpart, hQprop, hq, hQw, hmu, hcov⟩ :=
-      ih hML' (fun e he => hθ e (Finset.mem_insert_of_mem he))
-        (fun e he => hQ e (Finset.mem_insert_of_mem he))
-        (fun e he => hEb e (Finset.mem_insert_of_mem he)) P hP
-    obtain ⟨hθa, hθa1⟩ := hθ a (Finset.mem_insert_self a E)
+      ih hML.2 hθ.2 hQ.2 hEb.2 P hP
     obtain ⟨q', G', M', R, mu', hq', hG'P, hG'm, hRpart, hRprop, hRw, hmu', hcov'⟩ :=
-      (hML a (Finset.mem_insert_self a E)).on_partition (θ a) hθa hθa1
-        (hQ a (Finset.mem_insert_self a E)) P Q hQpart hQprop
+      hML.1.on_partition (θ a) hθ.1.1 hθ.1.2 hQ.1 P Q hQpart hQprop
     set eqv := section5NatFlattenEquiv M'
     set fp : Fin q × Fin q' ≃ Fin (q * q') := finProdFinEquiv
     refine ⟨∑ j, M' j, q * q', G ∩ G', boxFlatten M' R,
       fun J i e => if e = a then mu' (eqv.symm J).1 (eqv.symm J).2 (fp.symm i).2
         else mu (eqv.symm J).1 (fp.symm i).1 e,
-      fun x hx => hGP (Finset.mem_inter.mp hx).1, ?_, boxFlatten_partition P Q M' R hQpart hRpart,
-      fun J => hRprop _ _, ?_, ?_, ?_, ?_⟩
+      Finset.inter_subset_left.trans hGP, ?_, boxFlatten_partition P Q M' R hQpart hRpart,
+      fun J => hRprop _ _, ?_, fun J => ?_, fun J i e he => ?_, fun J x hxR hxG hxD => ?_⟩
     · -- the good set
       rw [Finset.sum_insert ha]
-      have hu : (G ∪ G').card ≤ P.carrier.card :=
-        Finset.card_le_card (Finset.union_subset hGP hG'P)
-      have hui := Finset.card_union_add_card_inter G G'
-      have hu' : ((G ∪ G').card : Real) + ((G ∩ G').card : Real) = G.card + G'.card := by
-        exact_mod_cast hui
-      have huR : ((G ∪ G').card : Real) ≤ P.carrier.card := by exact_mod_cast hu
-      nlinarith
+      linarith [card_add_card_le_card_inter_add hGP hG'P]
     · -- the count
-      rw [Finset.prod_insert ha]
-      have hq0 : (0 : Real) ≤ q := Nat.cast_nonneg _
-      have hprod : 0 ≤ ∏ e ∈ E, Qb e (θ e) := hq0.trans hq
-      push_cast
-      rw [mul_comm (Qb a (θ a))]
-      exact mul_le_mul hq hq' (Nat.cast_nonneg _) hprod
+      rw [Finset.prod_insert ha, Nat.cast_mul, mul_comm (Qb a (θ a))]
+      exact mul_le_mul hq hq' (Nat.cast_nonneg _) ((Nat.cast_nonneg _).trans hq)
     · -- the widths
-      intro J
       rw [Finset.prod_insert ha, mul_comm, Real.rpow_mul (Nat.cast_nonneg _)]
-      refine le_trans ?_ (hRw (eqv.symm J).1 (eqv.symm J).2)
-      exact Real.rpow_le_rpow (by positivity) (hQw _) (hEb a (Finset.mem_insert_self a E))
+      exact (Real.rpow_le_rpow (by positivity) (hQw _) hEb.1).trans
+        (hRw (eqv.symm J).1 (eqv.symm J).2)
     · -- multilinearity
-      intro J i e he
       dsimp only
       split_ifs with hea
-      · exact hmu' _ _ _
-      · exact hmu _ _ e ((Finset.mem_insert.mp he).resolve_left hea)
+      exacts [hmu' _ _ _, hmu _ _ e ((Finset.mem_insert.mp he).resolve_left hea)]
     · -- the cover
-      intro J x hxR hxG hxD
-      obtain ⟨hxG1, hxG2⟩ := Finset.mem_inter.mp hxG
-      have hxR' : x ∈ (R (eqv.symm J).1 (eqv.symm J).2).carrier := hxR
-      have hxQ : x ∈ (Q (eqv.symm J).1).carrier :=
-        IsPartition.cell_subset (hRpart (eqv.symm J).1) (eqv.symm J).2 hxR'
-      obtain ⟨i1, hi1⟩ := hcov (eqv.symm J).1 x hxQ hxG1
-        (fun e he => hxD e (Finset.mem_insert_of_mem he))
-      obtain ⟨i2, hi2⟩ := hcov' (eqv.symm J).1 (eqv.symm J).2 x hxR' hxG2 (f a x)
-        (Finset.mem_image.mpr ⟨x, hxD a (Finset.mem_insert_self a E), rfl⟩)
+      rw [Finset.mem_inter] at hxG
+      rw [Finset.forall_mem_insert] at hxD
+      obtain ⟨i1, hi1⟩ := hcov _ x ((hRpart (eqv.symm J).1).cell_subset _ hxR) hxG.1 hxD.2
+      obtain ⟨i2, hi2⟩ := hcov' (eqv.symm J).1 (eqv.symm J).2 x hxR hxG.2 (f a x)
+        (Finset.mem_image.mpr ⟨x, hxD.1, rfl⟩)
       refine ⟨fp (i1, i2), fun e he => ?_⟩
-      have hs : fp.symm (fp (i1, i2)) = (i1, i2) := fp.symm_apply_apply _
-      show f e x = (if e = a then mu' (eqv.symm J).1 (eqv.symm J).2 (fp.symm (fp (i1, i2))).2
-        else mu (eqv.symm J).1 (fp.symm (fp (i1, i2))).1 e) x
-      rw [hs]
+      simp only [Equiv.symm_apply_apply]
       split_ifs with hea
       · subst hea; exact hi2
       · exact hi1 e ((Finset.mem_insert.mp he).resolve_left hea)
@@ -138,73 +118,39 @@ theorem JointCoverOn.piece {N d : Nat} [NeZero N] {ι : Type*} {E : Finset ι}
       (theta - s) / Qt * R.carrier.card ≤
         (H.filter fun x => x ∈ R.carrier ∧ ∀ e ∈ E, f e x = nu e x).card := by
   obtain ⟨M, q, G, Q, mu, hGP, hGm, hQpart, hQprop, hq, hQw, hmu, hcov⟩ := hJ
-  -- the good part of `H`
+  -- the good part of `H` and a cell `Q j` dense in it
   have hHG : (theta - s) * P.carrier.card ≤ (H ∩ G).card := by
-    have hu : (H ∪ G).card ≤ P.carrier.card :=
-      Finset.card_le_card (Finset.union_subset hHP hGP)
-    have hui := Finset.card_union_add_card_inter H G
-    have hu' : ((H ∪ G).card : Real) + ((H ∩ G).card : Real) = H.card + G.card := by
-      exact_mod_cast hui
-    have huR : ((H ∪ G).card : Real) ≤ P.carrier.card := by exact_mod_cast hu
-    nlinarith
-  have hPpos : (0 : Real) < P.carrier.card := by exact_mod_cast hPne.card_pos
-  have hne : (H ∩ G).Nonempty := by
-    rw [← Finset.card_pos]
-    exact Nat.cast_pos.mp (lt_of_lt_of_le (mul_pos (by linarith) hPpos) hHG)
+    linarith [card_add_card_le_card_inter_add hHP hGP]
+  have hne : (H ∩ G).Nonempty := Finset.card_pos.mp <| Nat.cast_pos.mp <|
+    (mul_pos (sub_pos.mpr hs) (Nat.cast_pos.mpr hPne.card_pos)).trans_le hHG
   obtain ⟨j, hj⟩ := exists_dense_cell (fun j => (Q j).carrier) P.carrier hQpart (H ∩ G) id
     (fun x hx => hGP (Finset.mem_inter.mp hx).2) hne hHG
-  set D := (H ∩ G).filter fun x => id x ∈ (Q j).carrier with hDdef
-  have hDmem : ∀ x ∈ D, x ∈ H ∧ x ∈ G ∧ x ∈ (Q j).carrier := fun x hx => by
-    obtain ⟨hx1, hx2⟩ := Finset.mem_filter.mp hx
-    exact ⟨(Finset.mem_inter.mp hx1).1, (Finset.mem_inter.mp hx1).2, hx2⟩
-  have hcovD : ∀ x ∈ D, ∃ i, ∀ e ∈ E, f e x = mu j i e x := fun x hx => by
-    obtain ⟨hxH, hxG, hxQ⟩ := hDmem x hx
-    exact hcov j x hxQ hxG fun e he => hHD e he hxH
-  have hQj := IsPartition.cell_subset hQpart j
-  have hst : (0 : Real) ≤ theta - s := by linarith
-  rcases Nat.eq_zero_or_pos q with hq0 | hq0
-  · -- no tuples: the dense cell is empty of covered points
-    subst hq0
-    have hD0 : D = ∅ := Finset.eq_empty_of_forall_notMem fun x hx => by
-      obtain ⟨i, -⟩ := hcovD x hx
-      exact i.elim0
-    rw [hD0, Finset.card_empty, Nat.cast_zero] at hj
-    refine ⟨Q j, fun _ _ => 0, hQprop j, hQj, hQw j, fun e _ => isMultilinear_constant 0, ?_⟩
-    rcases le_or_gt Qt 0 with hQt | hQt
-    · calc (theta - s) / Qt * (Q j).carrier.card ≤ 0 :=
-            mul_nonpos_of_nonpos_of_nonneg (div_nonpos_of_nonneg_of_nonpos hst hQt)
-              (Nat.cast_nonneg _)
-        _ ≤ _ := Nat.cast_nonneg _
-    · calc (theta - s) / Qt * (Q j).carrier.card = ((theta - s) * (Q j).carrier.card) / Qt := by
-            ring
-        _ ≤ 0 := div_nonpos_of_nonpos_of_nonneg hj hQt.le
-        _ ≤ _ := Nat.cast_nonneg _
+  set D := (H ∩ G).filter fun x => id x ∈ (Q j).carrier
+  set T := fun i => H.filter fun x => x ∈ (Q j).carrier ∧ ∀ e ∈ E, f e x = mu j i e x
+  -- every point of `D` lies on one of the `q` tuples
+  have hsum : (D.card : Real) ≤ ∑ i, ((T i).card : Real) := by
+    have hsub : D ⊆ Finset.univ.biUnion T := fun x hx => by
+      simp only [D, T, id, Finset.mem_filter, Finset.mem_inter, Finset.mem_biUnion,
+        Finset.mem_univ, true_and] at hx ⊢
+      exact (hcov j x hx.2 hx.1.2 fun e he => hHD e he hx.1.1).imp fun i hi => ⟨hx.1.1, hx.2, hi⟩
+    exact_mod_cast (Finset.card_le_card hsub).trans Finset.card_biUnion_le
+  rcases Nat.eq_zero_or_pos q with rfl | hq0
+  · -- no tuples: the dense cell has no covered points
+    refine ⟨Q j, fun _ _ => 0, hQprop j, IsPartition.cell_subset hQpart j, hQw j,
+      fun e _ => isMultilinear_constant 0, ?_⟩
+    rw [div_mul_eq_mul_div]
+    exact (div_nonpos_of_nonpos_of_nonneg (hj.trans (by simpa using hsum))
+      ((Nat.cast_nonneg _).trans hq)).trans (Nat.cast_nonneg _)
   · have hqR : (0 : Real) < q := by exact_mod_cast hq0
-    have hQt : 0 < Qt := lt_of_lt_of_le hqR hq
-    have hsum : (D.card : Real) ≤ ∑ i, ((D.filter fun x => ∀ e ∈ E, f e x = mu j i e x).card : Real) := by
-      have hsub : D ⊆ Finset.univ.biUnion fun i => D.filter fun x => ∀ e ∈ E, f e x = mu j i e x := by
-        intro x hx
-        obtain ⟨i, hi⟩ := hcovD x hx
-        exact Finset.mem_biUnion.mpr ⟨i, Finset.mem_univ _, Finset.mem_filter.mpr ⟨hx, hi⟩⟩
-      exact_mod_cast (Finset.card_le_card hsub).trans Finset.card_biUnion_le
-    have hne' : (Finset.univ : Finset (Fin q)).Nonempty := Finset.univ_nonempty_iff.mpr ⟨⟨0, hq0⟩⟩
-    have hle : ∑ _i : Fin q, (D.card : Real) / q ≤
-        ∑ i, ((D.filter fun x => ∀ e ∈ E, f e x = mu j i e x).card : Real) := by
-      rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul,
-        mul_div_cancel₀ _ hqR.ne']
-      exact hsum
-    obtain ⟨i, -, hi⟩ := Finset.exists_le_of_sum_le hne' hle
-    refine ⟨Q j, fun e => mu j i e, hQprop j, hQj, hQw j, fun e he => hmu j i e he, ?_⟩
-    have hsub : (D.filter fun x => ∀ e ∈ E, f e x = mu j i e x) ⊆
-        H.filter fun x => x ∈ (Q j).carrier ∧ ∀ e ∈ E, f e x = mu j i e x := fun x hx => by
-      obtain ⟨hxD, hxe⟩ := Finset.mem_filter.mp hx
-      obtain ⟨hxH, -, hxQ⟩ := hDmem x hxD
-      exact Finset.mem_filter.mpr ⟨hxH, hxQ, hxe⟩
-    calc (theta - s) / Qt * (Q j).carrier.card = ((theta - s) * (Q j).carrier.card) / Qt := by
-          ring
-      _ ≤ (D.card : Real) / Qt := div_le_div_of_nonneg_right hj hQt.le
+    obtain ⟨i, -, hi⟩ := Finset.exists_le_of_sum_le (Finset.univ_nonempty_iff.mpr ⟨⟨0, hq0⟩⟩)
+      (show ∑ _i : Fin q, (D.card : Real) / q ≤ ∑ i, ((T i).card : Real) by
+        rwa [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul,
+          mul_div_cancel₀ _ hqR.ne'])
+    refine ⟨Q j, mu j i, hQprop j, IsPartition.cell_subset hQpart j, hQw j, hmu j i, ?_⟩
+    calc (theta - s) / Qt * (Q j).carrier.card ≤ (D.card : Real) / Qt := by
+          rw [div_mul_eq_mul_div]; exact div_le_div_of_nonneg_right hj (hqR.le.trans hq)
       _ ≤ (D.card : Real) / q := div_le_div_of_nonneg_left (Nat.cast_nonneg _) hqR hq
-      _ ≤ _ := hi.trans (by exact_mod_cast Finset.card_le_card hsub)
+      _ ≤ _ := hi
 
 /-- **The remainder map from vertex covers**, on one piece of density
 `(θ - Σ θ_e)/Π Qb_e(θ_e)`. -/
@@ -231,29 +177,15 @@ theorem remainder_piece_of_vertex_covers {N k : Nat} [NeZero N] [Fact N.Prime]
         (H.filter fun x => x ∈ R.carrier ∧ section16PhiRemainder phi x0 x = mu x).card := by
   set E := Finset.univ.filter fun e : Fin k → Bool => e ≠ fun _ => true with hEdef
   have hEmem : ∀ e ∈ E, e ≠ fun _ => true := fun e he => (Finset.mem_filter.mp he).2
-  have hJ := joint_cover_on Dom (section16TranslatedVertex phi x0) Qb Eb θv E
-    (fun e he => hML e (hEmem e he)) (fun e _ => hθv e) (fun e _ => hQb e) (fun e _ => hEb e) P hP
-  obtain ⟨R, nu, hR, hRP, hRw, hnu, hRc⟩ :=
-    hJ.piece hs H hHP (fun e he => hHD e (hEmem e he)) hHc hPne
+  obtain ⟨R, nu, hR, hRP, hRw, hnu, hRc⟩ := (joint_cover_on Dom (section16TranslatedVertex phi x0)
+    Qb Eb θv E (fun e he => hML e (hEmem e he)) (fun e _ => hθv e) (fun e _ => hQb e)
+    (fun e _ => hEb e) P hP).piece hs H hHP (fun e he => hHD e (hEmem e he)) hHc hPne
   refine ⟨R, fun x => -∑ e ∈ E, (-1 : ZMod N) ^ (k + boolWeight e) * nu e x, hR, hRP, hRw,
-    ?_, ?_⟩
-  · have hsum := (IsMultilinear.finset_sum E
+    ?_, hRc.trans (Nat.cast_le.mpr (Finset.card_le_card fun x hx => ?_))⟩
+  · simpa only [neg_one_mul] using (IsMultilinear.finset_sum E
       (fun e x => (-1 : ZMod N) ^ (k + boolWeight e) * nu e x)
       (fun e he => (hnu e he).const_mul _)).const_mul (-1)
-    have hfun : (fun x => -∑ e ∈ E, (-1 : ZMod N) ^ (k + boolWeight e) * nu e x) =
-        fun x => (-1) * ∑ e ∈ E, (-1 : ZMod N) ^ (k + boolWeight e) * nu e x :=
-      funext fun x => by ring
-    rw [hfun]
-    exact hsum
-  · refine hRc.trans (Nat.cast_le.mpr (Finset.card_le_card ?_))
-    intro x hx
-    simp only [Finset.mem_filter] at hx ⊢
-    obtain ⟨hxH, hxR, hxg⟩ := hx
-    refine ⟨hxH, hxR, ?_⟩
-    simp only [section16PhiRemainder]
-    rw [← hEdef]
-    congr 1
-    exact Finset.sum_congr rfl fun e he => by
-      rw [hxg e he]
+  · simp only [Finset.mem_filter, section16PhiRemainder, ← hEdef] at hx ⊢
+    exact ⟨hx.1, hx.2.1, congrArg Neg.neg (Finset.sum_congr rfl fun e he => by rw [hx.2.2 e he])⟩
 
 end LeanProofs.GowersSzemeredi

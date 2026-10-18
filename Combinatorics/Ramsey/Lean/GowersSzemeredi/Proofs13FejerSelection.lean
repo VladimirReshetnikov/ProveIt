@@ -28,23 +28,14 @@ theorem exists_subset_seed_survival_bounds {X E C : Type*} [DecidableEq X]
   apply exists_subset_seed_purification U p hp0 hp1 good bad carrier hgood hbad eta mass heta hmass
   rw [Finset.expect_sub_distrib, ← Finset.mul_expect,
     Finset.expect_sum_comm, Finset.expect_sum_comm]
-  have hg : (good.card : Real) * signal ≤
-      ∑ e ∈ good, 𝔼 c : C, ∏ x ∈ carrier e, p c x := by
-    simpa using Finset.sum_le_sum hgoodmean
-  have he : (∑ e ∈ bad, if e ∈ exceptional then (1 : Real) else 0) ≤ exceptional.card := by
-    rw [← Finset.sum_filter]
-    simp only [Finset.sum_const, nsmul_eq_mul, mul_one]
-    exact_mod_cast Finset.card_le_card (show bad.filter (fun e => e ∈ exceptional) ⊆ exceptional from
-      fun e he => (Finset.mem_filter.mp he).2)
-  have hb : (∑ e ∈ bad, 𝔼 c : C, ∏ x ∈ carrier e, p c x) ≤
-      (bad.card : Real) * baseline + exceptional.card := by
-    calc
-      _ ≤ ∑ e ∈ bad, (baseline + if e ∈ exceptional then 1 else 0) := Finset.sum_le_sum hbadmean
-      _ ≤ _ := by
-        simp only [Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul]
-        linarith only [he]
-  have hgm := mul_le_mul_of_nonneg_left hg heta.le
-  nlinarith only [hbudget, hgm, hb]
+  -- sum the mean bounds; the exceptional edges cost at most `|exceptional|`
+  have hg := Finset.sum_le_sum hgoodmean
+  have hb := Finset.sum_le_sum hbadmean
+  rw [Finset.sum_const, nsmul_eq_mul] at hg
+  rw [Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul, Finset.sum_boole] at hb
+  have he : ((bad.filter (· ∈ exceptional)).card : Real) ≤ exceptional.card := by
+    exact_mod_cast Finset.card_le_card fun e he => (Finset.mem_filter.mp he).2
+  linarith only [hbudget, mul_le_mul_of_nonneg_left hg heta.le, hb, he]
 
 theorem exists_subset_fejer_purification {N L M : Nat} [NeZero N]
     {I X E : Type*} [Fintype I] [DecidableEq I] [Nonempty I]
@@ -70,25 +61,18 @@ theorem exists_subset_fejer_purification {N L M : Nat} [NeZero N]
   apply exists_subset_seed_survival_bounds U
     (fun c : ZMod N × ZMod N => fun x => finiteFejerKernel L (c.1 * phi x + c.2 * feature x))
     (fun _ _ _ => finiteFejerKernel_nonneg _) (fun _ _ _ => finiteFejerKernel_le_one hL _)
-    good bad exceptional (fun e => Finset.univ.image (vertex e)) hgood hbad
-    _ _ eta mass heta hmass ?_ ?_ hbudget
-  · intro e he
-    exact fejer_kernel_mean_signal_lower hL hML (positive e) (vertex e) phi feature
-      (hphi e he) (hfeature e he)
-  · intro e he
-    by_cases hex : e ∈ exceptional
-    · rw [if_pos hex]
-      have hmean : (𝔼 c : ZMod N × ZMod N,
-          ∏ x ∈ Finset.univ.image (vertex e), finiteFejerKernel L (c.1 * phi x + c.2 * feature x)) ≤ 1 := by
-        apply Finset.expect_le Finset.univ_nonempty
-        intro c _
-        exact Finset.prod_le_one (fun _ _ => finiteFejerKernel_nonneg _)
-          (fun _ _ => finiteFejerKernel_le_one hL _)
-      have hb : (0 : Real) ≤ ((L : Real)⁻¹) ^ Fintype.card I := by positivity
-      linarith only [hmean, hb]
-    · rw [if_neg hex, add_zero]
-      simp_rw [Finset.prod_image (hinj e he hex).injOn]
-      exact (fejer_kernel_mean_diagonal hL (phi ∘ vertex e) (feature ∘ vertex e)
-        (hdiagonal e he hex)).le
+    good bad exceptional (fun e => Finset.univ.image (vertex e)) hgood hbad _ _ eta mass heta hmass
+    (fun e he => fejer_kernel_mean_signal_lower hL hML (positive e) (vertex e) phi feature
+      (hphi e he) (hfeature e he)) ?_ hbudget
+  intro e he
+  split_ifs with hex
+  · -- an exceptional edge survives with probability at most one
+    exact le_add_of_nonneg_of_le (by positivity) (Finset.expect_le Finset.univ_nonempty
+      fun c _ => Finset.prod_le_one (fun _ _ => finiteFejerKernel_nonneg _)
+        fun _ _ => finiteFejerKernel_le_one hL _)
+  · rw [add_zero]
+    simp_rw [Finset.prod_image (hinj e he hex).injOn]
+    exact (fejer_kernel_mean_diagonal hL (phi ∘ vertex e) (feature ∘ vertex e)
+      (hdiagonal e he hex)).le
 
 end LeanProofs.GowersSzemeredi

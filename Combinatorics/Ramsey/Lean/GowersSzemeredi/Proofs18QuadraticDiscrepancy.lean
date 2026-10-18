@@ -57,84 +57,52 @@ theorem quadratic_nonuniformity_discrepancy_partition_of_power_bounds :
           quadraticDiscrepancyParameter alpha * N ≤
             ∑ j, ‖∑ s ∈ (R j).carrier, f s‖ := by
   intro alpha hα hαone N _ _ hlarge hbudget f hf hnot
-  let e := cor711Exponent ((alpha / 2) ^ (12359 : Nat)) 1
+  set e := cor711Exponent ((alpha / 2) ^ (12359 : Nat)) 1
   let beta := (2 : Real) ^ (-(19 : Int)) * alpha ^ 2 * (alpha / 2) ^ (12359 : Nat)
-  let q : Real := 1 / 2048
-  let C := section5LocalRefinementConstant 2 beta * (6 : Real) ^ q
-  have hβ : 0 < beta := by dsimp [beta]; positivity
-  have hq : 0 < q := by norm_num [q]
-  have hK : (polynomialPartitionConstant 2 : Real)⁻¹ = q := by
-    norm_num [polynomialPartitionConstant, q, Nat.factorial]
   obtain ⟨phi, M, l, Q, hpoly, hpart, hproper, hlength, _, hfail⟩ :=
     quadratic_nonuniformity_localized_phase_removal_of_power_bound alpha hα hαone N hlarge f hf hnot
-  have hsize : ∀ i, (Q i).carrier.card ≤ l + 1 := by
-    intro i
-    rw [(hproper i).1]
-    rcases (hproper i).2 with h | h <;> omega
+  have hl (i : Fin M) : l ≤ (Q i).carrier.card ∧ (Q i).carrier.card ≤ l + 1 := by
+    rw [(hproper i).1]; rcases (hproper i).2 with h | h <;> omega
   obtain ⟨L, R, hR, _, hRproper, hcount, hbias⟩ :=
-    twisted_partition_nonuniformity_discrepancy Q phi f beta (by omega) hβ (by omega)
-      hpoly hf hpart hsize hfail
+    twisted_partition_nonuniformity_discrepancy Q phi f beta (by omega) (by positivity) (by omega)
+      hpoly hf hpart (fun i ↦ (hl i).2) hfail
   have hNpos : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hMbound : (M : Real) ≤ 6 * (N : Real) ^ (1 - e) := by
-    have hsum := hpart.card_mul_le ((N : Real) ^ e / 6) (fun i ↦ by
-      rw [(hproper i).1]
-      have hli : l ≤ (Q i).length := by rcases (hproper i).2 with h | h <;> omega
-      exact hlength.trans (by exact_mod_cast hli))
-    have hp : 0 < (N : Real) ^ e := Real.rpow_pos_of_pos hNpos _
-    rw [Real.rpow_sub hNpos, Real.rpow_one, ← mul_div_assoc]
-    apply (le_div_iff₀ hp).2
+  have hS := section5LocalRefinementConstant_pos 2 beta
+  have hK : (polynomialPartitionConstant 2 : Real)⁻¹ = 1 / 2048 := by
+    norm_num [polynomialPartitionConstant, Nat.factorial]
+  rw [hK] at hcount
+  -- `M ≤ 6 N^(1-e)`, from the common cell length
+  have hM : (M : Real) ≤ 6 * (N : Real) ^ (1 - e) := by
+    have hsum := hpart.card_mul_le ((N : Real) ^ e / 6)
+      fun i ↦ hlength.trans (by exact_mod_cast (hl i).1)
+    rw [Real.rpow_sub hNpos, Real.rpow_one, ← mul_div_assoc,
+      le_div_iff₀ (Real.rpow_pos_of_pos hNpos _)]
     nlinarith only [hsum]
-  have hcount' : (L : Real) ≤ C * (N : Real) ^ (1 - e * q) := by
-    rw [hK] at hcount
-    calc
-      _ ≤ section5LocalRefinementConstant 2 beta * (M : Real) ^ q *
-          (N : Real) ^ (1 - q) := hcount
-      _ ≤ section5LocalRefinementConstant 2 beta * (6 * (N : Real) ^ (1 - e)) ^ q *
-          (N : Real) ^ (1 - q) := by
-        exact mul_le_mul_of_nonneg_right
-          (mul_le_mul_of_nonneg_left (Real.rpow_le_rpow (Nat.cast_nonneg _) hMbound hq.le)
-            (section5LocalRefinementConstant_pos 2 beta).le) (Real.rpow_nonneg (Nat.cast_nonneg _) _)
-      _ = _ := by
-        rw [Real.mul_rpow (by norm_num : (0 : Real) ≤ 6) (Real.rpow_nonneg hNpos.le _),
-          ← Real.rpow_mul hNpos.le]
-        have hp : (N : Real) ^ ((1 - e) * q) * (N : Real) ^ (1 - q) =
-            (N : Real) ^ (1 - e * q) := by
-          rw [← Real.rpow_add hNpos]
-          congr 1
-          ring
-        calc
-          _ = C * ((N : Real) ^ ((1 - e) * q) * (N : Real) ^ (1 - q)) := by
-            dsimp only [C]
-            ring
-          _ = _ := by rw [hp]
-  have hexp : quadraticDiscrepancyExponent alpha = e * q / 2 := by
-    dsimp [quadraticDiscrepancyExponent, e, q]
-    ring
-  have hCbound : C ≤ (N : Real) ^ (e * q / 2) := by
-    simpa only [hexp, quadraticRefinementConstant, C, beta, q] using hbudget
-  have hLbound : (L : Real) ≤ (N : Real) ^ (1 - e * q / 2) := by
-    calc
-      _ ≤ C * (N : Real) ^ (1 - e * q) := hcount'
-      _ ≤ (N : Real) ^ (e * q / 2) * (N : Real) ^ (1 - e * q) :=
-        mul_le_mul_of_nonneg_right hCbound (Real.rpow_nonneg hNpos.le _)
-      _ = _ := by
-        rw [← Real.rpow_add hNpos]
-        congr 1
-        ring
-  have hL : 0 < L := by
+  have hL : (0 : Real) < L := by
     obtain ⟨j, _⟩ := (hR.1 (0 : ZMod N)).mp (Finset.mem_univ _)
-    exact Nat.zero_lt_of_lt j.isLt
+    exact_mod_cast Nat.zero_lt_of_lt j.isLt
   have hparam : quadraticDiscrepancyParameter alpha = beta / 2 := by
     dsimp [quadraticDiscrepancyParameter, beta]
     generalize (alpha / 2) ^ (12359 : Nat) = a
     norm_num
     ring
   refine ⟨L, R, hR, hRproper, ?_, by simpa only [hparam] using hbias⟩
-  rw [hR.averageCellSize_univ, hexp]
-  apply (le_div_iff₀ (show (0 : Real) < L by exact_mod_cast hL)).2
-  calc
-    _ ≤ (N : Real) ^ (e * q / 2) * (N : Real) ^ (1 - e * q / 2) :=
-      mul_le_mul_of_nonneg_left hLbound (Real.rpow_nonneg hNpos.le _)
-    _ = N := by rw [← Real.rpow_add hNpos, show e * q / 2 + (1 - e * q / 2) = 1 by ring, Real.rpow_one]
+  rw [hR.averageCellSize_univ, le_div_iff₀ hL]
+  calc (N : Real) ^ quadraticDiscrepancyExponent alpha * L
+      ≤ (N : Real) ^ (e / 4096) * (section5LocalRefinementConstant 2 beta *
+        (6 * (N : Real) ^ (1 - e)) ^ (1 / 2048 : Real) * (N : Real) ^ (1 - 1 / 2048 : Real)) := by
+        refine mul_le_mul_of_nonneg_left (hcount.trans ?_) (by positivity)
+        gcongr
+    _ = (N : Real) ^ (e / 4096) * (section5LocalRefinementConstant 2 beta * 6 ^ (1 / 2048 : Real)) *
+        ((N : Real) ^ ((1 - e) * (1 / 2048)) * (N : Real) ^ (1 - 1 / 2048 : Real)) := by
+        rw [Real.mul_rpow (by norm_num) (Real.rpow_nonneg hNpos.le _), ← Real.rpow_mul hNpos.le]
+        ring
+    _ ≤ (N : Real) ^ (e / 4096) * (N : Real) ^ (e / 4096) *
+        ((N : Real) ^ ((1 - e) * (1 / 2048)) * (N : Real) ^ (1 - 1 / 2048 : Real)) := by
+        gcongr; exact hbudget
+    _ = N := by
+        rw [← Real.rpow_add hNpos, ← Real.rpow_add hNpos, ← Real.rpow_add hNpos]
+        convert Real.rpow_one (N : Real) using 2
+        ring
 
 end LeanProofs.GowersSzemeredi

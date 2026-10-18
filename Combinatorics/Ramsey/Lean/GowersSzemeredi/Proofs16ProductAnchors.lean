@@ -41,50 +41,29 @@ theorem section16_product_anchored_good_set {N k q r : Nat} [Fact N.Prime]
             ((phi (appendCoordinate h (sample i)) + (-1) * phi (appendCoordinate h (sample j))) * x +
               ((-sample j) * phi (appendCoordinate h (sample i)) +
                 sample i * phi (appendCoordinate h (sample j)))) := by
-  have hJ : J.Nonempty := by
-    apply Finset.card_pos.mp
-    by_contra hz
-    have hz' : J.card = 0 := by omega
-    have hq' : (0 : ℝ) < q := by exact_mod_cast hq
-    simp only [hz', Nat.cast_zero, mul_zero] at hlong
-    linarith
+  have hJ : J.Nonempty := Finset.card_pos.mp (Nat.pos_of_ne_zero fun h0 => by
+    rw [h0, Nat.cast_zero, mul_zero] at hlong; linarith [(Nat.cast_pos.mpr hq : (0 : ℝ) < q)])
   letI : Nonempty J := hJ.to_subtype
   let B : A → Finset J := fun h => Finset.univ.filter
     (fun x => appendCoordinate h.val x.val ∈ D)
-  let f : A → J → ZMod N := fun h x => phi (appendCoordinate h.val x.val)
-  have hcov : ∀ h x, x ∈ B h → ∃ t, f h x = ell h.val t x.val := by
-    intro h x hx
-    exact hcover h.val h.property x.val x.property (Finset.mem_filter.mp hx).2
   obtain ⟨sample, G, hmass, hanchors⟩ := section16_affine_cover_anchored_good_set
-    (fun x : J => x.val) Subtype.val_injective B f (fun h => ell h.val)
-    (fun h t => hell h.val h.property t) hcov σ hq hσ (by simpa using hlong) hr
+    (fun x : J => x.val) Subtype.val_injective B (fun h x => phi (appendCoordinate h.val x.val))
+    (fun h => ell h.val) (fun h t => hell h.val h.property t)
+    (fun h x hx => hcover h.val h.property x.val x.property (Finset.mem_filter.mp hx).2)
+    σ hq hσ (by simpa using hlong) hr
   let embed : A × J → Point N (k + 1) := fun z => appendCoordinate z.1.val z.2.val
-  have hinj : Function.Injective embed := by
-    intro a b hab
-    have hp : (a.1.val, a.2.val) = (b.1.val, b.2.val) := appendCoordinate_pair_injective hab
-    apply Prod.ext
-    · exact Subtype.ext (congrArg Prod.fst hp)
-    · exact Subtype.ext (congrArg Prod.snd hp)
-  have hsub : G.image embed ⊆ lastProductSet A J := by
-    intro z hz
-    obtain ⟨⟨h, x⟩, _, rfl⟩ := Finset.mem_image.mp hz
-    exact (mem_lastProductSet_append A J h.val x.val).mpr ⟨h.property, x.property⟩
+  have hinj : Function.Injective embed :=
+    appendCoordinate_pair_injective.comp (Subtype.val_injective.prodMap Subtype.val_injective)
+  have hsub : G.image embed ⊆ lastProductSet A J := Finset.image_subset_iff.mpr fun z _ =>
+    (mem_lastProductSet_append A J _ _).mpr ⟨z.1.property, z.2.property⟩
   refine ⟨fun i => (sample i).val, G.image embed, fun i => (sample i).property, hsub, ?_, ?_⟩
   · rw [Finset.card_image_of_injective _ hinj, lastProductSet_card]
     simpa only [Fintype.card_coe, Nat.cast_mul, mul_assoc] using hmass
   · intro h x hxD hxF
     obtain ⟨hh, hx⟩ := (mem_lastProductSet_append A J h x).mp (hsub hxF)
-    let hp : A := ⟨h, hh⟩
-    let xp : J := ⟨x, hx⟩
-    have hG : (hp, xp) ∈ G := by
-      obtain ⟨z, hz, heq⟩ := Finset.mem_image.mp hxF
-      have hz' : z = (hp, xp) := hinj heq
-      exact hz' ▸ hz
-    have hB : xp ∈ B hp := Finset.mem_filter.mpr ⟨Finset.mem_univ _, hxD⟩
-    obtain ⟨i, j, hiB, hjB, hiG, hjG, hij, heq⟩ := hanchors hp xp hG hB
-    refine ⟨i, j, (Finset.mem_filter.mp hiB).2, (Finset.mem_filter.mp hjB).2,
-      ?_, ?_, hij, heq⟩
-    · exact Finset.mem_image.mpr ⟨(hp, sample i), hiG, rfl⟩
-    · exact Finset.mem_image.mpr ⟨(hp, sample j), hjG, rfl⟩
+    obtain ⟨i, j, hiB, hjB, hiG, hjG, hij, heq⟩ := hanchors ⟨h, hh⟩ ⟨x, hx⟩
+      (hinj.mem_finset_image.mp hxF) (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hxD⟩)
+    exact ⟨i, j, (Finset.mem_filter.mp hiB).2, (Finset.mem_filter.mp hjB).2,
+      Finset.mem_image_of_mem embed hiG, Finset.mem_image_of_mem embed hjG, hij, heq⟩
 
 end LeanProofs.GowersSzemeredi
