@@ -12,6 +12,48 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Queue review: 18 October 2026
+
+At Vladimir's request, the twenty ZIPs present at `e58338db7545909907e07a7603e8eb88625c527a`
+were reviewed for deletion if they were both outdated and contained no useful
+new ideas. **All twenty are retained.** Their old state-count targets and
+historical proof-status statements often need updating, but each package has
+at least one substantive contribution not fully superseded by the maintained
+work or another queued package. Repeated background, larger search counts,
+different wording, and an obsolete machine count were not retention reasons.
+
+This is a review for redundancy, not completed intake or a new certification
+of the delivered mathematical claims. Main manuscripts and relevant proof
+appendices were compared with the current research and with one another;
+their verification suites were not rerun for this review. The following
+specific material should be considered when these archives next undergo intake.
+
+| Retained archive | Material still worth considering |
+| --- | --- |
+| `BusyBeaver_245_Review_Sources_2026-10-18.zip` | Independently written arbitrary-register/list runtime checker and parametric wrong-return counterexample for a rejected reassociation. |
+| `Shifted_Pairing_Companion_Sources_2026-10-18.zip` | Shifted pairing `2^a(2b+1)-1`: exact dirty-scratch contracts, whole-source clean-call analysis, and logical transfer addressing code-as-variable freshness. |
+| `sub246-audit-and-alternatives-20261018.zip` | Biased-reference copier, gap-sensitive comparators, packed component libraries, and grow-and-sweep saturation architecture; controller and linking costs remain open. |
+| `zfc-246-frontier-research-20261018.zip` | Unbounded-time impossibility proof for the specified seven-state read-only detector, beyond bounded synthesis failures. |
+| `zfc-axiom-symmetry-20261018.zip` | Protected-stack proof compiler for independently permuted AX rows and parameter roles, including twelve safe single-read variants of the fourth propositional parameter. |
+| `zfc-below245-research-20261018 (2).zip` | Relaxation of bootstrap locks, a complete five-zero-scanner architecture witness, and a model obstruction to deleting container transitivity. |
+| `zfc-below245-research-20261018.zip` | Equality/converse-membership orientation families and classification of every existing blank start of the spare-zero variant, despite its successful recurrent contracts. |
+| `zfc-below245-source-search-20261018.zip` | Exact CP/GIC Boolean and double-negation normalization with a calibrated changed-source control and fine-token compiler. |
+| `zfc-below246-research-20261018 (3).zip` | One-row removal of accumulating spare blocks with full local contracts, and source transfer-loop erasure under an abstract invariant. |
+| `zfc-continuation-research-20261018.zip` | Ranked continuation quotient, physical-selector compiler symmetry, and exact incidence-matrix obstruction to uniform increment retyping. |
+| `zfc-direct-negation-20261018.zip` | Scratch-retaining negation contraction `LNPQMVQPW` to `LMPW`, distinct from the earlier pairing-shift optimization. |
+| `zfc-layout-circuits-20261018.zip` | Expanded signed certificate recognizer for safe nonzero startup data: a negative certificate proves a negation, rather than claiming nonderivability. General safe-root and identity-compaction ideas are already known. |
+| `zfc-raw-profile-routing-20261018.zip` | Raw-assignment profile construction removes all function-congruence clauses while reconstructing the required schema and selector supply. |
+| `zfc-small-kernels-20261018.zip` | Three-coordinate model combines logical constructors and witnesses into three proper function symbols, with explicit collision separation. |
+| `zfc-sub245-research-20261018 (1).zip` | Detailed two-coordinate model and witness storage for the frozen selective-equality kernel; later reports depend on this construction. |
+| `zfc-sub245-research-20261018 (2).zip` | Rank-preserving label-twist independence argument retaining CP/GIC, and an anchored-rank obstruction to a proposed GIC repair. |
+| `zfc-sub245-research-20261018.zip` | Infinite countermodel for dropping membership transport. The positive selective-quotient reduction is partly superseded by the raw-profile report. |
+| `zfc243-composed-20261018.zip` | Finite-ground satisfiability via total operation tables. Its machine is exactly the maintained 243-state machine; see the [comparison](../../Computability/BusyBeaver/Research/ZFC/candidate-combined243/comparison-074c76bb74.md). |
+| `zfc245-semantic-search-20261018.zip` | Exact integer-dual certificate for a restricted 128-rule grammar optimum; stronger evidence than a solver's infeasibility message, within its fixed vocabulary. |
+| `zfc246-contextual-reassociation-20261018.zip` | Reassociation theorem with one-sided control hypotheses and a moving-zero-register transducer with an explicit continuation obstruction. |
+
+No archive was deleted or modified by this review. This entry is not an intake
+batch and does not change the placement/write/catalogue sequence below.
+
 ## Where this procedure comes from
 
 The procedure was developed in the Surreal repository, whose drop zone was
