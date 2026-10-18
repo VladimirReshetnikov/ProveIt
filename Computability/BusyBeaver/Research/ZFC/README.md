@@ -27,6 +27,18 @@ the lower bound needed for the independence argument; no absolute consistency
 proof is claimed. Require a concrete encoding benefit before increasing the
 benchmark strength.
 
+The [combined **243-state candidate**](candidate-combined243/README.md) combines
+two compatible reductions of Routing245. The loop rotation from `d91a27b462`
+removes old state 26; the compensation from `248bc05936` removes old state 122.
+Every local invariant and block hypothesis of the compensation survives the
+rotation. The new table passes all 8,390 expanded runtime cases and 2,314,868
+symbolic rules, with its own exact 407,967-step blank initialization.
+[Lean proves its halting equivalence to the rotated 244-state table](combined243_simulation.md):
+five units pass 83 theorem probes and 39 typed callers, with zero warnings.
+The ordinary proof supports the same ZFC consistency calibration. The rotation's
+source/runtime connection still needs a complete Lean proof, so compensated244
+remains the smallest machine with a closed external Lean consistency endpoint.
+
 The compensated **244-state candidate** from `248bc05936` has passed the
 complete fresh 8,391-case symbolic runtime replay. Its
 [three Lean foundation units](compensated244_foundations.md) now check the

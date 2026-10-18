@@ -1,0 +1,78 @@
+{
+  "status": "PASS_COMBINED243_BLANK_AFFINE_LITERAL",
+  "blank_steps": 407967,
+  "literal_steps": 6473394,
+  "cases": 8390,
+  "scope": "Exact blank prefix, affine proof-certificate replay, finite literal fixtures; expanded proof separate.",
+  "before": {
+    "/tmp/zfc243-root-replay/candidate/machine_old.tm": "4207fc3d1bb16f3c64c3cff0980eaa1486160c3f467aee7685740a39e3df7300",
+    "/tmp/zfc243-root-replay/candidate/machine.tm": "a3860fb49d6b96e58ead6293134f246d59b3958231cb56850273c4b8a8138791",
+    "/tmp/zfc243-root-replay/candidate/renumbering.json": "4a47f6d323aa460f6208e16babfd67919a27cc7ce7b9f34b33a71795723e630a",
+    "/tmp/zfc243-root-replay/candidate/sites_logical.json": "3ee984818f0bdfd2c4daae72aeb14340572e34d73f5cdb5616b6d29d78fcd7f4",
+    "/tmp/zfc243-root-replay/candidate/sites_physical.json": "ee14a4496cc216de7c242f5e652de47d455169d79856ba36bee3a4fc3d69d86a",
+    "/tmp/zfc243-root-replay/adapters/check_combined243_literal.py": "a4d50bf745986669160465f4674112b43c25da1e00b397e80622736ebc6e8ee4",
+    "/tmp/zfc243-root-replay/adapters/check_runtime_combined243.py": "36194a01234756eea08726179d30de92add0bcb2515b19a0f87d810698babcd7",
+    "/tmp/zfc243-root-replay/adapters/check_combined243_blank.py": "2f6c2df431c15312231019f9635601aeff0c6d1057c8ca042215ec1391c5190e",
+    "/tmp/zfc243-root-replay.py": "132d964d18f118848353a88249e6e816aa4b4d54fc66dbb9ed9bbaab0d3ab855"
+  },
+  "after": {
+    "/tmp/zfc243-root-replay/candidate/machine_old.tm": "4207fc3d1bb16f3c64c3cff0980eaa1486160c3f467aee7685740a39e3df7300",
+    "/tmp/zfc243-root-replay/candidate/machine.tm": "a3860fb49d6b96e58ead6293134f246d59b3958231cb56850273c4b8a8138791",
+    "/tmp/zfc243-root-replay/candidate/renumbering.json": "4a47f6d323aa460f6208e16babfd67919a27cc7ce7b9f34b33a71795723e630a",
+    "/tmp/zfc243-root-replay/candidate/sites_logical.json": "3ee984818f0bdfd2c4daae72aeb14340572e34d73f5cdb5616b6d29d78fcd7f4",
+    "/tmp/zfc243-root-replay/candidate/sites_physical.json": "ee14a4496cc216de7c242f5e652de47d455169d79856ba36bee3a4fc3d69d86a",
+    "/tmp/zfc243-root-replay/adapters/check_combined243_literal.py": "a4d50bf745986669160465f4674112b43c25da1e00b397e80622736ebc6e8ee4",
+    "/tmp/zfc243-root-replay/adapters/check_runtime_combined243.py": "36194a01234756eea08726179d30de92add0bcb2515b19a0f87d810698babcd7",
+    "/tmp/zfc243-root-replay/adapters/check_combined243_blank.py": "2f6c2df431c15312231019f9635601aeff0c6d1057c8ca042215ec1391c5190e",
+    "/tmp/zfc243-root-replay.py": "132d964d18f118848353a88249e6e816aa4b4d54fc66dbb9ed9bbaab0d3ab855"
+  },
+  "commands": [
+    {
+      "job": "blank",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc243-root-replay/adapters/check_combined243_blank.py",
+        "--table",
+        "/tmp/zfc243-root-replay/candidate/machine_old.tm",
+        "--baseline",
+        "/tmp/zfc244-rotation-root-replay/copy/reference/baseline245/certificate/machine_old.tm",
+        "--reference",
+        "/tmp/zfc244-rotation-root-replay/copy/reference/baseline245",
+        "--output",
+        "/tmp/zfc243-root-replay/blank"
+      ],
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 0.9659746242687106
+    },
+    {
+      "job": "affine",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc243-root-replay/adapters/check_runtime_combined243.py",
+        "--reference",
+        "/tmp/zfc244-rotation-root-replay/copy/reference/baseline245",
+        "--candidate",
+        "/tmp/zfc243-root-replay/candidate"
+      ],
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 2.9190510530024767
+    },
+    {
+      "job": "literal",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc243-root-replay/adapters/check_combined243_literal.py",
+        "--candidate",
+        "/tmp/zfc243-root-replay/candidate"
+      ],
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 3.5703035332262516
+    }
+  ]
+}
