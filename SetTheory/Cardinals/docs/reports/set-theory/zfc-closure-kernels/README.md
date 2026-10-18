@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings, 17 October 2026. This report now reconciles sixty-three manuscripts.
+Intake findings, 17 October 2026. This report now reconciles sixty-seven manuscripts.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -9,13 +9,19 @@ No merged PDF is built. These are ordinary mathematical arguments and finite
 regression checks. The deliveries confer no formal status; subsequent Lean
 results and their exact scope are listed below.
 
-The user's machine target is an equivalence **provable in PA** between
+The original machine target asks for an equivalence **provable in PA** between
 blank-tape non-halting and Con(ZFC), with fewer than 254 nonhalting states on a
 binary, two-way infinite, single tape. The maintained 252-state machine closes
 the external Lean comparison with Con(ZFC); its internal PA comparison remains
-open. Several deliveries instead discuss provability in ZFC. Those arguments
-are retained with their stated scope and do not relax the original PA request.
-This corrects the earlier description of the user's target as having changed.
+open. Several deliveries discuss provability in ZFC instead, and retain that
+stated scope. The user's later stronger-theory allowance is governed by the
+[current project criterion](../../../../../../Computability/BusyBeaver/Research/ZFC/README.md):
+assumptions must stay within well-understood benchmarks widely believed
+consistent. An artificial calculus T needs an accepted benchmark S and proofs
+of Con(S) → Con(T) → Con(ZF), with the formalization base stated. This upper
+bound and a concrete encoding benefit are required before increasing the
+benchmark strength; no absolute consistency proof or completed PA comparison
+is inferred from the allowance.
 
 Batch 146 below supplies a countermodel to the entire intended raw
 C/G code calculus, including the variants behind the earlier 252/250/248
@@ -65,6 +71,31 @@ found no mathematical blocker within their scopes. Exact 246 Lean verification
 and equivalence inside PA remain open. The optional-search bound discrepancy
 and stale bootstrap filename are preserved with explicit corrections in the
 reconciliation. See the [reproduction instructions](intake-162-reproduction.md).
+
+Batch 163 adds [four reduction studies](intake-163.md) as sources 64–67.
+They provide local arithmetic identities, stronger prepared-frame obstructions,
+numerical invariants, source rewrites and two different alternate 246-state
+tables. No complete sub-246 machine is established. Thirty substantive jobs
+pass; an additional source 66 full symbolic replay times out at its explicit
+360-second cap, leaving its delivered complete result inherited. The source
+67 201-node result concerns a source DAG, while its alternate 246-state machine
+compiles a different 202-node rewrite. Its all-case and complete-startup
+certificate freshly passes.
+
+| Source | Delivered archive | Reviewed contribution |
+| --- | --- | --- |
+| 64 | `zfc-below246-research-20261018.zip` | Decrement-only 245 core, 244 branch collision and alternate 246 detector; ten jobs pass. |
+| 65 | `zfc-beyond246-research-20261018.zip` | Theorem-valued/prepared-frame obstructions, two numerical invariant families and scoped searches; five jobs pass. |
+| 66 | `zfc-below246-research-20261018 (2).zip` | Local arithmetic trap, source bisimulation and compiler-context failures; seven jobs pass and the full symbolic replay times out. |
+| 67 | `zfc-under246-research-20261018.zip` | 201-node source rewrite, alternate 246-state decoder repair and separate partition/rejection certificates; eight jobs pass. |
+
+Placement `47507759e7` preserves all 1,190 ancillary files; 70 manuscript and
+delivery files remain recoverable from the four retired arrival archives.
+The collection still has 290 reports. [Recovery and replay instructions](intake-163-reproduction.md)
+preserve exact original names, fresh/inherited evidence, failed attempts and
+attribution. These intake findings confer no new Lean/PA endpoint. The project's
+exact 246-state formalization and its evolving proof-status ledger remain
+separate from the alternate tables and the earlier intake checkpoints above.
 
 ## Sources, overlap and base
 

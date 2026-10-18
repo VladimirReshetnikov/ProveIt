@@ -1,0 +1,91 @@
+{
+  "scope": "Proposed source-reviewed jobs; not executed by reviewer",
+  "cwd": "separate disposable copy of packet root",
+  "assertions_required": true,
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "decompress_before_jobs": "research/agent_state/incoming_extended_compensating_search.json.gz -> sibling without .gz",
+  "delivery_manifest_verification": "skip; do not call verify.py check_manifest",
+  "jobs": [
+    [
+      "python3",
+      "-B",
+      "research/agent_logic/verify_reassociation.py"
+    ],
+    [
+      "python3",
+      "-B",
+      "research/agent_logic/verify_rotated246.py"
+    ],
+    [
+      "python3",
+      "-B",
+      "research/agent_state/check_compensating_partition.py"
+    ],
+    [
+      "python3",
+      "-B",
+      "research/agent_logic/abstract_cfg.py",
+      "--K",
+      "8"
+    ],
+    [
+      "python3",
+      "-B",
+      "research/agent_logic/specialized_axiom_countermodel.py"
+    ],
+    [
+      "python3",
+      "-B",
+      "research/agent_state/check_oracle_counterexample.py"
+    ],
+    [
+      "python3",
+      "-B",
+      "research/root_search/literal_rebracket_counterexample.py"
+    ],
+    [
+      "python3",
+      "-B",
+      "research/agent_state/rebracket/check_synthesis201_certificate.py",
+      "--replay"
+    ]
+  ],
+  "after_jobs": "Compare regenerated research/agent_logic/rotated246/zfc_rotated246.tm bytes with machines/zfc_rotated246.tm",
+  "dependencies": "Python 3.10+ standard library and bundled sources/data only; no external solver/compiler/network",
+  "source_paths": [
+    {
+      "path": "/tmp/zfc-intake-163/zfc-under246/zfc-under246-research-20261018/research/agent_logic/verify_reassociation.py",
+      "sha256": "ac82629f4475dbbf9700c5e73f952fb50bc5f53cbbad9401069c58893957e507"
+    },
+    {
+      "path": "/tmp/zfc-intake-163/zfc-under246/zfc-under246-research-20261018/research/agent_logic/verify_rotated246.py",
+      "sha256": "c78f34b53d1990ce996508a8bc6fa75ecbc931c6d9a42a6e31e14fd7ff7265df"
+    },
+    {
+      "path": "/tmp/zfc-intake-163/zfc-under246/zfc-under246-research-20261018/research/agent_state/check_compensating_partition.py",
+      "sha256": "6fd1f7f54bf8ae3ae3def8a2591108073ec4e0611923e32dfd7873bc8b66e8be"
+    },
+    {
+      "path": "/tmp/zfc-intake-163/zfc-under246/zfc-under246-research-20261018/research/agent_logic/abstract_cfg.py",
+      "sha256": "28ed70aef759eee31ff471938683c3c6334dc68595d0c5c9901477dcbeb850a0"
+    },
+    {
+      "path": "/tmp/zfc-intake-163/zfc-under246/zfc-under246-research-20261018/research/agent_logic/specialized_axiom_countermodel.py",
+      "sha256": "eec808da240f1d54c72c8c0543161fb2b42553e49a4d3e52f9467ea6a3531d7e"
+    },
+    {
+      "path": "/tmp/zfc-intake-163/zfc-under246/zfc-under246-research-20261018/research/agent_state/check_oracle_counterexample.py",
+      "sha256": "57d972a95527aa3bac39cb71fdb2d4e0d5f80db24821eb98aa50ee537211effb"
+    },
+    {
+      "path": "/tmp/zfc-intake-163/zfc-under246/zfc-under246-research-20261018/research/root_search/literal_rebracket_counterexample.py",
+      "sha256": "cb9dbd5563a810bb5a8618ddb4c33bba2836b0cf11c3cfe223820be327acd6f1"
+    },
+    {
+      "path": "/tmp/zfc-intake-163/zfc-under246/zfc-under246-research-20261018/research/agent_state/rebracket/check_synthesis201_certificate.py",
+      "sha256": "5429072fa84fec146c98d1ba1b7c14ae1c54133ba3a05a648a63dbf2f368ad76"
+    }
+  ]
+}

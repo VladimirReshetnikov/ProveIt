@@ -1,0 +1,203 @@
+{
+  "one_row_repair.json": {
+    "scope": "All single-row replacements of (218,0) in the 245-state rebracket candidate; inherited macro oracle; 1500 affine-rule fuel.",
+    "tries": 980,
+    "successes": [],
+    "critical_cases": [
+      1166,
+      708
+    ],
+    "failure_counts": {
+      "1166": 964,
+      "708": 16
+    },
+    "seconds": 0.44811855499938247
+  },
+  "rotated_merge_results.json": {
+    "counts": {
+      "uniform": {
+        "tested": 60025,
+        "affine_pass": 982,
+        "macro_pass": 0
+      },
+      "blend": {
+        "tested": 59780,
+        "affine_pass": 146,
+        "macro_pass": 0
+      }
+    },
+    "survivors": [],
+    "seconds": 290.1131119370002
+  },
+  "rotated_single_incoming_results.json": {
+    "scope": "All four write/direction choices and retained state targets replacing the unique nonself incoming edge of every noninitial, affine-visited working state in the rotated correct 246 table; 1500 affine-rule fuel and independent macro proof replay.",
+    "tested": 133280,
+    "affine_pass": 0,
+    "seconds": 54.669731210000464
+  },
+  "original_single_incoming_results.json": {
+    "scope": "All four write/direction choices and retained state targets replacing the unique nonself incoming edge of every noninitial, affine-visited working state in the selected correct 246 table; 1500 affine-rule fuel and independent macro proof replay.",
+    "original": true,
+    "tested": 132300,
+    "affine_pass": 0,
+    "seconds": 52.92256497799826
+  },
+  "rotated_context_row_results.json": {
+    "scope": "Pairs with one identical literal transition; redirect deleted state globally, retain the common row, synthesize the other row from every write/direction/retained-state-or-halt target; protect the 42 macro-proof rows exactly; affine fuel 1500.",
+    "pairs": 279,
+    "tested": 274536,
+    "seconds": 139.92890713399902
+  },
+  "201_q218_screen.json": {
+    "scope": "201 source, q243 made pure N80, only q218/read0 changed; two specified affine cases, fuel1500.",
+    "critical": [
+      1166,
+      708
+    ],
+    "histogram": {
+      "1166": 961,
+      "708": 19
+    },
+    "survivors": []
+  },
+  "synthesis201_three_rows_summary.json": {
+    "status": "COMPLETE",
+    "scope": "Lazy full-table synthesis at q218/0, q256/1, q244/1 in a 201-node layout.\n\nFailures certify only rejection by the named affine system at its stated fuel,\nnot literal incorrectness or a state lower bound. Unknown rows trigger branching\nwhen first read; a previously completed trace cannot read a later-assigned row.\n",
+    "rows": [
+      [
+        "218",
+        0
+      ],
+      [
+        "256",
+        1
+      ],
+      [
+        "244",
+        1
+      ]
+    ],
+    "cases": 8391,
+    "fuel": 1500,
+    "counts": {
+      "calls": 19681,
+      "affine_runs": 20227,
+      "reject_nodes": 19661,
+      "split_nodes": 20,
+      "covered": 952763904
+    },
+    "total_family": 952763904,
+    "survivors": [],
+    "seconds": 5.369804109999677,
+    "root": 0,
+    "raw_sha256": "a7037c8cb30d4266614516628b47b8290666fc9a77b998b498bc549140c86fa9"
+  },
+  "synthesis201_partition_audit.json": {
+    "status": "PASS",
+    "scope": "Independent standard-library partition check; optional affine-leaf replay.",
+    "raw_sha256": "a7037c8cb30d4266614516628b47b8290666fc9a77b998b498bc549140c86fa9",
+    "nodes": 19681,
+    "covered": 952763904,
+    "leaf_case_histogram": {
+      "1166": 1929,
+      "708": 6857,
+      "3924": 10652,
+      "3925": 22,
+      "3959": 179,
+      "5655": 22
+    },
+    "split_row_histogram": {
+      "0": 1,
+      "1": 2,
+      "2": 17
+    },
+    "affine_rejections_replayed": 19661
+  },
+  "synthesis201_4_rows_summary.json": {
+    "status": "node limit",
+    "scope": "Lazy full-table synthesis at q218/0, q256/1, q244/1 in a 201-node layout.\n\nFailures certify only rejection by the named affine system at its stated fuel,\nnot literal incorrectness or a state lower bound. Unknown rows trigger branching\nwhen first read; a previously completed trace cannot read a later-assigned row.\n",
+    "rows": [
+      [
+        "218",
+        0
+      ],
+      [
+        "256",
+        1
+      ],
+      [
+        "244",
+        1
+      ],
+      [
+        "218",
+        1
+      ]
+    ],
+    "cases": 8391,
+    "fuel": 1500,
+    "counts": {
+      "calls": 500001,
+      "affine_runs": 501350,
+      "reject_nodes": 499490,
+      "split_nodes": 510,
+      "covered": 4193456500
+    },
+    "total_family": 937519681536,
+    "survivors": [],
+    "seconds": 176.08585828799914,
+    "root": 0,
+    "raw_sha256": "39e02c5b35f5aa6304c924984a87ddc8b6908830497150ce1f299c07d5f238af"
+  },
+  "swap31_fold_results.json": {
+    "scope": "All directed uniform and mixed-row folds of swap31 table preserving the42 macro-support rows literally; retain dispatcher96; affected universal source guards, affine fuel1500.",
+    "results": {
+      "uniform": {
+        "tested": 54390,
+        "rejected": 54390
+      },
+      "blend": {
+        "tested": 49728,
+        "rejected": 49728
+      }
+    },
+    "survivors": [],
+    "seconds": 51.2134041850004
+  },
+  "combined_fold_results.json": {
+    "scope": "All directed uniform and mixed-row folds of selected table preserving the42 macro-support rows literally; retain dispatcher96; affected universal source guards, affine fuel1500.",
+    "combined": true,
+    "results": {
+      "uniform": {
+        "tested": 54390,
+        "rejected": 54390
+      },
+      "blend": {
+        "tested": 49728,
+        "rejected": 49728
+      }
+    },
+    "survivors": [],
+    "seconds": 50.05762926099851
+  },
+  "combined246_result.json": {
+    "status": "PASS",
+    "cases": 8391,
+    "minimum_literal_steps": 13,
+    "used_pairs": 472
+  },
+  "cautions": [
+    "Only the three-row synthesis has a complete independently audited partition certificate.",
+    "The four-row synthesis log stops at the 500,000-node cap and is incomplete.",
+    "Affine rejection can represent unsupported symbolic execution or fuel exhaustion and is not a state lower bound.",
+    "Composed table bootstrap and full logical calibration belong to the parent audit."
+  ],
+  "artifact_sha256": {
+    "unshared246.tm": "e27b5d90abae92dae72a728d161d7e46b0dcbb19233afc8bc67e972efd5384ee",
+    "combined246.tm": "7afee78d84f916c6c8b87d60fe7dfa8639c40f3dec6b04bf1e53ed8bcc6feba0",
+    "combined246_dag.json": "a5e68e75b85cbcd9a837f9e9ff5512542a666a009a07cfd95685e942ede33cec",
+    "rebracket_search_note.tex": "742bdc1a49352d9aba633f9dce014c1073f10c9076ffdb8d7af67c53933bba4d",
+    "synthesis201_three_rows.json.gz": "fb93af9a6b830b99ac9219d52ed7bbb0ab379f684af51253e412c42b2b052eca",
+    "synthesis201_4_rows.json.gz": "1332eafc71f1f0f96e62b396187750ae854fb94d86db2bab0e843564b6b6211c"
+  }
+}

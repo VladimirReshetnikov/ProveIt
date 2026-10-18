@@ -1,0 +1,224 @@
+{
+  "status": "No machine below 246 states found in these experiments.",
+  "baseline_sha256": "303911c554284c49ce09042d8127feba4da260baae766e32260034aa3bdb82ee",
+  "solver_version": "5.3.1",
+  "solver_package_version": "5.3.1.0",
+  "synthesis_answer_counts": {
+    "unknown": 9,
+    "sat": 2,
+    "unsat": 1
+  },
+  "synthesis": [
+    {
+      "result": "experiments/counter/result_n7_t32_w0.json",
+      "sha256": "4ed5d38346c828ab032dd6ce20cc6160d83f1b8ead521af72cf8a00dde30a5e1",
+      "family": "initial_fixed_entry_blank_left",
+      "command": "python experiments/counter/synthesize.py --states 7 --steps 32 --seconds 180 --first-write 0",
+      "status": "unknown",
+      "states": 7,
+      "step_bound": 32,
+      "seconds": 181.6421184789997,
+      "reason": "timeout",
+      "scope": "Nine bounded traces with no read past the first left one; long case has blank left exterior."
+    },
+    {
+      "result": "experiments/counter/result_n7_t32_w1.json",
+      "sha256": "84d59979f9d6df73ddd82df5b54f5cb7e7aa04c746f24741782aa55f81b7a391",
+      "family": "initial_fixed_entry_blank_left",
+      "command": "python experiments/counter/synthesize.py --states 7 --steps 32 --seconds 180 --first-write 1",
+      "status": "unknown",
+      "states": 7,
+      "step_bound": 32,
+      "seconds": 180.40591354599928,
+      "reason": "timeout",
+      "scope": "Nine bounded traces with no read past the first left one; long case has blank left exterior."
+    },
+    {
+      "result": "experiments/counter/result_n8_t8_wNone.json",
+      "sha256": "ce4ac75cc5fcc0f1f6235b36f1fba7d7e2ee893272da61c02a5ece41c3f81159",
+      "family": "initial_fixed_entry_blank_left",
+      "command": "python experiments/counter/synthesize.py --states 8 --steps 8 --seconds 180",
+      "status": "sat",
+      "states": 8,
+      "step_bound": 8,
+      "seconds": 3.347017369000241,
+      "reason": null,
+      "scope": "Nine bounded traces with no read past the first left one; long case has blank left exterior."
+    },
+    {
+      "result": "experiments/counter/detector_n7_t16_wNone_fix0_nowrite0_seed0.json",
+      "sha256": "9c264b9e296b1f37aedbc7621d97be7e673e788313a60613cfbe55260101b7df",
+      "family": "relaxed_larger_blank_window",
+      "command": "python experiments/counter/synthesize_detector.py --states 7 --steps 16 --seconds 180 --long-min-read -16 --long-min-exit -16 --seed 0 --output experiments/counter/detector_n7_t16_wNone_fix0_nowrite0_seed0.json",
+      "status": "unknown",
+      "states": 7,
+      "step_bound": 16,
+      "seconds": 180.24433921699892,
+      "reason": "timeout",
+      "scope": "Nine bounded exact traces. Entry head 0; cells +1=0,+2=1. Short case k=0..7 has first left 1 at -k and active reads only [-k,2]. Long case has blank left exterior, active reads only [-16,2]. Entire tape restored; short exit n at head -k-1, long exit n+1 at a zero head <=1. Unknown is not an impossibility result."
+    },
+    {
+      "result": "experiments/counter/detector_n7_t16_wNone_fix0_nowrite0_seed0_left-7_exit-7.json",
+      "sha256": "8f650ae9487439cebb487f9db644b8667ec02bdf9eec9626be9a5aa93bfde534",
+      "family": "relaxed_finite_window",
+      "command": "python experiments/counter/synthesize_detector.py --states 7 --steps 16 --seconds 180 --long-min-read -7 --long-min-exit -7 --seed 0 --output experiments/counter/detector_n7_t16_wNone_fix0_nowrite0_seed0_left-7_exit-7.json",
+      "status": "unknown",
+      "states": 7,
+      "step_bound": 16,
+      "seconds": 180.21867263500098,
+      "reason": "timeout",
+      "scope": "Nine bounded exact traces. Entry head 0; cells +1=0,+2=1. Short case k=0..7 has first left 1 at -k and active reads only [-k,2]. Long case has known zeros [-7,1], active reads only [-7,2], and arbitrary exterior outside this window. Entire tape restored; short exit n at head -k-1, long exit n+1 at a zero head in [-7,1]. Unknown is not an impossibility result."
+    },
+    {
+      "result": "experiments/counter/detector_n7_t16_wNone_fix0_nowrite0_seed0_left-7_exit-8_head-8.json",
+      "sha256": "b170ef577f449141040ac1115a0bcb0710a29879dd2e88f0b5189cfeec41959d",
+      "family": "relaxed_exact_long_exit",
+      "command": "python experiments/counter/synthesize_detector.py --states 7 --steps 16 --seconds 180 --long-min-read -7 --long-min-exit -8 --long-exit-head -8 --seed 0 --output experiments/counter/detector_n7_t16_wNone_fix0_nowrite0_seed0_left-7_exit-8_head-8.json",
+      "status": "unknown",
+      "states": 7,
+      "step_bound": 16,
+      "seconds": 180.16905101299926,
+      "reason": "timeout",
+      "scope": "Nine bounded exact traces. Entry head 0; cells +1=0,+2=1. Short case k=0..7 has first left 1 at -k and active reads only [-k,2]. Long case has known zeros [-7,1], active reads only [-7,2], and arbitrary exterior outside this window. Entire tape restored; short exit n at head -k-1, long exit n+1 at exact head -8, before any further read of the exterior. Unknown is not an impossibility result."
+    },
+    {
+      "result": "experiments/counter/detector_n7_t20_wNone_fix0_nowrite0_seed0.json",
+      "sha256": "60f21f29bad81d27be54470a7ec1ed96b6898553de0ca6847a9bf418f8e0c160",
+      "family": "relaxed_larger_blank_window",
+      "command": "python experiments/counter/synthesize_detector.py --states 7 --steps 20 --seconds 180 --long-min-read -16 --long-min-exit -16 --seed 0 --output experiments/counter/detector_n7_t20_wNone_fix0_nowrite0_seed0.json",
+      "status": "unknown",
+      "states": 7,
+      "step_bound": 20,
+      "seconds": 180.16482553499918,
+      "reason": "timeout",
+      "scope": "Nine bounded exact traces. Entry head 0; cells +1=0,+2=1. Short case k=0..7 has first left 1 at -k and active reads only [-k,2]. Long case has blank left exterior, active reads only [-16,2]. Entire tape restored; short exit n at head -k-1, long exit n+1 at a zero head <=1. Unknown is not an impossibility result."
+    },
+    {
+      "result": "experiments/counter/detector_n7_t20_wNone_fix0_nowrite0_seed0_left-7_exit-7.json",
+      "sha256": "5c5d0816c12aa7f62c5748d52cd9d45c494e3f3bda05e4fe2ec5273c21e86a43",
+      "family": "relaxed_finite_window",
+      "command": "python experiments/counter/synthesize_detector.py --states 7 --steps 20 --seconds 180 --long-min-read -7 --long-min-exit -7 --seed 0 --output experiments/counter/detector_n7_t20_wNone_fix0_nowrite0_seed0_left-7_exit-7.json",
+      "status": "unknown",
+      "states": 7,
+      "step_bound": 20,
+      "seconds": 180.1880876790001,
+      "reason": "timeout",
+      "scope": "Nine bounded exact traces. Entry head 0; cells +1=0,+2=1. Short case k=0..7 has first left 1 at -k and active reads only [-k,2]. Long case has known zeros [-7,1], active reads only [-7,2], and arbitrary exterior outside this window. Entire tape restored; short exit n at head -k-1, long exit n+1 at a zero head in [-7,1]. Unknown is not an impossibility result."
+    },
+    {
+      "result": "experiments/counter/detector_n7_t24_wNone_fix0_nowrite0_seed0.json",
+      "sha256": "78b2eb9eaecdabb47f8e648c36e938b48688161d8a2c4026f8ba075ea00b75c9",
+      "family": "relaxed_larger_blank_window",
+      "command": "python experiments/counter/synthesize_detector.py --states 7 --steps 24 --seconds 180 --long-min-read -16 --long-min-exit -16 --seed 0 --output experiments/counter/detector_n7_t24_wNone_fix0_nowrite0_seed0.json",
+      "status": "unknown",
+      "states": 7,
+      "step_bound": 24,
+      "seconds": 180.25379974399948,
+      "reason": "timeout",
+      "scope": "Nine bounded exact traces. Entry head 0; cells +1=0,+2=1. Short case k=0..7 has first left 1 at -k and active reads only [-k,2]. Long case has blank left exterior, active reads only [-16,2]. Entire tape restored; short exit n at head -k-1, long exit n+1 at a zero head <=1. Unknown is not an impossibility result."
+    },
+    {
+      "result": "experiments/counter/detector_n7_t24_wNone_fix0_nowrite0_seed0_left-7_exit-7.json",
+      "sha256": "8e1ecca81a52d59a4b8168ac7392df25e82bec6d01ea8a9d2c39acf7d334a3c1",
+      "family": "relaxed_finite_window",
+      "command": "python experiments/counter/synthesize_detector.py --states 7 --steps 24 --seconds 180 --long-min-read -7 --long-min-exit -7 --seed 0 --output experiments/counter/detector_n7_t24_wNone_fix0_nowrite0_seed0_left-7_exit-7.json",
+      "status": "unknown",
+      "states": 7,
+      "step_bound": 24,
+      "seconds": 180.1894612649994,
+      "reason": "timeout",
+      "scope": "Nine bounded exact traces. Entry head 0; cells +1=0,+2=1. Short case k=0..7 has first left 1 at -k and active reads only [-k,2]. Long case has known zeros [-7,1], active reads only [-7,2], and arbitrary exterior outside this window. Entire tape restored; short exit n at head -k-1, long exit n+1 at a zero head in [-7,1]. Unknown is not an impossibility result."
+    },
+    {
+      "result": "experiments/counter/detector_n7_t8_wNone_fix0_nowrite0_seed0_left-7_exit-8_head-8.json",
+      "sha256": "80a6a0ee9570b47329440bee71e231a33fefabb062f3409840d623dc4d21cf82",
+      "family": "relaxed_exact_long_exit",
+      "command": "python experiments/counter/synthesize_detector.py --states 7 --steps 8 --seconds 60 --long-min-read -7 --long-min-exit -8 --long-exit-head -8 --seed 0 --output experiments/counter/detector_n7_t8_wNone_fix0_nowrite0_seed0_left-7_exit-8_head-8.json",
+      "status": "unsat",
+      "states": 7,
+      "step_bound": 8,
+      "seconds": 0.8609443019995524,
+      "reason": null,
+      "scope": "Nine bounded exact traces. Entry head 0; cells +1=0,+2=1. Short case k=0..7 has first left 1 at -k and active reads only [-k,2]. Long case has known zeros [-7,1], active reads only [-7,2], and arbitrary exterior outside this window. Entire tape restored; short exit n at head -k-1, long exit n+1 at exact head -8, before any further read of the exterior. Unknown is not an impossibility result."
+    },
+    {
+      "result": "experiments/counter/detector_n8_t8_wNone_fix0_nowrite0_seed0_left-7_exit-8_head-8.json",
+      "sha256": "facc21d13c2c53006b5e899b315496640a1d651f8c9701245e760ea711fe78c5",
+      "family": "relaxed_exact_long_exit",
+      "command": "python experiments/counter/synthesize_detector.py --states 8 --steps 8 --seconds 60 --long-min-read -7 --long-min-exit -8 --long-exit-head -8 --seed 0 --output experiments/counter/detector_n8_t8_wNone_fix0_nowrite0_seed0_left-7_exit-8_head-8.json",
+      "status": "sat",
+      "states": 8,
+      "step_bound": 8,
+      "seconds": 0.35075693399994634,
+      "reason": null,
+      "scope": "Nine bounded exact traces. Entry head 0; cells +1=0,+2=1. Short case k=0..7 has first left 1 at -k and active reads only [-k,2]. Long case has known zeros [-7,1], active reads only [-7,2], and arbitrary exterior outside this window. Entire tape restored; short exit n at head -k-1, long exit n+1 at exact head -8, before any further read of the exterior. Unknown is not an impossibility result."
+    }
+  ],
+  "folds": [
+    {
+      "result": "experiments/decoder/both-fold-search246.json",
+      "sha256": "d8937472e4f3d9c4f1b9c5c9461051713b7516973428567e798573704145bf99",
+      "table_sha256": "303911c554284c49ce09042d8127feba4da260baae766e32260034aa3bdb82ee",
+      "seconds": 257.93120078100037,
+      "families": {
+        "uniform": {
+          "status": "completed",
+          "recipes": 54390,
+          "checks": 129741,
+          "full_rechecks": 0,
+          "failures": {
+            "unsupported": 30662,
+            "fuel": 23552,
+            "missing": 176
+          },
+          "survivors": []
+        },
+        "mixed": {
+          "status": "completed",
+          "recipes": 49688,
+          "checks": 717456,
+          "full_rechecks": 0,
+          "failures": {
+            "fuel": 17978,
+            "unsupported": 31504,
+            "missing": 206
+          },
+          "survivors": []
+        }
+      }
+    },
+    {
+      "result": "experiments/decoder/detector8-fold-search246.json",
+      "sha256": "50be409bd71cbf3d5ed9223b24d28af7cf73dbed3a0f8c15a284f68628793596",
+      "table_sha256": "2e4c60cf14947c9ebb8e4bf999f9cd0ac995d09d16bb8b84e5c2fba922f79b1b",
+      "seconds": 224.93518531399968,
+      "families": {
+        "uniform": {
+          "status": "completed",
+          "recipes": 54390,
+          "checks": 122933,
+          "full_rechecks": 0,
+          "failures": {
+            "unsupported": 30881,
+            "fuel": 23313,
+            "missing": 196
+          },
+          "survivors": []
+        },
+        "mixed": {
+          "status": "completed",
+          "recipes": 49704,
+          "checks": 624388,
+          "full_rechecks": 0,
+          "failures": {
+            "fuel": 17881,
+            "unsupported": 31612,
+            "missing": 211
+          },
+          "survivors": []
+        }
+      }
+    }
+  ],
+  "note": "Result files record bounded families. UNKNOWN and bounded checker rejection are not impossibility results. The 8-step UNSAT result is not a general detector or ZFC-machine lower bound."
+}
