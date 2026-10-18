@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings, 17 October 2026. This report now reconciles sixty-eight manuscripts.
+Intake findings through 18 October 2026. This report now reconciles seventy manuscripts.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -11,9 +11,9 @@ results and their exact scope are listed below.
 
 The original machine target asks for an equivalence **provable in PA** between
 blank-tape non-halting and Con(ZFC), with fewer than 254 nonhalting states on a
-binary, two-way infinite, single tape. The maintained 246-state machine closes
+binary, two-way infinite, single tape. The maintained [routed 245-state machine](../../../../../../Computability/BusyBeaver/Research/ZFC/routing245_binary.md) closes
 the external Lean comparison with Con(ZFC), improving the earlier checked
-252-state endpoint; its internal PA comparison remains open. Several deliveries discuss provability in ZFC instead, and retain that
+246- and 252-state endpoints; its internal PA comparison remains open. Several deliveries discuss provability in ZFC instead, and retain that
 stated scope. The user's later stronger-theory allowance is governed by the
 [current project criterion](../../../../../../Computability/BusyBeaver/Research/ZFC/README.md):
 assumptions must stay within well-understood benchmarks widely believed
@@ -104,12 +104,57 @@ gives 117 framework roles plus 128 grammar roles, retaining the original
 proof-search theory. The complete fresh suite passes: all 8,391 universal
 whole-frame cases, exact 407,915-step blank initialization, and 8,385 finite
 literal regressions. Four supplemental and four historical checks also pass.
-Independent ordinary-proof reviews find no substantive blocker. The candidate
-has no new exact-table Lean endpoint or internal PA proof; the closed 246-state
-external theorem remains the checked baseline. Placement `46e8518e0e` retains
+Independent ordinary-proof reviews find no substantive blocker. At that intake checkpoint, the candidate
+had no new exact-table Lean endpoint or internal PA proof, and the closed 246-state
+external theorem was the checked baseline. The exact routed 245-state external
+endpoint has since closed; its PA internalization remains open. Placement `46e8518e0e` retains
 273 ancillary files, with 21 files recoverable only from the committed archive.
-See [recovery and execution scope](intake-164-reproduction.md). Six older queued
-archives remain pending; their scratch source numbers were provisional.
+See [recovery and execution scope](intake-164-reproduction.md). Six older archives
+remained queued at that checkpoint; their scratch source numbers were provisional.
+
+Batch 165 adds [source blocks, workspace freedom and exact obstructions](intake-165.md)
+as source 69. Positive source blocks may contain several instructions, while
+all nine primary values and the clean tape relation remain protected. The
+finite invariants, block controls and two rejected 245 tables provide research
+methods and counterexamples, not a smaller calibrated machine. All 14 main
+jobs and eight supplemental checks pass on disposable copies; the recorded
+large searches remain distinct from fresh verification. See the [recovery and
+replay instructions](intake-165-reproduction.md).
+
+| Source | Delivered archive | Reviewed contribution |
+| --- | --- | --- |
+| 69 | `zfc-sub246-research-20261018.zip` | Positive multi-instruction source blocks, numeric invariants, workspace relations, exact rejection witnesses and scoped runtime experiments. |
+
+Placement `500381f8f1` preserves 454 ancillary files unchanged; 12 article,
+PDF, TeX and delivery files remain recoverable from the committed archive.
+It also retires a byte-identical reintroduction of source 68, with all 273
+original ancillary bindings checked in their original placement tree; that
+repeat receives no new number. The source 69 report studies an older 246
+reference. Its two rejected 245 tables are different from the now verified
+routed 245 machine. This intake adds no PA theorem or stronger theory.
+The base article remains unchanged, and the collection remains 290 reports.
+
+Batch 166 adds the [compensated 244-state reduction](intake-166.md) as source 70.
+The ordinary proof deletes old state 122 and changes four retained Routing245
+rows, preserving halting from the shared start on every binary tape. Both local
+checkers, the exact 407,951-step blank startup and the separate complete 8,391-case
+runtime replay pass; the latter checks 2,315,075 symbolic rules and all 488 rows.
+The existing 245-state external Lean endpoint remains the checked baseline at
+this intake checkpoint; a complete 244-state Lean endpoint and internal PA
+calibration remain open. The accompanying equational conversion has a complete
+2,324-bit packet but no compiled binary machine. Search scopes and supplemental
+variants remain distinct from the principal direct proof.
+
+| Source | Delivered archive | Reviewed contribution |
+| --- | --- | --- |
+| 70 | `zfc244-compensated-routing-20261018.zip` | Compensated one-state fold, direct all-tape halting proof, complete principal replay, exact startup and a separate equational backend. |
+
+Placement `6619bd0002` preserves 170 ancillary files unchanged; 21 originals
+remain archive-only, with all 191 members recoverable. See [recovery and replay](intake-166-reproduction.md)
+and the separate [maintained candidate inputs](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-compensated244/README.md).
+The report keeps the original theory and attribution. It adds no unconditional
+consistency/nonhalting or minimality claim. The base article is unchanged and
+the collection remains 290 reports; eighteen other archives remain queued.
 
 ## Sources, overlap and base
 

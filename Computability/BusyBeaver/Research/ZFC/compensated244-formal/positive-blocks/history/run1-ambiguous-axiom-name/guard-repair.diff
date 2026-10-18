@@ -1,0 +1,20 @@
+--- run1/check.py
++++ run2/check.py
+@@ -7,7 +7,7 @@
+ PREFIX='SetTheory.BusyBeaver.ZFC.PositiveBlockBisimulation.'
+ PROBES=['Simulation.symm','forward','halts_iff','blank_halts_iff']
+ SOURCE_SHA='ffa519dc3162ef5c002e21d1ad8f6abb9c33a0a9492ada832155df84b145db2a'
+-AUDIT_SHA='71a250662d517d3de726ee741ae2bd2ad0a7b618919f8131f788823283148084'
++AUDIT_SHA='fce10923ebc4cae49367da0f8dde77202b5f92e00f7ca8b0d3dbb33a7dfb2abe'
+ BOUNDARY_SHA='4d76e51e539b3e63a0610c0934d00ab4ad058aa159bca43e04287bfda4e0314f'
+ PARENT_SHA='41ff9364f37d9eb33ff1eb2b4bbc0e5f17f0a44ac02a4a7dcdbdfa6c5b1ccf87'
+ STANDARD={'propext','Classical.choice','Quot.sound'}
+@@ -45,7 +45,7 @@
+     ns=re.findall(r'^#print axioms (\S+)$',Path(e['audit']['snapshot']).read_text(),re.M);rr=reports(e['commands'][1]['output'])
+     require(len(ns)==11 and [q['name']for q in rr]==ns and all(set(q['axioms'])<=STANDARD for q in rr),'Parent raw reports.')
+     require(imports(S)==['BusyBeaver.ZFC.RuntimePerm252']and imports(A)==[MODULE],'Imports changed.')
+-    require(re.findall(r'^#print axioms (\S+)$',A.read_text(),re.M)==PROBES,'Audit short names changed.')
++    require(re.findall(r'^#print axioms (\S+)$',A.read_text(),re.M)==[PREFIX+n for n in PROBES],'Audit qualified names changed.')
+     require(len(re.findall(r'^example\b',A.read_text(),re.M))==4,'Typed callers changed.')
+     for p in [S,A]:
+         require(not re.search(r'\b(sorry|admit|native_decide)\b',p.read_text()),'Untrusted proof exit.')

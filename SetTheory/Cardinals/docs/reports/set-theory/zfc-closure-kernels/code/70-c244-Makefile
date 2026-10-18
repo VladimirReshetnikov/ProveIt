@@ -1,0 +1,10 @@
+.PHONY: verify full-runtime pdf
+
+verify:
+	python3 -B verify.py
+
+full-runtime:
+	python3 -B verify.py --full-runtime
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex

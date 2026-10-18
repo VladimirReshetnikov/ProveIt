@@ -1,0 +1,26 @@
+PYTHON ?= python3
+PDFLATEX ?= pdflatex
+
+.PHONY: verify integrity independent pdf rebuild clean
+
+verify:
+	$(PYTHON) -B code/verify_all.py
+
+integrity:
+	$(PYTHON) -B code/check_hashes.py
+
+independent:
+	$(PYTHON) -B reviews/audit246.py reviews/prior250
+
+rebuild:
+	$(PYTHON) -B code/rebuild_machines.py
+	$(PYTHON) -B code/render_table.py
+
+pdf:
+	mkdir -p build
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error -output-directory build report.tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error -output-directory build report.tex
+	cp build/report.pdf report.pdf
+
+clean:
+	rm -rf build

@@ -1,0 +1,29 @@
+# Compensated 244-state candidate
+
+This binary, single-tape machine has **244 working states**, including initialization, and one separate halt state. It starts in state 0 at head 0 on an all-zero two-way infinite tape. Every transition moves left or right.
+
+The ordinary mathematical proof supports **ZFC ⊢ (¬Halt(M244) ↔ Con(ZFC))** by reducing the exact [Routing245 machine](../candidate-routing245/README.md) to this table. It deletes old state 122 and changes four retained rows. From their common old start 95, the two machines have the same halting outcome on every initial binary tape and at every head position. The proof uses an inductive local tape condition, 482 equal ordinary transition rows and seven positive finite blocks with identical whole-tape endpoints.
+
+The root's fresh portable replay passes both independently implemented local checkers, reconstructs all three delivered variants and checks the exact principal blank startup. The default symbolic dependency smoke test covers one case. A separate complete fresh replay also passes all **8,391** universally guarded cases, **2,315,075** symbolic rules and all **488** rows in **540.786 seconds**, with positive duration at least 13. Every complete output field matches the delivered certificate except elapsed time.
+
+**No complete 244-state Lean endpoint or object-language PA calibration is claimed here.** The [245-state endpoint](../routing245_binary.md) remains the checked external Lean baseline. The new local reduction is accompanied by an arithmetic formalizability argument, while the full internal PA proof remains [open](../pa_internalization.md). A generic simulation theorem alone does not discharge this table's invariant and local-transition obligations.
+
+| Artifact | Meaning |
+| --- | --- |
+| [zfc_compensated244.tm](zfc_compensated244.tm) | Canonical 488-row table: working states 0–243, start 0, dispatcher 88, halt 244. |
+| [zfc_compensated244_old.tm](zfc_compensated244_old.tm) | Exact same machine in old labels: start 95, dispatcher 96, halt 254. |
+| [renumbering.json](renumbering.json) | The exact bijection. |
+| [facts.json](facts.json) | Delivered machine facts. |
+| [Main proof fragment](proof/contextual_fold.tex), [independent proof fragment](proof/independent_audit.tex) | Ordinary mathematical proofs, included by the original report; not standalone compiled articles. |
+| [Literal local checker](code/verify_local_stuttering.py) | Independent finite-premise checker taking explicit old/new table paths. |
+| [Direct proof data](evidence/contextual_fold_proof.json), [independent local data](evidence/local-stuttering-audit.json) | Delivered finite certificates; fresh replay evidence is recorded separately. |
+
+Each noncomment transition row is `state read write direction next_state`. The canonical table SHA is `2ea5521fa7d0fc24b4f3dc07d497b10de2532147225820033d9c96f247444187`; the old-label table SHA is `d603bc3793ac9373f510a05d4e898f4ee7b4cac492821406a665554dca5c6daf`. The baseline old table SHA is `f8dbeacdad5fd89c57e3f240781324b09110be8e0ccdb838a9c710fb28d2a267`.
+
+Sparse and dense simulations agree on the entire blank-start tape after **407,951 transitions**: old state 96, head −5, header 176, physical values `(0,0,0,3,0,0,3,0,0)`, logical seed `(3,0,0,0,3,0,0,0,0)`, 167 spare ones and exactly 351 one-cell coordinates. This is the same root frame as Routing245, reached 36 steps later. The finite startup is not an inference of nonhalting.
+
+For a small independent replay, copy this directory outside the repository and run the unchanged local checker there, passing the maintained Routing245 old table and the copied new old table as its two positional arguments, and an external `--output` path. Python 3.10+ and the standard library suffice; assertions must remain enabled. The complete package's [recovery and broader reproduction](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-166-reproduction.md) restore all original nested paths. Neither local checker is a proof-assistant kernel.
+
+The original calculus and proof-search program are credited to Mira-Cult, verification to Jeff Ketchersid, and the compiler framework to Andrew James Wade. ProveIt contributors' Routing245 construction and earlier reductions retain their attribution. The incoming 18 October 2026 contribution supplies the compensated fold, proof, finite checks and separate equational-backend experiment. It was prepared for Vladimir Reshetnikov and ProveIt; the delivery does not identify an additional individual author.
+
+The report arrived in [commit 248bc05936](https://github.com/VladimirReshetnikov/ProveIt/commit/248bc0593651331065ae558802a914110562d20a), against ProveIt `cb7984df14aed713269d5a596a27d33321cc2c19` and inherited upstream `c132d7eae8158cd3a9850ea3eb7251158c3dd821`. Collection placement `6619bd0002a0771284cfda26d0e734f76cffaaa4` preserves its ancillary files as source70 of `SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels`; every original member remains recoverable from the committed archive. This candidate directory promotes selected exact inputs and proof references, without replacing that intake. The [source70 reconciliation](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-166.md) links the exact root execution records and separate reviews. The complete source also preserves two supplemental variants, bounded search data, inherited notices/licenses, and the equational branch with its unimplemented binary compiler. No absolute consistency proof, unconditional nonhalting theorem, minimality claim or two-sided independence from consistency alone is asserted.

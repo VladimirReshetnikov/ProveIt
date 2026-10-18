@@ -27,6 +27,14 @@ the lower bound needed for the independence argument; no absolute consistency
 proof is claimed. Require a concrete encoding benefit before increasing the
 benchmark strength.
 
+The compensated **244-state candidate** from `248bc05936` has passed the
+complete fresh 8,391-case symbolic runtime replay. Its
+[three Lean foundation units](compensated244_foundations.md) now check the
+exact table, the original-machine tape invariant and generic positive-block
+halting transport (62 theorem probes, 18 typed callers, zero warnings).
+The concrete local-block/global simulation and complete 244-state endpoint
+are in progress; these components do not yet replace the closed 245 endpoint.
+
 The active external Lean baseline is the
 [routed 245-state machine](candidate-routing245/README.md), from
 `8286787dd0`. It passes its complete executable suite, including all 8,391
@@ -1827,6 +1835,12 @@ also with six probes and eight callers and zero warnings. The
 now has its own checked whole-file contract, with three probes and four callers.
 Structural source witnesses resolved ten recursion-depth failures without
 changing its statements or proof limits; the failed attempt is preserved.
+The next two constructor occurrences,
+[433–460](arithmetic_control_ax_constructor433254.md) and
+[460–487](arithmetic_control_ax_constructor460254.md), also have checked
+whole-file contracts for arbitrary internal register files with zero
+scratch coordinates. Each passed three probes and four typed callers
+without warnings. Composing the surrounding AX branch remains open.
 
 [Structural catalogue lookup](arithmetic_control_source_rank254.md) supplies
 a reusable path-to-rank proof and two concrete source bindings at controls

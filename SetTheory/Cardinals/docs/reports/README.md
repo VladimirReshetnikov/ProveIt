@@ -2903,6 +2903,24 @@ archive; all 294 original payloads remain recoverable. The complete fresh
 runtime suite passes, including 8,391 expanded symbolic cases, 490 rows,
 407,915 blank steps and 8,385 finite regressions. Four auxiliary and four
 historical checks also pass. Independent reviews find no substantive blocker
-within the ordinary mathematical proof's scope. The new table has no Lean
-endpoint or PA-internal equivalence yet; the exact 246-state external Lean
-endpoint remains the checked baseline. The six earlier archives remain queued.
+within the ordinary mathematical proof's scope. At that intake checkpoint the new table had no Lean
+endpoint or PA-internal equivalence, and the exact 246-state external Lean
+endpoint was the checked baseline. Six earlier archives remained queued then.
+The routed 245-state external Lean endpoint has since closed; PA remains open.
+
+
+Batch 165 adds source 69 from `36633bfe16` to
+[ZFC closure kernels](set-theory/zfc-closure-kernels/intake-165.md), now 69
+manuscripts and still 290 reports. Placement `500381f8f1` preserves 454
+ancillary files and 12 archive-only files; write `91b1c296b3` reconciles
+positive multi-instruction source blocks, numerical invariants, unused-workspace
+relations and exact rejection witnesses. The main 14 jobs and eight supplemental
+checks all pass. Recorded discovery searches retain their finite scopes and
+were not rerun. No smaller calibrated machine or new PA proof results.
+The current external Lean baseline is the different, fully checked routed
+245-state table, rather than the report's historical 246 reference or either
+of its rejected 245 tables. The exact reintroduced source 68 archive was also
+retired after all 273 original ancillary blobs were checked in their placement
+tree; it receives no new number. Eighteen other archives remained queued at
+the placement checkpoint. The base article and all delivered bytes remain unchanged; the
+collection manifest is rebuilt separately.
