@@ -1,0 +1,90 @@
+{
+  "review": "Independent logical and runtime proof review for prefix247",
+  "reviewer_role": "logical_audit",
+  "source_pin": "e0b512a63e2c1ca6a1698fa437b8568f1643ff6b",
+  "source_repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "prior250_original_label_sha256": "fd455304bad82a6da7ab83149352d0b1db27557582c4cc6312de003c96ff4e43",
+  "selected247_canonical_sha256_reported_by_root": "58bbbda620daf6d4d62f486db05f54d0dccb8373c080c1b5a0b26533e7a3a669",
+  "construction": {
+    "deleted_working_states": [0, 1, 3],
+    "changed_retained_row": {"state": 60, "read": 0, "old": [0, "R", 0], "new": [0, "R", 20]},
+    "original_label_start": 97,
+    "unchanged_initializer": [1, "R", 83],
+    "working_state_count": 247,
+    "separate_halt": 254
+  },
+  "independent_graph_checks": {
+    "incoming0_before_fold": [[60, 0]],
+    "incoming1_before_fold": [[0, 0], [1, 1], [3, 1]],
+    "incoming3_before_fold": [[1, 0]],
+    "row0_1_equals_row20_1": [0, "L", 2],
+    "graph_unreachable_after_fold": [1, 3],
+    "reachable_working_states_after_fold": 247
+  },
+  "new_marking_proof": {
+    "domain": "Every physical selector r=0..8, arbitrary finite preceding primary values, arbitrary exterior contexts, target begins 01",
+    "time": "2 * width(preceding_blocks) + 3",
+    "exit_head": "one cell left of original file origin",
+    "exit_state": "2 for r=0, 6 for r>0",
+    "effect": "Erase precisely first unary one of selected register; all other cells unchanged",
+    "key_invariant": "The entry newly redirected to state20 reads1; state20/read0 is unmodified and is never used by that entry"
+  },
+  "other_register_contracts": {
+    "result": "The three prefix250 macro identities are unchanged because their literal footprints avoid removed states and changed row",
+    "increment": "entry73; exit48 at old boundary-1; time2*whole_width+7; append spare1",
+    "positive_decrement": "entry95; exit48 at old origin; time2*prefix_width+4; move file boundary right1; preserve spare suffix",
+    "zero_decrement": "entry95; exit112 at old boundary-1; time2*prefix_width+7; restore entire file",
+    "essential_premise": "Nonempty spare suffix ensures a following block for every primary register; it is preserved by all operations"
+  },
+  "independent_selected_blank_run": {
+    "method": "Reconstruct table in memory from frozen250; delete0/1/3 and redirect60/0; separate Python sparse-set literal simulator",
+    "steps": 741241,
+    "original_state": 96,
+    "head": -5,
+    "marker": -6,
+    "header": 245,
+    "distance": 250,
+    "program_counter": [],
+    "physical_primary": [0, 0, 0, 3, 0, 0, 3, 0, 0],
+    "logical_N_T_W_A_D_H_X_Y_L": [3, 0, 0, 0, 3, 0, 0, 0, 0],
+    "spare_count": 235,
+    "all_spare_values": 1,
+    "total_blocks": 244,
+    "one_cells": 487,
+    "last_one": 974,
+    "initializer_row_uses": 1,
+    "complete_support_equals_reconstructed_frame": true
+  },
+  "logical_interfaces_read_in_current_source": [
+    "DirtyProgram254.safe_iff",
+    "DirtyProgram254.path_halts_iff",
+    "DirtyProgram254.six_nonformula_path_iff",
+    "Bisim254.prog254_halts_iff",
+    "NativeTheory254.NativeAx",
+    "NativeTheory254.c254_refutation_iff",
+    "ZFNative.native_of_zf",
+    "WFModel.quotient_models_ZF",
+    "WellFoundedPart.quotient_domain_nonempty",
+    "WFTheory.c254_refutation_iff_zf",
+    "WFTheory.native_refutation_iff_zf",
+    "ChoiceCalibration254.constructible_models_ZFC",
+    "ChoiceCalibration254.constructible_nonempty",
+    "ChoiceCalibration254.zf_refutation_iff_zfc",
+    "FirstOrder.Completeness.model_of_BCon",
+    "FirstOrder.Completeness.completeness_inf_context"
+  ],
+  "safe_root_application": "DirtyProgram254.six_nonformula_path_iff 3 0 3 0 0 0; T=H=W=0 supplies truth, truth, good_zero; no special dirty-reset assertion at counter3 is needed",
+  "logical_conclusion": "The ordinary set-coded proof is formalizable in ZFC and yields nonhalting iff Con(ZFC), provided the exact247 all-sites certificate is bound to the stated four macro contracts and complete decoder tree as in the main report",
+  "formalization_distinctions": [
+    "An external Lean theorem with standard Lean axioms alone is not an internally serialized ZFC proof",
+    "Henkin completeness, set quotients, definable submodels, syntax induction, and finite binary traces are ordinary ZFC constructions",
+    "Only internal well-foundedness is used for the quotient's WF subdomain; no transitive model or external well-foundedness assumption",
+    "Only set-structure satisfaction is used; no truth predicate for the ambient set universe",
+    "Schemas range over actual first-order formula syntax, not all arbitrary external relations",
+    "A ZFC proof is weaker as a requirement than the repository's open PA internalization project",
+    "Full logical independence is not inferred from bare consistency; exclusion of a proof of halting requires an appropriate soundness hypothesis"
+  ],
+  "fresh_kernel_build": false,
+  "new_all_sites_checker_run_by_this_reviewer": false,
+  "scope": "Independent ordinary proof review, exact graph audit, new marking induction, and independent full selected bootstrap; root and prefix_reduction supply complete fresh instruction checks"
+}
