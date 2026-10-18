@@ -1,0 +1,25 @@
+--- check.py
++++ check_combined243_blocks.py
+@@ -2,7 +2,8 @@
+ """Seven exact compensated244 blocks and their endpoints; three project providers."""
+ from pathlib import Path
+ import argparse,hashlib,json,os,re,shutil,signal,subprocess,time
+-HERE=Path('/tmp/zfc243-combined-lean/blocks')
++HERE=Path(__file__).resolve().parent
++REPO=HERE.parents[3]
+ MODULE='BusyBeaver.ZFC.Combined243Blocks'
+ PREFIX='SetTheory.BusyBeaver.ZFC.Combined243Blocks.'
+ PROBES=['enter122_from104_read0', 'enter122_from104_read1', 'enter122_from106_read0', 'enter122_from106_read1', 'repair167', 'enter92_from81_zero', 'enter92_from81_one', 'enter122_from104_read0_new_endpoint', 'enter122_from104_read1_new_endpoint', 'enter122_from106_read0_new_endpoint', 'enter122_from106_read1_new_endpoint', 'repair167_new_endpoint', 'enter92_from81_zero_new_endpoint', 'enter92_from81_one_new_endpoint']
+@@ -21,9 +22,9 @@
+     return [dict(name=n,axioms=sorted({x.strip()for x in a.split(',')if x.strip()}))for n,a in rr]
+ def main():
+     p=argparse.ArgumentParser(description=__doc__)
+-    p.add_argument('--source',type=Path,default=HERE/'Combined243Blocks.lean')
+-    p.add_argument('--audit',type=Path,default=HERE/'Audit.lean')
+-    p.add_argument('--boundary',type=Path,default=HERE/'boundary.json')
++    p.add_argument('--source',type=Path,default=REPO/'Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Combined243Blocks.lean')
++    p.add_argument('--audit',type=Path,default=HERE/'combined243_blocks_audit.lean')
++    p.add_argument('--boundary',type=Path,default=HERE/'combined243-formal/blocks/boundary.json')
+     p.add_argument('--parent-evidence',type=Path)
+     p.add_argument('--output',type=Path,required=True)
+     p.add_argument('--prepare-only',action='store_true')

@@ -1,0 +1,68 @@
+--- /tmp/zfc244-compensated-lean/simulation/check.py
++++ /tmp/zfc243-combined-lean/simulation/check-template.py
+@@ -2,14 +2,14 @@
+ """Concrete compensated244 whole-run simulation; exact three parents/seven projects."""
+ from pathlib import Path
+ import argparse,hashlib,json,os,re,shutil,signal,subprocess,time
+-HERE=Path('/tmp/zfc244-compensated-lean/simulation')
+-MODULE='BusyBeaver.ZFC.Compensated244Simulation'
+-PREFIX='SetTheory.BusyBeaver.ZFC.Compensated244Simulation.'
++HERE=Path('/tmp/zfc243-combined-lean/simulation')
++MODULE='BusyBeaver.ZFC.Combined243Simulation'
++PREFIX='SetTheory.BusyBeaver.ZFC.Combined243Simulation.'
+ PROBES=['simulation','start_halts_iff','blank_halts_iff','blank_nonhalts_iff']
+-SOURCE_SHA='b48949f1eeef88b622a5fda34ff42c37f4335c53daca55666099a31798a73ac4'
+-AUDIT_SHA='a847a6fb95d1125cf0e64d9fdf5cb33862c35c14bc2e33dc6778233b27c9acf8'
+-BOUNDARY_SHA='9fe962442f5fabfe36551969e402c055c252139f29ce8af72f7c7b33ced4b18a'
+-PARENT_SHAS={'positive': '39d7b8257fc41468782322c1131e81c8ffdef34edccd61ec539419a205bdd420', 'invariant': '1ec56adfbe3e0df272aa82cf42f02ada7f9bb33bcedd334e73e509fc401030c9', 'blocks': '71b8b0096ead121f787f0f489cd5cc8988b7311ca52f3a602e3235f1a2c09b41'}
++SOURCE_SHA='85fcfb12740f6ce57425945b9d92429d58d426b7d893d3c7734f3acc515c9a31'
++AUDIT_SHA='ca02e99bcc39b913f1cf324e6250aa92baea16f5bd1d908fb01deb907abc27a6'
++BOUNDARY_SHA=None
++PARENT_SHAS={'positive': '39d7b8257fc41468782322c1131e81c8ffdef34edccd61ec539419a205bdd420', 'invariant': None, 'blocks': None}
+ STANDARD={'propext','Classical.choice','Quot.sound'}
+ sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+ rel=lambda m,s='.olean':Path(m.replace('.','/')).with_suffix(s)
+@@ -21,12 +21,13 @@
+     return [dict(name=n,axioms=sorted({x.strip()for x in a.split(',')if x.strip()}))for n,a in rr]
+ def main():
+     p=argparse.ArgumentParser(description=__doc__)
+-    p.add_argument('--source',type=Path,default=HERE/'Compensated244Simulation.lean')
++    p.add_argument('--source',type=Path,default=HERE/'Combined243Simulation.lean')
+     p.add_argument('--audit',type=Path,default=HERE/'Audit.lean')
+     p.add_argument('--boundary',type=Path,default=HERE/'boundary.json')
+     p.add_argument('--output',type=Path,required=True)
+     p.add_argument('--prepare-only',action='store_true')
+     a=p.parse_args();require(__debug__,'No optimized Python.')
++    require(BOUNDARY_SHA is not None, 'Pending actual predecessor proof: this template is not executable.')
+     S,A,B,W=a.source.resolve(),a.audit.resolve(),a.boundary.resolve(),a.output.resolve()
+     require(not W.exists()or(W.is_dir()and not any(W.iterdir())),'Fresh output required.')
+     require(not W.is_relative_to(Path('/home/codex/.codex/worktrees/ec20/Proofs')) and not W.is_relative_to(Path('/home/codex/src/Proofs')),'External output only.')
+@@ -50,9 +51,7 @@
+         ns=re.findall(r'^#print axioms (\S+)$',Path(e['audit']['snapshot']).read_text(),re.M);rr=reports(e['commands'][1]['output'])
+         require(ns==desc['audit_names']and len(ns)==desc['probes']and [q['name']for q in rr]==desc['report_names']and all(set(q['axioms'])<=STANDARD for q in rr),'Wrong raw parent audit names/axioms.')
+         require(len(re.findall(r'^example\b',Path(e['audit']['snapshot']).read_text(),re.M))==desc['callers'],'Wrong parent callers.')
+-        if key=='invariant':
+-            require(desc['report_names']==['SetTheory.BusyBeaver.ZFC.Routing245Invariant.'+n for n in ns]and 'open SetTheory.BusyBeaver.ZFC.Routing245Invariant' in Path(e['audit']['snapshot']).read_text(),'Unexpected invariant namespace.')
+-        else:require(desc['report_names']==ns,'Unexpected parent namespace.')
++        require(desc['report_names']==ns,'Unexpected parent namespace.')
+         fs=e['fresh_modules'];require(len(fs)==1,'Wrong parent fresh count.');f=fs[0]
+         require(e['source_object_recorded_before_audit']and all(e['source_pass_object'][k]==f[k]for k in ['module','path','sha256','source_sha256']),'Missing parent fresh capture.')
+         require(e['source_pass_object']['source_command_index']==0 and f['source_sha256']==e['source']['sha256'],'Wrong source capture binding.')
+@@ -73,7 +72,7 @@
+         parent_records.append(dict(path=str(E),sha256=PARENT_SHAS[key],module=f['module']))
+     reused=b['reused_modules'];tools=b['toolchain_providers'];projects={q['module']:q for q in reused}
+     require(projects==pool and len(pool)==7 and {q['module']:q for q in tools}==alltools and set(alltools)=={'Init','Lean.Elab.Tactic.Omega'},'Wrong seven-project/two-tool union.')
+-    require(imports(S)==['BusyBeaver.ZFC.PositiveBlockBisimulation','BusyBeaver.ZFC.Routing245Invariant','BusyBeaver.ZFC.Compensated244Blocks']and imports(A)==[MODULE],'Changed source imports.')
++    require(imports(S)==['BusyBeaver.ZFC.PositiveBlockBisimulation','BusyBeaver.ZFC.Rotation244Invariant','BusyBeaver.ZFC.Combined243Blocks']and imports(A)==[MODULE],'Changed source imports.')
+     require(re.findall(r'^#print axioms (\S+)$',A.read_text(),re.M)==[PREFIX+n for n in PROBES]and len(re.findall(r'^example\b',A.read_text(),re.M))==4,'Wrong audit4/4.')
+     for pp in [S,A]:
+         require(not re.search(r'\b(sorry|admit|native_decide)\b',pp.read_text()),'Untrusted proof exit.')
+@@ -125,7 +124,7 @@
+             r['commands'].append(dict(label=label,command=cmd,seconds=time.monotonic()-start,exit_code=proc.returncode,timed_out=timeout,interrupted=interrupted,output=out,log=str(log),log_sha256=sha(log)));save()
+             require(not timeout and interrupted is None and proc.returncode==0,'Source/audit failed; output retained.')
+             require('sorryAx'not in out and "declaration uses 'sorry'"not in out,'Untrusted output.');return out
+-        obj=cache/rel(MODULE);require(not obj.exists(),'Target already exists.');run('source',ss,obj)
++        obj=cache/rel(MODULE);require(not obj.exists(),'Target already exists.');obj.parent.mkdir(parents=True,exist_ok=True);run('source',ss,obj)
+         q=dict(module=MODULE,path=str(obj),sha256=sha(obj),source_sha256=SOURCE_SHA)
+         r.update(fresh_modules=[q],source_pass_object=dict(q,source_command_index=0),source_object_recorded_before_audit=True,fresh_first_provider_before_audit=dict(module=MODULE,path=str(first(MODULE)),sha256=sha(first(MODULE))))
+         require(first(MODULE)==obj.resolve(),'Fresh first provider mismatch.');save()

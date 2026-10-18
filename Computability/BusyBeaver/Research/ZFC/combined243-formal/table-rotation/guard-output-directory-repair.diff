@@ -1,0 +1,11 @@
+--- check.py
++++ check-v2.py
+@@ -112,7 +112,7 @@
+             r['commands'].append(dict(label=label,command=cmd,seconds=time.monotonic()-start,exit_code=proc.returncode,timed_out=timeout,interrupted=interrupted,output=out,log=str(log),log_sha256=sha(log)));save()
+             require(not timeout and interrupted is None and proc.returncode==0,'Source/audit failed; output retained.')
+             require('sorryAx'not in out and "declaration uses 'sorry'"not in out,'Untrusted output.');return out
+-        obj=cache/rel(MODULE);require(not obj.exists(),'Target already exists.');run('source',ss,obj)
++        obj=cache/rel(MODULE);require(not obj.exists(),'Target already exists.');obj.parent.mkdir(parents=True,exist_ok=True);run('source',ss,obj)
+         q=dict(module=MODULE,path=str(obj),sha256=sha(obj),source_sha256=SOURCE_SHA)
+         r.update(fresh_modules=[q],source_pass_object=dict(q,source_command_index=0),source_object_recorded_before_audit=True,fresh_first_provider_before_audit=dict(module=MODULE,path=str(first(MODULE)),sha256=sha(first(MODULE))))
+         require(first(MODULE)==obj.resolve(),'Fresh first provider mismatch.');save()

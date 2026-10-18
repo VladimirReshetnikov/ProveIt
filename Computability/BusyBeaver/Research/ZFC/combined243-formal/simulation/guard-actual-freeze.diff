@@ -1,0 +1,37 @@
+--- check-template.py
++++ check.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Concrete compensated244 whole-run simulation; exact three parents/seven projects."""
++"""Concrete Combined243 versus Rotation244 whole-run simulation; exact three parents/seven projects."""
+ from pathlib import Path
+ import argparse,hashlib,json,os,re,shutil,signal,subprocess,time
+ HERE=Path('/tmp/zfc243-combined-lean/simulation')
+@@ -8,8 +8,8 @@
+ PROBES=['simulation','start_halts_iff','blank_halts_iff','blank_nonhalts_iff']
+ SOURCE_SHA='85fcfb12740f6ce57425945b9d92429d58d426b7d893d3c7734f3acc515c9a31'
+ AUDIT_SHA='ca02e99bcc39b913f1cf324e6250aa92baea16f5bd1d908fb01deb907abc27a6'
+-BOUNDARY_SHA=None
+-PARENT_SHAS={'positive': '39d7b8257fc41468782322c1131e81c8ffdef34edccd61ec539419a205bdd420', 'invariant': None, 'blocks': None}
++BOUNDARY_SHA='8fdf6167b0ef2fc9b285e347f8110a646773988cbecc351295e15c3fab2e3805'
++PARENT_SHAS={'positive': '39d7b8257fc41468782322c1131e81c8ffdef34edccd61ec539419a205bdd420', 'invariant': '76cf8e6e038f187b336908c860227375eb5bfdfbdd6a52e644ef7c18ec03c6d0', 'blocks': 'e4ebb3fcf294760563409069fae6211593bd7fcbd07b428438819db1fc684cb7'}
+ STANDARD={'propext','Classical.choice','Quot.sound'}
+ sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+ rel=lambda m,s='.olean':Path(m.replace('.','/')).with_suffix(s)
+@@ -27,7 +27,6 @@
+     p.add_argument('--output',type=Path,required=True)
+     p.add_argument('--prepare-only',action='store_true')
+     a=p.parse_args();require(__debug__,'No optimized Python.')
+-    require(BOUNDARY_SHA is not None, 'Pending actual predecessor proof: this template is not executable.')
+     S,A,B,W=a.source.resolve(),a.audit.resolve(),a.boundary.resolve(),a.output.resolve()
+     require(not W.exists()or(W.is_dir()and not any(W.iterdir())),'Fresh output required.')
+     require(not W.is_relative_to(Path('/home/codex/.codex/worktrees/ec20/Proofs')) and not W.is_relative_to(Path('/home/codex/src/Proofs')),'External output only.')
+@@ -99,7 +98,7 @@
+             rows.append(dict(module=q['module'],actual_first=str(pp),sha256=sha(pp)))
+         return rows
+     actual=providers();env=dict(os.environ,LEAN_PATH=str(cache),LEAN_NUM_THREADS='1')
+-    r=dict(status='PREPARED_NOT_BUILT'if a.prepare_only else'RUNNING',prepare_only=a.prepare_only,scope='Concrete244 versus checked245 positive-block simulation, arbitrary finite-support start tapes and exact blank halting/nonhalting iff. No PA internalization or infinite-support tape claim.',source=dict(path=str(S),sha256=SOURCE_SHA,snapshot=str(ss)),audit=dict(path=str(A),sha256=AUDIT_SHA,snapshot=str(aa)),boundary=dict(path=str(B),sha256=BOUNDARY_SHA),provider_evidence=parent_records,compiler=b['compiler'],compiler_version_query_performed=False,reused_modules=reused,toolchain_providers=tools,actual_first_providers=actual,exact_project_import_closure=sorted(seen),exact_project_prerequisite_count=7,before=dict(tracked),commands=[],fresh_modules=[],LEAN_PATH=str(cache),LEAN_NUM_THREADS='1',memory_mebibytes=4096,shared_timeout_seconds=120,global_option_overrides=[],dependency_build=False,downloads=False,parent_scope=b['scope'])
++    r=dict(status='PREPARED_NOT_BUILT'if a.prepare_only else'RUNNING',prepare_only=a.prepare_only,scope='Combined243 versus Rotation244 positive-block simulation, arbitrary finite-support start tapes and exact blank halting/nonhalting iff. No consistency calibration, PA internalization or infinite-support tape claim.',source=dict(path=str(S),sha256=SOURCE_SHA,snapshot=str(ss)),audit=dict(path=str(A),sha256=AUDIT_SHA,snapshot=str(aa)),boundary=dict(path=str(B),sha256=BOUNDARY_SHA),provider_evidence=parent_records,compiler=b['compiler'],compiler_version_query_performed=False,reused_modules=reused,toolchain_providers=tools,actual_first_providers=actual,exact_project_import_closure=sorted(seen),exact_project_prerequisite_count=7,before=dict(tracked),commands=[],fresh_modules=[],LEAN_PATH=str(cache),LEAN_NUM_THREADS='1',memory_mebibytes=4096,shared_timeout_seconds=120,global_option_overrides=[],dependency_build=False,downloads=False,parent_scope=b['scope'])
+     def save():(W/'verification.json').write_text(json.dumps(r,indent=2)+'\n')
+     def post():
+         r['after']={p:sha(p)for p in tracked};require(r['before']==r['after']and providers()==actual,'Postcheck failed.')
