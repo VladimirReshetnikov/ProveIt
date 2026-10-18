@@ -1,10 +1,14 @@
 # Smaller machines for Con(ZFC)
 
 The goal is a binary, single-tape machine with fewer than 254 nonhalting
-states whose blank-tape nonhalting is provably in **PA** equivalent to
-Con(ZFC), as originally requested. The external Lean equivalence is now proved
-for a 252-state machine; its internal PA proof remains open. All new formal
-work uses Lean.
+states whose halting status is independent of ZF. The original target was
+blank-tape nonhalting provably in **PA** equivalent to Con(ZFC). The search
+now also permits equivalence to consistency of an effectively axiomatized
+stronger theory, as clarified by the user on 17 October 2026. Each candidate
+must state the assumptions used for its two unprovability directions;
+consistency alone must not be confused with arithmetic soundness. The
+external Lean equivalence with Con(ZFC) is now proved for a 252-state
+machine; its internal PA proof remains open. All new formal work uses Lean.
 An intended set-theoretic meaning is optional: any effectively presented
 theory or proof calculus is eligible once its consistency calibration is proved.
 The complete compiled search, including its data and initialization, is the
@@ -71,6 +75,22 @@ The [246 symbolic executor](prefix246_symbolic.md) and
 soundness proofs. Their 15/15 and 12/13 theorem/client audits pass with zero
 warnings. Complete coverage of the actual decoder and final startup
 composition remain separate obligations.
+
+The [246 whole-tape frame adapters](prefix246_frame.md) connect symbolic
+execution to the logical register file while preserving the spare suffix and
+header distance. Fourteen theorem audits and fourteen callers pass; complete
+decoder coverage and startup composition remain separate.
+
+The [246 instruction composition](prefix246_instruction.md) implements
+every accepted logical instruction by a positive binary execution segment,
+preserving the complete dispatch frame and nonempty spares. Its seven
+theorem audits and seven callers pass with no warnings.
+
+The [246 conditional runtime equivalence](prefix246_runtime.md) now proves
+both directions of register/binary halting from a related whole-tape frame
+and accepted decoder coverage. Eleven theorem audits and twelve callers pass
+with no warnings. The complete coverage certificate and blank startup must
+still discharge those explicit premises.
 
 The [exact 250-state table](table_prefix250.md) is now checked in Lean: all 500
 actions, the state numbering, the unique halt edge and the incoming edges of

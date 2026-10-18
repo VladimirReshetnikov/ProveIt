@@ -102,6 +102,31 @@ translation, the internal L-specific Separation/Replacement proofs, and the comp
 interpreter-to-Enum connection. The forward validator sentence alone does
 not yet imply the requested PA theorem about the literal binary machine.
 
+The active binary target is now the exact 246-state candidate. Its table,
+logical seed, whole-tape instruction contracts and conditional runtime
+comparison have separate Lean checks; completing that external endpoint
+still does not supply an internal PA theorem.
+
+Source review of the merged arithmetic work through `70f2e7a57b` identifies
+three further reusable pieces in `Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/`:
+`LGlueCodes.lean` proves environment opening/free-variable and binder code
+identities for arbitrary internal formulas; `LMatch.lean` supplies the
+primitive-recursive, Sigma-one-definable matching formula `MT(j)` and its
+zero/successor equations for every internal index; `LGlueT.lean` contains
+`funTemplate_provable`, `slot0Template_provable` and
+`slotSTemplate_provable`. These fixed templates prove functionality and
+slot-reading steps and can be instantiated by the existing internal
+`compileT_provable` interface. This paragraph records source inspection,
+not a new compiler run of those upstream files.
+
+The next connecting work is to instantiate the templates at `MT(j)`, prove
+the exact translated code identities, and carry out internal induction for
+functionality and slot reading. The general `envForm`/`relativize` equivalence
+and the uniform constructible Separation/Replacement obligation `hSchema`
+remain open. None of these source additions by itself closes the reverse
+ZF-to-validator translation or the arithmetic proof for the actual 246-state
+binary machine.
+
 ## What is already available
 
 The following declarations identify mathematical inputs, not represented
