@@ -4,6 +4,11 @@ This binary, single-tape machine has **243 working states**, including initializ
 
 It combines the [QT loop rotation](../candidate-rotation244/README.md) with the [compensated fold](../candidate-compensated244/README.md). The ordinary argument supports **ZFC ⊢ (¬Halt(M243) ↔ Con(ZFC))**. This table was developed in the repository after reviewing both reports; neither incoming ZIP supplied a 243-state machine.
 
+The later [submission in commit 074c76bb74](comparison-074c76bb74.md) supplies
+exactly the same machine: both tables, renumbering and both source-site lists
+are byte-identical. It adds a standalone local audit, explicit clock bounds
+and a separate finite-algebra research proposal, with no further state reduction.
+
 | Construction | Mechanism | Deleted inherited states | Source leaves / cases | Blank prefix |
 | --- | --- | --- | --- | --- |
 | Routed245 | Baseline | Neither 26 nor 122 | 6,460 / 8,391 | 407,915 |
