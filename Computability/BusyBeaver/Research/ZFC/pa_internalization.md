@@ -180,6 +180,19 @@ and actual 246-state arithmetic runtime remain separate obligations. The
 [pinned source review](results/upstream-ccdebc892a-source-review.json) records
 the declarations and remaining obligations.
 
+Commit `e6b5769ba46ca018085414df212968273022531b` adds
+[LGlue3](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LGlue3.lean).
+`glue_atom` supplies the atomic compiled-glue client: for all internal
+indices `a,b < j` in any IΣ1 model, internal ZF proves that the membership
+or equality atom agrees with its environment encoding under `MT j`.
+It discharges the slot, numeral-correctness, functionality, uniqueness and
+atom-definition premises; `eAtomT_val` identifies the encoded atom body.
+The [independent source review](results/upstream-e6b5769ba4-source-review.json)
+finds no issue within that scope, without claiming a fresh compilation.
+The matching antecedent remains. General formula glue and its internal
+induction, matching-environment existence, and the schema closure/domain-side
+adapter to `hSchema` remain open.
+
 ## What is already available
 
 The following declarations identify mathematical inputs, not represented
@@ -741,8 +754,9 @@ use `LNumOK.numOK` (every numeral chain defines one natural, in `𝗭𝗙`).
 **Remaining for `hSchema`** (superseding the historical next-step notes below):
 the reflection driver producing `Θ` is already available. `LGlue1` provides
 matching functionality and slot reading; `LGlue2` supplies shift-fixity and the
-opened quantifier-premise identity. Still needed are the compiled glue steps
-and internal formula induction, existence of a suitable matching environment
+opened quantifier-premise identity; `LGlue3` supplies the atomic compiled-glue
+client. Still needed are the remaining compiled glue steps, constructor/code
+adapters and internal formula induction, existence of a suitable matching environment
 `t₀` with `t₀(i) = &i`, and the `SchemaRecognizer`/`relativize` closure adapter.
 These must turn the compiled final templates into the internal derivability
 of every relativized Separation/Replacement instance, with its domain side
