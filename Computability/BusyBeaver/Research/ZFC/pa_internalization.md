@@ -650,7 +650,16 @@ stage. Replacement needs no code-level shift: the image is bounded in a
 stage, and the domain `X` is stored at a slot `n` beyond a support bound of
 the reflecting code (`SatSupport.sat_support`) by patching the environment.
 
-**Remaining for `hSchema`**: (ii) the internal induction driver chaining the
+**Driver (checked).** `LDriver.driver`: for every internal semiformula code
+`p` of level `n` (nonstandard included), some function code `f` makes
+`𝗭𝗙 ⊢ totS f ⋏ reflS (envForm n p) f`. The induction is Foundation's
+`IsSemiformula.sigma1_structural_induction`, whose binder level is exactly
+`envForm`'s depth; each case is one compiled step (`LDriverSteps`) whose new
+function code is the translation of the template's own defining matrix, so
+every definitional hypothesis is the internal tautology `∀(A ↔ A)`. Atoms
+use `LNumOK.numOK` (every numeral chain defines one natural, in `𝗭𝗙`).
+
+**Remaining for `hSchema`** (superseding item (ii) below): (ii) ~~the internal induction driver chaining the
 compiled step templates at internal codes (definitional hypotheses as
 internal tautologies), producing `Θ` for `envForm 1 φ` / `envForm 2 ψ`;
 (iii) the glue from `SchemaRecognizer` codes to `relativize`: an
