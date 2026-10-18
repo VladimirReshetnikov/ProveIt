@@ -294,14 +294,10 @@ private lemma prop177_two_mul_k_succ_le_pow (k : Nat) :
   have hks : k + 1 ≤ 2 ^ (k + 1) := Nat.le_of_lt (k + 1).lt_two_pow_self
   calc
     2 * k * (k + 1) ≤ 2 * 2 ^ k * 2 ^ (k + 1) := by gcongr
-    _ = 2 ^ (k + 1) * 2 ^ (k + 1) := by
-      rw [pow_succ]
-      ring
+    _ = 2 ^ (k + 1) * 2 ^ (k + 1) := by ring
     _ = 2 ^ ((k + 1) + (k + 1)) :=
       (pow_add 2 (k + 1) (k + 1)).symm
-    _ = 2 ^ (2 * k + 2) := by
-      congr 1
-      omega
+    _ = 2 ^ (2 * k + 2) := by ring
 
 private lemma prop177_thresholdCount_le_pow (k : Nat) :
     prop177ThresholdCount k (k * (k + 1)) ≤ 2 ^ (3 * k + 2) := by
@@ -312,10 +308,7 @@ private lemma prop177_thresholdCount_le_pow (k : Nat) :
       apply Nat.mul_le_mul
       · exact Nat.sub_le _ _
       · simpa [mul_assoc] using prop177_two_mul_k_succ_le_pow k
-    _ = 2 ^ (3 * k + 2) := by
-      rw [← pow_add]
-      congr 1
-      omega
+    _ = 2 ^ (3 * k + 2) := by ring
 
 private lemma prop177_region_sum_bound (k : Nat) (hk : 0 < k) :
     (∑ j ∈ Finset.range (k + 3),
@@ -895,11 +888,7 @@ private lemma prop177_sum_cube_norm_sq_le_moment {N k : Nat} [NeZero N]
       change (∑ s : ZMod N, ‖f (s - c)‖ ^ ((2 : Nat) ^ (k + 1))) = T
       exact (Equiv.subRight c).sum_comp
         (fun s : ZMod N => ‖f s‖ ^ ((2 : Nat) ^ (k + 1)))
-    _ = T := by
-      simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fun,
-        Fintype.card_fin, Fintype.card_bool, nsmul_eq_mul, Nat.cast_pow,
-        Nat.cast_ofNat]
-      field_simp
+    _ = T := by norm_num
     _ = ∑ s : ZMod N, ‖f s‖ ^ ((2 : Nat) ^ (k + 1)) := rfl
 
 private lemma prop177_fourier_sq_le_moment {N k : Nat} [NeZero N]
@@ -1520,10 +1509,7 @@ private lemma prop177_affine_cubeArgument {N k : Nat}
   rw [hsum, mul_sub, Finset.mul_sum]
   have hmul :
       (∑ i : Fin k, if e i then d * a i else 0) =
-        ∑ i : Fin k, d * (if e i then a i else 0) := by
-    apply Finset.sum_congr rfl
-    intro i _
-    cases e i <;> simp
+        ∑ i : Fin k, d * (if e i then a i else 0) := by norm_num
   rw [hmul]
   ring
 
@@ -1735,9 +1721,7 @@ private lemma prop177_select_double_sum
     _ ≤ (F.card : Real) * Fintype.card C * ((F.card : Real) * E g) := by
       gcongr
     _ = (F.card : Real) ^ 2 * Fintype.card C *
-        ∑ u : U, ∑ c : C, ‖V g c u‖ ^ 2 := by
-      unfold E
-      ring
+        ∑ u : U, ∑ c : C, ‖V g c u‖ ^ 2 := by linarith
 
 private def prop177ExtendedLocalFamily {N M k : Nat} [NeZero M]
     (_hM : 0 < M) (f : ZMod N → Complex) (d : ZMod N)
@@ -1951,10 +1935,7 @@ private lemma prop177_cubeArgument_affine {N q : Nat}
     d * (s - ∑ i : Fin q, if e i then x i else 0) - offset
   have hsum :
       (∑ i : Fin q, if e i then d * x i else 0) =
-        ∑ i : Fin q, d * (if e i then x i else 0) := by
-    apply Finset.sum_congr rfl
-    intro i _
-    cases e i <;> simp
+        ∑ i : Fin q, d * (if e i then x i else 0) := by norm_num
   rw [hsum, mul_sub, Finset.mul_sum]
   ring
 

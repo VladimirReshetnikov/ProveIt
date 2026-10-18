@@ -688,11 +688,7 @@ private lemma lemma134_arrangement_count_lower {N : Nat} [NeZero N]
   have hNpow : 0 < (N : Real) ^ 32 := pow_pos hN 32
   have hcancel : (N : Real) ^ 32 *
       (S.alpha ^ 32 * (N : Real) ^ 32) ≤
-      (N : Real) ^ 32 * arrangementCount 8 S.A := by
-    calc
-      (N : Real) ^ 32 * (S.alpha ^ 32 * (N : Real) ^ 32) =
-          (S.alpha * (N : Real) ^ 2) ^ 32 := by ring
-      _ ≤ (N : Real) ^ 32 * arrangementCount 8 S.A := hraw
+      (N : Real) ^ 32 * arrangementCount 8 S.A := by linarith
   exact le_of_mul_le_mul_left hcancel hNpow
 
 /-! ### Good heights carry a positive fraction of the arrangements -/
@@ -704,9 +700,7 @@ private lemma lemma134_sectionC_total {N : Nat} [NeZero N]
   let T : Finset (DArrangement N 8) :=
     Finset.univ.filter fun R => R.IsIn S.A
   have hmap : Set.MapsTo DArrangement.height (T : Set (DArrangement N 8))
-      (Finset.univ : Finset (ZMod N)) := by
-    intro R _
-    simp
+      (Finset.univ : Finset (ZMod N)) := by norm_num
   have hfiber := Finset.card_eq_sum_card_fiberwise hmap
   have hheight (h : ZMod N) : section13C S h =
       (T.filter fun R => R.height = h).card := by
@@ -715,9 +709,7 @@ private lemma lemma134_sectionC_total {N : Nat} [NeZero N]
     apply congrArg Finset.card
     ext R
     simp [T]
-  have htotal : T.card = arrangementCount 8 S.A := by
-    unfold arrangementCount countWhere
-    rw [Finset.filter_congr_decidable]
+  have htotal : T.card = arrangementCount 8 S.A := rfl
   calc
     (∑ h : ZMod N, section13C S h) =
         ∑ h : ZMod N, (T.filter fun R => R.height = h).card := by
@@ -735,9 +727,7 @@ private lemma lemma134_sectionG_total {N : Nat} [NeZero N]
   let T : Finset (DArrangement N 8) :=
     Finset.univ.filter fun R => R.IsIn S.A ∧ R.IsRespected S.phi
   have hmap : Set.MapsTo DArrangement.height (T : Set (DArrangement N 8))
-      (Finset.univ : Finset (ZMod N)) := by
-    intro R _
-    simp
+      (Finset.univ : Finset (ZMod N)) := by norm_num
   have hfiber := Finset.card_eq_sum_card_fiberwise hmap
   have hheight (h : ZMod N) : section13G S h =
       (T.filter fun R => R.height = h).card := by
@@ -1133,9 +1123,7 @@ private lemma lemma134_exists_common_step
   let exponent : Real := theta₁ ^ 2 / (16 * (q : Real))
   let delta : Real := theta₁ / (32 * Real.pi * (l : Real))
   have htheta₁ : 0 < theta₁ := lemma134_thetaOne_pos theta htheta
-  have hdelta : 0 < delta := by
-    unfold delta
-    positivity
+  have hdelta : 0 < delta := by positivity
   have hdeltaOne : delta ≤ 1 := by
     unfold delta
     apply (div_le_one₀ (by positivity :
@@ -1260,10 +1248,7 @@ theorem lemma134_at_graph_budget
   have hqQ : (q : Real) ≤ Qbound := hbudget q hq hqBound
   let scale : Real := section13ThetaOne theta / (64 * Real.pi) *
     (N : Real) ^ (section13ThetaOne theta ^ 2 / (16 * Qbound))
-  have hscaleNonneg : 0 ≤ scale := by
-    dsimp [scale]
-    exact mul_nonneg (div_nonneg htheta₁.le (by positivity))
-      (Real.rpow_nonneg (by positivity) _)
+  have hscaleNonneg : 0 ≤ scale := by positivity
   have hscaleMono : scale ≤ lemma134Scale N theta q := by
     unfold scale lemma134Scale
     apply mul_le_mul_of_nonneg_left _ (by positivity)

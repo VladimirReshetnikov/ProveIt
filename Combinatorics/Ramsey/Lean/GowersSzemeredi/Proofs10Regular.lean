@@ -376,12 +376,7 @@ private lemma almostEvery_of_weighted_error
     have hstrict := mul_lt_mul_of_pos_left hgt
       (show 0 < 300 * r4 * L by positivity)
     have hchain : 300 * r4 * L * (5 * r1 * W.card) <
-        1440 * eta * L * W.card := by
-      calc
-        _ < 300 * r4 * L * Bad.card := by simpa using hstrict
-        _ ≤ ∑ y ∈ Bad, e y := hBadLower
-        _ ≤ ∑ y ∈ W, e y := hBadSum
-        _ ≤ _ := hsumE
+        1440 * eta * L * W.card := by linarith
     rw [show 300 * r4 * L * (5 * r1 * W.card) =
         1500 * eta * L * W.card by rw [← hrprod]; ring] at hchain
     have : 0 ≤ eta * L * W.card := by positivity
@@ -501,9 +496,7 @@ private lemma exists_regular_parameters {X : Type*} [Fintype X]
     Spr p - cE * Ew p - cW * Cw p - cV * Cv p
   letI : IsProbabilityMeasure ν := intervalProbability_isProbability hrho
   have hLpos : 0 < 1 + 2 * rho := by linarith
-  have hprob : 0 < prob := by
-    dsimp only [prob]
-    positivity
+  have hprob : 0 < prob := by positivity
   have hSprInt : Integrable Spr μ := windowedSum_integrable rho a b q U μ
   have hEwInt : Integrable Ew μ := windowedSum_integrable rho a b e Finset.univ μ
   have hCwInt : Integrable Cw μ := windowedSum_integrable rho a b (fun _ => 1) Finset.univ μ
@@ -532,15 +525,9 @@ private lemma exists_regular_parameters {X : Type*} [Fintype X]
       4 * sigma / (1 + 2 * rho) * T := by
     dsimp only [Cv, μ, ν]
     simpa only [hcard] using integral_boundaryCount_le rho sigma a b hrho hsigma.le
-  have hcE : 0 ≤ cE := by
-    dsimp only [cE]
-    positivity
-  have hcW : 0 ≤ cW := by
-    dsimp only [cW]
-    positivity
-  have hcV : 0 ≤ cV := by
-    dsimp only [cV]
-    positivity
+  have hcE : 0 ≤ cE := by positivity
+  have hcW : 0 ≤ cW := by positivity
+  have hcV : 0 ≤ cV := by positivity
   have hSprLower : prob * (S / 2) ≤ ∫ p, Spr p ∂μ := by
     rw [hIntSpr]
     exact mul_le_mul_of_nonneg_left hU hprob.le
@@ -600,9 +587,7 @@ private lemma exists_regular_parameters {X : Type*} [Fintype X]
       _ = (∫ p, Spr p ∂μ) - cE * (∫ p, Ew p ∂μ) -
           cW * (∫ p, Cw p ∂μ) - cV * (∫ p, Cv p ∂μ) := by
         rw [hIntTwo, integral_const_mul]
-  have hAvgBase : prob * S / 4 ≤ ∫ p, F p ∂μ := by
-    rw [hIntF]
-    linarith only [hSprLower, hEpenalty, hWpenalty, hVpenalty]
+  have hAvgBase : prob * S / 4 ≤ ∫ p, F p ∂μ := by linarith
   have hProbBase : rho ^ 2 * S / 4 ≤ prob * S / 4 := by
     have hLsq : (1 + 2 * rho) ^ 2 ≤ 4 := by nlinarith [hLpos, hL]
     have hprobLower : rho ^ 2 ≤ prob := by
@@ -703,18 +688,14 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
   have hK : 0 < K := by
     dsimp only [K, qScale]
     positivity
-  have hT : 0 < T := by
-    dsimp only [T]
-    positivity
+  have hT : 0 < T := by positivity
   have hS : 0 < S := by
     have hbase : 0 < alpha ^ 3 * M ^ 3 * N ^ 2 / 4 := by positivity
     dsimp only [S]
     exact hbase.trans_le hSanchor
   have hbasic := lemma_10_1_holds N X D alpha M
     ⟨halpha, halphaOne, hM, hcard, hfibre⟩
-  have hq (y : X) : 0 ≤ q y := by
-    dsimp only [q]
-    positivity
+  have hq (y : X) : 0 ≤ q y := by positivity
   have hqUpper (y : X) : q y ≤ K := by
     dsimp only [q, K, qScale]
     exact hbasic.1 x y
@@ -791,12 +772,8 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
           ∑ y : X, if ¬ alpha ^ 2 * M / 8 ≤ (D.fibreSize y : Real)
             then q y else 0 := by
         simp only [Finset.sum_filter]
-  have hU : S / 2 ≤ ∑ y ∈ X', q y := by
-    have hbase : alpha ^ 3 * M ^ 3 * N ^ 2 / 4 ≤ S := hSanchor
-    linarith only [hsplit, hbadWeight, hbase]
-  have hTcard : (Fintype.card X : Real) = T := by
-    dsimp only [T]
-    exact hcard
+  have hU : S / 2 ≤ ∑ y ∈ X', q y := by linarith
+  have hTcard : (Fintype.card X : Real) = T := hcard
   obtain ⟨p, hSpr, hEw, hCw, hCv⟩ :=
     exists_regular_parameters rho sigma eta S T a b q e X' hrho hL
       hsigmaPos hetaPos hS hT ha hb hq he hU hEsum hTcard
@@ -930,22 +907,13 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
           ring
         _ ≤ S := hSanchor
     have hcancel : (T * K) * (alpha / 4) ≤
-        (T * K) * (12 * (p.1 + rho)) := by
-      calc
-        (T * K) * (alpha / 4) ≤ S := hanchor'
-        _ ≤ 12 * T * (p.1 + rho) * K := hScenter
-        _ = (T * K) * (12 * (p.1 + rho)) := by ring
+        (T * K) * (12 * (p.1 + rho)) := by linarith
     have := (mul_le_mul_iff_right₀ (mul_pos hT hK)).mp hcancel
     linarith
   have hQratio : (p.1 + rho) / 2 ≤ p.1 - rho := by
-    have : 4 * rho ≤ p.1 + rho := by
-      calc
-        4 * rho ≤ alpha / 48 := by linarith only [hrhoAlpha]
-        _ ≤ p.1 + rho := hQcenter
+    have : 4 * rho ≤ p.1 + rho := by linarith
     linarith
-  have hQlowerPos : 0 < p.1 - rho := by
-    have : 0 < p.1 + rho := lt_of_lt_of_le (by positivity) hQcenter
-    linarith only [hQratio, this]
+  have hQlowerPos : 0 < p.1 - rho := by linarith
   have hqVar : VariesByFactorAtMostTwo W
       (fun y => domainDifferenceWeight D x y) := by
     intro y hy z hz
@@ -982,18 +950,11 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
         _ = b y₀ * M := hRScale y₀
         _ ≤ (p.2 + rho) * M := by gcongr
     have hscaled' : (M : Real) * (alpha ^ 2 / 8) ≤
-        (M : Real) * (p.2 + rho) := by
-      calc
-        (M : Real) * (alpha ^ 2 / 8) = alpha ^ 2 * M / 8 := by ring
-        _ ≤ (p.2 + rho) * M := hscaled
-        _ = (M : Real) * (p.2 + rho) := by ring
+        (M : Real) * (p.2 + rho) := by linarith
     have := (mul_le_mul_iff_right₀ hMreal).mp hscaled'
     linarith
   have hRratio : (p.2 + rho) / 2 ≤ p.2 - rho := by
-    have : 4 * rho ≤ p.2 + rho := by
-      calc
-        4 * rho ≤ alpha ^ 2 / 8 := by linarith only [hrhoAlphaSq]
-        _ ≤ p.2 + rho := hRcenter
+    have : 4 * rho ≤ p.2 + rho := by linarith
     linarith
   have hRlower : alpha ^ 2 / 16 ≤ p.2 - rho := by
     linarith only [hRcenter, hrhoAlphaSq]
@@ -1026,9 +987,7 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
     rw [hay, hby]
     exact (hmemW y).mp hy
   let Lq : Real := (p.1 - rho) * K
-  have hLq : 0 < Lq := by
-    dsimp only [Lq]
-    positivity
+  have hLq : 0 < Lq := by positivity
   have hqWindowLower (y : X) (hy : y ∈ W) : Lq ≤ q y := by
     rw [hqScale]
     dsimp only [Lq]
@@ -1090,10 +1049,7 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
       _ ≤ 24 * (eta * rho ^ 4 * alpha / 384) * T := by
         gcongr
       _ = rho ^ 2 * (eta * (rho ^ 2 * alpha * T / 16)) := by ring
-  have hBaseT : rho ^ 2 * alpha * T / 16 ≤ (W.card : Real) := by
-    dsimp only [T]
-    convert hWcardLower using 1
-    ring
+  have hBaseT : rho ^ 2 * alpha * T / 16 ≤ (W.card : Real) := by linarith
   have hVcard : (V.card : Real) ≤ eta * W.card :=
     hVcardPre.trans (mul_le_mul_of_nonneg_left hBaseT heta)
   have hOverlap (d : ZMod N) (hd : d ∈ B) :

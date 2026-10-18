@@ -47,10 +47,7 @@ private def theorem1013FinFourEquiv (X : Type*) :
     rfl
 
 private lemma theorem1013_quad_card (X : Type*) [Fintype X] :
-    Fintype.card (Theorem1013Quad X) = Fintype.card X ^ 4 := by
-  rw [Fintype.card_congr (theorem1013FinFourEquiv X)]
-  simp only [Fintype.card_prod]
-  ring
+    Fintype.card (Theorem1013Quad X) = Fintype.card X ^ 4 := by norm_num
 
 private lemma theorem1013_sum_fin_four {X R : Type*}
     [Fintype X] [AddCommMonoid R] (F : (Fin 4 → X) → R) :
@@ -401,12 +398,7 @@ theorem theorem10_13_spectrum_bound {N M : Nat} [NeZero N]
     have hpositive : 0 < ((M : Real) ^ 2 * (N : Real) ^ 2) := by positivity
     have hscaled :
         ((K.card : Real) * lambda ^ 2) * ((M : Real) ^ 2 * (N : Real) ^ 2) ≤
-          alpha * ((M : Real) ^ 2 * (N : Real) ^ 2) := by
-      calc
-        ((K.card : Real) * lambda ^ 2) * ((M : Real) ^ 2 * (N : Real) ^ 2) =
-            (K.card : Real) * (lambda * M * N) ^ 2 := by ring
-        _ ≤ alpha * (M : Real) ^ 2 * (N : Real) ^ 2 := henergy
-        _ = alpha * ((M : Real) ^ 2 * (N : Real) ^ 2) := by ring
+          alpha * ((M : Real) ^ 2 * (N : Real) ^ 2) := by linarith
     exact le_of_mul_le_mul_right hscaled hpositive
   have hlambda_sq : lambda ^ 2 = (2 : Real) ^ (-(74 : Real)) * alpha ^ 11 := by
     dsimp [lambda, section10Lambda]
@@ -489,9 +481,7 @@ private lemma theorem1013_small_spectrum_tail {N M : Nat} [NeZero N]
           ‖fourier (domainFibreCountFunction D) r‖ ^ 2 *
             ‖fourier (domainFibreCountFunction D) r‖ ^ 2 := by ring
       _ ≤ (lambda * M * N) ^ 2 *
-          ‖fourier (domainFibreCountFunction D) r‖ ^ 2 := by
-        exact mul_le_mul_of_nonneg_right
-          (pow_le_pow_left₀ (norm_nonneg _) hrlt.le 2) (sq_nonneg _)
+          ‖fourier (domainFibreCountFunction D) r‖ ^ 2 := by gcongr
   calc
     (∑ r ∈ (Finset.univ.filter fun r : ZMod N ↦ r ∉ K),
         ‖fourier (domainFibreCountFunction D) r‖ ^ 4) ≤
@@ -637,9 +627,7 @@ private lemma theorem1013_weighted_phase_sum {N M : Nat} [NeZero N]
         2 * (alpha * lambda ^ 2 * (M : Real) ^ 4 * (N : Real) ^ 4) := by
       gcongr
     _ = 4 * alpha * section10Lambda alpha ^ 2 *
-        (M : Real) ^ 4 * (N : Real) ^ 4 := by
-      dsimp [lambda]
-      ring
+        (M : Real) ^ 4 * (N : Real) ^ 4 := by linarith
 
 private lemma theorem1013_quad_shift_fourier {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]
@@ -700,14 +688,7 @@ private lemma theorem1013_quad_shift_bound {N M : Nat} [NeZero N]
         exact norm_sum_le _ _
       _ = (N : Real)⁻¹ * ∑ r : ZMod N,
           ‖fourier (domainFibreCountFunction D) r‖ ^ 4 *
-            ‖exponential (r * d) - 1‖ := by
-        congr 1
-        apply Finset.sum_congr rfl
-        intro r _
-        rw [norm_mul, norm_mul, cor57_norm_exponential,
-          Complex.norm_real, Real.norm_eq_abs,
-          abs_of_nonneg (by positivity)]
-        ring
+            ‖exponential (r * d) - 1‖ := by norm_num
       _ ≤ (N : Real)⁻¹ *
           (4 * alpha * section10Lambda alpha ^ 2 *
             (M : Real) ^ 4 * (N : Real) ^ 4) := by
@@ -723,9 +704,7 @@ private lemma theorem1013_quad_shift_bound {N M : Nat} [NeZero N]
       rw [Complex.norm_real, Real.norm_eq_abs]
     _ =
         ‖(((theorem1013QuadDomain D).fibre (s + d)).card : Complex) -
-          (((theorem1013QuadDomain D).fibre s).card : Complex)‖ := by
-      congr 1
-      rw [Complex.ofReal_sub, Complex.ofReal_natCast, Complex.ofReal_natCast]
+          (((theorem1013QuadDomain D).fibre s).card : Complex)‖ := by norm_num
     _ ≤ 4 * alpha * section10Lambda alpha ^ 2 *
         (M : Real) ^ 4 * (N : Real) ^ 3 := hnorm
 
