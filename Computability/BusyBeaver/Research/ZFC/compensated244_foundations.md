@@ -75,8 +75,8 @@ in their boundaries, including historical scratch paths. Preparation invokes
 no proof compiler. This is a check against recorded providers, not a standalone
 dependency bootstrap for a fresh machine.
 
-The remaining transfer obligations are the seven local execution blocks,
-their global checkpoint simulation, and composition with
-[BinaryRouting245](routing245_binary.md). Internal PA formalization remains
-a separate open task. No absolute consistency or unconditional nonhalting
-claim follows from these three units.
+The [seven local execution blocks and global checkpoint simulation](compensated244_simulation.md)
+have subsequently passed their separate18-probe/18-caller check. Composition
+with [BinaryRouting245](routing245_binary.md) is being checked separately.
+Internal PA formalization remains a separate open task. No absolute consistency
+or unconditional nonhalting claim follows from these three units.

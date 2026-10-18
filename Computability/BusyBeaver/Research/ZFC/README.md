@@ -32,8 +32,10 @@ complete fresh 8,391-case symbolic runtime replay. Its
 [three Lean foundation units](compensated244_foundations.md) now check the
 exact table, the original-machine tape invariant and generic positive-block
 halting transport (62 theorem probes, 18 typed callers, zero warnings).
-The concrete local-block/global simulation and complete 244-state endpoint
-are in progress; these components do not yet replace the closed 245 endpoint.
+The [seven local blocks and global simulation](compensated244_simulation.md)
+also pass18 probes and18 callers, proving exact blank halting equivalence
+with Routing245. The final ZF/ZFC endpoint composition is being checked
+separately; internal PA formalization remains open.
 
 The active external Lean baseline is the
 [routed 245-state machine](candidate-routing245/README.md), from

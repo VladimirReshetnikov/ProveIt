@@ -1,0 +1,25 @@
+--- actual-guard
++++ maintained-guard
+@@ -2,7 +2,8 @@
+ """Concrete compensated244 whole-run simulation; exact three parents/seven projects."""
+ from pathlib import Path
+ import argparse,hashlib,json,os,re,shutil,signal,subprocess,time
+-HERE=Path('/tmp/zfc244-compensated-lean/simulation')
++HERE=Path(__file__).resolve().parent
++REPO=HERE.parents[3]
+ MODULE='BusyBeaver.ZFC.Compensated244Simulation'
+ PREFIX='SetTheory.BusyBeaver.ZFC.Compensated244Simulation.'
+ PROBES=['simulation','start_halts_iff','blank_halts_iff','blank_nonhalts_iff']
+@@ -21,9 +22,9 @@
+     return [dict(name=n,axioms=sorted({x.strip()for x in a.split(',')if x.strip()}))for n,a in rr]
+ def main():
+     p=argparse.ArgumentParser(description=__doc__)
+-    p.add_argument('--source',type=Path,default=HERE/'Compensated244Simulation.lean')
+-    p.add_argument('--audit',type=Path,default=HERE/'Audit.lean')
+-    p.add_argument('--boundary',type=Path,default=HERE/'boundary.json')
++    p.add_argument('--source',type=Path,default=REPO/'Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Compensated244Simulation.lean')
++    p.add_argument('--audit',type=Path,default=HERE/'compensated244_simulation_audit.lean')
++    p.add_argument('--boundary',type=Path,default=HERE/'compensated244-formal/simulation/boundary.json')
+     p.add_argument('--output',type=Path,required=True)
+     p.add_argument('--prepare-only',action='store_true')
+     a=p.parse_args();require(__debug__,'No optimized Python.')

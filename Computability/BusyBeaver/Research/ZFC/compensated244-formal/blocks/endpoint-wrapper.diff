@@ -1,0 +1,227 @@
+--- draft7/source
++++ final14/source
+@@ -33,7 +33,7 @@
+       cfgOld 25 (h + 2) t := by
+   have s1 : machineRouting245.step (cfgOld 104 h t) =
+       cfgOld 122 (h + 1) t := by
+-    simpa only [cfgOld, Move.apply, (show h + 1 = (h + 1) by omega)] using
++    simpa only [cfgOld, Move.apply] using
+       (step_read machineRouting245 (oldStateRouting245 104)
+         (oldStateRouting245 122) .right true h t
+         h0 foldRowRouting245_old104_true)
+@@ -53,7 +53,7 @@
+       cfgNew 25 (h + 2) t := by
+   have s1 : machineCompensated244.step (cfgNew 104 h t) =
+       cfgNew 92 (h + 1) t := by
+-    simpa only [cfgNew, Move.apply, (show h + 1 = (h + 1) by omega)] using
++    simpa only [cfgNew, Move.apply] using
+       (step_read machineCompensated244 (oldStateCompensated244 104)
+         (oldStateCompensated244 92) .right true h t
+         h0 foldRowCompensated244_old104_true)
+@@ -65,7 +65,7 @@
+         hp1 foldRowCompensated244_old92_false)
+   have s3 : machineCompensated244.step (cfgNew 107 h t) =
+       cfgNew 125 (h + 1) t := by
+-    simpa only [cfgNew, Move.apply, (show h + 1 = (h + 1) by omega)] using
++    simpa only [cfgNew, Move.apply] using
+       (step_read machineCompensated244 (oldStateCompensated244 107)
+         (oldStateCompensated244 125) .right true h t
+         h0 foldRowCompensated244_old107_true)
+@@ -93,7 +93,7 @@
+       cfgOld 66 (h + 2) t := by
+   have s1 : machineRouting245.step (cfgOld 104 h t) =
+       cfgOld 122 (h + 1) t := by
+-    simpa only [cfgOld, Move.apply, (show h + 1 = (h + 1) by omega)] using
++    simpa only [cfgOld, Move.apply] using
+       (step_read machineRouting245 (oldStateRouting245 104)
+         (oldStateRouting245 122) .right true h t
+         h0 foldRowRouting245_old104_true)
+@@ -113,7 +113,7 @@
+       cfgNew 66 (h + 2) t := by
+   have s1 : machineCompensated244.step (cfgNew 104 h t) =
+       cfgNew 92 (h + 1) t := by
+-    simpa only [cfgNew, Move.apply, (show h + 1 = (h + 1) by omega)] using
++    simpa only [cfgNew, Move.apply] using
+       (step_read machineCompensated244 (oldStateCompensated244 104)
+         (oldStateCompensated244 92) .right true h t
+         h0 foldRowCompensated244_old104_true)
+@@ -141,7 +141,7 @@
+       cfgOld 25 (h + 2) t := by
+   have s1 : machineRouting245.step (cfgOld 106 h t) =
+       cfgOld 122 (h + 1) t := by
+-    simpa only [cfgOld, Move.apply, (show h + 1 = (h + 1) by omega)] using
++    simpa only [cfgOld, Move.apply] using
+       (step_read machineRouting245 (oldStateRouting245 106)
+         (oldStateRouting245 122) .right true h t
+         h0 foldRowRouting245_old106_true)
+@@ -161,7 +161,7 @@
+       cfgNew 25 (h + 2) t := by
+   have s1 : machineCompensated244.step (cfgNew 106 h t) =
+       cfgNew 92 (h + 1) t := by
+-    simpa only [cfgNew, Move.apply, (show h + 1 = (h + 1) by omega)] using
++    simpa only [cfgNew, Move.apply] using
+       (step_read machineCompensated244 (oldStateCompensated244 106)
+         (oldStateCompensated244 92) .right true h t
+         h0 foldRowCompensated244_old106_true)
+@@ -173,7 +173,7 @@
+         hp1 foldRowCompensated244_old92_false)
+   have s3 : machineCompensated244.step (cfgNew 107 h t) =
+       cfgNew 125 (h + 1) t := by
+-    simpa only [cfgNew, Move.apply, (show h + 1 = (h + 1) by omega)] using
++    simpa only [cfgNew, Move.apply] using
+       (step_read machineCompensated244 (oldStateCompensated244 107)
+         (oldStateCompensated244 125) .right true h t
+         h0 foldRowCompensated244_old107_true)
+@@ -201,7 +201,7 @@
+       cfgOld 66 (h + 2) t := by
+   have s1 : machineRouting245.step (cfgOld 106 h t) =
+       cfgOld 122 (h + 1) t := by
+-    simpa only [cfgOld, Move.apply, (show h + 1 = (h + 1) by omega)] using
++    simpa only [cfgOld, Move.apply] using
+       (step_read machineRouting245 (oldStateRouting245 106)
+         (oldStateRouting245 122) .right true h t
+         h0 foldRowRouting245_old106_true)
+@@ -221,7 +221,7 @@
+       cfgNew 66 (h + 2) t := by
+   have s1 : machineCompensated244.step (cfgNew 106 h t) =
+       cfgNew 92 (h + 1) t := by
+-    simpa only [cfgNew, Move.apply, (show h + 1 = (h + 1) by omega)] using
++    simpa only [cfgNew, Move.apply] using
+       (step_read machineCompensated244 (oldStateCompensated244 106)
+         (oldStateCompensated244 92) .right true h t
+         h0 foldRowCompensated244_old106_true)
+@@ -249,7 +249,7 @@
+       cfgOld 24 (h - 2) t := by
+   have s1 : machineRouting245.step (cfgOld 167 h t) =
+       cfgOld 92 (h - 1) t := by
+-    simpa only [cfgOld, Move.apply, (show h - 1 = (h - 1) by omega)] using
++    simpa only [cfgOld, Move.apply] using
+       (step_read machineRouting245 (oldStateRouting245 167)
+         (oldStateRouting245 92) .left true h t
+         h0 foldRowRouting245_old167_true)
+@@ -269,7 +269,7 @@
+       cfgNew 24 (h - 2) t := by
+   have s1 : machineCompensated244.step (cfgNew 167 h t) =
+       cfgNew 151 (h - 1) t := by
+-    simpa only [cfgNew, Move.apply, (show h - 1 = (h - 1) by omega)] using
++    simpa only [cfgNew, Move.apply] using
+       (step_read machineCompensated244 (oldStateCompensated244 167)
+         (oldStateCompensated244 151) .left true h t
+         h0 foldRowCompensated244_old167_true)
+@@ -297,7 +297,7 @@
+       cfgOld 107 (h - 2) t := by
+   have s1 : machineRouting245.step (cfgOld 81 h t) =
+       cfgOld 92 (h - 1) t := by
+-    simpa only [cfgOld, Move.apply, (show h - 1 = (h - 1) by omega)] using
++    simpa only [cfgOld, Move.apply] using
+       (step_read machineRouting245 (oldStateRouting245 81)
+         (oldStateRouting245 92) .left true h t
+         h0 foldRowRouting245_old81_true)
+@@ -317,7 +317,7 @@
+       cfgNew 107 (h - 2) t := by
+   have s1 : machineCompensated244.step (cfgNew 81 h t) =
+       cfgNew 92 (h - 1) t := by
+-    simpa only [cfgNew, Move.apply, (show h - 1 = (h - 1) by omega)] using
++    simpa only [cfgNew, Move.apply] using
+       (step_read machineCompensated244 (oldStateCompensated244 81)
+         (oldStateCompensated244 92) .left true h t
+         h0 foldRowCompensated244_old81_true)
+@@ -346,7 +346,7 @@
+       cfgOld 2 (h - 2) (Tape.write (Tape.write t h false) (h - 1) false) := by
+   have s1 : machineRouting245.step (cfgOld 81 h t) =
+       cfgOld 92 (h - 1) t := by
+-    simpa only [cfgOld, Move.apply, (show h - 1 = (h - 1) by omega)] using
++    simpa only [cfgOld, Move.apply] using
+       (step_read machineRouting245 (oldStateRouting245 81)
+         (oldStateRouting245 92) .left true h t
+         h0 foldRowRouting245_old81_true)
+@@ -370,7 +370,7 @@
+         hm1 foldRowRouting245_old37_true)
+   have s5 : machineRouting245.step (cfgOld 55 h t) =
+       cfgOld 20 (h - 1) (Tape.write t h false) := by
+-    simpa only [cfgOld, Move.apply, (show h - 1 = (h - 1) by omega)] using
++    simpa only [cfgOld, Move.apply] using
+       (step_write machineRouting245 (oldStateRouting245 55)
+         (oldStateRouting245 20) .left true false h t
+         h0 foldRowRouting245_old55_true)
+@@ -387,14 +387,14 @@
+   rw [s1, s2, s3, s4, s5, s6]
+ 
+ private theorem enter92_from81_one_new (h : Int) (t : Tape)
+-    (hm2 : Tape.read t (h - 2) = true)
++    (_hm2 : Tape.read t (h - 2) = true)
+     (hm1 : Tape.read t (h - 1) = true)
+     (h0 : Tape.read t h = true) :
+     machineCompensated244.runFrom (cfgNew 81 h t) 4 =
+       cfgNew 2 (h - 2) (Tape.write (Tape.write t h false) (h - 1) false) := by
+   have s1 : machineCompensated244.step (cfgNew 81 h t) =
+       cfgNew 92 (h - 1) t := by
+-    simpa only [cfgNew, Move.apply, (show h - 1 = (h - 1) by omega)] using
++    simpa only [cfgNew, Move.apply] using
+       (step_read machineCompensated244 (oldStateCompensated244 81)
+         (oldStateCompensated244 92) .left true h t
+         h0 foldRowCompensated244_old81_true)
+@@ -406,7 +406,7 @@
+         hm1 foldRowCompensated244_old92_true)
+   have s3 : machineCompensated244.step (cfgNew 66 h t) =
+       cfgNew 20 (h - 1) (Tape.write t h false) := by
+-    simpa only [cfgNew, Move.apply, (show h - 1 = (h - 1) by omega)] using
++    simpa only [cfgNew, Move.apply] using
+       (step_write machineCompensated244 (oldStateCompensated244 66)
+         (oldStateCompensated244 20) .left true false h t
+         h0 foldRowCompensated244_old66_true)
+@@ -431,4 +431,54 @@
+   rw [enter92_from81_one_new h t hm2 hm1 h0, enter92_from81_one_old h t hm2 hm1 h0]
+   simp only [cfgNew, cfgOld, embedConfig244, Option.map_some, embedState244_old2]
+ 
++theorem enter122_from104_read0_new_endpoint (h : Int) (t : Tape)
++    (h0 : Tape.read t h = true)
++    (hp1 : Tape.read t (h + 1) = false) :
++    machineCompensated244.runFrom (cfgNew 104 h t) 4 =
++      cfgNew 25 (h + 2) t :=
++  enter122_from104_read0_new h t h0 hp1
++
++theorem enter122_from104_read1_new_endpoint (h : Int) (t : Tape)
++    (h0 : Tape.read t h = true)
++    (hp1 : Tape.read t (h + 1) = true) :
++    machineCompensated244.runFrom (cfgNew 104 h t) 2 =
++      cfgNew 66 (h + 2) t :=
++  enter122_from104_read1_new h t h0 hp1
++
++theorem enter122_from106_read0_new_endpoint (h : Int) (t : Tape)
++    (h0 : Tape.read t h = true)
++    (hp1 : Tape.read t (h + 1) = false) :
++    machineCompensated244.runFrom (cfgNew 106 h t) 4 =
++      cfgNew 25 (h + 2) t :=
++  enter122_from106_read0_new h t h0 hp1
++
++theorem enter122_from106_read1_new_endpoint (h : Int) (t : Tape)
++    (h0 : Tape.read t h = true)
++    (hp1 : Tape.read t (h + 1) = true) :
++    machineCompensated244.runFrom (cfgNew 106 h t) 2 =
++      cfgNew 66 (h + 2) t :=
++  enter122_from106_read1_new h t h0 hp1
++
++theorem repair167_new_endpoint (h : Int) (t : Tape)
++    (hm1 : Tape.read t (h - 1) = true)
++    (h0 : Tape.read t h = true) :
++    machineCompensated244.runFrom (cfgNew 167 h t) 2 =
++      cfgNew 24 (h - 2) t :=
++  repair167_new h t hm1 h0
++
++theorem enter92_from81_zero_new_endpoint (h : Int) (t : Tape)
++    (hm1 : Tape.read t (h - 1) = false)
++    (h0 : Tape.read t h = true) :
++    machineCompensated244.runFrom (cfgNew 81 h t) 2 =
++      cfgNew 107 (h - 2) t :=
++  enter92_from81_zero_new h t hm1 h0
++
++theorem enter92_from81_one_new_endpoint (h : Int) (t : Tape)
++    (hm2 : Tape.read t (h - 2) = true)
++    (hm1 : Tape.read t (h - 1) = true)
++    (h0 : Tape.read t h = true) :
++    machineCompensated244.runFrom (cfgNew 81 h t) 4 =
++      cfgNew 2 (h - 2) (Tape.write (Tape.write t h false) (h - 1) false) :=
++  enter92_from81_one_new h t hm2 hm1 h0
++
+ end SetTheory.BusyBeaver.ZFC.Compensated244Blocks
