@@ -42,7 +42,9 @@ The current arithmetic checkpoints are:
   `𝗜𝚺₁ ⊢ Con(ZF) → Con(ZFC)` and `𝗣𝗔 ⊢ Con(ZF) → Con(ZFC)`
   (`LSchema.iSigma1_proves_con_ZF_imp_con_ZFC`,
   `LSchema.peano_proves_con_ZF_imp_con_ZFC`; axioms `propext`,
-  `Classical.choice`, `Quot.sound` only).
+  `Classical.choice`, `Quot.sound` only). With the internal inclusion of
+  `𝗭𝗙`'s axiom class in `𝗭𝗙𝗖`'s, the ZFC/ZF pair is two-way:
+  `𝗣𝗔 ⊢ Con(ZF) ↔ Con(ZFC)` (`LSchema.peano_proves_con_ZF_iff_con_ZFC`).
 * [Internal validator provability](../../../../Logic/Interpretability/ZFCinPA/validator_provability254.md)
   supplies the twelve literal rule closures and a classical propositional
   interface. The [formula encoder](../../../../Logic/Interpretability/ZFCinPA/validator_formula_encoder254.md)

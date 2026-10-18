@@ -68,6 +68,27 @@ theorem consistent_ZFC_of_ZF (h : (𝗭𝗙 : SetTheory).Consistent W) :
   rw [e] at hZFC ⊢
   exact provable_falsum_ZF_of_ZFC hZFC
 
+/-- Internally, `𝗭𝗙`'s axiom class is contained in `𝗭𝗙𝗖`'s. -/
+lemma zf_subset_zfc : (𝗭𝗙 : SetTheory).internalize W ⊆ (𝗭𝗙𝗖 : SetTheory).internalize W :=
+  fun _ hp ↦ ConstructibleInterpretation.mem_class_union.mpr (Or.inl hp)
+
+/-- An internal `𝗭𝗙`-refutation is an internal `𝗭𝗙𝗖`-refutation. -/
+theorem provable_falsum_ZFC_of_ZF (h : Bootstrapping.Provable 𝗭𝗙 (^⊥ : W)) :
+    Bootstrapping.Provable 𝗭𝗙𝗖 (^⊥ : W) := by
+  have h' : (𝗭𝗙 : SetTheory).internalize W ⊢ (⊥ : Bootstrapping.Formula W ℒₛₑₜ) :=
+    Bootstrapping.tprovable_iff_provable.mpr (by simpa using h)
+  simpa using Bootstrapping.tprovable_iff_provable.mp (Bootstrapping.TProof.of_subset zf_subset_zfc h')
+
+theorem consistent_ZF_of_ZFC (h : (𝗭𝗙𝗖 : SetTheory).Consistent W) :
+    (𝗭𝗙 : SetTheory).Consistent W := by
+  have e : (⌜(⊥ : Sentence ℒₛₑₜ)⌝ : W) = ^⊥ := by
+    simp [LO.FirstOrder.Sentence.quote_def, LO.FirstOrder.Semiformula.quote_def]
+  intro hZF
+  apply h
+  unfold LO.FirstOrder.Theory.Consistent at *
+  rw [e] at hZF ⊢
+  exact provable_falsum_ZFC_of_ZF hZF
+
 end Internal
 
 /-- **`𝗜𝚺₁ ⊢ Con(𝗭𝗙) → Con(𝗭𝗙𝗖)`.** -/
@@ -80,6 +101,24 @@ theorem iSigma1_proves_con_ZF_imp_con_ZFC :
   intro h
   have h' : (𝗭𝗙 : SetTheory).Consistent M := by simpa [models_iff] using h
   simpa [models_iff] using consistent_ZFC_of_ZF h'
+
+/-- **`𝗜𝚺₁ ⊢ Con(𝗭𝗙) ↔ Con(𝗭𝗙𝗖)`.** -/
+theorem iSigma1_proves_con_ZF_iff_con_ZFC :
+    𝗜𝚺₁ ⊢ ((𝗭𝗙 : SetTheory).consistent : ArithmeticSentence) 🡘 (𝗭𝗙𝗖 : SetTheory).consistent := by
+  apply LO.FirstOrder.Arithmetic.complete.{0} 𝗜𝚺₁ _
+  intro M _ hM
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₁ := hM
+  simp only [LogicalConnective.iff, Semantics.And.models_and, Semantics.Imp.models_imply]
+  refine ⟨fun h ↦ ?_, fun h ↦ ?_⟩
+  · have h' : (𝗭𝗙 : SetTheory).Consistent M := by simpa [models_iff] using h
+    simpa [models_iff] using consistent_ZFC_of_ZF h'
+  · have h' : (𝗭𝗙𝗖 : SetTheory).Consistent M := by simpa [models_iff] using h
+    simpa [models_iff] using consistent_ZF_of_ZFC h'
+
+/-- **`𝗣𝗔 ⊢ Con(𝗭𝗙) ↔ Con(𝗭𝗙𝗖)`.** -/
+theorem peano_proves_con_ZF_iff_con_ZFC :
+    𝗣𝗔 ⊢ ((𝗭𝗙 : SetTheory).consistent : ArithmeticSentence) 🡘 (𝗭𝗙𝗖 : SetTheory).consistent :=
+  Entailment.WeakerThan.pbl iSigma1_proves_con_ZF_iff_con_ZFC
 
 /-- **`𝗣𝗔 ⊢ Con(𝗭𝗙) → Con(𝗭𝗙𝗖)`.** -/
 theorem peano_proves_con_ZF_imp_con_ZFC :
