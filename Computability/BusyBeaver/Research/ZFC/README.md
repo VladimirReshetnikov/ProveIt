@@ -1838,7 +1838,15 @@ a general performance improvement or an execution contract.
 The [generic internal interpretation core](internal_interpretation_core.md)
 has passed a fresh source check and an expanded audit with seven probes,
 thirteen typed callers and zero warnings. It transports arbitrary internal
-derivations using defined equality and membership. The concrete parameter's
-`Good` conditions, domain nonemptiness and uniform internal axiom transport
-remain separate obligations. The original source is preserved alongside
-the checked version with reduced imports.
+derivations using defined equality and membership, assuming `Good`, domain
+nonemptiness and uniform internal axiom transport. The original source is
+preserved alongside the checked version with reduced imports.
+
+The [closed native quotient parameter](native_wf_closed_parameters.md)
+now satisfies `Good` in every IΣ₁ model: seven probes and ten typed callers
+passed without warnings. Its [quotation helper](raw_form_quotation.md)
+passed five probes and eight callers, retaining two style warnings.
+This establishes arity and shift invariance for the explicitly closed
+domain, equality and membership formulas. Identifying this parameter with
+the semantic interpretation, domain nonemptiness and uniform internal ZF
+axiom transport remain separate steps.

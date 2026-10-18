@@ -764,8 +764,10 @@ splits into three pieces with a narrow interface:
    `QuotientModel.memberForm 0 1`. The domain describes the internally
    well-founded part of the definable quotient: its minimal-element
    condition quantifies over represented sets, not arbitrary external
-   subsets. First quote these formulas and prove the core's `Good`
-   arity/shift conditions. Then prove native domain nonemptiness and
+   subsets. The [explicitly closed parameter](native_wf_closed_parameters.md)
+   now has checked `Good` arity/shift conditions in every IΣ₁ model.
+   Its identification with the semantic interpretation remains to be
+   checked. Then prove native domain nonemptiness and
    transport of every internal ZF axiom code, including interpreted
    equality axioms and nonstandard Separation/Replacement matrices.
    Existing semantic proofs and completeness can supply fixed ordinary
@@ -783,7 +785,12 @@ and zero warnings. Its public declarations are unchanged; the import repair
 adds a private arity lemma and redirects seven uses to it. The historical
 source and audit remain available. The set-language term
 premise is supplied by `SetRelativization.isTerm_eq_fvar`, while `Good`,
-domain nonemptiness and internal axiom transport remain hypotheses.
+domain nonemptiness and internal axiom transport remain hypotheses of the
+generic core. The separate closed-parameter audit passed seven probes and
+ten typed callers without warnings. Its quotation helper passed five
+probes and eight callers with two retained style warnings. These syntax
+results do not supply the remaining semantic or arbitrary-code transport
+steps.
 A finite-fragment alternative would still need a uniform
 transformation of arbitrary internal refutations; a result restricted to a
 proper definable cut would need an additional bridge to full consistency.
