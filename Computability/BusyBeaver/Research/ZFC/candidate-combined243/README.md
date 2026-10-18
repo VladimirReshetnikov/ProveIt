@@ -2,6 +2,10 @@
 
 This binary, single-tape machine has **243 working states**, including initialization, and one separate halt state. It starts in state 0 at head 0 on an all-zero two-way infinite tape. Every transition moves left or right.
 
+The later [241-state candidate](../candidate-fold241/README.md) adds two
+compatible local folds, retaining this logical source. Its complete runtime
+and startup replays pass; its Lean consistency endpoint remains open.
+
 It combines the [QT loop rotation](../candidate-rotation244/README.md) with the [compensated fold](../candidate-compensated244/README.md). The ordinary argument supports **ZFC ⊢ (¬Halt(M243) ↔ Con(ZFC))**. This table was developed in the repository after reviewing both reports; neither incoming ZIP supplied a 243-state machine.
 
 The later [submission in commit 074c76bb74](comparison-074c76bb74.md) supplies

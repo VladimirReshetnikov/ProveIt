@@ -27,6 +27,14 @@ the lower bound needed for the independence argument; no absolute consistency
 proof is claimed. Require a concrete encoding benefit before increasing the
 benchmark strength.
 
+The [**241-state candidate**](candidate-fold241/README.md) from `8c41b1fb7d`
+adds two local folds to the combined243 table. The last fold uses a bit written
+by the predecessor to distinguish two merged controls. Fresh replay passes
+all 8,390 runtime cases, 2,319,442 symbolic rules and all 482 transition rows,
+with exact 408,419-step blank initialization. Its ordinary proof preserves
+halting; the complete Lean consistency endpoint and internal PA comparison
+remain open. The unchanged source allows it to reuse the formal work below.
+
 The [combined **243-state candidate**](candidate-combined243/README.md) combines
 two compatible reductions of Routing245. The loop rotation from `d91a27b462`
 removes old state 26; the compensation from `248bc05936` removes old state 122.
