@@ -45,8 +45,10 @@ all 407,931 transitions and the complete final tape: state 87, head −5,
 checkpoint and ten continuation modules pass 76 theorem probes and 111
 typed callers with zero warnings. The
 [rotated source and logical calibration](source_rotation244.md) are also
-checked. Completing the rotation runtime, decoder coverage and checked
-full-frame composition remains necessary before the relative binary
+checked. The [nine runtime units](rotation244_runtime.md) now pass 106 theorem
+probes and 94 typed callers with zero warnings. Their halting equivalence
+retains coverage and initial-frame hypotheses. Exact decoder coverage and
+checked full-frame composition remain necessary before the relative binary
 equivalence closes the 243-state endpoint; PA internalization remains open.
 
 The compensated **244-state candidate** from `248bc05936` has passed the

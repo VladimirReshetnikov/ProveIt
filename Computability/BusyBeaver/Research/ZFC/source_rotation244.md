@@ -63,9 +63,11 @@ python3 -B check_calibrated_rotation244.py --output /tmp/rotation-calibrated-act
 ```
 
 The [exact Rotation244 blank startup](rotation244_bootstrap.md) now proves
-all 407,931 transitions and the complete final tape. Its checked dispatch-frame
-identification, binary runtime and decoder coverage must still connect that
-checkpoint to this source seed. The checked
+all 407,931 transitions and the complete final tape. The
+[binary runtime contracts](rotation244_runtime.md) are also checked, retaining
+coverage and initial-frame hypotheses. Decoder coverage and the checked
+dispatch-frame identification must still connect that checkpoint to this
+source seed. The checked
 [Combined243/Rotation244 binary equivalence](combined243_simulation.md)
 remains relative until that connection is supplied. These source and startup
 theorems therefore do not yet close a new 243/244 binary consistency endpoint.
