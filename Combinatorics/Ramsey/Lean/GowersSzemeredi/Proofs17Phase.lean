@@ -103,8 +103,7 @@ private lemma powersetDifferencePoly_insert (a : ι) (S : Finset ι)
       powersetDifferencePoly S x (backwardDiffPoly (x a) P) := by
   rw [powersetDifferencePoly, Finset.sum_powerset_insert ha,
     powersetDifferencePoly, ← Finset.sum_add_distrib]
-  apply Finset.sum_congr rfl
-  intro E hE
+  refine Finset.sum_congr rfl fun E hE => ?_
   have haE : a ∉ E := notMem_mono (mem_powerset.mp hE) ha
   rw [card_insert_of_notMem haE, sum_insert haE]
   simp only [pow_succ, mul_neg, mul_one, C_neg]
@@ -256,8 +255,7 @@ private lemma signedCubeSum_polarization {N k : Nat} [NeZero N] [Fact N.Prime]
             polarizationPhase c (boolSupport e)
               (s - ∑ i ∈ boolSupport e, x i) := by
       unfold signedCubeSum
-      apply Finset.sum_congr rfl
-      intro e _
+      refine Finset.sum_congr rfl fun e _ => ?_
       rw [parityTerm_eq_negOnePow, ← boolSupport_card, cubeArgument,
         ← boolSupport_sum]
     _ = ∑ E : Finset (Fin k),
@@ -275,11 +273,9 @@ private lemma signedCubeSum_polarization {N k : Nat} [NeZero N] [Fact N.Prime]
             (-1 : ZMod N) ^ E.card * polarizationCoefficient c U *
               (s - ∑ i ∈ E, x i) ^ U.card
           else 0 := by
-      apply Finset.sum_congr rfl
-      intro E _
+      refine Finset.sum_congr rfl fun E _ => ?_
       rw [polarizationPhase, mul_sum]
-      apply Finset.sum_congr rfl
-      intro U _
+      refine Finset.sum_congr rfl fun U _ => ?_
       split_ifs <;> ring
     _ = ∑ U ∈ F.powerset, ∑ E ∈ F.powerset,
           if E ⊆ U then
@@ -290,13 +286,11 @@ private lemma signedCubeSum_polarization {N k : Nat} [NeZero N] [Fact N.Prime]
     _ = ∑ U ∈ F.powerset, ∑ E ∈ U.powerset,
           (-1 : ZMod N) ^ E.card * polarizationCoefficient c U *
             (s - ∑ i ∈ E, x i) ^ U.card := by
-      apply Finset.sum_congr rfl
-      intro U hU
+      refine Finset.sum_congr rfl fun U hU => ?_
       apply sum_if_subset_powerset F U (mem_powerset.mp hU)
     _ = ∑ U ∈ F.powerset,
           c ((boolFinsetEquiv k).symm U) * ∏ i ∈ U, x i := by
-      apply Finset.sum_congr rfl
-      intro U _
+      refine Finset.sum_congr rfl fun U _ => ?_
       calc
         (∑ E ∈ U.powerset,
             (-1 : ZMod N) ^ E.card * polarizationCoefficient c U *
@@ -306,8 +300,7 @@ private lemma signedCubeSum_polarization {N k : Nat} [NeZero N] [Fact N.Prime]
                 (-1 : ZMod N) ^ E.card *
                   (s - ∑ i ∈ E, x i) ^ U.card) := by
           rw [Finset.mul_sum]
-          apply Finset.sum_congr rfl
-          intro E _
+          refine Finset.sum_congr rfl fun E _ => ?_
           ring
         _ = polarizationCoefficient c U *
             (((U.card.factorial : Nat) : ZMod N) * ∏ i ∈ U, x i) := by
@@ -324,8 +317,7 @@ private lemma signedCubeSum_polarization {N k : Nat} [NeZero N] [Fact N.Prime]
           simpa using ((boolFinsetEquiv k).sum_comp (fun U =>
             c ((boolFinsetEquiv k).symm U) * ∏ i ∈ U, x i)).symm
         _ = ∑ e : Fin k → Bool, c e * ∏ i, if e i then x i else 1 := by
-          apply Finset.sum_congr rfl
-          intro e _
+          refine Finset.sum_congr rfl fun e _ => ?_
           rw [boolSupport_prod]
 
 /-- **Gowers, Lemma 17.1.** Every multiaffine frequency is the alternating
@@ -344,13 +336,11 @@ theorem lemma_17_1_holds : lemma_17_1 := by
       rw [polarizationPhase, Finset.sum_powerset]
       simp only [Finset.card_univ, Fintype.card_fin]
       rw [Finset.sum_fin_eq_sum_range]
-      apply Finset.sum_congr rfl
-      intro j hj
+      refine Finset.sum_congr rfl fun j hj => ?_
       have hjlt : j < k + 1 := mem_range.mp hj
       simp only [q, dif_pos hjlt]
       rw [Finset.sum_mul]
-      apply Finset.sum_congr rfl
-      intro U hU
+      refine Finset.sum_congr rfl fun U hU => ?_
       have hcard : U.card = j := (mem_powersetCard.mp hU).2
       split_ifs with hEU
       · rw [hcard]

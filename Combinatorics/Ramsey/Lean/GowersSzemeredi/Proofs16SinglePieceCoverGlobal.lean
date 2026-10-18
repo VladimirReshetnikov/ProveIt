@@ -176,19 +176,15 @@ theorem single_piece_lift_global_cover_scheme {k : Nat} (hk : 1 ≤ k) {t1 zeta 
   have hθ'pos : 0 < θ' := by rw [hθ'def, globalBudgetW]; positivity
   have hθ'le : θ' ≤ 1 := by
     rw [hθ'def, globalBudgetW, div_le_one (by positivity)]
-    have : (1 : Real) ≤ 2 ^ k := one_le_pow₀ (by norm_num)
-    nlinarith
+    nlinarith [one_le_pow₀ (by norm_num : (1 : Real) ≤ 2) (n := k)]
   set δ := section16Delta (t1)
   -- 1. Lemmas 16.5 (without condition (i)) and 16.7
   obtain ⟨H, Y, phiPrime, hH, hcube, hselected, hselection⟩ :=
     section16_dense_induced_selection_with (k := k) (Fact.out : N.Prime) t1 zeta B phi
       ha0 haS hzeta hz0 hB
-  have hmass : t1 / 8 * (N : Real) ^ k ≤ H.card := by
-    refine le_trans ?_ hH
-    have : (0 : Real) ≤ (N : Real) ^ k := by positivity
-    nlinarith
   obtain ⟨x0, hgood, hidentity⟩ := lemma_16_7_with t1 zeta hθ₁pos.le B phi H Y phiPrime
-    hmass hcube hselected hselection
+    ((mul_le_mul_of_nonneg_right (by linarith) (by positivity)).trans hH) hcube hselected
+    hselection
   have hid : Section16PhiOneIdentity (section16GoodDomain B H Y x0) phi x0 phiPrime :=
     section16_phi_one_identity_of_common_base B phi H Y x0 phiPrime hidentity
   set B1 := section16GoodDomain B H Y x0 with hB1def
@@ -212,13 +208,9 @@ theorem single_piece_lift_global_cover_scheme {k : Nat} (hk : 1 ≤ k) {t1 zeta 
     intro e
     by_cases he : e = fun _ => true
     · exact ⟨∅, fun h => absurd he h⟩
-    · have hl1 : 1 ≤ (section16VertexDirections e).card :=
-        Finset.card_pos.mpr ⟨_, section16VertexDirections_last e⟩
-      have hlk : (section16VertexDirections e).card ≤ k := by
-        have := section16VertexDirections_card_lt he
-        omega
-      obtain ⟨J, hJ, hML⟩ := (hcov _ hl1 hlk).face_cover hg hg1 hθ'pos hθ'le hprodB
-        (coordinateSubsetFace (section16VertexDirections e) t)
+    · obtain ⟨J, hJ, hML⟩ := (hcov _ (Finset.card_pos.mpr ⟨_, section16VertexDirections_last e⟩)
+        (by have := section16VertexDirections_card_lt he; omega)).face_cover hg hg1 hθ'pos hθ'le
+        hprodB (coordinateSubsetFace (section16VertexDirections e) t)
       exact ⟨J, fun _ => ⟨hJ, hML⟩⟩
   choose Jv hJv using hvex
   set DomV : (Fin k → Bool) → Finset (Point N (k + 1)) := fun e =>
@@ -226,8 +218,8 @@ theorem single_piece_lift_global_cover_scheme {k : Nat} (hk : 1 ≤ k) {t1 zeta 
       (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∈
         (coordinateSubsetFace (section16VertexDirections e) t).domain B ∩ Jv e with hDomVdef
   have hvert : ∀ e : Fin k → Bool, e ≠ (fun _ => true) →
-      MultiplyLinearWith
-        (fun s => max (Qb (section16VertexDirections e).card gamma θ' s) ((3 ^ (k + 1) : Nat) : Real))
+      MultiplyLinearWith (fun s => max (Qb (section16VertexDirections e).card gamma θ' s)
+          ((3 ^ (k + 1) : Nat) : Real))
         (fun s => Eb (section16VertexDirections e).card gamma θ' s /
           16 ^ (k + 1 - (section16VertexDirections e).card))
         (partialGraph (DomV e) (section16TranslatedVertex phi x0 e)) := by
@@ -246,45 +238,26 @@ theorem single_piece_lift_global_cover_scheme {k : Nat} (hk : 1 ≤ k) {t1 zeta 
   choose Js hJs hMLs using hsex
   set DomS : ZMod N → Finset (Point N k) := fun x =>
     Finset.univ.filter fun h => h + x0 ∈ (lastSliceFace k x).domain B ∩ Js x with hDomSdef
-  have hsl : ∀ x, Sc.SL (DomS x) (fun h => phi (appendCoordinate (h + x0) x)) :=
-    fun x => hof _ _ _ x0 (hMLs x)
   -- 5. the retained good domain
   set E := Finset.univ.filter fun e : Fin k → Bool => e ≠ fun _ => true with hEdef
   set B1' := B1.filter fun z => section16Init z ∈ JΔ ∧
       (∀ e ∈ E, selectedCoordinates
         (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∈ Jv e) ∧
-      section16Init z + x0 ∈ Js (section16Last z) with _
-  have hE : (E.card : Real) = 2 ^ k - 1 := by
-    rw [hEdef, nonTopVertices_card]
-    have : 1 ≤ 2 ^ k := Nat.one_le_two_pow
-    push_cast [this]
-    ring
+      section16Init z + x0 ∈ Js (section16Last z)
   have hB1'card : globalTheta2W t1 * (N : Real) ^ (k + 1) ≤ B1'.card := by
-    have hbudget : θ' * (2 ^ k + 1) = θ₂ / 2 := by
-      rw [hθ'def, globalBudgetW, ← hθ₂def]
-      field_simp
     rw [globalTheta2W, ← hθ₂def]
-    exact section16_retained_domain_card B1 t x0 JΔ Jv Js hJΔ
-      (fun e he => (hJv e he).1) hJs hB1card hbudget
+    exact section16_retained_domain_card B1 t x0 JΔ Jv Js hJΔ (fun e he => (hJv e he).1) hJs
+      hB1card (by rw [hθ'def, globalBudgetW, ← hθ₂def]; field_simp)
   -- memberships
-  have hB1'B1 : B1' ⊆ section16GoodDomain B H Y x0 := Finset.filter_subset _ _
   have hB1V : ∀ e : Fin k → Bool, e ≠ (fun _ => true) → B1' ⊆ DomV e := by
     intro e he z hz
     obtain ⟨hzB1, -, hzV, -⟩ := Finset.mem_filter.mp hz
-    have heq : (coordinateSubsetFace (section16VertexDirections e) t).map
-        (selectedCoordinates (coordinateSubsetFace (section16VertexDirections e) t).free
-          (z + t)) =
-        appendCoordinate (fun i => x0 i + if e i then section16Init z i else 0)
-          (section16Last z) := by
-      rw [← section16_vertex_coordinate_mask x0 e z]
-      funext j
-      exact coordinateSubsetFace_retraction _ t (z + t) j
     simp only [hDomVdef, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_inter,
       CoordinateFace.mem_domain]
-    refine ⟨?_, hzV e (Finset.mem_filter.mpr ⟨Finset.mem_univ _, he⟩)⟩
-    rw [heq]
-    exact section16GoodDomain_vertex_mem B H Y x0 hzB1 e
-  have hB1G : ∀ z ∈ B1', section16Init z ∈ JΔ := fun z hz => (Finset.mem_filter.mp hz).2.1
+    have hmap := (funext fun j => coordinateSubsetFace_retraction _ t (z + t) j).trans
+      (section16_vertex_coordinate_mask x0 e z)
+    exact ⟨(congrArg (· ∈ B) hmap).mpr (section16GoodDomain_vertex_mem B H Y x0 hzB1 e),
+      hzV e (Finset.mem_filter.mpr ⟨Finset.mem_univ _, he⟩)⟩
   have hB1S : ∀ z ∈ B1', section16Init z ∈ DomS (section16Last z) := by
     intro z hz
     obtain ⟨hzB1, -, -, hzS⟩ := Finset.mem_filter.mp hz
@@ -293,27 +266,16 @@ theorem single_piece_lift_global_cover_scheme {k : Nat} (hk : 1 ≤ k) {t1 zeta 
     refine ⟨?_, hzS⟩
     have h := section16GoodDomain_vertex_mem B H Y x0 hzB1 (fun _ => true)
     simp only [if_true] at h
-    have hcomm : (fun i => x0 i + section16Init z i) = section16Init z + x0 := by
-      funext i; simp [add_comm]
-    rw [hcomm] at h
-    exact h
-  have hcR : ∀ s : Real, 0 < s → s ≤ 1 → 0 < s / 2 ∧ s / 2 ≤ 1 := fun s hs hs1 =>
-    ⟨by positivity, by linarith⟩
-  obtain ⟨hθ₂'pos, hθ₂'le⟩ : 0 < globalTheta2W t1 ∧ globalTheta2W t1 ≤ 1 :=
-    ⟨by rw [globalTheta2W]; positivity, by rw [globalTheta2W]; linarith⟩
+    rwa [show (fun i => x0 i + section16Init z i) = section16Init z + x0 from
+      funext fun i => add_comm _ _] at h
   -- 6. the remainder piece from the joint cover, on the full box
-  set P0 := fullSpaceBox N (k + 1)
-  have hP0 : P0.IsProper := fullSpaceBox_isProper N (k + 1)
-  have hP0carrier : P0.carrier = Finset.univ := fullSpaceBox_carrier N (k + 1)
-  have hP0width : P0.width = N := fullSpaceBox_width N (k + 1) (Nat.succ_pos k)
-  have hP0card : (P0.carrier.card : Real) = (N : Real) ^ (k + 1) := by
-    rw [hP0carrier, Finset.card_univ]
-    simp [Point, ZMod.card]
-  have hP0ne : P0.carrier.Nonempty := by rw [hP0carrier]; exact Finset.univ_nonempty
+  have hP0carrier := fullSpaceBox_carrier N (k + 1)
   obtain ⟨hpr0, hpr1⟩ := coverPrecW_pos_le t1 k ha0 haS
+  obtain ⟨hθ₂'pos, hθ₂'le⟩ := globalTheta2W_pos_le ha0 haS
   have hsum : ∑ _ ∈ E, coverPrecW t1 k ≤ globalTheta2W t1 / 2 := by
-    rw [Finset.sum_const, nsmul_eq_mul, hE]
-    exact nonTop_coverPrecW_sum_le t1 k ha0 haS
+    rw [Finset.sum_const, nsmul_eq_mul, hEdef, nonTopVertices_card,
+      Nat.cast_sub Nat.one_le_two_pow]
+    exact_mod_cast nonTop_coverPrecW_sum_le t1 k ha0 haS
   obtain ⟨R1, Mrem, hR1, -, hR1w, hMrem, hR1c⟩ := remainder_piece_of_vertex_covers DomV
     (fun e s => max (Qb (section16VertexDirections e).card gamma θ' s) ((3 ^ (k + 1) : Nat) : Real))
     (fun e s => Eb (section16VertexDirections e).card gamma θ' s /
@@ -321,33 +283,23 @@ theorem single_piece_lift_global_cover_scheme {k : Nat} (hk : 1 ≤ k) {t1 zeta 
     (fun _ => coverPrecW t1 k) hvert (fun _ => ⟨hpr0, hpr1⟩)
     (fun e => (zero_le_one.trans (hQb _ gamma θ' _ hpr0 hpr1)).trans (le_max_left _ _))
     (fun e => div_nonneg (hEb _ gamma θ' _ hpr0 hpr1).le (by positivity))
-    (theta := globalTheta2W t1) (lt_of_le_of_lt hsum (half_lt_self hθ₂'pos)) P0 B1' hP0
-    (by rw [hP0carrier]; exact Finset.subset_univ _) hB1V (by rw [hP0card]; exact hB1'card) hP0ne
-  rw [hP0width] at hR1w
-  rw [← hEdef] at hR1c hR1w
-  have hcc : coverCountW Qb t1 gamma k = ∏ e ∈ E,
-      max (Qb (section16VertexDirections e).card gamma θ' (coverPrecW t1 k))
-        ((3 ^ (k + 1) : Nat) : Real) := by
-    rw [hEdef, hθ'def]; rfl
-  have hce : coverExpW Eb t1 gamma k = ∏ e ∈ E,
-      Eb (section16VertexDirections e).card gamma θ' (coverPrecW t1 k) /
-        16 ^ (k + 1 - (section16VertexDirections e).card) := by
-    rw [hEdef, hθ'def]; rfl
-  have hcc0 := coverCountW_pos Qb hQb t1 gamma k
-  rw [hcc] at hcc0
-  have hrem : ∃ (R1 : Box N (k + 1)) (Mrem : Point N (k + 1) → ZMod N),
-      R1.IsProper ∧ coverRemWidthW Eb t1 gamma k N ≤ R1.width ∧ IsMultilinear Mrem ∧
-      coverRho1W Qb t1 gamma k * R1.carrier.card ≤
-        (B1'.filter fun x => x ∈ R1.carrier ∧ section16PhiRemainder phi x0 x = Mrem x).card := by
-    refine ⟨R1, Mrem, hR1, Nat.ceil_le.mpr ?_, hMrem, le_trans ?_ hR1c⟩
-    · rw [hce]; exact hR1w
-    · refine mul_le_mul_of_nonneg_right ?_ (Nat.cast_nonneg _)
-      rw [coverRho1W, hcc]
-      exact div_le_div_of_nonneg_right (by linarith) hcc0.le
+    (theta := globalTheta2W t1) (lt_of_le_of_lt hsum (half_lt_self hθ₂'pos))
+    (fullSpaceBox N (k + 1)) B1' (fullSpaceBox_isProper N (k + 1))
+    (by rw [hP0carrier]; exact Finset.subset_univ _) hB1V
+    (by rw [hP0carrier, Finset.card_univ]; simpa [Point, ZMod.card] using hB1'card)
+    (by rw [hP0carrier]; exact Finset.univ_nonempty)
+  rw [fullSpaceBox_width N (k + 1) (Nat.succ_pos k)] at hR1w
+  rw [← hEdef] at hR1c
   exact single_piece_lift_core_rem_scheme hk hz0 hz2 (cR := fun s => s / 2)
-    (Qc := fun s => Qb k δ θ' (s / 2)) (wR := coverWidth (Eb k δ θ')) hcR (coverWidth_mono _)
-    eps thr hretile Sc B phi H Y phiPrime x0 hselection hid B1'
-    hB1'B1 hθ₂'pos hθ₂'le hB1'card _ (coverRho1W_pos_le Qb hQb t1 gamma k ha0 haS) _
-    hrem JΔ hcovG hB1G DomS hsl hB1S hL4 m hm1 hm hpar
+    (Qc := fun s => Qb k δ θ' (s / 2)) (wR := coverWidth (Eb k δ θ'))
+    (fun s hs hs1 => ⟨half_pos hs, (half_le_self hs.le).trans hs1⟩) (coverWidth_mono _)
+    eps thr hretile Sc B phi H Y phiPrime x0 hselection hid B1' (Finset.filter_subset _ _)
+    hθ₂'pos hθ₂'le hB1'card (coverRho1W Qb t1 gamma k)
+    (coverRho1W_pos_le Qb hQb t1 gamma k ha0 haS) (coverRemWidthW Eb t1 gamma k N)
+    ⟨R1, Mrem, hR1, Nat.ceil_le.mpr hR1w, hMrem, le_trans (mul_le_mul_of_nonneg_right
+      (div_le_div_of_nonneg_right (by linarith) (coverCountW_pos Qb hQb t1 gamma k).le)
+      (Nat.cast_nonneg _)) hR1c⟩
+    JΔ hcovG (fun z hz => (Finset.mem_filter.mp hz).2.1) DomS (fun x => hof _ _ _ x0 (hMLs x))
+    hB1S hL4 m hm1 hm hpar
 
 end LeanProofs.GowersSzemeredi

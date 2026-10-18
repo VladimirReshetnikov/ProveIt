@@ -49,127 +49,45 @@ theorem linearPattern_uniform_last_bound {N k : Nat} [NeZero N] [Fact N.Prime]
       UniformOfDegree (f i) alpha (k - 2)) :
     ‖linearPatternAverage c f‖ ≤
       alpha ^ ((1 : Real) / (2 : Real) ^ (k - 1)) * (N : Real) ^ 2 := by
-  induction k using Nat.strong_induction_on generalizing alpha with
-  | h k ih =>
-      by_cases ha1 : alpha ≤ 1
-      · by_cases hk : k = 2
-        · subst k
-          have hfirst : ‖∑ s : ZMod N, f 0 s‖ ≤ (N : Real) := by
-            calc
-              ‖∑ s : ZMod N, f 0 s‖ ≤ ∑ s : ZMod N, ‖f 0 s‖ := norm_sum_le _ _
-              _ ≤ ∑ _s : ZMod N, (1 : Real) := by
-                apply Finset.sum_le_sum
-                intro s _
-                exact hf 0 s
-              _ = (N : Real) := by simp [ZMod.card]
-          have hlast : UniformOfDegree (f 1) alpha 0 := hu 1 (by omega)
-          have hlastSum : ‖∑ s : ZMod N, f 1 s‖ ^ 2 ≤ alpha * (N : Real) ^ 2 := by
-            simpa [UniformOfDegree, Point, cubeDifference, iteratedDifference] using hlast
-          have hfirstSq : ‖∑ s : ZMod N, f 0 s‖ ^ 2 ≤ (N : Real) ^ 2 :=
-            pow_le_pow_left₀ (norm_nonneg _) hfirst 2
-          have hsq : ‖linearPatternAverage c f‖ ^ 2 ≤
-              alpha * ((N : Real) ^ 2) ^ 2 := by
-            rw [linearPatternAverage_two_factor c hc, norm_mul, mul_pow]
-            calc
-              ‖∑ s : ZMod N, f 0 s‖ ^ 2 * ‖∑ t : ZMod N, f 1 t‖ ^ 2 ≤
-                  (N : Real) ^ 2 * (alpha * (N : Real) ^ 2) :=
-                mul_le_mul hfirstSq hlastSum (sq_nonneg _) (by positivity)
-              _ = alpha * ((N : Real) ^ 2) ^ 2 := by ring
-          have hsq' : ‖linearPatternAverage c f‖ ^ 2 ≤
-              alpha ^ (1 : Real) * ((N : Real) ^ 2) ^ 2 := by
-            simpa using hsq
-          simpa using le_rpow_mul_of_sq_le ha0 (by norm_num : (0 : Real) ≤ 1)
-            (norm_nonneg _) (by positivity : (0 : Real) ≤ (N : Real) ^ 2) hsq'
-        · have hk3 : 3 ≤ k := by omega
-          obtain ⟨n, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : k ≠ 0)
-          have hn2 : 2 ≤ n := by omega
-          have hlast : UniformOfDegree (f (Fin.last n)) alpha (n - 1) := by
-            have := hu (Fin.last n) (by simp)
-            convert this using 1
-            all_goals omega
-          have hconditions := lemma_3_1_holds N (n - 1) (f (Fin.last n))
-            (by omega) (hf (Fin.last n)) alpha 0 0 ha0 ha1
-            (by norm_num) (by norm_num) (by norm_num) (by norm_num)
-          have hiv : higherUniformConditioniv (f (Fin.last n)) alpha (n - 1) :=
-            hconditions.2.2.1.mp (hconditions.1.mp hlast)
-          rcases hiv with ⟨beta, hbeta, hbetaSum, hbetaUniform⟩
-          let p : Real := 1 / (2 : Real) ^ (n - 1)
-          have hp0 : 0 ≤ p := by positivity
-          have hp1 : p ≤ 1 := by
-            dsimp [p]
-            exact (div_le_one (by positivity : (0 : Real) < 2 ^ (n - 1))).2
-              (one_le_pow₀ (by norm_num))
-          have hn0 : c (Fin.last n) - c 0 ≠ 0 := by
-            apply sub_ne_zero.mpr
-            intro hh
-            have hi := congrArg Fin.val (hc hh)
-            simp only [Fin.val_last, Fin.val_zero] at hi
-            omega
-          have hct : Function.Injective (linearPatternTailCoefficients c) := by
-            intro i j hij
-            exact Fin.succ_injective _ (hc (sub_left_inj.mp hij))
-          have hpowerSum :
-              (∑ u : ZMod N, beta ((c (Fin.last n) - c 0) * u) ^ p) ≤
-                alpha ^ p * N := by
-            calc
-              (∑ u : ZMod N, beta ((c (Fin.last n) - c 0) * u) ^ p) =
-                  ∑ v : ZMod N, beta v ^ p := by
-                exact Equiv.sum_comp (Equiv.mulLeft₀ (c (Fin.last n) - c 0) hn0)
-                  (fun v : ZMod N ↦ beta v ^ p)
-              _ ≤ alpha ^ p * N :=
-                sum_rpow_le_rpow_average beta alpha p (fun u ↦ (hbeta u).1)
-                  hbetaSum hp0 hp1
-          have havg (u : ZMod N) :
-              ‖linearPatternAverage (linearPatternTailCoefficients c) (linearPatternTailDifference c f u)‖ ≤
-                beta ((c (Fin.last n) - c 0) * u) ^ p * (N : Real) ^ 2 := by
-            apply ih n (by omega) hn2 (linearPatternTailCoefficients c) hct
-              (linearPatternTailDifference c f u)
-              (fun i => difference_discValued (hf i.succ) _)
-              (beta ((c (Fin.last n) - c 0) * u)) (hbeta _).1
-            intro i hi
-            have hisucc : i.succ = Fin.last n := by
-              apply Fin.ext
-              simp only [Fin.val_succ, Fin.val_last]
-              omega
-            have hlocal := hbetaUniform ((c (Fin.last n) - c 0) * u)
-            simp only [linearPatternTailDifference, linearPatternTailCoefficients, hisucc]
-            convert hlocal using 1
-            all_goals omega
-          have hsq : ‖linearPatternAverage c f‖ ^ 2 ≤
-              alpha ^ p * ((N : Real) ^ 2) ^ 2 := by
-            calc
-              ‖linearPatternAverage c f‖ ^ 2 ≤
-                  (N : Real) * ∑ u : ZMod N,
-                    ‖linearPatternAverage (linearPatternTailCoefficients c) (linearPatternTailDifference c f u)‖ :=
-                linearPattern_cauchy_step c f (hf 0)
-              _ ≤ (N : Real) * ∑ u : ZMod N,
-                    (beta ((c (Fin.last n) - c 0) * u) ^ p * (N : Real) ^ 2) := by
-                gcongr with u
-                exact havg u
-              _ = (N : Real) *
-                    ((∑ u : ZMod N, beta ((c (Fin.last n) - c 0) * u) ^ p) *
-                      (N : Real) ^ 2) := by rw [Finset.sum_mul]
-              _ ≤ (N : Real) *
-                    ((alpha ^ p * (N : Real)) * (N : Real) ^ 2) := by
-                gcongr
-              _ = alpha ^ p * ((N : Real) ^ 2) ^ 2 := by ring
-          have hroot := le_rpow_mul_of_sq_le ha0 hp0 (norm_nonneg _)
-            (by positivity : (0 : Real) ≤ (N : Real) ^ 2) hsq
-          have hexp : p / 2 = (1 : Real) / (2 : Real) ^ n := by
-            dsimp [p]
-            have hpow : (2 : Real) ^ n = (2 : Real) ^ (n - 1) * 2 := by
-              calc
-                (2 : Real) ^ n = (2 : Real) ^ ((n - 1) + 1) := by congr 1; omega
-                _ = (2 : Real) ^ (n - 1) * 2 := by rw [pow_succ]
-            rw [hpow]
-            ring
-          simpa only [Nat.succ_sub_one, hexp] using hroot
-      · have ha1' : 1 ≤ alpha := le_of_not_ge ha1
-        have hexp0 : 0 ≤ (1 : Real) / (2 : Real) ^ (k - 1) := by positivity
-        calc
-          ‖linearPatternAverage c f‖ ≤ (N : Real) ^ 2 := linearPatternAverage_trivial c f hf
-          _ ≤ alpha ^ ((1 : Real) / (2 : Real) ^ (k - 1)) * (N : Real) ^ 2 := by
-            have := Real.one_le_rpow ha1' hexp0
-            nlinarith [sq_nonneg ((N : Real) ^ 2)]
+  rcases lt_or_ge 1 alpha with ha1 | ha1
+  · exact (linearPatternAverage_trivial c f hf).trans
+      (le_mul_of_one_le_left (by positivity) (Real.one_le_rpow ha1.le (by positivity)))
+  induction k, hk2 using Nat.le_induction generalizing alpha with
+  | base =>
+    have h0 : ‖∑ s, f 0 s‖ ≤ N := (norm_sum_le_of_le _ fun s _ => hf 0 s).trans (by simp)
+    have h1 : ‖∑ s, f 1 s‖ ^ 2 ≤ alpha * (N : Real) ^ 2 := by
+      simpa [UniformOfDegree, Point, cubeDifference, iteratedDifference] using hu 1 (by omega)
+    have hsq : ‖linearPatternAverage c f‖ ^ 2 ≤ alpha ^ (1 : Real) * ((N : Real) ^ 2) ^ 2 := by
+      rw [linearPatternAverage_two_factor c hc, norm_mul, mul_pow, Real.rpow_one]
+      calc _ ≤ (N : Real) ^ 2 * (alpha * (N : Real) ^ 2) := by gcongr
+        _ = _ := by ring
+    simpa using le_rpow_mul_of_sq_le ha0 zero_le_one (norm_nonneg _) (by positivity) hsq
+  | succ n hn ih =>
+    have h31 := lemma_3_1_holds N (n - 1) (f (Fin.last n)) (by omega) (hf _) alpha 0 0 ha0 ha1
+      le_rfl zero_le_one le_rfl zero_le_one
+    obtain ⟨beta, hbeta, hsum, hunif⟩ := h31.2.2.1.mp (h31.1.mp (by
+      convert hu (Fin.last n) (by simp) using 1; omega))
+    let p : Real := 1 / 2 ^ (n - 1)
+    have hn0 : c (Fin.last n) - c 0 ≠ 0 :=
+      sub_ne_zero.mpr (hc.ne (Fin.ne_of_val_ne (by simp; omega)))
+    have hpow : (∑ u : ZMod N, beta ((c (Fin.last n) - c 0) * u) ^ p) ≤ alpha ^ p * N :=
+      (Equiv.sum_comp (Equiv.mulLeft₀ _ hn0) (beta · ^ p)).le.trans
+        (sum_rpow_le_rpow_average beta alpha p (fun u => (hbeta u).1) hsum (by positivity)
+          (div_le_one_of_le₀ (one_le_pow₀ one_le_two) (by positivity)))
+    have havg (u : ZMod N) := ih (linearPatternTailCoefficients c)
+      (fun i j hij => Fin.succ_injective _ (hc (sub_left_inj.mp hij)))
+      (linearPatternTailDifference c f u) (fun i => difference_discValued (hf i.succ) _)
+      (beta ((c (Fin.last n) - c 0) * u)) (hbeta _).1 (fun i hi => by
+        simp only [linearPatternTailDifference, linearPatternTailCoefficients,
+          show i.succ = Fin.last n from Fin.ext (by simpa using hi)]
+        convert hunif ((c (Fin.last n) - c 0) * u) using 1; omega) (hbeta _).2
+    have hsq : ‖linearPatternAverage c f‖ ^ 2 ≤ alpha ^ p * ((N : Real) ^ 2) ^ 2 := calc
+      _ ≤ (N : Real) * ∑ u : ZMod N, beta ((c (Fin.last n) - c 0) * u) ^ p * (N : Real) ^ 2 :=
+        (linearPattern_cauchy_step c f (hf 0)).trans (by gcongr with u; exact havg u)
+      _ ≤ (N : Real) * (alpha ^ p * N * (N : Real) ^ 2) := by rw [← Finset.sum_mul]; gcongr
+      _ = _ := by ring
+    rw [Nat.add_sub_cancel, show (1 : Real) / 2 ^ n = 1 / 2 ^ (n - 1) / 2 by
+      rw [div_div, ← pow_succ, Nat.sub_add_cancel (by omega : 1 ≤ n)]]
+    exact le_rpow_mul_of_sq_le ha0 (by positivity) (norm_nonneg _) (by positivity) hsq
 
 end LeanProofs.GowersSzemeredi

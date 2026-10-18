@@ -142,63 +142,17 @@ private def lemma122ToPair {N : Nat}
 
 private lemma lemma122_toPair_injective {N : Nat} :
     Function.Injective (lemma122ToPair (N := N)) := by
-  intro R S hRS
-  have hfirst := congrArg Prod.fst hRS
-  have hsecond := congrArg Prod.snd hRS
-  change lemma122FirstParallelogram R = lemma122FirstParallelogram S at hfirst
-  change lemma122SecondParallelogram R = lemma122SecondParallelogram S at hsecond
-  have hx0 : R.crossSection 0 = S.crossSection 0 := by
-    simpa [lemma122ToPair, lemma122FirstParallelogram,
-      VerticalParallelogram.x] using
-      congrArg VerticalParallelogram.x hfirst
-  have hx3 : R.crossSection 3 = S.crossSection 3 := by
-    simpa [lemma122ToPair, lemma122SecondParallelogram,
-      VerticalParallelogram.x] using
-      congrArg VerticalParallelogram.x hsecond
-  have hx2 : R.crossSection 2 = S.crossSection 2 := by
-    have hw := congrArg VerticalParallelogram.width hfirst
-    simp [lemma122FirstParallelogram, VerticalParallelogram.width] at hw
-    rw [hx0] at hw
-    exact sub_left_injective hw
-  have hx1 : R.crossSection 1 = S.crossSection 1 := by
-    have hw := congrArg VerticalParallelogram.width hsecond
-    simp [lemma122SecondParallelogram, VerticalParallelogram.width] at hw
-    rw [hx3] at hw
-    exact sub_left_injective hw
-  have hcross : R.crossSection = S.crossSection := by
-    funext j
-    fin_cases j
-    · exact hx0
-    · exact hx1
-    · exact hx2
-    · exact hx3
-  have hy0 : R.base 0 0 = S.base 0 0 := by
-    simpa [lemma122FirstParallelogram, VerticalParallelogram.y] using
-      congrArg VerticalParallelogram.y hfirst
-  have hy2 : R.base 2 0 = S.base 2 0 := by
-    simpa [lemma122FirstParallelogram, VerticalParallelogram.y'] using
-      congrArg VerticalParallelogram.y' hfirst
-  have hy3 : R.base 3 0 = S.base 3 0 := by
-    simpa [lemma122SecondParallelogram, VerticalParallelogram.y] using
-      congrArg VerticalParallelogram.y hsecond
-  have hy1 : R.base 1 0 = S.base 1 0 := by
-    simpa [lemma122SecondParallelogram, VerticalParallelogram.y'] using
-      congrArg VerticalParallelogram.y' hsecond
-  have hbase : R.base = S.base := by
-    funext j i
-    fin_cases j <;> fin_cases i
-    · exact hy0
-    · exact hy1
-    · exact hy2
-    · exact hy3
-  have hside0 : R.side 0 = S.side 0 := by
-    simpa [lemma122FirstParallelogram, VerticalParallelogram.height] using
-      congrArg VerticalParallelogram.height hfirst
-  have hside : R.side = S.side := by
-    funext i
-    fin_cases i
-    exact hside0
-  exact Prod.ext hside (Prod.ext hbase hcross)
+  intro R S h
+  simp only [lemma122ToPair, lemma122FirstParallelogram, lemma122SecondParallelogram,
+    Prod.mk.injEq, Matrix.vecCons_inj, and_true] at h
+  obtain ⟨⟨h0, hb0, hb2, hw0, hs⟩, h3, hb3, hb1, hw1, -⟩ := h
+  rw [h0, sub_left_inj] at hw0
+  rw [h3, sub_left_inj] at hw1
+  refine Prod.ext (funext fun i => ?_) (Prod.ext (funext fun j => funext fun i => ?_)
+    (funext fun j => ?_))
+  · fin_cases i; exact hs
+  · fin_cases j <;> fin_cases i <;> assumption
+  · fin_cases j <;> assumption
 
 lemma lemma122_additiveTuple_two_iff {N : Nat}
     (q : Fin 4 → ZMod N) :
@@ -265,95 +219,28 @@ private lemma lemma122_toPair_good {N : Nat} [NeZero N]
       (lemma122ToPair R).1.value phi = (lemma122ToPair R).2.value phi := by
   rcases hR with ⟨⟨hcross, hvertices⟩, hrespected⟩
   have hmem (b : Bool) (j : Fin 4) :
-      (R.crossSection j,
-        R.base j 0 + if b then R.side 0 else 0) ∈ B := by
-    exact (lemma122_vertex_mem_iff B R (lemma122BoolVertex b) j).mp
-      (hvertices (lemma122BoolVertex b) j)
-  have hfalse (j : Fin 4) :
-      (R.crossSection j, R.base j 0) ∈ B := by
-    simpa using hmem false j
-  have htrue (j : Fin 4) :
-      (R.crossSection j, R.base j 0 + R.side 0) ∈ B := by
+      (R.crossSection j, R.base j 0 + if b then R.side 0 else 0) ∈ B :=
+    (lemma122_vertex_mem_iff B R (lemma122BoolVertex b) j).mp (hvertices _ j)
+  have hfalse (j : Fin 4) : (R.crossSection j, R.base j 0) ∈ B := by simpa using hmem false j
+  have htrue (j : Fin 4) : (R.crossSection j, R.base j 0 + R.side 0) ∈ B := by
     simpa using hmem true j
-  have hx02 : R.crossSection 0 +
-      (R.crossSection 2 - R.crossSection 0) = R.crossSection 2 := by
-    abel
-  have hx31 : R.crossSection 3 +
-      (R.crossSection 1 - R.crossSection 3) = R.crossSection 1 := by
-    abel
-  have hfirstIn : (lemma122FirstParallelogram R).IsIn B := by
-    intro z hz
-    simp only [VerticalParallelogram.carrier, Finset.mem_insert,
-      Finset.mem_singleton] at hz
-    rcases hz with hz | hz | hz | hz
-    · subst z
-      simpa [lemma122FirstParallelogram, VerticalParallelogram.x,
-        VerticalParallelogram.y] using hfalse 0
-    · subst z
-      simpa [lemma122FirstParallelogram, VerticalParallelogram.x,
-        VerticalParallelogram.y, VerticalParallelogram.height] using htrue 0
-    · subst z
-      simpa [lemma122FirstParallelogram, VerticalParallelogram.x,
-        VerticalParallelogram.y', VerticalParallelogram.width, hx02] using
-        hfalse 2
-    · subst z
-      simpa [lemma122FirstParallelogram, VerticalParallelogram.x,
-        VerticalParallelogram.y', VerticalParallelogram.width,
-        VerticalParallelogram.height, hx02] using htrue 2
-  have hsecondIn : (lemma122SecondParallelogram R).IsIn B := by
-    intro z hz
-    simp only [VerticalParallelogram.carrier, Finset.mem_insert,
-      Finset.mem_singleton] at hz
-    rcases hz with hz | hz | hz | hz
-    · subst z
-      simpa [lemma122SecondParallelogram, VerticalParallelogram.x,
-        VerticalParallelogram.y] using hfalse 3
-    · subst z
-      simpa [lemma122SecondParallelogram, VerticalParallelogram.x,
-        VerticalParallelogram.y, VerticalParallelogram.height] using htrue 3
-    · subst z
-      simpa [lemma122SecondParallelogram, VerticalParallelogram.x,
-        VerticalParallelogram.y', VerticalParallelogram.width, hx31] using
-        hfalse 1
-    · subst z
-      simpa [lemma122SecondParallelogram, VerticalParallelogram.x,
-        VerticalParallelogram.y', VerticalParallelogram.width,
-        VerticalParallelogram.height, hx31] using htrue 1
-  have hwidth : (lemma122FirstParallelogram R).width =
-      (lemma122SecondParallelogram R).width := by
-    have hadd := (lemma122_additiveTuple_two_iff R.crossSection).mp hcross
-    change R.crossSection 2 - R.crossSection 0 =
-      R.crossSection 1 - R.crossSection 3
-    linear_combination -hadd
-  have hheight : (lemma122FirstParallelogram R).height =
-      (lemma122SecondParallelogram R).height := by
-    simp [lemma122FirstParallelogram, lemma122SecondParallelogram,
-      VerticalParallelogram.height]
-  have hvalue : (lemma122FirstParallelogram R).value phi =
-      (lemma122SecondParallelogram R).value phi := by
-    have hadd := (lemma122_additiveTuple_two_iff
-      (fun j ↦ R.cubeValue (lemma122PointPhi phi) j)).mp hrespected
-    simp_rw [lemma122_cubeValue_one] at hadd
-    change
-      phi (R.crossSection 0, R.base 0 0) -
-          phi (R.crossSection 0, R.base 0 0 + R.side 0) -
-          phi (R.crossSection 0 +
-            (R.crossSection 2 - R.crossSection 0), R.base 2 0) +
-          phi (R.crossSection 0 +
-            (R.crossSection 2 - R.crossSection 0),
-              R.base 2 0 + R.side 0) =
-        phi (R.crossSection 3, R.base 3 0) -
-          phi (R.crossSection 3, R.base 3 0 + R.side 0) -
-          phi (R.crossSection 3 +
-            (R.crossSection 1 - R.crossSection 3), R.base 1 0) +
-          phi (R.crossSection 3 +
-            (R.crossSection 1 - R.crossSection 3),
-              R.base 1 0 + R.side 0)
-    rw [hx02, hx31]
-    linear_combination hadd
-  simpa [lemma122ToPair] using
-    And.intro hfirstIn (And.intro hsecondIn
-      (And.intro hwidth (And.intro hheight hvalue)))
+  -- both parallelograms have the shape `(x_j, y_j, y_j', x_j' - x_j, side)`
+  have hIn (j j' : Fin 4) : VerticalParallelogram.IsIn ![R.crossSection j, R.base j 0,
+      R.base j' 0, R.crossSection j' - R.crossSection j, R.side 0] B := by
+    simp [VerticalParallelogram.IsIn, VerticalParallelogram.carrier, Finset.insert_subset_iff,
+      VerticalParallelogram.x, VerticalParallelogram.y, VerticalParallelogram.y',
+      VerticalParallelogram.width, VerticalParallelogram.height, hfalse, htrue]
+  have hx := (lemma122_additiveTuple_two_iff R.crossSection).mp hcross
+  have hv := (lemma122_additiveTuple_two_iff _).mp hrespected
+  simp_rw [lemma122_cubeValue_one] at hv
+  refine ⟨hIn 0 2, hIn 3 1, ?_, rfl, ?_⟩
+  · change R.crossSection 2 - R.crossSection 0 = R.crossSection 1 - R.crossSection 3
+    linear_combination -hx
+  · simp only [lemma122ToPair, lemma122FirstParallelogram, lemma122SecondParallelogram,
+      VerticalParallelogram.value, VerticalParallelogram.x, VerticalParallelogram.y,
+      VerticalParallelogram.y', VerticalParallelogram.width, VerticalParallelogram.height,
+      Matrix.cons_val, add_sub_cancel]
+    linear_combination hv
 
 private lemma lemma122_arrangement_count_le {N : Nat} [NeZero N]
     (B : Finset (Pair N)) (phi : Pair N → ZMod N) :

@@ -84,39 +84,8 @@ private lemma extraction_restricted_ite_eq_sum {N : Nat} {X : Type*}
         D.index uv.1 - D.index x ∈ B then 1 else 0) =
       ∑ d ∈ B, if D.index uv.1 = D.index x + d ∧
         D.index uv.2 = D.index w + d then 1 else 0 := by
-  by_cases hrel : D.index uv.1 - D.index x =
-      D.index uv.2 - D.index w ∧ D.index uv.1 - D.index x ∈ B
-  · rw [if_pos hrel]
-    let d₀ : ZMod N := D.index uv.1 - D.index x
-    have hd₀ : d₀ ∈ B := hrel.2
-    rw [Finset.sum_eq_single d₀]
-    · have hu : D.index uv.1 = D.index x + d₀ := by ring
-      have hv : D.index uv.2 = D.index w + d₀ := by
-        dsimp only [d₀]
-        linear_combination hrel.1.symm
-      simp [hu, hv]
-    · intro d _ hdne
-      rw [if_neg]
-      intro huv
-      apply hdne
-      dsimp only [d₀]
-      linear_combination huv.1.symm
-    · exact fun hd₀not => (hd₀not hd₀).elim
-  · rw [if_neg hrel]
-    symm
-    apply Finset.sum_eq_zero
-    intro d hd
-    rw [if_neg]
-    intro huv
-    apply hrel
-    constructor
-    · rw [huv.1, huv.2]
-      abel
-    · have hu : D.index uv.1 - D.index x = d := by
-        rw [huv.1]
-        abel
-      rw [hu]
-      exact hd
+  simp_rw [← sub_eq_iff_eq_add', ite_and, Finset.sum_ite_eq]
+  by_cases h : D.index uv.1 - D.index x ∈ B <;> simp [h, eq_comm]
 
 private lemma extraction_error_ite_eq_sum {N : Nat} {X : Type*}
     (D : MultifunctionDomain N X) (phi : X → ZMod N)
@@ -301,132 +270,52 @@ private lemma extraction_direction_good_almostEvery {N : Nat} [NeZero N]
     AlmostEvery (1 - 35 * t ^ 2) B
       (fun d => extractionDirectionGood D phi x w d t) := by
   classical
-  by_cases hBempty : B = ∅
-  · subst B
-    unfold AlmostEvery
-    simp
-  have hBnonempty : B.Nonempty := Finset.nonempty_iff_ne_empty.mpr hBempty
+  rcases B.eq_empty_or_nonempty with rfl | hB
+  · simp [AlmostEvery]
+  -- `P d` pairs lie in direction `d`; each `P d` is at most four times the least one, `P d₀`
   let P : ZMod N → Real := fun d =>
-    ((D.fibre (D.index x + d)).card : Real) *
-      (D.fibre (D.index w + d)).card
-  let BadD : Finset (ZMod N) :=
-    B.filter fun d => ¬ extractionDirectionGood D phi x w d t
-  apply extraction_almostEvery_of_bad_card_le
-  change (BadD.card : Real) ≤ 35 * t ^ 2 * B.card
-  by_contra hBadBound
-  have hBadGt : 35 * t ^ 2 * (B.card : Real) < BadD.card :=
-    lt_of_not_ge hBadBound
-  have hBadPositiveReal : 0 < (BadD.card : Real) :=
-    (mul_nonneg (by positivity) (by positivity)).trans_lt hBadGt
-  have hBadNonempty : BadD.Nonempty := Finset.card_pos.mp (by exact_mod_cast hBadPositiveReal)
-  obtain ⟨d₀, hd₀B, hd₀min⟩ := B.exists_min_image P hBnonempty
-  have hxQuarter := extraction_sigmaM_le_anchor_quarter D phi B alpha rho M
+    ((D.fibre (D.index x + d)).card : Real) * (D.fibre (D.index w + d)).card
+  obtain ⟨d₀, hd₀B, hd₀min⟩ := B.exists_min_image P hB
+  have hxQ := extraction_sigmaM_le_anchor_quarter D phi B alpha rho M
     sigma eta x hsetup hanchor hrho hsigma
-  have hwQuarter := extraction_sigmaM_le_regular_quarter D phi B alpha rho M N
+  have hwQ := extraction_sigmaM_le_regular_quarter D phi B alpha rho M N
     sigma eta x w W hsetup hregular hrho hsigma hw
-  have hinvariant := hsetup.2.2.2.2.2.1
-  have hprodCompare (d : ZMod N) (hd : d ∈ B) : P d ≤ 4 * P d₀ := by
-    exact extraction_fibre_product_le_four D B sigma M x w hinvariant
-      hxQuarter hwQuarter d hd d₀ hd₀B
-  have hxBasePos : 0 < (D.fibreSize x : Real) := by
-    have hM : (0 : Real) < M := by exact_mod_cast hsetup.1.2.2.1
-    have halpha := hsetup.1.1
-    exact (show 0 < alpha ^ 2 * M / 2 by positivity).trans_le hanchor.1
-  have hwBasePos : 0 < (D.fibreSize w : Real) := by
-    have hM : (0 : Real) < M := by exact_mod_cast hsetup.1.2.2.1
-    have halpha := hsetup.1.1
-    exact (show 0 < alpha ^ 2 * M / 16 by positivity).trans_le
-      (hregular.2.2.2.2.2.1 w hw)
-  have hxd₀ := extraction_shifted_fibre_bounds D B sigma M x hinvariant
-    hxQuarter d₀ hd₀B
-  have hwd₀ := extraction_shifted_fibre_bounds D B sigma M w hinvariant
-    hwQuarter d₀ hd₀B
-  have hxd₀Pos : 0 < ((D.fibre (D.index x + d₀)).card : Real) := by
-    linarith
-  have hwd₀Pos : 0 < ((D.fibre (D.index w + d₀)).card : Real) := by
-    linarith
-  have hP₀Pos : 0 < P d₀ := by positivity
-  have hbEq : (domainRestrictedDifferenceWeight D B x w : Real) =
-      ∑ d ∈ B, P d := by
+  have hinv := hsetup.2.2.2.2.2.1
+  have hσM : 0 < sigma * M := mul_pos hsetup.2.1 (by exact_mod_cast hsetup.1.2.2.1)
+  have hP₀ : 0 < P d₀ := mul_pos
+    (by linarith [(extraction_shifted_fibre_bounds D B sigma M x hinv hxQ d₀ hd₀B).1])
+    (by linarith [(extraction_shifted_fibre_bounds D B sigma M w hinv hwQ d₀ hd₀B).1])
+  have hb : (domainRestrictedDifferenceWeight D B x w : Real) = ∑ d ∈ B, P d := by
     rw [extraction_restrictedWeight_eq_sum]
     push_cast
     rfl
-  have hbUpper : (domainRestrictedDifferenceWeight D B x w : Real) ≤
-      4 * (B.card : Real) * P d₀ := by
-    rw [hbEq]
-    calc
-      (∑ d ∈ B, P d) ≤ ∑ _d ∈ B, 4 * P d₀ := by
-        apply Finset.sum_le_sum
-        intro d hd
-        exact hprodCompare d hd
-      _ = 4 * (B.card : Real) * P d₀ := by
-        simp
-        ring
-  have hbLower : P d₀ ≤
-      (domainRestrictedDifferenceWeight D B x w : Real) := by
-    rw [hbEq]
-    exact Finset.single_le_sum
-      (fun d (_hd : d ∈ B) => by dsimp only [P]; positivity) hd₀B
-  have hbPos : 0 < (domainRestrictedDifferenceWeight D B x w : Real) :=
-    hP₀Pos.trans_le hbLower
-  have hdirBad (d : ZMod N) (hd : d ∈ BadD) :
-      35 * t ^ 2 * P d < ((extractionBadPairs D phi x w d).card : Real) := by
-    have hdNot := (Finset.mem_filter.mp hd).2
-    have hbad := extraction_bad_card_lt_of_not_almostEvery
-      (35 * t ^ 2)
-      ((D.fibre (D.index x + d)).product (D.fibre (D.index w + d)))
-      (fun yz => phi yz.1 - phi x = phi yz.2 - phi w) hdNot
-    simpa [extractionDirectionGood, extractionBadPairs, P] using hbad
-  have hsumStrict :
-      (∑ _d ∈ BadD, 35 * t ^ 2 * P d₀) <
-        ∑ d ∈ BadD, ((extractionBadPairs D phi x w d).card : Real) := by
-    apply Finset.sum_lt_sum_of_nonempty hBadNonempty
-    intro d hd
-    calc
-      35 * t ^ 2 * P d₀ ≤ 35 * t ^ 2 * P d := by
-        gcongr
-        exact hd₀min d (Finset.filter_subset _ _ hd)
-      _ < ((extractionBadPairs D phi x w d).card : Real) := hdirBad d hd
-  have hsumBadLe :
-      (∑ d ∈ BadD, ((extractionBadPairs D phi x w d).card : Real)) ≤
-        domainDifferenceErrorCount D phi B x w := by
+  have hbB : (domainRestrictedDifferenceWeight D B x w : Real) ≤ B.card * (4 * P d₀) := by
+    rw [hb, ← nsmul_eq_mul]
+    exact sum_le_card_nsmul _ _ _ fun d hd =>
+      extraction_fibre_product_le_four D B sigma M x w hinv hxQ hwQ d hd d₀ hd₀B
+  have hbpos : 0 < (domainRestrictedDifferenceWeight D B x w : Real) := by
+    rw [hb]
+    exact hP₀.trans_le (single_le_sum (fun d _ => by positivity) hd₀B)
+  have he := (div_le_iff₀ hbpos).mp hwError
+  -- a bad direction `d` carries more than `35 t² P d ≥ 35 t² P d₀` erroneous pairs
+  have hcol : ∀ d ∈ B.filter fun d => ¬ extractionDirectionGood D phi x w d t,
+      35 * t ^ 2 * P d₀ ≤ (extractionBadPairs D phi x w d).card := fun d hd => by
+    have h : 35 * t ^ 2 * P d < (extractionBadPairs D phi x w d).card := by
+      simpa [extractionBadPairs, P] using extraction_bad_card_lt_of_not_almostEvery (35 * t ^ 2)
+        ((D.fibre (D.index x + d)).product (D.fibre (D.index w + d)))
+        (fun yz => phi yz.1 - phi x = phi yz.2 - phi w) (mem_filter.mp hd).2
+    exact (mul_le_mul_of_nonneg_left (hd₀min d (mem_filter.mp hd).1) (by positivity)).trans h.le
+  have hbad : ((B.filter fun d => ¬ extractionDirectionGood D phi x w d t).card : Real) *
+      (35 * t ^ 2 * P d₀) ≤ domainDifferenceErrorCount D phi B x w := by
     rw [extraction_errorCount_eq_sum]
     push_cast
-    apply Finset.sum_le_sum_of_subset_of_nonneg
-    · exact Finset.filter_subset _ _
-    · intro d hdB _hdBad
-      positivity
-  have hfactorPos : 0 < 35 * t ^ 2 * P d₀ := by positivity
-  have hscaled := mul_lt_mul_of_pos_left hBadGt hfactorPos
-  have herrorLower :
-      1225 * t ^ 4 * (B.card : Real) * P d₀ <
-        domainDifferenceErrorCount D phi B x w := by
-    calc
-      1225 * t ^ 4 * (B.card : Real) * P d₀ =
-          (35 * t ^ 2 * P d₀) * (35 * t ^ 2 * B.card) := by ring
-      _ < (35 * t ^ 2 * P d₀) * BadD.card := hscaled
-      _ = ∑ _d ∈ BadD, 35 * t ^ 2 * P d₀ := by simp; ring
-      _ < ∑ d ∈ BadD,
-          ((extractionBadPairs D phi x w d).card : Real) := hsumStrict
-      _ ≤ domainDifferenceErrorCount D phi B x w := hsumBadLe
-  have herrorUpper :
-      (domainDifferenceErrorCount D phi B x w : Real) ≤
-        300 * t ^ 4 * domainRestrictedDifferenceWeight D B x w := by
-    unfold domainProportionateError at hwError
-    exact (div_le_iff₀ hbPos).mp hwError
-  have hupperFinal :
-      (domainDifferenceErrorCount D phi B x w : Real) ≤
-        1200 * t ^ 4 * (B.card : Real) * P d₀ := by
-    calc
-      (domainDifferenceErrorCount D phi B x w : Real) ≤
-          300 * t ^ 4 * domainRestrictedDifferenceWeight D B x w := herrorUpper
-      _ ≤ 300 * t ^ 4 * (4 * (B.card : Real) * P d₀) := by
-        gcongr
-      _ = 1200 * t ^ 4 * (B.card : Real) * P d₀ := by ring
-  have hBcardPos : (0 : Real) < B.card := by
-    exact_mod_cast Finset.card_pos.mpr hBnonempty
-  have : 0 < t ^ 4 * (B.card : Real) * P d₀ := by positivity
-  nlinarith
+    rw [← nsmul_eq_mul]
+    exact (card_nsmul_le_sum _ _ _ hcol).trans
+      (sum_le_sum_of_subset_of_nonneg (filter_subset _ _) fun _ _ _ => by positivity)
+  apply extraction_almostEvery_of_bad_card_le
+  refine le_of_mul_le_mul_right (hbad.trans ?_) (mul_pos (by positivity) hP₀)
+  linarith [mul_le_mul_of_nonneg_left hbB (by positivity : (0 : Real) ≤ 300 * t ^ 4),
+    mul_nonneg (mul_nonneg (pow_nonneg ht.le 4) (Nat.cast_nonneg B.card)) hP₀.le]
 
 private lemma extraction_agreement_card_eq_sum {Y Z L : Type*}
     [DecidableEq Y] [DecidableEq Z] [DecidableEq L]
@@ -472,85 +361,46 @@ private lemma extraction_directionGood_gives_mode {N : Nat} [NeZero N]
     phi yz.1 - phi x = phi yz.2 - phi w
   let Ebad : Finset (X × X) := (A.product C).filter fun yz =>
     phi yz.1 - phi x ≠ phi yz.2 - phi w
-  by_cases hCempty : C = ∅
+  rcases C.eq_empty_or_nonempty with hC | hC
   · unfold AlmostEvery
-    simp [C, hCempty]
-  have hCpos : (0 : Real) < C.card := by
-    exact_mod_cast Finset.card_pos.mpr
-      (Finset.nonempty_iff_ne_empty.mpr hCempty)
-  have hEdgeLower :
-      (1 - 35 * t ^ 2) * (A.card : Real) * C.card ≤ E.card := by
-    have hgood' := hgood
-    unfold extractionDirectionGood AlmostEvery at hgood'
-    rw [Finset.filter_congr_decidable] at hgood'
-    rw [mul_assoc, ← Nat.cast_mul, ← Finset.card_product]
-    simpa only [A, C, E, Finset.product_eq_sprod] using hgood'
-  have hEdgeUpperNat : E.card ≤ Am.card * C.card := by
-    calc
-      E.card = ∑ z ∈ C,
-          (A.filter fun y => phi y - phi x = phi z - phi w).card := by
-        exact extraction_agreement_card_eq_sum A C
-          (fun y => phi y - phi x) (fun z => phi z - phi w)
-      _ ≤ ∑ _z ∈ C, Am.card := by
-        apply Finset.sum_le_sum
-        intro z _
-        dsimp only [Am, m, A]
-        exact extractionMode_max D phi x d (phi z - phi w)
-      _ = Am.card * C.card := by simp [mul_comm]
-  have hEdgeUpper : (E.card : Real) ≤ Am.card * C.card := by
-    exact_mod_cast hEdgeUpperNat
-  have hModeLower :
-      (1 - 35 * t ^ 2) * (A.card : Real) ≤ Am.card := by
-    apply le_of_mul_le_mul_right _ hCpos
-    calc
-      (1 - 35 * t ^ 2) * (A.card : Real) * C.card ≤ E.card := hEdgeLower
-      _ ≤ (Am.card : Real) * C.card := hEdgeUpper
-  have hBadEdgeUpper : (Ebad.card : Real) ≤
-      35 * t ^ 2 * (A.card : Real) * C.card := by
-    have hbad := extraction_almostEvery_bad_card_le (35 * t ^ 2)
-      (A.product C)
-      (fun yz => phi yz.1 - phi x = phi yz.2 - phi w) hgood
-    simpa [Ebad, Finset.card_product, mul_assoc] using hbad
-  have hrectangleSubset : Am.product (C \ Cm) ⊆ Ebad := by
-    intro yz hyz
-    have hyzParts := Finset.mem_product.mp hyz
-    have hyAm := Finset.mem_filter.mp hyzParts.1
-    have hzBad := Finset.mem_sdiff.mp hyzParts.2
-    have hzC := hzBad.1
-    have hzNot := hzBad.2
-    have hzNe : phi yz.2 - phi w ≠ m := by
-      exact fun hzEq => hzNot (Finset.mem_filter.mpr ⟨hzC, hzEq⟩)
-    exact Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨hyAm.1, hzC⟩,
-      fun heq => hzNe (heq ▸ hyAm.2)⟩
-  have hrectangle : (Am.card : Real) * (C \ Cm).card ≤ Ebad.card := by
-    exact_mod_cast (Finset.card_product Am (C \ Cm)).symm.trans_le
-      (Finset.card_le_card hrectangleSubset)
-  have hModeBad : (Am.card : Real) * (C \ Cm).card ≤
-      35 * t ^ 2 * (A.card : Real) * C.card :=
-    hrectangle.trans hBadEdgeUpper
+    simp [C, hC]
+  -- at most `35 t² #A #C` pairs of `A × C` are bad, and grouped by `z` the good ones number at
+  -- most `#C #Am`; so `#Am ≥ (1 - 35 t²) #A`
+  have hpart : E.card + Ebad.card = A.card * C.card :=
+    (card_filter_add_card_filter_not _).trans (card_product A C)
+  have hBad : (Ebad.card : Real) ≤ 35 * t ^ 2 * (A.card * C.card) := by
+    simpa [Ebad, mul_assoc] using extraction_almostEvery_bad_card_le (35 * t ^ 2)
+      (A.product C) (fun yz => phi yz.1 - phi x = phi yz.2 - phi w) hgood
+  have hGood : E.card ≤ C.card * Am.card := by
+    have h := (extraction_agreement_card_eq_sum A C (fun y => phi y - phi x)
+      (fun z => phi z - phi w)).trans_le (sum_le_card_nsmul _ _ _ fun z _ =>
+        extractionMode_max D phi x d (phi z - phi w))
+    rwa [smul_eq_mul] at h
+  have hModeLower : (1 - 35 * t ^ 2) * (A.card : Real) ≤ Am.card := by
+    have h₁ : (E.card : Real) + Ebad.card = A.card * C.card := by exact_mod_cast hpart
+    have h₂ : (E.card : Real) ≤ C.card * Am.card := by exact_mod_cast hGood
+    refine le_of_mul_le_mul_right ?_ (by positivity : (0 : Real) < C.card)
+    linarith
+  -- the pairs of `Am × (C \ Cm)` are bad
+  have hsub : Am.product (C \ Cm) ⊆ Ebad := fun yz hyz => by
+    obtain ⟨hy, hz⟩ := mem_product.mp hyz
+    obtain ⟨hzC, hzCm⟩ := mem_sdiff.mp hz
+    exact mem_filter.mpr ⟨mem_product.mpr ⟨(mem_filter.mp hy).1, hzC⟩,
+      fun h => hzCm (mem_filter.mpr ⟨hzC, h.symm.trans (mem_filter.mp hy).2⟩)⟩
+  have hrect : (Am.card : Real) * (C \ Cm).card ≤ Ebad.card := by
+    exact_mod_cast (card_product Am (C \ Cm)).symm.trans_le (card_le_card hsub)
   have hp : 0 < 1 - 35 * t ^ 2 := by
     nlinarith [mul_nonneg ht.le (sub_nonneg.mpr htUpper.le)]
-  have hcancelA :
-      (1 - 35 * t ^ 2) * ((C \ Cm).card : Real) ≤
-        35 * t ^ 2 * C.card := by
-    refine le_of_mul_le_mul_left ?_ hanchorFibre
-    linarith [hModeBad, mul_le_mul_of_nonneg_right hModeLower (Nat.cast_nonneg (C \ Cm).card)]
   have hnumeric : 35 * t ^ 2 ≤ 10 * t * (1 - 35 * t ^ 2) := by
     nlinarith [mul_nonneg ht.le (sub_nonneg.mpr htUpper.le),
       mul_nonneg (sq_nonneg t) (sub_nonneg.mpr htUpper.le)]
   have htargetBad : ((C \ Cm).card : Real) ≤ 10 * t * C.card := by
-    refine le_of_mul_le_mul_left ?_ hp
-    linarith [hcancelA, mul_le_mul_of_nonneg_right hnumeric (Nat.cast_nonneg C.card)]
-  have hdiff : C \ Cm = C.filter fun z =>
-      ¬ (phi z - phi w = extractionMode D phi x d) := by
-    ext z
-    simp only [Finset.mem_sdiff, Finset.mem_filter]
-    dsimp only [Cm, m]
-    simp only [Finset.mem_filter]
-    tauto
+    refine le_of_mul_le_mul_left ?_ (mul_pos hp hanchorFibre)
+    linarith [mul_le_mul_of_nonneg_right hModeLower (Nat.cast_nonneg (C \ Cm).card),
+      mul_le_mul_of_nonneg_right hnumeric (by positivity : (0 : Real) ≤ A.card * C.card)]
   apply extraction_almostEvery_of_bad_card_le
-  rw [← hdiff]
-  simpa only [C] using htargetBad
+  rw [filter_not]
+  exact htargetBad
 
 private lemma extraction_product_filter_card_first {Y Z : Type*}
     [DecidableEq Y] [DecidableEq Z] (U : Finset Y) (V : Finset Z)
@@ -580,76 +430,27 @@ private lemma extraction_select_directions {Y Z : Type*}
     AlmostEvery (1 - 7 * t) V fun z =>
       AlmostEvery (1 - 5 * t) U fun y => Q y z := by
   classical
-  by_cases hUempty : U = ∅
-  · subst U
-    unfold AlmostEvery
-    rw [Finset.filter_eq_self.2]
-    · have _ : (0 : Real) ≤ V.card := by positivity
-      nlinarith
-    · intro z _
-      simp
-  have hUnonempty : U.Nonempty := Finset.nonempty_iff_ne_empty.mpr hUempty
-  let BadPair : Finset (Y × Z) :=
-    (U.product V).filter fun yz => ¬ Q yz.1 yz.2
-  let H : Finset Z := V.filter fun z =>
-    ¬ AlmostEvery (1 - 5 * t) U (fun y => Q y z)
   apply extraction_almostEvery_of_bad_card_le
-  change (H.card : Real) ≤ 7 * t * V.card
-  by_contra hHBound
-  have hHGt : 7 * t * (V.card : Real) < H.card := lt_of_not_ge hHBound
-  have hHPosReal : 0 < (H.card : Real) := (mul_nonneg (by positivity) (by positivity)).trans_lt hHGt
-  have hHnonempty : H.Nonempty := Finset.card_pos.mp (by exact_mod_cast hHPosReal)
-  have hBadRows : BadPair.card =
-      ∑ y ∈ U, (V.filter fun z => ¬ Q y z).card := by
-    exact extraction_product_filter_card_first U V (fun y z => ¬ Q y z)
-  have hBadUpper : (BadPair.card : Real) ≤
-      35 * t ^ 2 * (V.card : Real) * U.card := by
-    rw [hBadRows]
-    push_cast
-    calc
-      (∑ y ∈ U, ((V.filter fun z => ¬ Q y z).card : Real)) ≤
-          ∑ _y ∈ U, 35 * t ^ 2 * V.card := by
-        apply Finset.sum_le_sum
-        intro y hy
-        exact extraction_almostEvery_bad_card_le (35 * t ^ 2) V (Q y)
-          (hrow y hy)
-      _ = 35 * t ^ 2 * (V.card : Real) * U.card := by
-        simp
-        ring
-  have hcolumnBad (z : Z) (hz : z ∈ H) :
-      5 * t * (U.card : Real) <
-        ((U.filter fun y => ¬ Q y z).card : Real) := by
-    have hzNot := (Finset.mem_filter.mp hz).2
-    exact extraction_bad_card_lt_of_not_almostEvery (5 * t) U
-      (fun y => Q y z) hzNot
-  have hsumColumnsStrict :
-      (∑ _z ∈ H, 5 * t * (U.card : Real)) <
-        ∑ z ∈ H, ((U.filter fun y => ¬ Q y z).card : Real) := by
-    exact Finset.sum_lt_sum_of_nonempty hHnonempty hcolumnBad
-  have hBadColumns : BadPair.card =
-      ∑ z ∈ V, (U.filter fun y => ¬ Q y z).card := by
-    exact extraction_product_filter_card_second U V (fun y z => ¬ Q y z)
-  have hsumColumnsLe :
-      (∑ z ∈ H, ((U.filter fun y => ¬ Q y z).card : Real)) ≤
-        BadPair.card := by
-    rw [hBadColumns]
-    push_cast
-    apply Finset.sum_le_sum_of_subset_of_nonneg
-    · exact Finset.filter_subset _ _
-    · intro z hzV _hzH
-      positivity
-  have hfactorPos : 0 < 5 * t * (U.card : Real) := by positivity
-  have hscaled := mul_lt_mul_of_pos_left hHGt hfactorPos
-  have : 35 * t ^ 2 * (V.card : Real) * U.card < BadPair.card := by
-    calc
-      35 * t ^ 2 * (V.card : Real) * U.card =
-          (5 * t * U.card) * (7 * t * V.card) := by ring
-      _ < (5 * t * U.card) * H.card := hscaled
-      _ = ∑ _z ∈ H, 5 * t * (U.card : Real) := by simp; ring
-      _ < ∑ z ∈ H,
-          ((U.filter fun y => ¬ Q y z).card : Real) := hsumColumnsStrict
-      _ ≤ (BadPair.card : Real) := hsumColumnsLe
-  linarith
+  rcases U.eq_empty_or_nonempty with rfl | hU
+  · simp [AlmostEvery]
+    positivity
+  -- count the pairs `(y, z)` with `¬ Q y z` by columns and by rows
+  have hcol : ∀ z ∈ V.filter (fun z => ¬ AlmostEvery (1 - 5 * t) U fun y => Q y z),
+      5 * t * (U.card : Real) ≤ (U.filter fun y => ¬ Q y z).card := fun z hz =>
+    (extraction_bad_card_lt_of_not_almostEvery _ U _ (mem_filter.mp hz).2).le
+  refine le_of_mul_le_mul_right ?_ (by positivity : (0 : Real) < 5 * t * U.card)
+  calc ((V.filter fun z => ¬ AlmostEvery (1 - 5 * t) U fun y => Q y z).card : Real) *
+        (5 * t * U.card)
+      ≤ ∑ z ∈ V, ((U.filter fun y => ¬ Q y z).card : Real) := by
+        rw [← nsmul_eq_mul]
+        exact (card_nsmul_le_sum _ _ _ hcol).trans
+          (sum_le_sum_of_subset_of_nonneg (filter_subset _ _) fun _ _ _ => by positivity)
+    _ = ∑ y ∈ U, ((V.filter fun z => ¬ Q y z).card : Real) := by
+        exact_mod_cast (extraction_product_filter_card_second U V fun y z => ¬ Q y z).symm.trans
+          (extraction_product_filter_card_first U V fun y z => ¬ Q y z)
+    _ ≤ U.card • (35 * t ^ 2 * V.card) := sum_le_card_nsmul _ _ _ fun y hy =>
+        extraction_almostEvery_bad_card_le _ V _ (hrow y hy)
+    _ = 7 * t * V.card * (5 * t * U.card) := by rw [nsmul_eq_mul]; ring
 
 private lemma extraction_lift_almostEvery {Y : Type*} [DecidableEq Y]
     (W U : Finset Y) (P : Y → Prop) (a b : Real)
@@ -705,102 +506,46 @@ theorem lemma_10_6_holds : lemma_10_6 := by
   classical
   intro N _ X _ _ D phi B alpha rho M sigma eta x W
     hsetup hanchor hregular hrho hsigma
-  let t : Real := eta ^ ((1 : Real) / 5)
-  have hpositive : 0 < eta * rho * alpha ^ 2 / 16 :=
-    hsetup.2.1.trans_le hsigma
-  have hmulPositive : 0 < eta * rho * alpha ^ 2 := by linarith
-  have hetaRhoPositive : 0 < eta * rho := by
-    rcases (mul_pos_iff.mp hmulPositive) with h | h
-    · exact h.1
-    · exact (not_lt_of_ge (sq_nonneg alpha) h.2).elim
-  have heta : 0 ≤ eta := hsetup.2.2.1
-  have hetaPos : 0 < eta := by
-    rcases (mul_pos_iff.mp hetaRhoPositive) with h | h
-    · exact h.1
-    · exact (not_lt_of_ge heta h.1).elim
+  have heta := hsetup.2.2.1
+  have hetaPos : 0 < eta := lt_of_le_of_ne heta fun h => by
+    subst h
+    linarith [hsetup.2.1]
+  set t : Real := eta ^ ((1 : Real) / 5) with ht_def
   have ht : 0 < t := by positivity
   by_cases htLarge : 1 ≤ 10 * t
-  · refine ⟨∅, fun _ => 0, ?_⟩
-    refine ⟨Finset.empty_subset _, ?_, ?_⟩
-    · simp only [Finset.card_empty, Nat.cast_zero]
-      dsimp only [t] at htLarge
-      nlinarith
-    · intro d hd
-      simp at hd
-  have htUpper : t < 1 / 10 := by nlinarith
+  · refine ⟨∅, fun _ => 0, empty_subset _, ?_, by simp⟩
+    rw [card_empty, Nat.cast_zero]
+    exact mul_nonpos_of_nonpos_of_nonneg (by linarith) (Nat.cast_nonneg _)
   have htFour : eta ^ ((4 : Real) / 5) = t ^ 4 := by
-    dsimp only [t]
-    have h := Real.rpow_mul_natCast heta ((1 : Real) / 5) 4
-    convert h using 1
+    rw [ht_def, ← Real.rpow_mul_natCast heta]
     norm_num
+  -- `Low`: the points of `W` with small proportionate error
   let Low : Finset X := W.filter fun w =>
     domainProportionateError D phi B x w ≤ 300 * t ^ 4
-  have hLowAE : AlmostEvery (1 - 5 * t) W (fun w => w ∈ Low) := by
+  have hLow : AlmostEvery (1 - 5 * t) W (· ∈ Low) := by
     have h := hregular.2.2.1
     rw [htFour] at h
-    change AlmostEvery (1 - 5 * t) W
-      (fun w => domainProportionateError D phi B x w ≤ 300 * t ^ 4) at h
-    exact extraction_almostEvery_mono (1 - 5 * t) W
-      (fun w => domainProportionateError D phi B x w ≤ 300 * t ^ 4)
-      (fun w => w ∈ Low) h (fun w hwW hwError =>
-        Finset.mem_filter.mpr ⟨hwW, hwError⟩)
-  have hrows : ∀ w, w ∈ Low →
-      AlmostEvery (1 - 35 * t ^ 2) B
-        (fun d => extractionDirectionGood D phi x w d t) := by
-    intro w hwLow
-    have hwParts := Finset.mem_filter.mp hwLow
-    exact extraction_direction_good_almostEvery D phi B alpha rho M sigma eta t
-      x w W hsetup hanchor hregular hrho hsigma ht hwParts.1 hwParts.2
-  have hselected := extraction_select_directions Low B
-    (fun w d => extractionDirectionGood D phi x w d t) t ht hrows
-  let Selected : ZMod N → Prop := fun d =>
-    AlmostEvery (1 - 5 * t) Low fun w =>
-      extractionDirectionGood D phi x w d t
-  let B' : Finset (ZMod N) := B.filter Selected
-  let psi : ZMod N → ZMod N := fun d => extractionMode D phi x d
-  have hB'largeSeven : (1 - 7 * t) * B.card ≤ (B'.card : Real) := by
-    change AlmostEvery (1 - 7 * t) B Selected at hselected
-    unfold AlmostEvery at hselected
-    change (1 - 7 * t) * B.card ≤ (B'.card : Real) at hselected
-    exact hselected
-  have hB'largeTen : (1 - 10 * t) * B.card ≤ (B'.card : Real) := by
-    nlinarith
-  have hxQuarter := extraction_sigmaM_le_anchor_quarter D phi B alpha rho M
+    exact extraction_almostEvery_mono _ _ _ _ h fun w hw hwE => mem_filter.mpr ⟨hw, hwE⟩
+  -- `B'`: the directions that are good for most points of `Low`
+  have hsel := extraction_select_directions Low B
+    (fun w d => extractionDirectionGood D phi x w d t) t ht fun w hw =>
+      extraction_direction_good_almostEvery D phi B alpha rho M sigma eta t x w W hsetup
+        hanchor hregular hrho hsigma ht (mem_filter.mp hw).1 (mem_filter.mp hw).2
+  let B' : Finset (ZMod N) := B.filter fun d =>
+    AlmostEvery (1 - 5 * t) Low fun w => extractionDirectionGood D phi x w d t
+  have hB' : (1 - 7 * t) * B.card ≤ (B'.card : Real) := hsel
+  have hxQ := extraction_sigmaM_le_anchor_quarter D phi B alpha rho M
     sigma eta x hsetup hanchor hrho hsigma
-  have hinvariant := hsetup.2.2.2.2.2.1
-  refine ⟨B', psi, Finset.filter_subset _ _, ?_, ?_⟩
-  · simpa only [t] using hB'largeTen
-  · intro d hdB'
-    have hdParts := Finset.mem_filter.mp hdB'
-    have hdB := hdParts.1
-    have hdSelected := hdParts.2
-    dsimp only [Selected] at hdSelected
-    have hdirWbase := extraction_lift_almostEvery W Low
-      (fun w => extractionDirectionGood D phi x w d t)
-      (5 * t) (5 * t) (by positivity) (by positivity)
-      (Finset.filter_subset _ _) hLowAE hdSelected
-    have hdirW : AlmostEvery (1 - 10 * t) W
-        (fun w => extractionDirectionGood D phi x w d t) := by
-      convert hdirWbase using 1
-      ring
-    have hxd := extraction_shifted_fibre_bounds D B sigma M x hinvariant
-      hxQuarter d hdB
-    have hxBasePos : 0 < (D.fibreSize x : Real) := by
-      have hM : (0 : Real) < M := by exact_mod_cast hsetup.1.2.2.1
-      have halpha := hsetup.1.1
-      exact (show 0 < alpha ^ 2 * M / 2 by positivity).trans_le hanchor.1
-    have hxdPos : 0 < ((D.fibre (D.index x + d)).card : Real) := by
-      linarith
-    have hlocalT : AlmostEvery (1 - 10 * t) W fun w =>
-        AlmostEvery (1 - 10 * t) (D.fibre (D.index w + d)) fun z =>
-          phi z - phi w = psi d := by
-      apply extraction_almostEvery_mono (1 - 10 * t) W
-        (fun w => extractionDirectionGood D phi x w d t)
-        (fun w => AlmostEvery (1 - 10 * t) (D.fibre (D.index w + d))
-          (fun z => phi z - phi w = psi d)) hdirW
-      intro w _ hwDirection
-      simpa only [psi] using extraction_directionGood_gives_mode D phi x w d t
-        ht htUpper hxdPos hwDirection
-    simpa only [t] using hlocalT
+  have hσM : 0 < sigma * M := mul_pos hsetup.2.1 (by exact_mod_cast hsetup.1.2.2.1)
+  refine ⟨B', extractionMode D phi x, filter_subset _ _,
+    by linarith [mul_nonneg ht.le (Nat.cast_nonneg B.card)], fun d hd => ?_⟩
+  -- for `d ∈ B'` most `w ∈ W` are good for `d`, and then most `z` realize the mode difference
+  have hxd := (extraction_shifted_fibre_bounds D B sigma M x hsetup.2.2.2.2.2.1 hxQ d
+    (mem_filter.mp hd).1).1
+  have hW := extraction_lift_almostEvery W Low _ (5 * t) (5 * t) (by positivity)
+    (by positivity) (filter_subset _ _) hLow (mem_filter.mp hd).2
+  rw [show 5 * t + 5 * t = 10 * t by ring] at hW
+  exact extraction_almostEvery_mono _ _ _ _ hW fun w _ hw =>
+    extraction_directionGood_gives_mode D phi x w d t ht (by linarith) (by linarith) hw
 
 end LeanProofs.GowersSzemeredi

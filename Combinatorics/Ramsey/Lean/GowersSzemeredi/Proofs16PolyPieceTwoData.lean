@@ -186,254 +186,154 @@ theorem section16_poly_piece_two_data_with
       (polyPieceFaceCountW t1 gamma) (polyPieceFaceCountW t1 gamma)) := by
   obtain ⟨hθ₁pos, _, hδpos, hδle⟩ := section16_theta_delta_bounds_with ha0 haS
   obtain ⟨hθ₂pos, hθ₂le⟩ := section16ThetaTwo_pos_le_with ha0 haS
-  have hθ'pos : 0 < polyPieceBudgetW t1 := by
-    unfold polyPieceBudgetW; linarith
-  have hθ'le : polyPieceBudgetW t1 ≤ 1 := by
-    unfold polyPieceBudgetW; linarith
+  have hθ'pos : 0 < polyPieceBudgetW t1 := by unfold polyPieceBudgetW; linarith
+  have hθ'le : polyPieceBudgetW t1 ≤ 1 := by unfold polyPieceBudgetW; linarith
   set θ' := polyPieceBudgetW t1 with hθ'def
-  have hθ₂eq : section16ThetaTwo (t1) = 8 * θ' := by
-    rw [hθ'def, polyPieceBudgetW]; ring
-  set δ := section16Delta (t1)
+  have hθ₂eq : section16ThetaTwo t1 = 8 * θ' := by rw [hθ'def, polyPieceBudgetW]; ring
+  set δ := section16Delta t1
   -- 1. Lemmas 16.5 and 16.7
   obtain ⟨H, Y, phiPrime, hH, hcube, hselected, hselection⟩ :=
     section16_dense_induced_selection_with (Fact.out : N.Prime) t1 zeta B phi
       ha0 haS hzeta hz0 hBarr
-  have hmass : t1 / 8 * (N : Real) ^ 1 ≤ H.card := by
-    refine le_trans ?_ hH
-    have : (0 : Real) ≤ (N : Real) ^ 1 := by positivity
-    nlinarith
   obtain ⟨x0, hgood, hidentity⟩ := lemma_16_7_with t1 zeta hθ₁pos.le B phi H Y phiPrime
-    hmass hcube hselected hselection
-  have hid : Section16PhiOneIdentity (section16GoodDomain B H Y x0) phi x0 phiPrime :=
-    section16_phi_one_identity_of_common_base B phi H Y x0 phiPrime hidentity
+    (le_trans (mul_le_mul_of_nonneg_right (by linarith) (by positivity)) hH) hcube hselected
+    hselection
+  have hid := section16_phi_one_identity_of_common_base B phi H Y x0 phiPrime hidentity
   set B1 := section16GoodDomain B H Y x0 with hB1def
-  have hB1card : section16ThetaTwo (t1) * (N : Real) ^ (1 + 1) ≤
-      B1.card := by
-    rw [hB1def, section16GoodDomain_card]; exact hgood
+  have hB1card : 8 * θ' * (N : Real) ^ 2 ≤ B1.card := by
+    rw [hB1def, section16GoodDomain_card, ← hθ₂eq]; exact hgood
   -- 2. the spectrum families
   obtain ⟨JΔ, Dsp, fsp, hJΔ, hfsp, hcsp⟩ := section16_extract_uniform_base_family hδpos hδle
     hθ'pos hθ'le (section16SpectrumRelation B δ)
     (by simpa using section16_spectrum_relation_card B hδpos)
     (section16_spectrum_relation_product B hδpos)
   -- 3. the face families
-  set F := firstFixedFace (N := N) x0 with hFdef
-  set Fdom := F.domain B with hFdomdef
-  set g := F.pullback phi with hgdef
+  set F := firstFixedFace (N := N) x0
+  set Fdom := F.domain B
+  set g := F.pullback phi
   have hsizeF : ((partialGraph Fdom g).card : Real) ≤ gamma ^ (-(2 : Int)) * N := by
-    rw [partialGraph_card]
-    have hle : (Fdom.card : Real) ≤ N := by
-      exact_mod_cast (show Fdom.card ≤ N by
-        simpa [Point, ZMod.card] using Finset.card_le_univ Fdom)
-    have hginv : 1 ≤ gamma ^ (-(2 : Int)) := by
-      rw [zpow_neg, zpow_ofNat]
-      exact (one_le_inv₀ (pow_pos hg 2)).mpr (pow_le_one₀ hg.le hg1)
-    exact hle.trans (le_mul_of_one_le_left (by positivity) hginv)
+    rw [partialGraph_card, zpow_neg, zpow_ofNat]
+    refine le_trans ?_ (le_mul_of_one_le_left (Nat.cast_nonneg _)
+      ((one_le_inv₀ (pow_pos hg 2)).mpr (pow_le_one₀ hg.le hg1)))
+    exact_mod_cast (show Fdom.card ≤ N by simpa [Point, ZMod.card] using Finset.card_le_univ Fdom)
   obtain ⟨Jr, Dr, fr, hJr, hfr, hcr⟩ := section16_extract_uniform_base_family hg hg1
     hθ'pos hθ'le (partialGraph Fdom g) hsizeF
     (partialGraph_relationProductProperty (hprodB.coordinateFace F))
   -- 4. the slice families
   obtain ⟨C, hCsub, hCcard, hfam⟩ :=
     section16_final_freiman_families_of_product hg hg1 hθ'pos hθ'le B phi hprodB
-  set Bs := B.filter fun z => section16Init z ∈ C (section16Last z) with hBsdef
-  -- 5. the domain in the shifted frame
-  set t : Point N 2 := appendCoordinate x0 0 with htdef
-  set D := (section16GoodDomain B (H ∩ JΔ) Y x0).filter fun z =>
-    lastPt z ∈ Fdom ∩ Jr ∧ appendCoordinate (section16Init z + x0) (section16Last z) ∈ Bs
-    with hDdef
-  have hDgood : D ⊆ section16GoodDomain B (H ∩ JΔ) Y x0 := Finset.filter_subset _ _
+  set Bs := B.filter fun z => section16Init z ∈ C (section16Last z)
+  -- 5. the domain in the shifted frame; the original frame is `w = z + t`
+  set t : Point N 2 := appendCoordinate x0 0
+  have hshift (z : Point N 2) :
+      appendCoordinate (section16Init z + x0) (section16Last z) = z + t :=
+    appendCoordinate_init_add z x0
+  have hshift' (z : Point N 2) :
+      appendCoordinate (fun i => x0 i + section16Init z i) (section16Last z) = z + t :=
+    (congrArg (appendCoordinate · (section16Last z)) (add_comm x0 _)).trans (hshift z)
+  have hinit (z : Point N 2) : section16Init (z + t) = section16Init z + x0 := by
+    rw [← hshift, section16Init_appendCoordinate]
+  have hlast (z : Point N 2) : section16Last (z + t) = section16Last z := by
+    rw [← hshift, section16Last_appendCoordinate]
+  have hvert : ∀ z ∈ B1, z + t ∈ B ∧ lastPt z ∈ Fdom := fun z hz => by
+    have h1 := section16GoodDomain_vertex_mem B H Y x0 hz (fun _ => true)
+    have h0 := section16GoodDomain_vertex_mem B H Y x0 hz (fun _ => false)
+    simp only [if_true, Bool.false_eq_true, if_false, add_zero, hshift'] at h1 h0
+    exact ⟨h1, (CoordinateFace.mem_domain _ _ _).mpr h0⟩
+  set D := B1.filter fun z => section16Init z ∈ JΔ ∧ lastPt z ∈ Fdom ∩ Jr ∧ z + t ∈ Bs
   -- 6. the three deletions are sparse
-  set X1 := Finset.univ.filter fun z : Point N 2 => section16Init z ∉ JΔ with hX1
-  set X2 := Finset.univ.filter fun z : Point N 2 => lastPt z ∉ Jr with hX2
+  set X1 := Finset.univ.filter fun z : Point N 2 => section16Init z ∉ JΔ
+  set X2 := Finset.univ.filter fun z : Point N 2 => lastPt z ∉ Jr
   set X3 := Finset.univ.filter fun z : Point N 2 =>
     appendCoordinate (section16Init z + x0) (section16Last z) ∈ B ∧
-      section16Init z + x0 ∉ C (section16Last z) with hX3
+      section16Init z + x0 ∉ C (section16Last z)
   have hX1card : (X1.card : Real) ≤ θ' * (N : Real) ^ 2 := by
     have h := card_filter_selected_not_mem_le (n := 2) (l := 1)
       ⟨Fin.castSucc, Fin.castSucc_injective 1⟩ 0 JΔ (by simpa using hJΔ) (by omega)
-    have hfun : ∀ z : Point N 2,
-        (fun i => z ((⟨Fin.castSucc, Fin.castSucc_injective 1⟩ : Fin 1 ↪ Fin 2) i) +
-          (0 : Point N 1) i) = section16Init z := fun z => by
-      funext i; simp [section16Init]
-    simp only [hfun] at h
+    simp only [Function.Embedding.coeFn_mk, Pi.zero_apply, add_zero] at h
     exact h
   have hX2card : (X2.card : Real) ≤ θ' * (N : Real) ^ 2 := by
     have h := card_filter_selected_not_mem_le (n := 2) (l := 1)
       ⟨fun _ => Fin.last 1, fun a b _ => Subsingleton.elim a b⟩ 0 Jr (by simpa using hJr)
       (by omega)
-    have hfun : ∀ z : Point N 2,
-        (fun i => z ((⟨fun _ => Fin.last 1, fun a b _ => Subsingleton.elim a b⟩ :
-          Fin 1 ↪ Fin 2) i) + (0 : Point N 1) i) = lastPt z := fun z => by
-      funext i; simp [lastPt, section16Last]
-    simp only [hfun] at h
+    simp only [Function.Embedding.coeFn_mk, Pi.zero_apply, add_zero] at h
     exact h
   have hX3card : (X3.card : Real) ≤ θ' * (N : Real) ^ 2 :=
     card_translated_slice_bad_le B C hCsub hCcard x0
-  have hvert_true : ∀ z ∈ B1, appendCoordinate (section16Init z + x0) (section16Last z) ∈ B := by
-    intro z hz
-    have h := section16GoodDomain_vertex_mem B H Y x0 hz (fun _ => true)
-    simp only [if_true] at h
-    have hcomm : (fun i => x0 i + section16Init z i) = section16Init z + x0 := by
-      funext i; simp [add_comm]
-    rw [hcomm] at h
-    exact h
-  have hvert_false : ∀ z ∈ B1, lastPt z ∈ Fdom := by
-    intro z hz
-    have h := section16GoodDomain_vertex_mem B H Y x0 hz (fun _ => false)
-    simp only [Bool.false_eq_true, if_false, add_zero] at h
-    rw [hFdomdef, CoordinateFace.mem_domain]
-    exact h
-  have hcover : B1 ⊆ D ∪ X1 ∪ X2 ∪ X3 := by
-    intro z hz
-    by_cases h1 : section16Init z ∈ JΔ
-    · by_cases h2 : lastPt z ∈ Jr
-      · by_cases h3 : section16Init z + x0 ∈ C (section16Last z)
-        · refine Finset.mem_union_left _ (Finset.mem_union_left _ (Finset.mem_union_left _ ?_))
-          have hzG : z ∈ section16GoodDomain B (H ∩ JΔ) Y x0 := by
-            rw [section16GoodDomain_inter]
-            exact Finset.mem_filter.mpr ⟨hz, h1⟩
-          have hzBs : appendCoordinate (section16Init z + x0) (section16Last z) ∈ Bs := by
-            refine Finset.mem_filter.mpr ⟨hvert_true z hz, ?_⟩
-            simpa only [section16Init_appendCoordinate, section16Last_appendCoordinate] using h3
-          exact Finset.mem_filter.mpr ⟨hzG, Finset.mem_inter.mpr ⟨hvert_false z hz, h2⟩, hzBs⟩
-        · exact Finset.mem_union_right _
-            (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hvert_true z hz, h3⟩)
-      · exact Finset.mem_union_left _ (Finset.mem_union_right _
-          (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h2⟩))
-    · exact Finset.mem_union_left _ (Finset.mem_union_left _ (Finset.mem_union_right _
-        (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h1⟩)))
+  have hcover : B1 ⊆ D ∪ X1 ∪ X2 ∪ X3 := fun z hz => by
+    obtain ⟨hzt, hzF⟩ := hvert z hz
+    simp only [D, X1, X2, X3, Bs, Finset.mem_union, Finset.mem_filter, Finset.mem_inter,
+      Finset.mem_univ, true_and, hshift, hinit, hlast, hz, hzt, hzF]
+    tauto
   have hDcard : 5 * θ' * (N : Real) ^ 2 ≤ D.card := by
-    have hc := Finset.card_le_card hcover
-    have hu1 := Finset.card_union_le (D ∪ X1 ∪ X2) X3
-    have hu2 := Finset.card_union_le (D ∪ X1) X2
-    have hu3 := Finset.card_union_le D X1
-    have h' : (B1.card : Real) ≤ (D.card : Real) + (X1.card : Real) + (X2.card : Real) +
-        (X3.card : Real) := by
-      have h := (hc.trans hu1).trans (Nat.add_le_add_right (hu2.trans
-        (Nat.add_le_add_right hu3 _)) _)
-      exact_mod_cast h
-    rw [hθ₂eq] at hB1card
-    norm_num at hB1card
-    nlinarith
+    have h : B1.card ≤ D.card + X1.card + X2.card + X3.card :=
+      (Finset.card_le_card hcover).trans ((Finset.card_union_le _ _).trans (Nat.add_le_add_right
+        ((Finset.card_union_le _ _).trans (Nat.add_le_add_right (Finset.card_union_le _ _) _)) _))
+    have h' : (B1.card : Real) ≤ D.card + X1.card + X2.card + X3.card := by exact_mod_cast h
+    linarith
   -- 7. the original frame
-  set D' := D.image fun z => z + t
-  have hD'card : D'.card = D.card := Finset.card_image_of_injective _ (add_left_injective t)
-  have hshift : ∀ z : Point N 2,
-      appendCoordinate (section16Init z + x0) (section16Last z) = z + t := fun z => by
-    rw [htdef]; exact appendCoordinate_init_add z x0
-  have hinit : ∀ z : Point N 2, section16Init (z + t) = section16Init z + x0 := by
-    intro z
-    have h := congrArg section16Init (hshift z)
-    simpa only [section16Init_appendCoordinate] using h.symm
-  have hlast : ∀ z : Point N 2, section16Last (z + t) = section16Last z := by
-    intro z
-    have h := congrArg section16Last (hshift z)
-    simpa only [section16Last_appendCoordinate] using h.symm
-  have hDmem : ∀ z ∈ D, z ∈ section16GoodDomain B (H ∩ JΔ) Y x0 ∧
-      lastPt z ∈ Fdom ∩ Jr ∧ z + t ∈ Bs := by
-    intro z hz
-    obtain ⟨h1, h2, h3⟩ := Finset.mem_filter.mp hz
-    exact ⟨h1, h2, by rw [← hshift]; exact h3⟩
   let H1' := (H ∩ JΔ).image fun h => h + x0
   let K' : Point N 1 → Finset (ZMod N) := fun x => section16LargeSpectrum B (x - x0) δ
   let A' : Point N 1 → Finset (ZMod N) := fun x =>
     Finset.univ.filter fun y => (x - x0, y) ∈ section16InducedDomain B H Y
   let f' : Point N 1 → ZMod N → ZMod N := fun x y => phiPrime (x - x0) y
   let rem' : Point N 2 → ZMod N := fun w => phi (appendCoordinate x0 (section16Last w))
-  have hHsub : H ∩ JΔ ⊆ H := Finset.inter_subset_left
   refine ⟨{
-    D := D'
-    phi := phi
-    graph_sub := ?_
-    card_ge := ?_
-    H1 := H1'
-    K := K'
-    A := A'
-    f := f'
-    rem := rem'
-    linear := ?_
-    dom := ?_
-    ident := ?_
-    spec := ?_
-    remc := ?_
-    slices := ?_ }⟩
+    D := D.image fun z => z + t, phi := phi, H1 := H1', K := K', A := A', f := f', rem := rem',
+    graph_sub := ?_, card_ge := ?_, linear := ?_, dom := ?_, ident := ?_, spec := ?_,
+    remc := ?_, slices := ?_ }⟩
   · -- graph inside Gamma
     intro p hp
     obtain ⟨w, hw, rfl⟩ := Finset.mem_image.mp hp
     obtain ⟨z, hz, rfl⟩ := Finset.mem_image.mp hw
-    exact hBG (Finset.mem_image.mpr ⟨z + t, (Finset.mem_filter.mp (hDmem z hz).2.2).1, rfl⟩)
-  · rw [hD'card]; exact hDcard
+    exact hBG (Finset.mem_image.mpr ⟨z + t, (hvert z (Finset.mem_filter.mp hz).1).1, rfl⟩)
+  · rw [Finset.card_image_of_injective _ (add_left_injective t)]; exact hDcard
   · -- Bohr linearity
     intro x hx v hv J hJ hd
     obtain ⟨h, hh, rfl⟩ := Finset.mem_image.mp hx
-    have hsh : h + x0 - x0 = h := add_sub_cancel_right h x0
-    have hd' : J.step ∈ bohr (section16LargeSpectrum B h δ) (zeta / v) := by
-      simpa only [K', hsh] using hd
-    have hlin := hselection.2 h (hHsub hh) v hv J.step hd' J rfl hJ
-    simpa only [A', f', hsh, Finset.inter_filter, Finset.inter_univ] using hlin
+    simp only [K', A', f', add_sub_cancel_right, Finset.inter_filter, Finset.inter_univ] at hd ⊢
+    exact hselection.2 h (Finset.mem_inter.mp hh).1 v hv J.step hd J rfl hJ
   · -- domains
     intro w hw
     obtain ⟨z, hz, rfl⟩ := Finset.mem_image.mp hw
-    obtain ⟨hzG, -, -⟩ := hDmem z hz
-    have hzG' : appendCoordinate (section16Init z) (section16Last z) ∈
-        section16GoodDomain B (H ∩ JΔ) Y x0 := by
-      rw [appendCoordinate_init_last]; exact hzG
-    obtain ⟨hhH1, hdom⟩ := section16GoodDomain_fibre_mem B H (H ∩ JΔ) Y x0
-      (section16Init z) (section16Last z) hHsub hzG'
+    obtain ⟨hzB1, hzJ, -⟩ := Finset.mem_filter.mp hz
+    obtain ⟨hhH, hdom⟩ := section16GoodDomain_fibre_mem B H H Y x0 (section16Init z)
+      (section16Last z) (Finset.Subset.refl _) ((appendCoordinate_init_last z).symm ▸ hzB1)
     rw [hinit, hlast]
-    refine ⟨Finset.mem_image.mpr ⟨section16Init z, hhH1, rfl⟩, ?_⟩
-    simp only [A', Finset.mem_filter, Finset.mem_univ, true_and, add_sub_cancel_right]
-    exact hdom
+    exact ⟨Finset.mem_image.mpr ⟨_, Finset.mem_inter.mpr ⟨hhH, hzJ⟩, rfl⟩,
+      by simpa [A'] using hdom⟩
   · -- the identity
     intro w hw
     obtain ⟨z, hz, rfl⟩ := Finset.mem_image.mp hw
-    obtain ⟨hzG, -, -⟩ := hDmem z hz
-    have hzB1 : z ∈ B1 := by
-      rw [section16GoodDomain_inter] at hzG
-      exact (Finset.mem_filter.mp hzG).1
-    have hidz := hid z hzB1
+    have hidz := hid z (Finset.mem_filter.mp hz).1
     rw [section16PhiRemainder_one] at hidz
     simp only [section16PhiOne, section16PhiPrimeLift, section16TranslatedVertex,
-      Bool.false_eq_true, if_false, add_zero] at hidz
-    have hcomm : (fun i => x0 i + section16Init z i) = section16Init z + x0 := by
-      funext i; simp [add_comm]
-    rw [hcomm, hshift] at hidz
-    simp only [f', rem', hinit, hlast, add_sub_cancel_right]
-    exact hidz
+      Bool.false_eq_true, if_false, add_zero, hshift'] at hidz
+    simpa only [f', rem', hinit, hlast, add_sub_cancel_right] using hidz
   · -- the spectrum cover
     have hR : RelFreimanCover (polyPieceSpecCountW t1)
         (restrictRelation (section16SpectrumRelation B δ) JΔ) := ⟨Dsp, fsp, hfsp, hcsp⟩
-    refine (hR.translate x0).mono ?_
-    intro z hz
+    refine (hR.translate x0).mono fun z hz => ?_
     obtain ⟨hz1, hz2⟩ := Finset.mem_filter.mp hz
-    obtain ⟨hx, -⟩ := Finset.mem_product.mp hz1
-    obtain ⟨h, hh, hx'⟩ := Finset.mem_image.mp hx
-    refine Finset.mem_image.mpr ⟨(h, z.2), ?_, ?_⟩
-    · have hr : z.2 ∈ section16LargeSpectrum B h δ := by
-        simpa only [K', ← hx', add_sub_cancel_right] using hz2
-      simpa only [restrictRelation, section16SpectrumRelation, Finset.mem_filter,
-        Finset.mem_univ, true_and] using And.intro hr (Finset.mem_inter.mp hh).2
-    · rw [hx']
+    obtain ⟨h, hh, hx⟩ := Finset.mem_image.mp (Finset.mem_product.mp hz1).1
+    have hr : z.2 ∈ section16LargeSpectrum B h δ := by
+      simpa only [K', ← hx, add_sub_cancel_right] using hz2
+    refine Finset.mem_image.mpr ⟨(h, z.2), ?_, by rw [hx]⟩
+    simpa only [restrictRelation, section16SpectrumRelation, Finset.mem_filter,
+      Finset.mem_univ, true_and] using And.intro hr (Finset.mem_inter.mp hh).2
   · -- the remainder cover
     have hR : RelFreimanCover (polyPieceFaceCountW t1 gamma)
         (restrictRelation (partialGraph Fdom g) Jr) := ⟨Dr, fr, hfr, hcr⟩
-    refine hR.mono ?_
-    intro p hp
+    refine hR.mono fun p hp => ?_
     obtain ⟨w, hw, rfl⟩ := Finset.mem_image.mp hp
     obtain ⟨z, hz, rfl⟩ := Finset.mem_image.mp hw
-    obtain ⟨-, hzR, -⟩ := hDmem z hz
-    obtain ⟨hzF, hzJ⟩ := Finset.mem_inter.mp hzR
-    have hlp : lastPt (z + t) = lastPt z := by
-      funext i; simp only [lastPt, hlast]
-    rw [hlp]
-    have hval : rem' (z + t) = g (lastPt z) := by
-      simp only [rem', hgdef, CoordinateFace.pullback, hFdef, firstFixedFace, hlast, lastPt]
-    rw [hval]
-    simp only [restrictRelation, Finset.mem_filter]
-    exact ⟨Finset.mem_image.mpr ⟨lastPt z, hzF, rfl⟩, hzJ⟩
+    obtain ⟨hzF, hzJ⟩ := Finset.mem_inter.mp (Finset.mem_filter.mp hz).2.2.1
+    have hlp : lastPt (z + t) = lastPt z := funext fun _ => hlast z
+    refine Finset.mem_filter.mpr ⟨Finset.mem_image.mpr ⟨lastPt z, hzF, ?_⟩, hlp ▸ hzJ⟩
+    rw [hlp]; simp only [rem', hlast]; rfl
   · -- the slices
-    refine hfam.mono ?_
-    intro w hw
+    refine hfam.mono fun w hw => ?_
     obtain ⟨z, hz, rfl⟩ := Finset.mem_image.mp hw
-    exact (hDmem z hz).2.2
+    exact (Finset.mem_filter.mp hz).2.2.2
 
 end LeanProofs.GowersSzemeredi

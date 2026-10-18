@@ -166,18 +166,6 @@ private lemma exists_and_of_almostEvery {X : Type*} [DecidableEq X]
   obtain ⟨x, hx⟩ := Finset.card_pos.mp (by exact_mod_cast hgood)
   exact ⟨x, (Finset.mem_filter.mp hx).1, (Finset.mem_filter.mp hx).2⟩
 
-private lemma of_almostEvery_one {X : Type*} [DecidableEq X]
-    (U : Finset X) (P : X → Prop) (hP : AlmostEvery 1 U P)
-    {x : X} (hx : x ∈ U) : P x := by
-  classical
-  have hcard : U.card ≤ (U.filter P).card := by
-    unfold AlmostEvery at hP
-    rw [Finset.filter_congr_decidable] at hP
-    exact_mod_cast (by simpa using hP)
-  have heq : U.filter P = U :=
-    Finset.eq_of_subset_of_card_le (Finset.filter_subset _ _) hcard
-  exact (Finset.mem_filter.mp (heq.symm ▸ hx)).2
-
 /-! ### The bad-pair double count -/
 
 private def shiftBadPairs {N : Nat} [NeZero N]
@@ -393,38 +381,17 @@ lemma shift_almostEvery_eligible {N : Nat} [NeZero N]
   rcases hregular with ⟨hW, hsym, hvar, hoverlap⟩
   let Q : X → Prop := fun w =>
     AlmostEvery (1 - 2 * Real.sqrt theta) (D.fibre (D.index w + d)) P
-  have hnegd : -d ∈ B := (hsym d).mp hd
-  have heligible :
-      (1 - eta) * W.card ≤ ((shiftEligible D W d).card : Real) := by
-    simpa only [shiftEligible] using hoverlap (-d) hnegd
-  have hexceptional :
-      ((shiftExceptional D W d theta P).card : Real) ≤
-        Real.sqrt theta * W.card :=
-    shiftExceptional_card_le D W d theta P hW hvar htheta hP
-  have hpartNat := Finset.card_filter_add_card_filter_not Q
-    (s := shiftEligible D W d)
-  have hpart :
-      (((shiftEligible D W d).filter Q).card : Real) +
-          ((shiftExceptional D W d theta P).card : Real) =
-        (shiftEligible D W d).card := by
-    have hcast :
-        (((shiftEligible D W d).filter Q).card : Real) +
-            (((shiftEligible D W d).filter fun w => ¬ Q w).card : Real) =
-          (shiftEligible D W d).card := by
-      exact_mod_cast hpartNat
-    simpa only [Q, shiftExceptional] using hcast
-  have hgoodEq :
-      (W.filter fun w => w ∈ shiftEligible D W d ∧ Q w) =
-        (shiftEligible D W d).filter Q := by
-    ext w
-    simp only [Finset.mem_filter, shiftEligible, Finset.mem_inter]
-    aesop
-  unfold AlmostEvery
-  rw [Finset.filter_congr_decidable]
-  change (1 - Real.sqrt theta - eta) * (W.card : Real) ≤
-    ((W.filter fun w => w ∈ shiftEligible D W d ∧ Q w).card : Real)
-  rw [hgoodEq]
-  nlinarith
+  -- the eligible points split into those satisfying `Q` and the exceptional ones
+  have hpart : (((shiftEligible D W d).filter Q).card : Real) +
+      (shiftExceptional D W d theta P).card = (shiftEligible D W d).card := by
+    exact_mod_cast card_filter_add_card_filter_not Q
+  have hE : (1 - eta) * W.card ≤ ((shiftEligible D W d).card : Real) :=
+    hoverlap (-d) ((hsym d).mp hd)
+  have hX := shiftExceptional_card_le D W d theta P hW hvar htheta hP
+  rw [AlmostEvery, filter_congr_decidable]
+  refine le_trans (by linarith) (Nat.cast_le.mpr (card_le_card
+    (s := (shiftEligible D W d).filter Q) fun w hw => mem_filter.mpr
+      ⟨(mem_inter.mp (mem_filter.mp hw).1).1, mem_filter.mp hw⟩))
 
 /-! ### Lemma 10.9 -/
 
@@ -472,246 +439,68 @@ private lemma twoStep_localDifference_nonempty {N : Nat} [NeZero N]
       (D.fibre (D.index w + d₁ + d₂)).Nonempty ∧
       AlmostEvery (1 - theta) (D.fibre (D.index w + d₁ + d₂)) fun z =>
         phi z - phi w = psi d₁ + psi d₂ := by
-  let Q₁ : X → Prop := localDifferenceGood D phi psi theta d₁
-  let Q₂ : X → Prop := localDifferenceGood D phi psi theta d₂
-  let E₂ : X → Prop := fun w => w ∈ shiftEligible D W d₂
-  let R₂ : X → Prop := fun w => Q₂ w ∧ E₂ w
-  let S : X → Prop := fun w =>
-    w ∈ shiftEligible D W d₁ ∧
-      AlmostEvery (1 - 2 * Real.sqrt rho) (D.fibre (D.index w + d₁)) R₂
-  have hE₂ : AlmostEvery (1 - eta) W E₂ := almostEvery_shiftEligible D W B eta hregular d₂ hd₂
-  have hR₂base : AlmostEvery (1 - (theta + eta)) W R₂ :=
-    almostEvery_and theta eta W Q₂ E₂ hlocal₂ hE₂
-  have hR₂rho : AlmostEvery (1 - rho) W R₂ :=
-    almostEvery_weaken_error (theta + eta) rho W R₂ htheta_eta_rho hR₂base
-  have hshift : AlmostEvery (1 - (Real.sqrt rho + eta)) W S := by
-    have hs := shift_almostEvery_eligible D W B eta rho R₂ hregular hrho
-      hR₂rho d₁ hd₁
-    convert hs using 1
-    ring
-  have hboth : AlmostEvery (1 - (theta + (Real.sqrt rho + eta))) W
-      (fun w => Q₁ w ∧ S w) :=
-    almostEvery_and theta (Real.sqrt rho + eta) W Q₁ S hlocal₁ hshift
-  have hboth' : AlmostEvery (1 - 3 * Real.sqrt theta) W
-      (fun w => Q₁ w ∧ S w) :=
-    almostEvery_weaken_error (theta + (Real.sqrt rho + eta))
-      (3 * Real.sqrt theta) W (fun w => Q₁ w ∧ S w) houter hboth
-  apply almostEvery_mono (1 - 3 * Real.sqrt theta) W (fun w => Q₁ w ∧ S w)
-  · exact hboth'
-  · intro w _ hw
-    rcases hw with ⟨hQ₁, hwEligible, hR₂⟩
-    have hwEligible' : w ∈ W ∩ D.shift W (-d₁) := by
-      simpa only [shiftEligible] using hwEligible
-    obtain ⟨u, _, huindex⟩ := exists_shifted_representative D d₁ hwEligible'
-    have huFibre : u ∈ D.fibre (D.index w + d₁) :=
-      (mem_fibre_iff D _ _).mpr huindex
-    obtain ⟨w', hw'Fibre, hrel₁, hQ₂w', hw'Eligible⟩ :=
-      exists_and_of_almostEvery theta (2 * Real.sqrt rho)
-        (D.fibre (D.index w + d₁))
-        (fun w' => phi w' - phi w = psi d₁) R₂
-        ⟨u, huFibre⟩ hmiddle hQ₁ hR₂
-    have hw'index : D.index w' = D.index w + d₁ :=
-      (mem_fibre_iff D _ _).mp hw'Fibre
-    have hw'Eligible' : w' ∈ W ∩ D.shift W (-d₂) := by
-      simpa only [R₂, E₂, shiftEligible] using hw'Eligible
-    obtain ⟨z₀, _, hz₀index⟩ :=
-      exists_shifted_representative D d₂ hw'Eligible'
-    have hz₀Fibre : z₀ ∈ D.fibre (D.index w + d₁ + d₂) := by
-      apply (mem_fibre_iff D _ _).mpr
-      rw [hz₀index, hw'index, add_assoc]
-    refine ⟨⟨z₀, hz₀Fibre⟩, ?_⟩
-    have hQ₂w'' :
-        AlmostEvery (1 - theta) (D.fibre (D.index w + d₁ + d₂)) fun z =>
-          phi z - phi w' = psi d₂ := by
-      simpa only [R₂, Q₂, localDifferenceGood, hw'index, add_assoc] using hQ₂w'
-    exact almostEvery_mono (1 - theta) (D.fibre (D.index w + d₁ + d₂))
-      (fun z => phi z - phi w' = psi d₂)
-      (fun z => phi z - phi w = psi d₁ + psi d₂) hQ₂w''
-      (fun z _ hrel₂ => by
-        calc
-          phi z - phi w = (phi z - phi w') + (phi w' - phi w) := by abel
-          _ = psi d₂ + psi d₁ := by rw [hrel₂, hrel₁]
-          _ = psi d₁ + psi d₂ := add_comm _ _)
-
-/-- The zero-error endpoint of the two-step argument. -/
-private lemma twoStep_localDifference_exact {N : Nat} [NeZero N]
-    {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
-    (phi : X → ZMod N) (W : Finset X) (B : Finset (ZMod N))
-    (psi : ZMod N → ZMod N)
-    (hregular : IsSection10ShiftRegular D W B 0)
-    (d₁ d₂ : ZMod N) (hd₁ : d₁ ∈ B) (hd₂ : d₂ ∈ B)
-    (hlocal₁ : AlmostEvery 1 W (localDifferenceGood D phi psi 0 d₁))
-    (hlocal₂ : AlmostEvery 1 W (localDifferenceGood D phi psi 0 d₂))
-    (w : X) (hwW : w ∈ W) :
-    (D.fibre (D.index w + d₁ + d₂)).Nonempty ∧
-      ∀ z ∈ D.fibre (D.index w + d₁ + d₂),
-        phi z - phi w = psi d₁ + psi d₂ := by
-  let E₁ : X → Prop := fun x => x ∈ shiftEligible D W d₁
-  have hE₁ : AlmostEvery 1 W E₁ := by
-    simpa only [sub_zero] using almostEvery_shiftEligible D W B 0 hregular d₁ hd₁
-  have hwEligible : w ∈ W ∩ D.shift W (-d₁) := by
-    simpa only [E₁, shiftEligible] using of_almostEvery_one W E₁ hE₁ hwW
-  obtain ⟨w', hw'W, hw'index⟩ := exists_shifted_representative D d₁ hwEligible
-  have hw'Fibre : w' ∈ D.fibre (D.index w + d₁) :=
-    (mem_fibre_iff D _ _).mpr hw'index
-  have hQ₁ := of_almostEvery_one W (localDifferenceGood D phi psi 0 d₁) hlocal₁ hwW
-  have hrel₁ : phi w' - phi w = psi d₁ := by
-    exact of_almostEvery_one (D.fibre (D.index w + d₁))
-      (fun z => phi z - phi w = psi d₁) (by simpa [localDifferenceGood] using hQ₁)
-      hw'Fibre
-  let E₂ : X → Prop := fun x => x ∈ shiftEligible D W d₂
-  have hE₂ : AlmostEvery 1 W E₂ := by
-    simpa only [sub_zero] using almostEvery_shiftEligible D W B 0 hregular d₂ hd₂
-  have hw'Eligible : w' ∈ W ∩ D.shift W (-d₂) := by
-    simpa only [E₂, shiftEligible] using
-      of_almostEvery_one W E₂ hE₂ hw'W
-  obtain ⟨z₀, _, hz₀index⟩ :=
-    exists_shifted_representative D d₂ hw'Eligible
-  have hz₀Fibre : z₀ ∈ D.fibre (D.index w + d₁ + d₂) := by
-    apply (mem_fibre_iff D _ _).mpr
-    rw [hz₀index, hw'index, add_assoc]
-  refine ⟨⟨z₀, hz₀Fibre⟩, ?_⟩
-  have hQ₂ := of_almostEvery_one W (localDifferenceGood D phi psi 0 d₂) hlocal₂ hw'W
-  intro z hzFibre
-  have hrel₂ : phi z - phi w' = psi d₂ := by
-    exact of_almostEvery_one (D.fibre (D.index w + d₁ + d₂))
-      (fun z => phi z - phi w' = psi d₂) (by
-        simpa only [localDifferenceGood, hw'index, add_assoc, sub_zero] using hQ₂) hzFibre
-  calc
-    phi z - phi w = (phi z - phi w') + (phi w' - phi w) := by abel
-    _ = psi d₂ + psi d₁ := by rw [hrel₂, hrel₁]
-    _ = psi d₁ + psi d₂ := add_comm _ _
+  -- almost every `w` is good for `d₁`, and almost all of its `d₁`-fibre is good for `d₂`
+  have hS := shift_almostEvery_eligible D W B eta rho _ hregular hrho
+    (almostEvery_weaken_error _ _ W _ htheta_eta_rho (almostEvery_and _ _ W _ _ hlocal₂
+      (almostEvery_shiftEligible D W B eta hregular d₂ hd₂))) d₁ hd₁
+  rw [sub_sub] at hS
+  refine almostEvery_mono _ W _ _ (almostEvery_weaken_error _ _ W _ houter
+    (almostEvery_and _ _ W _ _ hlocal₁ hS)) fun w _ hw => ?_
+  obtain ⟨hQ₁, hwE, hR₂⟩ := hw
+  -- a point `w'` of the `d₁`-fibre that is good for `d₂` and has a nonempty `d₂`-fibre
+  obtain ⟨u, -, hu⟩ := exists_shifted_representative D d₁ hwE
+  obtain ⟨w', hw', hrel₁, hQ₂, hw'E⟩ := exists_and_of_almostEvery _ _ _ _ _
+    ⟨u, (mem_fibre_iff D _ _).mpr hu⟩ hmiddle hQ₁ hR₂
+  obtain ⟨z₀, -, hz₀⟩ := exists_shifted_representative D d₂ hw'E
+  have hfib : D.index w' + d₂ = D.index w + d₁ + d₂ := by
+    rw [(mem_fibre_iff D _ _).mp hw']
+  refine ⟨⟨z₀, (mem_fibre_iff D _ _).mpr (hz₀.trans hfib)⟩, ?_⟩
+  have hQ₂' : AlmostEvery (1 - theta) (D.fibre (D.index w + d₁ + d₂)) fun z =>
+      phi z - phi w' = psi d₂ := hfib ▸ hQ₂
+  exact almostEvery_mono _ _ _ _ hQ₂' fun z _ hz => by linear_combination hz + hrel₁
 
 theorem lemma_10_9_holds : lemma_10_9 := by
-  intro N _ X _ _ D phi W B B' psi eta
-  dsimp only
-  intro hWne hregular hmodel hsmall
-  let theta : Real := 10 * eta ^ ((1 : Real) / 5)
-  change IsSection10LocalDifferenceModel D phi W B B' psi theta at hmodel
-  change 6 * Real.sqrt theta < 1 at hsmall
-  rcases hmodel with ⟨hB'sub, _, hlocal⟩
-  unfold FreimanHom
-  rw [isAddFreimanHom_two]
-  refine ⟨Set.mapsTo_univ _ _, ?_⟩
-  intro d₁ hd₁ d₂ hd₂ d₃ hd₃ d₄ hd₄ hadd
-  have hd₁B : d₁ ∈ B := hB'sub hd₁
-  have hd₂B : d₂ ∈ B := hB'sub hd₂
-  have hd₃B : d₃ ∈ B := hB'sub hd₃
-  have hd₄B : d₄ ∈ B := hB'sub hd₄
-  have hregularParts := hregular
-  rcases hregularParts with ⟨_, _, _, hoverlap⟩
-  have hover := hoverlap d₁ hd₁B
-  have hinterNat : (W ∩ D.shift W d₁).card ≤ W.card :=
-    Finset.card_le_card Finset.inter_subset_left
-  have hinter : ((W ∩ D.shift W d₁).card : Real) ≤ W.card := by
-    exact_mod_cast hinterNat
-  have hWcard : (0 : Real) < W.card := by
-    exact_mod_cast Finset.card_pos.mpr hWne
-  have heta : 0 ≤ eta := by nlinarith
-  have hthetaDef : theta = 10 * eta ^ ((1 : Real) / 5) := rfl
-  have hrootNonneg : 0 ≤ eta ^ ((1 : Real) / 5) := Real.rpow_nonneg heta _
-  have hthetaNonneg : 0 ≤ theta := by rw [hthetaDef]; positivity
-  have hsqrtNonneg : 0 ≤ Real.sqrt theta := Real.sqrt_nonneg _
-  have hsquare : (Real.sqrt theta) ^ 2 = theta := Real.sq_sqrt hthetaNonneg
-  have hthetaLtOne : theta < 1 := by nlinarith [hsquare]
-  have hrootLtOne : eta ^ ((1 : Real) / 5) < 1 := by nlinarith [hthetaDef]
-  have hetaLtOne : eta < 1 :=
-    (Real.rpow_lt_one_iff' heta (by norm_num : (0 : Real) < (1 : Real) / 5)).mp
-      hrootLtOne
-  have hetaLeRoot : eta ≤ eta ^ ((1 : Real) / 5) :=
-    Real.self_le_rpow_of_le_one heta hetaLtOne.le (by norm_num)
-  have hetaLeThetaTenth : eta ≤ theta / 10 := by nlinarith [hthetaDef]
-  have hlocal₁ := hlocal d₁ hd₁
-  change AlmostEvery (1 - theta) W
-    (localDifferenceGood D phi psi theta d₁) at hlocal₁
-  have hlocal₂ := hlocal d₂ hd₂
-  change AlmostEvery (1 - theta) W
-    (localDifferenceGood D phi psi theta d₂) at hlocal₂
-  have hlocal₃ := hlocal d₃ hd₃
-  change AlmostEvery (1 - theta) W
-    (localDifferenceGood D phi psi theta d₃) at hlocal₃
-  have hlocal₄ := hlocal d₄ hd₄
-  change AlmostEvery (1 - theta) W
-    (localDifferenceGood D phi psi theta d₄) at hlocal₄
-  by_cases hthetaZero : theta = 0
-  · have hrootZero : eta ^ ((1 : Real) / 5) = 0 := by nlinarith [hthetaDef]
-    have hetaZero : eta = 0 :=
-      (Real.rpow_eq_zero heta (by norm_num : (1 : Real) / 5 ≠ 0)).mp hrootZero
-    have hregularZero : IsSection10ShiftRegular D W B 0 := by
-      simpa only [hetaZero] using hregular
-    have hlocal₁Zero : AlmostEvery 1 W (localDifferenceGood D phi psi 0 d₁) := by
-      simpa only [hthetaZero, sub_zero] using hlocal₁
-    have hlocal₂Zero : AlmostEvery 1 W (localDifferenceGood D phi psi 0 d₂) := by
-      simpa only [hthetaZero, sub_zero] using hlocal₂
-    have hlocal₃Zero : AlmostEvery 1 W (localDifferenceGood D phi psi 0 d₃) := by
-      simpa only [hthetaZero, sub_zero] using hlocal₃
-    have hlocal₄Zero : AlmostEvery 1 W (localDifferenceGood D phi psi 0 d₄) := by
-      simpa only [hthetaZero, sub_zero] using hlocal₄
-    obtain ⟨w, hwW⟩ := hWne
-    have hpair₁₂ := twoStep_localDifference_exact D phi W B psi hregularZero
-      d₁ d₂ hd₁B hd₂B hlocal₁Zero hlocal₂Zero w hwW
-    have hpair₃₄ := twoStep_localDifference_exact D phi W B psi hregularZero
-      d₃ d₄ hd₃B hd₄B hlocal₃Zero hlocal₄Zero w hwW
-    obtain ⟨z, hz⟩ := hpair₁₂.1
-    have htargetEq : D.index w + d₁ + d₂ = D.index w + d₃ + d₄ := by
-      simpa only [add_assoc] using congrArg (D.index w + ·) hadd
-    have hz' := hz
-    rw [htargetEq] at hz'
-    exact (hpair₁₂.2 z hz).symm.trans (hpair₃₄.2 z hz')
-  · have hthetaPos : 0 < theta := lt_of_le_of_ne hthetaNonneg (Ne.symm hthetaZero)
-    have hsqrtPos : 0 < Real.sqrt theta := Real.sqrt_pos.2 hthetaPos
-    have hthetaLtSqrtDivSix : theta < Real.sqrt theta / 6 := by
-      have hprod := mul_pos hsqrtPos (sub_pos.mpr hsmall)
-      nlinarith [hsquare]
-    let rho : Real := theta + eta
-    have hrhoPos : 0 < rho := by dsimp only [rho]; linarith
-    have hrhoNonneg : 0 ≤ rho := hrhoPos.le
-    have hrhoSquare : (Real.sqrt rho) ^ 2 = rho := Real.sq_sqrt hrhoNonneg
-    have hsqrtRhoNonneg : 0 ≤ Real.sqrt rho := Real.sqrt_nonneg _
-    have hsqrtRhoLe : Real.sqrt rho ≤ 2 * Real.sqrt theta := by
-      nlinarith [hrhoSquare, hsquare]
-    have houter : theta + (Real.sqrt rho + eta) ≤ 3 * Real.sqrt theta := by
-      nlinarith [hthetaLtSqrtDivSix, hetaLeThetaTenth, hsqrtRhoLe]
-    have hmiddle : theta + 2 * Real.sqrt rho < 1 := by
-      nlinarith [hthetaLtSqrtDivSix, hsqrtRhoLe, hsmall]
-    have hpair₁₂ := twoStep_localDifference_nonempty D phi W B psi eta theta rho
-      hregular hrhoPos le_rfl houter hmiddle d₁ d₂ hd₁B hd₂B hlocal₁ hlocal₂
-    have hpair₃₄ := twoStep_localDifference_nonempty D phi W B psi eta theta rho
-      hregular hrhoPos le_rfl houter hmiddle d₃ d₄ hd₃B hd₄B hlocal₃ hlocal₄
-    let P₁₂ : X → Prop := fun w =>
-      (D.fibre (D.index w + d₁ + d₂)).Nonempty ∧
-      AlmostEvery (1 - theta) (D.fibre (D.index w + d₁ + d₂)) fun z =>
-        phi z - phi w = psi d₁ + psi d₂
-    let P₃₄ : X → Prop := fun w =>
-      (D.fibre (D.index w + d₃ + d₄)).Nonempty ∧
-      AlmostEvery (1 - theta) (D.fibre (D.index w + d₃ + d₄)) fun z =>
-        phi z - phi w = psi d₃ + psi d₄
-    have hpair₁₂' : AlmostEvery (1 - 3 * Real.sqrt theta) W P₁₂ := by
-      simpa only [P₁₂] using hpair₁₂
-    have hpair₃₄' : AlmostEvery (1 - 3 * Real.sqrt theta) W P₃₄ := by
-      simpa only [P₃₄] using hpair₃₄
-    have houterIntersect : 3 * Real.sqrt theta + 3 * Real.sqrt theta < 1 := by
-      nlinarith
-    obtain ⟨w, _, hw₁₂, hw₃₄⟩ :=
-      exists_and_of_almostEvery (3 * Real.sqrt theta) (3 * Real.sqrt theta)
-        W P₁₂ P₃₄ hWne houterIntersect hpair₁₂' hpair₃₄'
-    rcases hw₁₂ with ⟨hfinalNonempty, hinner₁₂⟩
-    rcases hw₃₄ with ⟨_, hinner₃₄⟩
-    have htargetEq : D.index w + d₁ + d₂ = D.index w + d₃ + d₄ := by
-      simpa only [add_assoc] using congrArg (D.index w + ·) hadd
-    have hinner₃₄' : AlmostEvery (1 - theta)
-        (D.fibre (D.index w + d₁ + d₂)) fun z =>
-          phi z - phi w = psi d₃ + psi d₄ := by
-      rw [htargetEq]
-      exact hinner₃₄
-    have hinnerIntersect : theta + theta < 1 := by
-      nlinarith [hthetaLtSqrtDivSix, hsmall]
-    obtain ⟨z, _, hz₁₂, hz₃₄⟩ :=
-      exists_and_of_almostEvery theta theta
-        (D.fibre (D.index w + d₁ + d₂))
-        (fun z => phi z - phi w = psi d₁ + psi d₂)
-        (fun z => phi z - phi w = psi d₃ + psi d₄)
-        hfinalNonempty hinnerIntersect hinner₁₂ hinner₃₄'
-    exact hz₁₂.symm.trans hz₃₄
+  intro N _ X _ _ D phi W B B' psi eta theta hWne hregular hmodel hsmall
+  obtain ⟨hB'sub, -, hlocal⟩ := hmodel
+  refine isAddFreimanHom_two.mpr ⟨Set.mapsTo_univ _ _,
+    fun d₁ hd₁ d₂ hd₂ d₃ hd₃ d₄ hd₄ hadd => ?_⟩
+  -- `0 ≤ eta` by the overlap bound; then `theta < 1 / 36` and `eta ≤ theta / 10`
+  have heta : 0 ≤ eta := by
+    have h : ((W ∩ D.shift W d₁).card : Real) ≤ W.card := by
+      exact_mod_cast card_le_card inter_subset_left
+    nlinarith [hregular.2.2.2 d₁ (hB'sub hd₁),
+      (by exact_mod_cast hWne.card_pos : (0 : Real) < W.card)]
+  have hθ : theta = 10 * eta ^ ((1 : Real) / 5) := rfl
+  have hθ0 : 0 ≤ theta := by positivity
+  have hθ1 : theta < 1 / 36 := by
+    have h := Real.lt_sq_of_sqrt_lt (show Real.sqrt theta < 1 / 6 by linarith)
+    norm_num at h
+    linarith
+  have hηθ : eta ≤ theta / 10 := by
+    have h := (Real.rpow_lt_one_iff' heta (by norm_num : (0 : Real) < 1 / 5)).mp (by linarith)
+    linarith [Real.self_le_rpow_of_le_one heta h.le (by norm_num : (1 : Real) / 5 ≤ 1)]
+  -- Raising `theta` to some `θ ∈ (0, 1/36)` only weakens the local model, and `0 < θ` lets the
+  -- two-step argument run without a separate exact case `theta = 0`.
+  obtain ⟨θ, hθθ, hθpos, hθ36⟩ : ∃ θ, theta ≤ θ ∧ 0 < θ ∧ θ < 1 / 36 :=
+    ⟨(theta + 1 / 36) / 2, by linarith, by linarith, by linarith⟩
+  have hs := Real.sqrt_pos.2 hθpos
+  have hsq := Real.sq_sqrt hθpos.le
+  have hs6 : Real.sqrt θ < 1 / 6 := (Real.sqrt_lt' (by norm_num)).mpr (by norm_num; linarith)
+  have hθs : θ < Real.sqrt θ / 6 := by linarith [mul_pos hs (sub_pos.mpr hs6)]
+  have hρs : Real.sqrt (θ + eta) ≤ 2 * Real.sqrt θ :=
+    Real.sqrt_le_iff.mpr ⟨by positivity, by linarith⟩
+  have hloc (d : ZMod N) (hd : d ∈ B') :
+      AlmostEvery (1 - θ) W (localDifferenceGood D phi psi θ d) :=
+    almostEvery_weaken_error _ _ W _ hθθ (almostEvery_mono _ W _ _ (hlocal d hd)
+      fun _ _ h => almostEvery_weaken_error _ _ _ _ hθθ h)
+  have hpair (a b : ZMod N) (ha : a ∈ B') (hb : b ∈ B') :=
+    twoStep_localDifference_nonempty D phi W B psi eta θ (θ + eta) hregular (by linarith)
+      le_rfl (by linarith) (by linarith) a b (hB'sub ha) (hB'sub hb) (hloc a ha) (hloc b hb)
+  obtain ⟨w, -, ⟨hne, h₁₂⟩, -, h₃₄⟩ := exists_and_of_almostEvery _ _ W _ _ hWne
+    (by linarith) (hpair d₁ d₂ hd₁ hd₂) (hpair d₃ d₄ hd₃ hd₄)
+  rw [show D.index w + d₃ + d₄ = D.index w + d₁ + d₂ by
+    rw [add_assoc, add_assoc, hadd]] at h₃₄
+  obtain ⟨z, -, hz₁₂, hz₃₄⟩ := exists_and_of_almostEvery _ _ _ _ _ hne (by linarith) h₁₂ h₃₄
+  exact hz₁₂.symm.trans hz₃₄
 
 end LeanProofs.GowersSzemeredi

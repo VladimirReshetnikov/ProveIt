@@ -102,8 +102,7 @@ theorem parityCharacter_eq_prod {N k : Nat}
         if e i then (-1 : ZMod N) else 1 := by
   simp only [parityCharacter, boolWeight, countWhere]
   rw [← Finset.prod_const, Finset.prod_filter]
-  apply Finset.prod_congr rfl
-  intro i _
+  refine Finset.prod_congr rfl fun i _ => ?_
   by_cases h : e i = true <;> simp [h]
 
 theorem walshProduct_eq_parity {N k : Nat}
@@ -115,8 +114,7 @@ theorem walshProduct_eq_parity {N k : Nat}
       (-1 : ZMod N) ^ k =
         ∏ _i : Fin k, (-1 : ZMod N) := by simp
   rw [hconst, ← Finset.prod_mul_distrib]
-  apply Finset.prod_congr rfl
-  intro i _
+  refine Finset.prod_congr rfl fun i _ => ?_
   cases e i <;> simp [walshSign]
 
 /-- **Corollary 15.2 without the ternary hypothesis.** Constancy of all

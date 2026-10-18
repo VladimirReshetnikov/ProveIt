@@ -69,10 +69,7 @@ theorem factorial_sq_mul_two_pow_le : ∀ d : Nat, d.factorial ^ 2 * 2 ^ d ≤ 2
         Nat.mul_le_mul (factorial_sq_mul_two_pow_le n)
           (Nat.mul_le_mul_right 2
             (Nat.pow_le_pow_left (Nat.succ_le_of_lt (Nat.lt_two_pow_self (n := n))) 2))
-      _ = 2 ^ ((n + 1) * (n + 1)) := by
-        rw [← pow_mul, ← pow_succ, ← pow_add]
-        congr 1
-        ring
+      _ = 2 ^ ((n + 1) * (n + 1)) := by ring
 
 /-- The log-degree of the partition constant of the step: `(k+3)² + (k+2)(k+1)`. -/
 def partDeg (k : Nat) : Nat := (k + 3) ^ 2 + (k + 2) * (k + 1)

@@ -69,81 +69,50 @@ theorem single_piece_lift_core_rem_scheme {k : Nat} (hk : 1 ≤ k) {delta zeta :
         singlePieceTheta (spectrumPieceRho cR (ρ1)) 1 *
             Sc.dens (singlePieceTheta (spectrumPieceRho cR (ρ1)) 1) * S.carrier.card ≤
           (B.filter fun z => z ∈ S.carrier ∧ phi z = mu z).card := by
-  have hk0 : 0 < k := hk
   obtain ⟨R1, Mrem, hR1, hR1w, hMrem, hR1c⟩ := hrem
   set E1 := B1.filter fun x => x ∈ R1.carrier ∧ section16PhiRemainder phi x0 x = Mrem x
-    with _
   have hR1w4 : 4 ≤ R1.width := hL4.trans hR1w
   have hR1ne : R1.carrier.Nonempty :=
     R1.carrier_nonempty_of_axis_pos fun z => lt_of_lt_of_le (by omega) (R1.width_le_axis_length z)
-  have hR1pos : (0 : Real) < R1.carrier.card := by exact_mod_cast hR1ne.card_pos
-  have hE1R1 : E1 ⊆ R1.carrier := fun x hx => (Finset.mem_filter.mp hx).2.1
-  have hE1ne : E1.Nonempty := by
-    rw [← Finset.card_pos]
-    exact Nat.cast_pos.mp (lt_of_lt_of_le (mul_pos hρ1.1 hR1pos) hR1c)
+  have hE1ne : E1.Nonempty := Finset.card_pos.mp (Nat.cast_pos.mp
+    ((mul_pos hρ1.1 (Nat.cast_pos.mpr hR1ne.card_pos)).trans_le hR1c))
   -- 2. a short-parent dense cell
-  obtain ⟨Q, hQ, -, hQw, hshort, hQI, hQstep, hQd, hQc⟩ :=
-    exists_short_parent_dense_cell hk0 R1 hR1 hR1w4 E1 hE1R1 hE1ne hR1c
+  obtain ⟨Q, hQ, -, hQw, hshort, hQI, hQstep, hQd, hQc⟩ := exists_short_parent_dense_cell hk R1
+    hR1 hR1w4 E1 (fun x hx => (Finset.mem_filter.mp hx).2.1) hE1ne hR1c
   set I := R1.axis (Fin.last k)
-  have hI : I.IsProper := hR1 (Fin.last k)
   have hIlen : R1.width ≤ I.length := R1.width_le_axis_length (Fin.last k)
   set E2 := E1.filter fun z => z ∈ lastProductSet Q.carrier I.carrier
   set E := E2.image fun z => (section16Init z, section16Last z)
-  have hEcard : E.card = E2.card := Finset.card_image_of_injective _ initLast_injective
-  have hEmem : ∀ p ∈ E, appendCoordinate p.1 p.2 ∈ E2 := by
-    intro p hp
+  have hEmem : ∀ p ∈ E, appendCoordinate p.1 p.2 ∈ E2 := fun p hp => by
     obtain ⟨z, hz, rfl⟩ := Finset.mem_image.mp hp
     simpa only [appendCoordinate_init_last] using hz
-  have hEB1' : ∀ p ∈ E, appendCoordinate p.1 p.2 ∈ B1 := fun p hp =>
+  have hEB1 : ∀ p ∈ E, appendCoordinate p.1 p.2 ∈ B1 := fun p hp =>
     (Finset.mem_filter.mp (Finset.mem_filter.mp (hEmem p hp)).1).1
-  have hEB1 : ∀ p ∈ E, appendCoordinate p.1 p.2 ∈ section16GoodDomain B H Y x0 := fun p hp =>
-    hB1 (hEB1' p hp)
-  have hEsub : E ⊆ Q.carrier ×ˢ I.carrier := by
-    intro p hp
-    have h := (Finset.mem_filter.mp (hEmem p hp)).2
-    simp only [lastProductSet, Finset.mem_filter, Finset.mem_univ, true_and,
-      section16Init_appendCoordinate, section16Last_appendCoordinate] at h
-    exact Finset.mem_product.mpr h
+  have hEsub : E ⊆ Q.carrier ×ˢ I.carrier := fun p hp => by
+    simpa [lastProductSet] using (Finset.mem_filter.mp (hEmem p hp)).2
   have hEc : ρ1 * Q.carrier.card * I.carrier.card ≤ E.card := by
-    rw [hEcard, mul_assoc]
-    have h := hQc
-    rw [lastProductSet_card] at h
-    push_cast at h
-    exact h
-  have hgoodpair : ∀ p ∈ E, Section16GoodInducedPair B H Y x0 (p.1, p.2) := by
-    intro p hp
-    have h := (Finset.mem_filter.mp (hEB1 p hp)).2
-    simpa only [section16Init_appendCoordinate, section16Last_appendCoordinate] using h
-  have hvertex : ∀ p ∈ E, appendCoordinate (p.1 + x0) p.2 ∈ B := by
-    intro p hp
-    have h := section16GoodDomain_vertex_mem B H Y x0 (hEB1 p hp) (fun _ => true)
+    rw [show E.card = E2.card from Finset.card_image_of_injective _ initLast_injective, mul_assoc]
+    simpa only [lastProductSet_card, Nat.cast_mul] using hQc
+  have hgoodpair : ∀ p ∈ E, Section16GoodInducedPair B H Y x0 (p.1, p.2) := fun p hp => by
+    simpa only [section16Init_appendCoordinate, section16Last_appendCoordinate] using
+      (Finset.mem_filter.mp (hB1 (hEB1 p hp))).2
+  have hcomm : ∀ h : Point N k, (fun i => x0 i + h i) = h + x0 :=
+    fun h => funext fun i => add_comm _ _
+  have hvertex : ∀ p ∈ E, appendCoordinate (p.1 + x0) p.2 ∈ B := fun p hp => by
+    have h := section16GoodDomain_vertex_mem B H Y x0 (hB1 (hEB1 p hp)) (fun _ => true)
     simp only [if_true, section16Init_appendCoordinate, section16Last_appendCoordinate] at h
-    have heq : (fun i => x0 i + p.1 i) = p.1 + x0 := by
-      funext i
-      simp [add_comm]
-    rw [heq] at h
-    exact h
-  -- 3. the spectrum step
-  set phi1 : Point N k × ZMod N → ZMod N :=
-    fun p => section16PhiOne phi x0 (appendCoordinate p.1 p.2) with hphi1def
+    rwa [hcomm p.1] at h
+  -- 3. the spectrum step, for `φ₁(h, x) = φ(h + x₀, x)`
+  set phi1 : Point N k × ZMod N → ZMod N := fun p => phi (appendCoordinate (p.1 + x0) p.2)
   have hident : ∀ p ∈ E, phi1 p =
-      (-1 : ZMod N) ^ k * phiPrime p.1 p.2 + Mrem (appendCoordinate p.1 p.2) := by
-    intro p hp
-    have h1 := hid _ (hEB1 p hp)
-    have h2 := (Finset.mem_filter.mp (Finset.mem_filter.mp (hEmem p hp)).1).2.2
-    simp only [section16PhiPrimeLift, section16Init_appendCoordinate,
+      (-1 : ZMod N) ^ k * phiPrime p.1 p.2 + Mrem (appendCoordinate p.1 p.2) := fun p hp => by
+    have h1 := hid _ (hB1 (hEB1 p hp))
+    simp only [section16PhiOne, section16PhiPrimeLift, section16Init_appendCoordinate,
       section16Last_appendCoordinate] at h1
-    rw [hphi1def]
-    dsimp only
-    rw [h1, h2]
-  have hK : ∀ h x, (h, x) ∈ E → ∀ r ∈ section16LargeSpectrum B h delta,
-      (h, r) ∈ section16SpectrumRelation B delta := by
-    intro h x _ r hr
-    simp only [section16SpectrumRelation, Finset.mem_filter, Finset.mem_univ, true_and]
-    exact hr
+    rw [hcomm p.1, (Finset.mem_filter.mp (Finset.mem_filter.mp (hEmem p hp)).1).2.2] at h1
+    exact h1
   have hA : ∀ p ∈ E, p.2 ∈ (Finset.univ.filter fun x =>
-      (p.1, x) ∈ section16InducedDomain B H Y) := by
-    intro p hp
+      (p.1, x) ∈ section16InducedDomain B H Y) := fun p hp => by
     obtain ⟨hpH, C0, hC0, -, hC0x⟩ := hgoodpair p hp
     simp only [Finset.mem_filter, Finset.mem_univ, true_and, section16InducedDomain]
     exact ⟨hpH, C0, hC0, hC0x⟩
@@ -152,62 +121,41 @@ theorem single_piece_lift_core_rem_scheme {k : Nat} (hk : 1 ≤ k) {delta zeta :
       LinearOn (J.carrier ∩ Finset.univ.filter fun x =>
         (h, x) ∈ section16InducedDomain B H Y) (phiPrime h) := by
     intro h x hx v hv J hJ hd
-    have hhH : h ∈ H := (hgoodpair (h, x) hx).1
-    have hlin := hselection.2 h hhH v hv J.step hd J rfl hJ
-    simpa only [Finset.inter_filter, Finset.inter_univ] using hlin
-  have hsl' : ∀ x ∈ I.carrier, Sc.SL (DomS x) (fun h => phi1 (h, x)) := by
-    intro x _
-    refine Sc.congr (hsl x) (fun h => ?_)
-    rw [hphi1def]
-    simp only [section16PhiOne, section16Init_appendCoordinate, section16Last_appendCoordinate]
-    congr 2
-    funext i
-    simp [add_comm]
-  have hDom : ∀ p ∈ E, p.1 ∈ DomS p.2 := by
-    intro p hp
-    have h := hB1S _ (hEB1' p hp)
-    simpa only [section16Init_appendCoordinate, section16Last_appendCoordinate] using h
-  have hEG : ∀ p ∈ E, p.1 ∈ DomG := by
-    intro p hp
-    have h := hB1G _ (hEB1' p hp)
-    simpa only [section16Init_appendCoordinate] using h
-  have hQwidth : ⌈(ω1 : Real) / 8⌉₊ ≤
-      Q.width := by
-    apply Nat.ceil_le.mpr
-    exact le_trans (div_le_div_of_nonneg_right (by exact_mod_cast hR1w) (by norm_num)) hQw
+    simpa only [Finset.inter_filter, Finset.inter_univ] using
+      hselection.2 h (hgoodpair (h, x) hx).1 v hv J.step hd J rfl hJ
+  have hDom : ∀ p ∈ E, p.1 ∈ DomS p.2 := fun p hp => by
+    simpa only [section16Init_appendCoordinate, section16Last_appendCoordinate] using
+      hB1S _ (hEB1 p hp)
+  have hEG : ∀ p ∈ E, p.1 ∈ DomG := fun p hp => by
+    simpa only [section16Init_appendCoordinate] using hB1G _ (hEB1 p hp)
+  have hQwidth : ⌈(ω1 : Real) / 8⌉₊ ≤ Q.width := Nat.ceil_le.mpr
+    ((div_le_div_of_nonneg_right (by exact_mod_cast hR1w) (by norm_num)).trans hQw)
   obtain ⟨q, hq, S, mu, hS, -, hSw, hmu, hcount⟩ :=
-    single_piece_of_spectrum_cover_for_scheme hk0 hcR eps thr hretile hz hz2 Sc
-      Q I hQ hI hQd (by rw [hQstep]; exact R1.axis_step _) hshort hQI
+    single_piece_of_spectrum_cover_for_scheme hk hcR eps thr hretile hz hz2 Sc
+      Q I hQ (hR1 _) hQd (by rw [hQstep]; exact R1.axis_step _) hshort hQI
       (by omega) E hEsub hρ1.1 hρ1.2 hEc phi1 phiPrime ((-1 : ZMod N) ^ k) Mrem hMrem hident
       (section16SpectrumRelation B delta) DomG hcovG hEG
-      (fun h => section16LargeSpectrum B h delta) hK
+      (fun h => section16LargeSpectrum B h delta)
+      (fun h x _ r hr => Finset.mem_filter.mpr ⟨Finset.mem_univ _, hr⟩)
       (fun h => Finset.univ.filter fun x => (h, x) ∈ section16InducedDomain B H Y) hA hlinear
-      DomS hsl' hDom m hm1 (hm.trans (hwR _ hQwidth)) hpar
+      DomS (fun x _ => hsl x) hDom m hm1 (hm.trans (hwR _ hQwidth)) hpar
   -- 4. translate the piece of `φ₁` back to `φ`
   set t : Point N (k + 1) := appendCoordinate x0 0 with htdef
-  refine ⟨q, hq, S.translate t, fun z => mu (z + -t), hS.translate t, hmu.translate (-t), ?_, ?_⟩
-  · rw [Box.translate_width]; exact hSw
-  · rw [Box.translate_card]
-    refine hcount.trans ?_
-    have hshift : ∀ p : Point N k × ZMod N,
-        appendCoordinate p.1 p.2 + t = appendCoordinate (p.1 + x0) p.2 := by
-      intro p
-      rw [htdef, appendCoordinate_add, add_zero]
-    exact_mod_cast Finset.card_le_card_of_injOn
-      (fun p : Point N k × ZMod N => appendCoordinate p.1 p.2 + t)
-      (fun p hp => by
-        obtain ⟨hpE, hpS, hpmu⟩ := Finset.mem_filter.mp hp
-        refine Finset.mem_filter.mpr ⟨?_, ?_, ?_⟩
-        · dsimp only; rw [hshift]; exact hvertex p hpE
-        · exact (Box.translate_mem_carrier S t _).mpr hpS
-        · dsimp only
-          rw [add_neg_cancel_right, hshift, ← hpmu, hphi1def]
-          simp only [section16PhiOne, section16Init_appendCoordinate,
-            section16Last_appendCoordinate]
-          congr 2
-          funext i
-          simp [add_comm])
-      (fun p _ p' _ h => appendCoordinate_pair_injective (add_right_cancel h))
+  have hshift : ∀ p : Point N k × ZMod N,
+      appendCoordinate p.1 p.2 + t = appendCoordinate (p.1 + x0) p.2 := fun p => by
+    rw [htdef, appendCoordinate_add, add_zero]
+  refine ⟨q, hq, S.translate t, fun z => mu (z + -t), hS.translate t, hmu.translate (-t),
+    by rw [Box.translate_width]; exact hSw, ?_⟩
+  rw [Box.translate_card]
+  refine hcount.trans ?_
+  exact_mod_cast Finset.card_le_card_of_injOn
+    (fun p : Point N k × ZMod N => appendCoordinate p.1 p.2 + t)
+    (fun p hp => by
+      obtain ⟨hpE, hpS, hpmu⟩ := Finset.mem_filter.mp hp
+      refine Finset.mem_filter.mpr ⟨?_, (Box.translate_mem_carrier S t _).mpr hpS, ?_⟩
+      · dsimp only; rw [hshift]; exact hvertex p hpE
+      · dsimp only; rw [add_neg_cancel_right, hshift]; exact hpmu)
+    (fun p _ p' _ h => appendCoordinate_pair_injective (add_right_cancel h))
 
 /-- The deletion budget of each good set: `θ₂/(2(2^k+1))`. -/
 def globalBudget (theta gamma : Real) (k : Nat) : Real :=
@@ -263,125 +211,58 @@ theorem section16_retained_domain_card {N k : Nat} [NeZero N]
   set B1' := B1.filter fun z => section16Init z ∈ JΔ ∧
       (∀ e ∈ E, selectedCoordinates
         (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∈ Jv e) ∧
-      section16Init z + x0 ∈ Js (section16Last z) with _
+      section16Init z + x0 ∈ Js (section16Last z) with hB1'
   change theta2 / 2 * (N : Real) ^ (k + 1) ≤ B1'.card
-  -- the three bad sets are sparse
-  have hbadΔ : ((Finset.univ.filter fun z : Point N (k + 1) =>
-      section16Init z ∉ JΔ).card : Real) ≤ budget * (N : Real) ^ (k + 1) := by
-    have h := card_filter_selected_not_mem_le (n := k + 1) (l := k)
-      ⟨Fin.castSucc, Fin.castSucc_injective k⟩ 0 JΔ hJΔ (by omega)
-    have hfun : ∀ z : Point N (k + 1),
-        (fun i => z ((⟨Fin.castSucc, Fin.castSucc_injective k⟩ : Fin k ↪ Fin (k + 1)) i) +
-          (0 : Point N k) i) = section16Init z := fun z => by
-      funext i; simp [section16Init]
-    simp only [hfun] at h
-    exact h
-  have hbadV : ∀ e ∈ E, ((Finset.univ.filter fun z : Point N (k + 1) => selectedCoordinates
-      (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∉ Jv e).card : Real) ≤
-      budget * (N : Real) ^ (k + 1) := by
-    intro e he
-    have hne : e ≠ fun _ => true := (Finset.mem_filter.mp he).2
-    have hlk : (section16VertexDirections e).card ≤ k + 1 := by
-      have := section16VertexDirections_card_lt hne
-      omega
-    exact card_filter_selected_not_mem_le
-      (coordinateSubsetFace (section16VertexDirections e) t).free
-      (fun i => t ((coordinateSubsetFace (section16VertexDirections e) t).free i))
-      (Jv e) (hJv e hne) hlk
-  have hbadS : ((Finset.univ.filter fun z : Point N (k + 1) =>
-      section16Init z + x0 ∉ Js (section16Last z)).card : Real) ≤
-      budget * (N : Real) ^ (k + 1) := by
-    rw [Finset.card_eq_sum_card_fiberwise (f := section16Last) (t := Finset.univ)
-      (fun _ _ => Finset.mem_univ _)]
-    push_cast
-    have hfib : ∀ x : ZMod N, (((Finset.univ.filter fun z : Point N (k + 1) =>
-        section16Init z + x0 ∉ Js (section16Last z)).filter fun z => section16Last z = x).card :
-          Real) ≤ budget * (N : Real) ^ k := by
-      intro x
-      have h1 : ((Finset.univ.filter fun z : Point N (k + 1) =>
-          section16Init z + x0 ∉ Js (section16Last z)).filter fun z =>
-            section16Last z = x).card ≤
-          (Finset.univ.filter fun h : Point N k => h + x0 ∉ Js x).card := by
-        refine Finset.card_le_card_of_injOn section16Init (fun z hz => ?_) ?_
-        · obtain ⟨hz1, hz2⟩ := Finset.mem_filter.mp hz
-          have hz1' := (Finset.mem_filter.mp hz1).2
-          rw [hz2] at hz1'
-          exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hz1'⟩
-        · intro z hz z' hz' hzz
-          apply initLast_injective
-          simp only [Prod.mk.injEq]
-          exact ⟨hzz, ((Finset.mem_filter.mp hz).2).trans ((Finset.mem_filter.mp hz').2).symm⟩
-      have h2 := card_filter_selected_not_mem_le (n := k) (l := k)
-        (Function.Embedding.refl (Fin k)) x0 (Js x) (hJs x) le_rfl
-      simp only [Function.Embedding.refl_apply] at h2
-      have h1' : (((Finset.univ.filter fun z : Point N (k + 1) =>
-          section16Init z + x0 ∉ Js (section16Last z)).filter fun z =>
-            section16Last z = x).card : Real) ≤
-          ((Finset.univ.filter fun h : Point N k => h + x0 ∉ Js x).card : Real) := by
-        exact_mod_cast h1
-      exact h1'.trans h2
-    calc ∑ x : ZMod N, (((Finset.univ.filter fun z : Point N (k + 1) =>
-          section16Init z + x0 ∉ Js (section16Last z)).filter fun z =>
-            section16Last z = x).card : Real)
-        ≤ ∑ _x : ZMod N, budget * (N : Real) ^ k := Finset.sum_le_sum fun x _ => hfib x
-      _ = budget * (N : Real) ^ (k + 1) := by
-          rw [Finset.sum_const, Finset.card_univ, ZMod.card, nsmul_eq_mul, pow_succ]; ring
-  -- the retained domain is dense
-  have hE : (E.card : Real) = 2 ^ k - 1 := by
-    rw [hEdef, nonTopVertices_card]
-    have : 1 ≤ 2 ^ k := Nat.one_le_two_pow
-    push_cast [this]
-    ring
-  have hcover : B1 ⊆ B1' ∪ (Finset.univ.filter fun z : Point N (k + 1) =>
-      section16Init z ∉ JΔ) ∪ (E.biUnion fun e => Finset.univ.filter fun z : Point N (k + 1) =>
-        selectedCoordinates (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∉
-          Jv e) ∪ (Finset.univ.filter fun z : Point N (k + 1) =>
-        section16Init z + x0 ∉ Js (section16Last z)) := by
-    intro z hz
-    by_cases h1 : section16Init z ∈ JΔ
-    · by_cases h2 : ∀ e ∈ E, selectedCoordinates
-          (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∈ Jv e
-      · by_cases h3 : section16Init z + x0 ∈ Js (section16Last z)
-        · exact Finset.mem_union_left _ (Finset.mem_union_left _ (Finset.mem_union_left _
-            (Finset.mem_filter.mpr ⟨hz, h1, h2, h3⟩)))
-        · exact Finset.mem_union_right _ (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h3⟩)
-      · push_neg at h2
-        obtain ⟨e, he, hbad⟩ := h2
-        exact Finset.mem_union_left _ (Finset.mem_union_right _
-          (Finset.mem_biUnion.mpr ⟨e, he, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hbad⟩⟩))
-    · exact Finset.mem_union_left _ (Finset.mem_union_left _ (Finset.mem_union_right _
-        (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h1⟩)))
-  set X1 := Finset.univ.filter fun z : Point N (k + 1) => section16Init z ∉ JΔ
+  set X1 := Finset.univ.filter fun z : Point N (k + 1) => section16Init z ∉ JΔ with hX1
   set X2 := E.biUnion fun e => Finset.univ.filter fun z : Point N (k + 1) =>
-      selectedCoordinates (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∉
-        Jv e with _
+    selectedCoordinates (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∉
+      Jv e with hX2
   set X3 := Finset.univ.filter fun z : Point N (k + 1) =>
-      section16Init z + x0 ∉ Js (section16Last z) with _
-  have hc := Finset.card_le_card hcover
-  have hu1 := Finset.card_union_le (B1' ∪ X1 ∪ X2) X3
-  have hu2 := Finset.card_union_le (B1' ∪ X1) X2
-  have hu3 := Finset.card_union_le B1' X1
-  have hb := Finset.card_biUnion_le (s := E) (t := fun e => Finset.univ.filter
-    fun z : Point N (k + 1) => selectedCoordinates
-      (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∉ Jv e)
-  have hbR : (X2.card : Real) ≤ E.card * (budget * (N : Real) ^ (k + 1)) := by
-    have hb' : (X2.card : Real) ≤ ∑ e ∈ E, ((Finset.univ.filter fun z : Point N (k + 1) =>
-        selectedCoordinates (coordinateSubsetFace (section16VertexDirections e) t).free
-          (z + t) ∉ Jv e).card : Real) := by
-      exact_mod_cast hb
-    refine hb'.trans ?_
-    calc ∑ e ∈ E, ((Finset.univ.filter fun z : Point N (k + 1) => selectedCoordinates
-          (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∉
-            Jv e).card : Real)
-        ≤ ∑ _e ∈ E, budget * (N : Real) ^ (k + 1) := Finset.sum_le_sum hbadV
-      _ = _ := by rw [Finset.sum_const, nsmul_eq_mul]
-  have h' : (B1.card : Real) ≤ (B1'.card : Real) + (X1.card : Real) + (X2.card : Real) +
-      (X3.card : Real) := by
-    have h := (hc.trans hu1).trans (Nat.add_le_add_right (hu2.trans
-      (Nat.add_le_add_right hu3 _)) _)
-    exact_mod_cast h
-  rw [hE] at hbR
-  have hbudgetN := congrArg (fun x : Real => x * (N : Real) ^ (k + 1)) hbudget
-  nlinarith
+    section16Init z + x0 ∉ Js (section16Last z) with hX3
+  -- the three bad sets are sparse
+  have h1 : (X1.card : Real) ≤ budget * (N : Real) ^ (k + 1) := by
+    refine le_trans (Nat.cast_le.mpr (Finset.card_le_card fun z hz => ?_))
+      (card_filter_selected_not_mem_le (n := k + 1) ⟨Fin.castSucc, Fin.castSucc_injective k⟩ 0 JΔ
+        hJΔ (by omega))
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Pi.zero_apply, add_zero]
+    exact (Finset.mem_filter.mp hz).2
+  have h2 : (X2.card : Real) ≤ (2 ^ k - 1) * (budget * (N : Real) ^ (k + 1)) := by
+    have hE : (E.card : Real) = 2 ^ k - 1 := by
+      rw [hEdef, nonTopVertices_card, Nat.cast_sub Nat.one_le_two_pow]; norm_num
+    refine (Nat.cast_le.mpr Finset.card_biUnion_le).trans ?_
+    rw [Nat.cast_sum, ← hE, ← nsmul_eq_mul]
+    refine Finset.sum_le_card_nsmul _ _ _ fun e he => ?_
+    have hne := (Finset.mem_filter.mp he).2
+    exact card_filter_selected_not_mem_le _ _ (Jv e) (hJv e hne)
+      (by have := section16VertexDirections_card_lt hne; omega)
+  have h3 : (X3.card : Real) ≤ budget * (N : Real) ^ (k + 1) := by
+    rw [Finset.card_eq_sum_card_fiberwise (f := section16Last) (t := Finset.univ)
+      (fun _ _ => Finset.mem_univ _), Nat.cast_sum]
+    refine (Finset.sum_le_card_nsmul _ _ (budget * (N : Real) ^ k) fun x _ => ?_).trans_eq
+      (by rw [Finset.card_univ, ZMod.card, nsmul_eq_mul]; ring)
+    refine le_trans (Nat.cast_le.mpr (Finset.card_le_card_of_injOn section16Init (fun z hz => ?_)
+      fun z hz z' hz' hzz => ?_)) (card_filter_selected_not_mem_le
+        (Function.Embedding.refl _) x0 (Js x) (hJs x) le_rfl)
+    · simp only [hX3, Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and] at hz ⊢
+      rw [← hz.2]; exact hz.1
+    · exact initLast_injective (Prod.ext hzz
+        ((Finset.mem_filter.mp hz).2.trans (Finset.mem_filter.mp hz').2.symm))
+  -- the retained domain is dense
+  have hcover : B1 ⊆ B1' ∪ X1 ∪ X2 ∪ X3 := by
+    intro z hz
+    simp only [hB1', hX1, hX2, hX3, Finset.mem_union, Finset.mem_filter, Finset.mem_univ,
+      true_and, Finset.mem_biUnion]
+    by_cases h : ∀ e ∈ E, selectedCoordinates
+        (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∈ Jv e
+    · tauto
+    · obtain ⟨e, he, hbad⟩ := not_forall₂.mp h
+      exact Or.inl (Or.inr ⟨e, he, hbad⟩)
+  have hc : (B1.card : Real) ≤ B1'.card + X1.card + X2.card + X3.card := by
+    exact_mod_cast (Finset.card_le_card hcover).trans ((Finset.card_union_le _ _).trans
+      (Nat.add_le_add_right ((Finset.card_union_le _ _).trans
+        (Nat.add_le_add_right (Finset.card_union_le _ _) _)) _))
+  have hbudgetN : budget * (2 ^ k + 1) * (N : Real) ^ (k + 1) =
+      theta2 / 2 * (N : Real) ^ (k + 1) := by rw [hbudget]
+  linarith
 
 end LeanProofs.GowersSzemeredi

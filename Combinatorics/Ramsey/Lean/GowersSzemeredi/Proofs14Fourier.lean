@@ -136,54 +136,15 @@ private lemma prop141_initial_bound {N p : Nat} [NeZero N]
       ∑ y : Fin p → ZMod N, ∑ x : Fin p → ZMod N,
         ∑ u : Fin p → ZMod N, ∑ w : Fin p → ZMod N,
           ‖∑ h : ZMod N, prop141InnerTerm lambda f sigma y x u w h‖ := by
-  let energy : Real := ∑ h : ZMod N, lambda h * ∏ i : Fin p,
-    ‖fourier (firstCoordinateCorrelation (f i) h) (sigma i h)‖ ^ 2
-  have henergy : 0 ≤ energy := by
-    dsimp only [energy]
-    apply Finset.sum_nonneg
-    intro h _
-    exact mul_nonneg (hlambda h) (Finset.prod_nonneg fun _ _ => sq_nonneg _)
-  calc
-    (∑ h : ZMod N, lambda h * ∏ i : Fin p,
-        ‖fourier (firstCoordinateCorrelation (f i) h) (sigma i h)‖ ^ 2) =
-        ‖((energy : Real) : Complex)‖ := by
-          rw [Complex.norm_real, Real.norm_of_nonneg henergy]
-    _ = ‖∑ y : Fin p → ZMod N, ∑ x : Fin p → ZMod N,
-        ∑ u : Fin p → ZMod N, ∑ w : Fin p → ZMod N,
-          prop141Outer f y x u w *
-            ∑ h : ZMod N, prop141InnerTerm lambda f sigma y x u w h‖ := by
-              rw [prop141_energy_expansion lambda f sigma]
-    _ ≤ ∑ y : Fin p → ZMod N,
-        ‖∑ x : Fin p → ZMod N, ∑ u : Fin p → ZMod N,
-          ∑ w : Fin p → ZMod N, prop141Outer f y x u w *
-            ∑ h : ZMod N, prop141InnerTerm lambda f sigma y x u w h‖ :=
-              norm_sum_le _ _
-    _ ≤ ∑ y : Fin p → ZMod N, ∑ x : Fin p → ZMod N,
-        ‖∑ u : Fin p → ZMod N, ∑ w : Fin p → ZMod N,
-          prop141Outer f y x u w *
-            ∑ h : ZMod N, prop141InnerTerm lambda f sigma y x u w h‖ := by
-              apply Finset.sum_le_sum
-              intro y _
-              exact norm_sum_le _ _
-    _ ≤ ∑ y : Fin p → ZMod N, ∑ x : Fin p → ZMod N,
-        ∑ u : Fin p → ZMod N,
-          ‖∑ w : Fin p → ZMod N, prop141Outer f y x u w *
-            ∑ h : ZMod N, prop141InnerTerm lambda f sigma y x u w h‖ := by
-              gcongr with y _ x _
-              exact norm_sum_le _ _
-    _ ≤ ∑ y : Fin p → ZMod N, ∑ x : Fin p → ZMod N,
-        ∑ u : Fin p → ZMod N, ∑ w : Fin p → ZMod N,
-          ‖prop141Outer f y x u w *
-            ∑ h : ZMod N, prop141InnerTerm lambda f sigma y x u w h‖ := by
-              gcongr with y _ x _ u _
-              exact norm_sum_le _ _
-    _ ≤ ∑ y : Fin p → ZMod N, ∑ x : Fin p → ZMod N,
-        ∑ u : Fin p → ZMod N, ∑ w : Fin p → ZMod N,
-          ‖∑ h : ZMod N, prop141InnerTerm lambda f sigma y x u w h‖ := by
-            gcongr with y _ x _ u _ w _
-            rw [norm_mul]
-            exact mul_le_of_le_one_left (norm_nonneg _)
-              (prop141_outer_norm_le f hf y x u w)
+  have h0 : 0 ≤ ∑ h : ZMod N, lambda h * ∏ i : Fin p,
+      ‖fourier (firstCoordinateCorrelation (f i) h) (sigma i h)‖ ^ 2 :=
+    Finset.sum_nonneg fun h _ => mul_nonneg (hlambda h) (by positivity)
+  rw [← Real.norm_of_nonneg h0, ← Complex.norm_real, prop141_energy_expansion]
+  refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun y _ => (norm_sum_le _ _).trans
+    (Finset.sum_le_sum fun x _ => (norm_sum_le _ _).trans (Finset.sum_le_sum fun u _ =>
+      (norm_sum_le _ _).trans (Finset.sum_le_sum fun w _ => ?_))))
+  rw [norm_mul]
+  exact mul_le_of_le_one_left (norm_nonneg _) (prop141_outer_norm_le f hf y x u w)
 
 private lemma prop141_l1_cauchy {N p : Nat} [NeZero N]
     (F : (Fin p → ZMod N) → (Fin p → ZMod N) →
@@ -412,45 +373,15 @@ private lemma prop141_weight_eq_energy {N p : Nat} [NeZero N]
     simultaneouslyAdditiveWeight lambda sigma =
       weightedSimultaneousAdditiveEnergy Finset.univ lambda sigma := by
   unfold simultaneouslyAdditiveWeight weightedSimultaneousAdditiveEnergy
-  apply Fintype.sum_equiv
-      ({ toFun q := ![q 0, q 3, q 2, q 1]
-         invFun q := ![q 0, q 3, q 2, q 1]
-         left_inv q := by
-           funext i
-           fin_cases i <;> rfl
-         right_inv q := by
-           funext i
-           fin_cases i <;> rfl } : (Fin 4 → ((ZMod N))) ≃ (Fin 4 → ((ZMod N))))
-  intro q
-  simp only [Finset.mem_univ, forall_const, true_and,
-    IsAdditiveQuadruple]
-  by_cases hadd : q 0 - q 1 = q 2 - q 3
-  · have hadd' : q 0 + q 3 = q 2 + q 1 :=
-      sub_eq_sub_iff_add_eq_add.mp hadd
-    by_cases hsigma : ∀ i,
-        sigma i (q 0) - sigma i (q 1) =
-          sigma i (q 2) - sigma i (q 3)
-    · have hsigma' : ∀ i,
-          sigma i (q 0) + sigma i (q 3) =
-            sigma i (q 2) + sigma i (q 1) := fun i =>
-        sub_eq_sub_iff_add_eq_add.mp (hsigma i)
-      rw [if_pos ⟨hadd, hsigma⟩, if_pos ⟨hadd', hsigma'⟩,
-        prop141_prod_fin_four]
-      change lambda (q 0) * lambda (q 1) * lambda (q 2) * lambda (q 3) =
-        lambda (q 0) * lambda (q 3) * lambda (q 2) * lambda (q 1)
-      ring
-    · have hsigma' : ¬ ∀ i,
-          sigma i (q 0) + sigma i (q 3) =
-            sigma i (q 2) + sigma i (q 1) := by
-        exact fun h => hsigma fun i => sub_eq_sub_iff_add_eq_add.mpr (h i)
-      rw [if_neg (fun h => hsigma h.2), if_neg]
-      exact fun h => hsigma' h.2
-  · have hadd' : q 0 + q 3 ≠ q 2 + q 1 := fun h =>
-      hadd (sub_eq_sub_iff_add_eq_add.mpr h)
-    rw [if_neg]
-    · rw [if_neg]
-      exact fun h => hadd' h.1
-    · exact fun h => hadd h.1
+  refine Fintype.sum_equiv
+    ({ toFun q := ![q 0, q 3, q 2, q 1]
+       invFun q := ![q 0, q 3, q 2, q 1]
+       left_inv q := by funext i; fin_cases i <;> rfl
+       right_inv q := by funext i; fin_cases i <;> rfl } : (Fin 4 → ZMod N) ≃ (Fin 4 → ZMod N))
+    _ _ fun q => ?_
+  simp only [IsSimultaneouslyAdditive, IsAdditiveQuadruple, Finset.mem_univ, forall_const,
+    true_and, sub_eq_sub_iff_add_eq_add, Fin.prod_univ_four, Equiv.coe_fn_mk, Matrix.cons_val]
+  exact if_congr Iff.rfl (by ring) rfl
 
 private lemma prop141_fourthB_total_eq_energy {N p : Nat} [NeZero N]
     (lambda : ZMod N → Real) (sigma : Fin p → ZMod N → ZMod N) :
@@ -491,118 +422,31 @@ applying Cauchy--Schwarz over the four vector variables, introducing a common
 scalar shift, and using character orthogonality for the `Fin p` family. -/
 theorem proposition_14_1_holds : proposition_14_1 := by
   intro N p _ lambda f sigma alpha hAlpha hlambda hf hlarge
-  let L1 : Real :=
-    ∑ y : Fin p → ZMod N, ∑ x : Fin p → ZMod N,
-      ∑ u : Fin p → ZMod N, ∑ w : Fin p → ZMod N,
-        ‖∑ h : ZMod N, prop141InnerTerm lambda f sigma y x u w h‖
-  let L2 : Real :=
-    ∑ y : Fin p → ZMod N, ∑ x : Fin p → ZMod N,
-      ∑ u : Fin p → ZMod N, ∑ w : Fin p → ZMod N,
-        ‖∑ h : ZMod N, prop141InnerTerm lambda f sigma y x u w h‖ ^ 2
-  let mixed : Real :=
-    ∑ y : Fin p → ZMod N, ∑ x : Fin p → ZMod N,
-      ∑ u : Fin p → ZMod N, ∑ w : Fin p → ZMod N,
-        ∑ r : ZMod N,
-          ‖fourier (prop141A f y x u w) r‖ ^ 2 *
-            ‖fourier (prop121B lambda sigma u) r‖ ^ 2
-  let fourthA : Real :=
-    ∑ y : Fin p → ZMod N, ∑ x : Fin p → ZMod N,
-      ∑ u : Fin p → ZMod N, ∑ w : Fin p → ZMod N,
-        ∑ r : ZMod N, ‖fourier (prop141A f y x u w) r‖ ^ 4
-  let fourthB : Real :=
-    ∑ _y : Fin p → ZMod N, ∑ _x : Fin p → ZMod N,
-      ∑ u : Fin p → ZMod N, ∑ _w : Fin p → ZMod N,
-        ∑ r : ZMod N, ‖fourier (prop121B lambda sigma u) r‖ ^ 4
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hN4p : (0 : Real) < (N : Real) ^ (4 * p) := by positivity
-  have hN4p4 : (0 : Real) < (N : Real) ^ (4 * p + 4) := by positivity
-  have hN4p1 : (0 : Real) < (N : Real) ^ (4 * p + 1) := by positivity
-  have hL1 : alpha * (N : Real) ^ (4 * p + 1) ≤ L1 := hlarge.trans <| by
-    simpa only [L1] using prop141_initial_bound lambda f sigma hlambda hf
-  have hL1_nonneg : 0 ≤ L1 := by
-    dsimp only [L1]
-    exact Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ =>
-      Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _
-  have hbase_nonneg : 0 ≤ alpha * (N : Real) ^ (4 * p + 1) :=
-    mul_nonneg hAlpha (by positivity)
-  have hL1sq :
-      (alpha * (N : Real) ^ (4 * p + 1)) ^ 2 ≤ L1 ^ 2 :=
-    (sq_le_sq₀ hbase_nonneg hL1_nonneg).2 hL1
-  have hCauchy1 : L1 ^ 2 ≤ (N : Real) ^ (4 * p) * L2 := by
-    simpa only [L1, L2] using
-      (prop141_l1_cauchy (N := N) (p := p)
-        (fun y x u w =>
-          ‖∑ h : ZMod N, prop141InnerTerm lambda f sigma y x u w h‖))
-  have hL2 : alpha ^ 2 * (N : Real) ^ (4 * p + 2) ≤ L2 := by
-    apply le_of_mul_le_mul_left _ hN4p
-    calc
-      (N : Real) ^ (4 * p) *
-          (alpha ^ 2 * (N : Real) ^ (4 * p + 2)) =
-          (alpha * (N : Real) ^ (4 * p + 1)) ^ 2 := by
-            rw [show 4 * p + 2 = 4 * p + 1 + 1 by omega,
-              pow_add, pow_succ]
-            ring
-      _ ≤ L1 ^ 2 := hL1sq
-      _ ≤ (N : Real) ^ (4 * p) * L2 := hCauchy1
-  have hmixed_eq : mixed = (N : Real) ^ 2 * L2 := by
-    simpa only [mixed, L2] using prop141_mixed_eq_l2 lambda f sigma
-  have hmixed : alpha ^ 2 * (N : Real) ^ (4 * p + 4) ≤ mixed := by
-    calc
-      alpha ^ 2 * (N : Real) ^ (4 * p + 4) =
-          (N : Real) ^ 2 *
-            (alpha ^ 2 * (N : Real) ^ (4 * p + 2)) := by
-              rw [show 4 * p + 4 = 2 + (4 * p + 2) by omega, pow_add]
-              ring
-      _ ≤ (N : Real) ^ 2 * L2 :=
-        mul_le_mul_of_nonneg_left hL2 (by positivity)
-      _ = mixed := hmixed_eq.symm
-  have hfourthA : fourthA ≤ (N : Real) ^ (4 * p + 4) := by
-    simpa only [fourthA] using prop141_fourthA_le f hf
-  have hmixed_nonneg : 0 ≤ mixed := by
-    dsimp only [mixed]
-    exact Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ =>
-      Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ =>
-        Finset.sum_nonneg fun _ _ => mul_nonneg (sq_nonneg _) (sq_nonneg _)
-  have hfourthB_nonneg : 0 ≤ fourthB := by
-    dsimp only [fourthB]
-    exact Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ =>
-      Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ =>
-        Finset.sum_nonneg fun _ _ => pow_nonneg (norm_nonneg _) 4
-  have hmixed_sq :
-      (alpha ^ 2 * (N : Real) ^ (4 * p + 4)) ^ 2 ≤ mixed ^ 2 := by
-    apply (sq_le_sq₀
-      (mul_nonneg (sq_nonneg _) (pow_nonneg hN.le _)) hmixed_nonneg).2
-    exact hmixed
-  have hglobal : mixed ^ 2 ≤ fourthA * fourthB := by
-    simpa only [mixed, fourthA, fourthB] using
-      prop141_global_cauchy lambda f sigma
-  have hfourthB :
-      alpha ^ 4 * (N : Real) ^ (4 * p + 4) ≤ fourthB := by
-    apply le_of_mul_le_mul_left _ hN4p4
-    calc
-      (N : Real) ^ (4 * p + 4) *
-          (alpha ^ 4 * (N : Real) ^ (4 * p + 4)) =
-          (alpha ^ 2 * (N : Real) ^ (4 * p + 4)) ^ 2 := by ring
-      _ ≤ mixed ^ 2 := hmixed_sq
-      _ ≤ fourthA * fourthB := hglobal
-      _ ≤ (N : Real) ^ (4 * p + 4) * fourthB :=
-        mul_le_mul_of_nonneg_right hfourthA hfourthB_nonneg
-  have hfourthB_eq :
-      fourthB = (N : Real) ^ (4 * p + 1) *
-        weightedSimultaneousAdditiveEnergy Finset.univ lambda sigma := by
-    simpa only [fourthB] using prop141_fourthB_total_eq_energy lambda sigma
-  apply le_of_mul_le_mul_left _ hN4p1
-  calc
-    (N : Real) ^ (4 * p + 1) * (alpha ^ 4 * (N : Real) ^ 3) =
-        alpha ^ 4 * (N : Real) ^ (4 * p + 4) := by
-          calc
-            _ = alpha ^ 4 * (N : Real) ^ ((4 * p + 1) + 3) := by
-              rw [pow_add]
-              ring
-            _ = _ := by rw [show (4 * p + 1) + 3 = 4 * p + 4 by omega]
-    _ ≤ fourthB := hfourthB
-    _ = (N : Real) ^ (4 * p + 1) *
-        weightedSimultaneousAdditiveEnergy Finset.univ lambda sigma :=
-      hfourthB_eq
+  -- the arithmetic of the Cauchy--Schwarz chain, with the five sums as variables
+  have key (S1 S2 Sm SA SB E : Real) (h1 : alpha * (N : Real) ^ (4 * p + 1) ≤ S1)
+      (h2 : S1 ^ 2 ≤ (N : Real) ^ (4 * p) * S2) (h3 : Sm = (N : Real) ^ 2 * S2)
+      (h4 : Sm ^ 2 ≤ SA * SB) (h5 : SA ≤ (N : Real) ^ (4 * p + 4)) (hB : 0 ≤ SB)
+      (h6 : SB = (N : Real) ^ (4 * p + 1) * E) : alpha ^ 4 * (N : Real) ^ 3 ≤ E := by
+    have hS2 : alpha ^ 2 * (N : Real) ^ (4 * p + 2) ≤ S2 := le_of_mul_le_mul_left (calc
+      (N : Real) ^ (4 * p) * (alpha ^ 2 * N ^ (4 * p + 2)) = (alpha * N ^ (4 * p + 1)) ^ 2 := by
+        ring
+      _ ≤ _ := (pow_le_pow_left₀ (by positivity) h1 2).trans h2) (pow_pos hN _)
+    have hSm : alpha ^ 2 * (N : Real) ^ (4 * p + 4) ≤ Sm := calc
+      _ = (N : Real) ^ 2 * (alpha ^ 2 * N ^ (4 * p + 2)) := by ring
+      _ ≤ Sm := by rw [h3]; gcongr
+    have hSB : alpha ^ 4 * (N : Real) ^ (4 * p + 4) ≤ SB := le_of_mul_le_mul_left (calc
+      (N : Real) ^ (4 * p + 4) * (alpha ^ 4 * N ^ (4 * p + 4)) =
+          (alpha ^ 2 * N ^ (4 * p + 4)) ^ 2 := by ring
+      _ ≤ SA * SB := (pow_le_pow_left₀ (by positivity) hSm 2).trans h4
+      _ ≤ (N : Real) ^ (4 * p + 4) * SB := by gcongr) (pow_pos hN _)
+    apply le_of_mul_le_mul_left _ (pow_pos hN (4 * p + 1))
+    calc _ = alpha ^ 4 * (N : Real) ^ (4 * p + 4) := by ring
+      _ ≤ SB := hSB
+      _ = _ := h6
+  exact key _ _ _ _ _ _ (hlarge.trans (prop141_initial_bound lambda f sigma hlambda hf))
+    (prop141_l1_cauchy _) (prop141_mixed_eq_l2 lambda f sigma)
+    (prop141_global_cauchy lambda f sigma) (prop141_fourthA_le f hf) (by positivity)
+    (prop141_fourthB_total_eq_energy lambda sigma)
 
 end LeanProofs.GowersSzemeredi

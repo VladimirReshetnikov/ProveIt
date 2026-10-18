@@ -42,11 +42,7 @@ private lemma prop14_ofFn_insertNth_perm {n : Nat} {X : Type*}
   | succ n ih =>
       refine Fin.cases ?_ (fun j => ?_) j
       · simp [Fin.insertNth_zero']
-      · have hy : y = Fin.cons (y 0) (Fin.tail y) := by
-          funext i
-          refine Fin.cases ?_ (fun i => ?_) i
-          · simp
-          · rfl
+      · have hy : y = Fin.cons (y 0) (Fin.tail y) := by norm_num
         rw [hy, Fin.insertNth_succ_cons, List.ofFn_cons, List.ofFn_cons]
         exact (List.Perm.cons _ (ih j (Fin.tail y))).trans
           (List.Perm.swap _ _ _)
@@ -266,10 +262,7 @@ private lemma prop143_correlation_decomposition {N n : Nat} [NeZero N]
     _ = ∑ u : Point N n, ∑ a : ZMod N,
         prop143Component f z j u (a + h, b) *
           star (prop143Component f z j u (a, b)) := by
-            apply Finset.sum_congr rfl
-            intro u _
-            apply Finset.sum_congr rfl
-            intro a _
+            refine Finset.sum_congr rfl fun u _ => Finset.sum_congr rfl fun a _ => ?_
             exact prop143_cube_product_eq f z j u a h b
     _ = _ := by rfl
 

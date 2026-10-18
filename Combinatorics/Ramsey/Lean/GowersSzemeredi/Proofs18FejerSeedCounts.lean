@@ -64,9 +64,7 @@ theorem polyPieceBudgetW_fejer_ge_power {gamma theta : Real} (hg : 0 < gamma) (h
   have hu1 : 1 ≤ u := by linarith
   have hupos : 0 < u := by linarith
   have h35 : (u ^ 35)⁻¹ ≤ (2 : Real) ^ (-(32 : Real)) / 8 := by
-    have h1 : (2 : Real) ^ (-(32 : Real)) / 8 = ((2 : Real) ^ 35)⁻¹ := by
-      rw [Real.rpow_neg (by norm_num)]
-      norm_num
+    have h1 : (2 : Real) ^ (-(32 : Real)) / 8 = ((2 : Real) ^ 35)⁻¹ := by linarith
     rw [h1]
     exact inv_anti₀ (by positivity) (pow_le_pow_left₀ (by norm_num) hu2 35)
   have hθ18 : (u ^ ((2 : Nat) ^ 22))⁻¹ ≤ fejerThetaOne theta gamma 1 ^ 8 := by
@@ -256,9 +254,7 @@ theorem fejerProductThreshold_one_le_power {gamma theta : Real} (hg : 0 < gamma)
   -- `m + 1 ≤ u^501`
   have hm1 : ((fejerOrder 1 a eta : Nat) : Real) + 1 ≤ u ^ 501 := by
     unfold fejerOrder
-    have hpos : 1 ≤ 2 ^ (1 + 4) * ⌈6 / (min a 1 * eta)⌉₊ := by
-      have : 1 ≤ 2 ^ (1 + 4) := Nat.one_le_two_pow
-      exact Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega))
+    have hpos : 1 ≤ 2 ^ (1 + 4) * ⌈6 / (min a 1 * eta)⌉₊ := by omega
     have hcast : ((2 ^ (1 + 4) * ⌈6 / (min a 1 * eta)⌉₊ - 1 : Nat) : Real) + 1 =
         32 * ((⌈6 / (min a 1 * eta)⌉₊ : Nat) : Real) := by
       rw [Nat.cast_sub hpos]; push_cast; ring

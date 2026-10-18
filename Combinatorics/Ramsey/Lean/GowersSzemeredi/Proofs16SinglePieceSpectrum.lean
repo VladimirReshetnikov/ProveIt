@@ -185,230 +185,128 @@ theorem single_piece_of_spectrum_cover_for_scheme {k : Nat} (hk : 0 < k)
   have hθ2 : 0 < theta / 2 := by positivity
   have hθ21 : theta / 2 ≤ 1 := by linarith
   obtain ⟨hcRpos, hcRle⟩ := hcR (theta / 2) hθ2 hθ21
-  have hρpos : 0 < ρ := by rw [hρdef, spectrumPieceRho]; positivity
-  have hρle : ρ ≤ 1 := by
-    rw [hρdef, spectrumPieceRho]
-    calc theta / 2 * cR (theta / 2) ≤ 1 * 1 :=
-          mul_le_mul hθ21 hcRle hcRpos.le zero_le_one
-      _ = 1 := one_mul 1
-  have hJ0card : J0.carrier.card = J0.length := hJ0
-  have hJ0posR : (0 : Real) < J0.carrier.card := by rw [hJ0card]; exact_mod_cast hJ0pos
+  have hρpos : 0 < ρ := mul_pos hθ2 hcRpos
+  have hρle : ρ ≤ 1 := mul_le_one₀ hθ21 hcRpos.le hcRle
+  have hJ0posR : (0 : Real) < J0.carrier.card := by
+    rw [show J0.carrier.card = J0.length from hJ0]; exact_mod_cast hJ0pos
   -- 1. popular fibres and the local spectrum cover
   set H1 := T0.carrier.filter fun h =>
-    theta / 2 * J0.carrier.card ≤ ((E.filter fun p => p.1 = h).card : Real) with hH1def
+    theta / 2 * J0.carrier.card ≤ ((E.filter fun p => p.1 = h).card : Real)
   have hH1 : theta / 2 * T0.carrier.card ≤ H1.card :=
     popular_fibres T0.carrier J0.carrier E hE (by exact_mod_cast hJ0posR) hθ2.le
       (by linarith)
-  obtain ⟨R, G, q, mu, hR, hRT, hRw, hGH, hGR, hGc, hq, hmu, hGcov⟩ :=
-    hcover (theta / 2) hθ2 hθ21 T0 H1 hT0 (Finset.filter_subset _ _) (fun h hh => by
-      have h1 := (Finset.mem_filter.mp hh).2
-      have hpos : 0 < (E.filter fun p => p.1 = h).card :=
-        Nat.cast_pos.mp (lt_of_lt_of_le (mul_pos hθ2 hJ0posR) h1)
-      obtain ⟨p, hp⟩ := Finset.card_pos.mp hpos
-      obtain ⟨hpE, rfl⟩ := Finset.mem_filter.mp hp
-      exact hEG p hpE) hH1
-  obtain ⟨hthr, hcell4, hcellJ, hcellw⟩ := hpar q hq
-  have hGE : ∀ h ∈ G, ∃ x, (h, x) ∈ E := by
-    intro h hh
-    have h1 := (Finset.mem_filter.mp (hGH hh)).2
-    have hpos : 0 < (E.filter fun p => p.1 = h).card := by
-      have : (0 : Real) < (E.filter fun p => p.1 = h).card :=
-        lt_of_lt_of_le (mul_pos hθ2 hJ0posR) h1
-      exact Nat.cast_pos.mp this
-    obtain ⟨p, hp⟩ := Finset.card_pos.mp hpos
+  -- a popular fibre is nonempty
+  have hH1E : ∀ h ∈ H1, ∃ x, (h, x) ∈ E := fun h hh => by
+    obtain ⟨p, hp⟩ := Finset.card_pos.mp (Nat.cast_pos.mp
+      ((mul_pos hθ2 hJ0posR).trans_le (Finset.mem_filter.mp hh).2))
     obtain ⟨hpE, rfl⟩ := Finset.mem_filter.mp hp
     exact ⟨p.2, hpE⟩
+  obtain ⟨R, G, q, mu, hR, hRT, hRw, hGH, hGR, hGc, hq, hmu, hGcov⟩ :=
+    hcover (theta / 2) hθ2 hθ21 T0 H1 hT0 (Finset.filter_subset _ _)
+      (fun h hh => hEG _ (hH1E h hh).choose_spec) hH1
+  obtain ⟨hthr, hcell4, hcellJ, hcellw⟩ := hpar q hq
   -- 2. retiled linearity on `R × J₀`
   set i : Fin k := ⟨0, hk⟩
   have hRwidth : m ≤ R.width := hm.trans hRw
-  have hRne : R.carrier.Nonempty :=
-    R.carrier_nonempty_of_axis_pos fun j => lt_of_lt_of_le (by omega) (hRwidth.trans
-      (R.width_le_axis_length j))
-  have hsub : (R.axis i).carrier ⊆ (T0.axis i).carrier :=
-    R.axis_carrier_subset_of_carrier_subset T0 hRne hRT i
-  have hlarge : 1 < spectrumCellWidth zeta m (eps q) := by linarith
+  have hRne : R.carrier.Nonempty := R.carrier_nonempty_of_axis_pos fun j =>
+    lt_of_lt_of_le (by omega) (hRwidth.trans (R.width_le_axis_length j))
   obtain ⟨M, S, T, J, hSpart, hSprop, hSprod, hSlin⟩ :=
-    hretile q N m R (T0.axis i) J0 i (Units.mk0 T0.commonDiff hT0d) hR hJ0
-      (by rw [Units.val_mk0, T0.axis_step i]) (hJ0step.trans (T0.axis_step i).symm) hsub hshort
-      hT0J0 mu hmu hthr hRwidth K G A f zeta hz hz2
-      (fun x _ hxG r hr => hGcov x hxG r (hK x _ (hGE x hxG).choose_spec r hr))
-      (fun x hxG v hv J hJ hd => hlinear x _ (hGE x hxG).choose_spec v hv J hJ hd) hlarge
+    hretile q N m R (T0.axis i) J0 i (Units.mk0 T0.commonDiff hT0d) hR hJ0 (T0.axis_step i)
+      (hJ0step.trans (T0.axis_step i).symm)
+      (R.axis_carrier_subset_of_carrier_subset T0 hRne hRT i) hshort hT0J0 mu hmu hthr hRwidth
+      K G A f zeta hz hz2
+      (fun x _ hxG r hr => hGcov x hxG r (hK x _ (hH1E x (hGH hxG)).choose_spec r hr))
+      (fun x hxG v hv J hJ hd => hlinear x _ (hH1E x (hGH hxG)).choose_spec v hv J hJ hd)
+      (lt_of_lt_of_le (by norm_num) hcell4)
   -- 3. a dense cell
-  set EG := E.filter fun p => p.1 ∈ G with hEGdef
+  set EG := E.filter fun p => p.1 ∈ G
   have hEGcard : ρ * (lastProductSet R.carrier J0.carrier).card ≤ EG.card := by
-    have h := fibre_sum_ge E G (s := theta / 2 * J0.carrier.card) fun h hh =>
-      (Finset.mem_filter.mp (hGH hh)).2
-    rw [lastProductSet_card]
-    push_cast
-    calc ρ * ((R.carrier.card : Real) * J0.carrier.card) =
-        cR (theta / 2) * R.carrier.card * (theta / 2 * J0.carrier.card) := by
-          rw [hρdef, spectrumPieceRho]; ring
-      _ ≤ G.card * (theta / 2 * J0.carrier.card) :=
-          mul_le_mul_of_nonneg_right hGc (by positivity)
-      _ ≤ _ := h
-  have hEGin : ∀ p ∈ EG, appendCoordinate p.1 p.2 ∈ lastProductSet R.carrier J0.carrier := by
-    intro p hp
-    obtain ⟨hpE, hpG⟩ := Finset.mem_filter.mp hp
-    simp only [lastProductSet, Finset.mem_filter, Finset.mem_univ, true_and,
-      section16Init_appendCoordinate, section16Last_appendCoordinate]
-    exact ⟨hGR hpG, (Finset.mem_product.mp (hE hpE)).2⟩
+    rw [lastProductSet_card, hρdef, spectrumPieceRho]; push_cast
+    calc theta / 2 * cR (theta / 2) * ((R.carrier.card : Real) * J0.carrier.card) =
+        cR (theta / 2) * R.carrier.card * (theta / 2 * J0.carrier.card) := by ring
+      _ ≤ G.card * (theta / 2 * J0.carrier.card) := by gcongr
+      _ ≤ EG.card := fibre_sum_ge E G fun h hh => (Finset.mem_filter.mp (hGH hh)).2
+  have hEGin : ∀ p ∈ EG, appendCoordinate p.1 p.2 ∈ lastProductSet R.carrier J0.carrier :=
+    fun p hp => by
+      obtain ⟨hpE, hpG⟩ := Finset.mem_filter.mp hp
+      simpa [lastProductSet] using And.intro (hGR hpG) (Finset.mem_product.mp (hE hpE)).2
   have hRcard : (0 : Real) < R.carrier.card := by exact_mod_cast hRne.card_pos
-  have hEGne : EG.Nonempty := by
-    rw [← Finset.card_pos]
-    have : (0 : Real) < EG.card := lt_of_lt_of_le (by
-      rw [lastProductSet_card]; push_cast; positivity) hEGcard
-    exact_mod_cast this
+  have hEGne : EG.Nonempty := Finset.card_pos.mp (Nat.cast_pos.mp (lt_of_lt_of_le
+    (by rw [lastProductSet_card]; push_cast; positivity) hEGcard))
   obtain ⟨j, hj⟩ := exists_dense_cell (fun j => (S j).carrier) _ hSpart EG
     (fun p => appendCoordinate p.1 p.2) hEGin hEGne hEGcard
-  set Dj := EG.filter fun p => appendCoordinate p.1 p.2 ∈ (S j).carrier with hDjdef
+  set Dj := EG.filter fun p => appendCoordinate p.1 p.2 ∈ (S j).carrier
   have hSw : spectrumCellWidth zeta m (eps q) ≤ (S j).width := (hSprop j).2
-  have hSw4 : 4 ≤ (S j).width := by
-    have : (4 : Real) ≤ (S j).width := hcell4.trans hSw
-    exact_mod_cast this
+  have hSw4 : 4 ≤ (S j).width := by exact_mod_cast hcell4.trans hSw
   -- 4. a short-parent sub-cell
-  set I := (S j).axis (Fin.last k) with hIdef
-  have hSjprop := (hSprop j).1
-  have hI : I.IsProper := hSjprop (Fin.last k)
+  set I := (S j).axis (Fin.last k)
+  have hI : I.IsProper := (hSprop j).1 (Fin.last k)
   have hIlen : (S j).width ≤ I.length := (S j).width_le_axis_length (Fin.last k)
   obtain ⟨L, Q, hQpart, hQprop, hQaxes, hQstep⟩ :=
-    (boxInit (S j)).short_parent_partition I (boxInit_isProper _ hSjprop) hI hk hSw4
+    (boxInit (S j)).short_parent_partition I (boxInit_isProper _ (hSprop j).1) hI hk hSw4
       (boxInit_width _ hk) hIlen
   have hSjcarrier : (S j).carrier = lastProductSet (boxInit (S j)).carrier I.carrier :=
     (boxInit_last_product (S j)).1
-  have hDjin : ∀ p ∈ Dj, appendCoordinate p.1 p.2 ∈
-      lastProductSet (boxInit (S j)).carrier I.carrier := by
-    intro p hp
-    rw [← hSjcarrier]
-    exact (Finset.mem_filter.mp hp).2
-  have hSjcard : (0 : Real) < (S j).carrier.card := by
-    have hne : (S j).carrier.Nonempty :=
-      (S j).carrier_nonempty_of_axis_pos fun z =>
-        lt_of_lt_of_le (by omega) ((S j).width_le_axis_length z)
-    exact_mod_cast hne.card_pos
-  have hDjne : Dj.Nonempty := by
-    rw [← Finset.card_pos]
-    have : (0 : Real) < Dj.card := lt_of_lt_of_le (by positivity) hj
-    exact_mod_cast this
+  have hSjne : (S j).carrier.Nonempty := (S j).carrier_nonempty_of_axis_pos fun z =>
+    lt_of_lt_of_le (by omega) ((S j).width_le_axis_length z)
+  have hDjne : Dj.Nonempty := Finset.card_pos.mp (Nat.cast_pos.mp (lt_of_lt_of_le
+    (mul_pos hρpos (by exact_mod_cast hSjne.card_pos)) hj))
   obtain ⟨l, hl⟩ := exists_dense_cell (fun l => lastProductSet (Q l).carrier I.carrier) _
-    (lastProductSet_partition _ _ _ hQpart) Dj (fun p => appendCoordinate p.1 p.2) hDjin hDjne
-    (by rw [← hSjcarrier]; exact hj)
+    (lastProductSet_partition _ _ _ hQpart) Dj (fun p => appendCoordinate p.1 p.2)
+    (fun p hp => hSjcarrier ▸ (Finset.mem_filter.mp hp).2) hDjne (hSjcarrier ▸ hj)
   set D := Dj.filter fun p => appendCoordinate p.1 p.2 ∈ lastProductSet (Q l).carrier I.carrier
-    with _
-  -- membership facts for `D`
   have hDmem : ∀ p ∈ D, p ∈ E ∧ p.1 ∈ G ∧ appendCoordinate p.1 p.2 ∈ (S j).carrier ∧
-      p.1 ∈ (Q l).carrier ∧ p.2 ∈ I.carrier := by
-    intro p hp
-    obtain ⟨hpDj, hpQ⟩ := Finset.mem_filter.mp hp
-    obtain ⟨hpEG, hpS⟩ := Finset.mem_filter.mp hpDj
-    obtain ⟨hpE, hpG⟩ := Finset.mem_filter.mp hpEG
-    simp only [lastProductSet, Finset.mem_filter, Finset.mem_univ, true_and,
-      section16Init_appendCoordinate, section16Last_appendCoordinate] at hpQ
-    exact ⟨hpE, hpG, hpS, hpQ.1, hpQ.2⟩
-  have hDsub : D ⊆ (Q l).carrier ×ˢ I.carrier := fun p hp =>
-    Finset.mem_product.mpr ⟨(hDmem p hp).2.2.2.1, (hDmem p hp).2.2.2.2⟩
-  have hQcard : ((lastProductSet (Q l).carrier I.carrier).card : Real) =
-      (Q l).carrier.card * I.carrier.card := by
-    rw [lastProductSet_card]; push_cast; ring
+      p.1 ∈ (Q l).carrier ∧ p.2 ∈ I.carrier := fun p hp => by
+    simp only [D, Dj, EG, lastProductSet, Finset.mem_filter, Finset.mem_univ, true_and,
+      section16Init_appendCoordinate, section16Last_appendCoordinate] at hp
+    exact ⟨hp.1.1.1, hp.1.1.2, hp.1.2, hp.2⟩
   have hDc : ρ * (Q l).carrier.card * I.carrier.card ≤ D.card := by
-    rw [mul_assoc, ← hQcard]; exact hl
-  have hDne : D.Nonempty := by
-    rw [← Finset.card_pos]
-    have hQne : (Q l).carrier.Nonempty := by
-      have h8 : ((S j).width : Real) / 8 ≤ (Q l).width := (hQprop l).2
-      have h1 : 1 ≤ (Q l).width := by
-        have : (4 : Real) / 8 ≤ (Q l).width :=
-          le_trans (div_le_div_of_nonneg_right (by exact_mod_cast hSw4) (by norm_num)) h8
-        have : (0 : Real) < (Q l).width := lt_of_lt_of_le (by norm_num) this
-        exact_mod_cast this
-      exact (Q l).carrier_nonempty_of_axis_pos fun z =>
-        lt_of_lt_of_le one_pos (h1.trans ((Q l).width_le_axis_length z))
-    have hIne : (0 : Real) < I.carrier.card := by
-      rw [show I.carrier.card = I.length from hI]
-      exact_mod_cast (show 0 < I.length by omega)
-    have hQc : (0 : Real) < (Q l).carrier.card := by exact_mod_cast hQne.card_pos
-    have : (0 : Real) < D.card := lt_of_lt_of_le (mul_pos (mul_pos hρpos hQc) hIne) hDc
-    exact Nat.cast_pos.mp this
+    simpa only [lastProductSet_card, Nat.cast_mul, mul_assoc] using hl
+  have hQne : (Q l).carrier.Nonempty :=
+    (Q l).carrier_nonempty_of_axis_pos fun z => (hQaxes l z).1
   -- the fibres of `φ` on `D` are affine
+  have hST : ∀ h x, appendCoordinate h x ∈ (S j).carrier →
+      h ∈ (T j).carrier ∧ x ∈ (J j).carrier := fun h x hx => by
+    simpa [(hSprod j).1] using hx
   have haff : ∀ h, ∃ a b : ZMod N, ∀ x, (h, x) ∈ D → phi (h, x) = a * x + b := by
     intro h
     by_cases hh : ∃ x, (h, x) ∈ D
-    · obtain ⟨x0, hx0⟩ := hh
-      obtain ⟨-, hG0, hS0, -, -⟩ := hDmem _ hx0
-      have hT0' : h ∈ (T j).carrier := by
-        have := hS0
-        rw [(hSprod j).1] at this
-        simp only [Finset.mem_filter, Finset.mem_univ, true_and,
-          section16Init_appendCoordinate] at this
-        exact this.1
-      obtain ⟨a, b, hab⟩ := hSlin j h hT0' hG0
+    · obtain ⟨-, hG0, hS0, -, -⟩ := hDmem _ hh.choose_spec
+      obtain ⟨a, b, hab⟩ := hSlin j h (hST _ _ hS0).1 hG0
       obtain ⟨α, β, hαβ⟩ := hMrem.linearOn_last_fibre h
       refine ⟨s * a + α, s * b + β, fun x hx => ?_⟩
       obtain ⟨hxE, -, hxS, -, -⟩ := hDmem _ hx
-      have hxJ : x ∈ (J j).carrier := by
-        have := hxS
-        rw [(hSprod j).1] at this
-        simp only [Finset.mem_filter, Finset.mem_univ, true_and,
-          section16Last_appendCoordinate] at this
-        exact this.2
       have e1 : phi (h, x) = s * f h x + Mrem (appendCoordinate h x) := hident _ hxE
-      have e2 : f h x = a * x + b := hab x (Finset.mem_inter.mpr ⟨hxJ, hA _ hxE⟩)
       have e3 : Mrem (appendCoordinate h x) = α * x + β := hαβ x (Finset.mem_univ _)
-      rw [e1, e2, e3]
+      rw [e1, e3, hab x (Finset.mem_inter.mpr ⟨(hST _ _ hxS).2, hA _ hxE⟩)]
       ring
-    · simp only [not_exists] at hh
-      exact ⟨0, 0, fun x hx => absurd hx (hh x)⟩
-  -- the final axis lies in `J₀`
-  have hIJ0 : ∀ x ∈ I.carrier, x ∈ J0.carrier := by
-    intro x hx
-    obtain ⟨p, hp⟩ := hDne
-    have ht := (hDmem p hp).2.2.2.1
-    have htS : (Fin.snoc p.1 x : Point N (k + 1)) ∈ (S j).carrier :=
-      (mem_boxInit_snoc (S j) p.1 x).mpr
-        ⟨IsPartition.cell_subset hQpart l ht, hx⟩
-    have := IsPartition.cell_subset hSpart j htS
-    simp only [lastProductSet, Finset.mem_filter, Finset.mem_univ, true_and] at this
-    simpa [section16Last] using this.2
-  -- 5. step 2 on the cell `Q l × I`
-  have hQd : (Q l).commonDiff ≠ 0 := by
-    rw [hQstep l]
-    have hu := I.step_isUnit_of_prime hI (by omega)
-    rw [show I.step = (S j).commonDiff from (S j).axis_step _] at hu
-    exact hu.ne_zero
-  have hQw : ⌈spectrumCellWidth zeta m (eps q) / 8⌉₊ ≤ (Q l).width := by
-    apply Nat.ceil_le.mpr
-    have h8 : ((S j).width : Real) / 8 ≤ (Q l).width := (hQprop l).2
-    exact le_trans (div_le_div_of_nonneg_right hSw (by norm_num)) h8
-  have hθ₁ := singlePieceTheta_pos hρpos one_pos
-  have hθ₁1 := singlePieceTheta_le_one hρpos hρle one_pos
-  have hwidth : 2 ≤ Sc.wid (singlePieceTheta ρ 1) (Q l).width :=
-    hcellw.trans (Sc.wid_mono _ hθ₁ hθ₁1 hQw)
-  obtain ⟨S', R', I', mu', hS'prop, -, -, hS'sub, hS'w, hmu', hcount⟩ :=
-    single_piece_on_affine_cell_of_scheme hk Sc (Q l) I (hQprop l).1 hI ⟨_, (hDmem _
-      hDne.choose_spec).2.2.2.1⟩ hQd (by rw [hQstep l]; exact (S j).axis_step _)
-      ((hQaxes l i).2.1) ((hQaxes l i).2.2) D hDsub hρpos hρle hDc
-      (by
-        have : spectrumCellWidth zeta m (eps q) ≤ I.length := hSw.trans (by exact_mod_cast hIlen)
-        calc (2 : Real) ≤ ρ ^ 3 * spectrumCellWidth zeta m (eps q) := hcellJ
-          _ ≤ ρ ^ 3 * I.length := mul_le_mul_of_nonneg_left this (by positivity))
-      phi haff
-      Dom (fun x hx => hsl x (hIJ0 x hx)) (fun p hp => hDom p (hDmem p hp).1) hwidth
-  refine ⟨q, hq, S', mu', hS'prop, ?_, ?_, hmu', ?_⟩
-  · intro z hz
-    have hz' := hS'sub hz
-    simp only [lastProductSet, Finset.mem_filter, Finset.mem_univ, true_and] at hz' ⊢
-    have hzS : (Fin.snoc (section16Init z) (section16Last z) : Point N (k + 1)) ∈
-        (S j).carrier :=
-      (mem_boxInit_snoc (S j) _ _).mpr ⟨IsPartition.cell_subset hQpart l hz'.1, hz'.2⟩
-    have := IsPartition.cell_subset hSpart j hzS
+    · exact ⟨0, 0, fun x hx => absurd ⟨x, hx⟩ hh⟩
+  -- the cell `Q l × I` lies in `T₀ × J₀`
+  have hQI : ∀ t ∈ (Q l).carrier, ∀ x ∈ I.carrier, t ∈ T0.carrier ∧ x ∈ J0.carrier := by
+    intro t ht x hx
+    have := IsPartition.cell_subset hSpart j
+      ((mem_boxInit_snoc (S j) t x).mpr ⟨IsPartition.cell_subset hQpart l ht, hx⟩)
     simp only [lastProductSet, Finset.mem_filter, Finset.mem_univ, true_and,
-      section16Init_snoc] at this
-    exact ⟨hRT this.1, by simpa [section16Last] using this.2⟩
-  · have hsq := Nat.sqrt_le_sqrt (Nat.sub_le_sub_right
-      (Sc.wid_mono _ hθ₁ hθ₁1 hQw) 1)
-    omega
-  · refine hcount.trans ?_
-    exact_mod_cast Finset.card_le_card fun p hp => by
-      obtain ⟨hpD, hpS⟩ := Finset.mem_filter.mp hp
-      exact Finset.mem_filter.mpr ⟨(hDmem p hpD).1, hpS⟩
+      section16Init_snoc, section16Last, Fin.snoc_last] at this
+    exact ⟨hRT this.1, this.2⟩
+  -- 5. step 2 on the cell `Q l × I`
+  have hIstep : I.step = (Q l).commonDiff := ((S j).axis_step _).trans (hQstep l).symm
+  have hmono := Sc.wid_mono _ (singlePieceTheta_pos hρpos one_pos)
+    (singlePieceTheta_le_one hρpos hρle one_pos)
+    (Nat.ceil_le.mpr ((div_le_div_of_nonneg_right hSw (by norm_num)).trans (hQprop l).2))
+  obtain ⟨S', R', I', mu', hS'prop, -, -, hS'sub, hS'w, hmu', hcount⟩ :=
+    single_piece_on_affine_cell_of_scheme hk Sc (Q l) I (hQprop l).1 hI hQne
+      (hIstep ▸ (I.step_isUnit_of_prime hI (by omega)).ne_zero) hIstep (hQaxes l i).2.1
+      (hQaxes l i).2.2 D (fun p hp => Finset.mem_product.mpr (hDmem p hp).2.2.2) hρpos hρle hDc
+      (hcellJ.trans (mul_le_mul_of_nonneg_left (hSw.trans (by exact_mod_cast hIlen))
+        (by positivity)))
+      phi haff Dom (fun x hx => hsl x (hQI _ hQne.choose_spec x hx).2)
+      (fun p hp => hDom p (hDmem p hp).1) (hcellw.trans hmono)
+  refine ⟨q, hq, S', mu', hS'prop, fun z hz => ?_,
+    (Nat.sub_le_sub_right (Nat.sqrt_le_sqrt (Nat.sub_le_sub_right hmono 1)) 1).trans hS'w, hmu',
+    hcount.trans ?_⟩
+  · obtain ⟨-, hzQ, hzI⟩ := Finset.mem_filter.mp (hS'sub hz)
+    exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hQI _ hzQ _ hzI⟩
+  · exact_mod_cast Finset.card_le_card (Finset.filter_subset_filter _ fun p hp => (hDmem p hp).1)
 
 end LeanProofs.GowersSzemeredi

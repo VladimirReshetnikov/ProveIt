@@ -29,114 +29,44 @@ theorem polynomial_degree_scale_real (K D d T r v : Nat) (x gamma : Real)
           (r : Real) ^ (-(2 * (D : Real)⁻¹)) := by
   have hx0 : 0 < x := by linarith
   have hx1 : 1 ≤ x := by linarith
-  have hK0 : (0 : Real) < K := by exact_mod_cast (show 0 < K by omega)
-  have hD0 : (0 : Real) < D := by exact_mod_cast (show 0 < D by omega)
+  have hxy : x ≤ x ^ (2 * K) := le_self_pow₀ hx1 (by omega)
   have hr0 : (0 : Real) < r := by rw [hr]; positivity
-  let y := x ^ (2 * K)
-  have hxy : x ≤ y := by
-    simpa only [pow_one] using pow_le_pow_right₀ hx1 (show 1 ≤ 2 * K by omega)
-  have hy0 : 0 ≤ y := by positivity
-  let u := Nat.floor y
-  have huupper : (u : Real) ≤ y := Nat.floor_le hy0
-  have hufloor : y < (u : Real) + 1 := Nat.lt_floor_add_one y
-  have hu : 1 ≤ u := by
-    have : (1 : Real) ≤ u := by linarith
-    exact_mod_cast this
-  have hu4 : u ^ 4 ≤ r := by
-    have h : (u : Real) ^ 4 ≤ (r : Real) := by
-      calc
-        (u : Real) ^ 4 ≤ y ^ 4 := pow_le_pow_left₀ (Nat.cast_nonneg _) huupper _
-        _ = x ^ (8 * K) := by dsimp [y]; rw [← pow_mul]; congr 1; omega
-        _ ≤ x ^ D := pow_le_pow_right₀ hx1 hD
-        _ = r := hr.symm
-    exact_mod_cast h
+  let u := ⌊x ^ (2 * K)⌋₊
+  have hu0 : (u : Real) ≤ x ^ (2 * K) := Nat.floor_le (by positivity)
+  have hu1 : x ^ (2 * K) < u + 1 := Nat.lt_floor_add_one _
   have herror : (u : Real) ^ d * (r : Real) ^ (-gamma) ≤ 1 / x ^ 4 := by
-    have hpower : x ^ (2 * K * d + 4) ≤ (r : Real) ^ gamma := by
-      calc
-        x ^ (2 * K * d + 4) = x ^ (((2 * K * d + 4 : Nat) : Real)) :=
-          (Real.rpow_natCast _ _).symm
-        _ ≤ x ^ ((D : Real) * gamma) := Real.rpow_le_rpow_of_exponent_le hx1 hgamma
-        _ = (r : Real) ^ gamma := by
-          rw [hr, ← Real.rpow_natCast, ← Real.rpow_mul hx0.le]
-    have hnum : (u : Real) ^ d * x ^ 4 ≤ (r : Real) ^ gamma := by
-      calc
-        (u : Real) ^ d * x ^ 4 ≤ y ^ d * x ^ 4 :=
-          mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (Nat.cast_nonneg _) huupper d) (by positivity)
-        _ = x ^ (2 * K * d + 4) := by dsimp [y]; rw [← pow_mul, ← pow_add]
-        _ ≤ (r : Real) ^ gamma := hpower
-    rw [Real.rpow_neg hr0.le, ← div_eq_mul_inv]
-    apply (div_le_div_iff₀ (Real.rpow_pos_of_pos hr0 gamma) (by positivity)).2
-    simpa using hnum
-  refine ⟨u, hu, hu4, ?_⟩
-  intro L hL
-  have hLlower : y / 2 ≤ (L : Real) := by
-    have huL : (u : Real) - 1 ≤ L := by
-      rcases hL with rfl | rfl
-      · rw [Nat.cast_sub hu, Nat.cast_one]
-      · linarith
+    rw [Real.rpow_neg hr0.le, ← div_eq_mul_inv,
+      div_le_div_iff₀ (Real.rpow_pos_of_pos hr0 gamma) (by positivity)]
+    calc (u : Real) ^ d * x ^ 4 ≤ (x ^ (2 * K)) ^ d * x ^ 4 := by gcongr
+      _ = x ^ ((2 * K * d + 4 : Nat) : Real) := by rw [Real.rpow_natCast]; ring
+      _ ≤ x ^ ((D : Real) * gamma) := Real.rpow_le_rpow_of_exponent_le hx1 hgamma
+      _ = 1 * (r : Real) ^ gamma := by rw [one_mul, hr, Real.rpow_natCast_mul hx0.le]
+  refine ⟨u, (Nat.one_le_floor_iff _).mpr (by linarith), ?_, fun L hL => ?_⟩
+  · have : (u : Real) ^ 4 ≤ r := (pow_le_pow_left₀ (by positivity) hu0 4).trans
+      (by rw [← pow_mul, hr]; exact pow_le_pow_right₀ hx1 (by omega))
+    exact_mod_cast this
+  have hL : x ^ (2 * K) / 2 ≤ L := by
+    have : (u : Real) ≤ L + 1 := by exact_mod_cast (by omega : u ≤ L + 1)
     linarith
-  have hLpos : (0 : Real) < L := by linarith
-  have hTL : T < L := by
-    have h : (T : Real) + 1 ≤ L := by change 2 * ((T : Real) + 1) ≤ y at hthreshold; linarith
-    have h' : T + 1 ≤ L := by exact_mod_cast h
-    omega
-  have hxK : 4 ≤ x ^ K := hx.trans (by simpa only [pow_one] using pow_le_pow_right₀ hx1 hK)
-  have hxKL : x ^ K ≤ (L : Real) := by
-    have hy : y = (x ^ K) ^ 2 := by dsimp [y]; rw [← pow_mul]; congr 1; omega
-    rw [hy] at hLlower
-    nlinarith
-  have hvL : (v : Real) ≤ (L : Real) ^ (K : Real)⁻¹ := by
-    apply hv.trans
-    have h := Real.rpow_le_rpow (by positivity : 0 ≤ x ^ K) hxKL
-      (inv_nonneg.mpr hK0.le)
-    have hroot : (x ^ K) ^ (K : Real)⁻¹ = x := by
-      rw [← Real.rpow_natCast, ← Real.rpow_mul hx0.le, mul_inv_cancel₀ hK0.ne', Real.rpow_one]
-    simpa only [hroot] using h
-  let e : Real := 2 * (K : Real)⁻¹
-  have he0 : 0 ≤ e := by dsimp [e]; positivity
-  have he2 : e ≤ 2 := by
-    have hK1 : (1 : Real) ≤ K := by exact_mod_cast hK
-    have hinv : (K : Real)⁻¹ ≤ 1 := (inv_le_one₀ hK0).2 hK1
-    dsimp [e]
-    linarith
-  have hyPow : y ^ e = x ^ 4 := by
-    dsimp only [y]
-    rw [← Real.rpow_natCast, ← Real.rpow_mul hx0.le]
-    have hexp : ((2 * K : Nat) : Real) * e = 4 := by
-      dsimp [e]
-      push_cast
-      field_simp
-      norm_num
-    rw [hexp]
-    norm_cast
-  have htwo : (2 : Real) ^ e ≤ 4 := by
-    have h := Real.rpow_le_rpow_of_exponent_le (by norm_num : (1 : Real) ≤ 2) he2
-    norm_num at h ⊢
-    exact h
-  have hLpow : x ^ 4 ≤ 4 * (L : Real) ^ e := by
-    calc
-      x ^ 4 = y ^ e := hyPow.symm
-      _ ≤ (2 * (L : Real)) ^ e := Real.rpow_le_rpow hy0 (by linarith) he0
-      _ = (2 : Real) ^ e * (L : Real) ^ e := Real.mul_rpow (by norm_num) hLpos.le
-      _ ≤ 4 * (L : Real) ^ e := mul_le_mul_of_nonneg_right htwo (by positivity)
-  have hdiam : (L : Real) ^ (-e) ≤ 4 / x ^ 4 := by
-    rw [Real.rpow_neg hLpos.le, inv_eq_one_div]
-    apply (div_le_div_iff₀ (Real.rpow_pos_of_pos hLpos e) (by positivity)).2
-    simpa using hLpow
-  have hrootD : (r : Real) ^ (2 * (D : Real)⁻¹) = x ^ 2 := by
-    rw [hr, ← Real.rpow_natCast, ← Real.rpow_mul hx0.le]
-    have h : (D : Real) * (2 * (D : Real)⁻¹) = 2 := by field_simp
-    rw [h]
-    norm_cast
-  refine ⟨hTL, hvL, ?_⟩
-  calc
-    (u : Real) ^ d * (r : Real) ^ (-gamma) + (L : Real) ^ (-e) ≤
-        1 / x ^ 4 + 4 / x ^ 4 := add_le_add herror hdiam
-    _ = 5 / x ^ 4 := by ring
+  have hroot : x ^ 2 / 2 ≤ (L : Real) ^ (K : Real)⁻¹ := by
+    rw [← Real.pow_rpow_inv_natCast (by positivity : 0 ≤ x ^ 2 / 2) (by omega : K ≠ 0)]
+    gcongr
+    calc (x ^ 2 / 2) ^ K = x ^ (2 * K) / 2 ^ K := by rw [div_pow, pow_mul]
+      _ ≤ x ^ (2 * K) / 2 := by gcongr; exact le_self_pow₀ one_le_two (by omega)
+      _ ≤ L := hL
+  have hdiam : (L : Real) ^ (-(2 * (K : Real)⁻¹)) ≤ 4 / x ^ 4 := by
+    rw [Real.rpow_neg (Nat.cast_nonneg L), mul_comm, Real.rpow_mul (Nat.cast_nonneg L),
+      Real.rpow_two, show (4 : Real) / x ^ 4 = ((x ^ 2 / 2) ^ 2)⁻¹ by ring]
+    gcongr
+  have hrD : (r : Real) ^ (-(2 * (D : Real)⁻¹)) = 1 / x ^ 2 := by
+    rw [Real.rpow_neg hr0.le, mul_comm, Real.rpow_mul hr0.le, hr,
+      Real.pow_rpow_inv_natCast hx0.le (by omega : D ≠ 0), Real.rpow_two, inv_eq_one_div]
+  refine ⟨by exact_mod_cast (show (T : Real) < L by linarith),
+    hv.trans ((show x ≤ x ^ 2 / 2 by nlinarith [sq_nonneg (x - 2)]).trans hroot), ?_⟩
+  rw [hrD]
+  calc _ ≤ 1 / x ^ 4 + 4 / x ^ 4 := add_le_add herror hdiam
     _ ≤ 1 / x ^ 2 := by
-      apply (div_le_div_iff₀ (by positivity) (by positivity)).2
+      rw [← add_div, div_le_div_iff₀ (by positivity) (by positivity)]
       nlinarith [sq_nonneg (x ^ 2 - 5)]
-    _ = (r : Real) ^ (-(2 * (D : Real)⁻¹)) := by
-      rw [Real.rpow_neg hr0.le, hrootD, inv_eq_one_div]
 
 end LeanProofs.GowersSzemeredi

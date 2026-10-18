@@ -125,28 +125,16 @@ theorem section16_freiman_family_poly_cover {N q : Nat} [NeZero N] [Fact N.Prime
     MultiplyLinearWith (fun _ => ((3 ^ 1 * q : Nat) : Real)) (polyBaseExponent q) Gamma := by
   intro sigma hs hs1 P hP
   -- Every point carries at most `q` values.
-  have hmem : ∀ z ∈ Gamma, ∃ i, z.1 ∈ B i ∧ z.2 = phi i z.1 := by
-    intro z hz
-    have hz' := hcover hz
-    rw [section16FinsetUnion, Finset.mem_biUnion] at hz'
-    obtain ⟨i, -, hzi⟩ := hz'
+  have hmem : ∀ z ∈ Gamma, ∃ i, z.1 ∈ B i ∧ z.2 = phi i z.1 := fun z hz => by
+    obtain ⟨i, -, hzi⟩ := Finset.mem_biUnion.mp (hcover hz)
     exact ⟨i, (mem_partialGraph_one (B i) (phi i) z.1 z.2).1 hzi⟩
   have hfib : ∀ x : Point N 1, (Gamma.filter fun z => z.1 = x).card ≤ q := by
     intro x
-    have hsub : Gamma.filter (fun z => z.1 = x) ⊆
-        (Finset.univ : Finset (Fin q)).image (fun i => (x, phi i x)) := by
-      intro z hz
-      obtain ⟨hzG, hzx⟩ := Finset.mem_filter.mp hz
-      obtain ⟨i, -, hzi⟩ := hmem z hzG
-      refine Finset.mem_image.mpr ⟨i, Finset.mem_univ _, Prod.ext ?_ ?_⟩
-      · exact hzx.symm
-      · show phi i x = z.2
-        rw [hzi, hzx]
-    calc (Gamma.filter fun z => z.1 = x).card
-        ≤ ((Finset.univ : Finset (Fin q)).image (fun i => (x, phi i x))).card :=
-          Finset.card_le_card hsub
-      _ ≤ (Finset.univ : Finset (Fin q)).card := Finset.card_image_le
-      _ = q := by simp
+    refine (Finset.card_le_card (t := Finset.univ.image fun i : Fin q => (x, phi i x))
+      fun z hz => ?_).trans (Finset.card_image_le.trans (by simp))
+    obtain ⟨hzG, rfl⟩ := Finset.mem_filter.mp hz
+    obtain ⟨i, -, hzi⟩ := hmem z hzG
+    exact Finset.mem_image.mpr ⟨i, Finset.mem_univ _, Prod.ext rfl hzi.symm⟩
   set W : Real := (P.width : Real) with hW_def
   have hW0 : 0 ≤ W := Nat.cast_nonneg _
   have hη := polyBase_loss_pos hq hs
@@ -155,235 +143,135 @@ theorem section16_freiman_family_poly_cover {N q : Nat} [NeZero N] [Fact N.Prime
   have hΛ := polyBaseThreshold_ge_four hq hs hs1
   have hE := polyBaseExponent_pos hq hs hs1
   have hEa := polyBaseExponent_le_half hq hs hs1
-  have hcard0 : (0 : Real) ≤ (P.carrier.card : Real) := Nat.cast_nonneg _
+  have hE1 : polyBaseExponent q sigma ≤ 1 := by
+    have h2 : (2 : Real) ^ (-(14 : Real)) ≤ 1 :=
+      Real.rpow_le_one_of_one_le_of_nonpos (by norm_num) (by norm_num)
+    have : polyBaseCorExponent q sigma ≤ 1 := mul_le_one₀ (mul_le_one₀ h2 (by positivity)
+      (pow_le_one₀ hη.le hη1)) (by positivity) (inv_le_one_of_one_le₀ (by exact_mod_cast hq))
+    linarith
+  -- The width of the whole box is enough.
+  have hWE : W ^ polyBaseExponent q sigma ≤ W := by
+    rcases Nat.eq_zero_or_pos P.width with h0 | h0
+    · rw [hW_def, h0]; simp [Real.zero_rpow hE.ne']
+    · exact (Real.rpow_le_rpow_of_exponent_le (by rw [hW_def]; exact_mod_cast h0) hE1).trans_eq
+        (Real.rpow_one W)
   by_cases hbig : polyBaseThreshold q sigma < W ^ polyBaseCorExponent q sigma
   swap
   · -- Small boxes: the exact coarse cover.
     push Not at hbig
     obtain ⟨L, R, mu, hpart, hproper, hwidth, hmu, hcov⟩ :=
       section16_coarse_relation_cover (by norm_num : 0 < 1) Gamma q hfib P hP
-    refine ⟨L, 3 ^ 1 * q, P.carrier, R, mu, Finset.Subset.refl _, ?_, hpart, hproper,
-      le_rfl, ?_, hmu, fun j x hx _ y hy => hcov j x hx y hy⟩
-    · nlinarith [mul_nonneg hs.le hcard0]
-    · intro j
-      have hmin : W ^ polyBaseExponent q sigma ≤ ((min 2 P.width : Nat) : Real) := by
-        rcases Nat.lt_or_ge P.width 2 with hlt | hge
-        · rw [min_eq_right hlt.le]
-          rcases (by omega : P.width = 0 ∨ P.width = 1) with h0 | h1
-          · rw [hW_def, h0]
-            simp [Real.zero_rpow hE.ne']
-          · rw [hW_def, h1]
-            simp
-        · rw [min_eq_left hge]
-          exact_mod_cast polyBase_small_width hW0 hq hs hs1 hbig
-      exact hmin.trans (by exact_mod_cast hwidth j)
+    refine ⟨L, 3 ^ 1 * q, P.carrier, R, mu, Finset.Subset.refl _,
+      mul_le_of_le_one_left (Nat.cast_nonneg _) (by linarith), hpart, hproper, le_rfl,
+      fun j => le_trans ?_ (Nat.cast_le.mpr (hwidth j)), hmu,
+      fun j x hx _ y hy => hcov j x hx y hy⟩
+    push_cast
+    exact le_min (polyBase_small_width hW0 hq hs hs1 hbig) hWE
   -- Large boxes.
   have hX4 : 4 < W ^ polyBaseCorExponent q sigma := lt_of_le_of_lt hΛ hbig
-  have hW1 : 1 ≤ W := by
-    by_contra hlt
-    push Not at hlt
-    have := Real.rpow_le_one hW0 hlt.le ha.le
-    linarith
+  have hW1 : 1 ≤ W := not_lt.mp fun hlt => by linarith [Real.rpow_le_one hW0 hlt.le ha.le]
+  -- Delete the graphs that are sparse in this box.
   let I : Finset (Fin q) := Finset.univ.filter fun i =>
     sigma / (q : Real) * W ≤ ((boxOneIndexDomain P (B i)).card : Real)
-  let H : Finset (Point N 1) := P.carrier.filter fun x => ∀ i, i ∉ I → x ∉ B i
-  have hHsub : H ⊆ P.carrier := Finset.filter_subset _ _
-  have hPcard : (P.carrier.card : Real) = W := by
-    rw [hW_def]
-    exact_mod_cast boxOne_card_eq_width P hP
+  let U := (Finset.univ.filter (· ∉ I)).biUnion fun i => B i ∩ P.carrier
+  let H : Finset (Point N 1) := P.carrier \ U
+  have hHU : ∀ x ∈ H, ∀ i, x ∈ B i → i ∈ I := fun x hx i hxB => by
+    by_contra hi
+    exact (Finset.mem_sdiff.mp hx).2 (Finset.mem_biUnion.mpr ⟨i, Finset.mem_filter.mpr
+      ⟨Finset.mem_univ _, hi⟩, Finset.mem_inter.mpr ⟨hxB, (Finset.mem_sdiff.mp hx).1⟩⟩)
   have hHmass : (1 - sigma) * (P.carrier.card : Real) ≤ H.card := by
-    have hsplit := Finset.card_filter_add_card_filter_not
-      (s := P.carrier) (fun x => ∀ i, i ∉ I → x ∉ B i)
-    have hbad : ((P.carrier.filter fun x => ¬ ∀ i, i ∉ I → x ∉ B i).card : Real) ≤
-        sigma * W := by
-      have hsub : (P.carrier.filter fun x => ¬ ∀ i, i ∉ I → x ∉ B i) ⊆
-          (Finset.univ.filter fun i => i ∉ I).biUnion (fun i => B i ∩ P.carrier) := by
-        intro x hx
-        obtain ⟨hxP, hx⟩ := Finset.mem_filter.mp hx
-        push Not at hx
-        obtain ⟨i, hiI, hxB⟩ := hx
-        exact Finset.mem_biUnion.mpr ⟨i, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hiI⟩,
-          Finset.mem_inter.mpr ⟨hxB, hxP⟩⟩
-      have hle : ((P.carrier.filter fun x => ¬ ∀ i, i ∉ I → x ∉ B i).card : Real) ≤
-          ∑ i ∈ Finset.univ.filter (fun i => i ∉ I), ((B i ∩ P.carrier).card : Real) := by
-        exact_mod_cast (Finset.card_le_card hsub).trans Finset.card_biUnion_le
-      have hterm : ∀ i ∈ Finset.univ.filter (fun i => i ∉ I),
-          ((B i ∩ P.carrier).card : Real) ≤ sigma / (q : Real) * W := by
-        intro i hi
-        have hiI := (Finset.mem_filter.mp hi).2
-        have hnot : ¬ (sigma / (q : Real) * W ≤ ((boxOneIndexDomain P (B i)).card : Real)) := by
-          exact fun h => hiI (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h⟩)
-        rw [← boxOneIndexDomain_card P hP (B i)]
-        push Not at hnot
-        exact hnot.le
-      have hsum := Finset.sum_le_sum hterm
-      rw [Finset.sum_const, nsmul_eq_mul] at hsum
-      have hcount : ((Finset.univ.filter fun i : Fin q => i ∉ I).card : Real) ≤ q := by
-        exact_mod_cast (Finset.card_filter_le _ _).trans (by simp)
-      have hq0 : (0 : Real) < q := by exact_mod_cast hq
-      calc _ ≤ _ := hle
-        _ ≤ _ := hsum
-        _ ≤ (q : Real) * (sigma / (q : Real) * W) :=
-            mul_le_mul_of_nonneg_right hcount (by positivity)
-        _ = sigma * W := by field_simp [hq0.ne']
-    have hsplitR : (H.card : Real) +
-        ((P.carrier.filter fun x => ¬ ∀ i, i ∉ I → x ∉ B i).card : Real) =
-        (P.carrier.card : Real) := by exact_mod_cast hsplit
-    rw [hPcard] at hsplitR ⊢
-    nlinarith
+    have hterm : ∀ i ∈ Finset.univ.filter (· ∉ I),
+        ((B i ∩ P.carrier).card : Real) ≤ sigma / q * W := fun i hi => by
+      rw [← boxOneIndexDomain_card P hP (B i)]
+      exact (not_le.mp fun h => (Finset.mem_filter.mp hi).2
+        (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h⟩)).le
+    have h1 : (P.carrier.card : Real) ≤ H.card + U.card := by
+      exact_mod_cast Finset.card_le_card_sdiff_add_card
+    have h2 : (U.card : Real) ≤
+        ∑ i ∈ Finset.univ.filter (· ∉ I), ((B i ∩ P.carrier).card : Real) := by
+      exact_mod_cast Finset.card_biUnion_le
+    have h3 := Finset.sum_le_card_nsmul _ _ _ hterm
+    have h4 : ((Finset.univ.filter (· ∉ I)).card : Real) * (sigma / q * W) ≤
+        q * (sigma / q * W) :=
+      mul_le_mul_of_nonneg_right (by exact_mod_cast (Finset.card_filter_le _ _).trans (by simp))
+        (by positivity)
+    have hq0 : (q : Real) ≠ 0 := by positivity
+    have h5 : (q : Real) * (sigma / q * W) = sigma * W := by field_simp
+    have hPcard : (P.carrier.card : Real) = W := by
+      rw [hW_def]; exact_mod_cast boxOne_card_eq_width P hP
+    rw [nsmul_eq_mul] at h3
+    rw [hPcard] at h1 ⊢
+    linarith
   by_cases hIempty : I.card = 0
   · -- No graph is dense in this box: no point of `H` carries a value.
-    have hIe : I = ∅ := Finset.card_eq_zero.mp hIempty
-    refine ⟨1, 0, H, fun _ => P, fun _ i => i.elim0, hHsub, hHmass, ?_, fun _ => hP,
-      ?_, ?_, fun _ i => i.elim0, ?_⟩
-    · constructor
-      · intro x
-        simp
-      · intro i j hij
-        exact ((bne_iff_ne.mp hij) (Subsingleton.elim i j)).elim
-    · show ((0 : Nat) : Real) ≤ ((3 ^ 1 * q : Nat) : Real)
-      exact_mod_cast Nat.zero_le _
-    · intro _
-      show W ^ polyBaseExponent q sigma ≤ W
-      have hE1 : polyBaseExponent q sigma ≤ 1 := by
-        have : polyBaseCorExponent q sigma ≤ 1 := by
-          unfold polyBaseCorExponent
-          have hq1 : (1 : Real) ≤ q := by exact_mod_cast hq
-          have hsq : (sigma / q) ^ 2 ≤ 1 := pow_le_one₀ hη.le hη1
-          have hinv : (q : Real)⁻¹ ≤ 1 := inv_le_one_of_one_le₀ hq1
-          have h2 : (2 : Real) ^ (-(14 : Real)) ≤ 1 :=
-            Real.rpow_le_one_of_one_le_of_nonpos (by norm_num) (by norm_num)
-          calc (2 : Real) ^ (-(14 : Real)) * (sigma / q) ^ 2 * (q : Real)⁻¹
-              ≤ 1 * 1 * 1 := by gcongr
-            _ = 1 := by norm_num
-        linarith
-      calc W ^ polyBaseExponent q sigma ≤ W ^ (1 : Real) :=
-            Real.rpow_le_rpow_of_exponent_le hW1 hE1
-        _ = W := Real.rpow_one W
-    · intro j x _ hxH y hxy
-      obtain ⟨i, hxB, -⟩ := hmem (x, y) hxy
-      dsimp only at hxB
-      have hall := (Finset.mem_filter.mp hxH).2
-      exact ((hall i (by simp [hIe])) hxB).elim
+    refine ⟨1, 0, H, fun _ => P, fun _ i => i.elim0, Finset.sdiff_subset, hHmass,
+      ⟨fun x => by simp, fun i j hij => absurd (Subsingleton.elim i j) (bne_iff_ne.mp hij)⟩,
+      fun _ => hP, by simp, fun _ => hWE, fun _ i => i.elim0, fun j x _ hxH y hxy => ?_⟩
+    obtain ⟨i, hxB, -⟩ := hmem (x, y) hxy
+    exact absurd (Finset.card_pos.mpr ⟨i, hHU x hxH i hxB⟩) (by omega)
   -- Simultaneous linearization of the dense graphs.
   have hq'pos : 0 < I.card := Nat.pos_of_ne_zero hIempty
   let q' := I.card
   let e : Fin q' → Fin q := fun i' => (I.equivFin.symm i').1
-  have he_mem : ∀ i', e i' ∈ I := fun i' => (I.equivFin.symm i').2
   let R := boxOneIndexAP P
   let A' : Fin q' → Finset Int := fun i' => boxOneIndexDomain P (B (e i'))
   let psi : Fin q' → Int → ZMod N := fun i' => boxOneIndexMap P (phi (e i'))
   set X : Real := W ^ polyBaseCorExponent q sigma with hX
   let m := Nat.floor X
   have hm2 : 2 ≤ m := Nat.le_floor (by push_cast; linarith)
-  have hm : 0 < m := by omega
-  have hRlen : (R.length : Real) = W := rfl
-  have hRpos : 0 < R.length := by
-    have : (0 : Real) < R.length := by rw [hRlen]; linarith
-    exact_mod_cast this
-  have hq'q : q' ≤ q := (Finset.card_le_univ I).trans (by simp)
-  have hexp' : polyBaseCorExponent q sigma ≤
-      (2 : Real) ^ (-(14 : Real)) * (sigma / q) ^ 2 * (q' : Real)⁻¹ := by
-    unfold polyBaseCorExponent
-    have hq'0 : (0 : Real) < q' := by exact_mod_cast hq'pos
-    have hinv : (q : Real)⁻¹ ≤ (q' : Real)⁻¹ :=
-      inv_anti₀ hq'0 (by exact_mod_cast hq'q)
-    have hc : 0 ≤ (2 : Real) ^ (-(14 : Real)) * (sigma / q) ^ 2 := by positivity
-    exact mul_le_mul_of_nonneg_left hinv hc
   have hXle : X ≤ (R.length : Real) ^
-      ((2 : Real) ^ (-(14 : Real)) * (sigma / q) ^ 2 * (q' : Real)⁻¹) := by
-    rw [hRlen, hX]
-    exact Real.rpow_le_rpow_of_exponent_le hW1 hexp'
-  have hmBound : (m : Real) ≤ (R.length : Real) ^
       ((2 : Real) ^ (-(14 : Real)) * (sigma / q) ^ 2 * (q' : Real)⁻¹) :=
-    (Nat.floor_le (by positivity)).trans hXle
-  have hcorLarge : 1024 * Real.pi / (sigma / q) < (R.length : Real) ^
-      ((2 : Real) ^ (-(14 : Real)) * (sigma / q) ^ 2 * (q' : Real)⁻¹) := by
-    have h : polyBaseThreshold q sigma < X := hbig
-    unfold polyBaseThreshold at h
-    exact lt_of_lt_of_le h hXle
-  have hAvec : ∀ i', A' i' ⊆ R.carrier ∧
-      sigma / q * R.length ≤ (A' i').card ∧ FreimanHom 8 (A' i') (psi i') := by
-    intro i'
-    refine ⟨boxOneIndexDomain_subset P (B (e i')), ?_, ?_⟩
-    · rw [hRlen]
-      exact (Finset.mem_filter.mp (he_mem i')).2
-    · exact boxOneIndex_freiman P (B (e i')) (phi (e i')) (hfreiman (e i'))
-  obtain ⟨M, S, hSpart, hSproper, _hSstep, hSlinear⟩ :=
-    corollary_7_11_holds N q' m R A' psi (sigma / q) hq'pos hm hη hRpos
-      (boxOneIndexAP_proper P) hAvec hmBound hcorLarge
+    Real.rpow_le_rpow_of_exponent_le hW1 (mul_le_mul_of_nonneg_left (inv_anti₀
+      (by exact_mod_cast hq'pos) (by exact_mod_cast (Finset.card_le_univ I).trans (by simp)))
+      (by positivity))
+  obtain ⟨M, S, hSpart, hSproper, -, hSlinear⟩ :=
+    corollary_7_11_holds N q' m R A' psi (sigma / q) hq'pos (by omega) hη
+      (by rw [← Nat.cast_pos (α := Real)]; exact one_pos.trans_le hW1) (boxOneIndexAP_proper P)
+      (fun i' => ⟨boxOneIndexDomain_subset P (B (e i')),
+        (Finset.mem_filter.mp (I.equivFin.symm i').2).2,
+        boxOneIndex_freiman P (B (e i')) (phi (e i')) (hfreiman (e i'))⟩)
+      ((Nat.floor_le (by positivity)).trans hXle) (hbig.trans_le hXle)
   have hSsub (j : Fin M) : (S j).carrier ⊆ R.carrier := hSpart.cell_subset j
   have hQproper (j : Fin M) : (indexCellBox P (S j)).IsProper :=
     indexCellBox_proper P hP (S j) (hSproper j).1 (hSsub j)
+  have hlen (j : Fin M) : m ≤ (S j).length := by rcases (hSproper j).2 with h | h <;> omega
   choose c d hcd using fun (j : Fin M) (i' : Fin q') => hSlinear i' j
-  let Q : Fin M → Box N 1 := fun j => indexCellBox P (S j)
   let mu : Fin M → Fin q → Point N 1 → ZMod N := fun j i =>
     if hi : i ∈ I then indexCellAffine P (S j) (c j (I.equivFin ⟨i, hi⟩))
       (d j (I.equivFin ⟨i, hi⟩)) else fun _ => 0
-  refine ⟨M, q, H, Q, mu, hHsub, hHmass, indexCells_partition P hP S hSpart, hQproper,
-    ?_, ?_, ?_, ?_⟩
-  · show (q : Real) ≤ ((3 ^ 1 * q : Nat) : Real)
-    push_cast
-    linarith
-  · intro j
-    have hmj : m ≤ (S j).length := by
-      rcases (hSproper j).2 with h | h <;> omega
-    have hwidthM : W ^ polyBaseExponent q sigma ≤ m := by
-      have hyNonneg : 0 ≤ W ^ polyBaseExponent q sigma := by positivity
-      have hsq : (W ^ polyBaseExponent q sigma) ^ 2 ≤ X := by
-        rw [← Real.rpow_natCast, ← Real.rpow_mul hW0, hX]
-        apply Real.rpow_le_rpow_of_exponent_le hW1
-        push_cast
-        linarith
-      have hy : W ^ polyBaseExponent q sigma ≤ X - 1 := by nlinarith
-      have hfloor : X < (m : Real) + 1 := Nat.lt_floor_add_one X
-      linarith
-    show W ^ polyBaseExponent q sigma ≤ ((indexCellBox P (S j)).width : Real)
-    rw [indexCellBox_width]
-    exact hwidthM.trans (by exact_mod_cast hmj)
-  · intro j i
-    by_cases hi : i ∈ I
-    · simp only [mu, dif_pos hi]
-      exact indexCellAffine_multilinear P (S j) _ _
-    · simp only [mu, dif_neg hi]
-      exact isMultilinear_constant 0
-  · intro j x hxQ hxH y hxy
+  refine ⟨M, q, H, fun j => indexCellBox P (S j), mu, Finset.sdiff_subset, hHmass,
+    indexCells_partition P hP S hSpart, hQproper, by push_cast; linarith, fun j => ?_,
+    fun j i => ?_, fun j x hxQ hxH y hxy => ?_⟩
+  · -- the cell widths
+    have hsq : (W ^ polyBaseExponent q sigma) ^ 2 ≤ X := by
+      rw [← Real.rpow_natCast, ← Real.rpow_mul hW0, hX]
+      exact Real.rpow_le_rpow_of_exponent_le hW1 (by push_cast; linarith)
+    have hy : W ^ polyBaseExponent q sigma ≤ X - 1 := by
+      nlinarith [Real.rpow_nonneg hW0 (polyBaseExponent q sigma)]
+    have hmj : (m : Real) ≤ (S j).length := by exact_mod_cast hlen j
+    simp only [indexCellBox_width]
+    linarith [Nat.lt_floor_add_one X]
+  · -- the maps are multilinear
+    simp only [mu]
+    split_ifs
+    exacts [indexCellAffine_multilinear P (S j) _ _, isMultilinear_constant 0]
+  · -- the cover
     obtain ⟨i, hxB, hy⟩ := hmem (x, y) hxy
     dsimp only at hxB hy
-    have hiI : i ∈ I := by
-      by_contra hiI
-      exact (Finset.mem_filter.mp hxH).2 i hiI hxB
-    set i' := I.equivFin ⟨i, hiI⟩ with hi'
-    have hei : e i' = i := by
-      show (I.equivFin.symm i').1 = i
-      rw [hi', Equiv.symm_apply_apply]
+    have hiI := hHU x hxH i hxB
+    simp only [indexCellBox_carrier] at hxQ
+    obtain ⟨z, hzS, rfl⟩ := Finset.mem_image.mp hxQ
+    obtain ⟨t, -, rfl⟩ := Finset.mem_image.mp hzS
+    have hei : e (I.equivFin ⟨i, hiI⟩) = i :=
+      congrArg Subtype.val (I.equivFin.symm_apply_apply ⟨i, hiI⟩)
+    have hvalue := hcd j (I.equivFin ⟨i, hiI⟩) t
+      (Finset.mem_filter.mpr ⟨hSsub j hzS, hei.symm ▸ hxB⟩)
+    have hstepNe : ((S j).step : ZMod N) * (P.axis 0).step ≠ 0 :=
+      proper_modAP_step_ne_zero_of_two_le ((indexCellBox P (S j)).axis 0) (hQproper j 0)
+        (by simpa [indexCellBox] using hm2.trans (hlen j))
     refine ⟨i, ?_⟩
     simp only [mu, dif_pos hiI]
-    rw [← hi']
-    change x ∈ (indexCellBox P (S j)).carrier at hxQ
-    rw [indexCellBox_carrier] at hxQ
-    obtain ⟨z, hzS, hzx⟩ := Finset.mem_image.mp hxQ
-    rw [IntAP.carrier] at hzS
-    obtain ⟨t, _ht, htz⟩ := Finset.mem_image.mp hzS
-    have hzx' : boxOneIntPoint P ((S j).start + ((t : Nat) * (S j).step : Nat)) = x :=
-      (congrArg (boxOneIntPoint P) htz).trans hzx
-    have hzA : (S j).start + ((t : Nat) * (S j).step : Nat) ∈ A' i' := by
-      change (S j).start + ((t : Nat) * (S j).step : Nat) ∈
-        boxOneIndexDomain P (B (e i'))
-      rw [boxOneIndexDomain, Finset.mem_filter]
-      refine ⟨hSsub j ?_, ?_⟩
-      · rw [IntAP.carrier]
-        exact Finset.mem_image.mpr ⟨t, _ht, rfl⟩
-      · rw [hzx', hei]
-        exact hxB
-    have hvalue : psi i' ((S j).start + ((t : Nat) * (S j).step : Nat)) =
-        c j i' * (t : Nat) + d j i' := hcd j i' t hzA
-    have hm2j : 2 ≤ (S j).length := by
-      rcases (hSproper j).2 with h | h <;> omega
-    have hstepNe : ((S j).step : ZMod N) * (P.axis 0).step ≠ 0 := by
-      exact proper_modAP_step_ne_zero_of_two_le ((indexCellBox P (S j)).axis 0)
-        (hQproper j 0) (by simpa [indexCellBox] using hm2j)
-    rw [hy, ← hzx', indexCellAffine_value P (S j) (c j i') (d j i') t hstepNe, ← hvalue]
+    rw [hy, indexCellAffine_value P (S j) _ _ t hstepNe, ← hvalue]
     simp only [psi, boxOneIndexMap, hei]
 
 end LeanProofs.GowersSzemeredi

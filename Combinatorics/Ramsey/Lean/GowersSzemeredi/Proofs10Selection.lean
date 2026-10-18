@@ -87,9 +87,7 @@ theorem lemma_10_3_holds : lemma_10_3 := by
         rw [countWhere_cast_eq_sum_ite, Finset.sum_mul]
         exact Finset.sum_congr rfl fun x _ => by split_ifs <;> simp
       _ ≤ (alpha ^ 2 * M * N / 2) * (alpha ^ 2 * M ^ 3 * N ^ 2) := by gcongr
-      _ = A / 2 := by
-        dsimp only [A]
-        ring
+      _ = A / 2 := by linarith
   have hsplit : QT = QS + ∑ x : X, if ¬ good x then Q x else 0 := by
     rw [← Finset.sum_filter]
     exact (Finset.sum_filter_add_sum_filter_not _ good Q).symm
