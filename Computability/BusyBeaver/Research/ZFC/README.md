@@ -48,6 +48,13 @@ ZFC has a refutation. Seven theorem audits and seven client examples pass.
 The binary startup and simulation must still connect that program theorem
 to the literal blank-tape machine; the PA comparison remains open.
 
+The [246 pulse contracts](prefix246_pulse.md) and
+[unbounded register operations](prefix246_boxes.md) now pass in Lean on the
+exact folded table. The proofs retain the whole tape, arbitrary natural
+register values, and the required spare suffix. Zero decrement restores the
+file; positive decrement shifts its boundary; increment adds a value-one
+spare. Complete decoder coverage and blank-start composition remain open.
+
 The [exact 250-state table](table_prefix250.md) is now checked in Lean: all 500
 actions, the state numbering, the unique halt edge and the incoming edges of
 the shared initializer. Its 40 named theorem audits and 40 callers pass.
