@@ -1731,3 +1731,11 @@ registers. Seven axiom probes and twelve typed callers passed without warnings.
 The exact history retains the uncompiled initial draft and proactive finite
 target repair; the first actual source/audit run passed. Composition with
 the surrounding AX fragments is a separate obligation.
+
+The [generic copy-and-restore contract](arithmetic_control_copy_back254.md)
+adds an argument register to TW and restores the argument in exactly
+`7*oldArgument+2` internal steps, requiring only scratch1 to start at zero.
+Its composition with a clean push sets TW to the argument and pushes old TW
+onto WS. Five axiom probes and nine typed callers passed without warnings;
+the initial two-coordinate proof failure and explicit rewrite repair remain
+in the history. Concrete AX occurrences require their own literal bindings.
