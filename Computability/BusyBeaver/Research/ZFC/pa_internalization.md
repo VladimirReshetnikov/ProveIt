@@ -777,9 +777,14 @@ splits into three pieces with a narrow interface:
 
 The [source-only R3 review](results/upstream-internal-interpretation-ec37dd933a-review.json)
 records the exact supplied core and existing quotient/WF formulas. The
-core's set-language term premise is already supplied by
-`SetRelativization.isTerm_eq_fvar`. No fresh compiler audit of the new core
-is claimed here. A finite-fragment alternative would still need a uniform
+[reduced-import core](internal_interpretation_core.md) subsequently passed
+its source check and expanded audit: seven probes, thirteen typed callers,
+and zero warnings. Its public declarations are unchanged; the import repair
+adds a private arity lemma and redirects seven uses to it. The historical
+source and audit remain available. The set-language term
+premise is supplied by `SetRelativization.isTerm_eq_fvar`, while `Good`,
+domain nonemptiness and internal axiom transport remain hypotheses.
+A finite-fragment alternative would still need a uniform
 transformation of arbitrary internal refutations; a result restricted to a
 proper definable cut would need an additional bridge to full consistency.
 

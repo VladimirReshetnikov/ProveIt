@@ -1834,3 +1834,11 @@ a reusable path-to-rank proof and two concrete source bindings at controls
 steps closed residual `Option.map` goals. The original failed attempt is
 preserved. These two clients establish source bindings; they do not establish
 a general performance improvement or an execution contract.
+
+The [generic internal interpretation core](internal_interpretation_core.md)
+has passed a fresh source check and an expanded audit with seven probes,
+thirteen typed callers and zero warnings. It transports arbitrary internal
+derivations using defined equality and membership. The concrete parameter's
+`Good` conditions, domain nonemptiness and uniform internal axiom transport
+remain separate obligations. The original source is preserved alongside
+the checked version with reduced imports.
