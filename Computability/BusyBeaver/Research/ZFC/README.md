@@ -52,6 +52,11 @@ the independent gap changes from positive decrement and PC overflow. Its
 12 theorem audits and 13 client examples pass. Checking every original
 instruction against that interface remains the next coverage obligation.
 
+The [whole-tape frame adapters](prefix250_frame.md) now connect those
+symbolic endpoints to the logical register file and preserve the changed
+spare suffix and header distance. Fourteen theorem audits and fourteen
+client examples pass; complete runtime composition remains in progress.
+
 The [previous intake](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-158-159.md)
 preserves five complete reports and one explicitly partial salvage, including
 cache-result MP, semantic seeds, countdowns and pairing-shift negation.
