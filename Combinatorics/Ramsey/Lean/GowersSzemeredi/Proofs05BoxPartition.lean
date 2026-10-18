@@ -53,30 +53,16 @@ theorem boxProductCell_partition {N k : Nat} [NeZero N] (P : Box N k)
     IsBoxPartition
       (fun j : Fin (Fintype.card (∀ i, Fin (m i))) =>
         boxProductCell m Q d hstep ((Fintype.equivFin _).symm j)) P := by
-  let e := Fintype.equivFin (∀ i, Fin (m i))
-  constructor
-  · intro x
-    simp only [Box.carrier, Finset.mem_filter, Finset.mem_univ, true_and]
-    constructor
-    · intro hx
-      have hex : ∀ i, ∃ j, x i ∈ (Q i j).carrier := fun i => ((hpart i).1 _).mp (hx i)
-      choose j hj using hex
-      refine ⟨e j, ?_⟩
-      simpa only [boxProductCell, e, Equiv.symm_apply_apply] using hj
-    · rintro ⟨j, hj⟩ i
-      exact ((hpart i).1 _).mpr ⟨(e.symm j) i, hj i⟩
-  · intro j l hjl
-    apply Finset.disjoint_left.mpr
-    intro x hxj hxl
-    have hj : ∀ i, x i ∈ (Q i ((e.symm j) i)).carrier := by
-      simpa only [Box.carrier, Finset.mem_filter, Finset.mem_univ, true_and, boxProductCell] using hxj
-    have hl : ∀ i, x i ∈ (Q i ((e.symm l) i)).carrier := by
-      simpa only [Box.carrier, Finset.mem_filter, Finset.mem_univ, true_and, boxProductCell] using hxl
-    have heq : e.symm j = e.symm l := by
-      funext i
-      by_contra hne
-      exact Finset.disjoint_left.mp ((hpart i).2 _ _ (bne_iff_ne.mpr hne)) (hj i) (hl i)
-    exact (bne_iff_ne.mp hjl) (e.symm.injective heq)
+  refine ⟨fun x => ?_, fun j l hjl => Finset.disjoint_left.mpr fun x hxj hxl => ?_⟩
+  · simp only [Box.carrier, Finset.mem_filter, Finset.mem_univ, true_and]
+    refine ⟨fun hx => ?_, fun ⟨j, hj⟩ i => ((hpart i).1 _).mpr ⟨_, hj i⟩⟩
+    choose j hj using fun i => ((hpart i).1 _).mp (hx i)
+    exact ⟨Fintype.equivFin _ j, by simpa [boxProductCell] using hj⟩
+  · -- the cells of `j` and `l` differ along some axis, where they are disjoint
+    exact bne_iff_ne.mp hjl ((Fintype.equivFin _).symm.injective (funext fun i =>
+      Classical.byContradiction fun hne => Finset.disjoint_left.mp
+        ((hpart i).2 _ _ (bne_iff_ne.mpr hne)) ((Finset.mem_filter.mp hxj).2 i)
+        ((Finset.mem_filter.mp hxl).2 i)))
 
 /-- A proper box admits a partition with prescribed step and almost-equal
 axis lengths whenever p*v^2 fits in its width. -/
@@ -89,34 +75,18 @@ theorem section5_box_residue_partition {N k : Nat} [NeZero N]
       (∀ j i, 0 < ((Q j).axis i).length ∧
         (((Q j).axis i).length = v - 1 ∨ ((Q j).axis i).length = v)) ∧
       ∀ j, (Q j).commonDiff = (p : ZMod N) * P.commonDiff := by
-  have haxis (i : Fin k) : p * v ^ 2 ≤ (P.axis i).length :=
-    hsize.trans (P.width_le_axis_length i)
-  choose m R _ hRpart hRprop hRstep using
-    fun i => section5_residue_target_partition (P.axis i).length p v hp hv (haxis i)
+  choose m R _ hRpart hRprop hRstep using fun i => section5_residue_target_partition
+    (P.axis i).length p v hp hv (hsize.trans (P.width_le_axis_length i))
   let T (i : Fin k) (j : Fin (m i)) := section5Transport (P.axis i) (R i j)
-  have hTpart (i : Fin k) : IsPartition (fun j => (T i j).carrier) (P.axis i).carrier :=
-    section5Transport_partition (P.axis i) (R i) (hP i) (hRpart i)
-  have hTproper (i : Fin k) (j : Fin (m i)) : (T i j).IsProper :=
-    section5Transport_isProper (P.axis i) (R i j) (hP i) (hRprop i j).1
-      (IsPartition.cell_subset (hRpart i) j)
   have hTstep (i : Fin k) (j : Fin (m i)) : (T i j).step = (p : ZMod N) * P.commonDiff := by
-    change ((R i j).step : ZMod N) * (P.axis i).step = _
-    rw [hRstep, P.axis_step]
-  let Q := fun j : Fin (Fintype.card (∀ i, Fin (m i))) =>
-    boxProductCell m T ((p : ZMod N) * P.commonDiff) hTstep ((Fintype.equivFin _).symm j)
-  refine ⟨_, Q, boxProductCell_partition P m T _ hTstep hTpart, ?_, ?_, ?_, ?_⟩
-  · intro j i
-    exact hTproper i _
-  · intro j
-    apply Box.le_width_of_le_axis _ hk
-    intro i
-    have hlen := (hRprop i (((Fintype.equivFin _).symm j) i)).2.2
-    change v - 1 ≤ (R i (((Fintype.equivFin _).symm j) i)).length
-    omega
-  · intro j i
-    exact (hRprop i _).2
-  · intro j
-    rfl
+    simp only [T, section5Transport, hRstep, P.axis_step]
+  refine ⟨_, _, boxProductCell_partition P m T _ hTstep fun i =>
+      section5Transport_partition (P.axis i) (R i) (hP i) (hRpart i),
+    fun j i => section5Transport_isProper (P.axis i) _ (hP i) (hRprop i _).1
+      (IsPartition.cell_subset (hRpart i) _),
+    fun j => Box.le_width_of_le_axis _ hk fun i =>
+      (hRprop i _).2.2.elim Eq.ge fun h => (Nat.sub_le v 1).trans h.ge,
+    fun j i => (hRprop i _).2, fun j => rfl⟩
 
 /-- Natural index vectors of a box. -/
 def boxIndexSet {N k : Nat} (P : Box N k) : Finset (Fin k → Nat) :=

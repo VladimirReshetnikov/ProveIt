@@ -148,30 +148,12 @@ private lemma extraction_sigma_le_alpha_sq_div_64 {N : Nat} {X : Type*}
     (hrho : rho ≤ alpha ^ 2 / 32)
     (hsigma : sigma ≤ eta * rho * alpha ^ 2 / 16) :
     sigma ≤ alpha ^ 2 / 64 := by
-  rcases hsetup with ⟨⟨halpha, halphaOne, _hM, _hcard, _hfibre⟩,
-    hsigmaPos, heta, hetaOne, _hsym, _hinv, _happrox⟩
-  have hmulPositive : 0 < eta * rho * alpha ^ 2 := by linarith
-  have hetaRhoPositive : 0 < eta * rho := by
-    rcases (mul_pos_iff.mp hmulPositive) with h | h
-    · exact h.1
-    · exact (not_lt_of_ge (sq_nonneg alpha) h.2).elim
-  have hrhoPositive : 0 < rho := by
-    rcases (mul_pos_iff.mp hetaRhoPositive) with h | h
-    · exact h.2
-    · exact (not_lt_of_ge heta h.1).elim
-  have hetaRhoUpper : eta * rho ≤ alpha ^ 2 / 32 :=
-    (mul_le_of_le_one_left hrhoPositive.le hetaOne).trans hrho
-  have halphaSqOne : alpha ^ 2 ≤ 1 := by
-    nlinarith [mul_nonneg (sub_nonneg.mpr halphaOne)
-      (show 0 ≤ 1 + alpha by linarith)]
-  have halphaFourth : alpha ^ 2 * alpha ^ 2 ≤ alpha ^ 2 :=
-    mul_le_of_le_one_right (sq_nonneg alpha) halphaSqOne
-  calc
-    sigma ≤ eta * rho * alpha ^ 2 / 16 := hsigma
-    _ ≤ (alpha ^ 2 / 32) * alpha ^ 2 / 16 := by
-      gcongr
-    _ ≤ alpha ^ 2 / 64 := by
-      nlinarith
+  obtain ⟨⟨halpha, halphaOne, -⟩, -, heta, hetaOne, -⟩ := hsetup
+  have h : eta * rho ≤ 1 / 32 := by
+    rcases le_total rho 0 with h | h
+    · nlinarith
+    · linarith [mul_le_of_le_one_left h hetaOne, pow_le_one₀ (n := 2) halpha.le halphaOne]
+  linarith [mul_le_mul_of_nonneg_right h (sq_nonneg alpha), sq_nonneg alpha]
 
 private lemma extraction_sigmaM_le_anchor_quarter {N : Nat} {X : Type*}
     [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
@@ -233,27 +215,14 @@ private lemma extraction_fibre_product_le_four {N : Nat} {X : Type*}
         (D.fibre (D.index w + d)).card ≤
       4 * (((D.fibre (D.index x + e)).card : Real) *
         (D.fibre (D.index w + e)).card) := by
-  have hxd := extraction_shifted_fibre_bounds D B sigma M x hinvariant
-    hxQuarter d hd
-  have hxe := extraction_shifted_fibre_bounds D B sigma M x hinvariant
-    hxQuarter e he
-  have hwd := extraction_shifted_fibre_bounds D B sigma M w hinvariant
-    hwQuarter d hd
-  have hwe := extraction_shifted_fibre_bounds D B sigma M w hinvariant
-    hwQuarter e he
-  have hxCompare : ((D.fibre (D.index x + d)).card : Real) ≤
-      2 * (D.fibre (D.index x + e)).card := by linarith
-  have hwCompare : ((D.fibre (D.index w + d)).card : Real) ≤
-      2 * (D.fibre (D.index w + e)).card := by linarith
-  calc
-    ((D.fibre (D.index x + d)).card : Real) *
-          (D.fibre (D.index w + d)).card ≤
-        (2 * (D.fibre (D.index x + e)).card) *
-          (D.fibre (D.index w + d)).card := by gcongr
-    _ ≤ (2 * (D.fibre (D.index x + e)).card) *
-          (2 * (D.fibre (D.index w + e)).card) := by gcongr
-    _ = 4 * (((D.fibre (D.index x + e)).card : Real) *
-          (D.fibre (D.index w + e)).card) := by ring
+  have hx := extraction_shifted_fibre_bounds D B sigma M x hinvariant hxQuarter
+  have hw := extraction_shifted_fibre_bounds D B sigma M w hinvariant hwQuarter
+  calc ((D.fibre (D.index x + d)).card : Real) * (D.fibre (D.index w + d)).card
+      ≤ (2 * (D.fibre (D.index x + e)).card) * (2 * (D.fibre (D.index w + e)).card) := by
+        gcongr ?_ * ?_
+        · linarith [(hx d hd).2, (hx e he).1]
+        · linarith [(hw d hd).2, (hw e he).1]
+    _ = _ := by ring
 
 private lemma extraction_direction_good_almostEvery {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]
@@ -459,34 +428,14 @@ private lemma extraction_lift_almostEvery {Y : Type*} [DecidableEq Y]
     (hP : AlmostEvery (1 - b) U P) :
     AlmostEvery (1 - (a + b)) W P := by
   classical
-  have hbadU := extraction_almostEvery_bad_card_le a W
-    (fun y => y ∈ U) hU
-  have hbadP := extraction_almostEvery_bad_card_le b U P hP
-  have hsubset : (W.filter fun y => ¬ P y) ⊆
-      (W.filter fun y => y ∉ U) ∪ (U.filter fun y => ¬ P y) := by
-    intro y hy
-    have hyParts := Finset.mem_filter.mp hy
-    by_cases hyU : y ∈ U
-    · exact Finset.mem_union_right _ (Finset.mem_filter.mpr ⟨hyU, hyParts.2⟩)
-    · exact Finset.mem_union_left _ (Finset.mem_filter.mpr ⟨hyParts.1, hyU⟩)
-  have hcardNat : (W.filter fun y => ¬ P y).card ≤
-      (W.filter fun y => y ∉ U).card + (U.filter fun y => ¬ P y).card :=
-    (Finset.card_le_card hsubset).trans (Finset.card_union_le _ _)
   have hcard : ((W.filter fun y => ¬ P y).card : Real) ≤
-      ((W.filter fun y => y ∉ U).card : Real) +
-        (U.filter fun y => ¬ P y).card := by
-    exact_mod_cast hcardNat
-  have hUcard : (U.card : Real) ≤ W.card := by
-    exact_mod_cast Finset.card_le_card hUW
+      (W.filter fun y => y ∉ U).card + (U.filter fun y => ¬ P y).card := by
+    exact_mod_cast (card_le_card fun y hy => by
+      simp only [mem_union, mem_filter] at hy ⊢; tauto).trans (card_union_le _ _)
+  have hUcard : (U.card : Real) ≤ W.card := by exact_mod_cast card_le_card hUW
   apply extraction_almostEvery_of_bad_card_le
-  calc
-    ((W.filter fun y => ¬ P y).card : Real) ≤
-        ((W.filter fun y => y ∉ U).card : Real) +
-          (U.filter fun y => ¬ P y).card := hcard
-    _ ≤ a * W.card + b * U.card := add_le_add hbadU hbadP
-    _ ≤ (a + b) * W.card := by
-      have := mul_le_mul_of_nonneg_left hUcard hb
-      nlinarith
+  linarith [extraction_almostEvery_bad_card_le a W (fun y => y ∈ U) hU,
+    extraction_almostEvery_bad_card_le b U P hP, mul_le_mul_of_nonneg_left hUcard hb]
 
 private lemma extraction_almostEvery_mono {Y : Type*} [DecidableEq Y]
     (p : Real) (U : Finset Y) (P Q : Y → Prop)

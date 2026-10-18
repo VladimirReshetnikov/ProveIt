@@ -233,15 +233,6 @@ def cor147ArrangementEquiv (N k d : Nat) :
       (Equiv.arrowProdEquivProdArrow (Fin (2 * d))
         (fun _ ↦ Point N k) (fun _ ↦ ZMod N)))
 
-@[simp] private lemma cor147_arrangementEquiv_side {N k d : Nat}
-    (h : Point N k) (p : cor147PairFamily N k d) :
-    (cor147ArrangementEquiv N k d (h, p)).side = h := rfl
-
-@[simp] private lemma cor147_arrangementEquiv_base {N k d : Nat}
-    (h : Point N k) (p : cor147PairFamily N k d) (j : Fin (2 * d)) :
-    (cor147ArrangementEquiv N k d (h, p)).base j =
-      (cor147PairEquiv d (cor147Atom N k) p j).1 := rfl
-
 @[simp] private lemma cor147_arrangementEquiv_crossSection {N k d : Nat}
     (h : Point N k) (p : cor147PairFamily N k d) (j : Fin (2 * d)) :
     (cor147ArrangementEquiv N k d (h, p)).crossSection j =
@@ -259,37 +250,16 @@ private lemma cor147_good_iff_arrangement {N k d : Nat} [NeZero N]
     cor147Good B phi h p ↔
       (cor147ArrangementEquiv N k d (h, p)).IsIn B ∧
         (cor147ArrangementEquiv N k d (h, p)).IsRespected phi := by
-  have hmem :
-      (∀ (e : Fin k → Bool) (j : Fin (2 * d)),
-        (cor147ArrangementEquiv N k d (h, p)).vertex e j ∈ B) ↔
-        ((∀ i, cor147CubeIn B h (p.1 i)) ∧
-          ∀ i, cor147CubeIn B h (p.2 i)) := by
-    rw [forall_comm]
-    change (∀ j, cor147CubeIn B h
-      (cor147PairEquiv d (cor147Atom N k) p j)) ↔ _
-    exact cor147_all_pair_iff d (cor147CubeIn B h) p.1 p.2
-  have hcross :
-      (Finset.univ.filter (fun j : Fin (2 * d) ↦ (j : Nat) < d)).sum
-          (cor147ArrangementEquiv N k d (h, p)).crossSection =
-        (Finset.univ.filter (fun j : Fin (2 * d) ↦ d ≤ (j : Nat))).sum
-          (cor147ArrangementEquiv N k d (h, p)).crossSection ↔
-      (∑ i, (p.1 i).2) = ∑ i, (p.2 i).2 := by
-    simp only [cor147_arrangementEquiv_crossSection]
-    rw [cor147_sum_left_comp d (fun z : cor147Atom N k ↦ z.2) p.1 p.2,
-      cor147_sum_right_comp d (fun z : cor147Atom N k ↦ z.2) p.1 p.2]
-  have hvalue :
-      (Finset.univ.filter (fun j : Fin (2 * d) ↦ (j : Nat) < d)).sum
-          (fun j ↦ (cor147ArrangementEquiv N k d (h, p)).cubeValue phi j) =
-        (Finset.univ.filter (fun j : Fin (2 * d) ↦ d ≤ (j : Nat))).sum
-          (fun j ↦ (cor147ArrangementEquiv N k d (h, p)).cubeValue phi j) ↔
-      (∑ i, cor147CubeValue phi h (p.1 i)) =
-        ∑ i, cor147CubeValue phi h (p.2 i) := by
-    simp only [cor147_arrangement_cubeValue]
-    rw [cor147_sum_left_comp d (cor147CubeValue phi h) p.1 p.2,
-      cor147_sum_right_comp d (cor147CubeValue phi h) p.1 p.2]
-  unfold cor147Good GeneralArrangement.IsIn GeneralArrangement.IsRespected
-    IsAdditiveTuple
-  rw [hcross, hmem, hvalue]
+  have hmem : (∀ e j, (cor147ArrangementEquiv N k d (h, p)).vertex e j ∈ B) ↔
+      (∀ i, cor147CubeIn B h (p.1 i)) ∧ ∀ i, cor147CubeIn B h (p.2 i) :=
+    forall_comm.trans (cor147_all_pair_iff d (cor147CubeIn B h) p.1 p.2)
+  unfold cor147Good GeneralArrangement.IsIn GeneralArrangement.IsRespected IsAdditiveTuple
+  rw [hmem]
+  simp only [cor147_arrangementEquiv_crossSection, cor147_arrangement_cubeValue]
+  rw [cor147_sum_left_comp d (fun z : cor147Atom N k ↦ z.2) p.1 p.2,
+    cor147_sum_right_comp d (fun z : cor147Atom N k ↦ z.2) p.1 p.2,
+    cor147_sum_left_comp d (cor147CubeValue phi h) p.1 p.2,
+    cor147_sum_right_comp d (cor147CubeValue phi h) p.1 p.2]
   aesop
 
 private lemma cor147_good_count_eq {N k d : Nat} [NeZero N]
@@ -331,19 +301,11 @@ private lemma cor147_prod_fourierTerm {N k d : Nat} [NeZero N]
           (-((∑ i, (a i).2) * r) +
             (∑ i, cor147CubeValue phi h (a i)) * u)
       else 0 := by
-  by_cases ha : ∀ i, cor147CubeIn B h (a i)
-  · rw [if_pos ha]
-    simp only [cor147FourierTerm, if_pos (ha _)]
-    simp_rw [← exponential_add]
-    rw [cor147_prod_exponential]
-    congr 1
-    rw [Finset.sum_add_distrib, Finset.sum_neg_distrib,
-      Finset.sum_mul, Finset.sum_mul]
-  · rw [if_neg ha]
-    simp only [not_forall] at ha
-    obtain ⟨i, hi⟩ := ha
-    apply Finset.prod_eq_zero (Finset.mem_univ i)
-    simp [cor147FourierTerm, hi]
+  split_ifs with ha
+  · simp only [cor147FourierTerm, if_pos (ha _), ← exponential_add, cor147_prod_exponential,
+      Finset.sum_add_distrib, Finset.sum_neg_distrib, Finset.sum_mul]
+  · obtain ⟨i, hi⟩ := not_forall.mp ha
+    exact Finset.prod_eq_zero (Finset.mem_univ i) (by simp [cor147FourierTerm, hi])
 
 private lemma cor147_pair_orthogonality {N k d : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N)
@@ -495,7 +457,7 @@ private lemma cor147_interpolation {X : Type*} [Fintype X]
     (s := (Finset.univ : Finset X)) (p := (7 : Real)) (by norm_num)
     (fun i ↦ a i ^ 2) (fun i ↦ a i ^ 2)
     (fun i ↦ sq_nonneg (a i)) (fun i ↦ sq_nonneg (a i))
-  have hfour : (∑ i, a i ^ 2 * a i ^ 2) = ∑ i, a i ^ 4 := by ring
+  have hfour : (∑ i, a i ^ 2 * a i ^ 2) = ∑ i, a i ^ 4 := by ring_nf
   rw [hfour] at h
   norm_num [Real.rpow_natCast] at h
   ring_nf at h

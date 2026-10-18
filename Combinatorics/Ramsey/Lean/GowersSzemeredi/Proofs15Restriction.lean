@@ -141,40 +141,18 @@ lemma selection_good_bad_restrict_card {N k : Nat} [NeZero N]
         selectionCarrier R ⊆ B').card =
       generalArrangementCount 8 B' := by
   classical
-  let all' := (selectionArrangements B).filter fun R ↦
-    selectionCarrier R ⊆ B'
-  let good' := (selectionGoodArrangements B phi).filter fun R ↦
-    selectionCarrier R ⊆ B'
-  let bad' := (selectionBadArrangements B phi).filter fun R ↦
-    selectionCarrier R ⊆ B'
-  have hdisj : Disjoint good' bad' := by
-    apply Finset.disjoint_left.mpr
-    intro R hgood hbad
-    have hg : R ∈ selectionGoodArrangements B phi :=
-      (Finset.mem_filter.mp hgood).1
-    have hb : R ∈ selectionBadArrangements B phi :=
-      (Finset.mem_filter.mp hbad).1
-    exact (Finset.mem_sdiff.mp hb).2 hg
-  have hunion : good' ∪ bad' = all' := by
+  have hsub : selectionGoodArrangements B phi ⊆ selectionArrangements B :=
+    Finset.filter_subset _ _
+  have hall : (selectionArrangements B).filter (fun R ↦ selectionCarrier R ⊆ B') =
+      selectionArrangements B' := by
     ext R
-    simp only [good', bad', all', selectionBadArrangements,
-      selectionGoodArrangements,
-      Finset.mem_union, Finset.mem_filter, Finset.mem_sdiff]
-    tauto
-  have hallcard : all'.card = generalArrangementCount 8 B' := by
-    unfold all' selectionArrangements generalArrangementCount countWhere
-    simp only [Finset.filter_filter]
-    rw [Finset.filter_congr_decidable]
-    apply congrArg Finset.card
-    ext R
-    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-    constructor
-    · rintro ⟨hRB, hcarrier⟩
-      exact (selection_isIn_iff B B' R hRB).mpr hcarrier
-    · intro hRB'
-      have hRB : R.IsIn B := ⟨hRB'.1, fun e j ↦ hB'B (hRB'.2 e j)⟩
-      exact ⟨hRB, (selection_isIn_iff B B' R hRB).mp hRB'⟩
-  rw [← hallcard, ← hunion, Finset.card_union_of_disjoint hdisj]
+    simp only [selectionArrangements, Finset.mem_filter, Finset.mem_univ, true_and]
+    refine ⟨fun h ↦ (selection_isIn_iff B B' R h.1).mpr h.2, fun h ↦ ?_⟩
+    have hRB : R.IsIn B := ⟨h.1, fun e j ↦ hB'B (h.2 e j)⟩
+    exact ⟨hRB, (selection_isIn_iff B B' R hRB).mp h⟩
+  unfold selectionBadArrangements
+  rw [← Finset.card_union_of_disjoint (Finset.disjoint_filter_filter Finset.disjoint_sdiff),
+    ← Finset.filter_union, Finset.union_sdiff_of_subset hsub, hall, selectionArrangements_card]
 
 def selectionIndexSign {N : Nat} (j : Fin 16) : ZMod N :=
   if (j : Nat) < 8 then 1 else -1
@@ -309,26 +287,15 @@ lemma selection_expect_phase {N k : Nat} [NeZero N]
       exponential (∑ F, C F * rel F)) =
       if ∀ F, rel F = 0 then 1 else 0 := by
   classical
-  have hexp (C : SelectionPhase N k) :
-      exponential (∑ F, C F * rel F) =
-        ∏ F, exponential (C F * rel F) := by
-    exact (fejer_prod_exponential (fun F ↦ C F * rel F)).symm
-  simp_rw [hexp]
-  rw [selection_expect_pi_prod
-    (I := SelectionFeature k) (C := ZMod N)
+  simp_rw [← fejer_prod_exponential]
+  rw [selection_expect_pi_prod (I := SelectionFeature k) (C := ZMod N)
     (f := fun F c ↦ exponential (c * rel F))]
-  have hfactor (F : SelectionFeature k) :
-      (𝔼 c : ZMod N, exponential (c * rel F)) =
-        if rel F = 0 then 1 else 0 := by
-    simpa only [mul_comm] using fejer_expect_exponential_mul (rel F)
-  simp_rw [hfactor]
+  simp_rw [mul_comm _ (rel _), fejer_expect_exponential_mul]
   by_cases hrel : ∀ F, rel F = 0
   · simp [hrel]
-  · rw [if_neg hrel]
-    push Not at hrel
-    obtain ⟨F, hF⟩ := hrel
-    apply Finset.prod_eq_zero (Finset.mem_univ F)
-    rw [if_neg hF]
+  · obtain ⟨F, hF⟩ := not_forall.mp hrel
+    rw [if_neg hrel]
+    exact Finset.prod_eq_zero (Finset.mem_univ F) (if_neg hF)
 
 /-! ## The distinguished relation and nondegeneracy -/
 

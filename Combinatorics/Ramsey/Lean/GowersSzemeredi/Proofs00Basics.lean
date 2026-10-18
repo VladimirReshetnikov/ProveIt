@@ -47,45 +47,11 @@ lemma gcs_countWhere_eq_sum_ite {X : Type*} [Fintype X]
 lemma gcs_boolWeight_insertNth {n : Nat}
     (j : Fin (n + 1)) (b : Bool) (e : Fin n → Bool) :
     boolWeight (j.insertNth b e) = (if b then 1 else 0) + boolWeight e := by
-  classical
-  unfold boolWeight
-  rw [gcs_countWhere_eq_sum_ite, gcs_countWhere_eq_sum_ite]
-  let ind : Bool → Nat := fun c => if c then 1 else 0
-  have hind (c : Bool) :
-      @ite Nat (c = true) (Classical.propDecidable (c = true)) 1 0 = ind c := by
-    cases c <;> simp [ind]
-  have hfun :
-      (fun i : Fin (n + 1) =>
-        ind ((j.insertNth b e : Fin (n + 1) → Bool) i)) =
-        j.insertNth (ind b) (fun i : Fin n => ind (e i)) := by
-    rw [Fin.eq_insertNth_iff]
-    constructor
-    · simp
-    · funext i
-      simp [Fin.removeNth_apply]
-  calc
-    (∑ i : Fin (n + 1),
-        @ite Nat ((j.insertNth b e : Fin (n + 1) → Bool) i = true)
-          (Classical.propDecidable _) 1 0) =
-        ∑ i : Fin (n + 1),
-          ind ((j.insertNth b e : Fin (n + 1) → Bool) i) := by
-      apply Finset.sum_congr rfl
-      intro i _
-      exact hind _
-    _ = ∑ i : Fin (n + 1),
-          (j.insertNth (ind b) (fun i : Fin n => ind (e i))) i := by
-      apply Finset.sum_congr rfl
-      intro i _
-      exact congrFun hfun i
-    _ = ind b + ∑ i : Fin n, ind (e i) := Fin.sum_insertNth j _ _
-    _ = (if b then 1 else 0) + ∑ i : Fin n, ind (e i) := by rfl
-    _ = (if b then 1 else 0) +
-        ∑ i : Fin n,
-          @ite Nat (e i = true) (Classical.propDecidable _) 1 0 := by
-      congr 1
-      apply Finset.sum_congr rfl
-      intro i _
-      exact (hind _).symm
+  have h {m : Nat} (f : Fin m → Bool) : boolWeight f = ∑ i, (f i).toNat := by
+    rw [boolWeight, gcs_countWhere_eq_sum_ite]
+    exact Finset.sum_congr rfl fun i _ => by cases f i <;> simp
+  rw [h, h, Fin.sum_univ_succAbove _ j]
+  cases b <;> simp
 
 lemma cor24_exponential_eq_exp_valMinAbs {N : Nat} [NeZero N]
     (x : ZMod N) :
@@ -97,60 +63,26 @@ lemma cor24_exponential_eq_exp_valMinAbs {N : Nat} [NeZero N]
     _ = Complex.exp (2 * Real.pi * Complex.I * (x.valMinAbs : Int) / N) :=
       ZMod.stdAddChar_coe x.valMinAbs
     _ = Complex.exp
-        (Complex.I * (2 * Real.pi * (x.valMinAbs : Real) / N : Real)) := by push_cast; ring
-
-private def lemma134Left : Finset (Fin 16) :=
-  Finset.univ.filter fun i => (i : Nat) < 8
-
-private def lemma134Right : Finset (Fin 16) :=
-  Finset.univ.filter fun i => 8 ≤ (i : Nat)
-
-private lemma lemma134_zero_mem_left : (0 : Fin 16) ∈ lemma134Left := by
-  simp [lemma134Left]
-
-private lemma lemma134_zero_notMem_right : (0 : Fin 16) ∉ lemma134Right := by
-  simp [lemma134Right]
+        (Complex.I * (2 * Real.pi * (x.valMinAbs : Real) / N : Real)) := by push_cast; ring_nf
 
 lemma lemma134_additive_ext {N : Nat}
     {x y : Fin 16 → ZMod N} (hx : IsAdditiveTuple (k := 8) x)
     (hy : IsAdditiveTuple (k := 8) y)
     (htail : ∀ i : Fin 15, x i.succ = y i.succ) : x = y := by
-  have hoff : ∀ i : Fin 16, i ≠ 0 → x i = y i := by
-    intro i hi
-    rcases i with ⟨(_ | i), hiBound⟩
-    · exact (hi rfl).elim
-    · exact htail ⟨i, by omega⟩
-  unfold IsAdditiveTuple at hx hy
-  change (∑ i ∈ lemma134Left, x i) = ∑ i ∈ lemma134Right, x i at hx
-  change (∑ i ∈ lemma134Left, y i) = ∑ i ∈ lemma134Right, y i at hy
-  have hleft :
-      (∑ i ∈ lemma134Left.erase 0, x i) =
-        ∑ i ∈ lemma134Left.erase 0, y i := by
-    apply Finset.sum_congr rfl
-    intro i hi
-    exact hoff i (Finset.ne_of_mem_erase hi)
-  have hright :
-      (∑ i ∈ lemma134Right, x i) = ∑ i ∈ lemma134Right, y i := by
-    apply Finset.sum_congr rfl
-    intro i hi
-    apply hoff i
-    intro hzero
-    subst i
-    exact lemma134_zero_notMem_right hi
+  have hoff (i : Fin 16) (hi : i ≠ 0) : x i - y i = 0 := by
+    obtain ⟨j, rfl⟩ := Fin.exists_succ_eq.mpr hi
+    exact sub_eq_zero.mpr (htail j)
+  have hL : ∑ i ∈ univ.filter (fun i : Fin (2 * 8) => (i : Nat) < 8), (x i - y i) =
+      x 0 - y 0 := Finset.sum_eq_single_of_mem (0 : Fin 16) (by simp) fun i _ => hoff i
+  have hR : ∑ i ∈ univ.filter (fun i : Fin (2 * 8) => 8 ≤ (i : Nat)), (x i - y i) = 0 :=
+    Finset.sum_eq_zero fun i hi => hoff i (by rintro rfl; simp at hi)
+  rw [Finset.sum_sub_distrib] at hL hR
   funext i
-  refine Fin.cases ?_ (fun j => htail j) i
-  apply add_left_cancel (a := ∑ i ∈ lemma134Left.erase 0, x i)
-  calc
-    (∑ i ∈ lemma134Left.erase 0, x i) + x 0 =
-        ∑ i ∈ lemma134Left, x i :=
-      Finset.sum_erase_add _ _ lemma134_zero_mem_left
-    _ = ∑ i ∈ lemma134Right, x i := hx
-    _ = ∑ i ∈ lemma134Right, y i := hright
-    _ = ∑ i ∈ lemma134Left, y i := hy.symm
-    _ = (∑ i ∈ lemma134Left.erase 0, y i) + y 0 := by
-      symm
-      exact Finset.sum_erase_add _ _ lemma134_zero_mem_left
-    _ = (∑ i ∈ lemma134Left.erase 0, x i) + y 0 := by rw [hleft]
+  by_cases hi : i = 0
+  · subst hi
+    unfold IsAdditiveTuple at hx hy
+    linear_combination hx - hy + hR - hL
+  · exact sub_eq_zero.mp (hoff i hi)
 
 lemma fejer_prod_exponential {N : Nat} [NeZero N]
     {I : Type*} [Fintype I] (f : I → ZMod N) :
@@ -177,7 +109,7 @@ lemma lemma154_sum_mul_sub_eq_two {N : Nat} {I : Type*}
   rw [← Finset.sum_sub_distrib]
   calc
     (∑ t, (a t * x t - a t * y t)) =
-        ∑ t, a t * (x t - y t) := by ring
+        ∑ t, a t * (x t - y t) := by ring_nf
     _ = ∑ t ∈ ({i, j} : Finset I), a t * (x t - y t) := by
       symm
       apply Finset.sum_subset (by simp)

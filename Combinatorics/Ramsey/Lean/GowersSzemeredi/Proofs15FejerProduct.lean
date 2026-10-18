@@ -73,30 +73,17 @@ theorem fejer_coefficient_without_density_factor (k : Nat) (hk : 1 ≤ k)
     (beta * gamma / 2) ^ fejerProductExponent k ≤
       (beta ^ (7 * 4 ^ (k + 1)) * gamma ^ (21 * k * 4 ^ (k + 1)) *
         ((2 : Real)⁻¹ ^ 44) / 4) ^ fejerSelectionExponent k := by
-  let A := 7 * 4 ^ (k + 1)
-  let G := 21 * k * 4 ^ (k + 1)
-  let S := fejerSelectionExponent k
-  let T := fejerProductExponent k
-  have hbeta : A * S ≤ T := by
-    have h := lemma156_beta_base_exponent k hk
-    exact Nat.mul_le_mul_right S (by omega)
-  have hgamma : G * S ≤ T := Nat.mul_le_mul_right S (lemma156_gamma_base_exponent k)
-  have hconstant : 46 * S ≤ T := Nat.mul_le_mul_right S (lemma156_constant_base_exponent k)
-  have hbp : beta ^ T ≤ beta ^ (A * S) := pow_le_pow_of_le_one hb.le hb1 hbeta
-  have hgp : gamma ^ T ≤ gamma ^ (G * S) := pow_le_pow_of_le_one hg.le hg1 hgamma
-  have hcp : ((2 : Real)⁻¹) ^ T ≤ ((2 : Real)⁻¹) ^ (46 * S) :=
-    pow_le_pow_of_le_one (by norm_num) (by norm_num) hconstant
-  have hnum : (2 : Real)⁻¹ ^ 44 / 4 = (2 : Real)⁻¹ ^ 46 := by norm_num
-  calc
-    (beta * gamma / 2) ^ T = beta ^ T * gamma ^ T * ((2 : Real)⁻¹) ^ T := by
-      rw [div_eq_mul_inv, mul_pow, mul_pow]
-    _ ≤ beta ^ (A * S) * gamma ^ (G * S) * ((2 : Real)⁻¹) ^ (46 * S) := by
-      exact mul_le_mul (mul_le_mul hbp hgp (by positivity) (by positivity))
-        hcp (by positivity) (by positivity)
-    _ = (beta ^ A * gamma ^ G * ((2 : Real)⁻¹ ^ 44) / 4) ^ S := by
-      rw [show beta ^ A * gamma ^ G * ((2 : Real)⁻¹ ^ 44) / 4 =
-        (beta ^ A * gamma ^ G) * ((2 : Real)⁻¹ ^ 44 / 4) by ring, hnum,
-        mul_pow, mul_pow, ← pow_mul, ← pow_mul, ← pow_mul]
+  have hT (A : Nat) (h : A ≤ 2 ^ (3 * k + 7)) :
+      A * fejerSelectionExponent k ≤ fejerProductExponent k := Nat.mul_le_mul_right _ h
+  rw [div_eq_mul_inv, mul_pow, mul_pow, mul_div_assoc,
+    show (2 : Real)⁻¹ ^ 44 / 4 = (2 : Real)⁻¹ ^ 46 by norm_num, mul_pow, mul_pow,
+    ← pow_mul, ← pow_mul, ← pow_mul]
+  gcongr ?_ * ?_ * ?_
+  · exact pow_le_pow_of_le_one hb.le hb1
+      (hT _ (by have := lemma156_beta_base_exponent k hk; omega))
+  · exact pow_le_pow_of_le_one hg.le hg1 (hT _ (lemma156_gamma_base_exponent k))
+  · exact pow_le_pow_of_le_one (by norm_num) (by norm_num)
+      (hT _ (lemma156_constant_base_exponent k))
 
 /-- The explicit threshold of the density-uniform Fejér Lemma 15.6: the Fejér
 selection threshold at `α = β^(7·4^(k+1))·γ^(21k·4^(k+1))`, `η = 2^(−44)`,
@@ -120,40 +107,25 @@ theorem fejer_product_of_density_lower_explicit (k : Nat) (beta gamma : Real)
             generalArrangementCount 8 B' ∧
           (1 - (2 : Real)⁻¹ ^ 44) * generalArrangementCount 8 B' ≤
             respectedGeneralArrangementCount 8 B' phi := by
-  let alpha := beta ^ (7 * 4 ^ (k + 1)) * gamma ^ (21 * k * 4 ^ (k + 1))
-  let eta := (2 : Real)⁻¹ ^ 44
-  have ha : 0 < alpha := mul_pos (pow_pos hb _) (pow_pos hg _)
-  have he : 0 < eta := by dsimp [eta]; positivity
-  have he1 : eta ≤ 1 := pow_le_one₀ (by norm_num) (by norm_num)
   intro N _ hN hp ho B phi hB hprod
+  let alpha := beta ^ (7 * 4 ^ (k + 1)) * gamma ^ (21 * k * 4 ^ (k + 1))
   have hNp : 0 < (N : Real) ^ (k + 1) := pow_pos (by exact_mod_cast NeZero.pos N) _
   let b : Real := (B.card : Real) / (N : Real) ^ (k + 1)
   have hbb : beta ≤ b := (le_div_iff₀ hNp).mpr hB
   have hbpos : 0 < b := hb.trans_le hbb
-  have hcard : (B.card : Real) = b * (N : Real) ^ (k + 1) := by
-    dsimp [b]
-    field_simp
-  have hbupper : b ≤ 1 := by
-    apply (div_le_one hNp).mpr
-    exact_mod_cast (show B.card ≤ N ^ (k + 1) by
-      simpa [Point, ZMod.card] using Finset.card_le_univ B)
-  have hu : (generalArrangementCount 8 B : Real) ≤ 1 * (N : Real) ^ (17 * k + 15) := by
-    exact (selection_arrangement_real_upper b B hcard).trans
+  have hcard : (B.card : Real) = b * (N : Real) ^ (k + 1) := (div_mul_cancel₀ _ hNp.ne').symm
+  have hbupper : b ≤ 1 := (div_le_one hNp).mpr (by exact_mod_cast (show B.card ≤ N ^ (k + 1) by
+    simpa [Point, ZMod.card] using Finset.card_le_univ B))
+  have hu : (generalArrangementCount 8 B : Real) ≤ 1 * (N : Real) ^ (17 * k + 15) :=
+    (selection_arrangement_real_upper b B hcard).trans
       (mul_le_mul_of_nonneg_right (pow_le_one₀ hbpos.le hbupper) (by positivity))
-  have hl : alpha * 1 * (N : Real) ^ (17 * k + 15) ≤
-      respectedGeneralArrangementCount 8 B phi := by
-    have hc := lemma_14_8_holds N k b gamma B phi hk hbpos hg hg1 hcard hprod
-    apply le_trans ?_ hc
-    dsimp [alpha]
-    simp only [mul_one]
-    exact mul_le_mul_of_nonneg_right
-      (mul_le_mul_of_nonneg_right (pow_le_pow_left₀ hb.le hbb _)
-        (pow_nonneg hg.le _)) (by positivity)
-  obtain ⟨B', hsub, hcount, hrespect⟩ :=
-    fejer_scale_estimate_explicit k alpha 1 eta hk ha (by norm_num) he he1 N hN hp ho B phi hu hl
-  refine ⟨B', hsub, ?_, hrespect⟩
-  have hcoef := fejer_coefficient_without_density_factor k hk hb hb1 hg hg1
-  exact (mul_le_mul_of_nonneg_right hcoef (by positivity)).trans
-    (by simpa [alpha, eta] using hcount)
+  have hl : alpha * 1 * (N : Real) ^ (17 * k + 15) ≤ respectedGeneralArrangementCount 8 B phi :=
+    le_trans (by simp only [alpha, mul_one]; gcongr)
+      (lemma_14_8_holds N k b gamma B phi hk hbpos hg hg1 hcard hprod)
+  obtain ⟨B', hsub, hcount, hrespect⟩ := fejer_scale_estimate_explicit k alpha 1
+    ((2 : Real)⁻¹ ^ 44) hk (by positivity) one_pos (by positivity)
+    (pow_le_one₀ (by norm_num) (by norm_num)) N hN hp ho B phi hu hl
+  exact ⟨B', hsub, (mul_le_mul_of_nonneg_right (fejer_coefficient_without_density_factor k hk
+    hb hb1 hg hg1) (by positivity)).trans (by simpa [alpha] using hcount), hrespect⟩
 
 end LeanProofs.GowersSzemeredi

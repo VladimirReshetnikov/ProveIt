@@ -11,61 +11,38 @@ The endpoints are chosen from the first and last surviving indices. -/
 theorem NatAP.exists_inter_Ico (P : NatAP) (hP : P.IsProper) (a b : Nat) :
     ∃ Q : NatAP, Q.IsProper ∧ Q.carrier = P.carrier ∩ Finset.Ico a b := by
   let I : Finset (Fin P.length) := Finset.univ.filter (fun i => a ≤ P.index i ∧ P.index i < b)
-  by_cases hI : I.Nonempty
-  · let u := I.min' hI
-    let v := I.max' hI
-    have hu : u ∈ I := Finset.min'_mem I hI
-    have hv : v ∈ I := Finset.max'_mem I hI
-    have huv : u ≤ v := Finset.min'_le I v hv
-    have hmono : Monotone P.index := by
-      intro i j hij
-      exact Nat.add_le_add_left (Nat.mul_le_mul_right P.step hij) _
-    have hmem (i : Fin P.length) : i ∈ I ↔ u ≤ i ∧ i ≤ v := by
-      constructor
-      · intro hi
-        exact ⟨Finset.min'_le I i hi, Finset.le_max' I i hi⟩
-      · rintro ⟨hui, hiv⟩
-        refine Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_, ?_⟩
-        · exact (Finset.mem_filter.mp hu).2.1.trans (hmono hui)
-        · exact (hmono hiv).trans_lt (Finset.mem_filter.mp hv).2.2
-    let Q : NatAP := ⟨P.index u, P.step, (v : Nat) + 1 - u⟩
-    refine ⟨Q, Q.isProper_of_step_pos hP.1, ?_⟩
+  have hI (i : Fin P.length) : i ∈ I ↔ a ≤ P.index i ∧ P.index i < b := by simp [I]
+  by_cases hne : I.Nonempty
+  · let u := I.min' hne
+    let v := I.max' hne
+    have hu := (hI u).mp (I.min'_mem hne)
+    have hv := (hI v).mp (I.max'_mem hne)
+    have hmono : Monotone P.index := fun i j hij =>
+      Nat.add_le_add_left (Nat.mul_le_mul_right _ hij) _
+    refine ⟨⟨P.index u, P.step, (v : Nat) + 1 - u⟩, NatAP.isProper_of_step_pos _ hP.1, ?_⟩
     ext x
+    simp only [NatAP.carrier, Finset.mem_inter, Finset.mem_image, Finset.mem_univ, true_and,
+      Finset.mem_Ico]
     constructor
-    · intro hx
-      obtain ⟨j, _, rfl⟩ := Finset.mem_image.mp hx
-      have hj : (j : Nat) < (v : Nat) + 1 - u := j.isLt
+    · rintro ⟨j, rfl⟩
+      have hj := j.isLt
       let i : Fin P.length := ⟨(u : Nat) + j, by have := v.isLt; omega⟩
-      have hi : i ∈ I := (hmem i).mpr ⟨by change (u : Nat) ≤ (u : Nat) + j; omega,
-        by change (u : Nat) + j ≤ (v : Nat); omega⟩
-      have heq : Q.start + (j : Nat) * Q.step = P.index i := by
-        dsimp [Q, NatAP.index, i]
-        ring
-      rw [heq]
-      exact Finset.mem_inter.mpr
-        ⟨Finset.mem_image.mpr ⟨i, Finset.mem_univ _, rfl⟩,
-          Finset.mem_Ico.mpr (Finset.mem_filter.mp hi).2⟩
-    · intro hx
-      obtain ⟨hxP, hx⟩ := Finset.mem_inter.mp hx
-      obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hxP
-      have hi : i ∈ I := Finset.mem_filter.mpr ⟨Finset.mem_univ _, Finset.mem_Ico.mp hx⟩
-      obtain ⟨hui, hiv⟩ := (hmem i).mp hi
-      let j : Fin Q.length := ⟨(i : Nat) - u, by dsimp [Q]; omega⟩
-      refine Finset.mem_image.mpr ⟨j, Finset.mem_univ _, ?_⟩
-      have hji : (u : Nat) + j = i := by dsimp [j]; omega
-      change P.index u + (j : Nat) * P.step = P.start + (i : Nat) * P.step
-      rw [← hji]
-      dsimp [NatAP.index]
-      ring
-  · refine ⟨⟨0, 1, 0⟩, NatAP.isProper_of_step_pos _ (by decide), ?_⟩
-    have hempty : P.carrier ∩ Finset.Ico a b = ∅ := by
-      apply Finset.eq_empty_iff_forall_notMem.mpr
-      intro x hx
-      obtain ⟨hxP, hx⟩ := Finset.mem_inter.mp hx
-      obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hxP
-      exact hI ⟨i, Finset.mem_filter.mpr ⟨Finset.mem_univ _, Finset.mem_Ico.mp hx⟩⟩
-    rw [hempty]
-    simp [NatAP.carrier]
+      have hui : u ≤ i := show (u : Nat) ≤ (u : Nat) + j by omega
+      have hiv : i ≤ v := show (u : Nat) + j ≤ v by omega
+      have hx : P.index u + j * P.step = P.index i := by simp only [NatAP.index, i]; ring
+      exact hx ▸ ⟨⟨i, rfl⟩, hu.1.trans (hmono hui), (hmono hiv).trans_lt hv.2⟩
+    · rintro ⟨⟨i, rfl⟩, hi⟩
+      have hui : u ≤ i := I.min'_le i ((hI i).mpr hi)
+      have hiv : i ≤ v := I.le_max' i ((hI i).mpr hi)
+      refine ⟨⟨(i : Nat) - u, by omega⟩, ?_⟩
+      simp only [NatAP.index]
+      rw [add_assoc, ← Nat.add_mul, Nat.add_sub_of_le hui]
+  · refine ⟨⟨0, 1, 0⟩, NatAP.isProper_of_step_pos _ one_pos, ?_⟩
+    ext x
+    simp only [NatAP.carrier, Finset.mem_inter, Finset.mem_image, Finset.mem_univ, true_and,
+      Finset.mem_Ico, IsEmpty.exists_iff, false_iff, not_and]
+    rintro ⟨i, rfl⟩ h1 h2
+    exact hne ⟨i, (hI i).mpr ⟨h1, h2⟩⟩
 
 /-- Translation followed by a justified subtraction preserves natural
 progressions. The lower bound is required only on actual carrier points. -/

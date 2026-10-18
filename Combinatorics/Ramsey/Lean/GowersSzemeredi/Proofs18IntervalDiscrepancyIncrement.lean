@@ -26,45 +26,28 @@ theorem interval_density_increment_of_discrepancy_partition
       (beta / (8 * boundaryRefinementConstant (beta / 64))) *
         (N : Real) ^ (sigma / 16) ≤ (P.carrier.card : Real) ∧
       (delta + beta / 8) * P.carrier.card ≤ (A ∩ P.carrier).card := by
-  let S := finiteIntervalImage N (Finset.univ : Finset (Fin L))
-  let f := relativeBalanced A S delta
-  let C := boundaryRefinementConstant (beta / 64)
-  have hC : 0 < C := section5LocalRefinementConstant_pos _ _
   have hNr : (0 : Real) < N := by exact_mod_cast NeZero.pos N
+  have hC : 0 < boundaryRefinementConstant (beta / 64) := section5LocalRefinementConstant_pos _ _
   obtain ⟨K, R, hR, _, hRproper, hcount, hdiam, hnorm⟩ :=
     small_diameter_partition_refinement Q (beta / 64) (by positivity) hQ hQproper
-  have hdisR : beta * N ≤ ∑ j, ‖∑ x ∈ (R j).carrier, f x‖ := hdis.trans (hnorm f)
   obtain ⟨j, hsub, hsize, hinc⟩ := interval_small_diameter_relative_increment R hL A delta beta
-    hAS hδ hδone hβ hcard hR hdiam hscale hdisR
-  have hM : 0 < M := section18_partition_index_nonempty (fun i ↦ (Q i).carrier) hQ
-  have hK : 0 < K := section18_partition_index_nonempty (fun i ↦ (R i).carrier) hR
-  have hMbound : (M : Real) ≤ (N : Real) ^ (1 - sigma) := by
-    rw [hQ.averageCellSize_univ] at havg
-    have hm := (le_div_iff₀ (show (0 : Real) < M by exact_mod_cast hM)).mp havg
-    rw [Real.rpow_sub hNr, Real.rpow_one]
-    apply (le_div_iff₀ (Real.rpow_pos_of_pos hNr sigma)).2
-    simpa only [mul_comm] using hm
-  have hcount' : (K : Real) ≤ C * (N : Real) ^ (1 - sigma / 16) := by
-    calc
-      _ ≤ C * (M : Real) ^ (1 / 16 : Real) * (N : Real) ^ (15 / 16 : Real) := hcount
-      _ ≤ C * ((N : Real) ^ (1 - sigma)) ^ (1 / 16 : Real) * (N : Real) ^ (15 / 16 : Real) :=
-        mul_le_mul_of_nonneg_right
-          (mul_le_mul_of_nonneg_left (Real.rpow_le_rpow (Nat.cast_nonneg _) hMbound (by norm_num)) hC.le)
-          (Real.rpow_nonneg hNr.le _)
-      _ = _ := by
-        rw [← Real.rpow_mul hNr.le, mul_assoc, ← Real.rpow_add hNr]
-        congr 2
-        ring
-  have hsize' : beta / (8 * C) * (N : Real) ^ (sigma / 16) ≤ beta * N / (8 * K) := by
-    apply (le_div_iff₀ (show (0 : Real) < 8 * K by positivity)).2
-    have hp : (N : Real) ^ (sigma / 16) * (N : Real) ^ (1 - sigma / 16) = N := by
-      rw [← Real.rpow_add hNr, show sigma / 16 + (1 - sigma / 16) = 1 by ring, Real.rpow_one]
-    calc
-      _ = (beta / C * (N : Real) ^ (sigma / 16)) * K := by ring
-      _ ≤ (beta / C * (N : Real) ^ (sigma / 16)) * (C * (N : Real) ^ (1 - sigma / 16)) :=
-        mul_le_mul_of_nonneg_left hcount' (by positivity)
-      _ = beta * ((N : Real) ^ (sigma / 16) * (N : Real) ^ (1 - sigma / 16)) := by field_simp
-      _ = _ := by rw [hp]
-  exact ⟨R j, hRproper j, hsub, hsize'.trans hsize, hinc⟩
+    hAS hδ hδone hβ hcard hR hdiam hscale (hdis.trans (hnorm _))
+  have hK : (0 : Real) < K := Nat.cast_pos.mpr (section18_partition_index_nonempty _ hR)
+  rw [hQ.averageCellSize_univ,
+    le_div_iff₀' (Nat.cast_pos.mpr (section18_partition_index_nonempty _ hQ))] at havg
+  generalize boundaryRefinementConstant (beta / 64) = C at hC hcount ⊢
+  have hKN : (K : Real) * N ^ (sigma / 16) ≤ C * N := calc
+    (K : Real) * N ^ (sigma / 16) ≤
+        C * (M : Real) ^ (1 / 16 : Real) * (N : Real) ^ (15 / 16 : Real) * N ^ (sigma / 16) := by
+      gcongr
+    _ = C * ((M : Real) * N ^ sigma) ^ (1 / 16 : Real) * N ^ (15 / 16 : Real) := by
+      rw [Real.mul_rpow (Nat.cast_nonneg M) (Real.rpow_nonneg hNr.le sigma),
+        ← Real.rpow_mul hNr.le, show sigma * (1 / 16) = sigma / 16 by ring]
+      ring
+    _ ≤ C * (N : Real) ^ (1 / 16 : Real) * N ^ (15 / 16 : Real) := by gcongr
+    _ = C * N := by rw [mul_assoc, ← Real.rpow_add hNr]; norm_num
+  refine ⟨R j, hRproper j, hsub, le_trans ?_ hsize, hinc⟩
+  rw [div_mul_eq_mul_div, div_le_div_iff₀ (by positivity) (by positivity)]
+  linarith [mul_le_mul_of_nonneg_left hKN hβ.le]
 
 end LeanProofs.GowersSzemeredi

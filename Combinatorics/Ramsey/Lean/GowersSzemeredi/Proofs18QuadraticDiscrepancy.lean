@@ -64,8 +64,8 @@ theorem quadratic_nonuniformity_discrepancy_partition_of_power_bounds :
   have hl (i : Fin M) : l ≤ (Q i).carrier.card ∧ (Q i).carrier.card ≤ l + 1 := by
     rw [(hproper i).1]; rcases (hproper i).2 with h | h <;> omega
   obtain ⟨L, R, hR, _, hRproper, hcount, hbias⟩ :=
-    twisted_partition_nonuniformity_discrepancy Q phi f beta (by omega) (by positivity) (by omega)
-      hpoly hf hpart (fun i ↦ (hl i).2) hfail
+    twisted_partition_nonuniformity_discrepancy Q phi f beta (by omega) (by positivity) hpoly hf
+      hpart (fun i ↦ (hl i).2) hfail
   have hNpos : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   have hS := section5LocalRefinementConstant_pos 2 beta
   have hK : (polynomialPartitionConstant 2 : Real)⁻¹ = 1 / 2048 := by

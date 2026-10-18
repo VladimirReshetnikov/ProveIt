@@ -27,46 +27,30 @@ theorem ModAP.exists_natAP_of_short_interval {N L : Nat} [NeZero N]
     ∃ Q : NatAP, Q.IsProper ∧ Q.length = P.length ∧
       Q.carrier = P.carrier.image ZMod.val ∧ Q.carrier ⊆ Finset.range L := by
   let S := P.carrier.image ZMod.val
-  have hS : S.card = P.length := by
-    rw [Finset.card_image_of_injective _ (ZMod.val_injective N)]
-    exact hP
+  have hS : S.card = P.length := (Finset.card_image_of_injective _ (ZMod.val_injective N)).trans hP
   have hindex (i : Nat) (hi : i < P.length) : P.index i ∈ P.carrier :=
     Finset.mem_image.mpr ⟨⟨i, hi⟩, Finset.mem_univ _, rfl⟩
   have hAP : HasNatAP S P.length := by
     by_cases htwo : 2 ≤ P.length
-    · have hd : P.step ≠ 0 := by
-        intro hd
-        have heq : P.index 0 = P.index 1 := by simp [ModAP.index, hd]
-        have := P.index_injOn hP (by simp; omega) (by simp; omega) heq
-        omega
-      apply hasNatAP_of_short_modular_sequence S (fun i => (P.index i).val)
-        P.start P.step hd hsize
-      intro i hi
-      refine ⟨Finset.mem_image.mpr ⟨P.index i, hindex i hi, rfl⟩, ?_, ?_⟩
-      · have := (mem_finiteIntervalSupport (by omega : L ≤ N) _).mp (hsub (hindex i hi))
-        omega
-      · exact ZMod.natCast_zmod_val _
-    · by_cases hzero : P.length = 0
-      · exact ⟨0, 1, by omega, by omega⟩
-      · refine ⟨(P.index 0).val, 1, by omega, ?_⟩
-        intro i hi
-        have : i = 0 := by omega
-        subst i
-        simpa only [Nat.zero_mul, Nat.add_zero] using (Finset.mem_image.mpr ⟨P.index 0, hindex 0 (by omega), rfl⟩ :
-          (P.index 0).val ∈ S)
+    · have hd : P.step ≠ 0 := fun hd => Nat.zero_ne_one (P.index_injOn hP (by simp; omega)
+        (by simp; omega) (by simp [ModAP.index, hd]))
+      refine hasNatAP_of_short_modular_sequence S (fun i => (P.index i).val) P.start P.step hd
+        hsize fun i hi => ⟨Finset.mem_image_of_mem _ (hindex i hi), ?_, ZMod.natCast_zmod_val _⟩
+      have := (mem_finiteIntervalSupport (by omega : L ≤ N) _).mp (hsub (hindex i hi))
+      omega
+    · refine ⟨(P.index 0).val, 1, one_pos, fun i hi => ?_⟩
+      obtain rfl : i = 0 := by omega
+      exact Finset.mem_image.mpr ⟨P.index 0, hindex 0 hi, by simp⟩
   obtain ⟨a, d, hd, hAP⟩ := hAP
   let Q : NatAP := ⟨a, d, P.length⟩
   have hQ : Q.IsProper := Q.isProper_of_step_pos hd
-  have hQS : Q.carrier ⊆ S := by
-    intro x hx
-    obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hx
-    exact hAP i i.isLt
+  have hQS : Q.carrier ⊆ S := fun x hx => by
+    obtain ⟨i, -, rfl⟩ := Finset.mem_image.mp hx; exact hAP i i.isLt
   have heq : Q.carrier = S := Finset.eq_of_subset_of_card_le hQS (by rw [hS, hQ.2])
   refine ⟨Q, hQ, rfl, heq, ?_⟩
   rw [heq]
-  intro x hx
-  obtain ⟨y, hy, rfl⟩ := Finset.mem_image.mp hx
-  exact Finset.mem_range.mpr ((mem_finiteIntervalSupport (by omega : L ≤ N) y).mp (hsub hy))
+  exact Finset.image_subset_iff.mpr fun y hy =>
+    Finset.mem_range.mpr ((mem_finiteIntervalSupport (by omega : L ≤ N) y).mp (hsub hy))
 
 /-- Natural representatives recover the original finite interval set. -/
 theorem finiteIntervalImage_val {N L : Nat} [NeZero N] (hL : L ≤ N)

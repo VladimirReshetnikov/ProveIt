@@ -16,43 +16,23 @@ theorem disjoint_class_deletion {X I : Type*} [DecidableEq X] [Fintype I]
     ∃ E : Finset X, E ⊆ S ∧ (∀ i, E ∩ A i = D i) ∧
       (S.card : ℝ) - ((∑ i, ((A i).card : ℝ)) - ∑ i, ((D i).card : ℝ)) ≤ E.card := by
   let bad := Finset.univ.biUnion (fun i => A i \ D i)
-  have hbad : bad ⊆ S := by
-    intro x hx
-    obtain ⟨i, _, hi⟩ := Finset.mem_biUnion.mp hx
-    exact hA i (Finset.mem_sdiff.mp hi).1
-  have hcard := Finset.card_le_card hbad
-  have hDgood : ∀ i, D i ⊆ S \ bad := by
-    intro i x hx
-    refine Finset.mem_sdiff.mpr ⟨hA i (hD i hx), ?_⟩
-    intro hxbad
-    obtain ⟨j, _, hj⟩ := Finset.mem_biUnion.mp hxbad
-    obtain ⟨hja, hjd⟩ := Finset.mem_sdiff.mp hj
-    by_cases hij : i = j
-    · subst j
-      exact hjd hx
-    · exact Finset.disjoint_left.mp (hdisj hij) (hD i hx) hja
-  refine ⟨S \ bad, Finset.sdiff_subset, ?_, ?_⟩
-  · intro i
-    ext x
-    constructor
-    · intro hx
-      obtain ⟨hxE, hxA⟩ := Finset.mem_inter.mp hx
-      by_contra hxD
-      exact (Finset.mem_sdiff.mp hxE).2
-        (Finset.mem_biUnion.mpr ⟨i, Finset.mem_univ _, Finset.mem_sdiff.mpr ⟨hxA, hxD⟩⟩)
-    · intro hx
-      exact Finset.mem_inter.mpr ⟨hDgood i hx, hD i hx⟩
-  · have hsum : (bad.card : ℝ) ≤
-        (∑ i, ((A i).card : ℝ)) - ∑ i, ((D i).card : ℝ) := by
-      calc
-        _ ≤ ∑ i, ((A i \ D i).card : ℝ) := by
-          exact_mod_cast (Finset.card_biUnion_le : bad.card ≤ ∑ i, (A i \ D i).card)
-        _ = _ := by
-          rw [← Finset.sum_sub_distrib]
-          apply Finset.sum_congr rfl
-          intro i _
-          rw [Finset.card_sdiff_of_subset (hD i), Nat.cast_sub (Finset.card_le_card (hD i))]
-    rw [Finset.card_sdiff_of_subset hbad, Nat.cast_sub hcard]
+  have hbad : bad ⊆ S := Finset.biUnion_subset.2 fun i _ => Finset.sdiff_subset.trans (hA i)
+  refine ⟨S \ bad, Finset.sdiff_subset, fun i => ?_, ?_⟩
+  · ext x
+    simp only [Finset.mem_inter, Finset.mem_sdiff, bad, Finset.mem_biUnion, Finset.mem_univ,
+      true_and, not_exists, not_and, not_not]
+    refine ⟨fun ⟨⟨_, h⟩, hx⟩ => h i hx, fun hx => ⟨⟨hA i (hD i hx), fun j hj => ?_⟩, hD i hx⟩⟩
+    rcases eq_or_ne i j with rfl | hij
+    · exact hx
+    · exact absurd hj (Finset.disjoint_left.mp (hdisj hij) (hD i hx))
+  · have h1 : ((S \ bad).card : ℝ) + bad.card = S.card := by
+      exact_mod_cast Finset.card_sdiff_add_card_eq_card hbad
+    have h2 : (bad.card : ℝ) ≤ ∑ i, ((A i \ D i).card : ℝ) := by
+      exact_mod_cast (Finset.card_biUnion_le : bad.card ≤ ∑ i, (A i \ D i).card)
+    have h3 : ∑ i, ((A i \ D i).card : ℝ) + ∑ i, ((D i).card : ℝ) = ∑ i, ((A i).card : ℝ) := by
+      rw [← Finset.sum_add_distrib]
+      exact Finset.sum_congr rfl fun i _ => by
+        exact_mod_cast Finset.card_sdiff_add_card_eq_card (hD i)
     linarith
 
 /-- A fibre class viewed as a set of ambient product points. -/
@@ -96,28 +76,17 @@ theorem section16_prune_and_sample_good_set {α β : Type*}
         ∃ i j, sample i ∈ C (h, t) ∧ sample j ∈ C (h, t) ∧
           sample i ≠ sample j ∧ (h, sample i) ∈ E ∧ (h, sample j) ∈ E := by
   let A := fun i : β × Fin q => section16FibreClassSet i.1 (C i)
-  have hAdisj := section16FibreClassSet_pairwise C hdisj
   obtain ⟨sample, D, hD, hanchors, hloss⟩ :=
     section16_linear_prune_and_sample q r C σ hq hσ hlong hr
   obtain ⟨E, _, hED, hE⟩ := disjoint_class_deletion Finset.univ A
     (fun i => section16FibreClassSet i.1 (D i)) (fun _ => Finset.subset_univ _)
-    (fun i => Finset.image_subset_image (hD i)) hAdisj
+    (fun i => Finset.image_subset_image (hD i)) (section16FibreClassSet_pairwise C hdisj)
   simp only [A, section16FibreClassSet_card, Finset.card_univ, Fintype.card_prod,
     Nat.cast_mul] at hE
-  refine ⟨sample, E, by nlinarith [hE, hloss], ?_⟩
-  intro h t x hxE hxC
-  have hxA : (h, x) ∈ A (h, t) := Finset.mem_image.mpr ⟨x, hxC, rfl⟩
-  have hxD : x ∈ D (h, t) := by
-    have hp := Finset.mem_inter.mpr ⟨hxE, hxA⟩
-    rw [hED (h, t)] at hp
-    simpa [section16FibreClassSet] using hp
-  obtain ⟨i, j, hi, hj, hij⟩ := hanchors (h, t) ⟨x, hxD⟩
-  have hmem : ∀ y ∈ D (h, t), (h, y) ∈ E := by
-    intro y hy
-    have hp : (h, y) ∈ section16FibreClassSet h (D (h, t)) :=
-      Finset.mem_image.mpr ⟨y, hy, rfl⟩
-    rw [← hED (h, t)] at hp
-    exact (Finset.mem_inter.mp hp).1
-  exact ⟨i, j, hD _ hi, hD _ hj, hij, hmem _ hi, hmem _ hj⟩
+  refine ⟨sample, E, by nlinarith [hE, hloss], fun h t x hxE hxC => ?_⟩
+  have hiff (y : α) : (h, y) ∈ E ∧ y ∈ C (h, t) ↔ y ∈ D (h, t) := by
+    simpa [A, section16FibreClassSet] using Finset.ext_iff.mp (hED (h, t)) (h, y)
+  obtain ⟨i, j, hi, hj, hij⟩ := hanchors (h, t) ⟨x, (hiff x).1 ⟨hxE, hxC⟩⟩
+  exact ⟨i, j, hD _ hi, hD _ hj, hij, ((hiff _).2 hi).1, ((hiff _).2 hj).1⟩
 
 end LeanProofs.GowersSzemeredi

@@ -52,29 +52,17 @@ theorem exists_fourier_restrict_energy_bound {N : Nat} [NeZero N]
       (norm_fourier_restrictToCell_le S f hf t) (norm_nonneg _) (norm_nonneg _)
   have hparseval : ∑ t : ZMod N, ‖fourier g t‖ ^ 2 ≤ (N : Real) * S.card := by
     rw [identity_2_3_holds]
-    apply mul_le_mul_of_nonneg_left _ (Nat.cast_nonneg N)
-    have heq : (∑ s : ZMod N, ‖g s‖ ^ 2) = ∑ s ∈ S, ‖f s‖ ^ 2 := by
-      simp only [g, restrictToCell, apply_ite, norm_zero, ite_pow, zero_pow (by omega : 2 ≠ 0)]
-      rw [← Finset.sum_filter]
-      simp
-    rw [heq]
-    calc
-      _ ≤ ∑ _s ∈ S, (1 : Real) := Finset.sum_le_sum fun s _ ↦
-        pow_le_one₀ (norm_nonneg _) (hf s)
-      _ = _ := by simp
+    gcongr
+    simp only [g, restrictToCell, apply_ite, norm_zero, ite_pow, zero_pow (by omega : 2 ≠ 0),
+      Finset.sum_ite_mem_eq]
+    exact (Finset.sum_le_sum fun s _ => pow_le_one₀ (norm_nonneg _) (hf s)).trans_eq (by simp)
   have hfour : ∑ t : ZMod N, ‖fourier g t‖ ^ 4 ≤
-      (N : Real) * ((S.card : Real) ^ 2 * ‖fourier g r‖) := by
-    calc
-      _ = ∑ t : ZMod N, ‖fourier g t‖ ^ 2 * ‖fourier g t‖ ^ 2 := by
-        apply Finset.sum_congr rfl
-        intro t _
-        ring
-      _ ≤ ∑ t : ZMod N, (‖fourier g r‖ * S.card) * ‖fourier g t‖ ^ 2 :=
-        Finset.sum_le_sum fun t _ ↦ mul_le_mul_of_nonneg_right (hpoint t) (sq_nonneg _)
-      _ = (‖fourier g r‖ * S.card) * ∑ t : ZMod N, ‖fourier g t‖ ^ 2 :=
-        (Finset.mul_sum _ _ _).symm
-      _ ≤ (‖fourier g r‖ * S.card) * ((N : Real) * S.card) :=
-        mul_le_mul_of_nonneg_left hparseval (by positivity)
+      (N : Real) * ((S.card : Real) ^ 2 * ‖fourier g r‖) :=
+    calc _ ≤ ∑ t : ZMod N, ‖fourier g r‖ * S.card * ‖fourier g t‖ ^ 2 :=
+          Finset.sum_le_sum fun t _ => by
+            linarith only [mul_le_mul_of_nonneg_right (hpoint t) (sq_nonneg ‖fourier g t‖)]
+      _ = ‖fourier g r‖ * S.card * ∑ t : ZMod N, ‖fourier g t‖ ^ 2 := by rw [Finset.mul_sum]
+      _ ≤ ‖fourier g r‖ * S.card * (N * S.card) := by gcongr
       _ = _ := by ring
   rw [fourthMoment_eq_degreeOneEnergy] at hfour
   exact ⟨r, (mul_le_mul_iff_right₀ (show (0 : Real) < N by exact_mod_cast NeZero.pos N)).mp hfour⟩
@@ -84,14 +72,14 @@ at least beta times the ambient size. No prime-model or selected-cell loss
 is needed: every cell supplies its own frequency. -/
 theorem partition_linear_nonuniformity_fourier_bias {N K m : Nat} [NeZero N]
     (f : ZMod N → Complex) (Q : Fin K → ModAP N) (beta : Real)
-    (hf : DiscValued f) (hβ : 0 ≤ beta) (hm : 0 < m)
+    (hf : DiscValued f) (hβ : 0 ≤ beta)
     (hpart : IsPartition (fun i ↦ (Q i).carrier) Finset.univ)
     (hsize : ∀ i, (Q i).carrier.card ≤ m)
     (hfail : ¬ UniformOnPartition f 1 beta Q m) :
     ∃ r : Fin K → ZMod N,
       beta * N < ∑ i, ‖∑ x ∈ (Q i).carrier, f x * exponential (-(r i * x))‖ := by
-  have henergy : beta * (m : Real) ^ 3 * K <
-      ∑ i, ∑ a : Point N 1, ‖∑ s : ZMod N, cubeDifference (restrictToCell (Q i).carrier f) a s‖ ^ 2 := by
+  have henergy : beta * (m : Real) ^ 3 * K < ∑ i, ∑ a : Point N 1,
+      ‖∑ s : ZMod N, cubeDifference (restrictToCell (Q i).carrier f) a s‖ ^ 2 := by
     unfold UniformOnPartition at hfail
     simp only [sum_cube_succ_eq_sum_norm_sq, Complex.ofReal_re, Nat.reduceAdd] at hfail
     exact lt_of_not_ge hfail
@@ -100,23 +88,14 @@ theorem partition_linear_nonuniformity_fourier_bias {N K m : Nat} [NeZero N]
       ‖∑ s : ZMod N, cubeDifference (restrictToCell (Q i).carrier f) a s‖ ^ 2) ≤
       (m : Real) ^ 2 * ∑ i, ‖fourier (restrictToCell (Q i).carrier f) (r i)‖ := by
     rw [Finset.mul_sum]
-    apply Finset.sum_le_sum
-    intro i _
-    exact (hr i).trans (mul_le_mul_of_nonneg_right
-      (pow_le_pow_left₀ (Nat.cast_nonneg _) (by exact_mod_cast hsize i) 2) (norm_nonneg _))
-  have htotal : N ≤ m * K := by
+    exact Finset.sum_le_sum fun i _ => (hr i).trans (by gcongr; exact_mod_cast hsize i)
+  have htotal : (N : Real) ≤ m * K := by
     have h := Finset.sum_le_sum (fun i (_ : i ∈ (Finset.univ : Finset (Fin K))) ↦ hsize i)
     rw [hpart.sum_card] at h
-    simpa [mul_comm] using h
-  have htotalR : (N : Real) ≤ (m : Real) * K := by exact_mod_cast htotal
-  have hstrict : beta * (m : Real) * K <
-      ∑ i, ‖fourier (restrictToCell (Q i).carrier f) (r i)‖ := by
-    apply (mul_lt_mul_iff_right₀ (show (0 : Real) < (m : Real) ^ 2 by positivity)).mp
-    calc
-      (m : Real) ^ 2 * (beta * m * K) = beta * (m : Real) ^ 3 * K := by ring
-      _ < _ := henergy.trans_le hbound
-  refine ⟨r, ?_⟩
+    exact_mod_cast (by simpa [mul_comm] using h : N ≤ m * K)
+  refine ⟨r, lt_of_mul_lt_mul_left ?_ (sq_nonneg (m : Real))⟩
   simp_rw [← fourier_restrictToCell]
-  exact (by nlinarith only [mul_le_mul_of_nonneg_left htotalR hβ] : beta * N ≤ beta * (m : Real) * K).trans_lt hstrict
+  have h0 : (0 : Real) ≤ beta * m ^ 2 := by positivity
+  linarith only [henergy.trans_le hbound, mul_le_mul_of_nonneg_left htotal h0]
 
 end LeanProofs.GowersSzemeredi

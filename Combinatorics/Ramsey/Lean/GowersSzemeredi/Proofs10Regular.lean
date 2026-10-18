@@ -41,22 +41,10 @@ private lemma intervalProbability_apply_Icc {rho a b : Real}
     (hrho : 0 < rho) (ha : -rho ≤ a) (hb : b ≤ 1 + rho) :
     intervalProbability rho (Set.Icc a b) =
       ENNReal.ofReal ((b - a) / (1 + 2 * rho)) := by
-  rw [intervalProbability, ProbabilityTheory.cond_apply measurableSet_Icc]
-  have hinter : Set.Icc (-rho) (1 + rho) ∩ Set.Icc a b = Set.Icc a b := by
-    ext x
-    simp only [Set.mem_inter_iff, Set.mem_Icc]
-    constructor
-    · exact fun h => h.2
-    · intro h
-      exact ⟨⟨ha.trans h.1, h.2.trans hb⟩, h⟩
-  rw [hinter]
-  have hlen : 0 < 1 + 2 * rho := by linarith
-  simp only [Real.volume_Icc]
-  rw [show 1 + rho - -rho = 1 + 2 * rho by ring]
-  rw [← ENNReal.ofReal_inv_of_pos hlen]
-  rw [← ENNReal.ofReal_mul (by positivity : 0 ≤ (1 + 2 * rho)⁻¹)]
-  congr 1
-  field_simp
+  rw [intervalProbability, ProbabilityTheory.cond_apply measurableSet_Icc,
+    Set.inter_eq_right.mpr (Set.Icc_subset_Icc ha hb), Real.volume_Icc, Real.volume_Icc,
+    show 1 + rho - -rho = 1 + 2 * rho by ring,
+    ENNReal.ofReal_div_of_pos (by linarith : (0 : Real) < 1 + 2 * rho), ENNReal.div_eq_inv_mul]
 
 private lemma intervalProbability_window {rho a : Real}
     (hrho : 0 < rho) (ha0 : 0 ≤ a) (ha1 : a ≤ 1) :
@@ -113,35 +101,14 @@ private lemma intervalProbability_Icc_length_le {rho sigma a : Real}
     (hrho : 0 < rho) (hsigma : 0 ≤ sigma) :
     (intervalProbability rho).real (Set.Icc a (a + sigma)) ≤
       sigma / (1 + 2 * rho) := by
-  have hlen : 0 < 1 + 2 * rho := by linarith
-  have hmeasure :
-      intervalProbability rho (Set.Icc a (a + sigma)) ≤
-        ENNReal.ofReal (sigma / (1 + 2 * rho)) := by
-    rw [intervalProbability, ProbabilityTheory.cond_apply measurableSet_Icc]
-    calc
-      (volume (Set.Icc (-rho) (1 + rho)))⁻¹ *
-          volume (Set.Icc (-rho) (1 + rho) ∩ Set.Icc a (a + sigma)) ≤
-          (volume (Set.Icc (-rho) (1 + rho)))⁻¹ *
-            volume (Set.Icc a (a + sigma)) := by
-        gcongr
-        exact Set.inter_subset_right
-      _ = ENNReal.ofReal (sigma / (1 + 2 * rho)) := by
-        simp only [Real.volume_Icc]
-        rw [show 1 + rho - -rho = 1 + 2 * rho by ring]
-        rw [show a + sigma - a = sigma by ring]
-        rw [← ENNReal.ofReal_inv_of_pos hlen]
-        rw [← ENNReal.ofReal_mul
-          (by positivity : 0 ≤ (1 + 2 * rho)⁻¹)]
-        congr 1
-        field_simp
-  rw [Measure.real]
-  calc
-    (intervalProbability rho (Set.Icc a (a + sigma))).toReal ≤
-        (ENNReal.ofReal (sigma / (1 + 2 * rho))).toReal :=
-      ENNReal.toReal_mono (by simp) hmeasure
-    _ = sigma / (1 + 2 * rho) := by
-      rw [ENNReal.toReal_ofReal]
-      positivity
+  rw [Measure.real, intervalProbability, ProbabilityTheory.cond_apply measurableSet_Icc]
+  refine ENNReal.toReal_le_of_le_ofReal (by positivity) ?_
+  calc _ ≤ (volume (Set.Icc (-rho) (1 + rho)))⁻¹ * volume (Set.Icc a (a + sigma)) := by
+        gcongr; exact Set.inter_subset_right
+    _ = _ := by
+      rw [Real.volume_Icc, Real.volume_Icc, show 1 + rho - -rho = 1 + 2 * rho by ring,
+        add_sub_cancel_left, ENNReal.ofReal_div_of_pos (by linarith : (0 : Real) < 1 + 2 * rho),
+        ENNReal.div_eq_inv_mul]
 
 private noncomputable def normalizedBoundarySet
     (rho sigma a b : Real) : Set (Real × Real) :=
@@ -347,24 +314,12 @@ private lemma integral_windowedSum {X : Type*}
     (∫ p : Real × Real, windowedSum rho a b w U p
       ∂((intervalProbability rho).prod (intervalProbability rho))) =
       ((2 * rho) / (1 + 2 * rho)) ^ 2 * ∑ y ∈ U, w y := by
-  letI : IsProbabilityMeasure (intervalProbability rho) :=
-    intervalProbability_isProbability hrho
+  letI := intervalProbability_isProbability hrho
   unfold windowedSum
-  rw [integral_finsetSum U]
-  · calc
-      (∑ y ∈ U, ∫ p : Real × Real,
-          (normalizedWindowSet rho (a y) (b y)).indicator (fun _ => w y) p
-          ∂((intervalProbability rho).prod (intervalProbability rho))) =
-          ∑ y ∈ U, ((2 * rho) / (1 + 2 * rho)) ^ 2 * w y := by
-        apply Finset.sum_congr rfl
-        intro y _
-        exact integral_productProbability_window_const hrho
-          (ha y).1 (ha y).2 (hb y).1 (hb y).2
-      _ = ((2 * rho) / (1 + 2 * rho)) ^ 2 * ∑ y ∈ U, w y := by
-        rw [Finset.mul_sum]
-  · intro y _
-    exact (integrable_const (w y)).indicator
-      (measurableSet_normalizedWindowSet rho (a y) (b y))
+  rw [integral_finsetSum U fun y _ => (integrable_const (w y)).indicator
+    (measurableSet_normalizedWindowSet rho (a y) (b y)), Finset.mul_sum]
+  exact Finset.sum_congr rfl fun y _ =>
+    integral_productProbability_window_const hrho (ha y).1 (ha y).2 (hb y).1 (hb y).2
 
 private lemma integral_boundaryCount_le {X : Type*} [Fintype X]
     (rho sigma : Real) (a b : X → Real)
@@ -372,30 +327,15 @@ private lemma integral_boundaryCount_le {X : Type*} [Fintype X]
     (∫ p : Real × Real, boundaryCount rho sigma a b p
       ∂((intervalProbability rho).prod (intervalProbability rho))) ≤
       4 * sigma / (1 + 2 * rho) * Fintype.card X := by
-  letI : IsProbabilityMeasure (intervalProbability rho) :=
-    intervalProbability_isProbability hrho
-  let μ := (intervalProbability rho).prod (intervalProbability rho)
+  letI := intervalProbability_isProbability hrho
   unfold boundaryCount
-  rw [integral_finsetSum (Finset.univ : Finset X)]
-  · calc
-      (∑ y : X, ∫ p : Real × Real,
-          (normalizedBoundarySet rho sigma (a y) (b y)).indicator
-            (fun _ => (1 : Real)) p ∂μ) =
-          ∑ y : X, μ.real (normalizedBoundarySet rho sigma (a y) (b y)) := by
-        apply Finset.sum_congr rfl
-        intro y _
-        rw [MeasureTheory.integral_indicator_const (1 : Real)
-          (measurableSet_normalizedBoundarySet rho sigma (a y) (b y))]
-        simp
-      _ ≤ ∑ _y : X, 4 * sigma / (1 + 2 * rho) := by
-        apply Finset.sum_le_sum
-        intro y _
-        exact measureReal_productProbability_boundary_le hrho hsigma
-      _ = 4 * sigma / (1 + 2 * rho) * Fintype.card X := by
-        simp [mul_comm]
-  · intro y _
-    exact (integrable_const (1 : Real)).indicator
-      (measurableSet_normalizedBoundarySet rho sigma (a y) (b y))
+  rw [integral_finsetSum _ fun y _ => (integrable_const (1 : Real)).indicator
+    (measurableSet_normalizedBoundarySet rho sigma (a y) (b y))]
+  refine (Finset.sum_le_card_nsmul _ _ (4 * sigma / (1 + 2 * rho)) fun y _ => ?_).trans_eq
+    (by rw [Finset.card_univ, nsmul_eq_mul, mul_comm (Fintype.card X : Real)])
+  rw [integral_indicator_const (1 : Real)
+    (measurableSet_normalizedBoundarySet rho sigma (a y) (b y)), smul_eq_mul, mul_one]
+  exact measureReal_productProbability_boundary_le hrho hsigma
 
 /-- The four simultaneous estimates supplied by the two-parameter averaging
 argument in Lemma 10.5. -/

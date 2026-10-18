@@ -47,45 +47,20 @@ theorem polynomialPartitionThreshold_four_pow {d : Nat} (hd : 1 ≤ d) :
 theorem polynomialPartitionThreshold_degree_budget {k : Nat} (hk : 1 ≤ k) :
     (2 * (polynomialPartitionThreshold k + 1)) ^ ((k + 1) ^ 2 * 2 ^ (2 * (k + 1))) ≤
       polynomialPartitionThreshold (k + 1) := by
-  let d := k + 1
-  let a := 2 ^ (40 * k ^ 3 + 1)
-  have ha : 2 ≤ a := by
-    simpa only [pow_one] using Nat.pow_le_pow_right (n := 2) (by norm_num) (show 1 ≤ 40 * k ^ 3 + 1 by omega)
-  have hT : polynomialPartitionThreshold k = 2 ^ a := by
-    unfold polynomialPartitionThreshold weylThreshold a
-    rw [← pow_mul]
-    congr 1
-  have hT1 : 1 ≤ polynomialPartitionThreshold k := by rw [hT]; exact Nat.one_le_iff_ne_zero.mpr (by positivity)
-  have hbase : 2 * (polynomialPartitionThreshold k + 1) ≤ 2 ^ (a + 2) := by
-    rw [pow_add, ← hT]
-    norm_num
-    omega
-  have hE : d ^ 2 * 2 ^ (2 * d) ≤ 2 ^ (4 * d) := by
-    calc
-      d ^ 2 * 2 ^ (2 * d) ≤ (2 ^ d) ^ 2 * 2 ^ (2 * d) :=
-        Nat.mul_le_mul_right _ (Nat.pow_le_pow_left (Nat.lt_two_pow_self (n := d)).le 2)
-      _ = 2 ^ (4 * d) := by rw [← pow_mul, ← pow_add]; congr 1; omega
-  have ha2 : a + 2 ≤ 2 ^ (40 * k ^ 3 + 2) := by
-    have he : 40 * k ^ 3 + 2 = (40 * k ^ 3 + 1) + 1 := by omega
-    rw [he, pow_succ]
-    change a + 2 ≤ a * 2
-    omega
-  have hexp : (a + 2) * (d ^ 2 * 2 ^ (2 * d)) ≤ 2 ^ (40 * d ^ 3 + 1) := by
-    calc
-      (a + 2) * (d ^ 2 * 2 ^ (2 * d)) ≤ 2 ^ (40 * k ^ 3 + 2) * 2 ^ (4 * d) :=
-        Nat.mul_le_mul ha2 hE
-      _ = 2 ^ (40 * k ^ 3 + 2 + 4 * d) := (pow_add _ _ _).symm
-      _ ≤ 2 ^ (40 * d ^ 3 + 1) := by
-        apply Nat.pow_le_pow_right (by norm_num)
-        dsimp [d]
-        nlinarith
-  calc
-    (2 * (polynomialPartitionThreshold k + 1)) ^ (d ^ 2 * 2 ^ (2 * d)) ≤
-        (2 ^ (a + 2)) ^ (d ^ 2 * 2 ^ (2 * d)) := Nat.pow_le_pow_left hbase _
-    _ ≤ 2 ^ 2 ^ (40 * d ^ 3 + 1) := by rw [← pow_mul]; exact Nat.pow_le_pow_right (by norm_num) hexp
+  -- `T (k + 1) = (T k ^ 2) ^ 2 ^ (120 k ^ 2 + 120 k + 39)` and `2 (T k + 1) ≤ T k ^ 2`
+  have hT : 4 ≤ polynomialPartitionThreshold k := by
+    have := Nat.one_lt_two_pow (n := 2 ^ (40 * k ^ 3)) (by positivity)
+    unfold polynomialPartitionThreshold weylThreshold; nlinarith
+  have hE : (k + 1) ^ 2 * 2 ^ (2 * (k + 1)) ≤ 2 ^ (120 * k ^ 2 + 120 * k + 39) :=
+    calc (k + 1) ^ 2 * 2 ^ (2 * (k + 1)) ≤ 2 ^ (2 * (k + 1)) * 2 ^ (2 * (k + 1)) := by
+          gcongr ?_ * _; rw [pow_mul']; exact Nat.pow_le_pow_left Nat.lt_two_pow_self.le 2
+      _ ≤ _ := by rw [← pow_add]; exact Nat.pow_le_pow_right (by norm_num) (by omega)
+  calc _ ≤ (polynomialPartitionThreshold k ^ 2) ^ 2 ^ (120 * k ^ 2 + 120 * k + 39) :=
+        (Nat.pow_le_pow_left (by nlinarith) _).trans
+          (Nat.pow_le_pow_right (pow_pos (by omega) _) hE)
     _ = polynomialPartitionThreshold (k + 1) := by
-      unfold polynomialPartitionThreshold weylThreshold
-      rw [← pow_mul, pow_succ]
+        simp only [polynomialPartitionThreshold, weylThreshold, ← pow_mul]
+        exact congrArg (fun n : Nat => 2 ^ n) (by ring)
 
 /-- Constant growth pays for the fourth-power rounding loss and the leading term. -/
 theorem polynomialPartitionConstant_degree_budgets {k : Nat} (hk : 1 ≤ k) :
@@ -93,36 +68,18 @@ theorem polynomialPartitionConstant_degree_budgets {k : Nat} (hk : 1 ≤ k) :
     ((2 * polynomialPartitionConstant k * (k + 1) + 4 : Nat) : Real) ≤
       (polynomialPartitionConstant (k + 1) : Real) *
         (((k + 1 : Nat) : Real) * (2 : Real) ^ (k + 1 + 1))⁻¹ := by
-  let K := polynomialPartitionConstant k
-  let d := k + 1
-  have hK : 1 ≤ polynomialPartitionConstant k := by
-    unfold polynomialPartitionConstant
-    have := Nat.factorial_pos k
-    exact Nat.one_le_iff_ne_zero.mpr (by positivity)
-  have hd : 2 ≤ d := by dsimp [d]; omega
-  have hp : 4 ≤ 2 ^ d := by
-    simpa using Nat.pow_le_pow_right (n := 2) (by norm_num) hd
-  have hD : polynomialPartitionConstant (k + 1) = 2 * (d ^ 2 * 2 ^ (2 * d)) * K :=
-    polynomialPartitionConstant_succ k
-  constructor
-  · rw [hD]
-    change 8 * K ≤ 2 * (d ^ 2 * 2 ^ (2 * d)) * K
-    have hpow : 1 ≤ 2 ^ (2 * d) := Nat.one_le_iff_ne_zero.mpr (by positivity)
-    have hE : 4 ≤ d ^ 2 * 2 ^ (2 * d) := by nlinarith
-    nlinarith
-  · have hdR : (d : Real) ≠ 0 := by exact_mod_cast (show d ≠ 0 by omega)
-    have heq : (polynomialPartitionConstant (k + 1) : Real) *
-        ((d : Real) * (2 : Real) ^ (d + 1))⁻¹ = (K : Real) * d * 2 ^ d := by
-      rw [hD]
-      push_cast
-      rw [show 2 * d = d + d by omega, pow_add, pow_succ]
-      field_simp
-      ring
-    change ((2 * K * d + 4 : Nat) : Real) ≤ _
-    rw [heq]
-    have hnat : 2 * K * d + 4 ≤ K * d * 2 ^ d := by
-      have hKd : 2 ≤ K * d := by nlinarith
-      nlinarith [Nat.mul_le_mul_left (K * d) hp]
-    exact_mod_cast hnat
+  have hK : 0 < polynomialPartitionConstant k := by
+    unfold polynomialPartitionConstant; positivity
+  rw [polynomialPartitionConstant_succ]
+  generalize polynomialPartitionConstant k = K at hK ⊢
+  refine ⟨Nat.mul_le_mul_right _ ?_, ?_⟩
+  · linarith [Nat.mul_le_mul (Nat.pow_le_pow_left (show 2 ≤ k + 1 by omega) 2)
+      (Nat.one_le_two_pow (n := 2 * (k + 1)))]
+  · -- the right side is `K (k + 1) 2 ^ (k + 1)`
+    have h : 2 * K * (k + 1) + 4 ≤ K * (k + 1) * 2 ^ (k + 1) := by
+      nlinarith [Nat.mul_le_mul_left (K * (k + 1))
+        (Nat.pow_le_pow_right two_pos (show 2 ≤ k + 1 by omega))]
+    refine (Nat.cast_le.mpr h).trans_eq ?_
+    push_cast; field_simp; ring
 
 end LeanProofs.GowersSzemeredi

@@ -59,35 +59,16 @@ private lemma cor146_section_product_property {N k : Nat} [NeZero N]
 private lemma cor146_sum_section_card {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) :
     ∑ r : ZMod N, (cor146Section B r).card = B.card := by
-  let e : Point N k × ZMod N ≃ Point N (k + 1) :=
-    (Equiv.prodComm (Point N k) (ZMod N)).trans
-      (Fin.snocEquiv (fun _ : Fin (k + 1) => ZMod N))
-  calc
-    ∑ r : ZMod N, (cor146Section B r).card =
-        ∑ r : ZMod N,
-          countWhere (fun x : Point N k => cor146Embed x r ∈ B) := by
-      apply Fintype.sum_congr
-      intro r
-      unfold cor146Section countWhere
-      apply congrArg Finset.card
-      ext x
-      simp
-    _ = countWhere (fun z : ZMod N × Point N k =>
-        cor146Embed z.2 z.1 ∈ B) := by
-      rw [show (∑ r : ZMod N,
-          countWhere (fun x : Point N k => cor146Embed x r ∈ B)) =
-        countWhere (fun z : ZMod N × Point N k =>
-          cor146Embed z.2 z.1 ∈ B) from (prop144_countWhere_prod _).symm]
-    _ = countWhere (fun z : Point N k × ZMod N =>
-        cor146Embed z.1 z.2 ∈ B) := by
-      simpa using (prop144_countWhere_equiv
-        (Equiv.prodComm (ZMod N) (Point N k))
-        (fun z : Point N k × ZMod N => cor146Embed z.1 z.2 ∈ B)).symm
-    _ = countWhere (fun x : Point N (k + 1) => x ∈ B) := by
-      symm
-      simpa [e, cor146Embed, Fin.snocEquiv] using
-        prop144_countWhere_equiv e (fun x : Point N (k + 1) => x ∈ B)
-    _ = B.card := by simp [countWhere]
+  classical
+  rw [Finset.card_eq_sum_card_fiberwise (s := B) (t := Finset.univ)
+    (f := fun z => z (Fin.last k)) fun _ _ => Finset.mem_coe.mpr (Finset.mem_univ _)]
+  refine Finset.sum_congr rfl fun r _ => Finset.card_nbij' (cor146Embed · r) Fin.init
+    (fun x hx => ?_) (fun z hz => ?_) (fun x _ => Fin.init_snoc _ _) fun z hz => ?_
+  · simpa [cor146Section, cor146Embed] using hx
+  · obtain ⟨hzB, rfl⟩ := Finset.mem_filter.mp (Finset.mem_coe.mp hz)
+    simpa [cor146Section, cor146Embed] using hzB
+  · obtain ⟨-, rfl⟩ := Finset.mem_filter.mp (Finset.mem_coe.mp hz)
+    exact Fin.snoc_init_self z
 
 private lemma cor146_sum_section_density {N k : Nat} [NeZero N]
     (beta : Real) (B : Finset (Point N (k + 1)))
@@ -411,32 +392,17 @@ private lemma cor146_build_good {N k : Nat} [NeZero N]
     (hsource : cor146FiberGood B phi K (q, f)) :
     (cor146Build (K, q, f)).IsIn B ∧
       (cor146Build (K, q, f)).IsRespected phi := by
-  have henergy := hsource.1
-  have hgood := hsource.2
-  constructor
-  · constructor
-    · exact (cor146_additiveTuple_two_iff q).2 henergy.2.1
-    · intro e t
-      have ht : cor146GoodPair B phi K (q t) (f t) := by
-        simpa [cor146GoodSet] using hgood t
-      have ht' : (f t).IsIn (cor146Section B (q t)) := ht.2.1
-      have hv := ht' e
-      unfold GeneralArrangement.vertex
-      rw [cor146_build_cube B phi K q f hgood]
-      change appendCoordinate ((f t).vertex e) (q t) ∈ B
-      rw [← cor146_embed_eq_append]
-      simpa [cor146Section] using hv
-  · apply (cor146_additiveTuple_two_iff _).2
-    have href := cor146_reference_values_additive phi K q henergy.2.2
+  have ht (t : Fin 4) : cor146GoodPair B phi K (q t) (f t) := by
+    simpa [cor146GoodSet] using hsource.2 t
+  refine ⟨⟨(cor146_additiveTuple_two_iff q).2 hsource.1.2.1, fun e t => ?_⟩,
+    (cor146_additiveTuple_two_iff _).2 ?_⟩
+  · unfold GeneralArrangement.vertex
+    rw [cor146_build_cube B phi K q f hsource.2]
+    exact (by simpa [cor146Section] using (ht t).2.1 e : cor146Embed ((f t).vertex e) (q t) ∈ B)
+  · have href := cor146_reference_values_additive phi K q hsource.1.2.2
     unfold IsAdditiveQuadruple at href ⊢
-    have heq (t : Fin 4) :
-        (cor146Build (K, q, f)).cubeValue phi t =
-          K.value (cor146SectionPhi phi (q t)) := by
-      rw [cor146_build_cubeValue B phi K q f hgood]
-      have ht : cor146GoodPair B phi K (q t) (f t) := by
-        simpa [cor146GoodSet] using hgood t
-      exact ht.2.2.2.symm
-    simpa only [heq] using href
+    simpa only [cor146_build_cubeValue B phi K q f hsource.2, fun t => ((ht t).2.2.2).symm]
+      using href
 
 private def cor146SourceGood {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N)
@@ -459,32 +425,13 @@ private lemma cor146_augmented_injective {N k : Nat} [NeZero N]
     (h : cor146AugmentedBuild (K, q, f) =
       cor146AugmentedBuild (L, q', g)) :
     (K, q, f) = (L, q', g) := by
-  have hR : cor146Build (K, q, f) = cor146Build (L, q', g) :=
-    congrArg Prod.fst h
-  have hb : K.base = L.base := congrArg Prod.snd h
-  have hs : K.side = L.side := by
-    have := congrArg GeneralArrangement.side hR
-    exact this
-  have hK : K = L := Prod.ext hb hs
-  have hq : q = q' := by
-    have := congrArg GeneralArrangement.crossSection hR
-    exact this
-  have hbases : (fun t => (f t).base) = fun t => (g t).base := by
-    have := congrArg GeneralArrangement.base hR
-    exact this
-  have hfg : f = g := by
-    funext t
-    have hft : cor146GoodPair B phi K (q t) (f t) := by
-      simpa [cor146GoodSet] using hf.2 t
-    have hgt : cor146GoodPair B phi L (q' t) (g t) := by
-      simpa [cor146GoodSet] using hg.2 t
-    apply Prod.ext
-    · exact congrFun hbases t
-    · calc
-        (f t).side = K.side := hft.2.2.1.symm
-        _ = L.side := hs
-        _ = (g t).side := hgt.2.2.1
-  exact Prod.ext hK (Prod.ext hq hfg)
+  simp only [cor146AugmentedBuild, cor146Build, Prod.mk.injEq] at h
+  obtain ⟨⟨hs, hb, rfl⟩, hK⟩ := h
+  have hside {K : AxisCube N k} {q : Fin 4 → ZMod N} {f : Fin 4 → AxisCube N k}
+      (hf : cor146FiberGood B phi K (q, f)) (t : Fin 4) : (f t).side = K.side :=
+    (by simpa [cor146GoodSet] using hf.2 t : cor146GoodPair B phi K (q t) (f t)).2.2.1.symm
+  exact Prod.ext (Prod.ext hK hs) (Prod.ext rfl (funext fun t =>
+    Prod.ext (congrFun hb t) ((hside hf t).trans (hs.trans (hside hg t).symm))))
 
 private lemma cor146_source_count_le {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N) :

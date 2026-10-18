@@ -69,45 +69,30 @@ theorem lemma_13_5_poly_with_catalogue {N : Nat} [NeZero N] (hprime : N.Prime)
     ∃ E : Stage135Data N, IsStage135Data S D E ∧
       IsStage135At S D E (stage135UniformExponent p D.q) (stage135UniformExponent p D.q) := by
   obtain ⟨c, hc⟩ : ∃ c : Nat, c = 2 * p * (D.q + 1) ^ 8 := ⟨_, rfl⟩
-  have hc1 : 1 ≤ c := by
-    have : 0 < 2 * p * (D.q + 1) ^ 8 := by positivity
-    omega
-  have hcR : (1 : Real) ≤ c := by exact_mod_cast hc1
-  have hu : stage135UniformExponent p D.q = ((c : Real) ^ 4)⁻¹ := by
-    unfold stage135UniformExponent
-    rw [← hc]
-  have he : stage135PolyExponent p D.q = ((c : Real) ^ 2)⁻¹ := by
-    unfold stage135PolyExponent
-    rw [← hc]
+  have hcR : (1 : Real) ≤ c := by
+    rw [hc]; norm_cast; exact Nat.one_le_iff_ne_zero.mpr (by positivity)
   have hupos : 0 < ((c : Real) ^ 4)⁻¹ := by positivity
-  have hue : ((c : Real) ^ 4)⁻¹ ≤ ((c : Real) ^ 2)⁻¹ :=
-    inv_anti₀ (by positivity) (pow_le_pow_right₀ hcR (by norm_num))
   have h12 : (1 : Real) / 2 ^ (12 * D.q) ≤ 1 / 2 ^ (11 * D.q) :=
     one_div_le_one_div_of_le (by positivity) (pow_le_pow_right₀ (by norm_num) (by omega))
-  have hpos11 : (0 : Real) < 1 / 2 ^ (11 * D.q) := by positivity
-  have hpos12 : (0 : Real) < 1 / 2 ^ (12 * D.q) := by positivity
+  rw [stage135UniformExponent, ← hc]
   by_cases hcase : c ^ 2 ≤ 2 ^ (11 * D.q)
-  · obtain ⟨E, hE⟩ := lemma_13_5_poly hpp hp hK S D theta h134
-    rw [he] at hE
-    have h11 : (1 : Real) / 2 ^ (11 * D.q) ≤ ((c : Real) ^ 2)⁻¹ := by
-      rw [one_div]
-      exact inv_anti₀ (by positivity) (by exact_mod_cast hcase)
-    refine ⟨E, (isStage135Data_iff_at S D E).mpr
-      (hE.mono hpos12 hpos11 (h12.trans h11) h11), ?_⟩
-    rw [hu]
-    exact hE.mono hupos hupos hue hue
-  · push_neg at hcase
+  · -- the polynomial progression, at exponent `c⁻²`, beats both printed exponents
+    obtain ⟨E, hE⟩ := lemma_13_5_poly hpp hp hK S D theta h134
+    rw [stage135PolyExponent, ← hc] at hE
+    have h11 : (1 : Real) / 2 ^ (11 * D.q) ≤ ((c : Real) ^ 2)⁻¹ :=
+      (one_div _).trans_le (inv_anti₀ (by positivity) (by exact_mod_cast hcase))
+    have hue : ((c : Real) ^ 4)⁻¹ ≤ ((c : Real) ^ 2)⁻¹ :=
+      inv_anti₀ (by positivity) (pow_le_pow_right₀ hcR (by norm_num))
+    exact ⟨E, (isStage135Data_iff_at S D E).mpr (hE.mono (by positivity) (by positivity)
+      (h12.trans h11) h11), hE.mono hupos hupos hue hue⟩
+  · -- `q` is small: the printed progression already has `2 ^ (-12 q) ≥ c⁻⁴`
     obtain ⟨E, hE⟩ := lemma_13_5_prime hprime S D theta h134
-    have h2q : 2 ^ D.q ≤ 2 ^ (11 * D.q) := Nat.pow_le_pow_right (by norm_num) (by omega)
     have h12q : 2 ^ (12 * D.q) ≤ c ^ 4 := by
-      calc 2 ^ (12 * D.q) = 2 ^ (11 * D.q) * 2 ^ D.q := by rw [← pow_add]; ring_nf
-        _ ≤ c ^ 2 * c ^ 2 := Nat.mul_le_mul hcase.le (h2q.trans hcase.le)
-        _ = c ^ 4 := by ring
-    have hu12 : ((c : Real) ^ 4)⁻¹ ≤ 1 / 2 ^ (12 * D.q) := by
-      rw [one_div]
-      exact inv_anti₀ (by positivity) (by exact_mod_cast h12q)
-    refine ⟨E, hE, ?_⟩
-    rw [hu]
-    exact ((isStage135Data_iff_at S D E).mp hE).mono hupos hupos hu12 (hu12.trans h12)
+      have := Nat.pow_le_pow_left (not_le.mp hcase).le 2
+      rw [← pow_mul, ← pow_mul] at this
+      exact (Nat.pow_le_pow_right two_pos (by omega)).trans this
+    have hu12 : ((c : Real) ^ 4)⁻¹ ≤ 1 / 2 ^ (12 * D.q) :=
+      (inv_anti₀ (by positivity) (by exact_mod_cast h12q)).trans_eq (one_div _).symm
+    exact ⟨E, hE, ((isStage135Data_iff_at S D E).mp hE).mono hupos hupos hu12 (hu12.trans h12)⟩
 
 end LeanProofs.GowersSzemeredi

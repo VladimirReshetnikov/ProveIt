@@ -119,73 +119,36 @@ finite geometric character sum. -/
 lemma character_denominator_lower_bound {N : Nat} [NeZero N]
     (r : ZMod N) :
     4 * (centeredAbs r : Real) / N <= ‖ZMod.stdAddChar (-r) - 1‖ := by
-  let y : Real := -(2 * Real.pi * (r.valMinAbs : Real) / N)
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have habsval : |(r.valMinAbs : Real)| = (centeredAbs r : Real) := by
-    rw [centeredAbs, ← Int.cast_abs, Int.abs_eq_natAbs]
-    rfl
-  have htwiceNat : 2 * centeredAbs r <= N := by
-    simpa [centeredAbs, Nat.mul_comm] using
-      (Nat.le_div_iff_mul_le (by norm_num : 0 < (2 : Nat))).mp
-        (ZMod.natAbs_valMinAbs_le r)
-  have htwice : (2 : Real) * centeredAbs r <= N := by exact_mod_cast htwiceNat
-  have habs_y : |y| = 2 * Real.pi * centeredAbs r / N := by
-    dsimp [y]
-    rw [abs_neg, abs_div, abs_mul, abs_mul, abs_of_nonneg (by norm_num : (0 : Real) <= 2),
-      abs_of_pos Real.pi_pos, habsval, abs_of_pos hN]
-  have habs_half : |y / 2| = Real.pi * centeredAbs r / N := by
-    rw [abs_div, habs_y, abs_of_pos (by norm_num : (0 : Real) < 2)]
-    ring
-  have hhalf : |y / 2| <= Real.pi / 2 := by
-    rw [habs_half]
-    apply (div_le_iff₀ hN).2
-    have hmul := mul_le_mul_of_nonneg_left htwice Real.pi_pos.le
-    nlinarith
-  have hjordan : 2 / Real.pi * |y / 2| <= |Real.sin (y / 2)| :=
-    Real.mul_abs_le_abs_sin hhalf
-  rw [stdAddChar_neg_eq_exp_valMinAbs, Complex.norm_exp_I_mul_ofReal_sub_one]
-  change 4 * (centeredAbs r : Real) / N <= ‖(2 : Real) * Real.sin (y / 2)‖
-  rw [Real.norm_eq_abs, abs_mul, abs_of_nonneg (by norm_num : (0 : Real) <= 2)]
-  calc
-    4 * (centeredAbs r : Real) / N = 2 * (2 / Real.pi * |y / 2|) := by
-      rw [habs_half]
-      field_simp [Real.pi_ne_zero, NeZero.ne N]
-      ring
-    _ <= 2 * |Real.sin (y / 2)| := by gcongr
+  have h2 : 2 * (centeredAbs r : Real) ≤ N := by
+    have := ZMod.natAbs_valMinAbs_le r
+    exact_mod_cast (show 2 * centeredAbs r ≤ N by unfold centeredAbs; omega)
+  have hx : |Real.pi * r.valMinAbs / N| = Real.pi * centeredAbs r / N := by
+    rw [abs_div, abs_mul, abs_of_pos Real.pi_pos, abs_of_pos hN, centeredAbs, Nat.cast_natAbs,
+      Int.cast_abs]
+  -- Jordan's inequality at `π r / N`, which lies in `[-π/2, π/2]`
+  have hj := Real.mul_abs_le_abs_sin (x := Real.pi * r.valMinAbs / N) (by
+    rw [hx, div_le_div_iff₀ hN two_pos]; nlinarith [Real.pi_pos])
+  rw [hx] at hj
+  rw [stdAddChar_neg_eq_exp_valMinAbs, Complex.norm_exp_I_mul_ofReal_sub_one, Real.norm_eq_abs,
+    abs_mul, abs_two, show -(2 * Real.pi * (r.valMinAbs : Real) / N) / 2 =
+      -(Real.pi * r.valMinAbs / N) by ring, Real.sin_neg, abs_neg]
+  calc 4 * (centeredAbs r : Real) / N = 2 * (2 / Real.pi * (Real.pi * centeredAbs r / N)) := by
+        field_simp; ring
+    _ ≤ _ := by gcongr
 
 /-- Lemma 5.1: Fourier decay of a centered interval. -/
 theorem lemma_5_1_holds : lemma_5_1 := by
   intro N M _ hMN r
-  constructor
-  · calc
-      ‖fourier (indicator (centeredInterval N M)) r‖ <=
-          (centeredInterval N M).card :=
-        fourier_indicator_norm_le_card (centeredInterval N M) r
-      _ = 2 * M := by rw [centeredInterval_card N M hMN]; norm_num
-  · intro hr
-    have hr' : r ≠ 0 := bne_iff_ne.mp hr
-    have habsNat : 0 < centeredAbs r := by
-      rw [centeredAbs, Int.natAbs_pos]
-      exact fun h => hr' ((ZMod.valMinAbs_eq_zero r).mp h)
-    have habs : (0 : Real) < centeredAbs r := by exact_mod_cast habsNat
-    have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-    have hdenom : 0 < ‖ZMod.stdAddChar (-r) - 1‖ := by
-      rw [norm_pos_iff]
-      apply sub_ne_zero.mpr
-      intro hchar
-      have hneg : -r = 0 := ZMod.injective_stdAddChar (by
-        simpa using hchar)
-      exact hr' (neg_eq_zero.mp hneg)
-    rw [fourier_centeredInterval_eq_int_sum N M hMN r]
-    calc
-      ‖∑ x ∈ Finset.Ico (-(M : Int)) (M : Int),
-          ZMod.stdAddChar (-((x : ZMod N) * r))‖ <=
-          2 / ‖ZMod.stdAddChar (-r) - 1‖ :=
-        norm_centered_character_sum_le M r hr'
-      _ <= (N : Real) / (2 * centeredAbs r) := by
-        apply (div_le_div_iff₀ hdenom (mul_pos (by norm_num) habs)).2
-        have hlower := character_denominator_lower_bound r
-        have hscaled := (div_le_iff₀ hN).mp hlower
-        nlinarith
+  refine ⟨(fourier_indicator_norm_le_card _ r).trans_eq (by simp [centeredInterval_card N M hMN]),
+    fun hr => ?_⟩
+  have hr' : r ≠ 0 := bne_iff_ne.mp hr
+  have habs : (0 : Real) < centeredAbs r := by simpa [centeredAbs] using hr'
+  have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
+  have hlower := (div_le_iff₀ hN).mp (character_denominator_lower_bound r)
+  rw [fourier_centeredInterval_eq_int_sum N M hMN r]
+  refine (norm_centered_character_sum_le M r hr').trans
+    ((div_le_div_iff₀ (by nlinarith) (by linarith)).2 ?_)
+  linarith
 
 end LeanProofs.GowersSzemeredi

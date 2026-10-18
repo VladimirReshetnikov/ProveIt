@@ -18,35 +18,20 @@ theorem section16_weighted_distinct_failure {α : Type*}
       (((Finset.univ.filter (fun sample : Fin r → α =>
         ¬ section16SampleHasDistinctPair C sample)).card : Real) /
         Fintype.card (Fin r → α)) ≤ 6 * Fintype.card α / r := by
-  let n : Real := Fintype.card α
-  let d : Real := (C.card / 2 : Nat)
-  let x : Real := (n - d) / n
-  have hn : 0 < n := by dsimp [n]; exact_mod_cast Fintype.card_pos
-  have hr0 : (0 : Real) < r := by exact_mod_cast hr
-  have hd : 0 ≤ d := by positivity
-  have hdn : C.card / 2 ≤ Fintype.card α :=
-    (Nat.div_le_self _ _).trans (Finset.card_le_univ C)
-  have hdn' : d ≤ n := by dsimp [d, n]; exact_mod_cast hdn
-  have hx : 0 ≤ x := div_nonneg (sub_nonneg.mpr hdn') hn.le
-  have hc : (C.card : Real) ≤ 3 * d := by
-    dsimp [d]
+  have hn : (0 : Real) < Fintype.card α := by exact_mod_cast Fintype.card_pos
+  have hdn : C.card / 2 ≤ Fintype.card α := (Nat.div_le_self _ _).trans (Finset.card_le_univ C)
+  have hc : (C.card : Real) ≤ 3 * (C.card / 2 : Nat) := by
     exact_mod_cast (show C.card ≤ 3 * (C.card / 2) by omega)
-  have hone : 1 - x = d / n := by dsimp [x]; field_simp; ring
-  have hp := section16_pow_mul_linear_le_one hx r
-  rw [hone] at hp
-  have hp' : x ^ r * (n + (r : Real) * d) ≤ n := by
-    calc
-      _ = (x ^ r * (1 + (r : Real) * (d / n))) * n := by field_simp
-      _ ≤ 1 * n := mul_le_mul_of_nonneg_right hp hn.le
-      _ = n := one_mul _
-  have hpn : (0 : Real) ≤ x ^ r * n := mul_nonneg (pow_nonneg hx _) hn.le
-  have hcw := mul_le_mul_of_nonneg_right hc (mul_nonneg (Nat.cast_nonneg r) (pow_nonneg hx r))
-  have hfinal : (C.card : Real) * (2 * x ^ r) ≤ 6 * n / r := by
-    apply (le_div_iff₀ hr0).mpr
-    nlinarith only [hp', hpn, hcw]
-  apply (mul_le_mul_of_nonneg_left (section16_distinct_sampling_probability_bound C r)
-    (Nat.cast_nonneg C.card)).trans
-  simpa only [x, n, d, Nat.cast_sub hdn] using hfinal
+  refine (mul_le_mul_of_nonneg_left (section16_distinct_sampling_probability_bound C r)
+    (Nat.cast_nonneg C.card)).trans ((le_div_iff₀ (by exact_mod_cast hr)).2 ?_)
+  rw [Nat.cast_sub hdn]
+  generalize hx : ((Fintype.card α : Real) - (C.card / 2 : Nat)) / Fintype.card α = x
+  have hx0 : 0 ≤ x := by rw [← hx]; exact div_nonneg (sub_nonneg.2 (by exact_mod_cast hdn)) hn.le
+  have hxn : x * Fintype.card α = Fintype.card α - (C.card / 2 : Nat) := by
+    rw [← hx, div_mul_cancel₀ _ hn.ne']
+  linarith [mul_le_mul_of_nonneg_left (section16_pow_mul_linear_le_one hx0 r) hn.le,
+    mul_le_mul_of_nonneg_right hc (by positivity : (0 : Real) ≤ 2 * r * x ^ r),
+    congrArg (fun t => (r : Real) * x ^ r * t) hxn, mul_nonneg hn.le (pow_nonneg hx0 r)]
 
 /-- Finite averaging with a separate expected weighted-loss budget for
 each event. No independence between the events is required. -/
@@ -81,25 +66,17 @@ theorem section16_weighted_sample_loss {α I : Type*}
         (∑ i, ((section16RetainedClass (C i) sample).card : Real)) ≤
       (Fintype.card I : Real) * (6 * Fintype.card α / r) := by
   have hΩ : (0 : Real) < Fintype.card (Fin r → α) := by exact_mod_cast Fintype.card_pos
-  have hb (i : I) :
-      ((Finset.univ.filter (fun sample : Fin r → α => ¬ section16SampleHasDistinctPair (C i) sample)).card : Real) * (C i).card ≤
-        (6 * Fintype.card α / r) * Fintype.card (Fin r → α) := by
-    rcases hC i with hi | hi
-    · simp only [hi, Nat.cast_zero, mul_zero]
-      positivity
-    · have h := section16_weighted_distinct_failure (C i) r hr hi
-      apply (div_le_iff₀ hΩ).mp
-      simpa only [mul_div_assoc, mul_comm] using h
   obtain ⟨sample, hs⟩ := finite_weighted_event_selection_budgets
     (fun i (sample : Fin r → α) => ¬ section16SampleHasDistinctPair (C i) sample)
-    (fun i => ((C i).card : Real)) (fun _ => 6 * Fintype.card α / r) hb
-  refine ⟨sample, ?_⟩
+    (fun i => ((C i).card : Real)) (fun _ => 6 * Fintype.card α / r) fun i => by
+      rcases hC i with hi | hi
+      · simp only [hi, Nat.cast_zero, mul_zero]; positivity
+      · have h := section16_weighted_distinct_failure (C i) r hr hi
+        exact (div_le_iff₀ hΩ).mp (by simpa only [mul_div_assoc, mul_comm] using h)
+  refine ⟨sample, le_trans (le_of_eq ?_) (hs.trans_eq (by simp))⟩
   rw [← Finset.sum_sub_distrib]
-  convert hs using 1
-  · apply Finset.sum_congr rfl
-    intro i _
-    by_cases h : section16SampleHasDistinctPair (C i) sample <;> simp [section16RetainedClass, h]
-  · simp
+  refine Finset.sum_congr rfl fun i _ => ?_
+  by_cases h : section16SampleHasDistinctPair (C i) sample <;> simp [section16RetainedClass, h]
 
 /-- Discard only singletons before size-weighted sampling. The same total
 loss 2*sigma now needs r*sigma>=6*q, instead of r*sigma^2>=6*q. -/
@@ -114,42 +91,25 @@ theorem section16_linear_prune_and_sample {α β : Type*}
       (∑ i, ((C i).card : Real)) - (∑ i, ((D i).card : Real)) ≤
         2 * σ * Fintype.card β * Fintype.card α := by
   let L := fun i => if 2 ≤ (C i).card then C i else ∅
-  have hL (i) : L i ⊆ C i := by dsimp [L]; split_ifs <;> simp
-  have hLsize (i) : (L i).card = 0 ∨ 2 ≤ (L i).card := by
+  have hrR : (0 : Real) < r := by nlinarith [(Nat.cast_pos.mpr hq : (0 : Real) < q)]
+  obtain ⟨sample, hs⟩ := section16_weighted_sample_loss L r (by exact_mod_cast hrR) fun i => by
     dsimp [L]; split_ifs with h <;> simp [h]
-  have hr0 : 0 < r := by
-    by_contra hz
-    have hz' : r = 0 := by omega
-    have hq0 : (0 : Real) < q := by exact_mod_cast hq
-    simp only [hz', Nat.cast_zero, zero_mul] at hr
-    linarith only [hr, hq0]
-  obtain ⟨sample, hs⟩ := section16_weighted_sample_loss L r hr0 hLsize
   refine ⟨sample, fun i => section16RetainedClass (L i) sample,
-    fun i => (section16RetainedClass_subset _ _).trans (hL i),
+    fun i => (section16RetainedClass_subset _ _).trans (by dsimp [L]; split_ifs <;> simp),
     fun i hi => section16RetainedClass_anchors _ _ hi, ?_⟩
   have hloss : (∑ i, ((C i).card : Real)) - (∑ i, ((L i).card : Real)) ≤
       (Fintype.card β : Real) * q := by
     rw [← Finset.sum_sub_distrib]
-    calc
-      _ ≤ ∑ _i : β × Fin q, (1 : Real) := by
-        apply Finset.sum_le_sum
-        intro i _
-        dsimp [L]
-        split_ifs with h
-        · simp
-        · simp only [Finset.card_empty, Nat.cast_zero, sub_zero]
-          exact_mod_cast (show (C i).card ≤ 1 by omega)
-      _ = _ := by simp
-  have hrR : (0 : Real) < r := by exact_mod_cast hr0
-  have hfrac : 6 * (q : Real) / r ≤ σ := (div_le_iff₀ hrR).mpr (by linarith only [hr])
+    refine (Finset.sum_le_card_nsmul _ _ 1 fun i _ => ?_).trans (by simp)
+    by_cases h : 2 ≤ (C i).card
+    · simp [L, h]
+    · simpa [L, h] using (show (C i).card ≤ 1 by omega)
   have hbudget : (Fintype.card (β × Fin q) : Real) * (6 * Fintype.card α / r) ≤
       σ * Fintype.card β * Fintype.card α := by
-    simp only [Fintype.card_prod, Fintype.card_fin, Nat.cast_mul]
-    calc
-      _ = (6 * (q : Real) / r) * Fintype.card β * Fintype.card α := by ring
-      _ ≤ _ := mul_le_mul_of_nonneg_right
-        (mul_le_mul_of_nonneg_right hfrac (Nat.cast_nonneg _)) (Nat.cast_nonneg _)
-  have hsingle := mul_le_mul_of_nonneg_left hlong (Nat.cast_nonneg (Fintype.card β) : (0 : Real) ≤ Fintype.card β)
-  nlinarith only [hs, hbudget, hloss, hsingle]
+    rw [Fintype.card_prod, Fintype.card_fin, Nat.cast_mul, mul_div_assoc', div_le_iff₀ hrR]
+    nlinarith [mul_le_mul_of_nonneg_left hr
+      (by positivity : (0 : Real) ≤ Fintype.card β * Fintype.card α)]
+  nlinarith only [hs, hbudget, hloss, mul_le_mul_of_nonneg_left hlong
+    (Nat.cast_nonneg (Fintype.card β) : (0 : Real) ≤ Fintype.card β)]
 
 end LeanProofs.GowersSzemeredi

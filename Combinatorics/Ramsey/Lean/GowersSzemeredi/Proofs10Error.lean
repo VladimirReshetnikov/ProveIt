@@ -122,22 +122,10 @@ private lemma alt_additive_partition {N : Nat} {X : Type*}
     [Fintype X] (D : MultifunctionDomain N X) (phi : X → ZMod N) :
     countWhere (AltDomainAdditive D) =
       countWhere (AltPhiAdditive D phi) + countWhere (AltPhiBad D phi) := by
-  let A : Finset (Fin 4 → X) := Finset.univ.filter (AltDomainAdditive D)
-  let P (q : Fin 4 → X) : Prop :=
-    phi (q 3) - phi (q 2) = phi (q 1) - phi (q 0)
-  have hGood : A.filter P = Finset.univ.filter (AltPhiAdditive D phi) := by
-    ext q
-    simp only [A, P, Finset.mem_filter, Finset.mem_univ, true_and,
-      AltPhiAdditive]
-  have hBad : A.filter (fun q => ¬ P q) =
-      Finset.univ.filter (AltPhiBad D phi) := by
-    ext q
-    simp only [A, P, Finset.mem_filter, Finset.mem_univ, true_and, AltPhiBad]
-  have hcard := Finset.card_filter_add_card_filter_not (s := A) P
-  rw [countWhere_eq_card_filter, countWhere_eq_card_filter,
-    countWhere_eq_card_filter]
-  rw [← hGood, ← hBad]
-  exact hcard.symm
+  rw [countWhere_eq_card_filter, countWhere_eq_card_filter, countWhere_eq_card_filter,
+    ← Finset.card_filter_add_card_filter_not (s := Finset.univ.filter (AltDomainAdditive D))
+      fun q => phi (q 3) - phi (q 2) = phi (q 1) - phi (q 0),
+    Finset.filter_filter, Finset.filter_filter]
 
 private lemma bad_additive_count_le {N : Nat} [NeZero N] {X : Type*}
     [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
@@ -326,26 +314,12 @@ private lemma bad_left_or_bad_right {N : Nat} {X : Type*}
     (he : RestrictedError D phi B x y uv) :
     AltPhiBad D phi ![x, y, zw.1, zw.2] ∨
       AltPhiBad D phi ![uv.1, uv.2, zw.1, zw.2] := by
-  have hvuIndex : D.index uv.2 - D.index uv.1 =
-      D.index y - D.index x := by
-    apply sub_eq_sub_iff_add_eq_add.mpr
-    have hadd := sub_eq_sub_iff_add_eq_add.mp he.1
-    simpa only [add_comm] using hadd.symm
-  have hrightIndex : D.index zw.2 - D.index zw.1 =
-      D.index uv.2 - D.index uv.1 := hq.trans hvuIndex.symm
-  have herr : phi uv.1 - phi x ≠ phi uv.2 - phi y := by
-    simpa using he.2.2
-  by_cases hleft : phi zw.2 - phi zw.1 ≠ phi y - phi x
+  have herr : phi uv.1 - phi x ≠ phi uv.2 - phi y := by simpa using he.2.2
+  by_cases hleft : phi zw.2 - phi zw.1 = phi y - phi x
+  · exact Or.inr ⟨show D.index zw.2 - D.index zw.1 = D.index uv.2 - D.index uv.1 by
+      linear_combination hq + he.1, fun (h : phi zw.2 - phi zw.1 = phi uv.2 - phi uv.1) =>
+        herr (by linear_combination h - hleft)⟩
   · exact Or.inl ⟨hq, hleft⟩
-  · right
-    refine ⟨hrightIndex, ?_⟩
-    intro hright
-    apply herr
-    apply sub_eq_sub_iff_add_eq_add.mpr
-    have hvuPhi : phi uv.2 - phi uv.1 = phi y - phi x :=
-      hright.symm.trans (not_ne_iff.mp hleft)
-    have hadd := sub_eq_sub_iff_add_eq_add.mp hvuPhi
-    simpa only [add_comm] using hadd.symm
 
 private lemma bad_count_eq_pair_pair_sum {N : Nat} {X : Type*}
     [Fintype X] (D : MultifunctionDomain N X) (phi : X → ZMod N) :
@@ -381,16 +355,10 @@ private lemma left_contribution_le_bad {N : Nat} {X : Type*}
       else 0) ≤ countWhere (AltPhiBad D phi) := by
   rw [bad_count_eq_pair_pair_sum]
   gcongr with xy _ zw _
-  by_cases houter : LargeFibre D alpha eta M xy.1 ∧
-      LargeFibre D alpha eta M xy.2 ∧
-      AltPhiBad D phi ![xy.1, xy.2, zw.1, zw.2]
-  · simp only [if_pos houter, if_pos houter.2.2]
-    exact restrictedError_inv_sum_le_one D phi B xy.1 xy.2
-  · simp only [if_neg houter, Finset.sum_const_zero]
-    by_cases hbad : AltPhiBad D phi ![xy.1, xy.2, zw.1, zw.2]
-    · rw [if_pos hbad]
-      norm_num
-    · rw [if_neg hbad]
+  rw [Finset.sum_ite_irrel, Finset.sum_const_zero]
+  split_ifs with houter hbad
+  exacts [restrictedError_inv_sum_le_one D phi B xy.1 xy.2, absurd houter.2.2 hbad, zero_le_one,
+    le_rfl]
 
 private lemma right_contribution_le_four_bad {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]
@@ -405,19 +373,13 @@ private lemma right_contribution_le_four_bad {N : Nat} [NeZero N]
           RestrictedPair D B xy.1 xy.2 uv
         then (domainRestrictedDifferenceWeight D B xy.1 xy.2 : Real)⁻¹ else 0
       else 0) ≤ 4 * countWhere (AltPhiBad D phi) := by
-  rw [sum_triple_rotate, bad_count_eq_pair_pair_sum, Finset.mul_sum]
-  apply Finset.sum_le_sum
-  intro uv _
-  rw [Finset.mul_sum]
-  apply Finset.sum_le_sum
-  intro zw _
-  by_cases hbad : AltPhiBad D phi ![uv.1, uv.2, zw.1, zw.2]
-  · simp only [if_pos hbad]
-    norm_num
-    exact large_reverse_inv_sum_le_four D B alpha sigma eta M heta hsymmetric
-      hinvariant hsigma uv.1 uv.2
-  · simp only [if_neg hbad, Finset.sum_const_zero]
-    norm_num
+  rw [sum_triple_rotate, bad_count_eq_pair_pair_sum]
+  simp_rw [Finset.mul_sum, Finset.sum_ite_irrel, Finset.sum_const_zero]
+  gcongr with uv _ zw _
+  split_ifs
+  · exact (large_reverse_inv_sum_le_four D B alpha sigma eta M heta hsymmetric hinvariant hsigma
+      uv.1 uv.2).trans_eq (mul_one 4).symm
+  · norm_num
 
 private lemma large_weighted_sum_le_five_bad {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]
@@ -493,28 +455,13 @@ theorem small_fibre_count_le {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]
     (D : MultifunctionDomain N X) {T : Real} (hT : 0 ≤ T) :
     (countWhere (fun x : X => ¬ T ≤ (D.fibreSize x : Real)) : Real) ≤ T * N := by
-  let f : ZMod N → Real := fun s =>
-    if T ≤ (D.fibre s).card then 0 else 1
-  have hcast :
-      (countWhere (fun x : X => ¬ T ≤ (D.fibreSize x : Real)) : Real) =
-        ∑ x : X, f (D.index x) := by
-    rw [countWhere_cast_eq_sum_ite]
-    apply Finset.sum_congr rfl
-    intro x _
-    unfold MultifunctionDomain.fibreSize
-    by_cases hx : T ≤ ((D.fibre (D.index x)).card : Real)
-    · simp [f, hx]
-    · simp [f, hx]
-  rw [hcast, sum_comp_index_eq_sum_mul_fibre]
-  calc
-    (∑ s : ZMod N, f s * (D.fibre s).card) ≤ ∑ _s : ZMod N, T := by
-      apply Finset.sum_le_sum
-      intro s _
-      by_cases hs : T ≤ ((D.fibre s).card : Real)
-      · simp [f, hs, hT]
-      · have hle : ((D.fibre s).card : Real) ≤ T := le_of_not_ge hs
-        simpa [f, hs] using hle
-    _ = T * N := by simp [ZMod.card, mul_comm]
+  rw [countWhere_cast_eq_sum_ite]
+  refine ((sum_comp_index_eq_sum_mul_fibre D fun s =>
+    if ¬ T ≤ ((D.fibre s).card : Real) then (1 : Real) else 0).trans_le
+      (Finset.sum_le_card_nsmul _ _ T fun s _ => ?_)).trans_eq (by simp [ZMod.card, mul_comm])
+  by_cases hs : T ≤ ((D.fibre s).card : Real)
+  · simpa [hs] using hT
+  · simpa [hs] using (not_le.mp hs).le
 
 private lemma small_fibre_card_bound {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]
@@ -548,33 +495,13 @@ private lemma small_first_weight_le {N : Nat} [NeZero N]
     (∑ x : X, if ¬ LargeFibre D alpha eta M x
       then ∑ y : X, (domainDifferenceWeight D x y : Real) else 0) ≤
       5 * eta * alpha ^ 4 * M ^ 4 * N ^ 3 := by
-  have hcount := small_fibre_card_bound D alpha eta M heta
-  have htotal (x : X) :
-      (∑ y : X, (domainDifferenceWeight D x y : Real)) ≤
-        alpha ^ 2 * M ^ 3 * N ^ 2 := by
-    simpa only [domainTotalWeight, Nat.cast_sum] using
+  rw [← Finset.sum_filter]
+  refine (Finset.sum_le_card_nsmul _ _ (alpha ^ 2 * M ^ 3 * N ^ 2) fun x _ => ?_).trans ?_
+  · simpa only [domainTotalWeight, Nat.cast_sum] using
       (lemma_10_1_holds N X D alpha M hbounds).2.1 x
-  calc
-    (∑ x : X, if ¬ LargeFibre D alpha eta M x
-        then ∑ y : X, (domainDifferenceWeight D x y : Real) else 0) ≤
-        ∑ x : X, if ¬ LargeFibre D alpha eta M x
-          then alpha ^ 2 * M ^ 3 * N ^ 2 else 0 := by
-      apply Finset.sum_le_sum
-      intro x _
-      by_cases hx : ¬ LargeFibre D alpha eta M x
-      · simp only [if_pos hx]
-        exact htotal x
-      · simp [hx]
-    _ = (countWhere (fun x : X => ¬ LargeFibre D alpha eta M x) : Real) *
-        (alpha ^ 2 * M ^ 3 * N ^ 2) := by
-      rw [countWhere_cast_eq_sum_ite, Finset.sum_mul]
-      apply Finset.sum_congr rfl
-      intro x _
-      by_cases hx : ¬ LargeFibre D alpha eta M x <;> simp [hx]
-    _ ≤ (5 * eta * alpha ^ 2 * M * N) *
-        (alpha ^ 2 * M ^ 3 * N ^ 2) := by
-      exact mul_le_mul_of_nonneg_right hcount (by positivity)
-    _ = 5 * eta * alpha ^ 4 * M ^ 4 * N ^ 3 := by ring
+  · rw [nsmul_eq_mul, ← countWhere_eq_card_filter]
+    exact (mul_le_mul_of_nonneg_right (small_fibre_card_bound D alpha eta M heta)
+      (by positivity)).trans_eq (by ring)
 
 private lemma small_second_weight_le {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]
@@ -582,20 +509,9 @@ private lemma small_second_weight_le {N : Nat} [NeZero N]
     (heta : 0 ≤ eta) (hbounds : Section10DomainBounds D alpha M) :
     (∑ y : X, if ¬ LargeFibre D alpha eta M y
       then ∑ x : X, (domainDifferenceWeight D x y : Real) else 0) ≤
-      5 * eta * alpha ^ 4 * M ^ 4 * N ^ 3 := by
-  calc
-    (∑ y : X, if ¬ LargeFibre D alpha eta M y
-        then ∑ x : X, (domainDifferenceWeight D x y : Real) else 0) =
-        ∑ y : X, if ¬ LargeFibre D alpha eta M y
-          then ∑ x : X, (domainDifferenceWeight D y x : Real) else 0 := by
-      apply Finset.sum_congr rfl
-      intro y _
-      congr 1
-      apply Finset.sum_congr rfl
-      intro x _
-      rw [differenceWeight_symm]
-    _ ≤ 5 * eta * alpha ^ 4 * M ^ 4 * N ^ 3 :=
-      small_first_weight_le D alpha eta M heta hbounds
+      5 * eta * alpha ^ 4 * M ^ 4 * N ^ 3 :=
+  (Finset.sum_congr rfl fun y _ => by simp only [differenceWeight_symm D _ y]).trans_le
+    (small_first_weight_le D alpha eta M heta hbounds)
 
 /-- **Gowers, Lemma 10.2.** -/
 theorem lemma_10_2_holds : lemma_10_2 := by

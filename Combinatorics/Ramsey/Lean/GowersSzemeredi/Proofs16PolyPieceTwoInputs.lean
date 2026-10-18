@@ -58,31 +58,17 @@ theorem section16_final_freiman_families_of_product {N : Nat} [Fact N.Prime]
       (∀ t, ((section16FinalCoordinateSection B t).card : Real) - theta * N ≤ (C t).card) ∧
       Section16FinalFreimanFamilies (section16BaseFamilyBound gamma theta)
         (B.filter fun z => section16Init z ∈ C (section16Last z)) phi := by
-  have hsl : ∀ t : ZMod N, HasProductProperty (section16FinalCoordinateSection B t)
+  have hsl (t : ZMod N) : HasProductProperty (section16FinalCoordinateSection B t)
       (section16FinalCoordinateRestriction phi t) gamma := by
-    intro t
-    have h := hprod.coordinateFace (lastSliceFace 1 t)
     have hdom : (lastSliceFace 1 t).domain B = section16FinalCoordinateSection B t := by
-      ext x
-      simp [CoordinateFace.domain, section16FinalCoordinateSection, lastSliceFace]
-    have hfun : (lastSliceFace 1 t).pullback phi = section16FinalCoordinateRestriction phi t := by
-      funext x
-      rfl
-    rw [hdom, hfun] at h
-    exact h
-  have hex : ∀ t : ZMod N, ∃ C : Finset (Point N 1),
-      C ⊆ section16FinalCoordinateSection B t ∧
-      ((section16FinalCoordinateSection B t).card : Real) - theta * N ≤ C.card ∧
-      Section16FreimanFamilyCover (section16BaseFamilyBound gamma theta) C
-        (section16FinalCoordinateRestriction phi t) := fun t =>
+      ext x; simp [CoordinateFace.domain, section16FinalCoordinateSection, lastSliceFace]
+    rw [← hdom]
+    exact hprod.coordinateFace (lastSliceFace 1 t)
+  choose C hCsub hCcard hCfam using fun t =>
     section16_restrict_function_freiman_family hg hg1 ht ht1 _ _ (hsl t)
-  choose C hCsub hCcard hCfam using hex
-  refine ⟨C, hCsub, hCcard, ?_⟩
-  intro t
-  apply (hCfam t).mono
-  intro y hy
-  have hy' := (Finset.mem_filter.mp (Finset.mem_filter.mp hy).2).2
-  simpa only [section16Init_appendCoordinate, section16Last_appendCoordinate] using hy'
+  refine ⟨C, hCsub, hCcard, fun t => (hCfam t).mono fun y hy => ?_⟩
+  simpa only [section16Init_appendCoordinate, section16Last_appendCoordinate] using
+    (Finset.mem_filter.mp (Finset.mem_filter.mp hy).2).2
 
 /-- The translated points of a slice-pruned set that miss it are sparse, in
 every dimension. -/
@@ -96,38 +82,21 @@ theorem card_translated_slice_bad_le_succ {N k : Nat} [NeZero N] {theta : Real}
         appendCoordinate (section16Init z + x0) (section16Last z) ∈ B ∧
           section16Init z + x0 ∉ C (section16Last z)).card : Real) ≤
       theta * (N : Real) ^ (k + 1) := by
-  set X := (Finset.univ : Finset (Point N (k + 1))).filter fun z =>
-    appendCoordinate (section16Init z + x0) (section16Last z) ∈ B ∧
-      section16Init z + x0 ∉ C (section16Last z) with _
   rw [Finset.card_eq_sum_card_fiberwise (f := section16Last) (t := Finset.univ)
     (fun _ _ => Finset.mem_univ _)]
   push_cast
-  have hfib : ∀ t : ZMod N, ((X.filter fun z => section16Last z = t).card : Real) ≤
-      theta * (N : Real) ^ k := by
-    intro t
-    have h1 : (X.filter fun z => section16Last z = t).card ≤
-        (section16FinalCoordinateSection B t \ C t).card := by
-      refine Finset.card_le_card_of_injOn (fun z => section16Init z + x0) (fun z hz => ?_) ?_
-      · obtain ⟨hz1, hz2⟩ := Finset.mem_filter.mp hz
-        obtain ⟨-, hzB, hzC⟩ := Finset.mem_filter.mp hz1
-        rw [hz2] at hzB hzC
-        exact Finset.mem_sdiff.mpr ⟨Finset.mem_filter.mpr ⟨Finset.mem_univ _, hzB⟩, hzC⟩
-      · intro z hz z' hz' hzz
-        apply initLast_injective
-        simp only [Prod.mk.injEq]
-        refine ⟨add_right_cancel hzz, ?_⟩
-        exact ((Finset.mem_filter.mp hz).2).trans ((Finset.mem_filter.mp hz').2).symm
-    have h2 : ((section16FinalCoordinateSection B t \ C t).card : Real) ≤ theta * (N : Real) ^ k := by
-      have hsum : ((section16FinalCoordinateSection B t \ C t).card : Real) + (C t).card =
-          (section16FinalCoordinateSection B t).card := by
-        exact_mod_cast Finset.card_sdiff_add_card_eq_card (hC t)
-      linarith [hcard t]
-    exact (by exact_mod_cast h1 : ((X.filter fun z => section16Last z = t).card : Real) ≤
-      ((section16FinalCoordinateSection B t \ C t).card : Real)).trans h2
-  calc ∑ t : ZMod N, ((X.filter fun z => section16Last z = t).card : Real)
-      ≤ ∑ _t : ZMod N, theta * (N : Real) ^ k := Finset.sum_le_sum fun t _ => hfib t
-    _ = theta * (N : Real) ^ (k + 1) := by
-        rw [Finset.sum_const, Finset.card_univ, ZMod.card, nsmul_eq_mul, pow_succ]; ring
+  refine (Finset.sum_le_card_nsmul _ _ (theta * (N : Real) ^ k) fun t _ => ?_).trans_eq
+    (by rw [Finset.card_univ, ZMod.card, nsmul_eq_mul, pow_succ]; ring)
+  have hsum : ((section16FinalCoordinateSection B t \ C t).card : Real) + (C t).card =
+      (section16FinalCoordinateSection B t).card := by
+    exact_mod_cast Finset.card_sdiff_add_card_eq_card (hC t)
+  refine le_trans (Nat.cast_le.2 (Finset.card_le_card_of_injOn (fun z => section16Init z + x0)
+    (t := section16FinalCoordinateSection B t \ C t) (fun z hz => ?_)
+    fun z hz z' hz' hzz => ?_)) (by linarith [hcard t])
+  · obtain ⟨hz1, rfl⟩ := Finset.mem_filter.mp hz
+    simpa [section16FinalCoordinateSection] using (Finset.mem_filter.mp hz1).2
+  · exact initLast_injective (Prod.ext (add_right_cancel hzz)
+      ((Finset.mem_filter.mp hz).2.trans (Finset.mem_filter.mp hz').2.symm))
 
 /-- The translated points of a slice-pruned set that miss it are sparse. -/
 theorem card_translated_slice_bad_le {N : Nat} [NeZero N] {theta : Real}

@@ -18,48 +18,27 @@ theorem quadratic_interval_parameters_inv_upper {alpha : Real}
     (quadraticDiscrepancyParameter alpha /
       (8 * boundaryRefinementConstant (quadraticDiscrepancyParameter alpha / 64)))⁻¹ ≤
         (8 * section5LocalRefinementConstant 1 1) * (2 / alpha) ^ (210541 : Nat) := by
-  let u := 2 / alpha
-  let tau := quadraticDiscrepancyParameter alpha
-  let beta := (2 : Real) ^ (-(19 : Int)) * alpha ^ 2 * (alpha / 2) ^ (12359 : Nat)
-  have hu : 2 ≤ u := (le_div_iff₀ hα).mpr (by linarith)
-  have hτ : 0 < tau := by dsimp [tau, quadraticDiscrepancyParameter]; positivity
-  have hτeq : tau = beta / 2 := by
-    dsimp [tau, beta, quadraticDiscrepancyParameter]
-    generalize (alpha / 2) ^ (12359 : Nat) = t
-    norm_num
-    ring
-  have hτinv : tau⁻¹ ≤ u ^ (12381 : Nat) := by
-    calc
-      _ = 2 * beta⁻¹ := by rw [hτeq, inv_div, div_eq_mul_inv]
-      _ ≤ 2 * u ^ (12380 : Nat) := mul_le_mul_of_nonneg_left
-        (quadratic_parameters_inv_upper hα hαone).1 (by norm_num)
-      _ ≤ u * u ^ (12380 : Nat) := mul_le_mul_of_nonneg_right hu (by positivity)
-      _ = _ := (pow_succ' u 12380).symm
-  have h8 : (8 : Real) ≤ u ^ (3 : Nat) := by
-    have hp := pow_le_pow_left₀ (by norm_num : (0 : Real) ≤ 2) hu 3
-    norm_num at hp
-    exact hp
-  have h16 : (16 : Real) ≤ u ^ (4 : Nat) := by
-    have hp := pow_le_pow_left₀ (by norm_num : (0 : Real) ≤ 2) hu 4
-    norm_num at hp
-    exact hp
+  have hu : 2 ≤ 2 / alpha := (le_div_iff₀ hα).mpr (by linarith)
+  have hτ : 0 < quadraticDiscrepancyParameter alpha := by
+    unfold quadraticDiscrepancyParameter; positivity
+  have hτinv : (quadraticDiscrepancyParameter alpha)⁻¹ ≤ (2 / alpha) ^ (12381 : Nat) := by
+    have hτeq : quadraticDiscrepancyParameter alpha =
+        (2 : Real) ^ (-(19 : Int)) * alpha ^ 2 * (alpha / 2) ^ (12359 : Nat) / 2 := by
+      unfold quadraticDiscrepancyParameter
+      generalize (alpha / 2) ^ (12359 : Nat) = t
+      norm_num
+      ring
+    rw [hτeq, inv_div, div_eq_mul_inv, pow_succ' (2 / alpha) 12380]
+    exact mul_le_mul hu (quadratic_parameters_inv_upper hα hαone).1 (by positivity) (by positivity)
   have hσ : 0 < quadraticDiscrepancyExponent alpha :=
     div_pos (quadratic_frequency_exponent_bounds hα hαone).1 (by norm_num)
-  refine ⟨hτinv, ?_, ?_, ?_⟩
-  · calc
-      _ = 8 * tau⁻¹ := by rw [inv_div, div_eq_mul_inv]
-      _ ≤ u ^ (3 : Nat) * u ^ (12381 : Nat) :=
-        mul_le_mul h8 hτinv (inv_nonneg.mpr hτ.le) (by positivity)
-      _ = _ := by rw [← pow_add]
-  · calc
-      _ = 16 * (quadraticDiscrepancyExponent alpha)⁻¹ := by rw [inv_div, div_eq_mul_inv]
-      _ ≤ u ^ (4 : Nat) * u ^ (24744 : Nat) :=
-        mul_le_mul h16 (quadratic_parameters_inv_upper hα hαone).2
-          (inv_nonneg.mpr hσ.le) (by positivity)
-      _ = _ := by rw [← pow_add]
-  · have h := interval_length_factor_inv_le_scaled (n := 12381) hu hτ hτinv
-    norm_num only [Nat.reduceMul, Nat.reduceAdd] at h
-    exact h
+  refine ⟨hτinv, ?_, ?_, interval_length_factor_inv_le_scaled (n := 12381) hu hτ hτinv⟩
+  · rw [inv_div, div_eq_mul_inv, show (12384 : Nat) = 3 + 12381 from rfl, pow_add]
+    exact mul_le_mul (le_trans (by norm_num) (pow_le_pow_left₀ (by norm_num) hu 3)) hτinv
+      (inv_nonneg.mpr hτ.le) (by positivity)
+  · rw [inv_div, div_eq_mul_inv, show (24748 : Nat) = 4 + 24744 from rfl, pow_add]
+    exact mul_le_mul (le_trans (by norm_num) (pow_le_pow_left₀ (by norm_num) hu 4))
+      (quadratic_parameters_inv_upper hα hαone).2 (inv_nonneg.mpr hσ.le) (by positivity)
 
 theorem quadratic_interval_length_factor_le_one {alpha : Real}
     (hα : 0 < alpha) (hαone : alpha ≤ 1) :

@@ -70,51 +70,32 @@ private theorem boundedChunk_proper {L r : Nat} (j : Fin (L / r)) :
 private theorem boundedChunk_partition (L r : Nat) (hr : 0 < r) (hL : r ≤ L) :
     IsNatAPPartition (boundedChunk L r) (Finset.range L) := by
   have hM : 0 < L / r := Nat.div_pos hL hr
-  constructor
-  · intro x
-    rw [Finset.mem_range]
-    constructor
-    · intro hx
-      by_cases hq : x / r < L / r
-      · let j : Fin (L / r) := ⟨x / r, hq⟩
-        refine ⟨j, (boundedChunk_mem j x).mpr ⟨Nat.div_mul_le_self x r, ?_⟩⟩
-        have hstart := boundedChunk_start_le j
-        change x < (j : Nat) * r + (if (j : Nat) + 1 = L / r then L - (j : Nat) * r else r)
-        split_ifs
-        · omega
-        · have hxdiv := Nat.div_add_mod x r
-          have hxmod := Nat.mod_lt x hr
-          dsimp [j]
-          nlinarith
-      · let j : Fin (L / r) := ⟨L / r - 1, by omega⟩
-        have hstart : (j : Nat) * r ≤ x := by
-          have hq' : (j : Nat) ≤ x / r := by dsimp [j]; omega
-          exact (Nat.mul_le_mul_right r hq').trans (Nat.div_mul_le_self x r)
-        refine ⟨j, (boundedChunk_mem j x).mpr ⟨hstart, ?_⟩⟩
-        have hj : (j : Nat) + 1 = L / r := by dsimp [j]; omega
-        change x < (j : Nat) * r + (if (j : Nat) + 1 = L / r then L - (j : Nat) * r else r)
-        rw [if_pos hj]
-        omega
-    · rintro ⟨j, hj⟩
-      exact ((boundedChunk_mem j x).mp hj).2.trans_le (boundedChunk_end_le j)
-  · intro i j hij
-    apply Finset.disjoint_left.mpr
-    intro x hxi hxj
+  have hsep (a b : Fin (L / r)) (hab : (a : Nat) < b) :
+      (a : Nat) * r + (boundedChunk L r a).length ≤ (b : Nat) * r := by
+    simp only [boundedChunk, if_neg (show (a : Nat) + 1 ≠ L / r by omega)]
+    nlinarith [Nat.mul_le_mul_right r (show (a : Nat) + 1 ≤ b by omega)]
+  refine ⟨fun x => ⟨fun hx => ?_, fun ⟨j, hj⟩ => Finset.mem_range.2
+    (((boundedChunk_mem j x).mp hj).2.trans_le (boundedChunk_end_le j))⟩, fun i j hij => ?_⟩
+  · rw [Finset.mem_range] at hx
+    have hxr := Nat.div_add_mod' x r
+    have hxm := Nat.mod_lt x hr
+    by_cases hq : x / r + 1 < L / r
+    · refine ⟨⟨x / r, by omega⟩, (boundedChunk_mem _ x).mpr ⟨Nat.div_mul_le_self x r, ?_⟩⟩
+      simp only [boundedChunk, if_neg (show x / r + 1 ≠ L / r by omega)]
+      omega
+    · have h1 := Nat.mul_le_mul_right r (show L / r - 1 ≤ x / r by omega)
+      have h2 := Nat.mul_le_mul_right r (show L / r - 1 ≤ L / r by omega)
+      refine ⟨⟨L / r - 1, by omega⟩,
+        (boundedChunk_mem _ x).mpr ⟨h1.trans (Nat.div_mul_le_self x r), ?_⟩⟩
+      simp only [boundedChunk, if_pos (show L / r - 1 + 1 = L / r by omega)]
+      have := Nat.div_mul_le_self L r
+      omega
+  · refine Finset.disjoint_left.mpr fun x hxi hxj => ?_
     have hi := (boundedChunk_mem i x).mp hxi
     have hj := (boundedChunk_mem j x).mp hxj
-    have hne : (i : Nat) ≠ (j : Nat) := fun h => (bne_iff_ne.mp hij) (Fin.ext h)
-    have hseparate (a b : Fin (L / r)) (hab : (a : Nat) < (b : Nat)) :
-        (a : Nat) * r + (boundedChunk L r a).length ≤ (b : Nat) * r := by
-      have hlast : (a : Nat) + 1 ≠ L / r := by omega
-      change (a : Nat) * r + (if (a : Nat) + 1 = L / r then L - (a : Nat) * r else r) ≤ _
-      rw [if_neg hlast]
-      have h := Nat.mul_le_mul_right r (show (a : Nat) + 1 ≤ (b : Nat) by omega)
-      nlinarith
-    rcases lt_or_gt_of_ne hne with h | h
-    · have := hseparate i j h
-      omega
-    · have := hseparate j i h
-      omega
+    rcases Nat.lt_or_gt_of_ne (Fin.val_ne_of_ne (bne_iff_ne.mp hij)) with h | h
+    · have := hsep i j h; omega
+    · have := hsep j i h; omega
 
 /-- Localize a natural interval to lengths in [r,2*r), requiring only r<=L. -/
 theorem bounded_interval_partition (L r : Nat) (hr : 0 < r) (hL : r ≤ L) :
