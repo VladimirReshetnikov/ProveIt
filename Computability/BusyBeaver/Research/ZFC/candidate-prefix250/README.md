@@ -23,7 +23,10 @@ stronger PA formalization remains unfinished.
 
 The [literal table and finite graph facts](../table_prefix250.md) are now checked
 in Lean: 40 theorem audits and 40 callers pass, with only standard `propext`
-where axioms occur. Unbounded operation and whole-run proofs remain separate.
+where axioms occur. Lean now also checks the [unbounded register operations](../prefix250_boxes.md),
+[selectors](../prefix250_mark.md), [symbolic execution](../prefix250_symbolic.md),
+[frame adapters](../prefix250_frame.md), and [first 1,024 blank steps](../boot_prefix250_first.md).
+Complete coverage, runtime composition and the final startup remain in progress.
 
 The reduction preserves the complete original proof-search program. It shares
 a carry/rollback circuit between register operations and reuses a runtime

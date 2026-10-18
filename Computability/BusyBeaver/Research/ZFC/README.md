@@ -57,6 +57,11 @@ symbolic endpoints to the logical register file and preserve the changed
 spare suffix and header distance. Fourteen theorem audits and fourteen
 client examples pass; complete runtime composition remains in progress.
 
+The [first 1,024 blank-tape steps](boot_prefix250_first.md) are now checked
+in Lean, with a complete tape description and a reusable checkpoint
+composition theorem. This is a finite prefix; the full 585,431-step startup
+still needs its remaining checked segments and final frame identification.
+
 The [previous intake](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-158-159.md)
 preserves five complete reports and one explicitly partial salvage, including
 cache-result MP, semantic seeds, countdowns and pairing-shift negation.
