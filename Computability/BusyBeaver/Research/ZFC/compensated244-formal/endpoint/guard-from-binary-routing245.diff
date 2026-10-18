@@ -1,0 +1,76 @@
+--- /tmp/zfc-routing245-endpoint-actual/check-audit-v2.py
++++ /tmp/zfc244-endpoint/check.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Exact routing245 composition unit. Pending parents reject all execution.
++"""Exact compensated244 composition unit from two successful actual parents.
+ Only selected actual-import providers are reused from pinned successful records.
+ Fresh source/audit share120s, -j1/-M4096, default proof limits. Prepare-only has
+ no compiler/version call, dependency build or download. This is external Lean,
+@@ -7,7 +7,7 @@
+ """
+ from pathlib import Path
+ import argparse, hashlib, json, os, re, shutil, subprocess, time
+-CFG = <old exact inputs>
++CFG = <new exact inputs>
+ TOOLS={'Init':'d2e85d72099f9d869c9582aad5fb13079968d9d121ac6061e8326b00800b306e',
+        'Lean.Elab.Tactic.Omega':'eb766bae1ab40110a853c7cca853e36e1f4aece010a09fa4dd9b1b48116953fe'}
+ COMPILER_SHA='e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550'
+@@ -60,9 +60,17 @@
+        'Raw parent named axiom reports differ.')
+   need(all('sorryAx' not in q['output'] and "declaration uses 'sorry'" not in q['output'] for q in d['commands']),
+        'Parent shortcut diagnostic.')
++  parent_audit=Path(d['audit']['snapshot'])
++  need([n for n,_ in reports]==re.findall(r'^#print axioms (\S+)$',parent_audit.read_text(),re.M) and
++       len(re.findall(r'^example\b',parent_audit.read_text(),re.M))==cfg['callers'],
++       'Raw parent names/typed callers differ from exact audit snapshot.')
++  for command in d['commands']:
++   log=Path(command['log']).resolve()
++   need(log.read_text()==command['output'],'Parent raw log differs.');inputs.append(log)
+   fresh=d['fresh_modules'];need(len(fresh)==1 and fresh[0]['module']==cfg['module'],'Wrong fresh parent module.')
+   f=fresh[0];saved=d['source_pass_object']
+-  need(all(saved[k]==f[k] for k in ('module','path','sha256','source_sha256')) and
++  need(saved['source_command_index']==0 and
++       all(saved[k]==f[k] for k in ('module','path','sha256','source_sha256')) and
+        f['source_sha256']==d['source']['sha256'],'Parent pre-audit source binding differs.')
+   first=d['fresh_first_provider_before_audit']
+   need(first['module']==f['module'] and first_path(first)==Path(f['path']).resolve() and first['sha256']==f['sha256'],
+@@ -72,7 +80,12 @@
+   if compiler is None:compiler=dict(path=identity[0],sha256=identity[1],version=identity[2],compiler_version_query_performed=False)
+   else:need(identity==(compiler['path'],compiler['sha256'],compiler['version']),'Parent compiler differs.')
+   actuals={q['module']:q for q in d['actual_first_providers']}
+-  need(len(actuals)==len(d['actual_first_providers'])==len(d['reused_modules']),'Duplicate/missing parent provider.')
++  project_names={q['module'] for q in d['reused_modules']}
++  extra_tools=set(cfg['actual_tool_names'])
++  need(len(project_names)==len(d['reused_modules']) and
++       len(actuals)==len(d['actual_first_providers']) and
++       set(actuals)==project_names|extra_tools and extra_tools<=set(TOOLS),
++       'Duplicate/missing/unexpected parent provider.')
+   rows=[(q,False) for q in d['reused_modules']]+[(dict(module=f['module'],source=d['source']['path'],
+       source_sha256=d['source']['sha256'],object=f['path'],object_sha256=f['sha256']),True)]
+   for q,is_fresh in rows:
+@@ -90,8 +103,14 @@
+     need((pool[name]['source_sha256'],pool[name]['object_sha256'])==(row['source_sha256'],row['object_sha256']),
+          'Conflicting same-named source/object '+name)
+    else:pool[name]=dict(row,parent_label=label,parent_fresh=is_fresh)
++  need({t['module'] for t in d['toolchain_providers']}==set(TOOLS) and
++       len(d['toolchain_providers'])==len(TOOLS),'Parent tool census differs.')
+   for t in d['toolchain_providers']:
+    need(t['module'] in TOOLS and t['object_sha256']==TOOLS[t['module']],'Parent tool identity differs.')
++   if t['module'] in extra_tools:
++    actual=actuals[t['module']]
++    need(first_path(actual)==Path(t['object']).resolve() and actual['sha256']==t['object_sha256'],
++         'Parent extra actual tool differs.')
+    if t['module'] in tool_pool:need(tool_pool[t['module']]['object_sha256']==t['object_sha256'],'Conflicting tool provider.')
+    else:tool_pool[t['module']]=t
+   summaries.append(dict(label=label,path=str(evidence),sha256=sha(evidence),fresh_module=cfg['module'],
+@@ -111,8 +130,7 @@
+       'Exact project import closure differs.')
+  need(tool_names==set(TOOLS) and tool_names<=set(tool_pool),'Exact Init/Omega boundary differs.')
+  selected={name:pool[name] for name in closure}
+- # Rehash only snapshots of fresh parents actually imported; evidence-only seed
+- # reuse selects LogicalSeed246 and its dependencies, never BinaryPrefix246.
++ # Rehash exact source/audit snapshots for both directly imported fresh parents.
+  for row in summaries:
+   d,e=parents[row['label']];used=row['fresh_module'] in selected;row['fresh_module_selected']=used
+   if used:

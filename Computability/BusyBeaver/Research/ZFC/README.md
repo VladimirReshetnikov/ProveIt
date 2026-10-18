@@ -8,8 +8,8 @@ stronger theory, as clarified by the user on 17 October 2026. Each candidate
 must state the assumptions used for its two unprovability directions;
 consistency alone must not be confused with arithmetic soundness. The
 external Lean equivalence with Con(ZFC) is now proved for the exact
-[245-state machine](routing245_binary.md), improving the earlier checked
-246- and 252-state endpoints; its internal PA proof remains open.
+[244-state machine](compensated244_binary.md), improving the earlier checked
+245-, 246- and 252-state endpoints; its internal PA proof remains open.
 All new formal work uses Lean.
 An intended set-theoretic meaning is optional: any effectively presented
 theory or proof calculus is eligible once its consistency calibration is proved.
@@ -34,10 +34,11 @@ exact table, the original-machine tape invariant and generic positive-block
 halting transport (62 theorem probes, 18 typed callers, zero warnings).
 The [seven local blocks and global simulation](compensated244_simulation.md)
 also pass18 probes and18 callers, proving exact blank halting equivalence
-with Routing245. The final ZF/ZFC endpoint composition is being checked
-separately; internal PA formalization remains open.
+with Routing245. The [closed ZF/ZFC endpoint](compensated244_binary.md) now
+passes six further probes and six callers with zero warnings; internal PA
+formalization remains open.
 
-The active external Lean baseline is the
+The earlier external Lean baseline, reused by the 244 proof, is the
 [routed 245-state machine](candidate-routing245/README.md), from
 `8286787dd0`. It passes its complete executable suite, including all 8,391
 expanded whole-tape instruction cases and its 407,915-step exact blank prefix.

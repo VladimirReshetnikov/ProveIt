@@ -64,8 +64,8 @@ Historical cache paths and the pinned toolchain are required, as described in
 the [foundation instructions](compensated244_foundations.md). Preparation
 does not invoke Lean. The maintained guards change only path defaults.
 
-The final wrapper composing this equivalence with the closed
-[BinaryRouting245](routing245_binary.md) ZF/ZFC calibration is being checked
-separately. These simulation theorems do not assert unconditional nonhalting
+The [final wrapper](compensated244_binary.md) composing this equivalence with
+the closed [BinaryRouting245](routing245_binary.md) ZF/ZFC calibration now
+passes its separate six-probe/six-caller check. These simulation theorems do not assert unconditional nonhalting
 or an internal proof in PA. Attribution and the exact submitted table are
 recorded on the [candidate page](candidate-compensated244/README.md).

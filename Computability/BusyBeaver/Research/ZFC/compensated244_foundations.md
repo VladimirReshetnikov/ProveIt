@@ -2,7 +2,7 @@
 
 Three checked units support the transfer from the verified routed 245-state
 machine to the compensated 244-state candidate from `248bc05936`.
-The complete 244-state halting-equivalence theorem remains in progress.
+The [complete 244-state endpoint](compensated244_binary.md) has subsequently passed its separate Lean check.
 
 | Unit | What Lean proves | Named probes / typed callers |
 | --- | --- | --- |
@@ -77,6 +77,6 @@ dependency bootstrap for a fresh machine.
 
 The [seven local execution blocks and global checkpoint simulation](compensated244_simulation.md)
 have subsequently passed their separate18-probe/18-caller check. Composition
-with [BinaryRouting245](routing245_binary.md) is being checked separately.
+with [BinaryRouting245](routing245_binary.md) now passes the separate [final endpoint check](compensated244_binary.md).
 Internal PA formalization remains a separate open task. No absolute consistency
 or unconditional nonhalting claim follows from these three units.
