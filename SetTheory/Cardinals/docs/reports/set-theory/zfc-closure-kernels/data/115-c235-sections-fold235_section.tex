@@ -1,0 +1,150 @@
+\section{The 235-state fold: two meanings recovered from a preceding bit}
+\label{sec:fold235}
+
+Let $M$ denote the 236-state basis after the seven independently certified
+source reassociations, and let $N$ denote the resulting 235-state machine.
+All state labels in this section are inherited labels.  Both machines have
+initial state $95$ and a separate halting outcome $254$.  A configuration is
+$(q,h,T)$, where $h\in\mathbb Z$ and $T:\mathbb Z\to\{0,1\}$.
+The source reassociations are a separate part of the construction: this
+section proves an unconditional local equivalence between their exact
+236-state output and the 235-state table.
+
+\subsection{Exact edit and incoming invariant}
+
+The four special old transition rows are
+\[
+\begin{array}{c|cc}
+\text{Old state}&\text{Read }0&\text{Read }1\\\hline
+74&0R114&1R233\\
+193&0R190&1R213.
+\end{array}
+\]
+Delete state $193$, redirect its incoming rows $163/1$ and $229/1$ to $74$,
+and replace the two rows of state $74$ by
+\[
+74/0=0L138,\qquad 74/1=1L116.
+\]
+Every other retained row is unchanged.  Define
+\[
+\phi(q)=\begin{cases}74,&q=193,\\q,&q\ne193,\end{cases}
+\qquad
+F(q,h,T)=(\phi(q),h,T).
+\]
+The map fixes both the initial state and the halt outcome.  There are exactly
+$236$ old working states with $472$ rows and $235$ new working states with
+$470$ rows.  No extra initial tape word, tape symbol, or intermediate control
+state is supplied.
+
+The old machine satisfies the invariant
+\[
+I(q,h,T):\quad
+(q=74\Longrightarrow T(h-1)=0)\ \land\
+(q=193\Longrightarrow T(h-1)=1).
+\]
+Indeed, the complete old incoming-edge inventory is
+\[
+\begin{array}{c|c|c}
+\text{Target}&\text{Incoming rows}&\text{Written bit and move}\\\hline
+74&140/0&0,R\\
+193&163/1,\ 229/1&1,R.
+\end{array}
+\]
+Each incoming transition therefore puts the required bit immediately left
+of the new head.  The initial state is neither special state, so $I$ holds
+initially for every tape and every head position.  Induction on the old
+step count establishes $I$ for every reachable old configuration.  The
+invariant is asserted at old configurations and their simulation
+checkpoints; the reused helper states may have additional meanings between
+those checkpoints.
+
+\subsection{Four three-step identities on open tapes}
+
+Put the initial head at coordinate zero for notation, write $b=T(0)$, and
+write $\ell=T(-1)$.  For the four old cases the complete new paths are
+\[
+\begin{array}{c|c|c|c}
+\text{Old state}&b&\ell&\text{New control path}\\\hline
+74&0&0&74\to138\to210\to114\\
+74&1&0&74\to116\to246\to233\\
+193&0&1&74\to138\to211\to190\\
+193&1&1&74\to116\to134\to213.
+\end{array}
+\]
+Each displayed path has exactly three transitions.  Their head positions
+are $0,-1,0,1$.  Their read bits are $b,\ell,b$, respectively, and each
+transition writes back the bit it reads.  Thus every cell is preserved,
+including all unspecified exterior cells, and the final head displacement
+is $+1$.  The endpoint states $114,233,190,213$ are precisely the endpoints
+of the corresponding single old transitions.  None is an interior halt.
+
+Equivalently, the two new rows first choose the helper according to the
+current bit.  Helper $138$ or $116$ then reads the preceding bit, recovering
+which old control state was intended.  One final existing decoder row
+completes that old transition.  The source reassociations supply the
+necessary four continuations without introducing a helper state.
+
+These identities quantify over every surrounding binary tape.  The finite
+footprint $\{-1,0\}$ is a consequence of the displayed paths, not a bound on
+possible tape contents or future computation.  It suffices to check the
+four prescribed assignments to this footprint because the invariant and
+the current read bit fix both accessed cells.  The remaining $468$ old rows
+commute with $F$ in exactly one new step, including the two incoming
+redirections implementing $\phi$.
+
+\subsection{Halting equivalence and exact clock identity}
+
+\paragraph{Theorem.}
+For every binary tape $T$ and every head position $h$,
+\[
+\operatorname{Halts}(M,95,h,T)
+\quad\Longleftrightarrow\quad
+\operatorname{Halts}(N,95,h,T).
+\]
+
+\paragraph{Proof.}
+Let $C_t$ be the old run while it is defined.  Set $\tau(0)=0$ and
+\[
+\tau(t+1)-\tau(t)=
+\begin{cases}
+3,&\text{the control state of }C_t\text{ is }74\text{ or }193,\\
+1,&\text{otherwise}.
+\end{cases}
+\]
+The inductive incoming invariant and the four block identities prove
+$N^{\tau(t)}(F(C_0))=F(C_t)$ by induction on $t$.  An old halt is therefore
+a new halt.  Conversely, an infinite old run supplies infinitely many
+positive new blocks; their synchronization times satisfy $\tau(t)\ge t$,
+and no block contains an interior halt.  Their union covers the entire new
+run, which consequently cannot halt.  This establishes both directions.
+\hfill$\square$
+
+If $V_q(t)$ counts old visits to state $q$ among the first $t$ transitions,
+the proof gives the exact identity
+\[
+\tau(t)=t+2V_{74}(t)+2V_{193}(t),\qquad t\le\tau(t)\le3t.
+\]
+The theorem uses only finite table calculations and induction and is
+formalizable in ZFC.  Composing it with the separately verified source
+reassociation, initialization, runtime simulation, and inherited logical
+calibration transfers the desired equivalence with
+$\operatorname{Con}(\mathrm{ZFC})$.  The local theorem itself requires no
+consistency hypothesis and does not assert an unconditional nonhalting
+result.
+
+\subsection{Independent executable verification}
+
+The delivered \texttt{check\_fold235.py} has no imports from either discovery
+scanner or the generic symbolic checker.  It checks the exact input-byte
+hashes, complete state and row inventories, all incoming edges, all $468$
+ordinary row identities, and all four three-step blocks.  Its tape map
+contains only the two fixed cells; an attempted exterior read is rejected.
+Every write is checked against the current value, and every complete
+state/head/tape endpoint is compared with the old transition.  Its receipt
+records the full traces.
+
+A second route, the inherited generic open-tape verifier, independently
+rederives the bit invariant and proves all $472$ old rows, producing $468$
+one-step blocks and four three-step blocks.  The two routes support the
+ordinary mathematical proof above.  They do not constitute a newly
+compiled proof-assistant theorem for the complete 235-state machine.

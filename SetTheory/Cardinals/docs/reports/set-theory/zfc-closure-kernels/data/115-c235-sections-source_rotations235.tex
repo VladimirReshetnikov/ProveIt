@@ -1,0 +1,243 @@
+% Incorporation-ready section. Requires amsmath and booktabs only.
+% All state labels in this section are inherited labels, not canonical labels.
+\section{Seven source rotations that expose the new fold}
+\label{sec:seven-source-rotations235}
+
+The reduction from 236 to 235 states comes from changing the arrangement of
+the existing decoder.  The source still has 224 distinct DAG nodes and
+6,455 instruction occurrences.  Seven closed reassociations create the
+paths needed to merge states 74 and 193, while retaining the calibration
+of the compact binary interpreter.  The final arrangement has maximum
+depth 48, compared with 49 in the pinned 236-state input.
+
+The new contribution is this concrete composition and its complete
+validation.  Closed associativity and the use of a previously written
+tape bit to distinguish merged states are already present in the
+236-state predecessor.  The present construction applies these ideas
+at new locations and repairs a global encoding constraint that defeated
+several shorter, locally plausible candidates.
+
+\subsection{The exact source transformation}
+
+Write
+\[
+ \mathsf L:(A,(B,C))\longmapsto((A,B),C),\qquad
+ \mathsf R:((A,B),C)\longmapsto(A,(B,C)).
+\]
+If the rotated source occurrence has prefix $p$, the left rotation changes
+paths by
+\[
+ p0u\mapsto p00u,\qquad
+ p10u\mapsto p01u,\qquad
+ p11u\mapsto p1u;
+\]
+the right rotation uses the inverse substitutions.  Operations and
+operands are unchanged.  An outer state $q$ and inner state $q'$ identify
+the two corresponding pure decoder nodes immediately before that stage.
+Each row of these nodes writes back its read symbol and moves right.
+The inner node has exactly one incoming transition, from the stated
+outer node.  These properties are checked on the literal table, rather
+than inferred from the names of the source chunks.
+
+The following sequence is applied in order.  Chunk sizes count expanded
+instruction occurrences.  The last two columns describe the complete
+source after the indicated stage.
+
+\begin{center}
+\begin{tabular}{rrrc rrr}
+\toprule
+Stage & $q$ & $q'$ & Rotation & $|A|,|B|,|C|$ & Depth & Zero run\\
+\midrule
+0 & --- & --- & --- & --- & 49 & 6\\
+1 & 138 & 211 & $\mathsf R$ & $539,56,242$ & 48 & 6\\
+2 & 116 & 134 & $\mathsf L$ & $56,121,125$ & 48 & 7\\
+3 & 162 & 116 & $\mathsf L$ & $108,177,125$ & 48 & 6\\
+4 & 199 & 227 & $\mathsf L$ & $2965,177,940$ & 49 & 7\\
+5 & 227 & 197 & $\mathsf R$ & $1919,1046,177$ & 48 & 7\\
+6 & 197 & 115 & $\mathsf R$ & $480,566,177$ & 48 & 7\\
+7 & 115 & 229 & $\mathsf R$ & $406,160,177$ & 48 & 6\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Each stage has exactly one expanded occurrence of its rotated node.
+The full path prefixes, every individual row edit, all chunk boundaries
+and the intermediate source statistics are recorded in
+\texttt{source\_rotation\_certificate.json}.  The portable builder
+reconstructs these data directly from the pinned original leaf list.
+Thus the source certificate does not depend on retaining a stochastic
+search state or an undocumented compiler invocation.
+
+Across the complete seven-stage composition, exactly 2,524 leaf paths
+change.  The resulting 236-state basis differs from the input in 17
+literal rows, involving 10 states.  Subsequent edits cancel some earlier
+row changes, so these 17 rows should not be confused with the four rows
+examined at each individual rotation.
+
+\subsection{Why the source proof covers arbitrary register values}
+
+For a source chunk $T$, the builder calculates a boundary signature
+$\partial T=(b_T,c_T,h_T)$: upper bounds on escaping break and continue
+depths, together with a flag for a halt occurrence.  For leaves it uses
+\[
+\begin{aligned}
+ \partial\operatorname{CI}(r)&=(0,0,\mathrm{false}),&
+ \partial\operatorname{CD}(r)&=(1,0,\mathrm{false}),\\
+ \partial\operatorname{CB}(k)&=(k,0,\mathrm{false}),&
+ \partial\operatorname{CC}(k)&=(0,k,\mathrm{false}),\\
+ \partial\operatorname{CH}&=(0,0,\mathrm{true}).
+\end{aligned}
+\]
+Writing $x^+=\max(x,0)$, a binary node satisfies
+\[
+ \partial(A,B)=
+ \bigl(\max((b_A-1)^+,b_B),\,
+       \max(c_A,(c_B-1)^+),\,h_A\lor h_B\bigr).
+\]
+Every one of the 21 rotated chunks has boundary
+$(0,0,\mathrm{false})$.  No control action escapes a chunk, so either
+parenthesization executes the same closed chunks in the same order.
+This argument includes divergence inside a chunk; it does not require
+the chunks to terminate.
+
+The executable certificate also checks the complete guarded source
+graph at every stage.  It numbers leaves in their common left-to-right
+order and records the operation, register operand, and every successor.
+For a decrement it checks both the zero branch and the nonzero branch.
+Break and continue destinations are resolved against the entire source
+path, including enclosing contexts.  The initial leaf is checked as
+well.  All 6,455 ordered operations and all 8,386 guarded cases agree
+with the original source.  Successor resolution also checks that any
+unused suffix contains only zeros, as required by the source interface.
+
+At corresponding leaves, the two programs therefore apply exactly the
+same register operation and select the same next leaf for every
+natural-valued register file.  Induction gives identical finite source
+runs; the same step correspondence preserves infinite runs.  This is
+an unbounded source equivalence proved by a finite graph comparison,
+not a test on a finite range of counter values.  A separate checker
+using a trie and ancestor unwinding verifies the same source graph
+without importing the builder's arithmetic successor resolver.
+
+\subsection{What the four core rotations create}
+
+Before the final fold, the relevant native rows are
+\[
+\begin{array}{c|cc}
+ &0&1\\\hline
+ 74&0\ R\ 114&1\ R\ 233\\
+ 193&0\ R\ 190&1\ R\ 213.
+\end{array}
+\]
+The first three rotations construct two useful binary routing patterns:
+\[
+\begin{array}{c|cc}
+ &0&1\\\hline
+ 138&0\ R\ 210&1\ R\ 211\\
+ 116&0\ R\ 246&1\ R\ 134.
+\end{array}
+\]
+Existing or newly arranged following rows supply
+\[
+ 210/0\to114,\quad211/0\to190,\quad
+ 246/1\to233,\quad134/1\to213,
+\]
+each preserving its read symbol and moving right.  The fourth rotation
+makes the old 193 entry arrive immediately after a written 1.  The final
+three repairs preserve that property while moving its source occurrence.
+In the final basis, every arrival at 74 is through $140/0=0\ R\ 74$,
+while the only arrivals at 193 are $163/1=1\ R\ 193$ and
+$229/1=1\ R\ 193$.  State 74 consequently has a 0 immediately to the
+left of the head; state 193 has a 1 there.
+
+Redirect both incoming 193 targets to 74, delete state 193, and set
+\[
+ 74/0=0\ L\ 138,\qquad 74/1=1\ L\ 116.
+\]
+The state records the current bit by choosing 138 or 116, moves left to
+read the old-state tag, and follows a pre-existing rightward path back
+through the original cell.  Each of the four exceptional old rows is
+simulated in exactly three transitions.  The old and new endpoints have
+the same state, head position one cell to the right, and entire tape.
+All other 468 old rows are simulated in one transition after renaming
+193 to 74.  This is the one-state saving; the rotations themselves
+neither add nor remove a working state.
+
+Relative to the original 236-state table, the complete result changes
+20 surviving rows and removes the two rows of state 193.  The retained
+state labels are inherited labels; the separately supplied canonical
+table uses working states $0,\ldots,234$ and halt outcome 235.
+
+\subsection{Why the last three rotations are included}
+
+The four core rotations already give the source-graph proof and the
+local state-fold proof.  They do not yield a correct binary interpreter.
+They create a source path containing seven consecutive zeros, conflicting
+with the compact tape encoding.  In the actual failed candidate, the
+universal runtime check rejects the increment at leaf ordinal 648,
+whose path is
+\begin{center}\ttfamily
+1110100100110110101010000000.
+\end{center}
+Here and below leaf ordinals start at zero.  A concrete finite execution
+independently exposes the same failure.
+
+The final three rotations transport a 177-leaf closed chunk through
+successive larger chunks, restoring a maximum zero run of six.  The
+repair search allowed intermediate source representations with seven
+or eight consecutive zeros; it demanded the six-zero condition at the
+final binary candidate.  All intermediates remain source-equivalent.
+They are algebraic stages of the construction, not individually
+calibrated binary machines.  Enforcing every final encoding constraint
+after every source move would exclude the displayed route.
+
+Restoring the zero bound alone is insufficient.  One rejected repair
+rotated the decoder pair 105/123.  Although the guarded source graph
+still agreed, that edit changed bits immediately preceding a shared
+arithmetic routine.  A backward-reading helper then took the wrong
+branch for an increment at leaf 195.  It also changed the exact blank
+startup at step 12,742.  The final construction avoids that edit.
+This failure is useful evidence about the optimization problem:
+decoder nodes can simultaneously serve as runtime helper states, and
+their behavior can depend on preceding path bits.
+
+These observations motivate three distinct checks.  Closed-source
+reasoning proves the intended register program is unchanged.  The
+all-tape local fold proof proves the final deletion implements the
+rotated literal basis.  The instruction-runtime proof establishes
+that this exact basis actually executes the transformed source.  None
+of these obligations can be replaced by the other two.
+
+\subsection{The final binary checks and reproducible construction}
+
+The seven-rotation 236-state basis and the final 235-state machine both
+pass fresh unbounded runtime validation on all 8,386 guarded cases.
+The runs use 2,266,171 and 2,269,055 symbolic rules respectively, cover
+all 472 and 470 literal rows, and establish minimum instruction duration
+13.  The runtime contracts cover arbitrary natural values of all nine
+primary registers, arbitrary nonnegative extra gap, arbitrary first
+spare register, and an arbitrary finite spare tail.  They check the
+complete tape, head and next source location.
+
+The blank startup is unchanged: all 409,836 checkpoints, including
+the initial one, agree through 409,835 transitions.  No changed or
+deleted row is visited during this startup.  The endpoint has inherited
+dispatcher state 96, head position $-5$, and exactly 351 one-cells,
+with their full support recorded in the startup certificate.
+
+The standard-library Python builder accepts the extracted pinned
+236-state package through \texttt{--baseline-dir}, and an output
+directory through \texttt{--output-dir}.  It verifies both exact input
+hashes, replays the seven rotations, checks every guarded source graph,
+builds and renumbers the final table, and replays the complete startup.
+The independent source, fold and universal runtime checkers are
+separate proof artifacts.  The construction is deterministic and
+requires no discovery search, network access or original compact
+compiler.
+
+The construction and these finite proof certificates compose with
+the pinned logical calibration as ordinary mathematics formalizable
+in ZFC.  They do not by themselves claim a newly compiled proof-assistant
+endpoint for 235 states.  The discovery search statistics and finite
+execution filters are useful provenance, but are not premises of the
+calibration theorem.

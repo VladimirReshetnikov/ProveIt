@@ -1,0 +1,43 @@
+\section{The literal E663 packet}
+The following lines concatenate to the complete 663-bit packet. The
+typographical line breaks are not data. The packed file has 83 bytes,
+with one final zero padding bit excluded from the logical length.
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+00001001000010010010010001010010010000001001010101010000010101010001000000000101
+00010101001000000001101100111000100000100000110110011100100001100100000110000100
+00111000010011100000001010111000010000011000010000111100001010000000000110110110
+00100000011000100001111000001100100000101110001111010000100000001000011000111001
+00001000010100010101011100011101110000001101111001000000000110000001000101010001
+01101110000000001101110000001101010100101110000000001100110101010001010101010101
+00101100101001000001011100011100100111000100000110000001000101101110100001010000
+01010101001011000110010000010110110010100100001100011100100111011100000010000001
+10000001000100101000100
+\end{lstlisting}
+The logical-bit SHA-256, excluding a text-file newline, is
+\begin{center}\small\ttfamily
+6c3b72c39c81aa5bbf028e654c8056e7e86376cdeecdd56943e5c3e23de1a215.
+\end{center}
+The header declares nine symbols, their three-bit arities, and a
+four-variable local capacity. Every term node has a four-bit opcode.
+Variables use codes 0--3; the ordered operation codes are:
+\begin{center}
+\begin{tabular}{rcl@{\qquad}rcl}
+\toprule
+Code & Arity & Symbol & Code & Arity & Symbol\\
+\midrule
+4&0&$d$ & 9&1&$Q$\\
+5&2&$N$ &10&2&$W$\\
+6&2&$V$ &11&2&$p_E$\\
+7&2&$P$ &12&2&$p_\varepsilon$\\
+8&2&$A$ &&&\\
+\bottomrule
+\end{tabular}
+\end{center}
+Each equation begins with marker 1 and contains its two prefix-encoded
+terms. Marker 0 ends the equation list. Two ground terms follow. The
+last 12 bits, \texttt{1001 0100 0100}, encode $Q(d)$ and $d$.
+The AST and independent decoder provide the machine-readable definition;
+the displayed accounting includes the complete signature, arities,
+equation list, and both endpoints. Unused opcodes and nonground endpoints
+are rejected. This packet defines a consistency problem, not a 663-state
+or 663-step machine.

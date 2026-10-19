@@ -1,0 +1,77 @@
+\section{Research lessons and the next optimization targets}
+\label{sec:search}
+
+The search explored both the finite-control implementation and the
+foundational presentation. The successful state reduction stayed with
+the calibrated native-calculus frontend. The separate E663 result changes
+the presentation of the consistency problem. Keeping these results
+separate makes their actual costs and proof obligations explicit.
+
+\subsection{A source-preserving plateau can enable a state saving}
+
+The seven source moves do not reduce the 224-node DAG, yet they enable a
+literal-state deletion. The important objective is therefore the size of
+the \emph{combined} machine after shared decoder paths are used. A search
+that accepts only an immediate decrease in source nodes would miss this
+construction. A search that insists on a calibrated binary interpreter
+after each intermediate source move would also miss the displayed route:
+several intermediate trees have a seven-zero run. The mathematical source
+equivalence holds throughout; the complete runtime contract is imposed
+on the final candidate.
+
+The source and machine objectives still need strong interfaces. In this
+compiler, a decoder state can also serve a backward-reading arithmetic
+routine, and a preceding source bit can carry an instruction selector.
+Consequently a source transformation must preserve more than the abstract
+control graph before it may be accepted as a literal-machine change.
+The rejected 105/123 rotation supplies a concrete regression for exactly
+this issue. Its source proof and a local fold proof were both valid,
+while its full binary runtime was wrong.
+
+\subsection{Exact restricted searches and their limits}
+
+On the exact incoming table, completed searches considered two neutral
+helper changes, staged shared-row helpers, one-bit tape tags, and small
+head displacements. The two-helper family included every unordered pair
+of working states, 27,730 pairs in total. Its profile considered
+52,132,400 initial row choices; a staged extension considered 228 pairs
+sharing an old transition. The complete search-scope receipt is retained
+in \texttt{evidence/research\_scope.json}. None of those recorded finite
+families yielded the final deletion directly. These finite negative
+results establish no lower bound on state count or replacement length.
+
+For source variants, the useful fast filter computed inductive bit facts
+and matched four required continuation edges for a three-step
+left-neighbor fold. It identified possible state savings before paying
+for a full source and runtime proof. A compiled concrete instruction
+filter then rejected invalid layouts cheaply. Passing that filter never
+replaced the unbounded proof. The accepted candidate was finally checked
+by independent source, fold, startup and symbolic-runtime routes.
+
+An earlier candidate folded states 86 and 187 on a source-walk snapshot.
+Its local all-tape theorem was valid, but the modified basis interfered
+with the inherited sharing of 182 and 223. Unfolding that earlier sharing
+exposed an incoming row $182/0=0R187$ that supplied a left-0 entry to
+187, contrary to the proposed new meaning. This is another reason to
+preserve complete compatibility proofs between consecutive reductions.
+It was rejected and is not a second calibrated 235-state construction.
+
+\subsection{What remains worth trying}
+
+The demonstrated direction is to synthesize short shared paths together
+with their source layout. A useful search can allow temporary source
+encoding violations, preserve exact source semantics, track which
+predecessor bits each shared runtime entry needs, and insist on a proved
+whole-tape contract before accepting the final table. It should evaluate
+the resulting complete state count, including any repairs or restored
+initializer states. The present construction is one successful instance
+of that process; it is not evidence that 235 is minimal.
+
+For a different frontend, the most concrete new target is E663. Ground
+equational proofs avoid quantifier syntax in the enumerated derivations,
+but they still require complete substitution, context replacement, either
+rewrite direction and fair enumeration. A specialized interpreter that
+shares its source generator, term traversal and blank writer could make
+that presentation competitive. The following sections supply the exact
+packet and its proof, while charging its currently unimplemented
+complete binary search engine honestly.

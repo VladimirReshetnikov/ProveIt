@@ -1,0 +1,459 @@
+\section{A complete 663-bit equational consistency packet}
+\label{sec:e667}
+
+The alternative-formalism branch yields a complete \textbf{663-bit}
+consistency packet with seven equations, nine operation symbols,
+150 equation-term nodes, and the native-coordinate query $Q(d)=d$.
+It is obtained in two independently justified steps.  First, combining
+the 236-state archive's derived-truth argument with the separate
+$\mathcal E_{692}$ packet's structural witnesses, Boolean multiplexer,
+and unary selector gives the 667-bit intermediate $\mathcal E_{667}$.
+Second, replacing the four-node Boolean collapse query $N(d,d)=d$
+by the three-node native collapse query $Q(d)=d$ saves four more bits.
+The latter query attains the minimum possible endpoint length among
+distinct ground endpoints in this unchanged signature and codec.
+Both reductions use the existing codec; neither charges a new opcode
+or a definition supplied outside the packet.
+
+The first reduction has a particularly strong relative conclusion:
+\begin{equation}
+ \operatorname{Mod}(\mathcal E_{667})
+   =\operatorname{Mod}(\mathcal E_{692}).
+ \label{eq:e667-models}
+\end{equation}
+Thus it preserves every equational consequence, in the identical
+signature, not merely the designated consistency question.
+
+The first contribution is the explicit combination and its proof for the
+\emph{changed} multiplexer closure.  The prior $\mathcal E_{688}$ argument
+proved truth redundant for a different closure expression and a larger
+signature; its conclusion did not automatically apply to
+$\mathcal E_{692}$.  We check the relevant Boolean cofactor again.
+The new query reduction then uses only native Head/Tail to establish
+carrier collapse.  The inherited 692-bit packet itself and its model
+construction retain their attribution.  No binary Turing-machine bound
+follows from the 663 bits: an interpreter, complete search, and blank
+initialization must also be charged.  We retain the complete E667
+intermediate to separate the two arguments and their exact accounting.
+
+\subsection{The literal theory and its designated query}
+
+The ordered signature is
+\[
+ d^0,N^2,V^2,P^2,A^2,Q^1,W^2,p_E^2,p_\varepsilon^2.
+\]
+The first six equations, universally quantified in all displayed
+variables, are
+\begin{align}
+ N(N(x,N(N(y,x),x)),N(y,N(z,x)))&=y,
+       \label{eq:e667-sh1}\\
+ V(P(x,s),d)&=x,\label{eq:e667-head}\\
+ V(P(x,s),Q(j))&=V(s,j),\label{eq:e667-tail}\\
+ p_\varepsilon(s,P(a,b))
+     &=N(p_\varepsilon(s,a),p_\varepsilon(s,b)),
+       \label{eq:e667-nand}\\
+ p_\varepsilon(s,A(i,j))
+     &=p_E(V(s,i),V(s,j)),\label{eq:e667-atom}\\
+ p_\varepsilon(s,Q(a))
+     &=N\bigl(p_\varepsilon(P(W(s,a),s),a),
+               p_\varepsilon(P(z,s),a)\bigr).
+       \label{eq:e667-binder}
+\end{align}
+Equation~\eqref{eq:e667-sh1} is the published Sheffer single axiom Sh1.
+Theorem 2 of McCune, Veroff, Fitelson, Harris, Feist, and Wos,
+\emph{Short Single Axioms for Boolean Algebra}, supplies its Boolean
+algebra interpretation and a 66-step equational derivation of the
+Sheffer basis.\footnote{Primary paper:
+\url{https://www.cs.unm.edu/~mccune/papers/basax/v12.pdf};
+the authors' supplementary material is at
+\url{https://www.cs.unm.edu/~veroff/BA/}.}
+For the Boolean algebra determined by this reduct, $N$ is NAND;
+write its derived top and bottom as $1$ and $0$.
+\emph{We do not assume $d=1$ at this stage.}
+
+The seventh equation uses these displayed abbreviations, all expanded
+in the delivered AST and bit packet:
+\begin{align*}
+ h&=Q(b),& n_z&=P(b,z),&m_z&=A(b,z),\\
+ R_b(x,y)&=p_\varepsilon(P(y,P(x,b)),V(b,d)),&&&
+\end{align*}
+\begin{align*}
+ r&=R_b(h,n_z),& e&=p_E(m_z,n_z),&f&=p_E(m_z,z),\\
+ a&=p_E(W(x,d),x),& b_0&=p_E(x,h),&c&=R_b(x,y),\\
+ u&=p_E(y,h),&v&=R_b(P(b,y),y).&&
+\end{align*}
+Here $b$ is the descriptor variable, while $b_0$ names a Boolean
+predicate value.  Define the Boolean terms
+\begin{align*}
+ K&=N(c,N(a,N(d,b_0))),\\
+ H&=N\bigl(N(N(d,u),K),N(u,v)\bigr),\\
+ B^-&=N\bigl(r,N(d,N(e,N(d,f)))\bigr),\\
+ F(d,r,e,f,a,b_0,c,u,v)&=N(B^-,N(d,H)).
+\end{align*}
+The seventh equation is exactly
+\begin{equation}
+             d=F(d,r,e,f,a,b_0,c,u,v).
+ \label{eq:e667-closure}
+\end{equation}
+The designated ground equality whose derivability is searched for is
+\begin{equation}
+                         N(d,d)=d.
+ \label{eq:e667-query}
+\end{equation}
+The inherited $\mathcal E_{692}$ consists of these seven equations
+together with
+\begin{equation}
+                         d=N(d,N(d,d)).
+ \label{eq:e667-deleted}
+\end{equation}
+This additional equation has six term nodes and states $d=1$ once
+Sh1 is available.
+
+\subsection{The truth-forcing argument survives the multiplexer}
+
+\paragraph{Boolean lemma.}
+In every Boolean algebra, treating all nine arguments independently,
+\begin{equation}
+ \neg d\wedge F(d,r,e,f,a,b_0,c,u,v)=\neg d\wedge r.
+ \label{eq:e667-cofactor}
+\end{equation}
+In particular, $r=1$ and $d=F$ imply $d=1$.
+
+\paragraph{Proof.}
+At formal argument $d=0$, every subterm $N(d,t)$ is $1$.
+Consequently $B^-=N(r,1)=\neg r$ and
+$F=N(\neg r,1)=r$, regardless of the internal value of $H$.
+For an arbitrary Boolean algebra, project evaluated Boolean values
+to the principal interval $[0,\neg d]$ by $t\mapsto t\wedge\neg d$.
+This is a Boolean homomorphism when the interval uses its relative
+complement and top.  It sends $d$ to zero, so the preceding
+calculation proves~\eqref{eq:e667-cofactor}.
+If $r=1$ and $d=F$, its left side is zero and its right side is
+$\neg d$, proving $d=1$.
+Only the already evaluated Boolean values are projected;
+there is no assertion that $P,V,W$ commute with this projection.
+\hfill$\square$
+
+An alternative short argument for the only required case $r=1$
+is that $B^-=\neg N(d,X)=d\wedge X$ for
+$X=N(e,N(d,f))$.  Hence $B^-\leq d$, and
+$F=\neg(B^-\wedge N(d,H))\geq\neg d$.  The equality $d=F$
+then implies $\neg d\leq d$, which forces $d=1$.
+
+\paragraph{A concrete ground instance supplies $r=1$.}
+Let
+\[
+                  k=P(d,P(d,d)),\qquad b_*=P(k,d).
+\]
+The NAND-class equation gives, for every native argument $s$,
+\[
+ p_\varepsilon(s,k)
+ =N\bigl(p_\varepsilon(s,d),
+           N(p_\varepsilon(s,d),p_\varepsilon(s,d))\bigr)=1.
+\]
+The last equality is $t\mathbin{\mathrm{NAND}}\neg t=1$.
+It imposes no assumption on the class denoted by $d$.
+By the native head equation, $V(b_*,d)=k$.  In the closure
+equation substitute $b=b_*$ and $x=y=z=d$.  Its first predicate is
+\[
+ r=p_\varepsilon(P(P(b_*,d),P(Q(b_*),b_*)),k)=1.
+\]
+Applying the Boolean lemma proves $d=1$ and therefore the omitted
+equation~\eqref{eq:e667-deleted}.
+
+\paragraph{Same-model theorem.}
+Every $\mathcal E_{667}$-model is an $\mathcal E_{692}$-model,
+and conversely.  The forward inclusion is the derivation just
+given; the reverse inclusion deletes an axiom.  Equational
+soundness and completeness yield identical equational consequences,
+including identical derivability status for~\eqref{eq:e667-query}.
+This proves~\eqref{eq:e667-models}.  The new argument is ordinary
+mathematics formalizable in ZFC.  The artifact contains its explicit
+ground substitution and its Boolean identity, not a newly emitted
+rewrite derivation expanding every use of the published Sh1 theorem.
+
+\subsection{Consistency calibration and the scope of the inherited proof}
+
+The inherited $\mathcal E_{692}$ calibration is an ordinary model
+construction over the equality-free empty-input closure schema
+(raw EPSC).  Its full proof is retained as
+\texttt{reference/e692\_compatibility.tex}.  The crucial points are
+as follows.
+
+After a homomorphism from the nontrivial Boolean reduct to two
+truth values, define $E(x,y)$ by the resulting value of $p_E(x,y)$
+and class incidence by that of $p_\varepsilon$.
+The native equations retain literal equality on the original carrier.
+The binder equation implies
+\[
+ \varepsilon(s,Q(a))\quad\Longleftrightarrow\quad
+        \exists z\,\neg\varepsilon(P(z,s),a),
+\]
+with the selected $W(s,a)$ realizing a false instance whenever
+one exists.  To see this, write the selected truth value as $w$
+and the arbitrary one as $u_z$.  The equations
+$q=\neg(w\wedge u_z)$ for all $z$, including the selected value,
+give $q=\neg w$ and $w\leq u_z$ for every $z$.
+
+Selectors $\nu_0=d$, $\nu_{i+1}=Q(\nu_i)$ and the two native
+stack equations recover every finite coordinate.  The class constructor
+$A$ represents atomic membership, $P$ represents NAND, and
+$Q(P(a,a))$ represents ordinary existential quantification.
+Thus every finite pure-membership formula with finitely many parameters
+has a descriptor $b$.  The head code is built before that descriptor,
+with the two relation variables placed before it on the stack.
+
+Once $d=1$ is established, the closure equation is exactly
+\[
+ (r\wedge e\wedge\neg f)
+ \ \lor\
+ \bigl((a\lor\neg c\lor u)
+       \wedge(\neg b_0\lor\neg c\lor u)
+       \wedge(\neg u\lor v)\bigr).
+\]
+For a locally subset-bounded represented relation, a bound at $h=Q(b)$
+makes one bad-branch instance false.  All hull instances must then hold.
+They give closure at empty inputs and at members of $h$, together
+with unrestricted relation support for every member of $h$.
+These are exactly raw EPSC.
+
+Conversely, the inherited proof starts with a countable raw-EPSC
+structure and takes a free tagged carrier with constructors $P,A,Q$.
+The integer weights
+\[
+ w(Q(b))=w(b)+1,\quad
+ w(P(b,z))=w(b)+w(z)+2,\quad
+ w(A(b,z))=w(b)+w(z)+3
+\]
+order raw-value choices: a hull or unbounded input at $Q(b)$,
+a relation witness at $P(b,z)$, then a separating member at $A(b,z)$.
+Descriptor parameters descend to proper subtrees, so the choices
+are well founded.  The independent class and selector projections
+respect their own syntactic recursions.  The class $d$ is false,
+leaving $W(x,d)$ free to select a member of every nonempty raw object.
+Transporting a countably infinite Boolean algebra to the carrier,
+with its top at $d$, supplies the separating equational model.
+
+The raw-EPSC/ZFC comparison is the expressly inherited ordinary
+calibration from ProveIt's Sources 14 and 08; Source 14 proves the
+EPSC/PSC comparison and records the hereditary interpretation and
+Foundation/Choice dependencies.\footnote{Pinned source dossier:
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/ce192939372ac7944fe2a0208c68a96d49fb5e3b/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-146-source-14.md}.
+A retrieved snapshot is retained in \texttt{reference/raw\_epsc\_source14.md}.}
+Composing that calibration with the new same-model theorem yields
+\begin{equation}
+ \mathrm{ZFC}\vdash
+ \left(\mathcal E_{667}\nvdash N(d,d)=d
+          \ \longleftrightarrow\ \operatorname{Con}(\mathrm{ZFC})\right).
+ \label{eq:e667-calibration}
+\end{equation}
+The present work does not claim a new formal-kernel verification of
+the entire inherited interpretation, a PA proof-code transformer,
+or a binary TM implementing this packet.
+
+\subsection{Two tempting signature identifications fail}
+
+The successful identification of structural constructors with raw
+closure witnesses should not be extrapolated without a compatibility
+proof.  Two further identifications have direct obstructions.
+
+\paragraph{Identifying $W$ with $V$ forces a common member.}
+Assume a separating model of the theory obtained by this identification
+and pass to its two-valued raw-EPSC interpretation.  Put
+\[
+ i=Q(d),\qquad j=Q(Q(d)),\qquad a=Q(A(i,j)).
+\]
+For arbitrary $x,z,s$, one binder expansion and the stack identities give
+\begin{align*}
+ \varepsilon(P(z,P(x,s)),a)
+ &\Longleftrightarrow
+   \exists w\,\neg E(z,x)\\
+ &\Longleftrightarrow\neg E(z,x).
+\end{align*}
+Nonemptiness of the carrier justifies the second equivalence.
+Therefore the outer complemented binder, when applied to environment
+$P(x,s)$ and class $a$, must choose a member of $x$ whenever $x$
+is nonempty.  But $W=V$ and the native tail equation give
+\[
+ W(P(x,s),a)=V(P(x,s),Q(A(i,j)))=V(s,A(i,j)).
+\]
+For fixed $s$ the selected object is independent of $x$, so it must
+belong to \emph{every} nonempty raw object.
+
+Raw EPSC has disjoint nonempty objects: its established bootstrap
+gives an empty object $e$, a nonempty power object of $e$, and
+full-profile singleton objects for each.  The first singleton contains
+only empty-profile objects; the second contains only nonempty-profile
+objects.  Each contains its defining object, so both are nonempty
+and they are disjoint.  No common member exists.  This contradiction
+shows that the $W=V$ specialization has no separating model and its
+designated equation is derivable.  The obstruction arises from the
+native tail equation, not from an unsuccessful finite search.
+
+\paragraph{Identifying $p_E$ with $p_\varepsilon$ creates a universal set.}
+The ground class $k=P(d,P(d,d))$ used above has
+$p_\varepsilon(s,k)=1$ for every $s$.  If the two predicate operations
+are identical, the raw relation therefore satisfies $E(s,k)$ for
+every $s$.  Such a universal object is incompatible with raw EPSC
+by a direct two-instance argument.
+
+First the constantly false relation has a locally bounded output
+class, and EPSC support produces an empty object $e$.
+Next use the relation $R(x,y)\Longleftrightarrow\neg E(y,y)$.
+Its outputs are locally subset-bounded by the universal object $k$.
+EPSC closure at $e$ gives
+$\neg E(y,y)\Rightarrow E(y,h)$; support gives the converse.
+Substitution $y=h$ yields $E(h,h)\Longleftrightarrow\neg E(h,h)$.
+Thus this identification also destroys the separating models.
+These arguments explain why the remaining native witness and predicate
+symbols cannot simply be merged with their nearest apparent analogues.
+
+\subsection{Exact accounting, verification, and next implementation boundary}
+
+The seven equation-node counts are
+\[
+                   14,6,9,12,12,17,80,
+\]
+whose sum is 150.  Nine operations and four equation-local variables
+still require four-bit term opcodes.  The complete count is
+\[
+ \underbrace{8+3\cdot9+8}_{43\text{ header}}
+ +\underbrace{7+1+4\cdot150}_{608\text{ equations}}
+ +\underbrace{4\cdot4}_{16\text{ endpoints}}
+ =\boxed{667\text{ bits}}.
+\]
+The exact bit-character SHA-256, excluding the final newline, is
+\begin{center}\scriptsize\ttfamily
+1075854399e1c3428e1c178b51bac47e428b8ef010b59e0312a3c06d409e55b8.
+\end{center}
+Packed transport occupies 84 bytes, with five trailing zero padding
+bits.  Those padding bits are not part of the logical packet.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Packet & Operations & Equations & Equation nodes & Logical bits\\
+\hline
+Inherited $\mathcal E_{688}$ & 12 & 7 & 153 & 688\\
+Inherited $\mathcal E_{692}$ & 9 & 8 & 156 & 692\\
+Combined $\mathcal E_{667}$ & 9 & 7 & 150 & 667\\
+Native-query $\mathcal E_{663}$ & 9 & 7 & 150 & 663\\
+\hline
+\end{tabular}
+\end{center}
+
+Run \texttt{python3 -B build\_e667.py} in this companion directory.
+The independent builder first reconstructs the exact inherited
+$\mathcal E_{688}$ and $\mathcal E_{692}$ packets and checks their
+literal supplied bits and pinned hashes.  It then verifies that
+$\mathcal E_{667}$ deletes only the indicated truth equation,
+round-trips the full new packet, rejects all 667 strict truncations
+and three malformed controls, and checks all 512 Boolean assignments
+for the cofactor and truth-forcing implication.  A further 256
+assignments check the closure translation after $d=1$.
+The finite checks establish transcription and Boolean identities;
+the proof above handles arbitrary Boolean algebras and unbounded models.
+
+The complete derivability target admits fair enumeration of ground
+contextual rewrites in either orientation.  A certificate must supply
+ground values for the union of variables on both sides of each used
+equation, including variables absent from the side being matched.
+Taking the least congruence of all such ground instances gives the
+usual countable separating ground-term algebra whenever the two
+endpoints are not connected.  The constant $d$ ensures that the
+ground-term domain is nonempty.
+
+The unresolved implementation cost is substantial.  The repository's
+separate equational-generator experiment reports a 299-working-state
+control, before a literal ZFC query and its writer, with a 171-state
+isolated emitter; those are a different input basis and are not a
+compilation of $\mathcal E_{667}$.\footnote{Pinned cost report:
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/Computability/BusyBeaver/Research/ZFC/equational_generator_cost.md}.}
+A competitive next construction therefore needs a smaller interpreter
+architecture in addition to the compact axioms.  E667 is an exact,
+calibrated input for that work; the main machine construction in this
+report has its own independently counted finite table.
+
+\subsection{A further reduction to 663 bits: query native noncollapse}
+\label{sec:e663}
+
+The truth-value query $N(d,d)=d$ is not the shortest available ground
+query with the required calibration.  Keep all seven equations of
+$\mathcal E_{667}$ and the complete ordered signature unchanged, but
+replace the designated query by
+\begin{equation}
+                            Q(d)=d.
+ \label{eq:e663-query}
+\end{equation}
+The resulting complete consistency packet has \textbf{663 bits}.
+This reduction uses the native coordinate equations, independently of
+the Boolean truth-forcing optimization.
+
+\paragraph{Query-equivalence theorem.}
+For every algebra satisfying the seven equations, each of
+$Q(d)=d$ and $N(d,d)=d$ holds if and only if its carrier is a
+singleton.  Consequently the two queries have the same equational
+derivability status from the seven equations.
+
+\paragraph{Proof.}
+Suppose $Q(d)=d$.  The native head and tail equations, with the
+tail index $j=d$, give for every $x,s$
+\[
+ x=V(P(x,s),d)=V(P(x,s),Q(d))=V(s,d).
+\]
+Fixing $s=d$ shows that every element $x$ equals $V(d,d)$, so the
+carrier is a singleton.  No Boolean identity or semantic quotient
+is used in this implication.
+
+Sh1 makes $N$ NAND in a Boolean algebra on this same carrier.
+If $N(d,d)=d$, then $\neg d=d$, which implies
+$0=d\wedge\neg d=d$ and $1=d\vee\neg d=d$.
+Thus $0=1$ and the carrier is again a singleton.  Conversely both
+equalities hold in every singleton algebra.  The two equalities
+therefore hold in exactly the same models of the seven equations.
+Equational soundness and completeness give equivalence of their
+derivability.  Equivalently, use the countable ground-term congruence
+model to witness either nonderivability; the constant $d$ guarantees
+that this model is nonempty.
+\hfill$\square$
+
+The E667 consistency theorem therefore gives, with its same inherited
+ordinary raw-EPSC/ZFC calibration,
+\[
+ \mathrm{ZFC}\vdash
+ \left(\mathcal E_{667}\nvdash Q(d)=d
+              \ \longleftrightarrow\ \operatorname{Con}(\mathrm{ZFC})\right).
+\]
+The label $\mathcal E_{663}$ denotes this new \emph{packet}; the
+seven-equation axiom set itself is unchanged.  This distinction matters
+because the four-bit saving is in the encoded goal, not the axioms.
+
+The header still has 43 bits and the equations have 608 bits.  The new
+endpoints have three term nodes, so they require 12 rather than 16 bits:
+\[
+                       43+608+12=\boxed{663\text{ bits}}.
+\]
+Packed transport occupies 83 bytes, with one trailing zero padding bit.
+The exact bit-character SHA-256, excluding the final newline, is
+\begin{center}\scriptsize\ttfamily
+6c3b72c39c81aa5bbf028e654c8056e7e86376cdeecdd56943e5c3e23de1a215.
+\end{center}
+Run \texttt{python3 -B e663/build\_e663.py} from the E667 companion
+directory.  It reconstructs the pinned E667 packet, verifies that the
+header and all axiom bits are literally unchanged, and emits
+\texttt{E663.bits}, \texttt{E663.bin}, \texttt{E663.bitlength},
+\texttt{E663.json}, and an exact verification receipt.
+All 663 strict truncations and three malformed controls are rejected
+by the independent decoder.
+
+\paragraph{A limited endpoint optimum.}
+The signature has exactly one constant, $d$.  Thus its only one-node
+ground term is $d$.  Two syntactically distinct ground endpoints must
+have at least three nodes in total: one endpoint has at least two
+nodes, and the other has at least one.  The pair $Q(d),d$ attains this
+bound.  Since every node costs four bits in the unchanged codec,
+\textbf{12 endpoint bits are optimal among distinct ground endpoint
+pairs in this fixed signature and codec}.  This is not a claim that
+663 total bits are globally minimal: the axioms, signature, codec,
+or interpreter could be redesigned.  No machine-state bound is
+inferred from the shorter query.

@@ -1,0 +1,81 @@
+{
+  "status": "RESTRICTED_SEARCH_RECORD_NO_LOWER_BOUND",
+  "baseline236_sha256": "ff059535876bc9e1e1e63174ebfd1c10a91c1a818ba0c3f8c4ef2ac51a3cfcc3",
+  "profile_sha256": "54c566056546fdc1ecfc3e34d8f1423bd8fd5157771202374d7ecef3d5556c2d",
+  "profile_windows": 28926,
+  "radius": 5,
+  "old_trace_limit": 65,
+  "new_trace_limit": 65,
+  "completed_negative_families": [
+    {
+      "family": "Two independently neutral helper edits, one repairing each retained row",
+      "pairs": 27730,
+      "row_checks": 52132400,
+      "combined_helper_checks": 632715870,
+      "hits": 0,
+      "source": "two_helpers.cpp",
+      "log": "two_helpers.log",
+      "source_sha256": "5abf584efd79015255219f2775dd19571a3b73dfc3cca72105b83923656d467e",
+      "log_sha256": "39d2c1a0c5923f8b8d56460545b74a71463d8c2c41ff3baf076cb3095fb3c423"
+    },
+    {
+      "family": "Staged two-helper repair on pairs with an identical old transition",
+      "pairs": 228,
+      "row_checks": 428640,
+      "one_helper_checks": 6880389,
+      "two_helper_checks": 165399162,
+      "hits": 0,
+      "source": "staged_helpers.cpp",
+      "log": "staged_helpers.log",
+      "source_sha256": "7a92f838df80750ca72ba1f5d266235c68be50966533742f5eb0f9baa88ca5a6",
+      "log_sha256": "199554e59b59ddbc3683a47a4692a83a20f3d900fe8753a3ebfd751da706dc8f"
+    },
+    {
+      "family": "One-bit incoming tape tag and one neutral helper",
+      "oriented_feasible_pairs": 48581,
+      "row_checks": 91332280,
+      "helper_checks": 1069846232,
+      "hits": 0,
+      "source": "tag_helpers.cpp",
+      "log": "tag_helpers.log",
+      "source_sha256": "2a12fcfb66bc0c767a6397a8dec1a204ff3fa196edd632f60ffa645125791f73",
+      "log_sha256": "30b2331a07a342c70d914133a495aee08a9a8b9cb4a39bd7e483f3a05ea9ba63"
+    },
+    {
+      "family": "Head offset plus or minus two and one neutral helper",
+      "oriented_feasible_pairs": 47705,
+      "row_checks": 89685400,
+      "helper_checks": 1210473374,
+      "hits": 0,
+      "source": "offset_helpers.cpp",
+      "log": "offset_helpers.log",
+      "source_sha256": "d6b1f2e006579e7657d52834a8e93953db69df3f6b5558e222afdb5df56733e1",
+      "log_sha256": "40adb877484c3780aad71cc248c842c767e51c8cfef428e46cc3e8983e904d74"
+    }
+  ],
+  "new_discovery_tools": {
+    "tag_scan.py": "Three-step tape-preserving left-neighbor folds, using inductive constant-bit facts; recovers original182/223 fold as regression.",
+    "open_tape_scan.cpp": "Precomputes short symbolic replacement actions for individual old rows, then intersects their domains to find candidate pair folds; forbids executing merged states inside replacement blocks. Candidate hits receive a separate generic proof."
+  },
+  "negative_scope": "These finite discovery families establish neither a machine-size lower bound nor completeness of the method. The final235 mathematical claim does not rely on a negative search result.",
+  "rejected_constructions": [
+    {
+      "description": "Snapshot0217a9f534ad admits an exact86/187 local fold, but the basis corrupts the inherited182/223 sharing after source reassociation. Unfolding182 restores a left0 entry to187, contradicting the proposed left1 tag guard.",
+      "receipt": "minimal_fold86_check.json"
+    },
+    {
+      "description": "A proposed six-rotation basis with R105/123 preserves the abstract source CFG but changes required two-bit context at hardware state81. Sourceleaf195 CI7 executes the wrong operation; blank startup also first diverges at step12742.",
+      "table_sha256": "79a28f4e9016af2d520a4dbeffd39b8f4b1904ed11a48f15f2f2fdbbbc70fa4b",
+      "candidate_sha256": "60ac51056b89792febb672b07a9ddcac52ac418b0b485192c02a1952ad6eac0c",
+      "receipt": "leaf195_finite.json"
+    }
+  ],
+  "accepted_local_construction": {
+    "basis236_sha256": "014133f39c409277c239fa327db17800b4e886a5c7a5a73034ed87e4978820aa",
+    "candidate235_sha256": "d017abe46023a4154085a2fe2c04c8d66bbbec53b81d193d520ad697d171cbd4",
+    "local_proof": "fold235_independent.json",
+    "generic_proof": "candidate235_seven_rotations74.proof.json",
+    "startup": "startup235.json",
+    "scope": "All-tape local simulation plus exact prescribed finite startup; source and unbounded runtime verification are separate."
+  }
+}

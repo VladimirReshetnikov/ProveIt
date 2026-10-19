@@ -1,0 +1,83 @@
+\subsection{A further reduction to 663 bits: query native noncollapse}
+\label{sec:e663}
+
+The truth-value query $N(d,d)=d$ is not the shortest available ground
+query with the required calibration.  Keep all seven equations of
+$\mathcal E_{667}$ and the complete ordered signature unchanged, but
+replace the designated query by
+\begin{equation}
+                            Q(d)=d.
+ \label{eq:e663-query}
+\end{equation}
+The resulting complete consistency packet has \textbf{663 bits}.
+This reduction uses the native coordinate equations, independently of
+the Boolean truth-forcing optimization.
+
+\paragraph{Query-equivalence theorem.}
+For every algebra satisfying the seven equations, each of
+$Q(d)=d$ and $N(d,d)=d$ holds if and only if its carrier is a
+singleton.  Consequently the two queries have the same equational
+derivability status from the seven equations.
+
+\paragraph{Proof.}
+Suppose $Q(d)=d$.  The native head and tail equations, with the
+tail index $j=d$, give for every $x,s$
+\[
+ x=V(P(x,s),d)=V(P(x,s),Q(d))=V(s,d).
+\]
+Fixing $s=d$ shows that every element $x$ equals $V(d,d)$, so the
+carrier is a singleton.  No Boolean identity or semantic quotient
+is used in this implication.
+
+Sh1 makes $N$ NAND in a Boolean algebra on this same carrier.
+If $N(d,d)=d$, then $\neg d=d$, which implies
+$0=d\wedge\neg d=d$ and $1=d\vee\neg d=d$.
+Thus $0=1$ and the carrier is again a singleton.  Conversely both
+equalities hold in every singleton algebra.  The two equalities
+therefore hold in exactly the same models of the seven equations.
+Equational soundness and completeness give equivalence of their
+derivability.  Equivalently, use the countable ground-term congruence
+model to witness either nonderivability; the constant $d$ guarantees
+that this model is nonempty.
+\hfill$\square$
+
+The E667 consistency theorem therefore gives, with its same inherited
+ordinary raw-EPSC/ZFC calibration,
+\[
+ \mathrm{ZFC}\vdash
+ \left(\mathcal E_{667}\nvdash Q(d)=d
+              \ \longleftrightarrow\ \operatorname{Con}(\mathrm{ZFC})\right).
+\]
+The label $\mathcal E_{663}$ denotes this new \emph{packet}; the
+seven-equation axiom set itself is unchanged.  This distinction matters
+because the four-bit saving is in the encoded goal, not the axioms.
+
+The header still has 43 bits and the equations have 608 bits.  The new
+endpoints have three term nodes, so they require 12 rather than 16 bits:
+\[
+                       43+608+12=\boxed{663\text{ bits}}.
+\]
+Packed transport occupies 83 bytes, with one trailing zero padding bit.
+The exact bit-character SHA-256, excluding the final newline, is
+\begin{center}\scriptsize\ttfamily
+6c3b72c39c81aa5bbf028e654c8056e7e86376cdeecdd56943e5c3e23de1a215.
+\end{center}
+Run \texttt{python3 -B e663/build\_e663.py} from the E667 companion
+directory.  It reconstructs the pinned E667 packet, verifies that the
+header and all axiom bits are literally unchanged, and emits
+\texttt{E663.bits}, \texttt{E663.bin}, \texttt{E663.bitlength},
+\texttt{E663.json}, and an exact verification receipt.
+All 663 strict truncations and three malformed controls are rejected
+by the independent decoder.
+
+\paragraph{A limited endpoint optimum.}
+The signature has exactly one constant, $d$.  Thus its only one-node
+ground term is $d$.  Two syntactically distinct ground endpoints must
+have at least three nodes in total: one endpoint has at least two
+nodes, and the other has at least one.  The pair $Q(d),d$ attains this
+bound.  Since every node costs four bits in the unchanged codec,
+\textbf{12 endpoint bits are optimal among distinct ground endpoint
+pairs in this fixed signature and codec}.  This is not a claim that
+663 total bits are globally minimal: the axioms, signature, codec,
+or interpreter could be redesigned.  No machine-state bound is
+inferred from the shorter query.
