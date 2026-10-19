@@ -8,6 +8,9 @@ dispatcher 84, halt 238); [zfc_combined238_old.tm](zfc_combined238_old.tm) is th
 same machine with inherited labels (start 95, dispatcher 96, halt 254), and
 [renumbering.json](renumbering.json) is the bijection.
 
+Batch 173 adds a further fold of this table to the
+[237-state candidate](../candidate-composed237/README.md).
+
 It was found during the intake of batch 172 by combining the two **different**
 239-state constructions delivered in that batch. Its status is that of those
 constructions: an ordinary mathematical argument with executable, unbounded

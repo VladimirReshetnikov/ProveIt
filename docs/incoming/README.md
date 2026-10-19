@@ -12,6 +12,14 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Queue status after batch 173
+
+Batch 173 imported the six packages of `1cba633ec3` and `ec480205a1` as Sources
+104–109 of [ZFC closure kernels](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-173.md)
+and retired them in placement `197ce3dc67`. Five repeat the 238-state composition;
+Source 106 adds the [237-state candidate](../../Computability/BusyBeaver/Research/ZFC/candidate-composed237/README.md).
+No archive is waiting.
+
 ## Queue status after batch 172
 
 Batch 172 imported the three 239-state packages of `83fd358548` as Sources
@@ -843,6 +851,7 @@ ProveIt-era batches (from this directory):
 | 170 | One manuscript from `e5c2b3337e`: placement `0841b55a14` adds source 80, now 80 sources and still 290 reports. 79 originals = 61 new + 7 existing aliases + 5 batch aliases + 6 archive-only; recovery passes 79/73/67. Only this ZIP retired; twenty older archives remain. | `cc73ddc7d9`: source rotation enables the 72/90 fold, giving an ordinary 240-state candidate; dense-order obstruction and full-schema equivalence retained. Delivered bytes unchanged. | `952a23ee0b` | All ten fresh substantive jobs pass. Both runtimes cover 8,386 cases: rotated 241 has 2,318,435 rules/482 rows; final 240 has 2,322,575 rules/480 rows and 409,691-step startup. No supplied manifest audit, nested suite or search rerun. Complete 240 Lean consistency and internal PA endpoints remain open; compensated244 is the closed external baseline. Catalogue PDF rebuilt separately. |
 | 171 | `950e2f0ff6`: twenty older archives imported as sources 81–100; all ZIPs retired. 8,564 members = 5,999 new ancillary files + 2,384 exact aliases + 181 archive-only originals. | `7cbe05d7c0`: complete per-source reconciliation, attribution, obsolete-count corrections and open scopes; unchanged delivered bytes. | this commit | All 38 selected jobs pass after one AST compatibility retry; first failure retained. Recovery passes 8,564 originals and 8,383 ancillary aliases. No new machine record or Lean/PA endpoint. Catalogue PDF rebuilt and visually checked. |
 | 172 | Three manuscripts from `83fd358548`: placement `07194e5b4d` adds sources 101–103 to `set-theory/zfc-closure-kernels`, now 103 sources and still 290 reports. 562 members = 377 new files + 175 exact aliases + 10 archive-only; all three ZIPs retired. | `a2cd96c44f`: per-source notes; Sources 101/102 are one 239 table found twice, Source 103 a different 239 table; intake finding: their composition is a 238-state candidate, published in `754ed766b5`. | this commit | Combined 238: direct unbounded runtime (8,386 cases, 2,255,513 rules), exact 409,835-step startup, second route by guarded fold + guard; positive controls reproduce published counts, negative control fails. No Lean/PA endpoint. Catalogue PDF rebuilt and checked visually. |
+| 173 | Six manuscripts from `1cba633ec3` and `ec480205a1`: placement `197ce3dc67` adds sources 104–109, now 109 sources and still 290 reports. 1,162 members = 358 new files + 783 exact aliases + 21 archive-only; all six ZIPs retired. | `3c539e3f0d`: per-source notes; five packages give the batch-172 238 table, Source 106 a 237 fold, published in `f6c9b40dc1`; no combination below 237. | this commit | 237 runtime replays (2,261,369 rules); discovery and all-tape fold searches on the 237 table and its variants find nothing; Source 106's discovery receipt reproduced exactly. No Lean/PA endpoint. Catalogue PDF rebuilt and checked visually. |
 
 
 Batches 99 to 113 are the fifteen clusters into which the intake triaged

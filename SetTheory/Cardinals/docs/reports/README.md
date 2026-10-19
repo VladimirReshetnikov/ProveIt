@@ -3070,3 +3070,16 @@ intake composed the two savings into an ordinary
 It passes the direct unbounded runtime check and an exact blank startup, plus a
 second, guarded-fold route, and a negative control fails as expected. None of the
 239- or 238-state tables has a Lean or PA endpoint.
+
+
+Batch 173 imports six 19 October packages as
+[Sources 104–109](set-theory/zfc-closure-kernels/intake-173.md), giving this host
+**109 sources** and leaving the collection at **290 reports**. Placement
+`197ce3dc67` retires all six ZIPs and accounts for all 1,162 members: 358 new
+unchanged files, 783 exact aliases and 21 archive-only manuscript/PDF/README files.
+Five packages deliver the same 238-state table, the batch-172 composition. Source 106
+folds state 235 into 98 to give the
+[237-state candidate](../../../../Computability/BusyBeaver/Research/ZFC/candidate-composed237/README.md),
+which replays independently. No combination of the delivered ideas goes below 237,
+and further fold searches on the 237 table find nothing. No Lean or PA endpoint exists
+for these tables.

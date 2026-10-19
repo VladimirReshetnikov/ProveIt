@@ -38,8 +38,17 @@ equivalent to the corresponding consistency statements. Its nine probes and
 nine typed callers pass with zero warnings. The internal PA equivalence for
 this exact 240-state machine remains open. See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md).
 
-The smallest **ordinary** candidate is now the [**238-state machine**](candidate-combined238/README.md)
-of batch 172. Two independent 239-state savings were delivered that day. One is a
+The smallest **ordinary** candidate is now the [**237-state machine**](candidate-composed237/README.md)
+of batch 173 (Source 106). It takes the 238-state composition below and merges
+state 235 into 98, with a coordinated change to helper row `240/1`, proved for every
+initial tape. Its unbounded runtime proof replays independently (8,386 cases,
+2,261,369 rules, all 474 rows), and its blank startup takes 409,835 steps. None of the
+delivered ideas combines below 237. Further discovery and all-tape fold searches on
+the 237 table find nothing, and the remaining leads are source-level. See the
+[batch 173 reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-173.md).
+
+The [238-state machine](candidate-combined238/README.md) is the composition made in
+batch 172. Two independent 239-state savings were delivered that day. One is a
 delayed erasure: fold state 169 into 80 and change the shared helper return `91/1`;
 two packages found it independently. The other is a source boundary: reparenthesize
 the register source, repair the decoder, and split state 218. The two edit disjoint
@@ -2122,3 +2131,11 @@ three ZIPs were retired at placement `07194e5b4d`. The
 [recovery and replay guide](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-172-reproduction.md)
 records the exact verification scope. No Lean or PA endpoint is claimed for the 239-
 or 238-state tables.
+
+
+Batch 173 imports six 19 October packages as
+[Sources 104–109](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-173.md).
+Five of them deliver the same 238-state table, the batch-172 composition. Source 106
+adds the fold to the [237-state candidate](candidate-composed237/README.md). All six
+ZIPs were retired at placement `197ce3dc67`. No Lean or PA endpoint is claimed for the
+238- or 237-state tables.
