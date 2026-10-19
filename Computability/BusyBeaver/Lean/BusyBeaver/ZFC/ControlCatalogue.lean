@@ -186,6 +186,7 @@ theorem entry_at_crank (t : Tree) (P : List Bool) (i : Nat) (e : Edge) (d : Nat)
 inductive BT (α : Type) where
   | leaf
   | node (l : BT α) (x : α) (r : BT α)
+  deriving DecidableEq
 
 def evens {α : Type} : List α → List α
   | [] => []

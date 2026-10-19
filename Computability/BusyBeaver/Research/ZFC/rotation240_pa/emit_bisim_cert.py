@@ -63,7 +63,7 @@ def main(out_path):
         return "[" + ",".join(str(x) for x in v) + "]"
 
     lines = []
-    lines.append("import BusyBeaver.ZFC.ArithmeticControlBisim")
+    lines.append("import BusyBeaver.ZFC.PackedTables")
     lines.append("")
     lines.append("set_option autoImplicit false")
     lines.append("")
@@ -72,31 +72,46 @@ def main(out_path):
     lines.append("An offset segment bisimulation between the dag254 path program and Rotation240")
     lines.append("control catalogues: %d entries, %d with a nonzero offset. Entry 0 is the" % (len(entries), nonzero))
     lines.append("start pair.")
-    lines.append("The kernel re-checks every entry in `ControlBisimRotation240`.")
+    lines.append("Tables are packed into single natural-number literals (`PackedTables`): the")
+    lines.append("two control catalogues (36-bit rows) and the certificate (96-bit entries).")
+    lines.append("The row tables define the two interpreters; `ControlBisimRotation240`")
+    lines.append("re-checks every certificate entry.")
     lines.append("-/")
     lines.append("")
     lines.append("namespace SetTheory.BusyBeaver.ZFC.BisimCertRotation240")
-    lines.append("open ArithmeticControlBisim")
+    lines.append("open ArithmeticControlBisim PackedTables")
     lines.append("")
     lines.append("def fuel : Nat := %d" % fuel)
     lines.append("def size : Nat := %d" % len(entries))
     lines.append("")
-    PART = 400
-    parts = []
-    for k in range(0, len(entries), PART):
-        name = "part%02d" % (k // PART)
-        parts.append(name)
-        lines.append("set_option maxRecDepth 200000 in")
-        lines.append("set_option maxHeartbeats 0 in")
-        lines.append("def %s : List Entry := [" % name)
-        body = []
-        for (i, j, al, be, s0, s1) in entries[k:k + PART]:
-            body.append("  ⟨%d,%d,%s,%s,%d,%d⟩" % (i, j, vec(al), vec(be), s0, s1))
-        lines.append(",\n".join(body))
-        lines.append("]")
+    def pack_rows(rows):
+        n = 0
+        for k, (op, reg, n0, n1) in enumerate(rows):
+            assert op < 8 and reg < 9 and n0 < 8192 and n1 < 8192
+            n |= (op | reg << 3 | n0 << 7 | n1 << 20) << (36 * k)
+        return n
+
+    def pack_vec(v):
+        assert len(v) == 9 and all(0 <= x < 4 for x in v)
+        return sum(x << (2 * k) for k, x in enumerate(v))
+
+    def pack_entries(es):
+        n = 0
+        for k, (i, j, al, be, s0, s1) in enumerate(es):
+            assert i < 8192 and j < 8192 and s0 < 4096 and s1 < 4096
+            x = i | j << 13 | pack_vec(al) << 26 | pack_vec(be) << 44 | s0 << 62 | s1 << 74
+            n |= x << (96 * k)
+        return n
+
+    for name, value, count in (("tableD", pack_rows(A), len(A)), ("tableR", pack_rows(B), len(B)),
+                               ("certPacked", pack_entries(entries), len(entries))):
+        lines.append("/-- Packed table, %d slots. -/" % count)
+        lines.append("def %s : Nat :=" % name)
+        h = "%x" % value
+        lines.append("  0x" + h)
         lines.append("")
-    lines.append("def certList : List Entry :=")
-    lines.append("  " + " ++ ".join(parts))
+    lines.append("def countD : Nat := %d" % len(A))
+    lines.append("def countR : Nat := %d" % len(B))
     lines.append("")
     lines.append("end SetTheory.BusyBeaver.ZFC.BisimCertRotation240")
     with open(out_path, "w", encoding="utf-8", newline="\n") as f:
