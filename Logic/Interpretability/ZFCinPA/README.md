@@ -232,6 +232,11 @@ The [fresh internal-context check](r2ctx.md) now verifies the unchanged
 `R2Ctx` source with six theorem probes and ten typed callers. One source
 unused-variable warning remains. This scoped replay is separate from the
 upstream report of the complete R2/equivalence build.
+The subsequent [negation translation check](r2neg.md) verifies unchanged
+`R2Neg` with nine probes and twelve callers. Its Π₂ induction covers arbitrary
+internal formula codes in IΣ₂. One source unused-section-variable warning
+remains; the audit is warning-free. The full upstream chain is still being
+checked separately.
 
 ## Building
 
@@ -472,3 +477,9 @@ literal padded validator GIC instance is provable. Eight probes and ten typed
 callers passed with zero warnings after a two-line proof repair. The complete
 encoded native body and its universal closure remain open. This helper serves
 the unchanged logical source of the 241-state candidate as well.
+
+[Internal binder peeling](native_peel.md) now passes six probes and eight
+typed callers with zero warnings after one implicit-argument repair. It
+closes arbitrarily many internal binders while preserving the explicit
+interpretation and domain-side-formula hypotheses. The original failed run
+and the minimal correction are retained with the successful check.

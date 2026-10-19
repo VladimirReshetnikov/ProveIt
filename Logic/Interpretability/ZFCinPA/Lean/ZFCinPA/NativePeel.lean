@@ -129,7 +129,7 @@ theorem peel_step (hP : Good P) {j x : V} (hx : IsSemiformula ℒₛₑₜ 1 x)
   · intro y hy
     rcases mem_bitInsert_iff.mp hy with rfl | hy
     · simp
-    · rcases mem_bitInsert_iff.mp (domSet_succ_subset hd hds j y hy) with rfl | hy
+    · rcases mem_bitInsert_iff.mp (domSet_succ_subset hd hds j hy) with rfl | hy
       · simp
       · simp [hy]
 

@@ -1458,3 +1458,10 @@ limits. The last unit includes the explicit nested-pair seed and the existing
 fixed binary halting sentence; it imports no L2 scheduler or consistency
 sentence. Final W7 composition and fresh local checks of the upstream
 register/validator consistency chain remain separate work.
+The [reviewed final-composition draft](rotation240_pa/final-composition-plan/README.md)
+now fixes the literal sentence bridge and both ZF/ZFC endpoints. It has no
+fresh compiler result. Its accompanying inventory and dependency plans track
+the outstanding upstream checks. The subsequent R2Neg and NativePeel checks
+and three [register-program prerequisites](arithmetic_register_prerequisites.md)
+have passed. The first concrete control-bisimulation check hit the 4 GiB
+memory limit; its finite certificate is being split into smaller proof units.
