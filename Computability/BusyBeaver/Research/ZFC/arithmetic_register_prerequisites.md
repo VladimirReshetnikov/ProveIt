@@ -1,6 +1,6 @@
 # Internal register-program prerequisites
 
-Seven unchanged upstream modules now have fresh local Lean checks for the
+Eight unchanged upstream modules now have fresh local Lean checks for the
 register side of the 240-state PA comparison.
 
 [`ArithmeticDagRun`](../../Lean/BusyBeaver/ZFC/ArithmeticDagRun.lean) proves
@@ -82,9 +82,25 @@ because expected-type inference constrained a whole record before projecting
 its field. Two local intermediate equalities fix the audit without changing
 its statements or the proof source. Both attempts are retained in the
 [publication history](arithmetic-l2-axioms-eval254/history.json.gz).
-Identification with the named validator axiom operation is the next module.
+Identification with the named validator axiom operation is provided by the
+following module.
 
-All seven successful runs use one thread, 4,096 MiB and a shared 120-second source-and-audit
+[`ArithmeticL2Root254`](../../Lean/BusyBeaver/ZFC/ArithmeticL2Root254.lean)
+identifies that bundle with `gateValue` and `axStackValue`, and proves the
+exact dispatch, fetch and read effects. Its
+[actual check](results/arithmetic-l2-root254-verification.json) passes four
+probes and four typed callers with zero warnings, in 3.859 and 1.742 seconds.
+The source retains its 8,192 recursion and 4,000,000 heartbeat limits; the
+audit uses defaults. The guard selects 54 project prerequisites from the
+checked evaluator and historical enumerator-step result. That older result
+has no recorded shared timeout or modern pre-audit object capture; these
+limitations and its alternative same-source Cantor object are disclosed in
+the [publication](results/arithmetic-l2-root254-publication.json). The new
+check selects the evaluator's Cantor object and applies the current policy.
+The one-step scheduler theorem is in the following module, despite the
+broader description in this source's header.
+
+All eight successful runs use one thread, 4,096 MiB and a shared 120-second source-and-audit
 deadline. The first two guards select 35 and 37 exact project prerequisites,
 respectively, from already checked parents, with three external source/object
 boundaries and Init/Omega. Inputs, first providers and fresh objects are
@@ -95,7 +111,7 @@ dependency cache.
 The [DagRun publication](results/arithmetic-dag-run-publication.json) and
 [DagControl publication](results/dag-control254-publication.json) preserve
 the source bindings, audits, guards, logs and author history. These are
-prerequisites of the remaining axiom-evaluation and scheduler checks. The
+prerequisites of the remaining scheduler checks. The
 [final PA composition](rotation240_pa/final-composition-plan/README.md)
 still requires the remaining register and validator dependencies and its
 own successful compilation.

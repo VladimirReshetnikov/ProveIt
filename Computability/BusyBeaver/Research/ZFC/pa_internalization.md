@@ -1463,10 +1463,12 @@ now fixes the literal sentence bridge and both ZF/ZFC endpoints. It has no
 fresh compiler result. Its accompanying inventory and dependency plans track
 the outstanding upstream checks. The subsequent R2Neg, R2Quant, R2Main, R2Gic,
 NativePeel and
-[internal renaming/substitution](../../../../SetTheory/BoundedConsistency/internal_soundness_check.md)
-checks and seven [register-program prerequisites](arithmetic_register_prerequisites.md)
+[internal renaming/substitution](../../../../SetTheory/BoundedConsistency/internal_soundness_check.md),
+[coded-derivation soundness](../../../../SetTheory/BoundedConsistency/coded_derivation_check.md)
+and [compactness/completeness](../../../../Logic/FirstOrder/checked_interfaces.md)
+checks and eight [register-program prerequisites](arithmetic_register_prerequisites.md)
 have passed. The first concrete control-bisimulation check hit the 4 GiB
 memory limit; [all 3,862 entries and the assembled equivalence](control_bisim_rotation240_split.md)
 now pass after splitting the certificate into 31 intervals, with the memory
-cap unchanged. These results close fourteen of the inventory's 88 missing
+cap unchanged. These results close eighteen of the inventory's 88 missing
 module checks; the final PA endpoint remains pending.
