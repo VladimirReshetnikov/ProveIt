@@ -1,0 +1,38 @@
+/-
+Exact noncontiguous source excerpts for reference, not a standalone Lean module.
+Source commit: 13ec39ed43148b1807f51ed6e6528e1c84659562
+Source path: Logic/FirstOrder/Lean/FirstOrder/Calculus.lean
+Source URL: https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/Logic/FirstOrder/Lean/FirstOrder/Calculus.lean
+Inherited material; see ../../licenses/LICENSE.ProveIt and ../CALIBRATION_INTERFACE.md.
+-/
+
+-- Upstream lines 27-55, verbatim:
+/-!
+The natural-deduction calculus.  Terms are variables only (the signature is
+purely relational), so quantifier instantiation substitutes a variable for
+de Bruijn 0 — which is just a renaming.
+-/
+
+inductive Prov : List Form → Form → Prop
+  | P_ass    : ∀ G a, a ∈ G → Prov G a
+  | P_impI   : ∀ G a b, Prov (a :: G) b → Prov G (fImp a b)
+  | P_impE   : ∀ G a b, Prov G (fImp a b) → Prov G a → Prov G b
+  | P_botE   : ∀ G a, Prov G fBot → Prov G a
+  | P_lem    : ∀ G a, Prov G (fOr a (fImp a fBot))
+  | P_andI   : ∀ G a b, Prov G a → Prov G b → Prov G (fAnd a b)
+  | P_andE1  : ∀ G a b, Prov G (fAnd a b) → Prov G a
+  | P_andE2  : ∀ G a b, Prov G (fAnd a b) → Prov G b
+  | P_orI1   : ∀ G a b, Prov G a → Prov G (fOr a b)
+  | P_orI2   : ∀ G a b, Prov G b → Prov G (fOr a b)
+  | P_orE    : ∀ G a b c, Prov G (fOr a b) → Prov (a :: G) c → Prov (b :: G) c →
+               Prov G c
+  | P_allI   : ∀ G a, Prov (G.map (rename Nat.succ)) a → Prov G (fAll a)
+  | P_allE   : ∀ G a k, Prov G (fAll a) → Prov G (rename (inst k) a)
+  | P_exI    : ∀ G a k, Prov G (rename (inst k) a) → Prov G (fEx a)
+  | P_exE    : ∀ G a c, Prov G (fEx a) →
+               Prov (a :: G.map (rename Nat.succ)) (rename Nat.succ c) → Prov G c
+  | P_eqRefl : ∀ G k, Prov G (fEq k k)
+  /-- Proper Leibniz: from `i = j` and `a[0:=i]` infer `a[0:=j]` (`a` is the
+  property with a hole at de Bruijn 0). Gives symmetry/transitivity/congruence. -/
+  | P_eqElim : ∀ G i j a,
+      Prov G (fEq i j) → Prov G (rename (inst i) a) → Prov G (rename (inst j) a)

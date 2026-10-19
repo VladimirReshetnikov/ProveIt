@@ -1,0 +1,83 @@
+\section{Independent source audit and the clean-frame bridge}
+\label{sec:source}
+
+The binary construction uses the boundary source with 6,455 leaf
+occurrences and 224 distinct source subtrees.  Its full control graph is
+equal to that of the calibrated Rotation240 source.  Besides replaying
+the inherited source certificate and exact extraction from the pinned Lean
+definitions, we independently verified this equality by dyadic intervals
+and direct transformations of path prefixes.
+
+For a binary word $p$ of length at most $64$, define
+\[
+ x(p)=\operatorname{value}(p)2^{64-|p|},\qquad
+ I(p)=[x(p),x(p)+2^{64-|p|}).
+\]
+The independent checker establishes that the ordered leaf intervals
+partition $[0,2^{64})$.  The leaf encountered by the zero-padded pointer
+$P$ is therefore the unique leaf $p$ for which $x(P)\in I(p)$.
+This provides a decoder independent of the inherited recursive tree
+walk.  All $13$ transformation stages are replayed through the direct
+prefix substitutions
+\[
+ (0,10,11)\longmapsto(00,01,1)
+\]
+or their inverse.  Each stage preserves all $8,385$ successor edges,
+including both decrement outcomes, and the unique halt descriptor.
+The complete source graph therefore gives a bisimulation for every
+natural register vector, by induction over the source instruction number.
+This argument includes the last two rotations crossing an explicit break;
+it requires no unverified general associativity rule.
+
+There is a separate interface issue because an instruction can produce
+a pointer $P$ shorter or longer than the next leaf path.  Let
+$F(P,R,A,g,h)$ denote the clean binary configuration with dispatcher
+state, head $h$, marker at $h-1$, the bits of $P$ followed by zeros,
+header at $h+64+g$, the physical encoding of the nine primary registers
+$R$, and a nonempty finite spare list $A$.  The exterior is zero.
+
+\paragraph{Clean-frame lemma.}
+If $|P|,|p|\leq64$ and $P0^\omega=p0^\omega$, then
+\[
+ F(P,R,A,g,h)=F(p,R,A,g,h)
+\]
+as complete binary configurations, for every natural register vector,
+natural gap, nonempty finite spare list, and head location.
+
+\paragraph{Proof.}
+The padded-word equality gives exactly the same one-cell support before
+the header.  The marker, header, primary blocks, spare blocks, and zero
+exterior are identical by definition.  The state and head are identical
+as well.  Thus the entire configurations are equal.\hfill$\square$
+
+For every source successor $P$, the checker verifies the stronger equality
+$x(P)=x(p)$, where $p$ is its encountered leaf path.  Because both words
+have length at most $64$, this is precisely $P0^\omega=p0^\omega$.
+It also directly compares their sets of one-bit positions.  All $8,385$
+successor identities hold for the baseline and for each transformation
+stage.  The empty initial pointer similarly has the same padded word as
+the first leaf, whose path consists entirely of zeros.
+
+Consequently, the quantified runtime theorems at exact leaf paths compose
+without any additional machine steps: each successor clean frame is
+literally the next input frame.  The exact blank prefix supplies the
+initial frame.  The invariant $g\geq0$ is preserved by the recorded gap
+updates, the existing spares are preserved, and increments append a
+value-$1$ spare.  Thus the spare list remains nonempty.  Since every
+source operand addresses one of the nine primary registers, spare values
+do not change the logical register file or its zero tail.
+
+If all instruction derivations have positive finite binary duration, an
+induction pairs every finite sequence of source steps with a finite
+sequence of binary blocks.  A source halt gives a literal binary halt.
+An infinite source execution gives infinitely many strictly increasing
+binary checkpoint times, so the binary execution cannot have halted
+earlier.  This proves the source/binary halting equivalence and permits
+composition with the inherited source consistency calibration.
+
+The new independent checker uses the Python standard library and explicit
+exceptions.  Its completeness concerns a finite control graph that
+represents all natural register assignments; it does not use a register
+cutoff or a bounded execution sample.  These results remain ordinary
+mathematical proofs with executable certificates, not new proof-assistant
+kernel theorems.

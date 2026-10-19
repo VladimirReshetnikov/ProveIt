@@ -1,0 +1,85 @@
+/-
+Exact noncontiguous source excerpts for reference, not a standalone Lean module.
+Source commit: 13ec39ed43148b1807f51ed6e6528e1c84659562
+Source path: SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/Choice.lean
+Source URL: https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/Choice.lean
+Inherited material; see ../../licenses/LICENSE.ProveIt and ../CALIBRATION_INTERFACE.md.
+-/
+
+-- Upstream lines 65-124, verbatim:
+/-- Under the outer binder of `Choice_form` (so `x` is index `0`): every member
+of `x` is nonempty.
+
+Indices: under `∀y` one has `y = 0`, `x = 1`; under the inner `∃z`, `z = 0`,
+`y = 1`. -/
+def Choice_nonempty : Form :=
+  fAll (fImp (fMem 0 1) (fEx (fMem 0 1)))
+
+/-- Under the outer binder of `Choice_form` (so `x` is index `0`): distinct
+members of `x` are disjoint.
+
+Indices: under `∀y ∀y'` one has `y' = 0`, `y = 1`, `x = 2`; under the inner
+`∃z`, `z = 0`, `y' = 1`, `y = 2`, `x = 3`. -/
+def Choice_disjoint : Form :=
+  fAll (fAll (fImp (fAnd (fAnd (fMem 1 2) (fMem 0 2)) (fNot (fEq 1 0)))
+                   (fNot (fEx (fAnd (fMem 0 2) (fMem 0 1))))))
+
+/-- Under the outer binder of `Choice_form` and the existential binding the
+selector (so `c = 0`, `x = 1`): `c` meets every member of `x` in exactly one
+point.
+
+Indices: under `∀y` one has `y = 0`, `c = 1`, `x = 2`; under `∃z`, `z = 0`,
+`y = 1`, `c = 2`, `x = 3`; under the uniqueness binder `∀w`, `w = 0`, `z = 1`,
+`y = 2`, `c = 3`, `x = 4`. -/
+def Choice_selector : Form :=
+  fAll (fImp (fMem 0 2)
+          (fEx (fAnd (fAnd (fMem 0 1) (fMem 0 2))
+                  (fAll (fImp (fAnd (fMem 0 2) (fMem 0 3)) (fEq 0 1))))))
+
+/-- Zermelo's choice axiom: every pairwise disjoint family of nonempty sets
+admits a set meeting each member in exactly one point. -/
+def Choice_form : Form :=
+  fAll (fImp (fAnd Choice_nonempty Choice_disjoint) (fEx Choice_selector))
+
+/-- `Choice_form` is closed: every variable occurrence is captured by one of
+its binders, so it is an axiom rather than an axiom schema instance and needs
+no universal closure to be a sentence. -/
+theorem Sentence_Choice_form : Sentence Choice_form := by
+  intro n h
+  simp only [Choice_form, Choice_nonempty, Choice_disjoint, Choice_selector,
+    fNot, Free] at h
+  repeat' rcases h with h | h
+  all_goals first
+    | exact h
+    | omega
+
+/-! ## The semantic choice principle -/
+
+/-- The abstract choice principle for a structure `(V, mem)`: for every `x`
+whose members are nonempty and pairwise disjoint there is a `c` such that every
+member `y` of `x` contains exactly one element of `c`.
+
+This is the `mem`-level reading of `Choice_form`; `bridge_Choice` proves the
+two equivalent. -/
+def ChoiceSem {V : Type u} (mem : V → V → Prop) : Prop :=
+  ∀ x : V,
+    (∀ y, mem y x → ∃ z, mem z y) →
+    (∀ y y', mem y x → mem y' x → y ≠ y' → ¬ ∃ z, mem z y ∧ mem z y') →
+    ∃ c, ∀ y, mem y x →
+      ∃ z, mem z y ∧ mem z c ∧ ∀ w, mem w y → mem w c → w = z
+
+-- Upstream lines 175-188, verbatim:
+/-- The axioms of ZFC: the ZF axioms of `ZFax` together with `Choice_form`.
+Adjoining a single closed formula keeps every ZF-specific lemma about `ZFax`
+available through `ZFCax_of_ZFax`. -/
+def ZFCax (f : Form) : Prop := ZFax f ∨ f = Choice_form
+
+/-- Provability from finitely many ZFC axioms, in the list-context calculus of
+`FirstOrder.Calculus`; the ZFC counterpart of `ZFprov`. -/
+def ZFCprov (phi : Form) : Prop :=
+  ∃ G, (∀ x ∈ G, ZFCax x) ∧ Prov G phi
+
+/-- ZFC as a theory of sentences: every axiom universally closed by `sealF`,
+the ZFC counterpart of `ZFax_s`.  `Choice_form` is already closed, but it is
+sealed anyway so that membership in `ZFCax_s` is uniform. -/
+def ZFCax_s (f : Form) : Prop := ZFax_s f ∨ f = sealF Choice_form

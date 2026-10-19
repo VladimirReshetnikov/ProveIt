@@ -1,0 +1,44 @@
+{
+  "purpose": "Reproduce the supplementary bounded negative search on the Coordinated239 branch; this is not part of the acceptance proof of M238.",
+  "source_archive": "BusyBeaver239_Research_2026-10-19.zip",
+  "source_archive_sha256": "440c7d78ea0c3ab696181a48f18395cb88fb0f8ac42ddccdfc2f19b65defe877",
+  "sources": [
+    {
+      "file": "empirical_contexts.cpp",
+      "origin": "research/search/head_offset/empirical_contexts.cpp",
+      "sha256": "d7f5ba7d85f05259172dbcf4ffee5879a0a9938933b0e20cba3b96aec57dd4ac",
+      "unchanged_from_inherited_archive": true
+    },
+    {
+      "file": "neutral_domains.cpp",
+      "origin": "research/search/local_folds/neutral_domains.cpp",
+      "sha256": "c4caa499c4b056c84432bc9d22549e596cb5ed7bd8b4f9f624de5fec50394f30",
+      "unchanged_from_inherited_archive": true
+    },
+    {
+      "file": "helper_domains.cpp",
+      "origin": "research/search/local_folds/helper_domains.cpp",
+      "sha256": "4f07a5e9f6b54789746207ed4877df1412e9ba2232a2403da675a6ed379466c6",
+      "unchanged_from_inherited_archive": true
+    }
+  ],
+  "inputs": [
+    {
+      "file": "inputs/baseline239_old.tm",
+      "origin": "machines/zfc239_old.tm",
+      "sha256": "76a9574ac0385b96dbd558fa852a222e1d9025e48e34dc3590384146726d2a9b",
+      "working_states": 239,
+      "start": 95,
+      "halt": 254
+    },
+    {
+      "file": "inputs/sites.txt",
+      "sha256": "1c4d46610d175b1dffcf5ff7642dc446f8677b35db7569bdca0de5c359807311",
+      "source_file": "machines/sites_logical.json",
+      "source_file_sha256": "74b1e7f73cc3ffe7761e36ab2d57a26e0ba34d3ac624f2472799e6ac41d5a51d",
+      "conversion": "For each ordered JSON triple [pc,op,arg], emit pc, op, arg separated by single spaces; use 0 for the null operand of CH; append newline. No instruction path, order, or operative operand changes."
+    }
+  ],
+  "recorded_execution": "The recorded logs and receipt are from this task's completed new run on the final Coordinated239 table. The search was not rerun during packaging.",
+  "license_and_attribution": "Inherited code and algorithm notices remain applicable; see the package licenses and attribution. The original profile and finite-window search sources are copied byte-for-byte. This task contributes the new run, its input profile, receipt, and explicit bounded scope."
+}

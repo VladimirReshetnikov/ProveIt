@@ -1,0 +1,225 @@
+The successful construction preserves the calibrated proof-search theory.
+We also examined alternative logical and algebraic presentations, using
+the existing repository investigations to avoid treating old proposals as
+new results.  The relevant comparison is the entire blank-input machine:
+logical rules, theory data, data representation, control, and initialization.
+A shorter axiom list or bit string does not by itself reduce that cost.
+
+\subsection{A precise contract for a competing theory}
+
+For an effective theory $T$, a replacement architecture needs both
+\[
+ \ZFC\vdash\Con(T)\longleftrightarrow\Con(\ZFC)
+ \quad\hbox{and}\quad
+ \ZFC\vdash\Halt(M_T,\blank)
+              \longleftrightarrow\exists p\,\ProofRef_T(p).
+\]
+The first is a calibration theorem; the second is a complete literal
+implementation theorem.  The latter includes invalid-certificate rejection,
+fair enumeration of every finite proof, scratch and stack behavior, and
+the exact initializer.  Giving a computable reference search establishes
+an algorithmic specification but does not identify a small binary machine.
+
+Explicit primitive-recursive translations of refutations in both
+directions would be especially useful for future PA formalization.
+They are stronger implementation data than the ZFC-provable consistency
+biconditional requested here.  A valid set-model argument can establish
+the latter without having yet produced the former.  We keep these two
+levels distinct when comparing prospective frontends.
+
+\subsection{Raw closure schemas and ground equational search}
+
+The existing native source searches a compact nonextensional theory
+using power containers, global-image collection, and irreflexivity.  It
+already avoids separate emitters for the usual long list of set-theory
+axioms.  Deleting a familiar axiom name therefore does not correspond to
+deleting an isolated subroutine from this program.
+
+The repository's equality-free empty-seed positive subset closure (EPSC)
+route changes the logical interface more substantially.  Its calibration
+uses the complete intended schema, including arbitrary finite parameters,
+and a complete common-domain first-order logic.  That does not authorize
+removing equality transport from the current numerical calculus.  The
+repository's finite-sort counterinterpretation isolates this issue:
+semantic adequacy of a different equality-free presentation does not
+imply completeness of a fragment obtained by deleting existing logical
+rules.  The indicated old reports and their model arguments are retained
+as the source of this comparison~\cite{coordinated239,boundary239}.
+
+A concrete alternate frontend is the inherited \textbf{946-bit complete
+finite equational packet}.  It contains 14 equations, 215 term nodes
+across both sides, 13 operation symbols, and three local variables; the
+combined symbol/variable alphabet fits four-bit opcodes.  Its count
+includes the signature arities, delimiters, and both ground endpoints.
+The earlier construction identifies the stack-cons and class-NAND
+operations and uses a false-class witness slice for member selection.
+Its model argument, generator, exact packet, and attribution are included
+under \file{alternatives/equational946/}.  These are inherited findings,
+not a new 946-bit result of this report.
+
+The intended target is the ground equation
+\[
+ N(d,d)=d.
+\]
+The logical question is whether that equation follows from the fixed
+equations $E$.  Bare consistency of $E$ is unsuitable: every equational
+theory has a one-element algebra.  With the inherited calibration, the
+useful consistency statement is instead the existence of an algebra
+satisfying $E$ and separating the two ground terms.
+
+This distinction also supplies a clear complete search specification.
+Take the ground term algebra and quotient it by the least congruence
+containing every ground instance of every equation.  If the target terms
+are not congruent, that quotient is a separating algebra.  Conversely,
+each congruence identification has a finite witness assembled from axiom
+instances, reversal, transitivity, and insertion into contexts.  A fair
+enumeration of finite contextual rewrite certificates therefore finds
+the target equality exactly when it is derivable.  Both orientations of
+an equation and all variables appearing on either side must be included;
+reverse application may introduce a variable absent from the matched side.
+
+The remaining binary costs are unbounded term storage, repeated-variable
+matching, equality comparison, substitution and context enumeration,
+control of the search, and a blank-tape writer for the entire fixed packet.
+The supplied reference rewrite enumerator makes this interface concrete.
+Its finite examples test transcription and certificate handling; they
+neither establish nonderivability nor supply a binary state count.
+
+\subsection{Finite class theory}
+
+Friedman's published NBG* presentation uses 15 finite axioms in a class
+language with a set predicate.  Theorem 3.21 states equivalence with his
+specified NBG presentation, obtaining limited comprehension and collection
+from the finite class operations and capture principle~\cite{nbg}.
+This gives a serious finite-payload alternative to a direct schema emitter.
+
+A compiler for that route must preserve set/class guards and the exact
+quantifier structure, emit the full normalized fixed sentence, and
+implement complete first-order inference or a verified ground-clause
+translation.  Equality must either be native to the inference engine or
+have its required congruence rules charged.  The ZF-to-ZFC relative
+consistency bridge also remains explicit.  The source repository already
+studies normalization and proof repairs for this architecture; this
+report does not certify a new normalization from scratch.
+
+The attraction is the fixed payload and a potentially reusable inference
+engine.  The cost risk is replacing the current shared arithmetic formula
+constructors with a parser, instantiator, equality machinery, and loader.
+There is no measured complete binary implementation here that beats the
+exhibited 237-state table.
+
+\subsection{Logical bases and substitution machinery}
+
+The current implicational component uses the four-variable
+\L ukasiewicz single axiom.  Pfenning gives both that axiom and the
+three-schema Tarski--Bernays system, with substitution and detachment
+as inference rules~\cite{pfenning}.  These are legitimate alternate
+logical interfaces, but the smallest formula is not necessarily the
+smallest compiled program.  A basis change affects parameter reads,
+formula construction, stack width, axiom selection, and shared decoder
+subprograms.
+
+There is already a precisely scoped counterexample to one tempting
+shortcut in the companion239 report.  Replacing the fourth parameter by
+an arbitrary implication-only term in the other three and truth fails
+to recover all Peirce instances in the specified retained logical
+fragment.  Its three-valued counterinterpretation covers arbitrarily
+large such terms by a closed subset argument.  The result excludes
+claiming that fragment complete from the specialization alone; its
+stated scope does not include CP/GIC and does not settle every altered
+full set theory~\cite{coordinated239}.
+
+Condensed detachment offers another finite logical interface.  Megill's
+Algorithm D explicitly requires variable renaming, subformula extraction,
+an occurs check, simultaneous substitution, and normalization~\cite{megill}.
+Those operations are part of the machine to be compiled.  Cantor pairing
+represents their trees and stacks, but does not implement the tree walks
+or repeated-variable comparisons for free.
+
+The needed completeness theorem must match the exact notion of axiom
+schema being enumerated.  Jubin's study exhibits a scheme-independent
+axiom all of whose individual instances follow from other schemes, making
+the distinction concrete~\cite{jubin}.  An optimization verified only
+on generic variable instances can lose precisely the uniform interface
+used by the theory generator.  A successful alternate basis thus needs
+an explicit proof transport and a new complete source/runtime proof.
+
+\subsection{Two useful impossibility filters}
+
+Neither filter below is a lower bound on arbitrary machines.  Each
+rejects a specific attractive shortcut before one spends time compiling it.
+
+\begin{proposition}[Finite true set-theory fragments]
+Let $\Gamma$ be a fixed finite collection of membership-language theorems
+of ZFC.  Then $\ZFC\vdash\Con(\Gamma)$.  If ZFC is consistent, ZFC
+cannot also prove $\Con(\Gamma)\leftrightarrow\Con(\ZFC)$.
+\end{proposition}
+
+\begin{proof}
+Apply reflection to the finite conjunction of $\Gamma$ and the finitely
+many subformulas needed for it.  A sufficiently large rank segment
+satisfies all sentences in $\Gamma$.  Its set-coded satisfaction relation
+and first-order soundness give consistency of this finite fragment in
+ZFC.  Adding the proposed biconditional would let ZFC prove its own
+consistency, contrary to the second incompleteness theorem under the
+stated consistency assumption.
+\end{proof}
+
+The hypothesis matters.  This does not exclude finite class theories in
+an expanded interpretation or a finite arithmetic theory containing a
+consistency assertion.  For example, placing the full arithmetized
+$\Con(\ZFC)$ into a fixed arithmetic axiom moves the complexity into
+that axiom's payload; it does not eliminate the proof predicate that a
+machine must represent.
+
+\begin{proposition}[Universal relational theories without functions]
+A finite universal theory in a finite relational language with $c$
+constants and no positive-arity function symbols is satisfiable if and
+only if it has a model of size at most $\max(1,c)$.  Its satisfiability
+is decidable by a finite search.
+\end{proposition}
+
+\begin{proof}
+Given a model, take the induced substructure on the values of its constants;
+if there are no constants, take any one element.  This set is closed under
+all symbols because there are no positive-arity functions.  Quantifier-free
+formulas have the same truth values on tuples from the substructure,
+and universal sentences are therefore preserved.  Conversely a finite
+model is a model.  There are only finitely many interpretations on the
+bounded domains to enumerate.  Ground disequalities remain valid in the
+same induced substructure.
+\end{proof}
+
+This explains why removing all term constructors from a universal
+ground architecture can destroy the required unbounded structure.
+It does not rule out existential axioms, axiom schemas, or finite
+equational systems with positive-arity functions and a separating target.
+
+\subsection{The comparison that remains actionable}
+
+\begin{center}\small
+\begin{tabular}{p{0.25\linewidth}p{0.32\linewidth}p{0.33\linewidth}}
+\toprule
+Architecture & Established datum & Remaining cost\\\midrule
+Existing native calculus & Complete calibrated source and final 237-state
+machine & Further verified decoder or source sharing\\[3pt]
+EPSC / equational packet & Fixed 946-bit packet with inherited ordinary
+calibration & Complete term engine, fair search, and blank loader\\[3pt]
+Finite class theory & Finite NBG-style presentation & Exact normalization,
+inference engine, and complete payload compiler\\[3pt]
+Alternate logical basis & Known complete logical systems & Proof-code
+transport, changed stack/AX interface, literal runtime\\[3pt]
+Combinator or universal interpreter & General ability to represent a search
+& Closed input term, evaluator strategy, and charged initializer\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For an interpreter architecture, the relevant budget is the final union
+of interpreter and loader states after justified sharing.  A small
+universal machine with a long required input is not already a small
+blank-tape consistency machine.  A rational next experiment is to compile
+one complete ground-rewrite checker and its fixed payload, then compare
+the emitted transition table with 237.  Until that implementation exists,
+the packet sizes and axiom counts are research directions rather than
+numerical competitors to the present explicit result.

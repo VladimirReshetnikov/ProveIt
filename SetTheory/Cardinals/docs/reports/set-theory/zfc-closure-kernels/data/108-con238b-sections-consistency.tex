@@ -1,0 +1,136 @@
+\section{The consistency calibration and the final theorem}
+\label{sec:consistency}
+
+\subsection{Precisely what is inherited}
+
+Let $P_0$ be the actual ProveIt
+\term{SourceRotation240.program}, and let
+\[
+ R_*=(3,0,0,0,3,0,0,0,0),
+\]
+with every higher logical register zero. The initial source
+configuration has the empty path. The inherited theorem is
+\begin{align}
+ &\term{CalibratedRotation240.halts\_iff\_zfc\_refutation}:\notag\\
+ &\hspace{5mm}
+ \RHalt(P_0,(\epsilon,R_*))
+ \longleftrightarrow
+ \operatorname{BProv}(\mathrm{ZFCax\_s},[],\bot).
+ \label{eq:calibration}
+\end{align}
+Its exact source is retained in
+\file{reference/calibration/CalibratedRotation240.lean}.
+The current repository's calibration and binary-endpoint records
+identify the corresponding established proofs
+\cite{calibration,rotation240}.
+
+The right side asserts a finite derivation in the specified
+first-order ZFC calculus. Finite proof trees and their numerical
+codes translate by structural recursion, so it is the ordinary
+arithmetized refutation statement for that presentation of ZFC.
+Changing between customary effective finite-proof codings uses
+the usual syntactic translations and preserves consistency.
+
+The calibration contains substantive mathematics: correctness of
+the proof enumerator and its compact calculus; correspondence to
+the native theory consisting of a power-container axiom, full
+global-image collection, and irreflexivity; the native theory's
+comparison with ZF; and the ZF/ZFC consistency transport.
+The source reduction does not re-prove these layers. They are
+named inherited theorems, not inferred from a filename or from
+an unqualified claim of equiconsistency.
+
+The theorem's concrete left side is independently identified.
+The source-interface checker parses all 203 literal lookup rows,
+the actual lookup decision tree, the three inherited overrides,
+the program root, the register-field encoding, and the logical
+seed. The resulting ordered source list has exactly 6,455
+triples and is the input to the new source certificate.
+It is not enough merely to compare a displayed theorem name
+with a separately supplied JSON file; this data check supplies
+that connection.
+
+\subsection{Direct proof of Theorem~\ref{thm:main}}
+
+Let $P_1$ be the boundary source used by the new table.
+The complete source certificate and independent interval
+audit establish
+\begin{equation}
+ \RHalt(P_1,(\epsilon,R))
+ \longleftrightarrow
+ \RHalt(P_0,(\epsilon,R))
+ \quad\text{for every register vector }R.
+ \label{eq:sourcebisim}
+\end{equation}
+All instruction effects, both decrement outcomes, and the
+literal halt occurrence are preserved under the same ordered
+leaf indices.
+
+The exact initialization reaches the clean frame for
+$(\epsilon,R_*)$. Proposition~\ref{prop:runtime} and the
+zero-padding identities of Section~\ref{sec:source} give
+\begin{equation}
+ \Halt(M_{238},\blank)
+ \longleftrightarrow
+ \RHalt(P_1,(\epsilon,R_*)).
+ \label{eq:binarysource}
+\end{equation}
+To see the reverse implication for nonhalting explicitly,
+suppose the source has no finite halt. Its next instruction is
+always defined, since the source tree is finite and complete.
+Each instruction has a finite positive binary realization
+and ends at the next clean frame. Thus infinitely many source
+steps yield unbounded binary checkpoint times. No instruction
+segment contains an unmatched halt. The unique binary run
+therefore cannot halt between those checkpoints.
+
+Composing \eqref{eq:binarysource}, \eqref{eq:sourcebisim} at
+$R_*$, and \eqref{eq:calibration}, followed by the finite
+proof-coding equivalence, proves \eqref{eq:mainhalt}. Negating
+both sides proves \eqref{eq:maincon}. Canonical renumbering is
+a literal transition isomorphism, so it preserves the result.
+\hfill$\square$
+
+The local proof supplies an independent binary route:
+Boundary239's own unbounded runtime has been rechecked while
+certifying its guard, and Theorem~\ref{thm:fold} transfers its
+halting behavior to the new table. Both routes meet at the
+same source certificate and inherited calibration.
+
+\subsection{Why the proof is formalizable in ZFC}
+
+All new finite structures are explicit: transition tables,
+source trees, affine vectors, finite words, and lists. The
+new reasoning is finite case analysis, natural-number induction,
+finite-list induction, elementary arithmetic, and equality
+of finite-support tapes. These are ordinary constructions
+within ZFC.
+
+The inherited calibration's use of finite syntax, first-order
+models, quotients, definable interpretations, and completeness
+is likewise ordinary set-theoretic mathematics. Invoking that
+mathematics does not require a general assertion that ZFC
+proves the soundness of every theorem accepted by the whole
+Lean or Rocq type theory.
+
+The phrase \emph{provably in ZFC} here classifies the mathematical
+proof. It does not report delivery of a serialized object-level
+ZFC derivation or a newly checked proof-assistant theorem for
+the final 238-state endpoint. The exact proof data and small
+transport lemmas make those formalization goals concrete.
+
+\subsection{Consistency and independence}
+
+If ZFC is consistent, \eqref{eq:maincon} implies that the
+machine in fact runs forever. By G\"odel's second
+incompleteness theorem, consistent ZFC cannot prove that
+nonhalting statement, since such a proof would prove its own
+consistency.
+
+Bare consistency should not be promoted to two-sided
+independence. Excluding a proof of the false existential
+halting statement requires a stronger correctness hypothesis,
+such as arithmetical $\Sigma_1$ soundness. The principal
+result is the requested biconditional, for which neither
+an unconditional consistency assertion nor a two-sided
+independence claim is needed.

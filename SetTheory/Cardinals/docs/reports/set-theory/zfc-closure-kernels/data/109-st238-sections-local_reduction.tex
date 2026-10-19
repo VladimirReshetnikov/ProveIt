@@ -1,0 +1,195 @@
+\section{A verified composition of the two 239-state reductions}
+
+The starting point for this section is the boundary-reassociated 239-state
+machine, denoted $B$, with inherited start state $95$, dispatcher $96$, and
+separate halt state $254$.  Its table omits state $218$ and retains state
+$169$.  The coordinated-helper reduction from the other 239-state
+construction acts on a different set of states.  Applying that reduction
+to $B$ produces a machine $C$ with 238 working states.  Compatibility is a
+mathematical assertion that needs verification: changes to the decoder can
+change the contexts in which a shared state is visited.  The checks below
+establish the required compatibility for this exact pair of machines.
+
+Define the control map
+\[
+ \phi(q)=\begin{cases}80,&q=169,\\q,&q\ne169.\end{cases}
+\]
+Delete the two rows of state $169$, apply $\phi$ to every target, and replace
+the two retained rows
+\[
+ C(80,0)=(0,L,106),\qquad C(91,1)=(1,L,167).
+\]
+The only redirected incoming edge is $147/0$, whose target changes from
+$169$ to $80$.  Thus the construction changes three retained rows, removes
+two rows, and leaves the other 473 retained rows literally unchanged.
+The new machine still has alphabet $\{0,1\}$ and a two-way infinite tape;
+every transition moves exactly one cell left or right.  Its entire blank
+initializer is included in the 238-state count.
+
+\subsection{The predecessor invariant}
+
+Write $t(i)$ for the tape symbol at position $i$, and let $h$ be the head
+position.  The following implication is an inductive invariant of $B$ from
+state $95$, even if its initial tape is arbitrary:
+\[
+\begin{array}{c|l}
+\text{state}&\text{forced symbols}\\\hline
+67&t(h-1)=0\\
+80&t(h-2)=0,\quad t(h-1)=1\\
+91&t(h-3)=0,\quad t(h-2)=t(h-1)=1\\
+169&t(h-1)=0.
+\end{array}
+\]
+Here and below, an implication associated with one of these states makes
+no demand in any other state.
+
+The proof uses the complete incoming-edge inventory.  State $67$ can be
+entered only from $52/0$ or $124/0$, both writing zero and moving right.
+State $80$ can be entered only from $67/1$, writing one and moving right;
+the preceding zero from the invariant of state $67$ then lies two cells
+left.  State $91$ can be entered only from $80/1$, writing one and moving
+right, which shifts the forced pattern to $011$.  State $169$ can be
+entered only from $147/0$, writing zero and moving right.  None of these
+conditions is imposed at the start state $95$.  These observations prove
+initiality and preservation by every transition.
+
+The finite-window replay independently checks this invariant on all
+121,024 admitted combinations of a working state and a nine-cell Boolean
+window.  The predecessor proof explains why those calculations apply to
+an arbitrary exterior tape; the machine reads and writes only the scanned
+cell, and preservation inspects only the explicitly listed neighbors.
+
+\subsection{Four positive blocks on an open tape}
+
+The additional premise required by the reduction is
+\begin{equation}\label{eq:boundary169-right-guard}
+ q=169\ \wedge\ t(h)=1\quad\Longrightarrow\quad t(h+1)=1.
+\end{equation}
+This premise does not follow from the preceding incoming-edge argument.
+It is proved for the blank computation by the unbounded instruction-frame
+argument in the next subsection.
+
+With that premise, each exceptional step of $B$ has the following exact
+simulation in $C$:
+\[
+\begin{array}{c|c|l|r}
+\text{old state}&\text{read}&\text{new state path}&\text{steps}\\\hline
+80&0&80,106,92,107,125,25&5\\
+169&0&80,106,93,57&3\\
+169&1&80,91,167,151,173,56&5\\
+91&1&91,167,151,24,36,54,71,82,94,50&9.
+\end{array}
+\]
+The final entry in each path is the target configuration's state; it does
+not contribute another transition.  Each displayed block agrees with the
+old single step in the entire final tape, head position, and state after
+applying $\phi$.
+
+For $80/0$, the forced symbol immediately left is one.  The new head
+positions, relative to its starting point, are
+$-1,0,-1,0,1$; all inspected symbols are the forced left one and the
+scanned zero.  Every write preserves its cell, and the final state is $25$.
+For $169/0$, the forced left zero selects $106/0$ instead.  The head follows
+$-1,0,1$, all writes preserve zeros, and the final state is $57$.
+
+For $169/1$, the new first step temporarily leaves the scanned one in place
+and moves right to state $91$.  Premise~\eqref{eq:boundary169-right-guard}
+forces this right neighbor to be one.  The head positions then become
+$1,0,-1,0,1$.  The forced left zero selects $151/0$, and $173/1$ erases
+the original scanned one in the final step.  The right neighbor is
+preserved.  The final effect is precisely the old $169/1$ transition,
+which writes zero, moves right, and enters $56$.
+
+For $91/1$, the pattern at positions $h-3,h-2,h-1,h$ is $0111$.
+The head positions are
+$-1,-2,-3,-2,-1,0,-1,0,-1$.
+Every transition preserves its symbol until $94/1$ erases the original
+scanned one and moves left to $50$.  This is the complete effect of the
+old $91/1$ transition.  No part of this argument inspects a cell outside
+the forced pattern.
+
+The independent open-tape checker represents only the forced cells and
+rejects any trace attempting to read another cell.  It therefore proves
+these identities with no assignments to exterior cells.  A separate
+finite-footprint checker obtains the same result on all 22 admitted
+assignments to the window from $h-3$ through $h+1$.  The remaining 474 old
+transition rows commute literally with $\phi$ in one step.  No displayed
+block visits the halt state in its interior.
+
+\subsection{The unbounded right-neighbor guard}
+
+The decoder source is the exact boundary-reassociated list of 6,455
+instruction sites.  The guard audit keeps this source and its 239-state
+table fixed and rederives the four arbitrary-list traversal lemmas from
+the literal table.  It then checks every instruction site, splitting
+conditional decrements into their zero and positive cases.  This gives
+8,386 symbolic cases.  The completed fresh audit uses 2,247,513 symbolic
+rules and covers all 478 rows of the old table.  It explicitly checks 32
+state-$169$/read-one visits; the smallest constant term of their one-run
+lengths is 23.  The resulting bound is stronger than the two consecutive
+ones needed by the local reduction.  The minimum certified constant part
+of an instruction duration is 13.
+
+Each case has nine independent natural register values, an arbitrary
+additional gap, an arbitrary first spare value, and an arbitrary finite
+remaining spare list.  Unary run lengths are affine forms in independent
+natural variables.  At every literal visit to old state $169$ scanning a
+one, the audit normalizes the run representation and checks that the
+constant term of the current one-run length is at least two.  Since all
+variable coefficients are nonnegative, the right neighbor is then one
+for every assignment of those parameters.
+
+The audit also checks that state $169$ is absent from the interior traces
+of all accelerated list-traversal lemmas, is not the entry state of any
+such lemma, and has no self-loop on either symbol.  Consequently neither
+list induction nor unary-loop induction can conceal a state-$169$ visit.
+Every applicable visit is explicitly inspected.  Full instruction
+endpoints and positive duration checks are retained unchanged from the
+underlying mathematical runtime checker.  The finite cap used to build
+a symbolic derivation bounds the proof construction, not the values of
+the registers, the length of the spare list, or the actual computation.
+
+The exact blank prefix supplies the remaining initialization case.
+All 409,692 old checkpoints, including both endpoints of the 409,691-step
+initialization, agree with the corresponding complete new configurations
+under $\phi$.  The six old initialization visits to $169/1$ satisfy
+\eqref{eq:boundary169-right-guard}.  The counts of the four exceptional
+rows $(80/0,169/0,169/1,91/1)$ are $(18,12,6,3)$.  Therefore the exact new
+initialization time is
+\[
+409691+4\cdot18+2\cdot12+4\cdot6+8\cdot3=409835.
+\]
+The final head is at $-5$, the dispatcher is $96$, and the entire tape
+has the same 351 one-cells as the old complete startup frame; every other
+cell is zero.  Concatenating the unbounded instruction cases from that
+frame establishes the right-neighbor guard throughout the old blank
+computation.
+
+\subsection{Why positive simulation gives halting equivalence}
+
+For completeness, the simulation argument can be stated without a
+bounded-execution assumption.  Let $c_0,c_1,\ldots$ be the old blank
+computation, up to a halt if there is one.  Keep tape and head unchanged
+in the configuration map $\Phi$ and replace its control state by $\phi$.
+Each old transition has a certified block length $\ell(c_i)$ between
+one and nine, with
+\[
+ C^{\ell(c_i)}(\Phi(c_i))=\Phi(c_{i+1}).
+\]
+Set $k_0=0$ and $k_{i+1}=k_i+\ell(c_i)$.  Induction gives
+$C^{k_i}(\Phi(c_0))=\Phi(c_i)$, and no corresponding intermediate
+configuration halts.  If the old machine halts, the new machine reaches
+its mapped halt.  If the old machine has infinitely many steps, then
+$k_i\ge i$ is unbounded; the positive blocks cover the entire new
+computation, which therefore never halts.  Determinism yields both
+directions of halting equivalence.
+
+All arguments here concern natural numbers, finite strings, finite
+lists, and their inductions, and are formalizable in ZFC.  Composing this
+equivalence with the inherited calibration of the boundary source gives
+the requested equivalence between nonhalting of the exact 238-state
+machine and $\operatorname{Con}(\mathrm{ZFC})$.  This is an ordinary
+mathematical proof with executable finite and unbounded symbolic
+certificates.  It does not constitute a newly kernel-checked theorem for
+the 238-state table, nor does it assert that ZFC proves its own
+consistency or that 238 is a minimal state count.

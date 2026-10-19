@@ -1,0 +1,437 @@
+{
+  "status": "LITERAL_LOCAL_CONTROL_SIGNATURES_PASS",
+  "criterion": "z(A)=0 and o(C)=0",
+  "tested_rotations": 328,
+  "accepted_rotations": 245,
+  "accepted_under_prior_all_closed_rule": 225,
+  "additional_admissible_rotations": 20,
+  "rejected_witnesses": [
+    {
+      "node": 8,
+      "direction": "L",
+      "chunks": [
+        4,
+        5,
+        6
+      ],
+      "leaf_ordinal": 2,
+      "old_local_path": "11",
+      "new_local_path": "1",
+      "old": [
+        "CC",
+        3,
+        [
+          [
+            "continue",
+            1
+          ]
+        ]
+      ],
+      "new": [
+        "CC",
+        3,
+        [
+          [
+            "continue",
+            2
+          ]
+        ]
+      ],
+      "A_escaping_break": 0,
+      "C_escaping_continue": 3
+    },
+    {
+      "node": 9,
+      "direction": "L",
+      "chunks": [
+        3,
+        4,
+        7
+      ],
+      "leaf_ordinal": 0,
+      "old_local_path": "0",
+      "new_local_path": "00",
+      "old": [
+        "CD",
+        0,
+        [
+          [
+            "break",
+            0
+          ],
+          1
+        ]
+      ],
+      "new": [
+        "CD",
+        0,
+        [
+          2,
+          1
+        ]
+      ],
+      "A_escaping_break": 1,
+      "C_escaping_continue": 2
+    },
+    {
+      "node": 14,
+      "direction": "L",
+      "chunks": [
+        10,
+        11,
+        12
+      ],
+      "leaf_ordinal": 2,
+      "old_local_path": "11",
+      "new_local_path": "1",
+      "old": [
+        "CC",
+        2,
+        [
+          0
+        ]
+      ],
+      "new": [
+        "CC",
+        2,
+        [
+          [
+            "continue",
+            1
+          ]
+        ]
+      ],
+      "A_escaping_break": 0,
+      "C_escaping_continue": 2
+    },
+    {
+      "node": 15,
+      "direction": "L",
+      "chunks": [
+        9,
+        10,
+        13
+      ],
+      "leaf_ordinal": 6,
+      "old_local_path": "111",
+      "new_local_path": "11",
+      "old": [
+        "CC",
+        2,
+        [
+          4
+        ]
+      ],
+      "new": [
+        "CC",
+        2,
+        [
+          0
+        ]
+      ],
+      "A_escaping_break": 0,
+      "C_escaping_continue": 1
+    },
+    {
+      "node": 15,
+      "direction": "R",
+      "chunks": [
+        3,
+        8,
+        14
+      ],
+      "leaf_ordinal": 0,
+      "old_local_path": "00",
+      "new_local_path": "0",
+      "old": [
+        "CD",
+        0,
+        [
+          4,
+          1
+        ]
+      ],
+      "new": [
+        "CD",
+        0,
+        [
+          [
+            "break",
+            0
+          ],
+          1
+        ]
+      ],
+      "A_escaping_break": 1,
+      "C_escaping_continue": 0
+    },
+    {
+      "node": 16,
+      "direction": "L",
+      "chunks": [
+        2,
+        9,
+        14
+      ],
+      "leaf_ordinal": 1,
+      "old_local_path": "01",
+      "new_local_path": "001",
+      "old": [
+        "CB",
+        1,
+        [
+          [
+            "break",
+            0
+          ]
+        ]
+      ],
+      "new": [
+        "CB",
+        1,
+        [
+          6
+        ]
+      ],
+      "A_escaping_break": 1,
+      "C_escaping_continue": 0
+    }
+  ],
+  "explicit_examples": [
+    {
+      "label": "middle_decrement_is_allowed",
+      "valid": true,
+      "left": [
+        [
+          "CI",
+          0,
+          [
+            1
+          ]
+        ],
+        [
+          "CD",
+          5,
+          [
+            [
+              "break",
+              0
+            ],
+            2
+          ]
+        ],
+        [
+          "CI",
+          1,
+          [
+            [
+              "break",
+              0
+            ]
+          ]
+        ]
+      ],
+      "right": [
+        [
+          "CI",
+          0,
+          [
+            1
+          ]
+        ],
+        [
+          "CD",
+          5,
+          [
+            [
+              "break",
+              0
+            ],
+            2
+          ]
+        ],
+        [
+          "CI",
+          1,
+          [
+            [
+              "break",
+              0
+            ]
+          ]
+        ]
+      ]
+    },
+    {
+      "label": "middle_halt_is_allowed",
+      "valid": true,
+      "left": [
+        [
+          "CI",
+          0,
+          [
+            1
+          ]
+        ],
+        [
+          "CH",
+          null,
+          [
+            "halt"
+          ]
+        ],
+        [
+          "CI",
+          1,
+          [
+            [
+              "break",
+              0
+            ]
+          ]
+        ]
+      ],
+      "right": [
+        [
+          "CI",
+          0,
+          [
+            1
+          ]
+        ],
+        [
+          "CH",
+          null,
+          [
+            "halt"
+          ]
+        ],
+        [
+          "CI",
+          1,
+          [
+            [
+              "break",
+              0
+            ]
+          ]
+        ]
+      ]
+    },
+    {
+      "label": "escaping_break_in_A_changes_target",
+      "valid": false,
+      "left": [
+        [
+          "CD",
+          5,
+          [
+            [
+              "break",
+              0
+            ],
+            1
+          ]
+        ],
+        [
+          "CI",
+          0,
+          [
+            2
+          ]
+        ],
+        [
+          "CI",
+          1,
+          [
+            [
+              "break",
+              0
+            ]
+          ]
+        ]
+      ],
+      "right": [
+        [
+          "CD",
+          5,
+          [
+            2,
+            1
+          ]
+        ],
+        [
+          "CI",
+          0,
+          [
+            2
+          ]
+        ],
+        [
+          "CI",
+          1,
+          [
+            [
+              "break",
+              0
+            ]
+          ]
+        ]
+      ]
+    },
+    {
+      "label": "escaping_continue_in_C_changes_target",
+      "valid": false,
+      "left": [
+        [
+          "CI",
+          0,
+          [
+            1
+          ]
+        ],
+        [
+          "CI",
+          1,
+          [
+            2
+          ]
+        ],
+        [
+          "CC",
+          1,
+          [
+            1
+          ]
+        ]
+      ],
+      "right": [
+        [
+          "CI",
+          0,
+          [
+            1
+          ]
+        ],
+        [
+          "CI",
+          1,
+          [
+            2
+          ]
+        ],
+        [
+          "CC",
+          1,
+          [
+            0
+          ]
+        ]
+      ]
+    }
+  ],
+  "input_sha256": "863f4af5e08b0123f8e06ddea3027d46b937e6f9ef2bc3caa0fed1458fa2c101",
+  "checker_sha256": "ae15085497601fa6071f649868c5526993903660ebb92a70a0000e866579f98f",
+  "signature_engine_sha256": "707f7b00cb7fd5701dd5ba7ba13721cf1ee54f97c1e5eceb16148f06c00ce1cb",
+  "scope": "Finite verification of the criterion on every single rotation of the exact inherited source; the general lemma is proved in boundary_associativity.tex."
+}

@@ -1,0 +1,69 @@
+/-
+Exact noncontiguous source excerpts for reference, not a standalone Lean module.
+Source commit: 13ec39ed43148b1807f51ed6e6528e1c84659562
+Source path: SetTheory/ZF/Lean/ZF/Zf.lean
+Source URL: https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/SetTheory/ZF/Lean/ZF/Zf.lean
+Inherited material; see ../../licenses/LICENSE.ProveIt and ../CALIBRATION_INTERFACE.md.
+-/
+
+-- Upstream lines 40-57, verbatim:
+def rsep : Nat → Nat
+  | 0 => 0
+  | i+1 => i + 3
+
+def rf1 : Nat → Nat
+  | 0 => 1
+  | 1 => 2
+  | j+2 => j + 3
+
+def rf2 : Nat → Nat
+  | 0 => 0
+  | 1 => 2
+  | j+2 => j + 3
+
+def ri : Nat → Nat
+  | 0 => 1
+  | 1 => 0
+  | j+2 => j + 4
+
+-- Upstream lines 101-140, verbatim:
+def Ext_form : Form :=
+  fAll (fAll (fImp (fAll (fIff (fMem 0 2) (fMem 0 1))) (fEq 1 0)))
+def Pair_form : Form :=
+  fAll (fAll (fEx (fAll (fIff (fMem 0 1) (fOr (fEq 0 3) (fEq 0 2))))))
+def Union_form : Form :=
+  fAll (fEx (fAll (fIff (fMem 0 1) (fEx (fAnd (fMem 1 0) (fMem 0 3))))))
+def Pow_form : Form :=
+  fAll (fEx (fAll (fIff (fMem 0 1) (fAll (fImp (fMem 0 1) (fMem 0 3))))))
+def Inf_form : Form :=
+  fEx (fAnd
+        (fEx (fAnd (fMem 0 1) (fAll (fImp (fMem 0 1) fBot))))
+        (fAll (fImp (fMem 0 1)
+                 (fEx (fAnd (fMem 0 2)
+                         (fAll (fIff (fMem 0 1) (fOr (fMem 0 2) (fEq 0 2)))))))))
+def Reg_form : Form :=
+  fAll (fImp (fEx (fMem 0 1))
+          (fEx (fAnd (fMem 0 1)
+                  (fImp (fEx (fAnd (fMem 0 1) (fMem 0 2))) fBot))))
+def Sep_form (phi : Form) : Form :=
+  fAll (fEx (fAll (fIff (fMem 0 1) (fAnd (fMem 0 2) (rename rsep phi)))))
+def Func_form (psi : Form) : Form :=
+  fAll (fAll (fAll (fImp (fAnd (rename rf1 psi) (rename rf2 psi)) (fEq 1 0))))
+def Image_form (psi : Form) : Form :=
+  fAll (fEx (fAll (fIff (fMem 0 1) (fEx (fAnd (fMem 0 3) (rename ri psi))))))
+def Repl_form (psi : Form) : Form := fImp (Func_form psi) (Image_form psi)
+
+/-! ## The ZF axiom set: list-context provability, and as a sentence theory -/
+
+def ZFax (f : Form) : Prop :=
+  f = Ext_form ∨ f = Pair_form ∨ f = Union_form ∨ f = Pow_form ∨
+  f = Inf_form ∨ f = Reg_form ∨
+  (∃ phi, f = Sep_form phi) ∨ (∃ psi, f = Repl_form psi)
+
+def ZFprov (phi : Form) : Prop :=
+  ∃ G, (∀ x ∈ G, ZFax x) ∧ Prov G phi
+
+def ZFax_s (f : Form) : Prop :=
+  f = sealF Ext_form ∨ f = sealF Reg_form ∨ f = sealF Pow_form ∨
+  f = sealF Pair_form ∨ f = sealF Union_form ∨ f = sealF Inf_form ∨
+  (∃ phi, f = sealF (Sep_form phi)) ∨ (∃ psi, f = sealF (Repl_form psi))

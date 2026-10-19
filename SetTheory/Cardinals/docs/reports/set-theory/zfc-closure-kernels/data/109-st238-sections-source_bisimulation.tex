@@ -1,0 +1,227 @@
+\section{An independent proof of source equivalence}
+\label{sec:independent-source-bisimulation}
+
+Let $P_0$ denote the complete ordered source list with SHA-256 digest
+\begin{quote}\small\ttfamily
+74b1e7f73cc3ffe7761e36ab2d57a26e0ba34d3ac624f2472799e6ac41d5a51d,
+\end{quote}
+and let $P_1$ denote the reparenthesized source list with digest
+\begin{quote}\small\ttfamily
+7fd152d1f5371d2a561d4ad1870d241683b010ce7b7a27399b95363a4537cfb6.
+\end{quote}
+Each has $m=6455$ instruction occurrences, listed from left to right in
+its full binary decoder tree.  Write $p_i^{(a)}$ for the codeword of
+occurrence $i$ in $P_a$, where $0\leq i<m$ and $a\in\{0,1\}$.
+The operation and operand at occurrence $i$ are exactly the same in
+the two lists.  There are $1931$ decrement occurrences, $2596$
+increments, $128$ explicit breaks, $1799$ continues, and one halt.
+The maximum codeword lengths are $51$ and $48$, respectively;
+$6250$ codewords change.
+
+\subsection{Pointer conventions and a finite semantic quotient}
+
+Pointers are finite binary words, read from their first bit, and
+implicitly followed by zeroes.  On decoding a pointer $u$ to a leaf
+of depth $d$, the actual RegisterPath semantics consumes
+\[
+  \operatorname{consume}(u,d)=(u0^d)\mathbin{\upharpoonright}d.
+\]
+Thus the word on which the instruction operates is precisely its
+leaf codeword, even if the incoming pointer is shorter or has an
+unused suffix.  For a finite word $p$, let $I(p)$ be its fixed-length
+binary increment.  In particular, an all-ones word of length $d$
+increments to $0^d$, and $I(\epsilon)=\epsilon$.  Let $S_b(k,p)$
+delete the suffix through the $k$th occurrence of bit $b$, counting
+from the right; if fewer than $k$ such bits occur, the result is
+$\epsilon$.
+
+The successor pointers are $I(p)$ for an increment or positive
+decrement, $I(S_0(1,p))$ for a zero decrement,
+$I(S_0(k,p))$ for an explicit break of depth $k$, and
+$S_1(k,p)$ for a continue of depth $k$.  The halt occurrence has
+no successor.  These are the literal definitions in the retained
+RegisterPath source, with no replacement of break or continue by
+an informal structured-language convention.
+
+For each source, decode every successor pointer with implicit
+zero padding and record only the reached instruction index.
+This gives a finite control table with $6455$ rows and $8385$
+nonhalting successor entries.  The extra $1931$ entries arise by
+checking both decrement outcomes.  The one halt row is checked
+separately.  Registers do not enter this finite calculation:
+the two outcomes of every decrement are retained explicitly.
+
+\paragraph{Independent finite certificate.}
+The new checker \texttt{verify\_source\_control.py} compares these
+control tables directly.  It does not import the inherited source
+checker, replay the rotation certificate, or recurse through a
+source tree.  Instead, for the maximum depth $D$ of one source,
+it interprets a codeword $p$ as the dyadic integer interval
+\[
+  J_D(p)=
+  [\operatorname{val}(p)2^{D-|p|},
+   (\operatorname{val}(p)+1)2^{D-|p|}).
+\]
+The checker verifies that the ordered intervals partition
+$[0,2^D)$ with neither gaps nor overlaps.  This proves both
+prefix-freeness and completeness.  A pointer $u$ is decoded by
+locating the integer $\operatorname{val}(u)2^{D-|u|}$ in this
+partition.  Bit shifts and fixed-width integer addition implement
+the pointer operations above.  The checker compares every
+operation, operand, guarded successor index, and halt flag,
+and checks that both empty pointers decode to index zero.
+It pins both input digests and refuses to run with Python
+assertions disabled.
+
+The checker also establishes a property needed when connecting
+this source argument to exact binary-tape runtime frames.  For
+every generated successor $u$, its dyadic integer is exactly the
+\emph{left endpoint} of the interval of the decoded leaf $p_i$.
+Equivalently,
+\[
+             u0^\omega=p_i0^\omega.
+\]
+Consequently replacing the successor by its decoded leaf does
+not discard a nonzero unused bit or insert a new one.  This
+handles shorter pointers, zero-only unused tails, and all-ones
+overflow.  The empty initial pointer likewise agrees with the
+first leaf after infinite zero padding.  The check of this
+property is separate from equality of instruction indices.
+
+\paragraph{Source equivalence theorem.}
+For every register function $R:\mathbb N\to\mathbb N$,
+\[
+ \operatorname{RegisterHalts}(P_1,(\epsilon,R))
+ \quad\longleftrightarrow\quad
+ \operatorname{RegisterHalts}(P_0,(\epsilon,R)).
+\]
+The equivalence requires no zero-register hypothesis and no
+bound on any register value.
+
+\paragraph{Proof.}
+Project a source configuration to its decoded instruction index
+and its entire register function.  Decoding always terminates
+at a leaf: both source trees are finite and complete.  In the
+pinned Lean realization of $P_0$, all reached DAG children have
+smaller indices, its maximum leaf depth is $51$, and the supplied
+decoder fuel is $204$.  Thus fuel exhaustion cannot be confused
+with the literal halt occurrence.  The source $P_1$ can be
+represented by its displayed finite tree with any fuel exceeding
+its maximum depth $48$.
+
+The two projections start at the same index zero and the same
+register function.  Assume the projections agree at one step.
+The occurrence labels agree.  An increment updates the same
+register on both sides.  A decrement tests the same register,
+therefore selects the same zero/nonzero guard, and applies the
+same update.  Breaks and continues do not change registers.
+The finite certificate proves that the selected successor
+indices agree in every case.  Finally, the unique literal halt
+occurrence agrees.  Induction on the number of source steps
+therefore gives a bisimulation with exactly the same sequence
+of instruction indices, register functions, and halt flags.
+This proves the equivalence for finite halting runs, and also
+shows that an infinite source execution on either side has an
+infinite counterpart.  The registers above index eight are
+unchanged throughout; no assumption about them was used.
+\hfill$\square$
+
+This proof concerns source instructions.  It does not assert
+equal numbers of binary Turing-machine steps: the two decoders
+have different codewords and can take different amounts of
+time.  Positive whole-tape runtime segment theorems supply the
+separate binary connection.
+
+\subsection{The exact inherited consistency calibration}
+
+The calibrated initial register function is
+\[
+ R_*=(3,0,0,0,3,0,0,0,0),\qquad R_*(i)=0\quad(i\geq9),
+\]
+and its pointer is empty.  This is the literal value of
+\path{LogicalSeed246.initial}, obtained from
+\path{L2.enc}\ applied to the record
+$(\mathrm{np},\mathrm{tw},\mathrm{ws},\mathrm{ac},
+\mathrm{p1},\mathrm{p2},\mathrm{s1},\mathrm{s2},\mathrm{pl})
+=(3,0,0,0,3,0,0,0,0)$.
+It is not an arbitrary reinterpretation of the binary initializer.
+The exact startup/runtime argument must still identify the binary
+tape with this logical register function and the empty pointer.
+
+At the pinned ProveIt commit
+\texttt{13ec39ed43148b1807f51ed6e6528e1c84659562}, the retained declaration
+is \path{CalibratedRotation240.halts_iff_zfc_refutation}.
+Write $P_0$ for \path{SourceRotation240.program} and $(\epsilon,R_*)$
+for \path{LogicalSeed246.initial}. The declaration states
+\[
+ \operatorname{RegisterHalts}(P_0,(\epsilon,R_*))
+ \quad\longleftrightarrow\quad
+ \operatorname{BProv}(\mathrm{ZFCax\_s},[],\bot).
+\]
+The identity of its program with the complete source $P_0$ is
+checked separately by extracting the actual DAG lookup definitions,
+including the overrides at rows $5$, $6$, and $169$.  Storage
+contains $203$ rows; $202$ internal rows are reachable, and the
+unfolding contains exactly the pinned $6455$ leaves.
+
+The declaration composes explicit inherited interfaces.  First,
+\path{SourceRotation240.program_halts_iff} identifies the new
+source with \path{ProgramRotation244.program} for every register
+function.  Then \path{SourceRotation244.program_halts_iff}
+and \path{BisimRouting245.program_halts_iff} identify that
+source with \path{Prog254.program}, again for every register
+function.  At $R_*$,
+\path{LogicalSeed246.halts_iff_native_refutation} uses the
+existing \path{Bisim254.prog254_halts_iff} and
+\path{DirtyProgram254.six_nonformula_path_iff}
+interfaces to obtain a refutation of the native first-order
+calculus.  The two remaining comparisons are
+\begin{align*}
+ \operatorname{BProv}(\mathrm{NativeAx},[],\bot)
+  &\longleftrightarrow
+   \operatorname{BProv}(\mathrm{ZFax\_s},[],\bot),\\
+ \operatorname{BProv}(\mathrm{ZFax\_s},[],\bot)
+  &\longleftrightarrow
+   \operatorname{BProv}(\mathrm{ZFCax\_s},[],\bot),
+\end{align*}
+The first is provided by \path{WFTheory.native_refutation_iff_zf}.
+The second is provided by
+\path{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+
+The first comparison uses the internally well-founded part of the
+CP/GIC quotient to build a model of ZF and uses first-order soundness
+and completeness to compare finite refutations.  The second
+constructs the constructible submodel of a model of ZF, verifies
+Choice there, and again applies soundness and completeness.  In
+particular, the actual comparison includes Foundation and Power
+on the ZF side and the Choice axiom on the ZFC side.  These
+statements are more specific than a bare informal claim that two
+theories are equiconsistent.
+
+Finally, $\operatorname{BProv}$ asserts the existence of a finite
+list of theory axioms and a finite natural-deduction derivation
+from that list, expressed by the inductive relation
+$\operatorname{Prov}$.  Encoding finite derivation trees by natural numbers,
+and decoding such encodings, identifies this endpoint with
+$\exists p\,\operatorname{Proof}_{\mathrm{ZFC}}(p,\bot)$
+for the retained first-order proof convention.  Ordinary changes
+between standard effective proof encodings are finite syntactic
+translations.  Negation gives the corresponding consistency
+statement.
+
+\paragraph{Internalization and scope of this audit.}
+The new source theorem uses finite arithmetic checks and induction
+on source steps, so its ordinary mathematical proof is formalizable
+in ZFC.  The inherited model-theoretic comparisons use finite
+syntax, first-order models, quotients, and definable submodels;
+their ordinary arguments also fit within ZFC.  This observation
+does not rely on assuming a general soundness theorem for all of
+Lean's type theory inside ZFC.  The present work has inspected
+the cited declaration statements and their explicit composition,
+and freshly verified the finite source certificate.  It has not
+rebuilt or independently re-proved the complete ancestor Lean
+library, nor produced a new serialized proof for the entire
+binary endpoint. This inherited calibration is the logical
+dependency in the final ZFC biconditional. No consistency assumption is needed to prove the
+biconditional; actual nonhalting follows under
+$\operatorname{Con}(\mathrm{ZFC})$.

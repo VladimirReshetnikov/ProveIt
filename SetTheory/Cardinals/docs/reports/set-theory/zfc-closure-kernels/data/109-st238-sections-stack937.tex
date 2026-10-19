@@ -1,0 +1,465 @@
+\section{A supplementary equational result: three structural witness identifications}
+\label{sec:stack937}
+
+The binary construction and the equational construction in this section
+have separate correctness arguments.  The former gives the stated
+238-state machine.  Here we specialize the complete 946-bit native-stack
+packet of the preceding coordinated-reuse report~\cite{coordinated239}.
+Three of its closure-witness functions can share existing structural
+constructors:
+\begin{equation}
+ \mathsf{Target}(b)=Q(b),\qquad
+ \mathsf{Next}(b,z)=P(b,z),\qquad
+ \mathsf{Mem}(b,z)=A(b,z).
+ \label{eq:937-identifications}
+\end{equation}
+The resulting complete packet has \textbf{937 bits}, 14 equations,
+215 term nodes, 10 operation symbols and three local variables.
+The reduction is nine bits in this particular encoding.  No binary
+implementation of its equational proof search is supplied, and no
+minimum over other encodings is asserted.
+
+The substantive point is the compatibility proof.  A stack constructor,
+a class constructor and a Skolem witness need not have compatible
+interpretations merely because their arities agree.  We construct a
+countable model whose elements carry both a finite structural tag and a
+raw set value.  A weighted recursion assigns the latter in the order
+required by all three witness obligations.  The argument applies to the
+complete packet, including malformed selectors, arbitrary descriptors,
+both closure branches and its native equality equations.
+
+\subsection{The inherited interface and the exact finite packet}
+
+Write \(\mathcal K_{946}\) for the inspected parent packet.  It already
+identifies its class-NAND constructor \(J\) with its stack constructor
+\(P\), implements a member selector as \(W(x,d)\), and uses the same
+element \(d\) as its Boolean truth constant.  Let \(\mathcal K_{937}\)
+be its literal transformation by~\eqref{eq:937-identifications}.
+The remaining signature is
+\[
+ d^{(0)},\quad N^{(2)},\quad V^{(2)},\quad P^{(2)},\quad
+ A^{(2)},\quad Q^{(1)},\quad W^{(2)},\quad
+ p_E^{(2)},\quad p_\varepsilon^{(2)},\quad p_G^{(1)}.
+\]
+Its ground query is \(N(d,d)=d\).  Bare equational consistency would
+not be the appropriate query: every equational theory has a one-element
+model.  We require a model separating these two ground terms,
+equivalently their nonderivability.
+
+The first eight equations, with all displayed variables universally
+quantified, are
+\begin{align}
+ N\bigl(N(x,N(N(y,x),x)),N(y,N(z,x))\bigr)&=y,
+       \label{eq:937-sh1}\\
+ d&=N(d,N(d,d)),\label{eq:937-top}\\
+ V(P(x,s),d)&=x,\label{eq:937-head}\\
+ V(P(x,s),A(j,d))&=V(s,j),\label{eq:937-tail}\\
+ p_\varepsilon(s,P(a,b))
+       &=N(p_\varepsilon(s,a),p_\varepsilon(s,b)),\\
+ p_\varepsilon(s,A(i,j))
+       &=p_E(V(s,i),V(s,j)),\\
+ p_\varepsilon(s,Q(a))
+       &=p_\varepsilon(P(W(s,a),s),a),\label{eq:937-witness}\\
+ d&=N\bigl(p_\varepsilon(P(z,s),a),
+                N(d,p_\varepsilon(s,Q(a)))\bigr).
+                \label{eq:937-arbitrary}
+\end{align}
+Equation~\eqref{eq:937-sh1} is the inherited Sh1 Boolean basis;
+the parent report supplies its attribution and the same-carrier
+Boolean conversion~\cite{coordinated239}.
+
+For the remaining six equations it is clearer first to display their
+ordinary two-valued content.  Put
+\[
+ R_b(x,y)=
+ \varepsilon\bigl(P(y,P(x,b)),V(b,d)\bigr),\qquad h=Q(b).
+\]
+The six clauses are
+\begin{align}
+ G(b)&\ \lor\ R_b(h,P(b,z)), \label{eq:937-bad1}\\
+ G(b)&\ \lor\ E(A(b,z),P(b,z)), \label{eq:937-bad2}\\
+ G(b)&\ \lor\ \neg E(A(b,z),z), \label{eq:937-bad3}\\
+ \neg G(b)&\ \lor\ E(W(x,d),x)\ \lor\
+                    \neg R_b(x,y)\ \lor\ E(y,h), \label{eq:937-empty}\\
+ \neg G(b)&\ \lor\ \neg E(x,h)\ \lor\
+                    \neg R_b(x,y)\ \lor\ E(y,h), \label{eq:937-close}\\
+ \neg G(b)&\ \lor\ \neg E(y,h)\ \lor\
+                    R_b(P(b,y),y). \label{eq:937-support}
+\end{align}
+Each clause has the parent's explicit Boolean equation in \(N,d\).
+For example~\eqref{eq:937-bad1} is
+\[
+ d=N\!\left(N(d,p_G(b)),
+ N\!\left(d,p_\varepsilon
+       \bigl(P(P(b,z),P(Q(b),b)),V(b,d)\bigr)\right)\right).
+\]
+The file \texttt{stack937.equations} contains all 14 equations fully
+expanded, and \texttt{stack937.bits} encodes exactly those equations and
+the two ground endpoints.  Thus the abbreviations in this exposition
+are not omitted parts of the measured payload.
+
+\subsection{The raw closure theory used by the upper construction}
+
+In an ordinary nonempty structure with membership relation \(E\), define
+\[
+ \operatorname{Empty}(x)\ \equiv\ \forall u\,\neg E(u,x),
+ \qquad
+ y\subseteq_E z\ \equiv\
+       \forall u\,(E(u,y)\rightarrow E(u,z)).
+\]
+For every \emph{equality-free pure-membership} formula
+\(R(x,y;\bar p)\), with any finite tuple of parameters, put
+\[
+ \operatorname{LB}(R)\ \equiv\
+    \forall x\,\exists z\,\forall y\,
+                (R(x,y;\bar p)\rightarrow y\subseteq_E z).
+\]
+The raw empty-seed positive subset-closure scheme, abbreviated EPSC,
+asserts that \(\operatorname{LB}(R)\) implies the existence of \(h\)
+such that
+\begin{align}
+ \forall x\,\forall y\,
+ \bigl((\operatorname{Empty}(x)\lor E(x,h))\land R(x,y;\bar p)
+                    \rightarrow E(y,h)\bigr),\label{eq:937-epsc-close}\\
+ \forall y\,\bigl(E(y,h)\rightarrow
+                          \exists x\,R(x,y;\bar p)\bigr).
+                          \label{eq:937-epsc-support}
+\end{align}
+The parent packet's ordinary consistency calibration uses precisely
+this formula-indexed scheme~\cite{coordinated239}.  The proof below
+does not assume closure for arbitrary externally specified relations.
+It also does not replace the scheme by a single fixed first-order sentence.
+
+\begin{lemma}[Literal reverse interpretation]
+\label{lem:937-reverse}
+Every \(\mathcal K_{937}\)-model expands to a
+\(\mathcal K_{946}\)-model by~\eqref{eq:937-identifications}.
+The expansion preserves the values of \(N(d,d)\) and \(d\).
+\end{lemma}
+
+\begin{proof}
+Give each deleted operation its displayed defining term.
+Every parent equation becomes exactly the transformed equation.
+The ground query uses only unchanged symbols.
+\end{proof}
+
+The upper direction requires a different argument.  We prove it for
+every countable EPSC structure, which isolates the new construction
+from the inherited set-theoretic calibration.
+
+\subsection{Finite tags, total selectors and the dependency order}
+
+Let \(M=(M,E_M)\) be a countable nonempty EPSC structure.
+Take a countably infinite carrier \(D\) of freely generated finite trees.
+Its leaves are one distinguished element \(d\) and a separate element
+\(e_m\) for every \(m\in M\); its constructors are \(P,A,Q\).
+The leaves \(e_m\) are elements of a chosen model carrier, not additional
+constant symbols in the finite equational signature.  Interpret
+\(P,A,Q\) by their disjoint injective tree constructors.
+
+Assign weight one to every leaf and define
+\begin{equation}
+ \begin{split}
+ w(Q(b))&=w(b)+1,\\
+ w(P(b,z))&=w(b)+w(z)+2,\\
+ w(A(b,z))&=w(b)+w(z)+3.
+ \end{split}
+ \label{eq:937-weights}
+\end{equation}
+Every proper subterm has smaller weight.  In addition, for every
+\(b,z\in D\),
+\begin{equation}
+              w(Q(b))<w(P(b,z))<w(A(b,z)).
+              \label{eq:937-cross-order}
+\end{equation}
+These cross-constructor inequalities will allow a hull or bad input
+to be selected first, then a relation witness, and then a member
+separating that witness from a proposed bound.
+
+For any selector \(i\), let \(\operatorname{idx}(i)\) be the number of
+successive outer layers of the form \(A(j,d)\).  A selector of every
+other shape has index zero.  Regard \(P(x,s)\) as a cons cell and
+every non-\(P\) tail as the infinite constant-\(d\) stream.
+Define \(V(s,i)\) to be coordinate \(\operatorname{idx}(i)\) of that
+stream.  This defines \(V\) on all of \(D^2\), and
+\eqref{eq:937-head}--\eqref{eq:937-tail} follow directly.
+In particular, their universal ranges have not been restricted to
+canonical selectors.
+
+Every class tree \(c\) also decodes syntactically to a finite
+pure-membership formula in finitely many stream coordinates.
+A leaf denotes falsity; \(P(a,b)\) denotes NAND; \(A(i,j)\) denotes
+membership between coordinates \(\operatorname{idx}(i)\) and
+\(\operatorname{idx}(j)\); \(Q(a)\) existentially prepends a coordinate.
+This is recursion on the finite class tree.  It does not inspect any
+membership relation or raw set value.
+
+\begin{lemma}[Descriptor descent]
+\label{lem:937-descent}
+For each descriptor \(b\), the expression
+\[
+       \varepsilon(P(y,P(x,b)),V(b,d))
+\]
+decodes to one finite equality-free formula
+\(\widehat R_b(x,y;\bar u)\).  Each fixed parameter in \(\bar u\)
+is a proper subterm of \(b\) or the default leaf \(d\).
+\end{lemma}
+
+\begin{proof}
+The class \(V(b,d)\) is the head of \(b\) if \(b\) is a \(P\)-tree,
+and is \(d\) otherwise.  Decode that finite class first.
+Its finitely many referenced stream coordinates are the two newly
+prepended variables, coordinates of the tail \(b\), or coordinates
+introduced by its own existential binders.  Every coordinate of \(b\)
+is a head of a proper tail subtree, hence a proper subterm of \(b\),
+or is the default \(d\).  Bound coordinates become quantified
+variables.  Only the stated fixed parameters remain.
+\end{proof}
+
+The lemma also covers classes that inspect their code slot or an
+unexpectedly deep coordinate.  The relevant property is finite
+structural descent, not a promise that arbitrary descriptors have
+the intended syntactic format.
+
+\subsection{Assigning raw values without a circular definition}
+
+Fix \(m_0\in M\).  We define a projection \(\mu:D\to M\) by recursion
+on~\eqref{eq:937-weights}, starting with
+\[
+                   \mu(d)=m_0,\qquad \mu(e_m)=m.
+\]
+These leaves guarantee surjectivity independently of every later
+constructor choice.  Countability permits all subsequent witnesses
+to be selected using a fixed external enumeration of \(M\).
+
+Once the parameters in Lemma~\ref{lem:937-descent} have received
+their raw values, its decoded formula defines a particular
+pure-membership relation \(R_b^M\) in \(M\).  It is one of the
+permitted EPSC instances.  Make the following fixed choice for
+each descriptor \(b\).
+
+If \(\operatorname{LB}(R_b^M)\) holds, set \(g_b=\mathrm{true}\)
+and choose an EPSC hull \(h_b\).  If it fails, set
+\(g_b=\mathrm{false}\) and choose a bad input \(h_b\) such that
+\begin{equation}
+ \forall z\in M\,\exists n,m\in M\,
+ \bigl(R_b^M(h_b,n)\land E_M(m,n)\land\neg E_M(m,z)\bigr).
+ \label{eq:937-bad-input}
+\end{equation}
+The latter choice is exactly classical negation of the displayed
+local-boundedness statement, including the definition of subset.
+Assign
+\begin{equation}
+                         \mu(Q(b))=h_b.
+                         \label{eq:937-projection-q}
+\end{equation}
+
+For \(P(b,z)\), distinguish the same two branches.
+If \(g_b=\mathrm{false}\), choose \(n\) with
+\[
+ R_b^M(h_b,n),\qquad n\not\subseteq_{E_M}\mu(z),
+\]
+as supplied by~\eqref{eq:937-bad-input}.
+If \(g_b=\mathrm{true}\) and \(E_M(\mu(z),h_b)\), choose \(n\)
+with \(R_b^M(n,\mu(z))\), using hull support.
+If \(g_b=\mathrm{true}\) and \(\mu(z)\) is not a member of \(h_b\),
+take \(n=m_0\).  In each case set
+\begin{equation}
+                         \mu(P(b,z))=n.
+                         \label{eq:937-projection-p}
+\end{equation}
+Finally, if \(g_b=\mathrm{false}\), choose a member of
+\(\mu(P(b,z))\) that is not a member of \(\mu(z)\), and assign
+that value to \(\mu(A(b,z))\).  If \(g_b=\mathrm{true}\),
+assign \(m_0\) to \(\mu(A(b,z))\).
+
+\begin{lemma}[Well-founded raw interpretation]
+\label{lem:937-projection}
+These prescriptions define a total surjection \(\mu:D\to M\).
+\end{lemma}
+
+\begin{proof}
+To choose \(R_b^M,g_b,h_b\), only the proper-subterm parameter
+values of \(b\), and the already fixed \(\mu(d)\), are needed.
+Thus~\eqref{eq:937-projection-q} is legitimate at weight \(w(Q(b))\).
+When assigning \(\mu(P(b,z))\), both \(\mu(z)\) and the needed
+\(\mu(Q(b))=h_b\) have smaller weight by~\eqref{eq:937-cross-order}.
+When assigning \(\mu(A(b,z))\), the value \(\mu(P(b,z))\) is
+available for the same reason.  Each requested witness exists by
+the selected branch's defining property.  Recursion on positive
+integer weights therefore supplies all values.  The equations
+\(\mu(e_m)=m\) prove surjectivity.
+\end{proof}
+
+Define raw membership on \(D\) by
+\[
+                      E_D(u,v)\quad\Longleftrightarrow\quad
+                      E_M(\mu(u),\mu(v)).
+\]
+Induction on formulas, with surjectivity used at quantifiers, gives
+\begin{equation}
+ (D,E_D)\models\phi(\bar u)
+       \quad\Longleftrightarrow\quad
+ (M,E_M)\models\phi(\mu(\bar u))
+ \label{eq:937-formula-transfer}
+\end{equation}
+for every equality-free pure-membership formula \(\phi\).
+Native equality is deliberately excluded from this transfer:
+two distinct tags may have the same raw value.
+Native equality in the equational kernel remains literal equality
+of trees and satisfies the stack equations already proved.
+
+\subsection{Class semantics, the free witness slice and both branches}
+
+Interpret \(\varepsilon(s,c)\) by the finite decoded class \(c\),
+its stream coordinates and \(E_D\).  This realizes class NAND and
+atomic membership.  The definition of the quantifier constructor
+gives
+\[
+ \varepsilon(s,Q(a))
+       \quad\Longleftrightarrow\quad
+       \exists z\in D\,\varepsilon(P(z,s),a).
+\]
+For \(a\ne d\), choose \(W(s,a)\) to witness this existential
+whenever it is true, and choose an arbitrary element otherwise.
+At \(a=d\), the class is always false.  Both sides of the chosen
+witness equivalence are therefore false whatever \(W(s,d)\) is,
+and the arbitrary-candidate implication has a false antecedent.
+Use this unconstrained slice to set
+\[
+ W(x,d)=
+ \begin{cases}
+   e_m \text{ for some }m\text{ with }E_M(m,\mu(x)),
+                      &\text{if such }m\text{ exists},\\
+   d,                  &\text{otherwise}.
+ \end{cases}
+\]
+Consequently \(E_D(W(x,d),x)\) holds whenever \(x\) is nonempty.
+The selector still has exactly the member-choice behavior required
+by the parent packet.
+
+Set \(G(b)=g_b\).  Formula transfer~\eqref{eq:937-formula-transfer}
+and the definitions of \(\varepsilon,V\) identify \(R_b(x,y)\)
+with \(R_b^M(\mu(x),\mu(y))\).
+If \(g_b=\mathrm{false}\), the chosen raw values of \(Q(b)\),
+\(P(b,z)\) and \(A(b,z)\) satisfy
+\eqref{eq:937-bad1}--\eqref{eq:937-bad3}; the other clauses
+hold because their first literal is true.
+
+If \(g_b=\mathrm{true}\), the first three clauses hold immediately.
+For~\eqref{eq:937-empty}, a nonempty \(x\) satisfies its member-selector
+literal.  For an empty \(x\), the hull's empty-seed closure
+property~\eqref{eq:937-epsc-close} supplies the last literal whenever
+\(R_b(x,y)\) holds.  The same hull property directly gives
+\eqref{eq:937-close}.  If \(E_D(y,Q(b))\), the definition of
+\(\mu(P(b,y))\) supplies a supporting input for \(R_b(-,y)\),
+which proves~\eqref{eq:937-support}.
+This verifies all six clauses for every descriptor and every tuple
+of carrier elements.
+
+\begin{theorem}[Upper model and ordinary consistency calibration]
+\label{thm:937-calibration}
+Every countable nonempty EPSC structure has a countable tagged cover
+supporting a \(\mathcal K_{937}\)-model in which \(N(d,d)\ne d\).
+Using the inherited raw-EPSC/ZFC calibration of
+\(\mathcal K_{946}\), ordinary ZFC proves
+\[
+       \mathcal K_{937}\nvdash N(d,d)=d
+                \quad\Longleftrightarrow\quad
+       \operatorname{Con}(\mathrm{ZFC}).
+\]
+\end{theorem}
+
+\begin{proof}
+The construction above gives the ordinary relational and native-function
+interpretation.  Transport a countably infinite Boolean algebra onto
+the same carrier \(D\), mapping its top to the distinguished \(d\).
+Interpret \(N\) as Boolean NAND and \(p_E,p_\varepsilon,p_G\)
+as its top or bottom according to the ordinary predicate truth values.
+Keep \(P,A,Q,V,W\) unchanged.  The verified native equations and
+Boolean clauses give exactly \(\mathcal K_{937}\), and its
+Boolean bottom \(N(d,d)\) differs from \(d\).
+
+For the final equivalence, the inherited calibration supplies a
+countable EPSC model from \(\operatorname{Con}(\mathrm{ZFC})\),
+in the ordinary ZFC metatheory.  The upper construction gives a
+separating \(\mathcal K_{937}\)-model.  Conversely, a separating
+model expands to a separating parent model by
+Lemma~\ref{lem:937-reverse}, and the parent calibration yields
+\(\operatorname{Con}(\mathrm{ZFC})\).
+Equational completeness converts existence of a separating model
+to nonderivability of the ground query.  The ground-term congruence
+quotient suffices for this last step.
+\end{proof}
+
+The Boolean role of \(d\) and its class role differ:
+\(d\) is the Boolean top, while \(\varepsilon(s,d)\) is always
+false in the upper model.  No equation identifies an object with
+its class-incidence value.  This proof is ordinary mathematics,
+formalizable in ZFC; it supplies no new Lean/Rocq endpoint or
+serialized PA derivation.
+
+\subsection{Exact accounting and the remaining implementation boundary}
+
+The unchanged codec includes an eight-bit symbol count, three arity
+bits per symbol, an eight-bit variable capacity, one marker per
+equation followed by a terminating marker, every term node, and both
+ground endpoints.  Ten symbols plus three variables still require
+four-bit opcodes.  Thus the measured length is
+\[
+ \underbrace{8+3\cdot10+8}_{46\text{ header bits}}
+ +\underbrace{14+1+4\cdot215}_{875\text{ equation bits}}
+ +\underbrace{4\cdot4}_{16\text{ endpoint bits}}
+ =\boxed{937}.
+\]
+The three identifications preserve arity and the number of term
+nodes; their nine-bit saving comes entirely from the signature header.
+The serializer reconstructs the exact parent packet before applying
+them.  Two independent parsers agree on the transformed packet;
+all 937 strict prefixes are rejected, and the finite Boolean audit
+checks 72 clause-group valuations.  Four malformed or trailing-input
+controls also pass.  The builder explicitly rejects Python
+\texttt{-O} and \texttt{-OO}, which would otherwise disable assertions.
+These are exact serialization and Boolean-transcription checks.
+They do not replace the unbounded upper-model proof.
+
+The bit-character SHA-256, excluding the terminating file newline, is
+\begin{center}\small\ttfamily
+a35c535276aa32cefc6c019824124a6841\\
+d9aef91b6bf679fae0af3116da2f52
+\end{center}
+The complete machine-readable equations, bits, parsed data and
+verification receipt accompany the packet as
+\texttt{stack937.equations}, \texttt{stack937.bits},
+\texttt{stack937.json} and \texttt{verification.json}.
+
+This alternative keeps genuine equational substitution.  That is
+materially different from deleting equality rows in the current
+numerical proof engine: those rows also implement cross-variable
+instantiation, whose absence admits the documented finite-sort
+countermodel~\cite{typedcountermodel}.  Likewise, the familiar
+dual-\(\rho_6\) rewrite requires additional care with the runtime's
+relative falsity; ordinary Boolean resemblance alone does not
+establish the required refutation equivalence~\cite{dualgap}.
+The main binary result retains its calibrated complete frontend.
+
+Finally, the present sharing argument does not permit arbitrary
+operation identifications.  For example, \(N=P\) would make
+the native cons constructor commutative, since Boolean NAND is
+commutative.  Then for arbitrary \(x,s\),
+\[
+ x=V(P(x,s),d)=V(P(s,x),d)=s,
+\]
+and the carrier would collapse to one element.  We keep Boolean
+\(N\) separate from structural \(P\).  We also keep the free
+\(W(-,d)\) slice available for member selection: additionally
+forcing it to equal \(Q\) would impose a further compatibility
+condition not proved here.
+
+A complete binary implementation of this packet must still account
+for substitutions with repeated variables, arbitrary one-hole
+contexts, both equation orientations, fair unbounded certificate
+enumeration, and the blank-tape initializer.  The 937-bit result
+supplies a smaller explicit input in the inspected stack family.
+Its bit count cannot be subtracted from the 238-state machine's
+state count.

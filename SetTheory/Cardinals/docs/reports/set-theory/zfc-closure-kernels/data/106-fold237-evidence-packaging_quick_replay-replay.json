@@ -1,0 +1,366 @@
+{
+  "status": "PASS_QUICK_REPLAY",
+  "mode": "quick",
+  "started_utc": "2026-10-19T16:31:04.133482+00:00",
+  "python_version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "python_executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+  "assertions_enabled": true,
+  "temporary_copy": true,
+  "commands": [
+    {
+      "name": "construct238",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "build_composed238.py"
+      ],
+      "cwd": "fresh temporary package copy",
+      "log": "logs/01_construct238.log",
+      "status": "PASS",
+      "returncode": 0,
+      "seconds": 6.383991828000035,
+      "log_sha256": "d2d13574f0e7bbb552fdf6f099d7d42d41410e73438e685e151faafa36365b52"
+    },
+    {
+      "name": "construct237",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "build_composed237.py",
+        "--input238",
+        "zfc_composed238_old.tm",
+        "--output-dir",
+        "replay_products/rebuilt237"
+      ],
+      "cwd": "fresh temporary package copy",
+      "log": "logs/02_construct237.log",
+      "status": "PASS",
+      "returncode": 0,
+      "seconds": 0.06433002599987958,
+      "log_sha256": "029071b992de5857de008cc69c6d3f01a59bd7ac2ceb045785debd8a4cfe9edc"
+    },
+    {
+      "name": "bootstrap237",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "verify_bootstrap237.py"
+      ],
+      "cwd": "fresh temporary package copy",
+      "log": "logs/03_bootstrap237.log",
+      "status": "PASS",
+      "returncode": 0,
+      "seconds": 6.484644397000011,
+      "log_sha256": "3937415713a4af603a51d2b0ae19019ae95a5a5f8805ef172c1177f15a2549e6"
+    },
+    {
+      "name": "source_rotation_certificate",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "source_certificate/check_rotation_certificate.py",
+        "--report",
+        "replay_products/receipts/source_rotation.json"
+      ],
+      "cwd": "fresh temporary package copy",
+      "log": "logs/04_source_rotation_certificate.log",
+      "status": "PASS",
+      "returncode": 0,
+      "seconds": 1.3184863829997084,
+      "log_sha256": "a8442ae4d94e78b69621e5911cd33259f7ed7ffba0a5096e602b98fb35179e0b"
+    },
+    {
+      "name": "source_interface",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "source_interface/check_source_interface.py",
+        "--sites",
+        "source_certificate/baseline_sites.json",
+        "--blank-prefix",
+        "inputs/boundary239_blank_prefix.json",
+        "--output",
+        "replay_products/receipts/source_interface.json"
+      ],
+      "cwd": "fresh temporary package copy",
+      "log": "logs/05_source_interface.log",
+      "status": "PASS",
+      "returncode": 0,
+      "seconds": 0.11432699400029378,
+      "log_sha256": "e3705db4f16b280d2f27ffb48ab54b42b6344747d4e35e78eeeacaf5cac21ef1"
+    },
+    {
+      "name": "independent_source_graph",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "verification/check_source_graph.py",
+        "source_certificate/baseline_sites.json",
+        "inputs/sites_logical.json",
+        "--output",
+        "replay_products/receipts/source_graph_audit.json"
+      ],
+      "cwd": "fresh temporary package copy",
+      "log": "logs/06_independent_source_graph.log",
+      "status": "PASS",
+      "returncode": 0,
+      "seconds": 0.2649543940001422,
+      "log_sha256": "c3f19abfa1eb13d3992caef9fc68219f3cfc70aff1088e6e4a969591c21a9ff5"
+    },
+    {
+      "name": "boundary240_to239",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "verification/certify_boundary_fold.py",
+        "inputs/boundary240_old.tm",
+        "inputs/zfc_boundary239_old.tm",
+        "--output",
+        "replay_products/receipts/boundary_fold.json"
+      ],
+      "cwd": "fresh temporary package copy",
+      "log": "logs/07_boundary240_to239.log",
+      "status": "PASS",
+      "returncode": 0,
+      "seconds": 0.06459294899968882,
+      "log_sha256": "a7b465d677a6161996757e266b45159428620bdcca5bd99725c34e1d0bee4b7d"
+    },
+    {
+      "name": "independent238",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "verification/verify_composed238_independent.py",
+        "--old",
+        "inputs/zfc_boundary239_old.tm",
+        "--new",
+        "zfc_composed238_old.tm",
+        "--output",
+        "replay_products/receipts/composed238_independent.json"
+      ],
+      "cwd": "fresh temporary package copy",
+      "log": "logs/08_independent238.log",
+      "status": "PASS",
+      "returncode": 0,
+      "seconds": 7.088434028000393,
+      "log_sha256": "65db9acab2342f7f30c9295704059ba131aae1fd105435114c5e88a5b1e89fce"
+    },
+    {
+      "name": "local237",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "verification/verify_237.py",
+        "--old",
+        "zfc_composed238_old.tm",
+        "--new",
+        "zfc_composed237_old.tm",
+        "--output",
+        "replay_products/receipts/local_simulation237.json"
+      ],
+      "cwd": "fresh temporary package copy",
+      "log": "logs/09_local237.log",
+      "status": "PASS",
+      "returncode": 0,
+      "seconds": 7.139664431000256,
+      "log_sha256": "69849a61809720cb5c176d2bd4079f5f19aee94f6df7b25e685be777a19ab9e2"
+    },
+    {
+      "name": "independent_local237",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "verification/review_local237.py",
+        "zfc_composed238_old.tm",
+        "zfc_composed237_old.tm",
+        "--output",
+        "replay_products/receipts/local237_independent_review.json"
+      ],
+      "cwd": "fresh temporary package copy",
+      "log": "logs/10_independent_local237.log",
+      "status": "PASS",
+      "returncode": 0,
+      "seconds": 0.032899779999752354,
+      "log_sha256": "9bc5c083878ccd2a23ae1662a092b73c3881dc984c0cc0e2d8832ac97f9629ea"
+    }
+  ],
+  "comparisons": [
+    {
+      "name": "zfc_composed238_old.tm",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "069942be27db9736875ea042320e51ac3b1eac7116cbe01cdce520fa6056f78c"
+    },
+    {
+      "name": "zfc_composed238.tm",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "909f29c493e0ccc5d6a481fd7a20a9a82eb934ab2aa7df17b5ec3789255a8c08"
+    },
+    {
+      "name": "renumbering238.json",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "3687835bc511fe86bdb81ddba99a4f3bc9646abb34b3aba9cbae5ddbf3824562"
+    },
+    {
+      "name": "evidence/construction238.json",
+      "status": "PASS",
+      "stable_sha256": "49ef335987c3ea1c26e5372a95e0a821747a5d285397d02ee5b4b344b638cadb"
+    },
+    {
+      "name": "evidence/local_fold238.json",
+      "status": "PASS",
+      "stable_sha256": "d2b2d97020994e89b61785a7eea8be6f08c2c62bd8f280003e9ffb5f431e3f72"
+    },
+    {
+      "name": "evidence/bootstrap238.json",
+      "status": "PASS",
+      "stable_sha256": "c396450d8766bad606bf371a2f3437ae83dc29f2017f0ab59a0e6a9bd2a7beb6"
+    },
+    {
+      "name": "zfc_composed237_old.tm",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "a3c4407f30e2e2139af87c6a91948c518134855841a28eb85b1d81bcfd026c9a"
+    },
+    {
+      "name": "zfc_composed237.tm",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "7eda1da1fcda629cae86d22b01d3faf419552cf04ed4179f0c045ad0adf2c1a6"
+    },
+    {
+      "name": "renumbering.json",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "d62a4e8444742714b34c3c23c582919c74b28a1c5869dff857d26ca51267c035"
+    },
+    {
+      "name": "evidence/bootstrap237.json",
+      "status": "PASS",
+      "stable_sha256": "50c7eb6dec1c4b579e12c8bf2515119430f0ac94e2dce376b2b24b995a95bd4f"
+    },
+    {
+      "name": "source_certificate/rotation_certificate_results.json",
+      "status": "PASS",
+      "stable_sha256": "fb182d72b6309ca515d9b65762f577e763b717bed366246d3d4c94553d9ff568"
+    },
+    {
+      "name": "evidence/source_graph_audit.json",
+      "status": "PASS",
+      "stable_sha256": "ddf48c22dfdf8b61faed3ac4b277783aa17709cf93d74f707476ffb4fa8c84bb"
+    },
+    {
+      "name": "evidence/composed238_independent.json",
+      "status": "PASS",
+      "stable_sha256": "0b866655e5ab52437f4c63d00cd0d7599eb46e2a61098db1e8f5bc6be0aa046d"
+    },
+    {
+      "name": "evidence/local_simulation237.json",
+      "status": "PASS",
+      "stable_sha256": "44f2cc6b36361d1a68ce1fecdf9b6c788adbcec6f100929c86ae661366d728de"
+    },
+    {
+      "name": "evidence/local237_independent_review.json",
+      "status": "PASS",
+      "stable_sha256": "708bf117a0e649223100953360ce556ad90e3131f05cd838601ac1f7852c1ef8"
+    }
+  ],
+  "replayed_receipts": [
+    {
+      "file": "receipts/construction238.json",
+      "sha256": "d2d13574f0e7bbb552fdf6f099d7d42d41410e73438e685e151faafa36365b52"
+    },
+    {
+      "file": "receipts/local_fold238.json",
+      "sha256": "2836dadc66942bd81cb8737e93f46afea2964aa489ada6662fe37854777f7dd5"
+    },
+    {
+      "file": "receipts/bootstrap238.json",
+      "sha256": "346b9a7eacb72bf24b0ee27ab4913b7797dc48bb45360a344b1df2b11383de4d"
+    },
+    {
+      "file": "receipts/bootstrap237.json",
+      "sha256": "f2e5a5d037324e12c6e1d858fefbb7cf630ebf493a8ad5db0000e384d95e7736"
+    },
+    {
+      "file": "receipts/source_rotation.json",
+      "sha256": "a8442ae4d94e78b69621e5911cd33259f7ed7ffba0a5096e602b98fb35179e0b"
+    },
+    {
+      "file": "receipts/source_interface.json",
+      "sha256": "e1cbc15068aab0582f52ea5b02beffed0db9df050ef0ee24aa5b3f7601da1f9a"
+    },
+    {
+      "file": "receipts/source_graph_audit.json",
+      "sha256": "c3f19abfa1eb13d3992caef9fc68219f3cfc70aff1088e6e4a969591c21a9ff5"
+    },
+    {
+      "file": "receipts/boundary_fold.json",
+      "sha256": "635530b691e2f35bf055ee33450222662692d29c7e6516cca848940ac51a4e95"
+    },
+    {
+      "file": "receipts/composed238_independent.json",
+      "sha256": "685b8ae92060ce128256f2e089e825d0245dc46b04955614b419e57be6508984"
+    },
+    {
+      "file": "receipts/local_simulation237.json",
+      "sha256": "00fba54962c1f80099b16c7c1250c1d0c717aa8a1cf49b7bdfcb1e013e77788c"
+    },
+    {
+      "file": "receipts/local237_independent_review.json",
+      "sha256": "9bc5c083878ccd2a23ae1662a092b73c3881dc984c0cc0e2d8832ac97f9629ea"
+    }
+  ],
+  "manifest": {
+    "status": "NOT_PRESENT",
+    "checked_files": 0
+  },
+  "delivered_full_certificate_audit": {
+    "status": "PASS_DELIVERED_FULL_CERTIFICATE_AUDIT",
+    "source_sha256": "7fd152d1f5371d2a561d4ad1870d241683b010ce7b7a27399b95363a4537cfb6",
+    "scope": "Audits pinned case arrays, complete guard keys, affine clocks, checker/table hashes, row coverage and aggregate counts. Quick mode does not rerun the expensive symbolic derivations.",
+    "certificates": [
+      {
+        "file": "evidence/universal_runtime238_cases.json",
+        "sha256": "878ed9d459867d6af94d55250f444e02c26c0b795d99d06e5dd1f560c2886cbf",
+        "cases": 8386,
+        "symbolic_rules": 2255513,
+        "minimum_duration_constant": 13,
+        "stable_data_sha256": "2afea3ab04406ab421e62850a11c897d18e77b863d166e124af9e53c65a36e70",
+        "summary": "evidence/universal_runtime238.json",
+        "summary_sha256": "a49b07b94594fac1d8765b7400f6d50ebe94913397672c6407c798f306c6374f",
+        "summary_stable_sha256": "bd9715f919177451ee371661d649521b3275729d5198f008ade2f81e2c2f8081",
+        "literal_rows_covered": 476
+      },
+      {
+        "file": "evidence/universal_runtime237_cases.json",
+        "sha256": "573e2d88400030c9457ab028c701102205124875f69aedd6acfa7f9341cd8c25",
+        "cases": 8386,
+        "symbolic_rules": 2261369,
+        "minimum_duration_constant": 13,
+        "stable_data_sha256": "ebb79c4a386c0eade06df21c49d3a973e600a01af09734ac231607ac6d9fab97",
+        "summary": "evidence/universal_runtime237.json",
+        "summary_sha256": "f106bc3bec89618260e109b284775e82a28bf432dea5c214f1b6ff6fdfa374c4",
+        "summary_stable_sha256": "7e8fb40c47f1a9caeb16b50c664f09dae3b2fe41b5bfd9ff858376f0631e0866",
+        "literal_rows_covered": 474
+      },
+      {
+        "file": "evidence/boundary_guard_cases.json",
+        "sha256": "606c4d8e003120583774840e64e4f9dd7d46f0bcaae7c47a053e3f9d5c4b0b62",
+        "cases": 8386,
+        "symbolic_rules": 2247513,
+        "minimum_duration_constant": 13,
+        "stable_data_sha256": "6583d956e771c509ec2eb12a69bc960076f744eac898ab52944dfa5d19bc84b3",
+        "summary": "evidence/boundary_guard.json",
+        "summary_sha256": "ad8ac667ce3f79e6ec36867c07541fdbc16e1eee2f057ec08b9323a089cad291",
+        "summary_stable_sha256": "ca2870a30765f5ef7933b4af8a08b00bdb8153adb0e4aee971223cc900ebd174",
+        "literal_rows_covered": 478,
+        "explicit_guard_visits": 32,
+        "minimum_guard_one_run_constant": 23,
+        "visits_file_sha256": "c5cf7aa851b95af94f36df2357f4ff3d03a2da0d8c66e3376573d3a3a00d6fea"
+      }
+    ]
+  },
+  "temporary_copy_removed_on_exit": true,
+  "original_evidence_unchanged": true,
+  "original_evidence_files_checked": 17,
+  "full_symbolic_jobs_rerun": 0,
+  "seconds": 29.394886826999937,
+  "finished_utc": "2026-10-19T16:31:33.528391+00:00"
+}

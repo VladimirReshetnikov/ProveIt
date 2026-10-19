@@ -1,0 +1,45 @@
+\subsection{A new 921 bit equational packet}
+A separate result removes one redundant equation from the supplied complete 946-bit stack-EPSC packet. Write $E$ for its incidence operation, $N$ for NAND, $P,Q$ for its native operations, and $d$ for its distinguished constant. The deleted equation is
+\[
+d=N(d,N(d,d)).
+\]
+The remaining signature, ordered equations and query endpoints are unchanged. The key retained equations, with their original indices, are
+\begin{align*}
+(0)\quad&N(N(x,N(N(y,x),x)),N(y,N(z,x)))=y,\\
+(4)\quad&E(s,P(a,b))=N(E(s,a),E(s,b)),\\
+(7)\quad&d=N(E(P(z,s),a),N(d,E(s,Q(a)))).
+\end{align*}
+Equation (0) is the Sh1 Boolean-basis axiom. Theorem 2 of McCune, Veroff, Fitelson, Harris, Feist and Wos, \emph{Short Single Axioms for Boolean Algebra} (2002), supplies its NAND Boolean-algebra interpretation. The source is \url{https://www.cs.unm.edu/~mccune/papers/basax/v12.pdf}. This is an inherited Boolean-basis dependency; the argument below does not assume that $d$ already denotes top.
+
+\begin{proposition}[Literal same-model redundancy]
+The reduced 13-equation theory proves the deleted identity in equational logic. Consequently it has exactly the same equational consequences as the original 14-equation theory, including the original query $N(d,d)=d$.
+\end{proposition}
+\begin{proof}
+Work in any algebra satisfying the retained equations. Sh1 makes $N$ NAND in a Boolean algebra; let $1$ denote its top. Choose arbitrary $s,z,a$ and abbreviate
+\[
+e=E(P(z,s),a),\quad q=E(s,Q(a)),\quad r=E(s,Q(P(a,a))).
+\]
+The constant ensures the carrier is nonempty. Equation (7) gives $d=\neg e\vee(d\wedge q)$, hence $d\vee e=1$. Replacing $a$ by $P(a,a)$ and applying (4) makes the first incidence value $N(e,e)=\neg e$. Thus $d=e\vee(d\wedge r)$ and $d\vee\neg e=1$. Distributivity yields
+\[
+d=(d\vee e)\wedge(d\vee\neg e)=1.
+\]
+It follows that $N(d,N(d,d))=N(1,N(1,1))=1=d$. This includes trivial Boolean algebras, and uses no relation between $q$ and $r$. Every model of the reduced theory is therefore a model of the original theory on literally the same carrier and operations. Ordinary equational completeness gives the stated syntactic consequence, and substituting its finite derivation preserves all other consequences.
+\end{proof}
+
+No explicit Sh1-only rewrite derivation of the deleted equation is supplied. The argument is an ordinary all-algebra proof plus equational completeness, formalizable in ZFC. Since the endpoints are unchanged, the old ordinary consistency calibration transfers, subject to the exact inherited raw-EPSC/ZFC and original stack-packet dependencies.
+
+The unchanged codec now emits exactly 921 bits: 55 header bits, 850 equation bits and 16 endpoint bits. It has 13 equations, 209 term nodes, 13 operation symbols, three local variable slots and four-bit opcodes. The 25-bit saving is one equation marker plus six four-bit term nodes. An independent encoder/decoder, importing none of the producing scripts, reproduces both packet hashes and identifies the sole removed bit interval $[112,137)$. All 1,867 strict prefixes of the 946- and 921-bit packets are rejected. The producing script also checks 69,905 finite Boolean assignments; these tests supplement the universal proof above.
+
+\textbf{Machine boundary.} The packet charges every signature field, equation and query endpoint. It does not provide a binary TM interpreter, substitution/inference engine, fair search, workspace controller or blank-tape writer. Its complete alternative-machine cost is unknown. The 25-bit saving is not subtracted from 238. The packet and proof are under \file{formalisms/}; the independent review is \file{encoding/packet921_independent_review.json}.
+
+\subsection{A displaced head state sharing search}
+A distinct new finite search allows an eliminated state $q$ at head $h$ to be represented by retained state $r$ at $h+k$, with $k=\pm2$, while preserving the tape. Eligible $q$ has no self-loop, is not the start, and has uniform incoming direction $d$; choose $k=-2d$. Reverse each incoming move and redirect it to $r$, keeping its write. Freely synthesize both rows of $r$; all other edits are forced by those incoming changes.
+
+The local certificate requires positive exact-tape joins within a radius-five, eleven-cell window, with at most 63 old and 127 new steps. There are 193 eligible deletions and 237 retained choices, or 45,741 ordered pairs. Two domains were tested:
+\begin{itemize}
+\item A sound abstract window closure from all initial binary windows, nondeterministically exposing boundary cells: 79,761,416 retained-row actions, no survivor.
+\item Windows collected from all 8,386 guarded cases at eight finite scenarios each, plus exact blank boot: 28,339 windows over 36,712,361 literal steps; 81,391,240 row actions, no survivor.
+\end{itemize}
+The second domain is finite discovery evidence rather than an invariant. The source-case collector checks all 67,088 cases: every nonhalting case matches its exact whole-tape endpoint, and every halt case reaches the designated halt. A three-working-state positive control recovers both expected opposite-displacement reductions.
+
+The search is exhaustive only within its stated edit, window and block-certificate family. A failure may reflect insufficient window or block bounds, so it does not prove semantic inequivalence or a state lower bound. Additional helper edits, nonconstant displacements, tape transformations and different architectures remain open. Reproduction uses the supplied C++17 sources and commands in \file{encoding/README.md}. These negative results are not premises of the 238-state theorem.

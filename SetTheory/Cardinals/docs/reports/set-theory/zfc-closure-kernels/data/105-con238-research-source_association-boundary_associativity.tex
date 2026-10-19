@@ -1,0 +1,125 @@
+% This is a report section, not a standalone LaTeX document.
+\section{A broader source associativity criterion}
+\label{sec:broad-associativity}
+
+The search for an additional state reduction led to a source transformation
+with fewer hypotheses than the earlier closed-chunk rule.  It is an
+independent source result; no smaller binary machine is inferred from it.
+
+Write $\langle P,Q\rangle$ for the binary source constructor.  A local
+instruction has an ordinary successor, an explicit break or continue
+target, or a halt outcome.  Once an instruction has exhausted the zeros
+or ones in its path inside a subtree, an escaping break or continue still
+requires a positive number of the corresponding ancestors outside that
+subtree.  Ordinary fallthrough is denoted $B_0$; $B_k$ for $k\geq1$ and
+$C_k$ for $k\geq1$ denote escaping break and continue targets with the
+indicated residual counts.
+
+\paragraph{General associativity lemma.}
+Let $A,B,C$ be nonempty source trees.  If $A$ has no escaping break and $C$
+has no escaping continue, then
+\[
+ \langle A,\langle B,C\rangle\rangle
+ \quad\longleftrightarrow\quad
+ \langle\langle A,B\rangle,C\rangle
+\]
+preserves every ordered instruction and every possible control target in
+every surrounding source context in which the required external ancestor
+targets are defined.  The middle tree $B$ is arbitrary.
+Halt instructions are permitted in all three trees.  Consequently, the
+identity on ordered instruction positions and register files gives a
+register-machine bisimulation, including divergent computations.
+
+\paragraph{Proof.}
+Let $a$ and $b$ be the positive leaf counts of $A$ and $B$.  Both trees
+place their instruction lists at the same offsets $0,a,a+b$.
+All internal control edges therefore remain identical.  Ordinary
+fallthrough from $A$ enters $B$ at ordinal $a$, from $B$ enters $C$ at
+ordinal $a+b$, and from $C$ falls through the full tree, in both layouts.
+It remains to inspect escaping control edges.
+
+For an instruction in $B$, its local prefix changes from $10$ to $01$.
+An escaping break $B_k$ becomes $B_{k-1}$ in either layout, while an
+escaping continue $C_1$ returns to ordinal zero in either layout and
+$C_k$ for $k\geq2$ becomes $C_{k-1}$ in either layout.  Thus $B$ needs
+no restriction.  For an instruction in $A$, the prefix changes from $0$
+to $00$.  Escaping continues are unaffected, while escaping breaks would
+change their targets; the hypothesis excludes precisely these breaks.
+For an instruction in $C$, the prefix changes from $11$ to $1$.
+Escaping breaks are unaffected, while escaping continues would change
+their targets; the second hypothesis excludes precisely these continues.
+Halting has no successor to compare.  These cases cover every instruction
+outcome, proving the stated control-graph equality.\hfill$\square$
+
+The two conditions are also necessary for equality of the complete local
+control signatures with distinct symbolic external targets.  An escaping
+break from $A$ with residual count one changes from $B_0$ to ordinal
+$a+b$; with residual count $k\geq2$, it changes from $B_{k-1}$ to
+$B_{k-2}$.  An escaping continue from $C$ with residual count one
+changes from ordinal $a$ to ordinal zero; residual count two changes
+from zero to $C_1$; and count $k\geq3$ changes from $C_{k-2}$ to
+$C_{k-1}$.  This necessity concerns the complete syntactic control graph.
+Unreachable instructions or special surrounding contexts can permit
+further semantic identities.
+
+\paragraph{Relation to the preceding rules.}
+Requiring all three chunks to be syntactically closed is a sufficient
+special case.  So is right association across a final break, since a
+break leaf has no escaping continue.  The new criterion also permits
+escaping continues in $A$, escaping breaks in $C$, arbitrary control exits
+in $B$, and halt leaves.  A compiler search can test the two conditions
+using just two nonnegative boundary counters per DAG node.
+
+If $z(P)$ and $o(P)$ are the maximum numbers of zero and one ancestors
+still needed outside $P$, then
+\[
+\begin{split}
+z(\langle P,Q\rangle)&=\max\{\max(z(P)-1,0),z(Q)\},\\
+o(\langle P,Q\rangle)&=\max\{o(P),\max(o(Q)-1,0)\}.
+\end{split}
+\]
+For a decrement leaf these counters are $(1,0)$; for a break of depth
+$k$, $(k,0)$; for a continue of depth $k$, $(0,k)$; and for an increment
+or halt, $(0,0)$.  The admissibility test is exactly $z(A)=o(C)=0$.
+
+\paragraph{Certificate discipline.}
+The accompanying script independently computes local control signatures
+from literal instruction paths and by composition of child signatures.
+It checks their agreement on all live nodes of the inherited boundary
+source and checks every initially admissible rotation against those
+signatures.  A bounded beam search then uses the proved two-counter
+criterion to explore source DAGs with the same instruction order and
+control graph.  A separate checker verifies the complete final source
+control graph, including both decrement branches.  These source
+certificates do not establish a binary compiler theorem: changes in
+source parentheses can disturb the inherited backward routing helpers
+even when every register-machine instruction is preserved.
+
+\paragraph{Concrete bounded-search result.}
+The inherited boundary source has 6,455 leaves, 224 distinct source
+subtrees, maximum instruction-path length 48, and maximum consecutive-zero
+run six.  A beam of width 150 over 20 levels examined 625,858 generated
+alternatives, including 40,486 whose chosen rotation was outside the
+previous all-closed rule.  Counts refer to generated alternatives within
+the beam search; alternatives can recur at different levels.
+
+The best retained source has the same 6,455 leaves, the same 224 distinct
+subtrees, and the same six-zero bound, but maximum instruction-path length
+\textbf{39}.  Its replay records 19 transformations, five of them outside
+the all-closed rule.  The independent full-graph checker verifies the
+identity on every instruction and all 8,386 guarded control edges after
+each recorded transformation.  The source record's SHA-256 is
+\begin{quote}\small\ttfamily
+b1cc93221d70b4ee28abc790aa032fcca461db9729e75910288147fd4aafbb02.
+\end{quote}
+The single-rotation checker independently examines all 328 possible local
+rotations of the inherited source: the broader criterion admits 245,
+compared with 225 admitted by the all-closed rule.  Every acceptance and
+rejection agrees with the literal local control signature, and the
+certificate includes concrete changed-target witnesses for rejections.
+
+No 223-node source was found within the declared beam and caps.  The
+39-depth source is a checked source-level alternative for later compiler
+work; no transition table, machine state reduction, or runtime improvement
+is claimed for it.  The achieved 238-state machine elsewhere in this
+report continues to use the inherited boundary source.

@@ -1,0 +1,389 @@
+% Report fragment. Requires amsmath, amssymb, amsthm, booktabs, hyperref.
+% All URLs are pinned or explicitly identify an incoming archive.
+\section{Why the final machine has the requested ZFC calibration}
+\label{sec:logic-review-endpoint}
+
+Let $M_{237}$ denote the final canonical binary table in this report,
+whose SHA-256 is
+\begin{quote}\small\ttfamily
+7eda1da1fcda629cae86d22b01d3faf4\\
+19552cf04ed4179f0c045ad0adf2c1a6.
+\end{quote}
+The displayed line break is typographic.  There are 237 working states,
+including the complete initializer, and a separate halt state.  Write
+$\operatorname{Halt}(M_{237})$ for the existence of a finite execution from
+state 0, head 0, on the all-zero two-way tape that reaches that halt state.
+Fix a customary effective finite-proof predicate
+$\operatorname{Proof}_{\rm ZFC}(p,\bot)$.  The mathematical endpoint is
+\begin{equation}
+ \mathrm{ZFC}\ \vdash\quad
+ \operatorname{Halt}(M_{237})
+ \ \longleftrightarrow\
+ \exists p\;\operatorname{Proof}_{\rm ZFC}(p,\bot).
+ \label{eq:review-halting}
+\end{equation}
+Negating both sides gives the requested equivalence
+\[
+ \mathrm{ZFC}\ \vdash\quad
+ \neg\operatorname{Halt}(M_{237})
+ \ \longleftrightarrow\
+ \operatorname{Con}(\mathrm{ZFC}).
+\]
+This section specifies the composition establishing that conclusion and
+the formalization boundary.  No premise asserting ZFC's consistency is
+used to prove the equivalence.
+
+\subsection{A reusable criterion for composing source and tape changes}
+
+The most useful composition criterion refers directly to the final
+machine.  Let $P_0$ be a calibrated finite register program, let $P_1$ be
+a proposed replacement, and let $R_*$ be the fixed initial register file.
+Suppose the following facts have been proved.
+\begin{enumerate}
+\item The two register programs have equivalent halting from their root
+      paths and $R_*$.
+\item A finite blank prefix of the final binary machine reaches a complete
+      tape frame representing $(P_1,\epsilon,R_*)$, without halting.
+\item Every nonhalting instruction of $P_1$, for every register file and
+      every allowed tape-frame parameter, is simulated by a finite
+      positive-length binary segment.  The segment does not halt, and
+      ends at a complete frame for the precise next source configuration.
+\item Every source halt instruction produces a finite binary halt.
+      The instruction cases are exhaustive, and the allowed frame family
+      is preserved by the outgoing segments.
+\end{enumerate}
+Then the final binary machine halts exactly when $P_0$ halts from $R_*$.
+
+\begin{proof}
+Remove the finite initialized prefix and use its complete final frame as
+the first checkpoint.  If the source executes finitely many instructions
+and reaches its halt instruction, concatenate their finite segment
+witnesses and then the halt witness.  This gives a binary halting trace.
+
+For the converse, suppose the source does not halt.  Its finite full
+control tree and total natural-number register operations give a next
+instruction at every source stage.  Recursively concatenate the certified
+segments.  If their lengths are $d_0,d_1,\ldots$, each $d_i\geq1$; hence
+the time of the $n$th checkpoint is at least $n$.  Every finite binary time
+therefore lies before some checkpoint, inside one of the verified finite
+segments.  No such segment halts.  Determinism identifies this concatenation
+with the actual binary execution, so the actual machine never halts.
+The source equivalence in the first premise supplies the claimed endpoint.
+All the arguments use recursion and induction over natural numbers and
+finite sequences.
+\end{proof}
+
+This criterion explains how the two incoming 239-state reductions and the
+further $235\mapsto98$ fold can be combined without assuming that their
+stated savings simply add.  Disjoint
+edited rows are insufficient by themselves: one edit may change the tape
+context in which another edited row is entered.  For the present combined
+machine, the complete instruction simulation is checked afresh against
+the final 474 rows.  The result supplies a single frame invariant for the
+combined implementation.  It also avoids treating a guard proved for an
+older source tree as automatically valid for a reassociated tree.
+
+The positive-segment criterion is a standard simulation argument; no claim
+of priority is made for it.  The new engineering result is that the
+specific reassociated decoder, context split, and both coordinated helper
+reuses meet its premises simultaneously at 237 states.
+
+\subsection{The exact source equivalence}
+
+The calibrated source $P_0$ is the current
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ce192939372ac7944fe2a0208c68a96d49fb5e3b/Computability/BusyBeaver/Research/ZFC/candidate-rotation240/sites_logical.json}
+{Rotation240 source}.  Its complete source-file digest is
+\begin{quote}\small\ttfamily
+74b1e7f73cc3ffe7761e36ab2d57a26e\\
+0ba34d3ac624f2472799e6ac41d5a51d.
+\end{quote}
+The boundary-reassociated source $P_1$ was supplied in the incoming
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ce192939372ac7944fe2a0208c68a96d49fb5e3b/docs/incoming/ZFC_239_State_Construction_2026-10-19.zip}
+{239-state construction archive}; its digest is
+\begin{quote}\small\ttfamily
+7fd152d1f5371d2a561d4ad1870d2416\\
+83b010ce7b7a27399b95363a4537cfb6.
+\end{quote}
+These source data and their reassociation are inherited.  The independent
+source audit accompanying the present report is new.
+
+The exact semantics matters.  A finite program-counter word $p$ is padded
+on the right by zeros, and the decoder stops at the first encountered
+leaf.  If that leaf has depth $d$, the instruction computes with the
+consumed $d$-bit leaf path, discarding the unused tail of the old word.
+Increment, break, and continue apply to this consumed path.  These are the
+literal conventions in the retained
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ce192939372ac7944fe2a0208c68a96d49fb5e3b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterPath.lean}
+{RegisterPath definition}, rather than an informal interpretation of
+binary-tree associativity.
+
+Number the leaves from left to right.  For each increment record the
+register number and successor leaf; for each decrement record the
+register and both successors; for each break or continue record its jump
+target; and for a halt record a halt descriptor.  The two exact sources
+have identical complete descriptor arrays.  Configurations having the
+same register file and the same encountered leaf index are therefore
+strongly bisimilar.  The decrement outcomes agree because the tested
+register values agree.  Jump descriptors preserve the register file,
+and the unique halt descriptor is matched exactly.  Induction proves
+halting equivalence for every initial register file, including all unused
+registers beyond the first nine.
+
+The independent checker \texttt{check\_source\_graph.py} uses integer
+path arithmetic and a separate prefix lookup.  It freshly checks all
+6,455 leaves, 8,385 successor or guarded edges, and the sole halt
+descriptor.  Both empty paths locate leaf 0.  The maximum leaf depth
+changes from 51 to 48.  Every generated successor has only zeros after
+its encountered leaf, giving the stronger physical-canonicality identity
+\[
+ p0^\omega=p_{\operatorname{loc}(p)}0^\omega.
+\]
+That identity handles both a path shorter than the next leaf and a path
+with redundant trailing zeros.  It ensures that discarding the unused
+source-path tail cannot erase a physical one in the subsequent decoder
+frame.  Changed-register, removed-leaf, and duplicate-leaf negative
+controls all reject.  These are finite exhaustive control checks, with
+an ordinary induction proving their unbounded meaning; no register bound
+or proof-search horizon is imposed.
+
+\subsection{The final tape contracts}
+
+The final table reaches its complete root frame after 409,835 blank
+steps.  The canonical dispatcher is 84, the head is at $-5$, the marker
+at $-6$, and the header at 176.  The logical registers are
+\[
+ R_*=(3,0,0,0,3,0,0,0,0),
+\]
+with the remaining logical registers zero.  The physical suffix contains
+167 spare register blocks of value 1.  The tape has exactly 351 one-cells
+and every other cell is zero.  The startup evidence records the whole
+finite support and agrees with an independent dense run of the canonical
+table, so agreement of a few selected registers is not being used in
+place of whole-frame identity.
+
+The direct universal runtime audit then passes all 8,386 instruction
+guards for $P_1$, using the exact final 474 transition rows.  It exercises
+every row and has minimum certified instruction duration 13.  Its
+2,261,369 symbolic rule applications are the size of the proof computation,
+not the length of the eventual consistency search.
+
+The symbolic domains retain arbitrary natural primary-register values,
+nonnegative extra spacing, and the arbitrary finite spare suffix allowed
+by the stated runtime contract.  The rules are literal table transitions,
+induction along a unary run, and induction over finite register-block
+lists after checking the one-block identities.  They identify the complete
+outgoing tape, control state, and head displacement.  The verified spare
+and gap updates keep the frame family closed.  Thus the direct audit
+provides the last three premises of the positive-segment criterion, and
+establishes
+\[
+ \operatorname{Halt}(M_{237})
+ \longleftrightarrow
+ \operatorname{RegisterHalts}(P_1,\epsilon,R_*)
+ \longleftrightarrow
+ \operatorname{RegisterHalts}(P_0,\epsilon,R_*).
+\]
+
+\subsection{What the inherited logical calibration actually says}
+
+The retained source theorem is
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ce192939372ac7944fe2a0208c68a96d49fb5e3b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/CalibratedRotation240.lean}
+{CalibratedRotation240.halts\_iff\_zfc\_refutation}:
+\[
+ \operatorname{RegisterHalts}(P_0,\epsilon,R_*)
+ \longleftrightarrow
+ \operatorname{BProv}(\mathrm{ZFCax\_s},[],\bot).
+\]
+The native compact theory has a power-container axiom CP, the complete
+global-image collection schema GIC, and irreflexivity, in ordinary
+first-order logic with genuine equality.  It does not contain a separate
+emitter for each familiar ZFC axiom.  In particular, deleting a familiar
+axiom name from a conventional list is not an available local state
+optimization of this source.
+
+The mathematical calibration has four relevant pieces.  The program
+enumerates a complete proof language for the numerical calculus.  That
+calculus represents refutations of the native CP/GIC/irreflexivity theory,
+including its special truth and falsity aliases.  The native theory is
+compared with ZF through its profile/bisimulation quotient and internally
+well-founded interpreted substructure.  Finally, Choice is removed from
+refutations by the constructible submodel.  The actual comparison sources
+are
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ce192939372ac7944fe2a0208c68a96d49fb5e3b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFTheory.lean}
+{WFTheory},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ce192939372ac7944fe2a0208c68a96d49fb5e3b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZFNative.lean}
+{ZFNative}, and
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ce192939372ac7944fe2a0208c68a96d49fb5e3b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean}
+{ConstructibleChoice}.
+
+These are arguments about finite syntax, countable set-coded models,
+quotients of sets, definable substructures, and first-order soundness and
+completeness.  They can be carried out within ordinary ZFC.  A consistency
+assumption is introduced only inside a relative-consistency implication,
+where completeness supplies a set-coded model of the assumed-consistent
+theory.  The argument never assumes that ZFC already proves existence of
+a model of all of ZFC.
+
+There is also no hidden change in the meaning of consistency.
+The actual definition in
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ce192939372ac7944fe2a0208c68a96d49fb5e3b/Logic/FirstOrder/Lean/FirstOrder/Completeness.lean}
+{FirstOrder.Completeness} is
+\[
+ \operatorname{BProv}(B,G,\varphi)
+ \quad\Longleftrightarrow\quad
+ \exists G_B\;[\,G_B\subseteq B\ \land\
+                   \operatorname{Prov}(G_B\mathbin{+\!+}G,\varphi)\,],
+\]
+where $G_B$ is a finite list and $\operatorname{Prov}$ is finite derivation.
+The actual
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ce192939372ac7944fe2a0208c68a96d49fb5e3b/SetTheory/ZF/Lean/ZF/Zf.lean}
+{ZF axiom predicate} includes full Separation and functional Replacement
+with all parameters universally closed; the
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ce192939372ac7944fe2a0208c68a96d49fb5e3b/SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/Choice.lean}
+{ZFC predicate} adds the specified choice-set axiom.  Coding the finite
+lists, axiom-instance witnesses, and proof trees identifies this statement
+with existence of an ordinary finite ZFC refutation.  Effective translations
+between customary first-order proof calculi give the same consistency
+statement.  Composition proves \eqref{eq:review-halting}.
+
+\subsection{Formalization status and independence consequences}
+
+The final 237-state conclusion is an ordinary mathematical proof with
+finite executable certificates and explicitly inherited logical
+calibration.  A new serialized Lean theorem for the entire 237-state
+binary endpoint is not supplied here.  The separate task of representing
+every unbounded syntax and simulation step in PA is also not claimed to
+be complete.  These distinctions matter, but they are not an additional
+set-theoretic axiom needed by the ordinary ZFC proof just given.
+
+In particular, an external Lean theorem is not converted into a ZFC
+theorem merely by citing the Lean kernel.  The reason ZFC suffices here
+is the concrete mathematical content of the finite simulation and the
+set-coded logical comparison, rather than a soundness assertion for all
+of Lean's type theory.
+
+If ZFC is consistent, the equivalence and the second incompleteness
+theorem show that ZFC cannot prove this machine nonhalting.  Consistency
+alone should not be reported as excluding a ZFC proof of halting: that
+direction is a false $\Sigma^0_1$ assertion when ZFC is consistent and
+requires an additional suitable soundness assumption to exclude.
+Neither absolute consistency nor unconditional nonhalting is asserted.
+
+\section{Alternative formalisms: conclusions that affect the next reduction}
+\label{sec:logic-review-alternatives}
+
+The present improvement preserves the calibrated theory.  The alternatives
+below were examined to identify where a more substantial future saving
+would have to come from.  Their mathematical promise is distinct from
+the cost of a complete binary implementation.
+
+\subsection{Raw closure schemas and a finite equational packet}
+
+The repository already studies equality-free empty-seed positive subset
+closure (EPSC), with a complete ordinary first-order logic and arbitrary
+finite parameters.  Its adequacy is a statement about the entire schema
+and its quotient interpretation.  It does not justify deleting equality
+and substitution machinery from the existing numerical proof calculus.
+The retained
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ce192939372ac7944fe2a0208c68a96d49fb5e3b/Computability/BusyBeaver/Research/ZFC/typed_countermodel.md}
+{finite-sort counterinterpretation} pinpoints that distinction.
+
+A more concrete independent architecture is the 946-bit packet in the
+incoming
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ce192939372ac7944fe2a0208c68a96d49fb5e3b/docs/incoming/BusyBeaver239_Research_2026-10-19.zip}
+{coordinated-reuse archive}.  It has 14 equations, 215 term nodes,
+13 operation symbols, and three local variables.  Its native stack
+constructor also acts as a class NAND constructor; an unconstrained
+false-class witness slice supplies member selection; and its truth
+constant is shared with the existing distinguished object.  The earlier
+report supplies the countable upper model needed to justify those
+identifications.  These packet and model results are inherited, not new
+claims of the present construction.
+
+The refutation target is the particular ground equation $N(d,d)=d$.
+The equations alone always have a one-element model, so their bare
+consistency is the wrong endpoint.  What corresponds to
+$\operatorname{Con}(\mathrm{ZFC})$ is nonderivability of that ground
+equation, equivalently existence of an algebra separating its two sides.
+A complete ground contextual rewrite search is adequate: the quotient of
+the ground term algebra by the congruence generated by all ground axiom
+instances is a separating model whenever the ground equation is not
+derivable.  Every equality in the generated congruence has a finite
+contextual rewrite witness.  Both directions of equations and all
+substitution variables, including variables introduced only by reversing
+an equation, must be included.
+
+The open engineering cost is exact and substantial: a binary machine
+must represent and compare unbounded terms, check repeated variables,
+enumerate finite substitutions and one-hole contexts fairly, manage its
+working tape, and write the entire fixed packet from the blank tape.
+The number 946 measures serialized theory data, not working states.
+It becomes a competing construction only after the interpreter, packet
+loader, and their interaction have all been charged and verified.
+
+\subsection{Logical basis changes}
+
+The current single implicational axiom is the four-variable
+\L ukasiewicz axiom.  The three-schema Tarski--Bernays basis and alternative
+single axioms give valid competing logical interfaces; a primary reference
+is Pfenning's
+\href{https://www.cs.cmu.edu/~fp/papers/cade88.pdf}
+{Single Axioms in the Implicational Propositional Calculus}, Section 2.
+Formula length alone does not decide their compiled cost.  A different
+basis changes variable reads, stack output width, shared subprograms, and
+the encoding of proof instructions.
+
+The incoming
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ce192939372ac7944fe2a0208c68a96d49fb5e3b/docs/incoming/ZFC239_Companion_2026-10-19.zip}
+{companion report} already proves a useful obstruction: replacing the
+fourth input by any implication-only term in the other three inputs and
+truth fails to recover all instances of Peirce's law in its specified
+retained logical fragment.  Its three-valued counterinterpretation covers
+arbitrarily large such terms by closure of a two-element subset.  Its
+scope deliberately excludes CP and GIC, so it does not settle the
+consistency strength of every full altered set theory.  It does exclude
+claiming logical completeness from that specialization alone.
+
+Consequently, a successful basis change needs an explicit complete
+proof translation and a new source-encoding transport.  The already
+calibrated proof language is retained in the exhibited 237-state machine.
+
+\subsection{Two finite-presentation tests}
+
+There is no general prohibition on using a finite theory equiconsistent
+with ZFC.  Two more precise tests are useful.
+
+\paragraph{Finite fragments of the actual set universe.}
+Let $\Gamma$ be a fixed finite collection of membership-language theorems
+of ZFC.  Reflection, applied to their finite conjunction and its
+subformulas, gives a rank segment satisfying $\Gamma$.  Hence
+\[
+ \mathrm{ZFC}\vdash\operatorname{Con}(\Gamma).
+\]
+Assuming ZFC is consistent, it follows that ZFC cannot also prove
+$\operatorname{Con}(\Gamma)\leftrightarrow
+\operatorname{Con}(\mathrm{ZFC})$.  Otherwise ZFC would prove its own
+consistency.  This excludes replacing the infinite schema by finitely
+many of its ordinary set-language theorem instances.  It does not exclude
+finite class theories, finite theories in an expanded interpretation,
+or fixed arithmetic theories containing a consistency assertion.
+The same precisely scoped observation is recorded in the incoming
+239-state construction's alternative-formalisms appendix.
+
+\paragraph{Universal relational kernels without functions.}
+Consider a finite purely relational language with $c$ constants and no
+positive-arity function symbols, and a finite universal theory in it.
+Any nonempty model has an induced substructure on its constant values,
+or on one chosen element when $c=0$.  Universal sentences are preserved
+by induced substructures, so satisfiability has a model of size at most
+$\max(1,c)$.  Exhausting these finitely many structures decides it.
+Ground disequalities can be retained in the same argument.  Thus a
+generic universal refutation architecture of this restricted form
+cannot represent the required unbounded ground structure.  The native
+stack's positive-arity functions are an essential resource of its
+particular finite presentation, rather than dispensable notation.
+
+These tests are proof obligations and rejection filters, not lower
+bounds on arbitrary Turing machines.  They motivate comparing complete
+implementations of adequate theories while keeping the final binary
+runtime certificate as the deciding state-count criterion.

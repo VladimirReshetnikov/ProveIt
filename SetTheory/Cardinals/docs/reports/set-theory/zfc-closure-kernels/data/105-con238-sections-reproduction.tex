@@ -1,0 +1,118 @@
+\section{Reproduction, evidence, and incorporation}
+\label{sec:reproduction}
+
+The archive contains the complete mathematical report and editable
+LaTeX, both table labelings, the exact source, the new checkers and
+receipts, and the selected inherited files needed for offline
+reproduction. The Python checks require Python 3.10 or later and its
+standard library. Assertions must remain enabled: do not use
+\file{-O} or \file{-OO}, and leave \file{PYTHONOPTIMIZE} unset.
+
+\subsection{One command for the principal result}
+
+From the extracted archive root, run
+\begin{verbatim}
+python3 -B reproduce.py --output /tmp/zfc238-replay
+\end{verbatim}
+Choose a new or empty output directory. The driver checks the manifest
+when present, copies the bundle to temporary storage, and preserves the
+delivered artifacts. It reconstructs the inherited boundary239 table,
+constructs final 238, checks its canonical bytes and complete startup,
+replays the exact source certificate and source/seed identification,
+checks the independent local composition, and runs the complete
+8,386-case final 238 runtime proof. It also checks the supplementary
+logical matrices and source-association certificates. All JSON statuses
+are checked explicitly; process exit zero by itself is insufficient.
+
+For the additional, separately sufficient local-guard route, use
+\begin{verbatim}
+python3 -B reproduce.py --with-guard --output /tmp/zfc238-guard
+\end{verbatim}
+This repeats the full unbounded selector proof for exact boundary239
+and its changed source. It uses the exact attributed engine bytes
+recorded in the original fresh guard receipt. The default direct
+final-table runtime proof does not need this guard as a premise.
+
+A quick packaging and finite-certificate check is available:
+\begin{verbatim}
+python3 -B reproduce.py --quick --output /tmp/zfc238-quick
+\end{verbatim}
+Its result is explicitly labeled as omitting the unbounded replay.
+It must not be described as a fresh complete runtime proof. The full
+runtime and guard runs performed during this investigation are preserved
+separately, with their exact table, source, checker, and engine hashes.
+The quick assembled-package replay verifies the integration of the
+portable paths and freshly reconstructs the complete machine.
+
+The recorded direct final runtime took about 220 seconds and the
+separate guard replay about 302 seconds in the preparation environment.
+These are timings of proof construction by Python. They do not
+measure the transition count of a hypothetical halting run of $M_{238}$.
+
+\subsection{Important artifact groups}
+
+\begin{center}
+\small
+\begin{tabular}{p{0.31\textwidth}p{0.62\textwidth}}
+\toprule
+Path&Purpose\\
+\midrule
+\file{machines/}&Exact 238 tables and action-preserving renumbering.\\
+\file{source/sites_logical.json}&The certified boundary source used by
+the final machine.\\
+\file{verification/}&New construction/initialization checker, independent
+block-composition checker, and fresh selector-guard wrapper.\\
+\file{evidence/}&Actual full runtime and guard receipts, all per-case
+affine durations, exact initialized tape, source checks, and audits.\\
+\file{vendor/boundary239/}&Selected unchanged files from the prior boundary
+archive, including the inherited reconstruction, source certificate,
+runtime rules, source-interface Lean data, and original notices.\\
+\file{vendor/guard239/}&Exact prior engine/helper bytes used by the fresh
+selector guard.\\
+\file{reference/current/}&The endpoint declarations and primary
+specifications read at the pinned repository checkpoint.\\
+\file{research/source_association/}&General associativity lemma, exact
+depth-39 source and replay, and bounded-search evidence. This source
+is separate from the accepted binary implementation.\\
+\file{research/formalisms/}&Logical-matrix proofs, finite checkers, and
+their precisely stated scopes.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The SHA-256 manifest is an integrity record, not a digital signature.
+The original notices and licenses remain under the inherited baseline's
+\file{licenses/} directory. Attribution distinguishes the original
+calculus and machine, the prior reductions, the inherited proof engine,
+and the work contributed here. No author identity is inferred from
+filenames or tool outputs.
+
+\subsection{Building the report}
+
+With a normal TeX Live installation, from the archive root:
+\begin{verbatim}
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+The appendix is generated from the exact canonical table and is checked
+against its 238 controls and both read-symbol actions. The supplied PDF
+was compiled and visually reviewed after rendering its pages.
+
+\subsection{Suggested integration}
+
+A suitable new research directory is:
+
+\file{Computability/BusyBeaver/Research/ZFC/candidate-composition238/}.
+
+Keep the existing rotation240 and incoming 239 artifacts as historical
+predecessors. The new directory should identify the inherited source
+calibration, the exact new table digest, the separate ordinary proof
+and kernel-proof statuses, and the reproduction entry point.
+
+The strongest immediate formalization target is the exact 238 blank
+halting equivalence, using either the positive local block relation or
+the complete runtime interface. The depth-39 source and alternative
+logical systems should remain separately identified research inputs
+until a corresponding complete binary implementation and calibration
+are available. No repository write or external publication is needed
+to inspect or reproduce this archive.

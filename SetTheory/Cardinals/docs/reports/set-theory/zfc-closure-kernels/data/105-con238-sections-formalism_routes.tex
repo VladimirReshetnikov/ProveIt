@@ -1,0 +1,116 @@
+\section{Alternative formalisms and where their costs occur}
+\label{sec:formalism-routes}
+
+The search considered both mathematical axiom systems and their concrete
+machine encodings. The successful state reduction preserves the calibrated
+theory. The following comparison explains why a shorter-looking axiom
+list cannot be converted directly into a subtraction from the machine's
+state count, and identifies a precise obstruction for one especially
+attractive simplification.
+
+\subsection{The compact theory already used by the machine}
+
+The inherited native theory has equality congruence, the power-container
+axiom CP, the Global-Image Collection schema GIC, and irreflexivity IR.
+In readable notation, with raw membership and
+$x\subseteq y$ abbreviating $\forall z(z\in x\to z\in y)$, these are
+\begin{align*}
+\mathrm{CP}:\quad
+ &\forall p\,\exists V\,
+ \bigl(p\in V\ \land\
+   \forall x\in V\,[x\subseteq V\ \land\
+      \exists W\in V\,\forall z(z\subseteq x\to z\in W)]\bigr),\\
+\mathrm{GIC}_{\varphi}:\quad
+ &\forall B\,\exists C\,
+ \bigl(\forall a\in B\,\forall y\,
+   [\varphi(a,y)\to\exists y'(\varphi(a,y')\land y'\in C)]\\[-2pt]
+ &\hspace{43mm}\land\ \forall y\in C\,\exists x\,\varphi(x,y)\bigr),\\
+\mathrm{IR}:\quad &\forall x\,\neg(x\in x).
+\end{align*}
+The GIC schema permits arbitrary formula parameters; its support clause
+has an unrestricted input $x$. This precise placement matters to the
+published compact syntax. Extensionality and the usual ZFC axiom list
+are not supplied literally to the enumerator. The inherited interpretation
+recovers ZF on a bisimulation quotient of raw sets, and the opposite
+direction is obtained inside a constructible model. These are the
+published calibration arguments, not new axiomatization claims in this
+report.\cite{upstream-settheory,calibration}
+
+The upstream set-theory development also proves the equiconsistency of
+$S_0=\mathrm{CP}+\mathrm{GIC}$, without IR, with ZF. Nevertheless, simply
+deleting IR is not an executable optimization for the present proof
+enumerator. Its falsity code is the atom $v_0\in v_0$, and the soundness
+of that alias depends on irreflexivity under every assignment, including
+assignments changed by a binder of $v_0$. The exact gated axiom bundle
+also permits the input-label collision $a=b$, whose soundness uses the
+same diagonal property. A different theory can therefore have the right
+consistency strength while requiring a different formula coding and
+proof-calculus bridge.\cite{upstream-logic,upstream-settheory}
+
+\subsection{Four routes examined}
+
+\begin{center}
+\small
+\begin{tabular}{p{0.19\textwidth}p{0.36\textwidth}p{0.35\textwidth}}
+\toprule
+Route&Attraction&Concrete obligation before a state claim\\
+\midrule
+CP/GIC without IR&Retains inherited consistency strength with one fewer
+explicit theory ingredient.&Replace the falsity alias and reprove the
+literal logical rows, gate collisions, and complete compiler interface.\\
+Fourth-input specialization&Remove one proof-stream read and its
+constructor data flow.&Recover sufficient logical strength or supply a
+different interpretation. The next countermodel results obstruct reuse
+of the old completeness route.\\
+Finite class-theory presentation&Encode a fixed finite theory payload
+instead of schema-recognition code.&Include the class/set distinction,
+logical proof checker, fixed payload, interpreter, and blank initialization
+in one complete table.\\
+Ground rewriting or an alternate proof language&Move substitution and
+schema handling into a smaller uniform symbolic engine.&Compile the exact
+rules and search scheduler and prove both proof translations, including
+all symbol encodings and startup.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The latter two are investigated design routes rather than new measured
+constructions. This report assigns them no machine count. A universal
+interpreter advertised with a small control count is insufficient here
+unless the particular theory and program are also generated from the
+blank tape within the counted table. Likewise, an equiconsistency proof
+alone gives no bound on the compiled cost of its proof checker.
+
+The already calibrated CP/GIC engine offers a particularly useful
+separation of concerns: source transformations can preserve every proof
+operation while the binary decoder is compressed independently. The
+successful 238 composition takes advantage of that separation, with a
+fresh interface check where the two optimizations interact.
+
+\subsection{The fourth parameter is a precise research target}
+
+The axiom constructor emits
+\[
+ L(a,b,c,u)=((c\to u)\to a)\to((a\to c)\to(b\to c)),
+\]
+the four-parameter implicational schema from the published logical
+basis. Its fourth argument is read separately from the proof stream.
+Replacing it by a term in the other three parameters could remove
+concrete source work. The earlier reports explored several such
+specializations and diagnostic compiler outputs.\cite{companion239,upstream-logic}
+
+The new theorem below covers every finite implication term
+$U(a,b,c,F,\top)$, including terms containing falsity and of arbitrarily
+large size. It shows that none recovers the full classical logical
+subsystem under the specified retained rules. Its proof partitions all
+terms into five possible leaves and the implication-root case; a
+four-valued matrix handles the latter uniformly because implication
+never returns the one value needed to falsify the specialized axiom.
+A second matrix handles the remaining leaf.
+
+This result gives useful information about a concrete compression
+proposal. It does not bound the possible consistency strength of every
+modified calculus, and does not prevent a different translation of
+classical formulas. The conditional model construction in
+Section~\ref{sec:colored-model-addendum} strengthens the obstruction for most replacements by
+adding the exact CP/GIC bundle.

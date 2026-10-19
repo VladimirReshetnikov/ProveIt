@@ -1,0 +1,183 @@
+\section{An independent positive-block proof of the fold}
+\label{sec:fold}
+
+Let $D$ be the exact Boundary239 predecessor and $N$ the new table,
+both with inherited labels. Put
+\[
+ \phi(169)=80,\qquad \phi(q)=q\text{ for }q\ne169,
+ \qquad
+ \Phi(q,h,T)=(\phi(q),h,T).
+\]
+The map fixes the start, dispatcher, and halt outcome.
+Only old configurations need satisfy the old-state invariant;
+new intermediate helper configurations may have other contexts.
+
+\subsection{A structural invariant on arbitrary tapes}
+
+Write $t_i=T(h+i)$. Define the predicate $P$ by the following
+conditional requirements:
+\[
+ \begin{array}{c|l}
+ q & \text{Required bits}\\ \hline
+ 67 & t_{-1}=0\\
+ 80 & (t_{-2},t_{-1})=(0,1)\\
+ 91 & (t_{-3},t_{-2},t_{-1})=(0,1,1)\\
+ 169 & t_{-1}=0.
+ \end{array}
+\]
+Unlisted states impose no condition.
+
+\begin{lemma}[Incoming-row invariant]
+$P$ holds throughout every execution of $D$ starting at state 95,
+for an arbitrary initial binary tape.
+\end{lemma}
+\begin{proof}
+It is vacuous at state 95. The complete incoming inventory is:
+states 52 and 124, reading zero, write zero and move right into 67;
+state 67, reading one, writes one and moves right into 80;
+state 80, reading one, writes one and moves right into 91; and
+state 147, reading zero, writes zero and moves right into 169.
+Each required nearest-left bit is the incoming write, and the
+predecessor's requirements supply the older left bits. All other
+targets have no requirement. The independent checker inspects
+every predecessor row, so this inventory is verified for $D$ itself.
+Induction on the execution length proves the result.
+\end{proof}
+
+One extra guard is needed:
+\begin{equation}
+ Q(q,h,T):\quad q=169\ \land\ T(h)=1
+       \ \Longrightarrow\ T(h+1)=1.
+ \label{eq:nextone}
+\end{equation}
+Unlike $P$, we claim $Q$ only on the actual blank initialization and
+the valid source-generated runtime, rather than on every initial
+tape.
+
+\subsection{Four exact local paths}
+
+The four exceptional old rows and their new state paths are
+\begin{align*}
+ (80,0):\quad&
+ 80\to106\to92\to107\to125\to25
+ &&(5\text{ steps}),\\
+ (169,0):\quad&
+ 80\to106\to93\to57
+ &&(3\text{ steps}),\\
+ (169,1):\quad&
+ 80\to91\to167\to151\to173\to56
+ &&(5\text{ steps}),\\
+ (91,1):\quad&
+ 91\to167\to151\to24\to36\to54\\
+ &\hspace{7mm}\to71\to82\to94\to50
+ &&(9\text{ steps}).
+\end{align*}
+The final two lines describe one nine-transition block.
+
+\begin{lemma}[Four whole-tape identities]
+\label{lem:fourblocks}
+Under $P$ and, for the third path, $Q$, each displayed new path has
+the same final tape and head as the corresponding single old step,
+and its final state is the image of the old final state under $\phi$.
+Every other one of the 474 old rows commutes with $\Phi$ in one step.
+\end{lemma}
+\begin{proof}
+For the first path the required footprint is offsets $-1,0$ with
+bits $1,0$; for the second it is $-1,0$ with bits $0,0$.
+The third requires $(-1,0,1)=(0,1,1)$, while the fourth requires
+$(-3,-2,-1,0)=(0,1,1,1)$. Direct substitution into the literal table
+gives the displayed paths. The first two preserve the tape and
+end one cell right. The third erases the original current one
+and ends one cell right. The fourth erases the original current
+one and ends one cell left.
+
+The independent verifier assigns a distinct symbolic original
+bit to every unspecified cell. An attempted read of an
+unconstrained bit is rejected. It compares the two complete
+finite write maps with the same symbolic exterior, along with
+head position and mapped state. Thus the four comparisons hold
+for arbitrary tapes outside their footprints. There is no internal
+halt. For all other predecessor rows the mapped literal row is
+checked directly, including the row entering halt 254.
+\end{proof}
+
+\subsection{The extra guard survives the source change}
+
+The observer \file{verification/verify_guard238.py} instruments
+the unchanged affine/list engine while it proves \emph{Boundary239's}
+runtime. At every state-169 entry, it checks a rightward scan into
+an explicit run. When that run is a one-run, the constant length
+must be at least two.
+
+All 8,386 interfaces pass, using 2,247,513 symbolic rules and all
+478 predecessor rows. The 32 explicit state-169/read-one visits
+have run lengths
+\[
+ g+K,\qquad g\ge0,\qquad 23\le K\le59.
+\]
+This proves the neighbor in \eqref{eq:nextone} is one. The value
+23 is the new minimum for the changed source; the earlier
+Rotation240 guard's value 21 is not used.
+
+No accelerated rule hides an unchecked visit. State 169 is
+neither an entry of a list schema nor a source or target inside
+any of the four explicit one-block proofs. Neither of its rows
+is a self-loop, so a unary acceleration cannot conceal such a
+visit either. The exact predecessor blank prefix has six
+state-169/read-one visits, each with the required right neighbor.
+Together with the source/frame composition, these facts prove
+$Q$ throughout the predecessor's actual blank run.
+
+\begin{theorem}[Guarded composition]
+\label{thm:fold}
+$D$ and $N$ have equivalent halting behavior on the blank tape.
+If $D$ performs $n$ transitions before a checkpoint, then $N$
+reaches the mapped checkpoint after
+\begin{align}
+ \tau(n)=n
+ &+4V_{80,0}(n)+2V_{169,0}(n)\notag\\
+ &+4V_{169,1}(n)+8V_{91,1}(n), \label{eq:clock}
+\end{align}
+where $V_{q,b}(n)$ counts the indicated old row among the first
+$n$ transitions. In particular, $n\le\tau(n)\le9n$.
+\end{theorem}
+\begin{proof}
+The invariant and guard just proved permit
+Lemma~\ref{lem:fourblocks} at every old configuration. Inductively
+concatenate the applicable new blocks. Equation~\eqref{eq:clock}
+counts their extra transitions, and every block has length
+between one and nine.
+
+If the old machine halts, the corresponding new checkpoint is
+halted. If it runs forever, the strictly increasing checkpoint
+times are unbounded; no block halts internally. Determinism
+identifies this constructed trajectory with the new machine's
+unique trajectory. Hence the new machine also runs forever.
+This establishes both directions of halting equivalence.
+\end{proof}
+
+\subsection{Independent initialization clock}
+
+The local verifier compares all 409,692 full-tape checkpoints
+spanning the predecessor's 409,691-transition initialization.
+The exceptional old-row visits, in the order used in
+\eqref{eq:clock}, are
+\[
+ (18,12,6,3).
+\]
+Therefore
+\[
+ \tau(409691)
+ =409691+4\cdot18+2\cdot12+4\cdot6+8\cdot3
+ =409835.
+\]
+Both endpoints are state 96, head $-5$, and the same 351 one-cells.
+This independently agrees with the direct sparse, dense, and
+canonically relabeled startup check.
+
+The useful general principle is that two verified transformations
+compose once the second transformation's configuration obligations
+are proved for the first transformation's actual output system.
+Disjoint text edits are only a discovery heuristic. Here the
+positive local simulation and the re-established guard supply the
+missing mathematical compatibility condition.

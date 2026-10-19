@@ -1,0 +1,169 @@
+Independent ordinary review of the E713 equational kernel
+========================================================
+
+Reviewed artifacts:
+  research/logical_search/build_packet.py
+  research/logical_search/generated/E713.json
+  research/logical_search/generated/E713.bits
+  research/logical_search/generated/E713.equations
+
+This review checks the new reductions and their composition with the stated
+inherited EPSC kernel. It is an ordinary mathematical review, not a Lean/Rocq
+proof or a reproof of the EPSC-to-ZFC calibration.
+
+1. The complemented existential equation is sound.
+
+Write a_z = eps(P(z,s),a), w = a_{W(s,a)}, q = eps(s,Q(a)). The literal equation
+is q = N(w,a_z) for every z, where N is Boolean NAND. Substituting z=W(s,a)
+gives q=not w. Substitution back gives w=w and a_z, or w<=a_z, for every z.
+In a two-valued interpretation, q is true exactly when some a_z is false;
+if it is true, the chosen witness W(s,a) has false a-value. In an arbitrary
+Boolean algebra the precise property is a chosen minimum w and q=not w.
+One must not interpret this as an unrestricted infinitary Boolean join.
+
+The ordinary existential constructor from Source79 is recoverable by
+  Q_old(a) = Q_new(P(a,a)),
+  W_old(s,a) = W_new(s,P(a,a)).
+Class P(a,a) negates class a. The fused equation at P(a,a), with the selected
+witness substituted for z, gives the original chosen-witness equality.
+For arbitrary z it gives the old arbitrary-candidate implication. These
+facts hold algebraically, as well as after two-valued extraction.
+
+2. The closure factoring is exact.
+
+For fixed descriptor b put h=Target(b), n_z=Next(b,z), m_z=Mem(b,z), and
+R(x,y)=eps(P(y,P(x,b)),V(b,d)). Use the Boolean atoms
+  r=R(h,n_z), e=E(m_z,n_z), f=E(m_z,z),
+  A=E(W(x,d),x), B=E(x,h), C=R(x,y), D=E(y,h), S=R(n_y,y).
+Then
+  Bad = r and e and not f,
+  Hull = (A or not C or D) and (not B or not C or D) and (not D or S).
+Let L=C and (not A or B). Hull is exactly (L implies D) and (D implies S).
+The literal eighth equation evaluates to Bad or Hull, with all displayed
+abbreviations expanded in its term tree. The independent checker evaluates
+the actual equation under all 256 Boolean assignments, rather than only
+testing the generator's intermediate helper expressions.
+
+3. Eliminating the flag does not presume a Boolean infimum.
+
+The new equation is universally quantified over b,z,x,y. At the two-valued
+relational level, for each b, forall z,x,y [Bad(b,z) or Hull(b,x,y)] is
+equivalent to [forall z Bad(b,z)] or [forall x,y Hull(b,x,y)]. This follows
+by taking a counterexample z when the first universal statement is false.
+It permits the old flag to be assigned either false or true respectively.
+
+This is not asserted to be a literal same-algebra term interpretation of a
+flag on every Boolean-valued model: an arbitrary Boolean algebra need not
+contain the required infinite infimum. In the lower model direction, apply
+an ultrafilter to predicate values first. This produces two-valued
+predicates on the original object carrier, with all native functions
+unchanged. Choose flags there if recovering Source79. Alternatively the
+next paragraph derives EPSC directly and never introduces a flag.
+
+4. The direct lower EPSC argument is complete under its stated calibration.
+
+Suppose R is locally bounded. Apply local boundedness at the existing
+object h=Target(b); there is z such that every R(h,y) output is E-subset
+of z. Bad(b,z) would contradict this bound by choosing y=n_z and member
+m_z. Hence Bad(b,z) is false, so Hull(b,x,y) is true for all x,y.
+
+For empty x, A=E(W(x,d),x) is false. Thus the first Hull clause gives the
+empty-seed closure. The second gives closure under inputs belonging to h.
+The third supplies support R(Next(b,y),y) for every y in h. These are
+exactly the displayed raw EPSC conclusions. This proof does not require
+W(x,d) to select a member in every lower model: emptiness alone makes A
+false when it matters. Member choice is needed in the upper construction.
+
+5. Formula representation retains arbitrary finite parameters.
+
+The native equations V(P(x,s),d)=x and
+V(P(x,s),A(j,d))=V(s,j) recover arbitrary finite coordinates using selectors
+d,A(d,d),A(A(d,d),d),.... Their universal ranges include noncanonical j.
+Class A expresses an atomic E formula, class P expresses NAND, and the
+new Q with P(a,a) expresses ordinary existential quantification.
+
+Given any fixed equality-free pure-E formula in x,y and finitely many
+parameters, first construct its finite class term using the appropriate
+coordinates. Put its code in the head of descriptor b, followed by the
+parameters. Then P(y,P(x,b)) has coordinates y,x,code,parameters....
+The class code is constructed before b; no self-referential code equation
+or satisfaction predicate for the expanded object language is needed.
+
+6. The upper countable model handles every carrier object.
+
+From Con(ZFC), ordinary first-order completeness supplies a countable
+set-coded ZFC model; no transitivity or omega-standardness is needed.
+Relabel its carrier by external natural numbers, with d=0. The disjoint
+increasing P/A/Q code constructors proposed in the proof note cover all
+positive integers, with every constructor argument smaller than its code.
+Every object therefore receives a finite class interpretation by structural
+recursion. P simultaneously means stream cons for native projection and
+class NAND for incidence; these are compatible separate operations.
+
+Every fixed class code is a finite pure-E formula in finitely many stream
+coordinates. Consequently each fixed descriptor relation is a pure-E
+relation with finitely many parameters, within the inherited EPSC schema.
+The global external decoder need not be internally definable in the model.
+
+If a descriptor is not locally bounded, select an input h witnessing that
+failure, and for every z select n_z,m_z witnessing the failure of z to
+bound the outputs at h. Then every Bad(b,z) holds. If it is locally bounded,
+select a supported hull h and support witnesses Next(b,y). Then every Hull
+holds, provided W(x,d) chooses a member of nonempty x. Exclusive branch
+choices make the shared Target/Next functions compatible. Least witnesses
+under the external natural enumeration make all these functions total.
+
+7. The false-class witness slice remains free after changing Q.
+
+Interpret class d as false on every stream. The new Q(d) is then the true
+class, because it denotes exists-not of an always-false class. In the
+fused equation both selected and arbitrary d-incidence values are false,
+and NAND(false,false)=true independently of W(s,d). Thus W(x,d) may be
+chosen as a member of x when one exists, and arbitrarily otherwise.
+
+It is essential to use Q(d)=true in this new upper construction. The old
+ordinary-existential proof's Q(d)=false statement cannot be copied here.
+
+8. Booleanization and nontriviality have the correct scope.
+
+Transport a countably infinite Boolean algebra onto the existing carrier,
+arranging its top to be object d, and make all predicate-valued functions
+take only top/bottom values according to the relational construction.
+Retain all native and Skolem operations. Object d being Boolean top is
+consistent with the distinct value eps(s,d) being Boolean bottom.
+Boolean NAND itself is not identified with stream cons P.
+
+The ground target is N(d,d)=d. The relevant property is its
+nonderivability, or equivalently a model separating the two ground terms.
+Ordinary equational consistency by itself is vacuous here, since every
+equational theory has a one-element model. Soundness/completeness and the
+explicit inherited EPSC/ZFC comparison are the dependencies connecting the
+separating-model property to Con(ZFC).
+
+9. Exact packet size has independently checked meaning.
+
+Without importing the constructor, review713.py parses the raw bitstream
+using an iterative unfinished-parent stack, checks arities, all equation
+trees, local variable renaming, and both ground endpoint trees against the
+JSON artifact. It independently counts
+  12 operation symbols, 4 local variables, 4-bit opcodes,
+  8 equations, 159 equation term nodes,
+  52 header bits + 9 equation markers + 636 term bits + 16 endpoint bits
+  = 713 bits.
+The exact bit-character SHA-256, excluding the final file newline, is
+  3cd0c3d0fb8d8640cfef1f44e0c22d377dd930de88a94093a2ef7650e22c9e72.
+
+The literal closure and binder equations passed independent propositional
+transcription checks. These finite checks are not finite models of EPSC
+and do not test consistency. The 713 bits charge a complete equational
+packet, not a ground-rewrite interpreter or binary TM initialization. No
+Turing-machine state count follows from this packet size.
+
+Review conclusion
+-----------------
+The complemented binder, Boolean factoring, flag elimination, and
+false-class witness reuse have sound ordinary proofs in the stated model
+directions. The result can be presented as a complete 713-bit equational
+frontend with the explicitly inherited EPSC/ZFC calibration. It should not
+be presented as a newly formalized proof-assistant theorem or as a further
+reduction of the independently constructed 238-state machine.

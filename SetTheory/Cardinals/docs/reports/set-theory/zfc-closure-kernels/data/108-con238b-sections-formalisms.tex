@@ -1,0 +1,330 @@
+\section{A smaller relational axiom presentation}
+\label{sec:formalisms}
+
+The successful binary construction retains the calibrated logical
+engine. Exploring alternative formalisms nevertheless gives a
+useful concrete theorem: in complete first-order logic, one
+membership-congruence axiom follows from the other through
+global-image collection. This section gives the derivation,
+its consistency calibration, and the exact implementation
+obligation that remains.
+
+\subsection{The native theory and its collection schema}
+
+The inherited native theory $\SIR$ uses ordinary logical equality,
+membership, a power-container axiom $C_P$, full global-image
+collection, and irreflexivity \cite{upstream,native}. It does not
+add Extensionality, Foundation, or Choice as axioms.
+For clarity, write
+\[
+ x\subseteq y\quad\text{for}\quad
+ \forall u\,(u\in x\to u\in y).
+\]
+The container principle has the form
+\[
+ C_P:\quad
+ \forall a\,\exists V\left[
+ a\in V\ \land\
+ \forall x\in V\left(
+ x\subseteq V\ \land\
+ \exists y\in V\,\forall z\,(z\subseteq x\to z\in y)
+ \right)\right].
+\]
+It supplies a transitive host and bounds for subsets inside
+that host. The full calibration of this nonextensional theory
+uses the inherited interpretation machinery; the displayed
+formula alone is not a new consistency proof.
+
+For a matrix $\theta(x,y;\bar p)$, global-image collection is
+\begin{align}
+ \GIC(\theta):\quad
+ \forall A\,\exists B\bigl[
+ &\forall y\bigl(y\in B\to\exists x\,\theta(x,y;\bar p)\bigr)
+ \notag\\
+ {}\land{}&
+ \forall x\bigl(x\in A\to
+ ((\exists y\,\theta(x,y;\bar p))
+ \to\exists y\,(y\in B\land\theta(x,y;\bar p)))\bigr)
+ \bigr].
+ \label{eq:gic}
+\end{align}
+Every parameter is universally closed, and the displayed
+variables $A,B$ are fresh for the matrix. The first conjunct
+is \emph{global range purity}; the second chooses a witness
+for each nonempty fiber over the seed set.
+All finite native formulas, including formulas with equality,
+are permitted as matrices. Restricting this to equality-free
+matrices without justification would change the theory.
+
+\subsection{Replacing logical equality by a relation}
+
+Work in complete first-order logic without built-in equality,
+over two binary relations $E$ and $R$. Write $x\in y$ for
+$R(x,y)$. Quantifiers range over a single common nonempty
+domain, and ordinary capture-avoiding first-order
+instantiation is available. Initially $E$ is merely a relation.
+
+Assume the universal closures of
+\begin{align*}
+ H_1 &: \quad \forall b\,\exists a\,E(a,b),\\
+ H_7 &: \quad E(c,a)\to(E(c,b)\to E(a,b)),\\
+ H_5 &: \quad E(c,a)\to(R(c,b)\to R(a,b)).
+\end{align*}
+These are the relational versions of the upstream numerical
+rows $\rho_1,\rho_7,\rho_5$. The fourth row of interest is
+\[
+ H_3:\quad E(a,b)\to(R(c,a)\to R(c,b)).
+ \tag{right congruence}
+\]
+The row numbering and formulas agree with the actual upstream
+definitions \cite{codes,tarski}.
+
+\begin{lemma}[Equivalence from predecessor existence and Euclideanness]
+\label{lem:equiv}
+$H_1$ and $H_7$ prove that $E$ is an equivalence relation.
+\end{lemma}
+\begin{proof}
+For arbitrary $b$, take $d$ with $E(d,b)$ by $H_1$.
+Apply $H_7$ with common left endpoint $d$ and both premises
+$E(d,b)$ to obtain $E(b,b)$; the needed instance is
+$E(d,b)\to(E(d,b)\to E(b,b))$.
+From $E(a,b)$ and reflexivity $E(a,a)$, the common-left-endpoint
+instance at $a$ gives $E(b,a)$.
+Finally, if $E(a,b)$ and $E(b,c)$, symmetry gives $E(b,a)$,
+and $H_7$ with common left endpoint $b$ gives $E(a,c)$.
+\end{proof}
+
+\begin{theorem}[One collection instance derives right congruence]
+\label{thm:collectioncong}
+The axioms $H_1,H_7,H_5$ together with the single universally
+closed GIC instance whose matrix is
+\[
+ \theta(x,y;a,c)=E(y,a)\land R(c,y)
+\]
+prove $H_3$. No container, Extensionality, irreflexivity,
+Infinity, or separate nonempty-member-set assumption is
+required.
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{lem:equiv}, $E$ is an equivalence relation.
+Assume $E(a,b)$ and $R(c,a)$. Apply the displayed collection
+instance with seed $A=a$, and let $B$ be the resulting
+collection set.
+
+The matrix is independent of its input variable $x$.
+Reflexivity gives $E(a,a)$, so $y=a$ witnesses
+$\theta(c,y;a,c)$. Since $R(c,a)$, coverage at input $c$
+gives an object $w$ with
+\[
+ R(w,B),\qquad E(w,a),\qquad R(c,w).
+\]
+Transitivity applied to $E(w,a)$ and $E(a,b)$ gives $E(w,b)$.
+Now $H_5$, transporting the \emph{first} membership argument,
+gives $R(b,B)$. Range purity, instantiated at the member $b$,
+gives $\exists x\,\theta(x,b;a,c)$, whose second conjunct
+is precisely $R(c,b)$.
+
+Discharge the two assumptions and universally generalize.
+The premise $R(c,a)$ itself supplied the nonempty seed.
+No step transported an object through the second membership
+argument by assumption; that transport was obtained from
+collection purity.
+\end{proof}
+
+The argument uses positive first-order reasoning and is
+intuitionistically valid at this local level. The later
+consistency comparison is stated in ordinary classical
+first-order logic.
+
+\begin{remark}[Collection is a substantive premise]
+The other axioms and irreflexivity alone do not imply $H_3$.
+Take a three-element domain $\{a,b,c\}$, let the $E$-classes
+be $\{a,b\}$ and $\{c\}$, and let the only membership pair
+be $R(c,a)$. Then $E$ is an equivalence relation, $H_1,H_7,H_5$
+and irreflexivity hold, but $E(a,b)$ and $R(c,a)$ hold while
+$R(c,b)$ fails. The GIC instance used above fails in this
+structure, exactly as the theorem requires.
+\end{remark}
+
+\subsection{A stronger saturation statement}
+
+\begin{proposition}[Definable predicates are saturated]
+\label{prop:saturation}
+Suppose $E$ is an equivalence relation, $H_5$ holds, and
+$R(u,A)$ holds for some $u,A$. For any formula
+$\varphi(y;\bar p)$, assume GIC for
+\[
+ \theta_\varphi(x,y;a,\bar p)
+ =E(y,a)\land\varphi(y;\bar p).
+\]
+Then
+\[
+ E(a,b)\to
+ \bigl(\varphi(a;\bar p)\leftrightarrow\varphi(b;\bar p)\bigr).
+\]
+\end{proposition}
+\begin{proof}
+Assume $E(a,b)$ and $\varphi(a;\bar p)$ and collect over the
+fixed nonempty seed $A$. The output $a$ witnesses the fiber
+over $u$. Coverage gives $w\in B$ with $E(w,a)$ and
+$\varphi(w;\bar p)$. Transitivity and $H_5$ place $b$ in $B$;
+purity yields $\varphi(b;\bar p)$. Interchanging $a,b$
+and using symmetry proves the converse.
+\end{proof}
+
+This statement also works in an expanded relational language
+when the corresponding matrices are present. For the language
+$\{E,R\}$ alone, Theorem~\ref{thm:collectioncong} first makes
+both atomic relations congruent, after which ordinary formula
+induction proves all formula congruence without a separate
+nonempty-member assumption.
+
+\subsection{An equiconsistent alternative theory}
+
+Define $T_-$ in the relational language $\{E,R\}$ to consist of
+$H_1,H_7,H_5$, the displayed $C_P$ written with $R$,
+irreflexivity $\forall x\,\neg R(x,x)$, and GIC for every
+finite $\{E,R\}$ matrix with arbitrary finite parameters.
+Its background logic is the complete equality-free
+first-order calculus just specified.
+
+\begin{corollary}
+\label{cor:tminus}
+Using conventional effective proof predicates,
+\[
+ \ZFC\vdash
+ \Con(T_-)\longleftrightarrow\Con(\SIR)
+ \longleftrightarrow\Con(\ZFC).
+\]
+The final equivalence is the inherited SIR calibration.
+\end{corollary}
+\begin{proof}
+Every SIR model expands to a $T_-$ model by interpreting
+$E$ as actual identity. All three $H$ axioms hold, and
+each translated GIC instance is a native SIR instance.
+
+Conversely, let a $T_-$ model have domain $D$.
+Lemma~\ref{lem:equiv} and Theorem~\ref{thm:collectioncong}
+give an equivalence relation and congruence of $R$ in both
+coordinates. On the quotient $D/E$ define
+\[
+ [a]\in^*[b]\quad\Longleftrightarrow\quad R(a,b).
+\]
+The relation is well-defined, and equality of quotient classes
+is exactly $E$ on representatives. Induction on formulas gives
+the truth lemma for replacing native equality by $E$.
+The quantifier steps use surjectivity of the quotient projection;
+no global choice of representatives is necessary.
+The quotient therefore satisfies $C_P$, irreflexivity, and
+every native GIC instance, so it is an SIR model.
+
+The two model transports and first-order completeness give
+the two consistency implications inside ZFC. The languages,
+formula translations, and fixed right-congruence derivation
+are all effective. The established SIR/ZFC comparison supplies
+the last equivalence \cite{upstream,native,calibration}.
+\end{proof}
+
+\subsection{Why this does not delete a machine row}
+
+The actual numerical calculus has modus ponens,
+generalization, its truth-code-0 axiom, its eight logical rows, and its gated
+bundle as primitive operations. Ordinary arbitrary
+first-order instantiation is \emph{derived} in that engine.
+The established derivation uses the equality rows,
+including $\rho_3$ \cite{tarski}.
+
+The proof of Theorem~\ref{thm:collectioncong} instantiates
+collection at $A=a$, uses the witness $y=a$, and specializes
+purity at $y=b$. To remove $\rho_3$ from the numerical
+machine, these exact inferences would need a numerical
+proof scheme using only the remaining rows and permitted
+gated instances. The full-logic argument does not supply
+that scheme automatically.
+
+At the ordinary formula level, the deleted row has three
+atomic occurrences and two implication nodes. The equality
+constructor, its coding tag, and other equality rows are
+still needed. A replacement instantiation engine has its
+own cost. Accordingly, this report proves a simpler
+equiconsistent presentation and identifies a concrete
+future compiler target; it assigns no additional state
+saving to that theorem. The accepted 238-state table keeps
+every logical row of its calibrated source.
+
+\section{Other formalisms and complete encoding costs}
+\label{sec:costs}
+
+The repository already contains useful matched controls.
+These are \emph{reported prior measurements}, identified
+in the included reference notes, rather than new compiler
+executions in this work. They use a public Wade baseline of
+281 states, which is different from the separately optimized
+240-state machine. They cannot be subtracted directly from
+238 or 240.
+
+\begin{center}
+\small
+\begin{tabular}{@{}L{0.34\textwidth}rL{0.43\textwidth}@{}}
+\toprule
+Alternative & Count & Meaning of the measurement\\
+\midrule
+Public original reconstruction & 281 & Matched nine-register baseline\\
+Full logical engine with raw subset-seeded PSC & 279 & Fixed shared control; partial named table and new proof obligations\\
+GEN elimination by prefix closure & 285 & Best grouped control in the reported search\\
+Eight-register alternate pairing & 306 & Best shared full-source control\\
+Extensional subset PSC & 320 & Particular fixed emitter/control\\
+Functional subset closure & 347 & Corresponding equality-bound control\\
+Ground-equational generic control & 299 & Before a literal ZFC query and its writer\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The full-logic PSC control has a meaningful theory direction,
+but its new schema translation, emitter discipline, source
+proof, and binary simulation remain separate obligations.
+The notes explicitly identify its missing named row;
+it is not a complete new 279-state consistency machine
+\cite{controls}.
+
+GEN elimination has a correct proof-theoretic motivation,
+yet grouping universally prefixed axiom families cost more
+in the reported backend. Likewise the eight-register pairing
+$2^a(2b+1)-1$ reduces the number of scratch registers while
+making arithmetic and formula handling more expensive
+\cite{genfree,registers}.
+
+The subset and functional closure presentations offer
+legitimate ordinary mathematical comparisons, but their
+measured emitters cost 320 and 347 states respectively
+\cite{functional}. The ground-equational generator moves
+complexity from inference checking into generation of
+valid equations, yet its 299-state control still lacks
+the literal ZFC query and writer \cite{equational}.
+
+The tempting smaller equality-deletion experiments have
+a different problem. Removing the machinery for
+cross-variable instantiation admits the repository's
+finite-sort counterinterpretations. Their small table
+counts do not certify an equiconsistent search engine.
+A primitive falsity symbol does not repair that
+completeness failure \cite{countermodel}.
+
+Clause engines, finite-quotient proof certificates, and
+short equational packets remain plausible directions.
+For a blank-tape bound, however, every packet bit, query,
+decoder, inference mechanism, and initializer must be
+charged. A short input for a universal machine is not
+already a short blank machine, and an alphabet reduction
+can introduce additional states. Standard complete
+first-order engines make substitutions and equality
+handling explicit \cite{avigad}; that explicitness is
+precisely what a competitive alternative must implement
+compactly.
+
+The experimental choice in the present construction is
+therefore supported by concrete costs and proof
+obligations: retain the established logical calibration,
+then compress its source and binary control together.
+The alternate theory $T_-$ remains a separate, precisely
+stated candidate for a future complete frontend.

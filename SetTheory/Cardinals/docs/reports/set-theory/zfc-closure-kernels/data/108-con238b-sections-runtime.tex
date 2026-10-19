@@ -1,0 +1,254 @@
+\section{The unbounded binary runtime proof}
+\label{sec:runtime}
+
+The complete final-table check proves 8,386 guarded interfaces using
+\textbf{2,255,513 symbolic execution rules}. All 476 literal transition
+rows occur in these derivations. The minimum constant part of a
+certified instruction duration is \textbf{13}. These figures count
+proof construction. They do not estimate the machine's ultimate search
+time, and the machine's nonhalting is not inferred from a long test run.
+
+\subsection{The quantified configuration family}
+
+Define a unary register block and its transient form by
+\[
+ B(v)=0\,1^{v+1},\qquad C(v)=1\,0\,1^v
+ \quad(v\in\Nat).
+\]
+Both have length $v+2$. For a finite list $A=(a_1,\ldots,a_k)$,
+write $B(A)=B(a_1)\cdots B(a_k)$, and similarly for $C(A)$.
+The primary registers are permuted physically by
+\[
+ \pi=(6,2,0,4,3,7,8,5,1).
+\]
+That is, logical register $i$ occupies physical block $\pi(i)$.
+The physical block vector for the initial logical seed is
+$(0,0,0,3,0,0,3,0,0)$.
+
+A clean instruction frame at inherited dispatcher 96 has a one-bit
+marker immediately left of the head, a path word followed by zeros,
+a one-bit header at distance $64+g$ from the head, and then the
+blocks of the nine primary registers followed by a nonempty spare
+list. The exterior is zero. The integer $g$ is any nonnegative
+additional gap. The source has maximum path length 48, so the path
+fits before the fixed minimum header distance 64.
+
+Each symbolic proof independently quantifies:
+\begin{itemize}
+\item all nine primary values $r_0,\ldots,r_8\in\Nat$;
+\item the additional gap $g\in\Nat$;
+\item the first spare value $a\in\Nat$;
+\item an arbitrary finite remaining spare list $A$.
+\end{itemize}
+The complete spare suffix is $B(a)B(A)$, and is therefore nonempty
+even when $A$ is empty. A decrement case is split into its zero
+case and its positive case $r_i=u+1$, with $u\in\Nat$.
+No finite bound is placed on these parameters or on the length of
+the remaining list.
+
+\subsection{Exact source effects}
+
+The source operations are increment (\term{CI}), decrement-if-positive
+(\term{CD}), break (\term{CB}), continue (\term{CC}), and halt
+(\term{CH}). Paths are read most-significant bit first with trailing
+zero padding. After a leaf is selected, the path is extended or
+truncated to the leaf's depth before path arithmetic. This matches
+the included \file{RegisterPath.lean} semantics.
+
+Let $\operatorname{inc}(p)$ be fixed-width binary increment, with
+all-ones rollover, and let $\operatorname{strip}_b^k(p)$ remove the
+suffix through the $k$th occurrence of bit $b$ counted from the right,
+or all of $p$ if there are too few. Then:
+\begin{center}
+\begin{tabular}{@{}L{0.16\textwidth}L{0.32\textwidth}L{0.42\textwidth}@{}}
+\toprule
+Operation & Logical effect & Successor pointer\\
+\midrule
+$\term{CI}(i)$ & $r_i\gets r_i+1$ & $\operatorname{inc}(p)$\\
+$\term{CD}(i)$, positive & $r_i\gets r_i-1$ & $\operatorname{inc}(p)$\\
+$\term{CD}(i)$, zero & Registers unchanged &
+$\operatorname{inc}(\operatorname{strip}_0^1(p))$\\
+$\term{CB}(k)$ & Registers unchanged &
+$\operatorname{inc}(\operatorname{strip}_0^k(p))$\\
+$\term{CC}(k)$ & Registers unchanged &
+$\operatorname{strip}_1^k(p)$\\
+$\term{CH}$ & Literal binary halt & No successor\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Increment appends one spare block of value 1. Other operations
+preserve all existing spare values. A successful decrement increases
+the additional gap by one; binary path rollover can also increase
+the gap and shift the head left by one. The target frame includes
+that exact displacement. In particular, the next gap is nonnegative
+and the spare suffix remains nonempty.
+
+\subsection{Three sound execution rules}
+
+The proof engine represents each homogeneous run length by an affine
+form
+\[
+ c+\alpha g+\sum_{i=0}^{8}\beta_i r_i+\gamma a+\delta W,
+\]
+where $W$ denotes the width of the remaining spare list when needed.
+There are thirteen coefficient slots including the constant. It only
+uses a run as uniformly nonempty when the constant is at least one;
+all variable coefficients must be nonnegative. It refuses an
+unjustified read into an unknown or possibly empty context.
+
+\begin{lemma}[Literal transition rule]
+If the current cell is represented by a run with a positive constant
+length and known bit, the engine's one-transition rule has exactly
+the effect of the corresponding literal table row, for every
+assignment of natural parameters.
+\end{lemma}
+\begin{proof}
+Writing changes the current bit and moving changes the two sides of
+the zipper by one cell. The affine run is shortened by exactly one.
+Its remaining coefficients stay nonnegative. The next state, direction,
+duration increment, and displacement are read from that literal row.
+No information about any other cell is altered. This is the defining
+Turing-machine transition equation.
+\end{proof}
+
+\begin{lemma}[Homogeneous-run induction]
+Suppose a row, reading $b$, writes $w$, moves in the current scan
+direction, and returns to the same state. Traversing a run $b^n$
+has the effect of replacing it by $w^n$, moving exactly $n$ cells
+in that direction, and retaining the state, for every $n\in\Nat$.
+\end{lemma}
+\begin{proof}
+For $n=0$ the statement is the identity. For $n+1$, the first literal
+transition writes $w$ and exposes a run $b^n$ in the same state.
+Apply the induction hypothesis. Durations and displacements add.
+This also explains why accelerating a symbolic run whose value can
+be zero is sound: the zero instance takes zero literal transitions.
+\end{proof}
+
+The only arbitrary-list accelerations are founded on four one-block
+schemas. Their names identify entry controls, while their validity
+is rederived from the \emph{actual supplied table}:
+\begin{center}
+\begin{tabular}{@{}rccc@{}}
+\toprule
+Entry state & Direction & Block effect & Exact duration\\
+\midrule
+73 & Right & $B(v)\mapsto B(v)$ & $v+2$\\
+95 & Right & $B(v)\mapsto C(v)$ & $v+2$\\
+48 & Left & $B(v)\mapsto B(v)$ & $v+2$\\
+112 & Left & $C(v)\mapsto B(v)$ & $v+2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For a leftward scan, the block is encountered in reverse order.
+The proofs use an arbitrary opaque context on each side. Reaching an
+opaque context prematurely is a failure, so a one-block proof
+cannot silently assume a bit outside its stated footprint.
+
+\begin{lemma}[Finite-list induction]
+\label{lem:list}
+Each verified one-block schema above extends to every finite list
+of blocks, with the same entry/exit state and total duration equal
+to the sum of their lengths.
+\end{lemma}
+\begin{proof}
+The empty list requires no transition. For a nonempty list, apply
+the one-block result to its first encountered block, taking the
+remainder as the arbitrary exterior context. Apply the induction
+hypothesis to the remaining list. The state at the join is exactly
+the next schema's entry state. The tape transformation and displacement
+therefore concatenate, including the leftward reversal convention.
+\end{proof}
+
+Normalization also uses the word identity
+\[
+ C(A)\,1=1\,B(A),
+\]
+and its reversal. For one block,
+$C(v)1=101^{v+1}=1B(v)$. The empty-list case and induction on the
+list prove the general identity. Adjacent equal-symbol runs are
+joined, and an infinite zero exterior absorbs a finite adjoining
+zero run. Each normalization is an exact word equality.
+
+\subsection{What acceptance of a case proves}
+
+For a nonhalting operation, acceptance requires equality of the
+entire symbolic output tape with the prescribed successor frame,
+equality of state and orientation, and the exact affine head
+displacement. It also requires a duration with nonnegative
+coefficients and strictly positive constant part.
+For the halt instruction, the literal halt state must actually
+be reached after a positive finite segment. An intermediate
+unmatched halt would have no next transition and cause failure.
+
+The case driver checks every leaf and both outcomes of every
+decrement, not only combinations observed during execution.
+There are 1,931 decrement leaves, giving
+$6,455+1,931=8,386$ cases. The finite cap of 4,000 symbolic rules
+per derivation limits the effort spent constructing a certificate;
+it does not limit any parameter of the theorem or the number of
+literal transitions represented by a derived rule.
+
+For example, an instruction segment whose duration is
+$c+\beta r_i+\delta W$ may require arbitrarily many literal
+transitions. The same finite derivation proves its correctness for
+every $r_i$ and every finite spare list. This is the reason that a
+finite successful case census can establish an unbounded runtime
+theorem.
+
+\begin{proposition}[Final-table instruction interface]
+\label{prop:runtime}
+Every guarded leaf of the supplied boundary source is implemented
+by the exact 238-state table on the complete quantified frame
+family above. Each nonhalting leaf reaches its prescribed successor
+frame in finite positive time; the halt leaf reaches the designated
+halt outcome.
+\end{proposition}
+\begin{proof}
+The attributed engine proves the four one-block schemas and then
+constructs each case using only the three rules just justified and
+exact word normalization. The complete driver accepts all 8,386
+cases and checks the literal row census, source completeness, exact
+source hash, positive clocks, and expected aggregate counts.
+Induction over each recorded derivation proves its universally
+quantified interface. Lemma~\ref{lem:list} discharges the only
+arbitrary-list rule. The results and every affine case record are
+included in \file{evidence/}.
+\end{proof}
+
+\subsection{Exact initialization}
+\label{sec:boot}
+
+The new table, from the prescribed blank start, reaches this frame
+after exactly 409,835 transitions:
+\begin{center}
+\begin{tabular}{@{}L{0.38\textwidth}L{0.51\textwidth}@{}}
+\toprule
+Frame component & Value\\
+\midrule
+State; head & Canonical 84; $-5$\\
+Marker; header & $-6$; $176$\\
+Header distance; extra gap & $181$; $117$\\
+Logical primary values & $(3,0,0,0,3,0,0,0,0)$\\
+Physical primary values & $(0,0,0,3,0,0,3,0,0)$\\
+Spare suffix & 167 blocks, each of value 1\\
+One-cell count & 351\\
+Other tape positions & All zero\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The checker runs a sparse finite-support interpreter, an independent
+dense-array interpreter, and a dense run of the canonical renumbering.
+It compares their complete states, heads, and one-cell supports,
+then parses the actual unary blocks to recover the displayed
+registers and spares. The new complete tape also equals the pinned
+calibrated startup frame. This is a finite proof of a specific
+initialization, not an argument for infinite nonhalting.
+
+The source/frame lemma in Section~\ref{sec:source} now closes the
+runtime invariant from this initial configuration: every successor
+frame is literally the input frame for the next source leaf.
+Consequently Proposition~\ref{prop:runtime} applies at every future
+source step, with no hidden bound on the growing computation.

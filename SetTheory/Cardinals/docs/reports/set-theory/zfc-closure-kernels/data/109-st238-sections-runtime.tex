@@ -1,0 +1,229 @@
+\section{A direct unbounded proof for the literal 238-state table}
+\label{sec:runtime}
+
+The positive block argument above explains the state saving and provides
+one proof route. A second route executes the exact new table symbolically
+from every guarded source instruction frame, with no bound on represented
+register values. This section states the frame precisely and explains
+why the finite proof construction gives an unbounded theorem.
+
+\subsection{Frames, the logical seed and spare storage}
+
+Use inherited labels in this section, so dispatcher 96 is canonical state
+84. A frame is in that dispatcher with the head at the first pointer
+cell and a one-marker immediately to its left. The finite pointer word
+is followed by zero padding until a header one at distance $64+g$ from
+the head, where $g\in\mathbb N$ is an arbitrary additional gap. After the
+header come nine primary register blocks and a nonempty finite list of
+spare blocks. A block of value $v$ is
+\[
+                       B(v)=0\,1^{v+1}.
+\]
+The tape outside this complete finite frame is zero. This convention
+keeps the separators, the extra unary one in every block, the final
+spare tail and the zero exterior in the specification.
+
+The logical-to-physical register permutation is
+\[
+   (\operatorname{phy}(0),\ldots,\operatorname{phy}(8))
+                      =(6,2,0,4,3,7,8,5,1).
+\]
+The initial logical register function and its physical representation are
+\begin{align*}
+ R_*&=(3,0,0,0,3,0,0,0,0),& R_*(i)&=0\quad(i\geq9),\\
+ R_{\rm physical}&=(0,0,0,3,0,0,3,0,0).
+\end{align*}
+The 167 initial spare blocks each have value one. They are auxiliary
+binary storage, not the logical register function above index eight.
+The source only addresses registers zero through eight, so a logical
+tail of zeros is preserved throughout source execution.
+
+Two different tape implementations execute the new table from the
+all-zero tape: a sparse set of one-cells in inherited labels and a dense
+array in canonical labels. Both first reach the dispatcher after exactly
+409,835 transitions with head $-5$, marker $-6$, header $176$, and gap
+$g=117$. They agree on every tape cell and decode the displayed primary
+values and 167 spare ones. There are 351 one-cells, ending at position
+701; every other cell is zero. The complete position list is retained in
+\file{evidence/full_replay/bootstrap.json}. The independently checked
+configuration-by-configuration positive simulation supplies the same
+complete frame from the boundary initializer.
+
+\subsection{The instruction theorem}
+
+\begin{proposition}[Whole-tape instruction segments]
+\label{prop:runtime}
+For each of the 6,455 occurrences of $P_1$, every natural primary register
+assignment satisfying the selected decrement guard, every natural gap,
+and every nonempty finite spare list, the literal new table executes a
+finite positive segment implementing exactly that source instruction.
+For a nonhalting instruction it returns to a complete valid dispatcher
+frame with the prescribed next pointer and updated registers. The head
+position and entire tape agree with the specified output. For the unique
+halt instruction it reaches the designated halt state. No nonhalting
+case or intermediate portion is accepted as a halt.
+\end{proposition}
+
+There are 1,931 decrement occurrences. Checking both outcomes for each,
+and one case for every other occurrence, yields $6455+1931=8386$ cases.
+A positive decrement starts its tested value at $1+x$ with $x\in\mathbb N$;
+its zero case fixes only that value to zero. All other primary values
+remain independent natural parameters. The cases describe all values,
+not a finite sample of small registers.
+
+An increment adds one to the selected register and appends a spare block
+of value one. A positive decrement subtracts one and increases the
+additional gap by one. Breaks, continues and zero decrements perform
+the exact pointer operations stated in the source section. Pointer
+overflow can shift the head and marker one cell left while adjusting the
+gap. The comparison checks the actual motion separately from the tape
+representation, so agreement cannot be obtained merely by translating
+the output frame. Every nonhalting endpoint retains a nonempty spare
+list.
+
+\subsection{A finite language for infinite families of tapes}
+
+The inherited proof engine stores the tape as a zipper: a finite symbolic
+word to each side of the head, an orientation and a control state. Word
+atoms are constant bits, runs whose lengths are affine forms, and an
+arbitrary finite list of unary blocks. Its thirteen affine slots are a
+constant, the extra gap, nine primary values, the first spare value,
+and the total width of the remaining spare list. The last width is the
+actual width of that list, not a separate unconstrained parameter that
+may disagree with it. Reversal flags retain list orientation as the head
+crosses between zipper sides.
+
+The representation also uses a second block family
+\[
+                        C(v)=1\,0\,1^v.
+\]
+All affine coefficients are integers. Where a literal bit must exist,
+the proof demands a positive constant term and nonnegative coefficients.
+Where an entire variable run is traversed, a zero length is permitted and
+handled by the induction base case. This difference prevents reading a
+symbol from a possibly empty symbolic run.
+
+\subsection{The sound inference rules}
+
+The proof construction has three execution rules and exact word
+normalization. Their soundness follows from ordinary induction.
+
+\paragraph{Literal transition.}
+If a run is known nonempty, apply the actual table row to its first bit,
+record the write and one-cell motion, and add one to the duration. This
+changes exactly one concrete tape cell under every parameter assignment.
+
+\paragraph{Unary self-loop.}
+When the actual table row stays in the same state and moves in the scan
+direction, it can be applied to an arbitrary nonnegative run length $n$
+at once. Induction on $n$ proves the accumulated word, duration $n$ and
+motion $\pm n$. For $n=0$, this is the identity computation; it is not an
+extra transition. The rule checks the literal row instead of assuming
+that a state name denotes a scan loop.
+
+\paragraph{Finite-list traversal.}
+Before any list acceleration, the engine derives four one-block
+identities from the supplied table, with an arbitrary natural value $v$
+and opaque exterior tape. In inherited state labels these are:
+\begin{center}
+\begin{tabular}{ccccc}
+\toprule
+State & Direction & Input block & Output block & Steps / absolute motion \\
+\midrule
+73 & $R$ & $B(v)$ & $B(v)$ & $v+2$ \\
+95 & $R$ & $B(v)$ & $C(v)$ & $v+2$ \\
+48 & $L$ & $B(v)$ & $B(v)$ & $v+2$ \\
+112 & $L$ & $C(v)$ & $B(v)$ & $v+2$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The exit state equals the entry state, permitting induction over any
+finite list. The empty list gives the identity; the cons step combines
+the one-block result with the induction hypothesis. Total duration and
+motion are the sum of the block widths. The one-block proofs use literal
+steps and the preceding unary induction, not the list rule they justify.
+
+\paragraph{Exact word identities.}
+Adjacent equal-symbol runs combine by addition; zero runs disappear;
+reversal retains the denoted word. For a finite value list $A$, one also
+uses
+\[
+                         C(A)\,1=1\,B(A)
+\]
+and its reversal, proved by base/cons induction from the one-block
+identity. This equation explains the apparently shifted boundary one
+when a converted spare list is normalized. The proof manipulates whole
+words; it does not discard a damaged boundary cell.
+
+These rules preserve a concrete interpretation for every choice of the
+parameters and arbitrary spare tail. The engine records both a symbolic
+duration and an independent head-motion form. A successful nonhalt case
+must have exactly the target control state, the entire normalized left
+and right tape words, and the target motion. Its duration must have
+nonnegative coefficients and a strictly positive constant. A halt case
+can finish only at the actual halt state. None of the accelerated loops
+or block identities enters halt in its interior.
+
+\subsection{The completed universal certificates}
+
+For the direct 238-state proof, every one of the 8,386 cases succeeds.
+The replay constructs 2,255,513 symbolic rule applications and covers all
+476 literal transition rows. The least constant term of a completed
+instruction duration is 13. The fresh boundary-239 guard proof succeeds
+on the same 8,386 cases with 2,247,513 rules, covering all 478 old rows,
+and explicitly verifies the extra neighbor guard as described earlier.
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Metric & Direct 238 proof & Boundary-239 guard proof \\
+\midrule
+Guarded cases & 8,386 & 8,386 \\
+Symbolic rule applications & 2,255,513 & 2,247,513 \\
+Literal rows covered & 476 & 478 \\
+Minimum duration constant & 13 & 13 \\
+Explicit old $169/1$ runtime visits & Not required & 32 \\
+Minimum guarded one-run constant & Not required & 23 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The engine's 4,000-rule per-case cap limits the finite attempt to build
+a derivation. It puts no bound on a natural parameter, the number or
+values of spare blocks, or the runtime represented by an accepted
+derivation. Every list and unary acceleration has a proved induction
+rule, so the resulting certificates establish Proposition~\ref{prop:runtime}
+for unbounded data.
+
+The engine file is unchanged from the attributed coordinated-reuse
+package and has SHA-256
+\begin{center}\small\ttfamily
+9ff1b7c487036744206976aa45c16c3b8\\
+d6eeb8d4e7cad81f41dae8ebab66c5e.
+\end{center}
+Its two wrappers use the new exact tables and pin the boundary source.
+They share this proof engine; the word ``separate'' does not mean two
+independent implementations of universal symbolic execution.
+
+\subsection{Concatenation and exact source behavior}
+
+At each nonhalting endpoint, the source-control certificate verifies
+that the successor pointer and the reached leaf codeword have the same
+infinite zero-padded word. Thus the next symbolic instruction theorem
+applies to the very same tape, including overflow and shorter-pointer
+cases. Translation of a frame along $\mathbb Z$ preserves all literal
+steps, so the theorem applies at the actual head position reached by the
+previous segment. Induction supplies an exact binary segment for every
+finite source prefix starting at $(\epsilon,R_*)$.
+
+Every segment has positive duration. Hence infinitely many source steps
+produce an unbounded number of binary steps; there is no infinite
+zero-time stuttering. Conversely, every represented nonhalting source
+instruction finishes in finite time, so binary nontermination cannot be
+caused by a hidden infinite loop within an instruction. The unique halt
+occurrence reaches the unique designated binary halt. Together with the
+verified blank prefix, this proves
+\[
+ \Halt(\Mnew,\mathrm{blank})
+            \longleftrightarrow \RegHalts(P_1,(\epsilon,R_*)).
+\]

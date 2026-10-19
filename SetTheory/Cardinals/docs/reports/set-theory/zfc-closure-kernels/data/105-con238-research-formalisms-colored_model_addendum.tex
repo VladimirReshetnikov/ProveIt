@@ -1,0 +1,206 @@
+% Optional supplementary section.  Complete ordinary proof; not formalized.
+% Does not replace the unconditional logical-only theorem.
+\section{Extension to the full CP/GIC bundle under consistency}
+\label{sec:colored-model-addendum}
+
+The four-valued obstruction can be extended to the full published
+CP/GIC bundle, conditionally on a model of ZFC.  The result still
+concerns recovery of classical logic: it does not exclude a different
+interpretation proving equiconsistency of the modified calculus.
+The bare reconstruction $U=a$, which needed M3, is excluded from this
+addendum.
+
+\paragraph{Proposition.}
+Assume $M$ is a set model of ZFC.  For every reconstruction $U$ that
+is an implication-root term in $a,b,c,F,\top$, or one of the leaves
+$b,c,F,\top$, there is a four-valued expansion of $M$ validating all
+the original numerical logical rows with $\rho_8$ replaced by
+$L(a,b,c,U)$, all gated CP/GIC/vacuity bundle instances, truth0,
+modus ponens, and generalization, while refuting a fixed ordinary
+Peirce instance.  Thus, assuming $\operatorname{Con}(\mathrm{ZFC})$,
+those modified calculi cannot recover all classical Peirce instances
+even by using their CP/GIC axioms.
+
+\paragraph{Construction.}
+All ordinary membership statements in this proof refer to the
+first-order relation of $M$, which need not be externally
+well-founded.  Inside $M$ choose
+\[
+ A=1=\{0\},\qquad B=\{2\},\qquad 2=\{0,1\}.
+\]
+ZF proves $A\ne B$, $A\notin B$, $B\notin A$, and both are nonempty.
+On the domain of $M$ define the membership value $R(x,y)$ by
+\[
+ R(x,y)=
+ \begin{cases}
+ 3,&M\models x\in y,\\
+ 1,&x=A,\ y=B,\\
+ 2,&x=B,\ y=A,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\]
+The two exceptional clauses concern false off-diagonal edges, so this
+definition is unambiguous.  Use implication M4, designated value $3$,
+crisp equality $3/0$, and universal minimum in the order $0<2<1<3$.
+Minimum over an infinite domain is well-defined because the value set
+is finite and the domain is nonempty.  In particular $R(x,x)=0$ for
+all $x$, by Foundation in $M$; the falsity alias remains uniformly zero.
+
+\paragraph{Elementary value identities.}
+For arbitrary values $r,s$, direct inspection of M4 gives
+\begin{align*}
+ r\land s=3&\quad\Longleftrightarrow\quad r=s=3,\\
+ \exists x\,\varphi=3&\quad\Longleftrightarrow\quad
+                 \text{some assignment to }x\text{ gives }\varphi=3,\\
+ r\to t=3&\quad\Longleftrightarrow\quad
+                 (r=3\Longrightarrow t=3)\quad(t\in\{0,3\}).
+\end{align*}
+Conjunction and existential quantification always have value in
+$\{0,3\}$.  Universal quantification is designated exactly when
+every instance is designated.  Every implication also has value in
+$\{0,3\}$, although an implication with consequent $2$ can fail at
+antecedent $1$; that exception will be handled explicitly below.
+
+The designated implication relation is closed under finite minima in
+the stated order.  To verify this without an infinitary assumption,
+suppose every $r_i\to s_i$ is designated.  If $\min r_i=0$ or $2$,
+the implication from that minimum is always designated.  If
+$\min r_i=3$, every $r_i=3$, hence every $s_i=3$.  If
+$\min r_i=1$, each $r_i$ is $1$ or $3$; corresponding $s_i$ can
+never be $2$, so their minimum cannot be $2$.  This proves the
+claim, including infinite families since their minima are attained.
+It supplies $\rho_2$ for arbitrary model domains.  The argument for
+$\rho_6$ is equally direct: $\neg\neg m$ is $3$ precisely when
+$m=3$, and is otherwise $0$.  The other logical rows, equality
+existence, fresh atomic vacuity, MP and GEN follow as in the finite
+matrix proof, without any restriction on domain size.
+
+\paragraph{All GIC instances.}
+For each finite formula $\varphi(x,y;\bar p)$, the predicate
+``its four-valued interpretation is $3$'' is an ordinary first-order
+formula of $M$, with the extra fixed parameters $A,B$.  This follows
+by syntax induction using the finite truth table.  For a universal
+quantifier, exact value $v$ is expressed by saying that all instances
+have value at least $v$ in the fixed order and at least one has value
+$v$.  Thus this is a formula translation, not a truth predicate for
+the universe of all sets.  Write $\varphi_3$ for the translated
+designation predicate.
+
+Apply ordinary GIC in $M$ to $\varphi_3$ over the chosen domain set
+$D$.  Explicitly, separate the inputs in $D$ whose fibers are nonempty,
+apply Collection to those active inputs, and use Separation on the
+collected witnesses to retain only outputs with a supporting input.
+It gives an actual set $C$ such that every nonempty
+$\varphi_3$-fiber over $D$ has a member in $C$, and every member of
+$C$ has an unrestricted supporting input.  By the preceding value
+identities the literal machine clause
+\[
+ \forall x\bigl(R(x,D)\to
+       \forall y(\varphi(x,y)\to
+           \exists y'(\varphi(x,y')\land R(y',C)))\bigr)
+\]
+is designated exactly when that coverage condition holds.  The
+inner existential has value $0$ or $3$, so the exceptional
+$1\to2$ entry never appears here.  The support clause
+\[
+ \forall y(R(y,C)\to\exists x\varphi(x,y))
+\]
+has the same property.  This proves validity of every GIC instance,
+including matrices whose values are sometimes $1$ or $2$, and
+including either exceptional object as $D$ or $C$.
+
+\paragraph{The literal power-container clause.}
+Write
+\[
+ \operatorname{Sub}_R(x,y)=\forall z(R(z,x)\to R(z,y)).
+\]
+Its value is always $0$ or $3$.  Designation implies
+$M\models x\subseteq y$, because an actual membership antecedent
+has value $3$ and forces actual membership in the consequent.
+The converse can fail due to $1\to2$, so it is not assumed.
+
+Given any root $p$, in $M$ choose an ordinary transitive
+power-container $V$ that contains $p,A,B$ as members.  For example
+apply ordinary CP to the finite root $\{p,A,B\}$ and use
+transitivity.  Since $A,B\in V$, irreflexivity gives $V\ne A,B$.
+Every false edge into the column $V$ therefore has value $0$.
+For each actual $x\in V$, actual transitivity now implies
+$\operatorname{Sub}_R(x,V)=3$: a true predecessor edge is preserved,
+and a false predecessor edge has value $0$, $1$, or $2$, each of
+which implies $0$ and $3$ in M4.  This explicitly avoids the only
+problematic false-to-false implication $1\to2$.
+
+For such $x$, ordinary CP supplies $W\in V$ containing every actual
+subset of $x$.  If $\operatorname{Sub}_R(z,x)=3$, the preceding
+one-way implication gives actual $z\subseteq x$, hence $z\in W$
+and $R(z,W)=3$.  If that subset predicate is $0$, its implication
+to $R(z,W)$ is designated by the zero row.  Consequently
+\[
+ \forall z(\operatorname{Sub}_R(z,x)\to R(z,W))=3.
+\]
+Together with $R(W,V)=3$, this validates the internal power bound.
+The outer membership implication at an actual nonmember of $V$
+has antecedent $0$ and is designated automatically.  The root
+$R(p,V)=3$ completes the literal CP clause.  No unproved converse
+between the ordinary and colored subset relations was used.
+
+\paragraph{Gates, coincident labels, and aliases.}
+For distinct numerical labels $a,b,c$, the exact published bundle
+is the CP instance at the object assigned to $c$, the GIC instance
+for the matrix decoded from numerical code $c$, and the two atomic
+vacuity clauses.  Different labels may receive the same object;
+none of the preceding arguments requires object distinctness.
+For positive code $c$, the code-bound freshness theorem makes label
+$c$ absent from its decoded matrix.  For code $0$, freshness is semantic
+independence: the decoded truth constant has value $3$ under every
+assignment, even if its literal representation uses label $0$.  Thus
+choosing the GIC witness does not change the value of the matrix.  Adding
+the fixed model parameters $A,B$ to its semantic translation does
+not add any free source-variable label.
+
+When the numerical labels $a=b$ and $c$ is distinct, the displayed
+CP universal has a diagonal membership antecedent $R(x,x)=0$ and
+is automatically designated.  Its remaining existential root
+requires only an ordinary set containing the value assigned to
+$c$, which exists in $M$.  The GIC coverage universal has the same
+zero-diagonal antecedent.  For its support clause choose the actual
+empty set.  It differs from the two nonempty exceptional columns
+$A,B$, hence every incoming value is $0$ and support is designated.
+This deals directly with the allowed label collision; it does not
+import a classical derivation of collision soundness into the
+weakened calculus.
+
+When $c=a$ or $c=b$, the numerical gate emits truth0, whose value is
+$3$.  The fresh atomic vacuity clauses are designated because
+binding an absent label leaves the atom's value unchanged.
+Finally, code $1$ decodes to diagonal membership, with value $0$
+under every assignment, while the code-$0$ implication alias is
+compatible with $3\to3=3$.  Thus the relative falsity and
+truth aliases, including binders of label $0$, cause no exception.
+
+\paragraph{The refuted target and the exact conclusion.}
+At an assignment with $v_0=A,v_1=B$, set
+$P=(v_0\in v_1)$ and $Q=(v_1\in v_0)$.
+The ordinary Peirce formula has value $0$, by the M4 calculation.
+The target codes are $P=9$, $Q=5$, and Peirce code
+$326667170376$.  They are positive, so its implication tree does not
+encounter the special code-$0$ collapse.  All generated
+axioms are valid and the inference rules preserve validity;
+hence this formula is absent from every modified calculus covered
+by the proposition.
+
+Formalized first-order completeness inside ZFC supplies a set model
+of ZFC from its consistency statement, so the conditional
+nonderivability conclusion is an ordinary theorem formalizable in
+ZFC.  This addendum supplies no proof-assistant formalization or
+serialized arithmetic proof translator.  The supplied auxiliary
+finite checker verifies only the value identities and GIC reduction;
+the model construction is the written argument above.
+
+The result strengthens the logical-only warning for compound $U$
+and for $b,c,F,\top$.  It leaves $U=a$ open at the full-theory level.
+More generally, failure to recover Peirce for the original formulas
+does not prevent a consistency-equivalent interpretation using
+translated formulas or a different logical interface.  In
+particular the proposition is neither an inequiconsistency theorem
+nor an unconditional proof of nonhalting for the modified machine.

@@ -1,0 +1,92 @@
+Manifest: 184 files verified.
+Checking source_rotation ...
+Checking baseline_table_and_start ...
+Checking literal_239_construction ...
+Checking exact_lean_source_and_seed ...
+Checking six_block_fold ...
+Checking final_minimum_fixtures ...
+Checking abstract_source_invariant ...
+Checking flat_container_diagnostic ...
+{
+  "status": "PASS",
+  "mode": "quick",
+  "manifest_files_verified": 184,
+  "checks": [
+    {
+      "check": "source_rotation",
+      "status": "PASS",
+      "seconds": 1.477,
+      "arguments": [
+        "formalism/extra/check_rotation_certificate.py"
+      ]
+    },
+    {
+      "check": "baseline_table_and_start",
+      "status": "PASS",
+      "seconds": 0.421,
+      "arguments": [
+        "validation/check_baseline.py"
+      ]
+    },
+    {
+      "check": "literal_239_construction",
+      "status": "PASS",
+      "seconds": 0.771,
+      "arguments": [
+        "candidate239/build_candidate239.py"
+      ]
+    },
+    {
+      "check": "exact_lean_source_and_seed",
+      "status": "PASS",
+      "seconds": 0.107,
+      "arguments": [
+        "source_interface/check_source_interface.py"
+      ]
+    },
+    {
+      "check": "six_block_fold",
+      "status": "PASS",
+      "seconds": 0.042,
+      "arguments": [
+        "state_folds/certify_239_fold.py",
+        "boundary240/boundary240_old.tm",
+        "candidate239/zfc_boundary239_old.tm",
+        "--output",
+        "replay-logs/six_block_fold.json"
+      ]
+    },
+    {
+      "check": "final_minimum_fixtures",
+      "status": "PASS",
+      "seconds": 1.903,
+      "arguments": [
+        "source_encoding/finite_screen.py",
+        "candidate239/zfc_boundary239_old.tm",
+        "candidate239/sites_logical.json",
+        "--output",
+        "replay-logs/final_minimum_fixtures.json"
+      ]
+    },
+    {
+      "check": "abstract_source_invariant",
+      "status": "PASS",
+      "seconds": 0.446,
+      "arguments": [
+        "semantic/abstract_zeros.py"
+      ]
+    },
+    {
+      "check": "flat_container_diagnostic",
+      "status": "PASS",
+      "seconds": 0.161,
+      "arguments": [
+        "formalism/check_flat_container.py"
+      ]
+    }
+  ],
+  "seconds": 5.328,
+  "canonical_machine_sha256": "666f5bf1370b6b44ff4e614e4b194bc5be6b4c621914842ad7e344d6570a544e",
+  "scope": "Executable certificate replay and ordinary proof evidence. This driver does not invoke a Lean or Rocq kernel.",
+  "work_directory_retained": "/workspace/scratch/5167da97a258/research/packaged_full_replay_v3/parent_replay_work"
+}

@@ -1,0 +1,219 @@
+\section{Result, conventions, and provenance}
+\label{sec:result}
+
+\begin{theorem}[Exact 238-state consistency machine]
+\label{thm:main}
+Let $M_{238}$ be the machine specified by
+\file{machines/zfc_combined238.tm}, whose SHA-256 digest is
+\begin{center}\small\ttfamily
+909f29c493e0ccc5d6a481fd7a20a9a82\\
+eb934ab2aa7df17b5ec3789255a8c08.
+\end{center}
+It has 238 working states, one binary tape indexed by $\mathbb Z$, and
+only left and right moves. The head starts at position zero in state zero,
+and every tape cell initially contains zero. State 238 is a separate
+halting outcome and has no outgoing transitions. For the conventional
+finite first-order ZFC proof predicate,
+\begin{align}
+ \ZFC&\vdash
+ \Halt(M_{238},\blank)\longleftrightarrow
+ \exists p\,\Proof_{\ZFC}(p,\bot), \label{eq:mainhalt}\\
+ \ZFC&\vdash
+ \neg\Halt(M_{238},\blank)\longleftrightarrow\Con(\ZFC).
+ \label{eq:maincon}
+\end{align}
+The proof imports the established consistency calibration of the exact
+ProveIt register source, identified in Section~\ref{sec:consistency}.
+No assumption that ZFC is consistent is used in proving either
+biconditional.
+\end{theorem}
+
+The user's threshold is fewer than 239 working states. This construction
+meets it. The initializer is part of the 238 states; there is no preloaded
+program, free input word, extra tape, extra alphabet symbol, or stationary
+move. The distinction between working states and the halt outcome is the
+same convention used by the supplied 254-state and ProveIt machines.
+
+\begin{center}
+\begin{tabular}{@{}L{0.42\textwidth}L{0.48\textwidth}@{}}
+\toprule
+Property & Exact value\\
+\midrule
+Working states & $0,\ldots,237$\\
+Transition rows & $476$, two for each working state\\
+Tape alphabet; blank symbol & $\{0,1\}$; $0$\\
+Tape coordinates & $\mathbb Z$\\
+Start state; initial head & $0$; $0$\\
+Dispatcher; halt outcome & $84$; $238$\\
+Inherited labels & Start $95$, dispatcher $96$, halt $254$\\
+Exact initialization duration & $409,835$ transitions\\
+Logical register seed & $(3,0,0,0,3,0,0,0,0)$\\
+Source leaves; guarded interfaces & $6,455$; $8,386$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+A row \term{q b w D n} means: in state $q$, reading $b$, write $w$,
+move one cell in direction $D\in\{L,R\}$, and enter state $n$.
+The file's \term{\#! start 0} line fixes the initial state.
+Appendix~\ref{sec:table} prints every transition.
+
+\subsection{The two proof routes}
+
+The primary route verifies the final table directly. It consists of exact
+source identification, a source control-flow certificate, all unbounded
+instruction interfaces for the new table, and an exact complete startup
+frame. Composing these facts with the inherited source calibration proves
+Theorem~\ref{thm:main}. It does not assume that the predecessor's machine
+table was correctly compiled.
+
+The second route proves a local reduction from the incoming Boundary239
+machine. It checks the complete changed table, its incoming-state
+invariant, four symbolic local paths, the full predecessor startup, and
+the required guard over Boundary239's own unbounded runtime frames.
+This route explains why the reductions compose and supplies a shorter
+target for later formal verification.
+
+Both routes use ordinary induction over naturals or finite lists. Python
+calculations certify finite premises and symbolic identities; Python is
+not a replacement for a proof-assistant kernel. The exact boundary is:
+the mathematical construction and proofs are supplied, while a newly
+compiled end-to-end Lean or Rocq theorem for this table is not supplied.
+
+\subsection{Current repository and prior inputs}
+
+The inspected ProveIt checkout is commit
+\begin{center}\small\ttfamily
+ce192939372ac7944fe2a0208c68a96d49fb5e3b.
+\end{center}
+The incoming commit \term{83fd3585484e5dffb37992f91f7dd4d3e70c437a}
+contains three reports labeled 239 states. Their literal contents matter:
+\begin{enumerate}
+\item \file{ZFC_239_State_Construction_2026-10-19.zip} supplies
+the distinct \emph{Boundary239} machine. It reparenthesizes the calibrated
+source and reorganizes part of its decoder, eventually removing old
+state 218.
+\item \file{BusyBeaver239_Research_2026-10-19.zip} supplies the
+\emph{coordinated-reuse} or \emph{delayed-erasure} machine, removing old
+state 169.
+\item \file{ZFC239_Companion_2026-10-19.zip} contains the
+\emph{same literal delayed-erasure table} as the second archive.
+These two reports contribute one state saving.
+\end{enumerate}
+
+All three are pinned in \file{PROVENANCE.json}, including archive digests.
+The historical source pin used inside them is
+\term{13ec39ed43148b1807f51ed6e6528e1c84659562}. The current
+240-state table and its source data agree with those pinned inputs.
+The present repository also reports an external Lean endpoint for the
+exact 240-state binary machine; earlier statements in the incoming
+reports about which external endpoint was then smallest are historical
+and are not repeated as current facts \cite{rotation240,calibration}.
+
+The supplied upstream work credits Mira-Cult for the 254-state machine
+and Jeff Ketchersid for its Rocq verification. Its proof decomposes into
+binary/register simulation, source enumeration, logical calculus, and
+the native set theory's comparison with ZF/ZFC \cite{upstream}.
+The Busy Beaver overview lists this 254-state milestone
+\cite{bbwiki}. The present work improves the concrete state count using
+the ProveIt line of reductions; it does not reassign credit for the
+logical theory or claim a survey-based world-record certification.
+
+\section{The concrete composition}
+\label{sec:construction}
+
+Use inherited labels throughout this section. The exact Boundary239
+input is \file{reference/boundary239_old.tm}, with digest
+\begin{center}\small\ttfamily
+d061770f487937f9da652919c9bc9bb79\\
+bc9bf137ca41dd7a08eb5ecda8e7719.
+\end{center}
+This historical file has no start directive; its documented inherited
+start is 95. The new inherited-label file explicitly supplies that
+directive.
+
+Delete the two rows of state 169 and make precisely these three
+retained-row edits:
+\begin{center}
+\begin{tabular}{@{}rll@{}}
+\toprule
+Row & Boundary239 & Combined238\\
+\midrule
+$80/0$ & $0R25$ & $0L106$\\
+$91/1$ & $0L50$ & $1L167$\\
+$147/0$ & $0R169$ & $0R80$\\
+\bottomrule
+\end{tabular}
+\end{center}
+All 473 other retained rows remain unchanged. The only incoming edge
+to state 169 was $147/0$. Consequently no transition targets the
+deleted state. There are now exactly 476 rows and 238 working states.
+The canonical renumbering lists start 95 first, then every remaining
+working label in increasing order, and sends halt 254 to 238.
+The result is a bijection preserving every write, move, and target.
+
+\begin{proposition}[Literal construction]
+\label{prop:literal}
+The three edits and one deletion above produce exactly the supplied
+inherited-label table. Its canonical renumbering is exactly the table
+in Theorem~\ref{thm:main}. Both presentations are total on their
+working-state/symbol pairs, and their only nonworking target is the
+designated halt outcome.
+\end{proposition}
+\begin{proof}
+The constructor parses all predecessor rows, rejects duplicate or
+malformed entries, checks the three old row values before editing, and
+deletes state 169. It checks the complete resulting table against the
+published bytes and both digests, then verifies every transition under
+the saved state bijection. Its graph traversal also reaches every
+working state and the halt outcome from the start in the directed
+transition graph. This last fact is a graph property; it does not say
+that the unique blank execution visits every state.
+The finite checks are in \file{verification/check_construction.py}.
+\end{proof}
+
+\subsection{Why compatibility needed a new proof}
+
+The boundary construction modifies 40 retained rows of the 240-state
+table and deletes state 218. None of those edited rows occurs in the
+three-edit list above. The helper transitions used by the delayed-erasure
+paths also remain present. This makes the combination plausible, but
+syntactic disjointness alone does not prove it correct.
+
+The boundary transformation changes which paths the decoder follows.
+A later shared helper could therefore be entered with a different
+neighboring tape bit, invalidating a fold whose edited rows were
+untouched. We prove the required invariant on the \emph{actual}
+Boundary239 table and certify its additional right-neighbor guard
+against the \emph{changed} source paths. The final table's direct
+unbounded runtime proof supplies a second acceptance check.
+
+The state saving comes from retaining a one temporarily at $91/1$.
+Existing controls 167 and 151 then distinguish two caller contexts
+using already present tape bits. Both continuations eventually erase
+the intended cell and synchronize with the predecessor computation.
+The method trades a few extra transitions for one working state.
+No new data symbol or uncharged control is introduced.
+
+\subsection{Exact state accounting}
+
+\begin{center}
+\begin{tabular}{@{}L{0.43\textwidth}rL{0.38\textwidth}@{}}
+\toprule
+Construction & States & Relevant change\\
+\midrule
+Upstream Mira-Cult table & 254 & Original verified benchmark\\
+ProveIt Rotation240 & 240 & Calibrated source and binary baseline\\
+Incoming Boundary239 & 239 & Source/decoder change; removes 218\\
+Incoming delayed-erasure239 & 239 & Original source; removes 169\\
+This Combined238 & \textbf{238} & Boundary source and both removals\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Source DAG counts are different quantities. The reparenthesization
+changes 225 distinct source subtrees to 224 while retaining all 6,455
+instruction occurrences. Its repaired binary implementation and fold
+have their own charged state costs. The table above counts literal
+working states, not source nodes, compressed bits, or a hypothetical
+compiler output.

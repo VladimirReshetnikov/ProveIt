@@ -1,0 +1,173 @@
+\section{Independent proof of compatibility of the two reductions}
+\label{sec:independent-composition}
+
+The exact combination is mathematically justified; the fact that its
+edited rows have disjoint labels is only one part of the justification.
+We independently check the rows used by every exceptional block, all
+incoming ports needed by the structural invariants, the complete edit
+sets, and equality of the two possible orders of construction.
+
+Let $S$ denote the repaired boundary240 table, let $B$ denote the
+entry-context reduction deleting state $218$, and let $D$ denote the
+delayed-erasure reduction deleting state $169$.  All labels in this
+section are inherited labels: start $95$, dispatcher $96$, and halt
+$254$.  The delivered table $N$ satisfies the literal identity
+\[
+             N=D(B(S))=B(D(S)).
+\]
+The two intermediate tables $B(S)$ and $D(S)$ each have $239$ working
+states; $N$ has $238$ working states and $476$ transition rows.
+This identity is equality of complete tables, not merely equivalence
+of sampled executions.  The independent audit also verifies that
+all $238$ working states are reachable in the directed transition
+graph from $95$.  Graph reachability is used for table accounting;
+it makes no assertion about which states occur in the blank run.
+
+\subsection{The delayed-erasure edge remains valid}
+
+Write $T$ for the complete binary tape and $h$ for the head coordinate.
+In the predecessor $B(S)$ the following are structural invariants:
+\[
+\begin{array}{c|l}
+q&\text{required tape facts}\\\hline
+67&T(h-1)=0\\
+80&T(h-2)=0,\quad T(h-1)=1\\
+91&T(h-3)=0,\quad T(h-2)=T(h-1)=1\\
+169&T(h-1)=0.
+\end{array}
+\]
+They hold on every binary tape started in state $95$.  The only
+incoming rows to $67$ are $52/0$ and $124/0$; both write $0$ and move
+right.  The only incoming rows to $80$, $91$, and $169$ are
+$67/1$, $80/1$, and $147/0$, respectively.  These facts have been
+rechecked against the complete boundary239 table.  The boundary
+transformation leaves every one of these rows unchanged.
+
+The additional selector fact
+\begin{equation}
+q=169\ \land\ T(h)=1\quad\Longrightarrow\quad T(h+1)=1
+\label{eq:new-selector-guard}
+\end{equation}
+requires the interpreter's representation invariant.  The old guard
+certificate for the unmodified rotation240 source cannot simply be
+reused: the boundary construction changes source paths.  The new
+guard replay therefore checks the exact boundary239 table against
+the exact changed source, including the literal blank initialization
+and every unbounded instruction case.  No execution rule is added
+to the symbolic engine.  Every selector entry must expose a literal
+run or the known zero exterior; every entry reading $1$ must exhibit
+a uniformly positive run of length at least two.  The generic
+finite-list block lemmas are rederived and checked not to hide a
+selector visit.  State $169$ has no self-loop, so unary-loop
+acceleration cannot hide a selector visit either.
+
+The fresh run passes all $8,386$ guarded instruction cases using
+$2,247,513$ symbolic steps.  It finds $96$ symbolic selector entries,
+of which $32$ read $1$.  At each of those $32$ entries the right-hand
+run has length $G+K$, with $G\geq0$ the additional header gap and
+$23\leq K\leq59$; all are increment-register-$4$ sites.  The exact
+$409,691$-step boundary239 startup has $18$ selector entries, including
+six reading $1$, and every one satisfies the required implication.
+These are fresh measurements for the changed source, rather than
+the predecessor's $21\leq K\leq59$ interval.  The receipt is
+\texttt{boundary239\_selector\_guard.json}.
+
+With this guard, put $\phi(169)=80$ and $\phi(q)=q$ otherwise.
+Corresponding configurations retain the exact same head and entire
+tape.  All old transitions outside $80$, $91$, and $169$ agree in
+one step under $\phi$.  The complete exceptional identities are:
+\[
+\begin{array}{c|l|r|r|c}
+\text{old row}&\text{tape assumptions}&\text{old steps}&\text{new steps}
+&\text{endpoint}\\\hline
+80/0&T(h-1)=1&1&5&(25,h+1)\\
+80/1&\text{none}&1&1&(91,h+1)\\
+169/0&T(h-1)=0&1&3&(57,h+1)\\
+169/1&T(h-1)=0,\ T(h+1)=1&1&5&(56,h+1)\\
+91/0&\text{none}&1&1&(106,h+1)\\
+91/1&T[h-3,h)=011&3&11&(2,h-3).
+\end{array}
+\]
+The read bit specified in the first column is always part of the
+assumptions.  Every identity equates the complete final tapes.
+Unmentioned cells are independent free variables, and the checker
+rejects any attempt to read one.  In particular, these are exact
+local identities valid for arbitrary exterior tapes.
+
+All rows executed in these six old/new comparisons are unchanged
+by $B$.  The independent checker replays the identities both from
+$S$ to $D(S)$ and from $B(S)$ to $N$, and obtains identical traces.
+Thus the only source-sensitive premise was the selector guard,
+which is discharged afresh on $B(S)$.
+
+\subsection{The boundary edge also survives delayed erasure}
+
+The $B$ reduction uses a different part of control.  At old $179$,
+the bit $\ell=T(h-1)$ is always $0$: its only incoming rows are
+$161/0$, $236/0$, and $239/0$, all writing $0$ and moving right.
+Old $218$ receives tag $1$ from $187/1$ and $220/1$, or tag $0$
+from $237/0$.  Old $223$ can be entered only from $218/0$ and is
+kept entirely inside the corresponding three-step comparison block.
+At checkpoints the old/new control relation is
+\[
+179,\ell=0\mapsto179,\qquad
+218,\ell=0\mapsto223,\qquad
+218,\ell=1\mapsto179,
+\]
+with all other checkpoint controls unchanged and old $223$
+excluded from the checkpoints.  The tape and head are identical.
+
+The six comparison identities below read only the cells $h-1,h$,
+leave the entire tape unchanged, and finish at $h+1$:
+\[
+\begin{array}{r|r|r|r|r|r|r}
+\text{old state}&\ell&\text{read}&\text{new state}&
+\text{old steps}&\text{new steps}&\text{endpoint}\\\hline
+179&0&0&179&1&1&105\\
+179&0&1&179&1&5&105\\
+218&0&0&223&3&1&23\\
+218&0&1&223&1&1&70\\
+218&1&0&179&3&1&105\\
+218&1&1&179&1&3&70.
+\end{array}
+\]
+Every required incoming port and executed row survives $D$ unchanged.
+The independent checker replays this proof both from $S$ to $B(S)$
+and from $D(S)$ to $N$.  This boundary equivalence holds for every
+initial binary tape at start $95$; it requires no semantic selector
+guard and no restriction on source-register values.
+
+\subsection{Why positive finite blocks prove halting equivalence}
+
+Suppose corresponding configurations satisfy the appropriate
+checkpoint invariant.  At an ordinary checkpoint one step on
+each side restores the relation.  At an exceptional checkpoint
+one of the displayed positive finite blocks restores it with
+equal complete tapes and head positions.  None of the blocks
+passes through the halt state before its endpoint.  Induction
+therefore constructs corresponding checkpoints for as many
+blocks as either deterministic computation performs.  Positivity
+prevents an infinite execution on one side from being represented
+by only finitely many steps on the other.  A finite halting
+execution corresponds to a finite halting execution, and an
+infinite execution corresponds to an infinite execution.
+
+Applied to the freshly guarded delayed-erasure edge, this proves
+\[
+             N\downarrow\quad\Longleftrightarrow\quad B(S)\downarrow
+\]
+from the blank tape.  The independent boundary edge gives
+$B(S)\downarrow\leftrightarrow S\downarrow$.  The separate source
+equivalence, decoder/runtime, and startup arguments connect $S$
+to the calibrated rotation240 source.  Composition yields the
+requested consistency equivalence for the literal $238$-state table.
+
+The finite block arguments and natural-number/list inductions are
+ordinary mathematical proofs formalizable in ZFC.  Their executable
+certificates are not a newly compiled Lean endpoint for $N$.
+The existing external Lean endpoint for rotation240 identifies its
+nonhalting with absence of a finite refutation in the specified
+recursive ZFC proof calculus.  The new composition preserves that
+halting predicate.  A proof of the entire equivalence internal to
+PA, and an external Lean compilation for this exact new table,
+remain distinct artifacts and are not asserted here.

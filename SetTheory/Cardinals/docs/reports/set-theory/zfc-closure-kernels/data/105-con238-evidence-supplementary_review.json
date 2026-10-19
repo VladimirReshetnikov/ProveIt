@@ -1,0 +1,88 @@
+{
+  "status": "INDEPENDENT_SUPPLEMENTARY_MATHEMATICAL_REVIEW_PASS",
+  "fourth_input_no_go": {
+    "status": "PASS",
+    "finite_matrix_recheck": [
+      {
+        "name": "M3",
+        "status": "PASS",
+        "full_L_failures": [
+          [
+            1,
+            2,
+            1,
+            0,
+            1
+          ]
+        ],
+        "quantifier_distribution_cases": 81,
+        "rho6_vector_cases": 9
+      },
+      {
+        "name": "M4",
+        "status": "PASS",
+        "full_L_failures": [
+          [
+            0,
+            3,
+            1,
+            2,
+            0
+          ],
+          [
+            1,
+            3,
+            1,
+            2,
+            0
+          ],
+          [
+            2,
+            3,
+            1,
+            2,
+            0
+          ]
+        ],
+        "quantifier_distribution_cases": 256,
+        "rho6_vector_cases": 16
+      }
+    ],
+    "unbounded_term_argument": "Every term is a leaf or has implication at its root. M4 covers all implication-root terms and b,c,F,top; M3 covers a. No depth bound is used.",
+    "first_order_semantics_review": "Finite-minimum quantifiers validate rho2/rho4/rho6; crisp equality plus all-designated false-antecedent row validates equality congruence; selected zero-diagonal membership validates IR; MP and GEN preserve validity.",
+    "scope": "Only stated logical subsystem; CP/GIC excluded. Neither inequiconsistency of full modified set theory nor a TM lower bound follows.",
+    "required_corrections": []
+  },
+  "boundary_associativity": {
+    "status": "PASS",
+    "residual_exit_algebra_reviewed": true,
+    "two_counter_recurrences_correct": true,
+    "necessity_qualification_correct": "Nonempty chunks and distinct symbolic external targets; semantic identities in special contexts or unreachable code may be stronger.",
+    "independent_full_source_graph_comparison": "All ordered instructions, arguments and 8386 guarded targets match.",
+    "before": {
+      "leaves": 6455,
+      "guards": 8386,
+      "maximum_depth": 48,
+      "maximum_zero_run": 6,
+      "unresolved_positive_escapes": 0
+    },
+    "after": {
+      "leaves": 6455,
+      "guards": 8386,
+      "maximum_depth": 39,
+      "maximum_zero_run": 6,
+      "unresolved_positive_escapes": 0,
+      "distinct_source_nodes": 224
+    },
+    "required_corrections": [],
+    "optional_clarification": "Every surrounding context means contexts in which required external ancestor targets are defined, or a semantics that treats undefined escapes identically. Both exact complete programs have zero unresolved positive escapes.",
+    "binary_scope": "Source-only. Depth39 is not a new smaller binary TM."
+  },
+  "reviewed_file_sha256": {
+    "formalism_research/fourth_input_no_go.tex": "6303303feeae88ff93fb6213023b946da4457abe9018fa439510d65d5999f254",
+    "formalism_research/check_fourth_input_no_go.py": "fdb92179dc95dd4a2c5632bd1ac71a3dae242a95c64412497a0042b1f822110d",
+    "encoding_research/boundary_associativity.tex": "80c921a80924fa30c6c139fd9df101aee145dc8af363bdafc4eb0b1e49b198f5",
+    "encoding_research/best_source.json": "b1cc93221d70b4ee28abc790aa032fcca461db9729e75910288147fd4aafbb02"
+  },
+  "review_scope": "Independent mathematical review and finite matrix/source-graph checks; no additional machine verification."
+}

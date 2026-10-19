@@ -1,0 +1,397 @@
+\section{A complete 713-bit equational alternative}
+\label{sec:e713}
+
+This section gives a separate alternative to the binary machine in the main
+report.  The supplied finite equational presentation has eight equations,
+twelve operation symbols and two specified ground endpoints. Its entire
+serialized consistency problem occupies 713 bits in the previously used
+packet codec. Subject to the inherited ordinary calibration of raw EPSC,
+we prove in the ZFC metatheory that
+\begin{equation}
+ \mathcal E_{713}\not\vdash N(d,d)=d
+ \quad\longleftrightarrow\quad \operatorname{Con}(\mathrm{ZFC}).
+ \label{eq:e713-calibration}
+\end{equation}
+Here derivability is ordinary equational derivability, including arbitrary
+ground substitutions and contextual use in either direction. This is an
+ordinary mathematical proof formalizable in ZFC, not a delivered Lean/Rocq
+or internal PA proof. No binary Turing-machine state count is inferred from
+713 bits. The 238-state construction in the main report uses the existing
+calibrated machine and is independent of this alternative.
+
+The audited numerical baseline is the complete 946-bit packet from the
+19 October 2026 coordinated-reuse research archive. Our builder reconstructs its
+equations, ordered signature, endpoints and bit string exactly. Source 79
+supplies the earlier 1,169-bit native-stack presentation and its ordinary
+model argument. The earlier 946-bit construction supplies the sharing
+$J=P$, truth fusion and the allocation $\mathsf{Pick}(x)=W(x,d)$.
+Boolean factoring and elimination of an auxiliary branch predicate are
+standard transformations; we claim the explicit charged construction and
+the new comparison with the inspected packet, without asserting exhaustive
+historical priority. An earlier archive named
+\texttt{zfc-sub240-research-20261019.zip} was described in conversation
+history as containing a 766-bit kernel. Its bytes were unavailable in the
+inspected material, so no literal comparison with that kernel is claimed.
+
+\subsection{Raw EPSC and the exact inherited dependency}
+
+Work with a nonempty first-order domain and a binary relation $E$. Define
+\begin{align*}
+ \mathsf{Empty}(x)&\;\Longleftrightarrow\;\forall u\,\neg E(u,x),\\
+ y\subseteq_E z&\;\Longleftrightarrow\;\forall u\,(E(u,y)\to E(u,z)),\\
+ \mathsf{LB}(R)&\;\Longleftrightarrow\;
+       \forall x\,\exists z\,\forall y\,(R(x,y)\to y\subseteq_E z).
+\end{align*}
+For each equality-free pure-membership formula $R(x,y;\bar p)$ with any
+finite parameter tuple, raw EPSC asserts that $\mathsf{LB}(R)$ implies
+the existence of $h$ with
+\begin{align}
+ ((\mathsf{Empty}(x)\lor E(x,h))\land R(x,y))&\longrightarrow E(y,h),
+ \label{eq:e713-close}\\
+ E(y,h)&\longrightarrow\exists x\,R(x,y).
+ \label{eq:e713-support}
+\end{align}
+These are actual formula instances, not quantification over every semantic
+binary relation. The previously reviewed Sources 14 and 08 give the
+ordinary ZFC-provable consistency comparison between this full raw schema
+and ZFC. Source 14 first derives empty objects, power objects and profile
+singletons, reconstructs transitive hulls and Separation/Union, and then
+reduces EPSC to the earlier PSC schema. Source 08 supplies the hereditary
+saturation interpretation and the ordinary Foundation/Choice comparison.
+This section uses that calibration as an explicit inherited theorem.
+It neither shortens those proofs nor assumes that an attractive incomplete
+code calculus is already a complete proof system for the schema.
+
+\subsection{Signature, native stack and the complemented binder}
+
+The signature is
+\[
+ d^0,N^2,V^2,P^2,A^2,Q^1,W^2,
+ \mathsf{Target}^1,\mathsf{Next}^2,\mathsf{Mem}^2,
+ p_E^2,p_\varepsilon^2.
+\]
+Superscripts give arities. The first six equations are
+\begin{align}
+ N(N(x,N(N(y,x),x)),N(y,N(z,x)))&=y,\label{eq:e713-sh1}\\
+ d&=N(d,N(d,d)),\label{eq:e713-top}\\
+ V(P(x,s),d)&=x,\label{eq:e713-head}\\
+ V(P(x,s),A(j,d))&=V(s,j),\label{eq:e713-tail}\\
+ p_\varepsilon(s,P(a,b))&=N(p_\varepsilon(s,a),p_\varepsilon(s,b)),
+ \label{eq:e713-nand}\\
+ p_\varepsilon(s,A(i,j))&=p_E(V(s,i),V(s,j)).\label{eq:e713-atom}
+\end{align}
+Equation~\eqref{eq:e713-sh1} is the published Sheffer single axiom Sh1.
+It makes the reduct a Boolean algebra with $N$ interpreted as NAND;
+\eqref{eq:e713-top} makes $d$ its top. The native stack equations have
+ordinary equality and apply to the entire domain. They are not identities
+only after applying a truth-value map.
+
+The seventh equation is the new binder:
+\begin{equation}
+\begin{split}
+ p_\varepsilon(s,Q(a))={}&N\bigl(
+      p_\varepsilon(P(W(s,a),s),a),\,
+      p_\varepsilon(P(z,s),a)\bigr).
+\end{split}
+\label{eq:e713-quantifier}
+\end{equation}
+The variable $z$ is universally quantified, as are all equation variables.
+The intended meaning of $Q$ is \emph{existential negation}:
+\[
+ \varepsilon(s,Q(a))\quad\longleftrightarrow\quad
+      \exists z\,\neg\varepsilon(P(z,s),a).
+\]
+It is essential not to read it as the old ordinary existential constructor.
+
+\paragraph{Complemented-witness lemma.}
+Let $X$ be nonempty, let $(u_z)_{z\in X}$ be elements of a Boolean algebra,
+and let $w=u_{z_0}$ be a selected member of that family. Then
+\[
+ (\forall z\;q=\neg(w\wedge u_z))
+ \quad\longleftrightarrow\quad
+ q=\neg w\ \land\ \forall z\;(w\leq u_z).
+\]
+Indeed, $z=z_0$ gives $q=\neg w$ by idempotence. Taking complements in
+the other equations yields $w=w\wedge u_z$. The reverse implication
+is immediate. In the two-element algebra this says exactly that $q$ is
+true iff some $u_z$ is false, and the selected $u_{z_0}$ is then false.
+The lemma does not say that every arbitrary Boolean-valued family has
+such a selector: the selected value must be an attained minimum.
+
+The new equation therefore replaces both the old selected-witness equality
+and the arbitrary-witness implication. With the rest of the literal
+946-bit packet retained, it gives 917 bits: one fewer equation and seven
+fewer term nodes save $1+4\cdot7=29$ bits. This comparison does not depend
+on the subsequent Boolean factoring or branch elimination.
+
+\subsection{One fully expanded closure equation}
+
+The following names abbreviate \emph{terms} for explanation only:
+\begin{align*}
+ h&=\mathsf{Target}(b),& n_z&=\mathsf{Next}(b,z),&m_z&=\mathsf{Mem}(b,z),\\
+ R_b(x,y)&=p_\varepsilon(P(y,P(x,b)),V(b,d)),&&&
+\end{align*}
+and the eight Boolean-valued terms
+\begin{align*}
+ r&=R_b(h,n_z),&e&=p_E(m_z,n_z),&f&=p_E(m_z,z),\\
+ a&=p_E(W(x,d),x),&b_0&=p_E(x,h),&c&=R_b(x,y),\\
+ u&=p_E(y,h),&v&=R_b(\mathsf{Next}(b,y),y).&&
+\end{align*}
+The descriptor variable is $b$; $b_0$ is just the name of one predicate
+value. Define $\overline t=N(d,t)$ and
+\[
+ \ell=N(d,N(c,N(a,N(d,b_0)))),\qquad
+ B^-=N(r,N(d,N(e,N(d,f)))),
+\]
+\[
+ H^-=N\bigl(N(\ell,N(d,u)),\,N(u,N(d,v))\bigr).
+\]
+The eighth equation is
+\begin{equation}
+                       d=N(B^-,H^-).\label{eq:e713-closure}
+\end{equation}
+Every name in this display is expanded in
+\texttt{generated/E713.equations}, \texttt{generated/E713.json}, and
+\texttt{generated/E713.bits}. No definition or arity is supplied to the
+decoder from outside the packet.
+
+In the Boolean algebra, write
+\begin{align*}
+ \mathsf{Bad}(b,z)&=r\land e\land\neg f,\\
+ \mathsf{Hull}(b,x,y)&=(a\lor\neg c\lor u)
+       \land(\neg b_0\lor\neg c\lor u)
+       \land(\neg u\lor v).
+\end{align*}
+The elementary identities
+\[
+ \ell=c\land(\neg a\lor b_0),\qquad
+ \mathsf{Hull}=(\ell\to u)\land(u\to v),
+\]
+give $B^-=\neg\mathsf{Bad}$ and $H^-=\neg\mathsf{Hull}$. Thus the
+last equation is exactly
+\begin{equation}
+ \forall b,z,x,y\quad
+       \mathsf{Bad}(b,z)\lor\mathsf{Hull}(b,x,y).\label{eq:e713-disj}
+\end{equation}
+All three former bad-branch literals and all three former hull clauses
+remain present with their original polarities. Neither global support nor
+the empty-input clause has been removed.
+
+In two-valued logic, for each fixed $b$,~\eqref{eq:e713-disj} is equivalent
+to the existence of a Boolean flag $g$ such that
+\[
+  (\forall z\;g\lor\mathsf{Bad}(b,z))
+  \quad\land\quad
+  (\forall x,y\;\neg g\lor\mathsf{Hull}(b,x,y)).
+\]
+If some $z$ makes the bad branch false, all hull instances must be true;
+otherwise choose the bad branch. This explains the exact removal of
+$p_G$ from the signature. This step is applied \emph{after} reducing
+predicate values to two truth values. We do not assume that a general
+Boolean algebra has the infinitary meet needed to manufacture such a
+flag from all its predicate values.
+
+\subsection{Lower interpretation and all binder translations}
+
+Let a model of $\mathcal E_{713}$ separate $N(d,d)$ and $d$. Its
+Sh1 reduct is a nontrivial Boolean algebra. Choose an ultrafilter and
+apply its Boolean homomorphism to $\{0,1\}$ only to the values of
+$p_E$ and $p_\varepsilon$. Keep the original domain and every native
+function $P,V,A,Q,W,\mathsf{Target},\mathsf{Next},\mathsf{Mem}$.
+The native equations retain their literal equality, and all Boolean
+equations retain their logical consequences.
+
+Equation~\eqref{eq:e713-quantifier} and the complemented-witness lemma
+now give the stated $\exists\neg$ semantics. To compare with Source 79's
+ordinary existential presentation, the complete operation translations are
+\begin{align*}
+ J_{\rm old}(a,b)&=P(a,b),&\mathsf{top}_{\rm old}&=d,\\
+ Q_{\rm old}(a)&=Q(P(a,a)),&
+ W_{\rm old}(s,a)&=W(s,P(a,a)),\\
+ \mathsf{Pick}_{\rm old}(x)&=W(x,d).&&
+\end{align*}
+All other native functions are unchanged. For any fixed $s,a$, the class
+$P(a,a)$ is the complement of $a$. Applying the new binder to it gives
+\begin{align*}
+ \varepsilon(s,Q(P(a,a)))&\longleftrightarrow
+       \exists z\,\varepsilon(P(z,s),a),\\
+ \varepsilon(s,Q(P(a,a)))&\longleftrightarrow
+       \varepsilon(P(W(s,P(a,a)),s),a).
+\end{align*}
+The arbitrary-witness implication follows from the first line.
+The independent old member selector is $W(x,d)$, not
+$W(x,P(d,d))$. This is why we compare with Source 79 before its
+member-selector fusion, rather than asserting an unjustified literal
+expansion to the already-fused 946-bit equations.
+
+For completeness, define selectors $\nu_0=d$ and
+$\nu_{i+1}=A(\nu_i,d)$. Equations~\eqref{eq:e713-head}--\eqref{eq:e713-tail}
+recover coordinate $i$ of every finite stack by $i$ tail substitutions
+and one head substitution. An atomic formula on coordinates $i,j$ is
+represented by $A(\nu_i,\nu_j)$, NAND by $P$, and ordinary existential
+quantification of a represented matrix $a$ by $Q(P(a,a))$. Prepending
+a stream entry shifts each free coordinate by one under a binder.
+The descriptor has its code in its own coordinate 0, hence the full
+environment $P(y,P(x,b))$ has output $y$ at 0, input $x$ at 1, code at 2,
+and its finite parameter list starting at 3. Build the class term first
+and then its enclosing descriptor. Structural induction represents every
+finite equality-free pure-$E$ formula with every finite parameter tuple;
+no satisfaction predicate for the expanded language is asserted.
+
+Fix such a descriptor and suppose $\mathsf{LB}(R_b)$. Apply boundedness
+at the object $h=\mathsf{Target}(b)$ to obtain a $z$ bounding every
+$R_b(h,y)$-output. The three bad literals cannot all hold at this $z$:
+they would give $R_b(h,n_z)$, $E(m_z,n_z)$ and $\neg E(m_z,z)$, contrary
+to that bound. Equation~\eqref{eq:e713-disj} consequently gives every
+hull clause. If $x$ is empty, $E(W(x,d),x)$ is false, so its first
+clause gives closure at empty inputs. The second gives closure at members
+of $h$. The last gives unrestricted support, witnessed by
+$\mathsf{Next}(b,y)$. Thus every instance of raw EPSC holds.
+
+The inherited raw-EPSC calibration now yields
+$\operatorname{Con}(\mathrm{ZFC})$. No choice of an infinitary Boolean
+flag and no quotient of native objects was needed.
+
+\subsection{Upper model, including the free witness slice}
+
+Assume $\operatorname{Con}(\mathrm{ZFC})$ while working in ZFC.
+Completeness and downward L\"owenheim--Skolem give a countably infinite
+set-coded ZFC model; relabel its domain by $\mathbb N$ and retain its
+membership relation $E$. The model may be nonstandard and need not be
+transitive. It supplies the required pure-membership EPSC instances by
+the inherited upper calibration.
+
+Take a Cantor pairing bijection $\pi$ with
+$\pi(i,j)\geq\max(i,j)$ and set
+\[
+ d=0,\quad P(x,s)=3\pi(x,s)+1,\quad A(i,j)=3\pi(i,j)+2,
+ \quad Q(a)=3a+3.
+\]
+The positive constructor ranges are disjoint and every constructor code
+strictly exceeds its arguments. Interpret a $P$-code as a stream cell,
+and give every non-$P$ stream head and tail 0. The index of a selector
+is the number of successive outer layers $A(j,0)$; it is zero when the
+selector has any other shape. Let $V(s,i)$ return that stream coordinate.
+Both native stack equations hold for arbitrary, including noncanonical,
+arguments.
+
+Define class incidence by recursion on the natural-number class code:
+$d$ is false; $P(a,b)$ is NAND of its child classes; $A(i,j)$ tests
+$E(V(s,i),V(s,j))$; and $Q(a)$ means
+$\exists z\,\neg\varepsilon(P(z,s),a)$. The strict decrease of child
+codes makes this definition well founded. Every fixed class describes a
+finite pure-$E$ formula in finitely many stream coordinates. Therefore
+every fixed descriptor $b$ describes a pure-$E$ formula in $x,y$ with
+finitely many parameters. The global external decoder is not claimed to
+be internally definable in the chosen nonstandard set model.
+
+For $a\ne d$, choose $W(s,a)$ to be the least external-index element
+falsifying $\varepsilon(P(z,s),a)$ whenever one exists, and 0 otherwise.
+At $a=d$, every instance is false and the new $Q(d)$ class is true.
+Both sides of~\eqref{eq:e713-quantifier} then equal true, independently
+of $W(s,d)$. Allocate this entire free slice as
+\[
+ W(x,d)=\begin{cases}
+   \min\{u:E(u,x)\},&\text{if $x$ has an $E$-member},\\
+   0,&\text{otherwise}.
+ \end{cases}
+\]
+Thus the complemented binder preserves exactly the freedom needed for
+the earlier member-selector allocation. No second, incompatible role is
+assigned to that slice.
+
+For each descriptor, if local boundedness fails choose $h$ with
+unbounded output subsets. For each $z$ choose $n_z,m_z$ satisfying
+$R_b(h,n_z)\land E(m_z,n_z)\land\neg E(m_z,z)$. Interpret
+$\mathsf{Target},\mathsf{Next},\mathsf{Mem}$ by these choices. The bad
+branch is true at every $z$, so the final equation holds. If local
+boundedness holds, choose an EPSC hull $h$. For each $y\in_E h$, select
+an input witnessing $R_b(\mathsf{Next}(b,y),y)$; use 0 elsewhere and
+for the unused member witnesses. The member-selector slice makes the
+first hull clause vacuous at nonempty $x$, and EPSC gives it at empty
+$x$. The remaining two hull clauses follow directly from EPSC. Hence
+the hull branch is always true. The two uses of $\mathsf{Next}$ are
+compatible because they are assigned in mutually exclusive descriptor
+cases. External least-index choices make all functions total.
+
+Finally transport a countably infinite Boolean algebra, for example the
+finite/cofinite algebra, to this same carrier with top equal to the
+existing $d$. Interpret $N$ as its NAND and $p_E,p_\varepsilon$ as its
+top or bottom according to the just-constructed relations. Keep every
+native function fixed. All eight equations hold, and $N(d,d)\ne d$.
+This proves the upper implication without confusing a Boolean quotient
+with the native domain.
+
+\subsection{Equational proof search and exact packet cost}
+
+The ground terms exist because the signature contains $d$. Let $\sim$
+be the congruence generated on all ground terms by every ground instance
+of every equation. If the endpoints are not equationally derivable,
+the ground-term quotient by $\sim$ is a separating model: finite choices
+of representatives verify every universally quantified equation. The
+converse is equational soundness. This ordinary set construction in ZFC
+converts the model comparison above into~\eqref{eq:e713-calibration}.
+
+Consequently a fair enumerator of finite ground contextual rewrite
+certificates, stopping on a trace from $N(d,d)$ to $d$, has nonhalting
+equivalent in ZFC to $\operatorname{Con}(\mathrm{ZFC})$. Reversed equations
+may introduce variables absent from their matched side: each certificate
+must specify ground values for the union of variables on both sides,
+with shared values for repeated occurrences. This is a genuine
+computable search specification, but its parser, substitution engine,
+context traversal, enumeration, reset and blank-tape writer have not
+been compiled into a charged binary machine here.
+
+The inherited codec contains an 8-bit symbol count, three arity bits for
+each symbol, an 8-bit variable capacity, one leading bit per equation,
+a zero equation-list terminator and two ground endpoint trees. Symbols
+and local variables share a fixed-width opcode space. For $\mathcal E_{713}$,
+twelve symbols plus four variables require exactly four bits per node.
+The complete count is
+\[
+ \underbrace{8+3\cdot12+8}_{52\text{ header}}
+ +\underbrace{8+1+4\cdot159}_{645\text{ equations}}
+ +\underbrace{4\cdot4}_{16\text{ endpoints}}=713.
+\]
+The literal eight equation-node counts are
+$14,6,6,10,12,12,17,82$, totaling 159.
+The bit-character SHA-256, excluding the file's final newline, is
+\begin{center}\small\ttfamily
+3cd0c3d0fb8d8640cfef1f44e0c22d377dd930de88a94093a2ef7650e22c9e72.
+\end{center}
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Variant&Equations&Nodes&Symbols/variables&Complete bits\\\hline
+Inspected shared-stack baseline&14&215&13/3&946\\
+Complemented binder only&13&208&13/3&917\\
+Factored closure with a flag&9&166&13/3&745\\
+Factored closure without a flag&8&159&12/4&713\\\hline
+\end{tabular}
+\end{center}
+
+The complete reduction relative to the inspected 946-bit packet is 233
+bits, or about 24.63 percent. Every row includes its signature, all
+equations and both endpoints; none is merely the size of an axiom basis.
+The builder checks literal round trips, every strict-prefix truncation
+and malformed/trailing inputs. It also checks the Boolean identities and
+the attained-minimum binder lemma on explicit finite Boolean algebras.
+These are finite transcription and algebra regressions, not models of
+EPSC or tests of consistency. The accompanying independent review adds
+its own parser and direct equation checks. The final receipt records the
+exact executed scope.
+
+\subsection{Further questions specific to this frontend}
+
+The immediate engineering question is whether a ground-rewrite checker
+specialized to these eight equations can be compiled more compactly than
+the existing arithmetic proof-search engine. A useful implementation
+must charge the entire 713-bit writer and the interfaces listed above.
+The complemented-witness identity may also be applied to other class or
+formula evaluators, but each adaptation must preserve its witness-slice
+requirements and every occurrence of the old quantifier. Finally, an
+explicit primitive-recursive proof translator for raw EPSC and the
+complete equational kernel would strengthen the internal-arithmetic
+calibration beyond the ordinary ZFC proof supplied here. These questions
+remain separate from the achieved 238-state machine reduction.

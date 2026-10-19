@@ -1,0 +1,130 @@
+\section{From the literal table to the consistency statement}
+\label{sec:endpoint}
+
+We now give the precise composition proving Theorem~\ref{thm:main}.
+It is useful to separate a theorem of ordinary mathematics from the
+additional work needed to serialize that theorem in a proof assistant
+or in an arithmetized theory.
+
+\subsection{The calibrated premise is a concrete source theorem}
+
+The pinned ProveIt declaration
+\file{CalibratedRotation240.halts_iff_zfc_refutation} states
+\[
+ \RHalt(P_0,(\epsilon,R_*))
+ \leftrightarrow
+ \operatorname{BProv}(\mathrm{ZFCax\_s},[],\bot).
+\tag{C}
+\]
+Here $\operatorname{BProv}$ denotes existence of a finite first-order
+derivation in the explicitly supplied ZFC calculus. The new source-data
+check identifies $P_0$ and $R_*$ with its actual definitions. The
+earlier ordinary calibration includes the proof-program enumeration,
+its compact logical basis and native CP/GIC theory, the quotient
+interpretation of ZF, and the comparison of ZF and ZFC refutations.
+It is not merely an appeal to the informal word ``equiconsistent.\cite{calibration,upstream-settheory}''
+
+The source and binary theorem declarations read at the current checkpoint
+are retained under \file{reference/current/}. The current
+\file{BinaryRotation240.nonhalting_iff_zfc_consistency} is an external
+Lean endpoint for the original 240 table. We rely on the mathematical
+content of this development and its cited calibration, not on a claimed
+general soundness theorem for all of Lean's type theory inside ZFC.
+The underlying arguments about finite syntax, models of first-order
+theories, quotients, and definable submodels are formalizable in ZFC.
+
+The existence of a finite $\operatorname{BProv}$ derivation is equivalent
+to $\exists p\,\Proof_{\mathrm{ZFC}}(p,\bot)$ by effective encoding
+and decoding of finite proof trees. Other customary effective proof
+codings give the same consistency statement through finite syntactic
+translations. No truth predicate for the universe of all sets is
+required by this change of proof coding.
+
+\subsection{Proof of the main theorem}
+
+By the complete blank prefix, $M_{238}$ reaches a valid frame for
+$(P_1,\epsilon,R_*)$. By the unbounded runtime proof, every source step
+corresponds to a finite positive binary segment and has the exact
+claimed successor configuration. A source halt gives a finite binary
+halt. Conversely an infinite nonhalting source execution supplies
+infinitely many positive binary segments; it cannot be represented
+by a finite binary prefix or be trapped in one instruction. A premature
+binary halt is excluded by the complete segment computations. Therefore
+\[
+       \Halt(M_{238},0^{\mathbb Z})
+       \leftrightarrow \RHalt(P_1,(\epsilon,R_*)).
+\tag{R}
+\]
+
+The exact source control certificate gives
+\[
+       \RHalt(P_1,(\epsilon,R_*))
+       \leftrightarrow \RHalt(P_0,(\epsilon,R_*)).
+\tag{S}
+\]
+Composing (R), (S), and (C), followed by finite-proof coding, gives
+\[
+       \Halt(M_{238},0^{\mathbb Z})
+       \leftrightarrow \exists p\,\Proof_{\mathrm{ZFC}}(p,\bot).
+\]
+Negating both sides yields the stated consistency equivalence. The
+canonical state renumbering preserves each binary transition, so the
+same theorem holds for the canonical table in the appendix.
+
+All new side conditions are finite facts about exact tables and source
+data, proved by explicit calculations. All new unbounded arguments are
+inductions on natural numbers, finite lists, or source execution lengths.
+Together with the inherited calibration mathematics, they give the
+ordinary ZFC proof claimed here. \hfill$\square$
+
+The separately audited local route supplies a useful cross-check:
+boundary239 already has the calibrated source/runtime interface, and
+the new selector guard plus the delayed-erasure blocks prove that
+final 238 halts exactly when boundary239 does. The direct runtime route
+above does not assume that selector guard, so a mistake in its extraction
+would not silently become a premise of the direct final-table proof.
+
+\subsection{The fresh guard's exact scope}
+
+The guard replay examines the complete boundary239 startup and all 8,386
+unbounded cases for $P_1$, using 2,247,513 symbolic rules. There are 96
+symbolic visits to inherited state 169, of which 32 read a one. At every
+such positive visit the exposed one-run is
+\[
+                         G+K,\qquad23\le K\le59.
+\]
+Only the gap coefficient is nonzero; all other variable coefficients
+vanish in these run lengths. Thus the required neighboring one is
+forced for every $G\ge0$. All 32 positive visits occur at increment
+sites for logical register 4. The literal predecessor startup has 18
+visits to 169, including six that read a one, and each is checked directly.
+The four list schemas do not visit 169, and 169 has no self-loop, so no
+accelerated rule can hide an uncovered visit.
+
+\subsection{Formalization and independence distinctions}
+
+The result is an ordinary proof formalizable in ZFC, with reproducible
+executable certificates. It is not a newly compiled external Lean/Rocq
+theorem for this exact 238 table. It also does not claim that the complete
+equivalence has been proved inside PA. The existing repository contains
+separate ongoing work on arithmetized endpoints; that work is not
+silently completed by a Python certificate or by an external theorem.
+
+For a future exact-table Lean endpoint, the local route can port the
+finite block relations and the fresh guard into the existing machine
+semantics. The direct route can instantiate the existing runtime
+framework for this table and certify its exact source coverage and
+409,835-step frame. Either must refer to the delivered table's literal
+identity, not just a generic machine with the same state count.
+Both routes must also check the $P_1\leftrightarrow P_0$ source bridge
+in the kernel. The local route needs a checked boundary predecessor's
+runtime and startup; the inherited closed binary endpoint belongs to
+rotation240.
+
+If ZFC is consistent, the machine does not halt. Under the usual
+derivability conditions, a ZFC proof of this nonhalting statement would
+give a ZFC proof of its own consistency, contrary to the second
+incompleteness theorem. Bare consistency alone is not used to rule out
+a ZFC proof of halting. A stronger hypothesis, such as arithmetical
+$\Sigma_1$-soundness, supplies the familiar two-sided independence
+conclusion. No minimum possible state count is established.

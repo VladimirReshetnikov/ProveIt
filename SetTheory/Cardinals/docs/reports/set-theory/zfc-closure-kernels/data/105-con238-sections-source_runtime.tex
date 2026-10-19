@@ -1,0 +1,254 @@
+\section{Source identity and control-flow equivalence}
+\label{sec:source}
+
+The binary table is connected to an explicitly calibrated register
+program. This interface must be fixed before an instruction-level
+simulation says anything about consistency. Let $P_0$ be the exact
+rotation240 source list and $P_1$ the boundary-reassociated source list.
+Their SHA-256 digests are respectively
+\begin{quote}\small\ttfamily
+74b1e7f73cc3ffe7761e36ab2d57a26e0ba\\
+34d3ac624f2472799e6ac41d5a51d,\\[3pt]
+7fd152d1f5371d2a561d4ad1870d241683b\\
+010ce7b7a27399b95363a4537cfb6.
+\end{quote}
+The final machine uses $P_1$. Each source item is an ordered triple
+$(p,\mathrm{op},r)$: a nonempty binary path in a complete source tree,
+an instruction, and its operand, if any. Register operands lie in
+$0,\ldots,8$. The 6,455 items contain 2,596 increments, 1,931
+conditional decrements, 128 breaks, 1,799 continues, and one halt.
+The two branches of each decrement make $6,455+1,931=8,386$ guarded
+instruction cases.
+
+\subsection{The exact path conventions}
+
+Bits choose the left or right child of a binary source node. Missing
+bits are zero-padded until a leaf is reached. On reaching a leaf the
+executor retains its actual path, discarding only verified unused zero
+padding. Let $\operatorname{inc}(p)$ increment a fixed-width binary
+word, with all-ones rollover to all zeros. Let
+$\operatorname{strip}_b(p,k)$ remove the suffix through the $k$th
+occurrence of bit $b$ counted from the right, or return the empty
+word when that many occurrences are absent. The source actions are:
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Instruction&Register effect&Next path or outcome\\
+\midrule
+$\mathrm{CI}(r)$&$R_r\gets R_r+1$&$\operatorname{inc}(p)$\\
+$\mathrm{CD}(r)$, $R_r>0$&$R_r\gets R_r-1$&$\operatorname{inc}(p)$\\
+$\mathrm{CD}(r)$, $R_r=0$&none&$\operatorname{inc}(\operatorname{strip}_0(p,1))$\\
+$\mathrm{CB}(k)$&none&$\operatorname{inc}(\operatorname{strip}_0(p,k))$\\
+$\mathrm{CC}(k)$&none&$\operatorname{strip}_1(p,k)$\\
+$\mathrm{CH}$&none&halt\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Every nonhalting successor is decoded to its next leaf. For each such
+successor $s$, the certificate also checks the stronger padding equation
+\[
+             s0^\omega=p_{\operatorname{loc}(s)}0^\omega.
+\]
+This prevents a control-flow abstraction from silently throwing away a
+nonzero suffix that still exists on the tape. The initial empty pointer
+has the same padded representation as the all-zero path to the first
+leaf.
+
+\subsection{The complete inherited rotation certificate, freshly replayed}
+
+The boundary certificate has 13 stages with 25 local rotations. After
+every stage, its independent checker compares the complete ordered
+instruction word and all normalized successor ordinals. It checks 8,385
+nonhalting edges and the one halt descriptor, including both decrement
+outcomes. No numerical register valuation is sampled.
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Property&$P_0$&$P_1$\\
+\midrule
+Instruction occurrences&6,455&6,455\\
+Distinct instruction kinds including operands&23&23\\
+Distinct source subtrees&225&224\\
+Distinct internal source nodes&202&201\\
+Maximum path length&51&48\\
+Maximum consecutive-zero run&6&6\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Equal ordered instructions give equal register updates, and equal
+successor ordinals give a step-for-step register-machine bisimulation
+under the identity on register files. Thus for every register file $R$,
+\[
+ \RHalt(P_1,(\epsilon,R))\leftrightarrow
+ \RHalt(P_0,(\epsilon,R)).
+\]
+The finite source certificate has no execution-fuel bound. Its proof is
+an induction on source steps using complete finite control-graph equality.
+
+The separate source-interface checker reconstructs $P_0$ from six
+pinned Lean files. It parses all 203 stored node declarations and the
+actual lookup tree, applies the two rotation244 overrides and the one
+rotation240 override, and compares all 6,455 ordered triples. The
+203-row storage bound differs from the number of reachable source
+nodes: 202 internal nodes are reachable and one stored row is not.
+The same extraction checks the logical seed and register encoding.
+This is an exact static data check, not a Lean kernel replay.
+
+\section{The unbounded binary runtime proof}
+\label{sec:runtime}
+
+We rederive the whole source/runtime interface directly from the final
+238-state table. This provides a complete route from the new table to
+$P_1$, independently of the delayed-erasure guard. The symbolic engine
+is inherited and attributed; all its execution and induction rules are
+unchanged. Its convenience wrapper is supplied the exact new table,
+source list, and state count.
+
+\subsection{The complete representation invariant}
+
+For a natural number $v$, write
+\[
+                       B(v)=01^{v+1}.
+\]
+At an instruction boundary the dispatcher is inherited state $96$.
+Relative to its head position $h$, there is a marker $1$ at $h-1$,
+and every cell farther left is zero. To the right are a source pointer
+$p$, a zero gap of length $64-|p|+G$ for an arbitrary $G\ge0$, a
+header $1$, and the unary register blocks. There are nine primary
+blocks, followed by a nonempty finite spare list. Every cell beyond
+the represented finite word is zero.
+
+The register permutation is
+\[
+ (\operatorname{physical}(R_0),\ldots,\operatorname{physical}(R_8))
+                         =(6,2,0,4,3,7,8,5,1).
+\]
+Thus logical register $R_i$ is stored in the indicated physical block.
+The spare values are arbitrary naturals, with an arbitrary finite
+remaining tail after the first spare. They are auxiliary storage;
+every source instruction addresses one of the nine primary registers.
+The representation does not identify the spare values with additional
+logical registers used by the proof search.
+
+\subsection{Three sound rules for arbitrarily large tapes}
+
+The executor represents run lengths by affine expressions in independent
+natural parameters. Its rules are:
+
+\begin{enumerate}
+\item \textbf{Literal transition.} The displayed table supplies the write,
+move, and next state. A literal read is permitted only when the current
+symbol is determined and the represented run is known to be nonempty.
+\item \textbf{Unary-run induction.} If the current row loops in the scan
+direction, an arbitrary homogeneous run can be traversed in its exact
+symbolic length. This is induction on that natural length, including the
+empty case; it is not a bounded numerical simulation.
+\item \textbf{Finite-list induction.} A traversal of an arbitrary spare
+tail is used only after its one-block schema has been proved from the
+same literal table. Structural induction then applies that schema to
+every block of the arbitrary finite list.
+\end{enumerate}
+
+For the last rule, also write $C(v)=101^v$. The four one-block schemas
+reproved for the final table are:
+
+\begin{center}
+\begin{tabular}{rllll}
+\toprule
+Entry state&Direction&Input family&Output family&Exact duration\\
+\midrule
+73&right&$B(v)$&$B(v)$&$v+2$\\
+95&right&$B(v)$&$C(v)$&$v+2$\\
+48&left&$B(v)$&$B(v)$&$v+2$\\
+112&left&$C(v)$&$B(v)$&$v+2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+They hold with arbitrary surrounding words. For a finite value list $A$,
+the word identity
+\[
+                            C(A)1=1B(A)
+\]
+and its reversal follow by induction on the list. These identities
+account for the displaced separators during the two changing traversals.
+The checker also absorbs a finite terminal zero run into the infinite
+zero exterior. It compares normalized complete words on both sides of
+the head, not only a register projection.
+
+\subsection{Universal coverage and progress}
+
+Each increment, break, continue, and halt has one case. Each decrement
+has two: the selected register is either exactly zero or $1+X$ for an
+arbitrary natural $X$. All other primary values remain independent
+naturals. Every case also quantifies independently over $G$, the first
+spare value, and the entire finite spare tail.
+
+For each nonhalt case the calculated endpoint equals the complete target
+configuration required by the source action. For the unique halt leaf,
+the calculation reaches the literal halt outcome $254$. The frame
+remains valid: an increment preserves every existing spare and appends
+a new spare of value one; no instruction empties the spare suffix.
+A positive decrement and binary pointer rollover can enlarge the gap,
+so its nonnegativity is preserved.
+
+The exact duration is an affine form
+\[
+ c_{\mathrm{const}}+c_GG+\sum_{i=0}^{8}c_iX_i+c_SS_0+c_WW,
+\]
+where $W$ is the total width of the remaining spare tail. The coefficients
+are nonnegative, and the smallest $c_{\mathrm{const}}$ among all accepted cases is 13.
+In particular each simulated source instruction consumes finitely many
+strictly positive binary transitions for every finite input frame.
+The proof engine uses thirteen affine slots: the constant and twelve
+independent parameter slots.
+
+The complete result is
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Successful guarded cases&8,386 of 8,386\\
+Symbolic rule applications&2,255,513\\
+Distinct final-table rows directly covered&476 of 476\\
+Minimum positive duration constant&13\\
+Unbounded primary values, gap and spare tail&all covered\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The checker limit of 4,000 bounds construction of a symbolic proof for
+one case. It imposes no upper bound on register values, spare-list length,
+gap, or actual binary execution time. The successful run therefore
+establishes a universally quantified instruction theorem by the sound
+rules above. It remains an ordinary mathematical checker implemented in
+Python, rather than a proof-assistant kernel.
+
+\subsection{The exact blank initialization}
+
+Sparse-set and dense-array interpreters independently execute the final
+table from the blank tape. A separately relabeled dense execution checks
+the canonical table too. All agree after exactly 409,835 transitions:
+\[
+ q=96\quad(\text{canonical }84),\qquad h=-5,\qquad
+ \text{marker}=-6,\quad\text{header}=176.
+\]
+The physical primary values are
+$(0,0,0,3,0,0,3,0,0)$, hence the logical seed is
+\[
+                         R_*=(3,0,0,0,3,0,0,0,0).
+\]
+There are exactly 167 spare blocks, all of value one, and $G=117$ because
+the header is 181 cells from the head. The root pointer is empty. The
+receipt lists all 351 one-cell positions explicitly and specifies that
+every other tape cell is zero.
+
+The resulting whole configuration is identical to the boundary239
+configuration after 409,691 steps. Delayed erasure adds 144 transitions
+to this finite prefix, without changing the initialized data. The
+independent source-interface check identifies precisely this logical
+seed with the calibrated register enumerator. Startup and recurrent
+simulation thus meet at an exact complete configuration.

@@ -1,0 +1,14 @@
+/-
+Exact noncontiguous source excerpts for reference, not a standalone Lean module.
+Source commit: 13ec39ed43148b1807f51ed6e6528e1c84659562
+Source path: Logic/FirstOrder/Lean/FirstOrder/Completeness.lean
+Source URL: https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/Logic/FirstOrder/Lean/FirstOrder/Completeness.lean
+Inherited material; see ../../licenses/LICENSE.ProveIt and ../CALIBRATION_INTERFACE.md.
+-/
+
+-- Upstream lines 307-311, verbatim:
+/-- "`B` together with the finite list `G` proves `phi`". -/
+def BProv (B : Form → Prop) (G : List Form) (phi : Form) : Prop :=
+  ∃ Gb, (∀ x ∈ Gb, B x) ∧ Prov (Gb ++ G) phi
+
+def BCon (B : Form → Prop) (G : List Form) : Prop := ¬ BProv B G fBot

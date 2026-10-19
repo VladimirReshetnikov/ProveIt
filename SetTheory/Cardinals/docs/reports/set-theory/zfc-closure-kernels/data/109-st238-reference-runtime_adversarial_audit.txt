@@ -1,0 +1,171 @@
+Adversarial review of the composed238 mathematical endpoint
+Date: 2026-10-19
+Reviewer role: source_reduction peer agent, separate from construction/runtime execution
+
+Conclusion
+==========
+I found no defect in the inspected runtime rules, source-control bridge, or
+actual seed identification that invalidates the ordinary mathematical
+halting/consistency composition. This is a read-only mathematical code review,
+not a second complete runtime run and not a new proof-assistant verification.
+The full inherited source/calculus/theory calibration remains an explicitly
+cited dependency; its entire ancestor library was not independently re-proved.
+
+Inputs inspected
+================
+- other239/ZFC_239_State_Construction_2026-10-19/zfc239-research-20261019/
+  validation/symbolic_runtime.py
+- The neighboring independent_runtime.py and check_literal_runtime.py.
+- The current work238/runtime238.json and its exact table hash.
+- The independently authored source_agent/verify_source_control.py,
+  source_control_audit.json, and retained RegisterPath definitions.
+- work238/boot238_preliminary.json, read as a complete finite tape support.
+- The old169 guard instrumentation and the new local reduction receipts.
+
+The current direct-runtime receipt names 238 working states, 476 rows,
+8,386 guarded instruction cases, 2,255,513 symbolic proof operations,
+minimum actual segment duration 13, and inherited table SHA-256
+069942be27db9736875ea042320e51ac3b1eac7116cbe01cdce520fa6056f78c.
+Its source SHA-256 is
+7fd152d1f5371d2a561d4ad1870d241683b010ce7b7a27399b95363a4537cfb6.
+The record's engine and helper hashes identify the code reviewed here.
+This audit does not substitute these recorded counts for inspection of rules.
+
+1. Affine runs, including zero lengths
+=====================================
+Every represented run length is a 13-component affine expression. The
+normalizer requires all coefficients to be nonnegative. The nine primary
+register parameters, additional gap, first spare value, and actual spare-tail
+width therefore range over nonnegative integers without bounded testing.
+For a positive decrement the selected value is 1+x; for a zero decrement it
+is exactly zero. These two forms exhaust the possible inputs.
+
+A possibly empty run can be traversed in one symbolic operation only when
+the literal transition is a self-loop moving in the current scan direction.
+For length zero this rule denotes zero literal steps and preserves control,
+head, and tape. For length n>0 it is justified by n repeated applications of
+that same transition. No guessed bit is read in the zero-length case.
+Every other literal transition requires a positive constant term, so the
+symbolic head is known to scan a real cell for every parameter assignment.
+Subtracting one then preserves nonnegativity. This avoids the usual bug of
+executing a transition on an atom that may denote an empty word.
+
+The scan rule may write a different bit; moving a block of the written bit
+to the other side of the zipper is the exact effect of the repeated row.
+Clock and motion are increased by the run length with the correct sign.
+
+2. Zipper orientation and the whole tape
+======================================
+The left and right sequences are stored nearest-boundary first. In direction
++1 the head is the first cell on the right; in direction -1 it is the first
+cell on the left. A move continuing in the current direction transfers the
+written cell to the opposite sequence. A reversal restores the written cell
+to the same sequence and switches which side contains the head. This yields
+exactly a one-cell move in either case. The representation does not silently
+move the head twice or omit the just-written cell at a reversal.
+
+Normalizing adjacent equal-bit runs, removing an identically empty run, and
+absorbing finite zeroes into an adjacent infinite zero exterior all preserve
+the represented tape. Opaque contexts in the one-block lemmas cannot be
+read: attempting to reach one produces an error. The lemmas therefore do
+not assume any value for exterior cells. Equality of final symbolic keys is
+sufficient for equality of the entire represented relative tape, not merely
+selected register values. The independently accumulated head-motion equation
+then fixes the absolute translation of that relative tape.
+
+3. Arbitrary finite spare lists and the empty-tail case
+=====================================================
+The four list rules are derived from literal one-block computations on the
+current exact table. Each returns to the same control state and orientation,
+uses no outside cell, preserves the block value, and takes exactly v+2 steps.
+Induction on a finite list therefore gives the corresponding whole-list
+scan. The empty list takes zero steps and is included. The first spare is
+represented separately, so the entire spare suffix is nonempty while the
+remaining abstract list may be empty.
+
+Slot 12 must be interpreted as the actual encoded width
+W(A)=sum_{v in A}(v+2) of the one fixed spare-tail list A. It is not a second
+independent tape sequence. Both encodings B(v)=0 1^(v+1) and C(v)=1 0 1^v
+have width v+2, so all list conversions preserve W(A). Treating the width as
+an algebraic variable is sound: polynomial identities proved for all values
+remain true after substituting this actual width. The implementation uses
+one named abstract tail throughout; no two unrelated list widths are equated.
+
+The normalizer's C(A)1=1B(A) rule follows from C(v)1=1B(v) by list induction.
+The latter identity reduces to ordinary adjacent-run combination and does
+not invoke the abstract-list identity. Its reversal is the exact reversed
+word identity. The implementation's direction/reversal flag changes agree
+with these two orientations. The empty-list identity is also valid.
+
+4. Endpoints, halting, progress, and frame closure
+================================================
+For a nonhalting instruction, acceptance requires exact equality with the
+intended full target frame and accumulated motion -overflow. The target's
+padding is increased by delta+overflow, where delta is one precisely for a
+positive decrement. Hence the new padding remains nonnegative. An increment
+appends one auxiliary spare of value one; all previous spare values and their
+order are preserved. No instruction empties the spare suffix. These facts
+close the representation invariant for arbitrarily many source instructions.
+
+A nonhalt case cannot accept reaching halt254: its target control is 96.
+The next attempted row at254 would fail. A literal halt case deliberately
+accepts on reaching254 without requiring a specific output tape or head;
+that is sufficient for the claimed halting predicate. Neither unary
+acceleration nor list acceleration can hide an unobserved intermediate halt:
+unary control is unchanged, and each list block was literally derived and
+returns to its working-state entry.
+
+Individual empty scans may take zero steps, but every accepted instruction
+segment has a nonnegative affine duration with strictly positive constant
+term. The smallest current constant is13. Consequently infinitely many
+source steps give infinitely many actual binary steps. The symbolic loop
+caps50 and4000 bound proof search only; a failed closure is rejected. They
+do not impose a bound on natural register values, tape lengths, or actual
+runtime. Symbolic proof-operation counts must not be described as total
+running times of the machine's proof search.
+
+5. Source pointers and the actual initial seed
+=============================================
+The independent source checker pins both lists, checks complete ordered
+prefix partitions, and compares all labels and guarded successor indices.
+Its extra equality-to-left-endpoint check proves that every generated
+successor pointer agrees with its decoded leaf after infinite zero padding.
+This closes the binary runtime interface; matching instruction indices alone
+would not suffice if discarded suffix bits could be nonzero. Fixed-width
+overflow and the empty pointer are checked under the same convention.
+
+RegisterPath consumes precisely the leaf depth before executing the
+instruction, so the source projection to (leaf index, entire register
+function) is exact. Both source decoders have ample fuel and finite complete
+trees; an exhausted decoder is never confused with the literal halt leaf.
+
+I independently decoded the already-recorded238 startup tape without
+rerunning the machine. It has marker -6, head -5, header176, header distance181,
+extra gap117, and351 one-cells. Its first nine physical block values are
+(0,0,0,3,0,0,3,0,0). Applying PHY=(6,2,0,4,3,7,8,5,1) gives the logical seed
+(3,0,0,0,3,0,0,0,0). Its remaining167 blocks all have value one. There are no
+other nonzero tape cells in the recorded support. The logical registers
+above index8 may be taken to be zero because the exact source never accesses
+them; the physical spare blocks are auxiliary storage, not additional logical
+register values. Confusing these two roles would make the seed statement
+incorrect, but the supplied representation keeps them distinct.
+
+6. Guarded local reduction and remaining dependencies
+====================================================
+The additional old169/read1 right-neighbor premise is not an invariant on
+all binary tapes. Its proof must remain restricted to the actual blank prefix
+and valid runtime frames. The separate instrumentation checks it before
+literal visits, rules out169 as a self-loop/list-lemma entry or interior,
+and retains the full endpoint computations. The current boundary-source
+receipt reports minimum one-run constant23. The source clean-pointer result
+and frame closure are what extend that premise to the unbounded continuation.
+An unrestricted all-tape claim for the final guarded fold would be too strong.
+
+The final ZFC theorem also depends on the inherited calibrated source theorem,
+the precise finite-proof interpretation of BProv, and the source/calculus/ZF/
+ZFC comparisons. The inspected declarations expose those dependencies.
+The new arithmetic and list arguments are ordinary proofs formalizable in
+ZFC; they do not automatically create a new serialized Lean/Rocq proof or an
+internal PA theorem. The report should preserve that proof-status distinction.
+
+No blocking mathematical defect was identified within the reviewed scope.

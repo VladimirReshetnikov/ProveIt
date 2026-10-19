@@ -1,0 +1,54 @@
+% Short independent-review addendum. Requires amsmath and hyperref.
+\subsection{Independent review of the final 237-state fold}
+
+The further $235\mapsto98$ reduction has been independently reviewed
+against the two exact inherited-label tables and the supplied ordinary
+proof.  No mathematical flaw was found.  This step is stronger in scope
+than the earlier frame-sensitive $169\mapsto80$ reduction: its hypotheses
+follow from the old transition table alone, for every initial binary tape
+and every head position at inherited start state 95.
+
+The independent program \texttt{review\_local237.py} checks invariant
+closure by entailment of finite partial assignments to tape cells.  It
+does not enumerate the original checker's nine-cell Boolean windows and
+does not import that checker.  For each of all 476 old transition rows,
+the old state's required bits and the actual write imply every bit
+required by the destination state at the displaced head.  The initial
+constraint is vacuous at state 95.  This gives a separate finite
+certificate for the universal predecessor invariant.
+
+The only nontrivial transport obligations are old $98/0$, old $235/0$,
+and old $240/1$.  The independently recomputed new blocks take 3, 5,
+and 3 steps, respectively, and finish in states 113, 231, and 99 with
+head displacement $+1$.  Every inspected cell is fixed by the applicable
+guard, each write restores the bit already present, and no exterior cell
+is read.  Thus the entire tape is unchanged throughout the blocks.
+The block guards themselves are implied by the invariant and current
+read bit.  All 473 remaining old rows commute in one new step through
+the state map, including old $235/1$ and both caller redirections.
+
+The old invariant need not hold at new intermediate helper states.
+That distinction is respected by the proof: it is used only at old
+checkpoints.  At those checkpoints the tapes and head positions agree,
+and the new control is the image of the old control.  Positive block
+lengths and absence of internal halts give both halting directions,
+with exact prefix clock
+\[
+ \tau(t)=t+2V_{98,0}(t)+4V_{235,0}(t)+2V_{240,1}(t),
+ \qquad t\leq\tau(t)\leq5t.
+\]
+
+The audit result is
+\texttt{local237\_independent\_review.json}; it binds the old digest
+\texttt{069942be27db9736875ea042320e51ac3b1}\allowbreak
+\texttt{eac7116cbe01cdce520fa6056f78c}
+and new digest
+\texttt{a3c4407f30e2e2139af87c6a91948c5181}\allowbreak
+\texttt{34855841a28eb85b1d81bcfd026c9a}.
+The source equivalence and logical calibration are inherited from the
+preceding 238-state argument.  The new local reduction transports that
+ordinary ZFC theorem to the 237-state table.  Independently, the complete
+final-table runtime replay reports all 8,386 guards, 2,261,369 symbolic
+rules, minimum instruction duration 13, and all 474 rows.  This review
+checked the local proof and its finite premises; it did not repeat that
+entire runtime replay or claim a new proof-assistant endpoint.

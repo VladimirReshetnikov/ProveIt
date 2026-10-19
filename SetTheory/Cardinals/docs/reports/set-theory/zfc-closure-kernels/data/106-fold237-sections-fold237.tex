@@ -1,0 +1,238 @@
+\section{A new unconditional local reduction from 238 to 237 states}
+\label{sec:local237}
+
+The last state saving uses a further coordinated helper change.  Its proof is
+particularly short: three replacement blocks preserve the tape at every
+intermediate step, and all their guards follow from an inductive predecessor
+invariant.  This reduction requires no new assumption about valid register
+frames.  It therefore proves halting equivalence from the inherited start state
+on \emph{every} initial binary tape.
+
+Throughout this section, states retain their inherited numeric labels.
+Let $M$ be the 238-state input machine and $N$ the new 237-state machine.
+Both start in state 95 and halt on entering state 254.  A row written
+$wDq$ writes $w$, moves in direction $D$, and enters state $q$.
+The 238-state input has SHA256
+\begin{quote}\small\ttfamily
+069942be27db9736875ea042320e51ac3b1\\
+eac7116cbe01cdce520fa6056f78c.
+\end{quote}
+The 237-state output has inherited-label SHA256
+\begin{quote}\small\ttfamily
+a3c4407f30e2e2139af87c6a91948c5181\\
+34855841a28eb85b1d81bcfd026c9a.
+\end{quote}
+
+\subsection{Exact construction}
+
+Delete state 235 and redirect its incoming edges to state 98.  Change one row
+of state 98 and one row of the retained helper state 240.  The complete list
+of changes to retained rows is
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Row & $M$ & $N$\\
+\midrule
+$98/0$ & $0R113$ & $0L240$\\
+$139/1$ & $1R235$ & $1R98$\\
+$156/1$ & $1R235$ & $1R98$\\
+$240/1$ & $1R99$ & $1L87$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The deleted rows are $235/0=0R231$ and $235/1=1R16$.
+The retained row $98/1=1R16$ is unchanged.  Thus all 470 other retained rows
+are unchanged, and the output has exactly 474 transition rows on 237 working
+states.  The separate halt state is not included in the working-state count.
+The source program, alphabet, tape convention, initial state, and initializer
+are inherited without an additional input word or an uncharged control state.
+
+Define the map on control states by
+\[
+ \phi(q)=\begin{cases}98,&q=235,\\q,&q\ne235.\end{cases}
+\]
+It fixes state 95 and halt state 254.  For a configuration
+$C=(q,h,T)$, where $T:\mathbb Z\to\{0,1\}$, write
+$F(C)=(\phi(q),h,T)$.
+
+\subsection{The predecessor invariant}
+
+For an old configuration $(q,h,T)$, let $I(q,h,T)$ be the conjunction of
+the following implications:
+\begin{align*}
+ q=98 &\ \Longrightarrow\ T(h-1)=0,\\
+ q=139 &\ \Longrightarrow\ T(h-1)=1,\\
+ q=156 &\ \Longrightarrow\ T(h-1)=1,\\
+ q=235 &\ \Longrightarrow\ T(h-2)=T(h-1)=1,\\
+ q=240 &\ \Longrightarrow\ T(h-1)=0.
+\end{align*}
+This invariant concerns only the run of $M$.  It need not hold at new
+intermediate configurations of $N$, where the helper intentionally serves
+another role.
+
+The incoming-edge inventory of the exact old table is
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Target & Incoming rows & Immediate consequence\\
+\midrule
+98 & $86/0$, $187/0$ & Write 0 and move right\\
+139 & $117/1$ & Write 1 and move right\\
+156 & $195/1$ & Write 1 and move right\\
+235 & $139/1$, $156/1$ & Write 1 and move right\\
+240 & $135/0$, $242/0$ & Write 0 and move right\\
+\bottomrule
+\end{tabular}
+\end{center}
+The first, second, third, and fifth implications follow directly from these
+writes and moves.  On entry to 235, the new immediate-left bit is the 1 just
+written.  The old invariant at predecessor 139 or 156 supplies the new
+two-left bit, also 1.  Hence every old transition preserves $I$.
+State 95 is none of the five constrained states, so $I(95,h,T)$ holds for
+every $h$ and every binary tape $T$.  Induction on the old step count proves
+$I$ throughout every such old run.
+
+The accompanying checker independently verifies this implication over all
+nine-cell Boolean windows admitted by $I$, with arbitrary exterior tape.
+It closes 120,448 state/window cases.  The nine-cell window is more than the
+proof needs; every read and every invariant query lies within the represented
+window.  This is a finite check of an inductive statement, not a sample of
+possible executions.
+
+A second independent checker uses entailment of finite partial tape
+assignments.  It verifies invariant preservation for all 476 old transition
+rows directly, without enumerating the first checker's nine-cell windows.
+It also proves that the invariant and read bit entail every replacement
+block guard, and checks the three open-tape blocks and all 473 ordinary
+row identities.  Its complete result is retained as
+\file{evidence/local237_independent_review.json}.
+
+\subsection{Three open-tape block identities}
+
+All nontrivial old steps are accounted for by the following table.  Coordinates
+are relative to the initial head position, which is set to 0 only for notation.
+The final state in each displayed path is the synchronization endpoint.
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+Old row & Required left bits & New control path & Steps\\
+\midrule
+$98/0$ & $T(-1)=0$
+ & $98\to240\to176\to113$ & 3\\
+$235/0$ & $T(-2)=T(-1)=1$
+ & $98\to240\to87\to164\to118\to231$ & 5\\
+$240/1$ & $T(-1)=0$
+ & $240\to87\to190\to99$ & 3\\
+\bottomrule
+\end{tabular}
+\end{center}
+The guards are exactly the relevant consequences of $I$.
+For complete transparency, the read configurations of the three new blocks
+are, respectively,
+\begin{align*}
+ &(98,0,0),\ (240,-1,0),\ (176,0,0),\\
+ &(98,0,0),\ (240,-1,1),\ (87,-2,1),\
+   (164,-1,1),\ (118,0,0),\\
+ &(240,0,1),\ (87,-1,0),\ (190,0,1).
+\end{align*}
+Each triple lists state, relative head position, and bit read.  Every row
+on these paths writes back the bit it reads.  Thus the tape is unchanged
+even between synchronization points.  The final head position is $+1$ in
+each case, and the final states are 113, 231, and 99, exactly as required
+by the respective old steps.  No cell outside $[-2,0]$ is read or written.
+
+The checker proves these identities on symbolic open tapes: each unbound
+cell is an independent Boolean variable, and it rejects any attempted branch
+on an unbound cell.  The displayed guards resolve every branch.  The final
+whole-tape override map agrees exactly with that of the old step.
+
+The remaining 473 old transition rows commute in one step through $F$.
+This includes $235/1$, whose transition is identical to retained $98/1$.
+The two incoming-edge redirections simply implement $\phi$ on the target.
+Therefore every old reachable nonhalting configuration $C$ satisfies
+\[
+ N^{k(C)}(F(C))=F(M(C)),
+ \qquad
+ k(C)=
+ \begin{cases}
+ 3,&(q,T(h))=(98,0),\\
+ 5,&(q,T(h))=(235,0),\\
+ 3,&(q,T(h))=(240,1),\\
+ 1,&\text{otherwise}.
+ \end{cases}
+\]
+Here $M(C)$ denotes one transition, and $N^k$ denotes $k$ successive
+transitions.  None of the exceptional blocks has an interior halt.
+
+\subsection{Halting equivalence and exact clock relation}
+
+\paragraph{Theorem.}
+For every binary tape $T$ and every head position $h$,
+\[
+ \operatorname{Halt}(M,95,h,T)
+ \quad\Longleftrightarrow\quad
+ \operatorname{Halt}(N,95,h,T).
+\]
+The proof uses only the exact finite tables and induction.  With tapes
+represented as functions on the integers, this theorem can in particular
+be formalized in ZFC.
+
+\paragraph{Proof.}
+Let $C_t$ be the old run while it is defined, and put $\tau(0)=0$ and
+$\tau(t+1)=\tau(t)+k(C_t)$.  Induction using the preceding block identities
+gives $N^{\tau(t)}(F(C_0))=F(C_t)$.  An old halt is thus a new halt.
+If the old run is infinite, all its synchronization states are nonhalting,
+each intervening block has no interior halt, and $\tau(t)\ge t$.
+The new blocks consequently cover every finite prefix of an infinite new
+run.  The new machine cannot halt.  This proves the reverse implication
+as well.  The argument uses only positive blocks of length at most five.
+\hfill$\square$
+
+More precisely, if $a_t$, $b_t$, and $c_t$ count visits to old rows
+$98/0$, $235/0$, and $240/1$ among the first $t$ old transitions, then
+\[
+ \tau(t)=t+2a_t+4b_t+2c_t,
+ \qquad t\le\tau(t)\le5t.
+\]
+This is an exact identity for each prefix, not an asymptotic estimate.
+The supplied startup receipt instantiates it for the complete prescribed
+238-state blank initialization.  None of the three exceptional rows is
+visited in that prefix, so the new startup clock is unchanged at 409,835
+steps.  The checker compares all 409,836 synchronization checkpoints,
+including the initial and final configurations, and independently checks
+the final tape with sparse and dense emulators.  The endpoint has inherited
+state 96, head $-5$, marker $-6$, header 176, 351 one-cells, logical registers
+$(3,0,0,0,3,0,0,0,0)$, and 167 spare unary blocks of value 1.  All other tape
+cells are zero.
+
+Applying the theorem to the blank tape transfers the established 238-state
+calibration immediately:
+\[
+ \mathrm{ZFC}\ \vdash\
+ \neg\operatorname{Halt}(N,\mathrm{blank})
+ \ \longleftrightarrow\ \operatorname{Con}(\mathrm{ZFC}).
+\]
+This last displayed conclusion inherits the preceding source-calibration
+and 238-state correctness premises.  The new local argument itself has no
+frame-sensitive guard.  It supplies neither an unconditional proof of
+nonhalting nor a proof-assistant kernel theorem for the final machine.
+
+\subsection{What the new reduction adds}
+
+The 238-state combination changes the decoder contexts enough to expose a
+further sharing opportunity.  Old states 98 and 235 have the same read-1
+transition.  On read 0 their left contexts are disjoint: 0 for state 98 and
+11 for state 235.  The revised row of helper 240 distinguishes these roles
+while preserving its original behavior in its own left-0 contexts.
+The machine stores the distinction in already-present tape bits and pays
+for it by taking a few extra steps.  No marker bit, extra tape alphabet
+symbol, hidden input, or added state is introduced.
+
+Finite instruction profiles guided discovery only.  The accepted saving
+rests on the predecessor invariant and the three open-tape identities above;
+their scope is stronger than the discovery profile.  A separate complete
+unbounded instruction-runtime replay of the exact 237-state table supplies
+an additional validation route: all 8,386 guarded cases close, using
+2,261,369 symbolic rules, with minimum instruction duration 13 and all 474
+rows exercised.  The bounded search that found this edit
+does not establish a state minimum or rule out other encodings.

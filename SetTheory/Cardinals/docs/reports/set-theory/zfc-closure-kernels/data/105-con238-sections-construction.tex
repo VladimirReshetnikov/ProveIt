@@ -1,0 +1,199 @@
+\section{Result, conventions, and exact identity}
+\label{sec:result}
+
+The requested strict threshold is achieved: the delivered machine has
+\textbf{238 working states}, including all initialization, so its count
+is smaller than 239. The tape is indexed by $\mathbb Z$ and uses symbols
+$0,1$, with $0$ blank. The head begins at coordinate zero, and every cell
+initially contains zero. Every transition writes a bit and moves one cell
+left or right. There is no stationary move, external input, prewritten
+program, or uncharged initializing machine.
+
+The canonical controls are $0,1,\ldots,237$. Start is $0$, the recurrent
+dispatcher is $84$, and $238$ is a separate halt outcome with no outgoing
+transitions. Each working control has exactly two transition rows.
+A row $q\ b\ w\ D\ r$ means that state $q$, reading $b$, writes $w$,
+moves in direction $D$, and enters $r$. The full table appears in the
+appendix and in \file{machines/zfc238.tm}.
+
+\begin{theorem}[Exact 238-state consistency machine]
+\label{thm:main}
+Let $M_{238}$ be the canonical table identified below. For the ordinary
+effective finite-proof predicate of first-order ZFC,
+\begin{align*}
+ \mathrm{ZFC}&\vdash
+ \Halt(M_{238},0^{\mathbb Z})
+ \leftrightarrow \exists p\,\Proof_{\mathrm{ZFC}}(p,\bot),\\
+ \mathrm{ZFC}&\vdash
+ \neg\Halt(M_{238},0^{\mathbb Z})\leftrightarrow\Con(\mathrm{ZFC}).
+\end{align*}
+The proof is the ordinary mathematical composition developed in this
+report, using the explicitly identified inherited calibration.
+\end{theorem}
+
+The theorem does not assume that ZFC is consistent. The assertion that
+this particular machine actually runs forever follows if ZFC is
+consistent. No finite execution test is used to infer that assertion.
+
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Literal working states & 238\\
+Literal transition rows & 476\\
+Source instruction occurrences & 6,455\\
+Guarded instruction cases & 8,386\\
+Rules in the complete symbolic runtime proof & 2,255,513\\
+Least constant term in a certified instruction duration & 13\\
+Blank initialization transitions & 409,835\\
+One-cells in the complete initialized tape & 351\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The SHA-256 digest of the canonical table is
+\begin{quote}\small\ttfamily
+909f29c493e0ccc5d6a481fd7a20a9a82\\
+eb934ab2aa7df17b5ec3789255a8c08.
+\end{quote}
+The inherited-label table \file{machines/zfc238_old.tm} has digest
+\begin{quote}\small\ttfamily
+069942be27db9736875ea042320e51ac3b\\
+1eac7116cbe01cdce520fa6056f78c.
+\end{quote}
+Inherited start, dispatcher, and halt labels are $95,96,254$. The canonical
+renumbering places inherited $95$ first, then lists the other surviving
+working controls in increasing order; inherited $254$ becomes $238$.
+\file{machines/renumbering.json} records this bijection. Re-reading the
+serialized table and comparing every action verifies the renumbering
+step for step. All working states are reachable in the transition graph;
+this is not a claim that the blank execution visits every state.
+
+\subsection{The repository checkpoint and inherited work}
+
+The repository is pinned to
+\file{ce192939372ac7944fe2a0208c68a96d49fb5e3b}. Its incoming research commit
+\file{83fd3585484e5dffb37992f91f7dd4d3e70c437a} includes the two 239-state
+archives used here. The first is the boundary construction in
+\file{ZFC_239_State_Construction_2026-10-19.zip}; the second is delayed
+erasure in \file{ZFC239_Companion_2026-10-19.zip}. The independently prepared
+\file{BusyBeaver239_Research_2026-10-19.zip} corroborates the delayed-erasure
+reduction but is not needed as a runtime dependency.\cite{boundary239,companion239}
+
+Those reports used an earlier checkpoint. We compared their rotation240
+tables and source bytes against the current checkpoint and checked the
+Git blob identities of all six source/seed interface files. They agree
+exactly. At the current checkpoint, rotation240 additionally has an
+external Lean binary consistency endpoint; this progress is later than
+some historical status statements retained inside the incoming archives.
+We use the current theorem statements while preserving the older
+artifacts' provenance.\cite{proveit240,calibration}
+None of these inherited kernel checks is
+represented as a new kernel run performed here.
+
+\section{The literal construction}
+\label{sec:construction}
+
+The shortest construction starts with the accepted inherited-label
+boundary239 table. Change exactly the following three rows, then remove
+both rows of state $169$:
+
+\begin{center}
+\begin{tabular}{rrll}
+\toprule
+State & Read & Boundary239 & Final238\\
+\midrule
+147&0&$0R169$&$0R80$\\
+80&0&$0R25$&$0L106$\\
+91&1&$0L50$&$1L167$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The only incoming edge to $169$ is $147/0$, so the resulting table is
+total on its remaining working states. This is exactly the delayed-erasure
+transformation from the incoming companion, applied to a different,
+already compressed predecessor. The 239-state predecessor has digest
+\begin{quote}\small\ttfamily
+d061770f487937f9da652919c9bc9bb79\\
+bc9bf137ca41dd7a08eb5ecda8e7719.
+\end{quote}
+
+\subsection{Why the bit is kept temporarily}
+
+The row $91/1$ originally erases the read $1$ immediately. Keeping it
+briefly allows existing helpers $167$ and $151$ to distinguish two caller
+contexts. The modified row of $80$ can then serve its original role and
+the role formerly assigned to $169$. The surrounding tape contains the
+information needed to recover the correct control path. Subsequent steps
+perform the required erasure and restore the complete intended tape.
+
+This is a change to a small control implementation, with a compensating
+helper edit. It is not obtained by finding two states whose transition
+rows were already identical. The savings count all surviving helpers,
+and the proof checks both original callers of the reused control.
+
+\subsection{The other state comes from the boundary construction}
+
+Let $R$ denote rotation240 and let $S$ denote the repaired boundary240
+reference. The inherited source certificate changes the parentheses of
+the 6,455-leaf source while preserving every instruction occurrence and
+its register-level successors. The distinct source-subtree count becomes
+224 instead of 225. The compiler's altered decoder contexts require a
+charged repair, giving $S$, which still has 240 states.
+
+In $S$, old state $218$ has two roles distinguished by the immediately
+preceding tape bit. One role is transferred to $223$, and the other
+shares $179$. This operation, denoted $B$, removes $218$. Its complete
+patch relative to $S$ is:
+
+\begin{center}
+\begin{tabular}{rrll}
+\toprule
+State&Read&$S$&$B(S)$\\
+\midrule
+179&1&$1R105$&$1L215$\\
+187&1&$1R218$&$1R179$\\
+220&1&$1R218$&$1R179$\\
+223&0&$0R16$&$0R23$\\
+223&1&$1R99$&$1R70$\\
+237&0&$0R218$&$0R223$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Both rows of $218$ are deleted. Write $D$ for delayed erasure. The exact
+table identity checked in this report is
+\[
+                 M_{238}^{\mathrm{old}}=D(B(S))=B(D(S)),
+ \qquad M_{238}=\operatorname{renumber}(M_{238}^{\mathrm{old}}).
+\]
+The two orders form the following square of complete literal tables:
+
+\begin{center}
+\begin{tikzpicture}[>=Latex,node distance=1.3cm and 3.3cm,
+ box/.style={draw=navy,rounded corners=2pt,fill=pale,align=center,
+ minimum width=3.4cm,minimum height=0.95cm,font=\small}]
+\node[box] (s) {$S$\\repaired boundary240};
+\node[box,right=of s] (b) {$B(S)$\\boundary239};
+\node[box,below=of s] (d) {$D(S)$\\delayed boundary239};
+\node[box,right=of d] (n) {$M_{238}^{\mathrm{old}}$\\238 states};
+\draw[->] (s)--node[above,font=\small] {delete 218} (b);
+\draw[->] (s)--node[left,font=\small] {delete 169} (d);
+\draw[->] (b)--node[right,font=\small] {delete 169} (n);
+\draw[->] (d)--node[below,font=\small] {delete 218} (n);
+\end{tikzpicture}
+\end{center}
+
+Here $D(S)$ is a distinct intermediate table; it is not the companion's
+$D(R)$. Confusing these two 239-state tables would lose the source change.
+The actual final machine retains the boundary source, not rotation240's
+original paths and not the supplementary depth-39 source studied later.
+
+Disjoint changed rows alone would not prove compatibility. A changed
+helper can affect another block even without sharing its entry state,
+and a source transformation can invalidate a tape guard. The independent
+audit therefore checks the complete block traces and incoming ports,
+and the source-sensitive guard is rederived on $B(S)$. There are twelve
+distinct local identities, replayed on both corresponding edges, giving
+24 comparisons. An additional direct proof checks the final 238 runtime
+without using the local-fold guard as a premise.

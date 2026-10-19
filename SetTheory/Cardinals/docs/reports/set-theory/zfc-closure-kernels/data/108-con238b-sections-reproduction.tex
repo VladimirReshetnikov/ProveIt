@@ -1,0 +1,154 @@
+\section{Reproduction and evidence}
+\label{sec:reproduce}
+
+\subsection{The delivered archive}
+
+The package is self-contained for all new executable checks.
+Python 3.10 or later and its standard library suffice.
+No network access, compiler installation, numerical solver,
+or proof-assistant dependency build is required for the
+replay. Run with assertions enabled; \term{-O},
+\term{-OO}, and \term{PYTHONOPTIMIZE} are unsupported.
+
+\begin{center}
+\small
+\begin{tabular}{@{}L{0.47\textwidth}L{0.45\textwidth}@{}}
+\toprule
+Artifact & Purpose\\
+\midrule
+\file{report.pdf}, \file{report.tex}, \file{sections/}
+& Article, proofs, and complete printed table\\
+\file{machines/zfc_combined238.tm}
+& Canonical 476-row machine\\
+\file{machines/zfc_combined238_old.tm}
+& Same machine with inherited labels\\
+\file{machines/renumbering.json}
+& Complete action-preserving bijection\\
+\file{machines/sites_logical.json}
+& Exact 6,455-leaf source\\
+\file{verification/}
+& Constructor, runtime driver, guard and local verifiers\\
+\file{reference/source/}
+& Source certificate, pinned Lean data, and seed interface\\
+\file{evidence/packaged_replay/}
+& Fresh successful complete replay and per-case records\\
+\file{PROVENANCE.json}, \file{SHA256SUMS}
+& Source pins and integrity manifest\\
+\file{ATTRIBUTION.md}, \file{licenses/}
+& Original credits, licenses, and inherited notices\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Some included files preserve historical text and filenames,
+including the unchanged symbolic engine and earlier reference
+notes. They retain their original attribution. The main
+driver selects the correct 238-state wrappers, table,
+and changed source. Historical receipts are distinguished
+from the fresh runs.
+
+\subsection{Commands}
+
+From the extracted package root, the normal full final-table
+replay is:
+\begin{verbatim}
+python3 -B reproduce.py --output replay
+\end{verbatim}
+It checks construction, exact startup, inherited source
+certificate, static Lean source/seed identity, independent
+dyadic source/frame identities, local fold, and all final-table
+unbounded instruction cases.
+
+To replay the independent predecessor-guard route as well:
+\begin{verbatim}
+python3 -B reproduce.py --with-guard --output replay-both
+\end{verbatim}
+This complete two-route replay passed in the preparation
+environment in approximately 467 seconds. The final-table
+unbounded pass took approximately 183 seconds, and the
+predecessor-guard pass approximately 266 seconds. These
+are reproducibility observations about this environment,
+not asymptotic complexity claims.
+
+For finite construction/source/local/startup checks only:
+\begin{verbatim}
+python3 -B reproduce.py --quick --output replay-quick
+\end{verbatim}
+The output directory must be new or empty. The driver
+writes fresh receipts there and preserves the delivered
+evidence. It checks each subprocess exit code and the
+specific JSON success status. A zero exit code alone is
+not accepted as proof completion.
+
+The expected final statuses are
+\term{FULL\_238\_MATHEMATICAL\_REPLAY\_PASS}
+or, for the explicitly abbreviated run,
+\term{QUICK\_238\_REPLAY\_PASS}.
+The quick status does not claim to have rerun either
+unbounded proof.
+
+Build the article from its editable source using:
+\begin{verbatim}
+mkdir -p build-pdf
+pdflatex -halt-on-error -output-directory=build-pdf report.tex
+pdflatex -halt-on-error -output-directory=build-pdf report.tex
+\end{verbatim}
+All section files and the generated table source are
+included. The delivered PDF was compiled and visually
+inspected.
+
+\subsection{Fresh acceptance ledger}
+
+\begin{center}
+\small
+\begin{tabular}{@{}L{0.49\textwidth}L{0.43\textwidth}@{}}
+\toprule
+Obligation & Fresh result\\
+\midrule
+Literal table and canonical bijection & 238 states; 476 rows; exact bytes\\
+Independent source extraction & All 6,455 ordered triples and the seed\\
+Source transformation & 13 stages; 25 rotations; 8,385 edges plus halt per stage\\
+Independent frame joins & 8,385 padded-word equalities per source\\
+Final-table runtime & 8,386 guards; 2,255,513 rules; all 476 rows\\
+Minimum final instruction duration & 13 literal transitions\\
+Independent local fold & Four symbolic paths; 474 commuting predecessor rows\\
+Predecessor guard runtime & 8,386 guards; 2,247,513 rules; all 478 rows\\
+State-169/read-one guard & 32 symbolic visits; run $g+K$, $23\le K\le59$\\
+Startup, sparse/dense/canonical & 409,835 transitions; identical complete tape\\
+Relative startup & 409,692 complete mapped checkpoints\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The two full runtime routes share the attributed affine/list
+execution engine. Their independence is therefore qualified:
+the local finite-footprint verifier uses a separate symbolic
+tape implementation, and the source interval checker uses a
+different decoder and rotation representation; the unbounded
+list reasoning itself is not duplicated in a second
+proof-assistant kernel.
+
+The trust boundary consists of the inspected finite
+verification programs, the soundness arguments for their
+rules, ordinary arithmetic/list reasoning, and the inherited
+logical calibration. The checksums preserve identity rather
+than establish mathematical truth by themselves.
+
+\subsection{Suggested incorporation}
+
+The archive can be retained as a new \file{docs/incoming/}
+research package. Its full extracted contents can also form
+a directory such as
+\file{Computability/BusyBeaver/Research/ZFC/candidate-combined238/}.
+Preserve its relative structure so that the replay commands
+remain portable. The existing 240-state and incoming
+239-state artifacts provide provenance and should retain
+their original identities.
+
+For a future formal endpoint, the most direct implementation
+route is to instantiate the existing binary framework with
+the new literal table, exact startup, source tree, and
+coverage certificate. The alternative is to formalize
+Theorem~\ref{thm:fold} and its next-one guard, then compose
+with a checked Boundary239 endpoint. Neither route requires
+redesigning the set-theoretic calibration.

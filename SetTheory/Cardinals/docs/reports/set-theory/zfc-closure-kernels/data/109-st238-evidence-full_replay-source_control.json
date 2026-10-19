@@ -1,0 +1,22 @@
+{
+  "status": "PASS_INDEPENDENT_SOURCE_CONTROL_EQUALITY",
+  "baseline_sha256": "74b1e7f73cc3ffe7761e36ab2d57a26e0ba34d3ac624f2472799e6ac41d5a51d",
+  "candidate_sha256": "7fd152d1f5371d2a561d4ad1870d241683b010ce7b7a27399b95363a4537cfb6",
+  "checker_sha256": "7afcc2511fceeabb1796b668cf6621d3a84230091843ba530030fac8f008a7c4",
+  "leaves": 6455,
+  "exact_input_pins_checked": true,
+  "assertions_enabled": true,
+  "guarded_successors": 8385,
+  "halt_leaves": 1,
+  "baseline_maximum_depth": 51,
+  "candidate_maximum_depth": 48,
+  "changed_codewords": 6250,
+  "all_instruction_descriptors_identical": true,
+  "all_guarded_successor_indices_identical": true,
+  "complete_prefix_codes_verified_by_dyadic_interval_partition": true,
+  "every_generated_successor_equals_decoded_leaf_after_infinite_zero_padding": true,
+  "initial_instruction_index": 0,
+  "common_control_graph_sha256": "d84aaa339de3efa9a836285427650a084ee0011414da12dca8002f30a52fd344",
+  "proof": "Project every RegisterPath state to (decoded leaf index, unchanged register file). Consumption makes the next decoded index depend only on the current leaf and its decrement guard. All labels, updates, halt flags, and successor indices coincide; induction on source steps gives exact instruction-index bisimulation for every natural register vector. Empty pointers both decode to index zero.",
+  "limitations": "Ordinary finite certificate; no binary-TM runtime claim and no newly executed Lean/Rocq proof."
+}

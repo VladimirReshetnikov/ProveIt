@@ -1,0 +1,30 @@
+\section{Reproduction and evidence boundaries}
+Use Python 3.10 or later with assertions enabled and no third-party packages. Do not set \file{PYTHONOPTIMIZE} or pass \file{-O} or \file{-OO}. From the extracted archive root:
+\begin{lstlisting}
+python3 -B reproduce.py --output /tmp/zfc238-full
+\end{lstlisting}
+The output directory must be new or empty. The driver preserves archived evidence, works in a temporary copy, and checks explicit receipt statuses and identities. The default replays source identity, the full rotation certificate, exact construction and renumbering, independent startup, the six local transfer identities, and the complete final unbounded runtime. It also replays the separate boundary selector guard. These two full symbolic checks each took a few minutes in the preparation environment.
+
+A short check intentionally omitting both full symbolic replays is
+\begin{lstlisting}
+python3 -B reproduce.py --quick --output /tmp/zfc238-quick
+\end{lstlisting}
+Quick success is not reported as full mathematical replay. Archived JSON receipts document previously completed runs; the driver reruns the proof-construction programs instead of trusting saved status strings. The manifest verifies bytes, not mathematical truth and not author authenticity.
+
+The smallest binary-only reproduction is the self-contained directory \file{combine/candidate238/}. Its \file{reproduce.py} reconstructs the exact table and finite startup, then runs the entire direct binary interface proof. That convenient entry point does not itself re-establish the separately included source equivalence and inherited set-theoretic calibration.
+
+The principal new evidence is:
+\begin{itemize}
+\item \file{combine/candidate238/construction.json}, \file{blank_prefix.json}, and \file{universal_runtime.json} with complete case data;
+\item \file{boundary_audit/independent_boundary_audit.json} and \file{source_interface_replay.json};
+\item \file{erasure_audit/local_transfer.json} and \file{boundary_guard.json};
+\item \file{verification/independent_blank238.json} and the final assembled-package replay record.
+\end{itemize}
+The two original reference directories preserve their own historical scope, documentation, licenses and reproduction commands. They are dependency/reference archives, not competing final candidates. Only \file{machines/zfc238.tm} is the canonical table delivered as the new result.
+
+With a standard TeX Live installation, rebuild the report by running
+\begin{lstlisting}
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{lstlisting}
+No network access, Lean download or dependency rebuild is needed for the Python replay. The packet does not reproduce the complete ancestor Lean library. Its trust boundary is stated in the calibration section and original source records.
