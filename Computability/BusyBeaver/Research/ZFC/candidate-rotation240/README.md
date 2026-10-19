@@ -85,6 +85,15 @@ probes and 13 typed callers pass with zero warnings. Complete binary decoder
 coverage and consistency composition still need proofs for the changed table
 and source.
 
+The [register-source consistency calibration](../calibrated_rotation240.md)
+passes seven probes and nine callers: from the logical seed, register halting
+is equivalent to ZF and ZFC refutation. This remains to be composed with the
+complete binary decoder coverage.
+
+The [coverage proof in progress](../rotation240_coverage.md) has checked
+68 of 530 subtrees, containing 1,038 guarded cases. The complete decoder
+coverage theorem remains open.
+
 ## Exact files and attribution
 
 | File | Meaning |

@@ -2,9 +2,22 @@
 
 Research inventory begun 16 October 2026 against
 `7b1e56dbc59f746695a7fb375546422f91de3a96`, updated with the explicitly linked
-Lean checks below. The full PA equivalence is still open. The represented
-checker and actual machine-run evaluator have PA totality theorems. The
-forward validator consistency implication is now also proved in IΣ₁ and PA.
+Lean checks below. The PA equivalence for the exact 240-state binary machine
+remains open. Upstream commit `e1ff9636d5` now supplies the complete arithmetic
+[validator comparison](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorConsistencyEquivalence.lean):
+IΣ₂, hence PA, proves `Con(ZF) ↔ validatorConsistencySentence`
+and `Con(ZFC) ↔ validatorConsistencySentence`, where the fixed sentence says
+that no internal code has `ArithmeticHistory254.value = 2`. The represented
+checker and machine-run evaluator already have PA totality theorems.
+
+This update records source review of the upstream R2/R3 composition. Its commit
+reports a successful facade build and a 15-probe standard-axiom audit; this
+review did not locate a dedicated fresh R2/equivalence verification record in
+the maintained results and did not run Lean. Existing linked forward-validator
+records retain their separate actual-check status.
+The [source review](results/upstream-r2-review.json) and
+[preserved review history](results/upstream-r2-review-history.json.gz) record
+the scope and the available evidence.
 
 The request and active goal require an equivalence provable in **PA**.
 A Lean theorem comparing halting and `BProv` is an ordinary metatheorem until
@@ -74,16 +87,18 @@ The current arithmetic checkpoints are:
   disjoint fresh streams. [Concrete stream selection](../../../../Logic/Interpretability/ZFCinPA/validator_environment_streams254.md)
   now compares encodings at any two free-safe starts, including overlapping
   starts `s` and `s+2`, through a represented opposite-parity intermediate.
-  Source-proof translation remains open and can use the configurable encoder
-  directly, since its falsity code is already `1`; comparison with the earlier
-  fixed encoder is optional. Arbitrary accepted proofs are not assumed closed
-  under variable renaming.
+  The upstream `R2Main`/`R2Native` source now completes internal source-proof
+  translation with this configurable encoder, whose falsity code is `1`.
+  It uses Π₂ induction in IΣ₂ and discharges the native-axiom callback; no
+  comparison with the earlier fixed encoder is required. Arbitrary accepted
+  proofs are not assumed closed under variable renaming.
   [Native GIC matrix slots](../../../../Logic/Interpretability/ZFCinPA/validator_native_gic_slots254.md)
   now identify both internal substitution orders and derive padded-matrix
   vacancy from odd labels under IΣ₂. The literal padded GIC instance passed
-  eight probes and ten typed callers with zero warnings. Complete native-body
-  encoding and universal closure remain separate; the unchanged logical
-  source makes these results reusable for the 241-state candidate.
+  eight probes and ten typed callers with zero warnings. Upstream `R2Gic` and
+  `R2Ax` now supply the complete encoded native body and arbitrary internal
+  universal closure. These arithmetic results concern the numerical validator;
+  their connection to the exact 240-state binary machine remains separate.
 * [Both actual reads](arithmetic_control_read_template254.md) are checked on
   every internal register file with its scratch fields zero. They reach the
   actual dispatch control 38, retain the whole register file in their
@@ -130,24 +145,40 @@ The current arithmetic checkpoints are:
   probes and eleven callers, preserving the original cache inside the GEN
   result while updating cache and PL afterward. The remaining AX bundle is
   still open.
+  Later checked contracts extend this frontier: the
+  [third implication composition](arithmetic_control_ax_third_imp254.md)
+  reaches control 354 from 41. The subsequent
+  [cache push](arithmetic_control_ax_next_cache_push254.md),
+  [AC push](arithmetic_control_ax_next_ac_push254.md), and constructors at
+  [406](arithmetic_control_ax_next_constructor254.md),
+  [433](arithmetic_control_ax_constructor433254.md) and
+  [460](arithmetic_control_ax_constructor460254.md) reach 487 in successive
+  whole-file contracts. These six existing units passed 28 probes and 38
+  callers with zero warnings. Their combined 41→487 contract and the
+  subsequent AX operations still require their own checks.
 
-The remaining major steps are the reverse internal ZF-to-validator proof
-translation, the complete interpreter-to-Enum connection, and the unbounded
-internal register/binary simulation. The internal L-specific schema proofs
-now close the Choice transport. The forward validator sentence alone does
-not yet imply the requested PA theorem about the literal binary machine.
+The remaining major steps are the complete interpreter-to-Enum connection
+and the unbounded internal register/binary simulation for the exact 240-state
+machine. The upstream R2/R3 source closes the reverse internal ZF-to-validator
+translation in IΣ₂, and the internal L-schema theorem supplies Choice transport.
+The validator biconditionals do not by themselves identify the literal binary
+run with the arithmetic scheduler.
 
-The active binary target is the [combined243 machine](candidate-combined243/README.md).
-Its checked equivalence to Rotation244, the
-[calibrated rotation source](source_rotation244.md) and the
-[407,931-step rotation bootstrap](rotation244_bootstrap.md) supply separate
-external components. The [rotation runtime contracts](rotation244_runtime.md)
-and [exact source tree/startup frame](rotation244_tree_frame.md) are checked.
-Complete decoder-site coverage and final binary composition remain pending.
-Compensated244 is still the smallest
-closed external Lean endpoint. The arithmetic table and startup results below
-concern the earlier 246-state machine. Transferring those results to the active
-binary target and proving the all-internal comparison remain obligations.
+The active binary target is the [rotation240 machine](candidate-rotation240/README.md).
+Its exact table/fast lookup and [runtime contracts](rotation240_runtime.md) have
+actual Lean checks. The [409,691-step blank bootstrap](rotation240_bootstrap.md)
+and [full startup frame](rotation240_tree_frame.md) now have their own successful
+checks. The [source consistency calibration](calibrated_rotation240.md) also
+passes seven probes and nine typed callers. Complete decoder-site coverage
+and final binary composition remain separate until their actual checks finish.
+Compensated244 remains the smallest closed external Lean endpoint at this
+checkpoint. Earlier combined243/rotation244 results are retained as provenance.
+The [exact 240-state arithmetic lookup](arithmetic_machine_graph_rotation240.md)
+now passes eight probes and eight typed callers, defining all 480 actions in
+every IOpen model. The arithmetic step, iteration and startup results below
+still concern the earlier 246-state machine. Specializing those results to
+the active binary target and proving the all-internal comparison remain
+obligations.
 The [fixed arithmetic lookup for the 246-state table](arithmetic_machine_graph_prefix246.md)
 is now checked in every IOpen model and agrees with all 492 typed transitions.
 The [exact step graph](arithmetic_machine_step_prefix246.md) now defines the
@@ -177,9 +208,10 @@ working fields `TW=WS=H=0,D=3`, in every IΣ1 model. Both proof-code and
 runtime witnesses range over all internal values. The represented refutation
 word has raw candidate at least 3, and the initial working state is certified
 even with `D=3`. The resulting fixed sentence has IΣ1 and PA proofs. This
-closes the arithmetic scheduler's seed adjustment; its identification with
-the exact246 binary run and the reverse ZF-to-validator proof translation
-remain open.
+closes the arithmetic scheduler's seed adjustment. Its identification with
+the actual register interpreter and the active exact240 binary run remains
+open; the upstream R2/R3 source now supplies the separate reverse validator
+comparison.
 
 Source review of the merged arithmetic work through `70f2e7a57b` identifies
 three further reusable pieces in `Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/`:
@@ -742,7 +774,13 @@ requested; the original user request explicitly requires PA, and remains the
 target here. Avoiding arithmetic inside a future verifier does not remove the
 arithmetic proof obligation relating its finite traces to Con(ZFC).
 
-## Proposed decomposition of the reverse ZF-to-validator translation
+## Historical decomposition of the reverse ZF-to-validator translation
+
+The proposal below records the earlier obligations and its intended IΣ₁
+bound. The later `R2Native` and `ValidatorConsistencyEquivalence` source
+discharges the comparison in IΣ₂, hence PA; the R3 interpretation remains in
+IΣ₁. Keep the original proposal as chronology, rather than reading its open
+items or IΣ₁ target as the current frontier.
 
 *Proposal (Claude lane, 2026-10-17), with the R1 theory-construction sources
 supplied in `f368d4ff11` and the generic R3 interpretation core supplied in

@@ -1,0 +1,1872 @@
+{
+  "status": "SOURCE_AND_RECORDED_PROVIDER_INVENTORY_ONLY",
+  "sources": {
+    "R2Ctx": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/R2Ctx.lean",
+      "sha256": "da11c9b2254150a45d6709dd88202b9d58cac55ed07f3b1f5030eeeddd9c7b95",
+      "lines": 354,
+      "imports": [
+        "ZFCinPA.ValidatorEnvironmentLabels254",
+        "ZFCinPA.ValidatorQuantifierCore254"
+      ]
+    },
+    "R2Neg": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/R2Neg.lean",
+      "sha256": "efa03f341e28d45a1fafd8e87d5c1236a06cdae575db2c6604e200f42be9a538",
+      "lines": 208,
+      "imports": [
+        "ZFCinPA.R2Ctx"
+      ]
+    },
+    "R2Quant": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/R2Quant.lean",
+      "sha256": "1220da7c83aa7d86de81805fd26035ffee7bf9c8cc6eef08c98e30a6b6c7e66b",
+      "lines": 299,
+      "imports": [
+        "ZFCinPA.R2Neg",
+        "ZFCinPA.ValidatorEnvironmentAlpha254",
+        "ZFCinPA.ValidatorEnvironmentStreams254",
+        "ZFCinPA.ValidatorEnvironmentOpening254",
+        "ZFCinPA.ValidatorEnvironmentInstantiation254",
+        "ZFCinPA.ValidatorNativeGicSlots254"
+      ]
+    },
+    "R2Main": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/R2Main.lean",
+      "sha256": "c65a0a35e06693bae8b42ac1688af7bc194f9afa7f593b05535fec1cb5b87f00",
+      "lines": 246,
+      "imports": [
+        "ZFCinPA.R2Quant"
+      ]
+    },
+    "R2Gic": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/R2Gic.lean",
+      "sha256": "9c61e6948b16e56ea7a3f6e3c3e18b4af3e55227734e30966b3c525e264cff7d",
+      "lines": 486,
+      "imports": [
+        "ZFCinPA.R2Main",
+        "ZFCinPA.ValidatorNativeGicCongruence254"
+      ]
+    },
+    "R2Ax": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/R2Ax.lean",
+      "sha256": "b0e7c8a3975f63569a0240defb13c620bdcfe079c1bdfdde58f88e4ef71a2f3f",
+      "lines": 115,
+      "imports": [
+        "ZFCinPA.R2Gic",
+        "ZFCinPA.NativePeel",
+        "ZFCinPA.NativeTheory"
+      ]
+    },
+    "R2Fixed": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/R2Fixed.lean",
+      "sha256": "0766268b41c2ac1975291f29b9a9cba985fcbcd574be4e8a1e5f669b32e5bae8",
+      "lines": 417,
+      "imports": [
+        "ZFCinPA.R2Ax"
+      ]
+    },
+    "R2Native": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/R2Native.lean",
+      "sha256": "5dede1cf75df4ae1d9309cd24f6febe3573557fadbd037aeada97988260f68c4",
+      "lines": 110,
+      "imports": [
+        "ZFCinPA.R2Fixed",
+        "ZFCinPA.NativeSchema"
+      ]
+    },
+    "NativeSchema": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/NativeSchema.lean",
+      "sha256": "a707e5ca406d9c45c1ce436bdfaf39c36c3511bec4317dac0bc380b4656c108d",
+      "lines": 279,
+      "imports": [
+        "ZFCinPA.NativeSchemaSem",
+        "ZFCinPA.NativePeel",
+        "ZFCinPA.NativeFixed"
+      ]
+    },
+    "NativeSchemaSem": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/NativeSchemaSem.lean",
+      "sha256": "0f34ca50caee85a523cf0012afd4193bc715bbaf48259fd8062cc699611801c6",
+      "lines": 419,
+      "imports": [
+        "ZFCinPA.NTInterp"
+      ]
+    },
+    "NativePeel": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/NativePeel.lean",
+      "sha256": "113125cdd06d685a05011f18d93bd6e8b0a0d77316b429fe1a4abebf2fa76940",
+      "lines": 173,
+      "imports": [
+        "ZFCinPA.InternalInterpretation",
+        "ZFCinPA.ModelCodedOpenSchemaAxioms"
+      ]
+    },
+    "NativeFixed": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/NativeFixed.lean",
+      "sha256": "2864c6abb0bab67f6b25132218df142dafb35771bb868869aaf7629c5a30d9e4",
+      "lines": 214,
+      "imports": [
+        "ZFCinPA.NativeInterp"
+      ]
+    },
+    "NativeTheory": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/NativeTheory.lean",
+      "sha256": "6e6c14f76e0bdb88b31128706727b679f9e458925a4e3b182c200cdda921281d",
+      "lines": 121,
+      "imports": [
+        "ZFCinPA.NativeGicDelta1",
+        "ZFCinPA.ZFDelta1",
+        "ZFCinPA.Translation",
+        "BusyBeaver.ZFC.ProfileModel"
+      ]
+    },
+    "NTInterp": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/NTInterp.lean",
+      "sha256": "8b3c6a27b6a46b80f22730a89556b6210df82aa6ba543b7eedf078fc235044f6",
+      "lines": 311,
+      "imports": [
+        "ZFCinPA.NTemplate",
+        "ZFCinPA.NativeInterp"
+      ]
+    },
+    "ValidatorConsistencyEquivalence": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorConsistencyEquivalence.lean",
+      "sha256": "e0502e78a7c1a4a8c6d3f242279ae557ce91678dfd9cb52aa628bf38c0fbd242",
+      "lines": 75,
+      "imports": [
+        "ZFCinPA.R2Native",
+        "ZFCinPA.LSchema",
+        "ZFCinPA.ValidatorConsistencyForward254"
+      ]
+    },
+    "R2Audit": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/R2Audit.lean",
+      "sha256": "d2b06b97323ddcef239c34f8310d3bb3bf22321258f1140e476a4d2b14a40ed3",
+      "lines": 22,
+      "imports": [
+        "ZFCinPA.ValidatorConsistencyEquivalence"
+      ]
+    },
+    "ValidatorConsistencyForward254": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorConsistencyForward254.lean",
+      "sha256": "ed61e36f97d574bc0a381c849f7f89008d9b5e5545f99fc7bf520838b60a49f9",
+      "lines": 81,
+      "imports": [
+        "ZFCinPA.ModelCodedDecoderAccepted254",
+        "Foundation.FirstOrder.Incompleteness.Consistency"
+      ]
+    },
+    "LSchema": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/LSchema.lean",
+      "sha256": "c68dbfb6e9b152ab71654de3a2b2cf3559ebe1f8e616edabd12e24209ea568f2",
+      "lines": 128,
+      "imports": [
+        "ZFCinPA.LReplBase"
+      ]
+    }
+  },
+  "maintained_verification_records_searched": [
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/buffered-template-proof-compiler-verification.json",
+      "sha256": "c33cd4f78d4fbbc524635ad9579a26fa66df03ff0827a86f8697a5008681975e"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/collection-template254-verification.json",
+      "sha256": "8a85acbdd23dd9633f24acc42075c883fff3a40841e78ef3cc1d915b073d7557"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/compiled-collection254-verification.json",
+      "sha256": "23a19b6390ce8b48b92924e607f0bbdd07d14f08889892e4ba8466d95031487b"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/constructible-interpretation-verification.json",
+      "sha256": "c6ed6c6bd40da28a3460778686f32cd969fd5695ce89187a72efe19e23c2fadd"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-bind-free-verification.json",
+      "sha256": "c001333711a8ec93529f880e5586822e5c7e0bb142d699dc7e188aa260b65550"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-bind-one-swap-verification.json",
+      "sha256": "1a14376caf23c71813696639dbec7f0dbc1eebf5bba4127dce2285c80f444333"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-bind-one-verification.json",
+      "sha256": "ba5f861549f2a15126f53eec9ea8b083ebb6faaf22ada9c08d9aa3b4150d1ed3"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-bind-two-slots-verification.json",
+      "sha256": "34ba624f5a8b590f9168d9c8a93e34e0a162a81643d5581813fe017e0e94c0de"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-binder-absorption-verification.json",
+      "sha256": "1c9bd40d34475912fee45b0e1665adce144d983df3aff78fe952cbb06d8bbac5"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-closed-schema-axioms-verification.json",
+      "sha256": "a92f56e51ae587c6f92b2adb4ad71b697c87a2f8d920c7b6facaaf896ebd9f45"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-accepted254-verification.json",
+      "sha256": "9d6326a40f7b39bb25533c69520c129b8b8342fdafbd12bbbf439d0b8aaf4407"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-atomic-vacuity254-verification.json",
+      "sha256": "c8db05327dc3841e76162ab89aa09cab4a923dc56b0f9231cf8473bd83a4bdbe"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-bundle254-verification.json",
+      "sha256": "5083970e48f266eb2b6d4129eb904cacaab393d0f1544f29a95e6847e756307c"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-circuits254-verification.json",
+      "sha256": "60dca2bc4655490e462548e0eb66e5aeaa3664f0ec6c3b099025286a855c5c8a"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-collection-normalization254-verification.json",
+      "sha256": "7caade6d321f2997f5fc746e7435ca9cfc59fb5c4106db61330df308587614ff"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-collection254-verification.json",
+      "sha256": "2a235367a454a23c709bce36e924c11d7a23e55394d7aef6eb314b17143dfc4e"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-constructors254-verification.json",
+      "sha256": "e58ee25d0df49d9d944562df49e04073c0d31a6f9a32edfb654af134e6799ad9"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-container254-verification.json",
+      "sha256": "0886042fd6f1869923560d869daa7c62a928c033b2657dfe5558ad8c969d385c"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-equality254-verification.json",
+      "sha256": "201fe7054da8ee722775f64d9e5e1d1f8ca8ea0411b53e91f9c49e6c0e8d8893"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-falsity254-verification.json",
+      "sha256": "148f922e9caa4dc42ae49b90e2f62f1e4c6734ffa01dc9c887802ede4bae36cb"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-freshness254-verification.json",
+      "sha256": "61fbed2347cdb94d1ad033b60e47c5d38e5911e2a858ea3380d08e30a6887d92"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-generalization254-verification.json",
+      "sha256": "f170c917355398a60a9977c17a8d86010732e56829ad7acfcf359a30f69a2bdb"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-lukasiewicz254-verification.json",
+      "sha256": "29b44c710d4ebc612d543fa486ded86da97616bbce5ab5f87f029487d217f3e9"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-propositional254-verification.json",
+      "sha256": "626b3fdbfdbeadbccbf676d3d0acf9737ec8fbc196df2032e300a6a0fd72d622"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-rho1-254-verification.json",
+      "sha256": "b59fab7eb413ad13f5e5264a5bac1d4b27b0bd280fc9588b4333e6fb81c6e7f1"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-rho2-254-verification.json",
+      "sha256": "05eab26792e3ee879009a48e329a3b16369c2310f378d1bc483e0957e5eb56a7"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-rho4-254-verification.json",
+      "sha256": "0dede09ee2cb35da5a71981a37308fab099aeee2b2323c2534f1560bc5a0e223"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-rho6-254-verification.json",
+      "sha256": "a1359e706ae6053a3d8dc1930d0aaca92573d7a5ae3149801a74ec6d6e5be624"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder254-verification.json",
+      "sha256": "77a19cc0cc6486e5837f3cc9a6873324f5f3a7d3ba850e0923ed3366d8f800a9"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-free-renaming-verification.json",
+      "sha256": "1f3a5b8b6eba805fe6a8b49e1c4ad4faea56f709e9798bff874ea75740415183"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-named-binder-laws-verification.json",
+      "sha256": "02fb1ba11ddede650035672cc44317f04bbf2be71de0b4c99a7bade0bb5db55a"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-named-logical-normalization254-verification.json",
+      "sha256": "67a8ce71d214fecf4af83ec32ea9df883f34e49bd4f8d9061cbc51e779113a42"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-named-quantifier-templates254-verification.json",
+      "sha256": "ba473cab0a9627dd3c06c1f77f37ecf0d94464efa402d1be4660cfd988c57251"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-open-schema-axioms-verification.json",
+      "sha256": "fe5abdb0a6be81a729b6b66aba2e3dd061780debe7ab9a7ea3c7cf72b4885002"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-proof-renaming-verification.json",
+      "sha256": "d632dffca314210c09d6346c311155af8bc6a2295b9e1c4911258aa096562315"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-renaming-sets-verification.json",
+      "sha256": "0968a6d211cb4b7972f21cf59932a475ba78defcfa36ed91140123f9c699339f"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-renaming-successors-verification.json",
+      "sha256": "e63b43e407ae6eb3e889c098f1deca7ae2b92ba6862591d2ca12843d598c630e"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-schema-axioms-verification.json",
+      "sha256": "0dea76026bb0b4bb457f0d426ed3d837bbcce46b901a955597b6e6328e5ce81d"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-shift-cancellation-verification.json",
+      "sha256": "8c9cad55fc156c994c9da2186279d34682fa474fb509ea123268455cdbc44a15"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-specialization-verification.json",
+      "sha256": "386ad991c3c99640b86e059767460d1f8318bfbe67427bb88cd0abc940b564c6"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-two-quantifier-swap-verification.json",
+      "sha256": "3ae6c5d4ade693b637b1ed928cc7356a2bd6ab1562b90de93262fe263db71dd1"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/native-zf-containers254-verification.json",
+      "sha256": "74bca8ad3e63c7bbf6f36eb501a13ece8ff99f5ffe716dbb045c1adfbc4cf3af"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/open-schema-templates-verification.json",
+      "sha256": "7371be4b9777ad0d41a713f886120ad9c2a30aea0feb611bff5e4d0f93a48280"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/open-set-template-compiler-verification.json",
+      "sha256": "6239b2396972db2ed461a7180a4774cf5733883ecee298fccafdb24cb1d39095"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/open-template-closure-verification.json",
+      "sha256": "2592cfce0e3e759ba84d2a5eaf73b3d7cc0a408cc9f24b597b5d074972dde3fa"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/set-congruence-refresh-verification.json",
+      "sha256": "4369b6f41e0d0f9a59ebb69755579fb4ac2961d5710e9874d75626a697a1cc1f"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-consistency-forward254-verification.json",
+      "sha256": "152ad57350535cd82ff294e30cae2180365fec9274171afcc25503d14e3ef0fe"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-environment-alpha254-verification.json",
+      "sha256": "ddff9df9abf9507b40e58e1c854dde9f3f4dd8c33e1ffa0e7e054de9a5c59df3"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-environment-instantiation254-verification.json",
+      "sha256": "321a55d12c3c9880471d752e72a38fe9c26ab062e60fb4dbceeaf7240ae529fd"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-environment-labels254-verification.json",
+      "sha256": "9a0e14528cb4cb0786ae506492e4a4fad8a82af6d7f31adc155a0260792523e7"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-environment-opening254-verification.json",
+      "sha256": "d6e52632bd3d0913e8685550ddd9231a737efd8904302fcb915e01fbd532b42b"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-environment-streams254-verification.json",
+      "sha256": "8aef9bebed938663d982c9f14e5e4dd440c9443d13b38141e4ca127bf4cb8369"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-environment-vacuity254-verification.json",
+      "sha256": "795c1f1f1e23d4750e081ad448cabc324b0f87f1177e1dcc4e94f46479a3b219"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-equality-context-vacuity254-verification.json",
+      "sha256": "86a77b3386f711a0ec156fb215974264efe5648567559e58adb4aa310d5ffa4e"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-equality-context254-verification.json",
+      "sha256": "995fa46eb66b94c710edc83b9308d2b02b82e81b603a6d14628e6e3d770d95b1"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-equality-core254-verification.json",
+      "sha256": "6378b03ff024de5ed1510ee31361419b4c7a6385694c7ab020bcfc85d8f3ccaf"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-formula-encoder254-verification.json",
+      "sha256": "d54519bbd03b4b988743169d72f48cce500ba4280a43beeed4c4d932b95186d4"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-native-gic-congruence254-verification.json",
+      "sha256": "2eff35a0f24acbd450ab2aa8554a3c8f9dd8e52a8b4888b85dbd0d689356a277"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-native-gic-slots254-verification.json",
+      "sha256": "80d2b2bef3c75a722861c3f0e82aa36aab410df6a9ef124cf9a508eeb529f268"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-native-gic254-verification.json",
+      "sha256": "e3d8eb23397575903fb1a8e0ace9978829c3d62bd7ebfbad97a1b995de8c821b"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-provability254-verification.json",
+      "sha256": "d6822aaa0bcf9d7774e9046ff408ef88aaf51da21fa670f7ba3700ed107a7da4"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-quantifier-core254-verification.json",
+      "sha256": "a5d44ee88abad04bf5a3a6f6e9a470e2c1b72970cfa5063ea3129dfc300240ca"
+    }
+  ],
+  "candidate_pairs": {
+    "BusyBeaver.ZFC.ProfileModel": [],
+    "Foundation.FirstOrder.Incompleteness.Consistency": [],
+    "ZFCinPA.InternalInterpretation": [],
+    "ZFCinPA.LReplBase": [],
+    "ZFCinPA.LSchema": [],
+    "ZFCinPA.ModelCodedDecoderAccepted254": [
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-accepted254-verification.json",
+          "sha256": "9d6326a40f7b39bb25533c69520c129b8b8342fdafbd12bbbf439d0b8aaf4407"
+        },
+        "pair": {
+          "source": "/tmp/zfc-decoder-accepted/sources/ZFCinPA/ModelCodedDecoderAccepted254.lean",
+          "source_sha256": "7459498d7e2243cb254178d08d28954ca740b626c6d2865642bd9e1c3fb892dc",
+          "object": "/tmp/zfc-decoder-accepted/run2/cache/ZFCinPA/ModelCodedDecoderAccepted254.olean",
+          "object_sha256": "802703ef9a54b5039daa99dceb79a380a736f3089f03bedfa78dff343c15bb7a"
+        },
+        "fresh": true,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-consistency-forward254-verification.json",
+          "sha256": "152ad57350535cd82ff294e30cae2180365fec9274171afcc25503d14e3ef0fe"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedDecoderAccepted254.lean",
+          "source_sha256": "7459498d7e2243cb254178d08d28954ca740b626c6d2865642bd9e1c3fb892dc",
+          "object": "/tmp/zfc-decoder-accepted/run2/cache/ZFCinPA/ModelCodedDecoderAccepted254.olean",
+          "object_sha256": "802703ef9a54b5039daa99dceb79a380a736f3089f03bedfa78dff343c15bb7a"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      }
+    ],
+    "ZFCinPA.ModelCodedOpenSchemaAxioms": [
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/compiled-collection254-verification.json",
+          "sha256": "23a19b6390ce8b48b92924e607f0bbdd07d14f08889892e4ba8466d95031487b"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedOpenSchemaAxioms.lean",
+          "source_sha256": "e51c73b97672a8e8d1c57b6feb0fa73ade787724d52ab0c8bc4b751979241710",
+          "object": "/tmp/zfc-model-coded-closure/open-schema-run4/cache/ZFCinPA/ModelCodedOpenSchemaAxioms.olean",
+          "object_sha256": "1af4bba3a1bba9531816d18b86a4978419e9b51308e769967945c2b493c2c205"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-accepted254-verification.json",
+          "sha256": "9d6326a40f7b39bb25533c69520c129b8b8342fdafbd12bbbf439d0b8aaf4407"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedOpenSchemaAxioms.lean",
+          "source_sha256": "e51c73b97672a8e8d1c57b6feb0fa73ade787724d52ab0c8bc4b751979241710",
+          "object": "/tmp/zfc-model-coded-closure/open-schema-run4/cache/ZFCinPA/ModelCodedOpenSchemaAxioms.olean",
+          "object_sha256": "1af4bba3a1bba9531816d18b86a4978419e9b51308e769967945c2b493c2c205"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-bundle254-verification.json",
+          "sha256": "5083970e48f266eb2b6d4129eb904cacaab393d0f1544f29a95e6847e756307c"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedOpenSchemaAxioms.lean",
+          "source_sha256": "e51c73b97672a8e8d1c57b6feb0fa73ade787724d52ab0c8bc4b751979241710",
+          "object": "/tmp/zfc-model-coded-closure/open-schema-run4/cache/ZFCinPA/ModelCodedOpenSchemaAxioms.olean",
+          "object_sha256": "1af4bba3a1bba9531816d18b86a4978419e9b51308e769967945c2b493c2c205"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-collection254-verification.json",
+          "sha256": "2a235367a454a23c709bce36e924c11d7a23e55394d7aef6eb314b17143dfc4e"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedOpenSchemaAxioms.lean",
+          "source_sha256": "e51c73b97672a8e8d1c57b6feb0fa73ade787724d52ab0c8bc4b751979241710",
+          "object": "/tmp/zfc-model-coded-closure/open-schema-run4/cache/ZFCinPA/ModelCodedOpenSchemaAxioms.olean",
+          "object_sha256": "1af4bba3a1bba9531816d18b86a4978419e9b51308e769967945c2b493c2c205"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-open-schema-axioms-verification.json",
+          "sha256": "fe5abdb0a6be81a729b6b66aba2e3dd061780debe7ab9a7ea3c7cf72b4885002"
+        },
+        "pair": {
+          "source": "/tmp/zfc-model-coded-closure/sources/ZFCinPA/ModelCodedOpenSchemaAxioms.lean",
+          "source_sha256": "e51c73b97672a8e8d1c57b6feb0fa73ade787724d52ab0c8bc4b751979241710",
+          "object": "/tmp/zfc-model-coded-closure/open-schema-run4/cache/ZFCinPA/ModelCodedOpenSchemaAxioms.olean",
+          "object_sha256": "1af4bba3a1bba9531816d18b86a4978419e9b51308e769967945c2b493c2c205"
+        },
+        "fresh": true,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/open-schema-templates-verification.json",
+          "sha256": "7371be4b9777ad0d41a713f886120ad9c2a30aea0feb611bff5e4d0f93a48280"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedOpenSchemaAxioms.lean",
+          "source_sha256": "e51c73b97672a8e8d1c57b6feb0fa73ade787724d52ab0c8bc4b751979241710",
+          "object": "/tmp/zfc-model-coded-closure/open-schema-run4/cache/ZFCinPA/ModelCodedOpenSchemaAxioms.olean",
+          "object_sha256": "1af4bba3a1bba9531816d18b86a4978419e9b51308e769967945c2b493c2c205"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-consistency-forward254-verification.json",
+          "sha256": "152ad57350535cd82ff294e30cae2180365fec9274171afcc25503d14e3ef0fe"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedOpenSchemaAxioms.lean",
+          "source_sha256": "e51c73b97672a8e8d1c57b6feb0fa73ade787724d52ab0c8bc4b751979241710",
+          "object": "/tmp/zfc-model-coded-closure/open-schema-run4/cache/ZFCinPA/ModelCodedOpenSchemaAxioms.olean",
+          "object_sha256": "1af4bba3a1bba9531816d18b86a4978419e9b51308e769967945c2b493c2c205"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      }
+    ],
+    "ZFCinPA.NTInterp": [],
+    "ZFCinPA.NTemplate": [],
+    "ZFCinPA.NativeFixed": [],
+    "ZFCinPA.NativeGicDelta1": [
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-native-gic-slots254-verification.json",
+          "sha256": "80d2b2bef3c75a722861c3f0e82aa36aab410df6a9ef124cf9a508eeb529f268"
+        },
+        "pair": {
+          "source": "/tmp/zfc-native-gic-delta1-check/NativeGicDelta1.lean",
+          "source_sha256": "9abb4d641e4d3db586c25f525d0efea98da466bc4497f5c11c9f0393078ce861",
+          "object": "/tmp/zfc-native-gic-delta1-check/run1/cache/ZFCinPA/NativeGicDelta1.olean",
+          "object_sha256": "b330dfcbf2c8e23b76676d29b135b1ba4d761db0fbb5cbc4e92d89a431cead04"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      }
+    ],
+    "ZFCinPA.NativeInterp": [],
+    "ZFCinPA.NativePeel": [],
+    "ZFCinPA.NativeSchema": [],
+    "ZFCinPA.NativeSchemaSem": [],
+    "ZFCinPA.NativeTheory": [],
+    "ZFCinPA.R2Audit": [],
+    "ZFCinPA.R2Ax": [],
+    "ZFCinPA.R2Ctx": [],
+    "ZFCinPA.R2Fixed": [],
+    "ZFCinPA.R2Gic": [],
+    "ZFCinPA.R2Main": [],
+    "ZFCinPA.R2Native": [],
+    "ZFCinPA.R2Neg": [],
+    "ZFCinPA.R2Quant": [],
+    "ZFCinPA.Translation": [],
+    "ZFCinPA.ValidatorConsistencyEquivalence": [],
+    "ZFCinPA.ValidatorConsistencyForward254": [
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-consistency-forward254-verification.json",
+          "sha256": "152ad57350535cd82ff294e30cae2180365fec9274171afcc25503d14e3ef0fe"
+        },
+        "pair": {
+          "source": "/tmp/zfc-validator-pa-forward/sources/ZFCinPA/ValidatorConsistencyForward254.lean",
+          "source_sha256": "ed61e36f97d574bc0a381c849f7f89008d9b5e5545f99fc7bf520838b60a49f9",
+          "object": "/tmp/zfc-validator-pa-forward/run1/cache/ZFCinPA/ValidatorConsistencyForward254.olean",
+          "object_sha256": "89d85f2f08e8fb7fd30c7a678dd4481db28e100ee0f64c141a6252c973d665a3"
+        },
+        "fresh": true,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      }
+    ],
+    "ZFCinPA.ValidatorEnvironmentAlpha254": [
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-environment-alpha254-verification.json",
+          "sha256": "ddff9df9abf9507b40e58e1c854dde9f3f4dd8c33e1ffa0e7e054de9a5c59df3"
+        },
+        "pair": {
+          "source": "/tmp/zfc-validator-alpha/ValidatorEnvironmentAlpha254.lean",
+          "source_sha256": "fc7d9701f11172b7c35160eb436d0e6ef6dd89c3037ef7081e6661d18799876c",
+          "object": "/tmp/zfc-validator-alpha/run1/cache/ZFCinPA/ValidatorEnvironmentAlpha254.olean",
+          "object_sha256": "2e9ce9f861ee5acb2a29e3cbf6cdce3bb288ddd2a0153d73f6ad5b73c139cca4"
+        },
+        "fresh": true,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-environment-streams254-verification.json",
+          "sha256": "8aef9bebed938663d982c9f14e5e4dd440c9443d13b38141e4ca127bf4cb8369"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorEnvironmentAlpha254.lean",
+          "source_sha256": "fc7d9701f11172b7c35160eb436d0e6ef6dd89c3037ef7081e6661d18799876c",
+          "object": "/tmp/zfc-validator-alpha/run1/cache/ZFCinPA/ValidatorEnvironmentAlpha254.olean",
+          "object_sha256": "2e9ce9f861ee5acb2a29e3cbf6cdce3bb288ddd2a0153d73f6ad5b73c139cca4"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      }
+    ],
+    "ZFCinPA.ValidatorEnvironmentInstantiation254": [
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-environment-instantiation254-verification.json",
+          "sha256": "321a55d12c3c9880471d752e72a38fe9c26ab062e60fb4dbceeaf7240ae529fd"
+        },
+        "pair": {
+          "source": "/tmp/zfc-validator-instantiation/ValidatorEnvironmentInstantiation254.lean",
+          "source_sha256": "b9d26d70a061f6b88490b1e4234cf38f0b6db36d17d754b2f9249bd7614ed3a1",
+          "object": "/tmp/zfc-validator-instantiation/run1/cache/ZFCinPA/ValidatorEnvironmentInstantiation254.olean",
+          "object_sha256": "e2a4ed11f549ebadf97b85908f4229957900f05d54b684420a5ed038df0fb931"
+        },
+        "fresh": true,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      }
+    ],
+    "ZFCinPA.ValidatorEnvironmentLabels254": [
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-environment-alpha254-verification.json",
+          "sha256": "ddff9df9abf9507b40e58e1c854dde9f3f4dd8c33e1ffa0e7e054de9a5c59df3"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorEnvironmentLabels254.lean",
+          "source_sha256": "c7735da0c060c645a2285ec96fe7cec3f50feb5ec8873d06f270831a71fe2e66",
+          "object": "/tmp/zfc-validator-environment/run2/cache/ZFCinPA/ValidatorEnvironmentLabels254.olean",
+          "object_sha256": "a9b3498997becb0574a91a4e0000dc556d9863bcd0a978e1db1235bbdb9ff7dc"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-environment-instantiation254-verification.json",
+          "sha256": "321a55d12c3c9880471d752e72a38fe9c26ab062e60fb4dbceeaf7240ae529fd"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorEnvironmentLabels254.lean",
+          "source_sha256": "c7735da0c060c645a2285ec96fe7cec3f50feb5ec8873d06f270831a71fe2e66",
+          "object": "/tmp/zfc-validator-environment/run2/cache/ZFCinPA/ValidatorEnvironmentLabels254.olean",
+          "object_sha256": "a9b3498997becb0574a91a4e0000dc556d9863bcd0a978e1db1235bbdb9ff7dc"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-environment-labels254-verification.json",
+          "sha256": "9a0e14528cb4cb0786ae506492e4a4fad8a82af6d7f31adc155a0260792523e7"
+        },
+        "pair": {
+          "source": "/tmp/zfc-validator-encoder/ValidatorEnvironmentLabels254.lean",
+          "source_sha256": "c7735da0c060c645a2285ec96fe7cec3f50feb5ec8873d06f270831a71fe2e66",
+          "object": "/tmp/zfc-validator-environment/run2/cache/ZFCinPA/ValidatorEnvironmentLabels254.olean",
+          "object_sha256": "a9b3498997becb0574a91a4e0000dc556d9863bcd0a978e1db1235bbdb9ff7dc"
+        },
+        "fresh": true,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-environment-opening254-verification.json",
+          "sha256": "d6e52632bd3d0913e8685550ddd9231a737efd8904302fcb915e01fbd532b42b"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorEnvironmentLabels254.lean",
+          "source_sha256": "c7735da0c060c645a2285ec96fe7cec3f50feb5ec8873d06f270831a71fe2e66",
+          "object": "/tmp/zfc-validator-environment/run2/cache/ZFCinPA/ValidatorEnvironmentLabels254.olean",
+          "object_sha256": "a9b3498997becb0574a91a4e0000dc556d9863bcd0a978e1db1235bbdb9ff7dc"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-environment-streams254-verification.json",
+          "sha256": "8aef9bebed938663d982c9f14e5e4dd440c9443d13b38141e4ca127bf4cb8369"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorEnvironmentLabels254.lean",
+          "source_sha256": "c7735da0c060c645a2285ec96fe7cec3f50feb5ec8873d06f270831a71fe2e66",
+          "object": "/tmp/zfc-validator-environment/run2/cache/ZFCinPA/ValidatorEnvironmentLabels254.olean",
+          "object_sha256": "a9b3498997becb0574a91a4e0000dc556d9863bcd0a978e1db1235bbdb9ff7dc"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-environment-vacuity254-verification.json",
+          "sha256": "795c1f1f1e23d4750e081ad448cabc324b0f87f1177e1dcc4e94f46479a3b219"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorEnvironmentLabels254.lean",
+          "source_sha256": "c7735da0c060c645a2285ec96fe7cec3f50feb5ec8873d06f270831a71fe2e66",
+          "object": "/tmp/zfc-validator-environment/run2/cache/ZFCinPA/ValidatorEnvironmentLabels254.olean",
+          "object_sha256": "a9b3498997becb0574a91a4e0000dc556d9863bcd0a978e1db1235bbdb9ff7dc"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-equality-context-vacuity254-verification.json",
+          "sha256": "86a77b3386f711a0ec156fb215974264efe5648567559e58adb4aa310d5ffa4e"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorEnvironmentLabels254.lean",
+          "source_sha256": "c7735da0c060c645a2285ec96fe7cec3f50feb5ec8873d06f270831a71fe2e66",
+          "object": "/tmp/zfc-validator-environment/run2/cache/ZFCinPA/ValidatorEnvironmentLabels254.olean",
+          "object_sha256": "a9b3498997becb0574a91a4e0000dc556d9863bcd0a978e1db1235bbdb9ff7dc"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-equality-context254-verification.json",
+          "sha256": "995fa46eb66b94c710edc83b9308d2b02b82e81b603a6d14628e6e3d770d95b1"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorEnvironmentLabels254.lean",
+          "source_sha256": "c7735da0c060c645a2285ec96fe7cec3f50feb5ec8873d06f270831a71fe2e66",
+          "object": "/tmp/zfc-validator-environment/run2/cache/ZFCinPA/ValidatorEnvironmentLabels254.olean",
+          "object_sha256": "a9b3498997becb0574a91a4e0000dc556d9863bcd0a978e1db1235bbdb9ff7dc"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-native-gic-slots254-verification.json",
+          "sha256": "80d2b2bef3c75a722861c3f0e82aa36aab410df6a9ef124cf9a508eeb529f268"
+        },
+        "pair": {
+          "source": "/tmp/zfc-validator-encoder/ValidatorEnvironmentLabels254.lean",
+          "source_sha256": "c7735da0c060c645a2285ec96fe7cec3f50feb5ec8873d06f270831a71fe2e66",
+          "object": "/tmp/zfc-validator-environment/run2/cache/ZFCinPA/ValidatorEnvironmentLabels254.olean",
+          "object_sha256": "a9b3498997becb0574a91a4e0000dc556d9863bcd0a978e1db1235bbdb9ff7dc"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      }
+    ],
+    "ZFCinPA.ValidatorEnvironmentOpening254": [
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-environment-instantiation254-verification.json",
+          "sha256": "321a55d12c3c9880471d752e72a38fe9c26ab062e60fb4dbceeaf7240ae529fd"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorEnvironmentOpening254.lean",
+          "source_sha256": "2d31d61027e3c98921182008bf9b1404c7cf4e448276c6b322b66e82a379a8bd",
+          "object": "/tmp/zfc-validator-opening/run2/cache/ZFCinPA/ValidatorEnvironmentOpening254.olean",
+          "object_sha256": "9c8538b4c29b9a5a0d75ac3f306cc1ae6f45aa1e87043c66f3271493d3ecc94a"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-environment-opening254-verification.json",
+          "sha256": "d6e52632bd3d0913e8685550ddd9231a737efd8904302fcb915e01fbd532b42b"
+        },
+        "pair": {
+          "source": "/tmp/zfc-validator-opening/ValidatorEnvironmentOpening254.lean",
+          "source_sha256": "2d31d61027e3c98921182008bf9b1404c7cf4e448276c6b322b66e82a379a8bd",
+          "object": "/tmp/zfc-validator-opening/run2/cache/ZFCinPA/ValidatorEnvironmentOpening254.olean",
+          "object_sha256": "9c8538b4c29b9a5a0d75ac3f306cc1ae6f45aa1e87043c66f3271493d3ecc94a"
+        },
+        "fresh": true,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      }
+    ],
+    "ZFCinPA.ValidatorEnvironmentStreams254": [
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-environment-streams254-verification.json",
+          "sha256": "8aef9bebed938663d982c9f14e5e4dd440c9443d13b38141e4ca127bf4cb8369"
+        },
+        "pair": {
+          "source": "/tmp/zfc-validator-streams/ValidatorEnvironmentStreams254.lean",
+          "source_sha256": "6a669804c50bc65e85483df6cff6341abef0d614b45720c8a25cd8a46eafc8fe",
+          "object": "/tmp/zfc-validator-streams/run1/cache/ZFCinPA/ValidatorEnvironmentStreams254.olean",
+          "object_sha256": "cf2cb9d7c6de618229e3dd47c09b6b85ea75144702ab16d072205bebf7c0aca1"
+        },
+        "fresh": true,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      }
+    ],
+    "ZFCinPA.ValidatorNativeGicCongruence254": [
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-native-gic-congruence254-verification.json",
+          "sha256": "2eff35a0f24acbd450ab2aa8554a3c8f9dd8e52a8b4888b85dbd0d689356a277"
+        },
+        "pair": {
+          "source": "/tmp/zfc-validator-native-gic-congruence/ValidatorNativeGicCongruence254.lean",
+          "source_sha256": "e8f4c30a9d7a72f2bc71ccf910ef1c406768cc2096a8b44db9e8987ca12d3ace",
+          "object": "/tmp/zfc-validator-native-gic-congruence/run1/cache/ZFCinPA/ValidatorNativeGicCongruence254.olean",
+          "object_sha256": "98001de8bd52333f124fb7b558a56abb9f6801f5090aab25c37cbdc1c9147af4"
+        },
+        "fresh": true,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      }
+    ],
+    "ZFCinPA.ValidatorNativeGicSlots254": [
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-native-gic-slots254-verification.json",
+          "sha256": "80d2b2bef3c75a722861c3f0e82aa36aab410df6a9ef124cf9a508eeb529f268"
+        },
+        "pair": {
+          "source": "/tmp/zfc-validator-native-gic-slots/source-v2/ValidatorNativeGicSlots254.lean",
+          "source_sha256": "48b38859d5963c6046963c6af1a24dd0bd4988a3a819a94cfcf0175fd35ffae6",
+          "object": "/tmp/zfc-validator-native-gic-slots/run2/cache/ZFCinPA/ValidatorNativeGicSlots254.olean",
+          "object_sha256": "4a8d5540f42c7fa9bf89652c6a0a06d25f902690cd299b5943f011588aad308c"
+        },
+        "fresh": true,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      }
+    ],
+    "ZFCinPA.ValidatorQuantifierCore254": [
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-environment-alpha254-verification.json",
+          "sha256": "ddff9df9abf9507b40e58e1c854dde9f3f4dd8c33e1ffa0e7e054de9a5c59df3"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorQuantifierCore254.lean",
+          "source_sha256": "4afb9947d05cf713b74c16cb8162af5b0e6c03461ed87e21cbdf1da3303ea2f1",
+          "object": "/tmp/zfc-validator-quantifier/run1/cache/ZFCinPA/ValidatorQuantifierCore254.olean",
+          "object_sha256": "23aec68314992d3b63c020f2c4abb3daf3cad038e663dbdfc663fb792ed68c0f"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-environment-streams254-verification.json",
+          "sha256": "8aef9bebed938663d982c9f14e5e4dd440c9443d13b38141e4ca127bf4cb8369"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorQuantifierCore254.lean",
+          "source_sha256": "4afb9947d05cf713b74c16cb8162af5b0e6c03461ed87e21cbdf1da3303ea2f1",
+          "object": "/tmp/zfc-validator-quantifier/run1/cache/ZFCinPA/ValidatorQuantifierCore254.olean",
+          "object_sha256": "23aec68314992d3b63c020f2c4abb3daf3cad038e663dbdfc663fb792ed68c0f"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-environment-vacuity254-verification.json",
+          "sha256": "795c1f1f1e23d4750e081ad448cabc324b0f87f1177e1dcc4e94f46479a3b219"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorQuantifierCore254.lean",
+          "source_sha256": "4afb9947d05cf713b74c16cb8162af5b0e6c03461ed87e21cbdf1da3303ea2f1",
+          "object": "/tmp/zfc-validator-quantifier/run1/cache/ZFCinPA/ValidatorQuantifierCore254.olean",
+          "object_sha256": "23aec68314992d3b63c020f2c4abb3daf3cad038e663dbdfc663fb792ed68c0f"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-equality-context-vacuity254-verification.json",
+          "sha256": "86a77b3386f711a0ec156fb215974264efe5648567559e58adb4aa310d5ffa4e"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorQuantifierCore254.lean",
+          "source_sha256": "4afb9947d05cf713b74c16cb8162af5b0e6c03461ed87e21cbdf1da3303ea2f1",
+          "object": "/tmp/zfc-validator-quantifier/run1/cache/ZFCinPA/ValidatorQuantifierCore254.olean",
+          "object_sha256": "23aec68314992d3b63c020f2c4abb3daf3cad038e663dbdfc663fb792ed68c0f"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-equality-context254-verification.json",
+          "sha256": "995fa46eb66b94c710edc83b9308d2b02b82e81b603a6d14628e6e3d770d95b1"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorQuantifierCore254.lean",
+          "source_sha256": "4afb9947d05cf713b74c16cb8162af5b0e6c03461ed87e21cbdf1da3303ea2f1",
+          "object": "/tmp/zfc-validator-quantifier/run1/cache/ZFCinPA/ValidatorQuantifierCore254.olean",
+          "object_sha256": "23aec68314992d3b63c020f2c4abb3daf3cad038e663dbdfc663fb792ed68c0f"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-equality-core254-verification.json",
+          "sha256": "6378b03ff024de5ed1510ee31361419b4c7a6385694c7ab020bcfc85d8f3ccaf"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorQuantifierCore254.lean",
+          "source_sha256": "4afb9947d05cf713b74c16cb8162af5b0e6c03461ed87e21cbdf1da3303ea2f1",
+          "object": "/tmp/zfc-validator-quantifier/run1/cache/ZFCinPA/ValidatorQuantifierCore254.olean",
+          "object_sha256": "23aec68314992d3b63c020f2c4abb3daf3cad038e663dbdfc663fb792ed68c0f"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-native-gic-congruence254-verification.json",
+          "sha256": "2eff35a0f24acbd450ab2aa8554a3c8f9dd8e52a8b4888b85dbd0d689356a277"
+        },
+        "pair": {
+          "source": "/tmp/zfc-validator-encoder/ValidatorQuantifierCore254.lean",
+          "source_sha256": "4afb9947d05cf713b74c16cb8162af5b0e6c03461ed87e21cbdf1da3303ea2f1",
+          "object": "/tmp/zfc-validator-quantifier/run1/cache/ZFCinPA/ValidatorQuantifierCore254.olean",
+          "object_sha256": "23aec68314992d3b63c020f2c4abb3daf3cad038e663dbdfc663fb792ed68c0f"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-native-gic-slots254-verification.json",
+          "sha256": "80d2b2bef3c75a722861c3f0e82aa36aab410df6a9ef124cf9a508eeb529f268"
+        },
+        "pair": {
+          "source": "/tmp/zfc-validator-encoder/ValidatorQuantifierCore254.lean",
+          "source_sha256": "4afb9947d05cf713b74c16cb8162af5b0e6c03461ed87e21cbdf1da3303ea2f1",
+          "object": "/tmp/zfc-validator-quantifier/run1/cache/ZFCinPA/ValidatorQuantifierCore254.olean",
+          "object_sha256": "23aec68314992d3b63c020f2c4abb3daf3cad038e663dbdfc663fb792ed68c0f"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-native-gic254-verification.json",
+          "sha256": "e3d8eb23397575903fb1a8e0ace9978829c3d62bd7ebfbad97a1b995de8c821b"
+        },
+        "pair": {
+          "source": "/tmp/zfc-validator-encoder/ValidatorQuantifierCore254.lean",
+          "source_sha256": "4afb9947d05cf713b74c16cb8162af5b0e6c03461ed87e21cbdf1da3303ea2f1",
+          "object": "/tmp/zfc-validator-quantifier/run1/cache/ZFCinPA/ValidatorQuantifierCore254.olean",
+          "object_sha256": "23aec68314992d3b63c020f2c4abb3daf3cad038e663dbdfc663fb792ed68c0f"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-quantifier-core254-verification.json",
+          "sha256": "a5d44ee88abad04bf5a3a6f6e9a470e2c1b72970cfa5063ea3129dfc300240ca"
+        },
+        "pair": {
+          "source": "/tmp/zfc-validator-encoder/ValidatorQuantifierCore254.lean",
+          "source_sha256": "4afb9947d05cf713b74c16cb8162af5b0e6c03461ed87e21cbdf1da3303ea2f1",
+          "object": "/tmp/zfc-validator-quantifier/run1/cache/ZFCinPA/ValidatorQuantifierCore254.olean",
+          "object_sha256": "23aec68314992d3b63c020f2c4abb3daf3cad038e663dbdfc663fb792ed68c0f"
+        },
+        "fresh": true,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      }
+    ],
+    "ZFCinPA.ZFDelta1": [
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/buffered-template-proof-compiler-verification.json",
+          "sha256": "c33cd4f78d4fbbc524635ad9579a26fa66df03ff0827a86f8697a5008681975e"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/collection-template254-verification.json",
+          "sha256": "8a85acbdd23dd9633f24acc42075c883fff3a40841e78ef3cc1d915b073d7557"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/compiled-collection254-verification.json",
+          "sha256": "23a19b6390ce8b48b92924e607f0bbdd07d14f08889892e4ba8466d95031487b"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/constructible-interpretation-verification.json",
+          "sha256": "c6ed6c6bd40da28a3460778686f32cd969fd5695ce89187a72efe19e23c2fadd"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-bind-one-swap-verification.json",
+          "sha256": "1a14376caf23c71813696639dbec7f0dbc1eebf5bba4127dce2285c80f444333"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-bind-one-verification.json",
+          "sha256": "ba5f861549f2a15126f53eec9ea8b083ebb6faaf22ada9c08d9aa3b4150d1ed3"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-bind-two-slots-verification.json",
+          "sha256": "34ba624f5a8b590f9168d9c8a93e34e0a162a81643d5581813fe017e0e94c0de"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-binder-absorption-verification.json",
+          "sha256": "1c9bd40d34475912fee45b0e1665adce144d983df3aff78fe952cbb06d8bbac5"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-closed-schema-axioms-verification.json",
+          "sha256": "a92f56e51ae587c6f92b2adb4ad71b697c87a2f8d920c7b6facaaf896ebd9f45"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-accepted254-verification.json",
+          "sha256": "9d6326a40f7b39bb25533c69520c129b8b8342fdafbd12bbbf439d0b8aaf4407"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-atomic-vacuity254-verification.json",
+          "sha256": "c8db05327dc3841e76162ab89aa09cab4a923dc56b0f9231cf8473bd83a4bdbe"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-bundle254-verification.json",
+          "sha256": "5083970e48f266eb2b6d4129eb904cacaab393d0f1544f29a95e6847e756307c"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-circuits254-verification.json",
+          "sha256": "60dca2bc4655490e462548e0eb66e5aeaa3664f0ec6c3b099025286a855c5c8a"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-collection-normalization254-verification.json",
+          "sha256": "7caade6d321f2997f5fc746e7435ca9cfc59fb5c4106db61330df308587614ff"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-collection254-verification.json",
+          "sha256": "2a235367a454a23c709bce36e924c11d7a23e55394d7aef6eb314b17143dfc4e"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-constructors254-verification.json",
+          "sha256": "e58ee25d0df49d9d944562df49e04073c0d31a6f9a32edfb654af134e6799ad9"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-container254-verification.json",
+          "sha256": "0886042fd6f1869923560d869daa7c62a928c033b2657dfe5558ad8c969d385c"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-equality254-verification.json",
+          "sha256": "201fe7054da8ee722775f64d9e5e1d1f8ca8ea0411b53e91f9c49e6c0e8d8893"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-falsity254-verification.json",
+          "sha256": "148f922e9caa4dc42ae49b90e2f62f1e4c6734ffa01dc9c887802ede4bae36cb"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-freshness254-verification.json",
+          "sha256": "61fbed2347cdb94d1ad033b60e47c5d38e5911e2a858ea3380d08e30a6887d92"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-generalization254-verification.json",
+          "sha256": "f170c917355398a60a9977c17a8d86010732e56829ad7acfcf359a30f69a2bdb"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-lukasiewicz254-verification.json",
+          "sha256": "29b44c710d4ebc612d543fa486ded86da97616bbce5ab5f87f029487d217f3e9"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-propositional254-verification.json",
+          "sha256": "626b3fdbfdbeadbccbf676d3d0acf9737ec8fbc196df2032e300a6a0fd72d622"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-rho1-254-verification.json",
+          "sha256": "b59fab7eb413ad13f5e5264a5bac1d4b27b0bd280fc9588b4333e6fb81c6e7f1"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-rho2-254-verification.json",
+          "sha256": "05eab26792e3ee879009a48e329a3b16369c2310f378d1bc483e0957e5eb56a7"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-rho4-254-verification.json",
+          "sha256": "0dede09ee2cb35da5a71981a37308fab099aeee2b2323c2534f1560bc5a0e223"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder-rho6-254-verification.json",
+          "sha256": "a1359e706ae6053a3d8dc1930d0aaca92573d7a5ae3149801a74ec6d6e5be624"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-decoder254-verification.json",
+          "sha256": "77a19cc0cc6486e5837f3cc9a6873324f5f3a7d3ba850e0923ed3366d8f800a9"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-free-renaming-verification.json",
+          "sha256": "1f3a5b8b6eba805fe6a8b49e1c4ad4faea56f709e9798bff874ea75740415183"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-named-binder-laws-verification.json",
+          "sha256": "02fb1ba11ddede650035672cc44317f04bbf2be71de0b4c99a7bade0bb5db55a"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-named-logical-normalization254-verification.json",
+          "sha256": "67a8ce71d214fecf4af83ec32ea9df883f34e49bd4f8d9061cbc51e779113a42"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-named-quantifier-templates254-verification.json",
+          "sha256": "ba473cab0a9627dd3c06c1f77f37ecf0d94464efa402d1be4660cfd988c57251"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-open-schema-axioms-verification.json",
+          "sha256": "fe5abdb0a6be81a729b6b66aba2e3dd061780debe7ab9a7ea3c7cf72b4885002"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-proof-renaming-verification.json",
+          "sha256": "d632dffca314210c09d6346c311155af8bc6a2295b9e1c4911258aa096562315"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-renaming-sets-verification.json",
+          "sha256": "0968a6d211cb4b7972f21cf59932a475ba78defcfa36ed91140123f9c699339f"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-renaming-successors-verification.json",
+          "sha256": "e63b43e407ae6eb3e889c098f1deca7ae2b92ba6862591d2ca12843d598c630e"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-schema-axioms-verification.json",
+          "sha256": "0dea76026bb0b4bb457f0d426ed3d837bbcce46b901a955597b6e6328e5ce81d"
+        },
+        "pair": {
+          "source": "/tmp/zfc-model-coded-set-axioms/sources/ZFCinPA/ModelCodedSchemaAxioms.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": true,
+        "current_pair": false,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-shift-cancellation-verification.json",
+          "sha256": "8c9cad55fc156c994c9da2186279d34682fa474fb509ea123268455cdbc44a15"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-specialization-verification.json",
+          "sha256": "386ad991c3c99640b86e059767460d1f8318bfbe67427bb88cd0abc940b564c6"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/model-coded-two-quantifier-swap-verification.json",
+          "sha256": "3ae6c5d4ade693b637b1ed928cc7356a2bd6ab1562b90de93262fe263db71dd1"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/open-schema-templates-verification.json",
+          "sha256": "7371be4b9777ad0d41a713f886120ad9c2a30aea0feb611bff5e4d0f93a48280"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/open-set-template-compiler-verification.json",
+          "sha256": "6239b2396972db2ed461a7180a4774cf5733883ecee298fccafdb24cb1d39095"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/open-template-closure-verification.json",
+          "sha256": "2592cfce0e3e759ba84d2a5eaf73b3d7cc0a408cc9f24b597b5d074972dde3fa"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/set-congruence-refresh-verification.json",
+          "sha256": "4369b6f41e0d0f9a59ebb69755579fb4ac2961d5710e9874d75626a697a1cc1f"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-consistency-forward254-verification.json",
+          "sha256": "152ad57350535cd82ff294e30cae2180365fec9274171afcc25503d14e3ef0fe"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-environment-instantiation254-verification.json",
+          "sha256": "321a55d12c3c9880471d752e72a38fe9c26ab062e60fb4dbceeaf7240ae529fd"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      },
+      {
+        "record": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/results/validator-environment-opening254-verification.json",
+          "sha256": "d6e52632bd3d0913e8685550ddd9231a737efd8904302fcb915e01fbd532b42b"
+        },
+        "pair": {
+          "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+          "source_sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550",
+          "object": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+          "object_sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+        },
+        "fresh": false,
+        "current_pair": true,
+        "current_maintained_source_matches": true,
+        "scope": "Candidate provenance only; record full closure/first-provider/command audit not revalidated by this inventory."
+      }
+    ]
+  },
+  "object_roots_checked": [
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/.lake/build/lib/lean/ZFCinPA",
+      "exists": false,
+      "named_objects": []
+    },
+    {
+      "path": "/home/codex/src/Proofs/.lake/build/lib/lean/ZFCinPA",
+      "exists": false,
+      "named_objects": []
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/.lake/build/lib/lean/ZFCinPA",
+      "exists": false,
+      "named_objects": []
+    },
+    {
+      "path": "/home/codex/src/Proofs/Logic/Interpretability/ZFCinPA/.lake/build/lib/lean/ZFCinPA",
+      "exists": false,
+      "named_objects": []
+    }
+  ],
+  "upstream_author_claims": {
+    "e1ff9636d5": {
+      "path": "/tmp/zfc-upstream-r2-equivalence-review/e1ff9636d5-commit.txt",
+      "sha256": "fe0a102591c96cf23c28dd529c5da5b09f85464213f085c1507a7d40c2e0f99c"
+    },
+    "79cedcc093": {
+      "path": "/tmp/zfc-upstream-r2-equivalence-review/79cedcc093-commit.txt",
+      "sha256": "105d0977ddf0c1762934e419f17d67ecb6de83ab616551180da54a8e6831b283"
+    },
+    "9d5ec3e831": {
+      "path": "/tmp/zfc-upstream-r2-equivalence-review/9d5ec3e831-commit.txt",
+      "sha256": "5bdcc637c428d7b734de44c7cdfe96177dcbb634766f01bba5cfb7e863ceda23"
+    },
+    "e58338db75": {
+      "path": "/tmp/zfc-upstream-r2-equivalence-review/e58338db75-commit.txt",
+      "sha256": "a8c5c684299c939718d710d9049b549b5261caafb2c71a5d70edc91042133599"
+    }
+  },
+  "new_proof_compilation": false
+}
