@@ -1389,3 +1389,16 @@ identification of the AX dispatch with the validator's AX operation
 (`ArithmeticL2.ax_eval`), the scheduler/seed composition and both halting
 directions, listed as open in the review above, are therefore discharged.
 W6 (binary240 ⟺ the `tableR` interpreter) and W7 remain open.
+
+**W7, register half (Claude lane, 2026-10-19).** As fixed sentences
+(`ZFCinPA.RotationInterpreterConsistency240`, in the ZFCinPA facade; standard
+axioms only): `rotationHaltsSentence` says that
+`controlRun ControlBisimRotation240.tableR` reaches `0` from the seed state
+(physical fields `[0,0,0,3,0,0,3,0,0]` as nested Cantor pairs);
+`isigma1_proves_accepted_iff_rotation_halts : 𝗜𝚺₁ ⊢ acceptedFalsitySentence 🡘
+rotationHaltsSentence`; and, with `ValidatorConsistencyEquivalence`,
+`peano_proves_con_ZFC_iff_not_rotation_halts : 𝗣𝗔 ⊢ Con(𝗭𝗙𝗖) 🡘
+∼rotationHaltsSentence` (also the `𝗭𝗙` and `𝗜𝚺₂` versions). The final W7
+sentence `𝗣𝗔 ⊢ Con(𝗭𝗙𝗖) 🡘 blank240 never halts` then needs only the W6
+semantic theorem (every IΣ₁ model: blank240 halts iff this interpreter halts)
+and one more completeness step.
