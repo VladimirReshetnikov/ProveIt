@@ -52,7 +52,10 @@ is byte-identical to source74's `rotate_h` list.
 Lean checks the [exact table and its fast evaluator](../rotation240_foundations.md):
 nine theorem probes and eleven typed callers pass with zero warnings. These
 prove the table's numbering and halt facts and equality of the fast evaluator
-with the complete machine. Runtime and full initialization proofs are separate.
+with the complete machine. The [nine general runtime units](../rotation240_runtime.md)
+also pass: 106 theorem probes and 94 typed callers, with zero warnings. Their
+halting equivalence retains concrete decoder-coverage and initial-frame
+hypotheses. Full initialization and the final composition remain separate.
 
 Root freshly ran ten substantive jobs, including two complete unbounded
 register/list runtime checks. The final machine passes **8,386 guarded

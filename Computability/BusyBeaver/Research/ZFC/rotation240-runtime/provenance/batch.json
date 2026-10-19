@@ -1,0 +1,430 @@
+{
+  "status": "PASS_EIGHT_RUNTIME_UNITS",
+  "scope": "Eight runtime proof pairs after separately checked KernelRows; coverage/startup/endpoint remain separate.",
+  "kernel": {
+    "path": "/tmp/zfc-rotation240-runtime-ports-v1/kernel/run1/verification.json",
+    "sha256": "c139a003213eb3dbad9c62ef32df69cddd8b31f28cb5b51e1e562f9875f6d34e"
+  },
+  "commands": [
+    {
+      "unit": "pulse",
+      "phase": "prepare",
+      "command": [
+        "python3",
+        "-B",
+        "/tmp/zfc-rotation240-runtime-control/check_runtime.py",
+        "--unit",
+        "pulse",
+        "--parent",
+        "kernel",
+        "/tmp/zfc-rotation240-runtime-ports-v1/kernel/run1/verification.json",
+        "c139a003213eb3dbad9c62ef32df69cddd8b31f28cb5b51e1e562f9875f6d34e",
+        "--output",
+        "/tmp/zfc-rotation240-runtime-seven-v1/pulse/prepared1",
+        "--prepare-only"
+      ],
+      "seconds": 0.524869816377759,
+      "exit_code": 0,
+      "log": "/tmp/zfc-rotation240-runtime-batch1/pulse-prepare.log",
+      "log_sha256": "6349787dd4612a21b1f11928517f1bb435c8cc4ad3fe860c53bbf80f2bd88185"
+    },
+    {
+      "unit": "pulse",
+      "phase": "actual",
+      "command": [
+        "python3",
+        "-B",
+        "/tmp/zfc-rotation240-runtime-control/check_runtime.py",
+        "--unit",
+        "pulse",
+        "--parent",
+        "kernel",
+        "/tmp/zfc-rotation240-runtime-ports-v1/kernel/run1/verification.json",
+        "c139a003213eb3dbad9c62ef32df69cddd8b31f28cb5b51e1e562f9875f6d34e",
+        "--output",
+        "/tmp/zfc-rotation240-runtime-seven-v1/pulse/run1"
+      ],
+      "seconds": 1.7747916709631681,
+      "exit_code": 0,
+      "log": "/tmp/zfc-rotation240-runtime-batch1/pulse-actual.log",
+      "log_sha256": "945ec3a89bf691d6f010f7c40c7d1802de06e291945c9ec8a22e850f9aafd9db"
+    },
+    {
+      "unit": "mark",
+      "phase": "prepare",
+      "command": [
+        "python3",
+        "-B",
+        "/tmp/zfc-rotation240-runtime-control/check_runtime.py",
+        "--unit",
+        "mark",
+        "--output",
+        "/tmp/zfc-rotation240-runtime-ports-v1/mark/prepared1",
+        "--prepare-only"
+      ],
+      "seconds": 0.46912963781505823,
+      "exit_code": 0,
+      "log": "/tmp/zfc-rotation240-runtime-batch1/mark-prepare.log",
+      "log_sha256": "f809a52fcf2350ff82e2bdb60ccbcc33a440e75271b37e7470f15bf7a876f375"
+    },
+    {
+      "unit": "mark",
+      "phase": "actual",
+      "command": [
+        "python3",
+        "-B",
+        "/tmp/zfc-rotation240-runtime-control/check_runtime.py",
+        "--unit",
+        "mark",
+        "--output",
+        "/tmp/zfc-rotation240-runtime-ports-v1/mark/run1"
+      ],
+      "seconds": 2.06645960919559,
+      "exit_code": 0,
+      "log": "/tmp/zfc-rotation240-runtime-batch1/mark-actual.log",
+      "log_sha256": "d19c1d3c0d4783b4c9b94c5e27f20aea09621854f983d50b9043152c69edf305"
+    },
+    {
+      "unit": "boxes",
+      "phase": "prepare",
+      "command": [
+        "python3",
+        "-B",
+        "/tmp/zfc-rotation240-runtime-control/check_runtime.py",
+        "--unit",
+        "boxes",
+        "--parent",
+        "pulse",
+        "/tmp/zfc-rotation240-runtime-seven-v1/pulse/run1/verification.json",
+        "b60a748b2f7e0b6327aa7f6b8220016906a085cb3b87a5badb52e5992f109279",
+        "--output",
+        "/tmp/zfc-rotation240-runtime-seven-v1/boxes/prepared1",
+        "--prepare-only"
+      ],
+      "seconds": 0.5693103978410363,
+      "exit_code": 0,
+      "log": "/tmp/zfc-rotation240-runtime-batch1/boxes-prepare.log",
+      "log_sha256": "66a8b7a4b6172399e50af5fda6b2a631300c2a1ccaedbf24884f5323053776af"
+    },
+    {
+      "unit": "boxes",
+      "phase": "actual",
+      "command": [
+        "python3",
+        "-B",
+        "/tmp/zfc-rotation240-runtime-control/check_runtime.py",
+        "--unit",
+        "boxes",
+        "--parent",
+        "pulse",
+        "/tmp/zfc-rotation240-runtime-seven-v1/pulse/run1/verification.json",
+        "b60a748b2f7e0b6327aa7f6b8220016906a085cb3b87a5badb52e5992f109279",
+        "--output",
+        "/tmp/zfc-rotation240-runtime-seven-v1/boxes/run1"
+      ],
+      "seconds": 2.9496745727956295,
+      "exit_code": 0,
+      "log": "/tmp/zfc-rotation240-runtime-batch1/boxes-actual.log",
+      "log_sha256": "426fcce9c98944f8fa9d7e403de76a7d40a82911192c4c016037cabbcf2baf41"
+    },
+    {
+      "unit": "symbolic",
+      "phase": "prepare",
+      "command": [
+        "python3",
+        "-B",
+        "/tmp/zfc-rotation240-runtime-control/check_runtime.py",
+        "--unit",
+        "symbolic",
+        "--parent",
+        "boxes",
+        "/tmp/zfc-rotation240-runtime-seven-v1/boxes/run1/verification.json",
+        "29bcfecacae5a5fbbcb04e3b361cf40a51a48b68c99519e94a9668a9e8805896",
+        "--parent",
+        "mark",
+        "/tmp/zfc-rotation240-runtime-ports-v1/mark/run1/verification.json",
+        "02fe17bb3553b879c18e63134084aace356d9330919c29a4df0dcc0728fbd0ef",
+        "--output",
+        "/tmp/zfc-rotation240-runtime-seven-v1/symbolic/prepared1",
+        "--prepare-only"
+      ],
+      "seconds": 0.8636412816122174,
+      "exit_code": 0,
+      "log": "/tmp/zfc-rotation240-runtime-batch1/symbolic-prepare.log",
+      "log_sha256": "17ff98d7cec61709d738fd3a929818f013c9076067d338b884f6fa20c3211c0b"
+    },
+    {
+      "unit": "symbolic",
+      "phase": "actual",
+      "command": [
+        "python3",
+        "-B",
+        "/tmp/zfc-rotation240-runtime-control/check_runtime.py",
+        "--unit",
+        "symbolic",
+        "--parent",
+        "boxes",
+        "/tmp/zfc-rotation240-runtime-seven-v1/boxes/run1/verification.json",
+        "29bcfecacae5a5fbbcb04e3b361cf40a51a48b68c99519e94a9668a9e8805896",
+        "--parent",
+        "mark",
+        "/tmp/zfc-rotation240-runtime-ports-v1/mark/run1/verification.json",
+        "02fe17bb3553b879c18e63134084aace356d9330919c29a4df0dcc0728fbd0ef",
+        "--output",
+        "/tmp/zfc-rotation240-runtime-seven-v1/symbolic/run1"
+      ],
+      "seconds": 5.478309324011207,
+      "exit_code": 0,
+      "log": "/tmp/zfc-rotation240-runtime-batch1/symbolic-actual.log",
+      "log_sha256": "adc73587c5aa7ddad96f2d578aac72c452551223e1cc81fb1b6489f64933137a"
+    },
+    {
+      "unit": "site",
+      "phase": "prepare",
+      "command": [
+        "python3",
+        "-B",
+        "/tmp/zfc-rotation240-runtime-control/check_runtime.py",
+        "--unit",
+        "site",
+        "--parent",
+        "symbolic",
+        "/tmp/zfc-rotation240-runtime-seven-v1/symbolic/run1/verification.json",
+        "610e9e83f40ba1efad7937134fbda94fa72e26528b93db5b0d400fd4dde50369",
+        "--output",
+        "/tmp/zfc-rotation240-runtime-seven-v1/site/prepared1",
+        "--prepare-only"
+      ],
+      "seconds": 0.7544701527804136,
+      "exit_code": 0,
+      "log": "/tmp/zfc-rotation240-runtime-batch1/site-prepare.log",
+      "log_sha256": "fab850cc97a583186194438197ac2cc57ff66b88e0ac6ce8290ed91310472c10"
+    },
+    {
+      "unit": "site",
+      "phase": "actual",
+      "command": [
+        "python3",
+        "-B",
+        "/tmp/zfc-rotation240-runtime-control/check_runtime.py",
+        "--unit",
+        "site",
+        "--parent",
+        "symbolic",
+        "/tmp/zfc-rotation240-runtime-seven-v1/symbolic/run1/verification.json",
+        "610e9e83f40ba1efad7937134fbda94fa72e26528b93db5b0d400fd4dde50369",
+        "--output",
+        "/tmp/zfc-rotation240-runtime-seven-v1/site/run1"
+      ],
+      "seconds": 2.042078895494342,
+      "exit_code": 0,
+      "log": "/tmp/zfc-rotation240-runtime-batch1/site-actual.log",
+      "log_sha256": "e4007900a67b4615997d110a0034419fd23307b9574494acc1e70ff69c4281aa"
+    },
+    {
+      "unit": "frame",
+      "phase": "prepare",
+      "command": [
+        "python3",
+        "-B",
+        "/tmp/zfc-rotation240-runtime-control/check_runtime.py",
+        "--unit",
+        "frame",
+        "--parent",
+        "site",
+        "/tmp/zfc-rotation240-runtime-seven-v1/site/run1/verification.json",
+        "e45f3b19b2f739d8e831a14ecd0a6b8f4e366f7852881c52fd33741cccb28a86",
+        "--output",
+        "/tmp/zfc-rotation240-runtime-seven-v1/frame/prepared1",
+        "--prepare-only"
+      ],
+      "seconds": 0.8344447873532772,
+      "exit_code": 0,
+      "log": "/tmp/zfc-rotation240-runtime-batch1/frame-prepare.log",
+      "log_sha256": "b901f3ece0d4b95c511107e4b026253361a98b05c4beba2b38744fa39084b146"
+    },
+    {
+      "unit": "frame",
+      "phase": "actual",
+      "command": [
+        "python3",
+        "-B",
+        "/tmp/zfc-rotation240-runtime-control/check_runtime.py",
+        "--unit",
+        "frame",
+        "--parent",
+        "site",
+        "/tmp/zfc-rotation240-runtime-seven-v1/site/run1/verification.json",
+        "e45f3b19b2f739d8e831a14ecd0a6b8f4e366f7852881c52fd33741cccb28a86",
+        "--output",
+        "/tmp/zfc-rotation240-runtime-seven-v1/frame/run1"
+      ],
+      "seconds": 2.354162818752229,
+      "exit_code": 0,
+      "log": "/tmp/zfc-rotation240-runtime-batch1/frame-actual.log",
+      "log_sha256": "fd50f5ac643b3c45d4fb2a4f90dc88545db8985d8ab4c13ca1c40df376821eb1"
+    },
+    {
+      "unit": "instruction",
+      "phase": "prepare",
+      "command": [
+        "python3",
+        "-B",
+        "/tmp/zfc-rotation240-runtime-control/check_runtime.py",
+        "--unit",
+        "instruction",
+        "--parent",
+        "frame",
+        "/tmp/zfc-rotation240-runtime-seven-v1/frame/run1/verification.json",
+        "ac209f0b190a7224ae71187105684cc1abacc0ec4618a5b694e51fb31aa3b391",
+        "--output",
+        "/tmp/zfc-rotation240-runtime-seven-v1/instruction/prepared1",
+        "--prepare-only"
+      ],
+      "seconds": 0.8723231619223952,
+      "exit_code": 0,
+      "log": "/tmp/zfc-rotation240-runtime-batch1/instruction-prepare.log",
+      "log_sha256": "e508f402fe78aca938761e20686a647a935e5bf467f9a7990b16f8a8f6af6a79"
+    },
+    {
+      "unit": "instruction",
+      "phase": "actual",
+      "command": [
+        "python3",
+        "-B",
+        "/tmp/zfc-rotation240-runtime-control/check_runtime.py",
+        "--unit",
+        "instruction",
+        "--parent",
+        "frame",
+        "/tmp/zfc-rotation240-runtime-seven-v1/frame/run1/verification.json",
+        "ac209f0b190a7224ae71187105684cc1abacc0ec4618a5b694e51fb31aa3b391",
+        "--output",
+        "/tmp/zfc-rotation240-runtime-seven-v1/instruction/run1"
+      ],
+      "seconds": 2.0942553440108895,
+      "exit_code": 0,
+      "log": "/tmp/zfc-rotation240-runtime-batch1/instruction-actual.log",
+      "log_sha256": "fd34ccd1b9492b1b09191d7804f40eae9c90161a6e3612d9692c68eca204c3f2"
+    },
+    {
+      "unit": "runtime",
+      "phase": "prepare",
+      "command": [
+        "python3",
+        "-B",
+        "/tmp/zfc-rotation240-runtime-control/check_runtime.py",
+        "--unit",
+        "runtime",
+        "--parent",
+        "instruction",
+        "/tmp/zfc-rotation240-runtime-seven-v1/instruction/run1/verification.json",
+        "f7292a84c078d2703b363e0bc917d8ae44de69bafe43942e425725e098d6c171",
+        "--output",
+        "/tmp/zfc-rotation240-runtime-seven-v1/runtime/prepared1",
+        "--prepare-only"
+      ],
+      "seconds": 1.0724091557785869,
+      "exit_code": 0,
+      "log": "/tmp/zfc-rotation240-runtime-batch1/runtime-prepare.log",
+      "log_sha256": "00a51db5140c2a3165025a1c7190d68704dceb90249a6a5619e2cca9c5d083dc"
+    },
+    {
+      "unit": "runtime",
+      "phase": "actual",
+      "command": [
+        "python3",
+        "-B",
+        "/tmp/zfc-rotation240-runtime-control/check_runtime.py",
+        "--unit",
+        "runtime",
+        "--parent",
+        "instruction",
+        "/tmp/zfc-rotation240-runtime-seven-v1/instruction/run1/verification.json",
+        "f7292a84c078d2703b363e0bc917d8ae44de69bafe43942e425725e098d6c171",
+        "--output",
+        "/tmp/zfc-rotation240-runtime-seven-v1/runtime/run1"
+      ],
+      "seconds": 2.190463504754007,
+      "exit_code": 0,
+      "log": "/tmp/zfc-rotation240-runtime-batch1/runtime-actual.log",
+      "log_sha256": "d02fcc56469a6d9bdc7b822737c427e6c1954eb2c2b53076e87d558ea24d656f"
+    }
+  ],
+  "units": [
+    {
+      "unit": "pulse",
+      "path": "/tmp/zfc-rotation240-runtime-seven-v1/pulse/run1/verification.json",
+      "sha256": "b60a748b2f7e0b6327aa7f6b8220016906a085cb3b87a5badb52e5992f109279",
+      "probes": 3,
+      "callers": 4,
+      "source_seconds": 0.6446379879489541,
+      "audit_seconds": 0.6243646685034037
+    },
+    {
+      "unit": "mark",
+      "path": "/tmp/zfc-rotation240-runtime-ports-v1/mark/run1/verification.json",
+      "sha256": "02fe17bb3553b879c18e63134084aace356d9330919c29a4df0dcc0728fbd0ef",
+      "probes": 10,
+      "callers": 6,
+      "source_seconds": 1.0955193303525448,
+      "audit_seconds": 0.484777077101171
+    },
+    {
+      "unit": "boxes",
+      "path": "/tmp/zfc-rotation240-runtime-seven-v1/boxes/run1/verification.json",
+      "sha256": "29bcfecacae5a5fbbcb04e3b361cf40a51a48b68c99519e94a9668a9e8805896",
+      "probes": 14,
+      "callers": 19,
+      "source_seconds": 1.7475777985528111,
+      "audit_seconds": 0.6338362954556942
+    },
+    {
+      "unit": "symbolic",
+      "path": "/tmp/zfc-rotation240-runtime-seven-v1/symbolic/run1/verification.json",
+      "sha256": "610e9e83f40ba1efad7937134fbda94fa72e26528b93db5b0d400fd4dde50369",
+      "probes": 15,
+      "callers": 15,
+      "source_seconds": 4.11818141490221,
+      "audit_seconds": 0.4844436487182975
+    },
+    {
+      "unit": "site",
+      "path": "/tmp/zfc-rotation240-runtime-seven-v1/site/run1/verification.json",
+      "sha256": "e45f3b19b2f739d8e831a14ecd0a6b8f4e366f7852881c52fd33741cccb28a86",
+      "probes": 12,
+      "callers": 13,
+      "source_seconds": 0.8254959536716342,
+      "audit_seconds": 0.46217939630150795
+    },
+    {
+      "unit": "frame",
+      "path": "/tmp/zfc-rotation240-runtime-seven-v1/frame/run1/verification.json",
+      "sha256": "ac209f0b190a7224ae71187105684cc1abacc0ec4618a5b694e51fb31aa3b391",
+      "probes": 14,
+      "callers": 15,
+      "source_seconds": 0.9770347978919744,
+      "audit_seconds": 0.5295981373637915
+    },
+    {
+      "unit": "instruction",
+      "path": "/tmp/zfc-rotation240-runtime-seven-v1/instruction/run1/verification.json",
+      "sha256": "f7292a84c078d2703b363e0bc917d8ae44de69bafe43942e425725e098d6c171",
+      "probes": 7,
+      "callers": 7,
+      "source_seconds": 0.7643944779410958,
+      "audit_seconds": 0.4599961470812559
+    },
+    {
+      "unit": "runtime",
+      "path": "/tmp/zfc-rotation240-runtime-seven-v1/runtime/run1/verification.json",
+      "sha256": "73ae91f8758b5bcc9c2d97322a39585d148ba6a2c492cb8867bcafbd10bfd784",
+      "probes": 11,
+      "callers": 12,
+      "source_seconds": 0.6500158896669745,
+      "audit_seconds": 0.47784201707690954
+    }
+  ],
+  "active_unit": null,
+  "active_phase": null
+}

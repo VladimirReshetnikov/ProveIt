@@ -47,6 +47,11 @@ pass Lean: nine theorem probes and eleven typed callers, with zero warnings.
 The fast evaluator is proved equal to the published machine for every state
 and input bit.
 
+The [nine 240-state runtime units](rotation240_runtime.md) pass a further
+106 theorem probes and 94 typed callers, with zero warnings. They prove
+halting equivalence assuming complete decoder coverage and a related initial
+tape configuration; those concrete hypotheses remain to be discharged.
+
 The [**241-state candidate**](candidate-fold241/README.md) from `8c41b1fb7d`
 adds two local folds to the combined243 table. The last fold uses a bit written
 by the predecessor to distinguish two merged controls. Fresh replay passes
