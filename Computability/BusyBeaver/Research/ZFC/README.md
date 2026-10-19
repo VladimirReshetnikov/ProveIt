@@ -148,6 +148,10 @@ The [internal symbolic-tape interpretation](arithmetic_symbolic_tape_rotation240
 passes 10 probes and 12 callers. Actual normalization and `isMatch` preserve
 numeric tape configurations at arbitrary internal gaps; box execution and
 the full arithmetic simulation remain to be connected.
+The [represented whole-frame relation](arithmetic_control_frame_data_rotation240.md)
+passes 18 probes and callers. It is Σ₁-definable with the exact control table,
+state 85, 64-bit pointer margin and `167+extra` one-valued spares; related
+configurations are live. Step simulation remains a separate obligation.
 
 The [**241-state candidate**](candidate-fold241/README.md) from `8c41b1fb7d`
 adds two local folds to the combined243 table. The last fold uses a bit written
