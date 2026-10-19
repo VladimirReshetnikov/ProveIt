@@ -27,6 +27,15 @@ the lower bound needed for the independence argument; no absolute consistency
 proof is claimed. Require a concrete encoding benefit before increasing the
 benchmark strength.
 
+The [**240-state candidate**](candidate-rotation240/README.md) from `e5c2b3337e`
+combines another source-loop rotation with a 72/90 state fold. Fresh replay
+passes all 8,386 runtime cases, 2,322,575 symbolic rules and all 480 transition
+rows, with exact 409,691-step blank initialization. Its ordinary consistency
+argument is independently reviewed; the full exact-table Lean endpoint and
+internal PA equivalence remain open. The new source has 6,455 leaves and
+requires its own binary runtime and decoder coverage. The active formalization
+target is now this 240-state machine. See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md).
+
 The [**241-state candidate**](candidate-fold241/README.md) from `8c41b1fb7d`
 adds two local folds to the combined243 table. The last fold uses a bit written
 by the predecessor to distinguish two merged controls. Fresh replay passes
