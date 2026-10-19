@@ -7,7 +7,7 @@ import BusyBeaver.ZFC.BisimCertRotation240
 set_option autoImplicit false
 
 /-!
-# The dag254 path program and the Rotation240 source halt together, internally
+# Catalogue instances and initial certificate probes for Rotation240
 
 Two instances of the tree-generic control interpreter `ArithmeticControlTree`:
 
@@ -15,15 +15,15 @@ Two instances of the tree-generic control interpreter `ArithmeticControlTree`:
   unfolding of the 219-node DAG on which the L2 subroutine proofs are stated;
 * `TreeRotation240.tree`, the decoder tree of the rotated 240-state source.
 
-In every model of `IΣ₁`, from every internal register file, the two
-represented interpreters halt together (`halts_iff`). The proof instantiates
-`ArithmeticControlBisim.halts_iff_of_check` with the generated 3,862-entry
-certificate `BisimCertRotation240.certList`, checked by the kernel against
-both catalogues in chunks. Its only nonzero offsets (ten entries, each of size
-one) absorb the two transfer-plus-one loop rotations; the routing245
-re-association needs none.
+The generated `BisimCertRotation240.certList` contains 3,862 entries. The
+current source contains length/row probes and a kernel proof for entries
+0–9. Complete chunk checking and instantiation of
+`ArithmeticControlBisim.halts_iff_of_check` remain pending. The intended
+conclusion relates halting in every `IΣ₁` model from every internal register
+file. The certificate's ten unit-offset entries account for the two
+transfer-plus-one loop rotations; the routing245 re-association needs none.
 
-For the PA endpoint this replaces the external chain
+For the PA endpoint this is intended to replace the external chain
 `SourceRotation240`/`SourceRotation244`/`BisimRouting245`/`Bisim254`.
 -/
 
