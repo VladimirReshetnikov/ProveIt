@@ -32,38 +32,14 @@ theorem weylNextBudget_le (k B K : Nat) (hB : 1 ≤ B) (hK : 1 ≤ K) :
   have hk : k + 1 ≤ 2 ^ k := Nat.lt_two_pow_self
   have hA : 1 ≤ 2 ^ k := Nat.one_le_two_pow
   have hB2 : B ^ 2 ≤ B ^ 4 := Nat.pow_le_pow_right hB (by norm_num)
-  have hK1 : K ≤ K ^ 3 := by
-    calc K = K ^ 1 := (pow_one K).symm
-      _ ≤ K ^ 3 := Nat.pow_le_pow_right hK (by norm_num)
+  have hB4 : 1 ≤ B ^ 4 := Nat.one_le_pow _ _ hB
+  have hK1 : K ≤ K ^ 3 := le_self_pow hK (by norm_num)
   have hK2 : K ^ 2 ≤ K ^ 3 := Nat.pow_le_pow_right hK (by norm_num)
-  have hB1 : 1 ≤ B ^ 2 := Nat.one_le_pow _ _ hB
   have hK3 : 1 ≤ K ^ 3 := Nat.one_le_pow _ _ hK
-  have h18 : 2 ^ (k + 18) = 2 ^ k * 262144 := by rw [pow_add]; norm_num
-  rw [h18]
-  set X := 2 ^ k * B ^ 4 * K ^ 3 with hX
-  have hX1 : K ≤ X := by
-    calc K ≤ K ^ 3 := hK1
-      _ = 1 * 1 * K ^ 3 := by ring
-      _ ≤ 2 ^ k * B ^ 4 * K ^ 3 := Nat.mul_le_mul (Nat.mul_le_mul hA (le_trans hB1 hB2)) le_rfl
-  have hX2 : B ^ 2 ≤ X := by
-    calc B ^ 2 ≤ B ^ 4 := hB2
-      _ = 1 * B ^ 4 * 1 := by ring
-      _ ≤ 2 ^ k * B ^ 4 * K ^ 3 := Nat.mul_le_mul (Nat.mul_le_mul hA le_rfl) hK3
-  have hX3 : B ^ 2 * K ≤ X := by
-    calc B ^ 2 * K ≤ B ^ 4 * K ^ 3 := Nat.mul_le_mul hB2 hK1
-      _ = 1 * B ^ 4 * K ^ 3 := by ring
-      _ ≤ 2 ^ k * B ^ 4 * K ^ 3 := Nat.mul_le_mul (Nat.mul_le_mul hA le_rfl) le_rfl
-  have hX4 : (k + 1) * B ^ 2 * K ^ 2 ≤ X := by
-    calc (k + 1) * B ^ 2 * K ^ 2 ≤ 2 ^ k * B ^ 4 * K ^ 3 :=
-          Nat.mul_le_mul (Nat.mul_le_mul hk hB2) hK2
-      _ = X := rfl
-  have e1 : 128 * B ^ 2 * K = 128 * (B ^ 2 * K) := by ring
-  have e2 : 65536 * 2 ^ k * B ^ 4 * K ^ 3 = 65536 * X := by rw [hX]; ring
-  have e3 : 128 * (k + 1) * B ^ 2 * K ^ 2 = 128 * ((k + 1) * B ^ 2 * K ^ 2) := by ring
-  have e4 : 98304 * 2 ^ k * B ^ 4 * K ^ 3 = 98304 * X := by rw [hX]; ring
-  have e5 : 2 ^ k * 262144 * B ^ 4 * K ^ 3 = 262144 * X := by rw [hX]; ring
-  rw [e1, e2, e3, e4, e5]
-  omega
+  -- each lower monomial is at most `2^k B^4 K^3`
+  rw [pow_add 2 k 18]
+  linarith [Nat.mul_le_mul (Nat.mul_le_mul hA hB4) hK1, Nat.mul_le_mul (Nat.mul_le_mul hA hB2) hK3,
+    Nat.mul_le_mul (Nat.mul_le_mul hA hB2) hK1, Nat.mul_le_mul (Nat.mul_le_mul hk hB2) hK2]
 
 /-! ### Every degree -/
 

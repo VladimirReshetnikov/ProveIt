@@ -45,29 +45,19 @@ theorem balancedFeatureRelation_universal_iff {I R : Type*}
         (∀ i, u₁ (some i) = sign i * c) := by
   constructor
   · intro hall
-    have hpair (i : I) : u₀ (some i) + u₁ (some i) = 0 := by
-      simpa only [balancedFeatureRelation_pair_test] using
-        hall (Pi.single i 1) (Pi.single (some i) 1) 0
-    have hlast : u₀ none + u₁ none = 0 := by
-      let i : I := Classical.arbitrary I
-      have ht : sign i * (u₀ none + u₁ none) = 0 := by
-        simpa only [balancedFeatureRelation_last_test] using
-          hall (Pi.single i 1) (Pi.single none 1) 0
-      exact (mul_eq_zero.mp ht).resolve_left (hsign i)
-    have hheight (i : I) : u₁ (some i) + sign i * u₁ none = 0 := by
-      simpa only [balancedFeatureRelation_height_test] using hall (Pi.single i 1) 0 1
-    refine ⟨-u₁ none, by linear_combination hlast, by ring, ?_, ?_⟩
-    · intro i
-      linear_combination hpair i - hheight i
-    · intro i
-      linear_combination hheight i
+    have hpair (i : I) :=
+      (balancedFeatureRelation_pair_test sign u₀ u₁ i).symm.trans (hall _ _ _)
+    have hheight (i : I) :=
+      (balancedFeatureRelation_height_test sign u₀ u₁ i).symm.trans (hall _ _ _)
+    have hlast := (mul_eq_zero.mp ((balancedFeatureRelation_last_test sign u₀ u₁
+      (Classical.arbitrary I)).symm.trans (hall _ _ _))).resolve_left (hsign _)
+    exact ⟨-u₁ none, by linear_combination hlast, by ring,
+      fun i ↦ by linear_combination hpair i - hheight i,
+      fun i ↦ by linear_combination hheight i⟩
   · rintro ⟨c, h₀, h₁, h₀s, h₁s⟩ x y h
-    simp only [balancedFeatureRelation, h₀, h₁, h₀s, h₁s,
-      neg_add_cancel, add_neg_cancel, zero_mul, zero_add]
-    rw [Finset.sum_mul, ← Finset.sum_add_distrib]
-    apply Finset.sum_eq_zero
-    intro i _
-    ring
+    simp only [balancedFeatureRelation, h₀, h₁, h₀s, h₁s, Finset.sum_mul,
+      ← Finset.sum_add_distrib]
+    exact Finset.sum_eq_zero fun i _ ↦ by ring
 
 theorem balancedFeatureRelation_nonzero_witness {I R : Type*}
     [Fintype I] [DecidableEq I] [Nonempty I] [Field R]

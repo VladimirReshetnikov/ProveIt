@@ -36,24 +36,19 @@ theorem quadratic_leading_phase_error {N L t : Nat} [NeZero N]
     ‖exponential (-(b * (t : ZMod N) ^ 2 + y)) - exponential (-y)‖ ≤
       1 / (8 * L) := by
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hR : (0 : Real) < quadraticLocalizationPrecision L := by
-    exact_mod_cast (show 0 < quadraticLocalizationPrecision L by
-      have := quadraticLocalization_precision_ge_two hL; omega)
-  have htR : (t : Real) ≤ 2 * (quadraticLocalizationChunk L : Real) := by exact_mod_cast ht
-  have hbmul : (centeredAbs (b * (t : ZMod N) ^ 2) : Real) ≤
-      (centeredAbs b : Real) * (t : Real) ^ 2 := by
+  have hR : (0 : Real) < quadraticLocalizationPrecision L :=
+    Nat.cast_pos.mpr (by have := quadraticLocalization_precision_ge_two hL; omega)
+  have hbmul : (centeredAbs (b * (t : ZMod N) ^ 2) : Real) ≤ centeredAbs b * (t : Real) ^ 2 := by
     exact_mod_cast centeredAbs_mul_natCast_pow_le b t 2
   rw [exponential_neg_add_distance]
   calc
-    _ ≤ 2 * Real.pi * centeredAbs (-(b * (t : ZMod N) ^ 2)) / N :=
-      downstream_norm_exponential_sub_one_le _
-    _ = 2 * Real.pi * centeredAbs (b * (t : ZMod N) ^ 2) / N := by
-      simp only [centeredAbs, ZMod.natAbs_valMinAbs_neg]
+    _ ≤ 2 * Real.pi * centeredAbs (b * (t : ZMod N) ^ 2) / N :=
+      (downstream_norm_exponential_sub_one_le _).trans_eq (by rw [centeredAbs_neg])
     _ ≤ 2 * Real.pi * ((N : Real) / quadraticLocalizationPrecision L *
           (2 * (quadraticLocalizationChunk L : Real)) ^ 2) / N := by
       gcongr
-      exact hbmul.trans (mul_le_mul hb (pow_le_pow_left₀ (by positivity) htR 2)
-        (by positivity) (by positivity))
+      exact hbmul.trans (mul_le_mul hb (pow_le_pow_left₀ (by positivity)
+        (by exact_mod_cast ht) 2) (by positivity) (by positivity))
     _ = 2 * Real.pi * (2 * (quadraticLocalizationChunk L : Real)) ^ 2 /
         quadraticLocalizationPrecision L := by field_simp
     _ ≤ _ := quadraticLocalization_leading_error hL

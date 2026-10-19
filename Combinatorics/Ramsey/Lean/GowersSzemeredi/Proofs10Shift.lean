@@ -129,27 +129,17 @@ private lemma almostEvery_and {X : Type*} [DecidableEq X]
     (hP : AlmostEvery (1 - a) U P) (hQ : AlmostEvery (1 - b) U Q) :
     AlmostEvery (1 - (a + b)) U (fun x => P x ∧ Q x) := by
   classical
-  have hbadP := almostEvery_bad_card_le a U P hP
-  have hbadQ := almostEvery_bad_card_le b U Q hQ
+  -- a point failing `P ∧ Q` fails `P` or fails `Q`
   have hsub : (U.filter fun x => ¬ (P x ∧ Q x)) ⊆
       (U.filter fun x => ¬ P x) ∪ (U.filter fun x => ¬ Q x) := by
     intro x hx
-    rw [Finset.mem_union, Finset.mem_filter, Finset.mem_filter]
-    have hx' := Finset.mem_filter.mp hx
-    by_cases hPx : P x
-    · exact Or.inr ⟨hx'.1, fun hQx => hx'.2 ⟨hPx, hQx⟩⟩
-    · exact Or.inl ⟨hx'.1, hPx⟩
-  have hbadNat :
-      (U.filter fun x => ¬ (P x ∧ Q x)).card ≤
-        (U.filter fun x => ¬ P x).card + (U.filter fun x => ¬ Q x).card :=
-    (Finset.card_le_card hsub).trans (Finset.card_union_le _ _)
-  have hbad :
-      ((U.filter fun x => ¬ (P x ∧ Q x)).card : Real) ≤ (a + b) * U.card := by
-    have hbadReal :
-        ((U.filter fun x => ¬ (P x ∧ Q x)).card : Real) ≤
-          (U.filter fun x => ¬ P x).card + (U.filter fun x => ¬ Q x).card := by
-      exact_mod_cast hbadNat
-    nlinarith
+    simp only [Finset.mem_union, Finset.mem_filter] at hx ⊢
+    tauto
+  have hbad : ((U.filter fun x => ¬ (P x ∧ Q x)).card : Real) ≤ (a + b) * U.card := by
+    have h : ((U.filter fun x => ¬ (P x ∧ Q x)).card : Real) ≤
+        (U.filter fun x => ¬ P x).card + (U.filter fun x => ¬ Q x).card := by
+      exact_mod_cast (Finset.card_le_card hsub).trans (Finset.card_union_le _ _)
+    linarith [almostEvery_bad_card_le a U P hP, almostEvery_bad_card_le b U Q hQ]
   exact almostEvery_of_bad_card_le (a + b) U (fun x => P x ∧ Q x) hbad
 
 private lemma exists_and_of_almostEvery {X : Type*} [DecidableEq X]

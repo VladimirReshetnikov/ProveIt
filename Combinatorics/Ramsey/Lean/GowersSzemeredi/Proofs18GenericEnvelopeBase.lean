@@ -418,7 +418,7 @@ theorem inv_mul_div_four_le_pw (hX : 2 ≤ X) {x y : Real} {a : Nat}
 
 end Calc
 
-theorem familyRecThr_le_exp {X : Real} (hX : 2 ≤ X) {k K p q μK c : Nat} (hK : 1 ≤ K)
+theorem familyRecThr_le_exp {X : Real} (hX : 2 ≤ X) {k K p q μK c : Nat}
     (hKμ : K ≤ 2 ^ (2 ^ μK)) (hpμ : p ≤ 2 ^ (2 ^ μK)) (hq : (q : Real) + 1 ≤ X ^ (2 ^ c)) :
     (familyRecThr k K p q : Real) ≤ Real.exp (X ^ (2 ^ (max μK (c + (k + 2)) + 3))) := by
   have hq0 : (0 : Real) ≤ (q : Real) + 1 := by positivity

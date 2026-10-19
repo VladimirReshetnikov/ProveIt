@@ -204,27 +204,10 @@ private lemma contextEncodeArrangement_injective {N : Nat} [NeZero N]
     (B : Finset (Pair N)) :
     Function.Injective (contextEncodeArrangement B) := by
   intro R S hcode
-  apply Subtype.ext
-  have hfun :
-      (fun i : Fin 15 ↦
-        (⟨(R.1.x i.succ, R.1.y i.succ), (R.2.2 i.succ).1⟩ : ↑B)) =
-        fun i : Fin 15 ↦
-          ⟨(S.1.x i.succ, S.1.y i.succ), (S.2.2 i.succ).1⟩ :=
-    congrArg Prod.fst hcode
-  have hxTail : ∀ i : Fin 15, R.1.x i.succ = S.1.x i.succ := by
-    exact fun i => congrArg (fun q ↦ (q i : Pair N).1) hfun
-  have hyTail : ∀ i : Fin 15, R.1.y i.succ = S.1.y i.succ := by
-    exact fun i => congrArg (fun q ↦ (q i : Pair N).2) hfun
-  have hx : R.1.x = S.1.x :=
-    lemma134_additive_ext R.2.1 S.2.1 hxTail
-  have hy0 : R.1.y 0 = S.1.y 0 :=
-    congrArg (fun c ↦ c.2.1) hcode
-  have hy : R.1.y = S.1.y := by
-    funext i
-    refine Fin.cases hy0 (fun j ↦ hyTail j) i
-  have hh : R.1.height = S.1.height :=
-    congrArg (fun c ↦ c.2.2) hcode
-  exact Prod.ext hx (Prod.ext hy hh)
+  simp only [contextEncodeArrangement, Prod.mk.injEq, funext_iff, Subtype.mk.injEq] at hcode
+  obtain ⟨htail, hy0, hh⟩ := hcode
+  exact Subtype.ext (Prod.ext (lemma134_additive_ext R.2.1 S.2.1 fun i ↦ (htail i).1)
+    (Prod.ext (funext fun i ↦ Fin.cases hy0 (fun j ↦ (htail j).2) i) hh))
 
 theorem context_arrangementCount_le_card_pow {N : Nat} [NeZero N]
     (B : Finset (Pair N)) :

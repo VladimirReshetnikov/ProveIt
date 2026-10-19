@@ -149,22 +149,16 @@ theorem exists_freiman_common_rows_of_two_densities {N : Nat} [Fact N.Prime]
   have hn : (0 : Real) < S.card := by exact_mod_cast hS.card_pos
   have htotal : (∑ h ∈ I, ((translatedRow S B y h).card : Real)) = B.card := by
     exact_mod_cast translatedRow_total S I B y hB
-  have hI : I.Nonempty := by
-    by_contra hi
-    have hi0 : I = ∅ := Finset.not_nonempty_iff_eq_empty.mp hi
-    have hz : (B.card : Real) = 0 := by simpa [hi0] using htotal.symm
-    have hp : 0 < β * m * S.card := by positivity
-    rw [hz] at habs
-    linarith
+  have hI : I.Nonempty := Finset.nonempty_of_sum_ne_zero
+    (htotal.trans_ne ((by positivity : (0 : Real) < β * m * S.card).trans_le habs).ne')
   have hcube := cubic_row_moment_of_two_bounds I
     (fun h ↦ ((translatedRow S B y h).card : Real)) (fun _ _ ↦ Nat.cast_nonneg _) hI
     (mul_nonneg hδ.le hn.le) (show 0 ≤ β * m * S.card by positivity)
     (by simpa only [htotal] using hrel) (by simpa only [htotal] using habs)
   have hdiag := quadratic_row_moment_le S I (translatedRow S B y)
     (fun _ _ ↦ Finset.filter_subset _ _) hIm
-  apply exists_freiman_common_rows_of_moments ctx S I B y hS hBA
+  exact exists_freiman_common_rows_of_moments ctx S I B y hS hBA
     (fun z hz ↦ (Finset.mem_product.mp (hB hz)).1) hlinear
-    (mul_pos hm (sub_pos.mpr hwidth))
-  nlinarith [hcube, hdiag]
+    (mul_pos hm (sub_pos.mpr hwidth)) (by nlinarith [hcube, hdiag])
 
 end LeanProofs.GowersSzemeredi

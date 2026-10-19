@@ -364,10 +364,6 @@ private lemma prop141_global_cauchy {N p : Nat} [NeZero N]
 
 alias prop141_sum_exponential_mul := fejer_sum_exponential_mul
 
-lemma prop141_prod_fin_four (a : Fin 4 → Real) :
-    (∏ i, a i) = a 0 * a 1 * a 2 * a 3 := by
-  rw [Fin.prod_univ_four]
-
 private lemma prop141_weight_eq_energy {N p : Nat} [NeZero N]
     (lambda : ZMod N → Real) (sigma : Fin p → ZMod N → ZMod N) :
     simultaneouslyAdditiveWeight lambda sigma =

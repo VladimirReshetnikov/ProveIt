@@ -453,10 +453,4 @@ lemma selectionCarrier_prod_of_nondegenerate {N k : Nat} [NeZero N]
 
 /-! ## Iterating the one-stage selection -/
 
-noncomputable def selectionDegenerateFinset (N k : Nat) [NeZero N] :
-    Finset (GeneralArrangement N k 8) := by
-  classical
-  exact Finset.univ.filter fun R ↦
-    IsAdditiveTuple R.crossSection ∧ R.IsDegenerate
-
 end LeanProofs.GowersSzemeredi

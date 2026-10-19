@@ -88,21 +88,12 @@ lemma productProperty_one_additive {N : Nat} [NeZero N]
     gamma ^ (8 : Nat) * (N : Real)⁻¹ * (B.card : Real) ^ 4 ≤
       phiAdditiveCount (pointOneDomain B) (pointOneMap phi) := by
   classical
-  let y : Fin 1 → Point N 1 := fun _ => 0
-  have h := hproduct 1 0 y (pointOneDomain B) (fun _ => (1 : Real))
-    (fun _ => by positivity)
-  have hmem : ∀ (i : Fin 1) z, z ∈ pointOneDomain B →
-      replaceCoordinate (y i) 0 z ∈ B := by
-    intro i z hz
-    rw [replaceCoordinate_one]
-    exact (mem_pointOneDomain B z).1 hz
-  specialize h hmem
-  have henergy :
-      weightedSimultaneousAdditiveEnergy (pointOneDomain B)
-          (fun _ => (1 : Real))
-          (fun i => coordinateRestriction phi (y i) 0) =
+  have h := hproduct 1 0 (fun _ => 0) (pointOneDomain B) (fun _ => (1 : Real))
+    (fun _ => zero_le_one) fun _ z hz => by
+      rw [replaceCoordinate_one]; exact (mem_pointOneDomain B z).1 hz
+  have henergy : weightedSimultaneousAdditiveEnergy (pointOneDomain B) (fun _ => (1 : Real))
+      (fun _ : Fin 1 => coordinateRestriction phi 0 0) =
         (phiAdditiveCount (pointOneDomain B) (pointOneMap phi) : Nat) := by
-    classical
     unfold weightedSimultaneousAdditiveEnergy phiAdditiveCount countWhere
     rw [Finset.filter_congr_decidable]
     simp only [coordinateRestriction_one]

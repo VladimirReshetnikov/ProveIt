@@ -45,36 +45,20 @@ theorem fejer_vertex_injective_of_feature_line {N L : Nat} [NeZero N] [Fact N.Pr
     Function.Injective vertex := by
   intro i j hij
   by_contra hne
-  have hk : ∃ k : I, k ≠ i ∧ k ≠ j := by
-    by_contra h
-    push Not at h
-    have hsub : (Finset.univ : Finset I) ⊆ {i, j} := by
-      intro k _
-      by_cases hki : k = i
-      · simp [hki]
-      · simp [h k hki]
-    have hc := Finset.card_le_card hsub
-    have htwo : ({i, j} : Finset I).card ≤ 2 := (Finset.card_insert_le _ _).trans (by simp)
-    rw [Finset.card_univ] at hc
-    omega
-  obtain ⟨k, hki, hkj⟩ := hk
+  obtain ⟨k, -, hk⟩ := Finset.exists_mem_notMem_of_card_lt_card
+    (Finset.card_le_two.trans_lt (hI.trans_eq Finset.card_univ.symm) :
+      ({i, j} : Finset I).card < (Finset.univ : Finset I).card)
+  simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hk
   let v : I → Fin L × Fin L := fun a =>
     (⟨if a = i then 1 else 0, by split_ifs <;> omega⟩,
       ⟨if a = j then 1 else 0, by split_ifs <;> omega⟩)
   have hv (a : I) : ((v a).1 - (v a).2 : ZMod N) =
       (if a = i then 1 else 0) - (if a = j then 1 else 0) := by
     simp [v]
-  have hf : fejerPairRelation v (feature ∘ vertex) = 0 := by
+  obtain ⟨c, hc⟩ := hline v (by
     simp only [fejerPairRelation, hv, sub_mul, Finset.sum_sub_distrib, Function.comp_apply]
-    simp [ite_mul, hij]
-  obtain ⟨c, hc⟩ := hline v hf
-  have hc0 : c = 0 := by
-    have ht := hc k
-    rw [hv] at ht
-    simp only [if_neg hki, if_neg hkj, sub_self] at ht
-    exact (mul_eq_zero.mp ht.symm).resolve_right (hlambda k)
-  have hi := hc i
-  rw [hv, hc0] at hi
-  simp [hne] at hi
+    simp [ite_mul, hij])
+  have hc0 : c = 0 := by simpa [hv, hk.1, hk.2, hlambda k] using (hc k).symm
+  simpa [hv, hc0, hne] using hc i
 
 end LeanProofs.GowersSzemeredi

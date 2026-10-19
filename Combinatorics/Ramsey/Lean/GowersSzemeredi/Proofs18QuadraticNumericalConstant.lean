@@ -11,29 +11,21 @@ theorem section5_small_degree_refinement_constant_upper {k : Nat} (hk : k ≤ 2)
     section5LocalRefinementConstant k 1 ≤ (2 : Real) ^ ((2 : Nat) ^ 321) + 4 := by
   have hK : polynomialPartitionConstant k ≤ 2048 := by
     interval_cases k <;> norm_num [polynomialPartitionConstant, Nat.factorial]
-  have he : 40 * k ^ 3 + 1 ≤ 321 := by
-    have hh := Nat.pow_le_pow_left hk 3
-    norm_num at hh
-    omega
+  have he : 40 * k ^ 3 + 1 ≤ 321 := by have := Nat.pow_le_pow_left hk 3; omega
   have hW : (polynomialPartitionThreshold k : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 321) := by
     simp only [polynomialPartitionThreshold, weylThreshold, Nat.cast_pow, Nat.cast_ofNat]
     rw [← pow_mul, ← pow_succ]
     exact pow_le_pow_right₀ (by norm_num) (Nat.pow_le_pow_right (by norm_num) he)
-  have h8192 : 8192 ≤ (2 : Nat) ^ 321 :=
-    (by norm_num : 8192 ≤ (2 : Nat) ^ 13).trans (Nat.pow_le_pow_right (by norm_num) (by omega))
   have h16 : (16 : Real) ^ polynomialPartitionConstant k ≤ (2 : Real) ^ ((2 : Nat) ^ 321) := by
-    calc
-      _ ≤ (16 : Real) ^ 2048 := pow_le_pow_right₀ (by norm_num) hK
-      _ = (2 : Real) ^ 8192 := by rw [show (16 : Real) = 2 ^ (4 : Nat) by norm_num, ← pow_mul]
-      _ ≤ _ := pow_le_pow_right₀ (by norm_num) h8192
-  have hpi : (4 * Real.pi / 1) ^ polynomialPartitionConstant k ≤ (2 : Real) ^ ((2 : Nat) ^ 321) := by
-    apply le_trans _ h16
-    apply pow_le_pow_left₀ (by positivity)
-    have hh := Real.pi_lt_four
-    linarith
+    rw [show (16 : Real) = 2 ^ 4 by norm_num, ← pow_mul]
+    exact pow_le_pow_right₀ (by norm_num) ((Nat.mul_le_mul_left 4 hK).trans
+      ((by norm_num : 4 * 2048 ≤ 2 ^ 13).trans (Nat.pow_le_pow_right (by norm_num) (by norm_num))))
+  have hle (b : Real) (hb : 0 ≤ b) (hb16 : b ≤ 16) :
+      b ^ polynomialPartitionConstant k ≤ (2 : Real) ^ ((2 : Nat) ^ 321) :=
+    (pow_le_pow_left₀ hb hb16 _).trans h16
   unfold section5LocalRefinementConstant
-  exact add_le_add_left (max_le (max_le hW hpi)
-    ((pow_le_pow_left₀ (by norm_num : (0 : Real) ≤ 4) (by norm_num : (4 : Real) ≤ 16) _).trans h16)) 4
+  exact add_le_add_left (max_le (max_le hW (hle _ (by positivity)
+    (by linarith [Real.pi_lt_four]))) (hle 4 (by norm_num) (by norm_num))) 4
 
 /-- The fixed prefactor is far below the exponent reserve in the source's
 four-term instance of the quantitative Szemeredi threshold. -/

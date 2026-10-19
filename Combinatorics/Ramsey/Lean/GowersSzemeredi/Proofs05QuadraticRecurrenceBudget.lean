@@ -71,36 +71,21 @@ theorem quadraticRecurrence_denominator_bound {R q : Real} (hR : 2 ≤ R) (hq : 
         (q⁻¹ + 2 / quadraticRecurrenceSample R) *
           (1 + Real.log (quadraticRecurrenceSample R))) :
     q ≤ 2 ^ (40 : Nat) * quadraticRecurrenceRoot R * R ^ 3 := by
-  have hR0 : 0 < R := by linarith
   have hD : 0 < quadraticRecurrenceRoot R := by unfold quadraticRecurrenceRoot; positivity
+  have hlog := quadraticRecurrence_log_bound hR
   have herr := quadraticRecurrence_error_bound hR
-  have hsplit : 2 ^ (25 : Nat) * quadraticRecurrenceRoot R *
-      (q⁻¹ + 2 / quadraticRecurrenceSample R) *
-        (1 + Real.log (quadraticRecurrenceSample R)) =
-      (2 ^ (25 : Nat) * quadraticRecurrenceRoot R *
-        (1 + Real.log (quadraticRecurrenceSample R))) / q +
-      2 ^ (26 : Nat) * quadraticRecurrenceRoot R *
-        (1 + Real.log (quadraticRecurrenceSample R)) / quadraticRecurrenceSample R := by ring
-  rw [hsplit] at hweyl
-  have hhalf : 1 / (64 * R ^ 2) = 2 * (1 / (128 * R ^ 2)) := by ring
-  rw [hhalf] at hweyl
-  have hlo : 1 / (128 * R ^ 2) ≤
-      (2 ^ (25 : Nat) * quadraticRecurrenceRoot R *
-        (1 + Real.log (quadraticRecurrenceSample R))) / q := by linarith
-  have hprod := (le_div_iff₀ hq).mp hlo
-  have hq' : q ≤ (2 ^ (25 : Nat) * quadraticRecurrenceRoot R *
-      (1 + Real.log (quadraticRecurrenceSample R))) * (128 * R ^ 2) := by
-    apply (div_le_iff₀ (by positivity : 0 < 128 * R ^ 2)).mp
-    simpa only [one_div, div_eq_mul_inv, one_mul, mul_comm] using hprod
-  calc
-    q ≤ _ := hq'
-    _ ≤ (2 ^ (25 : Nat) * quadraticRecurrenceRoot R * (145 * R)) * (128 * R ^ 2) := by
-      gcongr
-      exact quadraticRecurrence_log_bound hR
-    _ ≤ 2 ^ (40 : Nat) * quadraticRecurrenceRoot R * R ^ 3 := by
-      have hcoef : (2 : Real) ^ (25 : Nat) * 145 * 128 ≤ 2 ^ (40 : Nat) := by norm_num
-      have h := mul_le_mul_of_nonneg_right hcoef (show 0 ≤ quadraticRecurrenceRoot R * R ^ 3 by positivity)
-      nlinarith [h]
+  set D := quadraticRecurrenceRoot R
+  set S := quadraticRecurrenceSample R
+  set L := 1 + Real.log S
+  -- the second summand of `hweyl` is at most half its left side, by `herr`
+  have hsplit : 2 ^ (25 : Nat) * D * (q⁻¹ + 2 / S) * L =
+      2 ^ (25 : Nat) * D * L / q + 2 ^ (26 : Nat) * D * L / S := by ring
+  have hlo : 1 / (128 * R ^ 2) ≤ 2 ^ (25 : Nat) * D * L / q := by
+    linarith [show 1 / (64 * R ^ 2) = 2 * (1 / (128 * R ^ 2)) by ring]
+  rw [div_le_div_iff₀ (by positivity : (0 : Real) < 128 * R ^ 2) hq, one_mul] at hlo
+  linarith [mul_le_mul_of_nonneg_left hlog
+    (by positivity : (0 : Real) ≤ 2 ^ (25 : Nat) * D * (128 * R ^ 2)),
+    (by positivity : (0 : Real) ≤ D * R ^ 3)]
 
 theorem quadraticRecurrence_witness_budget {R h q : Real} (hR : 2 ≤ R)
     (hhR : h ≤ 4 * R ^ 2) (hq : 0 ≤ q)

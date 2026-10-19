@@ -38,26 +38,12 @@ lemma cor57_phase_close_of_mem_interval {N d : Nat} [NeZero N]
     ‖exponential (-y) - exponential (-a)‖ ≤
       2 * Real.pi * d / N := by
   unfold ModAP.carrier modInterval at hy
-  simp only [Finset.mem_image, Finset.mem_univ, true_and] at hy
+  simp only [Finset.mem_image, Finset.mem_univ, true_and, mul_one] at hy
   obtain ⟨i, rfl⟩ := hy
-  have hi : (i : Nat) ≤ d := by omega
-  have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  simp only [mul_one]
-  calc
-    ‖exponential (-(a + (i : ZMod N))) - exponential (-a)‖ =
-        ‖exponential (-a) * (exponential (-(i : ZMod N)) - 1)‖ := by
-      congr 1
-      rw [show -(a + (i : ZMod N)) = -a + -(i : ZMod N) by ring, exponential_add]
-      ring
-    _ = ‖exponential (-(i : ZMod N)) - 1‖ := by
-      rw [norm_mul, cor57_norm_exponential, one_mul]
-    _ ≤ 2 * Real.pi * centeredAbs (-(i : ZMod N)) / N :=
-      cor57_norm_exponential_sub_one_le _
-    _ ≤ 2 * Real.pi * d / N := by
-      apply div_le_div_of_nonneg_right _ hN.le
-      gcongr
-      exact_mod_cast
-        (cor57_centeredAbs_neg_natCast_le (N := N) (i := (i : Nat))).trans hi
+  rw [neg_add, exponential_add, ← mul_sub_one, norm_mul, cor57_norm_exponential, one_mul]
+  refine (cor57_norm_exponential_sub_one_le _).trans ?_
+  gcongr
+  exact_mod_cast (cor57_centeredAbs_neg_natCast_le (N := N) (i := (i : Nat))).trans (Fin.is_le i)
 
 lemma cor57_partition_constant_pos (k : Nat) :
     0 < polynomialPartitionConstant k := by

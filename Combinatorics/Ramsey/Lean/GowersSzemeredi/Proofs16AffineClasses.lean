@@ -12,29 +12,15 @@ theorem finite_graph_cover_partition {X Y : Type*} [DecidableEq X]
     (hcover : ∀ x ∈ B, ∃ i, f x = ell i x) :
     ∃ C : Fin q → Finset X, IsPartition C B ∧
       ∀ i x, x ∈ C i → f x = ell i x := by
-  let label : X → Fin q := fun x =>
-    if hx : x ∈ B then (hcover x hx).choose else ⟨0, hq⟩
-  let C : Fin q → Finset X := fun i => B.filter (fun x => label x = i)
-  refine ⟨C, ⟨?_, ?_⟩, ?_⟩
-  · intro x
-    constructor
-    · intro hx
-      exact ⟨label x, Finset.mem_filter.mpr ⟨hx, rfl⟩⟩
-    · rintro ⟨i, hi⟩
-      exact (Finset.mem_filter.mp hi).1
-  · intro i j hij
-    apply Finset.disjoint_left.mpr
-    intro x hi hj
-    have hei := (Finset.mem_filter.mp hi).2
-    have hej := (Finset.mem_filter.mp hj).2
-    exact (bne_iff_ne.mp hij) (hei.symm.trans hej)
-  · intro i x hx
-    obtain ⟨hxB, hlabel⟩ := Finset.mem_filter.mp hx
-    have hchosen : f x = ell (label x) x := by
-      dsimp [label]
-      rw [dif_pos hxB]
-      exact (hcover x hxB).choose_spec
-    simpa only [hlabel] using hchosen
+  let label : X → Fin q := fun x => if hx : x ∈ B then (hcover x hx).choose else ⟨0, hq⟩
+  refine ⟨fun i => B.filter (fun x => label x = i),
+    ⟨fun x => ⟨fun hx => ⟨label x, Finset.mem_filter.mpr ⟨hx, rfl⟩⟩,
+      fun ⟨_, hi⟩ => (Finset.mem_filter.mp hi).1⟩,
+    fun i j hij => Finset.disjoint_left.mpr fun x hi hj =>
+      bne_iff_ne.mp hij ((Finset.mem_filter.mp hi).2.symm.trans (Finset.mem_filter.mp hj).2)⟩,
+    fun i x hx => ?_⟩
+  obtain ⟨hxB, rfl⟩ := Finset.mem_filter.mp hx
+  simpa only [label, dif_pos hxB] using (hcover x hxB).choose_spec
 
 /-- The same construction works on a finite column space embedded in the
 field, as required for a progression J smaller than the full modulus. -/

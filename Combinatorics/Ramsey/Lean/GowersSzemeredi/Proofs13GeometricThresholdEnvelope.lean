@@ -26,27 +26,19 @@ theorem section13_fejer_spectral_double_exp_le {alpha : Real}
     (hα : 0 < alpha) (hαone : alpha ≤ 1) :
     Real.exp (Real.exp (112 * section13Q ((alpha / 2) ^ (4207554485 : Nat)))) ≤
       Real.exp (Real.exp ((2 / alpha) ^ ((2 : Nat) ^ 54))) := by
-  let delta := (alpha / 2) ^ (4207554485 : Nat)
-  have hδ : 0 < delta := by dsimp [delta]; positivity
-  apply Real.exp_le_exp.mpr (Real.exp_le_exp.mpr _)
   have hs := section13_fejer_spectral_upper hα hαone
   have ht : 2 ≤ 2 / alpha := (le_div_iff₀ hα).mpr (by linarith only [hαone])
-  have hQ0 : 0 ≤ section13Q delta := by
+  have hQ0 : 0 ≤ section13Q ((alpha / 2) ^ (4207554485 : Nat)) := by
     unfold section13Q
-    exact mul_nonneg (pow_nonneg (by norm_num) _) (Real.rpow_nonneg hδ.le _)
-  have h8 : (8 : Real) ≤ (2 / alpha) ^ (3 : Nat) := by
-    have h := pow_le_pow_left₀ (by norm_num : (0 : Real) ≤ 2) ht 3
-    norm_num at h ⊢
-    exact h
-  calc
-    _ ≤ (8 * 15) * section13Q delta :=
-      mul_le_mul_of_nonneg_right (by norm_num : (112 : Real) ≤ 8 * 15) hQ0
-    _ = 8 * (15 * section13Q delta) := mul_assoc _ _ _
-    _ ≤ 8 * (2 / alpha) ^ ((2 : Nat) ^ 53) := mul_le_mul_of_nonneg_left hs (by norm_num)
-    _ ≤ (2 / alpha) ^ (3 : Nat) * (2 / alpha) ^ ((2 : Nat) ^ 53) :=
-      mul_le_mul_of_nonneg_right h8 (by positivity)
-    _ = (2 / alpha) ^ (3 + (2 : Nat) ^ 53) := (pow_add _ _ _).symm
-    _ ≤ _ := pow_le_pow_right₀ (by linarith only [ht]) (by norm_num)
+    positivity
+  have h8 : (8 : Real) ≤ (2 / alpha) ^ ((2 : Nat) ^ 53) :=
+    ((by norm_num : (8 : Real) = 2 ^ 3).trans_le (pow_le_pow_left₀ (by norm_num) ht 3)).trans
+      (pow_le_pow_right₀ (by linarith only [ht]) (by norm_num))
+  rw [Real.exp_le_exp, Real.exp_le_exp, show (2 : Nat) ^ 54 = 2 ^ 53 + 2 ^ 53 by norm_num,
+    pow_add (2 / alpha)]
+  generalize section13Q ((alpha / 2) ^ (4207554485 : Nat)) = Q at hs hQ0 ⊢
+  generalize (2 / alpha) ^ ((2 : Nat) ^ 53) = B at hs h8 ⊢
+  nlinarith only [hs, hQ0, h8]
 
 /-- The complete geometric construction has a double-exponential threshold
 at the improved Fourier graph density. -/

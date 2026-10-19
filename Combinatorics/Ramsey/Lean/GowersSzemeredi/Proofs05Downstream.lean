@@ -257,28 +257,13 @@ private lemma downstream_scale_le {k r : Nat} (eta : Real)
       (4 * Real.pi / eta) ^ polynomialPartitionConstant k < (r : Real)) :
     (r : Real) ^ (-(polynomialPartitionConstant k : Real)⁻¹) * (1 : Real) ≤
       eta / (4 * Real.pi) := by
-  let K := polynomialPartitionConstant k
-  have hK : 0 < K := by
-    dsimp only [K]
-    unfold polynomialPartitionConstant
-    positivity
-  have hKReal : (0 : Real) < K := by exact_mod_cast hK
-  have hr : (0 : Real) < r := by
-    have hbase : 0 < 4 * Real.pi / eta := by positivity
-    exact (pow_nonneg hbase.le K).trans_lt hlarge
-  have hbase : 0 < 4 * Real.pi / eta := by positivity
-  have hroot : 4 * Real.pi / eta < (r : Real) ^ (K : Real)⁻¹ := by
-    rw [Real.lt_rpow_inv_iff_of_pos hbase.le hr.le hKReal]
-    simpa only [Real.rpow_natCast] using hlarge
-  have hrootPos : 0 < (r : Real) ^ (K : Real)⁻¹ :=
-    Real.rpow_pos_of_pos hr _
-  have hinv : ((r : Real) ^ (K : Real)⁻¹)⁻¹ <
-      (4 * Real.pi / eta)⁻¹ :=
-    (inv_lt_inv₀ hrootPos hbase).2 hroot
-  rw [Real.rpow_neg hr.le]
-  have hright : (4 * Real.pi / eta)⁻¹ = eta / (4 * Real.pi) := by
-    field_simp
-  simpa only [K, hright, mul_one] using hinv.le
+  have hb : 0 < 4 * Real.pi / eta := by positivity
+  have hr : (0 : Real) < r := (pow_pos hb _).trans hlarge
+  have hK : (0 : Real) < polynomialPartitionConstant k := by
+    exact_mod_cast cor57_partition_constant_pos k
+  rw [mul_one, Real.rpow_neg hr.le, ← inv_div]
+  refine inv_anti₀ hb ((Real.lt_rpow_inv_iff_of_pos hb.le hr.le hK).2 ?_).le
+  simpa only [Real.rpow_natCast] using hlarge
 
 /-- Retain the diameter information in the local polynomial partition. -/
 theorem section5_local_diameter_refinement_of_corollary_5_6

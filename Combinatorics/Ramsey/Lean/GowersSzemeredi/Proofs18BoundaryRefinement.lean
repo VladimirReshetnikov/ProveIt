@@ -37,28 +37,21 @@ theorem interval_length_factor_inv_le_scaled {X beta : Real} {n : Nat}
     (hX : 2 ≤ X) (hb : 0 < beta) (hbi : beta⁻¹ ≤ X ^ n) :
     (beta / (8 * boundaryRefinementConstant (beta / 64)))⁻¹ ≤
       (8 * section5LocalRefinementConstant 1 1) * X ^ (17 * n + 64) := by
-  have hX1 : 1 ≤ X := by linarith only [hX]
-  have hX0 : 0 ≤ X := zero_le_one.trans hX1
-  have heta : 0 < 4 * Real.pi * (beta / 64) := by positivity
-  have hetai : (4 * Real.pi * (beta / 64))⁻¹ ≤ X ^ (4 + n) := by
-    rw [show (4 * Real.pi * (beta / 64))⁻¹ = 16 / Real.pi * beta⁻¹ by field_simp; ring, pow_add]
-    have h16 : 16 / Real.pi ≤ X ^ 4 :=
-      (div_le_self (by norm_num) (by linarith [Real.pi_gt_three])).trans
-        ((show (16 : Real) ≤ 2 ^ 4 by norm_num).trans (pow_le_pow_left₀ (by norm_num) hX 4))
-    exact mul_le_mul h16 hbi (inv_pos.mpr hb).le (pow_nonneg hX0 _)
+  have h16 : 16 / Real.pi ≤ X ^ 4 :=
+    (div_le_self (by norm_num) (by linarith [Real.pi_gt_three])).trans
+      (by linarith [pow_le_pow_left₀ (by norm_num : (0 : Real) ≤ 2) hX 4])
   have hscaled := section5LocalRefinementConstant_le_scaled 1 (4 * Real.pi * (beta / 64))
-    (X ^ (4 + n)) heta (one_le_pow₀ hX1) hetai
-  have hK : polynomialPartitionConstant 1 = 16 := by norm_num [polynomialPartitionConstant]
-  rw [hK, ← pow_mul] at hscaled
-  rw [inv_div, div_eq_mul_inv]
+    (X ^ (4 + n)) (by positivity) (one_le_pow₀ (by linarith)) (by
+      rw [pow_add, show (4 * Real.pi * (beta / 64))⁻¹ = 16 / Real.pi * beta⁻¹ by field_simp; ring]
+      gcongr)
+  rw [show polynomialPartitionConstant 1 = 16 by norm_num [polynomialPartitionConstant]] at hscaled
+  have := section5LocalRefinementConstant_pos 1 1
   calc
-    _ ≤ (8 * (section5LocalRefinementConstant 1 1 * X ^ ((4 + n) * 16))) * X ^ n :=
-      mul_le_mul (mul_le_mul_of_nonneg_left hscaled (by norm_num)) hbi
-        (inv_pos.mpr hb).le (by have := section5LocalRefinementConstant_pos 1 1; positivity)
-    _ = (8 * section5LocalRefinementConstant 1 1) * X ^ (17 * n + 64) := by
-      rw [mul_assoc 8, mul_assoc, ← pow_add, ← mul_assoc]
-      congr 2
-      omega
+    _ = 8 * boundaryRefinementConstant (beta / 64) * beta⁻¹ := by rw [inv_div, div_eq_mul_inv]
+    _ ≤ 8 * (section5LocalRefinementConstant 1 1 * (X ^ (4 + n)) ^ 16) * X ^ n :=
+      mul_le_mul (mul_le_mul_of_nonneg_left hscaled (by norm_num)) hbi (by positivity)
+        (by positivity)
+    _ = _ := by ring
 
 /-- Absorb the fixed refinement constant as well, and retain the positive
 unit range of the interval-length coefficient. -/
@@ -119,32 +112,20 @@ theorem small_diameter_partition_refinement {N M : Nat} [NeZero N]
       (∀ j, diameterAtMostReal (R j).carrier (epsilon * N)) ∧
       ∀ f : ZMod N → Complex,
         (∑ i, ‖∑ x ∈ (Q i).carrier, f x‖) ≤ ∑ j, ‖∑ x ∈ (R j).carrier, f x‖ := by
-  have hM := section18_partition_index_nonempty (fun i ↦ (Q i).carrier) hQ
-  choose L R hpart hRproper hcount hdiam using fun i ↦ (Q i).small_diameter_refinement (hproper i) epsilon hε
+  choose L R hpart hRproper hcount hdiam using
+    fun i ↦ (Q i).small_diameter_refinement (hproper i) epsilon hε
   refine ⟨∑ i, L i, section5Flatten L R, section5Flatten_partition Q L R hQ hpart,
-    section5Flatten_refinement Q L R hQ hpart, section5Flatten_isProper L R hRproper, ?_, ?_, ?_⟩
-  · have hcards : ∑ i, (Q i).carrier.card = N := by simpa using hQ.sum_card
-    have hjensen := section5_sum_rpow_le (by omega : 0 < 16) (fun i ↦ (Q i).carrier.card) hcards
-    norm_num only [Nat.cast_ofNat] at hjensen
-    rw [Nat.cast_sum]
-    calc
-      _ ≤ ∑ i, boundaryRefinementConstant epsilon * ((Q i).carrier.card : Real) ^ (15 / 16 : Real) :=
-        Finset.sum_le_sum fun i _ ↦ hcount i
-      _ = boundaryRefinementConstant epsilon *
-          ∑ i, ((Q i).carrier.card : Real) ^ (15 / 16 : Real) := (Finset.mul_sum _ _ _).symm
-      _ ≤ boundaryRefinementConstant epsilon *
-          ((M : Real) ^ (1 / 16 : Real) * (N : Real) ^ (15 / 16 : Real)) := by
-        apply mul_le_mul_of_nonneg_left _ (section5LocalRefinementConstant_pos _ _).le
-        simpa only [one_div] using hjensen
-      _ = _ := by ring
-  · intro j
-    let z := (section5FlattenEquiv L).symm j
-    exact hdiam z.1 z.2
-  · intro f
-    rw [section5Flatten_sum L R (fun P ↦ ‖∑ x ∈ P.carrier, f x‖)]
-    apply Finset.sum_le_sum
-    intro i _
-    rw [← (hpart i).sum_weights f]
-    exact norm_sum_le _ _
+    section5Flatten_refinement Q L R hQ hpart, section5Flatten_isProper L R hRproper, ?_,
+    fun j ↦ hdiam _ _, fun f ↦ ?_⟩
+  · have hj := section5_sum_rpow_le (by norm_num : 0 < 16) (fun i ↦ (Q i).carrier.card)
+      (by simpa using hQ.sum_card : ∑ i, (Q i).carrier.card = N)
+    norm_num only [Nat.cast_ofNat] at hj
+    rw [Nat.cast_sum, mul_assoc]
+    refine (Finset.sum_le_sum fun i _ ↦ hcount i).trans ?_
+    rw [← Finset.mul_sum]
+    exact mul_le_mul_of_nonneg_left (by simpa only [one_div] using hj)
+      (section5LocalRefinementConstant_pos _ _).le
+  · rw [section5Flatten_sum L R (fun P ↦ ‖∑ x ∈ P.carrier, f x‖)]
+    exact Finset.sum_le_sum fun i _ ↦ (hpart i).sum_weights f ▸ norm_sum_le _ _
 
 end LeanProofs.GowersSzemeredi

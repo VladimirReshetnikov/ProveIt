@@ -131,36 +131,27 @@ theorem MultiplyLinearWith.relSumFin {N k : Nat} [NeZero N] :
       (∀ i s, 0 < s → s ≤ 1 → 0 ≤ Q i s) → (∀ i s, 0 < s → s ≤ 1 → 0 ≤ E i s) →
       MultiplyLinearWith (fun s => ∏ i, Q i (s / ((n : Real) + 1)))
         (fun s => ∏ i, E i (s / ((n : Real) + 1))) (relSumFin n Gamma)
-  | 0, Gamma, Q, E, h, _, _ => by
-    have hfun : ∀ (F : Fin (0 + 1) → Real → Real),
-        (fun s => ∏ i, F i (s / (((0 : Nat) : Real) + 1))) = F 0 := by
-      intro F; funext s; simp
-    rw [hfun Q, hfun E]
-    exact h 0
+  | 0, Gamma, Q, E, h, _, _ => by simpa [LeanProofs.GowersSzemeredi.relSumFin] using h 0
   | n + 1, Gamma, Q, E, h, hQ, hE => by
-    have ih := MultiplyLinearWith.relSumFin n (Gamma := fun i => Gamma i.castSucc)
-      (Q := fun i => Q i.castSucc) (E := fun i => E i.castSucc) (fun i => h i.castSucc)
-      (fun i => hQ i.castSucc) (fun i => hE i.castSucc)
-    have hn1 : (0 : Real) < (n : Real) + 1 := by positivity
     have hn2 : (0 : Real) < ((n + 1 : Nat) : Real) + 1 := by positivity
     set lam : Real := ((n : Real) + 1) / (((n + 1 : Nat) : Real) + 1) with hlam
-    have hl : 0 < lam := div_pos hn1 hn2
-    have hl1 : lam < 1 := by
-      rw [hlam, div_lt_one hn2]; push_cast; linarith
-    have hsum := MultiplyLinearWith.relationSum ih (h (Fin.last (n + 1))) hl hl1
-      (hQ (Fin.last (n + 1))) (hE (Fin.last (n + 1)))
-    have hA : ∀ s : Real, lam * s / ((n : Real) + 1) = s / (((n + 1 : Nat) : Real) + 1) := by
-      intro s; rw [hlam]; field_simp
-    have hB : ∀ s : Real, (1 - lam) * s = s / (((n + 1 : Nat) : Real) + 1) := by
-      intro s; rw [hlam]; field_simp; push_cast; ring
-    have hfun : ∀ F : Fin (n + 1 + 1) → Real → Real,
-        (fun s => (∏ i : Fin (n + 1), F i.castSucc (lam * s / ((n : Real) + 1))) *
-            F (Fin.last (n + 1)) ((1 - lam) * s)) =
-          fun s => ∏ i, F i (s / (((n + 1 : Nat) : Real) + 1)) := by
-      intro F; funext s
-      conv_rhs => rw [Fin.prod_univ_castSucc]
-      simp only [hA, hB]
-    rw [← hfun Q, ← hfun E]
+    have hsum := MultiplyLinearWith.relationSum (MultiplyLinearWith.relSumFin n
+      (fun i => h i.castSucc) (fun i => hQ i.castSucc) (fun i => hE i.castSucc))
+      (h (Fin.last (n + 1))) (by positivity : 0 < lam)
+      ((div_lt_one hn2).mpr (by push_cast; linarith)) (hQ (Fin.last (n + 1)))
+      (hE (Fin.last (n + 1)))
+    have hA (s : Real) : lam * s / ((n : Real) + 1) = s / (((n + 1 : Nat) : Real) + 1) := by
+      rw [hlam]; field_simp
+    have hB (s : Real) : (1 - lam) * s = s / (((n + 1 : Nat) : Real) + 1) := by
+      rw [hlam]; field_simp; push_cast; ring
+    have hfun (F : Fin (n + 1 + 1) → Real → Real) :
+        (fun s => ∏ i, F i (s / (((n + 1 : Nat) : Real) + 1))) = fun s =>
+          (∏ i : Fin (n + 1), F i.castSucc (lam * s / ((n : Real) + 1))) *
+            F (Fin.last (n + 1)) ((1 - lam) * s) := by
+      funext s
+      conv_lhs => rw [Fin.prod_univ_castSucc]
+      rw [hA, hB]
+    rw [hfun Q, hfun E]
     exact hsum
 
 /-! ### Vertex maps as functions of a face -/

@@ -71,35 +71,22 @@ theorem square_power_lower_explicit {c e f g : Real}
     (N : Nat) (hN : squarePowerThreshold c e f g ≤ N) :
     (N : Real) ^ (e * f * g / 4) ≤
       ((Nat.floor ((c * (N : Real) ^ e) ^ f) / 2 : Nat) : Real) ^ (g / 2) - 1 := by
-  let C := (c ^ f / 4) ^ (g / 2)
-  have hC : 0 < C := by dsimp [C]; positivity
   have hNr : (1 : Real) ≤ N :=
     (positivePowerThreshold_one_le _ _ _).trans ((le_max_left _ _).trans hN)
-  have hNpos : (0 : Real) < N := zero_lt_one.trans_le hNr
-  have hfour := positivePowerThreshold_spec (Real.rpow_pos_of_pos hc _) (mul_pos he hf)
-    ((le_max_left _ _).trans hN)
-  have htwo := positivePowerThreshold_spec hC (show 0 < e * f * g / 4 by positivity)
-    ((le_max_right _ _).trans hN)
-  have hfour' : 4 ≤ (c * (N : Real) ^ e) ^ f := by
-    rw [Real.mul_rpow hc.le (Real.rpow_nonneg hNpos.le _), ← Real.rpow_mul hNpos.le]
-    exact hfour
-  have hquarter := quarter_le_floor_half hfour'
-  have hpow : ((c * (N : Real) ^ e) ^ f / 4) ^ (g / 2) =
-      C * (N : Real) ^ (e * f * (g / 2)) := by
-    rw [Real.mul_rpow hc.le (Real.rpow_nonneg hNpos.le _), ← Real.rpow_mul hNpos.le,
-      show c ^ f * (N : Real) ^ (e * f) / 4 = c ^ f / 4 * (N : Real) ^ (e * f) by ring,
-      Real.mul_rpow (by positivity) (Real.rpow_nonneg hNpos.le _), ← Real.rpow_mul hNpos.le]
-  have hpower : 2 * (N : Real) ^ (e * f * g / 4) ≤ C * (N : Real) ^ (e * f * (g / 2)) := by
-    have h := mul_le_mul_of_nonneg_right htwo (Real.rpow_nonneg hNpos.le (e * f * g / 4))
-    rw [mul_assoc C _ _, ← Real.rpow_add hNpos] at h
-    convert h using 1 <;> congr 2 <;> ring
-  have hlarge : 2 * (N : Real) ^ (e * f * g / 4) ≤
-      ((Nat.floor ((c * (N : Real) ^ e) ^ f) / 2 : Nat) : Real) ^ (g / 2) := by
-    calc
-      _ ≤ C * (N : Real) ^ (e * f * (g / 2)) := hpower
-      _ = _ := hpow.symm
-      _ ≤ _ := Real.rpow_le_rpow (by positivity) hquarter (by positivity)
+  have hN0 : (0 : Real) < N := zero_lt_one.trans_le hNr
+  have hcN : (c * (N : Real) ^ e) ^ f = c ^ f * (N : Real) ^ (e * f) := by
+    rw [Real.mul_rpow hc.le (Real.rpow_nonneg hN0.le _), ← Real.rpow_mul hN0.le]
+  have hfour : 4 ≤ (c * (N : Real) ^ e) ^ f := hcN ▸ positivePowerThreshold_spec
+    (Real.rpow_pos_of_pos hc _) (mul_pos he hf) ((le_max_left _ _).trans hN)
+  have htwo := positivePowerThreshold_spec (by positivity : 0 < (c ^ f / 4) ^ (g / 2))
+    (by positivity : 0 < e * f * g / 4) ((le_max_right _ _).trans hN)
+  have hpow : ((c * (N : Real) ^ e) ^ f / 4) ^ (g / 2) = (c ^ f / 4) ^ (g / 2) *
+      ((N : Real) ^ (e * f * g / 4) * (N : Real) ^ (e * f * g / 4)) := by
+    rw [hcN, mul_div_right_comm, Real.mul_rpow (by positivity) (Real.rpow_nonneg hN0.le _),
+      ← Real.rpow_mul hN0.le, ← Real.rpow_add hN0]
+    ring_nf
+  have hfloor := Real.rpow_le_rpow (by positivity) (quarter_le_floor_half hfour) (half_pos hg).le
   have hone : 1 ≤ (N : Real) ^ (e * f * g / 4) := Real.one_le_rpow hNr (by positivity)
-  linarith only [hlarge, hone]
+  linarith [mul_le_mul_of_nonneg_right htwo (zero_le_one.trans hone)]
 
 end LeanProofs.GowersSzemeredi

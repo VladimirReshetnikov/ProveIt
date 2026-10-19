@@ -32,23 +32,6 @@ namespace LeanProofs.GowersSzemeredi
 /-- The arrangement exponent of Lemma 15.6 after the Fejér selection. -/
 def fejerProductExponent (k : Nat) : Nat := 2 ^ (3 * k + 7) * fejerSelectionExponent k
 
-/-- **Lemma 15.6 with the Fejér exponent**: the statement of Lemma 15.6 with
-`fejerProductExponent k` in place of `2^(2^(k+5))`. -/
-def FejerProductRestriction : Prop :=
-  ∀ (k : Nat) (beta gamma : Real),
-    1 ≤ k → 0 < beta → beta ≤ 1 → 0 < gamma → gamma ≤ 1 →
-    ∃ N0 : Nat, ∀ (N : Nat) [NeZero N], N0 ≤ N → Nat.Prime N → Odd N →
-      ∀ (B : Finset (Point N (k + 1)))
-          (phi : Point N (k + 1) → ZMod N),
-        (B.card : Real) = beta * (N : Real) ^ (k + 1) →
-        HasProductProperty B phi gamma →
-        ∃ B' : Finset (Point N (k + 1)), B' ⊆ B ∧
-          (beta * gamma / 2) ^ fejerProductExponent k *
-              (N : Real) ^ (17 * k + 15) ≤
-            generalArrangementCount 8 B' ∧
-          (1 - (2 : Real)⁻¹ ^ 44) * generalArrangementCount 8 B' ≤
-            respectedGeneralArrangementCount 8 B' phi
-
 /-- The Fejér exponent of Lemma 15.6 is single-exponential: at most
 `2^(5k+14)`, against the printed `2^(2^(k+5))`. -/
 theorem fejerProductExponent_le (k : Nat) :

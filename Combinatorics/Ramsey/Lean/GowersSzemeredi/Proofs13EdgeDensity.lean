@@ -27,33 +27,17 @@ theorem section13_height_count_le_edge_card {N : Nat} [NeZero N]
   have hinj : Function.Injective encode := by
     intro x y hxy
     have hlast : x.val (Fin.last 15) = y.val (Fin.last 15) := congrArg Prod.fst hxy
-    have hxrest (i : Fin 14) : (x.val i.succ.castSucc).val.1 =
-        (y.val i.succ.castSucc).val.1 :=
-      congrFun (congrArg (fun c : Code ↦ c.2.1) hxy) i
-    have hyrest (i : Fin 15) : (x.val i.castSucc).val.2 = (y.val i.castSucc).val.2 :=
-      congrFun (congrArg (fun c : Code ↦ c.2.2) hxy) i
-    have hxall : (fun i ↦ (x.val i).val.1) = (fun i ↦ (y.val i).val.1) := by
-      apply stage135_additive_ext x.property y.property
-      intro i
-      refine Fin.lastCases ?_ (fun j ↦ ?_) i
-      · exact congrArg (fun z : Section13Edges A h ↦ z.val.1) hlast
-      · exact hxrest j
-    have hyall : (fun i ↦ (x.val i).val.2) = (fun i ↦ (y.val i).val.2) := by
-      funext i
-      refine Fin.lastCases ?_ (fun j ↦ hyrest j) i
-      exact congrArg (fun z : Section13Edges A h ↦ z.val.2) hlast
-    apply Subtype.ext
-    funext i
-    exact Subtype.ext (Prod.ext (congrFun hxall i) (congrFun hyall i))
-  have hcount : arrangementCountAtHeight 8 A h = Fintype.card T := by
-    rw [← section13_domain_additive_count]
-    unfold domainAdditiveTupleCount countWhere
-    rw [Finset.filter_congr_decidable, ← Fintype.card_subtype]
-  calc
-    _ = Fintype.card T := hcount
-    _ ≤ Fintype.card Code := Fintype.card_le_of_injective encode hinj
-    _ = (verticalEdgeDomain A h).card * N ^ 29 := by
-      simp [Code, Fintype.card_coe, ← pow_add]
+    have hx1 := stage135_additive_ext x.property y.property fun i ↦
+      Fin.lastCases (congrArg (fun z : Section13Edges A h ↦ z.val.1) hlast)
+        (congrFun (congrArg (fun c : Code ↦ c.2.1) hxy)) i
+    exact Subtype.ext (funext fun i ↦ Subtype.ext (Prod.ext (congrFun hx1 i)
+      (Fin.lastCases (congrArg (fun z : Section13Edges A h ↦ z.val.2) hlast)
+        (congrFun (congrArg (fun c : Code ↦ c.2.2) hxy)) i)))
+  rw [← section13_domain_additive_count]
+  unfold domainAdditiveTupleCount countWhere
+  rw [Finset.filter_congr_decidable, ← Fintype.card_subtype]
+  exact (Fintype.card_le_of_injective encode hinj).trans_eq
+    (by simp [Code, Fintype.card_coe, ← pow_add])
 
 /-- A strong height has the claimed edge-domain density `alpha^32/16`. -/
 theorem section13_strong_height_edge_density {N : Nat} [NeZero N]

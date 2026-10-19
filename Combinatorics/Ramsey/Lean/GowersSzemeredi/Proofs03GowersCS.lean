@@ -40,28 +40,8 @@ private lemma gcs_cubeArgument_insertNth {N n : Nat}
     (s : ZMod N) (b : Bool) (e : Fin n → Bool) :
     cubeArgument s (j.insertNth r a) (j.insertNth b e) =
       s - (if b then r else 0) - ∑ i, if e i then a i else 0 := by
-  have hfun :
-      (fun i : Fin (n + 1) =>
-        if (j.insertNth b e : Fin (n + 1) → Bool) i then
-          (j.insertNth r a : Point N (n + 1)) i else 0) =
-        j.insertNth (if b then r else 0)
-          (fun i : Fin n => if e i then a i else 0) := by
-    rw [Fin.eq_insertNth_iff]
-    constructor
-    · simp
-    · funext i
-      simp [Fin.removeNth_apply]
-  unfold cubeArgument
-  rw [show (∑ i : Fin (n + 1),
-      if (j.insertNth b e : Fin (n + 1) → Bool) i then
-        (j.insertNth r a : Point N (n + 1)) i else 0) =
-      ∑ i : Fin (n + 1),
-        (j.insertNth (if b then r else 0)
-          (fun i : Fin n => if e i then a i else 0)) i by
-    apply Finset.sum_congr rfl
-    intro i _
-    exact congrFun hfun i]
-  rw [Fin.sum_insertNth]
+  rw [cubeArgument, Fin.sum_univ_succAbove _ j]
+  simp only [Fin.insertNth_apply_same, Fin.insertNth_apply_succAbove]
   abel
 
 /-- Product on one face of a cube after deleting coordinate `j`. -/
@@ -302,27 +282,13 @@ theorem gowers_cauchy_schwarz {N d : Nat} [NeZero N]
     ‖cubeForm f‖ ≤ ∏ e : Fin d → Bool,
       ‖cubeForm (d := d) (fun (_ : Fin d → Bool) => f e)‖ ^
         ((1 : Real) / (2 : Real) ^ d) := by
-  let G : (Fin d → Bool) → Real := fun e =>
-    ‖cubeForm (d := d) (fun (_ : Fin d → Bool) => f e)‖
-  let R : Real := ∏ e : Fin d → Bool, G e
-  let m : Nat := (2 : Nat) ^ d
-  have hG (e : Fin d → Bool) : 0 ≤ G e := norm_nonneg _
-  have hR : 0 ≤ R := Finset.prod_nonneg fun e _ => hG e
-  have hm : m ≠ 0 := by positivity
-  have hmpos : 0 < (m : Real) := by exact_mod_cast Nat.pos_of_ne_zero hm
-  have hpower : ‖cubeForm f‖ ^ m ≤ R := by
-    simpa only [m, R, G] using cubeForm_power_le_product f
-  have hroot : ‖cubeForm f‖ ≤ R ^ (m : Real)⁻¹ := by
-    apply (Real.le_rpow_inv_iff_of_pos (norm_nonneg _) hR hmpos).2
-    simpa only [Real.rpow_natCast] using hpower
-  calc
-    ‖cubeForm f‖ ≤ R ^ (m : Real)⁻¹ := hroot
-    _ = ∏ e : Fin d → Bool, G e ^ (m : Real)⁻¹ :=
-      (Real.finsetProd_rpow Finset.univ G (fun e _ => hG e) _).symm
-    _ = ∏ e : Fin d → Bool,
-        ‖cubeForm (d := d) (fun (_ : Fin d → Bool) => f e)‖ ^
-          ((1 : Real) / (2 : Real) ^ d) := by
-      simp only [G, m, one_div, Nat.cast_pow, Nat.cast_ofNat]
+  -- take the `2 ^ d`-th root of `cubeForm_power_le_product`
+  have hG : ∀ e ∈ (Finset.univ : Finset (Fin d → Bool)),
+      0 ≤ ‖cubeForm (d := d) (fun (_ : Fin d → Bool) => f e)‖ := fun _ _ => norm_nonneg _
+  have h := Real.le_rpow_inv_iff_of_pos (norm_nonneg (cubeForm f)) (Finset.prod_nonneg hG)
+    (by positivity : (0 : Real) < ((2 ^ d : Nat) : Real))
+  rw [Real.rpow_natCast, ← Real.finsetProd_rpow _ _ hG] at h
+  simpa only [one_div, Nat.cast_pow, Nat.cast_ofNat] using h.2 (cubeForm_power_le_product f)
 
 /-- **Lemma 3.8 (Gowers--Cauchy--Schwarz).** -/
 theorem lemma_3_8_holds : lemma_3_8 := by

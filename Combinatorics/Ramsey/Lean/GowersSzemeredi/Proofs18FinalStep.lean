@@ -640,7 +640,7 @@ theorem MReq_le_expJT3 {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alpha) (ha
   have hBe2 : 2 / P.Bexp alpha ≤ (2 / alpha) ^ (2 ^ (expDegJT3 P.k P.μ0 μK + 1)) := by
     rw [div_eq_mul_inv]; exact pw_mul hX (inv_pos.mpr hB).le (hX.trans (pw_X hX _)) hBx
   refine ⟨(Nat.one_le_cast.mpr (familyRecThr_pos hK1 _)).trans (le_max_left _ _),
-    max_le (ex_mono hX (familyRecThr_le_exp hX hK1 H.hKμ H.hpμ hQM) (by omega))
+    max_le (ex_mono hX (familyRecThr_le_exp hX H.hKμ H.hpμ hQM) (by omega))
       (max_le ?_ (max_le ?_ ?_))⟩
   · exact ex_mono hX (ex_rpow_of_nonneg hX (div_pos (by norm_num) hz0).le (hcz 8 (by norm_num))
       (div_pos one_pos hB).le hBe) (by omega)

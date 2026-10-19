@@ -25,13 +25,4 @@ theorem intervalQuadraticUniformityParameter_le_one {delta : Real}
   apply pow_le_one₀ (by positivity)
   linarith
 
-theorem intervalQuadraticUniformityParameter_count_error (delta : Real) :
-    4 * intervalQuadraticUniformityParameter delta ^ (1 / 8 : Real) ≤ delta ^ 4 / 8192 := by
-  have hroot : ((delta ^ 4 / 32768) ^ (8 : Nat)) ^ (1 / 8 : Real) = delta ^ 4 / 32768 := by
-    rw [← Real.rpow_natCast, ← Real.rpow_mul (show 0 ≤ delta ^ 4 / 32768 by positivity)]
-    norm_num
-  unfold intervalQuadraticUniformityParameter
-  rw [hroot]
-  linarith
-
 end LeanProofs.GowersSzemeredi

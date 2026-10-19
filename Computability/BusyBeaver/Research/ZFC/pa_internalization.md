@@ -880,12 +880,37 @@ Eight probes and eleven typed callers passed with zero warnings. Configurable
 native-body encoding, alpha identification, arbitrary universal closure and
 internal derivation translation remain separate R2 obligations.
 
-Composing (R3), (R2) and the forward sentence gives, in PA,
-`Con(ZF) ↔ ¬∃code, value(code)=2`, and with `LSchema` the same for ZFC.
-The binary-machine side (exact246/routed245 runs against the arithmetic
-scheduler) is independent of all three. Proposed split: (R2) on the
-validator side, which owns the encoder; (R3) on the Claude lane; (R1) agreed
-first, since both depend on its exact shape.
+**R2 closed (Claude lane, 18 October).**
+[`R2Native`](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/R2Native.lean)
+proves, in every IΣ₂ model, `Provable nativeTheory ⊥ → CProv 1`
+(`cProv_falsum_of_native`), and with R3 `Provable 𝗭𝗙 ⊥ → CProv 1`
+(`cProv_falsum_of_ZF`), hence
+`𝗣𝗔 ⊢ ¬∃code, value(code)=2 → Con(𝗭𝗙)` (`peano_proves_validator_imp_con_ZF`).
+The translation is generic (`R2Main.cProv_falsum_of_provable`): a Tait
+sequent `Γ` is encoded, at an odd free environment `F` and an even binder
+stream `s`, as the validator implication chain from the negated encodings of
+`Γ` to falsum, and a Π₂ order induction over internal derivations (hence
+IΣ₂, not IΣ₁) shows that every enumeration of every derivable sequent is a
+validator theorem at every such `F` and `s`. Free labels are odd and binder
+streams even throughout, so every rename targets a label absent from its
+source and no bound-variable vacuity is needed. The axiom callback
+`axOK_native` is a case split on the class of `nativeTheory`:
+
+* `R2Fixed`: the `𝗘𝗤` axioms and irreflexivity through Codex's equality,
+  Leibniz and Kalmár tautology interfaces, and the container axiom from the
+  validator's bundle container clause;
+* `R2Gic`/`R2Ax`: `gic_bridge_core` turns the literal GIC clause (through
+  `cProv_internalGic` and the fixed-label congruence above) into the encoded
+  GIC body at any odd labels, and `gic_axiom` peels the arbitrary internal
+  universal closure.
+
+Composing (R3), (R2) and the forward sentence,
+[`ValidatorConsistencyEquivalence`](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorConsistencyEquivalence.lean)
+states `𝗣𝗔 ⊢ Con(𝗭𝗙) ↔ validatorConsistencySentence`
+(`peano_proves_con_ZF_iff_validator`) and, with `LSchema`, the same for
+`𝗭𝗙𝗖` (`peano_proves_con_ZFC_iff_validator`); both already hold in `𝗜𝚺₂`.
+`R2Audit` reports the axioms. The binary-machine side (exact246/routed245
+runs against the arithmetic scheduler) is independent of all three.
 
 ## Claude lane: represented relativization (L-interpretation core)
 

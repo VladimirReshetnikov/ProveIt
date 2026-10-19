@@ -16,6 +16,18 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
+section
+open scoped BigOperators Pointwise ZMod
+open Finset
+
+noncomputable def selectionDegenerateFinset (N k : Nat) [NeZero N] :
+    Finset (GeneralArrangement N k 8) := by
+  classical
+  exact Finset.univ.filter fun R ↦
+    IsAdditiveTuple R.crossSection ∧ R.IsDegenerate
+
+end
+
 def selectionDigitInt (j : Fin 4) : Int :=
   ![0, 0, 1, -1] j
 

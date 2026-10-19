@@ -25,7 +25,7 @@ theorem classVertexNum_succ_le (k : Nat) : classVertexNum k + 1 ≤ 2 ^ k := by
   omega
 
 theorem inv_scale_le {w rho : Real} {c : Real} {j : Nat} (hw : 2 ≤ w) (hr : 0 < rho)
-    (hrw : rho⁻¹ ≤ w) (hc0 : 0 < c) (hc : c ≤ 2 ^ j) : (rho / c)⁻¹ ≤ w ^ (j + 1) := by
+    (hrw : rho⁻¹ ≤ w) (hc : c ≤ 2 ^ j) : (rho / c)⁻¹ ≤ w ^ (j + 1) := by
   rw [inv_div, div_eq_mul_inv, pow_succ]
   exact mul_le_mul (const_le_pow hw hc) hrw (inv_pos.mpr hr).le (pow_nonneg (by linarith) _)
 

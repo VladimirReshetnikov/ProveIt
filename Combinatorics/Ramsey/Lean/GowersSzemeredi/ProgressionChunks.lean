@@ -73,62 +73,26 @@ lemma exists_coarseChunk {L m t : Nat} (hm : 0 < m)
     ∃ j : Fin (L / m), ∃ i : Nat,
       i < coarseChunkLength m (L % m) j ∧
       t = coarseChunkStart m (L % m) j + i := by
-  let n := L / m
-  let b := L % m
-  have hdecomp : L = n * m + b := by
-    calc
-      L = m * (L / m) + L % m := (Nat.div_add_mod L m).symm
-      _ = (L / m) * m + L % m := by rw [Nat.mul_comm m (L / m)]
-      _ = n * m + b := by rfl
-  have hbn : b ≤ n := coarse_remainder_le_quotient hm hLm
-  by_cases hfront : t < b * (m + 1)
-  · let j : Fin n := ⟨t / (m + 1), by
-      have hjb : t / (m + 1) < b :=
-        (Nat.div_lt_iff_lt_mul (by omega : 0 < m + 1)).2 hfront
-      exact hjb.trans_le hbn⟩
-    let i := t % (m + 1)
-    have hjb : (j : Nat) < b :=
-      (Nat.div_lt_iff_lt_mul (by omega : 0 < m + 1)).2 hfront
-    have hjb' : (j : Nat) < L % m := by simpa [b] using hjb
-    refine ⟨j, i, ?_, ?_⟩
-    · simpa [coarseChunkLength, hjb', i] using Nat.mod_lt t (by omega : 0 < m + 1)
-    · have htdiv : t = t / (m + 1) * (m + 1) + t % (m + 1) := by
-        calc
-          t = (m + 1) * (t / (m + 1)) + t % (m + 1) :=
-            (Nat.div_add_mod t (m + 1)).symm
-          _ = t / (m + 1) * (m + 1) + t % (m + 1) := by
-            rw [Nat.mul_comm (m + 1) (t / (m + 1))]
-      rw [coarseChunkStart, min_eq_left hjb'.le]
-      dsimp only [j, i]
-      calc
-        t = t / (m + 1) * (m + 1) + t % (m + 1) := htdiv
-        _ = t / (m + 1) * m + t / (m + 1) + t % (m + 1) := by ring
-  · have hback : b * (m + 1) ≤ t := Nat.le_of_not_gt hfront
-    let u := t - b * (m + 1)
-    have hu : u < (n - b) * m := by
-      have hrewrite : L = b * (m + 1) + (n - b) * m := by
-        calc
-          L = n * m + b := hdecomp
-          _ = ((n - b) + b) * m + b := by rw [Nat.sub_add_cancel hbn]
-          _ = b * (m + 1) + (n - b) * m := by ring
-      dsimp only [u]
-      omega
-    let j : Fin n := ⟨b + u / m, by
-      have huq : u / m < n - b := (Nat.div_lt_iff_lt_mul hm).2 hu
-      omega⟩
-    let i := u % m
-    have hbj : b ≤ (j : Nat) := by simp [j]
-    have hbj' : L % m ≤ (j : Nat) := by simpa [b] using hbj
-    refine ⟨j, i, ?_, ?_⟩
-    · simpa [coarseChunkLength, Nat.not_lt.mpr hbj', i] using Nat.mod_lt u hm
-    · have htu : t = b * (m + 1) + u := by dsimp only [u]; omega
-      have hmod : u = u / m * m + u % m := by
-        calc
-          u = m * (u / m) + u % m := (Nat.div_add_mod u m).symm
-          _ = u / m * m + u % m := by rw [Nat.mul_comm m (u / m)]
-      rw [htu, hmod, coarseChunkStart, min_eq_right hbj']
-      dsimp only [j, i]
-      ring
+  have hm1 : 0 < m + 1 := m.succ_pos
+  by_cases hfront : t / (m + 1) < L % m
+  · -- `t` lies in one of the first `L % m` chunks, of length `m + 1`
+    refine ⟨⟨t / (m + 1), hfront.trans_le (coarse_remainder_le_quotient hm hLm)⟩,
+      t % (m + 1), by simpa [coarseChunkLength, hfront] using Nat.mod_lt t hm1, ?_⟩
+    simp only [coarseChunkStart, min_eq_left hfront.le]
+    have := Nat.div_add_mod' t (m + 1)
+    rw [Nat.mul_add_one] at this
+    omega
+  · -- otherwise `t - L % m` is split into chunks of length `m`
+    have hb := (Nat.le_div_iff_mul_le hm1).1 (Nat.not_lt.1 hfront)
+    rw [Nat.mul_add_one] at hb
+    have hj : L % m ≤ (t - L % m) / m := (Nat.le_div_iff_mul_le hm).2 (by omega)
+    have hq : (t - L % m) / m < L / m :=
+      (Nat.div_lt_iff_lt_mul hm).2 (by have := Nat.div_add_mod' L m; omega)
+    refine ⟨⟨_, hq⟩, (t - L % m) % m,
+      by simpa [coarseChunkLength, Nat.not_lt.2 hj] using Nat.mod_lt (t - L % m) hm, ?_⟩
+    simp only [coarseChunkStart, min_eq_right hj]
+    have := Nat.div_add_mod' (t - L % m) m
+    omega
 
 lemma coarseChunk_unique {L m t : Nat}
     (j j' : Fin (L / m)) (i i' : Nat)
@@ -136,30 +100,14 @@ lemma coarseChunk_unique {L m t : Nat}
     (hi' : i' < coarseChunkLength m (L % m) j')
     (ht : t = coarseChunkStart m (L % m) j + i)
     (ht' : t = coarseChunkStart m (L % m) j' + i') : j = j' := by
+  -- a chunk ends no later than every later chunk starts
+  have key : ∀ {a b : Nat}, a < b → coarseChunkStart m (L % m) a +
+      coarseChunkLength m (L % m) a ≤ coarseChunkStart m (L % m) b := fun h =>
+    (coarseChunk_end _ _ _).trans_le (coarseChunkStart_mono (Nat.succ_le_of_lt h))
   apply Fin.ext
-  by_contra hne
-  rcases lt_or_gt_of_ne hne with hj | hj
-  · have hlt : t < coarseChunkStart m (L % m) j' := by
-      calc
-        t = coarseChunkStart m (L % m) j + i := ht
-        _ < coarseChunkStart m (L % m) j +
-            coarseChunkLength m (L % m) j := Nat.add_lt_add_left hi _
-        _ = coarseChunkStart m (L % m) (j + 1) := coarseChunk_end _ _ _
-        _ ≤ coarseChunkStart m (L % m) j' := by
-          apply coarseChunkStart_mono
-          omega
-    rw [ht'] at hlt
-    omega
-  · have hlt : t < coarseChunkStart m (L % m) j := by
-      calc
-        t = coarseChunkStart m (L % m) j' + i' := ht'
-        _ < coarseChunkStart m (L % m) j' +
-            coarseChunkLength m (L % m) j' := Nat.add_lt_add_left hi' _
-        _ = coarseChunkStart m (L % m) (j' + 1) := coarseChunk_end _ _ _
-        _ ≤ coarseChunkStart m (L % m) j := by
-          apply coarseChunkStart_mono
-          omega
-    rw [ht] at hlt
-    omega
+  rcases lt_trichotomy (j : Nat) j' with h | h | h
+  · have := key h; omega
+  · exact h
+  · have := key h; omega
 
 end LeanProofs.GowersSzemeredi.BaseCase

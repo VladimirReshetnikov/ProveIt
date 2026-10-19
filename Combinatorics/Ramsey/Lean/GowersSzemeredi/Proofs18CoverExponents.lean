@@ -199,7 +199,7 @@ theorem MReq_le_expC {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alpha) (ha2 
   have hKE : μK + 2 ≤ E := by
     rw [hEdef]; unfold expDegC; exact (le_max_right _ _).trans (le_max_right _ _)
   -- the recurrence threshold
-  have hthr := familyRecThr_le_exp (k := k) hX (by have := H.hK; omega) H.hKμ H.hpμ hQM
+  have hthr := familyRecThr_le_exp (k := k) hX H.hKμ H.hpμ hQM
   have hthr' : (familyRecThr k P.K P.p (P.QM alpha) : Real) ≤
       Real.exp ((2 / alpha) ^ (2 ^ (E + 3))) := ex_mono hX hthr (by omega)
   have hthr1 : (1 : Real) ≤ (familyRecThr k P.K P.p (P.QM alpha) : Real) :=

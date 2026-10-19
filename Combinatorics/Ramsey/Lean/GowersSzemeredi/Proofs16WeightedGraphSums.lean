@@ -29,30 +29,23 @@ theorem weightedSimultaneousAdditiveEnergy_eq_collision {N p : Nat} [NeZero N]
       if z.1 ∈ (E ×ˢ E) then if z.2 ∈ (E ×ˢ E) then
         if section16ParallelPairSum psi z.1 = section16ParallelPairSum psi z.2 then
           (w z.1.1 * w z.1.2) * (w z.2.1 * w z.2.2) else 0 else 0 else 0 := by
-      apply Fintype.sum_equiv
-          ({ toFun q := ((q 0, q 1), (q 2, q 3))
-             invFun z := ![z.1.1, z.1.2, z.2.1, z.2.2]
-             left_inv q := by funext i; fin_cases i <;> rfl
-             right_inv z := by rcases z with ⟨⟨a, b⟩, ⟨c, d⟩⟩; rfl } : (Fin 4 → ((ZMod N))) ≃ ((((ZMod N)) × ((ZMod N))) × (((ZMod N)) × ((ZMod N)))))
-      intro q
-      have hmem : (∀ t, q t ∈ E) ↔ (q 0, q 1) ∈ (E ×ˢ E) ∧ (q 2, q 3) ∈ (E ×ˢ E) := by
+      refine Fintype.sum_equiv
+        ({ toFun q := ((q 0, q 1), (q 2, q 3))
+           invFun z := ![z.1.1, z.1.2, z.2.1, z.2.2]
+           left_inv q := by funext i; fin_cases i <;> rfl
+           right_inv z := by rcases z with ⟨⟨a, b⟩, ⟨c, d⟩⟩; rfl } :
+          (Fin 4 → ZMod N) ≃ (ZMod N × ZMod N) × (ZMod N × ZMod N)) _ _ fun q => ?_
+      have hmem : (∀ t, q t ∈ E) ↔ (q 0, q 1) ∈ E ×ˢ E ∧ (q 2, q 3) ∈ E ×ˢ E := by
         simp only [Finset.mem_product]
-        constructor
-        · intro h
-          exact ⟨⟨h 0, h 1⟩, h 2, h 3⟩
-        · rintro ⟨⟨h0, h1⟩, h2, h3⟩ t
-          fin_cases t <;> assumption
-      have hadd : (IsAdditiveQuadruple q ∧ ∀ i, IsAdditiveQuadruple (fun t => psi i (q t))) ↔
-          section16ParallelPairSum psi (q 0, q 1) = section16ParallelPairSum psi (q 2, q 3) := by
-        simp only [IsAdditiveQuadruple, section16ParallelPairSum, Prod.mk.injEq, funext_iff]
-      change (if (∀ t, q t ∈ E) ∧ IsAdditiveQuadruple q ∧
-        (∀ i, IsAdditiveQuadruple (fun t => psi i (q t))) then ∏ t, w (q t) else 0) = _
-      simp only [hmem, hadd, Equiv.coe_fn_mk, Fin.prod_univ_four, ite_and]
+        exact ⟨fun h => ⟨⟨h 0, h 1⟩, h 2, h 3⟩, fun ⟨⟨h0, h1⟩, h2, h3⟩ t => by
+          fin_cases t <;> assumption⟩
+      simp only [hmem, IsAdditiveQuadruple, section16ParallelPairSum, Prod.mk.injEq, funext_iff,
+        Equiv.coe_fn_mk, Fin.prod_univ_four, ite_and]
       split_ifs <;> ring
     _ = _ := by
       rw [Fintype.sum_prod_type]
-      simp only [Finset.sum_ite_irrel, Finset.sum_const_zero]
-      simp only [sum_univ_indicator, weightedCollisionEnergy]
+      simp only [Finset.sum_ite_irrel, Finset.sum_const_zero, sum_univ_indicator,
+        weightedCollisionEnergy]
 
 /-- A support of at most M graph-pair sums gives the fourth-moment lower
 bound. No positivity assumption on the weights is required. -/

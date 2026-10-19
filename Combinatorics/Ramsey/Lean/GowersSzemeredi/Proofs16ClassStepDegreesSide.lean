@@ -196,10 +196,9 @@ theorem step_count_le_W {k D P : Nat} (hD : 1 ≤ D) {V V' : Real} (hV : 1 ≤ V
       have h2 : (2 : Real) ^ (k + 3) = 2 ^ k * 8 := by rw [pow_add]; norm_num
       rw [h2]
       linarith only [h1]
-    have hc0 : (0 : Real) < 8 * ((classVertexNum k : Real) + 1) := mul_pos (by norm_num) hnv0
     have hri : (rho / 8 / ((classVertexNum k : Real) + 1))⁻¹ ≤ w ^ (k + 3 + 1) := by
       rw [div_div]
-      exact inv_scale_le (c := 8 * ((classVertexNum k : Real) + 1)) (j := k + 3) hw2 hr hrw hc0 hc
+      exact inv_scale_le (c := 8 * ((classVertexNum k : Real) + 1)) (j := k + 3) hw2 hr hrw hc
     have hbase := level_base_le hw2 hV0 hVw hM1 hscale hri hg hb hgdw
     have hbase' : uniformBase V (n * m) tS gamma (rho / 8 / ((classVertexNum k : Real) + 1)) ≤
         w ^ stepY1W P k := le_pow_mono hw2 (by unfold stepY1W; omega) hbase
@@ -223,7 +222,7 @@ theorem step_count_le_W {k D P : Nat} (hD : 1 ≤ D) {V V' : Real} (hV : 1 ≤ V
   set S := famPieceSamples (classQr V D k (n * m) tS gamma) (n * m) rho
   have hMS : ((n * m * S : Nat) : Real) + 1 ≤ w ^ ((P + 2) + stepSDegW P k D + 1) :=
     add_le_pow_succ hw2 (nat_mul_le_pow hw2 hM hS) (one_le_pow_of_two_le hw2 _)
-  have hr4 : (rho / 4)⁻¹ ≤ w ^ (2 + 1) := inv_scale_le hw2 hr hrw (by norm_num) (by norm_num)
+  have hr4 : (rho / 4)⁻¹ ≤ w ^ (2 + 1) := inv_scale_le hw2 hr hrw (by norm_num)
   have hPbase := level_base_le hw2 hV0 hVw hMS (by positivity) hr4 hg hb hgdw
   have hPb : classPb V D (n * m) tS gamma S (rho / 4) ≤ w ^ stepPbDegW P k D := by
     unfold classPb
@@ -293,7 +292,7 @@ theorem step_exp_inv_le_W {k D P T : Nat} (hD : 1 ≤ D) {V V' : Real} (hV : 1 �
   have hM1 : ((n * m : Nat) : Real) + 1 ≤ w ^ (P + 2 + 1) :=
     add_le_pow_succ hw2 hM (one_le_pow_of_two_le hw2 _)
   -- the spectrum controls at `ρ/8`
-  have hr8 : (rho / 8)⁻¹ ≤ w ^ (3 + 1) := inv_scale_le hw2 hr hrw (by norm_num) (by norm_num)
+  have hr8 : (rho / 8)⁻¹ ≤ w ^ (3 + 1) := inv_scale_le hw2 hr hrw (by norm_num)
   have hSbase := level_base_le hw2 hV0 hVw hM1 (by positivity) hr8 hd hb hddw
   have hSbase' : uniformBase V (n * m) tS gS (rho / 8) ≤ w ^ (2 * P + 9) :=
     le_pow_mono hw2 (by omega) hSbase
@@ -317,8 +316,7 @@ theorem step_exp_inv_le_W {k D P T : Nat} (hD : 1 ≤ D) {V V' : Real} (hV : 1 �
     rw [h2]; linarith only [h1]
   have hri : (rho / 8 / ((classVertexNum k : Real) + 1))⁻¹ ≤ w ^ (k + 3 + 1) := by
     rw [div_div]
-    exact inv_scale_le (c := 8 * ((classVertexNum k : Real) + 1)) (j := k + 3) hw2 hr hrw
-      (mul_pos (by norm_num) hnv0) hc
+    exact inv_scale_le (c := 8 * ((classVertexNum k : Real) + 1)) (j := k + 3) hw2 hr hrw hc
   have hRbase := level_base_le hw2 hV0 hVw hM1 hscale hri hg hb hgdw
   have hRbase' : uniformBase V (n * m) tS gamma (rho / 8 / ((classVertexNum k : Real) + 1)) ≤
       w ^ stepY1W P k := le_pow_mono hw2 (by unfold stepY1W; omega) hRbase
@@ -410,7 +408,7 @@ theorem step_exp_inv_le_W {k D P T : Nat} (hD : 1 ≤ D) {V V' : Real} (hV : 1 �
   set S := famPieceSamples (classQr V D k (n * m) tS gamma) (n * m) rho with hSdef
   have hMS : ((n * m * S : Nat) : Real) + 1 ≤ w ^ ((P + 2) + stepSDegW P k D + 1) :=
     add_le_pow_succ hw2 (nat_mul_le_pow hw2 hM hS) (one_le_pow_of_two_le hw2 _)
-  have hr4 : (rho / 4)⁻¹ ≤ w ^ (2 + 1) := inv_scale_le hw2 hr hrw (by norm_num) (by norm_num)
+  have hr4 : (rho / 4)⁻¹ ≤ w ^ (2 + 1) := inv_scale_le hw2 hr hrw (by norm_num)
   have hPbase := level_base_le hw2 hV0 hVw hMS (by positivity) hr4 hg hb hgdw
   have hPbase1 : 1 ≤ uniformBase V (n * m * S) tS gamma (rho / 4) :=
     le_trans (by norm_num) (uniformBase_two_le hV _ hb hb1 hg hg1 (by positivity)

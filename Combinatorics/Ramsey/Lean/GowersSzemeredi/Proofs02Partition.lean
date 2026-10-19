@@ -286,7 +286,7 @@ private lemma partitionRatio_quarter {N r s : Nat} (hN : 0 < N) :
       rw [partitionRatio_sq hN]
       have hN0 : (N : Real) ≠ 0 := by exact_mod_cast (Nat.ne_of_gt hN)
       field_simp
-    _ = Real.sqrt ((partitionRatio N r s / 4) ^ 2) := by ring
+    _ = Real.sqrt ((partitionRatio N r s / 4) ^ 2) := by ring_nf
     _ = |partitionRatio N r s / 4| := Real.sqrt_sq_eq_abs _
     _ = partitionRatio N r s / 4 := abs_of_nonneg (by positivity)
 

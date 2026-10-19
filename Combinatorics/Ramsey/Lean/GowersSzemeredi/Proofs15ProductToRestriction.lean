@@ -35,36 +35,13 @@ lemma lemma156_nat_le_two_pow (k : Nat) : k ≤ 2 ^ k := by
       have hpow : 1 ≤ 2 ^ k := Nat.one_le_pow _ 2 (by norm_num)
       omega
 
-lemma lemma156_beta_base_exponent (k : Nat) (hk : 1 ≤ k) :
+lemma lemma156_beta_base_exponent (k : Nat) (_hk : 1 ≤ k) :
     7 * 4 ^ (k + 1) + 15 ≤ 2 ^ (3 * k + 7) := by
-  have hfour : 4 ^ (k + 1) = 2 ^ (2 * (k + 1)) := by
-    rw [show 4 = 2 ^ 2 by norm_num, pow_mul]
-  have hA : 7 * 4 ^ (k + 1) ≤ 2 ^ (2 * k + 5) := by
-    calc
-      7 * 4 ^ (k + 1) = 7 * 2 ^ (2 * (k + 1)) := by rw [hfour]
-      _ ≤ 2 ^ 3 * 2 ^ (2 * (k + 1)) :=
-        Nat.mul_le_mul_right _ (by norm_num : 7 ≤ 2 ^ 3)
-      _ = 2 ^ (2 * k + 5) := by
-        rw [← pow_add]
-        congr 1
-        omega
-  have h15 : 15 ≤ 2 ^ (2 * k + 5) := by
-    calc
-      15 ≤ 2 ^ 7 := by norm_num
-      _ ≤ 2 ^ (2 * k + 5) :=
-        Nat.pow_le_pow_right (by norm_num) (by omega)
-  have hsum : 7 * 4 ^ (k + 1) + 15 ≤ 2 ^ (2 * k + 6) := by
-    calc
-      7 * 4 ^ (k + 1) + 15 ≤
-          2 ^ (2 * k + 5) + 2 ^ (2 * k + 5) := Nat.add_le_add hA h15
-      _ = 2 ^ (2 * k + 6) := by
-        calc
-          2 ^ (2 * k + 5) + 2 ^ (2 * k + 5) =
-              2 ^ (2 * k + 5) * 2 := by omega
-          _ = 2 ^ ((2 * k + 5) + 1) :=
-            (pow_succ 2 (2 * k + 5)).symm
-          _ = 2 ^ (2 * k + 6) := by congr 1
-  exact hsum.trans (Nat.pow_le_pow_right (by norm_num) (by omega))
+  -- `7 * 4 ^ (k + 1) + 15 ≤ 43 * 4 ^ k ≤ 128 * 8 ^ k`
+  have h48 : 4 ^ k ≤ (2 ^ 3) ^ k := Nat.pow_le_pow_left (by norm_num) k
+  have h1 : 1 ≤ 4 ^ k := Nat.one_le_pow k 4 (by norm_num)
+  rw [Nat.pow_succ, Nat.pow_add, Nat.pow_mul]
+  omega
 
 lemma lemma156_gamma_base_exponent (k : Nat) :
     21 * k * 4 ^ (k + 1) ≤ 2 ^ (3 * k + 7) := by

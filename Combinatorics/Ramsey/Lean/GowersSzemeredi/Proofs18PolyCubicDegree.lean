@@ -80,7 +80,7 @@ section Envelope
 
 variable {X : Real}
 
-theorem inv_mul_le_pw (hX : 2 ≤ X) {x y : Real} (hx : 0 < x) (hy : 0 < y) {a b : Nat}
+theorem inv_mul_le_pw (hX : 2 ≤ X) {x y : Real} (hy : 0 < y) {a b : Nat}
     (h1 : x⁻¹ ≤ X ^ (2 ^ a)) (h2 : y⁻¹ ≤ X ^ (2 ^ b)) : (x * y)⁻¹ ≤ X ^ (2 ^ (max a b + 1)) := by
   rw [mul_inv]
   exact pw_mul' hX (inv_nonneg.mpr hy.le) h1 h2
@@ -127,7 +127,7 @@ theorem section13PolySquareFactorF_inv_le (hX : 2 ≤ X) {delta : Real} (hδ : 0
   have h2 : (delta ^ 448)⁻¹ ≤ X ^ (2 ^ (32 + 9)) := by
     rw [← inv_pow]
     exact pw_pow hX (inv_nonneg.mpr hδ.le) hδinv (by norm_num)
-  exact pw_mono hX (inv_mul_le_pw hX (by positivity) (by positivity) h1 h2) (by norm_num)
+  exact pw_mono hX (inv_mul_le_pw hX (by positivity) h1 h2) (by norm_num)
 
 /-- The third square factor `g = cor711Exponent (2^(−135)δ^704) 1` lies in
 `(0, 1]`, and `g⁻¹ ≤ X^(2^45)`. -/
@@ -139,16 +139,16 @@ theorem section13PolySquareFactorG_bounds (hX : 2 ≤ X) {delta : Real} (hδ : 0
   have hb : 0 < (2 : Real) ^ (-(135 : Int)) * delta ^ 704 := by positivity
   have hb1 : (2 : Real) ^ (-(135 : Int)) * delta ^ 704 ≤ 1 :=
     mul_le_one₀ (by norm_num) (by positivity) (pow_le_one₀ hδ.le hδone)
-  have hbinv := inv_mul_le_pw hX (by positivity) (pow_pos hδ 704)
+  have hbinv := inv_mul_le_pw hX (pow_pos hδ 704)
     (pw_const hX (by norm_num) : ((2 : Real) ^ (-(135 : Int)))⁻¹ ≤ X ^ (2 ^ 8))
     ((inv_pow delta 704).symm.trans_le
       (pw_pow hX (inv_nonneg.mpr hδ.le) hδinv (by norm_num : 704 ≤ 2 ^ 10)))
   unfold cor711Exponent
   rw [Nat.cast_one, inv_one, mul_one, sq]
   exact ⟨by positivity, mul_le_one₀ (by norm_num) (by positivity) (mul_le_one₀ hb1 hb.le hb1),
-    pw_mono hX (inv_mul_le_pw hX (by positivity) (mul_pos hb hb)
+    pw_mono hX (inv_mul_le_pw hX (mul_pos hb hb)
       (pw_const hX (by norm_num) : ((2 : Real) ^ (-(14 : Real)))⁻¹ ≤ X ^ (2 ^ 4))
-      (inv_mul_le_pw hX hb hb hbinv hbinv)) (by norm_num)⟩
+      (inv_mul_le_pw hX hb hbinv hbinv)) (by norm_num)⟩
 
 /-- The polynomial square exponent is positive, at most `1/2`, and its
 inverse is at most `X^(2^72)`. -/
@@ -163,7 +163,7 @@ theorem section13PolySquareExponent_bounds (hX : 2 ≤ X) {delta : Real} (hδ : 
   have hf1 : (2 : Real) ^ (-(100 : Int)) * delta ^ 448 ≤ 1 :=
     mul_le_one₀ (by norm_num) (by positivity) (pow_le_one₀ hδ.le hδone)
   obtain ⟨hg, hg1, hginv⟩ := section13PolySquareFactorG_bounds hX hδ hδone hδinv
-  have hrfg := inv_mul_le_pw hX (mul_pos hr hf) hg (inv_mul_le_pw hX hr hf
+  have hrfg := inv_mul_le_pw hX hg (inv_mul_le_pw hX hf
     (polyRowExponent_inv_le_pw hX hδ hδone hδinv hpB)
     (section13PolySquareFactorF_inv_le hX hδ hδinv)) hginv
   unfold section13PolySquareExponent
@@ -193,7 +193,7 @@ theorem fejerCubicDiscrepancyExponentAt_poly_bounds {alpha : Real} (hα : 0 < al
     (pow_le_one₀ (by positivity) (by linarith only [hαone]))
     (by rw [← inv_pow, inv_div]; exact pw_natpow hX (by norm_num)) hp hpB
   have hκ := (fejerCubicLocalCountExponent_bounds hα hαone).1
-  have hek := inv_mul_le_pw hX he hκ heinv (fejerCubicLocalCountExponent_inv_le_power hα hαone)
+  have hek := inv_mul_le_pw hX hκ heinv (fejerCubicLocalCountExponent_inv_le_power hα hαone)
   have hK : 2 * (polynomialPartitionConstant 3 : Real) ≤ (2 / alpha) ^ (2 ^ 7) :=
     pw_const hX (by norm_num [polynomialPartitionConstant, Nat.factorial])
   unfold fejerCubicDiscrepancyExponentAt phaseInverseExponent

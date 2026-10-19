@@ -59,33 +59,24 @@ theorem crossing_cell_subset_intervalBoundaryBand {N : Nat} [NeZero N]
     (hin : ∃ x ∈ C, x.val < L) (hout : ∃ y ∈ C, L ≤ y.val) :
     C ⊆ intervalBoundaryBand N L d := by
   obtain ⟨a, ha⟩ := hdiam
-  have hindex (z : ZMod N) (hz : z ∈ C) :
-      ∃ i : Nat, i ≤ d ∧ z.val = (a.val + i) % N := by
-    obtain ⟨i, hi, hzi⟩ := mem_modInterval_index a z d (ha hz)
-    refine ⟨i, hi, ?_⟩
-    rw [hzi, ← ZMod.natCast_zmod_val a, ← Nat.cast_add, ZMod.val_natCast]
-    simp only [ZMod.natCast_zmod_val]
   intro z hz
   apply mem_intervalBoundaryBand_of_val
-  obtain ⟨i, hi, hzi⟩ := hindex z hz
   by_cases hd : N ≤ d
   · exact Or.inl (z.val_lt.le.trans hd)
   have haN := a.val_lt
-  by_cases hwrap : N ≤ a.val + d
-  · by_cases hzWrap : N ≤ a.val + i
-    · left
-      have hless : a.val + i < N + N := by omega
-      rw [Nat.mod_eq_sub_mod hzWrap, Nat.mod_eq_of_lt (by omega)] at hzi
-      omega
-    · right; left
-      rw [Nat.mod_eq_of_lt (by omega)] at hzi
-      omega
-  · obtain ⟨x, hx, hxL⟩ := hin
-    obtain ⟨y, hy, hyL⟩ := hout
-    obtain ⟨ix, hix, hxv⟩ := hindex x hx
-    obtain ⟨iy, hiy, hyv⟩ := hindex y hy
-    rw [Nat.mod_eq_of_lt (by omega)] at hzi hxv hyv
-    right; right
-    omega
+  have hindex (w : ZMod N) (hw : w ∈ C) :
+      ∃ i : Nat, i ≤ d ∧ (w.val = a.val + i ∨ w.val + N = a.val + i) := by
+    obtain ⟨i, hi, rfl⟩ := mem_modInterval_index a w d (ha hw)
+    refine ⟨i, hi, ?_⟩
+    rw [ZMod.val_add, ZMod.val_natCast, Nat.mod_eq_of_lt (by omega : i < N)]
+    rcases lt_or_ge (a.val + i) N with h | h
+    · exact Or.inl (Nat.mod_eq_of_lt h)
+    · right; rw [Nat.mod_eq_sub_mod h, Nat.mod_eq_of_lt (by omega)]; omega
+  obtain ⟨x, hx, hxL⟩ := hin
+  obtain ⟨y, hy, hyL⟩ := hout
+  obtain ⟨i, hi, hzi⟩ := hindex z hz
+  obtain ⟨ix, hix, hxv⟩ := hindex x hx
+  obtain ⟨iy, hiy, hyv⟩ := hindex y hy
+  omega
 
 end LeanProofs.GowersSzemeredi

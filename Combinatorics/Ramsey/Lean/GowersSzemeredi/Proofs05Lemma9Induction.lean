@@ -92,32 +92,17 @@ theorem section5NatTransport_partition {M : Nat} (P : NatAP)
     (R : Fin M -> NatAP) (hP : P.IsProper)
     (hR : IsNatAPPartition R (Finset.range P.length)) :
     IsNatAPPartition (fun j => section5NatTransport P (R j)) P.carrier := by
-  have hinj := section5NatIndexPoint_injective P hP.1
-  constructor
-  · intro x
+  refine ⟨fun x => ?_, fun i j hij => ?_⟩
+  · simp only [section5NatTransport_carrier, section5Nat_carrier_eq_image_range P,
+      Finset.mem_image]
     constructor
-    · intro hx
-      rw [section5Nat_carrier_eq_image_range] at hx
-      obtain ⟨t, ht, rfl⟩ := Finset.mem_image.mp hx
+    · rintro ⟨t, ht, rfl⟩
       obtain ⟨j, htj⟩ := (hR.1 t).mp ht
-      refine ⟨j, ?_⟩
-      change section5NatIndexPoint P t ∈ (section5NatTransport P (R j)).carrier
-      rw [section5NatTransport_carrier]
-      exact Finset.mem_image.mpr ⟨t, htj, rfl⟩
-    · rintro ⟨j, hx⟩
-      exact section5NatTransport_subset P (R j)
-        (IsPartition.cell_subset hR j) hx
-  · intro i j hij
-    rw [Finset.disjoint_left]
-    intro x hxi hxj
-    change x ∈ (section5NatTransport P (R i)).carrier at hxi
-    change x ∈ (section5NatTransport P (R j)).carrier at hxj
-    rw [section5NatTransport_carrier] at hxi hxj
-    obtain ⟨s, hsi, hsx⟩ := Finset.mem_image.mp hxi
-    obtain ⟨t, htj, htx⟩ := Finset.mem_image.mp hxj
-    have hst : s = t := hinj (hsx.trans htx.symm)
-    subst t
-    exact Finset.disjoint_left.mp (hR.2 i j hij) hsi htj
+      exact ⟨j, t, htj, rfl⟩
+    · rintro ⟨j, t, htj, rfl⟩
+      exact ⟨t, IsPartition.cell_subset hR j htj, rfl⟩
+  · simpa only [section5NatTransport_carrier,
+      Finset.disjoint_image (section5NatIndexPoint_injective P hP.1)] using hR.2 i j hij
 
 theorem section5NatIndexPoint_cast {N : Nat} (P : NatAP) (t : Nat) :
     (section5NatIndexPoint P t : ZMod N) =
@@ -160,25 +145,8 @@ theorem section5NatFlatten_partition {M : Nat} (P : Fin M -> NatAP)
   let e := section5NatFlattenEquiv L
   have hsigma := IsPartition.sigma L (fun i => (P i).carrier) S
     (fun i j => (R i j).carrier) hP hR
-  constructor
-  · intro x
-    rw [hsigma.1 x]
-    constructor
-    · rintro ⟨z, hz⟩
-      refine ⟨e z, ?_⟩
-      change x ∈
-        (R ((section5NatFlattenEquiv L).symm (section5NatFlattenEquiv L z)).1
-          ((section5NatFlattenEquiv L).symm (section5NatFlattenEquiv L z)).2).carrier
-      rw [(section5NatFlattenEquiv L).symm_apply_apply z]
-      exact hz
-    · rintro ⟨j, hj⟩
-      refine ⟨e.symm j, ?_⟩
-      simpa only [section5NatFlatten, e] using hj
-  · intro i j hij
-    have hij' : i ≠ j := bne_iff_ne.mp hij
-    have hpre : e.symm i ≠ e.symm j := fun h => hij' (e.symm.injective h)
-    simpa only [section5NatFlatten, e] using
-      hsigma.2 (e.symm i) (e.symm j) (bne_iff_ne.mpr hpre)
+  exact ⟨fun x => (hsigma.1 x).trans e.exists_congr_left, fun i j hij =>
+    hsigma.2 (e.symm i) (e.symm j) (bne_iff_ne.mpr (e.symm.injective.ne (bne_iff_ne.mp hij)))⟩
 
 theorem section5NatFlatten_isProper {M : Nat} (L : Fin M -> Nat)
     (R : (i : Fin M) -> Fin (L i) -> NatAP)

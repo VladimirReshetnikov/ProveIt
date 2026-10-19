@@ -36,22 +36,17 @@ theorem freiman_frequencies_affine_progression
     change R.carrier.card = N
     rw [hRuniv, Finset.card_univ, ZMod.card]
   obtain ⟨M, Q, hp, hcell⟩ := corollary_7_11_all_scales_universal N R B delta
-    hR (by simp [R, modInterval]) (NeZero.pos N) hδ hδone
-    (by rw [hRuniv]; exact Finset.subset_univ _) hmass
-  have hmass' : delta * R.carrier.card ≤ (B.card : Real) := by
-    simpa only [hRuniv, Finset.card_univ, ZMod.card] using hmass
-  obtain ⟨j, hj⟩ := exists_coordinate_filter_cell B R.carrier id (fun j ↦ (Q j).carrier)
-    (by rw [hRuniv]; exact Finset.univ_nonempty) hp
-    (fun _ _ ↦ by rw [hRuniv]; exact Finset.mem_univ _) hmass'
+    hR (by simp [R, modInterval]) (NeZero.pos N) hδ hδone (by simp [hRuniv]) hmass
+  -- a cell of the partition keeps the relative mass of `B`
+  obtain ⟨j, hj⟩ := exists_coordinate_filter_cell (b := delta) B R.carrier id
+    (fun j ↦ (Q j).carrier) (by rw [hRuniv]; exact Finset.univ_nonempty) hp
+    (fun _ _ ↦ by simp [hRuniv]) (by simpa only [hRuniv, Finset.card_univ, ZMod.card] using hmass)
   obtain ⟨hstep, hproper, hlen, hlinear⟩ := hcell j
   obtain ⟨a, b, hab⟩ := hlinear phi hphi
-  refine ⟨Q j, B.filter (fun x ↦ x ∈ (Q j).carrier), a, b,
-    hstep, hproper, Finset.filter_subset _ _, ?_, hlen, ?_, ?_⟩
-  · exact fun _ hx ↦ (Finset.mem_filter.mp hx).2
-  · simpa only [id_eq, show (Q j).carrier.card = (Q j).length from hproper] using hj
-  · intro x hx
-    obtain ⟨hxB, hxQ⟩ := Finset.mem_filter.mp hx
-    exact hab x (Finset.mem_filter.mpr ⟨hxQ, hxB⟩)
+  refine ⟨Q j, B.filter (fun x ↦ x ∈ (Q j).carrier), a, b, hstep, hproper,
+    Finset.filter_subset _ _, fun _ hx ↦ (Finset.mem_filter.mp hx).2, hlen, ?_,
+    fun x hx ↦ hab x (Finset.mem_filter.mpr (Finset.mem_filter.mp hx).symm)⟩
+  simpa only [id_eq, show (Q j).carrier.card = (Q j).length from hproper] using hj
 
 /-- The degree-two obstruction produces a long affine Fourier progression. -/
 theorem quadratic_nonuniformity_affine_frequencies

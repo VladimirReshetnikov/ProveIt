@@ -75,28 +75,15 @@ lemma theorem1013Parameters_bohr_radius_eq (alpha : Real)
     (halpha : 0 < alpha) :
     section10BohrRadius alpha =
       (2 : Real) ^ (-(148 : Real)) * alpha ^ (18 : Nat) / Real.pi := by
-  have htwo :
-      ((2 : Real) ^ (-(37 : Real))) ^ (4 : Nat) =
-        (2 : Real) ^ (-(148 : Real)) := by
-    rw [← Real.rpow_natCast, ← Real.rpow_mul (show (0 : Real) ≤ 2 by norm_num)]
+  have htwo : ((2 : Real) ^ (-(37 : Real))) ^ 4 = (2 : Real) ^ (-(148 : Real)) := by
+    rw [← Real.rpow_mul_natCast (by norm_num : (0 : Real) ≤ 2)]; norm_num
+  have halpha18 :
+      alpha ^ (-(4 : Real)) * (alpha ^ ((11 : Real) / 2)) ^ 4 = alpha ^ (18 : Nat) := by
+    rw [← Real.rpow_mul_natCast halpha.le, ← Real.rpow_add halpha, ← Real.rpow_natCast]
     norm_num
-  have halphaFour :
-      (alpha ^ ((11 : Real) / 2)) ^ (4 : Nat) = alpha ^ (22 : Nat) := by
-    rw [← Real.rpow_natCast, ← Real.rpow_mul halpha.le]
-    norm_num [Real.rpow_natCast]
-  have halphaCombine :
-      alpha ^ (-(4 : Real)) * alpha ^ (22 : Nat) = alpha ^ (18 : Nat) := by
-    rw [← Real.rpow_natCast, ← Real.rpow_add halpha]
-    norm_num [Real.rpow_natCast]
   unfold section10BohrRadius section10Lambda
-  rw [mul_pow, htwo, halphaFour]
-  calc
-    alpha ^ (-(4 : Real)) *
-          ((2 : Real) ^ (-(148 : Real)) * alpha ^ (22 : Nat)) / Real.pi =
-        (2 : Real) ^ (-(148 : Real)) *
-          (alpha ^ (-(4 : Real)) * alpha ^ (22 : Nat)) / Real.pi := by ring
-    _ = (2 : Real) ^ (-(148 : Real)) * alpha ^ (18 : Nat) / Real.pi := by
-      rw [halphaCombine]
+  rw [mul_pow, htwo, ← halpha18]
+  ring
 
 /-- The Bohr radius `epsilon` in Theorem 10.13 is positive. -/
 theorem theorem10_13_bohrRadius_pos (alpha : Real) (halpha : 0 < alpha) :
@@ -125,28 +112,11 @@ lemma theorem1013Parameters_bohr_radius_lower (alpha : Real)
     (halpha : 0 < alpha) :
     (2 : Real) ^ (-(150 : Real)) * alpha ^ (18 : Nat) ≤
       section10BohrRadius alpha := by
-  rw [theorem1013Parameters_bohr_radius_eq alpha halpha]
-  have hpi : (0 : Real) < Real.pi := Real.pi_pos
-  have hrecip : (1 : Real) / 4 ≤ 1 / Real.pi :=
-    one_div_le_one_div_of_le hpi Real.pi_le_four
-  have hcoeff :
-      (2 : Real) ^ (-(150 : Real)) ≤
-        (2 : Real) ^ (-(148 : Real)) / Real.pi := by
-    calc
-      (2 : Real) ^ (-(150 : Real)) =
-          (2 : Real) ^ (-(148 : Real)) * (1 / 4) := by
-        rw [show (1 / 4 : Real) = (2 : Real) ^ (-(2 : Real)) by
-          norm_num [Real.rpow_neg, Real.rpow_two]]
-        rw [← Real.rpow_add (show (0 : Real) < 2 by norm_num)]
-        norm_num
-      _ ≤ (2 : Real) ^ (-(148 : Real)) * (1 / Real.pi) := by gcongr
-      _ = (2 : Real) ^ (-(148 : Real)) / Real.pi := by ring
-  calc
-    (2 : Real) ^ (-(150 : Real)) * alpha ^ (18 : Nat) ≤
-        ((2 : Real) ^ (-(148 : Real)) / Real.pi) *
-          alpha ^ (18 : Nat) := by gcongr
-    _ = (2 : Real) ^ (-(148 : Real)) * alpha ^ (18 : Nat) / Real.pi := by
-      ring
+  have h : (2 : Real) ^ (-(148 : Real)) = 2 ^ (-(150 : Real)) * 4 := by
+    rw [show (-(148 : Real)) = -150 + 2 by norm_num, Real.rpow_add two_pos]; norm_num
+  rw [theorem1013Parameters_bohr_radius_eq alpha halpha, h, mul_div_right_comm, mul_div_assoc]
+  gcongr
+  exact le_mul_of_one_le_right (by positivity) ((one_le_div₀ Real.pi_pos).mpr Real.pi_le_four)
 
 /-- The corrected `zeta` is small enough at the ceiling spectrum parameter. -/
 theorem theorem10_13_zeta_le_parameterRadius (alpha : Real)

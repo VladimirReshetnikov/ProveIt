@@ -168,58 +168,27 @@ private lemma realDot_add_smul {k : Nat} (a x v : Fin k → Real) (t : Real) :
 private lemma exists_dot_values {k : Nat} {I : Type*} [Fintype I]
     (v : I → Fin k → Real) (hli : LinearIndependent Real v) (b : I → Real) :
     ∃ x : Fin k → Real, ∀ i, realDot (v i) x = b i := by
-  let coeff : (I →₀ Real) →ₗ[Real] Real :=
-    Finsupp.lsum Real (fun i => b i • LinearMap.id)
-  let f0 : Submodule.span Real (Set.range v) →ₗ[Real] Real :=
-    coeff.comp hli.repr
-  obtain ⟨f, hf⟩ := LinearMap.exists_extend f0
-  let x : Fin k → Real := fun j => f (Pi.basisFun Real (Fin k) j)
-  refine ⟨x, fun i => ?_⟩
-  have hcoord : realDot (v i) x = f (v i) := by
-    dsimp only [realDot, x]
-    calc
-      (∑ j, v i j * f (Pi.basisFun Real (Fin k) j)) =
-          ∑ j, f (v i j • Pi.basisFun Real (Fin k) j) := by simp
-      _ = f (∑ j, v i j • Pi.basisFun Real (Fin k) j) := by rw [map_sum]
-      _ = f (v i) := by
-        congr 1
-        simpa [Pi.basisFun_repr] using
-          (Pi.basisFun Real (Fin k)).sum_repr (v i)
-  rw [hcoord]
-  have hvi : v i ∈ Submodule.span Real (Set.range v) :=
-    Submodule.subset_span (Set.mem_range_self i)
-  have hcomp := LinearMap.congr_fun hf ⟨v i, hvi⟩
-  rw [LinearMap.comp_apply] at hcomp
-  rw [show f (v i) = f0 ⟨v i, hvi⟩ by simpa using hcomp]
-  dsimp only [f0, coeff]
-  rw [LinearMap.comp_apply, hli.repr_eq_single i ⟨v i, hvi⟩ rfl]
-  simp
+  -- extend `v i ↦ b i` from the span of the `v i` to a functional `f`; `x` lists its coordinates
+  obtain ⟨f, hf⟩ := LinearMap.exists_extend
+    ((Finsupp.lsum Real fun i => b i • (LinearMap.id : Real →ₗ[Real] Real)).comp hli.repr)
+  refine ⟨fun j => f fun l => if j = l then 1 else 0, fun i => ?_⟩
+  have hvi : v i ∈ Submodule.span Real (Set.range v) := Submodule.subset_span ⟨i, rfl⟩
+  have h := LinearMap.congr_fun hf ⟨v i, hvi⟩
+  simp [hli.repr_eq_single i ⟨v i, hvi⟩ rfl] at h
+  exact (LinearMap.pi_apply_eq_sum_univ f (v i)).symm.trans h
 
 private lemma exists_avoiding_kernels
     {V : Type*} [AddCommGroup V] [Module Real V]
-    {I : Type*} [DecidableEq I] (S : Finset I) (f : I → V →ₗ[Real] Real)
+    {I : Type*} (S : Finset I) (f : I → V →ₗ[Real] Real)
     (hf : ∀ i, i ∈ S → f i ≠ 0) :
     ∃ v : V, ∀ i, i ∈ S → f i v ≠ 0 := by
-  let K : Finset (Subspace Real V) := S.image fun i => LinearMap.ker (f i)
-  have htop : (⊤ : Subspace Real V) ∉ K := by
-    intro hmem
-    simp only [K, Finset.mem_image] at hmem
-    obtain ⟨i, hiS, hi⟩ := hmem
-    have hk : LinearMap.ker (f i) ≠ ⊤ := by
-      exact fun hker => hf i hiS (LinearMap.ker_eq_top.mp hker)
-    exact hk hi
-  have hne := Subspace.biUnion_ne_univ_of_top_notMem htop
-  have hex : ∃ v, v ∉ ⋃ p ∈ K, (p : Set V) := by
-    by_contra hn
-    push Not at hn
-    exact hne (Set.eq_univ_of_forall hn)
-  obtain ⟨v, hv⟩ := hex
-  refine ⟨v, fun i hiS hzero => ?_⟩
-  apply hv
-  apply Set.mem_iUnion_of_mem (LinearMap.ker (f i))
-  apply Set.mem_iUnion_of_mem (show LinearMap.ker (f i) ∈ K by
-    exact Finset.mem_image.mpr ⟨i, hiS, rfl⟩)
-  exact hzero
+  -- otherwise the kernels of the `f i`, all proper subspaces, would cover `V`
+  by_contra! h
+  obtain ⟨i, hi⟩ := Subspace.exists_eq_top_of_iUnion_eq_univ
+    (p := fun i : S => LinearMap.ker (f i)) (Set.eq_univ_of_forall fun v => by
+      obtain ⟨i, hiS, hv⟩ := h v
+      exact Set.mem_iUnion.mpr ⟨⟨i, hiS⟩, LinearMap.mem_ker.mpr hv⟩)
+  exact hf i i.2 (LinearMap.ker_eq_top.mp hi)
 
 private lemma exists_intersectionPoint_avoids {k m : Nat}
     (H : Fin m → AffineHyperplane k) (hgp : HyperplanesInGeneralPosition H)

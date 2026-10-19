@@ -63,30 +63,15 @@ theorem IsPartition.sigma {X : Type*} [DecidableEq X]
       exists z : Sigma fun i : Fin M => Fin (L i), x ∈ B z.1 z.2) /\
       forall z w : Sigma fun i : Fin M => Fin (L i), z != w ->
         Disjoint (B z.1 z.2) (B w.1 w.2) := by
-  constructor
-  · intro x
-    rw [hA.1]
-    constructor
-    · rintro ⟨i, hi⟩
-      obtain ⟨j, hj⟩ := (hB i).1 x |>.mp hi
-      exact ⟨⟨i, j⟩, hj⟩
-    · rintro ⟨⟨i, j⟩, hij⟩
-      exact ⟨i, (hB i).1 x |>.mpr ⟨j, hij⟩⟩
-  · intro z w hzw
-    have hzw' : z ≠ w := bne_iff_ne.mp hzw
-    by_cases hi : z.1 = w.1
-    · rcases z with ⟨i, j⟩
-      rcases w with ⟨i', j'⟩
-      dsimp only at hi ⊢
-      subst i'
-      have hj : j ≠ j' := by
-        intro h
-        subst j'
-        exact hzw' rfl
-      exact (hB i).2 j j' (bne_iff_ne.mpr hj)
-    · exact Disjoint.mono (IsPartition.cell_subset (hB z.1) z.2)
-        (IsPartition.cell_subset (hB w.1) w.2)
-        (hA.2 z.1 w.1 (bne_iff_ne.mpr hi))
+  refine ⟨fun x => (hA.1 x).trans ⟨fun ⟨i, hi⟩ => ?_, fun ⟨⟨i, j⟩, hij⟩ =>
+    ⟨i, ((hB i).1 x).2 ⟨j, hij⟩⟩⟩, fun ⟨i, j⟩ ⟨i', j'⟩ hzw => ?_⟩
+  · obtain ⟨j, hj⟩ := ((hB i).1 x).1 hi
+    exact ⟨⟨i, j⟩, hj⟩
+  · by_cases hi : i = i'
+    · subst hi
+      exact (hB i).2 j j' (by simpa using hzw)
+    · exact Disjoint.mono ((hB i).cell_subset j) ((hB i').cell_subset j')
+        (hA.2 i i' (bne_iff_ne.mpr hi))
 
 /-- The cells of a finite partition account for the cardinality of the set
 exactly once. -/

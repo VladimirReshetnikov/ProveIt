@@ -30,42 +30,22 @@ theorem fejerPurificationThreshold_le_power
   have hx0 : 0 ≤ x := by linarith only [hx]
   have hx1 : 1 ≤ x := by linarith only [hx]
   let M := Nat.ceil ((2 : Real) ^ 34 / (rho * eta))
-  have hratio : (2 : Real) ^ 34 / (rho * eta) ≤ x ^ (34 + r + e) := by
-    rw [div_eq_mul_inv, mul_inv_rev]
-    calc
-      _ = (2 : Real) ^ 34 * rho⁻¹ * eta⁻¹ := by ring
-      _ ≤ x ^ 34 * x ^ r * x ^ e :=
-        mul_le_mul (mul_le_mul (pow_le_pow_left₀ (by norm_num) hx 34) hr
-          (by positivity) (by positivity)) he (by positivity) (by positivity)
-      _ = _ := by rw [pow_add, pow_add]
-  have hM : (M : Real) ≤ x ^ (r + e + 35) := by
-    have h := nat_ceil_le_pow_succ hx (by positivity) hratio
-    simpa only [show 34 + r + e + 1 = r + e + 35 by omega] using h
-  have hsmall : (2 * M : Nat) ≤ x ^ (64 * (r + e + 35) + 15 * d + 132) := by
-    calc
-      _ = (2 : Real) * M := by push_cast; rfl
-      _ ≤ x * x ^ (r + e + 35) := mul_le_mul hx hM (by positivity) hx0
-      _ = x ^ (r + e + 35 + 1) := by rw [pow_succ]; ring
-      _ ≤ _ := pow_le_pow_right₀ hx1 (by omega)
+  have hratio : (2 : Real) ^ 34 / (rho * eta) ≤ x ^ 34 * x ^ r * x ^ e := by
+    rw [div_eq_mul_inv, mul_inv, ← mul_assoc]
+    gcongr
+  have hM : (M : Real) ≤ x ^ (r + e + 35) :=
+    nat_ceil_le_pow_succ hx (by positivity) (hratio.trans_eq (by ring))
   have hlarge : (2 : Real) ^ 131 * (M : Real) ^ 63 / (rho * eta * delta ^ 15) ≤
-      x ^ (131 + 63 * (r + e + 35) + r + e + 15 * d) := by
-    calc
-      _ = (2 : Real) ^ 131 * (M : Real) ^ 63 * rho⁻¹ * eta⁻¹ * (delta⁻¹) ^ 15 := by
-        simp only [div_eq_mul_inv, mul_inv_rev, inv_pow]
-        ring
-      _ ≤ x ^ 131 * (x ^ (r + e + 35)) ^ 63 * x ^ r * x ^ e * (x ^ d) ^ 15 := by
-        apply mul_le_mul _ (pow_le_pow_left₀ (by positivity) hd 15) (by positivity) (by positivity)
-        apply mul_le_mul _ he (by positivity) (by positivity)
-        apply mul_le_mul _ hr (by positivity) (by positivity)
-        exact mul_le_mul (pow_le_pow_left₀ (by norm_num) hx 131)
-          (pow_le_pow_left₀ (Nat.cast_nonneg _) hM 63) (by positivity) (by positivity)
-      _ = _ := by
-        rw [← pow_mul, ← pow_mul]
-        simp only [pow_add, Nat.mul_comm 63, Nat.mul_comm 15]
-  have hceil := nat_ceil_le_pow_succ hx (by positivity) hlarge
+      x ^ 131 * (x ^ (r + e + 35)) ^ 63 * (x ^ r * x ^ e * (x ^ d) ^ 15) := by
+    rw [div_eq_mul_inv, mul_inv, mul_inv, ← inv_pow]
+    gcongr
+  have hceil := nat_ceil_le_pow_succ hx (by positivity) (hlarge.trans_eq (by ring) :
+    _ ≤ x ^ (63 * (r + e + 35) + r + e + 15 * d + 131))
   unfold fejerPurificationThreshold
-  rw [Nat.cast_max]
-  exact max_le hsmall (hceil.trans (pow_le_pow_right₀ hx1 (by omega)))
+  push_cast
+  exact max_le ((mul_le_mul hx hM (by positivity) hx0).trans
+    ((pow_succ' x _).symm.trans_le (pow_le_pow_right₀ hx1 (by omega))))
+    (hceil.trans (pow_le_pow_right₀ hx1 (by omega)))
 
 /-- The explicit frequency-graph threshold is polynomial in 2/alpha.
 Its exponent is much smaller than any later double-exponential budget. -/

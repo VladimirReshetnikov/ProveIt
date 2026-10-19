@@ -25,28 +25,20 @@ theorem squareLengthThreshold_le_double_exp {f g W A : Real}
     squareLengthThreshold f g W ≤ Real.exp (Real.exp (4 * A)) := by
   have hA0 : 0 ≤ A := by linarith only [hA]
   have h8 := eight_le_exp_of_four_le hA
+  have key {C D e : Real} (hD : 0 < D) (he : 0 ≤ e) (hC : C ≤ Real.exp A)
+      (hDi : D⁻¹ ≤ Real.exp A) (hEi : e⁻¹ ≤ Real.exp (2 * A)) :
+      positivePowerThreshold C D e ≤ Real.exp (Real.exp (4 * A)) :=
+    (positivePowerThreshold_le_double_exp hD he hA0 zero_le_one zero_le_one
+      (by rwa [one_mul]) (by rwa [one_mul]) hEi).trans_eq (by norm_num)
   have hf2 : f⁻¹ ≤ Real.exp (2 * A) := hfI.trans (Real.exp_le_exp.mpr (by linarith only [hA]))
-  have hfg : (f * g)⁻¹ ≤ Real.exp (2 * A) := by
-    rw [mul_inv_rev, show 2 * A = A + A by ring, Real.exp_add]
-    exact mul_le_mul hgI hfI (by positivity) (Real.exp_pos _).le
-  have hD : ((1 / 4 : Real) ^ g)⁻¹ ≤ Real.exp A := by
-    rw [← Real.inv_rpow (by norm_num : (0 : Real) ≤ 1 / 4)]
-    norm_num only [one_div, inv_inv]
-    exact (Real.rpow_le_rpow_of_exponent_le (by norm_num : (1 : Real) ≤ 4) hg1).trans
-      (by simpa only [Real.rpow_one] using (show (4 : Real) ≤ Real.exp A by linarith only [h8]))
-  have h1 : (1 : Real)⁻¹ ≤ Real.exp A := by
-    simpa using Real.one_le_exp_iff.mpr hA0
-  have hleft := positivePowerThreshold_le_double_exp (C := 8) zero_lt_one hf.le hA0
-    (by norm_num : (0 : Real) ≤ 1) (by norm_num : (0 : Real) ≤ 1)
-    (by simpa only [one_mul] using h8) (by simpa only [one_mul] using h1) hf2
-  have hmid := positivePowerThreshold_le_double_exp (C := W) zero_lt_one hf.le hA0
-    (by norm_num : (0 : Real) ≤ 1) (by norm_num : (0 : Real) ≤ 1)
-    (by simpa only [one_mul] using hW) (by simpa only [one_mul] using h1) hf2
-  have hright := positivePowerThreshold_le_double_exp
-    (Real.rpow_pos_of_pos (by norm_num : (0 : Real) < 1 / 4) g) (mul_pos hf hg).le hA0
-    (by norm_num : (0 : Real) ≤ 1) (by norm_num : (0 : Real) ≤ 1)
-    (by simpa only [one_mul] using h8) (by simpa only [one_mul] using hD) hfg
-  exact max_le (by norm_num at hleft; exact hleft) (max_le (by norm_num at hmid; exact hmid) (by norm_num at hright; exact hright))
+  have h1 : (1 : Real)⁻¹ ≤ Real.exp A := inv_one.trans_le (Real.one_le_exp_iff.mpr hA0)
+  refine max_le (key one_pos hf.le h8 h1 hf2) (max_le (key one_pos hf.le hW h1 hf2)
+    (key (by positivity) (mul_pos hf hg).le h8 ?_ ?_))
+  · rw [one_div, Real.inv_rpow (by norm_num : (0 : Real) ≤ 4), inv_inv]
+    exact (Real.rpow_le_rpow_of_exponent_le (by norm_num) hg1).trans
+      (by rw [Real.rpow_one]; linarith)
+  · rw [mul_inv, two_mul, Real.exp_add]
+    gcongr
 
 /-- The outer length threshold adds only two units to the inner exponential
 budget. This accounts for the small initial length coefficient c. -/
@@ -81,43 +73,28 @@ theorem squarePowerThreshold_le_double_exp {c e f g A : Real}
     squarePowerThreshold c e f g ≤ Real.exp (Real.exp (7 * A)) := by
   have hA0 : 0 ≤ A := by linarith only [hA]
   have h8 := eight_le_exp_of_four_le hA
-  have hcf : (c ^ f)⁻¹ ≤ Real.exp A := by
-    rw [← Real.inv_rpow hc.le]
-    calc
-      _ ≤ (Real.exp A) ^ f := Real.rpow_le_rpow (inv_nonneg.mpr hc.le) hcI hf.le
-      _ = Real.exp (A * f) := (Real.exp_mul _ _).symm
-      _ ≤ _ := Real.exp_le_exp.mpr (by nlinarith only [hA0, hf1])
+  have hpow {x y B : Real} (hx : 0 < x) (hy : 0 ≤ y) (hy1 : y ≤ 1) (hB : 0 ≤ B)
+      (h : x⁻¹ ≤ Real.exp B) : (x ^ y)⁻¹ ≤ Real.exp B := by
+    rw [← Real.inv_rpow hx.le]
+    exact (Real.rpow_le_rpow (inv_nonneg.2 hx.le) h hy).trans
+      ((Real.exp_mul B y).symm.trans_le (Real.exp_le_exp.mpr (mul_le_of_le_one_right hB hy1)))
+  have hcf := hpow hc hf.le hf1 hA0 hcI
   have hef : (e * f)⁻¹ ≤ Real.exp (2 * A) := by
-    rw [mul_inv_rev, show 2 * A = A + A by ring, Real.exp_add]
-    exact mul_le_mul hfI heI (by positivity) (Real.exp_pos _).le
-  have hcoef : ((c ^ f / 4) ^ (g / 2))⁻¹ ≤ Real.exp (2 * A) := by
-    have hinner : (c ^ f / 4)⁻¹ ≤ Real.exp (2 * A) := by
-      rw [inv_div, div_eq_mul_inv, show 2 * A = A + A by ring, Real.exp_add]
-      exact mul_le_mul (show (4 : Real) ≤ Real.exp A by linarith only [h8]) hcf (by positivity) (Real.exp_pos _).le
-    rw [← Real.inv_rpow (by positivity : 0 ≤ c ^ f / 4)]
-    calc
-      _ ≤ (Real.exp (2 * A)) ^ (g / 2) := Real.rpow_le_rpow (by positivity) hinner (by positivity)
-      _ = Real.exp (2 * A * (g / 2)) := (Real.exp_mul _ _).symm
-      _ ≤ _ := Real.exp_le_exp.mpr (by nlinarith only [hA0, hg1])
+    rw [mul_inv, two_mul, Real.exp_add]
+    gcongr
+  have hcoef := hpow (by positivity : 0 < c ^ f / 4) (by positivity : 0 ≤ g / 2)
+    (by linarith) (by positivity : 0 ≤ 2 * A)
+    (by rw [inv_div, div_eq_mul_inv, two_mul, Real.exp_add]; gcongr; linarith)
   have hefg : (e * f * g / 4)⁻¹ ≤ Real.exp (4 * A) := by
-    rw [inv_div, div_eq_mul_inv, mul_inv_rev]
-    calc
-      _ ≤ Real.exp A * (Real.exp A * Real.exp (2 * A)) :=
-        mul_le_mul (show (4 : Real) ≤ Real.exp A by linarith only [h8])
-          (mul_le_mul hgI hef (by positivity) (Real.exp_pos _).le) (by positivity) (Real.exp_pos _).le
-      _ = _ := by rw [← Real.exp_add, ← Real.exp_add]; congr 1; ring
-  have hleft := positivePowerThreshold_le_double_exp (C := 4) (Real.rpow_pos_of_pos hc f)
-    (mul_pos he hf).le hA0 (by norm_num : (0 : Real) ≤ 1) (by norm_num : (0 : Real) ≤ 1)
-    (by simpa only [one_mul] using (show (4 : Real) ≤ Real.exp A by linarith only [h8]))
-    (by simpa only [one_mul] using hcf) hef
-  have hright := positivePowerThreshold_le_double_exp (C := 2)
-    (Real.rpow_pos_of_pos (by positivity : 0 < c ^ f / 4) (g / 2)) (by positivity : 0 ≤ e * f * g / 4)
-    hA0 (by norm_num : (0 : Real) ≤ 1) (by norm_num : (0 : Real) ≤ 2)
-    (by simpa only [one_mul] using (show (2 : Real) ≤ Real.exp A by linarith only [h8])) hcoef hefg
-  apply max_le
-  · apply (show positivePowerThreshold 4 (c ^ f) (e * f) ≤ Real.exp (Real.exp (4 * A)) by norm_num at hleft; exact hleft).trans
-    exact Real.exp_le_exp.mpr (Real.exp_le_exp.mpr (by linarith only [hA0]))
-  · norm_num at hright
-    exact hright
+    rw [inv_div, div_eq_mul_inv, mul_inv, show 4 * A = A + (2 * A + A) by ring,
+      Real.exp_add, Real.exp_add]
+    gcongr
+    linarith
+  refine max_le ((positivePowerThreshold_le_double_exp (C := 4) (Real.rpow_pos_of_pos hc f)
+      (mul_pos he hf).le hA0 zero_le_one zero_le_one (by rw [one_mul]; linarith)
+      (by rwa [one_mul]) hef).trans ?_) ((positivePowerThreshold_le_double_exp (C := 2)
+      (by positivity) (by positivity) hA0 zero_le_one zero_le_two (by rw [one_mul]; linarith)
+      hcoef hefg).trans_eq (by norm_num))
+  exact Real.exp_le_exp.mpr (Real.exp_le_exp.mpr (by linarith))
 
 end LeanProofs.GowersSzemeredi
