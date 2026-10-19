@@ -4,8 +4,10 @@ This binary, single-tape machine has **236 working states**, including
 initialization, plus a separate halt state. It starts in state 0 at head 0
 on an all-zero two-way infinite tape. Every transition moves left or right.
 The complete 472-row table is [zfc236.tm](zfc236.tm).
-**It is the smallest known candidate** whose blank-tape non-halting is equivalent
-to Con(ZFC).
+It was the smallest known candidate whose blank-tape non-halting is equivalent
+to Con(ZFC), until Source 115's 235-state machine (batch 177) and the
+[228-state machine](../candidate-k228/README.md), which applies two of the reductions
+below 241 to Elliot Glazer's K-theory 230.
 
 It removes one more state from the [237-state candidate](../candidate-composed237/README.md).
 That machine in turn removed three from the [240-state candidate](../candidate-rotation240/README.md).

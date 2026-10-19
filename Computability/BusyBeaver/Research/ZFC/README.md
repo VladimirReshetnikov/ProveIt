@@ -38,7 +38,21 @@ equivalent to the corresponding consistency statements. Its nine probes and
 nine typed callers pass with zero warnings. The internal PA equivalence for
 this exact 240-state machine remains open. See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md).
 
-The smallest **ordinary** candidate is now the [**236-state machine**](candidate-rotated236/README.md)
+The smallest **ordinary** candidate is now the [**228-state machine**](candidate-k228/README.md).
+It starts from Elliot Glazer's [230-state machine](https://github.com/elliotglazer/k230-rocq)
+(commit `3142e4d`), which replaces the calculus by a compact set theory K, equiconsistent
+with ZFC, and has a Rocq proof that it halts iff ZFC is inconsistent. k230 keeps ProveIt's
+241-state engine unchanged: the two machines agree step for step through the whole
+408,419-step startup. Two of ProveIt's later reductions live in that engine and transfer
+exactly: the delayed erasure (169 into 80) and the loop rotation with the 90/72 fold. The
+228 table passes the direct unbounded runtime proof on its own source (6,656 cases,
+1,614,426 rules), an exact 409,835-step startup, and a source-equivalence check. No Rocq
+or Lean theorem covers the 228 itself. The other four ProveIt savings, down to the
+batch-177 235, sit on axiom subtrees that K does not have.
+
+Within the original calculus the smallest is the 235-state machine of batch 177
+(Source 115), placed in `746e88f2f7`; its reconciliation follows. Before it came the
+[**236-state machine**](candidate-rotated236/README.md)
 of batch 175 (Source 112). It applies a closed, node-neutral source rotation to the 237 table, costing four
 decoder rows, and the rotated row `177/1` exposes a fold of state 223 into 182 by the bit to its
 left, proved for every tape. Its unbounded runtime proof (8,386 cases, 2,267,815 rules), exact
