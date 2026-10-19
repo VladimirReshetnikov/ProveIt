@@ -1,0 +1,627 @@
+\section{Combining the logical encodings: a complete 692-bit packet}
+\label{sec:eq704}
+
+There is a successful combination of two genuinely different ideas in the
+inspected intake, even though it is not by itself a binary-state reduction.
+The eight-equation packet $\mathcal E_{713}$ uses a complemented existential
+binder and a factored closure equation.  The separate 937-bit packet uses
+three structural constructors as closure witnesses.  Applying those three
+identifications to $\mathcal E_{713}$ gives a complete \textbf{704-bit}
+equational consistency problem: nine operation symbols, eight equations,
+159 equation-term nodes, four local variables, and two ground endpoints.
+That first packet is exactly 88 bytes.  The nine saved bits are all
+signature bits; the term-node count is unchanged.  A further Boolean
+identity reduces its closure equation from 82 to 80 term nodes, producing
+the \textbf{696-bit checkpoint $\mathcal E_{696}$}, exactly 87 bytes.
+A further structural identification uses the already unary $Q$ as
+selector successor, removing one more term node and giving the
+\textbf{692-bit packet $\mathcal E_{692}$}.  Its packed representation
+uses 87 bytes with four trailing padding bits.  We retain both checkpoints
+so that the model combination, Boolean identity, and change of selector
+representation can be assessed separately.
+
+The substantive issue is compatibility of the model interpretations.
+In the new packet $Q$ must mean existential negation as a formula
+constructor and must also supply a closure hull or a bad input as a raw
+object.  We prove that these roles coexist by a well-founded assignment
+on a free tagged carrier.  In particular, reusing the 937-bit packet's
+ordinary-existential interpretation of $Q$ without changing it would be
+incorrect.  The first new relative theorem is
+\begin{equation}
+ \mathrm{ZFC}\vdash
+ \bigl(\mathcal E_{704}\nvdash N(d,d)=d
+       \ \longleftrightarrow\
+       \mathcal E_{713}\nvdash N(d,d)=d\bigr).
+ \label{eq:704-relative}
+\end{equation}
+Its proof below needs no new assumption about the consistency strength
+of raw EPSC.  Composing it with the inherited ordinary calibration of
+$\mathcal E_{713}$ gives the same equivalence with
+$\operatorname{Con}(\mathrm{ZFC})$.  This is an ordinary mathematical
+proof formalizable in ZFC.  A serialized Lean/Rocq endpoint and an
+accounted binary interpreter for the packet are not supplied here.
+
+\subsection{Exact equations and encoding}
+
+The ordered signature is
+\[
+ d^0,N^2,V^2,P^2,A^2,Q^1,W^2,p_E^2,p_\varepsilon^2.
+\]
+The first seven equations are
+\begin{align}
+ N(N(x,N(N(y,x),x)),N(y,N(z,x)))&=y,\label{eq:704-sh1}\\
+ d&=N(d,N(d,d)),\label{eq:704-top}\\
+ V(P(x,s),d)&=x,\label{eq:704-head}\\
+ V(P(x,s),A(j,d))&=V(s,j),\label{eq:704-tail}\\
+ p_\varepsilon(s,P(a,b))
+   &=N(p_\varepsilon(s,a),p_\varepsilon(s,b)),\label{eq:704-nand}\\
+ p_\varepsilon(s,A(i,j))
+   &=p_E(V(s,i),V(s,j)),\label{eq:704-atom}\\
+ p_\varepsilon(s,Q(a))
+   &=N\bigl(p_\varepsilon(P(W(s,a),s),a),
+            p_\varepsilon(P(z,s),a)\bigr).
+       \label{eq:704-binder}
+\end{align}
+The first equation is the published Sh1 single axiom for Boolean algebra,
+not a newly discovered axiom.  The second makes $d$ the Boolean top.
+Equation~\eqref{eq:704-binder} is universal in $z$ as well as its other
+variables.  As explained below, its intended binder is $\exists\neg$.
+
+For the eighth equation the following are only abbreviations for terms:
+\begin{align*}
+ h&=Q(b),&n_z&=P(b,z),&m_z&=A(b,z),\\
+ R_b(x,y)&=p_\varepsilon(P(y,P(x,b)),V(b,d)),&&&
+\end{align*}
+and
+\begin{align*}
+ r&=R_b(h,n_z),&e&=p_E(m_z,n_z),&f&=p_E(m_z,z),\\
+ a&=p_E(W(x,d),x),&b_0&=p_E(x,h),&c&=R_b(x,y),\\
+ u&=p_E(y,h),&v&=R_b(P(b,y),y).&&
+\end{align*}
+Put
+\[
+ \ell=N(d,N(c,N(a,N(d,b_0)))),\qquad
+ B^-=N(r,N(d,N(e,N(d,f)))),
+\]
+\[
+ H^-=N\bigl(N(\ell,N(d,u)),N(u,N(d,v))\bigr).
+\]
+The final equation is
+\begin{equation}
+                         d=N(B^-,H^-).
+ \label{eq:704-closure}
+\end{equation}
+The files \texttt{E704.equations}, \texttt{E704.json}, and
+\texttt{E704.bits} contain the fully expanded terms.  No abbreviation
+or signature information is supplied outside the bit packet.
+
+This is the literal substitution
+\begin{equation}
+ \mathsf{Target}(b)=Q(b),\qquad
+ \mathsf{Next}(b,z)=P(b,z),\qquad
+ \mathsf{Mem}(b,z)=A(b,z)
+ \label{eq:704-aliases}
+\end{equation}
+in $\mathcal E_{713}$.  In particular, every separating
+$\mathcal E_{704}$-model expands to a separating
+$\mathcal E_{713}$-model by these definitions.  That direction is
+immediate; the converse requires the following construction.
+
+\subsection{What the inherited packet implies about raw membership}
+
+We give enough detail to make the new relative theorem independent of
+a black-box assertion about raw EPSC.  Work with a nonempty domain and
+a binary relation $E$, with no equality in the formulas of the schema.
+Write
+\begin{align*}
+ \mathsf{Empty}(x)&\iff\forall t\,\neg E(t,x),\\
+ y\subseteq_E z&\iff\forall t\,(E(t,y)\to E(t,z)),\\
+ \mathsf{LB}(R)&\iff
+       \forall x\,\exists z\,\forall y\,(R(x,y)\to y\subseteq_E z).
+\end{align*}
+For every finite pure-membership formula $R(x,y;\bar p)$ and every
+finite parameter tuple, raw EPSC asserts
+\begin{equation}
+ \mathsf{LB}(R)\ \longrightarrow\
+ \exists h\left[
+   \begin{aligned}
+   &\forall x,y\,
+     (((\mathsf{Empty}(x)\lor E(x,h))\land R(x,y))\to E(y,h))\\[-1mm]
+   &{}\land\forall y\,(E(y,h)\to\exists x\,R(x,y))
+   \end{aligned}\right].
+ \label{eq:704-epsc}
+\end{equation}
+This is a syntactic first-order schema.  It is not collection for all
+semantic binary relations.
+
+\paragraph{Complemented-witness fact.}
+For a Boolean-valued family $(u_z)$ and a selected value $w=u_{z_0}$,
+\[
+ \forall z\,[q=\neg(w\wedge u_z)]
+ \quad\Longleftrightarrow\quad
+ q=\neg w\ \land\ \forall z\,[w\leq u_z].
+\]
+Taking $z=z_0$ proves the first conjunct; complementing the remaining
+equations proves the second.  After a Boolean homomorphism to two
+values this says $q\iff\exists z\,\neg u_z$, with the selected
+instance false whenever such an instance exists.  It does not assert
+the existence of an attained minimum in an arbitrary Boolean-valued
+family.
+
+\paragraph{Extraction lemma.}
+Every countable separating $\mathcal E_{713}$-model gives a countable
+raw-EPSC structure on the same nonempty carrier.
+
+\begin{proof}
+Sh1 makes the carrier a nontrivial Boolean algebra.  Choose an
+ultrafilter and its homomorphism to two truth values.  Apply it to
+the values of $p_E$ and $p_\varepsilon$; retain all native functions
+and their literal equality on the original carrier.  The complemented
+witness fact proves the $\exists\neg$ semantics of $Q$ for the resulting
+class relation $\varepsilon$.
+
+Let $\nu_0=d$ and $\nu_{i+1}=A(\nu_i,d)$.  The two native stack
+equations recover the $i$th coordinate of a finite stack by repeated
+tail equations followed by one head equation.  Atomic membership
+is represented by $A(\nu_i,\nu_j)$, NAND by $P$, and ordinary
+existential quantification of a class $a$ by $Q(P(a,a))$.
+Structural induction, shifting indices under binders, represents every
+finite equality-free pure-membership formula.  For a matrix in $x,y$
+and parameters, use output coordinate 0, input coordinate 1, skip
+coordinate 2, and put parameters at coordinates 3 onward.  Build its
+class code $c$ first and then the descriptor
+$b=P(c,P(p_1,\ldots P(p_k,d)\ldots))$.  Its represented relation
+is exactly $R_b$.  This is a finite term construction without circular
+definition.  Logical truth and falsity, if needed, are represented by
+NAND tautologies and contradictions built from an atomic class; the
+lower argument does not assume that the arbitrary class $d$ is false.
+
+In two truth values, the final equation of $\mathcal E_{713}$ is
+\[
+ \forall b,z,x,y\quad
+ \mathsf{Bad}(b,z)\lor\mathsf{Hull}(b,x,y),
+\]
+where
+\begin{align*}
+ \mathsf{Bad}&=r\land e\land\neg f,\\
+ \mathsf{Hull}&=(a\lor\neg c\lor u)
+            \land(\neg b_0\lor\neg c\lor u)
+            \land(\neg u\lor v).
+\end{align*}
+For a represented $R_b$ satisfying $\mathsf{LB}$, apply that hypothesis
+at $h=\mathsf{Target}(b)$.  It supplies one $z$ for which the three
+bad literals cannot all hold.  The hull clauses therefore hold for
+every $x,y$.  If $x$ is empty, $E(W(x,d),x)$ is false, so the first
+hull clause gives closure at empty inputs.  The second gives closure
+at members of $h$.  The third gives unrestricted support, with witness
+$\mathsf{Next}(b,y)$.  These are precisely~\eqref{eq:704-epsc}.
+\end{proof}
+
+\subsection{A model of the combined packet from any countable EPSC structure}
+
+Let $M=(M,E_M)$ be a countable nonempty raw-EPSC structure, and fix
+$m_0\in M$.  Take the carrier $D$ to consist of all finite free trees
+whose leaves are a distinguished $d$ and separate elements $e_m$ for
+$m\in M$, with constructors $P,A,Q$.  The leaves $e_m$ belong to the
+chosen model carrier; they are not extra constant symbols in the
+finite packet.  Interpret the three constructors as their literal
+disjoint injective tree constructors.
+
+Give leaves weight 1 and put
+\begin{equation}
+ w(Q(b))=w(b)+1,\quad
+ w(P(b,z))=w(b)+w(z)+2,\quad
+ w(A(b,z))=w(b)+w(z)+3.
+ \label{eq:704-weight}
+\end{equation}
+Every proper subtree has smaller weight, and
+\[
+               w(Q(b))<w(P(b,z))<w(A(b,z)).
+\]
+These inequalities order the hull choice, output witness, and separating
+member witness.  They are the reason the structural identifications
+are compatible.
+
+For any selector $i$, define $\operatorname{idx}(i)$ to be the number
+of consecutive outer layers $A(j,d)$; a selector of any other shape
+has index zero.  Read $P(x,s)$ as a cons cell and every non-$P$ tail
+as the infinite constant-$d$ stream.  Define $V(s,i)$ to return
+coordinate $\operatorname{idx}(i)$.  The two native stack equations
+hold for all carrier arguments, including noncanonical selectors.
+
+Decode a finite class tree structurally: each leaf is falsity, $P$
+is NAND, $A(i,j)$ is membership between coordinates
+$\operatorname{idx}(i),\operatorname{idx}(j)$, and $Q(a)$ prepends
+one coordinate and existentially quantifies the negation of its body.
+Thus $Q$ is interpreted as $\exists\neg$, not as the ordinary
+existential of the 937-bit input.  This decoding is pure syntax and
+does not use a raw-value assignment.
+
+\paragraph{Descriptor descent.}
+For every $b$, the class expression
+$\varepsilon(P(y,P(x,b)),V(b,d))$ describes a finite pure-membership
+formula $\widehat R_b(x,y;\bar u)$.  Every fixed parameter in
+$\bar u$ is a proper subtree of $b$ or the default leaf $d$.
+Indeed, the class $V(b,d)$ is the head of $b$ when $b$ is a $P$-tree
+and is $d$ otherwise.  Its finitely many referenced coordinates are
+the two new inputs, bound coordinates, or coordinates of the tail
+$b$.  Each of the latter is the head of a proper tail subtree or the
+default leaf.  The argument also covers codes referring to their own
+code slot and arbitrarily deep selector indices.  Changing an
+existential binder to $\exists\neg$ does not change this descent.
+
+Define a projection $\mu:D\to M$ by recursion on weight, starting
+with $\mu(d)=m_0$ and $\mu(e_m)=m$.  For each descriptor $b$, after
+the proper-subtree parameters of $\widehat R_b$ have received raw
+values, let $R_b^M$ be the resulting pure-membership relation in $M$.
+Use a fixed enumeration of $M$ to make the following choices consistently
+whenever the same descriptor recurs.
+
+If $\mathsf{LB}(R_b^M)$ holds, choose an EPSC hull $h_b$ and mark
+this the hull case.  Otherwise choose $h_b$ satisfying
+\begin{equation}
+ \forall z\in M\,\exists n,m\in M\quad
+ R_b^M(h_b,n)\land E_M(m,n)\land\neg E_M(m,z).
+ \label{eq:704-bad-input}
+\end{equation}
+This is exactly classical negation of local boundedness.  Set
+$\mu(Q(b))=h_b$.
+
+In the bad-input case, choose $\mu(P(b,z))=n$ with
+$R_b^M(h_b,n)$ and $n\not\subseteq_{E_M}\mu(z)$; then choose
+$\mu(A(b,z))$ to be a member of $n$ outside $\mu(z)$.
+In the hull case, if $E_M(\mu(z),h_b)$, choose
+$\mu(P(b,z))=n$ with $R_b^M(n,\mu(z))$, using hull support;
+otherwise use $m_0$.  In this case put $\mu(A(b,z))=m_0$.
+
+This is a total recursion.  At $Q(b)$ all descriptor parameters have
+smaller weight.  At $P(b,z)$, the value of $Q(b)$ and that of $z$
+are available.  At $A(b,z)$, the value of $P(b,z)$ is available.
+Every requested witness exists in its selected case.  No truth
+predicate for the expanded language and no circular definition of
+formula meaning is used.  The leaves $e_m$ make $\mu$ surjective.
+
+Define $E_D(u,v)$ by $E_M(\mu(u),\mu(v))$.  For every
+equality-free pure-membership formula $\phi$,
+\begin{equation}
+ (D,E_D)\models\phi(\bar u)
+ \quad\Longleftrightarrow\quad
+ (M,E_M)\models\phi(\mu(\bar u)).
+ \label{eq:704-transfer}
+\end{equation}
+Induction on formulas proves this; surjectivity is used at quantifiers.
+Literal equality is excluded from this transfer because distinct free
+tags can have the same raw value.  Native equality in the equational
+packet remains literal equality of trees throughout.
+
+Let $\varepsilon(s,c)$ be the truth value of the finite class decoded
+from $c$ on stream $s$ in $(D,E_D)$.  For $a\ne d$, choose $W(s,a)$
+to falsify $\varepsilon(P(z,s),a)$ whenever such a $z$ exists,
+and choose $d$ otherwise.  Countability permits a fixed least-index
+choice.  At $a=d$, every class instance is false and the
+$\exists\neg$ class $Q(d)$ is true.  Thus both sides of the binder
+equation are true independently of $W(s,d)$, leaving that slice free.
+Allocate it by
+\[
+ W(x,d)=
+ \begin{cases}
+ e_m\text{ for a fixed selected }m\text{ with }E_M(m,\mu(x)),
+       &\text{if such }m\text{ exists},\\
+ d,&\text{otherwise}.
+ \end{cases}
+\]
+This makes $E_D(W(x,d),x)$ true whenever $x$ is nonempty.  There is
+only one allocation to this free slice.
+
+Formula transfer identifies the relation represented by $R_b$ with the pullback
+\[
+ (x,y)\longmapsto R_b^M(\mu(x),\mu(y)).
+\]
+In the bad-input case, the three raw values
+\[
+ \mu(Q(b)),\qquad\mu(P(b,z)),\qquad\mu(A(b,z))
+\]
+make every bad clause true.
+In the hull case, the first hull clause follows from member choice at
+nonempty $x$ and from EPSC closure at empty $x$; the second follows
+from closure at members of the hull; the third follows from the
+selected support witness $\mu(P(b,y))$.  Hence
+$\mathsf{Bad}(b,z)\lor\mathsf{Hull}(b,x,y)$ holds for all tuples.
+No Boolean branch flag is needed in the signature.
+
+Finally transport a countably infinite Boolean algebra, for example
+the finite/cofinite algebra, onto $D$ with top equal to its distinguished
+element $d$.  Interpret $N$ as NAND, and $p_E,p_\varepsilon$ as that
+algebra's top or bottom according to $E_D,\varepsilon$.  Keep every
+native function fixed.  All eight equations now hold literally and
+$N(d,d)\ne d$.  This completes the upper-model construction.
+
+\subsection{Ground nonderivability, calibration, and the exact remaining cost}
+
+For either finite equational packet, the presence of $d$ ensures a
+nonempty countable algebra of ground terms.  Let $\sim$ be the least
+congruence containing all ground instances of both orientations of all
+equations.  If the endpoints are not equationally derivable, their
+classes in the ground-term quotient are distinct.  That quotient is
+a countable separating model: choose ground representatives for the
+finitely many values assigned to the variables of an equation.
+Conversely, equational soundness prevents a separating model from
+equating the endpoints derivably.
+
+Starting with a separating $\mathcal E_{704}$-model, expand by
+the three literal definitions to obtain an $\mathcal E_{713}$-model.
+Starting with nonderivability for $\mathcal E_{713}$, take its
+countable ground-term model, apply the extraction lemma, and use
+the weighted upper construction to obtain a separating
+$\mathcal E_{704}$-model.  This proves~\eqref{eq:704-relative}.
+All objects in this argument are sets; recursion is on finite syntax
+or positive integer weights, and the uses of ultrafilters and ordinary
+first-order soundness are legitimate in ZFC.
+
+The inherited dependency for the full calibration is the ordinary
+raw-EPSC/ZFC comparison in ProveIt's Sources 14 and 08, and its use in
+the $\mathcal E_{713}$ argument.  With that dependency explicitly
+retained, the conclusion is
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\mathcal E_{704}\nvdash N(d,d)=d
+             \ \longleftrightarrow\ \operatorname{Con}(\mathrm{ZFC})\bigr).
+\]
+Thus a fair enumerator of ground contextual rewrite certificates
+from $N(d,d)$ to $d$ is a new precisely specified consistency search
+target.  Every certificate must assign a ground value to the union
+of variables on both sides of a chosen equation, including variables
+absent from the matched side when the equation is reversed.
+
+The unchanged codec uses an 8-bit symbol count, three arity bits per
+symbol, an 8-bit variable capacity, one leading bit per equation,
+one zero list terminator, and fixed-width term opcodes.  Nine symbols
+plus four variables require four bits per term node.  The complete
+cost is
+\[
+ \underbrace{8+3\cdot9+8}_{43}
+ +\underbrace{8+1+4\cdot159}_{645}
+ +\underbrace{4\cdot4}_{16}
+ =\boxed{704\text{ bits}}.
+\]
+The equation-node counts are $14,6,6,10,12,12,17,82$.  The bit-character
+SHA-256, excluding the final newline, is
+\begin{center}\scriptsize\ttfamily
+616d4eef0e70b67947b79ca5edc23dab718c06efd0c730a8e0929850b179629f.
+\end{center}
+The builder reconstructs the exact incoming 713-bit packet before
+specializing it, roundtrips the result, rejects all 704 strict
+prefixes and two malformed controls, and checks the closure Boolean
+identity on all 256 assignments.  These checks validate syntax and
+transcription; the unbounded model proof above supplies the logical
+argument.  No finite validation is described as a model of EPSC.
+
+\paragraph{Further research.}
+The next comparison must charge a ground-rewrite verifier, substitution,
+context navigation, complete enumeration, reset, and a blank-tape
+initializer in the same binary TM convention as the existing candidate.
+The 704 bits alone do not imply any state bound.  A particularly useful
+next proof artifact would check the weighted descriptor recursion and
+the two binder interpretations in one kernel development.  The
+signature sharing may be reusable in other finite interpreted theories,
+but each proposed sharing must exhibit its own well-founded dependency
+order and preserve any unconstrained witness slice it uses.
+
+\subsection{The 696-bit checkpoint: eliminating a double complement}
+\label{sec:eq696}
+
+The 704-bit checkpoint implements the hull requirement as the interval
+condition $\ell\leq u\leq v$, where
+$\ell=c\wedge(\neg a\lor b_0)$.  Its complement is used in the
+outer closure equation.  The same condition admits the Boolean
+identity
+\begin{equation}
+ (\neg\ell\lor u)\wedge(\neg u\lor v)
+   =(\neg u\wedge\neg\ell)\lor(u\wedge v).
+ \label{eq:696-mux}
+\end{equation}
+This identity holds in every Boolean algebra: distribute the left
+side, then absorb its consensus term $\neg\ell\wedge v$ into the
+other two terms, using $u\lor\neg u=1$.
+
+The complement of $\ell$ has the cheaper direct expression
+\[
+                 K=N(c,N(a,N(d,b_0))).
+\]
+Define
+\begin{equation}
+ H=N\bigl(N(N(d,u),K),N(u,v)\bigr).
+ \label{eq:696-hull}
+\end{equation}
+The NAND meaning of this term is the right side
+of~\eqref{eq:696-mux}.  The 696-bit packet retains the first seven
+equations of $\mathcal E_{704}$ and replaces the eighth equation by
+\begin{equation}
+                        d=N(B^-,N(d,H)),
+ \label{eq:696-closure}
+\end{equation}
+where $B^-$ and all predicate-term abbreviations are unchanged.
+Every abbreviation is expanded in \texttt{E696.equations} and the
+encoded packet.
+
+The previous expression first formed $\ell$ by complementing $K$;
+the new expression uses $K$ directly.  After the complete NAND
+expressions are expanded, this saves two term nodes in the closure
+equation.  The remaining appearances of $u$, every relation witness,
+the membership support clause, and both closure clauses are retained.
+The change is a Boolean identity, not a weakening of EPSC.
+
+\paragraph{Boolean equivalence theorem.}
+$\mathcal E_{696}$ and $\mathcal E_{704}$ have exactly the same
+models in their common signature, and hence exactly the same
+equational consequences.  In particular, in the ordinary ZFC
+metatheory,
+\[
+ \mathcal E_{696}\nvdash N(d,d)=d
+ \quad\Longleftrightarrow\quad
+ \mathcal E_{704}\nvdash N(d,d)=d
+ \quad\Longleftrightarrow\quad
+ \mathcal E_{713}\nvdash N(d,d)=d.
+\]
+To prove the first assertion, use Sh1 and the top equation to interpret
+the common reduct as a Boolean algebra.  Identity~\eqref{eq:696-mux}
+makes the two eighth equations equivalent for every assignment;
+the other equations are identical.  Ground-term equational
+completeness, or the earlier separating-model argument, gives the
+assertion about the designated query.  Composing with the explicitly
+retained E713 calibration yields
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\mathcal E_{696}\nvdash N(d,d)=d
+          \ \longleftrightarrow\ \operatorname{Con}(\mathrm{ZFC})\bigr).
+\]
+
+The 696-bit equation-node counts are
+$14,6,6,10,12,12,17,80$, totaling 157.  Under the unchanged codec,
+\[
+ \underbrace{8+3\cdot9+8}_{43\text{ header bits}}
+ +\underbrace{8+1+4\cdot157}_{637\text{ equation bits}}
+ +\underbrace{4\cdot4}_{16\text{ endpoint bits}}
+ =\boxed{696\text{ bits}}.
+\]
+Its bit-character SHA-256, excluding the final newline, is
+\begin{center}\scriptsize\ttfamily
+d0e84abc889413e5b12781b7aa3176901be6bd0a97cccbc40dc95b04ee35302a.
+\end{center}
+The builder checks the full closure identity and the new hull identity
+on all 256 assignments to the eight independent Boolean predicates,
+roundtrips both complete packets, rejects all 696 strict prefixes of
+the 696-bit checkpoint, and rejects two additional malformed controls.  It
+retains E704 as an independently encoded checkpoint and reconstructs
+the exact incoming E713 baseline.  These are syntax and Boolean
+checks; neither the 87-byte size nor the model-equivalence theorem
+charges the missing binary rewrite interpreter or its initializer.
+
+\subsection{The final 692-bit packet: sharing the unary binder with selectors}
+\label{sec:eq692}
+
+The remaining selector successor $A(j,d)$ costs three term nodes.
+The signature already contains the unary constructor $Q$.  Replace
+only the fourth equation of $\mathcal E_{696}$ by
+\begin{equation}
+                 V(P(x,s),Q(j))=V(s,j).
+ \label{eq:692-tail}
+\end{equation}
+Keep all seven other equations, the ordered signature, and the
+designated ground endpoints unchanged.  This defines
+$\mathcal E_{692}$.  The change is a new representation of finite
+indices, not a Boolean identity or a claim that the two packets
+have identical models.
+
+\paragraph{Selector-sharing theorem.}
+In the ordinary ZFC metatheory,
+\[
+ \mathcal E_{692}\nvdash N(d,d)=d
+ \quad\Longleftrightarrow\quad
+ \mathcal E_{696}\nvdash N(d,d)=d.
+\]
+Consequently, with the same explicitly retained raw-EPSC calibration,
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\mathcal E_{692}\nvdash N(d,d)=d
+       \ \longleftrightarrow\ \operatorname{Con}(\mathrm{ZFC})\bigr).
+\]
+
+\begin{proof}
+For the lower direction, take a countable separating
+$\mathcal E_{692}$-model and use the same Boolean homomorphism to
+two values as in the extraction lemma.  Set
+$\nu_0=d$ and $\nu_{i+1}=Q(\nu_i)$.
+Equations~\eqref{eq:704-head} and~\eqref{eq:692-tail} recover every
+coordinate of a finite stack by induction on $i$.  Represent atomic
+membership by $A(\nu_i,\nu_j)$, NAND by $P$, and ordinary existential
+quantification by $Q(P(a,a))$.  This still represents every finite
+equality-free pure-membership formula.  A selector is an argument of
+the atomic constructor; it need not have any particular class truth
+value when interpreted as a class in its own right.
+Construct the class code before its descriptor, with the same unused
+coordinate 2.  The closure equation is unchanged.  The earlier
+Boolean extraction therefore gives a countable raw-EPSC structure.
+
+For the upper direction, use precisely the previous free carrier,
+class decoding, weighted raw-value recursion, and final Boolean
+transport, except for this definition:
+\[
+ \operatorname{idx}(Q(i))=\operatorname{idx}(i)+1,\qquad
+ \operatorname{idx}(i)=0
+       \quad\text{if $i$ has no outer $Q$ constructor}.
+\]
+This is structural recursion on finite trees.  Define $V(s,i)$
+to return stream coordinate $\operatorname{idx}(i)$, as before.
+The two new native stack equations hold for all $s,x,i$, including
+noncanonical indices and tails.  The atomic class $A(i,j)$ reads
+the newly defined indices; the class $Q(a)$ retains exactly its
+$\exists\neg$ interpretation.
+
+Descriptor descent is unchanged: arbitrarily deep selectors choose
+only an input coordinate, a bound coordinate, a proper-subtree
+parameter of the descriptor, or the default $d$.  The definition of
+$\operatorname{idx}$ inspects syntax and never queries a raw value.
+Thus the weight inequalities~\eqref{eq:704-weight} still make the
+raw assignments to $Q(b),P(b,z),A(b,z)$ well founded.  The
+$W(x,d)$ member-choice slice remains free because class $d$ is false.
+The previous proof then verifies every remaining equation and the
+separation of the endpoints.
+
+We have obtained a countable raw-EPSC structure from every separating
+$\mathcal E_{692}$-model and a separating $\mathcal E_{692}$-model
+from every countable raw-EPSC structure.  The earlier argument gives
+the same two implications for $\mathcal E_{696}$.  Apply ground-term
+equational completeness in both directions to obtain the stated
+relative theorem.  No replacement of a native equality by equality
+of raw projections occurs in this argument.
+\end{proof}
+
+\paragraph{Checking the apparent collision at $Q(d)$.}
+In the constructed upper model, $Q(d)$ serves three compatible roles.
+As a selector it denotes index 1.  As a class it is true, since its
+body $d$ is false and the domain is nonempty.  As a raw object,
+$\mu(Q(d))$ is the chosen hull for the constantly false descriptor
+relation $R_d$, so hull support makes that raw object empty.
+These are different projections of one finite tree.  None of the
+equations identifies its class truth value, its selector index, and
+its raw-membership value.  In particular, class truth does not
+require the tree $Q(d)$ itself to be the Boolean top $d$; the
+predicate value $p_\varepsilon(s,Q(d))$ is the top.  This distinction
+also explains why no sharing of $V$ with the independent witness
+operation $W$ is being asserted.
+
+\paragraph{Complete charge and transport format.}
+The eight equation-node counts, totaling 156, are
+\[
+ 14,6,6,9,12,12,17,80.
+\]
+The codec, local-variable
+capacity, opcode width, and endpoints are unchanged:
+\[
+ \underbrace{8+3\cdot9+8}_{43\text{ header bits}}
+ +\underbrace{8+1+4\cdot156}_{633\text{ equation bits}}
+ +\underbrace{4\cdot4}_{16\text{ endpoint bits}}
+ =\boxed{692\text{ logical bits}}.
+\]
+The bit-character SHA-256, excluding the final newline, is
+\begin{center}\scriptsize\ttfamily
+477e5b5de0876ec2d784ca958540117bb2aef9121eaee670925ab2ee8e1455e7.
+\end{center}
+\texttt{E692.bits} stores exactly these 692 logical bit characters.
+\texttt{E692.bin} packs them most-significant bit first into 87 bytes
+and appends four zero padding bits.  The supplied
+\texttt{E692.bitlength} records 692.  A transport adapter must crop
+to that length before calling the strict packet decoder; the padding
+is not part of the equational packet.  No new opcode or custom
+compression convention is used to obtain the four-bit reduction.
+
+The builder reconstructs the incoming E713 packet, emits and
+roundtrips all three new packets, and rejects every strict prefix
+and two malformed controls for each.  It also checks the Boolean
+identities on all 256 predicate assignments and the new native stack
+equations in 14,400 finite-tree regressions.  Those regressions detect
+transcription errors in the index convention; the proof above covers
+all finite trees and all countable raw-EPSC structures.  The exact
+692-bit consistency problem remains to be compiled into a fully
+charged binary blank-tape machine.

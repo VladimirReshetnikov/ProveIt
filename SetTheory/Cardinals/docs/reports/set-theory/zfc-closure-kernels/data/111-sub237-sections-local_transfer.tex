@@ -1,0 +1,133 @@
+\section{A reusable theorem for positive block transfer}
+\label{sec:blocks}
+
+Small-table optimization often changes the representation of control.
+Two old states may become one new state if nearby tape bits retain the
+distinction.  A head displacement or reversible tape change may also
+be part of the representation.  Correctness must therefore compare
+whole configurations, not just target-state numbers.
+
+\begin{theorem}[Positive block transfer]
+Let $M,N$ be deterministic machines with designated halt outcomes.
+Let $I$ be an invariant of the old run and $F$ map its checkpoint
+configurations into new configurations.  Suppose the initial
+configurations correspond and halt/nonhalt is preserved by $F$.
+For every nonhalting old checkpoint $C$ satisfying $I$, suppose there
+are positive integers $a(C),b(C)$ such that an old block of $a(C)$
+steps ends at a checkpoint $C'$, a new block of $b(C)$ steps ends
+at $F(C')$, and neither block contains an interior halt.  Suppose
+the blocks remain in their respective executions and the endpoint
+again satisfies $I$.  Then the two initial runs halt together.
+\end{theorem}
+
+\begin{proof}
+Concatenate the corresponding blocks.  Induction on their number
+establishes corresponding endpoints.  If either run halts at an
+endpoint, its corresponding endpoint is a halt; an interior halt is
+excluded by hypothesis.  If all blocks continue, the two cumulative
+clocks both tend to infinity because every increment is positive.
+Consequently the concatenations cover every finite execution prefix
+of both deterministic runs.  Both runs are then infinite.
+\end{proof}
+
+The theorem makes no assertion that unrelated row edits compose.
+An edit can change the contexts entering another edited helper, so
+the invariant, endpoint map, and interior paths must be checked for
+the combined table.  A search depth limits the attempt to discover
+blocks; after a finite family of universally guarded identities is
+proved, it does not bound the simulated execution.
+
+\subsection{The inherited 238-to-237 fold, proved on all tapes}
+
+Let $M$ be the common 238-state input and $N$ the 237-state table,
+both in inherited labels.  Delete 235, map it to 98, and make exactly
+these retained-row changes~\cite{parent237}:
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Row & Old & New\\
+\midrule
+$98/0$ & $0R113$ & $0L240$\\
+$139/1$ & $1R235$ & $1R98$\\
+$156/1$ & $1R235$ & $1R98$\\
+$240/1$ & $1R99$ & $1L87$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The removed rows are $235/0=0R231$ and $235/1=1R16$.
+All 470 other retained rows are unchanged.  Let
+$F(q,h,T)=(\phi(q),h,T)$, where $\phi(235)=98$ and $\phi$
+fixes every other state, including start 95 and halt 254.
+
+The old-run invariant is
+\begin{align*}
+ q\in\{98,240\}&\Longrightarrow T(h-1)=0,\\
+ q\in\{139,156\}&\Longrightarrow T(h-1)=1,\\
+ q=235&\Longrightarrow T(h-2)=T(h-1)=1.
+\end{align*}
+Every incoming edge to 98 or 240 writes 0 and moves right.  The
+only predecessors of 139 and 156 write 1 and move right.  Entry
+to 235 is from 139 or 156, writes another 1, and moves right;
+the predecessor invariant supplies its second left-hand 1.
+The exact incoming rows are $86/0,187/0$ for 98;
+$117/1$ for 139; $195/1$ for 156; $139/1,156/1$ for 235;
+and $135/0,242/0$ for 240.  This proves induction closure.
+At state 95 the invariant is vacuous for every tape and head position.
+
+Only three old rows need longer new blocks:
+\begin{center}\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+Old row & Guard & New state path & Steps\\
+\midrule
+$98/0$ & left 0 & $98\to240\to176\to113$ & 3\\
+$235/0$ & left 11 & $98\to240\to87\to164\to118\to231$ & 5\\
+$240/1$ & left 0 & $240\to87\to190\to99$ & 3\\
+\bottomrule
+\end{tabular}
+\end{center}
+Setting the initial head to zero for notation, the triples
+$(\text{state},\text{position},\text{read bit})$ are
+\begin{align*}
+ &(98,0,0),(240,-1,0),(176,0,0);\\
+ &(98,0,0),(240,-1,1),(87,-2,1),(164,-1,1),(118,0,0);\\
+ &(240,0,1),(87,-1,0),(190,0,1).
+\end{align*}
+Every transition writes the bit it reads.  No cell outside $[-2,0]$
+is touched, the complete tape is unchanged, and each block ends
+one cell right at the old target.  All 473 other old rows commute
+in one step through $F$, including $235/1$, which agrees with $98/1$.
+The positive block theorem proves halting equivalence from state 95
+on every binary tape.  If $a_t,b_t,c_t$ count old visits to the three
+exceptional rows, the exact synchronized clock is
+\[
+             \tau(t)=t+2a_t+4b_t+2c_t,
+             \qquad t\leq\tau(t)\leq5t.
+\]
+
+\subsection{A new independent finite checker}
+
+The new \file{verification/verify_representation.py} begins with
+every radius-$R$ binary window at old start state 95.  It computes
+the least fixed point of the finite abstract transition relation,
+branching both ways on each newly exposed exterior bit.  Induction
+shows that this overapproximates every concrete old run on every
+initial tape; it is not an empirical execution profile.
+
+For every admitted checkpoint window, it simulates positive old
+and new blocks and compares mapped whole-window endpoints.  It
+rejects reads outside the represented window and any unavailable
+representation-dependent cell.  Common arbitrary exterior tape
+is untouched, so equality of finite overrides proves equality of
+the complete tapes.  Halt stops a block, preventing interior halts.
+Its optional state split excludes an old helper from checkpoints
+only after verifying that all incoming edges to the helper come
+from the deleted state or the helper itself.
+
+On the inherited fold, radius 2, old cap 1 and new cap 5 give
+3,282 cases: 3,266 blocks of lengths $(1,1)$, 12 of $(1,3)$, and
+4 of $(1,5)$.  The same checker independently validates the earlier
+context split.  A negative control restoring old helper row
+$240/1=1R99$ is rejected at old state 235 with local window 11000.
+That rejection concerns the proposed local certificate; it does
+not claim the mutated blank run halts.

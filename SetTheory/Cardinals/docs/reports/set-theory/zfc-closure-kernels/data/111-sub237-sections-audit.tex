@@ -1,0 +1,74 @@
+\section{The actual starting point}
+\label{sec:audit}
+
+The objective is to construct a machine $M$ with at most 236 working
+states and prove
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\neg\Halt(M,0^{\mathbb Z})
+           \longleftrightarrow\Con(\mathrm{ZFC})\bigr).
+\]
+Here a working state is a state with two transition rows.  The machine
+has one two-way infinite binary tape, begins on zeros, and writes one
+bit and moves one cell left or right on every transition.  Initialization
+counts toward the state total.  The separate halt outcome has no rows.
+An inherited numerical label larger than 236 is not evidence of an
+extra working state.
+
+The first useful finding is that the four inspected 238-state table
+deliveries do not supply four different reductions to combine.  Their
+inherited-label tables are byte-identical, with SHA-256
+\hash{069942be27db9736875ea042320e51ac3b1}{eac7116cbe01cdce520fa6056f78c}
+and their canonical table has SHA-256
+\hash{909f29c493e0ccc5d6a481fd7a20a9a82}{eb934ab2aa7df17b5ec3789255a8c08}
+Their common table already combines the source/decoder reduction
+deleting inherited state 218 with the coordinated runtime-helper
+reduction deleting state 169.  The incoming 237-state candidate then
+deletes state 235.  Reapplying any of these three deletions cannot
+save another state.  This conclusion is an exact table comparison,
+not an inference from similar titles or descriptions~\cite{repo,parent237}.
+
+The 237-state checkpoint retained in this package is:
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Convention & Canonical table & Inherited-label table\\
+\midrule
+Working states & $0,\ldots,236$ & 237 sparse labels\\
+Start & 0 & 95\\
+Dispatcher & 84 & 96\\
+Halt outcome & 237 & 254\\
+Transition rows & 474 & 474\\
+\bottomrule
+\end{tabular}
+\end{center}
+Its canonical SHA-256 is
+\hash{7eda1da1fcda629cae86d22b01d3faf41955}{2cf04ed4179f0c045ad0adf2c1a6}
+and its inherited-label SHA-256 is
+\hash{a3c4407f30e2e2139af87c6a91948c5181}{34855841a28eb85b1d81bcfd026c9a}
+The complete files and the state bijection are in \file{machines/}.
+
+The fresh audit reproduces the finite construction/source/local/startup
+workflow and reruns the complete 237-state instruction proof.  It finds
+no flaw in the final local fold or the three-rule affine/list runtime
+argument.  Its strongest fresh numerical evidence is:
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Item & Fresh result\\
+\midrule
+Unbounded guarded instruction cases & 8,386\\
+Symbolic execution rules & 2,261,369\\
+Literal transition rows exercised & 474\\
+Minimum certified instruction duration & 13\\
+Independent all-tape local cases, radius 2 & 3,282\\
+Blank initialization steps & 409,835\\
+\bottomrule
+\end{tabular}
+\end{center}
+The complete fresh case-array hash is
+\hash{573e2d88400030c9457ab028c70110220}{5124875f69aedd6acfa7f9341cd8c25}
+and the case bytes agree with the shipped evidence.  These are
+reproduction results for the inherited machine, not a new state record.
+The following sections explain why the checked interfaces are unbounded
+and where the inherited logical argument enters.

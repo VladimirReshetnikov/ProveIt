@@ -1,0 +1,210 @@
+{
+  "status": "PASS_FULL_REPLAY",
+  "full": true,
+  "manifest": {
+    "status": "PASS",
+    "files": 327,
+    "manifest_sha256": "fc75ddab57324e389cbf017b8d87aab4d5a5cf07ca2aa805ed270e321d476394"
+  },
+  "runtime_audits": [
+    {
+      "status": "AUDITED_STORED_UNIVERSAL_RECEIPT",
+      "states": 236,
+      "cases": 8386,
+      "rules": 2267815,
+      "receipt_sha256": "8989438800d5f45733c97282725ab73f7154545828cbdf71f2b786af3812d1ac",
+      "case_array_sha256": "cb72b3531d1b5c2501799b16a4ba9287ea90fedf408e5c94d76c466474c709b7",
+      "fresh_unbounded_execution": false
+    },
+    {
+      "status": "AUDITED_STORED_UNIVERSAL_RECEIPT",
+      "states": 237,
+      "cases": 8386,
+      "rules": 2262455,
+      "receipt_sha256": "0806c0a2b6df18800c7c60881406e965dc5b722646e27fbebad6cb1cdd373ff9",
+      "case_array_sha256": "7da6defc13b46704d36939352aa677f9522214a6c3740f1a493cc34d9ec7c139",
+      "fresh_unbounded_execution": false
+    }
+  ],
+  "jobs": [
+    {
+      "name": "construction",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "build_zfc236.py",
+        "--input237",
+        "upstream/zfc237/zfc_composed237_old.tm",
+        "--output-dir",
+        "machines"
+      ],
+      "returncode": 0,
+      "seconds": 13.15863627699946,
+      "log": "construction.log"
+    },
+    {
+      "name": "source",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "build_source.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.31513750799967966,
+      "log": "source.log"
+    },
+    {
+      "name": "source_independent",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "verification/check_source_rotation.py",
+        "--source",
+        "source/boundary_source_input.json",
+        "--baseline-table",
+        "upstream/zfc237/zfc_composed237_old.tm",
+        "--rotated-table",
+        "machines/zfc_rotated237_old.tm",
+        "--rotated-sites",
+        "source/sites_logical.json",
+        "--output",
+        "source/independent_replay.json"
+      ],
+      "returncode": 0,
+      "seconds": 0.2755130650002684,
+      "log": "source_independent.log"
+    },
+    {
+      "name": "fold_independent",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "verification/check_fold236.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.049371216000508866,
+      "log": "fold_independent.log"
+    },
+    {
+      "name": "fold_generic",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "verification/verify_state_fold.py",
+        "machines/zfc_rotated237_old.tm",
+        "machines/zfc236_old.tm",
+        "--keep",
+        "182",
+        "--drop",
+        "223",
+        "--output",
+        "evidence/fold236_generic.json"
+      ],
+      "returncode": 0,
+      "seconds": 0.06602942100107612,
+      "log": "fold_generic.log"
+    },
+    {
+      "name": "generic_adversarial",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "formalisms/check_fold_checker_regressions.py",
+        "--checker",
+        "verification/verify_state_fold.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.03874412000004668,
+      "log": "generic_adversarial.log"
+    },
+    {
+      "name": "equational688",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "formalisms/build_e688.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.0809517039997445,
+      "log": "equational688.log"
+    },
+    {
+      "name": "tail_countermodel",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "formalisms/check_tail_deletion_model.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.17819017600049847,
+      "log": "tail_countermodel.log"
+    },
+    {
+      "name": "inherited237_quick",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "upstream/zfc237/reproduce.py",
+        "--output-dir",
+        "/workspace/scratch/3d8e493a805d/full_replay236/inherited237"
+      ],
+      "returncode": 0,
+      "seconds": 33.72201992200098,
+      "log": "inherited237_quick.log"
+    },
+    {
+      "name": "runtime236_fresh",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "verification/verify_runtime.py",
+        "--output",
+        "/workspace/scratch/3d8e493a805d/full_replay236/runtime236.json"
+      ],
+      "returncode": 0,
+      "seconds": 218.31084237899995,
+      "log": "runtime236_fresh.log"
+    },
+    {
+      "name": "runtime237_fresh",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "verification/verify_runtime.py",
+        "--table",
+        "machines/zfc_rotated237_old.tm",
+        "--states",
+        "237",
+        "--output",
+        "/workspace/scratch/3d8e493a805d/full_replay236/runtime237.json"
+      ],
+      "returncode": 0,
+      "seconds": 214.42899553700045,
+      "log": "runtime237_fresh.log"
+    }
+  ],
+  "artifact_checks": {
+    "status": "PASS_REBUILT_ARTIFACTS_AND_EXACT_CALIBRATED_SEED",
+    "states": 236,
+    "all_working_states_graph_reachable": true,
+    "startup_steps": 409835,
+    "one_cells": 351,
+    "header": 176,
+    "gap_parameter": 117,
+    "physical_values": [
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      3,
+      0,
+      0
+    ],
+    "spare_count": 167,
+    "canonical_dispatcher": 84
+  },
+  "fresh_unbounded_jobs": 2,
+  "seconds": 266.3555026569993
+}

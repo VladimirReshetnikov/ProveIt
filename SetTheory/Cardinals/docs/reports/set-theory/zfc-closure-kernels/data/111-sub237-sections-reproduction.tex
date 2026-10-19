@@ -1,0 +1,84 @@
+\section{Reproduction, files, and provenance}
+\label{sec:reproduce}
+
+The archive is intended for incorporation into ProveIt.  It
+preserves the exact 237-state tables and parent archive; it does
+not silently replace the existing repository candidate.  All
+published counts refer to literal table rows or complete logical
+bit packets; byte-transport padding is recorded separately.  Hashes identify those objects independently of the
+explanatory prose.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}p{0.34\textwidth}X@{}}
+\toprule
+Path & Purpose\\
+\midrule
+\file{report.tex}, \file{sections/} & Main exposition and proofs\\
+\file{machines/} & Exact canonical/inherited 237-state tables and bijection\\
+\file{vendor/parent237.zip} & Preserved original proof/checker package\\
+\file{verification/verify_representation.py} & New independent all-tape checker\\
+\file{evidence/} & Fresh runtime arrays, local receipts and audit notes\\
+\file{research/source_abstraction/} & Source-level invariant and search artifacts\\
+\file{equational/} & E692 primary packet, E704/E696 checkpoints, builder and full proof\\
+\file{reproduce.py} & Integrated replay entry point\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Use Python with assertions enabled.  The new all-tape checker and
+equational builder use only the standard library.  The integrated
+driver extracts the preserved parent into a temporary location
+and provides the correct inherited-label input paths; consult
+its help for the exact packaged options.  The two essential
+standalone operations have the following form:
+\begin{lstlisting}
+python3 -B verification/verify_representation.py OLD238_TABLE \
+  machines/zfc_composed237_old.tm \
+  --deleted 235 --retained 98 --radius 2 \
+  --old-cap 1 --new-cap 5 --output local-replay.json
+
+python3 -B equational/build704.py
+\end{lstlisting}
+The equational builder's historical filename is retained.  It
+now generates E704, E696, and the final E692; its optional
+\file{--baseline} argument compares a supplied incoming E713 bit
+file literally.  It always reconstructs the pinned E713 hash
+internally before applying the three transformations.  The E692
+logical packet has 692 bits; its packed 87-byte transport includes
+four trailing zero padding bits.  Crop to the supplied
+\file{E692.bitlength} before strict decoding.
+
+For the original 237-state complete workflow, the preserved
+parent's \file{reproduce.py} supports
+\file{--output-dir replay} and
+\file{--full --output-dir replay-full}.  The first reconstructs
+tables and repeats finite/source/local/startup checks while
+auditing stored universal evidence.  The second additionally
+reruns the parent universal runtime proofs and compatibility
+guard proof.  The present fresh full 237-state output is
+\file{evidence/universal237_fresh.json} with its complete
+\file{universal237_fresh_cases.json}; the new independent local
+receipt is \file{independent237_representation.json}.
+Operational elapsed times can vary without changing proof data.
+
+To compile the article, run twice from this directory:
+\begin{lstlisting}
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{lstlisting}
+Optional discovery searches may require a C++17 compiler and
+have explicit run limits.  They are not prerequisites for the
+inherited machine's proof replay.  Search receipts document
+negative results within their specified families; they do not
+certify global minimality.
+
+The original source calculus and 254-state construction retain
+credit to Mira-Cult, upstream Rocq verification to Jeff
+Ketchersid and contributors, the compiler framework to Andrew
+James Wade, and the preceding ProveIt reductions and logical
+interpretations to their original contributors.  The present
+contribution consists of the fresh audit, independent
+representation verification and source analysis, the explicitly
+scoped searches, and the combined/optimized E692 construction.
+Original notices and archive identities are retained.  The
+equational source manifest records exact URLs, archive lengths
+and SHA-256 values for its E713 and structural-sharing inputs.

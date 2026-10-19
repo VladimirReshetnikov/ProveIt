@@ -1,0 +1,55 @@
+\section{Further research questions with concrete acceptance criteria}
+\label{sec:further}
+
+\paragraph{1. Can a source invariant pay for one actual binary state?}
+A forced-zero decrement is valuable only if replacing its control
+branch changes a compiled runtime component enough to delete a
+working state.  The acceptance criterion is a rebuilt complete
+table with at most 236 states, a checked source transformation,
+new decoder coverage and initialization, and either a direct
+unbounded runtime replay or an applicable representation theorem.
+A smaller leaf list alone is insufficient.
+
+\paragraph{2. Can two state changes be synthesized together?}
+The 237-state fold succeeds because a retained helper's return
+changes along with the state identification.  A useful search
+should consider a small connected group of controls, permit
+several guarded representations, and verify all incoming
+contexts together.  A SAT/SMT encoding could separate the
+finite candidate synthesis from the independent positive-block
+checker.  The checker, not the solver's empirical profile,
+must discharge the all-tape or valid-frame theorem actually used.
+
+\paragraph{3. Can a stronger source abstraction preserve useful correlations?}
+Independent register sets lose relations such as equality,
+one-step offsets, and a scratch register being zero whenever
+another control branch is taken.  An economical relational
+domain might expose additional dead code or simpler arithmetic
+helpers.  Its transitions, join operation and initial inclusion
+must have an ordinary soundness proof and an independent finite
+closure check before those facts change the proof-search program.
+
+\paragraph{4. What is the fully charged cost of E692?}
+Implement one fair ground-rewrite verifier, including the union
+of variables of both equation sides, contextual replacement,
+enumeration, reset and a writer for the complete 692-bit payload.  Compare the final
+binary state count with the existing arithmetic engine.
+An evaluator with a small code file but a large tape loader
+does not meet the target.  The most useful intermediate output
+would be a small fixed register program with exact source
+semantics and a fully included packet.
+
+\paragraph{5. Can the strongest ordinary proofs be given compact kernel endpoints?}
+The final three-block local fold is an especially small target:
+its invariant is elementary and every exceptional path has at
+most five steps.  The equational construction has a different
+target: formalize finite descriptor descent, the weighted raw
+assignment, and the complemented-witness lemma in one development.
+These tasks would strengthen reproducibility without implying
+that the unresolved internal PA proof-code comparison has
+already been completed.
+
+The principal open outcome remains the original one: an explicit
+sub-237-state blank binary machine with a complete calibration
+argument.  The validated checkpoint and the new finite
+consistency problem provide concrete starting points for that work.

@@ -1,0 +1,232 @@
+{
+  "status": "PASS_QUICK_REPLAY",
+  "full": false,
+  "commands": [
+    {
+      "name": "parent237",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/zfc-research-replay-4wdljkhz/zfc237-research-20261019/reproduce.py",
+        "--output-dir",
+        "/tmp/zfc_final_integrated_replay/parent"
+      ],
+      "cwd": "/workspace/scratch/fbd6bc5ce6e9/zfc_sub237_research_20261019",
+      "log": "logs/01_parent237.log",
+      "status": "PASS",
+      "returncode": 0,
+      "seconds": 39.5567899990001,
+      "log_sha256": "d5db521e6d43acee3a8dad16f1a7262ed4f0f6f076773fdf38b639a06507a2d6"
+    },
+    {
+      "name": "all_tape_fold",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/scratch/fbd6bc5ce6e9/zfc_sub237_research_20261019/verification/verify_representation.py",
+        "/tmp/zfc-research-replay-4wdljkhz/zfc237-research-20261019/zfc_composed238_old.tm",
+        "/workspace/scratch/fbd6bc5ce6e9/zfc_sub237_research_20261019/machines/zfc_composed237_old.tm",
+        "--deleted",
+        "235",
+        "--retained",
+        "98",
+        "--radius",
+        "2",
+        "--old-cap",
+        "1",
+        "--new-cap",
+        "5",
+        "--output",
+        "/tmp/zfc_final_integrated_replay/independent237_representation.json"
+      ],
+      "cwd": "/workspace/scratch/fbd6bc5ce6e9/zfc_sub237_research_20261019",
+      "log": "logs/02_all_tape_fold.log",
+      "status": "PASS",
+      "returncode": 0,
+      "seconds": 0.1152568080005949,
+      "log_sha256": "91faa7acec3ebc03c9cdc38c244b1e08420cc889ac49ecd0af5fc243da397dc9"
+    },
+    {
+      "name": "source_invariant_discovery",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/scratch/fbd6bc5ce6e9/zfc_sub237_research_20261019/research/source_abstraction/verify_invariant.py",
+        "--threshold",
+        "16",
+        "--output",
+        "/tmp/zfc_final_integrated_replay/source_generation"
+      ],
+      "cwd": "/workspace/scratch/fbd6bc5ce6e9/zfc_sub237_research_20261019",
+      "log": "logs/03_source_invariant_discovery.log",
+      "status": "PASS",
+      "returncode": 0,
+      "seconds": 1.4292677610001192,
+      "log_sha256": "433963c76e188b9e6cafd78b78e53ef54c51659fe08c4e0d08d5dd1d17db6b6a"
+    },
+    {
+      "name": "source_invariant_independent",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/scratch/fbd6bc5ce6e9/zfc_sub237_research_20261019/verification/check_source_product_invariant.py",
+        "--sites",
+        "/workspace/scratch/fbd6bc5ce6e9/zfc_sub237_research_20261019/research/source_abstraction/source.json",
+        "--facts",
+        "/workspace/scratch/fbd6bc5ce6e9/zfc_sub237_research_20261019/research/source_abstraction/source_abstract_facts_k16.json",
+        "--summary",
+        "/workspace/scratch/fbd6bc5ce6e9/zfc_sub237_research_20261019/research/source_abstraction/source_abstract_summary_k16.json",
+        "--threshold",
+        "16",
+        "--output",
+        "/tmp/zfc_final_integrated_replay/source_product_k16_independent.json"
+      ],
+      "cwd": "/workspace/scratch/fbd6bc5ce6e9/zfc_sub237_research_20261019",
+      "log": "logs/04_source_invariant_independent.log",
+      "status": "PASS",
+      "returncode": 0,
+      "seconds": 0.3730794370003423,
+      "log_sha256": "9d68163598ca9e9bc964410dc874cb9d9bfe87443c90be81888d3c8a7d3e5f39"
+    },
+    {
+      "name": "equational_packets",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/scratch/fbd6bc5ce6e9/zfc_sub237_research_20261019/equational/build704.py",
+        "--baseline",
+        "/workspace/scratch/fbd6bc5ce6e9/zfc_sub237_research_20261019/inputs/E713.bits",
+        "--out",
+        "/tmp/zfc_final_integrated_replay/equational"
+      ],
+      "cwd": "/workspace/scratch/fbd6bc5ce6e9/zfc_sub237_research_20261019",
+      "log": "logs/05_equational_packets.log",
+      "status": "PASS",
+      "returncode": 0,
+      "seconds": 0.26685216700025194,
+      "log_sha256": "92efaa52f22122dfe359c2b4a5d10a4177024b848fe5758b9875664aec78e976"
+    }
+  ],
+  "comparisons": [
+    {
+      "name": "zfc_composed237.tm",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "7eda1da1fcda629cae86d22b01d3faf419552cf04ed4179f0c045ad0adf2c1a6"
+    },
+    {
+      "name": "zfc_composed237_old.tm",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "a3c4407f30e2e2139af87c6a91948c518134855841a28eb85b1d81bcfd026c9a"
+    },
+    {
+      "name": "renumbering.json",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "d62a4e8444742714b34c3c23c582919c74b28a1c5869dff857d26ca51267c035"
+    },
+    {
+      "name": "all-tape fold",
+      "status": "PASS_DETERMINISTIC_PROOF_FIELDS"
+    },
+    {
+      "name": "source_abstract_facts_k16.json",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "b090ca2bd543bca6a1f6c1349531b3f5e11b961e5c3448000a2919a7ff61c9f9"
+    },
+    {
+      "name": "source_abstract_summary_k16.json",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "d034c6c088c2aa5ceeac29bbb67d03b846e668b406864c651206d1048d25046e"
+    },
+    {
+      "name": "independent source invariant",
+      "status": "PASS_DETERMINISTIC_PROOF_FIELDS"
+    },
+    {
+      "name": "E692.bin",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "e351b75eb8113f36ec3217f3d907a67a3c7fd1dadfb7d23c0c41ec72c05dc062"
+    },
+    {
+      "name": "E692.bitlength",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "389279ba3b0ae113e6fcc96131da61d17c7da49a0e5eb6891d94d80e32142951"
+    },
+    {
+      "name": "E692.bits",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "0d05d8ee60cec00dc12b9f5b97a7567832a979829a7759f3b59e564ed8da974b"
+    },
+    {
+      "name": "E692.equations",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "4a2ba47a0c0b6f6d3a173067f0d50b21437c0b26dca3bb33a39ed00ea52fa231"
+    },
+    {
+      "name": "E692.json",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "0657cefef8f41bd7e463eb0adcd5a44b118de62ec852729202d3ecc4b6942d43"
+    },
+    {
+      "name": "E696.bin",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "16dc1dc28ed5a1f1bbfc6c08e2ea7c023e1ef5e3ac42a4b64cc408b37188f5af"
+    },
+    {
+      "name": "E696.bitlength",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "6eb53cfba18d14520e4088356415aa6830438a7ea400fa20662a59a5be731072"
+    },
+    {
+      "name": "E696.bits",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "2f9d79301e0d957d9abe998d0be8134d9a904975d0d2049af99ce944758a1e1a"
+    },
+    {
+      "name": "E696.equations",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "80f523bb901b6585f94fdef050eb59e36b100e8297735c0a45ddff3468889511"
+    },
+    {
+      "name": "E696.json",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "c34182b73dedf6fe19dcb99cbe859f7d1d6e30228c62cd952b371900f6cbf836"
+    },
+    {
+      "name": "E704.bin",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "c425d4a72ab7272e1596d942be6faf901ef5c805caa6b6c72f7656cb2ccd80df"
+    },
+    {
+      "name": "E704.bitlength",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "65ca2cdfad81f20951852c2e4943c8fd42f5b963bd0aceeae277619d97101e45"
+    },
+    {
+      "name": "E704.bits",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "6cf5652a3fb21b508185a1f473c650ce44ca4c6fb6fcded3cdab9c83d7107a19"
+    },
+    {
+      "name": "E704.equations",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "92c2503f341faf89eb2e41639a1efdf9c4c8000faafb34cf735e3a5c255ef2fa"
+    },
+    {
+      "name": "E704.json",
+      "status": "PASS_BYTE_IDENTITY",
+      "sha256": "f18c08d0f993b6deb836a38c441a37d778037c2c0f3887845a001889c93079aa"
+    }
+  ],
+  "started_utc": "2026-10-19T17:47:07.506567+00:00",
+  "python_version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "scope": "Mathematical and byte-level replay; no proof-assistant kernel build",
+  "manifest": {
+    "status": "PASS",
+    "files": 174,
+    "sha256": "2e897ad6d865ae5bb8c96dcfe9c46326dfeb601bed9631cbc969dc3344eea232"
+  },
+  "delivered_files_unchanged": true,
+  "temporary_parent_removed": true,
+  "seconds": 41.841286199000024,
+  "finished_utc": "2026-10-19T17:47:49.347873+00:00"
+}

@@ -1,0 +1,118 @@
+\section{An independent four-case proof of the 236-state fold}
+\label{sec:four-case-fold}
+
+Let $M$ be the 237-state reassociated table with SHA-256
+\begin{center}\small\ttfamily
+da0b3d1fdd74d56482b9d231119bbbaccdbcadc78e7b7df72c3a734a3a808724
+\end{center}
+and let $N$ be the new 236-state table in the inherited labels, with SHA-256
+\begin{center}\small\ttfamily
+ff059535876bc9e1e1e63174ebfd1c10a91c1a818ba0c3f8c4ef2ac51a3cfcc3.
+\end{center}
+Both start in state $95$ and halt in the distinguished symbol $254$.
+The state map is
+\[
+ \phi(q)=\begin{cases}182,&q=223,\\q,&q\ne223.\end{cases}
+\]
+It changes neither the head position nor any tape bit.  This proof uses only
+the literal rows listed below and the equality of the other rows.  It does
+not depend on the generic symbolic fold checker or its inferred radius-five
+invariant.
+
+\subsection*{Two immediate predecessor guards}
+
+Write a configuration as $(q,h,t)$, where $t:\mathbb Z\to\{0,1\}$.
+The complete list of incoming rows to old state $182$ consists of
+\[
+ \delta_M(76,1)=(1,R,182),
+\]
+and the complete list of incoming rows to old state $223$ consists of
+\[
+ \delta_M(237,0)=(0,R,223).
+\]
+The initial state is neither $182$ nor $223$.  Consequently every reachable
+old configuration satisfies the two implications
+\[
+ q=182\Longrightarrow t(h-1)=1,
+ \qquad
+ q=223\Longrightarrow t(h-1)=0.
+ \tag{G}
+\]
+Indeed, the last transition into either state writes exactly the asserted
+bit and then moves right.  This argument allows an arbitrary initial binary
+tape, including tapes with infinite support, and an arbitrary initial head
+position.
+
+\subsection*{Four exact blocks}
+
+The new state's two rows are
+\[
+ \delta_N(182,0)=(0,L,198),\qquad
+ \delta_N(182,1)=(1,L,210).
+\]
+They move left to read the distinguishing bit from (G).  The following two
+steps return to the original cell and then move right.  In the table, each
+displayed state sequence includes the three successive new target states;
+the initial new state is always $182$.
+
+\begin{center}
+\begin{tabular}{ccccc}
+Old state & Current bit & Left bit & Three new target states & Old target\\
+\hline
+$182$ & $0$ & $1$ & $198,136,187$ & $187$\\
+$182$ & $1$ & $1$ & $210,177,212$ & $212$\\
+$223$ & $0$ & $0$ & $198,206,23$ & $23$\\
+$223$ & $1$ & $0$ & $210,114,70$ & $70$
+\end{tabular}
+\end{center}
+
+Every transition in these four blocks writes back the bit it reads.  The
+head movements are $L,R,R$, so the final head is $h+1$ and the entire tape is
+unchanged.  The corresponding old row also preserves the current bit and
+moves right to the displayed old target.  Thus, for an old configuration
+$c$ satisfying (G) in one of these two states,
+\[
+ N^3(\phi(c))=\phi(M(c)).
+ \tag{E}
+\]
+None of the intermediate states is the halt symbol.
+
+For each of the other $470$ old rows, the new row is literally the old row
+with $\phi$ applied to its target.  This includes the redirection
+$\delta_N(237,0)=(0,R,182)$.  Therefore
+\[
+ N(\phi(c))=\phi(M(c))
+ \tag{O}
+\]
+at every other working state.  These are all $2\cdot237=474$ old rows.
+
+\subsection*{Unbounded consequence}
+
+Starting from $(95,h,t)$, induction on the number of old transitions applies
+(E) or (O) at each step.  If $c_j$ is the old configuration after $j$ steps,
+define $\tau(0)=0$ and
+\[
+ \tau(j+1)-\tau(j)=
+ \begin{cases}3,&\text{the state of }c_j\text{ is }182\text{ or }223,\\
+ 1,&\text{otherwise.}\end{cases}
+\]
+Then $N^{\tau(j)}(95,h,t)=\phi(c_j)$ throughout the old run, and no new halt
+occurs inside one of the blocks.  In particular, $j\le\tau(j)\le3j$.
+If the old machine halts, the new machine reaches the same halt symbol with
+exactly the same head and tape.  If the old run is infinite, $\tau(j)$ is
+unbounded and its successive blocks cover the entire new run, which is
+therefore infinite.  We obtain the universal theorem
+\[
+ \forall h\in\mathbb Z\;\forall t:\mathbb Z\to\{0,1\},\qquad
+ \operatorname{Halts}(M,95,h,t)
+ \;\longleftrightarrow\;
+ \operatorname{Halts}(N,95,h,t).
+\]
+
+The accompanying \texttt{check\_fold236.py} independently
+checks the two complete predecessor lists, all $470$ ordinary row equalities,
+the four three-step blocks, the exact state sets, and the input byte hashes.
+It imports neither the candidate search code nor the generic fold checker.
+The proof above is ordinary finite-table mathematics formalizable in ZFC;
+the file is not represented as a new proof-assistant theorem or as completion
+of the inherited internal arithmetic consistency endpoint.

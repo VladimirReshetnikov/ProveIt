@@ -1,0 +1,162 @@
+{
+  "format": "audit-binary-search-receipt-v1",
+  "status": "COMPLETE_ZERO_CANDIDATES",
+  "working_directory": "research/binary_search",
+  "methodological_limit": "These completed finite families do not constitute a lower bound or exhaustion of all possible transformations. The all-tape window abstraction is inductive; the empirical profiles are finite discovery data. A candidate found by any search would require a separate unbounded proof and exact startup check.",
+  "radius_left": 5,
+  "radius_right": 5,
+  "old_block_cap": 65,
+  "new_block_cap": 65,
+  "searches": [
+    {
+      "id": "unchanged_row_head_shift_radius5",
+      "source": "shifted_fold_search.cpp",
+      "executable": "shifted_fold_search",
+      "argv": [
+        "input237.tm",
+        "5",
+        "5",
+        "65",
+        "65"
+      ],
+      "stdout": "shifted_alltape237.txt",
+      "stderr": "shifted_alltape237.log",
+      "scope": "Head offset plus or minus 2 with a uniform incoming direction change and no other retained-row change. Inductively closed all-tape radius-5 window domain, starting at state 95.",
+      "counts": {
+        "contexts": 93113,
+        "ordered_pairs": 48616,
+        "context_checks": 51136,
+        "candidates": 0
+      },
+      "elapsed_seconds": 0.0166661,
+      "compile_argv": [
+        "g++",
+        "-O3",
+        "-std=c++17",
+        "shifted_fold_search.cpp",
+        "-o",
+        "shifted_fold_search"
+      ]
+    },
+    {
+      "id": "neighbor_tape_tag_radius5",
+      "source": "tag_toggle_domains.cpp",
+      "executable": "tag_toggle_domains",
+      "argv": [
+        "input237.tm",
+        "profile237.txt",
+        "5",
+        "5",
+        "65",
+        "65"
+      ],
+      "stdout": "tag_toggle237.txt",
+      "stderr": "tag_toggle237.log",
+      "scope": "Replace deleted q by retained p at the same head position, with one neighboring bit toggled. Toggle the symbol written by every external q-entering row. Synthesize both retained p rows. Finite empirical radius-5 profile.",
+      "counts": {
+        "ordered_pairs": 49324,
+        "row_checks": 93123712,
+        "context_tests": 129187531,
+        "candidates": 0
+      },
+      "elapsed_seconds": 16.154,
+      "compile_argv": [
+        "g++",
+        "-O3",
+        "-std=c++17",
+        "tag_toggle_domains.cpp",
+        "-o",
+        "tag_toggle_domains"
+      ]
+    },
+    {
+      "id": "neighbor_tape_tag_one_neutral_helper_radius5",
+      "source": "tag_helper_domains.cpp",
+      "executable": "tag_helper_domains",
+      "argv": [
+        "input237.tm",
+        "5",
+        "5",
+        "65",
+        "65",
+        "neutral237.txt",
+        "profile237.txt"
+      ],
+      "stdout": "tag_helper237.txt",
+      "stderr": "tag_helper237.log",
+      "scope": "Same tape-tag representation with one helper substitution drawn from the 601 individually neutral rows in neutral237.txt; finite empirical radius-5 profile.",
+      "counts": {
+        "contexts": 28414,
+        "neutral_helper_patches": 601,
+        "ordered_pairs": 49324,
+        "row_checks": 93123712,
+        "helper_checks": 1118565120,
+        "context_tests": 1889504012,
+        "candidates": 0
+      },
+      "elapsed_seconds": 526.628,
+      "compile_argv": [
+        "g++",
+        "-O3",
+        "-std=c++17",
+        "tag_helper_domains.cpp",
+        "-o",
+        "tag_helper_domains"
+      ]
+    },
+    {
+      "id": "source_constrained_focused_tape_tag_one_helper_radius5",
+      "source": "tag_helper_restricted_domains.cpp",
+      "executable": "tag_helper_restricted_domains",
+      "argv": [
+        "input237.tm",
+        "5",
+        "5",
+        "65",
+        "65",
+        "source_neutral237.txt",
+        "source_profile237.txt"
+      ],
+      "stdout": "tag_source_restricted237.txt",
+      "stderr": "tag_source_restricted237.log",
+      "scope": "Same tape-tag/helper search, limited to ordered pairs with p or q in {113,172,204}. The finite profile includes the exact blank initializer and only source guards admitted by the independently certified K16 product invariant.",
+      "counts": {
+        "contexts": 29192,
+        "neutral_helper_patches": 601,
+        "ordered_pairs": 1326,
+        "row_checks": 2503488,
+        "helper_checks": 28551112,
+        "context_tests": 42587093,
+        "candidates": 0
+      },
+      "elapsed_seconds": 9.06223,
+      "compile_argv": [
+        "g++",
+        "-O3",
+        "-std=c++17",
+        "tag_helper_restricted_domains.cpp",
+        "-o",
+        "tag_helper_restricted_domains"
+      ]
+    }
+  ],
+  "files_sha256": {
+    "input237.tm": "a3c4407f30e2e2139af87c6a91948c518134855841a28eb85b1d81bcfd026c9a",
+    "neutral237.txt": "ca27d0cdb3816e27db832be118fb04c0c7ca432ab9c53d4af1e71d171a7846c9",
+    "profile237.txt": "95b893ec1b0b07655317e371c07b77884b941003271320a13852663106ce5c18",
+    "shifted_alltape237.log": "869ed50a1e62766c9a8bb2f3f0291dd150abbb0136b3c2beecf4d137a8689816",
+    "shifted_alltape237.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "shifted_fold_search.cpp": "f59686f57cb836354e89ca07b2ca4ac47fa886e1dca1b517201fcd6fdd59b5dd",
+    "source_neutral237.txt": "ca27d0cdb3816e27db832be118fb04c0c7ca432ab9c53d4af1e71d171a7846c9",
+    "source_profile237.txt": "0f358af06f914af8d959454e746681c06d721f067cf59646ebeda594194f2f2e",
+    "tag_helper237.log": "8a24e24db67b471f65609708107d36c64d2636e894fb73052fdcb3bdde3ff120",
+    "tag_helper237.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tag_helper_domains.cpp": "c79cd777e4fb3b70d3bfeba2720d958fa9ebc1bfce6e154d8302620e38443724",
+    "tag_helper_restricted_domains.cpp": "73e395fa54e6531c2e77c47b85851b6648fd43b2242f3292732018515399f596",
+    "tag_source_restricted237.log": "ecf1bd19c533e8eb4d883758b2706b1966c05c935099203e53d260f1aa274c9e",
+    "tag_source_restricted237.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tag_toggle237.log": "bf7cbac07e2dba0b1d691f83d1042e7b2416a6b9bd6fdadcf7bf4490e4232676",
+    "tag_toggle237.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tag_toggle_domains.cpp": "e6206d9c3b439a867e47851eae8550079915e6aa5158b494cdbbb931558ed661"
+  }
+}

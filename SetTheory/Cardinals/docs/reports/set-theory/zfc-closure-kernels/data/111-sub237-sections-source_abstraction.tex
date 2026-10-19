@@ -1,0 +1,285 @@
+\section{A new source invariant and two regions of unreachable code}
+\label{sec:source-product-invariant}
+
+The following result concerns the exact 6,455-leaf source program of the
+237-state checkpoint. It is an ordinary inductive proof supported
+by a finite certificate, and it does not itself reduce the binary state count.
+It supplies two precise regions in which source code may be changed without
+affecting the initialized proof-search computation.
+
+The source list has SHA-256
+\begin{quote}\small\ttfamily
+7fd152d1f5371d2a561d4ad1870d241683\allowbreak
+b010ce7b7a27399b95363a4537cfb6.
+\end{quote}
+Its ordered instruction indices start at zero.  Registers are logical
+registers, before the inherited physical permutation.  The initial register
+file is
+\[
+(3,0,0,0,3,0,0,0,0).
+\]
+The finite graph interface is the inherited ordered-leaf graph: an increment
+advances the program counter, a positive conditional decrement decreases its
+register and advances, and a zero conditional decrement executes a level-one
+break.  The graph extraction checks the required zero-padded path convention.
+
+\subsection{A finite abstraction with an unbounded meaning}
+
+Use the eighteen classes
+\[
+\{0\},\{1\},\ldots,\{15\},\qquad
+ E=\{16,18,20,\ldots\},\qquad
+ O=\{17,19,21,\ldots\}.
+\]
+An abstract register value is any union of these classes.  An abstract register
+file is the Cartesian product of nine such unions.  Different program points
+have different abstract register files; an unreached point is assigned the
+empty set.  Class unions are encoded as eighteen-bit nonnegative integers.
+
+Increment is exact on the singleton classes below 15, maps 15 into $E$, maps
+$E$ into $O$, and maps $O$ into $E$.  Positive decrement is exact on positive
+singletons, and its two large-class images are
+\[
+\operatorname{pred}(E)=\{15\}\cup O,
+\qquad
+\operatorname{pred}(O)=E.
+\]
+Transfer across a zero decrement branch restricts its tested register to
+$\{0\}$; transfer across a positive branch first excludes zero and then applies
+positive decrement.  Jumps preserve all register values.  Every abstract image described here contains the concrete image.  The
+displayed predecessor images of $E$ and $O$ are exact; mapping 15 into $E$
+and incrementing $O$ can overapproximate the concrete image.  Taking Cartesian
+products can additionally discard relations between registers, but it only
+enlarges the possible set of files.
+
+Starting with the exact initialized seed at the first decoded instruction,
+the replay iterates these transfers and componentwise union until a fixed
+point is reached.  The lattice is finite, so this process terminates without
+a bound on the source computation, register values, or the number of proof
+search iterations.  For the threshold-16 run, 273,541 strict point updates
+produce the retained certificate.  A separate pass checks every applicable
+edge against the final annotation.
+
+\paragraph{Inductive invariant theorem.}
+Every initialized source configuration belongs to the abstract register file
+assigned to its decoded instruction point.
+
+\paragraph{Proof.}
+The initial seed is included in its point annotation.  Each concrete source
+step is included in the corresponding abstract transfer just described.  The
+post-fixpoint condition says that the resulting abstract file is included in
+the annotation at its actual successor.  Induction on the number of source
+steps proves the assertion.  The induction ranges over arbitrary natural
+step counts.  All underlying objects are finite strings, natural numbers, and
+finite lists; the argument is formalizable in ZFC.  The Python replay is a
+mathematical checker, not a new kernel-checked theorem.
+
+\subsection{Exact consequences}
+
+The resulting annotation reaches 6,452 instruction points and excludes exactly
+three.  It proves the following stronger zero-register facts:
+\[
+\begin{array}{c|l|l}
+\text{index}&\text{instruction path}&\text{registers forced to zero}\\\hline
+6314&\texttt{111010010110001110}&R_3,R_6,R_7\\
+6429&\texttt{111111000}&R_1,R_3,R_5,R_6,R_7
+\end{array}
+\]
+The instructions at these two points are respectively $\operatorname{CD}(6)$
+and $\operatorname{CD}(1)$.  Their positive branches are therefore impossible
+in the initialized source computation.  The three excluded points are
+\[
+\begin{array}{c|l|l}
+\text{index}&\text{path}&\text{instruction}\\\hline
+6315&\texttt{111010010110001111}&\operatorname{CC}(2)\\
+6430&\texttt{1111110010}&\operatorname{CI}(6)\\
+6431&\texttt{1111110011}&\operatorname{CC}(2).
+\end{array}
+\]
+Thus the second and third excluded leaves form one wholly unreachable subtree
+at prefix \texttt{111111001}.  A simpler three-class abstraction using zero,
+positive even, and odd already proves the last two leaves unreachable and the
+zero fact at point 6429.  Increasing the exact-value threshold from 16 to 64
+produces the same three excluded points and two forced decrement guards; this
+is a scoped observation, not a completeness result for source invariants.
+
+\subsection{A replacement theorem for the initialized computation}
+
+At path \texttt{111010010110001110}, replace $\operatorname{CD}(6)$ by any of
+\[
+\operatorname{CB}(1),\quad
+\operatorname{CD}(3),\quad \operatorname{CD}(6),\quad \operatorname{CD}(7).
+\]
+At path \texttt{111111000}, replace $\operatorname{CD}(1)$ by any of
+\[
+\operatorname{CB}(1),\quad
+\operatorname{CD}(1),\quad \operatorname{CD}(3),\quad
+\operatorname{CD}(5),\quad \operatorname{CD}(6),\quad \operatorname{CD}(7).
+\]
+Finally replace the subtree at either or both prefixes
+\[
+\texttt{111010010110001111},\qquad \texttt{111111001}
+\]
+by any finite source subtrees, leaving their attachment prefixes and all other
+source structure fixed.  No remaining reachable instruction path is changed.
+
+\paragraph{Source replacement theorem.}
+Every such replacement gives exactly the same sequence of register files and
+source program-counter words as the original program from the displayed seed.
+In particular its source halting behavior is identical.
+
+\paragraph{Proof.}
+Compare the two source computations by induction.  The original computation
+never decodes a point inside either replaced subtree, by the invariant.  At a
+retained forced-zero guard, every permitted replacement is a zero conditional
+decrement or an explicit level-one break.  Each preserves the entire register
+file and applies the identical level-one-break operation to the identical
+program-counter word.  Every other decoded instruction is unchanged.
+Consequently one old step and one new step have exactly the same successor
+configuration.  The induction keeps the two trajectories equal and hence also
+keeps the new trajectory away from the replaced subtrees.  This proves both
+halting and nonhalting equivalence without any consistency assumption.
+
+This theorem is specific to the initialized seed.  It makes no claim about
+arbitrary register files at the affected instructions.  A compiler or binary
+runtime proof that requires every syntactic instruction guard must either
+retain that broader interface or explicitly incorporate this new invariant.
+The inherited ZFC calibration can be composed with the source equivalence
+once a complete binary simulation and a correct blank initializer for a new
+table have been established.
+
+\subsection{A checked contraction and its present limitation}
+
+As an additional experiment, remove the entire zero loop at prefix
+\texttt{11111100}, consisting of old points 6429--6431, and contract its
+surviving sibling \texttt{11111101} into \texttt{1111110}.  The resulting source
+has 6,452 leaves.  Every surviving instruction label and jump operand remains
+unchanged, and all its successor indices agree with the old graph after
+sending the removed zero loop to old point 6432.  The original computation
+can make only one consecutive step inside the removed loop, so deleting that
+step is a proper stuttering simulation and preserves infinite computations.
+
+However, hash-consing of the source decision tree, treating each complete
+instruction as an atomic leaf, changes its number of unique internal subtrees
+from 201 to 202.  Therefore this contraction does not
+supply a smaller binary machine.  The more useful optimization interface is
+the preceding replacement theorem, which preserves all reachable path lengths
+and permits the unreachable regions to be chosen for decoder sharing.  No
+236-state table or other sub-237-state binary result is claimed by this
+invariant package.  Initializer correctness must be checked independently for
+any later literal decoder change, because the initializer shares states with
+the running program.
+
+\subsection{Independent verification and relational refinement}
+
+A second checker imports no discovery code. It reconstructs the binary trie and the literal consumed-path control operations, then verifies seed inclusion and all 8,380 enabled nonhalting edges. It rejects both excluding a seed value and admitting a positive value at a forced-zero guard. The retained receipt is \file{evidence/source_product_k16_independent.json}.
+
+The relational extension tracks an arbitrary set of the 512 joint parity patterns of nine registers and reduces it against the product value classes after every transfer and join. Its final post-fixpoint scan passes, but it proves the same two forced-zero guards and three unreachable leaves. This is a finite abstraction of an unbounded execution, and its negative discovery result is limited to the chosen domain.
+
+\subsection{Instruction contracts restricted by the source invariant}
+
+The source invariant can justify a stronger binary optimization interface than
+testing every instruction on every register file.  Let $I_i\subseteq\mathbb N^9$
+be the product of the certified register sets at leaf $i$, with $I_i=\varnothing$
+for a bottom fact.  The independent checker reconstructs the complete source
+control graph from a full binary trie and the consumed-path list operations.
+It verifies the initial seed and every guarded transfer inclusion.  Therefore
+every finite prefix of the actual source computation reaches a register tuple
+in the corresponding $I_i$.
+
+For the delivered threshold-$16$ certificate, the abstract atoms are
+\[
+ \{0\},\{1\},\ldots,\{15\},\qquad
+ E=\{16,18,20,\ldots\},\qquad
+ O=\{17,19,21,\ldots\}.
+\]
+The threshold is not a bound on any register.  The sets $E$ and $O$ retain
+arbitrarily large values.  Their arithmetic images follow from elementary
+progression identities:
+\[
+ E+1=O,\quad O+1=E\setminus\{16\},\quad
+ E-1=\{15\}\cup O,\quad O-1=E.
+\]
+The least abstract image of $O+1$ is $E$, so the transfer deliberately
+overapproximates that concrete image.  Singleton images are handled exactly
+until they enter a tail atom.  Taking unions proves all $36$ atomic increment
+and decrement rules.  No numerical sample is substituted for these identities.
+
+The independent check closes $8{,}380$ enabled nonhalting edges and the single
+halt leaf.  It proves that logical register $R_6$ is zero at leaf $6314$, whose
+path is \texttt{111010010110001110}, and that $R_1$ is zero at leaf $6429$,
+whose path is \texttt{111111000}.  Leaves $6315$, $6430$, and $6431$ are
+unreachable.  These facts concern the calibrated source computation from its
+specified seed.  They do not assert the same restrictions on arbitrary
+register frames supplied externally to the binary interpreter.
+
+\paragraph{Affine covering families.}
+The literal unary/list engine accepts affine natural-valued register
+expressions.  To use it without splitting a product into exponentially many
+atomic cases, write one coordinate of $I_i$ as a union of a finite set $F$ of
+small values and zero, one, or two progressions with first terms in $B$ and
+common step $2$.  Let
+\[
+ m=\min(F\cup B),\qquad
+ d=\gcd\Bigl(\{a-m:a\in F\cup B\}
+       \cup\{2:B\ne\varnothing\}\Bigr),
+\]
+where the gcd of a set consisting only of zero is zero.  The notation for the
+second set means that $2$ is included precisely when a tail is present.
+Every allowed value belongs to $m+d\mathbb N$; if $d=0$, this family is the
+singleton $\{m\}$.  Indeed, each finite difference is divisible by $d$, and
+for a tail value $a+2t$ both $a-m$ and $2$ are divisible by $d$.
+
+Before forming these families for a decrement, intersect the selected
+coordinate with its zero or positive guard.  A zero branch thus receives the
+exact constant zero; every positive branch has $m\ge1$.  Empty branches and
+bottom leaves are omitted only because the independent source invariant
+proves them impossible.  Each other coordinate receives its own independent
+natural variable.  The gap, first spare, and arbitrary finite spare tail remain
+unrestricted.  This leaves $8{,}381$ universal source interfaces, including the
+halt interface, compared with the original $8{,}386$ unrestricted interfaces.
+
+The wrapper \file{verification/check_source_restricted_runtime.py} verifies
+the source invariant first, checks that the runtime helper's path arithmetic
+matches the independently reconstructed control graph, and then substitutes
+these affine families into the unchanged three-rule execution engine.  It
+rederives the four finite-list schemas from the supplied literal table.  Each
+nonhalting interface must still reach its complete prescribed tape, state,
+orientation, and head displacement with positive finite duration; a halt
+interface must reach the actual halt state.  The output retains every family,
+guard, affine clock, exact input digest, and complete case coverage.
+
+\begin{proposition}[Source-restricted binary simulation]
+Suppose the delivered source invariant contains the calibrated seed and is
+preserved by every source step.  Suppose a binary table has positive finite
+instruction contracts for affine families covering every permitted guarded
+product $I_i$, with exact source updates and whole-tape endpoints.  If its
+blank initializer reaches the prescribed source frame, then its blank halting
+is equivalent to halting of that calibrated source computation.
+\end{proposition}
+
+\begin{proof}
+At the initial frame the actual source registers belong to $I_0$.  Assume the
+source and binary computations agree at a frame for leaf $i$.  The actual
+tuple lies in $I_i$, so it lies in one of the permitted guarded affine
+families.  The corresponding positive binary block reaches exactly the frame
+of the source successor.  Source-invariant preservation places the new actual
+tuple in the successor product.  Induction gives corresponding frames for
+every source prefix.
+
+A source halt supplies a finite binary halting block.  If the source run is
+infinite, the positive nonhalting blocks concatenate into an infinite binary
+run.  Such a block cannot hide an interior halt because the machine has no
+transition out of the halt outcome.  The two computations therefore halt
+together.  Notice that the enlarged affine families themselves need not be
+closed under source transitions: the induction uses the narrower certified
+products for the actual run.  All arguments are ordinary finite syntax,
+natural-number arithmetic, and induction, and are formalizable in ZFC.
+\end{proof}
+
+The initializer premise remains explicit.  A successful restricted instruction
+replay alone does not certify a new machine's blank startup, and unreachable
+source leaves alone do not remove literal binary states from a shared decoder.
+
+The complete fresh restricted replay succeeds on all 8,381 interfaces with 2,249,105 symbolic rules and minimum duration 13. It still directly uses all 474 rows of the 237-state table, so these reachability facts do not expose an entirely unused binary state. The complete case-array SHA-256 is
+\hash{b359d39135f4cb12323b28a05ea56513}{14a96d10afc8da52dfa3bd5ff8741e9d}

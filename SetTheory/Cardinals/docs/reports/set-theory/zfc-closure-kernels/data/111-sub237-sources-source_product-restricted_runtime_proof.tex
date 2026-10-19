@@ -1,0 +1,104 @@
+\subsection{Instruction contracts restricted by the source invariant}
+
+The source invariant can justify a stronger binary optimization interface than
+testing every instruction on every register file.  Let $I_i\subseteq\mathbb N^9$
+be the product of the certified register sets at leaf $i$, with $I_i=\varnothing$
+for a bottom fact.  The independent checker reconstructs the complete source
+control graph from a full binary trie and the consumed-path list operations.
+It verifies the initial seed and every guarded transfer inclusion.  Therefore
+every finite prefix of the actual source computation reaches a register tuple
+in the corresponding $I_i$.
+
+For the delivered threshold-$16$ certificate, the abstract atoms are
+\[
+ \{0\},\{1\},\ldots,\{15\},\qquad
+ E=\{16,18,20,\ldots\},\qquad
+ O=\{17,19,21,\ldots\}.
+\]
+The threshold is not a bound on any register.  The sets $E$ and $O$ retain
+arbitrarily large values.  Their arithmetic images follow from elementary
+progression identities:
+\[
+ E+1=O,\quad O+1=E\setminus\{16\},\quad
+ E-1=\{15\}\cup O,\quad O-1=E.
+\]
+The least abstract image of $O+1$ is $E$, so the transfer deliberately
+overapproximates that concrete image.  Singleton images are handled exactly
+until they enter a tail atom.  Taking unions proves all $36$ atomic increment
+and decrement rules.  No numerical sample is substituted for these identities.
+
+The independent check closes $8{,}380$ enabled nonhalting edges and the single
+halt leaf.  It proves that logical register $R_6$ is zero at leaf $6314$, whose
+path is \texttt{111010010110001110}, and that $R_1$ is zero at leaf $6429$,
+whose path is \texttt{111111000}.  Leaves $6315$, $6430$, and $6431$ are
+unreachable.  These facts concern the calibrated source computation from its
+specified seed.  They do not assert the same restrictions on arbitrary
+register frames supplied externally to the binary interpreter.
+
+\paragraph{Affine covering families.}
+The literal unary/list engine accepts affine natural-valued register
+expressions.  To use it without splitting a product into exponentially many
+atomic cases, write one coordinate of $I_i$ as a union of a finite set $F$ of
+small values and zero, one, or two progressions with first terms in $B$ and
+common step $2$.  Let
+\[
+ m=\min(F\cup B),\qquad
+ d=\gcd\Bigl(\{a-m:a\in F\cup B\}
+       \cup\{2:B\ne\varnothing\}\Bigr),
+\]
+where the gcd of a set consisting only of zero is zero.  The notation for the
+second set means that $2$ is included precisely when a tail is present.
+Every allowed value belongs to $m+d\mathbb N$; if $d=0$, this family is the
+singleton $\{m\}$.  Indeed, each finite difference is divisible by $d$, and
+for a tail value $a+2t$ both $a-m$ and $2$ are divisible by $d$.
+
+Before forming these families for a decrement, intersect the selected
+coordinate with its zero or positive guard.  A zero branch thus receives the
+exact constant zero; every positive branch has $m\ge1$.  Empty branches and
+bottom leaves are omitted only because the independent source invariant
+proves them impossible.  Each other coordinate receives its own independent
+natural variable.  The gap, first spare, and arbitrary finite spare tail remain
+unrestricted.  This leaves $8{,}381$ universal source interfaces, including the
+halt interface, compared with the original $8{,}386$ unrestricted interfaces.
+
+The wrapper \file{verification/check_source_restricted_runtime.py} verifies
+the source invariant first, checks that the runtime helper's path arithmetic
+matches the independently reconstructed control graph, and then substitutes
+these affine families into the unchanged three-rule execution engine.  It
+rederives the four finite-list schemas from the supplied literal table.  Each
+nonhalting interface must still reach its complete prescribed tape, state,
+orientation, and head displacement with positive finite duration; a halt
+interface must reach the actual halt state.  The output retains every family,
+guard, affine clock, exact input digest, and complete case coverage.
+
+\begin{proposition}[Source-restricted binary simulation]
+Suppose the delivered source invariant contains the calibrated seed and is
+preserved by every source step.  Suppose a binary table has positive finite
+instruction contracts for affine families covering every permitted guarded
+product $I_i$, with exact source updates and whole-tape endpoints.  If its
+blank initializer reaches the prescribed source frame, then its blank halting
+is equivalent to halting of that calibrated source computation.
+\end{proposition}
+
+\begin{proof}
+At the initial frame the actual source registers belong to $I_0$.  Assume the
+source and binary computations agree at a frame for leaf $i$.  The actual
+tuple lies in $I_i$, so it lies in one of the permitted guarded affine
+families.  The corresponding positive binary block reaches exactly the frame
+of the source successor.  Source-invariant preservation places the new actual
+tuple in the successor product.  Induction gives corresponding frames for
+every source prefix.
+
+A source halt supplies a finite binary halting block.  If the source run is
+infinite, the positive nonhalting blocks concatenate into an infinite binary
+run.  Such a block cannot hide an interior halt because the machine has no
+transition out of the halt outcome.  The two computations therefore halt
+together.  Notice that the enlarged affine families themselves need not be
+closed under source transitions: the induction uses the narrower certified
+products for the actual run.  All arguments are ordinary finite syntax,
+natural-number arithmetic, and induction, and are formalizable in ZFC.
+\end{proof}
+
+The initializer premise remains explicit.  A successful restricted instruction
+replay alone does not certify a new machine's blank startup, and unreachable
+source leaves alone do not remove literal binary states from a shared decoder.

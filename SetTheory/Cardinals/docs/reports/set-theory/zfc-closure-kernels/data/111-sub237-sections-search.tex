@@ -1,0 +1,125 @@
+\section{What the new control and source searches establish}
+\label{sec:search}
+
+The inherited 235-to-98 fold suggests a useful direction: use nearby tape
+information to distinguish two meanings of a retained state, then repair the
+shared helper. The new searches generalize that direction in several ways.
+None produced an accepted sub-237-state binary candidate. None proves a lower
+bound on the number of states, even within all possible local representations.
+
+\subsection{Finite profiles as discovery filters}
+
+The first profile executes the exact blank initializer and every source leaf
+on four register/spare fixtures, splitting both decrement guards. It records
+28,414 distinct radius-5 state/windows from 33,545 runs and 18,834,620 literal
+steps. A radius-7 version records 95,441 windows. These are test collections,
+not inductive invariants. The wider instruction interface also tests register
+files that the initialized source computation may never reach. Passing a
+profile would be only a discovery event; an unbounded proof and startup check
+would still be needed.
+
+The search synthesizes both rows of a retained state and, in some families,
+one or two helper rows. A helper is selected from individually neutral
+substitutions on the profile. Neutrality by itself does not prove that two
+substitutions compose. The proposed combined table is always checked again
+on the profile, with the representation map applied at block endpoints.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}p{0.30\textwidth}p{0.31\textwidth}X@{}}
+\toprule
+Family & Completed search size & Scope; all without a candidate\\
+\midrule
+One helper, radius 5 & 27,966 state pairs; 651,775,278 helper checks &
+At most one neutral helper row\\
+Two helpers, separate branches & 827,307 two-helper checks &
+Each helper supplies a partial branch domain\\
+Staged two helpers & 234 same-row pairs; 165,117,788 two-helper checks &
+Heuristic second-helper selection\\
+Head displacement & 49,324 ordered state/offset pairs &
+Offsets $\pm2$, no helper mutation\\
+One helper, radius 7 & 27,966 pairs; 983,223,225 helper checks &
+Larger footprint and block caps\\
+Tape-bit change plus helper & 49,324 pairs; 1,118,565,120 helper checks &
+One neighboring entry bit toggled\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+For the tape-bit representation, the deleted state's image changes a nearby
+tape bit, and incoming writes encode that change. This differs from the
+inherited tape-preserving fold. The radius-5 searches use old and new block
+caps of 65 steps; the radius-7 helper search uses 97. Those caps and helper
+domains are part of the negative scope. Counts from overlapping searches
+should not be added as if they measured distinct mathematical possibilities.
+
+An additional synthesis divides the deleted state between two retained states
+according to the preceding tape bit and synthesizes four rows simultaneously.
+The forward-entry/helper family finishes 2,840 pairings and 3,984,710
+backtracking row assignments; its mirrored family finishes 48 pairings and
+163,697 assignments. Both have no accepted output. A broader version with
+two arbitrary compatible retained controls reaches 228,168 proposals and
+218,570,931 assignments before its 600-second limit. That is a partial run,
+not an exhausted family.
+
+The source invariant in the next section changes the interface in a
+semantically justified way. A new profile skips three unreachable leaves
+and two impossible positive decrement guards, sampling only register values
+permitted by that invariant. Six fixtures, including larger values in the
+unbounded classes, give 50,287 runs, 39,756,590 literal steps, and 29,192
+windows. It removes 26 old windows and adds 804; it is not simply a subset
+because the fixtures differ. One-helper synthesis again finds no candidate
+after 27,966 pairs and 651,243,800 helper checks. A focused two-helper followup
+has six pairs and 3,197,854 helper-pair checks, also without a candidate. A
+source-constrained tape-bit/helper followup checks 1,326 pairs and 28,551,112
+helper alternatives, again without a candidate. The restricted-runtime
+theorem below supplies the unbounded proof interface for future successful
+candidates from this route.
+
+\subsection{Source reassociation and unreachable-subtree choices}
+
+Ordinary hash-consing of the retained source has 224 distinct nodes:
+201 internal binary nodes and 23 instruction leaves. This measures the
+source DAG, not the binary TM states.
+
+The control-preserving reassociation rule used here permits
+\[
+ A;(B;C)\quad\longleftrightarrow\quad(A;B);C
+\]
+when $A$ has no escaping break and $C$ has no escaping continue.
+$B$ need not be closed. Each signature retains the ordered instructions and
+their exact successor targets, including the number of external ancestors
+required by a break or continue. Equality gives a local control equivalence
+in every surrounding source context.
+
+A reproducible stochastic search permits temporary growth to 227 DAG nodes
+and zero-run length 7, seeking a final source of at most 223 nodes and zero-run
+length at most 6. In 600 seconds it examines 428,474 proposals and accepts
+137,285 moves, but its best source still has 224 nodes. A second search adds
+commutations of affine register transformations whose exact matrix signatures
+commute. It examines 71,000 proposals and accepts 20,491 moves in approximately
+600 seconds, again retaining 224 nodes. Seeds, code, receipts, and best source
+descriptions are included. With a time limit, proposal counts depend on machine
+speed even with a fixed seed; the saved counts describe the completed runs.
+
+The invariant permits a different finite search: choose one of four equivalent
+forced-zero instructions at leaf 6314, one of six at leaf 6429, and replace
+each of two unreachable subtrees by any of the 224 original subtrees. Exact
+hash-consing evaluates all
+\[
+ (4\cdot224)(6\cdot224)=1,204,224
+\]
+pairs. All respect the zero-run bound, but none reduces the DAG below 224
+nodes. This exhausts only the stated substitution family, without subsequent
+reassociation or newly invented replacement subtrees.
+
+Deleting the entire proved no-op loop yields fewer source leaves but 225 DAG
+nodes. An additional bounded reassociation run from that contracted source
+still does not improve on 225. An instruction can thus be redundant while
+the shared decoder implementing it remains useful elsewhere. The reachability
+facts must be used jointly with decoder representation, helper routing, and
+initialization.
+
+The \file{research/} directories retain sources, profiles, command recipes,
+and completed receipts. Discovery uses C++17 and Python; correctness replay
+does not require repeating these searches. The absence of a new candidate
+is recorded explicitly throughout the package.

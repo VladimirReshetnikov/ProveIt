@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "checker_sha256": "43c89550f165972cefa619993084b53e10e5d31165d152749ecc3a2144c4044e",
+  "adversarial_regressions": [
+    {
+      "name": "halt_as_drop",
+      "result": "REJECTED",
+      "exception": "Fold must delete an old working state into a distinct retained working state",
+      "reason": "The halt symbol cannot be a deleted working state.",
+      "old_blank_halting_steps": 1,
+      "new_nonhalting_proof": "At state 95 on an all-zero tape, read0 writes0, moves right, and remains in 95. This repeats at every time."
+    },
+    {
+      "name": "initial_tag",
+      "result": "REJECTED",
+      "exception": "The initial tape must not be transformed",
+      "reason": "The map at the initial state must not flip an input bit.",
+      "old_blank_halting_steps": 1,
+      "new_nonhalting_proof": "The blank configuration at state96, head0 returns exactly to itself in two steps: 96/0 -> 97/head1 -> 96/head0, writing zeros."
+    }
+  ],
+  "scope": "two semantically invalid maps are rejected; general soundness is the separate source audit"
+}

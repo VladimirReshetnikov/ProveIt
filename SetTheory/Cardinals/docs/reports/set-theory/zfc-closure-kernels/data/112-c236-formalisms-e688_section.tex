@@ -1,0 +1,245 @@
+\section{A 688-bit equational presentation: the truth axiom is derived}
+\label{sec:e688}
+
+The strongest alternative formalism among the five inspected incoming
+archives is the complete $713$-bit packet $\mathcal E_{713}$, supplied in
+the archive \texttt{zfc238-composition-20261019}. It has eight equations,
+twelve operation symbols, and the ground query
+\[
+                 N(d,d)=d.
+\]
+The packet includes its ordered signature, arities, all equations, and both
+endpoints. Its ordinary consistency calibration is independent of the
+binary-state constructions. The $946$- and $937$-bit packets in other
+archives are earlier controls, so they are not the best baseline for this
+comparison.
+
+There is a further reduction within the \emph{same} signature and codec:
+the explicit equation forcing $d$ to be Boolean truth follows from the
+other equations. Deleting it gives a complete $688$-bit packet with seven
+equations. The proof below establishes equality of the two model classes,
+not merely an upper consistency bound or an empirical coincidence.
+No number of Turing-machine states is inferred from this bit count.
+
+\subsection{The equations needed by the reduction}
+
+The unchanged signature is
+\[
+ d^0,N^2,V^2,P^2,A^2,Q^1,W^2,
+ \mathsf{Target}^1,\mathsf{Next}^2,\mathsf{Mem}^2,
+ p_E^2,p_\varepsilon^2.
+\]
+The first equation of $\mathcal E_{713}$ is the published Sheffer single
+axiom
+\[
+ N(N(x,N(N(y,x),x)),N(y,N(z,x)))=y.
+ \tag{Sh1}
+\]
+It makes the reduct a Boolean algebra with $N$ interpreted as NAND.
+The primary proof source is McCune, Veroff, Fitelson, Harris, Feist and Wos,
+\emph{Short Single Axioms for Boolean Algebra}, Journal of Automated
+Reasoning 29 (2002), 1--16; the authors' supplementary site includes
+the explicit Otter and Prover9 derivations:
+\url{https://www.cs.unm.edu/~veroff/BA/}.
+
+The equation to be removed is
+\[
+                    d=N(d,N(d,d)).
+                    \tag{T}
+\]
+In a Boolean algebra its right side is $d\mathbin{\mathrm{NAND}}\neg d=1$,
+so $(T)$ states exactly $d=1$. Throughout the proof, $1$ and $0$ denote
+the \emph{derived Boolean} top and bottom. No prior identification of the
+native symbol $d$ with either of them is assumed.
+
+Two retained equations are
+\begin{align*}
+ V(P(x,s),d)&=x,\tag{Head}\\
+ p_\varepsilon(s,P(a,b))
+    &=N(p_\varepsilon(s,a),p_\varepsilon(s,b)).\tag{NAND class}
+\end{align*}
+For completeness, the other unchanged native and incidence equations are
+\begin{align*}
+ V(P(x,s),A(j,d))&=V(s,j),\tag{Native tail}\\
+ p_\varepsilon(s,A(i,j))&=p_E(V(s,i),V(s,j)),\tag{Atom class}\\
+ p_\varepsilon(s,Q(a))
+   &=N\bigl(p_\varepsilon(P(W(s,a),s),a),
+            p_\varepsilon(P(z,s),a)\bigr).\tag{Binder}
+\end{align*}
+Together with Sh1, Head, NAND class and the closure equation below,
+these are all seven equations of $\mathcal E_{688}$. All variables are
+universally quantified. The binder denotes existential negation, with
+$W$ selecting a witness; its inherited calibration is explained in
+\texttt{reference/kernel\_section.tex}.
+
+The remaining equation needed for the derivation is the fully expanded
+closure equation. To state its Boolean structure, use nine arguments
+$d,r,e,f,a,b_0,c,u,v$ and define the following \emph{Boolean terms}:
+\begin{align*}
+ L&=N(d,N(c,N(a,N(d,b_0)))),\\
+ B^-&=N(r,N(d,N(e,N(d,f)))),\\
+ H^-&=N(N(L,N(d,u)),N(u,N(d,v))),\\
+ F(d,r,e,f,a,b_0,c,u,v)&=N(B^-,H^-).
+\end{align*}
+The last equation in the literal $713$-bit packet is $d=F$, after
+substitution of the following native terms. The descriptor variable is
+$b$; the Boolean argument $b_0$ is a different notation.
+\begin{align*}
+ h&=\mathsf{Target}(b),&
+ n_z&=\mathsf{Next}(b,z),&
+ m_z&=\mathsf{Mem}(b,z),\\
+ R_b(x,y)&=p_\varepsilon(P(y,P(x,b)),V(b,d)),&&&
+\end{align*}
+and
+\begin{align*}
+ r&=R_b(h,n_z),&e&=p_E(m_z,n_z),&f&=p_E(m_z,z),\\
+ a&=p_E(W(x,d),x),&b_0&=p_E(x,h),&c&=R_b(x,y),\\
+ u&=p_E(y,h),&v&=R_b(\mathsf{Next}(b,y),y).&&
+\end{align*}
+All the displayed abbreviations are expanded in the delivered AST and
+equation listing. The new checker reconstructs this entire equation
+independently and compares it literally with the inherited source.
+
+\subsection{A Boolean cofactor forces truth}
+
+\paragraph{Lemma.}
+In every Boolean algebra, with no assumption on $d$,
+\[
+ \neg d\wedge F(d,r,e,f,a,b_0,c,u,v)=\neg d\wedge r.
+ \tag{Cofactor}
+\]
+Consequently, $r=1$ and $d=F(d,r,e,f,a,b_0,c,u,v)$ imply $d=1$.
+
+\paragraph{Proof.}
+First set the formal Boolean argument $d$ to $0$. Every term $N(d,t)$
+then equals $1$, giving
+\[
+ L=1,\qquad B^-=\neg r,\qquad
+ H^-=N(N(1,1),N(u,1))=N(0,\neg u)=1.
+\]
+It follows that $F(0,r,e,f,a,b_0,c,u,v)=N(\neg r,1)=r$.
+The Boolean cofactor identity now gives the displayed equality.
+
+For an explicit all-algebra justification, let $q=\neg d$ and restrict
+Boolean values to the principal interval $[0,q]$. The map
+$t\mapsto t\wedge q$ preserves the Boolean operations when the interval
+uses its relative complement and its own top $q$. It sends $d$ to $0$,
+so the preceding calculation in the interval proves $(\mathrm{Cofactor})$.
+This is a calculation on already evaluated predicate values. It does not
+project the native domain or assert that $P,V,W$ commute with the map.
+If $r=1$ and $d=F$, the identity yields
+$0=\neg d\wedge d=\neg d$, hence $d=1$.
+\hfill$\square$
+
+\subsection{A constant true class supplies the required instance}
+
+Define the concrete ground terms
+\[
+              k=P(d,P(d,d)),\qquad b_*=P(k,d).
+\]
+The NAND-class equation gives, for every native stream argument $s$,
+\begin{align*}
+ p_\varepsilon(s,k)
+ &=N\bigl(p_\varepsilon(s,d),
+          N(p_\varepsilon(s,d),p_\varepsilon(s,d))\bigr)\\
+ &=1.
+\end{align*}
+This uses the Boolean tautology $t\mathbin{\mathrm{NAND}}\neg t=1$.
+It makes no assumption about the class denoted by $d$ or the value
+$p_\varepsilon(s,d)$. In particular it does not use the equation being
+deleted.
+
+The native head equation gives $V(b_*,d)=k$. Substitute $b=b_*$ and
+$x=y=z=d$ in the retained closure equation. Its first matrix value is
+therefore
+\[
+ r=p_\varepsilon\!\left(
+  P(\mathsf{Next}(b_*,d),P(\mathsf{Target}(b_*),b_*)),k\right)=1.
+\]
+The cofactor lemma applied to this single ground instance forces $d=1$.
+Thus the missing equation $(T)$ is a consequence of the retained
+equations.
+
+\paragraph{Theorem.}
+Let $\mathcal E_{688}$ be the seven-equation theory obtained by deleting
+$(T)$ from $\mathcal E_{713}$. Every $\mathcal E_{688}$ algebra satisfies
+$(T)$. Hence $\mathcal E_{688}$ and $\mathcal E_{713}$ have exactly the
+same models and the same equational consequences. In particular, the
+ZFC-formalizable inherited calibration gives
+\[
+ \mathcal E_{688}\not\vdash N(d,d)=d
+ \quad\longleftrightarrow\quad
+ \mathcal E_{713}\not\vdash N(d,d)=d
+ \quad\longleftrightarrow\quad
+ \operatorname{Con}(\mathrm{ZFC}).
+\]
+
+\paragraph{Proof.}
+One model inclusion follows by deleting an axiom. The opposite inclusion
+is the preceding derivation. Equational soundness and completeness give
+equality of consequences; alternatively one can insert the derived
+equation whenever the old theory uses $(T)$. The final consistency
+comparison is precisely the ordinary $\mathcal E_{713}$/raw-EPSC/ZFC
+calibration in the incoming archive, with its stated dependencies.
+The present reduction introduces no new set-theoretic assumption.
+\hfill$\square$
+
+The argument is ordinary mathematics formalizable in ZFC. A fully
+expanded contextual rewrite trace deriving $(T)$ directly from Sh1 has
+not been emitted. The supplied ground-instance recipe and Boolean
+identity are an explicit proof recipe, not a claimed independent
+proof-assistant endpoint or an internal PA proof-code transformer.
+
+\subsection{Exact accounting and reproducibility}
+
+The ordered signature, its arities, the variable capacity, the opcode
+width, both endpoints, and every other equation are unchanged. The
+original explicit truth equation has six tree nodes across both sides.
+The codec uses one leading equation bit and four bits per node, so its
+deletion saves exactly
+\[
+                        1+4\cdot6=25\text{ bits}.
+\]
+The new equation-node counts are
+$14,6,10,12,12,17,82$, totaling $153$. The complete packet count is
+\[
+ \underbrace{8+3\cdot12+8}_{52\text{ header}}
+ +\underbrace{7+1+4\cdot153}_{620\text{ equations}}
+ +\underbrace{4\cdot4}_{16\text{ endpoints}}
+ =688.
+\]
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Packet & Equations & Equation nodes & Header / endpoints & Total bits\\
+\hline
+Inherited $\mathcal E_{713}$ & 8 & 159 & 52 / 16 & 713\\
+Derived-truth $\mathcal E_{688}$ & 7 & 153 & 52 / 16 & 688\\
+\hline
+\end{tabular}
+\end{center}
+
+The exact $688$ bit characters, excluding the final newline, have SHA-256
+\begin{center}\small\ttfamily
+9518c474861557da085c76ef77dd4141eecfa0befaec66d90acc81ac39264d97.
+\end{center}
+
+Run \texttt{python3 -B build\_e688.py} in the supplied
+\texttt{formalisms} directory. Its independent AST/codec implementation
+first reconstructs the exact inherited $713$ bits and checks their pin.
+It then deletes only the displayed truth axiom, validates the resulting
+arities and ground endpoints, round-trips the complete new packet, and
+rejects every one of its $688$ strict truncations and three malformed
+controls. The Boolean cofactor is checked on all $512$ assignments to its
+nine independent Boolean arguments. These finite checks substantiate
+transcription and the finite algebraic identity; the written proof is
+what establishes the arbitrary-algebra redundancy.
+
+The deliverable includes \texttt{E688.bits}, \texttt{E688.json}, the fully
+expanded \texttt{E688.equations}, a ground-substitution recipe, and a
+verification receipt. A fair ground-rewrite search can use this packet
+with exactly the same abstract checker as $\mathcal E_{713}$. Its binary
+implementation, full writer and initialization cost still require a
+separate compilation. This reduction supplies a smaller calibrated
+equational input; it is not itself a sub-$237$-state Turing machine.

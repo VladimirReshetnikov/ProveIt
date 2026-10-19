@@ -1,0 +1,85 @@
+\subsection{A precise obstruction to deleting native stack traversal}
+\label{sec:tail-deletion}
+
+The truth-axiom elimination does not make the remaining presentation an
+arbitrary deletion target. In particular, remove the native tail equation
+\[
+ V(P(x,s),A(j,d))=V(s,j)
+ \tag{Tail}
+\]
+from $\mathcal E_{688}$, and call the resulting six-equation theory
+$\mathcal E^-$. There is an explicit separating $\mathcal E^-$ model in
+ZFC without any consistency assumption. Thus this second deletion would
+destroy the intended consistency calibration, assuming ZFC is consistent.
+
+\paragraph{The carrier and Boolean operations.}
+Use the carrier $\mathbb N$. Code a finite set by its binary bit mask $m$;
+the even number $2m$ represents its complement in $\mathbb N$, while
+$2m+1$ represents the finite set itself. This is the finite/cofinite
+Boolean algebra. Its top is the native value $d=0$, its bottom is $1$,
+complement toggles the last bit, and $N$ is NAND. Sh1 therefore holds and
+$N(d,d)=1\ne0=d$.
+
+Let $\pi(x,y)=\frac{(x+y)(x+y+1)}2+y$ and define
+\[
+ P(x,s)=3\pi(x,s)+1,\qquad A(i,j)=3\pi(i,j)+2,
+ \qquad Q(a)=3a+3.
+\]
+These three constructor ranges partition the positive naturals and are
+disjoint; each constructor code exceeds its arguments. Interpret
+$V(s,i)$ as the first decoded component when $s$ is a $P$ code and as
+$0$ otherwise, \emph{independently of $i$}. The native head equation holds.
+
+Define $\tau(a)\in\{0,1\}$ by recursion on the natural class code:
+\[
+ \tau(0)=1,\quad
+ \tau(P(a,b))=N(\tau(a),\tau(b)),\quad
+ \tau(A(i,j))=1,\quad
+ \tau(Q(a))=N(\tau(a),\tau(a)).
+\]
+The recursion is well founded because its children are smaller.
+Set $p_\varepsilon(s,a)=\tau(a)$, so incidence is independent of the stream.
+Set $p_E(x,y)=0$ when $x<y$ and $p_E(x,y)=1$ otherwise; the Boolean value
+$0$ is truth in this coding. Finally let
+\[
+ W(s,a)=0,\qquad\mathsf{Target}(b)=0,\qquad
+ \mathsf{Next}(b,z)=z+2,\qquad\mathsf{Mem}(b,z)=z+1.
+\]
+
+\paragraph{Verification for all arguments.}
+The NAND-class equation holds by the definition of $\tau$. For the atom
+equation, $V(s,i)=V(s,j)$, so the right side is the false value $1$;
+the left side is $\tau(A(i,j))=1$. In the complemented-binder equation,
+the two selected and arbitrary evaluations are both $\tau(a)$, hence its
+right side is $N(\tau(a),\tau(a))=\tau(Q(a))$, exactly its left side.
+
+For a fixed descriptor $b$, the relation value
+\[
+ R_b(x,y)=p_\varepsilon(P(y,P(x,b)),V(b,d))
+          =\tau(V(b,d))
+\]
+is constant in both $x$ and $y$. If that constant is truth, the bad branch
+of the closure equation is true at every $z$: its three conjuncts are
+the true matrix value, $z+1<z+2$, and the negation of $z+1<z$.
+If the constant is false, the target $h=0$ has no members, so both closure
+implications and its unrestricted support clause are true. In either
+case the retained factored closure equation holds. This argument covers
+every descriptor and every natural assignment, including noncanonical
+selectors and streams.
+
+Nevertheless $(\mathrm{Tail})$ fails at $x=1$, $s=0$, $j=0$: its left
+side is $1$, while its right side is $0$. All six retained equations hold
+and the original ground endpoints are separated. The model is explicitly
+defined using arithmetic, finite/cofinite Boolean operations, and a
+well-founded recursion, so ZFC proves its existence directly. Consequently
+ZFC proves $\mathcal E^-\not\vdash N(d,d)=d$. If this were also provably
+equivalent in ZFC to $\operatorname{Con}(\mathrm{ZFC})$, ZFC would prove
+its own consistency.
+
+The accompanying checker evaluates the six literal AST equations on
+$6{,}208$ assignments with all variables in $\{0,\ldots,7\}$ and verifies
+the displayed tail failure and endpoint separation. Those finite cases
+check the implementation against the stated construction; the preceding
+all-natural argument proves the model theorem. This control identifies
+the logical role of actual coordinate traversal and explains why a
+seemingly small deletion cannot be priced as another valid improvement.

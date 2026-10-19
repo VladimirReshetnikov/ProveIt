@@ -1,0 +1,69 @@
+Independent mathematical review of the E692 selector-sharing construction
+Date: 2026-10-19
+
+Scope: focused ordinary mathematical review of the final E692 section and
+its dependency on the preceding free-carrier, descriptor-descent, and
+weighted-model definitions in equational/combination704.tex. This is not a
+kernel proof, a newly reconstructed raw-EPSC/ZFC calibration, or a claim of
+an accounted binary Turing-machine implementation.
+
+Conclusion: no concrete flaw was found in replacing A(j,d) by Q(j) in the
+stack-tail equation while retaining Q as the complemented existential class
+constructor and the raw Target witness constructor.
+
+1. Lower extraction. With nu_0=d and nu_(i+1)=Q(nu_i), the head and new tail
+   equations recover every coordinate of any finite native stack. Atomic
+   classes A(nu_i,nu_j), NAND classes P(a,b), and ordinary existential
+   classes Q(P(a,a)) therefore still represent every finite equality-free
+   pure-membership formula. Selector terms need not have prescribed truth
+   values when separately interpreted as class arguments.
+
+2. Upper selector interpretation. On the free P/A/Q tree carrier, idx counts
+   consecutive outer Q constructors. This recursion inspects finite syntax
+   only; it does not query the raw projection mu, class truth, the membership
+   relation, or any not-yet-selected witness. Reading the corresponding
+   stream coordinate verifies both native stack equations for every tree,
+   including noncanonical selector trees and non-P tails.
+
+3. Formula decoding and descriptor descent. Atomic A(i,j) reads the two
+   syntactically determined indices, whereas Q(a), when decoded as a class,
+   still means existential negation. In the descriptor relation R_b, every
+   fixed raw parameter is a proper subtree of b or the default leaf d.
+   Bound coordinates and the two new input coordinates create no fixed
+   parameter dependency. Arbitrarily large finite indices do not create a
+   reference to the raw value of the whole descriptor.
+
+4. Well-founded witness assignment. The unchanged weights satisfy
+      w(Q(b)) < w(P(b,z)) < w(A(b,z)).
+   At Q(b), all fixed descriptor parameters are already assigned. At P(b,z),
+   the raw values of Q(b) and z are already assigned. At A(b,z), the raw
+   value of P(b,z) is already assigned. These are inequalities of positive
+   integer weights, not inequalities between the raw values mu(...).
+   Changing idx leaves all these dependencies unchanged.
+
+5. Apparent Q(d) collision. Q(d) has selector index 1 and is a true class,
+   since d is a false class and the carrier is nonempty. Its raw value is
+   an empty hull for the constantly false relation R_d. These assignments
+   coexist: the binder equation makes p_epsilon(s,Q(d)) the Boolean top,
+   and does not identify the tree Q(d) with the top tree d. Native equality
+   is literal equality of trees; equality of raw projections is not used
+   as a substitute. The free member-choice slice W(x,d) remains available.
+
+6. Relative theorem. The argument constructs a countable raw-EPSC structure
+   from a separating E692 model, and constructs a separating E692 model
+   from a countable raw-EPSC structure. Together with the already established
+   implications for E696 and ground-term equational completeness, this gives
+   the stated equivalence of designated ground nonderivability. It does not
+   assert that E692 and E696 have identical models.
+
+7. Charge. Replacing the three-node A(j,d) term by the two-node Q(j) term
+   reduces the total equation-node count from 157 to 156. The stated codec
+   charge is 43 + (8+1+4*156) + 16 = 692 logical bits. The four zero padding
+   bits in its 87-byte transport file are expressly distinguished from the
+   logical packet; no complete binary interpreter or initializer is charged
+   by this result.
+
+The mathematical conclusion remains conditional only on the explicitly
+retained ancestor calibration when it is stated as an equivalence with
+Con(ZFC). The selector-sharing relative theorem itself introduces no new
+consistency or soundness assumption.

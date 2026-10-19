@@ -1,0 +1,215 @@
+\section{Source transformations with exact control targets}
+\label{sec:source-rewrite-lemmas}
+
+This section records ordinary universal lemmas for the Wade register-language
+semantics used in \texttt{RegisterPath.lean} and \texttt{RMDag.lean}.  They are
+independent of finite register testing.  The delivered 236-state candidate
+uses an ordinary reassociation of three closed blocks; the jump-adjusting
+rules below are a larger search space for subsequent work.
+
+Write $(A,B)$ for a source cons cell.  A leaf is an increment $I_r$, a
+decrement $D_r$, a break $B_k$, a continue $C_k$, or halt.  Decrement reduces
+a positive register and continues normally; on zero it acts as a break of
+level one.  All explicit break and continue operands in this section are
+strictly positive.  The source frontend enforces that restriction; a checker
+that interprets a zero operand by the positive-operand formulas below would
+be unsound.
+
+\subsection*{A finite control graph is a universal certificate}
+
+Unfold a finite acyclic source DAG and number its leaves from left to right.
+For every subtree prefix $p$, let $[\ell(p),r(p))$ be its leaf interval.
+At a leaf with path $p$, increment and positive decrement target the next
+leaf, or the normal exit if it is last.  Zero decrement uses the break-one
+target.  A break of level $k$ finds the $k$th zero in $p$, counted from the
+right, and targets the end of the subtree preceding that zero.  A continue
+finds the $k$th one and targets the beginning of its preceding subtree.
+If fewer than $k$ matching bits exist inside the local subtree, retain the
+external exit type and the number of ancestors still required.
+
+More explicitly, a local control target is a leaf ordinal, a halt outcome,
+or an external token $\mathsf B_j$ or $\mathsf C_j$.  The token
+$\mathsf B_0$ denotes normal completion, while positive subscripts denote
+unconsumed break or continue levels.  For $(A,B)$ with $m$ leaves in $A$,
+the rules that embed local targets are
+\[
+\begin{array}{c|cc}
+\text{Local target}&\text{from }A&\text{from }B\\ \hline
+i&i&m+i\\
+\mathsf B_0&m&\mathsf B_0\\
+\mathsf B_j\ (j\ge1)&\mathsf B_{j-1}&\mathsf B_j\\
+\mathsf C_1&\mathsf C_1&0\\
+\mathsf C_j\ (j\ge2)&\mathsf C_j&\mathsf C_{j-1}\\
+\mathsf{halt}&\mathsf{halt}&\mathsf{halt}
+\end{array}
+\tag{C}
+\]
+Here an internal $i$ in the first or second column is relative to the
+corresponding child.  In the complete well-formed program, normal completion
+restarts the root at leaf zero, and no positive external token remains.
+
+\paragraph{Certificate lemma.}
+Suppose two finite source trees have the same number of leaves.  At each
+corresponding ordinal, require the same register action and the same ordered
+control targets, including all external tokens.  For a decrement, the zero
+and positive targets must agree separately.  Then the two trees have the
+same execution for every initial register file when configurations are
+identified by current leaf ordinal and register file.  They can be substituted
+for one another in every surrounding source context.
+
+To prove this, note first that \texttt{RegisterPath.execute} uses the path
+truncated and zero-extended to precisely the depth of the decoded leaf.
+Thus the next decoded leaf depends only on that leaf and, for decrement,
+whether the selected register is zero.  The preceding target formulas are
+therefore exact.  Matching action and target data gives a one-step graph
+isomorphism, and induction gives the result for every finite execution;
+determinism extends it to divergence.  The compositional rules (C) prove
+context substitution by induction on the surrounding tree.  They also
+explain why residual external levels must be compared, rather than merely
+noting that both jumps leave the subtree.
+
+An unconditional break or continue has no register effect.  Its numeric
+operand is representation data once its target is known.  Consequently an
+equivalence checker may ignore that operand after proving exact target
+agreement.  Even its break/continue opcode can be erased in a full-program
+graph comparison if the resulting targets, including root wraparound, are
+equal.  Preserving the opcode is a sound, more restrictive search rule.
+
+\subsection*{Reassociation with adjusted jumps}
+
+Consider
+\[
+             (A,(B,C))\quad\longmapsto\quad((A',B),C').
+\tag{L}
+\]
+The paths of leaves in the three blocks change from
+$0\alpha,10\beta,11\gamma$ to $00\alpha,01\beta,1\gamma$.
+For a jump inside a block, call it \emph{escaping} when its operand exceeds
+the number of matching zero or one bits in its path relative to that block.
+The difference is its residual level.
+
+The following sufficient conditions and changes preserve the exact local
+control graph in (L):
+\begin{enumerate}
+\item No zero-decrement branch escapes $A$.
+\item Increase by one every explicit break operand escaping $A$; these
+changes define $A'$.  Leave its other leaves unchanged.
+\item Every continue escaping $C$ has residual level at least two.  Decrease
+each such operand by one; these changes define $C'$.
+\item Leave all internal jumps, register operands, and all leaves of $B$
+unchanged.
+\end{enumerate}
+
+For a direct proof, internal targets are unchanged by the prefix replacement.
+An escaping break from $A$ crosses one left edge before rotation and two
+afterward, hence the increment of its operand.  Its implicit decrement-zero
+branch cannot receive that increment, which explains condition 1.  Escaping
+continues from $C$ cross two right edges before rotation and one afterward,
+hence the decrement.  A residual continue of level one from $C$ would restart
+$B$ before rotation; after rotation no ancestor of $C$ begins at $B$.
+This target is unrepresentable by changing only that continue operand, which
+explains condition 3.  In $B$, the outer edge pair changes from $10$ to $01$:
+a break crosses one left edge in either form, and a continue crosses one
+right edge in either form.  Residual continue one restarts $A$ in both, and
+residual break one ends the whole displayed block in both.  All other exits
+follow immediately from (C).
+
+The inverse rule decreases explicit break operands escaping $A$ by one,
+requires their old residual levels to be at least two and forbids an escaping
+implicit zero-decrement branch there, and increases each continue operand
+escaping $C$ by one.  No other adjustment is needed.
+
+For example, without any register inequality assumption,
+\[
+ (I_a,(I_b,C_{k+1}))\ \simeq\ ((I_a,I_b),C_k),\qquad k\ge1.
+\tag{I}
+\]
+For $k=1$ the whole block restarts on both sides.  For $k\ge2$ it increments
+the same two registers and emits the same residual continue of level
+$k-1$.  Formula (I) cannot be extended by retaining $C_1$ on the left and
+inventing $C_0$ on the right: the left program repeats $I_b$ without repeating
+$I_a$, and zero-continue is outside the stated source language.
+
+These rules need not be implemented as ad hoc syntactic exceptions.  Given
+any new binary parenthesization with the same ordered leaves, recompute its
+available target for each positive jump operand and choose an operand that
+matches the old target.  Check every decrement-zero edge separately because
+its level is fixed.  If all targets can be matched, the certificate lemma
+proves the transformation.  The new parenthesization may then be hash-consed
+to expose source DAG sharing.  Its emitted Turing-machine count must still
+be measured independently.
+
+\subsection*{When increment commutation is valid}
+
+For a literal two-leaf subtree, the identity
+\[
+                    (I_a,I_b)\simeq(I_b,I_a)
+\tag{S}
+\]
+holds in every surrounding context.  Both terminate normally with the same
+register file; it also holds when $a=b$.  More generally, any permutation of
+a finite, always-executed increment sequence has the same net addition
+vector.
+
+For consecutive leaves in a larger control graph, adjacency alone is
+insufficient.  A sufficient graph condition is that the sequence has one
+entry: its internal leaves have no incoming edge except the predecessor's
+fallthrough, and the initial program entry is not an internal leaf.  The
+sequence can then be treated as one block with the same output register file.
+Without that condition, an outside continue may enter the second increment
+and observe which register is incremented there.  Combining (I) with (S),
+when its jump condition holds, safely creates a commutable pair that was
+previously separated by the source tree's right nesting.
+
+\subsection*{Moving an increment through a transfer loop}
+
+For $r\ne s$, define the closed transfer block
+\[
+ T_{r,s}=(D_r,(I_s,C_2)).
+\]
+On every register file $R$ it terminates normally, sets register $r$ to zero,
+sets $s$ to $R(s)+R(r)$, and leaves all other registers unchanged.  This is
+the existing generic \texttt{RMDag.transfer} contract.  Induction on $R(r)$
+also proves it directly.
+
+We obtain the three-way identity
+\[
+ (I_r,T_{r,s})\ \simeq\ (I_s,T_{r,s})
+ \ \simeq\ (I_s,(D_r,C_2)),\qquad r\ne s.
+\tag{T}
+\]
+All three terminate normally with
+\[
+ R'(r)=0,\qquad R'(s)=R(s)+R(r)+1,\qquad
+ R'(j)=R(j)\quad(j\ne r,s).
+\]
+The final form executes $I_s$ before each test, including the final zero test;
+there are $R(r)+1$ increments.  This proves the displayed normal form without
+a register invariant.  Determinism then gives equality of every exit/output
+judgment, so the replacement is valid in arbitrary source contexts.
+
+The first equality in (T) also applies to a nonlocal control-graph pattern.
+Let the first increment fall through to a decrement of the same register;
+require the decrement's positive edge to go to $I_s$, that increment to an
+unconditional continue, and that continue back to the same decrement.  Its
+zero edge may be any unchanged continuation.  Starting before the first
+increment, the old and new executions both reach that continuation with the
+displayed output.  Other edges may enter the loop, because none of its
+instructions is changed by this first equality.
+
+Several such increment changes may be made together when no changed
+increment is part of another witness's loop body.  This disjointness of the
+changed sites from the witness interiors makes every witness survive the
+other changes.  The measured file
+\texttt{reference/transfer\_source\_receipt.json} contains 34 exact witnesses,
+and the set of their first increment sites has empty intersection with the
+set of their loop increment sites.  The source theorem therefore justifies
+the simultaneous changes in that particular experiment.  It does not by
+itself claim any reduction in emitted Turing-machine states.
+
+\paragraph{Proof status.}
+The finite-control certificate and transformations above are ordinary
+mathematical consequences of the stated semantics.  No new compiled Lean
+theorem or internal PA proof is claimed here.  A concrete source candidate
+also needs its finite unfolding/control check and the complete source-to-TM
+calibration; a smaller source DAG alone is not a state bound.
