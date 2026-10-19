@@ -1,0 +1,220 @@
+\documentclass[10pt]{article}
+\usepackage[a4paper,margin=25mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,booktabs,longtable,hyperref}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Seq}[2]{\langle #1,#2\rangle}
+\newcommand{\CB}{\operatorname{break}}
+\title{Source restructuring behind the 239-state ZFC candidate}
+\author{Research supplement}
+\date{19 October 2026}
+\begin{document}
+\maketitle
+
+\section{What the source optimization contributes}
+The final literal machine in \texttt{../candidate239/zfc\_boundary239.tm}
+has 239 working states, a separate halt state, two symbols, and no stationary
+moves. This note explains the source and encoding part of its construction.
+The logical calibration to consistency and the complete quantified runtime
+check are separate components of the accompanying report.
+
+The inherited 240-state source has 6,455 instruction leaves and 225 distinct
+binary subtrees. A source subtree is either an instruction or a pair
+$\Seq{P}{Q}$ interpreted as sequential composition with explicit encoded
+control exits. Increment and decrement instructions act on natural-valued
+registers. A zero decrement follows a break edge; a positive decrement
+follows the ordinary successor. Explicit break and continue instructions
+count, respectively, zero and one ancestors in the binary instruction path.
+
+A finite source control-flow graph can therefore be checked exactly. Give
+each instruction its left-to-right ordinal, record its operation and argument,
+and record the target ordinal for each possible exit. If two source trees
+have the same ordered instructions and the same target ordinals, the identity
+map on ordinals is a register-machine bisimulation. This statement holds for
+all natural-valued register assignments, including computations that diverge.
+It is stronger than agreement on finitely many test inputs.
+
+\section{Associativity and the final break}
+A subtree is syntactically closed when none of its local break or continue
+instructions needs an ancestor outside that subtree, and it has no halt
+instruction. For closed $P,Q,R$, the standard associativity transformation
+\[
+ \Seq{P}{\Seq{Q}{R}} \quad\longleftrightarrow\quad
+ \Seq{\Seq{P}{Q}}{R}
+\]
+preserves both normal behavior and divergence. In the current source, the
+initial useful reassociation is
+\[
+ \Seq{p}{\Seq{d}{h}}
+ \quad\longmapsto\quad
+ \Seq{\Seq{p}{d}}{h},
+\]
+where $p$ is the PUSH routine, $d$ copies register D, and $h$ is PUSH followed
+by a copy of register H. The pair $\Seq{p}{d}$ already occurs elsewhere,
+so the source DAG loses one node.
+
+This reduction is insufficient at the tape level. Six decrement instruction
+paths acquire a run of seven zeros, while the inherited backward scanner
+requires the source's six-zero bound. Moreover, state 218 uses the old
+reassociated decoder as a backward routing helper. The direct 239-state
+attempt consequently fails 702 of 8,386 finite instruction guards, despite
+having the same exact initial blank-tape prefix.
+
+A beam of further closed reassociations removes five of the six bad paths
+without increasing the 224-node source count. One bad path remains, at the
+first PUSH decrement of the AX branch. The following extension removes it.
+
+\begin{lemma}[Right association across a final break]
+Let $P$ and $Q$ be syntactically closed and let $k\geq 1$. Then
+\[
+ \Seq{\Seq{P}{Q}}{\CB k}
+ \quad\longleftrightarrow\quad
+ \Seq{P}{\Seq{Q}{\CB k}}
+\]
+preserves the register computation and the external break target.
+\end{lemma}
+\begin{proof}
+Each side executes $P$ followed by $Q$. If either diverges, both sides diverge
+with the same register computation. Otherwise both reach the same registers
+at the break. The relative path of that break changes from $1$ to $11$.
+No zero ancestor is added or removed, so the counted external break target
+is unchanged. Since $P$ and $Q$ are closed, their own instruction exits are
+unaffected by changing their enclosing parentheses.
+\end{proof}
+
+The final AX subtree has the form
+\[
+ \Seq{\Seq{\mathrm{GEN}}{\Seq{\mathrm{AXrest}}{\mathrm{clear}}}}{\CB 1}.
+\]
+All three displayed computational routines are closed. Applying the lemma
+twice, first at instruction prefix \texttt{11101001001} and then at the
+resulting prefix \texttt{111010010011}, gives
+\[
+ \Seq{\mathrm{GEN}}{
+   \Seq{\mathrm{AXrest}}{\Seq{\mathrm{clear}}{\CB 1}}}.
+\]
+The resulting source has 224 distinct subtrees, 6,455 leaves, maximum path
+length 48, and maximum zero run 6. The exact source-graph check verifies every
+ordered instruction and every conditional or explicit-control target. The
+lemma explains why the former all-three-chunks-closed search rule missed the
+useful transformation; the finite graph certificate checks the actual full
+program independently.
+
+\section{Changing the decoder-sharing choice}
+A reduced source DAG is not yet a smaller correct Turing machine. The
+inherited compiler shares some unequal source subtrees by using a bit already
+present immediately left of the head. Reparenthesizing a source can change
+the available tag or an intermediate route. This is the second obstruction
+in the direct reduction.
+
+Let $p$ denote PUSH, $f$ denote the source routine fn45, and $i$ denote
+incrementing logical register 1. Their entry states are, respectively,
+23, 105, and 70 in the inherited labels. The relevant source nodes are
+\[
+ F=\Seq{p}{i},\qquad G=\Seq{f}{i},\qquad H=\Seq{f}{f}.
+\]
+The old decoder represents $F$ and $G$ together at state 218, according to
+whether the preceding tape bit is 0 or 1. State 179 separately represents $H$
+and is entered after a 0 bit. The source reassociation changes a helper used
+by the shared $F/G$ zero branch.
+
+The successful repair represents $F$ explicitly at state 223:
+\[
+ 223/0=0R23,\qquad 223/1=1R70,\qquad 237/0=0R223.
+\]
+All remaining entries into 218 now follow a transition that writes 1 and
+moves right; all entries into 179 follow a transition that writes 0 and
+moves right. These are global incoming-edge properties, so their invariants
+hold from the common initial state on arbitrary tapes.
+
+The construction then shares $G$ with $H$ instead of sharing $G$ with $F$.
+Replace 179 by
+\[
+ 179/0=0R105,\qquad 179/1=1L215,
+\]
+redirect entries into 218 to 179, and remove 218. The common first child is
+$f$. The second child is selected by a route through existing states:
+\begin{center}
+\begin{tabular}{clc}
+\toprule
+Preceding bit & New read-1 path & Endpoint \\
+\midrule
+0 & $179\to215\to183\to213\to237\to105$ & $(105,h+1)$ \\
+1 & $179\to215\to233\to70$ & $(70,h+1)$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+Every step in these paths preserves the scanned tape bit. Only positions
+$h-1$ and $h$ are read, and the complete tape is unchanged at the endpoint.
+On read 0 the new direct transition to 105 matches old state 179, or replaces
+old state 218's three-step route through $86/1$ and $99/0$.
+
+There are four local cases: each of the two old states, under its incoming
+tag, and each read symbol. The independent checker
+\texttt{../candidate239/build\_candidate239.py} verifies all four by refusing
+any exterior tape read. A positive finite-block simulation then gives
+halting equivalence for the repaired 240-state reference and the final
+239-state table. The companion fold note gives the complete connection to
+the separately validated reference table.
+
+Thus the useful operation is a change in the choice of shared decoder
+nodes. The state removed by source reparenthesization is retained as a net
+saving because a newly favorable pair of unequal source programs can share
+one state using an inherited tape bit.
+
+\section{Verification and provenance}
+The canonical final table has 478 rows, start state 0, dispatcher 84, and
+separate halt state 239. Its SHA-256 is
+\begin{quote}\small\ttfamily
+666f5bf1370b6b44ff4e614e4b194bc5be6b4c621914842ad7e344d6570a544e
+\end{quote}
+The inherited-label table has SHA-256
+\begin{quote}\small\ttfamily
+d061770f487937f9da652919c9bc9bb79bc9bf137ca41dd7a08eb5ecda8e7719.
+\end{quote}
+Canonicalization is a literal action-preserving bijection of all working and
+halt labels. Sparse and dense interpreters, including a separately relabeled
+dense run, agree on the exact 409,691-step blank prefix: the head is at $-5$,
+the dispatcher is active, and exactly 351 tape cells contain one. The root
+register values are $(3,0,0,0,3,0,0,0,0)$ with 167 spare unary values all equal
+to one. No merged or split state is visited during this prefix.
+
+The final source certificate's JSON bytes have SHA-256
+\begin{quote}\small\ttfamily
+7fd152d1f5371d2a561d4ad1870d241683b010ce7b7a27399b95363a4537cfb6.
+\end{quote}
+The quantified source-runtime checker reports all 8,386 guards verified with
+2,247,513 symbolic rules. Those checks quantify over the register lengths
+and the permitted runtime frame parameters; they are distinct from the
+finite sanity screens used to reject preliminary candidates.
+
+\section{Overlap and unsuccessful experiments}
+The initial closed reassociation already appears as an \texttt{obvious244}
+negative experiment in the inherited companion's independent runtime script.
+It is not claimed as novel. The contribution of the present construction is
+its completed combination with the boundary-aware source rotations and the
+new sharing choice at 179/218, yielding a correct literal table below 240.
+This is not a claim of exhaustive literature priority.
+
+Further arithmetic loop rotations were also explored. If a transfer loop
+adds a vector $V$ to registers other than its counter, and $A$ is a subvector
+of $V$, then a loop followed by $A$ can be rotated into an initial $A$, a
+decrement test, the remaining vector $V-A$, and a repeat. For counter value
+$n$, both forms add $nV+A$. In this source the tested contextual versions
+added four to seven distinct source nodes because the original shared loops
+remained needed elsewhere. Thirty such variants did not give a smaller
+literal candidate.
+
+A separate decoder-aware beam tried to manufacture a zero-cost helper for
+the original state-218 route while preserving another projection used by
+states 243 and 220. It examined 930,448 generated alternatives over 20 levels
+with width 240 and found no improvement under its bounded settings. An
+unconstrained source result reached 224 nodes with the desired helper but
+lost another inherited contextual sharing and failed 256 finite instruction
+guards. These are useful cost-model counterexamples, not lower bounds.
+
+The full source and literal certificates remain essential: a small source
+DAG, a successful blank prefix, and finite runtime tests each establish only
+part of the needed equivalence.
+\end{document}

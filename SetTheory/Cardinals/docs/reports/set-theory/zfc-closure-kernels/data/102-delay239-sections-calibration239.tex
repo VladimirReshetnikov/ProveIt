@@ -1,0 +1,109 @@
+\section{Consistency calibration and the precise theorem}
+\label{sec:calibration239}
+
+Let $M_{239}$ be the literal 239-working-state machine specified in this
+report, started in state $0$ at position $0$ on the all-zero, two-way infinite
+tape. Let $H_{239}$ be its arithmetical halting sentence. Fix the recursively
+presented first-order ZFC proof calculus used by the inherited calibration,
+and write
+\[
+ \operatorname{Con}(\mathrm{ZFC})\;:=\;
+ \neg\exists p\,\operatorname{Proof}_{\mathrm{ZFC}}(p,\bot).
+\]
+Proofs here are finite syntactic objects; ordinary effective changes of
+proof calculus give the usual equivalent consistency statement.
+
+\paragraph{Theorem.}
+The concrete construction and the inherited logical calibration give an
+ordinary mathematical proof, formalizable in ZFC, of
+\[
+ \mathrm{ZFC}\ \vdash\
+ \bigl(\neg H_{239}\ \longleftrightarrow\
+             \operatorname{Con}(\mathrm{ZFC})\bigr).
+\]
+The proof does not assume $\operatorname{Con}(\mathrm{ZFC})$.
+This report does not claim a newly checked Lean theorem for this exact
+binary machine or an internal PA proof of the displayed equivalence.
+
+\paragraph{The inherited logical component.}
+The register enumerator is calibrated to the non-extensional set theory
+SIR: the container principle CP, schema GIC with its full
+support clause, and irreflexivity IR. The published proof relates refutations
+of this theory to ZF and ZFC refutations. Its coded-calculus calibration
+handles native equality, variable freshness, and the use of the atom
+$v_0\in v_0$ as relative falsity; irreflexivity is essential to that last
+identification. The source rotations preserve the complete register-program
+halting behavior. The archived theorem
+\texttt{CalibratedRotation240.halts\_iff\_zfc\_refutation} consequently
+identifies halting of the exact rotated source at the logical seed with
+existence of a ZFC refutation.\cite{m254,source240,cal240}
+
+\paragraph{The concrete machine component.}
+The source list used here has exactly 6,455 leaves and is pinned by SHA-256
+\texttt{74b1e7f7}\ldots\texttt{41d5a51d}. This packet freshly reconstructs
+all 203 source-DAG rows and all 6,455 ordered leaves from the pinned Lean
+definitions used by the calibration. The source hashes and exact DAG/leaf
+identity are recorded in \texttt{evidence/source\_joins.json}. Thus the
+logical identity of the simulated program is fixed independently of the
+number of successful runtime cases.\cite{source240}
+
+For the new literal table, all 8,386 guarded instruction cases establish
+whole-tape simulation for arbitrary natural primary-register values,
+arbitrary admissible gap, and an arbitrary nonempty finite spare-block list. Zero
+and positive decrement cases exhaust the natural numbers. The symbolic
+rules are literal transitions, induction on unary run length, and induction
+on finite lists using the independently derived one-block traversal rules.
+Every certified instruction block takes a positive finite number of actual
+steps, with minimum constant term 13. Induction on source execution therefore
+preserves finite halting. If the source continues indefinitely, concatenating
+these positive blocks supplies an unbounded concrete execution and excludes
+premature concrete halting. This gives both directions of the halting
+comparison.
+
+The exact blank bootstrap reaches the required dispatcher frame after
+409,835 transitions. Its logical registers are
+\[
+ (3,0,0,0,3,0,0,0,0),
+\]
+its program counter is empty, and its auxiliary storage consists of 167
+spare blocks of value $1$. The empty counter uses the established zero-padding
+decoder convention. Completeness of the finite decoder tree covers this
+initial case and every successor instruction. The spare blocks are auxiliary
+frame data; all source register operands lie in $\{0,\ldots,8\}$. Their
+presence therefore does not replace the logical seed by a different
+proof-search input. The logical-to-physical register permutation, head,
+marker, header, and zero exterior are included in the frame identification.
+The inherited frame and runtime conventions are documented separately.
+\cite{tree240,runtime240}
+
+\paragraph{Internalization and verification status.}
+The composition is
+\[
+ \begin{aligned}
+ H_{239}&\ \longleftrightarrow\
+ \operatorname{Halts}(\text{rotated source},\text{logical seed})\\
+ &\ \longleftrightarrow\
+ \exists p\,\operatorname{Proof}_{\mathrm{ZFC}}(p,\bot).
+ \end{aligned}
+\]
+Each finite table calculation can be represented by a finite computation
+sequence in ZFC. The uniform simulation arguments use natural-number and
+finite-list induction, and the fixed syntactic source calibration supplies
+the second equivalence. Negating the two equivalent existential statements
+gives the theorem. This internalizes the particular proof constructions;
+it does not invoke a global soundness or reflection principle for Lean or
+for the Python checker. The open exact-table Lean coverage/composition
+endpoint is a separate mechanization task. The stronger claim that PA itself
+proves this complete equivalence remains a separate obligation as well.
+
+\paragraph{Independence assumptions.}
+In the intended standard interpretation, the construction halts exactly
+when a finite ZFC refutation exists. Under consistency of ZFC, it therefore
+does not halt. G\"odel's second incompleteness theorem then rules out a ZFC
+proof of its nonhalting, using the displayed internal equivalence. Bare
+consistency alone does not justify the further claim that ZFC cannot prove
+its halting: that assertion is equivalent here to excluding a ZFC proof of
+its own inconsistency. Two-sided independence follows, for example, from
+arithmetical $\Sigma_1$-soundness of ZFC. The more targeted sufficient
+assumption $\operatorname{Con}(\mathrm{ZFC}+\operatorname{Con}(\mathrm{ZFC}))$
+also suffices. No unconditional nonhalting or absolute consistency is claimed.

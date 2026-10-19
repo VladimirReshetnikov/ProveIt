@@ -1,0 +1,159 @@
+\section{A 239-state machine by delayed erasure}
+
+We use the inherited state labels throughout this section.  The starting
+state is 95, the instruction dispatcher is 96, and the separate halt state
+is 254.  Renumbering the working states consecutively changes none of the
+arguments below.  Let $M_{240}$ be the pinned rotation240 table, and let
+$M_{239}$ be obtained by the following three row edits and one state
+deletion:
+\[
+\begin{array}{c|c|c}
+\text{row}&M_{240}&M_{239}\\\hline
+147/0&0\mathrm{R}169&0\mathrm{R}80\\
+80/0&0\mathrm{R}25&0\mathrm{L}106\\
+91/1&0\mathrm{L}50&1\mathrm{L}167
+\end{array}
+\]
+Delete both rows of state 169.  There is no other incoming edge to 169,
+so these edits leave a complete binary table with 239 working states and
+478 transition rows.  The source program, register permutation, encoding,
+and initialization convention are unchanged.
+
+\subsection{Why keeping a bit temporarily saves a state}
+
+The essential change is the write in row $91/1$.  Instead of immediately
+erasing the scanned 1, the new machine retains it and takes an existing
+leftward route through states 167 and 151.  State 151 then distinguishes
+two contexts.  An ordinary visit to 91 has the preceding word $011$;
+a visit induced by the deleted selector state 169 has a 0 in the position
+tested by 151.  The first context returns to the old erasure computation;
+the second takes the existing row $173/1$ and reaches selector state 56.
+All cells eventually have exactly their old values.  This is a change in
+the timing of erasure, not an abstraction that discards tape contents.
+
+\subsection{Structural context and the selector guard}
+
+For a tape $T\colon\mathbb Z\to\{0,1\}$ and head position $h$, the old
+machine satisfies the following context predicates:
+\[
+\begin{array}{c|l}
+q&\text{predicate at state }q\\\hline
+67&T(h-1)=0\\
+80&T(h-2)=0,\quad T(h-1)=1\\
+91&T(h-3)=0,\quad T(h-2)=T(h-1)=1\\
+169&T(h-1)=0.
+\end{array}
+\]
+These are ordinary inductive invariants, valid even for an arbitrary tape
+started in state 95.  States 52 and 124 are the only predecessors of 67,
+and both relevant rows write 0 and move right.  The only predecessor of
+80 is $67/1$, the only predecessor of 91 is $80/1$, and the only predecessor
+of 169 is $147/0$.  Inspection of those rows proves preservation; the
+initial state 95 satisfies the predicates vacuously.
+
+One additional fact uses the interpreter representation:
+\begin{equation}\label{eq:selector169guard}
+q=169\ \land\ T(h)=1\quad\Longrightarrow\quad T(h+1)=1.
+\end{equation}
+This is not asserted for arbitrary tapes.  It holds along the blank-start
+computation, including every subsequently interpreted instruction.  The
+separate guard certificate checks all such visits in the exact blank
+initialization and in the complete unbounded symbolic instruction proof.
+At each symbolic visit, the right-hand word starts with a run of 1s whose
+affine length has constant term at least 2 and nonnegative coefficients.
+Consequently the current cell and the next cell are both 1 for every
+allowed register file, every additional header gap, and every finite
+spare list.  The check introduces no new symbolic rewrite rule.  Unary
+self-loop induction cannot hide a visit to state 169, and the four
+finite-list schemas are rederived from the literal table.
+More precisely, the check finds 32 symbolic visits, all at increment-4
+sites, with right-hand run length $G+K$, where $G\geq0$ is the additional
+header gap and $21\leq K\leq59$.  The exact initialization has six further
+visits, each checked literally.  The required two-cell margin therefore
+has a generous uniform reserve; it is not an extrapolation from small
+register values.
+
+The direct complete runtime proof for $M_{239}$ supplies a second route:
+it checks all 8,386 original guarded instruction cases, without using the
+source interval restrictions employed during discovery.  Thus the new
+machine does not depend on specializing the source program or dropping
+any of its guard cases.
+
+\subsection{Exact positive-block comparison}
+
+Let $\phi(169)=80$ and $\phi(q)=q$ for every other control state.  The
+configuration map preserves the complete tape and head position.  Every
+old transition outside states 80, 91, and 169 agrees with the corresponding
+new transition under $\phi$.  The following six comparisons cover the
+exceptional configurations:
+\[
+\begin{array}{c|l|c|c|c}
+\text{old state/read}&\text{additional tape facts}&
+\text{old steps}&\text{new steps}&\text{common endpoint}\\\hline
+80/0&T(h-1)=1&1&5&(25,h+1)\\
+80/1&\text{none}&1&1&(91,h+1)\\
+169/0&T(h-1)=0&1&3&(57,h+1)\\
+169/1&T(h-1)=0,\ T(h+1)=1&1&5&(56,h+1)\\
+91/0&\text{none}&1&1&(106,h+1)\\
+91/1&T[h-3,h)=011&3&11&(2,h-3).
+\end{array}
+\]
+The notation for the endpoint suppresses the tape only to keep the table
+compact: in every row the entire old and new tapes are equal, including
+both infinite zero exteriors when those are present.  The nontrivial new
+control paths are
+\begin{align*}
+80/0 &: 80\to106\to92\to107\to125\to25,\\
+169/0 &:80\to106\to93\to57,\\
+169/1 &:80\to91\to167\to151\to173\to56,\\
+91/1 &:91\to167\to151\to24\to36\to54\to71
+       \to82\to94\to50\to20\to2.
+\end{align*}
+In the last row the old path is $91\to50\to20\to2$.  Both paths erase
+exactly the three 1s at $h,h-1,h-2$ and leave every other cell unchanged.
+The selector row $169/1$ erases exactly the original cell $h$, as the old
+row does.  All other listed comparisons preserve the initial tape.
+
+The checker \texttt{verify\_local239.py} executes these paths with every
+unmentioned tape cell represented by an independent symbolic variable.
+It rejects any attempt to read such a variable without an explicit
+assumption.  This establishes the comparisons for arbitrary exterior
+tapes; it is not a finite sample of concrete tapes.
+
+\subsection{Halting equivalence and the consistency statement}
+
+All comparison blocks have positive length: at most 3 old steps and at
+most 11 new steps.  Beginning with corresponding configurations, iterate
+the appropriate comparison block along the deterministic old run.  Its
+endpoint is again a reachable old configuration and the corresponding
+new configuration, so the invariant and guard remain available.  If the
+old computation is infinite, positivity gives an infinite new computation.
+If the old computation halts, finitely many positive old blocks reach its
+halt configuration, and the matching new blocks reach the same halt state.
+No comparison path halts prematurely.  Therefore
+\[
+M_{239}\downarrow\quad\Longleftrightarrow\quad M_{240}\downarrow.
+\]
+The blank initial configurations correspond because the state map fixes
+95 and does not alter the head or tape.  Combining this reduction with the
+inherited rotation240 source calibration gives the requested equivalence
+between nonhalting of $M_{239}$ and $\operatorname{Con}(\mathrm{ZFC})$.
+This is an ordinary mathematical proof with executable, whole-domain
+evidence.  A completed Lean or Coq theorem for the exact 239-state table
+is not claimed by this packet.
+
+The fastest of the three discovered row-$80/0$ variants is the one above.
+Its blank initialization takes 409,835 steps, an increase of 144 over
+rotation240.  The exact full tape, head, and dispatcher state at that
+point agree with the inherited initialized frame.  The longer initialization
+is immaterial to the state-count reduction or halting equivalence.
+There is also an exact clock identity.  If $n_{q,b}$ counts visits to row
+$q/b$ in the old run between corresponding endpoints, then
+\[
+t_{239}-t_{240}
+=4n_{80,0}+2n_{169,0}+4n_{169,1}+8n_{91,1}.
+\]
+The old initialization has counts $18,12,6,3$ in that order, giving
+$4\cdot18+2\cdot12+4\cdot6+8\cdot3=144$.  Each new comparison block has
+between one and five times the duration of its old block, so any finite
+halting run also satisfies $t_{240}\leq t_{239}\leq5t_{240}$.

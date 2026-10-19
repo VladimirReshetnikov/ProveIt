@@ -1,0 +1,40 @@
+{
+  "status": "SEMANTIC_DEFINITION_CORRESPONDENCE_CONFIRMED",
+  "method": "Direct reading of pinned Lean definitions and comparison with source_result.tex and check_rotation_certificate.py; no kernel replay.",
+  "file": "RegisterPath.lean",
+  "repository": "VladimirReshetnikov/ProveIt",
+  "commit": "13ec39ed43148b1807f51ed6e6528e1c84659562",
+  "upstream_path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterPath.lean",
+  "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterPath.lean",
+  "bytes": 7073,
+  "git_blob_sha_expected": "ee8b60a3c3971472004755fb08e6e264550b5bc8",
+  "git_blob_sha_recomputed": "ee8b60a3c3971472004755fb08e6e264550b5bc8",
+  "git_blob_sha_verification": "MATCH",
+  "sha256": "a1457f32034eb4da50c8755610a366805260aac711424bba8b516ccab4e5b879",
+  "walk": "MSB-first; absent bits are false; false selects cell.1, true selects cell.2; stop at first non-node edge and return consumed depth d.",
+  "consume": "(P ++ List.replicate d false).take d; therefore execution uses exactly the encountered leaf path.",
+  "increment": "Fixed-length binary increment; all ones roll over to all zeros; empty word remains empty.",
+  "strip": "Remove suffix through kth selected bit from the right; exhaustion yields empty; k=0 preserves input.",
+  "break": "incPath (stripPath false k P)",
+  "continue": "stripPath true k P",
+  "instruction_branches": {
+    "CI(r)": "R[r] := R[r]+1; successor incPath P.",
+    "CD(r), R[r]=0": "Registers unchanged; successor breakPath 1 P.",
+    "CD(r), R[r]=v+1": "R[r] := v; successor incPath P.",
+    "CB(k)": "Registers unchanged; successor breakPath k P; one source step.",
+    "CC(k)": "Registers unchanged; successor continuePath k P; one source step.",
+    "CH": "Literal .halt leaf, recognized by AtHalt."
+  },
+  "other_registers": "Every update preserves R[i] for i different from the selected register.",
+  "halts": "Exists a finite run reaching AtHalt; step=None alone is not the halting definition.",
+  "baseline_decoder": {
+    "declared_nnodes": 203,
+    "fuel": 204,
+    "max_leaf_depth": 51,
+    "child_indices_strictly_decrease": true,
+    "fuel_exhaustion_possible": false
+  },
+  "python_checker": "Same increment, strip, break, continue, and zero-padded locate definitions; additional rejection of nonzero unused successor suffixes is the stronger canonicality check stated in source_result.tex.",
+  "discrepancies": [],
+  "lean_kernel_replay_performed": false
+}

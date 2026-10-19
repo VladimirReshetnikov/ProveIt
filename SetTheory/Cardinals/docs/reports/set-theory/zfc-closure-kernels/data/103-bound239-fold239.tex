@@ -1,0 +1,206 @@
+\section{A 239-state machine by splitting an entry context}
+\label{sec:fold239}
+
+The decisive reduction is a change of control representation in a small
+region of the repaired boundary240 table.  State $218$ has two meanings
+distinguished by the bit immediately left of the head.  Splitting these
+entry contexts allows one meaning to share state $179$, while the other
+uses state $223$, which previously served only as an internal projection
+helper.  Thus three old control states are represented by two new states.
+The representation change needs no extra tape symbol, no extra tape cell,
+and no assumption about the register values or the source program counter.
+
+\subsection{Exact construction}
+
+Let $M$ be the repaired boundary240 machine, with inherited start label
+$95$ and halt label $254$.  Its SHA-256 digest is
+\begin{quote}\small\ttfamily
+19cd7f7863a681828fd026adbf8ce91c21e3ac7604439bc9d4603ba58661853e.
+\end{quote}
+Construct $N$ by deleting state $218$ and applying the six row changes
+in Table~\ref{tab:239-edits}.  Every other row is identical.  Here
+$(w,d,q)$ means write $w$, move $d$, and enter $q$.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{rrll}
+State & Read & Old transition & New transition \\
+\hline
+$179$ & $1$ & $(1,R,105)$ & $(1,L,215)$ \\
+$187$ & $1$ & $(1,R,218)$ & $(1,R,179)$ \\
+$220$ & $1$ & $(1,R,218)$ & $(1,R,179)$ \\
+$223$ & $0$ & $(0,R,16)$ & $(0,R,23)$ \\
+$223$ & $1$ & $(1,R,99)$ & $(1,R,70)$ \\
+$237$ & $0$ & $(0,R,218)$ & $(0,R,223)$ \\
+\hline
+\end{tabular}
+\caption{All six changed rows.  The two rows of old state $218$,
+$(0,L,223)$ and $(1,R,70)$, are removed.}
+\label{tab:239-edits}
+\end{table}
+
+The resulting inherited-label table has $239$ working states and $478$
+rows.  All $239$ working states are reachable in the directed transition
+graph from state $95$.  The table file
+\texttt{boundary239\_fold179\_old.tm} has SHA-256 digest
+\begin{quote}\small\ttfamily
+d061770f487937f9da652919c9bc9bb79bc9bf137ca41dd7a08eb5ecda8e7719.
+\end{quote}
+Graph reachability is used here only to account for the literal states;
+it does not claim that every state is reached by the blank execution.
+
+\subsection{The invariant and control representation}
+
+Write $\ell=T(h-1)$ for the tape bit immediately left of the head.
+Inspection of the complete old transition table establishes the
+following incoming-port facts:
+\begin{itemize}
+\item The only incoming transitions to old $179$ are
+$161/0$, $236/0$, and $239/0$.  Each writes $0$ and moves right.
+Thus every entry to old $179$ has $\ell=0$.
+\item The only incoming transitions to old $218$ are $187/1$,
+$220/1$, and $237/0$.  The first two write $1$ and move right;
+the last writes $0$ and moves right.  They therefore supply tags
+$1$, $1$, and $0$, respectively.
+\item The only incoming transition to old $223$ is old $218/0$.
+Old $223$ can be kept entirely inside a three-step old-machine block.
+\end{itemize}
+None of these special states is the initial state.  The fixed tag at
+old $179$ is therefore a globally inductive fact, valid even for an
+arbitrary initial binary tape.  The two tags at old $218$ are exhaustive.
+
+At simulation checkpoints the head and the entire tape are identical.
+The control relation is
+\[
+\begin{array}{c|c}
+\text{Old control and tag} & \text{New control} \\
+\hline
+179,\ \ell=0 & 179\\
+218,\ \ell=0 & 223\\
+218,\ \ell=1 & 179\\
+q\notin\{179,218,223\} & q.
+\end{array}
+\]
+Old $223$ is not a checkpoint.  Its executions occur inside the
+three-step block that starts at old $218$ reading $0$.
+The new targets of the three old $218$ callers select exactly the
+corresponding entry of this relation: $237/0$ selects new $223$,
+while $187/1$ and $220/1$ select new $179$.
+
+\subsection{Six whole-tape block identities}
+
+The local verification needs only the two tape cells at relative
+positions $-1$ and $0$.  The cells outside this pair are arbitrary.
+All six old and new blocks in Table~\ref{tab:239-blocks} leave the
+\emph{entire tape unchanged}, finish with head displacement $+1$,
+and enter the stated common endpoint.  No block reads or writes
+outside those two cells.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{rrrrrrr}
+Old state & $\ell$ & Read & New state & Old steps & New steps & Endpoint \\
+\hline
+$179$ & $0$ & $0$ & $179$ & $1$ & $1$ & $105$\\
+$179$ & $0$ & $1$ & $179$ & $1$ & $5$ & $105$\\
+$218$ & $0$ & $0$ & $223$ & $3$ & $1$ & $23$\\
+$218$ & $0$ & $1$ & $223$ & $1$ & $1$ & $70$\\
+$218$ & $1$ & $0$ & $179$ & $3$ & $1$ & $105$\\
+$218$ & $1$ & $1$ & $179$ & $1$ & $3$ & $70$\\
+\hline
+\end{tabular}
+\caption{The complete local proof obligations for the context split
+and fold.  Each row quantifies over every surrounding binary tape.}
+\label{tab:239-blocks}
+\end{table}
+
+The useful old projection is particularly simple.  At old $218$
+reading $0$, the machine first moves left into old $223$.  If the
+tag is $0$, it then passes through $16$ and reaches $23$.  If the
+tag is $1$, it passes through $99$ and reaches $105$.  Both paths
+take three steps, preserve the two bits, and finish one cell to the
+right of the starting head.  New $223/0$ and new $179/0$ implement
+these respective outcomes directly.
+
+The shared new row $179/1=(1,L,215)$ uses the preceding tag to recover
+the two remaining meanings.  For tag $0$ its successive executed rows are
+\[
+179/1,\quad 215/0,\quad 183/1,\quad 213/0,\quad 237/1,
+\]
+and it finishes at $105$.  For tag $1$ they are
+\[
+179/1,\quad 215/1,\quad 233/1,
+\]
+and it finishes at $70$.  The first path takes five steps and
+simulates old $179/1$; the second takes three steps and simulates
+old $218/1$ in its tag-$1$ context.  The tag-$0$ context of old
+$218/1$ is handled directly by new $223/1$.
+
+\subsection{Composition theorem}
+
+\paragraph{Theorem.}
+For every binary initial tape $T$, the old repaired boundary240
+machine started in state $95$ on $T$ halts if and only if the
+new $239$-state machine started in state $95$ on $T$ halts.
+In particular, their blank-tape halting and non-halting statements
+are equivalent.
+
+\paragraph{Proof.}
+The initial configurations are related because state $95$ is unchanged.
+At an ordinary checkpoint, the next old and new transition have identical
+writes and moves.  Their targets are either identical ordinary states,
+old $179$ with its forced tag $0$, or one of the three rerouted old
+$218$ ports.  The incoming-port checks above establish the control
+relation in every case.  There is no ordinary transition into old $223$.
+
+At a special checkpoint, select the corresponding row of
+Table~\ref{tab:239-blocks}.  It provides a finite old block and a
+finite new block ending in exactly the same ordinary control state,
+head position, and tape.  Hence the checkpoint relation is restored.
+This also accounts for every visit to old $223$; it cannot be entered
+except through one of the specified old $218/0$ blocks.
+
+Each block on each side has positive length.  By induction the two
+deterministic executions have corresponding checkpoints for every
+finite number of blocks.  A finite halting execution corresponds
+to a finite halting execution, while an infinite execution supplies
+infinitely many positive blocks on both sides.  The machines therefore
+halt together.  All invariant checks and local identities are finite
+facts about the displayed tables, and the induction is formalizable
+in ordinary elementary arithmetic.  In particular, ZFC proves the
+blank-tape equivalence. \hfill$\square$
+
+Consequently, any proof in ZFC that the repaired boundary240 machine
+does not halt exactly when $\operatorname{Con}(\mathrm{ZFC})$ holds
+transfers to the explicit $239$-state table.  This local theorem does
+not by itself discharge the separate source-calculus and compiler
+correctness obligations for the repaired boundary240 reference.
+
+\subsection{Reproducible certificate}
+
+The standalone Python program \texttt{certify\_239\_fold.py} validates
+both tables, checks the entire edit set and every incoming port of
+$179$, $218$, and $223$, and executes the six blocks above.  Its
+symbolic tape consists of the two specified cells; an attempted
+read outside them is an error.  It checks the complete final tape
+map, head, and control state, and records both step-by-step traces.
+It uses only the Python standard library.  The command
+\begin{verbatim}
+python certify_239_fold.py boundary240_old.tm \
+  boundary239_fold179_old.tm --output fold239_certificate.json
+\end{verbatim}
+returns \texttt{PASS}.  Alternatively, \texttt{--build} constructs the
+new table directly from the old table and verifies it before saving.
+The supplied \texttt{fold239\_certificate.json} records all six
+obligations, the incoming-port checks, and the input hashes.  This
+is a finite executable certificate together with the composition
+proof above, rather than a proof-assistant kernel certificate.
+
+The discovery process first tested $50,317$ finite runs, including
+startup, collecting $26,842,232$ transition observations and all
+$480$ old rows.  These observations suggested the fold.  The proof
+above replaces that heuristic evidence: it uses a global entry-tag
+invariant and universally quantified two-cell identities.  A separate
+finite regression of all $8,386$ instruction guards on the $239$-state
+table also passes.  Those finite tests are supporting diagnostics;
+they are not the basis of the equivalence theorem.

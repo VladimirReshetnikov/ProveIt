@@ -1,0 +1,78 @@
+\section{Alternative source and compiler experiments}
+\label{sec:source-research}
+
+The reduction was accompanied by searches at several levels of the
+240-state construction~\cite{rotation240}.  Their common objective was to
+reduce the complete binary transition table, including initialization and
+return control.  A shorter axiom presentation, source program, or compressed
+instruction dictionary is useful only when its encoding saves more states
+than its decoding and tape maintenance require.  The following experiments
+help distinguish productive changes from improvements in an intermediate
+representation that do not reduce the final machine.
+
+\paragraph{Source invariants.}
+An independent interval analysis started from the exact logical register
+seed $(3,0,0,0,3,0,0,0,0)$ and propagated bounds over all 6,455 source leaves.
+A finite interval domain with saturation threshold eight reached a fixed
+point, after which every initial-state and control-edge preservation
+obligation was checked again.  It admits 8,381 guarded cases and excludes
+five of the unrestricted 8,386 cases; three complete leaf sites are
+unreachable.  A separately implemented analysis with threshold three gives
+the same exclusions.  These invariants restricted the concrete contexts
+used to discover the new fold.  They are \emph{not acceptance assumptions}:
+the final 239-state table passes all 8,386 symbolic instruction cases for
+independent arbitrary natural register values, arbitrary additional gap,
+and arbitrary spare-list length.
+
+\paragraph{Register permutations.}
+A narrow impossibility result concerns exact, one-transition state
+quotients after permuting the nine physical registers.  The family changes
+only twelve register-selector destinations, choosing among the existing
+nine skip-entry states; all writes, directions, and other destinations
+remain fixed.  A greatest-relation computation deliberately relaxes the
+requirement that all selector occurrences share one global permutation.
+Consequently, every genuine bisimulation quotient for any of the $9!$
+permutations is contained in the computed relation.  Starting with 29,941
+ordered pairs, thirteen refinements leave only diagonal pairs.  This rules
+out exact transition-quotient savings in that family.  It does not exclude
+different initialization, other tape layouts, contextual sharing, or
+simulation by blocks of unequal length.  The successful reduction uses
+precisely such additional freedom.
+
+\paragraph{Instruction grammars.}
+The present decomposition has 125 sequence-grammar states and 115 remaining
+states.  Five finite heuristic runs, adapted from earlier grammar-search
+implementations, examined 6,647,187 proposals without finding a 124-state
+grammar.  This is a bounded search outcome, not an optimality theorem.
+One different 125-state grammar does produce a verified alternative
+240-state table.  Its source still has 6,455 leaves, but maximum address
+depth falls from 51 to 48 while maximum consecutive-zero length remains
+six.  A 1,932-pair bisimulation checks the source control segments and their
+register effects.  Exact blank initialization reaches the original seed
+frame after 409,691 transitions, and all 8,386 unbounded runtime cases pass.
+This alternative layout provides a concrete starting point for further
+search, although no saving from it is claimed here.
+
+\paragraph{Specializing the contradiction test.}
+The direct NIP test was already proposed in the earlier Source~57 and
+Source~71 investigations; the present contribution is its checked
+instantiation against the exact current source.  The interval invariant
+proves that scratch register $R_6$ is zero at the relevant entry.  Under
+that precondition, a twelve-leaf test can be replaced by six leaves,
+reducing the complete source to 6,449 leaves.  The comparison covers the
+exact affine cases $R_5=0$, $R_5=1$, and $R_5=2+n$, followed by induction
+over the clearing loop.  Both programs halt exactly when the entry value
+of $R_5$ is one; otherwise they reach corresponding cleanup points with
+$R_5=R_6=0$ and every other register unchanged.  The certificate also checks
+8,369 commuting control edges outside the replacement.  However, the
+proposed binary realization disrupts the existing compensated return
+through states 72 and 90.  Its repair remains unfinished, so no valid
+smaller machine follows from this source shortening.
+
+Together these experiments emphasize correctness at entry and return
+phases.  Source addresses and nearby tape bits also guide initialization
+and reused control paths.  Preserving a source-level computation therefore
+does not by itself preserve those paths.  The accepted reduction instead
+supplies exact return configurations and positive finite simulation blocks,
+then checks the complete binary machine independently of the restrictions
+used during discovery.

@@ -1,0 +1,450 @@
+{
+  "status": "EXACT_SYMBOLIC_LOCAL_PASS",
+  "baseline_sha256": "547dd69da66f66dd48238a53d34b52a3ce85bb6c7d01534dd1cfb815507f248f",
+  "candidate_sha256": "76a9574ac0385b96dbd558fa852a222e1d9025e48e34dc3590384146726d2a9b",
+  "working_states": 239,
+  "deleted": 169,
+  "retained": 80,
+  "structural_invariant": {
+    "67": {
+      "-1": 0
+    },
+    "80": {
+      "-2": 0,
+      "-1": 1
+    },
+    "91": {
+      "-3": 0,
+      "-2": 1,
+      "-1": 1
+    },
+    "169": {
+      "-1": 0
+    }
+  },
+  "structural_preservation_rows": [
+    {
+      "source": [
+        52,
+        0
+      ],
+      "target": 67
+    },
+    {
+      "source": [
+        67,
+        1
+      ],
+      "target": 80
+    },
+    {
+      "source": [
+        80,
+        1
+      ],
+      "target": 91
+    },
+    {
+      "source": [
+        124,
+        0
+      ],
+      "target": 67
+    },
+    {
+      "source": [
+        147,
+        0
+      ],
+      "target": 169
+    }
+  ],
+  "semantic_guard_required": "In reachable old configurations: q=169 and tape[h]=1 implies tape[h+1]=1.",
+  "semantic_guard_proved_here": false,
+  "maximum_old_block": 3,
+  "maximum_new_block": 11,
+  "cases": [
+    {
+      "name": "80/read0",
+      "old_state": 80,
+      "new_state": 80,
+      "assumptions": {
+        "-1": 1,
+        "0": 0
+      },
+      "all_other_cells": "independent free variables, never inspected unless forced by listed assumptions",
+      "old_steps": 1,
+      "new_steps": 5,
+      "endpoint_state": 25,
+      "endpoint_head": 1,
+      "old_trace": [
+        {
+          "state": 80,
+          "head": 0,
+          "read": 0,
+          "write": 0,
+          "direction": 1,
+          "next": 25
+        }
+      ],
+      "new_trace": [
+        {
+          "state": 80,
+          "head": 0,
+          "read": 0,
+          "write": 0,
+          "direction": -1,
+          "next": 106
+        },
+        {
+          "state": 106,
+          "head": -1,
+          "read": 1,
+          "write": 1,
+          "direction": 1,
+          "next": 92
+        },
+        {
+          "state": 92,
+          "head": 0,
+          "read": 0,
+          "write": 0,
+          "direction": -1,
+          "next": 107
+        },
+        {
+          "state": 107,
+          "head": -1,
+          "read": 1,
+          "write": 1,
+          "direction": 1,
+          "next": 125
+        },
+        {
+          "state": 125,
+          "head": 0,
+          "read": 0,
+          "write": 0,
+          "direction": 1,
+          "next": 25
+        }
+      ]
+    },
+    {
+      "name": "80/read1",
+      "old_state": 80,
+      "new_state": 80,
+      "assumptions": {
+        "0": 1
+      },
+      "all_other_cells": "independent free variables, never inspected unless forced by listed assumptions",
+      "old_steps": 1,
+      "new_steps": 1,
+      "endpoint_state": 91,
+      "endpoint_head": 1,
+      "old_trace": [
+        {
+          "state": 80,
+          "head": 0,
+          "read": 1,
+          "write": 1,
+          "direction": 1,
+          "next": 91
+        }
+      ],
+      "new_trace": [
+        {
+          "state": 80,
+          "head": 0,
+          "read": 1,
+          "write": 1,
+          "direction": 1,
+          "next": 91
+        }
+      ]
+    },
+    {
+      "name": "169/read0",
+      "old_state": 169,
+      "new_state": 80,
+      "assumptions": {
+        "-1": 0,
+        "0": 0
+      },
+      "all_other_cells": "independent free variables, never inspected unless forced by listed assumptions",
+      "old_steps": 1,
+      "new_steps": 3,
+      "endpoint_state": 57,
+      "endpoint_head": 1,
+      "old_trace": [
+        {
+          "state": 169,
+          "head": 0,
+          "read": 0,
+          "write": 0,
+          "direction": 1,
+          "next": 57
+        }
+      ],
+      "new_trace": [
+        {
+          "state": 80,
+          "head": 0,
+          "read": 0,
+          "write": 0,
+          "direction": -1,
+          "next": 106
+        },
+        {
+          "state": 106,
+          "head": -1,
+          "read": 0,
+          "write": 0,
+          "direction": 1,
+          "next": 93
+        },
+        {
+          "state": 93,
+          "head": 0,
+          "read": 0,
+          "write": 0,
+          "direction": 1,
+          "next": 57
+        }
+      ]
+    },
+    {
+      "name": "169/read1",
+      "old_state": 169,
+      "new_state": 80,
+      "assumptions": {
+        "-1": 0,
+        "0": 1,
+        "1": 1
+      },
+      "all_other_cells": "independent free variables, never inspected unless forced by listed assumptions",
+      "old_steps": 1,
+      "new_steps": 5,
+      "endpoint_state": 56,
+      "endpoint_head": 1,
+      "old_trace": [
+        {
+          "state": 169,
+          "head": 0,
+          "read": 1,
+          "write": 0,
+          "direction": 1,
+          "next": 56
+        }
+      ],
+      "new_trace": [
+        {
+          "state": 80,
+          "head": 0,
+          "read": 1,
+          "write": 1,
+          "direction": 1,
+          "next": 91
+        },
+        {
+          "state": 91,
+          "head": 1,
+          "read": 1,
+          "write": 1,
+          "direction": -1,
+          "next": 167
+        },
+        {
+          "state": 167,
+          "head": 0,
+          "read": 1,
+          "write": 1,
+          "direction": -1,
+          "next": 151
+        },
+        {
+          "state": 151,
+          "head": -1,
+          "read": 0,
+          "write": 0,
+          "direction": 1,
+          "next": 173
+        },
+        {
+          "state": 173,
+          "head": 0,
+          "read": 1,
+          "write": 0,
+          "direction": 1,
+          "next": 56
+        }
+      ]
+    },
+    {
+      "name": "91/read0",
+      "old_state": 91,
+      "new_state": 91,
+      "assumptions": {
+        "0": 0
+      },
+      "all_other_cells": "independent free variables, never inspected unless forced by listed assumptions",
+      "old_steps": 1,
+      "new_steps": 1,
+      "endpoint_state": 106,
+      "endpoint_head": 1,
+      "old_trace": [
+        {
+          "state": 91,
+          "head": 0,
+          "read": 0,
+          "write": 0,
+          "direction": 1,
+          "next": 106
+        }
+      ],
+      "new_trace": [
+        {
+          "state": 91,
+          "head": 0,
+          "read": 0,
+          "write": 0,
+          "direction": 1,
+          "next": 106
+        }
+      ]
+    },
+    {
+      "name": "91/read1",
+      "old_state": 91,
+      "new_state": 91,
+      "assumptions": {
+        "-3": 0,
+        "-2": 1,
+        "-1": 1,
+        "0": 1
+      },
+      "all_other_cells": "independent free variables, never inspected unless forced by listed assumptions",
+      "old_steps": 3,
+      "new_steps": 11,
+      "endpoint_state": 2,
+      "endpoint_head": -3,
+      "old_trace": [
+        {
+          "state": 91,
+          "head": 0,
+          "read": 1,
+          "write": 0,
+          "direction": -1,
+          "next": 50
+        },
+        {
+          "state": 50,
+          "head": -1,
+          "read": 1,
+          "write": 0,
+          "direction": -1,
+          "next": 20
+        },
+        {
+          "state": 20,
+          "head": -2,
+          "read": 1,
+          "write": 0,
+          "direction": -1,
+          "next": 2
+        }
+      ],
+      "new_trace": [
+        {
+          "state": 91,
+          "head": 0,
+          "read": 1,
+          "write": 1,
+          "direction": -1,
+          "next": 167
+        },
+        {
+          "state": 167,
+          "head": -1,
+          "read": 1,
+          "write": 1,
+          "direction": -1,
+          "next": 151
+        },
+        {
+          "state": 151,
+          "head": -2,
+          "read": 1,
+          "write": 1,
+          "direction": -1,
+          "next": 24
+        },
+        {
+          "state": 24,
+          "head": -3,
+          "read": 0,
+          "write": 0,
+          "direction": 1,
+          "next": 36
+        },
+        {
+          "state": 36,
+          "head": -2,
+          "read": 1,
+          "write": 1,
+          "direction": 1,
+          "next": 54
+        },
+        {
+          "state": 54,
+          "head": -1,
+          "read": 1,
+          "write": 1,
+          "direction": 1,
+          "next": 71
+        },
+        {
+          "state": 71,
+          "head": 0,
+          "read": 1,
+          "write": 1,
+          "direction": -1,
+          "next": 82
+        },
+        {
+          "state": 82,
+          "head": -1,
+          "read": 1,
+          "write": 1,
+          "direction": 1,
+          "next": 94
+        },
+        {
+          "state": 94,
+          "head": 0,
+          "read": 1,
+          "write": 0,
+          "direction": -1,
+          "next": 50
+        },
+        {
+          "state": 50,
+          "head": -1,
+          "read": 1,
+          "write": 0,
+          "direction": -1,
+          "next": 20
+        },
+        {
+          "state": 20,
+          "head": -2,
+          "read": 1,
+          "write": 0,
+          "direction": -1,
+          "next": 2
+        }
+      ]
+    }
+  ],
+  "theorem_scope": "Under the stated invariant and guard, the state map169->80 has positive-block simulation for arbitrary exterior tapes. All other old transitions agree in one step; all halt endpoints are unchanged."
+}

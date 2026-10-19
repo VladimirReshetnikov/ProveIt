@@ -1,0 +1,225 @@
+% Report section. Requires amsmath, amssymb, amsthm, hyperref.
+\section{Alternative formalisms: the calibration and compilation tests}
+\label{sec:alternative-formalisms}
+
+A shorter axiom list is useful only if the whole refutation search becomes
+smaller.  The current source already avoids a general substitution
+algorithm, constructs its theory instances arithmetically, and shares many
+formula-construction fragments.  Replacing it by a finite class theory or
+an interpreter therefore has to beat the combined cost of the logical
+engine, theory payload, data representation, and blank-input initializer.
+This investigation found a certified improvement to the existing source
+tree, described in Section~\ref{sec:boundary-rotation-certificate}; it did
+not establish a smaller complete binary compiler for a different theory.
+
+\subsection{The exact proof-transport contract}
+
+Fix a primitive-recursive predicate $\operatorname{Ref}_T(p)$ for finite
+refutations of a specified effective theory $T$.  A schema axiom should
+carry its actual finite matrix and a derivation of any required syntactic
+side condition; there is no need to assume that an unannotated schema
+range has an especially simple recognizer.  A particularly strong and
+reviewable calibration would provide explicit primitive-recursive maps
+$f,g$ and prove
+\[
+\begin{split}
+ \mathrm{ZFC}&\vdash\forall p\,
+   (\operatorname{Ref}_{\mathrm{ZFC}}(p)
+            \longrightarrow\operatorname{Ref}_T(f(p))),\\
+ \mathrm{ZFC}&\vdash\forall q\,
+   (\operatorname{Ref}_T(q)
+            \longrightarrow\operatorname{Ref}_{\mathrm{ZFC}}(g(q))).
+\end{split}
+\]
+For the user's stated goal, the weaker internal theorem
+$\mathrm{ZFC}\vdash\operatorname{Con}(T)\leftrightarrow
+\operatorname{Con}(\mathrm{ZFC})$ is sufficient.  An ordinary model
+argument can establish that theorem without yet supplying either of the
+displayed primitive-recursive proof maps.  These claims must be kept
+distinct.
+
+Next one needs, for the literal blank-input binary machine $M$,
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\exists t\;\operatorname{HaltTrace}_M(t)\bigr)
+ \ \longleftrightarrow\
+ \bigl(\exists p\;\operatorname{Ref}_T(p)\bigr).
+\]
+This includes invalid-candidate rejection, fairness over all finite proof
+certificates, scratch-register and stack invariants, and the actual
+initializer.  A theorem about a reference Python search or an algebraic
+term enumerator does not identify its binary transition table.  A proof
+that a search eventually reaches each certificate also does not, without
+an additional argument, provide a primitive-recursive running-time bound.
+
+\subsection{Finite class theories}
+
+Friedman's \emph{Simplified Axioms for Class Theory}, September 15, 2020,
+Sections 1--3, gives a finite presentation using familiar class operations
+and a capture principle.  Its Theorem 3.21 asserts equivalence with the
+specified choice-free NBG presentation.  The document was read directly,
+including its set predicate, limited comprehension, and collection
+arguments; see the
+\href{https://bpb-us-w2.wpmucdn.com/u.osu.edu/dist/1/1952/files/2020/09/NBGAxioms091520.pdf}
+{primary manuscript}.
+
+The repository has already made this a concrete competitor.  Its
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/8c41b1fb7d7bb8cd0612e37848181fe4a2f5d569/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/41-cyclic-code-finite_nbg.py}
+{fourteen-sentence generator} eliminates the set predicate by
+$M(x)\equiv\exists y\,(x\in y)$, fully closes the parameters, and records
+the intended normalization of several printed expressions.  The archived
+formula artifact contains 752 formula-tree nodes.  It also records a
+coordinate-alias defect in the displayed collection proof and a tagged
+repair.  This is prior work, not a new finite axiomatization supplied here.
+
+For compression, the promising choice is a fixed ground theory payload
+with an independently complete first-order or ground-clause engine.  The
+obligations are concrete: preserve native equality or prove the proposed
+replacement congruence; retain set/class guards; give the effective
+limited-comprehension translation for every matrix; and connect the exact
+normalized finite sentence to the intended class theory.  Choice-free
+calibration then still needs the relative-consistency passage from ZF to
+ZFC.  The existing record gives ordinary mathematical calibration, with
+documented repairs; this section does not upgrade it to a serialized proof
+translator.
+
+The existing pair/unpair routines could encode class formulas and ground
+instances, but a fixed payload requires initialization or a dedicated
+formula constructor.  No state count for that complete alternative is
+available.  Counting fourteen sentences, or conjoining them into one,
+does not measure either cost.
+
+\subsection{Condensed detachment and substitution}
+
+Megill's \emph{A Finitely Axiomatized Formalization of Predicate Calculus
+with Equality} supplies a concrete primary candidate: its system $S_1$
+uses fourteen fixed logical axioms, condensed detachment, and condensed
+generalization.  Algorithm D includes variable renaming, subformula
+extraction, an occurs check, substitution throughout several formulas,
+and normalization.  These are actual algorithms to be compiled, not free
+meta-level operations.  The
+\href{https://us.metamath.org/downloads/finiteaxiom.pdf}{corrected preprint}
+also flags two later missing lemmas in its substitution-theorem proof,
+whose corrections are not incorporated in that file.  Its completeness
+interface and the correction history must therefore be pinned before
+using this exact presentation as a new proof-search target.
+
+The code-cost comparison is unfavorable unless the substitution machinery
+can replace enough of the current arithmetic constructors.  Cantor pairing
+can represent syntax and work stacks, but does not perform the required
+tree walks, environment updates, or repeated-variable tests by itself.
+Moving to explicit substitution avoids implementing most-general
+unification, at the price of enumerating and verifying substitution
+certificates.  Either version needs a concrete register program before
+there is a state budget.
+
+There is an additional logical trap.  Object-level completeness and
+completeness for axiom schemes with variable restrictions are different
+properties.  Jubin's
+\href{https://arxiv.org/html/2202.10383}{primary study of the
+Tarski--Monk--Megill systems}, especially Theorems 2.2--2.3 and
+Remark 0.1, makes this distinction explicit.  A proposed rule deletion
+must preserve the exact scheme interface used to generate the theory,
+including coincident variable labels.  The current repository's reduced
+equality-free and cofinal-freshness counterexamples already show why
+testing attractive generic instances is insufficient.
+
+\subsection{Ground rewriting and a finite algebraic kernel}
+
+This route has a clearer opportunity to reuse the current arithmetic:
+ground terms are trees; contextual rewriting needs an address, a fixed
+pattern, and equality checks on repeated subterms.  It can avoid bound
+variables and capture checks altogether.  The repository already contains
+both a complete ground-clause reference for the PSC theory and a cyclic
+equational competitor.  The
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/8c41b1fb7d7bb8cd0612e37848181fe4a2f5d569/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/41-cyclic-notes-algebraic_development.md}
+{archived cyclic development} gives an E9 basis with four term
+constructors and 75 tree nodes across nine equations, together with
+ordinary proof transport for its algebraic reduction.
+
+The missing datum is crucial: the nine identities alone have a
+one-element model.  A refuter must carry the designated translated target
+equation, or its ground disequation, that represents the calibrated finite
+class theory.  The same archive explicitly distinguishes its concrete
+first-order wrapper from the still-unexpanded final algebraic target.
+Thus 75 nodes is a basis measurement, not the size of the consistency
+problem or a binary machine.
+
+A meaningful next implementation would first emit the complete target,
+then build one shared zipper traversal for both contextual matching and
+replacement.  It must price the target writer, reverse-rule witnesses,
+equality checks, and address stack.  Without those artifacts, this remains
+an alternative engineering program rather than a numerical upper bound.
+
+\subsection{Combinators and a fixed arithmetic sentence}
+
+A combinator interpreter is considered here as a \emph{research
+specification}, not as a claim of a newly calibrated compact calculus.
+Choose an explicit finite rewriting system, compile a complete refutation
+checker into a closed term, and prove that the chosen reduction strategy
+halts exactly on its accepted certificates.  The closed term, the
+strategy's stack discipline, and the blank-tape writer must all be counted.
+If the interpreter has $u$ states and its compiled loader contributes
+$w$ additional states after all justified sharing, the relevant condition
+is $u+w\leq239$.  Neither number was established here.  Replacing the
+checker by a name for a universal computation leaves the expensive input
+unspecified.
+
+Finite arithmetic can package the calibration even more directly, but
+does not erase it.  For illustration fix a conventional finite arithmetic
+base $Q$ and its standard proof coding, and consider
+\[
+ A=Q+\operatorname{Con}(\mathrm{ZFC}).
+\]
+Ordinary ZFC proves $\operatorname{Con}(A)\leftrightarrow
+\operatorname{Con}(\mathrm{ZFC})$.  In one direction, assuming
+$\operatorname{Con}(\mathrm{ZFC})$, the standard natural numbers form a
+set model of $A$.  In the other, any finite ZFC refutation is a concrete
+arithmetical witness which the base verifies, contradicting the additional
+axiom of $A$.  This observation is a calibration example, not a proposed
+compression: the arithmetization of the ZFC proof predicate remains in the
+fixed sentence.  No primitive-recursive proof map in the difficult reverse
+direction, compact numeral representation, or binary state bound follows
+from this argument alone.
+
+There is also a useful general obstruction.  If $\Gamma$ is any fixed
+finite collection of membership-language theorems of ZFC, reflection gives
+a rank segment satisfying that finite collection.  ZFC therefore proves
+$\operatorname{Con}(\Gamma)$.  Assuming ZFC consistent, such a $\Gamma$
+cannot have ZFC-provable consistency equivalent to ZFC's own.  A finite
+class theory is not excluded by this observation: its universe includes
+classes and its finite axiom conjunction is not thereby a theorem about
+the ordinary set universe.  Likewise, the arithmetic sentence
+$\operatorname{Con}(\mathrm{ZFC})$ above is not a theorem of consistent
+ZFC.  The obstruction applies to the stated hypothesis, not to every
+finite presentation in an expanded interpretation.
+
+\subsection{Comparison at the current evidence level}
+
+\begin{center}\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.22\linewidth}>{\raggedright\arraybackslash}p{0.35\linewidth}>{\raggedright\arraybackslash}p{0.33\linewidth}}
+Route&Calibration evidence&Measured size and remaining work\\\hline
+Native CP/GIC source&Existing ordinary calibration; the new source has an
+exact finite control certificate.&225 to 224 source DAG nodes and an
+accepted 239-state binary table; see Section~\ref{sec:fold239}.\\[3pt]
+Finite class theory&Specified fourteen-sentence target and prior ordinary
+equivalence argument, with documented proof repairs.&752 formula-tree
+nodes in the archived target; no complete binary state count.\\[3pt]
+Ground clauses / E9&Prior complete reference kernels and ordinary
+reductions; the exact algebraic target must be emitted.&E9 basis: 75 term
+nodes, nine equations; payload and full compiler unmeasured.\\[3pt]
+Condensed detachment&Published logical system and a specified unification
+algorithm; exact theory attachment still required.&No measured complete
+binary replacement for the current engine.\\[3pt]
+Combinator / arithmetic interpreter&Explicit checker term and internal
+simulation would provide calibration; not supplied here.&Interpreter,
+program payload, and initializer all unmeasured.
+\end{tabular}
+\end{center}
+
+The two precise weakening filters in Section~\ref{sec:theory-filters}
+provide an early rejection test before investing in these compilers.
+The successful source rotation gives a different lesson: sharing and
+control-path shape can lower the implementation cost while retaining the
+entire already-calibrated logical engine.  That is the measured positive
+result of this part of the investigation.

@@ -1,0 +1,97 @@
+{
+  "status": "INDEPENDENT_FREE_EXTERIOR_CERTIFICATE_REPLAY_PASS",
+  "baseline_sha256": "547dd69da66f66dd48238a53d34b52a3ce85bb6c7d01534dd1cfb815507f248f",
+  "candidate_sha256": "76a9574ac0385b96dbd558fa852a222e1d9025e48e34dc3590384146726d2a9b",
+  "certificate_sha256": "954473204927dd6fb14e89b06f84ff9c8ff536273af9116faed49eba8e1e1037",
+  "reviewer_sha256": "cecb298399989b5b04939762ccc40d7c39a5c10352724f6042e3956619cdda07",
+  "working_states_before": 240,
+  "working_states_after": 239,
+  "complete_transition_domains_checked": true,
+  "all_other_rows_match_under_state_map": true,
+  "structural_invariant_incoming_rows": [
+    [
+      52,
+      0,
+      67
+    ],
+    [
+      67,
+      1,
+      80
+    ],
+    [
+      80,
+      1,
+      91
+    ],
+    [
+      124,
+      0,
+      67
+    ],
+    [
+      147,
+      0,
+      169
+    ]
+  ],
+  "local_cases": [
+    {
+      "case": "80/read0",
+      "old_steps": 1,
+      "new_steps": 5,
+      "endpoint": [
+        25,
+        1
+      ]
+    },
+    {
+      "case": "80/read1",
+      "old_steps": 1,
+      "new_steps": 1,
+      "endpoint": [
+        91,
+        1
+      ]
+    },
+    {
+      "case": "169/read0",
+      "old_steps": 1,
+      "new_steps": 3,
+      "endpoint": [
+        57,
+        1
+      ]
+    },
+    {
+      "case": "169/read1",
+      "old_steps": 1,
+      "new_steps": 5,
+      "endpoint": [
+        56,
+        1
+      ]
+    },
+    {
+      "case": "91/read0",
+      "old_steps": 1,
+      "new_steps": 1,
+      "endpoint": [
+        106,
+        1
+      ]
+    },
+    {
+      "case": "91/read1",
+      "old_steps": 3,
+      "new_steps": 11,
+      "endpoint": [
+        2,
+        -3
+      ]
+    }
+  ],
+  "semantic_premise": "In the old reachable run, q169/read1 implies a 1 immediately to the right; established separately by the all-case symbolic guard audit.",
+  "conclusion": "Conditional on that semantic premise, every old reachable configuration has a positive finite block simulation under 169->80, preserving the complete tape, head, and halting equivalence. No new-run invariant is required: invariants are used only at mapped old configurations.",
+  "halting_argument": "Every local old block and new block has positive length and no intermediate halt. Unchanged steps also take one step. Thus an infinite old execution yields an infinite new execution, and an old finite halting execution yields a new finite halting execution. Determinism supplies the equivalence."
+}

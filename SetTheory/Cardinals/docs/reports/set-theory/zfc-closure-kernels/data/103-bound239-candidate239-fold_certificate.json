@@ -1,0 +1,473 @@
+{
+  "status": "PASS",
+  "claim": "Whole-tape positive-block simulation between the supplied240 and239 tables",
+  "initial_tapes": "Every binary tape at start95, including blank",
+  "start": 95,
+  "halt": 254,
+  "old_working_states": 240,
+  "new_working_states": 239,
+  "checkpoint_mapping": {
+    "old179,left0": 179,
+    "old218,left0": 223,
+    "old218,left1": 179,
+    "old223": "Internal to the three-step old218/0 block; not a checkpoint",
+    "other_states": "Identity"
+  },
+  "incoming_ports": {
+    "179": [
+      [
+        161,
+        0,
+        0,
+        "R"
+      ],
+      [
+        236,
+        0,
+        0,
+        "R"
+      ],
+      [
+        239,
+        0,
+        0,
+        "R"
+      ]
+    ],
+    "218": [
+      [
+        187,
+        1,
+        1,
+        "R"
+      ],
+      [
+        220,
+        1,
+        1,
+        "R"
+      ],
+      [
+        237,
+        0,
+        0,
+        "R"
+      ]
+    ],
+    "223": [
+      [
+        218,
+        0,
+        0,
+        "L"
+      ]
+    ]
+  },
+  "explicit_tape_cells": [
+    -1,
+    0
+  ],
+  "outside_tape": "Arbitrary and never read or written by the six checked blocks",
+  "block_obligations": [
+    {
+      "old_state": 179,
+      "left_tag": 0,
+      "read": 0,
+      "new_state": 179,
+      "old_steps": 1,
+      "new_steps": 1,
+      "endpoint_state": 105,
+      "endpoint_head": 1,
+      "whole_tape_unchanged": true,
+      "old_trace": [
+        {
+          "step": 1,
+          "state": 179,
+          "head": 0,
+          "read": 0,
+          "write": 0,
+          "move": "R",
+          "next": 105
+        }
+      ],
+      "new_trace": [
+        {
+          "step": 1,
+          "state": 179,
+          "head": 0,
+          "read": 0,
+          "write": 0,
+          "move": "R",
+          "next": 105
+        }
+      ]
+    },
+    {
+      "old_state": 179,
+      "left_tag": 0,
+      "read": 1,
+      "new_state": 179,
+      "old_steps": 1,
+      "new_steps": 5,
+      "endpoint_state": 105,
+      "endpoint_head": 1,
+      "whole_tape_unchanged": true,
+      "old_trace": [
+        {
+          "step": 1,
+          "state": 179,
+          "head": 0,
+          "read": 1,
+          "write": 1,
+          "move": "R",
+          "next": 105
+        }
+      ],
+      "new_trace": [
+        {
+          "step": 1,
+          "state": 179,
+          "head": 0,
+          "read": 1,
+          "write": 1,
+          "move": "L",
+          "next": 215
+        },
+        {
+          "step": 2,
+          "state": 215,
+          "head": -1,
+          "read": 0,
+          "write": 0,
+          "move": "R",
+          "next": 183
+        },
+        {
+          "step": 3,
+          "state": 183,
+          "head": 0,
+          "read": 1,
+          "write": 1,
+          "move": "L",
+          "next": 213
+        },
+        {
+          "step": 4,
+          "state": 213,
+          "head": -1,
+          "read": 0,
+          "write": 0,
+          "move": "R",
+          "next": 237
+        },
+        {
+          "step": 5,
+          "state": 237,
+          "head": 0,
+          "read": 1,
+          "write": 1,
+          "move": "R",
+          "next": 105
+        }
+      ]
+    },
+    {
+      "old_state": 218,
+      "left_tag": 0,
+      "read": 0,
+      "new_state": 223,
+      "old_steps": 3,
+      "new_steps": 1,
+      "endpoint_state": 23,
+      "endpoint_head": 1,
+      "whole_tape_unchanged": true,
+      "old_trace": [
+        {
+          "step": 1,
+          "state": 218,
+          "head": 0,
+          "read": 0,
+          "write": 0,
+          "move": "L",
+          "next": 223
+        },
+        {
+          "step": 2,
+          "state": 223,
+          "head": -1,
+          "read": 0,
+          "write": 0,
+          "move": "R",
+          "next": 16
+        },
+        {
+          "step": 3,
+          "state": 16,
+          "head": 0,
+          "read": 0,
+          "write": 0,
+          "move": "R",
+          "next": 23
+        }
+      ],
+      "new_trace": [
+        {
+          "step": 1,
+          "state": 223,
+          "head": 0,
+          "read": 0,
+          "write": 0,
+          "move": "R",
+          "next": 23
+        }
+      ]
+    },
+    {
+      "old_state": 218,
+      "left_tag": 0,
+      "read": 1,
+      "new_state": 223,
+      "old_steps": 1,
+      "new_steps": 1,
+      "endpoint_state": 70,
+      "endpoint_head": 1,
+      "whole_tape_unchanged": true,
+      "old_trace": [
+        {
+          "step": 1,
+          "state": 218,
+          "head": 0,
+          "read": 1,
+          "write": 1,
+          "move": "R",
+          "next": 70
+        }
+      ],
+      "new_trace": [
+        {
+          "step": 1,
+          "state": 223,
+          "head": 0,
+          "read": 1,
+          "write": 1,
+          "move": "R",
+          "next": 70
+        }
+      ]
+    },
+    {
+      "old_state": 218,
+      "left_tag": 1,
+      "read": 0,
+      "new_state": 179,
+      "old_steps": 3,
+      "new_steps": 1,
+      "endpoint_state": 105,
+      "endpoint_head": 1,
+      "whole_tape_unchanged": true,
+      "old_trace": [
+        {
+          "step": 1,
+          "state": 218,
+          "head": 0,
+          "read": 0,
+          "write": 0,
+          "move": "L",
+          "next": 223
+        },
+        {
+          "step": 2,
+          "state": 223,
+          "head": -1,
+          "read": 1,
+          "write": 1,
+          "move": "R",
+          "next": 99
+        },
+        {
+          "step": 3,
+          "state": 99,
+          "head": 0,
+          "read": 0,
+          "write": 0,
+          "move": "R",
+          "next": 105
+        }
+      ],
+      "new_trace": [
+        {
+          "step": 1,
+          "state": 179,
+          "head": 0,
+          "read": 0,
+          "write": 0,
+          "move": "R",
+          "next": 105
+        }
+      ]
+    },
+    {
+      "old_state": 218,
+      "left_tag": 1,
+      "read": 1,
+      "new_state": 179,
+      "old_steps": 1,
+      "new_steps": 3,
+      "endpoint_state": 70,
+      "endpoint_head": 1,
+      "whole_tape_unchanged": true,
+      "old_trace": [
+        {
+          "step": 1,
+          "state": 218,
+          "head": 0,
+          "read": 1,
+          "write": 1,
+          "move": "R",
+          "next": 70
+        }
+      ],
+      "new_trace": [
+        {
+          "step": 1,
+          "state": 179,
+          "head": 0,
+          "read": 1,
+          "write": 1,
+          "move": "L",
+          "next": 215
+        },
+        {
+          "step": 2,
+          "state": 215,
+          "head": -1,
+          "read": 1,
+          "write": 1,
+          "move": "R",
+          "next": 233
+        },
+        {
+          "step": 3,
+          "state": 233,
+          "head": 0,
+          "read": 1,
+          "write": 1,
+          "move": "R",
+          "next": 70
+        }
+      ]
+    }
+  ],
+  "table_edits": [
+    {
+      "state": 179,
+      "read": 1,
+      "old": [
+        1,
+        "R",
+        105
+      ],
+      "new": [
+        1,
+        "L",
+        215
+      ]
+    },
+    {
+      "state": 187,
+      "read": 1,
+      "old": [
+        1,
+        "R",
+        218
+      ],
+      "new": [
+        1,
+        "R",
+        179
+      ]
+    },
+    {
+      "state": 218,
+      "read": 0,
+      "old": [
+        0,
+        "L",
+        223
+      ],
+      "new": null
+    },
+    {
+      "state": 218,
+      "read": 1,
+      "old": [
+        1,
+        "R",
+        70
+      ],
+      "new": null
+    },
+    {
+      "state": 220,
+      "read": 1,
+      "old": [
+        1,
+        "R",
+        218
+      ],
+      "new": [
+        1,
+        "R",
+        179
+      ]
+    },
+    {
+      "state": 223,
+      "read": 0,
+      "old": [
+        0,
+        "R",
+        16
+      ],
+      "new": [
+        0,
+        "R",
+        23
+      ]
+    },
+    {
+      "state": 223,
+      "read": 1,
+      "old": [
+        1,
+        "R",
+        99
+      ],
+      "new": [
+        1,
+        "R",
+        70
+      ]
+    },
+    {
+      "state": 237,
+      "read": 0,
+      "old": [
+        0,
+        "R",
+        218
+      ],
+      "new": [
+        0,
+        "R",
+        223
+      ]
+    }
+  ],
+  "proof_scope": "Finite certificate with the mathematical composition argument in fold239.tex; not a proof-assistant kernel certificate",
+  "reference_sha256": "19cd7f7863a681828fd026adbf8ce91c21e3ac7604439bc9d4603ba58661853e",
+  "candidate_sha256": "d061770f487937f9da652919c9bc9bb79bc9bf137ca41dd7a08eb5ecda8e7719",
+  "reference_matches_reported_digest": true,
+  "candidate_matches_reported_digest": true,
+  "checker_sha256": "267794a74fedb3072b3ebfab9bcf3ebe12d5eb04c238faa1f8517ea3187ecff7"
+}

@@ -1,0 +1,235 @@
+% Standalone section fragment. Requires amsmath, amssymb, amsthm, hyperref.
+\section{A complete finite certificate for the source rotation}
+\label{sec:boundary-rotation-certificate}
+
+The construction in this section changes the binary register-program tree,
+not the arithmetic algorithm or the searched theory.  Starting with the
+6,455-site source of \texttt{candidate-rotation240}, it removes one distinct
+internal tree node while retaining a maximum zero run of six.  Its exact
+source metrics are
+\[
+ \begin{array}{c|cc}
+ &\text{baseline}&\text{rotated source}\\\hline
+ \text{distinct internal nodes}&202&201\\
+ \text{distinct leaf instructions}&23&23\\
+ \text{total distinct DAG nodes}&225&224\\
+ \text{expanded leaf occurrences}&6455&6455\\
+ \text{maximum leaf-path length}&51&48\\
+ \text{maximum consecutive zero bits}&6&6.
+ \end{array}
+\]
+The reduction is certified for every natural register vector.  A binary
+Turing-machine simulation theorem is a separate obligation: context-sensitive
+decoder folds need not survive a correct source reassociation.
+
+\subsection{Exact source semantics, including path boundaries}
+
+Let $T$ be a finite full binary tree.  Its leaves carry the instructions
+$\mathrm{CI}(r)$, $\mathrm{CD}(r)$, $\mathrm{CB}(k)$,
+$\mathrm{CC}(k)$, or $\mathrm{CH}$.  Number the leaf occurrences
+$0,\ldots,m-1$ in left-to-right order and write $p_i$ for leaf $i$'s path.
+For any finite binary word $P$, define $\operatorname{loc}_T(P)$ by
+following $P0^\omega$ from the root, stopping at the first leaf.  Any bits
+remaining after the encountered leaf are ignored.  In particular,
+$\operatorname{loc}_T(\epsilon)=0$.
+
+Write $\operatorname{inc}(p)$ for fixed-length binary increment, with the
+convention
+\[
+ \operatorname{inc}(1^d)=0^d,
+ \qquad \operatorname{inc}(\epsilon)=\epsilon.
+\]
+Write $\operatorname{strip}_b(k,p)$ for removal of a suffix through the
+$k$th occurrence of bit $b$, counting from the right.  If the word is
+exhausted first, the result is $\epsilon$; for $k=0$, it is $p$.  Set
+\[
+ \operatorname{brk}(k,p)=
+ \operatorname{inc}(\operatorname{strip}_0(k,p)),
+ \qquad
+ \operatorname{cont}(k,p)=\operatorname{strip}_1(k,p).
+\]
+Every instruction operates on the \emph{encountered leaf path} $p_i$,
+not the untruncated input word $P$.  This is exactly the role of
+\texttt{firstn d (P ++ repeat false d)} in the upstream definition of
+\texttt{rm\_step}.  These conventions reproduce the explicit definitions
+in \href{https://github.com/jeff87654/busy-beaver/blob/zf-254/ZF/m254/coq/tm/RM.v}
+{\texttt{RM.v}} and its
+\href{https://github.com/jeff87654/busy-beaver/blob/zf-254/ZF/m254/tools/prog/rmpath.py}
+{Python path-semantics mirror}.
+
+The complete finite control descriptor $G_T(i)$ is
+\[
+\begin{array}{ll}
+ (\mathrm{CI},r,\operatorname{loc}_T(\operatorname{inc}(p_i)))
+       &\text{for }\mathrm{CI}(r),\\
+ (\mathrm{CD},r,\operatorname{loc}_T(\operatorname{inc}(p_i)),
+             \operatorname{loc}_T(\operatorname{brk}(1,p_i)))
+       &\text{for }\mathrm{CD}(r),\\
+ (\mathrm{J},\operatorname{loc}_T(\operatorname{brk}(k,p_i)))
+       &\text{for }\mathrm{CB}(k),\\
+ (\mathrm{J},\operatorname{loc}_T(\operatorname{cont}(k,p_i)))
+       &\text{for }\mathrm{CC}(k),\\
+ (\mathrm{H})&\text{for }\mathrm{CH}.
+\end{array}
+\]
+Both branches of every decrement occur in this descriptor.  No assertion
+that a register is usually zero, or that a branch is not reached in a
+finite experiment, enters its definition.  Representing break and continue
+by the common symbol $\mathrm J$ permits exact rebasing of explicit control
+instructions, when needed; neither modifies a register.
+
+\paragraph{Finite-control isomorphism lemma.}
+Suppose $T,U$ are finite full binary source trees with the same number of
+leaves and $G_T(i)=G_U(i)$ for every leaf index $i$.  Then their path
+semantics are strongly bisimilar from the initial empty path, for every
+initial register vector.  Their register vectors agree at every matched
+instruction, and they reach their halt instructions at the same source
+step exactly when either reaches one.
+
+\begin{proof}
+Relate configurations $(P,R)$ and $(Q,S)$ precisely when $R=S$ and
+$\operatorname{loc}_T(P)=\operatorname{loc}_U(Q)$.  Initial empty paths
+are related because both locate leaf zero.  Assume related configurations
+locate index $i$.
+
+For an increment descriptor, the same register is incremented on both
+sides, and the descriptor supplies the same successor index.  For a
+decrement descriptor, equality of the register vectors makes the zero
+test agree.  In the zero case both vectors are unchanged and the two zero
+successor indices agree.  In the positive case both decrement the same
+positive register and the two nonzero successors agree.  For a jump
+descriptor both vectors remain unchanged and the successor indices
+agree.  For a halt descriptor both sides halt.  Each case therefore
+preserves the relation or halts on both sides.
+
+This argument uses the exact zero-padded walk and the actually consumed
+leaf path.  It covers root rollover, an empty path after stripping, paths
+shorter than the next leaf, and paths longer than the leaf encountered.
+Induction on the number of source steps proves the claim.  Full finite
+trees have no missing branch or cyclic internal edge, so a walk cannot
+become stuck; consequently halting here means reaching $\mathrm{CH}$,
+not exhausting a traversal fuel bound.
+\end{proof}
+
+The lemma is deliberately independent of an associativity heuristic.
+An arbitrary rotation of a source tree can change a decrement's implicit
+break target and be unsound.  A rotation is accepted here only when its
+entire resulting descriptor array agrees with the pinned baseline array.
+
+\subsection{Thirteen replayable stages}
+
+A left rotation means $(A,(B,C))\mapsto((A,B),C)$; a right rotation is its
+inverse.  Paths in the certificate always refer to the tree immediately
+before that stage.  Multiple paths in one stage are prefix-incomparable,
+so they specify simultaneous disjoint rewrites.
+
+Stage 1 applies the same left rotation at all 13 occurrences of the source
+fragment identified in the search as node 69.  Its three closed chunks are
+\texttt{PUSH}, \texttt{copy-param1}, and
+\texttt{PUSH;copy-cache}.  It reuses the existing paired chunk
+\texttt{PUSH;copy-param1} and removes one distinct internal source subtree.
+Stages 2--11 are the closed-chunk reassociations recovered from the saved
+source search.  The remaining stages cross the final explicit break in
+the AX command; they are exactly the two moves absent from a rule that
+requires all three chunks of a rotation to be closed.
+
+\begin{center}
+\begin{tabular}{rcl}
+Stage&Direction&Path (before that stage)\\\hline
+1&left&13 explicit paths in \texttt{rotation\_certificate.json}\\
+2&left&\texttt{1110100100101011010101000}\\
+3&left&\texttt{111010010010101101010}\\
+4&right&\texttt{11101001001010110101}\\
+5&left&\texttt{11101001001010110101010010}\\
+6&right&\texttt{1110100100101011010101001}\\
+7&right&\texttt{11101001001010110101010011}\\
+8&left&\texttt{111010010010101101010100111}\\
+9&left&\texttt{11101001001010110101010000}\\
+10&right&\texttt{1110100100101011010101000}\\
+11&left&\texttt{111010010010101101010100111}\\
+12&right&\texttt{11101001001}\\
+13&right&\texttt{111010010011}
+\end{tabular}
+\end{center}
+
+There are 13 stages and 25 individual tree rotations, with no change to
+any leaf instruction or explicit break/continue operand.  Stage 12 turns
+$((\mathrm{GEN},\mathrm{AXrest}),\mathrm{CB}(1))$ into
+$(\mathrm{GEN},(\mathrm{AXrest},\mathrm{CB}(1)))$.  It removes the sole
+remaining excessive zero run at leaf 40, but transfers it to leaf 121,
+the next parameter-unpair decrement.  Stage 13 reassociates the two
+closed portions of that remainder across the same trailing break and
+removes the transferred excessive run as well.  The first eleven stages
+end with maximum zero run seven and one offending leaf; the last stage
+ends with maximum zero run six and none.  Both final moves leave the
+number of distinct DAG nodes at 224.
+
+\subsection{Portable independent verification}
+
+The following five files suffice to replay and verify the entire source
+construction, using only the Python standard library:
+\begin{itemize}
+\item \texttt{baseline\_sites.json}: the exact pinned source input;
+\item \texttt{rotation\_certificate.json}: all 13 stages and all paths;
+\item \texttt{boundary224\_sites.json}: the claimed final source;
+\item \texttt{check\_rotation\_certificate.py}: the independent checker;
+\item \texttt{rotation\_certificate\_results.json}: the recorded result.
+\end{itemize}
+The compact \texttt{boundary224\_dag.json} additionally provides the 224
+distinct source nodes.  Its metric counts include the 23 distinct leaf
+instructions and must not be mistaken for a binary Turing-machine state
+count.
+
+Run
+\begin{quote}\ttfamily
+python3 check\_rotation\_certificate.py
+\end{quote}
+in the artifact directory.  The checker verifies the baseline byte hash,
+validates a finite full binary source tree, replays every structural
+rotation, checks the ordered instruction word, and compares the complete
+control descriptor arrays after each stage.  Each stage checks 8,385
+successor/guard edges and the unique halt descriptor.  It then compares
+the replayed source against the claimed final source and recomputes all
+DAG and path metrics.  It has no register-value cutoff, execution fuel,
+heuristic reachability test, repository import, or solver dependency.
+All checks use explicit exceptions rather than Python assertions; running
+with \texttt{python3 -O} does not disable any certificate check.
+
+For every generated successor word, the checker also verifies that any
+unused suffix after the encountered leaf contains only zeros.  This is a
+stronger canonicality check than the control-isomorphism lemma itself
+requires.  Together with the initial empty word, it proves by induction the precise
+canonicality identity
+\[ P0^\omega=p_{\operatorname{loc}_T(P)}0^\omega. \]
+This covers a word shorter than its encountered leaf path as well as a word
+with redundant trailing zeros.  Thus no nonzero discarded tail can silently
+alter the path convention used by a later machine interface.
+
+The canonical normalized control-graph SHA-256 is
+\begin{quote}\ttfamily\small
+ae7f12f37306b86e5f70469210fd2a8d\\
+68b6f9df094bf659abc6b4a56714f1fd.
+\end{quote}
+The exact baseline source SHA-256 is
+\begin{quote}\ttfamily\small
+74b1e7f73cc3ffe7761e36ab2d57a26e\\
+0ba34d3ac624f2472799e6ac41d5a51d.
+\end{quote}
+The exact final source file SHA-256 is
+\begin{quote}\ttfamily\small
+7fd152d1f5371d2a561d4ad1870d2416\\
+83b010ce7b7a27399b95363a4537cfb6.
+\end{quote}
+The line breaks in these displays are purely typographic.  The result
+JSON records the hashes as uninterrupted strings.  As an additional
+cross-check, the upstream segment-bisimulation
+generator independently produced a 2,987-entry certificate between the
+baseline and the final source.  The portable checker above does not
+depend on that generator or certificate.
+
+These are executable finite certificates plus an ordinary mathematical
+proof of their significance.  They are not, by themselves, a Lean/Rocq
+kernel proof or a serialized derivation in arithmetic.  They establish source equivalence.  Sections~\ref{sec:boundary240} and
+\ref{sec:fold239} supply the separate instruction-path decoding, context
+repair, blank initialization, and unbounded binary simulation obligations
+for the final 239-state construction.

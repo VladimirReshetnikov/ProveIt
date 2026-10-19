@@ -1,0 +1,164 @@
+% Includable section. Requires the main document's amsmath, booktabs and
+% hyperref packages. No preamble, bibliography or document environment.
+\section{Alternative formalisms and the cost of an interpreter}
+\label{sec:alternative-formalisms}
+
+The target is a particular blank-tape, two-symbol, one-tape machine $M$
+for which ordinary ZFC proves
+\[
+ \neg\operatorname{Halt}(M)\quad\longleftrightarrow\quad
+ \operatorname{Con}(\mathrm{ZFC}).
+\]
+Changing the formalism can shorten the program, but its calibration and its
+complete machine cost are separate obligations. The useful quantity is the
+number of states in the final initialized interpreter and search, including
+all shared control. Formula length, packet bits, abstract instructions and
+states with a preloaded input are intermediate measurements. The 239-state
+construction elsewhere in this report and the 946-bit equational appendix
+are separate results; the former count is not inferred from the latter.
+
+\subsection{Which theories retain the required strength?}
+
+\paragraph{SIR already removes the familiar long axiom list.}
+The inherited 254-state program searches SIR, a nonextensional theory of
+power containers, global-image collection and irreflexivity. Its quotient
+interpretation and upper relative-consistency construction supply the
+comparison with ZFC; the upstream literal-table Coq endpoint is documented
+in the pinned
+\href{https://github.com/jeff87654/busy-beaver/blob/c132d7eae8158cd3a9850ea3eb7251158c3dd821/ZF/m254/README.md}{upstream README}
+and
+\href{https://github.com/jeff87654/busy-beaver/blob/c132d7eae8158cd3a9850ea3eb7251158c3dd821/ZF/m254/design/settheory.md}{set-theory design}.
+Thus there is no separate Infinity, Pairing or Choice emitter left to
+delete from the present source. Native logical equality and full
+substitution still matter. The numerical false code aliases self-membership,
+so irreflexivity also supports apparently logical rows. The retained
+freshness gate permits $a=b$ but requires $c\ne a,b$.
+
+\paragraph{Raw EPSC moves complexity into a closure schema.}
+The empty-seed positive subset closure schema says that every locally
+bounded definable relation has a supported hull closed from empty inputs
+and from members already in the hull. The ordinary argument passes through
+seeded PSC and hereditary saturation to recover the required set-theoretic
+strength. It needs every equality-free pure-membership matrix, arbitrary finite
+parameters and ordinary common-domain first-order logic; these are explicit
+dependencies in the
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-146-source-14.md}{Source 14 review}.
+This is a serious alternative foundation, but not a license to remove
+equality rows from an incomplete numerical calculus. The maintained
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/Computability/BusyBeaver/Research/ZFC/typed_countermodel.md}{finite-sort countermodel}
+validates such reduced rows while blocking refutation: it defeats the
+required identification of different variable labels. A cited complete
+EPSC control had 270 states in its compiler family, rather than a smaller
+calibrated machine.
+
+\paragraph{Replacing collection requires its support as well.}
+Another exact reformulation is power containers together with weak
+Collection and Separation. Full global-image collection is equivalent to
+weak Collection plus Separation in ordinary nonempty native-equality
+structures. Dropping support without restoring Separation is inadequate:
+the
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md}{rational-cut construction}
+satisfies power containers, full weak Collection and several familiar
+set axioms while violating full global-image collection. Its argument
+covers all formulas. Conversely, the cited
+\href{https://hjemmesider.diku.dk/~grue/papers/BerlineGrue97/BerlineGrue97.pdf}{Berline--Grue Map Theory model}
+uses a strongly inaccessible cardinal in its upper consistency bound;
+that source alone does not establish the requested exact calibration.
+
+\subsection{Finite kernels and fully charged packets}
+
+A finite class/assignment language can represent the infinitely many EPSC
+matrices. A descriptor stores a formula code and an arbitrarily long finite
+parameter list. This exchanges schema recognition for an interpreter of
+assignments, class constructors and binding. The native-stack construction
+in
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/79-zb242-res-stack-kernel-stack_kernel_note.tex}{Source 79}
+uses two unconditional projection equations and de Bruijn binding.
+Its Boolean conversion retains these native equations on the same carrier;
+it therefore avoids explicit equality-completion clauses.
+
+The appendix identifies the class NAND constructor with stack cons,
+uses the earlier false-class witness-slice technique as
+$\mathsf{Pick}(x)=W(x,d)$, and fuses Boolean top with $d$.
+The explicit upper model justifies all three identifications together.
+Thirteen operation symbols plus three variable slots fit four-bit opcodes,
+giving 14 equations, 215 term nodes and 946 complete bits. This improves the
+equational family, not every possible native-clause codec:
+
+\begin{center}
+\small
+\begin{tabular}{@{}llr@{}}
+\toprule
+Source/variant & Encoding boundary & Bits\\
+\midrule
+70, grouped & Complete equational packet & 2,324\\
+77, dispatch & Complete equational packet & 2,194\\
+78, elimination/alias & Complete equational packet & 1,768\\
+Joint 77/78 & Complete equational packet & 1,750\\
+79, native stack & Complete equational packet & 1,169\\
+79, reviewed truth fusion & Complete equational packet & 1,166\\
+This appendix & Complete equational packet & \textbf{946}\\
+42, variant A & Native clauses / equality completed & 901 / 1,998\\
+42, variant B & Native clauses / equality completed & 917 / 1,703\\
+44, FC15* native & Template; external signature and arities & 881\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The earlier equational totals are recorded in the
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-169.md}{intake 169 comparison}
+and its linked source reviews. In
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-155-source-42.md}{Source 42},
+901 and 1,998 describe the same variant; 917 and 1,703 describe another.
+The smaller native payload is therefore not the smaller equality-completed
+payload. The native codec charges its header, arities, equality index and
+clause scopes, but still needs a native equality proof mechanism.
+Source 44's
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/44-nine-code-ground_kernel.py}{881-bit template codec}
+takes its signature and arities externally. None of these totals prices a
+complete binary inference engine or its blank initializer.
+
+\subsection{What must a complete interpreter do?}
+
+\paragraph{First-order proof enumeration.}
+Enumerating finite candidate proof strings gives a direct specification:
+check syntax, axiom-schema instances and every inference, and halt exactly
+on a refutation. Using ZFC itself requires recognition of Separation and
+Replacement instances; using SIR or EPSC replaces those schemas but retains
+the binding and logical work. An axiom recognizer alone does not include
+proof enumeration, substitution, freshness, equality or tape management.
+For either presentation, completeness requires an unbounded fair schedule;
+a fixed proof-length or variable bound changes the problem.
+
+\paragraph{Ground contextual equations.}
+The finite equational route searches for the particular ground equation
+$N(d,d)=d$, not for inconsistency of the equations: their one-element
+algebra always exists. A complete certificate gives a finite sequence of
+ground equation instances in arbitrary one-hole contexts, in either
+orientation. Each substitution assigns the union of variables on both
+sides, including those introduced by a backward step. Ground-term
+congruence supplies completeness. The companion reference search enumerates
+all finite binary certificates and implements these operations without a
+fixed term-depth bound. This closes the abstract scheduling specification;
+it does not implement that search as a small binary transition table.
+
+There is already a useful negative cost benchmark. The repository's
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/Computability/BusyBeaver/Research/ZFC/equational_generator_cost.md}{seven-equation register-control experiment}
+compiles to 299 working states: 238 decision and 61 framework states,
+before adding a ZFC-specific query and its writer. Its isolated emitter
+has 171 states. The generic bootstrap is counted, but its full correctness
+bridge remains open. These figures concern that architecture; they neither
+bound all equational interpreters nor give a calibrated ZFC machine.
+
+\paragraph{Combinators, tag systems and universal machines.}
+Translating a complete refutation search into combinatory reduction or a
+tag system can reduce the number of primitive rules. The translation must
+still supply the program, the data representation and a halting convention
+with both directions proved. A universal machine's stated control size
+assumes an input convention; its theory/query word has to be generated from
+the blank tape in the target problem. A larger alphabet, extra tracks or
+a periodic background also requires an explicit binary simulation and
+initialization strategy. These transformations may share control and
+improve the final count, but no state saving follows solely from their
+universality. The useful next experiment is an actual transition table
+containing the whole pipeline, followed by its unbounded simulation proof.

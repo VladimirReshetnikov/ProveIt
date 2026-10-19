@@ -1,0 +1,173 @@
+% Supplementary section, intended for \input from the main report.
+% Requires only standard LaTeX mathematics and amssymb for \square.
+\section{A quantified obstruction to eliminating the fourth logical input}
+\label{sec:fourth-input-obstruction}
+
+The published AX instruction emits the implicational schema
+\[
+ L(a,b,c,u)=((c\to u)\to a)\to((a\to c)\to(b\to c)).
+\]
+Its fourth independent input is attractive to remove: the existing emitter
+loads $u$ using three macros, whereas another available scalar uses one.
+The following results determine a genuine limitation of this optimization.
+They are logical nonderivability theorems, with exact finite certificates,
+not conclusions about the consistency strength of the complete set theory.
+In particular, CP and GIC are excluded from the countermodels below.
+
+\paragraph{The logical calculus being tested.}
+Retain modus ponens, generalization, the seven other published logical
+schemas, fresh atomic vacuity, and irreflexivity. The seven schemas are
+\begin{align*}
+ &\exists x\,(x=y),\\
+ &\forall x\,(A\to B)\to(\forall x\,A\to\forall x\,B),\\
+ &x=y\to(z\in x\to z\in y),\\
+ &\forall x\,\forall y\,A\to\forall y\,\forall x\,A,\\
+ &x=y\to(x\in z\to y\in z),\\
+ &\exists x\,\forall x\,A\to A,\\
+ &x=y\to(x=z\to y=z).
+\end{align*}
+Here $\neg A$ abbreviates $A\to F$, and
+$\exists x\,A$ abbreviates $\neg\forall x\neg A$, exactly as in the source.
+The two atomic vacuity schemas are $P\to\forall x\,P$ for membership and
+equality atoms in which $x$ is not free. In the intended classical models,
+irreflexivity makes the source's relative falsity $F=(v_0\in v_0)$ false
+under every assignment. The two many-valued interpretations below explicitly
+give membership zero diagonal, so $F$ has value $0$ under every assignment.
+
+\paragraph{Theorem 1: all positive reconstructions fail to recover classical logic.}
+Let $U(a,b,c,\top)$ be any finite term made only from its displayed
+arguments and implication. Replace $L(a,b,c,u)$ by
+$L(a,b,c,U(a,b,c,\top))$. The resulting logical calculus does not prove
+all instances of Peirce's law. This remains true after adding the schemas
+$K$, composition $B$, ex falso, identity, and double-negation elimination.
+The statement has no bound on the size of $U$.
+
+\paragraph{Proof.}
+Use truth values $\{0,1,2\}$, designated value $2$, $F=0$, and implication
+\[
+\begin{array}{c|ccc}
+ \to&0&1&2\\\hline
+ 0&2&2&2\\
+ 1&1&2&2\\
+ 2&0&1&2
+\end{array}.
+\]
+A check of the $3^4$ valuations of $L$ gives precisely one undesignated
+case:
+\[
+ (a,b,c,u)=(1,2,1,0),\qquad L(1,2,1,0)=1.
+\]
+The set $\{1,2\}$ is closed under implication. At this sole critical
+assignment, $a,b,c,\top$ all lie in that set. Structural induction on $U$
+therefore gives $U\in\{1,2\}$, so the bad case is impossible. This proves
+validity of every proposed specialization, including arbitrarily large ones.
+The same matrix validates $K$, $B$, identity, ex falso, and double-negation
+elimination.
+
+To include the quantifier and equality rules, take a two-element individual
+domain. Interpret equality crisply, with values $2$ and $0$. Interpret
+membership by any table having zero diagonal. Interpret $\forall x$ as
+minimum in the order $0<1<2$ over the two assignments to $x$.
+Quantifier distribution holds for all $3^4$ pairs of two-point truth
+vectors. Quantifier commutation follows from commutation of finite minima.
+For a two-point truth vector $p$, writing $m=\min p$, the value of
+$\exists x\forall x P$ is $\neg\neg m=m$; hence the sixth schema is
+valid. Equality existence and congruence are valid, as are generalization,
+atomic fresh vacuity, and irreflexivity. These finite obligations are all
+checked by the supplied certificate.
+
+Finally choose a membership edge of value $1$, and let $P$ be its atomic
+formula at that assignment. Then
+\[
+ ((P\to F)\to P)\to P=1,
+\]
+which is undesignated. Since every axiom is valid under every assignment,
+and both inference rules preserve validity, this instance of Peirce's law
+is not derivable. $\square$
+
+For comparison, the particular choice $U=b$ has the intuitionistic proof
+term $\lambda h\,g\,b.\,g(h(\lambda c.\,b))$. The theorem above is stronger
+than this isolated observation: it handles every positive term $U$ and
+also includes the retained quantifier rules. The three-valued matrix was
+already present in the repository's Source71 notes as a different
+propositional obstruction; its use for this unbounded specialization family
+and its quantified expansion are the additional results here.
+
+\paragraph{Theorem 2: negating the cached input also fails at the logical level.}
+Replacing $u$ by $\neg b$ still does not recover all instances of Peirce's
+law from the retained logical calculus. This remains true with $K$,
+identity, ex falso, and double-negation elimination added.
+
+\paragraph{Proof.}
+Use designated value $3$ and $F=0$ in the matrix
+\[
+\begin{array}{c|cccc}
+ \to&0&1&2&3\\\hline
+ 0&3&3&3&3\\
+ 1&1&3&3&3\\
+ 2&3&3&3&3\\
+ 3&2&1&0&3
+\end{array}.
+\]
+Interpret $\forall$ on the same two-element individual domain as minimum
+in the order
+\[
+ 0<2<1<3,
+\]
+with crisp equality $3/0$ and zero-diagonal graded membership. The
+certificate checks all $4^3=64$ instances of $L(a,b,c,\neg b)$; all
+$4^4=256$ instances of quantifier distribution; the sixth schema at both
+points of each of the $4^2$ truth vectors; and equality existence,
+congruence, modus ponens, generalization, and fresh atomic vacuity.
+Commutation again follows from the definition by minima.
+For a membership edge $P=1$, Peirce with consequent $F=0$ has value $1$,
+so the same soundness induction proves nonderivability. $\square$
+
+\paragraph{Exact scope.}
+The sixth schema has been checked explicitly; these are not countermodels
+that silently omit the source's quantifier principle. Conversely, the
+models are not asserted to satisfy CP or GIC. It remains logically possible
+that suitable CP/GIC instances recover the missing propositional rules,
+or that an interpretation of classical set theory in the weaker calculus
+proves the required consistency equivalence without recovering Peirce.
+Either claim would require a new proof. None is assumed in the state counts
+that follow.
+
+\subsection{Emitted complete-source cost controls}
+
+The pinned public Wade backend was run on complete AX replacements, keeping
+all other emitted formulas and the original cleanup/gates. Symbolic execution
+of each emitted AX word agrees exactly with its specified formula stack.
+The original control has $281=219+62$ working-state identifiers; this is a
+different backend from the optimized $240$-state interpreter. The controls
+therefore measure source cost, not a transferable reduction of $240$.
+
+\begin{center}
+\begin{tabular}{lrrr}
+Fourth input & $L$ macros & AX macros & Emitted working states\\\hline
+Independent $u$ &15&186&281\\
+$a$, $b$, or $c$ &13&184&278\\
+$\top$ &13&184&279\\
+$F$ &12&183&278\\
+$a\to b$ &15&186&280\\
+$b\to a$ &15&186&280\\
+$\neg b$ &14&185&279
+\end{tabular}
+\end{center}
+
+An additional common-subsequence pass changes only the displayed
+$b\to a$ control, from $280$ to $279$; all other listed counts stay the
+same. The common $62$-state framework remains present. Each backend output
+retains its known missing row \texttt{1.inc/read1}; these are diagnostic
+partial-table outputs, not newly certified total consistency machines.
+The independent-input control exactly reconstructs the published symbolic
+AX specification. Every other control removes the fourth read, so a future
+valid replacement would also need a proof-list transport for the changed
+command encoding.
+
+The logical checker and cost-control scripts are supplied under
+\texttt{research/formalisms/}, together with their exact JSON certificates.
+The transition tables, pinned compiler inputs, upstream MIT-0 license, and
+SHA-256 bindings are supplied alongside them. The finite checker performs
+no condensed-detachment search and has no proof-length cutoff. Its
+unbounded family result uses the explicit induction described above.

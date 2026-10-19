@@ -1,0 +1,246 @@
+% Standalone section fragment. Requires amsmath, amssymb, amsthm, hyperref.
+% Ordinary mathematical results; no proof-assistant endpoint is supplied.
+\section{Two precise filters on proposed smaller set-theory kernels}
+\label{sec:theory-filters}
+
+The smallest displayed formula is not necessarily the cheapest complete
+consistency search.  In particular, a proposed deletion from the present
+container axiom must retain both its coverage of arbitrary objects and its
+requirement that a set bounding all subsets be an element of the same
+container.  The two statements below isolate these obligations.  They
+supplement the existing deletion examples rather than claiming a new general
+countermodel method or a new Turing-machine bound.
+
+\subsection{Exact language and the retained schema}
+
+Use classical first-order logic with native equality, a nonempty domain, and
+one binary relation $\in$.  Put
+\[
+ x\subseteq y\quad:\!\Longleftrightarrow\quad
+       \forall z\,(z\in x\longrightarrow z\in y),
+ \qquad
+ \operatorname{Tr}(V)\quad:\!\Longleftrightarrow\quad
+       \forall x\in V\;(x\subseteq V).
+\]
+The current container axiom is
+\begin{equation}
+\forall a\;\exists V\left[
+ a\in V\ \land\ \operatorname{Tr}(V)\ \land\
+ \forall x\in V\;\exists W\in V\;\forall z
+       (z\subseteq x\longrightarrow z\in W)\right].
+\tag{CP}\label{eq:filter-cp}
+\end{equation}
+For every actual finite formula $\theta(x,y;\bar p)$, including formulas
+with equality and arbitrarily many parameters, retain
+\begin{equation}
+\forall\bar p\;\forall A\;\exists B\left[
+ \forall x\in A\bigl(\exists y\,\theta(x,y;\bar p)
+             \longrightarrow\exists y\in B\,\theta(x,y;\bar p)\bigr)
+ \ \land\ \forall y\in B\;\exists x\,\theta(x,y;\bar p)
+ \right].
+\tag{GIC}\label{eq:filter-gic}
+\end{equation}
+All parameters are universally closed; all auxiliary bound variables are
+fresh.  The supporting input in the last clause is unrestricted.  This is
+an effective infinite schema, not an axiom for arbitrary semantic relations.
+Write $\mathrm{IR}$ for $\forall x\,(x\notin x)$.  These are the native
+theory interfaces documented in ProveIt's
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/Computability/BusyBeaver/Research/ZFC/native_theory254.md}{\texttt{native\_theory254.md}}
+and
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/Computability/BusyBeaver/Research/ZFC/equality_free_bisimulation.md}{\texttt{equality\_free\_bisimulation.md}};
+the latter displays the same formulas before restricting its matrix language.
+
+\subsection{One good container does not replace coverage of every root}
+
+Replace \eqref{eq:filter-cp} by the shorter fixed assertion
+\begin{equation}
+\exists V\left[
+ (\exists a\;a\in V)\ \land\ \operatorname{Tr}(V)\ \land\
+ \forall x\in V\;\exists W\in V\;\forall z
+       (z\subseteq x\longrightarrow z\in W)\right].
+\tag{CP$_{\exists}$}\label{eq:filter-rootless}
+\end{equation}
+The assertion still requests a nonempty transitive container and genuine
+internal power bounds.  Its only missing feature is coverage of an arbitrary
+external root $a$.
+
+\paragraph{Proposition.}
+Let $T_{\exists}$ contain $\mathrm{CP}_{\exists}$, all instances of GIC,
+and all the axioms of ZFC except Power Set, with full Separation and
+Replacement retained.  Then ZFC proves that $T_{\exists}$ has a set model,
+and consequently proves $\operatorname{Con}(T_{\exists})$.  In particular,
+adding Extensionality, Empty Set, Pairing, Union, Infinity, Foundation,
+Choice, or IR to the shortened packet does not repair it.
+
+\paragraph{Proof.}
+Work in ZFC and take
+\[
+ M=H_{\omega_1}
+   =\{x: \operatorname{TC}(\{x\})\text{ is countable}\},
+\]
+with actual membership and equality.  This is a nonempty transitive set.
+Every element of $M$ is countable, and a countable collection of elements
+of $M$ is again an element of $M$: its transitive closure is contained in
+a countable union of countable transitive closures.  The use of countable
+choice in this sentence occurs in the ambient ZFC proof.
+
+Fix an internally interpreted GIC matrix, its finite parameter tuple in
+$M$, and $A\in M$.  In the ambient universe form
+\[
+ D=\{x\in A:M\models\exists y\,\theta(x,y;\bar p)\}.
+\]
+The domain $D$ is countable.  Choose, in the ambient universe, one
+$f(x)\in M$ satisfying the matrix for each $x\in D$, and put
+$B=\{f(x):x\in D\}$.  If $D$ is empty take $B=\varnothing$.
+The closure fact above gives $B\in M$.  It supplies a witness for every
+nonempty fiber over $A$, and each of its members has a supporting input
+in $D\subseteq A$.  Thus it satisfies even the domain-guarded support
+condition, which is stronger than the support required by GIC.
+
+The same closure fact gives Pairing, Union, and every Replacement instance.
+For Separation, any externally defined subset of $A\in M$ belongs to $M$,
+in particular a trace defined using the set-model satisfaction relation.
+Actual transitivity gives Extensionality and Foundation; $\omega\in M$
+gives Infinity.  An ambient choice function for a member $A$ of $M$ has
+countable graph and hereditarily countable values, hence belongs to $M$,
+so the internal Choice axiom also holds.
+
+Finally $V_\omega\in M$ is a witness to $\mathrm{CP}_{\exists}$.
+It is countable, transitive, and nonempty.  For $x\in V_\omega$, every
+subset of $x$ is hereditarily finite and the finite set
+$W=\mathcal P(x)$ also belongs to $V_\omega$.  Because $M$ is transitive,
+its subset relation between its elements is the actual subset relation,
+so these are exactly the required internal power bounds.
+
+For clarity, $M$ does not satisfy Power Set at $\omega$.  All actual
+subsets of $\omega$ belong to $M$, while every member of $M$ is
+countable.  A putative internal power set of $\omega$ would therefore
+be countable and contain all actual reals, contrary to Cantor's theorem.
+The original CP fails at the root $a=\omega$ for the same reason: its
+power bound for that member would have to contain all reals.
+
+This is a uniform set-model argument.  ZFC has a satisfaction relation
+for the set $M$ and can quantify over finite formula codes and their
+finite parameter tuples in the preceding witness construction.  It
+therefore proves that every axiom of the recursively presented packet
+holds in $M$.  Formalized first-order soundness gives
+$\operatorname{Con}(T_{\exists})$.  We are not merely asserting that
+each externally fixed axiom has some unrelated model.\hfill$\square$
+
+\subsection{Containing each subset is weaker than containing its bound}
+
+A second plausible simplification removes the existential $W$ from the
+power clause and puts its elements directly in $V$:
+\begin{equation}
+\forall a\;\exists V\left[
+ a\in V\ \land\ \operatorname{Tr}(V)\ \land\
+ \forall x\in V\;\forall z
+       (z\subseteq x\longrightarrow z\in V)\right].
+\tag{CP$_{\mathrm{flat}}$}\label{eq:filter-flat}
+\end{equation}
+CP implies this sentence, because the old bound $W$ lies in a transitive
+$V$.  The converse is false even when all native GIC instances, full
+Extensionality, Foundation, Separation, Replacement, and ordinary Power
+Set are available.
+
+\paragraph{Proposition.}
+Let $T_{\mathrm{flat}}$ contain $\mathrm{CP}_{\mathrm{flat}}$, all GIC
+instances, and all axioms of ZFC except Infinity.  ZFC proves that
+$V_\omega$ is a set model of $T_{\mathrm{flat}}+\neg\mathrm{Infinity}$;
+in particular it proves $\operatorname{Con}(T_{\mathrm{flat}})$.
+
+\paragraph{Proof.}
+Every member of $V_\omega$ is finite.  For any matrix interpreted in this
+set structure and any domain $A\in V_\omega$, choose one witness from
+each nonempty fiber over the finite set $A$.  The finite set of chosen
+witnesses belongs to $V_\omega$ and satisfies both GIC clauses.  The
+argument works uniformly for all finite formula codes via satisfaction
+for the set $V_\omega$.  The other listed set axioms hold because finite
+sets are closed under their relevant finite constructions; Separation
+and Replacement again use the internally interpreted matrix.
+
+Given $a\in V_\omega$, choose a natural $n>\operatorname{rank}(a)$.
+Then $V_n\in V_\omega$, $a\in V_n$, and $V_n$ is transitive.
+If $x\in V_n$ and $z\subseteq x$, then
+$\operatorname{rank}(z)\leq\operatorname{rank}(x)<n$, so $z\in V_n$.
+Thus $V_n$ is a witness to $\mathrm{CP}_{\mathrm{flat}}$.
+There is no inductive set in $V_\omega$: such a finite set would have
+to contain every finite von Neumann ordinal.  The set-model soundness
+argument yields the consistency conclusion as above.\hfill$\square$
+
+There is also a compact arithmetic witness that makes the lost resource
+visible.  Interpret membership on natural numbers by Ackermann coding:
+$i\mathrel{E}x$ iff bit $i$ of $x$ is one.  For the root $a$, put
+\[
+ v=2^{a+1}-1.
+\]
+Its members are precisely $0,\ldots,a$, so $aEv$.  If $xEv$ and $uEx$,
+then $u<x\leq a$, giving transitivity.  If $z\subseteq_E x$, bit
+inclusion implies $z\leq x\leq a$, so $zEv$.  Therefore the same single
+arithmetic term witnesses all of $\mathrm{CP}_{\mathrm{flat}}$.
+Nevertheless this particular $v$ never supplies the original internal
+power bound for its member $a$.  Such a bound $W\mathrel{E}v$ would
+have to contain $a$, since $a\subseteq_E a$.  But $W\leq a<2^a$,
+whereas $aEW$ requires $W\geq 2^a$.
+
+The companion diagnostic checks these exact bit identities and witness
+failures for a finite range of roots.  It is a regression check of the
+displayed constructions, not a finite proof of the infinite model
+argument.  The arithmetic calculation is compatible with the existing
+PA interpretation of the transitive-container/GIC theory in
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/Computability/BusyBeaver/Research/ZFC/mira_containers.md}{\texttt{mira\_containers.md}}.
+No serialized PA interpretation or arithmetic consistency certificate is
+exported here.
+
+\subsection{What the consistency filter actually excludes}
+
+Fix the usual effective finite-proof consistency predicates.  For either
+of the two weakened packets $T$, the preceding argument gives
+\[
+ \mathrm{ZFC}\vdash\operatorname{Con}(T).
+\]
+Consequently, if ZFC is consistent, ZFC cannot also prove
+$\operatorname{Con}(T)\leftrightarrow\operatorname{Con}(\mathrm{ZFC})$:
+that would give a ZFC proof of its own consistency, contradicting the
+second incompleteness theorem.  If a literal machine is correctly
+compiled so that ZFC proves its nonhalting equivalent to
+$\operatorname{Con}(T)$, ZFC will prove that machine nonhalting.  It
+therefore cannot simultaneously have the requested ZFC-provable
+equivalence with $\operatorname{Con}(\mathrm{ZFC})$, assuming consistency.
+
+This conclusion excludes the stated presentations as targets for the
+requested calibration.  It does not say that every unrelated
+interpretation into those theories is impossible, assign a lower bound
+on binary states, or replace a required source-to-machine proof by a
+semantic slogan.  The argument is an ordinary proof formalizable in
+ZFC; this appendix supplies no Lean, Rocq, or serialized first-order proof.
+
+\subsection{Prior overlap and the surviving engineering question}
+
+The repository already uses hereditarily finite and hereditarily
+countable models to reject other deletions from positive-closure
+schemas; see the source 01--03 reconciliation in
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md}{the closure-kernel host}.
+The two applications here concern the exact CP interfaces
+\eqref{eq:filter-rootless} and \eqref{eq:filter-flat}.  No historical
+priority is claimed for the models or the general consistency argument.
+The existing
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-144-source-09-theory.md}{source 09 review}
+instead removes CP's transitivity and uses a pseudo-hereditary model at
+a singular strong limit; the primary construction is discussed by
+Greg Oman, \emph{On the axiom of union}, Arch. Math. Logic 49 (2010),
+283--289, \href{https://doi.org/10.1007/s00153-009-0163-1}{doi:10.1007/s00153-009-0163-1}.
+The current
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md}{source 80 reconciliation}
+uses rational cuts to reject deletion of GIC support and proves that
+full native GIC is equivalent to weak Collection plus full Separation.
+These are distinct weakened packets.
+
+The successful construction in Section~\ref{sec:fold239} follows the source
+route: it keeps the already calibrated full theory and complete calculus,
+while changing which binary decoder contexts can be shared.  The raw PSC, finite
+assignment kernels, and alternative complete proof languages are useful
+longer-term comparison specifications.  Their formula counts and finite
+certificate sizes do not establish a smaller complete binary machine.
+Even a source reassociation saving one decoder state must charge any
+extra decoder depth or change in the blank initialization contract.

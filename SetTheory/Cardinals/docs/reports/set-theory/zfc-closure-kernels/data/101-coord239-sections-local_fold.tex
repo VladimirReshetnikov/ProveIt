@@ -1,0 +1,171 @@
+\section{A guarded reduction from 240 to 239 states}
+\label{sec:guarded-local-239}
+
+Let $M$ be the pinned Rotation240 machine, using its inherited state
+labels, start state $95$, and halt state $254$.  Let $N$ be
+\path{machines/zfc239_old.tm}.  A configuration is $(q,h,T)$ with
+$T:\mathbb Z\to\{0,1\}$; the local statements below allow an arbitrary
+exterior tape.  The canonical presentation
+\path{machines/zfc239.tm} has working states $0,\ldots,238$, start $0$,
+dispatcher $84$, and halt $239$.
+
+Define $\phi(169)=80$ and $\phi(q)=q$ otherwise, and put
+$\Phi(q,h,T)=(\phi(q),h,T)$. The exact row changes were given in
+Section~\ref{sec:construction}.
+
+The extra freedom comes from reusing a helper in two tape contexts.
+The modified row at $91$ remains equivalent to its old behavior in
+old state-$91$ contexts, while an entry through the merged role has a
+different nearby bit and follows a different return path.  Consequently
+the proof concerns old configurations and corresponding new
+checkpoints; it does not assert that the old invariant holds at every
+intermediate step of $N$.
+
+\subsection{A syntactic invariant and one additional guard}
+
+For an old configuration write $t_i=T(h+i)$.  Consider
+\begin{equation}
+\label{eq:g239-P}
+P(q,h,T):\quad
+\begin{cases}
+t_{-1}=0,&q=67,\\
+(t_{-2},t_{-1})=(0,1),&q=80,\\
+(t_{-3},t_{-2},t_{-1})=(0,1,1),&q=91,\\
+t_{-1}=0,&q=169.
+\end{cases}
+\end{equation}
+Unlisted states impose no condition.  This is an invariant of $M$
+started at $95$ on \emph{every} tape.  Its proof uses the complete
+incoming-row inventory:
+\begin{align*}
+67&:\quad (52,0)\mapsto(0,R,67),\quad (124,0)\mapsto(0,R,67),\\
+80&:\quad (67,1)\mapsto(1,R,80),\\
+91&:\quad (80,1)\mapsto(1,R,91),\\
+169&:\quad (147,0)\mapsto(0,R,169).
+\end{align*}
+Initialization is vacuous at $95$.  Each incoming write gives the
+nearest required bit; the invariant at its predecessor supplies any
+older bits.  Induction on the number of old steps proves
+\eqref{eq:g239-P}.
+
+One further property is needed:
+\begin{equation}
+\label{eq:g239-Q}
+Q(q,h,T):\quad q=169\ \wedge\ t_0=1\quad\Longrightarrow\quad t_1=1.
+\end{equation}
+We establish this property for the exact blank initialization and all
+valid instruction frames.  We make no all-tape claim for
+\eqref{eq:g239-Q}.
+
+\subsection{Four exact positive blocks}
+
+The following paths include both their initial state and final state.
+Each new path has exactly the same final tape and head position as
+the indicated single old transition, and its final state is mapped
+by $\phi$.
+\begin{align*}
+(80,0),\quad t_{-1}=1:
+&\qquad 80\to106\to92\to107\to125\to25,
+\tag{5 steps}\label{eq:g239-block80}\\
+(169,0),\quad t_{-1}=0:
+&\qquad 80\to106\to93\to57,
+\tag{3 steps}\label{eq:g239-block169zero}\\
+(169,1),\quad t_{-1}=0,\ t_1=1:
+&\qquad 80\to91\to167\to151\to173\to56.
+\tag{5 steps}\label{eq:g239-block169one}
+\end{align*}
+For old row $(91,1)$, when
+$(t_{-3},t_{-2},t_{-1})=(0,1,1)$, the new path is
+\begin{equation}
+91\to167\to151\to24\to36\to54\to71\to82\to94\to50.
+\tag{9 steps}\label{eq:g239-block91}
+\end{equation}
+These are literal transition calculations.  The first two paths read
+only offsets $-1,0$ and leave their bits unchanged.  The third reads
+only $-1,0,1$, changes the original head cell from $1$ to $0$, and
+ends one cell right.  The last reads only $-3,-2,-1,0$, changes just
+the original head cell from $1$ to $0$, and ends one cell left.
+Thus every exterior cell is untouched.  No path contains an internal
+halt.
+
+The other $476$ old rows commute with $\Phi$ in one new step.
+The program \path{verification/verify_guarded_fold239.py} independently
+checks this inventory, invariant closure on $121{,}536$ admitted
+Boolean windows, and all $22$ admitted assignments to the common
+five-cell footprint of the four blocks.  Its whole-tape comparisons
+are exact; cells outside the represented footprint are never read or
+written.  The resulting receipt is
+\path{evidence/guarded_fold239_certificate.json}.
+
+\subsection{Unbounded certification of the right-hand guard}
+
+The driver \path{verification/certify_guard169.py} instruments the
+unchanged affine/list checker \path{verification/symbolic_runtime.py}.
+It retains every existing whole-tape endpoint and positive-clock
+check.  Register values, additional gap, first spare value, and the
+finite remaining spare list stay arbitrary.  The complete pinned
+source tree has $6{,}455$ leaves and $8{,}386$ instruction cases after
+splitting decrement guards.
+
+At each explicit visit to $169$, the driver normalizes the symbolic
+tape and verifies that the head scans rightward into an explicit
+run.  If that run contains ones, its length has the form
+$c+\sum_i a_i x_i$, with all $a_i,x_i\ge0$, and the driver checks
+$c\ge2$.  This proves \eqref{eq:g239-Q} uniformly.  Across the complete
+audit there are $32$ such symbolic visits, and the smallest certified
+constant is in fact $21$.
+
+There are no hidden visits inside accelerated steps.  Neither row at
+$169$ is a self-loop.  State $169$ is neither an entry of a list
+lemma nor an interior state in any of the four separately rederived
+one-block proofs.  Natural-number induction on unary scans and
+structural induction on finite lists therefore preserve the
+instrumentation's coverage.  The audit closes all $8{,}386$ cases
+using $2{,}322{,}575$ symbolic rules and directly covers all $480$ old
+rows.  The proof-construction cap bounds neither tape parameters nor
+actual execution lengths.  Receipts and the affine visit records are
+\path{evidence/guard169_universal.json} and
+\path{evidence/guard169_visits.json}.
+
+The separately checked blank prefix has $409{,}691$ old steps and
+six old $(169,1)$ visits, each satisfying the guard.  Its endpoint
+is the baseline clean dispatcher frame.  The runtime frame theorem
+then supplies the guard throughout continuation.  These are ordinary
+mathematical inductions with checked finite premises; this bundle
+does not claim a new Lean or Rocq kernel proof.
+
+\subsection{Global simulation and the initialization clock}
+
+For any old execution satisfying $P$ and $Q$, concatenate the
+appropriate positive blocks.  If $C_n$ is its $n$th configuration,
+the new execution has configuration $\Phi(C_n)$ at time
+\begin{align*}
+\tau(n)=n
+ &+4V_{80,0}(n)+2V_{169,0}(n)\\
+ &+4V_{169,1}(n)+8V_{91,1}(n),
+\end{align*}
+where $V_{q,b}(n)$ counts the first $n$ old transitions using row
+$(q,b)$.  In particular $n\le\tau(n)\le9n$.  Induction proves the
+checkpoint identity; positivity prevents an infinite old execution
+from collapsing to finitely many new steps.  The absence of internal
+halts proves halting equivalence in both directions.
+
+The exact blank census is
+\[
+(V_{80,0},V_{169,0},V_{169,1},V_{91,1})=(18,12,6,3).
+\]
+It gives an additional $4\cdot18+2\cdot12+4\cdot6+8\cdot3=144$
+steps.  Thus the same complete frame occurs after $409{,}835$ new
+steps.  The local verifier compares all $409{,}692$ old checkpoints
+with their new counterparts, including the entire finite support of
+the tape.  Both endpoints have state $96$, head $-5$, and $351$ one
+cells, with every other cell zero.
+
+The resulting blank-run equivalence is expressible and provable in
+ZFC by the elementary inductions above.  Composing it with the
+separately supplied Rotation240 source calibration transfers
+$\mathrm{NH}(M)\leftrightarrow\operatorname{Con}(\mathrm{ZFC})$ to
+$\mathrm{NH}(N)\leftrightarrow\operatorname{Con}(\mathrm{ZFC})$.
+The source calculus, enumerator, and logical calibration are inherited;
+the new contribution here is the coordinated state reuse and its
+guarded positive-block proof.

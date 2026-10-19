@@ -1,0 +1,74 @@
+\section{An explicitly repaired 240-state reference}
+\label{sec:boundary240}
+
+The certified source can be implemented with the inherited engine after
+charging a dedicated state for the remaining context projection.  This
+gives a new fully checked runtime reference, but it does not improve the
+240-state bound by itself.  The following section supplies the additional
+context split and fold that reduces this reference to 239 states.
+
+The provisional 239-state compilation includes the necessary changes to
+the final AX break route.  Its only remaining failures in the complete
+minimum-register screen are the 690 guards associated with the state-218
+projection.  In this particular compilation, inherited label 223 is no
+longer used.  Reintroduce it with
+\[
+ (223,0)\mapsto0R16,\qquad(223,1)\mapsto1R99,
+\]
+and change
+\[
+ (218,0)\mapsto0L223.
+\]
+Both new rows are charged; the resulting machine has 240 working states
+and 480 transitions.
+
+\paragraph{Exact projection lemma.}
+Suppose state 218 scans a zero at position $h$, with bit $b$ at $h-1$.
+For an arbitrary tape outside these two cells, the patched machine reaches
+state 23 at $h+1$ if $b=0$, and state 105 at $h+1$ if $b=1$, in exactly
+three transitions.  The entire tape is unchanged.
+
+\paragraph{Proof.}
+The first row preserves the zero and moves left into 223.  On tag zero,
+state 223 preserves it and moves right into 16; state 16 reads the same
+zero, preserves it, and moves right into 23.  On tag one, state 223
+preserves it and moves right into 99; state 99 reads the zero, preserves
+it, and moves right into 105.  No other tape cell is read or written.
+This enumerates both possible tags without assuming an inherited global
+invariant.\hfill$\square$
+
+\file{validation/check_boundary240.py} constructs the exact table from
+the provisional compilation, checks this two-cell lemma, and verifies the
+complete known blank-root configuration after 409,691 transitions.  It
+then rederives the four unbounded one-block rules and all 8,386 instruction
+guards for the certified boundary-reassociated source.  The result is
+\texttt{UNIVERSAL\_MATHEMATICAL\_PASS}, using 2,252,241 symbolic rules,
+with minimum duration constant 13.  These are symbolic proof-construction
+counts, not a benchmark of the full proof search's running time.
+
+The old-label table's SHA-256 is
+\begin{quote}\ttfamily\small
+19cd7f7863a681828fd026adbf8ce91c\\
+21e3ac7604439bc9d4603ba58661853e.
+\end{quote}
+The exact table, canonical relabeling, source paths, per-guard affine
+durations, and aggregate result are under \file{boundary240/}.  The
+canonical start, dispatch, and halt labels remain 0, 84, and 240.
+
+The source-control certificate matches leaf indices, while the runtime
+proofs match each machine's own source paths.  The two exact blank starts
+reach the same root register vector and spare layout.  Composing these
+facts proves that the repaired machine and the original 240-state
+baseline halt together, by ordinary induction over source steps and the
+positive-duration binary segments.  Nonhalting correspondence uses the
+fact that every source instruction segment terminates in a finite
+positive number of binary steps; neither machine can get trapped forever
+inside a single correctly simulated instruction.
+
+This is a useful reference for subsequent compression experiments: its
+source is smaller and its binary runtime contract is complete.  A strict
+state improvement still requires eliminating or sharing one charged
+state without breaking that contract; Section~\ref{sec:fold239} does so.
+The broader theory calibration
+is inherited only through the baseline's separately justified ordinary source/calculus/theory calibration;
+no new proof-assistant endpoint is claimed here.

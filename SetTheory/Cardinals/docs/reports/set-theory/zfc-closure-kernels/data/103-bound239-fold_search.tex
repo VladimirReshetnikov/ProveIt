@@ -1,0 +1,192 @@
+\section{Locally certified state-fold search}
+\label{sec:local-fold-search}
+
+We implemented a bounded superoptimizer for literal binary Turing-machine
+tables.  Its purpose was to find a further state reduction with a finite,
+checkable simulation argument.  It found no reduction in the three search
+classes described below, on either the published rotation240 table or the
+new, repaired boundary240 table.  As a positive control, exactly the same
+implementation rediscovers the established $90\to72$ reduction of the
+rotated241 table.  These negative results concern the stated certificate
+classes; they are not lower bounds on the number of states needed for the
+consistency problem.
+
+\subsection{A sound local invariant}
+
+Fix a radius $K$.  At control state $q$, the abstraction retains the bits
+in tape cells at offsets $-K,\ldots,K$ from the head.  We represent the
+window by an integer $m$, with bit $i+K$ representing offset $i$.  The
+abstract transition writes the center bit, shifts the window according
+to the move direction, and nondeterministically assigns either value to
+the newly exposed boundary cell.  Breadth-first closure computes a set
+$I_K(q)$ of allowed masks for every state.
+
+The initial set contains \emph{every} mask at the designated start state.
+Consequently this invariant is valid from every initial binary tape, and
+in particular from the blank tape.  This is a deliberate overapproximation:
+the search does not assume that the source program, its register encoding,
+or the startup routine supplies additional structure.  The abstraction
+is sound because the actual newly exposed cell always has one of the two
+values included in the abstract successor relation.  Induction on the
+number of machine steps proves that every reachable concrete
+configuration projects into $I_K$.
+
+Soundness of this invariant must not be confused with completeness for
+the application.  A mask in $I_K(q)$ need not arise from a well-formed
+register frame, or from any execution of the fixed source program.
+Such masks can rule out a proposed rewrite which would be valid under a
+stronger invariant.  Enlarging the radius can sometimes recover a lost
+correlation, but the results below are confined to $K=9$.
+
+\subsection{Positive-block replacement domains}
+
+For each row $(q,b)$, the search considers every possible replacement
+edge $(w,d,t)$: either write bit, either move direction, and any existing
+working state or the designated halt as target.  There are
+$4(n+1)$ candidate edges per row for an $n$-state table.  Each candidate
+is executed separately on every mask in $I_K(q)$ whose center is $b$.
+After its first transition, execution follows the original table.
+
+The candidate must reach a specified original configuration in at
+least one and at most $F$ transitions.  The comparison includes the
+control state, head displacement, and \emph{every bit of the initial
+window}.  Neither trajectory may read a cell outside that window.
+The final head position may be one cell beyond it when the final move
+does not read that cell.  Since all changed cells lie inside the
+window, equality of the compared windows proves equality of the entire
+tapes, irrespective of the unrepresented cells.  Thus an accepted
+domain is a universally quantified local fact, not a test of one
+finite tape.
+
+The implementation records which control states the replacement
+executes strictly between its start and matching endpoint.  These
+support sets prevent composition from silently using a row that the
+proposed fold also changes.  All simulated old and new blocks have
+positive length.  Matching checkpoints therefore preserve halting in
+both directions and cannot introduce an infinite sequence of
+zero-length simulation steps.
+
+The three modes are as follows.
+
+\begin{enumerate}
+\item \textbf{Pair mode.}  The matching target is the configuration after
+one original transition.  Intermediate replacement execution may not
+execute state $q$.  For two states $q,r$, the algorithm intersects their
+replacement-edge domains separately for read bits $0$ and $1$, then
+requires both support sets to avoid both $q$ and $r$.  A nonempty
+intersection for each read bit supplies common rows for the quotient
+state.  Incoming targets and the designated start, if needed, are
+mapped to that state.  The comparison uses the same tape and head at
+each checkpoint; it does not permit an arbitrary tape representation
+change or a permanently shifted head.
+
+\item \textbf{Block mode.}  The original trajectory may take any positive
+number of steps up to $F$ before the matching checkpoint, instead of
+exactly one.  The replacement remains bounded by $F$ and uses the same
+window.  The same support exclusions and pairwise domain intersection
+are applied.  This allows a longer old block to be implemented by a
+different positive block, but still requires an exactly matching
+control state, head, and tape at the checkpoint.
+
+\item \textbf{Incoming-deletion mode.}  For a state $s$ to be deleted,
+every external row targeting $s$ must receive a replacement edge.
+Each edge must rejoin a positive original block at a state other than
+$s$.  Intermediate replacement execution is forbidden from entering
+$s$ or executing any row whose original target is $s$, since those
+rows are all being rewritten.  If every external incoming row has a
+nonempty domain, the independently chosen replacements compose and
+$s$ can be removed.  Both move directions are considered, so this
+also considers repairs which change the predecessor's first head
+position by two cells.  It does not cover arbitrary simultaneous
+changes to other helper rows.
+\end{enumerate}
+
+For an accepted rewrite, relate an original checkpoint to the
+configuration with its folded state label and the same head and tape.
+Unchanged transitions preserve this relation directly.  A changed
+transition is covered by its positive-block domain, and support
+exclusion makes the selected replacement trajectory unchanged by the
+other edits.  At its endpoint the relation holds again.  This gives
+the required finite local simulation proof.  The checker is ordinary
+C++ code with this mathematical soundness argument; it is not a
+proof-assistant extraction or a kernel-checked formal proof.
+
+\subsection{Recorded bounded results}
+
+All negative runs in Table~\ref{tab:fold-search-results} use
+$K=9$, hence $19$ tape cells, and $F=101$.  The tables use inherited
+labels, start state $95$, and halt label $254$.  Each has $240$
+working states and therefore $964$ candidate edges per row.  An
+``accepted row domain'' means one row/edge pair that passes all of
+its abstract masks; it need not combine with any other domain to
+remove a state.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{llrrr}
+Table & Mode & Mask executions & Row domains & Reductions \\
+\hline
+rotation240 & Pair   & 23,231,947 & 1,030 & 0 \\
+rotation240 & Block  & 25,523,988 & 1,101 & 0 \\
+rotation240 & Delete & 2,610,950  & 63    & 0 \\
+boundary240 & Pair   & 23,227,610 & 1,061 & 0 \\
+boundary240 & Block  & 25,578,178 & 1,137 & 0 \\
+boundary240 & Delete & 2,671,284  & 68    & 0 \\
+\hline
+\end{tabular}
+\caption{Exact enumeration within the specified local certificate
+classes.  Mask executions count attempted edge/mask simulations;
+failed edge candidates stop at their first counterexample.}
+\label{tab:fold-search-results}
+\end{table}
+
+The rotation240 closure contains $11,819,659$ abstract state/window
+configurations; the repaired boundary240 closure contains $11,853,163$.
+The input SHA-256 digests are:
+\begin{quote}\small\ttfamily
+rotation240:\par
+547dd69da66f66dd48238a53d34b52a3ce85bb6c7d01534dd1cfb815507f248f\par
+boundary240:\par
+19cd7f7863a681828fd026adbf8ce91c21e3ac7604439bc9d4603ba58661853e
+\end{quote}
+
+The positive control uses rotated241 with $K=6$ and $F=31$.
+Its closure contains $299,617$ abstract configurations.  Pair mode
+finds exactly one reduction, identifying states $72$ and $90$ with
+the common rows
+\[
+  0\mapsto (0,L,144),\qquad 1\mapsto (1,L,36).
+\]
+This independently checks that the implementation can recognize the
+known tape-context fold, rather than merely rejecting all candidates.
+
+\subsection{Reproduction and limits}
+
+The single-file driver \texttt{rerun\_fold\_search.py} embeds its C++17
+engine.  It requires Python~3.9 or newer and an available C++17 compiler,
+uses no third-party Python packages, and does not import repository
+programs.  It compiles its engine in a temporary directory.  For example,
+from the directory containing the driver and a copied inherited-label
+table:
+\begin{verbatim}
+python rerun_fold_search.py zfc_rotation240_old.tm \
+  --mode all --radius 9 --fuel 101 --output results_rotation240
+\end{verbatim}
+The output directory must be new.  The driver writes the table and
+driver hashes, exact bounds, counts, discovered reductions, accepted
+row domains and their support sets, and a compact summary of the
+invariant.  The compact invariant file lists fixed offsets and mask
+counts; it is not the full set $I_K$.  Rerunning reconstructs the full
+closure before checking the domains.  The included result directories
+\texttt{portable\_baseline9}, \texttt{portable\_boundary9}, and
+\texttt{portable\_control6} record the runs reported above.
+
+The enumeration does not cover all $239$-state tables, all folds,
+all choices of invariant, unbounded replacement programs, arbitrary
+three-state quotients, or source-level changes.  In particular,
+relabeling an endpoint more flexibly can expose recursive loop
+identifications outside the literal endpoint comparison used here.
+The negative result therefore says that these relatively small,
+locally provable rewrites have been exhausted under the stated
+window and fuel bounds.  It gives a reusable search component and
+a precise boundary for further work, not an impossibility theorem.

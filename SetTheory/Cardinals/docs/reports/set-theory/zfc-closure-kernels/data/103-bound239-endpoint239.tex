@@ -1,0 +1,200 @@
+% Section fragment; requires amsmath, amssymb, hyperref.
+\section{The exact ZFC endpoint and independent audit}
+\label{sec:endpoint239}
+
+\paragraph{Theorem.}
+Let $M_{239}$ be the inherited-label binary table with SHA-256 digest
+\begin{quote}\small\ttfamily
+d061770f487937f9da652919c9bc9bb79bc9bf137ca41dd7a08eb5ecda8e7719,
+\end{quote}
+started in state $95$ at head position $0$ on the all-zero two-way infinite
+tape, with halt label $254$.  Equivalently, use the supplied canonical
+renumbering, with start state $0$.  Let
+$\operatorname{Proof}_{\mathrm{ZFC}}(p,\bot)$ be the standard finite
+first-order proof predicate for the ZFC axiom schemas used by the pinned
+ProveIt calibration.  Then the following is an ordinary mathematical
+theorem formalizable in ZFC:
+\[
+ \mathrm{ZFC}\ \vdash\
+ \operatorname{Halt}(M_{239},0^\mathbb Z)
+ \ \longleftrightarrow\
+ \exists p\,\operatorname{Proof}_{\mathrm{ZFC}}(p,\bot).
+ \tag{E239}
+\]
+Consequently,
+\[
+ \mathrm{ZFC}\ \vdash\
+ \neg\operatorname{Halt}(M_{239},0^\mathbb Z)
+ \ \longleftrightarrow\
+ \operatorname{Con}(\mathrm{ZFC}).
+\]
+The construction has exactly $239$ working states, including initialization,
+and one separate halt state.  No assumption of
+$\operatorname{Con}(\mathrm{ZFC})$ is used to prove these equivalences.
+
+\subsection{The inherited calibration used in the proof}
+
+Write $P_0$ for the source with digest
+\file{74b1e7f73cc3ffe7761e36ab2d57a26e0ba34d3ac624f2472799e6ac41d5a51d},
+and let $R_*=(3,0,0,0,3,0,0,0,0)$, with all subsequent logical registers
+zero.  At commit
+\texttt{13ec39ed43148b1807f51ed6e6528e1c84659562}, the exact inherited
+theorem is
+\begin{align*}
+ &\texttt{CalibratedRotation240.halts\_iff\_zfc\_refutation}:\\[-2pt]
+ &\qquad
+ \operatorname{RegisterHalts}(P_0,(\epsilon,R_*))
+ \ \longleftrightarrow\
+ \operatorname{BProv}(\mathrm{ZFCax\_s},[],\bot).
+ \tag{C0}
+\end{align*}
+Its source is read directly from the pinned repository;
+\texttt{LogicalSeed246} supplies the explicit nine-register seed.
+The complete source-tree identity is the separate
+\texttt{TreeRotation240} theorem.\footnote{Pinned sources:
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/CalibratedRotation240.lean}{CalibratedRotation240.lean},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/LogicalSeed246.lean}{LogicalSeed246.lean}, and the
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/Computability/BusyBeaver/Research/ZFC/rotation240_tree_frame.md}{exact source-tree and startup-frame record}.
+These are inherited results, not newly replayed Lean checks.}
+The new \file{source_interface/check_source_interface.py} additionally
+identifies the complete ordered 6,455-site source directly from the actual
+pinned Lean lookup definitions and overrides, and extracts the seed and
+register encoding.  The audited \file{semantic_interface/RegisterPath.lean}
+uses exactly the path, instruction and literal-halting conventions stated
+in our source proof.  Descending node indices and depth $51<204$ exclude
+exhaustion of its finite decoder fuel.  These checks identify the concrete
+source data and semantics without requiring a new Lean dependency build.
+
+Here $\operatorname{BProv}$ asserts the existence of a finite derivation.
+Encoding and decoding its finite proof trees identifies it with
+$\exists p\,\operatorname{Proof}_{\mathrm{ZFC}}(p,\bot)$ by structural
+recursion.  A different customary effective coding of first-order ZFC
+proofs gives the same consistency statement by the usual finite syntactic
+proof translations.
+
+The mathematical content of (C0) includes the actual proof enumerator,
+the native CP/GIC/irreflexivity calculus, its comparison with ZF, and
+the removal of Choice from a ZFC refutation.  It is not an inference from
+the words ``equiconsistent'' alone.  In particular,
+\texttt{WFTheory.native\_refutation\_iff\_zf} uses the internally
+well-founded part of the CP/GIC quotient together with completeness;
+\texttt{ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation}
+uses the constructible submodel, soundness, and completeness.\footnote{The
+two actual comparison sources read for this audit are
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFTheory.lean}{WFTheory.lean} and
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean}{ConstructibleChoice.lean}.
+The source calibration composes these already established interfaces;
+this report does not re-prove their full ancestor library.}
+These are ordinary arguments about finite syntax, countable
+first-order models, quotients, and definable substructures, which ZFC
+formalizes.  This use of the inherited mathematics does not assume a
+general soundness theorem for the whole Lean type theory inside ZFC.
+
+\subsection{The new source and binary simulation}
+
+Let $P_1$ be the source with digest
+\file{7fd152d1f5371d2a561d4ad1870d241683b010ce7b7a27399b95363a4537cfb6}.
+The independently checked certificate of
+Section~\ref{sec:boundary-rotation-certificate} establishes
+\[
+ \operatorname{RegisterHalts}(P_1,(\epsilon,R))
+ \longleftrightarrow
+ \operatorname{RegisterHalts}(P_0,(\epsilon,R))
+ \qquad\text{for every }R.
+ \tag{S}
+\]
+All $13$ stages preserve the exact ordered instruction occurrences and
+their successor indices, including both decrement guards and the halt
+leaf.  The certificate also checks the precise canonicality equation
+\[ P0^\omega=p_{\operatorname{loc}(P)}0^\omega \]
+for every generated successor.  This covers shorter zero-padded prefixes
+and longer zero-only tails.  Thus identifying a path with its reached leaf
+does not silently discard a nonzero tape bit.  The empty initial path
+and the all-zero path to the first leaf represent the same initial
+dispatch tape.  Finite source well-formedness guarantees that decoding
+always reaches a leaf.
+
+For the binary part, write $B_{240}$ for the repaired boundary240 table
+with digest
+\file{19cd7f7863a681828fd026adbf8ce91c21e3ac7604439bc9d4603ba58661853e}.
+Its exact blank run reaches the full calibrated root tape after
+$409\,691$ transitions.  The head is $-5$, the dispatcher is inherited
+state $96$, the nine logical registers are $R_*$, and the spare suffix
+consists of $167$ values equal to $1$.  The header is $181$ cells from
+the head, so the additional gap parameter in the runtime checker is
+$181-64=117$.  The finite support has $351$ one-cells; the comparison
+includes every tape position and its zero exterior.
+
+The supplied universal runtime proof establishes, for this precise
+$P_1$ and $B_{240}$, every one of the $8\,386$ guarded instruction
+interfaces.  The same independent engine also proves all $8\,386$
+interfaces directly for $M_{239}$, using $2\,247\,513$ symbolic rules.
+The lower bound on an instruction segment's actual duration is $13$.
+These are universally quantified calculations.  The symbolic values
+range independently over all natural primary-register values, every
+nonnegative extra gap, an arbitrary first spare value, and an arbitrary
+finite remaining spare list.
+
+The sound rules are literal transitions, induction on the length of a
+unary run for an appropriate self-loop, and structural induction on a
+list of register blocks after proving the relevant one-block identity
+from the exact transition table.  Four one-block schemas suffice.  The
+word identity $C(A)1=1B(A)$, with
+$B(v)=01^{v+1}$ and $C(v)=101^v$, follows by induction on the finite
+list $A$; its reversal is used as well.  Every accepted nonhalting
+interface equates the entire final tape, control state, and displacement
+with the required successor frame.  The gap stays nonnegative;
+decrement and rollover can enlarge it.  Increment appends a spare value
+$1$, and no operation empties the spare suffix.  These facts close the
+frame invariant for arbitrarily many source instructions.
+
+Determinism and positive segment lengths now give
+\[
+ \operatorname{Halt}(B_{240},0^\mathbb Z)
+ \longleftrightarrow
+ \operatorname{RegisterHalts}(P_1,(\epsilon,R_*)).
+ \tag{R}
+\]
+A source halt produces a finite binary halt.  Conversely, every
+nonhalting source execution supplies infinitely many positive binary
+segments; the literal and inductively verified segment computations
+exclude a premature binary halt.  Therefore the reverse implication
+does not depend on a finite testing horizon.
+
+\subsection{The final fold and composition}
+
+The six local identities in Section~\ref{sec:fold239}
+prove, for every initial binary tape and hence for the blank tape,
+\[
+ \operatorname{Halt}(M_{239},0^\mathbb Z)
+ \longleftrightarrow
+ \operatorname{Halt}(B_{240},0^\mathbb Z).
+ \tag{F}
+\]
+The independent audit re-ran this certificate with Python optimization
+enabled, since the checker uses explicit failing conditions rather
+than removable assertions.  It checks all incoming ports, the exact
+edit set, and complete two-cell traces.  No arithmetic or register
+assumption is used: the surrounding tape is arbitrary.  The blocks
+have positive lengths on both sides, and old state $223$ is internal
+to a block and has no uncovered caller.  Thus the context split
+cannot introduce an infinite stutter or an unmatched halt.
+
+Compose (F), (R), (S) at $R_*$, and (C0), followed by the finite-proof
+coding equivalence.  This proves (E239).  State renumbering is a
+bijection on all working controls and the designated halt control,
+so it preserves this conclusion step for step.  All new inductions
+are over natural numbers or finite lists, and every finite side
+condition is pinned to the displayed files.  Together with the
+inherited calibration mathematics, the composition is a proof in
+ordinary ZFC. \hfill$\square$
+
+\paragraph{Proof status.}
+The ordinary mathematical endpoint above is complete relative to the
+explicitly cited inherited calibration.  A newly serialized Lean
+kernel theorem for the complete $239$-state binary endpoint has not
+been supplied, and no internal PA endpoint is claimed.  Those are
+additional formalization tasks.  They do not constitute an omitted
+step in the ordinary source, tape, or finite-proof composition given
+here.  The theorem proves the requested equivalence; it does not
+prove ZFC's consistency or unconditional nonhalting.

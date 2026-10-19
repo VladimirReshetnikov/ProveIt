@@ -1,0 +1,178 @@
+Source/compiler track: independently checked results and integration notes
+=======================================================================
+
+Main 239-state candidate
+------------------------
+
+The chosen v106 table was independently reconstructed from the exact pinned
+240-state table, not copied from the state-fold search output.  It deletes
+old state 169, redirects 147/0 to80, replaces 80/0 by 0L106, and replaces 91/1
+by 1L167.  All other rows are preserved.  The complete domain is 239 working
+states, two rows each, with a separate halt state 254 in the inherited labels.
+
+Old-label SHA256:
+76a9574ac0385b96dbd558fa852a222e1d9025e48e34dc3590384146726d2a9b
+
+Canonical table (start 0, working 0..238, halt 239) SHA256:
+4447a2423907f2b96e8bcd6c88ed2d1e353f925fb8cf36ca913224ddce5914ba
+
+Files:
+  check_candidate239_boot.py
+  candidate239_boot/candidate239_v106_old.tm
+  candidate239_boot/candidate239_v106.tm
+  candidate239_boot/boot_v106.json
+  candidate239_boot/summary.json
+
+The blank initialization was checked by two separately implemented literal
+interpreters: a sparse set of one-cells and a dense byte array with its own
+dispatch structure and transition loop.  Both give precisely 409835 steps,
+state 96, head −5, exactly 351 one-cells, and every other cell 0.  The visited
+head range is [−15,701].  There are 1410 visits to state 96 before and including
+the required complete frame, so stopping at the first dispatcher visit would
+be incorrect.  The exact one-cell list is in the receipt.
+
+The final marker is at −6, the register header at 176; physical register values
+are [0,0,0,3,0,0,3,0,0], and the 167 spare blocks each have value 1.  Logical
+values are [3,0,0,0,3,0,0,0,0].  The same complete frame is reached by the old
+table at 409691 steps, so this candidate's bootstrap has 144 additional steps.
+
+The two other locally synthesized 239 variants also pass the exact blank
+check: v12 takes 409943 steps and v142 takes 409967.  Their tables are optional
+discovery artifacts; v106 has the full runtime proof performed by the root.
+
+Independent local-proof review
+------------------------------
+
+Files:
+  review_local239.py
+  local239_independent_review.json
+
+The independent checker replays the six finite certificate paths directly
+against both literal tables.  Every unassigned tape position is treated as
+an independent original bit.  Any attempt to read such a position fails;
+all replayed reads are forced by explicit assumptions or earlier writes.
+The entire symbolic tapes agree at each endpoint, including every exterior
+cell.  The checker additionally verifies the complete transition domains,
+all other rows under the state map 169->80, and every incoming transition
+needed for the old-machine structural invariant.
+
+Cases (old steps/new steps, common endpoint relative to entry head):
+  old 80/read0:  1/5,  state 25,  head +1
+  old 80/read1:  1/1,  state 91,  head +1
+  old 169/read0: 1/3,  state 57,  head +1
+  old 169/read1: 1/5,  state 56,  head +1
+  old 91/read0:  1/1,  state 106, head +1
+  old 91/read1:  3/11, state 2,   head −3
+
+The structural invariant is: state 67 has a 0 immediately to its left;
+state 80 has 01 to its left; state 91 has011 to its left; state 169 has a 0
+immediately to its left.  These predicates are vacuous initially at state 95
+and are preserved by all incoming rows.
+
+One semantic premise remains external to this short local checker:
+old 169 reading 1 implies a 1 immediately to its right.  The state-fold agent's
+verify_selector_guard.py checks it during all 8,386 unbounded runtime cases
+using the unchanged inherited proof engine.  Its wrapper adds no rewrite
+rule.  An affine 1-run of constant term at least 2, with nonnegative variable
+coefficients, proves the premise for every natural valuation in a case.
+
+Coverage review: q169 has no self-loop, so a unary summary cannot skip an
+unexamined q169 control visit.  The four single-block proofs cover the list
+induction steps and contain no q169 state.  At q169 an opaque/list head lacking
+a registered lemma would make the underlying checker fail; hence the
+wrapper's run test does not omit a successful unbounded proof branch.  The
+full proof checks exact tape joins between instruction frames.  The extra
+finite blank guard audit covers the initialization prefix.
+
+The simulation argument uses invariants only at mapped OLD configurations.
+It does not require these same predicates at every intermediate state of
+the new run.  Each block has positive old and new length, and the displayed
+blocks contain no intermediate halt.  Infinite old runs yield infinite new
+runs; finite old halting runs yield finite new halting runs.  Together with
+determinism this proves halting equivalence.  The root's direct full8386-case
+runtime verification gives a separate route to the same machine-level
+simulation result.
+
+This track has not audited the entire earlier logical consistency compiler.
+The local result transfers the exact 240 machine/source theorem to 239.  The
+parent report must keep the inherited logical proof chain explicit and
+distinguish ordinary mathematical verification from a proof-assistant
+endpoint.
+
+Source and compiler experiments
+-------------------------------
+
+1. Register permutation family: a rigorous narrow negative result.
+
+permutation_quotient_screen.py constructs an overapproximation of exact
+step-bisimilarity over every physical-register permutation in the specified
+12-selector-row family.  Mutable rows are the read-1 rows of states
+18,21,25,47,49,53,65,70,93,169,173,201; allowed skip targets are
+60,44,31,56,38,40,28,64,69.  Distinct logical registers must have distinct
+physical images; choices are otherwise allowed independently at different
+occurrences, a relaxation of one global bijection.  Starting with 29,941
+ordered state pairs including diagonals, 13 refinements leave no distinct
+pair.  Thus none of the 9! permutations yields an exact transition quotient
+within this family.  This says nothing against context-dependent folds,
+changed initialization, changed tape layouts or multiple-step simulation.
+Receipt: permutation_quotient_screen.json.
+
+2. Source reachability: independently closed interval invariant.
+
+reachable_intervals.py uses a finite capped interval domain, with every
+final source-edge preservation obligation rechecked after convergence.
+The cap 8 run gives 145,225 updates, 8,381 admitted guarded cases, 8,380
+nonterminal edges, and excludes precisely:
+  site 6314 positive, site 6315 control,
+  site 6429 positive, site 6430 increment, site 6431 control.
+Sites 6315, 6430, 6431 are unreachable.  These agree with the root's independent
+cap 3 analysis.  The receipt is reachable_intervals8.json.  The new 239 proof
+does not need these source restrictions: the direct runtime verification
+covers all 8,386 cases and all independent natural register values.
+
+3. Sequence grammar search: one independently verified alternate 240 layout.
+
+Five 55-second heuristic runs examined 6,647,187 proposals in total.  No run
+found a 124-node sequence grammar.  The current complement has 115 states and
+the grammar has 125; some copied upstream search metadata says 118 and must
+not be used as a state count.  Search engines were adapted from the existing
+Source 68/Source 71 research implementations; this is not a new algorithm.
+
+cluster_variant1 is a different 240-state table with 6,455 source leaves,
+maximum source depth 48 (old 51), and the same maximum zero-run 6.  A 1,932-pair
+increment/decrement-segment bisimulation checks every control edge against
+the original source.  The exact blank initialization is unchanged at 409691
+steps.  The inherited unbounded runtime checker passes all 8,386 cases.
+
+Alternate-layout SHA256:
+9353a5a0baa1ea352579fbf09f8f2c789c7595bdb55854b1012f947f97666d2a
+
+Files under cluster_variant1:
+  machine_old.tm, sites_logical.json, source_bisimulation.json,
+  construction.json
+
+This layout can be retained for future further-fold searches.  It is not
+needed by the selected 239 construction.  variant1 is exactly the original
+table, not an alternate result.  cluster_variant2 did not pass blank boot
+within its construction bound and must not be represented as valid.
+
+4. NIP source specialization: six leaves saved, binary repair unfinished.
+
+The exact source interval proves R6=0 at entry 11101001010.  The NIP check can
+then be specialized from 12 leaves to 6, giving 6,449 source leaves.  An exact
+affine prefix certificate splits R5 into 0, 1, 2+n, with a natural-number
+induction for the clearing loop.  There are 8,369 commuting outside control
+edges.  The normal form halts exactly when entry R5=1; otherwise it returns
+with R5=R6=0 and all other registers unchanged.
+
+Files: nip_specialize.py; nip_specialized/source_certificate.json and
+nip_specialized/sites_logical.json.  The direct NIP idea was already in
+earlier Source 57/Source 71 reports; the present result instantiates and
+checks it against the exact current source.  A nominal 240 binary rewrite
+breaks the existing 72/90 compensated return.  No repaired binary table or
+state saving from this source specialization is claimed.  Work was paused
+when the actual 239 fold was found.
+
+Other finite heuristic fragment/commutation searches found no certified
+state-saving alternative.  Their negative finite search outcomes are not
+impossibility theorems and need not be included in the main deliverable.
