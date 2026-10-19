@@ -1482,8 +1482,11 @@ NativePeel,
 [internal package induction](../../../../Logic/Interpretability/ZFCinPA/package_induction_check.md),
 [recursive formula-code construction](../../../../Logic/Interpretability/ZFCinPA/level_code_tower_check.md),
 [universal proof kernels](../../../../Logic/Interpretability/ZFCinPA/universal_kernel_check.md),
-[certificate assembly and extraction](../../../../Logic/Interpretability/ZFCinPA/certificate_family_check.md)
-and [native interpretation and quotation](../../../../Logic/Interpretability/ZFCinPA/native_interp_check.md)
+[certificate assembly and extraction](../../../../Logic/Interpretability/ZFCinPA/certificate_family_check.md),
+[native interpretation and quotation](../../../../Logic/Interpretability/ZFCinPA/native_interp_check.md),
+[interpretation/template commutation](../../../../Logic/Interpretability/ZFCinPA/ntinterp_check.md),
+[interpreted fixed ZF axioms](../../../../Logic/Interpretability/ZFCinPA/native_fixed_check.md)
+and [certificate-field code construction](../../../../Logic/Interpretability/ZFCinPA/certificate_fields_check.md)
 checks, the [compactness/completeness interfaces](../../../../Logic/FirstOrder/checked_interfaces.md)
 and ten [register-program modules](arithmetic_register_prerequisites.md)
 have passed. The first concrete control-bisimulation check hit the 4 GiB
@@ -1491,12 +1494,12 @@ memory limit; [all 3,862 entries and the assembled equivalence](control_bisim_ro
 now pass after splitting the certificate into 31 intervals, with the memory
 cap unchanged. The [register endpoint](arithmetic_register_endpoint240.md)
 now connects validator acceptance to the exact Rotation240 control seed in
-every IΣ₁ model. These fresh checks close forty-two of the inventory's 88
+every IΣ₁ model. These fresh checks close forty-five of the inventory's 88
 missing entries, including all eleven register-side entries. A
 [provider review](../../../../Logic/Interpretability/ZFCinPA/fixedpoint-template-route/README.md)
 also recovers an already accepted current-source result for
 `ModelCodedPredicateTemplate`, closing one further entry without replay.
-Thus 43 entries are resolved and 45 remain. The remaining
+Thus 46 entries are resolved and 42 remain. The remaining
 validator checks and final PA composition are still pending.
 The separate [Foundation set-theory dependency branch](../../../../Logic/Interpretability/ZFCinPA/foundation_set_theory_check.md)
 now has fresh Model, Basic, ExistsUnique and Z checks. The

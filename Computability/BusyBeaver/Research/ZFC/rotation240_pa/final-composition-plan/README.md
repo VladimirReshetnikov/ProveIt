@@ -49,6 +49,9 @@ After that inventory, [R2Neg](../../../../../../Logic/Interpretability/ZFCinPA/r
 [universal proof kernels](../../../../../../Logic/Interpretability/ZFCinPA/universal_kernel_check.md),
 [certificate assembly and extraction](../../../../../../Logic/Interpretability/ZFCinPA/certificate_family_check.md),
 [native interpretation and quotation](../../../../../../Logic/Interpretability/ZFCinPA/native_interp_check.md),
+[interpretation/template commutation](../../../../../../Logic/Interpretability/ZFCinPA/ntinterp_check.md),
+[interpreted fixed ZF axioms](../../../../../../Logic/Interpretability/ZFCinPA/native_fixed_check.md),
+[certificate-field code construction](../../../../../../Logic/Interpretability/ZFCinPA/certificate_fields_check.md),
 the [compactness/completeness interfaces](../../../../../../Logic/FirstOrder/checked_interfaces.md)
 and ten [register-program modules](../../arithmetic_register_prerequisites.md)
 passed. NativePeel required one
@@ -56,20 +59,21 @@ implicit-argument correction, with the failed original run preserved.
 The [first concrete bisimulation check](../control-bisim-first-check/README.md)
 hit the 4 GiB memory limit; the
 [complete split certificate and assembled equivalence](../../control_bisim_rotation240_split.md)
-now pass under the unchanged cap. These fresh checks remove forty-two of
+now pass under the unchanged cap. These fresh checks remove forty-five of
 the 88 entries. The
 [provider review](../../../../../../Logic/Interpretability/ZFCinPA/fixedpoint-template-route/README.md)
 also identifies an already accepted current-source result for
 `ModelCodedPredicateTemplate`; its exact source/object pair is reusable, with
 the original warnings and legacy capture limits retained. This closes one
-further entry without replay: 43 resolved and 45 remaining.
+further entry without replay: 46 resolved and 42 remaining.
 An independent [legacy-record reconciliation](../../../../../../Logic/Interpretability/ZFCinPA/fixedpoint-template-route/legacy-review.json)
 confirms that reuse and finds no further omission among 1,511 named PASS
 records. Its counts describe its earlier scan checkpoint; the later
 soundness, axiom-truth, Translation, NativeTheory, R2Ax, R2Fixed, SeparationKernel
 and UniformStatement checks, followed by SubstIdentity, LTemplate, NTemplate,
 PackageInduction, LevelCodeTower, UniversalKernel, CertificateFamily and
-NativeInterp, are included in the current count above. NativeInterp required
+NativeInterp, NTInterp, NativeFixed and CertificateFields, are included in
+the current count above. NativeInterp required
 two local definitional proof repairs, with the original failure retained.
 All eleven register-side entries are now checked;
 the [register endpoint](../../arithmetic_register_endpoint240.md) includes

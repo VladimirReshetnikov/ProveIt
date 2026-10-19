@@ -31,7 +31,10 @@ Fresh verification records now cover the
 [recursive formula-code construction](level_code_tower_check.md),
 [universal proof kernels](universal_kernel_check.md),
 [certificate assembly and extraction](certificate_family_check.md),
-[native interpretation and quotation](native_interp_check.md) and the separate
+[native interpretation and quotation](native_interp_check.md),
+[interpretation/template commutation](ntinterp_check.md),
+[interpreted fixed ZF axioms](native_fixed_check.md),
+[certificate-field code construction](certificate_fields_check.md) and the separate
 [arithmetic fixed-point dependency](foundation_fixedpoint_check.md).
 Their audits retain the distinction between external finite syntax and
 model-internal indices, and state the cached dependency boundaries explicitly.
