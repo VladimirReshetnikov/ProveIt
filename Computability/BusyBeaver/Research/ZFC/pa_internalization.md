@@ -1506,3 +1506,18 @@ now has fresh Model, Basic, ExistsUnique and Z checks. The
 [arithmetic FixedPoint dependency](../../../../Logic/Interpretability/ZFCinPA/foundation_fixedpoint_check.md)
 also passes its fresh check, with 13 preserved source style warnings.
 These external dependency checks are additional to the original 88 project entries.
+
+**W6 landed upstream; Claude lane replaying (2026-10-19).** The Codex lane
+proved W6 units A–F (`ControlCatalogueRotation240` … 
+`ArithmeticControlSimulationRotation240`, ending in
+`ArithmeticBlankControlRotation240.control_iff_blank_halts`: in every IΣ₁
+model, blank240 halts iff `controlRun ControlCatalogueRotation240.table`
+halts from `liveValue 1 seedFile`). That table is literally
+`ControlBisimRotation240.tableR`, and `seedFile` is the nested-pair code of
+`ArithmeticL2.enc seed`. So the Claude lane does **not** re-prove C–F.
+Instead it (i) replays the whole W7 closure locally, one module at a time
+(694 modules not yet compiled on this machine, including the 31-interval
+certificate split of `ControlBisimRotation240` and the site-decoder family),
+and (ii) lands the reviewed final composition
+`rotation240_pa/final-composition-plan/BinaryConsistencyRotation240.lean`
+unchanged as `ZFCinPA.BinaryConsistencyRotation240`, once that replay is green.
