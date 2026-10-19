@@ -120,6 +120,9 @@ now passes 35 generated modules with 1,061 probes and typed callers, zero
 warnings and default proof limits. All 6,455 four-field rows agree with the
 decoder catalogue. Including its separately checked pilot gives 1,062 probes
 and callers. This closes the finite table-identification part of W6.
+The [control-catalogue adapter](control_catalogue_rotation240.md) passes
+16 probes and callers, exposing exact packed rows, accepted source paths,
+PC values and consumed-path successor resolution without replaying coverage.
 The [internal carry and return contracts](arithmetic_carry_rotation240.md)
 pass 11 probes and 13 callers, proving complete unary-block tape effects at
 arbitrary internal register values for the exact 240-state transitions.
@@ -137,6 +140,14 @@ pass 12 probes and 14 callers with zero warnings. Both branches preserve
 arbitrary complete tape contexts and append no spare; positive decrement
 exposes its added gap cell, while zero decrement explicitly requires the
 following block supplied by the spare invariant.
+The [internal marking contract](arithmetic_register_mark_rotation240.md)
+passes 15 probes and 17 callers with zero warnings, preserving both complete
+tape halves at each of the nine physical selectors and proving the exact
+positive return clock.
+The [internal symbolic-tape interpretation](arithmetic_symbolic_tape_rotation240.md)
+passes 10 probes and 12 callers. Actual normalization and `isMatch` preserve
+numeric tape configurations at arbitrary internal gaps; box execution and
+the full arithmetic simulation remain to be connected.
 
 The [**241-state candidate**](candidate-fold241/README.md) from `8c41b1fb7d`
 adds two local folds to the combined243 table. The last fold uses a bit written
