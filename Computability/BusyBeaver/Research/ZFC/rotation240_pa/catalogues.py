@@ -218,3 +218,35 @@ if __name__ == "__main__":
     b = rotation240()
     print("prog254 leaves", len(a.entries), "start", a.start())
     print("rotation240 leaves", len(b.entries), "start", b.start())
+
+
+def parse_dag254():
+    """`Dag254.dagNodes` as {n: (car, cdr)} with edges ("node", m) or leaves."""
+    with open(os.path.join(LEAN, "Dag254.lean"), encoding="utf-8") as f:
+        text = f.read()
+    nodes = {}
+    pat = re.compile(r"^  \| (\d+) => \((.*)\)\s*--", re.M)
+    edge_pat = re.compile(r"\(?\.(node|inc|decnz|brk|cont|halt)(?: (\d+))?\)?")
+    for m in pat.finditer(text):
+        n = int(m.group(1))
+        es = edge_pat.findall(m.group(2))
+        assert len(es) == 2, (n, m.group(2))
+        nodes[n] = tuple((k, int(a) if a else 0) for k, a in es)
+    return nodes
+
+
+def dag_tree(nodes, root=0, fuel=220):
+    """`RMBisim.toTree (ofDag dag254 219) 220 root`."""
+    def go(f, n):
+        if f == 0:
+            return ("none",)
+        car, cdr = nodes[n]
+
+        def child(e):
+            return go(f - 1, e[1]) if e[0] == "node" else ("leaf", e)
+        return ("node", child(car), child(cdr))
+    return go(fuel, root)
+
+
+def dag254():
+    return Catalogue(dag_tree(parse_dag254()))

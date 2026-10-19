@@ -18,8 +18,8 @@ agree; the certificate names the related successor entry of each branch. Each
 such segment costs at least one instruction on both sides (the test itself),
 so one `Σ₁` induction transports halting in both directions (`halts_iff`).
 
-`checkAll`/`closedRange` are external Boolean computations, evaluated by the
-kernel on concrete catalogues. Their soundness (`rel_step`) is proved once for
+`checkFrom`/`entryOK` are external Boolean computations, evaluated by the
+kernel on concrete catalogues. Their soundness (`entry_step`) is proved once for
 arbitrary internal register values. Concrete machines enter only through the
 abstract step equations `spec`, so this module fixes no catalogue and no file
 encoding.
@@ -53,7 +53,11 @@ structure Row where
 /-- An offset vector, read with default zero. -/
 abbrev Vec := List Nat
 
-def vget (u : Vec) (p : Nat) : Nat := u.getD p 0
+/-- Structural read (kernel-fast; no typeclass indexing). -/
+def vget : Vec → Nat → Nat
+  | [], _ => 0
+  | x :: _, 0 => x
+  | _ :: u, p+1 => vget u p
 
 def bump : Vec → Nat → Vec
   | [], 0 => [1]
@@ -61,16 +65,18 @@ def bump : Vec → Nat → Vec
   | x :: u, 0 => (x+1) :: u
   | x :: u, p+1 => x :: bump u p
 
+theorem vget_nil (p : Nat) : vget [] p = 0 := by cases p <;> rfl
+
 theorem vget_bump (u : Vec) (r p : Nat) :
     vget (bump u r) p = vget u p + if p = r then 1 else 0 := by
   induction u generalizing r p with
   | nil =>
     induction r generalizing p with
-    | zero => cases p <;> simp [bump, vget]
+    | zero => cases p <;> simp [bump, vget, vget_nil]
     | succ r ih =>
       cases p with
       | zero => simp [bump, vget]
-      | succ p => simpa [bump, vget] using ih p
+      | succ p => simpa [bump, vget, vget_nil] using ih p
   | cons x u ih =>
     cases r with
     | zero => cases p <;> simp [bump, vget]
@@ -79,14 +85,36 @@ theorem vget_bump (u : Vec) (r p : Nat) :
       | zero => simp [bump, vget]
       | succ p => simpa [bump, vget] using ih r p
 
-/-- Offset left over after moving the pointwise minimum into the base. -/
-def vnorm (u v : Vec) : Vec :=
-  (List.range 9).map fun p => vget u p - min (vget u p) (vget v p)
+def vhead : Vec → Nat
+  | [] => 0
+  | x :: _ => x
 
-theorem vget_range_map (g : Nat → Nat) (p : Fin 9) :
-    vget ((List.range 9).map g) p = g p := by
-  have hp := p.isLt
-  simp [vget, hp]
+def vtail : Vec → Vec
+  | [] => []
+  | _ :: u => u
+
+/-- Offset left over after moving the pointwise minimum into the base (first `n`
+registers). -/
+def vnormN : Nat → Vec → Vec → Vec
+  | 0, _, _ => []
+  | n+1, u, v => (vhead u - min (vhead u) (vhead v)) :: vnormN n (vtail u) (vtail v)
+
+def vnorm (u v : Vec) : Vec := vnormN 9 u v
+
+theorem vget_vnormN (n : Nat) (u v : Vec) (p : Nat) (hp : p < n) :
+    vget (vnormN n u v) p = vget u p - min (vget u p) (vget v p) := by
+  induction n generalizing u v p with
+  | zero => omega
+  | succ n ih =>
+    cases p with
+    | zero => cases u <;> cases v <;> simp [vnormN, vget, vhead, vget_nil]
+    | succ p =>
+      have h := ih (vtail u) (vtail v) p (by omega)
+      cases u <;> cases v <;> simp_all [vnormN, vget, vtail, vget_nil]
+
+theorem vget_vnorm (u v : Vec) (p : Fin 9) :
+    vget (vnorm u v) p = vget u p - min (vget u p) (vget v p) :=
+  vget_vnormN 9 u v p p.isLt
 
 /-- One certificate entry: related controls, their offsets, and the indices of
 the successor entries for the zero and the positive branch. -/
@@ -178,36 +206,44 @@ theorem checkEntry_spec (rowsA rowsB : Nat → Option Row) (cert : Nat → Optio
     next => cases h
   next => cases h
 
-/-- All entries below `n` exist and pass the local check, and all their
-successor indices are below `bound`. -/
-def checkAll (rowsA rowsB : Nat → Option Row) (cert : Nat → Option Entry)
-    (fuel bound : Nat) : Nat → Bool
-  | 0 => true
-  | n+1 => checkAll rowsA rowsB cert fuel bound n &&
-      match cert n with
-      | some e => checkEntry rowsA rowsB cert fuel e && decide (e.s0 < bound) &&
-          decide (e.s1 < bound)
-      | none => false
+/-- One entry exists, passes the local check, and names successors below `bound`. -/
+def entryOK (rowsA rowsB : Nat → Option Row) (cert : Nat → Option Entry)
+    (fuel bound i : Nat) : Bool :=
+  match cert i with
+  | some e => checkEntry rowsA rowsB cert fuel e && decide (e.s0 < bound) &&
+      decide (e.s1 < bound) && decide (0 < e.a)
+  | none => false
 
-theorem checkAll_entry (rowsA rowsB : Nat → Option Row) (cert : Nat → Option Entry)
-    (fuel bound n : Nat) (h : checkAll rowsA rowsB cert fuel bound n = true)
-    (i : Nat) (hi : i < n) :
-    ∃ e, cert i = some e ∧ checkEntry rowsA rowsB cert fuel e = true ∧
-      e.s0 < bound ∧ e.s1 < bound := by
-  induction n with
+/-- Entries `i, …, i+k-1` pass `entryOK`; the entry check is evaluated first so
+that the recursive call is in tail position for the kernel. -/
+def checkFrom (rowsA rowsB : Nat → Option Row) (cert : Nat → Option Entry)
+    (fuel bound : Nat) : Nat → Nat → Bool
+  | _, 0 => true
+  | i, k+1 => entryOK rowsA rowsB cert fuel bound i && checkFrom rowsA rowsB cert fuel bound (i+1) k
+
+theorem checkFrom_entry (rowsA rowsB : Nat → Option Row) (cert : Nat → Option Entry)
+    (fuel bound i k : Nat) (h : checkFrom rowsA rowsB cert fuel bound i k = true)
+    (j : Nat) (hj : i ≤ j) (hjk : j < i + k) : entryOK rowsA rowsB cert fuel bound j = true := by
+  induction k generalizing i with
   | zero => omega
-  | succ n ih =>
-    simp only [checkAll, Bool.and_eq_true] at h
-    rcases Nat.lt_succ_iff_lt_or_eq.mp hi with hlt | rfl
-    · exact ih h.1 hlt
-    · obtain ⟨_, h2⟩ := h
-      revert h2
-      cases cert i with
-      | none => simp
-      | some e =>
-        intro h2
-        simp only [Bool.and_eq_true, decide_eq_true_eq] at h2
-        exact ⟨e, rfl, h2.1.1, h2.1.2, h2.2⟩
+  | succ k ih =>
+    simp only [checkFrom, Bool.and_eq_true] at h
+    rcases Nat.eq_or_lt_of_le hj with rfl | hlt
+    · exact h.1
+    · exact ih (i+1) h.2 (by omega) (by omega)
+
+theorem entryOK_spec (rowsA rowsB : Nat → Option Row) (cert : Nat → Option Entry)
+    (fuel bound i : Nat) (h : entryOK rowsA rowsB cert fuel bound i = true) :
+    ∃ e, cert i = some e ∧ checkEntry rowsA rowsB cert fuel e = true ∧
+      e.s0 < bound ∧ e.s1 < bound ∧ 0 < e.a := by
+  unfold entryOK at h
+  revert h
+  cases cert i with
+  | none => simp
+  | some e =>
+    intro h
+    simp only [Bool.and_eq_true, decide_eq_true_eq] at h
+    exact ⟨e, rfl, h.1.1.1, h.1.1.2, h.1.2, h.2⟩
 
 /-! ## A generic two-sided positive transport -/
 
@@ -331,11 +367,11 @@ theorem shifted_norm (x ya yb : V) (ua ub : Vec)
     Shifted reg x' (vnorm ua ub) ya ∧ Shifted reg x' (vnorm ub ua) yb := by
   constructor
   · intro p
-    rw [ha p, hx' p, vnorm, vget_range_map, add_assoc, ← Nat.cast_add]
+    rw [ha p, hx' p, vget_vnorm, add_assoc, ← Nat.cast_add]
     congr 2
     omega
   · intro p
-    rw [hb p, hx' p, vnorm, vget_range_map, add_assoc, ← Nat.cast_add]
+    rw [hb p, hx' p, vget_vnorm, add_assoc, ← Nat.cast_add]
     congr 2
     omega
 
@@ -446,9 +482,9 @@ theorem entry_step (e : Entry) (hc : checkEntry rowsA rowsB cert fuel e = true)
   obtain ⟨hsa', hsb'⟩ := shifted_norm x ya1 yb1 ua ub hya1 hyb1 x' hx'p
   set r := ra.reg
   have hra0 : vget (vnorm ua ub) r = 0 := by
-    rw [vnorm, vget_range_map]; omega
+    rw [vget_vnorm]; omega
   have hrb0 : vget (vnorm ub ua) r = 0 := by
-    rw [vnorm, vget_range_map]; omega
+    rw [vget_vnorm]; omega
   have hva : reg ya1 r = reg x' r := by rw [hsa' r, hra0]; simp
   have hvb : reg yb1 r = reg x' r := by rw [hsb' r, hrb0]; simp
   have hvb' : reg yb1 rb.reg = reg x' r := by rw [← hreg]; exact hvb
@@ -718,11 +754,10 @@ variable {reg : V → Fin 9 → V} {write : Fin 9 → V → V → V} {live : V �
     stepB (live (c : V) x) = sem reg write live row x)
   (reg_write_same : ∀ p v x, reg (write p v x) p = v)
   (reg_write_other : ∀ p q v x, p ≠ q → reg (write p v x) q = reg x q)
-  (hcheck : checkAll rowsA rowsB cert fuel N N = true)
-  (hpos : ∀ i e, i < N → cert i = some e → 0 < e.a)
+  (hcheck : ∀ i, i < N → entryOK rowsA rowsB cert fuel N i = true)
 
 include reg_fileOf live_ne runA_zero runB_zero runA_add runB_add runA_one runB_one
-  runA_halted runB_halted specA specB reg_write_same reg_write_other hcheck hpos hlive hreg
+  runA_halted runB_halted specA specB reg_write_same reg_write_other hcheck hlive hreg
 
 /-- **Certified halting equivalence.** If entry `0` relates controls `a`, `b`
 with zero offsets, then from every internal register file the two control
@@ -739,7 +774,7 @@ theorem halts_iff_of_check (e : Entry) (he : cert 0 = some e) (hN : 0 < N)
     exact ⟨ha ▸ live_ne _ _, hb ▸ live_ne _ _⟩
   · intro a b h
     obtain ⟨i, hi, e, he, x, ya, yb, ha, hb, hsa, hsb⟩ := rel_entry a b h
-    obtain ⟨_, he', hc, hs0, hs1⟩ := checkAll_entry rowsA rowsB cert fuel N N hcheck i hi
+    obtain ⟨_, he', hc, hs0, hs1, _⟩ := entryOK_spec rowsA rowsB cert fuel N i (hcheck i hi)
     rw [he] at he'
     cases he'
     obtain ⟨ka, kb, hka, hkb, hq⟩ := entry_step fileOf reg_fileOf stepA stepB runA runB rowsA
@@ -752,8 +787,14 @@ theorem halts_iff_of_check (e : Entry) (he : cert 0 = some e) (hN : 0 < N)
     · have hsN : s < N := by rcases hs with rfl | rfl <;> assumption
       refine .inr ?_
       rw [ha', hb']
-      exact rel_of_entry s hsN e' hes (hpos s e' hsN hes) x' ya' yb' hsa' hsb'
-  · exact rel_of_entry 0 hN e he (hpos 0 e hN he) x x x
+      obtain ⟨e'', he'', _, _, _, hpos⟩ := entryOK_spec rowsA rowsB cert fuel N s (hcheck s hsN)
+      rw [hes] at he''
+      cases he''
+      exact rel_of_entry s hsN e' hes hpos x' ya' yb' hsa' hsb'
+  · obtain ⟨e', he', _, _, _, hpos⟩ := entryOK_spec rowsA rowsB cert fuel N 0 (hcheck 0 hN)
+    rw [he] at he'
+    cases he'
+    exact rel_of_entry 0 hN e he hpos x x x
       (fun p => by rw [hα p]; simp) (fun p => by rw [hβ p]; simp)
 
 end Main
