@@ -1367,3 +1367,25 @@ These are source plans and a data comparison; the concrete Lean table equality
 and unbounded arithmetic simulation are still required. The
 [frozen history](rotation240_pa/w6-route/history.json.gz) preserves the proposed
 Lean proofs, inventories, parser corrections and source-only evidence.
+
+**W4/W5 closed (Claude lane, 2026-10-19).** The register side of the PA chain
+is now proved in Lean, in every model of IΣ₁, down to the W6 interface:
+`ArithmeticL2.accepted_iff_rotation_halts` (module `ArithmeticL2Endpoint254`)
+states that `∃ code, ArithmeticHistory254.value code = 2` iff
+`controlRun ControlBisimRotation240.tableR` halts from
+`liveValue 1 (enc ⟨3, 0, 0, 0, 3, 0, 0, 0, 0⟩)` (logical seed `np = 3`,
+`p1 = 3`). The chain is: `ArithmeticEnumeratorSeed246.accepted_iff_seed_halts`;
+`ArithmeticL2.halts_iff` (positive-clock transport of
+`ArithmeticPositiveSimulation254` with the Σ₁ relation `ArithmeticL2.Related`;
+one scheduler step is one run of the root, `ArithmeticL2.root_step`, built
+from the internal port of the L2 contracts in `ArithmeticL2Lib254`,
+`…Macros254`, `…Control254`, `…Axioms254`, `…AxiomsEval254`, `…Root254`,
+`…Scheduler254`); the root occurrence `ArithmeticL2.root_occ` (one
+`decide +kernel` on the packed dag254 table, fuel 220, controls 1–6460, normal
+exit to control 1; Python model `rotation240_pa/check_root_occ.py`); and the W3
+bisimulation `ControlBisimRotation240.halts_iff`. Axioms: `propext`,
+`Classical.choice`, `Quot.sound`. The concrete root occurrence, the
+identification of the AX dispatch with the validator's AX operation
+(`ArithmeticL2.ax_eval`), the scheduler/seed composition and both halting
+directions, listed as open in the review above, are therefore discharged.
+W6 (binary240 ⟺ the `tableR` interpreter) and W7 remain open.
