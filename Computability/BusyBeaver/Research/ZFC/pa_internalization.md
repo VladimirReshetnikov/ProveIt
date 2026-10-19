@@ -58,6 +58,15 @@ and 14 callers with zero warnings. IΣ₁ and PA prove the equivalence of the fi
 blank- and seed-halting sentences. Its general shift theorem covers arbitrary
 internal offsets and configurations, including prefixes that extend past a
 halt. The unbounded internal binary-to-register simulation remains open.
+The [actual 240-state scan layer](arithmetic_scans_rotation240.md) now passes
+13 probes and 15 callers with zero warnings. It supplies bidirectional writing
+and unchanged scans over arbitrary internal lengths, plus exact single-row
+effects. The register-box and dispatch-frame composition remains to be proved.
+The [internal one-valued spare codec](arithmetic_one_blocks_rotation240.md)
+passes nine probes and eleven callers with zero warnings. It supplies total
+Σ₁/Δ₁ repetition, concatenation and append laws for `011`, matching the proposed
+167-plus-increments spare invariant. Machine preservation of that invariant
+is a remaining register-box obligation.
 
 The current arithmetic checkpoints are:
 
@@ -1347,3 +1356,14 @@ with the validator's AX operation, scheduler/seed composition and reverse
 halting argument remain to be joined. These are upstream source additions
 with explicit nondefault limits and attributed compile claims, not a new
 local Lean audit. W6/W7 remain open.
+
+The [W6 implementation route](rotation240_pa/w6-route/README.md) now fixes the
+exact numeric frame: state 85, 64-cell PC margin, 167 initial one-valued spares,
+and seed gap 117. Its independent static comparison finds all 6,455 packed
+four-field rows equal to the decoder catalogue, including both successor
+fields on non-test rows. The [finite binding plan](rotation240_pa/w6-route/table-binding.md)
+turns this into a kernel-checkable obligation using cached subtree counts.
+These are source plans and a data comparison; the concrete Lean table equality
+and unbounded arithmetic simulation are still required. The
+[frozen history](rotation240_pa/w6-route/history.json.gz) preserves the proposed
+Lean proofs, inventories, parser corrections and source-only evidence.

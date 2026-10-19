@@ -94,6 +94,12 @@ passes 12 probes and 14 callers: IΣ₁ and PA prove that blank halting is equiv
 to halting from that complete boot code, using arbitrary internal time shifts
 and halted-code absorption. The unbounded internal simulation and PA
 machine-to-validator comparison remain open.
+The [internal tape scans](arithmetic_scans_rotation240.md) pass 13 probes and
+15 typed callers with zero warnings, covering both directions, writing scans
+and complete single-row effects at arbitrary internal tape lengths.
+The [one-valued spare codec](arithmetic_one_blocks_rotation240.md) passes nine
+probes and eleven callers with zero warnings, supplying total internal
+repetition and append laws for the exact machine's `011` spare blocks.
 
 The [**241-state candidate**](candidate-fold241/README.md) from `8c41b1fb7d`
 adds two local folds to the combined243 table. The last fold uses a bit written
