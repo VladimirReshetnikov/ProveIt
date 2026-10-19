@@ -18,7 +18,8 @@ nonhalting, minimality or two-sided independence from bare consistency is claime
 
 Smaller ordinary candidates now build on this table: the
 [238-state composition](../candidate-combined238/README.md) and the
-[**237-state candidate**](../candidate-composed237/README.md), the smallest known.
+[237-state candidate](../candidate-composed237/README.md) and the
+[**236-state candidate**](../candidate-rotated236/README.md), the smallest known.
 They have executable unbounded certificates but no Lean endpoint. This 240-state
 table remains the smallest with one.
 

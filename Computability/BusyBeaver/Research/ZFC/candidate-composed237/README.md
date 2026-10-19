@@ -4,8 +4,8 @@ This binary, single-tape machine has **237 working states**, including
 initialization, plus a separate halt state. It starts in state 0 at head 0
 on an all-zero two-way infinite tape. Every transition moves left or right.
 The complete 474-row table is [zfc_composed237.tm](zfc_composed237.tm).
-**It is the smallest known candidate** whose blank-tape non-halting is equivalent
-to Con(ZFC).
+It was the smallest known candidate until the [236-state candidate](../candidate-rotated236/README.md)
+(Source 112) removed one more state from it.
 
 It removes three more states from the [240-state candidate](../candidate-rotation240/README.md),
 by three independent savings delivered on 19 October 2026. Each is

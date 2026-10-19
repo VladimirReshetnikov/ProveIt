@@ -38,8 +38,14 @@ equivalent to the corresponding consistency statements. Its nine probes and
 nine typed callers pass with zero warnings. The internal PA equivalence for
 this exact 240-state machine remains open. See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md).
 
-The smallest **ordinary** candidate is now the [**237-state machine**](candidate-composed237/README.md)
-of batch 173 (Source 106). It takes the 238-state composition below and merges
+The smallest **ordinary** candidate is now the [**236-state machine**](candidate-rotated236/README.md)
+of batch 175 (Source 112). It applies a closed, node-neutral source rotation to the 237 table, costing four
+decoder rows, and the rotated row `177/1` exposes a fold of state 223 into 182 by the bit to its
+left, proved for every tape. Its unbounded runtime proof (8,386 cases, 2,267,815 rules), exact
+409,835-step startup, source equivalence and fold all replay independently. The intake's search
+for a further fold by the same method found none.
+
+The [237-state machine](candidate-composed237/README.md) of batch 173 (Source 106) preceded it. It takes the 238-state composition below and merges
 state 235 into 98, with a coordinated change to helper row `240/1`, proved for every
 initial tape. Its unbounded runtime proof replays independently (8,386 cases,
 2,261,369 rules, all 474 rows), and its blank startup takes 409,835 steps. None of the
