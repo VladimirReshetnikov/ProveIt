@@ -44,8 +44,9 @@ The matching artifact directories preserve source plans, audits, raw logs,
 guards and actual provider identities. The Step and Execution histories also
 retain an independent source/API review. No dependency family was rebuilt.
 
-Connecting accepted site certificates, canonical dispatch reentry and exact
-startup is required for the full internal binary
-simulation. These checks alone do not prove the PA consistency endpoint.
+The checked [instruction runtime](arithmetic_site_rotation240.md) now connects
+accepted site certificates to canonical dispatch reentry. Unbounded iteration
+and exact startup remain to be joined for the full internal binary simulation.
+These checks alone do not prove the PA consistency endpoint.
 Machine and framework attribution remains with Mira-Cult, Jeff Ketchersid,
 Andrew James Wade and ProveIt.

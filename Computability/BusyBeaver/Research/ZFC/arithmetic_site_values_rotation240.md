@@ -26,7 +26,8 @@ to state code 85. The theorem statements and proof limits are unchanged.
 The [publication record](results/arithmetic-site-values-rotation240-publication.json)
 binds the accepted source, audit, raw logs and direct guard.
 
-This unit interprets instruction frames. Actual checker acceptance and the
-concrete runtime theorem must still be composed with these identities to
-obtain every instruction's binary endpoint. Attribution remains with
+This unit interprets instruction frames. The checked
+[instruction runtime](arithmetic_site_rotation240.md) now composes these
+identities with actual checker acceptance and the concrete runtime theorem
+to obtain every instruction's binary endpoint. Attribution remains with
 Mira-Cult, Jeff Ketchersid, Andrew James Wade and ProveIt.

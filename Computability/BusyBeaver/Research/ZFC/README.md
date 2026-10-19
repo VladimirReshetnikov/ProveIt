@@ -167,13 +167,18 @@ has checked Step (17/17) and Execution (9/9) units, all four concrete box
 contracts (8/10), and their runtime instance (3/7), with zero warnings.
 The mirror erases to the actual checker and transports accepted finite
 certificates to positive internal clocks with no runtime premise.
-Accepted sites, full dispatch simulation and exact startup are being connected.
+Accepted sites are now connected below; full dispatch simulation and exact
+startup remain to be joined.
 The [exact control-step equations](arithmetic_control_step_rotation240.md)
 pass ten probes and callers, identifying each instruction's represented file
 update and successor directly from the checked Rotation240 catalogue.
 The [exact site-frame interpretation](arithmetic_site_values_rotation240.md)
 passes 12 probes and 14 callers, relating the actual checker syntax and
 physical register writes to the canonical numeric entry and outgoing frames.
+The [internal instruction runtime](arithmetic_site_rotation240.md) passes
+15 probes and 15 callers with zero warnings. All six instruction cases have
+positive internal clocks and exact whole-frame endpoints, using actual site
+coverage and the concrete runtime contracts.
 
 The [**241-state candidate**](candidate-fold241/README.md) from `8c41b1fb7d`
 adds two local folds to the combined243 table. The last fold uses a bit written
