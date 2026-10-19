@@ -1,0 +1,943 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype,amsmath,amssymb,amsthm,mathtools}
+\newcommand{\llbracket}{\mathopen{[\![}}
+\newcommand{\rrbracket}{\mathclose{]\!]}}
+\usepackage{booktabs,longtable,tabularx,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,
+ pdftitle={A 238-state binary Turing machine for ZFC consistency},
+ pdfauthor={Research prepared for Vladimir Reshetnikov and ProveIt}}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=0.2em,topsep=0.35em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\RHalt}{\operatorname{RegisterHalts}}
+\newcommand{\loc}{\operatorname{loc}}
+\newcommand{\inc}{\operatorname{inc}}
+\newcommand{\strip}{\operatorname{strip}}
+\newcommand{\brk}{\operatorname{brk}}
+\newcommand{\cont}{\operatorname{cont}}
+\newcommand{\ZF}{\mathrm{ZF}}
+\newcommand{\ZFC}{\mathrm{ZFC}}
+\newcommand{\PA}{\mathrm{PA}}
+\newcommand{\bits}{\{0,1\}}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newcommand{\digest}[1]{\par\begingroup\small\ttfamily\detokenize{#1}\par\endgroup}
+
+\begin{document}
+\begin{center}
+{\Large\bfseries A 238-state binary Turing machine\\[4pt] for ZFC consistency}\par
+\vspace{0.45em}
+{\large Composing source regrouping with delayed erasure}\par
+\vspace{0.35em}
+Research prepared for Vladimir Reshetnikov and the ProveIt project\\
+19 October 2026
+\end{center}
+
+\begin{abstract}
+We construct an explicit binary, single-tape Turing machine with
+\textbf{238 working states}, including its entire blank-tape initialization,
+whose nonhalting is provably equivalent in ordinary ZFC to
+$\Con(\ZFC)$.  The construction combines two distinct 239-state reductions
+already present in ProveIt's incoming research: a source-boundary
+reassociation with a decoder-context split, and a delayed-erasure reduction.
+Their syntactically separate edits are not enough to justify composition.
+We check the complete local dependencies, reprove the remaining selector
+guard for the changed source, and independently verify every instruction
+interface directly on the final 238-state table.
+
+The final direct proof covers all 8,386 guarded cases of the 6,455-leaf source,
+with arbitrary natural register values, arbitrary additional header gap, and
+an arbitrary nonempty finite spare list.  It uses 2,255,513 symbolic proof
+steps and has minimum instruction duration 13.  Independent sparse and dense
+blank simulations agree on the entire tape after 409,835 transitions.
+The archive contains the exact machine, source data, LaTeX, PDF, fresh
+certificates, and portable standard-library Python replay.  The new endpoint
+is an ordinary mathematical proof supported by executable certificates;
+we do not supply a newly compiled Lean or Rocq theorem for the exact
+238-state table or a serialized internal PA derivation.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Result, convention, and evidence level}
+\label{sec:result}
+
+\begin{theorem}[The exact 238-state endpoint]
+Let $M_{238}$ be the transition table in
+\file{machines/zfc_composed238.tm}, started in state $0$ at head position $0$
+on the all-zero tape indexed by $\mathbb Z$.  State $238$ is the separate
+halt outcome.  For a customary effective first-order ZFC proof predicate,
+\[
+ \ZFC\vdash
+ \bigl(\Halt(M_{238},0^{\mathbb Z})
+ \longleftrightarrow
+ \exists p\,\operatorname{Proof}_{\ZFC}(p,\bot)\bigr).
+ \tag{1}
+\]
+Consequently,
+\[
+ \boxed{\quad\ZFC\vdash
+ \bigl(\neg\Halt(M_{238},0^{\mathbb Z})
+ \longleftrightarrow\Con(\ZFC)\bigr).\quad}
+ \tag{2}
+\]
+The theorem uses the explicitly identified inherited source-to-consistency
+calibration in Section~\ref{sec:calibration}, and the new exact-table
+construction and simulation proofs below.  It makes no assumption of
+$\Con(\ZFC)$ in establishing the biconditionals.
+\end{theorem}
+
+The following table fixes all state-counting conventions.  In particular,
+neither a supplied input word nor an uncharged initialization program is
+hidden outside the machine.
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Working states & $0,1,\ldots,237$: exactly 238\\
+Transition rows & 476: exactly two per working state\\
+Tape and alphabet & One two-way infinite tape, alphabet $\bits$\\
+Initial tape and head & All cells $0$; head at coordinate $0$\\
+Start and dispatcher & $0$ and $84$\\
+Separate halt outcome & $238$, with no outgoing transitions\\
+Moves & Exactly one cell left or right; no stationary moves\\
+In total, including halt & 239 control labels\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The convention is the usual working-state convention used by the supplied
+240-state baseline and the cited 254-state comparison.  Thus the requested
+strict threshold is met: $238<239$ working states.  Every working state is
+reachable from the start in the directed transition graph.  This census
+does not assert that all states occur in the actual blank run.
+
+The canonical table has SHA-256
+\digest{909f29c493e0ccc5d6a481fd7a20a9a82eb934ab2aa7df17b5ec3789255a8c08}
+The inherited-label version has SHA-256
+\digest{069942be27db9736875ea042320e51ac3b1eac7116cbe01cdce520fa6056f78c}
+It uses start $95$, dispatcher $96$, and halt $254$.  All local row numbers
+below refer to these inherited labels, unless explicitly called canonical.
+The complete canonical table is also printed in Appendix~\ref{app:table}.
+
+\subsection{What is newly established}
+
+The inspected repository checkpoint is
+\file{ce192939372ac7944fe2a0208c68a96d49fb5e3b}.  Its linked candidate remains
+the 240-state source-rotation construction.  The incoming archives at that
+checkpoint contain two different 239-state constructions.  Two archives
+give the same delayed-erasure machine; the third gives a different machine
+based on source regrouping and an entry-context split
+\cite{incomingA,incomingB,incomingC,rotation240}.
+
+The present contribution is the concrete 238-state composition and its
+complete compatibility and direct-runtime verification.  The individual
+239-state reductions, their source transformations, the underlying proof
+enumerator and the symbolic proof rules are inherited.  We make no claim
+of historical priority for those methods, of a minimum possible state
+count, or of an exhaustive smallest-known-machine result.  A supplementary
+formalism investigation gives a concrete obstruction to an attractive
+logical-basis substitution; its precise scope is stated separately.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Evidence & Status in this report\\
+\midrule
+Exact table, census, relabeling & Freshly reconstructed by two finite recipes.\\
+Source equivalence & Complete 13-stage certificate freshly replayed.\\
+Calibrated source identity & All 6,455 ordered triples and the seed freshly extracted as data from pinned Lean definitions.\\
+Final binary runtime & Complete unbounded proof replay on the exact 238-state table.\\
+Blank initialization & Fresh sparse/canonical and dense/inherited whole-tape agreement.\\
+Local 239-to-238 proof & Six exact blocks, inductive entry facts, and a fresh predecessor guard proof.\\
+Inherited logical calibration & The cited ProveIt mathematical development; its full proof-assistant ancestor library is not rebuilt here.\\
+New exact-table kernel endpoint & Not supplied.  An ordinary ZFC proof and executable certificates are supplied.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{The two savings and their exact composition}
+\label{sec:construction}
+
+\subsection{Two different 239-state parents}
+
+The delayed-erasure parent keeps the original 6,455-leaf source.  It removes
+old control state $169$ by making states $80$ and $91$ cooperate with
+existing helpers $167$ and $151$.  Its canonical table digest begins
+\file{4447a2423907}; the BusyBeaver239 and Companion submissions describe
+this same machine \cite{incomingA,incomingB}.
+
+The other parent, which we denote $B_{239}$, first reparenthesizes the source
+tree without changing its ordered instructions or complete control graph.
+After repairing the changed decoder context, it splits the two entry roles
+of old state $218$ according to the bit immediately left of the head.  One
+role shares state $179$; the other occupies state $223$, formerly an internal
+helper.  That construction removes $218$ and has canonical digest beginning
+\file{666f5bf1370b}.  Its exact inherited-label digest is
+\digest{d061770f487937f9da652919c9bc9bb79bc9bf137ca41dd7a08eb5ecda8e7719}
+This table is included as \file{reference/boundary239_old.tm}.
+The corresponding source has digest
+\digest{7fd152d1f5371d2a561d4ad1870d241683b010ce7b7a27399b95363a4537cfb6}
+
+The decisive observation is that $B_{239}$ still contains the precise
+control fragments needed by the delayed-erasure reduction.  This is a
+compatibility fact to prove, rather than a subtraction of two unrelated
+state-count claims.
+
+\subsection{The full final edit}
+
+Starting with the exact $B_{239}$ above, perform precisely the three retained
+row changes in Table~\ref{tab:edits} and delete both rows of state $169$.
+All remaining retained rows are unchanged.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{rrll}
+\toprule
+State & Read & $B_{239}$ transition & $M_{238}$ transition\\
+\midrule
+147 & 0 & $(0,R,169)$ & $(0,R,80)$\\
+80 & 0 & $(0,R,25)$ & $(0,L,106)$\\
+91 & 1 & $(0,L,50)$ & $(1,L,167)$\\
+\bottomrule
+\end{tabular}
+\caption{Every retained-row edit for the final 239-to-238 step.}
+\label{tab:edits}
+\end{table}
+
+The deleted rows are $169/0=(0,R,57)$ and $169/1=(0,R,56)$.
+The complete incoming-edge census shows that $147/0$ is the only edge into
+$169$.  Thus no dangling transition remains after redirection and deletion.
+There are $478-2=476$ rows; three retained rows change and 473 retained rows
+remain identical.
+
+Canonical numbering puts inherited state $95$ first, followed by every
+other surviving working label in increasing order.  Inherited halt $254$
+maps to canonical halt $238$.  This is an action-preserving bijection;
+it sends dispatcher $96$ to $84$ and preserves every step exactly.
+
+For incorporation against the older linked 240-state table, the archive
+also supplies the complete alternate recipe
+\file{reference/row_edits_from_rotation240.json}.  It removes states $169$
+and $218$ and changes 43 retained rows.  The builder independently performs
+this full patch and the three-row construction above, and requires
+byte-identical final inherited and canonical tables.  The larger patch
+includes the inherited source-routing changes; those changes must not be
+mistaken for a free two-state deletion from the original table.
+
+\subsection{Why syntactic noninterference is insufficient}
+
+The local delayed-erasure proof uses an invariant about nearby tape cells.
+Changing the source decoder can change the tapes on which those local rows
+are entered, even when the rows themselves are untouched.  Therefore the
+following reasoning would be invalid: the edit sets are disjoint, so both
+savings survive.  We instead establish three concrete facts:
+
+\begin{enumerate}
+\item Every row needed by the local block identities is still present with
+the required action.  The complete incoming-edge implications for the
+structural invariant are checked on $B_{239}$ itself.
+\item The only remaining semantic guard is proved anew for the changed
+source and the exact $B_{239}$ initialization and runtime.
+\item Every source-instruction interface is independently checked on the
+final $M_{238}$ table, giving a direct correctness route.
+\end{enumerate}
+
+This combination is useful beyond the particular number 238.  A local
+proof certificate has a finite dependency set of transition rows.  If those
+rows remain identical, its exact local equations remain valid.  Reachability
+premises are a different dependency and must be preserved by a proved
+invariant or re-established on the new source.  Explicitly keeping these
+two kinds of dependency separate makes compositions reviewable.
+
+\section{The short relational proof of the final saving}
+\label{sec:local}
+
+Write a configuration as $(q,h,T)$, where $T:\mathbb Z\to\bits$.
+Let $\phi(169)=80$, with $\phi(q)=q$ at every other inherited label.
+At simulation checkpoints, the old and new heads and entire tapes agree;
+the controls are related by $\phi$.
+
+\subsection{The structural invariant}
+
+The following predicate is inductive for $B_{239}$ from state $95$, even
+on arbitrary initial binary tapes:
+\[
+\begin{array}{c|l}
+q & \text{required nearby bits}\\\hline
+67 & T(h-1)=0\\
+80 & T(h-2)=0,\quad T(h-1)=1\\
+91 & T(h-3)=0,\quad T(h-2)=1,\quad T(h-1)=1\\
+169& T(h-1)=0.
+\end{array}
+\tag{3}
+\]
+There is no requirement at any other state.  The initial state is $95$,
+so the predicate initially holds vacuously.  For every transition into one
+of the four displayed states, the certificate checks the required shifted
+bits against the bit just written and the predecessor's invariant.
+All incoming transitions, including every row outside this small fragment,
+are inspected.  This prevents a missed caller from invalidating the proof.
+
+One extra premise is needed:
+\[
+ q=169\ \wedge\ T(h)=1\quad\Longrightarrow\quad T(h+1)=1.
+ \tag{4}
+\]
+Unlike (3), we do not claim (4) for arbitrary binary initial tapes.  We
+prove it for the blank run and the valid runtime frames of the changed
+source in Section~\ref{sec:guard}.
+
+\subsection{Six exact whole-tape equations}
+
+Table~\ref{tab:blocks} lists all exceptional blocks.  Unspecified tape cells
+are arbitrary and independent.  The local verifier rejects any read of an
+unspecified exterior cell, and compares every modified cell, final head,
+and endpoint control.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{rllrrrl}
+\toprule
+Old $q$ & Fixed relative bits & New $q$ & Old steps & New steps & $\Delta h$ & Endpoint\\
+\midrule
+80  & $T(-1)=1,T(0)=0$ &80&1&5&$+1$&25\\
+80  & $T(0)=1$ &80&1&1&$+1$&91\\
+169 & $T(-1)=0,T(0)=0$ &80&1&3&$+1$&57\\
+169 & $T(-1)=0,T(0)=T(1)=1$ &80&1&5&$+1$&56\\
+91  & $T(0)=0$ &91&1&1&$+1$&106\\
+91  & $T(-3)=0,T(-2)=T(-1)=T(0)=1$ &91&3&11&$-3$&2\\
+\bottomrule
+\end{tabular}
+\caption{The six positive-block identities.  The starting head is written
+as relative coordinate zero.  Old and new final tapes agree exactly.}
+\label{tab:blocks}
+\end{table}
+
+The fourth case shows the main mechanism.  The old machine erases the
+scanned $1$ and enters state $56$ one cell to the right.  The new control
+path is
+\[
+ 80\longrightarrow91\longrightarrow167\longrightarrow151
+ \longrightarrow173\longrightarrow56.
+\]
+It first retains the scanned $1$.  The guaranteed next $1$ makes the
+$91/1$ action available.  Returning left, states $167$ and $151$ use the
+preceding $0$ to choose the appropriate continuation.  State $173$ finally
+erases the original cell and reaches exactly the old endpoint.  The
+temporary retention of the bit stores a control distinction that would
+otherwise require a separate working state.
+
+For the last case, the old path $91,50,20$ erases the three consecutive
+ones at relative positions $0,-1,-2$ and reaches state $2$ at position $-3$.
+The new path is
+\[
+91,167,151,24,36,54,71,82,94,50,20.
+\]
+State $151$ reads $T(-2)=1$ to choose the original state-$91$ route;
+it encounters $0$ in the newly shared state-$169$ route.  The additional
+bit $T(-3)=0$ then licenses the $24/0$ step that begins the return excursion.
+The eleven-step path produces the same three
+erasures and no other tape change.  The remaining cases are identity
+excursions or unchanged transitions; their full traces are in
+\file{evidence/local238_certificate.json}.
+
+\begin{lemma}[Positive-block transfer]
+Assume the old execution begins at state $95$ and satisfies (4) at every
+reached old state-$169$ configuration.  Then $B_{239}$ and $M_{238}$,
+started on that same tape, halt together.
+\end{lemma}
+
+\begin{proof}
+The initial configurations are related by $\phi$.  At an old checkpoint in
+states $80,91,169$, choose the applicable row of Table~\ref{tab:blocks}.
+The structural invariant (3), and (4) in its one required case, supply all
+fixed bits.  The corresponding old and new positive blocks reach related
+configurations with identical heads and entire tapes.  At every other
+state, the old transition and the new transition agree under $\phi$;
+the verifier checks all 472 such ordinary rows.  This count includes
+$147/0$, which agrees after applying $\phi$.
+
+No exceptional block halts internally.  Induction produces corresponding
+checkpoints for every finite number of blocks.  Every old block takes
+between one and three steps, and every new block takes between one and
+eleven.  Thus an infinite old execution gives an infinite new execution
+with unbounded accumulated time.  A finite old halting execution gives a
+finite new halting execution.  Determinism excludes a different, earlier
+new halting trajectory, yielding the converse as well.
+\end{proof}
+
+\subsection{Reproving the selector guard for the changed source}
+\label{sec:guard}
+
+The guard verifier does not reuse the old rotation240 selector theorem
+merely because the local transition rows agree.  It instruments the exact
+$B_{239}$ table while replaying every arbitrary-value instruction case of
+the boundary source.  At each state-$169$ entry reading $1$, the symbolic
+right-hand run of ones is $G+K$, with $G\ge0$.  There are 32 such symbolic
+events and the minimum constant is $K=23$.  In particular its length is
+at least two, which proves (4).
+
+The bootstrap is separately checked for all 409,691 old transitions,
+including six state-$169$/read-$1$ visits, and its complete 351-one-cell
+endpoint is compared.  The subsequent 8,386 cases use 2,247,513 symbolic
+proof steps.  Unary shortcuts only iterate a literal self-loop; state
+$169$ has no self-loop.  Every one-block traversal schema is independently
+derived without a visit to $169$.  Consequently no unary or list shortcut
+can hide an unexamined visit relevant to (4).
+
+The source-frame invariant and the source joining result proved below
+allow this per-instruction result to be iterated indefinitely.  Therefore
+(4) holds throughout the old blank run, and the local transfer lemma gives
+the required blank-tape equivalence $B_{239}\leftrightarrow M_{238}$.
+This relational route is supplementary: the next sections verify the final
+table directly and do not require (4) as a premise.
+
+\section{Source equivalence and the exact calibrated source}
+\label{sec:source}
+
+\subsection{Why source associativity must be checked}
+
+The program is represented by a full binary tree whose leaves carry
+increment $\mathrm{CI}(r)$, decrement-and-test $\mathrm{CD}(r)$,
+break $\mathrm{CB}(k)$, continue $\mathrm{CC}(k)$, or halt
+$\mathrm{CH}$.  The binary path to an instruction participates in the
+control operation.  Thus an arbitrary reassociation of a source tree can
+change a jump target even when the left-to-right instruction sequence is
+unchanged.  The inherited boundary construction certifies the full control
+behavior, including rotations across an explicit trailing break.
+
+Number the leaf occurrences from left to right.  If $p_i$ is the path to
+leaf $i$, let $\loc_T(P)$ be the leaf reached by following the infinitely
+zero-padded word $P0^\omega$ in tree $T$.  The walk stops at the encountered
+leaf.  Fixed-length binary increment wraps $1^d$ to $0^d$, and
+$\inc(\epsilon)=\epsilon$.  Define $\strip_b(k,p)$ by deleting the suffix
+through the $k$th occurrence of $b$ from the right; exhaustion yields the
+empty path.  Set
+\[
+ \brk(k,p)=\inc(\strip_0(k,p)),\qquad
+ \cont(k,p)=\strip_1(k,p).
+\]
+An instruction acts on the path of the leaf actually encountered, rather
+than on an arbitrary unconsumed suffix of the starting program counter.
+These conventions match the pinned \file{RegisterPath.lean} semantics.
+
+The complete descriptor for a leaf records its register effect and every
+successor leaf index.  Increment has one successor, decrement has both the
+positive and zero successors, break and continue have their respective
+jump successor, and halt has a halt descriptor.  For example,
+\[
+ G_T(i)=\bigl(\mathrm{CD},r,
+ \loc_T(\inc(p_i)),\loc_T(\brk(1,p_i))\bigr)
+\]
+at a decrement leaf.  This finite array does not approximate the registers
+or infer any branch to be unreachable.
+
+\begin{lemma}[Complete descriptor equivalence]
+If two finite full source trees have identical complete descriptor arrays,
+then their register executions from the empty path are strongly bisimilar,
+for every initial register vector.
+\end{lemma}
+
+\begin{proof}
+Relate configurations whose register vectors are equal and whose decoded
+leaf indices are equal.  Both empty paths decode to leaf zero.  At a matched
+increment, both executions increment the same register and reach the same
+next index.  At a matched decrement, equal values choose the same zero or
+positive branch and give equal resulting values.  At a matched jump the
+registers are unchanged and the target indices agree.  A halt descriptor
+halts both sides.  Induction establishes the relation at every source
+step.  Full finite source trees cannot become stuck in an internal cycle
+or a missing branch.
+\end{proof}
+
+\subsection{The replayed finite certificate}
+
+The exact inherited source transform has 13 stages and 25 tree rotations.
+At every stage, the certificate checks the ordered instruction word and
+all 8,385 guarded successor edges together with the unique halt descriptor.
+It also requires that every unused successor suffix after the encountered
+leaf is all zero.  This supplies the tape identity
+\[
+ P0^\omega=p_{\loc_T(P)}0^\omega,
+ \tag{5}
+\]
+which is needed when joining binary instruction frames.  Equality of leaf
+indices alone would not justify discarding an arbitrary nonzero tail.
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Source metric & Rotation240 source $P_0$ & Boundary source $P_1$\\
+\midrule
+Expanded leaf occurrences & 6,455 & 6,455\\
+Distinct internal subtrees & 202 & 201\\
+Distinct leaf instructions & 23 & 23\\
+Total distinct source DAG nodes & 225 & 224\\
+Maximum leaf-path length & 51 & 48\\
+Maximum consecutive zero bits & 6 & 6\\
+Decrement occurrences & 1,931 & 1,931\\
+Guarded instruction cases & 8,386 & 8,386\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The DAG-node count is a source metric, not the number of working states of
+the final binary machine.  The source instruction inventory is 2,596
+increments, 1,931 decrements, 128 breaks, 1,799 continues and one halt.
+No instruction operand changes.  The normalized control graph has digest
+\digest{ae7f12f37306b86e5f70469210fd2a8d68b6f9df094bf659abc6b4a56714f1fd}
+
+The archive includes the original and changed leaf arrays, all rotation
+paths, a compact source DAG, and the standalone source checker.  The fresh
+receipt is \file{evidence/source_rotation_fresh.json}.
+
+\subsection{Identification with the inherited logical program}
+\label{sec:calibration}
+
+The exact original source $P_0$ has digest
+\digest{74b1e7f73cc3ffe7761e36ab2d57a26e0ba34d3ac624f2472799e6ac41d5a51d}
+The source-interface checker parses the actual pinned Lean lookup rows
+and overrides from \file{ProgramRouting245.lean},
+\file{ProgramRotation244.lean} and \file{SourceRotation240.lean}.
+All 203 lookup indices are checked; expanding the reachable data gives
+exactly the ordered 6,455 triples of $P_0$.  This is a data-identification
+check, not a fresh invocation of the Lean kernel.
+
+The pinned path walker uses a budget of $\mathrm{nnodes}+1=204$, exceeding
+the maximum source depth 51.  All reached internal references descend
+strictly in node index.  Its halting predicate requires a literal halt
+leaf, so neither decoder-budget exhaustion nor an internal cycle supplies
+an extra halting behavior in this comparison.
+
+The same procedure extracts the logical initial state
+\[
+ R_*=(3,0,0,0,3,0,0,0,0),
+ \tag{6}
+\]
+with later logical registers zero, from \file{LogicalSeed246.lean} and
+\file{L2Lib254.lean}.  The earlier calibrated theorem,
+\file{CalibratedRotation240.halts_iff_zfc_refutation}, states
+\begin{equation*}
+ \RHalt(P_0,(\epsilon,R_*))
+ \longleftrightarrow
+ \operatorname{BProv}(\mathrm{ZFCax\_s},[],\bot).
+ \tag{7}
+\end{equation*}
+The concrete inherited calibration checkpoint is
+\file{13ec39ed43148b1807f51ed6e6528e1c84659562}
+\cite{calibrated,source240,seed246}.
+
+Mathematically, this calibration combines the proof enumerator, its compact
+first-order calculus, and a native nonextensional set theory built from
+container, global-image collection and irreflexivity axioms.  The
+comparison with ZF uses the appropriate bisimulation quotient and its
+internally well-founded part.  The ZF-to-ZFC refutation comparison uses the
+constructible submodel and first-order soundness and completeness
+\cite{wf,choice,upstream}.  These are particular ordinary mathematical
+arguments that ZFC formalizes.  We do not assume a general soundness
+theorem for the whole Lean type theory inside ZFC.
+
+The endpoint $\operatorname{BProv}$ means that a finite derivation exists.
+Encoding and decoding finite syntax and derivation trees identifies it
+with $\exists p\,\operatorname{Proof}_{\ZFC}(p,\bot)$.  Changing between
+customary effective first-order proof codings gives the same consistency
+statement through the usual syntactic proof translations.  The argument
+does not rest on an unqualified assertion of external equiconsistency.
+
+Combining (7) with the source descriptor lemma gives
+\[
+ \RHalt(P_1,(\epsilon,R_*))
+ \longleftrightarrow\neg\Con(\ZFC)
+ \quad\text{provably in ZFC.}
+ \tag{8}
+\]
+The next section identifies this exact source execution with the final
+binary table directly.
+
+\section{Direct unbounded runtime proof for the 238-state table}
+\label{sec:runtime}
+
+\subsection{Frames and their quantified parameters}
+
+Logical registers occupy nine unary-coded physical positions, according to
+the permutation
+\[
+ \pi=(6,2,0,4,3,7,8,5,1).
+\]
+Thus logical $R_i$ is stored in physical position $\pi(i)$.
+Write
+\[
+ B(v)=0\,1^{v+1},\qquad C(v)=1\,0\,1^v.
+\]
+At an instruction checkpoint, the head is at coordinate $h$ in dispatcher
+state $96$.  A marker $1$ occupies $h-1$.  The program-counter bits start at
+$h$ and are padded with zeros through a header $1$ at $h+64+G$, where
+$G\ge0$.  Immediately after the header are the nine physical register
+blocks followed by a nonempty finite spare list.  The tape exterior on
+both sides is zero.
+
+For a leaf path $p$, a register vector $R\in\mathbb N^9$, a nonempty list
+$A\in\mathbb N^{<\omega}$, and $G\in\mathbb N$, denote this exact whole
+tape and control configuration by $F(p,R,A,G,h)$.  Every one of the nine
+register values is independent.  The first spare value is arbitrary, and
+the remaining spare tail is an arbitrary finite list, possibly empty.
+The source paths have length at most 48, so a header distance of at least
+64 leaves the required positive delimiter separation.
+
+The intended interface for a nonhalt leaf is a finite positive run to its
+successor frame.  Increment changes its chosen logical register by $+1$
+and appends a spare value $1$.  Positive decrement changes its register by
+$-1$ and increases the extra gap by one.  Zero decrement, break and
+continue have their exact source control effects and leave register values
+unchanged.  A binary counter rollover shifts the marker and dispatcher
+head one position left and adds one to the relative gap.  These motions
+are explicitly checked; comparing only a tape viewed relative to the head
+would be insufficient.
+
+If $\eta\in\{0,1\}$ is the increment rollover and $\delta=1$ only for a
+positive decrement, the nonhalt target has
+\[
+ h'=h-\eta,\qquad G'=G+\delta+\eta.
+ \tag{9}
+\]
+For continue, $\eta=\delta=0$.  Its target path is the exact stripped path.
+All gaps remain nonnegative and no operation empties the spare list.
+
+\subsection{The symbolic rules and why they are universal}
+
+The verification engine represents a tape as homogeneous runs, finite-list
+atoms, and an explicit infinite zero exterior.  Run lengths are affine
+expressions with nonnegative integer parameters.  It uses only three
+execution rules:
+
+\begin{enumerate}
+\item \emph{Literal transition.} The currently scanned bit is known and
+has positive available length.  The engine applies the exact table row,
+including its write, motion, and new state.
+\item \emph{Unary self-loop.} If the actual table row loops to the same
+state in the traversal direction, induction executes it over a whole
+homogeneous run of any natural length.  Zero length is allowed and leaves
+the configuration unchanged.
+\item \emph{Finite-list traversal.} Before traversing an arbitrary spare
+tail, the engine proves the corresponding one-block schema directly on
+the exact 238-state table, with arbitrary opaque contexts.  Structural
+induction then extends that schema to any finite list.
+\end{enumerate}
+
+The four required one-block schemas are shown below.  Each takes exactly
+$v+2$ literal steps and moves by the block width in its indicated direction.
+
+\begin{center}
+\begin{tabular}{rrll}
+\toprule
+Entry state & Direction & Input block family & Output family\\
+\midrule
+73 & $R$ & $B(v)$ & $B(v)$\\
+95 & $R$ & $B(v)$ & $C(v)$\\
+48 & $L$ & reversed $B(v)$ & reversed $B(v)$\\
+112& $L$ & reversed $C(v)$ & reversed $B(v)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Normalization also uses the exact finite-word identity
+\[
+ C(A)1=1B(A),
+ \tag{10}
+\]
+where $B(A)$ and $C(A)$ concatenate the corresponding blocks of list $A$,
+and its reversed version.  For a singleton, (10) is simply
+$101^v1=101^{v+1}$.  If it holds for $A$, then
+\[
+ C(v::A)1=C(v)C(A)1=C(v)1B(A)=1B(v)B(A).
+\]
+The empty-list case is immediate.  This proves the normalization rule for
+every finite spare list, including the empty tail, without a length cutoff.
+
+The generic block proofs reject any access to their opaque exterior.
+The halt label has no table rows, so a purported nonhalt proof cannot
+silently step through a halt.  List schemas return to their stipulated
+nonhalt entry control and have no hidden halting transition.  Unary
+shortcuts likewise stay at a working-state self-loop.  These checks
+exclude an intermediate halt concealed by a shortcut.
+
+\subsection{Coverage, duration, and iteration}
+
+The final direct replay succeeds at every leaf, splitting each decrement
+into the zero and positive cases.  Its exact totals are
+\[
+ 6455+1931=8386\quad\text{guarded cases},
+ \qquad 2\,255\,513\quad\text{symbolic proof steps}.
+\]
+Every one of the 476 literal transition rows is exercised in these proofs.
+Actual durations are affine expressions in the gap, nine independent
+register parameters, the first spare value, and the remaining list width.
+Every coefficient is nonnegative and the smallest constant term is 13.
+Thus each certified instruction has a positive finite actual duration
+for every concrete valuation.
+
+The engine's limit of 4,000 iterations within one proof attempt bounds
+proof construction, not a register value, gap, list length or actual
+machine runtime.  Every accepted case has closed before that limit.
+The correctness argument is the induction supporting the symbolic rules
+and the exact resulting equalities, rather than a long sampled trajectory.
+
+The direct source certificate validates all successor joins, including
+(5).  Therefore any successor frame, even one with a shorter program
+counter or a zero-only suffix, is exactly the entry tape for its decoded
+next leaf.  Equation (9) and spare preservation close the remaining frame
+invariants.  Induction over source instructions now gives:
+
+\begin{lemma}[Direct binary implementation]
+From any calibrated dispatcher frame of the changed source, the final
+$M_{238}$ reaches its halt label if and only if that source execution
+reaches its halt instruction.
+\end{lemma}
+
+\begin{proof}
+A source halt has its own finite certified binary halting segment.
+Every nonhalting source instruction has a finite positive binary segment
+ending at exactly its required successor frame.  Hence a finite halting
+source execution concatenates to a finite binary halt.  An infinite
+source execution concatenates infinitely many positive binary segments
+with no hidden halt, so the binary execution is infinite.  The source
+is deterministic and its full tree always decodes; these two alternatives
+also give the reverse implication.
+\end{proof}
+
+The primary fresh receipt is \file{evidence/composed238_runtime.json};
+the case file records every affine duration.  A separate review in
+\file{reviews/runtime_review.md} examines the symbolic rules, the direction
+convention, list identities, hidden-halt issue, source normalization and
+proof dependencies.  These are executable ordinary mathematical proofs,
+not a newly kernel-checked endpoint.
+
+\section{Exact initialization and the ZFC theorem}
+\label{sec:boot}
+
+\subsection{A complete finite prefix, checked in two representations}
+
+The initialization target is constructed from the logical seed (6), the
+physical permutation, and 167 spare values equal to one.  It is not copied
+from an observed trajectory and then used as its own specification.
+Two separately coded interpreters execute the final machine: one uses a
+sparse set of one-cells and canonical states; the other independently
+parses the inherited table into dense transition arrays and uses a dense
+byte tape with bounds large enough to contain the entire finite run.
+
+Both produce exactly the following configuration after 409,835 transitions:
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Control & Canonical 84 / inherited 96\\
+Head and marker & $h=-5$, marker at $-6$\\
+Header & Coordinate 176; distance 181 from the head\\
+Extra gap & $181-64=117$\\
+Program counter & Empty, equivalently the zero-padded first-leaf path\\
+Logical registers & $(3,0,0,0,3,0,0,0,0)$\\
+Physical registers & $(0,0,0,3,0,0,3,0,0)$\\
+Spare blocks & 167 blocks, each with value 1\\
+Tape support & Exactly 351 one-cells; every other cell zero\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All 351 positions are listed in the new bootstrap receipt.  Both simulations
+compare the entire final tape to the independently generated frame, as
+well as the state and absolute head coordinate.  The $B_{239}$ predecessor
+takes 409,691 steps to the same tape, so this last saving increases this
+initialization time by 144 transitions.  The time increase does not add
+working states.
+
+\subsection{Composition of the mathematical proof}
+
+Combining exact initialization, the direct binary implementation lemma,
+the complete source descriptor equivalence, and the inherited logical
+calibration yields
+\begin{align*}
+ \Halt(M_{238},0^{\mathbb Z})
+ &\longleftrightarrow \RHalt(P_1,(\epsilon,R_*))\\
+ &\longleftrightarrow \RHalt(P_0,(\epsilon,R_*))\\
+ &\longleftrightarrow \operatorname{BProv}(\mathrm{ZFCax\_s},[],\bot)\\
+ &\longleftrightarrow \exists p\,\operatorname{Proof}_{\ZFC}(p,\bot).
+\end{align*}
+This proves (1); negating gives (2).  The new proof uses finite table
+facts, induction on natural numbers and finite lists, and finite syntax
+translations.  Alongside the particular inherited first-order set-theory
+calibration, all these arguments are formalizable in ZFC.  No appeal to
+the truth of $\Con(\ZFC)$ occurs in the proof.
+
+The local proof of Section~\ref{sec:local} provides an additional route
+through the exact $B_{239}$ predecessor.  Its guard is independently
+re-established, so it is not circular with the final-table runtime proof.
+
+\subsection{Consistency, nonhalting, and independence}
+
+The external halting/refutation equivalence established by the ordinary
+mathematical proof above implies that, if ZFC is consistent, the machine
+actually does not halt.  This semantic conclusion uses that equivalence,
+rather than inferring the truth of an arbitrary ZFC theorem from consistency.
+Under that same consistency assumption, ZFC cannot prove this nonhalting
+statement: such a proof together with (2) would prove $\Con(\ZFC)$,
+contrary to G\"odel's second incompleteness theorem.
+
+Bare consistency is not asserted to rule out a ZFC proof of halting.
+To conclude two-sided independence, a stronger soundness assumption, such
+as arithmetical $\Sigma_1$-soundness, suffices: the false halting assertion
+is a $\Sigma_1$ sentence.  This distinction also prevents a misleading
+claim of unconditional nonhalting.  The theorem requested here is the
+provable equivalence, not a proof of consistency.
+
+The current upstream notes report more proof-assistant progress for the
+240-state endpoint than the historical 239 archives did.  Those changing
+project statuses do not change the exact tables and source identities
+used here.  This submission does not compile a new 238-state endpoint or
+claim the separate internal PA result.  Porting the compact local proof
+with its selector guard, or instantiating the existing runtime framework
+with the new table and source, are concrete next formalization tasks.
+
+\input{formalism.tex}
+
+\section{Reproduction, package contents, and incorporation}
+\label{sec:reproduce}
+
+The accepted verification needs Python 3.10 or later with assertions
+enabled and only the standard library.  It needs no network, compiler,
+SMT solver, Lean installation or original absolute workspace path.
+From the extracted directory, run
+\begin{verbatim}
+python3 -B reproduce.py --output /tmp/zfc238-replay
+\end{verbatim}
+with a new or empty output directory outside the package.  This replays
+the complete final runtime proof as well as construction, source control,
+calibrated source-data identification, exact local blocks, bootstrap and
+the supplementary finite logical-basis check.
+The runtime replay took about 222 seconds in the initial preparation run;
+elapsed time is environment dependent.
+
+For a short replay that intentionally omits the unbounded runtime replay,
+use
+\begin{verbatim}
+python3 -B reproduce.py --quick --output /tmp/zfc238-quick
+\end{verbatim}
+It still binds the archived complete-runtime receipt to the exact table,
+source, engine and helper hashes.  Its result explicitly says that the
+runtime was not freshly rerun.  To additionally replay the independent
+predecessor selector proof, add \file{--with-guard}.  That option performs
+a further complete unbounded predecessor run and checks its blank prefix.
+No child job is accepted solely for returning process exit code zero;
+the driver checks its expected JSON status.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Path & Purpose\\
+\midrule
+\file{report.tex}, \file{report.pdf} & Complete mathematical report and editable source.\\
+\file{machines/} & Exact final tables, bijection and changed source leaves.\\
+\file{build.py} & Two exact reconstruction recipes and census.\\
+\file{reproduce.py} & Portable replay with honest quick/full status.\\
+\file{source/} & Source rotation certificate, leaf arrays, DAG and pinned Lean source data.\\
+\file{verification/} & Unbounded runtime engine, exact local certificate, bootstrap and guard checkers.\\
+\file{evidence/} & Actual fresh receipts, individual runtime cases and logs.\\
+\file{formalism/} & Supplementary logical-basis obstruction and its finite checker.\\
+\file{reference/} & Exact predecessor tables, original notices, pins and alternate 43-row recipe.\\
+\file{reviews/} & Independent mathematical review of the runtime and proof interfaces.\\
+\file{licenses/} & Inherited ProveIt and Wade terms and original notices.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The complete manifest binds all delivered files except itself.  It is an
+integrity manifest, not a digital signature.  The packaged quick replay
+tests the relocated interfaces; the complete original fresh runtime
+receipt remains separately identified.  The inherited proof-assistant
+source excerpts are data and reference material, not a standalone Lean
+dependency checkout.
+
+A suitable future repository location is
+\begin{quote}\small
+\file{Computability/BusyBeaver/Research/ZFC/candidate-composed238/}.
+\end{quote}
+The existing 240-state candidate and both incoming 239-state constructions
+should retain their own identities and proof histories.  Incorporation
+can import this archive and subsequently add the exact-table kernel
+endpoint as a separate, reviewable development.  No remote repository
+write was performed during this work.
+
+\section*{Attribution}
+The original compact calculus, native set theory, register source and
+254-state machine are attributed to Mira-Cult.  The upstream Rocq
+verification is attributed to Jeff Ketchersid and contributors; the
+compiler framework is attributed to Andrew James Wade.  ProveIt and the
+previous incoming submissions retain credit for all prior reductions,
+including both 239-state parents used here.  The new work is the concrete
+238-state composition, compatibility and guard proofs, direct verification,
+new bootstrap checker, supplementary formalism analysis and this report.
+No additional restriction is asserted over the newly prepared material;
+inherited files retain their supplied terms and notices.
+
+\begin{thebibliography}{20}
+\bibitem{rotation240} ProveIt, \emph{Source-rotation 240-state candidate},
+inspected at commit\par
+\file{ce192939372ac7944fe2a0208c68a96d49fb5e3b}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ce192939372ac7944fe2a0208c68a96d49fb5e3b/Computability/BusyBeaver/Research/ZFC/candidate-rotation240/README.md}{Pinned candidate README}.
+\bibitem{incomingA} ProveIt incoming research, \emph{BusyBeaver239 Research},
+19 October 2026. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/83fd3585484e5dffb37992f91f7dd4d3e70c437a/docs/incoming/BusyBeaver239_Research_2026-10-19.zip}{Original archive}.
+\bibitem{incomingB} ProveIt incoming research, \emph{ZFC239 Companion},
+19 October 2026. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/83fd3585484e5dffb37992f91f7dd4d3e70c437a/docs/incoming/ZFC239_Companion_2026-10-19.zip}{Original archive}.
+\bibitem{incomingC} ProveIt incoming research, \emph{ZFC 239 State Construction},
+19 October 2026. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/83fd3585484e5dffb37992f91f7dd4d3e70c437a/docs/incoming/ZFC_239_State_Construction_2026-10-19.zip}{Original archive}.
+\bibitem{calibrated} ProveIt, \file{CalibratedRotation240.lean},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/CalibratedRotation240.lean}{pinned source calibration}.
+\bibitem{source240} ProveIt, \file{SourceRotation240.lean},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SourceRotation240.lean}{pinned source definition and equivalence}.
+\bibitem{seed246} ProveIt, \file{LogicalSeed246.lean},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/LogicalSeed246.lean}{pinned seed definition}.
+\bibitem{wf} ProveIt, \file{WFTheory.lean},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFTheory.lean}{native-theory and ZF refutation comparison}.
+\bibitem{choice} ProveIt, \file{ConstructibleChoice.lean},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean}{ZF and ZFC refutation comparison}.
+\bibitem{upstream} Jeff Ketchersid and contributors, \emph{A verified 254-state
+Turing machine that halts iff ZFC is inconsistent}, machine by Mira-Cult.
+\href{https://github.com/jeff87654/busy-beaver/tree/zf-254/ZF/m254}{Upstream m254 development}.
+\bibitem{bbwiki} Busy Beaver Challenge, \emph{Logical independence},
+\href{https://wiki.bbchallenge.org/wiki/Logical_independence}{overview},
+accessed 19 October 2026.  Used as context; the exact constructions are
+identified by their primary artifacts.
+\bibitem{friedman} Harvey M. Friedman, \emph{Simplified Axioms for Class
+Theory}, 15 September 2020, especially Section 2 and Theorem 3.21.
+\href{https://bpb-us-w2.wpmucdn.com/u.osu.edu/dist/1/1952/files/2020/09/NBGAxioms091520.pdf}{Primary manuscript}.
+\bibitem{megill} Norman D. Megill, \emph{A Finitely Axiomatized
+Formalization of Predicate Calculus with Equality}.
+\href{https://us.metamath.org/downloads/finiteaxiom.pdf}{Author's preprint}.
+\bibitem{typed} ProveIt, \emph{Typed countermodel},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ce192939372ac7944fe2a0208c68a96d49fb5e3b/Computability/BusyBeaver/Research/ZFC/typed_countermodel.md}{pinned equality-free calculus obstruction}.
+\end{thebibliography}
+
+\clearpage
+\appendix
+\section{Complete canonical transition table}
+\label{app:table}
+The start state is $0$.  The symbol $H$ in this printed table means the
+separate halt label $238$.  Each entry $wDq$ means: write bit $w$, move
+one cell in direction $D\in\{L,R\}$, and enter $q$.  In the machine file,
+all targets are integers and every row is written in the five-field form
+\texttt{state read write direction target}.  The printed table is generated
+directly from the canonical file bound by the digest in Section~\ref{sec:result}.
+\input{transition_table.tex}
+\end{document}

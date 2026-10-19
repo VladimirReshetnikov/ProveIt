@@ -1,0 +1,135 @@
+\section{Alternative formalisms and a new logical-basis obstruction}
+\label{sec:formalisms}
+
+The user requested exploration of both the underlying formalism and its
+binary encoding.  The accepted state reduction comes from composing
+encodings of the existing calibrated theory.  The formalism investigation
+produced a concrete negative result for a tempting simplification, together
+with the following comparison of viable directions.  No additional small
+binary-machine count is inferred from an uncompiled formalism.
+
+\subsection{The contract for changing the theory}
+
+For an effectively specified theory $T$, two independent obligations would
+replace the current proof chain:
+\[
+ \ZFC\vdash\Con(T)\longleftrightarrow\Con(\ZFC),
+ \qquad
+ \ZFC\vdash\Halt(M_T,0^{\mathbb Z})
+       \longleftrightarrow\exists p\,\operatorname{Ref}_T(p).
+ \tag{11}
+\]
+The first is an internal consistency calibration; the second includes the
+actual proof search, its fairness, finite-certificate verification, binary
+implementation and charged initialization.  Explicit primitive-recursive
+proof translators in both directions would be a particularly strong
+certificate for the first obligation, but the stated ZFC goal does not
+require those translators if a valid internal model-theoretic proof is
+available.  We do not infer primitive-recursive proof-size or execution-time
+bounds merely from an eventual-search or model-existence argument.
+
+Permuting a finite bundle of axiom templates, replacing it by a classically
+equivalent conjunction, or adding a redundant theorem can preserve the
+theory.  However, a modified enumerator still needs a completeness argument
+for its new proof encoding.  Equality and freshness conditions are part of
+that argument.  An unordered comparison of schema names does not establish
+the equivalence of the literal blank-start machines.
+
+\subsection{What the alternative presentations change}
+
+\paragraph{The existing native theory.}
+The CP/GIC/irreflexivity formalism already removes raw extensionality and
+packages substantial set theory into a compact constructor.  Irreflexivity
+also makes the numerical falsity alias $R(0,0)$ sound.  Omitting it because
+one set-theoretic interpretation happens not to use it would break a
+different part of the machine's logical interface.  The existing
+equality-free simplification has its own finite-sort counterinterpretation
+in the repository; this is prior work and not a new result of this report
+\cite{typed,upstream}.
+
+\paragraph{Finite class theory.}
+Friedman's class-theory manuscript presents a finite NBG-style system using
+class operations and a capture principle, with a stated equivalence theorem
+to its specified NBG presentation \cite{friedman}.  This is a concrete
+logical target.  For state minimization, its attraction is that a fixed
+theory payload could replace schema recognition.  Our engineering
+assessment is that the payload writer, set/class guards, equality engine
+and proof checker must be compiled together before its cost can be compared
+with 238.  The current work establishes no such complete binary count.
+
+\paragraph{Condensed detachment.}
+Megill's finite predicate-calculus presentation uses condensed detachment
+and condensed generalization.  Its unification algorithm explicitly
+manipulates variables and subformulas and performs substitutions
+\cite{megill}.  As an encoding choice this moves work from an axiom-schema
+recognizer into a syntax-processing engine.  A short axiom list is therefore
+not by itself a state saving.  We would need an exact implementation of the
+relevant unification, renaming and equality operations, with a pinned
+completeness interface, before replacing the current arithmetic constructor.
+
+\paragraph{Ground rewriting or an algebraic kernel.}
+Ground contextual rewriting can remove bound-variable capture checks:
+the certificate carries a term address, a rule instance and the required
+equalities of repeated subterms.  It can therefore reuse pairing and stack
+routines.  A crucial logical requirement remains: equations alone always
+have the one-element algebra as a model.  A calibrated refutation search
+must include a designated target equation or a disequation encoding the
+theory to be tested.  The complete target payload, its writer and the
+context traversal must all be counted.  A small equational basis without
+that target gives no consistency-machine bound.
+
+\paragraph{A fixed arithmetic package.}
+For a standard finite Robinson arithmetic base $Q_0$, the artificial
+theory $A=Q_0+\Con(\ZFC)$ illustrates the separation between short naming
+and actual coding.  ZFC proves $\Con(A)\leftrightarrow\Con(\ZFC)$:
+assuming $\Con(\ZFC)$, its natural-number structure models $A$; conversely,
+a finite ZFC refutation supplies a concrete arithmetical witness whose
+verification yields a $Q_0$ proof of the negation of the extra axiom.
+Formalized verification of the finite witness supplies the latter argument.
+This finite presentation retains the entire encoded ZFC proof predicate
+inside its extra sentence.  It is a calibration example, inherited as a
+research direction from the incoming analysis, rather than a measured
+compression \cite{incomingC}.
+
+\begin{proposition}[A finite-fragment obstruction]
+Fix a finite collection $\Gamma$ of membership-language sentences, each
+provable in ZFC.  Then ZFC proves $\Con(\Gamma)$.  If ZFC is consistent,
+therefore, this particular finite fragment cannot have its consistency
+provably equivalent in ZFC to $\Con(\ZFC)$.
+\end{proposition}
+\begin{proof}
+Conjoin the finitely many given theorems.  Reflection for that fixed finite
+formula collection provides a rank segment satisfying the conjunction.
+First-order soundness proves consistency of the finite fragment.  If ZFC
+also proved $\Con(\Gamma)\leftrightarrow\Con(\ZFC)$, it would prove its
+own consistency, contradicting G\"odel II under the stated assumption.
+\end{proof}
+
+This is a statement about each fixed finite fragment and its given theorem
+proofs, not a uniform reflection principle over all ZFC theorems.  It does
+not exclude finite class theories in an expanded interpretation or the
+arithmetic package above: their axiom conjunctions need not be fixed
+membership-language theorems about the ordinary set universe.
+
+\input{formalism/ks_obstruction.tex}
+
+\subsection{What this changes for subsequent searches}
+
+The six-valued obstruction rules out a specific hoped-for derivation of
+the missing classical logical basis from $K,S$ and the retained quantified
+rows.  It does not rule out every theory-specific implementation using
+intuitionistic implication: CP and GIC might provide additional principles,
+but such a proposal would need a new argument rather than inheriting the
+existing logical bridge.  Likewise, the finite-fragment proposition rules
+out a particular finite-theorem shortcut, not every finite equiconsistent
+presentation.
+
+For the accepted machine, the simpler and fully measured change is the
+representation of control information.  A predecessor tape bit and a
+temporarily retained one encode distinctions that were previously carried
+by separate states.  The source tree is permitted to change provided its
+complete descriptor graph and zero-padding interface are certified, with
+the changed runtime separately verified.  The
+238-state result demonstrates that independently discovered savings can
+survive together when their local dependencies and semantic guards are
+made explicit and checked on the composed construction.

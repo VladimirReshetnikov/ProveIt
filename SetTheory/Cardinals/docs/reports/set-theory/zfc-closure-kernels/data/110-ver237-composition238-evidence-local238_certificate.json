@@ -1,0 +1,729 @@
+{
+  "status": "PASS",
+  "working_states": [
+    239,
+    238
+  ],
+  "transition_rows": [
+    478,
+    476
+  ],
+  "start": 95,
+  "halt": 254,
+  "state_map": "169 -> 80; every other state fixed",
+  "scope": "Exact finite positive-block simulation under the stated selector guard; arbitrary exterior tapes",
+  "guard": "Every reached OLD q169/read1 configuration has tape[h+1]=1",
+  "guard_proved_here": false,
+  "structural_invariant": {
+    "67": {
+      "-1": 0
+    },
+    "80": {
+      "-2": 0,
+      "-1": 1
+    },
+    "91": {
+      "-3": 0,
+      "-2": 1,
+      "-1": 1
+    },
+    "169": {
+      "-1": 0
+    }
+  },
+  "structural_preservation": [
+    {
+      "row": [
+        52,
+        0
+      ],
+      "target": 67,
+      "obligations": [
+        [
+          -1,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "row": [
+        67,
+        1
+      ],
+      "target": 80,
+      "obligations": [
+        [
+          -2,
+          0,
+          -1,
+          0
+        ],
+        [
+          -1,
+          1,
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "row": [
+        80,
+        1
+      ],
+      "target": 91,
+      "obligations": [
+        [
+          -3,
+          0,
+          -2,
+          0
+        ],
+        [
+          -2,
+          1,
+          -1,
+          1
+        ],
+        [
+          -1,
+          1,
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "row": [
+        124,
+        0
+      ],
+      "target": 67,
+      "obligations": [
+        [
+          -1,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "row": [
+        147,
+        0
+      ],
+      "target": 169,
+      "obligations": [
+        [
+          -1,
+          0,
+          0,
+          0
+        ]
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "old_state": 80,
+      "new_state": 80,
+      "assumptions": {
+        "-1": 1,
+        "0": 0
+      },
+      "requires_semantic_guard": false,
+      "old_steps": 1,
+      "new_steps": 5,
+      "endpoint": [
+        25,
+        1
+      ],
+      "whole_tape_equality": true,
+      "old_trace": [
+        [
+          80,
+          0,
+          0,
+          0,
+          1,
+          25
+        ]
+      ],
+      "new_trace": [
+        [
+          80,
+          0,
+          0,
+          0,
+          -1,
+          106
+        ],
+        [
+          106,
+          -1,
+          1,
+          1,
+          1,
+          92
+        ],
+        [
+          92,
+          0,
+          0,
+          0,
+          -1,
+          107
+        ],
+        [
+          107,
+          -1,
+          1,
+          1,
+          1,
+          125
+        ],
+        [
+          125,
+          0,
+          0,
+          0,
+          1,
+          25
+        ]
+      ]
+    },
+    {
+      "old_state": 80,
+      "new_state": 80,
+      "assumptions": {
+        "0": 1
+      },
+      "requires_semantic_guard": false,
+      "old_steps": 1,
+      "new_steps": 1,
+      "endpoint": [
+        91,
+        1
+      ],
+      "whole_tape_equality": true,
+      "old_trace": [
+        [
+          80,
+          0,
+          1,
+          1,
+          1,
+          91
+        ]
+      ],
+      "new_trace": [
+        [
+          80,
+          0,
+          1,
+          1,
+          1,
+          91
+        ]
+      ]
+    },
+    {
+      "old_state": 169,
+      "new_state": 80,
+      "assumptions": {
+        "-1": 0,
+        "0": 0
+      },
+      "requires_semantic_guard": false,
+      "old_steps": 1,
+      "new_steps": 3,
+      "endpoint": [
+        57,
+        1
+      ],
+      "whole_tape_equality": true,
+      "old_trace": [
+        [
+          169,
+          0,
+          0,
+          0,
+          1,
+          57
+        ]
+      ],
+      "new_trace": [
+        [
+          80,
+          0,
+          0,
+          0,
+          -1,
+          106
+        ],
+        [
+          106,
+          -1,
+          0,
+          0,
+          1,
+          93
+        ],
+        [
+          93,
+          0,
+          0,
+          0,
+          1,
+          57
+        ]
+      ]
+    },
+    {
+      "old_state": 169,
+      "new_state": 80,
+      "assumptions": {
+        "-1": 0,
+        "0": 1,
+        "1": 1
+      },
+      "requires_semantic_guard": true,
+      "old_steps": 1,
+      "new_steps": 5,
+      "endpoint": [
+        56,
+        1
+      ],
+      "whole_tape_equality": true,
+      "old_trace": [
+        [
+          169,
+          0,
+          1,
+          0,
+          1,
+          56
+        ]
+      ],
+      "new_trace": [
+        [
+          80,
+          0,
+          1,
+          1,
+          1,
+          91
+        ],
+        [
+          91,
+          1,
+          1,
+          1,
+          -1,
+          167
+        ],
+        [
+          167,
+          0,
+          1,
+          1,
+          -1,
+          151
+        ],
+        [
+          151,
+          -1,
+          0,
+          0,
+          1,
+          173
+        ],
+        [
+          173,
+          0,
+          1,
+          0,
+          1,
+          56
+        ]
+      ]
+    },
+    {
+      "old_state": 91,
+      "new_state": 91,
+      "assumptions": {
+        "0": 0
+      },
+      "requires_semantic_guard": false,
+      "old_steps": 1,
+      "new_steps": 1,
+      "endpoint": [
+        106,
+        1
+      ],
+      "whole_tape_equality": true,
+      "old_trace": [
+        [
+          91,
+          0,
+          0,
+          0,
+          1,
+          106
+        ]
+      ],
+      "new_trace": [
+        [
+          91,
+          0,
+          0,
+          0,
+          1,
+          106
+        ]
+      ]
+    },
+    {
+      "old_state": 91,
+      "new_state": 91,
+      "assumptions": {
+        "-3": 0,
+        "-2": 1,
+        "-1": 1,
+        "0": 1
+      },
+      "requires_semantic_guard": false,
+      "old_steps": 3,
+      "new_steps": 11,
+      "endpoint": [
+        2,
+        -3
+      ],
+      "whole_tape_equality": true,
+      "old_trace": [
+        [
+          91,
+          0,
+          1,
+          0,
+          -1,
+          50
+        ],
+        [
+          50,
+          -1,
+          1,
+          0,
+          -1,
+          20
+        ],
+        [
+          20,
+          -2,
+          1,
+          0,
+          -1,
+          2
+        ]
+      ],
+      "new_trace": [
+        [
+          91,
+          0,
+          1,
+          1,
+          -1,
+          167
+        ],
+        [
+          167,
+          -1,
+          1,
+          1,
+          -1,
+          151
+        ],
+        [
+          151,
+          -2,
+          1,
+          1,
+          -1,
+          24
+        ],
+        [
+          24,
+          -3,
+          0,
+          0,
+          1,
+          36
+        ],
+        [
+          36,
+          -2,
+          1,
+          1,
+          1,
+          54
+        ],
+        [
+          54,
+          -1,
+          1,
+          1,
+          1,
+          71
+        ],
+        [
+          71,
+          0,
+          1,
+          1,
+          -1,
+          82
+        ],
+        [
+          82,
+          -1,
+          1,
+          1,
+          1,
+          94
+        ],
+        [
+          94,
+          0,
+          1,
+          0,
+          -1,
+          50
+        ],
+        [
+          50,
+          -1,
+          1,
+          0,
+          -1,
+          20
+        ],
+        [
+          20,
+          -2,
+          1,
+          0,
+          -1,
+          2
+        ]
+      ]
+    }
+  ],
+  "ordinary_rows": 472,
+  "changed_rows": [
+    {
+      "row": [
+        80,
+        0
+      ],
+      "old": [
+        0,
+        1,
+        25
+      ],
+      "new": [
+        0,
+        -1,
+        106
+      ]
+    },
+    {
+      "row": [
+        91,
+        1
+      ],
+      "old": [
+        0,
+        -1,
+        50
+      ],
+      "new": [
+        1,
+        -1,
+        167
+      ]
+    },
+    {
+      "row": [
+        147,
+        0
+      ],
+      "old": [
+        0,
+        1,
+        169
+      ],
+      "new": [
+        0,
+        1,
+        80
+      ]
+    },
+    {
+      "row": [
+        169,
+        0
+      ],
+      "old": [
+        0,
+        1,
+        57
+      ],
+      "new": null
+    },
+    {
+      "row": [
+        169,
+        1
+      ],
+      "old": [
+        0,
+        1,
+        56
+      ],
+      "new": null
+    }
+  ],
+  "old_block_dependencies": [
+    [
+      20,
+      1
+    ],
+    [
+      50,
+      1
+    ],
+    [
+      80,
+      0
+    ],
+    [
+      80,
+      1
+    ],
+    [
+      91,
+      0
+    ],
+    [
+      91,
+      1
+    ],
+    [
+      169,
+      0
+    ],
+    [
+      169,
+      1
+    ]
+  ],
+  "new_block_dependencies": [
+    [
+      20,
+      1
+    ],
+    [
+      24,
+      0
+    ],
+    [
+      36,
+      1
+    ],
+    [
+      50,
+      1
+    ],
+    [
+      54,
+      1
+    ],
+    [
+      71,
+      1
+    ],
+    [
+      80,
+      0
+    ],
+    [
+      80,
+      1
+    ],
+    [
+      82,
+      1
+    ],
+    [
+      91,
+      0
+    ],
+    [
+      91,
+      1
+    ],
+    [
+      92,
+      0
+    ],
+    [
+      93,
+      0
+    ],
+    [
+      94,
+      1
+    ],
+    [
+      106,
+      0
+    ],
+    [
+      106,
+      1
+    ],
+    [
+      107,
+      1
+    ],
+    [
+      125,
+      0
+    ],
+    [
+      151,
+      0
+    ],
+    [
+      151,
+      1
+    ],
+    [
+      167,
+      1
+    ],
+    [
+      173,
+      1
+    ]
+  ],
+  "max_old_steps": 3,
+  "max_new_steps": 11,
+  "proof_argument": "Starting at95, induct on successive old checkpoints. The structural predicate is inductive. At80,91,169 use the six exact whole-tape blocks and the selector guard; elsewhere use the identical one-step row under phi. Each block has positive length and no intermediate halt. Hence an infinite old run yields an infinite new run, and a finite old halting run yields a finite new halting run. Determinism yields equivalence.",
+  "old_sha256": "d061770f487937f9da652919c9bc9bb79bc9bf137ca41dd7a08eb5ecda8e7719",
+  "new_sha256": "069942be27db9736875ea042320e51ac3b1eac7116cbe01cdce520fa6056f78c",
+  "verifier_sha256": "3fd075311210479f44f92f8c5ba794bdf67aec3ce53824518ca894f5a511cb77"
+}

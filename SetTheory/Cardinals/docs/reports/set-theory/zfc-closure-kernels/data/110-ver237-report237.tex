@@ -1,0 +1,306 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,longtable,tabularx,array,enumitem}
+\usepackage[draft]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.35em}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=0.15em,topsep=0.3em}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathrm{ZFC}}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newcommand{\digest}[1]{\par\begingroup\small\ttfamily\detokenize{#1}\par\endgroup}
+\begin{document}
+\begin{center}
+{\Large\bfseries A verified 237-state endpoint}\par
+\vspace{0.5em}
+{\large An independently checked extension of the 238-state construction}\par
+\vspace{0.5em}
+Prepared for Vladimir Reshetnikov and ProveIt\\
+19 October 2026
+\end{center}
+
+\begin{abstract}
+The final delivered machine has 237 working states, 474 transition rows,
+one binary tape, and a fully charged blank initializer.  Its nonhalting is
+provably equivalent in ZFC to $\Con(\ZFC)$.  This supplement extends the
+accompanying independently prepared 238-state construction by an additional
+reduction already described in the user's existing 237-state research
+report.  We credit that report for the reduction and supply a new independent
+certificate: all 476 predecessor rows are covered by 473 ordinary identities
+and three exact whole-tape blocks.  A five-state structural invariant is
+inductive on every binary initial tape.  Thus the extra reduction needs no
+additional source-dependent guard.  The complete earlier source, runtime,
+bootstrap, calibration analysis and formalism investigation are preserved
+unchanged in the accompanying 238-state report.
+\end{abstract}
+
+\section{The final result and its provenance}
+
+\begin{theorem}[Exact final machine]
+Let $N$ be \file{machines/zfc_extended237.tm}, with working states
+$0,\ldots,236$, start state 0, separate halt outcome 237, initial head 0,
+and the all-zero tape indexed by $\mathbb Z$.  Then
+\[
+ \boxed{\ZFC\vdash
+ \bigl(\neg\Halt(N,0^{\mathbb Z})\longleftrightarrow\Con(\ZFC)\bigr).}
+\]
+All moves are one cell left or right.  There are exactly 237 working
+states, or 238 control labels when the halt outcome is also counted.
+\end{theorem}
+
+The canonical table has SHA-256
+\digest{7eda1da1fcda629cae86d22b01d3faf419552cf04ed4179f0c045ad0adf2c1a6}
+The inherited-label table has SHA-256
+\digest{a3c4407f30e2e2139af87c6a91948c518134855841a28eb85b1d81bcfd026c9a}
+Inherited labels use start 95, dispatcher 96 and halt 254; the canonical
+dispatcher is 84.  The included action-preserving bijection removes any
+counting ambiguity.  The full canonical table is printed in the appendix.
+
+\paragraph{Credit and the late source check.}
+After the 238-state construction and report were finished, a relevant
+existing report was identified among the user's files:
+\emph{ZFC\_237\_State\_Construction\_2026-10-19.pdf}, 22 pages,
+created 19 October 2026 at 16:34:01 UTC.  Its pages 3 and 7--11 identify
+the exact same 238-state intermediate and the further $235\mapsto98$
+reduction used here.  Its reported 237-state hashes agree byte for byte
+with our independently reconstructed tables.  The source identity is
+recorded in \file{reference/prior237_source.json}.
+
+This supplement does not claim discovery of that previously reported
+reduction.  It adds an independent finite verifier, a fresh exact startup
+comparison, and a complete connection to the separately checked 238-state
+proof.  The original 238-state report is retained as a historical companion;
+its novelty comparisons concern the inspected incoming repository archives,
+before this additional report was noticed.  No global minimum or historical
+priority claim is made for either state count.
+
+\section{Four retained-row edits}
+
+Let $M$ be the inherited-label 238-state machine in the companion package,
+whose SHA-256 is
+\digest{069942be27db9736875ea042320e51ac3b1eac7116cbe01cdce520fa6056f78c}
+All state labels in this proof are inherited labels.  Delete state 235,
+redirect its incoming edges to 98, and change the following retained rows.
+An action $wDq$ writes $w$, moves in direction $D$, and enters $q$.
+
+\begin{center}
+\begin{tabular}{rrll}
+\toprule
+State & Read & $M$ & $N$\\
+\midrule
+98 & 0 & $0R113$ & $0L240$\\
+139 & 1 & $1R235$ & $1R98$\\
+156 & 1 & $1R235$ & $1R98$\\
+240 & 1 & $1R99$ & $1L87$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The deleted rows are $235/0=0R231$ and $235/1=1R16$.
+The retained row $98/1$ is also $1R16$.  There are 474 retained rows,
+of which four change and 470 remain literally identical.  The relational
+proof below has 473 ordinary \emph{old} rows, because the two incoming
+redirections commute through the state map and the old $235/1$ row is
+implemented by retained $98/1$.
+
+The useful representation choice is visible directly.  States 98 and 235
+already agree when reading 1.  When reading 0, their forced predecessor
+tape contexts differ.  Existing helper 240 can inspect that context, and
+helper 87 can preserve 240's original role in its own context.  The state
+distinction is carried by bits already on the tape; the price is a few
+extra transitions.
+
+\section{The complete local proof}
+
+\subsection{An invariant established by all incoming edges}
+
+For an old configuration $(q,h,T)$, with $T:\mathbb Z\to\{0,1\}$,
+let $I(q,h,T)$ impose the following conditions and no others:
+\[
+\begin{array}{c|l}
+q&\text{required bits}\\\hline
+98&T(h-1)=0\\
+139,156&T(h-1)=1\\
+235&T(h-2)=T(h-1)=1\\
+240&T(h-1)=0.
+\end{array}
+\]
+The complete incoming-edge inventory of these five states is
+\begin{center}
+\begin{tabular}{rl}
+\toprule
+Target & Incoming rows\\\midrule
+98 & $86/0$, $187/0$\\
+139 & $117/1$\\
+156 & $195/1$\\
+235 & $139/1$, $156/1$\\
+240 & $135/0$, $242/0$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Each listed row moves right and writes the required new immediate-left
+bit.  For the two entries into 235, the old invariant at 139 or 156
+supplies the second preceding 1.  Therefore every transition of $M$
+preserves $I$.  Since 95 is not constrained, $I(95,h,T)$ holds for every
+head position and every binary tape, without a blankness assumption.
+Induction proves $I$ throughout each such old run.  The verifier checks
+every incoming implication on the exact literal table; the inventory is
+not limited to the blocks being modified.
+
+\subsection{Three whole-tape identities}
+
+Let $\phi(235)=98$ and let $\phi$ fix every other state, including
+start and halt.  Put $F(q,h,T)=(\phi(q),h,T)$.  The following are the
+only exceptional old rows.  Coordinates in the guard column are relative
+to the initial head at zero.  The last state in each path is its endpoint.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}l l X r@{}}
+\toprule
+Old row & Forced left bits & New control path & Steps\\\midrule
+$98/0$ & $T(-1)=0$ & $98\to240\to176\to113$ & 3\\
+$235/0$ & $T(-2)=T(-1)=1$ & $98\to240\to87\to164\to118\to231$ & 5\\
+$240/1$ & $T(-1)=0$ & $240\to87\to190\to99$ & 3\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The complete successive read configurations, written as
+(state, relative head, bit), are respectively
+\begin{align*}
+ &(98,0,0),(240,-1,0),(176,0,0),\\
+ &(98,0,0),(240,-1,1),(87,-2,1),(164,-1,1),(118,0,0),\\
+ &(240,0,1),(87,-1,0),(190,0,1).
+\end{align*}
+Each transition writes back exactly the bit it reads.  The entire tape
+is unchanged, the final head is $+1$, and the endpoint is respectively
+113, 231 or 99, as in the corresponding single old step.  All inspected
+cells lie in $[-2,0]$.  The verifier rejects any attempted read of an
+unspecified bit; consequently every exterior cell is independent and
+arbitrary, rather than implicitly filled with zero.  None of these paths
+contains a halt.
+
+Every one of the other 473 old rows obeys
+\[
+ \delta_N(\phi(q),b)=(w,d,\phi(q'))
+ \quad\text{when}\quad \delta_M(q,b)=(w,d,q').
+\]
+This includes $235/1$ and both redirected callers.  Thus all 476 old
+rows are covered.  The guards of the three exceptional identities are
+exactly consequences of $I$ together with the scanned bit.
+
+\subsection{Positive blocks prove both directions}
+
+\begin{theorem}[All-initial-tape transfer]
+For every binary tape $T$ and every head position $h$,
+\[
+ \Halt(M,95,h,T)\longleftrightarrow\Halt(N,95,h,T).
+\]
+\end{theorem}
+\begin{proof}
+Let $C_t$ be the old run and let $k(C_t)$ be 3, 5, or 3 on the three
+exceptional rows, and 1 otherwise.  Define $\tau(0)=0$ and
+$\tau(t+1)=\tau(t)+k(C_t)$.  Induction using $I$ and the complete block
+identities gives the matching checkpoint $N^{\tau(t)}F(C_0)=F(C_t)$.
+An old halt therefore yields a new halt.  If the old run is infinite,
+then $\tau(t)\ge t$ and every intermediate block has no halt, giving an
+infinite new run.  Completeness and determinism of both transition tables
+give the converse.  These are finite-table calculations and ordinary
+natural-number induction, and can be formalized in ZFC.
+\end{proof}
+
+More precisely, if $a_t,b_t,c_t$ count the three exceptional old rows in
+the first $t$ transitions, then
+\[
+ \tau(t)=t+2a_t+4b_t+2c_t,\qquad t\le\tau(t)\le5t.
+\]
+The invariant belongs to the old run.  It is not asserted at arbitrary
+intermediate states of the modified helper in $N$.
+
+\section{Connection to the ZFC calibration and fresh evidence}
+
+The companion report proves, using its exact source interface and the
+identified inherited calibration,
+\[
+ \ZFC\vdash \Halt(M,\mathrm{blank})
+ \longleftrightarrow\exists p\,\operatorname{Proof}_{\ZFC}(p,\bot).
+\]
+Combining this result with the all-tape transfer yields the final
+237-state theorem.  The proof of the biconditional assumes no consistency
+hypothesis.  The established external mathematical halting/refutation
+equivalence implies actual nonhalting if ZFC is consistent.  A new Lean
+or Rocq kernel theorem for either exact new table is not supplied.
+
+The following evidence distinctions are part of the deliverable:
+\begin{itemize}
+\item The 238-state source proof and direct unbounded runtime were freshly
+checked on all 8,386 guarded source cases, using 2,255,513 symbolic rules.
+Their exact engine, helper, table and source hashes are retained.
+\item The additional 237-state transfer was independently implemented and
+freshly checked here.  It proves three arbitrary-exterior identities,
+all eight incoming invariant implications, and all 473 ordinary rows.
+There is no additional semantic guard.
+\item A fresh two-table startup comparison checks all 409,836 mapped
+checkpoints through 409,835 transitions.  None of the three exceptional
+rows occurs.  The final entire tape equals the independently established
+238-state sparse/dense target: 351 one cells and zero everywhere else,
+dispatcher 96, head $-5$, marker $-6$, and header 176.
+\item The earlier 237-state report also describes a direct unbounded
+237-state runtime run.  That run is not represented as a fresh execution
+in this supplement.  The complete local transfer already establishes the
+needed final result from the freshly checked 238-state theorem.
+\end{itemize}
+
+The source-to-consistency checkpoint remains
+\file{13ec39ed43148b1807f51ed6e6528e1c84659562}, with the named endpoint
+\file{CalibratedRotation240.halts_iff_zfc_refutation}.
+The full discussion of source descriptors, zero-padding, native theory,
+ZF/ZFC calibration, independence qualifications, and alternative formalisms
+is in the accompanying 21-page report under \file{composition238/}.
+It includes the six-valued obstruction to the indicated $K,S$ logical
+replacement and its 11,690-case finite checker.
+
+\section{Reproduction and incorporation}
+
+The archive contains both exact machines, the unchanged 238-state research
+package, this editable supplement, complete tables, checkers, fresh receipts
+and attribution.  From the extracted root, using a new external directory,
+run
+\begin{verbatim}
+python3 -B reproduce.py --output /tmp/zfc237-replay
+\end{verbatim}
+This freshly replays the complete 238-state runtime proof and the finite
+237-state transfer and startup checks.  The supported short form is
+\begin{verbatim}
+python3 -B reproduce.py --quick --output /tmp/zfc237-quick
+\end{verbatim}
+It explicitly omits the fresh unbounded 238 runtime execution while
+checking its archived input/engine binding.  Both forms reconstruct the
+237 tables and compare their exact delivered bytes.  They require standard
+library Python 3.10 or later, assertions enabled, and no network or
+proof-assistant installation.  Add \file{--with-guard} to also replay the
+earlier boundary239 selector proof.
+
+For incorporation, retain the distinction between the prior proposal,
+the newly repeated ordinary mathematical checks, and the future
+proof-assistant endpoint.  No remote repository write was performed.
+Inherited terms and notices remain under \file{composition238/licenses/}.
+The earlier 237-state report retains credit for its further fold.  No
+additional restrictions are asserted over the newly prepared verification
+and exposition.
+
+\clearpage
+\appendix
+\section{Complete canonical 237-state table}
+Start at 0.  $H$ denotes the separate halt outcome 237.  An entry $wDq$
+means write $w$, move $D\in\{L,R\}$, and enter $q$.  Read the three groups
+as states $0$--$78$, $79$--$157$, and $158$--$236$.
+\input{transition_table237.tex}
+\end{document}

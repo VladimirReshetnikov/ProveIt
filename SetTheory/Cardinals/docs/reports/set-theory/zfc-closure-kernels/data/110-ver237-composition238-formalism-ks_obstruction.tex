@@ -1,0 +1,133 @@
+\subsection{A six-valued obstruction to an intuitionistic logical basis}
+\label{sec:ks-obstruction}
+
+An incoming formalism note suggested replacing the four-input
+\L ukasiewicz axiom by $K$ and $S$, then attempting to recover classical
+logic from the retained quantifier and equality rows.  The following
+counterinterpretation resolves that particular logical-bootstrap question
+negatively.  It retains all seven other logical rows, both atomic
+fresh-variable vacuity schemes, modus ponens, generalization, and
+irreflexivity.  It does not include CP or GIC; the conclusion concerns
+recovery of the logical basis, not the consistency strength of a complete
+modified set-theory search.
+
+\paragraph{Proposition.}
+Replace the original single implicational axiom by
+\[
+ K:\ A\to(B\to A),\qquad
+ S:\ (A\to(B\to C))\to((A\to B)\to(A\to C)).
+\]
+Keep the other seven published logical schemas, including
+$\exists_a\forall_a B\to B$, quantified implication distribution,
+quantifier commutation, equality existence, and the equality/congruence
+rows.  Keep atomic fresh-variable vacuity and IR.
+The resulting logical calculus does not derive all instances of Peirce,
+double-negation elimination, or the original single axiom.  It also does
+not derive unrestricted fresh-variable vacuity.
+
+\paragraph{The algebra.}
+Let $H=\{0,1,2\}\times\{0,1\}$ be the product of two finite Heyting
+chains.  The order and meet are coordinatewise, the bottom is $(0,0)$,
+and the designated top is $(2,1)$.  On a chain with top $t$, implication
+is $x\Rightarrow y=t$ if $x\le y$, and $y$ otherwise.  Define
+\[
+ Q(x,y)=\bigl((1+y)\,[x=2],\ y\bigr),
+\]
+where the bracket is 1 when the condition holds and 0 otherwise.
+The complete table is
+\[
+\begin{array}{c|rrrrrr}
+h&(0,0)&(0,1)&(1,0)&(1,1)&(2,0)&(2,1)\\\hline
+Qh&(0,0)&(0,1)&(0,0)&(0,1)&(1,0)&(2,1).
+\end{array}
+\]
+This operation preserves bottom, top, and finite meets.  Its fixed
+points are exactly bottom, $e=(0,1)$, and top.  Directly from the formula,
+\begin{equation}
+ \neg Q\neg Q(x,y)=\bigl(2[x=2],y\bigr)\le(x,y).
+ \tag{12}
+ \label{eq:ks-rho6}
+\end{equation}
+
+\paragraph{The quantified interpretation.}
+Use object domain $D=\{0,1\}$.  Atomic equality has value top exactly
+when its assigned objects agree, and bottom otherwise.  Let membership
+be irreflexive, with either off-diagonal value chosen from
+$\{\bot,e,\top\}$.  For environments $s$, set
+\[
+ \llbracket\forall_i A\rrbracket_s
+ =Q\left(\bigwedge_{d\in D}\llbracket A\rrbracket_{s[i:=d]}\right).
+\]
+Interpret implication in $H$, falsity by bottom, and the source's
+derived existential by $\neg\forall_i\neg$.  Literal code 1,
+$R(0,0)$, is bottom by irreflexivity.  Code 0 is top, compatibly with
+its numerical alias $0\to0=0$.
+
+This is an algebraic interpretation of the emitted inference rules.
+It is not ordinary first-order semantics: substitution and general
+fresh-variable vacuity are not being assumed as additional rules.
+
+The validation of the rules is uniform in every formula and environment.
+$K$ and $S$ hold because $H$ is Heyting; indeed every intuitionistically
+valid implication/falsity scheme holds.  Modus ponens preserves top, and
+generalization preserves validity because $Q(\top)=\top$.
+Meet preservation of $Q$ gives quantified implication distribution.
+It also makes both orders of two distinct quantifiers equal to $Q^2$
+of the meet over both assignments, proving commutation.  Coincident
+quantifier labels give the same expression directly.
+
+For the retained row $\exists_a\forall_a B\to B$, put
+$b=\bigwedge_d\llbracket B\rrbracket_{s[a:=d]}$.
+The inner universal has value $Qb$, independent of the outer a, so the
+existential universal has value $\neg Q\neg Qb\le b\le
+\llbracket B\rrbracket_s$ by~\eqref{eq:ks-rho6}.
+Equality existence holds because one assignment makes equality top:
+the meet of its negations is bottom and $\neg Q\bot=\top$.
+Equality congruence and the Euclidean equality row hold by actual
+identity of objects, including allowed label collisions.
+Fresh-variable quantification leaves an atomic value unchanged before
+applying $Q$, and all permitted atomic values are fixed points; hence
+both atomic vacuity schemes hold.  IR has value top.
+
+\paragraph{The failure.}
+Choose both off-diagonal membership values to be $e$, and distinct
+labels $a,b,c$ with an environment assigning different objects to a and b.
+Let
+\[
+ A=R(a,b),\qquad P=\forall_c\neg A.
+\]
+Their values are
+\[
+ \llbracket A\rrbracket=(0,1),\quad
+ \llbracket\neg A\rrbracket=(2,0),\quad
+ \llbracket P\rrbracket=(1,0).
+\]
+Consequently
+\[
+ \llbracket\neg\neg P\to P\rrbracket
+ =\llbracket((P\to F)\to P)\to P\rrbracket
+ =(1,1)\ne\top.
+\]
+The same value occurs for $\neg A\to\forall_c\neg A$, although c
+is absent from A.  Thus an attempted induction from atomic vacuity
+fails already at negation.  The original single axiom also fails with
+formula arguments $a=F$, $b=\neg A$, $c=P$, and $u=F$; each argument
+is an actual formula in the source language.  Induction on derivations
+now proves all claimed nonderivability statements.
+
+\paragraph{Executable certificate and scope.}
+The standalone script \texttt{check\_ks\_obstruction.py} checks
+11,690 declared cases: the algebra, the scalar identity, quantified
+distribution and commutation on arbitrary two-point value vectors,
+all equality/membership rows with variable-label collisions, and the
+explicit counterexamples.  It runs using only the Python standard
+library; explicit exceptions keep every check active under
+\texttt{python -O}.  This is an ordinary mathematical proof accompanied
+by a finite certificate, not a Lean or Rocq proof.
+
+The result is new relative to the examined incoming notes, without a
+claim of novelty relative to the algebraic-logic literature.  CP and
+GIC might supply additional principles; their ability to repair this
+changed calculus would require a separate, theory-specific argument.
+In particular, no nonhalting theorem or smaller binary-machine bound
+is inferred from this counterinterpretation.
