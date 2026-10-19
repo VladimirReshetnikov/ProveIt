@@ -67,14 +67,17 @@ exactly when ZF, respectively ZFC, has a refutation. The literal binary-machine
 composition still needs complete decoder coverage.
 
 The [fresh 240-state decoder coverage](rotation240_coverage.md) has checked
-68 of 530 subtrees, covering 791 leaves and 1,038 guards. These partial
-certificates pass 68 probes and 72 callers with zero warnings; all remaining
-subtrees and their final composition still need to pass.
+132 of 530 subtrees, covering 1,568 leaves and 2,045 guards. These partial
+certificates pass 132 probes and 136 callers; the first 16 structural joins
+pass another 16 probes and 16 callers, all with zero warnings. The remaining
+subtrees, joins and final composition still need to pass.
 
 The [240-state arithmetic lookup](arithmetic_machine_graph_rotation240.md)
 passes eight probes and eight callers. Its fixed bounded formula is total in
-every IOpen model and agrees with all 480 machine actions. Internal step/run
-specialization and the PA machine-to-validator comparison remain open.
+every IOpen model and agrees with all 480 machine actions. The
+[exact arithmetic step](arithmetic_machine_step_rotation240.md) passes another
+seven probes and ten callers, covering every natural configuration code.
+Run specialization and the PA machine-to-validator comparison remain open.
 
 The [**241-state candidate**](candidate-fold241/README.md) from `8c41b1fb7d`
 adds two local folds to the combined243 table. The last fold uses a bit written

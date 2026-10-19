@@ -31,9 +31,9 @@ The [publication record](results/arithmetic-graph-rotation240-publication.json),
 successful bytes and preparation. The original guard uses historical scratch
 and provider paths. Publication performed no proof replay.
 
-This begins the arithmetic specialization to the active 240-state table.
-The older [246-state step and run development](arithmetic_machine_step_prefix246.md)
-still needs its corresponding 240-state specialization. The all-internal
-register/binary simulation and final PA consistency equivalence remain open.
+The [240-state arithmetic step](arithmetic_machine_step_rotation240.md) now
+specializes the generic tape arithmetic to this lookup. Run and startup
+specialization, the all-internal register/binary simulation, and final PA
+consistency equivalence remain open.
 The original machine and compiler retain Mira-Cult, Jeff Ketchersid, Andrew
 James Wade and the subsequent ProveIt reductions' attribution.
