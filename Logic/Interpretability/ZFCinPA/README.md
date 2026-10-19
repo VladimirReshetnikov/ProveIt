@@ -19,7 +19,13 @@ indices included.
 
 Fresh verification records now cover the
 [translation into Foundation ZFC](translation_check.md), the
-[native theory's model interface](native_theory_check.md) and the separate
+[native theory's model interface](native_theory_check.md),
+[internally coded collection axioms](r2ax_check.md),
+[the fixed native axioms](r2fixed_check.md),
+[Separation and omega induction](separation_kernel_check.md),
+[identity substitution across arities](subst_identity_check.md),
+[template-theory compilation](ltemplate_check.md),
+[the literal uniform statement](uniform_statement_check.md) and the separate
 [arithmetic fixed-point dependency](foundation_fixedpoint_check.md).
 Their audits retain the distinction between external finite syntax and
 model-internal indices, and state the cached dependency boundaries explicitly.

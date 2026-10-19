@@ -37,6 +37,12 @@ After that inventory, [R2Neg](../../../../../../Logic/Interpretability/ZFCinPA/r
 [internal ZFC axiom truth](../../../../../../SetTheory/BoundedConsistency/axiom_truth_check.md),
 [translation into Foundation ZFC](../../../../../../Logic/Interpretability/ZFCinPA/translation_check.md),
 [the native theory's model interface](../../../../../../Logic/Interpretability/ZFCinPA/native_theory_check.md),
+[internally coded collection axioms](../../../../../../Logic/Interpretability/ZFCinPA/r2ax_check.md),
+[the fixed native axioms](../../../../../../Logic/Interpretability/ZFCinPA/r2fixed_check.md),
+[Separation and omega induction](../../../../../../Logic/Interpretability/ZFCinPA/separation_kernel_check.md),
+[identity substitution across arities](../../../../../../Logic/Interpretability/ZFCinPA/subst_identity_check.md),
+[template-theory compilation](../../../../../../Logic/Interpretability/ZFCinPA/ltemplate_check.md),
+[the literal uniform statement](../../../../../../Logic/Interpretability/ZFCinPA/uniform_statement_check.md),
 the [compactness/completeness interfaces](../../../../../../Logic/FirstOrder/checked_interfaces.md)
 and ten [register-program modules](../../arithmetic_register_prerequisites.md)
 passed. NativePeel required one
@@ -44,17 +50,18 @@ implicit-argument correction, with the failed original run preserved.
 The [first concrete bisimulation check](../control-bisim-first-check/README.md)
 hit the 4 GiB memory limit; the
 [complete split certificate and assembled equivalence](../../control_bisim_rotation240_split.md)
-now pass under the unchanged cap. These fresh checks remove thirty of
+now pass under the unchanged cap. These fresh checks remove thirty-six of
 the 88 entries. The
 [provider review](../../../../../../Logic/Interpretability/ZFCinPA/fixedpoint-template-route/README.md)
 also identifies an already accepted current-source result for
 `ModelCodedPredicateTemplate`; its exact source/object pair is reusable, with
 the original warnings and legacy capture limits retained. This closes one
-further entry without replay: 31 resolved and 57 remaining.
+further entry without replay: 37 resolved and 51 remaining.
 An independent [legacy-record reconciliation](../../../../../../Logic/Interpretability/ZFCinPA/fixedpoint-template-route/legacy-review.json)
 confirms that reuse and finds no further omission among 1,511 named PASS
 records. Its counts describe its earlier scan checkpoint; the later
-soundness, axiom-truth, Translation and NativeTheory checks are included in
+soundness, axiom-truth, Translation, NativeTheory, R2Ax, R2Fixed, SeparationKernel
+and UniformStatement checks, followed by SubstIdentity and LTemplate, are included in
 the current count above.
 All eleven register-side entries are now checked;
 the [register endpoint](../../arithmetic_register_endpoint240.md) includes
