@@ -132,6 +132,11 @@ The [complete internal increment contract](arithmetic_increment_rotation240.md)
 passes another 11 probes and 13 callers with zero warnings. It restores all
 other register values, increments the marked target and appends exactly one
 spare, with an exact positive clock and an explicit blank exterior.
+The [internal decrement contracts](arithmetic_decrement_rotation240.md)
+pass 12 probes and 14 callers with zero warnings. Both branches preserve
+arbitrary complete tape contexts and append no spare; positive decrement
+exposes its added gap cell, while zero decrement explicitly requires the
+following block supplied by the spare invariant.
 
 The [**241-state candidate**](candidate-fold241/README.md) from `8c41b1fb7d`
 adds two local folds to the combined243 table. The last fold uses a bit written
