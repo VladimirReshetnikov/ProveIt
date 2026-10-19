@@ -50,8 +50,10 @@ Publication did not run another proof or simulation.
 
 The [source-program halting equivalence](source_rotation240.md) is already
 checked. To obtain the closed binary consistency theorem, the concrete
-6,455-leaf decoder must still pass all 8,386 guards, and the exact blank
-initialization must establish the required `Related` configuration. The
+6,455-leaf decoder must still pass all 8,386 guards. The
+[exact source tree and startup frame](rotation240_tree_frame.md) now establish
+the complete blank-initialization frame; the final composition must combine
+it with coverage and the source calibration to obtain `Related`. The
 internal PA proof also remains open. Compensated244 remains the smallest
 closed external Lean consistency endpoint at this checkpoint.
 

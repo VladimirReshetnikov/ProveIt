@@ -55,7 +55,11 @@ prove the table's numbering and halt facts and equality of the fast evaluator
 with the complete machine. The [nine general runtime units](../rotation240_runtime.md)
 also pass: 106 theorem probes and 94 typed callers, with zero warnings. Their
 halting equivalence retains concrete decoder-coverage and initial-frame
-hypotheses. Full initialization and the final composition remain separate.
+hypotheses. The [exact decoder tree and startup frame](../rotation240_tree_frame.md)
+now pass a further 16 probes and 19 callers, identifying the complete tape
+after 409,691 steps. The [full startup proof](../rotation240_bootstrap.md)
+passes 72 probes and 102 callers across ten modules. Complete decoder coverage and the final composition
+remain separate.
 
 Root freshly ran ten substantive jobs, including two complete unbounded
 register/list runtime checks. The final machine passes **8,386 guarded
@@ -77,9 +81,9 @@ These checks support ordinary proofs; they do not supply a Lean or PA endpoint.
 The [source-rotation Lean proof](../source_rotation240.md) now establishes
 halting equivalence for every initial register file, using the generic loop
 and context theorems and changing one shared program node. Its 10 theorem
-probes and 13 typed callers pass with zero warnings. Binary runtime coverage,
-initialization and consistency composition still need proofs for the changed
-table and source.
+probes and 13 typed callers pass with zero warnings. Complete binary decoder
+coverage and consistency composition still need proofs for the changed table
+and source.
 
 ## Exact files and attribution
 

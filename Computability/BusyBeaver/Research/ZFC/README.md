@@ -33,13 +33,13 @@ passes all 8,386 runtime cases, 2,322,575 symbolic rules and all 480 transition
 rows, with exact 409,691-step blank initialization. Its ordinary consistency
 argument is independently reviewed; the full exact-table Lean endpoint and
 internal PA equivalence remain open. The new source has 6,455 leaves and
-requires its own binary runtime and decoder coverage. The active formalization
-target is now this 240-state machine. See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md).
+requires its own concrete decoder coverage and final composition. The active
+formalization target is now this 240-state machine. See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md).
 
 The [240 source-equivalence proof](source_rotation240.md) now passes Lean:
 10 theorem probes and 13 typed callers, with zero warnings. It proves that
 the new register program preserves halting for every initial register file.
-The binary runtime, initialization and final consistency composition remain
+The concrete decoder coverage and final consistency composition remain
 separate obligations.
 
 The [exact 240-state table and fast lookup](rotation240_foundations.md) also
@@ -50,7 +50,16 @@ and input bit.
 The [nine 240-state runtime units](rotation240_runtime.md) pass a further
 106 theorem probes and 94 typed callers, with zero warnings. They prove
 halting equivalence assuming complete decoder coverage and a related initial
-tape configuration; those concrete hypotheses remain to be discharged.
+tape configuration.
+
+The [complete 409,691-step blank initialization](rotation240_bootstrap.md)
+passes 72 theorem probes and 102 typed callers across ten modules, with zero
+warnings. It identifies the entire tape and proves activity throughout startup.
+The [exact 240-state source tree and startup frame](rotation240_tree_frame.md)
+pass 16 theorem probes and 19 typed callers with zero warnings. They identify
+the 6,455-leaf decoder and the complete tape after 409,691 blank-start steps,
+including all 167 spare registers. Complete decoder coverage and the final
+consistency composition remain open.
 
 The [**241-state candidate**](candidate-fold241/README.md) from `8c41b1fb7d`
 adds two local folds to the combined243 table. The last fold uses a bit written
