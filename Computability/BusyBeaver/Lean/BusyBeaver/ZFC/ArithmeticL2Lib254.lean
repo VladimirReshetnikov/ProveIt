@@ -613,4 +613,154 @@ theorem pair162 (st : AS V) :
   rw [hG m, e] at hres
   exact hres
 
+/-! ## The unpair walk -/
+
+/-- `(s1, s2) := unP m`. -/
+noncomputable def unpairAS (st : AS V) (m : V) : AS V := { st with s1 := first m, s2 := second m }
+
+def AS.withPLZero (st : AS V) : AS V := { st with pl := 0 }
+def AS.withWSZero (st : AS V) : AS V := { st with ws := 0 }
+
+theorem cantor_zero_succ (b : V) : cantor 0 b + 1 = cantor (b + 1) 0 := by
+  simp only [cantor, zero_add, add_zero, triangle_succ]
+
+theorem cantor_pos_succ (a b : V) : cantor (a + 1) b + 1 = cantor a (b + 1) := by
+  simp only [cantor]
+  rw [show a + 1 + b = a + b + 1 by ring, show a + (b + 1) = a + b + 1 by ring, add_assoc]
+
+/-- One step of the unpair walk on `(s1, s2)`, as in `Cantor.ofNat`. -/
+noncomputable def walkStep (st : AS V) : AS V :=
+  if st.s1 = 0 then { st with s1 := st.s2 + 1, s2 := 0 }
+  else { st with s1 := st.s1 - 1, s2 := st.s2 + 1 }
+
+theorem walkStep_fields (u : AS V) :
+    walkStep u = { u with s1 := first (cantor u.s1 u.s2 + 1), s2 := second (cantor u.s1 u.s2 + 1) } := by
+  unfold walkStep
+  split_ifs with h
+  · rw [h, cantor_zero_succ, first_cantor, second_cantor]
+  · have hv : u.s1 = (u.s1 - 1) + 1 :=
+      (tsub_add_cancel_of_le (one_le_of_pos (lt_of_le_of_ne (Arithmetic.zero_le _) (Ne.symm h)))).symm
+    rw [hv, cantor_pos_succ, first_cantor, second_cantor, add_tsub_cancel_right]
+
+/-- The shared loop body (node 154) performs one walk step and continues. -/
+theorem body154 (st : AS V) : IR (.node 154) (enc st) (.cont 1) (enc (walkStep st)) := by
+  have hinc := inc_AS 7 (by omega) st
+  have h137 : Rn (.node 137) (updAS st 7 (field st 7 + 1)) (walkStep st) := by
+    by_cases h0 : st.s1 = 0
+    · have h138 := R.skip (n := 138) rfl (decZero_AS 6 (by omega) (updAS st 7 (field st 7 + 1)) h0)
+      have h211 := loop211 (updAS st 7 (field st 7 + 1))
+      have h := R.seq (n := 137) rfl h138 h211
+      have e : ({ updAS st 7 (field st 7 + 1) with
+          s1 := (updAS st 7 (field st 7 + 1)).s1 + (updAS st 7 (field st 7 + 1)).s2, s2 := 0 } : AS V)
+          = walkStep st := by
+        cases st
+        simp only at h0
+        subst h0
+        simp [walkStep, updAS, field]
+      rwa [e] at h
+    · have hv : st.s1 = (st.s1 - 1) + 1 :=
+        (tsub_add_cancel_of_le (one_le_of_pos (lt_of_le_of_ne (Arithmetic.zero_le _) (Ne.symm h0)))).symm
+      have hdec := decPos_AS 6 (by omega) (updAS st 7 (field st 7 + 1)) (st.s1 - 1) hv
+      have h138 := R.brk_cdr (n := 138) (k := 0) rfl hdec (R.brkS 0 _)
+      have h := R.skip (n := 137) rfl h138
+      have e : updAS (updAS st 7 (field st 7 + 1)) 6 (st.s1 - 1) = walkStep st := by
+        simp only [walkStep, if_neg h0]
+        rfl
+      rwa [e] at h
+  have h155 := R.seq (n := 155) rfl hinc h137
+  exact R.cont_cdr (n := 154) (k := 0) rfl h155 (R.contS 1 _)
+
+theorem write3_definable (a b c : V) (f g h : V → V) (x0 : V)
+    (hf : 𝚺₁-Function₁[V] f) (hg : 𝚺₁-Function₁[V] g) (hh : 𝚺₁-Function₁[V] h) :
+    𝚺₁-Function₁[V] (fun t => writeValue a (f t) (writeValue b (g t) (writeValue c (h t) x0))) := by
+  definability
+
+local instance first_definable : 𝚺₀-Function₁[V] first := first_defined.to_definable
+local instance second_definable : 𝚺₀-Function₁[V] second := second_defined.to_definable
+
+theorem first_add_definable (M : V) : 𝚺₁-Function₁[V] (fun t => first (M + t)) := by definability
+theorem second_add_definable (M : V) : 𝚺₁-Function₁[V] (fun t => second (M + t)) := by definability
+
+/-- `fn_14`: unpair `pl` into `(s1, s2)`. -/
+theorem loop115 (st : AS V) :
+    Rn (.node 115) st (unpairAS st (cantor st.s1 st.s2 + st.pl)).withPLZero := by
+  set M := cantor st.s1 st.s2
+  set v := st.pl
+  let Wr : V → AS V := fun t => { st with pl := v - t, s1 := first (M + t), s2 := second (M + t) }
+  let x0 : V := enc st
+  let G : V → V := fun t => writeValue ((1 : Nat) : V) (v - t)
+    (writeValue ((5 : Nat) : V) (second (M + t)) (writeValue ((8 : Nat) : V) (first (M + t)) x0))
+  have hG : ∀ t, G t = enc (Wr t) := by
+    intro t
+    show lupd (lupd (lupd (enc st) 6 (first (M + t))) 7 (second (M + t))) 8 (v - t) = enc (Wr t)
+    rw [lupd_enc _ 6 (by omega), lupd_enc _ 7 (by omega), lupd_enc _ 8 (by omega)]
+    rfl
+  haveI : 𝚺₁-Function₁[V] G :=
+    write3_definable _ _ _ (fun t => v - t) (fun t => second (M + t)) (fun t => first (M + t)) x0
+      (sub_definable v) (second_add_definable M) (first_add_definable M)
+  have hpass : ∀ t, t < v → IR (.decnz 8) (G t) .normal (enc { (Wr t) with pl := v - t - 1 }) ∧
+      IR (.node 154) (enc { (Wr t) with pl := v - t - 1 }) (.cont 1) (G (t+1)) := by
+    intro t ht
+    refine ⟨?_, ?_⟩
+    · rw [hG]
+      exact decPos_AS 8 (by omega) (Wr t) (v - t - 1)
+        (tsub_add_cancel_of_le (one_le_of_pos (tsub_pos_of_lt ht))).symm
+    · rw [hG]
+      have h := body154 { (Wr t) with pl := v - t - 1 }
+      have e : walkStep { (Wr t) with pl := v - t - 1 } = Wr (t+1) := by
+        rw [walkStep_fields]
+        simp only [Wr, cantor_projections, add_assoc, tsub_tsub]
+      rwa [e] at h
+  have hfin : IR (.node 115) (G v) .normal (G v) := by
+    rw [hG]
+    exact R.skip (n := 115) rfl (decZero_AS 8 (by omega) (Wr v) (by simp only [Wr, tsub_self]; rfl))
+  have hit := R.iterate (n := 115) rfl G (fun t => enc { (Wr t) with pl := v - t - 1 }) v hpass hfin
+  have hG0 : G 0 = enc st := by
+    rw [hG]
+    congr 1
+    simp only [Wr, add_zero, tsub_zero, M, first_cantor, second_cantor, v]
+  rw [hG0, hG v] at hit
+  simpa only [Wr, tsub_self, unpairAS, AS.withPLZero, AS.withWSZero] using hit
+
+/-- `fn_41`: unpair `ws` into `(s1, s2)`. -/
+theorem loop116 (st : AS V) :
+    Rn (.node 116) st (unpairAS st (cantor st.s1 st.s2 + st.ws)).withWSZero := by
+  set M := cantor st.s1 st.s2
+  set v := st.ws
+  let Wr : V → AS V := fun t => { st with ws := v - t, s1 := first (M + t), s2 := second (M + t) }
+  let x0 : V := enc st
+  let G : V → V := fun t => writeValue ((0 : Nat) : V) (v - t)
+    (writeValue ((5 : Nat) : V) (second (M + t)) (writeValue ((8 : Nat) : V) (first (M + t)) x0))
+  have hG : ∀ t, G t = enc (Wr t) := by
+    intro t
+    show lupd (lupd (lupd (enc st) 6 (first (M + t))) 7 (second (M + t))) 2 (v - t) = enc (Wr t)
+    rw [lupd_enc _ 6 (by omega), lupd_enc _ 7 (by omega), lupd_enc _ 2 (by omega)]
+    rfl
+  haveI : 𝚺₁-Function₁[V] G :=
+    write3_definable _ _ _ (fun t => v - t) (fun t => second (M + t)) (fun t => first (M + t)) x0
+      (sub_definable v) (second_add_definable M) (first_add_definable M)
+  have hpass : ∀ t, t < v → IR (.decnz 2) (G t) .normal (enc { (Wr t) with ws := v - t - 1 }) ∧
+      IR (.node 154) (enc { (Wr t) with ws := v - t - 1 }) (.cont 1) (G (t+1)) := by
+    intro t ht
+    refine ⟨?_, ?_⟩
+    · rw [hG]
+      exact decPos_AS 2 (by omega) (Wr t) (v - t - 1)
+        (tsub_add_cancel_of_le (one_le_of_pos (tsub_pos_of_lt ht))).symm
+    · rw [hG]
+      have h := body154 { (Wr t) with ws := v - t - 1 }
+      have e : walkStep { (Wr t) with ws := v - t - 1 } = Wr (t+1) := by
+        rw [walkStep_fields]
+        simp only [Wr, cantor_projections, add_assoc, tsub_tsub]
+      rwa [e] at h
+  have hfin : IR (.node 116) (G v) .normal (G v) := by
+    rw [hG]
+    exact R.skip (n := 116) rfl (decZero_AS 2 (by omega) (Wr v) (by simp only [Wr, tsub_self]; rfl))
+  have hit := R.iterate (n := 116) rfl G (fun t => enc { (Wr t) with ws := v - t - 1 }) v hpass hfin
+  have hG0 : G 0 = enc st := by
+    rw [hG]
+    congr 1
+    simp only [Wr, add_zero, tsub_zero, M, first_cantor, second_cantor, v]
+  rw [hG0, hG v] at hit
+  simpa only [Wr, tsub_self, unpairAS, AS.withPLZero, AS.withWSZero] using hit
+
 end SetTheory.BusyBeaver.ZFC.ArithmeticL2
