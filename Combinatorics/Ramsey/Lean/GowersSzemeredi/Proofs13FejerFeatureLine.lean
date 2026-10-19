@@ -34,23 +34,18 @@ theorem fejerFeature_regular_line {N L : Nat} [NeZero N] [Fact N.Prime]
   let u₁ := fun j => fejerBoxCoefficient (N := N) (a (j, true))
   have hcoeff (j : Option I × Bool) : balancedRelationCoefficient u₀ u₁ j =
       ((v j).1 - (v j).2 : ZMod N) := by
-    rcases j with ⟨j, b⟩
-    cases b <;> simp only [balancedRelationCoefficient, Bool.false_eq_true, if_false, if_true] <;>
+    obtain ⟨j, _ | _⟩ := j <;>
+      simp only [balancedRelationCoefficient, Bool.false_eq_true, if_false, if_true] <;>
       exact fejerCoefficientBox_difference _
   have heval : MvPolynomial.eval (balancedFeatureAssignment x y h)
       (balancedFeaturePolynomial sign u₀ u₁) = 0 := by
-    rw [← balancedFeatureVertex_polynomial]
-    simp_rw [hcoeff]
-    exact hf
-  have hp : balancedFeaturePolynomial sign u₀ u₁ = 0 := by
-    by_contra hne
-    exact hregular ⟨a, hne, heval⟩
+    simpa only [← balancedFeatureVertex_polynomial, hcoeff, fejerPairRelation] using hf
+  have hp : balancedFeaturePolynomial sign u₀ u₁ = 0 :=
+    Classical.byContradiction fun hne ↦ hregular ⟨a, hne, heval⟩
   obtain ⟨c, h₀, h₁, h₀s, h₁s⟩ := (balancedFeaturePolynomial_eq_zero_iff sign hsign u₀ u₁).mp hp
-  refine ⟨c, ?_⟩
-  intro j
+  refine ⟨c, fun j ↦ ?_⟩
   rw [← hcoeff]
-  rcases j with ⟨j, b⟩
-  cases j <;> cases b <;>
+  obtain ⟨_ | j, _ | _⟩ := j <;>
     simp [balancedFeatureCoefficient, balancedRelationCoefficient, h₀, h₁, h₀s, h₁s, mul_comm]
 
 theorem fejerFeature_regular_injective {N L : Nat} [NeZero N] [Fact N.Prime]

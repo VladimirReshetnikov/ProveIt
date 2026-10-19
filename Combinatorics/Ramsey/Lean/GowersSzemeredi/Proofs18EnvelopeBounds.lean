@@ -51,47 +51,27 @@ theorem polyPartConst_le (d : Nat) : polynomialPartitionConstant d ≤ 2 ^ (4 * 
 /-- The refinement constant at scale one in degree `d ≥ 1`. -/
 theorem s5_one_le {d : Nat} (hd : 1 ≤ d) :
     section5LocalRefinementConstant d 1 ≤ (2 : Real) ^ (2 ^ (40 * d ^ 3 + 2)) := by
-  have hK := polyPartConst_le d
-  set K := polynomialPartitionConstant d
-  have hKe : 4 * K ≤ 2 ^ (40 * d ^ 3 + 1) := by
-    have h1 : 4 * K ≤ 2 ^ (4 * (d + 1) ^ 2 + 2) := by
-      rw [pow_add]; nlinarith
-    refine h1.trans (Nat.pow_le_pow_right (by norm_num) ?_)
-    have hd3 : d ≤ d ^ 3 := by
-      calc d = d ^ 1 := (pow_one d).symm
-        _ ≤ d ^ 3 := Nat.pow_le_pow_right hd (by norm_num)
-    have hd2 : d * d ≤ d ^ 3 := by
-      calc d * d = d ^ 2 := by ring
-        _ ≤ d ^ 3 := Nat.pow_le_pow_right hd (by norm_num)
-    nlinarith
-  set W := (2 : Real) ^ (2 ^ (40 * d ^ 3 + 1))
-  have hW : (polynomialPartitionThreshold d : Real) ≤ W := by
+  have hKe : 4 * polynomialPartitionConstant d ≤ 2 ^ (40 * d ^ 3 + 1) := by
+    refine (Nat.mul_le_mul_left 4 (polyPartConst_le d)).trans ?_
+    rw [show 4 * 2 ^ (4 * (d + 1) ^ 2) = 2 ^ (4 * (d + 1) ^ 2 + 2) by ring]
+    exact Nat.pow_le_pow_right (by norm_num) (by
+      nlinarith [Nat.pow_le_pow_right hd (show 1 ≤ 3 by norm_num),
+        Nat.pow_le_pow_right hd (show 2 ≤ 3 by norm_num)])
+  have hT : (polynomialPartitionThreshold d : Real) = 2 ^ (2 ^ (40 * d ^ 3 + 1)) := by
     simp only [polynomialPartitionThreshold, weylThreshold, Nat.cast_pow, Nat.cast_ofNat]
-    rw [← pow_mul, show 2 ^ (40 * d ^ 3) * 2 = 2 ^ (40 * d ^ 3 + 1) by ring]
-  have h16 : (16 : Real) ^ K ≤ W := by
-    calc (16 : Real) ^ K = 2 ^ (4 * K) := by
-          rw [show (16 : Real) = 2 ^ (4 : Nat) by norm_num, ← pow_mul]
-      _ ≤ W := pow_le_pow_right₀ (by norm_num) hKe
-  have hpi : (4 * Real.pi / 1) ^ K ≤ W := by
-    refine le_trans ?_ h16
-    apply pow_le_pow_left₀ (by positivity)
-    have hp := Real.pi_lt_four
-    linarith only [hp]
-  have hmax : section5LocalRefinementConstant d 1 ≤ W + 4 := by
-    unfold section5LocalRefinementConstant
-    exact add_le_add (max_le (max_le hW hpi)
-      ((pow_le_pow_left₀ (by norm_num : (0 : Real) ≤ 4) (by norm_num : (4 : Real) ≤ 16) _).trans
-        h16)) le_rfl
-  have h4 : (4 : Real) ≤ W := by
-    calc (4 : Real) = 2 ^ (2 : Nat) := by norm_num
-      _ ≤ W := pow_le_pow_right₀ (by norm_num) (by
-          have := Nat.lt_two_pow_self (n := 40 * d ^ 3 + 1); omega)
-  calc section5LocalRefinementConstant d 1 ≤ W + 4 := hmax
-    _ ≤ W + W := add_le_add le_rfl h4
-    _ = (2 : Real) ^ (2 ^ (40 * d ^ 3 + 1) + 1) := by rw [pow_succ, ← two_mul, mul_comm]
-    _ ≤ (2 : Real) ^ (2 ^ (40 * d ^ 3 + 2)) := pow_le_pow_right₀ (by norm_num) (by
-        rw [show 40 * d ^ 3 + 2 = (40 * d ^ 3 + 1) + 1 by ring, pow_succ]
-        have := Nat.one_le_two_pow (n := 40 * d ^ 3 + 1); omega)
+    rw [← pow_mul, ← pow_succ]
+  have h16 : (16 : Real) ^ polynomialPartitionConstant d ≤ 2 ^ (2 ^ (40 * d ^ 3 + 1)) := by
+    rw [show (16 : Real) = 2 ^ 4 by norm_num, ← pow_mul]
+    exact pow_le_pow_right₀ (by norm_num) hKe
+  have h4 : (4 : Real) ^ polynomialPartitionConstant d ≤ 2 ^ (2 ^ (40 * d ^ 3 + 1)) :=
+    (pow_le_pow_left₀ (by norm_num) (by norm_num) _).trans h16
+  have hpi : (4 * Real.pi / 1) ^ polynomialPartitionConstant d ≤ 2 ^ (2 ^ (40 * d ^ 3 + 1)) :=
+    (pow_le_pow_left₀ (by positivity) (by linarith [Real.pi_lt_four]) _).trans h16
+  have hK4 := le_self_pow₀ (by norm_num : (1 : Real) ≤ 4) (cor57_partition_constant_pos d).ne'
+  unfold section5LocalRefinementConstant
+  rw [show 40 * d ^ 3 + 2 = 40 * d ^ 3 + 1 + 1 by omega, pow_succ 2 (40 * d ^ 3 + 1), pow_mul]
+  generalize (2 : Real) ^ 2 ^ (40 * d ^ 3 + 1) = W at hT h4 hpi ⊢
+  nlinarith [max_le (max_le hT.le hpi) h4, hK4.trans h4]
 
 /-! ### Double exponentials -/
 

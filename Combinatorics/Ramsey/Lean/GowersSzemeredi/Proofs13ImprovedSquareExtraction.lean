@@ -15,6 +15,16 @@ noncomputable section
 open Filter
 namespace LeanProofs.GowersSzemeredi
 
+section
+open Filter
+
+theorem section13SquareExponent_pos {alpha : Real} (hα : 0 < alpha) :
+    0 < section13SquareExponent alpha := by
+  unfold section13SquareExponent cor711Exponent
+  positivity
+
+end
+
 /-- The explicit exponent retained by the complete square construction. -/
 def section13ImprovedSquareExponent (alpha : Real) : Real :=
   ((1 : Real) / (2 : Real) ^ (10 * section13Q alpha)) *

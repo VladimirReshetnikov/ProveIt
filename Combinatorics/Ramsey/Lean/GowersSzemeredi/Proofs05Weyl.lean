@@ -684,7 +684,7 @@ private lemma geometricSumMajorant_signedProduct (n : Nat) (c : Real)
       simpa only [Int.cast_neg, Int.cast_natCast] using hcast
     rw [hprodReal]
     convert geometricSumMajorant_neg n
-      (c * (hs.prod.natAbs : Nat)) using 1 <;> ring
+      (c * (hs.prod.natAbs : Nat)) using 1; ring_nf
 
 private lemma sum_weylShiftRange_erase_zero_natAbs_le {t : Nat}
     (f : Nat → Real) (hf : ∀ n, 0 ≤ f n) :
@@ -1751,7 +1751,7 @@ private def weylRaisedCoefficientNat (k : Nat) : Nat :=
 private lemma weylRaisedCoefficient_eq_natCast (k : Nat) :
     weylRaisedCoefficient k = (weylRaisedCoefficientNat k : Real) := by
   unfold weylRaisedCoefficient weylRaisedCoefficientAt weylRaisedCoefficientNat
-  push_cast <;> rfl
+  push_cast; rfl
 
 lemma nat_le_cube {k : Nat} (hk : 1 ≤ k) : k ≤ k ^ 3 := by
   calc

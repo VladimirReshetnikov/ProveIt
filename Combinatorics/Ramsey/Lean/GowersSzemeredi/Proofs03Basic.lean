@@ -82,31 +82,18 @@ lemma previousUniformEnergy_sq_le {N n : Nat} [NeZero N]
     (∑ a : Point N n, ‖∑ s : ZMod N, cubeDifference f a s‖ ^ 2) ^ 2 ≤
       (N : Real) ^ (n + 1) *
         ∑ b : Point N (n + 1), ‖∑ s : ZMod N, cubeDifference f b s‖ ^ 2 := by
-  let D := ∑ a : Point N n, ‖∑ s : ZMod N, cubeDifference f a s‖ ^ 2
-  let X : Point N (n + 1) → Complex :=
-    fun b => ∑ s : ZMod N, cubeDifference f b s
-  have hD : 0 ≤ D := Finset.sum_nonneg fun a _ => sq_nonneg _
-  have htotal : ∑ b : Point N (n + 1), X b = (D : Complex) := sum_cube_succ_eq_sum_norm_sq f
-  have hnorm : ‖∑ b : Point N (n + 1), X b‖ = D := by
-    rw [htotal, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hD]
-  have htriangle : ‖∑ b : Point N (n + 1), X b‖ ≤
-      ∑ b : Point N (n + 1), ‖X b‖ := by
-    simpa using norm_sum_le (Finset.univ : Finset (Point N (n + 1))) X
-  have hcauchy : (∑ b : Point N (n + 1), ‖X b‖) ^ 2 ≤
-      (Fintype.card (Point N (n + 1)) : Real) *
-        ∑ b : Point N (n + 1), ‖X b‖ ^ 2 := by
-    simpa using (sq_sum_le_card_mul_sum_sq
-      (s := (Finset.univ : Finset (Point N (n + 1))))
-      (f := fun b => ‖X b‖))
-  change D ^ 2 ≤ (N : Real) ^ (n + 1) * ∑ b, ‖X b‖ ^ 2
-  calc
-    D ^ 2 = ‖∑ b : Point N (n + 1), X b‖ ^ 2 := by rw [hnorm]
-    _ ≤ (∑ b : Point N (n + 1), ‖X b‖) ^ 2 :=
-      pow_le_pow_left₀ (norm_nonneg _) htriangle 2
-    _ ≤ (Fintype.card (Point N (n + 1)) : Real) *
-        ∑ b : Point N (n + 1), ‖X b‖ ^ 2 := hcauchy
-    _ = (N : Real) ^ (n + 1) * ∑ b : Point N (n + 1), ‖X b‖ ^ 2 := by
-      simp [Point, ZMod.card]
+  -- the energy of degree `n` is the norm of the total of degree `n + 1`
+  have hD : 0 ≤ ∑ a : Point N n, ‖∑ s : ZMod N, cubeDifference f a s‖ ^ 2 :=
+    Finset.sum_nonneg fun a _ => sq_nonneg _
+  have hnorm := congrArg norm (sum_cube_succ_eq_sum_norm_sq (n := n) f)
+  rw [Complex.norm_real, Real.norm_of_nonneg hD] at hnorm
+  have hcard : Fintype.card (Point N (n + 1)) = N ^ (n + 1) := by simp [Point]
+  rw [← hnorm]
+  calc _ ≤ (∑ b : Point N (n + 1), ‖∑ s : ZMod N, cubeDifference f b s‖) ^ 2 :=
+        pow_le_pow_left₀ (norm_nonneg _) (norm_sum_le _ _) 2
+    _ ≤ _ := by
+      simpa only [Finset.card_univ, hcard, Nat.cast_pow] using sq_sum_le_card_mul_sum_sq
+        (s := Finset.univ) (f := fun b : Point N (n + 1) => ‖∑ s : ZMod N, cubeDifference f b s‖)
 
 /-- **Gowers, Lemma 3.4.** Higher-degree uniformity is monotone, with the
 square-root loss obtained from finite Cauchy--Schwarz. -/

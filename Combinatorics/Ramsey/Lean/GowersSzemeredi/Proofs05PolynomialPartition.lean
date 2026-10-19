@@ -342,7 +342,7 @@ private lemma exponential_polynomial_eq_realExponential {N k : Nat} [NeZero N]
   calc
     ZMod.stdAddChar (-((((s : ZMod N) ^ k) * a) * r)) =
         ZMod.stdAddChar
-          (((-((s : Int) ^ k) * (a * r).valMinAbs : Int) : ZMod N)) := by push_cast; ring
+          (((-((s : Int) ^ k) * (a * r).valMinAbs : Int) : ZMod N)) := by push_cast; ring_nf
     _ = Complex.exp
         (2 * Real.pi * Complex.I *
           (-((s : Int) ^ k) * (a * r).valMinAbs : Int) / N) :=
@@ -531,7 +531,7 @@ private lemma lemma55_sqrt_threshold_gamma_gap {k u : Nat} (hk : 2 ≤ k)
       D * 18 = k * 2 ^ (k + 1) * 18 := rfl
       _ ≤ 2 ^ k * 2 ^ (k + 1) * 18 :=
         Nat.mul_le_mul_right 18 (Nat.mul_le_mul_right (2 ^ (k + 1)) hkpow)
-      _ ≤ 2 ^ k * 2 ^ (k + 1) * 32 := by gcongr <;> norm_num
+      _ ≤ 2 ^ k * 2 ^ (k + 1) * 32 := by gcongr; norm_num
       _ = 2 ^ (2 * k + 6) := by ring
       _ ≤ 2 ^ (40 * k ^ 3) :=
         Nat.pow_le_pow_right (by norm_num) hexponent
@@ -717,7 +717,7 @@ private lemma lemma55_sqrt_weyl_lower {k t u : Nat} (hk : 2 ≤ k)
         (u : Real) * (u : Real) ^ (-2 * gamma) := by
     calc
       (u : Real) ^ (1 - 2 * gamma) =
-          (u : Real) ^ ((1 : Real) + (-2 * gamma)) := by congr 1 <;> ring
+          (u : Real) ^ ((1 : Real) + (-2 * gamma)) := by congr 1; ring
       _ = (u : Real) ^ (1 : Real) * (u : Real) ^ (-2 * gamma) := by
         rw [Real.rpow_add huPos]
       _ = (u : Real) * (u : Real) ^ (-2 * gamma) := by rw [Real.rpow_one]

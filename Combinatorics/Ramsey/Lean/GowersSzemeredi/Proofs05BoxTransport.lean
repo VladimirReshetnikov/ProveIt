@@ -168,9 +168,8 @@ theorem boxAffineTransport_partition {N k M : Nat} [NeZero N]
     (P : Box N k) (hP : P.IsProper) (Q : Fin M → Box N k)
     (hQ : IsBoxPartition Q (boxIndexModel P)) :
     IsBoxPartition (fun j => boxAffineTransport P (Q j)) P := by
-  constructor
-  · intro x
-    rw [← boxAffinePoint_image_indexModel P]
+  refine ⟨fun x => ?_, fun i j hij => ?_⟩
+  · rw [← boxAffinePoint_image_indexModel P]
     simp only [boxAffineTransport_carrier, Finset.mem_image]
     constructor
     · rintro ⟨t, ht, rfl⟩
@@ -178,16 +177,10 @@ theorem boxAffineTransport_partition {N k M : Nat} [NeZero N]
       exact ⟨j, t, hj, rfl⟩
     · rintro ⟨j, t, ht, rfl⟩
       exact ⟨t, (hQ.1 t).mpr ⟨j, ht⟩, rfl⟩
-  · intro i j hij
-    change Disjoint (boxAffineTransport P (Q i)).carrier (boxAffineTransport P (Q j)).carrier
-    rw [boxAffineTransport_carrier, boxAffineTransport_carrier]
-    apply Finset.disjoint_left.mpr
-    intro x hx hy
-    obtain ⟨s, hs, rfl⟩ := Finset.mem_image.mp hx
-    obtain ⟨t, ht, heq⟩ := Finset.mem_image.mp hy
-    have hst : t = s := boxAffinePoint_injective_on_indexModel P hP
-      (IsPartition.cell_subset hQ j ht) (IsPartition.cell_subset hQ i hs) heq
-    subst t
+  · simp only [boxAffineTransport_carrier, Finset.disjoint_left, Finset.mem_image]
+    rintro _ ⟨s, hs, rfl⟩ ⟨t, ht, hts⟩
+    obtain rfl := boxAffinePoint_injective_on_indexModel P hP
+      (IsPartition.cell_subset hQ j ht) (IsPartition.cell_subset hQ i hs) hts
     exact Finset.disjoint_left.mp (hQ.2 i j hij) hs ht
 
 /-- Flatten the local refinements of a finite family of boxes. -/
@@ -205,20 +198,8 @@ theorem finsetPartition_flatten {X : Type*} [DecidableEq X] {M : Nat}
       let z := (section5NatFlattenEquiv L).symm j; B z.1 z.2) S := by
   let e := section5NatFlattenEquiv L
   have hsigma := IsPartition.sigma L A S B hA hB
-  constructor
-  · intro x
-    rw [hsigma.1 x]
-    constructor
-    · rintro ⟨z, hz⟩
-      refine ⟨e z, ?_⟩
-      change x ∈ B (e.symm (e z)).1 (e.symm (e z)).2
-      rw [e.symm_apply_apply]
-      exact hz
-    · rintro ⟨j, hj⟩
-      exact ⟨e.symm j, hj⟩
-  · intro i j hij
-    have hpre : e.symm i ≠ e.symm j := fun h => (bne_iff_ne.mp hij) (e.symm.injective h)
-    exact hsigma.2 (e.symm i) (e.symm j) (bne_iff_ne.mpr hpre)
+  exact ⟨fun x => (hsigma.1 x).trans e.exists_congr_left, fun i j hij =>
+    hsigma.2 (e.symm i) (e.symm j) (bne_iff_ne.mpr (e.symm.injective.ne (bne_iff_ne.mp hij)))⟩
 
 /-- Flattened proper-box refinements cover the original box exactly. -/
 theorem boxFlatten_partition {N k M : Nat} [NeZero N]

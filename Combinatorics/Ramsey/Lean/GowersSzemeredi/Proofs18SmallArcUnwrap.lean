@@ -15,27 +15,18 @@ theorem ModAP.exists_short_arc_natAP {N d : Nat} [NeZero N]
       Q.carrier ⊆ Finset.range (d + 1) ∧
       P.carrier = Q.carrier.image (fun x : Nat => a + (x : ZMod N)) := by
   obtain ⟨a, ha⟩ := hdiam
-  let R := P.translateBy (-a)
-  have hRc : R.carrier = P.carrier.image (fun x => x - a) := by
-    rw [ModAP.translateBy_carrier]
-    simp only [translateFinset, sub_eq_add_neg, add_comm]
-  have hsub : R.carrier ⊆ finiteIntervalImage N (Finset.univ : Finset (Fin (d + 1))) := by
-    intro x hx
-    rw [hRc] at hx
-    obtain ⟨y, hy, rfl⟩ := Finset.mem_image.mp hx
-    obtain ⟨i, hi, rfl⟩ := mem_modInterval_index a y d (ha hy)
-    apply Finset.mem_image.mpr
-    refine ⟨⟨i, by omega⟩, Finset.mem_univ _, ?_⟩
-    simp
-  obtain ⟨Q, hQ, hlen, hQc, hQsub⟩ :=
-    R.exists_natAP_of_short_interval (P.translateBy_isProper (-a) hP) hshort hsub
+  have hRc : (P.translateBy (-a)).carrier = P.carrier.image (fun x => -a + x) := by
+    rw [ModAP.translateBy_carrier, translateFinset]
+  obtain ⟨Q, hQ, hlen, hQc, hQsub⟩ := (P.translateBy (-a)).exists_natAP_of_short_interval
+    (P.translateBy_isProper (-a) hP) hshort (by
+      rw [hRc]
+      intro x hx
+      obtain ⟨y, hy, rfl⟩ := Finset.mem_image.mp hx
+      obtain ⟨i, hi, rfl⟩ := mem_modInterval_index a y d (ha hy)
+      exact Finset.mem_image.mpr ⟨⟨i, by omega⟩, Finset.mem_univ _, by simp⟩)
   refine ⟨a, Q, hQ, hlen, hQsub, ?_⟩
   rw [hQc, hRc, Finset.image_image, Finset.image_image]
-  have hfun : (fun x : ZMod N => a + ((x - a).val : ZMod N)) = id := by
-    funext x
-    rw [ZMod.natCast_zmod_val]
-    simp
-  simp only [Function.comp_def, hfun, Finset.image_id]
+  simp only [Function.comp_def, ZMod.natCast_zmod_val, add_neg_cancel_left, Finset.image_id']
 
 /-- A short-arc modular progression has exactly the natural representatives
 of a disjoint union of two ordinary progressions. -/

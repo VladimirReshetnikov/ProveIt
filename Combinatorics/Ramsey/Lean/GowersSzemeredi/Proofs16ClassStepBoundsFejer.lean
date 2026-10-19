@@ -125,28 +125,16 @@ theorem classPiecesFejer_le_gen {gamma theta : Real} (k : Nat) (hg : 0 < gamma) 
   obtain ⟨ha0, haS⟩ := fejerThetaOne_bounds k ht ht1 hg hg1
   obtain ⟨hb, _⟩ := classBudgetW_pos_le k ha0 haS
   have hbi := classBudgetW_fejer_inv_le k hg hg1 ht ht1
-  have hF := fejerProductExponent_ge k
   have hstep : 2 + 32 * fejerProductExponent k ≤ fejerStepP k := by
-    unfold fejerStepP
-    have : 2 ≤ 2 ^ (4 * k + 11) :=
-      le_trans (by norm_num) (Nat.pow_le_pow_right (n := 2) (by norm_num) (show 1 ≤ 4 * k + 11 by omega))
-    omega
-  set u := 2 / (gamma * theta) with hu
-  clear_value u
-  have hu1 : 1 ≤ u := le_trans (by norm_num) hu2
-  have hupos : 0 < u := lt_of_lt_of_le (by norm_num) hu2
-  have hg2 : gamma ^ (-(2 : Int)) ≤ u ^ 2 := by
-    rw [zpow_neg, zpow_ofNat, ← inv_pow]
-    exact pow_le_pow_left₀ (inv_pos.mpr hg).le hginv 2
-  have hgz : 0 ≤ gamma ^ (-(2 : Int)) := zpow_nonneg hg.le _
+    have := fejerProductExponent_ge k
+    have : 1 ≤ 2 ^ (4 * k + 11) := Nat.one_le_two_pow
+    unfold fejerStepP; omega
+  set u := 2 / (gamma * theta)
   unfold classPiecesFejer
-  refine (Nat.floor_le (div_nonneg hgz hb.le)).trans ?_
-  calc gamma ^ (-(2 : Int)) / classBudgetW (fejerThetaOne theta gamma k) k
-      = gamma ^ (-(2 : Int)) * (classBudgetW (fejerThetaOne theta gamma k) k)⁻¹ := div_eq_mul_inv _ _
-    _ ≤ u ^ 2 * u ^ (32 * fejerProductExponent k) :=
-        mul_le_mul hg2 hbi (inv_pos.mpr hb).le (pow_pos hupos _).le
-    _ = u ^ (2 + 32 * fejerProductExponent k) := (pow_add _ _ _).symm
-    _ ≤ u ^ fejerStepP k := pow_le_pow_right₀ hu1 hstep
+  refine (Nat.floor_le (div_nonneg (zpow_nonneg hg.le _) hb.le)).trans ?_
+  rw [div_eq_mul_inv, zpow_neg, zpow_ofNat, ← inv_pow]
+  calc _ ≤ u ^ 2 * u ^ (32 * fejerProductExponent k) := by gcongr
+    _ ≤ u ^ fejerStepP k := by rw [← pow_add]; exact pow_le_pow_right₀ (by linarith) hstep
 
 /-- The exponent arithmetic of the Fejér threshold: with
 `a = (7 + 21k)·4^(k+1) + k + 52`, `1 + k + (2a+1)·2^(k+4) ≤ 64·F`. -/
@@ -236,23 +224,11 @@ theorem tightZeta_fejer_inv_le_gen {gamma theta : Real} (k : Nat) (hg : 0 < gamm
   refine ⟨hz0, by linarith, ?_⟩
   have hs := fejer_tightRadiusExponent_le k ht ht1 hg hg1
   rw [mul_comm theta gamma] at hs
-  set s := tightRadiusExponent (fejerThetaOne theta gamma k / 4) with hsdef
-  have hs0 : 0 ≤ s := by
-    rw [hsdef]; unfold tightRadiusExponent
-    exact div_nonneg (by norm_num) (pow_nonneg ha0.le 11)
-  have hinv : (tightZeta (fejerThetaOne theta gamma k / 4))⁻¹ = (2 : Real) ^ s := by
-    unfold tightZeta; rw [← hsdef, Real.rpow_neg (by norm_num), inv_inv]
-  rw [hinv]
-  have h2e : (2 : Real) ^ s ≤ Real.exp s := by
-    rw [Real.rpow_def_of_pos (by norm_num)]
-    apply Real.exp_le_exp.mpr
-    have hl : Real.log 2 ≤ 1 := by
-      have := Real.log_le_sub_one_of_pos (show (0 : Real) < 2 by norm_num); linarith
-    nlinarith
-  calc (2 : Real) ^ s ≤ Real.exp s := h2e
-    _ ≤ Real.exp ((2 / (gamma * theta)) ^ fejerStepT k) := by
-        apply Real.exp_le_exp.mpr
-        unfold fejerStepT
-        exact hs
+  have hs0 : 0 ≤ tightRadiusExponent (fejerThetaOne theta gamma k / 4) :=
+    div_nonneg (by norm_num) (pow_nonneg ha0.le 11)
+  have hl : Real.log 2 ≤ 1 := (Real.log_le_sub_one_of_pos two_pos).trans (by norm_num)
+  unfold tightZeta fejerStepT
+  rw [Real.rpow_neg (by norm_num), inv_inv, Real.rpow_def_of_pos two_pos, Real.exp_le_exp]
+  linarith [mul_le_mul_of_nonneg_right hl hs0]
 
 end LeanProofs.GowersSzemeredi

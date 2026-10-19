@@ -48,35 +48,15 @@ theorem multiaffineEval_affine {ι R : Type*} [DecidableEq ι] [CommRing R]
     (c : Finset ι → R) (a x : ι → R) (d : R) :
     multiaffineEval F c (fun i => a i + d * x i) =
       multiaffineEval F (multiaffineAffineCoeff F c a d) x := by
-  unfold multiaffineEval
-  calc
-    (∑ S ∈ F, c S * ∏ i ∈ S, (a i + d * x i)) =
-        ∑ S ∈ F, ∑ T ∈ S.powerset,
-          c S * ((d ^ T.card * ∏ i ∈ S \ T, a i) * ∏ i ∈ T, x i) := by
-      apply Finset.sum_congr rfl
-      intro S _
-      rw [multiaffine_monomial_affine, Finset.mul_sum]
-    _ = ∑ S ∈ F, ∑ T ∈ F,
-          if T ⊆ S then c S * ((d ^ T.card * ∏ i ∈ S \ T, a i) * ∏ i ∈ T, x i) else 0 := by
-      apply Finset.sum_congr rfl
-      intro S hS
-      rw [← Finset.sum_filter]
-      apply Finset.sum_congr
-      · ext T
-        simp only [Finset.mem_powerset, Finset.mem_filter]
-        exact ⟨fun h => ⟨hF S hS T h, h⟩, fun h => h.2⟩
-      · intro T _; rfl
-    _ = ∑ T ∈ F, ∑ S ∈ F,
-          if T ⊆ S then c S * ((d ^ T.card * ∏ i ∈ S \ T, a i) * ∏ i ∈ T, x i) else 0 :=
-      Finset.sum_comm
-    _ = ∑ T ∈ F, multiaffineAffineCoeff F c a d T * ∏ i ∈ T, x i := by
-      apply Finset.sum_congr rfl
-      intro T _
-      unfold multiaffineAffineCoeff
-      rw [Finset.mul_sum, Finset.sum_mul]
-      apply Finset.sum_congr rfl
-      intro S _
-      split_ifs <;> ring
+  unfold multiaffineEval multiaffineAffineCoeff
+  simp_rw [multiaffine_monomial_affine, Finset.mul_sum]
+  -- swap the sums: the pairs `T ⊆ S` with `S ∈ F` are the pairs `T ⊆ S` with `T, S ∈ F`
+  refine (Finset.sum_comm' (t' := F) (s' := fun T => F.filter (T ⊆ ·)) fun S T => ?_).trans
+    (Finset.sum_congr rfl fun T _ => ?_)
+  · simp only [Finset.mem_powerset, Finset.mem_filter]
+    exact ⟨fun h => ⟨h, hF S h.1 T h.2⟩, fun h => h.1⟩
+  · rw [Finset.sum_mul, Finset.sum_filter]
+    exact Finset.sum_congr rfl fun S _ => by split_ifs <;> ring
 
 /-- A maximal monomial receives no contributions from larger monomials. -/
 theorem multiaffineAffineCoeff_maximal {ι R : Type*} [DecidableEq ι] [CommRing R]

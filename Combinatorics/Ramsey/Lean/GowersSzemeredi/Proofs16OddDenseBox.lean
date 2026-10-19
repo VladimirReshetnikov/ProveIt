@@ -32,25 +32,14 @@ theorem Box.dense_odd_short_box {N k : Nat} [Fact N.Prime]
       Q.width = m ∧ (∀ i, (Q.axis i).length = m) ∧
       C ⊆ B ∧ C ⊆ Q.carrier ∧ delta / (2 : Real) ^ k * (m : Real) ^ k ≤ C.card := by
   obtain ⟨m, hmodd, hmpos, hmlower, hmupper⟩ := exists_odd_nat_between_half hlarge
-  have hmP : m ≤ P.width := by exact_mod_cast hmupper.trans hwidth
-  have hw : 2 ≤ P.width := by
-    have h : (4 : Real) ≤ P.width := hlarge.trans hwidth
-    have h' : 4 ≤ P.width := by exact_mod_cast h
-    omega
-  have hstep := P.commonDiff_ne_zero_of_two_le_width hP hk hw
-  obtain ⟨Q, C, hs, hp, haxes, hCB, hCQ, hCmass⟩ :=
-    P.dense_equal_side_box hP hstep hmpos hmP B hδ hB hmass
-  have hN : (1 : Real) ≤ N := by exact_mod_cast NeZero.pos N
-  have hmsqrt : (m : Real) ≤ Real.sqrt N := by
-    calc
-      _ ≤ (N : Real) ^ e := hmupper
-      _ ≤ (N : Real) ^ (1 / 2 : Real) := Real.rpow_le_rpow_of_exponent_le hN hehalf
-      _ = _ := (Real.sqrt_eq_rpow _).symm
-  have hQwidth : Q.width = m := by
-    apply le_antisymm
-    · simpa only [haxes] using Q.width_le_axis_length ⟨0, hk⟩
-    · exact Q.le_width_of_le_axis hk (fun i => (haxes i).ge)
-  exact ⟨m, Q, C, hmodd, hmpos, hmlower, hmsqrt, hs, by rwa [hs], hp, hQwidth,
-    haxes, hCB, hCQ, hCmass⟩
+  have hstep := P.commonDiff_ne_zero_of_two_le_width hP hk
+    (by exact_mod_cast (by linarith : (2 : Real) ≤ P.width))
+  obtain ⟨Q, C, hs, hp, haxes, hCB, hCQ, hCmass⟩ := P.dense_equal_side_box hP hstep hmpos
+    (by exact_mod_cast hmupper.trans hwidth) B hδ hB hmass
+  refine ⟨m, Q, C, hmodd, hmpos, hmlower, hmupper.trans ?_, hs, by rwa [hs], hp,
+    le_antisymm (by simpa only [haxes] using Q.width_le_axis_length ⟨0, hk⟩)
+      (Q.le_width_of_le_axis hk fun i => (haxes i).ge), haxes, hCB, hCQ, hCmass⟩
+  exact (Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast NeZero.pos N) hehalf).trans_eq
+    (Real.sqrt_eq_rpow _).symm
 
 end LeanProofs.GowersSzemeredi

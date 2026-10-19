@@ -39,33 +39,19 @@ theorem HasProductProperty.comp_of_coordinates {N d l : Nat} [NeZero N]
   cases hr : r j with
   | none =>
     have hfun : (fun i : Fin p => coordinateRestriction (fun y => phi (A y)) (y i) j) =
-        (fun i _ => phi (A (y i))) := by
-      funext i x
-      show phi (A (replaceCoordinate (y i) j x)) = _
-      rw [hnone _ _ _ hr]
+        fun i _ => phi (A (y i)) :=
+      funext fun i => funext fun x => congrArg phi (hnone (y i) j x hr)
     rw [hfun, weightedSimultaneousAdditiveEnergy_constants]
-    have hz := section16_zero_parallel_energy (p := p) E theta
-    have hpow : gamma ^ (8 * p) ≤ 1 := pow_le_one₀ hg0 hg1
-    have hnn : 0 ≤ (N : Real)⁻¹ * (∑ x ∈ E, theta x) ^ 4 := by positivity
-    calc gamma ^ (8 * p) * (N : Real)⁻¹ * (∑ x ∈ E, theta x) ^ 4
-        = gamma ^ (8 * p) * ((N : Real)⁻¹ * (∑ x ∈ E, theta x) ^ 4) := by ring
-      _ ≤ 1 * ((N : Real)⁻¹ * (∑ x ∈ E, theta x) ^ 4) := mul_le_mul_of_nonneg_right hpow hnn
-      _ = (N : Real)⁻¹ * (∑ x ∈ E, theta x) ^ 4 := one_mul _
-      _ ≤ _ := hz
+    refine le_trans ?_ (section16_zero_parallel_energy E theta)
+    rw [mul_assoc]
+    exact mul_le_of_le_one_left (by positivity) (pow_le_one₀ hg0 hg1)
   | some m =>
-    have hh := h p m (fun i => A (y i)) E theta htheta (by
-      intro i x hx
-      have hmem := (Finset.mem_filter.mp (hE i x hx)).2
-      rw [hsome _ _ _ _ hr] at hmem
-      exact hmem)
     have hfun : (fun i => coordinateRestriction (fun y => phi (A y)) (y i) j) =
-        (fun i => coordinateRestriction phi (A (y i)) m) := by
-      funext i x
-      show phi (A (replaceCoordinate (y i) j x)) = _
-      rw [hsome _ _ _ _ hr]
-      rfl
+        fun i => coordinateRestriction phi (A (y i)) m :=
+      funext fun i => funext fun x => congrArg phi (hsome (y i) j m x hr)
     rw [hfun]
-    exact hh
+    exact h p m (fun i => A (y i)) E theta htheta fun i x hx =>
+      hsome (y i) j m x hr ▸ (Finset.mem_filter.mp (hE i x hx)).2
 
 /-! ### Masked selections -/
 
@@ -148,30 +134,18 @@ theorem faceSel_product {N k : Nat} [NeZero N] {B : Finset (Point N (k + 1))}
     {phi : Point N (k + 1) → ZMod N} {gamma : Real} (h : HasProductProperty B phi gamma)
     (hg0 : 0 ≤ gamma) (hg1 : gamma ≤ 1) (x0 : Point N k) (e : Fin k → Bool) (i : Fin k) :
     HasProductProperty (faceSelDomain B x0 e i) (faceSel phi x0 e i) gamma := by
-  have hmain := h.comp_of_coordinates hg0 hg1
+  exact h.comp_of_coordinates hg0 hg1
     (fun y => selectPt (Fin.snoc e true) (Fin.snoc x0 0) (Fin.insertNth i.castSucc 0 y))
     (fun j => if (Fin.snoc e true : Fin (k + 1) → Bool) (i.castSucc.succAbove j) = true
       then some (i.castSucc.succAbove j) else none)
-    (by
-      intro y j m x hr
+    (fun y j m x hr => by
       by_cases hm : (Fin.snoc e true : Fin (k + 1) → Bool) (i.castSucc.succAbove j) = true
       · simp only [hm, if_true, Option.some.injEq] at hr
-        subst hr
-        simp only [replaceCoordinate]
-        rw [Fin.insertNth_update, selectPt_update_true _ _ hm]
+        simp only [← hr, replaceCoordinate, Fin.insertNth_update, selectPt_update_true _ _ hm]
       · simp [hm] at hr)
-    (by
-      intro y j x hr
-      by_cases hm : (Fin.snoc e true : Fin (k + 1) → Bool) (i.castSucc.succAbove j) = true
-      · simp [hm] at hr
-      · have hf : (Fin.snoc e true : Fin (k + 1) → Bool) (i.castSucc.succAbove j) = false := by
-          simpa using hm
-        simp only [replaceCoordinate]
-        rw [Fin.insertNth_update, selectPt_update_false _ _ hf])
-  have hdom : faceSelDomain B x0 e i = (Finset.univ : Finset (Point N k)).filter fun y =>
-      selectPt (Fin.snoc e true) (Fin.snoc x0 0) (Fin.insertNth i.castSucc 0 y) ∈ B := by
-    unfold faceSelDomain; rfl
-  rw [hdom]
-  exact hmain
+    fun y j x hr => by
+      have hf : (Fin.snoc e true : Fin (k + 1) → Bool) (i.castSucc.succAbove j) = false := by
+        simpa using hr
+      simp only [replaceCoordinate, Fin.insertNth_update, selectPt_update_false _ _ hf]
 
 end LeanProofs.GowersSzemeredi

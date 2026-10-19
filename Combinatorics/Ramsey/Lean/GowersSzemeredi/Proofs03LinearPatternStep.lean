@@ -118,28 +118,18 @@ theorem linearPattern_cauchy_step {N n : Nat} [NeZero N]
     (c : Fin (n + 1) → ZMod N) (f : Fin (n + 1) → ZMod N → Complex) (hf : DiscValued (f 0)) :
     ‖linearPatternAverage c f‖ ^ 2 ≤
       (N : Real) * ∑ u : ZMod N, ‖linearPatternAverage (linearPatternTailCoefficients c) (linearPatternTailDifference c f u)‖ := by
-  let B : ZMod N → Complex := fun s ↦
-    ∑ r : ZMod N, linearPatternTailProduct c f s r
-  have hsplit : linearPatternAverage c f = ∑ s : ZMod N, f 0 s * B s := by
-    simpa only [B] using linearPatternAverage_split c f
-  have htriangle : ‖∑ s : ZMod N, f 0 s * B s‖ ≤
-      ∑ s : ZMod N, ‖f 0 s * B s‖ := norm_sum_le _ _
-  have hcauchy := sq_sum_le_card_mul_sum_sq
-    (s := (Finset.univ : Finset (ZMod N)))
-    (f := fun s : ZMod N ↦ ‖f 0 s * B s‖)
-  calc
-    ‖linearPatternAverage c f‖ ^ 2 = ‖∑ s : ZMod N, f 0 s * B s‖ ^ 2 := by rw [hsplit]
-    _ ≤ (∑ s : ZMod N, ‖f 0 s * B s‖) ^ 2 :=
-      pow_le_pow_left₀ (norm_nonneg _) htriangle 2
-    _ ≤ (N : Real) * ∑ s : ZMod N, ‖f 0 s * B s‖ ^ 2 := by
-      simpa [ZMod.card] using hcauchy
+  let B : ZMod N → Complex := fun s ↦ ∑ r : ZMod N, linearPatternTailProduct c f s r
+  -- the triangle inequality, with `|f 0| ≤ 1`, then Cauchy--Schwarz in `s`
+  have hB : ‖linearPatternAverage c f‖ ≤ ∑ s : ZMod N, ‖B s‖ := by
+    rw [linearPatternAverage_split]
+    refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun s _ => ?_)
+    rw [norm_mul]
+    exact mul_le_of_le_one_left (norm_nonneg _) (hf s)
+  calc ‖linearPatternAverage c f‖ ^ 2 ≤ (∑ s : ZMod N, ‖B s‖) ^ 2 :=
+        pow_le_pow_left₀ (norm_nonneg _) hB 2
     _ ≤ (N : Real) * ∑ s : ZMod N, ‖B s‖ ^ 2 := by
-      gcongr with s
-      rw [norm_mul]
-      nlinarith [hf s, norm_nonneg (f 0 s), norm_nonneg (B s)]
-    _ ≤ (N : Real) *
-        ∑ u : ZMod N, ‖linearPatternAverage (linearPatternTailCoefficients c) (linearPatternTailDifference c f u)‖ := by
-      exact mul_le_mul_of_nonneg_left
-        (by simpa only [B] using linearPatternTail_energy c f) (by positivity)
+      simpa [ZMod.card] using sq_sum_le_card_mul_sum_sq (s := Finset.univ) (f := fun s ↦ ‖B s‖)
+    _ ≤ _ := mul_le_mul_of_nonneg_left (by simpa only [B] using linearPatternTail_energy c f)
+      (by positivity)
 
 end LeanProofs.GowersSzemeredi

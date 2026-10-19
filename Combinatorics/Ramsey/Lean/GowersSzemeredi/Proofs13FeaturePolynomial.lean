@@ -66,35 +66,16 @@ theorem balancedFeaturePolynomial_totalDegree {I R : Type*}
     [Fintype I] [CommRing R] [Nontrivial R]
     (sign : I → R) (u₀ u₁ : Option I → R) :
     (balancedFeaturePolynomial sign u₀ u₁).totalDegree ≤ 2 := by
-  have hlinear (j : Option I) :
-      ((C (u₀ j) + C (u₁ j)) * X (some (Sum.inr j)) +
-        C (u₁ j) * X (none : BalancedFeatureVariable I)).totalDegree ≤ 1 := by
-    apply (totalDegree_add _ _).trans
-    apply max_le
-    · apply (totalDegree_mul _ _).trans
-      have hc := totalDegree_add (C (u₀ j) : MvPolynomial (BalancedFeatureVariable I) R) (C (u₁ j))
-      simp only [totalDegree_C, max_self] at hc
-      simp only [totalDegree_X]
-      omega
-    · apply (totalDegree_mul _ _).trans
-      simp
+  have hCX (c : R) (v : BalancedFeatureVariable I) : (C c * X v).totalDegree ≤ 1 :=
+    (totalDegree_mul _ _).trans (by simp)
+  have hL (j : Option I) : ((C (u₀ j) + C (u₁ j)) * X (some (Sum.inr j)) +
+      C (u₁ j) * X (none : BalancedFeatureVariable I)).totalDegree ≤ 1 :=
+    (totalDegree_add _ _).trans (max_le (by rw [← C_add]; exact hCX _ _) (hCX _ _))
   unfold balancedFeaturePolynomial balancedFeatureRelation
-  apply (totalDegree_add _ _).trans
-  apply max_le
-  · apply totalDegree_finsetSum_le
-    intro i _
-    apply (totalDegree_mul _ _).trans
-    have hi := hlinear (some i)
-    simp only [totalDegree_X]
-    omega
-  · apply (totalDegree_mul _ _).trans
-    have hs : (∑ i, C (sign i) * X (some (Sum.inl i)) :
-        MvPolynomial (BalancedFeatureVariable I) R).totalDegree ≤ 1 := by
-      apply totalDegree_finsetSum_le
-      intro i _
-      apply (totalDegree_mul _ _).trans
-      simp
-    exact Nat.add_le_add hs (hlinear none)
+  exact (totalDegree_add _ _).trans (max_le (totalDegree_finsetSum_le fun i _ ↦
+    (totalDegree_mul _ _).trans (Nat.add_le_add (totalDegree_X _).le (hL (some i))))
+    ((totalDegree_mul _ _).trans
+      (Nat.add_le_add (totalDegree_finsetSum_le fun i _ ↦ hCX _ _) (hL none))))
 
 theorem balancedFeatureVariable_card {I : Type*} [Fintype I] :
     Fintype.card (BalancedFeatureVariable I) = 2 * Fintype.card I + 2 := by

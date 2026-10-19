@@ -30,16 +30,6 @@ noncomputable section
 open scoped BigOperators
 namespace LeanProofs.GowersSzemeredi
 
-theorem section16GoodDomain_inter {N k : Nat} [NeZero N]
-    (B : Finset (Point N (k + 1))) (H J : Finset (Point N k))
-    (Y : (h : Point N k) → Finset (Section16CubeElement B h)) (x0 : Point N k) :
-    section16GoodDomain B (H ∩ J) Y x0 =
-      (section16GoodDomain B H Y x0).filter fun z => section16Init z ∈ J := by
-  ext z
-  simp only [section16GoodDomain, Section16GoodInducedPair, Finset.mem_filter,
-    Finset.mem_univ, true_and, Finset.mem_inter]
-  tauto
-
 theorem Section16PhiOneIdentity.mono {N k : Nat} [NeZero N]
     {B1 B1' : Finset (Point N (k + 1))} {phi : Point N (k + 1) → ZMod N} {x0 : Point N k}
     {phiPrime : Point N k → ZMod N → ZMod N}

@@ -13,6 +13,29 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
+section
+open scoped BigOperators Pointwise ZMod
+open Finset
+
+/-- **Lemma 15.6 with the Fejér exponent**: the statement of Lemma 15.6 with
+`fejerProductExponent k` in place of `2^(2^(k+5))`. -/
+def FejerProductRestriction : Prop :=
+  ∀ (k : Nat) (beta gamma : Real),
+    1 ≤ k → 0 < beta → beta ≤ 1 → 0 < gamma → gamma ≤ 1 →
+    ∃ N0 : Nat, ∀ (N : Nat) [NeZero N], N0 ≤ N → Nat.Prime N → Odd N →
+      ∀ (B : Finset (Point N (k + 1)))
+          (phi : Point N (k + 1) → ZMod N),
+        (B.card : Real) = beta * (N : Real) ^ (k + 1) →
+        HasProductProperty B phi gamma →
+        ∃ B' : Finset (Point N (k + 1)), B' ⊆ B ∧
+          (beta * gamma / 2) ^ fejerProductExponent k *
+              (N : Real) ^ (17 * k + 15) ≤
+            generalArrangementCount 8 B' ∧
+          (1 - (2 : Real)⁻¹ ^ 44) * generalArrangementCount 8 B' ≤
+            respectedGeneralArrangementCount 8 B' phi
+
+end
+
 theorem fejer_product_restriction : FejerProductRestriction := by
   unfold FejerProductRestriction
   intro k beta gamma hk hbeta hbeta_one hgamma hgamma_one

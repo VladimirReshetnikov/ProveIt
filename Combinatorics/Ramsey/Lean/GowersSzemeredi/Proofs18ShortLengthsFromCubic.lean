@@ -37,32 +37,22 @@ theorem theorem_18_2_L3_le_five_of (h3 : EnvBound 3 62) {k : Nat} (hk : k ≤ 5)
       (by norm_num) h3 (by norm_num) (by norm_num) (by norm_num)
   intro delta N hδ hδhalf hN A hA hcard
   by_cases hk1 : k ≤ 1
-  · have hNpos : (0 : Real) < N :=
-      (show 0 < szemerediThresholdAt 3 delta k by unfold szemerediThresholdAt; positivity).trans_le hN
-    have hcardpos : 0 < A.card := by
-      exact_mod_cast (mul_pos hδ hNpos).trans_le hcard
-    obtain ⟨a, ha⟩ := Finset.card_pos.mp hcardpos
-    refine ⟨a, 1, by decide, ?_⟩
-    intro i hi
-    have hi0 : i = 0 := by omega
-    simpa [hi0] using ha
-  have hk4 : k ≤ 4 := by omega
-  have hu : 1 ≤ delta⁻¹ := (one_le_inv₀ hδ).mpr (by linarith)
-  have hsource : (2 : Real) ^ ((2 : Real) ^ (delta⁻¹ ^ ((2 : Nat) ^ (2 ^ (k + 3))))) =
-      szemerediThresholdAt 3 delta k := by
-    unfold szemerediThresholdAt
-    simp only [← Real.rpow_natCast, Nat.cast_pow, Nat.cast_ofNat]
+  · have hN0 : (0 : Real) < N := (Real.rpow_pos_of_pos two_pos _).trans_le hN
+    obtain ⟨a, ha⟩ : A.Nonempty :=
+      Finset.card_pos.mp (by exact_mod_cast (mul_pos hδ hN0).trans_le hcard)
+    exact ⟨a, 1, one_pos, fun i hi => by simpa [show i = 0 by omega] using ha⟩
   have hthreshold : (2 : Real) ^ ((2 : Real) ^ (delta⁻¹ ^ ((2 : Nat) ^ 21))) ≤
       szemerediThresholdAt 3 delta k := by
-    rw [← hsource]
-    apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
-    apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
-    apply pow_le_pow_right₀ hu
-    apply Nat.pow_le_pow_right (by norm_num)
-    exact (by norm_num : 21 ≤ (2 : Nat) ^ 5).trans
-      (Nat.pow_le_pow_right (by norm_num) (by omega))
+    have h : (2 : Real) ^ ((2 : Real) ^ (delta⁻¹ ^ ((2 : Nat) ^ (2 ^ (k + 3))))) =
+        szemerediThresholdAt 3 delta k := by
+      unfold szemerediThresholdAt
+      simp only [← Real.rpow_natCast, Nat.cast_pow, Nat.cast_ofNat]
+    rw [← h]
+    exact Real.rpow_le_rpow_of_exponent_le one_le_two (Real.rpow_le_rpow_of_exponent_le one_le_two
+      (pow_le_pow_right₀ ((one_le_inv₀ hδ).mpr (by linarith)) (Nat.pow_le_pow_right two_pos
+        ((show 21 ≤ 2 ^ 5 by norm_num).trans (Nat.pow_le_pow_right two_pos (by omega))))))
   obtain ⟨a, d, hd, hmem⟩ := natural_four_term_explicit_tower delta N hδ hδhalf
     (hthreshold.trans hN) A hA hcard
-  exact ⟨a, d, hd, fun i hi => hmem i (hi.trans_le hk4)⟩
+  exact ⟨a, d, hd, fun i hi => hmem i (by omega)⟩
 
 end LeanProofs.GowersSzemeredi

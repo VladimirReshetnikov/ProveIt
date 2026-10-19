@@ -42,36 +42,23 @@ theorem quadratic_family_phase_localization {N q : Nat} [NeZero N]
           ∀ x, x ∈ (R j).carrier → ‖exponential (-(phi i x)) - z‖ ≤ 1 / (4 * U) := by
   induction q generalizing P with
   | zero =>
-    refine ⟨1, fun _ => P, ?_, ?_⟩
-    · constructor
-      · intro x; simp
-      · intro i j hij; exact ((bne_iff_ne.mp hij) (Subsingleton.elim _ _)).elim
-    · intro j
-      exact ⟨hP, hbudget, fun i => Fin.elim0 i⟩
+    exact ⟨1, fun _ => P, ⟨fun x => by simp, fun i j hij =>
+      ((bne_iff_ne.mp hij) (Subsingleton.elim _ _)).elim⟩,
+      fun _ => ⟨hP, hbudget, fun i => Fin.elim0 i⟩⟩
   | succ q ih =>
+    -- localize `phi 0` at the budget of the remaining `q` phases, then refine every cell
     let V := quadraticFamilyBudget q U
     have hUV : U ≤ V := quadraticFamilyBudget_ge q U
-    have hV : 2 ≤ V := hU.trans hUV
-    obtain ⟨M, C, z, hCpart, hC⟩ := thresholdFreePolynomialLocalization_two
-      N P (phi 0) V hP (hphi 0) hV (by
-        change (2 * V) ^ 1024 ≤ P.length
-        exact hbudget)
-    have hlocal (i : Fin M) := ih (C i) (fun j => phi j.succ)
-      (hC i).1 (fun j => hphi j.succ) (hC i).2.1
-    choose m R hpart hcells using hlocal
+    obtain ⟨M, C, z, hCpart, hC⟩ := thresholdFreePolynomialLocalization_two N P (phi 0) V hP
+      (hphi 0) (hU.trans hUV) (show (2 * V) ^ 1024 ≤ P.length from hbudget)
+    choose m R hpart hcells using fun i : Fin M =>
+      ih (C i) (fun j => phi j.succ) (hC i).1 (fun j => hphi j.succ) (hC i).2.1
     let e := section5NatFlattenEquiv m
-    refine ⟨∑ i, m i, (fun j => let v := e.symm j; R v.1 v.2), ?_, ?_⟩
-    · exact finsetPartition_flatten m (fun i => (C i).carrier) P.carrier
-        (fun i j => (R i j).carrier) hCpart hpart
-    · intro j
-      let v := e.symm j
-      refine ⟨(hcells v.1 v.2).1, (hcells v.1 v.2).2.1, ?_⟩
-      intro i
-      refine Fin.cases ?_ (fun k => (hcells v.1 v.2).2.2 k) i
-      refine ⟨z v.1, (hC v.1).2.2.1, ?_⟩
-      intro x hx
-      apply ((hC v.1).2.2.2 x ((hpart v.1).cell_subset v.2 hx)).trans
-      apply one_div_le_one_div_of_le (by positivity : (0 : Real) < 4 * U)
-      exact mul_le_mul_of_nonneg_left (by exact_mod_cast hUV) (by norm_num)
+    refine ⟨∑ i, m i, (fun j => let v := e.symm j; R v.1 v.2), finsetPartition_flatten m
+      (fun i => (C i).carrier) P.carrier (fun i j => (R i j).carrier) hCpart hpart, fun j => ?_⟩
+    obtain ⟨hprop, hlen, hrest⟩ := hcells (e.symm j).1 (e.symm j).2
+    refine ⟨hprop, hlen, fun i => Fin.cases ⟨z (e.symm j).1, (hC _).2.2.1, fun x hx =>
+      ((hC _).2.2.2 x ((hpart _).cell_subset _ hx)).trans ?_⟩ hrest i⟩
+    gcongr
 
 end LeanProofs.GowersSzemeredi

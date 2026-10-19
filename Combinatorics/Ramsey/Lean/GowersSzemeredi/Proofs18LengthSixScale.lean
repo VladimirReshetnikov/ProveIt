@@ -34,30 +34,16 @@ theorem coverWidth_div8_powerLB (E : Real → Real) (t : Real)
     (hE : 0 < E (t / 2)) :
     WidthPowerLB (fun L => coverWidth E t ⌈(L : Real) / 8⌉₊) (E (t / 2) / 2) 64 := by
   intro L hL
-  have hLpos : (0 : Real) < L := by linarith
-  have hc := coverWidth_powerLB E t hE.le ⌈(L : Real) / 8⌉₊ (Nat.cast_nonneg _)
-  have h8 : (L : Real) / 8 ≤ ⌈(L : Real) / 8⌉₊ := Nat.le_ceil _
-  have hp : ((L : Real) / 8) ^ E (t / 2) ≤ (⌈(L : Real) / 8⌉₊ : Real) ^ E (t / 2) :=
-    Real.rpow_le_rpow (by positivity) h8 hE.le
-  refine le_trans ?_ (hp.trans hc)
-  -- `L^(E/2) ≤ (L/8)^E` because `8 ≤ √L`
-  have hsq : (8 : Real) ≤ (L : Real) ^ ((1 : Real) / 2) := by
-    have h := Real.rpow_le_rpow (by norm_num : (0 : Real) ≤ 64) hL (by norm_num : (0 : Real) ≤ 1 / 2)
-    have h64 : (64 : Real) ^ ((1 : Real) / 2) = 8 := by
-      rw [show (64 : Real) = 8 ^ (2 : Real) by norm_num, ← Real.rpow_mul (by norm_num)]
-      norm_num
-    rw [h64] at h
-    exact h
-  have hsplit : (L : Real) ^ E (t / 2) = (L : Real) ^ (E (t / 2) / 2) *
-      ((L : Real) ^ ((1 : Real) / 2)) ^ E (t / 2) := by
-    rw [← Real.rpow_mul hLpos.le, ← Real.rpow_add hLpos]
-    congr 1
-    ring
-  rw [Real.div_rpow hLpos.le (by norm_num), hsplit, le_div_iff₀ (by positivity)]
-  have h8E : (8 : Real) ^ E (t / 2) ≤ ((L : Real) ^ ((1 : Real) / 2)) ^ E (t / 2) :=
-    Real.rpow_le_rpow (by norm_num) hsq hE.le
-  have hLE : 0 ≤ (L : Real) ^ (E (t / 2) / 2) := Real.rpow_nonneg hLpos.le _
-  nlinarith
+  have hL0 : (0 : Real) ≤ L := by linarith
+  -- `√L ≤ L/8` because `8 ≤ √L`
+  have hsq : Real.sqrt L ≤ L / 8 := by
+    nlinarith [Real.sqrt_nonneg (L : Real), Real.sq_sqrt hL0]
+  calc (L : Real) ^ (E (t / 2) / 2) = Real.sqrt L ^ E (t / 2) := by
+        rw [Real.sqrt_eq_rpow, ← Real.rpow_mul hL0]; congr 1; ring
+    _ ≤ ((L : Real) / 8) ^ E (t / 2) := Real.rpow_le_rpow (Real.sqrt_nonneg _) hsq hE.le
+    _ ≤ (⌈(L : Real) / 8⌉₊ : Real) ^ E (t / 2) :=
+        Real.rpow_le_rpow (by positivity) (Nat.le_ceil _) hE.le
+    _ ≤ _ := coverWidth_powerLB E t hE.le _ (Nat.cast_nonneg _)
 
 /-- The spectrum cell width is monotone in the exponent, for `m ≥ 1`. -/
 theorem spectrumCellWidth_mono_exp {zeta : Real} (hz : 0 ≤ zeta) {m : Nat} (hm : 1 ≤ m)

@@ -62,36 +62,19 @@ theorem progressionPhasePartition_of_commonDiffOne {K : Real} {p : Nat}
     (h : CommonDiffPartitionOne K p) : ProgressionPhasePartition K p := by
   classical
   intro N _ q P hP a b H hH hKH hsize
-  let B : Box N 1 := P.toBoxOne
-  have hB : B.IsProper := fun _ => hP
-  let mu : Fin q → Point N 1 → ZMod N := fun i x => a i * x 0 + b i
-  have hmu : ∀ i, IsMultilinear (mu i) := fun i => BaseCase.isMultilinear_affine_one (a i) (b i)
-  have hBwidth : B.width = P.length := Box.width_one B
-  have hsize' : H ^ (p * (q + 1) ^ (2 * (2 ^ (1 + 1)))) ≤ B.width := by
-    rw [hBwidth]
-    have h8 : 2 * (2 ^ (1 + 1)) = 8 := by norm_num
-    rw [h8]
-    exact_mod_cast hsize
-  obtain ⟨M, Q, hpart, hproper, hwidth, hsmall⟩ := h N q B hB mu hmu H hH hKH hsize'
-  let pt : ZMod N → Point N 1 := fun y _ => y
-  have hptB (y : ZMod N) : pt y ∈ B.carrier ↔ y ∈ P.carrier := Box.mem_carrier_one B (pt y)
-  have hptQ (j : Fin M) (y : ZMod N) : pt y ∈ (Q j).carrier ↔ y ∈ ((Q j).axis 0).carrier :=
-    Box.mem_carrier_one (Q j) (pt y)
+  obtain ⟨M, Q, hpart, hproper, hwidth, hsmall⟩ := h N q P.toBoxOne (fun _ => hP)
+    (fun i x => a i * x 0 + b i) (fun i => BaseCase.isMultilinear_affine_one (a i) (b i)) H hH
+    hKH (by rw [Box.width_one]; exact_mod_cast hsize)
+  have hptQ (j : Fin M) (y : ZMod N) :
+      (fun _ => y) ∈ (Q j).carrier ↔ y ∈ ((Q j).axis 0).carrier :=
+    Box.mem_carrier_one (Q j) _
   refine ⟨M, fun j => (Q j).axis 0, ⟨fun y => ?_, fun i j hij => ?_⟩, fun j => hproper j 0,
-    fun j => ?_, fun i j y hy => ?_⟩
-  · rw [← hptB, hpart.1 (pt y)]
-    exact exists_congr fun j => hptQ j y
-  · rw [Finset.disjoint_left]
-    intro y hyi hyj
-    exact Finset.disjoint_left.mp (hpart.2 i j hij) ((hptQ i y).mpr hyi) ((hptQ j y).mpr hyj)
-  · have hw := hwidth j
-    rw [Box.width_one] at hw
-    exact_mod_cast hw
-  · have hs := hsmall i j (pt y) ((hptQ j y).mpr hy)
-    have hstep : (Q j).commonDiff = ((Q j).axis 0).step := ((Q j).axis_step 0).symm
-    rw [hstep] at hs
-    have h4 : (2 : Real) ^ (1 + 1) = 4 := by norm_num
-    rw [h4] at hs
-    exact hs
+    fun j => by simpa only [Box.width_one, Nat.cast_le] using hwidth j, fun i j y hy => ?_⟩
+  · exact (Box.mem_carrier_one P.toBoxOne fun _ => y).symm.trans
+      ((hpart.1 _).trans (exists_congr fun j => hptQ j y))
+  · exact Finset.disjoint_left.mpr fun y hyi hyj =>
+      Finset.disjoint_left.mp (hpart.2 i j hij) ((hptQ i y).mpr hyi) ((hptQ j y).mpr hyj)
+  · rw [(Q j).axis_step 0, show (4 : Real) = 2 ^ (1 + 1) by norm_num]
+    exact hsmall i j _ ((hptQ j y).mpr hy)
 
 end LeanProofs.GowersSzemeredi

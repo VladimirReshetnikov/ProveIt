@@ -16,31 +16,17 @@ rounded spectrum parameter and its denominator. -/
 theorem section10Zeta_mono {a b : Real} (ha : 0 < a) (hab : a ≤ b) (hb : b ≤ 1) :
     section10Zeta a ≤ section10Zeta b := by
   have hbpos : 0 < b := ha.trans_le hab
-  have hkb : 0 < section10SpectrumParameter b := by
-    apply Nat.ceil_pos.mpr
-    unfold section10SpectrumBound
-    positivity
-  have hk : section10SpectrumParameter b ≤ section10SpectrumParameter a := by
-    apply Nat.ceil_mono
-    unfold section10SpectrumBound
-    exact mul_le_mul_of_nonneg_left
-      (Real.rpow_le_rpow_of_nonpos ha hab (by norm_num)) (by positivity)
-  have hkReal : (section10SpectrumParameter b : Real) ≤ section10SpectrumParameter a :=
-    by exact_mod_cast hk
-  have hp : a ^ (18 * section10SpectrumParameter a) ≤
-      b ^ (18 * section10SpectrumParameter b) := by
-    calc
-      _ ≤ b ^ (18 * section10SpectrumParameter a) := pow_le_pow_left₀ ha.le hab _
-      _ ≤ _ := pow_le_pow_of_le_one hbpos.le hb (Nat.mul_le_mul_left 18 hk)
-  have htwo : (2 : Real) ^ (-(155 : Real) * section10SpectrumParameter a) ≤
-      (2 : Real) ^ (-(155 : Real) * section10SpectrumParameter b) := by
-    apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
-    linarith
+  have hkb : 0 < section10SpectrumParameter b :=
+    Nat.ceil_pos.mpr (by unfold section10SpectrumBound; positivity)
+  have hk : section10SpectrumParameter b ≤ section10SpectrumParameter a := Nat.ceil_mono
+    (mul_le_mul_of_nonneg_left (Real.rpow_le_rpow_of_nonpos ha hab (by norm_num)) (by positivity))
+  have hkR : (section10SpectrumParameter b : Real) ≤ section10SpectrumParameter a := by
+    exact_mod_cast hk
   unfold section10Zeta
-  apply div_le_div₀
-    (mul_nonneg (Real.rpow_nonneg (by norm_num) _) (pow_nonneg hbpos.le _))
-    (mul_le_mul htwo hp (pow_nonneg ha.le _) (Real.rpow_nonneg (by norm_num) _))
-    (by exact_mod_cast hkb) hkReal
+  refine div_le_div₀ (by positivity) (mul_le_mul ?_ ?_ (by positivity) (by positivity))
+    (by exact_mod_cast hkb) hkR
+  · exact Real.rpow_le_rpow_of_exponent_le one_le_two (by linarith)
+  · exact (pow_le_pow_left₀ ha.le hab _).trans (pow_le_pow_of_le_one hbpos.le hb (by omega))
 
 /-- More frequencies and a smaller radius give a smaller Bohr domain. -/
 theorem bohr_domain_mono {N : Nat} [NeZero N] {K L : Finset (ZMod N)} {r s : Real}

@@ -65,28 +65,11 @@ theorem Section16LineCoverFamily.global_affine_lift_rounded_family {N k q : Nat}
       (∀ j i, IsMultilinear (mu j i)) ∧
       ∀ a j z, z ∈ (Q j).carrier → z ∈ B a → z ∈ H → ∃ i, phi a z = mu j i z := by
   intro r
-  let q' := max 1 q
-  have hq' : 0 < q' := lt_of_lt_of_le Nat.zero_lt_one (le_max_left _ _)
-  have hr : 6 * (q' : ℝ) * ((max 1 (Fintype.card ι) : Nat) : ℝ) ≤ (r : ℝ) * τ := by
-    have h : 6 * (max 1 q : ℝ) * ((max 1 (Fintype.card ι) : Nat) : ℝ) / τ ≤ (r : ℝ) :=
-      Nat.le_ceil _
-    have h2 := (div_le_iff₀ hτ).mp h
-    have hq'cast : ((q' : Nat) : ℝ) = max 1 (q : ℝ) := by
-      simp only [q', Nat.cast_max, Nat.cast_one]
-    rw [hq'cast]
-    exact h2
-  have hMpos : (0 : ℝ) < ((max 1 (Fintype.card ι) : Nat) : ℝ) := by
-    have : 0 < max 1 (Fintype.card ι) := lt_of_lt_of_le Nat.zero_lt_one (le_max_left _ _)
-    exact_mod_cast this
-  have hrpos : 0 < r := by
-    by_contra hz
-    have hz' : r = 0 := by omega
-    have hq'' : (0 : ℝ) < q' := by exact_mod_cast hq'
-    rw [hz', Nat.cast_zero, zero_mul] at hr
-    have : (0 : ℝ) < 6 * (q' : ℝ) * ((max 1 (Fintype.card ι) : Nat) : ℝ) := by positivity
-    linarith
-  obtain ⟨hPb, hEb, hEb1⟩ := hranges r ε hrpos hε hε1
-  have hpad := hline.mono_count (le_max_right 1 q)
-  exact hpad.global_affine_lift_family (Gs r) (hslice r) (hGs r) hk (Nat.floor_le hl)
-    τ ε hq' hτ hτ1 hε hε1 hPb hEb hEb1 hr
+  have hr : 6 * ((max 1 q : Nat) : ℝ) * ((max 1 (Fintype.card ι) : Nat) : ℝ) ≤ (r : ℝ) * τ := by
+    rw [Nat.cast_max 1 q, Nat.cast_one, ← div_le_iff₀ hτ]
+    exact Nat.le_ceil _
+  obtain ⟨hPb, hEb, hEb1⟩ := hranges r ε (Nat.ceil_pos.mpr (by positivity)) hε hε1
+  exact (hline.mono_count (le_max_right 1 q)).global_affine_lift_family (Gs r) (hslice r)
+    (hGs r) hk (Nat.floor_le hl) τ ε (by omega) hτ hτ1 hε hε1 hPb hEb hEb1 hr
+
 end LeanProofs.GowersSzemeredi

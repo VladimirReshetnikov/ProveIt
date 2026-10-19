@@ -52,25 +52,8 @@ theorem section5Flatten_partition {N M : Nat} [NeZero N]
   let e := section5FlattenEquiv L
   have hsigma := IsPartition.sigma L (fun i ↦ (Q i).carrier)
     Finset.univ (fun i j ↦ (R i j).carrier) hQ hR
-  constructor
-  · intro x
-    rw [hsigma.1 x]
-    constructor
-    · rintro ⟨z, hz⟩
-      refine ⟨e z, ?_⟩
-      change x ∈
-        (R ((section5FlattenEquiv L).symm (section5FlattenEquiv L z)).1
-          ((section5FlattenEquiv L).symm (section5FlattenEquiv L z)).2).carrier
-      rw [(section5FlattenEquiv L).symm_apply_apply z]
-      exact hz
-    · rintro ⟨j, hj⟩
-      refine ⟨e.symm j, ?_⟩
-      simpa only [section5Flatten, e] using hj
-  · intro i j hij
-    have hij' : i ≠ j := bne_iff_ne.mp hij
-    have hpre : e.symm i ≠ e.symm j := fun h => hij' (e.symm.injective h)
-    simpa only [section5Flatten, e] using
-      hsigma.2 (e.symm i) (e.symm j) (bne_iff_ne.mpr hpre)
+  exact ⟨fun x => (hsigma.1 x).trans e.exists_congr_left, fun i j hij =>
+    hsigma.2 (e.symm i) (e.symm j) (bne_iff_ne.mpr (e.symm.injective.ne (bne_iff_ne.mp hij)))⟩
 
 /-- The flattened partition refines the original family cell by cell. -/
 theorem section5Flatten_refinement {N M : Nat} [NeZero N]

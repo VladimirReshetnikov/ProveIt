@@ -56,35 +56,21 @@ theorem diameterAtMost_bounded_multiples {N : Nat} [NeZero N]
     {X : Type*} [DecidableEq X] (A : Finset X) (a : ZMod N)
     (w : X → Nat) (L : Nat) (hw : ∀ x, x ∈ A → w x ≤ L) :
     diameterAtMost (A.image fun x => a * (w x : ZMod N)) (L * centeredAbs a) := by
-  have hcast := ZMod.natCast_natAbs_valMinAbs a
-  have hsign : (centeredAbs a : ZMod N) = a ∨ (centeredAbs a : ZMod N) = -a := by
+  -- the centered lift is `a` or `-a`: count up from `0`, or down from `a * L`
+  obtain ⟨b, idx, hidx⟩ : ∃ b : ZMod N, ∃ idx : X → Nat, ∀ x ∈ A,
+      idx x ≤ L * centeredAbs a ∧ b + (idx x : ZMod N) * 1 = a * w x := by
+    have hcast := ZMod.natCast_natAbs_valMinAbs a
     unfold centeredAbs
     split at hcast
-    · exact Or.inl hcast
-    · exact Or.inr hcast
-  rcases hsign with hpos | hneg
-  · refine ⟨0, ?_⟩
-    intro y hy
-    obtain ⟨x, hx, rfl⟩ := Finset.mem_image.mp hy
-    apply Finset.mem_image.mpr
-    refine ⟨⟨w x * centeredAbs a, by
-      change w x * centeredAbs a < L * centeredAbs a + 1
-      have := Nat.mul_le_mul_right (centeredAbs a) (hw x hx); omega⟩, Finset.mem_univ _, ?_⟩
-    change 0 + ((w x * centeredAbs a : Nat) : ZMod N) * 1 = _
-    push_cast
-    rw [hpos]
-    ring
-  · refine ⟨a * (L : ZMod N), ?_⟩
-    intro y hy
-    obtain ⟨x, hx, rfl⟩ := Finset.mem_image.mp hy
-    apply Finset.mem_image.mpr
-    refine ⟨⟨(L - w x) * centeredAbs a, by
-      change (L - w x) * centeredAbs a < L * centeredAbs a + 1
-      have := Nat.mul_le_mul_right (centeredAbs a) (Nat.sub_le L (w x)); omega⟩,
-      Finset.mem_univ _, ?_⟩
-    change a * (L : ZMod N) + (((L - w x) * centeredAbs a : Nat) : ZMod N) * 1 = _
-    rw [Nat.cast_mul, Nat.cast_sub (hw x hx), hneg]
-    ring
+    · exact ⟨0, fun x => w x * a.valMinAbs.natAbs, fun x hx =>
+        ⟨Nat.mul_le_mul_right _ (hw x hx), by rw [Nat.cast_mul, hcast]; ring⟩⟩
+    · exact ⟨a * L, fun x => (L - w x) * a.valMinAbs.natAbs, fun x hx =>
+        ⟨Nat.mul_le_mul_right _ (Nat.sub_le _ _), by
+          rw [Nat.cast_mul, Nat.cast_sub (hw x hx), hcast]; ring⟩⟩
+  refine ⟨b, fun y hy => ?_⟩
+  obtain ⟨x, hx, rfl⟩ := Finset.mem_image.mp hy
+  exact Finset.mem_image.mpr ⟨⟨idx x, Nat.lt_succ_of_le (hidx x hx).1⟩, Finset.mem_univ _,
+    (hidx x hx).2⟩
 
 /-- Bound the top-degree term on any subset of the first u indices. -/
 theorem diameterAtMost_monomial {N k u : Nat} [NeZero N]

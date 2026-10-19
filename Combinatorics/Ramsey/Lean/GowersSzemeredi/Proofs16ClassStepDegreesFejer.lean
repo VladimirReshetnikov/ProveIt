@@ -88,45 +88,31 @@ theorem step_thr_le_fejer {k D : Nat} (hk : 1 ≤ k) {V V' : Real} (hV : 1 ≤ V
     {theta gamma : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1) :
     classStepThresholdFejer V D theta gamma k ≤ (V' * (2 / (gamma * theta))) ^ fejerStepThrDeg k D := by
   obtain ⟨hu2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
+  obtain ⟨ha0, haS⟩ := fejerThetaOne_bounds k ht ht1 hg hg1
+  obtain ⟨hb, -⟩ := classBudgetW_pos_le k ha0 haS
+  obtain ⟨-, -, hd, -⟩ := section16_theta_delta_bounds_with ha0 haS
   have hL := fejerProductThreshold_le_gen hk hg hg1 ht ht1
   have hgd := twoDiv_gamma_le_fejer k hg hg1 ht ht1
   have hdd := twoDiv_delta_le_fejer k hg hg1 ht ht1
-  set u := 2 / (gamma * theta) with hu
-  clear_value u
+  set u := 2 / (gamma * theta)
   have hV' : 1 ≤ V' := hV.trans hVV
-  have hu1 : 1 ≤ u := le_trans (by norm_num) hu2
-  have hua : u ≤ V' * u := le_mul_of_one_le_left (by linarith) hV'
+  have hua : u ≤ V' * u := le_mul_of_one_le_left (by positivity) hV'
+  have hVa : V ≤ V' * u := hVV.trans (le_mul_of_one_le_right (by positivity) (by linarith))
   have ha2 : 2 ≤ V' * u := hu2.trans hua
-  have ha1 : 1 ≤ V' * u := le_trans (by norm_num) ha2
-  have hpow : ∀ j : Nat, V * u ^ j ≤ (V' * u) ^ (j + 1) := by
-    intro j
-    rw [pow_succ']
-    exact mul_le_mul (hVV.trans (le_mul_of_one_le_right (by linarith) hu1))
-      (pow_le_pow_left₀ (by linarith) hua j) (pow_nonneg (by linarith) _) (by linarith)
-  have hpiece : ∀ g : Real, 0 < g → 2 / (g * classBudgetW (fejerThetaOne theta gamma k) k) ≤ u ^ (fejerStepP k + 1) →
-      (V * (2 / (g * classBudgetW (fejerThetaOne theta gamma k) k))) ^ D ≤ (V' * u) ^ fejerStepThrDeg k D := by
-    intro g hg0 hgi
-    have h1 : V * (2 / (g * classBudgetW (fejerThetaOne theta gamma k) k)) ≤ (V' * u) ^ (fejerStepP k + 1 + 1) :=
-      (mul_le_mul_of_nonneg_left hgi (by linarith)).trans (hpow _)
-    have h0 : 0 ≤ V * (2 / (g * classBudgetW (fejerThetaOne theta gamma k) k)) := by
-      obtain ⟨hb, -⟩ := classBudgetW_pos_le k (fejerThetaOne_bounds k ht ht1 hg hg1).1 (fejerThetaOne_bounds k ht ht1 hg hg1).2
-      have : 0 < g * classBudgetW (fejerThetaOne theta gamma k) k := mul_pos hg0 hb
-      exact mul_nonneg (by linarith) (div_nonneg (by norm_num) this.le)
-    have h2 := pow_le_pow_left₀ h0 h1 D
-    rw [← pow_mul] at h2
-    refine h2.trans (pow_le_pow_right₀ ha1 ?_)
-    unfold fejerStepThrDeg
-    have : (fejerStepP k + 1 + 1) * D = D * (fejerStepP k + 2) := by ring
-    omega
+  have ha1 : 1 ≤ V' * u := by linarith
+  -- a piece `V * x` with `x ≤ u^(P+1)` is at most `(V'u)^(P+2)`
+  have hpiece (x : Real) (hx0 : 0 ≤ x) (hx : x ≤ u ^ (fejerStepP k + 1)) :
+      (V * x) ^ D ≤ (V' * u) ^ fejerStepThrDeg k D :=
+    calc (V * x) ^ D ≤ (V' * u * (V' * u) ^ (fejerStepP k + 1)) ^ D := by
+          gcongr; exact hx.trans (by gcongr)
+      _ = (V' * u) ^ (D * (fejerStepP k + 2)) := by ring
+      _ ≤ _ := pow_le_pow_right₀ ha1 (by unfold fejerStepThrDeg; omega)
   unfold classStepThresholdFejer classPieceThresholdW
-  refine max_le ?_ (max_le ?_ (max_le ?_ ?_))
-  · have h3 : (3 : Real) ≤ (V' * u) ^ 2 := by nlinarith only [ha2]
-    exact h3.trans (pow_le_pow_right₀ ha1 (by unfold fejerStepThrDeg; omega))
-  · refine hL.trans ((pow_le_pow_left₀ (by linarith) hua _).trans (pow_le_pow_right₀ ha1 ?_))
-    unfold fejerStepThrDeg
-    omega
-  · obtain ⟨-, -, hd, -⟩ := section16_theta_delta_bounds_with (fejerThetaOne_bounds k ht ht1 hg hg1).1 (fejerThetaOne_bounds k ht ht1 hg hg1).2
-    exact hpiece _ hd hdd
-  · exact hpiece _ hg hgd
+  refine max_le ?_ (max_le ?_
+    (max_le (hpiece _ (by positivity) hdd) (hpiece _ (by positivity) hgd)))
+  · exact (show (3 : Real) ≤ (V' * u) ^ 2 by nlinarith only [ha2]).trans
+      (pow_le_pow_right₀ ha1 (by unfold fejerStepThrDeg; omega))
+  · exact hL.trans ((pow_le_pow_left₀ (by positivity) hua _).trans
+      (pow_le_pow_right₀ ha1 (by unfold fejerStepThrDeg; omega)))
 
 end LeanProofs.GowersSzemeredi

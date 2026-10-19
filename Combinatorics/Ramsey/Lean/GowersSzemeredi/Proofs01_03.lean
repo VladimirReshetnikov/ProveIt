@@ -166,7 +166,7 @@ theorem fourier_fourth_moment_le {N : Nat} [NeZero N]
       (∑ r : ZMod N, ‖fourier h r‖ ^ 4) =
         (N : Real) * ∑ t : ZMod N, ‖correlation h h t‖ ^ 2 := by
     calc
-      _ = ∑ r : ZMod N, ‖fourier h r‖ ^ 2 * ‖fourier h r‖ ^ 2 := by ring
+      _ = ∑ r : ZMod N, ‖fourier h r‖ ^ 2 * ‖fourier h r‖ ^ 2 := by ring_nf
       _ = _ := by simpa [correlation] using lemma_2_1_holds N h h
   rw [hid]
   calc

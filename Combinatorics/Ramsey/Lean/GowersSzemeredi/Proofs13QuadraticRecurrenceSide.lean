@@ -12,6 +12,35 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
+section
+open scoped BigOperators Pointwise ZMod
+open Finset
+
+/-- A family of candidate progressions carrying all geometric conclusions of
+Lemma 13.5 together with the precise weighted-average inequality needed for
+the final selection.  This is the clean interface that a repaired recurrence
+argument must produce. -/
+structure Stage135CandidateFamily {N : Nat} [NeZero N]
+    (S : Section13Context N) (D : Stage134Data N) where
+  count : Nat
+  Q : Fin count → ModAP N
+  count_pos : 0 < count
+  step_ne_zero : ∀ j, (Q j).step != 0
+  proper : ∀ j, (Q j).IsProper
+  subset : ∀ j, (Q j).carrier ⊆ D.P.carrier
+  length_lower : ∀ j,
+    (D.P.length : Real) ^
+        ((1 : Real) / (2 : Real) ^ (12 * D.q)) / 2 ≤ (Q j).length
+  small_affine : ∀ j i h, h ∈ (Q j).carrier →
+    (centeredAbs ((D.a i * h + D.b i) * (Q j).step) : Real) ≤
+      (D.P.length : Real) ^
+        (-((1 : Real) / (2 : Real) ^ (11 * D.q))) * N
+  weighted_average :
+    ∑ j, S.alpha ^ 32 * (N : Real) ^ 31 * (Q j).length / 8 ≤
+      ∑ j, (goodHeightWeight S ((Q j).carrier ∩ D.H) : Real)
+
+end
+
 /-! ### Audited numerical gap in the printed case split -/
 
 set_option exponentiation.threshold 400 in

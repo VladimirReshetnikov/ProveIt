@@ -13,6 +13,14 @@ noncomputable section
 
 namespace LeanProofs.GowersSzemeredi
 
+section
+
+/-- The bound on the number of sampled slices at loss `ρ`. -/
+def pieceSamples (Qr : Real → Real) (rho : Real) : Nat :=
+  ⌈6 * max 1 (Qr (rho / 8)) / (rho / 4)⌉₊
+
+end
+
 /-- The graph count of the piece cover at loss `ρ`. -/
 def pieceGraphBound (Qr : Real → Real) (Pb : Nat → Real → Real) (rho : Real) : Real :=
   max (Pb (pieceSamples Qr rho) (rho / 4))

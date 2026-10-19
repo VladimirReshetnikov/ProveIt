@@ -20,32 +20,22 @@ theorem cor711_constant_ceiling_budget {l q : Nat} {alpha : Real}
     (hlarge : 8 ≤ (l : Real) ^ cor711Exponent alpha q) :
     34 * (Nat.ceil ((l : Real) ^ cor711Exponent alpha q) : Real) ^ 2 ≤
       (l : Real) ^ ((23 / 6) * cor711Exponent alpha q) := by
-  let X : Real := (l : Real) ^ cor711Exponent alpha q
-  have hX : 0 < X := Real.rpow_pos_of_pos (by exact_mod_cast hl) _
-  have hm : (Nat.ceil X : Real) ≤ (9 / 8) * X := by
-    have hceil := Nat.ceil_lt_add_one hX.le
-    linarith
-  have hpower : (44 : Real) ≤ (8 : Real) ^ (11 / 6 : Real) := by
+  have hX : 0 < (l : Real) ^ cor711Exponent alpha q := by positivity
+  rw [mul_comm (23 / 6 : Real), Real.rpow_mul (Nat.cast_nonneg l),
+    show (23 / 6 : Real) = 11 / 6 + 2 by norm_num, Real.rpow_add hX, Real.rpow_two]
+  generalize (l : Real) ^ cor711Exponent alpha q = X at hX hlarge ⊢
+  -- `X ^ (11 / 6) ≥ 8 ^ (11 / 6) ≥ 44`, compared through sixth powers
+  have h44 : 44 ≤ X ^ (11 / 6 : Real) := by
+    refine le_trans ?_ (Real.rpow_le_rpow (by norm_num) hlarge (by norm_num))
     apply (Real.rpow_le_rpow_iff (by norm_num)
       (Real.rpow_nonneg (by norm_num) _) (by norm_num : (0 : Real) < 6)).mp
     rw [← Real.rpow_mul (by norm_num)]
     norm_num
-  have hlargePower : 44 ≤ X ^ (11 / 6 : Real) := hpower.trans
-    (Real.rpow_le_rpow (by norm_num) hlarge (by norm_num))
-  calc
-    _ ≤ 34 * ((9 / 8) * X) ^ 2 :=
-      mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (Nat.cast_nonneg _) hm 2) (by norm_num)
-    _ ≤ 44 * X ^ 2 := by nlinarith only [sq_nonneg X]
-    _ ≤ X ^ (11 / 6 : Real) * X ^ 2 :=
-      mul_le_mul_of_nonneg_right hlargePower (sq_nonneg _)
-    _ = X ^ (23 / 6 : Real) := by
-      rw [← Real.rpow_two, ← Real.rpow_add hX]
-      norm_num
-    _ = (l : Real) ^ ((23 / 6) * cor711Exponent alpha q) := by
-      dsimp only [X]
-      rw [← Real.rpow_mul (by exact_mod_cast hl.le)]
-      congr 1
-      ring
+  -- `⌈X⌉ < X + 1 ≤ 9 X / 8` as `X ≥ 8`, and `34 * (9 / 8) ^ 2 < 44`
+  have hc := Nat.ceil_lt_add_one hX.le
+  nlinarith [mul_pos (sub_pos.2 hc) (by positivity : (0 : Real) < X + 1 + ⌈X⌉₊),
+    mul_nonneg (sub_nonneg.2 hlarge) (by linarith : (0 : Real) ≤ 17 * X + 8),
+    mul_nonneg (sub_nonneg.2 h44) (sq_nonneg X), sq_nonneg X]
 
 /-- A domain-dependent partition with the full real-power cell length works
 for every Freiman map, with no loss for multiple maps on the same domain. -/

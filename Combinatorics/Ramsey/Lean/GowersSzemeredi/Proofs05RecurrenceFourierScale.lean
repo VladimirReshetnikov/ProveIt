@@ -13,27 +13,21 @@ theorem recurrence_fourier_interval_scale {N R : Nat} (hR : 2 ≤ R) (hN : 4 * R
   have hR0 : (0 : Real) < R := by exact_mod_cast (show 0 < R by omega)
   have hR2 : (2 : Real) ≤ R := by exact_mod_cast hR
   have hNr : 4 * (R : Real) ≤ N := by exact_mod_cast hN
-  let x := (N : Real) / (2 * R)
-  let c := Nat.ceil x
-  have hx2 : 2 ≤ x := (le_div_iff₀ (by positivity)).mpr (by nlinarith)
-  have hc : x ≤ c := Nat.le_ceil _
-  have hc2 : 2 ≤ c := by exact_mod_cast hx2.trans hc
-  have hcup : (c : Real) < x + 1 := Nat.ceil_lt_add_one (by linarith)
-  let M := 2 * (c - 1)
-  have hMcast : (M : Real) = 2 * ((c : Real) - 1) := by
-    simp only [M, Nat.cast_mul, Nat.cast_ofNat, Nat.cast_sub (by omega : 1 ≤ c), Nat.cast_one]
-  have hMlo : x ≤ (M : Real) := by rw [hMcast]; linarith
-  have hMhi : (M : Real) < (N : Real) / R := by
-    have heq : (N : Real) / R = 2 * x := by dsimp [x]; ring
-    rw [heq, hMcast]
-    linarith
-  have hM0 : 0 < M := by dsimp [M]; omega
-  refine ⟨M, hM0, ⟨c - 1, by dsimp [M]; omega⟩, ?_, hMlo, hMhi⟩
-  have hprod := (lt_div_iff₀ hR0).mp hMhi
-  have h2 : (2 : Real) * M ≤ N := by
-    have hm := mul_le_mul_of_nonneg_left hR2 (show (0 : Real) ≤ M by positivity)
-    nlinarith
-  exact_mod_cast h2
+  -- `M = 2 ⌈y⌉` with `y = N / (4 R) ≥ 1`, so `2 y ≤ M < 2 y + 2 ≤ 4 y`
+  let y := (N : Real) / (4 * R)
+  have hy : 1 ≤ y := (le_div_iff₀ (by positivity)).mpr (by linarith)
+  have hc : y ≤ ⌈y⌉₊ := Nat.le_ceil _
+  have hcup : (⌈y⌉₊ : Real) < y + 1 := Nat.ceil_lt_add_one (by linarith)
+  have hMlo : (N : Real) / (2 * R) ≤ (2 * ⌈y⌉₊ : Nat) := by
+    rw [show (N : Real) / (2 * R) = 2 * y by dsimp only [y]; ring]; push_cast; linarith
+  have hMhi : ((2 * ⌈y⌉₊ : Nat) : Real) < N / R := by
+    rw [show (N : Real) / R = 4 * y by dsimp only [y]; ring]; push_cast; linarith
+  have h2 : (2 : Real) * (2 * ⌈y⌉₊ : Nat) ≤ N := by
+    linarith [(lt_div_iff₀ hR0).mp hMhi,
+      mul_le_mul_of_nonneg_left hR2 (Nat.cast_nonneg (α := Real) (2 * ⌈y⌉₊))]
+  refine ⟨2 * ⌈y⌉₊, ?_, ⟨_, two_mul _⟩, by exact_mod_cast h2, hMlo, hMhi⟩
+  have := Nat.one_le_cast.mp (hy.trans hc)
+  omega
 
 theorem recurrence_fourier_frequency_bound {N R M : Nat}
     (hR : 0 < R) (hM : 0 < M) (hscale : (N : Real) / (2 * R) ≤ M) :

@@ -111,7 +111,7 @@ private lemma lemma78_fourth_moment_upper {N : Nat} [NeZero N]
       (∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 4) =
           ∑ r : ZMod N,
             ‖fourier (indicator A) r‖ ^ 2 *
-              ‖fourier (indicator A) r‖ ^ 2 := by ring
+              ‖fourier (indicator A) r‖ ^ 2 := by ring_nf
       _ <= ∑ r : ZMod N,
           (A.card : Real) ^ 2 * ‖fourier (indicator A) r‖ ^ 2 := by
         gcongr with r

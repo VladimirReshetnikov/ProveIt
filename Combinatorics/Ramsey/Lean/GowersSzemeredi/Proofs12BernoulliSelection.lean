@@ -37,26 +37,17 @@ private lemma restrictionWeight_event {X : Type*} [DecidableEq X]
   calc
     _ = ∑ S ∈ U.powerset, (∏ x ∈ S, p x) *
         ∏ x ∈ U \ S, (if x ∉ C then 1 - p x else 0) := by
-      apply Finset.sum_congr rfl
-      intro S hS
-      have hSC : (∀ x ∈ U \ S, x ∉ C) ↔ C ⊆ S := by
-        constructor
-        · intro h x hx
-          by_contra hxs
-          exact h x (Finset.mem_sdiff.mpr ⟨hC hx, hxs⟩) hx
-        · intro h x hx hxc
-          exact (Finset.mem_sdiff.mp hx).2 (h hxc)
+      refine Finset.sum_congr rfl fun S _ => ?_
+      have hSC : (∀ x ∈ U \ S, x ∉ C) ↔ C ⊆ S :=
+        ⟨fun h x hx => by_contra fun hxS => h x (Finset.mem_sdiff.2 ⟨hC hx, hxS⟩) hx,
+          fun h x hx hxC => (Finset.mem_sdiff.1 hx).2 (h hxC)⟩
       simp only [Finset.prod_ite_zero, hSC]
       by_cases h : C ⊆ S <;> simp [restrictionWeight, h]
     _ = ∏ x ∈ U, (p x + if x ∉ C then 1 - p x else 0) :=
       (Finset.prod_add p (fun x => if x ∉ C then 1 - p x else 0) U).symm
-    _ = ∏ x ∈ C, p x := by
-      calc
-        _ = ∏ x ∈ U, (if x ∈ C then p x else 1) := by
-          apply Finset.prod_congr rfl
-          intro x hx
-          by_cases hxC : x ∈ C <;> simp [hxC] <;> ring
-        _ = _ := by rw [Finset.prod_ite_mem, Finset.inter_eq_right.mpr hC]
+    _ = ∏ x ∈ C, (p x + if x ∉ C then 1 - p x else 0) :=
+      (Finset.prod_subset hC fun x _ hx => by simp [hx]).symm
+    _ = ∏ x ∈ C, p x := Finset.prod_congr rfl fun x hx => by simp [hx]
 
 private lemma exists_subset_of_weighted_average {X : Type*} [DecidableEq X]
     (U : Finset X) (p : X → Real) (hp0 : ∀ x ∈ U, 0 ≤ p x)

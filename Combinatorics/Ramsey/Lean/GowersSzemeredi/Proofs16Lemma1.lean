@@ -31,27 +31,12 @@ theorem lifted_diameter_commonDiff {N k : Nat} [NeZero N]
     (hwidth : 2 ≤ Q.width) (y : ZMod N) (hy : y ∈ (Q.axis 0).carrier)
     (x : Point N k) (hx : x ∈ (boxTail Q).carrier) :
     (centeredAbs (mu x * Q.commonDiff) : Real) ≤ s := by
-  have hbase : mu x * y ∈ Q.carrier.image (fun z => mu (Fin.tail z) * z 0) := by
-    refine Finset.mem_image.mpr ⟨Fin.cons y x, (mem_boxTail_cons _ _ _).mpr ⟨hy, hx⟩, ?_⟩
-    simp
-  obtain hnext | hprev := (Q.axis 0).adjacent_mem (hwidth.trans (Q.width_le_axis_length 0)) hy
-  · have hnext' : mu x * (y + Q.commonDiff) ∈
-        Q.carrier.image (fun z => mu (Fin.tail z) * z 0) := by
-      refine Finset.mem_image.mpr ⟨Fin.cons (y + (Q.axis 0).step) x,
-        (mem_boxTail_cons _ _ _).mpr ⟨hnext, hx⟩, ?_⟩
-      simp [Q.axis_step]
-    have h := hdiam.centeredAbs_sub_le hnext' hbase
-    convert h using 2
-    congr 1
-    ring
-  · have hprev' : mu x * (y - Q.commonDiff) ∈
-        Q.carrier.image (fun z => mu (Fin.tail z) * z 0) := by
-      refine Finset.mem_image.mpr ⟨Fin.cons (y - (Q.axis 0).step) x,
-        (mem_boxTail_cons _ _ _).mpr ⟨hprev, hx⟩, ?_⟩
-      simp [Q.axis_step]
-    have h := hdiam.centeredAbs_sub_le hbase hprev'
-    convert h using 2
-    congr 1
-    ring
+  have hmem (w : ZMod N) (hw : w ∈ (Q.axis 0).carrier) :
+      mu x * w ∈ Q.carrier.image (fun z => mu (Fin.tail z) * z 0) :=
+    Finset.mem_image.mpr ⟨Fin.cons w x, (mem_boxTail_cons _ _ _).mpr ⟨hw, hx⟩, by simp⟩
+  rw [← Q.axis_step 0]
+  obtain h | h := (Q.axis 0).adjacent_mem (hwidth.trans (Q.width_le_axis_length 0)) hy
+  · simpa [mul_add] using hdiam.centeredAbs_sub_le (hmem _ h) (hmem _ hy)
+  · simpa [mul_sub] using hdiam.centeredAbs_sub_le (hmem _ hy) (hmem _ h)
 
 end LeanProofs.GowersSzemeredi

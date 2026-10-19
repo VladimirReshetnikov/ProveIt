@@ -18,27 +18,17 @@ namespace LeanProofs.GowersSzemeredi
 theorem linearOn_of_card_le_two {N : Nat} [Fact N.Prime]
     (A : Finset (ZMod N)) (phi : ZMod N → ZMod N) (hA : A.card ≤ 2) :
     LinearOn A phi := by
-  by_cases htwo : A.card = 2
-  · obtain ⟨x, y, hxy, rfl⟩ := Finset.card_eq_two.mp htwo
-    let a := (phi y - phi x) / (y - x)
-    refine ⟨a, phi x - a * x, ?_⟩
-    intro z hz
-    rcases Finset.mem_insert.mp hz with rfl | hz
-    · ring
-    · have hzy := Finset.mem_singleton.mp hz
-      subst z
-      dsimp [a]
-      field_simp [sub_ne_zero.mpr hxy.symm]
-      ring
-  have hone : A.card ≤ 1 := by omega
-  by_cases hne : A.Nonempty
-  · obtain ⟨x, hx⟩ := hne
-    refine ⟨0, phi x, ?_⟩
-    intro y hy
-    have hyx : y = x := Finset.card_le_one.mp hone y hy x hx
-    simp [hyx]
-  · have hzero : A = ∅ := Finset.not_nonempty_iff_eq_empty.mp hne
-    subst A
-    exact ⟨0, 0, fun _ h ↦ (Finset.notMem_empty _ h).elim⟩
+  rcases A.eq_empty_or_nonempty with rfl | ⟨x, hx⟩
+  · exact ⟨0, 0, fun _ h ↦ (Finset.notMem_empty _ h).elim⟩
+  by_cases hone : A.card ≤ 1
+  · exact ⟨0, phi x, fun y hy ↦ by simp [Finset.card_le_one.mp hone y hy x hx]⟩
+  -- two points `u ≠ v`: take the line through `(u, phi u)` and `(v, phi v)`
+  obtain ⟨u, v, huv, rfl⟩ := Finset.card_eq_two.mp (by omega : A.card = 2)
+  refine ⟨(phi v - phi u) / (v - u), phi u - (phi v - phi u) / (v - u) * u, fun z hz ↦ ?_⟩
+  rcases Finset.mem_insert.mp hz with rfl | hz
+  · ring
+  · rw [Finset.mem_singleton.mp hz]
+    field_simp [sub_ne_zero.mpr huv.symm]
+    ring
 
 end LeanProofs.GowersSzemeredi

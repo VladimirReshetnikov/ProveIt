@@ -18,13 +18,6 @@ theorem exp_exp_sq_le {Z : Real} :
   have h0 := (Real.exp_pos Z).le
   nlinarith only [he2, h0]
 
-theorem pow_add_pow_le {X : Real} {a b : Nat} (hX : 2 ≤ X) (hab : b ≤ a) :
-    X ^ a + X ^ b ≤ X ^ (a + 1) := by
-  have h := pow_le_pow_right₀ (le_trans (by norm_num) hX) hab
-  have h0 := pow_nonneg (le_trans (by norm_num) hX) a
-  rw [pow_succ]
-  nlinarith only [h, h0, hX]
-
 theorem le_exp_exp_of_le_exp {x Y : Real} (hx : x ≤ Real.exp Y) : x ≤ Real.exp (Real.exp Y) :=
   hx.trans (Real.exp_le_exp.mpr ((Real.add_one_le_exp Y).trans' (by linarith only)))
 

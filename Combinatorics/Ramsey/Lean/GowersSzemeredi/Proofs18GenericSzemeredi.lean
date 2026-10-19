@@ -179,26 +179,19 @@ theorem double_exp_le_szemerediThresholdAt {L μ c : Nat} (hL : 1 ≤ L) {delta 
     Real.exp (Real.exp ((2 / intervalUniformityParameter delta L) ^ (2 ^ (μ + 9)))) ≤
       szemerediThresholdAt c delta L := by
   obtain ⟨ha0, -, -, hXu⟩ := intervalUniformityParameter_gen_bounds hL hδ hδhalf
-  set u : Real := delta⁻¹ with hu'
-  have hu : 2 ≤ u := by rw [hu', ← one_div, le_div_iff₀ hδ]; linarith
-  set q : Nat := 2 ^ (μ + 2 * L + 13) with hq
-  set E : Nat := 2 ^ (2 ^ (L + c)) with hE
-  have hqE : q + 2 ≤ E := by
-    have h2 : 2 ^ (μ + 2 * L + 14) = 2 * 2 ^ (μ + 2 * L + 13) := by
-      rw [show μ + 2 * L + 14 = (μ + 2 * L + 13) + 1 by ring, pow_succ]; ring
-    have h3 : 2 ≤ 2 ^ (μ + 2 * L + 13) :=
-      le_trans (by norm_num : 2 ≤ 2 ^ 1) (Nat.pow_le_pow_right (by norm_num) (by omega))
-    have h1 : q + 2 ≤ 2 ^ (μ + 2 * L + 14) := by rw [hq]; omega
-    exact h1.trans (Nat.pow_le_pow_right (by norm_num) hfit)
-  have habsorb : (2 / intervalUniformityParameter delta L) ^ (2 ^ (μ + 9)) ≤ u ^ q := by
-    have h := pow_le_pow_left₀ (by positivity) hXu (2 ^ (μ + 9))
-    rw [← pow_mul, ← pow_add] at h
-    rw [hq, show μ + 2 * L + 13 = 2 * L + 4 + (μ + 9) by ring]
-    exact h
-  have hexp := exp_exp_pow_le_two_rpow_two_rpow hu hqE
-  refine (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr habsorb)).trans (hexp.trans (le_of_eq ?_))
+  have hu : 2 ≤ delta⁻¹ := by rw [← one_div, le_div_iff₀ hδ]; linarith
+  have hqE : 2 ^ (μ + 2 * L + 13) + 2 ≤ 2 ^ (2 ^ (L + c)) := by
+    refine le_trans ?_ (Nat.pow_le_pow_right two_pos hfit)
+    have := Nat.lt_two_pow_self (n := μ + 2 * L + 13)
+    rw [show μ + 2 * L + 14 = μ + 2 * L + 13 + 1 by omega, pow_succ 2 (μ + 2 * L + 13)]
+    omega
+  have habsorb : (2 / intervalUniformityParameter delta L) ^ (2 ^ (μ + 9)) ≤
+      delta⁻¹ ^ 2 ^ (μ + 2 * L + 13) := by
+    rw [show μ + 2 * L + 13 = 2 * L + 4 + (μ + 9) by omega, pow_add 2 (2 * L + 4), pow_mul]
+    gcongr
+  refine (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr habsorb)).trans
+    ((exp_exp_pow_le_two_rpow_two_rpow hu hqE).trans_eq ?_)
   unfold szemerediThresholdAt
-  rw [hE, ← hu']
   simp only [← Real.rpow_natCast, Nat.cast_pow, Nat.cast_ofNat]
 
 theorem theorem182AtSharp_of_envBound {L μ c : Nat} (hL : 3 ≤ L) (henv : EnvBound (L - 2) μ)

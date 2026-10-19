@@ -13,38 +13,17 @@ theorem quadratic_parameters_lower {alpha : Real} (hα : 0 < alpha) (hαone : al
     (alpha / 2) ^ (12380 : Nat) ≤
       (2 : Real) ^ (-(19 : Int)) * alpha ^ 2 * (alpha / 2) ^ (12359 : Nat) ∧
     (alpha / 2) ^ (24744 : Nat) ≤ quadraticDiscrepancyExponent alpha := by
-  let a := alpha / 2
-  have ha : 0 ≤ a := by dsimp [a]; positivity
-  have hahalf : a ≤ 1 / 2 := by dsimp [a]; linarith only [hαone]
-  have haα : a ≤ alpha := by dsimp [a]; linarith only [hα]
-  have hc19 : a ^ (19 : Nat) ≤ (2 : Real) ^ (-(19 : Int)) := by
-    calc
-      _ ≤ (1 / 2 : Real) ^ (19 : Nat) := pow_le_pow_left₀ ha hahalf _
-      _ = _ := by norm_num
-  have hc26 : a ^ (26 : Nat) ≤ (2 : Real) ^ (-(26 : Int)) := by
-    calc
-      _ ≤ (1 / 2 : Real) ^ (26 : Nat) := pow_le_pow_left₀ ha hahalf _
-      _ = _ := by norm_num
   constructor
-  · calc
-      a ^ (12380 : Nat) = a ^ (19 : Nat) * a ^ (2 : Nat) * a ^ (12359 : Nat) := by
-        rw [← pow_add, ← pow_add]
-      _ ≤ _ := mul_le_mul_of_nonneg_right
-        (mul_le_mul hc19 (pow_le_pow_left₀ ha haα 2) (pow_nonneg ha _) (by positivity))
-        (pow_nonneg ha _)
-  · have hs : quadraticDiscrepancyExponent alpha =
-        (2 : Real) ^ (-(26 : Int)) * a ^ (24718 : Nat) := by
-      unfold quadraticDiscrepancyExponent cor711Exponent
-      simp only [Nat.cast_one, inv_one, mul_one]
-      change ((2 : Real) ^ (-(14 : Real)) * (a ^ (12359 : Nat)) ^ 2) / 4096 = _
-      rw [← pow_mul]
-      norm_num [Real.rpow_neg]
-      generalize a ^ (24718 : Nat) = t
-      ring
-    rw [hs]
-    calc
-      a ^ (24744 : Nat) = a ^ (26 : Nat) * a ^ (24718 : Nat) := by rw [← pow_add]
-      _ ≤ _ := mul_le_mul_of_nonneg_right hc26 (pow_nonneg ha _)
+  · rw [show (12380 : Nat) = 19 + 2 + 12359 from rfl, pow_add, pow_add, zpow_neg, zpow_ofNat,
+      ← inv_pow, ← one_div]
+    gcongr
+    linarith
+  · unfold quadraticDiscrepancyExponent cor711Exponent
+    rw [show (24744 : Nat) = 26 + 12359 * 2 from rfl, pow_add, pow_mul, Nat.cast_one, inv_one,
+      mul_one, mul_div_right_comm]
+    gcongr
+    calc (alpha / 2) ^ 26 ≤ (1 / 2) ^ 26 := by gcongr
+      _ = _ := by norm_num [Real.rpow_neg]
 
 /-- The inverse parameters have fixed-power upper bounds in 2/alpha. -/
 theorem quadratic_parameters_inv_upper {alpha : Real} (hα : 0 < alpha) (hαone : alpha ≤ 1) :
@@ -94,27 +73,16 @@ theorem quadraticDensityThreshold_le_exp_power {alpha : Real}
     quadraticDensityThreshold alpha ≤
       Real.exp ((4 + 6 * section5LocalRefinementConstant 2 1) *
         (2 / alpha) ^ (12380 * 2048 + 24744 : Nat)) := by
-  let u : Real := 2 / alpha
-  let D : Real := 6 * section5LocalRefinementConstant 2 1
-  have hu : 1 ≤ u := (le_div_iff₀ hα).2 (by linarith only [hαone])
-  have hD : 0 < D := mul_pos (by norm_num) (section5LocalRefinementConstant_pos _ _)
-  have hpow : 1 ≤ u ^ (12380 * 2048 : Nat) := one_le_pow₀ hu
+  have hpow : 1 ≤ (2 / alpha) ^ (12380 * 2048 : Nat) :=
+    one_le_pow₀ ((le_div_iff₀ hα).2 (by linarith only [hαone]))
   have hC := quadraticRefinementConstant_le_power hα hαone
-  have hinv := (quadratic_parameters_inv_upper hα hαone).2
   have hσ : 0 < quadraticDiscrepancyExponent alpha :=
     div_pos (quadratic_frequency_exponent_bounds hα hαone).1 (by norm_num)
-  apply (quadraticDensityThreshold_le_exp alpha hα hαone).trans
-  apply Real.exp_le_exp.mpr
-  rw [div_eq_mul_inv]
-  have hsum : 4 + quadraticRefinementConstant alpha ≤ (4 + D) * u ^ (12380 * 2048 : Nat) := by
-    have h4 : (4 : Real) ≤ 4 * u ^ (12380 * 2048 : Nat) := by
-      simpa only [mul_one] using mul_le_mul_of_nonneg_left hpow (by norm_num : (0 : Real) ≤ 4)
-    calc
-      _ ≤ 4 * u ^ (12380 * 2048 : Nat) + D * u ^ (12380 * 2048 : Nat) := add_le_add h4 hC
-      _ = _ := by rw [add_mul]
-  calc
-    _ ≤ ((4 + D) * u ^ (12380 * 2048 : Nat)) * u ^ (24744 : Nat) :=
-      mul_le_mul hsum hinv (inv_nonneg.mpr hσ.le) (by positivity)
-    _ = _ := by rw [mul_assoc, ← pow_add]
+  have hD := section5LocalRefinementConstant_pos 2 1
+  refine (quadraticDensityThreshold_le_exp alpha hα hαone).trans (Real.exp_le_exp.mpr ?_)
+  rw [div_eq_mul_inv, pow_add, ← mul_assoc]
+  refine mul_le_mul ?_ (quadratic_parameters_inv_upper hα hαone).2 (by positivity) (by positivity)
+  generalize (2 / alpha) ^ (12380 * 2048 : Nat) = P at hpow hC ⊢
+  linarith
 
 end LeanProofs.GowersSzemeredi

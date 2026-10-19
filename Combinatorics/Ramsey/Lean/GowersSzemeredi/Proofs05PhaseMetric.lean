@@ -12,31 +12,23 @@ alias exponential_eq_exp_valMinAbs := cor57_exponential_eq_exp_valMinAbs
 theorem four_centeredAbs_div_le_phase_norm {N : Nat} [NeZero N] (x : ZMod N) :
     4 * (centeredAbs x : Real) / N ≤ ‖exponential x - 1‖ := by
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have habs : |(x.valMinAbs : Real)| = (centeredAbs x : Real) := by
-    rw [centeredAbs, ← Int.cast_abs, Int.abs_eq_natAbs]
-    rfl
-  let t : Real := Real.pi * (x.valMinAbs : Real) / N
-  have habst : |t| = Real.pi * centeredAbs x / N := by
-    dsimp [t]
-    rw [abs_div, abs_mul, abs_of_pos Real.pi_pos, abs_of_pos hN, habs]
-  have hcenter : 2 * (centeredAbs x : Real) ≤ N := by
-    have h := (Nat.mul_le_mul_right 2 (ZMod.natAbs_valMinAbs_le x)).trans (Nat.div_mul_le_self N 2)
-    have hc : (centeredAbs x : Real) * 2 ≤ N := by exact_mod_cast h
-    linarith only [hc]
-  have ht : |t| ≤ Real.pi / 2 := by
-    rw [habst]
-    apply (div_le_iff₀ hN).mpr
-    have h := mul_le_mul_of_nonneg_left hcenter Real.pi_pos.le
-    linarith only [h]
-  have hs := Real.mul_abs_le_abs_sin ht
-  have hnorm : ‖exponential x - 1‖ = 2 * |Real.sin t| := by
-    rw [exponential_eq_exp_valMinAbs, Complex.norm_exp_I_mul_ofReal_sub_one]
-    have heq : (2 * Real.pi * (x.valMinAbs : Real) / N) / 2 = t := by dsimp [t]; ring
-    rw [heq, Real.norm_eq_abs, abs_mul, abs_of_pos (by norm_num : (0 : Real) < 2)]
-  rw [hnorm]
-  calc
-    _ = 2 * (2 / Real.pi * |t|) := by rw [habst]; field_simp; ring
-    _ ≤ _ := mul_le_mul_of_nonneg_left hs (by norm_num)
+  have habs : |Real.pi * (x.valMinAbs : Real) / N| = Real.pi * centeredAbs x / N := by
+    rw [abs_div, abs_mul, abs_of_pos Real.pi_pos, abs_of_pos hN, centeredAbs, Nat.cast_natAbs,
+      Int.cast_abs]
+  have hcenter : (centeredAbs x : Real) * 2 ≤ N := by
+    exact_mod_cast (Nat.mul_le_mul_right 2 (ZMod.natAbs_valMinAbs_le x)).trans
+      (Nat.div_mul_le_self N 2)
+  -- Jordan's inequality at `t = π v / N`, where `|t| ≤ π / 2`
+  have hs := Real.mul_abs_le_abs_sin
+    (show |Real.pi * (x.valMinAbs : Real) / N| ≤ Real.pi / 2 by
+      rw [habs, div_le_iff₀ hN]
+      linarith [mul_le_mul_of_nonneg_left hcenter Real.pi_pos.le])
+  rw [habs] at hs
+  rw [exponential_eq_exp_valMinAbs, Complex.norm_exp_I_mul_ofReal_sub_one, Real.norm_eq_abs,
+    abs_mul, abs_two, show 2 * Real.pi * (x.valMinAbs : Real) / N / 2 =
+      Real.pi * x.valMinAbs / N by ring]
+  calc _ = 2 * (2 / Real.pi * (Real.pi * centeredAbs x / N)) := by field_simp; ring
+    _ ≤ _ := by gcongr
 
 theorem phase_norm_sub_eq {N : Nat} [NeZero N] (x y : ZMod N) :
     ‖exponential x - exponential y‖ = ‖exponential (x - y) - 1‖ := by

@@ -165,40 +165,17 @@ lemma prop172_cubeDifference_product {N d : Nat}
       simp [cubeDifference, iteratedDifference, parityConj, boolWeight,
         cubeArgument, countWhere]
   | succ n ih =>
-      let r : ZMod N := x 0
-      let a : Point N n := Fin.tail x
-      have hx : x = Fin.cons r a := by
-        funext i
-        refine Fin.cases ?_ (fun j => ?_) i <;> rfl
-      rw [hx, cubeDifference_cons]
-      simp only [difference, ih]
-      let T : (Fin (n + 1) → Bool) → Complex := fun e =>
-        parityConj e (f (cubeArgument s (Fin.cons r a) e))
-      calc
-        (∏ e : Fin n → Bool,
-              parityConj e (f (cubeArgument s a e))) *
-            star (∏ e : Fin n → Bool,
-              parityConj e (f (cubeArgument (s - r) a e))) =
-            (∏ e : Fin n → Bool, T (Fin.cons false e)) *
-              ∏ e : Fin n → Bool, T (Fin.cons true e) := by
-          rw [star_prod]
-          congr 1
-          · apply Finset.prod_congr rfl
-            intro e _
-            simp only [T]
-            rw [prop172_parityConj_cons_false, prop172_cubeArgument_cons]
-            simp only [Bool.false_eq_true, if_false, sub_zero]
-            rfl
-          · apply Finset.prod_congr rfl
-            intro e _
-            simp only [T]
-            rw [prop172_parityConj_cons_true, prop172_cubeArgument_cons]
-            simp only [if_true]
-            rfl
-        _ = ∏ p : Bool × (Fin n → Bool), T (Fin.cons p.1 p.2) := by
-          rw [Fintype.prod_prod_type, Fintype.prod_bool, mul_comm]
-        _ = ∏ e : Fin (n + 1) → Bool, T e :=
-          (Fin.consEquiv (fun _ : Fin (n + 1) => Bool)).prod_comp T
+      -- split the cube vertices `Fin.cons b e` by their first coordinate `b`
+      rw [← Fin.cons_self_tail (q := x), cubeDifference_cons,
+        ← (Fin.consEquiv fun _ : Fin (n + 1) => Bool).prod_comp, Fintype.prod_prod_type,
+        Fintype.prod_bool, mul_comm, difference, ih, ih, star_prod]
+      congr 1 <;> refine Finset.prod_congr rfl fun e _ => ?_
+      · simp only [Fin.consEquiv, Equiv.coe_fn_mk, prop172_parityConj_cons_false,
+          prop172_cubeArgument_cons, Bool.false_eq_true, if_false, sub_zero]
+        rfl
+      · simp only [Fin.consEquiv, Equiv.coe_fn_mk, prop172_parityConj_cons_true,
+          prop172_cubeArgument_cons, if_true]
+        rfl
 
 lemma prop172_exponential_sum {N : Nat} [NeZero N]
     {I : Type*} (S : Finset I) (a : I → ZMod N) :

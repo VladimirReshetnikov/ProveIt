@@ -22,25 +22,18 @@ theorem FunctionDiscrepancyBound.progression_partition
       IsPartition (fun j => (R j).carrier) P.carrier ∧ (∀ j, (R j).IsProper) ∧
       (J : Real) ≤ 2 * boundaryRefinementConstant (1 / 16) * (M : Real) ^ (1 - sigma / 16) ∧
       beta * M ≤ ∑ j, ‖∑ x ∈ (R j).carrier, f x‖ := by
-  have hdisc := intervalExtension_discValued M (fun i : Fin P.length => hf (P.index i))
-  have hsupp (x : ZMod M) (hx : P.length ≤ x.val) : intervalExtension M (P.pullbackFunction f) x = 0 := by
-    simp only [intervalExtension, dif_neg (by omega : ¬ x.val < P.length)]
   obtain ⟨J, R, hR, hRproper, hcount, hdis⟩ := hbound.full_interval_partition
-    hM hL hT (intervalExtension M (P.pullbackFunction f)) hdisc hsupp hnot
+    hM hL hT (intervalExtension M (P.pullbackFunction f))
+    (intervalExtension_discValued M fun i => hf (P.index i)) (fun x hx => dif_neg (by omega)) hnot
   have hsub (j : Fin J) : (R j).carrier ⊆ Finset.range P.length := IsPartition.cell_subset hR j
   refine ⟨J, fun j => section5Transport P (R j), section5Transport_partition P R hP hR,
-    fun j => section5Transport_isProper P (R j) hP (hRproper j) (hsub j), hcount, ?_⟩
-  apply hdis.trans_eq
-  apply Finset.sum_congr rfl
-  intro j _
+    fun j => section5Transport_isProper P (R j) hP (hRproper j) (hsub j), hcount,
+    hdis.trans_eq (Finset.sum_congr rfl fun j _ => ?_)⟩
   rw [section5Transport_sum P (R j) hP (hsub j)]
   congr 1
-  apply Finset.sum_congr rfl
-  intro t ht
+  refine Finset.sum_congr rfl fun t ht => ?_
   have htL : t < P.length := Finset.mem_range.mp (hsub j ht)
-  have htM : t < M := htL.trans_le hL
-  have hv : (t : ZMod M).val = t := ZMod.val_natCast_of_lt htM
-  simp only [intervalExtension, hv, dif_pos htL, ModAP.pullbackFunction,
-    ModAP.index, section5IndexPoint]
+  simp only [intervalExtension, ZMod.val_natCast_of_lt (htL.trans_le hL), dif_pos htL,
+    ModAP.pullbackFunction, ModAP.index, section5IndexPoint]
 
 end LeanProofs.GowersSzemeredi

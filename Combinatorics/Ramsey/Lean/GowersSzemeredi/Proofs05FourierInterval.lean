@@ -112,7 +112,7 @@ private lemma stdAddChar_neg_eq_exp_valMinAbs {N : Nat} [NeZero N]
     _ = Complex.exp (2 * Real.pi * Complex.I * (-r.valMinAbs : Int) / N) :=
       ZMod.stdAddChar_coe (-r.valMinAbs)
     _ = Complex.exp (Complex.I *
-        (-(2 * Real.pi * (r.valMinAbs : Real) / N) : Real)) := by push_cast; ring
+        (-(2 * Real.pi * (r.valMinAbs : Real) / N) : Real)) := by push_cast; ring_nf
 
 /-- Jordan's inequality gives a uniform lower bound for the denominator in a
 finite geometric character sum. -/

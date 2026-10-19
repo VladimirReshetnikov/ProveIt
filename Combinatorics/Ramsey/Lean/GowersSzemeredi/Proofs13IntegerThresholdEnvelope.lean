@@ -61,28 +61,20 @@ bound, including q=0 and the natural ceiling at each term. -/
 theorem section13DensityIntegerThreshold_le_double_exp {delta : Real}
     (hδ : 0 < delta) (hδone : delta ≤ 1) :
     (section13DensityIntegerThreshold delta : Real) ≤ Real.exp (Real.exp (19 * section13Q delta)) := by
-  let Q := section13Q delta
   have hQ := section13Q_ge_512 hδ hδone
   have hb : 0 ≤ section13QBound (section10Lambda (delta ^ 32 / 16)) := by
     unfold section13QBound section10Lambda
     positivity
   unfold section13DensityIntegerThreshold
-  apply nat_cast_finset_sup_le _ _ (Real.exp_pos _).le
-  intro q hq
-  have hqN : q ≤ Nat.floor (section13QBound (section10Lambda (delta ^ 32 / 16))) := by
-    simp only [Finset.mem_range] at hq
-    omega
-  have hqQ : (q : Real) ≤ Q := by
-    have h := (Nat.cast_le.mpr hqN).trans (Nat.floor_le hb)
-    have h' := h.trans (section13_qBound_le_half_Q hδ hδone)
-    dsimp [Q]
-    linarith only [h', hQ]
-  have ht := section13IntegerBudgetThreshold_le_double_exp hδ hδone hqQ
+  refine nat_cast_finset_sup_le _ _ (Real.exp_pos _).le fun q hq ↦ ?_
+  have hqQ : (q : Real) ≤ section13Q delta :=
+    ((Nat.cast_le.mpr (Nat.lt_succ_iff.mp (Finset.mem_range.mp hq))).trans (Nat.floor_le hb)).trans
+      ((section13_qBound_le_half_Q hδ hδone).trans (by linarith only [hQ]))
   have ht0 : 0 ≤ section13IntegerBudgetThreshold delta q :=
     zero_le_one.trans ((positivePowerThreshold_one_le _ _ _).trans
       ((le_max_left _ _).trans (le_max_left _ _)))
-  have hc := nat_ceil_le_double_exp_add_one (by positivity : 0 ≤ 18 * Q) ht0 ht
-  apply hc.trans
-  exact Real.exp_le_exp.mpr (Real.exp_le_exp.mpr (by dsimp [Q]; linarith only [hQ]))
+  exact (nat_ceil_le_double_exp_add_one (by linarith only [hQ]) ht0
+    (section13IntegerBudgetThreshold_le_double_exp hδ hδone hqQ)).trans
+    (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr (by linarith only [hQ])))
 
 end LeanProofs.GowersSzemeredi

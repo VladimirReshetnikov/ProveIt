@@ -41,13 +41,4 @@ theorem simultaneous_partition_threshold_le_tower (k q b : Nat)
         (one_le_pow₀ (by norm_num : (1 : Nat) ≤ 2)) (Nat.pow_le_pow_left hK _)
     _ = _ := by rw [← pow_mul, ← pow_mul, ← pow_add]
 
-theorem quadratic_partition_threshold_le_singleton_cutoff {q : Nat} (hq : 311 ≤ q) :
-    simultaneousPolynomialThreshold 2 q ≤ 2 ^ (2 ^ (12 * q)) := by
-  have hK : polynomialPartitionConstant 2 ≤ 2 ^ 11 := by norm_num [polynomialPartitionConstant]
-  have hb := simultaneous_partition_threshold_le_tower 2 q 11 hK
-  apply hb.trans
-  apply Nat.pow_le_pow_right (n := 2) (by norm_num)
-  apply Nat.pow_le_pow_right (n := 2) (by norm_num)
-  omega
-
 end LeanProofs.GowersSzemeredi

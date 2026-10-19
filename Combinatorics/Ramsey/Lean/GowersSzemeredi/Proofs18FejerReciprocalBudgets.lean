@@ -67,29 +67,24 @@ theorem fejerCubicDiscrepancyParameter_inv_le_power {alpha : Real}
     (hα : 0 < alpha) (hαone : alpha ≤ 1) :
     (fejerCubicDiscrepancyParameter alpha)⁻¹ ≤ (2 / alpha) ^ ((2 : Nat) ^ 59) := by
   let x := 2 / alpha
-  let a := fejerCubicLocalQuadraticParameter alpha
-  let mu := fejerCubicLocalizedMassParameter alpha
-  have ha : 0 < a := fejerCubicLocalQuadraticParameter_pos hα
-  have ha1 : a ≤ 1 := fejerCubicLocalQuadraticParameter_le_one hα.le hαone
-  have hm : 0 < mu := by dsimp [mu, fejerCubicLocalizedMassParameter]; positivity
+  have ha := fejerCubicLocalQuadraticParameter_pos hα
+  have hm : 0 < fejerCubicLocalizedMassParameter alpha := by
+    unfold fejerCubicLocalizedMassParameter; positivity
   have hx : 2 ≤ x := (le_div_iff₀ hα).mpr (by linarith only [hαone])
-  have hx0 : 0 ≤ x := by linarith only [hx]
-  have hx1 : 1 ≤ x := by linarith only [hx]
-  have hquad := (quadratic_interval_parameters_inv_upper ha ha1).1
-  have hp := pow_le_pow_left₀ (by positivity : 0 ≤ 2 / a)
-    (two_div_fejerCubicLocalQuadraticParameter_le_power hα hαone) 12381
-  rw [← pow_mul] at hp
-  have hb : 0 < quadraticDiscrepancyParameter a := by unfold quadraticDiscrepancyParameter; positivity
-  have hβ : (quadraticDiscrepancyParameter a)⁻¹ ≤ x ^ (((2 : Nat) ^ 43 + 1) * 12381) := hquad.trans hp
-  change (mu * quadraticDiscrepancyParameter a / 2)⁻¹ ≤ _
-  rw [inv_div, div_eq_mul_inv, mul_inv_rev]
+  have hx0 : 0 ≤ x := zero_le_two.trans hx
+  have hβ := (quadratic_interval_parameters_inv_upper ha
+    (fejerCubicLocalQuadraticParameter_le_one hα.le hαone)).1.trans
+    ((pow_le_pow_left₀ (by positivity) (two_div_fejerCubicLocalQuadraticParameter_le_power hα hαone)
+      12381).trans_eq (pow_mul _ _ _).symm)
+  have hμ := fejerCubicLocalizedMassParameter_inv_le_power hα hαone
+  unfold fejerCubicDiscrepancyParameter fejerCubicTwistedDiscrepancyParameter
+  rw [inv_div, div_eq_mul_inv, mul_inv_rev, mul_comm]
   calc
-    _ ≤ x * (x ^ (((2 : Nat) ^ 43 + 1) * 12381) * x ^ ((2 : Nat) ^ 43)) :=
-      mul_le_mul hx (mul_le_mul hβ (fejerCubicLocalizedMassParameter_inv_le_power hα hαone)
-        (inv_nonneg.mpr hm.le) (pow_nonneg hx0 _)) (by positivity) hx0
-    _ = x ^ (1 + (((2 : Nat) ^ 43 + 1) * 12381) + (2 : Nat) ^ 43) := by
-      rw [pow_add, pow_add, pow_one, mul_assoc]
-    _ ≤ _ := pow_le_pow_right₀ hx1 (by norm_num)
+    _ ≤ x ^ (((2 : Nat) ^ 43 + 1) * 12381) * x ^ ((2 : Nat) ^ 43) * x :=
+      mul_le_mul (mul_le_mul hβ hμ (inv_nonneg.mpr hm.le) (pow_nonneg hx0 _)) hx zero_le_two
+        (mul_nonneg (pow_nonneg hx0 _) (pow_nonneg hx0 _))
+    _ = x ^ (((2 : Nat) ^ 43 + 1) * 12381 + (2 : Nat) ^ 43 + 1) := by rw [← pow_add, ← pow_succ]
+    _ ≤ _ := pow_le_pow_right₀ (by linarith only [hx]) (by norm_num)
 
 theorem fejerCubicLocalizationExponent_inv_le_exp {alpha : Real}
     (hα : 0 < alpha) :

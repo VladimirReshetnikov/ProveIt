@@ -33,31 +33,21 @@ theorem polynomial_degree_scale_exists {k r v : Nat} (hk : 1 ≤ k)
   let D := polynomialPartitionConstant (k + 1)
   let E := (k + 1) ^ 2 * 2 ^ (2 * (k + 1))
   let x : Real := (r : Real) ^ (D : Real)⁻¹
-  have hK : 1 ≤ K := by
-    dsimp [K, polynomialPartitionConstant]
-    exact Nat.one_le_iff_ne_zero.mpr (by positivity)
-  have hE : 0 < E := by dsimp [E]; positivity
   have hD : D = 2 * E * K := polynomialPartitionConstant_succ k
   obtain ⟨hD8, hgamma⟩ := polynomialPartitionConstant_degree_budgets hk
+  have hK : 1 ≤ K := cor57_partition_constant_pos k
   have hDpos : 0 < D := by change 8 * K ≤ D at hD8; omega
-  have hDreal : (D : Real) ≠ 0 := by exact_mod_cast hDpos.ne'
-  have hr0 : (0 : Real) ≤ r := Nat.cast_nonneg _
-  have hx0 : 0 ≤ x := Real.rpow_nonneg hr0 _
   have hr : (r : Real) = x ^ D := by
-    dsimp [x]
-    rw [← Real.rpow_natCast, ← Real.rpow_mul hr0, inv_mul_cancel₀ hDreal, Real.rpow_one]
-  have hx : 4 ≤ x := by
-    have hb : 4 ^ D ≤ r := (polynomialPartitionThreshold_four_pow (by omega : 1 ≤ k + 1)).trans hthreshold.le
-    have h : (4 : Real) ^ D ≤ x ^ D := by rw [← hr]; exact_mod_cast hb
-    exact le_of_pow_le_pow_left₀ hDpos.ne' hx0 h
-  have hthresholdReal : 2 * ((polynomialPartitionThreshold k : Real) + 1) ≤ x ^ (2 * K) := by
-    have hb := (polynomialPartitionThreshold_degree_budget hk).trans hthreshold.le
-    have hpow : (2 * ((polynomialPartitionThreshold k : Real) + 1)) ^ E ≤
-        (x ^ (2 * K)) ^ E := by
-      have hexp : (2 * K) * E = D := by rw [hD]; ring
-      rw [← pow_mul, hexp, ← hr]
-      exact_mod_cast hb
-    exact le_of_pow_le_pow_left₀ hE.ne' (by positivity) hpow
+    dsimp only [x]
+    rw [← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg r),
+      inv_mul_cancel₀ (Nat.cast_ne_zero.mpr hDpos.ne' : (D : Real) ≠ 0), Real.rpow_one]
+  have hx : 4 ≤ x := le_of_pow_le_pow_left₀ hDpos.ne' (by positivity) <| by
+    rw [← hr]
+    exact_mod_cast (polynomialPartitionThreshold_four_pow (by omega)).trans hthreshold.le
+  have hthresholdReal : 2 * ((polynomialPartitionThreshold k : Real) + 1) ≤ x ^ (2 * K) :=
+    le_of_pow_le_pow_left₀ (n := E) (by positivity) (by positivity) <| by
+      rw [← pow_mul, show 2 * K * E = D by rw [hD]; ring, ← hr]
+      exact_mod_cast (polynomialPartitionThreshold_degree_budget hk).trans hthreshold.le
   exact polynomial_degree_scale_real K D (k + 1) (polynomialPartitionThreshold k) r v x
     (((k + 1 : Nat) : Real) * (2 : Real) ^ (k + 1 + 1))⁻¹
     hK hD8 hx hr hv hthresholdReal hgamma

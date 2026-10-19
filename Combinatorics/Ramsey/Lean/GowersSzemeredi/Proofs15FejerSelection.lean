@@ -252,27 +252,14 @@ private lemma fejer_digit_count (m j : Nat) (hj : j ≤ m) (s : Int)
     (hs : s = 1 ∨ s = -1) :
     (Finset.univ.filter fun p : FejerDigit m => fejerDigitInt p = (j : Int) * s).card =
       m + 1 - j := by
-  classical
   rcases hs with rfl | rfl
   · simpa using fejer_digit_count_pos m j hj
-  · have himg : (Finset.univ.filter fun p : FejerDigit m =>
-          fejerDigitInt p = (j : Int) * -1) =
-        (Finset.univ.filter fun p : FejerDigit m =>
-          fejerDigitInt p = (j : Int)).image Prod.swap := by
-      ext p
-      simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image]
-      constructor
-      · intro hp
-        refine ⟨p.swap, ?_, Prod.swap_swap p⟩
-        unfold fejerDigitInt at hp ⊢
-        simp only [Prod.fst_swap, Prod.snd_swap]
-        omega
-      · rintro ⟨q, hq, rfl⟩
-        unfold fejerDigitInt at hq ⊢
-        simp only [Prod.fst_swap, Prod.snd_swap]
-        omega
-    rw [himg, Finset.card_image_of_injective _ Prod.swap_injective]
-    exact fejer_digit_count_pos m j hj
+  · -- the digits of value `-j` are the swaps of the digits of value `j`
+    refine (Finset.card_bijective Prod.swap Prod.swap_bijective fun p => ?_).trans
+      (fejer_digit_count_pos m j hj)
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Prod.fst_swap, Prod.snd_swap,
+      fejerDigitInt]
+    omega
 
 private lemma fejerMultiplePatterns_card {k : Nat} (m j : Nat) (hj : j ≤ m) :
     (fejerMultiplePatterns (k := k) m j).card = (m + 1 - j) ^ (2 ^ (k + 4)) := by
@@ -486,25 +473,15 @@ private lemma fejerGoodNondegenerate_card_lower {N k : Nat} [NeZero N] (m : Nat)
       (fejerGoodNondegenerate m B phi).card +
         degenerateGeneralArrangementCountWithin (N := N) (k := k) m 8 := by
   classical
-  let goodDeg := (selectionGoodArrangements B phi).filter fun R ↦ R.IsDegenerateWithin m
-  have hsplit :
-      (fejerGoodNondegenerate m B phi).card + goodDeg.card =
-        (selectionGoodArrangements B phi).card := by
-    simpa [fejerGoodNondegenerate, goodDeg] using
-      (Finset.card_filter_add_card_filter_not
-        (s := selectionGoodArrangements B phi) (fun R ↦ ¬ R.IsDegenerateWithin m))
-  have hsub : goodDeg ⊆ fejerDegenerateFinset N k m := by
-    intro R hR
-    have hR' := Finset.mem_filter.mp hR
-    have hgoodData : R ∈ selectionArrangements B ∧ R.IsRespected phi := by
-      simpa [selectionGoodArrangements] using hR'.1
-    have hIsIn : R.IsIn B := by
-      simpa [selectionArrangements] using hgoodData.1
-    simp [fejerDegenerateFinset, hIsIn.1, hR'.2]
-  have hcard : goodDeg.card ≤ degenerateGeneralArrangementCountWithin (N := N) (k := k) m 8 := by
-    calc goodDeg.card ≤ (fejerDegenerateFinset N k m).card := Finset.card_le_card hsub
-      _ = _ := fejerDegenerateFinset_card N k m
-  omega
+  -- every good arrangement is nondegenerate or lies in the degenerate set
+  rw [← fejerDegenerateFinset_card N k m]
+  refine (Finset.card_le_card fun R hR => ?_).trans (Finset.card_union_le _ _)
+  have hIsIn : R.IsIn B := by
+    simp only [selectionGoodArrangements, selectionArrangements, Finset.mem_filter] at hR
+    exact hR.1.2
+  by_cases hd : R.IsDegenerateWithin m
+  · exact Finset.mem_union_right _ (by simp [fejerDegenerateFinset, hIsIn.1, hd])
+  · exact Finset.mem_union_left _ (by simp [fejerGoodNondegenerate, hR, hd])
 
 private lemma fejer_carrier_score_lower {N k : Nat} [NeZero N]
     (hN : 2 ≤ N) (m : Nat) (hm : 1 ≤ m) (eta : Real) (heta : 0 ≤ eta)

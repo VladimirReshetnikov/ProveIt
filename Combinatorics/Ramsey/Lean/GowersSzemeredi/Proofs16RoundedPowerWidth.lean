@@ -29,34 +29,18 @@ theorem section16_rounded_power_width_of_exponent {m : Nat} {l z e a b : Real}
   have hl16 : 16 ≤ l :=
     (positivePowerThreshold_spec hz he ((le_max_left _ _).trans hm)).trans hl
   obtain ⟨_, hfloor⟩ := floor_half_lower (show 2 ≤ l by linarith only [hl16])
-  have hbase : (z / 16) * (m : Real) ^ e ≤ (Nat.floor l : Real) / 8 := by
-    linarith only [hl, hfloor]
-  have hbase1 : 1 ≤ (Nat.floor l : Real) / 8 := by linarith only [hl16, hfloor]
-  refine ⟨hbase1, ?_⟩
-  let D := ((z / 16) ^ (a / 2)) / 4
-  let gap := e * a / 2 - b
-  have hD : 0 < D := by dsimp [D]; positivity
-  have hgap : 0 < gap := sub_pos.mpr hb
-  have hlarge : 1 ≤ D * (m : Real) ^ gap :=
-    positivePowerThreshold_spec hD hgap ((le_max_right _ _).trans hm)
-  have hpow : (m : Real) ^ b * (m : Real) ^ gap = (m : Real) ^ (e * (a / 2)) := by
-    rw [← Real.rpow_add hm0]
-    congr 1
-    dsimp [gap]
-    ring
-  calc
-    (m : Real) ^ b ≤ (m : Real) ^ b * (D * (m : Real) ^ gap) := by
-      simpa only [mul_one] using mul_le_mul_of_nonneg_left hlarge (Real.rpow_nonneg hm0.le b)
-    _ = D * (m : Real) ^ (e * (a / 2)) := by rw [← hpow]; ring
+  refine ⟨by linarith only [hl16, hfloor], ?_⟩
+  have hlarge : 1 ≤ (z / 16) ^ (a / 2) / 4 * (m : Real) ^ (e * a / 2 - b) :=
+    positivePowerThreshold_spec (by positivity) (sub_pos.mpr hb) ((le_max_right _ _).trans hm)
+  have hsplit : (m : Real) ^ (e * (a / 2)) = (m : Real) ^ b * (m : Real) ^ (e * a / 2 - b) := by
+    rw [← Real.rpow_add hm0]; congr 1; ring
+  calc (m : Real) ^ b ≤ (z / 16) ^ (a / 2) * (m : Real) ^ (e * (a / 2)) / 4 := by
+        rw [hsplit]; linarith [mul_le_mul_of_nonneg_left hlarge (Real.rpow_nonneg hm0.le b)]
     _ = Real.sqrt (((z / 16) * (m : Real) ^ e) ^ a) / 4 := by
-      rw [Real.sqrt_eq_rpow, ← Real.rpow_mul (by positivity : 0 ≤ (z / 16) * (m : Real) ^ e),
-        Real.mul_rpow (by positivity : 0 ≤ z / 16) (Real.rpow_nonneg hm0.le _),
-        ← Real.rpow_mul hm0.le]
-      rw [show a * (1 / 2 : Real) = a / 2 by ring]
-      dsimp [D]
-      ring
-    _ ≤ _ := div_le_div_of_nonneg_right
-      (Real.sqrt_le_sqrt (Real.rpow_le_rpow (by positivity) hbase ha.le)) (by norm_num)
+        rw [Real.sqrt_eq_rpow, ← Real.rpow_mul (by positivity : 0 ≤ (z / 16) * (m : Real) ^ e),
+          Real.mul_rpow (by positivity : 0 ≤ z / 16) (Real.rpow_nonneg hm0.le _),
+          ← Real.rpow_mul hm0.le, mul_one_div]
+    _ ≤ _ := by gcongr; linarith only [hl, hfloor]
 
 /-- A convenient fixed choice retains half of the limiting exponent.
 The preceding theorem permits any exponent strictly below e*a/2. -/

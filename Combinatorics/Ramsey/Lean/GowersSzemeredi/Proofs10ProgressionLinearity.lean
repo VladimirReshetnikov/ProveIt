@@ -46,45 +46,23 @@ private lemma cor1014_zero_mem_symmetric {N : Nat} (d : ZMod N) (m : Nat) :
 theorem corollary_10_14_holds : corollary_10_14 := by
   intro N _ X _ _ D phi K zeta Y psi1 hprime hmodel m hm d hd
   obtain ⟨hpsi, hagree⟩ := hmodel
-  by_cases hY : Y.Nonempty
-  · have hshort : section10SymmetricMultiples d m ⊆ bohr K zeta := by
-      by_cases hK : K.Nonempty
-      · exact bohr_symmetric_multiples_subset K zeta
-          (cor1014_small_bohr_nonnegative K zeta m hm d hd hK) m hm d hd
-      · have hKempty : K = ∅ := Finset.not_nonempty_iff_eq_empty.mp hK
-        intro z _
-        simp [bohr, hKempty]
-    obtain ⟨a, ha⟩ := hY
-    have hpsiZero : psi1 0 = 0 := by
-      have hag := hagree a ha a ha
-        (hshort (by simpa using cor1014_zero_mem_symmetric d m))
-      simpa using hag.symm
-    letI : Fact N.Prime := ⟨hprime⟩
-    by_cases hd0 : d = 0
-    · refine ⟨0, ?_⟩
-      intro x hx y hy hxy
-      have hdiff : D.index x - D.index y = 0 := by
-        rw [section10SymmetricMultiples, Finset.mem_image] at hxy
-        obtain ⟨j, _, hj⟩ := hxy
-        simpa [hd0] using hj.symm
-      simpa [hdiff, hpsiZero] using hagree x hx y hy (hshort hxy)
-    · refine ⟨psi1 d / d, ?_⟩
-      intro x hx y hy hxy
-      have hag := hagree x hx y hy (hshort hxy)
-      rw [section10SymmetricMultiples, Finset.mem_image] at hxy
-      obtain ⟨j, hj, hjxy⟩ := hxy
-      have hsame : symmetricMultiples d m = section10SymmetricMultiples d m := rfl
-      have hdomain : symmetricMultiples d m ⊆ bohr K zeta := by
-        simpa only [hsame] using hshort
-      have hlin := freiman_map_int_multiple_of_zero (bohr K zeta) psi1 hpsi
-        hpsiZero d m hm hdomain j hj
-      rw [← hjxy, hlin] at hag
-      rw [← hjxy]
-      calc
-        phi x - phi y = (j : ZMod N) * psi1 d := hag
-        _ = (psi1 d / d) * ((j : ZMod N) * d) := by field_simp
-  · refine ⟨0, ?_⟩
-    intro x hx
-    exact (hY ⟨x, hx⟩).elim
+  rcases Y.eq_empty_or_nonempty with rfl | ⟨a, ha⟩
+  · exact ⟨0, fun x hx => absurd hx (Finset.notMem_empty x)⟩
+  have hshort : section10SymmetricMultiples d m ⊆ bohr K zeta := by
+    rcases K.eq_empty_or_nonempty with rfl | hK
+    · intro z _
+      simp [bohr]
+    · exact bohr_symmetric_multiples_subset K zeta
+        (cor1014_small_bohr_nonnegative K zeta m hm d hd hK) m hm d hd
+  have hpsiZero : psi1 0 = 0 := by
+    simpa using (hagree a ha a ha (hshort (by simpa using cor1014_zero_mem_symmetric d m))).symm
+  letI : Fact N.Prime := ⟨hprime⟩
+  refine ⟨psi1 d / d, fun x hx y hy hxy => ?_⟩
+  obtain ⟨j, hj, hjxy⟩ := Finset.mem_image.mp hxy
+  rw [hagree x hx y hy (hshort hxy), ← hjxy,
+    freiman_map_int_multiple_of_zero _ psi1 hpsi hpsiZero d m hm hshort j hj]
+  rcases eq_or_ne d 0 with rfl | hd0
+  · simp [hpsiZero]
+  · field_simp
 
 end LeanProofs.GowersSzemeredi

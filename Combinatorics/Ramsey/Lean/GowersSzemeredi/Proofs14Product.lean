@@ -77,38 +77,18 @@ private lemma prop14_restricted_weight_eq_energy {N p : Nat} [NeZero N]
     simultaneouslyAdditiveWeight (prop14RestrictedWeight E theta) sigma =
       weightedSimultaneousAdditiveEnergy E theta sigma := by
   unfold simultaneouslyAdditiveWeight weightedSimultaneousAdditiveEnergy
-  apply Fintype.sum_equiv
-      ({ toFun q := ![q 0, q 3, q 2, q 1]
-         invFun q := ![q 0, q 3, q 2, q 1]
-         left_inv q := by funext i; fin_cases i <;> rfl
-         right_inv q := by funext i; fin_cases i <;> rfl } : (Fin 4 → ((ZMod N))) ≃ (Fin 4 → ((ZMod N))))
-  intro q
-  simp only [IsSimultaneouslyAdditive,
-    IsAdditiveQuadruple]
-  have hadd :
-      q 0 - q 1 = q 2 - q 3 ↔ q 0 + q 3 = q 2 + q 1 :=
-    sub_eq_sub_iff_add_eq_add
-  have hsigma :
-      (∀ i, sigma i (q 0) - sigma i (q 1) =
-          sigma i (q 2) - sigma i (q 3)) ↔
-        ∀ i, sigma i (q 0) + sigma i (q 3) =
-          sigma i (q 2) + sigma i (q 1) := by
-    constructor <;> intro h i
-    · exact sub_eq_sub_iff_add_eq_add.mp (h i)
-    · exact sub_eq_sub_iff_add_eq_add.mpr (h i)
-  have hmem :
-      (∀ t, ![q 0, q 3, q 2, q 1] t ∈ E) ↔
-        q 0 ∈ E ∧ q 1 ∈ E ∧ q 2 ∈ E ∧ q 3 ∈ E := by
-    constructor
-    · intro h
-      exact ⟨h 0, h 3, h 2, h 1⟩
-    · rintro ⟨h0, h1, h2, h3⟩ t
-      fin_cases t <;> assumption
-  by_cases h0 : q 0 ∈ E <;> by_cases h1 : q 1 ∈ E <;>
-    by_cases h2 : q 2 ∈ E <;> by_cases h3 : q 3 ∈ E <;>
-    simp [prop14RestrictedWeight, h0, h1, h2, h3, hadd, hsigma, hmem,
-      prop141_prod_fin_four]
-  ring_nf
+  refine Fintype.sum_equiv
+    ({ toFun q := ![q 0, q 3, q 2, q 1]
+       invFun q := ![q 0, q 3, q 2, q 1]
+       left_inv q := by funext i; fin_cases i <;> rfl
+       right_inv q := by funext i; fin_cases i <;> rfl } : (Fin 4 → ZMod N) ≃ (Fin 4 → ZMod N))
+    _ _ fun q => ?_
+  -- the restricted weights multiply to a single indicator of `q 0, …, q 3 ∈ E`
+  simp only [IsSimultaneouslyAdditive, IsAdditiveQuadruple, sub_eq_sub_iff_add_eq_add,
+    Fin.prod_univ_four, Equiv.coe_fn_mk, Matrix.cons_val, prop14RestrictedWeight,
+    ite_zero_mul_ite_zero, ← ite_and]
+  exact if_congr ⟨fun ⟨hA, ⟨⟨h0, h1⟩, h2⟩, h3⟩ => ⟨fun t => by fin_cases t <;> assumption, hA⟩,
+    fun ⟨h, hA⟩ => ⟨hA, ⟨⟨h 0, h 3⟩, h 2⟩, h 1⟩⟩ (by ring) rfl
 
 /-- Lemma 14.2, uniformly for every coordinate direction. -/
 theorem lemma_14_2_holds : lemma_14_2 := by
@@ -284,27 +264,14 @@ private lemma prop143_fourier_sq_le {N n : Nat} [NeZero N]
       (N : Real) ^ n * ∑ u : Point N n,
         ‖fourier (firstCoordinateCorrelation (prop143Component f z j u) h) r‖ ^ 2 := by
   have hcard : Fintype.card (Point N n) = N ^ n := by simp [Point]
-  have htriangle :
-      ‖fourier (higherCubeCorrelation f (replaceCoordinate z j h)) r‖ ≤
-        ∑ u : Point N n,
-          ‖fourier (firstCoordinateCorrelation (prop143Component f z j u) h) r‖ := by
-    rw [prop143_fourier_decomposition]
-    exact norm_sum_le _ _
-  calc
-    ‖fourier (higherCubeCorrelation f (replaceCoordinate z j h)) r‖ ^ 2 ≤
-        (∑ u : Point N n,
-          ‖fourier (firstCoordinateCorrelation
-            (prop143Component f z j u) h) r‖) ^ 2 :=
-      (sq_le_sq₀ (norm_nonneg _) (Finset.sum_nonneg fun _ _ => norm_nonneg _)).2
-        htriangle
-    _ ≤ (N : Real) ^ n * ∑ u : Point N n,
-        ‖fourier (firstCoordinateCorrelation (prop143Component f z j u) h) r‖ ^ 2 := by
+  calc _ ≤ (∑ u : Point N n,
+        ‖fourier (firstCoordinateCorrelation (prop143Component f z j u) h) r‖) ^ 2 := by
+        rw [prop143_fourier_decomposition]
+        exact pow_le_pow_left₀ (norm_nonneg _) (norm_sum_le _ _) 2
+    _ ≤ _ := by
       simpa only [Finset.card_univ, hcard, Nat.cast_pow] using
-        (sq_sum_le_card_mul_sum_sq
-          (s := (Finset.univ : Finset (Point N n)))
-          (f := fun u =>
-            ‖fourier (firstCoordinateCorrelation
-              (prop143Component f z j u) h) r‖))
+        sq_sum_le_card_mul_sum_sq (s := Finset.univ) (f := fun u : Point N n =>
+          ‖fourier (firstCoordinateCorrelation (prop143Component f z j u) h) r‖)
 
 private lemma prop14_univ_restricted_energy_eq {N p : Nat} [NeZero N]
     (E : Finset (ZMod N)) (theta : ZMod N → Real)
