@@ -26,9 +26,10 @@ successful bytes, preparation and raw logs. The guard retains historical
 scratch/provider paths; publication performed no proof replay or dependency
 build.
 
-For the literal 240-state binary machine, this calibration must still be
-composed with complete decoder coverage, the
+For the literal 240-state binary machine, the
+[external endpoint](rotation240_binary.md) now composes this calibration with
+[complete decoder coverage](rotation240_coverage_complete.md), the
 [runtime proof](rotation240_runtime.md), and the
-[checked startup frame](rotation240_tree_frame.md). Its internal PA theorem
+[checked startup frame](rotation240_tree_frame.md). The internal PA theorem
 remains a separate obligation. Attribution follows the imported Mira-Cult,
 Jeff Ketchersid, Andrew James Wade and ProveIt constructions.

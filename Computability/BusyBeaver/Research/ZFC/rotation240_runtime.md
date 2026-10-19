@@ -48,14 +48,13 @@ The original guards retain historical scratch and provider paths. Compiled
 caches are excluded; a clean-checkout build is not supplied by this packet.
 Publication did not run another proof or simulation.
 
-The [source-program halting equivalence](source_rotation240.md) is already
-checked. To obtain the closed binary consistency theorem, the concrete
-6,455-leaf decoder must still pass all 8,386 guards. The
-[exact source tree and startup frame](rotation240_tree_frame.md) now establish
-the complete blank-initialization frame; the final composition must combine
-it with coverage and the source calibration to obtain `Related`. The
-internal PA proof also remains open. Compensated244 remains the smallest
-closed external Lean consistency endpoint at this checkpoint.
+The generic runtime theorem retains its `Covered` and `Related` premises.
+For `SourceRotation240.program` and the exact blank run, the
+[complete decoder coverage](rotation240_coverage_complete.md) and
+[checked startup frame](rotation240_tree_frame.md) discharge those premises.
+The [external binary endpoint](rotation240_binary.md) combines the resulting
+halting equivalence with the [register-source calibration](calibrated_rotation240.md).
+The internal PA theorem remains a separate obligation.
 
 Attribution follows Mira-Cult's original machine and calculus, Jeff
 Ketchersid's verification and calibration, Andrew James Wade's register

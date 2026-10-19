@@ -1,5 +1,21 @@
 # Decoder coverage for the exact 240-state machine
 
+The [complete direct240 coverage proof](rotation240_coverage_complete.md)
+checks all 530 subtrees and 529 structural joins over 6,455 leaves and 8,386
+guarded cases. Its 565 modules pass 1,062 named probes and 1,066 typed callers
+with zero warnings, establishing `SitesRotation240.all_sites`. The
+[external binary endpoint](rotation240_binary.md) now combines that theorem
+with the runtime, blank startup frame and register-source calibration.
+The internal PA equivalence remains a separate obligation.
+
+The [archived history and reconstruction instructions](rotation240-coverage/publications/complete/README.md) preserve the complete proof and review records.
+
+## Historical checkpoint: 132 cuts and the first 16 joins
+
+The following text and linked records describe the earlier partial
+publication. Its pending-status statements are historical; the records and
+archived proof attempts remain unchanged.
+
 The current Lean coverage proof is **partial: 132 of 530 subtrees have passed**.
 These disjoint subtrees contain 1,568 of 6,455 leaves and 2,045 of 8,386 guarded
 instruction cases. The four initial pilot proofs and first 128 production

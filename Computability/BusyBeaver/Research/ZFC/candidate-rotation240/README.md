@@ -9,9 +9,11 @@ The construction from commit `e5c2b3337e` combines a source-program rotation
 with a further state fold on the [241-state candidate](../candidate-fold241/README.md).
 Independent ordinary mathematical review and fresh executable checks support
 its inherited equivalence between nonhalting and Con(ZFC).
-**A complete Lean theorem for this exact 240-state machine and the equivalence
-inside PA remain open.** The [compensated244 theorem](../compensated244_binary.md)
-is the closed external Lean baseline. No absolute consistency, unconditional
+**The [external Lean endpoint](../rotation240_binary.md) is now checked for
+this exact 240-state machine.** It proves blank-tape halting equivalent to
+ZF/ZFC refutation and nonhalting equivalent to the corresponding consistency
+statements. Nine theorem probes and nine typed callers pass with zero warnings.
+The equivalence inside PA remains open. No absolute consistency, unconditional
 nonhalting, minimality or two-sided independence from bare consistency is claimed.
 
 ## How the state is saved
@@ -58,8 +60,10 @@ halting equivalence retains concrete decoder-coverage and initial-frame
 hypotheses. The [exact decoder tree and startup frame](../rotation240_tree_frame.md)
 now pass a further 16 probes and 19 callers, identifying the complete tape
 after 409,691 steps. The [full startup proof](../rotation240_bootstrap.md)
-passes 72 probes and 102 callers across ten modules. Complete decoder coverage and the final composition
-remain separate.
+passes 72 probes and 102 callers across ten modules. The
+[complete decoder coverage](../rotation240_coverage_complete.md) and
+[external endpoint](../rotation240_binary.md) now discharge the runtime's
+coverage and initial-frame premises for the blank run.
 
 Root freshly ran ten substantive jobs, including two complete unbounded
 register/list runtime checks. The final machine passes **8,386 guarded
@@ -77,22 +81,25 @@ The rotated241 startup takes 408,941 steps. The 750-step difference equals
 See the [actual replay](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/intake170-fresh-replay.json),
 [mathematical reconciliation](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md)
 and [reproduction instructions](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170-reproduction.md).
-These checks support ordinary proofs; they do not supply a Lean or PA endpoint.
+These executable replays are separate from the external Lean endpoint linked
+above; they do not establish the internal PA theorem.
 The [source-rotation Lean proof](../source_rotation240.md) now establishes
 halting equivalence for every initial register file, using the generic loop
 and context theorems and changing one shared program node. Its 10 theorem
-probes and 13 typed callers pass with zero warnings. Complete binary decoder
-coverage and consistency composition still need proofs for the changed table
-and source.
+probes and 13 typed callers pass with zero warnings. The completed decoder
+coverage and external consistency composition use this changed source and the
+exact published binary table.
 
 The [register-source consistency calibration](../calibrated_rotation240.md)
 passes seven probes and nine callers: from the logical seed, register halting
-is equivalent to ZF and ZFC refutation. This remains to be composed with the
-complete binary decoder coverage.
+is equivalent to ZF and ZFC refutation. The
+[external binary endpoint](../rotation240_binary.md) composes this register
+calibration with the checked runtime, startup frame and decoder coverage.
 
-The [coverage proof in progress](../rotation240_coverage.md) has checked
-132 of 530 subtrees, containing 2,045 guarded cases, and the first 16 structural
-joins. The complete decoder coverage theorem remains open.
+The [complete coverage proof](../rotation240_coverage_complete.md) checks all
+530 subtrees and 529 structural joins over 6,455 leaves and 8,386 guarded cases.
+Its 565 modules pass 1,062 probes and 1,066 callers with zero warnings. The
+[earlier progress notes](../rotation240_coverage.md) remain historical records.
 
 ## Exact files and attribution
 

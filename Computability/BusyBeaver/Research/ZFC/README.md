@@ -8,8 +8,9 @@ stronger theory, as clarified by the user on 17 October 2026. Each candidate
 must state the assumptions used for its two unprovability directions;
 consistency alone must not be confused with arithmetic soundness. The
 external Lean equivalence with Con(ZFC) is now proved for the exact
-[244-state machine](compensated244_binary.md), improving the earlier checked
-245-, 246- and 252-state endpoints; its internal PA proof remains open.
+[240-state machine](rotation240_binary.md), improving the earlier checked
+[244-state](compensated244_binary.md), 245-, 246- and 252-state endpoints.
+The equivalence inside PA remains open.
 All new formal work uses Lean.
 An intended set-theoretic meaning is optional: any effectively presented
 theory or proof calculus is eligible once its consistency calibration is proved.
@@ -31,16 +32,17 @@ The [**240-state candidate**](candidate-rotation240/README.md) from `e5c2b3337e`
 combines another source-loop rotation with a 72/90 state fold. Fresh replay
 passes all 8,386 runtime cases, 2,322,575 symbolic rules and all 480 transition
 rows, with exact 409,691-step blank initialization. Its ordinary consistency
-argument is independently reviewed; the full exact-table Lean endpoint and
-internal PA equivalence remain open. The new source has 6,455 leaves and
-requires its own concrete decoder coverage and final composition. The active
-formalization target is now this 240-state machine. See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md).
+argument is independently reviewed. The [exact-table external Lean endpoint](rotation240_binary.md)
+now proves blank-tape halting equivalent to ZF/ZFC refutation and nonhalting
+equivalent to the corresponding consistency statements. Its nine probes and
+nine typed callers pass with zero warnings. The internal PA equivalence for
+this exact 240-state machine remains open. See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md).
 
 The [240 source-equivalence proof](source_rotation240.md) now passes Lean:
 10 theorem probes and 13 typed callers, with zero warnings. It proves that
 the new register program preserves halting for every initial register file.
-The concrete decoder coverage and final consistency composition remain
-separate obligations.
+The [complete decoder coverage](rotation240_coverage_complete.md) and
+[external binary endpoint](rotation240_binary.md) now use this source theorem.
 
 The [exact 240-state table and fast lookup](rotation240_foundations.md) also
 pass Lean: nine theorem probes and eleven typed callers, with zero warnings.
@@ -50,7 +52,8 @@ and input bit.
 The [nine 240-state runtime units](rotation240_runtime.md) pass a further
 106 theorem probes and 94 typed callers, with zero warnings. They prove
 halting equivalence assuming complete decoder coverage and a related initial
-tape configuration.
+tape configuration. The [external endpoint](rotation240_binary.md) discharges
+those premises for the exact blank run.
 
 The [complete 409,691-step blank initialization](rotation240_bootstrap.md)
 passes 72 theorem probes and 102 typed callers across ten modules, with zero
@@ -58,19 +61,21 @@ warnings. It identifies the entire tape and proves activity throughout startup.
 The [exact 240-state source tree and startup frame](rotation240_tree_frame.md)
 pass 16 theorem probes and 19 typed callers with zero warnings. They identify
 the 6,455-leaf decoder and the complete tape after 409,691 blank-start steps,
-including all 167 spare registers. Complete decoder coverage and the final
-consistency composition remain open.
+including all 167 spare registers. These facts supply the exact initial frame
+used by the [external endpoint](rotation240_binary.md).
 
 The [rotated register source's consistency calibration](calibrated_rotation240.md)
 also passes seven probes and nine callers. From the logical seed it halts
-exactly when ZF, respectively ZFC, has a refutation. The literal binary-machine
-composition still needs complete decoder coverage.
+exactly when ZF, respectively ZFC, has a refutation. The
+[external binary endpoint](rotation240_binary.md) now composes this calibration
+with the complete decoder coverage and blank startup.
 
-The [fresh 240-state decoder coverage](rotation240_coverage.md) has checked
-132 of 530 subtrees, covering 1,568 leaves and 2,045 guards. These partial
-certificates pass 132 probes and 136 callers; the first 16 structural joins
-pass another 16 probes and 16 callers, all with zero warnings. The remaining
-subtrees, joins and final composition still need to pass.
+The [complete fresh 240-state decoder coverage](rotation240_coverage_complete.md)
+checks all 530 subtrees and 529 structural joins over 6,455 leaves and 8,386
+guards. Its 565 modules pass 1,062 probes and 1,066 typed callers with zero
+warnings, establishing `SitesRotation240.all_sites`. The
+[earlier coverage checkpoints](rotation240_coverage.md) and their raw evidence
+remain preserved.
 
 The [240-state arithmetic lookup](arithmetic_machine_graph_rotation240.md)
 passes eight probes and eight callers. Its fixed bounded formula is total in
@@ -96,8 +101,9 @@ symbolic rules, with its own exact 407,967-step blank initialization.
 [Lean proves its halting equivalence to the rotated 244-state table](combined243_simulation.md):
 five units pass 83 theorem probes and 39 typed callers, with zero warnings.
 The ordinary proof supports the same ZFC consistency calibration. The
-compensated244 machine remains the smallest closed external Lean consistency
-endpoint while the rotation binary connection is completed.
+compensated244 machine remains an earlier closed external Lean baseline;
+the [240-state endpoint](rotation240_binary.md) is now smaller. This does not
+by itself close the separate 243-state endpoint.
 
 The [exact Rotation244 blank startup](rotation244_bootstrap.md) now proves
 all 407,931 transitions and the complete final tape: state 87, head −5,
