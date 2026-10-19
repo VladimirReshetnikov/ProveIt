@@ -1469,8 +1469,9 @@ NativePeel,
 [ZFC axiom-code](../../../../SetTheory/BoundedConsistency/axiom_code_check.md),
 [partial universe truth](../../../../SetTheory/BoundedConsistency/universe_truth_check.md),
 [fixed-level truth and calculus soundness](../../../../SetTheory/BoundedConsistency/level_soundness_check.md),
-[internal ZFC axiom truth](../../../../SetTheory/BoundedConsistency/axiom_truth_check.md)
-and [translation into Foundation ZFC](../../../../Logic/Interpretability/ZFCinPA/translation_check.md)
+[internal ZFC axiom truth](../../../../SetTheory/BoundedConsistency/axiom_truth_check.md),
+[translation into Foundation ZFC](../../../../Logic/Interpretability/ZFCinPA/translation_check.md)
+and [the native theory's model interface](../../../../Logic/Interpretability/ZFCinPA/native_theory_check.md)
 checks, the [compactness/completeness interfaces](../../../../Logic/FirstOrder/checked_interfaces.md)
 and ten [register-program modules](arithmetic_register_prerequisites.md)
 have passed. The first concrete control-bisimulation check hit the 4 GiB
@@ -1478,12 +1479,12 @@ memory limit; [all 3,862 entries and the assembled equivalence](control_bisim_ro
 now pass after splitting the certificate into 31 intervals, with the memory
 cap unchanged. The [register endpoint](arithmetic_register_endpoint240.md)
 now connects validator acceptance to the exact Rotation240 control seed in
-every IΣ₁ model. These fresh checks close twenty-nine of the inventory's 88
+every IΣ₁ model. These fresh checks close thirty of the inventory's 88
 missing entries, including all eleven register-side entries. A
 [provider review](../../../../Logic/Interpretability/ZFCinPA/fixedpoint-template-route/README.md)
 also recovers an already accepted current-source result for
 `ModelCodedPredicateTemplate`, closing one further entry without replay.
-Thus 30 entries are resolved and 58 remain. The remaining
+Thus 31 entries are resolved and 57 remain. The remaining
 validator checks and final PA composition are still pending.
 The separate [Foundation set-theory dependency branch](../../../../Logic/Interpretability/ZFCinPA/foundation_set_theory_check.md)
 now has fresh Model, Basic, ExistsUnique and Z checks. The
