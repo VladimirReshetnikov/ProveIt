@@ -1389,3 +1389,12 @@ identification of the AX dispatch with the validator's AX operation
 (`ArithmeticL2.ax_eval`), the scheduler/seed composition and both halting
 directions, listed as open in the review above, are therefore discharged.
 W6 (binary240 ⟺ the `tableR` interpreter) and W7 remain open.
+
+The [independent source review through `3dbf5abe7f`](rotation240_pa/upstream-review-3dbf5abe7f/README.md)
+finds no substantive blocker in this Root/Scheduler/Endpoint composition and
+confirms the exact W6 interface. The upstream compilation and axiom claims
+remain attributed: these commits added no raw build/audit records, and the
+review ran no Lean. It records the nondefault proof limits and the diagnostic
+Python helper's narrower role. On the W6 side, fresh local checks now cover
+the [generic control prerequisites](rotation240_pa/control-prerequisites/README.md)
+and the [canonical counted decoder tree](rotation240_pa/counted-tree/README.md).
