@@ -1398,3 +1398,16 @@ review ran no Lean. It records the nondefault proof limits and the diagnostic
 Python helper's narrower role. On the W6 side, fresh local checks now cover
 the [generic control prerequisites](rotation240_pa/control-prerequisites/README.md)
 and the [canonical counted decoder tree](rotation240_pa/counted-tree/README.md).
+
+**W7, register half (Claude lane, 2026-10-19).** As fixed sentences
+(`ZFCinPA.RotationInterpreterConsistency240`, in the ZFCinPA facade; standard
+axioms only): `rotationHaltsSentence` says that
+`controlRun ControlBisimRotation240.tableR` reaches `0` from the seed state
+(physical fields `[0,0,0,3,0,0,3,0,0]` as nested Cantor pairs);
+`isigma1_proves_accepted_iff_rotation_halts : 𝗜𝚺₁ ⊢ acceptedFalsitySentence 🡘
+rotationHaltsSentence`; and, with `ValidatorConsistencyEquivalence`,
+`peano_proves_con_ZFC_iff_not_rotation_halts : 𝗣𝗔 ⊢ Con(𝗭𝗙𝗖) 🡘
+∼rotationHaltsSentence` (also the `𝗭𝗙` and `𝗜𝚺₂` versions). The final W7
+sentence `𝗣𝗔 ⊢ Con(𝗭𝗙𝗖) 🡘 blank240 never halts` then needs only the W6
+semantic theorem (every IΣ₁ model: blank240 halts iff this interpreter halts)
+and one more completeness step.
