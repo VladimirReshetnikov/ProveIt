@@ -40,6 +40,17 @@ comparison for the literal 240-state machine. It does not supply the PA proof
 connecting that machine's arithmetic run graph to validator consistency.
 The arithmetic work and its current status are recorded below.
 
+The [exact 240-state arithmetic run](arithmetic_machine_run_rotation240.md)
+now has a fresh Lean check (14 probes, 16 typed callers, zero warnings). Its
+fixed Σ₁/Δ₁ graph is total at every internal IΣ₁ time; its ordinary-natural
+interpretation agrees with the literal machine run at every time. IΣ₁ and PA
+prove its closed totality sentence. The parameter-free Σ₁ halting sentence
+therefore has the intended standard interpretation, while the internal
+startup/simulation and consistency equivalence remain to be connected.
+The [arbitrary-initial run](arithmetic_machine_run_from_rotation240.md) also
+passes a fresh 19-probe/23-caller check with zero warnings, supplying internal
+run composition, full halted-code absorption and recovery of that blank graph.
+
 The current arithmetic checkpoints are:
 
 * [Accepted-proof soundness](../../../../Logic/Interpretability/ZFCinPA/model_coded_decoder_accepted254.md)
@@ -1277,3 +1288,28 @@ structured semantics (`ArithmeticDagRun`: block occurrences with exit maps, the
 constructor-by-constructor port of L2; one root-occurrence check against the
 packed table replaces any per-occurrence contract. The Prog254 contracts are not
 on this route.
+
+The [packed W3 source review](rotation240_pa/upstream-review-9f2276a8c3/README.md)
+confirms the concrete interpreter theorem and independently compares all 3,862
+certificate entries and 12,915 packed rows with their source data. This was a
+source/data review, without a local Lean replay. The reported upstream timing
+and axiom audit remain attributed claims; the wrapper uses unlimited heartbeats.
+The packed-table identification with the binary decoder is still required.
+
+Upstream `e4f8bd1762` adds `ArithmeticDagRun` and `ArithmeticL2Lib254`.
+The [source review](rotation240_pa/upstream-review-e4f8bd1762/README.md) finds no
+substantive mathematical blocker in the internal structured composition,
+19 primitive loops and pairing contract. Its iteration proof fixes an external
+occurrence before Σ₁ induction, allowing arbitrary internal counters. These
+contracts remain conditional on occurrence facts; at that checkpoint the
+concrete root binding, unpairing and remaining macros, scheduler link and
+reverse halting argument were still needed. Both modules use recursion depth 8,192 and 4,000,000
+heartbeats. No local compiler replay or axiom audit is claimed by this review.
+
+The subsequent `85acb1bd28` and `ef744dd6d6` add internal unpairing and 22
+stack/formula macro contracts. Their [successor source review](rotation240_pa/upstream-review-ef744dd6d6/README.md)
+finds no substantive blocker and confirms the arbitrary-internal counters,
+full-file effects and clean-scratch hypotheses. Root occurrence, equality/fetch,
+dispatch/AX/root composition, the scheduler/seed relation and both directions
+of internal halting equivalence remain open, alongside W6/W7. Upstream compile
+claims retain their attributed status; this review did not run Lean.

@@ -82,7 +82,13 @@ passes eight probes and eight callers. Its fixed bounded formula is total in
 every IOpen model and agrees with all 480 machine actions. The
 [exact arithmetic step](arithmetic_machine_step_rotation240.md) passes another
 seven probes and ten callers, covering every natural configuration code.
-Run specialization and the PA machine-to-validator comparison remain open.
+The [fixed arithmetic run](arithmetic_machine_run_rotation240.md) passes
+14 probes and 16 callers: it is total at every internal IΣ₁ time, agrees with
+every ordinary-natural machine run, and has a PA totality theorem. The
+[arbitrary-initial run](arithmetic_machine_run_from_rotation240.md) passes a
+further 19 probes and 23 callers, proving internal composition, full halted-code
+absorption and blank-run recovery. The internal startup/simulation and PA
+machine-to-validator comparison remain open.
 
 The [**241-state candidate**](candidate-fold241/README.md) from `8c41b1fb7d`
 adds two local folds to the combined243 table. The last fold uses a bit written

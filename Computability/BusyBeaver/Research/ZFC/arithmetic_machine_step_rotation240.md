@@ -27,6 +27,8 @@ The [publication record](results/arithmetic-step-rotation240-publication.json),
 [lossless history](arithmetic-step-rotation240/history.json.gz) preserve the
 successful bytes and preparation. The guard retains historical scratch paths.
 
-Iteration, arithmetic startup transport, and the unbounded internal
+[Iteration is now checked](arithmetic_machine_run_rotation240.md), including
+totality in IΣ₁/PA and agreement with every ordinary-natural machine run.
+Arithmetic startup transport and the unbounded internal
 machine-to-validator comparison remain separate obligations. Attribution
 follows Mira-Cult, Jeff Ketchersid, Andrew James Wade and the ProveIt reductions.
