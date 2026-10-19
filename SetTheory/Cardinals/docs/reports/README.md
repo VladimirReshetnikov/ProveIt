@@ -3009,3 +3009,31 @@ finite checks at **1,750 complete bits**, 21 equations and four-bit opcodes,
 bound or PA theorem. Twenty older ZIPs remain queued after the six retirements.
 The base article and delivered bytes are unchanged; the catalogue PDF is
 built and visually reviewed separately.
+
+
+Batch 170 adds Source 80 from `e5c2b3337e` to
+[ZFC closure kernels](set-theory/zfc-closure-kernels/intake-170.md), now
+**80 sources** and still **290 reports**. Placement `0841b55a14` and write
+`cc73ddc7d9` preserve 79 originals: 61 new ancillary files, seven existing
+aliases, five batch aliases and six archive-only members. Fresh recovery checks
+all 79 originals and 73 ancillary occurrences through 67 targets. Only this ZIP
+was retired; twenty older archives remain queued.
+
+The new [240-state ordinary candidate](../../../../Computability/BusyBeaver/Research/ZFC/candidate-rotation240/README.md)
+combines the previously proposed source rotation with a predecessor-context
+fold of old state 90 into 72. Its complete 6,455-leaf source is byte-identical
+to Source 74's rotation; the new contribution is the concrete composition,
+five retained-row changes and one deletion. All ten fresh substantive jobs
+pass, including two complete 8,386-case runtime checks. Rotated 241 covers
+2,318,435 symbolic rules and 482 rows; final 240 covers 2,322,575 rules and all
+480 rows, with exact 409,691-step blank startup. The whole-tape fold compares
+the rotated intermediate with final 240; no all-tape equivalence between the
+original and rotated 241 tables is asserted.
+
+The separate rational-cut model refutes a proposed weakening of GIC; the
+full-schema GIC/weak-Collection-plus-Separation equivalence and all restricted
+searches remain in scope. Reusable theory tools have two disclosed freshness
+and syntax-validation limits. Exact 240 Lean consistency and internal PA
+endpoints remain open; compensated244 remains the closed external Lean
+baseline. The base article and delivered bytes are unchanged. The catalogue
+PDF is built and visually reviewed separately.
