@@ -3056,3 +3056,17 @@ after one documented AST compatibility retry; the original failure remains.
 The recovery checks all 8,564 originals and 8,383 ancillary aliases. No new
 machine record or complete Lean/PA endpoint is claimed. The ordinary 240-state
 candidate and closed external compensated244 baseline retain their scopes.
+
+
+Batch 172 imports three 19 October packages as
+[Sources 101–103](set-theory/zfc-closure-kernels/intake-172.md), giving this host
+**103 sources** and leaving the collection at **290 reports**. Placement
+`07194e5b4d` retires all three ZIPs and accounts for all 562 members: 377 new
+unchanged files, 175 exact aliases and 10 archive-only manuscript/PDF/README files.
+Sources 101 and 102 give the same delayed-erasure 239-state table, found
+independently. Source 103 gives a different source-boundary 239-state table. The
+intake composed the two savings into an ordinary
+[238-state candidate](../../../../Computability/BusyBeaver/Research/ZFC/candidate-combined238/README.md).
+It passes the direct unbounded runtime check and an exact blank startup, plus a
+second, guarded-fold route, and a negative control fails as expected. None of the
+239- or 238-state tables has a Lean or PA endpoint.

@@ -38,6 +38,19 @@ equivalent to the corresponding consistency statements. Its nine probes and
 nine typed callers pass with zero warnings. The internal PA equivalence for
 this exact 240-state machine remains open. See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md).
 
+The smallest **ordinary** candidate is now the [**238-state machine**](candidate-combined238/README.md)
+of batch 172. Two independent 239-state savings were delivered that day. One is a
+delayed erasure: fold state 169 into 80 and change the shared helper return `91/1`;
+two packages found it independently. The other is a source boundary: reparenthesize
+the register source, repair the decoder, and split state 218. The two edit disjoint
+rows, and the intake composed them. The 238 table passes the direct unbounded runtime
+check on the reparenthesized source (8,386 cases, 2,255,513 rules, all 476 rows) and
+an exact 409,835-step blank startup. A second route, the guarded fold from the accepted
+boundary239 table, also passes. This is an ordinary mathematical argument with
+executable certificates, at the level of the 239-state packages. **No Lean or PA
+endpoint exists for the 239- or 238-state tables.** See the
+[batch 172 reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-172.md).
+
 The [240 source-equivalence proof](source_rotation240.md) now passes Lean:
 10 theorem probes and 13 typed callers, with zero warnings. It proves that
 the new register program preserves halting for every initial register file.
@@ -2098,3 +2111,14 @@ placement. All 38 selected jobs pass after one documented Python AST retry.
 These imports do not supply a new state record or complete Lean/PA endpoint.
 The [recovery and replay guide](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-171-reproduction.md)
 records every placement and the exact verification scope.
+
+
+Batch 172 imports three 19 October packages as
+[Sources 101–103](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-172.md).
+Sources 101 and 102 give the same delayed-erasure 239-state table, and Source 103
+gives a different source-boundary 239-state table. Their composition is the
+[238-state candidate](candidate-combined238/README.md), checked by the intake. The
+three ZIPs were retired at placement `07194e5b4d`. The
+[recovery and replay guide](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-172-reproduction.md)
+records the exact verification scope. No Lean or PA endpoint is claimed for the 239-
+or 238-state tables.
