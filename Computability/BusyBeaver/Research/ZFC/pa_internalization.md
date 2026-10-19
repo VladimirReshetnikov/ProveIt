@@ -46,10 +46,14 @@ fixed Σ₁/Δ₁ graph is total at every internal IΣ₁ time; its ordinary-nat
 interpretation agrees with the literal machine run at every time. IΣ₁ and PA
 prove its closed totality sentence. The parameter-free Σ₁ halting sentence
 therefore has the intended standard interpretation, while the internal
-startup/simulation and consistency equivalence remain to be connected.
+simulation and consistency equivalence remain to be connected.
 The [arbitrary-initial run](arithmetic_machine_run_from_rotation240.md) also
 passes a fresh 19-probe/23-caller check with zero warnings, supplying internal
 run composition, full halted-code absorption and recovery of that blank graph.
+The [finite arithmetic startup](arithmetic_bootstrap_rotation240.md) passes
+seven further probes and nine callers with zero warnings. Its fixed sentence,
+provable in IΣ₁ and PA, gives the complete boot code after 409,691 steps.
+This finite transport does not replace the unbounded internal simulation.
 
 The current arithmetic checkpoints are:
 

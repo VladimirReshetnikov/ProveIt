@@ -37,6 +37,7 @@ The [publication record](results/arithmetic-run-from-rotation240-publication.jso
 [history](arithmetic-run-from-rotation240/history.json.gz) preserve the source
 plans, frozen actual parent and execution. The guard retains historical scratch
 paths; publication does not provide cached objects or a clean-checkout rebuild.
-The concrete startup, binary-to-register simulation and PA consistency
-equivalence remain separate obligations. Attribution follows Mira-Cult,
+The [finite arithmetic startup](arithmetic_bootstrap_rotation240.md) is now
+checked; unbounded binary-to-register simulation and the PA consistency
+equivalence remain open. Attribution follows Mira-Cult,
 Jeff Ketchersid, Andrew James Wade and the ProveIt reductions.
