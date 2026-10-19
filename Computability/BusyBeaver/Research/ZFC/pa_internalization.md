@@ -1337,3 +1337,13 @@ bootstrap now provided by `ArithmeticBootstrapRotation240`. The Claude lane is
 currently on W4/W5 (L2 port: `ArithmeticDagRun`, `ArithmeticL2Lib254`,
 `ArithmeticL2Macros254`, `ArithmeticL2Control254` landed); Codex-lane work on
 (i)–(ii) is welcome and should target this interface.
+
+The [control/AX source review through `8fa0f5b48e`](rotation240_pa/upstream-review-8fa0f5b48e/README.md)
+finds no substantive blocker in the new equality, fetch, MP/NIP and complete
+structured AX contracts. The AX evaluation module supplies 110 closed-form
+transformer equalities. Execution still requires its stated cleanliness and
+finite-occurrence hypotheses; the concrete root occurrence, identification
+with the validator's AX operation, scheduler/seed composition and reverse
+halting argument remain to be joined. These are upstream source additions
+with explicit nondefault limits and attributed compile claims, not a new
+local Lean audit. W6/W7 remain open.
