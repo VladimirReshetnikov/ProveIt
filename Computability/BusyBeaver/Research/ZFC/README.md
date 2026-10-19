@@ -105,6 +105,9 @@ pass 25 probes and 27 callers with zero warnings: exact path catalogues,
 nine-register code algebra, and conditional offset-segment halting transport
 in arbitrary IΣ₁ models. Concrete table binding and the binary simulation
 remain separate obligations.
+The [cached decoder tree](rotation240_pa/counted-tree/README.md) passes three
+further probes and callers, proving its exact annotation identity and 6,455
+catalogue entries under default proof limits.
 
 The [**241-state candidate**](candidate-fold241/README.md) from `8c41b1fb7d`
 adds two local folds to the combined243 table. The last fold uses a bit written
