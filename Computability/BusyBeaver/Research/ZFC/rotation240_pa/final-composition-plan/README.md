@@ -27,14 +27,17 @@ After that inventory, [R2Neg](../../../../../../Logic/Interpretability/ZFCinPA/r
 [R2Quant](../../../../../../Logic/Interpretability/ZFCinPA/r2quant.md),
 [R2Main](../../../../../../Logic/Interpretability/ZFCinPA/r2main.md),
 [R2Gic](../../../../../../Logic/Interpretability/ZFCinPA/r2gic.md),
-[NativePeel](../../../../../../Logic/Interpretability/ZFCinPA/native_peel.md)
-and six [register-program prerequisites](../../arithmetic_register_prerequisites.md)
-passed, removing eleven of the 88 entries. NativePeel required one
+[NativePeel](../../../../../../Logic/Interpretability/ZFCinPA/native_peel.md),
+[internal renaming/substitution](../../../../../../SetTheory/BoundedConsistency/internal_soundness_check.md)
+and seven [register-program prerequisites](../../arithmetic_register_prerequisites.md)
+passed. NativePeel required one
 implicit-argument correction, with the failed original run preserved.
 The [first concrete bisimulation check](../control-bisim-first-check/README.md)
 hit the 4 GiB memory limit; the
-[interval-joining helper](../../control_bisim_rotation240_split.md) passes,
-while splitting and checking the finite certificate remains work in progress.
+[complete split certificate and assembled equivalence](../../control_bisim_rotation240_split.md)
+now pass under the unchanged cap. Together these results remove fourteen of
+the 88 entries, leaving 74. The common helper and 31 leaf modules are
+additional checked modules, outside that original inventory.
 Subsequent actual records must update the remaining work; the frozen
 inventory itself stays unchanged. Checks retain
 the upstream source's declared limits and known warnings, while new audit

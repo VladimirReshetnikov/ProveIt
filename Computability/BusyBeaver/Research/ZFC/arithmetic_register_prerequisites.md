@@ -1,6 +1,6 @@
 # Internal register-program prerequisites
 
-Six unchanged upstream modules now have fresh local Lean checks for the
+Seven unchanged upstream modules now have fresh local Lean checks for the
 register side of the 240-state PA comparison.
 
 [`ArithmeticDagRun`](../../Lean/BusyBeaver/ZFC/ArithmeticDagRun.lean) proves
@@ -69,7 +69,22 @@ identify the constructed bundle with the validator's axiom operation.
 The [publication](results/arithmetic-l2-axioms254-publication.json) preserves
 the full source and the review of its literal decoder-tree compositions.
 
-All six runs use one thread, 4,096 MiB and a shared 120-second source-and-audit
+[`ArithmeticL2AxiomsEval254`](../../Lean/BusyBeaver/ZFC/ArithmeticL2AxiomsEval254.lean)
+gives the full closed forms of all nine register fields, including the final
+gate, formula bundle and stack. These equalities hold for arbitrary internal
+records without a clean-scratch premise. The
+[actual check](results/arithmetic-l2-axioms-eval254-verification.json) passes
+two probes and three typed callers with zero warnings, in 17.013 and 1.644
+seconds, reusing 44 project prerequisites. The source retains its 8,192
+recursion and 4,000,000 heartbeat limits and its existing disabled
+unused-simp-argument linter; the audit uses defaults. An initial audit failed
+because expected-type inference constrained a whole record before projecting
+its field. Two local intermediate equalities fix the audit without changing
+its statements or the proof source. Both attempts are retained in the
+[publication history](arithmetic-l2-axioms-eval254/history.json.gz).
+Identification with the named validator axiom operation is the next module.
+
+All seven successful runs use one thread, 4,096 MiB and a shared 120-second source-and-audit
 deadline. The first two guards select 35 and 37 exact project prerequisites,
 respectively, from already checked parents, with three external source/object
 boundaries and Init/Omega. Inputs, first providers and fresh objects are
