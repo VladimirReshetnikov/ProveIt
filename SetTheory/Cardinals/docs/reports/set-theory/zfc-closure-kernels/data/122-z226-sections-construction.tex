@@ -1,0 +1,237 @@
+\subsection{Accounting for the eight historical reductions}
+
+The historical sequence mixes changes to the register program with changes
+to its binary implementation.  The following accounting is therefore by
+mechanism and surviving role, rather than by numerical state names alone.
+The original reductions and the changed K230 frontend are attributed to
+their respective sources.\cite{proveit235,k230}
+
+\begingroup
+\small
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{@{}p{0.16\linewidth}p{0.23\linewidth}p{0.53\linewidth}@{}}
+\toprule
+Historical step & Relevant K correspondence & Disposition in this construction\\
+\midrule
+\endfirsthead
+\toprule
+Historical step & Relevant K correspondence & Disposition in this construction\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+$243\to242$; old $27\to15$
+& Old $15\mapsto K11$, $32\mapsto K26$
+& Already in K230: $K11/0=0LK26$ and the corresponding caller redirects.
+No additional saving.\\
+$242\to241$; old $39\to17$
+& Old $17\mapsto K13$, $106\mapsto K91$, $37\mapsto K31$
+& Already in K230: the two $K13$ rows move left into $K91$ and $K31$.
+No additional saving.\\
+$241\to240$; old $90\to72$
+& Old $90\mapsto K79$, $72\mapsto K63$, $142\mapsto K121$
+& Transplanted after the total transfer-loop rewrite. Delete $K79$ into
+$K63$; four exceptional positive blocks have lengths $9,3,3,3$.\\
+$240\to239$; delete old $218$
+& Old $218\mapsto K175$, $179\mapsto K150$; projection role becomes $K65$
+& Transplanted after source sharing and an additional K-specific entry-tag
+repair. Split the two entry contexts of $K175$ between $K150$ and $K65$.\\
+$239\to238$; old $169\to80$
+& Old $169\mapsto K140$, $80\mapsto K71$, $91\mapsto K80$
+& Transplanted with coordinated helper reuse. One local block needs an
+extra right-neighbor guard; the final machine is checked directly.\\
+$238\to237$; old $235\to98$
+& Old $98\mapsto K85$, $240\mapsto K186$
+& No direct counterpart for old 235. Its mapped children would be
+$(K180,K12)$; the nearby K199 instead has $(K180,K166)$.\\
+$237\to236$; old $223\to182$
+& Projection role $K65$, retained $K152$, helpers $K159,K169$
+& Transplanted after two source rotations repair the helper layout and
+the retained state's entry tag. Delete $K65$ into $K152$.\\
+$236\to235$; old $193\to74$
+& Required mapped pairs $(K157,K172)$ and $(K99,K182)$
+& Neither pair is a current K decoder node. The earlier correspondence
+old $74\mapsto K65$ predates their different repurposing; it gives no
+further fold of the final table.\\
+\end{longtable}
+\endgroup
+
+Thus two historical savings were already included, four are newly
+transplanted, and two have no direct surviving pair.  The accepted order is
+\[
+ 230\xrightarrow{\text{delete }K79}229
+ \xrightarrow{\text{delete }K140}228
+ \xrightarrow{\text{delete }K175}227
+ \xrightarrow{\text{delete }K65}226.
+\]
+Source reassociations and repairs between these arrows add no working
+state.  The complete correspondence is retained in
+\code{comparison/TRANSPLANT_CLASSIFICATION.md}.
+
+\subsection{The first two folds and their distinct proof scopes}
+
+The total macro replacement proved in Lemma~\ref{lem:macro} changes the
+two decoder successors of $K121$ from $(K31,K63)$ to $(K63,K13)$.
+It applies at four source occurrences.  Then delete $K79$, redirect its
+incoming transitions to $K63$, and set
+\[
+ K63/0=0LK123,\qquad K63/1=1LK30.
+\]
+The lost state distinction is recovered from already present predecessor
+bits.  At old $K63$ the two bits immediately left are $10$; at old $K79$
+the immediately preceding bit is $1$.  These facts are inductive from
+the common initial state, without restricting its initial tape.
+The four exceptional blocks reproduce the old write, displacement,
+successor and entire tape in $9,3,3,3$ transitions.  The other 456 old
+rows commute with the state identification in one transition.  Both the
+generic symbolic checker and a separate four-case checker prove this fold.
+
+For the second fold, identify $K140$ with $K71$ and change
+\[
+ K71/0=0LK91,\qquad K80/1=1LK138.
+\]
+The changed helper $K80$ is part of the construction, so this is more
+than replacing two identical rows.  The exceptional old rows
+$K71/0,K140/0,K140/1,K80/1$ have matching new blocks of lengths
+$5,3,5,9$.  Their predecessor guards follow from the binary table,
+except that $K140/1$ additionally requires a $1$ immediately to the right.
+The local certificate explicitly records this condition.  It does not
+claim an all-tape theorem for that fold.  The complete runtime proof
+below establishes the final machine's behavior on every valid frame,
+including this helper's actual use, independently of extrapolating
+the conditional local argument.
+
+\subsection{A source schedule that leaves usable decoder contexts}
+
+The first source reassociation changes the fragment
+\[
+ K85=(K19,K65),\quad K65=(K114,K12)
+ \;\longrightarrow\;
+ K85=(K98,K12),\quad K98=(K19,K114).
+\]
+Here a displayed pair describes source children.  The paired subtree
+$K98$ already exists, so the new left child requires no new decoder.
+The freed label $K65$ is reused as a backward projection helper, with
+$K175/0=0LK65$ and helper rows $0RK12,1RK86$.
+Sharing a source node does not by itself justify these backward entries;
+the binary runtime is a separate obligation.
+
+The next reassociation is also K-specific.  Originally
+$K202=((K149,K150),K151)$, with inner state $K201$.
+The right rotation makes $K202=(K149,(K150,K151))$.
+Thus $K201$ reaches $K150$ on its zero branch, repairing the entry tag
+needed below.  The exact children are 149,150,151: common ancestry with
+an older source is not a license to substitute a superficially similar
+subtree.
+
+Write $L_{q,r}$ for $(A,(B,C))\mapsto((A,B),C)$ at outer state $q$
+and inner state $r$, and $R_{q,r}$ for the inverse.  The complete ordered
+schedule after the loop replacement is
+\[
+\begin{gathered}
+ L_{85,65},\ R_{202,201},\ L_{174,119},\ L_{148,154},\
+ R_{52,67},\ R_{67,229},\\
+ R_{210,174},\ R_{174,101},\ R_{226,224},\ L_{205,134},\
+ R_{207,205},\ L_{101,209},\ L_{101,208}.
+\end{gathered}
+\]
+The certificate identifies every occurrence path, so shared fragments
+are rewritten consistently.  The first four stages temporarily give a
+maximum zero run of seven.  The final schedule restores six, retains
+5,121 leaf occurrences and 211 distinct source DAG nodes, and has maximum
+path depth 41.  This matters because primitive operations modify path
+bits before reset: a smaller source DAG alone does not preserve the
+binary frame invariant.
+
+Stages 5 and 6 cross the terminal AX break.  In their right rotation
+$((A,B),C)\mapsto(A,(B,C))$, the third chunk is
+$C=\mathrm{CB}(1)$ and is \emph{not closed}: it has one escaping break.
+A rule allowing only three closed chunks would exclude both moves.
+Their admissibility comes from comparing the complete source control
+graph, including every break target and both decrement branches.
+These moves permit the eventual zero-run repair without another reset
+state, but they also move a fused machine instruction and therefore
+require the callback repair described below.
+
+\subsection{The context split and the final three-step fold}
+
+In the prepared 228-state basis, all entries to $K150$ write a zero
+and move right.  The two callers $K155/1,K176/1$ enter $K175$ after
+writing one; $K184/0$ enters it after writing zero.  Moreover, old $K65$
+is entered only inside the backward $K175/0$ projection.
+Delete $K175$ by representing its left-zero context with $K65$ and its
+left-one context with $K150$.  Old $K150$ retains its left-zero context.
+The literal changes are
+\[
+\begin{aligned}
+ K150/1&=1LK173,& K155/1&=1RK150,& K176/1&=1RK150,\\
+ K65/0&=0RK19,& K65/1&=1RK61,& K184/0&=0RK65.
+\end{aligned}
+\]
+Six exact open-tape identities handle the two reads in these three
+contexts.  Old blocks have length one or three; new blocks have length
+one, three or five.  Each has the same whole tape and head at its
+endpoint.  Ordinary rows commute, and the sole entry to old $K65$
+ensures it is an internal macro state rather than an omitted checkpoint.
+This proves halting equivalence from state 0 on every initial binary tape.
+
+The rotations $L_{174,119}$ and $L_{148,154}$ supply the final fold's
+entry tag and helper layout.  Old $K65$ now has left bit zero, whereas
+$K152$ has left bit one.  Delete $K65$ into $K152$ and set
+\[
+ K152/0=0LK159,\qquad K152/1=1LK169.
+\]
+The four exceptional paths are
+\[
+\begin{array}{ccl}
+ \text{old state/read}&\text{left bit}&\text{new state path}\\
+ K65/0&0&K152,K159,K166,K19\\
+ K65/1&0&K152,K169,K99,K61\\
+ K152/0&1&K152,K159,K118,K155\\
+ K152/1&1&K152,K169,K148,K171.
+\end{array}
+\]
+All are three-transition blocks with unchanged surrounding tape.
+The checker proves all 454 old rows: 450 one-step blocks and these four
+three-step blocks.  No extra state is charged for either helper tree.
+
+\subsection{Repairing the relocated break without adding a state}
+
+The AX rotations move the terminal break path from
+\texttt{111010010011} to \texttt{11101001001111}.
+The old fused action $K52/1=0LK27$, followed by $K27/1=0LK40$,
+clears two trailing ones.  Copying it to $K229/1$ does not clear
+the four ones in the new path.  There is a second issue: the old
+backward callback $K103/1=0LK52$ would enter the newly repurposed
+decoder instead of its former primitive action.  The concrete failures
+occurred at different CB1 leaves, so repairing just one was insufficient.
+
+An existing duplicate, $K18/1=0LK27$, resolves both problems:
+\begin{verbatim}
+103 1 0 L 18
+229 1 0 L 103
+\end{verbatim}
+The original two-step callback $K103,K52,K27$ becomes
+$K103,K18,K27$ with exactly the same tape, head and endpoint.
+The complete clearing chains are now
+\[
+ K103\to K18\to K27\to K40\to K4,
+ \qquad
+ K229\to K103\to K18\to K27\to K40\to K4.
+\]
+An inductive invariant of the complete repaired table supplies the
+left-to-right predecessor patterns $011$ at $K103$ and $0111$ at
+$K229$.  On reading one, the first chain clears three trailing ones
+and their preceding zero; the second clears four and their preceding
+zero.  Both enter the ordinary prefix-increment routine $K4$ on the
+preceding cell.  Every unspecified tape cell remains free in these
+local proofs.  A negative control explicitly rejects the stale
+two-one action on the four-one suffix.
+
+The resulting machine, rather than an assumed sum of compatible folds,
+is the object of the complete 6656-case runtime proof and exact startup
+check.  The source replay, these local identities, and that unbounded
+runtime proof form ordinary mathematical certificates available for
+internalization in ZFC.  They establish the new transport used in
+Theorem~\ref{thm:main}; they are not a claim of a new Rocq kernel check
+for the 226-state table.

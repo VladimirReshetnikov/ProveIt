@@ -1,0 +1,155 @@
+The revised baseline is Elliot Glazer's K230 release at commit
+\code{3142e4dd980f0be12f4abb636c4ae2528afc17eb}.
+It contains a literal 230-working-state, binary, blank-input machine
+and an external Rocq theorem relating that exact machine to finite
+refutations of ordinary ZFC.  The current work inherits this theorem;
+it does not attribute the 230-state construction or the theory K
+to the new table reduction.\footnote{Pinned primary source:
+\url{https://github.com/elliotglazer/k230-rocq/tree/3142e4dd980f0be12f4abb636c4ae2528afc17eb}.
+The exact theorem is in \texttt{coq/tm/Correct230.v}.}
+
+\subsection{The one-schema theory actually searched}
+
+The theory uses membership and ordinary first-order equality.
+For any finite formula $\varphi(y,p;\bar q)$, with output role $y$,
+input role $p$, and finitely many additional parameters, abbreviate
+\begin{align*}
+ p\subseteq u&\quad\Longleftrightarrow\quad
+      \forall z\,(z\in p\to z\in u),\\
+ W_\varphi(p,C)&\quad\Longleftrightarrow\quad
+      (\exists y\,\varphi(y,p;\bar q))\to
+          \exists y\,(y\in C\land\varphi(y,p;\bar q)),\\
+ H_\varphi(C)&\quad\Longleftrightarrow\quad
+      \forall u\left(u\in C\to
+        \left((\exists p\,\varphi(u,p;\bar q))\land
+          \forall p\,(p\subseteq u\to W_\varphi(p,C))\right)\right).
+\end{align*}
+The ordinary theory $K$ has the equality axioms and the universal
+closures of
+\begin{equation}
+ \forall a\,\forall x\,\exists C\,
+       \bigl((\varphi(x,a;\bar q)\to x\in C)\land H_\varphi(C)\bigr).
+ \label{eq:k230-schema}
+\end{equation}
+Thus an output selected in advance belongs to a supported container,
+and that container supplies witnesses at every input that is a subset
+of one of its members.  The condition $H_\varphi(C)$ is required
+even when the selected instance $\varphi(x,a;\bar q)$ is false.
+Moving it into the consequent of that implication would change
+the theory and is not justified by this calibration.
+
+The files \texttt{KPrimeCore.v} and \texttt{KPrimeTheory.v} give
+the literal de Bruijn formulas and call this theory
+\texttt{KPrimeOrd}.  The encoded proof search uses
+\texttt{KPrimeOrdIR}, which adds
+$\forall x\,\neg(x\in x)$.  Both presentations have a proved
+finite-refutation equivalence with the explicit reference theory
+\begin{equation}
+ \texttt{StandardZFC}
+       =\texttt{ZFc}\cup\{\texttt{ax\_reg'}\}
+                    \cup\{\texttt{ax\_ac}\}.
+ \label{eq:k230-standard}
+\end{equation}
+Here the reference $\texttt{ZFc}$ supplies extensional ZF without
+Foundation; Foundation and Choice are explicitly added in
+\eqref{eq:k230-standard}.  This definition appears in
+\texttt{KQuotZFC.v}, rather than being inferred from an acronym.
+
+The lower consistency reduction first builds elementary raw set
+constructions, a tagged domain, bounded comprehension and collection.
+A bisimulation quotient then supplies extensionality, Power Set,
+Infinity, Separation and Replacement.  The pinned reference
+development supplies the relative-consistency comparisons for
+Foundation and Choice.  In the reverse direction, the constructible
+hierarchy and reflection provide containers with the required subset
+and witness closure, and Separation restricts them to supported
+outputs.  The declarations
+\texttt{KPrimeOrd\_standardZFC\_equiconsistent} and
+\texttt{KPrimeOrdIR\_standardZFC\_equiconsistent} in
+\texttt{KUpperConsistency.v} state the two finite-refutation
+biconditionals.
+
+These declarations transform finite derivations.  For a finite
+$K$-refutation, \texttt{KUpperConsistency.v} collects the finitely many
+axiom instances needed by the relative-$L$ interpretation and applies
+a syntactic proof-transfer lemma.  In the other direction,
+\texttt{KQuotZFC.v} composes the quotient interpretation's
+\texttt{KPrimeOrd\_ZFc\_inconsistent} with the reference
+\texttt{ac\_reg\_relcon}.  This finite proof-code interface is especially
+useful for the intended arithmetic equivalence inside ordinary ZFC.
+
+The exact numerical frontend retains the eight logical roots of the
+Mira/Jeff calculus, including the equality rules, the four-variable
+\L{}ukasiewicz implication axiom, quantifier distribution, quantifier
+commutation and equality existence.  Its formula codes remain
+$4P(a,b)+t$, for dual Cantor pairing $P$ and the four tags for
+implication, membership, universal quantification and equality.
+Code one is the designated self-membership/falsity alias.  K230's
+frontend saving comes from the shorter set-theoretic core and its
+encoding. The present 226-state construction retains that frontend and
+changes source scheduling and table sharing. It does not assume
+completeness of an equality-free fragment.
+
+The source's active roles are input $a$, output $b$ and fresh
+container label $c$, with the same integer $c$ serving as a matrix
+code.  The gate still excludes $c=a$ and $c=b$.  The decoding bridge
+checks the actual source formula, low codes and coincident active
+roles.  In particular \texttt{KDecodeDegenerate.v} treats $a=b$
+using an empty object and a container for a specified object; it
+does not assume three distinct labels silently.  These are essential
+interfaces when changing the frontend.
+
+\subsection{The exact end-to-end proof chain}
+
+The final declaration in \texttt{Correct230.v} is
+\begin{verbatim}
+tm230_halts_iff_ZFC_inconsistent :
+  halts tm c0 <-> StandardZFC |-TC bottom.
+\end{verbatim}
+The notation above abbreviates the source's module qualifiers and
+Unicode deduction symbols.  Its four-line proof composes the following
+named results:
+\begin{align*}
+ \operatorname{Halts}(M_{230},\mathrm{blank})
+ &\ \Longleftrightarrow\
+       \operatorname{RMHalts}(p_{230},([],R_0))\\
+ &\ \Longleftrightarrow\
+       \operatorname{EnumHalts}(\mathrm{seed}_{230})\\
+ &\ \Longleftrightarrow\ \texttt{thm230}(1)\\
+ &\ \Longleftrightarrow\
+       \texttt{StandardZFC}\vdash\bot.
+\end{align*}
+They are \texttt{Sim230Main.tm230\_rm},
+\texttt{Main230.prog230}, \texttt{Seed230.seed230\_iff\_thm},
+and \texttt{Consistency230.thm230\_iff\_standardZFC}.
+The proof uses the exact released table and exact program data.
+
+The nonzero search seed is handled explicitly.  In abstract enumerator
+order it is
+\[
+ (\mathrm{prooflist},\mathrm{nextproof},\mathrm{top},
+     \mathrm{stack},\mathrm{parameter},\mathrm{cache})
+                    =(0,3,0,0,3,0).
+\]
+In source register order the first nine values are
+$(3,0,0,0,3,0,0,0,0)$.  The completeness proof compiles any
+refutation into a candidate number at least three and proves that
+the enumeration reaches it from this seed.  It therefore does
+not rely on replacing the actual initialization by an all-zero
+register state.
+
+The source-tree bridge has full scope over register files:
+\[
+ \forall R\quad
+ \operatorname{RMHalts}(p_{230},([],R))
+       \Longleftrightarrow
+ \operatorname{RMHalts}(\mathrm{dag}_{230},([],R)).
+\]
+\texttt{ProgramBisim230.v} checks the literal finite certificate in
+both directions and proves the tree well formed.  This is an
+appropriate reuse boundary for source reassociation or commuting
+independent increment operations: the new source must have its own
+checked all-register program comparison.  A change in the program's
+tree layout also changes binary decoder paths, so program equivalence
+alone does not identify a new transition table with that source.
+

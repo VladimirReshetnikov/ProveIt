@@ -1,0 +1,77 @@
+{
+  "status": "EXACT_CLOSED_MACRO_CONTEXT_AND_GUARDED_GRAPH_PASS",
+  "replacement_paths": [
+    "111010010010111111000011",
+    "11101001001011111110011",
+    "1110100101100011",
+    "111110011"
+  ],
+  "before": {
+    "dag_nodes": 212,
+    "leaf_occurrences": 5125,
+    "maximum_depth": 40,
+    "maximum_zero_run": 6
+  },
+  "after": {
+    "dag_nodes": 212,
+    "leaf_occurrences": 5121,
+    "maximum_depth": 40,
+    "maximum_zero_run": 6
+  },
+  "old_macro_sites": [
+    [
+      "00",
+      "CD",
+      6
+    ],
+    [
+      "010",
+      "CI",
+      5
+    ],
+    [
+      "011",
+      "CC",
+      2
+    ],
+    [
+      "1",
+      "CI",
+      5
+    ]
+  ],
+  "new_macro_sites": [
+    [
+      "0",
+      "CI",
+      5
+    ],
+    [
+      "10",
+      "CD",
+      6
+    ],
+    [
+      "11",
+      "CC",
+      2
+    ]
+  ],
+  "macro_boundary": [
+    0,
+    0,
+    false
+  ],
+  "collapsed_context_leaves": 5113,
+  "collapsed_guarded_cases": 6644,
+  "collapsed_graph_sha256": "9d29b24717d983f8df0123aa313e12c54869cba726417ac84fc14b2d2b729032",
+  "outside_guarded_successors_identical": true,
+  "macro_semantics": {
+    "input": "R5=a,R6=b, with arbitrary natural a,b and other registers",
+    "output": "R5=a+b+1,R6=0; every other register unchanged",
+    "source_steps_each": "3*b+2",
+    "increments_each": "b+1",
+    "proof": "Induction on b: old form transfers b units then increments once; new form increments once then transfers b units. Both macros terminate and fall through."
+  },
+  "scope": "Exact surrounding source context and all guarded external successors. Compose with the stated induction on arbitrary b; a binary runtime proof is separate."
+}

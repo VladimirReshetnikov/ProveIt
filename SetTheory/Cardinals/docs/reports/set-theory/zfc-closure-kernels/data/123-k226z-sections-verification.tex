@@ -1,0 +1,142 @@
+\section{Verification of the exact final machine}
+\label{sec:verification}
+
+\subsection{The universal interpreter theorem}
+
+The selected table was checked afresh against the independently calibrated
+increment/drain source. First, the checker reconstructs and compares the
+complete ordered source control graph, including both outcomes of every
+decrement and all break, continue and halt successors. The eleven later
+closed reassociations and the two boundary rotations change addresses;
+they do not change this graph. The separate closed-loop theorem connects
+that graph to the original K230 source.
+
+The tape invariant describes a marker, a binary source address, a zero
+gap, a header, nine primary unary registers, a first spare register and
+an arbitrary finite spare tail. Each register value is independent and
+unbounded. The proof variables include the additional gap and the spare
+values; they are not fixed to the small values used in diagnostic runs.
+Each zero or positive decrement guard has its own proof case.
+
+Four generic register-file operations are justified by explicit
+finite-list induction schemas. Unary scans are justified by natural-number
+induction on their run length. Every use of these schemas is derived
+against the exact supplied transition table. The remaining transitions
+are executed literally on symbolic segments. For every nonhalting source instruction, the endpoint comparison checks
+the entire tape representation, head position, interpreter state, updated
+registers and source successor, including the zero exterior. The halt
+case reaches the unique terminal state.
+
+The complete fresh result is:
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}lX@{}}\toprule
+Obligation & Replayed result\\\midrule
+Source leaves & $5\,121$\\
+Guarded instruction cases, including halt & $6\,656$\\
+Symbolic rule applications & $1\,615\,284$\\
+Largest single proof & 412 symbolic rules\\
+Minimum actual instruction duration & 13 literal transitions\\
+Native working states / transition rows & $226/452$\\
+Rows outside runtime and initialization & none\\
+Blank initialization & $409\,835$ transitions\\
+Initialization tape support & 351 one-cells, every other cell zero\\
+Source maximum depth / zero run & $41/6$\\
+\bottomrule\end{tabularx}
+\end{center}
+The proof-construction fuel is a limit on searching for a symbolic proof.
+It does not bound a register, a list, the actual duration of an instruction,
+or the running time of the complete machine. All generated proof cases, the four block schemas, row coverage and exact initialization support
+are retained under \path{evidence/runtime226/}.
+
+\subsection{Initialization and state-count accounting}
+
+The blank initialization is a separate finite calculation, because the
+runtime invariant must first be established. In inherited interpreter
+coordinates the head reaches $-5$, the marker is at $-6$, and the register
+header is at 176. The 181 cells from the head at $-5$ through coordinate 175 are zero. The physical
+primary values are
+\[
+                    (0,0,0,3,0,0,3,0,0),
+\]
+followed by 167 spare values equal to one. The physical-to-logical register
+permutation produces the exact seed used by the numerical proof enumerator.
+The independent calculation uses the complete set of one positions, not
+just a bounded window or a register summary.
+
+The complete final table has two rows for every working state, no row for
+the separate halt label, no other undefined target, and only left/right
+moves. Every counted state is reachable in the directed transition graph
+from the start; this is state-count accounting and does not assert that
+every state occurs in the actual blank execution. The dense table is
+bijectively related to the original-label and inherited-label versions.
+All transition identities and start/halt mappings are checked. The
+canonicalization produced internally by the symbolic driver is a further
+renaming, not a different candidate; the public table is the one with
+SHA--256 beginning \path{b58279b8}.
+
+\subsection{Composition into the consistency theorem}
+
+\begin{theorem}[The selected machine]
+Let $M_{226}$ be the literal table \path{machines/k226.tm}, started in
+state zero on a blank two-sided binary tape. Then
+\[
+\mathrm{ZFC}\vdash
+\left(\Halts(M_{226},\mathrm{blank})\leftrightarrow
+          \exists p\,\mathrm{Proof}_{\mathrm{ZFC}}(p,\bot)\right).
+\]
+Consequently ZFC proves its nonhalting equivalent to \(\Con(\mathrm{ZFC})\).
+\end{theorem}
+\begin{proof}
+The exact initialization enters the interpreter invariant at the
+calibrated seed. The universal instruction theorem simulates every source
+instruction by a finite positive number of native transitions and
+reflects the unique halt instruction. Induction therefore equates native
+halting with source halting. Positive progress ensures that an infinite
+source execution cannot be compressed into a finite native run.
+
+The complete source graph audit transports the final source to the
+increment/drain source. Each of its four changed closed loops has the
+same terminating register transformation as the original loop; contextual
+replacement therefore transports halting to the pinned K230 source.
+The reference enumerator and finite-derivation translations identify
+that halting assertion with a classical ZFC derivation of falsity, as
+spelled out in the calibration section.
+
+Every new finite table check and every new induction here has a direct
+arithmetization in ZFC. The inherited calibration also consists of
+explicit syntax, proof enumeration and finite derivation translations.
+Formalizing those constructions gives the displayed internal assertion.
+Classical negation gives the nonhalting version. No consistency or
+soundness assumption is used to prove either biconditional.
+\end{proof}
+
+\subsection{External Rocq verification}
+\input{sections/rocq_status.tex}
+
+The external theorem and the assertion of ZFC-provability are different
+claims. Even a closed Rocq theorem does not by itself constitute a
+serialized ZFC derivation of the arithmetized sentence. The latter is
+justified here by the explicit finitary internalization argument. The
+package identifies exactly which new and inherited files were compiled, which endpoint assumptions were printed, and which independent kernel
+rechecks completed.
+
+\subsection{Diagnostic checks and rejected controls}
+
+Finite native tests were used to discover and reject candidates. The final
+226 table passed 26,624 instruction fixtures and the blank initialization,
+covering $15\,414\,531$ literal transitions in that test family. These
+tests are useful diagnostics, but the universal theorem above supplies
+the arbitrary-register claim.
+
+The rejected seven-zero trials are especially informative: a source
+reassociation can preserve the register program and still break the
+binary decoder. Its failing address, source branch and tape discrepancy
+are retained with a replay script. The two repairs at the 227-state stage and the five repairs at the
+226-state stage are therefore necessary parts of the construction.
+
+A bounded further native search on the repaired 227 table found no
+additional plain or one/two-helper fold with radius five and local blocks
+of at most 65 steps. The recorded search covered 25,651 state pairs,
+46,377,008 row choices and 585,927,699 helper checks. This is evidence about
+that specified search family only. It is not a lower bound on possible
+machines or on other compilation schemes.

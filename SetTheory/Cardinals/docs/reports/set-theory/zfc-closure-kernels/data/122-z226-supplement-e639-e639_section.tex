@@ -1,0 +1,505 @@
+\section{A 639-bit equational packet using a descriptor as its own class}
+\label{sec:e639}
+
+A separate result improves the complete equational input from the pinned
+663-bit packet to \textbf{639 bits}.  The seven equations, nine operation
+symbols, four local variables, and ground query are all charged under the
+unchanged codec.  The change removes six equation-term nodes by eliminating
+three uses of the descriptor projection $V(b,d)$.  The descriptor itself
+now serves as the represented class.
+
+The mathematical issue is not the textual replacement.  A descriptor must
+carry both an arbitrary formula and arbitrary parameters while preserving
+the formula's interpretation.  We prove that a duplicated parameter spine
+can carry those parameters with constant class truth value.  This gives a
+finite, noncircular construction of every required descriptor.  We also
+recheck the upper-model construction: its raw-value choices still depend
+only on proper subtrees.  The conclusion is a new relative calibration,
+not a claim that the old and new presentations have identical models.
+
+No binary Turing-machine state bound follows from 639 bits.  The result
+provides a smaller complete input for a future equational search engine;
+that engine, its enumeration, and its blank-tape initialization remain to
+be implemented and counted.
+
+\subsection{Literal signature, axioms, and query}
+
+The ordered signature is
+\[
+ d^0,N^2,V^2,P^2,A^2,Q^1,W^2,p_E^2,p_\varepsilon^2.
+\]
+All equations below are universally quantified in their displayed
+variables.  The first six are unchanged from the E663 packet:
+\begin{align}
+ N(N(x,N(N(y,x),x)),N(y,N(z,x)))&=y,\label{eq:e639-sh1}\\
+ V(P(x,s),d)&=x,\label{eq:e639-head}\\
+ V(P(x,s),Q(j))&=V(s,j),\label{eq:e639-tail}\\
+ p_\varepsilon(s,P(a,b))
+   &=N(p_\varepsilon(s,a),p_\varepsilon(s,b)),\label{eq:e639-nand}\\
+ p_\varepsilon(s,A(i,j))
+   &=p_E(V(s,i),V(s,j)),\label{eq:e639-atom}\\
+ p_\varepsilon(s,Q(a))
+   &=N\bigl(p_\varepsilon(P(W(s,a),s),a),
+              p_\varepsilon(P(z,s),a)\bigr).\label{eq:e639-binder}
+\end{align}
+The first equation is the published Sh1 single axiom for Boolean algebra,
+due to McCune, Veroff, Fitelson, Harris, Feist, and Wos; it is inherited,
+not a newly discovered Boolean axiom.\footnote{Primary paper:
+\url{https://www.cs.unm.edu/~mccune/papers/basax/v12.pdf},
+\emph{Short Single Axioms for Boolean Algebra}, Journal of Automated
+Reasoning 29 (2002), 1--16.}
+Thus $N$ is NAND in a Boolean algebra on the whole carrier.  Its top
+and bottom are written $1$ and $0$.  The distinguished native element
+$d$ is not assumed to equal $1$ until that equality is proved below.
+
+The seventh equation has the same Boolean kernel as E663, but uses the
+new direct descriptor relation
+\begin{equation}
+ \widetilde R_b(x,y)=p_\varepsilon(P(y,P(x,b)),b).
+ \label{eq:e639-direct}
+\end{equation}
+The following are abbreviations only; the bit packet expands them all:
+\begin{align*}
+ h&=Q(b),& n_z&=P(b,z),&m_z&=A(b,z),\\
+ r&=\widetilde R_b(h,n_z),&
+ e&=p_E(m_z,n_z),&f&=p_E(m_z,z),\\
+ a&=p_E(W(x,d),x),&b_0&=p_E(x,h),&c&=\widetilde R_b(x,y),\\
+ u&=p_E(y,h),&v&=\widetilde R_b(P(b,y),y).
+\end{align*}
+Define
+\begin{align*}
+ K&=N(c,N(a,N(d,b_0))),\\
+ H&=N\bigl(N(N(d,u),K),N(u,v)\bigr),\\
+ B^-&=N\bigl(r,N(d,N(e,N(d,f)))\bigr),\\
+ F(d,r,e,f,a,b_0,c,u,v)&=N(B^-,N(d,H)).
+\end{align*}
+The last equation is
+\begin{equation}
+                d=F(d,r,e,f,a,b_0,c,u,v).
+ \label{eq:e639-closure}
+\end{equation}
+The designated ground query remains
+\begin{equation}
+                         Q(d)=d.
+ \label{eq:e639-query}
+\end{equation}
+
+An equational theory always has a singleton model.  Accordingly the
+consistency question here is noncollapse: equivalently, the consistency
+of the ordinary first-order theory consisting of these seven equations
+and the ground disequality $Q(d)\ne d$.  It is not the consistency of
+the equations alone.
+
+\subsection{A class-transparent parameter spine}
+
+For a native element $a$ and environment $s$, write
+$\varepsilon_s(a)=p_\varepsilon(s,a)$, with its value in the full
+Boolean reduct.  All identities in this subsection hold before choosing
+an ultrafilter and without assuming any value for $\varepsilon_s(d)$.
+Put
+\[
+ T=P(d,P(d,d)).
+\]
+For any finite tuple of native parameters $p_1,\ldots,p_k$, define
+\[
+ S_{k+1}=T,\qquad
+ S_i=P(p_i,P(p_i,S_{i+1}))\quad(1\leq i\leq k).
+\]
+In the empty-parameter case let $S_1=T$.
+
+\paragraph{Masking lemma.}
+For every environment $s$ and every $i$,
+\[
+ \varepsilon_s(T)=1,\qquad \varepsilon_s(S_i)=1.
+\]
+For every additional native class $c$, the descriptor
+\begin{equation}
+                 b=P(P(c,c),S_1)
+ \label{eq:e639-maskdescriptor}
+\end{equation}
+satisfies
+\begin{equation}
+                         \varepsilon_s(b)=\varepsilon_s(c)
+ \label{eq:e639-transparency}
+\end{equation}
+for every $s$.
+
+\paragraph{Proof.}
+Equation~\eqref{eq:e639-nand} and Boolean algebra give
+\[
+ \varepsilon_s(T)
+ =N(t,N(t,t))=1,\qquad t=\varepsilon_s(d).
+\]
+If $\varepsilon_s(S_{i+1})=1$, then
+\[
+ \varepsilon_s(S_i)=N(q,N(q,1))=N(q,\neg q)=1,
+ \qquad q=\varepsilon_s(p_i).
+\]
+Finite descending induction proves the spine claim.  Finally,
+\[
+ \varepsilon_s(b)=N(N(q,q),1)=q,
+ \qquad q=\varepsilon_s(c).
+\]
+These are Boolean identities applied to already evaluated predicate
+values; they impose no compatibility of $P$ or the other native
+functions with a Boolean homomorphism.\hfill$\square$
+
+Set $\nu_0=d$ and $\nu_{j+1}=Q(\nu_j)$.  Repeated use of the
+native tail equation followed by the head equation shows that
+$V(s,\nu_j)$ reads coordinate $j$ of any sufficiently long finite
+$P$-stack, with the head numbered zero.  For
+$s=P(y,P(x,b))$ and the descriptor~\eqref{eq:e639-maskdescriptor},
+the relevant coordinates are exactly
+\[
+\begin{array}{c|ccccccc}
+\text{coordinate}&0&1&2&3&4&5&6\\ \hline
+\text{value}&y&x&P(c,c)&p_1&p_1&p_2&p_2.
+\end{array}
+\]
+Generally $p_i$ occurs at coordinates $2i+1$ and $2i+2$.
+No assertion about coordinates beyond the finite stack is needed.
+
+\paragraph{Representation lemma.}
+After passage to two truth values, every finite equality-free
+pure-membership formula $R(x,y;p_1,\ldots,p_k)$ is represented
+by $\widetilde R_b$ for a descriptor of the form
+\eqref{eq:e639-maskdescriptor}.
+
+\paragraph{Proof.}
+Build its finite class code $c$ first.  Atomic membership between
+coordinates $i,j$ is represented by $A(\nu_i,\nu_j)$, NAND
+by $P$, and ordinary existential quantification by $Q(P(a,a))$.
+The binder equation provides existential negation, as checked below.
+Use coordinate zero for the output $y$, coordinate one for the input
+$x$, and coordinate $2i+1$ for parameter $p_i$.  Coordinate two
+and the duplicate parameter coordinates are unused.  Under a binder,
+shift all existing coordinate indices by one and use the new head
+coordinate for the bound variable.  Structural induction on the
+finite formula proves this representation.  Boolean truth and falsity
+can be expressed by NAND tautologies and contradictions if the
+formula language includes them.
+
+Now form $S_1$ and $b$ using the already built code $c$.  The
+coordinate identities put exactly the desired parameters in
+$P(y,P(x,b))$.  Identity~\eqref{eq:e639-transparency} replaces
+evaluation of class $b$ by evaluation of $c$ at this same environment.
+Thus $\widetilde R_b(x,y)$ is $R(x,y;\bar p)$.
+There is no circular definition: $c$ only mentions fixed finite
+coordinate indices and is built before $b$.  The arbitrary class
+truth values of the native parameters are canceled by the spine.
+\hfill$\square$
+
+\subsection{Truth forcing and extraction of raw EPSC}
+
+The inherited Boolean kernel has the cofactor identity
+\begin{equation}
+ \neg d\wedge F(d,r,e,f,a,b_0,c,u,v)=\neg d\wedge r.
+ \label{eq:e639-cofactor}
+\end{equation}
+Indeed, at $d=0$ every $N(d,t)$ is $1$, so $B^-=\neg r$
+and $F=r$.  Projecting evaluated Boolean values to the principal
+interval $[0,\neg d]$ proves the identity for an arbitrary Boolean
+algebra.  If $r=1$ and $d=F$, it follows that $\neg d=0$.
+
+In the new equation we obtain $r=1$ simply by substituting $b=T$:
+the masking lemma gives $p_\varepsilon(s,T)=1$ for every $s$,
+including the environment in the displayed $r$.  Therefore
+every model of the seven equations satisfies $d=1$.
+This truth-forcing argument no longer uses the descriptor-head
+projection; its changed ground instance is explicitly supplied in
+the artifact.
+
+For completeness we state the raw theory to which the packet is
+calibrated.  In a nonempty structure $(M,E)$ with no native equality
+in the formula schema, put
+\begin{align*}
+ \mathsf{Empty}(x)&\iff\forall t\,\neg E(t,x),\\
+ y\subseteq_E z&\iff\forall t\,(E(t,y)\to E(t,z)),\\
+ \mathsf{LB}(R)&\iff\forall x\,\exists z\,\forall y\,
+                          (R(x,y)\to y\subseteq_E z).
+\end{align*}
+For each actual finite first-order matrix $R(x,y;\bar p)$, raw
+empty-input positive supported closure, abbreviated EPSC, is
+\begin{equation}
+\mathsf{LB}(R)\ \longrightarrow\
+\exists h\left[
+\begin{aligned}
+ &\forall x,y\,
+  (((\mathsf{Empty}(x)\lor E(x,h))\land R(x,y))\to E(y,h))\\
+ &{}\land\forall y\,(E(y,h)\to\exists x\,R(x,y))
+\end{aligned}\right].
+\label{eq:e639-epsc}
+\end{equation}
+Parameters are allowed.  This quantifies over syntactic formula
+instances, not all external relations on the domain.
+
+\paragraph{Extraction theorem.}
+Every nontrivial model of the seven new equations yields a raw-EPSC
+structure on the same carrier.
+
+\paragraph{Proof.}
+Choose a Boolean homomorphism from the nontrivial Boolean reduct
+onto the two-element algebra.  Apply it to the values of $p_E$
+and $p_\varepsilon$, while retaining the native operations on
+the original carrier with their actual equality.
+
+For the binder, let $w$ be the truth value at the selected witness
+$W(s,a)$, let $u_z$ be the value at the arbitrary $z$, and let $q$
+be the value of $p_\varepsilon(s,Q(a))$.  The binder equation says
+$q=\neg(w\land u_z)$ for every $z$.  Substituting the selected
+witness gives $q=\neg w$, and the remaining equations give
+$w\leq u_z$.  Hence $q$ is true exactly when some body instance
+is false.  This proves the existential-negation interpretation of
+$Q$ used in the representation lemma.
+
+The derived equation $d=1$ makes the last equation precisely
+\[
+ (r\land e\land\neg f)\ \lor\
+ \bigl((a\lor\neg c\lor u)
+       \land(\neg b_0\lor\neg c\lor u)
+       \land(\neg u\lor v)\bigr).
+\]
+Represent an arbitrary matrix $R$ by its masking descriptor $b$.
+If $\mathsf{LB}(R)$ holds, apply it at $h=Q(b)$ to obtain a bound
+$z$.  The bad-branch conjunction $r\land e\land\neg f$ is false
+for that $z$: if $r$ holds then $P(b,z)$ is a subset of $z$, so
+$e$ implies $f$.  The three hull clauses consequently hold for
+every $x,y$.
+
+When $x$ is empty, $a=E(W(x,d),x)$ is false; the first clause
+therefore supplies closure at empty inputs.  The second gives
+closure at members of $h$.  The last gives support for each
+$y\in h$, with input witness $P(b,y)$.  These are precisely the
+two conditions in~\eqref{eq:e639-epsc}.\hfill$\square$
+
+\subsection{The converse model construction still descends}
+
+\paragraph{Upper-model theorem.}
+From any countable nonempty raw-EPSC structure one can construct
+a nontrivial model of the seven new equations.
+
+\paragraph{Proof.}
+Let $(M,E_M)$ be such a structure and fix $m_0\in M$.
+Use the inherited free carrier $D$ of finite trees with distinct
+leaves $d$ and $e_m$ for $m\in M$, and disjoint constructors
+$P,A,Q$.  The leaves $e_m$ are elements of the model, not additional
+symbols in the packet.  Interpret those three operations as actual
+free-tree constructors.  Give all leaves weight one, and set
+\begin{equation}
+ w(Q(b))=w(b)+1,\quad
+ w(P(b,z))=w(b)+w(z)+2,\quad
+ w(A(b,z))=w(b)+w(z)+3.
+ \label{eq:e639-weights}
+\end{equation}
+
+Let $\operatorname{idx}(i)$ count the consecutive outer $Q$ layers
+of $i$.  A tree with another outer symbol has index zero.
+Read a $P$-tree as a cons cell and a non-$P$ tail as the infinite
+constant-$d$ stream.  Define $V(s,i)$ by reading coordinate
+$\operatorname{idx}(i)$.  Head and Tail hold for all arguments.
+
+Decode a class tree by syntax: each leaf denotes falsity; $P$
+is NAND; $A(i,j)$ is membership between its two indexed coordinates;
+and $Q(a)$ prepends a coordinate and existentially quantifies the
+negation of its body.  This finite formula decoding uses no raw
+value assignment.
+
+The changed descriptor relation is now the decoded class of $b$
+itself, evaluated on $P(y,P(x,b))$.  It is a finite pure-membership
+formula $\widehat R_b(x,y;\bar t)$.  Every fixed parameter
+$t\in\bar t$ is a proper subtree of $b$ or the default leaf $d$.
+To verify this, follow each finite class occurrence and each of its
+selector indices.  A referenced coordinate is a bound variable,
+one of the two inputs, or a coordinate of the native stream $b$.
+In the last case it is the head of a proper $P$-tail subtree of
+$b$, or $d$ after the finite spine ends.  The full class syntax
+may be $b$, but it does not require the raw value of $b$ merely
+to inspect that syntax.  This is the crucial descent fact that
+must be rechecked after dropping $V(b,d)$.
+
+Define a surjection $\mu:D\to M$ by recursion on the positive
+weights, starting with $\mu(d)=m_0$ and $\mu(e_m)=m$.
+For a descriptor $b$, its proper-subtree parameters already have
+raw values when its hull $Q(b)$ is assigned.  Let $R_b^M$ be the
+resulting relation on $M$.
+
+If $R_b^M$ is locally subset-bounded, choose an EPSC hull $h_b$.
+Otherwise classical negation of local boundedness gives an input
+$h_b$ such that for every $z\in M$ there are $n,m\in M$ with
+\[
+ R_b^M(h_b,n)\land E_M(m,n)\land\neg E_M(m,z).
+\]
+Choose such an input and set $\mu(Q(b))=h_b$.
+
+In the unbounded case, when assigning $P(b,z)$ choose its raw
+value $n$ so that $R_b^M(h_b,n)$ and
+$n\not\subseteq_{E_M}\mu(z)$.  When assigning $A(b,z)$ choose
+a member of this $n$ outside $\mu(z)$.
+In the hull case, if $E_M(\mu(z),h_b)$, choose the raw value
+$n$ of $P(b,z)$ so that $R_b^M(n,\mu(z))$, using hull support;
+otherwise use $m_0$.  Give $A(b,z)$ the default value $m_0$
+in the hull case.
+
+The recursion is well founded: the raw values required for a
+descriptor's parameters precede $Q(b)$; both $Q(b)$ and $z$
+precede $P(b,z)$; and $P(b,z)$ precedes $A(b,z)$ by
+\eqref{eq:e639-weights}.  The free constructor tags give each
+tree only one such assignment.  A fixed enumeration of $M$
+selects the least available witnesses, making the choices uniform.
+Every requested witness exists by the selected bounded or
+unbounded case.
+
+Set $E_D(u,v)\iff E_M(\mu(u),\mu(v))$.  Surjectivity of $\mu$
+and induction on formulas show that every equality-free formula
+is preserved and reflected under $\mu$, with the corresponding
+raw parameter values.  Native equality between trees is never
+replaced by equality of raw projections.
+
+Let $\varepsilon(s,a)$ be the truth value of the decoded finite
+class in $(D,E_D)$.  For $a\ne d$, choose $W(s,a)$ to falsify
+$\varepsilon(P(z,s),a)$ whenever a false instance exists, and
+choose $d$ otherwise.  At $a=d$ the class is always false,
+so the binder equation holds regardless of $W(s,d)$.  Use this
+free slice to choose a member of the raw object represented by
+$s$ whenever it is nonempty, and $d$ otherwise.  In particular,
+$E_D(W(x,d),x)$ is true whenever $x$ is nonempty.
+
+In the unbounded case the chosen raw values of
+$Q(b),P(b,z),A(b,z)$ make every bad branch true.  In the hull
+case EPSC and the selected member and support witnesses make
+all three hull clauses true.  Thus the last equation holds for
+all tuples.  This verifies the changed closure relation itself,
+not an unmodified predecessor relation.
+
+Finally transport a countably infinite Boolean algebra, such as
+the finite/cofinite algebra of subsets of $\mathbb N$, onto $D$
+with top at its distinguished element $d$.  Interpret $N$ as
+NAND and $p_E,p_\varepsilon$ by Boolean top or bottom according
+to $E_D,\varepsilon$.  Retain all native functions.  Every equation
+holds, and $Q(d)\ne d$ because the constructors are free.
+This supplies the required nontrivial model.\hfill$\square$
+
+\subsection{Noncollapse, formalization base, and the new calibration}
+
+The native Head and Tail equations alone show that $Q(d)=d$
+collapses every model to a singleton.  Indeed,
+\[
+ x=V(P(x,s),d)=V(P(x,s),Q(d))=V(s,d)
+\]
+for every $x,s$.  Conversely, every singleton model satisfies
+the query.  Sh1 likewise shows that $N(d,d)=d$ holds exactly
+in singleton models, since it asserts $\neg d=d$ in the
+Boolean reduct.
+
+For completeness, the same argument has a useful general form.
+In any nontrivial Head/Tail model the selector values
+$d,Q(d),Q^2(d),\ldots$ are pairwise distinct.  If two indices
+$m<n$ coincide, evaluate a finite stack whose coordinates
+$m,n$ are arbitrary elements $x,y$.  The coordinate lemma
+gives $x=y$, contradicting nontriviality.  In particular no
+finite nontrivial structure can model even this native fragment.
+Finite regression checks of encodings must not be treated as
+finite consistency evidence.
+
+Let $\mathcal E_{639}$ denote the seven equations.  Standard
+ground equational completeness gives
+\[
+ \mathcal E_{639}\nvdash Q(d)=d
+ \quad\Longleftrightarrow\quad
+ \mathcal E_{639}\text{ has a nontrivial model}.
+\]
+One can use its elementary proof: take the least congruence
+on ground terms containing every ground axiom instance.  If
+the endpoint classes are distinct, the quotient is a countable
+separating model.  The constant $d$ makes its domain nonempty.
+Conversely equational soundness preserves any separating model.
+Each rewrite certificate must assign values to the union of
+variables on both sides, including variables absent from the
+side currently being matched.
+
+The two new model theorems prove in ordinary ZFC
+\begin{equation}
+ \mathcal E_{639}\nvdash Q(d)=d
+ \quad\Longleftrightarrow\quad
+ \text{raw EPSC has a model}
+ \quad\Longleftrightarrow\quad
+ \mathcal E_{663}\nvdash Q(d)=d.
+ \label{eq:e639-relative}
+\end{equation}
+For an arbitrary raw-EPSC model one may first take a countable
+elementary submodel in its countable language.  First-order
+completeness supplies the corresponding consistency statement.
+The raw-EPSC/ZFC comparison is inherited from the expressly pinned
+ProveIt Sources 08 and 14 and the E692 compatibility proof, not
+reproved by the finite tests here.\footnote{The source dossier is
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/ce192939372ac7944fe2a0208c68a96d49fb5e3b/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-146-source-14.md}.
+The retained E663/E667 packet is from the user-specified ProveIt
+commit \texttt{0128d662fd}; its reference directory includes
+\texttt{e692\_compatibility.tex} and the raw-EPSC source snapshot.}
+With that inherited calibration,
+\begin{equation}
+ \mathrm{ZFC}\vdash
+ \left(\mathcal E_{639}\nvdash Q(d)=d
+              \ \longleftrightarrow\ \operatorname{Con}(\mathrm{ZFC})\right).
+ \label{eq:e639-zfc}
+\end{equation}
+Equivalently, the finite first-order theory
+$\mathcal E_{639}+\{Q(d)\ne d\}$ has this consistency strength.
+
+All constructions used in the new proof are set constructions,
+recursions on finite syntax or positive integer weights, ordinary
+Boolean algebra, and first-order soundness and completeness.
+They are available in ZFC.  No model of ZFC is asserted to exist
+inside ZFC without the consistency premise, no universe axiom
+is added, and no general soundness of a proof assistant is used.
+The result is an ordinary mathematical proof formalizable in ZFC.
+The artifact does not claim a newly serialized Lean/Rocq endpoint
+or a represented PA proof-code transformer.
+
+\subsection{Exact packet accounting and reproducible checks}
+
+The equation-node counts are now
+\[
+                 14,6,9,12,12,17,74,
+\]
+totaling 144.  The seven equations contain four distinct local
+variables at most; nine operation symbols plus those four
+variables still require four-bit term opcodes.  The complete
+packet count is
+\[
+ \underbrace{8+3\cdot9+8}_{43\text{ header bits}}
+ +\underbrace{7+1+4\cdot144}_{584\text{ equation bits}}
+ +\underbrace{4\cdot3}_{12\text{ endpoint bits}}
+ =\boxed{639\text{ bits}}.
+\]
+It occupies 80 transport bytes with one trailing zero padding
+bit, excluded from the logical packet.  Its exact bit-character
+SHA-256, excluding the final newline, is
+\begin{center}\scriptsize\ttfamily
+15c8bde20963ac71ff9015556c52e88ac3158e9d0b585f056cd11f018ed006a8.
+\end{center}
+
+The self-contained \texttt{build\_e639.py} imports no ancestor
+Python code.  It reconstructs the exact pinned E663 bits, checks
+that the signature, first six equations, and endpoints are unchanged,
+and emits the new full AST, seven expanded equations, bit string,
+packed bytes, bit length, and verification receipt.  Its independent
+decoder round-trips the packet and rejects all 639 strict truncations
+and three malformed controls.
+
+The new masking identities are checked on 1,020 Boolean assignments
+through seven native parameters, and 4,096 assignments in the
+eight-element powerset Boolean algebra.  Another 1,155 exact native
+coordinate checks cover up to 32 parameters.  All 512 assignments
+to the inherited Boolean closure kernel pass its cofactor and
+truth-forcing checks.  These are transcription and regression checks;
+the all-model proofs above establish the unbounded conclusions.
+
+This construction places some additional syntax in possible proof
+certificates: representing a matrix uses the duplicated parameter
+spine.  That syntax is generated by a fair proof search, rather
+than stored in the literal 639-bit theory.  Whether this change
+reduces a complete binary machine is an implementation question.
+The next useful experiment is a complete ground-rewrite interpreter
+that charges the packet writer, substitution, context traversal,
+and fair enumeration together.

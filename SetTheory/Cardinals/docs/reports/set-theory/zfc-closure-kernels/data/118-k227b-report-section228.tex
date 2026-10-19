@@ -1,0 +1,88 @@
+\section{Sequential composition to 228 states}
+The second transferable reduction changes a short source loop, then folds
+K79 into K63. Applied to the already proved 229-state table, it gives
+\textbf{228 working states}. Applying the two reductions in the reverse order
+gives exactly the same literal table; this equality is checked separately and
+is not used in place of either stage's proof.
+
+The canonical machine has start state 0, dispatcher 83, working states
+$0,\ldots,227$, and separate halt outcome 228. Its SHA-256 digest is
+\begin{quote}\ttfamily\small
+06726bd731f3a42e3ccd1c4189d80af74ba2d486e333045097480fcaa3313001.
+\end{quote}
+To reconstruct it directly from the released K230 table, first retain the old
+K230 state names, delete states 79 and 140, and replace exactly these eight
+surviving rows:
+\begin{center}
+\begin{tabular}{ccc}
+\toprule
+Row & K230 & K228, retaining K230 labels\\\midrule
+$(63,0)$ & $0R49$ & $0L123$\\
+$(63,1)$ & $0R55$ & $1L30$\\
+$(70,1)$ & $1R79$ & $1R63$\\
+$(71,0)$ & $0R21$ & $0L91$\\
+$(80,1)$ & $0L42$ & $1L138$\\
+$(121,0)$ & $0R31$ & $0R63$\\
+$(121,1)$ & $1R63$ & $1R13$\\
+$(126,0)$ & $0R140$ & $0R71$\\\bottomrule
+\end{tabular}
+\end{center}
+Every other surviving row is unchanged. Renumber the remaining working states
+in increasing order and map the old halt outcome 230 to 228. The archive
+includes this noncanonical intermediate as well as the canonical table and
+the exact bijection.
+
+\subsection{The source-loop identity}
+At each of four exact source occurrences, the old block repeatedly decrements
+register~6 and increments register~5, then performs one final increment of
+register~5. The new block performs the increment first, then tests/decrements
+register~6 and repeats when positive. For initial values $(r_6,r_5)=(n,y)$,
+both terminate at
+\[
+ (r_6,r_5)=(0,y+n+1),
+\]
+leave every other register unchanged, and exit normally. This is a direct
+induction on $n$. The zero case checks the final versus initial increment;
+the successor case reduces to $(n,y+1)$. Each repeated cycle strictly decreases
+the natural source register.
+
+The checker identifies all four exact local control graphs and proves that no
+outside edge enters any block interior. Collapsing the four old and new blocks
+produces identical 5,113-node control-flow graphs. Thus the local arithmetic
+identity applies in its actual source context, including divergent surrounding
+executions. The source shrinks from 5,125 to 5,121 operations, with 6,656 guarded
+cases. This is a semantic source rewrite, not merely reassociation of an
+unchanged operation list.
+
+\subsection{The contextual binary fold}
+After the source-loop rewrite changes decoder state K121, the incoming guards
+allow K79 to be identified with K63. The all-tape block proof uses the bit two
+cells to the left where required; remembering only the immediate-left tag
+would be insufficient. Its exceptional paths have lengths 9, 3, 3, and 3.
+Every block has positive duration and preserves the exact whole-tape contract.
+The independently checked local theorem applies both to the rotated
+230-to-229 table pair and to the sequential rotated 229-to-228 pair.
+
+This all-tape fold theorem relates the \emph{rotated basis} to its folded
+machine. Relating the rotated source to the original K230 source separately
+uses the terminating source-loop identity. The delayed-erasure stage retains
+its previously stated source/runtime guard boundary.
+
+\subsection{Fresh end-to-end ordinary certificate}
+The final 228-state table has a fresh quantified runtime proof, rather than an
+inference that two separately tested edits must compose. It proves all 6,656
+source guards, uses 1,614,426 symbolic rule applications, and covers all 456
+rows. Every source instruction has finite positive duration, with a minimum
+of 13 transitions and maximum symbolic proof length 415. Arbitrarily large
+register values and finite spare tails remain quantified.
+
+Exact blank startup takes 409,835 transitions. Independent sparse and dense
+canonical executions match the entire K230 calibrated tape at head $-5$ and
+new dispatcher 83. The source-level identity, complete runtime theorem, and
+startup binding therefore compose with the released K230 logic calibration:
+\[
+ \operatorname{Nonhalts}(K228,\mathrm{blank})\iff\Con(\mathrm{ZFC}).
+\]
+This is the independently verified intermediate for the next reduction. Its proof status is an
+ordinary mathematical certificate chain; it does not inherit the claim that
+a new literal K228 theorem has already been compiled in Rocq.

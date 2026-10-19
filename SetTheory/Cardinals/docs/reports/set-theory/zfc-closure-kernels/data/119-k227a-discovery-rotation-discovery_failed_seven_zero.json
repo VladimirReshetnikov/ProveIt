@@ -1,0 +1,140 @@
+{
+  "states": 227,
+  "source_metrics": {
+    "dag_nodes": 211,
+    "leaf_occurrences": 5121,
+    "maximum_depth": 39,
+    "maximum_zero_run": 7
+  },
+  "rotation": {
+    "direction": "left",
+    "outer_state": 98,
+    "inner_state": 74,
+    "paths": [
+      "11101001001000",
+      "111010010010110001000",
+      "111010010010110101000",
+      "1110100100101101011101011100",
+      "11101001001011011000",
+      "111010010010110111000",
+      "1110100100101111000",
+      "111010010010111101100",
+      "11101001001011110111100",
+      "1110100100101111100100"
+    ],
+    "chunk_leaf_counts": [
+      19,
+      7,
+      26
+    ],
+    "chunk_boundaries": [
+      [
+        0,
+        0,
+        false
+      ],
+      [
+        0,
+        0,
+        false
+      ],
+      [
+        0,
+        0,
+        false
+      ]
+    ],
+    "literal_edits": [
+      {
+        "row": [
+          74,
+          0
+        ],
+        "before": [
+          0,
+          1,
+          132
+        ],
+        "after": [
+          0,
+          1,
+          23
+        ]
+      },
+      {
+        "row": [
+          74,
+          1
+        ],
+        "before": [
+          1,
+          1,
+          16
+        ],
+        "after": [
+          1,
+          1,
+          132
+        ]
+      },
+      {
+        "row": [
+          98,
+          0
+        ],
+        "before": [
+          0,
+          1,
+          23
+        ],
+        "after": [
+          0,
+          1,
+          74
+        ]
+      },
+      {
+        "row": [
+          98,
+          1
+        ],
+        "before": [
+          1,
+          1,
+          74
+        ],
+        "after": [
+          1,
+          1,
+          16
+        ]
+      }
+    ],
+    "metrics": {
+      "dag_nodes": 211,
+      "leaf_occurrences": 5121,
+      "maximum_depth": 39,
+      "maximum_zero_run": 7
+    }
+  },
+  "source_guarded_graph": "identical",
+  "left_zero7_leaf_count": 6,
+  "input_sha256": "7f5153ac9360cbab06a4c8ce0a01d55228a4f4e32dcd83a3234d5ef94c2f35a6",
+  "status": "REJECTED_BY_FINITE_RUNTIME_COUNTEREXAMPLE",
+  "table_sha256": "b041b5bb897f5a8e4ce7e7f20c39da90dffe50f76162b2f26b9a63dec6c76fc1",
+  "source_sha256": "3bf9d3a808a85b52f419acbc669df782f267e11d7399a1d454728210c29cb52a",
+  "counterexample": {
+    "status": "FINITE_FAILURE",
+    "index": 40,
+    "positive": 0,
+    "cases": 56,
+    "ticks": 658,
+    "state": 96,
+    "head": 0,
+    "pc": "111010010010000000",
+    "op": "CD",
+    "arg": 1
+  },
+  "interpretation": "The closed source rotation and its exact guarded graph equality did not ensure that the binary scanner could encode this source. Six leaf paths acquired seven consecutive zeros. The recorded finite counterexample rejects this exact candidate; it is not a proof that every seven-zero source fails.",
+  "successful_repair": "The final construction restores the original98/74 association and instead performs closed right184/181 before the context split fold. It has maximum zero run6 and independent runtime certificates."
+}

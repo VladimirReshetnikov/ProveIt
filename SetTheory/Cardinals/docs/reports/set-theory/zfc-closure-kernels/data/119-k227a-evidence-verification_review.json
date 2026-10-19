@@ -1,0 +1,115 @@
+{
+  "format": "k227-independent-verification-review-v1",
+  "status": "REVIEW_COMPLETE_NO_FIXED_INPUT_SOUNDNESS_GAP_IDENTIFIED",
+  "scope": "Independent inspection within the same research workflow; ordinary mathematical verification, not proof-assistant certification. The complete runtime was not rerun by this review.",
+  "sha256": {
+    "table": "175d6d4df7b988b45253e0a3bcb2651648b55a0ca1efddd4d5c6100ff71b8f46",
+    "sites": "055e6d5426590a1d25907202197809ab1d921ab3b1108a6d89b85db5ea3ab329",
+    "runtime_driver": "80c0385ed0602f906dbb69234d54bb0cf5effd9ef639f712139fdd52bd549869",
+    "bootstrap_driver": "acfff94274c0dd610564e9c550ea0794013e017d24f2ce5b422036065f7ca022",
+    "runtime_receipt": "f289634a6b477b9a94588f57aacfe68f73b44f02a14c15976aeca9aa2cb70cb9",
+    "runtime_cases": "fa105fc60b0d4cfd3d0b194f948b98064947b44051b9c0dafaed9f8982a8edd5",
+    "bootstrap_receipt": "8a0b8c0663c39153b30b73b0b1fe21f74ef2383de65823f9aee687b98aee9eb0",
+    "induction_engine": "c22f1709a39277c59d163c613e250f27a9e239004a83f643f3bd7d44ad57f145",
+    "runtime_helper": "0d1dae10b921cc302a2211d9251ca7ec131aa63ecb040ce66720894877700346",
+    "split_fold_checker": "08e820d2dac04d63b9f4ae638662218a1fbe061293fa51559523b488635b6831",
+    "split_fold_basis": "e1f3ecd469a0048661bbd3bdb938631310bb5be81463ca004fff97e38be8681f",
+    "split_fold_rerun": "0f0e606f5b7e30d6a2e5dfaa95d8fbc3561e9394c3e97daf60c087b01e9e31f8",
+    "adversarial_harness": "abeef2cc26b6321460b13ec944ce2c8e0a5b01b0974ef4d1d0267eea266a997b",
+    "adversarial_receipt": "8bd75767d7738a52a90c6eae429a59703dafa0619ae21f17e8d14fc21e36933e",
+    "review_note": "315bf1641a0fb6814600f230510cea18e14a948db9655c6a6a9fecf985e5b75e",
+    "search_scope": "88a05267f10fe19c9ea3b72506e8305e2607200ff2fb7afe8be7ac16d14f28d3",
+    "search_note": "c60b6f68e0d4b3668e74d62ea58d86527cd7114bc3eff1fa004df472d7ced6af"
+  },
+  "runtime_receipt_checks": {
+    "status": "UNIVERSAL_MATHEMATICAL_PASS",
+    "leaves": 5121,
+    "decrement_leaves": 1535,
+    "halt_leaves": 1,
+    "expected_guarded_cases": 6656,
+    "case_order_exact": true,
+    "duration_slots": 13,
+    "every_duration_has_nonnegative_integer_coefficients_and_positive_constant": true,
+    "minimum_constant_duration": 13,
+    "symbolic_steps": 1615133,
+    "maximum_symbolic_steps": 409,
+    "nonhalting_successors_with_exact_padded_leaf_frame": 6655,
+    "directly_used_rows": 454,
+    "case_file_hash_verified": true
+  },
+  "seed_interface_checks": {
+    "steps": 409835,
+    "head": -5,
+    "state": 96,
+    "marker": -6,
+    "header": 176,
+    "base_gap": 64,
+    "additional_gap": 117,
+    "first_leaf": [
+      "000",
+      "CD",
+      8
+    ],
+    "logical_registers": [
+      3,
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0
+    ],
+    "physical_slot_of_logical": [
+      6,
+      2,
+      0,
+      4,
+      3,
+      7,
+      8,
+      5,
+      1
+    ],
+    "spare_count": 167,
+    "spare_value": 1,
+    "reconstructed_one_cells_equal_receipt": true,
+    "one_cell_count": 351,
+    "last_one_cell": 701
+  },
+  "split_fold_review": {
+    "rerun_status": "ALL_TAPE_STUTTERING_EQUIVALENCE_PASS",
+    "ordinary_rows": 450,
+    "exhaustive_two_cell_cases": 8,
+    "old_left_bit_facts": {
+      "179": 0,
+      "242": 1
+    },
+    "old_218_representation": {
+      "left0": 242,
+      "left1": 179
+    },
+    "minimum_block_steps": 1,
+    "maximum_old_block_steps": 3,
+    "maximum_new_block_steps": 5,
+    "macros_read_only_two_known_cells": true,
+    "macro_endpoints_restore_cells_and_advance_one": true,
+    "no_internal_or_endpoint_halt_in_exceptional_macros": true,
+    "scope": "Every binary tape and head position from common initial state95, between the rotated228 basis and clean227 candidate."
+  },
+  "adversarial_regressions": {
+    "status": "ALL_TARGETED_REGRESSIONS_PASS",
+    "tests": 17,
+    "valid_prefix_tests": 1,
+    "expected_rejections": 16,
+    "universal_pass_from_partial_run": false
+  },
+  "proof_boundaries": [
+    "Runtime simulation requires a nonempty spare file; startup supplies167 and the contracts preserve nonemptiness.",
+    "Exact tape/head postconditions apply to nonhalting instructions. Halt requires positive-time entry into254.",
+    "The source graph must separately be calibrated to the original contradiction-search semantics.",
+    "Finite profiles and rejection tests are not universal proofs or state lower bounds.",
+    "The pinned Python interpreter and mathematical soundness of the inspected induction rules remain trusted."
+  ]
+}

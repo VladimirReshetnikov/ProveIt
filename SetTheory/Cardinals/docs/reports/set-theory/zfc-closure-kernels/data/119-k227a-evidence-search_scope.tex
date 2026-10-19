@@ -1,0 +1,33 @@
+\subsection{State-fold discovery scope}
+
+The finite discovery experiments considered direct state-pair folds,
+folds with an edited neutral helper, short changes of head position,
+left-neighbor tags, independent incoming-port elimination, and two folds
+sharing a newly added helper. These are finite searches in specified
+families; their negative results are not lower bounds on Turing-machine
+size or evidence of global optimality.
+
+On K230, a radius-five profile from 26,641 concrete runs exposed two
+variants of the inherited state-169-to-state-80 fold. The selected variant
+uses state 91 and was transferred into the 228-state construction. Its
+local proof states the right-neighbor runtime guard explicitly. The
+complete direct unbounded runtime proof and exact blank startup provide
+the candidate-level calibration; the finite profile is only a discovery
+filter.
+
+For the final 227-state discovery table, the profile covered all 5,121
+source instructions using 26,625 concrete runs, including startup, and
+15,099,148 literal steps. It observed 26,608 radius-five windows and every
+working state and transition row. A direct pair-fold search considered
+25,651 pairs and 46,377,008 row choices with block limits 65; a one-helper
+search made 423,356,744 helper checks with limits 9; an incoming-port
+search with one helper made 4,067,761 helper checks with limits 17. These
+three searches found no further reduction. The final table is a renaming
+of this discovery table; the 227-state construction itself comes from
+the separately certified source rotation and context split fold.
+
+The JSON search-scope artifact records exact tested-table fingerprints,
+profile and search counters, including the earlier 235-state and
+228-state experiments. Searches interrupted when the user redirected the
+work to K230 are marked as interrupted. No search was extended after the
+227-state endpoint and its complete verification were available.

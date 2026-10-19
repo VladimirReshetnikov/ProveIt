@@ -1,0 +1,83 @@
+\section{Every surviving-row change from K230}
+\label{app:delta}
+All state numbers in this appendix are the original K230 labels.
+The original halt label is 230. Dense renumbering is applied only
+after these changes and the four state deletions.
+\begin{longtable}{@{}rrll@{}}
+\toprule State & Read & Original K230 & Final K226, original labels\\\midrule
+\endfirsthead
+\toprule State & Read & Original K230 & Final K226, original labels\\\midrule
+\endhead
+\bottomrule\endfoot
+52 & 0 & \texttt{0R67} & \texttt{0R76}\\
+52 & 1 & \texttt{0L27} & \texttt{1R67}\\
+63 & 0 & \texttt{0R49} & \texttt{0L123}\\
+63 & 1 & \texttt{0R55} & \texttt{1L30}\\
+67 & 0 & \texttt{0R76} & \texttt{0R204}\\
+70 & 1 & \texttt{1R79} & \texttt{1R63}\\
+71 & 0 & \texttt{0R21} & \texttt{0L91}\\
+80 & 1 & \texttt{0L42} & \texttt{1L138}\\
+85 & 0 & \texttt{0R19} & \texttt{0R98}\\
+85 & 1 & \texttt{1R65} & \texttt{1R12}\\
+101 & 0 & \texttt{0R153} & \texttt{0R208}\\
+101 & 1 & \texttt{1R170} & \texttt{1R199}\\
+103 & 1 & \texttt{0L52} & \texttt{0L162}\\
+119 & 0 & \texttt{0R152} & \texttt{0R151}\\
+119 & 1 & \texttt{1R101} & \texttt{1R152}\\
+121 & 0 & \texttt{0R31} & \texttt{0R63}\\
+121 & 1 & \texttt{1R63} & \texttt{1R13}\\
+126 & 0 & \texttt{0R140} & \texttt{0R71}\\
+134 & 0 & \texttt{0R182} & \texttt{0R99}\\
+134 & 1 & \texttt{1R183} & \texttt{1R182}\\
+148 & 0 & \texttt{0R136} & \texttt{0R154}\\
+148 & 1 & \texttt{1R154} & \texttt{1R171}\\
+150 & 1 & \texttt{1R90} & \texttt{1L173}\\
+152 & 0 & \texttt{0R155} & \texttt{0L159}\\
+152 & 1 & \texttt{1R171} & \texttt{1L169}\\
+154 & 0 & \texttt{0R158} & \texttt{0R136}\\
+154 & 1 & \texttt{1R171} & \texttt{1R158}\\
+155 & 1 & \texttt{1R175} & \texttt{1R150}\\
+174 & 0 & \texttt{0R151} & \texttt{0R153}\\
+174 & 1 & \texttt{1R119} & \texttt{1R101}\\
+176 & 1 & \texttt{1R175} & \texttt{1R150}\\
+184 & 0 & \texttt{0R175} & \texttt{0R152}\\
+201 & 0 & \texttt{0R149} & \texttt{0R150}\\
+201 & 1 & \texttt{1R150} & \texttt{1R151}\\
+202 & 0 & \texttt{0R201} & \texttt{0R149}\\
+202 & 1 & \texttt{1R151} & \texttt{1R201}\\
+205 & 0 & \texttt{0R99} & \texttt{0R183}\\
+205 & 1 & \texttt{1R134} & \texttt{1R206}\\
+207 & 0 & \texttt{0R205} & \texttt{0R134}\\
+207 & 1 & \texttt{1R206} & \texttt{1R205}\\
+208 & 0 & \texttt{0R182} & \texttt{0R209}\\
+208 & 1 & \texttt{1R199} & \texttt{1R182}\\
+209 & 0 & \texttt{0R133} & \texttt{0R170}\\
+209 & 1 & \texttt{1R208} & \texttt{1R133}\\
+210 & 0 & \texttt{0R174} & \texttt{0R119}\\
+210 & 1 & \texttt{1R209} & \texttt{1R174}\\
+224 & 0 & \texttt{0R155} & \texttt{0R159}\\
+224 & 1 & \texttt{1R159} & \texttt{1R225}\\
+226 & 0 & \texttt{0R224} & \texttt{0R155}\\
+226 & 1 & \texttt{1R225} & \texttt{1R224}\\
+229 & 0 & \texttt{0R204} & \texttt{0R228}\\
+229 & 1 & \texttt{1R228} & \texttt{0L103}\\
+\end{longtable}
+The following eight rows are deleted:
+\begin{center}\begin{tabular}{@{}rrl@{}}
+\toprule State & Read & Original row\\\midrule
+65 & 0 & \texttt{0R114}\\
+65 & 1 & \texttt{1R12}\\
+79 & 0 & \texttt{0R82}\\
+79 & 1 & \texttt{1R62}\\
+140 & 0 & \texttt{0R49}\\
+140 & 1 & \texttt{0R48}\\
+175 & 0 & \texttt{0L76}\\
+175 & 1 & \texttt{1R61}\\
+\bottomrule\end{tabular}\end{center}
+The complete dense renumbering is also explicit. For every retained
+working state $q$ in the original numbering, put
+\[\nu(q)=q-\bigl|\{d\in\{65,79,140,175\}:d<q\}\bigr|.
+\]
+Set $\nu(230)=226$ for halt. Thus the start remains 0 and
+the original dispatcher 84 becomes 82. This is a bijection on
+working states and preserves every write, move, and transition target.

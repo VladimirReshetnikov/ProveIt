@@ -1,0 +1,68 @@
+% TeX fragment extending the native227 section in the main report.
+\section{A fourth saving: the final 226-state machine}
+\label{sec:native226}
+
+The selected public machine has 226 binary working states, with start 0,
+dispatcher 82, and halt 226.  Its labels preserve ascending original K230 order
+after deleting 65, 79, 140, and 175.  Its public table SHA-256 is
+\begin{quote}\small\ttfamily
+b58279b8b2e2cf029dd94e084d47cd6097772d7bce2a62653767895123d29599.
+\end{quote}
+The fully proved 227-state construction is retained as a checkpoint; the
+226-state extension has its own source, literal tables, bijections and proofs.
+
+A closed left reassociation at states $85/65$, applied at all ten occurrences
+of the subtree, exposes an exact duplicate of the existing decoder at 98.
+Both states have the rows
+\[
+ 0\longmapsto 0R19,\qquad 1\longmapsto1R114.
+\]
+Consequently 65 can be deleted and all incoming targets 65 can be changed to
+98.  Let $f(65)=98$ and $f(q)=q$ otherwise.  For every old control $q$ and read
+symbol $b$, the checker verifies
+\[
+ \delta'(f(q),b)=(w,d,f(r))
+ \quad\text{whenever}\quad \delta(q,b)=(w,d,r).
+\]
+All 454 old rows are included.  This finite equality is sufficient for a
+one-step whole-tape simulation on arbitrary binary tapes and integer head
+positions: the written bit and direction agree, and all other tape cells are
+unchanged.  The map fixes start and halt and sends no working control to halt,
+so deterministic induction yields halting equivalence with identical clocks
+for the two tables in this quotient step.  No runtime guard or local tape
+invariant is needed for the quotient.
+
+The source DAG has 211 distinct nodes after this reassociation, compared with
+212 for the 227-state source.  Leaf occurrences remain 5,121 and the guarded
+source cases remain 6,656.  The initial reassociation creates four problematic
+seven-zero address runs.  Five further closed reassociations repair them:
+$101/209$ left, $101/208$ left, $226/224$ right, $205/134$ left, and $207/205$
+right.  Their exact source boundaries and every literal row change are
+recorded.  They preserve the native roles used by the earlier folds.  The final
+source has maximum depth 41 and maximum zero run 6.
+
+The unrepaired layout has a concrete instruction-protocol counterexample at
+leaf 650, with address
+\texttt{1110100100111000010000000}.  The zero branch of $CD(1)$, with all primary
+registers zero, first spare zero, and gap zero, reaches a clean dispatcher after
+658 steps with two wrong tape cells.  At relative positions 20 and 23 the
+actual/expected values are $1/0$ and $0/1$.  The complete initial tape, exact
+literal trace and both final tapes are retained.  The exact duplicate quotient
+remains a valid theorem about the two literal intermediate tables; correctness
+of the final encoding is established by the separate final protocol proof.
+
+That final proof succeeds for all 6,656 guarded source frames, using 1,615,284
+symbolic execution rules and all four finite-list induction schemas.  It
+covers arbitrary natural primary register values and gap, arbitrary first
+spare, and arbitrary finite spare tail.  All 452 rows are used.  Successor tape
+and head position are exact, every block has positive duration, and the minimum
+constant duration is 13.  Blank startup is checked literally in 409,835 steps,
+with an additional dense canonical replay of the complete tape support.
+
+Thus the 230-state input yields four state savings: the H loop fold, delayed
+erasure, the reassignment of state 175's two decoder roles, and the newly
+exposed duplicate decoder.  The source transformation and exact native proof
+are composed with the frozen K230 consistency theorem.  The stated evidence
+for the selected 226-state endpoint consists of ordinary mathematical proofs
+and explicit induction rules; a fresh proof-assistant kernel check is a
+separate claim and is not inferred from the endpoint's numerical state count.

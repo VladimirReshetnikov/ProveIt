@@ -1,0 +1,229 @@
+\section{Composition: the literal 228-state table has the required calibration}
+\label{sec:composition}
+
+Let $T$ be the released K230 source tree and let $T'$ be the supplied
+5,121-leaf tree.  Let $M$ be the 228-state literal table, first considered
+with its retained K230 state labels.  Its initial state is 0, its dispatcher
+is 84, and its separate halting outcome has retained label 230.
+The final contiguous renaming is a bijection on working states and maps
+the separate halting outcome to the separate halt label; it therefore
+preserves each transition and blank-tape halting by induction on time.
+The argument below concerns the complete table, including its shared
+initialization and decoder states.
+
+\subsection{The source transformation preserves the whole program}
+
+By Proposition~\ref{prop:source}, the four closed substitutions preserve
+source halting from every register file. For completeness, the lexical
+control-scope calculation connecting that macro lemma to the complete
+structured program is as follows.
+
+Both fragments have boundary signature $(B,C,H)=(0,0,\mathrm{false})$:
+no break or continue escapes, and neither can halt.  For a binary node
+with child signatures $(B_0,C_0,H_0)$ and $(B_1,C_1,H_1)$, the signature is
+\[
+ \left(\max(B_0\mathbin{\dot-}1,B_1),
+       \max(C_0,C_1\mathbin{\dot-}1),H_0\lor H_1\right),
+\]
+where $n\mathbin{\dot-}1=\max(n-1,0)$.
+This calculation checks both entire source trees to have signature
+$(0,0,\mathrm{true})$.  Their full binary prefix listings also prove
+finite decoding, and all control depths are positive.  Thus the generic
+well-formed source semantics applies to both programs.
+
+Replacing a terminating closed invocation inside a finite structured run
+preserves its exit mode and entire returned register file.  Induction on
+the surrounding finite run derivation proves this in either direction.
+The same replacement preserves every completed normal execution of the
+main tree, so it also preserves any finite sequence of main-tree
+iterations preceding a halt.  The inherited structured/path equivalence
+\texttt{rm\_halts\_iff\_iter} consequently gives
+\begin{equation}
+ \operatorname{RMHalt}(T,[],R)
+       \longleftrightarrow\operatorname{RMHalt}(T',[],R)
+ \quad\text{for every register file }R.
+ \label{eq:k228-source-equivalence}
+\end{equation}
+Here $\operatorname{RMHalt}$ means reaching the explicit halt leaf;
+it does not identify a malformed or stuck source configuration with a
+halt.\footnote{Inherited generic definitions and equivalence:
+\url{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/coq/tm/RM.v}
+and
+\url{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/coq/tm/RMEquiv.v}.
+The release attributes these reused generic semantics to Jeff's reference
+development.  The exact local replacement and source identity are
+rechecked by \texttt{code/check\_composition.py}.}
+
+\subsection{Why the universal leaf cases can be iterated}
+
+Write $B(v)=0\,1^{v+1}$ and extend $B$ to finite lists by concatenation.
+Let $\pi R$ put the nine logical registers in physical order, using
+\[
+        \pi=(6,2,0,4,3,7,8,5,1)
+        \quad\text{(logical index $i$ is stored at physical index $\pi_i$).}
+\]
+A dispatch frame $F(P,G,R,E)$ has state 84, a single 1 immediately to
+the left of the head followed by the all-zero left exterior, and right word
+\begin{equation}
+        P\,0^{G-|P|}\,1\,B(\pi R\mathbin{+\!+}E)\,0^\omega,
+        \qquad G\ge64,\quad E\ne[].
+ \label{eq:k228-frame}
+\end{equation}
+Every entry of $R$ and of the nonempty finite spare list $E$ is an arbitrary
+natural number.  The pointer $P$ has implicit trailing zeros.  It can end
+at an internal node, or contain trailing zeros beyond a shallower leaf.
+
+The crucial closure fact is the following exact finite-word identity.
+Let $L$ be the leaf reached by reading $P0^\omega$.  For every reachable
+source pointer, all bits of $P$ beyond $L$ are zero; hence
+\begin{equation}
+       P\,0^{G-|P|}=L\,0^{G-|L|}.
+ \label{eq:k228-padding}
+\end{equation}
+The inherited generic lemmas \texttt{no\_stray} and \texttt{split\_tape}
+prove precisely this property.  It also has a short direct proof.
+Stripping bits from a leaf yields a prefix of that leaf, which is a
+tree node until decoding reaches a leaf.  Incrementing such a prefix
+either gives only zeros on overflow, or changes $A0\,1^m$ to
+$A1\,0^m$ at an existing binary branch.  Every subsequent excess bit
+is zero.  This covers increment, decrement in either branch, break,
+and continue.\footnote{The exact inherited invariant and word-splitting
+lemma are in
+\url{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/coq/tm/Sim230.v};
+\texttt{no\_stray} is in the preceding \texttt{RMEquiv.v} source.}
+
+For additional exact source binding, the independent composition checker
+evaluates the successor of every nonhalting leaf/guard case and checks
+\eqref{eq:k228-padding} directly.  All 6,655 identities pass: 4,344
+successors extend with zeros to the next leaf, 1,781 already equal that
+leaf, and 530 discard only trailing zeros.  The sole remaining case is
+the explicit halt leaf.  The empty pointer decodes to leaf
+\texttt{000}, so the initialization case has the same property.
+
+The symbolic runtime proof covers all 6,656 leaf/guard cases, with the
+decrement guard split into zero and an arbitrary positive value.
+Its parameters are nine independent register values, an arbitrary extra
+gap $G-64$, an arbitrary first spare, and an arbitrary finite spare tail.
+Literal steps use the exact table.  Self-loop scans are justified by
+induction on a unary run length; four exact one-block calculations extend
+to arbitrary spare lists by list induction.  These rules preserve the
+entire tape word and the all-zero exterior.  Their finite derivations
+give finite concrete runs for every parameter assignment.  The bound
+4,000 limits construction of each symbolic proof, with no bound on
+concrete values or runtime.
+
+For a nonhalting leaf, the proved target is
+\[
+             F(P',G+\delta+o,R',E'),
+\]
+where $P'$ and $R'$ are the exact source successor, $\delta=1$ only for
+a positive decrement, and $o$ is the binary counter overflow bit.
+An increment appends a spare of value 1; all other operations preserve
+the spare list.  In particular, it stays nonempty.  The proved head
+displacement is $-o$, so an overflow moves the left marker as well as
+increasing the total instruction area.  All three overflow cases are
+included in the independent check.  Because $G+\delta+o\ge64$ and every
+new source leaf has depth at most 40, \eqref{eq:k228-padding} converts
+this exact target to another admissible leaf frame.  This proves closure
+of the runtime invariant, including changes in pointer length and return
+counter overflow.
+
+\subsection{Initialization, finite progress, and the halting equivalence}
+
+The complete blank run of $M$ reaches state 84 after exactly 409,835
+transitions.  Its full tape support is the frame
+\[
+ F([],181,R_0,[1]^{167}),\qquad
+              R_0=[3,0,0,0,3,0,0,0,0].
+\]
+Thus the extra gap is 117.  The nine physical values are
+$[0,0,0,3,0,0,3,0,0]$, exactly the inherited K230 boot values.
+The independently implemented dense and sparse simulations agree on
+the full finite support (351 one-cells), head position $-5$, and state;
+all other cells are zero.  Absolute translation of the frame has no
+semantic effect.  This reaches the actual nonzero seed used by the
+inherited enumerator completeness theorem.
+
+Every checked runtime segment has at least 13 concrete transitions.
+A nonhalting segment cannot pass through the separate halt outcome:
+the literal table has no transition there, so the certificate could not
+continue to its nonhalting target.  The one halt-leaf certificate reaches
+that outcome in a finite positive number of transitions.  State 0 can
+appear inside such segments because it also serves the shared runtime;
+its literal transitions are included without treating a revisit as a new
+boot or as a halting boundary.  All 456 table rows are covered by the
+universal certificates.  This coverage is an audit fact; soundness comes
+from the stated induction rules and complete case partition.
+
+Induction over source steps now concatenates the finite runtime
+segments.  If the source reaches its halt leaf, the machine halts.
+Conversely, if the source never reaches that leaf, full decoding and the
+preserved frame provide another finite nonhalting segment at every
+boundary.  After $n$ segments the elapsed time is at least $13n$;
+the boundaries therefore exceed every finite time.  No finite-time halt
+can occur between them, and no one segment can diverge.  This proves
+\begin{equation}
+ \operatorname{Halt}(M,\mathrm{blank})
+        \longleftrightarrow\operatorname{RMHalt}(T',[],R_0).
+ \label{eq:k228-runtime-equivalence}
+\end{equation}
+
+The same runtime argument applies directly to the original source $T$
+and the pinned literal K230 table. The separately completed baseline
+certificate covers all 6,660 guarded cases, with the same positive
+progress bound and frame semantics. Its exact 408,419-transition boot
+reaches $F([],181,R_0,[1]^{167})$. Therefore
+\[
+ \operatorname{Halt}(K230,\mathrm{blank})
+ \longleftrightarrow\operatorname{RMHalt}(T,[],R_0).
+\]
+This direct check avoids relying on an unverified identification between
+the released site JSON and an independently represented Rocq program AST.
+
+Combining \eqref{eq:k228-runtime-equivalence},
+\eqref{eq:k228-source-equivalence}, and the inherited K230 calibration
+gives the completed ordinary mathematical theorem
+\begin{equation}
+ \operatorname{Halt}(K228,\mathrm{blank})
+       \longleftrightarrow\operatorname{Halt}(K230,\mathrm{blank})
+       \longleftrightarrow\texttt{StandardZFC}\vdash\bot.
+ \label{eq:k228-complete}
+\end{equation}
+The inherited proof of completeness from $R_0$ is used as stated; no
+all-zero seed or bounded search assumption is substituted for it.
+
+\paragraph{Meaning of ``provable in ZFC.''}
+Choose a standard effective coding of finite first-order ZFC derivations,
+and define $\operatorname{Con}(\mathrm{ZFC})$ as the absence of a finite
+contradiction proof.  The new argument uses finite words, finite tables,
+finite lists and natural-number induction, all formalizable in ZFC.
+The inherited logical reductions act on finite object-level derivations:
+the lower interpretation translates a ZFC contradiction into a K
+contradiction, and the upper construction translates a K contradiction
+into a finite ZFC derivation using the required finite schema instances.
+In particular, the constructible-hierarchy argument is represented by
+object-level proof transformations, not by assuming the existence of a
+model of ZFC.\footnote{The finite-axiom collection and the actual
+derivation transfer can be read directly in
+\texttt{KPrimeOrdIR\_standardZFC\_inconsistent}, in
+\url{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/coq/settheory/KUpperConsistency.v}.
+The other direction is \texttt{KPrimeOrd\_standardZFC\_inconsistent}, in
+\url{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/coq/settheory/KQuotZFC.v}.}
+These particular syntactic constructions and their
+correctness arguments are likewise formalizable in ordinary ZFC.
+Consequently \eqref{eq:k228-complete}, followed by negation, yields
+\[
+ \boxed{\quad
+ \mathrm{ZFC}\vdash
+ \bigl(\operatorname{Nonhalt}(K228,\mathrm{blank})
+              \longleftrightarrow\operatorname{Con}(\mathrm{ZFC})\bigr).
+ \quad}
+\]
+This is the scope of the mathematical proof.  It does not assert
+$\operatorname{Con}(\mathrm{ZFC})$, require a general soundness theorem
+for Rocq inside ZFC, or assert a new machine-checked internal PA proof.
+The inherited K230 endpoint is the released Rocq theorem; the new
+228-state transfer is supplied here as an ordinary proof with executable
+finite and symbolic certificates.  A freshly kernel-checked Rocq theorem
+for K228, or a fully encoded object-language ZFC/PA derivation, is a
+further verification artifact and is not claimed by these checks.

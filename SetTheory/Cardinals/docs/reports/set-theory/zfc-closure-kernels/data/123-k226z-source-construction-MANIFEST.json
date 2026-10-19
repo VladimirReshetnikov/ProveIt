@@ -1,0 +1,79 @@
+{
+  "format": "k230-source-construction-v1",
+  "status": "FROZEN_SELECTED_K226_SOURCE_PACKET",
+  "upstream": {
+    "repo": "https://github.com/elliotglazer/k230-rocq",
+    "commit": "3142e4dd980f0be12f4abb636c4ae2528afc17eb",
+    "table_sha256": "e7ccbcec074534cfd955f0ab94d16f13594e81974074309dc2ce663b9dfd7ba8",
+    "sites_sha256": "400fad2b1c5f99ed8490f6346ff63088ba94fc39ada376962cee2f68c092e487"
+  },
+  "canonical_table": {
+    "path": "generated226/02_k226/k226.tm",
+    "sha256": "b58279b8b2e2cf029dd94e084d47cd6097772d7bce2a62653767895123d29599",
+    "states": 226,
+    "rows": 452,
+    "start": 0,
+    "halt": 226
+  },
+  "source": {
+    "path": "generated226/02_k226/sites.json",
+    "sha256": "47f5cfac0ec765c6f84f9d29973d4c9b3d79f12482a2cd1268d582e85c814bd3",
+    "leaves": 5121,
+    "guards": 6656,
+    "distinct_subtrees": 211,
+    "depth": 41,
+    "maximum_zero_run": 6
+  },
+  "construction": {
+    "H_replacements": 4,
+    "boundary_rotations": 2,
+    "closed_rotations": 11,
+    "deleted_k230_states": [
+      65,
+      79,
+      140,
+      175
+    ],
+    "changed_surviving_rows": 52
+  },
+  "local_roles": {
+    "path": "role_proof.json",
+    "cases": 8,
+    "outside_tape": "arbitrary",
+    "maximum_old_steps": 3,
+    "maximum_new_steps": 5
+  },
+  "quotient": {
+    "path": "generated226/duplicate_quotient.json",
+    "from": 65,
+    "to": 98,
+    "checked_old_rows": 454,
+    "outside_tape": "arbitrary",
+    "context_hypothesis": null
+  },
+  "offset_certificate": {
+    "path": "offset_certificate226/Cert226Offsets.v",
+    "entries": 2376,
+    "branches": 4750,
+    "offset_register": 5,
+    "nonzero_entries": 8,
+    "offset_values": [
+      0,
+      1
+    ],
+    "tests_at_nonzero_offset": 6,
+    "maximum_segment_length": 5
+  },
+  "reproduction": "python3 -B reproduce.py",
+  "proof_boundary": "This packet provides exact construction, source graph checks, local decoder blocks, total quotient, and generated offset certificates. Universal native runtime, blank initialization, Rocq source/runtime checks, and consistency calibration are companion proof layers.",
+  "mathematical_notes": [
+    "source_roles227.tex",
+    "source_duplicate226.tex",
+    "transfer_matrix.tex"
+  ],
+  "rejected_layouts": [
+    "generated/rejected227_zero7",
+    "generated226/01_unrepaired226"
+  ],
+  "discovery_search_required_for_reproduction": false
+}

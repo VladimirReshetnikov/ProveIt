@@ -1,0 +1,64 @@
+{
+  "status": "SOURCE_ONLY_COPY_LOOP",
+  "baseline_sha256": "400fad2b1c5f99ed8490f6346ff63088ba94fc39ada376962cee2f68c092e487",
+  "new_source_sha256": "61450579877bc79cc4bc323ff0b8ae506064c79644107f4d818401dcfbce941b",
+  "occurrence_paths": [
+    "111010010010111111000011",
+    "11101001001011111110011",
+    "1110100101100011",
+    "111110011"
+  ],
+  "old_subtree": [
+    [
+      [
+        "CD",
+        6
+      ],
+      [
+        [
+          "CI",
+          5
+        ],
+        [
+          "CC",
+          2
+        ]
+      ]
+    ],
+    [
+      "CI",
+      5
+    ]
+  ],
+  "new_subtree": [
+    [
+      "CI",
+      5
+    ],
+    [
+      [
+        "CD",
+        6
+      ],
+      [
+        "CC",
+        2
+      ]
+    ]
+  ],
+  "old_metrics": {
+    "dag_nodes": 212,
+    "leaf_occurrences": 5125,
+    "maximum_depth": 40,
+    "maximum_zero_run": 6
+  },
+  "new_metrics": {
+    "dag_nodes": 212,
+    "leaf_occurrences": 5121,
+    "maximum_depth": 40,
+    "maximum_zero_run": 6
+  },
+  "register_contract": "For arbitrary R6=n,R5=m, both fragments terminate normally with R6=0 and R5=m+n+1, preserving every other register.",
+  "ordinary_proof": "Induction on n: old body decrements R6 and increments R5 n times, then increments R5 once; new body increments R5 once before each test, with n successful decrements and one final zero test.",
+  "runtime_scope": "No new binary table or proof endpoint claimed."
+}

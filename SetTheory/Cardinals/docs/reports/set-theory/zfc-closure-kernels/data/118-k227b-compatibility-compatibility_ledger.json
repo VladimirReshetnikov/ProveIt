@@ -1,0 +1,625 @@
+{
+  "status": "EIGHT_HISTORICAL_REDUCTIONS_COMPATIBILITY_LEDGER",
+  "baseline": "K230 canonical labels0..229, halt230, start0, dispatcher84",
+  "summary": {
+    "already_present": 2,
+    "direct_new_reductions": 2,
+    "historical_mechanisms_used_in_joint_repair": 2,
+    "additional_joint_physical_savings": 1,
+    "remaining_untransferred_historical_reductions": 2,
+    "verified_combined_states": 227,
+    "combined_full_runtime_status": "Complete source, quantified runtime and exact blank startup pass; see source_fold227_zerofix/proof_chain.json. The raw zero7 intermediate remains explicitly rejected."
+  },
+  "entries": [
+    {
+      "step": "243 -> 242",
+      "historical_reduction": "27 -> 15 principal fold",
+      "status": "ALREADY_PRESENT_IN_K230",
+      "K_retained_state": 11,
+      "correspondence": {
+        "15": 11,
+        "32": 26,
+        "18": 14,
+        "47": 39,
+        "65": 56
+      },
+      "support_rows": [
+        {
+          "row": [
+            11,
+            0
+          ],
+          "action": [
+            0,
+            "L",
+            26
+          ]
+        },
+        {
+          "row": [
+            14,
+            0
+          ],
+          "action": [
+            0,
+            "L",
+            11
+          ]
+        },
+        {
+          "row": [
+            39,
+            0
+          ],
+          "action": [
+            0,
+            "L",
+            11
+          ]
+        },
+        {
+          "row": [
+            56,
+            0
+          ],
+          "action": [
+            0,
+            "L",
+            11
+          ]
+        }
+      ],
+      "net_additional_saving": 0,
+      "minimal_repair": "None; there is no separate old27 role left to delete.",
+      "step_number": 1
+    },
+    {
+      "step": "242 -> 241",
+      "historical_reduction": "39 -> 17 predecessor-bit fold",
+      "status": "ALREADY_PRESENT_IN_K230",
+      "K_retained_state": 13,
+      "correspondence": {
+        "17": 13,
+        "106": 91,
+        "37": 31,
+        "46": 38,
+        "50": 42
+      },
+      "support_rows": [
+        {
+          "row": [
+            13,
+            0
+          ],
+          "action": [
+            0,
+            "L",
+            91
+          ]
+        },
+        {
+          "row": [
+            13,
+            1
+          ],
+          "action": [
+            1,
+            "L",
+            31
+          ]
+        },
+        {
+          "row": [
+            38,
+            0
+          ],
+          "action": [
+            0,
+            "R",
+            13
+          ]
+        },
+        {
+          "row": [
+            42,
+            0
+          ],
+          "action": [
+            0,
+            "R",
+            13
+          ]
+        }
+      ],
+      "net_additional_saving": 0,
+      "minimal_repair": "None; the old39 behavior is already represented by the K13 contextual control.",
+      "step_number": 2
+    },
+    {
+      "step": "241 -> 240",
+      "historical_reduction": "transfer-plus-one source rotation, then90 -> 72",
+      "status": "PORTABLE_VERIFIED_COMPOSITION228",
+      "correspondence": {
+        "142": 121,
+        "72": 63,
+        "90": 79,
+        "79": 70,
+        "144": 123,
+        "36": 30,
+        "55": 47,
+        "17": 13
+      },
+      "source_rewrite": {
+        "old": "((CD6,(CI5,CC2)),CI5)",
+        "new": "(CI5,(CD6,CC2))",
+        "occurrences": 4,
+        "effect": "R5 := R5 + R6 + 1; R6 := 0; other registers unchanged; normal exit"
+      },
+      "rotation_rows": [
+        {
+          "row": [
+            121,
+            0
+          ],
+          "action": [
+            0,
+            "R",
+            63
+          ]
+        },
+        {
+          "row": [
+            121,
+            1
+          ],
+          "action": [
+            1,
+            "R",
+            13
+          ]
+        }
+      ],
+      "fold": "DeleteK79; redirect79 to63; set63/0=0L123,63/1=1L30.",
+      "guard": "K47,K121,K79 imply left1; K63 implies left0 and two-left1. Inductively checked on rotated230.",
+      "proof_artifacts": [
+        "compatibility/loop_fold229/fold_proof.json",
+        "compatibility/loop_fold229/source_binding.json",
+        "source_alignment/transfer_rotation/source_equivalence.json"
+      ],
+      "net_additional_saving": 1,
+      "minimal_repair": "The source loop rotation is necessary: original K121/1 enters K63 with left1, violating the postrotation fold guard. The resulting combined228 has a complete source/runtime/startup receipt.",
+      "step_number": 3
+    },
+    {
+      "step": "240 -> 239",
+      "historical_reduction": "boundary source reparenthesization and218 -> 179 fold",
+      "status": "PORTABLE_JOINTLY_AFTER_CERTIFIED_SOURCE_REPAIR227",
+      "correspondence": {
+        "179": 150,
+        "218": 175,
+        "215": 173,
+        "237": 184,
+        "187": 155,
+        "220": 176
+      },
+      "required_guard": {
+        "150": "left0 only",
+        "175_retained_role": "left1 only",
+        "split_CI1_role": "left0, decoder children19 and61"
+      },
+      "actual_incoming": {
+        "150": [
+          {
+            "row": [
+              183,
+              0
+            ],
+            "write": 0,
+            "move": "R"
+          },
+          {
+            "row": [
+              201,
+              1
+            ],
+            "write": 1,
+            "move": "R"
+          }
+        ],
+        "175": [
+          {
+            "row": [
+              155,
+              1
+            ],
+            "write": 1,
+            "move": "R"
+          },
+          {
+            "row": [
+              176,
+              1
+            ],
+            "write": 1,
+            "move": "R"
+          },
+          {
+            "row": [
+              184,
+              0
+            ],
+            "write": 0,
+            "move": "R"
+          }
+        ]
+      },
+      "obstruction": "Both K150 and K175 have mixed incoming left tags. Historical boundary rewrite split K175 left0 role into a separate control and changed other source/helper roles; no K state literally has rows0R19,1R61.",
+      "minimal_repair": "Closed rotations at K174/K119 and K202/K201 separate the mixed tags. The left1 role of K175 is reassigned to K150 without allocating a clone; the later K175-to-K152 fold yields one joint saving. A fourth zero-run repair is essential.",
+      "scope": "The original literal transfer was blocked, but the new source-context construction is completely verified. The finite negative search concerned a different fixed-table family.",
+      "net_additional_saving": 0,
+      "saving_accounting": "This mechanism is used jointly with historical step7. The single new physical saving is counted only at step7, not twice.",
+      "step_number": 4,
+      "coordinated_followup": {
+        "status": "VERIFIED_COORDINATED_SOURCE_REPAIR227",
+        "rotations": [
+          [
+            174,
+            119,
+            "left"
+          ],
+          [
+            202,
+            201,
+            "right"
+          ],
+          [
+            148,
+            154,
+            "left"
+          ],
+          [
+            211,
+            210,
+            "left"
+          ]
+        ],
+        "role_change": "Move node95 from K175 to K150, leave node106 at K175, then fold175 to152.",
+        "physical_state_saving": 1,
+        "source_guards": {
+          "node94_K150": "left0",
+          "node95_K150": "left1",
+          "node106_folded_K152": "left0",
+          "node436_K152": "left1"
+        },
+        "guard_proofs": "All incoming rows and complete whole-tape local blocks are independently checked on the zero-run-repaired intermediate tables, including runtime helper K176/1.",
+        "accepted_candidate": "compositions/source_fold227_zerofix",
+        "canonical_sha256": "0264f969f006304840f46f85d5eacb54b70bf968669299ff73c3e0c5221fe09a",
+        "source_operations": 5121,
+        "source_roles": 189,
+        "physical_source_states": 178,
+        "maximum_zero_run": 6,
+        "maximum_depth": 40,
+        "runtime_guards": 6656,
+        "symbolic_rules": 1613581,
+        "literal_rows": 454,
+        "blank_startup_steps": 409835,
+        "rejected_raw_intermediate": {
+          "failure_site": 1042,
+          "failure_prefix": "11101001001011010000000",
+          "failure_instruction": [
+            "CD",
+            2
+          ],
+          "failure_guard": "zero",
+          "proved_cases_before_failure": 1358,
+          "diagnosis": "The prefix has a seven-zero suffix, outside the inherited scanner contract. This raw table is not an accepted candidate."
+        },
+        "proof_artifacts": [
+          "compatibility/four_rotations227_independent.json",
+          "source_alignment/guard_repair/replay227/receipt.json",
+          "local_folds/zerofix227/audit.json",
+          "compositions/source_fold227_zerofix/proof_chain.json"
+        ]
+      }
+    },
+    {
+      "step": "239 -> 238",
+      "historical_reduction": "169 -> 80 delayed erasure with91 backward repair",
+      "status": "PORTABLE_VERIFIED_229",
+      "correspondence": {
+        "169": 140,
+        "80": 71,
+        "91": 80,
+        "106": 91,
+        "167": 138,
+        "147": 126,
+        "67": 58
+      },
+      "fold": "DeleteK140; redirect140 to71; set71/0=0L91,80/1=1L138.",
+      "guard": "K58:left0; K71:left1,two-left0; K80:left1,two-left1,three-left0; K140:left0. Additional intended-run premise: K140/read1 has a1 immediately to its right. This is separately checked for blank/source frames; no all-initial-tapes theorem is claimed.",
+      "proof_artifacts": [
+        "compositions/delayed_erasure229/universal_runtime.json",
+        "local_folds/delayed_erasure229_local.json"
+      ],
+      "net_additional_saving": 1,
+      "minimal_repair": "The K80/1 backward-route repair is required and is included in the verified composition.",
+      "step_number": 5
+    },
+    {
+      "step": "238 -> 237",
+      "historical_reduction": "235 -> 98 with240/1 helper repair",
+      "status": "HISTORICAL_SOURCE_ROLE_REMOVED_BY_NEW_AXIOMS",
+      "correspondence": {
+        "98_stream": 85,
+        "240": 186,
+        "87_partial_role": 229
+      },
+      "obstruction": "The old235 149-leaf ordered primitive stream has no contiguous occurrence anywhere in the5125-leaf K source, even when jump operands are ignored. Both historical callers also lack matching source roles. K85 has the old98 ordered stream in a different bracketing; the paired role is absent.",
+      "minimal_repair": "A new semantic source construction would be needed to reintroduce or replace the missing role. Reassociation/jump retuning alone cannot expose that historical149-leaf stream.",
+      "proof_artifacts": [
+        "compatibility/absent_historical_streams.json",
+        "compositions/later_folds/historical_transfer_receipt.json"
+      ],
+      "net_additional_saving": 0,
+      "step_number": 6
+    },
+    {
+      "step": "237 -> 236",
+      "historical_reduction": "177/185 closed rotation, then223 -> 182",
+      "status": "PORTABLE_JOINTLY_AFTER_CERTIFIED_SOURCE_REPAIR227",
+      "correspondence": {
+        "177": 148,
+        "185": 154,
+        "182_stream": 152,
+        "223_role": 175,
+        "198": 159,
+        "210": 169,
+        "212": 171,
+        "165_stream": 136,
+        "192": 158
+      },
+      "rotation_rows": [
+        {
+          "row": [
+            148,
+            0
+          ],
+          "action": [
+            0,
+            "R",
+            154
+          ]
+        },
+        {
+          "row": [
+            148,
+            1
+          ],
+          "action": [
+            1,
+            "R",
+            171
+          ]
+        },
+        {
+          "row": [
+            154,
+            0
+          ],
+          "action": [
+            0,
+            "R",
+            136
+          ]
+        },
+        {
+          "row": [
+            154,
+            1
+          ],
+          "action": [
+            1,
+            "R",
+            158
+          ]
+        }
+      ],
+      "required_guard": {
+        "152": "left1",
+        "175_CI1_role": "left0"
+      },
+      "actual_incoming": {
+        "152": [
+          {
+            "row": [
+              119,
+              0
+            ],
+            "write": 0,
+            "move": "R"
+          }
+        ],
+        "175": [
+          {
+            "row": [
+              155,
+              1
+            ],
+            "write": 1,
+            "move": "R"
+          },
+          {
+            "row": [
+              176,
+              1
+            ],
+            "write": 1,
+            "move": "R"
+          },
+          {
+            "row": [
+              184,
+              0
+            ],
+            "write": 0,
+            "move": "R"
+          }
+        ]
+      },
+      "obstruction": "K152 is entered only from K119/0, so has the opposite left bit. K175 coallocates the desired old223 source role with another role and has mixed tags. The supplied helper-edge rotation alone does not fix either condition.",
+      "minimal_repair": "Three closed context/helper rotations, contextual reassignment to K150, fold K175 to K152, and a fourth closed rotation at K211/K210 restoring zero-run6. Exact source graph, all internal macros, full runtime and blank startup pass.",
+      "proof_artifacts": [
+        "compositions/later_folds/historical_transfer_receipt.json"
+      ],
+      "net_additional_saving": 1,
+      "saving_accounting": "One joint physical saving with historical step4; K230 already coallocated two relevant roles, so the two historical mechanisms do not save two further states.",
+      "step_number": 7,
+      "coordinated_followup": {
+        "status": "VERIFIED_COORDINATED_SOURCE_REPAIR227",
+        "rotations": [
+          [
+            174,
+            119,
+            "left"
+          ],
+          [
+            202,
+            201,
+            "right"
+          ],
+          [
+            148,
+            154,
+            "left"
+          ],
+          [
+            211,
+            210,
+            "left"
+          ]
+        ],
+        "role_change": "Move node95 from K175 to K150, leave node106 at K175, then fold175 to152.",
+        "physical_state_saving": 1,
+        "source_guards": {
+          "node94_K150": "left0",
+          "node95_K150": "left1",
+          "node106_folded_K152": "left0",
+          "node436_K152": "left1"
+        },
+        "guard_proofs": "All incoming rows and complete whole-tape local blocks are independently checked on the zero-run-repaired intermediate tables, including runtime helper K176/1.",
+        "accepted_candidate": "compositions/source_fold227_zerofix",
+        "canonical_sha256": "0264f969f006304840f46f85d5eacb54b70bf968669299ff73c3e0c5221fe09a",
+        "source_operations": 5121,
+        "source_roles": 189,
+        "physical_source_states": 178,
+        "maximum_zero_run": 6,
+        "maximum_depth": 40,
+        "runtime_guards": 6656,
+        "symbolic_rules": 1613581,
+        "literal_rows": 454,
+        "blank_startup_steps": 409835,
+        "rejected_raw_intermediate": {
+          "failure_site": 1042,
+          "failure_prefix": "11101001001011010000000",
+          "failure_instruction": [
+            "CD",
+            2
+          ],
+          "failure_guard": "zero",
+          "proved_cases_before_failure": 1358,
+          "diagnosis": "The prefix has a seven-zero suffix, outside the inherited scanner contract. This raw table is not an accepted candidate."
+        },
+        "proof_artifacts": [
+          "compatibility/four_rotations227_independent.json",
+          "source_alignment/guard_repair/replay227/receipt.json",
+          "local_folds/zerofix227/audit.json",
+          "compositions/source_fold227_zerofix/proof_chain.json"
+        ]
+      }
+    },
+    {
+      "step": "236 -> 235",
+      "historical_reduction": "seven closed rotations, then193 -> 74",
+      "status": "SEVEN_STAGE_SEQUENCE_NOT_TRANSFERABLE_UNCHANGED",
+      "historical_rotations": [
+        [
+          138,
+          211,
+          "right"
+        ],
+        [
+          116,
+          134,
+          "left"
+        ],
+        [
+          162,
+          116,
+          "left"
+        ],
+        [
+          199,
+          227,
+          "left"
+        ],
+        [
+          227,
+          197,
+          "right"
+        ],
+        [
+          197,
+          115,
+          "right"
+        ],
+        [
+          115,
+          229,
+          "right"
+        ]
+      ],
+      "obstruction": "The large old199,227,197,115,229 ordered primitive streams have no contiguous occurrence in K, so the last four historical rotation contexts cannot be reconstructed by reassociation alone. The first138/211 adjacency also differs on K.",
+      "surviving_goal": {
+        "old74_stream": {
+          "leaves": 84,
+          "K_offsets": [
+            648
+          ]
+        },
+        "old193_stream": {
+          "leaves": 177,
+          "K_offsets": [
+            3610,
+            3910
+          ]
+        },
+        "currently_exposed_subtrees": false
+      },
+      "minimal_repair": "A new goal-directed exposure of the surviving74/193 streams may be possible, but it needs different source contexts and a fresh allocation/helper/guard proof. The literal seven-stage certificate does not transfer.",
+      "proof_artifacts": [
+        "compatibility/absent_historical_streams.json"
+      ],
+      "net_additional_saving": null,
+      "step_number": 8
+    }
+  ],
+  "pins": {
+    "research_k230/source/machine/k230.tm": "e7ccbcec074534cfd955f0ab94d16f13594e81974074309dc2ce663b9dfd7ba8",
+    "research_k230/source/machine/sites230.json": "400fad2b1c5f99ed8490f6346ff63088ba94fc39ada376962cee2f68c092e487",
+    "research_k230/compatibility/source_role_maps.json": "28eb2c4729c165c6d0200a6820d158936568a4fa96016da1e648dc6679b4e93f",
+    "research_k230/compatibility/literal_map.json": "3d00267ed1f22147ff1907562cb1a566307dc7b5ea4475b3478bc51a42153d99",
+    "research_k230/compatibility/absent_historical_streams.json": "047c188b2bbd63d39336e5881cab89a3e1dce43f9dd44e67a6f1bdea7ee6fd15",
+    "research_k230/compatibility/loop_fold229/fold_proof.json": "850f1f35b3e1a670a7d7a87faeeb51828d6083cc37b41bdebbc2fec110e08d3a",
+    "research_k230/compatibility/loop_fold229/source_binding.json": "35f0c09361fa821c150b22d022222b5578d1d44118c19b9255178713ab6f9c0f",
+    "research_k230/source_alignment/transfer_rotation/source_equivalence.json": "08dc655aca316ea8f64c6e3a7c123616eae716720607c2a1856644f85e103273",
+    "research_k230/compositions/delayed_erasure229/universal_runtime.json": "9e97864c0f711c183f21402046d306cf44e18a39fb86e4ba8e6873e923331a21",
+    "research_k230/compositions/loop_delayed228/proof_chain.json": "c1ace5f1168cd1c42f2be193abd90032e7cd393fa62c782210c8ef5b6f0f1d22",
+    "research_k230/compositions/source_fold227/universal_runtime.json": "a79cecb9af72ed2c84f60ff1d4e3de3fb36e12049b3bb6c4e22f1dc433e5147b",
+    "research_k230/compatibility/four_rotations227_independent.json": "9253dd59c4f2998d61a5f91457dbed48b0a4e22fb9ac8a452546d2fac60f80a3",
+    "research_k230/source_alignment/guard_repair/replay227/receipt.json": "91b53a81bc363fb2024e2f643fd7a2470e5a74fd29bf447960e0d2794c6395b4",
+    "research_k230/local_folds/zerofix227/audit.json": "1267b0dee4d346a45add11b1f5240043fba2c522f275ed3caf689f49f7cc02fb",
+    "research_k230/compositions/source_fold227_zerofix/proof_chain.json": "a4033424c23bb81a2671baa8f6f0d1959490845015bd31bff5bd56a6f653cf69",
+    "research_k230/compositions/source_fold227_zerofix/universal_runtime.json": "c5f1756e1dead6beb5fe9580f3b589c66d8fbf461bae4efaafdfb394d0270ebf"
+  },
+  "scope": "Historical compatibility only. Exact local blocks, source semantics, full runtime/startup and proof-assistant endpoints are distinguished. The coordinated guard repair is a new certified source construction, not a claim that the unchanged historical recipes already apply."
+}

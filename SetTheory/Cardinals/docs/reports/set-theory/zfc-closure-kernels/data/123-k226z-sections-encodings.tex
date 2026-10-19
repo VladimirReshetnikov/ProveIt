@@ -1,0 +1,224 @@
+\section{Other formal systems and concise encodings}
+\label{sec:encodings}
+
+The successful state reduction uses the K theory already calibrated by
+Glazer. The broader search nevertheless produced useful results about
+what to encode and how to charge its cost. A short mathematical formula,
+a short complete data packet, a small register program and a small
+blank-start binary machine are four different optimization objectives.
+There is no fixed conversion factor between them.
+
+\subsection{Comparison of the explored routes}
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{30mm}XX@{}}\toprule
+Route & Advantage & Current outcome and cost boundary\\\midrule
+Direct ZFC proof search & The target equivalence follows directly by
+enumerating finite derivations. & A baseline conceptual construction.
+Schema recognition, substitutions, variable conditions and proof checking
+all have to be implemented; no competitive small literal table was
+constructed by this route.\\
+Compact K schema & One closure-and-witness schema replaces a larger
+set-theory packet, while retaining the numerical calculus. & The route
+used by the selected machine. Both finite proof translations and the
+actual emitter are available in the pinned Rocq source.\\
+Finite equational noncollapse & A finite operation signature, finitely
+many equations and one ground query replace axiom-schema recognition. &
+E663 is inherited from the 235-state package. A complete new prefix packet
+has 574 bits, including its codebook. No binary proof-search interpreter
+or state bound for it is claimed.\\
+Constructor fusion & One operation can serve several semantically
+compatible syntactic roles. & The supplied E679 study gives an explicit
+equiconsistent fused presentation, with complete expansion/interpretation
+arguments. Its fixed-code packet is 679 bits; under the new prefix codec
+it is 586 bits.\\
+Finite class-theory frontend & A finite axiom list may simplify the
+enumerator's axiom-recognition step. & An architectural alternative only.
+The costs of class syntax, sorts, comprehension encoding and a complete
+derivation translation were not converted into a competitive literal
+machine in this investigation.\\
+\bottomrule\end{tabularx}
+\end{center}
+
+The first route is mathematically straightforward: enumerate all finite
+strings and halt precisely when one is a valid classical ZFC proof of
+falsity. A computable bijective enumeration and a decidable proof checker
+give the desired equivalence by elementary arithmetic. Its disadvantage
+here is not logical strength but the size of the complete low-level
+implementation. The K route already has a carefully optimized emitter
+and interpreter, so semantic source transformations and state sharing
+can immediately be measured in actual native states.
+
+The equational route removes the need for an unbounded axiom schema at
+the data level, but does not remove proof search. Its machine must
+enumerate substitutions, contexts and applications of finitely many
+equations, recognize the selected ground equality, implement all data
+access and initialize its packet from a blank tape. Omitting that
+interpreter or its blank writer would hide the main cost of a claimed
+small machine.
+
+\subsection{The inherited E663 packet}
+
+The 235-state archive supplies E663: nine operation symbols, seven
+equations and 150 equation-term nodes, with ground query
+\[
+                          Q(d)=d.
+\]
+The signature is
+\[
+ d:0,\quad N:2,\quad V:2,\quad P:2,\quad A:2,\quad Q:1,
+ \quad W:2,\quad p_E:2,\quad p_\varepsilon:2.
+\]
+The meanings include a Boolean operation, environment access, term and
+environment constructors, membership evaluation and a witness operation.
+The actual equations, not just these descriptions, are preserved in
+\path{formalisms/E663.json}; the complete original derivation and
+calibration are in the unchanged 235-state archive~\cite{proveit235}.
+
+The relevant assertion is nonderivability of the selected query:
+\[
+        \Con(\mathrm{ZFC})\quad\longleftrightarrow\quad
+                  E663\nvdash_{\mathrm{eq}}Q(d)=d.
+\]
+This is a noncollapse problem. An ordinary equational theory always has
+a one-element model, so saying that its axioms are simply ``consistent''
+would not express the intended distinction. The query identifies the
+collapse that corresponds to a refutation of the set-theoretic system.
+An equational proof enumerator would halt on a derivation of that query.
+
+In the inherited fixed-width codec, E663 costs 43 header bits,
+608 axiom bits and 12 query bits, totaling 663. Its seven equations have
+respectively
+\[
+                         14,6,9,12,12,17,80
+\]
+term nodes. The Boolean single-identity ingredient is inherited, rather
+than a new Boolean-algebra axiom discovered here~\cite{mccune}.
+
+\subsection{A fully declared 574-bit prefix packet}
+
+The new codec allocates short codes to frequent term symbols, including
+variables. The complete codebook is part of the packet, so the decoder
+does not need a preinstalled symbol palette or an external arity list.
+The packet contains thirteen codebook leaves: nine operations and four
+variable slots. A binary prefix tree is serialized recursively using
+the following self-delimiting node tags:
+\begin{center}
+\begin{tabular}{@{}ll@{}}\toprule
+Tag & Meaning\\\midrule
+\code{0} & Internal branch; two child codebooks follow\\
+\code{10} & Leaf denoting a binary operation\\
+\code{110} & Leaf denoting a variable slot\\
+\code{1110} & Leaf denoting a constant\\
+\code{1111} & Leaf denoting a unary operation\\
+\bottomrule\end{tabular}
+\end{center}
+Operation and variable identities are their respective preorder indices
+among the leaves. The path from the root to a leaf is its term-token
+code. Once a token is read, its arity determines how many subterms follow.
+Thus a term is decoded recursively without a terminator after each node.
+
+An equation is a one bit followed by its two terms. A zero bit ends the
+equation list and is followed by the two ground terms of the query.
+The decoder requires the packet to end exactly there. Variable names
+are local to an equation, as they are universally quantified there;
+renaming them by occurrence frequency does not change equational
+consequence. Operation names are uniformly renamed, with arities
+preserved. There is no identification of distinct operations or variables.
+
+For the selected E663 packet the complete codebook is:
+\begin{center}\small
+\begin{tabular}{@{}llrr@{}}\toprule
+Symbol & Prefix code & Frequency & Arity/kind\\\midrule
+$Q$ & \code{0000} & 7 & 1\\
+$p_E$ & \code{0001} & 7 & 2\\
+$V$ & \code{0010} & 8 & 2\\
+$v_3$ & \code{00110} & 4 & variable\\
+$W$ & \code{001110} & 2 & 2\\
+$A$ & \code{001111} & 3 & 2\\
+$v_0$ & \code{01} & 33 & variable\\
+$v_1$ & \code{100} & 19 & variable\\
+$N$ & \code{101} & 21 & 2\\
+$p_\varepsilon$ & \code{1100} & 10 & 2\\
+$v_2$ & \code{1101} & 12 & variable\\
+$d$ & \code{1110} & 13 & 0\\
+$P$ & \code{1111} & 14 & 2\\
+\bottomrule\end{tabular}
+\end{center}
+The $v_i$ labels in this table are the encoder's frequency-ranked slots;
+the raw decoder may name them in preorder instead. The included audit
+checks precisely that bijective renaming for each equation.
+
+The total charged cost is
+\[
+ \underbrace{46}_{\text{codebook}}
+ +\underbrace{508}_{\text{equation terms}}
+ +\underbrace{8}_{\text{equation framing}}
+ +\underbrace{12}_{\text{ground query}}
+ =\boxed{574\text{ bits}}.
+\]
+This is 89 bits shorter than the inherited 663-bit encoding. Byte
+transport requires 72 bytes, with two padding bits that are not part of
+the packet. The bit-character SHA--256, excluding the file's final
+newline, is
+\begin{quote}\small
+\path{c6414e72e7682442c170ef20c3f0376ee5ee82368854ec231bc500c565ae6313}.
+\end{quote}
+
+\begin{proposition}[Exact presentation preservation]
+Decoding the delivered 574-bit packet, using only that packet and the
+fixed codec grammar, yields exactly E663 and its ground query up to a
+bijective operation renaming and independent bijective variable
+renaming in each equation. In particular, the decoded query is derivable
+from the decoded equations if and only if the original query is derivable
+from E663.
+\end{proposition}
+\begin{proof}
+The codebook parser is deterministic because its five node tags are
+prefix-free. Each leaf is assigned one identity and one arity. Induction
+on a term shows that token decoding followed by decoding its arity-many
+children reverses its prefix encoding. Induction on the equation list
+and its final zero delimiter extends this to the complete packet and
+the two ground terms. The retained round-trip calculation compares
+every decoded term with the specified renaming of the original term.
+Apply the operation bijection uniformly throughout a derivation. For
+each axiom separately, its variable bijection preserves exactly the
+set of substitution instances: compose a substitution with that
+bijection or its inverse. The two presentations therefore have
+corresponding axiom instances, and the unchanged rules for contexts,
+symmetry, reflexivity and transitivity derive corresponding ground
+equalities. The inverse operation renaming gives the converse.
+\end{proof}
+
+The independent decoder accepts only the bit string; it does not read
+the encoder's JSON signature, token codes or variable maps. The replay
+also rejects all 574 strict truncations, both one-bit extensions and
+a nonbinary-character control. These diagnostics support the exact
+round trip; the mathematical preservation argument is the induction
+above.
+
+\subsection{Why the shorter packet is not yet a state bound}
+
+A Huffman codebook reduces data length but asks more of the runtime
+parser than a fixed-width alphabet. A very small interpreter might
+prefer a slightly longer packet whose tokens can be processed with
+fewer states. A blank writer can also reuse repeated substrings rather
+than paying a uniform state cost per bit. Consequently the 89 saved
+bits cannot be subtracted from a native state count.
+
+The concrete next experiment for this route is a complete binary
+equational-proof enumerator with a counted decoder and blank writer.
+Only its resulting full transition table would support comparison
+with the selected K machine. The artifact records a null TM state
+bound for the prefix packet so that its smaller data cost is not
+mistaken for such a construction.
+
+The supplied E679 constructor-fusion study illustrates the complementary
+semantic route. It reduces the operation vocabulary by arranging that
+one operation has compatible roles in a model with fresh copies of
+each membership type. That argument concerns interpretations and
+equiconsistency; the prefix codec concerns lossless representation of
+an already fixed presentation. The methods can be combined, but they
+must be charged and proved separately. Under the same new codec,
+E679 occupies 586 bits, so E663's 574-bit packet is the better of the
+two concrete packets considered here.

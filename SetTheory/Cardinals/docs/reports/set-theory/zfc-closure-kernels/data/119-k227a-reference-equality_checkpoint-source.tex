@@ -1,0 +1,512 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,array,longtable}
+\usepackage{microtype,enumitem,fancyhdr,xcolor,hyperref,listings}
+\hypersetup{colorlinks=true,linkcolor=black,urlcolor=blue,citecolor=black,pdftitle={Restricting equality vacuity in the ZFC machine calculus},pdfauthor={Research checkpoint for Vladimir Reshetnikov}}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=2pt,topsep=4pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Equality vacuity and the ZFC comparison}\fancyhead[R]{\small 19 October 2026}\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Rel}{\mathsf{Rel}}
+\newcommand{\Eq}{\mathsf{Eq}}
+\newcommand{\All}{\mathsf{All}}
+\newcommand{\Ex}{\mathsf{Ex}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\enc}{\operatorname{enc}}
+\newcommand{\dec}{\operatorname{dec}}
+\newcommand{\weq}{\operatorname{weq}}
+\newcommand{\wim}{\operatorname{wim}}
+\newcommand{\pad}{\operatorname{Pad}}
+\newcommand{\To}{\rightarrow}
+\newcommand{\Hh}{H_{\mathrm{eq}}}
+\newcommand{\Hs}{H_{\mathrm{sym}}}
+\newcommand{\Hr}{H_7}
+\newcommand{\NN}[1]{\neg\neg #1}
+\newcommand{\file}[1]{\begingroup\small\ttfamily\nolinkurl{#1}\endgroup}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,keepspaces=true,frame=none}
+\begin{document}
+\begin{center}
+{\LARGE\bfseries Restricting equality vacuity\\[4pt]in the ZFC machine calculus}\par
+\vspace{9pt}
+{\large Membership defined equality and an external consistency reduction}\par
+\vspace{9pt}
+Research checkpoint for Vladimir Reshetnikov\par
+19 October 2026
+\end{center}
+\vspace{5pt}
+\begin{abstract}
+The full fresh equality-vacuity family in the original substitution-free Tarski frontend can be restricted to one literal native-code binder per equality atom. Keep the original eight logical rows, membership vacuity, CP and native GIC, and replace
+\[
+ \Eq(a,b)\To\All_c\Eq(a,b)\quad(c\ne a,b)
+ \qquad\text{by}\qquad
+ \Eq(a,b)\To\All_{\weq(a,b)}\Eq(a,b).
+\]
+The resulting theory $\Hh$ is equiconsistent with ordinary ZFC, in the external classical metatheory and relative to the existing completeness and model-construction endpoints identified here. The proof interprets comparison equality as two-sided membership indiscernibility. A restricted quantifier-free specialization argument and explicit auxiliary-binder transport avoid circular uses of general substitution or alpha conversion. Equality-free comparison matrices preserve the actual native GIC output codes. Independent finite certificates support the construction, including label zero and binder collisions. This is a mathematical consistency result; the modified native Lean proof relation, proof-assistant verification of selected-source enumeration, and a new binary-machine halting endpoint remain to be supplied. A separate ordinary source/enumerator binding is included in Appendix~\ref{sec:binding}.
+\end{abstract}
+
+\section{Result and research status}
+The positive result is a reduction of logical requirements. It is not yet a reduction of the best specialized binary machine's state count. At this checkpoint, no validated machine with at most 235 working states has been found. The supplied 236-state result is inherited from commit \file{0b5fec6980}; it is not a new construction of this investigation.
+
+\textbf{Relation to prior work.} Source113 already describes eliminating identity through full incoming/outgoing observational equivalence in a complete first-order calculus, and explicitly warns that this model theorem does not justify deleting a numerical rule~\cite{source113}. The contribution recorded here is the noncircular bootstrap inside the weakened numerical-style calculus, together with the precise code-specific equality-vacuity restriction and the code-preserving theory comparison. Observational equality itself and the general quotient idea are not claimed as new.
+
+Three levels of evidence must remain distinct:
+\begin{enumerate}
+\item A uniform ordinary mathematical argument establishes the consistency comparison for arbitrary natural-number labels.
+\item Executable proof certificates check explicit finite Hilbert derivations and an independent collection of edge cases. Their generality is bounded by their stated schemas or numerical instantiations.
+\item The changed native proof relation and enumeration coverage still need proof-assistant formalization and an exact binary runtime/blank-start calibration. Appendix~\ref{sec:binding} supplies an ordinary source-level enumeration theorem, with finite source identifications; it does not supply those stronger endpoints.
+\end{enumerate}
+The article states the clean surgical result first. Broader $K/S$ frontends with canonical or projection vacuity also admit the interpretation; Section~\ref{sec:variants} describes the additional classicality and code obligations. A pinned generic compilation of the exact surgical theory has 263 working states, including its startup and totalization construction. It is a cost observation for that compiler, not a saving transferable to the specialized 236-state architecture.
+
+\section{Exact syntax and source conventions}\label{sec:syntax}
+Labels are natural numbers. The relative-falsity source language has membership atoms $\Rel(a,b)$, primitive equality atoms $\Eq(a,b)$, implication, and named universal quantification $\All_i A$. Its abbreviations are literally
+\begin{equation}\label{eq:abbr}
+ F=\Rel(0,0),\qquad \neg A=(A\To F),\qquad
+ A\wedge B=\neg(A\To\neg B),\qquad
+ \Ex_i A=\neg\All_i\neg A.
+\end{equation}
+There is no primitive bottom constructor in this source. In particular, the label 0 inside $F$ can be captured. A genuine-bottom language will be introduced explicitly for the comparison calculus and for a limited auxiliary syntax; its bottom will be translated to $F$.
+
+\subsection{The original logical rows}
+Writing $A,B,C,U$ for arbitrary formulas, and allowing all label coincidences unless a gate is stated, the original rows are
+\begin{align*}
+\rho_1&:&&\Ex_a\Eq(a,b),\\
+\rho_2&:&&\All_i(A\To B)\To(\All_i A\To\All_i B),\\
+\rho_3&:&&\Eq(a,b)\To(\Rel(c,a)\To\Rel(c,b)),\\
+\rho_4&:&&\All_i\All_j A\To\All_j\All_i A,\\
+\rho_5&:&&\Eq(a,b)\To(\Rel(a,c)\To\Rel(b,c)),\\
+\rho_6&:&&\Ex_i\All_i A\To A,\\
+\rho_7&:&&\Eq(c,a)\To(\Eq(c,b)\To\Eq(a,b)),\\
+\rho_8&:&&((C\To U)\To A)\To((A\To C)\To(B\To C)).
+\end{align*}
+Our parameter order for $\rho_5$ is a renaming of the repository's row. The calculus additionally has atomic vacuity for $\Rel$ and $\Eq$ at $i\ne a,b$, modus ponens, and generalization of closed theorems. A theory axiom is available under every assignment; ``closed theorem'' here means a proof with no temporary undischarged hypotheses, not a formula without free variables. This distinction matters throughout.
+
+\subsection{The surgical theory}
+\begin{definition}
+Let $\Hh$ keep $\rho_1$--$\rho_8$, the exact CP/native-GIC source families, full gated membership vacuity, MP and closed-theorem GEN. Replace only full equality vacuity by
+\begin{equation}\label{eq:helper}
+ V_{\mathrm{eq}}(a,b):\quad
+ \Eq(a,b)\To\All_{k_{ab}}\Eq(a,b),\qquad
+ k_{ab}=\weq(a,b)=4P(a,b)+3,
+\end{equation}
+where $P(a,b)=(a+b)(a+b+1)/2+b$. Define $\Con(\Hh)$ to mean $\Hh\nvdash F$.
+\end{definition}
+Since $P(a,b)\ge a,b$, the chosen $k_{ab}$ is strictly larger than both endpoints, including when $a=b=0$. If the helper is emitted inside the original bundle gated by a third parameter $c\ne a,b$, every $(a,b)$ instance remains available: choose $c=k_{ab}$ and project the helper after establishing classicality. Its internal binder is $k_{ab}$, independently of the bundle's output parameter. There is no gate requiring $a\ne b$.
+
+\subsection{The native code zero alias}
+The native numeric constructors are
+\begin{align*}
+\operatorname{Imp}(m,n)&=4P(m,n), &\operatorname{Rel}(a,b)&=4P(a,b)+1,\\
+\operatorname{All}(i,n)&=4P(i,n)+2, &\operatorname{Eq}(a,b)&=4P(a,b)+3.
+\end{align*}
+Thus $F$ has code 1, and $\Eq(0,0)$ has code 3. Numeric code 0 decodes to $F\To F$; encoding that displayed finite tree gives 16. Consequently $\enc(\dec(0))=16\ne0$. No part of the new proof assumes that encoding inverts decoding on arbitrary numbers.
+
+For every positive code $n$, every label in $\dec(n)$ is less than $n$. Strong induction proves this: unpaired fields are at most $\lfloor n/4\rfloor<n$; positive recursive children use the induction hypothesis; a zero child decodes to a tree containing only label 0. The separate $n=0$ case is a truth alias. These facts will justify canonical vacuity in Section~\ref{sec:variants}. The main surgical reverse comparison needs only $k_{ab}>a,b$.
+
+\section{Propositional and quantifier tools}\label{sec:tools}
+The retained $\rho_8$ yields $K$, $S$, and the classical implicational basis through the existing finite derivations in \file{Lukasiewicz.lean}. Relative explosion also follows from $\rho_6$: for any $A$, $K$ gives
+\[
+ F\To\bigl(\All_i(\All_i A\To F)\To F\bigr)
+   =F\To\Ex_i\All_i A,
+\]
+and composition with $\rho_6$ gives $F\To A$. Thus classical tautologies relative to the exact $F$ are derivable in $\Hh$. This includes $F\To\All_i F$ for every $i$, including 0; it does not require $F$ to be syntactically closed.
+
+Every use of a propositional tautology below means substitution into this derived classical basis. In the main finite E certificates, \file{TAUT} leaves are checked by Boolean enumeration with $F$ false and every other non-implication expression an independent atom. These are explicit abbreviations for propositional derivations, not new first-order axioms. The finite replay does not expand every such abbreviation into $\rho_8$ proofs.
+
+From a closed theorem $A\To B$, GEN and $\rho_2$ derive quantified monotonicity
+\[
+ \All_i A\To\All_i B.
+\]
+Contraposition on both sides derives existential monotonicity $\Ex_i A\To\Ex_i B$. Another consequence of $\rho_2$ and classical contraposition is
+\begin{equation}\label{eq:allimpex}
+ \All_i(A\To B)\To(\Ex_i A\To\Ex_i B).
+\end{equation}
+None of these steps generalizes an open assumption.
+
+\begin{lemma}[Primitive symmetry without full equality vacuity]\label{lem:sym}
+The theory $\Hh$ proves $\Eq(x,x)$ and $\Eq(x,y)\To\Eq(y,x)$.
+\end{lemma}
+\begin{proof}
+Let $z=k_{xx}$. By $\rho_7$ and propositional contraction,
+$\Eq(z,x)\To\Eq(x,x)$. Existential monotonicity and $\rho_1(z,x)$ give $\Ex_z\Eq(x,x)$. Apply existential monotonicity to the exact helper on $\Eq(x,x)$, obtaining $\Ex_z\All_z\Eq(x,x)$. Row $\rho_6$ now yields $\Eq(x,x)$. Finally $\rho_7$ with common first endpoint $x$, together with reflexivity, gives symmetry. Only the exact helper at a reflexive atom was used. This argument precedes every claim about defined equality.
+\end{proof}
+
+\section{Membership defined equality}\label{sec:definition}
+For $z\ne a,b$, set
+\begin{align}
+ L_{ab}(z)&=(\Rel(z,a)\To\Rel(z,b))\wedge(\Rel(z,b)\To\Rel(z,a)),\label{eq:L}\\
+ U_{ab}(z)&=(\Rel(a,z)\To\Rel(b,z))\wedge(\Rel(b,z)\To\Rel(a,z)),\label{eq:U}\\
+ E_{ab}^{z}&=(\All_z L_{ab}(z))\wedge(\All_z U_{ab}(z)),\label{eq:Ez}\\
+ E(a,b)&=E_{ab}^{k_{ab}}.\label{eq:E}
+\end{align}
+All conjunctions have the negative grouping in~\eqref{eq:abbr}. Equality is two-sided: both incoming and outgoing membership profiles are compared. Primitive $\Eq$ need not itself become logical identity in every weakened model; it will provide the witnesses needed to interpret identity by $E$.
+
+\begin{lemma}[The exact helper supplies equality witnesses]\label{lem:eqE}
+For all $a,b$, $\Hh$ proves
+\[
+ \Eq(a,b)\To E(a,b),\qquad \Ex_a E(a,b).
+\]
+\end{lemma}
+\begin{proof}
+Put $z=k_{ab}$. Rows $\rho_3$ and $\rho_5$ give the forward membership implications in~\eqref{eq:L} and~\eqref{eq:U}. Primitive symmetry followed by the same rows with reversed endpoints gives their converses. Conjunction introduction yields the closed implications
+\[
+ \Eq(a,b)\To L_{ab}(z),\qquad \Eq(a,b)\To U_{ab}(z).
+\]
+Generalize each closed implication at $z$, and apply $\rho_2$. Compose with~\eqref{eq:helper} to obtain the two universally quantified conjuncts under the premise $\Eq(a,b)$, then conjoin. Existential monotonicity at $a$ and $\rho_1(a,b)$ yield the second theorem. The literal internal binder $z$ is unchanged throughout.
+\end{proof}
+The separate certificate for this bridge uses $K/S$, primitive symmetry, $\rho_1,\rho_2,\rho_3,\rho_5$, MP, closed GEN, and the exact equality helper. It does not use classical \file{TAUT}, primitive reflexivity, primitive transitivity, CP/GIC, alpha conversion, or full equality vacuity. Its primitive-symmetry premise is discharged by Lemma~\ref{lem:sym} in $\Hh$.
+
+\section{Restricted specialization without a circular bootstrap}\label{sec:bootstrap}
+The main obstacle is that changing endpoint labels changes the code-dependent auxiliary binder in $E(a,b)$. Assuming general alpha conversion, general specialization, or quantified Leibniz substitution at this stage would import precisely the logical structure being reconstructed. The following restricted construction avoids that dependence.
+
+\subsection{A designated bottom in the auxiliary syntax}
+For this section, use finite membership expressions with a \emph{designated} constant $\bot_*$, translated to $F$. Replacing a variable fixes $\bot_*$. It acts on the arguments of ordinary membership atoms as usual. Freshness ignores only the designated constant; it counts all other labels, including bound labels. This is an auxiliary proof notation, not a claim that raw renaming of the atom $\Rel(0,0)$ fixes its arguments.
+
+The certificate generator represents $\bot_*$ and the raw atom $\Rel(0,0)$ by the same tuple. Its renaming function therefore fixes that tuple. Its API must not be described as an implementation of arbitrary raw-syntax substitution. For the needed E-body inputs this ambiguity causes no error: every non-bottom membership atom contains its auxiliary $z$, and $z\ne a,b$, so no original such atom is $\Rel(0,0)$. A substituted atom may become $F$; the atomic congruence proof still justifies that result. General raw substitution is used only after the full proof interpretation has been established.
+
+\begin{lemma}[Membership-only fresh vacuity]\label{lem:vac}
+If $A$ is an auxiliary membership-only expression and $i$ is absent from all its non-bottom labels, including bound labels, then its source translation satisfies $A\To\All_i A$.
+\end{lemma}
+\begin{proof}
+Induct on the expression. A membership atom uses retained membership vacuity; $\bot_*$ uses explosion. For implication, first note that an already derived $P\To\All_iP$ gives
+\[
+ \Ex_i P\To\Ex_i\All_iP\To P
+\]
+by existential monotonicity and $\rho_6$. Contraposition yields $\neg P\To\All_i\neg P$. From the induction hypotheses for $P,Q$, quantified monotonicity applied to the closed tautologies
+$\neg P\To(P\To Q)$ and $Q\To(P\To Q)$ gives both branches
+\[
+ \neg P\To\All_i(P\To Q),\qquad
+ Q\To\All_i(P\To Q).
+\]
+The classical equivalence $P\To Q\ \leftrightarrow\ \neg P\lor Q$ combines them. For $A=\All_jB$, generalize the closed induction theorem at $j$, distribute with $\rho_2$, and commute the two quantifiers with $\rho_4$. This proof renames no internal binder.
+\end{proof}
+
+\begin{lemma}[Quantifier-free specialization]\label{lem:qf}
+Let $A$ be quantifier-free in membership and designated bottom, and let $x\ne y$. If $A'$ replaces all displayed occurrences of $x$ by $y$, fixing designated bottom, then the source calculus proves $\All_x A\To A'$.
+\end{lemma}
+\begin{proof}
+Atomic $\rho_3/\rho_5$, primitive symmetry, and induction on propositional constructors prove both directions of
+\begin{equation}\label{eq:qfleib}
+ \Eq(x,y)\To(A\leftrightarrow A').
+\end{equation}
+If both atomic arguments are $x$, rewrite one position at a time. The designated-bottom case is identity. There is no quantified-constructor case, hence no need to move an equality premise through a binder.
+
+Shuffle the forward implication of~\eqref{eq:qfleib} to $A\To(\Eq(x,y)\To A')$, then generalize this closed theorem at $x$ and distribute. This gives
+\[
+ \All_x A\To\All_x(\Eq(x,y)\To A').
+\]
+Equation~\eqref{eq:allimpex} and $\rho_1(x,y)$ now give $\All_x A\To\Ex_x A'$. No non-bottom $x$ remains in $A'$, so Lemma~\ref{lem:vac} supplies $A'\To\All_x A'$. Existential monotonicity and $\rho_6$ give $\Ex_x A'\To A'$, completing the proof. If $x$ or $y$ is 0, the designated-bottom case is still justified by explosion rather than syntactic freshness.
+\end{proof}
+Only this quantifier-free lemma is needed to transport E's binders. A self-specialization example is also checked in the certificate package by a fresh detour; it is not assumed as an extra rule. We do not infer general substitution or alpha conversion from these finite examples.
+
+\section{Auxiliary transport and the reconstructed equality rows}\label{sec:rows}
+\begin{lemma}[Auxiliary-binder transport]\label{lem:transport}
+For $z,w\ne a,b$, both $E_{ab}^{z}\To E_{ab}^{w}$ and $E_{ab}^{w}\To E_{ab}^{z}$ are derivable.
+\end{lemma}
+\begin{proof}
+If $z=w$, use identity. Otherwise project $\All_z L_{ab}(z)$ from $E_{ab}^{z}$ and apply Lemma~\ref{lem:qf} to get the closed implication $E_{ab}^{z}\To L_{ab}(w)$. Do the same for $U$. Since $w$ is different from $a,b,z$, it is absent from every non-bottom label of the entire premise $E_{ab}^{z}$. Lemma~\ref{lem:vac} therefore gives
+\[
+ E_{ab}^{z}\To\All_w E_{ab}^{z}.
+\]
+Generalize each previously derived closed implication at $w$, distribute, and compose with this vacuity theorem. Conjoin to get $E_{ab}^{z}\To E_{ab}^{w}$. Reverse the roles of $z,w$. At no point is the premise generalized at its own internal binder, and no general alpha theorem has been used.
+\end{proof}
+
+\begin{proposition}[Full fresh vacuity for E]\label{prop:Evac}
+For $i\ne a,b$, $\Hh$ proves $E(a,b)\To\All_i E(a,b)$, including $i=k_{ab}$.
+\end{proposition}
+\begin{proof}
+Choose $w=\max(a,b,i,k_{ab})+1$. Transport $E(a,b)$ to $E_{ab}^{w}$. The label $i$ is absent from the non-bottom labels of this new formula, so Lemma~\ref{lem:vac} yields $E_{ab}^{w}\To\All_i E_{ab}^{w}$. Quantified monotonicity applied to the reverse transport gives $\All_i E_{ab}^{w}\To\All_iE(a,b)$. Compose. The collision $i=k_{ab}$ is exactly why vacuity is not applied directly to the original presentation of $E$.
+\end{proof}
+
+\begin{proposition}[Both membership congruences]\label{prop:cong}
+For all $a,b,c$, including repeated labels,
+\[
+ E(a,b)\To(\Rel(c,a)\To\Rel(c,b)),\qquad
+ E(a,b)\To(\Rel(a,c)\To\Rel(b,c)).
+\]
+\end{proposition}
+\begin{proof}
+Choose $w=\max(a,b,c,k_{ab})+1$ and transport to $E_{ab}^{w}$. Project each quantified matrix and specialize it from $w$ to $c$ using Lemma~\ref{lem:qf}, then project its forward implication. The choice of $w$ verifies the required $w\ne c$, even if $c=k_{ab}$ or $c=0$.
+\end{proof}
+
+\begin{proposition}[The exact translated rho7]\label{prop:E7}
+For arbitrary $a,b,c$,
+\[
+ E(c,a)\To(E(c,b)\To E(a,b)).
+\]
+\end{proposition}
+\begin{proof}
+Choose $w$ larger than $a,b,c,k_{ca},k_{cb},k_{ab}$. Transport both premises to this common auxiliary. Pointwise Boolean transitivity supplies closed tautologies
+\[
+ L_{ca}(w)\To(L_{cb}(w)\To L_{ab}(w)),\qquad
+ U_{ca}(w)\To(U_{cb}(w)\To U_{ab}(w)).
+\]
+Generalize these closed tautologies at $w$ and distribute twice with $\rho_2$. The two universally quantified premises now yield the two conjuncts of $E_{ab}^{w}$. Conjoin and transport to $k_{ab}$. The two E premises themselves are never generalized as open hypotheses.
+\end{proof}
+Reflexivity $E(a,a)$ follows by generalizing membership identity tautologies and conjoining. Symmetry follows by pair reversal and transport, or by reflexivity and Proposition~\ref{prop:E7}. Lemma~\ref{lem:eqE}, Propositions~\ref{prop:Evac}--\ref{prop:E7}, and these checks cover all original equality requirements. Every fresh-label choice is an explicit maximum plus one over a finite set; the argument is uniform in arbitrary natural-number labels, not an extrapolation from the sample roots.
+
+\section{Interpreting the complete substitution-free calculus}\label{sec:interpretation}
+Use the genuine-bottom named syntax \file{Tarski.NF} and the original full calculus \file{Tarski.Thm}. Define a structural translation $\tau$ by
+\begin{align*}
+\tau(\Rel(a,b))&=\Rel(a,b),& \tau(\Eq(a,b))&=E(a,b),&\tau(\bot)&=F,\\
+\tau(A\To B)&=\tau(A)\To\tau(B),&
+\tau(\All_i A)&=\All_i\tau(A).
+\end{align*}
+It preserves every quantifier label. All logical axiom constructors have derivable translations:
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Original constructor & Derivation of its translation\\\midrule
+$\rho_1$ & $\Ex_aE(a,b)$ from Lemma~\ref{lem:eqE}\\
+$\rho_2,\rho_4,\rho_6$ & Retained rows at translated formula parameters\\
+$\rho_3,\rho_5$ & Proposition~\ref{prop:cong}\\
+$\rho_7$ & Proposition~\ref{prop:E7}\\
+$\rho_8$ & Retained classical row\\
+Membership vacuity & Retained gated row\\
+Equality vacuity & Proposition~\ref{prop:Evac}\\\bottomrule
+\end{tabular}
+\end{center}
+MP and closed GEN commute with $\tau$. Induction on a \file{Thm} proof therefore translates every derivation whose extra axiom translations are theorems of $\Hh$.
+
+The proof relation has no substitution constructor. We do not assert that raw substitution commutes with $\tau$: changing $a,b$ changes $k_{ab}$, and substituting a label does not automatically recompute that code. All necessary changes of auxiliary binder have already been supplied by Lemma~\ref{lem:transport}. General specialization and alpha conversion can subsequently be imported as theorems of the complete comparison calculus; they were not assumptions of its interpretation.
+
+This also explains why using the existing full-calculus completeness theorem is legitimate. Its proof internally uses the original equality-vacuity and derived substitution laws, but the proof interpretation supplies translations of every original constructor. It does not assume completeness for the reduced source itself.
+
+\section{An equality-free comparison theory with exact output codes}\label{sec:theory}
+The code-coupled GIC family creates an important constraint: expanding equality in a matrix generally changes its code, and the output binder is that code. The argument avoids this problem by choosing an equality-free comparison theory from the outset.
+
+\subsection{Literal CP and GIC formulas}
+To fix parentheses and internal shadowing, write the named formulas from \file{Code254Containers.lean} using the relative abbreviations~\eqref{eq:abbr}:
+\begin{align*}
+ C(a,b,c)=\Ex_b\bigl[&\All_a\bigl(\Rel(a,b)\To
+   (D(a,b,c)\wedge\All_c(\Rel(c,a)\To\Rel(c,b)))\bigr)\\[-1pt]
+ &\wedge\Rel(c,b)\bigr],\\
+ D(a,b,c)=\Ex_c\bigl[&\All_b\bigl(\All_c(\Rel(c,b)\To\Rel(c,a))\To\Rel(b,c)\bigr)
+ \wedge\Rel(c,b)\bigr],\\
+ G(a,b,c,p)=\Ex_c\bigl[&\All_a\bigl(\Rel(a,b)\To
+     \All_b(p\To\Ex_b(p\wedge\Rel(b,c)))\bigr)\\[-1pt]
+ &\wedge\All_b(\Rel(b,c)\To\Ex_a p)\bigr].
+\end{align*}
+The repeated binders are intentional; no informal renaming is implicit. The exact source bundle couples the matrix to its output label. The comparison uses the following theory $T_0$ in the genuine-bottom named language:
+\begin{enumerate}
+\item The bot-free formula $C(2,3,1)$, supplied by the gated bundle whose matrix is $F$, of native code 1. Both gates $1\ne2,3$ hold.
+\item For each equality-free ordinary de Bruijn formula $\varphi$, let
+\begin{equation}\label{eq:matrix}
+ f=\operatorname{toNamed}(0,\varphi),\qquad
+ p=\pad(f)=((f\To f)\To f),\qquad c=\enc(p).
+\end{equation}
+Include exactly $G(1,3,c,p)$, with this actual $c$.
+\item Genuine-bottom irreflexivity
+\[
+ \mathrm{IR}=\All_0(\Rel(0,0)\To\bot).
+\]
+\end{enumerate}
+The name translation assigns free slot $j$ the odd name $2j+1$ and uses even, depth-indexed names for binders. More precisely,
+\[
+ \operatorname{names}(0,j)=2j+1,\quad
+ \operatorname{names}(d+1,0)=2d,\quad
+ \operatorname{names}(d+1,j+1)=\operatorname{names}(d,j).
+\]
+A new quantified variable at depth $d$ receives $2d$. Genuine bottom in $\varphi$ is translated to the membership atom $F$. These definitions select literal source matrices; they do not use an unproved renaming rule in $\Hh$.
+
+\subsection{Why the native code coupling is preserved}
+Finite-tree native coding gives $c>3$ for the padding in~\eqref{eq:matrix}. Every label occurring in $p$ is below $\enc(p)$, so $c$ is absent from $p$; in particular both source gates $c\ne1,3$ hold. The padding is equivalent to $f$ under every assignment. The existing named-matrix adapter handles the forward and reverse update orders inside $G$ without treating the repeated binders as distinct fresh variables.
+
+Items 1 and 2 of $T_0$ contain no primitive equality and no genuine bottom. Their relative falsehood is already the raw membership atom $F$. Consequently
+\[
+ \tau(C(2,3,1))=C(2,3,1),\qquad
+ \tau(G(1,3,c,p))=G(1,3,c,p)
+\]
+\emph{literally}, including the matrix, all binder labels, and its native output code. Classical projection retrieves the needed components from the emitted negative-conjunction bundle. If the measured frontend reorders classically equivalent conjunction trees, propositional equivalence and quantified monotonicity recover these exact forms.
+
+Finally $\tau(\mathrm{IR})=\All_0(F\To F)$, a generalized identity theorem. The proof never translates an equality-containing GIC matrix while keeping its former output code. Nor does it pick a convenient fresh output label independently of the matrix. It starts with an encodable finite named matrix and its actual encoding, and never needs $\enc(\dec(n))=n$.
+
+\section{The consistency comparison and exact existing endpoints}\label{sec:consistency}
+\begin{theorem}[Surgical equality-vacuity reduction]\label{thm:main}
+In the ordinary external classical metatheory, using the existing full-calculus completeness and CP/GIC model-construction results specified below,
+\[
+ \Con(\Hh)\quad\Longleftrightarrow\quad\Con(\mathrm{ZFC}).
+\]
+Here consistency on the right is absence of an ordinary finite ZFC refutation. This statement does not assert a new internal PA proof-code equivalence or a new machine-halting theorem.
+\end{theorem}
+\begin{proof}
+Assume $\Hh\nvdash F$. A refutation of $T_0$ in the complete genuine-bottom Tarski calculus would translate, by Section~\ref{sec:interpretation} and the literal theory translations of Section~\ref{sec:theory}, to a proof of $F$ in $\Hh$. Hence $T_0$ is consistent. The existing ordinary completeness theorem supplies a relational structure satisfying all its axioms under all assignments and a valuation witnessing nonemptiness. This is not an empty-domain shortcut: failure of semantic validity of bottom includes an actual valuation.
+
+IR makes the model irreflexive, so the native alias $F$ is false under every assignment, even under binders of label 0. The exact container adapter extracts Containers from $C(2,3,1)$. For each equality-free $\varphi$, the named GIC adapter applied to the literal instance in~\eqref{eq:matrix} yields its collection instance. Thus the structure satisfies \file{ProfileModel.ModelsCPGIC}.
+
+The existing \file{WFTheory.zf_consistent_of_model} turns a nonempty such model into ordinary $\Con(\mathrm{ZF})$, including Foundation. The existing \file{ChoiceCalibration254.zf_refutation_iff_zfc} then yields $\Con(\mathrm{ZFC})$.
+
+Conversely, every retained surgical row belongs to the original calibrated source. Its only new presentation,~\eqref{eq:helper}, is already an instance of original equality vacuity, since $k_{ab}>a,b$. The bundled presentation is recovered by ordinary component projection and reassembly. Hence any $\Hh$ refutation would give an original-source refutation. The original source/ZFC comparison yields $\Con(\mathrm{ZFC})\To\Con(\Hh)$.
+\end{proof}
+
+\subsection{The restricted adapter is mathematical work, not an existing theorem name}
+The packaged reference files state the following precise endpoints:
+\begin{itemize}
+\item \file{TarskiComplete.completeness} proves completeness of \file{Tarski.Thm} for arbitrary theory axioms valid under all assignments, given the classical theorem predicates supplied by \file{Lukasiewicz.lean}.
+\item \file{Code254Containers.container_at_of_namedC} extracts a container using the exact $C(2,3,1)$ instance, with its original internal shadowing.
+\item \file{Code254GIC.sat_toNamed}, \file{pad_code_gt_three}, \file{not_free_enc}, \file{collection_at_of_namedG}, and \file{matrix_relation} supply hygienic naming, actual-code freshness, and the collection extraction.
+\item \file{ProfileModel.ModelsGIC} quantifies only over equality-free ordinary formulas $\varphi$ and all parameter environments.
+\item \file{WFTheory.zf_consistent_of_model} has hypothesis a relation, a witness in its domain, and \file{ModelsCPGIC}; its conclusion says that \file{BProv} admits no derivation of \file{Form.fBot} from \file{ZFax_s} and the empty local context.
+\item \file{ChoiceCalibration254.zf_refutation_iff_zfc} equates ordinary ZF and ZFC refutations by the external constructible-model argument.
+\end{itemize}
+In particular, \file{Code254GIC.modelsGIC_of_encBundle} is stated for the stronger hypothesis containing all encodable bundles. It is not literally a ready-made Lean theorem for $T_0$. Its proof requests the named matrix for the current $\varphi$; restricting those calls to the equality-free instances selected above gives the required mathematical adapter. Implementing that specialization in Lean remains an explicit task.
+
+The quotient stage \file{QuotientCPGIC.quotient_fullCPGIC} supplies full-formula CP/GIC. It does not promise that raw irreflexivity survives quotienting, and this proof does not need that claim. \file{WFTheory} constructs the appropriate internally well-founded model and does not require quotient IR as an extra premise. This prevents a false Foundation gap from being introduced at the quotient stage.
+
+The selected reference Lean files are included for statement inspection, with their hashes and repository revision. This checkpoint has not rebuilt them or audited their entire dependency closure. Their existing results are premises of the comparison, rather than newly machine-checked achievements of this package.
+
+\section{Broader canonical and projection variants}\label{sec:variants}
+The same equality interpretation applies when $\rho_8$ is replaced by $K$, $S$, and positive canonical vacuity
+\[
+ V(n):\quad\dec(n)\To\All_n\dec(n).
+\]
+Let $\Hs$ retain $\rho_1$--$\rho_6$, primitive symmetry, membership vacuity, CP/GIC and these propositional rows, deleting full equality vacuity and primitive $\rho_7$. Let $\Hr$ retain $\rho_7$ instead of primitive symmetry. The ordinary argument gives
+\[
+ \Con(\Hs)\ \Longleftrightarrow\ \Con(\Hr)\ \Longleftrightarrow\ \Con(\mathrm{ZFC}).
+\]
+For $\Hr$, Lemma~\ref{lem:sym} supplies symmetry from the canonical helper on reflexive equality atoms. For $\Hs$, symmetry is already a row. Neither assertion says the omitted primitive equality-vacuity family or primitive $\rho_7$ is derivable; comparison equality is interpreted as $E$.
+
+\subsection{Classicality is a separate bridge}
+The finite $K/S$ bridge derives double-negation elimination for arbitrary $A$ from weak vacuity
+\[
+ A\To\neg\neg\All_iA,
+\]
+using $\rho_1,\rho_2,\rho_6$, closed GEN and MP. Canonical $V$ supplies this premise at $i=\enc(A)$ by double-negation introduction. The schematic finite certificate then derives the exact original $\rho_8$. Its historical filename contains ``atomic'', but its formula parameter is arbitrary, not restricted to atoms. The independent replay keeps weak vacuity as an explicit leaf; the ordinary argument is responsible for discharging it using the selected $V$ row.
+
+A positive standalone $V$ row permits this classicality step before projecting the negative bundle containing CP, GIC, and membership vacuity. Moving $V$ inside a gated or negative bundle creates a new schema-supply obligation; a cost receipt for some other placement does not discharge it. The surgical theory avoids this issue by retaining $\rho_8$ unchanged.
+
+\subsection{Projection vacuity and auxiliary codes}
+A projection variant supplies
+\[
+ \mathrm{PV}(A,B):\quad
+ A\To\All_{\enc(A\To B)}A.
+\]
+Choosing $A=\Eq(a,b)$ gives a binder strictly larger than $a,b$. The source-to-E certificate checks the bridge with this literal binder. Choosing $B=A$ is a simple uniform choice. Auxiliary transport then relates this presentation to the fixed $E(a,b)$ of~\eqref{eq:E}, so it supplies the same existential E row. The weak-vacuity classicality bridge likewise applies at the projection-selected binder for an arbitrary formula $A$.
+
+For the reverse direction, canonical $V$ is valid by the positive-code induction in Section~\ref{sec:syntax} and the separate code-zero truth case. Projection $V$ is valid because its output code dominates the labels of its antecedent; the all-zero numeric alias again has a true antecedent. These facts justify the ordinary source comparison. They do not themselves verify an emitter's supply of every row or its binary runtime.
+
+\section{Executable certificates and their limits}\label{sec:certificates}
+The package contains selected builders, serialized proof DAGs, and independent local-rule checkers. All proof checkers are run under Python \file{-O}; their acceptance does not depend on Python assertions remaining enabled. The classical proof generator is separately run without \file{-O}, as its internal checks intentionally use assertions.
+
+\begin{center}
+\begin{tabular}{@{}p{0.44\linewidth}rrr@{}}
+\toprule
+Certificate or independent check & Roots & Nodes & Formulas\\\midrule
+Main numerical E laws & 51 & 51,413 & 46,674\\
+Canonical plus projection Eq-to-E bridges & 4 & 598 & 440\\
+Original-$\rho_7$ equality bridge & 3 & 547 & \textemdash\\
+Weak-vacuity classical bridge & 4 & 724 & 502\\
+Additional independent E edge suite & 93 & 128,379 & 117,299\\\bottomrule
+\end{tabular}
+\end{center}
+For each source-helper choice, the Eq-to-E root uses 230 nodes and the existential-E root 299 nodes. The combined artifact shares serialization but has two separate choices of exact auxiliary. The independent audit also instantiates the canonical bridge at six numerical endpoint pairs, and the original-$\rho_7$ reflexivity/symmetry/transitivity artifact at four numerical triples.
+
+The main E suite includes both transport directions; E-vacuity at its own internal binder; both membership congruences with third label 0, 1, or $k_{ab}$; all eight $\rho_7$ patterns over $\{0,1\}$; a three-distinct-label case; $E(0,0)$; and a quantifier-free self-specialization example at binder 0. The independent 93-root suite adds auxiliary binder 0 in both transport directions, vacuity binder 0, repeated endpoints, $c=k_{ab}$, and labels as large as 999.
+
+The main checker allows only $K,S$, MP, closed GEN, $\rho_1$--$\rho_6$ where used, primitive symmetry, gated membership vacuity, and Boolean-checked classical tautologies. It admits no equality vacuity, primitive $\rho_7$, CP/GIC, general substitution, specialization, alpha conversion, or E-law leaf. The separate primitive equality artifact does use $\rho_7$ and the exact helper, as stated. The bridge artifact uses its exact canonical or projection helper. The combined package must not be summarized as avoiding those leaves everywhere.
+
+The independent checker has its own leaf matching, natural-label/formula validation, DAG checks, closed-GEN tracking, and direct Boolean assignment enumeration. It uses the upstream generator as an untrusted producer of proofs; it does not call the upstream replay checker. The native regression checks test positive codes 1 through 65,535, the exact 0/1/16 facts, literal preservation of $C(2,3,1)$, translated IR, and five equality-free named/padded GIC examples. These finite checks support, but do not prove, the uniform code and logical theorems.
+
+\section{Pinned generic cost and remaining implementation work}\label{sec:cost}
+The pinned generic compilation applies the equality-only helper to the inherited 236-source tree, then reassociates four closed chunks without altering their entire ordered instruction sequence or guarded control graph. The surgical edit changes one closed scalar push from the bundle parameter $c$ to the native equality code. The saved edit certificate checks the complete old and new equality-vacuity slices and that every literal instruction path outside the edit is unchanged. The subsequent reassociation changes no further logical row.
+
+The selected source has 201 decision nodes and 23 terminal nodes. Its complete generic binary table has 263 working states, 526 rows, start state 0, working states 0--262, and separate halt state 263. The SHA-256 of \file{frontend/generic.tm} is
+\begin{center}\small\ttfamily
+bf7f459c9489e3c4cef27044d66d30c8a3d5\\
+4eaff79a38af68348d06c0bb6275
+\end{center}
+The exact source SHA-256 is
+\begin{center}\small\ttfamily
+df4e316d1862c2e5345104ce4fa1030948b\\
+e98aaf7eb5e0908a132cdb80ff455.
+\end{center}
+The generic cost receipt reports re-extraction of all source edges. Packaging independently rechecks the table and source hashes, complete binary row inventory, state/target bounds, live source-node counts, literal paths outside the surgical edit, and equality of the entire guarded source graph before and after the closed reassociation. This package does not rerun the generic optimizing compiler or re-prove its runtime simulation. The table is included as a pinned cost artifact, not as a newly calibrated ZFC machine.
+
+The minimum-path surgical edit before reassociation priced at 264 generic states; the selected closed reassociation prices at 263. Both have 201 source decision nodes. These are compiler costs, not specialized binary state counts. Neither a generic count nor its difference may be subtracted from the inherited 236-state machine, and no global optimum is claimed.
+To promote the logical theorem to a new calibrated machine, the remaining work is:
+\begin{enumerate}
+\item Define the reduced native proof relation and formalize the uniform equality interpretation, including exact labels, genuine-bottom translation, and the helper's schema coverage.
+\item Implement the restricted equality-free named CP/GIC adapter described in Section~\ref{sec:consistency}, rather than invoking the stronger all-bundles theorem with an unmet premise.
+\item Formalize the ordinary source/enumerator binding supplied in Appendix~\ref{sec:binding}, including the exact gates, bundle layout, native coding, parser arity, and row coverage, against the new proof-assistant relation.
+\item Verify every selected compiler, runtime, startup, and folding transformation against a literal complete binary transition table, and compose the blank-halting bridge with the logical comparison.
+\end{enumerate}
+Until those steps are complete, the proved improvement is the logical reduction itself. The independent audit found no remaining logical gap in the ordinary comparison at the stated scope. It did not produce a new modified Lean theorem or a machine with at most 235 states.
+
+\section{Reproducing and inspecting this checkpoint}\label{sec:repro}
+Appendix~\ref{sec:kappa} extends the helper theorem to other native constructor binders, including the diagonal zero collision.
+
+The archive is deliberately small: it contains this article, selected certificates and audit programs, a single pinned generic-cost table, and selected existing Lean reference files. It omits the large search trees and search histories.
+
+From the extracted package directory, run
+\begin{lstlisting}
+python3 tools/verify_package.py
+python3 tools/replay_all.py
+pdflatex -interaction=nonstopmode -halt-on-error source.tex
+pdflatex -interaction=nonstopmode -halt-on-error source.tex
+\end{lstlisting}
+The first command validates the package SHA-256 manifest. The second copies the proof/audit material into a fresh temporary directory, regenerates the four proof artifacts, compares their bytes to the bundled versions, runs the independent replays and edge checks, and verifies the pinned frontend inventory, source-graph checks, and 26 source/enumerator identifications. Temporary replay outputs do not mutate the hashed package. The replay suite requires only Python's standard library; PDF rebuilding additionally requires pdfLaTeX and the packages named in the preamble. Successful replay is a finite-certificate result and is reported as such.
+
+\file{PROVENANCE.json} records the original source locations and packaging-only path adaptation. The selected existing Lean files are from clean repository revision
+\begin{center}\small\ttfamily
+7ba1598461c6e485c5aeb8f673c0b1d571f8012b.
+\end{center}
+They are provided as reference excerpts, not a self-contained Lean project. The supplied 236-state package has separate provenance, commit \file{0b5fec6980}. Neither revision is represented as containing the new reduced native theorem.
+
+\subsection*{Reading guide}
+For the ordinary theorem, Sections~\ref{sec:tools}--\ref{sec:consistency} contain the proof in dependency order. For exact numerical coupling, read Sections~\ref{sec:syntax} and~\ref{sec:theory}. For the review boundary, read Sections~\ref{sec:certificates}--\ref{sec:cost}. The accompanying \file{audit/mathematical_audit.md} records the independent mathematical review; the article incorporates its designated-bottom caveat and its distinction between a restricted adapter construction and an already implemented Lean theorem.
+
+\appendix
+\section{Other helper binders and the diagonal zero case}\label{sec:kappa}
+The main theorem does not require the equality helper to use an equality code. This extension gives the exact flexibility available to later source implementations; it leaves the pinned cost in Section~\ref{sec:cost} unchanged.
+
+\begin{theorem}[Safe off-diagonal helper]\label{thm:kappa}
+Let $\kappa:\mathbb N^2\To\mathbb N$ satisfy only
+\[
+ a\ne b\quad\Longrightarrow\quad\kappa(a,b)\notin\{a,b\}.
+\]
+Keep original $\rho_8$, $\rho_1$--$\rho_6$, membership vacuity and exact CP/GIC, and keep either original $\rho_7$ or primitive equality symmetry. Replace full equality vacuity by
+\[
+ \Eq(a,b)\To\All_{\kappa(a,b)}\Eq(a,b).
+\]
+The resulting ordinary theory is equiconsistent with ZFC at the scope of Theorem~\ref{thm:main}. There is no restriction on $\kappa(a,a)$.
+\end{theorem}
+\begin{proof}
+In the $\rho_7$ variant, fix $x$ and put $z=\kappa(x,x)$, $d=\Eq(z,x)$ and $e=\Eq(x,x)$. Row $\rho_7$ gives $d\To(d\To e)$ and hence $d\To e$. Row $\rho_1(z,x)$ and existential monotonicity yield $\Ex_z e$. The diagonal helper and another application of existential monotonicity yield $\Ex_z\All_z e$, and $\rho_6$ yields $e$. Thus primitive reflexivity and symmetry are recovered even when $z=x=0$. No freshness premise appears in this derivation. The primitive-symmetry variant can skip it.
+
+Keep interpreted equality fixed as $E(a,b)=E_{ab}^{\weq(a,b)}$. If $a\ne b$, the assumed condition makes $z=\kappa(a,b)$ safe. The same source-helper bridge proves $\Eq(a,b)\To E_{ab}^{z}$, and Lemma~\ref{lem:transport} takes this to $E(a,b)$. If $a=b$, both membership matrices defining the fixed-safe-auxiliary $E(a,a)$ consist of identity implications. Their negative conjunctions, closed GEN, and conjunction introduction prove $E(a,a)$ directly. Hence $\Eq(a,a)\To E(a,a)$ follows by $K$, without using the potentially colliding helper or any primitive equality fact. In both cases existential monotonicity and $\rho_1(a,b)$ supply $\Ex_a E(a,b)$. The remaining E laws and the theory comparison are unchanged.
+
+For the reverse direction, an off-diagonal helper is an instance of old equality vacuity. A diagonal helper is derivable in the old calculus from equality reflexivity, closed GEN at the chosen binder, and $K$, regardless of collision. Primitive symmetry is also an old theorem.
+\end{proof}
+If the helper remains inside the old gate $c\ne a,b$, choose any such $c$ to project it. At a diagonal collision one must not choose $c=\kappa(a,a)$; the bundle parameter and the helper's internal binder have independent roles.
+
+All native constructors $4P(a,b)+t$ for $t=0,1,2,3$, with either argument order, satisfy the condition. Positive tags always exceed both arguments. For tag 0, $P(a,b)>0$ unless $(a,b)=(0,0)$, and then $4P(a,b)>a,b$. The sole collision for either implication builder is $\kappa(0,0)=0$, explicitly covered above. Thus the canonical equality-code control and all seven other constructor/order choices are admitted; symmetry of $\kappa$ is unnecessary.
+
+The included \file{proofs/check_general_kappa.py} checks 169 closed roots and 27,486 proof nodes under Python \file{-O}. It covers all eight builders, off-diagonal source-to-E bridges, primitive equality facts with diagonal labels 0, 1, 2 and 999, and fixed-safe-auxiliary diagonal E/existence proofs. The collision is tested literally. These finite checks supplement the uniform argument; they do not themselves certify an effective builder, its schema coverage, an altered enumerator, or a runtime. The ordinary source-level binding for selected emitted builders is a separate result in Appendix~\ref{sec:binding}.
+
+\section{Ordinary source and enumerator binding}\label{sec:binding}
+A separately reviewed ordinary source/enumerator theorem is supplied in \file{source_binding/ORDINARY_PROOF.md}, with an independent finite binding checker and 26 pinned source inputs. It covers the selected surgical source, the canonical $H_7/H_{\mathrm{sym}}$ sources, and the saved constructor-binder variants. For the exact abstract register program, started at its genuine root with clean selector/scratch registers and safe theorem fields, the theorem is
+\[
+ \operatorname{HaltsFrom}(s)\quad\Longleftrightarrow\quad D(1),
+\]
+where $D$ is the specified native numerical calculus: truth code 0, its exact axiom rows and gated bundle, and closure under numerical MP and theorem GEN. Soundness uses the invariant that the current, cached, and every stacked formula code belongs to $D$. Completeness constructs a finite command block for each $D$ derivation and proves fair, cofinal enumeration of a refutation word.
+
+The proof accounts for the changed row and parser counts. Surgical sources emit nine rows including GEN, read both $y$ and $u$, and use ten NIPs for full AX cleanup. The canonical $K/S/V$ sources emit eleven rows, read $y$ only, and use twelve NIPs. Their old four-field AX serialization is not reused unchanged. Cofinal padding increases the reset command's $x$ field, so the proof works even after deletion of the old unused $u$ field. Every surviving candidate has a strictly decreasing residual program code, ensuring termination or halt before the next candidate. The distinction between safe-start soundness and completeness from arbitrary formula fields is explicit.
+
+The independent checker parses the pinned 219-node \file{Dag254.v} as data, grafts the exact changed AX macro word into its scheduler, and checks complete resolved control graphs. The only permitted normalizations are increment commutations with no interior entry and five explicitly proved terminating pretest/posttest loop identities. It verifies row formulas, gate structure, old-cache GEN use, parser reads, all source operations and branches, and the unique halt. Four adversarial changes are rejected. It imports no optimizer or emitter. The package includes the source bytes of ten reused Lean providers and records their hashes; those providers' full dependency closure was not rebuilt.
+
+This supplement establishes an ordinary source-level supply and enumeration result, so it is stronger than isolated AX-stack testing. It remains separate from a new Lean/Rocq declaration and from the literal binary runtime, decoder allocation, blank initialization, folds, or a state bound. In particular, it does not turn the pinned generic-cost table into a newly verified ZFC machine. The reduced logical interpretation and restricted model adapter also remain to be formalized in a proof assistant.
+
+\begin{thebibliography}{9}
+\bibitem{source113} ProveIt project, Source113, \emph{Numerical logical basis repairs}, pinned at repository commit \file{7fc67b181}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/7fc67b181/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/113-aud236-theory-README.md}{Public source}. Exact reviewed copy in \file{prior_art/Source113-theory-README.md}.
+\bibitem{tarski} ProveIt project, selected files \file{TarskiCalculus.lean}, \file{TarskiComplete.lean}, \file{TarskiFalsity.lean}, and \file{Lukasiewicz.lean}. Pinned repository revision in \file{PROVENANCE.json}; copies in \file{reference_lean/}.
+\bibitem{native} ProveIt project, \file{Code254.lean}, \file{Code254Containers.lean}, and \file{Code254GIC.lean}. Native syntax and exact CP/GIC adapters; selected copies in \file{reference_lean/}.
+\bibitem{models} ProveIt project, \file{ProfileModel.lean}, \file{QuotientCPGIC.lean}, \file{WFTheory.lean}, and \file{ChoiceCalibration254.lean}. Equality-free collection, the quotient/well-founded construction, and the external ZF/ZFC comparison; selected copies in \file{reference_lean/}.
+\bibitem{certs} Equality-reduction research certificates, 19 October 2026. Builders and proof-local replays in \file{proofs/}; independent edge checks and review in \file{audit/}. Every distributed file is covered by \file{SHA256SUMS}.
+\end{thebibliography}
+\end{document}

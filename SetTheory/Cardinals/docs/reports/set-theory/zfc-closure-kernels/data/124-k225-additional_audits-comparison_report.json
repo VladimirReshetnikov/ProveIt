@@ -1,0 +1,128 @@
+{
+  "status": "DISTINCT_226_COMPARISON_AND_COMPOSED_225_LOCAL_PASS",
+  "candidates": {
+    "archive01": {
+      "canonical_sha256": "f2c2fde39bcdb236a0ec53d5ca4867549fb5a85409a9aee38eb0cf9288f386bc",
+      "source_metrics": {
+        "dag_nodes": 211,
+        "leaf_occurrences": 5121,
+        "maximum_depth": 37,
+        "maximum_zero_run": 6
+      },
+      "literal_rows": 452,
+      "physical_source_states": 177,
+      "logical_source_roles": 188,
+      "source_prefix_binding_failures": 0
+    },
+    "archive06": {
+      "canonical_sha256": "789e9d1cf04567223823bfdda7d0b4922d7018718fc0daf67c6f5b0c6b4c9b26",
+      "source_metrics": {
+        "dag_nodes": 211,
+        "leaf_occurrences": 5121,
+        "maximum_depth": 41,
+        "maximum_zero_run": 6
+      },
+      "literal_rows": 452,
+      "physical_source_states": 177,
+      "logical_source_roles": 188,
+      "source_prefix_binding_failures": 0
+    }
+  },
+  "comparison": {
+    "same_ordered_primitive_occurrences": true,
+    "same_complete_guarded_source_graph": true,
+    "differing_normalized_literal_rows": 52,
+    "common_K_deletions": [
+      79,
+      140,
+      175
+    ],
+    "archive01_additional_deleted_K_label": 208,
+    "archive06_additional_deleted_K_label": 65,
+    "archive01_context_175_left_zero_reassigned_to_K": 229,
+    "archive01_208_to_76_helper_rows": {
+      "76/0": [
+        0,
+        -1,
+        152
+      ],
+      "76/1": [
+        1,
+        -1,
+        148
+      ]
+    },
+    "archive06_fold65_to152_rows": {
+      "152/0": [
+        0,
+        -1,
+        159
+      ],
+      "152/1": [
+        1,
+        -1,
+        169
+      ]
+    },
+    "crucial_archive01_inductive_guards": {
+      "76": {
+        "-2": 1
+      },
+      "152": {
+        "-1": 1
+      },
+      "229": {
+        "-1": 0
+      }
+    }
+  },
+  "composition225": {
+    "candidate_klabels_sha256": "0847184fa05327daefa45c7012ce2c75fe58bf03d1dc930fe152e9fac55b4fbc",
+    "source_sha256": "86b28af08e646eb7da8b822f63a03173ef5182e5a2ebc0404008e1b2af41b55b",
+    "source_metrics": {
+      "dag_nodes": 211,
+      "leaf_occurrences": 5121,
+      "maximum_depth": 38,
+      "maximum_zero_run": 6
+    },
+    "same_complete_guarded_source_graph": true,
+    "ordered_rotations": [
+      [
+        169,
+        136,
+        "right"
+      ],
+      [
+        170,
+        169,
+        "right"
+      ],
+      [
+        169,
+        154,
+        "left"
+      ],
+      [
+        159,
+        118,
+        "right"
+      ]
+    ],
+    "fold": {
+      "keep": 152,
+      "drop": 229,
+      "helper_read0": 159,
+      "helper_read1": 170
+    },
+    "literal_rows": 450,
+    "local_proof_status": "PASS_ALL_TAPE_POSITIVE_BLOCK_SIMULATION",
+    "local_positive_blocks": {
+      "1": 448,
+      "3": 4
+    },
+    "source_prefix_binding_failures": 0,
+    "source_roles": 188,
+    "physical_source_states": 176,
+    "scope": "Independent source-aware reconstruction, guarded source graph equality, full source-prefix binding, and all-tape local fold. Final direct runtime/startup and baseline proof calibration are separate dependencies."
+  }
+}

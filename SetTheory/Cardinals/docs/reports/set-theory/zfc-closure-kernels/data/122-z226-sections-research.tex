@@ -1,0 +1,113 @@
+\section{Other formalisms and where their encoding costs move}
+\label{sec:formalism-encoding-comparison}
+
+The strongest route in this delivery is to retain K230's calibrated
+proof enumerator and improve its implementation.  A shorter axiom or a
+smaller theory packet is useful only if it reduces the complete blank-tape
+machine after the interpreter, finite-proof search and initialization
+have been combined.  The alternatives below identify mathematically
+sound interfaces for further work while keeping measured packet sizes
+separate from measured machine states.
+
+\paragraph{K and the inherited native enumerator.}
+K230 already connects its exact nonzero search seed, numerical formula
+codes, finite derivations and binary table to ordinary ZFC refutation.
+The calibration is unusually concrete: the K-to-ZFC comparisons transform
+finite proofs, and the final Rocq theorem names the literal machine.
+The main construction preserves this logical interface.  The four
+transfer-plus-one normalizations and later source layouts change how
+the same search is executed; direct whole-machine simulation establishes
+the link to the changed table.  This gives a complete state count and
+a usable correctness boundary.\cite{k230}
+
+The shorter K schema retains native first-order equality, irreflexivity
+in its encoded presentation, all eight inherited logical roots, and the
+four formula tags.  Removing equality rules or switching to a smaller
+tag alphabet would require a new completeness and decoding proof.
+Source 14's earlier equality-free numerical proposals are a concrete
+reason to insist on that obligation: Boolean valuations validate their
+emitted rules while making the target false, even though the intended
+ordinary set-theoretic schema has the desired consistency strength.
+The intended axioms and the actually enumerated calculus must agree.
+\footnote{Pinned primary project record:
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/ce192939372ac7944fe2a0208c68a96d49fb5e3b/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-146-source-14.md}.}
+
+\paragraph{Direct ZFC and finite arithmetic presentations.}
+A direct checker can enumerate finite strings and halt upon finding a
+ZFC refutation.  Its calibration is immediate from the proof predicate,
+but its table must implement axiom-schema recognition, substitution,
+inference checking and fair enumeration.  A finite axiom list can move
+these costs into one complicated formula.  For example, for a fixed
+$\Pi^0_1$ sentence $\theta$, ordinary ZFC proves
+\[
+ \Con(\mathsf Q+\theta)\longleftrightarrow\theta.
+\]
+If $\theta$ fails, its finite witness yields a Robinson-arithmetic proof
+of $\neg\theta$; if $\theta$ holds, the natural-number interpretation
+and finite-proof soundness give consistency.  Taking
+$\theta=\Con(\mathrm{ZFC})$ therefore gives a finite equiconsistent
+arithmetic presentation.  Its added sentence still contains the
+arithmetized ZFC proof predicate.  This observation supplies no smaller
+implemented checker or state count.
+
+\paragraph{Raw closure and finite class-theory routes.}
+The inspected empty-input EPSC result removes PSC's distinguished seed
+parameter in an equality-free membership language.  The raw schema's
+active inputs are all empty objects; support first supplies an empty
+object, and raw power, separation and subset-bound constructions recover
+the seeded closure scheme.  The dossier gives finite schema-instance
+derivations and the inherited ordinary-ZFC consistency comparison.
+This is a substantive logical simplification, while its compressed
+numerical frontend still needs the same end-to-end calibration as K.
+
+A finite class-theory presentation could replace recognition of arbitrary
+schema instances by a fixed list of closure operations.  The specific
+18-equation Df3/finite-class-theory route in the inspected dossier stops
+at a proposal: it supplies neither the actual ZFC target term nor its
+translation.  At that artifact boundary there is no complete calibrated
+payload to compare with the delivered machine.  Constructing those two
+objects, then measuring their joint interpreter and initializer, would
+make the proposal assessable.
+
+\paragraph{E639: bind the descriptor inside its own class.}
+The equational supplement gives a more concrete alternative: seven
+equations, nine operation symbols and a ground query, encoded in
+\textbf{639 bits}.  Relative to the inherited E663 packet, it replaces
+\[
+ R_b(x,y)=p_\varepsilon(P(y,P(x,b)),V(b,d))
+ \quad\hbox{by}\quad
+ \widetilde R_b(x,y)=p_\varepsilon(P(y,P(x,b)),b).
+\]
+There are three occurrences.  Removing two term nodes at each occurrence
+saves exactly $3\cdot2\cdot4=24$ bits in the unchanged codec.
+
+The saving needs a representation proof: the descriptor must carry
+parameters and simultaneously denote the desired formula class.
+With $P$ acting as NAND under class evaluation, put
+\[
+ T=P(d,P(d,d)),\quad S_{k+1}=T,\quad
+ S_i=P(p_i,P(p_i,S_{i+1})),\quad b=P(P(c,c),S_1).
+\]
+Every $S_i$ evaluates to truth and $b$ evaluates to the same class as $c$.
+In the environment $P(y,P(x,b))$, output and input occupy coordinates
+zero and one; parameters occupy coordinates $3,5,7,\ldots$.
+Build $c$ first using these fixed indices, then build $b$.  Thus parameter
+binding is finite and noncircular.  The accompanying proof establishes
+both model directions with explicit well-founded constructor weights.
+The consistency target is the equations together with $Q(d)\ne d$;
+equations alone always admit a one-element model.  This is a proved
+24-bit descriptor-binding improvement, with no claimed TM state bound.
+
+\paragraph{What a new equational interpreter must achieve.}
+Ground congruence certificates can avoid a general first-order
+capture-avoiding substitution engine.  They still require arbitrary
+ground instances, either rewrite direction, replacement inside arbitrary
+contexts, and fair coverage of every finite derivation.  The earlier
+measured E7 generator compiled to 299 working states before supplying
+its ZFC-specific query and writer; its isolated emitter used 171.
+Those are costs of that particular architecture, neither a compilation
+nor a lower bound for E639.\footnote{Pinned primary experiment:
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/Computability/BusyBeaver/Research/ZFC/equational_generator_cost.md}.}
+The useful next experiment is therefore a complete alternative interpreter
+with the 639-bit payload charged, followed by the same source, startup and
+unbounded runtime checks used for the K transplants.

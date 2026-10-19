@@ -1,0 +1,238 @@
+\section{A 227-state port by constrained source reassociation}
+\label{sec:source227}
+
+The new candidate has 227 working states, a binary tape alphabet, and one
+designated halting state.  This section uses the inherited numerical state
+labels, with start state 95, dispatcher 96, and halt label 254.  A separate
+renumbering gives the usual consecutive labels.  The construction begins
+with the 229-state result of the loop rotation and the state-90/72 fold.
+Its additional stages are
+\[
+ T_{229}\ \longrightarrow\ B_{229}\ \longrightarrow\ B_{228}
+ \ \longrightarrow\ T_{227}.
+\]
+The first arrow changes the source parenthesization and its binary decoder
+without changing the number of working states.  The next arrow is a
+context-sensitive fold of state 218.  The final arrow is the delayed-erasure
+fold of state 169 into state 80.  The intermediate $B_{228}$ is distinct
+from the direct 228-state delayed-erasure port obtained from $T_{229}$.
+
+\subsection{Exact scope of the source change}
+
+The source before and after this construction has 5,121 instruction
+occurrences.  Numbering these in their common left-to-right order, every
+instruction, register operand, and guarded successor is identical.  There
+are 6,656 guarded cases, counting the zero and positive cases of each
+decrement separately.  Although 4,916 leaf paths change, the ordinal
+guarded operational graph does not change.
+
+The source directed acyclic graph has 212 distinct nodes before the
+reconstruction and 211 afterwards.  Its maximum leaf depth falls from 40
+to 37.  Its longest run of zero bits is six in both the calibrated input
+and the final result.  Intermediate source rearrangements can have a
+seven-zero run and are not accepted as final binary encodings.
+
+The reconstruction records seven source stages.  The first three transfer
+the exact common chunks of stages 1, 5, and 9 of the earlier source103
+boundary-fold construction.  The fourth and fifth move the terminal
+break through two closed chunks.  The sixth repairs an entry context
+specific to K230.  The final stage reparses an ordered sequence of 49
+closed atoms.
+
+\begin{center}
+\begin{tabular}{rlll}
+Stage & Operation & Chunk sizes & Occurrences\\\hline
+1 & left reassociation & $19,7,26$ & 10\\
+2 & left reassociation & $189,212,651$ & 1\\
+3 & left reassociation & $2,82,80$ & 1\\
+4 & right reassociation ending in break 1 & $81,4853,1$ & 1\\
+5 & right reassociation ending in break 1 & $527,4326,1$ & 1\\
+6 & right reassociation at states 502/501 & $52,54,189$ & 1\\
+7 & ordered 49-atom reassociation & 4,326 leaves in total & 1
+\end{tabular}
+\end{center}
+
+Here a left reassociation replaces $(A,(B,C))$ by $((A,B),C)$, and a
+right reassociation makes the inverse change.  These names describe
+parenthesization, not movement of the Turing-machine head.
+
+\subsection{An elementary source-equivalence proof}
+
+For an instruction tree $U$, let
+$\partial U=(b_U,c_U,h_U)$ bound its escaping break levels, escaping
+continue levels, and the presence of a halt instruction.  On leaves,
+\[
+\begin{aligned}
+ \partial\mathrm{CI}(r)&=(0,0,\mathrm{false}),&
+ \partial\mathrm{CD}(r)&=(1,0,\mathrm{false}),\\
+ \partial\mathrm{CB}(k)&=(k,0,\mathrm{false}),&
+ \partial\mathrm{CC}(k)&=(0,k,\mathrm{false}),\\
+ \partial\mathrm{CH}&=(0,0,\mathrm{true}).
+\end{aligned}
+\]
+Writing $x^+=\max(x,0)$, the recursive clause is
+\[
+ \partial(A,B)=
+ \bigl(\max((b_A-1)^+,b_B),
+       \max(c_A,(c_B-1)^+),h_A\lor h_B\bigr).
+\]
+An atom with signature $(0,0,\mathrm{false})$ is closed: its nonlocal
+control instructions resolve inside the atom.  Any parenthesization of
+an ordered list of such atoms preserves their register actions and
+control destinations.  A fall-through still reaches the next ordinal
+instruction.  A divergent execution inside an atom is preserved as
+well, so this argument does not assume that any atom terminates.
+
+Stages 1--3 and 6 have three closed chunks.  Every one of the 49 atoms in
+stage 7 is also closed.  In stages 4 and 5 the first two chunks are
+closed and the last chunk is the single instruction $\mathrm{CB}(1)$.
+The latter instruction changes its suffix from $1$ to $11$ under the
+right reassociation.  No zero is inserted on its ancestry, so the
+nearest enclosing zero edge and hence its break destination are
+unchanged.  These observations establish each source stage directly.
+
+The executable reconstruction additionally computes the complete guarded
+source graph twice at every stage.  One resolver uses binary successor
+and path cutting.  It checks that every unused suffix after resolution
+contains only zeros, the required no-stray-bit condition.  The other
+resolver independently assigns ordinal intervals to trie nodes and
+walks outward through ancestors to resolve breaks and continues.  Both
+resolvers agree with each other and with the input graph, and the
+initial ordinal leaf is zero throughout.
+
+Consequently, corresponding source configurations with any nine
+natural-valued registers make identical register updates and select
+identical ordinal successors.  Induction proves equality of every finite
+source run.  The same step correspondence preserves infinite runs and
+halting.  This is a proof for all register values obtained from a finite
+description of the operational graph.
+
+\subsection{The new layout search}
+
+The successful search treats source parenthesization as an ordered
+binary-tree optimization subject to decoder constraints.  The affected
+component is rooted at inherited state 528, at source prefix
+\texttt{11101001001110}.  Its 49 atoms contain 4,326 instruction
+occurrences.  Its 48 internal decoder labels are reused.  The atoms,
+their order, and their internal source trees are fixed.
+
+For an entry context, retain the last two path bits and the current
+length of the trailing zero run.  Appending a left or right edge updates
+this finite context.  The discovery filter rejects a zero run exceeding
+six, rejects changes to the inherited two-bit entry tags of the selected
+nontrivial decoder nodes, and requires every source entry to state 179
+to have a preceding zero.  States serving the startup and backward-read
+helper paths are placed inside fixed atoms rather than freely reparsed.
+These filters guide discovery; the final symbolic runtime proof remains
+the correctness check for arbitrary counters and spares.
+
+Let $A_i,\ldots,A_{j-1}$ be an interval of atoms and let $C$ be its set of
+possible incoming contexts.  If $L(C)$ and $R(C)$ append a zero and a one,
+respectively, and $W_{ij}$ is the number of instruction occurrences in
+that interval, the dynamic program uses
+\[
+ D(i,j,C)=\min_{i<k<j}
+ \bigl(D(i,k,L(C))+D(k,j,R(C))+W_{ij}\bigr).
+\]
+For a single atom the cost is zero when all its fixed paths satisfy the
+constraints, and is infinite otherwise.  The objective is the sum of
+atom entry depths weighted by atom sizes.  For this component it falls
+from 27,716 to 26,568.  The result is optimal for this fixed atom sequence,
+objective, and context filter; no global minimality claim is made for
+the source or the Turing machine.
+
+The deliverable does not need to rerun this search.  The construction
+record contains the literal old and new binary patterns, numbers every
+atom from 0 through 48 in ordinal order, pins each atom by its source
+hash, and records all 48 reused state labels.  The replay verifies that
+neither pattern drops, duplicates, or permutes an atom.  Thus optimizer
+implementation or tie-breaking choices are outside the replay's trust
+requirements.
+
+\subsection{Decoder and helper repairs}
+
+Recompiling the new source into $B_{229}$ changes 62 literal transition
+rows.  The complete edit set and every old-row precondition are in the
+construction record.  Three helper adjustments deserve explicit mention.
+First, state 61 acquires a changed forward decoding role, so the backward
+use at $120/1$ is redirected to the already existing state 202, whose
+required branch has the same behavior.  Second, the terminal break's
+longer one suffix is handled by
+\[
+ 138/1=0\ L\ 120.
+\]
+Third, state 529 is reused as the internal helper of $218/0$:
+\[
+ 218/0=0\ L\ 529,\qquad
+ 529/0=0\ R\ 16,\qquad 529/1=1\ R\ 99.
+\]
+This restores a backward branch whose former decoder continuation was
+changed by source reassociation.  The basis therefore still has 229
+states.  The purpose of these edits is to obtain the useful entry
+contexts without introducing an additional helper state.
+
+\subsection{The boundary fold from 229 to 228 states}
+
+In $B_{229}$ the only incoming transitions to state 179 are $236/0$ and
+$501/0$, both writing zero and moving right.  State 218 has three
+incoming ports: $187/1$, $220/1$, and $237/0$, all moving right.  The
+sole incoming transition to helper 529 is $218/0$, a left move.
+
+Delete state 218.  Redirect each old right-moving call of 218 to state
+529 if that call writes zero, or to state 179 if it writes one.  Make
+the following three row replacements:
+\[
+ 179/1=1\ L\ 215,\qquad
+ 529/0=0\ R\ 23,\qquad 529/1=1\ R\ 70.
+\]
+All other ordinary transitions are unchanged.  The finite certificate
+checks these six block identities, where $t$ is the preceding tape bit,
+$b$ is the scanned bit, and every endpoint has head displacement $+1$:
+\begin{center}
+\begin{tabular}{rrrrrrr}
+Old state & $t$ & $b$ & New state & Old steps & New steps & Endpoint\\\hline
+179&0&0&179&1&1&105\\
+179&0&1&179&1&5&105\\
+218&0&0&529&3&1&23\\
+218&0&1&529&1&1&70\\
+218&1&0&179&3&1&105\\
+218&1&1&179&1&3&70
+\end{tabular}
+\end{center}
+Each block reads only the preceding and scanned cells and restores both
+exactly.  All other tape cells are arbitrary and untouched.  Old helper
+529 is internal to the three-step $218/0$ block and is not a separate
+checkpoint.  The incoming-port check establishes the preceding-bit
+premises whenever an exceptional checkpoint is entered.  The start state
+is ordinary, and each paired block has positive length in both machines.
+Composing the blocks proves a whole-tape simulation from start state 95
+on every binary tape, preserving both finite halting and infinite runs.
+
+\subsection{The final fold and the blank start}
+
+The delayed-erasure fold then deletes state 169 and makes
+\[
+ 147/0=0\ R\ 80,\qquad
+ 80/0=0\ L\ 106,\qquad
+ 91/1=1\ L\ 167.
+\]
+The resulting table has 227 working states and 454 transition rows.
+The exact table, source, and stage hashes are checked by the replay.
+The independent unbounded binary-runtime proof is applied directly to
+this final table and the reconstructed source; it is not inferred from
+a bounded instruction test.
+
+The replay also executes the complete blank startup of every displayed
+stage.  The input $T_{229}$, source-recompiled $B_{229}$, and split
+$B_{228}$ each reach dispatcher 96 after 409,691 transitions.  The final
+$T_{227}$ reaches the same dispatcher after 409,835 transitions.  Every
+endpoint has head position $-5$ and exactly the same 351 marked cells;
+all other cells are zero.  Comparing the full support of the tapes
+establishes equality of the complete initialization frames.
+
+The source equivalence, startup equality, and the final unbounded runtime
+certificate are separate obligations.  Together with the documented
+theorem for the pinned K230 ancestor, they support transfer of its
+blank-start halting characterization.  The new finite certificates and
+their mathematical composition argument are not presented as a newly
+checked Rocq theorem for the 227-state table.

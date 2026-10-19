@@ -1,0 +1,85 @@
+{
+  "status": "PASS_SOURCE_AND_FRAME_COMPOSITION",
+  "checker_sha256": "412d8e0eb400566a18cc30902c713943d16929f0e29d8e519f680a38177d2f58",
+  "release_sites_sha256": "400fad2b1c5f99ed8490f6346ff63088ba94fc39ada376962cee2f68c092e487",
+  "old_source_sha256": "0879180d27ae48f6d77001f8f32108c7f7b3f86df3deab86bc2bbb7e7266d588",
+  "new_source_sha256": "61450579877bc79cc4bc323ff0b8ae506064c79644107f4d818401dcfbce941b",
+  "runtime_receipt_sha256": "ef2f2862cf93c29dad3fcf8e25c3dc4b86c48afc91b5456fb063cde3f32b9355",
+  "boot_receipt_sha256": "3bc14a1426014c218307fa09c69a792e55204645c10aa92bfa920f0513164ba8",
+  "source_replacement": {
+    "occurrences": [
+      "111010010010111111000011",
+      "11101001001011111110011",
+      "1110100101100011",
+      "111110011"
+    ],
+    "old_leaves": 5125,
+    "new_leaves": 5121,
+    "macro_signature": [
+      0,
+      0,
+      false
+    ],
+    "root_signature": [
+      0,
+      0,
+      true
+    ]
+  },
+  "all_leaf_guard_cases": 6656,
+  "halting_cases": 1,
+  "nonhalting_successor_identities": 6655,
+  "overflow_cases": 3,
+  "successor_kinds": {
+    "extend_with_zeroes": 4344,
+    "same_leaf": 1781,
+    "discard_trailing_zeroes": 530
+  },
+  "successor_examples": {
+    "extend_with_zeroes": {
+      "source": "000",
+      "op": "CD",
+      "positive": false,
+      "successor": "01",
+      "next_leaf": "0100"
+    },
+    "same_leaf": {
+      "source": "000",
+      "op": "CD",
+      "positive": true,
+      "successor": "001",
+      "next_leaf": "001"
+    },
+    "discard_trailing_zeroes": {
+      "source": "100011010",
+      "op": "CD",
+      "positive": false,
+      "successor": "10001110",
+      "next_leaf": "1000111"
+    }
+  },
+  "maximum_source_depth": 40,
+  "minimum_total_instruction_area": 64,
+  "frame_growth": "G' = G + positive_decrement + counter_overflow; head' = head - counter_overflow",
+  "minimum_actual_steps": 13,
+  "entry_leaf": "000",
+  "blank_startup_steps": 409835,
+  "initial_total_instruction_area": 181,
+  "initial_extra_gap": 117,
+  "physical_seed": [
+    0,
+    0,
+    0,
+    3,
+    0,
+    0,
+    3,
+    0,
+    0
+  ],
+  "initial_spares": {
+    "length": 167,
+    "constant": 1
+  },
+  "scope": "Finite exact source and frame-composition audit. Mathematical induction and upstream logical calibration are separately stated; no new Rocq kernel check is claimed."
+}

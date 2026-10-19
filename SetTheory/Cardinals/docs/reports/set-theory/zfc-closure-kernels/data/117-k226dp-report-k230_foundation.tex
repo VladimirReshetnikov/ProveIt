@@ -1,0 +1,197 @@
+\section{The K230 foundation and its verification boundary}
+\label{sec:k230-foundation}
+
+The user-specified K230 repository supplies a substantially smaller
+\emph{foundational} starting point: its published machine already has
+230 working states, and the theory searched by that machine has a complete
+Rocq calibration to ordinary ZFC.  The version inspected here is
+\texttt{3142e4dd980f0be12f4abb636c4ae2528afc17eb} of
+\url{https://github.com/elliotglazer/k230-rocq}.
+The published table's SHA-256 is
+\begin{center}\scriptsize\ttfamily
+e7ccbcec074534cfd955f0ab94d16f13594e81974074309dc2ce663b9dfd7ba8.
+\end{center}
+This is an inherited result, not a new construction of the present work.
+It gives the appropriate calibration to retain when transferring
+compatible source rearrangements or transition-state reductions.
+
+\subsection{One schema, with an essential unconditional closure clause}
+
+Let $\varphi(y,p,\vec q)$ be any first-order formula with output variable
+$y$, input variable $p$, and an arbitrary finite tuple of parameters.
+Define
+\begin{align*}
+ p\subseteq u&\quad:\!\!\Longleftrightarrow\quad
+       \forall z\,(z\in p\longrightarrow z\in u),\\
+ W_\varphi(p,C)&\quad:\!\!\Longleftrightarrow\quad
+       (\exists y\,\varphi(y,p,\vec q))
+       \longrightarrow\exists y\,(y\in C\land\varphi(y,p,\vec q)),\\
+ H_\varphi(C)&\quad:\!\!\Longleftrightarrow\quad
+       \forall u\in C\left[
+       (\exists p\,\varphi(u,p,\vec q))\land
+       \forall p\,(p\subseteq u\longrightarrow W_\varphi(p,C))\right].
+\end{align*}
+Together with equality axioms, the ordinary theory contains every
+universal closure of
+\begin{equation}
+ \forall a\,\forall x\,\exists C\,
+ \bigl[(\varphi(x,a,\vec q)\longrightarrow x\in C)
+          \land H_\varphi(C)\bigr].
+ \label{eq:k230-ordinary-schema}
+\end{equation}
+These definitions present \texttt{KPrimeOrd} in ordinary notation.
+The formal definitions are in \texttt{KPrimeCore.v} and
+\texttt{KPrimeTheory.v}.  In particular, $H_\varphi(C)$ is required
+\emph{even when the selected seed instance is false}.  Moving it
+inside the seed implication would change the theory.  The actual emitted
+formula reorders conjunctions and moves a support witness across a
+conjunct in which that witness does not occur; the decoder bridge proves
+the correspondence.
+\footnote{Pinned source overview:
+\url{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/docs/proof-overview.md}.}
+
+The power of the schema can be seen in short exact instances.  A false
+matrix produces an empty raw object, since the support clause excludes
+every member of $C$.  For a fixed $a$, the matrix $\varphi(y,p):y=a$,
+with seed $x=a$, produces a singleton of $a$.  For raw power set, use
+\[
+                 \varphi(y,p;a)\quad:\!\!\Longleftrightarrow\quad
+                    y=p\land p\subseteq a
+\]
+with seed input and output both $a$.  The seed gives $a\in C$;
+support makes every member of $C$ a raw subset of $a$.  Conversely,
+if $p\subseteq a$, closure at the member $a$ requires a witness for
+the input $p$, and the only allowed output is $y=p$.  Hence
+$p\in C$, giving exactly $C=\{p:p\subseteq a\}$.
+
+After singletons are available, a transitive container of $a$ comes
+from the matrix saying that $p$ is a singleton of $y$, seeded by
+output $a$ and input a singleton of $a$.  If $v\in u\in C$,
+then a singleton of $v$ is a subset of $u$; the closure requirement
+therefore puts $v$ into $C$.  These constructions are the formal
+patterns in \texttt{KPRaw.v} and \texttt{KPTransitive.v}.
+They do not assume that raw objects are extensional sets.
+\footnote{The power and singleton derivations are in
+\url{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/coq/settheory/KPRaw.v};
+the transitive-container derivation is in the adjacent
+\texttt{KPTransitive.v}.}
+
+\subsection{Exact consistency target and the reusable theorem chain}
+
+The formal target is defined literally by
+\[
+ \mathsf{StandardZFC}(\psi)=
+       (\mathsf{ZFc}(\psi)\lor\psi=\mathsf{ax\_reg}')
+                       \lor\psi=\mathsf{ax\_ac}.
+\]
+Thus Foundation and Choice are included.  The development proves
+equivalence of its finite-refutation predicate with the corresponding
+predicate for both $\mathsf{KPrimeOrd}$ and
+$\mathsf{KPrimeOrdIR}$, the latter adding
+$\forall x\,\neg(x\in x)$.
+Irreflexivity is used for the machine's numerical falsity alias;
+its absence from the ordinary lower interpretation does not license
+deleting numerical logical rows.
+
+The lower consistency reduction constructs a tagged domain, relation
+codes, and a bisimulation quotient satisfying extensional ZF.  Foundation
+and Choice are transferred using the pinned upstream relative-consistency
+proofs.  The upper reduction interprets each finite schema instance in
+the constructible hierarchy, using reflection to obtain the required
+closure bounds and Separation to retain supported outputs.
+In the quotient power-set step, the proof bounds canonical representatives
+before including their equivalent representatives; it does not assume
+that every raw code lies in the same naive bound.
+\footnote{The actual refutation equivalences are in
+\url{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/coq/settheory/KUpperConsistency.v};
+the target and lower bridge are in the adjacent \texttt{KQuotZFC.v}.}
+
+The released final theorem is assembled by the following explicit chain:
+\begin{align*}
+ \operatorname{Halt}(K230,\mathrm{blank})
+ &\ \longleftrightarrow\ \operatorname{RMHalt}(p_{230},R_0)
+                      &&\texttt{tm230\_rm},\\
+ &\ \longleftrightarrow\ \operatorname{EnumHalt}(\mathsf{seed230})
+                      &&\texttt{prog230},\\
+ &\ \longleftrightarrow\ \mathsf{thm230}(1)
+                      &&\texttt{seed230\_iff\_thm},\\
+ &\ \longleftrightarrow\ \mathsf{StandardZFC}\vdash_{\mathrm{TC}}\bot
+                      &&\texttt{thm230\_iff\_standardZFC}.
+\end{align*}
+The seed is
+\[
+  (\mathit{prooflist},\mathit{nextproof},\mathit{top},\mathit{stack},
+     \mathit{parameter},\mathit{cache})=(0,3,0,0,3,0),
+\]
+not an empty initial search state.  The published blank bootstrap is
+408,419 steps.  Its physical register frame has first nine values
+$[0,0,0,3,0,0,3,0,0]$, followed by 167 spare values equal to~1.
+
+A new table that provably implements the same $p_{230}$ and seed can
+reuse the last three arrows.  A change of source tree needs a complete
+control-graph equivalence, including every jump and guarded edge.
+An all-tape simulation between whole machines can instead transport the
+published final theorem directly.  The 235-state ancestor's CP/GIC
+source is a different source program, so its old logical bridge cannot
+be silently substituted for the K230 bridge.
+\footnote{The final composition is exactly the short proof in
+\url{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/coq/tm/Correct230.v}.}
+
+\subsection{Independent input audit and retained Linux build evidence}
+
+This session independently checked the 103 local manifest entries,
+including all 101 local Rocq proof files, and compared all 460 literal
+transition rows against \texttt{Table230.v}.  The source and table
+hashes match.  After nested-comment removal, no local proof file
+contains an axiom declaration, admitted proof, aborted proof, or unchecked
+cast token from the audit's listed set.  All seven existing build-script
+tests pass; they test infrastructure contracts, not the mathematical
+theorems.
+
+A separate literal-source parser also expands all 5,124 rows of
+\texttt{Prog230.v} and verifies exact ordered equality of its 5,125
+leaves with the published JSON and the normalized working source.
+It checks the edge translation, root, node bound, default, and initial
+register expression explicitly.  The expansion is acyclic, every
+node is reachable, and its maximum leaf depth is 40.  This closes
+the concrete JSON-to-formal-program correspondence used by the source
+transport argument in Section~\ref{sec:source229-independent}.
+
+More substantially, the GitHub plugin retrieved the successful Linux
+workflow for the exact inspected commit, run
+\texttt{39258562285}.  The downloaded
+\texttt{k230-linux-verification} artifact, identifier
+\texttt{12192455062}, has SHA-256
+\begin{center}\scriptsize\ttfamily
+60702d530e637fd343eda4d370b73d71924ca5c3f581444196acdf5da344f15f.
+\end{center}
+Its retained records match the inspected manifest, machine, and upstream
+commit.  They record Rocq~9.1.0, \texttt{rocq-stdlib}~9.0.0, and
+OCaml~4.14.2; compilation of all 216 proof sources; two final
+\texttt{Closed under the global context} reports; and a successful
+independent \texttt{coqchk} run with exit status zero.  The reported
+build-plus-check duration is 1,838.21 seconds, including 516.58 seconds
+for the independent kernel checker.
+\footnote{Exact successful workflow:
+\url{https://github.com/elliotglazer/k230-rocq/actions/runs/39258562285}.
+The unmodified downloaded JSON records and logs are retained with this
+research delivery.}
+
+The checker log also lists three axioms present in the loaded environment:
+\nolinkurl{BusyCoq.LibTactics.inj_pair2},
+\texttt{proof\_irrelevance}, and \texttt{eq\_rect\_eq}.
+This does not contradict the two closed final dependency reports:
+the former list describes the loaded environment, while
+\texttt{Print Assumptions} describes the actual dependencies of each
+specified theorem.  The final theorems use none of those declarations.
+The retained checker summary also reports no type-in-type dependency,
+unsafe fixpoint, or assumed positivity.
+
+No local Rocq toolchain was installed at the time of this source audit;
+the complete proof rebuild was performed by the identified upstream
+Linux workflow, whose artifact was retrieved and checked here.
+The endpoint is an external Rocq theorem about the exact K230 table
+and a syntactic finite-refutation predicate.  It is not an internally
+arithmetized PA derivation, and it does not by itself constitute a new
+Rocq endpoint for any reduced table.  Any ordinary mathematical
+transport proof for such a table must be stated separately.

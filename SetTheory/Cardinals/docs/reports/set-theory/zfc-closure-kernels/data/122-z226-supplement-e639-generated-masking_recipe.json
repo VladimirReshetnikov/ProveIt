@@ -1,0 +1,35 @@
+{
+  "truth_class": [
+    "P",
+    [
+      "d"
+    ],
+    [
+      "P",
+      [
+        "d"
+      ],
+      [
+        "d"
+      ]
+    ]
+  ],
+  "masking_base": "S_empty=P(d,P(d,d))",
+  "masking_step": "S_(p::params)=P(p,P(p,S_params))",
+  "descriptor": "b=P(P(c,c),S_params)",
+  "relation": "R_b(x,y)=p_eps(P(y,P(x,b)),b)",
+  "coordinates_zero_based": {
+    "output": 0,
+    "input": 1,
+    "unused_code": 2,
+    "parameter_i_for_i_zero_based": "3+2*i",
+    "duplicate": "4+2*i"
+  },
+  "upper_model_weights": {
+    "leaves": 1,
+    "Q(b)": "w(b)+1",
+    "P(b,z)": "w(b)+w(z)+2",
+    "A(b,z)": "w(b)+w(z)+3"
+  },
+  "proof_scope": "ordinary all-model argument; finite tests check transcription only"
+}

@@ -1,0 +1,66 @@
+\section{A separate 662-bit equational packet}
+\label{sec:e662}
+
+This observation concerns the E663 companion of the 235-state delivery,
+not the K230 source or any of the new K-based transition tables.  Let
+$E$ denote its unchanged seven equations over its nine-operation
+signature.  Its complete ground query is $Q(d)=d$.
+Append a fresh nullary operation $e$, unused by every equation, and
+replace the query by $e=d$.  Then
+\[
+          E\vdash Q(d)=d
+          \quad\Longleftrightarrow\quad
+          E\vdash_{\Sigma\cup\{e\}} e=d.
+\]
+Here the superscripted signature indicates that derivations may use
+terms containing the additional constant; no equation about it has
+been added.
+
+For the forward implication, two of the inherited equations are
+\[
+ V(P(x,s),d)=x,
+ \qquad V(P(x,s),Q(j))=V(s,j).
+\]
+Assuming $Q(d)=d$, substitute $s=j=d$ to obtain
+\[
+ x=V(P(x,d),d)=V(P(x,d),Q(d))=V(d,d).
+\]
+This holds for both $x=e$ and $x=d$, proving $e=d$ by symmetry and
+transitivity.  Conversely, uniformly replace every occurrence of
+the fresh constant $e$ in a finite derivation of $e=d$ by the
+old-signature ground term $Q(d)$.  Because $e$ occurs in no axiom,
+this remains a valid equational derivation and proves $Q(d)=d$.
+Thus the argument is an explicit finite proof transformation; it
+does not depend on a bounded algebra search.
+
+The inherited codec reserves four variable codes and uses four-bit
+operation/variable tags.  Increasing the signature from nine to ten
+operations keeps the total of fourteen tags within that width.
+The header gains three arity bits, changing from 43 to 46 bits.
+The seven equations retain exactly the same 150 term nodes and
+608 serialized bits, including their framing.  The two endpoints
+shrink from three nodes to two, changing from 12 to 8 bits.  The
+total is consequently
+\[
+                    46+608+8=662\ \text{bits}.
+\]
+The generator reconstructs the inherited 663-bit packet and checks
+its recorded digest before modifying it.  It independently parses
+the new packet, verifies the exact equation-bit identity, and rejects
+all 662 strict prefixes and three malformed controls.  The packed
+file uses two trailing transport-padding bits, which are excluded
+by its accompanying bit-length record.  The SHA-256 of the exact
+662 ASCII bit characters, excluding a newline, is
+\begin{center}\scriptsize\ttfamily
+d51acfb76b7805a994fd022ccb02ac7f58f6b9c57fc977b353c077edde8dd26f.
+\end{center}
+
+The ordinary raw-EPSC/ZFC calibration of E663 remains inherited;
+this work proves only the displayed conservative query change and
+its exact codec cost.  It supplies no binary equational interpreter,
+blank-tape writer, smaller Turing-machine state count, or new proof
+assistant endpoint.  Appending an operation can change decoder cost
+even when opcode width is unchanged.  The older fixed-signature
+query optimum is not contradicted: the signature here is different.
+Attribution and the complete baseline AST are retained beside the
+standalone Python builder.

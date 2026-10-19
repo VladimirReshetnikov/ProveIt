@@ -1,0 +1,127 @@
+\section{An independently checked source reduction}
+\label{sec:source229-independent}
+
+The source reduction replaces four occurrences of the register-program
+subtree
+\[
+ A=((\mathrm{CD}_6,(\mathrm{CI}_5,\mathrm{CC}_2)),\mathrm{CI}_5)
+ \qquad\hbox{by}\qquad
+ B=(\mathrm{CI}_5,(\mathrm{CD}_6,\mathrm{CC}_2)).
+\]
+A pair denotes a cons cell in the binary source tree; $\mathrm{CI}_r$
+increments register $r$, $\mathrm{CD}_r$ decrements a positive register
+and breaks once when it is zero, and $\mathrm{CC}_k$ continues $k$
+levels.  Register values are natural numbers.  This removes one
+instruction leaf per occurrence, reducing the literal source from
+5,125 leaves to 5,121.  Source leaves are not Turing-machine states;
+the state saving is a separate property of the compiled table.
+
+\subsection{An unbounded local proof}
+
+Let $p$ be the prefix of a replaced subtree.  The old instruction
+addresses relative to $p$ are
+$00:\mathrm{CD}_6$, $010:\mathrm{CI}_5$,
+$011:\mathrm{CC}_2$, and $1:\mathrm{CI}_5$.
+The new addresses are $0:\mathrm{CI}_5$,
+$10:\mathrm{CD}_6$, and $11:\mathrm{CC}_2$.
+These addresses permit a direct proof in the path semantics of
+\texttt{RM.v}, without appealing to an informal interpretation of
+the parentheses.  Paths are read from left to right and padded by
+zeros; each primitive operation manipulates the actually consumed
+prefix.  Increment means fixed-length binary increment.  Continue
+strips bits from the right until its specified number of ones has
+been removed, while a zero decrement strips one zero and increments.
+
+Write the input values as $R_5=s$ and $R_6=n$.  Both blocks have
+exactly the following recurrence:
+\begin{center}
+\begin{tabular}{c|c|c|c}
+Guard & Primitive steps & Resulting values & Control result \\
+\hline
+$n=0$ & $2$ & $(R_5,R_6)=(s+1,0)$ & common normal successor \\
+$n\geq1$ & $3$ & $(R_5,R_6)=(s+1,n-1)$ & restart this block
+\end{tabular}
+\end{center}
+Indeed, in $A$, a positive decrement is followed by an increment
+and a continue to the prefix $p0$, which resolves to $p00$.
+A zero decrement jumps to $p1$, increments, and returns by
+$\operatorname{inc}(p1)$.
+In $B$, the increment comes first.  A positive decrement is followed
+by a continue to $p$, which resolves to $p0$; a zero decrement
+returns by the same $\operatorname{inc}(p1)$.
+
+Induction on $n$ therefore proves that both blocks terminate normally
+after exactly $3n+2$ register-machine leaf steps, with
+\[
+ R_5'=R_5+R_6+1,\qquad R_6'=0,
+ \qquad R_i'=R_i\quad(i\ne5,6).
+\]
+The induction also proves that neither block visits a halt leaf or
+escapes by an unmatched break or continue.  This is an argument for
+all natural register values, with no finite register bound.
+
+\subsection{Whole-source control boundaries}
+
+The independent script \texttt{audit\_source229.py} reconstructs both
+complete binary trees from their literal path catalogues.  It verifies
+that these four disjoint prefixes, and no other source positions, are
+changed:
+\begin{center}\small\ttfamily
+\begin{tabular}{l}
+111010010010111111000011\\
+11101001001011111110011\\
+1110100101100011\\
+111110011
+\end{tabular}
+\end{center}
+It computes the successor of every unchanged instruction directly
+from the path arithmetic in \texttt{RM.v}, including both guards of
+every decrement.  All 5,109 exterior leaves are identical.  All 6,635
+exterior-to-exterior nonhalting edges are identical.  Exactly four
+edges enter a rewritten block, each at its first instruction in
+both versions.  The unique halt leaf remains at
+\texttt{1110100101101}, and the initial root entry is unchanged.
+These checks do not assume that a guard is reachable only under the
+intended enumerator invariant.
+
+At a common exterior instruction, equal registers therefore execute
+the same operation and select corresponding successors.  At a paired
+block entry, the preceding induction restores equal registers at the
+same exterior successor after the same finite number of steps.
+The resulting relation on exterior configurations and paired block
+entries proves whole-program halting equivalence, from the root and
+any natural initial register file.  Totality of the blocks ensures
+that no infinite computation disappears inside an omitted block.
+The compressed execution also preserves the number of register-machine
+leaf steps to the halt leaf, whenever that leaf is reached.
+
+\subsection{Connecting the JSON source to the formal theorem}
+
+The separate parser \texttt{audit\_prog230\_bridge.py} reads the
+literal \texttt{p230\_tab} in the pinned \texttt{Prog230.v}.  It checks
+the exact mapping from compact edges to \texttt{RM.v} instructions,
+root zero, the 5,124-node bound, the out-of-range default, and the
+literal initial register expression
+\texttt{upd (upd regs0 0 3) 4 3}.  It then expands the rooted table
+and compares every ordered leaf against both the published
+\texttt{machine/sites230.json} and the normalized source used here.
+
+All 5,124 nodes are reachable without cycles or repeated visits;
+the expansion has 5,125 leaves and maximum depth 40.  Thus the
+formal program's walk fuel is sufficient for every instruction
+pointer, including pointers padded by zeros.  Every expanded leaf
+matches both JSON catalogues exactly.  The manifest hashes of
+\texttt{Prog230.v}, \texttt{RM.v}, and the published catalogue match
+the manifest retained by the successful upstream Linux proof build.
+This establishes an explicit source-object correspondence, rather
+than relying on a generator comment or a filename.
+
+Together, the literal parser, the exterior graph audit, and the
+unbounded block induction connect the reduced source to the actual
+$p_{230}$ occurring in K230's formal theorem.  They do not by
+themselves prove that a new binary Turing table implements the
+reduced source: that requires the separately supplied compiler,
+bootstrap, and universal runtime argument.  The present source
+transport is an ordinary mathematical proof with executable finite
+certificates; no new Rocq theorem for the reduced source or table
+is claimed.

@@ -1,0 +1,87 @@
+INDEPENDENT REVIEW OF THE K226 REPRODUCTION ARCHITECTURE
+Date: 2026-10-19
+Review status: CODE_AND_PACKAGED_COMPONENT_REVIEW_PASS
+
+Scope
+-----
+This review covers the assembled reproduction driver, literal-machine
+builder, canonical-state audit, source comparison, runtime wrapper and
+engine, initialization checks, report, and formalism supplement. It is a
+code and mathematical-interface review. It does not claim that this
+reviewer independently reran the full reproducer or compiled Rocq.
+The delivering author records the separate full-package execution result.
+
+The reviewed machine in original K labels has SHA-256
+0d6740bbc94a92c9696ed92732b1828bec89109f8ebb6859bbb9197e2076ec89.
+Its canonical 226-state table has SHA-256
+789e9d1cf04567223823bfdda7d0b4922d7018718fc0daf67c6f5b0c6b4c9b26.
+The final source has SHA-256
+31aaece78d025fbc262e742411e75e24eef9435fe196c67e65b995e8b833fe61.
+
+Dependency wiring
+-----------------
+1. The builder starts from the exact pinned K230 table and reconstructs
+   the literal edits, source-layout adapters, local folds, callback repair
+   and canonical renumbering. The reproducer compares the rebuilt tables
+   with the delivered bytes. The separate canonical audit checks every
+   transition, the complete bijection, initial state and terminal state.
+
+2. The independent source checker imports neither the source builder nor
+   the runtime engine. It proves the four total transfer-plus-one macros
+   have the required actual control boundaries, then compares every
+   instruction and guarded edge of the final source. This yields the
+   whole-program source equivalence for every register map at root entry.
+   The actual final source is also reconstructed and compared byte for byte.
+
+3. Sparse initialization reaches the same entire finite tape support for
+   baseline and candidate. The independent dense checker executes a fixed
+   number of literal transitions and compares the complete support against
+   the explicit calibrated frame: head -5, marker -6, header 176, the actual
+   nonzero logical seed, and 167 spare blocks of value one. Its representation
+   also fixes both infinite exteriors to zero. Canonical renumbering joins
+   the two independently checked machine representations.
+
+4. Quick mode validates the input pins, case-array integrity, exhaustive
+   zero/positive guard census and positive affine durations of the stored
+   runtime receipts. It is explicitly described as integrity validation.
+   Full mode additionally invokes the actual universal runtime checker
+   without a prefix limit on both pinned K230 and rebuilt K226, validates
+   the fresh complete receipts, and compares the fresh case arrays with
+   the delivered arrays. Elapsed wall times are intentionally excluded
+   from exact comparison. The driver cannot promote a partial receipt.
+
+5. The unchanged runtime rules establish positive finite instruction
+   blocks on arbitrary valid frames with independent natural registers
+   and an arbitrary finite spare tail. Together with exact initialization,
+   the source comparison and the baseline runtime replay, these connect
+   the new table directly to the exact published K230 theorem. The guarded
+   state140 discovery argument is not an additional assumption of this
+   final proof chain.
+
+Checks actually repeated in this review
+--------------------------------------
+The packaged upstream data audit passed: all 103 local manifest pins and
+all 460 text-versus-Rocq table rows agree. The packaged runtime engine and
+helper are byte-identical to the inherited versions. The packaged source
+audit passed, including 5121 final instructions and 6655 guarded edges.
+The new independent dense checker passed the final original-label table
+at exactly 409835 transitions, with dispatcher84, head -5 and all 351
+expected one-cells. The final runtime receipt was inspected and agrees
+with 6656 cases, 1615284 symbolic rules, minimum duration13, maximum412
+symbolic rules in one case, and coverage of all 452 literal rows.
+
+Formalization and report scope
+-----------------------------
+The new proof is ordinary mathematics formalizable in ZFC. K230's
+consistency comparison uses finite proof transformations, so its reuse
+does not invoke a blanket soundness principle for arbitrary Rocq code.
+The upstream kernel result is correctly labeled as upstream CI evidence:
+216 compiled sources, two closed endpoint reports and successful coqchk.
+No fresh local Rocq build or new 226-state kernel endpoint is claimed.
+
+The formalism comparison keeps K as the complete machine route. E639 is
+a separately proved 639-bit equational packet, with an exact 24-bit
+descriptor-binding improvement and no new Turing-machine state bound.
+The older finite-class proposal is explicitly distinguished from a
+completed calibrated payload. No blocking mathematical or reproduction
+architecture defect was found in the reviewed code.

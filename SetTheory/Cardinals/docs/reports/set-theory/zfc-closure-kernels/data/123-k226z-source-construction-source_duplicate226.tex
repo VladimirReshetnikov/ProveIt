@@ -1,0 +1,96 @@
+\section{A further exact quotient: 227 to 226 states}
+\label{sec:k226-duplicate}
+
+The $227$-state construction admits one further reduction.  Unlike the
+preceding context-dependent fold, the final state identification here is
+an ordinary total quotient of the transition table.  Source
+reassociation is needed first to expose the duplicate.
+
+In the $227$-state table, state $85$ has rows $0R19$ and $1R65$,
+and state $65$ has rows $0R114$ and $1R12$.  These encode
+\[
+ (X,(Y,Z)),
+\]
+where $X,Y,Z$ are closed source chunks of $19$, $7$, and $26$ leaves.
+The left rotation at outer state $85$ and inner state $65$ changes this
+to $((X,Y),Z)$.  It is applied simultaneously at all ten occurrences
+of the shared source subtree.  The complete source graph, including
+all $6656$ guarded successors, is unchanged.
+
+After the rotation, state $65$ has the rows
+\[
+ 65/0=0R19,\qquad65/1=1R114.
+\]
+These are exactly the two rows of the already present state $98$.
+Define $\phi(65)=98$ and $\phi(q)=q$ for every other state, including
+the start and halt states.  Delete $65$ and redirect every transition
+target through $\phi$.  For every old working state $q$ and read symbol
+$b$, the checker verifies
+\[
+ \delta_{\rm new}(\phi(q),b)
+   =(w,d,\phi(r))
+ \quad\text{whenever}\quad
+ \delta_{\rm old}(q,b)=(w,d,r).
+\]
+All $454$ old transition rows are checked, including the two rows of
+the deleted state.  This is a one-step bisimulation on arbitrary tapes;
+no predecessor-bit, source-invariant, or register-value hypothesis is
+needed for the quotient itself.
+
+\subsection{Repairing the new source addresses}
+
+The first rotation creates four source paths with a seven-zero run.
+The unrepaired $226$-state table fails at leaf $650$, instruction
+$\mathrm{CD}_1$, at path
+\texttt{1110100100111000010000000}.
+The counterexample uses nine zero registers, one zero spare block, and
+zero extra gap.  It reaches the clean dispatcher with the expected head
+position but with two incorrect tape cells.  Thus the exact quotient
+alone is insufficient to justify the complete machine construction:
+the decoder address contract also has to be restored.
+
+A bounded search found the following five closed rotations.  Directions
+use the explicit parenthesizations in Section~\ref{sec:k227-source-roles}.
+All three chunks in every row have no escaping control and no halt.
+\begin{center}
+\begin{tabular}{r r c r r r}
+Outer & Inner & Direction & $|A|$ & $|B|$ & $|C|$\\
+\hline
+101 & 209 & left  & 595 & 242 & 231\\
+101 & 208 & left  & 837 & 82 & 149\\
+226 & 224 & right & 80 & 244 & 440\\
+205 & 134 & left  & 2 & 82 & 80\\
+207 & 205 & right & 84 & 80 & 230
+\end{tabular}
+\end{center}
+
+The search held fixed the helper rows required by the $227$-state role
+proof.  The deterministic builder contains only the selected rotation
+sequence and independently checks every guarded successor after each
+rotation.  Neither the search score nor the finite discovery tests
+serve as the runtime proof.
+
+The final source has $5121$ leaves, $6656$ guarded cases, $211$ distinct
+subtrees, maximum depth $41$, and maximum zero run $6$.
+The resulting binary table has $226$ working states and $452$ rows.
+Relative to K230 it deletes states $65$, $79$, $140$, and $175$ and
+changes $52$ surviving rows.  Across the entire construction there are
+four $H$ replacements, two boundary rotations, and eleven rotations
+whose three chunks are closed.
+
+The final source is also related directly to the original K230 source
+by an offset-aware certificate with $2376$ paired checkpoints and
+$4750$ checked branches.  Exactly eight entries use offset $+1$ in
+$R_5$, and all eight test $R_6$.  The other $2368$ entries have equal
+register files, and the longest straight-line segment has five
+instructions.  This removes any need to infer source equivalence from
+the discovery history.
+
+The canonical table has SHA-256
+\begin{quote}\ttfamily\small
+b58279b8b2e2cf029dd94e084d47cd6097772d7bce2a62653767895123d29599.
+\end{quote}
+The source and table are reproduced by \texttt{build226.py}, extending
+the separately retained $227$-state recipe.  Full native runtime and
+startup certificates, and the kernel-checked consistency endpoint,
+are supplied as separate proof layers.

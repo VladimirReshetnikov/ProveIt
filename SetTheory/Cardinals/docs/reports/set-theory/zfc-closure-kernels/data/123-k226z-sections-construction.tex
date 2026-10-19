@@ -1,0 +1,148 @@
+\section{Why the reductions compose, and where they do not}
+\label{sec:construction-overview}
+
+The most useful change of viewpoint is to treat the set-theoretic frontend
+and the native tape interpreter as separate sources of savings. Glazer's
+K230 construction changes the axiom packet and its emitter, while retaining
+the proof enumerator, the eight logical schemas, the unary register
+conventions and much of the native interpreter~\cite{glazer}. ProveIt's
+243-to-235 chain mainly changes how that interpreter and its source tree
+use the available states~\cite{proveit235,proveit236}. Some of those savings
+therefore survive the new axiom system, but others depend on source chunks
+that it replaces.
+
+The pinned K230 table already incorporates the two older 243-to-241
+folds. They cannot be counted a second time. The new construction saves
+four more states. The following table uses original K230 labels, not
+the dense numbering of the final file.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}lclX@{}}\toprule
+Operation & Saving & Deleted role & Reason\\\midrule
+Increment/drain transformation & 1 & $79\to63$ &
+Move the final increment to the loop's entrance; the new decoder contexts
+allow two native states to share a preceding-bit test.\\
+Delayed erasure & 1 & $140\to71$ &
+Reuse the original helper paths, preserving a bit until a later step.
+The required right-hand guard holds throughout the runtime.\\
+Decoder role reassignment & 1 & $175$ removed &
+Move its implication/increment role to $150$, then fold its zero/increment
+role into $152$ using the existing preceding bit.\\
+Exact duplicate after reassociation & 1 & $65\to98$ &
+Rebracket a closed source subtree until both decoder rows match an
+existing state, then apply five address-repair rotations.\\
+\bottomrule\end{tabularx}
+\end{center}
+
+Thus the literal count is
+\[
+                 230-1-1-1-1=226.
+\]
+The table makes clear why simply subtracting eight from 230 would be wrong:
+two savings are already present, and the remaining source-specific savings
+have to be reconstructed and proved under the new contexts.
+
+\subsection{The first transferred state: delayed erasure}
+
+This especially small intermediate is useful for review. Delete K230 state
+$140$, redirect $126/0$ to $71$, and change two retained rows:
+\begin{center}
+\begin{tabular}{@{}rlll@{}}\toprule
+State / read & Old row & New row & Meaning\\\midrule
+$71/0$ & $0R21$ & $0L91$ & inspect the preceding tag\\
+$80/1$ & $0L42$ & $1L138$ & defer the erasure\\
+$126/0$ & $0R140$ & $0R71$ & enter the shared state\\
+\bottomrule\end{tabular}
+\end{center}
+Every other surviving row is unchanged. The canonical 229-state table is
+retained as \path{machines/k229.tm}; its SHA--256 is
+\begin{quote}\small
+\path{08dff69bd527a65967608fafc9d1205a667a6f6087289c4b55452faccb042273}.
+\end{quote}
+
+The syntactically inductive invariant is
+\[
+\begin{array}{rcl}
+q=58&\Rightarrow&t_{-1}=0,\\
+q=71&\Rightarrow&(t_{-2},t_{-1})=(0,1),\\
+q=80&\Rightarrow&(t_{-3},t_{-2},t_{-1})=(0,1,1),\\
+q=140&\Rightarrow&t_{-1}=0,
+\end{array}
+\]
+where $t_j$ is the bit $j$ cells from the head. The additional runtime
+condition is
+\[
+                 q=140\ \land\ t_0=1\quad\Rightarrow\quad t_1=1.
+\]
+It is a fact about valid instruction frames and blank initialization;
+the local argument does not assume it for every arbitrary initial tape.
+
+Map $140$ to $71$ and every other state to itself. The four exceptional
+old rows are simulated in respectively $5,3,5,9$ new transitions:
+\[
+          (71,0),\quad(140,0),\quad(140,1),\quad(80,1).
+\]
+The remaining 456 of the 460 old rows commute in one transition. The
+blocks preserve the complete tape and end at the mapped old successor;
+none contains an internal halt. Consequently the correspondence has
+a strictly increasing time map, bounded between $n$ and $9n$ after
+$n$ old steps. This proves both directions of halting equivalence.
+
+The independent audit \path{verification/independent_fold229.py}
+checks every incoming invariant implication symbolically, every admitted
+Boolean assignment on the finite block footprints, every ordinary row,
+the dense renumbering, and all $408\,420$ initialization checkpoints.
+The latter compare the entire finite support of the tape, with a zero
+exterior. The new initialization takes $408\,563$ transitions, exactly
+144 more than K230. The separate symbolic guard proof covers all
+$6\,660$ original instruction cases, using $1\,605\,903$ proof rules;
+all 28 exposed read-one visits have a one-run constant at least 32.
+The direct Rocq runtime replay is discussed separately below.
+
+\subsection{The second transferred state: moving an increment through a loop}
+
+The closed source block
+\[
+ ((\mathrm{CD}_6,(\mathrm{CI}_5,\mathrm{CC}_2)),\mathrm{CI}_5)
+ \quad\longmapsto\quad
+ (\mathrm{CI}_5,(\mathrm{CD}_6,\mathrm{CC}_2))
+\]
+has four occurrences in the K230 source. Both sides terminate with
+\((R_5,R_6)=(a+b+1,0)\) from \((a,b)\), and change no other register.
+Induction on $b$ proves the contract: the old form adds one for each
+positive decrement and one at the end; the new form adds one at the
+beginning and one after each successful return through the loop.
+
+This replacement removes four primitive occurrences while preserving the
+program's semantics: $5\,125$ leaves become $5\,121$, and $6\,660$ guarded
+instruction cases become $6\,656$. The number of distinct source subtrees
+stays 212. With the corresponding native decoder change, state $79$
+can be folded into $63$. Combining this with delayed erasure gives a
+verified 228-state intermediate.
+
+The independent source checker does more than identify four matching
+substrings. It builds both source trees directly from the pinned K230
+site list and the proposed replacement list, checks the exact internal
+graphs of both loop forms, checks every external entry and exit, and
+compares all $5\,113$ control points after contracting the four loops
+to their common operation. Thus an unintended jump into the middle of
+the changed block, or any change elsewhere in the source, would fail.
+
+\subsection{Why the third saving needed a new arrangement}
+
+K230 state $175$ already serves two source roles. A direct transplant of
+the older predecessor-bit fold would conflict with one of them. The
+successful construction first makes an existing state $150$ handle that
+role using an existing helper at $173$. State $175$ then has only its
+other role, which can share $152$ through the helpers at $159$ and $169$.
+The exact local whole-tape proof and source rotations are given in the
+next section. No additional state, symbol or initialized tape cell is
+introduced for this rearrangement.
+
+The first 227-state trial had a single instruction path ending in seven
+zeros. Its finite check failed at a zero branch of a decrement of register
+2. That failure is preserved as a rejected control. Two further closed
+source rotations repair the offending address without disturbing the
+new shared-state contexts. The repaired 227-state checkpoint has maximum depth 40 and
+maximum zero run six. Section~\ref{sec:k226-duplicate} gives the further
+reduction and repairs leading to the selected 226-state machine.

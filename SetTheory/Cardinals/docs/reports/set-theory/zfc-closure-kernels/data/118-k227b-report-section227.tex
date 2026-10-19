@@ -1,0 +1,82 @@
+\section{A coordinated source repair to 227 states}
+The direct historical 237-to-236 fold initially fails on K: its predecessor
+bits no longer separate the required source roles. A coordinated repair
+recovers one further physical state beyond the 228-state composition.
+It combines the contextual role-sharing mechanism from the old 240-to-239
+reduction with the later closed-source rotation and state fold. The two
+historical mechanisms yield one new saving here, since K230 already shares
+two of the relevant logical roles.
+
+\subsection{Literal, source-aware construction}
+Starting from the verified 228-state table in K230 labels, perform the closed
+source reassociations
+\[
+ (174,119,L),\qquad (202,201,R),\qquad (148,154,L).
+\]
+Here $L$ changes $(A,(B,C))$ to $((A,B),C)$ and $R$ is the inverse. Each
+operation names the physical decoder of the outer node and its inner child.
+The certificate checks that all three chunks are closed: no break, continue,
+or halt escapes the chunk. It also compares the complete ordered operations
+and their resolved control-flow successors after every stage.
+
+The new source contexts separate two logical roles sharing K175. Move its
+left-one role to K150 by changing
+\[
+ (155,1):1R175\mapsto1R150,\quad
+ (176,1):1R175\mapsto1R150,\quad
+ (150,1):1R90\mapsto1L173.
+\]
+Then fold the remaining K175 role into K152, redirect incoming K175 targets,
+and replace the two K152 rows by $0L159$ and $1L169$.
+A fourth closed rotation, $(211,210,L)$, is essential: it restores the maximum
+zero-run in every complete source instruction to six without adding a state.
+
+The canonical machine has 227 working states, start 0, dispatcher 83, and
+separate halt outcome 227. Its SHA-256 digest is
+\begin{quote}\ttfamily\small
+0264f969f006304840f46f85d5eacb54b70bf968669299ff73c3e0c5221fe09a.
+\end{quote}
+The source still has 5,121 operations, maximum depth 40, and 6,656 guarded
+instruction cases. Its 189 logical decoder roles occupy 178 physical source
+states, exploiting 11 context-dependent identifications.
+
+\subsection{A rejected intermediate and the repair}
+Without the fourth rotation, the proposed 227-state table has a seven-zero
+instruction ending at a decrement of register~2. Its full runtime proof fails
+at source site 1042, on the zero guard, after 1,358 proved cases. A complete
+finite-frame replay confirms the scanner-contract violation. Passing source
+prefix macros and blank startup did not suffice. This raw table is not part
+of the verified candidate set.
+
+The fourth rotation removes the seven-zero defect while preserving the
+repaired context tags. All finite whole-frame cases then pass, followed by a
+fresh unbounded proof of the repaired table. The changed K176/1 row is also
+used as a runtime helper; it is explicitly covered by this proof rather than
+assumed harmless because its decoder use works.
+
+\subsection{Independent local proof and complete runtime}
+The role reassignment is checked using a piecewise state relation: old K175
+with a left-one tag maps to K150, while its left-zero role remains at K175.
+Old K150 has a left-zero tag. Every incoming row is checked, including helper
+entries. Six arbitrary-tape macro blocks have old/new lengths
+$1/1,1/5,1/1,1/1,3/1,1/3$. The final K175-to-K152 fold has four blocks of
+lengths $1/3,1/3,3/3,1/3$. All are strictly positive and check the whole tape,
+head, state relation, and nonhalting of intermediate steps. The independent
+checker replays these proofs on the repaired intermediate bases and verifies
+both state renumberings; tampered controls are rejected.
+
+The repaired table's new unbounded runtime proof covers all 6,656 guards,
+uses 1,613,581 symbolic rules, and exercises all 454 transition rows. Its
+minimum instruction duration is 13 and maximum symbolic case length is 406.
+The independent source audit matches all 5,121 ordered primitives and the
+complete control-flow graph to the proved 228-state source; the comparison
+also agrees after resolving the jump-only nodes.
+
+Exact blank startup still takes 409,835 transitions and reaches the identical
+calibrated tape at dispatcher 83, head $-5$. Separate sparse and dense
+canonical simulations agree. Thus the complete ordinary proof chain gives
+\[
+ \operatorname{Nonhalts}(K227,\mathrm{blank})\iff\Con(\mathrm{ZFC}).
+\]
+This is the smallest completed candidate in this delivery. As with the
+intermediates, no new compiled Rocq endpoint or minimality theorem is claimed.

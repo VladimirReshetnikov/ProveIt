@@ -1,0 +1,59 @@
+The reference and extension use Rocq 9.1.0, \texttt{rocq-stdlib} 9.0.0,
+and OCaml 4.14.2. The pinned reference's full build compiled all 216
+sources, printed two closed endpoint assumption reports, and passed the
+independent \texttt{coqchk} recheck of
+\path{K230.Correct230}. The original build and check receipts are retained
+under \path{evidence/rocq230/}.
+
+For the selected machine, all 19 new proof files have been freshly
+compiled in the isolated \texttt{K226F} namespace. The exact endpoint
+declarations are
+\begin{quote}\small
+\path{K226F.CorrectDense226.tm226_halts_iff_ZFC_inconsistent}\\[3pt]
+\path{K226F.CorrectDense226.tm226_nonhalting_iff_ZFC_consistent}.
+\end{quote}
+The first has type
+\[
+ \texttt{Dense.halts dense\_tm Dense.c0}
+       \quad\longleftrightarrow\quad
+       \mathrm{StandardZFC}\vdash_{\mathrm C}\bot.
+\]
+The second is its negated equivalence. Both print
+\texttt{Closed under the global context}. The separate dense context has
+226 working states and one terminal state, and its literal table is
+checked against the selected hash beginning \path{b58279b8}. No deleted
+working state is hidden in that count.
+
+The proof replays the complete literal initialization, the four generic
+register-block proofs and all 5,121 source leaves. It then uses the
+offset-aware source equivalence, which holds for every natural-valued
+register file, and the unchanged numerical and set-theoretic calibration.
+The native fold guards are discharged within this direct runtime proof;
+the external endpoint does not assume the Python checker's receipts.
+
+The independent kernel recheck of
+\path{K226F.CorrectDense226} completed successfully with exit code zero.
+The portable build also freshly compiled all 19 selected proof sources.
+The kernel-checked sources and the portable sources have identical proof
+text; the only difference consists of two corrected state-count comments
+in \path{Dense226.v}. The exact source-correspondence receipt and both
+source versions are retained. The default portable build performs a fresh
+independent kernel recheck as well. Actual statuses, source hashes and logs
+are under \path{rocq-extension/receipts/}.
+The 227- and 229-state intermediate endpoints are also retained, with
+their own compilation and assumption reports. They are useful checkpoints
+and are not substituted for the selected 226-state endpoint.
+
+``Closed'' here describes the dependency closure of each named theorem.
+Some imported utility modules declare axioms that these theorems do not
+use, and a module-wide \texttt{coqchk} summary can list such declarations.
+The endpoint reports are therefore the relevant assumption audit; the
+claim is not that every declaration in every imported module is axiom-free.
+
+A separate, standard-library-only Python audit parses the Rocq literal
+data independently of the generators. It matches all 452 dense rows and
+452 surviving sparse rows, checks all 454 state/symbol cases including
+halt under the exact renumbering, and expands the 188 decision nodes into
+all 5,121 selected paths, opcodes and arguments. Its executable script,
+written source-proof review and receipt are retained with the other
+independent checks.

@@ -1,0 +1,110 @@
+\subsection{Independent review of the verification boundary}
+\label{sec:independent-review}
+
+The review covered the final normalized 227-state table, its complete
+5,121-leaf source, the runtime and bootstrap drivers, the pinned symbolic
+engine and helper, and the final context split fold. No soundness gap was
+identified for these fixed inputs. This is an ordinary mathematical and
+software review; it is not a proof-assistant kernel certification of the
+227-state endpoint.
+
+\paragraph{Unbounded data and finite proof construction.}
+The symbolic engine represents each primary register by an independent
+natural variable. A positive decrement uses $1+n$; its zero case fixes that
+register to zero. Additional independent variables represent excess gap,
+the first spare value, and the total width of an arbitrary finite spare
+tail. Thus the runtime interface requires at least one spare block. The
+verified startup supplies 167, and the instruction contracts preserve a
+nonempty spare file.
+
+The engine uses literal transitions, unary self-loop induction, and four
+finite-list induction schemas. A unary run may be consumed at once only
+when the actual transition returns to the same state and moves in the
+current scan direction. This rule remains valid for a zero-length run.
+Other literal steps require a strictly positive constant part in the
+scanned run length, so a possibly empty symbolic run is never read as if
+it were nonempty.
+
+The one-block schemas are rederived from the supplied transition table
+with opaque left and right contexts; reaching an opaque context is fatal.
+They preserve these contexts and consume exactly $v+2$ transitions per
+block of value $v$. Structural induction then justifies traversal of any
+finite list, including the empty list. The normalization identity
+$C(A)1=1B(A)$, where $B(v)=01^{v+1}$ and $C(v)=101^v$, follows by the empty
+and one-element cases and concatenation; its reversed form is also valid.
+No finite choice of list length or register values substitutes for this
+induction.
+
+At every successful nonhalting instruction the checker compares the
+complete symbolic tape, both zero exteriors, state, orientation and head
+displacement against the exact successor frame. For the halt instruction,
+it instead requires positive-time entry into state 254; restoring a runtime
+frame is not a halt postcondition. A premature halt in any nonhalting case
+attempts to use an absent transition at state 254 and rejects. Affine
+duration coefficients must all be nonnegative and their constant term
+strictly positive. The 227-state receipt has minimum constant duration 13.
+The 4,000-iteration bound limits proof construction, not concrete runtime
+or represented data sizes.
+
+\paragraph{Source completeness and composition.}
+The driver rejects empty or malformed sources, duplicate paths, a leaf
+that is also an internal node, missing children, invalid opcodes and
+arguments, incorrect ordering, and a mismatched census. The final source
+has 5,121 leaves, 1,535 decrement leaves and one halt leaf. The case receipt
+was independently checked to enumerate exactly the corresponding 6,656
+leaf/guard pairs, with no duplicate or omitted pair. Every duration vector
+has the expected 13 integer coefficients and positive constant term.
+
+A runtime successor may name a prefix rather than a leaf. For all 6,655
+nonhalting guarded successors, the review checked that padding the
+successor by zeros gives exactly the same 64-cell word as padding its
+next source leaf. This supplies the composition interface between
+instruction contracts and source-graph steps. The source-graph
+calibration to the original contradiction search is a separate
+certificate and is not implied by a runtime PASS alone.
+
+\paragraph{Exact startup interface.}
+The bootstrap checker uses both sparse and fixed-array tape
+representations, checks array access bounds, and compares all one-cells,
+not just a bounded display window. After 409,835 steps it reaches state 96
+at head position $-5$, with marker $-6$ and header 176. Its 181-cell gap
+equals the runtime interface's base gap 64 plus excess gap 117. The first
+leaf is $000$ with instruction $\mathrm{CD}(8)$, so its padded code is the
+all-zero startup code. The logical register tuple is
+$(3,0,0,0,3,0,0,0,0)$ under the physical-slot map
+$(6,2,0,4,3,7,8,5,1)$. The 167 spare values are all one. Independently
+reconstructing this frame reproduces exactly the receipt's 351 one-cells,
+whose greatest position is 701. Every other tape cell is zero.
+
+\paragraph{Context split fold.}
+The independent rerun of the final fold checker verified 450 ordinary
+transition rows and eight two-cell macro cases. In the old machine,
+every arrival at state 179 writes zero and moves right, and every arrival
+at state 242 writes one and moves right. These imply their left-bit
+invariants from the common initial state 95 on any binary tape. Arrivals
+at deleted state 218 also move right, so the written bit selects its
+representation: state 242 on left zero, and state 179 on left one.
+
+Each exceptional case has strictly positive old and new block lengths,
+reads only the two specified cells, restores those cells, and ends in the
+same non-special, nonhalting state one cell to the right. The old blocks
+use at most three steps and the new blocks at most five. The local
+comparisons therefore apply to every unspecified tape exterior. Their
+composition follows the unique deterministic runs, and positive bounded
+block lengths preserve divergence in both directions. The shared labels
+are disambiguated by the left bit; no invariant for all visits to the new
+shared label is being assumed.
+
+\paragraph{Targeted rejection tests.}
+The portable harness performed 17 tests. A valid one-case run returned
+\texttt{PARTIAL\_PREFIX\_PASS}, never universal PASS. Sixteen deliberately
+invalid runs rejected: truncated and prefix-colliding sources, an unknown
+opcode, a Boolean register argument, wrong source census, missing and
+duplicate transition rows, an unknown transition target, premature
+runtime halting, disabled assertions by both Python mechanisms, altered
+engine and helper pins, premature startup halting, a wrong startup frame,
+and startup halting under Python optimization. These tests establish
+regression behavior, not a general proof of checker correctness. The
+complete unbounded run was not repeated by this review; its existing
+receipt and all case records were independently checked for identity,
+coverage and the stated interface properties.

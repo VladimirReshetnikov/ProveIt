@@ -1,0 +1,99 @@
+\section{A further reduction to 226 states}
+\label{sec:extension226}
+
+The calibrated 227-state layout admits one additional closed source
+rotation and a preceding-bit fold.  The final table has 226 working
+states and 452 transition rows.  This extension changes or deletes nine
+rows of the inherited 227-state table.
+
+\subsection{The source rotation}
+
+At source prefix \texttt{11101001001110011100}, replace
+$((A,B),C)$ by $(A,(B,C))$.  The three chunks contain 28, 81, and 138
+instruction occurrences, respectively, and all have boundary signature
+$(0,0,\mathrm{false})$.  The corresponding decoder states are the outer
+state 210 and its left child 177.  State 177 has no other incoming
+transition before the rotation.  The four edited rows are
+\[
+\begin{array}{c|cc}
+ &\text{before}&\text{after}\\\hline
+177/0&0\ R\ 165&0\ R\ 240\\
+177/1&1\ R\ 240&1\ R\ 215\\
+210/0&0\ R\ 177&0\ R\ 165\\
+210/1&1\ R\ 215&1\ R\ 177.
+\end{array}
+\]
+The same closed-chunk argument applies as in
+Section~\ref{sec:source227}.  Both independent source resolvers check
+all 5,121 ordinal operations and 6,656 guarded cases, together with the
+no-stray successor conditions.  The source still has 211 distinct DAG
+nodes, maximum depth 37, and maximum zero-run six.
+
+\subsection{The four roles in the fold}
+
+The discovery tuple $(86,508,182,177)$ means: retain state 86, whose
+entries have a preceding zero; delete state 508, whose entries have a
+preceding one; use state 182 as the backward-read helper when the
+current bit is zero; and use state 177 as that helper when the current
+bit is one.  It is not a four-state deletion.
+
+Before the fold the two decoder states are
+\[
+\begin{array}{c|cc}
+ &0&1\\\hline
+86&0\ R\ 98&1\ R\ 99\\
+508&0\ R\ 236&1\ R\ 233.
+\end{array}
+\]
+State 86 is entered only from $61/0$, $154/0$, and $233/0$, all writing
+zero and moving right.  State 508 is entered only from $242/1$, which
+writes one and moves right.  Neither is initial.  The local preceding
+bit therefore records which of these two former states was entered.
+
+Delete state 508, redirect $242/1$ to state 86, and set
+\[
+ 86/0=0\ L\ 182,\qquad 86/1=1\ L\ 177.
+\]
+The following existing rows complete the routing:
+\[
+\begin{array}{c|cc}
+\text{helper}&\text{preceding zero}&\text{preceding one}\\\hline
+182&0\ R\ 187&1\ R\ 212\\
+177&0\ R\ 240&1\ R\ 215
+\end{array}
+\qquad
+\begin{array}{c|c}
+187/0&0\ R\ 98\\
+212/0&0\ R\ 236\\
+240/1&1\ R\ 99\\
+215/1&1\ R\ 233.
+\end{array}
+\]
+For each of the four combinations of preceding and current bit, one
+old transition is replaced by three new transitions.  Both executions
+end in the same state, with head displacement $+1$, and preserve the
+whole tape.  Only the preceding and current cells are read.  The fold
+checker executes all four blocks with arbitrary tape outside those
+cells and checks every ordinary transition and incoming port.  This
+gives a positive-block simulation from the common start state on every
+binary tape, between the rotated 227-state table and the 226-state
+table.  It preserves finite halting and infinite runs.
+
+\subsection{Reconstruction and startup}
+
+The portable \texttt{reconstruct226.py} script pins the 227-state input,
+replays the single source rotation and the exact fold, checks the two
+source graphs, and writes the final source, table, and block receipts.
+The final inherited table has SHA-256
+\begin{quote}\small\ttfamily
+30082fe31158b8ae049a1bf15f56acff\\
+aae71f9031642e6fa7ab75555e466be4
+\end{quote}
+where the displayed line break is not part of the digest.
+
+No changed or deleted row is visited during the complete blank startup.
+Both tables therefore reach exactly the same dispatcher configuration
+after 409,835 transitions: state 96, head position $-5$, the same 351
+marked cells, and zeros everywhere else.  The final unbounded binary
+runtime certificate is applied directly to the 226-state table and its
+source, in addition to these source, local-fold, and startup checks.

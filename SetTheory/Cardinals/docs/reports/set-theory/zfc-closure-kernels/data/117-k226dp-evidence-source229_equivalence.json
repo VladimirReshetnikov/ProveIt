@@ -1,0 +1,503 @@
+{
+  "status": "PASS",
+  "old_sha256": "0879180d27ae48f6d77001f8f32108c7f7b3f86df3deab86bc2bbb7e7266d588",
+  "new_sha256": "61450579877bc79cc4bc323ff0b8ae506064c79644107f4d818401dcfbce941b",
+  "published_K230_sites_AST_match": true,
+  "old_site_count": 5125,
+  "new_site_count": 5121,
+  "exact_pattern_replacements": 4,
+  "unchanged_outside_sites": 5109,
+  "unchanged_nonhalting_outside_edges": 6635,
+  "unchanged_halt_paths": [
+    "1110100101101"
+  ],
+  "external_entrance_edges_to_blocks": 4,
+  "all_external_entrances_are_block_entries": true,
+  "all_natural_register_effect": {
+    "R5_out": "R5_in+R6_in+1",
+    "R6_out": 0,
+    "other_registers": "unchanged"
+  },
+  "all_natural_local_duration_in_RM_leaf_steps": "3*R6_in+2",
+  "all_natural_blocks_return_normally_without_halting": true,
+  "proof_method": "two affine local cases and induction on R6; exact exterior control-edge audit",
+  "scope": "ordinary unbounded register-program equivalence; no new Rocq theorem or binary runtime proof",
+  "blocks": [
+    {
+      "root": "111010010010111111000011",
+      "old_entry": "11101001001011111100001100",
+      "new_entry": "1110100100101111110000110",
+      "external_entrances": [
+        {
+          "from": "1110100100101111110000100",
+          "guard": "zero"
+        }
+      ],
+      "induction_cases": [
+        {
+          "old": {
+            "guard": "n=0",
+            "steps": 2,
+            "trace": [
+              {
+                "path": "11101001001011111100001100",
+                "op": "CD",
+                "argument": 6
+              },
+              {
+                "path": "1110100100101111110000111",
+                "op": "CI",
+                "argument": 5
+              }
+            ],
+            "R5_increment": 1,
+            "R6_affine_n": [
+              0,
+              0
+            ],
+            "end_kind": "return",
+            "end_path": "11101001001011111100010"
+          },
+          "new": {
+            "guard": "n=0",
+            "steps": 2,
+            "trace": [
+              {
+                "path": "1110100100101111110000110",
+                "op": "CI",
+                "argument": 5
+              },
+              {
+                "path": "11101001001011111100001110",
+                "op": "CD",
+                "argument": 6
+              }
+            ],
+            "R5_increment": 1,
+            "R6_affine_n": [
+              0,
+              0
+            ],
+            "end_kind": "return",
+            "end_path": "11101001001011111100010"
+          }
+        },
+        {
+          "old": {
+            "guard": "n>=1",
+            "steps": 3,
+            "trace": [
+              {
+                "path": "11101001001011111100001100",
+                "op": "CD",
+                "argument": 6
+              },
+              {
+                "path": "111010010010111111000011010",
+                "op": "CI",
+                "argument": 5
+              },
+              {
+                "path": "111010010010111111000011011",
+                "op": "CC",
+                "argument": 2
+              }
+            ],
+            "R5_increment": 1,
+            "R6_affine_n": [
+              1,
+              -1
+            ],
+            "end_kind": "recur",
+            "end_path": "11101001001011111100001100"
+          },
+          "new": {
+            "guard": "n>=1",
+            "steps": 3,
+            "trace": [
+              {
+                "path": "1110100100101111110000110",
+                "op": "CI",
+                "argument": 5
+              },
+              {
+                "path": "11101001001011111100001110",
+                "op": "CD",
+                "argument": 6
+              },
+              {
+                "path": "11101001001011111100001111",
+                "op": "CC",
+                "argument": 2
+              }
+            ],
+            "R5_increment": 1,
+            "R6_affine_n": [
+              1,
+              -1
+            ],
+            "end_kind": "recur",
+            "end_path": "1110100100101111110000110"
+          }
+        }
+      ]
+    },
+    {
+      "root": "11101001001011111110011",
+      "old_entry": "1110100100101111111001100",
+      "new_entry": "111010010010111111100110",
+      "external_entrances": [
+        {
+          "from": "111010010010111111100100",
+          "guard": "zero"
+        }
+      ],
+      "induction_cases": [
+        {
+          "old": {
+            "guard": "n=0",
+            "steps": 2,
+            "trace": [
+              {
+                "path": "1110100100101111111001100",
+                "op": "CD",
+                "argument": 6
+              },
+              {
+                "path": "111010010010111111100111",
+                "op": "CI",
+                "argument": 5
+              }
+            ],
+            "R5_increment": 1,
+            "R6_affine_n": [
+              0,
+              0
+            ],
+            "end_kind": "return",
+            "end_path": "1110100100101111111010"
+          },
+          "new": {
+            "guard": "n=0",
+            "steps": 2,
+            "trace": [
+              {
+                "path": "111010010010111111100110",
+                "op": "CI",
+                "argument": 5
+              },
+              {
+                "path": "1110100100101111111001110",
+                "op": "CD",
+                "argument": 6
+              }
+            ],
+            "R5_increment": 1,
+            "R6_affine_n": [
+              0,
+              0
+            ],
+            "end_kind": "return",
+            "end_path": "1110100100101111111010"
+          }
+        },
+        {
+          "old": {
+            "guard": "n>=1",
+            "steps": 3,
+            "trace": [
+              {
+                "path": "1110100100101111111001100",
+                "op": "CD",
+                "argument": 6
+              },
+              {
+                "path": "11101001001011111110011010",
+                "op": "CI",
+                "argument": 5
+              },
+              {
+                "path": "11101001001011111110011011",
+                "op": "CC",
+                "argument": 2
+              }
+            ],
+            "R5_increment": 1,
+            "R6_affine_n": [
+              1,
+              -1
+            ],
+            "end_kind": "recur",
+            "end_path": "1110100100101111111001100"
+          },
+          "new": {
+            "guard": "n>=1",
+            "steps": 3,
+            "trace": [
+              {
+                "path": "111010010010111111100110",
+                "op": "CI",
+                "argument": 5
+              },
+              {
+                "path": "1110100100101111111001110",
+                "op": "CD",
+                "argument": 6
+              },
+              {
+                "path": "1110100100101111111001111",
+                "op": "CC",
+                "argument": 2
+              }
+            ],
+            "R5_increment": 1,
+            "R6_affine_n": [
+              1,
+              -1
+            ],
+            "end_kind": "recur",
+            "end_path": "111010010010111111100110"
+          }
+        }
+      ]
+    },
+    {
+      "root": "1110100101100011",
+      "old_entry": "111010010110001100",
+      "new_entry": "11101001011000110",
+      "external_entrances": [
+        {
+          "from": "11101001011000100",
+          "guard": "zero"
+        }
+      ],
+      "induction_cases": [
+        {
+          "old": {
+            "guard": "n=0",
+            "steps": 2,
+            "trace": [
+              {
+                "path": "111010010110001100",
+                "op": "CD",
+                "argument": 6
+              },
+              {
+                "path": "11101001011000111",
+                "op": "CI",
+                "argument": 5
+              }
+            ],
+            "R5_increment": 1,
+            "R6_affine_n": [
+              0,
+              0
+            ],
+            "end_kind": "return",
+            "end_path": "111010010110010"
+          },
+          "new": {
+            "guard": "n=0",
+            "steps": 2,
+            "trace": [
+              {
+                "path": "11101001011000110",
+                "op": "CI",
+                "argument": 5
+              },
+              {
+                "path": "111010010110001110",
+                "op": "CD",
+                "argument": 6
+              }
+            ],
+            "R5_increment": 1,
+            "R6_affine_n": [
+              0,
+              0
+            ],
+            "end_kind": "return",
+            "end_path": "111010010110010"
+          }
+        },
+        {
+          "old": {
+            "guard": "n>=1",
+            "steps": 3,
+            "trace": [
+              {
+                "path": "111010010110001100",
+                "op": "CD",
+                "argument": 6
+              },
+              {
+                "path": "1110100101100011010",
+                "op": "CI",
+                "argument": 5
+              },
+              {
+                "path": "1110100101100011011",
+                "op": "CC",
+                "argument": 2
+              }
+            ],
+            "R5_increment": 1,
+            "R6_affine_n": [
+              1,
+              -1
+            ],
+            "end_kind": "recur",
+            "end_path": "111010010110001100"
+          },
+          "new": {
+            "guard": "n>=1",
+            "steps": 3,
+            "trace": [
+              {
+                "path": "11101001011000110",
+                "op": "CI",
+                "argument": 5
+              },
+              {
+                "path": "111010010110001110",
+                "op": "CD",
+                "argument": 6
+              },
+              {
+                "path": "111010010110001111",
+                "op": "CC",
+                "argument": 2
+              }
+            ],
+            "R5_increment": 1,
+            "R6_affine_n": [
+              1,
+              -1
+            ],
+            "end_kind": "recur",
+            "end_path": "11101001011000110"
+          }
+        }
+      ]
+    },
+    {
+      "root": "111110011",
+      "old_entry": "11111001100",
+      "new_entry": "1111100110",
+      "external_entrances": [
+        {
+          "from": "1111100100",
+          "guard": "zero"
+        }
+      ],
+      "induction_cases": [
+        {
+          "old": {
+            "guard": "n=0",
+            "steps": 2,
+            "trace": [
+              {
+                "path": "11111001100",
+                "op": "CD",
+                "argument": 6
+              },
+              {
+                "path": "1111100111",
+                "op": "CI",
+                "argument": 5
+              }
+            ],
+            "R5_increment": 1,
+            "R6_affine_n": [
+              0,
+              0
+            ],
+            "end_kind": "return",
+            "end_path": "11111010"
+          },
+          "new": {
+            "guard": "n=0",
+            "steps": 2,
+            "trace": [
+              {
+                "path": "1111100110",
+                "op": "CI",
+                "argument": 5
+              },
+              {
+                "path": "11111001110",
+                "op": "CD",
+                "argument": 6
+              }
+            ],
+            "R5_increment": 1,
+            "R6_affine_n": [
+              0,
+              0
+            ],
+            "end_kind": "return",
+            "end_path": "11111010"
+          }
+        },
+        {
+          "old": {
+            "guard": "n>=1",
+            "steps": 3,
+            "trace": [
+              {
+                "path": "11111001100",
+                "op": "CD",
+                "argument": 6
+              },
+              {
+                "path": "111110011010",
+                "op": "CI",
+                "argument": 5
+              },
+              {
+                "path": "111110011011",
+                "op": "CC",
+                "argument": 2
+              }
+            ],
+            "R5_increment": 1,
+            "R6_affine_n": [
+              1,
+              -1
+            ],
+            "end_kind": "recur",
+            "end_path": "11111001100"
+          },
+          "new": {
+            "guard": "n>=1",
+            "steps": 3,
+            "trace": [
+              {
+                "path": "1111100110",
+                "op": "CI",
+                "argument": 5
+              },
+              {
+                "path": "11111001110",
+                "op": "CD",
+                "argument": 6
+              },
+              {
+                "path": "11111001111",
+                "op": "CC",
+                "argument": 2
+              }
+            ],
+            "R5_increment": 1,
+            "R6_affine_n": [
+              1,
+              -1
+            ],
+            "end_kind": "recur",
+            "end_path": "1111100110"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+\section{Alternative formalisms and encoding routes}
+\label{sec:alternatives}
+
+The most useful distinction is between a shorter foundational theory,
+a shorter serialized query, and a smaller complete binary machine.
+Each can improve independently.  The alternatives below have concrete
+mechanisms, but none supplies an additional certified state saving
+beyond the K-based construction presented here.
+
+\paragraph{Native closure theories.}
+The K230 theory uses subset-indexed witness closure and a support
+condition, with unrestricted formula instances and finite parameter
+tuples.  Its ordinary and irreflexive versions are both calibrated
+to StandardZFC, while the emitted numerical calculus uses the
+irreflexive version for its falsity alias.  That calibration already
+reaches the published binary table.  It makes K the best verified
+machine starting point among the sources actually measured here.
+The older raw EPSC route instead activates every empty input and
+thereby removes an explicit seed parameter.  Its EPSC/PSC equivalence
+has uniform finite schema-instance arguments, but a smaller displayed
+schema does not remove the proof enumerator or its substitution and
+freshness obligations.  The retained Source~14 review explicitly
+distinguishes this ordinary equivalence from rejected numerical
+shortcuts and from the missing new-source formal endpoint.\footnote{
+K230: \url{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/docs/proof-overview.md}.
+EPSC: \url{https://github.com/VladimirReshetnikov/ProveIt/blob/ce192939372ac7944fe2a0208c68a96d49fb5e3b/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-146-source-14.md}.}
+
+\paragraph{Finite class and assignment kernels.}
+GB is finitely axiomatizable and conservative over ZF.  Adding the
+ordinary set-theoretic Choice sentence therefore gives a finite
+conservative extension of ZFC: conservativity with this extra set
+sentence follows by the deduction theorem.  This specifies the
+Choice convention without relying on an ambiguous use of the name
+NBG.  The class-comprehension matrices remain restricted to formulas
+without bound class variables.  Van Wesep's Theorem~3.1 gives a more
+general finite conservative class extension for any recursively
+enumerable extension of the underlying set theory.\footnote{
+Robert A. Van Wesep, \emph{Satisfaction relations for proper classes},
+arXiv:1201.5509v2, pp.~3--4 and Theorem~3.1:
+\url{https://arxiv.org/pdf/1201.5509}.}
+For machine design, finiteness replaces schema recognition by a
+literal axiom payload; class operations, sorts, and their first-order
+proof apparatus still contribute to the implementation.
+
+The repository's FC15 route makes the mechanism concrete: assignment
+evaluation and coordinate update, NAND and existential class
+constructors, and six closure-or-counterexample clauses represent
+the raw EPSC schema by fifteen universal clauses.  Its recommended
+form fuses guarded witnesses and derives a member selector.
+The one common domain and genuine equality are essential; a compiler
+must implement congruence and handle coincident values.  The source
+supplies an ordinary model interpretation, not a complete binary
+proof search.\footnote{
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/aaf47dea43ec6cc3c1f42b6ffd56a92fb6e7fdab/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/44-nine-notes-finite_class_closure.md}.}
+
+\paragraph{Pure equational search.}
+Ground contextual rewriting removes variable binding from the
+enumerated certificates.  Completeness follows from the ground-term
+algebra modulo the generated congruence, with a constant ensuring
+nonemptiness.  Arbitrary ground substitutions, both rewrite
+directions, repeated-variable matching, contextual replacement, and
+fair certificate coverage remain necessary.  The inherited E663
+packet already carries seven equations and its complete query;
+Section~\ref{sec:e662} gives the separate one-bit conservative
+fresh-constant improvement to E662.  This is a measured payload
+change, not a K improvement or a machine-state result.
+The repository's different seven-equation generator experiment
+produced a 299-state complete control source before the missing
+ZFC-specific target/writer and full calibration.  That measurement
+is neither a compilation nor a lower bound for E662.\footnote{
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/13ec39ed43148b1807f51ed6e6528e1c84659562/Computability/BusyBeaver/Research/ZFC/equational_generator_cost.md}.}
+
+The cyclic Df3 route compresses three commuting modal closures into
+one closure and an order-three rotation.  Its E9 basis has nine
+equations; the reverse validity reduction uses a threefold product
+and coordinate projection.  This transports empty-premise
+equational validity, not arbitrary extra premises.  The ZFC-specific
+target must contain the full first-order and pairing translation.
+The retained record includes a finite class source and its
+10,182-node model wrapper, but expressly lacks the final expanded
+modal/equational target.  Counting only the nine kernel equations
+would omit the main unresolved payload.\footnote{
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/aaf47dea43ec6cc3c1f42b6ffd56a92fb6e7fdab/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/41-cyclic-notes-algebraic_development.md}.}
+
+\paragraph{Combinators and complete-description accounting.}
+The repository also supplies an explicit closed SK term $P_M$
+simulating a literal machine, with a literal normal-form halt
+handler $K$.  The two SK equations plus $P_M\ne K$ are consistent
+exactly when $M$ does not halt: confluence relates conversion to
+reduction to $K$, and the ground-term quotient gives the separating
+model.  Equations alone would always have a singleton model.
+The measured 253-state carrier requires 192,272 BCL bits, with
+the table accounting for about 98.3 percent; its one-constant version
+grows to 302,419 bits.  Those are complete term measurements but
+exclude a binary evaluator and blank loader.  This is a concrete
+way to transfer a known calibration, and an example of why a smaller
+alphabet need not yield a shorter complete description.\footnote{
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/aaf47dea43ec6cc3c1f42b6ffd56a92fb6e7fdab/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/24-proxy-experiments-sk_carrier-README.md}.}
+
+The promising next encoding experiment is a shared ground-term
+walker used for decoding, substitution, contextual replacement,
+and query comparison, measured together with its literal writer.
+Frequency-based opcode tags or arity codes can shorten the data,
+but the decoder may grow and change state sharing.  A complete
+comparison must count the resulting combined transition table;
+no state budget is inferred here from symbol counts or bit counts.

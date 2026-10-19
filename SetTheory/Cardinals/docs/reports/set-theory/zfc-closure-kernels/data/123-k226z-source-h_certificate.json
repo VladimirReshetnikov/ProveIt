@@ -1,0 +1,77 @@
+{
+  "status": "FOUR_CLOSED_TRANSFER_PLUS_ONE_REPLACEMENTS",
+  "input_sha256": "952cb55b807a23d628912150113cb2cfde6d7faee4719b285e09dd1d808a7c9d",
+  "source_sha256": "d8a269db4a98890c22a6da3e5cdf246f1c6b97f1acc73ec31cc46c09c23916e5",
+  "replacement_prefixes": [
+    "111010010010111111000011",
+    "11101001001011111110011",
+    "1110100101100011",
+    "111110011"
+  ],
+  "before_macro": [
+    [
+      [
+        "CD",
+        6
+      ],
+      [
+        [
+          "CI",
+          5
+        ],
+        [
+          "CC",
+          2
+        ]
+      ]
+    ],
+    [
+      "CI",
+      5
+    ]
+  ],
+  "after_macro": [
+    [
+      "CI",
+      5
+    ],
+    [
+      [
+        "CD",
+        6
+      ],
+      [
+        "CC",
+        2
+      ]
+    ]
+  ],
+  "boundary": [
+    0,
+    0,
+    false
+  ],
+  "before_metrics": {
+    "dag_nodes": 212,
+    "leaf_occurrences": 5125,
+    "maximum_depth": 40,
+    "maximum_zero_run": 6
+  },
+  "after_metrics": {
+    "dag_nodes": 212,
+    "leaf_occurrences": 5121,
+    "maximum_depth": 40,
+    "maximum_zero_run": 6
+  },
+  "guarded_cases": 6656,
+  "macro_contract": {
+    "input_R5": "a",
+    "input_R6": "b",
+    "output_R5": "a+b+1",
+    "output_R6": 0,
+    "other_registers": "unchanged",
+    "termination": "every natural a,b"
+  },
+  "proof": "For OLD, each positive decrement of R6 adds one to R5 and the zero exit adds one. For NEW, the initial increment adds one; each positive decrement returns through the increment. Induction on b proves both terminate with R5=a+b+1 and R6=0. Closed boundaries permit replacement in every source context.",
+  "scope": "Syntactic context certificate and natural-number loop identity; exact native runtime is checked separately."
+}

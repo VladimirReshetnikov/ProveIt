@@ -1,0 +1,618 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=24mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{xcolor,microtype,enumitem}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Porting ProveIt reductions to K230},pdfauthor={Research contribution prepared for ProveIt}}
+\setlength{\parskip}{5pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small ProveIt / K230 reduction study}
+\fancyhead[R]{\small 19 October 2026}
+\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\artifact}[1]{\texttt{\detokenize{#1}}}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,breaklines=true,frame=single,rulecolor=\color{black!20}}
+\input{results.tex}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{14mm}
+{\Large\sffamily RESEARCH CONTRIBUTION FOR PROVEIT\par}
+\vspace{10mm}
+{\huge\bfseries Porting ProveIt reductions to K230\par}
+\vspace{5mm}
+{\LARGE A \CandidateStates-state binary machine calibrated to\par}
+{\LARGE $\Con(\ZFC)$\par}
+\vspace{12mm}
+{\large Exact construction, source equivalence, unbounded runtime\par}
+{\large certificates, and alternative encoding experiments\par}
+\vspace{12mm}
+19 October 2026
+\vfill
+\begin{abstract}
+We transfer compatible reductions from ProveIt's 243-to-235-state line to
+Elliot Glazer's independently calibrated 230-state K construction. Two
+predecessor-bit reductions are already present in K230. The transfer-plus-one
+loop rewrite and its contextual fold give 229 states; delayed erasure gives
+a particularly simple 228-state companion, differing from the published
+K230 table by two deleted states and eight retained-row edits before renumbering.
+A further source-boundary adaptation, using constrained reassociation of a
+49-atom closed component and repair of shared decoder contexts, gives 227
+states. One more closed source rotation and contextual fold gives the
+\textbf{\CandidateStates-state principal candidate}.
+
+The delivery includes exact binary tables, deterministic reconstruction,
+independent source and initialization checks, and fresh parametric runtime
+proofs. For the principal table, all 6,656 guarded instruction cases close,
+using \RuleCount\ symbolic rules and all \TransitionRows\ literal rows.
+The exact blank bootstrap reaches the calibrated complete tape after
+409,835 transitions. These facts yield an ordinary mathematical proof,
+formalizable in ZFC, of nonhalting equivalent to $\Con(\ZFC)$.
+The inherited K230 endpoint is checked in Rocq; the reduced table has no
+new Rocq or Lean endpoint. A separate equational-query observation produces
+a fully serialized 662-bit packet, without asserting a further machine saving.
+\end{abstract}
+\vfill
+\small
+Principal upstream: \url{https://github.com/elliotglazer/k230-rocq}\par
+Pinned commit: \code{3142e4dd980f0be12f4abb636c4ae2528afc17eb}\par
+ProveIt reference delivery: \code{0128d662fd46f72dc84505176ae8ec28affb2d9d}
+\end{titlepage}
+
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{Result and exact scope}
+
+\begin{theorem}[Ordinary consistency calibration]
+Let $M$ be the principal table in \artifact{machines/k226.tm}, with
+working states $0,\ldots,225$, initial state $0$, and a separate halt
+outcome $226$. Its tape alphabet is $\{0,1\}$, its initial tape is
+identically zero on $\mathbb Z$, and every transition moves one cell
+left or right. The constructions and proofs in this delivery establish
+the ordinary mathematical statement
+\[
+ \ZFC\ \vdash\
+ \bigl(\neg\Halt(M,\mathrm{blank})\ \longleftrightarrow\ \Con(\ZFC)\bigr).
+\]
+Here $\Con(\ZFC)$ means that no finite contradiction is derivable in
+the standard classical first-order ZFC proof system identified by the
+inherited K230 calibration.
+\end{theorem}
+
+The exact byte identity of the principal canonical table is
+\begin{center}\small\ttfamily\CanonicalHash\end{center}
+The inherited-label table, more convenient for comparing old local
+reductions, has SHA-256
+\begin{center}\small\ttfamily\InheritedHash\end{center}
+Its start, dispatcher and halt labels are 95, 96 and 254. Those labels
+are names: there are exactly \CandidateStates\ working states. In
+particular, inherited working labels may exceed 254; 254 alone is the halt.
+The state map supplied with each table verifies the bijective renaming.
+Initialization is included in the state count, with no supplied program
+on the tape and no separate free loader.
+
+The report calls $M$ a candidate to preserve the project's distinction
+between an ordinary mathematical construction and a new proof-assistant
+endpoint. The evidence is stronger than a bounded execution experiment:
+each instruction proof quantifies over arbitrary natural register values
+and arbitrary finite spare storage. It is weaker as a mechanically
+trusted artifact than compiling a new Rocq theorem for $M$. The latter
+has not been done. No explicit internal PA derivation or serialized
+ZFC derivation is supplied either.
+
+\subsection{Why the theorem follows}
+
+The argument has four separately checked interfaces:
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item The pinned K230 formal theorem identifies blank halting with a
+finite StandardZFC refutation. The actual literal Rocq register program
+is independently matched to the published instruction catalogue.
+\item Four local loop rewrites preserve whole-program halting for
+every initial natural register file. Subsequent reassociation preserves
+the ordered instruction labels and every guarded successor exactly.
+\item The principal binary table implements every guarded instruction
+of that source on its complete quantified tape frame, with positive
+finite duration and no unaccounted interior halt.
+\item Its exact blank startup reaches an instance of that frame with
+the actual nonzero seed from K230.
+\end{enumerate}
+
+Thus, as statements about finite computations and finite proofs,
+\[
+\begin{aligned}
+ \Halt(M,\mathrm{blank})
+ &\longleftrightarrow \Halt(P_{\rm new},R_0)\\
+ &\longleftrightarrow \Halt(P_{230},R_0)\\
+ &\longleftrightarrow \mathsf{StandardZFC}\vdash\bot.
+\end{aligned}
+\]
+Negating gives the desired equivalence. The new transport uses induction
+on natural counters, finite source executions, unary words and finite
+lists; these are ordinary arguments available in ZFC. The inherited
+logical calibration concerns the precise finite-refutation predicate,
+not an unspecified semantic notion of consistency.
+The ZFC-provability assertion uses the inherited finitary first-order
+proof translations together with these new elementary inductions.
+For example, \code{KUpperConsistency.v} records finite axiom lists and
+actual first-order derivations in \code{core_holdsL}, and its final
+consistency transfer assembles a finite contradiction. This is the
+object-level mathematical content being reused; the upstream Rocq
+kernel check certifies that implementation of the proof.\footnote{
+\url{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/coq/settheory/KUpperConsistency.v}.}
+
+\subsection{What transferred from 243 to 235}
+
+The earlier eight savings are mechanisms with hypotheses, not eight
+interchangeable deletions. Table~\ref{tab:transfer} states the outcome
+of inspecting their actual source patterns and transition ports.
+The predecessor and loop facts are documented in ProveIt's maintained
+241- and 240-state pages; the next three folds are documented in its
+237-state page.\footnote{
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/aaf47dea43ec6cc3c1f42b6ffd56a92fb6e7fdab/Computability/BusyBeaver/Research/ZFC/candidate-fold241/README.md};
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/aaf47dea43ec6cc3c1f42b6ffd56a92fb6e7fdab/Computability/BusyBeaver/Research/ZFC/candidate-rotation240/README.md};
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/aaf47dea43ec6cc3c1f42b6ffd56a92fb6e7fdab/Computability/BusyBeaver/Research/ZFC/candidate-composed237/README.md}.}
+
+\begin{table}[htbp]
+\small
+\begin{tabularx}{\textwidth}{@{}l l X@{}}
+\toprule
+Old step & Mechanism / inherited states & Outcome on K230 \\
+\midrule
+243 $\to$ 242 & $27\to15$ & Already present; no new saving.\\
+242 $\to$ 241 & $39\to17$ & Already present; no new saving.\\
+241 $\to$ 240 & Loop rewrite; $90\to72$ & Transfers: K230 $\to$ K229.\\
+240 $\to$ 239 & Source boundary; split 218 & Adapts with K-specific source/context repair; one further saving.\\
+239 $\to$ 238 & Delayed erasure; $169\to80$ & Transfers; combines with both sources.\\
+238 $\to$ 237 & Shared helper; $235\to98$ & Required source/helper pattern is absent in the inspected K230 representation.\\
+237 $\to$ 236 & Rotation, then $223\to182$ & Depends on a different source boundary layout; no further accepted saving here.\\
+236 $\to$ 235 & Source rotation and context fold & The method adapts with a different rotation and state pair: $508\to86$, giving K227 $\to$ K226.\\
+\bottomrule
+\end{tabularx}
+\caption{Transfer audit. ``Absent'' or ``no accepted saving'' is a statement
+about these inspected constructions, not an impossibility result.}
+\label{tab:transfer}
+\end{table}
+
+Four additional savings therefore survive in the principal construction:
+230 to 226. This is nine fewer states than the requested 235-state
+reference, and seventeen fewer than the earlier 243-state table. The
+unmodified logical theory remains Glazer's K; the contribution here is
+the calibrated composition and the boundary adaptation.
+
+\input{k230_foundation.tex}
+\input{source229_proof.tex}
+
+\section{A compact and independently useful 228-state companion}
+\label{sec:228}
+
+Before the more substantial source-boundary work, the literal loop and
+delayed-erasure ports already give a small, easily reviewed result.
+The complete table is \artifact{machines/k228.tm}; its inherited
+version is \artifact{machines/k228_old.tm}. The canonical SHA-256 is
+\begin{center}\small\ttfamily
+06726bd731f3a42e3ccd1c4189d80af74ba2d486e333045097480fcaa3313001.
+\end{center}
+It is retained as a companion because its patch is much smaller than
+the principal source-recompiled construction.
+
+\subsection{Eight retained rows in the original K230 numbering}
+
+Use the published K230 labels in this subsection, before any renumbering.
+Delete states 79 and 140. Replace exactly these eight retained rows:
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+State & Read & Write & Move & Next\\
+\midrule
+121&0&0&R&63\\
+121&1&1&R&13\\
+63&0&0&L&123\\
+63&1&1&L&30\\
+70&1&1&R&63\\
+71&0&0&L&91\\
+80&1&1&L&138\\
+126&0&0&R&71\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every other retained row stays unchanged. Reindex the remaining working
+states in their original order as $0,\ldots,227$, and change the old
+halt label 230 to 228. The supplied JSON patch and state map make this
+description executable and check its final byte digest. A source rewrite
+is still essential to its proof: these eight rows are not justified
+merely by visually comparing the machine graphs.
+
+\subsection{The contextual fold from 90 into 72}
+
+We return to inherited labels. The source change alters only
+$142/0:0R37\to0R72$ and $142/1:1R72\to1R17$ in the 230-state
+intermediate. This changes the context in which 72 is entered.
+The independently recomputed invariant gives a 1 immediately left of
+55, 142 and 90, and the bits 10 immediately left of 72.
+The state map sends 90 to 72 and fixes every other state. Replace the
+rows of 72 by $0L144$ and $1L36$, redirect $79/1$ to 72, and delete 90.
+
+For every admitted initial tape and head position, each old transition
+is reproduced by a positive new block with the same whole tape and
+mapped endpoint. There are 456 one-step cases, three three-step cases,
+and one nine-step case, covering all 460 old rows. The checker explores
+934 symbolic configurations and rederives the predecessor invariant
+from the literal table. Its four exceptional blocks are:
+\begin{center}\small
+\begin{tabular}{lll}
+\toprule
+Old row & New control path & Length\\
+\midrule
+72/0 & $72,144,47,15,32,46,17,106,93,57$ & 9\\
+72/1 & $72,36,53,64$ & 3\\
+90/0 & $72,144,82,93$ & 3\\
+90/1 & $72,36,54,71$ & 3\\
+\bottomrule
+\end{tabular}
+\end{center}
+The path includes both initial and final controls. The proof does not
+restrict the initial tape to blank; the source-changing step before
+this fold is separately calibrated for the intended blank initialization.
+
+\subsection{Delayed erasure and its precise proof premise}
+
+Delete inherited state 169 into 80. Change $80/0$ to $0L106$,
+$91/1$ to $1L167$, and redirect $147/0$ to $0R80$. The 1 at the
+second changed row is retained temporarily; existing states can use it
+to distinguish two control roles before restoring the required tape.
+
+The independent local checker proves these complete tape identities:
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}l X r@{}}
+\toprule
+Old row & Additional local premise & New transitions\\
+\midrule
+80/0 & Left neighbor is 1 & 5\\
+169/0 & Left neighbor is 0 & 3\\
+169/1 & Left neighbor is 0 and right neighbor is 1 & 5\\
+91/1 & The preceding three cells, left to right, are 011 & 9\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The remaining 454 rows commute in one step. The left-neighbor premises
+follow from a syntactic inductive invariant. The right-neighbor premise
+for $169/1$ does not follow from that invariant alone; an all-tape
+claim based only on those predecessor facts would be unjustified.
+
+For the blank prefix, all six relevant $169/1$ occurrences have the
+required right-hand 1. The independent checker compares all 409,692
+K229 startup checkpoints to their variable-duration K228 images.
+The four exceptional counts are respectively 18, 12, 6 and 3, giving
+\[
+409691 + 18\cdot4 + 12\cdot2 + 6\cdot4 + 3\cdot8=409835.
+\]
+For the unbounded part, the accepted argument proves every instruction
+contract directly on the final K228 table. This eliminates the need
+to assume the extra guard for arbitrary reachable tapes. All 6,656
+symbolic cases pass, with 1,614,426 rules and all 456 rows used.
+
+\input{boundary227.tex}
+\input{extension226.tex}
+
+\section{Unbounded binary runtime proof}
+\label{sec:runtime}
+
+\subsection{Exact quantified tape frames}
+
+For a natural $v$, put $B(v)=0\,1^{v+1}$ and $C(v)=1\,0\,1^v$;
+extend both encodings to finite lists by concatenation. At inherited
+dispatcher 96 the head is immediately right of a left marker 1, the
+exterior to its left is zero, and the tape to its right is
+\begin{equation}
+ p\;0^{64+g-|p|}\;1\;
+ B(V_0)\cdots B(V_8)\;B(s)\;B(A)\;0^\omega.
+ \label{eq:frame}
+\end{equation}
+Here $p$ is a literal source-leaf path, $g,s\in\mathbb N$, and $A$
+is any finite list of naturals, including the empty list. The nine
+logical registers are independent, with physical permutation
+\[
+ V_{\pi(i)}=R_i,\qquad \pi=(6,2,0,4,3,7,8,5,1).
+\]
+The explicit $B(s)$ supplies the nonempty spare list needed by this
+interpreter. The accepted source has maximum depth \SourceDepth,
+so the gap exponent is nonnegative for every allowed $g$.
+
+An increment raises its logical register by one and appends one
+$B(1)$ spare block. A positive decrement lowers its register by one
+and adds one to the gap parameter. Other operations preserve registers
+and spare blocks. A program-counter overflow moves the marker and
+head one cell left and adds one more to the gap parameter. Thus the
+frame family remains closed: the gap never becomes negative and the
+spare list never becomes empty.
+
+For each decrement, the zero case fixes the selected register at zero
+and the positive case writes it as $1+n$ for an arbitrary natural $n$.
+The other eight registers are still independent. All other instructions
+require one case. This is the source of the exact 6,656-case coverage.
+
+\subsection{Sound rules of the executable checker}
+
+The checker represents both sides of the head by runs and opaque
+finite-list atoms. Every run length is an affine expression in thirteen
+slots: constant, extra gap, nine primary parameters, first spare, and
+remaining-list width. It requires nonnegative coefficients. A literal
+step from a run not handled by a scan loop requires constant coefficient
+at least one, so the read cell exists for every valuation.
+
+There are three execution rules. A literal transition is just the
+corresponding row of the supplied table. A homogeneous self-loop scan
+is justified by induction on its arbitrary natural run length,
+including the zero-length case. A traversal of an opaque finite list
+is justified by structural induction after checking a one-block lemma
+on the actual table, with arbitrary opaque contexts on both sides.
+The four one-block lemmas are:
+\begin{center}
+\begin{tabular}{rlll}
+\toprule
+Entry & Direction & Encoding before $\to$ after & Duration\\
+\midrule
+73 & Right & $B(v)\to B(v)$ & $v+2$\\
+95 & Right & $B(v)\to C(v)$ & $v+2$\\
+48 & Left & $B(v)\to B(v)$ & $v+2$\\
+112 & Left & $C(v)\to B(v)$ & $v+2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Each lemma returns to the same entry state beyond the entire block
+and leaves both exterior contexts untouched. List induction therefore
+covers every finite tail. Its width parameter is instantiated as
+$W(A)=\sum_{v\in A}(v+2)$; treating this nonnegative number symbolically
+does not exclude any actual finite list.
+
+Normalization uses exact word identities: merge adjacent equal runs,
+remove zero-length runs, absorb finite trailing zeros into a blank
+exterior, and use
+\[
+ C(A)1=1B(A),\qquad
+ 1\operatorname{rev}(C(A))=\operatorname{rev}(B(A))1.
+\]
+The first follows from $C(v)1=1B(v)$ by induction on $A$; the second
+is its reversal. No unknown nonzero tape data are discarded.
+
+The generic engine and helper are retained byte for byte from the
+ProveIt evidence. Their original command-line entry point pins an older
+source. The new small adapter validates the K source and calls the
+unchanged generic \code{prove_blocks} and \code{case} functions.
+It checks the actual complete binary table, source prefix tree,
+register bounds, source depth, control operands and all program-counter
+normalizations before proving every case. The adapter does not invoke
+the old CLI with its unrelated source hash removed.
+
+\subsection{Program-counter normalization}
+
+A primitive source step can leave a path shorter or longer than the
+next leaf path. Follow its bits, then zeros, down the complete source
+tree. The independent source check verifies, for every possible
+guarded successor, that any discarded suffix contains only zeros.
+Appending or removing those zeros changes only the division between
+$p$ and its zero padding in \eqref{eq:frame}; it leaves every tape cell
+and the header position unchanged. This finite check supplies the
+``no stray bit'' interface needed to concatenate the per-leaf proofs.
+The initial empty path resolves in the same way to the first leaf,
+\code{000}.
+
+\subsection{Why a successful case proves actual progress}
+
+For a nonhalting instruction, a case closes only at the exact complete
+target frame, including its whole tape, state, relative head position,
+registers, arbitrary existing spare list and any appended spare.
+The accumulated absolute displacement is checked separately. A
+premature halt fails a nonhalting case. For the unique source halt,
+reaching the separate halt outcome is the required result; the final
+tape contents are irrelevant to halting.
+
+The duration is an affine expression with nonnegative coefficients
+and a positive constant. The smallest certified constant is 13.
+Each instruction therefore takes at least 13 concrete transitions,
+for every allowed valuation. If the source runs forever, these
+positive durations concatenate to an infinite machine run. If the
+source halts, the finite sequence of positive blocks reaches the halt
+outcome. Conversely, determinism and the absence of interior halt
+ensure that a finite machine halting run comes from a finite source
+execution ending in the halt leaf. There can be no infinite sequence
+of simulated zero-time instructions before a finite machine halt.
+
+The engine's 4,000-iteration cap bounds construction of a symbolic
+derivation. It does not bound the concrete execution, register values,
+gap, number of spare blocks or their sizes. In the principal proof
+the longest symbolic case uses only \MaximumSymbolic\ rules.
+
+\subsection{The actual blank seed}
+
+Two independently implemented tape representations---a sparse set of
+one-cell positions and a two-list zipper---compute the complete blank
+bootstrap. After 409,835 transitions they agree exactly on state 96,
+head $-5$, marker $-6$, header 176, and the entire support of 351 one
+cells. Every other cell is zero. The endpoint is reconstructed from
+the literal K230 bootstrap recipe, not inferred from a bounded
+prefix of the tape.
+
+It is exactly \eqref{eq:frame} with
+\[
+ R_0=(3,0,0,0,3,0,0,0,0),\qquad
+ g=117,\quad s=1,\quad A=[1]^{166}.
+\]
+Hence the header distance is $64+117=181$, the physical primary
+values are $(0,0,0,3,0,0,3,0,0)$, and there are 167 spare blocks
+of value 1. The initial empty program counter and its first resolved
+leaf \code{000} denote the same tape. Earlier visits to state 96
+during initialization need not be clean dispatcher frames; the proof
+uses the specified complete endpoint.
+
+\section{Validation, reproduction and further search}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Verified property & Simple K228 & K227 & Principal K226\\
+\midrule
+Working states & 228 & 227 & 226\\
+Literal rows & 456 & 454 & 452\\
+Source leaves & 5,121 & 5,121 & 5,121\\
+Guarded cases & 6,656 & 6,656 & 6,656\\
+Distinct source subtrees & 212 & 211 & 211\\
+Maximum source depth & 40 & 37 & 37\\
+Maximum zero run & 6 & 6 & 6\\
+Symbolic rule applications & 1,614,426 & 1,591,422 & \RuleCount\\
+Minimum concrete instruction duration & 13 & 13 & 13\\
+Maximum symbolic case length & 415 & 388 & \MaximumSymbolic\\
+Exact blank bootstrap & 409,835 & 409,835 & 409,835\\
+Final tape one-cells & 351 & 351 & 351\\
+\bottomrule
+\end{tabular}
+\caption{Fresh complete verification, with natural-valued parameters and
+finite lists quantified by induction. Row coverage alone is not the proof.}
+\end{table}
+
+\subsection{Portable replay}
+
+From the extracted archive root, Python 3.10 or later suffices:
+\begin{lstlisting}
+python3 -B reproduce.py --output-dir /tmp/k226-replay
+\end{lstlisting}
+This reconstructs the machines and source, checks the pinned upstream
+source and retained CI artifact, repeats the literal Rocq-source bridge,
+checks the source transformations, recomputes the bootstrap and local
+fold evidence, and reruns the complete principal symbolic proof.
+Assertions must remain enabled: do not use \code{-O} or set
+\code{PYTHONOPTIMIZE}. No network or external package is needed.
+
+For a quick construction and finite-interface check:
+\begin{lstlisting}
+python3 -B reproduce.py --quick --output-dir /tmp/k226-quick
+\end{lstlisting}
+The quick mode also audits the integrity and complete case coverage of
+the retained runtime records. It explicitly does not claim a fresh
+universal derivation. A \code{PASS} string or a hash match alone is
+not a substitute for rerunning the full induction engine. Add
+\code{--all-runtime} to the full command to rederive the K228 and K227
+companion proofs as well as the principal K226 proof.
+
+The original K230 Rocq snapshot and its attribution are retained under
+\artifact{vendor/k230-rocq}. Its upstream mathematical dependencies
+are pinned by its own manifest. A new local Rocq rebuild requires the
+toolchain and separately fetched dependencies described in that
+snapshot. The ordinary Python replay neither runs nor replaces that
+Rocq build.
+
+\subsection{Rejected attempts and the useful next direction}
+
+Several initially attractive source rotations failed a concrete
+instruction contract. A pure decoder state can also be entered while
+moving left as an arithmetic helper. Reparenthesizing it without
+preserving that context can return to the wrong source successor even
+when the abstract register-program graph is unchanged. In one rejected
+layout the first failing leaf was zero-guard decrement of register 1
+at ordinal 568. A later candidate exposed a missing helper for state
+218. These were genuine local counterexamples to those compiler
+layouts; they were not evidence that the source reassociation was
+mathematically invalid.
+
+The accepted boundary construction makes incoming tape tags and helper
+roles explicit constraints. That is the main reusable methodological
+change: optimize the source tree jointly with the implementation's
+context requirements. A source DAG with fewer nodes is a promising
+proposal, but it is only useful after the complete binary table passes
+the quantified runtime contract.
+
+Restricted direct searches on the simple K228 table found no additional
+fold at 17- or 33-transition budgets, including selected head-offset
+and one-bit tag variants. A separate correlated-window/helper search
+at radius 5 and block budgets 65 inspected 25,878 state pairs, with
+516,060,285 helper comparisons, and produced no candidate in that
+family. These negative searches are retained as discovery records;
+their finite limits are not lower bounds on all possible machines.
+The successful dynamic program demonstrates why changing the source
+and its shared-state contexts can be more productive than extending
+only those direct-fold searches.
+
+After accepting K226, a final targeted search examined 15, 120 and 680
+distinct layouts at depths one, two and three additional closed
+rotations, respectively, keeping every intermediate zero run at most
+six and freezing startup rows. No further generic context fold appeared.
+An earlier continuation allowed an intermediate seven-zero run and
+examined 1,602 layouts through depth two, also without a hit. The
+construction is frozen at 226; these searches make no global
+minimality claim.
+
+\input{alternatives.tex}
+
+\section{Attribution and integration notes}
+
+The compact theory K, its numerical axiom encoding, the 230-state
+table and its formal consistency calibration remain credited to
+Elliot Glazer and the K230 development. The predecessor-bit, loop,
+boundary and delayed-erasure mechanisms are inherited from the
+identified ProveIt constructions and incoming contributions. The new
+work consists of applying their actual hypotheses to K230, composing
+the compatible savings, finding and checking the K-specific boundary
+layout, and supplying the exact reproducible reduced tables.
+
+The calculus and proof-search architecture trace to Mira-Cult; the
+Rocq reference development to Jeff Ketchersid's busy-beaver project;
+and the compiler framework to Andrew James Wade's Turing Machine
+Explorer. BusyCoq, LibTactics and the Coq Library of Undecidability
+retain their upstream notices. ProveIt contributors retain their
+existing attribution. No personal author is inferred for an anonymous
+incoming contribution.
+
+The delivery preserves ProveIt's MIT No Attribution notice and the
+K230 \artifact{THIRD_PARTY.md} and \artifact{LICENSES} files. The
+latter expressly does not assign a blanket license to custom upstream
+or adapted files whose scope was not specified. The new report does
+not relicense those files. The snapshot contains source and build
+instructions rather than precompiled proof objects.
+
+For incorporation, the principal candidate's table, source, state map,
+construction recipe and executable proof records should travel
+together. The simple K228 companion is useful for a separate minimal
+diff review. The retained upstream CI logs establish exactly which
+formal baseline is being used. The final \artifact{MANIFEST.sha256}
+identifies every shipped artifact byte; generated replay output belongs
+in a separate directory.
+
+\appendix
+\input{e662.tex}
+
+\section{Complete canonical transition table}
+\label{sec:table}
+
+The following table is generated directly from
+\artifact{machines/k226.tm}. An entry $wDq$ means: write $w$, move
+one cell in direction $D\in\{L,R\}$, and enter $q$. The symbol $H$
+denotes the separate halt outcome 226, which is excluded from the
+226 working states. The initial state is 0. Each working state has
+exactly one row for each read symbol; no stationary move or larger
+alphabet is used.
+
+\input{transition_table.tex}
+
+\end{document}

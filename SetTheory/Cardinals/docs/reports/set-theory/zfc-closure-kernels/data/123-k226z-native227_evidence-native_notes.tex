@@ -1,0 +1,150 @@
+% TeX fragment for incorporation in the main research report.
+\section{A native reduction of the independent 230-state construction to 227 states}
+\label{sec:native227}
+
+The selected machine has 227 working states over a binary alphabet, starts in
+state 0 on the all-zero tape, dispatches source instructions at state 83, and
+halts at state 227.  The public table preserves ascending labels from the frozen
+K230 construction after deleting states 79, 140, and 175.  Its SHA-256 is
+\begin{quote}\small\ttfamily
+ce179dae58b737c508c6a3b360cad0fb4ff722165a34aa9e903a8877c0e89d34.
+\end{quote}
+All numbering changes are explicit bijections; there is no transition-table
+minimization hidden in renumbering.  The input is K230 commit
+\texttt{3142e4dd980f0be12f4abb636c4ae2528afc17eb}, with table hash
+\begin{quote}\small\ttfamily
+e7ccbcec074534cfd955f0ab94d16f13594e81974074309dc2ce663b9dfd7ba8.
+\end{quote}
+The exact selected recipe changes 36 retained rows and deletes the three stated
+controls.  All 227 working states are graph reachable.
+
+\subsection{What transfers from the older native implementation}
+
+The 230-state source changes the axiom packet, but retains the arithmetic
+implementation.  Its complete 408,419-step blank startup is literally the same
+head-and-tape trajectory as the older 241-state native implementation, under a
+bijection on 134 identified control labels, including the final dispatcher
+and the separately identified halt label.  This comparison identifies the reusable native states without relying
+on a numerical similarity between unrelated state labels.  In particular the
+older 243-to-241 folds are already present in K230.
+
+Two further arithmetic reductions transfer.  First, a source loop which drains
+$R_6$ into $R_5$ and then increments $R_5$ can instead increment $R_5$ before each
+decrement test.  If the two initial values are $(a,b)$, both closed loops
+terminate with
+\[
+ (R_5,R_6)=(a+b+1,0),
+\]
+and leave every other register unchanged.  Induction on $b$ proves termination
+and the value equation.  Four occurrences are replaced.  The independent
+context checker verifies their internal graphs, every external entry and exit,
+and equality of the 5,113 remaining collapsed control points.  Thus the source
+leaf count changes from 5,125 to 5,121 without changing the blank computation's
+halting behavior.
+
+The replacement establishes predecessor-bit information which permits native
+state $79$ to be identified with $63$.  In inherited labels this is the old
+$90\mapsto72$ fold.  The checker proves all 460 old transition cases on symbolic
+open tapes.  There are 456 ordinary one-step cases and four exceptional positive
+blocks, of lengths $9,3,3,3$.  Only cells read or written by these blocks are
+represented; every other cell is unchanged, so the argument concerns the whole
+infinite tape.
+
+Second, delayed erasure identifies state $140$ with $71$ (inherited
+$169\mapsto80$).  Before the identification the relevant changed retained rows,
+in K230 labels, are
+\[
+126/0:\ 0R140\longmapsto0R71,\qquad
+71/0:\ 0R21\longmapsto0L91,\qquad
+80/1:\ 0L42\longmapsto1L138.
+\]
+A marker is retained temporarily and erased by a later existing path.  Four
+exceptional blocks have lengths $5,3,5,9$.  The predecessor-bit premises are
+inductive from an arbitrary initial tape.  The additional premise is that when
+old state 140 reads 1, its immediate right neighbor is also 1.  This is checked
+separately over every valid source frame, rather than being inferred from a
+bounded run.  For the H source, the guard proof covers all 6,656 guarded cases,
+uses 1,608,122 symbolic rules, and records 28 visits, each with an affine one-run
+length whose constant term is at least 32.  The six visits in blank startup are
+checked literally.  The startup clock becomes 409,835 steps.
+
+\subsection{The additional state comes from reassigning existing decoder roles}
+
+The third saving uses the selector bit already immediately to the left of a
+source decoder.  A source reassociation makes the existing $PP$ decoder at
+state 150 enter only with predecessor bit 0.  Its bit-1 context can therefore
+implement the $PI$ role previously hosted at state 175.  Here $P$ denotes the
+existing native macro entered at state 90 and $I$ denotes increment of $R_1$,
+entered at state 61.  The source occurrences that supplied that role are
+retargeted to 150; its other role continues to implement $PP$.
+
+The remaining role of 175, denoted $ZI$, enters with predecessor bit 0.  A large
+source decoder at state 152 has predecessor bit 1 after a second reassociation.
+Its rows can be routed backwards through existing decoders so that the two
+predecessor contexts implement the two required roles.  This deletes 175.  The
+source checker supplies the incoming-row inventory and short, complete-tape
+branch synchronizations for this role reassignment.  The independently executed
+full native proof also checks every selected instruction frame directly.
+
+This construction uses existing tape information to distinguish two roles of a
+control state.  The source tree determines where that information is available;
+source reassociation and the native row assignment must therefore be designed
+together.  In this instance the operation changes neither the chosen axiom
+packet nor its ordered primitive control graph beyond the separately proved
+closed loop replacement.
+
+\subsection{Repairing an invalid intermediate address layout}
+
+A preliminary 227-state table was incorrect for its claimed instruction
+protocol.  Leaf 1042 had address
+\texttt{11101001001110010000000}.  With all primary registers zero, first spare
+zero, and gap zero, this $CD(2)$ instruction reached a clean dispatcher after
+1,708 steps with four wrong tape cells.  Relative to the initial head, the
+actual/expected pairs were
+\[
+16:1/0,\qquad19:1/0,\qquad21:0/1,\qquad23:1/0.
+\]
+The terminal seven-zero run confused the existing scanner after selector
+erasure.  Two further closed reassociations, $210/174$ and $174/101$, repaired
+the encoding without losing the roles needed for the native fold.  The final
+source has maximum depth 40 and maximum zero run 6.  The rejected table, full
+initial tape, exact trace and expected successor are retained as a reproducible
+counterexample; its state count was never used as a correctness argument.
+
+\subsection{The complete native theorem and its trust boundary}
+
+The final symbolic runtime proof checks 5,121 leaf occurrences and all 6,656
+guarded cases, including both decrement outcomes.  Its variables range over all
+natural primary register values, an arbitrary natural gap, an arbitrary first
+spare, and an arbitrary finite spare tail.  The proof preserves the complete
+tape and the exact head position at every source checkpoint.  It uses
+1,605,915 symbolic rules, all four exact-table finite-list induction schemas,
+and all 454 transition rows.  Every instruction block has positive duration;
+the smallest constant duration is 13 literal steps.  Blank startup is checked
+exactly in 409,835 steps, and a separate dense-array simulation verifies the
+same complete support.
+
+These are ordinary mathematical proofs represented by finite checked
+certificates and elementary induction rules.  They do not assert that the
+selected 227-state endpoint has already been checked in a proof-assistant
+kernel.  Together with the closed-source replacement argument and the frozen
+K230 consistency calibration, they establish the intended blank-halting
+transport.  All finite data, literal transition calculations, elementary
+induction arguments, and the source calibration can be formalized in ZFC.  The
+full consistency statement belongs to the accompanying calibration proof; the
+native packet itself exposes every assumption and numerical identity needed
+for that composition.
+
+The selected public table is reproduced from the frozen K230 bytes by an
+independent explicit-row builder.  The archived runtime checker's alternative
+canonical table uses inherited-label order; a separately checked bijection
+connects it with the public K230-preserving order.  Every source and table hash
+is pinned.  The default portable replay checks construction, finite blocks,
+source contexts, the scanner counterexample, finite regression and startup;
+the full replay additionally reproves every symbolic instruction and guard.
+
+A final bounded search of the selected host found no additional plain or
+one/two-helper fold within radius 5 and local blocks of at most 65 steps.  It
+examined 25,651 state pairs, 46,377,008 replacement-row choices and 585,927,699
+helper candidates under the stated finite discovery profile.  This describes
+the tested neighborhood and makes no claim of optimality.

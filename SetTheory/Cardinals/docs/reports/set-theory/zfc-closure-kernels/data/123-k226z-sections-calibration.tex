@@ -1,0 +1,228 @@
+% Standalone section for inclusion in the main research report.
+% Requires amsmath, amssymb, longtable, and hyperref in the enclosing document.
+\section{Calibration of the compact K theory and the transferred machines}
+\label{sec:k230-calibration}
+
+\subsection{Pinned source and the exact consistency statement}
+
+The reference in this section is Elliot Glazer's \texttt{k230-rocq}, commit
+\path{3142e4dd980f0be12f4abb636c4ae2528afc17eb}.
+Its literal table has 230 working states, start state 0, terminal label 230,
+and SHA--256
+\path{e7ccbcec074534cfd955f0ab94d16f13594e81974074309dc2ce663b9dfd7ba8}.
+The reference files imported from Jeff's development are pinned to
+\path{c132d7eae8158cd3a9850ea3eb7251158c3dd821}.
+The retained source-manifest replay checks the bytes of all 216 proof
+sources and all 460 transition rows. The same pinned reference was then
+freshly compiled with the specified toolchain, its two final assumption
+reports were closed, and an independent \texttt{coqchk} recheck succeeded.
+The retained receipts distinguish source checks, compilation, and kernel
+checking explicitly.
+
+The symbol \(\mathrm{StandardZFC}\) is not an unspecified theory parameter.
+In \texttt{KQuotZFC.v} it is defined by
+\[
+ \mathrm{StandardZFC}(A)\quad\Longleftrightarrow\quad
+ (\mathrm{ZFc}(A)\lor A=\mathrm{Foundation})
+       \lor A=\mathrm{Choice}.
+\]
+Here \texttt{Std\_iface.v} defines \(\mathrm{ZFc}\) to contain equality,
+extensionality, empty set, pairing, union, power set, infinity, and all closed
+instances of separation and replacement. The formulas use the ordinary
+function-free membership-and-equality signature. The relation
+\(T\vdash_{\mathrm C}\bot\) means a finite classical first-order derivation
+of falsity from a finite list of axioms belonging to \(T\).
+Consequently the consistency predicate at the endpoint is precisely
+\(\neg(\mathrm{StandardZFC}\vdash_{\mathrm C}\bot)\).
+
+\subsection{The single compact set-theoretic schema}
+
+Let \(\varphi(y,p,\vec q)\) be an arbitrary formula, with the displayed
+output and input variables and any finite tuple of additional parameters.
+Use the abbreviations
+\begin{align*}
+ p\subseteq u&\;:\Longleftrightarrow\;\forall z\,(z\in p\to z\in u),\\
+ W_\varphi(p,C)&\;:\Longleftrightarrow\;
+   (\exists y\,\varphi(y,p,\vec q))\to
+   \exists y\,(y\in C\land\varphi(y,p,\vec q)),\\
+ H_\varphi(C)&\;:\Longleftrightarrow\;
+   \forall u\bigl(u\in C\to
+     ((\exists p\,\varphi(u,p,\vec q))\land
+       \forall p\,(p\subseteq u\to W_\varphi(p,C)))\bigr).
+\end{align*}
+The ordinary theory \(K\), called \texttt{KPrimeOrd} in the development,
+contains the equality axioms and the universal closures of
+\begin{equation}
+ \forall a\,\forall x\,\exists C\,
+       ((\varphi(x,a,\vec q)\to x\in C)\land H_\varphi(C)).
+ \label{eq:compact-k-schema}
+\end{equation}
+In particular, \(H_\varphi(C)\) remains required when
+\(\varphi(x,a,\vec q)\) is false. Moving the entire closure condition under
+that implication would change the theory and is not a permitted compression.
+
+The emitted matrix uses a different local conjunction order and places a
+support witness across a conjunct in which that witness variable does not
+occur. These are proved correspondences in \texttt{KPrimeCore.v} and the
+decoder bridge, rather than identifications made by reading a suggestive
+formula. For numerical calibration the development also uses
+\(K^{\mathrm{IR}}=K+\forall x\,\neg(x\in x)\), named
+\texttt{KPrimeOrdIR}. The additional sentence is useful because the
+distinguished numerical falsity code decodes to the membership atom
+\(v_0\in v_0\). Both theories have the same consistency strength as
+\(\mathrm{StandardZFC}\).
+
+The two consistency directions are syntactic. For the lower reduction, raw
+objects of \(K\) first provide a tagged domain and codes of relations.
+A bisimulation quotient interprets extensional ZF without Foundation.
+The power-set argument bounds canonical representatives and subsequently
+includes all equivalent representatives; it does not assume that all raw
+codes already form an extensional universe. The pinned reference's
+\texttt{ac\_reg\_relcon} then supplies the reductions for Foundation and
+Choice. For the upper reduction, constructible-hierarchy reflection provides
+the required subset and witness closures. The proof collects the finitely
+many ZFC axiom instances required for each finite \(K^{\mathrm{IR}}\)
+derivation and translates that derivation into classical ZFC deduction.
+Neither direction assumes that a model of ZFC exists.
+
+\subsection{Numerical and machine interfaces}
+
+The numerical constructor conventions are
+\begin{align*}
+ \mathrm{imp}(a,b)&=4P(a,b), &
+ \mathrm{mem}(i,j)&=4P(i,j)+1,\\
+ \mathrm{all}(i,a)&=4P(i,a)+2, &
+ \mathrm{eq}(i,j)&=4P(i,j)+3.
+\end{align*}
+where \(P\) is the fixed Cantor pairing function. Falsity is code 1;
+negation and conjunction are implication abbreviations relative to that
+code. The axiom emitter retains all eight logical schemas, including both
+membership congruence schemas, equality transitivity, and the quantifier
+schema \((\exists a\,\forall a\,B)\to B\).
+Its set-theory packet is
+\(K(a,b,c)\land(V_{\in}(a,b,c)\land V_{=}(a,b,c))\), enabled only if
+\(c\ne a,b\). The same number \(c\) serves as matrix code and private
+variable label.
+
+That last reuse requires proof at all code values. The lemmas
+\texttt{D\_private\_fresh}, \texttt{D\_zero\_closed}, and
+\texttt{D\_one} handle it, including codes 0 and 1. The separate proof
+\texttt{named\_same\_roles} handles coincident public labels \(a=b\).
+For completeness, \texttt{ordinary\_named\_core\_Q} uses a padded
+ordinary formula code larger than the fixed public labels 1 and 3, so its
+freshness gate is enabled. There is no assumption that every arbitrary
+matrix code is an encoding of that specially padded form.
+
+The actual blank bootstrap reaches the interpreter after 408419 steps,
+with a gap of 181 zero cells, nine physical register values
+\((0,0,0,3,0,0,3,0,0)\), and 167 spare registers containing 1.
+The reference's source seed is therefore
+\(\texttt{mkState}\;0\;3\;0\;0\;3\;0\), not an invented empty cache.
+The complete chain is
+\begin{align*}
+ M_{230}\mathord\downarrow
+ &\;\Longleftrightarrow\;\texttt{rm\_halts}\;p_{230}\;([],R_0)\\
+ &\;\Longleftrightarrow\;\texttt{halts\_from}\;\texttt{seed230}\\
+ &\;\Longleftrightarrow\;\texttt{thm230}\;1\\
+ &\;\Longleftrightarrow\;K^{\mathrm{IR}}\vdash_{\mathrm C}\bot\\
+ &\;\Longleftrightarrow\;\mathrm{StandardZFC}\vdash_{\mathrm C}\bot.
+\end{align*}
+The named interfaces are, in the same order:
+\begin{quote}\small
+\path{Sim230Main.tm230_rm}\\
+\path{Main230.prog230}\\
+\path{Seed230.seed230_iff_thm}\\
+\path{Bridge230.thm230_iff_KPrimeOrdIR}\\
+\path{KUpperConsistency.KPrimeOrdIR_standardZFC_equiconsistent}.
+\end{quote}
+\texttt{Correct230.v} composes them directly.
+
+The simulation's symbolic register operations are not unexplained oracles.
+The temporary section parameters \texttt{box\_mark}, \texttt{box\_inc},
+\texttt{box\_dec0}, and \texttt{box\_decp} are discharged by the literal
+tape proofs in \texttt{Tape230Blocks.v} and \texttt{Tape230Carry.v}.
+\texttt{Interpreter230Check.v} checks every source leaf, and
+\texttt{ProgramBisim230.v} checks both directions of the finite certificate
+relating the literal interpreter tree to the structured source.
+
+\subsection{Which earlier reductions transfer}
+
+A native transformation that preserves the blank halting behavior of
+\(M_{230}\) inherits the whole chain above. A source transformation that
+preserves \texttt{rm\_halts}\,\(p_{230}\) from the actual seed inherits
+the numerical and set-theoretic parts. This makes runtime and source
+reductions composable with the stronger compact axiom package.
+
+The following distinction is essential. Arbitrary reassociation of a
+formula is not the same operation as reassociation of an interpreter
+source tree: the former requires propositional derivability, while the
+latter requires a control-flow or register-machine equivalence proof.
+Closed source blocks can be rebracketed when their exit contracts are
+respected and the resulting address-dependent runtime is reverified.
+The old set-theory packet containing separate fixed ZF and collection
+components cannot be substituted for the new \(K\) packet merely because
+both have been described as ZFC-equiconsistent.
+
+Logical-row permutations preserve the set of emitted schemas; their proof
+compiler must select the new stack positions. Independent bijective
+permutations of schematic parameters likewise preserve the set of axiom
+instances. Finally, the antecedent exchange
+\[
+ (X\to(Y\to Z))\quad\longleftrightarrow\quad(Y\to(X\to Z))
+\]
+is available from the retained propositional basis:
+\texttt{CD230.cd\_103} proves one implication and swapping \(X,Y\)
+proves the other. These alternatives change neither equality strength nor
+the quantifier rule. Removing either congruence axiom, or replacing the
+quantifier schema by its superficially dual form, is not justified by
+these transformations.
+
+The closed increment-and-drain identity used here is proved in
+Section~\ref{sec:k227-source-roles}. Its contextual replacement preserves
+source halting for arbitrary natural register values. The changed addresses
+still require the separate exact native decoder proof.
+
+\subsection{External Rocq proof and the ZFC-internal assertion}
+
+There are two different kinds of formalization here. The supplied Rocq
+development is an external proof about finite syntax, finite derivations,
+and executions. Its two final declarations state halting equivalence and
+nonhalting equivalence. A successful \texttt{Print Assumptions} report
+that they are closed under the global context rules out undischarged
+theory or simulation assumptions in those declarations. A successful
+\texttt{coqchk} recheck validates the compiled proof terms independently
+of their producing tactics. The assumption claim concerns the dependency
+closure of the named endpoints. Imported utility libraries also declare
+unused axioms, which can appear in a module-wide context summary without
+occurring in either endpoint proof. The pinned release uses Rocq 9.1.0 and
+\texttt{rocq-stdlib} 9.0.0. Its documentation explicitly says that the
+separate project concerning proofs internal to PA is not included.
+
+The intended object-theoretic conclusion, for a transferred machine \(M\),
+is
+\begin{equation}
+ \mathrm{ZFC}\vdash
+ \bigl[\neg\exists t\,\mathrm{HaltTrace}_M(t)
+       \;\longleftrightarrow\;
+       \neg\exists p\,\mathrm{Proof}_{\mathrm{ZFC}}(p,\bot)\bigr].
+ \label{eq:k-internal-target}
+\end{equation}
+The mathematical route to this internal assertion is finitary: encode
+the fixed transition table, the register interpreter, formulas, proof
+lists, and their translations by natural numbers. ZFC proves the elementary
+recursion and induction needed to verify the interpreter simulations,
+the proof enumerator's soundness and completeness, and the two syntactic
+derivation translations. Applying those translations to arbitrary finite
+proofs gives the two implications between the existential predicates in
+\eqref{eq:k-internal-target}; classical negation then gives the displayed
+equivalence. No appeal to ZFC's own consistency, its soundness, or existence
+of a model of ZFC occurs in that argument.
+
+The external kernel certificate and this internalization argument must not
+be conflated. The release does not contain a serialized derivation of
+\eqref{eq:k-internal-target} in an encoded ZFC proof calculus, and a fresh
+kernel recheck alone would not create one. The defensible claims are the
+exact external endpoint that was actually checked, together with the
+finitary mathematical argument that its constructions can be formalized
+in ZFC. Any later fully internal checker can target the same fixed
+arithmetized statement without changing the machine.

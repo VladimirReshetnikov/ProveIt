@@ -1,0 +1,34 @@
+\section{The seven equations encoded by the E663 packet}
+All variables in each equation are universally quantified independently.
+The only operation symbols are the nine in the declared signature.
+The first six equations are:
+\begin{align*}
+N(N(x,N(N(y,x),x)),N(y,N(z,x))) &= y\qquad\text{(E1)}\\
+V(P(x,s),d) &= x\qquad\text{(E2)}\\
+V(P(x,s),Q(j)) &= V(s,j)\qquad\text{(E3)}\\
+p_\varepsilon(s,P(a,b)) &= N(p_\varepsilon(s,a),p_\varepsilon(s,b))\qquad\text{(E4)}\\
+p_\varepsilon(s,A(i,j)) &= p_E(V(s,i),V(s,j))\qquad\text{(E5)}\\
+p_\varepsilon(s,Q(a)) &= N(p_\varepsilon(P(W(s,a),s),a),p_\varepsilon(P(z,s),a))\qquad\text{(E6)}
+\end{align*}
+For the seventh equation, use the following term abbreviations.
+They are purely typographical and introduce no extra operation
+symbols or axioms:
+\begin{align*}
+m &:= V(b,d)\\
+t &:= P(b,z)\\
+u &:= Q(b)\\
+e &:= p_\varepsilon(P(t,P(u,b)),m)\\
+f &:= N(p_E(A(b,z),t),N(d,p_E(A(b,z),z)))\\
+g &:= N(d,p_E(y,u))\\
+h &:= p_\varepsilon(P(y,P(x,b)),m)\\
+j &:= N(p_E(W(x,d),x),N(d,p_E(x,u)))\\
+k &:= N(p_E(y,u),p_\varepsilon(P(y,P(P(b,y),b)),m))\\
+l &:= N(N(g,N(h,j)),k)
+\end{align*}
+The last equation is
+\[d=N(N(e,N(d,f)),N(d,l)).\tag{E7}\]
+The ground query is $Q(d)=d$. The appendix generator expands every
+abbreviation and checks exact equality with the seventh JSON term
+tree, so the displayed presentation matches the encoded packet.
+The inherited calibration and the reasons for the noncollapse query
+are retained in the pinned 235-state archive.

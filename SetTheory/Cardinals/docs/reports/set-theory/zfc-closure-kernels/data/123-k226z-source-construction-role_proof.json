@@ -1,0 +1,603 @@
+{
+  "status": "ALL_TAPES_POSITIVE_BLOCK_ROLE_EQUIVALENCE_PASS",
+  "old_table_sha256": "0f0ee941fff9d1cb8413b17969b49bb7f0d30ce7760a05881ce515c02691dd2b",
+  "new_table_sha256": "1e08e34a1d33d8cfd14a10f56049b4a9a67fef66909630655157b5250b90f3ea",
+  "working_states": [
+    228,
+    227
+  ],
+  "start_state": 0,
+  "halt_state": 230,
+  "deleted_state": 175,
+  "old_tag_invariant": {
+    "150": "tape[head-1]=0",
+    "152": "tape[head-1]=1"
+  },
+  "invariant_initialization": "Start0 is outside the constrained states.",
+  "invariant_induction": "Every incoming transition into150 or152 writes the required bit and moves right.",
+  "incoming_rows": {
+    "150": [
+      [
+        183,
+        0,
+        0,
+        1
+      ],
+      [
+        201,
+        0,
+        0,
+        1
+      ]
+    ],
+    "152": [
+      [
+        119,
+        1,
+        1,
+        1
+      ]
+    ],
+    "175": [
+      [
+        155,
+        1,
+        1,
+        1
+      ],
+      [
+        176,
+        1,
+        1,
+        1
+      ],
+      [
+        184,
+        0,
+        0,
+        1
+      ]
+    ]
+  },
+  "relation": "Old175 maps to new150 when the predecessor is1, and to new152 when it is0; all other old states map identically. Related configurations have identical entire tapes and heads.",
+  "ordinary_rows": "Every other transition is literally identical, except the three checked incoming redirects.",
+  "incoming_redirects": [
+    {
+      "row": [
+        155,
+        1
+      ],
+      "predecessor_created": 1,
+      "old_target": 175,
+      "new_target": 150
+    },
+    {
+      "row": [
+        176,
+        1
+      ],
+      "predecessor_created": 1,
+      "old_target": 175,
+      "new_target": 150
+    },
+    {
+      "row": [
+        184,
+        0
+      ],
+      "predecessor_created": 0,
+      "old_target": 175,
+      "new_target": 152
+    }
+  ],
+  "cases": [
+    {
+      "role": "pp",
+      "old_entry": 150,
+      "new_entry": 150,
+      "predecessor": 0,
+      "read": 0,
+      "old_block": {
+        "steps": 1,
+        "trace": [
+          {
+            "state": 150,
+            "head": 0,
+            "read": 0,
+            "write": 0,
+            "direction": 1,
+            "next_state": 90
+          }
+        ],
+        "endpoint_state": 90,
+        "endpoint_head": 1,
+        "final_known_cells": {
+          "-1": 0,
+          "0": 0
+        }
+      },
+      "new_block": {
+        "steps": 1,
+        "trace": [
+          {
+            "state": 150,
+            "head": 0,
+            "read": 0,
+            "write": 0,
+            "direction": 1,
+            "next_state": 90
+          }
+        ],
+        "endpoint_state": 90,
+        "endpoint_head": 1,
+        "final_known_cells": {
+          "-1": 0,
+          "0": 0
+        }
+      }
+    },
+    {
+      "role": "pp",
+      "old_entry": 150,
+      "new_entry": 150,
+      "predecessor": 0,
+      "read": 1,
+      "old_block": {
+        "steps": 1,
+        "trace": [
+          {
+            "state": 150,
+            "head": 0,
+            "read": 1,
+            "write": 1,
+            "direction": 1,
+            "next_state": 90
+          }
+        ],
+        "endpoint_state": 90,
+        "endpoint_head": 1,
+        "final_known_cells": {
+          "-1": 0,
+          "0": 1
+        }
+      },
+      "new_block": {
+        "steps": 5,
+        "trace": [
+          {
+            "state": 150,
+            "head": 0,
+            "read": 1,
+            "write": 1,
+            "direction": -1,
+            "next_state": 173
+          },
+          {
+            "state": 173,
+            "head": -1,
+            "read": 0,
+            "write": 0,
+            "direction": 1,
+            "next_state": 153
+          },
+          {
+            "state": 153,
+            "head": 0,
+            "read": 1,
+            "write": 1,
+            "direction": -1,
+            "next_state": 172
+          },
+          {
+            "state": 172,
+            "head": -1,
+            "read": 0,
+            "write": 0,
+            "direction": 1,
+            "next_state": 184
+          },
+          {
+            "state": 184,
+            "head": 0,
+            "read": 1,
+            "write": 1,
+            "direction": 1,
+            "next_state": 90
+          }
+        ],
+        "endpoint_state": 90,
+        "endpoint_head": 1,
+        "final_known_cells": {
+          "-1": 0,
+          "0": 1
+        }
+      }
+    },
+    {
+      "role": "pi",
+      "old_entry": 175,
+      "new_entry": 150,
+      "predecessor": 1,
+      "read": 0,
+      "old_block": {
+        "steps": 3,
+        "trace": [
+          {
+            "state": 175,
+            "head": 0,
+            "read": 0,
+            "write": 0,
+            "direction": -1,
+            "next_state": 76
+          },
+          {
+            "state": 76,
+            "head": -1,
+            "read": 1,
+            "write": 1,
+            "direction": 1,
+            "next_state": 86
+          },
+          {
+            "state": 86,
+            "head": 0,
+            "read": 0,
+            "write": 0,
+            "direction": 1,
+            "next_state": 90
+          }
+        ],
+        "endpoint_state": 90,
+        "endpoint_head": 1,
+        "final_known_cells": {
+          "-1": 1,
+          "0": 0
+        }
+      },
+      "new_block": {
+        "steps": 1,
+        "trace": [
+          {
+            "state": 150,
+            "head": 0,
+            "read": 0,
+            "write": 0,
+            "direction": 1,
+            "next_state": 90
+          }
+        ],
+        "endpoint_state": 90,
+        "endpoint_head": 1,
+        "final_known_cells": {
+          "-1": 1,
+          "0": 0
+        }
+      }
+    },
+    {
+      "role": "pi",
+      "old_entry": 175,
+      "new_entry": 150,
+      "predecessor": 1,
+      "read": 1,
+      "old_block": {
+        "steps": 1,
+        "trace": [
+          {
+            "state": 175,
+            "head": 0,
+            "read": 1,
+            "write": 1,
+            "direction": 1,
+            "next_state": 61
+          }
+        ],
+        "endpoint_state": 61,
+        "endpoint_head": 1,
+        "final_known_cells": {
+          "-1": 1,
+          "0": 1
+        }
+      },
+      "new_block": {
+        "steps": 3,
+        "trace": [
+          {
+            "state": 150,
+            "head": 0,
+            "read": 1,
+            "write": 1,
+            "direction": -1,
+            "next_state": 173
+          },
+          {
+            "state": 173,
+            "head": -1,
+            "read": 1,
+            "write": 1,
+            "direction": 1,
+            "next_state": 182
+          },
+          {
+            "state": 182,
+            "head": 0,
+            "read": 1,
+            "write": 1,
+            "direction": 1,
+            "next_state": 61
+          }
+        ],
+        "endpoint_state": 61,
+        "endpoint_head": 1,
+        "final_known_cells": {
+          "-1": 1,
+          "0": 1
+        }
+      }
+    },
+    {
+      "role": "zi",
+      "old_entry": 175,
+      "new_entry": 152,
+      "predecessor": 0,
+      "read": 0,
+      "old_block": {
+        "steps": 3,
+        "trace": [
+          {
+            "state": 175,
+            "head": 0,
+            "read": 0,
+            "write": 0,
+            "direction": -1,
+            "next_state": 76
+          },
+          {
+            "state": 76,
+            "head": -1,
+            "read": 0,
+            "write": 0,
+            "direction": 1,
+            "next_state": 85
+          },
+          {
+            "state": 85,
+            "head": 0,
+            "read": 0,
+            "write": 0,
+            "direction": 1,
+            "next_state": 19
+          }
+        ],
+        "endpoint_state": 19,
+        "endpoint_head": 1,
+        "final_known_cells": {
+          "-1": 0,
+          "0": 0
+        }
+      },
+      "new_block": {
+        "steps": 3,
+        "trace": [
+          {
+            "state": 152,
+            "head": 0,
+            "read": 0,
+            "write": 0,
+            "direction": -1,
+            "next_state": 159
+          },
+          {
+            "state": 159,
+            "head": -1,
+            "read": 0,
+            "write": 0,
+            "direction": 1,
+            "next_state": 166
+          },
+          {
+            "state": 166,
+            "head": 0,
+            "read": 0,
+            "write": 0,
+            "direction": 1,
+            "next_state": 19
+          }
+        ],
+        "endpoint_state": 19,
+        "endpoint_head": 1,
+        "final_known_cells": {
+          "-1": 0,
+          "0": 0
+        }
+      }
+    },
+    {
+      "role": "zi",
+      "old_entry": 175,
+      "new_entry": 152,
+      "predecessor": 0,
+      "read": 1,
+      "old_block": {
+        "steps": 1,
+        "trace": [
+          {
+            "state": 175,
+            "head": 0,
+            "read": 1,
+            "write": 1,
+            "direction": 1,
+            "next_state": 61
+          }
+        ],
+        "endpoint_state": 61,
+        "endpoint_head": 1,
+        "final_known_cells": {
+          "-1": 0,
+          "0": 1
+        }
+      },
+      "new_block": {
+        "steps": 3,
+        "trace": [
+          {
+            "state": 152,
+            "head": 0,
+            "read": 1,
+            "write": 1,
+            "direction": -1,
+            "next_state": 169
+          },
+          {
+            "state": 169,
+            "head": -1,
+            "read": 0,
+            "write": 0,
+            "direction": 1,
+            "next_state": 99
+          },
+          {
+            "state": 99,
+            "head": 0,
+            "read": 1,
+            "write": 1,
+            "direction": 1,
+            "next_state": 61
+          }
+        ],
+        "endpoint_state": 61,
+        "endpoint_head": 1,
+        "final_known_cells": {
+          "-1": 0,
+          "0": 1
+        }
+      }
+    },
+    {
+      "role": "W",
+      "old_entry": 152,
+      "new_entry": 152,
+      "predecessor": 1,
+      "read": 0,
+      "old_block": {
+        "steps": 1,
+        "trace": [
+          {
+            "state": 152,
+            "head": 0,
+            "read": 0,
+            "write": 0,
+            "direction": 1,
+            "next_state": 155
+          }
+        ],
+        "endpoint_state": 155,
+        "endpoint_head": 1,
+        "final_known_cells": {
+          "-1": 1,
+          "0": 0
+        }
+      },
+      "new_block": {
+        "steps": 3,
+        "trace": [
+          {
+            "state": 152,
+            "head": 0,
+            "read": 0,
+            "write": 0,
+            "direction": -1,
+            "next_state": 159
+          },
+          {
+            "state": 159,
+            "head": -1,
+            "read": 1,
+            "write": 1,
+            "direction": 1,
+            "next_state": 118
+          },
+          {
+            "state": 118,
+            "head": 0,
+            "read": 0,
+            "write": 0,
+            "direction": 1,
+            "next_state": 155
+          }
+        ],
+        "endpoint_state": 155,
+        "endpoint_head": 1,
+        "final_known_cells": {
+          "-1": 1,
+          "0": 0
+        }
+      }
+    },
+    {
+      "role": "W",
+      "old_entry": 152,
+      "new_entry": 152,
+      "predecessor": 1,
+      "read": 1,
+      "old_block": {
+        "steps": 1,
+        "trace": [
+          {
+            "state": 152,
+            "head": 0,
+            "read": 1,
+            "write": 1,
+            "direction": 1,
+            "next_state": 171
+          }
+        ],
+        "endpoint_state": 171,
+        "endpoint_head": 1,
+        "final_known_cells": {
+          "-1": 1,
+          "0": 1
+        }
+      },
+      "new_block": {
+        "steps": 3,
+        "trace": [
+          {
+            "state": 152,
+            "head": 0,
+            "read": 1,
+            "write": 1,
+            "direction": -1,
+            "next_state": 169
+          },
+          {
+            "state": 169,
+            "head": -1,
+            "read": 1,
+            "write": 1,
+            "direction": 1,
+            "next_state": 148
+          },
+          {
+            "state": 148,
+            "head": 0,
+            "read": 1,
+            "write": 1,
+            "direction": 1,
+            "next_state": 171
+          }
+        ],
+        "endpoint_state": 171,
+        "endpoint_head": 1,
+        "final_known_cells": {
+          "-1": 1,
+          "0": 1
+        }
+      }
+    }
+  ],
+  "verified_cases": 8,
+  "maximum_old_block_steps": 3,
+  "maximum_new_block_steps": 5,
+  "scope": "Exact halting equivalence of the rotated228 basis and227 from start0 on arbitrary tapes. The source rotations, H identity, and earlier native folds have separate certificates."
+}

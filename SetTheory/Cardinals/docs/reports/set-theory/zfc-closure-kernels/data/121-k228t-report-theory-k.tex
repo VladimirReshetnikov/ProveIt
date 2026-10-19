@@ -1,0 +1,192 @@
+\section{The compact theory K and the exact inherited logical endpoint}
+\label{sec:k230-calibration}
+
+The decisive alternative-formalism input is Elliot Glazer's independently
+released K230 construction.  We pin it to revision
+\texttt{3142e4dd980f0be12f4abb636c4ae2528afc17eb}.  Its released machine has
+230 working states and a separate halt state.  Its literal table is
+\texttt{machine/k230.tm}, with SHA-256
+\begin{center}\scriptsize\ttfamily
+e7ccbcec074534cfd955f0ab94d16f13594e81974074309dc2ce663b9dfd7ba8.
+\end{center}
+The compact theory, its interpretation, the K-specific logical bridge,
+and the released 230-state table are Glazer's prior contribution.
+The machine and proof-search architecture build on Mira's construction
+and Vladimir Reshetnikov's ProveIt project; the compiler work builds on
+Andrew James Wade's Turing Machine Explorer.  Jeff's busy-beaver project
+supplies the pinned Rocq reference development, including its reused
+BusyCoq and Coq Library of Undecidability components.  The present
+reduction contributes the explicitly identified changes to this inherited
+construction.\footnote{Pinned release overview and attribution:
+\url{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/README.md}
+and
+\url{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/THIRD_PARTY.md}.
+The reference development is pinned to
+\texttt{jeff87654/busy-beaver} revision
+\texttt{c132d7eae8158cd3a9850ea3eb7251158c3dd821}.}
+
+\subsection{The ordinary axiom schema}
+
+Work in ordinary first-order logic with membership and equality.  Let
+$\varphi(y,p,\vec q)$ be any formula, where $y$ is the output, $p$ is
+the input, and $\vec q$ is a finite tuple of parameters.  Put
+\begin{align*}
+ p\subseteq u &\quad\Longleftrightarrow\quad
+       \forall z\,(z\in p\longrightarrow z\in u),\\
+ W_\varphi(p,C)&\quad\Longleftrightarrow\quad
+       (\exists y\,\varphi(y,p,\vec q))\longrightarrow
+       \exists y\,(y\in C\land\varphi(y,p,\vec q)),\\
+ H_\varphi(C)&\quad\Longleftrightarrow\quad
+       \forall u\left(u\in C\longrightarrow
+       \left[(\exists p\,\varphi(u,p,\vec q))\land
+       \forall p\,(p\subseteq u\longrightarrow W_\varphi(p,C))\right]\right).
+\end{align*}
+The ordinary theory, called \texttt{KPrimeOrd} in the release, consists
+of equality axioms and the universal closures of
+\begin{equation}
+ \forall a\,\forall x\,\exists C\,
+       \bigl[(\varphi(x,a,\vec q)\longrightarrow x\in C)
+                     \land H_\varphi(C)\bigr].
+ \label{eq:kprime-schema}
+\end{equation}
+The condition $H_\varphi(C)$ is unconditional: it remains required when
+$\varphi(x,a,\vec q)$ is false.  This placement is part of the literal
+schema.  For example, with the constantly false matrix, its support
+clause implies that $C$ has no members.  Thus this instance supplies an
+empty raw object.  With the matrix $y=t$ and seed output $x=t$, the
+same schema supplies a raw singleton of $t$: the seed clause gives
+$t\in C$, and support says every member equals $t$.
+These examples explain the role of the output seed and support; they
+do not by themselves establish the full ZFC interpretation.\footnote{Actual
+de Bruijn definitions and ordinary-theory constructors:
+\url{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/coq/settheory/KPrimeCore.v}
+and
+\url{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/coq/settheory/KPrimeTheory.v}.}
+
+The intended closure is economical.  If an input $p$ is a subset of
+some member of $C$, and $\varphi$ has an output at $p$, then $C$ already
+contains an appropriate output.  Conversely every member of $C$ has an
+input witnessing that it is a $\varphi$-output.  Neither extensionality
+nor Foundation is asserted of the raw membership relation.
+
+The proof first converts the output-seeded schema to an existentially
+seeded form.  If there exists a seed output, select one and use
+\eqref{eq:kprime-schema}; if no seed output exists, any instance still
+provides the required $H_\varphi(C)$.  The two cases are represented by
+an object-level classical natural-deduction argument in
+\texttt{output\_root\_to\_seed}.  The resulting seed theory yields
+\texttt{K0}, the factored closure theory used by the interpretation.
+The release then constructs a tagged domain and an extensional
+bisimulation quotient.  The quotient carries extensional ZF without
+Foundation.  The pinned reference's relative-consistency results add
+Foundation and Choice at the consistency level; they are not assumptions
+that the raw K objects already satisfy these axioms.  In the reverse
+direction, constructible-hierarchy reflection provides sets closed under
+the needed subset and witness operations, and separation restricts them
+to supported outputs.\footnote{Proof roadmap and its formal source links:
+\url{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/docs/proof-overview.md}.
+The lower and upper consistency endpoints are in
+\url{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/coq/settheory/KQuotZFC.v}
+and
+\url{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/coq/settheory/KUpperConsistency.v}.}
+
+\subsection{The numerical theory is identified, not inferred from the schema}
+
+K230 retains the existing eight logical rows $\rho_1,\ldots,\rho_8$,
+modus ponens, generalization, the special truth code $0$, and both full
+atomic vacuity rows.  Its set-theoretic bundle replaces the older
+container/global-image pair by K's closure core.  In particular, the
+released 230-state machine does not use the separate experimental
+restriction of equality vacuity.
+
+For its explicit dual Cantor pairing $P$, the four numerical constructors
+remain
+\[
+ \operatorname{Imp}(a,b)=4P(a,b),\qquad
+ \operatorname{Rel}(a,b)=4P(a,b)+1,
+\]
+\[
+ \operatorname{All}(a,b)=4P(a,b)+2,\qquad
+ \operatorname{Eq}(a,b)=4P(a,b)+3.
+\]
+The matrix code $c$ also serves as a private variable label in the
+emitted K schema.  The source rejects the bundle when $c=a$ or $c=b$.
+The source-to-theory proof handles these exact labels, coincident
+input/output labels, the freshness gate, and exceptional low numerical
+codes.  It does not rely only on an informal renaming of the ordinary
+schema.\footnote{The exact emitted arithmetic template is
+\url{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/coq/settheory/KCode230.v}.
+The actual numerical derivability relation is
+\url{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/coq/logic/Thm230.v}.}
+
+There is a necessary distinction between the ordinary theory and the
+machine's falsity convention.  Its halt target is code $1$, which is
+also $\operatorname{Rel}(0,0)$.  The calibrated ordinary theory is
+therefore \texttt{KPrimeOrdIR}, adding
+\[
+                       \forall x\,\neg(x\in x)
+\]
+to \texttt{KPrimeOrd}.  The release proves both
+\begin{align*}
+ \texttt{KPrimeOrd}\vdash\bot
+     &\quad\Longleftrightarrow\quad \texttt{StandardZFC}\vdash\bot,\\
+ \texttt{KPrimeOrdIR}\vdash\bot
+     &\quad\Longleftrightarrow\quad \texttt{StandardZFC}\vdash\bot.
+\end{align*}
+Here \texttt{StandardZFC} is defined literally as the reference ZF
+theory with Infinity, Foundation and Choice.  The equality axioms
+and the classical proof rules are represented as object-level syntax;
+they are not additional Rocq assumptions.
+
+\subsection{The complete released calibration}
+
+The final theorem is
+\begin{equation}
+ \operatorname{Halt}(K230,\text{blank})
+       \quad\Longleftrightarrow\quad
+       \texttt{StandardZFC}\vdash\bot.
+ \label{eq:k230-final}
+\end{equation}
+Its proof in \texttt{Correct230.v} composes four exact interfaces:
+\begin{center}
+\begin{tabular}{p{0.31\linewidth}p{0.60\linewidth}}
+\hline
+Declaration & What it connects\\
+\hline
+\texttt{tm230\_rm} & The frozen binary table from its blank start and the
+register program from the proved boot register file.\\
+\texttt{prog230} & That register program and the numerical enumerator
+from the actual nonzero seed.\\
+\texttt{seed230\_iff\_thm} & Halting from that seed and derivability of
+the numerical falsity code $1$.\\
+\texttt{thm230\_iff\_standardZFC} & Numerical derivability of $1$ and a
+finite contradiction proof in \texttt{StandardZFC}.\\
+\hline
+\end{tabular}
+\end{center}
+The last interface passes through the exact theorem
+\texttt{thm230\_iff\_KPrimeOrdIR}, followed by
+\texttt{KPrimeOrdIR\_standardZFC\_equiconsistent}.  All of these are
+declarations about the released artifacts.\footnote{Final source:
+\url{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/coq/tm/Correct230.v}.
+The named source-to-theory bridge is
+\url{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/coq/logic/Bridge230.v}.}
+
+The boot detail matters for transferring state reductions.  The proved
+blank run reaches state 84 after 408419 transitions.  Relative to that
+head position, its left word is $[1]$; its right word begins with 181
+zeros and one separator bit, followed by 176 register blocks.  The first
+nine values are
+\[
+                       [0,0,0,3,0,0,3,0,0],
+\]
+and the remaining 167 values are all $1$.  The numerical seed is
+\texttt{mkState 0 3 0 0 3 0}, not an all-zero seed.  Completeness from
+this seed is explicitly proved using the cofinal parameter search and
+a correctly encoded proof program.\footnote{Literal boot and seed proofs:
+\url{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/coq/tm/Boot230.v}
+and
+\url{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/coq/logic/Seed230.v}.}
+
+
+The completed transport to K228 is proved in Section~\ref{sec:composition}.

@@ -1,0 +1,70 @@
+{
+  "source_prefix_collision": {
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 165, in <module>\n    main()\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 98, in main\n    facts = source_facts(sites)\n            ^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 64, in source_facts\n    require(not leaves.intersection(prefixes), 'Leaf is also internal node')\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 18, in require\n    raise ValueError(message)\nValueError: Leaf is also internal node\n"
+  },
+  "bootstrap_premature_halt": {
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_bootstrap.py\", line 68, in <module>\n    main()\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_bootstrap.py\", line 21, in main\n    require(q != 254, 'Premature halt')\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 18, in require\n    raise ValueError(message)\nValueError: Premature halt\n"
+  },
+  "pin_independent_runtime": {
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 165, in <module>\n    main()\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 91, in main\n    require(sha(a.engine_dir/'independent_runtime.py') ==\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 18, in require\n    raise ValueError(message)\nValueError: Unexpected runtime helper\n"
+  },
+  "pin_symbolic_runtime": {
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 165, in <module>\n    main()\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 88, in main\n    require(sha(a.engine_dir/'symbolic_runtime.py') ==\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 18, in require\n    raise ValueError(message)\nValueError: Unexpected induction engine\n"
+  },
+  "runtime_premature_halt": {
+    "stdout": "Four arbitrary-context list induction schemas proved.\n",
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 165, in <module>\n    main()\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 131, in main\n    answer = s.case(table, lemmas, site, positive)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/7e52d76c3f87/work/state_search/vendor/zfc236-research-20261019/upstream/zfc237/verification/symbolic_runtime.py\", line 147, in case\n    clock,motion,event=state.step(table,lemmas,clock,motion)\n                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/7e52d76c3f87/work/state_search/vendor/zfc236-research-20261019/upstream/zfc237/verification/symbolic_runtime.py\", line 77, in step\n    w,d,q=table[self.q,a[1]]\n          ~~~~~^^^^^^^^^^^^^\nKeyError: (254, 0)\n"
+  },
+  "source_boolean_register": {
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 165, in <module>\n    main()\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 98, in main\n    facts = source_facts(sites)\n            ^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 61, in source_facts\n    require(type(arg) is int and 0 <= arg < 9, 'Bad register')\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 18, in require\n    raise ValueError(message)\nValueError: Bad register\n"
+  },
+  "valid_prefix": {
+    "stdout": "Four arbitrary-context list induction schemas proved.\n",
+    "stderr": ""
+  },
+  "table_unknown_target": {
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 165, in <module>\n    main()\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 96, in main\n    table = parse_table(a.table)\n            ^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 42, in parse_table\n    require({z for w, d, z in table.values()} - working == {254}, 'Bad targets')\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 18, in require\n    raise ValueError(message)\nValueError: Bad targets\n"
+  },
+  "disabled_assertions_environment": {
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 165, in <module>\n    main()\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 76, in main\n    require(__debug__ and not sys.flags.optimize, 'Run with assertions enabled')\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 18, in require\n    raise ValueError(message)\nValueError: Run with assertions enabled\n"
+  },
+  "bootstrap_checks_survive_optimization": {
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_bootstrap.py\", line 68, in <module>\n    main()\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_bootstrap.py\", line 21, in main\n    require(q != 254, 'Premature halt')\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 18, in require\n    raise ValueError(message)\nValueError: Premature halt\n"
+  },
+  "disabled_assertions_flag": {
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 165, in <module>\n    main()\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 76, in main\n    require(__debug__ and not sys.flags.optimize, 'Run with assertions enabled')\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 18, in require\n    raise ValueError(message)\nValueError: Run with assertions enabled\n"
+  },
+  "source_unknown_opcode": {
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 165, in <module>\n    main()\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 98, in main\n    facts = source_facts(sites)\n            ^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 57, in source_facts\n    require(op in ('CI', 'CD', 'CB', 'CC', 'CH'), 'Unknown instruction')\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 18, in require\n    raise ValueError(message)\nValueError: Unknown instruction\n"
+  },
+  "source_wrong_census": {
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 165, in <module>\n    main()\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 100, in main\n    require(facts['leaves'] == a.leaves and facts['guarded_cases'] == a.cases,\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 18, in require\n    raise ValueError(message)\nValueError: Wrong source census\n"
+  },
+  "table_missing_row": {
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 165, in <module>\n    main()\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 96, in main\n    table = parse_table(a.table)\n            ^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 41, in parse_table\n    require(all((q, r) in table for q in working for r in (0, 1)), 'Missing row')\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 18, in require\n    raise ValueError(message)\nValueError: Missing row\n"
+  },
+  "bootstrap_wrong_frame": {
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_bootstrap.py\", line 68, in <module>\n    main()\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_bootstrap.py\", line 37, in main\n    require(q == 96 and h == -5 and ones == want, 'Wrong complete startup frame')\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 18, in require\n    raise ValueError(message)\nValueError: Wrong complete startup frame\n"
+  },
+  "table_duplicate_row": {
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 165, in <module>\n    main()\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 96, in main\n    table = parse_table(a.table)\n            ^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 36, in parse_table\n    require((q, r) not in table, 'Duplicate row')\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 18, in require\n    raise ValueError(message)\nValueError: Duplicate row\n"
+  },
+  "source_truncated": {
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 165, in <module>\n    main()\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 98, in main\n    facts = source_facts(sites)\n            ^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 65, in source_facts\n    require(all(p+b in leaves or p+b in prefixes\n  File \"/workspace/scratch/7e52d76c3f87/work/root_verification/verify_runtime.py\", line 18, in require\n    raise ValueError(message)\nValueError: Incomplete binary tree\n"
+  }
+}

@@ -1,0 +1,245 @@
+{
+  "status": "PASS_SYMBOLIC_INDUCTIVE_LOOP_SCHEMAS",
+  "register_domain": "all natural n,m",
+  "other_registers": "untouched",
+  "base_and_induction_step": [
+    {
+      "schema": "base_n_zero",
+      "old_trace": [
+        {
+          "pc": 0,
+          "row": [
+            "CD",
+            6,
+            3,
+            1
+          ],
+          "next": 3,
+          "R5": [
+            0,
+            0,
+            1
+          ],
+          "R6": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "pc": 3,
+          "row": [
+            "CI",
+            5,
+            "normal_return"
+          ],
+          "next": "normal_return",
+          "R5": [
+            1,
+            0,
+            1
+          ],
+          "R6": [
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "new_trace": [
+        {
+          "pc": 0,
+          "row": [
+            "CI",
+            5,
+            1
+          ],
+          "next": 1,
+          "R5": [
+            1,
+            0,
+            1
+          ],
+          "R6": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "pc": 1,
+          "row": [
+            "CD",
+            6,
+            "normal_return",
+            2
+          ],
+          "next": "normal_return",
+          "R5": [
+            1,
+            0,
+            1
+          ],
+          "R6": [
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "matching_registers": {
+        "5": [
+          1,
+          0,
+          1
+        ],
+        "6": [
+          0,
+          0,
+          0
+        ]
+      },
+      "matching_control": "normal_return",
+      "primitive_steps": 2
+    },
+    {
+      "schema": "step_n_plus_one",
+      "old_trace": [
+        {
+          "pc": 0,
+          "row": [
+            "CD",
+            6,
+            3,
+            1
+          ],
+          "next": 1,
+          "R5": [
+            0,
+            0,
+            1
+          ],
+          "R6": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "pc": 1,
+          "row": [
+            "CI",
+            5,
+            2
+          ],
+          "next": 2,
+          "R5": [
+            1,
+            0,
+            1
+          ],
+          "R6": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "pc": 2,
+          "row": [
+            "CC",
+            2,
+            0
+          ],
+          "next": 0,
+          "R5": [
+            1,
+            0,
+            1
+          ],
+          "R6": [
+            0,
+            1,
+            0
+          ]
+        }
+      ],
+      "new_trace": [
+        {
+          "pc": 0,
+          "row": [
+            "CI",
+            5,
+            1
+          ],
+          "next": 1,
+          "R5": [
+            1,
+            0,
+            1
+          ],
+          "R6": [
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "pc": 1,
+          "row": [
+            "CD",
+            6,
+            "normal_return",
+            2
+          ],
+          "next": 2,
+          "R5": [
+            1,
+            0,
+            1
+          ],
+          "R6": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "pc": 2,
+          "row": [
+            "CC",
+            2,
+            0
+          ],
+          "next": 0,
+          "R5": [
+            1,
+            0,
+            1
+          ],
+          "R6": [
+            0,
+            1,
+            0
+          ]
+        }
+      ],
+      "matching_registers": {
+        "5": [
+          1,
+          0,
+          1
+        ],
+        "6": [
+          0,
+          1,
+          0
+        ]
+      },
+      "matching_control": 0,
+      "primitive_steps": 3
+    }
+  ],
+  "source_instruction_duration": "3*n+2",
+  "proof_scope": "Independent symbolic base/step validation; uniform induction and contextual closure explained in proof.md. No binary TM state count or Rocq rebuild."
+}

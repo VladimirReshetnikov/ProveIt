@@ -1,0 +1,73 @@
+\section{Reproduction, provenance and incorporation}
+\label{sec:reproduction}
+
+The top-level \path{README.md} gives the exact replay commands. The
+default replay checks the delivered manifest, regenerates the selected
+source and table from the two frozen K230 inputs, checks all state
+renamings, replays the source and local-role proofs, verifies exact
+initialization and regenerates the prefix packet. The full mathematical
+replay additionally reconstructs every symbolic instruction proof and
+compares the complete case arrays with the delivered evidence.
+
+The proof-assistant build is a separate optional command because it
+requires the pinned Rocq compiler and standard library. The exact
+reference dependencies needed for an offline source build are included,
+with their upstream hashes and notices. A fresh compilation receipt is
+not interchangeable with the manifest-only source check. The kernel
+recheck and endpoint assumption reports have their own retained logs.
+
+\subsection{Pinned inputs}
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}lX@{}}\toprule
+Input & Pinned identity\\\midrule
+Glazer K230 & \path{3142e4dd980f0be12f4abb636c4ae2528afc17eb}\\
+Jeff's proof reference & \path{c132d7eae8158cd3a9850ea3eb7251158c3dd821}\\
+ProveIt 235-state report & \path{0128d662fd46f72dc84505176ae8ec28affb2d9d}\\
+ProveIt 236-state report & \path{0b5fec6980cc3a5ba7dd47b404f0cbbe9a451c02}\\
+\bottomrule\end{tabularx}
+\end{center}
+The exact 235-state archive SHA--256 is
+\begin{quote}\small
+\path{b85176325ea106e8b758aa8a7fa3c661af3e91d112bbe35af6da851eae5f71c9}.
+\end{quote}
+Its quick mathematical replay completed afresh, including reconstruction,
+source checks, independent state-fold checks, initialization, the E667/E663
+packet derivations and the inherited 236-state quick suite. Its previously
+delivered full-runtime evidence was audited; that quick replay is not
+described as a fresh full symbolic rebuild of the 235-state machine.
+
+\subsection{Proof and discovery material}
+
+The selected table, its source, exact construction and proof scripts are
+separated from rejected trials and bounded-search receipts. The rejected
+files are labeled as controls and never substituted for the selected
+machine. Intermediate tables are kept because they explain which
+historical savings transfer and where the source context must change.
+
+Every source generator in the selected chain takes the frozen reference
+files or already pinned generated stages as inputs. No network lookup,
+unrecorded optimizer run or best-so-far search state is needed to rebuild
+the final machine. The symbolic engine is retained unchanged; the new
+driver supplies the exact source comparison, initial-frame binding and
+current-table protocol check.
+
+\subsection{Attribution and suggested repository layout}
+
+The work builds on Mira-Cult's compact set-theoretic machine, Jeff
+Ketchersid's formal development, Andrew James Wade's compiler work,
+the intervening ProveIt reductions and Elliot Glazer's K theory and
+K230 proof. The source notices for BusyCoq, LibTactics, the Coq Library
+of Undecidability, Wade and ProveIt are retained. The original K230
+\path{THIRD_PARTY.md} explains the license scope of its imported and
+adapted custom proof files; this package does not assign those files a
+new blanket license.
+
+For incorporation, the selected construction can occupy a new research
+directory under
+\path{Computability/BusyBeaver/Research/ZFC/}, and the complete ZIP can be
+placed under \path{docs/incoming/}. The public machine file is standalone.
+The larger vendored snapshots can subsequently be replaced by the
+repository's existing pinned dependencies, provided all byte identities
+and proof-load mappings are retained. No repository publication or merge
+is part of this delivery.

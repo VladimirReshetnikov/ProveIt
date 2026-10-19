@@ -1,0 +1,109 @@
+% Formal proof-method section; these generic and source-certificate theorems
+% were compiled in the isolated K227F and K226F namespaces.
+\section{A checked source equivalence with one register offset}
+\label{sec:offset-bisimulation}
+
+The increment-and-drain rotation changes the value of register 5 at an
+intermediate test. At the corresponding \texttt{CD6} checkpoints, the new
+program has already performed its extra increment, while the old program
+performs that increment after leaving the loop. Equality of register files
+at every test is therefore an unnecessarily strong certificate format.
+The source bridge permits a single, explicit integer offset.
+
+An entry of the finite certificate has the form
+\[
+  (P_{\mathrm{n}},P_{\mathrm{o}},z,j_+,j_0),
+\]
+where \(P_{\mathrm{n}},P_{\mathrm{o}}\) are the new and old instruction-pointer bit
+lists, \(z\in\mathbb Z\), and \(j_+,j_0\) identify the entries reached
+after positive and zero tests. The invariant at that entry is
+\begin{equation}
+  R_{\mathrm{n}}(i)=R_{\mathrm{o}}(i)+\delta_z(i),
+  \qquad
+  \delta_z(i)=\begin{cases}z&i=5,\\0&i\ne5.\end{cases}
+  \label{eq:register-offset}
+\end{equation}
+The equality is interpreted in \(\mathbb Z\); both register files
+themselves remain functions to \(\mathbb N\). No negative register value
+is introduced into either program.
+
+Between conditional decrements, the inherited \texttt{seg} function runs
+increments and control instructions until it reaches another conditional
+decrement or a halt. Let \(c_{\mathrm{n}}(i),c_{\mathrm{o}}(i)\) be the numbers of
+increments of register \(i\) in the two segments. A branch leading to an
+entry with offset \(z'\) passes precisely when the endpoint pointers match
+and, for every register that occurs in either segment and for register 5,
+\begin{equation}
+  \delta_z(i)+c_{\mathrm{n}}(i)
+       =c_{\mathrm{o}}(i)+\delta_{z'}(i).
+  \label{eq:offset-counts}
+\end{equation}
+Registers absent from this finite list have zero counts and zero relevant
+offset, so the check covers all register indices.
+
+Both checkpoints must test the same register \(r\), and the checker
+requires \(\delta_z(r)=0\). Equation~\eqref{eq:register-offset} therefore
+gives equal tested values, equal test outcomes, and equal decremented values
+on the positive branch. Equation~\eqref{eq:offset-counts} then establishes
+the next checkpoint's invariant. A halt is matched to a halt. The initial
+segments start with offset zero.
+
+\texttt{OffsetBisim230.v} proves soundness by strong induction on the
+number of steps in a finite halting execution. It reuses the pinned
+\texttt{Bisim230.v} proofs of segment execution, and supplies the additional
+integer arithmetic and zero-offset test argument. Thus it does not assume
+that the programs terminate. The mirror certificate swaps the pointers
+and negates every offset; checking it gives the converse implication.
+The exported theorem \texttt{ocheck\_iff} proves halting equivalence for
+every initial natural-valued register file.
+
+For the 227-state source, the checked certificate contains 2373 entries
+and 4744 conditional branches. For the 226-state source, it contains
+2376 entries and 4750 branches. Each has only eight entries with offset 1:
+two instruction-pointer spellings for each of the four rotated loop
+occurrences. Every nonzero-offset entry tests register 6. Every segment
+has length at most five. Both directions of both certificates evaluate
+to true in Rocq, yielding closed source-equivalence theorems
+\texttt{p227\_p230} and \texttt{p226\_p230}. These apply to the actual
+bootstrap register file as a special case.
+
+\section{Literal runtime replay and exact state counting}
+\label{sec:literal-runtime-replay}
+
+The runtime proof can be checked directly against a modified table. The
+isolated proof namespaces retain K230's sparse state labels, disable every
+deleted label by giving it no transition, and replay the literal bootstrap,
+the four register-block proofs, every interpreter leaf, and the global
+simulation invariant. Original source, logic, and set-theory proof files
+are reused without modification. The new source-equivalence theorem then
+connects the changed interpreter tree to the pinned \(p_{230}\) source.
+This route discharges native context requirements inside the runtime proof,
+without assuming a separately stated global guard theorem.
+
+Sparse labels serve only to keep inherited local tape proofs readable.
+The delivered machine uses dense labels. Its separate Rocq context has
+state type \(\{q\in\mathbb N:q\le N\}\), alphabet \(\{0,1\}\),
+working states \(0,\ldots,N-1\), and terminal state \(N\).
+The dense literal array has exactly \(N\) paired rows (two transitions each), and a finite checker
+verifies every target is at most \(N\).
+
+Let \(e\) be the increasing map that skips deleted sparse labels.
+A finite proof checks the transition identity for every dense state and
+both symbols, including the terminal state: applying the sparse machine
+at state \(e(q)\) is exactly the dense transition with its target state
+mapped through \(e\). Tape symbols and head movements agree. The induced
+map on configurations changes only the state. Induction transports every
+dense execution to a sparse execution, while the deterministic transition
+identity and the positive-progress halting lemma give the reverse halting
+implication. The transition argument treats arbitrary tapes at corresponding states.
+The exported halting equivalence is its blank instance, which composes
+with the runtime and source proofs.
+
+Consequently the state count is a property of the exact delivered table
+and of its own finite Rocq context. It is not a count obtained by leaving
+an unexecuted working state in the formal machine and omitting it from
+the displayed census.
+
+
+The exact endpoint names, assumption reports, and successful independent
+kernel recheck are recorded in Section~\ref{sec:verification}.

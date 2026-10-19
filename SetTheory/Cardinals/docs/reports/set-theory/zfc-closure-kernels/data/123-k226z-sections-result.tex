@@ -1,0 +1,62 @@
+\begin{abstract}
+We construct a deterministic, binary, one-tape Turing machine with
+\textbf{226 working states}, including blank initialization and excluding
+one separate halt outcome. It improves Elliot Glazer's pinned 230-state
+construction by four states. The smaller table combines three ProveIt
+ideas with his more compact set-theoretic axiom system: moving an increment
+across a terminating drain loop, delayed erasure, and sharing decoder
+states using a preceding tape bit. The third saving requires an additional
+change: first move one role out of a shared state into a different existing
+helper, and then fold its remaining role. Two address repairs restore the
+six-zero limit of the tape encoding. A further closed reassociation
+exposes an exact duplicate state; five more rotations restore valid
+addresses after that fourth saving.
+
+The final literal table has 452 rows. Its full source protocol is proved
+for every natural register file, arbitrary additional gap and finite
+spare-register tail, with positive progress. An independent source audit
+checks all four loop replacements and every entry and exit. These proofs
+compose with the pinned numerical and set-theoretic calibration to give
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\NH(M_{226},\mathrm{blank})\leftrightarrow\Con(\mathrm{ZFC})\bigr).
+\]
+The report distinguishes the ordinary internalization argument, the
+external Rocq endpoint, and finite diagnostic runs. It also gives a
+fully declared 574-bit prefix encoding of the inherited E663 equational
+packet. That encoding is a separate research result and is not used to
+count the 226-state machine.
+\end{abstract}
+
+\subsection*{Exact deliverable}
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}lX@{}}\toprule
+Item & Value\\\midrule
+Selected table & \path{machines/k226.tm}\\
+Working states & $0,1,\ldots,225$\\
+Initial state / head / tape & $0$ / coordinate $0$ / identically zero\\
+Interpreter dispatcher & $82$\\
+Separate halt label & $226$; it has no transition rows\\
+Alphabet and tape & $\{0,1\}$, one two-sided tape, moves $L$ and $R$ only\\
+Complete binary transition rows & $452$\\
+Exact blank initialization & $409\,835$ transitions\\
+Changes in original K230 labels & 52 surviving rows changed; states $65,79,140,175$ deleted\\
+\bottomrule\end{tabularx}
+\end{center}
+The SHA--256 of the selected table, including its header and final newline, is
+\begin{quote}\small
+\path{b58279b8b2e2cf029dd94e084d47cd6097772d7bce2a62653767895123d29599}.
+\end{quote}
+The full table and all 52 surviving-row changes appear in the appendices.
+The table with original K230 labels and the complete renumbering are supplied
+so the changes can be reviewed without undoing an arbitrary state permutation.
+
+\subsection*{What is established}
+The new result is a concrete composition of inherited optimization ideas
+with Glazer's axiom system, including a new reassignment of decoder roles and a duplicate exposed by
+source reassociation.
+It is not a global minimality result. The consistency equivalence itself
+does not assume \(\Con(\mathrm{ZFC})\). Under that consistency assumption,
+the machine really does not halt, and ZFC cannot prove that nonhalting
+statement. Mere consistency is not being used to assert that ZFC also
+cannot prove halting.

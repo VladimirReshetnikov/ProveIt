@@ -1,0 +1,276 @@
+\section{Constructor and Skolem sharing in the equational kernel}
+\label{sec:e679}
+
+The complete $688$-bit equational packet in the pinned 236-state report
+has three closure-witness operations that can be identified with its
+three syntax constructors.  The identifications are
+\[
+ \mathsf{Target}(b)=Q(b),\qquad
+ \mathsf{Next}(b,z)=P(b,z),\qquad
+ \mathsf{Mem}(b,z)=A(b,z).
+ \tag{Fusion}
+\]
+They leave every equation tree and every variable occurrence unchanged.
+Only nine operation occurrences in the final closure equation change
+their names; three operation declarations disappear.  This gives a
+complete $679$-bit packet $\mathcal E_{679}$ in the unchanged codec.
+
+This is a specialization of the old signature, so merely renaming symbols
+would not prove equiconsistency.  The substantive point is the upper
+model below: a syntax code can have a prescribed membership type as well
+as a prescribed syntactic role.  Infinitely many copies of each object
+make the two requirements compatible.  The construction depends on the
+fact that the interpreted matrices are equality-free.
+
+\subsection*{The unchanged axioms and the lower implication}
+
+Retain the first six equations of $\mathcal E_{688}$ literally: Sh1,
+the native head and tail identities, NAND classes, atomic classes, and
+the complemented binder.  In particular,
+\begin{align*}
+ V(P(x,s),d)&=x,&
+ V(P(x,s),A(j,d))&=V(s,j),\\
+ p_\varepsilon(s,P(a,b))
+   &=N(p_\varepsilon(s,a),p_\varepsilon(s,b)),&
+ p_\varepsilon(s,A(i,j))&=p_E(V(s,i),V(s,j)),\\
+ p_\varepsilon(s,Q(a))
+   &=N\bigl(p_\varepsilon(P(W(s,a),s),a),
+             p_\varepsilon(P(z,s),a)\bigr).
+\end{align*}
+The complete closure equation is the old equation after (Fusion).
+For its explanation, write
+\[
+ h=Q(b),\quad n_z=P(b,z),\quad m_z=A(b,z),\quad
+ R_b(x,y)=\varepsilon(P(y,P(x,b)),V(b,d)).
+\]
+After taking Boolean truth values, the unchanged equation says
+\[
+ \mathsf{Bad}(b,z)\ \lor\ \mathsf{Hull}(b,x,y)
+ \qquad\text{for all }b,z,x,y,
+\]
+where
+\begin{align*}
+ \mathsf{Bad}(b,z)
+   &=R_b(h,n_z)\land E(m_z,n_z)\land\neg E(m_z,z),\\
+ \mathsf{Hull}(b,x,y)
+   &=\bigl(E(W(x,d),x)\lor\neg R_b(x,y)\lor E(y,h)\bigr)\\
+   &\quad\land\bigl(\neg E(x,h)\lor\neg R_b(x,y)\lor E(y,h)\bigr)\\
+   &\quad\land\bigl(\neg E(y,h)\lor R_b(P(b,y),y)\bigr).
+\end{align*}
+These displayed abbreviations are expanded in the supplied AST.
+
+Every separating $\mathcal E_{679}$ algebra expands to an
+$\mathcal E_{688}$ algebra by defining the three old operation symbols
+according to (Fusion).  This is a literal substitution in each axiom;
+the ground endpoints remain $N(d,d)$ and $d$.  The inherited
+$\mathcal E_{688}$/raw-EPSC/ZFC calibration therefore proves
+\[
+ \mathcal E_{679}\text{ has a separating model}
+       \ \Longrightarrow\ \operatorname{Con}(\mathrm{ZFC}).
+\]
+The derivation of $d$ as Boolean top from the equation packet also
+survives by this same term substitution.  The reverse implication needs
+the following construction.
+
+\subsection*{A carrier with infinitely many copies}
+
+Work in ZFC and assume $\operatorname{Con}(\mathrm{ZFC})$.  By first-order
+completeness and downward L\"owenheim--Skolem, take a countably infinite
+set-coded model $M$ of ZFC.  It may be nonstandard and non-well-founded
+externally.  Fix a surjection
+\[
+             \tau:\mathbb N\longrightarrow |M|
+\]
+whose every fiber is infinite, and pull membership back to $\mathbb N$:
+\[
+          E(i,j)\quad\Longleftrightarrow\quad
+                        M\models\tau(i)\in\tau(j).
+\]
+Call $\tau(i)$ the membership type of $i$.  Every equality-free
+pure-membership formula is invariant under replacing any assignment by
+one with the same types.  Structural induction proves this, with
+surjectivity of $\tau$ treating the quantifiers.  Consequently all raw
+EPSC instances hold on this carrier.  It need not satisfy Extensionality
+with its literal equality, and no such assertion is required.
+
+Set $d=0$.  We construct $P,A,Q$ with pairwise disjoint ranges, jointly
+fresh outputs, and
+\[
+       P(i,j)>\max(i,j),\qquad A(i,j)>\max(i,j),\qquad Q(i)>i.
+\]
+They are injective in their complete argument lists.  Their output types
+will be prescribed by the closure witnesses.  An infinite fiber always
+has an unused element above any finite bound, so these requirements
+leave a choice at every finite stage.
+
+Interpret a $P$-code as a stream cell with its two unique children as
+head and tail.  Every other element has head and tail zero.  The selector
+index of $i$ is the number of successive outer layers $A(j,d)$; a
+different outer shape has index zero.  Let $V(s,i)$ be the corresponding
+stream coordinate.  The two native equations hold on all arguments,
+including noncanonical streams and selectors.
+
+Assign class $d$ and all nonconstructor numbers the constantly false
+meaning.  Interpret a $P$-class as NAND of its two child classes, an
+$A$-class as the indicated atomic membership formula, and a $Q$-class as
+existential negation after prepending a stream coordinate.  Increasing
+codes make this recursion well founded.  Each fixed class denotes a
+finite equality-free pure-membership formula in finitely many stream
+coordinates.  In particular, each fixed descriptor $b$ determines a
+binary relation $R_b$ depending only on the types of its two arguments
+and finitely many fixed parameter types.
+
+\subsection*{Why the construction is not circular}
+
+At stage $n$, perform the following finite batch in this order:
+\begin{enumerate}
+ \item Choose the value $Q(n)$.
+ \item Choose every $P(b,z)$ with $\max(b,z)=n$.
+ \item Choose every $A(b,z)$ with $\max(b,z)=n$.
+\end{enumerate}
+At each choice require the output to exceed $n$, its arguments, and all
+outputs chosen previously.  Thus a number at most $n$ that is not already
+a constructor output can never become one at a later stage.  Every
+constructor decomposition at an index at most $n$ is already settled.
+
+If $n$ is a $P$-code, its head $V(n,d)$ is strictly smaller than $n$;
+otherwise that head is $d$.  Its fixed tail coordinates are likewise
+smaller than $n$ or zero.  Therefore the finite pure-membership formula
+represented by $R_n$ is determined before $Q(n)$ is chosen.  Although
+its evaluation uses streams $P(y,P(x,n))$ for arbitrary $x,y$, decoding
+such a stream always gives the literal coordinates $y,x,n$, independently
+of the numerical labels or membership types of its new constructor
+outputs.  Those future output choices cannot change the represented
+formula.  This is the relevant distinction between syntax-code identities
+and the types of the encoded objects.
+
+For each descriptor $b$, mark one of two cases when $Q(b)$ is chosen.
+If $R_b$ is locally subset bounded, choose an EPSC hull type $h_b$ and
+give $Q(b)$ that type.  If it is not locally bounded, choose an input
+type $h_b$ with unbounded output subsets and give $Q(b)$ that type.
+Such choices exist in the pulled-back model, or equivalently in $M$.
+This uses the inherited upper direction for raw EPSC only at a fixed
+ordinary formula with a finite tuple of parameters.
+
+When $P(b,z)$ is chosen, $Q(b)$ has already been chosen.  In the bounded
+case, if $E(z,Q(b))$, prescribe its type to be an input witnessing
+$R_b(P(b,z),z)$; if $z$ is outside the hull, prescribe any type.  EPSC
+support supplies the witness.  In the unbounded case, prescribe an
+output type satisfying
+\[
+  R_b(Q(b),P(b,z)),\qquad P(b,z)\not\subseteq_E z.
+\]
+The selected input type is unbounded, so such an output exists for every
+$z$.  All copies of a prescribed type have the same required relation
+values, permitting the fresh increasing code choice.
+
+Finally, when $A(b,z)$ is chosen, $P(b,z)$ is already available.  In the
+unbounded case choose its type so that
+\[
+                  E(A(b,z),P(b,z))\land\neg E(A(b,z),z).
+\]
+In the bounded case prescribe any type, because this witness is unused.
+The order of the three parts of each batch supplies all dependencies.
+Only finitely many codes have been allocated before every choice, so
+none of the infinite type fibers can be exhausted.  This constructs total
+operations meeting both their syntactic and their witness requirements.
+
+\subsection*{Binder witnesses and Boolean values}
+
+For $a\ne d$, define $W(s,a)$ as the least external-index witness
+falsifying $\varepsilon(P(z,s),a)$ when such a witness exists, and zero
+otherwise.  Class incidence is defined before $W$, so this introduces no
+recursive dependence.  At $a=d$ the class is constantly false and the
+complemented binder places no restriction on the witness value.  Retain
+the old allocation
+\[
+ W(x,d)=\begin{cases}
+    \min\{u:E(u,x)\},&\text{if $x$ has a member},\\
+    0,&\text{otherwise}.
+ \end{cases}
+\]
+All native, NAND, atomic, and binder identities hold.  The choices above
+make the bad branch true for every $z$ in the unbounded case.  In the
+bounded case, EPSC closure and support make every hull clause true;
+the member selector makes its first clause vacuous at every nonempty
+input and lets EPSC handle empty inputs.
+
+Transport a countably infinite Boolean algebra to the carrier
+$\mathbb N$ with top equal to $d$, interpret $N$ as NAND, and interpret
+$p_E,p_\varepsilon$ by its top and bottom according to the two relations
+just constructed.  Leave all native operations fixed.  The equation
+packet holds and $N(d,d)\ne d$.  The Boolean algebra and membership types
+are independent structures on the same carrier; no quotient of native
+objects by a Boolean homomorphism is taken in this upper construction.
+
+\paragraph{Theorem.}
+With the inherited E688 calibration as an explicit dependency, ZFC proves
+\[
+ \mathcal E_{679}\not\vdash N(d,d)=d
+       \quad\Longleftrightarrow\quad
+                  \operatorname{Con}(\mathrm{ZFC}).
+\]
+Indeed, the preceding construction gives a separating algebra from
+consistency; the literal expansion gives the reverse implication.
+The usual quotient of ground terms by the generated equational
+congruence connects separating models to nonderivability.  This is an
+ordinary proof formalizable in ZFC, not a newly checked Lean/Rocq theorem
+or an internal PA proof-code transformer.
+
+\subsection*{Exact cost and limitations}
+
+The new signature is
+\[
+       d^0,N^2,V^2,P^2,A^2,Q^1,W^2,p_E^2,p_\varepsilon^2.
+\]
+There are still seven equations, four local variable slots, 153 equation
+tree nodes, and four endpoint nodes.  Nine symbols plus four variables
+still require a four-bit opcode.  The complete charged count is
+\[
+ \underbrace{8+3\cdot9+8}_{43\text{ header}}
+ +\underbrace{7+1+4\cdot153}_{620\text{ equations}}
+ +\underbrace{4\cdot4}_{16\text{ endpoints}}
+ =679.
+\]
+The nine-bit saving consists exactly of the three removed arity entries;
+it does not shorten the equation payload under this fixed-width codec.
+This is a small numerical gain and a more general structural sharing
+principle.  It supplies no Turing-machine state saving on its own.
+An actual binary implementation must still charge a ground-rewrite
+checker, fair enumerator, complete packet writer, and blank startup.
+
+The accompanying builder pins and reconstructs E688, checks every
+corresponding AST node, confirms the unchanged first six equations and
+endpoints, round-trips E679, and rejects all strict packet truncations.
+Its checks establish literal transcription and encoding facts; the
+infinite-model argument is the mathematical justification for the
+specialization.  Equality-bearing matrix semantics would invalidate the
+type-invariance step, so the fusion must not be imported unchanged into
+the original equality-bearing C/G machine calculus.
+
+\paragraph{An optional eight-operation specialization.}
+One can also eliminate the remaining binder-witness symbol by
+\[
+                    W(s,a)=A(Q(a),s).
+\]
+This further specialization has a compatible upper model.  A descriptor
+$b=Q(a)$ is not a $P$-code, so $V(b,d)=d$ and $R_b$ is constantly false.
+It is therefore in the bounded case with an empty hull, and all witness
+slots $A(b,z)$ are free of closure-witness constraints.  Use precisely
+those free slots for the binder counterexamples, retaining the member
+selector property when $a=d$: a fresh copy of the type of a selected
+member still belongs to the nonempty input class. Empty inputs impose no
+membership-witness requirement here.  Injectivity of $Q$ makes the allocation
+unambiguous.  At the stage when $A(Q(a),s)$ is chosen, $a<Q(a)$, so the
+class $a$ and the finite coordinates of stream $s$ are already fixed;
+type invariance permits any sufficiently fresh copy of the selected
+witness type.  Thus this use of $A$ introduces no circular dependence
+between binder choices and class meanings.
+
+There are two $W$ occurrences.  Replacing each by $A(Q(a),s)$ adds one
+AST node while removing one three-bit arity declaration.  The same
+fixed-width codec would therefore charge $679+2\cdot4-3=684$ bits.
+It reduces the signature from nine to eight operations but increases
+the complete packet under this codec.  The supplied primary packet
+remains E679; the eight-operation variant is a proved alternative
+specialization, not an additional claimed state reduction.

@@ -1,0 +1,119 @@
+{
+  "status": "EXACT_SOURCE_TRANSFER_PLUS_ONE_REPLACEMENT",
+  "input_table_sha256": "e7ccbcec074534cfd955f0ab94d16f13594e81974074309dc2ce663b9dfd7ba8",
+  "input_source_sha256": "400fad2b1c5f99ed8490f6346ff63088ba94fc39ada376962cee2f68c092e487",
+  "output_table_sha256": "ee3279c9a1cb499a30d21cef46d485976677640a43fa4e490d91affc6a010db2",
+  "output_source_sha256": "61450579877bc79cc4bc323ff0b8ae506064c79644107f4d818401dcfbce941b",
+  "occurrence_paths": [
+    "111010010010111111000011",
+    "11101001001011111110011",
+    "1110100101100011",
+    "111110011"
+  ],
+  "occurrences": 4,
+  "old_leaves": 5125,
+  "new_leaves": 5121,
+  "old_local": [
+    [
+      "00",
+      "CD",
+      6
+    ],
+    [
+      "010",
+      "CI",
+      5
+    ],
+    [
+      "011",
+      "CC",
+      2
+    ],
+    [
+      "1",
+      "CI",
+      5
+    ]
+  ],
+  "new_local": [
+    [
+      "0",
+      "CI",
+      5
+    ],
+    [
+      "10",
+      "CD",
+      6
+    ],
+    [
+      "11",
+      "CC",
+      2
+    ]
+  ],
+  "boundary_old": [
+    0,
+    0,
+    false
+  ],
+  "boundary_new": [
+    0,
+    0,
+    false
+  ],
+  "old_metrics": {
+    "dag_nodes": 212,
+    "leaf_occurrences": 5125,
+    "maximum_depth": 40,
+    "maximum_zero_run": 6
+  },
+  "new_metrics": {
+    "dag_nodes": 212,
+    "leaf_occurrences": 5121,
+    "maximum_depth": 40,
+    "maximum_zero_run": 6
+  },
+  "collapsed_contexts_structurally_identical": true,
+  "macro_effect": "For all natural a=R5 and b=R6, terminate with R5=a+b+1,R6=0, all other registers unchanged; normal exit.",
+  "old_local_execution": "Repeat CD6: if positive, decrement R6, CI5, CC2 back to CD6. When zero, exit inner loop and CI5 once, then normal exit.",
+  "new_local_execution": "CI5 once, then CD6: if positive, decrement R6 and CC2 back to CI5; if zero, normal exit.",
+  "exact_old_instruction_count": "3*b+2",
+  "exact_new_instruction_count": "3*b+2",
+  "induction": "At each positive CD6 the natural R6 decreases by1. Old increments exactly b times in loop and once after; new increments once before each of b positive and one final zero decrement. Other registers never occur.",
+  "literal_edits": [
+    {
+      "row": [
+        121,
+        0
+      ],
+      "old": [
+        0,
+        1,
+        31
+      ],
+      "new": [
+        0,
+        1,
+        63
+      ]
+    },
+    {
+      "row": [
+        121,
+        1
+      ],
+      "old": [
+        1,
+        1,
+        63
+      ],
+      "new": [
+        1,
+        1,
+        13
+      ]
+    }
+  ],
+  "proof_scope": "Unbounded structured source semantics by closed total context substitution. Exact binary runtime and startup are separate obligations."
+}
