@@ -87,7 +87,7 @@ theorem polyPartConst_le_sharp (k : Nat) :
     Nat.le_of_mul_le_mul_right h (by positivity)
   calc (k + 1 + 1).factorial ^ 2 * 2 ^ ((k + 1 + 1 + 1) ^ 2)
       ≤ 2 ^ ((k + 2) * (k + 1)) * 2 ^ ((k + 1 + 1 + 1) ^ 2) := Nat.mul_le_mul_right _ h'
-    _ = 2 ^ ((k + 3) ^ 2 + (k + 2) * (k + 1)) := by rw [← pow_add]; congr 1 <;> ring
+    _ = 2 ^ ((k + 3) ^ 2 + (k + 2) * (k + 1)) := by rw [← pow_add]; congr 1; ring
 
 /-- **The phase-refinement threshold, with the constants at the exponential
 level**, with the partition constant at `2^partDeg k`. -/

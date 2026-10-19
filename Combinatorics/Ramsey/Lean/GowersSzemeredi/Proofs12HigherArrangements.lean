@@ -117,22 +117,13 @@ private lemma lemma123_arrangement_isIn_iff {N d : Nat} [NeZero N]
     (IsAdditiveTuple R.crossSection ∧ ∀ j,
       (R.crossSection j, R.base j 0) ∈ B ∧
       (R.crossSection j, R.base j 0 + R.side 0) ∈ B)
-  constructor
-  · rintro ⟨hadd, hmem⟩
-    refine ⟨hadd, fun j ↦ ⟨?_, ?_⟩⟩
-    · simpa [lemma123BoolVertex] using (lemma123_vertex_mem_iff B R
-        (lemma123BoolVertex false) j).mp
-        (hmem (lemma123BoolVertex false) j)
-    · simpa [lemma123BoolVertex] using (lemma123_vertex_mem_iff B R
-        (lemma123BoolVertex true) j).mp
-        (hmem (lemma123BoolVertex true) j)
-  · rintro ⟨hadd, hmem⟩
-    refine ⟨hadd, ?_⟩
-    intro e j
-    rw [lemma123_vertex_mem_iff]
-    cases he : e 0
-    · simpa [he] using (hmem j).1
-    · simpa [he] using (hmem j).2
+  simp only [lemma123_vertex_mem_iff]
+  -- a vertex is the lower or the upper endpoint, according to the bit `e 0`
+  refine and_congr_right fun _ => ⟨fun h j => ⟨by simpa using h (fun _ => false) j,
+    by simpa using h (fun _ => true) j⟩, fun h e j => ?_⟩
+  cases he : e 0
+  · simpa [he] using (h j).1
+  · simpa [he] using (h j).2
 
 private lemma lemma123_arrangement_isRespected_iff {N d : Nat} [NeZero N]
     (phi : Pair N → ZMod N) (R : GeneralArrangement N 1 d) :

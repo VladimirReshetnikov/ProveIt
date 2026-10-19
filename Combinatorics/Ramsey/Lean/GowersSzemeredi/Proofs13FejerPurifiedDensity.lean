@@ -20,30 +20,24 @@ theorem section13_fejer_density_from_mass {N : Nat} [NeZero N]
   let t : Real := ((2 : Real) ^ 77)⁻¹ * rho ^ 3 * eta ^ 3 * beta
   have hc : (((2 : Real) ^ 77)⁻¹) ^ 15 ≤ ((2 : Real) ^ 1150)⁻¹ := by
     rw [inv_pow, ← pow_mul]
-    apply inv_anti₀ (by positivity)
-    exact pow_le_pow_right₀ (by norm_num) (by norm_num : (1150 : Nat) ≤ 77 * 15)
+    exact inv_anti₀ (by positivity) (pow_le_pow_right₀ (by norm_num) (by norm_num))
   have hr : rho ^ 45 ≤ rho ^ 32 := pow_le_pow_of_le_one hrho hrho1 (by decide)
   have he : eta ^ 45 ≤ eta ^ 31 := pow_le_pow_of_le_one heta heta1 (by decide)
   have ht : t ^ 15 ≤ ((2 : Real) ^ 1150)⁻¹ * rho ^ 32 * eta ^ 31 * beta ^ 15 := by
-    have h1 := mul_le_mul hc hr (by positivity) (by positivity)
-    have h2 := mul_le_mul h1 he (by positivity) (by positivity)
-    have h3 := mul_le_mul_of_nonneg_right h2 (pow_nonneg hbeta 15)
-    simpa only [t, mul_pow, ← pow_mul] using h3
+    simp only [t, mul_pow, ← pow_mul]
+    gcongr
   have hres : respectedArrangementCount 8 S phi ≤ arrangementCount 8 S := by
     have hp := fejerArrangementEdges_partition_card S (fun R => R.IsRespected phi)
     rw [fejerArrangementEdges_good_card] at hp
     omega
-  have hup : (respectedArrangementCount 8 S phi : Real) ≤ (S.card : Real) ^ 15 * (N : Real) ^ 2 := by
+  have hup : (respectedArrangementCount 8 S phi : Real) ≤
+      (S.card : Real) ^ 15 * (N : Real) ^ 2 := by
     exact_mod_cast hres.trans (context_arrangementCount_le_card_pow S)
   have hn : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hpow : (t * (N : Real) ^ 2) ^ 15 * (N : Real) ^ 2 ≤
-      (S.card : Real) ^ 15 * (N : Real) ^ 2 := by
-    calc
-      _ = t ^ 15 * (N : Real) ^ 32 := by ring
-      _ ≤ _ := (mul_le_mul_of_nonneg_right ht (by positivity)).trans (hmass.trans hup)
-  have hp : (t * (N : Real) ^ 2) ^ 15 ≤ (S.card : Real) ^ 15 :=
-    (mul_le_mul_iff_left₀ (by positivity : (0 : Real) < (N : Real) ^ 2)).mp hpow
-  exact le_of_pow_le_pow_left₀ (by decide : (15 : Nat) ≠ 0) (Nat.cast_nonneg _) hp
+  refine le_of_pow_le_pow_left₀ (n := 15) (by norm_num) (Nat.cast_nonneg _)
+    (le_of_mul_le_mul_right ?_ (by positivity : (0 : Real) < (N : Real) ^ 2))
+  calc (t * (N : Real) ^ 2) ^ 15 * (N : Real) ^ 2 = t ^ 15 * (N : Real) ^ 32 := by ring
+    _ ≤ _ := (mul_le_mul_of_nonneg_right ht (by positivity)).trans (hmass.trans hup)
 
 theorem section13_fejer_density_explicit
     (delta rho eta : Real) (hdelta : 0 < delta)

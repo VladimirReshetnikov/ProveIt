@@ -48,25 +48,17 @@ theorem fejerRelation_count_signal {N L M : Nat}
   let V := {v : I → Fin L × Fin L //
     fejerPairRelation v phi = 0 ∧ fejerPairRelation v feature = 0}
   let f : Fin M × (I → Fin M) → V := fun z =>
-    ⟨fun i => fejerShiftedPair hML (positive i) z.1 (z.2 i), by
-      constructor <;> rw [fejerPairRelation_shifted]
-      · rw [hphi, mul_zero]
-      · rw [hfeature, mul_zero]⟩
-  have hinj : Function.Injective f := by
-    intro v w h
-    have heq : ∀ i, (v.1, v.2 i) = (w.1, w.2 i) := by
-      exact fun i => fejerShiftedPair_injective hML (positive i) (congrArg (fun z : V => z.1 i) h)
+    ⟨fun i => fejerShiftedPair hML (positive i) z.1 (z.2 i),
+      by simp only [fejerPairRelation_shifted, hphi, hfeature, mul_zero, and_self]⟩
+  have hinj : Function.Injective f := fun v w h ↦ by
+    have heq (i : I) : (v.1, v.2 i) = (w.1, w.2 i) :=
+      fejerShiftedPair_injective hML (positive i) (congrArg (fun z : V => z.1 i) h)
     exact Prod.ext (congrArg (fun z : Fin M × Fin M => z.1) (heq (Classical.arbitrary I)))
-      (funext fun i => congrArg (fun z : Fin M × Fin M => z.2) (heq i))
-  have hcard := Fintype.card_le_of_injective f hinj
-  have hV : Fintype.card V = countWhere (fun v : I → Fin L × Fin L =>
-      fejerPairRelation v phi = 0 ∧ fejerPairRelation v feature = 0) := by
-    simp only [V, countWhere, Fintype.card_subtype]
-    congr 1
-    ext v
-    simp
-  rw [hV] at hcard
-  simpa only [Fintype.card_prod, Fintype.card_fun, Fintype.card_fin, pow_succ, Nat.mul_comm] using hcard
+      (funext fun i ↦ congrArg (fun z : Fin M × Fin M => z.2) (heq i))
+  unfold countWhere
+  rw [Finset.filter_congr_decidable, ← Fintype.card_subtype]
+  refine Eq.trans_le ?_ (Fintype.card_le_of_injective f hinj)
+  simp only [Fintype.card_prod, Fintype.card_fun, Fintype.card_fin, pow_succ, Nat.mul_comm]
 
 theorem fejer_kernel_mean_signal_lower {N L M : Nat} [NeZero N]
     {I X : Type*} [Fintype I] [DecidableEq I] [Nonempty I] [DecidableEq X]

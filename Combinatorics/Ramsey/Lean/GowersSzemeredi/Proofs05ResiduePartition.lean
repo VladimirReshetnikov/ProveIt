@@ -83,33 +83,23 @@ theorem section5_residue_target_partition (r p v : Nat)
       ∀ j, (Q j).step = p := by
   have hv2 : 1 ≤ v ^ 2 := one_le_pow₀ hv
   have hpr : p ≤ r := by nlinarith
+  obtain ⟨w, hw⟩ : ∃ w, v ^ 2 = w + 1 := ⟨v ^ 2 - 1, by omega⟩
   let P := residueNatAP r p
-  have hlong (a : Fin p) : v ^ 2 ≤ (P a).length := by
-    have hprod : p * (v ^ 2 - 1) + p ≤ r := by
-      rw [← Nat.mul_succ, Nat.succ_eq_add_one, Nat.sub_add_cancel hv2]
-      exact hsize
-    have hi : (a : Nat) + (v ^ 2 - 1) * p < r := by nlinarith [a.isLt]
-    have := (residueNatAP_index_lt hp hpr a (v ^ 2 - 1)).2 hi
-    change v ^ 2 ≤ (residueNatAP r p a).length
+  have hlong (a : Fin p) : v ^ 2 ≤ (residueNatAP r p a).length := by
+    have := (residueNatAP_index_lt hp hpr a w).2 (by rw [hw] at hsize; nlinarith [a.isLt])
     omega
   choose L R hL hRpart hRcells hRstep using
     fun a => section5_target_interval_partition_unit_step (P a).length v hv (hlong a)
   let T (a : Fin p) (i : Fin (L a)) := section5NatTransport (P a) (R a i)
-  have hTpart (a : Fin p) : IsNatAPPartition (T a) (P a).carrier :=
-    section5NatTransport_partition (P a) (R a) (residueNatAP_proper hp a) (hRpart a)
-  have hsum : 0 < ∑ a, L a := by
-    let a : Fin p := ⟨0, hp⟩
-    exact (hL a).trans_le (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (mem_univ a))
-  refine ⟨∑ a, L a, section5NatFlatten L T, hsum,
-    section5NatFlatten_partition P _ L T (residueNatAP_partition hp hpr) hTpart, ?_, ?_⟩
-  · intro j
-    let z := (section5NatFlattenEquiv L).symm j
+  refine ⟨∑ a, L a, section5NatFlatten L T,
+    (hL ⟨0, hp⟩).trans_le (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (mem_univ _)),
+    section5NatFlatten_partition P _ L T (residueNatAP_partition hp hpr) fun a =>
+      section5NatTransport_partition (P a) (R a) (residueNatAP_proper hp a) (hRpart a),
+    fun j => ?_, fun j => ?_⟩
+  · let z := (section5NatFlattenEquiv L).symm j
     exact ⟨section5NatTransport_isProper (P z.1) (R z.1 z.2)
       (residueNatAP_proper hp z.1) (hRcells z.1 z.2).1, (hRcells z.1 z.2).2⟩
-  · intro j
-    let z := (section5NatFlattenEquiv L).symm j
-    change (R z.1 z.2).step * (P z.1).step = p
-    rw [hRstep]
-    simp [P, residueNatAP]
+  · change (R _ _).step * p = p
+    rw [hRstep, one_mul]
 
 end LeanProofs.GowersSzemeredi

@@ -120,7 +120,7 @@ theorem MReq_le_exp {V : Real} {D k K p μV μD μ0 μK : Nat} (H : StdHyp V D k
     rw [hEdef]; unfold expDeg; exact (le_max_right _ _).trans (le_max_right _ _)
   obtain ⟨-, hQM, hBx⟩ := spectrum_exps_inv_le (K := K) ha ha2 hV hVμ hμ0 hD hkD hk0 hpμ
   -- the recurrence threshold
-  have hthr := familyRecThr_le_exp (k := k) hX (by omega) hKμ hpμ hQM
+  have hthr := familyRecThr_le_exp (k := k) hX hKμ hpμ hQM
   have hthr' : (familyRecThr k K p ((std V D k K p μ0).QM alpha) : Real) ≤
       Real.exp ((2 / alpha) ^ (2 ^ (E + 3))) := ex_mono hX hthr (by omega)
   have hthr1 : (1 : Real) ≤ (familyRecThr k K p ((std V D k K p μ0).QM alpha) : Real) :=

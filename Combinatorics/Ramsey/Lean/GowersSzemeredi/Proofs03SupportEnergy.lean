@@ -29,29 +29,21 @@ theorem sum_cubeDifference_norm_le_l1_pow {N k : Nat} [NeZero N]
   induction k with
   | zero => simp [cubeDifference, iteratedDifference, Point]
   | succ k ih =>
-    rw [sum_point_succ]
+    have hsub (s : ZMod N) : ∑ r : ZMod N, ‖f (s - r)‖ = ∑ t : ZMod N, ‖f t‖ :=
+      (Equiv.subLeft s).sum_comp (fun t => ‖f t‖)
     calc
       _ ≤ ∑ r : ZMod N, ∑ a : Point N k, ∑ s : ZMod N,
           ‖cubeDifference f a s‖ * ‖f (s - r)‖ := by
-        apply Finset.sum_le_sum; intro r _
-        apply Finset.sum_le_sum; intro a _
-        apply Finset.sum_le_sum; intro s _
+        rw [sum_point_succ]
+        gcongr with r _ a _ s _
         rw [cubeDifference_cons, difference, norm_mul, norm_star]
-        exact mul_le_mul_of_nonneg_left (cubeDifference_norm_le_base hf a (s - r))
-          (norm_nonneg _)
-      _ = (∑ a : Point N k, ∑ s : ZMod N, ‖cubeDifference f a s‖) *
-          (∑ s : ZMod N, ‖f s‖) := by
-        rw [Finset.sum_comm]
-        simp only [Finset.sum_mul]
-        apply Finset.sum_congr rfl; intro a _
-        rw [Finset.sum_comm]
-        apply Finset.sum_congr rfl; intro s _
-        rw [← Finset.mul_sum]
-        congr 1
-        exact (Equiv.subLeft s).sum_comp (fun t => ‖f t‖)
-      _ ≤ (∑ s : ZMod N, ‖f s‖) ^ (k + 1) * (∑ s : ZMod N, ‖f s‖) :=
-        mul_le_mul_of_nonneg_right ih (Finset.sum_nonneg fun _ _ => norm_nonneg _)
-      _ = _ := (pow_succ _ (k + 1)).symm
+        exact mul_le_mul_of_nonneg_left (cubeDifference_norm_le_base hf a (s - r)) (norm_nonneg _)
+      _ = (∑ a : Point N k, ∑ s : ZMod N, ‖cubeDifference f a s‖) * ∑ s : ZMod N, ‖f s‖ := by
+        rw [Finset.sum_comm, Finset.sum_mul]
+        refine Finset.sum_congr rfl fun a _ => ?_
+        rw [Finset.sum_comm, Finset.sum_mul]
+        simp_rw [← Finset.mul_sum, hsub]
+      _ ≤ _ := by rw [pow_succ]; gcongr
 
 /-- Unnormalized degree-k uniformity energy is at most the (k+2)-th power
 of the L1 mass of a disc-valued function. -/

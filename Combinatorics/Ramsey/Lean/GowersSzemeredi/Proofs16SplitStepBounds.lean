@@ -136,7 +136,7 @@ theorem split_level_base_le {V W g thp rho c : Real} {j P : Nat} (hW : 2 ≤ W)
   have hW0 : 0 ≤ W := by linarith
   unfold splitW
   rw [show 2 / (g * thp * (rho / c)) = 2 / (g * thp) * (rho / c)⁻¹ by field_simp]
-  have hri := inv_scale_le hW hrho hrW hc0 hc
+  have hri := inv_scale_le hW hrho hrW hc
   calc V * (2 / (g * thp) * (rho / c)⁻¹) ≤ W ^ 1 * (W ^ (P + 1) * W ^ (j + 1)) := by
         rw [pow_one]
         exact mul_le_mul hVW (mul_le_mul hgd hri (by positivity) (pow_nonneg hW0 _))
@@ -380,7 +380,7 @@ theorem split_count_le_W {k a D P m : Nat} {tS gS : Real} (ha : 1 ≤ a) (hD : 1
       (tb_one_le hν hW1) (tb_one_le hν hW1) hM hS
       (by rw [← hSdef, hPbv]; exact zero_le_one.trans hPb1)
       (by rw [← hSdef, hPbv]; exact hPb)
-    convert h using 1 <;> ring
+    convert h using 1; ring
   have h3k := (le_max_right _ _).trans hfac
   refine max_le (hG.trans (tb_mono hν hW1 (by unfold sCountN; omega) (by unfold swCountW; omega))) ?_
   refine h3k.trans (tb_mono hν hW1 (by unfold sCountN sPbN; nlinarith) ?_)

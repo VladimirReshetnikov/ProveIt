@@ -18,11 +18,6 @@ def section13SquareExponent (alpha : Real) : Real :=
     ((2 : Real) ^ (-(100 : Int)) * alpha ^ 448) *
     cor711Exponent ((2 : Real) ^ (-(135 : Int)) * alpha ^ 704) 1 / 4
 
-theorem section13SquareExponent_pos {alpha : Real} (hα : 0 < alpha) :
-    0 < section13SquareExponent alpha := by
-  unfold section13SquareExponent cor711Exponent
-  positivity
-
 set_option exponentiation.threshold 512 in
 /-- Closed form of the positive power retained after all floor and square
 losses, with the corrected upstream coefficient exponents. -/

@@ -42,10 +42,6 @@ theorem section16PowerWidth_transfer {A Bq : Nat → Real}
   rw [mul_div_assoc, Real.rpow_mul (Nat.cast_nonneg m)]
   exact Real.rpow_le_rpow (by positivity) hcell (div_nonneg ha (hB q).le)
 
-/-- The bound on the number of sampled slices at loss `ρ`. -/
-def pieceSamples (Qr : Real → Real) (rho : Real) : Nat :=
-  ⌈6 * max 1 (Qr (rho / 8)) / (rho / 4)⌉₊
-
 /-- The line exponent: the remainder and spectrum exponents through the power width. -/
 def pieceLineExponent (Bq : Nat → Real) (Qb Eb Er : Real → Real) (rho : Real) : Real :=
   Er (rho / 8) * Eb (rho / 8) / Bq ⌊Qb (rho / 8)⌋₊

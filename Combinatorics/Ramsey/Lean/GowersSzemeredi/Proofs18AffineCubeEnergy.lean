@@ -58,28 +58,15 @@ theorem ModAP.restrict_affine_eq_intervalExtension {N : Nat} [Fact N.Prime]
     (fun x => restrictToCell P.carrier f (P.start + P.step * x)) =
       intervalExtension N (P.pullbackFunction f) := by
   funext x
-  have hmem : P.start + P.step * x ∈ P.carrier ↔ x.val < P.length := by
+  have hmem : P.start + x * P.step ∈ P.carrier ↔ x.val < P.length := by
+    simp only [ModAP.carrier, Finset.mem_image, Finset.mem_univ, true_and, add_right_inj,
+      mul_left_inj' hd]
     constructor
-    · intro hx
-      obtain ⟨i, _, hi⟩ := Finset.mem_image.mp hx
-      have hi' : (i : ZMod N) = x := by
-        apply mul_left_cancel₀ hd
-        have heq := add_left_cancel hi
-        simpa only [mul_comm] using heq
-      have hv : x.val = i := by rw [← hi', ZMod.val_natCast_of_lt (i.isLt.trans_le hL)]
-      rw [hv]
-      exact i.isLt
-    · intro hx
-      apply Finset.mem_image.mpr
-      refine ⟨⟨x.val, hx⟩, Finset.mem_univ _, ?_⟩
-      simp only [ZMod.natCast_zmod_val]
-      ring
-  by_cases hx : x.val < P.length
-  · rw [restrictToCell, if_pos (hmem.mpr hx), intervalExtension, dif_pos hx]
-    simp only [ModAP.pullbackFunction, ModAP.index, ZMod.natCast_zmod_val]
-    congr 1
-    ring
-  · rw [restrictToCell, if_neg (fun h => hx (hmem.mp h)), intervalExtension, dif_neg hx]
+    · rintro ⟨i, rfl⟩
+      simpa only [ZMod.val_natCast_of_lt (i.isLt.trans_le hL)] using i.isLt
+    · exact fun hx => ⟨⟨x.val, hx⟩, ZMod.natCast_zmod_val x⟩
+  simp only [restrictToCell, intervalExtension, mul_comm P.step x, hmem, ModAP.pullbackFunction,
+    ModAP.index, ZMod.natCast_zmod_val, dite_eq_ite]
 
 /-- Exact energy equality for a function restricted to a short progression
 and its index function in a new sufficiently large modulus. -/

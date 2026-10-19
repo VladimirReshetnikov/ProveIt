@@ -31,42 +31,20 @@ theorem section13FejerOddSquareThreshold_le_double_exp {alpha : Real}
     section13FejerOddSquareThreshold alpha ≤ Real.exp (Real.exp ((2 / alpha) ^ ((2 : Nat) ^ 54))) := by
   let x := 2 / alpha
   let A := x ^ ((2 : Nat) ^ 53)
-  let e := (1 / 2 : Real) ^ A
   have hx : 2 ≤ x := (le_div_iff₀ hα).mpr (by linarith only [hαone])
-  have hx1 : 1 ≤ x := by linarith only [hx]
-  have hA4 : 4 ≤ A := by
-    calc
-      _ = (2 : Real) ^ (2 : Nat) := by norm_num
-      _ ≤ x ^ (2 : Nat) := pow_le_pow_left₀ (by norm_num) hx _
-      _ ≤ _ := pow_le_pow_right₀ hx1 (by norm_num : (2 : Nat) ≤ (2 : Nat) ^ 53)
-  have hA0 : 0 ≤ A := by linarith only [hA4]
-  have he : 0 < e := Real.rpow_pos_of_pos (by norm_num) _
-  have heI : e⁻¹ ≤ Real.exp A := by
-    dsimp [e]
-    rw [← Real.inv_rpow (by norm_num : (0 : Real) ≤ 1 / 2)]
-    norm_num only [one_div, inv_inv]
+  have hA4 : 4 ≤ A := le_trans (by nlinarith only [hx] : (4 : Real) ≤ x ^ 2)
+    (pow_le_pow_right₀ (by linarith only [hx]) (by norm_num))
+  have hA0 : 0 ≤ A := (by norm_num : (0 : Real) ≤ 4).trans hA4
+  have heI : ((1 / 2 : Real) ^ A)⁻¹ ≤ Real.exp (1 * A) := by
+    rw [one_mul, one_div, Real.inv_rpow (by norm_num), inv_inv]
     exact two_rpow_le_exp hA0
-  have h1 : (1 : Real) ≤ Real.exp (1 * A) := by rw [one_mul]; exact Real.one_le_exp_iff.mpr hA0
-  have h4 : (4 : Real) ≤ Real.exp (1 * A) := by
-    rw [one_mul]
-    exact (by norm_num : (4 : Real) ≤ 8).trans (eight_le_exp_of_four_le hA4)
-  have hpower := positivePowerThreshold_le_double_exp (C := 4) (r := 1) zero_lt_one he.le hA0
-    (by norm_num : (0 : Real) ≤ 1) (by norm_num : (0 : Real) ≤ 1) h4
-    (by simpa only [inv_one] using h1) (by simpa only [one_mul] using heI)
-  have hinner : 3 * A ≤ x ^ ((2 : Nat) ^ 54) := by
-    have hx2 : (3 : Real) ≤ x ^ (2 : Nat) := by
-      have hh := pow_le_pow_left₀ (by norm_num : (0 : Real) ≤ 2) hx 2
-      norm_num at hh
-      linarith only [hh]
-    calc
-      _ ≤ x ^ (2 : Nat) * x ^ ((2 : Nat) ^ 53) := mul_le_mul_of_nonneg_right hx2 (by positivity)
-      _ = x ^ (2 + (2 : Nat) ^ 53) := (pow_add _ _ _).symm
-      _ ≤ _ := pow_le_pow_right₀ hx1 (by norm_num)
-  unfold section13FejerOddSquareThreshold
-  refine max_le (section13FourierThreshold_le_double_exp hα hαone) ?_
-  have hp : positivePowerThreshold 4 1 e ≤ Real.exp (Real.exp (3 * A)) := by
-    norm_num only [show (1 + 1 + 1 : Real) = 3 by norm_num] at hpower
-    exact hpower
-  exact hp.trans (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr hinner))
+  have hpower := positivePowerThreshold_le_double_exp (C := 4) zero_lt_one (by positivity) hA0
+    zero_le_one zero_le_one (by rw [one_mul]; linarith only [eight_le_exp_of_four_le hA4])
+    (by rw [inv_one, one_mul]; exact Real.one_le_exp_iff.mpr hA0) heI
+  have hinner : (1 + 1 + 1) * A ≤ x ^ ((2 : Nat) ^ 54) := by
+    rw [show (2 : Nat) ^ 54 = 2 ^ 53 + 2 ^ 53 by norm_num, pow_add]
+    exact mul_le_mul_of_nonneg_right ((by norm_num : (1 + 1 + 1 : Real) ≤ 4).trans hA4) hA0
+  exact max_le (section13FourierThreshold_le_double_exp hα hαone)
+    (hpower.trans (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr hinner)))
 
 end LeanProofs.GowersSzemeredi

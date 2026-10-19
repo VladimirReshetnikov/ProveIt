@@ -66,29 +66,17 @@ private lemma backwardDiffPoly_degree_coeff (P : R[X]) (n : Nat)
     (backwardDiffPoly h P).natDegree ≤ n ∧
       (backwardDiffPoly h P).coeff n =
         ((n + 1 : Nat) : R) * h * P.coeff (n + 1) := by
-  have hshift : (P.comp (X - C h)).natDegree ≤ n + 1 := by
-    rw [show X - C h = X + C (-h) by simp [sub_eq_add_neg]]
-    rw [← Polynomial.taylor_apply, Polynomial.natDegree_taylor]
-    exact hP
-  have hrough : (backwardDiffPoly h P).natDegree ≤ n + 1 :=
-    (P.natDegree_sub_le_of_le hP hshift).trans (by simp)
-  have htop : (backwardDiffPoly h P).coeff (n + 1) = 0 := by
-    rw [backwardDiffPoly, coeff_sub]
-    have htaylor : (P.comp (X - C h)).coeff (n + 1) = P.coeff (n + 1) := by
-      rw [show X - C h = X + C (-h) by simp [sub_eq_add_neg], ← Polynomial.taylor_apply,
-        Polynomial.taylor_coeff, hasseDeriv_eq_C_of_natDegree_le P (n + 1) hP,
-        eval_C]
-    rw [htaylor, sub_self]
-  refine ⟨Polynomial.natDegree_le_pred hrough htop, ?_⟩
-  rw [backwardDiffPoly, coeff_sub]
-  have htaylor : (P.comp (X - C h)).coeff n =
-      P.coeff n - ((n + 1 : Nat) : R) * h * P.coeff (n + 1) := by
-    rw [show X - C h = X + C (-h) by simp [sub_eq_add_neg], ← Polynomial.taylor_apply,
-      Polynomial.taylor_coeff, hasseDeriv_pred_eq P n hP]
-    simp [eval_add, eval_mul, eval_C, eval_X]
+  -- `P.comp (X - C h)` is the Taylor shift of `P` by `-h`
+  have hQ : backwardDiffPoly h P = P - taylor (-h) P := by
+    rw [backwardDiffPoly, Polynomial.taylor_apply, C_neg, sub_eq_add_neg X]
+  rw [hQ]
+  refine ⟨Polynomial.natDegree_le_pred (n := n + 1) ((P.natDegree_sub_le_of_le hP
+    ((Polynomial.natDegree_taylor P (-h)).trans_le hP)).trans (max_self _).le) ?_, ?_⟩
+  · rw [coeff_sub, Polynomial.taylor_coeff, hasseDeriv_eq_C_of_natDegree_le P (n + 1) hP, eval_C,
+      sub_self]
+  · rw [coeff_sub, Polynomial.taylor_coeff, hasseDeriv_pred_eq P n hP]
+    simp only [eval_add, eval_mul, eval_C, eval_X]
     ring
-  rw [htaylor]
-  ring
 
 /-- Alternating polynomial sum over all subsets of `S`. -/
 private def powersetDifferencePoly (S : Finset ι) (x : ι → R)

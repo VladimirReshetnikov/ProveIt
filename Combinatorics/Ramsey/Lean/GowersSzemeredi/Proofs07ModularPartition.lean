@@ -76,31 +76,18 @@ theorem indexCell_scalar_linear {N : Nat} [Fact N.Prime]
   obtain ⟨a, b, hab⟩ := hlinear
   let d := ((BaseCase.indexCellBox P S).axis 0).step
   let start := ((BaseCase.indexCellBox P S).axis 0).start
-  refine ⟨a * d⁻¹, b - a * d⁻¹ * start, ?_⟩
-  intro x hx
+  refine ⟨a * d⁻¹, b - a * d⁻¹ * start, fun x hx => ?_⟩
   obtain ⟨hxQ, hxA⟩ := Finset.mem_filter.mp hx
   have hxBox := (mem_constant_box_one (BaseCase.indexCellBox P S) x).mpr hxQ
   rw [BaseCase.indexCellBox_carrier] at hxBox
+  -- `x` is the image of the integer `S.start + i * S.step` of the cell `S`
   obtain ⟨z, hzS, hzx⟩ := Finset.mem_image.mp hxBox
-  rw [IntAP.carrier] at hzS
-  obtain ⟨i, hi, hiz⟩ := Finset.mem_image.mp hzS
-  have hpoint : BaseCase.boxOneIntPoint P (S.start + ((i : Nat) * S.step : Nat)) =
-      (fun _ : Fin 1 ↦ x) := (congrArg (BaseCase.boxOneIntPoint P) hiz).trans hzx
-  have hzA : S.start + ((i : Nat) * S.step : Nat) ∈
-      BaseCase.boxOneIndexDomain P (liftScalarDomain A) := by
-    apply Finset.mem_filter.mpr
-    refine ⟨hsub (Finset.mem_image.mpr ⟨i, hi, rfl⟩), ?_⟩
-    rw [hpoint, mem_liftScalarDomain]
-    exact hxA
-  have hvalue := hab i hzA
+  obtain ⟨i, -, rfl⟩ := Finset.mem_image.mp hzS
+  have hvalue := hab i (Finset.mem_filter.mpr
+    ⟨hsub hzS, by rw [hzx, mem_liftScalarDomain]; exact hxA⟩)
   have hcalc := BaseCase.indexCellAffine_value P S a b i hstep
-  rw [hpoint] at hcalc
-  change phi ((BaseCase.boxOneIntPoint P (S.start + ((i : Nat) * S.step : Nat))) 0) =
-    a * (i : Nat) + b at hvalue
-  rw [hpoint] at hvalue
-  have hxeq : phi x = BaseCase.indexCellAffine P S a b (fun _ : Fin 1 ↦ x) :=
-    hvalue.trans hcalc.symm
-  rw [hxeq]
+  simp only [BaseCase.boxOneIndexMap, hzx] at hvalue hcalc
+  rw [hvalue, ← hcalc]
   dsimp only [BaseCase.indexCellAffine, d, start, BaseCase.indexCellBox]
   ring
 

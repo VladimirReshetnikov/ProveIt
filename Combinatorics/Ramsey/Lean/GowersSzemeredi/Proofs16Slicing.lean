@@ -108,30 +108,16 @@ theorem box_slice_partition {N k M : Nat} [NeZero N] (P : Box N k)
       IsBoxPartition (fun a => boxTail (Q (j a))) P := by
   let S := {a : Fin M // y ∈ ((Q a).axis 0).carrier}
   let e := Fintype.equivFin S
-  refine ⟨Fintype.card S, fun a => (e.symm a).val, fun a => (e.symm a).property, ?_⟩
-  constructor
-  · intro x
-    constructor
-    · intro hx
-      have hxy : Fin.cons y x ∈ (boxCons P I hstep).carrier := by
-        rw [mem_boxTail_cons, boxTail_boxCons]
-        exact ⟨hy, hx⟩
-      obtain ⟨a, ha⟩ := (hQ.1 _).mp hxy
-      obtain ⟨hay, hax⟩ := (mem_boxTail_cons _ _ _).mp ha
-      refine ⟨e ⟨a, hay⟩, ?_⟩
-      simpa only [Equiv.symm_apply_apply] using hax
-    · rintro ⟨a, ha⟩
-      have hxy : Fin.cons y x ∈ (Q (e.symm a).val).carrier :=
-        (mem_boxTail_cons _ _ _).mpr ⟨(e.symm a).property, ha⟩
-      have := (hQ.1 _).mpr ⟨_, hxy⟩
-      simpa only [mem_boxTail_cons, boxTail_boxCons] using (And.right
-        ((mem_boxTail_cons _ _ _).mp this))
-  · intro a b hab
-    apply Finset.disjoint_left.mpr
-    intro x hxa hxb
-    have hne : (e.symm a).val ≠ (e.symm b).val := by
-      exact fun he => (bne_iff_ne.mp hab) (e.symm.injective (Subtype.ext he))
-    exact Finset.disjoint_left.mp (hQ.2 _ _ (bne_iff_ne.mpr hne))
+  have hmem (x : Point N k) : Fin.cons y x ∈ (boxCons P I hstep).carrier ↔ x ∈ P.carrier := by
+    rw [mem_boxTail_cons, boxTail_boxCons]; exact and_iff_right hy
+  refine ⟨Fintype.card S, fun a => (e.symm a).val, fun a => (e.symm a).property,
+    fun x => ⟨fun hx => ?_, fun ⟨a, ha⟩ => (hmem x).mp ((hQ.1 _).mpr
+      ⟨_, (mem_boxTail_cons _ _ _).mpr ⟨(e.symm a).property, ha⟩⟩)⟩, fun a b hab => ?_⟩
+  · obtain ⟨c, hc⟩ := (hQ.1 _).mp ((hmem x).mpr hx)
+    obtain ⟨hcy, hcx⟩ := (mem_boxTail_cons _ _ _).mp hc
+    exact ⟨e ⟨c, hcy⟩, by simpa only [Equiv.symm_apply_apply] using hcx⟩
+  · exact Finset.disjoint_left.mpr fun x hxa hxb => Finset.disjoint_left.mp
+      (hQ.2 _ _ (bne_iff_ne.mpr fun he => bne_iff_ne.mp hab (e.symm.injective (Subtype.ext he))))
       ((mem_boxTail_cons _ _ _).mpr ⟨(e.symm a).property, hxa⟩)
       ((mem_boxTail_cons _ _ _).mpr ⟨(e.symm b).property, hxb⟩)
 

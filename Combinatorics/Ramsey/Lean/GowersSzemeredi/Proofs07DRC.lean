@@ -53,28 +53,9 @@ private lemma drcCore_card_sq {X : Type*} [DecidableEq X] {n : Nat}
     ((drcCore A t).card : Real) ^ 2 =
       ∑ i : Fin n, ∑ j : Fin n,
         if (forall r, t r ∈ A i ∩ A j) then 1 else 0 := by
-  simp only [drcCore, card_filter]
-  push_cast
-  rw [pow_two, Finset.sum_mul]
-  simp_rw [Finset.mul_sum]
-  simp only [ite_mul, mul_ite, one_mul, zero_mul, mul_one]
-  apply Finset.sum_congr rfl
-  intro i _
-  apply Finset.sum_congr rfl
-  intro j _
-  by_cases hi : forall r, t r ∈ A i
-  · by_cases hj : forall r, t r ∈ A j
-    · have hij : forall r, t r ∈ A i ∩ A j := fun r => by simp [hi r, hj r]
-      rw [if_pos hij]
-      simp [hi, hj]
-    · have hn : ¬ (forall r, t r ∈ A i ∩ A j) := by
-        exact fun h => hj fun r => (Finset.mem_inter.mp (h r)).2
-      rw [if_neg hn]
-      simp [hi, hj]
-  · have hn : ¬ (forall r, t r ∈ A i ∩ A j) := by
-      exact fun h => hi fun r => (Finset.mem_inter.mp (h r)).1
-    rw [if_neg hn]
-    simp [hi]
+  simp only [drcCore, Finset.natCast_card_filter, sq, Finset.sum_mul_sum]
+  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
+  by_cases hi : ∀ r, t r ∈ A i <;> by_cases hj : ∀ r, t r ∈ A j <;> simp [hi, hj, forall_and]
 
 private lemma incidenceDegree_sq {X : Type*} [DecidableEq X] {n : Nat}
     (A : Fin n -> Finset X) (x : X) :
@@ -291,29 +272,13 @@ private lemma hasDenseIntersectionCore_zero {X : Type*} [DecidableEq X]
 
 /-- The dependent-random-choice argument of Gowers's Lemma 7.4. -/
 theorem lemma_7_4_holds : lemma_7_4 := by
-  unfold lemma_7_4
   intro X _ m n V A delta hV hA hdelta hdelta_one
-  have hmain :
-      (delta ^ 2 * m * (n : Real) ^ 2 <=
-        ∑ i : Fin n, ∑ j : Fin n,
-          (((A i ∩ A j).card : Nat) : Real)) ->
-        HasDenseIntersectionCore m A delta := by
-    intro hsum
-    by_cases hm0 : m = 0
-    · simpa [hm0] using
-        (hasDenseIntersectionCore_zero A delta hdelta hdelta_one)
-    · have hm : 0 < m := Nat.pos_of_ne_zero hm0
-      obtain ⟨t, _ht, hscore⟩ :=
-        exists_drc_sample V A hV hA delta hdelta hsum hm
-      exact hasDenseIntersectionCore_of_score A delta hdelta t hscore
-  refine ⟨hmain, ?_⟩
-  intro hcard
-  apply hmain
-  by_cases hm0 : m = 0
-  · have hs : 0 <= ∑ i : Fin n, ∑ j : Fin n,
-        (((A i ∩ A j).card : Nat) : Real) := by positivity
-    simpa [hm0] using hs
-  · exact intersection_sum_lower_of_card_lower V A hV hA delta hdelta
-      (Nat.pos_of_ne_zero hm0) hcard
+  rcases Nat.eq_zero_or_pos m with rfl | hm
+  · have h := hasDenseIntersectionCore_zero A delta hdelta hdelta_one
+    exact ⟨fun _ => h, fun _ => h⟩
+  have hmain := fun hsum => (exists_drc_sample V A hV hA delta hdelta hsum hm).elim
+    fun t ht => hasDenseIntersectionCore_of_score A delta hdelta t ht.2
+  exact ⟨hmain, fun hcard =>
+    hmain (intersection_sum_lower_of_card_lower V A hV hA delta hdelta hm hcard)⟩
 
 end LeanProofs.GowersSzemeredi

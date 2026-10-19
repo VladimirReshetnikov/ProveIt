@@ -54,26 +54,18 @@ theorem section16_product_recovered_good_set {N k q r : Nat} [Fact N.Prime]
   by_cases hlong : 2 * (q : ℝ) ≤ τ * J.card
   · obtain ⟨sample, F, hs, hF, hm, ha⟩ :=
       section16_product_anchored_good_set A J D phi ell hell hcover τ hq hτ hlong hr
-    exact ⟨sample, F, hs, hF, hm, F, Finset.Subset.rfl, ha,
-      fun _ _ _ hx => Or.inl hx⟩
+    exact ⟨sample, F, hs, hF, hm, F, Finset.Subset.rfl, ha, fun _ _ _ hx => Or.inl hx⟩
   · letI : Nonempty J := hJ.to_subtype
     have hnr : J.card ≤ r := by
       by_contra hnr
-      have hnr' : (r : ℝ) ≤ J.card := by exact_mod_cast (by omega : r ≤ J.card)
-      have hq' : (0 : ℝ) < q := by exact_mod_cast hq
-      have hmul' := mul_le_mul_of_nonneg_right hnr' hτ.le
-      nlinarith [not_le.mp hlong]
+      have hnr' : (r : ℝ) ≤ J.card := by exact_mod_cast (not_le.mp hnr).le
+      linarith [mul_le_mul_of_nonneg_right hnr' hτ.le, not_le.mp hlong, Nat.cast_nonneg (α := ℝ) q]
     obtain ⟨sample, hsurj⟩ := finite_sample_surjective (α := J) r (by simpa using hnr)
-    refine ⟨fun i => (sample i).val, lastProductSet A J, fun i => (sample i).property,
-      Finset.Subset.rfl, ?_, ∅, Finset.empty_subset _, ?_, ?_⟩
-    · have _ : (0 : ℝ) ≤ (lastProductSet A J).card := Nat.cast_nonneg _
-      nlinarith
-    · intro h x _ hx
-      exact False.elim (Finset.notMem_empty _ hx)
-    · intro h x _ hx
-      have hxJ := ((mem_lastProductSet_append A J h x).mp hx).2
-      obtain ⟨i, hi⟩ := hsurj ⟨x, hxJ⟩
-      exact Or.inr ⟨i, (congrArg Subtype.val hi).symm⟩
+    exact ⟨fun i => (sample i).val, lastProductSet A J, fun i => (sample i).property,
+      Finset.Subset.rfl, mul_le_of_le_one_left (Nat.cast_nonneg _) (by linarith), ∅,
+      Finset.empty_subset _, fun _ _ _ hx => absurd hx (Finset.notMem_empty _),
+      fun h x _ hx => Or.inr <| (hsurj ⟨x, ((mem_lastProductSet_append A J h x).mp hx).2⟩).imp
+        fun i hi => (congrArg Subtype.val hi).symm⟩
 
 theorem section16_box_recovered_good_set {N k q r : Nat} [Fact N.Prime]
     (S : Box N (k + 1)) (T : Box N k) (J : ModAP N)

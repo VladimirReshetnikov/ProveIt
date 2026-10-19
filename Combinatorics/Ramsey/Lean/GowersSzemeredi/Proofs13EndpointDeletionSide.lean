@@ -14,6 +14,39 @@ open scoped BigOperators
 
 namespace LeanProofs.GowersSzemeredi
 
+section
+open scoped BigOperators
+
+/-- Delete the first and last indexed points of a modular progression. -/
+def ModAP.interior {N : Nat} (P : ModAP N) : ModAP N where
+  start := P.start + P.step
+  step := P.step
+  length := P.length - 2
+
+/-- An interior point and both adjacent points belong to the original cell. -/
+theorem ModAP.interior_neighbors {N : Nat} (P : ModAP N) {x : ZMod N}
+    (hx : x ∈ P.interior.carrier) :
+    x ∈ P.carrier ∧ x + P.step ∈ P.carrier ∧ x - P.step ∈ P.carrier := by
+  obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hx
+  have hi : i.val < P.length - 2 := i.isLt
+  refine ⟨?_, ?_, ?_⟩
+  · apply Finset.mem_image.mpr
+    refine ⟨⟨i.val + 1, by omega⟩, Finset.mem_univ _, ?_⟩
+    dsimp [ModAP.interior]
+    push_cast
+    ring
+  · apply Finset.mem_image.mpr
+    refine ⟨⟨i.val + 2, by omega⟩, Finset.mem_univ _, ?_⟩
+    dsimp [ModAP.interior]
+    push_cast
+    ring
+  · apply Finset.mem_image.mpr
+    refine ⟨⟨i.val, by omega⟩, Finset.mem_univ _, ?_⟩
+    dsimp [ModAP.interior]
+    ring
+
+end
+
 theorem ModAP.interior_subset {N : Nat} (P : ModAP N) :
     P.interior.carrier ⊆ P.carrier := fun _ hx => (P.interior_neighbors hx).1
 

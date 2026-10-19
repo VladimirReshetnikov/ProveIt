@@ -16,7 +16,7 @@ namespace LeanProofs.GowersSzemeredi
 entirely inside the interval. Both parameters are recovered from the pair. -/
 theorem finiteInterval_fourTermCount_floor {N L : Nat} [NeZero N] (hL : L ≤ N) :
     (L / 4) ^ 2 ≤ fourTermCount (finiteIntervalImage N (Finset.univ : Finset (Fin L))) := by
-  exact finiteInterval_progressionCount_floor (k := 4) hL (by norm_num)
+  exact finiteInterval_progressionCount_floor (k := 4) hL
 
 theorem finiteInterval_fourTermCount_lower {N L : Nat} [NeZero N]
     (hL : L ≤ N) (hLfour : 4 ≤ L) :

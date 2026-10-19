@@ -17,27 +17,19 @@ theorem quadratic_recurrence {N R : Nat} [NeZero N] (a : ZMod N)
   have htlarge : 4 * R ≤ t := quadraticRecurrenceSample_nat_large hR
   have ht : 2 ≤ t := by omega
   have htcast : (t : Real) = quadraticRecurrenceSample R := quadraticRecurrenceSample_natCast R
-  by_contra hfail
-  have hno : ∀ p : Nat, 1 ≤ p → p ≤ t →
-      (N : Real) / R ≤ (centeredAbs (((p : ZMod N) ^ 2) * a) : Real) := by
-    intro p hp hpt
-    by_contra h
-    exact hfail ⟨p, hp, hpt, lt_of_not_ge h⟩
+  by_contra! hfail
   obtain ⟨r, hr, hrsize, hrnorm⟩ := polynomial_recurrence_fourier_witness a hR ht hN
-    (htlarge.trans hN) hno
+    (htlarge.trans hN) hfail
   let alpha : Real := -(a * r).valMinAbs / (N : Real)
   obtain ⟨b, q, hq, hqt, hbq, happrox⟩ := lemma_5_4_holds alpha t (by omega)
-  have hlower : 1 / (64 * (R : Real) ^ 2) ≤ ‖weylSum alpha 2 t‖ ^ 2 / (t : Real) ^ 2 := by
-    have hsq := pow_le_pow_left₀ (show (0 : Real) ≤ (t : Real) / (8 * R) by positivity) hrnorm 2
-    calc
-      _ = ((t : Real) / (8 * R)) ^ 2 / (t : Real) ^ 2 := by field_simp; ring
-      _ ≤ _ := div_le_div_of_nonneg_right hsq (by positivity)
-  have hupper := quadratic_weyl_normalized ht (by omega) hqt b alpha hbq happrox
-  have hweyl := hlower.trans hupper
+  have hlower : 1 / (64 * (R : Real) ^ 2) ≤ ‖weylSum alpha 2 t‖ ^ 2 / (t : Real) ^ 2 :=
+    calc _ = ((t : Real) / (8 * R)) ^ 2 / (t : Real) ^ 2 := by field_simp; ring
+      _ ≤ _ := div_le_div_of_nonneg_right (pow_le_pow_left₀ (by positivity) hrnorm 2)
+        (by positivity)
+  have hweyl := hlower.trans (quadratic_weyl_normalized ht (by omega) hqt b alpha hbq happrox)
   rw [htcast, quadraticRecurrenceSample_sqrt] at hweyl
-  have happrox' : |(-(a * r).valMinAbs : Real) / N - (b : Real) / q| ≤
-      ((q : Real) * quadraticRecurrenceSample R)⁻¹ := by
-    simpa only [alpha, htcast] using happrox
-  exact hfail (quadratic_recurrence_of_weyl_witness a r b hR (by omega) hr hrsize happrox' hweyl)
+  obtain ⟨p, hp, hpt, hlt⟩ := quadratic_recurrence_of_weyl_witness a r b hR (by omega) hr hrsize
+    (by simpa only [alpha, htcast] using happrox) hweyl
+  exact absurd hlt (not_lt.mpr (hfail p hp hpt))
 
 end LeanProofs.GowersSzemeredi

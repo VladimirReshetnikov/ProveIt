@@ -95,37 +95,11 @@ private lemma sum_differenceWeight_eq_sum_sq {N : Nat} [NeZero N]
     (∑ x : X, ∑ y : X, (domainDifferenceWeight D x y : Real)) =
       ∑ d : ZMod N, (differenceMultiplicity D d : Real) ^ 2 := by
   simp_rw [differenceWeight_eq_multiplicity]
-  calc
-    (∑ x : X, ∑ y : X,
-        (differenceMultiplicity D (D.index y - D.index x) : Real)) =
-        ∑ xy : X × X,
-          (differenceMultiplicity D (D.index xy.2 - D.index xy.1) : Real) := by
-      rw [Fintype.sum_prod_type]
-    _ = ∑ xy : X × X, ∑ d : ZMod N,
-          if D.index xy.2 - D.index xy.1 = d then
-            (differenceMultiplicity D d : Real) else 0 := by
-      apply Finset.sum_congr rfl
-      intro xy _
-      simp
-    _ = ∑ d : ZMod N, ∑ xy : X × X,
-          if D.index xy.2 - D.index xy.1 = d then
-            (differenceMultiplicity D d : Real) else 0 := by
-      rw [Finset.sum_comm]
-    _ = ∑ d : ZMod N, (differenceMultiplicity D d : Real) ^ 2 := by
-      apply Finset.sum_congr rfl
-      intro d _
-      rw [show (∑ xy : X × X,
-            if D.index xy.2 - D.index xy.1 = d then
-              (differenceMultiplicity D d : Real) else 0) =
-          (differenceMultiplicity D d : Real) *
-            ∑ xy : X × X,
-              if D.index xy.2 - D.index xy.1 = d then 1 else 0 by
-        rw [Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro xy _
-        split <;> simp_all]
-      rw [← countWhere_cast_eq_sum_ite]
-      simp [differenceMultiplicity, pow_two]
+  rw [← Fintype.sum_prod_type', ← Finset.sum_fiberwise' _
+    (fun xy : X × X => D.index xy.2 - D.index xy.1) fun d => (differenceMultiplicity D d : Real)]
+  refine Finset.sum_congr rfl fun d _ => ?_
+  simp only [Finset.sum_const, nsmul_eq_mul, sq, differenceMultiplicity,
+    countWhere_cast_eq_sum_ite, Finset.natCast_card_filter]
 
 private lemma card_fourth_le_total_differenceWeight {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X) :
@@ -176,30 +150,13 @@ theorem lemma_10_1_holds : lemma_10_1 := by
 /-- **Gowers, Lemma 10.4.** -/
 theorem lemma_10_4_holds : lemma_10_4 := by
   intro N _ X _ _ D phi B alpha M sigma eta hsetup x y z hd
-  rcases hsetup with
-    ⟨⟨_halpha, _halpha_one, _hM, hcard, _hfibre⟩, _hsigma,
-      _heta, _heta_one, _hsymmetric, hinvariant, _happrox⟩
-  rw [differenceWeight_eq_sum_fibre, differenceWeight_eq_sum_fibre,
-    ← Finset.sum_sub_distrib]
-  calc
-    |∑ t : X,
-        (((D.fibre (D.index t + (D.index z - D.index x))).card : Real) -
-          (D.fibre (D.index t + (D.index y - D.index x))).card)| ≤
-        ∑ t : X,
-          |((D.fibre (D.index t + (D.index z - D.index x))).card : Real) -
-            (D.fibre (D.index t + (D.index y - D.index x))).card| :=
-      Finset.abs_sum_le_sum_abs _ _
-    _ ≤ ∑ _t : X, sigma * M := by
-      apply Finset.sum_le_sum
-      intro t _
-      have harg :
-          D.index t + (D.index z - D.index x) =
-            (D.index t + (D.index y - D.index x)) + (D.index z - D.index y) := by
-        ring
-      rw [harg]
-      exact hinvariant (D.index t + (D.index y - D.index x))
-        (D.index z - D.index y) hd
-    _ = (Fintype.card X : Real) * (sigma * M) := by simp
-    _ = sigma * alpha * M ^ 2 * N := by rw [hcard]; ring
+  obtain ⟨⟨-, -, -, hcard, -⟩, -, -, -, -, hinvariant, -⟩ := hsetup
+  rw [differenceWeight_eq_sum_fibre, differenceWeight_eq_sum_fibre, ← Finset.sum_sub_distrib]
+  refine (Finset.abs_sum_le_sum_abs _ _).trans ?_
+  calc _ ≤ ∑ _t : X, sigma * M := Finset.sum_le_sum fun t _ => by
+        have h := hinvariant (D.index t + (D.index y - D.index x)) _ hd
+        rwa [add_assoc, sub_add_sub_cancel'] at h
+    _ = sigma * alpha * M ^ 2 * N := by
+      rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hcard]; ring
 
 end LeanProofs.GowersSzemeredi

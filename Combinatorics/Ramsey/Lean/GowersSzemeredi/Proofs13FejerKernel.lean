@@ -30,30 +30,15 @@ theorem finiteFejerKernel_expansion {N L : Nat} [NeZero N] (x : ZMod N) :
     (finiteFejerKernel L x : Complex) =
       ((L : Complex) ^ 2)⁻¹ *
         ∑ i : Fin L, ∑ j : Fin L, exponential (((i : ZMod N) - (j : ZMod N)) * x) := by
-  have hstar (y : ZMod N) : star (exponential y) = exponential (-y) := by
-    simpa only [exponential, starRingEnd_apply] using
-      (AddChar.map_neg_eq_conj (ZMod.stdAddChar (N := N)) y).symm
   have hsquare : ((‖∑ i : Fin L, exponential ((i : ZMod N) * x)‖ ^ 2 : Real) : Complex) =
       ∑ i : Fin L, ∑ j : Fin L, exponential (((i : ZMod N) - (j : ZMod N)) * x) := by
-    calc
-      _ = (∑ i : Fin L, exponential ((i : ZMod N) * x)) *
-          star (∑ j : Fin L, exponential ((j : ZMod N) * x)) := by
-            rw [Complex.star_def, Complex.mul_conj', ← Complex.ofReal_pow]
-      _ = ∑ i : Fin L, ∑ j : Fin L,
-          exponential ((i : ZMod N) * x) * exponential (-((j : ZMod N) * x)) := by
-            simp only [star_sum, hstar, Finset.sum_mul, Finset.mul_sum]
-            rw [Finset.sum_comm]
-      _ = _ := by
-        apply Finset.sum_congr rfl
-        intro i _
-        apply Finset.sum_congr rfl
-        intro j _
-        unfold exponential
-        rw [← AddChar.map_add_eq_mul (ZMod.stdAddChar (N := N))]
-        congr 1
-        ring
-  unfold finiteFejerKernel
-  rw [Complex.ofReal_div, hsquare]
+    rw [Complex.ofReal_pow, ← Complex.mul_conj', map_sum, Finset.sum_mul_sum]
+    refine Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun j _ ↦ ?_
+    unfold exponential
+    rw [← AddChar.map_neg_eq_conj, ← AddChar.map_add_eq_mul]
+    congr 1
+    ring
+  rw [finiteFejerKernel, Complex.ofReal_div, hsquare]
   push_cast
   ring
 

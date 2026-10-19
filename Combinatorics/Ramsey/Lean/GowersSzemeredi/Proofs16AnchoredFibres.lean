@@ -31,25 +31,16 @@ theorem section16_affine_cover_anchored_good_set {N q r : Nat} [Fact N.Prime]
               ((-coord (sample j)) * f h (sample i) + coord (sample i) * f h (sample j))) := by
   choose C hpart hC using fun h =>
     affine_column_cover_partition coord hq (B h) (f h) (ell h) (hell h) (hcover h)
-  have hdisj : ∀ h, Pairwise (fun i j => Disjoint (C h i) (C h j)) := by
-    intro h i j hij
-    exact (hpart h).2 i j (bne_iff_ne.mpr hij)
-  obtain ⟨sample, E, hmass, hanchors⟩ := section16_prune_and_sample_good_set
-    q r (fun i => C i.1 i.2) σ hq hσ hlong hdisj hr
-  refine ⟨sample, E, hmass, ?_⟩
-  intro h x hxE hxB
+  obtain ⟨sample, E, hmass, hanchors⟩ := section16_prune_and_sample_good_set q r
+    (fun i => C i.1 i.2) σ hq hσ hlong (fun h i j hij => (hpart h).2 i j (bne_iff_ne.mpr hij)) hr
+  refine ⟨sample, E, hmass, fun h x hxE hxB => ?_⟩
   obtain ⟨t, hxt⟩ := ((hpart h).1 x).mp hxB
   obtain ⟨i, j, hi, hj, hij, hiE, hjE⟩ := hanchors h t x hxE hxt
-  have hij' : coord (sample i) ≠ coord (sample j) := fun heq => hij (hinj heq)
-  refine ⟨i, j, ((hpart h).1 _).mpr ⟨t, hi⟩, ((hpart h).1 _).mpr ⟨t, hj⟩,
-    hiE, hjE, hij', ?_⟩
   obtain ⟨a, b, hab⟩ := hC h t
-  have hlin : LinearOn Finset.univ (fun z : ZMod N => a * z + b) :=
-    ⟨a, b, fun _ _ => rfl⟩
-  have heq := hlin.two_anchor_interpolation
-    (Finset.mem_univ (coord (sample i))) (Finset.mem_univ (coord (sample j)))
-    (Finset.mem_univ (coord x)) hij'
+  have hne : coord (sample i) ≠ coord (sample j) := fun heq => hij (hinj heq)
+  refine ⟨i, j, ((hpart h).1 _).mpr ⟨t, hi⟩, ((hpart h).1 _).mpr ⟨t, hj⟩, hiE, hjE, hne, ?_⟩
   rw [hab x hxt, hab (sample i) hi, hab (sample j) hj]
-  exact heq
+  exact LinearOn.two_anchor_interpolation (f := fun z : ZMod N => a * z + b)
+    ⟨a, b, fun _ _ => rfl⟩ (Finset.mem_univ _) (Finset.mem_univ _) (Finset.mem_univ _) hne
 
 end LeanProofs.GowersSzemeredi

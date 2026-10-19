@@ -115,26 +115,10 @@ private lemma sum_localDegreeOneEnergy_eq_uniformEnergy {N n : Nat} [NeZero N]
     ∑ a : Point N n, ∑ b : Point N 1,
         ‖∑ s : ZMod N, cubeDifference (cubeDifference g a) b s‖ ^ 2 =
       ∑ c : Point N (n + 1), ‖∑ s : ZMod N, cubeDifference g c s‖ ^ 2 := by
-  calc
-    ∑ a : Point N n, ∑ b : Point N 1,
-        ‖∑ s : ZMod N, cubeDifference (cubeDifference g a) b s‖ ^ 2 =
-        ∑ a : Point N n, ∑ r : ZMod N,
-          ‖∑ s : ZMod N, difference (cubeDifference g a) r s‖ ^ 2 := by
-      apply Finset.sum_congr rfl
-      intro a _
-      exact degreeOneEnergy_eq_correlation _
-    _ = ∑ r : ZMod N, ∑ a : Point N n,
-          ‖∑ s : ZMod N, cubeDifference g (Fin.cons r a) s‖ ^ 2 := by
-      rw [sum_comm]
-      apply Finset.sum_congr rfl
-      intro r _
-      apply Finset.sum_congr rfl
-      intro a _
-      rw [cubeDifference_cons]
-    _ = ∑ c : Point N (n + 1),
-          ‖∑ s : ZMod N, cubeDifference g c s‖ ^ 2 :=
-      (sum_point_succ (N := N) (n := n) (M := Real)
-        (fun c => ‖∑ s : ZMod N, cubeDifference g c s‖ ^ 2)).symm
+  rw [sum_point_succ, Finset.sum_comm (s := (Finset.univ : Finset (ZMod N)))]
+  refine Finset.sum_congr rfl fun a _ => ?_
+  rw [degreeOneEnergy_eq_correlation]
+  simp only [cubeDifference_cons]
 
 private lemma higher_condition_i_iff_ii {N d : Nat} [NeZero N]
     (g : ZMod N → Complex) (c : Real) :

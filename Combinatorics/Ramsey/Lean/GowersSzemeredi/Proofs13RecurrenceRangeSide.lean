@@ -11,6 +11,19 @@ noncomputable section
 
 namespace LeanProofs.GowersSzemeredi
 
+section
+
+theorem quadratic_partition_threshold_le_singleton_cutoff {q : Nat} (hq : 311 ≤ q) :
+    simultaneousPolynomialThreshold 2 q ≤ 2 ^ (2 ^ (12 * q)) := by
+  have hK : polynomialPartitionConstant 2 ≤ 2 ^ 11 := by norm_num [polynomialPartitionConstant]
+  have hb := simultaneous_partition_threshold_le_tower 2 q 11 hK
+  apply hb.trans
+  apply Nat.pow_le_pow_right (n := 2) (by norm_num)
+  apply Nat.pow_le_pow_right (n := 2) (by norm_num)
+  omega
+
+end
+
 theorem stage134_odd_of_polynomial_threshold {N : Nat} [NeZero N]
     (S : Section13Context N) (D : Stage134Data N) (theta : Real)
     (h134 : IsStage134Data S theta D)

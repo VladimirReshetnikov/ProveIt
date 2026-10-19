@@ -22,32 +22,24 @@ theorem affine_phase_localization {N L : Nat} [NeZero N]
   have hrN : P.length ≤ N := by
     rw [← hP]
     simpa only [ZMod.card] using P.carrier.card_le_univ
-  have hr : 0 < P.length := by
-    have hp : 0 < 1024 * L ^ 3 := by positivity
-    omega
   obtain ⟨s, hs, hsN, hrs, hlen, herror⟩ :=
     affine_localization_diameter_scale (NeZero.pos N) hL hsize hrN
   have hlin : NatToZModLinear P.length (fun x => phi (section5IndexPoint P x)) := by
     obtain ⟨c, hc⟩ := polynomialOn_section5ModIndexPoint P phi hphi
-    refine ⟨c 1, c 0, ?_⟩
-    intro x _
+    refine ⟨c 1, c 0, fun x _ => ?_⟩
     simpa [Fin.sum_univ_two, section5_modIndexPoint_natCast, add_comm] using
       hc (x : ZMod N) (Finset.mem_univ _)
   obtain ⟨m, Q, hQpart, hQcells⟩ := lemma_2_3_holds N P.length s (NeZero.pos N)
-    hr hs hrN hsN hrs _ hlin
+    (lt_of_lt_of_le (by positivity) hsize) hs hrN hsN hrs _ hlin
   choose a ha using fun j => (hQcells j).2.1
   refine ⟨m, fun j => section5Transport P (Q j), fun j => exponential (-(a j)),
-    section5Transport_partition P Q hP hQpart, ?_⟩
-  intro j
-  have hsub : (Q j).carrier ⊆ Finset.range P.length := hQpart.cell_subset j
-  refine ⟨section5Transport_isProper P (Q j) hP (hQcells j).1 hsub,
-    ?_, AddChar.norm_apply (ZMod.stdAddChar (N := N)) _, ?_⟩
-  · exact_mod_cast hlen.trans (hQcells j).2.2.1
-  · intro x hx
-    rw [section5Transport_carrier] at hx
-    obtain ⟨t, ht, rfl⟩ := Finset.mem_image.mp hx
-    exact (downstream_phase_close_of_mem_interval (a j) _
-      (ha j (Finset.mem_image.mpr ⟨t, ht, rfl⟩))).trans herror
+    section5Transport_partition P Q hP hQpart, fun j => ⟨section5Transport_isProper P (Q j) hP
+      (hQcells j).1 (hQpart.cell_subset j), by exact_mod_cast hlen.trans (hQcells j).2.2.1,
+      cor57_norm_exponential _, fun x hx => ?_⟩⟩
+  rw [section5Transport_carrier] at hx
+  obtain ⟨t, ht, rfl⟩ := Finset.mem_image.mp hx
+  exact (downstream_phase_close_of_mem_interval (a j) _
+    (ha j (Finset.mem_image_of_mem _ ht))).trans herror
 
 theorem thresholdFreePolynomialLocalization_one : ThresholdFreePolynomialLocalization 1 := by
   intro N _ P phi L hP hphi hL hsize

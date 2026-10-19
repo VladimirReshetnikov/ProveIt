@@ -39,34 +39,21 @@ theorem FejerSquareAt.oddSquare {alpha e T : Real} (h : FejerSquareAt alpha e T)
     (hα : 0 < alpha) (he : 0 < e) (hehalf : e ≤ 1 / 2) :
     FejerOddSquareAt alpha e (max T (positivePowerThreshold 4 1 e)) := by
   intro N _ _ hN f hf hnot
-  have hlarge : 4 ≤ (N : Real) ^ e := by
-    have h4 := positivePowerThreshold_spec zero_lt_one he
-      ((le_max_right _ _).trans hN : positivePowerThreshold 4 1 e ≤ (N : Real))
-    simpa only [one_mul] using h4
-  obtain ⟨m, hmodd, hmpos, hmlower, hmupper⟩ := exists_odd_nat_between_half hlarge
-  obtain ⟨S, T, D, psi, hSs, hST, hS, hT, hlen, hsize, hD, hmass, hbil, hfourier⟩ :=
-    h N ((le_max_left _ _).trans hN) f hf hnot
+  obtain ⟨m, hmodd, hmpos, hmlower, hmupper⟩ := exists_odd_nat_between_half
+    ((positivePowerThreshold_spec zero_lt_one he ((le_max_right _ _).trans hN)).trans_eq
+      (one_mul _))
+  obtain ⟨S, T, D, psi, hSs, hST, hS, hT, hlen, hsize, hD, hmass, ⟨mu, hmu, hagree⟩,
+    hfourier⟩ := h N ((le_max_left _ _).trans hN) f hf hnot
   have hmS : m ≤ S.length := by exact_mod_cast hmupper.trans hsize
-  have hmT : m ≤ T.length := by omega
-  have hTstep : T.step != 0 := by rwa [← hST]
-  obtain ⟨mu, hmu, hagree⟩ := hbil
-  have hbilD : BilinearOn D psi := ⟨mu, hmu, fun z hz => hagree z (hD hz)⟩
+  have hTstep : T.step != 0 := hST ▸ hSs
   obtain ⟨P, Q, B, hPs, hQs, hP, hQ, hPl, hQl, hBD, hbox, hmass', _⟩ :=
     bilinear_square_of_integer_step_fit S T D psi ((alpha / 2) ^ ((2 : Nat) ^ 42)) 1 m
-      hS hT hTstep (by simpa only [Nat.cast_one, one_mul] using hST.symm)
-      (by omega) hmpos (by simpa only [one_mul] using hmS) hmT (by positivity) hD hmass hbilD
-  have hNreal : (1 : Real) ≤ N := by exact_mod_cast NeZero.pos N
-  have hmsqrt : (m : Real) ≤ Real.sqrt N := by
-    calc
-      _ ≤ (N : Real) ^ e := hmupper
-      _ ≤ (N : Real) ^ (1 / 2 : Real) := Real.rpow_le_rpow_of_exponent_le hNreal hehalf
-      _ = _ := (Real.sqrt_eq_rpow _).symm
-  refine ⟨m, P, Q, B, mu, hmodd, hmpos, hmsqrt, hmlower, ?_, hPs.trans hQs.symm,
-    hP, hQ, hPl, hQl, hbox, hmass', ⟨mu, hmu, fun _ _ => rfl⟩, ?_⟩
-  · rwa [hPs]
-  · intro z hz
-    rw [← hagree z (hD (hBD hz))]
-    exact hfourier z (hBD hz)
+      hS hT hTstep (by simpa only [Nat.cast_one, one_mul] using hST.symm) one_pos hmpos
+      (by omega) (by omega) (by positivity) hD hmass ⟨mu, hmu, fun z hz ↦ hagree z (hD hz)⟩
+  refine ⟨m, P, Q, B, mu, hmodd, hmpos, hmupper.trans ((Real.rpow_le_rpow_of_exponent_le
+    (Nat.one_le_cast.mpr (NeZero.pos N)) hehalf).trans_eq (Real.sqrt_eq_rpow _).symm), hmlower,
+    hPs ▸ hTstep, hPs.trans hQs.symm, hP, hQ, hPl, hQl, hbox, hmass', ⟨mu, hmu, fun _ _ ↦ rfl⟩,
+    fun z hz ↦ hagree z (hD (hBD hz)) ▸ hfourier z (hBD hz)⟩
 
 def section13FejerOddSquareThreshold (alpha : Real) : Real :=
   max (section13FourierThreshold alpha)

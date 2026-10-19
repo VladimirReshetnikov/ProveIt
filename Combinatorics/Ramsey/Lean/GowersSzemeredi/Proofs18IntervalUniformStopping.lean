@@ -15,45 +15,25 @@ namespace LeanProofs.GowersSzemeredi
 
 /-- Starts and nonnegative steps below L/k produce k-term progressions
 entirely inside the interval. Both parameters are recovered from the pair. -/
-theorem finiteInterval_progressionCount_floor {N L k : Nat} [NeZero N] (hL : L ≤ N) (_hk : 0 < k) :
+theorem finiteInterval_progressionCount_floor {N L k : Nat} [NeZero N] (hL : L ≤ N) :
     (L / k) ^ 2 ≤ progressionCount (finiteIntervalImage N (Finset.univ : Finset (Fin L))) k := by
-  let m := L / k
-  let F : Fin m × Fin m → ZMod N × ZMod N := fun p => (-(p.2 : Nat), (p.1 : Nat))
-  have hmL : m ≤ L := Nat.div_le_self _ _
-  have hcast := finiteInterval_cast_injective (hmL.trans hL)
-  have hF : Function.Injective F := by
-    intro p q hpq
-    apply Prod.ext
-    · exact hcast (congrArg Prod.snd hpq)
-    · exact hcast (neg_inj.mp (congrArg Prod.fst hpq))
-  have hsub : Finset.univ.image F ⊆
-      Finset.univ.filter (fun p : ZMod N × ZMod N =>
-        ∀ i : Fin k, p.2 - (i : Nat) * p.1 ∈
-          finiteIntervalImage N (Finset.univ : Finset (Fin L))) := by
-    intro p hp
-    obtain ⟨q, _, rfl⟩ := Finset.mem_image.mp hp
-    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-    intro i
-    have hzL : (q.1 : Nat) + (i : Nat) * (q.2 : Nat) < L := by
-      calc
-        _ < m + (i : Nat) * m := Nat.add_lt_add_of_lt_of_le q.1.isLt
-          (Nat.mul_le_mul_left _ q.2.isLt.le)
-        _ = ((i : Nat) + 1) * m := by ring
-        _ ≤ k * m := Nat.mul_le_mul_right m i.isLt
-        _ ≤ L := Nat.mul_div_le L k
-    apply Finset.mem_image.mpr
-    refine ⟨⟨(q.1 : Nat) + (i : Nat) * (q.2 : Nat), hzL⟩, Finset.mem_univ _, ?_⟩
-    dsimp [F]
-    push_cast
-    ring
-  have hcard := Finset.card_le_card hsub
-  rw [Finset.card_image_of_injective _ hF] at hcard
-  simp only [Finset.card_univ, Fintype.card_prod, Fintype.card_fin, ← pow_two] at hcard
-  convert hcard using 1
+  have hcast := finiteInterval_cast_injective ((Nat.div_le_self L k).trans hL)
   unfold progressionCount countWhere
-  congr 1
-  ext p
-  simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+  calc (L / k) ^ 2 = (Finset.univ : Finset (Fin (L / k) × Fin (L / k))).card := by simp [sq]
+    _ ≤ _ := Finset.card_le_card_of_injOn
+      (fun q => (-((q.2 : Nat) : ZMod N), ((q.1 : Nat) : ZMod N))) (fun q _ => ?_)
+      (fun p _ q _ h => ?_)
+  · simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and]
+    intro i
+    have hzL : (q.1 : Nat) + (i : Nat) * (q.2 : Nat) < L := calc
+      _ < L / k + (i : Nat) * (L / k) :=
+        Nat.add_lt_add_of_lt_of_le q.1.isLt (Nat.mul_le_mul_left _ q.2.isLt.le)
+      _ = ((i : Nat) + 1) * (L / k) := by ring
+      _ ≤ k * (L / k) := Nat.mul_le_mul_right _ i.isLt
+      _ ≤ L := Nat.mul_div_le L k
+    exact Finset.mem_image.mpr ⟨⟨_, hzL⟩, Finset.mem_univ _, by dsimp only; push_cast; ring⟩
+  · simp only [Prod.mk.injEq, neg_inj] at h
+    exact Prod.ext (hcast h.2) (hcast h.1)
 
 theorem finiteInterval_progressionCount_lower {N L k : Nat} [NeZero N]
     (hL : L ≤ N) (hk : 0 < k) (hkL : k ≤ L) :
@@ -71,7 +51,7 @@ theorem finiteInterval_progressionCount_lower {N L k : Nat} [NeZero N]
     (sq_le_sq₀ (by positivity) (by positivity)).mpr (by apply (div_le_iff₀ (by positivity : (0 : Real) < 2 * k)).mpr; nlinarith)
   have hc : (((L / k) ^ 2 : Nat) : Real) ≤
       (progressionCount (finiteIntervalImage N (Finset.univ : Finset (Fin L))) k : Real) := by
-    exact_mod_cast finiteInterval_progressionCount_floor hL hk
+    exact_mod_cast finiteInterval_progressionCount_floor hL
   push_cast at hc
   have heq : ((L : Real) / (2 * k)) ^ 2 = (L : Real) ^ 2 / (4 * (k : Real) ^ 2) := by
     rw [div_pow]

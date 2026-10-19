@@ -61,25 +61,21 @@ theorem quadratic_nonuniformity_localized_phase_removal_of_power_bound :
   obtain ⟨m, P, D, a, b, hodd, _, hmsqrt, hsize, hs, _, hPl, hD, hmass, hfourier⟩ :=
     quadratic_nonuniformity_odd_affine_frequencies_of_power_bound alpha hα hαone N hlarge f hf hnot
   let delta := (alpha / 2) ^ (12359 : Nat) / 2
-  let rho := delta * alpha ^ 2 / 4
-  have hrho : 0 < rho := by dsimp [rho, delta]; positivity
   have henergy := affineFrequencyProgression_energy P D f a b alpha delta hα.le hD hmass hfourier
-  have hwidth : P.asBox.width = m := (BaseCase.boxOne_width P.asBox).trans hPl
   obtain ⟨phi, M, l, Q, hpoly, hpart, hproper, hlength, hupper, hfail⟩ :=
-    proposition_17_7_with_upper N 1 m f P.asBox (fun x ↦ a * x 0 + b) rho hrho
-      (by omega) hodd hwidth (fun _ ↦ hPl) hs hmsqrt hf
-      (BaseCase.isMultilinear_affine_one a b) (by simpa only [pow_one] using henergy)
-  have hconstant : (2 : Real) ^ (-(2 * (1 + 1) ^ 3 : Int)) * rho =
+    proposition_17_7_with_upper N 1 m f P.asBox (fun x ↦ a * x 0 + b) (delta * alpha ^ 2 / 4)
+      (by positivity) (by omega) hodd ((BaseCase.boxOne_width P.asBox).trans hPl) (fun _ ↦ hPl)
+      hs hmsqrt hf (BaseCase.isMultilinear_affine_one a b) (by simpa only [pow_one] using henergy)
+  have hconstant : (2 : Real) ^ (-(2 * (1 + 1) ^ 3 : Int)) * (delta * alpha ^ 2 / 4) =
       (2 : Real) ^ (-(19 : Int)) * alpha ^ 2 * (alpha / 2) ^ (12359 : Nat) := by
-    dsimp [rho, delta]
+    dsimp [delta]
     generalize (alpha / 2) ^ (12359 : Nat) = c
     norm_num
     ring
-  refine ⟨phi, M, l, Q, hpoly, hpart, hproper, ?_, ?_, ?_⟩
-  · norm_num only [Nat.cast_one, mul_one] at hlength
-    linarith only [hsize, hlength]
-  · intro i
-    exact (by exact_mod_cast hupper i : ((Q i).length : Real) ≤ m).trans hmsqrt
-  · simpa only [Nat.cast_one, hconstant] using hfail
+  refine ⟨phi, M, l, Q, hpoly, hpart, hproper, ?_,
+    fun i ↦ (by exact_mod_cast hupper i : ((Q i).length : Real) ≤ m).trans hmsqrt,
+    by simpa only [Nat.cast_one, hconstant] using hfail⟩
+  norm_num only [Nat.cast_one, mul_one] at hlength
+  linarith only [hsize, hlength]
 
 end LeanProofs.GowersSzemeredi

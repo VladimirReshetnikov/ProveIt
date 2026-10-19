@@ -24,27 +24,10 @@ theorem FreimanHom.translate_input {G H : Type*} [AddCommMonoid G]
     [AddCommMonoid H] {k : Nat} {A J : Finset G} {f : G → H}
     (hf : FreimanHom k A f) (y : G) (hJ : ∀ h ∈ J, y + h ∈ A) :
     FreimanHom k J (fun h ↦ f (y + h)) := by
-  refine ⟨Set.mapsTo_univ _ _, ?_⟩
-  intro s t hsJ htJ hs ht hst
-  have hsA : ∀ ⦃x⦄, x ∈ s.map (fun h ↦ y + h) → x ∈ (A : Set G) := by
-    intro x hx
-    obtain ⟨h, hh, rfl⟩ := Multiset.mem_map.mp hx
-    exact hJ h (hsJ hh)
-  have htA : ∀ ⦃x⦄, x ∈ t.map (fun h ↦ y + h) → x ∈ (A : Set G) := by
-    intro x hx
-    obtain ⟨h, hh, rfl⟩ := Multiset.mem_map.mp hx
-    exact hJ h (htJ hh)
-  have heq : (s.map (fun h ↦ y + h)).sum =
-      (t.map (fun h ↦ y + h)).sum := by
-    calc
-      _ = (s.map (fun _ ↦ y)).sum + s.sum := by
-        simpa using (Multiset.sum_map_add (m := s) (f := fun _ ↦ y) (g := id))
-      _ = (t.map (fun _ ↦ y)).sum + t.sum := by simp [hs, ht, hst]
-      _ = _ := by
-        simpa using (Multiset.sum_map_add (m := t) (f := fun _ ↦ y) (g := id)).symm
-  have h := hf.map_sum_eq_map_sum hsA htA
-    (by simpa using hs) (by simpa using ht) heq
-  simpa only [Multiset.map_map, Function.comp_def] using h
+  refine IsAddFreimanHom.comp (f := fun h ↦ y + h) hf (IsAddFreimanHom.superset ?_
+    ((isAddFreimanHom_const (Set.mem_singleton y)).add (isAddFreimanHom_id subset_rfl)))
+  rintro _ ⟨_, rfl, h, hh, rfl⟩
+  exact hJ h hh
 
 /-- Two distinct evaluations of affine functions recover all Freiman
 relations of their coefficient pairs. No density hypothesis is needed. -/

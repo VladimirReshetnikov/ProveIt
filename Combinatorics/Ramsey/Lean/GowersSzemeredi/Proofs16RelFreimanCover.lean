@@ -65,40 +65,21 @@ theorem RelFreimanCover.translate {N q : Nat} [NeZero N] {R : Finset (Point N 1 
   obtain ⟨D, f, hf, hc⟩ := h
   let D' := fun i => (D i).image (fun x => x + t)
   let f' := fun i x => f i (x - t)
-  refine ⟨D', f', ?_, ?_⟩
-  · intro i
-    have hh := (hf i).translate_input (-(t 0)) (J := pointOneDomain (D' i)) (by
-      intro z hz
-      rw [mem_pointOneDomain] at hz ⊢
-      obtain ⟨x, hx, heq⟩ := Finset.mem_image.mp hz
-      have heval := congrFun heq 0
-      have hpoint : (pointOneEquiv N).symm (-t 0 + z) = x := by
-        funext j
-        fin_cases j
-        change -t 0 + z = x 0
-        change x 0 + t 0 = z at heval
-        rw [← heval]
-        abel
-      rwa [hpoint])
-    convert hh using 1
-    funext z
-    change f i ((pointOneEquiv N).symm z - t) = f i ((pointOneEquiv N).symm (-t 0 + z))
-    congr 1
-    funext j
-    fin_cases j
-    change z - t 0 = -t 0 + z
-    abel
-  · intro z hz
-    obtain ⟨⟨x, y⟩, hxy, rfl⟩ := Finset.mem_image.mp hz
-    have horig := hc hxy
-    unfold section16FinsetUnion at horig ⊢
-    obtain ⟨i, -, hi⟩ := Finset.mem_biUnion.mp horig
+  have hpt (z : ZMod N) : (pointOneEquiv N).symm (-t 0 + z) = (pointOneEquiv N).symm z - t := by
+    funext j; fin_cases j; exact neg_add_eq_sub (t 0) z
+  refine ⟨D', f', fun i => ?_, fun z hz => ?_⟩
+  · have hfun : pointOneMap (f' i) = fun z => pointOneMap (f i) (-t 0 + z) :=
+      funext fun z => by simp only [pointOneMap, f', hpt]
+    rw [hfun]
+    refine (hf i).translate_input (-(t 0)) fun z hz => ?_
+    obtain ⟨x, hx, heq⟩ := Finset.mem_image.mp ((mem_pointOneDomain _ _).mp hz)
+    rwa [mem_pointOneDomain, hpt, ← heq, add_sub_cancel_right]
+  · obtain ⟨⟨x, y⟩, hxy, rfl⟩ := Finset.mem_image.mp hz
+    obtain ⟨i, -, hi⟩ := Finset.mem_biUnion.mp (hc hxy)
     obtain ⟨w, hw, heq⟩ := Finset.mem_image.mp hi
     obtain ⟨rfl, rfl⟩ := Prod.mk.inj heq
-    apply Finset.mem_biUnion.mpr
-    refine ⟨i, Finset.mem_univ _, Finset.mem_image.mpr ⟨w + t, ?_, ?_⟩⟩
-    · exact Finset.mem_image.mpr ⟨w, hw, rfl⟩
-    · simp [f', add_sub_cancel_right]
+    exact Finset.mem_biUnion.mpr ⟨i, Finset.mem_univ _,
+      Finset.mem_image.mpr ⟨w + t, Finset.mem_image_of_mem _ hw, by simp [f']⟩⟩
 
 /-- **Finite unions add the counts.** -/
 theorem relFreimanCover_union {N q m : Nat} [NeZero N]

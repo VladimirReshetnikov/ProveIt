@@ -37,45 +37,21 @@ theorem corollary_7_9_holds : corollary_7_9 := by
   intro N _ A phi alpha hprime halpha hcard hphi
   dsimp only
   intro m hm d hd
-  obtain ⟨_, hBhom⟩ := lemma_7_8_holds N A phi alpha halpha hcard hphi
-  obtain ⟨psi, hpsi, hagree⟩ := hBhom
-  let K := section7Spectrum A alpha
-  let B := bohr K (alpha / (32 * Real.pi))
-  have hshort : symmetricMultiples d m ⊆ B :=
-    bohr_symmetric_multiples_subset K (alpha / (32 * Real.pi)) (by positivity) m hm d
-      (by rwa [div_div])
-  have hzeroShort : (0 : ZMod N) ∈ symmetricMultiples d m := by
-    rw [symmetricMultiples, Finset.mem_image]
-    refine ⟨0, Finset.mem_Icc.mpr ?_, by simp⟩
-    constructor <;> omega
-  have hNpos : 0 < N := NeZero.pos N
-  have hAcard : 0 < A.card := by
-    have : (0 : Real) < A.card := by rw [hcard]; positivity
-    exact_mod_cast this
-  obtain ⟨a, ha⟩ := Finset.card_pos.mp hAcard
+  obtain ⟨-, psi, hpsi, hagree⟩ := lemma_7_8_holds N A phi alpha halpha hcard hphi
+  have hshort := bohr_symmetric_multiples_subset (section7Spectrum A alpha)
+    (alpha / (32 * Real.pi)) (by positivity) m hm d (by rwa [div_div])
+  have hA : (0 : Real) < A.card := by
+    rw [hcard]; exact mul_pos halpha (Nat.cast_pos.mpr (NeZero.pos N))
+  obtain ⟨a, ha⟩ := Finset.card_pos.mp (Nat.cast_pos.mp hA)
   have hpsiZero : psi 0 = 0 := by
-    have hag := hagree a ha a ha (hshort (by simpa using hzeroShort))
-    simpa using hag.symm
+    simpa using (hagree a ha a ha (hshort (Finset.mem_image.mpr ⟨0, by simp, by simp⟩))).symm
   letI : Fact N.Prime := ⟨hprime⟩
-  by_cases hd0 : d = 0
-  · refine ⟨0, ?_⟩
-    intro x hx y hy hxy
-    have hdiff : x - y = 0 := by
-      rw [symmetricMultiples, Finset.mem_image] at hxy
-      obtain ⟨j, _, hj⟩ := hxy
-      simpa [hd0] using hj.symm
-    simpa [hdiff, hpsiZero] using hagree x hx y hy (hshort hxy)
-  · refine ⟨psi d / d, ?_⟩
-    intro x hx y hy hxy
-    have hag := hagree x hx y hy (hshort hxy)
-    rw [symmetricMultiples, Finset.mem_image] at hxy
-    obtain ⟨j, hj, hjxy⟩ := hxy
-    have hlin := freiman_map_int_multiple_of_zero B psi hpsi hpsiZero d m hm hshort j hj
-    rw [← hjxy, hlin] at hag
-    rw [← hjxy]
-    calc
-      phi x - phi y = (j : ZMod N) * psi d := hag
-      _ = (psi d / d) * ((j : ZMod N) * d) := by
-        field_simp
+  refine ⟨psi d / d, fun x hx y hy hxy => ?_⟩
+  obtain ⟨j, hj, hjxy⟩ := Finset.mem_image.mp hxy
+  rw [hagree x hx y hy (hshort hxy), ← hjxy,
+    freiman_map_int_multiple_of_zero _ psi hpsi hpsiZero d m hm hshort j hj]
+  rcases eq_or_ne d 0 with rfl | hd0
+  · simp [hpsiZero]
+  · field_simp
 
 end LeanProofs.GowersSzemeredi

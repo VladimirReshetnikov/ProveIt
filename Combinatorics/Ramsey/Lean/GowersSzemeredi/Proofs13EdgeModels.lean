@@ -35,25 +35,15 @@ theorem section13_edge_tuple_count {N k : Nat} [NeZero N]
   apply Finset.card_bij (fun x _ ↦ section13EdgeArrangement x)
   · intro x hx
     simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢
-    obtain ⟨hxadd, hxP⟩ := hx
-    refine ⟨⟨hxadd, ?_⟩, rfl, hxP⟩
-    exact fun i => (Finset.mem_filter.mp (x i).property).2
-  · intro x _ y _ hxy
-    funext i
-    apply Subtype.ext
-    apply Prod.ext
-    · exact congrArg (fun R : DArrangement N k ↦ R.x i) hxy
-    · exact congrArg (fun R : DArrangement N k ↦ R.y i) hxy
+    exact ⟨⟨hx.1, fun i ↦ (Finset.mem_filter.mp (x i).property).2⟩, rfl, hx.2⟩
+  · exact fun x _ y _ hxy ↦ funext fun i ↦ Subtype.ext (Prod.ext
+      (congrArg (fun R : DArrangement N k ↦ R.x i) hxy)
+      (congrArg (fun R : DArrangement N k ↦ R.y i) hxy))
   · intro R hR
-    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hR
-    obtain ⟨hRin, hheight, hRP⟩ := hR
-    let x : Fin (2 * k) → Section13Edges A h := fun i ↦
-      ⟨(R.x i, R.y i), Finset.mem_filter.mpr ⟨Finset.mem_univ _,
-        (hRin.2 i).1, by simpa only [hheight] using (hRin.2 i).2⟩⟩
-    have hxR : section13EdgeArrangement x = R := Prod.ext rfl (Prod.ext rfl hheight.symm)
-    refine ⟨x, ?_, hxR⟩
-    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-    exact ⟨hRin.1, hxR ▸ hRP⟩
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hR ⊢
+    obtain ⟨hRin, rfl, hRP⟩ := hR
+    exact ⟨fun i ↦ ⟨(R.x i, R.y i), Finset.mem_filter.mpr ⟨Finset.mem_univ _, hRin.2 i⟩⟩,
+      ⟨hRin.1, hRP⟩, rfl⟩
 
 /-- The Section 10 additive count is exactly the Section 13 height count. -/
 theorem section13_domain_additive_count {N : Nat} [NeZero N]

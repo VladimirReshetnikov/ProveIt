@@ -42,25 +42,13 @@ theorem corollary_5_6_holds_of_strong_diameter
   intro N k r v _ phi hk hphi hthreshold hrN hv hvupper
   obtain ⟨M, P, hM, hpartition, hcells, hdiameter⟩ :=
     hstrong N k r v phi hk hphi hthreshold hrN hv hvupper
-  refine ⟨M, P, hM, hpartition, hcells, ?_⟩
-  intro j
+  refine ⟨M, P, hM, hpartition, hcells, fun j => ?_⟩
   obtain ⟨d, hd, hdscale⟩ := hdiameter j
-  refine ⟨d, hd, hdscale.trans ?_⟩
-  have hrOneNat : 1 <= r := by
-    have hTPos : 0 < polynomialPartitionThreshold k := by
-      unfold polynomialPartitionThreshold weylThreshold
-      exact pow_pos (pow_pos (by norm_num) _) _
-    omega
-  have hrOne : (1 : Real) <= r := by exact_mod_cast hrOneNat
-  have hexponent :
-      -(2 * (polynomialPartitionConstant k : Real)⁻¹) <=
-        -(polynomialPartitionConstant k : Real)⁻¹ := by
-    have hKInv : 0 <= (polynomialPartitionConstant k : Real)⁻¹ := by positivity
-    linarith
-  have hscale :
-      (r : Real) ^ (-(2 * (polynomialPartitionConstant k : Real)⁻¹)) <=
-        (r : Real) ^ (-(polynomialPartitionConstant k : Real)⁻¹) :=
-    Real.rpow_le_rpow_of_exponent_le hrOne hexponent
-  exact mul_le_mul_of_nonneg_right hscale (by positivity)
+  have hrOne : (1 : Real) ≤ r := by
+    exact_mod_cast (polynomialPartitionThreshold_positive k).trans hthreshold
+  refine ⟨d, hd, hdscale.trans (mul_le_mul_of_nonneg_right
+    (Real.rpow_le_rpow_of_exponent_le hrOne ?_) (Nat.cast_nonneg N))⟩
+  have : 0 ≤ (polynomialPartitionConstant k : Real)⁻¹ := by positivity
+  linarith
 
 end LeanProofs.GowersSzemeredi

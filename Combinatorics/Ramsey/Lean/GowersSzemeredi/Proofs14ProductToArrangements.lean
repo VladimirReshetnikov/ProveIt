@@ -17,28 +17,10 @@ namespace LeanProofs.GowersSzemeredi
 
 theorem lemma_14_8_holds : lemma_14_8 := by
   intro N k _ beta gamma B phi hk hbeta hgamma hgamma_one hcard hproduct
-  let theta :=
-    beta ^ (4 ^ (k + 1)) * gamma ^ (3 * k * 4 ^ (k + 1))
-  have htheta : 0 < theta := by
-    dsimp only [theta]
-    exact mul_pos (pow_pos hbeta _) (pow_pos hgamma _)
-  have hpairs :
-      theta * (N : Real) ^ (5 * k + 3) ≤
-        respectedGeneralArrangementCount 2 B phi := by
-    dsimp only [theta]
-    exact corollary_14_6_holds N k beta gamma B phi hk hbeta hgamma
-      hgamma_one hcard hproduct
-  have height := lemma_14_7_holds N k theta B phi htheta hpairs
-  have hbetaExponent :
-      7 * 4 ^ (k + 1) = 4 ^ (k + 1) * 7 := by omega
-  have hgammaExponent :
-      21 * k * 4 ^ (k + 1) = (3 * k * 4 ^ (k + 1)) * 7 := by ring
-  calc
-    beta ^ (7 * 4 ^ (k + 1)) * gamma ^ (21 * k * 4 ^ (k + 1)) *
-        (N : Real) ^ (17 * k + 15) =
-      theta ^ 7 * (N : Real) ^ (17 * k + 15) := by
-        dsimp only [theta]
-        rw [mul_pow, ← pow_mul, ← pow_mul, hbetaExponent, hgammaExponent]
-    _ ≤ (respectedGeneralArrangementCount 8 B phi : Real) := height
+  -- Lemma 14.7 applied to the bound of Corollary 14.6
+  refine le_of_eq_of_le ?_ (lemma_14_7_holds N k _ B phi (by positivity)
+    (corollary_14_6_holds N k beta gamma B phi hk hbeta hgamma hgamma_one hcard hproduct))
+  rw [mul_pow, ← pow_mul, ← pow_mul, show 4 ^ (k + 1) * 7 = 7 * 4 ^ (k + 1) by ring,
+    show 3 * k * 4 ^ (k + 1) * 7 = 21 * k * 4 ^ (k + 1) by ring]
 
 end LeanProofs.GowersSzemeredi

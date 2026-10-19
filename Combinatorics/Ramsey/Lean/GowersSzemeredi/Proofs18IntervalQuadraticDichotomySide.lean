@@ -11,6 +11,19 @@ noncomputable section
 
 namespace LeanProofs.GowersSzemeredi
 
+section
+
+theorem intervalQuadraticUniformityParameter_count_error (delta : Real) :
+    4 * intervalQuadraticUniformityParameter delta ^ (1 / 8 : Real) ≤ delta ^ 4 / 8192 := by
+  have hroot : ((delta ^ 4 / 32768) ^ (8 : Nat)) ^ (1 / 8 : Real) = delta ^ 4 / 32768 := by
+    rw [← Real.rpow_natCast, ← Real.rpow_mul (show 0 ≤ delta ^ 4 / 32768 by positivity)]
+    norm_num
+  unfold intervalQuadraticUniformityParameter
+  rw [hroot]
+  linarith
+
+end
+
 /-- An explicit one-step alternative that can be iterated on integer sets:
 either the original set contains a four-term progression, or a subprogression
 inside the original interval has higher original relative density. -/

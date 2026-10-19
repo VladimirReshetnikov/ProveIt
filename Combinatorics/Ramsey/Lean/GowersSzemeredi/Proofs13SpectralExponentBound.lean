@@ -21,44 +21,31 @@ theorem section13SquareExponent_ge_spectral_power {delta : Real}
     (hδ : 0 < delta) (hδone : delta ≤ 1) :
     (2 : Real) ^ (-(15 * section13Q delta)) ≤ section13SquareExponent delta := by
   let Q := section13Q delta
-  have hC : (3712 : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 20) := by
-    calc
-      _ ≤ (2 : Real) ^ (12 : Nat) := by norm_num
-      _ ≤ _ := pow_le_pow_right₀ (by norm_num) (by norm_num)
-  have hpower : delta⁻¹ ≤ delta ^ (-((2 : Real) ^ 21)) := by
-    calc
-      _ = delta ^ (-(1 : Real)) := (Real.rpow_neg_one delta).symm
-      _ ≤ _ := Real.rpow_le_rpow_of_exponent_ge hδ hδone (by norm_num)
-  have hQinv : 3712 * delta⁻¹ ≤ Q :=
-    mul_le_mul hC hpower (inv_nonneg.mpr hδ.le) (by positivity)
-  have hinv : 1 ≤ delta⁻¹ := (one_le_inv₀ hδ).mpr hδone
-  have hQ386 : 386 ≤ Q := by nlinarith only [hQinv, hinv]
-  have hδpow : delta ^ 1856 ≥ (2 : Real) ^ (-Q) := by
-    have hgrow := pow_le_pow_left₀ (inv_nonneg.mpr hδ.le)
-      (le_two_rpow_two_mul (inv_nonneg.mpr hδ.le)) 1856
-    have hexp : ((2 : Real) ^ (2 * delta⁻¹)) ^ 1856 = (2 : Real) ^ (3712 * delta⁻¹) := by
-      rw [← Real.rpow_mul_natCast (by norm_num)]
-      congr 1
-      ring
-    rw [hexp] at hgrow
-    have hupper : (delta ^ 1856)⁻¹ ≤ (2 : Real) ^ Q := by
-      simpa only [inv_pow] using hgrow.trans
-        (Real.rpow_le_rpow_of_exponent_le (by norm_num) hQinv)
-    have hi := inv_anti₀ (inv_pos.mpr (pow_pos hδ 1856)) hupper
-    simpa only [inv_inv, Real.rpow_neg (by norm_num : (0 : Real) ≤ 2)] using hi
-  have hconst : (2 : Real) ^ (-Q) ≤ (2 : Real) ^ (-(386 : Int)) := by
-    rw [← Real.rpow_intCast]
-    apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
-    push_cast
-    linarith only [hQ386]
+  have hQinv : 3712 * delta⁻¹ ≤ Q := mul_le_mul
+    ((by norm_num : (3712 : Real) ≤ 2 ^ 12).trans (pow_le_pow_right₀ one_le_two (by norm_num)))
+    ((Real.rpow_neg_one delta).symm.trans_le
+      (Real.rpow_le_rpow_of_exponent_ge hδ hδone (by norm_num)))
+    (inv_nonneg.mpr hδ.le) (by positivity)
+  have hδpow : (2 : Real) ^ (-Q) ≤ delta ^ 1856 := by
+    rw [Real.rpow_neg zero_le_two, inv_le_comm₀ (by positivity) (pow_pos hδ _), ← inv_pow]
+    calc delta⁻¹ ^ 1856 ≤ ((2 : Real) ^ (2 * delta⁻¹)) ^ 1856 :=
+          pow_le_pow_left₀ (inv_nonneg.2 hδ.le) (le_two_rpow_two_mul (inv_nonneg.2 hδ.le)) _
+      _ = (2 : Real) ^ (3712 * delta⁻¹) := by
+          rw [← Real.rpow_mul_natCast zero_le_two]
+          congr 1
+          ring
+      _ ≤ (2 : Real) ^ Q := Real.rpow_le_rpow_of_exponent_le one_le_two hQinv
+  have hconst : (2 : Real) ^ (-Q) ≤ (2 : Real) ^ (-(386 : Int)) :=
+    (Real.rpow_le_rpow_of_exponent_le one_le_two
+      (by push_cast; linarith only [hQinv, (one_le_inv₀ hδ).mpr hδone])).trans_eq
+      (Real.rpow_intCast 2 _)
   rw [section13SquareExponent_formula]
   calc
     _ = ((2 : Real) ^ (-Q) * (2 : Real) ^ (-Q)) / (2 : Real) ^ (13 * Q) := by
-      rw [← Real.rpow_add (by norm_num), ← Real.rpow_sub (by norm_num)]
+      rw [← Real.rpow_add two_pos, ← Real.rpow_sub two_pos]
       congr 1
       ring
     _ ≤ _ := div_le_div_of_nonneg_right
-      (mul_le_mul hconst hδpow (Real.rpow_nonneg (by norm_num) _) (by positivity))
-      (Real.rpow_nonneg (by norm_num) _)
+      (mul_le_mul hconst hδpow (by positivity) (by positivity)) (by positivity)
 
 end LeanProofs.GowersSzemeredi

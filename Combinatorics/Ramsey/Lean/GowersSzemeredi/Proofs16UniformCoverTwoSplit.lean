@@ -49,11 +49,6 @@ theorem cubicBaseExponent_inv_le_tb {q : Nat} {s ν W : Real} {a b c : Nat} (hW 
           (pow_nonneg hq0.le _) (mul_nonneg (pow_nonneg hW0 _) (pow_nonneg hW0 _))
     _ = ν ^ (a * 4) * W ^ (27 + c * 3 + b * 4) := by rw [pow_add, pow_add]; ring
 
-/-- The scaled loss `(ρ/c)⁻¹ ≤ W^(j+1)` for `c ≤ 2^j`. -/
-theorem inv_scale_le_W {W rho c : Real} {j : Nat} (hW : 2 ≤ W) (hr : 0 < rho) (hrW : rho⁻¹ ≤ W)
-    (hc0 : 0 < c) (hc : c ≤ 2 ^ j) : (rho / c)⁻¹ ≤ W ^ (j + 1) :=
-  inv_scale_le hW hr hrW hc0 hc
-
 /-- The family size `M = n·m` and the dimension-two counts in two bases. -/
 theorem two_split_basics {V : Real} (hV : 1 ≤ V) {theta gamma rho : Real} (hg : 0 < gamma)
     (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1) (hr : 0 < rho) (hr1 : rho ≤ 1) (n : Nat) :
@@ -112,7 +107,7 @@ theorem famTwoCount_le_two_bases {ν W rho : Real} {M q a b c : Nat} (hν : 1 �
     unfold famTwoPb
     rw [Nat.cast_mul]
     exact (tb_const_mul (c := (3 : Real)) (j := 2) hW (by norm_num)
-      (Nat.cast_nonneg _) hplus).trans_eq (by congr 2 <;> ring)
+      (Nat.cast_nonneg _) hplus).trans_eq (by congr 2; ring)
   have hP0 : 0 ≤ famTwoPb M q S (rho / 4) := by unfold famTwoPb; exact Nat.cast_nonneg _
   have hG := famPieceGraphBound_le_mul_sq (tb_one_le hν hW1) (tb_one_le hν hW1) hM hS hP0 hPb
   refine max_le (hG.trans_eq (by ring)) ?_
@@ -128,7 +123,7 @@ theorem twoSamples_le_split {ν W rho : Real} {M q : Nat} (hν : 1 ≤ ν) (hW :
     (famPieceSamples (famTwoQr M q) M rho : Real) ≤
       ν ^ (1 + 1) * W ^ (5 + (4 + ((2 : Nat) ^ 24 + (2 : Nat) ^ 38 + 1) + (2 : Nat) ^ 24 + 1) + 1) := by
   have hQr := famTwoQr_le_two_bases hν hW hM hq (rho / 8)
-  convert famPieceSamples_le_two_bases hν hW hr hrW hQr hM using 1 <;> ring
+  convert famPieceSamples_le_two_bases hν hW hr hrW hQr hM using 1; ring
 
 /-- **The dimension-two width exponent, in two bases**: its inverse is at most
 `ν^29·W^(2^46)`. -/
@@ -157,8 +152,8 @@ theorem uniTwoFejerExp_inv_le_split {V : Real} (hV : 1 ≤ V) {K1 p1 : Nat} (hK1
   -- panics on exponents above `2 ^ 24`
   replace hζi : ζ⁻¹ ≤ Real.exp (W ^ ((2 : Nat) ^ 40)) :=
     hζi.trans (Real.exp_le_exp.mpr (pow_le_pow_left₀ (by positivity) hvW _))
-  have hr8 : (rho / 8)⁻¹ ≤ W ^ (3 + 1) := inv_scale_le_W hW2 hr hrW (by norm_num) (by norm_num)
-  have hr4 : (rho / 4)⁻¹ ≤ W ^ (2 + 1) := inv_scale_le_W hW2 hr hrW (by norm_num) (by norm_num)
+  have hr8 : (rho / 8)⁻¹ ≤ W ^ (3 + 1) := inv_scale_le hW2 hr hrW (by norm_num)
+  have hr4 : (rho / 4)⁻¹ ≤ W ^ (2 + 1) := inv_scale_le hW2 hr hrW (by norm_num)
   set B := (2 : Nat) ^ 24 + (2 : Nat) ^ 38 + 1 with hBdef
   have hMqs : ((M * qs + 1 : Nat) : Real) ≤ ν ^ 1 * W ^ B := affine_le_tb hν hW2 hM hqs
   have hMqf : ((M * qf + 1 : Nat) : Real) ≤ ν ^ 1 * W ^ B := affine_le_tb hν hW2 hM hqf

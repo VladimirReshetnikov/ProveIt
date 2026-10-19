@@ -22,25 +22,15 @@ private lemma cor76_count_le_graph_energy {N : Nat} [NeZero N]
     phiAdditiveCount B phi ≤
       Finset.addEnergy (functionGraph B phi) (functionGraph B phi) := by
   unfold phiAdditiveCount countWhere Finset.addEnergy
-  let graphPoint : ZMod N → ZMod N × ZMod N := fun x => (x, phi x)
-  let toEnergy : (Fin 4 → ZMod N) →
-      ((ZMod N × ZMod N) × (ZMod N × ZMod N)) ×
-        ((ZMod N × ZMod N) × (ZMod N × ZMod N)) :=
-    fun q => ((graphPoint (q 0), graphPoint (q 2)),
-      (graphPoint (q 1), graphPoint (q 3)))
-  refine Finset.card_le_card_of_injOn toEnergy ?_ ?_
+  -- `q ↦ ((x 0, x 2), (x 1, x 3))` for the graph points `x i = (q i, phi (q i))`
+  refine Finset.card_le_card_of_injOn (fun q => (((q 0, phi (q 0)), (q 2, phi (q 2))),
+    ((q 1, phi (q 1)), (q 3, phi (q 3))))) ?_ ?_
   · intro q hq
-    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and] at hq ⊢
-    rcases hq with ⟨hqB, hqadd, hqphi⟩
-    constructor
-    · simp only [Finset.mem_product]
-      repeat' constructor
-      all_goals
-        simp only [toEnergy, graphPoint, functionGraph, Finset.mem_image]
-        exact ⟨_, hqB _, rfl⟩
-    · exact Prod.ext hqadd hqphi
+    obtain ⟨hqB, hqadd, hqphi⟩ : IsPhiAdditive B phi q := by simpa using hq
+    refine Finset.mem_coe.2 (Finset.mem_filter.2 ⟨?_, Prod.ext hqadd hqphi⟩)
+    simp [cor75_mem_functionGraph, hqB]
   · intro q _ r _ hqr
-    simp only [toEnergy, graphPoint, Prod.mk.injEq] at hqr
+    simp only [Prod.mk.injEq] at hqr
     funext i
     fin_cases i <;> tauto
 
