@@ -1,0 +1,296 @@
+% Body-only section; parent supplies amsmath, amssymb, amsthm and booktabs.
+\section{Three proper functions and a three-bit term alphabet}
+\label{sec:three-functions}
+
+There is a further presentation of the nineteen-clause selective-equality
+theory using only one constant $d$ and three proper functions
+\[
+ V:2,\qquad C:3,\qquad A:2.
+\]
+It retains the four ordinary binary predicates $E,\mathsf{Inc},G,\sim$.
+The presentation has exactly \textbf{19 universal clauses, 45 literals,
+268 term nodes, and 999 flat payload bits}.  Four local variable opcodes,
+one constant opcode and three function opcodes fill an eight-symbol term
+alphabet.  This gives three-bit flat term tokens, despite the additional
+term structure needed to share functions.
+
+The following construction establishes equiconsistency with the named
+$\mathsf{SE19}$ theory of Section~\ref{sec:selective-equality}, hence
+with ZFC using exactly that section's stated calibration dependencies.
+The construction is an ordinary mathematical model argument, not a
+kernel-checked proof or a binary Turing-machine construction.  In
+particular, the number 999 does not give a state count.
+
+\subsection{Exact syntactic substitutions}
+
+First work with two named constants $d,q$, and abbreviate
+\[
+ r=C(d,d,d),\qquad h=C(d,d,q).
+\]
+Simultaneously replace the six eliminated function symbols in every
+native clause and every added completion clause by the following terms:
+\begin{align*}
+ N(a,b)&:=C(d,a,b),& Q(j,a)&:=C(q,j,a),\\
+ H(b,t)&:=A(C(b,t,d),d),&Y(b,t,u)&:=A(C(b,t,u),q),\\
+ W(s,j,a)&:=A(C(s,j,a),r),&Z(b,t,u)&:=A(C(b,t,u),h).
+\end{align*}
+The proper symbols $V,C,A$ are unchanged.  In the one-constant
+presentation replace every occurrence of $q$ by
+\[
+ q:=A(d,d),
+\]
+including its occurrences inside $h$, inside $Q$, and inside the
+separation clause $\neg(d\sim q)$.  All substitutions, including $r,h$,
+are expanded in the emitted JSON and bit streams.  No hidden constant,
+pairing symbol, decoder, or extra axiom is introduced.
+
+For the reverse implication, any model of the resulting presentation
+expands definitionally to an $\mathsf{SE19}$ model: interpret $q$ and
+the eliminated functions by these very terms.  Every required clause is
+then exactly one of the substituted clauses.  The substantive direction
+is existence of a model satisfying all the shared roles at once.
+
+\subsection{A raw pairing function available in the native model}
+
+Let $M$ be any genuine-identity model of the fifteen native clauses with
+distinct named selectors $d_0,q_0$.  The inherited upper-model
+construction provides such a model from $\operatorname{Con}(\mathrm{ZFC})$;
+no special relationship between $V_M(d_0,d_0)$ and $q_0$ is required.
+Write its functions as $V_M,C_M,N_M,A_M,Q_M,W_M,Y_M,Z_M,H_M$.
+The ordinary native update equations imply that
+\[
+ P(x,y)=C_M(C_M(d_0,d_0,x),q_0,y)
+\]
+has projections
+\[
+ V_M(P(x,y),d_0)=x,\qquad V_M(P(x,y),q_0)=y.
+\]
+Thus $P$ is injective as an actual map $M^2\to M$.
+Let $K_9:M^9\to M$ be any fixed nine-argument iterated use of this
+pairing, for example
+\[
+ K_9(x_1,\ldots,x_9)
+ =P(x_1,P(x_2,\ldots,P(x_8,x_9)\ldots)).
+\]
+Set
+\[
+ \tau=P(q_0,d_0),\qquad
+ J_9(\bar x)=P(d_0,K_9(\bar x)).
+\]
+Then $J_9$ is injective and $\tau$ is outside its image, by the first
+projection and $d_0\ne q_0$.  These maps are used only to build a model;
+they do not appear in the target signature or payload.
+
+\subsection{The three-coordinate model and its distinguished markers}
+
+Take the new raw carrier to be $U=M^3$.  Write $a_i$ for coordinate $i$
+of $a\in U$, with indices $0,1,2$.  Interpret predicates by
+\begin{align*}
+ a\sim b&\quad\Longleftrightarrow\quad a_0=b_0,\\
+ E_U(a,b)&\quad\Longleftrightarrow\quad E_M(a_0,b_0),\\
+ \mathsf{Inc}_U(s,t)&\quad\Longleftrightarrow\quad
+       \mathsf{Inc}_M(s_0,t_1),\\
+ G_U(b,t)&\quad\Longleftrightarrow\quad G_M(b_0,t_1).
+\end{align*}
+The first coordinate carries set objects and assignments, the second
+carries native class codes, and the third distinguishes complete raw
+update inputs.
+
+Prescribe two raw elements before defining the functions:
+\[
+ d_U=(d_0,d_0,\tau),\qquad
+ q_U=(q_0,A_M(d_0,d_0),\tau).
+\]
+They are distinct even modulo $\sim$.  Only $d_U$ is named in the
+one-constant signature; below we prove that $A_U(d_U,d_U)=q_U$.
+Define the primitive update by
+\begin{align*}
+ C_U(s,j,z)_0&=C_M(s_0,j_0,z_0),\\
+ C_U(s,j,z)_1&=
+ \begin{cases}
+ N_M(j_1,z_1),&s=d_U,\\
+ Q_M(j_0,z_1),&s=q_U,\\
+ d_0,&\text{otherwise},
+ \end{cases}\\
+ C_U(s,j,z)_2&=
+ J_9(s_0,s_1,s_2,j_0,j_1,j_2,z_0,z_1,z_2).
+\end{align*}
+The tests $s=d_U$ and $s=q_U$ here are literal identity in $U$, not
+the target predicate $\sim$.  They are disjoint.  The third coordinate
+makes $C_U:U^3\to U$ injective, and its image avoids both $d_U$ and
+$q_U$ because all image third coordinates differ from $\tau$.
+
+Now define
+\[
+ r_U=C_U(d_U,d_U,d_U),\qquad
+ h_U=C_U(d_U,d_U,q_U).
+\]
+These are distinct by injectivity of $C_U$ and $d_U\ne q_U$; both are
+distinct from $d_U,q_U$ by image separation.  The four raw markers
+$d_U,q_U,r_U,h_U$ are therefore pairwise distinct.  They need not have
+distinct class coordinates or belong to distinct $\sim$ classes.
+
+\subsection{The atomic-class function also supplies four witnesses}
+
+Define $A_U(a,k)$ by first setting
+\[
+ A_U(a,k)_1=A_M(a_0,k_0),\qquad A_U(a,k)_2=\tau.
+\]
+If $a$ is in the image of $C_U$, decode its unique preimage as
+$a=C_U(b,t,u)$ and set
+\[
+ A_U(a,k)_0=
+ \begin{cases}
+ H_M(b_0,t_1),&k=d_U,\\
+ Y_M(b_0,t_1,u_0),&k=q_U,\\
+ W_M(b_0,t_0,u_1),&k=r_U,\\
+ Z_M(b_0,t_1,u_0),&k=h_U,\\
+ q_0,&\text{otherwise}.
+ \end{cases}
+\]
+If $a$ has no $C_U$ preimage, set $A_U(a,k)_0=q_0$.
+The preimage is unique and the four marker cases are disjoint, so this
+is a well-defined total function.  In the hull branch the decoded $u$
+is ignored; the derived hull term uses $u=d_U$.
+
+Since $d_U$ is outside the image of $C_U$, this definition gives
+\[
+ A_U(d_U,d_U)
+   =(q_0,A_M(d_0,d_0),\tau)=q_U.
+\]
+Consequently the one-constant abbreviation computes exactly the raw
+element already used to define $C_U,r_U,h_U,A_U$.  There is no circular
+definition or fixed-point assumption: the elements $d_U,q_U$ were fixed
+first, followed in order by $C_U$, the two composite markers, and $A_U$.
+
+Finally put
+\[
+ V_U(s,j)=(V_M(s_0,j_0),d_0,\tau).
+\]
+Its first coordinate has the required lookup behavior, including
+transport in the assignment argument.  Its other coordinates need not
+implement any native operation.
+
+\subsection{Verification of every role and clause}
+
+For the six derived functions, the identities needed by the native
+clauses are now
+\begin{align*}
+ N_U(a,b)_1&=N_M(a_1,b_1),\\
+ Q_U(j,a)_1&=Q_M(j_0,a_1),\\
+ H_U(b,t)_0&=H_M(b_0,t_1),\\
+ Y_U(b,t,u)_0&=Y_M(b_0,t_1,u_0),\\
+ W_U(s,j,a)_0&=W_M(s_0,j_0,a_1),\\
+ Z_U(b,t,u)_0&=Z_M(b_0,t_1,u_0).
+\end{align*}
+For the retained symbols, $C_U,V_U$ have their native first coordinates,
+and $A_U(j,k)_1=A_M(j_0,k_0)$.  In particular the derived relation
+and empty-seed witness satisfy
+\begin{align*}
+ R_U(b,t,x,y)&\quad\Longleftrightarrow\quad
+ R_M(b_0,t_1,x_0,y_0),\\
+ D_U(x)_0&=D_M(x_0).
+\end{align*}
+For the second identity, expand
+$D_U(x)=W_U(C_U(d_U,q_U,x),d_U,A_U(d_U,q_U))$ and apply the displayed
+coordinate identities.  The atomic-class argument has class coordinate
+$A_M(d_0,q_0)$, as required.
+
+The clauses have consistent object/class usage within each row.
+Specifically, rows 1--2 project the assignment variables to coordinate
+0; rows 3--5 project $s$ to coordinate 0 and $a,b$ to coordinate 1;
+rows 6--7 project $s,j,k$ to coordinate 0; rows 8--9 project $s,j,z$ to
+coordinate 0 and $a$ to coordinate 1; and rows 10--15 project $b$ and
+all witness/set variables to coordinate 0 and $t$ to coordinate 1.
+The identities above therefore turn each clause into the corresponding
+true native clause under an ordinary assignment of its variables in
+$M$.  No variable in any of these rows is forced to serve incompatible
+coordinates.
+
+The four completion clauses also hold.  The surrogate $\sim$ is
+equality of first coordinates and hence satisfies SE1.  If $s\sim t$,
+then $V_U(s,j)_0=V_M(s_0,j_0)=V_M(t_0,j_0)=V_U(t,j)_0$, proving SE2.
+The definition of $E_U$ gives SE3, and $d_0\ne q_0$ gives SE4, including
+its expanded form $\neg(d\sim A(d,d))$.  No congruence for $C,A$,
+$\mathsf{Inc}$ or $G$ is required or silently added.
+
+This proves the upper model construction for both the named and
+one-constant three-function presentations.  Combined with the reverse
+definitional expansion and the inherited native-model existence and
+selective-equality consistency calibration, ZFC proves that each is
+consistent if and only if ZFC is consistent.
+
+The extensional twentieth clause is preserved by the same construction:
+its pairing term uses coordinate-0 update behavior, its NAND and
+quantifier terms use the class-coordinate identities, and its equality
+guards use coordinate 0.  Thus the alternative extensional calibration
+remains available with the corresponding substituted control payload.
+
+\subsection{Exact payload accounting and scope}
+
+The emitter \texttt{three\_function\_sharing.py} reads the pinned SE19
+and SE20 input ASTs, performs all substitutions, writes explicit JSON
+and binary payloads, and checks them with an independent cursor parser.
+Its measured results are:
+\begin{center}
+\begin{tabular}{lrrrrr}
+\toprule
+Presentation & Clauses & Literals & Nodes & Token bits & Payload bits\\
+\midrule
+SE19, two constants &19&45&240&4&1155\\
+SE19, one constant &19&45&268&3&999\\
+SE20, two constants &20&49&284&4&1346\\
+SE20, one constant &20&49&324&3&1182\\
+\bottomrule
+\end{tabular}
+\end{center}
+All four variants use three proper functions, four predicates, and at
+most four local variables per clause.  Maximum term depths are
+respectively $4,4,5,6$.  The nineteen-clause ground-instance polynomial
+is $1+13n^3+5n^4$ for a frontier containing $n$ ground terms; the
+extensional control adds one further cubic row.
+
+The bit format assigns three bits to clause length, three bits to
+literal sign and predicate, a fixed width to each prefix term node,
+and a final three-bit zero clause length.  Thus the main count is
+\[
+ 3\cdot19+3\cdot45+3\cdot268+3=999.
+\]
+Its packed representation occupies 125 bytes with one zero padding bit;
+padding is not part of the logical stream.  All four streams passed
+independent parse round trips, and sixteen selected malformed streams
+were rejected.  These checks establish exact serialization properties,
+not consistency or machine behavior.
+
+The same executable supplies a numeric ground-term codec with radix
+four.  Its constant has code zero, and a proper constructor or the
+single unused unary padding constructor has code
+\[
+ 1+\operatorname{tag}(f)+4\operatorname{tuplecode}
+       (\operatorname{code}(t_1),\ldots,\operatorname{code}(t_k)),
+\]
+where the tags for $V,C,A$ and padding are $0,1,2,3$, respectively.
+The tuple code is right-nested Cantor pairing.  Decoding is a bijection
+from the natural numbers to this conservatively padded ground-term
+language, with every child code strictly below its parent.  The target
+clauses contain no padding symbol.  The recorded checks include 4,096
+numeric-code round trips and 8,428 independent decoded-tree versus
+direct-arithmetic substitution checks.
+
+For stage $n$, the refuter takes every substitution of ground codes
+$0,\ldots,n$ into every clause, retains all resulting endpoint terms,
+and decides the complete finite CNF using the inherited exact DPLL core.
+SAT answers are independently checked against all input clauses.  The
+recorded stages 0 and 1 are SAT for both SE19 and SE20; their clause
+counts are $(19,185)$ and $(20,193)$, respectively.  These finite controls
+assert no consistency result.  The \texttt{--whole-search} mode tries
+successive stages and halts only at UNSAT.  Errors and resource failures
+propagate as errors and are never classified as refutations.
+
+The reduction offers a smaller primitive signature and a three-bit
+template alphabet for subsequent refuter/compiler work.  A fair
+ground-instantiation plus propositional-refutation search on this
+finite equality-free presentation semidecides inconsistency by Herbrand's
+theorem, with $\sim$ treated as an ordinary atom.  Realizing that search,
+including the finite payload and blank-tape initialization, as a binary
+machine with fewer than 245 working states remains an additional task.

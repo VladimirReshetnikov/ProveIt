@@ -1,0 +1,111 @@
+\section{Reproduction, exact artifacts, and incorporation}
+
+The ZIP is a self-contained research packet. Its top-level
+\code{verify.py} requires Python 3.10 or later and only the standard
+library. It requires assertions to be enabled and deliberately rejects
+\code{python -O}. It performs no network request and does not invoke
+Lean, Rocq, or a theorem-prover kernel. Run from the unpacked directory:
+\begin{lstlisting}
+python3 -B verify.py --output /tmp/zfc-layout-verification.json
+\end{lstlisting}
+The optional output path prevents a replay from overwriting the frozen
+verification record. With the archive's manifest present, it also checks
+the exact delivered bytes. The pristine reference contains its own
+105-entry integrity manifest, checked separately.
+
+The positive replay independently parses the pinned literal source;
+reconstructs all five source27 rotation options; compares source sites
+and finite maps; reruns all 8,391 universal instruction cases per layout;
+reruns four block inductions, three arithmetic macros, and nine selectors;
+checks every pruned literal row and target; and verifies all 492 table
+rows lie in the union of macro and instruction proof support. It then
+replays the two complete blank prefixes with a sparse infinite-tape
+representation and compares canonical table bytes and renumberings.
+The delivered run passes all five runtime checks and both complete
+initializations. It took about 15.5 seconds on the preparation host;
+this timing is an observation, not a required reproduction bound.
+
+\begin{center}
+\begin{tabular}{lp{89mm}}
+\toprule
+Directory or file & Contents\\
+\midrule
+\code{report.tex}, \code{sections/} &Editable mathematical report sources\\
+\code{report.pdf} &Rendered report, including both complete transition tables\\
+\code{candidates/} &Five program layouts and old-label runtime tables; canonical tables and whole-tape bootstrap certificates for layouts 0 and 233\\
+\code{reference/context246/} &Unchanged attributed 246-state reference and its original proof/checker material\\
+\code{reference/guard-invariant/} &Inherited product-invariant certificate used by the new searches\\
+\code{code/grammar/} &Source27 grammar libraries, adapted emitter, bounded layout searches, and control-target repair experiment\\
+\code{code/proof/} &Independent source, startup, guard-transport, and identity-collapse checkers\\
+\code{code/runtime/}, \code{code/fusion/} &Portable finite search implementations and exact fixture generators\\
+\code{verification/} &Compact measured results, independent audits, and the final positive replay\\
+\code{PROVENANCE.json}, \code{SHA256SUMS} &Source identities, contribution boundaries, and file integrity\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Large generated finite fixtures and compiled executables are omitted when
+they can be regenerated exactly. Their generators, settings, relevant
+hashes, and compact results are retained. The runtime and fusion READMEs
+give the separate C++17 build and replay commands; these broader searches
+are not rerun by the default positive verifier. This distinction keeps
+the universal theorem checks separate from optimization effort.
+
+The completed layout experiment can be reproduced independently of the
+original wall-clock cutoff using:
+\begin{lstlisting}
+python3 -B code/grammar/plateau_search.py \
+  --ceiling 247 --seconds 2147483647 --max-nodes 10000 \
+  --output /tmp/zfc-layout-247
+python3 -B code/grammar/plateau_search.py \
+  --ceiling 248 --seconds 2147483647 --max-nodes 991 \
+  --output /tmp/zfc-layout-248-prefix
+\end{lstlisting}
+The first run exhausts its queue. The second intentionally reproduces
+only the saved prefix of the unfinished 248-gated search. The historical
+JSON key \code{best_graph_quotient} means the charged metric $c(T)$ defined
+in Section~\ref{sec:search}; it should not be read as full minimization of
+every graph. Elapsed times need not match.
+
+Rebuild the report with two ordinary LaTeX passes:
+\begin{lstlisting}
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{lstlisting}
+The source requires common packages included in a standard TeX Live
+installation. The delivered PDF was rendered and visually checked after
+compilation. Full machine tables are also supplied as plain text, so
+reproduction does not depend on transcribing the PDF.
+
+\subsection{Canonical byte identities}
+
+\begin{description}[style=nextline]
+\item[Layout 0, \code{candidates/layout0/machine.tm}]
+\begingroup\small\ttfamily\raggedright
+471c89d993cbf7fc5ea1822c5cdd589d35ed5661680bcb1017b615badfbf3f22
+\par\endgroup
+\item[Layout 233, \code{candidates/layout233/machine.tm}]
+\begingroup\small\ttfamily\raggedright
+350f1288881adc268a048f24dea09d6f6fab1c7fe0b0f56b83f39e055304289b
+\par\endgroup
+\item[Inherited literal register program, \code{reference/context246/sources/Prog254.v}]
+\begingroup\small\ttfamily\raggedright
+1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746
+\par\endgroup
+\end{description}
+
+The literal format is \code{state read write move target}; the header
+declares the blank start. The canonical working states are 0 through
+245, and 246 is the only halt label. Original labels such as 255--260
+in the research tables are names, not additional states beyond the
+explicit retained set. The provided renumberings make that accounting
+checkable.
+
+For incorporation, retain this packet as research and verification
+material. The two complete layouts may be added alongside Context246
+as alternate 246-state candidates. The three bootless layouts and all
+source-specialization attempts should retain their stated experimental
+status. This work supplies neither a 245-state record claim nor a change
+to the maintained 252-state Lean endpoint. A future smaller machine
+should enter through its own complete table, positive certificates,
+exact initializer, and explicitly calibrated theorem.

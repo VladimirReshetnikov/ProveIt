@@ -1,0 +1,137 @@
+\section{A context-dependent contract for the existing increment of N}
+\label{sec:state18-context}
+
+This addendum extends the generic increment argument without modifying the
+frozen runtime evidence packet. All state numbers below are old Routing245
+labels. Let the dispatcher pointer $p$ be nonempty, contain no seven
+consecutive zeros, and have at least three blank gap cells before the header.
+Registers are arbitrary natural numbers, and the spare suffix is an arbitrary
+nonempty finite list. The external decoder is transparent: it preserves the
+pointer and returns to the same atomic entry on internal returns with an
+unchanged pointer.
+
+\paragraph{Theorem.}
+The existing state 18 correctly increments logical register $N$, appends a
+spare of value one, and performs the prescribed pointer successor whenever
+\[
+p\in\{0,1\}^{*}1\;\cup\;\{0,1\}^{*}10\;\cup\;\{0\}.
+\]
+The theorem uses the same arbitrary-register mark and increment induction
+contracts as the six-entry increment-orientation lemma. It adds no machine
+state and changes no transition.
+
+\paragraph{Literal zero-pulse reduction.}
+Put the first gap cell at coordinate zero; the last pointer bit is then at
+$-1$. On a zero gap cell, the relevant literal rows are
+\[
+\begin{array}{lll}
+18/0=0L27,&27/1=1R39,&39/0=0R57,\\
+27/0=0L32,&32/1=1R46,&46/0=0R39.
+\end{array}
+\]
+If $p$ ends in one, the first line gives the exact trace
+\[
+(18,0)\longrightarrow(27,-1)\longrightarrow(39,0)
+       \longrightarrow(57,1).
+\]
+It preserves every tape cell. If $p$ ends in $10$, the exact trace is
+\[
+\begin{split}
+(18,0)&\longrightarrow(27,-1)\longrightarrow(32,-2)\\
+&\longrightarrow(46,-1)\longrightarrow(39,0)
+ \longrightarrow(57,1).
+\end{split}
+\]
+Again every tape cell is preserved. The singleton pointer $0$ follows the
+second trace, reading the marker one at coordinate $-2$. In each case the
+result is exactly that of the generic zero pulse $0R57$, with two or four
+extra literal steps. No cell outside the displayed window is read or
+written during these replacements.
+
+\paragraph{Induction through the complete increment.}
+The one row is already
+\[
+18/1=0R28,
+\]
+and selector 28 is the inherited mark entry for physical register six,
+which represents logical register $N$. The generic proof requires only
+a zero pulse ending in state 57 one cell to the right, and a one pulse
+clearing that gap cell and entering the selected mark routine. The local
+traces establish precisely those premises for state 18.
+
+The first zero pulse fills the gap through state 42 and returns to the
+unchanged pointer. The one pulse marks physical register six and returns
+again to that unchanged pointer. Therefore the suffix hypothesis remains
+true at the second zero pulse. That pulse clears the second temporary gap
+cell through $57/1=0R73$ and invokes the generic marked increment. The
+inherited register induction increases exactly register six, appends
+$B(1)$, and returns through states 48 and 63. State 7 then performs the
+binary carry, and states 10, 14, 20, and 2 restore the canonical dispatcher
+frame, including the overflow marker displacement. The marker scanner
+preconditions are exactly those in the generic proof: the only scan before
+the increment has at most one extra zero next to the original pointer.
+
+Both uses of the substituted zero pulse see the original unchanged pointer,
+so no new suffix induction hypothesis is needed after binary carry. All
+remaining phases are unchanged, and their termination follows from the same
+unary and finite-list inductions. Relative to the hypothetical generic
+entry $0R57,0R28$, this execution adds exactly four steps when $p$ ends in one
+and eight when it ends in $10$ or is the singleton $0$. This proves the
+theorem.
+
+\subsection{Derived incoming masks for grammar words}
+
+Write $C$ for the fine token implemented by state 18. A transparent binary
+rule $w\to ab$ enters its left child after reading a zero and its right
+child after reading a one. Let $M(w)\subseteq\{0,1\}$ be the incoming
+last-bit values for which the word's interface is admitted. The argument
+below is conditional on the declared interfaces of all other atomic
+entries; observed source masks alone are not proofs of those interfaces.
+
+Keep the ordinary mask $M(C)=\{1\}$, but use the stronger theorem when $C$
+is the immediate left child. If the containing word was entered after a
+one, that call to $C$ has pointer suffix $10$. Hence the recurrence is
+\[
+M(w)=
+\begin{cases}
+\varnothing,&1\notin M(b),\\
+\{1\},&1\in M(b)\text{ and }a=C,\\
+\{0,1\},&1\in M(b),\ a\ne C,\ 0\in M(a),\\
+\varnothing,&\text{otherwise}.
+\end{cases}
+\]
+The right-child check already accepts $b=C$, since its ordinary mask
+contains one. A nonterminal left child must itself admit incoming zero;
+a nonterminal right child must admit incoming one. In particular, a
+right-only derived word cannot be embedded on a left edge merely because
+its own parent is entered from a one: the child immediately sees the left
+edge's zero. This distinction is essential.
+
+For an acyclic grammar, induction on the word dependency graph proves
+the recurrence sound relative to its atomic premises. A direct $C$ on the
+left introduces the sole new dependence on the containing word's incoming
+bit. All other child interfaces are checked on the actual edge bit. A word
+whose mask is empty is rejected. Roots with unknown entry bit, including
+conservatively treated routing roots, require mask $\{0,1\}$. Requiring
+both bits even at the absolute root deliberately forgoes the exceptional
+singleton-marker case; this is conservative and cannot introduce an
+unsound grammar.
+
+\paragraph{Implementation review.}
+The independently inspected implementation in
+\nolinkurl{anneal_fine_contextual18.cpp} represents masks by bits one and two
+for incoming zero and one. Its \texttt{derived\_mask} and
+\texttt{context\_ok} functions implement the displayed recurrence, require
+both bits at every declared root and routing root, and reject empty masks
+at all retained grammar words. These checks run on the seed and after
+closure before an accepted mutation. Proposal routines may provisionally
+permit $C$ on a left edge, because the final derived-mask check enforces
+the contextual condition.
+
+\paragraph{Verification boundary.}
+The exact local zero-pulse trace has an executable row checker in this
+addendum. The unbounded increment argument uses the inherited induction
+contracts. The grammar recurrence is a compositional rule relative to
+atomic contracts, not a proof of a whole new machine or of its blank
+initializer. Every resulting table still requires its actual whole-frame
+and blank-start verification. No new proof-kernel endpoint is claimed.

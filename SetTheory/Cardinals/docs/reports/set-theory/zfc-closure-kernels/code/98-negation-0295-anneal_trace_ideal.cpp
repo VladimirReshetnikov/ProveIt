@@ -1,0 +1,120 @@
+// Trace-ideal quotient extension of the attributed routing-aware trace annealer.
+// New: arbitrary left/right trace factors, one-new-node residual reparsing,
+// and an explicit commuting-child swap. See NOTICE.txt and README.md.
+#include <algorithm>
+#include <chrono>
+#include <cmath>
+#include <fstream>
+#include <iostream>
+#include <numeric>
+#include <queue>
+#include <array>
+#include <random>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <vector>
+using namespace std;
+struct Rule{int a,b;}; using Grammar=unordered_map<int,Rule>;
+struct Constraint{int target;string prefix;};
+struct Group{int source,read;vector<Constraint> cs;};
+vector<Group> groups;
+vector<pair<int,Constraint>> fixed_projections;
+struct Expr{char kind;int a,b;};vector<Expr> exprs;unordered_map<string,int> atomExpr;int originalExpr=-1;
+Grammar oldGrammar;
+struct Prop{int lead,zero,depth;};
+Prop join(Prop a,Prop b){return {1+a.lead,max({1+a.lead,a.zero,b.zero}),1+max(a.depth,b.depth)};}
+vector<string> words;unordered_map<string,int> ids;vector<int> roots;unordered_map<string,int> allowed;
+unordered_map<char,pair<int,bool>> tokeninfo;bool independent[128][128]={};
+unordered_map<string,string> normalcache;
+string norm(const string&s){
+ if(ids.count(s))return s;
+ auto old=normalcache.find(s);if(old!=normalcache.end())return old->second;
+ int n=s.size();vector<vector<int>>edges(n);vector<int>degree(n);unordered_map<char,int>last;
+ for(int i=0;i<n;i++){
+  auto [mask,halt]=tokeninfo.at(s[i]);
+  for(auto[d,j]:last){auto[m2,h2]=tokeninfo.at(d);if(!independent[(unsigned char)s[i]][(unsigned char)d]){edges[j].push_back(i);degree[i]++;}}
+  last[s[i]]=i;
+ }
+ priority_queue<pair<char,int>,vector<pair<char,int>>,greater<pair<char,int>>>ready;
+ for(int i=0;i<n;i++)if(!degree[i])ready.push({s[i],i});
+ string out;out.reserve(n);
+ while(!ready.empty()){auto[c,i]=ready.top();ready.pop();out.push_back(c);for(int j:edges[i])if(--degree[j]==0)ready.push({s[j],j});}
+ if(out.size()!=s.size()){cerr<<"canonicalization error"<<endl;exit(10);}
+ if(normalcache.size()<200000)normalcache[s]=out;
+ return out;
+}
+int intern(const string&raws){string s=norm(raws);auto it=ids.find(s);if(it!=ids.end())return it->second;int q=words.size();ids[s]=q;words.push_back(s);return q;}
+bool terminal(int q){return allowed.count(words[q]);}
+bool permitted(int a,int b){return (!terminal(a)||(allowed[words[a]]&1))&&(!terminal(b)||(allowed[words[b]]&2));}
+bool collect(Grammar&g,const vector<int>&route){unordered_set<int>seen;vector<int> todo=roots;todo.insert(todo.end(),route.begin(),route.end());while(!todo.empty()){int q=todo.back();todo.pop_back();if(terminal(q)||!seen.insert(q).second)continue;auto it=g.find(q);if(it==g.end())return false;todo.push_back(it->second.a);todo.push_back(it->second.b);}for(auto it=g.begin();it!=g.end();)if(!seen.count(it->first))it=g.erase(it);else++it;return true;}
+bool matches(const Grammar&g,int q,const vector<Constraint>&cs){for(auto c:cs){int v=q;for(char b:c.prefix){auto it=g.find(v);if(it==g.end())return false;v=b=='0'?it->second.a:it->second.b;}if(v!=c.target)return false;}return true;}
+bool route_contexts(const Grammar&g,vector<int>&route,mt19937_64&rng,bool randomize=false){for(auto [q,c]:fixed_projections)if(!matches(g,q,vector<Constraint>{c}))return false;for(int i=0;i<(int)groups.size();i++){if(!randomize&&matches(g,route[i],groups[i].cs))continue;vector<int> opts;for(auto [q,r]:g)if(matches(g,q,groups[i].cs))opts.push_back(q);if(opts.empty())return false;route[i]=opts[rng()%opts.size()];}return true;}
+Prop wordprop(int,const Grammar&,unordered_map<int,Prop>&,unordered_map<int,Prop>&,unordered_set<int>&);
+Prop exprprop(int x,const Grammar&g,unordered_map<int,Prop>&wm,unordered_map<int,Prop>&em,unordered_set<int>&seen){auto it=em.find(x);if(it!=em.end())return it->second;auto e=exprs[x];Prop p;if(e.kind=='L')p={0,0,0};else if(e.kind=='W')p=wordprop(e.a,g,wm,em,seen);else p=join(exprprop(e.a,g,wm,em,seen),exprprop(e.b,g,wm,em,seen));em[x]=p;return p;}
+Prop wordprop(int q,const Grammar&g,unordered_map<int,Prop>&wm,unordered_map<int,Prop>&em,unordered_set<int>&seen){auto it=wm.find(q);if(it!=wm.end())return it->second;if(!seen.insert(q).second)return {10000,10000,10000};Prop p;if(terminal(q))p=exprprop(atomExpr.at(words[q]),g,wm,em,seen);else{auto it=g.find(q);Rule r=it==g.end()?oldGrammar.at(q):it->second;p=join(wordprop(r.a,g,wm,em,seen),wordprop(r.b,g,wm,em,seen));}seen.erase(q);wm[q]=p;return p;}
+Prop fullprop(const Grammar&g){unordered_map<int,Prop>wm,em;unordered_set<int>seen;return exprprop(originalExpr,g,wm,em,seen);}
+void save(const string&path,const Grammar&g,const vector<int>&route,long long iterations,int seed,double elapsed){ofstream f(path);Prop p=fullprop(g);f<<"{\n\"status\":\"ABSTRACT_TRACE_IDEAL_GRAMMAR_ONLY\",\n\"rules_count\":"<<g.size()<<",\n\"framework_states\":118,\n\"erase177\":true,\n\"retarget\":-2,\n\"seed\":"<<seed<<",\n\"iterations\":"<<iterations<<",\n\"seconds\":"<<elapsed<<",\n\"properties\":["<<p.lead<<","<<p.zero<<","<<p.depth<<"],\n\"roots\":[";for(size_t i=0;i<roots.size();i++){if(i)f<<",";f<<"\""<<words[roots[i]]<<"\"";}f<<"],\n\"routes\":[";for(size_t i=0;i<route.size();i++){if(i)f<<",";f<<"{\"source\":"<<groups[i].source<<",\"read\":"<<groups[i].read<<",\"word\":\""<<words[route[i]]<<"\"}";}f<<"],\n\"rules\":[\n";vector<int>order;for(auto[q,r]:g)order.push_back(q);sort(order.begin(),order.end(),[](int a,int b){return words[a]<words[b];});for(size_t i=0;i<order.size();i++){auto q=order[i];auto r=g.at(q);if(i)f<<",\n";f<<"[\""<<words[q]<<"\",\""<<words[r.a]<<"\",\""<<words[r.b]<<"\"]";}f<<"\n]}\n";}
+int synth_child(Grammar&g,const vector<Constraint>&cs,const vector<int>&active,mt19937_64&rng){
+ for(auto c:cs)if(c.prefix.empty()){if(matches(g,c.target,cs))return c.target;return -1;}
+ vector<int>opts;for(int q:active)if(matches(g,q,cs))opts.push_back(q);
+ if(!opts.empty()&&rng()%5)return opts[rng()%opts.size()];
+ int forced[2]={-1,-1};for(auto c:cs){if(c.prefix.size()!=1)return -1;int b=c.prefix[0]-'0';if(forced[b]>=0&&forced[b]!=c.target)return -1;forced[b]=c.target;}
+ for(int tries=0;tries<30;tries++){int ab[2]={forced[0],forced[1]};for(int b=0;b<2;b++)if(ab[b]<0){ab[b]=active[rng()%active.size()];if(words[ab[b]].size()>30)ab[b]=active[rng()%active.size()];}if(words[ab[0]].size()+words[ab[1]].size()>80||!permitted(ab[0],ab[1]))continue;int q=intern(words[ab[0]]+words[ab[1]]);g[q]={ab[0],ab[1]};return q;}return -1;
+}
+bool router_move(Grammar&g,vector<int>&route,mt19937_64&rng){int i=rng()%groups.size();vector<Constraint> cs[2];for(auto c:groups[i].cs){if(c.prefix.empty())return false;cs[c.prefix[0]-'0'].push_back({c.target,c.prefix.substr(1)});}vector<int>active;for(auto[q,r]:g)active.push_back(q);for(auto[c,m]:allowed)active.push_back(intern(c));int ab[2];for(int b=0;b<2;b++){ab[b]=synth_child(g,cs[b],active,rng);if(ab[b]<0)return false;}if(words[ab[0]].size()+words[ab[1]].size()>160||!permitted(ab[0],ab[1]))return false;int q=intern(words[ab[0]]+words[ab[1]]);g[q]={ab[0],ab[1]};route[i]=q;return true;}
+// A trace left divisor need not be a string prefix of its canonical word.
+// Pull each requested letter left through only independent preceding letters.
+// Reversal computes right quotients by the same sound procedure.
+unordered_map<unsigned long long,int> quotient_cache;
+int quotient(int q,int f,bool right){
+ if(words[f].size()>=words[q].size())return -1;
+ unsigned long long key=(static_cast<unsigned long long>(q)<<33)|(static_cast<unsigned long long>(f)<<1)|right;
+ auto it=quotient_cache.find(key);if(it!=quotient_cache.end())return it->second;
+ string rest=words[q],factor=words[f];if(right){reverse(rest.begin(),rest.end());reverse(factor.begin(),factor.end());}
+ bool ok=true;
+ for(char c:factor){size_t j=0;while(j<rest.size()&&rest[j]!=c){if(!independent[(unsigned char)c][(unsigned char)rest[j]])break;j++;}
+  if(j==rest.size()||rest[j]!=c){ok=false;break;}rest.erase(j,1);}
+ int result=-1;if(ok){if(right)reverse(rest.begin(),rest.end());result=intern(rest);}
+ if(quotient_cache.size()<600000)quotient_cache[key]=result;return result;
+}
+bool ideal_move(Grammar&g,mt19937_64&rng){
+ vector<int>active,nodes;for(auto[q,r]:g){active.push_back(q);nodes.push_back(q);}for(auto[c,m]:allowed)active.push_back(intern(c));
+ int q=nodes[rng()%nodes.size()];
+ for(int tries=0;tries<14;tries++){
+  int f=active[rng()%active.size()];bool right=rng()%2;int residual=quotient(q,f,right);if(residual<0)continue;
+  Rule top=right?Rule{residual,f}:Rule{f,residual};if(!permitted(top.a,top.b))continue;
+  if(terminal(residual)||g.count(residual)){g[q]=top;return true;}
+  for(int j=0;j<14;j++){
+   int x=active[rng()%active.size()];bool rr=rng()%2;int y=quotient(residual,x,rr);if(y<0||(!terminal(y)&&!g.count(y)))continue;
+   Rule lower=rr?Rule{y,x}:Rule{x,y};if(!permitted(lower.a,lower.b))continue;
+   g[residual]=lower;g[q]=top;return true;
+  }
+ }
+ return false;
+}
+bool commute_move(Grammar&g,mt19937_64&rng){vector<int>active;for(auto[q,r]:g)active.push_back(q);int q=active[rng()%active.size()];Rule r=g.at(q);if(!permitted(r.b,r.a)||norm(words[r.b]+words[r.a])!=words[q])return false;g[q]={r.b,r.a};return true;}
+
+int main(int argc,char**argv){if(argc<6){cerr<<"grammar constraints output seconds seed [stopcount=127]"<<endl;return 2;}ifstream ti(argv[9]);int nt;ti>>nt;for(int i=0;i<nt;i++){char c;int m,h;ti>>c>>m>>h;tokeninfo[c]={m,bool(h)};}ifstream pairInput(argv[10]);int ni;pairInput>>ni;for(int i=0;i<ni;i++){char a,b;pairInput>>a>>b;independent[(unsigned char)a][(unsigned char)b]=independent[(unsigned char)b][(unsigned char)a]=true;}ifstream f(argv[1]);string output=argv[3];double seconds=stod(argv[4]);int seed=stoi(argv[5]),stopcount=argc>6?stoi(argv[6]):127;int nr,nroot,na;f>>nr>>nroot>>na;vector<tuple<string,string,string>>raw;Grammar initial;for(int i=0;i<nr;i++){string q,a,b;f>>q>>a>>b;intern(q);raw.push_back({q,a,b});}for(auto[q,a,b]:raw){int id=intern(q);initial[id]={intern(a),intern(b)};}for(int i=0;i<nroot;i++){string s;f>>s;roots.push_back(intern(s));}for(int i=0;i<na;i++){string c;int m;f>>c>>m;allowed[norm(c)]=m;}for(auto[c,m]:allowed)intern(c);oldGrammar=initial;
+ ifstream cf(argv[2]);int ng;cf>>ng;vector<int>initialroute;for(int i=0;i<ng;i++){Group gr;string rt;int nc;cf>>gr.source>>gr.read>>rt>>nc;initialroute.push_back(intern(rt));for(int j=0;j<nc;j++){string p,t;cf>>p>>t;gr.cs.push_back({intern(t),p});}groups.push_back(gr);}int ne,natom;cf>>ne>>originalExpr>>natom;for(int i=0;i<ne;i++){char k;cf>>k;Expr e{k,-1,-1};if(k=='W'){string w;cf>>w;e.a=intern(w);}else if(k=='N')cf>>e.a>>e.b;exprs.push_back(e);}for(int i=0;i<natom;i++){string c;int a;cf>>c>>a;atomExpr[norm(c)]=a;}
+ if(argc>7){ifstream lf(argv[7]);int nl;lf>>nl;for(int i=0;i<nl;i++){string w,b,t;lf>>w>>b>>t;int q=intern(w);fixed_projections.push_back({q,{intern(t),b}});if(find(roots.begin(),roots.end(),q)==roots.end())roots.push_back(q);}}
+ if(argc>8){ifstream sf(argv[8]);int ns;sf>>ns;initial.clear();for(int i=0;i<ns;i++){string w,a,b;sf>>w>>a>>b;int q=intern(w);initial[q]={intern(a),intern(b)};}int nrt;sf>>nrt;if(nrt!=int(initialroute.size()))return 8;for(int i=0;i<nrt;i++){string w;sf>>w;initialroute[i]=intern(w);}}
+ mt19937_64 rng(seed);uniform_real_distribution<double>uni(0,1);if(!collect(initial,initialroute))return 12;if(!route_contexts(initial,initialroute,rng)){cerr<<"initial routes fail"<<endl;return 4;}auto ip=fullprop(initial);cerr<<"INITIAL "<<initial.size()<<" props "<<ip.lead<<","<<ip.zero<<","<<ip.depth<<endl;
+ Grammar current=initial,best=initial;vector<int>curroute=initialroute,bestroute=initialroute;int currentn=current.size(),bestn=currentn;long long iter=0,accepted=0,uphill=0,restarts=0,lastbest=0;auto begin=chrono::steady_clock::now();double elapsed=0;save(output,best,bestroute,0,seed,elapsed);
+ while((elapsed=chrono::duration<double>(chrono::steady_clock::now()-begin).count())<seconds){iter++;Grammar next=current;auto nextroute=curroute;int move_kind=rng()%100;bool changed=true;
+ if(move_kind<40){vector<int>active;for(auto[q,r]:current)active.push_back(q);int q=active[rng()%active.size()];Rule r=current.at(q);if(rng()%5==0&&permitted(r.b,r.a)&&intern(words[r.b]+words[r.a])==q){next[q]={r.b,r.a};}else {bool left=rng()%2;int a,b,c,part;if(left){if(terminal(r.a))continue;auto s=current.at(r.a);a=s.a;b=s.b;c=r.b;part=intern(words[b]+words[c]);if(!permitted(a,part))continue;if(!next.count(part)){if(!permitted(b,c))continue;next[part]={b,c};}next[q]={a,part};}else{if(terminal(r.b))continue;auto s=current.at(r.b);a=r.a;b=s.a;c=s.b;part=intern(words[a]+words[b]);if(!permitted(part,c))continue;if(!next.count(part)){if(!permitted(a,b))continue;next[part]={a,b};}next[q]={part,c};}}}
+ else if(move_kind<58){vector<int>active;for(auto[q,r]:current)active.push_back(q);int q=active[rng()%active.size()];string w=words[q];vector<Rule>opts;for(size_t kk=1;kk<min(w.size(),size_t(20));kk++){size_t k=w.size()<20?kk:1+rng()%(w.size()-1);string sa=w.substr(0,k),sb=w.substr(k);if(rng()%2&&independent[(unsigned char)sa.back()][(unsigned char)sb.front()])swap(sa.back(),sb.front());auto ai=ids.find(norm(sa)),bi=ids.find(norm(sb));if(ai==ids.end()||bi==ids.end())continue;int x=ai->second,y=bi->second;if((terminal(x)||current.count(x))&&(terminal(y)||current.count(y))&&permitted(x,y))opts.push_back({x,y});}if(opts.empty())changed=false;else next[q]=opts[rng()%opts.size()];}
+ else if(move_kind<84)changed=ideal_move(next,rng);
+ else if(move_kind<90)changed=commute_move(next,rng);
+ else if(move_kind<94)changed=route_contexts(next,nextroute,rng,true);
+ else changed=router_move(next,nextroute,rng);
+ if(!changed||!route_contexts(next,nextroute,rng))continue;if(!collect(next,nextroute))continue;int nn=next.size();double phase=double(iter%900000)/900000.0;double temp=(0.10+0.55*(1.0-phase));bool ok=nn<=currentn||(nn<=bestn+5&&uni(rng)<exp((currentn-nn)/temp));if(ok){auto p=fullprop(next);if(p.zero>6||p.depth>64)ok=false;}if(ok){if(nn>currentn)uphill++;current=move(next);curroute=move(nextroute);currentn=nn;accepted++;}
+ if(currentn==bestn&&uni(rng)<0.015){best=current;bestroute=curroute;}
+ if(currentn<bestn){best=current;bestroute=curroute;bestn=currentn;lastbest=iter;save(output,best,bestroute,iter,seed,elapsed);cout<<"BEST "<<bestn<<" iter "<<iter<<" seconds "<<elapsed<<" pool "<<words.size()<<endl;if(bestn<=stopcount)break;}
+ if(iter%40000==0)cout<<"progress "<<iter<<" best "<<bestn<<" current "<<currentn<<" sec "<<elapsed<<" pool "<<words.size()<<endl;
+ if(iter%40000==0&&iter-lastbest>40000){bool orig=(restarts%5==0);current=orig?initial:best;curroute=orig?initialroute:bestroute;currentn=current.size();restarts++;}
+ }
+ save(output,best,bestroute,iter,seed,elapsed);cout<<"DONE "<<iter<<" best "<<bestn<<" accepted "<<accepted<<" uphill "<<uphill<<" restarts "<<restarts<<" sec "<<elapsed<<endl;
+}
+

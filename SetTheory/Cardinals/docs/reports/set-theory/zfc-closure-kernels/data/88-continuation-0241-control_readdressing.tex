@@ -1,0 +1,74 @@
+\section{Readdressing control operands after a decoder change}
+\label{sec:control-readdressing}
+
+A control operand is a relative address in the cons-tree layout.  A
+continue instruction of depth two before a rotation may need depth three
+afterwards to reach the same next instruction occurrence.  Requiring
+literal equality of the two operands would reject this valid
+readdressing.  The appropriate finite certificate compares their actual
+resolved destinations.
+
+For a consumed-path register program, assign each instruction occurrence
+the operational label
+\[
+ L(v)=\begin{cases}
+  (\mathrm{inc},r),&v=\mathrm{CI}(r),\\
+  (\mathrm{dec},r),&v=\mathrm{CD}(r),\\
+  \mathrm{halt},&v=\mathrm{CH},\\
+  \mathrm{control},&v=\mathrm{CB}(k)\text{ or }v=\mathrm{CC}(k).
+ \end{cases}
+\]
+The last two primitive kinds preserve every register.  Their operands
+still matter when computing their successor: the checker applies the
+actual strip-and-increment rule for each break, the actual strip rule
+for each continue, and the candidate's own decoder with its implicit
+zero suffix.  The operands are omitted only from the subsequent label
+comparison, after their destinations have been calculated.
+
+\begin{theorem}[Operational control-graph certificate]
+Let $P$ and $P'$ be finite acyclic decoders.  Suppose a bijection $f$
+between their instruction occurrences preserves operational labels and
+initial control, and maps each resolved successor to the corresponding
+successor.  For decrements, zero and positive successors must match in
+their respective order.  Then the two consumed-path register programs
+have identical halting behavior from corresponding controls and equal
+register vectors, for every natural register vector.  Finite halting
+computations also have equal primitive-step counts and final registers.
+\end{theorem}
+\begin{proof}
+Relate $(v,R)$ in $P$ to $(f(v),R)$ in $P'$.  An increment has the same
+operand and therefore the same update.  A decrement reads the same
+register, takes the same guard, and has the same update.  A control
+instruction changes no register.  The successor premise gives related
+output controls in each case.  Halt labels agree and are terminal in
+both programs.  This is a deterministic one-instruction bisimulation;
+induction on a finite run proves both directions and preserves its
+length and final register vector.
+\end{proof}
+
+For \texttt{s10\_best\_004}, the independent verifier compares the
+candidate to the already certified color-106 commuted seed using
+depth-first occurrence number as $f$.  Both have 6,460 occurrences and
+8,390 guarded successor edges.  Every operational label, every resolved
+successor, and the initial occurrence match.  Exactly 115 literal
+operands differ, all from $\mathrm{CC}(2)$ to $\mathrm{CC}(3)$; no
+increment or decrement operand changes.  The candidate has 203 shared
+pair nodes and maximum path depth 45.  Its source equivalence follows
+from the theorem and composes with the earlier region-contraction proof.
+
+The portable checker is
+\texttt{code/audit/check\_reassociated\_graph.py}, invoked with the
+explicit \texttt{--operational-controls} option.  Without that option it
+continues to require literal equality of all instruction operands.  Its
+JSON record lists every changed control occurrence and explicitly records
+that literal operand equality is false while operational-label and
+resolved-successor equality are true.
+
+This source result does not establish the blank-tape target for the
+emitted binary table.  The separate affine runtime checker validates all
+8,391 guarded frame contracts at minimum header distance 64, but the
+blank bootstrap of this table has not been calibrated.  It is retained
+as a validated source and runtime experiment, not as a new blank-input
+consistency machine.  A successful bootstrap search could close this gap
+after exact full-tape replay and verification of the inherited logical
+initialization hypotheses; no such audited prefix has been found here.

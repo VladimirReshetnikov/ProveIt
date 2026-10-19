@@ -1,0 +1,167 @@
+\section{New runtime and compiler-interface results}
+\label{sec:runtime-new}
+
+This investigation found additional freedom in the interface between the
+literal register-machine runtime and its compressed grammar. It did not
+construct a verified machine below 245 states. In particular, the negative
+search results below do not constitute a lower bound on Turing-machine size.
+
+\subsection{Observed incoming bits are not semantic contracts}
+
+The source extractor associates each closed atomic block with the final
+incoming bits observed at its original occurrences. Those masks are useful
+conservative restrictions, but an unobserved incoming bit can be valid.
+The accompanying increment-orientation lemma gives an ordinary mathematical
+proof, using the inherited arbitrary-register mark and increment contracts,
+that existing states 39, 72, and 93 admit both incoming bits. These entries
+implement increments of $X,H,Y$, respectively. Their original grammar symbols
+are $h,m,r$, and their fine-alphabet tokens are $A,T,F$. No literal transition
+changes and no extra state is charged. State 70, already used on both sides,
+and existing states 169 and 201 satisfy the same lemma.
+
+The exact local row premises are checked by
+\texttt{check\_increment\_orientation\_rows.py}. This check is not a proof-kernel
+certificate for the induction hypotheses. The mathematical argument is in
+\texttt{increment\_orientation\_lemma.tex}.
+
+\subsection{A wider symbolic survey of concrete control contexts}
+
+We then preserved the inherited affine symbolic executor unchanged and
+replaced only the external decoder by a transparent virtual decoder. Internal
+atomic syntax is reconstructed using the actual Routing245 reassociation.
+The experiment quantifies register values, nonempty finite spare suffixes,
+and header slack through the inherited induction contracts. Its external
+pointer prefixes are concrete, so it must not be promoted into a theorem
+about all possible control contexts.
+
+For each unambiguous physical atomic entry except the complete-program entry
+150, the exhaustive short-prefix survey considers every nonempty binary
+outer prefix of length at most seven with no seven consecutive zeros.
+There are 126 ending in zero and 127 ending in one. Primitive paths whose
+concatenation violates this scanner precondition are excluded. The executor
+checked 42,796 primitive cases before the configured first failure in each
+rejected orientation. Fourteen previously one-sided entries passed both
+orientations throughout the tested contexts:
+\[
+17,36,39,67,72,77,93,110,122,125,127,146,149,204.
+\]
+The three increments above have the separate general argument. For the
+remaining entries, these survey results are search guidance: a concrete
+candidate must replay every one of its actual terminal paths on its own
+literal table. The same test also rejects state 81 in a synthetic context
+matching its originally observed bit, demonstrating why an observed mask
+alone is not a sufficient closed-block specification.
+
+This boundary was tested constructively during the investigation. A new
+128-rule, fully bootstrap-unlocked grammar used three additional orientations
+(states 77, 67, and 127). Its source bisimulation passed, but replay on its
+compiled literal table failed at pointer $001010$. Its blank execution
+also reaches state 42 after 51 steps with head 5 and ones exactly
+$\{-3,0,2,3\}$; the row $42/0=1R42$ then writes forever along a blank right
+ray. This is a rejected candidate, not an independence machine. The example
+does not isolate terminal orientation as the cause: further reassociation
+inside the physical atoms and the unlocked bootstrap are additional changed
+conditions. It does establish that the finite baseline-atom survey cannot
+replace the full candidate proof.
+
+State 150, the complete changed program, was tested separately on three
+outer prefixes per orientation. It passed 25,020 primitive obligations per
+orientation. This smaller finite set is not included in the fourteen-entry
+short-prefix claim.
+
+\subsection{A suffix-sensitive increment entry}
+
+State 18, increment of $N$, is different from the generic increment family.
+Its zero row enters state 27 one cell to the left. If the pointer ends in one,
+the row $27/1=1R39$ restores the generic pulse. If the pointer ends in $10$,
+the rows
+\[
+27/0=0L32,\quad32/1=1R46,\quad46/0=0R39
+\]
+do the same. A singleton zero pointer also uses the preceding marker one.
+Thus the additional safe left orientation has a two-bit context condition:
+the outer pointer must end in $10$, with the marker handling the singleton
+case. By contrast, a suffix $00$ routes through
+\[
+32/0=0R45,\quad45/0=0R21,\quad21/0=0R30,
+\]
+and the third pulse uses $30/1=0R95$, the decrement backend, instead of the
+increment backend 73. This is a concrete reason to retain a context
+restriction, even after relaxing the other increments.
+
+A second survey considered all 506 legal outer prefixes of lengths one
+through eight for states 18, 51, 68, 144, 145, and 148. Its affine outcomes
+match exactly the predicates ``not ending in $00$'' for 18, ``ending in zero''
+for 51, 144, and 148, and ``ending in one'' for 68 and 145. This is finite
+control evidence for those predicates, not a completeness theorem.
+A grammar compiler could propagate context-dependent word masks: for
+example, a word having state 18 on its left edge may be admissible as a right
+child even when it is inadmissible as a left child. That is a distinct next
+optimization from simply declaring every terminal two-sided.
+
+\subsection{Simultaneous deletion with two independently replaced incoming actions}
+
+Earlier independent-splice screening can miss a compensating pair of edits
+when each edit fails on its own. We therefore tested the two actions
+simultaneously. For every eligible state with exactly two external incoming
+rows, delete that state and replace both incoming actions independently by
+any write bit, direction, and remaining working-state target. There are
+244 remaining targets and four write--direction combinations, so each of
+the 54 deleted-state choices defines
+\[
+(4\cdot244)^2=952,576
+\]
+action pairs, a combined family of 51,439,104.
+
+The finite fixtures are the inherited 8,385 exact whole-frame representative
+cases in \nolinkurl{candidate245-literal-cases.txt.gz}. They use header distance
+181 and 167 spare blocks of value one. The unchanged baseline passes every
+case and exercises all 490 literal rows; the maximum baseline run length
+is 2,686 steps. The search uses a 20,000-step limit and a 2,048-cell window,
+with exact final tape and head comparison at dispatcher 96. Halt is treated
+separately. It does not assume that the fixtures are blank-reachable.
+
+Sound prefix pruning rejects an entire first-action branch only if the
+chosen witness fails before encountering the second edited row. Otherwise
+the second actions are enumerated from the suspended configuration. The
+completed run executes 9,555,040 joint branches; 2,703 pass its initial
+small witness set, and none pass all affected fixtures. Unaffected baseline
+fixtures have unchanged executions. These counts and all 54 state choices
+are recorded in \texttt{coupled-complete.jsonl}. The family excludes adding
+new states, changing the entry invariant, or changing any other row; targets
+are remaining working states, not the halt state. The bounded result says
+only that this specified family produced no accepted candidate.
+
+\subsection{Joint grammar and scanner cost}
+
+The scanner currently needs eight zero-detection states because a valid
+pointer can contain six zeros and an intermediate phase contributes one
+additional zero. A previously audited 116-state framework is available
+when the source pointer bound is reduced to five. Consequently, two paths
+would each reach 244 states:
+\[
+117+127=244,\qquad116+128=244.
+\]
+The latter requires a genuine zero-five grammar and its compatible runtime
+and initializer, not deletion of a scanner state from the current grammar.
+Reducing total derivation depth alone does not save a scanner state: total
+depth and maximum consecutive-zero length are different resources.
+
+A new joint objective searches
+\[
+\#\mathrm{grammar\ rules}
+  +\mathbf1\{\mathrm{maximum\ zero\ run}=6\},
+\]
+subject to zero-run bound six and depth bound 64. Cost at most 128 is the
+prospective threshold, before whole-frame and blank-start verification.
+This runtime lane uses seed 181804 for 600 seconds with the fourteen-mask,
+bootstrap-unlocked source supplied by the grammar investigation. The exact
+final metadata and outcome are recorded in \texttt{joint-cost-run.json};
+the grammar is an abstract search artifact until compiled and replayed.
+
+\paragraph{Verification boundary.}
+Neither the finite deletion search, the control-prefix survey, nor an
+abstract grammar count proves a new consistency machine. The positive
+reusable result here is the increment interface lemma, together with
+explicit additional search freedom that can be discharged on a complete
+candidate. No new Lean or Rocq endpoint is claimed.

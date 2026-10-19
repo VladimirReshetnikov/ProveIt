@@ -1,0 +1,209 @@
+{
+  "status": "NO_VALID_SMALLER_BINARY_MACHINE_FROM_THESE_SEARCHES",
+  "scope": "Discovery and finite counterexample filtering. Bounded rejection is not a lower bound on the true minimum number of states.",
+  "base_working_states": 246,
+  "base_cases": 8391,
+  "base_fixture": {
+    "header_distance": 40,
+    "primary_values": "(3*i)%7 for physical i=0..8; guarded CD value replaced by0 or1",
+    "spares": [
+      0
+    ]
+  },
+  "base_bounds": {
+    "maximum_transitions_per_case": 4000,
+    "maximum_intermediate_dispatch_visits": 15,
+    "tape_coordinates": [
+      -128,
+      383
+    ]
+  },
+  "uniform_redirects": {
+    "recipes": 60025,
+    "survivors": 0,
+    "modes": [
+      "exact output tape",
+      "arbitrary valid nonempty spare suffix",
+      "also arbitrary translation and output header distance>=40"
+    ]
+  },
+  "single_row_target_changes": {
+    "eligible_rows": 469,
+    "recipes": 459620,
+    "exact_output_survivors": 785,
+    "spare_relaxed_survivors": 788,
+    "translation_gap_relaxed_survivors": 788,
+    "state_saving_claim": false
+  },
+  "affine_recheck_of_exact_edge_survivors": {
+    "checked": 751,
+    "passed": 735,
+    "failed": 16,
+    "inside_opaque_register_macro_not_checked": 34,
+    "premise": "Existing universal register macro contracts remain valid; oracle-internal edited rows are excluded."
+  },
+  "combined_incoming_edge_eliminations": {
+    "targets": [
+      30,
+      39,
+      42,
+      57,
+      67,
+      69,
+      122,
+      235
+    ],
+    "recipes_by_target": [
+      1906080,
+      60,
+      30,
+      14040,
+      1,
+      20,
+      1,
+      1
+    ],
+    "recipes_total": 1920233,
+    "survivors": 0
+  },
+  "exact_affine_program_analysis": {
+    "registers": 9,
+    "field": "rational",
+    "postfix_obligations_checked": true,
+    "worklist_pops": 25372,
+    "extra_excluded_guards": [],
+    "same_known_exclusions": [
+      8202,
+      8203,
+      8204,
+      8358,
+      8359,
+      8360
+    ]
+  },
+  "rotation245_repairs": {
+    "fixture": "All8391rotatedguarded sites; physical registers[0,1,2,3,5,8,13,21,34], guarded CD value0or17; one spare0, header distance40.",
+    "bounds": {
+      "maximum_transitions_per_case": 20000,
+      "maximum_intermediate_dispatch_visits": 15,
+      "tape_coordinates": [
+        -128,
+        383
+      ]
+    },
+    "single218_row": {
+      "recipes": 980,
+      "survivors": 0
+    },
+    "first_case_surviving_entry_plus_target_row": {
+      "recipes": 25480,
+      "survivors": 0
+    },
+    "first_case_surviving_entry_plus_next_zero_row": {
+      "recipes": 10780,
+      "survivors": 0
+    },
+    "alias_branch_plus_selected_genuine_caller_row": {
+      "recipes": 27440,
+      "survivors": 0
+    },
+    "arbitrary_third_row_after_fixed_two_row_alias": {
+      "bases": [
+        [
+          246,
+          179
+        ],
+        [
+          246,
+          193
+        ],
+        [
+          246,
+          241
+        ],
+        [
+          227,
+          179
+        ],
+        [
+          219,
+          179
+        ],
+        [
+          159,
+          179
+        ]
+      ],
+      "recipes_per_base": 480200,
+      "recipes_total": 2881200,
+      "survivors": 0
+    },
+    "source228_rotation_and_missing_branch_synthesis": {
+      "source_variants": [
+        "rotation_helper_36_180_left.json",
+        "rotation_helper_37_180_right.json"
+      ],
+      "recipes_per_variant": 980,
+      "survivors": 0
+    }
+  },
+  "portable_record_files": [
+    "rotation_counterexample.json",
+    "rotation_counterexample.tex",
+    "rotation_counterexample.py",
+    "affine_phase_result.json"
+  ],
+  "negative_evidence_boundary": "The finite rotation counterexample concerns the advertised completed-instruction frame. It is not an inequivalence theorem for blank halting; search bounds cannot establish absence of other invariants or longer repairs.",
+  "final_relaxation_checks": {
+    "original246_excluding_six_phase_impossible_guards": {
+      "guarded_cases": 8385,
+      "excluded_original_guard_indices": [
+        8202,
+        8203,
+        8204,
+        8358,
+        8359,
+        8360
+      ],
+      "uniform_recipes": 60025,
+      "uniform_survivors": 0,
+      "uniform_case_executions": 66852,
+      "uniform_literal_steps": 109683075,
+      "uniform_bounds": {
+        "steps_per_case": 4000,
+        "intermediate_dispatches": 15,
+        "tape_coordinates": [
+          -128,
+          383
+        ]
+      },
+      "mixed_recipes": 119464,
+      "mixed_survivors": 0,
+      "mixed_case_executions": 554909,
+      "mixed_literal_steps": 497045677,
+      "mixed_bounds": {
+        "steps_per_case": 6000,
+        "intermediate_dispatches": 24,
+        "tape_coordinates": [
+          -128,
+          383
+        ]
+      }
+    },
+    "new250_runtime": {
+      "guarded_cases": 8391,
+      "recomputed_reachable_transition_rows": 500,
+      "literal_fixture_steps": 3592772,
+      "uniform_recipes": 62001,
+      "uniform_survivors": 0,
+      "uniform_case_executions": 68996,
+      "uniform_literal_steps": 125194526,
+      "mixed_recipes": 123322,
+      "mixed_survivors": 0,
+      "mixed_case_executions": 622539,
+      "mixed_literal_steps": 596862728,
+      "bounds_as_above": true
+    },
+    "meaning": "These are exhaustive recipe enumerations under finite test bounds. They are not state lower bounds or proofs that another compilation cannot improve the table."
+  }
+}

@@ -1,0 +1,189 @@
+% Section source for incorporation in the main research report.
+\section{Two new arithmetic representations and their exact obstructions}
+\label{sec:runtime-new}
+
+The following experiments change the arithmetic representation rather than
+repeat a fold on the original transition table.  Neither produces a machine
+with fewer than 246 working states and the requested blank-tape consistency
+equivalence.  The positive-offset construction yields new universal local
+contracts on a 246-state core.  A reverse-prefix increment yields a 245-state
+local core, but its controller continuation fails at a frame actually reached
+by the reference machine from its blank tape.
+
+Use original state labels throughout; 254 is the separate halt label.  Write
+\[
+ \mathcal B(v)=0\,1^{v+1},\qquad
+ \mathcal C(v)=1\,0\,1^v,\qquad
+ \mathcal D(v)=1^{v+1}\,0.
+\]
+Extend these encodings by concatenation to finite lists, and put
+$\ell(A)=\sum_{v\in A}(v+2)$.  Marking replaces the selected block
+$\mathcal B(v)$ by $00\,1^v$.  All statements concern the complete tape,
+including arbitrary untouched contexts; no truncation of a finite tape
+window is used in the universal arguments.
+
+\subsection{Positive-offset primaries}
+
+Represent each logical register value $n$ by physical value $n+1$ and change
+only the following four rows of the frozen 246-state table:
+\[
+\begin{array}{c|c|c}
+q&b&(\text{write},\text{move},\text{next})\\\hline
+75&0&(1,L,131)\\
+75&1&(1,R,255)\\
+255&0&(0,L,112)\\
+255&1&(1,L,63)
+\end{array}
+\]
+The number of working states remains 246.  State 75 now distinguishes the
+blank end of an increment excursion from the guaranteed first unary one of
+a marked primary.  State 255 tests the next cell, distinguishing physical
+value one from physical values at least two.
+
+The resulting local contracts are as follows.  The marked input file is
+$\mathcal B(A)\,00\,1^v\,\mathcal B(S)$, where $A,S$ are arbitrary
+finite lists and $v$ is the selected physical value.  Its first cell is
+coordinate zero and is scanned by the initial head.  Increment enters in
+old state 73; both decrement cases enter in old state 95.
+For increment and positive decrement, the displayed file is followed by
+the all-zero right exterior.  Zero decrement instead needs a zero immediately
+after the selected marked value-one block, with arbitrary tape after that zero.
+The left context is arbitrary in each contract.  Positive decrement puts the output at coordinate one and a one at zero.
+\[
+\begin{array}{c|c|c|c}
+\text{operation}&\text{selected physical value}&\text{result}&\text{steps}\\\hline
+\text{increment}&x&x+1,\ \text{append spare }0&2\ell(A\mathbin{+\!+}[x]\mathbin{+\!+}S)+5\\
+\text{positive decrement}&x+2&x+1&2\ell(A)+6\\
+\text{zero decrement}&1&1&2\ell(A)+7
+\end{array}
+\]
+Here $x\in\mathbb N$; a client using the logical representation instantiates
+$x\ge1$ for increment.  Increment exits in state 48 at head $-1$; positive
+decrement exits in state 48 at head zero; zero decrement exits in state 112
+at head $-1$.  The zero contract needs a zero cell immediately after the
+selected physical value-one block.  That cell may be the separator of a
+following block or the blank exterior, so no following nonempty block is
+needed for this new zero test.
+
+These claims follow from four unchanged one-block inductions: seeking through
+$\mathcal B(v)$ in state 73, converting $\mathcal B(v)$ to $\mathcal C(v)$ in
+state 95, returning through a normal block in states 48/63, and rolling
+$\mathcal C(v)$ back to $\mathcal B(v)$ in states 112/131.  The word identity
+$\mathcal C(A)1=1\mathcal B(A)$ is proved by list induction.  The new endpoint
+at the blank exterior takes four transitions instead of six and appends
+$\mathcal B(0)=01$.  All remaining work is the composition of literal rows
+and the preceding inductions.  The accompanying checker records the complete
+symbolic proof traces; it is an ordinary mathematical checker, not a
+proof-assistant certificate.
+
+All 8,391 original guarded instruction fixtures passed with the new primary
+representation.  Two complete pair-merge screens, each containing 120,540
+row-provider recipes, found no survivor, first with spare values $(0,2)$ and
+then with $(0,0)$.  On the zero-spare suite, a further 135,240 recipes deleted
+one state with a single external incoming row and changed that incoming
+write, movement and retained-working-state target arbitrarily.  None survived.  The screens use 20,000 transitions per
+fixture and a 512-cell window; their negative outcomes are bounded diagnostic
+results.  No blank initializer for the positive-offset representation is
+claimed.
+
+\subsection{Reverse-prefix increment without state 255}
+
+Delete state 255 and replace just two rows:
+\[
+ (75,0)\mapsto(0,L,112),\qquad
+ (83,0)\mapsto(1,L,112).
+\]
+The resulting complete table has 245 working states.  The first edit is the
+previously identified decrement-preserving deletion.  The new second edit
+sends increment through the reverse carry, moving the register prefix left
+instead of shifting the suffix right.
+
+This yields an exact local theorem.  Let $k,v\in\mathbb N$ and let $A$ be an
+arbitrary finite list.  Suppose the tape locally reads
+\[
+ L\;00\;1^{k+1}\;\mathcal B(A)\;00\;1^v\;R,
+\]
+where $L,R$ are untouched contexts and the head is at the first cell after
+$1^{k+1}$, in state 73.  After
+\[
+ 2\ell(A)+k+6
+\]
+transitions, the tape reads
+\[
+ L\;0\;1^{k+1}\;\mathcal B(A)\;\mathcal B(v+1)\;R,
+\]
+in state 48 with head displacement $-k-4$.  Equivalently, the head now scans
+the cell immediately to the left of the first explicitly displayed zero in the output word.  This increases
+the selected register and shifts the relevant register prefix left by one
+cell.  It also shifts the entire temporary one-run to the left.
+
+For the proof, first check that state 131, moving left through
+$\mathcal B(v)$, replaces it by $\mathcal D(v)$ in exactly $v+2$ transitions
+and returns to state 131.  Structural induction extends this to every finite
+list.  A separate free-word induction gives
+\[
+ 0\mathcal D(A)=\mathcal B(A)0.
+\]
+The seek through $A$, the new state-83 transition, and the literal reverse
+carry then give the displayed theorem.  The complete symbolic certificate
+also verifies the unchanged positive-decrement contract, of duration
+$2\ell(A)+4$, and the simplified zero-decrement contract, of duration
+$2\ell(A)+5$.
+
+The shifted one-run is a control defect.  During actual execution it is
+part of a temporary program-counter representation, not just the isolated
+header bit of a clean register file.  Its shifted left edge creates the
+branch marker used by the zero-decrement continuation.  Consequently the
+register increment can be correct while the next program location is wrong.
+
+The first diagnostic uses path $01010$, the instruction $\mathrm{CI}\,8$,
+header distance 181, head zero, physical registers
+\[
+ (1,4,2,0,3,1,4,2,0),
+\]
+and two value-one spares.  The reference reaches its correct next dispatch
+after 1,618 transitions, at path $01011$.  The 245-state variant reaches its
+first dispatch after increment in 1,540 transitions, at path $011$.  The
+entire final tape is checked, and the register increment and one-cell file
+shift agree with the proposed arithmetic behavior.  The program counter does
+not.  All 980 actions whose targets are retained working states, for the unique
+external increment-entry row 57/read-one, fail this one exact fixture within 20,000 transitions.
+
+A stronger witness starts from the actual reference blank run.  The checker
+replays all 410,735 bootstrap transitions and identifies the reviewed frame
+with head $-5$, header distance 181, 167 value-one spares, and physical registers
+$(0,0,0,3,0,0,3,0,0)$.  The next two logical instructions are zero decrement
+of logical register 8 and positive decrement of logical register 0.  Their
+exact binary runs reach stored path $0101$, header distance 182, and physical
+registers
+\[
+ (0,0,0,3,0,0,2,0,0).
+\]
+The next consumed path is $01010$, again $\mathrm{CI}\,8$.  From this reached
+frame, the reference increment takes 2,590 transitions and returns to
+$01011$.  The variant takes 1,544 transitions and returns to $011$.
+A source invariant containing the reviewed seed therefore cannot exclude
+this instruction phase.  A second 980-action screen with retained working-state targets at row 57/read-one also
+fails on this reached source frame.  A direct target of halt instead of a retained working state fails the
+required dispatch endpoint immediately.  The mutant's own blank initializer is
+not claimed, and these witnesses make no assertion about its eventual
+blank-tape halting behavior.
+
+\subsection{The remaining space obligation}
+
+Even if the control defect were repaired, the proposed prefix-left
+implementation would need a separate space argument.  Under its intended
+frame relation, increment decreases the marker-to-file distance $D$ by one,
+positive decrement increases it by one, and a program-counter overflow that
+moves the left marker left increases it by one.  The number of represented
+blocks and all spare values remain fixed.  Thus
+\[
+ D+\sum_{i=0}^{8}r_i
+ =D_{\mathrm{initial}}+\sum_{i=0}^{8}r_{i,\mathrm{initial}}
+   +\#\{\text{leftward program-counter overflows}\}.
+\]
+This is an exact accounting identity as long as the intended simulation
+invariant holds.  It does not by itself prove that the actual source program
+exhausts its gap.  A completed construction would have to maintain sufficient
+distance while repairing the increment continuation, and would also need an
+actual blank-tape initialization and the full consistency calibration.

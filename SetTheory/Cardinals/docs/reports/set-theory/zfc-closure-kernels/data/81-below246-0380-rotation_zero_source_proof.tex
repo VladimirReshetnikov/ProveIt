@@ -1,0 +1,76 @@
+% Ordinary proof appendix for the verified zero-run-six source graph.
+\section{A source grammar with 202 shared pairs and zero runs of length six}
+\label{sec:zero-six-source}
+
+The source reassociation search can optimize a second quantity that is
+relevant to the binary compiler: the longest consecutive run of zero
+bits in any root-to-instruction path.  This quantity affects how far the
+runtime must distinguish a source path from a zero separator.  Minimizing
+only maximum tree depth does not directly optimize this quantity.
+
+Starting from the preceding 202-pair source grammar, a finite descent
+search first minimizes the number of leaves attaining the current
+maximum zero-run length.  It then minimizes the corresponding counts at
+successively smaller lengths.  All accepted moves preserve the complete
+guarded successor relation.  The resulting source has
+\[
+ \boxed{202\text{ distinct pair subtrees},\qquad
+        \text{maximum zero-run length }6.}
+\]
+Its unrolled tree has the same 6,459 internal nodes and 6,460 instruction
+leaves as the original source.  Its maximum path depth is 36.  Its leaf
+histogram, classified by maximum consecutive zero-run length, is
+\[
+\begin{array}{c|rrrrrrr}
+\text{length}&0&1&2&3&4&5&6\\\hline
+\text{leaves}&1&61&3778&1881&548&162&29.
+\end{array}
+\]
+There are no paths containing seven consecutive zero bits.
+
+The complete graph is \texttt{rotation\_zero\_candidate\_24.json}, with
+SHA-256
+\begin{quote}\ttfamily\small
+90d15a0fb69606e080a5fa5d2ce5179f2642958546a4f1203b259b2804eb76af.
+\end{quote}
+The exact source program used as the comparison remains the pinned
+\texttt{Prog254.v} with SHA-256
+\begin{quote}\ttfamily\small
+1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746.
+\end{quote}
+
+\paragraph{Theorem.}
+For every natural-valued register vector, the new source grammar and the
+original program have identical sequences of register instructions,
+identical register files at corresponding instruction occurrences, and
+the same halting behavior from their empty-PC roots.
+
+\paragraph{Proof.}
+Expand the graph into its literal tree and enumerate instruction leaves
+from left to right.  The old and new instruction lists are exactly equal,
+including every register argument, every break and continue operand, and
+the unique halt instruction.  In particular, the resulting graph needs
+no changes to the control operands.  At all 8,391 guarded cases, direct
+Boolean-list program-counter arithmetic followed by literal tree
+decoding reaches the same successor leaf index in the old and new trees.
+The empty PC selects leaf zero in both.  These are finite statements
+about the supplied explicit trees.  Instruction-count induction now
+preserves the register file and successor leaf index at every step.
+Halting is preserved in both directions.\hfill$\square$
+
+\texttt{rotation\_zero\_source\_audit.py} independently expands the
+untrusted graph, rejects cycles and malformed entries, and checks the
+theorem's finite premises with the direct decoder from
+\texttt{rotation245\_source\_audit.py}.  It does not import the searcher
+or use its interval-based decoding method.  The resulting certificate
+contains all 6,460 old/new leaf paths and all 8,391 guarded successors.
+No consistency assumption and no exemption for an unreachable guard is
+used in the source equivalence proof.
+
+This is a new compiler input, not a completed binary machine.  The
+longest-zero-run bound suggests a possible shorter backscan, but it does
+not itself establish a physical state saving.  The binary compiler also
+shares context-dependent backward aliases, as the rejected direct
+245-state realization demonstrates.  A candidate generated from this
+graph still requires exact literal-table accounting, universal register
+frame proofs, and a complete blank-tape initialization proof.

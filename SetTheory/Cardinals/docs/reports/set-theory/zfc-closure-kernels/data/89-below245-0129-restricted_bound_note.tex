@@ -1,0 +1,96 @@
+\section{An exact obstruction in a finite grammar neighborhood}
+\label{sec:restricted-grammar-bound}
+
+The routed machine separates into 117 fixed framework roles and 128 binary
+grammar roles. We investigated whether a smaller grammar could be obtained
+while retaining the present words at the externally constrained entries.
+The result below is a lower bound for an explicit finite grammar family.
+It is not a lower bound for unrestricted Turing machines, all source
+reassociations, all routing choices, or all encodings of the theory.
+
+Let $G_0$ be the supplied 128-rule grammar and let $w_{\rm AX}$ be its
+702-symbol AX word. Begin with the nonterminal words of $G_0$, the 44
+semantic terminal symbols, and every substring of $w_{\rm AX}$ of length
+between 2 and 40 having at least two occurrences. For each nonterminal
+$w$, admit every production $w\to uv$ with $w=uv$ and with both children in
+this vocabulary, subject to the original incoming-bit restrictions on
+terminal children. Freeze the original productions at the 43 words
+traversed by the fixed routes and the 54 bootstrap projection constraints.
+Delete unsupported words and productions repeatedly. The resulting
+explicit universe has 797 nonterminal words and 4,511 permitted
+productions. The retained entry words and frozen paths force 47 of the
+presence variables to be one.
+
+\begin{theorem}[Finite grammar neighborhood]
+Among the straight-line grammars using this exact production universe,
+the frozen productions, and the prescribed entry words, the minimum
+number of live nonterminal words is 128. This statement uses no bound on
+the maximum zero run of source addresses.
+\end{theorem}
+
+\begin{proof}
+Introduce a binary presence variable $x_w$ for each nonterminal and a
+production variable $y_p$ for each permitted production. Every grammar
+in the stated family satisfies
+\[
+  \sum_{p:\,\operatorname{parent}(p)=w}y_p=x_w,
+  \qquad y_{(w,u,v)}\leq x_u,\quad
+  y_{(w,u,v)}\leq x_v,
+\]
+where child inequalities are omitted for terminals. Required presence
+variables have lower bound one. All other variables lie between zero and
+one. The grammar cost is $\sum_w x_w$. We may relax the production
+variables to real numbers when deriving a lower bound.
+
+A branch tree on four presence variables has five leaves. The branches
+below are read from left to right, starting with the variable for
+\texttt{llYW}; the subsequent variables, where reached, are
+\texttt{eijkbIXllYW}, \texttt{lYW}, and \texttt{jGeijkbIXll}.
+
+\begin{center}
+\begin{tabular}{cc}
+Branch path & Exact rational lower bound \\
+\hline
+$0000$ & $1398/11$ \\
+$0001$ & $1409/11$ \\
+$001$  & $4205/33$ \\
+$01$   & $1398/11$ \\
+$1$    & $1779/14$
+\end{tabular}
+\end{center}
+
+For completeness, each leaf is verified directly as follows. Write its
+linear constraints as $Az=b$, $Bz\leq d$, and $\ell\leq z\leq u$.
+For the cost vector $c$, the certificate provides exact rational vectors
+$\lambda$ and $\mu$ with $\mu\leq0$. Define
+$r=c-A^{\mathsf T}\lambda-B^{\mathsf T}\mu$. Every feasible vector obeys
+\[
+ c^{\mathsf T}z\ \geq\
+ \lambda^{\mathsf T}b+\mu^{\mathsf T}d
+ +\sum_j\begin{cases}r_j\ell_j,&r_j\geq0,\\r_ju_j,&r_j<0.\end{cases}
+\]
+This inequality is checked with rational arithmetic, including every
+residual coefficient; no floating-point tolerance is a premise. Its
+right-hand side equals the rational number displayed for that leaf.
+Each bound is strictly greater than 127. The five leaves cover all
+assignments of the branched binary presence variables, so every grammar
+has integer cost at least 128. The original grammar is checked to belong
+to the stated family and has exactly 128 rules, proving sharpness.
+\end{proof}
+
+The supplied standard-library verifier reconstructs the full vocabulary,
+terminal restrictions, 43 production freezes, fixed-point pruning,
+production ordering, and forced presence variables from the pinned input
+texts. It then reconstructs all model equations and child dependencies,
+checks the model and certificate hashes, checks the positive witness,
+and verifies all five leaf inequalities. It imports no numerical solver.
+The integer-programming solver was used only to discover the certificate.
+The model permits every selected nonterminal at most one chosen
+production; context-dependent multiple meanings are outside this family.
+
+The finite restriction is material. Longer new substrings, changed route
+words, altered frozen productions, semantic respellings, different theory
+templates, and changes to the 117-role framework may all escape the
+bound. An expanded search allowing additional prefix and suffix words
+had 6,596 words and 85,865 productions; its solver terminated on the time
+limit without an incumbent. No lower bound is inferred from that run.

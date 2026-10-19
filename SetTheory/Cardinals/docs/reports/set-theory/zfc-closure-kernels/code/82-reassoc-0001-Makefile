@@ -1,0 +1,26 @@
+PYTHON ?= python3
+CXX ?= g++
+REFERENCE := reference/context246
+
+.PHONY: verify report search
+
+verify:
+	$(PYTHON) verify.py
+
+report:
+	mkdir -p results
+	pdflatex -interaction=nonstopmode -halt-on-error report.tex > results/pdf-build-pass1.log
+	pdflatex -interaction=nonstopmode -halt-on-error report.tex > results/pdf-build-pass2.log
+
+search:
+	$(PYTHON) decoder/generalized_rotations.py
+	$(PYTHON) decoder/affine_macros.py
+	$(PYTHON) decoder/repair_rotation.py
+	$(PYTHON) decoder/repair_two_rows.py
+	$(PYTHON) search/rotation_search.py
+	$(PYTHON) search/general_rotation_search.py
+	$(PYTHON) search/rotation_walk.py
+	mkdir -p build
+	$(CXX) -O3 -std=c++17 kernel/pulse6.cpp -o build/pulse6
+	build/pulse6 $(REFERENCE)/machine/zfc_prefix246_old.tm kernel/narrow- 0 600
+	build/pulse6 $(REFERENCE)/machine/zfc_prefix246_old.tm kernel/broad- 1 600

@@ -1,0 +1,101 @@
+{
+  "table": "architectures/reverse_path_copy_19.tm",
+  "table_sha256": "b47f336ad5e5ce8a1d9ffb4277a738c256b820c21b0ada99b3b4e63e41936a2b",
+  "start": 0,
+  "return": 19,
+  "reject": 18,
+  "working_states": 19,
+  "forced_one": [
+    1,
+    2,
+    5,
+    9
+  ],
+  "forced_zero": [
+    0,
+    13
+  ],
+  "allowed_reads": {
+    "0": [
+      0
+    ],
+    "1": [
+      1
+    ],
+    "2": [
+      1
+    ],
+    "3": [
+      0,
+      1
+    ],
+    "4": [
+      0,
+      1
+    ],
+    "5": [
+      1
+    ],
+    "6": [
+      0,
+      1
+    ],
+    "7": [
+      0,
+      1
+    ],
+    "8": [
+      0,
+      1
+    ],
+    "9": [
+      1
+    ],
+    "10": [
+      0,
+      1
+    ],
+    "11": [
+      0,
+      1
+    ],
+    "12": [
+      0,
+      1
+    ],
+    "13": [
+      0
+    ],
+    "14": [
+      0,
+      1
+    ],
+    "15": [
+      0,
+      1
+    ],
+    "16": [
+      0,
+      1
+    ],
+    "17": [
+      0,
+      1
+    ],
+    "18": [
+      0,
+      1
+    ]
+  },
+  "proof_reasons": {
+    "1": "Restored branch/sentinel has at least three ones; this is its second-last one.",
+    "2": "Restored branch/sentinel has at least three ones; this is its third-last one.",
+    "5": "For a decoded branch0, preceding field or five-one sentinel exists and its last one has not been changed.",
+    "9": "For a decoded branch1, preceding field or five-one sentinel exists and its last one has not been changed.",
+    "0": "Entry is the erased final one; later forward scans return to that same moving erased-one marker.",
+    "13": "Copied count k<n and gap>=n+2 leave the cell after current frontier zero."
+  },
+  "status": "Conservative ordinary-proof guards; full induction in reverse_path_copy_review.md, not inferred solely from finite coverage.",
+  "entry_precondition": "Frontier1, gap>=n+2 zeros, sentinel111110, n branch fields1^(b+3)0 with b=0/1; erase last one of last branch or sentinel for n=0; enter restore at erased cell.",
+  "composition_note": "Copier preserves arbitrary left exterior. Pairing mirrored oracle leaf emitters as forced0 additionally requires three zero cells immediately left of the original frontier before oracle call."
+}

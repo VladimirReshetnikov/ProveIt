@@ -1,0 +1,176 @@
+\section{Independent certificate for the color-106 source commutation}
+\label{sec:commute106-independent}
+
+The transformation in this section changes the register program while
+preserving its behavior from the root.  It produces another 246-state
+binary candidate; it does not by itself remove a working state.
+Its source proof is a finite-region argument, rather than equality of
+the old and new instruction graphs indexed by depth-first occurrence.
+
+Write $N(A,B)$ for a cons node in the source decoder.  Let
+\[
+ A=\mathrm{CI}(7),\qquad
+ B=N\bigl(\mathrm{CD}(6),N(\mathrm{CI}(1),\mathrm{CC}(2))\bigr).
+\]
+The proposed source transformation replaces $N(A,B)$ by $N(B,A)$.
+In the original shared decoder this is node 48, whose children are
+terminal 18 and node 47; its physical decoder color is old state 106.
+
+\begin{lemma}[The transfer region is total]
+For every vector $R\in\mathbb N^9$, execution of $B$ from its entry
+exits normally after exactly $3R_6+1$ primitive instructions.  Its final
+register vector $S$ satisfies
+\[
+ S_1=R_1+R_6,\qquad S_6=0,\qquad
+ S_j=R_j\quad(j\notin\{1,6\}).
+\]
+It cannot halt or escape by a break or continue.
+\end{lemma}
+\begin{proof}
+The positive branch of $\mathrm{CD}(6)$ decreases $R_6$ and reaches
+$\mathrm{CI}(1)$, followed by $\mathrm{CC}(2)$ and a return to the
+same decrement.  The zero branch exits the region normally.  Induction
+on the initial value of $R_6$ proves the claim: the zero case takes one
+instruction; a positive case takes three instructions before invoking
+the induction hypothesis with $R_6-1$ and $R_1+1$.
+\end{proof}
+
+\begin{corollary}[Exact local commutation]
+Both $N(A,B)$ and $N(B,A)$ terminate normally on every natural register
+vector after exactly $3R_6+2$ primitive instructions.  In either order
+the resulting vector is
+\[
+ R'_7=R_7+1,\qquad R'_1=R_1+R_6,\qquad R'_6=0,
+ \qquad R'_j=R_j\ (j\notin\{1,6,7\}).
+\]
+\end{corollary}
+\begin{proof}
+The increment of register 7 does not affect either register read or
+written by $B$.  Conversely, $B$ preserves register 7.  Apply the lemma
+and count the additional increment instruction.
+\end{proof}
+
+The general closed-component rule also applies: the escape bounds of
+both components are $(0,0)$, their register footprints are respectively
+$\{7\}$ and $\{1,6\}$, and neither contains a halt instruction.  Here
+the explicit totality proof gives a stronger, shorter argument.  Merely
+requiring closedness and disjoint footprints would not justify swapping
+arbitrary halt-containing components: a halt and a diverging component
+can change halting behavior when exchanged.
+
+\subsection{Complete occurrence and control-flow audit}
+
+The independent verifier parses the literal \texttt{Prog254.v} source
+and the emitted candidate DAG directly.  It imports neither the optimizer
+nor its transformation or source-equivalence checker.  Its path operations
+are an independent implementation of consumed-path binary increment,
+break, and continue, including the implicit zero suffix on decoding.
+
+There are 6,459 literal internal nodes and 6,460 instruction occurrences.
+The verifier establishes all of the following finite facts.
+\begin{enumerate}
+\item Every structural difference between the literal source and the
+candidate is exactly the displayed swap.  It occurs in 242 pairwise
+disjoint unfolded regions.  All other instructions and operands are
+matched occurrence by occurrence.
+\item Each old region has the control edges
+$A\to D$, $D_+\to I$, $I\to C$, $C\to D$, with $D_0$ reaching the
+normal exit.  Each new region has
+$D_+\to I$, $I\to C$, $C\to D$, $D_0\to A$, with $A$ reaching its
+normal exit.  Here $D=\mathrm{CD}(6)$, $I=\mathrm{CI}(1)$, and
+$C=\mathrm{CC}(2)$.
+\item No edge from outside a region enters its interior.  The only
+external entry is $A$ in the old program and $D$ in the new program.
+Thus the local theorem is never incorrectly applied to a computation
+that starts halfway through the exchanged sequence.
+\item The normal exits correspond under the boundary map.  All 7,180
+guarded edges outside the regions correspond exactly under that map,
+and the initial root controls correspond.  Both root escape bounds are
+zero.  The unique halt instruction lies outside every region.
+\end{enumerate}
+The candidate has 203 reachable shared pair nodes and 23 reachable
+terminal entries.  These are source counts, not a binary state claim.
+The complete check and the 242 occurrence records are emitted by
+\texttt{check\_commutation.py} into
+\texttt{commute106\_source\_audit.json}.
+
+\begin{theorem}[Whole-source equivalence]
+For every natural initial register vector, the literal source and the
+color-106 source have the same halting behavior from the root.  Whenever
+they halt, their final register vectors and total primitive-instruction
+counts agree.
+\end{theorem}
+\begin{proof}
+Contract each audited four-instruction region to one boundary transition
+with the total register transformation in the corollary and cost
+$3R_6+2$.  Unique entry and matching exit justify contraction in each
+program.  The checked boundary correspondence identifies every
+contracted transition, every remaining guarded primitive transition,
+and the halt instruction.  Induction on a finite contracted computation
+therefore transfers its full sequence of boundary register vectors and
+its cost in either direction.  A finite halting computation cannot end
+inside a region, because the region contains no halt.  Conversely, each
+contracted region step expands to a finite concrete computation by the
+totality lemma.  Thus contraction and expansion preserve and reflect
+finite halting computations, including their final vectors and costs.
+Negating finite halting gives nonhalting equivalence.
+\end{proof}
+
+\subsection{Separate binary obligations}
+
+The two binary row edits are
+\[
+ (106,0)\mapsto(0,\mathrm R,122),\qquad
+ (106,1)\mapsto(1,\mathrm R,93).
+\]
+The table still has 246 working states, 492 defined rows, and one edge
+to halting label 254.  The independently implemented dense blank-tape
+replay reaches, after 410,735 steps, working state 96 and head position
+$-5$, with exactly the full reference dispatch frame: marker $-6$,
+header 176, physical primary values $(0,0,0,3,0,0,3,0,0)$, and 167 spare
+blocks of value one.  The header distance is 181 and the tape has
+exactly 351 ones.  Both edited rows occur during that prefix; the result
+is established by literal replay, not by an assertion that its transition
+trace was unchanged.
+
+The separate symbolic binary audit reports all 8,391 guarded cases for
+arbitrary natural primaries, arbitrary nonempty valid spare suffixes,
+and header distance at least 64.  Together with its inductive register
+macros and the exact bootstrap, that supplies the binary simulation
+obligations for this 246-state derivative.  The checks are ordinary
+finite and induction certificates, not a serialized proof-assistant
+endpoint.  No sub-246 result follows from the source commutation alone.
+
+\subsection{Composition with later source reassociations}
+
+After the commutation, subsequent accepted rotations can be checked by a
+stronger and simpler finite certificate.  Number instruction occurrences
+in depth-first order in both the commuted seed and the rotated candidate.
+For each occurrence, compare its operation and operand and every guarded
+successor occurrence computed by the consumed-path interpreter.  Check
+also the initial occurrence.  If all comparisons succeed, equality of the
+occurrence index and register vector is an exact one-instruction
+bisimulation between those two source programs.  Its halting equivalence
+composes with the region-contraction theorem above; no assumption that
+every intermediate rotation was semantically admissible is needed.
+
+The independent checker \texttt{check\_reassociated\_graph.py} validates
+all 6,460 primitive labels and operands and all 8,390 guarded successor
+edges in this way.  It confirms the following two retained candidates
+against the commuted seed.
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Candidate & Shared pairs & Maximum depth & Changed paths & CD tails $0^7$\\
+\hline
+\texttt{s7\_best\_018} & 203 & 43 & 6,189 & 10\\
+\texttt{s9\_best\_007} & 203 & 40 & 6,189 & 8\\
+\hline
+\end{tabular}
+\end{center}
+Both have maximum zero run seven and retain 246 binary working states.
+The final column counts decrement occurrences, not weighted guarded
+scanner cases.  Independent dense replays also establish the exact full
+410,735-step blank bootstrap frame for both emitted binary tables.
+Their universal instruction contracts remain a separate check on each
+actual table; source equivalence alone does not establish those contracts.

@@ -1,0 +1,56 @@
+model 2286 words 24402 productions
+constraints 146523 variables 29218 build_seconds 0.7333184669987531
+Running HiGHS 1.8.0 (git hash: 222cce7): Copyright (c) 2024 HiGHS under MIT licence terms
+Coefficient ranges:
+  Matrix [1e+00, 6e+01]
+  Cost   [1e+00, 1e+00]
+  Bound  [1e+00, 6e+01]
+  RHS    [1e+00, 1e+02]
+Presolving model
+28489 rows, 6259 cols, 112597 nonzeros  0s
+25316 rows, 5992 cols, 96906 nonzeros  0s
+Objective function is integral with scale 1
+
+Solving MIP model with:
+   25316 rows
+   5992 cols (4500 binary, 0 integer, 2 implied int., 1490 continuous)
+   96906 nonzeros
+MIP-Timing:        0.36 - starting analytic centre calculation
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic; L => Sub-MIP;
+     P => Empty MIP; R => Randomized rounding; S => Solve LP; T => Evaluate node; U => Unbounded;
+     z => Trivial zero; l => Trivial lower; u => Trivial upper; p => Trivial point
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+         0       0         0   0.00%   79              inf                  inf        0      0      0         0     0.4s
+         0       0         0   0.00%   107.475         inf                  inf        0      0      8       605     0.4s
+         1       0         1 100.00%   inf             inf                  inf      942    101     76       985     1.2s
+
+Solving report
+  Status            Infeasible
+  Primal bound      inf
+  Dual bound        inf
+  Gap               inf
+  P-D integral      0
+  Solution status   -
+  Timing            1.21 (total)
+                    0.00 (presolve)
+                    0.00 (solve)
+                    0.00 (postsolve)
+  Max sub-MIP depth 0
+  Nodes             1
+  Repair LPs        0 (0 feasible; 0 iterations)
+  LP iterations     985 (total)
+                    0 (strong br.)
+                    380 (separation)
+                    0 (heuristics)
+RESULT         message: The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)
+        success: False
+         status: 2
+            fun: None
+              x: None
+ mip_node_count: None
+ mip_dual_bound: None
+        mip_gap: None

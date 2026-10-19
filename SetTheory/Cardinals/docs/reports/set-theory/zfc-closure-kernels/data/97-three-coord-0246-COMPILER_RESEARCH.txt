@@ -1,0 +1,123 @@
+COMPILER INVESTIGATION, 18 OCTOBER 2026
+
+Outcome: no machine with fewer than 245 working states was constructed.
+The new merge census and scanner synthesis are negative or unresolved
+experiments; none is a minimum-state theorem for ZFC machines.
+
+1. Common-action contextual mergers
+
+The earlier four-mask merger chooses each merged transition from one of the
+two states being identified. This investigation permits an arbitrary new
+write bit, left/right direction, and remaining target state for each bit.
+
+First replay all 8,385 inherited literal instruction fixtures of routing245.
+For every visited (state, read-bit), collect its 63-cell centered tape
+window. There are 1,796,119 distinct (transition, window) observations.
+For each transition, enumerate all actions with both writes, both directions,
+and every working-state or halt target. Retain an action only when, on every
+observed window, its original-table continuation joins the original
+transition's continuation within 30 steps without reading outside the
+window. A halt joins another halt without imposing an irrelevant final score.
+
+This yields 2,380 admissible actions. The zero-action and one-action sets
+have compatible intersections for 439 pairs of states after canonicalizing
+the merged targets. All 23,620 resulting merged tables were subjected to
+the complete finite fixture acceptance test; none passed. Start state 95 and
+dispatcher state 96 are excluded from the merged pairs. Candidate execution has
+a 20,000-step cap and tape coordinates -64 through 1983. Failed runs may
+have been rejected early after a counterexample, so "23,620 tests" does
+not mean each table executed all 8,385 cases.
+
+The local 30-step join screen is deliberately incomplete. A failed screen
+does not imply that an action is semantically invalid, and a finite fixture
+survivor would still have required universal symbolic verification plus
+blank initialization. The finite result excludes only the implemented
+search family under these stated acceptance conditions.
+
+Files: common_action_merge.cpp, results/common-action-summary.json,
+results/common_action_merge.log. Large windows and traces are omitted.
+
+Reproduction requires a C++17 compiler and Python 3 with its standard library.
+Restore the original zfc245-proof-20261018 package according to ProveIt's
+intake-164-reproduction.md, then run:
+
+  python3 prepare_cases.py --routing-package /PATH/TO/zfc245-proof-20261018 \
+    --output /tmp/zfc-merge-replay/cases.txt
+  c++ -O3 -std=c++17 common_action_merge.cpp -o /tmp/zfc-merge-replay/search
+  cd /tmp/zfc-merge-replay
+  ./search cases.txt
+
+prepare_cases.py verifies both compressed and decompressed byte identities.
+It reads inherited data without executing any inherited code. The source is
+inputs/state_reduction/candidate245-literal-cases.txt.gz, 445,975 bytes;
+the decompressed 25,548,048-byte input is deliberately not bundled.
+
+2. Restoring writable scanner synthesis
+
+Eight monotone states in the current interpreter distinguish short internal
+zero runs from the infinite zero ray to the left of the marker. The proposed
+change gives seven states both left/right motion and temporary tape writes.
+
+The strict block interface starts on the rightmost zero of a zero run with
+a 1 immediately to its right. For k=1,...,7 zeros bounded by a 1 on the left,
+the machine must restore every cell and return in its scanning state
+immediately left of that boundary. The eight-zero case must restore and
+exit after displacement -8. Short cases may read only their known run and
+two boundary ones. A finite successful table would therefore lift to
+arbitrary outside tape contexts, with composition over the successive runs.
+
+The flexible long-case interface with --long-room 16 permits reads at head
+displacements -17 through +1, and any restored exit at displacement at most -8.
+Only the zero-ray case is relaxed; short runs retain exact restoration and
+the same bounded interface. This distinction matters for a later bootstrap
+proof, which would still have to be checked independently.
+
+The solver outputs are SAT/UNSAT/unknown with explicit timeouts. The general
+seven-state, horizon-32 strict search returned unknown at 300 seconds. The
+focused marking-first, horizon-16 search returned unknown at 120 seconds.
+The flexible marking-first, horizon-32 searches returned unknown at 180 seconds,
+both before and after breadth-first state-renaming symmetry constraints.
+
+One more restricted flexible 32-step family returned UNSAT after 73.951 seconds.
+Its first action preserves zero and moves left; states 1 through 4 preserve
+one and reset left to state 0; first-use state names obey the explicit
+breadth-first constraints; all seven state names are graph-reachable.
+This is not an UNSAT result for all seven-state scanners.
+
+Positive control: the pinned eight-state read-only scanner is SAT; an
+independent Python literal interpreter checks all eight restoring cases,
+including the complete finite tape support and absence of external reads.
+Negative control: seven states with every transition read-only and moving
+left are UNSAT at horizon 16. In that monotone family, distinct zero-prefix
+lengths 0,...,7 must have distinct control states; this is the ordinary
+finite-state threshold lower bound, not a lower bound for writable machines.
+
+The exact selected commands and statuses are in results/scanner-runs.json.
+The original solver outputs are retained separately. The Python scripts use
+z3-solver, imported as z3. Install it in the chosen Python environment, or
+set PYTHONPATH to its package directory. No solver source/binary is bundled.
+
+  python3 synth_writable_scanner.py --control --states 8 --horizon 16 \
+    --timeout 30000 --output scanner8-control.json
+
+Check the supplied positive table with:
+
+  python3 verify_scanner_control.py results/scanner8-control.json
+
+3. Provenance and licensing
+
+The exact source program, native calculus and original machine are by
+Mira-Cult. Jeff Ketchersid supplied the upstream verification; Andrew James
+Wade supplied the compiler framework. Routing245 and its finite fixture
+resources are inherited from the existing ProveIt contribution. The new
+local-window/common-action search is derived from its literal simulator and
+fixture interface, retaining that attribution. The writable-scanner SMT
+models, independent scanner replay and input extraction are new research
+drivers. No new licensing restrictions are asserted over this contribution.
+Inherited notices and the ProveIt/Wade licenses are included in licenses/.
+
+Primary reproduction reference:
+https://github.com/VladimirReshetnikov/ProveIt/blob/fd1adfa19f8fe8da41444e3fa43b89a59d891067/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-164-reproduction.md
+
+Routing245 table source:
+https://github.com/VladimirReshetnikov/ProveIt/blob/fd1adfa19f8fe8da41444e3fa43b89a59d891067/Computability/BusyBeaver/Research/ZFC/candidate-routing245/zfc_routing245_old.tm

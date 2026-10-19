@@ -1,0 +1,222 @@
+\section{Compiler extensions and the normalized 246-state control}
+\label{sec:compiler-extensions}
+
+The source commutation proved earlier creates a different optimization
+starting point.  To explore it, the compiler search was extended in three
+ways: physical state assignments are transported through source rotations;
+arithmetic terminals can reuse existing selector entries; and relative
+control operands can be recomputed after a layout change.  These changes
+enlarge the search space.  They do not by themselves constitute a proof
+that an emitted binary table implements its source.
+
+\subsection{Transporting physical assignments}
+
+Write a shared source node as $N(A,B)$, and call the physical decoder state
+assigned to that node its \emph{color}.  Different source nodes may have the
+same color because the binary executor also uses information on the tape.
+In addition, a row of a decoder color may execute arithmetic or control
+work after its first decoding use.  Consequently, counting distinct source
+nodes does not count physical states.
+
+For each reassociation
+\[
+ N(A,N(B,C))\longleftrightarrow N(N(A,B),C),
+\]
+the search considers both ways of transporting the two local colors.
+Ancestor signatures are recomputed by structural interning.  When two
+signatures become equal, their colors may be merged if the protected-row
+constraints permit it; an unused unprotected color can then be removed
+from the emitted table.  All supporting states remain explicit, and every
+nonhalting transition target must be defined.  A merger of protected
+colors is rejected instead of being counted as a state saving.
+
+The protection data include rows observed outside their first source
+decoder use, targets reached from supporting states, and shared decoder
+entry contexts.  These finite observations are search filters, not a
+universal theorem about all executions.  The final proof obligation is
+the separate symbolic execution of every source instruction frame.  In
+particular, a candidate is not accepted merely because its structural
+colors fit or its finite sample executions succeed.
+
+For ordinary reassociations, a complete finite source check compares all
+6,460 instruction occurrences and their guarded successor occurrences.
+There are 8,390 successor edges and one halting case.  No allegedly
+unreachable guard is omitted in this compiler lane.  The independently
+checked color-106 commutation changes the preceding source program; later
+reassociations are compared to that commuted source and compose with its
+finite-region proof.
+
+\subsection{Normalizing arithmetic terminals without adding states}
+
+The earlier emitter retained a terminal's original borrowed handler where
+possible.  That unnecessarily restricted some instruction addresses: a
+borrowed handler may inspect preceding address bits even though a direct
+selector entry already exists elsewhere in the same table.
+
+The new emitter proposes the following existing entries.  Register numbers
+in the table are logical source numbers, starting at zero; state labels
+are the original physical labels, not the canonical renumbering.
+
+\begin{center}
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+Instruction & \multicolumn{6}{c}{Logical register $\longmapsto$ entry state}\\
+\midrule
+Increment & $1\mapsto70$ & $3\mapsto201$ & $4\mapsto169$
+ & $5\mapsto72$ & $6\mapsto39$ & $7\mapsto93$\\
+Decrement & $1\mapsto49$ & $3\mapsto21$ & $4\mapsto173$
+ & $5\mapsto53$ & $6\mapsto25$ & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+At an unprotected terminal edge reading $b$, the proposed row is
+$(b,R,q)$ for the listed entry $q$.  This uses an already counted state.
+For these proposals the search removes the artificial requirement that
+the last two address bits equal those of the corresponding original
+occurrence.  Other arithmetic terminals remain constrained: some use a
+common entry for increment and decrement, or borrow a decoder row whose
+meaning depends on its entry context.  Existing protected rows are never
+silently normalized.
+
+The table of entries is an emission strategy, not a blanket theorem for
+every conceivable prefix.  Its retained result is justified by the full
+candidate-specific instruction certificates.  This separation matters:
+relaxing a source suffix constraint can expose a valid layout, but can also
+expose an invalid borrowed-row context.  Only the universal frame audit
+distinguishes the two.
+
+The principal retained result is
+\texttt{machines/normalized246\_old.tm}, canonically renumbered as
+\texttt{machines/normalized246.tm}.  Its source graph has 203 shared pairs,
+6,460 leaves and maximum path depth 40.  It still has 246 working states.
+Its literal-table SHA-256, before canonical renumbering, is
+\begin{center}\small
+\texttt{b2a2e6608a603e3b8dda9fc3c4195e6376}\\
+\texttt{a934bba90519fa4d5e30306ed6ea25}.
+\end{center}
+The split above is typographical; the two lines concatenate to one hash.
+
+Independent source verification proves that its instruction operands and
+all resolved successors agree with the commuted seed by occurrence.
+Independent blank-tape simulation reaches the full reference frame after
+410,735 moves.  The two edited color-106 rows are used during this prefix,
+so the proof compares the resulting complete frame rather than asserting
+that the old transition trace is unchanged.
+
+\subsection{A larger invariant gap costs no machine states}
+
+The initial standard frame has head-to-header distance $d=181$.  Earlier
+experiments frequently required an instruction theorem at $d=40$.  That
+requirement can become unnecessarily restrictive after reassociation,
+because an address may approach or exceed that depth.
+
+For the retained control, the symbolic frame theorem is instead stated
+for $d\geq64$.  The executor and its arithmetic rules are unchanged.  In
+the inherited affine checker, the single expression specifying the
+initial symbolic gap changes from $40-|p|$ to $64-|p|$; the requested final
+gap is changed consistently.  The arbitrary additional nonnegative gap,
+all natural register values and the arbitrary nonempty spare suffix remain
+universally quantified.
+
+\begin{lemma}[Preservation of the stronger frame domain]
+Suppose the blank prefix reaches a standard frame with $d\geq64$ and the
+source's maximum address depth is at most 64.  If each instruction contract
+preserves the register encoding and changes the distance by a nonnegative
+amount, every later source instruction begins inside the same frame domain.
+\end{lemma}
+\begin{proof}
+The first instruction satisfies the domain by hypothesis.  The register
+contracts preserve the standard finite-word form.  The distance increases
+by one for a positive decrement and by one for an address overflow, when
+the corresponding event occurs, and otherwise does not decrease.  Thus
+$d'\geq d\geq64$ after each instruction.  Induction on the number of source
+instructions proves the assertion.
+\end{proof}
+
+For the retained table, all 8,391 guarded symbolic cases pass at this
+stronger minimum distance, together with the arbitrary-register arithmetic
+and finite-list induction obligations.  Every certified instruction uses
+at least 13 literal moves, which excludes an infinite source computation
+being represented by only finitely many binary moves.  The nine-zero
+scanner remains in the retained machine.
+
+\subsection{What the scanner progress does and does not show}
+
+The following source layouts all retain 246 binary states.  A decrement
+whose address ends in seven zeros contributes two guarded scanner
+obstructions; an increment can contribute one.  These counts concern the
+specific attempted deletion of scanner state 74, not arbitrary possible
+state reductions.
+
+\begin{center}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Layout & Source pairs & Maximum depth & Long-tail decrements
+ & Guarded obstructions\\
+\midrule
+\texttt{s3\_best\_010} & 202 & 39 & 12 & 25\\
+\texttt{s7\_best\_018} & 203 & 43 & 10 & 21\\
+\texttt{s9\_best\_007} & 203 & 40 & 8 & 16\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The normalized source therefore improves this particular obstruction
+count.  Deleting state 74 still gives a rejected 245-state experiment.
+Neither the smaller count nor the 202-pair source is evidence of a valid
+machine with fewer than 246 states.
+
+\subsection{Retargeting relative controls and preserving the bootstrap}
+
+The next extension recomputes a break or continue operand after a rotation.
+For each occurrence, the search enumerates available operands and resolves
+the resulting destination in the candidate's own decoder.  It selects an
+operand only if the destination equals the prescribed successor
+occurrence.  Increment and decrement operands are unchanged, and both
+decrement guards retain their prescribed targets.  The implemented search
+uses existing break depth 1 and continue depths 1--3; it does not allocate
+a new handler for a larger operand.
+
+For physical emission, candidate control rows are drawn from already
+observed combinations of control kind, operand and four-bit entry suffix.
+Every occurrence of a physical row must admit the chosen row.  This is
+again a finite proposal mechanism, followed by the complete symbolic
+runtime audit.  The operational-control theorem in
+Section~\ref{sec:control-readdressing} supplies the independent source proof
+when the literal operands differ.
+
+The retained experimental control \texttt{s10\_best\_004} changes 115
+continues from depth 2 to depth 3, preserves the full resolved source graph,
+and passes all 8,391 binary frame contracts at $d\geq64$.  Its blank
+bootstrap has not been calibrated.  In particular, the finite survey of
+30,000,000 moves from its original initial state did not find a standard
+empty-root frame satisfying the inherited dirty-start conditions.  This
+negative finite search is not a proof of eventual failure, and its runtime
+certificate is not a substitute for a bootstrap proof.  The table is kept
+only under \texttt{experiments/logic/controls}.
+
+An additional retargeting run froze all 264 rows encountered during the
+known blank prefix, in addition to the ordinary borrowed-row constraints.
+Its union contained 286 protected rows.  Over 79,969 proposals, 5,234 exact
+source candidates survived, but none changed a control operand or reduced
+the best state count.  The obstruction exposed by this run is specific to
+that frozen-prefix search family.
+
+\subsection{Reproducible search versus deterministic replay}
+
+The delivered scripts under \texttt{code/logic} include the color search,
+normalization, control retargeting, seed generation and their small source
+parsing dependencies.  Inputs and historical run records are under
+\texttt{experiments/logic}.  Random seeds and measured finite counts are
+retained.  The original search budgets were wall-clock limits, so rerunning
+a search on another computer can change the number of proposals reached
+before its deadline; a seed alone is not a claim of byte-identical replay.
+
+The selected result also has a fixed-workload replay.  Running
+\path{python -B code/logic/replay_selected.py} recomputes the rebased
+physical roles, verifies all source guards, and emits exactly the 492
+literal rows of the principal table.  This deterministic emission check is
+separate from the independent source, complete blank-frame and universal
+runtime checks.  The experiments' README gives the corresponding commands
+and identifies every uncalibrated control explicitly.

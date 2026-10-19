@@ -1,0 +1,16 @@
+PYTHON ?= python3
+PDFLATEX ?= pdflatex
+
+.PHONY: verify pdf baseline
+
+verify:
+	$(PYTHON) -B verify.py
+
+pdf:
+	$(PYTHON) -B tools/assemble_report.py
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error zfc_sub245_research.tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error zfc_sub245_research.tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error zfc_sub245_research.tex
+
+baseline:
+	$(PYTHON) -B tools/replay_baseline.py --package reference/zfc245 --output replay245 --whole-frame --literal

@@ -1,0 +1,136 @@
+\section{Joint grammar and interface exploration}
+\label{sec:joint-grammar-exploration}
+
+This branch found no validated machine below 245 states. It supplies a new
+combined 245-state control and a broader, reproducible search space. The
+unsuccessful bounded searches below are not lower bounds on any unrestricted
+class of machines or grammars.
+
+\subsection{A concrete combined control}
+
+We combined two inherited improvements: original-layout DNE mask32, and the
+four-projection bootstrap relaxation. In the fine alphabet, write
+$v=\mathtt{LNPQRKVQPW}$. The latter transformation replaces the grouping
+$((v\mathtt L)\mathtt c)$ by $(v(\mathtt L\mathtt c))$, removes the old helper
+word $v\mathtt L$, and introduces $\mathtt{Lc}$. It changes association only,
+so its closed source sequence is identical. The altered blank execution is
+checked independently.
+
+The resulting literal control has 128 grammar roles and 117 framework roles.
+Its canonical table has SHA-256
+\begin{verbatim}
+6b3c24a9f1f3261246217ba90460701f7b30aa5c18d65901f9b36addea1d8dd3
+\end{verbatim}
+The source has 6,366 leaves, depth 49, and maximum zero run 6. Fresh compiler
+checks establish a source bisimulation with 3,085 pairs and 6,168 edges,
+all 8,269 guarded affine cases, and exact blank initialization after 407,995
+transitions. Independent sparse and dense interpreters agree on the entire
+finite tape support. At the resulting dispatcher frame the logical registers
+are $(3,0,0,0,3,0,0,0,0)$, the header distance is 181, and the spare suffix
+contains 167 blocks. Independent whole-frame replay passes all 8,269 cases in
+344.72 seconds, including four block theorems, three arithmetic macros, and
+nine selectors re-derived on the actual table. Its full certificate is retained.
+
+The source/calculus bridge here is the inherited numerical DNE mask32 theorem.
+That theorem gives equality of numerical theorem sets without assuming an
+injective implication constructor and without treating the numerical falsity
+code as a free propositional constant. The new grammar bisimulation concerns
+the explicitly modified source, and is not an assertion of unchanged numerical
+AX outputs. No new Lean or Coq end-to-end theorem is asserted.
+
+\subsection{Simultaneous dictionary repair}
+
+The inherited routing-aware fine-token optimizer uses binary rotations,
+alternative known splits, local boundary changes, and caller rerouting. The
+new move selects one to four nonmandatory dictionary words simultaneously,
+deletes them, and repairs all directly affected parents. It first finds a
+short exact-substring segmentation over live implementations, then uses binary
+dynamic programming to select a compatible tree while reusing existing words.
+The final score charges actual live dictionary states, not the parser's local
+tree estimate. Dependency closure, caller projections, source zero bound at
+most six, and depth at most 64 are checked on accepted proposals.
+
+This move changes no literal source word. Source variations are explicit input
+objects with their own logical transfer obligations. Bootstrap projections
+and terminal orientation permissions are likewise explicit candidate data;
+deleting a lock is never counted as a proof of correct initialization.
+
+\subsection{Expanded entry families}
+
+The strongest tested permission family in this branch allows both incoming
+bits at the following physical atomic implementations. The final column gives
+the original permitted bit; masks use $1$ for bit 0 and $2$ for bit 1.
+
+\begin{center}
+\begin{tabular}{lrr@{\qquad}lrr}
+Fine word & State & Old bit & Fine word & State & Old bit\\
+\hline
+$\mathtt E$ & 110 & 0 & $\mathtt c$ & 204 & 1\\
+$\mathtt O$ & 122 & 1 & $\mathtt S$ & 36 & 0\\
+$\mathtt K$ & 125 & 1 & $\mathtt A$ & 39 & 0\\
+$\mathtt G$ & 127 & 0 & $\mathtt P$ & 67 & 0\\
+$\mathtt W$ & 146 & 1 & $\mathtt T$ & 72 & 1\\
+$\mathtt J$ & 149 & 1 & $\mathtt b$ & 77 & 0\\
+$\mathtt D$ & 17 & 0 & $\mathtt F$ & 93 & 0
+\end{tabular}
+\end{center}
+
+The companion runtime investigation checks these entries on all 253 outer
+prefixes of lengths one through seven except the all-zero length-seven word,
+partitioned by incoming bit. Internal PCs containing seven consecutive zeros
+are explicitly skipped: the survey concerns valid zero-six contexts. Register
+data and the guards of all retained PCs are symbolic. This finite prefix
+scope is not a theorem for arbitrary outer prefixes or subsequent reassociation
+of atom interiors. The grammar experiment
+therefore uses these as proposed permissions and requires actual-table
+universal replay for any successful smaller result. A deliberately broader
+21-permission run includes entries subsequently found to fail; its status is
+speculative throughout.
+
+\subsection{Recorded bounded outcomes}
+
+The original DNE32 plus four-lock-relaxation run made 5,364,874 proposals in
+600 seconds and retained 128 rules. The local Boolean antecedent-exchange
+variant made 2,532,524 proposals in 300 seconds and retained 128 rules, with
+depth 44. The three-entry increment family made 5,458,121 proposals in 600
+seconds; the speculative 21-entry family made 2,605,202 in 300 seconds.
+Both retained 128 rules. The 14-entry family with 50 retained locks made
+6,150,041 proposals in 600 seconds and also retained 128 rules. Releasing all
+54 bootstrap projections while retaining these 14 permissions gave 6,597,035
+proposals in another 600 seconds, still with 128 rules. Exact RNG
+seeds, final properties, and raw logs are recorded in
+\texttt{summary.json} and the individual experiment directories.
+
+The fully unlocked final grammar uses three new terminal orientations: state
+77 on the right of $\mathtt{Ab}$, 67 on the right of $\mathtt{NP}$, and 127 on
+the right of $\mathtt{ZG}$. Its actual table is rejected. Source bisimulation
+passes, but affine case $\mathtt{pc}=001010$ exhausts symbolic fuel. More
+decisively, after exactly 51 blank steps the machine has state 42, head 5,
+and one-cells $\{-3,0,2,3\}$. Its row $(42,0)\mapsto(1,R,42)$ then repeats
+forever on the blank right ray. The finite prefix plus this induction proves
+failure of the intended bootstrap, rather than merely a bounded failure to
+find a frame. This concrete rejection distinguishes local interface fixtures
+from a theorem about a newly composed table.
+
+The finite-dictionary MILP was extended by valid binary-tree rotation closure.
+Two closure rounds produce 3,177 words, 26,574 possible productions, 30,707
+binary variables, and 57,601 constraints. Two known 128-rule seeds satisfy
+every non-budget row by exact integer evaluation. The 120-second search at a
+127-rule budget returned a time limit with no feasible proposal; this is not
+an infeasibility certificate. Three closure rounds produce 29,411 words and
+1,239,167 variables; that process was killed with exit 137 before reporting
+any solver result.
+
+A second optimizer minimizes grammar count plus one extra scanner role when
+the source contains a six-zero run. Its target cost 128 encompasses both
+$127+117=244$ and $128+116=244$. A small secondary potential rewards removing
+distinct sixth-zero sites. Source zero bounds are only search conditions:
+the corresponding physical scanner, full source simulation, and blank
+initialization must still be verified. Its bounded run is recorded in the
+companion runtime packet.
+
+The self-contained reproduction subtree includes both C++ optimizers,
+explicit inputs and resumes, the adapted structural auditor, the finite
+MILP model, the literal control, and the minimal inherited runtime sources.
+The default reproduction audits structural claims; optional commands rebuild
+the control and replay the independent whole-frame theorem.

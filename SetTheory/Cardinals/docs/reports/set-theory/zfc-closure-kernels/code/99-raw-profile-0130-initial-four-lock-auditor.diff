@@ -1,0 +1,37 @@
+--- inherited/audit_fine_grammar.py
++++ joint/runtime/code/audit_fine_grammar.py
+@@ -128,9 +128,22 @@
+         if t in sequences:assert names[t] in rules,t
+     assert names[96] in rules
+     locks=(BASE/'inputs/state_reduction/bootstrap-lock54.txt').read_text().splitlines()
++    assert len(locks)-1==int(locks[0])==54
++    permitted_relaxation = {
++        ('eijkKCqkjGeU','0','eijkKCqkjGe'),
++        ('eijkKCqkjGeU','1','U'),
++        ('eijkKCqkjGe','0','eijkKCqkjG'),
++        ('eijkKCqkjGe','1','e'),
++    }
++    # New candidate class: exactly the four previously audited relaxation
++    # interfaces are omitted. All other original row equations remain checked.
++    observed_relaxation=set(); checked_locks=0
+     for w,b,t in map(str.split,locks[1:]):
++        if (w,b,t) in permitted_relaxation:
++            observed_relaxation.add((w,b,t));continue
+         assert project(encode(w),b)==encode(t),(w,b,t)
+-    assert len(locks)-1==int(locks[0])==54
++        checked_locks+=1
++    assert observed_relaxation==permitted_relaxation and checked_locks==50
+     old={}
+     _,_,immutable_names,_,_=make_vocabulary()
+     for q,ab in source['rules'].items():
+@@ -170,7 +183,9 @@
+       working_states=len(rules)+len(states-sequences-erased),
+       local_routing_cases=len(traces),route_traces=traces,
+       root_word_override_checks=[],fine_tokens=30,closed_atoms=44,
+-      boot_lock_projections=54,unreachable_but_charged_rules=sorted(set(rules)-live),
++      boot_lock_projections=50,
++      relaxed_bootstrap_interfaces=sorted(permitted_relaxation),
++      bootstrap_scope="Exact blank simulation is separately required",unreachable_but_charged_rules=sorted(set(rules)-live),
+       search_AST_properties=dict(leading_zeros=props[0],maximum_zero_run=props[1],depth=props[2]),
+       source_override=data.get('source_override'),
+       source_meaning_scope='AX replacement needs its separate logical calibration' if data.get('source_override') else 'Unchanged exact source',

@@ -1,0 +1,17 @@
+PYTHON ?= python3
+PDFLATEX ?= pdflatex
+
+.PHONY: verify full-search report clean
+verify:
+	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) code/verify.py
+
+full-search:
+	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) code/verify.py --full-search
+
+report:
+	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) code/report_data.py
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error report.tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error report.tex
+
+clean:
+	rm -f report.aux report.log report.out report.toc

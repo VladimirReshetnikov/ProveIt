@@ -1,0 +1,181 @@
+{
+  "status": "Final universal runtime audits and separate colored246 blank initialization complete",
+  "results": {
+    "246": {
+      "status": "PASS",
+      "working_states": 246,
+      "table_sha256": "540345fe9aaf61af73edc0485f34179d1391da73793067b89eecb18c0e0ded1b",
+      "certificate_sha256": "6ecac2574b22aacfa9d01809e5fe6a03ecc199c0f3b963b079214102dc2fde1f",
+      "source_stats": {
+        "instruction_leaves": 6460,
+        "maximum_depth": 37,
+        "maximum_zero_run": 7
+      },
+      "register_inductions": "PASS",
+      "universally_verified_cases": 8391,
+      "failed_cases": 0,
+      "successful_by_operation": {
+        "CD/zero": 1931,
+        "CD/positive": 1931,
+        "CB": 128,
+        "CI": 2601,
+        "CC": 1799,
+        "CH": 1
+      },
+      "failed_by_operation": {},
+      "failed_leaf_paths": [],
+      "added_word_rule_uses": 8,
+      "base_head_to_header_distance": 40,
+      "minimum_literal_progress": 13,
+      "blank_initialization_proved": true,
+      "separate_blank_initialization": {
+        "status": "PASS separately certified complete blank prefix",
+        "steps": 410735,
+        "start_state": 95,
+        "start_head": 0,
+        "start_tape": "all zero",
+        "complete_tape_equality": true,
+        "zero_exterior_verified": true,
+        "visited_head_interval": [
+          -16,
+          701
+        ],
+        "safe_root": {
+          "state": 96,
+          "head": -5,
+          "marker": -6,
+          "header": 176,
+          "header_distance": 181,
+          "pc": "",
+          "physical_primary": [
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            0
+          ],
+          "logical_primary": [
+            3,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            0,
+            0
+          ],
+          "spare_count": 167,
+          "every_spare_value": 1,
+          "ones": 351,
+          "zero_everywhere_else": true
+        },
+        "certificate": {
+          "path": "agent_states/blank_prefix_results.json",
+          "sha256": "5a2d8c07f135891852a5ea0498b706a5ee8f39a5d5bd1e682bd831068c76fac8"
+        },
+        "checker": {
+          "path": "agent_states/check_blank_prefix.py",
+          "sha256": "cf69789c666e34da138045a4f59595a0e5d1cc09b806f71359dac4b34460ea41"
+        }
+      },
+      "runtime_audit_scope": "The runtime-only audit retains blank_initialization_proved=false because that checker does not replay blank initialization; the separate certificate proves the prefix."
+    },
+    "245": {
+      "status": "FAIL",
+      "working_states": 245,
+      "table_sha256": "a18fa41482b3d6fb9a5015901a65849f1712d525f504450a3b97c8c2601a4d3d",
+      "certificate_sha256": "802d9f6dff88b4fcfebb545fc31d506bddfd2448a40aee58fafa45a44fe4c963",
+      "source_stats": {
+        "instruction_leaves": 6460,
+        "maximum_depth": 37,
+        "maximum_zero_run": 7
+      },
+      "register_inductions": "PASS",
+      "universally_verified_cases": 8361,
+      "failed_cases": 30,
+      "successful_by_operation": {
+        "CD/zero": 1916,
+        "CD/positive": 1916,
+        "CB": 128,
+        "CI": 2601,
+        "CC": 1799,
+        "CH": 1
+      },
+      "failed_by_operation": {
+        "CD/zero": 15,
+        "CD/positive": 15
+      },
+      "failed_leaf_paths": [
+        "111010010010000000",
+        "11101001001010000000",
+        "1110100100101010110000000",
+        "111010010010101110000000",
+        "1110100100101011110000000",
+        "11101001001010111111110000000",
+        "111010010010110111010000000",
+        "1110100100101101110110000000",
+        "1110100100101110000000",
+        "1110100100101110010000000",
+        "11101001001011100110000000",
+        "1110100100101110110000000",
+        "11101001001011110000000",
+        "1110100100101111010000000",
+        "11101001001011111110000000"
+      ],
+      "added_word_rule_uses": 8,
+      "base_head_to_header_distance": 40,
+      "minimum_literal_progress": 13,
+      "blank_initialization_proved": false
+    }
+  },
+  "quantification": {
+    "extra_gap": "all n>=0",
+    "registers": "all natural values with named decrement guard",
+    "spares": "every finite nonempty list of natural values"
+  },
+  "new_proof_rule": {
+    "identity": "b^(a*n) b = b^(a*n+1), a>0,n>=0,b in {0,1}",
+    "kind": "free-word normalization; no machine transition",
+    "state_head_and_tape_unchanged": true,
+    "literal_execution_and_box_rules_unchanged": true,
+    "initially_unresolved_case": "1110100100101011111111101100110110110",
+    "initially_unresolved_operation": "CI physical2",
+    "initially_unresolved_reason": "possibly empty1^n run immediately followed by two known ones"
+  },
+  "sources": {
+    "cli": {
+      "path": "agent_macros/check_colored_runtime.py",
+      "sha256": "0ce3fc2fe425136c40f10a2219bccb99632c1aeb1e7d3438e235d31790efddd9"
+    },
+    "extended_affine_executor": {
+      "path": "agent_macros/colored_affine.py",
+      "sha256": "e990bff4a1066099284dd29d6a323a1317862137895e3b6dd4645f06b27d7f96"
+    },
+    "pinned_affine_executor": {
+      "path": "sources/context246/zfc-context246/sources/prior/prefix_affine.py",
+      "sha256": "083f884e6de87a85381ebc6b28c23d02a9f0731e67c3d77e26ed9ea4544cd08e"
+    },
+    "source_graph": {
+      "path": "agent_states/colored_context_candidate_003.json",
+      "sha256": "dac8448ea107f6baf20eccfce5def1d263efc1cd2678b51019b592742ac6e27a"
+    },
+    "report_section": {
+      "path": "agent_macros/colored_runtime_result.tex",
+      "sha256": "b2bd6c2cae65cd05e85c382f2bf64a0938e6ccf5ac0b66ce3cae3bc538fbe2d0"
+    },
+    "blank_initialization_certificate": {
+      "path": "agent_states/blank_prefix_results.json",
+      "sha256": "5a2d8c07f135891852a5ea0498b706a5ee8f39a5d5bd1e682bd831068c76fac8"
+    },
+    "blank_initialization_checker": {
+      "path": "agent_states/check_blank_prefix.py",
+      "sha256": "cf69789c666e34da138045a4f59595a0e5d1cc09b806f71359dac4b34460ea41"
+    }
+  },
+  "runtime_certificate_fields_are_scope_limited": true
+}

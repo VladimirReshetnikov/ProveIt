@@ -1,0 +1,59 @@
+Independent review of the fine-token compiler
+============================================
+
+Files reviewed and replayed hashes are in fine-compiler-review.json. No root
+source file was modified by this reviewer.
+
+Finding: the unchanged-source compiler retains substantive validation gates.
+The finer 30-token representation decomposes an old atomic macro only when
+both children have break/continue bounds (0,0). The 44 original atom entries
+remain distinguished from pure decoder nodes; their allowed last incoming
+bits remain checked. Concatenation equalities alone are not treated as runtime
+proofs. The build separately reconstructs the full transformed source, checks
+exact ordered leaves against the original, compares the original with a fresh
+Prog254.v parse, and checks the finite register-program bisimulation. It then
+runs all guarded source instructions using the actual table, preserving full
+successor pointers and requiring literal progress, and checks every cell of
+the exact blank initialization with independent sparse/dense interpreters.
+
+The actual trial old-label table hash is recorded in the JSON. I independently
+rederived four block traversals, the complete three arithmetic macros, nine
+register selectors, and the free-word/list identity on this table. Every
+literal row used by these macro inductions is unchanged from the inherited
+246-state reference. The macro induction proof uses arbitrary natural lengths,
+finite lists and opaque untouched contexts; there is no finite register cap.
+
+Scope limits for a final unchanged-source candidate:
+* Execute the full expanded whole-frame replay, with all register values and
+  an arbitrary nonempty spare suffix; the affine box proof alone is not that
+  expanded replay.
+* Regenerate residual-pointer normalization and gap-invariant checks, counts,
+  renumbering, and exact initialization for the final emitted table.
+* The audit is an ordinary mathematical/code review and executable induction
+  certificate, not a new Lean/Rocq endpoint or formal proof of Python itself.
+
+Adaptation to an AX source override:
+An axiom-emission change normally changes numerical register semantics. Do not
+suppress the original leaf-order/bisimulation assertions and report the same
+source theorem. Supply an explicit modified abstract source as the compiler's
+reference, prove emitted code bisimilar to that source, and separately prove
+that its logic/consistency calibration agrees with the original theory.
+The complete ordered leaf stream of the modified reference must still equal
+that of the compiled output. The expected leaf and guarded-instruction counts
+must be computed from the modified reference, and both the affine driver and
+expanded whole-frame --sites parser require corresponding changes to their
+present hardcoded 6460/8391 assumptions. Preserve all named decrement guards,
+positive progress, full tape checks and complete branch coverage. Dynamic
+counts must describe the whole modified program, not silently skip hard cases.
+
+The local transparent route equations continue to be physical table obligations.
+The original 54 bootstrap lock projections are a discovery restriction, so a
+changed source can use fresh lock projections or drop that restriction while
+retaining independent exact blank execution to an admissible safe root. The
+fixed old-source bootstrap path cannot be inherited automatically.
+
+Minor robustness issue: build_fine_machine.py calculates `padding` only inside
+the successful-bisimulation branch and uses it unconditionally for boot. A
+failed bisimulation can therefore terminate with UnboundLocalError instead of
+writing a clean failure report. This cannot turn a failed candidate into a
+passed one, but computing padding before that branch makes diagnosis clearer.

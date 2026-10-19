@@ -1,0 +1,28 @@
+--- vendor/anneal_fine_compound_hardened.cpp
++++ anneal_fine_routing_closed.cpp
+@@ -1,3 +1,5 @@
++// Additional local hardening: no route may descend through a physical terminal,
++// and every route projection is rechecked after garbage collection.
+ // Exact fine-token extension of the attributed routing-aware zero6 annealer.
+ // Original implementation: ProveIt incoming zfc245-proof-20261018; see NOTICE.
+ // New here: variable-length atomic keys and joint macro-boundary mutations.
+@@ -49,8 +51,9 @@
+  return true;
+ }
+ 
+-bool matches(const Grammar&g,int q,const vector<Constraint>&cs){for(auto c:cs){int v=q;for(char b:c.prefix){auto it=g.find(v);if(it==g.end())return false;v=b=='0'?it->second.a:it->second.b;}if(v!=c.target)return false;}return true;}
++bool matches(const Grammar&g,int q,const vector<Constraint>&cs){for(auto c:cs){int v=q;for(char b:c.prefix){if(terminal(v))return false;auto it=g.find(v);if(it==g.end())return false;v=b=='0'?it->second.a:it->second.b;}if(v!=c.target)return false;}return true;}
+ bool route_contexts(const Grammar&g,vector<int>&route,mt19937_64&rng,bool randomize=false){for(auto [q,c]:fixed_projections)if(!matches(g,q,vector<Constraint>{c}))return false;for(int i=0;i<(int)groups.size();i++){if(!randomize&&matches(g,route[i],groups[i].cs))continue;vector<int> opts;for(auto [q,r]:g)if(matches(g,q,groups[i].cs))opts.push_back(q);if(opts.empty())return false;route[i]=opts[rng()%opts.size()];}return true;}
++bool all_route_paths(const Grammar&g,const vector<int>&route){for(auto [q,c]:fixed_projections)if(!matches(g,q,vector<Constraint>{c}))return false;for(size_t i=0;i<groups.size();i++)if(!matches(g,route[i],groups[i].cs))return false;return true;}
+ Prop wordprop(int,const Grammar&,unordered_map<int,Prop>&,unordered_map<int,Prop>&,unordered_set<int>&);
+ Prop exprprop(int x,const Grammar&g,unordered_map<int,Prop>&wm,unordered_map<int,Prop>&em,unordered_set<int>&seen){auto it=em.find(x);if(it!=em.end())return it->second;auto e=exprs[x];Prop p;if(e.kind=='L')p={0,0,0};else if(e.kind=='W')p=wordprop(e.a,g,wm,em,seen);else p=join(exprprop(e.a,g,wm,em,seen),exprprop(e.b,g,wm,em,seen));em[x]=p;return p;}
+ Prop wordprop(int q,const Grammar&g,unordered_map<int,Prop>&wm,unordered_map<int,Prop>&em,unordered_set<int>&seen){auto it=wm.find(q);if(it!=wm.end())return it->second;if(!seen.insert(q).second)return {10000,10000,10000};Prop p;if(terminal(q))p=exprprop(atomExpr.at(q),g,wm,em,seen);else{auto it=g.find(q);Rule r=it==g.end()?oldGrammar.at(q):it->second;p=join(wordprop(r.a,g,wm,em,seen),wordprop(r.b,g,wm,em,seen));}seen.erase(q);wm[q]=p;return p;}
+@@ -146,7 +149,7 @@
+  else if(move_kind<81)changed=route_contexts(next,nextroute,rng,true);
+  else if(move_kind<88)changed=router_move(next,nextroute,rng);
+  else changed=eliminate_move(next,nextroute,rng);
+- if(!changed||!route_contexts(next,nextroute,rng))continue;if(!collect(next,nextroute)){closure_rejections++;continue;}int nn=next.size();double phase=double(iter%600000)/600000.0;double temp=(0.09+0.50*(1.0-phase));bool ok=nn<=currentn||(nn<=bestn+5&&uni(rng)<exp((currentn-nn)/temp));if(ok){auto p=fullprop(next);if(p.zero>6||p.depth>64)ok=false;}if(ok){if(nn>currentn)uphill++;current=move(next);curroute=move(nextroute);currentn=nn;accepted++;}
++ if(!changed||!route_contexts(next,nextroute,rng))continue;if(!collect(next,nextroute)||!all_route_paths(next,nextroute)){closure_rejections++;continue;}int nn=next.size();double phase=double(iter%600000)/600000.0;double temp=(0.09+0.50*(1.0-phase));bool ok=nn<=currentn||(nn<=bestn+5&&uni(rng)<exp((currentn-nn)/temp));if(ok){auto p=fullprop(next);if(p.zero>6||p.depth>64)ok=false;}if(ok){if(nn>currentn)uphill++;current=move(next);curroute=move(nextroute);currentn=nn;accepted++;}
+  if(currentn==bestn&&uni(rng)<0.015){best=current;bestroute=curroute;}
+  if(currentn<bestn){best=current;bestroute=curroute;bestn=currentn;lastbest=iter;save(output,best,bestroute,iter,seed,elapsed);cout<<"BEST "<<bestn<<" iter "<<iter<<" seconds "<<elapsed<<" pool "<<words.size()<<endl;if(bestn<=stopcount)break;}
+  if(iter%40000==0)cout<<"progress "<<iter<<" best "<<bestn<<" current "<<currentn<<" sec "<<elapsed<<" pool "<<words.size()<<endl;

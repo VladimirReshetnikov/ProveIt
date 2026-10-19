@@ -1,0 +1,216 @@
+# Grammar search and finite obstruction
+
+This directory records the grammar-compression part of the search below the
+245-state routed construction. **It contains no new certified machine below
+245 states.** Its strongest negative result is an exact finite proof that
+five inherited left-child equations, together with one fixed atom edge,
+force a six-zero source path. The other negative outcomes are bounded search
+results, finite equality screens, or solver reports for specified finite
+models.
+
+The intended location is `grammar/` in the surrounding research archive.
+The pristine reference is `../reference/zfc245/`; the separately justified
+source commutations are in `../semantic/`. All commands below work from the
+archive root, and the driver resolves those locations relative to its own
+file, not the current shell directory. The source snapshot is ProveIt commit
+`6446ff5668307a2ac6aee1896037f0b792090389`.
+
+## Results and their status
+
+Ten bounded annealing campaigns made **41,679,192 proposal iterations**.
+These include rejected moves and repetitions, so the figure is not a count
+of distinct grammars. No run found 127 grammar roles, or 128 roles with
+maximum zero run five.
+
+| Search domain / objective | Bootstrap equations retained | Proposals | Saved roles | Maximum zero run | Six-zero chains |
+|---|---:|---:|---:|---:|---:|
+| Ordered words | 54 | 7,099,557 | 128 | 6 | 49 |
+| Ordered words, unlocked | 0 | 3,938,413 | 128 | 6 | 49 |
+| Fine words, warm | 54 | 3,937,175 | 128 | 6 | 48 |
+| Fine words, cold | 54 | 2,497,065 | 128 | 6 | 49 |
+| Disjoint-support traces | 54 | 863,648 | 128 | 6 | 50 |
+| Faster disjoint trace search | 54 | 2,042,251 | 128 | 6 | 48 |
+| Affine-extended traces | 54 | 5,073,185 | 128 | 6 | 50 |
+| Five-zero objective, mild penalty | 50 | 6,670,998 | 128 | 6 | 44 |
+| Five-zero objective, strong penalty | 50 | 4,070,474 | 134 | 6 | 6 |
+| Five-zero objective, fully unlocked | 0 | 5,486,426 | 134 | 6 | 4 |
+
+The two strong five-zero outputs minimize `roles + 0.30 * six_zero_chains`,
+so their saved role counts exceed the 128-role starting control. The mild
+weight is 0.05. All ten outputs pass the separate finite Python grammar
+audit. That audit checks semantic concatenation in the relevant word/trace
+domain, all terminal orientations, required source roots, 22 route
+projections, the supplied bootstrap equations, and expanded-source path
+statistics. It does **not** certify a new literal transition table,
+initialization, or complete runtime simulation. Every released-lock output
+has a new exact blank-start obligation that has not been discharged.
+
+The fixed-route finite MILPs at substring length caps 16 and 64 had 1,004 /
+2,720 candidate words and 5,059 / 31,572 productions. HiGHS reported no
+solution of at most 127 roles. A dynamic-route model at cap 32 had 2,014
+words, 17,716 productions, and 315 route options; it reported the same.
+A control model reported an optimum of 128 roles, whose explicit feasible
+grammar was independently audited. These are **solver reports about those
+finite pools**, with no independently checked infeasibility/optimality
+proof logs. They are not unrestricted lower bounds. A larger phrase-flow
+model reached its time limit without an incumbent: **UNKNOWN**.
+
+Reuse-biased parsing tried 1,557 control/single-swap combinations and 3,573
+combinations after adding the 224 ranked AX variants. Both best counts
+were 128. Four finite equality screens found no collisions among the 128
+existing grammar words plus 44 inherited atoms. The tested signatures are
+exact fine words, disjoint-support traces, affine-extended traces, and
+products of maximal consecutive affine runs with non-affine letters held
+opaque. Distinct signatures do not establish semantic inequality.
+
+## The exact frozen-lock obstruction
+
+The required source entry of old state 172 has word `eijkKCqkjGeU`. Five
+left projections in the original 54-equation lock force the chain
+
+```
+eijkKCqkjGeU -> eijkKCqkjGe -> eijkKCqkjG -> eijkKC -> eijk -> e
+```
+
+The fixed atom `e` has AST index 40, with left child `dec T`. Thus the
+required entry has a leaf at relative address `000000`. This proves that
+the global syntactic maximum zero run is at least six whenever those
+interfaces and atom implementations are retained. It is not a global
+machine-state lower bound, a reachable-site claim, or an obstruction to a
+stronger semantic scanner proof.
+
+In an ordered-word grammar, either fixed child determines the split, so
+removing only the top left equation does not release that split while its
+right child stays fixed. The 50-lock experiment instead rotates
+`((W e) U)` to `(W (e U))`, where `W = eijkKCqkjG`. It releases both equations
+for each of the two affected old words, deletes the obsolete `W e` role,
+and adds `e U`, preserving the starting grammar count. The proof and its
+machine-readable finite certificate are `zero5_lock_obstruction.tex` and
+`locked_zero5_obstruction_verified.json`.
+
+## Replay without running discovery
+
+Run with assertions enabled; do not use Python's `-O` option.
+
+```bash
+python3 grammar/reproduce.py verify
+```
+
+This uses only the Python standard library. It checks every file hash in
+the local manifest; regenerates the ordinary, fine, and trace inputs;
+audits all ten saved grammar outputs and the finite MILP control; replays
+the four equality screens and the exact lock obstruction; and recomputes
+the summary from the recorded logs and outputs. It writes a fresh
+`grammar/reproduced/verify/verification-summary.json`. The affine source
+matrices and commutation relation must be justified by the separate
+semantic source certificates in the surrounding package; this replay does
+not replace that proof.
+
+If these files are used in a different directory layout, supply paths
+explicitly:
+
+```bash
+python3 grammar/reproduce.py verify \
+  --package /path/to/zfc245-reference \
+  --semantic-root /path/to/semantic-certificates \
+  --output /path/to/new-replay-results
+```
+
+The exact small obstruction can also be replayed by itself:
+
+```bash
+python3 grammar/verify_zero5_lock_obstruction.py \
+  --package reference/zfc245 \
+  --grammar reference/zfc245/grammar.json \
+  --output grammar/reproduced/obstruction.json
+```
+
+The output directory for a standalone script must already exist. The main
+driver creates output directories itself.
+
+## Optional discovery reproduction
+
+The driver prepares fresh inputs and stages the research programs in a
+new output folder. Recorded evidence is preserved. Search profiles, exact
+seeds, budgets, source files, and input formats are in
+`search_profiles.json`.
+
+```bash
+python3 grammar/reproduce.py search affine_trace
+python3 grammar/reproduce.py search zero5_fully_unlocked
+python3 grammar/reproduce.py search all
+```
+
+A C++17 compiler named `g++` is required. The ten saved wall-time budgets
+sum to about 42 minutes before compilation. `--seconds 15` overrides the
+budget for a short exploratory run; it does not reproduce the full saved
+campaign. Time-limited stopping and compiler/library details can change
+the exact number of proposals and resulting trajectory.
+
+Finite MILP discovery requires NumPy and SciPy with `scipy.optimize.milp`:
+
+```bash
+python3 grammar/reproduce.py milp fixed16
+python3 grammar/reproduce.py milp fixed16_control
+python3 grammar/reproduce.py milp fixed64
+python3 grammar/reproduce.py milp routes32
+python3 grammar/reproduce.py milp phrase16
+```
+
+The first four profiles are given a generous 120-second reproduction
+budget; their saved solver calls completed within about four seconds. The
+phrase-flow budget is 180 seconds, and its recorded result is UNKNOWN.
+The models deliberately have finite candidate pools. Their scripts do not
+enforce the scanner depth/zero-run bound, and their frozen productions are
+stronger interfaces than unrestricted semantic equivalence. Phrase-flow
+endpoint orientation tests alone do not certify all interior binary
+associations, so a positive phrase witness would need realization checks.
+
+The parsing experiments use only the standard library:
+
+```bash
+python3 grammar/reproduce.py parse adjacent
+python3 grammar/reproduce.py parse ranked
+```
+
+The ranked profile reads `semantic/commuting_ax_variants.json`. Its input
+swap certificates are verified by the separate semantic suite. Its dynamic
+programming score charges phrase occurrences and therefore does not solve
+global shared-grammar minimization exactly.
+
+## File map and representation notes
+
+- `fine_semantic_domain.py` derives the 30-atom vocabulary and closed-control
+  bounds from the pinned AST. `prepare_fine_inputs.py` produces every
+  ordinary/fine/trace input plus the released-lock rotation.
+- `anneal_*.cpp` and `code-state_reduction-anneal_routes_zero6.cpp` contain
+  discovery algorithms. They adapt the attributed inherited route
+  annealer. No compiled executables are included.
+- `fine_milp.py`, `fine_milp_routes.py`, and `phrase_flow_milp.py` build the
+  finite optimization models. `parse_commuting_variants.py` is the separate
+  reuse-biased parser.
+- `audit_search_outputs.py`, `audit_semantic_collisions.py`, and
+  `verify_zero5_lock_obstruction.py` are finite verification tools.
+- `search_profiles.json`, `grammar_search_results.json`, and the `*.log`
+  files record search settings and actual outcomes. `summarize_recorded.py`
+  reconstructs the summary from the saved evidence.
+- `independent_grammar_audits.json`, `milp_control_grammar_audit.json`,
+  `semantic_collision_audit.json`, and
+  `locked_zero5_obstruction_verified.json` are the finite replay results.
+- `search_report.tex` is a section for the surrounding report. It includes
+  `grammar/zero5_lock_obstruction.tex` when compiled from the archive root.
+- `manifest.json` records SHA-256 hashes of the files in this contribution.
+
+The inherited `framework_states: 118` fields in raw search JSON predate
+the existing scanner contraction. They are historical metadata, not
+literal-state totals for the abstract grammar outputs. The proved
+245-state construction has 117 framework roles and 128 grammar roles.
+Fine/trace grammar identifiers must not be fed directly to the unmodified
+ordered-word machine builder. A successful future candidate must be
+realized as the actual rewritten source tree and must receive exact
+binary-table, source-equivalence, runtime/frame, scanner, and blank-start
+proofs.
+
+Original-source attribution and licenses remain those in the pristine
+reference. See `NOTICE.txt` and the reference's notices. These experiments
+make no new priority or minimality claim.

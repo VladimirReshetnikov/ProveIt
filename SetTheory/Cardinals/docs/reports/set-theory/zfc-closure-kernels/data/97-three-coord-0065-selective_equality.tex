@@ -1,0 +1,645 @@
+% Body-only note. The parent report supplies amsmath, amssymb, amsthm,
+% booktabs and hyperref. All results are ordinary mathematics, not kernel proofs.
+\section{A smaller finite formalism by interpreting raw assignments}
+\label{sec:selective-equality}
+
+The previous completed FC15$^*$ formalism retained congruence for the two
+assignment functions $V,C$, for membership $E$, and for incidence
+$\mathsf{Inc}$. Its strongest delivered reduction had 20 universal clauses,
+53 literals and 1,134 flat template bits. That argument reconstructed a
+native assignment/class model on an equality quotient.
+Here we prove a stronger reduction by constructing only the set-theoretic
+reduct needed for the consistency comparison. Raw class codes and raw
+assignments remain outside the quotient interpretation. This removes
+all update congruence, all incidence congruence, and lookup congruence in
+the selector argument.
+
+The main named-selector target has \textbf{19 clauses, 45 literals, and
+971 template bits}. Its extensional control has \textbf{20 clauses,
+49 literals, and 1,138 bits}. Both use two explicitly encoded constants,
+nine proper functions and four ordinary binary predicate symbols,
+including the equality surrogate. These are exact formalism sizes,
+not Turing-machine state counts. The second constant is charged in the
+template and ground-term encodings. There is no hidden initial tape.
+Sections~\ref{se:fusion}--\ref{se:witness-fusion} then reduce the proper
+function count to eight at no payload cost, to six for 40 extra bits,
+or to five for 56 extra bits, by explicit two-coordinate model constructions.
+
+\subsection{The exact language and four additional clauses}
+
+The constants are $d,q$. The proper functions are
+\[
+ V:2,\quad C:3,\quad N:2,\quad A:2,\quad Q:2,
+ \quad W:3,\quad Y:3,\quad Z:3,\quad H:2.
+\]
+The binary predicates are $E,\mathsf{Inc},G,\sim$. In the finite theory
+$\sim$ is an ordinary predicate, not built-in logical equality.
+Every variable below is universally quantified. Write
+\[
+ R(b,t,x,y):=\mathsf{Inc}(C(C(b,d,x),q,y),t),\qquad
+ D(x):=W(C(d,q,x),d,A(d,q)).
+\]
+The fifteen inherited native clauses, with their pseudo-equalities now
+read as $\sim$, are exactly
+\begin{align*}
+ &V(C(s,j,z),j)\sim z,\\
+ &(k\sim j)\lor (V(C(s,j,z),k)\sim V(s,k)),\\
+ &\mathsf{Inc}(s,N(a,b))\lor\mathsf{Inc}(s,a),\\
+ &\mathsf{Inc}(s,N(a,b))\lor\mathsf{Inc}(s,b),\\
+ &\neg\mathsf{Inc}(s,N(a,b))\lor\neg\mathsf{Inc}(s,a)
+        \lor\neg\mathsf{Inc}(s,b),\\
+ &\neg\mathsf{Inc}(s,A(j,k))\lor E(V(s,j),V(s,k)),\\
+ &\mathsf{Inc}(s,A(j,k))\lor\neg E(V(s,j),V(s,k)),\\
+ &\neg\mathsf{Inc}(C(s,j,z),a)\lor\mathsf{Inc}(s,Q(j,a)),\\
+ &\neg\mathsf{Inc}(s,Q(j,a))
+        \lor\mathsf{Inc}(C(s,j,W(s,j,a)),a),\\
+ &G(b,t)\lor R(b,t,H(b,t),Y(b,t,u)),\\
+ &G(b,t)\lor E(Z(b,t,u),Y(b,t,u)),\\
+ &G(b,t)\lor\neg E(Z(b,t,u),u),\\
+ &\neg G(b,t)\lor\neg E(x,H(b,t))\lor\neg R(b,t,x,y)
+        \lor E(y,H(b,t)),\\
+ &\neg G(b,t)\lor E(D(x),x)\lor\neg R(b,t,x,y)
+        \lor E(y,H(b,t)),\\
+ &\neg G(b,t)\lor\neg E(y,H(b,t))\lor R(b,t,Y(b,t,y),y).
+\end{align*}
+All abbreviations are expanded in the emitted JSON and bit streams.
+The source44 upper construction chooses the old selector as $N(d,d)$;
+our new language leaves $q$ independent and requires only the separation
+needed by the lower proof.
+
+Add precisely these four clauses:
+\begin{align}
+ &\neg(x\sim y)\lor\neg(x\sim z)\lor (y\sim z),
+          \tag{SE1}\label{se:eq}\\
+ &\neg(s\sim t)\lor (V(s,j)\sim V(t,j)),
+          \tag{SE2}\label{se:v}\\
+ &\neg(a\sim b)\lor\neg(x\sim y)\lor\neg E(a,x)\lor E(b,y),
+          \tag{SE3}\label{se:mem}\\
+ &\neg(d\sim q).
+          \tag{SE4}\label{se:sep}
+\end{align}
+Call the resulting theory $\mathsf{SE19}$. Clause \eqref{se:v} transports
+only the first argument of $V$, with the literally same selector $j$.
+There is no transport clause for $C,N,A,Q,W,Y,Z,H$, for $G$ or
+$\mathsf{Inc}$, or for the second argument of $V$.
+
+\subsection{An equality quotient with sufficiently many selector classes}
+
+Let $M$ be any set-sized model of these nineteen clauses, with raw carrier
+$U$. The first native clause at $s=j=d,z=x$ supplies
+$p_x\sim x$, where $p_x=V(C(d,d,x),d)$. Applying \eqref{se:eq} to
+$(p_x,x,x)$ proves $x\sim x$. Reflexivity and \eqref{se:eq} give symmetry;
+symmetry and \eqref{se:eq} give transitivity. Thus $\sim$ is an
+equivalence relation even though no reflexivity clause was emitted.
+
+Put $D=U/{\sim}$. We use brackets for quotient classes and interpret
+\[
+ E_D([x],[y])\quad\Longleftrightarrow\quad E_M(x,y).
+\]
+Clause \eqref{se:mem}, together with symmetry, proves this is well-defined
+in both arguments. No function other than this quotient relation will
+be interpreted on $D$.
+
+For raw objects put
+\[
+ P(x,y)=C(C(d,d,x),q,y).
+\]
+The first two native clauses and \eqref{se:sep} imply
+\[
+ V(P(x,y),d)\sim x,\qquad V(P(x,y),q)\sim y.
+\]
+If $P(x,y)\sim P(x',y')$, clause \eqref{se:v} at $d$ and $q$
+therefore implies $x\sim x'$ and $y\sim y'$. This is a cancellation
+statement; it does not assume that $P$ itself descends to a quotient
+function. Define raw terms
+\[
+ a_0=P(q,d),\qquad a_{n+1}=P(d,a_n).
+\]
+They belong to pairwise distinct equivalence classes. An equality involving
+$a_0$ and a later term contradicts the first projection and $d\not\sim q$;
+an equality between two later terms reduces by the second projection to
+one with smaller indices. Thus every required finite number of selector
+classes avoiding $[d],[q]$ exists. Equivalently, after choosing raw
+representatives, the cancellation property gives an injection $D^2\to D$.
+The finite argument already suffices for formula compilation.
+
+\subsection{The truth lemma that removes the remaining congruence}
+
+Choose raw selector representatives $j_v$ for the finitely many variable
+names of a fixed equality-free $E$-formula, after renaming bound variables,
+such that distinct names have distinct $\sim$-classes. For each raw
+assignment $s\in U$, define the finite environment
+\[
+ \eta_s(v)=[V(s,j_v)]\in D.
+\]
+The assignment clauses say exactly that replacing $s$ by
+$C(s,j_v,z)$ updates this finite environment at $v$ to $[z]$ and
+preserves every other selected coordinate. This assertion uses the
+actual raw update object. It does not identify updates of equivalent
+arguments, and it does not transport incidence along equality.
+
+Build a raw class object $t_\varphi$ by recursion:
+\begin{align*}
+ t_{E(v,w)}&=A(j_v,j_w),\\
+ t_{\operatorname{NAND}(\varphi,\psi)}&=N(t_\varphi,t_\psi),\\
+ t_{\exists v\,\varphi}&=Q(j_v,t_\varphi).
+\end{align*}
+Other classical connectives and falsity are represented by their ordinary
+finite NAND formulas. The native clauses prove the exact raw contracts
+\begin{align*}
+ \mathsf{Inc}(s,N(a,b))&\leftrightarrow
+   \neg(\mathsf{Inc}(s,a)\land\mathsf{Inc}(s,b)),\\
+ \mathsf{Inc}(s,A(j,k))&\leftrightarrow E(V(s,j),V(s,k)),\\
+ \mathsf{Inc}(s,Q(j,a))&\leftrightarrow
+   \exists z\in U\;\mathsf{Inc}(C(s,j,z),a).
+\end{align*}
+The last equivalence uses the supplied $W$ witness in its nontrivial
+direction. Consequently structural induction gives, for every raw $s$,
+\begin{equation}
+ \mathsf{Inc}_M(s,t_\varphi)
+ \quad\Longleftrightarrow\quad
+ (D,E_D)\models\varphi[\eta_s].
+ \label{se:truth}
+\end{equation}
+For the quantifier step, the induction hypothesis applies to each actual
+raw object $C(s,j_v,z)$; its environment is the required update, and
+the map $z\mapsto[z]$ is onto $D$. This deals with all raw witnesses,
+not merely a selected transversal. It is the point at which attempting
+to reconstruct a quotient update function would impose unnecessary
+congruence conditions.
+
+No arbitrary class is claimed to be invariant under equivalent raw
+assignments or equivalent raw class codes. Equation \eqref{se:truth}
+establishes the required invariance only for the class objects constructed
+from finite formulas, and that is enough.
+
+\subsection{All parameters and the exact supported-closure interface}
+
+Fix an arbitrary equality-free matrix $\varphi(x,y,\bar p)$ in $E$.
+Assign $d,q$ to the free input/output names, with all parameter and bound
+names in other pairwise distinct selector classes. Finite raw $C$
+updates produce an assignment $b$ realizing any prescribed tuple of
+parameter classes in $D$. The truth lemma gives a raw class $t$ with
+\begin{equation}
+ R_M(b,t,u,v)
+ \quad\Longleftrightarrow\quad
+ (D,E_D)\models\varphi([u],[v],\bar p)
+ \quad(u,v\in U).
+ \label{se:r}
+\end{equation}
+Thus the selected relation $R_M$ factors through both object arguments,
+although neither $C$ nor $\mathsf{Inc}$ is required to do so separately.
+
+Write $\operatorname{Empty}(x)$ for $\forall z\,\neg E_D(z,x)$
+and $y\subseteq_E u$ for $\forall z(E_D(z,y)\to E_D(z,u))$.
+The raw EPSC instance required from the inherited interface is
+\begin{align*}
+ &[\forall x\,\exists u\,\forall y
+       (\varphi(x,y,\bar p)\to y\subseteq_E u)]\\
+ &\qquad\Longrightarrow\quad
+ \exists c\bigl[
+ \forall x,y\bigl(((\operatorname{Empty}(x)\lor E_D(x,c))
+     \land\varphi(x,y,\bar p))\to E_D(y,c)\bigr)\\
+ &\hspace{47mm}\land\forall y(E_D(y,c)\to\exists x\,
+                  \varphi(x,y,\bar p))\bigr].
+\end{align*}
+
+Suppose its antecedent holds in $D$. If the raw flag $G_M(b,t)$ were
+false, apply local subset boundedness at $[H(b,t)]$ and choose a raw
+representative $u$ of the supplied bound. Clauses 10--12 give an output
+$Y(b,t,u)$ satisfying $R$, a member $Z(b,t,u)$ of that output, and
+nonmembership of the same object in $u$. Equation \eqref{se:r} and
+the definition of $E_D$ contradict the chosen bound. Hence $G_M(b,t)$
+is true.
+
+Take $c=[H(b,t)]$. Clause 13 gives recurrent closure. If $[x]$ is
+empty in $D$, then in particular $E_M(D(x),x)$ is false, whatever value
+the raw term $D(x)$ has; clause 14 gives the empty-input seed. Finally
+clause 15 supplies the supporting input $[Y(b,t,y)]$ for each hull
+member $[y]$. The exact support and all-empty-object seed are retained.
+This proves every raw EPSC instance, with unrestricted finite parameters
+and quantifier complexity, in the quotient structure $(D,E_D)$.
+
+\subsection{The extensional control}
+
+Let $\operatorname{Xor}(a,b)$ denote the inherited NAND class term
+\[
+ N(N(a,N(a,b)),N(b,N(a,b))).
+\]
+Add the single clause
+\[
+ (j\sim d)\lor(j\sim q)\lor(a\sim b)\lor
+ \mathsf{Inc}\bigl(P(a,b),
+ Q(j,\operatorname{Xor}(A(j,d),A(j,q)))\bigr).
+\]
+The resulting theory is $\mathsf{SE20}$. For any two distinct classes
+$[a],[b]$, choose a selector class $[j]$ avoiding $[d],[q]$.
+The projection identities and the raw truth lemma identify the final
+literal with
+\[
+ \exists z\in D\;[E_D(z,[a])\mathbin{\mathrm{xor}}E_D(z,[b])].
+\]
+Therefore $E_D$ is extensional. All colliding selector cases remain
+covered by the displayed guards. This derives actual Extensionality
+on the quotient, without transporting the values of $N,A,Q,C$
+or $\mathsf{Inc}$ through that quotient.
+
+\subsection{Consistency calibration and its exact dependency}
+
+Inside ZFC, the preceding constructions are set-sized quotient and
+satisfaction arguments. First-order completeness applied to
+$\operatorname{Con}(\mathsf{SE19})$ produces an initial set model;
+its quotient gives a model of full raw equality-free EPSC. The inherited
+ProveIt raw-EPSC calibration, which uses a hereditary-saturation
+interpretation, gives
+\[
+ \operatorname{Con}(\mathsf{SE19})\to
+ \operatorname{Con}(\mathrm{ZFC}).
+\]
+For $\mathsf{SE20}$ the quotient is extensional, so the inherited
+direct Extensionality-plus-EPSC bootstrap gives ZF without Foundation
+or Choice, followed by the existing Foundation/constructibility
+consistency transports. This is an alternative calibration dependency
+that does not require the raw hereditary-saturation interpretation.
+
+Conversely, the existing countable ZFC model construction of native
+FC15$^*$/FC16$^*$ provides a model of each new finite theory. Interpret
+$\sim$ as genuine identity and the new constant $q$ as the old term
+$N(d,d)$. In that native model NAND proves $d\ne N(d,d)$.
+All four added clauses hold under identity, and all native rows are
+unchanged by this assignment to $q$. Thus, with precisely the named
+inherited calibrations, ordinary ZFC proves
+\[
+ \operatorname{Con}(\mathsf{SE19})\leftrightarrow
+ \operatorname{Con}(\mathrm{ZFC}),\qquad
+ \operatorname{Con}(\mathsf{SE20})\leftrightarrow
+ \operatorname{Con}(\mathrm{ZFC}).
+\]
+These are new mathematical reductions of the completed finite payload.
+They are not claimed as new proofs of the inherited EPSC calibration,
+as kernel-checked endpoints, or as PA-verified proof-code compilers.
+In particular the argument does not license deleting equality rules in
+the unrelated 245-state Hilbert/Tarski source calculus.
+
+\subsection{Exact costs and an executable semidecision specification}
+
+The supplied generator imports byte-exact source44 clause builders,
+replaces each old selector term by the charged constant when selected,
+and appends exactly \eqref{se:eq}--\eqref{se:sep}. Its flat stream has
+three bits per clause length, three bits per literal's sign/predicate,
+four bits per term node, and a three-bit terminating zero length.
+Four local variable opcodes, two constants and nine function opcodes
+fit in four bits. The equality predicate is included in the two-bit
+predicate tag. The one-constant controls use $q=N(d,d)$ literally.
+
+\begin{center}\small
+\begin{tabular}{lrrrrr}
+\toprule
+Target & Clauses & Literals & Nodes & Max.\ variables & Bits\\
+\midrule
+Prior FC15$^*$ reduct &20&53&228&6&1134\\
+$\mathsf{SE19}$, one constant &19&45&208&4&1027\\
+$\mathsf{SE19}$, named $q$ &19&45&194&4&971\\
+Prior FC16$^*$ reduct &21&57&276&6&1341\\
+$\mathsf{SE20}$, one constant &20&49&256&4&1234\\
+$\mathsf{SE20}$, named $q$ &20&49&232&4&1138\\
+\bottomrule
+\end{tabular}
+\end{center}
+The named streams save 163 and 203 bits over the prior completed
+targets. Their packed byte lengths are 122 and 143, respectively,
+with five and six trailing zero padding bits. Maximum term depth is
+three for the raw target and five for the named extensional control.
+The one-constant comparison isolates the logical reduction from the
+separate constant-naming choice.
+
+There is also an exact reduction in the grounding burden of the stated
+frontend. For a frontier of $B$ terms, before deduplication, the old
+20-clause target emits
+\[
+ B^6+7B^4+12B^3
+\]
+ground substitution records. The new 19-clause target emits
+\[
+ 5B^4+13B^3+1.
+\]
+The extensional controls add $B^3$ to each expression. These polynomials
+count all colliding substitutions too; they follow by counting local
+variables in each literal template. Thus the direct exhaustive grounding
+stage drops from degree six to degree four. This is a scoped compiler
+benefit, not a bound on the total SAT search or the machine's halting time.
+
+The reference refuter treats all four predicates as ordinary
+propositional atom families. Its ground codec has $d=0,q=1$ and
+\[
+ \operatorname{code}(f_i(t_1,\ldots,t_r))
+ =2+i+16\,\operatorname{tuple}(\operatorname{code}(t_1),\ldots,
+                              \operatorname{code}(t_r)),
+\]
+with the dual Cantor pairing and seven unused unary padding
+constructors. Children have smaller codes; the codec is a bijection
+between naturals and the padded ground-term signature. Padding
+functions are absent from the clauses and need no congruence.
+
+At stage $n$, instantiate every local variable with every term code
+$0,\ldots,n$, including collisions. Keep all resulting endpoints,
+even when their codes are larger than $n$. Decide the resulting
+finite ground CNF exactly; halt only on UNSAT. The stages are nested
+and exhaust all ground instances. If every stage is SAT,
+propositional compactness supplies a valuation of all ground atoms;
+the raw term structure with that valuation is a model of the
+universal clauses. Conversely every first-order model satisfies
+every finite stage. Consequently the ideal refuter has the required
+ZFC-provable halting-versus-inconsistency contract.
+
+The solver adds no built-in equality or quotient-function constraints.
+In particular, giving $\mathsf{Inc}$ a table on equality classes would
+silently reinstate a condition that the new finite theory removed.
+Resource errors propagate and never count as UNSAT. Finite-stage SAT
+outputs are staging regressions, not consistency evidence. The supplied
+run checks four exact payload roundtrips, twelve malformed-stream
+rejections, 4,096 term-code roundtrips, 8,428 independently reconstructed
+ground endpoints, and 200 small CNFs against exhaustive assignments.
+At stages zero and one the raw target has 19 and 185 ground clauses;
+the extensional target has 20 and 193. All four SAT valuations are
+checked against their complete ground clauses.
+
+\subsection{Constructor fusion by a two-coordinate model}
+\label{se:fusion}
+
+The absence of congruence for class constructors permits a second
+reduction. Replace $H(b,t)$ everywhere by $N(b,t)$. Call the result
+$\mathsf{SE19N}$, or $\mathsf{SE20N}$ for the extensional control.
+The exact sizes remain 971 and 1,138 bits, but the number of proper
+functions drops from nine to \textbf{eight}. We now prove both
+consistency directions; identifying two functions in a presentation
+does not by itself justify equiconsistency.
+
+Every model of a fused theory expands to its unfused counterpart by
+setting $H=N$. For the converse start with an inherited native
+FC15$^*$ model $M$, with genuine identity as equality and the original
+separate $H_M,N_M$. Put $q_M=N_M(d_M,d_M)$, so $d_M\ne q_M$.
+Work on $U=M\times M$ and write $u=(u_0,u_1)$. Set
+\begin{align*}
+ d_U&=(d_M,d_M),&q_U&=(q_M,q_M),\\
+ u\sim_U v&\ \Longleftrightarrow\ u_0=v_0,&
+ E_U(u,v)&\ \Longleftrightarrow\ E_M(u_0,v_0),\\
+ \mathsf{Inc}_U(s,t)&\ \Longleftrightarrow\
+             \mathsf{Inc}_M(s_0,t_1),&
+ G_U(b,t)&\ \Longleftrightarrow\ G_M(b_0,t_1).
+\end{align*}
+Define the functions by
+\begin{align*}
+ V_U(s,j)&=(V_M(s_0,j_0),d_M),\\
+ C_U(s,j,z)&=(C_M(s_0,j_0,z_0),d_M),\\
+ N_U(a,b)&=(H_M(a_0,b_1),N_M(a_1,b_1)),\\
+ A_U(j,k)&=(d_M,A_M(j_0,k_0)),\\
+ Q_U(j,a)&=(d_M,Q_M(j_0,a_1)),\\
+ W_U(s,j,a)&=(W_M(s_0,j_0,a_1),d_M),\\
+ Y_U(b,t,u)&=(Y_M(b_0,t_1,u_0),d_M),\\
+ Z_U(b,t,u)&=(Z_M(b_0,t_1,u_0),d_M).
+\end{align*}
+Thus $N_U$ has two independent roles: its first coordinate supplies
+the old hull/bad-input object and its second supplies the old NAND
+class. These are compatible because incidence reads the class argument's
+second coordinate while membership and the equality surrogate read
+first coordinates.
+
+Every assignment law projects to the corresponding native law.
+The three NAND clauses follow from the second coordinate of $N_U$;
+the atomic and quantified class clauses similarly project to $A_M,Q_M$
+and $W_M$. Direct substitution gives the exact identity
+\[
+ R_U(b,t,x,y)=R_M(b_0,t_1,x_0,y_0).
+\]
+Here and below equality of displayed predicates means equality of
+their truth values. The first coordinate of the derived member term is
+\[
+ (D_U(x))_0=
+ W_M(C_M(d_M,q_M,x_0),d_M,A_M(d_M,q_M))=D_M(x_0).
+\]
+All six closure clauses therefore project exactly to their native
+counterparts. The four selective-equality clauses hold because
+$\sim_U$ is equality of first coordinates and $V_U$ respects that
+coordinate in its first argument. This construction needs no
+congruence for $N,A,Q,W,Y,Z$ or incidence.
+
+For the extensional theory begin with the inherited FC16$^*$ native
+model. In its additional clause, the first coordinate of every $P$
+assignment is the native $P_M$, and the second coordinate of every
+nested $A,N,Q$ class expression is its native class value. Its
+incidence literal and three equality guards therefore reduce to the
+original native extensional clause. This proves the upper direction
+for $\mathsf{SE20N}$ as well. Combined with the previous lower
+interpretations and inherited calibrations, ZFC proves
+\[
+ \operatorname{Con}(\mathsf{SE19N})\leftrightarrow
+ \operatorname{Con}(\mathrm{ZFC}),\qquad
+ \operatorname{Con}(\mathsf{SE20N})\leftrightarrow
+ \operatorname{Con}(\mathrm{ZFC}).
+\]
+The independent named selector is essential to this particular
+transport: $q_U$ was chosen explicitly and need not equal
+$N_U(d_U,d_U)$.
+
+There is also an optional three-predicate variant. Replace each
+$G(b,t)$ by $A(b,t)\sim d$, with the same sign, and modify only the
+first coordinate of $A_U$:
+\[
+ A_U(j,k)=
+ \left(
+ \begin{cases}d_M,&G_M(j_0,k_1),\\q_M,&\neg G_M(j_0,k_1),\end{cases}
+ \ A_M(j_0,k_0)\right).
+\]
+Then $A_U(b,t)\sim_U d_U$ holds exactly when $G_M(b_0,t_1)$ does.
+The atomic-class clauses still read only the unchanged second
+coordinate. The lower direction defines the old $G$ by this formula.
+There are six guard occurrences, so this trades the fourth predicate
+for twelve term nodes, or 48 flat bits: 1,019 and 1,186 bits.
+
+\subsection{Injective raw updates share three more witness constructors}
+\label{se:witness-fusion}
+
+Retain the primitive guard $G$ and first perform $H=N$. There is a
+six-function presentation obtained by the further substitutions
+\[
+ Y(b,t,u):=A(C(b,t,u),d),\qquad
+ Z(b,t,u):=Q(C(b,t,u),d).
+\]
+A five-function presentation additionally substitutes
+\[
+ W(s,j,a):=A(C(s,j,a),q).
+\]
+These substitutions apply everywhere, including inside $R$ and the
+derived member term $D$, and are expanded in the emitted streams.
+The respective proper signatures are $V,C,N,A,Q,W$ and $V,C,N,A,Q$.
+The raw theories have 1,011 and 1,027 bits; their extensional controls
+have 1,178 and 1,194. Clause and literal counts remain 19/45 and
+20/49, and the maximum local variable count remains four.
+
+Here is a full upper-model argument that rules out collisions between
+the shared witness roles. In the native model $M$ the pairing
+\[
+ P_M(x,y)=C_M(C_M(d_M,d_M,x),q_M,y)
+\]
+is injective, by its two exact native projection equations. Therefore
+a fixed nesting of $P_M$ gives an injection $J:M^6\to M$. Replace the
+earlier definition of $C_U$ by
+\[
+ C_U(s,j,z)=
+ \bigl(C_M(s_0,j_0,z_0),
+       J(s_0,s_1,j_0,j_1,z_0,z_1)\bigr).
+\]
+Its first coordinate is unchanged, so all previous projection
+identities and clause verifications still apply. Now $C_U:U^3\to U$
+is injective. If $c$ lies in its range, let
+$(\beta_c,\tau_c,\upsilon_c)$ denote its unique raw preimage.
+
+Keep the second coordinates
+\[
+ (A_U(j,k))_1=A_M(j_0,k_0),\qquad
+ (Q_U(j,a))_1=Q_M(j_0,a_1)
+\]
+for every pair of raw arguments. Define their first coordinates by
+the following disjoint cases, using $d_M$ whenever no displayed case
+applies:
+\begin{align*}
+ (A_U(c,d_U))_0
+   &=Y_M((\beta_c)_0,(\tau_c)_1,(\upsilon_c)_0)
+       &&(c\in\operatorname{ran}(C_U)),\\
+ (Q_U(c,d_U))_0
+   &=Z_M((\beta_c)_0,(\tau_c)_1,(\upsilon_c)_0)
+       &&(c\in\operatorname{ran}(C_U)),\\
+ (A_U(c,q_U))_0
+   &=W_M((\beta_c)_0,(\tau_c)_0,(\upsilon_c)_1)
+       &&(c\in\operatorname{ran}(C_U)).
+\end{align*}
+The first two equations handle the six-function theory, retaining
+primitive $W_U$ as before. Include the third and remove $W_U$ for the
+five-function theory. The two cases for $A_U$ cannot overlap:
+$d_U\ne q_U$ as raw pairs. Within each case the preimage is unique.
+Consequently these equations define total single-valued functions;
+they impose no selector-class or raw-code congruence.
+
+For all raw arguments the substituted witnesses have exactly the
+required native first coordinates:
+\begin{align*}
+ (A_U(C_U(b,t,u),d_U))_0&=Y_M(b_0,t_1,u_0),\\
+ (Q_U(C_U(b,t,u),d_U))_0&=Z_M(b_0,t_1,u_0),\\
+ (A_U(C_U(s,j,a),q_U))_0&=W_M(s_0,j_0,a_1).
+\end{align*}
+Their second coordinates can take the class values already specified
+by $A_U,Q_U$: every witness occurrence is consumed through its first
+coordinate, either directly by $E_U$ or as a replacement argument of
+$C_U$. This includes the witness inside the expanded term $D_U$.
+Thus every original clause has the same truth-value projection as
+before. Conversely, defining $H,Y,Z$ and optionally $W$ by the stated
+terms expands any reduced model to $\mathsf{SE19}$ or
+$\mathsf{SE20}$. This proves both consistency equivalences in ZFC
+for each of the four new presentations.
+
+Each replacement of $Y$ or $Z$ adds two term nodes, with five total
+occurrences: ten nodes and 40 bits. Replacing $W$ adds two nodes at
+each of two occurrences: four more nodes and 16 bits. These are
+charged syntax costs. No injective update clause, pairing constructor,
+or decoding function is added to the target. Injectivity is a property
+of the model used to prove the upper direction. In the lower direction
+the raw truth lemma continues to work for all models, including those
+whose raw update operation is not injective.
+
+All three retained-guard fused signatures fit a radix-eight total
+ground-term codec with $d=0,q=1$ and constructor codes
+$2+i+8\operatorname{tuple}(\bar n)$. The eight-function signature uses
+all tags; the six- and five-function signatures have two and three
+unused unary padding tags. Fair grounding uses the same polynomial
+$5B^4+13B^3+1$ and its extensional $+B^3$ control. The five-function
+raw target has maximum term depth four. The encoder, independent
+parser, codec roundtrips and exact finite SAT witnesses are supplied
+in \texttt{fused\_hull.py} and \texttt{fused\_witnesses.py}.
+None of these payload sizes is a binary-machine state count.
+
+\subsection{The six-function frozen kernel as a second compiler target}
+
+The same method also applies to the incoming frozen-assignment kernel.
+Its Boolean-normalized named-selector input \texttt{FC14Qd} has thirteen
+native clauses followed by the definition $q=I(d,d)$. Delete that last
+definition, interpret its other equalities by $\sim$, and append
+\eqref{se:eq}--\eqref{se:sep}. The resulting frozen target has
+\textbf{17 clauses, 36 literals, six functions, three predicates,
+and 1,042 flat bits}. Its extensional control has 18 clauses,
+40 literals and 1,201 bits. Both retain the two charged constants,
+and their maximum local variable count is four. Exact inputs and
+independently parsed outputs are emitted by
+\texttt{frozen\_selective\_control.py}.
+
+Here the functions are $V,C,I,A,U,F$. The raw contracts are implication
+for $I$, falsity for $d$, membership atoms for $A$, and universal
+quantification for $U$. The quantifier witness is the inherited term
+\[
+ J(s,j,a)=V(F(P(s,j),a),q).
+\]
+Its one witness clause still proves the exact raw universal contract:
+if the universal class is false, the actual raw update at $J(s,j,a)$
+is a counterexample. The truth-lemma quantifier step therefore works
+just as above and assumes no congruence for this term.
+
+The two additional native $F$ clauses give
+\[
+ \mathsf{Inc}(s,F(b,t))\leftrightarrow
+ \mathsf{Inc}(C(C(b,d,V(s,d)),q,V(s,q)),t).
+\]
+For a class $t$ representing a fixed ordinary matrix with parameters
+stored in $b$, the right side is exactly its relation evaluated on
+$[V(s,d)],[V(s,q)]$. Thus this frozen class has precisely the two
+coordinate dependencies needed by the inherited EPSC wrapper,
+even when the source matrix used the wrapper's auxiliary label.
+Applying the same raw truth induction to that wrapper, with an
+auxiliary selector class distinct from $[d],[q]$, gives the full
+supported EPSC instance on $D$. The Boolean normalization used in
+the incoming input remains valid because the implication/falsity
+contracts are exact on every raw assignment. Its extensional clause
+gives quotient Extensionality by the same argument as $\mathsf{SE20}$.
+
+For the upper direction, choose the existing rich-class-code native
+model from the frozen-kernel note and set the new $q$ to its old
+$I(d,d)$. That model has genuine equality and $d\ne q$, so all four
+new completion clauses hold. Consequently the same inherited
+EPSC consistency adapters prove the new frozen consistency
+equivalences in ZFC. The rich-code witness-sharing theorem is
+inherited; this corollary changes only equality requirements and
+the selector definition.
+
+The frozen inputs have six proper functions and three predicates.
+They use fewer clauses and predicates than the five-function fused
+targets, but more payload bits and substantially deeper terms: the
+new frozen maximum depth is twelve. Both families admit a radix-eight
+ground-term codec. Direct
+grounding emits $3B^4+12B^3+B+1$ records, or $3B^4+13B^3+B+1$
+for the extensional control. Neither payload family dominates all
+compiler costs, and neither establishes a Turing-machine state count.
+
+\subsection{Provenance and next compilation question}
+
+The fifteen native clauses, guard sharing, derived member witness,
+raw-EPSC interface, and extensional control come from ProveIt source44,
+preserved in the reference files. The general finite assignment/class
+method is attributed there to Harvey Friedman, \emph{Impossible
+Counting}, Section 4.1. The preceding incoming archive supplied the
+20/53 and 21/57 selective native-model reconstruction controls.
+The new contribution is the raw-assignment truth lemma over an
+$E$ quotient, the removal of the additional congruence obligations,
+the independent-selector variant, and the exact emitted finite
+payload/refuter. The two-coordinate model and injective raw-update
+construction additionally justify sharing the hull, Boolean, atomic-class,
+quantifier-class and witness roles in the explicit patterns proved above.
+Historical novelty beyond the inspected sources is
+not asserted.
+
+The practical compiler opportunity is specific: only four local
+variables remain, all update and incidence congruence checking
+disappears, lookup transport compares an unchanged raw selector, and
+the function signature can be reduced to five proper constructors.
+A complete binary implementation must still pay for fair term
+enumeration, clauses, Boolean valuation search, every helper,
+and blank-tape initialization. The 971-bit stream alone gives
+no numerical state bound below 245.

@@ -1,0 +1,145 @@
+# Toward a ZFC consistency machine below 246 states
+
+**The requested machine with fewer than 246 working states was not found.**
+This is a research and verification packet, not a new state-count record.
+
+Two complete alternative **246-state** machines are supplied. Ordinary
+mathematical proofs, tied to explicit finite certificates, establish for each
+that ZFC proves blank-tape nonhalting equivalent to `Con(ZFC)`. Three additional
+246-state runtime layouts have full instruction certificates but no certified
+blank initializer. No new Lean/Rocq endpoint or serialized ZFC proof is claimed.
+
+The machine convention is one bi-infinite tape, two symbols, all-zero blank
+start, and L/R moves only. Canonical working states are 0–245; 246 is the separate
+terminal label. The initializer uses only counted states.
+
+## Read first
+
+- `report.pdf` is the complete mathematical report, including both canonical
+  transition tables, proof boundaries, results, and reproduction instructions.
+- `report.tex` and `sections/*.tex` are its editable sources.
+- `verification/delivery-verification.json` records the fresh positive replay.
+- `PROVENANCE.json`, `NOTICE.md`, and `SHA256SUMS` identify sources and delivered
+  bytes. The unchanged reference has its own historical notices and manifest.
+
+## Candidates
+
+| Layout | Working states | Blank prefix from old state 95 | Status |
+|---|---:|---:|---|
+| Inherited Context246 | 246 | 410,735 moves | Unchanged reference |
+| 0 | 246 | 410,723 moves | Complete machine |
+| 233 | 246 | 410,815 moves | Complete machine |
+| 235, 236, 237 | 246 | No certified root within the recorded bound | Runtime variants only |
+
+Each `candidates/layoutN/` has `program.json`, `sites.json`,
+`source-map-certificate.json`, and `machine_old.tm`. Only layouts 0 and 233 have
+`machine.tm`, `renumbering.json`, and `bootstrap.json`. An old-label table's
+`#! start 95` header identifies the tested entry, and does not turn the three
+bootless runtime variants into certified blank-start machines.
+
+Both successful roots are the same complete frame: old dispatcher 96, head -5,
+marker -6, header 176, empty program counter, distance 181, physical registers
+`[0,0,0,3,0,0,3,0,0]`, and 167 spare blocks of value 1. The logical register vector
+is `[3,0,0,0,3,0,0,0,0]`. Every one-cell of the tape is accounted for.
+
+The specific Layout 0 reassociation was previously used for source27/faster253.
+This packet applies it to Context246 and supplies the resulting new prefix and
+checks. General reassociation, the baseline runtime, and the logical
+calibration are inherited and attributed.
+
+## Verify the positive results
+
+Python 3.10+ and its standard library suffice. Do not use `-O`.
+
+```sh
+python3 -B verify.py --output /tmp/zfc-layout-verification.json
+```
+
+The checker reconstructs the five changed source trees, independently parses
+the pinned literal program, checks the exact finite source maps, reruns every
+universal binary instruction contract, rechecks the register induction proofs,
+compares all retained literal rows, replays both entire blank prefixes, and
+compares canonical table bytes and renumberings. It also checks the product
+invariant and available integrity manifests. The reference/candidate inputs
+are not modified. The default positive replay does not repeat optimization
+searches or rebuild a proof-assistant dependency closure.
+
+For each runtime there are 6,460 source leaves, 8,391 guarded instruction cases,
+42 supporting literal macro rows, and 472 instruction-proof rows. The support
+union is all 492 table rows. These all-parameter induction and affine checks are
+distinct from finite rejection fixtures used by the search tools.
+
+## What the research adds
+
+1. **An independent finite source control-flow certificate.** It validates
+   changed decoder trees against the original program, including arithmetic
+   effects, both decrement guards, halt reflection, and zero-padded PC semantics.
+2. **A stronger safe-start recognizer.** Existing calculus lemmas certify useful
+   nonzero formula and stack codes. Unknown codes are not classified as false.
+3. **A full product-invariant search interface.** Merely deleting six impossible
+   guards leaves many inadmissible numerical fixtures: 5,327 of the previous
+   8,385 samples violate another register's mask. The new 33,540-frame corpora
+   respect all nine masks. Provider and synthesized-row searches still have no
+   survivor on these declared finite domains.
+4. **An additional sound affine rule.** An extra decrement of a register proved
+   zero is an exact identity on the whole file before any nonempty effect. Its
+   proof keeps all 42 supporting rows and complete endpoints.
+5. **Certified source identity collapses.** Removing the two always-zero loops
+   is proved correct on the invariant. The current compiler costs 253, 247,
+   and 254 states for the X, T, and combined specializations. All 718 one-step
+   closed rewrites and exact graph quotients failed to improve those costs.
+
+The 247-gated layout queue was exhausted after 364 expansions; its smallest
+charged count remains 246. The broader 248-gated run is unfinished after 991
+expansions, with 440 queued layouts remaining. These are claims about the
+specified fingerprint-deduplicated directed algorithm and gates. The cost
+function only computes exact bisimulation when the graph has at most 249
+states; it charges the raw graph size otherwise. No general lower bound follows.
+
+All 331 control-aware one-step reassociations were also checked: 255 source
+certificates passed, and none produced a verified smaller machine. The pulse
+and fusion search records retain their exact finite domains, time/fuel limits,
+overlaps, and failure meanings. Repeated recipe counts are not distinct-machine
+counts. A bounded checker failure alone is not a semantic impossibility proof.
+
+## Reproduce experiments
+
+See `code/runtime/README.md`, `code/fusion/README.md`, and
+`code/proof/README.md` for exact commands. Generated large fixture corpora and
+compiled binaries are omitted where they can be regenerated exactly.
+
+```sh
+python3 -B code/grammar/plateau_search.py \
+  --ceiling 247 --seconds 2147483647 --max-nodes 10000 \
+  --output /tmp/zfc-layout-247
+python3 -B code/grammar/plateau_search.py \
+  --ceiling 248 --seconds 2147483647 --max-nodes 991 \
+  --output /tmp/zfc-layout-248-prefix
+python3 -B code/grammar/control_rotations.py --output /tmp/zfc-control-rotations
+```
+
+The original source27 helper copies are libraries for the adapted drivers.
+Their old standalone entrypoints can expect the original upstream checkout;
+use the commands documented here for this portable packet. A C++17 compiler
+is required only for the separately documented compiled searches; OpenMP is
+optional for the auxiliary-row pulse search.
+
+## Build the PDF
+
+```sh
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+```
+
+## Incorporation into ProveIt
+
+Preserve this packet as research material and the two complete tables as
+alternate 246-state candidates. Keep the other artifacts' experimental status.
+The maintained `candidate-permutation252` and its Lean endpoint were not edited.
+A future 245-state submission needs its own complete table, uniform simulation
+proof, exact sufficient initializer, and calibrated theorem.
+
+The inspected repository is
+`VladimirReshetnikov/ProveIt@8e012a51d6e7fdad4d903089536427a813009a4f`.
+The precise existing-source and contribution boundary is in `PROVENANCE.json`
+and `NOTICE.md`.

@@ -1,0 +1,25 @@
+Framework experiments prepared for the ProveIt investigation on 18 October 2026.
+
+The original source calculus and program are attributed to Mira-Cult, upstream
+verification to Jeff Ketchersid, and the compiler framework to Andrew James Wade.
+The 245-state routed table and its proof package retain the attribution and
+licenses recorded in packages/zfc245-proof-20261018.
+
+edge_reroute_search.cpp and combined_reroute_search.cpp adapt the literal tape
+engine and fixture parser from code/state_reduction/resource_merge_search.cpp
+in that package. The new parts enumerate individual edge replacements and
+their combinations. The inherited engine itself traces to the ProveIt
+zfc-beyond246 incoming archive; no new simulator attribution is claimed.
+
+anneal_routes_zero5.cpp adapts that package's anneal_routes_scan_gradient.cpp
+and resume-file support from anneal_routes_zero6.cpp. Its new experiment uses
+the five-zero gradient, weight 0.25, no bootstrap locks, and a verified
+128-rule starting point. All inherited source notices remain applicable.
+
+Python research and reproduction adapters in this directory are part of the
+current contribution. They import the unchanged attributed symbolic rules
+from the reference package rather than replacing their proof semantics.
+
+Smaller transition tables are explicitly unverified diagnostic artifacts.
+No successful sub-245 consistency equivalence, minimality proof, or new
+proof-assistant endpoint is asserted by this directory.

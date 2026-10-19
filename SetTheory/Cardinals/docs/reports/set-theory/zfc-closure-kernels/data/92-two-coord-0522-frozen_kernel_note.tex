@@ -1,0 +1,539 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,hyperref,array}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\Inc}{\mathop{\rm Inc}}
+\newcommand{\Con}{\mathop{\rm Con}}
+\newcommand{\FC}{\ensuremath{\mathsf{FC13S}}}
+\newcommand{\FCE}{\ensuremath{\mathsf{FC14S}}}
+\newcommand{\Neg}[1]{\mathop{\rm Neg}(#1)}
+\newcommand{\ClassAnd}[2]{\mathop{\rm And}(#1,#2)}
+\newcommand{\Or}[2]{\mathop{\rm Or}(#1,#2)}
+\newcommand{\Ex}[2]{\mathop{\rm Ex}_{#1}(#2)}
+\title{Frozen assignments and shared witness coordinates:\\a six-function finite closure kernel}
+\author{Research contribution for the ProveIt small-machine project}
+\date{18 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give an ordinary mathematical consistency calibration for a finite
+universal theory with one constant, six proper functions, two non-equality
+binary predicates, thirteen clauses and twenty-six literals.  A fourteenth
+clause makes its membership reduct extensional.  The construction uses a
+class operator that freezes all matrix parameters except two selected
+coordinates.  The existing freeze object also supplies the universal
+quantifier's counterexample witness through an assignment coordinate.
+This second sharing step is justified by a rich coding construction in a
+countable set-coded ZFC model; it is not justified by an arbitrary function
+identification.  The thirteen-clause theory has a 1515-bit equality-completed
+template in the same flat format in which the previous nine-function FC15*
+payload has 1616 bits.  Its native template is larger, 1040 rather than
+881 bits.  These are explicit finite-theory and data results.  No binary
+machine, state reduction, proof-assistant theorem, or internal PA endpoint
+is asserted for this frontend.
+\end{abstract}
+
+\section{Inherited interface and the exact new signature}
+
+The assignment/class method is attributed to Friedman's \emph{Impossible
+Counting}, Section 4.1.  In particular his axiom K[1,5] already has a unary
+projection operation freezing parameters; $F$ below is its two-coordinate
+assignment-pullback variant.  His Theorem 4.1.3 gives the countable
+definable-class expansion.  ProveIt's source44 supplied the FC15*/FC16* finite
+closure kernels and their ordinary ZFC consistency calibration.  We retain
+their exact empty-seeded, subset-bounded, globally supported closure
+interface.  The contribution here is their particular six-function
+combination, including shared witness coordinates, and its measured
+encoding.  It does not weaken that interface or claim priority for
+projection/class coding in general.
+
+All variables range over one nonempty domain with native equality.  There
+is one constant $d$, six total functions
+\[
+ V:2,\quad C:3,\quad I:2,\quad A:2,\quad U:2,\quad F:2,
+\]
+and two binary predicates $E,\Inc$.  The symbol $q$ is always the literal
+term $I(d,d)$; it is not a second constant.  Define the following term
+abbreviations:
+\begin{align*}
+ P(a,b)&=C(C(d,d,a),q,b),\\
+ J(s,j,a)&=V(F(P(s,j),a),q),\\
+ B(b,s)&=C(C(b,d,V(s,d)),q,V(s,q)).
+\end{align*}
+In particular $J$ is not an additional function symbol.
+
+We also use finite class-term abbreviations, expanded in the supplied JSON
+and bit streams:
+\begin{align*}
+ \Neg{a}&=I(a,d),\\
+ \ClassAnd{a}{b}&=I(I(a,I(b,d)),d),\\
+ \Or{a}{b}&=I(I(a,d),b),\\
+ \Ex{j}{a}&=I(U(j,I(a,d)),d).
+\end{align*}
+For an auxiliary selector $r$, put
+\begin{align*}
+ S_r(t)&=U\bigl(d,\Ex{r}{U(q,I(t,U(d,I(A(d,q),A(d,r)))))}\bigr),\\
+ E_0&=U(q,I(A(q,d),d)),\\
+ K_r(t)&=U\bigl(d,U(q,I(\Or{E_0}{A(d,r)},I(t,A(q,r))))\bigr),\\
+ L_r(t)&=U(q,I(A(q,r),\Ex{d}{t})),\\
+ T_r(t)&=I\bigl(S_r(t),\Ex{r}{\ClassAnd{K_r(t)}{L_r(t)}}\bigr).
+\end{align*}
+The scopes deliberately reuse $d$ inside the subset test and $q$ inside
+the emptiness test.  Those inner scopes do not include the matrix $t$.
+Only one auxiliary selector, distinct from $d,q$, is needed.
+
+\section{The thirteen universal clauses}
+
+Every displayed row is a universally quantified clause.  Repeated variable
+substitutions are allowed.  The finite theory $\FC$ consists of exactly:
+\begin{align}
+ &V(C(s,j,z),j)=z,\\
+ &k=j\ \lor\ V(C(s,j,z),k)=V(s,k),\\
+ &\neg\Inc(s,I(a,b))\ \lor\ \neg\Inc(s,a)\ \lor\ \Inc(s,b),\\
+ &\Inc(s,I(a,b))\ \lor\ \Inc(s,a),\\
+ &\Inc(s,I(a,b))\ \lor\ \neg\Inc(s,b),\\
+ &\neg\Inc(s,d),\\
+ &\neg\Inc(s,A(j,k))\ \lor\ E(V(s,j),V(s,k)),\\
+ &\Inc(s,A(j,k))\ \lor\ \neg E(V(s,j),V(s,k)),\\
+ &\neg\Inc(s,U(j,a))\ \lor\ \Inc(C(s,j,z),a),\\
+ &\Inc(s,U(j,a))\ \lor\ \neg\Inc(C(s,j,J(s,j,a)),a),\\
+ &\neg\Inc(s,F(b,t))\ \lor\ \Inc(B(b,s),t),\\
+ &\Inc(s,F(b,t))\ \lor\ \neg\Inc(B(b,s),t),\\
+ &r=d\ \lor\ r=q\ \lor\ \Inc(b,T_r(F(b,t))).
+\end{align}
+Their literal counts are
+$1,2,3,2,2,1,2,2,2,2,2,2,3$, totaling $26$.
+At most four local universal variables occur in a row.  The maximum
+expanded term depth is $15$.
+
+\begin{lemma}[Exact core and selector supply]
+The first ten clauses imply the exact implication, falsity, membership
+atom and universal-quantifier laws.  Moreover $d\ne q$, $P$ is injective
+in both arguments, and there exist arbitrarily many pairwise distinct
+selector values avoiding $d,q$.
+\end{lemma}
+\begin{proof}
+The three implication clauses give
+$\Inc(s,I(a,b))\leftrightarrow(\Inc(s,a)\to\Inc(s,b))$.
+Clause (6) makes $d$ false at every assignment, while $q=I(d,d)$ is true
+at every assignment.  Hence $d\ne q$.  The two atom clauses are exactly
+their stated biconditional.  Clauses (9)--(10) give
+\[
+ \Inc(s,U(j,a))\quad\longleftrightarrow\quad
+ \forall z\,\Inc(C(s,j,z),a).
+\]
+For the right-to-left implication, a false left side would supply the
+counterexample $J(s,j,a)$ by clause (10).
+
+The two assignment laws and $d\ne q$ give
+$V(P(a,b),d)=a$ and $V(P(a,b),q)=b$, proving injectivity.
+Set $a_0=P(q,d)$ and $a_{n+1}=P(d,a_n)$ for each external finite $n$.
+The map $P(d,-)$ is injective and $a_0$ is outside its range by the first
+projection.  Thus the $a_n$ are pairwise distinct.  Among any $m+2$ such
+values at most two equal $d,q$, giving the required finite selector supply.
+This does not assert that a predetermined $a_n$ always avoids $d,q$.
+\end{proof}
+
+\section{Why freezing removes the capture problem}
+
+For fixed $b,t$, write
+\[
+ R_{b,t}(x,y)=\Inc(C(C(b,d,x),q,y),t).
+\]
+Clauses (11)--(12) give the exact identity
+\[
+ \Inc(s,F(b,t))\quad\longleftrightarrow\quad
+ R_{b,t}(V(s,d),V(s,q)).
+\]
+Thus this class depends on only two assignment coordinates, even if the
+original class $t$ depends on other selectors, including $r$.
+
+\begin{lemma}[Exact wrapper]
+If $r\notin\{d,q\}$, the final incidence in clause (13) holds precisely
+when the following implication holds for $R=R_{b,t}$:
+\begin{align*}
+ &[\forall x\,\exists u\,\forall y\,
+       (R(x,y)\to\forall z(E(z,y)\to E(z,u)))]\\
+ &\qquad\Longrightarrow\quad
+ \exists c\,\bigl[\forall x,y\,
+       (((\forall z\,\neg E(z,x))\lor E(x,c))\land R(x,y)
+         \to E(y,c))\\
+ &\hspace{53mm}\land\ \forall y(E(y,c)\to\exists x\,R(x,y))\bigr].
+\end{align*}
+\end{lemma}
+\begin{proof}
+Use the exact core laws and the freeze identity to expand the five
+class-term abbreviations.  In $S_r$ the inner $U(d,-)$ is confined to the
+subset test, so the antecedent matrix keeps the outer input value.
+In $E_0$ the local $U(q,-)$ is confined to the emptiness test, so the matrix
+in $K_r$ retains its outer output value.  Both scopes preserve the hull or
+bound coordinate $r$.  The two occurrences binding $r$ are in disjoint
+antecedent/consequent scopes.  Every displayed quantified clause is
+therefore exactly the indicated closure clause; no freshness assumption
+about the original class $t$ is needed.
+\end{proof}
+
+Deleting $F$ and directly using $t$ in the wrapper is unsound.  For example,
+if the original class depends only on coordinate $r$, quantifying over $r$
+changes that class.  In a two-value assignment diagnostic, a class true
+precisely when the $r$ coordinate is $1$ has false universal $r$-closure,
+whereas its frozen version at a base with $r=1$ has true universal closure.
+This is a capture counterexample, not a finite model of the whole theory.
+
+\begin{proposition}[Full lower interface]
+The $E$-reduct of every $\FC$ model satisfies every raw equality-free EPSC
+instance, with unrestricted finite matrix parameters and quantifiers.
+\end{proposition}
+\begin{proof}
+For any fixed finite equality-free $E$-formula, use the selector supply to
+choose distinct labels for all its free and bound names, assigning $d,q$
+to its input and output.  The exact core laws represent its atoms,
+implications, falsity and universal quantifiers by a class term.
+Successive $C$ updates set each of its finitely many parameter coordinates
+to the desired values while preserving the others.  This gives an
+assignment $b$ and class $t$ representing the entire matrix as $R_{b,t}$.
+Choose any $r$ avoiding $d,q$; clause (13) and the wrapper lemma give its
+exact EPSC instance.  The original matrix may use this same label $r$:
+its coordinate is frozen in $b$, so there is no capture.
+\end{proof}
+
+\section{Rich class coding justifies the shared witness}
+
+The less compressed intermediate theory has an independent ternary $W$
+in place of $J$ in clause (10).  A $\FC$ model expands to such a model by
+$W(s,j,a)=J(s,j,a)$ immediately.  The converse is not obtained by changing
+$W$ in an arbitrary model: the required incidence classes might lack
+representatives with the needed assignment coordinate.  We now construct
+a model with precisely this richness.
+
+\begin{lemma}[Class codes in every coordinate fiber]
+Work in ZFC.  Let $M$ be a countably infinite set-coded model of ZFC.
+Choose distinct domain elements $d,q$, and interpret $V,C$ by the common
+normalization to set-coded partial function graphs specified below, with
+default value $d$.  There exists a class coding $c\mapsto D_c$ onto all externally
+pure-membership-definable subsets of $M$ such that
+\[
+ D_d=\varnothing,\qquad D_q=M,\qquad
+ \forall D\,\forall w\,\exists c\;(D_c=D\ \land\ V(c,q)=w).
+\]
+\end{lemma}
+\begin{proof}
+The set $\mathcal D$ of externally definable classes with finite
+$M$-parameter tuples is countable.  Each fiber
+$B_w=\{c:V(c,q)=w\}$ is countably infinite: the objects $P(v,w)$, as
+$v$ ranges over $M$, lie in it and are distinct by their $d$ coordinates.
+Removing the at most two designated objects $d,q$ leaves each fiber
+countably infinite.  On that remainder choose a surjection onto
+$\mathcal D$, independently for each fiber.  Add the two prescribed class
+codes and assign arbitrary definable classes to any unused objects.
+The fibers partition the domain, so these choices are compatible.
+All choices occur in the ambient ZFC construction; no internal truth
+predicate for $M$ is asserted.
+\end{proof}
+
+\subsection*{Explicit membership-language normalization}
+
+Here is a fixed first-order definition of the two operations.  The class
+family permits logical equality; ``pure membership'' excludes the added
+function and predicate symbols, not logical equality.  If equality-free
+definitions are preferred, Extensionality in $M$ replaces $x=y$ by
+$\forall z(E(z,x)\leftrightarrow E(z,y))$, with fresh binders.
+To specify the graph definitions, write
+\begin{align*}
+ \operatorname{Sing}(u,x)&\equiv\forall v(v\in u\leftrightarrow v=x),\\
+ \operatorname{Dbl}(u,x,y)&\equiv\forall v(v\in u\leftrightarrow(v=x\lor v=y)),\\
+ \operatorname{KP}(p,x,y)&\equiv
+ \exists u\,\exists v\,
+ (\operatorname{Sing}(u,x)\land\operatorname{Dbl}(v,x,y)
+ \land\operatorname{Dbl}(p,u,v)).
+\end{align*}
+The graph-entry predicate is
+$\operatorname{Entry}(g,x,y)\equiv\exists p(p\in g\land\operatorname{KP}(p,x,y))$.
+Let $\operatorname{PF}(g)$ assert that every member of $g$ is a Kuratowski
+pair, and
+\[
+ \forall x,y,z\;
+  (\operatorname{Entry}(g,x,y)\land\operatorname{Entry}(g,x,z)\to y=z).
+\]
+Put
+\[
+ \Gamma(s,g)\equiv
+ (\operatorname{PF}(s)\land g=s)\lor
+ (\neg\operatorname{PF}(s)\land\forall p\,p\notin g).
+\]
+For fixed default $d$, the graph of $V$ is the formula
+\[
+ \exists g\;\Gamma(s,g)\land
+ \bigl[\operatorname{Entry}(g,j,z)\lor
+  (z=d\land\neg\exists y\,\operatorname{Entry}(g,j,y))\bigr].
+\]
+The graph of $C(s,j,z)=c$ is
+\begin{align*}
+ \exists g\;\Gamma(s,g)\land\forall p\;[p\in c\leftrightarrow
+  (\operatorname{KP}(p,j,z)\lor
+   (p\in g\land\neg\exists y\,\operatorname{KP}(p,j,y)))].
+\end{align*}
+Extensionality gives the uniqueness of the empty normal form and updated
+graph; Pairing, Separation and Union give their existence.  The graph
+functionality condition gives the unique $V$ value.  Updating preserves
+$\operatorname{PF}$ and directly proves both assignment equations,
+including the case of an invalid input $s$.  Finiteness of the graph is
+unnecessary.  Externally finite patterns are represented by finitely many
+updates starting from the empty graph.
+
+In an ill-founded or $\omega$-nonstandard model $M$ these formulas mean
+$M$-satisfaction, not the external assertion that the members of an
+$M$-object form a genuine well-founded graph.  Since ZFC proves existence
+and uniqueness for these fixed formulas, $M$ satisfies those theorems.
+Native equality then makes each formula select one actual domain element
+for each actual input tuple.  This defines external total operations on
+the set-sized carrier and supplies all identities used above.  No
+absoluteness of $M$'s finiteness or well-foundedness is assumed.
+
+\begin{theorem}[Upper model construction]
+ZFC proves $\Con(\mathrm{ZFC})\to\Con(\FC)$.  The same holds for the
+extensional fourteen-clause variant defined below.
+\end{theorem}
+\begin{proof}
+Completeness and the countable-model theorem provide such an $M$ from
+$\Con(\mathrm{ZFC})$.  Interpret $\Inc(s,c)$ as $s\in D_c$ using rich
+coding.  Implication of two definable classes, membership of two $V$
+values, and the universal preimage under $C$ are again pure-$E$-definable.
+Choose $I,A,U$ to name those classes, stipulating $I(d,d)=q$; the latter
+is possible since $D_q=M$.  This order of choices removes any apparent
+circularity in the syntactic definition of $q$.
+
+For each $(b,t)$, the frozen class
+\[
+ D^{\rm fr}_{b,t}=\{s:C(C(b,d,V(s,d)),q,V(s,q))\in D_t\}
+\]
+is pure-$E$-definable.  If $b=P(s,j)$, the pair $(s,j)$ is unique.  When
+some $z$ falsifies $\Inc(C(s,j,z),t)$ choose one such $z$ as $w$;
+otherwise choose any $w$.  If $b$ has no such pair representation also
+choose any $w$.  Richness provides a class code $c$ for $D^{\rm fr}_{b,t}$
+with $V(c,q)=w$.  Set $F(b,t)=c$.
+
+This satisfies both freeze clauses and the counterexample-witness clause
+simultaneously.  There is no incompatible collision: the common key is
+exactly $(b,t)$, and injectivity of $P$ makes its potential witness request
+unique.  The incidence class and the coordinate value are independent
+requirements precisely because of the rich coding lemma.
+
+For each fixed $b,t$, the relation $R_{b,t}$ is represented in $M$ by an
+ordinary finite pure-membership formula.  ZFC satisfies its EPSC instance:
+under the local subset bound each fiber is separated inside a power set,
+and its exact value is unique; Replacement and iteration over internal
+$\omega$ then produce the positive supported closure from the empty set.
+This is instancewise formula reasoning inside $M$, not expanded-language
+comprehension involving $F$ or $\Inc$.  The wrapper lemma now proves
+clause (13).  Since $M$ is extensional, the additional row below also holds.
+\end{proof}
+
+\subsection*{Which syntax universe is used}
+
+All uses of $\operatorname{Def}(M)$ refer to finite formulas in the
+\emph{ambient} ZFC proof's natural-number syntax, evaluated by its
+set-coded satisfaction relation for $M$.  They do not quantify over
+formula codes in $M$'s own possibly nonstandard $\omega$.  In an external
+description these are ordinary finite formulas.  When the entire argument
+is read in another ambient model of ZFC, ``finite formula'' and
+``satisfaction'' have that ambient model's ordinary internal meanings.
+The proof is uniform in that syntax and does not assume the ambient
+model is externally $\omega$-standard either.
+
+The required uniformity is elementary template substitution.  Given a
+formula code $\rho(x,y,\bar p)$, capture-safe renaming and substitution
+produce the subset bound and supported-closure wrapper.  A single finite
+ZF proof template, with $\rho$ as a relation placeholder, derives its EPSC
+instance.  For every input $x$, its exact output fiber is separated inside
+$\mathcal P(b)$ for any local subset bound $b$.  Extensionality makes that
+fiber unique independently of the chosen bound.  Replacement collects
+these unique fibers on any set.  The definable step
+\[
+ c\longmapsto c\cup\bigcup\{\{y:\rho(x,y,\bar p)\}:x\in c\}
+\]
+is functional.  The ordinary recursion proof on internal $\omega$, another
+fixed formula-indexed template, starts with the exact empty-input fiber
+and forms the union of its stages.  Induction gives recurrent closure
+and global output support.  Every occurrence of Separation and
+Replacement in this template becomes an actual ZF schema instance after
+substitution of $\rho$; no schema for the expanded $\Inc,F$ language is used.
+
+Consequently ambient ZFC proves uniformly that every set-coded ZF model
+satisfies every one of these ambient-formula EPSC instances.  This is why
+choosing a defining formula for each $D_t$ is sufficient even when $M$
+is nonstandard.  There is no unrestricted internal truth predicate for
+the ambient universe, and no reflection from a prover's metatheory.
+
+\subsection*{Finite proof transport and formalization scope}
+
+For the lower direction, a finite source proof uses finitely many EPSC
+matrices.  Each is compiled recursively to a class term, with a fresh
+finite selector list; the assignment identities and the wrapper lemma
+give a finite derivation of its instance.  Native-equality elimination
+in the extensional control similarly replaces each equality atom by its
+incoming-profile formula with a fresh label.  The existing EPSC-to-ZF
+and Foundation/Choice derivation transports then apply to a finite
+refutation.  This supplies ordinary effective finite proof transport,
+as well as the semantic consistency argument.
+
+For the upper direction the set-coded model construction, countability,
+rich coding, and satisfaction arguments are all carried out inside
+ordinary ZFC.  First-order soundness converts the constructed model into
+the statement that no finite proof of contradiction exists.  Thus the
+displayed consistency equivalences have the ambient ZFC meaning requested
+for the machine project.  This note does not give a serialized proof-code
+compiler, prove its represented correctness in PA, or claim that an
+external proof-assistant theorem already yields that arithmetic endpoint.
+
+\section{An extensional control with no extra function}
+
+For class terms put
+\[
+ \operatorname{Xor}(p,q')=I(I(p,q'),I(I(q',p),d)).
+\]
+Its incidence is exclusive disjunction by the implication/falsity laws.
+Add to $\FC$ the single clause
+\[
+ j=d\ \lor\ j=q\ \lor\ a=b\ \lor\
+ \Inc\left(P(a,b),\Ex{j}{
+ \operatorname{Xor}(A(j,d),A(j,q))}\right).
+\]
+Call the result $\FCE$.  If $j$ avoids $d,q$, the final literal says
+exactly that some object belongs to precisely one of $a,b$.  The selector
+supply provides such a $j$, so the row implies ordinary Extensionality.
+Conversely Extensionality implies the row, including all colliding-selector
+cases covered by its guards.  It is therefore an exact core-relative
+Extensionality formulation.
+
+\begin{theorem}[Consistency calibration and its dependencies]
+Using the existing ProveIt ordinary calibration of full raw EPSC and of
+Extensionality plus full EPSC, ZFC proves
+\[
+ \Con(\FC)\ \longleftrightarrow\ \Con(\mathrm{ZFC}),\qquad
+ \Con(\FCE)\ \longleftrightarrow\ \Con(\mathrm{ZFC}).
+\]
+\end{theorem}
+\begin{proof}
+The upper implications are proved above.  The lower interface proposition
+and source44's inherited raw-EPSC calibration give the first lower
+implication.  For the second, every $\FCE$ model has an extensional
+$E$-reduct satisfying full EPSC, hence ZF without Foundation or Choice by
+the accepted direct EPSC bootstrap.  Its existing Foundation and
+constructibility consistency transports give $\Con(\mathrm{ZFC})$.
+The extensional route does not use the hereditary-saturation interpretation
+needed for the raw route.  These named prior results are dependencies, not
+new proof-assistant results of this note.
+\end{proof}
+
+\section{Exact costs, tests, and an executable compiler target}
+
+The supplied standard-library Python file emits literal expanded clauses,
+encodes and independently parses the same flat template convention as
+source44, and reports exact metrics.  In that convention a clause length
+uses three bits, each literal uses three control bits, and each term node
+uses four bits; three zero bits terminate the stream.  Equality completion
+adds reflexivity, left-Euclidean equality, one congruence clause per retained
+function and one transport clause per non-equality predicate.  Padded
+function opcodes receive no congruence after passage to the retained reduct.
+
+\begin{center}
+\begin{tabular}{lrrrrrr}
+\toprule
+Theory & Func. & Clauses & Literals & Term nodes & Bits & Bytes\\
+\midrule
+FC15* native (source44) &9&15&35&182&881&111\\
+FC15* completed &9&29&82&320&1616&202\\
+$\FC$ native &6&13&26&230&1040&130\\
+$\FC$ completed &6&23&57&318&1515&190\\
+FC16* native (source44) &9&16&39&230&1088&136\\
+FC16* completed &9&30&86&368&1823&228\\
+$\FCE$ native &6&14&30&274&1231&154\\
+$\FCE$ completed &6&24&61&362&1706&214\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The raw completed stream saves 101 bits and six clauses; the extensional
+completed stream saves 117 bits and six clauses.  A frontend that already
+handles equality by quotient labels instead of explicit congruence clauses
+must price the \emph{native} rows, which grow by 159 and 143 bits respectively.
+Thus the encoding benefit depends on the checker architecture.  The term
+depth increases from the old shallow kernel to 15; tree-grounding stages can
+become much more expensive.  Neither improvement nor regression in these
+metrics determines the final binary-state count.
+
+Six proper functions fit a radix-eight ground term codec, with two padded
+unary constructor tags.  The old nine-function code needed radix sixteen.
+For a tuple pairing $\pi_k$ with each child no larger than its tuple code,
+use $0$ for $d$ and
+\[
+ \operatorname{code}(f_i(t_1,\ldots,t_k))
+ =1+i+8\pi_k(\operatorname{code}(t_1),\ldots,\operatorname{code}(t_k)).
+\]
+This is a total padded ground-term enumeration with children strictly
+smaller than parents.  A concrete compiler target is the existing
+finite-quotient frontend with these six retained tags, two predicate tables,
+the literal native rows above, and congruence checks only on retained tags.
+Every colliding substitution and every finite quotient labeling must remain
+eligible.  Compactness and the retained term-algebra quotient give the same
+ideal inconsistency semidecision theorem as the existing frontend.
+
+The included finite checks compare the class wrapper with an independently
+written direct EPSC predicate for all 260 pairs of arbitrary binary $E,R$
+tables on carriers of size one or two, both before and after the safe binder
+reuse.  They also check 4096 freezing-support diagnostics and an explicit
+unfrozen capture counterexample.  These carriers are not models of the
+infinite assignment/class core.  Every generated payload round-trips through
+its parser; malformed truncation controls are rejected.  These finite checks
+support the transcription and codec; the unbounded consistency statement
+rests on the ordinary proofs above.
+
+The separate executable \texttt{frozen\_frontend.py} realizes a complete
+ground-clause reference using explicit equality completion, rather than
+the suggested quotient-label implementation.  At finite stage $n$ it
+instantiates every local variable by every term code $0,\ldots,n$, retaining
+endpoint terms beyond that frontier, and runs exact iterative DPLL.  It
+imposes no artificial total-function interpretation on the bounded
+frontier.  Its \texttt{--whole-search} loop halts only at an exhausted UNSAT
+stage and catches no resource exception as a logical answer.  Fairness
+covers every ground instance; compactness followed by the retained-language
+equality quotient gives its ideal inconsistency equivalence.  A finite-stage
+SAT valuation is a propositional certificate, not a model of the whole kernel.
+The default $n=1$ checks return SAT for both targets, with 300/308 clauses,
+259/267 atoms, and maximum endpoint bit length 63197.  The latter is the
+bit length of a deeply nested ground term, despite the tiny substitution
+frontier; it is not a 63197-bit template or a TM state count.  The reference
+also passes 130 exhaustive small-CNF comparisons and 4096 radix-eight
+encode/decode round trips.
+
+No complete RM or TM compilation is supplied.  Template emission, ground
+term traversal, equality/partition checking, Boolean valuation, outer-stage
+enumeration, and blank initialization remain to be charged.  A small
+signature and a 190-byte completed stream do not establish a machine with
+fewer than 245 states.
+
+\section*{Sources and reproducibility}
+
+The current repository input is ProveIt
+\texttt{6446ff5668307a2ac6aee1896037f0b792090389}.  The comparison sources are:
+\begin{itemize}
+\item \texttt{44-nine-notes-finite\_class\_closure.md} and
+\texttt{intake-155-source-44.md} in
+\texttt{SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/};
+they give the attributed core, exact FC15*/FC16* costs and calibration
+dependencies.
+\item \texttt{Computability/BusyBeaver/Research/ZFC/finite\_quotient\_frontend.md}
+for the existing quotient-label checker and its ideal compactness argument.
+\item Harvey M. Friedman, \emph{Impossible Counting}, 2 September 2017,
+Section 4.1 and Theorem 4.2.3,\newline
+\url{https://bpb-us-w2.wpmucdn.com/u.osu.edu/dist/1/1952/files/2014/01/ImpossibleCnt090217-2a5ewhm.pdf}.
+\end{itemize}
+Run \texttt{python3 frozen\_kernel.py} to regenerate all exact payloads and
+\texttt{frozen-kernel-results.json}.  The filename labels F/R/S denote the
+seven-function intermediate, the witness-coordinate reduction, and that
+reduction with safe binder reuse.  Only the final S variants are recommended
+as the new finite-theory targets.  No global priority claim is made.
+\end{document}

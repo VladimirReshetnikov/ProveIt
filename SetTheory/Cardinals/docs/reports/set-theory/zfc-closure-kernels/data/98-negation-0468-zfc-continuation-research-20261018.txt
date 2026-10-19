@@ -1,0 +1,133 @@
+# Continuation equivalence and proved source commutations below 246 states
+
+**Result: the requested strict bound is not achieved.** This contribution
+establishes new **246-state** binary blank-tape controls and documents new
+compiler/proof transformations and rejected reductions. It does not establish
+any machine with fewer than 246 working states.
+
+The target is the exact theorem
+
+> ZFC proves: the machine does not halt on blank tape if and only if Con(ZFC).
+
+The proof is conventional set-coded mathematics with executable finite and
+induction certificates, using the explicitly identified existing logical
+calibration. A new closed Lean/Rocq endpoint and a serialized ZFC proof are
+not supplied. The paper explains this distinction and all dependencies.
+
+## Read first
+
+`report.pdf` is the complete research paper; `report.tex` and `proof/*.tex`
+are its editable sources. The paper contains the complete canonical table of
+the principal control and a detailed consistency/simulation argument.
+
+The principal machine is `machines/normalized246.tm`, with working states
+0–245, blank start 0 and halt label 246. It is the certified `s9_best_007`
+experiment, combining a proved source commutation, reassociation, and
+normalized arithmetic terminal entries. Its original-label counterpart is
+`machines/normalized246_old.tm`, with start 95, dispatcher 96 and halt 254.
+Sparse numeric labels must not be mistaken for the state count.
+
+| Artifact stem | Source pairs | States | Failed cases after the rejected 245-state scanner edit |
+|---|---:|---:|---:|
+| `reassociated246` | 202 | 246 | 25 |
+| `commuted_reassociated246` | 203 | 246 | 21 |
+| `normalized246` | 203 | 246 | 16 |
+
+All three controls and the directly commuted seed pass all **8,391 universal
+instruction obligations**, register inductions for arbitrary natural values
+and nonempty spare lists, and an independent complete **410,735-transition**
+blank bootstrap. They finish at the same safe logical vector
+`(3,0,0,0,3,0,0,0,0)` and complete tape frame. These are positive controls;
+the shortened tables are explicitly rejected experiments.
+
+## What this adds
+
+- **Proved source commutation.** An increment of logical register 7 moves
+  across the terminating transfer from register 6 to register 1. An independent
+  audit verifies all 242 changed regions, unique external entries, matching
+  exits, complete outside control flow and the exact total register map.
+- **Control readdressing.** A further source experiment changes 115 `CC2`
+  operands to `CC3` while preserving every resolved guarded successor. Its
+  universal runtime is checked, but blank initialization remains unresolved;
+  it is retained under experiments, not among the certified machines.
+- **Continuation equivalence with progress.** A 4,530-class guarded source
+  quotient permits different clean return addresses. A rank at most four
+  prevents a false simulation consisting of infinitely many silent returns.
+- **Compiler symmetry.** A theorem shows why physical-selector permutations
+  repeat the same fixed-color state conflicts and state counts.
+- **Increment-label rigidity.** A 1,875×20 exact incidence matrix has rank 19.
+  Its only kernel direction exchanges two already identical register-1 labels;
+  nonnegative one-hot labels force the original assignment.
+- **Reproducible negative evidence.** State folds, incoming-edge pruning,
+  scanner compensation, affine invariants and alternate blank starts have
+  explicit finite scopes and preserved inputs. None is a general lower bound.
+
+## Verify
+
+Python 3 with its standard library is sufficient for the main positive
+certificates. Run without `-O`, since assertions are mathematical obligations.
+From the archive root:
+
+```sh
+python3 code/verify.py
+```
+
+Fresh logs and JSON certificates are written to a new directory under
+`verification/`. To select a destination, use `--output PATH`. To validate all
+frozen archive hashes first, add `--check-hashes`.
+
+The optional bounded state campaigns need a C++17 compiler:
+
+```sh
+python3 code/verify.py --full-search
+```
+
+They take about one minute on the preparation environment, with most time in
+the complete 9! selector census; timings are machine dependent. Details are
+in `experiments/state/REPRODUCTION.txt` and `experiments/continuation/README.md`.
+A rejected finite fixture or symbolic obligation is not automatically a proof
+that the corresponding blank-tape computation has the wrong halting set.
+
+The selected compiler emission can also be replayed without rerunning a
+stochastic search; see `experiments/logic/README.md`. Historical time-bounded
+searches may explore different numbers of recipes on different hardware.
+Frozen table/source certificates are deterministic.
+
+Build the paper with a standard pdfLaTeX installation:
+
+```sh
+make report
+```
+
+## Archive layout
+
+- `machines/`: certified controls, source DAGs, transported physical roles and
+  the principal table's LaTeX rendering.
+- `code/`: portable verification code, independent audits and research producers.
+- `results/`: frozen positive certificates, independent reviews and report data.
+- `experiments/`: bounded-search inputs, rejected candidates, logs and exact scopes.
+- `vendor/context246/`: the small original conventional-proof baseline bundle,
+  including the inherited calibration argument and identified source snapshots.
+- `PROVENANCE.json`, `SHA256SUMS`, and notices: pinned inputs and exact file identity.
+
+## Repository integration
+
+A suitable destination is
+`Computability/BusyBeaver/Research/ZFC/candidate-continuation246/`, with a link
+from `docs/incoming`. Keep the 246-state controls distinct from the rejected
+245-state scanner edits and the uncalibrated control-readdressing experiment.
+No existing repository file has been changed or pushed by this contribution.
+
+## Attribution and proof boundary
+
+The investigation starts from ProveIt commit
+`c539ed64bfad3fa5a059bf040b06b6c91ded680e` and Jeff Ketchersid's upstream
+`zf-254` commit `c132d7eae8158cd3a9850ea3eb7251158c3dd821`. The 254-state
+machine is credited upstream to Mira-Cult; Andrew James Wade's compiler and
+source work and all inherited contributors retain their attributions.
+The complete upstream Rocq closure was inspected by source and stated results,
+not rebuilt in this investigation. The included ordinary proof does not treat
+an external Lean theorem as an automatic internal ZFC theorem.
+
+This is an AI-assisted research contribution prepared for the requested
+ProveIt investigation. Its unresolved numerical target is stated explicitly.

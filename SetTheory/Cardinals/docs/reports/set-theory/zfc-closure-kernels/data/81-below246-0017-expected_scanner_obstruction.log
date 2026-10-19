@@ -1,0 +1,102 @@
+{
+  "status": "FAIL",
+  "table_sha256": "4d26442be47022487878255ddb49c3f9eb9900e159789a6665dd7b6d7cc790be",
+  "graph_sha256": null,
+  "working_states": 245,
+  "scanner_induction": {
+    "status": "PASS",
+    "count_states": [
+      {
+        "state": 4,
+        "previously_read_zeros": 0,
+        "zero_next": 6,
+        "one_next": 4
+      },
+      {
+        "state": 6,
+        "previously_read_zeros": 1,
+        "zero_next": 9,
+        "one_next": 4
+      },
+      {
+        "state": 9,
+        "previously_read_zeros": 2,
+        "zero_next": 13,
+        "one_next": 4
+      },
+      {
+        "state": 13,
+        "previously_read_zeros": 3,
+        "zero_next": 19,
+        "one_next": 4
+      },
+      {
+        "state": 19,
+        "previously_read_zeros": 4,
+        "zero_next": 29,
+        "one_next": 4
+      },
+      {
+        "state": 29,
+        "previously_read_zeros": 5,
+        "zero_next": 41,
+        "one_next": 4
+      },
+      {
+        "state": 41,
+        "previously_read_zeros": 6,
+        "zero_next": 58,
+        "one_next": 4
+      },
+      {
+        "state": 58,
+        "previously_read_zeros": 7,
+        "zero_next": 84,
+        "one_next": 4
+      }
+    ],
+    "distinguished_zero_run": 8,
+    "deleted_state": 74,
+    "tape_preserved": true,
+    "return_state": 96,
+    "return_head": "left_marker + 1",
+    "literal_steps_from_state4": "entry_head-left_marker+19",
+    "condition": "interval [left_marker,entry_head] contains no 0^8; left_marker is 1; every cell to its left is 0"
+  },
+  "source_stats": {
+    "instruction_leaves": 6460,
+    "maximum_depth": 34,
+    "maximum_zero_run": 7
+  }
+}
+register_inductions PASS
+{
+  "status": "FAIL",
+  "universally_verified_cases": 8355,
+  "by_operation": {
+    "CD/zero": 1913,
+    "CD/positive": 1913,
+    "CB": 128,
+    "CI": 2601,
+    "CC": 1799,
+    "CH": 1
+  },
+  "minimum_literal_steps": 13,
+  "maximum_symbolic_rules": 488,
+  "rule_counts": {
+    "literal": 1817051,
+    "peel_right": 17368,
+    "recenter": 847206,
+    "scan_right": 25836,
+    "peel_left": 6427,
+    "scan_left": 25836,
+    "pad_left": 75189,
+    "box": 12854,
+    "literal_box_boundary": 6555
+  },
+  "base_header_distance": 40,
+  "extra_gap": "all n>=0",
+  "registers": "all natural values, with named decrement guard",
+  "spare_suffix": "every finite nonempty list of natural values"
+}
+first_failures [{'pc': '111010010010000000', 'op': 'CD', 'register': 2, 'zero': True, 'exception': "AssertionError(('no justified box operation', '95', (2, True), ('mark', 0)))"}, {'pc': '111010010010000000', 'op': 'CD', 'register': 2, 'zero': False, 'exception': "AssertionError(('no justified box operation', '64', (2, False), ('plain', ('dec', 2))))"}, {'pc': '11101001001010000000', 'op': 'CD', 'register': 1, 'zero': True, 'exception': "AssertionError(('no justified box operation', '95', (1, True), ('mark', 2)))"}, {'pc': '11101001001010000000', 'op': 'CD', 'register': 1, 'zero': False, 'exception': "AssertionError(('no justified box operation', '31', (1, False), ('plain', ('dec', 1))))"}, {'pc': '1110100100101010000000', 'op': 'CD', 'register': 0, 'zero': True, 'exception': "AssertionError(('no justified box operation', '31', (0, True), ('mark', 0)))"}]

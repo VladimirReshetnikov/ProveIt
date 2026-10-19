@@ -1,0 +1,194 @@
+% Ordinary mathematical proof of the single source association change.
+% Requires amsmath/amssymb and the surrounding document's theorem environments.
+\section{One shared reassociation removes a shared source pair}
+\label{sec:rotation-source-proof}
+
+The useful source transformation keeps every instruction occurrence and
+every register operation.  It changes how one repeated three-part sequence
+is parenthesized.  Its relevance to state count is that one of the newly
+formed pairs is already represented by an existing decoder state.  The
+source result is proved below; the simplest 245-state binary realization
+is rejected by an instruction-frame counterexample.
+
+\subsection{The repeated fragment}
+
+In the literal source tree, a representative fragment is
+\[
+ \begin{array}{rcl}
+ 363&=&\operatorname{seq}(364,382),\\
+ 382&=&\operatorname{seq}(383,389).
+ \end{array}
+\]
+Let $A$ denote subtree 364, $B$ subtree 383, and $C$ subtree 389.  The
+fragment is $A;(B;C)$.  The existing subtree 75 is
+\[
+ 75=\operatorname{seq}(76,94),
+\]
+where subtree 76 is structurally identical to $A$ and subtree 94 is
+structurally identical to $B$.  Therefore $A;B$ already has a decoder.
+Replace the shared fragment by
+\[
+ \boxed{\qquad (A;B);C.\qquad}
+\]
+
+The old fragment has nine occurrences.  The following are original
+\texttt{Prog254.v} node numbers and their complete paths after the
+published constant prefix has been removed.
+\begin{center}
+\small
+\begin{tabular}{rll}
+Fragment node & Root-to-fragment path & Old right-child node\\
+\hline
+363  & \texttt{111010010010100110} & 382\\
+1400 & \texttt{11101001001010101111} & 1419\\
+1995 & \texttt{11101001001010111011} & 2014\\
+2710 & \texttt{11101001001011001001} & 2729\\
+2977 & \texttt{111010010010110011110} & 2996\\
+4313 & \texttt{111010010010111010100} & 4332\\
+4364 & \texttt{111010010010111010101} & 4383\\
+4416 & \texttt{111010010010111010110} & 4435\\
+4879 & \texttt{1110100100101111001010} & 4898
+\end{tabular}
+\end{center}
+
+All nine fragment roots represent one shared subtree, and all nine old
+right children represent one shared subtree.  Every occurrence is changed.
+The latter shared subtree then disappears, while the former becomes a
+pair of two existing subtrees.  Exact structural hashing therefore gives
+\[
+ 203\quad\longrightarrow\quad202
+\]
+distinct internal pair subtrees.  The literal unrolled tree still has
+6,459 internal nodes and 6,460 instruction leaves.  Its maximum depth is
+still 34 and its maximum consecutive zero run is still seven.
+
+\subsection{Why the reassociation preserves control}
+
+Ordinary associativity of sequential execution is not by itself enough
+for this representation: source instructions contain relative break and
+continue counts, and zero decrement skips a control subtree.  These counts
+are checked against the exact changed paths.
+
+Let $p$ be one of the nine fragment paths and let $s$ be a suffix inside
+the indicated component.  The leaf-path correspondence is
+\[
+ \begin{array}{rcll}
+ p0s  &\longmapsto&p00s,&\text{inside }A,\\
+ p10s &\longmapsto&p01s,&\text{inside }B,\\
+ p11s &\longmapsto&p1s,&\text{inside }C.
+ \end{array}
+\]
+All other leaf paths are unchanged.  This is a bijection preserving leaf
+order and the literal instruction attached to each leaf.  In particular,
+every register index, every break/continue count, and the terminal leaf
+remain the same.
+
+For an instruction at leaf $i$ and a guard $g$ (zero or positive for a
+decrement), write $\sigma(i,g)$ for the successor leaf obtained from the
+exact program-counter operations and the zero-padded decoder.  The
+independent reconstruction verifies the finite identity
+\[
+ \Phi\bigl(\sigma_P(i,g)\bigr)
+ =\sigma_{P'}\bigl(\Phi(i),g\bigr)
+\]
+at all 8,391 guarded cases, including both decrement branches and all
+break/continue cases.  It interprets carry by retaining all cleared carry
+bits; it checks that no unconsumed one is discarded at a decoded leaf.
+The initial empty PC selects corresponding first leaves.  No unreachable
+guard is exempted from this comparison.
+
+\paragraph{Theorem.}
+For every natural-valued register vector $R$, the original program $P$
+and the rotated program $P'$ have identical instruction traces under
+$\Phi$ from their empty-PC roots.  Consequently
+\[
+ \operatorname{Halt}(P,[],R)
+ \quad\longleftrightarrow\quad
+ \operatorname{Halt}(P',[],R).
+\]
+The same register vector appears at corresponding points, and the number
+of register instructions before any corresponding point is equal.
+
+\paragraph{Proof.}
+At the initial leaves the register files agree.  At corresponding leaves,
+the attached operation and its register argument are identical.  Therefore
+the two executions select the same decrement guard and apply the same
+register update.  The checked successor identity places them at
+corresponding next leaves.  Induction on the instruction count proves the
+trace claim.  The unique halt is retained, so a finite halting trace in
+either program gives one in the other with the same number of register
+instructions.  No soundness invariant on formula data, consistency
+assumption, or bound on register values is used.\hfill$\square$
+
+\subsection{A rejected 245-state binary realization}
+
+In the original numerical TM labels, the four relevant passive decoder
+states represent the following source subtrees:
+\[
+ 363\leftrightarrow178,\qquad
+ 382\leftrightarrow208,\qquad
+ 75\leftrightarrow16,\qquad
+ 389\leftrightarrow206.
+\]
+The old rows are
+\[
+\begin{array}{c|cc}
+ &0&1\\\hline
+178&(0,R,23)&(1,R,208)\\
+208&(0,R,24)&(1,R,206)\\
+16 &(0,R,23)&(1,R,24).
+\end{array}
+\]
+Change only the two rows of state 178 to
+\[
+ \delta'(178,0)=(0,R,16),\qquad
+ \delta'(178,1)=(1,R,206),
+\]
+and remove state 208.  Its only old incoming transition is the replaced
+read-one transition of state 178.  Every displayed decoder action reads
+and writes the same bit and moves right.  The new state 178 thus decodes
+the existing $A;B$ subtree on zero and $C$ on one.  All other surviving
+rows are unchanged.
+
+This edit produces a literal table with 245 working states, but that
+table does not satisfy the inherited instruction-frame contract.  State
+178 is also borrowed by a backward decoder alias:
+\[
+ \delta(218,0)=(0,L,154),\qquad
+ \delta(154,0)=(0,R,178).
+\]
+On the relevant previous-bit-zero context, this path expects the old
+read-zero derivative $\delta(178,0)=(0,R,23)$.  The reassociation changes
+that derivative to $(0,R,16)$, corrupting other source occurrences.
+An explicit failing leaf is
+\begin{quote}\ttfamily\small
+11101001001010100111000000,
+\end{quote}
+whose instruction is logical-register-1 decrement.  The candidate can
+instead select logical register 2.  The independently checked root phase
+invariant does not make these registers equal or force both to zero at
+this site.  Thus the finite failure cannot be discarded as an impossible
+source branch using that invariant.
+
+The source theorem remains valid.  It does not prove that this binary
+table preserves the complete source execution, and the table is not a
+certified sub-246 solution.  A successful compiler must charge and check
+both ordinary source decoding and all backward alias uses.  Separate
+full-frame instruction certificates and a safe blank initialization are
+necessary before the end-to-end consistency theorem may be asserted.
+
+\subsection{Independent reconstruction}
+
+\texttt{rotation245\_source\_audit.py} reconstructs the change directly
+from the original source node numbers, without reading the searcher's
+hash-consed graph.  It parses every source token, checks the complete
+forward tree, generates the nine rotations, and uses a direct tree walk
+and Boolean-list control operations to compare all guarded successors.
+This differs from the searcher's interval/binary-search decoder.  The
+certificate includes every old/new leaf path and every guarded successor.
+The exact input source SHA-256 is
+\begin{quote}\ttfamily\small
+1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746.
+\end{quote}
+The proof above gives the ordinary meaning of those finite checks.  No
+new Lean or Rocq run is claimed for the changed source tree by this audit.

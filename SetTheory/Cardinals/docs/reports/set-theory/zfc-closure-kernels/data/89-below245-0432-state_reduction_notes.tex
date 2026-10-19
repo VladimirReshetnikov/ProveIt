@@ -1,0 +1,140 @@
+\section{Register sharing and the actual tape resources}
+\label{sec:state-reduction-new}
+
+\subsection{A nine-value obstruction from an admitted theorem-valued root}
+
+The earlier register-lifetime report exhibits nine unequal live values inside
+the Cantor unpairing macro, but explicitly does not claim that its chosen
+formula registers satisfy the proof-search invariant. We strengthen that
+particular obstruction with a small, exactly replayed source execution from
+an admitted clean root. This remains an obstruction to direct pointwise
+register identification, not to general eight-register algorithms.
+
+In logical order $(N,T,W,A,D,H,X,Y,L)$, begin at
+\[
+  r_0=(4,2,3,0,6,10,0,0,1648).
+\]
+The formula registers are legitimate: $2$ codes $\forall\top$, $10$ codes
+$\forall\forall\top$, and $3=P(2,0)$ codes a one-element stack containing
+$\forall\top$. The three control temporaries $A,X,Y$ are zero. Thus this is
+a clean root satisfying the inherited theorem/stack invariant; no consistency
+assumption is needed to show that its displayed formulas are theorems.
+
+The exact program reaches
+\[
+  r_*=(4,2,3,5,6,10,1,7,8)
+\]
+after 13,517 primitive source instructions, with decoded counter
+\texttt{1100011001}. The next instruction is $\mathrm{CB}(1)$. Every one of
+the nine displayed values is positive and they are pairwise distinct.
+
+The calculation has a short conceptual explanation. The nonempty command
+pointer is first decremented, and
+\[
+  1647=P(5,51),\qquad P(a,b)=\frac{(a+b)(a+b+1)}2+b.
+\]
+The first field read therefore sets $A=5$ and leaves $L=51$. During the
+second field read, the Cantor walk has performed 43 updates when its values
+are $X=1$, $Y=7$, and $L=8$, since $P(1,7)=43$ and $43+8=51$.
+The six outer registers are unchanged during that walk.
+
+\begin{proposition}[Direct aliasing fails even on admitted roots]
+There is no implementation of the unchanged source program on every admitted
+clean root that, at every source-instruction boundary, represents all nine
+logical registers by the exact values of at most eight physical counters
+through a map from logical registers to physical counters. The map may vary
+with the source control location.
+\end{proposition}
+\begin{proof}
+Apply the claimed representation to the displayed execution and its final
+source boundary. Any map from nine logical registers to at most eight counters
+identifies two logical registers. Their values would then be equal. The nine
+values in $r_*$ are pairwise distinct, giving a contradiction.
+\end{proof}
+
+The proposition requires that each logical value itself be stored in its
+assigned counter. It does not exclude recomputing a value, packing several
+values into one counter, representing a value by a constant or an expression,
+omitting a value that a revised simulation does not need, or moving to a
+different register program. It also does not claim that $r_0$ occurs on the
+literal blank computation of the 246-state table. These qualifications are
+material; the proposition is not a lower bound on Turing-machine states.
+
+The artifact \texttt{safe\_lifetime\_witness.py} has two independent finite
+executors. One reads the exact 6,459-node literal tree in \texttt{Prog254.v}
+and uses binary-counter path semantics. The other reads the 219-node
+structured \texttt{Dag254.v}, using an explicit continuation stack instead
+of binary-counter arithmetic. They agree on the instruction count, final
+register vector, and next operation. The JSON record retains hashes of both
+upstream programs. A second control has target
+$(4,0,3,5,6,2,1,7,8)$, a permutation of $0,\ldots,8$, from an equally safe
+root with $T=0$ and $H=2$.
+
+\subsection{Pair merges with the actual spare restriction}
+
+The previously completed broad pair-merge experiment used two spare values
+$[0,2]$ and header distance 40. The actual 246-state bootstrap yields the
+stronger resources of 167 value-one spares and header distance 181; increments
+append value-one spares and the distance never decreases. A reduction that
+requires these resources can therefore fail the older broader test.
+
+We reran the complete pair family with those actual resource values and the
+8,385 retained instruction representatives from the inherited interval
+certificate. All six already excluded guards remain excluded. For each
+unordered pair of the 246 states, identify the pair and independently select
+the read-zero and read-one rows from either original state, redirecting all
+incoming references. There are
+\[
+  4\binom{246}{2}=120,540
+\]
+recipes. The family permits arithmetic, selector, and dispatcher states to
+participate. It holds the original logical-to-physical register permutation
+fixed.
+
+The baseline passes all 8,385 finite fixtures, exercises all 492 transition
+pairs, and needs at most 2,692 moves for one fixture. Of the modified recipes,
+76 pass the initial coverage probes; none passes the full affected-fixture
+screen. Each candidate fixture has a 20,000-move bound and a represented tape
+window from $-64$ through $1983$. The completed search takes 9.74 seconds in
+the recorded environment. Its recipes and fixtures differ from the earlier
+heterogeneous-spare experiment, although the mutation family is the same.
+
+These are finite diagnostics. The representatives satisfy the supplied
+interval restrictions and the stronger tape resources, but the experiment
+does not prove that every representative occurs from blank. A timeout or
+tape-window exit rejects a recipe for this screen without proving inequivalence.
+Nor does one fixture with 167 spares prove a contract for every larger spare
+count. No candidate survived to require such a universal proof or a new blank
+initialization.
+
+\subsection{A conserved quantity and the forward-carry collision}
+
+Let $h$ be the absolute position of the register-file header, let
+$s=\sum_{i=0}^{8}r_i$ be the sum of the nine primary values, and let $k$ be
+the number of spare blocks. At source instruction boundaries of the original
+246-state representation,
+\[
+  h+s-k=15.
+\]
+The initial values are $h=176$, $s=6$, and $k=167$. An increment raises both
+$s$ and $k$ by one. A positive decrement raises $h$ by one and lowers $s$ by
+one. Zero decrement, break, continue, and the counter-overflow adjustment
+preserve the quantity; counter overflow shifts the left marker, not the
+absolute header. Induction on source steps proves the formula.
+
+This identity cannot by itself repair the information loss of the previously
+proposed 244-state forward-carry decrement. Its zero and positive collision
+inputs have the same header and all other primary values, while the positive
+input has both selected-register value and spare count larger by one.
+Consequently both inputs have the same value of $h+s-k$.
+
+Moreover, absolute header position is not directly observable from a pointed
+runtime frame once the original blank origin is unmarked. The available
+distance $d$ from the current dispatcher head to the header satisfies
+\[
+  d+s-k=20+o,
+\]
+where $o$ is the number of program-counter overflows since bootstrap.
+Any repair that proposes to use spare count as a branch flag must specify a
+stronger, accessible invariant and an actual procedure for recovering the
+flag. A conserved affine expression alone supplies neither.

@@ -1,0 +1,15 @@
+.PHONY: all pdf verify clean
+
+all: pdf
+
+pdf:
+	pdflatex -interaction=nonstopmode -halt-on-error report.tex
+	pdflatex -interaction=nonstopmode -halt-on-error report.tex
+	cd research/theory && pdflatex -interaction=nonstopmode -halt-on-error theory_codec_note.tex
+	cd research/theory && pdflatex -interaction=nonstopmode -halt-on-error theory_codec_note.tex
+
+verify:
+	python3 -B verify.py
+
+clean:
+	python3 -c "from pathlib import Path; roots=[Path('.'),Path('research/theory')]; [p.unlink() for r in roots for s in ('*.aux','*.log','*.out','*.toc') for p in r.glob(s)]"

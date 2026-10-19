@@ -1,0 +1,455 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,array,geometry,hyperref}
+\geometry{margin=1in}
+\hypersetup{hidelinks}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\CP}{\mathsf{CP}}
+\newcommand{\GIC}{\mathsf{GIC}}
+\newcommand{\IR}{\mathsf{IR}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\TC}{\operatorname{TC}}
+\newcommand{\Pow}{\mathcal P}
+\title{Theory and formula-codec controls for the search below 245 states}
+\author{Research contribution for the ProveIt repository}
+\date{18 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+This note supplies a rigorous obstruction to a tempting simplification of the
+small set-theoretic axiom kernel, an exact propositional countermodel to fixing
+one logical-axiom parameter, and measured register/compiler controls for three
+alternative formula encodings.  It does not claim a Turing machine below 245
+states.  The main mathematical result is that deleting transitivity from the
+power-container axiom leaves a theory whose consistency is provable in ZFC,
+even when its full collection schema is retained.  The measured alternative
+encodings preserve native equality but cost more than their same-backend
+control.  The accompanying scripts make all finite computations reproducible.
+\end{abstract}
+
+\section{The target and the exact weak theory}
+
+The target is a completely specified, blank-start, one-tape, binary Turing
+machine $M$ with fewer than 245 nonhalting states and a proof in ZFC of
+\[
+ M\text{ does not halt}\quad\longleftrightarrow\quad\Con(\ZFC).
+\]
+An alternative recursively axiomatized theory $T$ is useful only if the two
+consistency reductions are formalizable in the base theory.  A compact-looking
+axiom by itself supplies neither that reduction nor a small machine.
+
+The upstream 254-state development uses a set-theoretic kernel with ordinary
+logical equality and no extensionality axiom.  In ordinary mathematical
+notation its relevant axioms are the power-container principle
+\begin{equation}\label{eq:cp}
+ \CP:\quad\forall p\,\exists V\left[
+ p\in V\ \land\ \forall x\in V\left(
+ x\subseteq V\ \land\ \exists W\in V\,\forall z
+       (z\subseteq x\longrightarrow z\in W)\right)\right],
+\end{equation}
+irreflexivity $\IR:\forall x\,x\notin x$, and generalized image collection.
+For every first-order formula $\varphi(x,y,\bar t)$, the latter schema is
+\begin{equation}\label{eq:gic}
+\begin{split}
+\GIC_\varphi:\quad\forall\bar t\,\forall B\,\exists C\,[\,&
+\forall x\in B\,\forall y\bigl(\varphi(x,y,\bar t)\longrightarrow
+  \exists y'(\varphi(x,y',\bar t)\land y'\in C)\bigr)\ \,\land\\
+&\forall y\in C\,\exists x\,\varphi(x,y,\bar t)\,].
+\end{split}
+\end{equation}
+The last existential quantifier over $x$ is unbounded.  The source code and
+proof are in the upstream repository\cite{jeff}; the current routed source is
+documented in ProveIt\cite{proveit}.  The finite-source experiments below retain
+the complete logical axiom rows of that source, including equality.
+
+The most obvious literal deletion from \eqref{eq:cp} produces exactly
+\begin{equation}\label{eq:cpminus}
+ \CP^-:\quad\forall p\,\exists V\left[
+ p\in V\ \land\ \forall x\in V\,\exists W\in V\,\forall z
+       (z\subseteq x\longrightarrow z\in W)\right].
+\end{equation}
+Let $T^-$ be first-order logic with equality plus $\CP^-$, all instances of
+\eqref{eq:gic}, and $\IR$.  The following obstruction concerns this exact
+theory; it is not merely a failure to re-use an existing proof.
+
+\section{A set model of the weakened theory inside ZFC}
+
+Greg Oman uses pseudo-hereditarily small sets to show that, for a singular
+strong-limit cardinal $\kappa$, one obtains a transitive set model of all ZFC
+axioms except Union\cite[Theorem 1]{oman}.  His Corollary 2 draws the resulting
+second-incompleteness obstruction to a ZFC proof of equiconsistency with ZFC.
+We adapt this model directly to $\CP^-+\GIC+\IR$ and give the sethood and
+schema-uniformity details needed here.  This does not assert priority for the
+model construction.
+
+Work throughout this section in ambient ZFC.  Put
+$\kappa=\beth_\omega=\sup_{n<\omega}\beth_n$, where
+$\beth_0=\aleph_0$ and $\beth_{n+1}=2^{\beth_n}$.  This is a singular strong
+limit of cofinality $\omega$.  Define
+\[
+ H=\{x:\text{for every }y\in\TC(\{x\}),\ |y|<\kappa\}.
+\]
+Here $\TC(\{x\})$ includes $x$.  This is the pseudo-hereditary condition;
+we do \emph{not} require $|\TC(\{x\})|<\kappa$.
+
+\begin{lemma}\label{lem:set}
+$H$ is a transitive set, every one of whose members has cardinality below
+$\kappa$.  More precisely, every $x\in H$ has
+$|\TC(\{x\})|\leq\kappa$ and $\operatorname{rank}(x)<\kappa^+$.
+\end{lemma}
+\begin{proof}
+For an $x$ satisfying the displayed condition, let $A_0=\{x\}$ and
+$A_{n+1}=\bigcup A_n$.  Every member of every layer has cardinality below
+$\kappa$.  If $|A_n|\leq\kappa$, ambient Choice gives
+$|A_{n+1}|\leq\kappa\cdot\kappa=\kappa$.  Consequently
+\[
+ |\TC(\{x\})|=\left|\bigcup_{n<\omega}A_n\right|\leq\kappa.
+\]
+The membership relation restricted to this transitive set is well founded.
+By well-founded induction each of its nodes has rank below $\kappa^+$:
+the ranks of at most $\kappa$ immediate predecessors have supremum below
+$\kappa^+$, since the successor cardinal $\kappa^+$ is regular in ZFC.
+These are their ordinary set-theoretic ranks, because the domain is
+transitive.  In particular $x\in V_{\kappa^+}$.  Separation within
+$V_{\kappa^+}$ now makes $H$ a set.  If $u\in x\in H$, then every descendant
+of $u$, including $u$ itself, is a descendant of $x$, so $u\in H$.
+The size assertion follows because $x\in\TC(\{x\})$.
+\end{proof}
+
+\begin{lemma}\label{lem:closure}
+Every ambient subset of an element of $H$ belongs to $H$.  If $x\in H$, then
+its ambient power set $\Pow(x)$ belongs to $H$.  More generally, any set $C$
+of fewer than $\kappa$ elements of $H$ itself belongs to $H$.
+\end{lemma}
+\begin{proof}
+If $z\subseteq x\in H$, then $|z|<\kappa$, and every proper descendant of
+$z$ is a descendant of $x$.  Thus $z\in H$.  The strong-limit property gives
+$|\Pow(x)|=2^{|x|}<\kappa$, and all its elements are locally small by the
+first assertion.  Finally, for a set $C\subseteq H$ of size below $\kappa$,
+all descendants other than $C$ lie among descendants of its elements, and
+so each has size below $\kappa$.  This proves the last assertion.  No bound
+on the \emph{total} number of those descendants is needed for this argument.
+\end{proof}
+
+\begin{theorem}\label{thm:model}
+ZFC proves that $(H,\in)$ is a set model of $T^-$, and therefore proves
+$\Con(T^-)$.  Nevertheless $(H,\in)$ fails the original axiom $\CP$.
+\end{theorem}
+\begin{proof}
+Irreflexivity is inherited from the ambient membership relation.
+
+To verify $\CP^-$, take $p\in H$.  Define $p_0=p$ and
+$p_{n+1}=\Pow(p_n)$ in ambient ZFC.  Lemma~\ref{lem:closure} proves by
+induction that every $p_n$ belongs to $H$.  The set
+$V=\{p_n:n<\omega\}$ has cardinality at most $\aleph_0<\kappa$, so
+$V\in H$.  It contains $p$.  For any $x=p_n\in V$, choose
+$W=p_{n+1}\in V$.  If $z\in H$ and $(H,\in)\models z\subseteq x$,
+transitivity of $H$ implies that $z\subseteq x$ in the ambient universe.
+Hence $z\in\Pow(x)=W$.  This is precisely \eqref{eq:cpminus} relativized
+to $H$.
+
+For generalized image collection, take $B\in H$, parameters $\bar t\in H$,
+and a formula $\varphi$.  Write $\varphi^H$ for satisfaction in the set
+structure $(H,\in)$, and define
+\[
+ D=\{x\in B:\exists y\in H\ \varphi^H(x,y,\bar t)\}.
+\]
+Ambient Choice selects one such witness $y_x\in H$ for each $x\in D$.
+The range $C=\{y_x:x\in D\}$ has size at most $|B|<\kappa$, and therefore
+$C\in H$ by Lemma~\ref{lem:closure}.  If $x\in B$ has any $H$-witness,
+then $y_x\in C$ is one; conversely every $y\in C$ came from some $x\in D$.
+Both conjuncts of \eqref{eq:gic} follow.  This actually proves the stronger
+version with the supporting $x$ required to lie in $B$.
+
+Because $H$ is a set, ZFC constructs its satisfaction relation uniformly
+for finite first-order formula codes.  The preceding witness selection uses
+that satisfaction relation and works uniformly over those codes.  Thus this
+is an internal proof of satisfaction of the recursively specified schema,
+not only an external assertion about each standard instance separately.
+Formalized first-order soundness then gives $\Con(T^-)$.
+
+Finally, $\omega\in H$.  Suppose a witness $V\in H$ satisfied the original
+$\CP$ for $p=\omega$.  Its transitivity clause makes $V$ an actual
+transitive set, again because $H$ is transitive.  Put $x_0=\omega$ and
+choose recursively $x_{n+1}\in V$ containing every $H$-subset of $x_n$.
+All ambient subsets of $x_n$ belong to $H$ by
+Lemma~\ref{lem:closure}, so $\Pow(x_n)\subseteq x_{n+1}$ and
+$|x_n|\geq\beth_n$.  Transitivity gives $x_n\subseteq V$ for all $n$.
+It follows that $|V|\geq\sup_n\beth_n=\kappa$, contradicting $V\in H$.
+\end{proof}
+
+Assuming ZFC is consistent, Theorem~\ref{thm:model} rules out a ZFC proof of
+$\Con(T^-)\longrightarrow\Con(\ZFC)$ by the second incompleteness theorem.
+In particular, replacing the kernel by $T^-$ cannot meet the stated
+nonhalting equivalence.  Transitivity performs essential consistency-strength
+work.  Dropping it is not repaired merely by keeping the complete collection
+schema, native equality, or Extensionality.  Oman's stronger model statement
+also allows all the ordinary ZFC axioms other than Union to be added.
+
+\section{A logical-axiom shortcut with an exact countermodel}
+
+One source row is the implicational schema
+\[
+ L(A,B,C,U)=((C\to U)\to A)\to((A\to C)\to(B\to C)).
+\]
+Fixing the fourth parameter to truth could eliminate a literal parameter
+read.  However, it loses propositional completeness.  The following matrix
+provides a small, exact obstruction.  Its values are $0,1,2$, its only
+designated value is $2$, and implication is $a\to b=\min(2,2-a+b)$:
+\[
+\begin{array}{c|ccc}
+\to&0&1&2\\\hline
+0&2&2&2\\
+1&1&2&2\\
+2&0&1&2
+\end{array}
+\]
+Modus ponens preserves designation, since $2\to b=b$.
+Every valuation designates $L(A,B,C,2)$, the $K$ axiom
+$A\to(B\to A)$, ex falso $0\to A$, and double-negation elimination
+$((A\to0)\to0)\to A$.  In contrast, the classical implicational $S$ axiom
+\[
+ (A\to(B\to C))\to((A\to B)\to(A\to C))
+\]
+has value $1$ when $(A,B,C)=(1,1,0)$.  Uniform substitution also preserves
+validity, so these restricted axioms cannot derive $S$ using substitution
+and modus ponens.  The accompanying matrix-checker script checks
+all 27 valuations.  This is a result about the proposed propositional
+calculus.  It is not a finite-valued countermodel of the entire first-order
+collection theory, nor a claim that every possible constrained-fourth-input
+replacement is impossible.
+
+\section{Formula encodings retaining all four constructors}
+
+Let $P(a,b)=\frac{(a+b)(a+b+1)}2+b$ be the dual Cantor pairing used by the
+source.  The measured alternatives retain implication, relation, universal
+quantification, and equality as separate semantic constructors.  They
+change their numeric codes as follows:
+\begin{center}\small
+\begin{tabular}{@{}lllll@{}}
+\toprule
+Variant&Implication&Relation&Universal&Equality\\
+\midrule
+uniform4&$4P$&$4P+1$&$4P+2$&$4P+3$\\
+uniform4\_swap&$4P$&$4P+1$&$4P+3$&$4P+2$\\
+prefix\_2488&$2P$&$4P+1$&$8P+3$&$8P+7$\\
+prefix\_2848&$2P$&$8P+1$&$4P+3$&$8P+5$\\
+atom\_parity3&$3P(a,b)$&$3P(2a,b)+1$&$3P(a,b)+2$&$3P(2a+1,b)+1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+In the first four rows $P$ abbreviates $P(a,b)$.  The prefix names give the
+multipliers in constructor order.  Their low-order residues partition the
+natural numbers.  The parity variant packs the two atom kinds into residue
+one modulo three: after unpairing, the parity of the first component
+distinguishes relation from equality.  It does not remove equality.
+
+All five variants preserve numeric truth $0$ (with the harmless alias
+$\operatorname{Imp}(0,0)=0$) and false atom
+$1=\operatorname{Rel}(0,0)$.  Every positive code has a unique root
+constructor, and its immediate argument labels are smaller than it.  These
+facts follow directly from the residue partition, invertibility of $P$, and
+$P(a,b)\geq\max(a,b)$.  The same inequality gives variable freshness: every
+variable occurring in the decoded positive formula has index below its code.
+These are useful hypotheses for porting the numeric proof calculus.  They do
+not by themselves establish the full proof-search or binary-machine bridge.
+
+The experiment starts from the immutable original 219-node register DAG.
+Only the four numeric constructor nodes are replaced.  The control reconstructs
+an exactly identical rooted source tree after ignoring node names.  Register
+allocation, all logical axiom rows, the scheduler, pairing, and stack routines
+are retained.  In particular these are complete-logic controls, not low counts
+obtained by silently deleting equality axioms.
+
+The constructors are executed literally using an independent flattened
+register interpreter.  Each variant passed 2,304 encode/decode round trips,
+19,999 positive-code inverse and strict-argument checks, and 1,296 full register
+contracts with varying operands and stack tails.  These are finite executable
+checks; the preceding arithmetic argument supplies their unbounded mathematical
+justification at the codec level.  The control also passes exact rooted-tree
+equality against the input source.
+
+\begin{center}
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Variant&DAG nodes&Leaves&Max zero run&Wade states&Framework\\
+\midrule
+uniform4&219&6460&7&281&62\\
+uniform4\_swap&219&6477&7&281&62\\
+prefix\_2488&231&6519&8&294&63\\
+prefix\_2848&231&6471&8&294&63\\
+atom\_parity3&227&6512&7&289&62\\
+\bottomrule
+\end{tabular}
+\end{center}
+All these unreassociated trees have maximum depth 96.  The Wade counts are
+actual emitted named transition tables after the inherited compiler's graph
+garbage collection.  Each table has one inherited missing row,
+\texttt{(1.inc,1)}, and a distinguished terminal target \texttt{halt}.
+Consequently they are raw compiler cost controls and are \emph{not} submitted
+as complete, calibrated consistency machines.  No unreachability proof for
+that row and no new blank-start or binary-simulation proof is claimed here.
+
+The relevant comparison is within the same compiler: both unequal-prefix
+variants add 13 working states; relation/equality parity adds eight.  The
+281-state baseline is not the 245-state routed baseline, so these numbers
+cannot be subtracted directly from 245.  The extra source structures may
+behave differently under the newest grammar optimization.  The experiments
+reject these direct implementations as immediate improvements, while leaving
+open joint codec and grammar redesign.
+
+\section{Equivalent CP fusion: fewer instructions, greater direct cost}
+
+There is a smaller, conservative theory-side transformation that changes
+source repetition without changing axioms.  Define
+$\operatorname{Cover}(a,c)=\forall z\,(z\subseteq a\to z\in c)$,
+using the existing source's expansion and bound-variable reuse when compiling.
+If
+$\operatorname{Tr}(a,b)=\forall c\,(c\in a\to c\in b)$, then
+\[
+ [\exists c\,(\operatorname{Cover}(a,c)\land c\in b)]
+       \land\operatorname{Tr}(a,b)
+ \quad\longleftrightarrow\quad
+ \exists c\,[(\operatorname{Cover}(a,c)\land c\in b)
+       \land\operatorname{Tr}(a,b)].
+\]
+The side condition holds because $c$ is not free in
+$\operatorname{Tr}(a,b)$.  This uses the same three variable names and the
+same constructors but changes the concatenated macro word.  It may alter
+grammar sharing even though it shortens no ordinary formula.  Terms depending
+on the outer container must not be moved across a quantifier that shadows its
+variable name.  The measured direct implementation of this scope-lifting
+rewrite has 224 source nodes and 286 Wade states, compared with 219 and 281
+for the exact original-source control; both have 6,460 literal instructions.
+
+\subsection{Absorption and quantifier fusion}
+
+Two stronger rearrangements preserve the axiom exactly.  Replace the
+per-member body $x\subseteq V\land\exists W\in V\,\forall z
+(z\subseteq x\to z\in W)$ either by
+\begin{equation}\label{eq:absorbed}
+ \exists W\in V\,\forall z\,
+       (z\subseteq x\longrightarrow(z\in W\land z\subseteq V)),
+\end{equation}
+or by
+\begin{equation}\label{eq:fused}
+ \exists W\in V\,\forall z\,
+       ((z\in x\longrightarrow z\in V)\land
+        (z\subseteq x\longrightarrow z\in W)).
+\end{equation}
+For \eqref{eq:absorbed}, the old body implies the new one by transitivity of
+the subset relation.  Conversely instantiate $z=x$, using $x\subseteq x$,
+to recover $x\subseteq V$, and project the first conjunct to recover the old
+cover condition.  For \eqref{eq:fused}, distribute $\forall z$ over the
+conjunction and move the conjunct not containing $W$ outside its existential
+quantifier.  These are ordinary first-order equivalences, requiring no new
+set-theoretic axiom.  The surrounding $p\in V$ and all other parts of CP
+stay as before.
+
+Quantifier fusion removes one universal constructor.  Its coding cost has a
+catch: the original source reuses three variable names by shadowing the
+container variable inside the cover formula.  Both displayed fused forms
+naturally keep $x,V,W,z$ in scope together.  The experiment prices a fourth
+name explicitly.  It reserves $z=0$ and replaces the CP-only labels
+$a,b,c$ by $a+1,b+1,c+1$.  These three new scalar-push macros each copy the
+old parameter and increment the copy.  GIC and the logical rows are unchanged.
+The old gate $c\ne a,b$ still guarantees the corresponding shifted
+inequalities.  When $a=b$, the outer membership antecedent becomes
+self-membership and is false under IR, as in the original coincident-label
+case.  When the three labels differ, all four required names are distinct.
+
+A second control closes the CP axiom explicitly with fixed labels
+$x=1,V=2,W=3,z=0$, with the outer parameter quantified using label 3 outside
+the witness's scope.  This measures fusion without arithmetic shifts.
+Fixed-label CP itself was already investigated in the incoming research;
+the measured fused variants here are additional controls, not a claim that
+fixed binders are a new idea.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+CP implementation&DAG nodes&Leaves&AX macro tokens&Wade states\\
+\midrule
+Original, exact re-emission&219&6460&186&281\\
+Scope lift only&224&6460&186&286\\
+Original with shifted labels&241&6482&186&304\\
+Absorbed, shifted labels&242&6450&186&305\\
+Fused, shifted labels&243&6386&184&306\\
+Original, fixed and closed&242&6407&188&304\\
+Scope lift, fixed and closed&242&6407&188&304\\
+Absorbed, fixed and closed&243&6394&188&305\\
+Fused, fixed and closed&244&6344&186&306\\
+\bottomrule
+\end{tabular}
+\end{center}
+Reversing the two conjuncts in \eqref{eq:fused} gives the same displayed
+counts in both encodings.  The source emitted for the fixed fused formula
+has 116 fewer literal instructions than the original, yet its direct
+compiled state count is 25 larger.  This illustrates why literal instruction
+count alone is not a reliable state-cost objective.
+
+The script checks the full original AX expansion against its symbolic
+formula specification, reproduces the old rooted source tree exactly,
+and checks each new AX expansion against the proposed formula.  All nine
+logical rows, GIC, atomic vacuity, parameter reads, and cleanup/gate events
+are retained.  The shifted-label implementations each have 324 literal
+register checks for the three new push macros; fixed-label implementations
+have 18 checks for the two new constant-push macros.  A further exhaustive
+diagnostic compares the ordinary local formulas on all binary relations on
+one, two, or three objects, for 4,674 assignments of $x,V$.  This finite
+diagnostic treats falsity as a logical constant; the numerical code's use
+of a relation atom as falsity additionally uses IR as in the original source.
+The ordinary equivalences above supply the unbounded mathematical argument.
+
+These source and raw-compiler controls do not include a new whole-program
+proof-search calibration, binary simulation theorem, or verified blank
+initialization.  They retain the same inherited missing Wade row noted
+earlier.  Joint grammar optimization could change the ranking, but none of
+these direct implementations improves the same-backend original control.
+
+The strongest immediate theory lesson is to preserve transitive containment
+and spend optimization effort on how complete formulas share executable
+structure.  The strongest codec lesson is to price native equality honestly:
+packing it into an atom parameter avoids a fourth top-level tag, but the
+parameter arithmetic can cost more than the saved tag operation.  A convincing
+breakthrough needs the axiom-to-source reduction and an actual backend count
+to improve together.
+
+\section*{Artifact scope and reproduction}
+
+The attached Python files use only the standard library; the optional raw
+compiler counts use the attributed Wade backend.  Run
+\begin{verbatim}
+python codec_source_experiment.py
+python check_codec_experiments.py --backend backend
+python check_truth_restriction.py
+python cp_fusion_experiment.py --backend backend
+python verify.py --output /tmp/theory-reproduction
+\end{verbatim}
+The final command reproduces all default controls in a separate directory,
+compares the frozen JSON and raw tables exactly, and checks that frozen
+artifacts were not modified.
+The JSON reports distinguish the exact source control, finite checks, and raw
+compiler counts.  No proof-assistant endpoint for these alternative theories
+or codecs is supplied.  The set-model theorem above is an ordinary ZFC proof;
+the finite matrix is exhaustive; the numeric-codec tests have the finite
+coverage stated explicitly.  The original 245-state candidate and its
+existing assurance boundary remain as documented by its repository.
+
+\begin{thebibliography}{9}\small\raggedright
+\bibitem{oman} Greg Oman, \emph{On the axiom of union}, Archive for
+Mathematical Logic 49 (2010), 283--289.
+\href{https://doi.org/10.1007/s00153-009-0163-1}{doi:10.1007/s00153-009-0163-1}.
+\href{https://faculty.uccs.edu/goman/wp-content/uploads/sites/15/2021/02/On_the_axiom_of_union.pdf}{Author PDF}.
+\bibitem{jeff} The \texttt{jeff87654/busy-beaver} contributors,
+branch \texttt{zf-254}, \texttt{ZF/m254}.
+\href{https://github.com/jeff87654/busy-beaver/tree/zf-254/ZF/m254}{Source repository}.
+\bibitem{proveit} Vladimir Reshetnikov and contributors, ProveIt,
+\texttt{candidate-routing245} research package.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Computability/BusyBeaver/Research/ZFC/candidate-routing245/README.md}{Candidate documentation}.
+\bibitem{incoming} ProveIt incoming research artifacts.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/docs/incoming}{Incoming archive directory}.
+\end{thebibliography}
+\end{document}

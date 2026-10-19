@@ -1,0 +1,52 @@
+# ZFC consistency machines: source normalization and search below 245
+
+**Outcome: no machine with fewer than 245 working states was certified.**
+
+This research packet adds a theorem-preserving AX source family, a grammar representation that can change macro boundaries, a new fully audited 245-state machine, and precise negative results for limited search families. It is intended for ProveIt research intake, alongside the maintained `candidate-routing245`.
+
+Start with `report.pdf` (complete mathematical and experimental report). Its editable sources are `report/main.tex` and the other `.tex` files in that directory. `REPRODUCE.md` explains the standalone verification and optional search reruns.
+
+## Main results
+
+* The unchanged numerical logic proves relative double-negation elimination, and GEN/rho2 transports theorem equivalence through every relevant quantifier, including label zero. All 64 selected CP/GIC bundle normalizations have exactly the original numerical theorem set. The later Boolean family inherits the same transfer theorem.
+* Forty-four closed semantic atoms expand over 30 fine closed AST tokens. The new search can move boundaries between those macros while preserving exact token identities, 22 routing cases, all 54 bootstrap projections, and the scanner/depth bounds.
+* The selected DNE mask32 machine has **245 working states**, including initialization, on a single binary tape initially all zero. Its full runtime proof covers all 8,269 guarded instruction cases, arbitrary register values and spare suffixes, and the exact 407,915-step blank initialization.
+* The old macros and optimized fine expansions have a separately checked all-register equivalence: 19 macros, 192 control pairs, and 346 decrement edges. This handles existing increment commutations correctly.
+* A forced path `1111000000` proves the six-zero obstruction even in the current fine-token representation and after arbitrary AX-only source replacement, provided the stated atomic implementations and 54 bootstrap projections are retained.
+* A full Boolean normalization shortens AX from 1,270 to 1,144 fine tokens but did not improve the machine count. A complete K/S/Peirce basis replacement also cost more in the matched coarse compiler. Other bounded transition-bypass searches found no accepted reduction.
+
+The new contribution is the exact fixed-bundle application, source/emission artifacts, semantic macro bridge, joint fine-token compiler/search, and measured experiments. Classical DNE, its contextual transport, the older resegmentation idea, the original SIR/ZFC calibration, and prior compiler frameworks are credited rather than claimed as new.
+
+## Principal machine identity
+
+`machine/normalized245.tm` specifies all 490 transitions, start state 0, working states 0 through 244, and halt target 245.
+
+SHA-256:
+
+```text
+d193291ac92bc090a9b8a6e7d2c578928109633e12155cd0ce9fc1b5f66d2921
+```
+
+`machine/grammar.json` is the exact normalized grammar that produced this table. `certificates/normalized245/` contains the modified source, leaf maps, bisimulation, full symbolic replay, dense renumbering, bootstrap, and independent linked audit. This is an ordinary mathematical proof supported by executable certificates; no new Lean or Coq endpoint is claimed.
+
+The consistency equivalence is proved without assuming consistency. No assertion that ZFC is consistent, or that the machine actually never halts, is added.
+
+## Layout
+
+| Path | Contents |
+| --- | --- |
+| `report.pdf`, `report/` | Complete report and editable TeX components |
+| `machine/` | Selected 245-state machine, grammar, old labels and renumbering |
+| `certificates/normalized245/` | Complete positive-control evidence |
+| `certificates/unchanged-source245/` | Earlier unchanged-source fine-compiler control |
+| `certificates/normalized246-seed/` | Initial larger normalized seed, clearly charged at 246 states |
+| `work/theory_encoding/` | Logical proofs, 64 DNE variants, Boolean variants and standalone symbolic checkers |
+| `work/fine_grammar/` | New compiler overlays, fine-token search, exact audited proposals and MILP records |
+| `work/grammar_search/` | Compound search, arbitrary source-edit seeder, exact scanner witnesses, bounded ledgers |
+| `work/machine_reduction/` | Universal macro bridge, dynamic frame checkers, bounded bypass studies; rejected prototypes are identified by the local index |
+| `reference/` | Unchanged inherited proof archive and attributed logical fixtures |
+| `sources/` | Small attributed dependency set for optional compiler controls |
+
+Search-result files are exploratory unless their own evidence says otherwise. In particular, the scanner244 prototype in the machine-study directory is rejected; it is not the delivered consistency machine.
+
+Pinned ProveIt source: `6446ff5668307a2ac6aee1896037f0b792090389`. `PROVENANCE.json` records individual copied inputs and hashes. `SHA256SUMS` covers the deliverable payloads, excluding itself.

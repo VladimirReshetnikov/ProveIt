@@ -1,0 +1,164 @@
+\section{Certified commutation of closed register fragments}
+
+This note supplies the ordinary semantic argument and an independent
+certificate checker for a grammar search modulo commuting register
+fragments. The underlying idea of disjoint-register trace grammars already
+appears in ProveIt intake163/source66 and source67. The refinement examined
+here permits shared additive outputs while forbidding interference with
+tested registers. It is a sufficient condition, not a complete procedure
+for deciding whether two programs commute. No historical priority claim
+or Turing-machine state saving is attached to the condition itself.
+
+\subsection{Effect condition and partial-map proof}
+
+A fragment is a fixed structured register program over nine natural-number
+registers, using increments, decrement/zero tests, structured breaks and
+continues. The frozen source DAG's structural analysis verifies that a
+fragment is closed: no break or continue escapes to an enclosing source
+context. Exclude every fragment containing the primitive \texttt{halt}.
+A remaining fragment either returns normally with a register file or runs
+forever, and consequently denotes a partial function on $\mathbb N^9$.
+
+For a fragment $P$, let $W(P)$ be the set of registers appearing in an
+increment or decrement instruction, and let $D(P)$ be those appearing in
+a decrement/zero-test instruction. The conservative independence condition
+is
+\begin{equation}\label{trace-additive-condition}
+D(P)\cap W(Q)=\varnothing,
+\qquad
+D(Q)\cap W(P)=\varnothing.
+\end{equation}
+The strict control instead requires $W(P)\cap W(Q)=\varnothing$.
+
+\paragraph{Commutation theorem.}
+If two closed, halt-free fragments satisfy
+\eqref{trace-additive-condition}, then their partial normal-return
+functions commute: $P;Q$ and $Q;P$ have the same domain and the same
+output register file on that domain.
+
+\paragraph{Proof.}
+Every control decision in $P$ depends only on a register in $D(P)$.
+Initial values of all other registers cannot change its instruction path
+or termination. More precisely, keeping the initial $D(P)$ coordinates
+fixed keeps the entire control trace fixed. On a terminating trace, each
+coordinate outside $D(P)$ is unchanged except for a fixed finite number
+of increments, whose count depends only on those initial $D(P)$ values.
+The analogous statements hold for $Q$.
+
+By the first condition, $Q$ never modifies an input determining $P$'s
+trace; by the second, $P$ never modifies one determining $Q$'s trace.
+Thus both fragments terminate in either order iff each terminates on the
+initial register file. On those initial files, a register in $D(P)$ is
+untouched by $Q$, and a register in $D(Q)$ is untouched by $P$. On every
+remaining register, each fragment contributes only its fixed nonnegative
+increment count, and the two additions commute. This proves equality of
+the outputs. If either fragment diverges, its trace is unaffected by the
+other and neither composition returns. No totality assumption is needed.
+
+\paragraph{Why the boundaries matter.}
+A primitive halt cannot be included merely because its register effect
+is empty: a halting fragment followed by a divergent fragment would halt
+in one order and diverge in the other. Likewise a break that escapes the
+fragment is not a partial function from register files to normal returns;
+its effect depends on an enclosing continuation. The checker excludes
+halts and verifies closure before applying any commutation rule. It
+permits rearrangement of complete source atoms, not arbitrary pieces of
+the tape decoder or return implementation.
+
+The structural closure analysis tracks a pair of outward break and
+continue bounds. Its leaves assign bounds $(1,0)$ to a decrement,
+$(n,0)$ to \texttt{brk} $n$, $(0,n)$ to \texttt{cont} $n$, and $(0,0)$
+to increment or halt. For a source composition node with child bounds
+$a,b$, the pair is
+\[
+\bigl(\max(a_0-1,b_0,0),\;\max(a_1,b_1-1,0)\bigr).
+\]
+All forty-four current semantic atoms have bound $(0,0)$. Atoms
+\texttt{J} and \texttt{n} are excluded because they contain halt.
+The proof uses the existing semantics of this structural source analysis;
+the emitted effect data is not a replacement for the source compiler's
+correctness argument.
+
+\subsection{Canonical words and independently checkable certificates}
+
+Use a symmetric, irreflexive independence relation on the semantic atom
+alphabet. Two words are trace-equivalent when adjacent independent
+letters can be swapped. The partial-map theorem makes every such swap
+sound in a sequence of complete closed fragments, including a sequence
+whose later continuation eventually halts.
+
+The normalizer uses the lexicographically least topological order of the
+word's dependence DAG. Its vertices are occurrences. For every earlier
+occurrence of a letter dependent on a later letter there is a precedence
+constraint. It suffices to store an edge from the last earlier occurrence
+of each dependent letter: repeated occurrences of one letter are already
+chained, so transitive closure implies all earlier constraints. A priority
+queue of currently minimal occurrences produces a unique canonical word.
+Ordinary adjacent-inversion sorting is not a valid substitute: a partial
+commutation relation need not make such a rewriting strategy confluent.
+
+The normal form $\operatorname{NF}$ satisfies
+\[
+\operatorname{NF}(\operatorname{NF}(u)\operatorname{NF}(v))
+ =\operatorname{NF}(uv),
+\qquad
+\operatorname{NF}(u)=\operatorname{NF}(v)
+\ \Longleftrightarrow\ u\text{ and }v\text{ are trace-equivalent}.
+\]
+Thus an intern table in a grammar search may use
+$\operatorname{NF}(uv)$ as the key of a composition, provided every rule
+continues to denote the concatenation of the two child functions.
+Rotations, alternative splits and extraction of repeated subwords then
+operate in this quotient monoid.
+
+The companion \texttt{trace\_commutation.py} independently derives every
+effect from the frozen AST. For each root word it outputs an explicit
+list of adjacent-swap positions, together with the original and final
+word. A small checker replays that list, checks independence at every
+step against the derived effect relation, and verifies the final word.
+This avoids trusting the searcher's normalizer merely because it reports
+the same key. Further grammar-to-source and binary compiler verification
+is still required for a newly emitted machine.
+
+\subsection{Finite controls on the 245-state input grammar}
+
+The checked input has 128 grammar rules, fourteen roots and forty-four
+semantic atoms. The exact observations are:
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Observation & Strict disjoint & Additive outputs\\
+\midrule
+Unordered independent atom pairs &162&211\\
+Eligible adjacent pairs across roots &70&91\\
+Roots whose canonical spelling changes &9&9\\
+Adjacent swaps in all root certificates &154&154\\
+Already duplicate grammar keys after normalization &0&0\\
+\bottomrule
+\end{tabular}
+\end{center}
+The larger independence relation gives additional legal search moves but
+does not by itself collapse any of the current 128 keys. The script also
+checks normal-form idempotence, the concatenation identity at every split
+of every current grammar word, and the swap identity for every independent
+pair. The 211 additive-output pairs agree exactly with the independently
+generated relation used by the C++ search lane.
+
+Pinned inputs, with SHA256 values, are:
+\begin{itemize}
+\item \texttt{closed-sequence-grammar-next22.json}:\\
+\texttt{3d7798e924a9e5d56594d29e8a5c46bf1e9affc3f23fa4e6a1695499112fac19}.
+\item \texttt{semantic-symbols.json}:\\
+\texttt{4e77c352494a3e18d143776a1b5ffca1a2e7d234aba0c2560a41982339395fdd}.
+\item \texttt{state\_reduction/route-grammar.txt}:\\
+\texttt{6e52c8830dfa46b3e38a3a6d081e91316521393c7029a0b115a2f4d2e3d3398c}.
+\end{itemize}
+Reproduce with the source-proof input directory and routed grammar:
+\begin{verbatim}
+python trace_commutation.py --inputs INPUTS \
+  --grammar INPUTS/state_reduction/route-grammar.txt \
+  --output trace_commutation_results.json
+\end{verbatim}
+The results include all atom footprints and root swap certificates.
+The source input and symbols belong to the earlier
+\texttt{zfc245-proof-20261018} package; this note changes neither input.

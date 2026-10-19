@@ -1,0 +1,377 @@
+{
+  "status": "bounded search completed; no validated machine below246 states",
+  "frozen_rows": {
+    "count": 54,
+    "file": "original_terminal_dependencies.json",
+    "sha256": "346147d851005fae66ceb22be68c2ee5da946b4a31256f318469c576c1f3682d",
+    "rows": [
+      [
+        16,
+        1
+      ],
+      [
+        24,
+        0
+      ],
+      [
+        24,
+        1
+      ],
+      [
+        32,
+        0
+      ],
+      [
+        32,
+        1
+      ],
+      [
+        33,
+        1
+      ],
+      [
+        34,
+        0
+      ],
+      [
+        34,
+        1
+      ],
+      [
+        36,
+        0
+      ],
+      [
+        36,
+        1
+      ],
+      [
+        37,
+        1
+      ],
+      [
+        45,
+        0
+      ],
+      [
+        46,
+        0
+      ],
+      [
+        50,
+        0
+      ],
+      [
+        50,
+        1
+      ],
+      [
+        54,
+        1
+      ],
+      [
+        55,
+        1
+      ],
+      [
+        61,
+        1
+      ],
+      [
+        71,
+        0
+      ],
+      [
+        71,
+        1
+      ],
+      [
+        79,
+        0
+      ],
+      [
+        79,
+        1
+      ],
+      [
+        82,
+        0
+      ],
+      [
+        82,
+        1
+      ],
+      [
+        89,
+        0
+      ],
+      [
+        89,
+        1
+      ],
+      [
+        94,
+        1
+      ],
+      [
+        104,
+        0
+      ],
+      [
+        105,
+        0
+      ],
+      [
+        107,
+        0
+      ],
+      [
+        121,
+        0
+      ],
+      [
+        144,
+        1
+      ],
+      [
+        152,
+        0
+      ],
+      [
+        152,
+        1
+      ],
+      [
+        154,
+        0
+      ],
+      [
+        154,
+        1
+      ],
+      [
+        174,
+        0
+      ],
+      [
+        175,
+        0
+      ],
+      [
+        175,
+        1
+      ],
+      [
+        178,
+        0
+      ],
+      [
+        179,
+        0
+      ],
+      [
+        188,
+        0
+      ],
+      [
+        188,
+        1
+      ],
+      [
+        207,
+        0
+      ],
+      [
+        207,
+        1
+      ],
+      [
+        213,
+        0
+      ],
+      [
+        213,
+        1
+      ],
+      [
+        219,
+        1
+      ],
+      [
+        220,
+        1
+      ],
+      [
+        237,
+        1
+      ],
+      [
+        238,
+        1
+      ],
+      [
+        244,
+        1
+      ],
+      [
+        245,
+        0
+      ],
+      [
+        245,
+        1
+      ]
+    ],
+    "discovery_scope": "rows used outside the declared instruction-path positions in all8391 finite baseline instruction cases; final candidate verification is separate"
+  },
+  "search_algorithm": {
+    "file": "colored_rotation_search.py",
+    "earlier_version": "colored_rotation_search_v1.py",
+    "state_transport": "pivot and inner state colors may be retained or exchanged; all other ancestor colors are transported",
+    "source_classes": 203,
+    "physical_decoder_colors": 191,
+    "support_states": 55,
+    "fixed_row_rule": "all54 identified borrowed rows equal their original246 transitions",
+    "shared_state_rotation_rule": "pivot and inner colors cannot be one of the original12 shared colors",
+    "collision_rule": "reject merged source pairs with incompatible physical colors and reject a changed set of physical colors",
+    "maximum_depth": 46,
+    "maximum_internal_zero_run": 7,
+    "maximum_saved_steps": 45,
+    "plateau_budget": "at most12 equal-score first neighbors, with one additional rotation from each",
+    "objective": "lexicographic counts of CD trailing-zero lengths >=7, then6through0, then maximum depth",
+    "source_semantics": "all8391 guarded successors exactly match original instruction occurrence indices; every register operand retained",
+    "no_new_blank_bootstrap_search": true
+  },
+  "first_run": {
+    "counts": {
+      "recipes": 46284,
+      "colored_admitted": 10215,
+      "semantic_checks": 1924,
+      "source_exact": 1012
+    },
+    "seconds": 40.759283832998335,
+    "best_graph": "colored_candidate_020.json",
+    "best_table": "colored_candidate_020.tm",
+    "state_count": 246,
+    "unique_pairs": 203,
+    "maximum_depth": 39,
+    "maximum_internal_zero_run": 7,
+    "cd_tail7_leaves": 7,
+    "finite_validation": {
+      "header_distance": 50,
+      "passed": 8352,
+      "failed": 39,
+      "scope": "whole instruction frames; failures refute this candidate compilation"
+    }
+  },
+  "context_preserving_run": {
+    "counts": {
+      "recipes": 29232,
+      "colored_admitted": 6482,
+      "semantic_checks": 154,
+      "source_exact": 154
+    },
+    "seconds": 18.15926700399723,
+    "additional_constraints": [
+      "Every original shared physical decoder occurrence retains its instruction interval and last two entry bits.",
+      "Every instruction occurrence retains the last four bits of marker-plus-word, padded with zeros on the left."
+    ],
+    "best_graph": "colored_context_candidate_003.json",
+    "best_graph_sha256": "dac8448ea107f6baf20eccfce5def1d263efc1cd2678b51019b592742ac6e27a",
+    "best_table": "colored_context_candidate_003.tm",
+    "best_table_sha256": "540345fe9aaf61af73edc0485f34179d1391da73793067b89eecb18c0e0ded1b",
+    "working_states": 246,
+    "unique_pairs": 203,
+    "maximum_depth": 37,
+    "maximum_internal_zero_run": 7,
+    "cd_tail7_leaves": 15,
+    "finite_validation": {
+      "header_distance": 40,
+      "guarded_cases": 8391,
+      "passed": 8391,
+      "literal_steps": 3658156,
+      "maximum_case_steps": 762,
+      "complete_tape_equality": true
+    },
+    "scanner_shortening": {
+      "table": "colored_context003_scanner245.tm",
+      "table_sha256": "a18fa41482b3d6fb9a5015901a65849f1712d525f504450a3b97c8c2601a4d3d",
+      "working_states": 245,
+      "finite_passed": 8361,
+      "finite_failed": 30,
+      "failures": "both decrement guards at precisely15 instruction words ending in seven zeros",
+      "claim": "not a validated runtime",
+      "universal_instruction_audit": {
+        "status": "FAIL",
+        "passed": 8361,
+        "failed": 30,
+        "file": "colored_context245_audit.json",
+        "sha256": "802d9f6dff88b4fcfebb545fc31d506bddfd2448a40aee58fafa45a44fe4c963",
+        "failures": "exactly the two guards of all15 CD leaf words ending in seven zeros"
+      }
+    },
+    "shared_entry_occurrences": 518,
+    "independent_source_audit": {
+      "status": "PASS",
+      "file": "colored_context_source_certificate.json",
+      "sha256": "5110bed9259823205044509c6f18447923c9fda1a0f186860c597573af8b2004",
+      "method": "independent Boolean-list PC arithmetic and direct expanded-tree traversal; no searcher import"
+    },
+    "universal_instruction_audit": {
+      "status": "PASS",
+      "guarded_cases": 8391,
+      "file": "colored_context246_audit.json",
+      "sha256": "6ecac2574b22aacfa9d01809e5fe6a03ecc199c0f3b963b079214102dc2fde1f",
+      "checker": "check_colored_runtime.py with colored_affine.py",
+      "domain": "all gap>=40, arbitrary primary registers under named guard, and all finite nonempty spare suffixes",
+      "added_sound_word_rule": "adjacent equal-symbol runs may be joined; specifically1^n 1 = 1^(n+1) resolves one generic checker indeterminacy"
+    },
+    "blank_prefix": {
+      "status": "PASS",
+      "certificate": "blank_prefix_results.json",
+      "certificate_sha256": "5a2d8c07f135891852a5ea0498b706a5ee8f39a5d5bd1e682bd831068c76fac8",
+      "checker": "check_blank_prefix.py",
+      "initial_state": 95,
+      "initial_head": 0,
+      "initial_tape": "all zero",
+      "steps": 410735,
+      "entire_reference_trajectory_identical": true,
+      "safe_root": {
+        "state": 96,
+        "head": -5,
+        "marker": -6,
+        "header": 176,
+        "header_distance": 181,
+        "pc": "",
+        "physical_primary": [
+          0,
+          0,
+          0,
+          3,
+          0,
+          0,
+          3,
+          0,
+          0
+        ],
+        "logical_primary": [
+          3,
+          0,
+          0,
+          0,
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        "spare_count": 167,
+        "every_spare_value": 1,
+        "ones": 351,
+        "zero_everywhere_else": true
+      },
+      "no_bootstrap_search": true
+    },
+    "calibration": "Finite blank prefix plus independently checked source conjugacy and universal instruction-frame theorem establish ordinary mathematical blank-start halting equivalence to baseline246; no new kernel endpoint."
+  }
+}

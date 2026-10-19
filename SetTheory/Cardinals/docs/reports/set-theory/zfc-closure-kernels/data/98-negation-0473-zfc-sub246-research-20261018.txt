@@ -1,0 +1,89 @@
+# Toward fewer than 246 states
+
+Research contribution for ProveIt, 18 October 2026.
+
+**No machine with fewer than 246 working states is established by this package.** The target remains a binary, single-tape, all-zero-input Turing machine `M` with at most 245 working states and an ordinary proof inside ZFC of
+
+`not Halt(M, blank) <-> Con(ZFC)`.
+
+The target equivalence must be proved without assuming consistency. No changed machine in this research meets all required simulation, blank-initialization, and logical-calibration obligations. The positive 246-state reference is retained with its original notices and proofs. Files under `rejected/` are failed modifications; the initialized runtime tables under `search/` are experiments, not new blank-start consistency constructions.
+
+## Read and reproduce
+
+- `report.pdf` is the complete mathematical report; `report.tex` and `results.tex` are its editable source.
+- `reviews/source-block-workspace-audit.md` independently reviews the source invariant, finite-block theorem, workspace oracle, and arithmetic-block implementation.
+- `results/verification-summary.json` and `results/package-verification.log` record the completed portable verification.
+
+From this directory, with Python 3.10 or later:
+
+```sh
+python3 -B code/verify_all.py
+```
+
+Only the Python standard library is required. Do not use `python -O`: assertions are certificate conditions, and the driver rejects optimized execution. The main verification ran successfully in approximately 43 seconds in the research environment. Timing is not a portable performance guarantee.
+
+To rebuild the report with a conventional TeX installation containing pdfLaTeX, Latin Modern, AMS packages, `microtype`, `booktabs`, `enumitem`, `fancyhdr`, `xurl`, and `hyperref`:
+
+```sh
+make pdf
+```
+
+The build uses three passes for contents and references. The main verifier rechecks the reference in a disposable temporary copy, preserving the imported reference files. New check outputs are written to `results/`; one wrapper also emits its compact result beside its code.
+
+## What this package contributes
+
+### A sound, more permissive acceptance method
+
+The simulator can match a positive finite block of source instructions. It carries the exact nine-register offset vector for each possible endpoint and refuses to cross source halt or an undecided decrement. The relation existentially quantifies the absolute head origin, excess separator space, and the finite nonempty suffix of unused register blocks. It preserves every primary register and the complete canonical tape shape.
+
+The report proves halting equivalence by finite induction in both directions. A future candidate must also preserve or reprove the actual register macros and have an exact blank initialization in a source state covered by both the numerical invariant and the inherited safe-root calibration.
+
+| Checked property of the frozen source | Result |
+|---|---:|
+| Unfolded source leaves | 6,460 |
+| Original guarded cases | 8,391 |
+| Guarded cases admitted by the numerical invariant, including halt | 8,385 |
+| Quiet-block endpoints | 10,563 |
+| Arithmetic-block endpoints | 17,643 |
+| Cases with additional arithmetic endpoints | 4,856 |
+| Maximum certified source instructions per arithmetic block | 13 |
+
+The four absent leaves and two impossible positive decrement guards were **already known** in the prior `beyond252` packet. They are not claimed as new discoveries. The compact invariant certificate and its use in the stronger checkers are additions here. Standard finite-block simulation and abstract interpretation are not claimed as historically new mathematical ideas.
+
+### Scoped searches and exact obstructions
+
+- The 254,856-trial incoming-action family has exactly the same per-state local domains under six checked oracle variants. Local compatibility does not imply compatibility of all incoming rewrites together.
+- Eight exact closed-graph certificates cover 19 boundary configurations and 128 edges. They prove failure for their specified simultaneous-action domains on a concrete source instruction, without relying on an execution cutoff. State 30's certificate covers 1,906,080 fixed action combinations.
+- A tail-state deletion passes its finite macro screens but reaches an unconditional left-scanning trap after three blank-tape transitions. It is provably nonhalting for a trivial finite-control reason and cannot supply the required ZFC-provable equivalence if ZFC is consistent.
+- A shortened gap detector produces the wrong source frame at a state reached after 6,012,481 transitions of the **reference** blank run. Matching the altered PC later in the original source does not repair the discrepancy: the original has primary register `W=10`, while the altered frame has `W=0`.
+- The largest coordinated detector screen completes 15,635,760 assignments after pruning a nominal 855,938,304-assignment family, with no survivor under its finite criteria.
+- 238 closed source transformations, source-loop removals, constant-transfer identities, and origin-preserving emission give no initialized runtime below 246. The origin-preserving emitter covers 260 variants, with 198 full guarded successes and 40 distinct source rotations attaining 246. **Their blank initializations were not verified.**
+
+These are scoped results. Neither exhausted finite screens nor failed sufficient symbolic certificates establish a global state-count lower bound.
+
+## Verification scope
+
+The default driver checks:
+
+1. Reference reconstruction, universal register-macro inductions, all original guarded instruction contracts, and the exact 410,735-step blank initialization.
+2. Independent invariant recomputation for arbitrary roots and for the exact root with several finite constant domains; initial inclusion and every admitted source transfer.
+3. Source-guard, quiet-block, workspace, and arithmetic-block baseline replays.
+4. Workspace offset, endpoint, halt-metadata, and progress controls; independent arithmetic traces and mutation controls.
+5. Reconstruction of the two rejected tables, the exact tail trap, all eight closed-graph certificates with an unbounded sparse tape, and the reachable gap-detector witness.
+6. Equality of the **recorded** local action domains from the six completed searches. This compares stored data; it does not rerun the large searches.
+
+Optional search programs and explicit commands are described in `search/README.md`. Their finite criteria and completion status are preserved. No newly compiled Lean/Rocq endpoint or serialized ZFC/PA proof object is included. The supplied ordinary proofs explain the internal-ZFC argument; the retained Lean sources are reference material, not a newly rebuilt dependency closure.
+
+## Reference identity and integration
+
+The inspected ProveIt commit is `8cdc55ff9281b0aaba49bf74b0b225d57f12b893`. The exact incoming archive is `docs/incoming/zfc-context246-20261018.zip`. Its complete 106-file content is retained unchanged under `reference/context246/`.
+
+The canonical reference table is `reference/context246/machine/zfc_prefix246.tm`, with start 0, working states 0 through 245, halt 246, and 492 rows. SHA-256:
+
+```text
+89cda615b3ea9fcac07ad6b08e0351faa34841a56935b6f5846d3920f13bc0fc
+```
+
+Research scripts use the original labels: start 95, dispatcher 96, halt 254, and working label 255. Count distinct row-source labels; the maximum label is not the number of working states. Tables use rows `state read write L_or_R target`.
+
+For incorporation into ProveIt, retain this as a research-method and obstruction packet beside the positive 246-state construction. Do not register the rejected tables as `candidate245`, and do not treat the initialized runtime ties as new Busy Beaver bounds. `PROVENANCE.json`, `NOTICE.md`, and `SHA256SUMS` record source identity, attribution boundaries, and delivered-file integrity. Historical notices inside the preserved reference describe their original packages.

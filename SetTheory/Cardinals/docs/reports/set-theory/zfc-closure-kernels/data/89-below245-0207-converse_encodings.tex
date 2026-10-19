@@ -1,0 +1,334 @@
+% Standalone section.  Requires amsmath, amssymb, and theorem environments.
+\section{Equality orientations and converse membership}
+\label{sec:converse-encodings}
+
+There is a useful distinction between replacing a logical axiom by a
+plausible shorter formula and changing every occurrence of a primitive atom
+consistently.  The second operation can preserve the entire proof calculus
+by an explicit involution.  We tested two such changes against the frozen
+source: converse membership in the nonlogical templates, and converse
+equality throughout the logical templates.  The latter has a favorable
+initial source metric, although a smaller transition table requires a
+separate compiler experiment.
+
+\subsection{Equality converse}
+
+Work first with named formulas whose atomic constructors are
+$R(i,j)$ and $E(i,j)$, with implication, falsity, and universal
+quantification.  Here $E$ is syntactically a binary atomic constructor;
+the original equality axioms give it the usual equality behavior.
+Define an involution $\epsilon$ by
+\[
+ \epsilon E(i,j)=E(j,i),\qquad
+ \epsilon R(i,j)=R(i,j),\qquad
+ \epsilon\bot=\bot,
+\]
+and let it commute with implication and quantification.
+It follows by structural induction that $\epsilon^2 A=A$,
+that $\epsilon$ preserves the set of occurring names, and that it
+commutes with every capture-avoiding renaming or substitution of names.
+
+Let $\mathcal L$ be the complete named-variable calculus behind the
+original eight logical rows, with modus ponens, generalization, and
+both gated atomic-vacuity families.  Let $\mathcal L^\epsilon$ contain
+the $\epsilon$-images of the eight rows and retain both full
+atomic-vacuity families.  Reversing the equality-vacuity family does
+not change that family, since both endpoint names range freely.
+
+\begin{theorem}[Equality-converse transport]
+For every sentence theory $T$ and formula $A$,
+\[
+ T\vdash_{\mathcal L} A
+ \quad\Longleftrightarrow\quad
+ \epsilon T\vdash_{\mathcal L^\epsilon}\epsilon A.
+\]
+The two translations of finite proofs are primitive recursive and
+inverse to each other.
+\end{theorem}
+
+\begin{proof}
+Apply $\epsilon$ to every line of a finite proof.  An axiom instance
+becomes an instance of its image schema.  Modus ponens is preserved
+because $\epsilon(A\to B)=\epsilon A\to\epsilon B$;
+generalization is preserved because
+$\epsilon(\forall_i A)=\forall_i\epsilon A$.
+The side condition $k\ne i,j$ on atomic vacuity is unchanged.
+No recursive variable substitution is added to the running enumerator:
+this is a metatheoretic proof translation.  Applying the same operation
+again gives the inverse proof translation.  The operation acts
+recursively on finite syntax and proof sequences, so primitive
+recursiveness and the proof-checker assertions are provable in PA
+for the chosen elementary codings.
+\end{proof}
+
+For clarity, the four rows that actually change are
+\[
+\begin{aligned}
+ \rho_1^\epsilon&=\exists a\,E(b,a),\\
+ \rho_3^\epsilon&=E(b,a)\to(R(c,a)\to R(c,b)),\\
+ \rho_5^\epsilon&=E(a,c)\to(R(c,b)\to R(a,b)),\\
+ \rho_7^\epsilon&=E(a,c)\to(E(b,c)\to E(b,a)).
+\end{aligned}
+\]
+The equality-vacuity factor becomes
+$E(b,a)\to\forall_cE(b,a)$.
+The other four rows, GEN, the membership-vacuity factor, the
+freshness tests, the command parser, and the scheduler stay as in the
+original source.  Reversing an arbitrary selection of equality atoms
+is not justified by this involution theorem alone.  The anchored family
+proved next allows specified nonuniform reversals.
+
+The nonlogical theory has CP, the full GIC schema, and IR.  Its CP
+and IR formulas contain no equality atoms.  Its GIC wrapper contains
+equality only inside the arbitrary matrix.  Consequently
+\[
+ \epsilon(\operatorname{GIC}[\varphi])
+       =\operatorname{GIC}[\epsilon\varphi],
+ \qquad \epsilon T_{\mathrm{SIR}}=T_{\mathrm{SIR}}.
+\]
+In particular, the modified named calculus has exactly the same
+refutation strength as the original calculus over SIR.  The
+diagonal formula used by the numerical source as falsity,
+$F=R(0,0)$, is fixed by $\epsilon$; the truth alias is fixed as well.
+This avoids a change in the meaning of the halt target.
+
+The numerical source uses one scalar in two roles, as the GIC matrix
+code and as its auxiliary name.  The preceding argument is not a
+claim that $\epsilon$ fixes that scalar: transforming its decoded
+matrix generally changes its code while leaving the displayed binder
+name fixed.  A direct numerical conjugacy would therefore need an
+additional fresh-name and encodability argument.  For equality
+orientations this issue can be avoided completely by the local
+axiom-replacement proof below: all GIC matrix codes stay literally
+unchanged.  The involution theorem is a useful semantic explanation,
+but the local proof is the stronger implementation interface.
+
+\subsection{A directly calibrated 32-member equality family}
+
+Write $\exists^F_i A=((\forall_i(A\to F))\to F)$ for the
+original relative existential, where $F=R(0,0)$ is the literal
+halt target.  The following argument works directly with that
+formula; it does not treat $F$ as a closed primitive constant or
+assume that numerical formula constructors are injective.
+
+An \emph{anchor direction} $d\in\{0,1\}$ chooses
+\[
+\begin{array}{c|cc}
+d&\text{existence anchor}&\text{Euclidean anchor}\\\hline
+0&\exists^F_a E(a,b)&E(c,a)\to(E(c,b)\to E(a,b))\\
+1&\exists^F_a E(b,a)&E(a,c)\to(E(b,c)\to E(b,a)).
+\end{array}
+\]
+These are the original $\rho_1,\rho_7$ and their uniform
+equality-converse images.  The four equality-free logical rows,
+GEN, and both unrestricted gated atomic-vacuity families are
+retained.  In particular, the gates remain exactly $c\ne a,b$.
+
+\begin{lemma}[Anchors suffice for equality symmetry]
+In either anchor direction, the basis derives
+$E(x,x)$ and $E(x,y)\to E(y,x)$, independently of $\rho_3$
+and $\rho_5$.  The proofs are uniform finite proof patterns in
+the names $x,y$.
+\end{lemma}
+
+\begin{proof}
+The known finite $\rho_8$ certificates supply K, S and Peirce.
+Only K, S and the unchanged $\rho_6$ are needed for relative
+explosion: if $D=\forall_i((\forall_i A)\to F)$, then K gives
+$F\to(D\to F)$, while $\rho_6$ gives $(D\to F)\to A$.
+Composition gives $F\to A$.
+
+Quantifier distribution and GEN give universal monotonicity.
+Propositional contraposition on each side then gives
+\[
+ (A\to B)\text{ derivable}
+ \quad\Longrightarrow\quad
+ (\exists^F_i A\to\exists^F_i B)\text{ derivable}.
+\]
+If $A\to\forall_i A$ is derivable, monotonicity followed by
+$\rho_6$ gives $\exists^F_i A\to A$.
+
+For direction zero, choose $k=x+1$.  The Euclidean anchor with
+both endpoint names equal to $x$ gives $E(k,x)\to E(x,x)$.
+The existence anchor and existential monotonicity give
+$\exists^F_k E(x,x)$.  Equality vacuity at $k\ne x$ and the
+preceding existential elimination give $E(x,x)$.
+The Euclidean instance
+$E(x,y)\to(E(x,x)\to E(y,x))$ now gives symmetry.
+For direction one, use $E(x,k)\to E(x,x)$ in the first argument,
+and use
+$E(x,y)\to(E(y,y)\to E(y,x))$ in the last step.
+Every invocation has the same finite proof pattern and a
+computable fresh name.
+\end{proof}
+
+The corresponding named-syntax proof is already visible in
+\path{Tarski.eq_refl} and \path{Tarski.eq_symm}
+in the pinned repository's \path{TarskiDerived.lean}.
+The preceding argument lists its dependencies to rule out
+circular use of either congruence row.
+
+\begin{theorem}[Local equality-orientation replacement]
+Starting from either anchor direction, independently perform
+any of the following four changes:
+\begin{enumerate}
+\item reverse the sole equality premise in $\rho_3$;
+\item reverse the sole equality premise in $\rho_5$;
+\item reverse the concluding equality in $\rho_7$;
+\item reverse both endpoint occurrences in equality vacuity.
+\end{enumerate}
+All $2\cdot2^4=32$ resulting numerical calculi have exactly
+the same theorems, and hence the same refutations, as the
+original numerical calculus.  This holds with the original
+gated C/G bundle, matrix decoder and relative falsity code.
+The proof translations replace axiom leaves by uniform finite
+derivations and keep each arbitrary matrix code unchanged.
+\end{theorem}
+
+\begin{proof}
+First normalize the fourth and third changes.  Reversed equality
+vacuity is the identical full family under the interchange
+$a\leftrightarrow b$; its two freshness conditions are symmetric.
+For direction zero, the changed Euclidean row is
+$E(c,a)\to(E(c,b)\to E(b,a))$.  Its instance with $a,b$
+interchanged, followed by the propositional antecedent-exchange
+theorem, yields the original Euclidean row.  The reverse derivation
+is identical.  The direction-one calculation is its literal
+equality converse.  This step uses no equality symmetry.
+
+The lemma now supplies symmetry in every variant.  For arbitrary
+formula $P$, the two implications $E(x,y)\to P$ and
+$E(y,x)\to P$ interderive using symmetry and propositional
+composition.  This deals independently with both congruence
+premises.  It also changes every premise or conclusion in either
+Euclidean anchor when converting between anchor directions.
+Existential monotonicity applied to equality symmetry converts
+the two existence anchors.  Thus every logical row of each
+calculus is derivable in the other.
+
+The only changed bundle factor is equality vacuity.  Conjunction
+projection extracts the C, G and membership-vacuity factors at
+the original $(a,b,c)$.  A bundle at $(b,a,c)$ supplies the desired
+orientation of equality vacuity.  Conjunction introduction
+reassembles the desired bundle.  Both calls have the same valid
+gate, and the C/G factors used in the reconstructed bundle retain
+the original matrix code $c$ and the original names.  Relative
+conjunction projections and introduction are derivable using the
+propositional layer and the relative explosion established above.
+
+Replace axiom leaves in a finite derivation by these blocks; copy
+MP and GEN nodes.  Each code constructor used is the original
+one, so the proof works by its arithmetic defining equalities
+even at aliased codes.  Structural induction on the derivation
+gives both theoremhood implications.  There is no transformation
+of an arbitrary encoded formula in this proof.
+\end{proof}
+
+This direct transfer reduces the new endpoint obligation to
+verifying the actual changed AX emitter and its compiled
+implementation.  It still does not identify any unchecked
+transition table with that emitter, nor prove a new blank-start
+runtime theorem.  The existing output-selector construction can
+extract the extra AX instances used by the replacement blocks,
+with the protected theorem-stack suffix preserved.
+
+\subsection{Converse membership}
+
+Define $\mu R(i,j)=R(j,i)$, fix equality and falsity, and again
+commute with the logical constructors.  The same proof-translation
+argument applies to complete first-order logic.  At the theory level,
+write $C^\mu$ for CP with every explicit relation atom reversed, and
+$G^\mu[\varphi]$ for the GIC wrapper with explicit relation atoms
+reversed but its matrix placeholder left opaque.  Since $\mu$ is an
+involution on all matrices,
+\[
+ \{\mu(G[\psi]):\psi\text{ a formula}\}
+       =\{G^\mu[\varphi]:\varphi\text{ a formula}\}.
+\]
+Also $\mu$ fixes the diagonal irreflexivity axiom.  Thus
+$C^\mu+\{G^\mu[\varphi]\}_\varphi+\mathrm{IR}$ is
+definitionally isomorphic to SIR by taking the converse of the
+primitive binary relation.  The interpreted relation is converse
+membership; ordinary membership itself is not asserted to satisfy
+the reversed axioms.
+
+All eight logical rows can remain unchanged, because they form a
+complete calculus for an arbitrary binary relation.  Both ordinary
+atomic-vacuity factors remain unchanged.  The source therefore
+needs no recursive transformation of an input matrix: it constructs
+the reversed wrapper around every decoded matrix, and the family of
+matrices supplies the inverse transformation in the proof argument.
+
+Combining membership converse with the 32 equality orientations
+gives 64 fully specified source variants.  Only the equality
+factor has the direct same-code replacement theorem above.
+Membership converse changes the nonlogical wrapper and therefore
+uses the ordinary native full-schema theory, together with the
+usual padding, freshness and decoded-bundle bridges.  Its
+numerical calibration has not been re-exported as a Lean theorem
+in this experiment.
+
+\subsection{Exact source measurements}
+
+The independent source generator loads the pinned pure formula
+definitions, re-emits the original logical rows and bundle, and
+checks equality of their entire finest source-operation sequence
+with the retained original AX word.  It then applies the specified
+atom reversals.  All 64 words have 1,270 finest operations.  The
+scalar-copy macros and three tag increments in the equality
+constructor are retained unchanged.
+
+The 44 existing semantic atoms provide a finite dictionary of
+operation words.  Dynamic programming over every operation cut
+computes the minimum number of dictionary calls spelling each
+new word.  It is an exact optimization for that dictionary, with
+no claim of optimality over Turing machines.
+
+\begin{center}
+\begin{tabular}{lrr}
+\hline
+Source variant & Finest operations & Minimum dictionary calls\\
+\hline
+Original & 1,270 & 533\\
+Membership converse in C/G & 1,270 & 546\\
+Equality converse throughout logic & 1,270 & 499\\
+Both converses & 1,270 & 512\\
+Best anchored equality orientation & 1,270 & 493\\
+\hline
+\end{tabular}
+\end{center}
+
+The original published spelling has 702 calls; its already known
+best dictionary spelling has 533.  Thus the favorable comparison
+for equality converse is $533\to499$, rather than comparing a newly
+optimized spelling only with the older unoptimized 702-call word.
+The script also checks the membership-converse semantic identity
+in 1,028 small wrapper cases, with the matrix interpreted as an
+arbitrary binary predicate.  Those finite tests validate the
+implementation of the transformation; the all-formula theorem is
+the structural proof above.
+
+The best anchored word uses direction-zero existence and
+Euclidean premises, reverses both congruence premises and the
+Euclidean conclusion, reverses equality vacuity, and retains
+ordinary membership in C/G.  Its manifest key is
+\path{anchor0_r31_r51_r7c1_ev1_mu0}.  The four
+nontrivial logical rows are explicitly
+\[
+\begin{aligned}
+\rho_1'&=\exists^F_aE(a,b),\\
+\rho_3'&=E(b,a)\to(R(c,a)\to R(c,b)),\\
+\rho_5'&=E(a,c)\to(R(c,b)\to R(a,b)),\\
+\rho_7'&=E(c,a)\to(E(c,b)\to E(b,a)).
+\end{aligned}
+\]
+The equality-vacuity factor is $E(b,a)\to\forall_cE(b,a)$.
+Its exact improvement over the prior best dictionary spelling
+is $533\to493$, or 40 calls.
+
+The 40-call improvement is not a 40-state improvement.  Shared
+grammar nodes, allowed incoming directions, scanner restrictions,
+required roots, and the entire blank prefix must all be charged in
+the complete compiler.  At this stage the result is an explicit
+new source family with a rigorous logical justification and a
+promising measured dictionary cost, not a new small-machine bound.

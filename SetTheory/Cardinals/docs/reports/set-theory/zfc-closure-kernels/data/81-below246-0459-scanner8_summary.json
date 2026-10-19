@@ -1,0 +1,265 @@
+{
+  "status": "proved local scanner lemma and preserved register contracts; isolated whole-program candidate FAIL",
+  "original_working_states": 246,
+  "patched_working_states": 245,
+  "deleted_state": 74,
+  "row_patch": {
+    "source_state": 58,
+    "read": 0,
+    "before": [
+      0,
+      "L",
+      74
+    ],
+    "after": [
+      0,
+      "L",
+      84
+    ]
+  },
+  "untouched_shared_selector_return_states": [
+    4,
+    6
+  ],
+  "patched_table_sha256": "4d26442be47022487878255ddb49c3f9eb9900e159789a6665dd7b6d7cc790be",
+  "scanner_induction": {
+    "status": "PASS",
+    "count_states": [
+      {
+        "state": 4,
+        "previously_read_zeros": 0,
+        "zero_next": 6,
+        "one_next": 4
+      },
+      {
+        "state": 6,
+        "previously_read_zeros": 1,
+        "zero_next": 9,
+        "one_next": 4
+      },
+      {
+        "state": 9,
+        "previously_read_zeros": 2,
+        "zero_next": 13,
+        "one_next": 4
+      },
+      {
+        "state": 13,
+        "previously_read_zeros": 3,
+        "zero_next": 19,
+        "one_next": 4
+      },
+      {
+        "state": 19,
+        "previously_read_zeros": 4,
+        "zero_next": 29,
+        "one_next": 4
+      },
+      {
+        "state": 29,
+        "previously_read_zeros": 5,
+        "zero_next": 41,
+        "one_next": 4
+      },
+      {
+        "state": 41,
+        "previously_read_zeros": 6,
+        "zero_next": 58,
+        "one_next": 4
+      },
+      {
+        "state": 58,
+        "previously_read_zeros": 7,
+        "zero_next": 84,
+        "one_next": 4
+      }
+    ],
+    "distinguished_zero_run": 8,
+    "deleted_state": 74,
+    "tape_preserved": true,
+    "return_state": 96,
+    "return_head": "left_marker + 1",
+    "literal_steps_from_state4": "entry_head-left_marker+19",
+    "condition": "interval [left_marker,entry_head] contains no 0^8; left_marker is 1; every cell to its left is 0"
+  },
+  "entry6_qualification": "append one virtual zero to interval word before checking absence of0^8",
+  "register_inductions": {
+    "status": "PASS",
+    "one_block_theorems": 4,
+    "word_identity": 1,
+    "full_arithmetic_macros": 3,
+    "register_marking_contracts": 9
+  },
+  "frame": {
+    "base_head_to_header_distance": 40,
+    "extra_gap": "all n>=0",
+    "maximum_original_leaf_depth": 34,
+    "register_values": "all natural numbers",
+    "spare_suffix": "any finite nonempty list"
+  },
+  "baseline_guarded_cases": 8391,
+  "baseline_successful_universal_cases": 8355,
+  "baseline_failed_cases": 36,
+  "successful_by_operation": {
+    "CD/zero": 1913,
+    "CD/positive": 1913,
+    "CB": 128,
+    "CI": 2601,
+    "CC": 1799,
+    "CH": 1
+  },
+  "failed_by_operation": {
+    "CD/zero": 18,
+    "CD/positive": 18
+  },
+  "distinct_failed_leaves": 18,
+  "failed_leaf_condition": "exactly CD leaves ending in seven zeros",
+  "failed_leaf_paths": [
+    "111010010010000000",
+    "11101001001010000000",
+    "1110100100101010000000",
+    "11101001001010100110000000",
+    "11101001001010110000000",
+    "111010010010101110000000",
+    "1110100100101011110000000",
+    "11101001001010111110000000",
+    "111010010010110000000",
+    "1110100100101101010000000",
+    "11101001001011010110000000",
+    "1110100100101110000000",
+    "1110100100101110010000000",
+    "11101001001011100110000000",
+    "1110100100101110110000000",
+    "11101001001011110000000",
+    "1110100100101111010000000",
+    "11101001001011111110000000"
+  ],
+  "phase_obstruction": {
+    "prepare": "00 -> 11; fill remaining separator with ones",
+    "selection": "11 -> 01",
+    "bad_concatenation": "PC suffix0^7 plus first phase0 gives0^8"
+  },
+  "new_source_target": {
+    "file": "rotation_zero_candidate_24.json",
+    "sha256": "90d15a0fb69606e080a5fa5d2ce5179f2642958546a4f1203b259b2804eb76af",
+    "maximum_depth": 36,
+    "maximum_zero_run": 6,
+    "shared_pairs": 202,
+    "guarded_source_successors_preserved": 8391
+  },
+  "artifacts": {
+    "report": "scanner8_result.tex",
+    "checker": "check_short_scanner.py",
+    "table": "scanner8_baseline245.tm",
+    "full_certificate": "scanner8_baseline245_audit.json",
+    "positive_table": "compiled24_scanner250.tm",
+    "positive_certificate": "compiled24_scanner250_audit.json",
+    "positive_summary": "compiled24_summary.json",
+    "positive_blank_certificate": "agent_states/blank_prefix_results.json",
+    "positive_blank_checker": "agent_states/check_blank_prefix.py"
+  },
+  "validated_new_source_runtime": {
+    "status": "PASS universal runtime simulation and separately certified complete blank initialization",
+    "working_states": 250,
+    "source_stats": {
+      "instruction_leaves": 6460,
+      "maximum_depth": 36,
+      "maximum_zero_run": 6
+    },
+    "universal_guarded_cases": 8391,
+    "by_operation": {
+      "CD/zero": 1931,
+      "CD/positive": 1931,
+      "CB": 128,
+      "CI": 2601,
+      "CC": 1799,
+      "CH": 1
+    },
+    "base_head_to_header_distance": 40,
+    "additional_gap": "all n>=0",
+    "register_values": "all natural numbers with named decrement guard",
+    "spare_suffix": "all finite nonempty natural-valued lists",
+    "minimum_literal_progress": 13,
+    "maximum_symbolic_rules": 493,
+    "register_induction_counts": {
+      "block": 4,
+      "word_identity": 1,
+      "arithmetic": 3,
+      "marking": 9
+    },
+    "scanner": {
+      "deleted_state": 74,
+      "changed_row": [
+        58,
+        0,
+        0,
+        "L",
+        84
+      ],
+      "run_length": 8
+    },
+    "below_246_goal_met": false,
+    "runtime_audit_alone_is_whole_blank_tape_ConZFC_theorem": false,
+    "runtime_audit_scope": "Instruction-frame simulation only; blank initialization is established by the separately cited certificate.",
+    "blank_initialization_proved": true,
+    "separate_blank_initialization": {
+      "status": "PASS separately certified complete blank prefix",
+      "steps": 407983,
+      "start_state": 95,
+      "start_head": 0,
+      "start_tape": "all zero",
+      "complete_tape_equality": true,
+      "zero_exterior_verified": true,
+      "visited_head_interval": [
+        -15,
+        701
+      ],
+      "safe_root": {
+        "state": 96,
+        "head": -5,
+        "marker": -6,
+        "header": 176,
+        "header_distance": 181,
+        "pc": "",
+        "physical_primary": [
+          0,
+          0,
+          0,
+          3,
+          0,
+          0,
+          3,
+          0,
+          0
+        ],
+        "logical_primary": [
+          3,
+          0,
+          0,
+          0,
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        "spare_count": 167,
+        "every_spare_value": 1,
+        "ones": 351,
+        "zero_everywhere_else": true
+      },
+      "certificate": {
+        "path": "agent_states/blank_prefix_results.json",
+        "sha256": "5a2d8c07f135891852a5ea0498b706a5ee8f39a5d5bd1e682bd831068c76fac8"
+      },
+      "checker": {
+        "path": "agent_states/check_blank_prefix.py",
+        "sha256": "cf69789c666e34da138045a4f59595a0e5d1cc09b806f71359dac4b34460ea41"
+      }
+    },
+    "proof_composition": "Complete blank and runtime components are certified; source equivalence and the inherited logical calibration provide the separate composition interfaces.",
+    "table_sha256": "e3d6e23d9970e1e3dceca66490e6a789e8b6cf692ab4d44fb911f591cb39a8b9"
+  },
+  "no_complete_new_binary_machine_below246_theorem": true,
+  "isolated_baseline245_new_blank_initialization_proved": false
+}

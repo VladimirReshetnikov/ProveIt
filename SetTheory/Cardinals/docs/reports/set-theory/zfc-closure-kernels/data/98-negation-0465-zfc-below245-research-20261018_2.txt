@@ -1,0 +1,105 @@
+# Below 245 states: semantic dictionaries, shorter scanners, and theory obstructions
+
+**No verified machine below 245 states was found.** This is a research contribution for ProveIt, dated 18 October 2026. It contains a new checked 245-state variant, a complete 252-state witness using a smaller scanner framework, exact obstructions, bounded searches, and measured theory/encoding experiments. It is ready for research intake; it does not change the maintained state record or supply a new Lean/Rocq endpoint.
+
+The goal remains an explicit deterministic one-tape, two-symbol machine, started on an all-zero tape, with fewer than 245 working states and an ordinary ZFC proof of
+
+\[
+\neg\operatorname{Halt}(M,0^{\mathbb Z})\iff\operatorname{Con}(\mathrm{ZFC}).
+\]
+
+Every working state has two defined transitions. Initialization is counted. A separate target-only halt state is excluded.
+
+## What this contribution establishes
+
+The new compiler represents a program word by its ordered sequence of **finest closed source blocks**, rather than its spelling in the old 44-letter physical-atom alphabet. The 44 actual physical entries form a zero-cost dictionary over 30 finest blocks, with their true incoming-bit masks. This permits sharing across old atom boundaries. Exact source parsing, route projections, register-program bisimulation, actual-table arithmetic induction templates, and all-parameter instruction checks remain separate verification gates.
+
+The inherited 54 bootstrap equations force five left branches followed by the physical atom `e`'s own left branch. They therefore force a six-zero source leaf, independently of the number of grammar rules. A five-zero source grammar is impossible **under those exact locks**. This is a restricted mathematical obstruction, not a lower bound on arbitrary Turing machines.
+
+Four sufficient bootstrap equations can be relaxed without increasing the state count. The reassociation
+
+```text
+((eijkKCqkjG,e),U)  ->  (eijkKCqkjG,(e,U))
+```
+
+replaces one obsolete helper by another. The resulting 245-state table passes complete source/runtime/blank certificates and reaches exactly the original safe tape after 407,995 steps. This shows concretely that those four locks are unnecessary for a valid construction.
+
+A further repaired grammar works with the five-zero scanner. The final checked witness has **136 grammar states + 116 framework states = 252 working states**. It passes all 8,391 guarded runtime cases and reaches the safe blank-start frame in 405,175 moves. It requires the certified family of header distances `96+n`; the old `64+n` family gives insufficient separation at its deepest paths. The state budget needed to beat 245 in this architecture is 128 grammar rules, eight fewer than this witness.
+
+Removing the container axiom's transitivity conjunct is a different kind of failure: the resulting theory, retaining full generalized image collection and irreflexivity, has a set model whose existence ZFC proves. The report gives a self-contained proof using pseudo-hereditarily small sets at `beth_omega`, with attribution to Oman's model construction. Thus ZFC proves the weakened theory's consistency, preventing the requested consistency equivalence if ZFC is consistent.
+
+Equivalent CP quantifier rewrites and complete-equality numerical encodings were actually emitted and measured. The best literal shortening among the CP controls removes 116 instruction occurrences but increases the same-backend raw state count from 281 to 306. Those raw Wade tables retain an inherited missing transition row and are cost controls, not complete calibrated machines.
+
+## Machine and assurance table
+
+| Object | Working states | Grammar + framework | Max zero run | Blank prefix | Status |
+|---|---:|---:|---:|---:|---|
+| Pinned routed baseline | 245 | 128 + 117 | 6 | 407,915 | Retained ordinary mathematical construction, freshly replayed |
+| Canonical representation control | 245 | 128 + 117 | 6 | 407,915 | Exact table relabeling; all source/runtime/blank gates pass |
+| Four-lock relaxation | 245 | 128 + 117 | 6 | 407,995 | New complete checked variant; no state reduction |
+| Final five-zero witness | 252 | 136 + 116 | 5 | 405,175 | New complete checked architecture witness, padding 96 |
+| Scanner deletion on original grammar | 244 | 128 + 116 | 6 | 818,324 | Experimental; uniform wrong-successor family |
+| Scanner deletion on relaxed grammar | 244 | 128 + 116 | 6 | 405,175 | Experimental; first failed universal case retained |
+
+The ordinary ZFC transfer argument for the two new positive variants is in `report.tex`/`report.pdf`. It composes the retained source68 consistency calibration, exact source bisimulation, positive all-parameter binary segments, complete frame closure, and safe blank initialization. The package does **not** supply a new proof-assistant kernel endpoint.
+
+Canonical machine hashes:
+
+| Machine | SHA-256 |
+|---|---|
+| Pinned 245 baseline | `17f4d430747c4a0cd580dc2cc13ea06a74ce7f51f12be4c2d12f6a646691dd13` |
+| New relaxed 245 | `2ffe70818ecd88b697ce83984efaab41215f0c8954316c244064bcd7c9d655b8` |
+| Five-zero 252 witness | `cf00f19aef2740cc20a75d48c9076ffd7a9d03b6917caac8ef93d99d798a781e` |
+
+## Contents
+
+| Path | Purpose |
+|---|---|
+| `report.tex`, `report.pdf`, `sections/` | Complete integrated report, proofs, measured results, and scope |
+| `verify.py` | Offline integration replay, including expected negative controls |
+| `code/` | Independent semantic compiler and arithmetic frame checker |
+| `inputs/` | Frozen principal canonical grammars |
+| `machines/canonical-control245/` | Positive representation control and complete certificate data |
+| `machines/relaxed50-245/` | New 245-state table, source/runtime/frame/boot certificates |
+| `machines/zero5-witness252/` | Complete five-zero framework witness and certificates |
+| `experiments/rejected244-relaxed50/` | Explicitly failed 244-state experiment |
+| `research/grammar/` | Canonical search tools, initial control plus 10 checked frozen candidates, exact lock obstruction, bounded logs |
+| `research/framework/` | Original-grammar 244-state experiment, exact blank replay, universal negative family, scoped elimination searches |
+| `research/theory/` | Standalone TeX/PDF note, CP/model proofs, matrix, code variants, raw cost controls, independent reviews |
+| `results/` | Fresh replay summaries and principal validation records |
+| `vendor/zfc245-proof-20261018.zip` | Unmodified, attributed offline dependency, 294 payload files |
+| `PROVENANCE.json`, `NOTICE.txt`, `SHA256SUMS` | Source pins, licenses/attribution boundaries, payload integrity |
+
+The full baseline dependency is included so that reproduction does not require network access or a moving repository branch. Seven additional incoming research archives were inspected; their exact names and hashes are recorded in `PROVENANCE.json` without redistributing them again.
+
+## Reproduce
+
+From this directory, with Python assertions enabled:
+
+```sh
+python3 -B verify.py --output /tmp/zfc-below245-replay
+```
+
+Use a new or empty output directory. The default path requires Python's standard library and the included sources/backend. It verifies the delivered payload hashes, unpacks the exact dependency, replays the baseline, recompiles the positive and negative semantic candidates, binds rebuilt table/certificate bytes to the delivered files, checks frame closure, proves the exact lock obstruction and scanner negative family, rechecks the initial abstract control plus 10 fixed-source candidates, and reproduces all 36 theory/codec JSON/TM outputs exactly. Frozen inputs and results are not overwritten.
+
+The expected final status is:
+
+```text
+PASS_RESEARCH_PACKAGE_NO_SUB245_CLAIM
+```
+
+This means the research evidence replays; it does not mean a 244-state solution exists. The failed candidate is expected to exit with code 2 and to carry `NOT_A_VERIFIED_COMPLETE_MACHINE` in its JSON. A source-only `PASS` is never substituted for a full machine check.
+
+Optional expanded symbolic and finite compiled searches, compiler requirements, and document-building commands are described in `REPRODUCE.md`. Heuristic optimization is not required to reproduce frozen candidate certificates.
+
+## Concrete continuation targets
+
+The closest fixed-source budgets remain `117+127=244` with the current scanner and `116+128=244` with the shorter scanner. The new work demonstrates that relaxing the four identified bootstrap equations is compatible with a complete construction, and that the shorter framework itself works. Future compression can start from a verified source/runtime/boot witness and use newly generated bootstrap traces instead of imposing all 54 old equations.
+
+The finite dictionary MILP's reported optimum is only for its stated word pool, fixed routes, and numerical solver model. The direct elimination screens are finite; two joint-search cases hit their declared budgets. None is a general impossibility result. Exact details are retained so those domains can be extended without repeating the same experiments.
+
+## Provenance and incorporation
+
+ProveIt was inspected at commit `6446ff5668307a2ac6aee1896037f0b792090389`; the upstream 254-state source is pinned at `c132d7eae8158cd3a9850ea3eb7251158c3dd821`. Existing source-calculus, Rocq, compiler, and ProveIt work retains its attribution and license boundaries. See `NOTICE.txt` and the local research notices.
+
+The archive is an incoming research contribution. No repository, branch, or pull request was modified. Experimental tables should remain identified by their failed proof obligations; the maintained state record remains 245 under the supplied candidate's documented ordinary mathematical assurance boundary.

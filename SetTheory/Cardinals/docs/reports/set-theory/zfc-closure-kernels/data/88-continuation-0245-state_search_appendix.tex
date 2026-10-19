@@ -1,0 +1,203 @@
+\section{State-level searches with equivalent continuation controls}
+\label{sec:state-quotient-search}
+
+The new state searches admit a clean return whose program counter denotes
+the same guarded continuation class as the expected source endpoint.
+The continuation quotient has 4,530 classes. Generic control-only steps
+carry a nonnegative rank, at most four in this source, so that acceptance
+does not identify an arbitrary cycle with a finite sequence of no-ops.
+The quotient construction and its soundness are separate from the finite
+Turing-machine screening discussed here.
+
+Two exact tables were used in the single-edge campaigns. The first is the established 246-state table.
+The second is the new 202-source-node, 246-state colored table
+\texttt{s3\_best\_010}, with old-label SHA-256
+\nolinkurl{15ca3aac4ef760ffbd3a01ecf9440b471637ee7f037751123ead83613211001f}.
+Its complete guarded source graph, indexed by ordered leaf occurrence,
+is checked to equal the graph used by the quotient. The continuation
+classes and ranks therefore transport to the changed binary addresses
+without any recomputation or guess about the meaning of a new address.
+The new source DAG is unfolded into 6,459 binary decision nodes for the
+matcher, preserving all 6,460 distinct leaf occurrences.
+
+The new-table fixture generator first executes all 8,391 guarded
+instruction cases at header distance 64. The nine finite primary values
+are obtained from $(3i\bmod7)_{i<9}$, with the selected decrement value
+set to zero or one according to the named guard. There is one zero-valued
+spare. Every case reaches its full, exactly expected literal endpoint;
+the total is 4,370,984 transitions and the largest case takes 764 moves.
+This is a finite preparation check. The independent universal instruction
+proof of the new table is not supplied by these chosen numerical values.
+
+\subsection{A complete single-edge family with actual graph pruning}
+
+For each of 492 transition positions, the search changes its target to
+one of the other 246 available targets, including halt. It then computes
+the graph reachable from the fixed blank start 95. A recipe is retained
+only if it deletes at least one working state after graph pruning and
+retains dispatch state 96. For each such target change, all four choices
+of written bit and movement direction are tested. Thus the table is
+charged by the states it retains, not by a cosmetic omission of an
+unused row or by its maximum numerical label.
+
+\begin{center}
+\begin{tabular}{lrr}
+\hline
+Quantity & Established 246 table & New colored 246 table\\
+\hline
+Edge/target choices & 121,032 & 121,032\\
+Choices producing graph pruning & 32,485 & 32,731\\
+Write/move/target recipes tested & 129,940 & 130,924\\
+Finite fixture executions & 149,653 & 151,528\\
+Literal transitions executed & 231,797,908 & 268,292,723\\
+Surviving recipes & 0 & 0\\
+\hline
+\end{tabular}
+\end{center}
+
+The matcher checks the entire finite nonblank support, a left marker
+with blank exterior, a clean decoded address in the expected continuation
+class with an admissible rank, the exact nine primary values, and a
+nonempty suffix of valid spare blocks. It permits spare contents and
+length to vary. Each trial has a 4,000-transition cutoff, at most 15
+unsuccessful visits to dispatch, and a 512-cell represented window.
+Consequently failure is rejection by this declared finite screen. It is
+not a theorem that the altered machine cannot eventually reach a useful
+frame and is not a lower bound for arbitrary implementations.
+
+\subsection{Shortening the scanner and adding a compensating row}
+
+On the new colored table, the fixed edit
+\[
+ T(58,0)=(0,L,84)
+\]
+removes the only external incoming edge to state 74 and shortens the
+marker detector from nine zeros to eight. The relaxed continuation
+screen rejects 25 of the 8,391 numerical cases. Twenty-four are the two
+guards at twelve decrement leaves; the additional case is increment of
+logical register $T$ at address
+\texttt{1110100100101110000000}. Counting only long decrement suffixes
+would miss this extra obstruction.
+
+The next search permits one arbitrary additional transition replacement
+while retaining that scanner edit. It considers every retained working
+target and halt, both write bits and both directions. The nominal family
+has $489\cdot984=481,176$ additional-row recipes. There is an exact pruning
+for this finite search: a row absent from one already failed execution
+cannot repair that execution when it is the only additional changed row.
+Recording the complete bounded traces of all 25 failures leaves 69 row
+positions in their intersection. One is the locked scanner edit itself,
+so 68 positions remain and $68\cdot984=66,912$ recipes require execution.
+None survives. The campaign performs 85,725 fixture executions and
+139,244,684 literal moves, including its preparation checks.
+
+This result rules out every member of the stated family under the finite
+acceptance criteria. It does not cover two compensating rows, a changed
+source graph, a different tape representation, longer execution bounds,
+or a relation more permissive than the proved continuation quotient.
+
+\paragraph{The independently reordered candidate.}
+The same scanner experiment was repeated on the subsequently certified
+\texttt{s7\_best\_018} table, whose source includes the closed disjoint
+commutation at physical color 106. Its old-label table SHA-256 is
+\nolinkurl{c7cd613c2a55cba8a731bdecab4ef24d97acf4f319ad8b22f7048007c25afc73}.
+Because this rewrite changes the ordered leaf graph, the original quotient
+is not transported by leaf ordinal. The fixture generator parses the new
+guarded graph, erases terminating control-only chains, and recomputes its
+greatest guarded bisimulation. As a control, the same implementation
+reconstructs the original partition and ranks exactly. The new quotient
+again has 4,530 classes and maximum control rank four.
+
+All 8,391 finite baseline instructions pass at header distance 64, taking
+4,364,700 literal transitions; the longest again takes 764 moves. The
+scanner deletion rejects 21 cases: the two guards at ten decrement leaves
+and one increment leaf. Its failed-trace intersection contains 71
+transition positions, of which one is the locked scanner edit. All
+$70\cdot984=68,880$ executed one-row compensation recipes reject, covering
+the same nominal family of 481,176 choices. The experiment performs
+87,386 fixture executions and 146,685,756 literal transitions. These
+figures include both preparation passes and retain the same finite limits.
+
+\paragraph{The terminal-normalized candidate.}
+The subsequently certified \texttt{s9\_best\_007} table uses generic
+terminal entries as well as the reordered source. Its old-label SHA-256 is
+\nolinkurl{b2a2e6608a603e3b8dda9fc3c4195e6376a934bba90519fa4d5e30306ed6ea25}.
+The independently recomputed source quotient again has 4,530 classes and
+rank at most four. All 8,391 finite preparation cases pass, taking
+4,373,570 transitions with maximum 764. Shortening its scanner rejects
+exactly sixteen cases: both guards at eight decrement leaves, with no
+increment obstruction. There are 69 common failed-trace positions, leaving
+68 additional-row positions after the locked scanner edit is excluded.
+None of the 66,912 executed compensation recipes survives; the campaign
+performs 91,431 fixture executions and 139,900,936 literal transitions.
+Thus this better source and terminal arrangement narrows the obstruction
+set but still supplies no passing 245-state machine in the declared family.
+
+\subsection{Physical-layout controls}
+
+A separate complete census applies all $9!=362,880$ physical-selector
+target permutations to the previously certified rotated 246 table.
+Each resulting transition graph has all 246 working states reachable,
+and its greatest exact output-state bisimulation has 246 classes.
+The enumeration uses the earlier attributed partition-refinement code
+on this new input table. It does not certify the runtime or blank
+initialization of every permutation.
+
+Three incomplete compiler tables were also screened under 109 declared
+physical permutations: the nine swaps putting each physical register
+at position zero, followed by 100 distinct pseudorandom controls from
+seed 98713. The source guards and expected register effects were
+conjugated as well. The raw 202-node 245-state table fails the same
+sufficient symbolic case, index 1166, for every permutation; the raw
+201-node table fails case 707; the repaired 201-node attempt fails
+case 3924. A failed sufficient symbolic proof is not promoted to a
+counterexample to the whole machine. The exact compiler symmetry proved
+in Section~\ref{sec:selector-symmetry} explains why repeating fixed-color
+state-count searches under these layouts is redundant.
+
+\subsection{Transfer regions across syntax boundaries}
+
+A final source-level scan works directly on the complete guarded control
+graph, independently of its binary-tree segmentation. It recognizes a
+decrement loop when its positive edge follows a finite chain containing
+only increments and control transfers, returns to that same decrement,
+and never increments its counter. Induction on the natural counter proves
+that this region terminates: it clears the counter and adds its initial
+value times the fixed increment vector to the other registers.
+
+There are 1,433 such loop occurrences and 20 distinct transfer maps.
+Together with single increments they give 4,034 recognized total arithmetic
+regions. Exact homogeneous integer matrices compose their effects along
+chains of at most sixteen regions. No region in these chains is
+algebraically redundant after its prefix. Thirty complete effect maps
+have distinct factorizations, largely from moving increments across
+transfer loops. These are source identities, not binary state savings.
+For example, writing $\operatorname{Move}_{s\to t}$ for the loop that
+clears $s$ while adding its old value to $t$,
+\[
+ \operatorname{Inc}_s;\operatorname{Move}_{s\to t}
+ =\operatorname{Inc}_t;\operatorname{Move}_{s\to t}
+ \qquad(s\ne t).
+\]
+The finite graph scan records the literal loop bodies and matrices so
+these local identities can be checked without inferring totality of any
+unrecognized fragment.
+
+\subsection{A different blank initial state}
+
+The experimental \texttt{s10\_best\_004} table has a universal runtime
+certificate but has not been connected to a safe blank initialization.
+Since choosing an existing initial working state costs no additional
+state, a separate survey starts this unchanged table on blank tape in
+each of its 246 working states. A success must be a complete dispatch
+frame with an empty stored program counter, header distance at least 64,
+at least one spare block, and logical $T=H=W=0$. The other six primary
+values are unrestricted in this screen.
+
+No start succeeds within the declared bounds. Each run has a limit of
+2,000,000 transitions and a represented head interval
+$[-131070,131070]$. The survey executes 41,589,045 literal transitions;
+241 starts leave that interval and five exhaust the transition limit.
+Its table is never patched during the survey. The result is a bounded
+initialization search, not a theorem excluding other starts after longer
+executions or under a different admissible initialization relation.

@@ -1,0 +1,207 @@
+{
+  "status": "BOUNDED_RESEARCH_NO_BELOW245_SOLUTION",
+  "annealing": [
+    {
+      "name": "canonical-20262021",
+      "engine": "anneal_canonical.cpp",
+      "seed": 20262021,
+      "proposals": 14452680,
+      "best_grammar_rules": 128,
+      "seconds": 900.001,
+      "accepted": 4807696,
+      "uphill": 21564,
+      "restarts": 259,
+      "locks": 54,
+      "final_source_properties": [
+        3,
+        6,
+        52
+      ],
+      "conclusion": "No grammar meeting the below245 state budget found.",
+      "log": "search_logs/canonical-20262021.log"
+    },
+    {
+      "name": "canonical-dynamic",
+      "engine": "anneal_canonical_dynamic.cpp",
+      "seed": 622202,
+      "proposals": 15118774,
+      "best_grammar_rules": 128,
+      "seconds": 900.0,
+      "accepted": 5648992,
+      "uphill": 21937,
+      "restarts": 259,
+      "locks": 54,
+      "final_source_properties": [
+        3,
+        6,
+        52
+      ],
+      "conclusion": "No grammar meeting the below245 state budget found.",
+      "log": "search_logs/canonical-dynamic.log"
+    },
+    {
+      "name": "canonical-free-zero6",
+      "engine": "anneal_canonical_dynamic.cpp",
+      "seed": 634202,
+      "proposals": 16691471,
+      "best_grammar_rules": 128,
+      "seconds": 900.001,
+      "accepted": 6379255,
+      "uphill": 25487,
+      "restarts": 309,
+      "locks": 0,
+      "final_source_properties": [
+        3,
+        6,
+        53
+      ],
+      "conclusion": "No grammar meeting the below245 state budget found.",
+      "log": "search_logs/canonical-free-zero6.log"
+    },
+    {
+      "name": "canonical-free-zero7",
+      "engine": "anneal_canonical_dynamic.cpp",
+      "seed": 633202,
+      "proposals": 15829958,
+      "best_grammar_rules": 128,
+      "seconds": 900.0,
+      "accepted": 6751923,
+      "uphill": 39555,
+      "restarts": 276,
+      "locks": 0,
+      "final_source_properties": [
+        4,
+        7,
+        44
+      ],
+      "conclusion": "No grammar meeting the below245 state budget found.",
+      "log": "search_logs/canonical-free-zero7.log"
+    },
+    {
+      "name": "canonical-zero5",
+      "engine": "anneal_canonical_gradient.cpp",
+      "seed": 530202,
+      "proposals": 8851853,
+      "best_grammar_rules": 129,
+      "seconds": 900.002,
+      "accepted": 3035680,
+      "uphill": 16411,
+      "restarts": 112,
+      "locks": 54,
+      "final_source_properties": [
+        3,
+        6,
+        47,
+        34
+      ],
+      "conclusion": "No grammar meeting the below245 state budget found.",
+      "log": "search_logs/canonical-zero5.log"
+    },
+    {
+      "name": "canonical-zero5-reparse",
+      "engine": "anneal_canonical_reparse.cpp",
+      "seed": 531202,
+      "proposals": 12982376,
+      "best_grammar_rules": 129,
+      "seconds": 1200.0,
+      "accepted": 5918161,
+      "uphill": 22356,
+      "restarts": 205,
+      "locks": 54,
+      "final_source_properties": [
+        3,
+        6,
+        48,
+        34
+      ],
+      "conclusion": "No grammar meeting the below245 state budget found.",
+      "log": "search_logs/canonical-zero5-reparse.log"
+    },
+    {
+      "name": "canonical-zero5-relax50",
+      "engine": "anneal_canonical_zero5_strong.cpp",
+      "seed": 635202,
+      "proposals": 12243555,
+      "best_grammar_rules": 134,
+      "seconds": 900.001,
+      "accepted": 5484070,
+      "uphill": 24783,
+      "restarts": 37,
+      "locks": 50,
+      "final_source_properties": [
+        3,
+        6,
+        60,
+        4
+      ],
+      "conclusion": "No grammar meeting the below245 state budget found.",
+      "log": "search_logs/canonical-zero5-relax50.log"
+    },
+    {
+      "name": "canonical-zero5-final",
+      "engine": "anneal_canonical_dynamic.cpp",
+      "seed": 636202,
+      "proposals": 6112052,
+      "best_grammar_rules": 136,
+      "seconds": 300.0,
+      "accepted": 2251681,
+      "uphill": 12811,
+      "restarts": 97,
+      "locks": 50,
+      "final_source_properties": [
+        3,
+        5,
+        61
+      ],
+      "conclusion": "No grammar meeting the below245 state budget found.",
+      "log": "search_logs/canonical-zero5-final.log"
+    }
+  ],
+  "milp": [
+    {
+      "name": "canonical-milp24",
+      "maxlen": 24,
+      "seconds": 0.5081772260000434,
+      "status": 0,
+      "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+      "objective": 128.0,
+      "words": 1756,
+      "variables": 14535,
+      "constraints": 25728,
+      "scope": "Fixed source and route words; repeated substrings <=24 plus baseline words. HiGHS reports optimum only in this explicit finite dictionary."
+    },
+    {
+      "name": "canonical-milp32-warm",
+      "maxlen": 32,
+      "seconds": 483.59307791599986,
+      "status": 13,
+      "message": "Time limit reached",
+      "objective": 128.0,
+      "words": 3723,
+      "variables": 41494,
+      "constraints": 76460,
+      "scope": "Fixed source and route words; repeated substrings <=32 plus all longest-root prefixes/suffixes. Time limit, no optimality claim."
+    }
+  ],
+  "axiom_symmetry": {
+    "source_trials": 1500,
+    "source_seconds": 70.2627,
+    "best_rules": 131,
+    "anneal_seed": 620202,
+    "anneal_proposals": 15245326,
+    "anneal_seconds": 700,
+    "best_row_role_choice": "Swap a,b only in the Lukasiewicz row; preserve original row order.",
+    "scope": "Changed-source grammar only, no independently compiled TM or new logical calibration."
+  },
+  "exact_obstruction": {
+    "checker": "verify_zero5_bootstrap_obstruction.py",
+    "forced_zero_run": 6,
+    "scope": "Only the stated five locked projections and mandatory source-root occurrence."
+  },
+  "interpretation": "Heuristic failures are not lower bounds. A below245 construction remains open.",
+  "milp_input": {
+    "path": "inputs/canonical-baseline.json",
+    "sha256": "04b05b32fe512664998bfe54dbcf68a414604abf232ff89f8941269b94dddc90",
+    "note": "Frozen initial checkpoint, distinct from the later neutral best checkpoint. Both original finite MILP models used this initial grammar."
+  }
+}

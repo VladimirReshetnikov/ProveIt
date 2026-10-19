@@ -1,0 +1,59 @@
+# Source50 independent intake review
+
+**Accepted with the stated scope.** I read the complete manuscript, included machine appendix, all 13 new Python files, TERM254 specification, both READMEs, attribution and relevant pinned/current formal interfaces. I found no concrete mathematical or source-level verification defect and no current repository theorem requiring retraction. The package proposes certificate representations for the existing full C254 calculus and reports bounded machine diagnostics. It supplies no new binary machine, certified251-state result, Lean/Coq theorem, or internally formalized PA/ZFC endpoint.
+
+The title is *Canonical term certificates for small consistency machines*. It arrived as `docs/incoming/zfc_sparse_certificates.zip` in `85633fd2f57b5dca16f87667699134d1b500ebc0`, against ProveIt `fab89c5d26b81cd2ccab2ee5d213ff23725c7726`, upstream `297ab8df7e5de329605c3875b4934643b371a5e3`. Its 67-file original was extracted safely to `/tmp/zfc-intake157/source50-original/zfc_sparse_certificates` and remained untouched. Every test/build below used `/tmp/zfc-source50-review-146o_hlm/package`. The proposed disposition is an addition to the existing `set-theory/zfc-closure-kernels` report, prospective local50.
+
+## Mathematical and source review
+
+The weighted Cantor inequality, raw-proof mass bound, doubly logarithmic height bound and all-input short-fuel argument are sound ordinary proofs. In particular, successful parsing implies exact re-quotation without logical validity, so the reverse direction covers malformed inputs and0. The report does not mistake the old fuel value `c+1` for a claim that parsing takes `c` runtime steps. Repeated child occurrences and all numeric fields count in the mass bound.
+
+Finite normal constructor trees are in bijection with Nat: only `B0(Z,Z)` collapses. Topological canonical nodes and duplicate-key rejection make ID equality exact numeric equality. Formula labels and other parameters remain arbitrary natural values. The O(L) record and O(L²) bit bounds are existence/producer bounds for certificates made from a proof code; the verifier may accept larger certificates with unused records. The conclusion bound uses the explicit enormous fixed exponent `2^28`; repeated GEN does not silently multiply that exponent.
+
+The quoted local checker validates every supplied literal equation and all 12 exact C254 rule cases, including both bundle gates, before later quotation records reuse child codes. It binds both legacy quotation fields to the requested code/goal. The unquoted checker is a separate derivability interface. The constructor-only checker checks the same full calculus, a unique normal arena, and a fixed default falsity target `B1(Z,Z)`; a supplied certificate cannot pick its own goal. It needs no arbitrary numeric literal decoding or Cantor arithmetic in the verifier. An actual binary serialization, exhaustive word enumerator, compiler, charged initializer and resulting state count remain proposed.
+
+The incoming-action synthesizer intercepts an unknown action before executing it and restarts each branch from its case source. It preserves all 55 supporting box rows, start and dispatch. Any affine survivor would receive a complete 8,391-case recheck and exact whole-tape blank bootstrap. Journal partition replay proves traversal/frontier bookkeeping, not the semantics of reported failure reasons. Fuel, unsupported symbolic operations and missing transitions are diagnostic stops, never mathematical counterexamples.
+
+The34-move continuation changes only cell6 and reads positions[-11,6], so its local statement preserves arbitrary exterior tape. The original RM residuals are exactly `F(t,n,k)=(t,n+k,0)` and `G(t,n,k)=(t+n,n+k,0)`. Their unbounded fibers rule out a fixed finite history label for this specific functional join encoding. The obstruction does not exclude spare/ghost storage, a stronger reachable-state domain or nonfunctional simulation. The source distinguishes these original residual formulas from later literal prefixes of the changed binary table and makes no blank-reachability claim for the prepared frames.
+
+A second complete read-only mathematical review by Fibers independently accepted all distinct contents of both manuscript forms, the included machine section and TERM254 specification, plus targeted verifier source. Its dossiers are `/tmp/zfc-intake157/source50-independent-review.md/json`; no current theorem requiring retraction was found. Its additional provenance finding is incorporated below: the degree-one family overlaps source48.
+
+## Functional verification
+
+The complete advertised default replay passed in 21.012s: **10 substantive PASS and one explicit provenance SKIP**. The skip is solely the degree-one canonical-plus-extra-LF line-ending/hash loop in `code/replay_all.py`; a narrow in-memory AST adapter removed its `norm` assignment and loop and marked that named check skipped. It retained all other functional assertions, fixed table/selected journal identities and regenerated-output comparisons. No delivered file was patched. The script's mechanical final string says all 11 checks passed; the saved structured result correctly reports10 PASS + 1 SKIP.
+
+The substantive jobs cover literal source extraction; sparse/canonical comparison; independent quotation/fuel, canonical and constructor-only checker audits; fixed template metrics; both saved compressed partition journals; literal continuation/residual replay; and the original 8,391-case affine plus exact 82,552-step whole-tape bootstrap control. Deterministic regenerated results agree with saved results. Counts include 200,000 raw-code scans/169,005 parses,50,000 main scans/41,767 comparisons,10,000 random raw trees,10,000 pair inequalities,20,000 literal roundtrips,33,332 logical-axiom numeric values,3,000 algebra checks, all 12 proof tags,14 explicit-goal positive controls,24 term corruptions and a 1,000-GEN chain. The default fixed falsity target rejects all 14 positive-control proofs as expected.
+
+The supplied complete degree-one journal replays 132,048 pruned recipes,0 remaining and 132,179 nodes; the supplied timed degree-two journal replays 10,845,350 pruned of 46,738,944, with 35,893,594 remaining in 1,093 frontier entries. These are exact finite bookkeeping checks.
+
+I additionally ran the optional degree-one search to completion on the copy. It took 122.460s and independently repeated **132,048 recipes/203,162 affine checks**. The entire 132,179-line,19,251,270-byte journal is byte-identical to the decompressed supplied journal. Stops are 69,429 fuel, 61,641 unsupported symbolic rule and 978 missing transition. There are no affine survivors, full rechecks or blank runs. **This is the same incoming-action family already accepted in source48, not a new additional search.** Source50 combines the older `unknown_right_run` and `unsupported_box` categories as 61,641 unsupported symbolic rules.
+
+The driver has a wall-clock cutoff but no deterministic node cutoff/resume. Following the requested 600-second control, a fresh degree-two run ended normally after 600.420s with 723,940 nodes/756,252 affine checks,3,035,293 recipes pruned,43,703,651 remaining in 858 frontier entries, and no survivor/full recheck/blank run. Its entire 115,298,980-byte/723,940-line journal exactly matches the beginning of the supplied degree-two journal. This is a fresh bounded partial reproduction, not a reproduction of the supplied longer partial frontier. An independent fresh partition replay passed for every branch, weight and remaining assignment. Stops are 507,605 fuel, 212,366 unsupported symbolic rule and 3,250 missing transition.
+
+The exact default adapter and commands are preserved externally:
+
+```sh
+python3 -B /tmp/zfc-source50-review-146o_hlm/replay_adapter.py
+python3 -B /tmp/zfc-source50-review-146o_hlm/run_search.py 1
+python3 -B /tmp/zfc-source50-review-146o_hlm/run_search.py 2
+python3 -B /tmp/zfc-source50-review-146o_hlm/package/machine_experiments/replay_entry_partition.py --result /tmp/zfc-source50-review-146o_hlm/fresh-degree2.json --table /tmp/zfc-source50-review-146o_hlm/package/reference/proveit/Computability/BusyBeaver/Research/ZFC/candidate-permutation252/zfc_permutation252_old.tm --output /tmp/zfc-source50-review-146o_hlm/fresh-degree2-partition.json
+```
+
+The two wrapper commands invoke the original source with `--seconds 1000000` for degree 1 and `--seconds 600` for degree 2; their JSON records retain actual separated argv tokens, complete logs and elapsed times. All scripts run with assertions enabled. No Lean or Coq build was attempted.
+
+## PDF review
+
+Both modular `report.tex` and flattened `zfc_sparse_certificates.tex` compiled through three quiet pdflatex passes on the copy. Each final PDF has 25 physical pages (title+TOC+23 numbered) and 448,625 bytes. Extracted text is exactly equal. All 25 font objects are embedded/subset/Unicode; final logs have zero warnings, overfull/underfull boxes, undefined references or missing glyphs. All 25 pages were inspected in contact sheets and physical pages 8, 10, 12, 14, 18, 19, 23 enlarged. The main inequalities, large quotation examples, certificate tables, search partition, continuation comparison and bundle appendix are readable and unclipped. No layout defect was found.
+
+Artifacts are `/tmp/zfc-source50-review-146o_hlm/pdf-main/report.pdf`, `pdf-flat/zfc_sparse_certificates.pdf`, `contact-01-13.png`, `contact-14-25.png` and the numbered `page-*.png` files. Exact commands and six pass results are in `pdf-builds.json`.
+
+## Current-tree scope and attribution
+
+The current machine is already closed in Lean as blank nonhalting iff ordinary ZF consistency, with the 82,552-step boot and full 8,391-site coverage. Choice transport and the requested internal PA formulation remain separate. The report claims neither a new endpoint nor a smaller machine. Its formal pin has the same full 12-rule RawProof quotation and C254 primitives. Current `Code254History.lean` already proves its dense numeric interface for all inputs: the sparse witness proposal is an optimization alternative, not a flaw in that proof. Its stronger quotation bounds/short-fuel proof are new ordinary arguments, not current kernel theorems. The separate current arithmetic-Cantor component has advanced through an explicitly checked arbitrary-IOpen pairing graph and bounded projections; that component alone does not provide the complete represented checker/internal PA endpoint. Later current `EnumStackCount254` and `DirtyReset254` proofs are distinct developments after the report pin, so historical missing-scheduler/dirty-start descriptions must be read at that pin.
+
+The report's wording that ZFC is the target and PA a stronger request corresponds to the later goal record. Reconciliation must retain that the original user request explicitly asked for a PA equivalence; no supplied result is internally formalized in either theory. Current exact source quotes/line references are embedded in the companion JSON.
+
+Attribution preserves Mira-Cult's machine/calculus, Jeff and busy-beaver contributors' verification, Andrew Wade's compiler/framework, mira-emmy's public253 PR20, and ProveIt's permutation/bootstrap/formal/experiment work. The minimal `reference/proveit` snapshot is explicitly not a complete Lean build environment. No required finite-suite or PDF file was missing. Delivered manuscripts, existing tables and borrowed sources remain unchanged; no upstream reduction is attributed to this report.
+
+The companion `/tmp/zfc-intake157/source50-review.json` embeds all substantive results, exact timings/counts, narrow adapter metadata, fresh optional comparisons/partition result, current-tree quotes, code snapshot hashes and PDF evidence. The complete generated data and logs remain under `/tmp/zfc-source50-review-146o_hlm`.
+

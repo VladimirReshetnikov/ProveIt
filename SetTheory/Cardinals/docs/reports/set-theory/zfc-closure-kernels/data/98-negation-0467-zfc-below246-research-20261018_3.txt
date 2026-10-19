@@ -1,0 +1,179 @@
+# Toward fewer than 246 states
+
+**Status: no new machine with fewer than 246 working states is certified by this contribution.**
+
+The main positive result is a new, fully checked representation of the existing
+register program: **202 distinct pair subtrees, maximum consecutive zero run six**,
+with the same 6,460 instructions and all 8,391 guarded successor cases preserved.
+The original source has 203 pairs and maximum zero run seven. The theorem holds
+for every natural-valued nine-register vector at an empty-PC root.
+
+A repaired binary realization now passes all universal register and instruction
+contracts, including the shorter return scanner, with **250 working states**.
+This validates the source/scanner mechanism, but its decoder repairs cost too
+many states to improve the 246-state baseline. A complete finite blank-prefix
+certificate reaches the same safe root as the reference after 407,983 steps.
+
+A second compiler experiment preserves the existing shared transition rows and
+their incoming bit contexts. It retains **246 states** and reduces the decrement
+paths obstructing scanner removal from 18 to 15. All 8,391 universal instruction
+contracts and all register inductions pass for this runtime. The protected source-only
+frontier reaches five such paths, but does not yet preserve every borrowed
+terminal-handler contract. These two frontiers are deliberately distinguished.
+
+The new 246-state table also retains the exact 410,735-step blank initializer.
+Thus both new tables have the same blank halting behavior as the reference,
+by composition of the source, runtime, and finite initialization certificates.
+The report gives the ordinary ZFC proof of that composition and states its
+proof-assistant boundary explicitly. Neither construction reduces the state bound.
+
+This is a compiler input for the next state-reduction attempt. It is not a
+202-state Turing machine. A simpler first source reassociation gives a tempting
+245-state table, but its advertised recurrent simulation fails. The exact
+counterexample is included. Its correct blank initialization does not repair
+that failure.
+
+## Read first
+
+- `report.pdf` and `report.tex`: complete research report with source proofs,
+  the decoder-alias obstruction, logical calibration, macro results, and scope.
+- `agent_logic/rotation_zero_candidate_24.json`: strongest new source graph.
+- `agent_logic/rotation_zero_source_certificate.json`: all old/new leaf paths
+  and guarded successor indices, plus the verified zero-run bound.
+- `agent_states/rotation_counterexample.json`: precise finite counterexample
+  to the first proposed 245-state compilation.
+- `agent_states/search_summary.json`: compact counts and bounds for the state
+  and edge searches. The negative searches do not establish minimality.
+- `agent_states/colored_search_handoff.json`: the final bounded compiler search,
+  its physical-state constraints, and the 246-state context-preserving candidate.
+- `agent_logic/protected_frontier.json`: the separately certified source frontier
+  with five remaining decrement suffixes, plus the precise remaining obligations.
+- `agent_states/blank_prefix_results.json`: exact safe blank initialization of
+  both new tables; `check_blank_prefix.py` replays it independently.
+
+The report's proof status is conventional mathematics with executable finite
+and symbolic checks. No new Lean/Rocq endpoint or serialized ZFC/PA proof was
+built for this contribution.
+
+## Reproduce the main checks
+
+From this directory, with Python 3.10 or later:
+
+```sh
+python3 -B verify_bundle.py
+```
+
+This checks source identities, reconstructs both source transformations,
+verifies the arbitrary-root phase invariant and erasure, proves the arithmetic
+macro contracts, replays the reference and five modified 8,391-case symbolic
+instruction suites, and reproduces the rejected table's blank prefix and
+counterexample. The expected result for the rejected table is **a reproduced
+counterexample**, never a passed consistency-machine theorem.
+It also reproduces the shorter scanner's 8,355 proved cases and exactly 36
+failed cases, while checking that its universal register contracts survive.
+The repaired 250-state compilation is checked against all 8,391 cases of the
+new zero-run-six graph as a separate positive runtime result.
+The final protected and context-preserving source graphs are independently
+checked as well. The colored 246-state runtime has all 8,391 universal cases
+replayed; its shortened 245-state version has exactly 30 expected failures.
+The colored-runtime executor adds the free-word identity `b^(a*n) b = b^(a*n+1)`
+to the pinned symbolic executor, without changing any machine or box rule.
+Finally, the exact blank prefixes of the new 246- and 250-state constructions
+are replayed, including equality of the complete tape and zero exterior.
+
+Logs and the compact replay summary are written to `_recheck/`. Some original
+checkers also regenerate their certificate files in their own directories.
+Assertions are required; do not use Python's `-O` option. No network access or
+external Python package is required. Search programs are optional and are
+not run by this entry point.
+
+To rebuild the PDF:
+
+```sh
+make pdf
+```
+
+This requires `latexmk`, a LaTeX installation with the standard packages named
+in `report.tex`, and a PDF engine. The delivered PDF has already been rendered
+and visually inspected. The `.v` trees are inputs for future Rocq integration;
+they were not compiled here.
+
+## Artifact map
+
+| Directory | Meaning |
+| --- | --- |
+| `sources/context246/zfc-context246/` | Attributed, frozen incoming reference package, including the established 246-state tables and its original report. |
+| `sections/` | LaTeX sections included by the new report. |
+| `generated/` | The two verified transformed trees exported as Rocq definitions, with a serialization roundtrip check; Rocq was not run. |
+| `agent_logic/` | New source graphs, independent source/phase checkers, certificates, and grammar-search scripts. |
+| `agent_states/` | Literal counterexample, affine phase analysis, finite search fixtures, search code and logs. |
+| `agent_macros/` | Five certified runtime transformations, universal macro checks, and related discovery searches. |
+| `research/` | The rejected first 245-state table and additional bounded search sources/results. |
+| `_recheck/` | Logs from the delivered end-to-end replay of this package's checks. |
+
+Directory names preserve the investigation layout so that the portable scripts'
+relative source paths work without editing. Compiled discovery executables and
+Python caches are omitted.
+
+## Machine status
+
+The frozen incoming reference contains the established 246-state construction.
+This contribution adds two complete blank-start constructions with the same
+halting behavior, together with several explicitly rejected candidates:
+
+- `research/rotation245_old.tm` is a **rejected compilation candidate**. It has
+  245 working states but fails the claimed instruction correspondence.
+- The five neutral `agent_macros/*.tm` variants have certified recurrent runtime
+  contracts, but no newly certified blank initializer. Their `#! start 95`
+  marker is a serialization convention, not a blank-halting-equivalence claim.
+- `agent_macros/scanner8_baseline245.tm` is a rejected isolated scanner change.
+  It preserves the register macros but fails 36 instruction cases.
+- `agent_macros/compiled24_scanner250.tm` has a certified universal runtime
+  interpretation of the new source, with 250 working states. Its exact blank
+  prefix takes 407,983 steps. It does not meet the requested state threshold.
+- `agent_states/colored_context_candidate_003.tm` is the final 246-state runtime
+  from the context-preserving grammar search. Its source equivalence has an
+  independent certificate, all 8,391 universal runtime cases pass, and its
+  blank prefix is identical to the reference through the safe root at step
+  410,735. It has the same state count as the reference.
+- `agent_states/colored_context003_scanner245.tm` is a rejected attempt to shorten
+  that runtime's scanner. It fails both guards at fifteen decrement instructions.
+- Other `agent_states/*.tm` and experimental tables are search inputs or failed
+  intermediate repairs. They carry no end-to-end consistency claim.
+
+All numerical transition edits in the new report use the old state labels.
+The original start is 95, dispatcher 96, and halt 254. The state count is the
+number of working labels, not the largest numerical label plus one.
+
+## Source provenance and attribution
+
+The inspected ProveIt revision is
+`8cdc55ff9281b0aaba49bf74b0b225d57f12b893`, with incoming file
+`docs/incoming/zfc-context246-20261018.zip`. The reference archive's own source
+provenance cites the earlier revision
+`e0b512a63e2c1ca6a1698fa437b8568f1643ff6b`.
+
+The separately inspected Jeff repository revision is
+`c132d7eae8158cd3a9850ea3eb7251158c3dd821` on `zf-254`, under `ZF/m254`.
+The register program is attributed to Mira-Cult, its upstream verification to
+Jeff Ketchersid, and its compiler framework to Andrew James Wade. The current
+ProveIt work is Vladimir Reshetnikov's repository. Original attribution and
+source headers are retained; no new ownership claim is made over these inputs.
+
+The source `Prog254.v` SHA-256 is
+`1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746`.
+The reference old-label 246-state table SHA-256 is
+`303911c554284c49ce09042d8127feba4da260baae766e32260034aa3bdb82ee`.
+The new zero-run-six graph SHA-256 is
+`90d15a0fb69606e080a5fa5d2ce5179f2642958546a4f1203b259b2804eb76af`.
+
+`SHA256SUMS` covers the delivered file bytes. It does not claim that a rerun's
+timing fields or newly created logs will be byte-identical.
+
+## Suggested repository placement
+
+This contribution belongs in the research/incoming area. It should not replace
+the established 246-state artifact or be advertised as a 245-state result.
+The main integration targets are the 202-pair, zero-run-six source graph,
+its independent source equivalence certificate, the arbitrary-root phase
+erasure, and the explicit contextual decoder obligation in the report.

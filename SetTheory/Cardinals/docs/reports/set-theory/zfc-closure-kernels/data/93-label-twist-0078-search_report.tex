@@ -1,0 +1,222 @@
+\section{Grammar discovery and its finite limits}
+\label{sec:grammar-search}
+
+The semantic freedoms above were integrated into actual grammar search
+programs.  None of the recorded campaigns produced a grammar with 127
+roles, nor a 128-role grammar with maximum zero run five.  The positive
+results of this part are a portable search representation, separately
+checked finite candidate grammars, and an exact obstruction showing why
+one apparently natural search family could never satisfy its objective.
+
+\subsection{The representation and objective}
+
+A grammar role has two outgoing decoder choices, represented by a rule
+$w\to(u,v)$.  In the ordinary domain, $w=uv$ is literal concatenation of
+inherited semantic symbols.  In the fine domain, every symbol is expanded
+over the 30 closed atoms.  The 44 inherited implementations remain
+available as zero-additional-cost terminals, including their 14 composite
+expansions.  This exposes reassociations across the old symbolic
+boundaries without charging again for already present implementation
+roles.  Terminal implementations retain their actual allowed left/right
+entry orientations.  The tokens in this representation are compiler
+identifiers; the target tape alphabet remains binary.
+
+In a trace domain, the concatenation condition becomes
+$\operatorname{nf}(w)=\operatorname{nf}(uv)$, where $\operatorname{nf}$ is
+the lexicographically least linearization of the dependence graph for
+the specified independence relation.  The search can therefore share a
+role between different certified orderings of the same closed
+computation.  Its moves include binary reassociation, alternative cuts
+using already available words, changes to folded-entry routes, and
+construction of small router words.  The affine version also tries
+commuting child swaps and adjacent commuting changes near a proposed cut.
+No rule may refer cyclically to itself through another rule.
+
+The objective counts all live grammar roles, including roles needed only
+by the folded-entry routes.  Eleven routes satisfy 22 specified decoder
+projection equations.  A candidate also retains required source entry
+roots and, when requested, the 54 inherited bootstrap projection
+equations.  These equations are sufficient inherited interfaces, rather
+than a characterization of every possible valid initialization.
+
+The scanner constraint is evaluated on the complete expanded source
+tree, including fixed atom implementations and unchanged source
+subtrees.  For a leaf put $(L,Z,D)=(0,0,0)$, where $L$ is the leading-zero
+depth, $Z$ the maximum zero run, and $D$ the maximum leaf depth.  Binary
+composition obeys
+\[
+ L(A,B)=1+L(A),\qquad
+ Z(A,B)=\max\{1+L(A),Z(A),Z(B)\},\qquad
+ D(A,B)=1+\max\{D(A),D(B)\}.
+\]
+The ordinary and trace searches retain $Z\leq6$ and $D\leq64$.  The
+five-zero searches additionally minimize the number $B_6$ of tree-node
+occurrences from which six consecutive left edges exist:
+\[
+ B_6(A,B)=B_6(A)+B_6(B)+\mathbf 1_{L(A)\geq5}.
+\]
+This counts occurrences in the expanded tree, including repetitions of a
+shared grammar role.  It is not a count of reachable execution sites.
+
+\subsection{Recorded annealing campaigns}
+
+Table~\ref{tab:grammar-campaigns} reports the saved output of each
+campaign.  Every listed output was checked again by the independent
+Python grammar auditor.  It verifies concatenation in the stated domain,
+the fixed terminal orientations, mandatory source roots, all 22 route
+projections, the supplied bootstrap equations, and the expanded-tree
+statistics.  The affine audit uses the separately justified 178-pair
+relation.  It is a finite grammar audit, not a new blank-start or
+whole-runtime proof.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}Xrrrrr@{}}
+\toprule
+Campaign & Locks & Proposals & Roles & $Z$ & $B_6$ \\
+\midrule
+Ordered words & 54 & 7,099,557 & 128 & 6 & 49 \\
+Ordered, unlocked & 0 & 3,938,413 & 128 & 6 & 49 \\
+Fine words, warm & 54 & 3,937,175 & 128 & 6 & 48 \\
+Fine words, cold & 54 & 2,497,065 & 128 & 6 & 49 \\
+Disjoint-support traces & 54 & 863,648 & 128 & 6 & 50 \\
+Faster trace search & 54 & 2,042,251 & 128 & 6 & 48 \\
+Affine-extended traces & 54 & 5,073,185 & 128 & 6 & 50 \\
+Five-zero, mild penalty & 50 & 6,670,998 & 128 & 6 & 44 \\
+Five-zero, strong penalty & 50 & 4,070,474 & 134 & 6 & 6 \\
+Five-zero, fully unlocked & 0 & 5,486,426 & 134 & 6 & 4 \\
+\bottomrule
+\end{tabularx}
+\caption{Bounded discovery runs: 41,679,192 proposal iterations in total.
+The last two outputs minimize a weighted score, so their reported role
+counts can exceed the 128-role initial control.}
+\label{tab:grammar-campaigns}
+\end{table}
+
+The mild five-zero score is $K+0.05B_6$, where $K$ counts live roles; the
+strong score is $K+0.30B_6$.  Their uphill-proposal caps are respectively
+133 and 137 roles.  The strong campaigns demonstrate that most six-zero
+chains can be removed at a grammar cost, but both retain $Z=6$.  They do
+not meet either numerical target.  The 50-lock runs use the association
+rotation described below.  The fully unlocked run removes all bootstrap
+equations and starts from the same rotated seed.  No modified blank
+execution was certified for any released-lock output.
+
+The proposals include rejected moves and repeated grammars.  The total is
+not a count of distinct candidates and is not an exhaustive enumeration.
+Each run is wall-time bounded, with seeds and settings in
+\file{grammar/search_profiles.json}; runtime-dependent stopping and
+implementation details can change a rerun's exact trajectory.  The saved
+JSON and logs specify the actual investigated artifacts.  Their inherited
+\texttt{framework\_states:118} metadata predates the existing scanner
+contraction and must not be added uncritically to a grammar count to claim
+a literal new machine.  These files describe abstract grammars only.
+
+\subsection{Finite candidate optimization and reuse-biased parsing}
+
+Three binary-production MILP models test increasingly large finite
+dictionaries.  A word-activation variable chooses whether a word has a
+role; a production variable chooses one legal split into available
+children.  Every active word has exactly one active production, and all
+nonterminal children of an active production must be active.  Required
+roots are active.  Since children are shorter words, selected productions
+are acyclic.  The objective is the number of active words, with the stated
+upper bound.  Candidate pools contain the old words, inherited terminal
+expansions, and substrings occurring at least twice among the selected
+roots, through the stated length cap.  Unsupported words are pruned.
+
+The fixed-route models retain 39 roots and 43 complete old productions,
+the latter being enough to preserve the old bootstrap and route paths.
+Thus they freeze more than the abstract route projection equations alone.
+The dynamic-route model has 32 roots, 27 frozen productions, and 315
+supported route options.  Its options are generated from the finite
+production pool and explicitly enforce the required one- or two-bit
+projections.  These models do not impose the scanner zero-run or depth
+bounds.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}lrrrX@{}}
+\toprule
+Model & Length cap & Words & Productions & Solver report \\
+\midrule
+Fixed routes & 16 & 1,004 & 5,059 & Infeasible at $K\leq127$ \\
+Fixed control & 16 & 1,004 & 5,059 & Optimum $K=128$ at $K\leq128$ \\
+Fixed routes & 64 & 2,720 & 31,572 & Infeasible at $K\leq127$ \\
+Dynamic routes & 32 & 2,014 & 17,716 & Infeasible at $K\leq127$ \\
+\bottomrule
+\end{tabularx}
+\caption{HiGHS reports about the specified finite MILP models.  No
+independently checked infeasibility or optimality proof log is supplied.}
+\label{tab:grammar-milp}
+\end{table}
+
+The 128-role control solution was independently checked as a valid finite
+grammar.  This is a feasibility check of its explicit witness; it does not
+independently establish the reported optimum.  The three infeasibility
+reports concern only their generated finite pools and their stronger
+frozen interfaces.  They are not lower bounds for the unrestricted
+grammar problem or for Turing machines.
+
+A further phrase-flow model lets an activated phrase be decomposed into
+a path of shorter available phrases, with cost equal to the number of
+pieces minus one.  It explores freedom in intermediate binary
+associations beyond a fixed pool of single binary rules.  This is an
+exploratory finite model; its endpoint orientation tests do not by
+themselves certify an arbitrary completed binary realization.  At length
+cap 16, it has 2,785 word variables, 473,057 flow edges, and 475,191
+constraints.  HiGHS reached the 180-second time limit without an
+incumbent, taking about 182.3 seconds in the measured call.  Its result is
+\textbf{UNKNOWN}.  It provides no infeasibility evidence.
+
+A separate dynamic-programming parser assigns low cost to phrases whose
+dependencies are already paid for outside AX.  The unchanged non-AX
+closure contains 51 helper rules, leaving 77 AX-exclusive rules in the
+baseline.  The parser minimizes a weighted occurrence cost, then builds
+an orientation-compatible binary association and counts its actual shared
+closure.  Nine reuse weights were tried.  The control and 172 single
+adjacent disjoint swaps gave 1,557 weighted parses; adding the 224
+rank-generated words gave 3,573.  Both campaigns retained a best count of
+128.  These are heuristic parses: minimizing a weighted occurrence cost
+is not equivalent to minimizing a shared grammar globally.
+
+Finally, a direct finite equality screen compared the 128 old grammar
+words and 44 inherited atoms.  All 172 remain distinct under exact fine
+words, disjoint-support traces, affine-extended traces, and a signature
+that multiplies each maximal consecutive affine run while keeping
+non-affine letters opaque.  This rules out an immediate merge by these
+four equality tests on these existing objects.  Distinct signatures do
+not prove distinct program semantics.  New factorizations or a stronger
+semantic equality procedure remain possible.
+
+\input{grammar/zero5_lock_obstruction.tex}
+
+\subsection{Reproducing the recorded claims}
+
+The finite replay uses only Python's standard library.  From the archive
+root run
+\begin{verbatim}
+python3 grammar/reproduce.py verify
+\end{verbatim}
+It checks the local manifest, regenerates the word vocabularies and
+search inputs from the pristine reference, rechecks all ten annealing
+outputs and the MILP control, replays the four equality screens and the
+five-edge obstruction, and recomputes the search summary from the saved
+logs and outputs.  Its affine equality checks use the separate source
+certificates described earlier.  It does not treat a solver's textual
+status as a proof object.
+
+Discovery runs are optional and distinct from this replay.  For example,
+\begin{verbatim}
+python3 grammar/reproduce.py search affine_trace
+python3 grammar/reproduce.py search zero5_fully_unlocked
+python3 grammar/reproduce.py milp fixed64
+python3 grammar/reproduce.py parse ranked
+\end{verbatim}
+The C++ searches require a C++17 compiler; MILP discovery additionally
+requires NumPy and SciPy.  Outputs go to an archive-relative
+\file{grammar/reproduced/} directory by default, preserving the recorded
+evidence.  The ten saved annealing budgets total about 42 minutes, before
+compilation; a shorter optional run can use \texttt{--seconds}.  Full
+parameter overrides and the inventory of code, source inputs, logs and
+certificates are documented in \file{grammar/README.md}.

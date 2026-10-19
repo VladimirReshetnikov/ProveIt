@@ -1,0 +1,58 @@
+{
+  "status": "PASS",
+  "commands": [
+    [
+      "python3",
+      "/workspace/scratch/a19445e9aa35/work/machine_reduction/whole_frame_dynamic.py",
+      "--runtime",
+      "/workspace/scratch/a19445e9aa35/work/machine_reduction/mask32-positive-control/runtime",
+      "--table",
+      "/workspace/scratch/a19445e9aa35/work/machine_reduction/mask32-positive-control/machine/machine_old.tm",
+      "--sites",
+      "/workspace/scratch/a19445e9aa35/work/machine_reduction/mask32-positive-control/machine/sites_physical.json",
+      "--padding",
+      "64",
+      "--source-reference",
+      "/workspace/scratch/a19445e9aa35/work/machine_reduction/mask32-positive-control/machine/modified_source.json",
+      "--output",
+      "/workspace/scratch/a19445e9aa35/work/machine_reduction/mask32-positive-control/whole-frame.json"
+    ],
+    [
+      "python3",
+      "/workspace/scratch/a19445e9aa35/work/machine_reduction/audit_frame_dynamic.py",
+      "--old-table",
+      "/workspace/scratch/a19445e9aa35/work/machine_reduction/mask32-positive-control/machine/machine_old.tm",
+      "--table",
+      "/workspace/scratch/a19445e9aa35/work/machine_reduction/mask32-positive-control/machine/machine.tm",
+      "--renumbering",
+      "/workspace/scratch/a19445e9aa35/work/machine_reduction/mask32-positive-control/machine/renumbering.json",
+      "--logical-sites",
+      "/workspace/scratch/a19445e9aa35/work/machine_reduction/mask32-positive-control/machine/sites_logical.json",
+      "--physical-sites",
+      "/workspace/scratch/a19445e9aa35/work/machine_reduction/mask32-positive-control/machine/sites_physical.json",
+      "--bootstrap",
+      "/workspace/scratch/a19445e9aa35/work/machine_reduction/mask32-positive-control/machine/blank_boot.json",
+      "--padding",
+      "64",
+      "--whole-frame-report",
+      "/workspace/scratch/a19445e9aa35/work/machine_reduction/mask32-positive-control/whole-frame.json",
+      "--require-seed",
+      "3,0,0,0,3,0,0,0,0",
+      "--output",
+      "/workspace/scratch/a19445e9aa35/work/machine_reduction/mask32-positive-control/independent-frame-audit.json"
+    ]
+  ],
+  "results": [
+    {
+      "command_index": 0,
+      "returncode": 0,
+      "seconds": 393.8508820719999
+    },
+    {
+      "command_index": 1,
+      "returncode": 0,
+      "seconds": 0.21222145799993086
+    }
+  ],
+  "table_sha256": "2d11111223320f268b0b808748d55317c2d312b3f8732611d990b4c248ad9ac1"
+}

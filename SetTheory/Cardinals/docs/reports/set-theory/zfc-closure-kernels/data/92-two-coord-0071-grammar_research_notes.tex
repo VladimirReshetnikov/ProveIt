@@ -1,0 +1,177 @@
+\section{A separate search for the missing grammar state}
+\label{sec:grammar-search}
+The routed machine has 128 binary sequence-decoder states and 117 other
+working states.  A grammar with at most 127 decoder states, the same caller
+contracts, and maximum source-path zero run at most six would therefore
+provide a direct route to 244 working states.  This statement is a state
+accounting implication, not a correctness certificate for an unbuilt
+candidate.  The literal table, register-machine correspondence, parametric
+instruction contracts, whole-frame composition and blank initialization
+would still have to be checked.
+
+We searched the same closed-atom semantic words using four additional
+classes of proposals.  A coordinated deletion rewrites every immediate
+caller of a selected grammar state before collecting unreachable rules.
+A coordinated context proposal rewrites the top one or two splits of an
+existing state word to satisfy the projection equations of a chosen
+microcode caller.  A semantic spelling proposal replaces a substring of
+the large axiom-constructor word by an existing atomic macro with the same
+finest closed-atom expansion.  Finally, a semantic deletion removes a
+state private to the axiom constructor and its dependent ancestors, and
+reparses the resulting frontier using unaffected states and equivalent
+atomic macros.  These proposals preserve the intended source semantics
+by construction, but the independent grammar checker remains the authority
+for accepting an output object.
+
+For frontier reparsing, dynamic programming minimizes the sum of newly
+introduced binary concatenations while assigning cost zero to an already
+available state or atom.  The sum can count a newly shared rule more than
+once.  Consequently this is a useful proposal heuristic, not an exact
+minimum-grammar algorithm.  The final live-rule count is recomputed after
+each proposal.
+
+\subsection{The routing-only state and an alternative encoding basin}
+In the frozen 128-rule candidate, the closure of the 14 source entry roots
+contains 127 rules.  The closure of those roots and all caller routes
+contains one additional rule.  Write
+\[
+ A=\mathtt{eijkKC},\quad B=\mathtt{qkjG},\quad
+ C=\mathtt{VqkjGqkjGVqkjG},\quad D=\mathtt{VqkjGS}.
+\]
+The additional rule spells $ABCD$ and has children $AB$ and $CD$.
+The two callers which replace old framework state 177 share that rule.
+One caller requires projections $01\mapsto B$ and $11\mapsto D$; the other
+requires $00\mapsto A$ and $10\mapsto C$.
+
+\paragraph{A forced-word observation.}
+If the two callers use the same binary concatenation state $u$, those four
+projection equations force $u=((A,B),(C,D))$ and hence force its word to be
+$ABCD$.  Indeed, the first two projections of its left child force that
+child's ordered children to be $A,B$, and the two projections of its right
+child force its ordered children to be $C,D$.  This conclusion uses the
+literal semantic-word grammar, not a lower bound for general Turing
+machines.  Giving the callers distinct existing states can avoid the
+extra word.
+
+A finite examination of the frozen state's words found that the caller
+requiring $00\mapsto A$, $10\mapsto C$ could use only two state words even
+at the string-pattern level: $ABCD$ itself and the complete 702-symbol
+axiom-constructor word.  This motivated an alternative encoding in which
+the axiom-constructor root is also that caller's routing state.  Its long
+prefix and suffix were reconstructed by frontier reparsing; a finite
+rotation beam then repaired a 131-rule candidate from maximum zero run
+seven to six.  The repair reached zero offending nodes after 6,694
+neighbor evaluations.  The independent local grammar audit accepted the
+131-rule object, corresponding to 248 working states under the ordinary
+six-zero scanner.  Subsequent optimization reduced its grammar to 129
+rules in the initial experiment.  These objects are alternate search
+starting points and do not improve the published 245-state candidate.
+
+\subsection{Why a suffix-only zero condition can be misleading}
+For a finite full binary tree with edge labels zero on the left and one
+on the right, the maximum length of a zero run anywhere in a root-to-leaf
+word equals the maximum length of a terminal zero run among all such
+words.  To prove the nontrivial inequality, take any zero run ending at a
+node and continue from that node along left edges until reaching a leaf.
+The resulting terminal zero run is at least as long.  The reverse
+inequality is immediate.
+
+It follows that imposing a five-zero terminal bound on every source leaf
+is exactly the same restriction as imposing a five-zero global bound.
+A bound only on selected instruction types can be weaker; its benefit
+must be demonstrated using those types.  In the frozen candidate, every
+source leaf with a six-zero suffix is an increment or decrement: there
+are 49 decrement sites and one increment site.  The 99 failing guarded
+instruction cases of the second scanner contraction consist of the two
+branches of those 49 decrements and the single increment case.  Thus the
+observed failure pattern does not by itself provide a weaker grammar
+constraint than the five-zero objective for this source tree.
+
+\subsection{A conditional obstruction from caller 183 and a constructive escape}
+The five-zero objective has a structural obstruction in a commonly visited
+routing basin.  Let
+\[
+ C=\mathtt{VqkjGqkjGVqkjG},\qquad B=\mathtt{qkjG},\qquad
+ E=\mathtt{VqkjG}.
+\]
+Old framework caller 183 on reading one requires \emph{both} projections
+$01\mapsto B$ and $11\mapsto E$.  In the original routed grammar its target
+is $C$.  Retaining this choice is not compatible with the five-zero
+objective, irrespective of how many grammar states are allowed, provided
+the original axiom-constructor spelling is retained.
+
+Here is the precise conditional statement and its proof.  For an expanded
+binary expression $T$, let $\lambda(T)$ be the number of initial left
+edges before its first instruction leaf.  The immutable atomic definitions
+contain
+\[
+ e=(\operatorname{dec}(1),\ldots),\qquad
+ V=(\mathtt{eijk},l),\qquad P=(C,\mathtt{eijkKCeijkfgW}).
+\]
+The first identity gives $\lambda(e)=1$.  Every concatenation parse of the
+four-symbol word $\mathtt{eijk}$ starts with $e$, so it has leading length
+at least two.  Hence $\lambda(V)\geq3$.  The equation $C.01=B$ forces the
+left child of $C$ to have the form $(x,B)$, where $x$ is a nonempty prefix
+of $C$ and therefore starts with $V$.  It follows that
+\[
+ \lambda(C)=2+\lambda(x)\ \geq\ 2+\lambda(V)\ \geq\ 5,
+ \qquad \lambda(P)=1+\lambda(C)\ \geq\ 6.
+\]
+The original 702-symbol axiom-constructor word contains $P$.  Its expanded
+source consequently has a zero run of length at least six.  This proves
+the conditional obstruction for the orientation-preserving, one-parse-per-
+semantic-word grammar model.  The finite immutable source identities,
+the two caller equations and the occurrence of $P$ are checked by
+\texttt{check\_routing183\_obstruction.py}; the accompanying JSON records
+the exact source hash.  This is a human mathematical proof with checked
+finite premises, not a proof-assistant theorem or a lower bound on
+arbitrary Turing machines.
+
+The existing shared routing-only state $u=((A,B),(C,D))$ cannot simply
+replace caller 183's target.  Although $u.01=B$, it has
+$u.11=D=\mathtt{VqkjGS}$, whereas this caller requires
+$E=\mathtt{VqkjG}$.  This second equation blocks the apparently free reuse.
+The obstruction can instead be escaped by giving caller 183 a fresh
+routing word whose left and right children end at $B$ and $E$, and then
+reparsing the source word $C$ with first child $V$.
+
+A finite construction from a 135-rule, two-offender grammar found six
+such repair plans with 137 grammar rules and maximum zero run exactly
+five.  The recorded representative routes caller 183 to
+$\mathtt{jGqkjGqkjGVqkjG}$ and splits the source word $C$ as
+$(V,\mathtt{qkjGqkjGVqkjG})$.  Its independent local audit passes all source,
+orientation and caller constraints.  The 137-rule object has ordinary
+state accounting $137+117=254$; with the proposed second scanner
+contraction its accounting would be $137+116=253$.  No corresponding full
+machine was built or claimed.  The significance is that the five-zero
+constraint is feasible once this caller coupling is removed.
+
+A final 300-second hard-five-zero search started from this construction,
+used the original 14 source roots with no bootstrap locks, and targeted
+128 rules.  It completed 6,473,735 proposals with seed 181061 and reduced
+the grammar to 135 rules, with maximum zero run five and depth 52.
+The independent audit accepted all 6,460 ordered source instruction
+leaves with no six-zero suffix.  Its ordinary state accounting is 252;
+the proposed additional scanner contraction would give 251.  No full
+table for this grammar was built.  Across the ten completed randomized
+runs in this lane, 54,653,830 proposals were recorded.  The exact results,
+seeds, proposal counts, source hashes and checkpoint hashes are in
+\texttt{search-summary.json}.  These time-bounded searches do not
+establish a minimum grammar size.
+
+The conditional proof also isolates two other legitimate directions:
+change the semantic spelling to unfold the problematic $P$, or allow
+multiple decoder states with the same semantic word but different parse
+trees.  The latter would separate a source role from a routing role but
+must count both states explicitly.  Neither possibility is excluded by
+the conditional obstruction or by the unsuccessful compression runs.
+
+\subsection{Recorded scope}
+The search logs distinguish completed time-bounded runs from runs stopped
+to reallocate computation.  Proposal counts are not counts of distinct
+grammars and are not exhaustive certificates.  Saved objects marked
+\texttt{ABSTRACT\_ROUTING\_GRAMMAR\_ONLY} are not complete machine proofs.
+The local audits attached to selected outputs validate the finite routing,
+orientation, state-accounting and AST conditions only.  None of the
+negative searches proves a state lower bound or rules out a different
+source formalism.

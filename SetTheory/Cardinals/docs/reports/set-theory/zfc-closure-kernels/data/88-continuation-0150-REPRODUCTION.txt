@@ -1,0 +1,152 @@
+State experiments: portable reproduction and scope
+=================================================
+
+No machine with fewer than 246 working states is certified by this directory.
+All table-mutation screens use a 512-cell window, 4,000 literal transitions,
+and at most 15 unsuccessful visits to dispatch. A rejection is rejection by
+that declared finite screen, not an impossibility theorem. The exact scoped
+selector symmetry is an ordinary mathematical proof with finite premises;
+the permutation census is an exact structural enumeration.
+
+Run from the root of the extracted archive, with assertions enabled:
+
+    python3 code/state/replay.py
+
+Dependencies: Python 3 standard library and a C++17 compiler called c++.
+This was tested with Python 3.12. An alternate compiler can be selected:
+
+    python3 code/state/replay.py --cxx g++
+
+The runner builds executable files in a temporary directory, removes them
+when finished, and writes all generated outputs in a fresh directory under
+verification/. To select an output directory explicitly:
+
+    python3 code/state/replay.py --output verification/state-full
+
+The runner prints the chosen directory and writes replay_timing.json there.
+Packaged inputs, generated certificates and fixtures remain unchanged.
+The immutable baseline is
+reused from vendor/context246; the original guarded quotient and numerical
+fixtures are reused from experiments/audit_inputs. No network is required.
+Fresh outputs can have different elapsed-time fields and path spellings in
+generated JSON files, while the mathematical inputs and integer experiment
+counts remain the relevant invariants. Archive hashes describe the packaged
+run. All state producers honor ZFC_STATE_OUTPUT; if it is unset they create
+their own fresh verification directory. Output paths inside packaged code,
+inputs, certificates, machine tables or proof directories are rejected.
+Bytecode writing is disabled during these state checks.
+The recorded campaign times total approximately 49 seconds on this runner: about
+34 seconds for the exhaustive permutation census, 1-3 seconds for each
+Python preparation/check, and under 2 seconds for each C++ mutation screen.
+Compiler time is additional. These timings are environment dependent.
+
+Scope and operation counts
+--------------------------
+
+1. check_selector_commutation.py checks the fixed-palette compiler symmetry
+   premises on the original 203-node and rotated 202-node sources. In each
+   case 14 changed supporting rows cover all nine selector targets; borrowed
+   rows and terminal recipes remain unchanged. It does not transport blank
+   initialization or runtime correctness across register permutations.
+
+2. coverage.py reruns the inherited block/macro inductions and all 8,391
+   affine guarded cases while monitoring transition reads. All 492 table
+   rows occur in these broad contracts. This does not prove that every row
+   is used on the single initialized run.
+
+3. permutation_rebracket.py checks 109 declared conjugated physical layouts
+   on each of three incomplete compiler tables. Every layout fails the same
+   sufficient affine proof case within each family. Failure of that proof
+   screen is not a semantic counterexample to the entire machine.
+
+4. permutation_bisim.cpp exhausts all 362,880 selector permutations of the
+   rotated 246-state table. Every graph retains 246 reachable working states
+   and 246 exact output-state bisimulation classes. The empty stdout file
+   means no improving permutation was reported; the census summary is in
+   rotated_permutation_census_summary.txt.
+
+5. quotient_incoming_search.cpp tries every one-edge target change that
+   actually prunes working states reachable from blank start 95, and then
+   all four write/move choices. On the established table: 129,940 recipes,
+   149,653 fixture runs, 231,797,908 literal moves, zero survivors.
+
+6. quotient_incoming_gap64.cpp repeats that family on s3_best_010. It uses
+   130,924 recipes, 151,528 runs, 268,292,723 moves, zero survivors.
+
+7. quotient_scanner_compensation.cpp fixes 58/0 = 0L84, removing state 74,
+   and permits any one additional retained transition to change. The
+   nominal family has 481,176 recipes for each table. Exact intersection
+   of all already failed bounded traces prunes recipes that cannot affect
+   at least one failure:
+
+   table          short failures   executed recipes   fixture runs   moves
+   s3_best_010           25              66,912            85,725     139,244,684
+   s7_best_018           21              68,880            87,386     146,685,756
+   s9_best_007           16              66,912            91,431     139,900,936
+
+   All three campaigns have zero survivors. The s3 and s7 failures include
+   one increment case each. The s9 failures are exactly both guards at
+   eight decrement leaves. Exact paths are in scanner_failed_cases.json.
+
+8. global_transfer_regions.py recognizes 1,433 simple total transfer-loop
+   occurrences in the complete source CFG, with 20 distinct affine effects.
+   Together with increments these form 4,034 total arithmetic regions.
+   Chains of up to 16 regions contain no algebraically redundant region
+   after its prefix. Thirty maps have distinct factorizations. Loop bodies
+   and integer matrices are recorded in global_transfer_regions.json.
+   No binary-table compiler or machine-state saving is inferred from them.
+
+9. blank_start_survey.cpp starts the unchanged s10_best_004 table in each
+   of its 246 working states. It checks complete empty-PC frames at distance
+   at least 64 with logical T=H=W=0, other primaries unrestricted, and at
+   least one spare. With 2,000,000 transitions per start and head interval
+   [-131070,131070], there are zero successes: 241 window exits and 5 fuel
+   exhaustions, totaling 41,589,045 literal transitions. The s10 table is
+   an initialization experiment; it is not a safe blank candidate here.
+
+Individual commands
+-------------------
+
+Each command below writes fresh output by default. To collect several
+commands in one chosen verification directory, set ZFC_STATE_OUTPUT to that
+directory in the calling environment. The archive's input references remain
+fixed; changing the output directory does not redirect input lookup.
+
+    python3 code/state/check_selector_commutation.py
+    python3 code/state/coverage.py
+    python3 code/state/permutation_rebracket.py
+    python3 code/state/global_transfer_regions.py
+
+    python3 code/state/prepare_colored_quotient.py experiments/state/inputs/s3_best_010
+    python3 code/state/prepare_colored_quotient.py experiments/state/inputs/s7_best_018 --derive-quotient
+    python3 code/state/prepare_colored_quotient.py experiments/state/inputs/s9_best_007 --derive-quotient
+
+The latter two sources change the original leaf graph. Their quotients are
+recomputed from parsed candidate semantics; no unchanged-ordinal transport
+is assumed. The implementation first reconstructs the original partition
+and control ranks as an independent control. Each candidate has 4,530
+continuation classes and maximum control rank four.
+
+For direct C++ invocation, compile the desired code/state/*.cpp with
+c++ -O3 -std=c++17. Mutation binaries take four arguments:
+
+    old-label-table.tm decoder.txt quotient_cases.txt mode
+
+mode is incoming for either incoming binary and scanner for the scanner
+binary. The original table uses experiments/state/baseline/decoder.txt and
+experiments/audit_inputs/quotient_cases.txt. Candidate fixtures are under
+experiments/state/<candidate>/. The permutation census takes only a table.
+The blank-start survey takes a table followed by its per-start transition
+limit. Its supplied table is never changed by the program.
+
+The proof fragments explaining these counts and their limits are
+proof/state_search_appendix.tex and proof/selector_commutation.tex.
+
+Attribution
+-----------
+
+See NOTICE.txt in this directory and the original notices/licenses retained
+under vendor/context246. source_decoder.py and permutation_bisim.cpp are
+unchanged copies of prior research code used as declared dependencies. The
+portable wrappers, new quotient-aware mutation searches, derived quotient
+construction, and compiler-symmetry premise checker are new to this package.

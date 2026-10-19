@@ -1,0 +1,207 @@
+{
+  "status": "PASS",
+  "full_runtime_replayed": false,
+  "church_search_replayed": true,
+  "checks": [
+    {
+      "name": "payload-manifest",
+      "status": "PASS",
+      "files": 681
+    },
+    {
+      "name": "theory-to-pinned-source-AST",
+      "status": "PASS"
+    },
+    {
+      "name": "theory-identities",
+      "status": "PASS",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/tmp/zfc-direct-final-quickcheck-v3/theory-replay/verify_packet.py",
+        "--church-search"
+      ],
+      "log": "theory-identities.log"
+    },
+    {
+      "name": "frozen-control-grammar",
+      "status": "PASS",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/work/grammar/audit_lm_grammar.py",
+        "--candidate",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/work/grammar/lm-control/grammar.json",
+        "--backend",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/work/grammar/lm-backend/backend.json",
+        "--fine",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/dependencies/fine_grammar",
+        "--output",
+        "/tmp/zfc-direct-final-quickcheck-v3/frozen-control-grammar.json"
+      ],
+      "log": "frozen-control-grammar.log"
+    },
+    {
+      "name": "lm-warm-grammar-0",
+      "status": "PASS",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/work/grammar/audit_lm_grammar.py",
+        "--candidate",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/work/grammar/lm-warm/search0.json",
+        "--backend",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/work/grammar/lm-backend/backend.json",
+        "--fine",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/dependencies/fine_grammar",
+        "--output",
+        "/tmp/zfc-direct-final-quickcheck-v3/lm-warm-grammar-0.json"
+      ],
+      "log": "lm-warm-grammar-0.log"
+    },
+    {
+      "name": "lm-dne32-warm-grammar-0",
+      "status": "PASS",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/work/grammar/audit_lm_grammar.py",
+        "--candidate",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/work/grammar/lm-dne32-warm/search1.json",
+        "--backend",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/work/grammar/lm-dne32-backend/backend.json",
+        "--fine",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/dependencies/fine_grammar",
+        "--output",
+        "/tmp/zfc-direct-final-quickcheck-v3/lm-dne32-warm-grammar-0.json"
+      ],
+      "log": "lm-dne32-warm-grammar-0.log"
+    },
+    {
+      "name": "lm-church8-repaired-grammar-0",
+      "status": "PASS",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/work/grammar/audit_lm_grammar.py",
+        "--candidate",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/work/grammar/lm-church8-repaired/search0.json",
+        "--backend",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/work/grammar/lm-church8-backend/backend.json",
+        "--fine",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/dependencies/fine_grammar",
+        "--output",
+        "/tmp/zfc-direct-final-quickcheck-v3/lm-church8-repaired-grammar-0.json"
+      ],
+      "log": "lm-church8-repaired-grammar-0.log"
+    },
+    {
+      "name": "routing-collection-regression",
+      "status": "PASS",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/work/grammar/audit_router_collection.py",
+        "--output",
+        "/tmp/zfc-direct-final-quickcheck-v3/routing-collection-regression.json"
+      ],
+      "log": "routing-collection-regression.log"
+    },
+    {
+      "name": "trace-ideal-grammar",
+      "status": "PASS",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/work/grammar/audit_trace_ideal.py",
+        "--candidate",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/work/grammar/dne32/search0.json",
+        "--inputs",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/work/grammar/dne32",
+        "--fine",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/dependencies/fine_grammar",
+        "--output",
+        "/tmp/zfc-direct-final-quickcheck-v3/trace-ideal-grammar.json"
+      ],
+      "log": "trace-ideal-grammar.log"
+    },
+    {
+      "name": "ordered-grammar-witnesses",
+      "status": "PASS",
+      "trials": 22
+    },
+    {
+      "name": "emit-exact-control",
+      "status": "PASS",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/work/grammar/emit_lm_machine.py",
+        "--candidate",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/work/grammar/lm-control/grammar.json",
+        "--backend",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/work/grammar/lm-backend/backend.json",
+        "--fine",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/dependencies/fine_grammar",
+        "--output",
+        "/tmp/zfc-direct-final-quickcheck-v3/emitted-control"
+      ],
+      "log": "emit-exact-control.log"
+    },
+    {
+      "name": "byte-identical-control-reemission",
+      "status": "PASS",
+      "files": [
+        "machine.tm",
+        "machine_old.tm",
+        "sites_logical.json",
+        "sites_physical.json",
+        "allocation.json",
+        "renumbering.json",
+        "register_bisimulation.json",
+        "blank_boot.json"
+      ]
+    },
+    {
+      "name": "independent-pointers-and-blank",
+      "status": "PASS",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/work/runtime/audit_frame_dynamic.py",
+        "--old-table",
+        "/tmp/zfc-direct-final-quickcheck-v3/emitted-control/machine_old.tm",
+        "--table",
+        "/tmp/zfc-direct-final-quickcheck-v3/emitted-control/machine.tm",
+        "--renumbering",
+        "/tmp/zfc-direct-final-quickcheck-v3/emitted-control/renumbering.json",
+        "--logical-sites",
+        "/tmp/zfc-direct-final-quickcheck-v3/emitted-control/sites_logical.json",
+        "--physical-sites",
+        "/tmp/zfc-direct-final-quickcheck-v3/emitted-control/sites_physical.json",
+        "--bootstrap",
+        "/tmp/zfc-direct-final-quickcheck-v3/emitted-control/blank_boot.json",
+        "--padding",
+        "64",
+        "--whole-frame-report",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/work/runtime/lm-control-validation/whole-frame.json",
+        "--output",
+        "/tmp/zfc-direct-final-quickcheck-v3/independent-frame-audit.json"
+      ],
+      "log": "independent-pointers-and-blank.log"
+    },
+    {
+      "name": "exact-state-graph",
+      "status": "PASS",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/work/runtime/audit_graph.py",
+        "/tmp/zfc-direct-final-quickcheck-v3/emitted-control/machine_old.tm",
+        "/tmp/zfc-direct-final-quickcheck-v3/graph-audit.json"
+      ],
+      "log": "exact-state-graph.log"
+    }
+  ],
+  "scope": "The report separates source proofs, finite grammar checks, unbounded runtime certificates, and finite search rejections. No sub-245 machine or new proof-assistant endpoint is claimed."
+}

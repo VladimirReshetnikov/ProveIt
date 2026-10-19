@@ -1,0 +1,79 @@
+MODEL 3723 words 41494 variables 76460 constraints
+Running HiGHS 1.8.0 (git hash: 222cce7): Copyright (c) 2024 HiGHS under MIT licence terms
+Coefficient ranges:
+  Matrix [1e+00, 1e+00]
+  Cost   [1e+00, 1e+00]
+  Bound  [1e+00, 1e+00]
+  RHS    [1e+00, 1e+00]
+Assessing feasibility of MIP using primal feasibility and integrality tolerance of       1e-06
+Solution has               num          max          sum
+Col     infeasibilities      0            0            0
+Integer infeasibilities      0            0            0
+Row     infeasibilities      0            0            0
+Row     residuals            0            0            0
+Presolving model
+68554 rows, 41269 cols, 171079 nonzeros  0s
+65770 rows, 39439 cols, 163981 nonzeros  0s
+
+MIP start solution is feasible, objective value is 128
+Objective function is integral with scale 1
+
+Solving MIP model with:
+   65770 rows
+   39439 cols (39439 binary, 0 integer, 0 implied int., 0 continuous)
+   163981 nonzeros
+MIP-Timing:         1.7 - starting analytic centre calculation
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic; L => Sub-MIP;
+     P => Empty MIP; R => Randomized rounding; S => Solve LP; T => Evaluate node; U => Unbounded;
+     z => Trivial zero; l => Trivial lower; u => Trivial upper; p => Trivial point
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+         0       0         0   0.00%   52              128               59.38%        0      0      0         0     1.7s
+         0       0         0   0.00%   53.1479081      128               58.48%        0      0      7      1784     3.2s
+         0       0         0   0.00%   53.91313792     128               57.88%     1006      5      7      3380    11.8s
+         0       0         0   0.00%   53.97186194     128               57.83%     2640      8     35      4452    23.3s
+         0       0         0   0.00%   54              128               57.81%     2956     11     35     14595    52.7s
+         0       0         0   0.00%   54              128               57.81%     3127     13     35     16834    64.1s
+         0       0         0   0.00%   54              128               57.81%     3211     14     35     19099    69.5s
+         0       0         0   0.00%   54              128               57.81%     3235     15     35     21859    77.5s
+         0       0         0   0.00%   54              128               57.81%     3530     16     35     26143    92.3s
+         0       0         0   0.00%   54              128               57.81%     3652     17     35     34307   111.7s
+         0       0         0   0.00%   54              128               57.81%     3792     18     35     47277   143.9s
+         0       0         0   0.00%   54              128               57.81%     4014     18     35     56592   176.0s
+         0       0         0   0.00%   54              128               57.81%     4127     19     35     61661   199.8s
+         0       0         0   0.00%   54              128               57.81%     4127     19     35     79376   245.6s
+
+Symmetry detection completed in 0.0s
+Found 1 full orbitope(s) acting on 2 columns
+
+       151     150         1   0.00%   54              128               57.81%     4127     19     40    126682   306.9s
+       262     259         2   0.00%   54              128               57.81%     4270     20     50    171339   377.3s
+       263     259         3   0.00%   54              128               57.81%     4386     21     50    227553   483.6s
+       263     259         3   0.00%   54              128               57.81%     4386     21     50    227553   483.6s
+
+Solving report
+  Status            Time limit reached
+  Primal bound      128
+  Dual bound        54.0000000001
+  Gap               57.81%
+  P-D integral      278.614182654
+  Solution status   feasible
+                    128 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            483.57 (total)
+                    0.00 (presolve)
+                    0.00 (solve)
+                    0.00 (postsolve)
+  Max sub-MIP depth 5
+  Nodes             263
+  Repair LPs        0 (0 feasible; 0 iterations)
+  LP iterations     227553 (total)
+                    0 (strong br.)
+                    63882 (separation)
+                    70522 (heuristics)
+RESULT {'maxlen': 32, 'seconds': 483.59307791599986, 'status': 13, 'message': 'Time limit reached', 'objective': 128.0, 'words': 3723, 'variables': 41494, 'constraints': 76460}

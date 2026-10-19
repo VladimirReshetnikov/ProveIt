@@ -1,0 +1,49 @@
+\subsection{Measured costs of the certified loop removals}
+
+The two identity collapses above were applied at their particular
+source occurrences. Shared occurrences elsewhere were retained; a
+global replacement would lack the required zero premise. The independent
+checker verifies all feasible incoming and outgoing edges through
+normalization, not merely the local tree rewrite.
+
+\begin{center}
+\small\begin{tabular}{lrrrr}
+\toprule
+Removed zero loop & Source leaves & Retained cases & Emitted states & Best after one rewrite\\
+\midrule
+$X$ loop &6,457&8,384&253&253\\
+$T$ loop &6,457&8,384&247&247\\
+Both &6,454&8,383&254&254\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Each collapse preserves the original root and skips at most one
+reachable identity source step between retained leaves. The two
+additional deleted body leaves of each loop have empty invariant.
+The three independent source certificates therefore prove the stated
+source simplifications on the inherited product invariant.
+
+The cost experiment checked all 718 closed one-step rewrite proposals
+across these three starting programs, as well as the three unrewritten
+programs. Unlike the earlier plateau cost gate, this final screen
+computed exact one-step state bisimulation for \emph{every} emitted
+graph, including those with more than 249 states. None improved its
+respective starting count. The best source specialization costs 247
+states under the current emitter, so no new complete binary candidate
+results from this experiment.
+
+For the closest case, the $T$-loop collapse, a further 333 one-step
+control-aware global reassociations were checked. Exactly 257 passed
+the invariant-conditioned source-edge repair and 76 failed it. Exact
+bisimulation of the emitted tables still gave a minimum of 247.
+This is again a one-step source and cost screen, not a universal binary
+correctness or initialization certificate for those tables.
+
+This is a concrete counterexample to the heuristic that removing
+source instructions necessarily reduces the state table. Specializing
+one occurrence destroys some shared decoder shapes and requires new
+ancestors. The source proof succeeds; the measured compression goal
+does not. A future compiler may recover the lost sharing through a
+different representation, but these data do not establish such a
+compiler or a saving below 246.

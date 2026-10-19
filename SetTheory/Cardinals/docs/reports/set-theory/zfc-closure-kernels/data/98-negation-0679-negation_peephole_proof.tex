@@ -1,0 +1,210 @@
+\section{A certified cancellation in the negation constructor}
+\label{sec:negation-peephole}
+
+This section concerns a register-program identity, not a weakening of the
+proof calculus.  The idea was identified in the present grammar search;
+the arithmetic argument and the AST-level audit below were reconstructed
+independently.  Let
+\[
+ \pi(x,y)=\frac{(x+y)(x+y+1)}2+y,
+ \qquad \operatorname{Neg}(x)=4\pi(x,1).
+\]
+An adjacent prior route is recorded in the repository's
+\texttt{intake-159-source-56.md} and \texttt{intake-158-159.md}:
+the pairing-shift identity
+$\pi(x,1)=\pi(0,x)+2$ gives
+$\operatorname{Neg}(x)=4\pi(0,x)+8$.
+That submission changes the arithmetic operand arrangement.  The present
+identity instead retains the existing operand in scratch storage and
+cancels a push immediately followed by its inverse; it still computes
+$4\pi(x,1)$.  The independent whole-AX occurrence and scratch-precondition
+audit below certifies this operand-retention transformation.  It does not
+repair or incorporate the separate missing source-correspondence evidence
+identified for the prior 255-state pairing-shift candidate.  These are
+related constructor-optimization ideas with different proof obligations.
+
+Use $t=r_1$ for the current formula, $s=r_2$ for the logical stack, and
+$u=r_6,v=r_7$ for the two scratch registers.  All register values are arbitrary
+natural numbers.  The exact fine tokens in the archived source give the
+following transformations; omitted registers are unchanged:
+\[
+\begin{array}{c|c}
+\text{token}&(t,s,u,v)\text{ after execution}\\\hline
+L&(0,s,u+t,v)\\
+M&(t+1,s,u,v)\\
+N&(t+s,0,u,v)\\
+P&(0,s,0,v+\pi(u,t))\\
+Q&(t,s+v,u,0)\\
+W&(t+4v,s,u,0).
+\end{array}
+\]
+For $V$, the input condition $u=v=0$ gives
+\[
+ V(t,s,0,0)=(t,0,\pi_0(s),\pi_1(s)),
+ \qquad \pi(\pi_0(s),\pi_1(s))=s.
+\]
+These are statements about the actual closed AST blocks, including their
+break/continue levels.  They are not replacements of the source by a
+higher-level pairing instruction.
+
+\paragraph{The pair loop.}
+The first inner loop of $P$ consumes $t$ into $u$ and $v$, giving
+$u+t$ in scratch register~6 and adding $t$ to register~7.  If $n=u+t>0$,
+the next test consumes one unit, adds one unit to~7, moves the remaining
+$n-1$ units into register~1, and repeats.  The quantity $n$ decreases by
+one on each complete outer round, and every inner transfer terminates.
+Thus the extra accumulation is
+$\sum_{j=1}^{u+t}j=(u+t)(u+t+1)/2$, in addition to the first $t$ units.
+The result is exactly $v+\pi(u,t)$, with registers~1 and~6 zero.
+
+\paragraph{The unpair loop.}
+With scratch registers initially zero, one outer step of $V$ consumes one
+unit of~$s$ and updates $(u,v)$ by
+\[
+ (u,v)\longmapsto
+ \begin{cases}(u-1,v+1),&u>0,\\(v+1,0),&u=0.
+ \end{cases}
+\]
+Both updates increase $\pi(u,v)$ by one.  Starting at $(0,0)$ and performing
+$s$ such steps therefore returns the unique inverse pair of $s$.  Its outer
+counter decreases at every iteration, and the inner move loop terminates.
+This also proves the exact orientation of the two outputs.
+
+\paragraph{The remaining symbolic operations.}
+The whole-word replay also uses the tokens $R,S,X$ to copy an available
+parameter before restoring its source.  For $c=R,S,X$, put respectively
+$j=4,5,3$.  Their exact operation, without a cleanliness assumption, is
+\[
+ r_1'=r_1+r_j,\qquad r_6'=r_6+r_j,\qquad r_j'=0,
+\]
+with every other register unchanged.  The actual fine AST tests and
+decrements $r_j$, increments registers~1 and~6 once on its positive branch,
+and returns to that same guard.  After $k$ positive branches, the invariant
+is $(r_j,r_1,r_6)=(r_j^0-k,r_1^0+k,r_6^0+k)$.  Hence the loop terminates
+after exactly $r_j^0$ positive branches and has the claimed output.  The
+tokens $K,U,J$ then move scratch~6 back to register $4,5,3$, respectively.
+The other moves used by the replay are
+\[
+\begin{array}{c|rrrrrrrr}
+\text{token}&L&N&O&K&U&Q&I&J\\\hline
+\text{source}&1&2&6&6&6&7&7&6\\
+\text{destination}&6&1&1&4&5&2&8&3.
+\end{array}
+\]
+Each move adds its source to its destination and clears its source; its
+single decreasing guard proves the statement for arbitrary destination
+contents.  Finally, $H$ is exactly the same unpair walk as $V$ with its
+input counter changed from register~2 to register~8.  Thus, when $r_6=r_7=0$,
+\[
+ r_8'=0,\qquad r_6'=\pi_0(r_8),\qquad r_7'=\pi_1(r_8),
+\]
+and all other registers are unchanged.  The preceding unpair invariant
+proves this operation for every proof-list code, including zero.  These
+facts account for every token interpreted by the symbolic AX body.
+
+\paragraph{Cancellation theorem.}
+For every $t,s$ and every assignment of the other five registers,
+\[
+ \boxed{\quad LNPQMVQPW\;\equiv\;LMPW
+       \quad\text{when }r_6=r_7=0.\quad}
+\]
+Both sides terminate, preserve the stack $s$ and the other five registers,
+return both scratch registers to zero, and replace the current formula by
+$4\pi(t,1)$.  Indeed,
+\[
+\begin{array}{c|c}
+\text{prefix}&(t,s,u,v)\\\hline
+\text{start}&(t,s,0,0)\\
+LNPQ&(0,\pi(t,s),0,0)\\
+LNPQM&(1,\pi(t,s),0,0)\\
+LNPQMVQ&(1,s,t,0)\\
+LNPQMVQPW&(4\pi(t,1),s,0,0),
+\end{array}
+\]
+whereas $LM$ reaches $(1,s,t,0)$ directly.  The old constructor writes a
+stack cell and immediately unpairs it; the new constructor retains the
+needed operand in its scratch register.
+In fact the local equivalence only needs $v=0$: if $u$ is arbitrary, both
+programs return $(4\pi(t+u,1),s,0,0)$.  Requiring $u=0$ gives the intended
+negation of the original current formula and is already supplied at every
+validated constructor site.
+
+\paragraph{Why the precondition is part of the theorem.}
+The equivalence is not asserted for arbitrary dirty scratch registers.
+The audit includes unequal-output controls with nonzero scratch values.
+The appropriate application is a formula-construction boundary, whose
+contract already includes zero scratch registers.  Arbitrary rewrites in
+unrelated control code would require separate justification.
+
+\paragraph{Whole-AX premise audit.}
+The independent checker reads the actual fine word for the routed source,
+then interprets all its constructor tokens over an interned symbolic
+expression DAG.  Its variables stand for arbitrary initial registers;
+only registers~6 and~7 are set to zero.  A pair expression is split into its
+exact two children; all other inverse-pair expressions are retained as
+symbolic projections.  The rules above, ordinary register transfers, scalar
+copies and the corresponding proof-stream unpair operation give the
+symbolic semantics.  Each token's rule is justified by its loop invariant.
+Consequently structural induction on the word makes this an all-values
+source certificate, not a run on sample formula codes.
+
+At every literal occurrence of the old nine-token negation word, the
+checker requires both incoming scratch expressions to be literally zero.
+It verifies the local replacement's complete nine-register output, performs
+all replacements, and compares the complete output again.  The unchanged
+five-token gate/cleanup suffix sees exactly the same register state.
+The checker also audits the changed-formula controls using the same rule.
+The JSON record lists every source offset, source/output hash and exact
+number of replacements.  A separate interpreter executes the extracted
+binary AST directly, with its actual decrement, break and continue
+instructions, as a finite regression check of the stated token contracts.
+
+\paragraph{Where the AX-entry invariant is established.}
+The precise original-source interface is in the vendored
+\texttt{L2Root254.v}, at the ProveIt commit
+\texttt{fd1adfa19f8fe8da41444e3fa43b89a59d891067}.
+Its definition \texttt{enc} is
+\[
+ \operatorname{enc}(s)=
+ (\operatorname{np}s,\operatorname{tw}s,\operatorname{ws}s,
+  0,\operatorname{d}s,\operatorname{h}s,0,0,\operatorname{pl}s).
+\]
+Lemma \texttt{prefix\_ok} proves that the fetch-and-read prefix returns
+\[
+ (n',\operatorname{tw}s,\operatorname{ws}s,
+  a,\operatorname{d}s+x,\operatorname{h}s,0,0,p').
+\]
+The selector-handling prefixes in dispatcher lemmas \texttt{disp\_1},
+\texttt{disp\_2}, and \texttt{disp\_ax} subsequently decrement only
+register~3 before entering the selected command.  In the AX case
+of \texttt{root\_sem}, the call to \texttt{ax1} therefore discharges both
+scratch-zero premises by reflexivity.  That theorem returns
+\texttt{enc} of the next enumerator state after every nonhalting command;
+\texttt{root\_step\_gen}, \texttt{root\_step\_det}, and
+\texttt{iter\_halts\_dag} carry this interface through command iteration.
+The initial relation is \texttt{Main254.R0\_enc}.
+
+The accompanying \texttt{ProgLib254.v} has the original corresponding
+contracts \texttt{w198}, \texttt{w200}, \texttt{w193} for $R,S,X$;
+\texttt{unpair115}, \texttt{unpair116} for $H,V$;
+\texttt{pair162} for $P$; and \texttt{w117} for $W$.
+Some fine ASTs reassociate the original source and exchange adjacent
+increments.  Consequently their validity is established here by direct
+inspection of their actual control graphs and the displayed invariants,
+rather than by asserting literal identity with a differently grouped Coq
+term.  The archived sources' Git blob IDs were compared exactly with the
+objects named by the pinned current-tree commit.  The input manifest records
+those identities.  Applying the command-boundary theorem to the routed
+compiler still uses its existing source-equivalence certificate; no new
+claim about an arbitrary internal instruction pointer is made.
+
+\paragraph{Transfer to proof search.}
+The original and optimized AX bodies emit exactly the same numerical rows
+and the same numerical theory bundle.  The logical theory, parameter gate,
+formula codec, proof-candidate stream, and conclusion code are therefore
+unchanged.  The stated command invariant giving zero scratch at AX entry
+transfers the identity through every AX invocation by induction on the
+command trace.  The exact binary dispatcher and blank-start bootstrap
+must additionally be verified for the newly compiled table.  The present
+lemma discharges the new register-source obligation; it does not replace
+those machine-layer obligations.

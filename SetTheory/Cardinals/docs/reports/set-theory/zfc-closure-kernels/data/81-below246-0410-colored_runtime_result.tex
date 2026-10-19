@@ -1,0 +1,53 @@
+\paragraph{Universal runtime verification of the final colored candidate.}
+The final colored-context table
+\texttt{colored\_context\_candidate\_003.tm} has 246 working states.
+All four block induction theorems, the word identity, the three arithmetic
+macros, and the nine marking contracts pass against this exact table.
+The complete affine instruction audit proves all 8,391 guarded cases:
+2,601 increments, 1,931 zero decrements, 1,931 positive decrements,
+128 breaks, 1,799 continues, and one halt.  These results quantify over
+arbitrary natural register values, every finite nonempty spare suffix,
+and every header distance $d=40+n$ with $n\geq0$.  Thus the original
+bound $d\geq40$ remains sufficient for this depth-37 source graph.
+Blank initialization is certified separately by
+\texttt{agent\_states/check\_blank\_prefix.py} and
+\texttt{agent\_states/blank\_prefix\_results.json}.  From state 95,
+head zero, and the all-zero tape, this exact 246-state table reaches
+the reference safe root after 410,735 transitions: state 96, head
+$-5$, marker $-6$, header 176, empty PC, physical primary vector
+$(0,0,0,3,0,0,3,0,0)$, and 167 spare blocks of value one.
+The check verifies equality of the complete tape, including its
+351 one-cells and zero exterior.  The runtime certificate itself has
+the narrower scope of instruction-frame simulation; its
+\texttt{blank\_initialization\_proved=false} field records that scope,
+not the absence of this separate initialization proof.
+
+The unextended symbolic checker initially left one increment case
+unresolved.  Its tape representation was $1^n\,1\,1\,\mathsf{box}$
+at state 10: the leading run could be empty, although a known one
+immediately followed it.  The new executor adds only the free-word
+identity
+\[
+ b^{an}\,b=b^{an+1}\qquad(b\in\{0,1\},\ a>0,\ n\geq0).
+\]
+Joining these adjacent segments changes neither the represented tape,
+the head, nor the state, and consumes no machine transition.  Its
+soundness follows directly from finite-word concatenation.  All
+literal execution rules and all guarded register-box rules are
+unchanged.  This resolves the proof obligation for every $n\geq0$;
+the earlier failure was a limitation of the segment representation,
+not a concrete execution counterexample.
+
+Deleting state 74 and shortening the scanner gives
+\texttt{colored\_context003\_scanner245.tm}.  Its register induction
+contracts also pass, but its full instruction audit succeeds in only
+8,361 of the 8,391 cases.  The remaining 30 failures are precisely both
+decrement guards at the 15 CD leaves still ending in seven zeros.
+The checked counts are therefore 2,601 increments, 1,916 zero
+decrements, 1,916 positive decrements, all 128 breaks, all 1,799
+continues, and the halt case.  This 245-state table remains a rejected
+runtime candidate.  The portable
+\texttt{check\_colored\_runtime.py}, with scanner length 9 or 8,
+reproduces the two results; the complete certificates are
+\texttt{colored\_context246\_audit.json} and
+\texttt{colored\_context245\_audit.json}.

@@ -1,0 +1,204 @@
+% Self-contained report section.  No claim of a completed 245-state machine.
+\section{Shortening the return scanner: an exact obstruction and a source target}
+\label{sec:scanner-eight}
+
+The return scanner offers a concrete connection between source-tree
+reassociation and the physical state count.  The current 246-state
+machine recognizes nine consecutive zeros while moving left.  Replacing
+this with an eight-zero recognizer removes one working state, but the
+change requires a stronger condition on the words that the interpreter
+scans.  The local scanner theorem and the exact obstruction below are
+proved; they do not assert that this isolated 245-state table implements
+the complete program.
+
+\paragraph{The literal patch.}
+Use the original state labels of
+\texttt{zfc\_prefix246\_old.tm}.  Delete both rows of state 74 and replace
+the single incoming row
+\[
+ (58,0)\longmapsto(0,L,74)
+ \qquad\text{by}\qquad
+ (58,0)\longmapsto(0,L,84).
+\]
+All remaining rows are identical to the 246-state table.  State 74 has no
+other incoming transition, so the result is a total binary transition
+table with 245 working states and the same halt state 254.  States 4 and
+6 are retained because the register-marking contracts also use them.
+
+Let
+\[
+ (s_0,s_1,\ldots,s_7)=(4,6,9,13,19,29,41,58).
+\]
+The patched rows are exactly
+\[
+ \delta(s_i,1)=(1,L,s_0),\qquad
+ \delta(s_i,0)=
+ \begin{cases}
+  (0,L,s_{i+1}),&0\leq i<7,\\
+  (0,L,84),&i=7.
+ \end{cases}
+\]
+State 84 has the unchanged rows
+\[
+ \delta(84,0)=(0,R,84),\qquad
+ \delta(84,1)=(1,R,96).
+\]
+Thus $s_i$ records that $i$ consecutive zeros have already been read
+while moving left.  Every displayed transition preserves its tape cell.
+
+\paragraph{Universal local scanner lemma.}
+Fix integers $m\leq x$.  Suppose that the tape cell at $m$ is one, all
+cells strictly left of $m$ are zero, and the finite word in the interval
+$[m,x]$ contains no occurrence of $0^8$.  From state 4 with head at $x$,
+the patched table reaches state 96 with head at $m+1$, leaves the entire
+tape unchanged, and takes exactly
+\[
+ (x-m+1)+18=x-m+19
+\]
+literal transitions.  The contents strictly right of $x$ are arbitrary.
+
+\paragraph{Proof.}
+Induct on the number of cells already scanned in $[m,x]$.  The state is
+$s_i$, where $i$ is the length of the consecutive zero suffix of the
+word read in the direction of travel.  A one resets this counter to
+zero; a zero increases it by one.  The forbidden-word hypothesis keeps
+the counter below eight until the marker at $m$ has been read.  After
+exactly $x-m+1$ transitions, the head is at $m-1$ in state $s_0$.
+Eight exterior zeros then place the head at $m-9$ in state 84.  The
+rightward self-loop crosses the nine zeros from $m-9$ through $m-1$,
+and the marker-one row moves once more to $(96,m+1)$.  The final ten
+transitions give the stated total.  Every row preserves its symbol and
+no cell to the right of the entry head is read.\hfill$\square$
+
+The same argument applies when entry is in state $s_i$ rather than
+$s_0$, provided the interval word followed by $i$ virtual zeros contains
+no $0^8$.  In particular, state 6 means that one zero has already been
+counted.  Its valid hypothesis is the absence of $0^8$ in the interval
+word followed by one virtual right-hand zero; absence of $0^8$ in the
+interval word alone is insufficient.  The marker resets the counter,
+so the transition count after consuming the interval is still the
+same 18.  Relative to the original nine-zero scanner, a successful
+return from state 4 saves exactly two transitions.
+
+\paragraph{The register contracts are preserved.}
+The four one-block induction proofs, the free-word identity, all three
+increment/decrement contracts, and all nine register-marking proofs
+replay against the patched literal table.  Their derivations do not use
+state 74 or the changed row $(58,0)$.  They continue to quantify over
+arbitrary natural register values, every finite prefix and suffix of
+blocks, arbitrary left context, and a nonempty suffix after the selected
+primary register.  This establishes the register premises needed by the
+affine interpreter checker independently of the local scanner lemma.
+
+\paragraph{The baseline audit identifies the precise failure.}
+Apply the existing affine symbolic instruction checker to every leaf
+of the original pinned \texttt{Prog254.v}, using the patched table.
+Its frame is
+\[
+ {}^\infty0\;1\;P\;0^{\,d-|P|}\;1\;B(v)\;0^\infty,
+ \qquad q=96,\quad d=40+n,\quad n\geq0,
+\]
+where the head is immediately after the left marker, $v$ consists of
+nine arbitrary natural-valued primary registers followed by an
+arbitrary nonempty finite spare list, and $B(a)=01^{a+1}$.
+The lower bound 40 concerns the whole head-to-header distance $d$;
+it is not a lower bound on the trailing zero separator alone.
+
+Of the 8,391 guarded instruction cases, 8,355 have complete successful
+symbolic derivations for all admitted frames.  The breakdown is
+\[
+\begin{array}{c|r|r}
+ \text{case}&\text{successful}&\text{failed}\\\hline
+ \mathrm{CI}&2601&0\\
+ \mathrm{CD},\ \text{zero}&1913&18\\
+ \mathrm{CD},\ \text{positive}&1913&18\\
+ \mathrm{CB}&128&0\\
+ \mathrm{CC}&1799&0\\
+ \mathrm{CH}&1&0\\\hline
+ \text{total}&8355&36
+\end{array}
+\]
+Every failed case belongs to one of exactly 18 decrement leaves whose
+path ends with seven zeros.  There are no failures in any other
+instruction class.  These are successful or failed symbolic proof
+derivations, rather than a finite sample of concrete register values.
+
+The ordinary decrement phase protocol explains this obstruction.
+Preparation changes the two phase cells from $00$ to $11$ and fills
+the remaining separator with ones.  The register-selection step
+changes the first phase one to zero, producing $01$.  During the
+subsequent return, the first phase zero is adjacent to the last program
+counter bit.  Therefore a path ending in $0^7$ produces a scanned
+$0^8$ run.  The shortened scanner turns around there before reaching
+the left marker.  Merely observing that the source path itself has no
+$0^8$ misses this extra phase zero.
+
+\paragraph{How the new source graph addresses the obstruction.}
+The separately certified source graph
+\texttt{rotation\_zero\_candidate\_24.json} has maximum path depth 36,
+202 distinct shared pair subtrees, and no occurrence of $0^7$ in any
+instruction path.  Appending one phase zero to such a path gives a
+maximum zero run of seven, which satisfies the eight-zero local lemma.
+This is a useful source-side target for the compiler.  The source bound
+does not, by itself, prove that every compiler alias or intermediate
+phase meets the scanner precondition.  The literal compilation must
+also be checked, including its intermediate phases.
+
+\paragraph{A complete universal runtime check at 250 states.}
+A repaired compilation of that source graph has 251 working states.
+It explicitly splits three conflicting shared decoder roles and
+repairs the affected break-instruction return chains.  Applying the
+single scanner patch above gives
+\texttt{compiled24\_scanner250.tm}, a 250-state literal table.
+All four block inductions, the word identity, all three arithmetic
+macros, and all nine marking contracts pass against this exact table.
+The full affine audit also succeeds at every one of the 8,391 guarded
+instruction cases:
+\[
+\begin{array}{c|rrrrrr}
+ \text{case}&\mathrm{CI}&\mathrm{CD}/0&\mathrm{CD}/+&
+              \mathrm{CB}&\mathrm{CC}&\mathrm{CH}\\\hline
+ \text{proved}&2601&1931&1931&128&1799&1.
+\end{array}
+\]
+Each successful case quantifies over every $n\geq0$, every
+natural-valued register vector satisfying its named decrement guard,
+and every nonempty finite spare suffix.  The initial frame uses
+$d=40+n$, even though this source has maximum depth 36.  The audit
+therefore establishes that the existing lower bound $d\geq40$ is
+sufficient; increasing it to 42 is unnecessary.  Successful
+nonhalting cases reach the entire expected successor frame, including
+the exact register effect, spare suffix, program counter, head
+position, and header distance.  The halt case reaches state 254.
+Every case has positive literal progress; the smallest literal-step
+count in a symbolic derivation is 13.  The certificate is
+\texttt{compiled24\_scanner250\_audit.json}.
+
+This proves the full guarded runtime simulation of the rotated source
+by that table from admitted instruction frames.  The independent
+source-equivalence certificate consequently transfers the original
+register program's behavior at corresponding source entries.
+Blank initialization is now certified separately by
+\texttt{agent\_states/check\_blank\_prefix.py} and
+\texttt{agent\_states/blank\_prefix\_results.json}.  From state 95
+on the all-zero tape, this exact 250-state table reaches the reference
+safe root after 407,983 transitions.  The endpoint is state 96 with
+head $-5$, marker $-6$, header 176, empty PC, physical primary vector
+$(0,0,0,3,0,0,3,0,0)$, and 167 spare blocks, each of value one.
+The complete tape has 351 one-cells, and every other cell is zero.
+The fixed-prefix check verifies the whole tape and that cells outside
+the explicit finite window were never visited.  This supplies the initialization component in
+addition to the separately proved runtime and source correspondence.
+The table still has 250 working states, above the requested bound.
+
+The supplied \texttt{check\_short\_scanner.py} checks the exact scanner
+rows, replays the register inductions, expands an optional source graph
+with structural checks, and checks every instruction frame.  Its
+baseline certificate and compact summary record the failed cases
+explicitly, and the same checker produces the successful 250-state
+certificate.  The isolated 245-state baseline scanner patch remains
+a rejected whole-program candidate.  The validated 250-state runtime
+shows that source reassociation can discharge the scanner's universal
+precondition, while also making the cost of repairing physical decoder
+aliases explicit.  A below-246-state solution still requires a smaller
+complete table and its blank-tape initialization argument.

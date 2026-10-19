@@ -1,0 +1,140 @@
+% Report fragment: the parent manuscript supplies the document class and packages.
+\subsection{A 244-state scanner experiment and an exact obstruction}
+
+The supplied 245-state table admits a further local scanner contraction,
+giving a concrete 244-working-state table with a successful blank
+initialization.  The unchanged instruction compiler does not support this
+contraction globally.  A symbolic whole-frame replay proves a wrong next
+complete frame for an infinite family of inputs.  Accordingly, the table
+\texttt{scanner5-experiment244-old.tm} is an
+\textbf{unvalidated experiment}, not a proved machine for
+$\operatorname{Con}(\mathrm{ZFC})$.
+
+The reference is the supplied \texttt{zfc245-proof-20261018} package,
+specifically its \texttt{certificate/machine\_old.tm}.  Historical labels
+are retained: the start is 95, dispatcher 96, and target-only halt 254.
+Working label 255 remains present.  The experimental table has 488 rows,
+comprising 116 framework states and 128 grammar states.
+
+\paragraph{Local lemma.}
+In the baseline, the zero transitions of states 41, 58, and 84 are
+$(0,L,58)$, $(0,L,84)$, and $(0,R,84)$ respectively.  Delete state 58 and
+replace the zero transition of state 41 by $(0,L,84)$.  If cells
+$x,x-1,x-2$ are zero, the baseline trace is
+\[
+ (41,x)\longrightarrow(58,x-1)\longrightarrow(84,x-2)
+ \longrightarrow(84,x-1),
+\]
+while the experimental trace is $(41,x)\longrightarrow(84,x-1)$.
+Both leave the entire tape unchanged.  Thus the contraction saves exactly
+two literal moves under this local premise, with arbitrary exterior tape.
+
+\paragraph{Exact blank initialization.}
+The baseline reaches its recorded root after 407,915 moves.  The local
+premise fails once among its 1,411 entries to state 41 reading zero: at
+zero-based tick 46,732, head 0, the three leftward bits are $0,1,1$.
+Therefore contracting the old bootstrap trace does not justify the new
+bootstrap.  Independent sparse and dense interpreters instead establish
+the following new complete frame after exactly 818,324 moves:
+\[
+q=96,\quad h=-8,\quad p=\varepsilon,\quad D=245,
+\qquad R=(0,1,0,4,0,0,6,0,0).
+\]
+The isolated marker is at $-9$, the header at 237, and the spare list
+consists of 233 copies of value 1.  There are exactly 488 one cells;
+all other cells are zero.  The logical registers
+$(N,T,W,A,D,H,X,Y,L)$ are $(6,0,0,0,4,0,0,0,1)$, satisfying the inherited
+dirty-root guard $T=W=H=0$.  The verifier compares the complete support
+against a newly painted frame.  The experimental bootstrap uses the same
+55 semantic word/read pairs as the baseline, though their visit counts
+differ.
+
+\paragraph{A parametric wrong successor.}
+Write $F(p,D,R,S;h)$ for a complete normal dispatch frame, with isolated
+left marker, program-counter bits $p$, zero padding, a one-cell header,
+nine primary blocks $B(R_i)$, a nonempty finite spare list $B(S)$, and
+blank exterior, where $B(v)=01^{v+1}$.  Set
+\[
+\begin{split}
+p&=\texttt{11101001001000000},\\
+p_{\mathrm{intended}}&=\texttt{1110100100100001},\\
+p_{\mathrm{wrong}}&=\texttt{11101001001001}.
+\end{split}
+\]
+For every $g\in\mathbb N$ and every nonempty finite natural list $S$,
+the source leaf $p$ is the zero case of $\mathrm{CD}(1)$ on
+$F(p,64+g,0^9,S;0)$.  The baseline reaches
+$F(p_{\mathrm{intended}},64+g,0^9,S;0)$ in exactly $574+8g$ moves.
+The experiment instead reaches
+$F(p_{\mathrm{wrong}},64+g,0^9,S;0)$ in exactly $650+8g$ moves.
+The latter replay uses 245 checked symbolic rewrite steps.
+
+This is the first complete normal frame, not an arbitrary dispatcher
+visit.  Four earlier visits to state 96 are excluded explicitly: one
+has nonblank cells to the left of the required isolated marker, while
+each of the other three has a one at relative cell 51.  That cell lies
+inside the mandatory zero gap because source paths have length at most
+51 and normal header distance is at least 64.  The whole-frame equality
+includes the entire arbitrary spare list and exterior tape.  The finite
+instance $g=0$, $S=[1]$ is also independently replayed by a literal
+interpreter, obtaining the 574-move and 650-move endpoints.
+
+This disproves the intended next-frame instruction contract for the
+unchanged grammar.  It does not establish blank reachability of this
+input and does not settle an unrelated interpretation of the experiment
+as a consistency machine.  It identifies an obstruction to transferring
+the existing compositional proof.
+
+\paragraph{Universal obstruction census and grammar ancestry.}
+A complete run of the inherited whole-frame symbolic checker on all
+8,391 guarded source cases recorded 99 failed local scanner premises
+across 50 distinct program-counter paths: 49 zero decrements, 49 positive
+decrements, and one increment.  Every recorded entry scans a finite
+zero run of length exactly one immediately preceded on the tape by a
+one, and every offending source path ends in six zeros.  Infinite outer
+blank atoms are excluded from this finite-run count because they satisfy
+the local premise automatically.
+
+The frozen census and regenerated grammar-ancestry map give the exact
+source contexts to repair.  For the displayed decrement witness, original
+AST node 206 supplies one left edge into AX root 76; its successive left
+children are W86 ($\texttt{eijkKCeijkfgqkjGll}$), W98
+($\texttt{eijkKCeijkfg}$), W23 ($\texttt{eijk}$), and atom
+$\texttt{e}$, whose leading branch reaches $\mathrm{CD}(1)$.
+Thus this obstruction involves the caller as well as the expanded AX
+grammar.  Repairing one other known six-zero word does not remove it.
+
+\paragraph{Additional bounded state-elimination searches.}
+The finite search corpus contains 8,385 interval-admitted fixtures,
+distinct from the 8,391 all-values symbolic cases.  The baseline passes
+the corpus, using all 490 transition rows with maximum 2,686 moves.
+Search runs allow 20,000 moves per fixture and tape coordinates from
+$-64$ through $1983$.
+
+Replacing the unique external incoming action of each of 137 eligible
+states gives 133,712 recipes; none passes the finite corpus.  Allowing
+whole-frame translation, padding at least 181, and at least 167 arbitrary
+spare blocks, while retaining the complete counter and primary registers,
+also gives no survivor.  A contextual search over 467 incoming rows and
+455,792 actions finds 762 individually passing replacements.  These give
+complete incoming-choice domains for 13 potential deleted states.
+
+An execution-directed joint search assigns a single replacement to each
+incoming row across all affected cases.  Each state receives a budget of
+100,000,000 literal moves and 50,000 recursive branch calls.  Eleven
+domains are exhausted; state 4 reaches the move budget and state 30 the
+branch-call budget.  No joint survivor is found.  These results describe
+the stated finite search families and bounds; they are neither universal
+macro proofs nor lower bounds on Turing-machine state complexity.
+
+\paragraph{Reproduction.}
+The framework component's \texttt{verify.py} accepts
+\texttt{--reference PATH --output PATH}.  Its default invocation checks
+the exact table patch, both blank prefixes, the independent dense replay,
+the finite and universal wrong successors, the grammar map, and frozen
+summary consistency.  Optional flags \texttt{--full-scanner-audit} and
+\texttt{--search} rerun the complete census and bounded C++ searches.
+The latter workflow was rerun through the packaged entrypoint and
+reproduced all counters and choice files apart from elapsed time.
+All proofs here use the attributed inherited symbolic induction kernel;
+no newly compiled proof-assistant endpoint is claimed.

@@ -1,0 +1,236 @@
+% Section for the main report; uses amsmath/amssymb and hyperref.
+\section{Which alternative formalisms preserve the target?}
+\label{sec:formalism-inventory}
+
+The objective requires an effective refutation equivalence, not merely
+that a theory is strong enough to prove some set-theoretic theorems.
+For a recursively axiomatized theory $T$, the usable interface is
+\[
+ \mathrm{ZFC}\vdash
+  (\exists p\,\operatorname{Prf}_{T}(p,\bot))
+  \longleftrightarrow
+  (\exists q\,\operatorname{Prf}_{\mathrm{ZFC}}(q,\bot)).
+\]
+A proof enumerator for $T$ then has the required nonhalting target
+once its literal simulation is established.  A finite formula wrapper,
+a finite list of axiom names, and a finite first-order axiomatization
+are different objects.  In particular, quantifying over all matrices
+in a schema retains an infinite recursive family.
+
+\subsection{ZF, SIR, and the existing relative-falsity encoding}
+
+Omitting Choice from ZFC is sound for this target: the usual
+constructibility interpretation supplies the reverse consistency
+direction, while inclusion supplies the other.  Omitting Foundation
+also has a separate effective consistency comparison.  The repository
+carefully distinguishes its foundation-free intermediate $\mathrm{ZF}_0$
+from standard ZF.  These reductions already underlie the retained
+machine and do not represent an additional state saving.  Their
+source interfaces are \path{WFTheory.native_refutation_iff_zf}
+and \path{ChoiceCalibration254.zf_refutation_iff_zfc}.
+
+The native SIR presentation has ordinary first-order equality, the
+container sentence CP, one instance of GIC for every finite formula
+with parameters, and irreflexivity IR.  With
+$x\subseteq V$ abbreviating $\forall z(z\in x\to z\in V)$,
+\[
+\begin{split}
+\mathrm{CP}:\quad \forall p\exists V\,[p\in V\land
+ \forall x\,(x\in V\to (x\subseteq V\land
+  \exists W\,(W\in V\land
+    \forall z(z\subseteq x\to z\in W))))],
+\end{split}
+\]
+and, for each matrix $\varphi(x,y;\bar p)$,
+\[
+\begin{split}
+\mathrm{GIC}[\varphi]:\quad\forall B\exists C\,[{}&
+ \forall a\,(a\in B\to
+  \forall y(\varphi(a,y)\to
+    \exists y'(\varphi(a,y')\land y'\in C)))\\
+ &{}\land\forall y(y\in C\to\exists x\,\varphi(x,y))].
+\end{split}
+\]
+All displayed parameters are universally closed and auxiliary names
+are fresh.  The source uses an equivalent compact variable-sharing
+version with its stated gates.  SIR is nonextensional at the raw
+membership level; the consistency proof uses a represented quotient
+and the separate Foundation/Choice comparisons.  It does not obtain
+Extensionality simply by declaring duplicate elements identical.
+
+The machine already avoids an emitted IR axiom.  Its relative falsity
+is $F=R(0,0)$, and replacing primitive $\bot$ by $F$ sends
+the comparison sentence $\forall_0(R(0,0)\to\bot)$ to
+\[
+ \forall_0(F\to F),
+\]
+which follows by generalization of propositional identity.
+Every binder of label zero also binds occurrences inside $F$;
+global irreflexivity makes that capture harmless in the semantic
+comparison.  This is the explicit alias translation in
+\path{TarskiFalsity.lean}, through the theorems
+\path{Tarski.thm_tau} and \path{Tarski.alias_complete};
+it is not an argument
+that one may delete IR from an ordinary classical theory and ask
+for an arbitrary atomic theorem instead of a contradiction.
+The original numerical bridge handles the truth and falsity aliases.
+No fixed proof-length bound is permitted: the enumerator must search
+all finite candidates.  Bounding each local validation computation
+is compatible with an unbounded enumeration of those candidates.
+
+\subsection{A rigorous equality-free SIR control}
+
+There is an actual equality-free formalism at the same consistency
+strength.  Use ordinary equality-free first-order logic, one binary
+predicate $R$, and the equality-free CP, IR and full equality-free
+GIC schemas.  Call this $\mathrm{SIR}^{-}$.  Define
+\[
+\begin{split}
+D(x,y):\quad&\forall z\,(R(z,x)\leftrightarrow R(z,y))\\
+ &{}\land\forall z\,(R(x,z)\leftrightarrow R(y,z)).
+\end{split}
+\]
+Equality-free logic proves that $D$ is an equivalence relation and
+that replacing either argument of $R$ by a $D$-equivalent argument
+preserves its truth.  An induction on formulas gives substitution
+for every translated formula.  Consequently replacing every
+equality atom by $D$ translates every equality axiom into a theorem
+of equality-free logic.  CP and IR are fixed, and a GIC instance
+becomes the GIC instance of the translated matrix, which is in
+the full equality-free schema.  This gives an effective
+falsity-preserving translation
+\[
+  \mathrm{SIR}\vdash\bot
+       \quad\Longrightarrow\quad\mathrm{SIR}^{-}\vdash\bot.
+\]
+The reverse implication follows by viewing an equality-free proof
+as an equality-bearing proof.  Thus $\mathrm{SIR}^{-}$ is
+equiconsistent with SIR and ZFC by explicit proof translations.
+
+The two-sided definition of $D$ is essential to this short proof.
+Equality of predecessor profiles alone need not imply congruence
+in the other argument of a nonextensional relation.  More importantly,
+the formalism uses a \emph{complete} equality-free proof calculus.
+Deleting equality rows from the present small Tarski engine does
+not implement that calculus: its equality rows carry the variable
+transport needed to derive full first-order instantiation.  The
+repository's \path{logical_engine_completeness.md} and
+\path{typed_countermodel.md} already document this obstruction.
+This is a sound alternative theory, with no newly established
+complete-machine state count.
+
+\subsection{Positive subset-seeded closure}
+
+A different existing compact presentation uses Extensionality and
+one positive closure schema.  For a seed formula $\sigma(x,a)$,
+let
+\[
+\operatorname{SB}(\rho):=
+ \forall x\exists b\forall y(\rho(x,y)\to y\subseteq b).
+\]
+The schema is
+\[
+\begin{split}
+\operatorname{SB}(\rho)\to\forall a\exists C[{}&
+\forall x\forall y(((\sigma(x,a)\lor x\in C)\land\rho(x,y))
+                     \to y\in C)\\
+&{}\land\forall y(y\in C\to\exists x\,\rho(x,y))].
+\end{split}
+\]
+Both point seeding $\sigma(x,a)\equiv x=a$ and subset seeding
+$\sigma(x,a)\equiv x\subseteq a$ are deductively equivalent,
+with Extensionality, to the repository's foundation-free,
+choice-free $\mathrm{ZF}_0$.  All matrices and finite parameter
+tuples are retained.
+
+The forward reduction has concrete content.  Constant matrices
+give exact bounded classes, including Empty Set, singletons and
+Power Set.  A gated singleton decoder gives a transitive cover of
+each root's members before Union has been established.  Those
+covers yield Separation and Union.  A two-cycle functional relation
+gives Pairing; a Russell root outside the input set yields functional
+Replacement without assuming Collection; a successor relation
+then gives Infinity.  In the reverse direction, each locally bounded
+fiber is a unique exact subset of a power set.  Replacement collects
+these exact fibers, and their finite-stage iteration gives the
+required positive hull.  This avoids choosing arbitrary local bounds.
+These are the existing proofs in \path{subset_only.md}; the
+subset-seeded equality-bearing result has the repository's Lean
+\path{PSCCalibration} implementation.  They are prior work,
+not new claims of this experiment.
+
+An equality-free version replaces equality by predecessor-profile
+equality and adds the explicit sentence asserting congruence in
+the other membership argument.  Its full calibration depends on
+that sentence.  Under the repository's formula-tree metric, the
+point-seeded equality-bearing theory has 65 nodes, the subset-seeded
+one 68, and the equality-free congruence-plus-closure theory 79.
+These numbers exclude variable payloads, proof-checking and the
+binary backend.  They therefore cannot be compared directly with
+245 states or with the 493-call orientation word.
+
+\subsection{Finite class and algebraic presentations}
+
+Finite class-theory presentations offer a different tradeoff: a
+finite axiom test replaces an arbitrary-matrix schema generator,
+but the fixed class axioms and their full first-order engine must
+be stored and interpreted.  A conventional finite presentation of
+NBG, with its set-theory consistency comparison and the same
+constructibility reduction, has the required consistency
+calibration to ZFC.  The library of prior incoming
+research already includes a 14-sentence transcription of Friedman's
+class presentation (752 formula nodes in its stated metric),
+plus its class/set scopes and a repaired local Capture argument.
+Here the unary set predicate has been eliminated as
+$M(x)\leftrightarrow\exists y\,R(x,y)$, removing the corresponding
+definitional axiom from the author's 15-axiom presentation.\footnote{
+Harvey M. Friedman, \emph{Simplified axioms for class theory},
+15 September 2020, sections 1--3:
+\url{https://bpb-us-w2.wpmucdn.com/u.osu.edu/dist/1/1952/files/2020/09/NBGAxioms091520.pdf}.}
+The set-theory theorem does not make those 14 sentences 14 machine
+instructions.  We did not replace that data with a claimed smaller
+calibrated transition table.
+
+The same accounting applies to equational, relation-algebraic,
+combinatory and lambda-calculus encodings.  A complete finite
+algebraic presentation can reduce the syntax of proofs, while
+moving first-order substitution, relation pairing, class theory
+or satisfaction into fixed terms.  The prior inventory
+\path{38-equation-experiments-equational-literature_notes.md}
+and the concrete development
+\path{41-cyclic-notes-algebraic_development.md} retain these
+calibration obligations.  Merely compiling the existing proof
+recognizer to a universal combinator does not erase the recognizer
+or its blank-tape loader.  No new state count is claimed for these
+routes.
+
+The new work in this packet therefore concentrates on a presentation
+change that can be costed without replacing the established
+first-order engine: the 32 directly equivalent equality orientations,
+with 32 additional converse-membership controls.  All their emitted
+source words are provided.  Their logical preservation theorem is
+separate from, and considerably easier than, establishing a smaller
+complete binary machine.
+
+\subsection{Primary repository references}
+
+The retained sources are at ProveIt commit
+\path{6446ff5668307a2ac6aee1896037f0b792090389}.  The relevant
+paths are:
+\begin{itemize}
+\item \path{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/}:
+\path{TarskiDerived.lean}, \path{TarskiFalsity.lean},
+\path{Lukasiewicz.lean}, \path{NativeTheory254.lean},
+\path{PSCCalibration.lean}, and \path{ChoiceCalibration254.lean}.
+\item \path{Computability/BusyBeaver/Research/ZFC/}:
+\path{subset_only.md}, \path{raw_psc.md},
+\path{logical_engine_completeness.md},
+\path{typed_countermodel.md}, and \path{clausal_reference.md}.
+\item \path{SetTheory/Cardinals/docs/reports/set-theory/}
+\path{zfc-closure-kernels/}: the numbered incoming-source
+inventory and the exact source-41 intake review.
+\end{itemize}
+The original SIR and machine design is Mira-Cult's, with Jeff
+Ketchersid's end-to-end Rocq verification and Wade's compiler
+framework.  The theory emitter copies used by the executable
+experiment retain their pinned source hashes and upstream notices.

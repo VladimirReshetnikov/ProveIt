@@ -1,0 +1,68 @@
+% Research lemma; not a standalone article and not a kernel-checked proof.
+\section{An unbounded-time obstruction for a read-only gap detector}
+\label{sec:read-only-detector}
+
+The following obstruction uses no running-time bound.  It applies only when
+the detector writes no tape symbols and counts every internal control state.
+An exit is terminal for purposes of the classifier: if a caller performs
+further observations that can affect the classification, that caller's states
+must be included in the state count.
+
+\paragraph{Zero-excursion lemma.}
+Let a deterministic read-only machine have $n\ge1$ internal states and unit
+left/right moves.  Consider a maximal consecutive sequence of its internal
+observations of symbol zero.  Suppose it begins at position $s$, and all tape
+positions strictly below a first right nonzero barrier $b>s$ are zero.
+If the excursion is finite, it observes no cell below $s-(n-1)$.
+The excursion may end by reaching the right barrier or by leaving the internal
+state set.  The position reached by a terminal exit move, which is not then
+read by the detector, is not an observation in this statement.
+
+\paragraph{Proof.}
+On symbol zero, the internal state determines the next state and the signed
+move, independently of position.  If the observed internal states do not
+repeat, there are at most $n$ observations.  Their positions are reached after
+at most $n-1$ moves from $s$, so the claimed bound holds.
+
+Otherwise take the first repeated state: $q_j=q_i$, where $0\le i<j\le n$.
+Every transition before this recurrence remains internal.  Let
+$\Delta=p_j-p_i$ be the displacement of this deterministic zero-state cycle.
+No position observed during the first completed cycle reaches $b$.
+If $\Delta\le0$, each successive copy of the cycle is a translation of the
+first by $k\Delta\le0$.  Such a copy cannot newly reach the right barrier.
+It also cannot exit the state set, since all the repeated zero transitions are
+internal.  Thus the excursion would be infinite, contrary to hypothesis.
+
+Hence $\Delta>0$.  All later cycles lie strictly to the right of their
+predecessors, so the smallest position of the entire excursion occurs in the
+transient or first cycle.  Moreover $p_j=p_i+\Delta>p_i$, so that minimum
+occurs at one of $p_0,\ldots,p_{j-1}$, reached in at most $n-1$ moves from $s$.
+Its position is at least $s-(n-1)$, as claimed.  If a later positive cycle hits
+the barrier before it completes, this can only shorten the excursion and
+cannot decrease its minimum.
+
+\paragraph{Application to the gap-7 versus long classification.}
+Let the long input have a fixed one at $+2$ and zeros at all positions
+$\le1$, and let the head begin at $0$.  Suppose the classifier halts on this
+input.  Its first zero excursion starts at $s=0$, so with seven states its
+observed minimum is at least $-6$.  Any later excursion entering this left
+zero region must cross the fixed one at $+2$ and begin at $s=1$, so its minimum
+is at least $-5$.  Computation to the right of the known one, however long or
+complicated, does not alter either bound: the tape is read-only and every
+return carries only an internal state.
+
+Compare a short input that is identical to the long input at all positions
+greater than $-7$, but has its first differing one at $-7$.  To distinguish
+the two inputs, a deterministic classifier must observe a cell at which they
+differ.  With unit moves, reaching any smaller differing position first
+requires observing $-7$.  The terminating long computation never does so.
+The two computations consequently have the same state, position, observation,
+and transition at every step up to the common exit, and give the same answer.
+They cannot be classified differently.
+
+Therefore seven internal read-only states are insufficient, even with
+unbounded running time, arbitrary right-side computation, and repeated visits
+to the known one.  The conclusion is stronger than a bounded search result for
+a read-only seven-state template.  It does not exclude a detector that writes
+temporary tape marks, shares additional states with an interpreter, or returns
+a tape/head condition whose interpretation uses uncounted caller states.

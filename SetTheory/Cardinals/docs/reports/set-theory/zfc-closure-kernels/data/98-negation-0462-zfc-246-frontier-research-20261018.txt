@@ -1,0 +1,137 @@
+# At the 246-state frontier
+
+**No verified machine with fewer than 246 working states was obtained.**
+
+This package contributes new ordinary proofs, exact local transformations,
+reproducible bounded searches, and counterexamples for ProveIt. It does not
+claim a new state record. The target remains an explicit one-tape, two-symbol,
+blank-start machine M with at most 245 working states and the internal theorem:
+
+    ZFC proves: not Halt(M, blank) iff Con(ZFC).
+
+## Start here
+
+- report.pdf contains the complete research report.
+- report.tex and its included TeX sections reproduce the report.
+- STATUS.json identifies every important table by role and proof status.
+- MANIFEST.sha256 covers every delivered regular file except itself.
+
+The reference is the existing candidate-prefix246 machine at ProveIt commit
+79957d7b290ec807d434959a0c6ecc06ee90b419. The baseline directory contains its
+unchanged canonical table, old-label table, renumbering and licenses.
+Canonical SHA-256:
+89cda615b3ea9fcac07ad6b08e0351faa34841a56935b6f5846d3920f13bc0fc.
+
+The existing ordinary ZFC argument, current checked-in Lean progress, and
+new research evidence are distinguished in the report. This session did not
+rerun a Lean build or produce a new kernel-checked machine endpoint.
+
+## Main contributions
+
+1. Seven total internal read-only states cannot distinguish the specified
+   local long all-zero-left input from the short input differing first at -7,
+   even with unbounded time. Temporary writes, extra shared caller states,
+   and globally restricted opaque-marker access are outside this theorem.
+
+2. A new restoring-detector CNF reports UNSAT for seven isolated states
+   through 12 steps. There is no DRAT/LRAT certificate. Longer runs remain
+   explicitly UNKNOWN. Eight-state SAT controls are independently replayed.
+   A second template permits old4 and old2 as fixed callable helpers.
+
+3. Inside ZFC, derivability in C254 of any h congruent to 1 mod4 implies
+   derivability of F=1. This licenses accepting any derived membership atom.
+   The actual NIP macro has a universal proof and 17,408 finite controls.
+   Its raw Wade compilation grows 281 to 285 states; this is not pricing for
+   the separately optimized 246 interpreter. Accepting all odd values, zero,
+   or any nonempty downward-closed numerical target is unsound.
+
+4. The complete composed-rotation census has 56,873 ordered recipes,
+   2,277 distinct source DAGs and 9,108 emitted variants. Independent Python
+   replay confirms 6,102 support covers and 3,006 sufficient-checker rejections.
+   A cover combines successful instruction-contract footprints with fixed
+   macro support; it is not a claim that one blank run visits all labels.
+   Seven source layouts with actual control rebasing have 58,730 independently
+   checked successor edges.
+
+5. A positive-offset unary representation changes four rows and retains 246
+   states. Three universal local arithmetic contracts and 8,391 finite
+   instruction fixtures pass. New pair and entry searches give no saving.
+   Its blank initializer remains unproved.
+
+6. A reverse-prefix increment gives a 245-state local arithmetic experiment,
+   but also shifts a temporary counter run. At the reference-reached frame
+   at blank time 413,871, reference CI8 returns after 2,590 steps to PC01011;
+   the variant returns after 1,544 to PC011. The whole tapes are checked.
+   All 980 one-row entry repairs fail this fixture within 20,000 steps.
+   This refutes the claimed unchanged instruction interface, not a statement
+   about the experiment's eventual blank-tape behavior.
+
+## Reproduce the compact controls
+
+Use Python 3.10+ with assertions enabled; do not use -O or -OO.
+These commands need no third-party Python packages:
+
+~~~sh
+python3 -B code/verify.py --output /tmp/frontier-controls.json
+python3 -B experiments/runtime/check_runtime_variants.py --output /tmp/frontier-runtime.json
+python3 -B experiments/runtime/check_reachable_prefix_left.py --output /tmp/frontier-reached.json
+cd experiments/proof/atomic-target-portable
+python3 -B atomic_target_experiment.py
+python3 -B seed_zero_control.py
+~~~
+
+The first command checks all 492 renumbering rows, the exact 410,735-step
+baseline bootstrap with independent sparse and dense tapes, the entire
+expected frame, and both saved detector SAT models. The runtime commands
+check six universal word/list contracts and both whole-tape counterexamples.
+Add --search-entry to either runtime command to repeat its 980-action
+diagnostic; the two retained ledgers concern different fixtures.
+
+The atomic commands reproduce both raw compiler tables, their exact state
+counts, all NIP controls, and the reached zero-cache trace. They regenerate
+outputs in that experiment directory.
+
+From the package root, the decoder packet's default verification is:
+
+~~~sh
+python3 -B experiments/decoder/verify.py
+~~~
+
+It requires a C++17 compiler and uses a temporary copy. It checks imported
+identities, all baseline and negative controls, seven source certificates,
+and every saved double-rotation classification. Set ZFC_DECODER_TEMP_PARENT
+to choose its temporary parent. This default driver passed from a fresh
+copy; portable-replay.json records it. Optional --full regenerates both
+complete discovery censuses, which were already completed and retained.
+
+Detector synthesis requires the optional dependency pinned in its own
+requirements.txt. Its README gives exact commands, solver limitations,
+and all UNKNOWN results. The larger offset screens read Prog254.v from
+the pinned ProveIt repository through an explicit path argument; commands
+are in that packet. The repository and incoming ZIPs are not duplicated.
+
+## Compile the report
+
+From the package root with a normal TeX Live installation:
+
+~~~sh
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+~~~
+
+Both ordinary proof notes and the full arithmetic appendix are included.
+The PDF was compiled and every page visually inspected.
+
+## Attribution and table roles
+
+Mira-Cult, Jeff Ketchersid, Andrew James Wade, mira-emmy and the ProveIt
+contributors retain their attribution. Imported files have exact hashes
+and source locations; included licenses retain their original scope.
+
+- partial_prefix_left245_old.tm is a FAILED instruction-interface experiment.
+- offset246_old.tm is an uninitialized local-runtime experiment.
+- The atomic tables are raw compiler controls.
+- The existing 246 reference remains unchanged.
+
+No file establishes a verified sub246 blank-tape consistency machine,
+unconditional nonhalting, consistency, or global state minimality.

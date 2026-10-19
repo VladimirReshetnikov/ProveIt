@@ -1,0 +1,89 @@
+\section{A selector-permutation symmetry of the fixed-color compiler}
+\label{sec:selector-symmetry}
+
+There is a useful exact reduction in the dimension of the compiler search.
+For the two frozen compiler bases considered here, independently permuting
+the nine physical selector targets cannot change which fixed-color
+reassociations the emitter admits or how many states it emits. This statement
+is about that explicitly specified compiler family. It is not a lower bound
+on Turing machines and does not say that all permutations have a valid blank
+initialization.
+
+Let $T$ be a complete binary transition table, let $V$ be the palette of
+physical states assigned to source nodes, and let $S=\operatorname{dom}(T)
+\setminus V$ be the states copied as the supporting implementation. Here
+$\operatorname{dom}(T)$ denotes working-state labels, rather than transition
+pairs. Put
+\[
+ K=\{60,44,31,56,38,40,28,64,69\}\subset S.
+\]
+These are the nine physical register selectors. For a permutation $\pi$ of
+$K$, define $R_\pi T$ by replacing a target $k\in K$ by $\pi(k)$ precisely
+when the source state of the row is outside $K$. Every write, direction,
+source-state label, and other target is retained. In particular the selector
+circuits themselves are kept fixed; this operation is not a renaming of the
+whole transition graph.
+
+The fixed-color emitter first retains every supporting row. It then assigns
+rows to the chosen subset of $V$ from either a source-child color or one of
+the inherited terminal-action recipes. Conflicting demands on a physical
+row are rejected unless the emitter's fixed shared-color rule applies.
+The emitter also preserves a specified set $F$ of borrowed rows and forbids
+deletion of a specified protected-color set. Its source and suffix-context
+checks refer only to the source graph and the color assignment.
+
+\paragraph{Proposition.}
+Suppose the following finite premises hold:
+\begin{enumerate}
+\item $K\subset S$, so source colors and selector labels are disjoint.
+\item Every row changed by $R_\pi$ has source in $S$, and none belongs to $F$.
+\item Every inherited terminal-action target, and every explicit fixed
+target appearing in a fallback recipe, lies outside $K$.
+\item The changed supporting rows collectively target every member of $K$.
+The protected set is obtained from fixed shared colors, sources and targets
+of $F$, and targets of supporting rows.
+\end{enumerate}
+Then, for every permutation $\pi$ and every candidate source graph and color
+assignment admitted to this fixed-palette family, the two emissions are
+defined under exactly the same circumstances, have the same working-state
+domain, and satisfy
+\[
+ E_{R_\pi T}(C)=R_\pi\bigl(E_T(C)\bigr).
+\]
+Consequently their emitted state counts, row-conflict tests, borrowed-row
+tests, protected-color tests, and source-context tests agree.
+
+\paragraph{Proof.}
+The candidate's internal-child targets lie in $V$, which is disjoint from
+$K$. The inherited terminal recipes are also unchanged by the third premise.
+The reference rows inspected at source colors are unchanged by the second
+premise. Therefore each candidate demand on a source-colored row is
+literally identical in the two emissions. In particular every equality or
+conflict between such demands has the same answer.
+
+The supporting rows are copied from the reference table, and so differ
+exactly by $R_\pi$. No copied or emitted borrowed row changes. The only
+changing targets in the construction of the protected set belong to $K$;
+by the fourth premise the entire set $K$ occurs before and after the
+permutation. Thus the protected set itself is unchanged. The source graph,
+its colors, leaf order and local suffix contexts have not changed either.
+All acceptance tests consequently agree. Both emissions retain exactly
+$S$ together with the same used source colors, proving equality of their
+state domains and the displayed commutation identity.\hfill$\square$
+
+The finite premise checker in \texttt{check\_selector\_commutation.py}
+verifies this proposition for the original 203-node source and for the
+separately certified rotated 202-node source. Both use 191 source colors
+and 55 supporting states. The respective borrowed-row sets have 54 and
+50 rows. In both cases precisely 14 supporting rows are retargeted, their
+targets cover all nine selectors, and no inherited terminal action targets
+a selector directly. The explicit fallback target 39 also lies outside
+$K$. The certificate records the exact input hashes and changed row keys.
+
+This symmetry removes redundant repetitions of the same fixed-color search.
+It does not rule out changing selector circuits, changing terminal recipes,
+enlarging the color palette, or obtaining a different runtime-validity
+answer for a proposed table under a different physical register layout.
+Those are separate questions. In particular the proposition does not
+transport any claimed startup and is not a proof that all graph-pruning
+state counts are invariant for arbitrary emitted candidates.

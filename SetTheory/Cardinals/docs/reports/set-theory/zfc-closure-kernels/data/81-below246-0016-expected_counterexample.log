@@ -1,0 +1,82 @@
+{
+  "status": "COUNTEREXAMPLE_TO_ADVERTISED_INSTRUCTION_CONTRACT",
+  "table_sha256": "8539768b4ab9e862233adf3b3a3839fabfbb90afd5b654268f43f13c9d1fdb0c",
+  "input": {
+    "dispatcher": 96,
+    "head": 0,
+    "pc": "11101001001010100111000000",
+    "header_distance": 40,
+    "physical_registers": [
+      0,
+      1,
+      0,
+      3,
+      5,
+      8,
+      13,
+      21,
+      34
+    ],
+    "spares": [
+      0
+    ],
+    "source_operation": [
+      "CD",
+      1
+    ],
+    "physical_selected_register": 2,
+    "guard": "register2=0"
+  },
+  "first_changed_routing": {
+    "completed_steps": 25,
+    "state": 178,
+    "head": 23,
+    "read": 0,
+    "old_row": [
+      0,
+      "R",
+      23
+    ],
+    "naive_row": [
+      0,
+      "R",
+      16
+    ]
+  },
+  "first_macro_return": {
+    "completed_steps": 378,
+    "state": 96,
+    "head": 0,
+    "actual_pc": "11101001001010100111000001",
+    "expected_pc": "1110100100101010011100001",
+    "header_distance": 40,
+    "register_file_unchanged": true,
+    "spare_suffix_unchanged": true,
+    "differing_cells": [
+      {
+        "position": 24,
+        "expected": 1,
+        "actual": 0
+      },
+      {
+        "position": 25,
+        "expected": 0,
+        "actual": 1
+      }
+    ]
+  },
+  "next_selector_disagreement": {
+    "completed_steps": 531,
+    "state": 60,
+    "head": 41,
+    "observed_physical_selector": 0,
+    "declared_source_decode": [
+      "111010010010101001110000010",
+      "CI",
+      6
+    ],
+    "declared_source_physical_selector": 8,
+    "declared_source_selector_state": 69
+  },
+  "claim_boundary": "Refutes the proposed source/binary local instruction correspondence at its completed-operation boundary. Does not prove inequivalent blank-tape halting, impossibility of another invariant, or absence of a later revisit to an expected configuration."
+}

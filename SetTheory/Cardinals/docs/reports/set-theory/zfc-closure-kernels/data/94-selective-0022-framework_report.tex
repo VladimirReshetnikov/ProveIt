@@ -1,0 +1,181 @@
+% Includable section; requires amsmath and hyperref/url in the parent report.
+\section{Framework reductions: a relaxed bootstrap target and an exact obstruction}
+\label{sec:framework-findings}
+
+No table below 245 working states is certified by this section.  Its smaller
+tables are explicitly named \texttt{unverified\_scanner244} and
+\texttt{unverified\_scanner243}; they are retained to make the unsuccessful
+reductions concrete and reproducible.  The reference is the old-label routed
+245-state table with SHA-256
+\begin{center}\small
+\texttt{f8dbeacdad5fd89c57e3f240781324b09110be8e0ccdb838a9c710fb28d2a267}.
+\end{center}
+Its start, dispatcher and halt labels are respectively 95, 96 and 254.
+
+\subsection{The original bootstrap equations are not necessary}
+
+Delete state 58 and replace transition $(41,0)$ by $(0,L,84)$.  This yields
+244 working states.  Deleting state 41 as well, and replacing $(29,0)$ by
+$(0,L,84)$, yields 243.  Both retain a concrete blank prefix reaching a
+complete frame with formula-bearing logical registers $T=W=H=0$.
+Independent sparse-set and dense-array interpreters agree on every one-cell
+and hence on the complete tapes:
+\begin{center}\small
+\begin{tabular}{lrrrr}
+Table & Steps & Head & Header distance & Spare blocks\\\hline
+Reference 245 & 407915 & $-5$ & 181 & 167\\
+Unverified 244 & 818324 & $-8$ & 245 & 233\\
+Unverified 243 & 1389062 & $-8$ & 331 & 321
+\end{tabular}
+\end{center}
+All listed spares have value one.  In the order $(N,T,W,A,D,H,X,Y,L)$, the
+logical seeds are respectively
+\[
+(3,0,0,0,3,0,0,0,0),\qquad
+(6,0,0,0,4,0,0,0,1),\qquad
+(6,0,0,0,6,0,0,0,1).
+\]
+The complete one-cell counts are 351, 488 and 666; all their coordinates are
+retained in \path{framework_work/exact-blank-prefixes.json}.
+These facts justify relaxing the earlier fixed seed and 54 grammar
+bootstrap equations during search.  A replacement search may instead check
+its newly produced complete formula-clean frame.  A successful finite
+bootstrap does not establish recurrent correctness.
+
+\subsection{Why the direct 244-state contraction is not accepted}
+
+For header distance $64+n$, the unchanged guarded symbolic checker examines
+all 8391 instruction cases.  It accepts 8292 and fails 99: both guards of 49
+decrements and one increment.  Exactly 50 source leaves are affected, and
+these are exactly the leaves whose paths end in six zeros.  By physical
+register, the failed decrement counts are 70 for register 2, 26 for register
+0 and 2 for register 1; the failed increment uses register 2.  The checker
+permits 1000 symbolic rules per obligation.  Its failures remain failures of
+a sufficient procedure, not 99 separately asserted inequivalence proofs.
+
+There is also an independently replayed literal defect.  Start at state 96,
+head zero, pointer $p=11101001001000000$, header distance 64, nine zero
+physical registers, and one spare of value one.  Put one precisely at
+\[
+\begin{split}
+C=\{&-1,0,1,2,4,7,10,64,66,68,70,72,74,\\
+    &76,78,80,82,84,85\};
+\end{split}
+\]
+every other tape cell is zero.  This is a zero decrement of physical
+register 2.  The required successor pointer is
+$1110100100100001$.  The reference first returns to a complete frame at
+step 574, state 96 and head zero, with one-cells $C\cup\{15\}$.  The mutant
+first returns at step 650 with the same state, head and register file but
+one-cells $C\cup\{13\}$, representing $11101001001001$.
+
+Here a complete return frame has the sole negative one-cell at $-1$, the
+unchanged entire register suffix at and beyond 64, and a zero interval
+$[51,64)$ after the possible pointer; 51 is the reference maximum source
+depth.  All earlier dispatcher encounters are checked against this explicit
+criterion.  The mutant's second dispatcher encounter, at step 279, has head
+11; the corresponding reference encounter, at step 310, has head zero.
+This shows the false recognition of an internal zero suffix.  A second
+dense-tape execution checks both final configurations.
+
+The assertion is exact disagreement at the first complete instruction
+boundary.  No reachability of this particular frame from blank is claimed;
+nor is it claimed that the mutant can never revisit the expected frame later
+or that its eventual halting differs.  The data are sufficient to reject the
+proposed unchanged-source simulation argument, without overstating them as
+a refutation of every possible correctness argument for this table.
+
+\subsection{Expanded local search families}
+
+The finite fixture family contains 8385 cases, has header distance 181 and
+167 value-one spares, and exercises all 490 reference rows.  Its longest
+reference case takes 2686 steps.  Each mutation is allowed 20000 steps and
+tape coordinates $-64$ through 1983.
+\begin{center}\small
+\begin{tabular}{lrr}
+Family & Recipes & Full survivors\\\hline
+Pair quotient with four row selections & 119560 & 0\\
+Individual edge retargeting & 119316 & 109\\
+Combined surviving retargets deleting state 4 & 1536 & 0\\
+Combined surviving retargets deleting state 42 & 30 & 0
+\end{tabular}
+\end{center}
+Only states 4 and 42 have surviving alternatives for every external incoming
+edge in the individual-edge screen.  Their combinations do not survive.
+This also demonstrates why individually successful fixture-preserving edits
+must not be assumed to compose: each may depend on an original route removed
+by the other.  These bounded sweeps establish no minimality theorem.
+
+Pure router 166 was separately checked for context-dependent replacement.
+Its only external callers write a known bit $c$ and move left; let the now
+scanned predecessor be $b$.  After two transparent right steps, its endpoint
+states for $b=0,1$ are $(53,49)$ when $c=0$, and $(54,90)$ when $c=1$.
+Every other working state was tried as a replacement under this local
+contract.  All newly encountered unknown tape bits are explicitly branched,
+the whole tape must be preserved, state 166 may not be entered, and the
+bound is twelve literal steps.  No replacement exists in this bounded
+family.  Longer paths or newly synthesized routers are not excluded.
+
+\subsection{An unlocked five-zero grammar search}
+
+A modified inherited annealer removes the bootstrap locks and minimizes
+$K+0.25b$, where $K$ is the grammar-rule count and $b$ counts expanded syntax
+nodes with leading zero run greater than five.  Maximum zero run six and
+depth 64 remain hard bounds.  Seed 710418 made 5615239 proposals in
+600.006 seconds.  The retained weighted-best checkpoint has 132 rules,
+maximum zero run six, depth 45 and eleven bad nodes; it is not a target
+solution and is not a lower-bound certificate.
+
+The concrete remaining objective is a 128-rule grammar with a five-zero
+bound, separately passing full source bisimulation, all runtime obligations,
+and its new blank-prefix check.  Together with the 116-state shortened
+framework it would yield 244 states.  The present experiments show that
+retaining the previous bootstrap equations is unnecessary for this search;
+they do not claim to have solved its remaining grammar problem.
+
+After extracting the included reference archive to
+\path{packages/zfc245-proof-20261018}, the component command is
+\begin{quote}\small\ttfamily
+python3 framework\_work/reproduce\_findings.py\ \char`\\
+\newline
+\hspace*{1em}--reference packages/zfc245-proof-20261018 --full
+\end{quote}
+The archive-level command \texttt{python3 -B code/verify.py --full}
+performs the reference extraction automatically in a temporary directory.
+Its success label, \texttt{PASS\_FINDINGS\_REPRODUCED}, certifies only
+reproduction of the stated findings.  No success label in this section is
+an assertion of a sub-245 consistency equivalence.
+
+\subsection{The defect also appears on a literal blank trajectory}
+
+An independent source-context map relates the routed program directly to the
+annotated 219-node \path{Dag254.v} using a closed segment bisimulation:
+3021 pointer pairs and 6041 checked straight-line segments. It places 49
+affected leaves in \texttt{axioms()} and one in \texttt{mp()}. The argument
+compares register tests and every register's increment count between tests;
+it does not assume the two source compilations have identical leaf order.
+The complete annotation paths are in \path{scanner-semantic-contexts.json}.
+
+The MP leaf, source index 6367 and path $1111000000$, is reached by the
+contracted 244-state machine itself from blank at literal step 835524.
+The complete frame has state 96, head $-8$, header 238, physical registers
+$(0,0,0,4,0,0,6,0,0)$ and 233 spare blocks of value one. This is the zero
+branch of a decrement of $T$. Starting with that same complete frame,
+the reference first returns cleanly after 2044 steps with the required
+residual pointer $111100001$; the contraction first returns after 2102
+steps with pointer $1111001$. Relative to the common initial one-cell set,
+the reference adds coordinate $0$ and the contraction adds coordinate $-2$.
+The latter configuration therefore occurs at actual blank step 837626.
+Every cell in these finite prefixes and both fork endpoints is independently
+replayed with sparse and dense tapes by
+\path{reachable_scanner_discrepancy.py}.
+
+The two residual pointers also give different register files on their next
+return to the root under the ordinary source semantics. The expected fork
+reaches the root after 652 source instructions with $T=0$; the changed fork
+does so after 43 with $T=4$. The other logical registers in both files are
+$(N,W,A,D,H,X,Y,L)=(6,0,0,4,0,0,0,0)$. This is a finite source comparison;
+it does not identify all subsequent steps of the altered binary machine.
+In particular, neither the blank-reachable discrepancy nor the different
+root files proves different eventual halting. A revised source contract or
+a stronger reachable-state invariant has not been excluded.

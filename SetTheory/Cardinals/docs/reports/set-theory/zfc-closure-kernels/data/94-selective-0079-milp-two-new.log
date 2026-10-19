@@ -1,0 +1,78 @@
+{"nodes": 917, "productions": 3384, "constraints": 7269, "universe_steps": [310, 961]}
+Running HiGHS 1.8.0 (git hash: 222cce7): Copyright (c) 2024 HiGHS under MIT licence terms
+Coefficient ranges:
+  Matrix [1e+00, 1e+00]
+  Cost   [1e+00, 1e+00]
+  Bound  [1e+00, 1e+00]
+  RHS    [2e+00, 1e+02]
+Presolving model
+6034 rows, 4090 cols, 16186 nonzeros  0s
+5319 rows, 2723 cols, 11558 nonzeros  0s
+3506 rows, 2659 cols, 9844 nonzeros  0s
+3506 rows, 1658 cols, 6948 nonzeros  1s
+1545 rows, 1337 cols, 4640 nonzeros  1s
+1545 rows, 662 cols, 2812 nonzeros  1s
+513 rows, 404 cols, 1520 nonzeros  1s
+484 rows, 383 cols, 1441 nonzeros  1s
+Objective function is integral with scale 1
+
+Solving MIP model with:
+   484 rows
+   383 cols (383 binary, 0 integer, 0 implied int., 0 continuous)
+   1441 nonzeros
+MIP-Timing:         1.9 - starting analytic centre calculation
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic; L => Sub-MIP;
+     P => Empty MIP; R => Randomized rounding; S => Solve LP; T => Evaluate node; U => Unbounded;
+     z => Trivial zero; l => Trivial lower; u => Trivial upper; p => Trivial point
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+         0       0         0   0.00%   62              inf                  inf        0      0      0         0     1.9s
+         0       0         0   0.00%   73.47131537     inf                  inf        0      0      4       282     1.9s
+
+0.3% inactive integer columns, restarting
+Model after restart has 444 rows, 344 cols (344 bin., 0 int., 0 impl., 0 cont.), and 1354 nonzeros
+
+MIP-Timing:         3.7 - starting analytic centre calculation
+         0       0         0   0.00%   96.12539631     inf                  inf       37      0      0      3181     3.7s
+         0       0         0   0.00%   96.12539631     inf                  inf       37     34      3      3374     3.7s
+
+Symmetry detection completed in 0.0s
+Found 6 full orbitope(s) acting on 18 columns
+
+        73       0        36 100.00%   inf             inf                  inf     1671     53   2491     23498     8.2s
+
+Solving report
+  Status            Infeasible
+  Primal bound      inf
+  Dual bound        inf
+  Gap               inf
+  P-D integral      0
+  Solution status   -
+  Timing            8.17 (total)
+                    0.00 (presolve)
+                    0.00 (solve)
+                    0.00 (postsolve)
+  Max sub-MIP depth 3
+  Nodes             73
+  Repair LPs        0 (0 feasible; 0 iterations)
+  LP iterations     23498 (total)
+                    15954 (strong br.)
+                    1173 (separation)
+                    4113 (heuristics)
+{
+  "status": 2,
+  "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)",
+  "seconds": 8.186699317000148,
+  "universe_rounds": 2,
+  "new_word_limit": 2,
+  "grammar_bound": 127,
+  "nodes": 917,
+  "productions": 3384,
+  "constraints": 7269,
+  "objective": null,
+  "dual_bound": null,
+  "mip_gap": null
+}

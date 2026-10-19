@@ -1,0 +1,28 @@
+# A 245-state consistency machine: independent audit and alternative research
+
+Current result: the separately supplied, independently audited 245-state construction meets the requested bound and ordinary-ZFC-proof target. ZFC proves that its nonhalting from the all-zero tape is equivalent to the ordinary syntactic consistency of ZFC. No new Lean/Rocq endpoint or serialized first-order ZFC/PA proof object is claimed.
+
+Start with **audit245-addendum.pdf**. The construction belongs to the parallel user-supplied contribution, not to our unfinished native-component architecture. The original archive `zfc245-proof-20261018.zip` and its 17-page report remain separate, unchanged deliverables. This supplement does not duplicate them. See AUDIT245_REPRODUCE.md for the exact archive and table hashes.
+
+The independently audited canonical machine has 245 working states (0–244), start 0, dispatcher 88, separate halt 245, and 490 binary transition rows. Fresh sparse and dense simulations agree on the entire 351-one initialized tape after 407,915 steps. The source bisimulation has 3,013 reachable pairs and 6,024 guarded edges. All 8,391 universal affine and expanded whole-frame instruction cases pass, with exact pointer composition, actual-table macro inductions, and the inherited conventional-ZFC calibration.
+
+Quick independent reproduction (Python standard library, assertions enabled):
+
+    python3 verify_manifest.py
+    python3 run_audit245.py --archive /path/to/zfc245-proof-20261018.zip --output /path/to/fresh-audit
+
+The runner verifies the original archive hash, extracts into a new scratch tree, and replays four independent audits: literal table/blank tape, source bisimulation, universal affine runtime, and grammar/entry routing. Add `--core` to replay the original archive's full whole-frame proof as well. The delivered evidence and original archive are not overwritten.
+
+## Separate alternative-research results
+
+**sub246-research.pdf** records our alternative-formalism and native-component branch. This branch did not itself produce the complete 245-state construction. It supplies exact logical recodings, an 18-state copier, 28/24-state comparators with different gap premises, a 62-state native-edge quotient, and 216/187-state prepared libraries with unlinked ports. The growing forward saturation algorithm has ordinary soundness/completeness proofs; its binary generator and controller are still unimplemented. Its conceptual savings are not part of the successful machine's ledger.
+
+Replay the native component suite with:
+
+    python3 run_portable.py
+
+It uses fresh copies and records logs and hashes. REPRODUCE.md describes source-dependent experiments, minimal included dependencies, and optional solvers. INTEGRATION_CHECKLIST.md concerns future native integration. Historical lane reports and negative-result files preserve their original branch-specific status; this README and the audit addendum give the current overall result.
+
+## Attribution and scope
+
+The successful 245-state archive was supplied from the user's parallel research conversation. Our contribution is independent audit, supplementary reproducibility, and the distinct alternative research. PROVENANCE.md and notices/ preserve the Mira-Cult, Jeff Ketchersid, Andrew James Wade, public 253-state, and ProveIt lineage. The original archive's provenance pin and our experimental pin are distinguished. No upstream repository was modified, no external publication was made, and no external access permissions were changed.

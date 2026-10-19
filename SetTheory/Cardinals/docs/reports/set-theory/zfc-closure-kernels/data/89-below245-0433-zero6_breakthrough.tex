@@ -1,0 +1,99 @@
+% Report insert for the independently verified 245-state candidate.
+\subsection{The reduction that crosses the 246-state boundary}
+\label{sec:zero6-breakthrough}
+The successful construction combines a shorter marker scanner with a
+context-aware reassociation of the fixed decoder program.  Its final grammar
+has $128$ pure sequence rules after the old lookup at state~177 is represented
+as a grammar router.  The corresponding non-grammar framework has $118$
+working states before shortening the scanner, and $117$ afterwards.  Thus the
+realized table has
+\[
+ 128+117=245
+\]
+working states.  These accounting categories are semantic roles; a freed
+numeric state label may be reused by a decoder rule in the final table.
+The exact expanded source has maximum zero run~$6$, maximum leaf depth~$51$,
+and the same ordered list of all $6\,460$ instructions as the reference.
+
+\paragraph{Why a previously rejected rotation now works.}
+Write $[q]$ for the closed semantic word of old sequence state~$q$.  The
+well-known proposed reduction
+\[
+ [178]=([23],([24],[206]))
+       \quad\rightsquigarrow\quad
+       (([23],[24]),[206])=([16],[206])
+\]
+removes rule~208.  It previously failed because the folded call $218/0$
+entered state~154 from the left, and required its two projections
+$00\mapsto[23]$ and $10\mapsto[105]$.
+The new construction sends this call to the already useful word~86:
+\[
+ [86]=([98],[99]),\qquad
+ [98]=([23],([132],[16])),\qquad
+ [99]=([105],[114]).
+\]
+It follows immediately that word~86 has exactly the two required
+projections.  No change to the closed semantics of word~86 is needed,
+because the new rule for~98 is simply
+\[
+ ([113],[16])=(([23],[132]),[16])
+       \quad\rightsquigarrow\quad
+       ([23],([132],[16])).
+\]
+The helper $([132],[16])$ has the semantic word
+\texttt{KCeijkfg}.  Its shorter left spine also helps satisfy the scanner's
+zero-run bound.  This sharing of a reassociation between two purposes is the
+key: it reduces a dangerous decoder depth and supplies a different legal
+folded-entry target, which in turn permits the old~178 rotation.
+
+In the successful old-label table, the mechanism appears directly as
+\[
+\begin{array}{c|cc}
+\text{state}&\text{read }0&\text{read }1\\\hline
+98 &0\,R\,23&1\,R\,74\\
+74 &0\,R\,132&1\,R\,16\\
+178&0\,R\,16&1\,R\,206\\
+218&0\,L\,86&1\,R\,70
+\end{array}
+\]
+State label~74 is now the helper decoder, not the old scanner state.
+The scanner's transition $58/0$ instead goes directly to $84$.
+Other cost-neutral associations rearrange larger unique decoder regions so
+that no source path contains seven consecutive zeros.
+
+\paragraph{How the graph was found and checked.}
+The search releases a fixed folded-entry root only when each external call
+can be routed through another active grammar word with the same required
+projections.  It also synthesizes router-only words, rather than limiting the
+candidate pool to substrings of the original source.  All~22 folded
+projections and the~54 sufficient bootstrap row constraints are checked.
+A graded objective first reduces the number of seven-zero nodes from~18 to~1
+without increasing the~128-rule grammar budget.  A small explicit
+reassociation then gives a~129-rule, zero-six intermediate graph.
+A final search keeps the zero-six bound as a hard condition and removes one
+rule.  With seed~$129177$, it finds the~128-rule solution after
+$7\,040\,505$ proposals.  These proposal counts describe a heuristic run;
+they are not an exhaustive search or a state lower bound.
+
+The frozen successful grammar has SHA-256
+\begin{center}\ttfamily\footnotesize
+724ad366bb56206a3aac233932e6a8bfc10a49192f5a4d6689c873c5c1d6a278
+\end{center}
+Independent Python checks verify its exact words, orientations, all~22
+projections, all~54 bootstrap constraints, reachability of every rule, and
+expanded source bounds.  The separate literal-machine audit realizes it as a
+$245$-state table, checks the register-machine bisimulation, and verifies all
+$8\,391$ affine instruction cases.  In this lane, a second exact check
+repaints the~$8\,385$ retained interval representatives using the new source
+paths, header distance~$181$, and~$167$ spare blocks of value~$1$.
+Every case passes a literal binary-tape execution; the maximum is~$2\,686$
+moves and all~$490$ transition rows are exercised.  This sample-based replay
+corroborates, but does not replace, the parametric instruction proof.
+
+Fresh independent sparse and dense interpreters both reach the original
+bootstrap frame after~$407\,915$ moves, with state~96, head~$-5$, header~176,
+and exactly~351 one-cells.  The logical seed is
+$(3,0,0,0,3,0,0,0,0)$ and the~167 spare blocks all have value~1.
+The logical and parametric proof components are separate obligations in the
+complete consistency-equivalence argument; a small state count and a long
+non-halting simulation alone would establish neither.

@@ -1,0 +1,178 @@
+\section{Certified rewrites that preserve the register computation}
+\label{sec:neutral-macros}
+
+The following result does not reduce the working-state count.  It provides
+five independently checked runtime variants of the 246-state table and a
+useful exact reduction of its tape overhead.  No blank initializer is
+claimed for these variants.  In particular, a recurrent simulation theorem
+must not be mistaken for a blank-tape consistency machine.
+
+All state labels in this section are the original labels.  Write
+\[
+ B(v)=01^{v+1},\qquad B(A)=\prod_{v\in A}B(v),\qquad
+ C(v)=101^v,\qquad C(A)=\prod_{v\in A}C(v).
+\]
+Let $A$ be the prefix before the selected primary register, let $x$ be its
+value, and let $S$ be its nonempty suffix of ordinary register blocks.
+The input to an arithmetic macro is
+\[
+ B(A)\,00\,1^x B(S)0^\omega.
+\]
+The left context is arbitrary.  Put $p=|B(A)|$ and
+$w=|B(A\mathbin{+\!+}[x]\mathbin{+\!+}S)|$, so $w$ is the
+width of the entire unmarked file.  Arbitrary finite lists and arbitrary
+nonnegative register values are allowed.
+
+\subsection{Removing the increment's accumulating spare blocks}
+
+Make the single transition replacement
+\[
+ (131,0)\mapsto (1,R,103).
+ \tag{A}
+\]
+The replaced transition was $(131,0)\mapsto(0,L,48)$.
+All other transition rows remain unchanged.
+
+\begin{lemma}[A terminating erasure gadget]
+On a local word $011$ with state 131 at its first cell, replacement
+\textup{(A)} changes that word to $000$ and reaches state 48 one cell
+left of the word in exactly five steps.  It does not inspect either
+exterior context.
+\end{lemma}
+\begin{proof}
+The literal rows give
+\[
+ 131\xrightarrow{0/1,R}103
+ \xrightarrow{1/1,R}120
+ \xrightarrow{1/0,L}61
+ \xrightarrow{1/0,L}33
+ \xrightarrow{1/0,L}48.
+\]
+Every read symbol in this calculation is supplied either by the input
+$011$ or by an earlier displayed write.  The final word is $000$ and
+the net head movement is one cell left.
+\end{proof}
+
+\begin{lemma}[Increment with no added spare]
+For the modified table, the increment macro starting in state 73 at the
+file's origin reaches state 48 one cell left of the origin, after
+$2w+11$ transitions, with output
+\[
+ B(A\mathbin{+\!+}[x+1]\mathbin{+\!+}S)0^\omega.
+\]
+The entire suffix $S$, including all spare blocks, is preserved exactly.
+The positive- and zero-decrement macros retain the original contracts,
+with durations $2p+4$ and $2p+7$, respectively.
+\end{lemma}
+\begin{proof}
+The seeker and forward-carry block inductions are unchanged.  At the
+right exterior, the old increment creates $1011$, reaches state 131 at
+its middle zero, and subsequently returns left.  The new five-step
+gadget replaces that middle $011$ by $000$, leaving only the leading
+one.  The word identity $C(S)1=1B(S)$ then gives the stated incremented
+register with no extra block.  Replacing one old step by five new steps
+adds exactly four transitions to the old $2w+7$ formula.  The return
+scan crosses the same expanded old portion as before.
+
+The elementary carry and rollback block proofs use only the read-one
+row of state 131.  The zero-decrement local proof also uses only that
+row.  The original positive-decrement route uses states 63 and 48.
+Thus neither decrement macro changes.  Each statement is checked by
+symbolic unary induction and structural induction over the arbitrary
+block lists, rather than by bounded numerical samples.
+\end{proof}
+
+The complete decoder must still be checked, because state 131 also
+occurs outside the arithmetic box.  The unchanged affine symbolic
+executor accepts all 8,391 guarded instruction cases on this modified
+literal table, including all 1,931 zero and 1,931 positive decrement
+branches.  The new macro contracts above are the arithmetic premises.
+The executor verifies the entire successor program counter, header
+translation, register effect, and overflow behavior.  Its interpretation
+of a register box quantifies over a nonempty arbitrary spare suffix;
+the new increment preserves that premise exactly.  This is a
+mathematical symbolic proof check, not a proof-assistant kernel theorem.
+
+\begin{corollary}[Exact saving in tape overhead]
+Start the original runtime and variant \textup{(A)} from corresponding
+valid dispatch frames with identical logical registers, program counter,
+header gap, and initial spare suffix.  After any common finite sequence
+of instructions containing $I$ increments, variant \textup{(A)} has
+exactly $3I$ fewer cells in its encoded register file and $2I$ fewer
+one-cells contributed by spare blocks.  Its number of spare blocks
+remains equal to the initial number.
+\end{corollary}
+\begin{proof}
+The original increment appends the three-cell word $B(1)=011$; the
+new increment appends nothing.  Both tables perform the same primary
+register update.  All other instructions preserve the spare suffix
+in both runtimes.  Induction over the common instruction sequence
+proves the formulas.  Both tables have the same header movement at
+instruction boundaries, so the difference also applies to the right
+endpoint of their finite encodings relative to the same header.
+\end{proof}
+
+This is a storage reduction for the runtime from admitted frames.
+A bounded search of all 246 existing states as blank starts, with a
+three-million-step limit and finite tape bounds, found no admitted
+root for variant \textup{(A)}.  That failure is not an impossibility
+result, and it is not replaced here by an uncounted initializer.
+
+\subsection{Routing positive decrement through the seeker}
+
+Two further replacements, used separately, are
+\[
+ (75,1)\mapsto(1,R,73)\qquad\text{or}\qquad
+ (75,1)\mapsto(1,L,73).
+ \tag{B$_R$, B$_L$}
+\]
+The original row was $(75,1)\mapsto(1,L,63)$.  For a positive
+selected value, these replacements send the machine through the
+rightward seeker and its terminating carry before returning left.
+They preserve the primary decrement and the one-cell boundary shift.
+They append two value-one spare blocks, or one such block if combined
+with \textup{(A)}.  The left-moving choice takes two extra steps over
+the right-moving choice.
+
+For clarity, the complete local contracts are summarized below.
+The listed append counts concern value-one spare blocks; zero
+append count means that the whole existing suffix is preserved.
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Variant & Increment time & Positive decrement time
+ & Inc. append & Pos. dec. append\\
+\hline
+Original & $2w+7$ & $2p+4$ & 1 & 0\\
+A & $2w+11$ & $2p+4$ & 0 & 0\\
+B$_R$ & $2w+7$ & $2w+10$ & 1 & 2\\
+B$_L$ & $2w+7$ & $2w+12$ & 1 & 2\\
+A+B$_R$ & $2w+11$ & $2w+14$ & 0 & 1\\
+A+B$_L$ & $2w+11$ & $2w+16$ & 0 & 1\\
+\hline
+\end{tabular}
+\end{center}
+Zero decrement has duration $2p+7$ and preserves the whole file for
+all six rows.  Marking is also unchanged.  The macro induction checker
+and the complete 8,391-case affine instruction checker succeed for
+all five modifications listed after the original.
+
+\subsection{Scope of the resulting optimization search}
+
+Each neutral variant was used as a fresh base for state reduction.
+The finite discovery tests permitted translated dispatch frames,
+header gaps at least 40, the primary values of the specified finite
+sample suite, and arbitrary valid nonempty spare suffixes.  Visits
+were recomputed on each new base, so an old trace was not used to
+exclude newly reachable transitions.
+
+Across the five bases, 597,334 mixed-row state-identification recipes
+were tested: one state is removed, incoming edges are redirected to
+a retained state, and one row of the removed state supplies a row of
+the retained state.  All five searches returned zero survivors.
+Uniform state identifications likewise had zero survivors.  Searches
+of every single incoming edge to a state, together with selected
+multiple-incoming edges, also failed to produce a smaller candidate.
+These bounded searches do not establish minimality.  Their purpose
+is to distinguish the certified neutral transformations from a
+state-count improvement, which has not been obtained by this route.

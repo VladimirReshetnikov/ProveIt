@@ -1,0 +1,151 @@
+{
+  "status": "PASS universal runtime simulation and separately certified complete blank initialization",
+  "working_states": 250,
+  "source_stats": {
+    "instruction_leaves": 6460,
+    "maximum_depth": 36,
+    "maximum_zero_run": 6
+  },
+  "universal_guarded_cases": 8391,
+  "by_operation": {
+    "CD/zero": 1931,
+    "CD/positive": 1931,
+    "CB": 128,
+    "CI": 2601,
+    "CC": 1799,
+    "CH": 1
+  },
+  "base_head_to_header_distance": 40,
+  "additional_gap": "all n>=0",
+  "register_values": "all natural numbers with named decrement guard",
+  "spare_suffix": "all finite nonempty natural-valued lists",
+  "minimum_literal_progress": 13,
+  "maximum_symbolic_rules": 493,
+  "register_induction_counts": {
+    "block": 4,
+    "word_identity": 1,
+    "arithmetic": 3,
+    "marking": 9
+  },
+  "scanner": {
+    "deleted_state": 74,
+    "changed_row": [
+      58,
+      0,
+      0,
+      "L",
+      84
+    ],
+    "run_length": 8
+  },
+  "below_246_goal_met": false,
+  "sources": {
+    "binary_table": {
+      "path": "agent_macros/compiled24_scanner250.tm",
+      "sha256": "e3d6e23d9970e1e3dceca66490e6a789e8b6cf692ab4d44fb911f591cb39a8b9"
+    },
+    "full_certificate": {
+      "path": "agent_macros/compiled24_scanner250_audit.json",
+      "sha256": "fd57682ea8975f7648e348538030fc96f3f463eaca2f257539c2c426dc3556e2"
+    },
+    "checker": {
+      "path": "agent_macros/check_short_scanner.py",
+      "sha256": "2119f39d51bed498d8b94fa56ca4e2b4fc3c06aae028684bc5dd5f98566002e0"
+    },
+    "source_graph": {
+      "path": "agent_logic/rotation_zero_candidate_24.json",
+      "sha256": "90d15a0fb69606e080a5fa5d2ce5179f2642958546a4f1203b259b2804eb76af"
+    },
+    "source_equivalence_certificate": {
+      "path": "agent_logic/rotation_zero_source_certificate.json",
+      "sha256": "41bb16cddbaa0644c451d2e7be1a9ec8304e3f65115fcc51a59e7ed99a747d37"
+    },
+    "source_equivalence_checker": {
+      "path": "agent_logic/rotation_zero_source_audit.py",
+      "sha256": "61633596a862a0cf3e8677b6a612d4b710c2e3ce1e553ae42e6c2de53238786c"
+    },
+    "original_program": {
+      "path": "sources/context246/zfc-context246/sources/Prog254.v",
+      "sha256": "1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746"
+    },
+    "affine_executor": {
+      "path": "sources/context246/zfc-context246/sources/prior/prefix_affine.py",
+      "sha256": "083f884e6de87a85381ebc6b28c23d02a9f0731e67c3d77e26ed9ea4544cd08e"
+    },
+    "register_induction_checker": {
+      "path": "sources/context246/zfc-context246/code/check_macro_inductions.py",
+      "sha256": "3484c0be3aaf34bd3677c0cc727eaba8655efd358f9338192a88be0d9c89ad8d"
+    },
+    "source_path_arithmetic": {
+      "path": "sources/context246/zfc-context246/code/review_affine_source.py",
+      "sha256": "173e3955c4adefb82ef065c78e43d6521a468b88666ce11a9a269fd9ec7addc0"
+    },
+    "blank_initialization_certificate": {
+      "path": "agent_states/blank_prefix_results.json",
+      "sha256": "5a2d8c07f135891852a5ea0498b706a5ee8f39a5d5bd1e682bd831068c76fac8"
+    },
+    "blank_initialization_checker": {
+      "path": "agent_states/check_blank_prefix.py",
+      "sha256": "cf69789c666e34da138045a4f59595a0e5d1cc09b806f71359dac4b34460ea41"
+    }
+  },
+  "runtime_audit_alone_is_whole_blank_tape_ConZFC_theorem": false,
+  "runtime_audit_scope": "Instruction-frame simulation only; blank initialization is established by the separately cited certificate.",
+  "blank_initialization_proved": true,
+  "separate_blank_initialization": {
+    "status": "PASS separately certified complete blank prefix",
+    "steps": 407983,
+    "start_state": 95,
+    "start_head": 0,
+    "start_tape": "all zero",
+    "complete_tape_equality": true,
+    "zero_exterior_verified": true,
+    "visited_head_interval": [
+      -15,
+      701
+    ],
+    "safe_root": {
+      "state": 96,
+      "head": -5,
+      "marker": -6,
+      "header": 176,
+      "header_distance": 181,
+      "pc": "",
+      "physical_primary": [
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        3,
+        0,
+        0
+      ],
+      "logical_primary": [
+        3,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0
+      ],
+      "spare_count": 167,
+      "every_spare_value": 1,
+      "ones": 351,
+      "zero_everywhere_else": true
+    },
+    "certificate": {
+      "path": "agent_states/blank_prefix_results.json",
+      "sha256": "5a2d8c07f135891852a5ea0498b706a5ee8f39a5d5bd1e682bd831068c76fac8"
+    },
+    "checker": {
+      "path": "agent_states/check_blank_prefix.py",
+      "sha256": "cf69789c666e34da138045a4f59595a0e5d1cc09b806f71359dac4b34460ea41"
+    }
+  },
+  "proof_composition": "Complete blank and runtime components are certified; source equivalence and the inherited logical calibration provide the separate composition interfaces."
+}

@@ -1,0 +1,14 @@
+.PHONY: report verify full whole-frame
+
+report:
+	latexmk -pdf -halt-on-error report.tex
+
+verify:
+	python3 -B code/verify.py
+
+full:
+	python3 -B code/verify.py --full
+
+whole-frame:
+	python3 -B code/verify.py --full --whole-frame
+

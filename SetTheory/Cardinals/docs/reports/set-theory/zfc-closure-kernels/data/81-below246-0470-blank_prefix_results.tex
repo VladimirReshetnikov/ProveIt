@@ -1,0 +1,56 @@
+\subsection{Exact blank-start prefixes for both new constructions}
+An independent parser and dense binary-tape interpreter replay each exact
+table from state 95, head zero, and the all-zero tape. The only accepted
+endpoint is the complete admitted safe-root frame, with state 96, head
+$-5$, marker $-6$, header 176, empty PC, and header distance 181. Its nine
+physical registers are
+\[
+(0,0,0,3,0,0,3,0,0),
+\]
+its 167 spare registers all equal one, and its complete tape contains
+exactly 351 ones. Every other cell is zero. In logical register order the
+primary vector is $(3,0,0,0,3,0,0,0,0)$.
+
+\begin{center}
+\begin{tabular}{l r r l}
+Exact construction & States & First accepted step & Visited coordinates\\\hline
+Colored-context construction & 246 & 410,735 & $[-16,701]$\\
+Zero-run-six source with shorter scanner & 250 & 407,983 & $[-15,701]$\\
+\end{tabular}
+\end{center}
+Both endpoints agree with the target state, head, and every tape cell.
+The interpreter represents coordinates $[-2048,6143]$ explicitly and checks
+its access bounds on every transition. Neither execution approaches that
+boundary. Since the starting tape is blank and no cell outside the visited
+interval is written, all cells outside the explicit window, and all other
+unwritten exterior cells, remain zero. Thus equality is of the complete
+bi-infinite tape; it is not a comparison of only the register prefix or a
+finite tape excerpt.
+
+The new 246-state construction has the same state, head, and complete tape
+as the reference construction after every transition of this prefix. Its
+first occurrence of the exact target frame is transition 410,735. The
+250-state construction first departs from the reference trajectory at
+transition 26: in state 58, reading zero at coordinate $-11$, its row is
+$(0,\mathrm L,84)$, whereas the reference row is $(0,\mathrm L,74)$.
+The two tapes are still identical after that transition. Their first tape
+difference occurs after transition 39, at coordinate zero, reflecting their
+different execution timing. The 250-state construction reaches the exact
+same safe-root frame after 407,983 transitions.
+
+The fixed replay bound is 410,735 transitions, with checks for the exact
+endpoint at every dispatcher return. No other initial state is tested, no
+bootstrap search is performed, and no register or spare-suffix relaxation
+is used. The reference table is independently replayed to the same target
+as a positive control. The portable checker is
+\texttt{check\_blank\_prefix.py}; its compact certificate is
+\texttt{blank\_prefix\_results.json}, which records the hashes of both exact
+tables and the first reference-trajectory departure.
+
+For each construction, the finite blank prefix, independently checked
+source-program conjugacy, and universal instruction-frame theorem compose
+to blank-start halting equivalence with the baseline 246-state machine.
+Consequently the inherited ordinary consistency calibration applies to
+both new tables. This is an ordinary mathematical proof formalizable in
+ZFC, not a newly completed proof-assistant kernel endpoint. Neither
+construction improves the working-state count below 246.

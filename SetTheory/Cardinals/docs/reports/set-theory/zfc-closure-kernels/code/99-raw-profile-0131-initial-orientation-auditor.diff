@@ -1,0 +1,30 @@
+--- joint/auditor-relaxed50.py
++++ joint/auditor-orientation-candidates.py
+@@ -57,6 +57,16 @@
+ def audit(path,short_scan=False,allow_scanner_risk=False):
+     data=json.loads(path.read_text())
+     source,terminals,names,allowed,encode=make_vocabulary(data.get('source_override'))
++    permissions=data.get('terminal_orientation_relaxations',[])
++    assert len({x['word']for x in permissions})==len(permissions)
++    for change in permissions:
++        w=change['word']
++        assert w in terminals and allowed[w]==change['old_mask']
++        assert source['atoms'][terminals[w]]['state']==change['state']
++        assert change['new_mask']==3 and change['old_mask']in (1,2)
++        allowed[w]=3
++    # These are explicitly requested candidate permissions, not proved
++    # interfaces. They are discharged only by actual-table all-case proofs.
+     rules={w:(a,b) for w,a,b in data['rules']}
+     assert len(rules)==len(data['rules'])==data['rules_count']
+     assert not (set(rules)&set(terminals)), 'An atomic and pure-node implementation must be distinguished.'
+@@ -178,7 +188,9 @@
+     for q in source['required_entry_roots']:
+         if q not in released:visit(names[q])
+     for w in routes.values():visit(w)
+-    return dict(status='PASS_FINE_GRAMMAR',candidate=str(path),
++    return dict(status='PASS_STRUCTURAL_GRAMMAR_ORIENTATION_RELAXED' if permissions else 'PASS_FINE_GRAMMAR',candidate=str(path),
++      terminal_orientation_relaxations=permissions,
++      orientation_scope='Candidate permissions require actual-table all-case proofs' if permissions else 'Inherited checked entry masks',
+       grammar_states=len(rules),framework_states=len(states-sequences-erased),
+       working_states=len(rules)+len(states-sequences-erased),
+       local_routing_cases=len(traces),route_traces=traces,

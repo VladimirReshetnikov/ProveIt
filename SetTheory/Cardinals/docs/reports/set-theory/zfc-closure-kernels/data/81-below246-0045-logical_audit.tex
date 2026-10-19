@@ -1,0 +1,240 @@
+% Independent ordinary-mathematical audit; meant for inclusion in report.tex.
+% No new proof-assistant build is asserted.
+\section{Logical endpoint and arbitrary-root phase erasure}
+\label{sec:logical-audit}
+
+\subsection{Scope of the inherited consistency theorem}
+
+Let $C_{254}$ be the original numerical calculus and let $F=1$ be its
+designated refutation code.  The source program retains truth, modus ponens,
+generalization, all eight logical rows, the native equality mechanism,
+both freshness tests, and the complete CP/GIC bundle.  The native theory
+has the CP container axiom, every formula instance of global-image
+collection, and raw irreflexivity.  In particular, GIC ranges over finite
+syntactic formulas; it is not collection for every external binary relation.
+
+The source audit verifies that the inherited composition has the form
+\[
+ \operatorname{Halt}_{\mathrm{source}}(R)
+ \ \longleftrightarrow\ C_{254}(1)
+ \ \longleftrightarrow\ \operatorname{Refute}(\mathrm{NativeAx})
+ \ \longleftrightarrow\ \operatorname{Refute}(\mathrm{ZF})
+ \ \longleftrightarrow\ \operatorname{Refute}(\mathrm{ZFC}),
+\]
+provided the initial source register data are safe.  The first equivalence
+uses the actual path program and the literal-to-structured program
+comparison.  The next two use the native-calculus comparison and the
+internally well-founded part of the bisimulation quotient.  The last uses
+the constructible subdomain of an arbitrary set-coded ZF model.
+
+These model-theoretic arguments are available inside ZFC.  Satisfaction for
+a set structure is defined by recursion on finite syntax; the quotient and
+the definable subdomains are sets of the ambient metatheory.  Ordinary
+first-order completeness supplies a nonempty model when a recursively
+axiomatized countable theory is consistent.  Neither external
+well-foundedness nor transitivity of that model is required.  The
+well-foundedness predicate used inside the quotient quantifies over the
+subsets represented by that model, and its closure lemmas use the actual
+GIC instances.  The constructible subdomain is its internal $L$, with its
+own set-theoretic operations and Choice theorem.
+
+This is an ordinary ZFC proof route for the displayed equivalence.  The
+external Lean declarations identify the mathematics being composed; their
+standard axiom reports alone would not constitute a general translation
+from Lean into ZFC.  A PA proof additionally needs represented proof-code
+and execution translations.  The source explicitly leaves that stronger
+arithmetization task open.
+
+\subsection{The exact safe-root specialization}
+
+Use logical register order
+\[
+ (N,T,W,A,D,H,X,Y,L).
+\]
+The predicate used by \texttt{DirtyProgram254.safe\_iff} is exactly
+\[
+ C_{254}(T)\ \wedge\ C_{254}(H)\ \wedge\operatorname{Good}(W).
+\]
+All six remaining fields may be arbitrary natural numbers.  The current
+246-state bootstrap has logical root
+\[
+ (3,0,0,0,3,0,0,0,0).
+\]
+It therefore instantiates
+\texttt{six\_nonformula\_path\_iff} at
+$(N,A,D,X,Y,L)=(3,0,3,0,0,0)$, with two truth constructors and
+\texttt{Enum254.good\_zero}.  Its physical register permutation is
+$(6,2,0,4,3,7,8,5,1)$; the scalar nonzero value in physical block three
+is the numerical parameter $D$, not a formula or stack field.
+
+The proof permits arbitrary scratch values by replacing a dirty root with
+an explicitly computed virtual clean root that reaches the same state
+after the fetch and first read.  This map preserves $T,H,W$.  Completeness
+from an arbitrary candidate counter follows by padding an initial reset
+command: a refutation has arbitrarily large valid command encodings, and
+the scheduler reaches any prescribed later candidate unless it has
+already halted.  Thus starting at $N=3$ loses no refutation.
+
+The logical register file above index eight is zero in \texttt{L2.enc}.
+Physical spare blocks are a different representation resource and may
+have the values allowed by the binary frame contracts.  These two tails
+must not be identified when composing the source and tape semantics.
+
+\subsection{A strengthened phase invariant}
+
+The earlier phase analysis identifies two transfer loops whose positive
+guards never occur from the zero-register root.  The present calculation
+strengthens this to \emph{every} initial nine-register vector at the root.
+This removes the zero-initialization qualification from the source-level
+optimization, while retaining the distinction between root starts and
+arbitrary interior starts.
+
+For each register, use the finite abstract domain consisting of unions of
+the three classes $\{0\}$, $\{1\}$, and $\{2,3,\ldots\}$.  A program
+point holds a Cartesian product of nine such unions, or the empty set.
+Increment sends $0$ to $1$ and positive values to the third class.
+Positive decrement sends $1$ to $0$ and the third class to the union of
+the second and third classes.  Zero decrement filters to $0$ and changes
+no register.  Break and continue change only the finite control.
+
+Each abstract transfer contains every concrete successor of every value
+in its input set.  Componentwise union is a sound join.  Start the worklist
+with the full nine-fold product $\mathbb N^9$ at the leaf decoded from the
+empty PC.  The worklist can add only finitely many class bits and therefore
+terminates.  More significantly, the final certificate is checked directly:
+it contains the initial product, and the image of every feasible guarded
+edge lies inside the mask at its actual successor.  Induction on source
+steps proves that every concrete root execution lies in these masks.
+
+The all-registers-arbitrary computation terminates after 35,768 worklist
+pops.  Its postfix certificate admits 6,456 of the 6,460 leaves and 8,385
+of the 8,391 guards.  Its only exclusions remain
+\[
+ 8202,\ 8203,\ 8204,\ 8358,\ 8359,\ 8360.
+\]
+The two tested registers are exactly zero, independently of every other
+register value.  This is an unbounded invariant: there is no bound on
+register magnitudes or on the number of computation steps.
+
+\begin{center}
+\begin{tabular}{rlll}
+Old node & Loop & Impossible positive case & Zero continuation\\
+\hline
+6324 & $X\mathrel{+\!\to}H$ & 8202 & increment $H$\\
+6436 & $T\mathrel{+\!\to}X$ & 8358 & begin transfer $W\to T$
+\end{tabular}
+\end{center}
+
+The notation $U\mathrel{+\!\to}V$ means consume $U$ while adding its
+old value to $V$.  Both loops are transfers, rather than destructive
+assignments that could discard an arbitrary nonzero source.  Because their
+source is zero at every root-reachable call, their actual effect is the
+identity on the complete register vector.
+
+\subsection{The concrete occurrence-level contraction}
+
+In the literal \texttt{Prog254.v} tree, the relevant fragments are
+\[
+\begin{array}{rcl}
+6323&=&\operatorname{seq}(6324,\operatorname{inc}5),\\
+6324&=&\operatorname{seq}(\operatorname{decnz}6,6325),\\
+6325&=&\operatorname{seq}(\operatorname{inc}5,\operatorname{continue}2),\\[2pt]
+6435&=&\operatorname{seq}(6436,6438),\\
+6436&=&\operatorname{seq}(\operatorname{decnz}1,6437),\\
+6437&=&\operatorname{seq}(\operatorname{inc}6,\operatorname{continue}2).
+\end{array}
+\]
+Replace occurrence 6323 by $\operatorname{inc}5$, and occurrence 6435 by
+subtree 6438.  The qualifier ``occurrence'' matters: other uses of the
+shared transfer macros are unchanged and may have nonzero inputs.
+
+The generated full tree has 6,453 internal nodes, 6,454 instruction leaves,
+and 8,383 guarded cases.  Exactly six old leaves disappear: two always-zero
+decrement guards and the four unreachable body leaves.  Existing break
+and continue counts are retained.  The generator checks all 8,383 remaining
+guarded control successors after rebasing every retained leaf path.  They
+agree exactly with the old successors after bypassing the two zero guards.
+The check includes the final carry zeros in the PC representation and all
+break and continue operations; no trailing-zero truncation is substituted.
+
+\paragraph{Erasure theorem.}
+Let $P$ be the original literal path program and let $P^{\dagger}$ be this
+generated tree.  For every nine-register vector $R$, both programs started
+at the empty instruction pointer halt alike:
+\[
+ \operatorname{Halt}(P,[],R)
+ \quad\longleftrightarrow\quad
+ \operatorname{Halt}(P^{\dagger},[],R).
+\]
+
+\paragraph{Proof.}
+The postfix certificate gives the preceding phase invariant on every
+original root run.  At either deleted decrement, its source register is
+zero, so the next state has identical registers and follows the certified
+zero successor.  The two deleted positive branches and their bodies are
+unreachable.  Each retained instruction has the same operation and register
+argument in the new tree.  The verified path correspondence identifies its
+new successor with the original successor after these identity steps.
+This proves forward simulation by induction along a finite run.
+
+For the reverse direction, start with the same initial register vector.
+The successor certificate and the concrete transfer laws expand every new
+step into the corresponding old step, followed by zero or one deleted
+identity step.  The transported invariant supplies zero in the tested
+register whenever such a step is inserted.  Induction constructs an old
+run with the same registers at every retained point.  There is at most one
+erased step between consecutive retained points, and both programs retain
+the same unique terminal leaf.  Consequently the expansion or contraction
+of a finite halting run is finite and halting.  This proves the equivalence.
+\hfill$\square$
+
+The theorem applies without formula-safety assumptions; those assumptions
+are needed only when its common halting behavior is calibrated to
+$C_{254}(1)$ and hence to ZFC inconsistency.  The proof consists of finite
+control equalities and elementary induction, so it supplies an ordinary
+ZFC argument and a concrete proof-assistant port target.
+
+\subsection{Compiler measurement and the remaining question}
+
+Shorter source trees need not give smaller compressed programs.  Exact
+subtree sharing of the original literal tree yields 203 distinct pair
+subtrees.  Contracting only the $X\to H$ occurrence yields 206; contracting
+only the $T\to X$ occurrence yields 204; contracting both yields 207.
+In the last comparison, fifteen old unique pairs disappear but nineteen
+context-specific pairs are created.  The transfer macros still occur
+elsewhere.  Thus plain subtree hashing increases the decision graph by
+four nodes in this particular transformation.
+
+This negative measurement is useful: the sound source reduction is
+available, but obtaining a binary-state saving requires further grammar or
+layout optimization.  The delivered tree and certificates do not by
+themselves claim a new binary Turing-machine state count, a new Lean/Rocq
+endpoint, or a proof object internal to PA.  The source-level erasure is
+kept separate from any successful binary optimization found elsewhere in
+this report.
+
+\subsection{Independence hypotheses}
+
+Suppose ZFC proves
+$\neg\operatorname{Halt}(M)\leftrightarrow\operatorname{Con}(\mathrm{ZFC})$,
+where consistency is expressed using the standard proof predicate.
+Under the usual hypotheses of the second incompleteness theorem, external
+consistency of ZFC then prevents ZFC from proving
+$\neg\operatorname{Halt}(M)$: such a proof, together with the internal
+equivalence, would give a ZFC proof of its own consistency.  This is a
+syntactic unprovability conclusion.
+
+Actual nonhalting uses a separate external correctness argument.  For the
+proof-search construction discussed here, the external calibration shows
+that a finite halting run yields a finite ZFC contradiction proof.
+External consistency therefore rules out such a run.  The bare internal
+equivalence and external consistency alone do not establish this semantic
+conclusion.  The calibration invoked here is the ordinary simulation
+argument already described, not a new proof-code arithmetization.
+
+Once actual nonhalting is established, $\Sigma_1$-soundness of ZFC excludes
+a ZFC proof of the false $\Sigma_1$ statement that $M$ halts.  Consistency
+alone does not exclude such a false existential theorem.  Thus a full
+two-sided independence claim must state its stronger hypothesis
+explicitly; the internal equivalence theorem itself requires no
+soundness assumption.

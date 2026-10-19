@@ -1,0 +1,63 @@
+{
+  "status": "PASS",
+  "runs": [
+    {
+      "name": "whole-frame",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/work/runtime/whole_frame_dynamic.py",
+        "--runtime",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/dependencies/fine_grammar/runtime",
+        "--table",
+        "/tmp/zfc-staged-cold-replay-5uai2ptz/emitted/machine_old.tm",
+        "--sites",
+        "/tmp/zfc-staged-cold-replay-5uai2ptz/emitted/sites_physical.json",
+        "--padding",
+        "64",
+        "--output",
+        "/tmp/zfc-staged-cold-replay-5uai2ptz/validation/whole-frame.json",
+        "--source-reference",
+        "/tmp/zfc-staged-cold-replay-5uai2ptz/emitted/modified_source.json"
+      ],
+      "returncode": 0,
+      "log": "/tmp/zfc-staged-cold-replay-5uai2ptz/validation/whole-frame.log"
+    },
+    {
+      "name": "independent-frame-audit",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "/workspace/scratch/95a5fa6b3b29/deliverable/zfc-direct-negation-20261018/work/runtime/audit_frame_dynamic.py",
+        "--old-table",
+        "/tmp/zfc-staged-cold-replay-5uai2ptz/emitted/machine_old.tm",
+        "--table",
+        "/tmp/zfc-staged-cold-replay-5uai2ptz/emitted/machine.tm",
+        "--renumbering",
+        "/tmp/zfc-staged-cold-replay-5uai2ptz/emitted/renumbering.json",
+        "--logical-sites",
+        "/tmp/zfc-staged-cold-replay-5uai2ptz/emitted/sites_logical.json",
+        "--physical-sites",
+        "/tmp/zfc-staged-cold-replay-5uai2ptz/emitted/sites_physical.json",
+        "--bootstrap",
+        "/tmp/zfc-staged-cold-replay-5uai2ptz/emitted/blank_boot.json",
+        "--padding",
+        "64",
+        "--whole-frame-report",
+        "/tmp/zfc-staged-cold-replay-5uai2ptz/validation/whole-frame.json",
+        "--output",
+        "/tmp/zfc-staged-cold-replay-5uai2ptz/validation/independent-frame-audit.json"
+      ],
+      "returncode": 0,
+      "log": "/tmp/zfc-staged-cold-replay-5uai2ptz/validation/independent-frame-audit.log"
+    }
+  ],
+  "input_sha256": {
+    "machine_old.tm": "53fc5a9c55102e756e32374a643a03b7983da336074e73253a80694886db1845",
+    "machine.tm": "50c55ea80eaa10f537ff9eeab522124b851e844bbb79f8f839513a361d3906f7",
+    "renumbering.json": "06cc9c74b3948503e15b9a7c5b731006b9d7fa2f4490369e569a5c9bf77898c2",
+    "sites_logical.json": "2877b168143acda909a293b2262077ac61f04eddc01f1f9824c8f7fe8a1fb315",
+    "sites_physical.json": "3901b7def369b17d99578129d0c74a72a765125cfd8f9d4e22fb663f1c3ba48f",
+    "blank_boot.json": "e56a0f43fb0cc7348c95c0ccad451398776b83dd6caa02973b81c2bf7309503d"
+  }
+}

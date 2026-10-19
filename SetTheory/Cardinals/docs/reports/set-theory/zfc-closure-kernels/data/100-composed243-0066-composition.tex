@@ -1,0 +1,287 @@
+\section{Independent proof of the compensated fold after loop rotation}
+\label{sec:independent-composition-audit}
+
+Let $B$ denote the old-label Routing245 machine, let $R$ denote its
+244-state transfer-plus-one loop rotation, and let $C$ be the combined
+243-state machine.  Every machine in this section has binary alphabet,
+one two-way infinite tape, head moves in $\{L,R\}$, initial state $95$,
+and the target-only halt label $254$.  The number of working states
+excludes that halt label.  State relabelling into the canonical tables
+does not change any computation.
+
+The precise raw SHA-256 digests of the three old-label tables are
+\begin{center}\scriptsize
+\begin{tabular}{cl}
+$B$ & \texttt{f8dbeacdad5fd89c57e3f240781324b09110be8e0ccdb838a9c710fb28d2a267}\\
+$R$ & \texttt{0160caaf5d6db52eb7eb97a76cb04db4b424eb2bc0d58617818a6c7c6a1fe776}\\
+$C$ & \texttt{4207fc3d1bb16f3c64c3cff0980eaa1486160c3f467aee7685740a39e3df7300}.
+\end{tabular}
+\end{center}
+The checker pins the first two digests and checks the third table by its
+complete literal transition dictionary, as well as reporting its digest.
+
+\subsection{The exact construction and the required scope distinction}
+
+The rotation $B\mapsto R$ changes the rows
+\[
+ (12,0)\mapsto(0,R,18),\qquad
+ (12,1)\mapsto(1,R,17),\qquad
+ (17,1)\mapsto(0,L,20)
+\]
+and deletes both rows of state $26$.
+The compensated fold $R\mapsto C$ changes exactly
+\[
+\begin{array}{c|c|c}
+\text{row}&R&C\\\hline
+(92,1)&(1,L,24)&(1,R,66)\\
+(104,1)&(1,R,122)&(1,R,92)\\
+(106,1)&(1,R,122)&(1,R,92)\\
+(167,1)&(1,L,92)&(1,L,151)
+\end{array}
+\]
+and deletes both rows of state $122$.  These deleted rows are
+$(122,0)\mapsto(0,R,25)$ and $(122,1)\mapsto(1,R,66)$.
+No retained row outside the seven displayed patch keys changes from $B$
+to $C$.  Thus the literal inventory of $C$ has $245-2=243$ working states
+and $486$ rows.  Every retained state still has both binary transitions,
+and $254$ is the only target without outgoing rows.
+
+The two edits commute as operations on literal transition dictionaries:
+applying the compensated fold first to $B$ and then the rotation gives
+the same table $C$.  That syntactic fact does not alone prove that the
+edits preserve a computation.  The argument below verifies the stronger
+fact needed here: the compensated fold's complete proof premises remain
+true after the rotation.
+
+The all-tape theorem proved in this section is specifically
+$R\leftrightarrow C$ from state $95$.  The independent source and runtime
+proof of the rotation supplies $B\leftrightarrow R$ for the exact blank
+start and the represented register computations.  No assertion that
+$B$ and $R$ agree on every arbitrary binary tape is required or made.
+
+\subsection{The local invariant survives the rotation}
+
+For a configuration $(q,h,T)$ of $R$, with
+$T:\mathbb Z\to\{0,1\}$, put
+\[
+\begin{split}
+I(q,h,T)\quad\Longleftrightarrow\quad&
+ \bigl(q\in\{68,122,167\}\ \Longrightarrow\ T(h-1)=1\bigr)\\
+&{}\land
+ \bigl(q=81\ \land\ T(h-1)=1\ \Longrightarrow\ T(h-2)=1\bigr).
+\end{split}
+\]
+It holds at state $95$ for every tape and every head position.
+The complete incoming-edge lists relevant to $I$ in $R$ are
+\[
+\begin{array}{c|l}
+68&(52,1)\mapsto(1,R,68),\quad(123,1)\mapsto(1,R,68)\\
+81&(68,1)\mapsto(1,R,81),\quad(123,0)\mapsto(0,R,81)\\
+122&(104,1)\mapsto(1,R,122),\quad(106,1)\mapsto(1,R,122)\\
+167&(145,1)\mapsto(1,R,167),\quad(148,1)\mapsto(1,R,167).
+\end{array}
+\]
+The rotation neither changes these rows nor creates another predecessor
+of these four states.  An entry into $68$, $122$, or $167$ writes the
+required left-hand $1$.  An entry into $81$ from $123$ writes a left-hand
+$0$, so the implication is vacuous.  An entry into $81$ from $68$ writes
+the nearer $1$ and retains the next $1$ already required at $68$.
+Every other target state imposes no condition.  This proves inductiveness
+of $I$ under every literal transition of $R$.
+
+For additional independent verification, the checker exhausts all Boolean
+assignments to offsets $-3,-2,-1,0,1$.  These contain every cell mentioned
+by either $I$ before a step or $I$ after a left/right step, including the
+cell overwritten by that step.  It checks each transition whose scanned
+bit and antecedent invariant match the assignment.  This is exhaustive
+evaluation of a finite implication that quantifies arbitrary exterior
+tape cells.  It checks $7\,752$ admissible transition--assignment pairs
+for $R$ and $7\,736$ for $C$.  The proof only needs inductiveness for
+$R$; the check for $C$ supplies another consistency check of the data.
+
+\subsection{Boundaries, ordinary transitions, and the seven local identities}
+
+Use all working labels of $R$ except $92$ and $122$ as comparison
+boundaries, together with the common halt label as a terminal boundary.
+Paired boundary configurations have exactly the same state, head, and
+whole tape, and satisfy $I$ in the original machine $R$.
+
+There are $244-2=242$ working boundary states, hence $484$ rows out of
+them.  Exclude the four rows
+\[
+ E=\{(81,1),(104,1),(106,1),(167,1)\}.
+\]
+The remaining $480$ rows are identical in $R$ and $C$, and no such row
+enters $92$ or $122$.  All $480$ identities and all their targets are
+checked directly from the two supplied tables.  Every transition from a
+boundary into an excluded state therefore belongs to $E$.
+
+The exceptional rows are covered by the following seven identities.
+The starting head is written as coordinate $0$; unspecified cells are
+arbitrary.  The two step counts refer respectively to $R$ and $C$.
+\begin{center}
+\begin{tabular}{c|l|cc|c|l}
+$q$&\text{fixed initial cells}&$R$&$C$&\text{endpoint }$(q',h')$
+ &\text{changed cells}\\\hline
+104&$T(0)=1,\ T(1)=0$&2&4&$(25,2)$&none\\
+104&$T(0)=T(1)=1$&2&2&$(66,2)$&none\\
+106&$T(0)=1,\ T(1)=0$&2&4&$(25,2)$&none\\
+106&$T(0)=T(1)=1$&2&2&$(66,2)$&none\\
+167&$T(-1)=T(0)=1$&2&2&$(24,-2)$&none\\
+81&$T(-1)=0,\ T(0)=1$&2&2&$(107,-2)$&none\\
+81&$T(-2)=T(-1)=T(0)=1$&6&4&$(2,-2)$&$T(-1),T(0):1\mapsto0$
+\end{tabular}
+\end{center}
+
+For the first four cases the old route is
+$q,122,25$ or $q,122,66$.  The new route is $q,92,66$ when the right
+bit is $1$, and $q,92,107,125,25$ when it is $0$.
+The latter route visits heads $1,0,1,2$ and restores the bit just read at
+every step.  The first transition itself establishes the $1$ needed on
+its return to coordinate $0$.
+
+For the $167$ case the paths are $167,92,24$ and $167,151,24$;
+the needed left bit comes from $I$.  For the $81$ case with a left zero,
+both paths are $81,92,107$.  For the last case the old path is
+\[
+ 81,92,24,37,55,20,2,
+\]
+while the new one is
+\[
+ 81,92,66,20,2.
+\]
+Both erase just the two displayed $1$ cells, preserve the next left $1$,
+and end at head $-2$.  The rotation's three changed rows and its deleted
+state occur in none of these paths.  All actual rows traversed by the
+paths are nevertheless checked afresh, rather than inferred from that
+observation.
+
+Every displayed endpoint is a boundary and satisfies $I$ vacuously.
+The four cases for $104$ and $106$ exhaust their next-bit values.
+The $167$ case uses its left-bit invariant.  The two cases for $81$
+exhaust the possibilities allowed by $I$.  The checker additionally
+tests the partition on all $52$ five-bit assignments satisfying an
+exceptional entry and $I$: exactly one displayed guard matches each.
+Its local execution rejects any read outside a guard's specified
+window.  Thus the equalities are whole-tape identities in arbitrary
+exterior contexts, not examples on tapes artificially completed by zeros.
+
+\subsection{The all-tape halting theorem and its finite proof}
+
+\paragraph{Theorem.}
+For every $T:\mathbb Z\to\{0,1\}$ and $h\in\mathbb Z$,
+\[
+ \operatorname{Halt}(R,95,h,T)
+ \quad\Longleftrightarrow\quad
+ \operatorname{Halt}(C,95,h,T).
+\]
+
+\paragraph{Proof.}
+State $95$ is a boundary and satisfies $I$.  At a paired nonterminal
+boundary, choose its single common transition if the row is ordinary;
+otherwise choose the unique applicable complete block from the table.
+The endpoints have identical state, head, and tape.  They are again
+boundaries, and the old invariant remains true because every original
+literal transition preserves it.  Induction constructs a common
+sequence of paired boundaries.  Intermediate visits to boundary labels
+inside a selected block need not themselves be selected for comparison.
+
+Every block has positive duration on each side.  It has at most six
+steps in $R$ and at most four in $C$.  No exceptional block contains the
+halt state, and every ordinary halting transition agrees.  Therefore a
+halting computation on either side ends at a paired boundary on both
+sides.  If the sequence of blocks is infinite, the positive durations
+give unbounded elapsed time in both machines, so neither halts.
+This proves the equivalence.\hfill$\square$
+
+The direction starting from an alleged finite halt of $C$ needs no
+infinite-run principle.  If $C$ halts by time $t$ while $R$ has not halted
+by $6t$, the old run provides at least $t$ complete comparison blocks.
+Their new counterparts consume at least $t$ steps without encountering
+a halt, a contradiction.  The converse follows by constructing the
+finitely many blocks of a halting run of $R$.
+
+\paragraph{Exact clock accounting.}
+For a complete matched halting run, let $A$ count the blocks starting in
+$104$ or $106$ with next bit zero, and let $D$ count those starting in
+$81$ with the preceding two bits $11$.  If the two halting times are
+$\tau_R$ and $\tau_C$, the seven identities give
+\[
+ \tau_C=\tau_R+2A-2D,
+ \qquad \frac{2}{3}\tau_R\leq\tau_C\leq2\tau_R.
+\]
+For the inequalities, each ordinary or exceptional block separately
+satisfies $(2/3)\ell_R\leq\ell_C\leq2\ell_R$; sum over blocks.
+These bounds apply to matched complete halting runs.  They do not claim
+that every intermediate microstep has an identical counterpart.
+
+\subsection{A reusable criterion for transplanting the fold}
+
+The same reasoning applies after other modifications of a baseline
+machine whenever the following finite premises are checked:
+\begin{enumerate}
+\item The initial configuration is a comparison boundary satisfying $I$,
+and the required incoming lists establish inductiveness of $I$.
+\item Every retained ordinary boundary row agrees between the machines
+and targets another boundary or their common halt label.
+\item The guarded exceptional cases exhaust the possibilities under $I$,
+and their complete finite paths have equal whole-tape endpoints that are
+boundaries satisfying $I$.
+\item Every block has positive duration in both machines, and no
+exceptional block hides a halt.
+\end{enumerate}
+These are sufficient semantic premises; disjoint patch locations alone
+are insufficient.  In the present construction, all the premises are
+rechecked directly on $R$ and $C$.  The changed role of labels $12$ and
+$17$ has no effect on them, and state $26$ is absent throughout.
+
+\subsection{Calibration and proof-assistant status}
+
+Write $0^{\mathbb Z}$ for the blank tape.  Combining this section with
+the separately established rotation and baseline calibration gives
+\[
+\begin{aligned}
+\operatorname{Halt}(C,95,0,0^{\mathbb Z})
+&\ \Longleftrightarrow\
+\operatorname{Halt}(R,95,0,0^{\mathbb Z})\\
+&\ \Longleftrightarrow\
+\operatorname{Halt}(B,95,0,0^{\mathbb Z})\\
+&\ \Longleftrightarrow\ \neg\operatorname{Con}(\mathrm{ZFC}).
+\end{aligned}
+\]
+The source-loop proof and its runtime certificates justify the second
+line for this exact blank start.  The existing calibrated proof search
+justifies the last line.  Consequently the combined machine satisfies
+\[
+ \mathrm{ZFC}\ \vdash\
+ \bigl(\neg\operatorname{Halt}(C)\ \longleftrightarrow\
+       \operatorname{Con}(\mathrm{ZFC})\bigr).
+\]
+
+The present local proof consists of finite transition identities and
+induction on coded finite computations.  Its blank specialization is
+arithmetically formalizable in PA.  This does not supply an existing
+serialized object-language PA proof of the complete ZFC calibration.
+
+The old loop-rotation archive predates a later proof-assistant update.
+At ProveIt revision
+\texttt{d91a27b462cbf7fdc6537739775fd192b06fb769}, the maintained
+\texttt{routing245\_binary.md} reports closed external Lean theorems for
+the exact Routing245 blank machine, with no remaining runtime, startup,
+or source-bisimulation hypotheses.  Its recorded audit reports eleven
+axiom probes and eleven typed callers, using only
+\texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}.
+This independent audit inspected the maintained status; it did not
+replay those historical compiler/provider caches.
+The current endpoint and scope are documented at
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/d91a27b462cbf7fdc6537739775fd192b06fb769/Computability/BusyBeaver/Research/ZFC/routing245_binary.md}.
+No new complete Lean or Rocq endpoint for the 243-state table is claimed.
+
+The standalone checker \texttt{audit\_composition.py} imports only Python
+standard-library modules and none of the inherited compiler, source,
+symbolic-runtime, simulation, or search modules.  It uses explicit
+exceptions for all proof-premise failures, so optimization flags cannot
+disable its checks.  Its recorded result is
+\texttt{PASS\_INDEPENDENT\_243\_COMPOSITION\_AUDIT}.  The checked finite
+premises support the ordinary mathematical proof above; the checker is
+not itself a proof-assistant kernel.

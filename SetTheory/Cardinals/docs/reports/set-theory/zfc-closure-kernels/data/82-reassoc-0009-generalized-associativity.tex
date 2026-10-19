@@ -1,0 +1,136 @@
+\section{Source reassociation with one-sided control bounds}
+\label{sec:generalized-associativity}
+
+The following ordinary mathematical proof uses exactly the structured
+\texttt{run} semantics of Wade's register programs. It has not been
+compiled in Lean or Rocq in this session.
+Write $A;B$ for a cons cell with car $A$ and cdr $B$.
+
+\paragraph{Reassociation theorem.}
+Suppose no finite execution of $A$ exits with an escaping
+$\operatorname{Break}(k)$, and no finite execution of $C$ exits with an
+escaping $\operatorname{Continue}(k)$, for any positive $k$.
+There is no restriction on $B$. Then, for every initial register vector
+$R$, final vector $R'$, and exit $x$,
+\[
+ \operatorname{run}(A;(B;C),R,x,R')
+ \quad\Longleftrightarrow\quad
+ \operatorname{run}((A;B);C,R,x,R').
+\]
+In particular, $A$ may continue, $C$ may break, and any component may halt
+or diverge. The assertion preserves the exact exit level and final
+register vector, and assumes no total termination.
+
+\paragraph{Finite-loop normal form.}
+For a component $F$ and exit $x$, let $F_x$ be its binary relation on
+register vectors. Relational composition $XY$ means first $X$, then $Y$;
+$T^*$ is reflexive transitive closure by finite paths. Write the exits as
+$N$, $H$, $\mathsf B_k$, and $\mathsf C_k$, with $k\geq 1$.
+The constructors of \texttt{run} never produce a level-zero Break or
+Continue exit, so these channels exhaust all possible finite exits.
+For arbitrary $F,G$, put
+\[
+ T_{F,G}=F_NG_{\mathsf C_1}.
+\]
+This relation is exactly one restart of the cons cell. Define its
+non-restarting alternatives by
+\begin{align*}
+ D_N^{F,G}&=F_{\mathsf B_1}\cup F_NG_N,\\
+ D_{\mathsf B_k}^{F,G}
+   &=F_{\mathsf B_{k+1}}\cup F_NG_{\mathsf B_k},\\
+ D_{\mathsf C_k}^{F,G}
+   &=F_{\mathsf C_k}\cup F_NG_{\mathsf C_{k+1}},\\
+ D_H^{F,G}&=F_H\cup F_NG_H.
+\end{align*}
+The exact finite big-step relation is
+\begin{equation}
+ (F;G)_x=T_{F,G}^*D_x^{F,G}.
+ \label{eq:cons-finite-loop-normal-form}
+\end{equation}
+To prove this identity, inspect the final constructor of a finite
+\texttt{run} derivation. Every constructor except
+\texttt{run\_node\_cdr\_continue1} is one of the displayed $D$ alternatives.
+The exceptional constructor prepends one $T$ transition and has a
+strictly smaller derivation for restarting the same cons cell. Induction
+on the finite derivation extracts a finite $T$ path followed by $D$.
+Conversely, a $D$ alternative gives a non-restart constructor, and
+induction on the length of a finite $T$ path repeatedly applies the
+restart constructor. This proves both inclusions.
+
+\paragraph{Computing the left bracketing.}
+The hypotheses say $A_{\mathsf B_k}=\varnothing$ and
+$C_{\mathsf C_k}=\varnothing$ for every positive $k$. Put
+$T=A_NB_{\mathsf C_1}$. Applying
+\eqref{eq:cons-finite-loop-normal-form} gives
+\begin{align*}
+ (A;B)_N&=T^*A_NB_N,\\
+ (A;B)_{\mathsf B_k}&=T^*A_NB_{\mathsf B_k},\\
+ (A;B)_{\mathsf C_k}
+   &=T^*(A_{\mathsf C_k}\cup A_NB_{\mathsf C_{k+1}}),\\
+ (A;B)_H&=T^*(A_H\cup A_NB_H).
+\end{align*}
+The outer cell of $(A;B);C$ cannot restart because $C$ never continues.
+Applying the normal form again and distributing composition over union,
+we obtain
+\begin{align}
+ ((A;B);C)_N
+   &=T^*(A_NB_{\mathsf B_1}\cup A_NB_NC_N),
+   \label{eq:assoc-common-normal}\\
+ ((A;B);C)_{\mathsf B_k}
+   &=T^*(A_NB_{\mathsf B_{k+1}}\cup A_NB_NC_{\mathsf B_k}),
+   \label{eq:assoc-common-break}\\
+ ((A;B);C)_{\mathsf C_k}
+   &=T^*(A_{\mathsf C_k}\cup A_NB_{\mathsf C_{k+1}}),
+   \label{eq:assoc-common-continue}\\
+ ((A;B);C)_H
+   &=T^*(A_H\cup A_NB_H\cup A_NB_NC_H).
+   \label{eq:assoc-common-halt}
+\end{align}
+
+\paragraph{Computing the right bracketing.}
+The inner cell of $A;(B;C)$ cannot restart, so
+\begin{align*}
+ (B;C)_N&=B_{\mathsf B_1}\cup B_NC_N,\\
+ (B;C)_{\mathsf B_k}&=B_{\mathsf B_{k+1}}\cup B_NC_{\mathsf B_k},\\
+ (B;C)_{\mathsf C_k}&=B_{\mathsf C_k},\\
+ (B;C)_H&=B_H\cup B_NC_H.
+\end{align*}
+Consequently the restart relation of $A;(B;C)$ is again exactly
+$A_NB_{\mathsf C_1}=T$. Substitution in
+\eqref{eq:cons-finite-loop-normal-form}, using
+$A_{\mathsf B_k}=\varnothing$, gives precisely the four right-hand sides
+of \eqref{eq:assoc-common-normal}--\eqref{eq:assoc-common-halt}.
+All finite exit relations are equal, proving the theorem.
+
+This proof includes arbitrarily many finite repetitions. A
+$\operatorname{Continue}(1)$ emitted by $B$ repeats the same $A$-then-$B$
+pair in both bracketings: the inner cell catches it in $(A;B);C$, and the
+outer cell catches it in $A;(B;C)$. Infinite repetition or divergence
+inside a component yields no additional finite derivation on either
+side. No determinism hypothesis was used.
+
+\paragraph{A computable sufficient guard.}
+Let $(b_X,c_X)$ bound the escaping break and continue levels of a source
+component $X$. The bounds used by the search satisfy
+\[
+ b_{X;Y}=\max\{\max(b_X-1,0),b_Y\},\qquad
+ c_{X;Y}=\max\{c_X,\max(c_Y-1,0)\}.
+\]
+Increment and Halt have bounds $(0,0)$; Decrement has $(1,0)$;
+Break$(k)$ has $(k,0)$; Continue$(k)$ has $(0,k)$.
+Induction on finite \texttt{run} derivations shows that every emitted
+positive level is at most its corresponding bound. The restart
+constructor uses the induction hypothesis on its smaller restarted
+derivation. Therefore a sufficient guard for this reassociation is just
+\[
+ b_A=0\quad\hbox{and}\quad c_C=0.
+\]
+The other four component bounds are unrestricted.
+
+\paragraph{Application boundary.}
+This is a source-program semantic theorem. A DAG rewrite must preserve
+the component relations of $A,B,C$, or justify nested changes from the
+inside out. A binary-table rewrite additionally needs a complete
+simulation certificate accounting for every use of each changed row,
+including backward-peek and runtime contexts. The theorem alone provides
+neither a state-count saving nor correctness of a changed binary table.

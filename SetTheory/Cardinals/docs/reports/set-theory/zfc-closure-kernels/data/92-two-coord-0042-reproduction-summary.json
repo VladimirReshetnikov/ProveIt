@@ -1,0 +1,87 @@
+{
+  "status": "PASS_FINITE_THEORY_AND_ENCODING_REPRODUCTION",
+  "independent_shared_cases": 78,
+  "independent_ground_comparisons": 12,
+  "commands": [
+    {
+      "program": "frozen_kernel.py",
+      "arguments": [],
+      "seconds": 0.114238,
+      "log": "01-frozen_kernel.log"
+    },
+    {
+      "program": "frozen_frontend.py",
+      "arguments": [
+        "--stage",
+        "1"
+      ],
+      "seconds": 0.114323,
+      "log": "02-frozen_frontend.log"
+    },
+    {
+      "program": "frozen_frontend.py",
+      "arguments": [
+        "--stage",
+        "1",
+        "--extensional",
+        "--output",
+        "frozen-frontend-extensional-results.json"
+      ],
+      "seconds": 0.115073,
+      "log": "03-frozen_frontend.log"
+    },
+    {
+      "program": "boolean_class_control.py",
+      "arguments": [],
+      "seconds": 0.164637,
+      "log": "04-boolean_class_control.log"
+    },
+    {
+      "program": "linear_ground_codec.py",
+      "arguments": [],
+      "seconds": 0.365095,
+      "log": "05-linear_ground_codec.log"
+    },
+    {
+      "program": "linear_ground_codec.py",
+      "arguments": [
+        "--boolean-normalized",
+        "--output",
+        "linear-ground-boolean-results.json"
+      ],
+      "seconds": 0.26507,
+      "log": "06-linear_ground_codec.log"
+    },
+    {
+      "program": "shared_template_codec.py",
+      "arguments": [],
+      "seconds": 0.76702,
+      "log": "07-shared_template_codec.log"
+    },
+    {
+      "program": "named_selector.py",
+      "arguments": [],
+      "seconds": 1.219641,
+      "log": "08-named_selector.log"
+    },
+    {
+      "program": "channel_collapse_control.py",
+      "arguments": [],
+      "seconds": 1.969858,
+      "log": "09-channel_collapse_control.log"
+    },
+    {
+      "program": "codec_audit.py",
+      "arguments": [
+        "--formalisms",
+        "/workspace/scratch/d7ea9010d26f/packaged-finite-reproduction/theory",
+        "--output",
+        "/workspace/scratch/d7ea9010d26f/packaged-finite-reproduction/independent-codec-review.json"
+      ],
+      "seconds": 0.214938,
+      "log": "10-codec_audit.log"
+    }
+  ],
+  "seconds": 5.310978,
+  "scope": "Finite codec/transcription checks; ordinary proofs are in the report. No binary TM state claim."
+}

@@ -1,0 +1,87 @@
+{
+  "status": "PASS_AFFINE_AND_BOOT",
+  "working_states": 245,
+  "table_sha256": "e074e5349e32c9290625805dcae155610991fba9e4a7d61039c9bda5a2ca80ae",
+  "sites_sha256": "96094127f9b64de50e896816266ed0b86a703e012b52e4c73a0d34b34cd2926e",
+  "padding": 64,
+  "source_scope": "Same complete source instruction paths as the supplied previously certified sites file; no source modification.",
+  "macro_inductions": {
+    "status": "PASS",
+    "word_identity": {
+      "status": "PASS",
+      "induction": "finite lists of arbitrary natural numbers",
+      "base": "C([])1 = 1B([])",
+      "cons": "C(v)C(A)1 = C(v)1B(A) = 1B(v)B(A)",
+      "identity": "C(A)1 = 1B(A)",
+      "reverse_identity": "1rev(C(A)) = rev(B(A))1"
+    },
+    "scope": "Universal unary and finite-list induction templates rerun on the actual proposed table; no kernel endpoint."
+  },
+  "affine_all_cases": {
+    "status": "PASS",
+    "oracle_gate_checks": 342,
+    "padding": 64,
+    "cases": 8391,
+    "by_operation": {
+      "CD/zero": 1931,
+      "CD/positive": 1931,
+      "CB": 128,
+      "CI": 2601,
+      "CC": 1799,
+      "CH": 1
+    },
+    "target_paths_keep_all_overflow_and_trailing_zero_cells": true,
+    "overflow_cases": 3,
+    "minimum_literal_steps": 13,
+    "max_rules": 596,
+    "rule_counts": {
+      "literal": 2115083,
+      "peel_right": 17458,
+      "recenter": 995979,
+      "scan_right": 25980,
+      "peel_left": 6463,
+      "scan_left": 25980,
+      "pad_left": 75513,
+      "box": 12926,
+      "literal_box_boundary": 6591
+    }
+  },
+  "blank_boot": {
+    "status": "PASS",
+    "blank_steps": 407915,
+    "start": 95,
+    "dispatcher": 96,
+    "head": -5,
+    "marker": -6,
+    "header": 176,
+    "header_distance": 181,
+    "pc": "",
+    "physical_registers": [
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      3,
+      0,
+      0
+    ],
+    "logical_registers": [
+      3,
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0
+    ],
+    "one_count": 351,
+    "all_other_cells_zero": true,
+    "sparse_dense_exact_agreement": true,
+    "dirty_root_condition": "T=W=H=0; the six other logical registers are arbitrary naturals"
+  },
+  "seconds": 6.020585561999724
+}

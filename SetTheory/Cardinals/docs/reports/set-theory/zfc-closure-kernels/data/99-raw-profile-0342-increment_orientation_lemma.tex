@@ -1,0 +1,102 @@
+\section{An incoming-orientation invariant for six existing increment entries}
+\label{sec:increment-orientation}
+
+The original grammar restricts a terminal to the incoming bit values observed
+in the source from which the grammar was extracted. An observed restriction
+need not be a semantic restriction. Three previously one-sided terminals can
+be made available on both sides without changing any binary transition.
+
+Use the old state labels. Let $B(v)=0\,1^{v+1}$ and let $B$ concatenate finite
+lists. At a dispatcher frame, let the pointer word $p$ occupy cells
+$0,\ldots,\ell-1$, with marker one at $-1$, header one at $D$, and complete
+register suffix $B(R)B(S)$. Here $R\in\mathbb N^9$, $S$ is a nonempty finite
+list, $D-\ell\geq3$, and $p$ contains no seven consecutive zeros. The
+canonical Routing245 bounds $\ell\leq51$ and $D\geq64$ imply the stated gap
+condition. Translation of every coordinate is harmless.
+
+Assume that the transparent decoder follows the pointer $p$, preserving it,
+and enters an atomic state $Q$ at cell $\ell$. On each internal return to
+the dispatcher, the same unchanged pointer follows the same decoder route.
+The following existing entries have rows
+\[
+ Q/0=0R57,\qquad Q/1=0R\operatorname{skip}_r.
+\]
+\begin{center}
+\begin{tabular}{c|c|c|c}
+$Q$&logical increment&physical register $r$&$\operatorname{skip}_r$\\\hline
+39&$X$&8&69\\
+70&$T$&2&31\\
+72&$H$&7&64\\
+93&$Y$&5&40\\
+169&$D$&3&56\\
+201&$A$&4&38
+\end{tabular}
+\end{center}
+The last two entries already exist in the framework but are not singleton
+tokens in the present thirty-token fine alphabet.
+
+\paragraph{Orientation lemma.}
+Each displayed entry implements its indicated increment for both values of
+the last bit of $p$. It increases exactly register $r$, appends a spare of
+value one, and performs the full-width binary successor of the pointer,
+including its marker shift in the overflow case. No extra state is required.
+
+\paragraph{Proof.}
+The proof decomposes the literal execution into four phases. The only
+register assumptions used are the already checked mark and increment
+contracts, valid for arbitrary natural-valued registers and arbitrary
+nonempty spare suffixes. Those contracts use identical rows in Routing245.
+
+First, the rows $Q/0$, $57/0$ enter state 42 at cell $\ell$. Its zero
+self-loop fills the entire gap with ones. At the header, $42/1$ returns
+left through state 2 and the marker scanner. The scanner detects eight
+successive zeros, while the pointer has at most six. It therefore returns
+to the left marker without changing the tape. The pointer is unchanged;
+the decoder returns to $Q$, now reading one at cell $\ell$.
+
+Second, $Q/1$ clears that cell and enters the appropriate selector to its
+right. The selector crosses the remaining gap ones and header, marks
+register $r$, and returns left from the register file. Both possible mark
+return states, 2 and 6, have the same row $1L4$ on the header one. The
+scanner consequently sees the original pointer followed by one extra zero
+at cell $\ell$. Its zero runs have length at most seven, still below the
+eight-zero detector threshold. It returns to the unchanged pointer, and
+the transparent decoder again enters $Q$ at cell $\ell$.
+
+Third, $Q/0$ moves to state 57 at cell $\ell+1$, whose one is cleared by
+$57/1$. State 73 starts at $\ell+2$, crosses the remaining gap and header,
+and invokes the marked-register increment contract. That contract increases
+only register $r$, appends $B(1)$, and returns in state 48 to the left of
+the register file. The rows of 48 and 63 cross the gap ones until the two
+cleared cells are reached. In particular, $63/0$ puts state 48 at cell
+$\ell$, and $48/0$ puts state 7 on the final pointer bit at $\ell-1$.
+No marker scan occurs across the potentially longer zero run formed by the
+pointer and these two temporary zero cells.
+
+Finally, state 7 performs binary carry to the left: ones become zeros until
+the first zero is changed to one. If every bit of $p$ was one, it also
+clears the old marker and writes the new marker one cell farther left.
+States 10 and 14 clear the remaining temporary gap ones. State 20 restores
+the header one and returns through state 2. State 2 skips the complete
+trailing zero suffix before invoking the marker detector, so the long zero
+suffix produced by carry is not mistaken for a marker gap. Every other
+zero run in the surviving pointer prefix has length at most six. The final
+dispatcher frame therefore has precisely the full-width successor pointer,
+the indicated register increment, the new spare, and the prescribed
+overflow displacement. Every phase takes a finite positive number of
+steps; the register phases are justified by unary and finite-list induction.
+
+None of these phases branches on the incoming bit as a special case. The
+only read of that bit that matters is the ordinary binary carry in the final
+phase, which correctly handles both zero and one. This proves the lemma.
+
+\paragraph{Consequences and limits.}
+The previously restricted original symbols $h,m,r$ (states 39, 72, 93)
+may use orientation mask three. Their fine tokens are respectively
+$A,T,F$. State 70 already had both orientations. State 18, implementing
+increment of $N$, has a different zero row and is outside the lemma: a
+concrete outer pointer $00$ fails its opposite-orientation contract.
+Broader atomic experiments in this package quantify register values and
+header slack but use finitely many concrete outer prefixes; those
+experiments are not generalized by this lemma. A complete new candidate
+must still replay all its actual terminal paths on its own literal table.

@@ -1,0 +1,86 @@
+% Body-only report section, requiring amsmath and booktabs.
+\section{Joint AX row, role, and dictionary searches}
+
+No search in this section produced a grammar with fewer than $128$ rules.
+No new literal Turing-machine correctness endpoint is claimed. The
+maintained $245$-state construction has $117$ framework states and $128$ source
+grammar states; the legacy field \texttt{framework\_states=118} in
+historical grammar JSON is not the literal framework count.
+
+The new parser charges the union of dependencies of selected dictionary
+words. If $C$ is the required non-AX grammar core and $D(w)$ is the set of
+rules needed to expand an existing word $w$, a parse into $w_1,\ldots,w_k$
+has the constructive upper bound
+\[
+ |C|+\left|\bigcup_{i=1}^k(D(w_i)\setminus C)\right|+k-1.
+\]
+The final term charges binary joins. Exact shared parenthesization can
+reduce it when several joins use the same word or an existing definition.
+The parser retains a bounded beam of dependency masks at each source
+position. The materializer checks the actual terminal orientation masks,
+six-zero limit, depth $64$ limit, and shared-rule reachability. This is a
+heuristic grammar search; exhaustive enumeration of the $40\,320$ row orders
+does not make its bounded parsing stage exhaustive.
+
+Two source dictionaries were investigated. The original $128$-rule grammar
+has $51$ required core rules and $77$ private AX rules. The previously certified
+DNE-mask32 normalized245 grammar has $53$ core rules and $75$ private AX rules.
+The second lane therefore composes a proved earlier source normalization
+with new row-order search, rather than repeating the original fixed word.
+
+\begin{center}\small
+\begin{tabular}{lrrr}
+\toprule
+Search family&Proposals&Seconds&Best grammar\\
+\midrule
+Original AX, all row orders&40320&17.58&128\\
+Original AX, row and role mutations&222378&180&128\\
+Eleven new row-order seeds, route refinement&4420263&$11\times30$&128\\
+DNE-mask32 AX, all row orders&40320&32.22&128\\
+K/B/Peirce replacement&71784&120&134\\
+K/S/Peirce control&47282&40&133\\
+\bottomrule
+\end{tabular}
+\end{center}
+The counts include repeated proposals. Time-bounded runs are historical
+measurements, not claims that a rerun on another machine follows the same
+trajectory. The final basis counts are from materialized shared grammars,
+not merely from the parser's upper bound.
+
+The basis comparison is instructive. With
+\begin{align*}
+ K&=a\to(b\to a),\\
+ B&=(a\to b)\to((b\to c)\to(a\to c)),\\
+ S&=(a\to(b\to c))\to((a\to b)\to(a\to c)),\\
+ P&=((a\to b)\to a)\to a,
+\end{align*}
+the complete AX words have $1321$ fine atoms for K/B/P and $1331$ for K/S/P.
+Nevertheless, the retained K/S/P grammar has $133$ rules, versus $134$ for
+K/B/P. A shorter axiom spelling therefore need not decrease the cost of
+shared source decoding. These candidates keep the old physical dictionary
+and route interface; they do not price every possible compiler for either
+basis. In particular, the altered number of logical rows needs an explicit
+high-level selector/compiler proof before either could be a new endpoint.
+
+For the unchanged eight-row theory, the existing permutation lemma gives
+the selector $k_\pi(j)=9-\operatorname{pos}_\pi(j)$. Independent bijections
+of the three scalar parameters within each row are accommodated by the
+inverse bijection in that row's derivation-compiler leaf block. Thus the
+new search family has a precise high-level theorem-set preservation
+argument; it does not assert stepwise equivalence on arbitrary candidate
+numbers. The fourth parameter read remains present exactly once.
+
+The independent finite audit passes all $39$ retained grammars. For each it
+checks $22$ consumed route projections, all $54$ bootstrap equations, physical
+entry orientations, exact word concatenation, grammar reachability, the
+complete source's zero-run bound and depth bound, and the emitted AX word
+against its declared row/role specification. These are useful concrete
+compiler inputs. They are not a substitute for a literal transition table,
+an unbounded register simulation proof, and a verified blank initialization.
+
+The sources and replay instructions are in \texttt{agent\_grammar/README.txt};
+the exact finite results are in \texttt{structural\_audit.json}. The earlier
+closed-atom identities, source normalizations, selector lemma, constraints,
+and routing annealer retain their attribution. The new contributions are
+the dependency-union parser, shared materializer, composed search campaigns,
+and independently checked finite candidate records.

@@ -1,0 +1,260 @@
+\section{Theory variants and the cost of a different proof search}
+\label{sec:theory-exploration}
+
+There are two distinct quantities to optimize: the mathematical description
+of a theory, and the compiled description of an exhaustive proof search for
+that theory.  The present source experiments make the distinction concrete.
+A shorter equivalent axiom can introduce a new constructor pattern, while
+a longer formula can reuse code that the existing grammar already stores.
+The register identity in Section~\ref{sec:negation-peephole} is particularly
+useful because it changes the second quantity while preserving every
+numerical formula in the first.
+
+\subsection{Complete Church-basis controls}
+
+We measured four presentations of the propositional layer while retaining
+the other equality, quantifier and set-theoretic rows.  Write
+$\neg A$ for $A\to F$, where $F$ is the designated falsity formula.  In
+addition to the inherited single-axiom presentation $L$, the controls use
+\[
+\begin{aligned}
+K&: A\to(B\to A),\\
+S&: (A\to(B\to C))\to((A\to B)\to(A\to C)),\\
+P&: ((A\to B)\to A)\to A,\\
+D&: ((A\to F)\to F)\to A,\\
+P_F&: ((A\to F)\to A)\to A.
+\end{aligned}
+\]
+The three alternatives are $K,S,P$; $K,S,D$; and $K,S,P_F$.  Every permutation
+of the three new rows is measured.  These experiments preserve the
+availability of all propositional substitutions through the existing
+parameter mechanism; merely placing three fixed closed formulas on the
+stack would not be the same construction.
+
+There is an important dependency involving falsity.  The old quantifier row
+is
+\[
+ B_x(A):\quad \exists x\,\forall x\,A\to A.
+\]
+Let $C=\forall x\neg\forall x A$.  With the existing definition of
+existential quantification, this row is $(C\to F)\to A$.  The $K$ instance
+$F\to(C\to F)$ and implication composition, derivable from $K,S$, therefore
+give $F\to A$.  Thus the old row supplies ex falso even when $P$ or $P_F$
+is used in the propositional basis.  Under ex falso, $P_F$ gives double
+negation elimination: assuming $(A\to F)\to F$, compose with $F\to A$ to
+obtain $(A\to F)\to A$, then apply $P_F$.  The usual deduction construction
+in the $K,S$ calculus discharges that assumption.  Conversely, $D$ itself
+supplies ex falso by composing $F\to((A\to F)\to F)$ with $D$.
+
+We also tested the classically equivalent dual form
+\[
+ B_x^*(A):\quad A\to\forall x\exists x A.
+\]
+Replacing $A$ by $\neg A$, taking the contrapositive, and using classical
+negation duality interderives $B_x$ and $B_x^*$ in the unchanged normal
+quantifier calculus.  The dual is tested only with the explicit $D$ basis.
+Discarding the old row's ex-falso contribution while using an implicational
+Peirce basis would need an additional argument and is not included among
+the complete controls.
+
+All controls use the same fixed Boolean layout of the inherited set-theory
+bundle.  The second bundle choice recursively cancels every syntactic
+double negation in that layout.  It has eight such cancellations, so it is
+not the same finite control as an earlier experiment on a different bundle
+layout with six cancellations.  This is a formula equivalence transformation;
+it is distinct from the numerical negation-constructor identity proved in
+this packet.
+
+For each row order we tried seeds $0,\ldots,49$ and grammar exponents
+$2,4,8$.  The 50 distinct fine words give 7,500 grammar trials.  These use
+the attributed public Wade compiler with coarse macro terminals, rather
+than the compact routed machine's specialized runtime.  The measured
+working-state counts are therefore comparisons within this common
+experimental compiler, not an estimate of the state cost in the routed
+machine.  The unchanged $L$ control itself costs 269 states in this lane.
+
+\begin{center}
+\small
+\begin{tabular}{llrrrr}
+\hline
+Basis & Bundle / $B$ row & Fine tokens & Decision & Framework & Total\\
+\hline
+$L$ & original / old & 1270 & 206 & 63 & 269\\
+$L$ & double-negation-free / old & 1126 & 208 & 62 & 270\\
+$KSP$ & original / old & 1331 & 210 & 62 & 272\\
+$KSP$ & double-negation-free / old & 1187 & 210 & 63 & 273\\
+$KSD$ & original / old & 1329 & 210 & 63 & 273\\
+$KSD$ & double-negation-free / old & 1185 & 211 & 63 & 274\\
+$KSD$ & original / dual & 1329 & 211 & 63 & 274\\
+$KSD$ & double-negation-free / dual & 1185 & 213 & 62 & 275\\
+$KSP_F$ & original / old & 1330 & 210 & 63 & 273\\
+$KSP_F$ & double-negation-free / old & 1186 & 211 & 63 & 274\\
+\hline
+\end{tabular}
+\end{center}
+
+The portable replay reproduced all ten state counts, their transition-table
+hashes, and all 50 emitted fine words exactly.  For each saved candidate,
+the compiler inverts every emitted decision edge and checks it against the
+intended source DAG.  The single implicit missing transition is totalized
+by the inherited convention.  This is a source-emission and finite-table
+audit; a complete runtime proof and an internalized ZFC equivalence for
+these altered literal tables are not claimed.  None of these controls
+improves its own 269-state baseline.  They are useful negative results and
+additional inputs for a finer compiler, not a new machine bound.
+
+The independent negation audit also accepts all 50 of these fine words.
+Separately it checks 135 supplied partial or complete contraction variants,
+with 1,919 applications of the local identity.  Each is compared with its
+own supplied base word.  That comparison establishes every changed
+negation site's cleanliness and equality of all nine final register
+expressions; it does not assert that differently chosen base theories have
+identical numerical formulas.
+
+\subsection{Other formalisms: what has and has not improved}
+
+The existing repository already explores three broad ways of reducing the
+mathematical input.  The CP/GIC presentation is a compact nonextensional
+set theory that postpones recovery of ordinary sets to a quotient and
+calibration proof.  Weak finite-variable calculi and diagonal-free modal
+presentations reduce logical vocabulary, but must retain a complete
+substitution or instantiation mechanism.  Finite class or relational
+kernels shift the axiom schema into finitely many constructors and clauses,
+but then require an effective, sound clause-search interpreter and its
+translation to the target consistency statement.  Counting displayed
+axioms or clauses does not count that interpreter.
+
+Two inherited obstructions guide these choices.  Deleting transitivity
+from the tested CP axiom produces a weak theory whose consistency is
+provable in ZFC, so that deletion cannot provide the requested target.
+Deleting the current numerical equality rows is also unjustified: they
+perform cross-variable instantiation, and the repository's typed
+countermodels refute the proposed reduced calculus.  The full equality-free
+first-order route below addresses the theory-calibration issue, but leaves
+its complete proof-search implementation to be measured.
+
+The pairing representation has likewise already received a direct backend
+test.  In the pinned public compiler, the unchanged Cantor implementation
+has 219 decision plus 62 framework states, totaling 281.  Replacing both
+pairing and unpairing by the tested 2-adic implementation gives 242 plus
+63, totaling 305.  The pair-only and unpair-only diagnostic replacements
+give 292 and 294; those mixed codecs are incompatible and are not proof
+searches for a single numerical theory.  These results are recorded in the
+repository's \texttt{compiler\_route.md} and
+\texttt{pairing-backend-results.json}.  They do not rule out a direct tape
+codec, a different offset convention, or a different interpreter.  They do
+show that a concise pairing equation does not by itself reduce this unary
+register compiler.
+
+The research decision supported by these measurements is to preserve the
+existing consistency-strength kernel while changing its compiled
+constructor interface.  The negative controls do not establish any global
+lower bound.  A new calculus could still win if its entire verified search
+engine, rather than only its axiom string, compiles smaller.
+
+\subsection{Equality erasure by two-sided membership profiles}
+\label{sec:equality-erasure}
+
+Here is a short consistency comparison for the \emph{full} equality-free
+CP/GIC theory.  It completes the two-sided observational-profile route
+already mentioned in the repository's \texttt{logical\_engine\_completeness.md};
+no claim of priority for equality elimination is made.  It avoids rebuilding
+extensional set theory directly in the equality-free language.  Instead it
+first recovers the existing, nonextensional native theory with ordinary
+logical equality, after which the established native-to-ZFC calibration
+can be reused.
+
+Let $T_{=}$ be ordinary one-sorted first-order logic with equality, the
+original power-container axiom CP, irreflexivity IR, and GIC for every
+first-order formula, including formulas containing equality.  Let $T_{\rm ef}$
+be full equality-free first-order logic with CP, IR, and GIC restricted to
+equality-free matrices.  Parameters are allowed and universally closed in
+both schemas.  Their nonlogical axioms CP and IR have no equality atoms.
+
+For the sole binary membership predicate $R$, define
+\[
+ x\sim y\quad:\!\!\Longleftrightarrow\quad
+ [\forall z\,(R(z,x)\leftrightarrow R(z,y))]
+ \;\land\;
+ [\forall z\,(R(x,z)\leftrightarrow R(y,z))].
+\]
+The two directions are both necessary for the immediate argument.  Equality
+of incoming profiles alone preserves only the second slot of $R$; equality
+of outgoing profiles alone preserves only the first slot.
+
+\paragraph{Pure logical facts.}
+Equality-free first-order logic proves that $\sim$ is reflexive, symmetric,
+and transitive.  It also proves
+\[
+ x\sim x'\;\land\;y\sim y'
+ \quad\Longrightarrow\quad
+ [R(x,y)\leftrightarrow R(x',y')].
+\]
+The first profile component changes $y$ to $y'$, and the second changes
+$x$ to $x'$.  A formula induction therefore proves invariance of every
+formula after replacing its equality atoms by $\sim$, under replacement
+of assigned values by $\sim$-equivalent values.  Auxiliary quantifiers in
+this fixed definition are always renamed fresh.
+
+\paragraph{Quotient proof.}
+Given a set-coded model $\mathcal A$ of $T_{\rm ef}$, form the quotient
+$\mathcal A/{\sim}$ in ambient ZFC and put
+\[
+ [x]\;\widehat R\;[y]\quad\Longleftrightarrow\quad R(x,y).
+\]
+Congruence makes this well defined.  If $\varphi^\sim$ replaces equality
+atoms of $\varphi$ by the fixed displayed formula, then induction gives
+\[
+ (\mathcal A/{\sim})\models\varphi([\bar a])
+ \quad\Longleftrightarrow\quad
+ \mathcal A\models\varphi^\sim(\bar a).
+\]
+Surjectivity of the quotient map supplies the quantifier cases.  CP and IR
+are unchanged under this translation.  For each matrix $\varphi(x,y,\bar p)$,
+the translated axiom $\operatorname{GIC}_{\varphi}^{\sim}$ is precisely
+$\operatorname{GIC}_{\varphi^{\sim}}$, up to fresh bound-variable names.
+The latter is an axiom of $T_{\rm ef}$.  This argument permits arbitrary
+parameters, coincident parameter values, and arbitrary occurrences of
+equality in the original matrix.  Consequently the quotient satisfies
+$T_{=}$.  No extensionality of the original membership relation is assumed
+or concluded at this stage.
+
+Conversely, forgetting the equality symbol of a model of $T_{=}$ gives a
+model of $T_{\rm ef}$.  Formalized first-order completeness and the quotient
+construction give in ZFC
+\[
+ \operatorname{Con}(T_{\rm ef})
+ \quad\Longleftrightarrow\quad
+ \operatorname{Con}(T_{=}).
+\]
+Combining this with the existing calibration of the full native theory
+therefore gives the intended ZFC consistency strength for this genuinely
+equality-free first-order input.
+
+\paragraph{Uniform proof translation.}
+The quotient argument can be strengthened to a direct syntactic statement.
+Translation by $\varphi\mapsto\varphi^\sim$ commutes with the propositional
+connectives and quantifiers, modulo effective fresh renaming.  The standard
+equality axioms translate to fixed equality-free logical derivations of
+reflexivity and congruence.  Congruence for composite formulas is generated
+by structural recursion.  A translated GIC axiom is the GIC instance with
+translated matrix; CP and IR remain unchanged.  Induction on a finite proof
+thus gives a primitive-recursive proof translation from $T_{=}$ to
+$T_{\rm ef}$.  The reverse translation is the inclusion of the equality-free
+calculus in the equality-bearing one.  The required fresh-name bound can
+be chosen as one plus the maximum of all labels appearing in the current
+finite formula and its finite context; computation and formula recursion
+are primitive recursive.  This is an ordinary mathematical description of
+an internalizable translator.  This packet does not claim a serialized
+proof object or a newly compiled Lean theorem for it.
+
+\paragraph{Compiler implication and limitation.}
+This theorem supplies a simpler calibration interface for a complete
+equality-free proof search.  It does not validate deleting equality rows
+from the current numerical proof engine: those rows implement cross-variable
+instantiation and variable renaming.  The repository's typed-countermodel
+obstruction applies to that deletion.  An equality-free implementation must
+supply capture-avoiding substitution, a complete tableau mechanism, or a
+complete ground-instance checker.  The new register peephole in
+Section~\ref{sec:negation-peephole} has a more immediate measured target:
+it retains the entire existing logical engine and changes no formula code.

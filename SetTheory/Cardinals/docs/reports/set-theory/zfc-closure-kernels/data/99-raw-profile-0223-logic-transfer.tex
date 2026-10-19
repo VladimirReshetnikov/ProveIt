@@ -1,0 +1,710 @@
+\hypertarget{result-and-scope}{%
+\subsection{Result and scope}\label{result-and-scope}}
+
+For every one of the 64 masks in
+\nolinkurl{original_layout_dne_variants.json}, the numerical calculus
+obtained by replacing the original fixed bundle with the indicated
+normalized bundle has \textbf{exactly the same derivable numerical
+codes} as the original calculus. This is a syntactic interderivability
+theorem, uniform in all natural-number parameters. It includes the cases
+in which a quantifier binds variable 0, the designated falsity code is
+also a relation code, parameters collide, or the implication constructor
+has the numerical alias \texttt{Imp(0,0)=0}.
+
+The machine source must implement the corresponding new bundle
+constructor. Its AX input reads, GEN row, eight logical rows, output
+positions, gate and cleanup remain unchanged. The proof below supplies
+the new logical/enumerator bridge. Combining it with a complete compiler
+simulation and the exact blank-start frame for a resulting literal
+binary table gives the same ZFC consistency equivalence as the original
+source. An old/new source bisimulation that demands identical numerical
+registers is neither needed nor generally true.
+
+No Lean build of this new transfer theorem is supplied here. The
+mathematical proof is explicit, and \texttt{check\_dne\_variants.py}
+independently checks the finite template/emission facts for all 64
+masks. Complete binary coverage and bootstrap verification belong to
+each actual compiled candidate and must be reported separately.
+
+ProveIt source basis: commit
+\nolinkurl{6446ff5668307a2ac6aee1896037f0b792090389}. The exact formula
+specification is the attributed upstream
+\nolinkurl{ZF/m254/tools/logic/spec.py} at commit
+\nolinkurl{297ab8df7e5de329605c3875b4934643b371a5e3}, SHA-256
+\nolinkurl{7d96deff6994315b714579c74d10efeb65374694d476c802c727356e258578e9}.
+
+\hypertarget{work-with-the-actual-numerical-calculus}{%
+\subsection{1. Work with the actual numerical
+calculus}\label{work-with-the-actual-numerical-calculus}}
+
+Put
+
+\[
+P(x,y)=\frac{(x+y)(x+y+1)}2+y,
+\quad I(x,y)=4P(x,y),\quad R(x,y)=4P(x,y)+1,
+\] \[
+Q_i A=4P(i,A)+2,\qquad E(x,y)=4P(x,y)+3,\qquad F=1.
+\]
+
+Use the abbreviations
+
+\[
+NA=I(A,F),\quad A\mathbin{\wedge_F}B=N I(A,NB),
+\quad D_iA=NQ_iNA.
+\]
+
+These are functions on natural numbers. We do not assume they freely
+generate a syntax tree. In particular, \texttt{I(0,0)=0} and
+\texttt{R(0,0)=F} are genuine identities. Symbolic trees in the artifact
+describe expressions formed from these functions; every identity of
+derivability below survives arbitrary evaluation of their leaves.
+
+Write \texttt{T\ ⊢\ A} for a theorem predicate closed under the
+following common rules and rows:
+
+\begin{itemize}
+\tightlist
+\item
+  Modus ponens: from \texttt{A} and \texttt{I(A,B)}, infer \texttt{B}.
+\item
+  Generalization: from \texttt{A}, infer \texttt{Q\_i\ A}, for every
+  natural \texttt{i}.
+\item
+  The Łukasiewicz row \[
+  \rho_8(a,b,c,u)=((c\to u)\to a)\to((a\to c)\to(b\to c)).
+  \]
+\item
+  The original falsity/quantifier row \[
+  \rho_6(i,A)=(D_iQ_iA)\to A.
+  \]
+\item
+  Quantifier distribution \[
+  \rho_2(i,A,B)=Q_i(A\to B)\to(Q_iA\to Q_iB).
+  \]
+\end{itemize}
+
+Both the original and every normalized calculus contain this common
+core, without using either bundle as a premise.
+
+\hypertarget{lemma-1-full-classical-implication-in-the-common-core}{%
+\subsubsection{Lemma 1: full classical implication in the common
+core}\label{lemma-1-full-classical-implication-in-the-common-core}}
+
+The checked Łukasiewicz derivation supplies, uniformly in its arguments,
+
+\[
+K(A,B)=A\to(B\to A),
+\] \[
+S(A,B,C)=(A\to(B\to C))\to((A\to B)\to(A\to C)),
+\] \[
+\operatorname{Peirce}(A,B)=((A\to B)\to A)\to A.
+\]
+
+Only MP and instances of \texttt{rho8} occur in those derivations. The
+repository states this polymorphically for an arbitrary binary
+operation; injectivity of implication is not an assumption. See
+\texttt{Lukasiewicz.lean}, the theorems \texttt{k}, \texttt{s}, and
+\texttt{peirce}, and \texttt{Code254.lean}, \texttt{implicational} and
+\texttt{c254\_classical}.
+
+The common core also proves \texttt{F\ →\ A} for every natural
+\texttt{A}. To see this directly, fix \texttt{i=0} and abbreviate
+
+\[
+H=Q_0NQ_0A,\qquad X=D_0Q_0A=H\to F.
+\]
+
+An instance of K gives \texttt{F\ →\ (H\ →\ F)}, hence \texttt{F\ →\ X}.
+The row \texttt{rho6(0,A)} gives \texttt{X\ →\ A}. Transitivity of
+implication, derived from K and S, gives \texttt{F\ →\ A}. This is
+exactly the \texttt{Code254.c254\_efq} proof; it uses neither IR, atomic
+vacuity, the CP/GIC bundle, nor a freshness condition.
+
+\hypertarget{lemma-2-both-double-negation-directions}{%
+\subsubsection{Lemma 2: both double-negation
+directions}\label{lemma-2-both-double-negation-directions}}
+
+For every natural \texttt{A}, the common core proves
+
+\[
+A\to NNA\qquad\hbox{and}\qquad NNA\to A.
+\]
+
+For the first direction, under assumptions \texttt{A} and \texttt{A→F},
+MP yields \texttt{F}. Apply the propositional deduction theorem twice.
+
+For the second, assume \texttt{NNA}. Under a further assumption
+\texttt{A→F}, MP yields \texttt{F}, and \texttt{F→A} yields \texttt{A}.
+Discharging the latter assumption gives \texttt{(A→F)→A}; Peirce gives
+\texttt{A}. Discharge \texttt{NNA}. These uses of the deduction theorem
+involve only MP and common-core theorems. Generalization is never
+applied to an undischarged assumption.
+
+\hypertarget{lemma-3-replacement-in-formula-contexts}{%
+\subsubsection{Lemma 3: replacement in formula
+contexts}\label{lemma-3-replacement-in-formula-contexts}}
+
+Let \texttt{A\ ≃\ B} mean that both \texttt{A→B} and \texttt{B→A} are
+common-core theorems. Then \texttt{≃} is an equivalence relation and is
+preserved by the following context constructors:
+
+\[
+C[\,]\ ::=\ [\,]\mid I(C[\,],U)\mid I(U,C[\,])\mid Q_i C[\,].
+\]
+
+Implication congruence is propositional. For example, from
+\texttt{A\textquotesingle{}→A} and \texttt{B→B\textquotesingle{}},
+assumptions \texttt{A→B} and \texttt{A\textquotesingle{}} produce
+\texttt{B\textquotesingle{}}; discharging gives
+\texttt{(A→B)→(A\textquotesingle{}→B\textquotesingle{})}. Reverse the
+two equivalences for the other direction.
+
+For quantifier congruence, generalize the theorem \texttt{A→B} to obtain
+\texttt{Q\_i(A→B)} and apply \texttt{rho2(i,A,B)}. This gives
+\texttt{Q\_iA→Q\_iB}. Repeat for the converse. There is no condition on
+\texttt{i}: this generalizes a theorem, including when \texttt{i=0} and
+the literal number \texttt{F=1} decodes as \texttt{R(0,0)}.
+
+No selected rewrite occurs in a variable-label argument of \texttt{Q},
+\texttt{R}, or \texttt{E}. Thus these context constructors cover every
+path used by the finite transformation.
+
+\hypertarget{why-a-purely-semantic-shortcut-needs-care}{%
+\subsubsection{Why a purely semantic shortcut needs
+care}\label{why-a-purely-semantic-shortcut-needs-care}}
+
+For an arbitrary propositional atom \texttt{f}, \texttt{((A→f)→f)} is
+equivalent to \texttt{A∨f}, rather than to \texttt{A}. Five selected
+redexes have an inner formula \texttt{A=Y→(Z→F)}; there \texttt{F→A} is
+a tautology even when F is arbitrary, so local semantic cancellation
+works. The remaining redex has a quantified inner formula. Moving from a
+free assumption \texttt{¬R(0,0)} through a binder of variable 0 would be
+invalid without further argument. Lemmas 1--3 avoid that issue
+completely: they derive the required equivalences in a
+bundle-independent numerical calculus and then apply GEN to proved
+implications. The full six-redex theorem is consequently stronger and
+cleaner than a claim restricted to the five locally absorbing redexes.
+
+\hypertarget{the-exact-source-transformation}{%
+\subsection{2. The exact source
+transformation}\label{the-exact-source-transformation}}
+
+Let \texttt{beta(a,b,c)} denote the original expression
+
+\[
+\bigl(C(a,b,c)\wedge_F G(a,b,c)\bigr)
+\wedge_F
+\bigl((R(a,b)\to Q_cR(a,b))\wedge_F(E(a,b)\to Q_cE(a,b))\bigr).
+\]
+
+The exact C and G expressions are taken directly from the pinned
+\texttt{spec.py}, not reconstructed from an informal set-theory
+description. Here \texttt{c} remains both the supplied GIC matrix code
+and a variable-label parameter; its occurrences are not renamed or
+reinterpreted.
+
+An address is a list of child numbers in the fully expanded constructor
+expression: child 1 is the first argument and child 2 is the second. The
+six original addresses are:
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Redex ID & Original address \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+0 & \texttt{1,1,1,1,1,2} \\
+1 & \texttt{1,1,1,1,1,2,1,1,1,2,2,1,1,1,2} \\
+2 & \texttt{1,1,1,2} \\
+3 & \texttt{1,1,1,2,1,1,2} \\
+4 & \texttt{1,1,1,2,1,1,2,1,1,1,2,2,2,2,1,2} \\
+5 & \texttt{1,2} \\
+\end{longtable}
+
+At a selected address replace \texttt{I(I(X,F),F)} by \texttt{X}.
+Addresses refer to the original expression throughout, so deleting an
+enclosing selected node does not accidentally select a different
+descendant. Mask \texttt{m} selects ID \texttt{j} when bit \texttt{j} of
+\texttt{m} is one. The recursive implementation transports the original
+addresses through a deletion.
+
+Write \texttt{beta\_m} for the result. Lemmas 2--3, by recursion on the
+fixed expression, give
+
+\[
+\vdash_{\rm core}\beta(a,b,c)\to\beta_m(a,b,c),
+\quad
+\vdash_{\rm core}\beta_m(a,b,c)\to\beta(a,b,c)
+\tag{1}
+\]
+
+for every mask and every \texttt{a,b,c}. All parameter equalities are
+allowed in (1). The actual bundle-axiom gate remains
+\texttt{c≠a\ ∧\ c≠b}.
+
+Define \texttt{C\_m} to have exactly the original truth rule, MP, GEN
+and eight rows, and the sole changed axiom rule
+
+\[
+c\ne a\ \land\ c\ne b\quad\Longrightarrow\quad C_m(\beta_m(a,b,c)).
+\]
+
+\hypertarget{theorem-4-equality-of-the-numerical-theorem-sets}{%
+\subsubsection{Theorem 4: equality of the numerical theorem
+sets}\label{theorem-4-equality-of-the-numerical-theorem-sets}}
+
+For every natural \texttt{n} and every mask \texttt{m},
+
+\[
+C_m(n)\ \longleftrightarrow\ C_{254}(n).
+\tag{2}
+\]
+
+Induct on an original derivation to obtain the forward translation into
+the modified calculus. The truth, MP, GEN and eight-row cases are
+unchanged. In a bundle case, use the new bundle axiom with the same
+parameters and unchanged gate, followed by the common-core implication
+\texttt{beta\_m→beta} from (1). The reverse translation is identical
+with the implication reversed. This replaces each changed axiom leaf by
+a finite derivation and preserves the conclusion code exactly.
+
+This proves more than equiconsistency. In particular, every original
+CP/GIC/vacuity projection, every original native-formula adapter, and
+every original derivation of IR remains available in the new calculus,
+with the same numerical conclusion. There is no need to reprove
+set-theoretic calibration for a weakened schema or a changed variable
+convention: (2) returns directly to the original literal calculus.
+
+\hypertarget{exact-ax-interface-and-source-implementation}{%
+\subsection{3. Exact AX interface and source
+implementation}\label{exact-ax-interface-and-source-implementation}}
+
+Use the original six boundary registers \texttt{(pl,np,t,S,d,h)}, where
+the scratch registers and axiom selector have been cleared. Every
+command begins with the unchanged fetch/read prefix. If \texttt{pl=0},
+it selects candidate \texttt{np} and increments \texttt{np}; otherwise
+it decrements \texttt{pl} before unpairing. It decodes the selector and
+an additive field \texttt{x}, giving \texttt{d\textquotesingle{}=d+x}.
+
+The three non-AX commands are unchanged:
+
+\begin{itemize}
+\tightlist
+\item
+  MP checks \texttt{I(t,d\textquotesingle{})=h}. Success sets
+  \texttt{t=d\textquotesingle{}} and pushes zero onto \texttt{S};
+  failure sets \texttt{t=0}. Either branch clears \texttt{h}.
+\item
+  DROP pushes the old \texttt{t} and sets \texttt{t=h}, retaining
+  \texttt{h}.
+\item
+  NIP halts exactly when the incoming \texttt{h=1}; otherwise it pops
+  \texttt{(h,S)=unP(S)}.
+\end{itemize}
+
+For AX, the selector supplies \texttt{c}; put
+\texttt{a=d\textquotesingle{}}. Read the next field \texttt{y}, put
+\texttt{b=h+y}, and read the same fourth field \texttt{u} as before.
+Above the protected old stack tail, AX pushes, from bottom to top,
+
+\[
+t,\ Q_a h,\ \rho_8(a,b,c,u),\ \rho_7(a,b,c),\ \rho_6(a,b),\ \rho_5(a,b,c),
+\] \[
+\rho_4(a,b,c),\ \rho_3(a,b,c),\ \rho_2(a,b,c),\ \rho_1(a,b).
+\]
+
+The new current formula is \texttt{beta\_m(a,b,c)} if \texttt{c≠a,b},
+and zero otherwise. Clear \texttt{d,h} and all scratch/selector
+registers. \textbf{Only the displayed current bundle value changes.}
+
+The unchanged AX word prefix is \texttt{{[}166,121,180,176{]}}: push
+\texttt{a}, push the old cache, build its GEN row, then read the new
+\texttt{b}. The eight original rows follow in original push order. The
+only destructive \texttt{u} read remains inside the unchanged rho8
+constructor. After the changed bundle, the original tail
+\texttt{{[}192,131,211,197,131{]}} applies the same gate and cleanup.
+
+The independent symbolic checker establishes these facts for every mask:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  The GEN prefix, eight complete row expressions and their order are
+  literal matches to the pinned source.
+\item
+  The input reads are identical and occur at the same stack depths.
+\item
+  RPN execution never consumes the protected old current formula or the
+  old stack tail.
+\item
+  The new constructor word leaves exactly one current formula above the
+  same ten pushed outputs.
+\item
+  The bundle has outer constructor \texttt{I}, so its numerical code is
+  divisible by four and is never \texttt{F=1}. Every pushed logical row
+  also has outer \texttt{I}, except GEN, which has tag two; no pushed
+  row is 1.
+\item
+  The gate and cleanup macros are byte-for-byte unchanged.
+\end{enumerate}
+
+To lift this symbolic identity to a changed structured register program,
+apply the already proved scalar-push and binary-constructor contracts by
+induction on the emitted RPN word, followed by the unchanged
+gate/cleanup contracts. Each complete formula constructor is balanced:
+it leaves its value as current, restores its scratch and parameter
+registers, and pushes the previously current formula onto the protected
+tail. A binary constructor combines exactly the two fresh arguments; no
+new register operation is introduced. This is a compositional source
+lemma for the new program, not a comparison asserting that it emits the
+old numerical bundle.
+
+The routed baseline's fine-token AST is not literally the old
+\texttt{Dag254.v} AST: previous optimizations commute independent
+increments and reassociate control nodes with corresponding continuation
+adjustments. A separate all-register macro bridge now checks \textbf{all
+19 entries} of \texttt{macro\_to\_fine.json}. It independently builds
+finite control-flow graphs for the old macro and the composed fine word,
+compares the nine-register increment vectors between matching decrement
+guards, explores both branches, and verifies the resulting path
+equations again with the upstream path decoder. The certificate has
+\textbf{192 state pairs and 346 checked edges}. It preserves exact
+output registers and return/divergence behavior. See the neighboring
+machine-reduction artifacts \nolinkurl{audit_macro_fine_bridge.py},
+\texttt{macro-fine-bridge.json}, and
+\nolinkurl{macro-fine-bridge-certificates.json}. Composing that bridge with
+the original macro contracts is the required justification for assigning
+original constructor meanings to the new fine words; the aggregate
+original AX word hash alone would not establish it.
+
+The finite fine-token representation has these exact sizes:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1579}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2105}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2105}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2105}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2105}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Mask
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Deleted redexes
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Constructor-expression nodes
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Wade macro calls
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Fine AX terminals
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+0 & 0 & 145 & 186 & 1,270 \\
+59 & 5, omitting ID 2 & 125 & 196 & 1,180 \\
+63 & 6 & 121 & 196 & 1,162 \\
+\end{longtable}
+
+Every deleted redex removes 18 fine terminals and four
+constructor-expression nodes. It can increase the count of coarser Wade
+macro calls because an \texttt{And} or \texttt{Ex} pattern ceases to be
+recognizable as a single derived constructor. Consequently source size
+alone does not predict compressed state count.
+
+\hypertarget{soundness-and-completeness-of-the-changed-enumerator}{%
+\subsection{4. Soundness and completeness of the changed
+enumerator}\label{soundness-and-completeness-of-the-changed-enumerator}}
+
+\hypertarget{soundness-from-a-safe-start}{%
+\subsubsection{Soundness from a safe
+start}\label{soundness-from-a-safe-start}}
+
+Let \texttt{Good\_m(S)} mean that every element obtained by repeatedly
+unpairing the logical stack is a theorem of \texttt{C\_m}; the zero tail
+contributes the truth code 0. Preserve
+
+\[
+C_m(t)\ \land\ C_m(h)\ \land\ Good_m(S).
+\tag{3}
+\]
+
+The ordinary command proof is unchanged. Successful MP follows by MP in
+\texttt{C\_m}; failed MP and pushed dummy zeros use truth. DROP and NIP
+move previously proved codes. AX pushes GEN of the proved cache and
+eight unchanged logical axiom instances, and its current formula is
+either the gated new axiom or truth. Thus a halt, which is precisely an
+incoming cache value \texttt{F}, implies \texttt{C\_m(F)}.
+
+By (2), the sets of safe formula/stack contents for the original and new
+calculi are equal. At the actual baseline seed
+\texttt{(N,T,W,A,D,H,X,Y,L)=(3,0,0,0,3,0,0,0,0)}, all three
+formula-bearing fields are zero, so (3) holds. The nonzero candidate
+counter and additive parameter are not soundness assumptions about
+formulas.
+
+\hypertarget{completeness-by-explicit-proof-blocks}{%
+\subsubsection{Completeness by explicit proof
+blocks}\label{completeness-by-explicit-proof-blocks}}
+
+Use the original contract: a command list \texttt{Build(A)} started from
+\texttt{(t,S,d,h)=(T,S,0,0)} either halts, or ends at
+\texttt{(A,S,0,0)}, for arbitrary \texttt{T,S}. Earlier halting is an
+allowed successful outcome of this contract.
+
+The unchanged stack row count and the tag facts above permit precisely
+the original proof-block construction. In the following notation AX
+\texttt{(c;x,y,u)} denotes selector \texttt{c+3} followed by the three
+data fields; every unprinted command field is zero.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Derivation case
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Command block
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Discard / truth & \texttt{MP(1);\ AX(1;0,0,0);\ NIP\^{}10} \\
+Gated new bundle & \texttt{Discard;\ AX(c;a,b,0);\ NIP\^{}10} \\
+Logical row \texttt{rho\_j}, \texttt{1≤j≤8} &
+\texttt{Discard;\ AX(c;a,b,u);\ NIP\^{}j;\ DROP;\ NIP\^{}(11-j)} \\
+GEN \texttt{i} from \texttt{A} &
+\texttt{Build(A);\ DROP;\ NIP;\ AX(i;i,0,0);\ NIP\^{}9;\ DROP;\ NIP;\ NIP} \\
+MP to \texttt{B} from \texttt{A} and \texttt{A→B} &
+\texttt{Build(A);\ DROP;\ Build(A→B);\ NIP;\ DROP;\ NIP;\ MP(B);\ AX(B;0,0,0);\ NIP\^{}10;\ DROP;\ NIP;\ NIP} \\
+\end{longtable}
+
+The cleanup AX calls have \texttt{c=a}, so their bundle gate fails
+exactly as before. In the row selector the new current bundle may be
+pushed temporarily by DROP, but it is never 1, so the same NIP sequence
+restores the protected tail. The bundle-leaf case uses the new
+expression directly. Induction on a \texttt{C\_m} derivation therefore
+gives the required block for every theorem code, including \texttt{F}.
+
+\hypertarget{no-refutation-is-lost-by-beginning-with-nextproof-3}{%
+\subsubsection{No refutation is lost by beginning with nextproof
+3}\label{no-refutation-is-lost-by-beginning-with-nextproof-3}}
+
+The precise original safe-start proof is in
+\texttt{EnumSafeStart254.lean}, theorems \texttt{pad\_code\_ge},
+\texttt{padded\_program\_halts}, \texttt{reach\_ge}, and
+\texttt{complete\_from}. It adapts without altering any command
+schedule.
+
+Let \texttt{p} be a contradiction block. For every natural \texttt{u},
+prepend
+
+\[
+\operatorname{AX}(0;1,1,u)
+\]
+
+and append \texttt{DROP;NIP;NIP}. The leading AX resets \texttt{d=h=0}
+from arbitrary working values. Its current output and its newly pushed
+stack may depend on those old values and on \texttt{u}, but the contract
+for \texttt{p} quantifies over both. Thus this padded program halts from
+every working state.
+
+Its candidate code is at least \texttt{u}. Explicitly, if the encoded
+remaining command list is \texttt{r}, the leading code is
+
+\[
+P(3,P(1,P(1,P(u,r)))),
+\]
+
+with the usual successor convention included in \texttt{r}; every Cantor
+pairing is at least either argument. Pick \texttt{u} at least the
+initial next-candidate counter. Unchanged decrement-before-unpairing
+drains each current proof list, and every completed candidate increments
+that counter. Hence the padded refutation is eventually selected unless
+an earlier genuine halt occurs.
+
+Consequently, from every start satisfying (3), and in particular the
+actual seed with nextproof 3,
+
+\[
+\operatorname{Halt}(\operatorname{Enum}_m)\quad\longleftrightarrow\quad C_m(F)
+\quad\longleftrightarrow\quad C_{254}(F).
+\tag{4}
+\]
+
+This argument does not assume that the earlier candidates 0, 1, or 2 are
+harmless, or that the current proof-list pointer is initially zero. It
+supplies the needed cofinality directly.
+
+\hypertarget{the-exact-cpgic-and-zfc-comparison}{%
+\subsection{5. The exact CP/GIC and ZFC
+comparison}\label{the-exact-cpgic-and-zfc-comparison}}
+
+The inherited native theory has literal sealed sentences for the raw
+container axiom CP, global-image collection GIC for \textbf{every actual
+finite native formula with all parameters}, and raw irreflexivity IR.
+The upstream source names these compact axioms C and G; the source
+bundle also supplies atomic vacuity for the numerical calculus.
+
+In ordinary set-theoretic notation their content is
+
+\[
+\forall p\,\exists V\Bigl(p\in V\ \land\
+ \forall x\in V\,[x\subseteq V\ \land\ \exists W\in V\,\forall z\,(z\subseteq x\to z\in W)]\Bigr),
+\]
+
+and, for every formula \texttt{phi(x,y,parameters)},
+
+\[
+\forall B\,\exists C\Bigl[
+ \forall x\in B\,\forall y\,(\phi(x,y)\to\exists y'\,(\phi(x,y')\land y'\in C))
+ \ \land\ \forall y\in C\,\exists x\,\phi(x,y)\Bigr].
+\]
+
+IR is \texttt{∀x\ ¬(x∈x)}. These expressions describe the already
+calibrated theory; the precise finite syntax and closures remain those
+of \texttt{NativeTheory254.NativeAx}.
+
+The proved numerical/native interface is
+
+\[
+C_{254}(F)\quad\longleftrightarrow\quad
+\operatorname{BProv}(\operatorname{NativeAx},[\,],\bot).
+\tag{5}
+\]
+
+Equation (2) gives exactly the same interface for \texttt{C\_m}, not
+just a semantic soundness implication. All formula families, gate
+conventions, equality transport, and falsity aliases are inherited
+through the equality of theorem sets.
+
+The ordinary ZFC calibration may be composed as in the baseline proof:
+finite syntax and first-order completeness produce nonempty set-coded
+models; the native CP/GIC model has the relevant bisimulation quotient
+and internally well-founded interpretation; ZF including Foundation is
+compared with ZFC by the internal constructible interpretation. Internal
+Foundation must not be replaced by external well-foundedness of an
+arbitrary countable model. The native theory is also not obtained merely
+by deleting Choice from a displayed axiom list. Those are substantive
+inherited interpretation arguments, referenced below, and are unchanged
+by this transfer.
+
+Within ZFC these are assertions about sets of finite proofs,
+satisfaction for set structures, and finite machine runs. Equations
+(1)--(4) are uniform finite derivation transformations and elementary
+inductions and can be carried out there. Combined with the established
+ordinary baseline interpretation, they yield
+
+\[
+\mathrm{ZFC}\vdash
+\bigl(C_m(F)\leftrightarrow\neg\operatorname{Con}(\mathrm{ZFC})\bigr).
+\tag{6}
+\]
+
+This is not an assertion that the new theorem has already been checked
+in Lean, nor that every universe-polymorphic Lean result automatically
+becomes a ZFC proof. The particular set constructions and inductions in
+the ordinary baseline calibration, followed by the explicit finite
+transformations here, are the mathematical reason for (6).
+
+\hypertarget{what-is-needed-for-an-actual-binary-machine}{%
+\subsection{6. What is needed for an actual binary
+machine}\label{what-is-needed-for-an-actual-binary-machine}}
+
+For a literal compiled candidate \texttt{M\_m}, the remaining
+implementation theorem has the following concrete premises:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  The exact table has a complete positive-time simulation of every
+  instruction of the \textbf{new} structured source, for arbitrary
+  natural register values, all legal continuations, and the full tape
+  frame. Both directions preserve genuine halting; neither a decode
+  failure nor internal divergence is a halt.
+\item
+  The constructor/source lemma in Section 3 identifies that source with
+  \texttt{Enum\_m}, and unchanged control fragments preserve the
+  original fetch, selector, reads and command semantics.
+\item
+  The exact blank trace reaches the documented root frame, with the
+  actual head, header, logical register values, pointer stack, exterior
+  tape, and physical spare suffix. In particular the formula-bearing
+  logical fields satisfy (3).
+\end{enumerate}
+
+These premises imply by simulation, (4), and (6)
+
+\[
+\mathrm{ZFC}\vdash
+\bigl(\neg\operatorname{Halt}_{\rm blank}(M_m)
+\leftrightarrow\operatorname{Con}(\mathrm{ZFC})\bigr).
+\]
+
+A complete instruction/compiler certificate plus bootstrap is sufficient
+\textbf{when it is a certificate for the new source and is composed with
+the new AX/enumerator lemma}. An audit of the old source alone does not
+identify changed AX outputs. No equality-of-registers bisimulation
+between the old and new source is required; equations (2) and (4)
+replace that unnecessary demand.
+
+\hypertarget{provenance-and-novelty}{%
+\subsection{7. Provenance and novelty}\label{provenance-and-novelty}}
+
+The original compact calculus and set theory are due to Mira-Cult, the
+upstream verification to Jeff Ketchersid, and the machine compiler to
+Andrew James Wade. ProveIt's pinned numerical calculus, enumeration,
+safe-start and model adapters are inherited work.
+
+Prior incoming material already uses rho6-derived ex falso and
+quantified double-negation transport in
+\nolinkurl{verification/double_b6_review.md} to compare a changed
+quantifier row. The present contribution applies that method to the
+\textbf{six exact fixed-bundle redexes}, enumerates all 64
+original-layout masks, supplies their exact fine-token emission, and
+explains the complete source/enumerator transfer needed to combine them
+with a new binary optimization. It does not claim the underlying
+double-negation principle as new.
+
+Primary reference paths in the pinned ProveIt tree:
+
+\begin{itemize}
+\tightlist
+\item
+  \nolinkurl{Computability/BusyBeaver/Research/ZFC/candidate-routing245/README.md}
+  --- literal baseline, count, seed, ordinary theorem and formal status.
+\item
+  \nolinkurl{Computability/BusyBeaver/Research/ZFC/native_theory254.md}
+  --- exact numerical/native refutation comparison and full native
+  formula schema.
+\item
+  \nolinkurl{Computability/BusyBeaver/Research/ZFC/dirty_program254.md}
+  --- safe arbitrary control fields and structured source composition.
+\item
+  \nolinkurl{SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/35-dirty-formal-src-BusyBeaver-ZFC-Code254.lean}
+  --- numerical constructors, eight rows, exact bundle,
+  \texttt{c254\_efq}.
+\item
+  The same source-35 prefix with \texttt{Lukasiewicz.lean} and
+  \texttt{Kalmar.lean} --- implication derivations and
+  deduction/completeness, without injectivity assumptions.
+\item
+  The same source-35 prefix with \texttt{Enum254.lean} and
+  \texttt{EnumSafeStart254.lean} --- complete command contracts and
+  cofinal padding.
+\item
+  \nolinkurl{docs/incoming/sub246-audit-and-alternatives-20261018.zip},
+  \nolinkurl{research_sub246/verification/double_b6_review.md} and
+  \nolinkurl{acceptance_checklist_and_transfer.md} --- prior quantified
+  DNE argument and ordinary ZFC model interpretation audit.
+\end{itemize}
+
+The \nolinkurl{foundation_choice_route.md} note contains older
+intermediate Lean status and must not by itself be read as the final
+245-state ordinary calibration status. The baseline README and complete
+incoming ordinary proof distinguish that status from the remaining exact
+Lean endpoint.

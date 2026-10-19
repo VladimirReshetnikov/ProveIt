@@ -1,0 +1,126 @@
+{
+  "status": "ORDINARY_MATHEMATICAL_REVIEW_NO_SUBSTANTIVE_BLOCKER",
+  "reviewed_files": {
+    "skolem_reduct_body.tex": "013d9c2e8948a4467ad6515acda8484c0226d98a65a89903777a3cdcb509abfd",
+    "skolem_reduct.py": "e6c724923f994e5e94d7f74eae665315f00ee92c3906f227af8aacb847b52f5f",
+    "reference/ground_kernel.py": "2ceebc265a6d2dc5d487f4b9d078a53d6b37d7718184e6f2c6da920b6a4985fb",
+    "reference/coded_extensional.py": "57d8f48de761b2a0ce0cd29f63935b729da84e5e185a263fff331eba7f5d74f8",
+    "reference/finite_class_closure.md": "2f60e5cb54f4ed11ab88489c85ed083513e3938c39fa888038588d3d36102ccc"
+  },
+  "scope": "Independent critical review of the quotient/reconstruction proof and fresh finite-code replay. This is not a kernel-checked formal theorem, proof of Con(ZFC), or a binary TM construction.",
+  "checks": [
+    {
+      "name": "equality_quotient",
+      "finding": "Reflexivity and the left-Euclidean Eq axiom imply symmetry and transitivity; predicate congruence descends E, Inc and G. Only V,C are directly quotiented."
+    },
+    {
+      "name": "fixed_q",
+      "finding": "Ground d has code zero, so rho([d])=d. Therefore reconstructed N(d,d) is exactly the old class [N(d,d)], preserving the selector used by R and D*."
+    },
+    {
+      "name": "class_constructors",
+      "finding": "N and A outputs satisfy their exact incidence profiles by raw clauses at least representatives. Q is reconstructed at representatives of its two arguments, and raw clauses08/09 give its existential profile using preserved C. No invalid N/A/Q congruence inference occurs."
+    },
+    {
+      "name": "W_witness",
+      "finding": "In reconstructed row09, the representative triple (rho(s),rho(j),rho(a)) is exactly the triple used by the raw W instance, so the witness class is the reconstructed W value."
+    },
+    {
+      "name": "H_Y_Z_joint_key",
+      "finding": "Each fixed pair (b,t) uses one representative pair (b0,t0). H,Y,Z raw values therefore retain their shared branch key across rows10-15; all R occurrences use only preserved C and the fixed q-class."
+    },
+    {
+      "name": "nested_D_star",
+      "finding": "The rebuilt core proves nonempty x implies E(D*_rebuilt(x),x). If x is empty in the quotient, the raw D* literal is false regardless of its value, and the raw row14 yields the required closure. Raw and rebuilt D* need not agree, and the proof does not assert agreement."
+    },
+    {
+      "name": "FC16_extensionality",
+      "finding": "The proof derives quotient E extensionality from the raw nested Q/N/A incidence profiles, using a selector fresh from d and q. It then uses rebuilt core profiles to derive the actual rebuilt native clause. It does not identify raw nested constructor terms with reconstructed evaluations."
+    },
+    {
+      "name": "finite_stages",
+      "finding": "The radix16/Cantor interval is subterm-closed. Label equality realizes the finite Eq equivalence and predicate completion; the two same-tag function checks exactly enforce the retained V,C rows. Native endpoint-bounded instances cover all ground native clauses in the limit."
+    }
+  ],
+  "minor_wording_suggestion": "Use \u201cthe construction retains congruence only for V,C\u201d rather than implying the retained set is proved necessary or minimal.",
+  "fresh_finite_replay": {
+    "status": "PASS",
+    "byte_identical_files": [
+      {
+        "file": "fc15_assignment_congruence.bin",
+        "sha256": "9d1f3f5c75959f419f289460e5731024f1baa096e8c7a7c918bcf58595121a21",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc15_assignment_congruence.bits",
+        "sha256": "a53d28d957526e23d34a9afe53d2db81a7a246dd5216a552dc0f11520f18820b",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc15_assignment_congruence.json",
+        "sha256": "5da8f9baadbab568b714b365bdfb65e04f16be6c4bb0add86704beb026f0175f",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc15_five_base_congruence.bits",
+        "sha256": "8f9be08973ae26ee1cff62963602ffe8a1a5ffe1f6c3c812c590c51c498c7700",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc16_assignment_congruence.bin",
+        "sha256": "599c775ae425757a51076641fcad8dd1b74d0299d5ed712cbe55519071f8b625",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc16_assignment_congruence.bits",
+        "sha256": "dc27233c1ac29147f8ae7d5adeba3d1a2c26e339546c845d45a8b69e17375efa",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc16_assignment_congruence.json",
+        "sha256": "68a870c2d02321678384d349375603b2448888761f4bc56f8c47dee0dea1f99a",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc16_five_base_congruence.bits",
+        "sha256": "ca997589b85e4819ed3b7014bba2588ef6e13e5e9eb7cafa422e11b60404325d",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "results.json",
+        "sha256": "6b437d43e99282a1860b30fa28898af7b08d9234255664960251ec6d4e68bf53",
+        "byte_identical_to_author_output": true
+      }
+    ],
+    "independent_function_comparisons": 1440,
+    "native_k2_witnesses": {
+      "fc15": {
+        "k": 2,
+        "B": 4,
+        "candidate_bits": 56,
+        "kept_native_instances": 12,
+        "witness": 2097728,
+        "assignment_accepts": true,
+        "all_nine_accepts": true,
+        "zero_candidate_rejected": true,
+        "scope": "Explicit native-stage SAT witness, no exhaustive k2 search"
+      },
+      "fc16": {
+        "k": 2,
+        "B": 4,
+        "candidate_bits": 56,
+        "kept_native_instances": 12,
+        "witness": 2097728,
+        "assignment_accepts": true,
+        "all_nine_accepts": true,
+        "zero_candidate_rejected": true,
+        "scope": "Explicit native-stage SAT witness, no exhaustive k2 search"
+      }
+    }
+  },
+  "remaining_external_dependencies": [
+    "The inherited ordinary FC15*/FC16* consistency calibrations to ZFC are assumed at exactly the cited source44 status.",
+    "No serialized Lean/Coq proof of the new quotient theorem is supplied.",
+    "No small binary compiler or machine-state saving follows from the 421-bit template reduction alone."
+  ]
+}
