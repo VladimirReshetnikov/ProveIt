@@ -36,6 +36,12 @@ internal PA equivalence remain open. The new source has 6,455 leaves and
 requires its own binary runtime and decoder coverage. The active formalization
 target is now this 240-state machine. See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md).
 
+The [240 source-equivalence proof](source_rotation240.md) now passes Lean:
+10 theorem probes and 13 typed callers, with zero warnings. It proves that
+the new register program preserves halting for every initial register file.
+The binary runtime, initialization and final consistency composition remain
+separate obligations.
+
 The [**241-state candidate**](candidate-fold241/README.md) from `8c41b1fb7d`
 adds two local folds to the combined243 table. The last fold uses a bit written
 by the predecessor to distinguish two merged controls. Fresh replay passes

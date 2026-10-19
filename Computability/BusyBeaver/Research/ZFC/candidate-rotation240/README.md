@@ -66,9 +66,12 @@ See the [actual replay](../../../../../SetTheory/Cardinals/docs/reports/set-theo
 [mathematical reconciliation](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md)
 and [reproduction instructions](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170-reproduction.md).
 These checks support ordinary proofs; they do not supply a Lean or PA endpoint.
-The source rotation can reuse the existing generic Lean loop and context
-theorems by changing one shared program node. Binary runtime coverage and
-composition still need proofs for the changed table and source.
+The [source-rotation Lean proof](../source_rotation240.md) now establishes
+halting equivalence for every initial register file, using the generic loop
+and context theorems and changing one shared program node. Its 10 theorem
+probes and 13 typed callers pass with zero warnings. Binary runtime coverage,
+initialization and consistency composition still need proofs for the changed
+table and source.
 
 ## Exact files and attribution
 
