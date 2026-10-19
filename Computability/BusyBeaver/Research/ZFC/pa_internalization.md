@@ -53,7 +53,11 @@ run composition, full halted-code absorption and recovery of that blank graph.
 The [finite arithmetic startup](arithmetic_bootstrap_rotation240.md) passes
 seven further probes and nine callers with zero warnings. Its fixed sentence,
 provable in IΣ₁ and PA, gives the complete boot code after 409,691 steps.
-This finite transport does not replace the unbounded internal simulation.
+The [startup-removal theorem](arithmetic_startup_rotation240.md) passes 12 probes
+and 14 callers with zero warnings. IΣ₁ and PA prove the equivalence of the fixed
+blank- and seed-halting sentences. Its general shift theorem covers arbitrary
+internal offsets and configurations, including prefixes that extend past a
+halt. The unbounded internal binary-to-register simulation remains open.
 
 The current arithmetic checkpoints are:
 
