@@ -17,6 +17,12 @@ indices included.
 
 ## Status
 
+Fresh verification records now cover the
+[translation into Foundation ZFC](translation_check.md) and the separate
+[arithmetic fixed-point dependency](foundation_fixedpoint_check.md).
+Their audits retain the distinction between external finite syntax and
+model-internal indices, and state the cached dependency boundaries explicitly.
+
 **The target is not yet an unconditional theorem.** State it plainly:
 
 | Statement | Status |

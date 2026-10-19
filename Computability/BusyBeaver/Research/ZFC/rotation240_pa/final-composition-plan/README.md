@@ -35,6 +35,7 @@ After that inventory, [R2Neg](../../../../../../Logic/Interpretability/ZFCinPA/r
 [partial universe truth](../../../../../../SetTheory/BoundedConsistency/universe_truth_check.md),
 [fixed-level truth and calculus soundness](../../../../../../SetTheory/BoundedConsistency/level_soundness_check.md),
 [internal ZFC axiom truth](../../../../../../SetTheory/BoundedConsistency/axiom_truth_check.md),
+[translation into Foundation ZFC](../../../../../../Logic/Interpretability/ZFCinPA/translation_check.md),
 the [compactness/completeness interfaces](../../../../../../Logic/FirstOrder/checked_interfaces.md)
 and ten [register-program modules](../../arithmetic_register_prerequisites.md)
 passed. NativePeel required one
@@ -42,17 +43,17 @@ implicit-argument correction, with the failed original run preserved.
 The [first concrete bisimulation check](../control-bisim-first-check/README.md)
 hit the 4 GiB memory limit; the
 [complete split certificate and assembled equivalence](../../control_bisim_rotation240_split.md)
-now pass under the unchanged cap. These fresh checks remove twenty-eight of
+now pass under the unchanged cap. These fresh checks remove twenty-nine of
 the 88 entries. The
 [provider review](../../../../../../Logic/Interpretability/ZFCinPA/fixedpoint-template-route/README.md)
 also identifies an already accepted current-source result for
 `ModelCodedPredicateTemplate`; its exact source/object pair is reusable, with
 the original warnings and legacy capture limits retained. This closes one
-further entry without replay: 29 resolved and 59 remaining.
+further entry without replay: 30 resolved and 58 remaining.
 An independent [legacy-record reconciliation](../../../../../../Logic/Interpretability/ZFCinPA/fixedpoint-template-route/legacy-review.json)
 confirms that reuse and finds no further omission among 1,511 named PASS
-records. Its counts describe its earlier scan checkpoint; the two later
-soundness/axiom-truth checks are included in the current count above.
+records. Its counts describe its earlier scan checkpoint; the later
+soundness, axiom-truth and Translation checks are included in the current count above.
 All eleven register-side entries are now checked;
 the [register endpoint](../../arithmetic_register_endpoint240.md) includes
 validator acceptance iff Rotation240 control halting from the exact seed.
@@ -61,7 +62,10 @@ additional checked modules, outside that original inventory.
 The [Foundation Z dependency branch](../../../../../../Logic/Interpretability/ZFCinPA/foundation_set_theory_check.md)
 now also has fresh Model, Basic, ExistsUnique and Z checks, with the cached
 library boundaries explicitly retained. These external dependencies do not
-change the original 88-project-module census.
+change the original 88-project-module census. The separate
+[arithmetic FixedPoint dependency](../../../../../../Logic/Interpretability/ZFCinPA/foundation_fixedpoint_check.md)
+also has a fresh 12-probe/12-client check; its 13 source style warnings and
+opaque cached boundaries remain recorded.
 Subsequent actual records must update the remaining work; the frozen
 inventory itself stays unchanged. Checks retain
 the upstream source's declared limits and known warnings, while new audit

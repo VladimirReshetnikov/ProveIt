@@ -72,8 +72,9 @@ fresh prerequisite modules, three explicit cached boundaries and Init.
 All 102 recorded inputs, four fresh module artifacts and 193 namespace
 links remain unchanged. The [publication](results/foundation-set-z-publication.json)
 and [history](foundation-set-theory/z/history.json.gz) preserve the exact
-check. This closes the missing Foundation Z branch. Translation still needs
-the later bounded-consistency modules before its own fresh check.
+check. This closes the missing Foundation Z branch. The subsequent
+[Translation check](translation_check.md) now combines it with the checked
+bounded-consistency development.
 An [independent guard and API review](foundation-set-theory/z/peer-review.json)
 confirms the exact parents, namespace layout, artifact captures and limits.
 Its [history](foundation-set-theory/z/peer-history.json.gz) retains a
