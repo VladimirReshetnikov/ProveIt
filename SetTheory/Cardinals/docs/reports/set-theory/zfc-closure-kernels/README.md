@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings through 18 October 2026. This report now reconciles seventy-nine manuscripts.
+Intake findings through 18 October 2026. This report now reconciles eighty manuscripts.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -215,6 +215,30 @@ The [reconciliation](intake-169.md) and six source dossiers retain different ord
 
 The six supplied verification suites were not rerun. Exact state isomorphism reuses the prior batch168 primary-A/241 machine evidence; changed-source experiments retain their own unrefreshed scope. The base article and PDF and all delivered bytes stay unchanged. See [recovery/reproduction](intake-169-reproduction.md), [the joint proof and evidence boundary](intake-169-joint-proof.md), and the complete [placement map](data/intake169-placement.json). Placement `c3339d150f` retired only the six batch ZIPs. Fresh recovery restored all 1,387 originals and matched all 1,301 ancillary occurrences to 687 maintained targets; twenty older ZIPs remain queued.
 
+
+## Source 80: a source rotation enables the 240-state fold
+
+Batch 170 adds the [240-state construction and rational-cut model study](intake-170.md)
+from `e5c2b3337e`, pinned to the preceding241 companion. The rotated source
+already occurs in Source74; its new combination with a72/90 state fold saves
+one further binary state. The exact machine and attributed description are
+available in [candidate-rotation240](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-rotation240/README.md).
+
+All ten fresh substantive jobs pass. The final machine covers8,386 guards,
+2,322,575 symbolic rules and all480 rows, with exact409,691-step blank startup;
+the rotated241 intermediate has its own complete fresh runtime replay.
+The ordinary proof is independently reviewed. The exact240 Lean consistency
+endpoint and internal PA comparison remain open; compensated244 remains the
+closed external Lean baseline. The theory study proves the rational-cut
+obstruction to deleting GIC support and the native-equality equivalence
+GIC ⇔ weak Collection + full Separation, with reusable-tool caveats explicit.
+
+Placement `0841b55a14` retires the processed ZIP and preserves61 new files,
+seven existing aliases and five within-source aliases. Fresh recovery restores
+all79 originals and matches73 ancillary occurrences to67 targets.
+See [recovery and replay](intake-170-reproduction.md) and the
+[placement map](data/intake170-placement.json). Twenty older ZIPs remain queued.
+The base article, PDF and delivered bytes are unchanged.
 
 ## Sources, overlap and base
 

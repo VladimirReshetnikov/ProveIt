@@ -107,7 +107,18 @@ identifies all six later 242 tables with primary A, up to one state rename,
 so their composition gives the existing 241 candidate. A fresh joint
 equational packet has **1,750 complete bits**, without supplying a further
 binary-state bound or internal PA endpoint. Compensated244 remains the
-closed external Lean baseline while the 241 consistency endpoint is completed.
+closed external Lean baseline; the complete 241 consistency endpoint remains open.
+
+The [source-rotation 240-state candidate](BusyBeaver/Research/ZFC/candidate-rotation240/README.md)
+combines a previously proposed source rotation with a fold of inherited state
+90 into 72. The [batch 170 reconciliation](../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md)
+records all ten fresh checks passing, including 8,386 complete final runtime
+cases, 2,322,575 symbolic rules, all 480 rows and the exact 409,691-step blank
+startup. Its ordinary proof and fresh runtime evidence do not close the exact
+240-state Lean consistency theorem or internal PA comparison; compensated244
+remains the closed external Lean baseline. The theory countermodel,
+GIC/Collection-plus-Separation equivalence and bounded search limits are
+preserved separately from the machine claim.
 
 The score and time functions are distinct measures. The proved values
 `Sigma(2)=4`, `Sigma(3)=6`, `Sigma(4)=13` and `BB(2)=6`, `BB(3)=21`,
