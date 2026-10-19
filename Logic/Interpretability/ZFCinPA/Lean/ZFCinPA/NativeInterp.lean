@@ -175,8 +175,8 @@ theorem eval_atomI {ξ : Type*} {n k : ℕ} (R : (ℒₛₑₜ).Rel k) (v : Fin 
       rw [eval_eqS']
       simp only [Function.comp_apply]
       have e : (Semiformula.rel Language.Set.Rel.eq v : Semiformula ℒₛₑₜ ξ _).Eval (cls ∘ b) (cls ∘ f) ↔
-          (v 0).val (cls ∘ b) (cls ∘ f) = (v 1).val (cls ∘ b) (cls ∘ f) := by
-        simp [Semiformula.eval_rel, Semiformula.Operator.eq_def]
+          (v 0).val (cls ∘ b) (cls ∘ f) = (v 1).val (cls ∘ b) (cls ∘ f) :=
+        Iff.rfl
       rw [h0, h1, ← QuotientModel.mk_eq_iff (memRel M) wM hM, e, h0', h1']
       exact ⟨fun h ↦ Subtype.ext h, fun h ↦ congrArg Subtype.val h⟩
   | mem =>
@@ -187,8 +187,8 @@ theorem eval_atomI {ξ : Type*} {n k : ℕ} (R : (ℒₛₑₜ).Rel k) (v : Fin 
       simp only [Function.comp_apply]
       rw [h0, h1]
       have e : (Semiformula.rel Language.Set.Rel.mem v : Semiformula ℒₛₑₜ ξ _).Eval (cls ∘ b) (cls ∘ f) ↔
-          (v 0).val (cls ∘ b) (cls ∘ f) ∈ (v 1).val (cls ∘ b) (cls ∘ f) := by
-        simp [Semiformula.eval_rel]
+          (v 0).val (cls ∘ b) (cls ∘ f) ∈ (v 1).val (cls ∘ b) (cls ∘ f) :=
+        Iff.rfl
       rw [e, h0', h1']
       rfl
 

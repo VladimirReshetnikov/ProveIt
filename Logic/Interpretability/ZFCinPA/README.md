@@ -25,7 +25,13 @@ Fresh verification records now cover the
 [Separation and omega induction](separation_kernel_check.md),
 [identity substitution across arities](subst_identity_check.md),
 [template-theory compilation](ltemplate_check.md),
-[the literal uniform statement](uniform_statement_check.md) and the separate
+[native-theory proof templates](ntemplate_check.md),
+[the literal uniform statement](uniform_statement_check.md),
+[internal package induction](package_induction_check.md),
+[recursive formula-code construction](level_code_tower_check.md),
+[universal proof kernels](universal_kernel_check.md),
+[certificate assembly and extraction](certificate_family_check.md),
+[native interpretation and quotation](native_interp_check.md) and the separate
 [arithmetic fixed-point dependency](foundation_fixedpoint_check.md).
 Their audits retain the distinction between external finite syntax and
 model-internal indices, and state the cached dependency boundaries explicitly.

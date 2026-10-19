@@ -42,7 +42,13 @@ After that inventory, [R2Neg](../../../../../../Logic/Interpretability/ZFCinPA/r
 [Separation and omega induction](../../../../../../Logic/Interpretability/ZFCinPA/separation_kernel_check.md),
 [identity substitution across arities](../../../../../../Logic/Interpretability/ZFCinPA/subst_identity_check.md),
 [template-theory compilation](../../../../../../Logic/Interpretability/ZFCinPA/ltemplate_check.md),
+[native-theory proof templates](../../../../../../Logic/Interpretability/ZFCinPA/ntemplate_check.md),
 [the literal uniform statement](../../../../../../Logic/Interpretability/ZFCinPA/uniform_statement_check.md),
+[internal package induction](../../../../../../Logic/Interpretability/ZFCinPA/package_induction_check.md),
+[recursive formula-code construction](../../../../../../Logic/Interpretability/ZFCinPA/level_code_tower_check.md),
+[universal proof kernels](../../../../../../Logic/Interpretability/ZFCinPA/universal_kernel_check.md),
+[certificate assembly and extraction](../../../../../../Logic/Interpretability/ZFCinPA/certificate_family_check.md),
+[native interpretation and quotation](../../../../../../Logic/Interpretability/ZFCinPA/native_interp_check.md),
 the [compactness/completeness interfaces](../../../../../../Logic/FirstOrder/checked_interfaces.md)
 and ten [register-program modules](../../arithmetic_register_prerequisites.md)
 passed. NativePeel required one
@@ -50,19 +56,21 @@ implicit-argument correction, with the failed original run preserved.
 The [first concrete bisimulation check](../control-bisim-first-check/README.md)
 hit the 4 GiB memory limit; the
 [complete split certificate and assembled equivalence](../../control_bisim_rotation240_split.md)
-now pass under the unchanged cap. These fresh checks remove thirty-six of
+now pass under the unchanged cap. These fresh checks remove forty-two of
 the 88 entries. The
 [provider review](../../../../../../Logic/Interpretability/ZFCinPA/fixedpoint-template-route/README.md)
 also identifies an already accepted current-source result for
 `ModelCodedPredicateTemplate`; its exact source/object pair is reusable, with
 the original warnings and legacy capture limits retained. This closes one
-further entry without replay: 37 resolved and 51 remaining.
+further entry without replay: 43 resolved and 45 remaining.
 An independent [legacy-record reconciliation](../../../../../../Logic/Interpretability/ZFCinPA/fixedpoint-template-route/legacy-review.json)
 confirms that reuse and finds no further omission among 1,511 named PASS
 records. Its counts describe its earlier scan checkpoint; the later
 soundness, axiom-truth, Translation, NativeTheory, R2Ax, R2Fixed, SeparationKernel
-and UniformStatement checks, followed by SubstIdentity and LTemplate, are included in
-the current count above.
+and UniformStatement checks, followed by SubstIdentity, LTemplate, NTemplate,
+PackageInduction, LevelCodeTower, UniversalKernel, CertificateFamily and
+NativeInterp, are included in the current count above. NativeInterp required
+two local definitional proof repairs, with the original failure retained.
 All eleven register-side entries are now checked;
 the [register endpoint](../../arithmetic_register_endpoint240.md) includes
 validator acceptance iff Rotation240 control halting from the exact seed.
@@ -79,6 +87,14 @@ Subsequent actual records must update the remaining work; the frozen
 inventory itself stays unchanged. Checks retain
 the upstream source's declared limits and known warnings, while new audit
 files use default proof limits. Previously checked parents need not be replayed.
+
+The certificate modules supply shared coding infrastructure to
+`ConcreteFamily`, `NumeralOmega`, `EnvTransform` and the `LSchema` branch.
+The separate uniform-provability theorem in `ZFCinPA.Endpoint` still has
+successor-selector premises, but that module is absent from this binary240
+import closure. `LSchema` and `ValidatorConsistencyEquivalence` state the
+consistency transport without those premises. Their current sources still
+require the pending compilation and axiom checks recorded above.
 
 The [publication record](publication.json) binds these source-only artifacts.
 The [history](history.json.gz) preserves the author plans, independent review,
