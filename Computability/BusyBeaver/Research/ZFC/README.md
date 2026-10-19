@@ -163,10 +163,17 @@ passes 16 probes and 18 callers. It identifies the complete outgoing tape
 with the accepted next control, keeping added pointer padding separate from
 extra register spares. Its numeric runtime endpoint remains explicit.
 The [arithmetic symbolic executor](arithmetic_symbolic_execution_rotation240.md)
-has checked Step (17/17) and Execution (9/9) units, plus all four concrete box
-contracts (8/10), with zero warnings. The mirror erases to the actual checker
-and transports accepted finite certificates to positive internal clocks;
-the concrete instance and full dispatch simulation are being connected.
+has checked Step (17/17) and Execution (9/9) units, all four concrete box
+contracts (8/10), and their runtime instance (3/7), with zero warnings.
+The mirror erases to the actual checker and transports accepted finite
+certificates to positive internal clocks with no runtime premise.
+Accepted sites, full dispatch simulation and exact startup are being connected.
+The [exact control-step equations](arithmetic_control_step_rotation240.md)
+pass ten probes and callers, identifying each instruction's represented file
+update and successor directly from the checked Rotation240 catalogue.
+The [exact site-frame interpretation](arithmetic_site_values_rotation240.md)
+passes 12 probes and 14 callers, relating the actual checker syntax and
+physical register writes to the canonical numeric entry and outgoing frames.
 
 The [**241-state candidate**](candidate-fold241/README.md) from `8c41b1fb7d`
 adds two local folds to the combined243 table. The last fold uses a bit written

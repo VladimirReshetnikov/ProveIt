@@ -23,6 +23,12 @@ and Decrement operations. The permanent spares cover zero decrement at the
 last physical register; positive decrement preserves the spare count and
 places its extra true cell on the left tape. The right exterior is blank.
 
+[`ArithmeticSymbolicBoxRuntimeRotation240`](../../Lean/BusyBeaver/ZFC/ArithmeticSymbolicBoxRuntimeRotation240.lean)
+connects these proofs to all four `BoxRuntime` fields. Its `verifies_sound`
+and `verifiesHalt_sound` theorems therefore need only actual finite checker
+acceptance and the stated register branch condition; they assume no runtime
+contract. This closes the concrete symbolic executor soundness obligation.
+
 Actual checks, all at default proof limits with zero warnings and only
 standard axioms:
 
@@ -31,14 +37,15 @@ standard axioms:
 | Step | 17 / 17 | 5.533 / 2.568 | [Actual run](results/arithmetic-symbolic-step-rotation240-verification.json) |
 | Execution | 9 / 9 | 5.903 / 2.040 | [Actual run](results/arithmetic-symbolic-execution-rotation240-verification.json) |
 | Concrete box endpoints | 8 / 10 | 2.679 / 2.350 | [Actual run](results/arithmetic-symbolic-box-endpoints-rotation240-verification.json) |
+| Concrete runtime instance | 3 / 7 | 1.722 / 1.832 | [Actual run](results/arithmetic-symbolic-box-runtime-rotation240-verification.json) |
 
 Each source/audit pair shares a 120-second limit, one thread and 4,096 MiB.
 The matching artifact directories preserve source plans, audits, raw logs,
 guards and actual provider identities. The Step and Execution histories also
 retain an independent source/API review. No dependency family was rebuilt.
 
-Connecting the concrete instance, accepted site certificates, canonical
-dispatch reentry and exact startup is required for the full internal binary
+Connecting accepted site certificates, canonical dispatch reentry and exact
+startup is required for the full internal binary
 simulation. These checks alone do not prove the PA consistency endpoint.
 Machine and framework attribution remains with Mira-Cult, Jeff Ketchersid,
 Andrew James Wade and ProveIt.
