@@ -3017,7 +3017,7 @@ Batch 170 adds Source 80 from `e5c2b3337e` to
 `cc73ddc7d9` preserve 79 originals: 61 new ancillary files, seven existing
 aliases, five batch aliases and six archive-only members. Fresh recovery checks
 all 79 originals and 73 ancillary occurrences through 67 targets. Only this ZIP
-was retired; twenty older archives remain queued.
+was retired; twenty older archives remained queued at that checkpoint (completed in batch 171).
 
 The new [240-state ordinary candidate](../../../../Computability/BusyBeaver/Research/ZFC/candidate-rotation240/README.md)
 combines the previously proposed source rotation with a predecessor-context
@@ -3037,3 +3037,22 @@ and syntax-validation limits. Exact 240 Lean consistency and internal PA
 endpoints remain open; compensated244 remains the closed external Lean
 baseline. The base article and delivered bytes are unchanged. The catalogue
 PDF is built and visually reviewed separately.
+
+
+Batch 171 imports the twenty remaining ZFC research packages as
+[Sources 81–100](set-theory/zfc-closure-kernels/intake-171.md), giving this host
+**100 sources** and leaving the collection at **290 reports**. Placement
+`950e2f0ff6` retires all twenty ZIPs; reconciliation `7cbe05d7c0` records why each
+contains useful material beyond its superseded state-count claims. All 8,564
+members are accounted for: 5,999 new unchanged ancillary files, 2,384 exact
+aliases, and 181 archive-only manuscript/PDF/README files recoverable from Git.
+
+The additions preserve selective/raw-profile models, three-coordinate
+constructor sharing, membership-transport obstructions, source symmetries,
+shifted pairing and scratch-retaining negation, scoped grammar certificates,
+read-only detector bounds, compiler controls and independent runtime audits.
+The repeated 243-state table is already maintained. All 38 selected jobs pass
+after one documented AST compatibility retry; the original failure remains.
+The recovery checks all 8,564 originals and 8,383 ancillary aliases. No new
+machine record or complete Lean/PA endpoint is claimed. The ordinary 240-state
+candidate and closed external compensated244 baseline retain their scopes.

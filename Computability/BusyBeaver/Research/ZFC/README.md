@@ -1974,3 +1974,13 @@ also passed nine probes and eleven typed callers without warnings. It proves
 the exact configurable-encoder identity for arbitrary internal substitution
 vectors, including swapped and repeated two-slot replacements. Native axiom
 and derivation transport remain to be supplied.
+
+
+Batch 171 completes intake of twenty queued research packages as
+[Sources 81–100](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-171.md).
+They preserve useful alternative kernels, source/compiler transformations,
+countermodels and independent audits; all incoming ZIPs were retired after
+placement. All 38 selected jobs pass after one documented Python AST retry.
+These imports do not supply a new state record or complete Lean/PA endpoint.
+The [recovery and replay guide](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-171-reproduction.md)
+records every placement and the exact verification scope.
