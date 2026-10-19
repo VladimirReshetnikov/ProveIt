@@ -37,7 +37,7 @@ its [reader and history](review-history.json.gz) are retained separately.
 
 This theorem is generic and conditional on a complete row check. The
 [counted tree](../counted-tree/README.md) discharges the annotation premise for
-Rotation240; the concrete 6,455-row acceptance and resulting exact table
-equality remain to be checked. The internal binary simulation and PA endpoint
-also remain open. The construction reuses the maintained catalogue, decoder
+Rotation240. The [complete concrete check](../table-rows/README.md) now proves
+the 6,455-row acceptance and resulting exact table equality. The internal
+binary simulation and PA endpoint remain open. The construction reuses the maintained catalogue, decoder
 and physical-register mapping, with their original attribution.

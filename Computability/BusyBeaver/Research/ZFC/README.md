@@ -103,21 +103,31 @@ repetition and append laws for the exact machine's `011` spare blocks.
 The [generic arithmetic control prerequisites](rotation240_pa/control-prerequisites/README.md)
 pass 25 probes and 27 callers with zero warnings: exact path catalogues,
 nine-register code algebra, and conditional offset-segment halting transport
-in arbitrary IΣ₁ models. Concrete table binding and the binary simulation
-remain separate obligations.
+in arbitrary IΣ₁ models. Concrete table binding is checked below; the internal
+binary simulation remains a separate obligation.
 The [cached decoder tree](rotation240_pa/counted-tree/README.md) passes three
 further probes and callers, proving its exact annotation identity and 6,455
 catalogue entries under default proof limits.
 The [table interpreter and packed-data prerequisites](rotation240_pa/table-prerequisites/README.md)
 pass another 14 probes and 20 callers with zero warnings. Their concrete-data
-audit checks the table interface and count; complete row equality remains a
-separate proof obligation.
+audit checks the table interface and count; the complete row equality is
+proved by the subsequent binding below.
 The [generic packed-table binding](rotation240_pa/table-binding/README.md)
 passes six probes and nine callers: complete per-leaf checks and exact length
 imply full table equality, with correct consumed-path successor resolution.
+The [complete packed-table equality](rotation240_pa/table-rows/README.md)
+now passes 35 generated modules with 1,061 probes and typed callers, zero
+warnings and default proof limits. All 6,455 four-field rows agree with the
+decoder catalogue. Including its separately checked pilot gives 1,062 probes
+and callers. This closes the finite table-identification part of W6.
 The [internal carry and return contracts](arithmetic_carry_rotation240.md)
 pass 11 probes and 13 callers, proving complete unary-block tape effects at
 arbitrary internal register values for the exact 240-state transitions.
+The [internal file/spare traversal](arithmetic_carry_traversal_rotation240.md)
+and [end pulse](arithmetic_end_pulse_rotation240.md) pass another 23 probes and
+25 typed callers with zero warnings. They handle arbitrary internal spare
+counts, preserve complete tapes, and supply the exact six-step spare-creation
+window needed by increment.
 
 The [**241-state candidate**](candidate-fold241/README.md) from `8c41b1fb7d`
 adds two local folds to the combined243 table. The last fold uses a bit written

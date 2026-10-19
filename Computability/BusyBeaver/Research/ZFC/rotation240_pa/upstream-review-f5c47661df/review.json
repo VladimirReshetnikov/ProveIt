@@ -1,0 +1,87 @@
+{
+  "status": "UPSTREAM_SOURCE_API_REVIEW_PASS_NO_LOCAL_EXECUTION",
+  "findings": [],
+  "reviewer_role": "Independent source/API reviewer; not the upstream W7 proof author and no local compiler/audit executor. Earlier W4/W5 source review was separate.",
+  "upstream_commit": "f5c47661dfd0b312717d62a5fcd516d01cd779d3",
+  "upstream_attribution": {
+    "author": "Vladimir Reshetnikov",
+    "coauthor": "Claude Opus 5.5"
+  },
+  "source": {
+    "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/RotationInterpreterConsistency240.lean",
+    "sha256": "a07acc1fc3b84aa55281f9fa590246b365353867157e54c5a027436d19e777b1"
+  },
+  "lines_read_in_full": 140,
+  "imports": [
+    "ZFCinPA.ValidatorConsistencyEquivalence",
+    "BusyBeaver.ZFC.ArithmeticL2Endpoint254"
+  ],
+  "interface_sources_read": [
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorConsistencyEquivalence.lean",
+      "sha256": "e0502e78a7c1a4a8c6d3f242279ae557ce91678dfd9cb52aa628bf38c0fbd242"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorConsistencyForward254.lean",
+      "sha256": "ed61e36f97d574bc0a381c849f7f89008d9b5e5545f99fc7bf520838b60a49f9"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticL2Endpoint254.lean",
+      "sha256": "cce9f26c503fdb3eb275b6740b4fa2e0f4a92785dcb53f6fb49277b4f0be8740"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticL2Lib254.lean",
+      "sha256": "1d670a7b4f4137b1a2cc346ae3bcee272ad13339fb702c797b668d711244cb05"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticControlFile.lean",
+      "sha256": "44a21e19025aa72f487e2c82c9e27bce13b79cdbff91b709c4d405a8d96746b8"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticControlTable.lean",
+      "sha256": "d7337bf240871fc0f72c3ada1fdfb024e7a504f7a3727a26bc93460ae69ff33b"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ControlBisimRotation240.lean",
+      "sha256": "8f1f87eb09ece2f32608fe23a17ccef1933361fd56ee5a6590b1c9384c09e22f"
+    }
+  ],
+  "new_source_settings": [
+    "autoImplicit false",
+    "noncomputable section",
+    "local irreducibility of rotationHaltsSentence after its evaluation lemma"
+  ],
+  "inherited_settings_disclosure": [
+    "ArithmeticL2Endpoint254: maxRecDepth100000/maxHeartbeats4000000.",
+    "ControlBisimRotation240: maxRecDepth100000/maxHeartbeats0 (unlimited); other historical prerequisite settings remain their original provenance."
+  ],
+  "scope_checks": [
+    "rotationHaltsSentence is fixed arithmetic syntax: nested pairDef constructs exactly physical[0,0,0,3,0,0,3,0,0], liveDef uses control1, and controlRunDef receives output0/internaltimek/initialx in that order.",
+    "enc_seed is the exact enc of logical np=3,p1=3,othersevenfields0. No logical/physical-order substitution is assumed.",
+    "rotationHaltsSentence_eval quantifies time over every arbitrary I\u03a31 model and accounts for the represented graph equality orientation.",
+    "isigma1_proves_accepted_iff_rotation_halts uses arithmetic completeness over all eligible models, rather than only standard-Nat truth, with exact ArithmeticL2.accepted_iff_rotation_halts interface.",
+    "combine is propositional model semantics; the two I\u03a32 consistency theorems use the existing validator equivalences and induced I\u03a31 model instance. PA conclusions are theory weakening.",
+    "ControlBisimRotation240.tableR is the abbreviation PackedTables.table BisimCertRotation240.tableR BisimCertRotation240.countR, matching the finite row-binding target."
+  ],
+  "theorems": [
+    "enc_seed",
+    "rotationHaltsSentence_eval",
+    "isigma1_proves_accepted_iff_rotation_halts",
+    "combine",
+    "iSigma2_proves_con_ZFC_iff_not_rotation_halts",
+    "iSigma2_proves_con_ZF_iff_not_rotation_halts",
+    "peano_proves_con_ZFC_iff_not_rotation_halts",
+    "peano_proves_con_ZF_iff_not_rotation_halts"
+  ],
+  "remaining_obligation": "W6 must prove the represented binary240 blank/seed halting equivalence with this controlRun in every I\u03a31 model. A final sentence-evaluation/completeness composition can then connect the binary sentence to Con(ZFC). This file does not prove that binary equivalence.",
+  "upstream_compile_claim": "Commit message claims facade compiles and only propext/Classical.choice/Quot.sound. Attributed upstream claim only.",
+  "added_files_or_changes": [
+    "Computability/BusyBeaver/Research/ZFC/pa_internalization.md",
+    "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA.lean",
+    "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/RotationInterpreterConsistency240.lean"
+  ],
+  "raw_new_build_or_audit_evidence_in_commit": false,
+  "supplied_scripts_executed": false,
+  "compiler_executed": false,
+  "repository_edits": false
+}

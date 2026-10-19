@@ -1411,3 +1411,18 @@ rotationHaltsSentence`; and, with `ValidatorConsistencyEquivalence`,
 sentence `𝗣𝗔 ⊢ Con(𝗭𝗙𝗖) 🡘 blank240 never halts` then needs only the W6
 semantic theorem (every IΣ₁ model: blank240 halts iff this interpreter halts)
 and one more completeness step.
+
+The [independent W7 source review](rotation240_pa/upstream-review-f5c47661df/README.md)
+confirms the exact seed, represented formula, arbitrary-model completeness
+and PA weakening. Upstream compile and axiom claims remain attributed; this
+review does not provide a fresh local audit of that module.
+
+**W6 finite table identification checked (Codex lane, 2026-10-19).**
+[`TableRowsRotation240.table_eq`](../../Lean/BusyBeaver/ZFC/TableRowsRotation240.lean)
+identifies all 6,455 packed rows with the exact decoder catalogue, including
+both successor fields and exact length. The
+[complete check](rotation240_pa/table-rows/README.md) passes 35 modules with
+1,061 probes and typed callers, zero warnings and default proof limits.
+Its pilot contributes one further probe and caller. The final equality uses
+only `propext` and `Quot.sound`. This closes item (i) of the W6 interface above;
+the represented binary frame/step simulation and its halting transport remain.
