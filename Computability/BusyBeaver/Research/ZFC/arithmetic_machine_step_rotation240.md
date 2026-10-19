@@ -29,6 +29,6 @@ successful bytes and preparation. The guard retains historical scratch paths.
 
 [Iteration is now checked](arithmetic_machine_run_rotation240.md), including
 totality in IΣ₁/PA and agreement with every ordinary-natural machine run.
-Arithmetic startup transport and the unbounded internal
-machine-to-validator comparison remain separate obligations. Attribution
+The [finite arithmetic startup](arithmetic_bootstrap_rotation240.md) is also
+checked. The unbounded internal machine-to-validator comparison remains open. Attribution
 follows Mira-Cult, Jeff Ketchersid, Andrew James Wade and the ProveIt reductions.

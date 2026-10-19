@@ -18,6 +18,8 @@ internal machine-to-validator comparison or the PA consistency equivalence.
 The [arbitrary-initial evaluator](arithmetic_machine_run_from_rotation240.md)
 now supplies internal run composition, full halted-configuration absorption
 and recovery of this blank evaluator.
+The [finite arithmetic startup](arithmetic_bootstrap_rotation240.md) proves
+the exact 409,691-step boot equation in IΣ₁ and PA.
 
 The [actual check](results/arithmetic-run-rotation240-verification.json) passes
 14 named axiom probes and 16 typed callers, with zero warnings and only standard

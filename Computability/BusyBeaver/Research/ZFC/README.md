@@ -87,8 +87,10 @@ The [fixed arithmetic run](arithmetic_machine_run_rotation240.md) passes
 every ordinary-natural machine run, and has a PA totality theorem. The
 [arbitrary-initial run](arithmetic_machine_run_from_rotation240.md) passes a
 further 19 probes and 23 callers, proving internal composition, full halted-code
-absorption and blank-run recovery. The internal startup/simulation and PA
-machine-to-validator comparison remain open.
+absorption and blank-run recovery. The [finite arithmetic startup](arithmetic_bootstrap_rotation240.md)
+passes seven probes and nine callers: IΣ₁ and PA prove the complete 409,691-step
+boot equation. The unbounded internal simulation and PA machine-to-validator
+comparison remain open.
 
 The [**241-state candidate**](candidate-fold241/README.md) from `8c41b1fb7d`
 adds two local folds to the combined243 table. The last fold uses a bit written
