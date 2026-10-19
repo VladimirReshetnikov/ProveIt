@@ -42,6 +42,11 @@ the new register program preserves halting for every initial register file.
 The binary runtime, initialization and final consistency composition remain
 separate obligations.
 
+The [exact 240-state table and fast lookup](rotation240_foundations.md) also
+pass Lean: nine theorem probes and eleven typed callers, with zero warnings.
+The fast evaluator is proved equal to the published machine for every state
+and input bit.
+
 The [**241-state candidate**](candidate-fold241/README.md) from `8c41b1fb7d`
 adds two local folds to the combined243 table. The last fold uses a bit written
 by the predecessor to distinguish two merged controls. Fresh replay passes

@@ -49,6 +49,11 @@ is byte-identical to source74's `rotate_h` list.
 
 ## Verification
 
+Lean checks the [exact table and its fast evaluator](../rotation240_foundations.md):
+nine theorem probes and eleven typed callers pass with zero warnings. These
+prove the table's numbering and halt facts and equality of the fast evaluator
+with the complete machine. Runtime and full initialization proofs are separate.
+
 Root freshly ran ten substantive jobs, including two complete unbounded
 register/list runtime checks. The final machine passes **8,386 guarded
 cases and 2,322,575 symbolic rules**, exercises all 480 transition rows,
