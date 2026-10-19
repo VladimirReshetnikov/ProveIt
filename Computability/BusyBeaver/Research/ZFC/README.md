@@ -128,6 +128,10 @@ and [end pulse](arithmetic_end_pulse_rotation240.md) pass another 23 probes and
 25 typed callers with zero warnings. They handle arbitrary internal spare
 counts, preserve complete tapes, and supply the exact six-step spare-creation
 window needed by increment.
+The [complete internal increment contract](arithmetic_increment_rotation240.md)
+passes another 11 probes and 13 callers with zero warnings. It restores all
+other register values, increments the marked target and appends exactly one
+spare, with an exact positive clock and an explicit blank exterior.
 
 The [**241-state candidate**](candidate-fold241/README.md) from `8c41b1fb7d`
 adds two local folds to the combined243 table. The last fold uses a bit written

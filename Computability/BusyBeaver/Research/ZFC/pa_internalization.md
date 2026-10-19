@@ -1426,3 +1426,14 @@ both successor fields and exact length. The
 Its pilot contributes one further probe and caller. The final equality uses
 only `propext` and `Quot.sound`. This closes item (i) of the W6 interface above;
 the represented binary frame/step simulation and its halting transport remain.
+
+The internal runtime now also has checked
+[carry/rollback traversal](arithmetic_carry_traversal_rotation240.md),
+[end pulse](arithmetic_end_pulse_rotation240.md) and
+[complete marked-target increment](arithmetic_increment_rotation240.md).
+Together these pass 34 probes and 38 typed callers with zero warnings and
+default proof limits. The spare count and register values are arbitrary
+internal model elements. Increment preserves the other registers and appends
+one spare with an exact positive clock; its blank right exterior is explicit.
+Decrement, symbolic execution, canonical rebasing and the final represented
+frame simulation remain to be joined.
