@@ -1,0 +1,86 @@
+{
+  "status": "PASS_ALL_BINARY_INITIAL_TAPES_FROM_95",
+  "old_sha256": "da0b3d1fdd74d56482b9d231119bbbaccdbcadc78e7b7df72c3a734a3a808724",
+  "new_sha256": "ff059535876bc9e1e1e63174ebfd1c10a91c1a818ba0c3f8c4ef2ac51a3cfcc3",
+  "old_states": 237,
+  "new_states": 236,
+  "incoming_tag_proof": {
+    "182": [
+      {
+        "q": 76,
+        "b": 1,
+        "w": 1,
+        "direction": 1
+      }
+    ],
+    "223": [
+      {
+        "q": 237,
+        "b": 0,
+        "w": 0,
+        "direction": 1
+      }
+    ]
+  },
+  "ordinary_rows_commute": 470,
+  "exceptional_rows": 4,
+  "exhaustive_windows_checked": 32,
+  "paths": [
+    {
+      "old_state": 182,
+      "read": 0,
+      "left_tag": 1,
+      "old_steps": 1,
+      "new_steps": 3,
+      "new_path": [
+        182,
+        198,
+        136,
+        187
+      ]
+    },
+    {
+      "old_state": 182,
+      "read": 1,
+      "left_tag": 1,
+      "old_steps": 1,
+      "new_steps": 3,
+      "new_path": [
+        182,
+        210,
+        177,
+        212
+      ]
+    },
+    {
+      "old_state": 223,
+      "read": 0,
+      "left_tag": 0,
+      "old_steps": 1,
+      "new_steps": 3,
+      "new_path": [
+        182,
+        198,
+        206,
+        23
+      ]
+    },
+    {
+      "old_state": 223,
+      "read": 1,
+      "left_tag": 0,
+      "old_steps": 1,
+      "new_steps": 3,
+      "new_path": [
+        182,
+        210,
+        114,
+        70
+      ]
+    }
+  ],
+  "clock": "tau(t) = t + 2 * #{i<t: old_state(i) in {182,223}}",
+  "clock_bounds": "t <= tau(t) <= 3*t",
+  "conclusion": "Old and new halt from the same binary initial tape iff the other halts; the state map fixes start95 and halt254.",
+  "scope": "Exact finite local certificate plus incoming-edge induction. No empirical-profile assumption."
+}

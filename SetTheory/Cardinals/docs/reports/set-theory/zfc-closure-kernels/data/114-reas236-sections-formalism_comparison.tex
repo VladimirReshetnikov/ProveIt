@@ -1,0 +1,115 @@
+\label{sec:frontend-comparison}
+
+The concrete 236-state machine and the supplementary 639-bit packet improve
+different parts of the construction.  The machine retains the calibrated
+proof search and changes its physical realization.  The packet changes the
+finite equational presentation of the consistency problem.  Its shorter
+description is useful input for a future compiler, but is not another
+236-state machine or a measured improvement on that state count.
+
+\paragraph{The calibrated structured source.}
+The retained route separates the nonlogical theory, the complete logical
+calculus, numerical proof enumeration, structured register control, and
+binary execution.  This separation supplies reusable proof obligations,
+while allowing source representation and tape context to be optimized
+together.  In particular, the equality machinery of the substitution-free
+Tarski calculus implements variable instantiation and renaming, even when
+the nonlogical schema uses only membership.  The pinned logical audit
+explains precisely why deleting those rows does not inherit the existing
+completeness theorem.\footnote{Pinned ProveIt:
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1b27f052d770f4c7d435e82e779bf21f5a1f66ed/Computability/BusyBeaver/Research/ZFC/tarski_logic_layer.md}{Tarski logical layer}
+and
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1b27f052d770f4c7d435e82e779bf21f5a1f66ed/Computability/BusyBeaver/Research/ZFC/logical_engine_completeness.md}{logical-engine completeness}.}
+Our closed source reassociation preserves all 6,455 instruction occurrences
+and their control-flow graph.  Its benefit appears in the binary decoder:
+the changed tape contexts permit the additional state sharing proved in
+this report.  Associativity alone is not a new logical axiom or a smaller
+consistency theory.
+
+\paragraph{Raw EPSC: a small schema with unbounded formula coverage.}
+The inherited raw EPSC frontend works over a nonempty domain with a binary
+relation $E$.  For each finite equality-free membership formula
+$R(x,y;\bar p)$, local subset-boundedness means that every input has a
+bound containing every member of every related output.  The schema then
+provides an object $h$ closed under $R$ from empty objects and from members
+of $h$, with the additional support condition that every member of $h$ has
+an $R$-predecessor.  All finite parameter tuples are allowed.  The inherited
+calibration relates consistency of this entire schema to
+$\operatorname{Con}(\mathrm{ZFC})$; it does not quantify over arbitrary
+semantic binary relations or replace ZFC by a fixed finite fragment.
+The finite class encodings must therefore prove coverage of every finite
+formula and parameter tuple, and their converse model constructions must
+respect the same formula domain.  The exact schema and inherited
+calibration interface are retained with the E692 input proof.\footnote{
+Pinned archive
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1b27f052d770f4c7d435e82e779bf21f5a1f66ed/docs/incoming/ZFC_Sub237_Research_2026-10-19.zip}{ZFC\_Sub237\_Research\_2026-10-19.zip},
+member ending in \texttt{equational/combination704.tex}; the supplied copy is
+\texttt{equational/inputs/E692\_relative\_proof.tex}.}
+
+\paragraph{Finite equations: E692 to E639.}
+The equational route moves logical structure into operations for Boolean
+NAND, membership values, class codes, environments and selected witnesses.
+Its Boolean basis is the published Sh1 axiom.\footnote{W.~McCune,
+R.~Veroff, B.~Fitelson, K.~Harris, A.~Feist and L.~Wos,
+\href{https://www.cs.unm.edu/~mccune/papers/basax/v12.pdf}{Short Single
+Axioms for Boolean Algebra}, Theorem~2, \emph{Journal of Automated
+Reasoning} 29 (2002), 1--16; DOI:
+\href{https://doi.org/10.1023/A:1020542009983}{10.1023/A:1020542009983}.}
+E639 combines three savings against the exact E692 input: deriving the
+explicit truth equation saves 25 bits; a descriptor that carries its own
+class code removes three projections and saves 24 bits; replacing the
+Boolean-collapse query by $Q(d)=d$ saves four bits.  The result has seven
+equations, nine operations, four variable slots and 144 equation-term
+nodes.  The 639 bits include the signature, equations and ground query.
+
+The three proofs have different strengths.  Truth deletion preserves the
+equational theory; the two ground queries are equivalent collapse tests;
+descriptor replacement has a relative model proof preserving the
+consistency problem.  The protected false class in its parameter tail
+allows arbitrary parameters without changing the represented relation.
+The full derivation and both model directions are supplied separately.
+Source~104 already introduced truth-equation deletion for an earlier
+packet;\footnote{Pinned ProveIt:
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1b27f052d770f4c7d435e82e779bf21f5a1f66ed/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/104-res238-formalisms-truth_redundancy.md}{Source 104 truth-redundancy argument}.}
+the contribution here is a deduction compatible with E692's
+complemented binder, combined with the descriptor encoding.  The resulting
+ordinary theorem, composing the inherited calibration, is
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\mathcal E_{639}\nvdash Q(d)=d
+       \ \longleftrightarrow\ \operatorname{Con}(\mathrm{ZFC})\bigr).
+\]
+It is not a new serialized proof-assistant endpoint.
+
+\paragraph{Predicative class theory as another plausible frontend.}
+G\"odel--Bernays set theory with global choice (GBC) offers a familiar finite
+axiomatization equiconsistent with ZFC.  Its classes have ordinary
+many-sorted first-order, or Henkin, semantics: one does not require every
+external subclass to occur in a model.  Conservativity over ZFC follows
+by adding a generic global well-order and taking definable classes, without
+adding sets.\footnote{J.~D.~Hamkins and B.~Yao,
+\href{https://arxiv.org/pdf/2204.09766}{Reflection in second-order set
+theory with abundant urelements bi-interprets a supercompact cardinal},
+Section~4, discussion of GBC; \emph{Journal of Symbolic Logic} 89 (2024), 1007--1043,
+\href{https://doi.org/10.1017/jsl.2022.87}{doi:10.1017/jsl.2022.87}.}
+This makes GBC a sound candidate for a finite axiom emitter.  It still
+requires an exact presentation, a complete proof engine, and measured
+binary compilation.  This session supplies no such GBC table or count.
+
+\paragraph{The interpreter can outweigh the packet.}
+The pinned ground-equational generator provides a concrete cost control:
+its complete register-control source compiles to 299 working states
+(238 decision states and 61 framework states), before a ZFC-specific query
+and its writer.\footnote{Pinned ProveIt:
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1b27f052d770f4c7d435e82e779bf21f5a1f66ed/Computability/BusyBeaver/Research/ZFC/equational_generator_cost.md}{Ground-equational proof-generator cost}.}
+It generates valid equalities by axiom instances, symmetry, transitivity
+and constructor congruence, avoiding a separate matching-and-context
+parser.  This experiment uses a different equational basis from E639;
+its demonstration query has no ZFC calibration, and its general binary
+simulation and initialization invariant remain open.  Nevertheless, the
+measured table shows why counting axiom bits alone cannot settle the
+engineering question.  A complete comparison must include proof
+enumeration, term operations, dispatch, initialization, the precise
+halting query, and their opportunities for shared states.  For E639,
+constructing and verifying that complete binary implementation is the
+next unresolved step.

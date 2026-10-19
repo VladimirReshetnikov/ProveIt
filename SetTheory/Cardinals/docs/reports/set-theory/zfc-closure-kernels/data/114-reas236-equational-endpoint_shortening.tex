@@ -1,0 +1,51 @@
+\subsection{A three-node ground query and the 663-bit combination}
+\label{sec:e663}
+
+The native stack equations permit replacing the four-node ground query
+\(N(d,d)=d\) by the three-node query
+\begin{equation}
+                              Q(d)=d.
+\label{eq:e663-query}
+\end{equation}
+This gives 688 bits when applied to the unchanged E692 equation list, or
+\textbf{663 bits} when combined with the preceding 25-bit truth-equation
+deletion.  The inspected input archive contains E692 and the four-node
+query.  No independent priority claim is made for the elementary query
+shortening.  The
+exact 663-bit combination and the closure-based derivation of its omitted
+axiom are the contribution being exhibited here.
+
+To prove the equivalence directly, suppose the equation \(Q(d)=d\) is
+added.  For arbitrary \(x,y\), the retained head and tail equations give
+\begin{align*}
+ x&=V(P(x,P(y,d)),d)\\
+  &=V(P(x,P(y,d)),Q(d))\\
+  &=V(P(y,d),d)=y.
+\end{align*}
+Thus the added ground equation entails collapse of the entire algebra.
+Conversely, \(N(d,d)=d\) collapses the Boolean reduct furnished by Sh1:
+it says \(\neg d=d\), whence
+\(d=d\wedge d=d\wedge\neg d=0\) and
+\(d=d\vee d=d\vee\neg d=1\).  Therefore every two elements coincide,
+and in particular \(Q(d)=d\).
+
+The same reasoning applies to the term algebra modulo equational
+derivability, or equivalently uses completeness of equational logic.  For
+the retained equation theory \(E\),
+\[
+ E\vdash Q(d)=d
+ \quad\Longleftrightarrow\quad
+ E\vdash N(d,d)=d.
+\]
+No intended meaning of the binder \(Q\), no raw-membership model, and no
+truth value for the class \(d\) enters this argument.  The premises are
+only the native head/tail equations and Sh1.  The chosen query is true
+exactly in the trivial models of this theory.
+
+The E663 accounting is
+\[
+               43+(7+4\cdot150+1)+4\cdot3=663.
+\]
+The new packet has 83 physical bytes with one zero padding bit.  Its
+equations and ordered signature are exactly those of E667.  The script
+emits E667 as a checkpoint and E663 as the shorter designated-query packet.

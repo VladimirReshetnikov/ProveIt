@@ -1,0 +1,253 @@
+% Requires amsmath, amssymb, amsthm, hyperref and theorem/proof environments.
+\section{Combining the two newest equational reductions: E667}
+\label{sec:e667-combination}
+
+The two incoming packets can be combined. The 692-bit packet in the
+ProveIt input at commit
+\texttt{ecb4df12d256704d9115d4860f6ccb7b3443ef4a}
+shares three witness constructors, optimizes the Boolean hull expression,
+and reuses the unary class binder as the successor of a selector.
+The subsequent incoming 236-state archive, added at commit
+\texttt{0b5fec6980cc3a5ba7dd47b404f0cbbe9a451c02}, independently derives
+the truth equation of E713 from its other equations, obtaining E688.
+Applying that \emph{derived-truth argument} to E692 gives the complete
+\textbf{667-bit packet E667} below.
+
+This combination requires a fresh algebraic check. E692 changed the
+closure polynomial using an identity proved under the old truth axiom;
+it would be circular simply to delete that axiom while citing the
+earlier optimized-closure equivalence. Instead, we prove directly that
+the \emph{optimized} closure still forces truth without assuming it.
+
+\subsection{The exact seven equations}
+
+The unchanged ordered signature is
+\[
+ d^0,N^2,V^2,P^2,A^2,Q^1,W^2,p_E^2,p_\varepsilon^2.
+\]
+The first six equations, with all displayed variables universally
+quantified, are
+\begin{align}
+ N(N(x,N(N(y,x),x)),N(y,N(z,x)))&=y,
+     \label{eq:e667-sh1}\\
+ V(P(x,s),d)&=x,\label{eq:e667-head}\\
+ V(P(x,s),Q(j))&=V(s,j),\label{eq:e667-tail}\\
+ p_\varepsilon(s,P(a,b))
+   &=N(p_\varepsilon(s,a),p_\varepsilon(s,b)),
+       \label{eq:e667-nand}\\
+ p_\varepsilon(s,A(i,j))&=p_E(V(s,i),V(s,j)),
+       \label{eq:e667-atom}\\
+ p_\varepsilon(s,Q(a))
+   &=N\bigl(p_\varepsilon(P(W(s,a),s),a),
+            p_\varepsilon(P(z,s),a)\bigr).
+       \label{eq:e667-binder}
+\end{align}
+The first is the published Sh1 single axiom for Boolean algebra with
+$N$ interpreted as NAND. Its Boolean-algebra consequence is inherited
+from the primary proof of McCune, Veroff, Fitelson, Harris, Feist and Wos,
+\emph{Short Single Axioms for Boolean Algebra}, Journal of Automated
+Reasoning 29 (2002), 1--16; explicit proof files are supplied by the
+authors at \url{https://www.cs.unm.edu/~veroff/BA/}.
+The symbols $0_B,1_B$ below mean the \emph{derived} Boolean bottom and
+top of this reduct. They are not extra symbols in the packet, and $d$
+is not initially identified with either of them.
+
+The seventh equation uses the following abbreviations solely for print
+readability. Let
+\[
+ h=Q(b),\qquad n_z=P(b,z),\qquad m_z=A(b,z),
+\]
+\[
+ R_b(x,y)=p_\varepsilon(P(y,P(x,b)),V(b,d)),
+\]
+and define the eight Boolean arguments
+\begin{align*}
+ r&=R_b(h,n_z),&e&=p_E(m_z,n_z),&f&=p_E(m_z,z),\\
+ a_0&=p_E(W(x,d),x),&b_0&=p_E(x,h),&c_0&=R_b(x,y),\\
+ u&=p_E(y,h),&v&=R_b(P(b,y),y).&&
+\end{align*}
+The symbols $a_0,b_0,c_0$ distinguish these Boolean values from the
+native variables. Define the pure NAND polynomials
+\begin{align*}
+ K_0&=N(c_0,N(a_0,N(d,b_0))),\\
+ H&=N\bigl(N(N(d,u),K_0),N(u,v)\bigr),\\
+ B^-&=N(r,N(d,N(e,N(d,f)))),\\
+ G(d,r,e,f,a_0,b_0,c_0,u,v)&=N(B^-,N(d,H)).
+\end{align*}
+The seventh equation is exactly
+\begin{equation}
+                         d=G(d,r,e,f,a_0,b_0,c_0,u,v).
+                         \label{eq:e667-closure}
+\end{equation}
+All abbreviations are expanded in \texttt{E667.equations}, in the JSON
+term trees, and in the raw bit packet. The ground query is unchanged:
+\[
+                             N(d,d)=d.
+\]
+
+Relative to E692, the only deletion is
+\begin{equation}
+                            d=N(d,N(d,d)).
+                            \tag{T}\label{eq:e667-deletedtruth}
+\end{equation}
+In a Boolean algebra its right side is $1_B$. The arities, symbol order,
+other seven equations, variable capacity and both ground endpoints are
+identical to those of E692. In particular the unary selector equation
+\eqref{eq:e667-tail} and all three structural witness identifications
+are preserved.
+
+\subsection{Why the optimized closure still forces truth}
+
+\begin{lemma}[Cofactor of the optimized closure]
+In every Boolean algebra, for arbitrary values of all nine displayed
+arguments,
+\[
+ \neg d\wedge G(d,r,e,f,a_0,b_0,c_0,u,v)=\neg d\wedge r.
+ \tag{Cofactor}\label{eq:e667-cofactor}
+\]
+Consequently $r=1_B$ and $d=G(d,r,e,f,a_0,b_0,c_0,u,v)$ imply $d=1_B$.
+\end{lemma}
+\begin{proof}
+Set the formal Boolean argument $d$ to $0_B$. The right input of the
+outermost NAND becomes $N(0_B,H)=1_B$, whatever value the optimized hull
+polynomial $H$ has. Inside $B^-$, the outer $N(0_B,\cdot)$ likewise
+gives $1_B$, so $B^-=N(r,1_B)=\neg r$. Thus
+\[
+ G(0_B,r,e,f,a_0,b_0,c_0,u,v)=N(\neg r,1_B)=r.
+\]
+This computation neither uses nor needs an interpretation of the
+optimized hull as the original hull when $d\ne1_B$.
+
+For an all-algebra proof of the cofactor identity, let $q=\neg d$.
+The map $t\mapsto t\wedge q$ is a Boolean homomorphism to the principal
+interval $[0_B,q]$, using its relative complement and relative top $q$.
+It sends $d$ to $0_B$. Apply the preceding polynomial calculation in
+that interval to obtain \eqref{eq:e667-cofactor}. This projects only
+the already evaluated Boolean arguments; it makes no assertion that
+any native constructor or predicate commutes with the projection.
+If $r=1_B$ and $d=G$, the identity gives
+$0_B=\neg d\wedge d=\neg d\wedge1_B=\neg d$, hence $d=1_B$.
+\end{proof}
+
+\begin{lemma}[A ground closure instance has $r=1_B$]
+The retained head and NAND-class equations provide a ground instance of
+\eqref{eq:e667-closure} whose first matrix argument is Boolean top,
+without assuming equation~\eqref{eq:e667-deletedtruth}.
+\end{lemma}
+\begin{proof}
+Use the same syntactic constant-true class as the incoming E688 proof:
+\[
+ k=P(d,P(d,d)),\qquad b_*=P(k,d).
+\]
+For any native argument $s$, two applications of
+\eqref{eq:e667-nand} yield
+\[
+ p_\varepsilon(s,k)=N\bigl(p_\varepsilon(s,d),
+             N(p_\varepsilon(s,d),p_\varepsilon(s,d))\bigr)=1_B.
+\]
+The last equality is the Boolean identity $N(t,N(t,t))=1_B$.
+It does not assume any particular class value for $d$.
+Equation~\eqref{eq:e667-head} gives $V(b_*,d)=k$.
+
+Now substitute $b=b_*$ and $x=y=z=d$ in the seventh equation. Its
+first matrix value is
+\[
+ r=p_\varepsilon\bigl(P(P(b_*,d),P(Q(b_*),b_*)),k\bigr)=1_B.
+\]
+The structural identifications $\mathsf{Target}=Q$ and
+$\mathsf{Next}=P$ merely determine the first argument of
+$p_\varepsilon$; the displayed constant-class identity holds for every
+such argument. The selector-tail equation is not needed in this truth
+derivation. Thus neither constructor sharing nor the unary-selector
+change invalidates the witness.
+\end{proof}
+
+\begin{theorem}[Exact model equivalence of E667 and E692]
+\label{thm:e667-equivalence}
+E667 and E692 have exactly the same algebras in their common signature,
+and hence exactly the same equational consequences. With the explicitly
+inherited E692 calibration, ordinary ZFC proves
+\[
+ \mathcal E_{667}\nvdash N(d,d)=d
+ \quad\Longleftrightarrow\quad
+ \mathcal E_{692}\nvdash N(d,d)=d
+ \quad\Longleftrightarrow\quad
+ \operatorname{Con}(\mathrm{ZFC}).
+\]
+\end{theorem}
+\begin{proof}
+Every E692 algebra satisfies E667 by deleting its truth axiom.
+Conversely, in an E667 algebra Sh1 supplies the Boolean reduct. The
+ground instance in the second lemma and the cofactor lemma force
+$d=1_B$, which is precisely the missing truth equation. All remaining
+E692 equations are retained literally, so this is an E692 algebra.
+The argument includes the degenerate Boolean algebra as well.
+
+Equational soundness and completeness turn equality of model classes
+into equality of consequences. Equivalently, the derived equation can
+replace every use of the old truth axiom in a finite equational proof.
+All formula trees, algebras, polynomial calculations and term models
+used here are set-sized ZFC objects. Composition with the existing
+E692/E713/raw-EPSC/ZFC comparison gives the displayed conclusion.
+The raw-EPSC interpretation and the structural-sharing model theorem
+are inherited dependencies, not reproved by the finite codec checks.
+\end{proof}
+
+The incoming E688 theorem alone would not justify this combination:
+its closure polynomial differs from the one in E692. The direct
+cofactor calculation above supplies that missing compatibility check.
+No claim is made that the optimized and original closure polynomials
+agree for arbitrary $d$; only their shared truth-forcing property is
+needed before applying the already established E692 calibration.
+
+\subsection{Complete accounting and executable artifacts}
+
+The retained equation-node counts, including both sides, are
+\[
+                     14,6,9,12,12,17,80,
+\]
+for a total of 150 nodes. Nine symbols and four variable slots still
+require a four-bit term opcode. The unchanged codec charges an
+eight-bit symbol count, three bits for each arity, an eight-bit variable
+capacity, one bit before each equation, a zero equation-list terminator,
+and both ground endpoint trees. Thus
+\[
+ \underbrace{8+3\cdot9+8}_{43\text{ header}}
+ +\underbrace{7+1+4\cdot150}_{608\text{ equations}}
+ +\underbrace{4\cdot4}_{16\text{ endpoints}}
+ =\boxed{667\text{ bits}}.
+\]
+The reduction from E692 is exactly the six-node truth equation plus its
+equation marker: $6\cdot4+1=25$ bits. Relative to E688, the additional
+21 bits are the earlier signature, optimized-hull and unary-selector
+savings. These comparisons count complete packets under one codec.
+
+The raw 667 bit characters, excluding the final newline, have SHA-256
+\begin{center}\small\ttfamily
+1075854399e1c3428e1c178b51bac47e428b8ef010b59e0312a3c06d409e55b8.
+\end{center}
+The packed transport has 84 bytes, with five trailing zero padding bits;
+\texttt{E667.bitlength} records 667 so that a transport adapter can
+discard that padding. These five bits are not part of the logical
+packet.
+
+Run \texttt{python3 -O build\_e667.py} from the supplied equational
+directory. The checker uses explicit exceptions, so all checks remain
+enabled under optimization. It pins the E692 JSON and bit stream,
+reconstructs its optimized closure independently, checks the unchanged
+head/NAND-class/unary-selector equations, deletes only the truth row,
+and roundtrips the new packet with the independently implemented codec
+adapted from the incoming E688 builder. It rejects all 667 strict
+prefix truncations and three malformed controls. It also checks the
+cofactor on all 512 assignments to its nine independent Boolean
+arguments and verifies the packed-byte transport.
+
+The output includes the full equation trees, expanded equations,
+raw and packed bits, bit length, a concrete ground-substitution recipe
+for the truth derivation, and a verification receipt. The finite
+Boolean table verifies the polynomial identity; the written principal-
+interval argument establishes its arbitrary-Boolean-algebra meaning.
+A fully expanded Sh1-only contextual rewrite trace, a Lean/Rocq
+endpoint, and an accounted binary ground-rewrite interpreter are not
+supplied. E667 is a smaller precisely specified consistency problem;
+its 667-bit size does not by itself imply a Turing-machine state bound.

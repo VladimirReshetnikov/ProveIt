@@ -1,0 +1,75 @@
+\section{Independent audit of the newly arrived 236-state construction}
+
+The incoming archive \texttt{ZFC236\_Construction\_2026-10-19.zip}, added in
+ProveIt commit \texttt{0b5fec6980cc3a5ba7dd47b404f0cbbe9a451c02}, contains a
+236-state construction that was not present in the earlier pinned checkout.
+The independent audit here confirms its local reduction. The construction is
+credited to that incoming submission; the following is an independent review
+and a limited further-search result.
+
+Relative to the earlier composed237 table, the reassociated237 table changes
+exactly four rows:
+\[
+\begin{array}{c|cc}
+\text{row}&\text{earlier237}&\text{reassociated237}\\\hline
+177/0&0R165&0R185\\
+177/1&1R185&1R212\\
+185/0&0R192&0R165\\
+185/1&1R212&1R192
+\end{array}
+\]
+These rows perform the literal binary-tree rotation
+$(165,(192,212))\mapsto((165,192),212)$ without changing the number of states.
+Its source-level semantic justification is a separate obligation from the
+local binary fold.
+
+The fold deletes state223 and maps it to182. The new rows are
+$182/0=0L198$, $182/1=1L210$, and the old incoming row $237/0=0R223$ becomes
+$0R182$. The complete old incoming lists are just $76/1=1R182$ and
+$237/0=0R223$. Since the start is95, every visit to old182 has a1 immediately
+left of the head, while every visit to old223 has a0 there. These guards hold
+on every initial tape and at every initial integer head position.
+
+The four exceptional simulations are:
+\[
+\begin{array}{c|cc|c|c}
+\text{old state}&\text{read}&\text{left bit}&
+\text{three new targets}&\text{old target}\\\hline
+182&0&1&198,136,187&187\\
+182&1&1&210,177,212&212\\
+223&0&0&198,206,23&23\\
+223&1&0&210,114,70&70
+\end{array}
+\]
+Every block reads only the entry cell and its left neighbor, preserves every
+bit it reads, and moves $L,R,R$. Thus each block exactly simulates one old
+transition, with identical head and entire tape. All470 other old rows commute
+with the state map in one step. The independent checker verifies the complete
+row sets and these finite premises against pinned table hashes, importing no
+upstream proof or discovery module.
+
+Consequently, after $j$ old transitions the new clock is between $j$ and $3j$;
+no block has an interior halt. The two machines therefore have the same halting
+behavior on all common initial tapes, including the blank tape. Their head and
+tape even agree at a matched halt. This ordinary proof concerns the
+reassociated237-to236 fold; consistency calibration and the changed source's
+runtime interpretation are checked separately.
+
+The enabling change can be isolated exactly. Without the source rotation,
+the proposed block for old182 reading1 ends at185 after three steps, whereas
+the required target is212. The new row $177/1=1R212$ supplies that target.
+The earlier fixed-source local searches did not allow this semantic source
+rotation. The audit additionally verifies that the old $235\to98$ fold commutes
+with the four-row rotation, and that after rotation the two binary folds
+$235\to98$ and $223\to182$ commute: either order yields the exact236 table.
+
+For a limited attempt at235 states, freely synthesized helper compensation was
+tested on the eight common-row pairs touching the changed source/fold controls:
+$74/210$, $185/229$, $198/205$, $198/219$, $198/221$, $198/246$, $200/210$,
+and $210/232$. The first helper had to repair all merged-state profile cases
+before a second helper could compensate its original contexts. Halt targets
+were allowed and terminal tapes/heads were identified. At radius5 and old/new
+horizons65, on the retained28,926 finite profile windows, the completed searches
+tried7,552 retained rows,54,553,565 first-helper substitutions and4,715
+second-helper substitutions. They found no235-state candidate. This is neither
+an exhaustive search of larger coordinated changes nor a state lower bound.

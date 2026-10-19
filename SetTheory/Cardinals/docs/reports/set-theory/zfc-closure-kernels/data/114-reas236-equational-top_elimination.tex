@@ -1,0 +1,211 @@
+\section{A redundant truth equation: an exact 667-bit equational packet}
+\label{sec:e667}
+
+The inspected incoming packet \(\mathcal E_{692}\) has an equation that can be
+deleted without changing its equational theory.  The new packet
+\(\mathcal E_{667}\) has seven equations, nine operation symbols, four variable
+slots, and 150 equation-term nodes.  Its exact serialization is 667 logical
+bits.  This result concerns a finite equational consistency problem; it does
+not give a Turing machine with 667, 237, or any other specified number of states.
+
+The exact input is the \texttt{E692.json} member of
+\path{docs/incoming/ZFC_Sub237_Research_2026-10-19.zip} at ProveIt commit
+\path{1b27f052d770f4c7d435e82e779bf21f5a1f66ed}.  Its raw SHA-256 is
+\path{0657cefef8f41bd7e463eb0adcd5a44b118de62ec852729202d3ecc4b6942d43}.
+The original source's descriptor, complemented binder, structural witnesses,
+selector convention, and bit codec are retained.  Only the equation
+\begin{equation}
+                         d=N(d,N(d,d))
+\label{eq:e667-deleted}
+\end{equation}
+is deleted.
+
+\paragraph{Earlier truth elimination and the changed premise.}
+Source 104 already deleted this explicit truth equation from the older
+E946 packet, obtaining E921.  Its proof used the separate arbitrary-witness
+equation of the ordinary existential interface.  E692 has a complemented
+binder instead, so that literal proof premise is absent here.  The present
+contribution is the new closure-based deduction below and its application
+to the combined E692 packet, not the general idea of deleting a redundant
+truth equation.  The prior argument is retained in ProveIt at
+\texttt{data/104-res238-formalisms-truth\_redundancy.md} within the
+\texttt{zfc-closure-kernels} reports.
+
+\subsection{The precise Boolean premise}
+
+Both packets retain the single axiom
+\begin{equation}
+ N\bigl(N(x,N(N(y,x),x)),N(y,N(z,x))\bigr)=y.
+\label{eq:e667-sh1}
+\end{equation}
+This is exactly Sh1 in Theorem 2 of McCune, Veroff, Fitelson, Harris, Feist,
+and Wos, \emph{Short Single Axioms for Boolean Algebra}, Journal of Automated
+Reasoning 29 (2002), 1--16, DOI
+\href{https://doi.org/10.1023/A:1020542009983}{10.1023/A:1020542009983}.
+The authors give a finite 66-step derivation of the Sheffer basis from Sh1;
+the \href{https://www.cs.unm.edu/~mccune/papers/basax/v12.pdf}{author-hosted
+paper} and \href{https://www.cs.unm.edu/~mccune/papers/basax/Sh-1.proof}{plain
+proof} provide the primary source.
+Consequently the reduct of every Sh1 algebra is a Boolean algebra in which
+\(N(a,b)=\neg(a\wedge b)\), after choosing the corresponding Boolean dual if
+necessary.  No assumption concerning the distinguished constant \(d\) is
+needed for this interpretation.  In particular, the deleted equation is
+not used to obtain Boolean algebra.
+
+\subsection{A short equational lemma}
+
+For an arbitrary Boolean-algebra element \(u\), define the term
+\[
+                   t(u)=N(u,N(u,u)).
+\]
+It denotes the Boolean top, independently of \(u\).  For arbitrary
+\(d,k,h,u\), put
+\[
+              F=N\bigl(N(t(u),N(d,k)),N(d,h)\bigr).
+\]
+Then the following is an identity of Boolean algebras:
+\begin{equation}
+                         N(F,N(d,d))=d.
+\label{eq:e667-identity}
+\end{equation}
+Indeed, expansion using NAND gives
+\[
+ F=\neg d\vee\neg k\vee h,
+ \qquad F\wedge\neg d=\neg d,
+ \qquad N(F,N(d,d))=\neg\neg d=d.
+\]
+These are finite equational manipulations in the Boolean reduct.  They do
+not use an ultrafilter, an infinite meet, a two-element model assumption,
+or the equation \(d=1\).  Composing with the cited Sh1 derivation makes
+\eqref{eq:e667-identity} an equational consequence of the single retained
+axiom \eqref{eq:e667-sh1}.
+
+It follows immediately that an equation \(d=F\) forces
+\[
+ N(d,N(d,d))=N(F,N(d,d))=d,
+\]
+which is exactly the omitted equation, with its sides exchanged.
+
+\subsection{The retained closure has exactly the required form}
+
+Write \(\varepsilon\) for the packet's binary operation
+\(p_\varepsilon\), and retain \(p_E\) as its other binary predicate-valued
+operation.  All notation in the next display abbreviates literal terms;
+no new operation is added to the packet:
+\begin{align*}
+ r(b,z)&=\varepsilon\bigl(P(P(b,z),P(Q(b),b)),V(b,d)\bigr),\\
+ k(b,z)&=N\bigl(p_E(A(b,z),P(b,z)),N(d,p_E(A(b,z),z))\bigr),\\
+ c(b,x,y)&=\varepsilon\bigl(P(y,P(x,b)),V(b,d)\bigr),\\
+ u(b,y)&=p_E(y,Q(b)),\\
+ v(b,y)&=\varepsilon\bigl(P(y,P(P(b,y),b)),V(b,d)\bigr),\\
+ a(x)&=p_E(W(x,d),x),\qquad b_0(b,x)=p_E(x,Q(b)),\\
+ h(b,x,y)&=N\Bigl(
+   N\bigl(N(d,u(b,y)),N(c(b,x,y),N(a(x),N(d,b_0(b,x))))\bigr),
+   N(u(b,y),v(b,y))\Bigr).
+\end{align*}
+The last retained equation of \(\mathcal E_{692}\) is literally
+\begin{equation}
+ d=N\Bigl(N\bigl(r(b,z),N(d,k(b,z))\bigr),N(d,h(b,x,y))\Bigr).
+\label{eq:e667-closure}
+\end{equation}
+There is no use of the intended set-theoretic semantics in identifying
+this syntax.  In particular, \(h\) can be treated as a completely arbitrary
+Boolean-algebra element in the lemma.
+
+The other two retained equations needed for the new argument are
+\begin{align}
+                   V(P(x,s),d)&=x,\label{eq:e667-head}\\
+ \varepsilon(s,P(a,b))&=N(\varepsilon(s,a),\varepsilon(s,b)).
+ \label{eq:e667-class}
+\end{align}
+Let the \emph{ground class term} and descriptor be
+\[
+             T=P(d,P(d,d)),\qquad B=P(T,d).
+\]
+For every environment \(S\), two instances of
+\eqref{eq:e667-class} give
+\begin{equation}
+ \varepsilon(S,T)
+   =N\bigl(\varepsilon(S,d),N(\varepsilon(S,d),\varepsilon(S,d))\bigr)
+   =t(\varepsilon(S,d)).
+\label{eq:e667-tautology}
+\end{equation}
+This works for every meaning of the class \(d\); it is not an assumption
+that \(d\) denotes a true class.  By \eqref{eq:e667-head}, \(V(B,d)=T\),
+so, on writing \(S_z=P(P(B,z),P(Q(B),B))\),
+\[
+                     r(B,z)=t(\varepsilon(S_z,d)).
+\]
+Substitute \(b=B\) into \eqref{eq:e667-closure}.  Its right-hand side is
+now exactly the lemma's \(F\), with
+\[
+ u=\varepsilon(S_z,d),\quad k=k(B,z),\quad h=h(B,x,y).
+\]
+Equation \eqref{eq:e667-identity} and congruence give
+\eqref{eq:e667-deleted}.  If a closed derivation is desired, set
+\(x=y=z=d\) as well: one ground instance of the closure row, the head
+row, two class-NAND instances, and the Boolean identity suffice.
+
+\subsection{Exact equivalence and its scope}
+
+Every equation of \(\mathcal E_{667}\) is an equation of
+\(\mathcal E_{692}\).  The preceding finite argument derives the one
+omitted equation in the other direction.  Therefore, in the same
+signature, the two presentations have exactly the same equational
+consequences and exactly the same models, including the one-element model.
+In particular,
+\begin{equation}
+ \mathcal E_{667}\vdash N(d,d)=d
+ \quad\Longleftrightarrow\quad
+ \mathcal E_{692}\vdash N(d,d)=d.
+\label{eq:e667-equivalence}
+\end{equation}
+This is stronger than merely having the same consistency strength.
+Its proof does not depend on the raw-EPSC calibration.
+
+The incoming E692 report supplies the separate ordinary relative model
+argument connecting that packet to E713 and raw EPSC.  Composing
+\eqref{eq:e667-equivalence} with that explicitly inherited calibration gives
+the intended ZFC-metatheoretic equivalence between the nonderivability of
+the displayed ground query and \(\operatorname{Con}(\mathrm{ZFC})\).
+This work does not replace the inherited model argument or claim a new
+Lean/Rocq or internally serialized PA proof.  It also supplies no literal
+binary machine for the new equational presentation.
+
+\subsection{Reproduction and accounting}
+
+\texttt{build\_e667.py} checks the exact input hashes and reconstructs the
+692-bit input using an independently written encoder.  It identifies the
+literal retained premises above and the exact shape of
+\eqref{eq:e667-closure}, removes just equation index 1, and writes the new
+packet, expanded equations, syntax tree, and verification receipt.
+An independently written strict decoder checks the generated syntax and
+endpoints.  The new Boolean identity is normalized as a squarefree
+polynomial over \(\mathbb F_2\), using \(N(a,b)=1+ab\); its two sides
+normalize to the same polynomial \(d\).  This symbolic check is valid in
+every Boolean ring, with no finite cardinality bound.  The use of the
+published Sh1 theorem remains explicit.
+
+The deleted equation has six term nodes and one equation marker.  The
+common opcode width remains four bits, hence the saving is
+\[
+                         6\cdot4+1=25\text{ bits}.
+\]
+The exact total is
+\[
+ \underbrace{43}_{\text{signature and variable header}}
+ +\underbrace{(7+4\cdot150+1)}_{\text{seven equations and terminator}}
+ +\underbrace{16}_{\text{two ground endpoints}}
+ =667.
+\]
+The physical transport file has 84 bytes with five trailing zero padding
+bits.  Its logical length is recorded separately; the padding is not part
+of the packet.  Reproduce with
+\begin{verbatim}
+python3 -B build_e667.py --output /tmp/e667-replay
+\end{verbatim}
+
+The binary-state objective remains separate: the new theorem saves one
+axiom and six emitter-term nodes in an alternative frontend, but a complete
+equational enumerator, writer, initializer, and literal table must still be
+accounted before any state reduction can be asserted.

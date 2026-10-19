@@ -1,0 +1,186 @@
+\section{Additional local-reduction research at the 237-state boundary}
+
+The starting table is the repository's composed 237-state machine, in inherited
+labels, with start state 95 and separate halt state 254. Its table hash is
+\path{a3c4407f30e2e2139af87c6a91948c518134855841a28eb85b1d81bcfd026c9a}.
+The additional searches described here found no sub-237-state candidate.
+They extend several previously tested classes, but their negative outputs are
+not state lower bounds.
+
+\subsection{Halting observation is weaker than a tape-preserving terminal join}
+
+A relevant omission in the inherited search domains is that replacement
+transitions were enumerated over surviving \emph{working} states only. They did
+not include halt state 254. Moreover, local joins required equal head positions
+and equal tapes even when both computations had halted. Neither restriction is
+required by the research objective, which concerns halting from the blank tape.
+
+For the particular 237-state table, the only transition into the halt state is
+\[
+ \delta(77,1)=(1,+1,254).
+\]
+Consequently, a fold that deletes state 77, or resynthesizes both its rows while
+retaining it, cannot preserve a halting execution if every newly synthesized
+transition still excludes target 254. The unique original halting transition
+has disappeared and no replacement can enter the halt state. This is a scope
+omission in such searches, not an obstruction to merging state 77.
+
+The new terminal variants add 254 to synthesized target domains. They also
+identify all pairs of halted configurations, regardless of the final tape or
+head position. They retain exact tape and head equality at every nonhalting
+checkpoint, after applying the specified state-dependent representation.
+
+\paragraph{Positive-block simulation with terminal observation.}
+Let $M$ and $N$ be deterministic Turing machines, let $I$ be an invariant of $M$,
+and let $F$ map nonhalting configurations in $I$ to nonhalting configurations of
+$N$. Define a relation by
+\[
+ c\mathrel{R}d\quad\Longleftrightarrow\quad
+ \bigl(c\text{ and }d\text{ are both halted}\bigr)
+ \ \lor\ 
+ \bigl(c\in I\text{ is nonhalting and }d=F(c)\bigr).
+\]
+Suppose initial configurations are related and that for every nonhalting
+$c\in I$ there are positive integers $a(c),b(c)$ such that both finite runs
+exist up to their specified endpoints and
+\[
+ M^{a(c)}(c)\mathrel{R}N^{b(c)}(F(c)).
+\]
+Then the two initial runs have the same halting status.
+
+\emph{Proof.} Iterating the block condition gives related checkpoints with
+strictly increasing clocks in both machines. If $M$ halts after finitely many
+steps, the strictly increasing old clock cannot pass the halting time because
+a run beyond that time does not exist. It therefore reaches a halted endpoint,
+whose related new endpoint is also halted. If $M$ does not halt, the block
+condition provides infinitely many new steps because every $b(c)$ is positive;
+thus the deterministic new run cannot halt. This proves both implications.
+Injectivity of $F$ is not needed.\hfill$\square$
+
+A synthetic control validates this distinction without asserting a new
+consistency machine. It has working states $77,95,96$, start 95, and rows
+\[
+\begin{array}{c|cc}
+ &0&1\\\hline
+77&(1,L,96)&(1,R,254)\\
+95&(1,R,77)&(1,L,96)\\
+96&(1,R,77)&(1,R,77)
+\end{array}
+\]
+Merging 96 into 77, redirecting its incoming transition, and setting both rows
+of 77 to $(0,L,254)$ yields a two-state machine with the same universal halting
+behavior. On the blank tape the old machine takes four steps and halts at head
+2 with ones at cells 0 and 1; the new machine takes two steps and halts at head
+0 with a one only at cell 0. A terminal relation is therefore necessary for this
+particular local comparison. The checker exhausts all 128 assignments on cells
+$[-3,3]$ and verifies that neither run reads outside the window, giving a
+whole-tape positive control. The search engine independently recovers the
+specified merge.
+
+\subsection{Representations at both ends of a proposed merge}
+
+Previous families typically left the retained state's representation unchanged
+and modified only the deleted state's representation. Here both states $p,q$
+can change their representations. Suppose every external incoming transition
+to $s\in\{p,q\}$ has the same direction $d_s\in\{-1,+1\}$. An external
+predecessor is a state other than $p$ and $q$. Choose $\epsilon_s\in\{0,1\}$
+and one of the four Boolean functions
+\[
+ f_s(x)\in\{x,0,1,1-x\}.
+\]
+The proposed representation at $s$ is
+\[
+ F(s,h,t)=
+ \left(p,h-2\epsilon_s d_s,
+ t[h-d_s\leftarrow f_s(t(h-d_s))]\right).
+\]
+All other nonhalting states initially have the identity representation.
+The new tape may keep, erase, set, or negate the cell written by the caller;
+its head may stay aligned with the old head or shift by two cells.
+
+For an external incoming transition
+\[
+ \delta(r,b)=(w,d_s,s),\qquad r\notin\{p,q\},
+\]
+the required replacement is exactly
+\[
+ \delta'(r,b)=\bigl(f_s(w),(-1)^{\epsilon_s}d_s,p\bigr).
+\]
+This formula has a direct proof on every tape. If the old head at the caller is
+$k$, the old successor's head is $k+d_s$. Applying $F$ places the new head at
+$k+d_s-2\epsilon_s d_s=k+(-1)^{\epsilon_s}d_s$ and changes only cell $k$, to
+$f_s(w)$. This is precisely the replacement transition. The statement remains
+valid when $f_s$ is constant; preservation of halting does not require an
+injective representation.
+
+The two rows at the merged state are synthesized freely. Their compatibility
+must be checked, because the caller formula alone proves no correctness claim
+for the merge. A further family also changes one helper row from the inherited
+neutral catalogue and rechecks its original contexts together with the merged
+states' contexts. Individual neutrality is never assumed to imply compatibility
+with a changed representation.
+
+The strict common-row search covers 180 eligible state pairs and 49 nonidentity
+encoding pairs per state pair, for 8,820 representations. The terminal-aware
+search focused on the halting gate covers 207 eligible pairs involving 77 and
+all 64 encoding pairs, including the identity, for 13,248 representations.
+Both require a common external incoming direction at each encoded label and
+exclude encoding the initial state 95. These restrictions leave many possible
+representations and transformations outside the search.
+
+\subsection{Freely synthesized helper compensation}
+
+Another new search drops the requirement that each helper edit be independently
+neutral in the original machine. It considers every pair sharing one literal
+row, preserves that common row, and synthesizes the other retained row. It
+chooses a first helper edit from the full finite transition domain. The first
+helper must make all merged-state profile cases pass. If its original contexts
+then fail, a second helper edit is synthesized along the first failing new
+trace. The final check includes the merged states and the original contexts of
+both helpers.
+
+This is a sequential compensation subclass. It excludes possibilities where
+both helper edits are needed before the first helper can pass the merged-state
+cases. It also excludes arbitrary larger clusters and unrestricted changes to
+callers. At horizon 17, all 234 common-row pairs were completed. The two runs
+partitioning those pairs tried a total of 220,896 retained-row choices,
+1,491,793,070 first-helper choices and 16,878,220 second-helper choices, with no
+candidate. A terminal-aware follow-up at horizon 65 covered the two common-row
+pairs involving 77, namely $77/204$ and $77/252$, and likewise found none.
+
+\subsection{Evidence, controls, and limits}
+
+Discovery uses the retained source-constrained finite profile of 29,192
+state/window pairs, with window $[-5,5]$. Old and new traces must remain within
+the known window while reading or writing. Both clocks have the specified
+finite horizon, and the new trace may join any positive old checkpoint within
+that horizon. These finite cases are not an exhaustive description of the
+source runtime. An independent check confirms that every profile window belongs
+to the inductively closed all-tape sliding-window abstraction; the latter has
+93,177 state/window pairs including the halt state. This inclusion does not
+make the smaller profile exhaustive.
+
+The original helper catalogue contains 601 finite neutral substitutions.
+Regeneration with direct halt targets and the terminal relation considers
+450,774 substitutions and returns 604. The only additions are
+\[
+ 77/1\mapsto0L254,\qquad77/1\mapsto0R254,\qquad77/1\mapsto1L254.
+\]
+Every helper search focused on a merge involving 77 excludes 77 itself from
+helper selection. The active helper domains are therefore exactly identical
+for the 601- and 604-entry catalogues. The package checks this equality directly;
+there is no need to repeat an identical search after changing the catalogue.
+
+A separate positive control recovers the previously established $235\to98$
+fold from the 238-state table. The independent checker reconstructs the exact
+237-state table, verifies the predecessor invariant in 30,112 Boolean-window
+cases, checks the three open-tape exceptional blocks of lengths $3,5,3$, and
+checks 473 ordinary commuting old rows. These are sufficient finite premises
+for an ordinary all-tape proof of that inherited fold. The control does not
+claim a new reduction.
+
+The supplied JSON receipt and logs give commands, input and code hashes,
+completed counters, horizon choices, and positive-control outputs. No compiled
+binaries are needed. The retained discoveries are negative within these stated
+classes; there is no proof-assistant theorem, no new 236-state table, no
+minimality claim, and no assertion that broader coordinated edits cannot work.

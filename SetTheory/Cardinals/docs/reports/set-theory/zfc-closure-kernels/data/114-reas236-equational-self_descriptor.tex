@@ -1,0 +1,353 @@
+\section{A descriptor that also carries its own class: the 639-bit packet}
+\label{sec:e639}
+
+A further representation change removes six term nodes from the closure
+axiom.  Combined with the preceding truth-equation deletion and the shorter
+ground query, it gives a complete \textbf{639-bit equational consistency
+packet}: seven equations, nine operation symbols, four variable slots, and
+144 equation-term nodes.  The query is \(Q(d)=d\).  The signature and every
+equation and endpoint are included in these 639 logical bits; the physical
+file occupies 80 bytes with one zero padding bit.
+
+The change is to use the descriptor itself as the class code.  The original
+692-bit packet represents its schema matrix by
+\[
+ R_b^{\mathrm{old}}(x,y)
+   =p_\varepsilon(P(y,P(x,b)),V(b,d)).
+\]
+The new packet uses
+\begin{equation}
+                  R_b(x,y)=p_\varepsilon(P(y,P(x,b)),b).
+\label{eq:e639-R}
+\end{equation}
+There are exactly three occurrences of \(V(b,d)\) in the old closure row.
+Replacing each by \(b\) saves two term nodes, hence 24 bits.  The head
+equation itself is retained.  A protected parameter tail proves that this
+change still represents every matrix with every finite tuple of parameters.
+The comparison below is a relative model theorem, not a claim that the old
+and new closure equations have identical models.
+
+\subsection{The literal seven-equation presentation}
+
+The ordered signature remains
+\[
+ d^0,N^2,V^2,P^2,A^2,Q^1,W^2,p_E^2,p_\varepsilon^2.
+\]
+Write \(\varepsilon=p_\varepsilon\).  The first six equations are
+\begin{align*}
+ N(N(x,N(N(y,x),x)),N(y,N(z,x)))&=y,\\
+ V(P(x,s),d)&=x,\\
+ V(P(x,s),Q(j))&=V(s,j),\\
+ \varepsilon(s,P(a,b))&=N(\varepsilon(s,a),\varepsilon(s,b)),\\
+ \varepsilon(s,A(i,j))&=p_E(V(s,i),V(s,j)),\\
+ \varepsilon(s,Q(a))
+   &=N\bigl(\varepsilon(P(W(s,a),s),a),
+            \varepsilon(P(z,s),a)\bigr).
+\end{align*}
+The last equation uses the following abbreviations for actual terms:
+\begin{align*}
+ H_b&=Q(b), & n_z&=P(b,z), & m_z&=A(b,z),\\
+ r&=R_b(H_b,n_z), & e&=p_E(m_z,n_z), & f&=p_E(m_z,z),\\
+ a&=p_E(W(x,d),x), & b_0&=p_E(x,H_b), & c&=R_b(x,y),\\
+ u&=p_E(y,H_b), & v&=R_b(n_y,y).&&
+\end{align*}
+Define the terms
+\[
+ K=N(e,N(d,f)),\qquad
+ L^-=N(c,N(a,N(d,b_0))),\qquad
+ H=N\bigl(N(N(d,u),L^-),N(u,v)\bigr).
+\]
+The seventh equation is
+\begin{equation}
+                 d=N\bigl(N(r,N(d,K)),N(d,H)\bigr).
+\label{eq:e639-closure}
+\end{equation}
+The file \texttt{E639.equations} expands every abbreviation.  No arity,
+definition, or omitted helper is supplied outside the packet.
+
+\subsection{The protected parameter tail}
+
+Sh1 gives a Boolean reduct independently of the value of \(d\).  By the
+class-NAND equation, the ground terms
+\[
+                    T=P(d,P(d,d)),\qquad F=P(T,T)
+\]
+are respectively a uniformly true class and a uniformly false class:
+\[
+ \varepsilon(s,T)=1,\qquad \varepsilon(s,F)=0
+ \quad\hbox{for every environment }s.
+\]
+These are statements about predicate values.  They do not identify the
+native object \(T\) with the Boolean top or \(F\) with the Boolean bottom.
+
+Fix arbitrary native objects \(p_1,\ldots,p_k\), and set
+\[
+ L=P(p_1,P(p_2,\ldots P(p_k,d)\ldots)),\qquad
+ B=P(c,P(F,L)).
+\]
+For \(k=0\), use \(L=d\).  The tail \(P(F,L)\) is a true class regardless
+of the meanings of the parameters, because
+\(\varepsilon(s,P(F,L))=N(0,\varepsilon(s,L))=1\).
+Consequently
+\begin{equation}
+                       \varepsilon(s,B)=\neg\varepsilon(s,c).
+\label{eq:e639-guard}
+\end{equation}
+This is the central coding device.  Merely putting parameters after the
+code would not have this property: arbitrary parameter objects can have
+arbitrary class meanings.  The fixed false-class head makes the parameter
+tail semantically harmless without restricting any parameter.
+
+Let \(\nu_0=d\) and \(\nu_{i+1}=Q(\nu_i)\).  The head/tail equations
+show by induction that \(V(s,\nu_i)\) reads coordinate \(i\) of every
+sufficiently long finite \(P\)-stack.  In
+\(S=P(y,P(x,B))\), these coordinates are
+\[
+               (y,x,c,F,p_1,\ldots,p_k).
+\]
+Thus output has coordinate 0, input coordinate 1, the two internal
+descriptor fields occupy coordinates 2 and 3, and the parameters start
+at coordinate 4.  No assumption about the default tail is needed for
+these finitely many coordinates.
+
+After the usual Boolean homomorphism to two truth values, the retained
+binder means existential negation: \(Q(a)\) represents
+\(\exists z\,\neg a\).  Ordinary existential quantification is
+\(Q(P(a,a))\).  Membership atoms are represented by
+\(A(\nu_i,\nu_j)\), NAND by \(P\), and bound coordinates are shifted
+on prepending the bound variable.  The standard structural induction
+therefore represents every finite equality-free pure-membership matrix.
+Given \(R(x,y;p_1,\ldots,p_k)\), first construct a class code \(c\) for
+\(\neg R\) with the coordinate convention just stated, and only then
+form \(B\).  By \eqref{eq:e639-guard}, the new matrix \(R_B\) is exactly
+\(R\).  The code is built before its descriptor; there is no circular
+definition and no restriction to parameter-free instances.
+
+\subsection{Truth recovery and the ground query remain valid}
+
+The omitted truth equation still follows.  In
+\eqref{eq:e639-closure}, set \(b=T\).  Then
+\(r=\varepsilon(P(P(T,z),P(Q(T),T)),T)=1\).
+The same NAND identity used for E667 applies:
+\[
+ N\bigl(N(N(t(w),N(d,K)),N(d,H)),N(d,d)\bigr)=d,
+ \qquad t(w)=N(w,N(w,w)).
+\]
+It gives \(N(d,N(d,d))=d\).  The native head equation is no longer even
+needed for this particular deduction.  Hence \(d\) is the Boolean top
+in every model of the seven retained equations.
+
+The query \(Q(d)=d\) holds only in trivial models, by the head/tail chain
+\[
+ x=V(P(x,P(y,d)),d)=V(P(x,P(y,d)),Q(d))=V(P(y,d),d)=y.
+\]
+Conversely \(N(d,d)=d\) collapses every Sh1 Boolean reduct and implies
+\(Q(d)=d\).  Thus the shortened query and the original Boolean-collapse
+query have the same equational refutability for this new presentation too.
+
+\subsection{From a separating model to raw EPSC}
+
+Recall the full equality-free raw EPSC schema.  For every finite
+pure-membership relation formula \(R(x,y;\bar p)\), if
+\[
+ \forall x\,\exists z\,\forall y\,
+       \bigl(R(x,y;\bar p)\longrightarrow
+          \forall m\,(E(m,y)\to E(m,z))\bigr),
+\]
+then some \(h\) satisfies both
+\begin{align*}
+ &\forall x,y\,
+    \bigl((\mathsf{Empty}(x)\lor E(x,h))\land R(x,y;\bar p)
+       \longrightarrow E(y,h)\bigr),\\
+ &\forall y\,(E(y,h)\longrightarrow\exists x\,R(x,y;\bar p)),
+ \qquad \mathsf{Empty}(x)\equiv\forall m\,\neg E(m,x).
+\end{align*}
+
+Take a model separating \(Q(d)\) and \(d\).  Its Boolean reduct is
+nontrivial and its \(d\) is top.  Choose an ultrafilter of that Boolean
+algebra and apply its homomorphism to \(\{0,1\}\) only to the values of
+\(p_E\) and \(\varepsilon\).  Retain the entire native carrier and all
+native operations.  In particular native stack equality remains literal
+equality.  The selected complemented-witness equation gives
+\[
+ \varepsilon(s,Q(a))=1
+       \quad\Longleftrightarrow\quad
+       \exists z\,\varepsilon(P(z,s),a)=0.
+\]
+For completeness, set \(w=\varepsilon(P(W(s,a),s),a)\).  The instance
+\(z=W(s,a)\) gives the binder value \(\neg w\), and its other instances
+give \(w\leq\varepsilon(P(z,s),a)\).  In two truth values this is exactly
+the displayed equivalence, including an attained witness.  No preservation
+of arbitrary infinite joins by the homomorphism is assumed.
+
+Let \(E(x,y)\) mean that the image of \(p_E(x,y)\) is true.  Every matrix
+and parameter tuple is represented by a protected descriptor \(B\).
+The closure equation becomes
+\[
+ \mathsf{Bad}(B,z)\lor\mathsf{Hull}(B,x,y),
+\]
+where
+\begin{align*}
+ \mathsf{Bad}&=r\land e\land\neg f,\\
+ \mathsf{Hull}&=(a\lor\neg c\lor u)
+                \land(\neg b_0\lor\neg c\lor u)
+                \land(\neg u\lor v).
+\end{align*}
+If the represented relation is locally bounded, apply the bound at
+\(H_B=Q(B)\).  Some \(z\) makes \(\mathsf{Bad}(B,z)\) false: otherwise
+\(R_B(H_B,n_z)\), \(E(m_z,n_z)\), and \(\neg E(m_z,z)\) contradict
+that bound.  Hence all hull clauses hold.  If \(x\) is empty then
+\(a=E(W(x,d),x)\) is false, and the first clause gives closure at empty
+inputs.  The second gives closure at members of the hull.  The third gives
+unrestricted support, with witness \(P(B,y)\).  Thus every instance of
+the full raw EPSC schema holds on the same carrier.
+
+\subsection{The reverse model construction and its recursion order}
+
+For the reverse implication, let \((M,E_M)\) be a countable nonempty
+raw EPSC structure.  Use the same free carrier as the inspected E692
+construction: finite trees over constructors \(P,A,Q\), with a leaf
+\(d\) and separate leaves \(e_m\) for all \(m\in M\).  All these
+native constructors are literal disjoint tree constructors.  The extra
+leaves are carrier elements, not extra signature constants.
+
+Define \(\operatorname{idx}(i)\) as the number of outer \(Q\)-layers
+of the tree \(i\).  Read a \(P\)-tree as a cons cell and a non-\(P\)
+tail as the constant-\(d\) stream; let \(V(s,i)\) read coordinate
+\(\operatorname{idx}(i)\).  Both native stack equations hold for all
+arguments, canonical or otherwise.  Decode a class structurally: leaves
+are false, \(P\) is NAND, \(A(i,j)\) is membership between the selected
+coordinates, and \(Q(a)\) means existential negation of the decoded
+body after prepending its bound value.
+
+Give leaves weight 1 and constructors weights
+\[
+ w(Q(b))=w(b)+1,\quad
+ w(P(b,z))=w(b)+w(z)+2,\quad
+ w(A(b,z))=w(b)+w(z)+3.
+\]
+For each descriptor \(b\), decode \emph{the class tree \(b\) itself}
+on the stream \(P(y,P(x,b))\).  This gives a finite pure-membership
+formula \(\widehat R_b(x,y;\bar p)\).  Each fixed parameter in that
+formula is a proper tail-head subtree of \(b\) or the already assigned
+default \(d\): the first two free stream coordinates are \(y,x\),
+and subsequent coordinates are read from the native tail \(b\).
+If that tail is not a \(P\)-tree, they are all default \(d\).
+Bound variables inserted by class quantifiers do not change this
+classification.  The class-decoding operation inspects finite syntax and
+selector indices; it never queries an unassigned raw value.
+
+This is the revised descriptor-descent argument.  In particular, evaluating
+the class \(b\) does not amount to a truth predicate for the expanded
+language, and it does not introduce a raw function term such as
+\(\mu(P(x,b))\) into the matrix.  The matrix remains in the pure
+membership language, with finitely many fixed parameters of smaller
+weight.  This is what allows the raw EPSC hypothesis to be used.
+
+Choose \(m_0\in M\).  Set \(\mu(d)=m_0\), \(\mu(e_m)=m\), and
+define the remaining raw values recursively by weight.  Once the
+parameters of \(\widehat R_b\) have their raw values, write its
+resulting relation on \(M\) as \(R_b^M\).  If this relation is locally
+bounded, choose an EPSC hull \(h_b\).  Otherwise choose \(h_b\) with
+\[
+ \forall z\,\exists n,m\,
+      \bigl(R_b^M(h_b,n)\land E_M(m,n)\land\neg E_M(m,z)\bigr),
+\]
+the classical negation of local boundedness.  Put \(\mu(Q(b))=h_b\).
+In the latter case choose \(\mu(P(b,z))\) as the displayed \(n\)
+for the bound \(\mu(z)\), and choose \(\mu(A(b,z))\) as its displayed
+separating member \(m\).  In the hull case, if
+\(E_M(\mu(z),h_b)\), use support to choose \(\mu(P(b,z))=n\) with
+\(R_b^M(n,\mu(z))\); otherwise use \(m_0\).  In that case set
+\(\mu(A(b,z))=m_0\).
+
+Every choice is available when needed.  Specifically,
+\[
+                   w(Q(b))<w(P(b,z))<w(A(b,z)),
+\]
+and every descriptor parameter has smaller weight than \(Q(b)\).
+A fixed enumeration of the countable domain makes the choices consistent.
+The leaves \(e_m\) make \(\mu\) surjective.
+
+Pull membership back by \(E_D(u,v)\iff E_M(\mu(u),\mu(v))\), and
+interpret class evaluation by the finite decoding just defined.  Induction
+on equality-free formulas gives satisfaction transfer along \(\mu\),
+using surjectivity at quantifiers.  Hence the represented \(R_b\) is
+the pullback of \(R_b^M\).  For \(a\ne d\), choose \(W(s,a)\) to
+falsify \(\varepsilon(P(z,s),a)\) when possible, and arbitrarily
+otherwise.  At \(a=d\), every class instance is false, so the complemented
+binder imposes no condition on \(W(s,d)\).  Use that free slice to choose
+a member of \(\mu(s)\) whenever it has a member, lifting the selected
+member by a leaf \(e_m\).  This is the inherited member-choice device;
+\(V\) and \(W\) remain distinct operations.
+
+The bad case makes every bad disjunct true.  In the hull case, EPSC closure
+at empty inputs and hull members, the member-choice slice for nonempty
+inputs, and the chosen support witnesses make all three hull clauses true.
+Finally transport any countably infinite Boolean algebra onto the free
+carrier with top equal to \(d\), interpret \(N\) as its NAND, and let
+the two predicate-valued operations return its top or bottom according to
+the just constructed relations.  All seven equations hold literally.
+Since \(Q\) is a free tree constructor, \(Q(d)\ne d\), so the ground
+query is separated.  This construction preserves the compatible class,
+selector, and raw-membership roles of \(Q\); none is confused with the
+Boolean truth value of the native tree itself.
+
+\subsection{Relative calibration, evidence, and the exact charge}
+
+Ground terms modulo the least congruence generated by all ground equation
+instances form a countable model.  A ground equation is underivable
+exactly when this model separates its endpoints.  The two constructions
+above therefore prove, in the ordinary ZFC metatheory,
+\[
+ \mathcal E_{639}\nvdash Q(d)=d
+ \quad\Longleftrightarrow\quad
+ \mathcal E_{692}\nvdash N(d,d)=d.
+\]
+The right-hand side has the inspected report's inherited raw-EPSC/E713/ZFC
+calibration.  Composing with it gives the intended equivalence with
+\(\operatorname{Con}(\mathrm{ZFC})\).  The new relative theorem does not
+require re-proving that older calibration, but its use is explicit.
+
+The successive complete packets are
+\begin{center}
+\begin{tabular}{lrrr}
+\hline
+Packet & Equations & Equation nodes & Logical bits\\
+\hline
+Inspected E692 & 8 & 156 & 692\\
+Self-descriptor E668 & 8 & 150 & 668\\
+Truth deletion E643 & 7 & 144 & 643\\
+Short query E639 & 7 & 144 & 639\\
+\hline
+\end{tabular}
+\end{center}
+The final accounting is exactly
+\[
+ \underbrace{43}_{\text{header}}
+ +\underbrace{(7+4\cdot144+1)}_{\text{equations and terminator}}
+ +\underbrace{12}_{\text{ground query}}
+ =639.
+\]
+
+\texttt{build\_e639.py} checks the pinned E692 bytes, changes exactly the
+three code projections in its last equation, and emits all three new
+checkpoints with expanded equations and exact codec round trips.  It checks
+the protected-tail and truth-recovery Boolean identities by symbolic
+Boolean-ring normalization, and separately exercises the parameter-stack
+coordinate calculation for lengths 0 through 64.  The latter is a finite
+regression supporting the explicit head/tail induction; it is not an
+exhaustive verification of the model construction.  The ordinary proof
+above, the inherited Sh1 theorem, and the inherited raw-EPSC calibration
+remain mathematical premises of the result.  No new Lean/Rocq endpoint,
+internal PA proof-code translation, or binary-state count is supplied for
+this alternative presentation.
+
+The new contribution is the protected parameter-tail code, its compatible
+model construction, and its exact composition with closure-based truth
+recovery.  Source 104 retains credit for the earlier truth-equation
+elimination on E946; Source 107 for the complemented binder and factoring;
+the inspected E692 report for the structural-witness and selector
+combination; and the published authors for Sh1.  No claim of historical
+priority for general coding ideas, global bit minimality, or a binary
+machine record follows from this packet.

@@ -1,0 +1,563 @@
+% Self-contained sections for the parent report. Requires amsmath, amssymb,
+% amsthm and hyperref; theorem/lemma/proof environments should be available.
+% All names introduced here use the ks prefix to avoid collisions.
+\newcommand{\ksI}[2]{(#1\mathbin{\to}#2)}
+\newcommand{\ksN}[1]{\neg #1}
+\newcommand{\ksQ}[2]{Q_{#1}#2}
+\newcommand{\ksD}[1]{\mathsf{D}(#1)}
+\newcommand{\ksV}[2]{\mathsf{V}_{#1}(#2)}
+\newcommand{\ksAnd}{\mathbin{\wedge_F}}
+
+\section{Two repairs of the three-parameter logical frontend}
+\label{sec:ksrepairs}
+
+The useful outcome of this investigation is a pair of complete logical
+replacement arguments, together with finite proof certificates for their
+critical steps. These are frontend results. They do not supply a smaller
+binary Turing machine. Their cost must be measured after compiling the
+entire altered proof enumerator with the selected runtime and initializer.
+
+The K/S/Peirce replacement itself is prior ProveIt work. Source~91 already
+measured a three-parameter K/S/Peirce control, and Source~95 supplies both
+an explicitly checked K/S/Peirce-to-Lukasiewicz certificate and a routed
+250-state control. We reuse that basis comparison and attribute it to
+those sources. The new repairs examined here replace Peirce by either
+global double-negation elimination or a restricted quantified schema.
+
+\subsection{The exact numerical algebra and retained rules}
+
+Let
+\[
+ \pi(x,y)=\frac{(x+y)(x+y+1)}2+y,
+ \qquad
+ I(x,y)=4\pi(x,y).
+\]
+The numerical constructors are
+\[
+ R(i,j)=4\pi(i,j)+1,\quad
+ Q_iA=4\pi(i,A)+2,\quad
+ E(i,j)=4\pi(i,j)+3.
+\]
+We write $A\to B$ for $I(A,B)$ and keep the exact old constants
+\[
+ F=1=R(0,0),\qquad 0=I(0,0).
+\]
+The latter is a real alias: code~0 is a primitive theorem, and is not the
+code of a finite constructor tree in a free syntax. Define
+\[
+ \neg A=(A\to F),\qquad
+ A\ksAnd B=\neg(A\to\neg B),\qquad
+ \exists_i A=\neg Q_i\neg A.
+\]
+Every displayed propositional derivation below uses only equations of
+these operations and the explicitly named inference rules. It therefore
+admits arbitrary numerical substitution, including values~0 and~1;
+constructor injectivity is not an assumption of the finite proofs.
+
+The old propositional row is
+\[
+ L(a,b,c,u)=((c\to u)\to a)\to((a\to c)\to(b\to c)).
+\]
+Let $\mathcal C_L$ be the old numerical theorem calculus. In addition to
+$L$, it has truth~0, modus ponens, theorem-only generalization
+$A\mapsto Q_iA$, the seven other old logical rows, and the old gated
+set-theory bundle. Only three of the retained rows are needed in the
+bootstrap:
+\begin{align*}
+ \rho_1(i,j)&=\neg Q_i\neg E(i,j),\\
+ \rho_2(i,A,B)&=Q_i(A\to B)\to(Q_iA\to Q_iB),\\
+ \rho_6(i,A)&=\exists_i Q_iA\to A.
+\end{align*}
+The other four logical rows, the generalization mechanism and every
+component of the set-theory bundle are retained literally.
+
+The relevant outer shape of the gated bundle is
+\[
+ \mathcal B(a,b,c)=
+ (C(a,b,c)\ksAnd G(a,b,c))\ksAnd
+ (V_R(a,b,c)\ksAnd V_E(a,b,c)),
+\]
+where
+\[
+ V_R=R(a,b)\to Q_cR(a,b),\qquad
+ V_E=E(a,b)\to Q_cE(a,b).
+\]
+It is emitted as a theorem only when $c\ne a$ and $c\ne b$.
+The symbols $C,G$ denote the unchanged full native CP/GIC matrices,
+including their original numerical parameter convention. In particular
+$c$ is both an index and a matrix code in the GIC emitter. We never
+delete this gate, assume an unguarded bundle, or require $a\ne b$.
+
+The two standard implicational schemas are
+\[
+ K(A,B)=A\to(B\to A),
+ \quad
+ S(A,B,C)=(A\to(B\to C))\to((A\to B)\to(A\to C)).
+\]
+Write
+\[
+ \ksD A=\neg\neg A\to A,
+ \qquad \ksV iA=A\to Q_iA.
+\]
+In the next lemmas, a temporary assumption is discharged by the ordinary
+K/S deduction construction. Generalization is applied only to previously
+proved theorems, never to a formula depending on a temporary assumption.
+The accompanying finite certificates eliminate all temporary assumptions
+and explicitly check this distinction.
+
+\subsection{A bottom supplied by the retained quantified rule}
+
+\begin{lemma}[Explosion and seriality]
+\label{lem:ksefq}
+K, S, and the retained quantified rows prove, for every numerical $A,i$,
+\[
+ F\to A,\qquad Q_iF\to F.
+\]
+\end{lemma}
+\begin{proof}
+For explosion, K gives
+$F\to(Q_i\neg Q_iA\to F)=F\to\exists_iQ_iA$.
+Compose with $\rho_6(i,A)$ by K/S and modus ponens.
+
+For seriality choose any index $j$. K gives
+$F\to(E(i,j)\to F)$. Generalize this theorem with index~$i$ and apply
+$\rho_2$, obtaining $Q_iF\to Q_i\neg E(i,j)$. The exact old row
+$\rho_1(i,j)$ is $Q_i\neg E(i,j)\to F$, so composition gives the result.
+There is no freshness assumption on $i,j$, nor any appeal to Peirce,
+classical semantics, or generalization under assumptions.
+\end{proof}
+
+\begin{lemma}[Positive vacuity implies stability]
+\label{lem:ksvstable}
+If $A\to Q_iA$ is a theorem, then $\ksD A$ is a theorem in the K/S system
+with $\rho_1,\rho_2,\rho_6$ and theorem-only generalization.
+\end{lemma}
+\begin{proof}
+Generalize the theorem $A\to Q_iA$ and use $\rho_2$ to obtain
+\[
+ Q_iA\to Q_iQ_iA. \tag{*}
+\]
+Assume $\neg\neg A$ and $H=Q_i\neg Q_iA$. Under the additional assumption
+$A$, positive vacuity and $(*)$ give $Q_iQ_iA$. Distribution applied to
+$H$ gives $Q_iQ_iA\to Q_iF$, so Lemma~\ref{lem:ksefq} gives $F$.
+Discharge $A$ to obtain $\neg A$; the assumed $\neg\neg A$ gives $F$.
+Discharge $H$ to obtain $\neg Q_i\neg Q_iA=\exists_iQ_iA$. The retained
+row $\rho_6(i,A)$ yields $A$. Discharging $\neg\neg A$ proves stability.
+The only generalization in this argument was applied before any local
+assumption was introduced, to the given theorem $A\to Q_iA$.
+\end{proof}
+
+\begin{lemma}[Implication stability]
+\label{lem:ksimpstable}
+If $\ksD B$ is a theorem then $\ksD{(A\to B)}$ is a theorem using K/S.
+\end{lemma}
+\begin{proof}
+Assume $H=\neg\neg(A\to B)$ and $A$. Under $\neg B$, any assumed
+$A\to B$ yields $F$, so $\neg(A\to B)$ follows by discharge. Apply
+$H$ to obtain $F$ and discharge $\neg B$, obtaining $\neg\neg B$.
+The given stability of $B$ yields $B$. Discharge $A$, then $H$.
+This proof needs stability only of the consequent, and does not need
+explosion or quantified rules.
+\end{proof}
+
+\begin{lemma}[Negative-product extraction without classical circularity]
+\label{lem:ksbundle}
+K/S prove
+\[
+ (A\ksAnd B)\to\neg\neg A,
+ \qquad
+ (A\ksAnd B)\to\neg\neg B,
+ \qquad
+ \neg\neg\neg A\to\neg A.
+\]
+Consequently, from a theorem
+$(C\ksAnd G)\ksAnd(V_R\ksAnd V_E)$ and theorems
+$\ksD{V_R},\ksD{V_E}$ one obtains $V_R,V_E$.
+\end{lemma}
+\begin{proof}
+For the first projection assume $A\ksAnd B$ and $\neg A$. Under $A$
+one gets $F$, and K gives $B\to F$. Discharge $A$ to obtain
+$A\to\neg B$ and apply the negative conjunction to obtain $F$.
+Discharge $\neg A$ and then the conjunction. For the second projection,
+$\neg B$ gives $A\to\neg B$ directly by K, and the same argument applies.
+
+For triple-negation elimination, assume $\neg\neg\neg A$ and $A$.
+The latter gives $\neg\neg A$ by discharging an assumed $\neg A$;
+the former then gives $F$. Discharge $A$ and the first assumption.
+
+Now let $W=V_R\ksAnd V_E$. The right projection from the outer bundle
+gives $\neg\neg W$. Since $W$ itself is a negation, triple-negation
+elimination gives $W$. Project to $\neg\neg V_R,\neg\neg V_E$, and
+apply their assumed stability. This avoids assuming unrestricted
+classical conjunction elimination in the system being bootstrapped.
+\end{proof}
+
+\subsection{Quantified idempotence suffices}
+
+Let $\mathcal C_{KS4}$ replace the single old $L$ row by K, S, and
+\[
+ \mathsf Q4(i,A)=Q_iA\to Q_iQ_iA,
+\]
+with every other rule and gated bundle unchanged. Thus it uses three
+logical replacement rows but only the existing three independently
+enumerated source parameters. Let $\mathcal C_{KSDQ}$ make the same
+replacement using
+\[
+ \mathsf{QDN}(i,A)=\neg\neg Q_iA\to Q_iA
+\]
+instead of $\mathsf Q4$.
+
+\begin{theorem}[Full numerical stability from either quantified repair]
+\label{thm:ksquant}
+Both $\mathcal C_{KS4}$ and $\mathcal C_{KSDQ}$ prove $\ksD n$ for every
+natural-number formula code $n$. Consequently they prove every instance
+of the original $L$ row, and contain the old theorem calculus
+$\mathcal C_L$.
+\end{theorem}
+\begin{proof}
+In $\mathcal C_{KS4}$ apply Lemma~\ref{lem:ksvstable} to
+$A=Q_iB$ and to the axiom $Q_iB\to Q_iQ_iB$. Every quantified code is
+therefore stable. In $\mathcal C_{KSDQ}$ this is an axiom directly.
+
+Fix any atom $R(a,b)$ or $E(a,b)$ and choose an index $c$ different
+from both $a,b$. Such an index exists in the unbounded natural-number
+index set. Its gated bundle is a theorem. The two vacuity leaves
+$V_R,V_E$ have quantified consequents, already proved stable;
+Lemma~\ref{lem:ksimpstable} makes both leaves stable. Apply
+Lemma~\ref{lem:ksbundle} to obtain the leaves as theorems. Then
+Lemma~\ref{lem:ksvstable} gives stability of both atoms. The CP/GIC
+leaves are not used in this proof except as unchanged components of
+the actual bundle. Their presence causes no conjunction-extraction gap.
+
+Complete the proof by strong induction on $n$. Code~0 is handled
+separately: it is a theorem, and K with antecedent $\neg\neg0$ gives
+$\neg\neg0\to0$. Do not recursively unfold $0=I(0,0)$.
+For $n>0$, examine $n\bmod4$ using the inverse pairing operation.
+Membership and equality tags have just been handled, and the universal
+tag has unconditional quantified stability. If $n=I(x,y)>0$, then
+$y<n$, so the induction hypothesis and Lemma~\ref{lem:ksimpstable}
+give $\ksD n$. To see the strict inequality explicitly, if
+$\pi(x,y)>0$ then $y\le\pi(x,y)<4\pi(x,y)=n$.
+No appeal to a fictitious finite parse tree for code~0 is made.
+
+Explosion and unrestricted stability imply Peirce. Under
+$H=(A\to B)\to A$ and $\neg A$, an additional assumption $A$ yields
+$F$, hence $B$ by explosion. Discharge $A$ to obtain $A\to B$;
+$H$ then gives $A$, hence $F$. Discharge $\neg A$, use stability of
+$A$, and discharge $H$.
+
+Finally derive $L(a,b,c,u)$ from K/S/Peirce: assume
+$H=(c\to u)\to a$ and $J=a\to c$. Under $c\to u$, these yield $c$.
+Discharge to obtain $(c\to u)\to c$, use Peirce at $(c,u)$ to obtain
+$c$, and use K to obtain $b\to c$. Discharge $J,H$.
+Every old axiom leaf thus has a finite replacement derivation, while
+the remaining inference rules and axioms are unchanged.
+\end{proof}
+
+\paragraph{The reverse refutation comparison.}
+Theorem~\ref{thm:ksquant} proves old-to-new theorem inclusion. We do not
+claim an explicit old numerical derivation of every $\mathsf Q4$ instance
+from the finite certificates in this artifact. Instead, the required
+reverse \emph{refutation} comparison follows from the same native SIR
+interpretation used by the old calibration.
+
+Here are its added soundness obligations explicitly. Decode code~0 as a
+true formula. Decode positive implication codes recursively, universal
+codes as ordinary quantification in their numerical binder, and atomic
+codes as membership and native equality. For $I(0,0)=0$, both the
+chosen truth interpretation and its implication with itself are valid;
+the interpretation is compatible up to logical equivalence, which is
+all soundness needs. Native irreflexivity makes $F=R(0,0)$ false under
+every assignment, including assignments changed by a binder~0.
+
+The K and S rows are valid Boolean implication identities. For Q4,
+fix a model, an assignment $s$, and an index $i$. If $Q_i A$ holds at
+$s$, it holds at every assignment $s[i\mapsto d]$: the truth condition
+is still ``for every $e$, $A$ holds at $s[i\mapsto e]$'' because the
+inner occurrence of the same binder overwrites the outer assignment.
+Thus $Q_iQ_iA$ holds. This verifies same-binder Q4 even with numerical
+index collisions. For QDN, ordinary Boolean double-negation elimination
+applies because the interpretation of $F$ is false at every assignment.
+The unchanged old rows, unchanged gated CP/GIC bundle and inference
+rules use the existing native soundness proof.
+
+Therefore any new derivation of numerical~1 yields an SIR refutation.
+Conversely an SIR refutation yields an old numerical refutation by the
+existing old completeness/calibration theorem, and hence a new one by
+Theorem~\ref{thm:ksquant}. This is an ordinary proof of
+\[
+ \mathcal C_{KS4}\vdash1\ \Longleftrightarrow\ \mathrm{SIR}\vdash\bot
+ \ \Longleftrightarrow\ \mathcal C_{KSDQ}\vdash1.
+\]
+The native comparison with ZFC then transfers. This is a refutation
+bridge, not a claim that the finite Python checker has reverified the
+entire native set-theoretic interpretation or compiled a new machine.
+
+\subsection{Global DNE gives exact equality of numerical calculi}
+
+Let $\mathcal C_{KSD}$ replace $L$ by K, S, and the unrestricted schema
+\[
+ \mathsf D(A)=((A\to F)\to F)\to A.
+\]
+All three schemas can use the existing $a,b,c$ source fields. The final
+independent read of $u$ is unnecessary, but the extra axiom rows and
+changed command layout still have to be compiled and calibrated.
+
+\begin{theorem}[Exact relative-basis equivalence]
+\label{thm:ksdne}
+For every numerical code $n$,
+\[
+ \mathcal C_L\vdash n\quad\Longleftrightarrow\quad
+ \mathcal C_{KSD}\vdash n.
+\]
+\end{theorem}
+\begin{proof}
+The new calculus proves explosion by Lemma~\ref{lem:ksefq}. The Peirce
+argument at the end of Theorem~\ref{thm:ksquant}, now using the DNE
+axiom directly, proves every Peirce instance. The ensuing K/S/Peirce
+derivation proves every old $L$ instance. This gives old-to-new inclusion.
+
+Conversely, the old $L$ schema derives K, S and Peirce by the existing
+uniform implicational derivations. These are verified as explicit
+substitution/MP proofs in the upstream file \texttt{CD254.v}; Source~95
+already provides a small independent checker. No freeness of the
+numerical implication operation is required. The old retained $\rho_6$
+then gives explosion by the same finite argument. To derive DNE from
+Peirce and explosion, assume $\neg\neg A$. Under $\neg A$ this gives
+$F$, then $A$ by explosion. Discharge to obtain $(A\to F)\to A$.
+Peirce at $(A,F)$ gives $A$; discharge the first assumption. Thus every
+new axiom is an old theorem, giving the reverse inclusion. Replacing
+axiom leaves in finite proof trees proves the assertion for every code.
+\end{proof}
+
+The fixed-bottom qualification matters. We have not shown that DNE
+alone replaces Peirce in an arbitrary weaker propositional system.
+The inherited quantified row is what supplies explosion. Source~71's
+finite obstruction to a K/B/DNE shortcut does not conflict with
+Theorem~\ref{thm:ksdne}: that shortcut has composition~B instead of~S.
+The theorem here explicitly retains S.
+
+\subsection{Relation to Source 110's six-valued obstruction}
+
+Source~110 already proves that K/S alone do not recover the original
+\emph{logical} calculus. Its finite matrix uses the Heyting algebra
+$H=C_3\times C_2$, with bottom $(0,0)$, top $(2,1)$, componentwise
+implication, and the modal operation
+\[
+ q(x,y)=
+ \begin{cases}(1+y,y),&x=2,\\(0,y),&x<2.\end{cases}
+\]
+Quantification applies $q$ to the meet over a two-element individual
+domain. Atomic values may be the fixed points $(0,0),(0,1),(2,1)$.
+The exact retained seven logical rows, fresh atomic vacuity, MP, GEN,
+and irreflexivity are valid. The checker deliberately excludes CP and
+GIC, so it is not a countermodel to the complete altered set theory.
+
+Take an off-diagonal membership atom with value $A=(0,1)$ and a fresh
+quantifier. Then $\neg A=(2,0)$ and $P=Q\neg A=(1,0)$.
+This is the nonstable quantified value that blocks the proposed
+classical induction. The present repairs eliminate it directly:
+\[
+ Q\neg A=(1,0),\quad QQ\neg A=(0,0),
+\]
+so the Q4 instance at $\neg A$ is not designated. Likewise the QDN
+instance at $P$ is not designated. In particular, the theorem above
+identifies and repairs the obstruction's exact missing quantified
+stability property. It does not characterize KS-only equiconsistency
+of the full CP/GIC theory.
+
+\subsection{What the finite certificates establish}
+
+The accompanying \texttt{formalism\_proofs.py} generates and independently
+replays twelve finite Hilbert DAGs. Their final forms use only explicit
+instances of K, S, the listed old quantified rows, the selected repair
+schema, MP, and theorem-only GEN. Conditional lemmas list their exact
+global theorem premises. There is no primitive deduction-theorem rule
+and no residual local assumption in the exported certificates.
+
+The checked targets include explosion, seriality, positive vacuity
+implying stability, implication stability, negative-product projections,
+quantified stability from Q4, the full negative-bundle extraction and
+atomic stability argument for both quantified repairs, DNE-to-Peirce,
+Peirce-to-DNE, and DNE-to-original-L. The replay checks 2,015 proof nodes
+across the twelve DAGs. This is a finite mathematical proof-certificate
+check; it is not a Lean or Rocq kernel result. The unbounded numerical
+induction, native SIR interpretation and proof-enumerator calibration
+are the separately stated ordinary arguments.
+
+For an executable frontend, axiom enumeration must cover arbitrary
+numeric substitutions for K/S and the repair. The existing three-field
+enumeration and Source~95's generic enlarged-stack selector argument
+can be reused with its hypotheses checked: the new logical row count is
+ten; the removed $u$ read changes the AX command codec; proof selection
+uses the new stack width; and cofinal padding must still produce
+arbitrarily large successful proof candidates. Pure axiom equivalence
+alone does not establish these operational facts. Nor does it license
+retaining decoder folds whose caller conditions a changed source may
+violate.
+
+\section{An equality-free model route with full observational equivalence}
+\label{sec:ksequalityfree}
+
+There is a concise model-theoretic simplification of the equality-free
+lane. It is useful for separating the strength of the axiom system from
+the costs of the chosen proof calculus. It does not justify deleting
+native equality or a congruence row from the current numerical engine.
+
+Let $T^-$ be ordinary classical first-order logic without an equality
+symbol, with one binary relation $R$, the equality-free native CP axiom,
+and the full GIC schema for all equality-free finite formulas with
+arbitrary finite tuples of parameters. Retain irreflexivity if the
+literal bottom $R(0,0)$ is to be used. Write
+\[
+ x\subseteq_R y\quad:\Longleftrightarrow\quad
+ \forall z(R(z,x)\to R(z,y)),
+\]
+\[
+ \mathsf{Pow}_R(x,W)\quad:\Longleftrightarrow\quad
+ \forall z(z\subseteq_R x\to R(z,W)).
+\]
+Then the exact equality-free CP axiom is
+\[
+ \forall p\,\exists V\,\bigl[
+ R(p,V)\land\forall x\bigl(R(x,V)\to
+ [x\subseteq_R V\land\exists W(R(W,V)\land\mathsf{Pow}_R(x,W))]\bigr)\bigr].
+\]
+Only its consequence that some represented set has a member is needed
+for the singleton lemma below. The full strength of CP is retained for
+the later native-theory comparison.
+
+The GIC schema for a matrix $\varphi(x,y,\vec p)$ is
+\begin{align*}
+ \forall B\,\exists C\,\bigl[&
+ \forall x\bigl(R(x,B)\to
+   \forall y(\varphi(x,y,\vec p)\to
+    \exists y'(\varphi(x,y',\vec p)\land R(y',C)))\bigr)\\
+ &\land\forall y(R(y,C)\to\exists x\,\varphi(x,y,\vec p))\bigr],
+\end{align*}
+with universal closure in the parameters. This is the full schema,
+not a restriction to fixed parameter slots or a single displayed matrix.
+
+Define the equality-free formula
+\[
+ a\approx b\quad:\Longleftrightarrow\quad
+ \forall z\bigl[(R(a,z)\leftrightarrow R(b,z))\land
+                (R(z,a)\leftrightarrow R(z,b))\bigr].
+\]
+It compares both outgoing and incoming membership observations.
+
+\begin{theorem}[Full observational quotient]
+\label{thm:kstwin}
+Every nonempty set model $M$ of $T^-$ has a quotient set model of the
+native equality-bearing CP/GIC theory, and of SIR when irreflexivity
+is retained. Conversely, the relational reduct of a model of SIR
+satisfies $T^-$ with irreflexivity. Thus these presentations have the
+same consistency strength under ordinary first-order soundness and
+completeness.
+\end{theorem}
+\begin{proof}
+Pure classical predicate logic proves that $\approx$ is an equivalence
+relation: each conjunct is a pointwise biconditional, so reflexivity,
+symmetry and transitivity hold. It also proves congruence in both
+coordinates. If $a\approx a'$ and $b\approx b'$, the outgoing
+observation at $b$ gives $R(a,b)\leftrightarrow R(a',b)$, and the
+incoming observation at $a'$ gives
+$R(a',b)\leftrightarrow R(a',b')$.
+
+In the ambient ZFC universe form the set quotient $M/{\approx}$ and
+define $[a]\,\bar R\,[b]$ iff $R(a,b)$ in $M$. The congruence just
+proved makes the relation well-defined. Interpret native equality by
+identity of quotient classes.
+
+For every formula $\psi$ of the equality-bearing relational language,
+form $\psi^-$ by replacing each equality atom $x=y$ by $x\approx y$,
+leaving membership unchanged, and commuting with Boolean connectives
+and quantifiers. Rename the bound variable $z$ in the definition of
+$\approx$ when necessary. Ordinary structural induction gives
+\[
+ M/{\approx}\models\psi([\vec a])
+ \quad\Longleftrightarrow\quad M\models\psi^-(\vec a).
+\]
+The atomic equality case is the definition of the quotient, membership
+is its relation definition, and the quantifier cases use the surjective
+projection from $M$ to its quotient. Formula induction also gives
+invariance under changing representatives.
+
+CP contains no equality atom, so the truth lemma transfers it directly.
+For every equality-bearing GIC matrix $\psi$, the translated matrix
+$\psi^-$ is one of the equality-free GIC instances assumed in $T^-$.
+Applying the truth lemma transfers that whole GIC instance. The native
+equality axioms hold because equality is actual identity; irreflexivity,
+when assumed, transfers directly as well. The converse follows by
+forgetting equality, since every equality-free GIC instance was already
+an instance of the original full schema.
+
+These are set-sized structures, so the quotient, satisfaction relation
+and formula translation are ordinary ZFC objects. Soundness and Henkin
+completeness convert model existence into the consistency comparison.
+No transitive model, external well-foundedness assumption or global
+truth predicate for the universe is used.
+\end{proof}
+
+\begin{lemma}[One GIC instance yields full-twin singletons]
+For every $a$, $T^-$ proves that some $B$ has exactly the members
+observationally equivalent to $a$:
+\[
+ \forall y\,[R(y,B)\leftrightarrow y\approx a].
+\]
+\end{lemma}
+\begin{proof}
+Use CP to obtain a represented set $C$ with at least one member $x$.
+Apply GIC with seed $C$ and matrix $\varphi(x,y;a)=(y\approx a)$,
+which is independent of the first argument. Since $a\approx a$, the
+coverage clause gives $w$ with $w\approx a$ and $R(w,B)$. Outgoing
+congruence gives $R(a,B)$. The purity clause gives
+$R(y,B)\to\exists x(y\approx a)$, hence $R(y,B)\to y\approx a$.
+Conversely $y\approx a$ and $R(a,B)$ give $R(y,B)$ by outgoing
+congruence. Every use of the matrix is an allowed equality-free GIC
+instance with the parameter $a$.
+\end{proof}
+
+Define the one-way outgoing profile
+\[
+ a\preceq b\quad:\Longleftrightarrow\quad
+ \forall z(R(a,z)\to R(b,z)).
+\]
+The twin-singleton lemma gives $a\preceq b\Longleftrightarrow a\approx b$:
+the reverse direction is immediate, while for the forward direction
+test $\preceq$ at the full-twin singleton of $a$. Its membership of $a$
+forces membership of $b$, hence $b\approx a$ and symmetry finishes.
+
+This resembles the raw-PSC outgoing-profile/twin-singleton principle
+already documented in ProveIt's \texttt{outgoing\_profile.md}. No novelty
+claim is made for identity elimination or the profile argument as a
+general principle. The useful specific point is that the full
+equality-free CP/GIC lane has a direct full-observation quotient proof:
+it need not first reconstruct a bespoke extensional bisimulation
+equality merely to regain native equality.
+
+The scope restriction is substantial. Ordinary first-order logic here
+already supplies complete substitution and specialization. Removing
+the numerical native-equality constructor, removing $\rho_3$, or using
+a fixed-slot GIC fragment changes that proof calculus and requires a
+new soundness/completeness bridge. In particular Source~108's ordinary
+GIC derivation of the second membership congruence cannot be spliced
+into the current numerical engine by silently using the very
+specialization theorem whose existing proof depends on that congruence.
+The model theorem proves consistency strength of the full alternative
+presentation, not an uncounted state reduction in the present compiler.
+
+\paragraph{Primary provenance.}
+The original logical and native-theory specifications are in
+\href{https://github.com/jeff87654/busy-beaver/tree/zf-254/ZF/m254/design}{the upstream m254 design},
+and the checked comparison theorems are in
+\href{https://github.com/jeff87654/busy-beaver/blob/zf-254/ZF/m254/coq/e2e/E2E254.v}{\texttt{E2E254.v}}.
+The exact ProveIt input is pinned at commit
+\begin{center}\small\ttfamily
+ecb4df12d256704d9115d4860f6ccb7b3443ef4a.
+\end{center}
+Source~91's alternative-basis controls, Source~95's foundations notes
+and proof checkers, Source~108's formalism section, and Source~110's
+KS obstruction supply the local prior-art comparisons identified above.
+The local receipt records
+hashes of the newly emitted finite certificates and their checker.

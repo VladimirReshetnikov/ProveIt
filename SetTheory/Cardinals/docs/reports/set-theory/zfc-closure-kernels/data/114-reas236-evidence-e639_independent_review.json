@@ -1,0 +1,70 @@
+{
+  "status": "ORDINARY_MATHEMATICAL_REVIEW_PASS",
+  "scope": "Independent review of the new relative E639 model construction and its exact packet generator; supplemental to the separately certified 236-state TM.",
+  "reviewed_file_sha256": {
+    "self_descriptor.tex": "2152c6e6becb4579a1a724698bb1f14ed0b03cf7cef15188a65f850008b327ee",
+    "build_e639.py": "5cd2831a304b1e4c243a7a36cb9ad16ea0b32ab4170578e44a0fa359fe791e29",
+    "build_e667.py": "4749bd4e917b6e4530789885a33b933c54c613c012e2e9919ffb38be324db6aa"
+  },
+  "mathematical_checks": {
+    "arbitrary_parameter_tail": "The fixed false-class head makes the parameter tail uniformly true. Thus epsilon(s,P(c,P(F,L))) is the Boolean complement of epsilon(s,c), regardless of every parameter object and its class meaning.",
+    "reserved_coordinates": "The source matrix code uses output/input at0/1 and parameters at4 through k+3, avoiding reserved2/3; binder-induced coordinate shifts are finite. The code is built before its descriptor, without self-reference.",
+    "descriptor_descent": "For a fixed native finite-tree descriptor b, decoding b on P(y,P(x,b)) yields a finite equality-free pure-membership formula. Its fixed parameters are proper tail-head subtrees of b or the preassigned d. Selector indices are fixed finite syntax data, not raw functions of quantified variables.",
+    "weight_recursion": "At Q(b), all raw values of descriptor parameters are already assigned. At P(b,z), both mu(z) and mu(Q(b)) are assigned. At A(b,z), mu(P(b,z)) is assigned. The strict weights given in the text establish every dependency, with d handled as an initial leaf.",
+    "consistent_choices": "In the nonlocal case, the selected n for P(b,z) can be chosen from a witnessing n,m pair, and the later A(b,z) chooses a separating m for that same n. The fixed countable-domain enumeration makes these dependent choices coherent.",
+    "hull_clauses": "The raw EPSC hull supplies closure for empty inputs and members, and support supplies P(b,y). The free W(s,d) slice selects members for nonempty inputs, making the remaining first hull clause valid.",
+    "ultrafilter_step": "Only Boolean predicate values are mapped to two truth values; the native carrier and stack operations remain unchanged. The binder equivalence uses an attained witness and finite Boolean operations, not preservation of infinite joins.",
+    "truth_and_query": "A uniformly true class instantiates the closure matrix to recover d as Boolean top. Q(d)=d implies equality of arbitrary native objects by the literal head/tail equations, hence has the same collapse meaning as the original query.",
+    "equality_free_pullback": "Surjectivity through the additional native leaves e_m supports quantifiers in the pullback induction; the exclusion of equality is explicit and essential."
+  },
+  "literal_packet_regeneration": {
+    "status": "PASS",
+    "output_directory": "/workspace/scratch/00d0091d4a2c/work_source_reductions/review_e639/generated",
+    "packets": [
+      {
+        "name": "E668",
+        "logical_bits": 668,
+        "equations": 8,
+        "equation_nodes": 150,
+        "signature_symbols": 9,
+        "variable_capacity": 4,
+        "packed_bytes": 84,
+        "padding_bits": 4,
+        "logical_bits_sha256": "20fbc6b22df0035c41582f6f572e78d3a39d4eb26c198259ba15d8789bc31760"
+      },
+      {
+        "name": "E643",
+        "logical_bits": 643,
+        "equations": 7,
+        "equation_nodes": 144,
+        "signature_symbols": 9,
+        "variable_capacity": 4,
+        "packed_bytes": 81,
+        "padding_bits": 5,
+        "logical_bits_sha256": "6e15a2e0d473299e8fec86c35f22480d4d4c0e59d2357b1b1fa721af631cea67"
+      },
+      {
+        "name": "E639",
+        "logical_bits": 639,
+        "equations": 7,
+        "equation_nodes": 144,
+        "signature_symbols": 9,
+        "variable_capacity": 4,
+        "packed_bytes": 80,
+        "padding_bits": 1,
+        "logical_bits_sha256": "15c8bde20963ac71ff9015556c52e88ac3158e9d0b585f056cd11f018ed006a8"
+      }
+    ]
+  },
+  "verifier_note": "Requested an explicit assertion-optimization guard in build_e639.py; the author added the no -O/-OO guard before this receipt.",
+  "not_reproved": [
+    "The published Sh1-to-Boolean-algebra theorem",
+    "The inherited E692/raw-EPSC/E713/ZFC calibration"
+  ],
+  "proof_limits": [
+    "No Lean or Rocq kernel proof is supplied for this model theorem.",
+    "The finite coordinate checks supplement the written all-length induction; they do not prove the model construction by themselves.",
+    "639 is a logical packet bit count and is not a binary Turing-machine state count."
+  ],
+  "blocking_findings": []
+}

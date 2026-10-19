@@ -1,0 +1,157 @@
+\section{The source change that enables the additional fold}
+\label{sec:source-rotation}
+
+Let $M_{237}$ denote the composed candidate at ProveIt commit
+\path{1b27f052d770f4c7d435e82e779bf21f5a1f66ed}, with inherited labels,
+initial state $95$, dispatch state $96$, and halt label $254$.
+Its source is the literal file \texttt{baseline\_sites.json} distributed here.
+This section establishes the source part of the construction, independently of
+the state-fold argument and of the binary runtime checker.
+
+The relevant modification is one reassociation, at the source prefix
+\[
+ p=\texttt{1110100100110110101010011100001}.
+\]
+At that prefix the old source has the form $P;(Q;R)$.  Replace it by
+$(P;Q);R$.  The three chunks contain respectively $245$, $160$, and $132$
+instruction occurrences.  Each is syntactically closed in the precise sense
+below.  There is exactly one occurrence of the modified source root.
+
+\subsection{The elementary source identity}
+
+A source is a finite, full binary tree with instruction leaves.  A leaf has a
+binary address $a$.  Increment and positive decrement advance its binary
+instruction address; a zero decrement removes the suffix through one zero and
+then advances; a break of depth $k$ removes the suffix through $k$ zeros and then
+advances; and a continue of depth $k$ removes the suffix through $k$ ones.
+A halt leaf halts.  Subsequent lookup pads the address with zeros and stops at
+its encountered instruction leaf.
+
+Call a chunk \emph{syntactically closed} when, for every relative leaf path $a$:
+\begin{itemize}
+\item a zero decrement has at least one zero in $a$;
+\item a break of depth $k$ has at least $k$ zeros in $a$;
+\item a continue of depth $k$ has at least $k$ ones in $a$;
+\item no halt leaf occurs.
+\end{itemize}
+These are finite syntactic checks, rather than assumptions about the numerical
+values of any registers.  The supplied reconstruction script independently
+checks all three chunks against these conditions.
+
+For closed chunks, associativity
+\[
+ P;(Q;R)\;\simeq\;(P;Q);R
+\]
+holds for the structured register program.  The corresponding address changes
+inside the chosen occurrence are exactly
+\[
+ \begin{array}{c|c|c}
+ \text{chunk}&\text{old address}&\text{new address}\\ \hline
+ P& p0a&p00a\\
+ Q& p10a&p01a\\
+ R& p11a&p1a
+ \end{array}
+\]
+with the relative suffix $a$ and every operation and register operand unchanged.
+Closure ensures that the location selected by every internal control transfer
+is preserved under these changes, after the next instruction lookup.  Ordinary
+fallthrough follows the same ordered instruction occurrences.  Thus each
+instruction has the same successor occurrence, including both outcomes of every
+decrement, and it makes the same change to the register vector.
+
+This associativity principle is inherited background: the earlier Source~103
+construction already used closed reassociations.  The contribution here is the
+particular occurrence selected and its compatibility with a different decoder
+sharing.  No novelty is claimed for the associativity law itself.
+
+\subsection{An exact finite control certificate}
+
+The construction does not rely solely on the explanatory associativity argument.
+The unmodified Source~103 checker \texttt{check\_rotation\_certificate.py} was
+replayed with a new, one-stage rotation certificate and the exact pinned input
+bytes.  It constructs the full source tree and records each leaf in left-to-right
+order.  For each instruction, it computes every applicable successor by literal
+binary increment, literal suffix stripping, and zero-padded tree lookup.  It
+checks that no nonzero address suffix is discarded after a leaf is reached.
+Both decrement guards are included.
+
+The old and new ordered control graphs are exactly equal.  They contain $6{,}455$
+instruction occurrences, $8{,}385$ nonhalting transition descriptors, and one halt
+descriptor.  Equivalently, the check covers $8{,}386$ instruction/guard or halt
+cases.  Their common normalized graph has SHA-256
+\begin{quote}\small\ttfamily
+ ae7f12f37306b86e5f70469210fd2a8d68b6f9df094bf659abc6b4a56714f1fd.
+\end{quote}
+Exactly $537$ paths change: instruction indices $1501$ through $2037$, with indices
+starting at zero.  All ordered operation labels and operands are identical.
+The same entry leaf, index zero, corresponds to the empty initial address.
+Consequently the relation that pairs equal instruction indices and equal natural
+register vectors is a bisimulation of the normalized source executions.  In
+particular it preserves halting for the inherited logical seed
+\[
+ (3,0,0,0,3,0,0,0,0).
+\]
+The claim quantifies over every natural register vector; it is not an observed
+execution of the source from a small sample of inputs.
+
+\subsection{Re-encoding the modified decoder}
+
+The original decoder realizes $P;(Q;R)$ by dispatching state $177$ to state $165$
+for $P$ and state $185$ for $Q;R$.  State $185$ dispatches to states $192$ and $212$
+for $Q$ and $R$.  Reuse the same states with the following four row edits:
+\[
+ \begin{array}{c|c|c}
+ \text{row}&\text{old action}&\text{new action}\\ \hline
+ 177/0&0\ R\ 165&0\ R\ 185\\
+ 177/1&1\ R\ 185&1\ R\ 212\\
+ 185/0&0\ R\ 192&0\ R\ 165\\
+ 185/1&1\ R\ 212&1\ R\ 192
+ \end{array}
+\]
+\Needspace{6\baselineskip}
+All four actions preserve the scanned bit and move right.  This leaves $237$
+working states in the intermediate table \texttt{rotated237\_old.tm}.  Its SHA-256
+is
+\begin{quote}\small\ttfamily
+ da0b3d1fdd74d56482b9d231119bbbaccdbcadc78e7b7df72c3a734a3a808724.
+\end{quote}
+The new literal source \texttt{rotated\_sites.json} has SHA-256
+\begin{quote}\small\ttfamily
+ 1ebe9691507b2d3236951a31d6b9a7ef548a2cdf90525cd57051992f8ac2626f.
+\end{quote}
+There are still $224$ distinct source-DAG nodes, consisting of $201$ interior
+nodes and $23$ instruction leaf kinds.  The longest zero run remains six.
+The maximum path length increases from $48$ to $49$.
+
+This is why an objective that only decreases source-DAG size or path depth misses
+the successful modification.  The useful change is the meaning of an existing
+routing state.  The resulting decoder can share two further control roles, as
+established by the separate literal-table fold certificate.
+
+Source graph equality alone does not prove a binary Turing machine correct:
+backward decoder routes and cleanup routines also depend on tape contexts.
+The construction therefore checks the complete changed table directly with the
+unbounded symbolic runtime checker, and checks its blank startup against the
+complete inherited frame.  The intermediate passes all $8{,}386$ quantified
+cases, using $2{,}262{,}455$ symbolic proof steps; the minimum concrete duration
+is $13$ steps.  The four edited rows are all unvisited in the inherited $409{,}835$-step
+blank startup, so this source change preserves that startup step for step.
+An exact sparse and dense replay of the $237$-state intermediate independently
+reaches the same complete frame after $409{,}835$ steps.  These binary
+checks are separate from, and complementary to, the source bisimulation proved
+in this section.
+
+\subsection{Reproduction and proof scope}
+
+Run \texttt{python build\_and\_check\_source.py} in the supplied source-certificate
+directory, without Python's optimization flags.  The script verifies the two
+pinned input hashes, finds the stated source occurrence, checks chunk closure,
+replays the exact one-stage control certificate, reconstructs the intermediate
+literal table, and checks its expected hash.  It writes
+\texttt{source\_receipt.json} with the graph identity, leaf census, source and
+table hashes, source-seed binding, and row edits.
+
+The checker is a transparent finite arithmetic computation supporting an
+ordinary mathematical proof formalizable in ZFC.  It is not a new Lean or Rocq
+endpoint, and its successful execution is not described as a kernel-checked
+internal proof in PA.

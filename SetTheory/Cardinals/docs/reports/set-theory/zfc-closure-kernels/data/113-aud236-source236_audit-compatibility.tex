@@ -1,0 +1,34 @@
+\subsection{Source audit and compatibility at 236 states}
+
+The newly supplied 236-state construction uses the same source DAG as the
+237-state checkpoint, with one closed reassociation:
+\[
+ (233,(122,115))\quad\longmapsto\quad((233,122),115).
+\]
+The three chunks have 245, 160 and 132 instruction occurrences and no escaping
+break, continue or halt.  Ordinary sequential associativity proves the source
+equivalence for arbitrary natural register values.  Fresh builder and
+independent-checker replays confirm exactly 537 changed paths, unchanged
+ordered instructions and guard successors, and source score
+$(224,6,48)\mapsto(224,6,49)$.
+
+The reduction comes from the binary helper graph.  The reassociation creates
+the edge $177/1\to212$, completing the predecessor-bit detour that permits
+$223\mapsto182$.  Source node count is unchanged and path depth increases,
+yet the final binary state count decreases.  This is a concrete reason to
+optimize source association together with runtime helper availability.
+
+Our additional checker reconstructs the source control graph by literal binary
+increment/bit-stripping followed by zero-padded trie decoding.  Its equality
+check is independent of the incoming ordered-interval construction.  The
+parent's affine register invariants consequently transport unchanged by
+instruction index.
+
+The six-leaf NIP source rewrite lies at a disjoint prefix from the new rotation.
+Applying the two rewrites in either order gives identical leaf lists: 6,449
+occurrences, 224 live nodes, zero run six and depth 49.  The inherited NIP
+scratch-register hypothesis remains necessary.  This source compatibility
+does not validate the naive binary graft: on the literal 236 table, the
+unchanged $\mathrm{CI}_8$ instruction at \texttt{01010} returns its legal zero
+frame in 636 steps, whereas the five-row attempted edit returns the wrong tape
+in 648 steps.  No 235-state machine is obtained from this composition.

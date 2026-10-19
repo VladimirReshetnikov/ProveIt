@@ -1,0 +1,98 @@
+\section{Integrating new logical bases with the 237-state source}
+\label{sec:source-basis-integration}
+
+This experiment is pinned to ProveIt commit
+\texttt{ecb4df12d256704d9115d4860f6ccb7b3443ef4a}.
+Its structured source has 6,455 expanded instruction occurrences and 224
+distinct live DAG nodes, including primitive instruction nodes.  The maximum
+zero run in a source path is six, and maximum path depth is 48.  These quantities
+are source costs; they are neither binary decoder-state counts nor estimates
+of a completed machine's state count.
+
+Let $\neg A=I(A,1)$.  We replaced the original four-parameter
+\L{}ukasiewicz row by K, S, and one of the following schemas:
+\[
+\begin{array}{ll}
+P(a,b)&=((a\to b)\to a)\to a,\\
+Q_4(a,b)&=\forall a\,b\to\forall a\,\forall a\,b,\\
+Q_{\rm DN}(a,b)&=\neg\neg\forall a\,b\to\forall a\,b,\\
+D(a)&=\neg\neg a\to a.
+\end{array}
+\]
+The accompanying foundations argument establishes the adequacy of the latter
+interfaces with the retained numerical-calculus rows.  K/S/Peirce was already
+investigated in Sources 91 and 95; the present experiment contributes its
+integration into the later source dictionary, rather than a new basis.
+
+For each basis, 288 variants were generated: six shared permutations of
+$a,b,c$, six orders of the new three schemas, and eight insertion positions
+among the retained seven rows.  The minima are as follows.
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Basis & Live DAG nodes & Zero run & Depth & Macro calls\\
+\hline
+Original &224&6&48&186\\
+K/S/Peirce&226&6&36&196\\
+K/S/$Q_4$&227&6&45&198\\
+K/S/$Q_{\rm DN}$&227&6&43&198\\
+K/S/DNE&227&6&35&194\\
+\hline
+\end{tabular}
+\end{center}
+The shared-role sweep does not cover independently oriented schemas.  For
+example, independent K/S/DNE register choices would produce 5,184 cases under
+the same order and insertion convention.  Nor is the bounded dictionary parser
+a complete search over grammars.
+
+\paragraph{Source composition.}
+The 186 original macro calls expand to exactly the 1,270 closed atoms of the
+current AX word.  The parser uses every live closed subtree as a dictionary
+phrase, applies three fixed phrase penalties, and retains a bounded frontier
+of binary associations subject to zero run at most six.  The final escaping
+$\mathrm{CB}_1$ remains the rightmost leaf; its local path contains only ones,
+so reassociation inserts no zero ancestor and preserves its break target.
+The full resulting source DAG is then counted, including sharing with the
+unchanged parts of the program.
+
+The complete-word equality is supplemented by an all-register macro bridge.
+Eighteen macro pairs have exact decrement-control graph products.  The current
+gate macro 131 additionally uses the previously known transfer rotation
+\[
+ [Y{+}{+};(\operatorname{dec}X;\operatorname{continue}2)]
+ \equiv
+ [(\operatorname{dec}X;(Y{+}{+};\operatorname{continue}2));Y{+}{+}],
+ \qquad X\ne Y.
+\]
+For initial $X=n$, both sides terminate, clear $X$, and add $n+1$ to $Y$;
+induction on $n$ proves the identity.  One application, with $X=R_6$ and
+$Y=R_5$, normalizes gate 131 for graph comparison.  All 19 contracts then pass,
+with 192 graph pairs and 346 decrement edges, independently replayed by the
+inherited path evaluator.  Thus arbitrary new compositions of these macros
+have a compositional source justification.  This is executable mathematical
+evidence rather than a new kernel-checked endpoint.
+
+\paragraph{Combinations and obstructions.}
+All 64 existing Source 91 six-DNE bundle masks were also priced.  Only the
+unchanged mask reaches 224 nodes; the best changed mask has 225 nodes and depth
+42.  Combining each saved best basis with the six-leaf NIP specialization
+leaves all four basis scores unchanged.
+
+A naive five-row decoder graft for the NIP specialization is false.  The
+unchanged instruction $\mathrm{CI}_8$ at path \texttt{01010}, on the legal frame
+with nine zero registers and one zero spare, returns correctly in 636 steps
+under the baseline.  The edited table returns in 648 steps with the wrong tape.
+The decisive helper use is row $46/0$, whose baseline target is 17 and edited
+target is 62.  The wider saved finite replay has 290 failures in 8,378 cases.
+This rejects the graft; it is not a claim about the blank computation.
+
+The parent's exact affine invariant was tested for substitutions among 35
+recognized total affine source nodes.  The only distinct-node equality replaces
+node 199 by node 200 and increases the total count to 225.  No identity node or
+new invariant-conditioned commutation was found in that restricted class.
+
+No binary runtime for the new bases was synthesized in this experiment.  A
+larger structured source could still compile to fewer binary states through
+different encoding or helper sharing.  The equality-free CP/GIC frontend and
+independent schema orientations remain unpriced targets; the reported negative
+source measurements do not exclude them.

@@ -1,0 +1,101 @@
+\section{A two-bit reverse dispatch removes state 223}
+\label{sec:fold236}
+
+Let $B$ be the 237-state table obtained by the certified closed-chunk
+reassociation named \texttt{n234\_left}, and let $C$ be the delivered
+236-state table. All state numbers in this section are inherited labels;
+the start and halt labels are 95 and 254. The complete change from $B$ to
+$C$ is
+\[
+\begin{array}{c|c|c}
+\text{row}&B&C\\\hline
+182/0&0\,R\,187&0\,L\,198\\
+182/1&1\,R\,212&1\,L\,210\\
+237/0&0\,R\,223&0\,R\,182.
+\end{array}
+\]
+The two rows of state 223 are then deleted. Define $\phi(223)=182$ and
+$\phi(q)=q$ for every other state. On configurations, $\phi$ changes only
+the control state and preserves the tape and head position.
+
+\paragraph{The guard is a predecessor theorem.}
+Inspection of every row of the literal old table gives exactly one
+incoming row for each relevant state:
+\[
+76/1\longmapsto 1\,R\,182,
+\qquad
+237/0\longmapsto 0\,R\,223.
+\]
+Since the initial state is 95, induction on elapsed old-machine time
+proves the following statement on \emph{every binary initial tape}:
+if $B$ is in state 182, the cell immediately left of its head contains 1;
+if it is in state 223, that cell contains 0. No register values, source
+program counter, run-length restriction, finite support assumption, or
+empirical coverage assumption enters this induction.
+
+\paragraph{Four exact blocks.}
+Write $a$ for the bit left of the head and $b$ for the bit under the head.
+The new state 182 first reads $b$, moves left without changing it, and
+chooses state 198 when $b=0$ or state 210 when $b=1$. That helper reads
+$a$, moves right without changing it, and chooses a second helper. The
+second helper rereads $b$ and completes the old transition:
+\[
+\begin{array}{c|c|c|l}
+\text{old state}&b&a&\text{new three-step state path}\\\hline
+182&0&1&182\to198\to136\to187\\
+182&1&1&182\to210\to177\to212\\
+223&0&0&182\to198\to206\to23\\
+223&1&0&182\to210\to114\to70.
+\end{array}
+\]
+Each block reads only the cells at offsets $-1$ and $0$, never changes
+any tape bit, and ends one cell right of the original head. Its final
+state is exactly the image under $\phi$ of the old one-step final state.
+Every other old row---470 rows in total---commutes with $\phi$ in one
+step. This includes the redirected incoming row $237/0$.
+
+The standalone checker \texttt{check\_local\_fold.py} reconstructs the
+incoming-edge lists, compares all 470 ordinary rows, and computes these
+four paths directly from the two literal tables on all 32 five-cell
+windows satisfying the required tag. It rejects any read outside the
+window and checks equality of the entire window, head position, and
+mapped endpoint. The extra three window bits are arbitrary; the paths
+never inspect them, so the same statement holds for an arbitrary infinite
+tape outside the window.
+
+\paragraph{Unbounded simulation and halting equivalence.}
+Let $q_i$ denote the state of $B$ immediately before its $i$th transition,
+and set
+\[
+ A(t)=\#\{i<t:q_i\in\{182,223\}\},\qquad
+ \tau(t)=t+2A(t).
+\]
+Induction using the four blocks and the ordinary commuting rows gives
+\[
+ C^{\tau(t)}(c_0)=\phi\bigl(B^t(c_0)\bigr),
+ \qquad t\leq\tau(t)\leq3t,
+\]
+for every initial configuration $c_0$ with state 95, while the old run is
+defined. Every simulated block has positive length, and the four expanded
+blocks contain no halt state. The map fixes both the start and halt
+states. Consequently $B$ halts from a given initial tape if and only if
+$C$ halts from that same tape. This is an ordinary unbounded mathematical
+proof, formalizable by elementary induction; the finite checker verifies
+its complete local premises rather than sampling a time horizon.
+
+\paragraph{Why the source rotation matters.}
+In the original composed237 table the row $177/1$ enters state 185. The
+closed-chunk reassociation changes that row to $1\,R\,212$. This creates
+the missing fourth route in the reverse dispatch above. The source
+transformation itself keeps the number of states at 237, but exposes a
+state sharing that the unchanged table does not have. The saving is
+therefore a composition of a source-equivalent change and a local binary
+encoding change; it is not merely a repeat of the three already composed
+savings.
+
+Relative to the original composed237 table, the final machine deletes
+state 223, changes seven retained rows, and leaves the other 465 retained
+rows unchanged. The source transformation's separate certificate and the
+blank-start/runtime calibration complete the link to ZFC consistency.
+The present local proof alone asserts halting equivalence of $B$ and $C$;
+it makes no independent consistency assumption or proof-assistant claim.

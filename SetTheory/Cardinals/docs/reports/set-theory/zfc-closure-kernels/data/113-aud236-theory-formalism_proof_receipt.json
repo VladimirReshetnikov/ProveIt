@@ -1,0 +1,225 @@
+{
+  "status": "PASS",
+  "certificate_count": 12,
+  "proof_nodes": 2015,
+  "certificate_sha256": "6a48b920c025bb87a36105ae8cfff5b6ef409c0c00161f91b4c87eb27a96d075",
+  "checker_sha256": "cd275d18c41fc083d377f72bfae09928eeeee9ff8b222a8843aa9230a03521c9",
+  "checked": {
+    "explosion_from_rho6": {
+      "status": "PASS",
+      "nodes": 17,
+      "rules": {
+        "K": 5,
+        "MP": 8,
+        "R6": 1,
+        "S": 3
+      },
+      "local_assumptions": 0,
+      "declared_theorem_premises": [],
+      "conclusions": [
+        "(F -> a)"
+      ]
+    },
+    "seriality_from_rho1": {
+      "status": "PASS",
+      "nodes": 20,
+      "rules": {
+        "GEN": 1,
+        "K": 5,
+        "MP": 9,
+        "R1": 1,
+        "R2": 1,
+        "S": 3
+      },
+      "local_assumptions": 0,
+      "declared_theorem_premises": [],
+      "conclusions": [
+        "(Q[i](F) -> F)"
+      ]
+    },
+    "positive_vacuity_implies_stability": {
+      "status": "PASS",
+      "nodes": 104,
+      "rules": {
+        "GEN": 2,
+        "GIVEN": 1,
+        "K": 25,
+        "MP": 51,
+        "R1": 1,
+        "R2": 3,
+        "R6": 1,
+        "S": 20
+      },
+      "local_assumptions": 0,
+      "declared_theorem_premises": [
+        "(a -> Q[i](a))"
+      ],
+      "conclusions": [
+        "(((a -> F) -> F) -> a)"
+      ]
+    },
+    "implication_stability": {
+      "status": "PASS",
+      "nodes": 97,
+      "rules": {
+        "GIVEN": 1,
+        "K": 26,
+        "MP": 48,
+        "S": 22
+      },
+      "local_assumptions": 0,
+      "declared_theorem_premises": [
+        "(((b -> F) -> F) -> b)"
+      ],
+      "conclusions": [
+        "((((a -> b) -> F) -> F) -> (a -> b))"
+      ]
+    },
+    "negative_formula_stability": {
+      "status": "PASS",
+      "nodes": 45,
+      "rules": {
+        "K": 13,
+        "MP": 22,
+        "S": 10
+      },
+      "local_assumptions": 0,
+      "declared_theorem_premises": [],
+      "conclusions": [
+        "((((a -> F) -> F) -> F) -> (a -> F))"
+      ]
+    },
+    "negative_conjunction_projections": {
+      "status": "PASS",
+      "nodes": 87,
+      "rules": {
+        "K": 25,
+        "MP": 43,
+        "S": 19
+      },
+      "local_assumptions": 0,
+      "declared_theorem_premises": [],
+      "conclusions": [
+        "(((a -> (b -> F)) -> F) -> ((a -> F) -> F))",
+        "(((a -> (b -> F)) -> F) -> ((b -> F) -> F))"
+      ]
+    },
+    "Q4_implies_quantified_stability": {
+      "status": "PASS",
+      "nodes": 104,
+      "rules": {
+        "GEN": 2,
+        "K": 25,
+        "MP": 51,
+        "Q4": 1,
+        "R1": 1,
+        "R2": 3,
+        "R6": 1,
+        "S": 20
+      },
+      "local_assumptions": 0,
+      "declared_theorem_premises": [],
+      "conclusions": [
+        "(((Q[i](a) -> F) -> F) -> Q[i](a))"
+      ]
+    },
+    "Q4_gated_bundle_atomic_stability": {
+      "status": "PASS",
+      "nodes": 698,
+      "rules": {
+        "GEN": 5,
+        "GIVEN": 1,
+        "K": 177,
+        "MP": 352,
+        "Q4": 2,
+        "R1": 1,
+        "R2": 9,
+        "R6": 4,
+        "S": 147
+      },
+      "local_assumptions": 0,
+      "declared_theorem_premises": [
+        "((((c -> (g -> F)) -> F) -> ((((r -> Q[i](r)) -> ((e -> Q[i](e)) -> F)) -> F) -> F)) -> F)"
+      ],
+      "conclusions": [
+        "(((r -> F) -> F) -> r)",
+        "(((e -> F) -> F) -> e)"
+      ]
+    },
+    "QDN_gated_bundle_atomic_stability": {
+      "status": "PASS",
+      "nodes": 532,
+      "rules": {
+        "GEN": 3,
+        "GIVEN": 3,
+        "K": 137,
+        "MP": 268,
+        "R1": 1,
+        "R2": 5,
+        "R6": 2,
+        "S": 113
+      },
+      "local_assumptions": 0,
+      "declared_theorem_premises": [
+        "((((c -> (g -> F)) -> F) -> ((((r -> Q[i](r)) -> ((e -> Q[i](e)) -> F)) -> F) -> F)) -> F)",
+        "(((Q[i](r) -> F) -> F) -> Q[i](r))",
+        "(((Q[i](e) -> F) -> F) -> Q[i](e))"
+      ],
+      "conclusions": [
+        "(((r -> F) -> F) -> r)",
+        "(((e -> F) -> F) -> e)"
+      ]
+    },
+    "KS_DNE_to_Peirce": {
+      "status": "PASS",
+      "nodes": 88,
+      "rules": {
+        "DNE": 1,
+        "K": 23,
+        "MP": 44,
+        "R6": 1,
+        "S": 19
+      },
+      "local_assumptions": 0,
+      "declared_theorem_premises": [],
+      "conclusions": [
+        "(((a -> b) -> a) -> a)"
+      ]
+    },
+    "KS_Peirce_to_DNE": {
+      "status": "PASS",
+      "nodes": 59,
+      "rules": {
+        "K": 16,
+        "MP": 29,
+        "P": 1,
+        "R6": 1,
+        "S": 12
+      },
+      "local_assumptions": 0,
+      "declared_theorem_premises": [],
+      "conclusions": [
+        "(((a -> F) -> F) -> a)"
+      ]
+    },
+    "KS_DNE_to_original_L": {
+      "status": "PASS",
+      "nodes": 164,
+      "rules": {
+        "DNE": 1,
+        "K": 44,
+        "MP": 82,
+        "R6": 1,
+        "S": 36
+      },
+      "local_assumptions": 0,
+      "declared_theorem_premises": [],
+      "conclusions": [
+        "(((c -> u) -> a) -> ((a -> c) -> (b -> c)))"
+      ]
+    }
+  },
+  "numerical_induction": "Ordinary proof in formalism_sections.tex; not checked by this finite kernel.",
+  "machine_claim": false,
+  "proof_assistant_endpoint": false
+}

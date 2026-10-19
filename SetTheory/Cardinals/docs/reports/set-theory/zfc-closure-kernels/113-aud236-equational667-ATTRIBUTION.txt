@@ -1,0 +1,42 @@
+E667 combines two separately received ProveIt contributions:
+
+1. E692 from zfc_sub237_research_20261019/equational, pinned ProveIt
+   commit ecb4df12d256704d9115d4860f6ccb7b3443ef4a. It supplies the nine-symbol
+   structural witness identifications Target=Q, Next=P, Mem=A, the optimized
+   80-node Boolean closure, the unary Q selector successor, and the complete
+   ordinary E692/E713/raw-EPSC/ZFC calibration.
+   E692 JSON SHA-256:
+   0657cefef8f41bd7e463eb0adcd5a44b118de62ec852729202d3ecc4b6942d43
+   E692 bit-character SHA-256, excluding newline:
+   477e5b5de0876ec2d784ca958540117bb2aef9121eaee670925ab2ee8e1455e7
+   Original build704.py SHA-256:
+   7f09e4bbd26c3c7fc3c96cd1652cc9093f94746a27ffae55bb8fd8b7d8120447
+
+2. E688 from zfc236-research-20261019/formalisms in
+   docs/incoming/ZFC236_Construction_2026-10-19.zip, added by ProveIt commit
+   0b5fec6980cc3a5ba7dd47b404f0cbbe9a451c02 while the present research ran.
+   It supplies the derived-truth idea: the d=0 cofactor, the true class
+   P(d,P(d,d)), and head descriptor P(P(d,P(d,d)),d). Its proof removes the
+   truth equation from E713. Its independently implemented AST/codec
+   utilities are adapted in build_e667.py with explicit attribution.
+   Original build_e688.py SHA-256:
+   e6d0c5f7676564dadafe2196808a0e0090a541b67ba392a54f1b541ab18287ca
+
+The contribution here is the direct compatibility proof for E692's changed
+closure polynomial before d=top is known, followed by the exact E667
+construction, codec replay, Boolean cofactor certificate, ground-instance
+recipe and ordinary same-model equivalence theorem. It does not claim the
+truth-removal idea, witness sharing, selector sharing, Boolean single axiom
+or codec as new, and makes no priority or minimality claim.
+
+The Sh1 Boolean single axiom is due to William McCune, Robert Veroff,
+Branden Fitelson, Kenneth Harris, Andrew Feist and Larry Wos, Short Single
+Axioms for Boolean Algebra, Journal of Automated Reasoning 29 (2002), 1-16.
+Primary proof artifacts: https://www.cs.unm.edu/~veroff/BA/
+
+The native theory/model calibration, shared constructors and scalar
+predicate presentation are inherited through the original EPSC and ProveIt
+equational packets, including Sources 79, 40, 14 and 08. The original small
+binary consistency-machine source is attributed to Mira-Cult, its upstream
+Rocq verification to Jeff Ketchersid and contributors, and its compiler
+framework to Andrew James Wade. E667 supplies no binary-state count.

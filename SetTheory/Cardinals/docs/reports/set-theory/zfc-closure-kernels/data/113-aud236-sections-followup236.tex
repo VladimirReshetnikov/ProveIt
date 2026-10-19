@@ -1,0 +1,35 @@
+\subsection{A targeted follow-up at 236 states}
+
+The incoming 236 report already completes a plain-fold and one-neutral-helper
+search on the new table. We add the freely synthesized two-helper
+compensation method for the eight common-row pairs touching newly used
+source or fold controls:
+\[
+ 74/210,\ 185/229,\ 198/205,\ 198/219,\ 198/221,\ 198/246,
+ \ 200/210,\ 210/232.
+\]
+The finite source profile has 28,926 radius-five windows. Old and new trace
+horizons are 65, direct halt targets are allowed, and all halted heads/tapes
+are identified. As before, the first helper must already make the merged
+contexts pass before a second helper compensates its other uses. Across
+7,552 retained-row trials, 54,553,565 first-helper trials and 4,715
+second-helper trials, no 235-state candidate is found. This limited result
+is not a state lower bound.
+
+The independent audit also checks a positive composition fact: after the
+four-row source rotation, the old $235\to98$ fold and new $223\to182$ fold
+commute literally. Applying them in either order yields exactly the incoming
+236 table. On the unrotated 237 table, the proposed $182/1$ three-step block
+ends at state 185 instead of the required 212, isolating why the source
+rotation is necessary. The small independent checker, exact inputs and
+optional search recipes are under \texttt{fold236\_audit/}.
+
+The new source rotation also commutes as a source rewrite with the previously
+considered six-leaf NIP specialization, since their source prefixes are
+disjoint. Their joint source still has 224 shared nodes and depth 49.
+However, the attempted five-row NIP decoder graft still fails at the
+unchanged $\mathrm{CI}_8$ instruction: the legal zero-register frame is
+returned correctly in 636 steps by the new 236 table, whereas the altered
+table returns in 648 steps with the wrong tape. Source rewrite compatibility
+therefore does not justify composing the proposed binary patches.
+

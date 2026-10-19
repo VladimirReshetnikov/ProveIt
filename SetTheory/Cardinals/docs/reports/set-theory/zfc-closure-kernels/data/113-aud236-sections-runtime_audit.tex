@@ -1,0 +1,48 @@
+The full source and runtime checks were rerun from the delivered literal
+tables, rather than inferred from the stored receipts. The source interface
+uses the inherited symbolic engine, whose two implementation files were
+checked byte-for-byte against the previously recovered 237 engine.
+The new wrapper changes the pinned source hash and explicitly requires
+coverage of every literal transition row.
+
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}
+\toprule & Original 237 & Reassociated 237 & Final 236\\\midrule
+Working states &237&237&236\\
+Literal rows covered &474&474&472\\
+Guarded source cases &8,386&8,386&8,386\\
+Symbolic proof rules &2,261,369&2,262,455&2,267,815\\
+Minimum actual duration &13&13&13\\
+Blank startup steps &409,835&409,835&409,835\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All four unary/list induction schemas pass on each exact table. Every
+guarded instruction is checked over arbitrary natural primary register
+values, arbitrary natural gap and first spare, an arbitrary finite spare
+tail, and the entire tape with its zero exterior. The symbolic proof
+construction is finite; the represented register values and number of
+source iterations are not bounded by that construction fuel.
+
+The fresh 236 and reassociated-237 per-case arrays are byte-identical to
+their respective incoming arrays. These are genuinely fresh executions
+of the mathematical checker, not a claim of a separately implemented
+proof-assistant kernel. The independent four-case fold verifier supplies
+a second, substantially smaller route for the new local deletion.
+
+The complete incoming quick replay also passes, including all 348
+manifest entries, both source checks, exact construction and startup,
+the independent and generic fold checks, adversarial fold-checker
+controls, E688, the stack-tail countermodel, and the inherited 237
+quick suite. Its exact startup has 351 one-cells, marker at $-6$, head
+at $-5$, header at 176, physical registers
+$(0,0,0,3,0,0,3,0,0)$, and 167 spare blocks of value one. This is the
+calibrated logical seed $(3,0,0,0,3,0,0,0,0)$.
+
+The fresh receipts are \path{evidence/runtime236.json} and
+\path{evidence/runtime_rotated237.json}; their complete companion
+arrays are \path{evidence/runtime236_cases.json} and
+\path{evidence/runtime_rotated237_cases.json}. Each receipt records
+code hashes, the source hash and the table hash. The pinned original 236
+archive supplies the complete source and logical dependency chain.
