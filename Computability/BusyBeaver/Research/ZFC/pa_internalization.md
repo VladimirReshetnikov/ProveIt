@@ -1259,3 +1259,18 @@ that internal connection, the binary240 simulation/startup, and final PA
 composition remain open. No local compiler or axiom audit was run for this
 upstream review; its nondefault and unlimited-heartbeat settings are recorded
 explicitly. The separate external 240-state coverage work remains unchanged.
+
+**Claude-lane status, `9f2276a8c3` (W3 closed).** `ControlBisimRotation240.halts_iff`
+now holds in every IΣ₁ model from every internal register file: the dag254
+and Rotation240 represented interpreters halt together. All 3,862 certificate
+entries are kernel-checked in four chunks (about 90 s); axioms `propext`,
+`Classical.choice`, `Quot.sound` only. Both interpreters are now instances of
+`ArithmeticControlTable` at packed literal row tables (`PackedTables`), so the
+dag254 side needs no decoder-tree evaluation; only the Rotation240 table must
+later be identified with `TreeRotation240.tree`, for the binary simulation (W6).
+W4/W5 (scheduler link) will be proved on the dag254 interpreter by an internal
+structured semantics (`ArithmeticDagRun`: block occurrences with exit maps, the
+`RMDag.Run` constructors as composition lemmas, internal `Σ₁` iteration) and a
+constructor-by-constructor port of L2; one root-occurrence check against the
+packed table replaces any per-occurrence contract. The Prog254 contracts are not
+on this route.
