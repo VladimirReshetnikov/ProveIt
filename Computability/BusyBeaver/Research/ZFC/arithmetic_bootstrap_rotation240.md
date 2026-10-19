@@ -18,6 +18,10 @@ passes seven named axiom probes and nine typed callers, with zero warnings and
 only standard Lean axioms. Source compilation took 2.146 seconds and the audit
 2.010 seconds on the first attempt. They shared a 120-second deadline with one
 thread, 4,096 MiB and default proof limits.
+The [independent completed-run review](arithmetic-bootstrap-rotation240/review.json)
+checks the source scope, all 276 current inputs, exact import selection, raw
+logs and fresh-object captures. Its [history](arithmetic-bootstrap-rotation240/review-history.json.gz)
+preserves the review note, reader and full bindings.
 
 Three actual parent records supply the prerequisites: the 240-state arithmetic
 run, its checked final boot chunk, and the earlier 246-state arithmetic
