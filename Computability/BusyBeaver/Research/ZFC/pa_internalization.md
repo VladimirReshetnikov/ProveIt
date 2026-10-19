@@ -1461,8 +1461,8 @@ register/validator consistency chain remain separate work.
 The [reviewed final-composition draft](rotation240_pa/final-composition-plan/README.md)
 now fixes the literal sentence bridge and both ZF/ZFC endpoints. It has no
 fresh compiler result. Its accompanying inventory and dependency plans track
-the outstanding upstream checks. The subsequent R2Neg, R2Quant, R2Main and
-NativePeel checks and four [register-program prerequisites](arithmetic_register_prerequisites.md)
+the outstanding upstream checks. The subsequent R2Neg, R2Quant, R2Main, R2Gic and
+NativePeel checks and six [register-program prerequisites](arithmetic_register_prerequisites.md)
 have passed. The first concrete control-bisimulation check hit the 4 GiB
 memory limit; its [interval-joining helper and first 128-entry check](control_bisim_rotation240_split.md)
 now pass, with the remaining certificate intervals still to check.

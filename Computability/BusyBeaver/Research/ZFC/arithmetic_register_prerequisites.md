@@ -1,6 +1,6 @@
 # Internal register-program prerequisites
 
-Four unchanged upstream modules now have fresh local Lean checks for the
+Six unchanged upstream modules now have fresh local Lean checks for the
 register side of the 240-state PA comparison.
 
 [`ArithmeticDagRun`](../../Lean/BusyBeaver/ZFC/ArithmeticDagRun.lean) proves
@@ -45,7 +45,31 @@ which intentionally leave their output in `s1`. The
 [publication](results/arithmetic-l2-macros254-publication.json) retains the
 unchanged source and these exact contracts.
 
-All four runs use one thread, 4,096 MiB and a shared 120-second source-and-audit
+[`ArithmeticL2Control254`](../../Lean/BusyBeaver/ZFC/ArithmeticL2Control254.lean)
+proves destructive equality testing, fetch and the MP/NIP branches with
+their exact normal, break and halt exits. Both tested registers are cleared
+on either equality-test branch; the NIP halt case requires the explicit
+falsity-code premise. Its [actual check](results/arithmetic-l2-control254-verification.json)
+passes six probes and six typed callers with zero warnings, in 4.748 and
+1.810 seconds. The source retains its 8,192 recursion and 400,000 heartbeat
+limits; the audit uses defaults and 42 project prerequisites are reused.
+The [publication](results/arithmetic-l2-control254-publication.json) keeps
+the full-state contracts and all clean/cache premises explicit.
+
+[`ArithmeticL2Axioms254`](../../Lean/BusyBeaver/ZFC/ArithmeticL2Axioms254.lean)
+composes the axiom subtree's exact register effects. Its final gate clears
+the bundle on either prohibited equality and clears all three parameters;
+the complete node-1 routine preserves clean scratch registers. The
+[actual check](results/arithmetic-l2-axioms254-verification.json) passes three
+probes and three typed callers with zero warnings, in 25.417 and 1.603 seconds.
+The source retains its 8,192 recursion and 4,000,000 heartbeat limits;
+the audit uses defaults and 43 project prerequisites are reused. This
+composition result still needs the separate formula-evaluation theorem to
+identify the constructed bundle with the validator's axiom operation.
+The [publication](results/arithmetic-l2-axioms254-publication.json) preserves
+the full source and the review of its literal decoder-tree compositions.
+
+All six runs use one thread, 4,096 MiB and a shared 120-second source-and-audit
 deadline. The first two guards select 35 and 37 exact project prerequisites,
 respectively, from already checked parents, with three external source/object
 boundaries and Init/Omega. Inputs, first providers and fresh objects are
@@ -56,7 +80,7 @@ dependency cache.
 The [DagRun publication](results/arithmetic-dag-run-publication.json) and
 [DagControl publication](results/dag-control254-publication.json) preserve
 the source bindings, audits, guards, logs and author history. These are
-prerequisites of the remaining register-control and scheduler checks. The
+prerequisites of the remaining axiom-evaluation and scheduler checks. The
 [final PA composition](rotation240_pa/final-composition-plan/README.md)
 still requires the remaining register and validator dependencies and its
 own successful compilation.
