@@ -228,6 +228,11 @@ facade is [`Lean/ZFCinPA.lean`](Lean/ZFCinPA.lean).
 | `ValidatorConsistencyEquivalence` | **the PA equivalence**: with Codex's forward sentence (`ValidatorConsistencyForward254`), `peano_proves_con_ZF_iff_validator : 𝗣𝗔 ⊢ Con(𝗭𝗙) ↔ validatorConsistencySentence` and `peano_proves_con_ZFC_iff_validator` (via `LSchema`); both already in `𝗜𝚺₂` |
 | `R2Audit` | axiom audit for R2 and the equivalence (standard axioms only) |
 
+The [fresh internal-context check](r2ctx.md) now verifies the unchanged
+`R2Ctx` source with six theorem probes and ten typed callers. One source
+unused-variable warning remains. This scoped replay is separate from the
+upstream report of the complete R2/equivalence build.
+
 ## Building
 
 From the repository root. Set `LEAN_NUM_THREADS=0` first if your machine cannot

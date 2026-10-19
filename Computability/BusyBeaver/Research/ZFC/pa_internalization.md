@@ -19,6 +19,10 @@ The [source review](results/upstream-r2-review.json) and
 [preserved review history](results/upstream-r2-review-history.json.gz) record
 the scope and the available evidence.
 
+A subsequent [fresh R2 context check](../../../../Logic/Interpretability/ZFCinPA/r2ctx.md)
+passes six probes and ten callers on the unchanged upstream source, with one
+unused-variable warning. Replaying the remaining R2 composition is separate.
+
 The request and active goal require an equivalence provable in **PA**.
 A Lean theorem comparing halting and `BProv` is an ordinary metatheorem until
 the intended arithmetic sentence and an object-theory proof are connected to
@@ -175,10 +179,11 @@ Compensated244 remains the smallest closed external Lean endpoint at this
 checkpoint. Earlier combined243/rotation244 results are retained as provenance.
 The [exact 240-state arithmetic lookup](arithmetic_machine_graph_rotation240.md)
 now passes eight probes and eight typed callers, defining all 480 actions in
-every IOpen model. The arithmetic step, iteration and startup results below
-still concern the earlier 246-state machine. Specializing those results to
-the active binary target and proving the all-internal comparison remain
-obligations.
+every IOpen model. The [240-state arithmetic step](arithmetic_machine_step_rotation240.md)
+also passes seven probes and ten callers, identifying its action on every
+natural configuration code. The iteration and arithmetic startup results below
+still concern the earlier 246-state machine. Specializing those results and
+proving the all-internal comparison remain obligations.
 The [fixed arithmetic lookup for the 246-state table](arithmetic_machine_graph_prefix246.md)
 is now checked in every IOpen model and agrees with all 492 typed transitions.
 The [exact step graph](arithmetic_machine_step_prefix246.md) now defines the

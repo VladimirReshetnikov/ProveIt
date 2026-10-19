@@ -1,10 +1,16 @@
 # Decoder coverage for the exact 240-state machine
 
-The current Lean coverage proof is **partial: 68 of 530 subtrees have passed**.
-These disjoint subtrees contain 791 of 6,455 leaves and 1,038 of 8,386 guarded
-instruction cases. The four initial pilot proofs and first 64 production
-proofs passed 68 theorem probes and 72 typed callers, with zero warnings.
+The current Lean coverage proof is **partial: 132 of 530 subtrees have passed**.
+These disjoint subtrees contain 1,568 of 6,455 leaves and 2,045 of 8,386 guarded
+instruction cases. The four initial pilot proofs and first 128 production
+proofs passed 132 theorem probes and 136 typed callers, with zero warnings.
 The complete `all_sites` theorem has not yet been checked.
+
+The [first structural join module](rotation240_coverage_join000.md) has also
+passed 16 probes and 16 typed callers with zero warnings. It combines already
+checked subtrees, so it adds no leaf or guarded instruction cases. The current
+cut and first join packets together account for 148 probes and 152 callers.
+Other joins and the final `all_sites` theorem remain pending.
 
 Each successful theorem evaluates `SiteRotation240.checkSite` on the exact
 subtree of `TreeRotation240.tree`, retaining the complete root-path prefix.
@@ -20,14 +26,22 @@ both child proofs. The final theorem must establish coverage for every path
 through `SourceRotation240.program`. None of the older 244-state coverage
 certificates substitutes for a fresh 240-state check.
 
-The [progress record](results/rotation240-coverage-progress.json) identifies
-every successful module. Their sources are installed in the Lean tree;
+The [current cut progress record](results/rotation240-coverage-progress132.json)
+identifies every successful cut module. The
+[initial progress record](results/rotation240-coverage-progress.json) is retained
+unchanged. Successful sources are installed in the Lean tree;
 [typed audits](rotation240-coverage/audits/) and the
 [first completed batch record](rotation240-coverage/batch000-063.json) are
 preserved. The [history archive](rotation240-coverage/initial-progress-history.json.gz)
 retains raw actual records and logs, preparations, source-generation code,
 the entire generated family, and independent source/guard reviews. Unchecked
-generated files in that archive remain proposals, separate from the installed
+generated files in that archive retain their status at the initial checkpoint.
+The [second batch record](rotation240-coverage/batch064-127.json) and
+[second batch history](rotation240-coverage/batch064-127-history.json.gz)
+preserve the next 64 successful source/audit pairs and their preparation and
+raw execution evidence. Those pairs took 481.782 seconds for sources and
+28.902 seconds for audits in total; each pair had its own shared deadline.
+The remaining generated files are proposals, separate from the installed
 successful modules.
 
 Every source/audit pair uses one thread, 4,096 MiB, default proof limits and

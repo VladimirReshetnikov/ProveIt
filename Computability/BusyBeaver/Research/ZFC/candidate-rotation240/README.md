@@ -91,8 +91,8 @@ is equivalent to ZF and ZFC refutation. This remains to be composed with the
 complete binary decoder coverage.
 
 The [coverage proof in progress](../rotation240_coverage.md) has checked
-68 of 530 subtrees, containing 1,038 guarded cases. The complete decoder
-coverage theorem remains open.
+132 of 530 subtrees, containing 2,045 guarded cases, and the first 16 structural
+joins. The complete decoder coverage theorem remains open.
 
 ## Exact files and attribution
 
