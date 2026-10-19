@@ -1221,3 +1221,21 @@ Planned work items (Claude lane; new modules only, Codex modules are not edited)
 
 Because W3 bisimulates Rotation240 against Prog254, the existing Prog254
 contracts (and W4/W5) also serve the 252-state machine's PA endpoint.
+
+Upstream `3d62be4cbf` adds the source of `ArithmeticControlBisim`.
+Its `halts_iff_of_check` transports halting at arbitrary internal times in
+IΣ₁, conditional on both represented interpreter specifications and run
+laws, a common definable nine-register algebra, nonzero live states, and a
+passing closed certificate with positive A-controls and a zero-offset
+initial entry. The [source review](rotation240_pa/upstream-review-3d62be4cbf/README.md)
+records no local compilation, typed audit or concrete certificate check.
+The source explicitly sets recursion depth 8,192 and heartbeats 4,000,000.
+
+W2/W3 must reconcile register numbering: the Python catalogues use logical
+registers, while `ArithmeticControlData254.sourceRegister` applies `physOf`
+(logical register 0 is physical register 6). Use a common logical view of
+the register operations, or permute both catalogues and their offsets
+consistently. The concrete Lean certificate also needs successor indices
+`s0`/`s1`, start/closure facts, and enough fuel for the terminal lookup.
+These integration obligations and W4–W7 remain open at this source-review
+checkpoint; the exact binary240 PA endpoint is not established by W1 alone.
