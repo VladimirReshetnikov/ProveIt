@@ -10,7 +10,10 @@ consistency alone must not be confused with arithmetic soundness. The
 external Lean equivalence with Con(ZFC) is now proved for the exact
 [240-state machine](rotation240_binary.md), improving the earlier checked
 [244-state](compensated244_binary.md), 245-, 246- and 252-state endpoints.
-The equivalence inside PA remains open.
+**PA now proves the equivalence for that exact 240-state machine:**
+[`BinaryConsistencyRotation240`](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/BinaryConsistencyRotation240.lean) checks
+`𝗣𝗔 ⊢ Con(𝗭𝗙𝗖) ↔ ¬Halts(M₂₄₀, blank)` (already in IΣ₂, and likewise for ZF), with
+the standard axioms only.
 All new formal work uses Lean.
 An intended set-theoretic meaning is optional: any effectively presented
 theory or proof calculus is eligible once its consistency calibration is proved.
@@ -36,7 +39,8 @@ argument is independently reviewed. The [exact-table external Lean endpoint](rot
 now proves blank-tape halting equivalent to ZF/ZFC refutation and nonhalting
 equivalent to the corresponding consistency statements. Its nine probes and
 nine typed callers pass with zero warnings. The internal PA equivalence for
-this exact 240-state machine remains open. See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md).
+this exact 240-state machine is now checked too
+([`BinaryConsistencyRotation240`](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/BinaryConsistencyRotation240.lean), 19 October 2026). See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md).
 
 The smallest **ordinary** candidate is now the [**228-state machine**](candidate-k228/README.md).
 It starts from Elliot Glazer's [230-state machine](https://github.com/elliotglazer/k230-rocq)

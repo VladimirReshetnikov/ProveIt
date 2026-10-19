@@ -140,4 +140,6 @@ import ZFCinPA.R2Fixed
 import ZFCinPA.R2Native
 import ZFCinPA.ValidatorConsistencyEquivalence
 import ZFCinPA.RotationInterpreterConsistency240
+import ZFCinPA.BinaryConsistencyRotation240
+import ZFCinPA.BinaryConsistencyRotation240Audit
 import ZFCinPA.R2Audit

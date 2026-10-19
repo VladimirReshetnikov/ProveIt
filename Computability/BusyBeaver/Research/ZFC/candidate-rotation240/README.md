@@ -13,7 +13,9 @@ its inherited equivalence between nonhalting and Con(ZFC).
 this exact 240-state machine.** It proves blank-tape halting equivalent to
 ZF/ZFC refutation and nonhalting equivalent to the corresponding consistency
 statements. Nine theorem probes and nine typed callers pass with zero warnings.
-The equivalence inside PA remains open. No absolute consistency, unconditional
+**PA proves it too:** [`ZFCinPA.BinaryConsistencyRotation240`](../../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/BinaryConsistencyRotation240.lean)
+checks `𝗣𝗔 ⊢ Con(𝗭𝗙𝗖) ↔ ¬Halts(M₂₄₀, blank)` and the ZF form, already in IΣ₂, with only
+`propext`, `Classical.choice` and `Quot.sound`. No absolute consistency, unconditional
 nonhalting, minimality or two-sided independence from bare consistency is claimed.
 
 Smaller ordinary candidates now build on this table: the

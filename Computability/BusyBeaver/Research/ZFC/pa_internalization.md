@@ -2,8 +2,15 @@
 
 Research inventory begun 16 October 2026 against
 `7b1e56dbc59f746695a7fb375546422f91de3a96`, updated with the explicitly linked
-Lean checks below. The PA equivalence for the exact 240-state binary machine
-remains open. Upstream commit `e1ff9636d5` now supplies the complete arithmetic
+Lean checks below. **The PA equivalence for the exact 240-state binary machine is
+now checked** (19 October 2026): [`ZFCinPA.BinaryConsistencyRotation240`](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/BinaryConsistencyRotation240.lean)
+proves `𝗜𝚺₂ ⊢ Con(𝗭𝗙) ↔ ¬Halts` and `𝗜𝚺₂ ⊢ Con(𝗭𝗙𝗖) ↔ ¬Halts`, hence the same in PA,
+for the literal Σ₁ blank-halting sentence of `machineRotation240`. It composes the
+register-side W7 theorems of `RotationInterpreterConsistency240` with the IΣ₁
+binary/control equivalence of `ArithmeticBlankControlRotation240`, after identifying
+the packed table and the seed. Its audit, `BinaryConsistencyRotation240Audit`, shows
+only `propext`, `Classical.choice` and `Quot.sound`. The history below records how
+it was reached. Upstream commit `e1ff9636d5` now supplies the complete arithmetic
 [validator comparison](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorConsistencyEquivalence.lean):
 IΣ₂, hence PA, proves `Con(ZF) ↔ validatorConsistencySentence`
 and `Con(ZFC) ↔ validatorConsistencySentence`, where the fixed sentence says
@@ -57,7 +64,8 @@ The [startup-removal theorem](arithmetic_startup_rotation240.md) passes 12 probe
 and 14 callers with zero warnings. IΣ₁ and PA prove the equivalence of the fixed
 blank- and seed-halting sentences. Its general shift theorem covers arbitrary
 internal offsets and configurations, including prefixes that extend past a
-halt. The unbounded internal binary-to-register simulation remains open.
+halt. The unbounded internal binary-to-register simulation was then closed by
+`ArithmeticBlankControlRotation240` and composed in `BinaryConsistencyRotation240`.
 The [actual 240-state scan layer](arithmetic_scans_rotation240.md) now passes
 13 probes and 15 callers with zero warnings. It supplies bidirectional writing
 and unchanged scans over arbitrary internal lengths, plus exact single-row
