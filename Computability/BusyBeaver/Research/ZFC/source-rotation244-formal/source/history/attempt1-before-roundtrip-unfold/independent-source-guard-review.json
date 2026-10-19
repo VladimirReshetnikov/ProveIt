@@ -1,0 +1,66 @@
+{
+  "status": "INDEPENDENT_SOURCE_API_GUARD_REVIEW_PASS",
+  "findings": [],
+  "source": {
+    "path": "/tmp/zfc243-source-bridge/SourceRotation244.lean",
+    "sha256": "1841efd5e21b70b4384c61cff06f5efe525388f7d0838c0767cc85d28abaafe7"
+  },
+  "audit": {
+    "path": "/tmp/zfc243-source-bridge/Audit.lean",
+    "sha256": "7e95a46fe93957440d3ac2ccb5cc8496967dfaa006ba43fcb1b42fe24853d989"
+  },
+  "guard": {
+    "path": "/tmp/zfc243-source-bridge/check.py",
+    "sha256": "bb063edcaf0d4a32d368b2ef6ebc8614e5de156ed4e405927af8742e54c322df"
+  },
+  "boundary": {
+    "path": "/tmp/zfc243-source-bridge/boundary.json",
+    "sha256": "db8f50b066b17fa22c4ed2b1aa5a8b409e4dfdc2c2136c2aa3ed467a80a15c23"
+  },
+  "reviewer_source": {
+    "path": "/tmp/zfc243-source-bridge/independent_review.py",
+    "sha256": "f05248566df06c7c7999569660522b37fd87fba69ad1cec3c5a64243d096c3b7"
+  },
+  "reviewer_role": "Independent of concrete source/audit/emitter/guard; author of imported checked generic loop/context lemmas, disclosed rather than independent of those implementations.",
+  "checks": 3002,
+  "finite_metadata": {
+    "rows": 203,
+    "old_and_new_WF": true,
+    "safe_children": true,
+    "root": 202,
+    "height": 51,
+    "macro_entry": 6,
+    "excluded_interior": [
+      4,
+      5
+    ],
+    "rotated_continue_bound": {
+      "node": 5,
+      "value": 1
+    }
+  },
+  "provider_scope": {
+    "projects": 8,
+    "tools": [
+      "Init"
+    ],
+    "parent_input_references": {
+      "program": 28,
+      "loop": 15,
+      "context": 15
+    }
+  },
+  "mathematical_review": [
+    "Edge conversion is constructor inverse and ofDag preserves arbitrary program nodes/root/nnodes.",
+    "Finite WF checks establish both DAG height and root break/continue escape conditions, not merely acyclicity.",
+    "The generic local theorem is instantiated at old6/5/4 and new6/5, source register6 and destination0; full output and all exits are retained.",
+    "Safe context excludes interior nodes4/5; identical other rows and all safe children are checked; arbitrary out-of-range nodes are halt/halt.",
+    "Root iteration equivalence followed by RMEquiv.halts_iff_iterHalts proves empty-pointer path halting iff for arbitrary register functions.",
+    "Audits contain nine qualified probes and ten clients including nonhalting contrapositive."
+  ],
+  "limits": [
+    "No compiler or supplied guard/emitter/checker invocation.",
+    "Lean elaboration, finite-check resource costs and actual target result remain pending root execution.",
+    "No binary runtime/startup, absolute consistency calibration or internal PA theorem claimed."
+  ]
+}

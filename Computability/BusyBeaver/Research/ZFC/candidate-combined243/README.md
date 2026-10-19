@@ -2,7 +2,16 @@
 
 This binary, single-tape machine has **243 working states**, including initialization, and one separate halt state. It starts in state 0 at head 0 on an all-zero two-way infinite tape. Every transition moves left or right.
 
+The later [241-state candidate](../candidate-fold241/README.md) adds two
+compatible local folds, retaining this logical source. Its complete runtime
+and startup replays pass; its Lean consistency endpoint remains open.
+
 It combines the [QT loop rotation](../candidate-rotation244/README.md) with the [compensated fold](../candidate-compensated244/README.md). The ordinary argument supports **ZFC ⊢ (¬Halt(M243) ↔ Con(ZFC))**. This table was developed in the repository after reviewing both reports; neither incoming ZIP supplied a 243-state machine.
+
+The later [submission in commit 074c76bb74](comparison-074c76bb74.md) supplies
+exactly the same machine: both tables, renumbering and both source-site lists
+are byte-identical. It adds a standalone local audit, explicit clock bounds
+and a separate finite-algebra research proposal, with no further state reduction.
 
 | Construction | Mechanism | Deleted inherited states | Source leaves / cases | Blank prefix |
 | --- | --- | --- | --- | --- |
@@ -15,7 +24,20 @@ Starting from the common routed245 table, the combination deletes old states 26 
 
 The edits commute as literal patches, but that fact alone would not prove the combination sound. The [ordinary comparison](proof/ordinary-comparison.md) checks every compensation hypothesis against the rotated table: the local tape invariant, all required incoming edges, the seven whole-tape block identities, the ordinary-row classification and excluded comparison controls. None of the exceptional calculations uses deleted state 26 or the changed rows at 12 and 17. Positive finite blocks therefore preserve halting from the shared old start 95 with arbitrary head and tape. Composing with QT's source/runtime/seed argument gives the ordinary consistency calibration.
 
-The [relative Lean theorem](../combined243_simulation.md) now checks this binary transfer. Its five units have **83 theorem probes and 39 typed callers**, all with zero warnings: two exact tables, the local invariant, seven whole-tape blocks and global simulation. It proves combined243 halting equivalent to QT244 halting on blank input and, more generally, from the shared start on arbitrary finite Core tapes and head positions. **This is a relative machine theorem; the complete 243-state Lean consistency endpoint remains open.** It still needs the rotated machine's calibrated source bridge. The internal [PA calibration](../pa_internalization.md) also remains open.
+The [relative Lean theorem](../combined243_simulation.md) now checks this binary transfer. Its five units have **83 theorem probes and 39 typed callers**, all with zero warnings: two exact tables, the local invariant, seven whole-tape blocks and global simulation. It proves combined243 halting equivalent to QT244 halting on blank input and, more generally, from the shared start on arbitrary finite Core tapes and head positions. **The complete 243-state Lean consistency endpoint remains open.**
+
+The [rotated source calibration](../source_rotation244.md) is now checked:
+the rotated register program halts exactly when ZF/ZFC has a refutation, from
+the established logical seed. Five source units pass 34 probes and 40 typed
+callers with zero warnings. The exact
+[407,931-step Rotation244 startup](../rotation244_bootstrap.md),
+[nine runtime units](../rotation244_runtime.md), and
+[source tree and startup frame](../rotation244_tree_frame.md) are also checked.
+Complete decoder-site coverage and the final binary composition remain open.
+The checked blank-input equivalence then transfers the result to this
+243-state table; this route does not require a separate 243-state initialization
+proof. Internalizing the full argument in [PA](../pa_internalization.md)
+remains an additional obligation.
 
 Root's separate complete expanded replay passes **8,390 cases and 2,314,868 symbolic rules** in **509.285 seconds**. It covers 485 of 486 rows, with only inherited `(27,1)` unused. The actual table, source, adapters and inputs are bound before and after execution. This is a Python induction-certificate replay, distinct from the relative Lean theorem.
 

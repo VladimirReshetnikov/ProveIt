@@ -434,3 +434,26 @@ The first check passed 12 axiom probes and 16 callers with standard axioms;
 one unused-variable audit warning is retained. This supplies the syntax
 identity for the source existential rule; its proof-rule transport and the
 reverse consistency compiler remain separate.
+
+[Literal internal GIC introduction](validator_native_gic254.md) now extracts
+the validator’s container/GIC bundle and proves a padded GIC instance for
+every internal matrix value, including zero, in every IΣ₁ model. Eight probes
+and ten typed callers passed without warnings after a one-line numeric
+proof repair. Identifying this literal instance with the Foundation encoding,
+closing arbitrary parameter lists and translating native derivations remain
+separate obligations for the PA consistency result.
+
+[Simultaneous internal substitution](../../../Computability/BusyBeaver/Research/ZFC/validator_environment_substitution254.md)
+now has an exact encoding identity for arbitrary internally typed substitution
+vectors. Its two-slot clients cover swapped variables and repeated labels,
+as needed for the native GIC matrix. Nine probes and eleven typed callers
+passed with zero warnings. Formula/proof transport and the consistency
+endpoint remain separate obligations.
+
+[Native GIC matrix slots](validator_native_gic_slots254.md) identify the
+support and coverage substitution orders for every internally typed matrix.
+Odd labels supply vacancy for the even padding code under IΣ₂, and the
+literal padded validator GIC instance is provable. Eight probes and ten typed
+callers passed with zero warnings after a two-line proof repair. The complete
+encoded native body and its universal closure remain open. This helper serves
+the unchanged logical source of the 241-state candidate as well.

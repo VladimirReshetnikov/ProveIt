@@ -1,0 +1,183 @@
+\section{The contextual return fold}
+\label{sec:return-fold}
+
+All state numbers in this section are inherited labels. Let $O$ be the
+pinned combined243 machine, with start state $95$, dispatcher $96$, and
+halting state $254$. Its $243$ working states include $27$. A configuration
+is a triple $(q,h,\tau)$, where $h\in\mathbb Z$ and
+$\tau:\mathbb Z\to\{0,1\}$ is an arbitrary binary tape. Finite support is
+not needed for the ordinary argument. Let $N$ be the machine obtained by
+deleting state $27$ and applying precisely these four retained-row changes:
+\[
+\begin{array}{c|c|c}
+\text{row}&O&N\\\hline
+(15,0)&(0,R,21)&(0,L,32)\\
+(18,0)&(0,L,27)&(0,L,15)\\
+(47,0)&(0,L,27)&(0,L,15)\\
+(65,0)&(0,L,27)&(0,L,15).
+\end{array}
+\]
+Every other retained transition is unchanged. Thus $N$ has exactly $242$
+working states and $484$ total binary transition rows. In particular,
+$N$ is an ordinary two-symbol, one-tape, left/right machine; the saving
+includes the blank-input initialization.
+
+\paragraph{Inductive tape condition.}
+For an $O$-configuration $c=(q,h,\tau)$, put
+\[
+ I(c)\quad\Longleftrightarrow\quad
+ q\in\{15,18,47,65\}\ \Longrightarrow\ \tau(h-1)=0.
+\]
+The complete incoming-transition inventory of these states is
+\[
+\begin{array}{c|l}
+\text{target}&\text{incoming source/read pairs}\\\hline
+15&(11,0)\\
+18&(12,0),(148,0)\\
+47&(33,0),(144,0),(167,0)\\
+65&(51,0),(81,0).
+\end{array}
+\]
+Each listed transition writes zero and moves right. Consequently every
+single step of $O$ that enters the displayed set establishes $I$; steps
+ending elsewhere satisfy it vacuously. The initial state $95$ is outside
+the set, so $I$ holds at the start on every initial tape and at every
+initial head position. Induction on the number of steps proves $I$ at
+all configurations reachable in $O$. This argument does not assume
+anything about source-program registers or the outcome of the consistency
+search.
+
+\paragraph{The three-step replacement.}
+Suppose $q=15$, $\tau(h)=0$, and $I(q,h,\tau)$. Thus the two cells at $h-1$
+and $h$ are both zero. The old machine takes the single step
+\[
+ (15,h,\tau)\longrightarrow_O(21,h+1,\tau).
+\]
+The new machine takes the following three steps:
+\[
+ (15,h,\tau)\longrightarrow_N(32,h-1,\tau)
+ \longrightarrow_N(45,h,\tau)
+ \longrightarrow_N(21,h+1,\tau).
+\]
+The calculation uses the unchanged rows
+$(32,0)\mapsto(0,R,45)$ and
+$(45,0)\mapsto(0,R,21)$. Every write rewrites a zero as zero.
+The endpoints therefore agree on the state, the head, and the entire
+infinite tape. The zero immediately to the left supplies a return path
+that recreates the old forward transition.
+
+\paragraph{The three redirected entries.}
+Let $q\in\{18,47,65\}$ and $\tau(h)=0$. The invariant again gives
+$\tau(h-1)=0$. Using the old row
+$(27,0)\mapsto(0,L,32)$, the two old steps are
+\[
+ (q,h,\tau)\longrightarrow_O(27,h-1,\tau)
+ \longrightarrow_O(32,h-2,\tau).
+\]
+The new steps are
+\[
+ (q,h,\tau)\longrightarrow_N(15,h-1,\tau)
+ \longrightarrow_N(32,h-2,\tau).
+\]
+Their complete endpoints are identical. No condition is imposed on
+$\tau(h-2)$: state $32$ has not read that cell at the common endpoint.
+The deleted state's read-one row is never used in these blocks.
+
+\paragraph{All remaining rows.}
+The complete incoming inventory of state $27$ consists of
+$(18,0),(47,0),(65,0)$. Outside the four changed retained rows,
+all $480$ rows in $N$ agree with the corresponding rows in $O$ and have
+an $O$ target different from $27$. Consequently they give one old and
+one new step to the same full configuration, with no deleted endpoint.
+The two exceptional families above end in states $21$ or $32$, both
+different from $27$ and from halt.
+
+\paragraph{Global comparison.}
+Take equal $O$ and $N$ configurations whose state is different from $27$
+and satisfies the old-side invariant $I$. At a nonhalting checkpoint,
+choose the block determined by the current state and scanned bit:
+\[
+\begin{array}{c|c|c|c}
+\text{entry condition}&\text{old steps}&\text{new steps}
+ &\text{common endpoint state}\\\hline
+q=15,\ \tau(h)=0&1&3&21\\
+q\in\{18,47,65\},\ \tau(h)=0&2&2&32\\
+\text{all other nonhalting entries}&1&1&\text{the ordinary target}.
+\end{array}
+\]
+The calculations prove equality of the next checkpoints. The invariant
+holds at the old endpoint by its one-step inductiveness. The state is
+again different from $27$. Every intermediate state in an exceptional
+block is nonhalting, while an ordinary block reaches halt simultaneously
+on its two sides.
+
+Iteration gives a comparison from the shared state $95$. Both clocks
+increase by at least one per block, so infinitely many comparison blocks
+mean infinitely many actual transitions on both sides. Conversely, if
+one side halts after finitely many transitions, it cannot pass through
+infinitely many positive-duration blocks; the checkpoint comparison
+therefore reaches the common halting state. This establishes
+\[
+ \operatorname{Halt}_O(95,h,\tau)
+ \quad\Longleftrightarrow\quad
+ \operatorname{Halt}_N(95,h,\tau)
+\]
+for every $h\in\mathbb Z$ and every binary tape $\tau$.
+There is no consistency premise in this relative machine theorem.
+
+The proof is a finite transition calculation followed by ordinary
+induction. Under a conventional arithmetization of finite-support binary
+configurations it is formalizable in PA: the block selectors and both
+clock increments are bounded primitive-recursive operations, the local
+cases have the fixed upper bound three, and the invariant is quantifier
+free relative to the encoded tape lookup. This observation is an ordinary
+formalizability argument, not a newly checked internal PA proof artifact.
+The supplied executable checks the finite premises and an exact blank
+prefix; it is not a proof-assistant kernel certificate.
+
+\paragraph{Consistency calibration.}
+Apply the comparison to the all-zero tape at head zero and compose it
+with the inherited ordinary calibration of the exact combined243
+machine. One obtains the ordinary theorem
+\[
+ \mathrm{ZFC}\ \vdash\
+ \bigl(\neg\operatorname{Halt}(N)\ \longleftrightarrow\
+ \operatorname{Con}(\mathrm{ZFC})\bigr).
+\]
+The new argument adds only the relative $243\to242$ machine comparison.
+It does not change the logical frontend or the source theory, and it
+does not close any previously open proof-assistant bridge in the inherited
+source calibration. In particular, the claimed evidence level should not
+be upgraded from an ordinary proof to a fully kernel-checked ZFC endpoint
+merely because the local table reduction is elementary.
+
+\paragraph{Reproduction and exact startup.}
+The standalone driver reconstructs the table from the pinned old SHA256,
+checks the complete incoming inventories, checks all unchanged rows, and
+exhausts the sixteen relevant words on four cells. Every local block
+reads only provided cells; the cells outside the word are arbitrary and
+remain untouched. The local finite checks therefore verify the displayed
+universal block calculations rather than testing a bounded collection
+of source-register values.
+
+As a separate execution check, the old blank prefix of $407\,967$ steps
+and the new prefix of $407\,979$ steps reach exactly the same full
+configuration: inherited state $96$, head $-5$, and the same set of $351$
+one-cell positions. The old prefix visits $(15,0)$ six times. Each such
+visit adds two steps under the proof, explaining the independently
+observed twelve-step difference. This finite computation confirms the
+binding and bootstrap; it is not evidence by itself for nonhalting.
+
+\paragraph{Why the earlier source rotation enables this saving.}
+This is not a direct fold of the earlier Routing245 table. In that
+ancestor, row $(12,1)$ writes one and moves right into state $18$.
+Such an entry leaves a one immediately left of state $18$, so the
+displayed tape condition is not inductive for that ancestor. The QT source
+rotation changes that routing. In combined243, the complete incoming
+inventory of $18$ is precisely $(12,0)$ and $(148,0)$, both writing zero
+and moving right. This makes state $27$'s read-one behavior unnecessary,
+and the return through $32$ and $45$ provides a way to share its remaining
+read-zero behavior with state $15$. The additional state saving thus
+uses a tape invariant created by the source-level change, together with
+a compensating change to the decoder. Older negative state-fold screens
+on the unrotated table do not cover this construction.

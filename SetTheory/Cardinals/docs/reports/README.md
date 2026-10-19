@@ -2979,3 +2979,61 @@ consistency endpoint, and internal PA calibration remains open. Neither
 incoming package supplied the combined table. The base article and all
 delivered files remain unchanged. Eighteen archives remained queued at
 placement; a later arrival brings the queue to nineteen.
+
+
+Batch 168 adds sources 72–73 from `8c41b1fb7d` to
+[ZFC closure kernels](set-theory/zfc-closure-kernels/intake-168.md).
+Placement `696c150e84` and write `f58c9394c0` preserve 151 ancillary files
+and 12 archive-only members, all 163 recoverable. The three 242-state folds
+are alternatives. The recommended primary A combines with a predecessor-bit
+fold to produce the [241-state candidate](../../../../Computability/BusyBeaver/Research/ZFC/candidate-fold241/README.md).
+All 19 fresh substantive jobs pass, including five complete 8,390-case
+universal runs for A, B, C, inherited 243 and primary 241. The latter covers
+2,319,442 symbolic rules and all 482 rows, with exact 408,419-step startup.
+The ordinary all-tape proof and runtime replay remain distinct from a complete
+Lean consistency endpoint and the still-open internal PA equivalence.
+
+Batch 169 adds six sources 74–79 from `d584512002` to the
+[same report](set-theory/zfc-closure-kernels/intake-169.md), now **79 sources**
+and still **290 reports**. Placement `c3339d150f` and write `c3efb44b50`
+account for 1,387 originals: 440 new ancillary files, 830 existing aliases,
+31 batch aliases and 86 archive-only members. Fresh recovery matches all
+1,301 ancillary occurrences to 687 maintained targets. All six reported
+242-state tables are primary A, literally or under the retained-state rename
+15 to 27; adding the 17/39 fold gives the existing 241 table, not 240.
+The six supplied suites were not rerun; exact isomorphism reuses earlier
+machine evidence. Distinct semantic, compiler and equational ideas remain
+credited. A subsequent joint selector-dispatch/detour packet passes fresh
+finite checks at **1,750 complete bits**, 21 equations and four-bit opcodes,
+18 bits below the delivered detour packet. This supplies no new binary-state
+bound or PA theorem. Twenty older ZIPs remain queued after the six retirements.
+The base article and delivered bytes are unchanged; the catalogue PDF is
+built and visually reviewed separately.
+
+
+Batch 170 adds Source 80 from `e5c2b3337e` to
+[ZFC closure kernels](set-theory/zfc-closure-kernels/intake-170.md), now
+**80 sources** and still **290 reports**. Placement `0841b55a14` and write
+`cc73ddc7d9` preserve 79 originals: 61 new ancillary files, seven existing
+aliases, five batch aliases and six archive-only members. Fresh recovery checks
+all 79 originals and 73 ancillary occurrences through 67 targets. Only this ZIP
+was retired; twenty older archives remain queued.
+
+The new [240-state ordinary candidate](../../../../Computability/BusyBeaver/Research/ZFC/candidate-rotation240/README.md)
+combines the previously proposed source rotation with a predecessor-context
+fold of old state 90 into 72. Its complete 6,455-leaf source is byte-identical
+to Source 74's rotation; the new contribution is the concrete composition,
+five retained-row changes and one deletion. All ten fresh substantive jobs
+pass, including two complete 8,386-case runtime checks. Rotated 241 covers
+2,318,435 symbolic rules and 482 rows; final 240 covers 2,322,575 rules and all
+480 rows, with exact 409,691-step blank startup. The whole-tape fold compares
+the rotated intermediate with final 240; no all-tape equivalence between the
+original and rotated 241 tables is asserted.
+
+The separate rational-cut model refutes a proposed weakening of GIC; the
+full-schema GIC/weak-Collection-plus-Separation equivalence and all restricted
+searches remain in scope. Reusable theory tools have two disclosed freshness
+and syntax-validation limits. Exact 240 Lean consistency and internal PA
+endpoints remain open; compensated244 remains the closed external Lean
+baseline. The base article and delivered bytes are unchanged. The catalogue
+PDF is built and visually reviewed separately.

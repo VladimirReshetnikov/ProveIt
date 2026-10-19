@@ -12,10 +12,11 @@ the intended arithmetic sentence and an object-theory proof are connected to
 it. Completing the PA version would also serve the ZFC requirement, after
 checking the chosen arithmetic interpretation in ZFC.
 
-The [245-state endpoint](routing245_binary.md) now closes the external Lean
-theorem for the exact routed machine: blank nonhalting iff Con(ZFC).
-It reuses the earlier [Choice calibration](choice_calibration254.md), including
-Choice in L and external first-order completeness. This discharges the
+The [compensated244 endpoint](compensated244_binary.md) is the current closed
+external Lean baseline: blank nonhalting iff Con(ZFC). It extends the earlier
+[245-state endpoint](routing245_binary.md), which reuses the
+[Choice calibration](choice_calibration254.md), including Choice in L and
+external first-order completeness. This discharges the
 external consistency comparison; it does not implement the represented proof
 translations or prove their correctness for every internal code in every PA
 model. The remaining obligations are recorded below.
@@ -77,6 +78,12 @@ The current arithmetic checkpoints are:
   directly, since its falsity code is already `1`; comparison with the earlier
   fixed encoder is optional. Arbitrary accepted proofs are not assumed closed
   under variable renaming.
+  [Native GIC matrix slots](../../../../Logic/Interpretability/ZFCinPA/validator_native_gic_slots254.md)
+  now identify both internal substitution orders and derive padded-matrix
+  vacancy from odd labels under IΣ₂. The literal padded GIC instance passed
+  eight probes and ten typed callers with zero warnings. Complete native-body
+  encoding and universal closure remain separate; the unchanged logical
+  source makes these results reusable for the 241-state candidate.
 * [Both actual reads](arithmetic_control_read_template254.md) are checked on
   every internal register file with its scratch fields zero. They reach the
   actual dispatch control 38, retain the whole register file in their
@@ -130,12 +137,17 @@ internal register/binary simulation. The internal L-specific schema proofs
 now close the Choice transport. The forward validator sentence alone does
 not yet imply the requested PA theorem about the literal binary machine.
 
-The active binary target is the exact 245-state machine. Its complete
-coverage and 407,915-step blank startup now compose into the checked external
-ZF/ZFC consistency endpoint. That theorem still does not supply an internal
-PA proof. The arithmetic table and startup results below concern the earlier
-246-state machine; transferring them to the routed 245-state machine remains
-an obligation.
+The active binary target is the [combined243 machine](candidate-combined243/README.md).
+Its checked equivalence to Rotation244, the
+[calibrated rotation source](source_rotation244.md) and the
+[407,931-step rotation bootstrap](rotation244_bootstrap.md) supply separate
+external components. The [rotation runtime contracts](rotation244_runtime.md)
+and [exact source tree/startup frame](rotation244_tree_frame.md) are checked.
+Complete decoder-site coverage and final binary composition remain pending.
+Compensated244 is still the smallest
+closed external Lean endpoint. The arithmetic table and startup results below
+concern the earlier 246-state machine. Transferring those results to the active
+binary target and proving the all-internal comparison remain obligations.
 The [fixed arithmetic lookup for the 246-state table](arithmetic_machine_graph_prefix246.md)
 is now checked in every IOpen model and agrees with all 492 typed transitions.
 The [exact step graph](arithmetic_machine_step_prefix246.md) now defines the
@@ -813,9 +825,12 @@ define the Δ₁ schema recognizer and `NativeSet.nativeTheory`.
 `NativeSet.models_cpgic` supplies an external model bridge useful for R3.
 The [source review](results/upstream-native-theory-f368d4ff11-review.json)
 found no mathematical blocker; it did not run a fresh compiler or audit.
-R1's standard-proof sanity equivalence, arbitrary-internal GIC axiom
-introduction, and the R2/R3 internal translations remain open. The supplied
-five-probe audit has no typed callers.
+A subsequent [focused recognizer check](native_gic_delta1.md) compiled the
+unchanged `NativeGicDelta1` and passed seven probes and ten typed callers
+with zero warnings. It covers arbitrary-internal schema recognition; it
+does not compile `NativeTheory` or prove the R2 translation into `CProv`.
+The original five-probe audit, which has no typed callers, is retained as
+history. The later R3 result is described below.
 
 **R3 closed (Claude lane, 18 October).**
 [`NativeSchema`](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/NativeSchema.lean)
@@ -848,6 +863,22 @@ The parameter is `NativeInterp.PN` itself (`good_PN`), so no identification
 with the separately checked closed parameter is needed. The remaining
 arithmetic piece of the reverse comparison is (R2),
 `Provable nativeTheory ⊥ → CProv 1`.
+
+The [literal GIC introduction](../../../../Logic/Interpretability/ZFCinPA/validator_native_gic254.md)
+now supplies a validator proof for every internal matrix value after
+double-negation padding, including zero: eight probes and ten typed callers
+passed with no warnings. This closes the literal bundle side conditions;
+the configurable Foundation-body encoding, arbitrary universal closure and
+internal derivation translation required by R2 remain open.
+
+[Fixed-label matrix congruence](../../../../Logic/Interpretability/ZFCinPA/validator_native_gic_congruence254.md)
+now transports both validator implications through the literal GIC circuit
+in every IΣ₁ model. It removes padding from the matrix while retaining the
+witness label `pad p`, and derives
+`CProv (wal 3 (internalGic 1 3 (pad p) p))` for every internal matrix value.
+Eight probes and eleven typed callers passed with zero warnings. Configurable
+native-body encoding, alpha identification, arbitrary universal closure and
+internal derivation translation remain separate R2 obligations.
 
 Composing (R3), (R2) and the forward sentence gives, in PA,
 `Con(ZF) ↔ ¬∃code, value(code)=2`, and with `LSchema` the same for ZFC.

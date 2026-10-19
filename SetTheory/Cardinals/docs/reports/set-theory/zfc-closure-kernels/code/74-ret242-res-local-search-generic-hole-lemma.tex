@@ -1,0 +1,42 @@
+\subsection{A reusable state-borrowing rule}
+
+The concrete reduction is an instance of the following local rule.  Suppose
+an old machine has distinct states $d,r,s,t,u,v$ with rows
+\[
+\delta(d,0)=(0,R,u),\qquad\delta(d,1)=(1,R,v),
+\]
+and
+\[
+\delta(r,0)=(0,L,s),\qquad
+\delta(s,0)=(0,R,t),\qquad
+\delta(t,0)=(0,R,u).
+\]
+Assume all old occurrences of $r$ read zero, as established by an inductive
+invariant.  Assume every incoming row to $d$ is of the form
+$(p,0)\mapsto(0,R,d)$, with none of $d,r,s,t$ used as such an entry state.
+Finally require that the three displayed return rows remain present and
+unchanged after deleting $d$.
+
+Delete $d$, redirect each of its incoming rows to $r$, and replace the
+previously inadmissible row $r/1$ by $(1,R,v)$.  The machine loses one
+working state.  A formerly $d$-entering row writes zero immediately left of
+the new $r$ configuration.  If $r$ reads one, its replacement row performs
+the old $d/1$ action.  If $r$ reads zero, the three-step return
+$r,s,t,u$ performs the old $d/0$ action with exactly two extra transitions.
+The unchanged old occurrences of $r$ read zero and retain their old row.
+The same strictly positive block induction as above proves halting
+equivalence, provided the other ordinary-row checkpoint conditions hold.
+
+For the present construction the substitution is
+\[
+(d,r,s,t,u,v,p)=(15,27,32,45,21,22,11).
+\]
+The required return is already in the decoder; it is not a newly allocated
+subroutine.  The two symbols together with the earlier written tape cell
+provide the discrimination that would otherwise require state $15$.
+
+This lemma separates the reusable optimization from the finite proof that
+a particular target branch was inadmissible.  Such a branch need not remain
+inadmissible in the optimized machine: here $27/1$ becomes essential.  A
+coverage report showing an unused row is therefore a useful search lead,
+but the induction invariant and return identity are the actual proof.

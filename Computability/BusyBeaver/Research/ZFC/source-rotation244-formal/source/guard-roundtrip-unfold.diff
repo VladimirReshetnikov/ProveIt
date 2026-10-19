@@ -1,0 +1,26 @@
+--- /tmp/zfc243-source-bridge/check.py
++++ /tmp/zfc243-source-bridge/check-v2.py
+@@ -6,9 +6,9 @@
+ MODULE='BusyBeaver.ZFC.SourceRotation244'
+ PREFIX='SetTheory.BusyBeaver.ZFC.SourceRotation244.'
+ PROBES=['toPath_toDagEdge', 'ofDag_ofProgram', 'old_program_eq', 'new_program_eq', 'old_wf', 'new_wf', 'replacement', 'iterHalts_iff', 'program_halts_iff']
+-SOURCE_SHA='1841efd5e21b70b4384c61cff06f5efe525388f7d0838c0767cc85d28abaafe7'
++SOURCE_SHA='4a04758b69c4daed52ce24364c025e87d13b9f0895bf0f23b9912586ff960778'
+ AUDIT_SHA='7e95a46fe93957440d3ac2ccb5cc8496967dfaa006ba43fcb1b42fe24853d989'
+-BOUNDARY_SHA='db8f50b066b17fa22c4ed2b1aa5a8b409e4dfdc2c2136c2aa3ed467a80a15c23'
++BOUNDARY_SHA='463225f117a20757789b38227ca1c51fa14e078f1e7a9a36e60cdf3af728022d'
+ PARENT_SHAS={'program': '678a6a766caa23e1004540016d0dd71d04cbeb8561f273e9e3c83d5c81c9e5ab', 'loop': 'f170c9bd2c21450b36aac6ffd988a40d028c0dee731563737efc6a2dbc04cbd6', 'context': 'a17b3d4259f3be10a040ebf2fd5cc898ba4fd6e5b3883bd8df4ce5a961eb42b2'}
+ STANDARD={'propext','Classical.choice','Quot.sound'}
+ sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+@@ -21,9 +21,9 @@
+     return [dict(name=n,axioms=sorted({x.strip()for x in a.split(',')if x.strip()}))for n,a in rr]
+ def main():
+     p=argparse.ArgumentParser(description=__doc__)
+-    p.add_argument('--source',type=Path,default=HERE/'SourceRotation244.lean')
++    p.add_argument('--source',type=Path,default=HERE/'source-v2/SourceRotation244.lean')
+     p.add_argument('--audit',type=Path,default=HERE/'Audit.lean')
+-    p.add_argument('--boundary',type=Path,default=HERE/'boundary.json')
++    p.add_argument('--boundary',type=Path,default=HERE/'boundary-v2.json')
+     p.add_argument('--output',type=Path,required=True)
+     p.add_argument('--prepare-only',action='store_true')
+     a=p.parse_args();require(__debug__,'No optimized Python.')

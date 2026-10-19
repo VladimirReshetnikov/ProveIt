@@ -1,0 +1,16 @@
+{
+  "status": "PASS_INDEPENDENT_SOURCE_REVIEW",
+  "reviewed_source_sha256": "c3dcab01f1d067534ff01f7125e4cae2dd4e56393eb8b6182ff092d581542767",
+  "inherited_candidate_sha256": "6b700aa713418cfe347a6ff2d0a92de7c31810d1cf69814b4684c7fb463876a0",
+  "canonical_candidate_sha256": "64ddeb2c01c3e9c7feffaffaad87266a270716c9307892a0445bf869b988984d",
+  "findings": [
+    "The invariant is required only for the old machine; intermediate new state 27 reading 1 is deliberately admissible.",
+    "Offsets -2 through 1 suffice for every invariant precondition and postcondition.",
+    "All 482 ordinary rows are identical and do not enter deleted state 15.",
+    "The two explicit blocks use only offsets 0 and 1 and preserve the complete tape for arbitrary exterior assignments.",
+    "Positive clocks and absence of internal halts establish two-sided halting transport.",
+    "The literal dense canonical run is bound to the delivered canonical table by exact byte equality and SHA256 checks.",
+    "The explicit marker/left-exterior assertion has been added and resolves the only minor finite-frame review suggestion."
+  ],
+  "scope": "Independent human/assistant mathematical and code review plus separately implemented literal checker; not a proof-assistant theorem."
+}

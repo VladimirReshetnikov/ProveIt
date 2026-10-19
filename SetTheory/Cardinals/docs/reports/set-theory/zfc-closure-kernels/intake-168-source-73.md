@@ -1,0 +1,13 @@
+# Source 73 dossier — predecessor-bit 241
+
+Source archive: `BusyBeaver_241_Companion_2026-10-18.zip`, same arrival `8c41b1fb7d7bb8cd0612e37848181fe4a2f5d569`, wrapper `busybeaver241-companion`. Pinned prior repository: `e58338db7545909907e07a7603e8eb88625c527a`. Main manuscript/README/PDF and runtime README remain archive-only at collection placement. Proposed prefix `73-fold241-`.
+
+The primary contribution is the direct 17/39 fold on the exact recommended 242 table. Left 1 at old 17 and left 0 at old 39 follow from their complete incoming edges. Synthesizing both rows of retained 17 uses that tape bit as a control tag; four local paths match an old step in 3 or 5 new steps, ordinary rows in 1. The theorem applies from 95 to every head/function tape, with no source-frame premise. The exact direct 243 difference deletes 27 and 39 with eight distinct row edits, but the semantic proof explicitly composes through 242 A.
+
+Preserve `root-proof/check.py` and `boot.py`, both original scripts in `provenance/`, original receipts, portability/adaptation records, the direct construction record, independent local/boot/runtime scripts, all exact table/map/case files, and licenses. The nested 242 ZIP equals the separate source 72 arrival exactly and is placed as one data artifact. It is not a third source. Five member occurrences match older history; most inherited 242 content is inside that one retained ZIP rather than repeated as outer members.
+
+The companion attributes discovery guidance to a neutral-edit/sequential-background package pinned in `construction_provenance.json`. The final four-row patch removes those incidental edits; those discovery circumstances are not additional proof hypotheses. The mechanism lies outside earlier copied-overlay or one-retained-row search classes, without establishing global minimality or historical priority. No other exploratory 241 variant is implicitly certified.
+
+The delivered root proof reports7,712 invariant and 7,712 endpoint cases; direct runtime reports8,390 cases / 2,319,442 rules; whole blank initialization reports408,419 steps and 351 one-cells. The delivered and fresh root evidence are retained separately. No Lean/Rocq or internal PA endpoint is supplied by this archive; the current repository's completed rotated-source calibration is later work and must be attributed separately.
+
+Placement `696c150e84` is complete. See the [main reconciliation](intake-168.md) and [recovery/reproduction instructions](intake-168-reproduction.md). The [fresh root replay](data/intake168-fresh-replay.json) passes, with the delivered findings and new execution records retained separately. No proof-assistant completion is implied.

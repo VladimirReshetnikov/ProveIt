@@ -1,0 +1,278 @@
+% Independent proof audit. Fragment for the main manuscript.
+% Requires amsmath, amssymb, and a theorem environment supplied by the parent.
+\section{Two forced-symbol identifications and the 246-state machine}
+\label{sec:forced246}
+
+All state names in this section are the original numerical labels, with
+254 the separate terminal label.  Let $M_{250}$ be the prefix-carry and
+pulse machine in the preceding construction.  Its legal runtime frames
+have nine unary primary blocks and a nonempty finite spare suffix.  Define
+$M_{246}$ by deleting states $0,1,3,97$, changing just the two surviving rows
+\[
+ \delta(60,0)=(0,R,20),\qquad
+ \delta(255,0)=(1,L,255),
+\]
+and taking state 95 as the blank-tape initial state.  Every other surviving
+row is unchanged.  This is a total two-symbol machine with 246 working
+states, 492 transition entries, and one terminal transition.  The terminal
+entry is still $\delta(77,1)=(1,R,254)$, including its final write and move.
+
+The reduction uses information already guaranteed by the tape format and
+by a preceding write.  It preserves the complete original proof-search
+program, including all eight logical rows, the equality machinery, both
+freshness tests, and the CP/GIC bundle.  Its correctness does not depend on
+the rejected equality-free compiler experiments.
+
+\subsection{The marking-state identification}
+
+Write $B(v)=0\,1^{v+1}$.  The old marking state has rows
+\[
+ \delta_{250}(60,0)=(0,R,0),\qquad
+ \delta_{250}(0,1)=(0,L,2).
+\]
+The existing state 20 has
+\[
+ \delta_{250}(20,0)=(1,L,2),\qquad
+ \delta_{250}(20,1)=(0,L,2).
+\]
+Thus its read-one action agrees exactly with state 0's read-one action.
+At a legal marking call, state 60 reads the zero separator of the selected
+unmarked block $B(v)$.  Its right neighbor is one for every $v\geq0$,
+including the zero-valued register.  The two executions are therefore
+\[
+ \begin{array}{rcl}
+ M_{250}:&60\xrightarrow{0}0\xrightarrow{1}2,\\
+ M_{246}:&60\xrightarrow{0}20\xrightarrow{1}2.
+ \end{array}
+\]
+They have the same duration, head position, tape writes, and endpoint.
+Neither execution uses the read-zero row of the intermediate state.
+The remainder of the marking return scan is literally unchanged.
+
+This argument covers every physical register selector.  If the selected
+register is preceded by the block list $A$, the selector scan reaches its
+separator after $w(A)=\sum_{v\in A}(v+2)$ steps.  The return scan has the
+same width.  The old marking theorem therefore retains its exact duration
+$2w(A)+3$, its erased first unary one, and its endpoint state 2 for the
+first block or state 6 for the other eight blocks.  Both exterior tape
+contexts are retained.
+
+The original transition table has only one incoming edge to state 0,
+namely the changed $60/0$ edge.  After redirecting it, states 0, 1, and 3
+have no incoming edge from the retained control.  The only incoming edges
+to state 1 were $0/0$, $1/1$, and $3/1$; the only incoming edge to state 3
+was $1/0$.  Hence all three can be deleted together.  This is an actual
+three-state deletion.  The known symbol at marking is what licenses the
+redirection; ordinary exact state equivalence would not license it.
+
+\subsection{The pulse-state identification}
+
+The relevant prefix250 rows are
+\[
+\begin{array}{c|cc}
+ &0&1\\\hline
+75 &(1,R,255)&(1,L,63)\\
+255&(1,L,97)&(1,L,131)\\
+97 &(1,R,83)&(1,L,131).
+\end{array}
+\]
+The read-one rows of states 97 and 255 coincide.  Every recurrent entry
+to state 97 follows $255/0$, which itself follows $75/0$ in a local pulse.
+That preceding transition has already written one at the cell to which
+$255/0$ returns.  The returning state 97 consequently reads one.
+
+More explicitly, start in state 75 at coordinate $x$ reading zero.
+If the right neighbor is one, both machines reach state 131 at coordinate
+$x$ after two transitions, with the same whole tape.  If that neighbor is
+zero, the three-step state sequences are
+\[
+ \begin{array}{rcl}
+ M_{250}:&75\longrightarrow255\longrightarrow97\longrightarrow131,\\
+ M_{246}:&75\longrightarrow255\longrightarrow255\longrightarrow131.
+ \end{array}
+\]
+The first transition writes one at $x$, the second writes one at $x+1$
+and moves left, and the third reads the deposited one at $x$ and moves
+left again.  Both executions reach state 131 at $x-1$ after exactly three
+steps and agree at every tape coordinate.  This proves the pulse identity
+for either possible neighbor bit, with arbitrary exterior contexts.
+
+The only old incoming edge to 97 is $255/0$.  Redirecting it to 255 removes
+97 completely.  The old blank initialization at $97/0$ is consequently
+discarded; a separately checked blank run from state 95 provides the new
+initializer.  No assertion is made that the old and new blank prefixes
+agree.
+
+\subsection{Direct checks of the universal local identities}
+
+An independent constructor in \texttt{audit246.py} applies precisely these
+edits to the separately reconstructed prefix250 table.  The check is not
+limited to the two informal state diagrams.  The inherited mathematical
+induction checker is rerun against the new table for:
+\begin{itemize}
+\item the four arbitrary-length block identities for the seeker, carry,
+return, and rollback scans;
+\item the positive-decrement, zero-decrement, and increment macros, with
+symbolic prefix and suffix lists and arbitrary natural register values;
+\item all nine marking entries, with a separate arbitrary natural length
+for every primary register.
+\end{itemize}
+All sixteen checks pass.  The proof rules are literal transition steps,
+induction on unary self-loop lengths, structural induction on finite lists
+of register blocks, and the finite-word identity $C(A)1=1B(A)$ for
+$C(v)=10\,1^v$.  Opaque exterior contexts are never inspected.  The
+zero-decrement theorem retains its nonempty following-block premise;
+no zero-spare or bounded-register assumption is introduced.
+
+The independent run then reparses all 6,459 nodes of the literal
+\texttt{Prog254.v} decoder and checks every one of its 6,460 leaves,
+including both guards at each decrement.  All 8,391 instruction cases
+pass against the changed table.  They are parameterized by every extra
+gap $n\geq0$, every primary register vector satisfying the named guard,
+and every nonempty finite spare list.  The guard names the same physical
+register as the selected block.  Each accepted case contains at least
+13 literal steps, and no case requires more than 497 symbolic rules.
+
+These are explicit finite symbolic-induction certificates and ordinary
+mathematical proofs of their rule meanings.  They are not a new Lean or
+Rocq build of the 246-state endpoint.  A proof-assistant port can retain
+the original logical and model-theoretic modules and specialize the tape,
+bootstrap, and runtime modules to this new table.
+
+\section{Blank initialization and the inherited consistency calibration}
+\label{sec:calibration246}
+
+Two separately written literal interpreters, one using a set of one-cell
+coordinates and one using a bounded dense array with checked bounds,
+execute the complete 410,735-transition blank prefix.  They agree on the
+entire endpoint:
+\[
+ q=96,\qquad h=-5,\qquad \text{header}=176,\qquad d=181,\qquad P=[].
+\]
+The unique left marker is at $-6$.  The physical primary values are
+\[
+ (0,0,0,3,0,0,3,0,0),
+\]
+followed by 167 spare blocks of value one.  There are exactly 351 one-cells.
+Every remaining tape cell is zero.  The recorded finite support is
+reconstructed from this block description and compared against both
+interpreters; a finite window is not substituted for a whole-tape claim.
+
+The physical positions of logical registers $(N,T,W,A,D,H,X,Y,L)$ remain
+\[
+ (6,2,0,4,3,7,8,5,1).
+\]
+Thus the actual logical root vector is
+\[
+ R_*=(3,0,0,0,3,0,0,0,0).
+\]
+The nonzero fields are the next-candidate counter $N=3$ and numerical
+parameter $D=3$.  Current formula, cached formula, and formula stack are
+all zero.  The inherited theorem
+\texttt{DirtyProgram254.six\_nonformula\_path\_iff}
+applies with arguments $(N,A,D,X,Y,L)=(3,0,3,0,0,0)$.
+Its safety premises are the two instances of
+\texttt{Code254.C254.truth} and \texttt{Enum254.good\_zero}.
+Starting the candidate counter at three loses no possible refutation:
+\texttt{EnumSafeStart254.complete\_from} supplies arbitrarily large padded
+encodings of any refutation and proves the required scheduler coverage.
+
+\subsection{Unbounded runtime composition}
+
+The complete recurrent frame has state 96 and tape
+\[
+ 0^{\mathbb Z_{<h-1}}\;1\;P\;0^{d-|P|}\;1\;
+ B(V(R)S)\;0^\omega,
+\]
+where $d\geq40$, $|P|\leq d$, $S$ is a nonempty finite spare list, and
+$P$ satisfies the inherited clean-path predicate.  The lower bound concerns
+the total head-to-header distance, not just the zero gap after the current
+path.  The actual bootstrap has $181\geq40$ and an empty, hence clean,
+path.
+
+Each nonterminal logical instruction has a positive finite binary segment
+to the next complete recurrent frame.  The clean-path condition rebases
+the actual zero-padded PC to its consumed leaf path.  Positive decrement
+increases the header distance by one; a carry beyond the left marker also
+increases that distance by one.  Other instructions preserve the distance.
+Increment appends a value-one spare, and every other instruction preserves
+the spare suffix.  Consequently neither the margin nor the nonempty spare
+resource can be exhausted during an arbitrarily long computation.
+
+The two forced-symbol identifications preserve every local contract,
+including its whole-tape endpoint and exact duration.  The full instruction
+certificate therefore establishes the same positive-segment simulation
+for $M_{246}$ as for the prefix250 runtime.  Finite induction composes these
+segments along every finite logical computation.
+
+Halting reflection requires no time bound and no infinite choice of
+segments.  Suppose the binary machine halts in $t$ steps from a related
+frame.  If the logical instruction is terminal, decoder coverage provides
+the logical halt.  Otherwise its positive segment of length $k$ ends in an
+active related frame.  Absorption of terminal configurations forces $k<t$;
+the remaining binary halt has time $t-k<t$.  Strong induction on $t$ then
+produces a finite logical halt.  Thus the relation gives eventual halting
+equivalence in both directions.
+
+Combining the actual blank prefix with this equivalence and the dirty-root
+theorem yields
+\[
+ \operatorname{Halt}(M_{246},\mathrm{blank})
+ \quad\longleftrightarrow\quad C_{254}(1).
+\]
+The literal decoder-to-structured-program adapter is
+\texttt{Bisim254.prog254\_halts\_iff}; the numerical proof-system
+statement is exactly the original one, not a replacement calculus.
+
+\subsection{What is proved in ZFC}
+
+Fix the ordinary syntactic consistency statement
+$\operatorname{Con}(\mathrm{ZFC})=\neg\operatorname{Ref}_{\mathrm{ZFC}}$,
+where refutations are finite proofs in a fixed recursive first-order
+presentation.  The inherited endpoint chain is
+\[
+ C_{254}(1)
+ \ \longleftrightarrow\ 
+ \operatorname{Ref}_{\mathrm{NativeAx}}
+ \ \longleftrightarrow\ 
+ \operatorname{Ref}_{\mathrm{ZF}}
+ \ \longleftrightarrow\ 
+ \operatorname{Ref}_{\mathrm{ZFC}}.
+\]
+Here \texttt{NativeAx} means precisely CP, all first-order-formula GIC
+instances, and raw irreflexivity.  The relevant inherited declarations are
+\texttt{NativeTheory254.c254\_refutation\_iff},
+\texttt{WFTheory.native\_refutation\_iff\_zf}, and
+\texttt{ChoiceCalibration254.zf\_refutation\_iff\_zfc}.
+
+The model-theoretic proof is legitimate inside ZFC.  Finite syntax, proofs,
+and tape configurations are coded by natural numbers or finite sequences.
+First-order completeness supplies a set-coded model from consistency; it
+does not supply a transitive or externally well-founded model.  The native
+CP/GIC model gives a set-sized bisimulation quotient, and the internally
+well-founded predicate supplies the Foundation subdomain used by
+\texttt{WFModel.quotient\_models\_ZF}.  Conversely, every model of the
+specified ZF presentation, which includes Foundation, satisfies the native
+axioms by the internal rank and Collection constructions.  The ZFC
+comparison forms the internal constructible subdomain of any set model of
+ZF, proving Choice there.  Although that model regards its $L$ as a class,
+its external domain is a set, so the resulting subdomain is a set in the
+metatheory.  Satisfaction is satisfaction for these set structures, not a
+truth predicate for the universe.
+
+All machine arguments above are finite combinatorial inductions, and all
+model constructions and satisfaction recursions are ordinary ZFC
+constructions.  Accordingly their composition gives the conventional
+mathematical theorem
+\[
+ \mathrm{ZFC}\ \vdash\
+ \bigl(\neg\operatorname{Halt}(M_{246},\mathrm{blank})
+       \longleftrightarrow\operatorname{Con}(\mathrm{ZFC})\bigr).
+\]
+This assertion does not assume that ZFC is consistent.  A consistency
+assumption is used only when drawing the separate consequence that the
+machine really does not halt and that ZFC cannot prove its nonhalting.
+The existing 252-state formal endpoint is an external Lean metatheorem;
+the present proof supplies an ordinary ZFC derivation for the new table,
+not an asserted PA-internal proof object or a freshly compiled 246-state
+Lean/Rocq endpoint.

@@ -1,0 +1,563 @@
+{
+  "status": "IMMUTABLE_EIGHT_UNIT_RUNTIME_GUARD_MANIFEST",
+  "generation": {
+    "path": "/tmp/zfc-rotation244-runtime-ports-v1/generation.json",
+    "sha256": "6c76063a887c6dbe4f3a5888befdfdeffde0c706dab7e540ab16c3d55c5c36f1"
+  },
+  "author_metadata_source": {
+    "path": "/tmp/zfc-rotation244-runtime-ports-v1/control/prepare_manifest_metadata.py",
+    "sha256": "6a66b3b80b50ec732bca584e67a7c61a0db0288e5b0bb48601a5042ce9ec1ba5"
+  },
+  "anchors": {
+    "generic": {
+      "record": {
+        "path": "/tmp/zfc-routing245-lean/runtime/run1/verification.json",
+        "sha256": "9371377fd870cc2c093591effa3891feb99d7ba0f3a42e566d703c3d67f03835"
+      },
+      "module": "BusyBeaver.ZFC.RuntimeInstanceRouting245",
+      "source_sha256": "b9978b797172ba16f18a9444a164f9bc8e70bd212f6031773df0ab52533336d1",
+      "audit_sha256": "7b85d49b0f04096d373b7cee914982e6f2dbe1cd9fe701ef4d6ad2f7ffc0337a",
+      "probes": 11,
+      "callers": 12,
+      "schema": "legacy_runtime245"
+    },
+    "table": {
+      "record": {
+        "path": "/tmp/zfc243-combined-lean/table-rotation/run2/verification.json",
+        "sha256": "339ac1eb684bf2b0e2dca81f6a5d693abf2f3fe7079d0c924e5cf2ab870f3466"
+      },
+      "module": "BusyBeaver.ZFC.TableRotation244",
+      "source_sha256": "6e8301757528cc7f4c167701b784b06861eecb454bcaef2c704065f527ef28f6",
+      "audit_sha256": "e161482575e1a0f253574f74b6ac3f32e2413b979058b31a1ab0f4cf903dbcb1",
+      "probes": 7,
+      "callers": 7,
+      "schema": "modern"
+    },
+    "kernel": {
+      "record": {
+        "path": "/tmp/zfc-rotation244-runtime-ports-v1/kernel/run1/verification.json",
+        "sha256": "d0bbdd03f9b9d588e45281aede7a50c1732b6967f4846b4378261575b459f899"
+      },
+      "module": "BusyBeaver.ZFC.Rotation244KernelRows",
+      "source_sha256": "2a9af3601acae5a2fd6b481f8bf2e99fdf1bd9d3d220ef688e47747ec8009e5a",
+      "audit_sha256": "23818b2368257cc4cd12a58ef9fcc68aa96389728abd04e535909c46c3240bec",
+      "probes": 20,
+      "callers": 3,
+      "schema": "modern"
+    },
+    "fast": {
+      "record": {
+        "path": "/tmp/zfc-rotation244-bootstrap/fast/run1/verification.json",
+        "sha256": "d6b705cf3b0ab31e94edd01b0256c1a0a0553ae2d8640873e7c6803c58ec8feb"
+      },
+      "module": "BusyBeaver.ZFC.FastTableRotation244",
+      "source_sha256": "4e2cc9f512b51aa1ca2def813c60a13fba1cda0384d8a3f38aa2a2aaa99b5a35",
+      "audit_sha256": "6d02310b7f15df5e0b51e5547e0889cce96442ec8438d37a0b4359d0d6b01d02",
+      "probes": 2,
+      "callers": 4,
+      "schema": "modern"
+    }
+  },
+  "units": {
+    "pulse": {
+      "module": "BusyBeaver.ZFC.Rotation244Pulse",
+      "source": {
+        "path": "/tmp/zfc-rotation244-runtime-ports-v1/pulse/Rotation244Pulse.lean",
+        "sha256": "437b309c8893d9be6db70f208bc120600da1c2399e1af5cadfd562de54e204e6"
+      },
+      "audit": {
+        "path": "/tmp/zfc-rotation244-runtime-ports-v1/pulse/Audit.lean",
+        "sha256": "95e017b42d28e5905662a6592229e62caa9946e1035120a99af9c3d3f166021e"
+      },
+      "imports": [
+        "BusyBeaver.ZFC.Rotation244KernelRows",
+        "BusyBeaver.ZFC.ZipperRuns"
+      ],
+      "probes": 3,
+      "callers": 4,
+      "qualified_probes": [
+        "SetTheory.BusyBeaver.ZFC.Rotation244Pulse.pulse_zero_zero",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Pulse.pulse_zero_one",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Pulse.pulse_core"
+      ],
+      "expected_projects": [
+        "BusyBeaver.Core",
+        "BusyBeaver.ZFC.FiniteZipper",
+        "BusyBeaver.ZFC.Rotation244KernelRows",
+        "BusyBeaver.ZFC.TableRotation244",
+        "BusyBeaver.ZFC.ZipperRuns"
+      ],
+      "expected_tools": [
+        "Init",
+        "Lean.Elab.Tactic.Omega"
+      ],
+      "anchors": [
+        "generic",
+        "kernel"
+      ],
+      "future_parents": []
+    },
+    "mark": {
+      "module": "BusyBeaver.ZFC.RegisterMarkRotation244",
+      "source": {
+        "path": "/tmp/zfc-rotation244-runtime-ports-v1/mark/RegisterMarkRotation244.lean",
+        "sha256": "261234f34bc6b67cd68608629868921697b69aebce12b8c2058746cfcb8215fc"
+      },
+      "audit": {
+        "path": "/tmp/zfc-rotation244-runtime-ports-v1/mark/Audit.lean",
+        "sha256": "f5e5ab5f73d78bb3228f2e589f6d037519c967707e43baf8f45830f9efb95619"
+      },
+      "imports": [
+        "BusyBeaver.ZFC.TableRotation244",
+        "BusyBeaver.ZFC.RegisterMarkPerm252"
+      ],
+      "probes": 10,
+      "callers": 6,
+      "qualified_probes": [
+        "SetTheory.BusyBeaver.ZFC.RegisterMarkRotation244.skip_one_facts",
+        "SetTheory.BusyBeaver.ZFC.RegisterMarkRotation244.skip_next_facts",
+        "SetTheory.BusyBeaver.ZFC.RegisterMarkRotation244.skip_file",
+        "SetTheory.BusyBeaver.ZFC.RegisterMarkRotation244.mark_steps",
+        "SetTheory.BusyBeaver.ZFC.RegisterMarkRotation244.mark_word",
+        "SetTheory.BusyBeaver.ZFC.RegisterMarkRotation244.mark_zip",
+        "SetTheory.BusyBeaver.ZFC.RegisterMarkRotation244.mark",
+        "SetTheory.BusyBeaver.ZFC.RegisterMarkRotation244.mark_with_suffix",
+        "SetTheory.BusyBeaver.ZFC.RegisterMarkRotation244.row_skip_target",
+        "SetTheory.BusyBeaver.ZFC.RegisterMarkRotation244.row_erase_one"
+      ],
+      "expected_projects": [
+        "BusyBeaver.Core",
+        "BusyBeaver.ZFC.FiniteZipper",
+        "BusyBeaver.ZFC.RegisterBoxesPerm252",
+        "BusyBeaver.ZFC.RegisterMarkPerm252",
+        "BusyBeaver.ZFC.TablePerm252",
+        "BusyBeaver.ZFC.TableRotation244",
+        "BusyBeaver.ZFC.ZipperRuns"
+      ],
+      "expected_tools": [
+        "Init",
+        "Lean.Elab.Tactic.Omega"
+      ],
+      "anchors": [
+        "generic",
+        "table"
+      ],
+      "future_parents": []
+    },
+    "boxes": {
+      "module": "BusyBeaver.ZFC.Rotation244Boxes",
+      "source": {
+        "path": "/tmp/zfc-rotation244-runtime-ports-v1/boxes/Rotation244Boxes.lean",
+        "sha256": "e5447c8a8b7cd9e660e89436c8afa2192444b73a12db9e7e7fe1f8c58c917981"
+      },
+      "audit": {
+        "path": "/tmp/zfc-rotation244-runtime-ports-v1/boxes/Audit.lean",
+        "sha256": "276950d8038c83ce5d9424d0d426878f0d019a3144ca2ebd2acd3c326d6d117b"
+      },
+      "imports": [
+        "BusyBeaver.ZFC.Rotation244Pulse",
+        "BusyBeaver.ZFC.RegisterMarkPerm252"
+      ],
+      "probes": 14,
+      "callers": 19,
+      "qualified_probes": [
+        "SetTheory.BusyBeaver.ZFC.Rotation244Boxes.carryBits_snoc",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Boxes.carry_file",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Boxes.return_separator",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Boxes.positive_decrement_zip",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Boxes.rollback_file",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Boxes.zero_decrement_zip",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Boxes.carry_end",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Boxes.shift_suffix",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Boxes.increment_zip",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Boxes.positive_decrement_boundary",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Boxes.positive_decrement",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Boxes.zero_decrement",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Boxes.increment",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Boxes.following_nonempty"
+      ],
+      "expected_projects": [
+        "BusyBeaver.Core",
+        "BusyBeaver.ZFC.FiniteZipper",
+        "BusyBeaver.ZFC.RegisterBoxesPerm252",
+        "BusyBeaver.ZFC.RegisterMarkPerm252",
+        "BusyBeaver.ZFC.Rotation244KernelRows",
+        "BusyBeaver.ZFC.Rotation244Pulse",
+        "BusyBeaver.ZFC.TablePerm252",
+        "BusyBeaver.ZFC.TableRotation244",
+        "BusyBeaver.ZFC.ZipperRuns"
+      ],
+      "expected_tools": [
+        "Init",
+        "Lean.Elab.Tactic.Omega"
+      ],
+      "anchors": [
+        "generic"
+      ],
+      "future_parents": [
+        "pulse"
+      ]
+    },
+    "symbolic": {
+      "module": "BusyBeaver.ZFC.SymbolicRotation244",
+      "source": {
+        "path": "/tmp/zfc-rotation244-runtime-ports-v1/symbolic/SymbolicRotation244.lean",
+        "sha256": "6d0b13ea57e21f466b79fa1dd457863b30aa5fcede546ab2e603a4264fe7d211"
+      },
+      "audit": {
+        "path": "/tmp/zfc-rotation244-runtime-ports-v1/symbolic/Audit.lean",
+        "sha256": "589c4df98e923608e6020feb4c01679366822ddde0e6993c0babdfdab80247cd"
+      },
+      "imports": [
+        "BusyBeaver.ZFC.Rotation244Boxes",
+        "BusyBeaver.ZFC.FastTableRotation244",
+        "BusyBeaver.ZFC.RegisterMarkRotation244",
+        "BusyBeaver.ZFC.WritingRuns"
+      ],
+      "probes": 15,
+      "callers": 15,
+      "qualified_probes": [
+        "SetTheory.BusyBeaver.ZFC.SymbolicRotation244.box_head",
+        "SetTheory.BusyBeaver.ZFC.SymbolicRotation244.box_mark",
+        "SetTheory.BusyBeaver.ZFC.SymbolicRotation244.box_increment",
+        "SetTheory.BusyBeaver.ZFC.SymbolicRotation244.box_zero_decrement",
+        "SetTheory.BusyBeaver.ZFC.SymbolicRotation244.box_positive_decrement",
+        "SetTheory.BusyBeaver.ZFC.SymbolicRotation244.box_back",
+        "SetTheory.BusyBeaver.ZFC.SymbolicRotation244.skipTarget_sound",
+        "SetTheory.BusyBeaver.ZFC.SymbolicRotation244.skipTarget_complete",
+        "SetTheory.BusyBeaver.ZFC.SymbolicRotation244.sstep_sound",
+        "SetTheory.BusyBeaver.ZFC.SymbolicRotation244.exec_sound",
+        "SetTheory.BusyBeaver.ZFC.SymbolicRotation244.matches_sound",
+        "SetTheory.BusyBeaver.ZFC.SymbolicRotation244.exec_to_matches",
+        "SetTheory.BusyBeaver.ZFC.SymbolicRotation244.exec_to_halt",
+        "SetTheory.BusyBeaver.ZFC.SymbolicRotation244.verifies_sound",
+        "SetTheory.BusyBeaver.ZFC.SymbolicRotation244.verifiesHalt_sound"
+      ],
+      "expected_projects": [
+        "BusyBeaver.Core",
+        "BusyBeaver.ZFC.FastTableRotation244",
+        "BusyBeaver.ZFC.FiniteZipper",
+        "BusyBeaver.ZFC.RegisterBoxesPerm252",
+        "BusyBeaver.ZFC.RegisterMarkPerm252",
+        "BusyBeaver.ZFC.RegisterMarkRotation244",
+        "BusyBeaver.ZFC.Rotation244Boxes",
+        "BusyBeaver.ZFC.Rotation244KernelRows",
+        "BusyBeaver.ZFC.Rotation244Pulse",
+        "BusyBeaver.ZFC.TablePerm252",
+        "BusyBeaver.ZFC.TableRotation244",
+        "BusyBeaver.ZFC.WritingRuns",
+        "BusyBeaver.ZFC.ZipperRuns"
+      ],
+      "expected_tools": [
+        "Init",
+        "Lean.Elab.Tactic.Omega"
+      ],
+      "anchors": [
+        "generic",
+        "fast"
+      ],
+      "future_parents": [
+        "boxes",
+        "mark"
+      ]
+    },
+    "site": {
+      "module": "BusyBeaver.ZFC.SiteRotation244",
+      "source": {
+        "path": "/tmp/zfc-rotation244-runtime-ports-v1/site/SiteRotation244.lean",
+        "sha256": "a62918086a5ca0312e61bf78019ef16ae69effec6e9fafda1b39ce59d8884ae2"
+      },
+      "audit": {
+        "path": "/tmp/zfc-rotation244-runtime-ports-v1/site/Audit.lean",
+        "sha256": "e6f8f681f749dce420ae09e5150c3389d78854df120962343803ebf033a299cc"
+      },
+      "imports": [
+        "BusyBeaver.ZFC.SymbolicRotation244",
+        "BusyBeaver.ZFC.Permutation252Frame"
+      ],
+      "probes": 12,
+      "callers": 13,
+      "qualified_probes": [
+        "SetTheory.BusyBeaver.ZFC.SiteRotation244.checkSite_length",
+        "SetTheory.BusyBeaver.ZFC.SiteRotation244.checkSite_operation",
+        "SetTheory.BusyBeaver.ZFC.SiteRotation244.runTo_sound",
+        "SetTheory.BusyBeaver.ZFC.SiteRotation244.runHalt_sound",
+        "SetTheory.BusyBeaver.ZFC.SiteRotation244.check_inc",
+        "SetTheory.BusyBeaver.ZFC.SiteRotation244.check_decnz",
+        "SetTheory.BusyBeaver.ZFC.SiteRotation244.check_break",
+        "SetTheory.BusyBeaver.ZFC.SiteRotation244.check_continue",
+        "SetTheory.BusyBeaver.ZFC.SiteRotation244.check_halt",
+        "SetTheory.BusyBeaver.ZFC.SiteRotation244.check_inc_bound",
+        "SetTheory.BusyBeaver.ZFC.SiteRotation244.check_decnz_bound",
+        "SetTheory.BusyBeaver.ZFC.SiteRotation244.check_node_false"
+      ],
+      "expected_projects": [
+        "BusyBeaver.Core",
+        "BusyBeaver.ZFC.FastTableRotation244",
+        "BusyBeaver.ZFC.FiniteZipper",
+        "BusyBeaver.ZFC.Permutation252Frame",
+        "BusyBeaver.ZFC.RegisterBoxes253",
+        "BusyBeaver.ZFC.RegisterBoxesPerm252",
+        "BusyBeaver.ZFC.RegisterMarkPerm252",
+        "BusyBeaver.ZFC.RegisterMarkRotation244",
+        "BusyBeaver.ZFC.RegisterPath",
+        "BusyBeaver.ZFC.Rotation244Boxes",
+        "BusyBeaver.ZFC.Rotation244KernelRows",
+        "BusyBeaver.ZFC.Rotation244Pulse",
+        "BusyBeaver.ZFC.SymbolicRotation244",
+        "BusyBeaver.ZFC.Table253",
+        "BusyBeaver.ZFC.TablePerm252",
+        "BusyBeaver.ZFC.TableRotation244",
+        "BusyBeaver.ZFC.WritingRuns",
+        "BusyBeaver.ZFC.ZipperRuns"
+      ],
+      "expected_tools": [
+        "Init",
+        "Lean.Elab.Tactic.Omega"
+      ],
+      "anchors": [
+        "generic"
+      ],
+      "future_parents": [
+        "symbolic"
+      ]
+    },
+    "frame": {
+      "module": "BusyBeaver.ZFC.Rotation244Simulation",
+      "source": {
+        "path": "/tmp/zfc-rotation244-runtime-ports-v1/frame/Rotation244Simulation.lean",
+        "sha256": "4997568b50e9bb2d081032249534f03c0ff908664f9836a9f505721607d8cf84"
+      },
+      "audit": {
+        "path": "/tmp/zfc-rotation244-runtime-ports-v1/frame/Audit.lean",
+        "sha256": "50465c3ec12c62f04e521a17316fb99f69fd2c8143380d089b65cdcf20457972"
+      },
+      "imports": [
+        "BusyBeaver.ZFC.RegisterPathClean",
+        "BusyBeaver.ZFC.SiteRotation244"
+      ],
+      "probes": 14,
+      "callers": 15,
+      "qualified_probes": [
+        "SetTheory.BusyBeaver.ZFC.Rotation244Simulation.registerBits_eq",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Simulation.flat_map_bit",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Simulation.start_concrete",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Simulation.source_represents",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Simulation.target_concrete",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Simulation.target_frame",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Simulation.incr_eq_write",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Simulation.decr_eq_write",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Simulation.unchanged_rebase",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Simulation.nth_vregs_append_getD",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Simulation.increment_rebase",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Simulation.decrement_rebase",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Simulation.valid_none",
+        "SetTheory.BusyBeaver.ZFC.Rotation244Simulation.valid_branch"
+      ],
+      "expected_projects": [
+        "BusyBeaver.Core",
+        "BusyBeaver.ZFC.FastTableRotation244",
+        "BusyBeaver.ZFC.FiniteZipper",
+        "BusyBeaver.ZFC.Permutation252Frame",
+        "BusyBeaver.ZFC.RMDag",
+        "BusyBeaver.ZFC.RMEquiv",
+        "BusyBeaver.ZFC.RegisterBoxes253",
+        "BusyBeaver.ZFC.RegisterBoxesPerm252",
+        "BusyBeaver.ZFC.RegisterMarkPerm252",
+        "BusyBeaver.ZFC.RegisterMarkRotation244",
+        "BusyBeaver.ZFC.RegisterPath",
+        "BusyBeaver.ZFC.RegisterPathClean",
+        "BusyBeaver.ZFC.Rotation244Boxes",
+        "BusyBeaver.ZFC.Rotation244KernelRows",
+        "BusyBeaver.ZFC.Rotation244Pulse",
+        "BusyBeaver.ZFC.SiteRotation244",
+        "BusyBeaver.ZFC.SymbolicRotation244",
+        "BusyBeaver.ZFC.Table253",
+        "BusyBeaver.ZFC.TablePerm252",
+        "BusyBeaver.ZFC.TableRotation244",
+        "BusyBeaver.ZFC.WritingRuns",
+        "BusyBeaver.ZFC.ZipperRuns"
+      ],
+      "expected_tools": [
+        "Init",
+        "Lean.Elab.Tactic.Omega"
+      ],
+      "anchors": [
+        "generic"
+      ],
+      "future_parents": [
+        "site"
+      ]
+    },
+    "instruction": {
+      "module": "BusyBeaver.ZFC.InstructionRotation244",
+      "source": {
+        "path": "/tmp/zfc-rotation244-runtime-ports-v1/instruction/InstructionRotation244.lean",
+        "sha256": "2f6a550cd7d6592ccaa1de0cc3e136cea16e6f11db049a3313267c55f094acd1"
+      },
+      "audit": {
+        "path": "/tmp/zfc-rotation244-runtime-ports-v1/instruction/Audit.lean",
+        "sha256": "41e715045b748587c4e56434ec3e13a122d8951fa7a988d98eed83d5c54443c7"
+      },
+      "imports": [
+        "BusyBeaver.ZFC.Rotation244Simulation"
+      ],
+      "probes": 7,
+      "callers": 7,
+      "qualified_probes": [
+        "SetTheory.BusyBeaver.ZFC.InstructionRotation244.incRev_length",
+        "SetTheory.BusyBeaver.ZFC.InstructionRotation244.incPath_length",
+        "SetTheory.BusyBeaver.ZFC.InstructionRotation244.stripPath_length",
+        "SetTheory.BusyBeaver.ZFC.InstructionRotation244.breakPath_length",
+        "SetTheory.BusyBeaver.ZFC.InstructionRotation244.continuePath_length",
+        "SetTheory.BusyBeaver.ZFC.InstructionRotation244.execute_frame",
+        "SetTheory.BusyBeaver.ZFC.InstructionRotation244.halt_frame"
+      ],
+      "expected_projects": [
+        "BusyBeaver.Core",
+        "BusyBeaver.ZFC.FastTableRotation244",
+        "BusyBeaver.ZFC.FiniteZipper",
+        "BusyBeaver.ZFC.Permutation252Frame",
+        "BusyBeaver.ZFC.RMDag",
+        "BusyBeaver.ZFC.RMEquiv",
+        "BusyBeaver.ZFC.RegisterBoxes253",
+        "BusyBeaver.ZFC.RegisterBoxesPerm252",
+        "BusyBeaver.ZFC.RegisterMarkPerm252",
+        "BusyBeaver.ZFC.RegisterMarkRotation244",
+        "BusyBeaver.ZFC.RegisterPath",
+        "BusyBeaver.ZFC.RegisterPathClean",
+        "BusyBeaver.ZFC.Rotation244Boxes",
+        "BusyBeaver.ZFC.Rotation244KernelRows",
+        "BusyBeaver.ZFC.Rotation244Pulse",
+        "BusyBeaver.ZFC.Rotation244Simulation",
+        "BusyBeaver.ZFC.SiteRotation244",
+        "BusyBeaver.ZFC.SymbolicRotation244",
+        "BusyBeaver.ZFC.Table253",
+        "BusyBeaver.ZFC.TablePerm252",
+        "BusyBeaver.ZFC.TableRotation244",
+        "BusyBeaver.ZFC.WritingRuns",
+        "BusyBeaver.ZFC.ZipperRuns"
+      ],
+      "expected_tools": [
+        "Init",
+        "Lean.Elab.Tactic.Omega"
+      ],
+      "anchors": [
+        "generic"
+      ],
+      "future_parents": [
+        "frame"
+      ]
+    },
+    "runtime": {
+      "module": "BusyBeaver.ZFC.RuntimeInstanceRotation244",
+      "source": {
+        "path": "/tmp/zfc-rotation244-runtime-ports-v1/runtime/RuntimeInstanceRotation244.lean",
+        "sha256": "0b2521a3dd0390bf7bd0b3203955e1bbfa42dfafe2942dd4bda2e7f1a15b4b56"
+      },
+      "audit": {
+        "path": "/tmp/zfc-rotation244-runtime-ports-v1/runtime/Audit.lean",
+        "sha256": "798396682de7c28dc244c4a147d02d28a7cbe453a3eadb61c1be1d94f773af1a"
+      },
+      "imports": [
+        "BusyBeaver.ZFC.RuntimePerm252",
+        "BusyBeaver.ZFC.InstructionRotation244",
+        "BusyBeaver.ZFC.SiteCoverage"
+      ],
+      "probes": 11,
+      "callers": 12,
+      "qualified_probes": [
+        "SetTheory.BusyBeaver.ZFC.RuntimeInstanceRotation244.covered_of_allSites",
+        "SetTheory.BusyBeaver.ZFC.RuntimeInstanceRotation244.related_active",
+        "SetTheory.BusyBeaver.ZFC.RuntimeInstanceRotation244.clean_suffix",
+        "SetTheory.BusyBeaver.ZFC.RuntimeInstanceRotation244.source_from_walk",
+        "SetTheory.BusyBeaver.ZFC.RuntimeInstanceRotation244.related_step",
+        "SetTheory.BusyBeaver.ZFC.RuntimeInstanceRotation244.stopped_terminal",
+        "SetTheory.BusyBeaver.ZFC.RuntimeInstanceRotation244.related_halt",
+        "SetTheory.BusyBeaver.ZFC.RuntimeInstanceRotation244.positive_simulation",
+        "SetTheory.BusyBeaver.ZFC.RuntimeInstanceRotation244.partialRun_eq_registerRun",
+        "SetTheory.BusyBeaver.ZFC.RuntimeInstanceRotation244.register_halts_iff_binary",
+        "SetTheory.BusyBeaver.ZFC.RuntimeInstanceRotation244.allSites_halts_iff_binary"
+      ],
+      "expected_projects": [
+        "BusyBeaver.Core",
+        "BusyBeaver.ZFC.FastTableRotation244",
+        "BusyBeaver.ZFC.FiniteZipper",
+        "BusyBeaver.ZFC.InstructionRotation244",
+        "BusyBeaver.ZFC.Permutation252Frame",
+        "BusyBeaver.ZFC.RMBisim",
+        "BusyBeaver.ZFC.RMDag",
+        "BusyBeaver.ZFC.RMEquiv",
+        "BusyBeaver.ZFC.RegisterBoxes253",
+        "BusyBeaver.ZFC.RegisterBoxesPerm252",
+        "BusyBeaver.ZFC.RegisterMarkPerm252",
+        "BusyBeaver.ZFC.RegisterMarkRotation244",
+        "BusyBeaver.ZFC.RegisterPath",
+        "BusyBeaver.ZFC.RegisterPathClean",
+        "BusyBeaver.ZFC.Rotation244Boxes",
+        "BusyBeaver.ZFC.Rotation244KernelRows",
+        "BusyBeaver.ZFC.Rotation244Pulse",
+        "BusyBeaver.ZFC.Rotation244Simulation",
+        "BusyBeaver.ZFC.RuntimePerm252",
+        "BusyBeaver.ZFC.SiteCoverage",
+        "BusyBeaver.ZFC.SiteRotation244",
+        "BusyBeaver.ZFC.SymbolicRotation244",
+        "BusyBeaver.ZFC.Table253",
+        "BusyBeaver.ZFC.TablePerm252",
+        "BusyBeaver.ZFC.TableRotation244",
+        "BusyBeaver.ZFC.WritingRuns",
+        "BusyBeaver.ZFC.ZipperRuns"
+      ],
+      "expected_tools": [
+        "Init",
+        "Lean.Elab.Tactic.Omega"
+      ],
+      "anchors": [
+        "generic"
+      ],
+      "future_parents": [
+        "instruction"
+      ]
+    }
+  },
+  "all_allowed_projects": [
+    "BusyBeaver.Core",
+    "BusyBeaver.ZFC.FastTableRotation244",
+    "BusyBeaver.ZFC.FiniteZipper",
+    "BusyBeaver.ZFC.InstructionRotation244",
+    "BusyBeaver.ZFC.Permutation252Frame",
+    "BusyBeaver.ZFC.RMBisim",
+    "BusyBeaver.ZFC.RMDag",
+    "BusyBeaver.ZFC.RMEquiv",
+    "BusyBeaver.ZFC.RegisterBoxes253",
+    "BusyBeaver.ZFC.RegisterBoxesPerm252",
+    "BusyBeaver.ZFC.RegisterMarkPerm252",
+    "BusyBeaver.ZFC.RegisterMarkRotation244",
+    "BusyBeaver.ZFC.RegisterPath",
+    "BusyBeaver.ZFC.RegisterPathClean",
+    "BusyBeaver.ZFC.Rotation244Boxes",
+    "BusyBeaver.ZFC.Rotation244KernelRows",
+    "BusyBeaver.ZFC.Rotation244Pulse",
+    "BusyBeaver.ZFC.Rotation244Simulation",
+    "BusyBeaver.ZFC.RuntimePerm252",
+    "BusyBeaver.ZFC.SiteCoverage",
+    "BusyBeaver.ZFC.SiteRotation244",
+    "BusyBeaver.ZFC.SymbolicRotation244",
+    "BusyBeaver.ZFC.Table253",
+    "BusyBeaver.ZFC.TablePerm252",
+    "BusyBeaver.ZFC.TableRotation244",
+    "BusyBeaver.ZFC.WritingRuns",
+    "BusyBeaver.ZFC.ZipperRuns"
+  ],
+  "compiler": {
+    "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+    "sha256": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550",
+    "version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+    "compiler_version_query_performed": false
+  },
+  "maintained_repo": "/home/codex/.codex/worktrees/ec20/Proofs",
+  "shared_timeout_seconds": 120,
+  "memory_mebibytes": 4096,
+  "threads": 1,
+  "scope": "Fresh Rotation244 runtime prerequisites only. Every future predecessor is selected from an explicit actual PASS record+SHA at invocation, not from invented object identities. Coverage, startup frame and binary endpoint remain separate."
+}

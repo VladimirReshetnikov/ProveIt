@@ -1,0 +1,275 @@
+{
+  "checker_sha256": "ffd2a19544e62f6c892cbc17a709303c9ed32307206a332c8135cf0d241790af",
+  "exceptional_blocks": [
+    {
+      "candidate_path": [
+        [
+          72,
+          0,
+          0
+        ],
+        [
+          144,
+          -1,
+          0
+        ],
+        [
+          47,
+          0,
+          0
+        ],
+        [
+          15,
+          -1,
+          0
+        ],
+        [
+          32,
+          -2,
+          1
+        ],
+        [
+          46,
+          -1,
+          0
+        ],
+        [
+          17,
+          0,
+          0
+        ],
+        [
+          106,
+          -1,
+          0
+        ],
+        [
+          93,
+          0,
+          0
+        ]
+      ],
+      "exit_head": 1,
+      "exit_state": 57,
+      "matches_old_step_on_every_inspected_cell": true,
+      "old_state": 72,
+      "read": 0,
+      "steps": 9
+    },
+    {
+      "candidate_path": [
+        [
+          72,
+          0,
+          1
+        ],
+        [
+          36,
+          -1,
+          0
+        ],
+        [
+          53,
+          0,
+          1
+        ]
+      ],
+      "exit_head": 1,
+      "exit_state": 64,
+      "matches_old_step_on_every_inspected_cell": true,
+      "old_state": 72,
+      "read": 1,
+      "steps": 3
+    },
+    {
+      "candidate_path": [
+        [
+          72,
+          0,
+          0
+        ],
+        [
+          144,
+          -1,
+          1
+        ],
+        [
+          82,
+          0,
+          0
+        ]
+      ],
+      "exit_head": 1,
+      "exit_state": 93,
+      "matches_old_step_on_every_inspected_cell": true,
+      "old_state": 90,
+      "read": 0,
+      "steps": 3
+    },
+    {
+      "candidate_path": [
+        [
+          72,
+          0,
+          1
+        ],
+        [
+          36,
+          -1,
+          1
+        ],
+        [
+          54,
+          0,
+          1
+        ]
+      ],
+      "exit_head": 1,
+      "exit_state": 71,
+      "matches_old_step_on_every_inspected_cell": true,
+      "old_state": 90,
+      "read": 1,
+      "steps": 3
+    }
+  ],
+  "incoming_rows": {
+    "55": [
+      [
+        37,
+        1,
+        1,
+        1
+      ]
+    ],
+    "72": [
+      [
+        55,
+        0,
+        0,
+        1
+      ],
+      [
+        142,
+        0,
+        0,
+        1
+      ]
+    ],
+    "90": [
+      [
+        79,
+        1,
+        1,
+        1
+      ]
+    ],
+    "142": [
+      [
+        119,
+        1,
+        1,
+        1
+      ]
+    ]
+  },
+  "inductive_guard_argument": {
+    "142": "Only incoming row is119/1=1R142, hence immediate left cell1",
+    "55": "Only incoming row is37/1=1R55, hence immediate left cell1",
+    "72": "Only incoming rows55/0 and142/0 write0 and move right; predecessor invariant gives left pair10",
+    "90": "Only incoming row79/1=1R90, hence immediate left cell1",
+    "initial": "Start95 is unconstrained, so these state-conditional guards hold on every input tape"
+  },
+  "input_bindings": [
+    {
+      "actual_sha256": "3ee984818f0bdfd2c4daae72aeb14340572e34d73f5cdb5616b6d29d78fcd7f4",
+      "expected_sha256": "3ee984818f0bdfd2c4daae72aeb14340572e34d73f5cdb5616b6d29d78fcd7f4",
+      "matches": true,
+      "path": "reference/baseline_sites.json"
+    },
+    {
+      "actual_sha256": "74b1e7f73cc3ffe7761e36ab2d57a26e0ba34d3ac624f2472799e6ac41d5a51d",
+      "expected_sha256": "74b1e7f73cc3ffe7761e36ab2d57a26e0ba34d3ac624f2472799e6ac41d5a51d",
+      "matches": true,
+      "path": "machines/sites_logical.json"
+    },
+    {
+      "actual_sha256": "1fa8526c3c971d5a48868599eaed890f614c5a79256e51622d3e32a64229f3a3",
+      "expected_sha256": "1fa8526c3c971d5a48868599eaed890f614c5a79256e51622d3e32a64229f3a3",
+      "matches": true,
+      "path": "reference/baseline241_old.tm"
+    },
+    {
+      "actual_sha256": "88a1f42b01b7e2b4bf29bc1b3819b78f1e7a17cefaefbc003654f2f5cc202c2f",
+      "expected_sha256": "88a1f42b01b7e2b4bf29bc1b3819b78f1e7a17cefaefbc003654f2f5cc202c2f",
+      "matches": true,
+      "path": "reference/rotated241_old.tm"
+    },
+    {
+      "actual_sha256": "547dd69da66f66dd48238a53d34b52a3ce85bb6c7d01534dd1cfb815507f248f",
+      "expected_sha256": "547dd69da66f66dd48238a53d34b52a3ce85bb6c7d01534dd1cfb815507f248f",
+      "matches": true,
+      "path": "machines/zfc240_old.tm"
+    }
+  ],
+  "macros": [
+    {
+      "entry_new": "111010010010110000110",
+      "entry_old": "1110100100101100001100",
+      "exit": "1110100100101100010",
+      "outside_ingress": [
+        [
+          "111010010010110000100",
+          false
+        ]
+      ],
+      "root": "11101001001011000011"
+    },
+    {
+      "entry_new": "11101001001011100110",
+      "entry_old": "111010010010111001100",
+      "exit": "111010010010111010",
+      "outside_ingress": [
+        [
+          "11101001001011100100",
+          false
+        ]
+      ],
+      "root": "1110100100101110011"
+    },
+    {
+      "entry_new": "11101001011000110",
+      "entry_old": "111010010110001100",
+      "exit": "111010010110010",
+      "outside_ingress": [
+        [
+          "11101001011000100",
+          false
+        ]
+      ],
+      "root": "1110100101100011"
+    },
+    {
+      "entry_new": "1111100110",
+      "entry_old": "11111001100",
+      "exit": "11111010",
+      "outside_ingress": [
+        [
+          "1111100100",
+          false
+        ]
+      ],
+      "root": "111110011"
+    }
+  ],
+  "outside_guarded_edges": 8370,
+  "required_bridge": "Use full rotated-table runtime theorem for rotated142_sites, exact rotated blank initialization, source induction above, and inherited baseline241 calibration; then apply local all-tape fold.",
+  "review_scope": "Independent data parser, source ancestor semantics and symbolic finite-tape block replay; does not duplicate the full8386-case parameterized runtime proof or upstream SIR/ZFC proof. Ordinary proof formalizable in ZFC; no proof-assistant endpoint claimed.",
+  "source_induction": {
+    "CC2_scope": "Old p011 removes final two ones to p0, first leaf p00. New p11 removes final two ones to p, first leaf p0. Neither pops outside the replacement root.",
+    "conclusion": "Finite exit at identical outside instruction with R5=m+n+1,R6=0, other registers unchanged, in 3n+2 source instructions",
+    "n_positive": "One CI5, one successful CD6, one CC2 return to the corresponding entry with (m+1,n-1)",
+    "n_zero": "Both execute CI5 once and one failed CD6, exit with (m+1,0) in 2 source instructions",
+    "variables": "R5=m,R6=n, arbitrary naturals; all other registers arbitrary"
+  },
+  "status": "INDEPENDENT_SOURCE_AND_LOCAL_REVIEW_PASS"
+}

@@ -1,0 +1,20 @@
+/tmp/zfc243-source-bridge/run1/sources/BusyBeaver/ZFC/SourceRotation244.lean:42:10: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  fun n => (RMEquiv.toPath (toDagEdge (nodes n).fst), RMEquiv.toPath (toDagEdge (nodes n).snd))
+in the target expression
+  {
+      nodes := fun n =>
+        (RMEquiv.toPath ((ofProgram { nodes := nodes, root := root, nnodes := nnodes }).nodes n).fst,
+          RMEquiv.toPath ((ofProgram { nodes := nodes, root := root, nnodes := nnodes }).nodes n).snd),
+      root := root, nnodes := nnodes } =
+    { nodes := nodes, root := root, nnodes := nnodes }
+
+case mk
+nodes : Nat → RegisterPath.Edge × RegisterPath.Edge
+root nnodes : Nat
+hn : (fun n => (RMEquiv.toPath (toDagEdge (nodes n).fst), RMEquiv.toPath (toDagEdge (nodes n).snd))) = nodes
+⊢ {
+      nodes := fun n =>
+        (RMEquiv.toPath ((ofProgram { nodes := nodes, root := root, nnodes := nnodes }).nodes n).fst,
+          RMEquiv.toPath ((ofProgram { nodes := nodes, root := root, nnodes := nnodes }).nodes n).snd),
+      root := root, nnodes := nnodes } =
+    { nodes := nodes, root := root, nnodes := nnodes }

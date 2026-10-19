@@ -1,0 +1,532 @@
+[
+  {
+    "status": "PASS_UNIVERSAL_SOURCE_EQUIVALENCE",
+    "association": "right",
+    "scope": "Source loop identity and exact surrounding CFG only; TM runtime and blank bootstrap are separate obligations.",
+    "old_source_leaves": 6460,
+    "new_source_leaves": 6459,
+    "new_guarded_cases": 8390,
+    "register_precondition": "All nine registers arbitrary natural numbers.",
+    "register_postcondition": "R0_new=R0_entry+R6_entry+1; R6_new=0; all seven other registers unchanged.",
+    "old_loop_head": 6,
+    "new_loop_head": 7,
+    "new_minus_old_at_related_heads": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "equal_register_block_heads": [
+      6,
+      6
+    ],
+    "unbounded_symbolic_blocks": [
+      {
+        "guard": "R6=0",
+        "instruction_count": 2,
+        "old": {
+          "exit": 10,
+          "register_deltas": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "trace": [
+            [
+              6,
+              "zero",
+              9
+            ],
+            [
+              9,
+              "inc",
+              10
+            ]
+          ],
+          "output_lower_bounds": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_upper_bounds": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null
+          ]
+        },
+        "new": {
+          "exit": 9,
+          "register_deltas": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "trace": [
+            [
+              6,
+              "inc",
+              7
+            ],
+            [
+              7,
+              "zero",
+              9
+            ]
+          ],
+          "output_lower_bounds": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_upper_bounds": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null
+          ]
+        }
+      },
+      {
+        "guard": "R6>=1",
+        "instruction_count": 3,
+        "old": {
+          "exit": 6,
+          "register_deltas": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            -1,
+            0,
+            0
+          ],
+          "trace": [
+            [
+              6,
+              "positive",
+              7
+            ],
+            [
+              7,
+              "inc",
+              8
+            ],
+            [
+              8,
+              "control",
+              6
+            ]
+          ],
+          "output_lower_bounds": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_upper_bounds": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "new": {
+          "exit": 6,
+          "register_deltas": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            -1,
+            0,
+            0
+          ],
+          "trace": [
+            [
+              6,
+              "inc",
+              7
+            ],
+            [
+              7,
+              "positive",
+              8
+            ],
+            [
+              8,
+              "control",
+              6
+            ]
+          ],
+          "output_lower_bounds": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_upper_bounds": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      }
+    ],
+    "loop_variant": "R6, decreases by exactly one per positive iteration.",
+    "old_instruction_count": "3*R6_entry+2",
+    "new_instruction_count": "3*R6_entry+2",
+    "context_edges_checked": 8385,
+    "external_entry_edges": [
+      [
+        2,
+        "zero"
+      ]
+    ],
+    "old_halt_site": 6324,
+    "new_halt_site": 6323,
+    "old_sites_sha256": "f77a3fb9729382a0b8cd24d480639862b63ecb76bbc205542d1fc7077c025745",
+    "old_physical_sites_sha256": "f8de752f1c6fa89b9670473f7a9d04618aa19fd9cf499e99464abab33193b93e",
+    "logical_to_physical_registers": {
+      "8": 1,
+      "0": 6,
+      "6": 8,
+      "7": 5,
+      "3": 4,
+      "4": 3,
+      "1": 2,
+      "2": 0,
+      "5": 7
+    },
+    "new_sites_sha256": "3ee984818f0bdfd2c4daae72aeb14340572e34d73f5cdb5616b6d29d78fcd7f4"
+  },
+  {
+    "status": "PASS_UNIVERSAL_SOURCE_EQUIVALENCE",
+    "association": "left",
+    "scope": "Source loop identity and exact surrounding CFG only; TM runtime and blank bootstrap are separate obligations.",
+    "old_source_leaves": 6460,
+    "new_source_leaves": 6459,
+    "new_guarded_cases": 8390,
+    "register_precondition": "All nine registers arbitrary natural numbers.",
+    "register_postcondition": "R0_new=R0_entry+R6_entry+1; R6_new=0; all seven other registers unchanged.",
+    "old_loop_head": 6,
+    "new_loop_head": 7,
+    "new_minus_old_at_related_heads": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "equal_register_block_heads": [
+      6,
+      6
+    ],
+    "unbounded_symbolic_blocks": [
+      {
+        "guard": "R6=0",
+        "instruction_count": 2,
+        "old": {
+          "exit": 10,
+          "register_deltas": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "trace": [
+            [
+              6,
+              "zero",
+              9
+            ],
+            [
+              9,
+              "inc",
+              10
+            ]
+          ],
+          "output_lower_bounds": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_upper_bounds": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null
+          ]
+        },
+        "new": {
+          "exit": 9,
+          "register_deltas": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "trace": [
+            [
+              6,
+              "inc",
+              7
+            ],
+            [
+              7,
+              "zero",
+              9
+            ]
+          ],
+          "output_lower_bounds": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_upper_bounds": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null
+          ]
+        }
+      },
+      {
+        "guard": "R6>=1",
+        "instruction_count": 3,
+        "old": {
+          "exit": 6,
+          "register_deltas": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            -1,
+            0,
+            0
+          ],
+          "trace": [
+            [
+              6,
+              "positive",
+              7
+            ],
+            [
+              7,
+              "inc",
+              8
+            ],
+            [
+              8,
+              "control",
+              6
+            ]
+          ],
+          "output_lower_bounds": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_upper_bounds": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "new": {
+          "exit": 6,
+          "register_deltas": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            -1,
+            0,
+            0
+          ],
+          "trace": [
+            [
+              6,
+              "inc",
+              7
+            ],
+            [
+              7,
+              "positive",
+              8
+            ],
+            [
+              8,
+              "control",
+              6
+            ]
+          ],
+          "output_lower_bounds": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_upper_bounds": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        }
+      }
+    ],
+    "loop_variant": "R6, decreases by exactly one per positive iteration.",
+    "old_instruction_count": "3*R6_entry+2",
+    "new_instruction_count": "3*R6_entry+2",
+    "context_edges_checked": 8385,
+    "external_entry_edges": [
+      [
+        2,
+        "zero"
+      ]
+    ],
+    "old_halt_site": 6324,
+    "new_halt_site": 6323,
+    "old_sites_sha256": "f77a3fb9729382a0b8cd24d480639862b63ecb76bbc205542d1fc7077c025745",
+    "old_physical_sites_sha256": "f8de752f1c6fa89b9670473f7a9d04618aa19fd9cf499e99464abab33193b93e",
+    "logical_to_physical_registers": {
+      "8": 1,
+      "0": 6,
+      "6": 8,
+      "7": 5,
+      "3": 4,
+      "4": 3,
+      "1": 2,
+      "2": 0,
+      "5": 7
+    },
+    "new_sites_sha256": "0e6a40369f64a94392e04510aea24ab4590c40387cf45e908eb841bca9db69ba"
+  }
+]

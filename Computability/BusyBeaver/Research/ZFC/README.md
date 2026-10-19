@@ -27,6 +27,34 @@ the lower bound needed for the independence argument; no absolute consistency
 proof is claimed. Require a concrete encoding benefit before increasing the
 benchmark strength.
 
+The [**240-state candidate**](candidate-rotation240/README.md) from `e5c2b3337e`
+combines another source-loop rotation with a 72/90 state fold. Fresh replay
+passes all 8,386 runtime cases, 2,322,575 symbolic rules and all 480 transition
+rows, with exact 409,691-step blank initialization. Its ordinary consistency
+argument is independently reviewed; the full exact-table Lean endpoint and
+internal PA equivalence remain open. The new source has 6,455 leaves and
+requires its own binary runtime and decoder coverage. The active formalization
+target is now this 240-state machine. See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md).
+
+The [240 source-equivalence proof](source_rotation240.md) now passes Lean:
+10 theorem probes and 13 typed callers, with zero warnings. It proves that
+the new register program preserves halting for every initial register file.
+The binary runtime, initialization and final consistency composition remain
+separate obligations.
+
+The [exact 240-state table and fast lookup](rotation240_foundations.md) also
+pass Lean: nine theorem probes and eleven typed callers, with zero warnings.
+The fast evaluator is proved equal to the published machine for every state
+and input bit.
+
+The [**241-state candidate**](candidate-fold241/README.md) from `8c41b1fb7d`
+adds two local folds to the combined243 table. The last fold uses a bit written
+by the predecessor to distinguish two merged controls. Fresh replay passes
+all 8,390 runtime cases, 2,319,442 symbolic rules and all 482 transition rows,
+with exact 408,419-step blank initialization. Its ordinary proof preserves
+halting; the complete Lean consistency endpoint and internal PA comparison
+remain open. The unchanged source allows it to reuse the formal work below.
+
 The [combined **243-state candidate**](candidate-combined243/README.md) combines
 two compatible reductions of Routing245. The loop rotation from `d91a27b462`
 removes old state 26; the compensation from `248bc05936` removes old state 122.
@@ -35,9 +63,23 @@ rotation. The new table passes all 8,390 expanded runtime cases and 2,314,868
 symbolic rules, with its own exact 407,967-step blank initialization.
 [Lean proves its halting equivalence to the rotated 244-state table](combined243_simulation.md):
 five units pass 83 theorem probes and 39 typed callers, with zero warnings.
-The ordinary proof supports the same ZFC consistency calibration. The rotation's
-source/runtime connection still needs a complete Lean proof, so compensated244
-remains the smallest machine with a closed external Lean consistency endpoint.
+The ordinary proof supports the same ZFC consistency calibration. The
+compensated244 machine remains the smallest closed external Lean consistency
+endpoint while the rotation binary connection is completed.
+
+The [exact Rotation244 blank startup](rotation244_bootstrap.md) now proves
+all 407,931 transitions and the complete final tape: state 87, head −5,
+351 one cells and 167 value-one spare registers. Its fast lookup, first
+checkpoint and ten continuation modules pass 76 theorem probes and 111
+typed callers with zero warnings. The
+[rotated source and logical calibration](source_rotation244.md) are also
+checked. The [nine runtime units](rotation244_runtime.md) now pass 106 theorem
+probes and 94 typed callers with zero warnings. Their halting equivalence
+retains coverage and initial-frame hypotheses. The
+[exact decoder tree and startup frame](rotation244_tree_frame.md) now pass
+16 further probes and 19 callers, discharging the initial-frame requirement.
+Complete decoder-site coverage and final binary composition remain necessary
+to close the 243-state endpoint; PA internalization remains open.
 
 The compensated **244-state candidate** from `248bc05936` has passed the
 complete fresh 8,391-case symbolic runtime replay. Its
@@ -1879,3 +1921,24 @@ This establishes arity and shift invariance for the explicitly closed
 domain, equality and membership formulas. Identifying this parameter with
 the semantic interpretation, domain nonemptiness and uniform internal ZF
 axiom transport remain separate steps.
+
+Five checked source-level rotation units now total 34 named probes and 40 typed
+callers, all with zero warnings. `SourceRotation244` proves whole-program
+halting equivalence for arbitrary register functions; `CalibratedRotation244`
+composes it with the established logical seed and proves rotated-source
+nonhalting iff ZF/ZFC consistency. The exact binary runtime and blank-start
+connection remain open, as does internal PA formalization. See
+[source_rotation244.md](source_rotation244.md) for the actual records and the
+preserved one-unfold source repair; no new binary 243/244 endpoint is claimed.
+
+The [native GIC schema recognizer](native_gic_delta1.md) passed a fresh Lean
+source check and focused audit: seven probes, ten typed callers, zero warnings.
+It gives arithmetic recognition of GIC instances, including arbitrary
+internal codes. Translating native proofs into the validator remains an
+additional obligation for the PA consistency result.
+
+The [simultaneous-substitution bridge](validator_environment_substitution254.md)
+also passed nine probes and eleven typed callers without warnings. It proves
+the exact configurable-encoder identity for arbitrary internal substitution
+vectors, including swapped and repeated two-slot replacements. Native axiom
+and derivation transport remain to be supplied.

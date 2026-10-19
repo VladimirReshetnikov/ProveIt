@@ -1,0 +1,299 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,hyperref}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}[lemma]{Theorem}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Refute}{\operatorname{Refute}}
+\title{Composition audit for the 245-state consistency machine}
+\author{Supplement to the ProveIt research contribution}
+\date{18 October 2026}
+\begin{document}
+\maketitle
+
+\paragraph{Exact object and proof boundary.}
+Let $M$ be the binary table whose canonical file SHA-256 is
+\begin{center}\small
+\path{17f4d430747c4a0cd580dc2cc13ea06a74ce7f51f12be4c2d12f6a646691dd13}.
+\end{center}
+It has working states $0,\ldots,244$, start state~0, a single terminal
+state~245, and exactly 490 transition rows. The blank symbol is~0 and every
+step moves left or right. Its old-label file has SHA-256
+\begin{center}\small
+\path{f8dbeacdad5fd89c57e3f240781324b09110be8e0ccdb838a9c710fb28d2a267}.
+\end{center}
+The old-label start, dispatcher and terminal are 95, 96 and 254. An explicit
+bijection of labels was checked on every transition.
+
+The argument below is an ordinary mathematical proof using the stated
+universal word and register-operation lemmas, the finite certificate checks,
+and the existing source-program and set-theoretic interpretation theorems.
+The new binary endpoint has not yet been checked by Lean or Rocq. This
+distinction concerns verification in a proof-assistant kernel; the argument's
+mathematical strength is ZFC. The source references are pinned to ProveIt
+commit \path{c6bf052c70bbbafba8c39370a6a2d123f57cd2c1}.
+
+\section{The concrete initial frame}
+
+The exact blank computation reaches its first certified empty-pointer root
+frame after 407915 steps. In old coordinates the head is $h=-5$, its left
+marker is at $-6$, and the register header is at 176. Thus the pointed
+header distance is $d=181$. The nine physical register values are
+\[
+ (0,0,0,3,0,0,3,0,0).
+\]
+The logical-to-physical map is
+\[
+ (6,2,0,4,3,7,8,5,1),
+\]
+so the logical values in order $(N,T,W,A,D,H,X,Y,L)$ are
+\[
+ (3,0,0,0,3,0,0,0,0).                       \tag{1}
+\]
+The register file is followed by exactly 167 spare blocks, all of value~1.
+The frame has 351 one-cells in total and no other nonblank cells. Two exact
+interpreters agree on the complete endpoint. A separate arithmetic checker
+reconstructed all 351 one-cell positions from the stated block values and
+compared them with that endpoint.
+
+The successful grammar also satisfies all 54 immediate projection equations
+of the block-aware bootstrap lock. This was checked independently against
+\path{bootstrap-lock54.txt}; the successful build's original local report
+had not requested that optional check. The lock and the 1410 guarded
+three-step scanner shortcuts explain the time change
+$410735-2\cdot1410=407915$. The complete replay directly verifies the
+resulting finite prefix, independently of this explanation.
+
+\section{Uniform padding and the spare invariant}
+
+Write $B(v)=0\,1^{v+1}$. A dispatched frame consists of the left marker,
+a finite instruction-pointer word $p$, zero padding, the header one, nine
+primary blocks $B(r_i)$, and a nonempty finite list of spare blocks. The
+unrepresented tape exterior is blank. Put
+\[
+ d=n+64,\qquad n\in\mathbb N.
+\]
+The padding immediately after $p$ therefore has length $n+64-|p|$.
+Every leaf of the new complete decoder has depth at most 51, so this
+quantity is nonnegative and is at least $n+13$ at any leaf. The initial
+frame has $n=181-64=117$.
+
+The complete source decoder has 6459 internal nodes, 6460 instruction
+leaves, and 8391 guarded cases. Its maximum run of zero bits on a leaf
+path is six. The actual shortened binary scanner, including its exceptional
+zero-guard cases, is included in the full symbolic execution checks.
+The six-zero bound is not used as a replacement for those checks.
+
+For a source case, let $e=1$ for a positive decrement and $e=0$ otherwise.
+Let $o=1$ when the complete fixed-width pointer increment overflows, and
+$o=0$ otherwise. Break/zero-decrement pointer increments are included in
+this definition. The checked target frame has
+\[
+ d'=d+e+o,\qquad n'=n+e+o.                 \tag{2}
+\]
+Thus $n\geq0$ is inductive. The three overflow cases are numbered 8267,
+8356 and 8387 in the depth-first guarded-case order. Among the 8390
+nonterminal cases, 6456 have $d'=d$ and 1934 have $d'=d+1$.
+
+An increment appends one new spare block of value~1. Every other
+nonterminal source operation preserves the spare list. Consequently
+\[
+ K'=K+1\ \text{for increment},\qquad K'=K\ \text{otherwise}.       \tag{3}
+\]
+In particular, $K\geq167$ is inductive. This discharges the actual premise
+of the zero-decrement macro: even when the selected primary is the ninth
+register, a following block is available. The induction lemmas hold for
+arbitrary finite spare lists and arbitrary natural block values; they do
+not require a bounded or a fixed-size register representation.
+
+\begin{lemma}[Residual-pointer normalization]
+For every nonterminal guarded case, let $w$ be its complete successor
+pointer, retaining all trailing zero bits. Decode $w0^\omega$ to the next
+leaf pointer $q$. Then $w$ and $q$ differ only by a terminal string of
+zeroes, and, for every $n\geq0$,
+\[
+ w\,0^{n+64+e+o-|w|}
+   =q\,0^{n+64+e+o-|q|}.                  \tag{4}
+\]
+The empty initial pointer is equivalent in the same sense to leaf $000$.
+\end{lemma}
+
+\begin{proof}
+The clean-pointer argument is generic for a complete finite binary decoder.
+Increment flips its final zero and turns the following ones into zeroes,
+entering a sibling subtree followed by its all-left branch. A break first
+truncates at a zero and then performs that operation. Continue truncates at
+a one to an ancestor prefix. In every case, a stored suffix extending beyond
+the next leaf consists only of zeroes; an underflowed pointer is the empty
+root pointer. This argument uses the new tree's prefix-free complete leaf
+set, not a bound copied from the original decoder.
+
+The new decoder is independently reconstructed as a complete binary trie
+from its 6460 leaf paths. Decode each full successor pointer, extending it
+by zeroes when necessary. All 8390 successors have only zeroes after the
+decoded leaf, if any stored bits remain. Neither side of (4) passes the
+header: the smallest constant padding in the check is 13. The checker
+compares (4) at its constant part; appending the same $n$ zeroes before the
+header proves it for every $n$. The initial empty-word check is
+$0^{64}=000\,0^{61}$. These are finite word equalities, not bounded
+simulation claims.
+\end{proof}
+
+Equation (4) is essential for composing instruction simulations: the source
+semantics may erase an irrelevant trailing-zero suffix, whereas the literal
+tape retains cells and, at overflow, moves its marker. Their pointed frames
+agree after precisely the adjustment in (2).
+
+\section{From local macro proofs to halting equivalence}
+
+The actual-table register-operation proofs use four kinds of sound step:
+a literal transition; induction on the length of a homogeneous unary run;
+induction on a finite list of register blocks; and finite word identities.
+For example, with $C(v)=1\,0\,1^v$, the identity
+$C(A)1=1B(A)$ follows by induction on the finite list $A$. The positive,
+zero and increment contracts are compositions of these steps. The exact
+table was substituted into the induction checker before the corresponding
+symbolic oracles were admitted.
+
+The affine replay then verifies every one of the 8391 guarded instructions
+for all $n\geq0$, all nine natural register values satisfying its named
+guard, and every nonempty finite spare list. The guard names the same
+physical register as the decrement oracle. Oracles with a mismatched guard
+or a pre-existing pending register effect are rejected. Every successful
+instruction simulation has at least 13 literal steps; symbolic scans and
+macro invocations denote additional finite computations. In particular,
+every nonterminal source step has a finite, strictly positive literal
+binary duration and finishes in the corresponding nonterminal dispatched
+frame. The source halt instruction reaches the unique terminal state.
+
+As a separate verification, the complete-frame symbolic checker was run on
+this exact table with its all-values option. It checks all 8391 cases using
+2312645 literal, unary-induction and finite-list-induction rules, with all
+nine primary values independently quantified and every finite nonempty
+spare suffix admitted. It covers all 490 binary transition rows and again
+obtains minimum positive progress of 13 steps. This second proof expands
+the register file rather than using opaque affine register-operation
+oracles. The baseline interval invariant is read and independently checked
+by that program, but its lower bounds are then replaced by universal
+natural-number ranges before the all-values obligations are generated.
+
+\begin{lemma}[Clocked frame simulation]
+At any related source state and binary frame satisfying (2)--(4), the
+source computation eventually halts if and only if the binary computation
+eventually halts.
+\end{lemma}
+
+\begin{proof}
+The source-to-binary direction is induction on the finite source halting
+computation, concatenating the checked finite instruction segments. The
+frame premises persist by (2), (3) and (4).
+
+For the converse, use strong induction on the remaining literal binary
+halting time $t$. If the current source instruction is halt, the conclusion
+already holds. Otherwise it has a deterministic successor, and its checked
+simulation has some finite duration $k>0$ and a nonterminal endpoint.
+That segment contains no terminal state. Determinism and the assumed
+binary halt imply $k\leq t$: a halt before the end of a verified executable
+segment is impossible. The successor frame has a binary halting computation
+of length $t-k<t$, so the induction hypothesis supplies a source halt.
+This proof requires no choice of an infinite sequence of simulations and
+no uniform upper bound on their durations.
+\end{proof}
+
+The new source program is related to the original literal 6459-node
+program by a separately checked segment bisimulation with 3013 pairs,
+6024 successor edges, and one terminal pair. Related test sites decrement
+the same logical register. Between tests, the two sides execute the same
+number of increments on each register; break/continue steps inspect no
+register value. Counts can therefore be compared without assuming a bound
+on register values. The certificate also relates the segments from the
+empty pointers. This is the ordinary mathematical argument underlying
+\path{RMBisim.check_halts_iff}.
+
+\section{Exact source and consistency calibration}
+
+The existing theorem \path{Bisim254.prog254_halts_iff} relates the original
+literal decoder to \path{RMEquiv254.pathDag254}, the 219-node structured
+program, for every register file. At (1), the exact dirty-root
+specialization is
+\begin{center}\small
+\path{DirtyProgram254.six_nonformula_path_iff 3 0 3 0 0 0}.
+\end{center}
+Its six arguments are $(N,A,D,X,Y,L)$ in that order. The top and retained
+formula are both the truth code~0, and the stack is empty. Their safety
+witnesses are \path{Code254.C254.truth}, twice, and
+\path{Enum254.good_zero}. Arbitrary numerical fields are allowed by the
+existing scratch-absorption and padded-proof-enumeration theorems. Starting
+at candidate counter 3 therefore does not omit a refutation.
+
+The source file \path{L2.enc} sets logical registers with index at least
+nine to zero. The physical spare blocks are auxiliary storage and are
+not identified with those logical registers. Every source register operand
+is in $0,\ldots,8$, as independently checked on all instruction leaves.
+
+Write $\Refute_T$ for a finite derivation of falsity from the indicated
+first-order theory. The source and interpretation endpoints give
+\[
+ \Halt(M,\mathrm{blank})
+ \ \longleftrightarrow\ \Refute_{\mathrm{NativeAx}}
+ \ \longleftrightarrow\ \Refute_{\mathrm{ZF}}
+ \ \longleftrightarrow\ \Refute_{\mathrm{ZFC}}.              \tag{5}
+\]
+The exact native theory is the original CP/all-formula-GIC/irreflexivity
+theory. No logical-axiom restriction, theory substitution or row permutation
+is needed for this candidate. The named inherited comparison theorems are
+\path{NativeTheory254.c254_refutation_iff},
+\path{WFTheory.native_refutation_iff_zf}, and
+\path{ChoiceCalibration254.zf_refutation_iff_zfc}.
+
+To calibrate proof strength, interpret these arguments inside ZFC using
+finite syntax and set-coded first-order structures. Soundness, Henkin
+completeness, the inherited native/ZF model constructions and the internal
+constructible-model construction are available there. Models need not be
+externally well-founded or transitive. The finite machine certificates,
+word identities, natural-number inductions and strong halting-time induction
+likewise concern sets and finite codes. Thus (5) is an ordinary ZFC proof;
+it is not an inference that an arbitrary universe-polymorphic Lean theorem
+automatically internalizes into ZFC.
+
+\begin{theorem}
+For the fixed 245-working-state, two-symbol blank-tape machine above,
+\[
+ \mathrm{ZFC}\ \vdash\
+ \bigl(\neg\Halt(M,\mathrm{blank})\leftrightarrow\Con(\mathrm{ZFC})\bigr),
+\]
+where $\Con(\mathrm{ZFC})$ asserts the absence of a finite refutation in
+the fixed first-order presentation used by the source comparison.
+\end{theorem}
+
+\begin{proof}
+Compose the exact blank prefix, clocked frame simulation, new source
+bisimulation, dirty-root theorem and interpretation comparisons, giving (5).
+Negate both sides. No consistency or soundness assumption about ZFC is a
+premise of this equivalence. Actual nonhalting follows if ZFC is consistent.
+\end{proof}
+
+The same argument gives the concise comparison
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\Halt(M,\mathrm{blank})\leftrightarrow
+       \Halt(M_{246},\mathrm{blank})\bigr)
+\]
+with the reviewed Prefix246 machine. Both exact bootstraps reach the same
+complete register-frame seed; both runtimes simulate their source program
+on unbounded register frames; and the new source is segment-bisimilar to the
+original source. Thus the original ordinary ZFC consistency calibration may
+also be inherited through this direct halting-equivalence comparison.
+
+\paragraph{Reproduction.}
+The supplemental script \path{verify_machine_frame245.py} takes explicit
+paths to the candidate directory, grammar JSON and lock file. It imports
+no decoder, path-arithmetic, symbolic-execution or simulation code. Its
+result \path{frame245-composition-check.json} records the 54 lock equations,
+all 8390 residual-pointer equalities, the gap arithmetic, exact reported
+frame reconstruction, operand ranges, and canonical state renumbering.
+The actual blank execution and universal macro proofs remain the separately
+identified checks in the principal artifact; they are not silently inferred
+from this supplemental arithmetic verifier.
+\end{document}

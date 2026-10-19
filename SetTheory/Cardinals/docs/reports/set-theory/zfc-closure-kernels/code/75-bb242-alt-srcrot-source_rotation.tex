@@ -1,0 +1,77 @@
+\section{A further universal source transformation}
+\label{sec:additional-h-rotation}
+
+Alongside the successful binary state reduction, we found a source
+transformation that opens a new, semantically certified search neighborhood.
+It does not itself decrease the number of Turing-machine states.
+Let $H=R_5$ and $X=R_6$.  Four occurrences in the combined243 source have
+exactly the form
+\[
+ \mathsf{Node}\bigl(
+   \mathsf{Node}(\operatorname{dec}X,
+     \mathsf{Node}(\operatorname{inc}H,\operatorname{continue}(2))),
+   \operatorname{inc}H\bigr).
+\]
+They occur at the following complete source prefixes:
+\begin{center}
+\begin{tabular}{ll}
+\texttt{11101001001011000011}&\texttt{1110100100101110011}\\
+\texttt{1110100101100011}&\texttt{111110011}.
+\end{tabular}
+\end{center}
+Replace all four by
+\[
+ \mathsf{Node}\bigl(\operatorname{inc}H,
+   \mathsf{Node}(\operatorname{dec}X,\operatorname{continue}(2))\bigr).
+\]
+This is the transfer-plus-one loop rotation already used for $R_0$ in the
+inherited QT construction, now applied globally to all four $R_5$ instances.
+Its usefulness is that the existing QT change has already supplied the
+shared $(\operatorname{dec}X,\operatorname{continue}(2))$ decoder.
+
+\begin{proposition}
+For every vector of nine natural register values, the old and new four-fragment
+sources have equivalent halting behavior from the root.
+\end{proposition}
+\begin{proof}
+At a single fragment entry, let $H=a$ and $X=b$.  Both fragments end with
+$H=a+b+1$, $X=0$, and the other seven registers unchanged, after exactly
+$3b+2$ source instructions.  For $b=0$, the old fragment tests and then
+increments, while the new fragment increments and then tests.  Both exit
+in two instructions.  For $b>0$, both execute one decrement of $X$, one
+increment of $H$, and a continue; the two arithmetic instructions commute
+because they change distinct registers.  They return to their own entries
+with $(H,X)=(a+1,b-1)$.  Induction on $b$ proves the normal form and
+termination for all natural entry values.
+
+The independent source checker reconstructs the complete finite-pointer
+control-flow semantics, including implicit zero padding.  It checks all
+8,369 successor edges outside the four fragments.  Every such edge commutes
+with the unchanged-path correspondence and the map between fragment entries.
+There is exactly one external entry edge per fragment, and no outside edge
+enters a fragment's interior.  The old entry sites are 6281, 6300, 6315, and
+6425; their incoming edges are the zero branches of sites 6279, 6298, 6313,
+and 6423, respectively.  The root entries correspond, and the unique halt
+site moves from 6323 to 6320.  Thus the finite, universally terminating local
+blocks compose with the exact outside correspondence to preserve halting in
+both directions.  No reachability restriction on the register values is used.
+\end{proof}
+
+The complete logical source shrinks from 6,459 to 6,455 leaves and from 8,390
+to 8,386 guarded cases.  In inherited binary labels, the corresponding
+candidate changes just
+\[
+ (142,0)\mapsto(0,R,72),\qquad
+ (142,1)\mapsto(1,R,17).
+\]
+A fresh affine replay passes all 8,386 cases against this modified 243-state
+table.  This is auxiliary source/runtime evidence: no new expanded-runtime
+or separate kernel endpoint is claimed for this table.
+
+The state count remains 243.  The old transfer-to-$H$ decoder at inherited
+state 37 continues to serve other source occurrences, so it cannot be
+removed merely because these four callers changed.  Combining this source
+rotation with the main state-15 borrowing construction still gives 242
+states, and the subsequent bounded direct-fold screen found no additional
+saving in its stated search family.  These outcomes distinguish a proved
+source simplification from a charged binary-state improvement.

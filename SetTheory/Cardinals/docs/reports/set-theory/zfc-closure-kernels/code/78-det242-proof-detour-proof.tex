@@ -1,0 +1,226 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Conf}{\mathsf{Conf}}
+\newcommand{\Halt}{\mathsf{Halt}}
+\title{A short tape detour: from 243 to 242 states}
+\author{Research contribution prepared for the ProveIt project}
+\date{18 October 2026}
+\begin{document}
+\maketitle
+
+\paragraph{Scope.}
+This note gives an ordinary mathematical proof of the exact binary-machine
+transformation for arbitrary head positions and tapes at the shared start
+state 95. A small structural invariant proves that old 27 always reads 0;
+no source-reachability hypothesis or bounded execution experiment is
+required. The accompanying checker verifies the exact table patch, every
+incoming row needed by that invariant, all whole-tape block identities,
+and the complete finite classification of transition rows. It does not
+claim a Lean kernel theorem or independently prove source calibration.
+
+\section{Exact transformation}
+
+All state numbers in this note are the inherited state labels, not the
+canonical consecutive labels. Let $M$ be Combined243 with start 95 and
+halt 254. Its inherited table has SHA256
+\begin{quote}\ttfamily\small
+4207fc3d1bb16f3c64c3cff0980eaa1486160c3f467aee7685740a39e3df7300.
+\end{quote}
+Let $N$ be obtained by deleting state 27, redirecting every incoming edge of 27
+to 15, and replacing $(15,0)$ by $0L32$. The complete list of changed
+retained rows is
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+State&Read&Old action&New action\\
+\midrule
+15&0&$0R21$&$0L32$\\
+18&0&$0L27$&$0L15$\\
+47&0&$0L27$&$0L15$\\
+65&0&$0L27$&$0L15$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The two rows of 27 disappear. The other 480 retained rows remain literally
+unchanged. Consequently $N$ has 242 working states, 484 total binary rows,
+and one separate halt state. All its transitions move left or right. No
+transition targets 27. The inherited candidate SHA256 is
+\begin{quote}\ttfamily\small
+c8ef2f44d25fee6813164cc59ec05061799397da8cf7f0ea7baab63d32d76e02.
+\end{quote}
+The canonical table numbers the start as 0, the other working states as
+1 through 241, and halt as 242. Its SHA256 is
+\begin{quote}\ttfamily\small
+ef8c07f372c76a73c021f51801f16f28f1e4ca5ead2d4ce6780c2a245a0db245.
+\end{quote}
+
+\section{A one-cell invariant}
+
+A configuration is a triple $C=(q,h,\tau)$ with $q$ a control state,
+$h\in\mathbb Z$, and $\tau:\mathbb Z\to\{0,1\}$ the entire tape.
+Put $S=\{15,18,47,65\}$ and define
+\[
+ I(C)\quad\Longleftrightarrow\quad
+ \bigl(q\in S\Longrightarrow\tau(h-1)=0\bigr)
+ \;\land\;
+ \bigl(q=27\Longrightarrow\tau(h)=0\bigr).
+\]
+
+\begin{lemma}
+Every configuration in an $M$ execution starting in 95 satisfies $I$,
+regardless of its initial head position and tape.
+\end{lemma}
+\begin{proof}
+The initial control is outside $S\cup\{27\}$. The complete incoming-row
+census for the states in $S$ is
+\begin{center}
+\begin{tabular}{rll}
+\toprule
+Target&Source rows&Action\\
+\midrule
+15&$(11,0)$&$0R15$\\
+18&$(12,0),(148,0)$&$0R18$\\
+47&$(33,0),(144,0),(167,0)$&$0R47$\\
+65&$(51,0),(81,0)$&$0R65$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every one of these rows writes 0 and moves right, proving the left-zero
+property at the new head. The only rows targeting 27 are
+$(18,0),(47,0),(65,0)$, each with action $0L27$. Their source controls
+belong to $S$, so the inductive hypothesis says that the cell one position
+left of the predecessor head is 0. The write takes place at the predecessor
+head and does not change that left cell. Moving left therefore enters 27
+on 0. At every other target both implications are vacuous. Induction on
+the execution length proves the entire invariant, including the
+unreachability of row $(27,1)$.
+\end{proof}
+
+\section{Whole-tape comparison blocks}
+
+Write $\xrightarrow[k]{M}$ for exactly $k$ transitions. The changed row
+at 15 is justified by the following identity, not by identifying 15 and 27
+as interchangeable states on arbitrary tapes.
+
+\begin{lemma}[The detour]
+If $\tau(h)=\tau(h-1)=0$, then
+\[
+ (15,h,\tau)\xrightarrow[1]{M}(21,h+1,\tau),\qquad
+ (15,h,\tau)\xrightarrow[3]{N}(21,h+1,\tau).
+\]
+If $\tau(h)=1$, both machines instead take one identical step to
+$(22,h+1,\tau)$.
+\end{lemma}
+\begin{proof}
+The three new rows are exactly
+\[
+ (15,0)\mapsto(0,L,32),\quad
+ (32,0)\mapsto(0,R,45),\quad
+ (45,0)\mapsto(0,R,21).
+\]
+They visit head positions $h,h-1,h$. The inspected cells are both 0;
+every write preserves the inspected cell. The final state, head, and
+entire tape therefore agree with the old one-step result. On input 1,
+$(15,1)\mapsto(1,R,22)$ was not changed.
+\end{proof}
+
+\begin{lemma}[Redirected entries]
+For $p\in\{18,47,65\}$, if $\tau(h)=\tau(h-1)=0$, then
+\[
+ (p,h,\tau)\xrightarrow[2]{M}(32,h-2,\tau),\qquad
+ (p,h,\tau)\xrightarrow[2]{N}(32,h-2,\tau).
+\]
+\end{lemma}
+\begin{proof}
+The old first step reaches 27 at $h-1$, while the new first step reaches 15
+there. Their respective zero rows are both $0L32$. Both cells inspected
+were assumed 0, so every write preserves the complete tape.
+\end{proof}
+
+In these lemmas every unspecified cell of $\tau$ is arbitrary. The proofs
+neither assume that cells outside a finite window are zero nor discard
+changes outside an observed region. The finite checker represents each
+unread exterior cell by a distinct formal atom, and compares normalized
+whole-tape overlays.
+
+\section{Global relative halting theorem}
+
+Define $f(27)=15$ and $f(q)=q$ for every other inherited control,
+including halt 254. Exact finite inspection gives
+\[
+ \delta_N(f(q),b)=(w,d,f(t))
+ \quad\text{when}\quad\delta_M(q,b)=(w,d,t)
+\]
+for all 484 old rows other than $(15,0)$ and $(27,1)$. This includes the
+three redirected incoming rows and the old row $(27,0)$:
+old 27 on 0 and new15 on 0 both take the identical step $0L32$.
+The row $(27,1)$ is inadmissible by the structural invariant.
+
+\begin{theorem}
+Let $C_0=(95,h_0,\tau_0)$, with arbitrary head $h_0$ and tape $\tau_0$.
+Then
+\[
+ \Halt(M,C_0)\quad\Longleftrightarrow\quad\Halt(N,C_0).
+\]
+\end{theorem}
+\begin{proof}
+Relate the old configuration $(q,h,\tau)$ to the new configuration
+$(f(q),h,\tau)$ whenever the old configuration satisfies $I$.
+The old structural invariant applies at every step. Since $f(95)=95$,
+the two initial configurations are related.
+
+For the old row $(15,0)$, the invariant supplies a zero immediately
+left. The detour lemma simulates the old step by three new steps to the
+same configuration, whose state 21 is fixed by $f$. Every other
+admissible old row is simulated by one new step by the mapped-row
+identity just displayed. The apparent overlap at new15 is harmless:
+an old 27 configuration uses the one-step identity to 32, while an old 15
+configuration on 0 uses the full three-step detour to 21.
+
+Every old step therefore corresponds to one or three new steps. If the
+old execution has taken $n$ steps, of which $k$ used $(15,0)$, the related
+new configuration occurs at exactly $n+2k$ steps. Both head and entire
+tape agree, and the controls correspond by $f$. In particular, the
+new elapsed time lies between $n$ and $3n$ and tends to infinity with
+$n$. The two proper intermediate controls in the only longer block are 32
+and 45, both working controls. Finally $f$ maps the old halt to the new
+halt and maps every working control to a working control.
+
+Consequently an old finite halt is simulated by a new finite halt, and
+an infinite old execution supplies an infinite new execution. A new
+halt cannot occur inside the longer block, so a new finite halt must
+also correspond to an old finite halt. This establishes the claimed
+equivalence without a consistency assumption.
+\end{proof}
+
+\section{Consistency calibration}
+
+The structural invariant closes the potential $(27,1)$ issue directly
+at the binary-machine level. In particular, the comparison theorem
+applies to blank input without any additional hypothesis about the
+source program, reachable register values, or gap size. Composing it
+with the existing ordinary Combined243 calibration gives
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\neg\Halt(N,\mathrm{blank})\leftrightarrow
+       \operatorname{Con}(\mathrm{ZFC})\bigr).
+\]
+The local arguments use finite transition calculations and ordinary
+induction, so they can be formalized in ZFC. The bootstrap and the fresh
+full-frame replay of the 242-state table are useful independent checks,
+but are not premises of the relative machine theorem. This statement
+distinguishes an ordinary proof supported by executable certificates
+from completion of a new Lean consistency endpoint. Existing gaps in
+the predecessor's full Lean consistency bridge remain separate from
+the ordinary binary reduction established here.
+
+\paragraph{Attribution.}
+The predecessor calculus, program, compiler, and reductions retain their
+existing attributions to Mira-Cult, Jeff Ketchersid, Andrew James Wade,
+and the ProveIt and incoming research contributions. This contribution
+is the additional 27-to 15 detour and its exact local comparison proof.
+
+\end{document}

@@ -1,0 +1,298 @@
+{
+  "status": "PASS_FINITE_PREMISES_FOR_UNIVERSAL_BLOCK_SIMULATION",
+  "source_sha256": "4207fc3d1bb16f3c64c3cff0980eaa1486160c3f467aee7685740a39e3df7300",
+  "working_states": 242,
+  "binary_rows": 484,
+  "deleted_old_state": 27,
+  "changed_retained_rows": [
+    [
+      15,
+      0,
+      0,
+      "L",
+      32
+    ],
+    [
+      18,
+      0,
+      0,
+      "L",
+      15
+    ],
+    [
+      47,
+      0,
+      0,
+      "L",
+      15
+    ],
+    [
+      65,
+      0,
+      0,
+      "L",
+      15
+    ]
+  ],
+  "old_invariant": "State in {15,18,47,65} implies tape(head-1)=0",
+  "old_invariant_incoming_edges": {
+    "15": [
+      [
+        11,
+        0,
+        0,
+        "R",
+        15
+      ]
+    ],
+    "18": [
+      [
+        12,
+        0,
+        0,
+        "R",
+        18
+      ],
+      [
+        148,
+        0,
+        0,
+        "R",
+        18
+      ]
+    ],
+    "47": [
+      [
+        33,
+        0,
+        0,
+        "R",
+        47
+      ],
+      [
+        144,
+        0,
+        0,
+        "R",
+        47
+      ],
+      [
+        167,
+        0,
+        0,
+        "R",
+        47
+      ]
+    ],
+    "65": [
+      [
+        51,
+        0,
+        0,
+        "R",
+        65
+      ],
+      [
+        81,
+        0,
+        0,
+        "R",
+        65
+      ]
+    ]
+  },
+  "initial_invariant": "Vacuous at state95 for every head and every binary tape",
+  "blocks": [
+    {
+      "entry": 15,
+      "guard": "read=0 and left=0",
+      "old_steps": 1,
+      "new_steps": 3,
+      "all_local_windows": 8,
+      "example": {
+        "old": [
+          [
+            15,
+            0,
+            0,
+            0,
+            "R",
+            21
+          ]
+        ],
+        "new": [
+          [
+            15,
+            0,
+            0,
+            0,
+            "L",
+            32
+          ],
+          [
+            32,
+            -1,
+            0,
+            0,
+            "R",
+            45
+          ],
+          [
+            45,
+            0,
+            0,
+            0,
+            "R",
+            21
+          ]
+        ],
+        "endpoint_state": 21,
+        "head": 1
+      }
+    },
+    {
+      "entry": 18,
+      "guard": "read=0 and left=0",
+      "old_steps": 2,
+      "new_steps": 2,
+      "all_local_windows": 8,
+      "example": {
+        "old": [
+          [
+            18,
+            0,
+            0,
+            0,
+            "L",
+            27
+          ],
+          [
+            27,
+            -1,
+            0,
+            0,
+            "L",
+            32
+          ]
+        ],
+        "new": [
+          [
+            18,
+            0,
+            0,
+            0,
+            "L",
+            15
+          ],
+          [
+            15,
+            -1,
+            0,
+            0,
+            "L",
+            32
+          ]
+        ],
+        "endpoint_state": 32,
+        "head": -2
+      }
+    },
+    {
+      "entry": 47,
+      "guard": "read=0 and left=0",
+      "old_steps": 2,
+      "new_steps": 2,
+      "all_local_windows": 8,
+      "example": {
+        "old": [
+          [
+            47,
+            0,
+            0,
+            0,
+            "L",
+            27
+          ],
+          [
+            27,
+            -1,
+            0,
+            0,
+            "L",
+            32
+          ]
+        ],
+        "new": [
+          [
+            47,
+            0,
+            0,
+            0,
+            "L",
+            15
+          ],
+          [
+            15,
+            -1,
+            0,
+            0,
+            "L",
+            32
+          ]
+        ],
+        "endpoint_state": 32,
+        "head": -2
+      }
+    },
+    {
+      "entry": 65,
+      "guard": "read=0 and left=0",
+      "old_steps": 2,
+      "new_steps": 2,
+      "all_local_windows": 8,
+      "example": {
+        "old": [
+          [
+            65,
+            0,
+            0,
+            0,
+            "L",
+            27
+          ],
+          [
+            27,
+            -1,
+            0,
+            0,
+            "L",
+            32
+          ]
+        ],
+        "new": [
+          [
+            65,
+            0,
+            0,
+            0,
+            "L",
+            15
+          ],
+          [
+            15,
+            -1,
+            0,
+            0,
+            "L",
+            32
+          ]
+        ],
+        "endpoint_state": 32,
+        "head": -2
+      }
+    }
+  ],
+  "ordinary_equal_rows": 480,
+  "conclusion": "Old and new halt equivalently from state95, any head, any tape; follows by positive complete-configuration blocks.",
+  "proof_status": "Independent ordinary proof-premise checker; no Lean/Rocq claim."
+}

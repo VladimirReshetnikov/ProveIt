@@ -1,0 +1,89 @@
+% Standalone mathematical proof section for inclusion in the research report.
+\section{An independent local proof of the 242-state construction}
+
+Let $M$ be the inherited-label Combined243 machine. Its initial state is
+$95$ and its separate halt target is $254$. Define $N$ by deleting state
+$15$, changing $(11,0)$ from $(0,R,15)$ to $(0,R,27)$, and changing
+$(27,1)$ from $(1,R,39)$ to $(1,R,22)$. All other retained rows agree.
+The resulting machine has $242$ working states and $484$ binary rows.
+
+\paragraph{The unused branch is proved, not inferred from a finite run.}
+For a configuration $(q,h,T)$ of $M$, consider the invariant
+\[
+q\in\{18,47,65\}\implies T(h-1)=0,
+\qquad q=27\implies T(h)=0.
+\]
+It holds vacuously at state $95$, with arbitrary tape and head. Every
+incoming edge to any of $18,47,65$ writes zero and moves right, so it
+establishes the first implication. The only incoming edges to $27$ are
+$(18,0),(47,0),(65,0)$; each writes zero and moves left. The first
+implication at its source therefore establishes the second implication
+at the target. All other target states impose no condition. This is a
+one-step inductive invariant of the literal original machine.
+
+\paragraph{Five complete local blocks.}
+Use the states other than $15,27$ as comparison checkpoints. Every
+nonexceptional transition from a checkpoint is identical in both
+machines and targets another checkpoint or the common halt. The
+exceptional entry rows are exactly $(11,0),(18,0),(47,0),(65,0)$.
+
+At $(11,h,T)$ with $T(h)=0$, split on $T(h+1)$. If it is zero, the
+original state path is $11,15,21$, with head offsets $0,1,2$. The new
+path is $11,27,32,45,21$, with head offsets $0,1,0,1,2$. All four reads
+of the latter path are zero; its rows are
+\[
+(11,0)\mapsto(0,R,27),\quad
+(27,0)\mapsto(0,L,32),\quad
+(32,0)\mapsto(0,R,45),\quad
+(45,0)\mapsto(0,R,21).
+\]
+Both endpoints are $(21,h+2,T)$. If $T(h+1)=1$, the paths are
+$11,15,22$ and $11,27,22$; both endpoints are $(22,h+2,T)$ after two
+steps. These two identities require no initial tape invariant because
+the first transition itself writes the zero consulted by the detour.
+
+For each $q\in\{18,47,65\}$, at a checkpoint with $T(h)=0$, the
+invariant gives $T(h-1)=0$. The unchanged two-step path $q,27,32$
+ends at $(32,h-2,T)$ in both machines. The altered row $(27,1)$ is not
+used on these original entries. These are the remaining three identities.
+Every stated block preserves the entire tape; only the displayed two
+cells are inspected, so both exterior tape contexts remain arbitrary.
+
+\paragraph{Halting equivalence.}
+The initial configuration is a checkpoint and satisfies the original
+invariant. At a paired checkpoint, take one identical ordinary step or
+the appropriate complete local block. The resulting full configurations
+again coincide. The invariant on the original side persists by its
+one-step induction, so this comparison can be repeated indefinitely.
+Every original block has one or two steps; every new block has one, two,
+or four steps. The clocks are strictly positive and uniformly bounded,
+and no exceptional block contains a halt state. Hence both executions
+halt together or both have unbounded length. For every $h$ and binary
+tape $T$,
+\[
+\operatorname{Halt}(M,95,h,T)
+\quad\longleftrightarrow\quad
+\operatorname{Halt}(N,95,h,T).
+\]
+This is an ordinary finite combinatorial proof with arithmetical
+induction; it supplies a proof formalizable in PA and therefore ZFC.
+No proof-assistant kernel replay is asserted here.
+
+For a halting execution, let $Z$ count visits to $(11,0)$ whose next
+cell is zero in the original execution. The exact time identity is
+$T_N=T_M+2Z$, and in particular $T_M\leq T_N\leq2T_M$.
+Combining the blank-input equivalence with the inherited calibration
+of Combined243 gives the requested ZFC consistency equivalence for $N$.
+The local reduction uses no register-frame or consistency assumption.
+
+\paragraph{The reusable mechanism.}
+The new state $27$ uses its old zero branch to consult a bit immediately
+to the left, then restores the original head position before resuming.
+Its original one branch was excluded by an inductive invariant and can
+therefore implement the one branch of another decoder state. The
+preceding bit is supplied by the incoming transition itself. Thus tape
+context provides one part of the decoder control without consuming a
+new working state. In this concrete table the same mechanism also
+allows alternative 242-state machines deleting state $50$ or $171$;
+these alternatives compete for the same formerly unused branch and
+are not three independent simultaneous savings.

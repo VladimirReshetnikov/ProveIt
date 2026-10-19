@@ -1,0 +1,143 @@
+--- v1/catalogue-snippets.md
++++ v2/catalogue-snippets.md
+@@ -36,7 +36,7 @@
+ 
+ Adapt column placement to the existing table; substitute actual commit ids.
+ 
+-| 169 | Six return/branch/context/detour/zero-branch reports | Sources 74–79 of `zfc-closure-kernels`; 1,387 members = 440 new files + 830 existing aliases + 31 batch aliases + 86 archive-only. Exact table isomorphisms; joint 1,750-bit packet, with six-suite replay explicitly unclaimed. Only the six batch ZIPs retired; twenty older queued archives remain. | `PENDING_169_PLACEMENT_COMMIT` | `PENDING_169_WRITE_COMMIT` | `PENDING_168_169_CATALOGUE_COMMIT` |
++| 169 | Six return/branch/context/detour/zero-branch reports | Sources 74–79 of `zfc-closure-kernels`; 1,387 members = 440 new files + 830 existing aliases + 31 batch aliases + 86 archive-only. Exact table isomorphisms; joint 1,750-bit packet, with six-suite replay explicitly unclaimed. Only the six batch ZIPs retired; twenty older queued archives remain. | `c3339d150f` | write commit to be inserted after writing | catalogue commit to be inserted after catalogue build |
+ 
+ ## Computability README pointer
+ 
+--- v1/host-readme-addition.md
++++ v2/host-readme-addition.md
+@@ -4,4 +4,4 @@
+ 
+ The [reconciliation](intake-169.md) and six source dossiers retain different ordinary proofs, a function-tape Lean relative proof with explicit raised limits, semantic acceptance/MP improvements, bounded source and scanner experiments, selector dispatch, membership elimination/truth fusion and a native stack frontend. The new joint packet combines Sources 77 and 78: root's fresh copied-input check and independent output review establish **1,750 complete bits, 21 equations and four-bit opcodes**, 18 bits below the delivered detour packet. This is an encoding improvement with an ordinary inherited-calibration argument, not a smaller binary machine or internal PA endpoint.
+ 
+-The six supplied verification suites were not rerun. Exact state isomorphism reuses the prior batch168 primary-A/241 machine evidence; changed-source experiments retain their own unrefreshed scope. The base article and PDF and all delivered bytes stay unchanged. See [recovery/reproduction](intake-169-reproduction.md), [the joint proof and evidence boundary](intake-169-joint-proof.md), and the complete [placement map](data/intake169-placement.json). The placement commit is `PENDING_169_PLACEMENT_COMMIT`; recovery remains `PENDING_169_RECOVERY_RECORD` until root finalizes it.
++The six supplied verification suites were not rerun. Exact state isomorphism reuses the prior batch168 primary-A/241 machine evidence; changed-source experiments retain their own unrefreshed scope. The base article and PDF and all delivered bytes stay unchanged. See [recovery/reproduction](intake-169-reproduction.md), [the joint proof and evidence boundary](intake-169-joint-proof.md), and the complete [placement map](data/intake169-placement.json). Placement `c3339d150f` retired only the six batch ZIPs. Fresh recovery restored all 1,387 originals and matched all 1,301 ancillary occurrences to 687 maintained targets; twenty older ZIPs remain queued.
+--- v1/intake-169-reproduction.md
++++ v2/intake-169-reproduction.md
+@@ -2,7 +2,16 @@
+ 
+ The six delivered archives are preserved in arrival commit `d5845120023085f81694ee5b8babb95cd5fa50ef`. The [placement map](data/intake169-placement.json) identifies every original outer-member path, blob, byte hash and destination or archive-only disposition. Exact existing-host and intra-batch aliases are recovery links, not claims of scientific novelty. Main manuscripts and delivery READMEs remain archive-only; a nested ZIP remains a single member. No line-ending normalization or checksum-manifest validation is intake work.
+ 
+-Actual placement: `PENDING_169_PLACEMENT_COMMIT`. Actual recovery helper/record: `PENDING_169_RECOVERY_RECORD`. The frozen proposal has 1,387 members, of which 1,301 ancillary occurrences resolve to 687 unique paths; 86 are archive-only. Root's actual recovery result must replace this pending checkpoint before the write is finalized.
++Placement `c3339d150f` is complete. Root's [actual recovery](data/intake169-recovery.json) restored all 1,387 originals and matched all 1,301 ancillary occurrences to 687 unique maintained targets; 86 members are archive-only. The exact maintained placement-map hash is `80a344a65f05e6767c773bbecf91aaae05bc22beafd53c9e2c13d997ed403726`. Only the six batch ZIPs were retired.
++
++The preserved [recovery helper](code/recover169.py) validates committed archive/member identities and every alias, rejecting traversal and symlink members without invoking supplied code. From the repository root:
++
++```bash
++python3 -B SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/recover169.py \
++  --repo "$PWD" --output /tmp/intake169-originals
++```
++
++Use a fresh output directory outside the repository. Original layouts appear at `source74/<wrapper>/` through `source79/<wrapper>/`; source75's wrapper is `zfc242-branch-borrowing`, and the other wrappers match their archive stems.
+ 
+ Recover each original ZIP from Git into a separate scratch directory. For example:
+ 
+@@ -14,11 +23,21 @@
+ 
+ ## What was actually checked
+ 
+-Root's [six-table comparison](data/intake169-table-comparison-root.json) is a static full transition-isomorphism check: 484 rows per report and 482 rows after the known 17/39 fold. The three pair reviews independently inspected the ordinary proofs and secondary material. Their own static scripts parsed tables, certificates or serialized syntax; they did not run the supplied simulators or proof compilers.
++Root's [six-table comparison](data/intake169-table-comparison-root.json) is a static full transition-isomorphism check: 484 rows per report and 482 rows after the known 17/39 fold. The [portable comparison](data/intake169-portable-table-comparison.json) was also executed successfully on the actual recovered layouts against the pinned maintained primary-A and 241 tables. The three pair reviews independently inspected the ordinary proofs and secondary material. Their own static scripts parsed tables, certificates or serialized syntax; they did not run the supplied simulators or proof compilers.
+ 
+ The earlier [batch168 fresh replay](data/intake168-fresh-replay.json) is the source of fresh full runtime evidence for primary A and current 241. It passed 19 jobs, including five complete 8,390-case universal runs for A/B/C/243/241. Exact table identity or the complete start/halt-preserving state bijection transports the machine behavior to these six presentations. It does not make their supplied wrappers, recorded timings, discovery searches, changed-source H rotations or standalone Lean project freshly replayed. No six-suite PASS is asserted.
+ 
+ The only new supplied-code-dependent execution in this comparison is the derived joint packet builder. Root reviewed the builder, both inherited imported modules, the Horn helper and proof first, then ran on copied inputs. The [exact terminal command](data/intake169-joint-execution.json), stdout/stderr, copied dependencies, output packets and finite verification are preserved. The [actual peer review](data/intake169-joint-actual-review.json) reconstructs the encoded bits without re-executing that builder. No TM simulation, proof compiler, theorem search, NAND synthesis or TeX build occurs in this joint run.
++
++The exact [portable comparison helper](code/compare169_portable.py) can reproduce that static result from the fresh recovery above:
++
++```bash
++python3 -B SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/compare169_portable.py \
++  --repo "$PWD" --recovered /tmp/intake169-originals \
++  --output /tmp/intake169-static-comparison
++```
++
++It parses literal tables and constructs the state bijection; it does not step a machine or run a delivered verifier.
+ 
+ ## Replaying the joint packet on copied inputs
+ 
+--- v1/intake-169-source-74.md
++++ v2/intake-169-source-74.md
+@@ -1,6 +1,6 @@
+ # Source 74: return reuse and tag-independent proof rules
+ 
+-Source 74 is `zfc-return242-20261018.zip`, delivered in `d5845120023085f81694ee5b8babb95cd5fa50ef` against ProveIt `e58338db7545909907e07a7603e8eb88625c527a`. Its `report.tex`, delivery README, article fragments and PDFs remain in the committed archive. The `74-ret242-` placement map retains research proofs, executable sources, evidence and provenance, including inherited files by exact aliases. The proposed census is 386 members: 101 new files, 258 existing-host aliases, four batch aliases and 23 archive-only members. Actual placement/recovery is recorded in [the main note](intake-169.md).
++Source 74 is `zfc-return242-20261018.zip`, delivered in `d5845120023085f81694ee5b8babb95cd5fa50ef` against ProveIt `e58338db7545909907e07a7603e8eb88625c527a`. Its `report.tex`, delivery README, article fragments and PDFs remain in the committed archive. The `74-ret242-` placement map retains research proofs, executable sources, evidence and provenance, including inherited files by exact aliases. The placement census is 386 members: 101 new files, 258 existing-host aliases, four batch aliases and 23 archive-only members. Actual placement/recovery is recorded in [the main note](intake-169.md).
+ 
+ The base is the exact Combined243 table. The report deletes old 15, redirects `11/0` to `0R27`, and changes `27/1` to `1R22`. Its complete 484-row inherited table equals primary 242A after renaming surviving 15 to 27. The distinct proof uses checkpoints excluding old 15 and the old invariant “left zero at 18, 47, 65; current zero at 27.” At old `11/0`, two old steps match two or four new steps. Every endpoint preserves state, head and the entire arbitrary function tape; all block clocks are positive. The exact relation `t_new = t_old + 2k`, with `k ≤ t_old/2`, yields `t_new ≤ 2t_old`. This alternative proof and sharper clock accounting concern the same machine, not an additional state saving.
+ 
+--- v1/intake-169-source-75.md
++++ v2/intake-169-source-75.md
+@@ -1,6 +1,6 @@
+ # Source 75: branch borrowing, function tapes and orientation transport
+ 
+-Source 75 is `zfc242-branch-borrowing-20261018.zip`, with inner root `zfc242-branch-borrowing`, delivered in `d5845120023085f81694ee5b8babb95cd5fa50ef` against `e58338db7545909907e07a7603e8eb88625c527a`. Its proposed 65-member account is 47 new `75-bb242-` ancillary files, eight existing aliases, four batch aliases and six archive-only members. The main manuscript and delivery README are recovered from the original archive; the standalone formal and research READMEs remain ancillary records.
++Source 75 is `zfc242-branch-borrowing-20261018.zip`, with inner root `zfc242-branch-borrowing`, delivered in `d5845120023085f81694ee5b8babb95cd5fa50ef` against `e58338db7545909907e07a7603e8eb88625c527a`. Its placement account is 65 members: 47 new `75-bb242-` ancillary files, eight existing aliases, four batch aliases and six archive-only members. The main manuscript and delivery README are recovered from the original archive; the standalone formal and research READMEs remain ancillary records.
+ 
+ Its main table is byte-identical to Source 74's inherited and canonical tables. It deletes 15, redirects `11/0` to 27 and repurposes `27/1` to 22. The complete literal rename 15→27 identifies it with primary 242A. The incoming-bit invariant, two-versus-two/four checkpoint blocks, whole-tape preservation and positive clocks give the same ordinary relative theorem, including the exact twofold clock bound. Combining its table with the existing 17/39 patch produces the existing 241 table under that rename. No second independent 242 saving is available.
+ 
+--- v1/intake-169-source-76.md
++++ v2/intake-169-source-76.md
+@@ -1,10 +1,10 @@
+ # Source 76: contextual return reuse and residue acceptance
+ 
+-Source 76 is `zfc242-context-reuse-20261018.zip`, delivered in `d5845120023085f81694ee5b8babb95cd5fa50ef` and pinned to `e58338db7545909907e07a7603e8eb88625c527a`. Its proposed 371 members comprise 77 new `76-cr242-` files, 262 existing aliases, ten batch aliases and 22 archive-only members. The standalone `research/local_reuse_proof.tex` and `research/SEARCH.md` remain ancillary research, while the main report and true delivery README stay in the committed ZIP.
++Source 76 is `zfc242-context-reuse-20261018.zip`, delivered in `d5845120023085f81694ee5b8babb95cd5fa50ef` and pinned to `e58338db7545909907e07a7603e8eb88625c527a`. Its 371 members comprise 77 new `76-cr242-` files, 262 existing aliases, ten batch aliases and 22 archive-only members. The standalone `research/local_reuse_proof.tex` and `research/SEARCH.md` remain ancillary research, while the main report and true delivery README stay in the committed ZIP.
+ 
+ The complete inherited table is the delete-15 version of primary 242A: `11/0=0R27`, `27/1=1R22`, with old 15 removed. The old-side left/current-zero invariant and five exceptional checkpoint blocks preserve the entire tape; 478 ordinary rows agree directly. This checkpoint presentation is a second proof route to the same machine. Renaming retained primary-A state 15 to 27 matches every row, and adding the 17/39 fold matches the current 241 table. The canonical and inherited numbering must not be confused with formula codes or logical register indices.
+ 
+-The new semantic theorem is a **maximal power-of-two residue acceptance rule**: accept a derived code h when h is odd and `h ≠ 3 (mod 16)`. Membership atoms cannot be universally true in an irreflexive model; off-diagonal equality fails in a model with at least two elements, supplied here by the class principles; diagonal equality codes are `16T(i)+3`. Conversely, for each modulus `2^k`, k≥4, every excluded residue class contains an unconditional theorem code. Implication-to-zero, universal-zero and diagonal equality yield codes `4T(a)`, `4T(i)+2` and `16T(i)+3`; the triangular-number function T permutes residues modulo powers of two. The maximality statement is within this residue-test family. It is not a global optimality theorem for refutation recognizers and depends on the inherited native soundness/completeness calibration.
++The new semantic theorem is a **maximal power-of-two residue acceptance rule**: accept a derived code h when h is odd and `h ≠ 3 (mod 16)`. Membership atoms cannot be universally true in an irreflexive model; off-diagonal equality fails in a model with at least two elements, supplied here by the class principles; diagonal equality codes are `16T(i)+3`. Conversely, for each modulus `2^k`, k≥4, every excluded residue class contains an unconditional theorem code. Implication-to-zero, universal-zero and diagonal equality yield codes `4T(a)`, `4T(i)+2` and `16T(i)+3`; precisely, T(0), …, T(2^k−1) form a complete residue system modulo 2^k (T itself is not periodic modulo 2^k). The maximality statement is within this residue-test family. It is not a global optimality theorem for refutation recognizers and depends on the inherited native soundness/completeness calibration.
+ 
+ The compiler screen examines 162 layouts: three choices for each of four H-transfer-plus-one loops, times two QT associations. Three layouts reach 202 decoder nodes; the best has 6,455 leaves, but none has fewer binary states. Nineteen mod-4 tester experiments cost 205 or 206 nodes. No delivered smaller binary implementation of the mod-16 acceptance theorem is supplied. The formalism survey preserves broader closure/EPSC/quotient possibilities and their interpreter/data costs rather than turning a source-node or packet count into a binary bound.
+ 
+--- v1/intake-169-source-77.md
++++ v2/intake-169-source-77.md
+@@ -1,6 +1,6 @@
+ # Source 77: selector dispatch without selector congruence
+ 
+-Source 77 is `zfc242-contextual-reuse-20261018.zip`, delivered in `d5845120023085f81694ee5b8babb95cd5fa50ef` against `e58338db7545909907e07a7603e8eb88625c527a`. Its proposed 77 members comprise 47 new `77-ctx242-` files, 21 existing aliases, two batch aliases and seven archive-only members. The standalone state-map/checkpoint proofs, independent argument, dispatch proof and research README remain ancillary records.
++Source 77 is `zfc242-contextual-reuse-20261018.zip`, delivered in `d5845120023085f81694ee5b8babb95cd5fa50ef` against `e58338db7545909907e07a7603e8eb88625c527a`. Its 77 members comprise 47 new `77-ctx242-` files, 21 existing aliases, two batch aliases and seven archive-only members. The standalone state-map/checkpoint proofs, independent argument, dispatch proof and research README remain ancillary records.
+ 
+ The inherited table is byte-identical to primary 242A. It deletes old 27, sets `15/0=0L32` and redirects `18/0`, `47/0` and `65/0` to 15. The ordinary mapped-step proof uses old-side left zero at 15/18/47/65 and current zero at 27; the exceptional new path visits 32 and 45. The independent checkpoint proof is retained as another route. The canonical table's extra `#! start 0` header is a byte-level difference, not a transition difference. All 484 parsed rows match primary A and compose with the already-known 17/39 fold.
+ 
+--- v1/intake-169-source-78.md
++++ v2/intake-169-source-78.md
+@@ -1,6 +1,6 @@
+ # Source 78: detour folding and a 1,768-bit equational packet
+ 
+-Source 78 is `zfc242-detour-20261018.zip`, delivered in `d5845120023085f81694ee5b8babb95cd5fa50ef` against `e58338db7545909907e07a7603e8eb88625c527a`. Its proposed 417 members comprise 121 new `78-det242-` files, 268 existing aliases, eight batch aliases and 20 archive-only members. Research code, frozen outputs and `research/equational1768/{NOTES.md,FORMALISM_COMPARISON.md}` remain ancillary material.
++Source 78 is `zfc242-detour-20261018.zip`, delivered in `d5845120023085f81694ee5b8babb95cd5fa50ef` against `e58338db7545909907e07a7603e8eb88625c527a`. Its 417 members comprise 121 new `78-det242-` files, 268 existing aliases, eight batch aliases and 20 archive-only members. Research code, frozen outputs and `research/equational1768/{NOTES.md,FORMALISM_COMPARISON.md}` remain ancillary material.
+ 
+ Its main inherited machine is byte-identical to primary 242A: delete 27, replace `15/0` by `0L32`, redirect the three callers 18/47/65 to 15. The entire-tape mapped simulation and old-side invariant justify positive one-or-three-step blocks. This is the known 242 fold, and applying Source 73's predecessor-bit fold gives current 241. It is independent of the report's equational frontend.
+ 
+--- v1/intake-169-source-79.md
++++ v2/intake-169-source-79.md
+@@ -1,8 +1,8 @@
+ # Source 79: zero-branch reuse and a native stack frontend
+ 
+-Source 79 is `zfc242-zero-branch-reuse-20261018.zip`, delivered in `d5845120023085f81694ee5b8babb95cd5fa50ef` against `e58338db7545909907e07a7603e8eb88625c527a`. Its proposed 71 members comprise 47 new `79-zb242-` files, 13 existing aliases, three batch aliases and eight archive-only members. Its delivery README is `README.txt`. The standalone stack-kernel research note/README, codecs, exact packets and provenance are retained; the main paper and its included proof sections remain recoverable from the committed ZIP. A nested vendor archive is one preserved data member, not a separate intake or a reason to remove the corresponding older queued archive.
++Source 79 is `zfc242-zero-branch-reuse-20261018.zip`, delivered in `d5845120023085f81694ee5b8babb95cd5fa50ef` against `e58338db7545909907e07a7603e8eb88625c527a`. Its 71 members comprise 47 new `79-zb242-` files, 13 existing aliases, three batch aliases and eight archive-only members. Its delivery README is `README.txt`. The standalone stack-kernel research note/README, codecs, exact packets and provenance are retained; the main paper and its included proof sections remain recoverable from the committed ZIP. A nested vendor archive is one preserved data member, not a separate intake or a reason to remove the corresponding older queued archive.
+ 
+-The machine deletes old 15, redirects `11/0` to 27 and changes `27/1` to 22. It is the entire primary-A table after renaming surviving 15 to 27. Its checkpoint proof uses left zero at 18/47/65 and current zero at 27; two old steps match two or four new steps at the exceptional caller. Arbitrary tape context is preserved. The 17/39 fold therefore yields current 241 under the same rename. The separate note about four register-6-to-5 transfer-plus-one rotations gives 6,455 source leaves and 202 interned subtrees, with no extra binary deletion.
++The machine deletes old 15, redirects `11/0` to 27 and changes `27/1` to 22. It is the entire primary-A table after renaming surviving 15 to 27. Its checkpoint proof uses left zero at 18/47/65 and current zero at 27; two old steps match two or four new steps at the exceptional caller. Arbitrary tape context is preserved. The 17/39 fold therefore yields current 241 under the same rename. The separate note about four transfer-plus-one rotations from logical register 6 to logical register 5 (X to H) gives 6,455 source leaves and 202 interned subtrees, with no extra binary deletion.
+ 
+ The genuinely different frontend uses unconditional native stack equations:
+ 
+--- v1/intake-169.md
++++ v2/intake-169.md
+@@ -2,7 +2,9 @@
+ 
+ The six reports delivered in `d5845120023085f81694ee5b8babb95cd5fa50ef` become Sources 74–79 of this report. Their common provenance pin is `e58338db7545909907e07a7603e8eb88625c527a`. The intake follows the reconciliation-note option: the seeded article, its labels and PDF, and all delivered files remain unchanged. The host gains six sources, reaching 79; the collection remains 290 reports.
+ 
+-**Placement checkpoint: `PENDING_169_PLACEMENT_COMMIT`; recovery: `PENDING_169_RECOVERY_RECORD`.** The frozen proposal accounts for 1,387 outer members: 440 new prefixed ancillary files, 830 exact aliases to existing host files, 31 exact aliases within this batch, and 86 manuscript/PDF/delivery-README members recoverable from the committed archives. The 1,301 ancillary occurrences resolve to 687 unique targets: 440 new and 247 existing. Those existing targets are bound to 16 actual introduction/placement commits and their current bytes. Every original member retains its own recovery entry. Only the six batch ZIPs are to be retired during placement. Twenty older queued archives remain outside this batch; retaining a nested ZIP as one data member does not retire a separate queued copy. These counts describe the proposal until actual placement and recovery are recorded.
++Placement `c3339d150f` accounts for **1,387 original outer members**: 440 new prefixed ancillary files, 830 exact aliases to existing host files, 31 exact aliases within this batch, and 86 manuscript/PDF/delivery-README members recoverable from the committed archives. The 1,301 ancillary occurrences resolve to 687 unique targets: 440 new and 247 existing. Those existing targets are bound to 16 actual introduction/placement commits and their current bytes. Root's [fresh recovery](data/intake169-recovery.json) recovered all 1,387 originals and matched every ancillary occurrence to its maintained target. Only the six batch ZIPs were retired; twenty older queued archives remain outside this batch. Retaining a nested ZIP as one data member does not retire a separate queued copy.
++
++The [portable comparison](data/intake169-portable-table-comparison.json) also passed on those freshly recovered layouts against the maintained primary-A and 241 tables.
+ 
+ The [source dossiers](intake-169-source-74.md), [75](intake-169-source-75.md), [76](intake-169-source-76.md), [77](intake-169-source-77.md), [78](intake-169-source-78.md) and [79](intake-169-source-79.md) retain the different proofs, research methods and limits. [Reproduction](intake-169-reproduction.md) distinguishes recovery, static comparison, inherited runtime evidence and the one new joint packet execution.
+ 

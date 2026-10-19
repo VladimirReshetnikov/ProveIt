@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings through 18 October 2026. This report now reconciles seventy-one manuscripts.
+Intake findings through 18 October 2026. This report now reconciles eighty manuscripts.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -181,6 +181,64 @@ compensated244 external endpoint concerns a different machine. The delivered
 base article remains unchanged; the collection still has 290 reports.
 The placement checkpoint left eighteen other archives queued; the later raw-profile
 routing arrival `1590329560` brings that separate queue to nineteen.
+
+Batch 168 adds [three 242-state folds and the primary 241-state reduction](intake-168.md)
+as Sources 72 and 73. The first gives three alternative local reductions of
+exact Combined243. The second composes the recommended fold with a synthesized
+two-row control merge, using the predecessor's left bit to distinguish roles.
+Their ordinary positive-block proofs preserve halting from the shared start
+for arbitrary head positions and function tapes. The unchanged QT source and
+all earlier attribution remain explicit.
+
+| Source | Delivered archive | Reviewed contribution |
+| --- | --- | --- |
+| 72 | `BusyBeaver_242_Research_2026-10-18.zip` | Three exact 242-state alternatives, all-tape local invariants and independent proofs, whole-frame runtime and full blank initialization. |
+| 73 | `BusyBeaver_241_Companion_2026-10-18.zip` | Exact 241-state predecessor-bit fold of primary 242, four positive block identities, complete startup and direct runtime certificates. |
+
+Placement `696c150e84` preserves 151 ancillary files with 12 archive-only
+members, all 163 recoverable. The [placement map](data/intake168-placement.json),
+[source dossiers](intake-168-source-72.md), [companion dossier](intake-168-source-73.md)
+and [recovery instructions](intake-168-reproduction.md) distinguish new and
+inherited material. The nested 242 ZIP is retained once as a dependency artifact.
+The host now has 73 sources and the collection remains 290 reports; 26 other
+ZIPs remain outside this batch. The source calibration has since passed in
+Lean, but complete Rotation244 binary coverage/composition and internal PA
+calibration remain pending. All 19 fresh substantive jobs pass, including five full 8,390-case runtime
+replays and the exact 408,419-step primary 241 startup. Ordinary, executable
+and proof-assistant scopes stay separate.
+
+## Sources 74–79: six equivalent 242 tables and a joint 1,750-bit packet
+
+Batch 169 adds six reports from `d584512002`, all pinned to `e58338db7545909907e07a7603e8eb88625c527a`. Their complete 242-state tables are primary 242A, either literally or under the single retained-state rename 15→27. Composing with Source 73's predecessor-bit fold gives the existing 241 table; these six reports do not supply independent savings that can be added to obtain 240.
+
+The [reconciliation](intake-169.md) and six source dossiers retain different ordinary proofs, a function-tape Lean relative proof with explicit raised limits, semantic acceptance/MP improvements, bounded source and scanner experiments, selector dispatch, membership elimination/truth fusion and a native stack frontend. The new joint packet combines Sources 77 and 78: root's fresh copied-input check and independent output review establish **1,750 complete bits, 21 equations and four-bit opcodes**, 18 bits below the delivered detour packet. This is an encoding improvement with an ordinary inherited-calibration argument, not a smaller binary machine or internal PA endpoint.
+
+The six supplied verification suites were not rerun. Exact state isomorphism reuses the prior batch168 primary-A/241 machine evidence; changed-source experiments retain their own unrefreshed scope. The base article and PDF and all delivered bytes stay unchanged. See [recovery/reproduction](intake-169-reproduction.md), [the joint proof and evidence boundary](intake-169-joint-proof.md), and the complete [placement map](data/intake169-placement.json). Placement `c3339d150f` retired only the six batch ZIPs. Fresh recovery restored all 1,387 originals and matched all 1,301 ancillary occurrences to 687 maintained targets; twenty older ZIPs remain queued.
+
+
+## Source 80: a source rotation enables the 240-state fold
+
+Batch 170 adds the [240-state construction and rational-cut model study](intake-170.md)
+from `e5c2b3337e`, pinned to the preceding241 companion. The rotated source
+already occurs in Source74; its new combination with a72/90 state fold saves
+one further binary state. The exact machine and attributed description are
+available in [candidate-rotation240](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-rotation240/README.md).
+
+All ten fresh substantive jobs pass. The final machine covers8,386 guards,
+2,322,575 symbolic rules and all480 rows, with exact409,691-step blank startup;
+the rotated241 intermediate has its own complete fresh runtime replay.
+The ordinary proof is independently reviewed. The exact240 Lean consistency
+endpoint and internal PA comparison remain open; compensated244 remains the
+closed external Lean baseline. The theory study proves the rational-cut
+obstruction to deleting GIC support and the native-equality equivalence
+GIC ⇔ weak Collection + full Separation, with reusable-tool caveats explicit.
+
+Placement `0841b55a14` retires the processed ZIP and preserves61 new files,
+seven existing aliases and five within-source aliases. Fresh recovery restores
+all79 originals and matches73 ancillary occurrences to67 targets.
+See [recovery and replay](intake-170-reproduction.md) and the
+[placement map](data/intake170-placement.json). Twenty older ZIPs remain queued.
+The base article, PDF and delivered bytes are unchanged.
 
 ## Sources, overlap and base
 

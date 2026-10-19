@@ -1,0 +1,26 @@
+--- review_actual.py
++++ review_actual_v2.py
+@@ -98,10 +98,13 @@
+     audit_text = Path(e['audit']['snapshot']).read_text()
+     rr = raw_reports(e['commands'][1]['output'])
+     check([r['name'] for r in rr] == probe_names(audit_text) and len(rr) == probes, 'Exact ordered reports')
+-    check(rr == e['axiom_reports'] and all(set(r['axioms']) <= STANDARD for r in rr), 'Exact standard axioms')
++    recorded = e['actual_axiom_sets'] if historical else e['axiom_reports']
++    normalized = [{'name': r['name'], 'axioms': sorted(r['axioms'])} for r in recorded]
++    check(rr == normalized and all(set(r['axioms']) <= STANDARD for r in rr), 'Exact standard axioms')
+     check(len(re.findall(r'^example\b', audit_text, re.M)) == callers, 'Typed caller census')
+     check((e['named_axiom_probes'], e['callers']) == (probes, callers), 'Recorded audit census')
+-    check(e['warnings'] == sum(c['output'].count('warning:') for c in e['commands']) == 0, 'Zero warnings')
++    raw_warnings = {c['label']: c['output'].count('warning:') for c in e['commands']}
++    check(e['warnings'] == (raw_warnings if historical else sum(raw_warnings.values())) and sum(raw_warnings.values()) == 0, 'Zero warnings')
+     check(e['only_standard_axioms'] and e['all_fresh_objects_unchanged_after_audit'], 'Final proof postchecks')
+     check(len(e['fresh_modules']) == 1 and e['source_object_recorded_before_audit'], 'Fresh pre-audit source capture')
+     f = e['fresh_modules'][0]
+@@ -200,6 +203,7 @@
+     'scope': 'Arbitrary-register rotation equivalence composed with routed-program calibration; at LogicalSeed246.initial, halting iff native/ZF/ZFC refutation and nonhalting iff corresponding ZF/ZFC consistency. No binary-machine/blank-tape endpoint or internal PA theorem.',
+     'parent_schema_limits': ['BinaryRouting245 has historical output-bound logs without modern interrupted/log_sha256 fields and a fresh first capture using actual_first/resolved. These exact schemas were checked, not strengthened retroactively.', 'The 198 selected cached source/object pairs are attested by the two actual parent records. No dependency rebuild or clean-checkout proof claim.'],
+     'source_review': ['All source and audit statements and the complete guard/delta read.', 'SourceRotation244.program_halts_iff and BisimRouting245.program_halts_iff have the matching arbitrary-register/empty-pointer orientation.', 'LogicalSeed246.initial definition and all three refutation equivalences match the composition; two consistency results use not_congr.', 'Typed clients cover all seven public theorems plus halting-to-ZF and ZFC-refutation-to-halting directions.'],
++    'reviewer_history': desc(B / 'reviewer-history/schema-draft1/failure-and-correction.json'),
+     'supplied_guard_or_compiler_execution': False,
+ }
+ target = B / 'author-run1-evidence-review.json'

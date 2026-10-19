@@ -1,0 +1,81 @@
+{
+  "status": "PASS_ADVERSARIAL_ORDINARY_PROOF_REVIEW",
+  "provenance_commit": "e58338db7545909907e07a7603e8eb88625c527a",
+  "input_bindings": {
+    "research_tm/zero_reuse242.tex": "69ffee95b2b8a6e47ffdfd2c3cc98a30e3abbc6da25c5940d1b014afd219a160",
+    "research_tm/prove_zero_reuse242.py": "0ce92ed2293c8e81b23fa01c7d1aded500ace60440684a201a74fb6b2f21d160",
+    "research_tm/search_contextual_folds.py": "b38d85f0cf2e1c5cffdd5983ab8e5687495125de047e0fefb4453d2b6ec27fcb",
+    "research_tm/contextual-search243.json": "21ebd429efa3a3b2c710ff2072f7b31256fba60be9fbcf16726254d6309bb63e",
+    "research_tm/contextual-search242.json": "ce680cfd7d89aeb04381ac78dbd601e87b92aac94376b71b534f56a087da29d3",
+    "research_tm/candidate-zero-reuse242/zfc_zero_reuse242_old.tm": "6b700aa713418cfe347a6ff2d0a92de7c31810d1cf69814b4684c7fb463876a0",
+    "research_tm/candidate-zero-reuse242/zfc_zero_reuse242.tm": "64ddeb2c01c3e9c7feffaffaad87266a270716c9307892a0445bf869b988984d",
+    "research_tm/candidate-zero-reuse242/zero-reuse242-proof.json": "ec609e8f417b704e90f57befd4ebfb2442aee505e79175ecde3cec0bd9984935",
+    "research_source/verify_candidate.py": "0281f744c4d265f15b30d32e74bec5bd368a82262e5e9e269b4fd1b4c487ac67",
+    "research_source/independent-verification242.json": "721f4538e3e4ae2d8d3c934e05aa33e2bcc80372b4131aa51e46f9d37b79f157",
+    "ProveIt/Computability/BusyBeaver/Research/ZFC/candidate-combined243/zfc_combined243_old.tm": "4207fc3d1bb16f3c64c3cff0980eaa1486160c3f467aee7685740a39e3df7300",
+    "ProveIt/Computability/BusyBeaver/Research/ZFC/candidate-combined243/sites_logical.json": "3ee984818f0bdfd2c4daae72aeb14340572e34d73f5cdb5616b6d29d78fcd7f4"
+  },
+  "review_method": "Direct independent reading of the ordinary proof, exact tables, dedicated finite-premise checker and generic search implementation. The independent literal/blank checker was authored and executed separately. Search sweeps were inspected, not repeated by this reviewer.",
+  "substantive_blockers": [],
+  "ordinary_proof_findings": [
+    {
+      "topic": "Invariant quantification",
+      "finding": "The invariant concerns only the old machine. New executions may read27/1 inside the replacement blocks; the proof does not incorrectly impose the old invariant at such intermediate configurations."
+    },
+    {
+      "topic": "Complete predecessor census",
+      "finding": "All original incoming edges to15,18,27,47,65 are explicitly checked, including the often easy-to-miss65-to27 edge. Entry into18,47,65 writes a zero to the cell subsequently read by27."
+    },
+    {
+      "topic": "Arbitrary initial tape",
+      "finding": "The initial control95 is outside every antecedent in the invariant. Thus the invariant is vacuous initially for every integer head and every binary tape, with no finite-support, blank-tape or source-reachability assumption."
+    },
+    {
+      "topic": "Finite truth-table coverage",
+      "finding": "The five-cell window[-2,2] includes every input cell queried by both the old invariant and its one-step postcondition.7712 admissible state/window cases equal243*32-4*16 and cover the full local invariant proof."
+    },
+    {
+      "topic": "Whole-tape block identity",
+      "finding": "Both b=0 and b=1 replacement blocks read and write only cells h and h+1. Every written value equals its initial bit, and exact endpoints agree at21 or22, head h+2, with the full tape unchanged."
+    },
+    {
+      "topic": "Removed-state entry",
+      "finding": "State15 has only predecessor11/0. Every other feasible retained row is identical in both tables and does not target15."
+    },
+    {
+      "topic": "Reverse halting and progress",
+      "finding": "All paired blocks consume positive time on both sides, with old lengths1..2 and new lengths1..4. The exceptional blocks contain no halt, and matching ordinary halt rows are unchanged. An infinite matched-block sequence therefore gives infinite executions on both sides; halting in either machine must occur at a common halting block."
+    },
+    {
+      "topic": "Exact consistency status",
+      "finding": "The unconditional new theorem is relative halting equivalence to the pinned Combined243 machine. The claimed ZFC consistency calibration is its composition with Combined243 ordinary calibration. No new proof-assistant consistency endpoint, absolute consistency or unconditional nonhalting is established here."
+    }
+  ],
+  "search_review": {
+    "status": "SOUND_RESTRICTED_SEARCH_LOGIC_BY_INSPECTION",
+    "findings": [
+      "Every radius-r window at the start is seeded. Abstract shifting preserves the written center bit and branches over both possible unknown boundary bits, giving an inductive over-approximation for all initial binary tapes.",
+      "Local old traces stop before any unrepresented cell is read. Recording a just-exited boundary endpoint at h=+/- (r+1) is safe because the outside cell has not yet been read or written.",
+      "The packed configuration key is injective for represented tape words and h in[-r-1,r+1]: stride2r+3 gives head offsets0 through2r+2, and the tape word is smaller than space2^(2r+1).",
+      "Equal encoded endpoints imply equal state, head and every initially represented tape cell. The unrepresented context is untouched on both paths, so this is whole-tape equality.",
+      "For row-changing modes the code checks both the removed control context and the original retained control context. It excludes both controls as endpoints, ensuring strictly positive time before coalescence on each side.",
+      "Mode0 leaves the retained rows unchanged and excludes the removed control as a matching endpoint. The removed and retained initial states differ, so an accepted match also has positive time on both sides.",
+      "Candidates are checked for every abstractly reachable original entry window; matched endpoints lie on an original execution, so the same invariant supplies subsequent blocks.",
+      "Failure of the finite radius and step-bounded search gives no general lower bound. The recorded rejection of further242 reductions remains explicitly scoped."
+    ],
+    "presentation_note": "The JSON search outputs retain counts and accepted edits but not every abstract window or coalescence witness. Describe them as reproducible search summaries. The selected242 theorem is independently supported by the short invariant and dedicated proof checker."
+  },
+  "independent_execution": {
+    "guard_cases": 8390,
+    "source_leaves": 6459,
+    "literal_transitions": 6473406,
+    "covered_rows": 484,
+    "unused_rows": [],
+    "candidate_blank_steps": 407979,
+    "baseline_blank_steps": 407967,
+    "sparse_dense_and_canonical_inherited_agreement": true,
+    "whole_tape_root_endpoint_verified": true
+  },
+  "optional_wording_clarification": "The universal theorem over arbitrary binary tapes is naturally stated in set theory. Its blank-input specialization and its finite-premise proof are arithmetical; a literal first-order-PA quantifier over arbitrary functions Z->2 should not be inferred.",
+  "scope": "Independent mathematical and implementation review; not a proof-assistant kernel theorem. No additional machine search or optional tests were run for this review."
+}

@@ -1,0 +1,25 @@
+--- executed-check.py
++++ maintained-check.py
+@@ -2,7 +2,8 @@
+ """Concrete logical source rotation; exact three parents/eight projects."""
+ from pathlib import Path
+ import argparse,hashlib,json,os,re,shutil,signal,subprocess,time
+-HERE=Path('/tmp/zfc243-source-bridge')
++HERE=Path(__file__).resolve().parent
++REPO=HERE.parents[3]
+ MODULE='BusyBeaver.ZFC.SourceRotation244'
+ PREFIX='SetTheory.BusyBeaver.ZFC.SourceRotation244.'
+ PROBES=['toPath_toDagEdge', 'ofDag_ofProgram', 'old_program_eq', 'new_program_eq', 'old_wf', 'new_wf', 'replacement', 'iterHalts_iff', 'program_halts_iff']
+@@ -21,9 +22,9 @@
+     return [dict(name=n,axioms=sorted({x.strip()for x in a.split(',')if x.strip()}))for n,a in rr]
+ def main():
+     p=argparse.ArgumentParser(description=__doc__)
+-    p.add_argument('--source',type=Path,default=HERE/'source-v2/SourceRotation244.lean')
+-    p.add_argument('--audit',type=Path,default=HERE/'Audit.lean')
+-    p.add_argument('--boundary',type=Path,default=HERE/'boundary-v2.json')
++    p.add_argument('--source',type=Path,default=REPO/'Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SourceRotation244.lean')
++    p.add_argument('--audit',type=Path,default=HERE/'source_rotation244_audit.lean')
++    p.add_argument('--boundary',type=Path,default=HERE/'source-rotation244-formal/source/boundary-v2.json')
+     p.add_argument('--output',type=Path,required=True)
+     p.add_argument('--prepare-only',action='store_true')
+     a=p.parse_args();require(__debug__,'No optimized Python.')

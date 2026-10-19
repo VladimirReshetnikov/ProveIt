@@ -1,0 +1,10 @@
+--- /tmp/zfc243-source-bridge/SourceRotation244.lean
++++ /tmp/zfc243-source-bridge/source-v2/SourceRotation244.lean
+@@ -39,6 +39,7 @@
+         funext n
+         simp only [toPath_toDagEdge]
+       change (⟨_, root, nnodes⟩ : RegisterPath.Program) = ⟨nodes, root, nnodes⟩
++      dsimp only [ofProgram]
+       rw [hn]
+ 
+ def oldDag : RMDag.Prog := ofProgram ProgramRouting245.program

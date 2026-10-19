@@ -1,0 +1,9 @@
+# Additional source-search material
+
+This supplement leaves `review.md`, `static-review.json` and their wrapper unchanged. It adds the bounded source-encoding work described in Detour's `research/source-encodings/RESEARCH_NOTES.md`, and the final paragraph of zero-branch's `paper/alternatives.tex`.
+
+Detour includes a graded annealer objective counting source paths with six consecutive zeros, a finite word-pool MILP selecting both words and decomposition cuts, and exact small-neighborhood exchange searches. These are concrete search-method additions worth retaining, but the reported outputs contain no accepted grammar below 128 roles and no complete new machine. The best soft-penalty output still has nine offending paths; the reduced-lock result breaks ten original bootstrap projections. The historical MILP logs explicitly lack frozen intermediate inputs; the later frozen-input run is separate. No supplied search or solver was run in this review, and the note's search outcomes remain delivered observations rather than independent replay results.
+
+Zero-branch notes four remaining transfer-plus-one rotations from register 6 to register 5, reducing the source leaf count to 6,455 while leaving 202 distinct interned subtrees. It does not claim an additional binary deletion or give that route as the primary table. Reflection's separate return/branch review identifies the corresponding secondary H-rotation experiment and its exact row changes; that is the appropriate cross-report evidence rather than treating this prose as a separately measured saving.
+
+These points strengthen the retain decision but do not alter the exact main-table identity or the primary encoding conclusions. In particular, bounded search exhaustion, a smaller leaf count, and a smaller serialized packet are three different boundaries; none alone yields a state reduction.

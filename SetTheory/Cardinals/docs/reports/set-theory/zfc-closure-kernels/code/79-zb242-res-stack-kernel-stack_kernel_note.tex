@@ -1,0 +1,234 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,longtable}
+\usepackage[margin=1in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{listings}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Empty}{\operatorname{Empty}}
+\newcommand{\LB}{\operatorname{LB}}
+\newcommand{\NAND}{\mathbin{\vert}}
+\title{An environment-stack frontend for ZFC consistency:\\a fully charged 1,169-bit equational packet}
+\author{Research prepared for the ProveIt investigation}
+\date{18 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We replace indexed assignment update by two native equations for a stack and reuse an existing atomic-class constructor as the successor operation on variable selectors. This gives a finite environment/class presentation of the inherited raw EPSC schema with no conditional equality clauses. An equational backend can therefore retain the two native equations and omit reified equality and its congruence axioms. The explicit result has 14 equations, 16 symbols, at most three local variables, 214 term nodes, and a complete 1,169-bit prefix packet, including its signature and ground endpoints. The previous source-70 packet has 2,324 bits. We give an ordinary ZFC-formalizable model argument, using the previously established raw EPSC calibration as a dependency. The delivered finite checks verify the Boolean translation, selector reductions and packet; they do not verify the model argument in a proof assistant. This is a separate frontend result, not a claim of another binary Turing-machine state bound.
+\end{abstract}
+
+\section{Status, comparison and attribution}
+
+The comparison snapshot is ProveIt commit
+\texttt{e58338db7545909907e07a7603e8eb88625c527a}.
+This note continues the finite class kernels in source 40 and the equational conversion in source 70 of
+\texttt{SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/}.
+Those sources already supply the raw EPSC calibration, exclusive-branch sharing of closure witnesses, a Boolean equational conversion, and its packet format. We do not attribute those ideas to this note. The new step is the pair of equations below, their use with de Bruijn binding, and the resulting removal of conditional equality and equality completion. The Boolean basis is the \emph{Sh1} theorem of McCune, Veroff, Fitelson, Harris, Feist and Wos~\cite{sh1}.
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Metric & Source 70 & Stack frontend \\
+\midrule
+Equations & 21 & 14\\
+Signature symbols & 12 & 16\\
+Maximum local variables & 6 & 3\\
+Complete serialized packet, bits & 2,324 & 1,169\\
+Binary TM states established by this frontend & none & none\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These are complete packet measurements in the same fixed-opcode format, not a lower bound and not a prediction of the cost of an initializer or proof checker. In particular, the stack packet uses more operation symbols. A direct interpreter might make the shorter packet unattractive; that cost remains to be established. The main machine reduction in the surrounding investigation is logically independent of this branch.
+
+\section{The inherited schema}
+
+For a binary relation $R$, possibly defined with an arbitrary finite tuple of parameters in the pure language $\{E\}$, put
+\[
+ \Empty_E(x)\;\equiv\;\forall u\,\neg E(u,x),\qquad
+ y\subseteq_E z\;\equiv\;\forall u\,(E(u,y)\to E(u,z)),
+\]
+\[
+ \LB(R)\;\equiv\;\forall x\,\exists z\,\forall y\,
+                    (R(x,y)\to y\subseteq_E z).
+\]
+The raw EPSC instance for $R$ says that $\LB(R)$ implies existence of $h$ such that
+\begin{align}
+ &\forall x\,\forall y\,
+  (((\Empty_E(x)\lor E(x,h))\land R(x,y))\to E(y,h)),\label{eq:closure}\\
+ &\forall y\,(E(y,h)\to\exists x\,R(x,y)).\label{eq:support}
+\end{align}
+Here the seed is the class of \emph{all} empty objects. Neither extensionality nor uniqueness of empty objects is assumed. Formula matrices have arbitrary finite complexity, all ordinary internal quantifiers, and arbitrary finite parameters.
+
+We use source 14's empty-seed equivalence, composed with source 08's raw PSC interpretation, as reviewed in the repository~\cite{repo14}: its consistency is equivalent to $\Con(\mathrm{ZFC})$ in the stated ordinary ZFC metatheory. In particular a model of ordinary ZFC satisfies each pure-membership EPSC instance, and raw EPSC has the interpreted set-theoretic strength used in source 40. Replacing that dependency by a formalized proof is separate work. Finite relation tests alone could not justify this calibration.
+
+\section{The environment kernel}
+
+Let $K$ be a one-sorted first-order theory with ordinary equality, constant $d$, functions $P,V,J,A,Q$, and predicates $E,\eps$. Their arities are visible in the following axioms. All displayed free variables are universally quantified.
+\begin{align}
+ V(P(x,s),d)&=x,\label{eq:head}\\
+ V(P(x,s),A(j,d))&=V(s,j),\label{eq:tail}\\
+ \eps(s,J(a,b))&\leftrightarrow\neg(\eps(s,a)\land\eps(s,b)),\label{eq:nand}\\
+ \eps(s,A(i,j))&\leftrightarrow E(V(s,i),V(s,j)),\label{eq:atom}\\
+ \eps(s,Q(a))&\leftrightarrow\exists z\,\eps(P(z,s),a).\label{eq:exists}
+\end{align}
+There is no equation saying that $P$ is injective, no separate selector-successor symbol, and no conditional update law. For a descriptor $b$ define
+\[
+ R_b(x,y)\;\equiv\;
+ \eps(P(y,P(x,b)),V(b,d)).\label{eq:rho}
+\]
+The final axiom is the single first-order statement that
+\eqref{eq:closure}--\eqref{eq:support} hold with $R=R_b$ whenever
+$\LB(R_b)$ holds, for every descriptor $b$. This is a finite theory: the variable $b$ ranges over objects, not over formulas.
+
+\begin{lemma}[All finite selectors]
+Put $\nu_0=d$ and $\nu_{n+1}=A(\nu_n,d)$. For every finite tuple
+$(x_0,\ldots,x_{n-1})$, every $s$, and every $i<n$, the two equations prove
+\[
+ V(P(x_0,P(x_1,\ldots,P(x_{n-1},s)\ldots)),\nu_i)=x_i.
+\]
+\end{lemma}
+\begin{proof}
+Apply \eqref{eq:tail} $i$ times and then \eqref{eq:head}. Each is an unconditional ordinary equality; there is no freshness or distinctness premise. The use of $A$ both here and in \eqref{eq:atom} causes no proof ambiguity: the two displayed axioms simply constrain two different uses of the same function.
+\end{proof}
+
+\begin{lemma}[Formula representation]
+For every fixed pure-$E$ formula $\phi$ with finitely many free variables, there is a ground class term $c_\phi$ such that $K$ proves
+\[
+ \eps(s,c_\phi)\leftrightarrow
+ \phi(V(s,\nu_0),\ldots,V(s,\nu_{n-1})),
+\]
+with unused coordinates allowed. Binding is represented with de Bruijn indices; $Q$ binds the newly prepended coordinate.
+\end{lemma}
+\begin{proof}
+Use $A(\nu_i,\nu_j)$ for $E(x_i,x_j)$, $J$ for NAND, and $Q$ for existential binding. NAND and existential quantification express ordinary classical first-order formulas in this equality-free signature. For the quantifier induction, prepend the quantified object to $s$: \eqref{eq:head} supplies its coordinate and \eqref{eq:tail} shifts every free coordinate by one. Rename ordinary bound variables when translating to de Bruijn syntax. No arbitrary assignment permutation or substitution operator is being assumed.
+\end{proof}
+
+Given $\phi(x,y,p_1,\ldots,p_n)$, represent it with $y$ at coordinate 0, $x$ at coordinate 1, the unused descriptor-code coordinate 2, and the parameters at coordinates $3,\ldots,n+2$. Form its class term $c$, then choose
+\[
+ b=P(c,P(p_1,\ldots,P(p_n,d)\ldots)).
+\]
+The code is constructed before its descriptor; there is no recursive code equation. The selector lemma gives $V(b,d)=c$, and formula representation gives
+$R_b(x,y)\leftrightarrow\phi(x,y,\vec p)$. The final axiom of $K$ therefore recovers every raw EPSC instance, uniformly for every fixed formula and arbitrary parameters.
+
+\section{A countable upper model with all operations defined}
+
+The upper direction needs care: an arbitrary external coding of assignment objects would not automatically make the descriptor relation a pure-membership formula. The following construction makes exactly the required definability explicit.
+
+Assume $\Con(\mathrm{ZFC})$. By first-order completeness and downward L\"owenheim--Skolem, choose a countably infinite set-coded ZFC model and relabel its carrier as $\mathbb N$; retain its relation $E$. The model need not be transitive or $\omega$-standard. All natural numbers in the following coding are \emph{external} indices of that countable carrier.
+
+Let $\pi$ be the Cantor pairing bijection, so $\pi(i,j)\geq\max(i,j)$, and define
+\begin{align*}
+ d&=0,&P(x,s)&=4\pi(x,s)+1,&A(i,j)&=4\pi(i,j)+2,\\
+ J(a,b)&=4\pi(a,b)+3,&Q(a)&=4a+4.
+\end{align*}
+These ranges are disjoint, and each output strictly exceeds every argument. Decode $P$-values as stream cells; the head and tail of any other value are 0. Define $\operatorname{idx}(i)$ to be the number of repeated outer layers $A(j,0)$ in $i$, stopping with value 0 at any other code. This recursion terminates because $j<A(j,0)$. Let $V(s,i)$ be stream coordinate $\operatorname{idx}(i)$ of $s$. It follows directly that both native equations hold for \emph{all} objects and selectors, not only for generated numerals.
+
+Every carrier element also denotes a class. The class of $0$ or a $P$-code is false. Interpret an $A(i,j)$-code by membership between stream coordinates $\operatorname{idx}(i)$ and $\operatorname{idx}(j)$; interpret a $J$-code by NAND; interpret a $Q(a)$-code by existentially prepending an arbitrary carrier object and evaluating class $a$. Recursion on the class code is well-founded because all class arguments are smaller than their constructors.
+
+Inductively, each class code denotes a \emph{finite pure-$E$ formula} in finitely many stream coordinates. Existential binding replaces the zeroth coordinate by its bound variable and shifts the others. In particular, fixing $b$, and therefore fixing the class code $V(b,d)$, makes
+\[
+ (x,y)\longmapsto\eps(P(y,P(x,b)),V(b,d))
+\]
+a pure-$E$ relation in $x,y$ with finitely many parameters from the fixed tail of $b$. Neither $V$ nor the global class enumeration needs to be internally $E$-definable. There is no compositional truth predicate for the expanded language: classes denote formulas of $E$ alone. The chosen ZFC model satisfies the relevant ordinary EPSC instance, so the final axiom holds. This produces a countably infinite model of $K$.
+
+\begin{theorem}[Ordinary consistency calibration]
+Using the inherited raw EPSC calibration, ordinary ZFC proves
+\[
+ \Con(K)\leftrightarrow\Con(\mathrm{ZFC}).
+\]
+\end{theorem}
+\begin{proof}
+For the forward implication, a model of $K$ has an $E$-reduct satisfying every raw EPSC instance by the formula-representation argument. Apply the inherited calibration. For the reverse implication, use the explicit countable model above. Completeness converts model existence into the usual syntactic consistency statements. These are ordinary arguments in ZFC, not a claim that the present Python package checks them in a kernel.
+\end{proof}
+
+\section{The universal clauses and shared witnesses}
+
+Skolemize \eqref{eq:exists} with $W(s,a)$. It suffices to require
+\begin{align*}
+ \eps(s,Q(a))&\to\eps(P(W(s,a),s),a),\\
+ \eps(P(z,s),a)&\to\eps(s,Q(a)).
+\end{align*}
+Setting $z=W(s,a)$ in the second clause gives the converse of the first. Consequently the equational backend can use a selected-witness equality plus the arbitrary-witness implication. The JSON grouping records that one derived converse as well; it should not be counted as an independent new theory axiom.
+
+Use a unary predicate $G$, unary functions $\mathsf{Target},\mathsf{Pick}$, and binary functions $\mathsf{Next},\mathsf{Mem}$. For readability put
+$h=\mathsf{Target}(b)$, $n_z=\mathsf{Next}(b,z)$ and
+$m_z=\mathsf{Mem}(b,z)$. The following six clauses encode the closure alternative:
+\begin{align*}
+&G(b)\lor R_b(h,n_z),\\
+&G(b)\lor E(m_z,n_z),\\
+&G(b)\lor\neg E(m_z,z),\\
+&\neg G(b)\lor E(\mathsf{Pick}(x),x)\lor\neg R_b(x,y)\lor E(y,h),\\
+&\neg G(b)\lor\neg E(x,h)\lor\neg R_b(x,y)\lor E(y,h),\\
+&\neg G(b)\lor\neg E(y,h)\lor R_b(\mathsf{Next}(b,y),y).
+\end{align*}
+When $G(b)$ is false, the first three clauses exhibit one input whose output family has no subset bound. Thus $\LB(R_b)$ forces $G(b)$ true. The fourth clause then gives the empty-object seed: when $x$ is empty its positive member literal is false. The remaining two clauses give closure and support.
+
+Conversely, if local boundedness fails, choose a bad input for $\mathsf{Target}$ and bad outputs and members for $\mathsf{Next},\mathsf{Mem}$. If local boundedness holds, choose a supported hull for $\mathsf{Target}$ and support predecessors for $\mathsf{Next}$. Set $G$ according to the branch. Choose $\mathsf{Pick}(x)$ to be a member whenever $x$ is nonempty, and arbitrary otherwise. On a countable carrier all these choices can be made by least external index. The branch sharing is sound because the two branches impose disjoint obligations on the shared functions.
+
+An optional variant eliminates $\mathsf{Pick}$ by substituting
+\[
+ W(P(x,d),A(d,A(d,d))).
+\]
+The class here asks whether the prepended value is an $E$-member of the first tail coordinate. The existential witness is therefore a member of $x$ whenever one exists. This saves a signature symbol but enlarges the packet from 1,169 to 1,201 bits, so the explicit-pick version is preferred in this encoding.
+
+\section{Why the Boolean equational conversion is safe here}
+
+Retain \eqref{eq:head}--\eqref{eq:tail} as \emph{native equations}. Replace each predicate by an unconstrained Boolean-valued function, and translate its equality-free clauses propositionally. Introduce a separate Sheffer operation $N$ with the published basis
+\[
+ (x\NAND((y\NAND x)\NAND x))\NAND(y\NAND(z\NAND x))=y,
+\]
+and a constant $\mathsf{top}=N(d,N(d,d))$. Set
+$\mathsf{bottom}=N(\mathsf{top},\mathsf{top})$.
+The Boolean class equations and the six closure equations are printed completely in the generated \texttt{.equations} file. Together with the Boolean basis, truth definition and two native equations, there are exactly 14 equations.
+
+\begin{theorem}[Nontrivial equational models]
+The resulting equational theory $\mathcal E$ has a model with
+$\mathsf{bottom}\ne\mathsf{top}$ if and only if $\Con(\mathrm{ZFC})$.
+\end{theorem}
+\begin{proof}
+For the forward direction, the Sheffer theorem equips the carrier of a nontrivial $\mathcal E$-model with a Boolean algebra. Choose an ultrafilter. Declare each original predicate true exactly when its value belongs to that ultrafilter. Propositional equations pass to the two-element quotient of the Boolean algebra, so all equality-free clauses hold. The two native equations already hold on the original carrier. No quotient is taken of $P,V,A,J,Q,W$ or the closure witnesses. We therefore obtain an ordinary model of the universal kernel and hence of raw EPSC.
+
+For the reverse direction, take the countably infinite kernel model constructed above, including its chosen Skolem functions. Equip its \emph{same carrier} independently with a countably infinite Boolean algebra, for example a transported copy of the finite/cofinite algebra on $\mathbb N$. Keep every original function unchanged and define each predicate-valued function to take this algebra's top or bottom according to the predicate truth. All translated equations hold, and top differs from bottom.
+\end{proof}
+
+The restriction in the last proof is material. A general powerset/retraction extension need not preserve arbitrary native equations. We do not use it. Our explicit countable model supplies the needed infinite carrier; the reverse ultrafilter argument keeps native functions and native equality on that carrier. Likewise, a universal \emph{conditional} equality could not simply be retained by this construction. Avoiding such clauses is precisely the point of replacing indexed update with the two stack equations.
+
+A fair enumeration of finite ground contextual rewrite traces, allowing both directions of every equation and arbitrary ground substitutions, reaches bottom from top exactly when the equational theory proves their equality. The usual ground-term congruence construction proves completeness: if the two ground terms are not equivalent under those rewrites, the quotient term algebra is a nontrivial model. Thus this gives a mathematically complete refutation-search specification for the consistency target. A compact binary realization of its term codec, substitutions, contexts, fair enumeration and initialization has not been built here.
+
+\section{Packet and verification scope}
+
+The fixed packet format follows source 70. Its header has an 8-bit symbol count, a 3-bit arity for every symbol and an 8-bit variable capacity. Local variables and operation symbols share one fixed-width opcode space. Each equation begins with one marker bit and then contains two arity-delimited prefix terms; a zero marker ends the list. The final two ground terms are the start and target. Symbol names are documentation, while every symbol's opcode and arity are charged. There are no omitted macro definitions.
+
+For the preferred version, 16 symbols and 3 variable slots require 5-bit opcodes. The header has 64 bits. Fourteen marker bits, one terminator bit and $214\cdot5$ term bits use 1,085 bits. The two endpoints use another 20 bits, giving
+\[
+ 64+1,085+20=1,169.
+\]
+The reduction against the 2,324-bit source-70 packet is 1,155 bits, approximately 49.7 percent. It is a measurement of the exhibited packets only.
+
+The command \texttt{python3 stack\_kernel.py} regenerates both variants, their complete equations, JSON, bit strings and verification record. The recorded run passes 2,080 finite symbolic selector/projection reductions; 16,384 direct-versus-class formula comparisons (including nested binding and descriptor parameters); 72 Boolean truth assignments for all displayed propositional translations; exact arity-aware encode/decode round trips; and rejection of truncated or overlong packets. These checks cover concrete transcription risks. They do not test full-theory consistency, turn finite carriers into models of the kernel, or check the model argument in Lean/Rocq. No search for a ZFC contradiction was run.
+
+\section{Other formalisms and the exact target}
+
+The finite predicative-class, Herbrand, equality-aware clause and equational routes are already present in the repository. They are relevant because their short fixed packets can shift complexity from the axioms into a generic interpreter, but a payload-size comparison must charge that interpreter and its blank-tape initialization before yielding a machine bound. The current stack construction is a concrete improvement of one such packet, rather than a claim that the familiar alternative formalisms are newly discovered.
+
+Map Theory deserves a calibration caution in an exact-$\Con(\mathrm{ZFC})$ search. Grue's original system interprets ZFC, but the cited Berline--Grue model construction gives its upper consistency bound in ZFC plus a strongly inaccessible cardinal~\cite{map}. That source alone does not establish equiconsistency with ZFC. Similarly, obtaining a finite theory by postulating a set-coded model of full ZFC is not a free replacement of ZFC: the resulting consistency statement needs its own upper calibration. Neither change is used here.
+
+The next concrete compiler task is to compare a complete implementation of the 1,169-bit rewrite frontend with the existing source interpreter. The essential contracts are an unbounded prefix-tree parser, ground substitution with repeated variable occurrences, arbitrary one-hole contexts, bidirectional equation use, complete finite-certificate enumeration and a charged blank-tape initializer. Until those exist, no state count can be subtracted from the established machine.
+
+\begin{thebibliography}{9}
+\bibitem{repo14} ProveIt, source 14, \emph{Empty-input closure}: equality-free EPSC is deductively equivalent to subset-seeded PSC, with the source-08 hereditary interpretation explicitly credited.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/e58338db7545909907e07a7603e8eb88625c527a/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-146-source-14.md}
+\bibitem{repo40} ProveIt, source 40, \emph{Finite closure kernels for small consistency machines}, ordinary review and literal generator, at the pinned commit.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/e58338db7545909907e07a7603e8eb88625c527a/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-154-source-40.md}
+\bibitem{repo70} ProveIt, source 70, \emph{A 244-State Turing Machine Calibrated to Con(ZFC)}, separate equational branch and packet.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/e58338db7545909907e07a7603e8eb88625c527a/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-166.md}
+\bibitem{sh1} W. McCune, R. Veroff, B. Fitelson, K. Harris, A. Feist and L. Wos, \emph{Short single axioms for Boolean algebra}, Journal of Automated Reasoning 29 (2002), 1--16, Theorem 2.\newline
+\url{https://www.cs.unm.edu/~mccune/papers/basax/v12.pdf}
+\bibitem{map} C. Berline and K. Grue, \emph{A $\kappa$-denotational semantics for Map Theory in ZFC + SI}, Theoretical Computer Science 179 (1997), 137--202.\newline
+\url{https://hjemmesider.diku.dk/~grue/papers/BerlineGrue97/BerlineGrue97.pdf}
+\end{thebibliography}
+\end{document}

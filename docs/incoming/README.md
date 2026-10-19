@@ -12,6 +12,48 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Queue review: 18 October 2026
+
+At Vladimir's request, the twenty ZIPs present at `e58338db7545909907e07a7603e8eb88625c527a`
+were reviewed for deletion if they were both outdated and contained no useful
+new ideas. **All twenty are retained.** Their old state-count targets and
+historical proof-status statements often need updating, but each package has
+at least one substantive contribution not fully superseded by the maintained
+work or another queued package. Repeated background, larger search counts,
+different wording, and an obsolete machine count were not retention reasons.
+
+This is a review for redundancy, not completed intake or a new certification
+of the delivered mathematical claims. Main manuscripts and relevant proof
+appendices were compared with the current research and with one another;
+their verification suites were not rerun for this review. The following
+specific material should be considered when these archives next undergo intake.
+
+| Retained archive | Material still worth considering |
+| --- | --- |
+| `BusyBeaver_245_Review_Sources_2026-10-18.zip` | Independently written arbitrary-register/list runtime checker and parametric wrong-return counterexample for a rejected reassociation. |
+| `Shifted_Pairing_Companion_Sources_2026-10-18.zip` | Shifted pairing `2^a(2b+1)-1`: exact dirty-scratch contracts, whole-source clean-call analysis, and logical transfer addressing code-as-variable freshness. |
+| `sub246-audit-and-alternatives-20261018.zip` | Biased-reference copier, gap-sensitive comparators, packed component libraries, and grow-and-sweep saturation architecture; controller and linking costs remain open. |
+| `zfc-246-frontier-research-20261018.zip` | Unbounded-time impossibility proof for the specified seven-state read-only detector, beyond bounded synthesis failures. |
+| `zfc-axiom-symmetry-20261018.zip` | Protected-stack proof compiler for independently permuted AX rows and parameter roles, including twelve safe single-read variants of the fourth propositional parameter. |
+| `zfc-below245-research-20261018 (2).zip` | Relaxation of bootstrap locks, a complete five-zero-scanner architecture witness, and a model obstruction to deleting container transitivity. |
+| `zfc-below245-research-20261018.zip` | Equality/converse-membership orientation families and classification of every existing blank start of the spare-zero variant, despite its successful recurrent contracts. |
+| `zfc-below245-source-search-20261018.zip` | Exact CP/GIC Boolean and double-negation normalization with a calibrated changed-source control and fine-token compiler. |
+| `zfc-below246-research-20261018 (3).zip` | One-row removal of accumulating spare blocks with full local contracts, and source transfer-loop erasure under an abstract invariant. |
+| `zfc-continuation-research-20261018.zip` | Ranked continuation quotient, physical-selector compiler symmetry, and exact incidence-matrix obstruction to uniform increment retyping. |
+| `zfc-direct-negation-20261018.zip` | Scratch-retaining negation contraction `LNPQMVQPW` to `LMPW`, distinct from the earlier pairing-shift optimization. |
+| `zfc-layout-circuits-20261018.zip` | Expanded signed certificate recognizer for safe nonzero startup data: a negative certificate proves a negation, rather than claiming nonderivability. General safe-root and identity-compaction ideas are already known. |
+| `zfc-raw-profile-routing-20261018.zip` | Raw-assignment profile construction removes all function-congruence clauses while reconstructing the required schema and selector supply. |
+| `zfc-small-kernels-20261018.zip` | Three-coordinate model combines logical constructors and witnesses into three proper function symbols, with explicit collision separation. |
+| `zfc-sub245-research-20261018 (1).zip` | Detailed two-coordinate model and witness storage for the frozen selective-equality kernel; later reports depend on this construction. |
+| `zfc-sub245-research-20261018 (2).zip` | Rank-preserving label-twist independence argument retaining CP/GIC, and an anchored-rank obstruction to a proposed GIC repair. |
+| `zfc-sub245-research-20261018.zip` | Infinite countermodel for dropping membership transport. The positive selective-quotient reduction is partly superseded by the raw-profile report. |
+| `zfc243-composed-20261018.zip` | Finite-ground satisfiability via total operation tables. Its machine is exactly the maintained 243-state machine; see the [comparison](../../Computability/BusyBeaver/Research/ZFC/candidate-combined243/comparison-074c76bb74.md). |
+| `zfc245-semantic-search-20261018.zip` | Exact integer-dual certificate for a restricted 128-rule grammar optimum; stronger evidence than a solver's infeasibility message, within its fixed vocabulary. |
+| `zfc246-contextual-reassociation-20261018.zip` | Reassociation theorem with one-sided control hypotheses and a moving-zero-register transducer with an explicit continuation obstruction. |
+
+No archive was deleted or modified by this review. This entry is not an intake
+batch and does not change the placement/write/catalogue sequence below.
+
 ## Where this procedure comes from
 
 The procedure was developed in the Surreal repository, whose drop zone was
@@ -777,6 +819,9 @@ ProveIt-era batches (from this directory):
 | 165 | One source-block/workspace manuscript from `36633bfe16`: placement `500381f8f1` adds local source 69 to `set-theory/zfc-closure-kernels`, now 69 sources and still 290 reports. All 454 ancillary files preserved, 12 archive-only, 466 recoverable. Source 69 and exact duplicate source 68 ZIPs retired; original 273 duplicate ancillary bindings checked. Eighteen other archives remained queued at placement. | `91b1c296b3`: positive multi-instruction blocks, numerical invariants, workspace relation and exact rejected-candidate witnesses; original article and delivered files unchanged. | this commit | All 14 main jobs and eight supplemental checks pass; large searches remain recorded/scoped. No new smaller consistency machine or PA proof. Current external Lean baseline is the different routed 245 machine. Host reconciliation builds no article PDF; collection manifest rebuilt separately and rendered changes visually reviewed. |
 | 166 | One compensated 244-state manuscript from `248bc05936`: placement `6619bd0002` adds source 70 to `set-theory/zfc-closure-kernels`, now 70 sources and still 290 reports. All 170 ancillary files preserved, 21 originals archive-only at collection placement, 191 recoverable; only this ZIP retired. | `be13ec69d7`: exact four-row patch and deleted state, all-tape ordinary halting proof, complete principal replay and separate equational backend; exact candidate inputs promoted separately. | this commit | Portable replay passes; separate full replay passes 8,391 cases, 2,315,075 rules and 488 rows in 540.786 seconds; exact 407,951-step startup. Supplemental full variants remain inherited. After the intake checkpoint, the exact 244-state external Lean endpoint passed on 18 October 2026 (six reports/six clients, no warnings); internal PA calibration remains open. Base and delivered files unchanged; catalogue rebuilt and affected pages visually reviewed separately. |
 | 167 | One loop-rotation manuscript from `d91a27b462`: placement `5513e77ff1` adds source 71 to `set-theory/zfc-closure-kernels`, now 71 sources and still 290 reports. All 1,007 ancillary files preserved; 37 originals archive-only; 1,044 recoverable. Only this ZIP retired. | `a41168bef8`: exact source rotation, complete runtime/startup, alternative formalisms and grammar research; full recovery and independent scoped reviews. Delivered files unchanged. | this commit | Seven primary jobs and sixteen finite research checks pass; 8,390 expanded cases, 2,312,438 rules and 407,931-step startup. The different 244 reductions combine into a subsequent 243 table: fresh 8,390-case/2,314,868-rule replay and 407,967-step startup; five Lean units prove relative halting equivalence (83 probes/39 callers, zero warnings). Full rotated/combined Lean consistency and internal PA endpoints remain open; compensated244 remains the closed external baseline. Catalogue rebuilt and affected pages visually reviewed separately. |
+| 168 | Two manuscripts from `8c41b1fb7d`: placement `696c150e84` adds sources 72–73 to `set-theory/zfc-closure-kernels`; 151 ancillary files and 12 archive-only members, all 163 recoverable. Both ZIPs retired. | `f58c9394c0`: three alternative 242-state folds and the primary 241 predecessor-bit composition; ordinary all-tape proofs and exact reproduction. | 1f3f37675c | All 19 fresh substantive jobs pass, including five full 8,390-case universal runs for A/B/C/243/241. Primary 241 covers 2,319,442 rules, all 482 rows and 408,419-step startup. Complete 241 Lean consistency and internal PA endpoints remain open. |
+| 169 | Six manuscripts from `d584512002`: placement `c3339d150f` adds sources 74–79, now 79 sources and still 290 reports. 1,387 originals: 440 new files, 830 existing aliases, 31 batch aliases and 86 archive-only; 1,301 ancillary occurrences recover through 687 targets. Only six batch ZIPs retired; twenty older archives remain. | `c3efb44b50`: exact six-table comparison, distinct semantic/compiler/formalism ideas and a subsequent joint packet; delivered bytes unchanged. | 1f3f37675c | All six 242 tables equal primary A up to one state rename; composition gives existing 241. Six supplied suites were not rerun. Exact isomorphism reuses prior machine evidence. Root joint finite checks pass at 1,750 bits, 21 equations and four-bit opcodes, 18 bits below delivered detour. No extra binary-state or PA claim; catalogue PDF built separately. |
+| 170 | One manuscript from `e5c2b3337e`: placement `0841b55a14` adds source 80, now 80 sources and still 290 reports. 79 originals = 61 new + 7 existing aliases + 5 batch aliases + 6 archive-only; recovery passes 79/73/67. Only this ZIP retired; twenty older archives remain. | `cc73ddc7d9`: source rotation enables the 72/90 fold, giving an ordinary 240-state candidate; dense-order obstruction and full-schema equivalence retained. Delivered bytes unchanged. | this commit | All ten fresh substantive jobs pass. Both runtimes cover 8,386 cases: rotated 241 has 2,318,435 rules/482 rows; final 240 has 2,322,575 rules/480 rows and 409,691-step startup. No supplied manifest audit, nested suite or search rerun. Complete 240 Lean consistency and internal PA endpoints remain open; compensated244 is the closed external baseline. Catalogue PDF rebuilt separately. |
 
 
 Batches 99 to 113 are the fifteen clusters into which the intake triaged

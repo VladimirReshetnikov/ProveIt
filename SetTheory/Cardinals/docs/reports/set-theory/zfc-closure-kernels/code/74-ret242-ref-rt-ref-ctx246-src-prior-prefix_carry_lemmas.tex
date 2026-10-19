@@ -1,0 +1,500 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,microtype}
+\usepackage[margin=0.9in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newcommand{\bits}{\{0,1\}}
+\newcommand{\B}{\mathsf B}
+\newcommand{\M}{\mathsf M}
+\newcommand{\width}{\operatorname{width}}
+\newcommand{\Inc}{\operatorname{inc}}
+\newcommand{\Dec}{\operatorname{dec}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\concat}{\mathbin{+\!+}}
+\title{A 250-state shared-carry machine:\\local identities, runtime transport, and bootstrap}
+\author{ProveIt research contribution}
+\date{17 October 2026}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+A rightward carry circuit can implement both increment and decrement in the
+existing nine-register binary interpreter.  For decrement it shifts the
+register prefix, stopping at the selected mark; a zero result rolls that
+prefix back.  Increment deposits a harmless spare register of value one.
+Retiming a temporary bit makes an otherwise unused read-zero transition a
+blank-tape initializer.  The resulting table has 250 working states and 500
+binary transitions.  The new register identities are proved below for
+arbitrary register values, arbitrary left contexts, and arbitrary nonempty
+spare suffixes.  An adapted finite symbolic verifier checks all 8,391 original
+instruction guard cases.  A literal 585,431-step bootstrap reaches a safe root.
+This is a conventional mathematical proof with executable finite
+certificates; it does not claim a newly compiled Lean or Rocq endpoint.
+\end{abstract}
+
+\section{Exact machine and conventions}
+
+The source is the frozen original-label permutation252 table in ProveIt,
+at commit
+\begin{quote}\small\ttfamily
+a3f06a2059dd786ad385079106454efb84b87d3c.
+\end{quote}
+Its SHA-256 is
+\begin{quote}\small\ttfamily
+939f99d602c8f7057517c4369279de99e30827050fc743581df83f26aaf1b713.
+\end{quote}
+The final original-label file \texttt{machine/zfc\_prefix250\_old.tm} has SHA-256
+\begin{quote}\small\ttfamily
+fd455304bad82a6da7ab83149352d0b1db27557582c4cc6312de003c96ff4e43.
+\end{quote}
+The start state is old 97; old 254 remains the separate halt label.  There
+are 250 working labels: the old labels $0,\ldots,253$ except
+$5,8,43,59,85$, together with the new label 255.  A canonical renumbering is
+also supplied.  The tape is bi-infinite, initially all zero, and the head
+starts at coordinate zero.  A table entry $(w,d,q')$ writes $w$, moves one
+cell in direction $d$, and enters $q'$.
+
+Delete states 43, 59 and 85 from permutation252 and make precisely these
+changes, leaving every other surviving row fixed:
+\begin{center}
+\begin{tabular}{rrlll}
+\toprule
+State & Read & Write & Move & Next state\\
+\midrule
+30 & 1 & 0 & R & 95\\
+75 & 0 & 1 & R & 255\\
+75 & 1 & 1 & L & 63\\
+97 & 0 & 1 & R & 83\\
+97 & 1 & 1 & L & 131\\
+109 & 0 & 0 & R & 75\\
+131 & 0 & 0 & L & 48\\
+255 & 0 & 1 & L & 97\\
+255 & 1 & 1 & L & 131\\
+\bottomrule
+\end{tabular}
+\end{center}
+The state-30 change replaces the old decrement seeker by the carry entry.
+No surviving row targets a deleted state.  In
+particular, changing both state-97 rows removes its old reference to 85.
+The unique transition to halt retains its original write and movement.
+
+\section{Tape notation and exact local contracts}
+
+For a finite list of natural numbers $v=(v_0,\ldots,v_{m-1})$, put
+\[
+ \B(v)=\prod_{i<m} 0\,1^{v_i+1},\qquad
+ \width(v)=\sum_{i<m}(v_i+2).
+\]
+Thus a physical register block always contains at least one one-cell.  If
+$v=a\concat[x]\concat b$, where $|a|=r$, its selected, marked form is
+\[
+ \M_r(v)=\B(a)\,00\,1^x\B(b).
+\]
+The first one-cell of register $r$ has been erased.  All cells to the right
+of the displayed finite file are zero.  The left tape context $\ell$ is
+arbitrary; none of the local contracts imposes PC, marker, or gap conditions
+on it.
+
+In each lemma put the first file cell at coordinate zero.  An output ``at
+the old left boundary'' means head coordinate $-1$, immediately before the
+file, before that cell has been read.  ``At the new left boundary'' means
+head coordinate $0$, after the file's boundary has moved one cell right.
+The left context is therefore completely preserved in the first case,
+and the newly written one at coordinate zero extends it in the second case.
+The symbols $\Inc_r(v)$ and $\Dec_r(v)$ change only entry $r$ by $+1$ and
+$-1$, respectively; the latter is used only when $v_r>0$.
+
+All nine logical registers occupy physical indices $0,\ldots,8$.  The
+global invariant will require $m\geq10$.  Consequently, whenever $r<9$,
+the suffix $b$ in the marked decomposition is nonempty.  This is the exact
+condition needed to distinguish a zero register from the end of the file.
+
+\subsection{A three-step retiming identity}
+
+For clarity, first consider an auxiliary carry circuit with the same 250
+working labels.  Its rows differ from the final table as follows:
+\[
+\begin{array}{c|cc}
+ & \text{read }0 & \text{read }1\\ \hline
+75 & (0,R,255)&(1,L,63)\\
+255&(1,L,112)&(1,L,97)\\
+97&(0,L,112)&\text{unused}
+\end{array}
+\]
+Every other row is already final.  The auxiliary circuit is used only to
+prove local identities, not as the delivered blank-start machine.
+
+\begin{lemma}[Retiming]
+Start in state 75 scanning a zero at coordinate $c$.  For either value of
+the next cell $d=c+1$, the auxiliary and final circuits reach identical
+configurations after exactly three steps.  The assertion holds for every
+surrounding tape context.
+\end{lemma}
+\begin{proof}
+Only coordinates $c$ and $d$ are written.  If $d$ contains zero, the
+auxiliary state sequence is
+$75\to255\to112\to131$ and the final sequence is
+$75\to255\to97\to131$.
+Both end at coordinate $c-1$ in state 131, with both $c$ and $d$ equal to
+one.  If $d$ contains one, the auxiliary sequence is
+$75\to255\to97\to112$ and the final sequence is
+$75\to255\to131\to112$.
+Both end at $c-1$ in state 112, with $c=0$ and $d=1$.  These are literal
+three-row calculations.  In the final circuit, the temporary one at $c$
+ensures that state 97 is entered on read one.  Its read-zero row is free
+to initialize the blank tape.
+\end{proof}
+
+The retiming preserves both local times and outputs.  We may therefore
+derive the remaining contracts with the simpler auxiliary circuit and
+transfer them to the exact final table.
+
+\subsection{Positive decrement by moving the prefix}
+
+The unchanged carry rows are
+\[
+\begin{array}{c|cc}
+ &0&1\\ \hline
+95&(1,R,109)&(1,R,95)\\
+109&(0,R,75)&(0,R,95).
+\end{array}
+\]
+The state-109 read-zero row is the new termination test.  The old return
+scanner has
+\[
+63: (0,L,48),(1,L,63),\qquad
+48: (0,L,7),(1,L,63).
+\]
+
+\begin{lemma}[Positive selected register]\label{lem:positive}
+Let $v=a\concat[x]\concat b$ with $x>0$, and set $p=\width(a)$.
+Starting in state 95 at coordinate zero on $\M_r(v)$, the final machine
+reaches state 48 at coordinate zero after exactly $2p+4$ transitions.
+The tape is
+\[
+ \ell\;1\;\B(\Dec_r(v))\;0^\infty.
+\]
+The displayed one is at the original file origin, so the register file
+and its header boundary have shifted one cell to the right.  No spare
+value or number of spare blocks changes.
+\end{lemma}
+\begin{proof}
+At a normal block $01^{u+1}$, states 95 and 109 replace its initial $01$
+by $10$, then state 95 scans the remaining $u$ ones.  Applying this
+calculation successively to the blocks of $a$, followed by the first
+zero of the mark, takes $p+2$ rightward steps.  The machine is then in
+state 75 at coordinate $p+2$, and the tape prefix is
+\[
+ \ell\;1\,\B(a)\,0\,1^x\B(b).
+\]
+Since $x>0$, state 75 reads one and enters the return scanner.  Its
+isolated-zero block scan takes $p+2$ further leftward steps, stopping
+in state 48 at coordinate zero.  The selected block is $01^x$, so its
+new value is $x-1$.  Every preceding block merely moved right; every
+following block remained in place.  The left context was not read.
+\end{proof}
+
+\subsection{Zero detection and rollback}
+
+The reverse carry rows are
+\[
+\begin{array}{c|cc}
+ &0&1\\ \hline
+112&(1,L,131)&(1,L,112)\\
+131&(0,L,48)&(0,L,112).
+\end{array}
+\]
+The read-zero exit of 131 is deliberately state 48, not its old state 63.
+It supplies the zero-decrement control continuation after the local box
+has been restored.
+
+\begin{lemma}[Zero selected register]\label{lem:zero}
+Let $v=a\concat[0]\concat b$, with $b\ne[]$, and $p=\width(a)$.
+Starting in state 95 at coordinate zero on $\M_r(v)$, the final machine
+reaches state 112 at coordinate $-1$ after exactly $2p+7$ transitions.
+The entire tape is again $\ell\B(v)0^\infty$.
+\end{lemma}
+\begin{proof}
+The first $p+2$ steps are the same carry calculation as in
+Lemma~\ref{lem:positive}.  The local suffix is now
+\[
+ \underbrace{1}_{p}\;
+ \underbrace{0}_{p+1}\;
+ \underbrace{0}_{p+2}\;
+ \underbrace{1}_{p+3}\cdots .
+\]
+The last one exists because $b$ begins with a valid block.  In the
+auxiliary circuit, state 75 at $p+2$ takes the zero branch, 255 sees the
+one at $p+3$, and 97 returns left through $p+2$ to state 112 at $p+1$.
+The next two transitions restore the selected block: 112 writes one at
+$p+1$, and 131 changes the one at $p$ back to zero.  State 112 now scans
+the shifted prefix from coordinate $p-1$.
+
+For each preceding block, the pair $112/131$ changes its shifted $10$
+back to $01$ while moving left.  Induction on the blocks of $a$ takes
+exactly $p$ more steps and restores $\B(a)$ completely.  The result is
+state 112 at $-1$, before reading the left context.  The total is
+$(p+2)+5+p=2p+7$.  The retiming lemma transfers this exact result to the
+final table.
+\end{proof}
+
+The output state 112 is part of the contract.  It must not be silently
+replaced by the old zero-decrement return state 3.  At an actual
+instruction boundary, the subsequent literal $112/131$ scan changes
+the two phase bits from $00$ to $01$ before reaching state 48 at the
+last PC bit.  The finite instruction verifier executes this change
+explicitly and verifies the required break continuation.
+
+\subsection{Increment and the disposable spare}
+
+The unchanged seeker is
+$73:(0,R,83),(1,R,73)$ and
+$83:(1,R,95),(1,R,73)$.
+It finds the selected pair of zeros and restores the erased mark.
+
+\begin{lemma}[Increment]\label{lem:increment}
+Let $r<|v|$ and $w=\width(v)$.  Starting in state 73 at coordinate zero
+on $\M_r(v)$, the final machine reaches state 48 at coordinate $-1$
+after exactly $2w+7$ transitions.  Its tape is
+\[
+ \ell\;\B\bigl(\Inc_r(v)\concat[1]\bigr)\;0^\infty.
+\]
+Thus increment appends exactly one spare block, of value one.
+\end{lemma}
+\begin{proof}
+The seeker passes the preceding ordinary blocks, restores the first
+one of the selected block, and enters 95.  The carry shifts every later
+separator right.  From the file origin to state 75 at coordinate $w+2$
+there are exactly $w+2$ rightward transitions.  The last newly written
+one is at $w$, and coordinates $w+1,w+2,w+3$ are zero.
+
+In the auxiliary circuit, the zero/zero test writes ones at $w+3$ and
+$w+2$, then enters state 48 at $w$.  These four transitions leave the
+new spare block $011$ at $w+1,w+2,w+3$.  The return scanner takes $w+1$
+further steps to the old left boundary.  The total is
+$(w+2)+4+(w+1)=2w+7$.  The carry increased the selected register by one
+and preserved all other old values.  Retiming gives the same final
+result and duration.
+\end{proof}
+
+\subsection{Marking and the strengthened invariant}
+
+The nine selector entry states remain
+\[
+(60,44,31,56,38,40,28,64,69).
+\]
+Their previously established marking contract is unchanged: entry $r$
+on $\B(v)$ produces $\M_r(v)$ and returns to state 2 at the old left
+boundary when $r=0$, and state 6 otherwise.  Every table row used by this
+particular excursion is literally unchanged.  The original proof by
+induction over skipped unary blocks therefore applies.
+
+\begin{corollary}[Nonempty spare invariant]
+Suppose a runtime frame contains nine primary registers and at least
+one spare block.  Marking preserves the file.  Increment preserves
+all old spare values and appends one value-one spare.  Positive and
+zero decrement preserve the spare suffix exactly.  Consequently every
+subsequent runtime frame again contains a nonempty spare suffix, and
+Lemma~\ref{lem:zero} is available at every physical register $r<9$.
+\end{corollary}
+
+The spare values need not be zero or one for the local proofs.  Only
+their finite unary-block shape and nonemptiness matter.  The actual
+bootstrap happens to provide 210 value-one spares.
+
+\section{All instruction contracts}
+
+A normal dispatch frame has old state 96 and tape
+\[
+0^\infty\,1\,P\,0^{D-|P|}\,1\,\B(v)\,0^\infty,
+\]
+with the head at the first PC cell, $D\ge40$, and a nonempty spare suffix.
+The unchanged logical-to-physical assignment, in the declaration order
+$(N,T,W,A,D,H,X,Y,L)$, is
+\[
+(6,2,0,4,3,7,8,5,1).
+\]
+The overloaded letter $D$ in the logical-register list is a register
+name; the $D$ in the display is the marker-to-header span.
+
+The supplied \texttt{prefix\_affine.py} adapts the attributed source-27
+checker.  The only new symbolic tape operation is to prepend one
+one-cell to the left part when applying the positive-decrement
+contract.  This is exactly the boundary motion of
+Lemma~\ref{lem:positive}.  The abstract contracts are therefore:
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+Entry & Condition & Exit state & File / boundary effect\\
+\midrule
+Selector $r$ & Plain file & 2 or 6 & Mark $r$; fixed boundary\\
+73 & Marked $r$ & 48 & Increment $r$; append $[1]$\\
+95 & Marked $r$, $v_r=0$ & 112 & Restore file; fixed boundary\\
+95 & Marked $r$, $v_r>0$ & 48 & Decrement $r$; boundary $+1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Both decrement guards name the same physical register that was marked.
+
+\begin{lemma}[Finite symbolic verification]
+With these four contracts, all 8,391 instruction guard cases of the
+unchanged 6,460-leaf decoder satisfy their original register-program
+transition, for every additional gap parameter $n\ge0$, every primary
+register vector satisfying the named guard, and every nonempty finite
+spare suffix.  The final span is
+\[
+ D'=D+\mathbf1_{\text{positive decrement}}
+       +\mathbf1_{\text{PC overflow}}.
+\]
+The expected register operation and PC successor are unchanged.
+\end{lemma}
+\begin{proof}
+The finite certificate is reproduced by
+\texttt{check\_prefix\_affine.py}.  Its inputs are the exact final
+transition table and the complete extracted instruction-site list,
+whose provenance and hashes are supplied.  Every case starts with
+span $40+n$.  A run consists of literal steps, normalization of adjacent
+constant or affine runs, whole-run self-loop steps, and the four local
+contracts proved above.  A one-cell peel requires a positive constant
+part, so no branch on an unknown affine length is assumed.  The extra
+one-cell boundary extension has the semantics just described.
+
+Induction over each accepted symbolic trace proves its concrete
+meaning for every $n\ge0$ and every allowed file.  The verifier checks
+the entire target PC, span and box effect, not merely a return to state
+96.  It accepts 8,391 cases; the smallest number of literal transitions
+in a case is 13, and at most 497 symbolic rules are used.  The result
+records 1,868,409 literal rules over all cases.  Thus all instruction
+simulations make positive progress.  These are finite exhaustive
+symbolic certificates under proved local identities, rather than an
+inference from a bounded machine run.
+\end{proof}
+
+The Python checker itself has not been newly verified in a proof
+assistant.  Its small transition and symbolic-rule implementation is
+part of the reviewable computational proof.  Independent literal tests
+are useful regression evidence but are not substituted for the
+universal lemmas or symbolic trace argument.
+
+\section{Blank start and global transport}
+
+The final state-97 read-zero row writes one and enters state 83 one
+cell to the right.  During the proved runtime excursions, state 97 is
+entered only on read one.  This separates the blank initialization from
+the runtime without an additional state.
+
+\begin{lemma}[Exact bootstrap]
+From the all-zero tape in old state 97 at coordinate zero, the final
+machine reaches old state 96 after exactly 585,431 transitions, without
+an earlier halt.  The head is at $-3$, the marker at $-4$, the header at
+225, and the span is 228.  The PC is empty.  The primary physical vector is
+\[
+ [0,2,0,4,0,0,1,0,0],
+\]
+followed by exactly 210 spare blocks, each of value one.  The tape has
+exactly 438 one-cells, and every other cell is zero.
+\end{lemma}
+\begin{proof}
+This is a finite literal calculation, reproduced by
+\texttt{code/check\_boot250.py}.  Its output records every nonzero
+coordinate, and compares the complete final tape with the claimed
+frame.  The only visit to state 97 on read zero is the first transition.
+The output table hash is the exact frozen hash above.  The corresponding
+logical vector is $[1,0,0,0,4,0,0,0,2]$.
+\end{proof}
+
+The original frontend's safety and completeness result permits precisely
+this kind of residual data: the top formula, formula stack and cached
+formula are zero, and the remaining fields are admissible data for its
+root loop.  The next-candidate counter is one.  The accepted initial
+condition and unchanged logical calibration are part of the accompanying
+endpoint audit; no logical axiom, inference rule, or decoder leaf has
+been deleted in this construction.
+
+\begin{theorem}[Runtime transport]
+Let $\mathcal P$ be the unchanged source register program and let
+$R_*=[1,0,0,0,4,0,0,0,2]$ in its declaration order.  The final 250-state
+machine halts from the blank tape if and only if $\mathcal P$ halts from
+its root with register vector $R_*$.
+\end{theorem}
+\begin{proof}
+The bootstrap establishes the dispatch invariant, including $D\ge40$
+and a nonempty spare suffix.  At a current source instruction, the
+unchanged decoder's established path semantics chooses one of the
+listed leaf guard cases.  Its checked local simulation preserves the
+dispatch invariant and implements the exact source successor.  The
+span cannot decrease, and the spare suffix remains nonempty.  Induction
+therefore simulates every finite source run.
+
+If the source reaches its halt instruction, the corresponding checked
+case reaches old state 254.  Conversely, suppose the source does not
+halt.  Its successive instruction simulations form deterministic
+positive-length machine segments.  Every segment is finite and has no
+intermediate halt; otherwise it could not reach the certified target.
+Their cumulative lengths tend to infinity, because each includes at
+least one literal transition.  Thus every finite time after bootstrap
+lies in a nonhalting segment.  The binary machine cannot halt.
+\end{proof}
+
+\begin{corollary}[Consistency endpoint]
+Using the unchanged source-program and set-theoretic calibration, the
+250-state machine halts exactly when ZFC has a formal contradiction.
+Consequently the conventional proof gives
+\[
+ \mathrm{ZFC}\ \vdash
+ \bigl(\text{the 250-state blank-tape machine does not halt}\bigr)
+ \ \longleftrightarrow\ \Con(\mathrm{ZFC}).
+\]
+\end{corollary}
+
+The new transport uses elementary finite-string and natural-number
+induction.  The existing calibration is invoked as its ordinary
+mathematical argument about the fixed numerical calculus, the SIR
+set theory, ZF, and ZFC; its internal ZFC formulation is not inferred
+merely from a Lean axiom report.  In particular, the usual model and
+constructible-universe consistency arguments may be carried out inside
+ZFC, with first-order completeness where needed.  A new proof-assistant
+formalization of this exact 250-state endpoint, and an internalization
+of the complete calibration in PA, remain separate work.
+
+\section{Reproduction and attribution}
+
+The accompanying scripts use the Python standard library:
+\begin{verbatim}
+python3 -B code/verify_all.py
+\end{verbatim}
+Run this command from the extracted archive root. It reconstructs both
+frozen tables, checks the universally parameterized symbolic cases, runs
+3,600 literal box regressions and the independent instruction and exact-time
+audits, and checks the complete blank bootstrap.  The random
+tests are explicitly secondary to the proofs above.  No search is
+required to reproduce the final table or its certificates.
+
+The original machine and compact calculus are due to Mira-Cult; Jeff
+provided the original verification and symbolic rules, and Wade the
+compiler framework.  The 253-state reduction is due to mira-emmy.
+ProveIt supplied the permutation252 baseline and preserved the
+attributed source-27 strict affine checker.  This contribution changes
+the binary interpreter by shared prefix carry, rollback, spare
+accounting, and pulse retiming.  Source identities are retained in
+\texttt{provenance.json}; the unmodified source-27 checker is included
+for comparison.
+
+\begingroup\small\raggedright
+\begin{thebibliography}{9}
+\bibitem{candidate252}
+ProveIt, \emph{A 252-state machine with a checked ZFC consistency endpoint},
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Computability/BusyBeaver/Research/ZFC/candidate-permutation252}.
+\bibitem{m254}
+Jeff, \emph{A verified 254-state Turing machine that halts iff ZFC is inconsistent},
+including the attributed Mira-Cult table,
+\url{https://github.com/jeff87654/busy-beaver/tree/zf-254/ZF/m254}.
+\bibitem{tm-design}
+Jeff, \emph{zfc\_254: Turing-machine layer},
+\url{https://github.com/jeff87654/busy-beaver/blob/zf-254/ZF/m254/design/tm.md}.
+\end{thebibliography}
+\endgroup
+\end{document}
