@@ -152,6 +152,21 @@ The [represented whole-frame relation](arithmetic_control_frame_data_rotation240
 passes 18 probes and callers. It is Σ₁-definable with the exact control table,
 state 85, 64-bit pointer margin and `167+extra` one-valued spares; related
 configurations are live. Step simulation remains a separate obligation.
+The [finite tape adapters](arithmetic_finite_tape_rotation240.md) pass eight
+probes and ten callers, connecting finite startup encodings to numeric tape
+functions with arbitrary internal suffixes.
+The [internal register-box interpretation](arithmetic_symbolic_boxes_rotation240.md)
+passes 16 probes and 18 callers, fixing the exact nine-field layout and
+`167+extra` spare invariant for the actual symbolic syntax.
+The [canonical dispatch reentry](arithmetic_dispatch_rebase_rotation240.md)
+passes 16 probes and 18 callers. It identifies the complete outgoing tape
+with the accepted next control, keeping added pointer padding separate from
+extra register spares. Its numeric runtime endpoint remains explicit.
+The [arithmetic symbolic executor](arithmetic_symbolic_execution_rotation240.md)
+has checked Step (17/17) and Execution (9/9) units, plus all four concrete box
+contracts (8/10), with zero warnings. The mirror erases to the actual checker
+and transports accepted finite certificates to positive internal clocks;
+the concrete instance and full dispatch simulation are being connected.
 
 The [**241-state candidate**](candidate-fold241/README.md) from `8c41b1fb7d`
 adds two local folds to the combined243 table. The last fold uses a bit written
