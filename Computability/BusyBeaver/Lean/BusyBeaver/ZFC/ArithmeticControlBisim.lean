@@ -72,7 +72,7 @@ theorem vget_bump (u : Vec) (r p : Nat) :
   induction u generalizing r p with
   | nil =>
     induction r generalizing p with
-    | zero => cases p <;> simp [bump, vget, vget_nil]
+    | zero => cases p <;> simp [bump, vget]
     | succ r ih =>
       cases p with
       | zero => simp [bump, vget]
@@ -107,7 +107,7 @@ theorem vget_vnormN (n : Nat) (u v : Vec) (p : Nat) (hp : p < n) :
   | zero => omega
   | succ n ih =>
     cases p with
-    | zero => cases u <;> cases v <;> simp [vnormN, vget, vhead, vget_nil]
+    | zero => cases u <;> cases v <;> simp [vnormN, vget, vhead]
     | succ p =>
       have h := ih (vtail u) (vtail v) p (by omega)
       cases u <;> cases v <;> simp_all [vnormN, vget, vtail, vget_nil]
