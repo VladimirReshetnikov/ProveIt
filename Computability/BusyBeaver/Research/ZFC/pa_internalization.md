@@ -1317,3 +1317,19 @@ full-file effects and clean-scratch hypotheses. Root occurrence, equality/fetch,
 dispatch/AX/root composition, the scheduler/seed relation and both directions
 of internal halting equivalence remain open, alongside W6/W7. Upstream compile
 claims retain their attributed status; this review did not run Lean.
+
+**W6 interface (Claude lane, 2026-10-19).** The register side of the PA chain
+meets the binary side at the represented Rotation240 interpreter
+`ArithmeticControlTable.controlRun ControlBisimRotation240.tableR`, started at
+`liveValue 1 (ArithmeticL2.enc seed)` with the logical seed of
+`LogicalSeed246` (`np = 3`, `p1 = 3`, all other registers zero; `enc` places
+logical register `r` in physical field `physOf r`). W6 must show, in every
+IΣ₁ model, that blank240 halts iff this run reaches `0`. That needs (i) the
+agreement of the packed table `tableR` with `TreeRotation240.tree` (successor
+resolution as in the binary dispatcher; a chunked kernel check), (ii) a
+per-control binary frame/step simulation for the 240 table (the analogue of
+`ArithmeticControlFrame254`/`ArithmeticControlSimulation254`), and (iii) the
+bootstrap now provided by `ArithmeticBootstrapRotation240`. The Claude lane is
+currently on W4/W5 (L2 port: `ArithmeticDagRun`, `ArithmeticL2Lib254`,
+`ArithmeticL2Macros254`, `ArithmeticL2Control254` landed); Codex-lane work on
+(i)–(ii) is welcome and should target this interface.
