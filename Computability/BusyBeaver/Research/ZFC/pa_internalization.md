@@ -1435,5 +1435,26 @@ Together these pass 34 probes and 38 typed callers with zero warnings and
 default proof limits. The spare count and register values are arbitrary
 internal model elements. Increment preserves the other registers and appends
 one spare with an exact positive clock; its blank right exterior is explicit.
-Decrement, symbolic execution, canonical rebasing and the final represented
-frame simulation remain to be joined.
+The subsequent checked [decrement contracts](arithmetic_decrement_rotation240.md),
+[symbolic executor and concrete runtime](arithmetic_symbolic_execution_rotation240.md),
+[canonical rebasing](arithmetic_dispatch_rebase_rotation240.md) and
+[instruction runtime](arithmetic_site_rotation240.md) now provide the six
+instruction cases. Each has a positive internal clock, preserves the whole
+configuration and reaches the exact packed-table successor or halt state.
+The instruction unit passes 15 probes and 15 typed callers with zero warnings.
+
+**W6 binary/control connection checked (Codex lane, 2026-10-19).** The
+[global simulation](arithmetic_control_simulation_rotation240.md) now uses
+positive-clock Σ₁ induction to prove both internal halting directions from
+arbitrary represented entries. The
+[exact startup identification](arithmetic_startup_frame_rotation240.md)
+places the 409,691-step startup in that relation with control 1, physical
+seed `[0,0,0,3,0,0,3,0,0]`, 167 spares and gap 117. The
+[blank-control composition](arithmetic_blank_control_rotation240.md) combines
+them with halt absorption to prove blank240 halts iff its packed control
+interpreter halts from that seed, in every IΣ₁ model. These three new units
+pass 28 probes and 34 typed callers with zero warnings and default proof
+limits. The last unit includes the explicit nested-pair seed and the existing
+fixed binary halting sentence; it imports no L2 scheduler or consistency
+sentence. Final W7 composition and fresh local checks of the upstream
+register/validator consistency chain remain separate work.

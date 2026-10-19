@@ -25,9 +25,10 @@ dependency family was rebuilt.
 The [publication record](results/arithmetic-site-rotation240-publication.json)
 binds the accepted source, audit, logs and guard. The
 [history](arithmetic-site-rotation240/history.json.gz) preserves the source and
-guard preparation, including its metadata correction. Unbounded iteration
-and identification of the exact startup frame are separate obligations before
-the internal blank-machine halting equivalence follows.
+guard preparation, including its metadata correction. The subsequent
+[control simulation](arithmetic_control_simulation_rotation240.md) and
+[blank-control composition](arithmetic_blank_control_rotation240.md) now
+connect these endpoints to unbounded iteration and the exact startup.
 
 Attribution remains with Mira-Cult, Jeff Ketchersid, Andrew James Wade and
 ProveIt, as recorded by the underlying machine and source artifacts.

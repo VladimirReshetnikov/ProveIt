@@ -146,12 +146,13 @@ tape halves at each of the nine physical selectors and proving the exact
 positive return clock.
 The [internal symbolic-tape interpretation](arithmetic_symbolic_tape_rotation240.md)
 passes 10 probes and 12 callers. Actual normalization and `isMatch` preserve
-numeric tape configurations at arbitrary internal gaps; box execution and
-the full arithmetic simulation remain to be connected.
+numeric tape configurations at arbitrary internal gaps; the later units
+below connect these identities to box execution and the full simulation.
 The [represented whole-frame relation](arithmetic_control_frame_data_rotation240.md)
 passes 18 probes and callers. It is Σ₁-definable with the exact control table,
 state 85, 64-bit pointer margin and `167+extra` one-valued spares; related
-configurations are live. Step simulation remains a separate obligation.
+configurations are live. The later control simulation below supplies its
+step and halting transport.
 The [finite tape adapters](arithmetic_finite_tape_rotation240.md) pass eight
 probes and ten callers, connecting finite startup encodings to numeric tape
 functions with arbitrary internal suffixes.
@@ -167,8 +168,8 @@ has checked Step (17/17) and Execution (9/9) units, all four concrete box
 contracts (8/10), and their runtime instance (3/7), with zero warnings.
 The mirror erases to the actual checker and transports accepted finite
 certificates to positive internal clocks with no runtime premise.
-Accepted sites are now connected below; full dispatch simulation and exact
-startup remain to be joined.
+The units below connect accepted sites, full dispatch simulation and exact
+startup.
 The [exact control-step equations](arithmetic_control_step_rotation240.md)
 pass ten probes and callers, identifying each instruction's represented file
 update and successor directly from the checked Rotation240 catalogue.
@@ -179,6 +180,17 @@ The [internal instruction runtime](arithmetic_site_rotation240.md) passes
 15 probes and 15 callers with zero warnings. All six instruction cases have
 positive internal clocks and exact whole-frame endpoints, using actual site
 coverage and the concrete runtime contracts.
+The [internal control simulation](arithmetic_control_simulation_rotation240.md)
+passes six probes and eight callers. Positive-clock Σ₁ induction proves both
+halting directions from arbitrary represented entries, at arbitrary internal
+times. The [exact startup-frame identification](arithmetic_startup_frame_rotation240.md)
+passes 16 probes and 18 callers, relating the complete 409,691-step startup to
+control 1 and the required physical seed, 167 spares and gap 117.
+The [blank/control halting equivalence](arithmetic_blank_control_rotation240.md)
+passes six probes and eight callers with zero warnings. In every IΣ₁ model,
+the exact binary blank run halts iff the packed control interpreter halts
+from that seed. This closes the internal binary/control connection; final
+PA composition and fresh checks of its upstream consistency chain remain.
 
 The [**241-state candidate**](candidate-fold241/README.md) from `8c41b1fb7d`
 adds two local folds to the combined243 table. The last fold uses a bit written

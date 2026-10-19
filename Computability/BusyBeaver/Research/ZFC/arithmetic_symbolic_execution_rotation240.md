@@ -45,8 +45,9 @@ guards and actual provider identities. The Step and Execution histories also
 retain an independent source/API review. No dependency family was rebuilt.
 
 The checked [instruction runtime](arithmetic_site_rotation240.md) now connects
-accepted site certificates to canonical dispatch reentry. Unbounded iteration
-and exact startup remain to be joined for the full internal binary simulation.
-These checks alone do not prove the PA consistency endpoint.
+accepted site certificates to canonical dispatch reentry. The subsequent
+[blank-control equivalence](arithmetic_blank_control_rotation240.md) joins
+unbounded iteration and exact startup. Final PA consistency composition is
+separate from these runtime checks.
 Machine and framework attribution remains with Mira-Cult, Jeff Ketchersid,
 Andrew James Wade and ProveIt.
