@@ -30,15 +30,19 @@ After that inventory, [R2Neg](../../../../../../Logic/Interpretability/ZFCinPA/r
 [NativePeel](../../../../../../Logic/Interpretability/ZFCinPA/native_peel.md),
 [internal renaming/substitution](../../../../../../SetTheory/BoundedConsistency/internal_soundness_check.md),
 [coded-derivation soundness](../../../../../../SetTheory/BoundedConsistency/coded_derivation_check.md),
+[internal ranks and bounds](../../../../../../SetTheory/BoundedConsistency/coded_rank_check.md),
 the [compactness/completeness interfaces](../../../../../../Logic/FirstOrder/checked_interfaces.md)
-and eight [register-program prerequisites](../../arithmetic_register_prerequisites.md)
+and ten [register-program modules](../../arithmetic_register_prerequisites.md)
 passed. NativePeel required one
 implicit-argument correction, with the failed original run preserved.
 The [first concrete bisimulation check](../control-bisim-first-check/README.md)
 hit the 4 GiB memory limit; the
 [complete split certificate and assembled equivalence](../../control_bisim_rotation240_split.md)
-now pass under the unchanged cap. Together these results remove eighteen of
-the 88 entries, leaving 70. The common helper and 31 leaf modules are
+now pass under the unchanged cap. Together these results remove twenty-one of
+the 88 entries, leaving 67. All eleven register-side entries are now checked;
+the [register endpoint](../../arithmetic_register_endpoint240.md) includes
+validator acceptance iff Rotation240 control halting from the exact seed.
+The common helper and 31 leaf modules are
 additional checked modules, outside that original inventory.
 Subsequent actual records must update the remaining work; the frozen
 inventory itself stays unchanged. Checks retain

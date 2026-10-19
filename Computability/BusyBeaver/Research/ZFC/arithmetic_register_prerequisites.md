@@ -1,6 +1,6 @@
 # Internal register-program prerequisites
 
-Eight unchanged upstream modules now have fresh local Lean checks for the
+Ten unchanged upstream modules now have fresh local Lean checks for the
 register side of the 240-state PA comparison.
 
 [`ArithmeticDagRun`](../../Lean/BusyBeaver/ZFC/ArithmeticDagRun.lean) proves
@@ -100,7 +100,33 @@ check selects the evaluator's Cantor object and applies the current policy.
 The one-step scheduler theorem is in the following module, despite the
 broader description in this source's header.
 
-All eight successful runs use one thread, 4,096 MiB and a shared 120-second source-and-audit
+[`ArithmeticL2Scheduler254`](../../Lean/BusyBeaver/ZFC/ArithmeticL2Scheduler254.lean)
+proves that one invocation of the program root implements one represented
+scheduler step. It either halts on the scheduler's absorbing zero or reaches
+the next live record, with its candidate pointer decreasing or its next
+candidate increasing. Its
+[actual check](results/arithmetic-l2-scheduler254-verification.json) passes
+two probes and two typed callers in 3.574 and 1.593 seconds. Five existing
+unused-simplifier-argument warnings are retained in the source log; the audit
+has none. The source retains its 8,192 recursion and 300,000 heartbeat limits;
+the audit uses defaults. The guard selects 79 project prerequisites, with
+the historical seed and positive-simulation records' distinct policies and
+Cantor object alternatives explicitly preserved in the
+[publication](results/arithmetic-l2-scheduler254-publication.json). Iteration,
+positive clock transport and seed halting equivalence are supplied by the
+following module.
+
+[`ArithmeticL2Endpoint254`](../../Lean/BusyBeaver/ZFC/ArithmeticL2Endpoint254.lean)
+now connects represented validator acceptance to the Rotation240 control
+interpreter's halting from the exact logical seed, in every IΣ₁ model.
+The [endpoint description](arithmetic_register_endpoint240.md) records its
+literal root-occurrence check, positive-clock argument and exact seed. Its
+[actual check](results/arithmetic-l2-endpoint254-verification.json) passes
+six probes and eight typed callers with zero warnings, in 18.784 and 1.899
+seconds, reusing 113 project prerequisites. It retains the source's 100,000
+recursion and 4,000,000 heartbeat limits; the audit uses defaults.
+
+All ten successful runs use one thread, 4,096 MiB and a shared 120-second source-and-audit
 deadline. The first two guards select 35 and 37 exact project prerequisites,
 respectively, from already checked parents, with three external source/object
 boundaries and Init/Omega. Inputs, first providers and fresh objects are
@@ -111,7 +137,9 @@ dependency cache.
 The [DagRun publication](results/arithmetic-dag-run-publication.json) and
 [DagControl publication](results/dag-control254-publication.json) preserve
 the source bindings, audits, guards, logs and author history. These are
-prerequisites of the remaining scheduler checks. The
+parts of the now-checked register simulation. Together with the
+[complete control certificate](control_bisim_rotation240_split.md), these
+close all eleven register-side gaps in the original inventory. The
 [final PA composition](rotation240_pa/final-composition-plan/README.md)
-still requires the remaining register and validator dependencies and its
+still requires the remaining validator dependencies and its
 own successful compilation.
