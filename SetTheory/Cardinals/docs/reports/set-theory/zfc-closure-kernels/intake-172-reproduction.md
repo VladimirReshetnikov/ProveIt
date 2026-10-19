@@ -40,7 +40,7 @@ delivered file was modified. The record is [`data/intake172-fresh-replay.json`](
 | Startups | `candidate-combined238/code/boot.py` on rotation240, delayed239, boundary239 and combined238 | exact frames after 409,691, 409,835, 409,691 and 409,835 steps |
 | Fold certificates | `candidate-combined238/code/fold_any.py` on rotation240 → delayed239 (control) and boundary239 → combined238 | PASS; the control reproduces Source 101's 121,536 windows |
 | Guard | `candidate-combined238/code/guard_any.py` on boundary239 | PASS: 32 visits, constant ≥ 23, 6 blank-prefix visits |
-| Guard control | `guard_any.py` on rotation240 with its own source | running when this note was written; its result is added by the catalogue commit |
+| Guard control | `guard_any.py` on rotation240 with its own source | PASS: reproduces the published 2,322,575 rules, 32 visits, constant 21 and 6 prefix visits |
 
 The drivers `boot.py`, `fold_any.py` and `guard_any.py` were written for this intake.
 They are parameterized re-implementations of Source 101's `check_boot239.py`,
