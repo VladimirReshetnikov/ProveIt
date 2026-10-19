@@ -8,7 +8,8 @@ namespace LeanProofs.ZFCinPA.R2Fixed
 open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.FirstOrder.Arithmetic.Bootstrapping
 open _root_.SetTheory.BusyBeaver.ZFC ArithmeticCode254
 open LeanProofs.ZFCinPA.ValidatorProvability254 LeanProofs.ZFCinPA.ValidatorQuantifierCore254
-open LeanProofs.ZFCinPA.ValidatorEnvironmentLabels254
+open LeanProofs.ZFCinPA.ValidatorEnvironmentLabels254 LeanProofs.ZFCinPA.ValidatorEnvironmentStreams254
+open LeanProofs.ZFCinPA.ValidatorNativeGicSlots254
 open LeanProofs.ZFCinPA.R2Ctx LeanProofs.ZFCinPA.R2Neg LeanProofs.ZFCinPA.R2Quant LeanProofs.ZFCinPA.R2Gic
 open scoped LO.FirstOrder.Arithmetic
 
@@ -195,5 +196,222 @@ theorem irr_ax (F s : V) : CProv (encode F 0 s (⌜NativeSet.irAx⌝ : V)) := by
     Bootstrapping.Formula V ℒₛₑₜ) = ∀⁰ (nmemA 0 0 ⋎ ⊥) from rfl,
     encT_all, encT_or, encode_nmemA, encT_falsum]
   simpa using cProv_gen s (glue_irr (not_mem_self s))
+
+/-! ## The container axiom -/
+
+lemma relL (x y u : V) : CProv (wim (weq x y) (wim (wel x u) (wel y u))) := rel_left x y u
+lemma relL' (x y u : V) : CProv (wim (weq x y) (wim (wel y u) (wel x u))) :=
+  ded2 (.mp (.mp (.ax (rel_left y x u)) (.mp (.ax (eq_symm x y)) h1)) h0)
+lemma relR (x y u : V) : CProv (wim (weq x y) (wim (wel u x) (wel u y))) := rel_right x y u
+lemma relR' (x y u : V) : CProv (wim (weq x y) (wim (wel u y) (wel u x))) :=
+  ded2 (.mp (.mp (.ax (rel_right y x u)) (.mp (.ax (eq_symm x y)) h1)) h0)
+lemma selfU (h X : V) : CProv (wim h (wim X X)) := under (self_imp X)
+lemma dneg (X : V) : CProv (wim (neg (neg X)) X) := double_neg_elim X
+
+lemma bundleC_eq (a b c : V) : ArithmeticTemplates254.bundleC a b c =
+    ex b (conj (wal a (wim (wel a b) (conj (ex c (conj (wal b (wim (wal c (wim (wel c b) (wel c a)))
+      (wel b c))) (wel c b))) (wal c (wim (wel c a) (wel c b)))))) (wel c b)) := rfl
+
+section NegEx
+open Kalmar.PF
+local notation "⊥'" => Kalmar.PF.bot
+local infixr:60 " ⟹ " => Kalmar.PF.imp
+local notation "x0" => Kalmar.PF.var 0
+local notation "x1" => Kalmar.PF.var 1
+
+lemma neg_conj_neg (A B : V) : CProv (wim (neg (conj A (neg B))) (wim A B)) := by
+  have t := taut ((((x0 ⟹ ((x1 ⟹ ⊥') ⟹ ⊥')) ⟹ ⊥') ⟹ ⊥') ⟹ (x0 ⟹ x1)) 2
+    (by repeat' (first | exact trivial | decide | constructor)) (by
+      intro v; simp only [truth]
+      generalize v 0 = a0; generalize v 1 = a1
+      revert a0 a1; decide) (sig [A, B])
+  simp only [eval, sig, List.getD_cons_zero, List.getD_cons_succ] at t
+  exact t
+end NegEx
+
+/-- `¬∃w (w ∈ z ∧ ¬ w ∈ y) → ∀w (w ∈ z → w ∈ y)`. -/
+lemma negEx_all (W Z Y : V) :
+    CProv (wim (neg (ex W (conj (wel W Z) (neg (wel W Y))))) (wal W (wim (wel W Z) (wel W Y)))) :=
+  compose (dneg _) (all_mono W (neg_conj_neg _ _))
+
+variable [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2]
+
+/-- **The container bridge**, at abstract labels `a < b < c < X < C < Y < P < Z < W`. -/
+theorem container_core {a b c X C Y P Z W : V}
+    (lab : a < b) (lbc : b < c) (lcX : c < X) (lXC : X < C) (lCY : C < Y) (lYP : Y < P)
+    (lPZ : P < Z) (lZW : Z < W) :
+    CProv (wal X (ex C (conj (wel X C) (wal Y (wim (neg (neg (wel Y C)))
+      (conj (wal P (wim (neg (neg (wel P Y))) (wel P C)))
+        (ex P (conj (wel P C) (wal Z (wim (neg (ex W (conj (wel W Z) (neg (wel W Y)))))
+          (wel Z P))))))))))) := by
+  -- all pairwise orders
+  have lac := lab.trans lbc
+  have lbX := lbc.trans lcX
+  have laX := lac.trans lcX
+  have lcC := lcX.trans lXC
+  have lbC := lbX.trans lXC
+  have laC := laX.trans lXC
+  have lcY := lcC.trans lCY
+  have lbY := lbC.trans lCY
+  have laY := laC.trans lCY
+  have lXY := lXC.trans lCY
+  have lcP := lcY.trans lYP
+  have lbP := lbY.trans lYP
+  have laP := laY.trans lYP
+  have lXP := lXY.trans lYP
+  have lCP := lCY.trans lYP
+  have lcZ := lcP.trans lPZ
+  have lbZ := lbP.trans lPZ
+  have laZ := laP.trans lPZ
+  have lXZ := lXP.trans lPZ
+  have lCZ := lCP.trans lPZ
+  have lYZ := lYP.trans lPZ
+  have lcW := lcZ.trans lZW
+  have lbW := lbZ.trans lZW
+  have laW := laZ.trans lZW
+  have lXW := lXZ.trans lZW
+  have lCW := lCZ.trans lZW
+  have lYW := lYZ.trans lZW
+  have lPW := lPZ.trans lZW
+  -- the literal instance
+  have hL : CProv (ArithmeticTemplates254.bundleC a b c) :=
+    ValidatorNativeGic254.cProv_container a b c lac.ne' lbc.ne'
+  rw [bundleC_eq] at hL
+  -- S1: rename the subset witness c ↦ W, backwards (antecedent position)
+  have S1 : CProv (wim (wal W (wim (wel W b) (wel W a))) (wal c (wim (wel c b) (wel c a)))) :=
+    all_rename (imp_under (relL' W c b) (relL W c a))
+      (vac_imp (vac_rel c b W lcW.ne' lbW.ne') (vac_rel c a W lcW.ne' laW.ne'))
+      (vac_all W (vac_imp (vac_rel W b c lcW.ne lbc.ne') (vac_rel W a c lcW.ne lac.ne')))
+  -- S2, S3: the power-set clause body, then rename b ↦ Z
+  have S3 : CProv (wim (wal b (wim (wal c (wim (wel c b) (wel c a))) (wel b c)))
+      (wal Z (wim (wal W (wim (wel W Z) (wel W a))) (wel Z c)))) := by
+    have S2 := all_mono b (ValidatorNativeGicCongruence254.cProv_imp_mono S1 (self_imp (wel b c)))
+    refine compose S2 (all_rename (imp_under (all_under (vac_eq b Z W lbW.ne' lZW.ne')
+        (imp_under (relR b Z W) (selfU _ _))) (relL b Z c)) ?_ ?_)
+    · exact vac_imp (vac_all W (vac_imp (vac_rel W Z b lbW.ne lbZ.ne) (vac_rel W a b lbW.ne lab.ne')))
+        (vac_rel Z c b lbZ.ne lbc.ne)
+    · exact vac_all b (vac_imp (vac_all W (vac_imp (vac_rel W b Z lZW.ne lbZ.ne') (vac_rel W a Z lZW.ne laZ.ne')))
+        (vac_rel b c Z lbZ.ne' lcZ.ne'))
+  -- S4: the subset clause, rename c ↦ P
+  have S4 : CProv (wim (wal c (wim (wel c a) (wel c b))) (wal P (wim (wel P a) (wel P b)))) :=
+    all_rename (imp_under (relL' c P a) (relL c P b))
+      (vac_imp (vac_rel P a c lcP.ne lac.ne') (vac_rel P b c lcP.ne lbc.ne'))
+      (vac_all c (vac_imp (vac_rel c a P lcP.ne' laP.ne') (vac_rel c b P lcP.ne' lbP.ne')))
+  -- S5: the power-set witness, rename c ↦ P
+  have S5 : CProv (wim (ex c (conj (wal b (wim (wal c (wim (wel c b) (wel c a))) (wel b c))) (wel c b)))
+      (ex P (conj (wal Z (wim (wal W (wim (wel W Z) (wel W a))) (wel Z P))) (wel P b)))) := by
+    refine compose (ex_mono c (ValidatorNativeGicCongruence254.cProv_conj_mono S3 (self_imp _))) ?_
+    exact ex_rename (conj_under' (all_under (vac_eq c P Z lcZ.ne' lPZ.ne')
+        (imp_under (selfU _ _) (relR c P Z))) (relL c P b))
+      (vac_conj (vac_all Z (vac_imp (vac_all W (vac_imp (vac_rel W Z P lPW.ne lPZ.ne) (vac_rel W a P lPW.ne laP.ne')))
+        (vac_rel Z c P lPZ.ne lcP.ne'))) (vac_rel c b P lcP.ne' lbP.ne'))
+      (vac_ex P (vac_conj (vac_all Z (vac_imp (vac_all W (vac_imp (vac_rel W Z c lcW.ne lcZ.ne) (vac_rel W a c lcW.ne lac.ne')))
+        (vac_rel Z P c lcZ.ne lcP.ne))) (vac_rel P b c lcP.ne lbc.ne')))
+  -- S6: the element clause, rename a ↦ Y
+  have S6 : CProv (wim (wal a (wim (wel a b) (conj (ex c (conj (wal b (wim (wal c (wim (wel c b) (wel c a)))
+      (wel b c))) (wel c b))) (wal c (wim (wel c a) (wel c b))))))
+      (wal Y (wim (wel Y b) (conj (ex P (conj (wal Z (wim (wal W (wim (wel W Z) (wel W Y))) (wel Z P)))
+        (wel P b))) (wal P (wim (wel P Y) (wel P b))))))) := by
+    refine compose (all_mono a (ValidatorNativeGicCongruence254.cProv_imp_mono (self_imp _)
+      (ValidatorNativeGicCongruence254.cProv_conj_mono S5 S4))) ?_
+    have vPh : Vac P (weq a Y) := vac_eq a Y P laP.ne' lYP.ne'
+    have vZh : Vac Z (weq a Y) := vac_eq a Y Z laZ.ne' lYZ.ne'
+    have vWh : Vac W (weq a Y) := vac_eq a Y W laW.ne' lYW.ne'
+    refine all_rename (imp_under (relL' a Y b) (conj_under'
+      (ex_under vPh (conj_under' (all_under vZh (imp_under (all_under vWh
+        (imp_under (selfU _ _) (relR' a Y W))) (selfU _ _))) (selfU _ _)))
+      (all_under vPh (imp_under (relR' a Y P) (selfU _ _))))) ?_ ?_
+    · exact vac_imp (vac_rel Y b a laY.ne lab.ne)
+        (vac_conj (vac_ex P (vac_conj (vac_all Z (vac_imp (vac_all W (vac_imp (vac_rel W Z a laW.ne laZ.ne)
+          (vac_rel W Y a laW.ne laY.ne))) (vac_rel Z P a laZ.ne laP.ne))) (vac_rel P b a laP.ne lab.ne)))
+          (vac_all P (vac_imp (vac_rel P Y a laP.ne laY.ne) (vac_rel P b a laP.ne lab.ne))))
+    · exact vac_all a (vac_imp (vac_rel a b Y laY.ne' lbY.ne')
+        (vac_conj (vac_ex P (vac_conj (vac_all Z (vac_imp (vac_all W (vac_imp (vac_rel W Z Y lYW.ne lYZ.ne)
+          (vac_rel W a Y lYW.ne laY.ne'))) (vac_rel Z P Y lYZ.ne lYP.ne))) (vac_rel P b Y lYP.ne lbY.ne')))
+          (vac_all P (vac_imp (vac_rel P a Y lYP.ne laY.ne') (vac_rel P b Y lYP.ne lbY.ne')))))
+  -- S7: the container, rename b ↦ C
+  have S7 : CProv (ex C (conj (wal Y (wim (wel Y C) (conj (ex P (conj (wal Z (wim (wal W (wim (wel W Z)
+      (wel W Y))) (wel Z P))) (wel P C))) (wal P (wim (wel P Y) (wel P C)))))) (wel c C))) := by
+    refine cProv_mp ?_ (cProv_mp (ex_mono b (ValidatorNativeGicCongruence254.cProv_conj_mono S6 (self_imp _))) hL)
+    have vYh : Vac Y (weq b C) := vac_eq b C Y lbY.ne' lCY.ne'
+    have vPh : Vac P (weq b C) := vac_eq b C P lbP.ne' lCP.ne'
+    refine ex_rename (conj_under' (all_under vYh (imp_under (relR' b C Y) (conj_under'
+      (ex_under vPh (conj_under' (selfU _ _) (relR b C P)))
+      (all_under vPh (imp_under (selfU _ _) (relR b C P)))))) (relR b C c)) ?_ ?_
+    · exact vac_conj (vac_all Y (vac_imp (vac_rel Y b C lCY.ne lbC.ne')
+        (vac_conj (vac_ex P (vac_conj (vac_all Z (vac_imp (vac_all W (vac_imp (vac_rel W Z C lCW.ne lCZ.ne)
+          (vac_rel W Y C lCW.ne lCY.ne))) (vac_rel Z P C lCZ.ne lCP.ne))) (vac_rel P b C lCP.ne lbC.ne')))
+          (vac_all P (vac_imp (vac_rel P Y C lCP.ne lCY.ne) (vac_rel P b C lCP.ne lbC.ne'))))))
+        (vac_rel c b C lcC.ne' lbC.ne')
+    · exact vac_ex C (vac_conj (vac_all Y (vac_imp (vac_rel Y C b lbY.ne lbC.ne)
+        (vac_conj (vac_ex P (vac_conj (vac_all Z (vac_imp (vac_all W (vac_imp (vac_rel W Z b lbW.ne lbZ.ne)
+          (vac_rel W Y b lbW.ne lbY.ne))) (vac_rel Z P b lbZ.ne lbP.ne))) (vac_rel P C b lbP.ne lbC.ne)))
+          (vac_all P (vac_imp (vac_rel P Y b lbP.ne lbY.ne) (vac_rel P C b lbP.ne lbC.ne))))))
+        (vac_rel c C b lbc.ne lbC.ne))
+  -- S8: restructure
+  have S8 : CProv (ex C (conj (wel c C) (wal Y (wim (neg (neg (wel Y C)))
+      (conj (wal P (wim (neg (neg (wel P Y))) (wel P C)))
+        (ex P (conj (wel P C) (wal Z (wim (neg (ex W (conj (wel W Z) (neg (wel W Y)))))
+          (wel Z P)))))))))) := by
+    have mZ := all_mono Z (ValidatorNativeGicCongruence254.cProv_imp_mono (negEx_all W Z Y)
+      (self_imp (wel Z P)))
+    have mPex := ex_mono P (compose (conj_swap _ _)
+      (ValidatorNativeGicCongruence254.cProv_conj_mono (self_imp (wel P C)) mZ))
+    have mPsub := all_mono P (ValidatorNativeGicCongruence254.cProv_imp_mono (dneg (wel P Y))
+      (self_imp (wel P C)))
+    have mIn := compose (conj_swap _ _) (ValidatorNativeGicCongruence254.cProv_conj_mono mPsub mPex)
+    have mY := all_mono Y (ValidatorNativeGicCongruence254.cProv_imp_mono (dneg (wel Y C)) mIn)
+    have mC := ex_mono C (compose (conj_swap _ _)
+      (ValidatorNativeGicCongruence254.cProv_conj_mono (self_imp (wel c C)) mY))
+    exact cProv_mp mC S7
+  -- S9: generalize the point and rename it to X
+  refine cProv_mp (all_rename (ex_under (vac_eq c X C lcC.ne' lXC.ne')
+      (conj_under' (relL c X C) (selfU _ _))) ?_ ?_) (cProv_gen c S8)
+  · exact vac_ex C (vac_conj (vac_rel X C c lcX.ne lcC.ne) (vac_all Y (vac_imp
+      (vac_neg (vac_neg (vac_rel Y C c lcY.ne lcC.ne)))
+      (vac_conj (vac_all P (vac_imp (vac_neg (vac_neg (vac_rel P Y c lcP.ne lcY.ne))) (vac_rel P C c lcP.ne lcC.ne)))
+        (vac_ex P (vac_conj (vac_rel P C c lcP.ne lcC.ne) (vac_all Z (vac_imp
+          (vac_neg (vac_ex W (vac_conj (vac_rel W Z c lcW.ne lcZ.ne) (vac_neg (vac_rel W Y c lcW.ne lcY.ne)))))
+          (vac_rel Z P c lcZ.ne lcP.ne)))))))))
+  · exact vac_all c (vac_ex C (vac_conj (vac_rel c C X lcX.ne' lXC.ne) (vac_all Y (vac_imp
+      (vac_neg (vac_neg (vac_rel Y C X lXY.ne lXC.ne)))
+      (vac_conj (vac_all P (vac_imp (vac_neg (vac_neg (vac_rel P Y X lXP.ne lXY.ne))) (vac_rel P C X lXP.ne lXC.ne)))
+        (vac_ex P (vac_conj (vac_rel P C X lXP.ne lXC.ne) (vac_all Z (vac_imp
+          (vac_neg (vac_ex W (vac_conj (vac_rel W Z X lXW.ne lXZ.ne) (vac_neg (vac_rel W Y X lXW.ne lXY.ne)))))
+          (vac_rel Z P X lXZ.ne lXP.ne))))))))))
+
+
+
+lemma cast_fin_three : (((3 : Fin 6) : ℕ) : V) = 3 := by
+  rw [show ((3 : Fin 6) : ℕ) = 3 from rfl]; simp
+
+/-- The encoded container axiom at stream `t`. -/
+lemma encode_containerAx (F t : V) :
+    encode F 0 t (⌜NativeSet.containerAx⌝ : V) =
+      wal t (ex (t + 2) (conj (wel t (t + 2)) (wal (t + 2 + 2) (wim (neg (neg (wel (t + 2 + 2) (t + 2))))
+        (conj (wal (t + 2 + 2 + 2) (wim (neg (neg (wel (t + 2 + 2 + 2) (t + 2 + 2)))) (wel (t + 2 + 2 + 2) (t + 2))))
+          (ex (t + 2 + 2 + 2) (conj (wel (t + 2 + 2 + 2) (t + 2)) (wal (t + 2 + 2 + 2 + 2)
+            (wim (neg (ex (t + 2 + 2 + 2 + 2 + 2) (conj (wel (t + 2 + 2 + 2 + 2 + 2) (t + 2 + 2 + 2 + 2))
+              (neg (wel (t + 2 + 2 + 2 + 2 + 2) (t + 2 + 2))))))
+              (wel (t + 2 + 2 + 2 + 2) (t + 2 + 2 + 2))))))))))) := by
+  rw [quote_sentence, show (⌜(Rewriting.emb NativeSet.containerAx : SetTheoryProposition)⌝ :
+    Bootstrapping.Formula V ℒₛₑₜ) =
+    ∀⁰ ∃⁰ (memA 1 0 ⋏ (∀⁰ (nmemA 0 1 ⋎ ((∀⁰ (nmemA 0 1 ⋎ memA 0 2)) ⋏
+      (∃⁰ (memA 0 2 ⋏ (∀⁰ ((∃⁰ (memA 0 1 ⋏ nmemA 0 3)) ⋎ memA 0 1)))))))) from rfl]
+  simp only [encT_all, encT_exs, encT_and, encT_or, encode_memA, encode_nmemA, Fin.val_zero, Fin.val_one,
+    Fin.val_two, Nat.cast_zero, Nat.cast_one, Nat.cast_ofNat, nth_adjoin_zero, nth_adjoin_one,
+    nth_two_cons, nth_three_cons, cast_fin_three]
+
+/-- **The container axiom is a validator theorem** at every odd environment and even stream. -/
+theorem container_ax {F s : V} (hF : OddEnv F) (hs : s % 2 = 0) :
+    CProv (encode F 0 s (⌜NativeSet.containerAx⌝ : V)) := by
+  have h6 : CProv (encode F 0 6 (⌜NativeSet.containerAx⌝ : V)) := by
+    rw [encode_containerAx]
+    exact container_core (a := 1) (b := 3) (c := 5) (by norm_num) (by norm_num) (by norm_num)
+      (lt_add_two _) (lt_add_two _) (lt_add_two _) (lt_add_two _) (lt_add_two _)
+  have hp : IsFormula ℒₛₑₜ (⌜NativeSet.containerAx⌝ : V) := by simp
+  have e6 : (6 : V) % 2 = 0 := by
+    rw [show (6 : V) = 2 * 3 by norm_num]; simp
+  exact cProv_mp (encode_formula_relabel hp F 6 s (streamFree_even e6 hF) (streamFree_even hs hF)).1 h6
 
 end LeanProofs.ZFCinPA.R2Fixed
