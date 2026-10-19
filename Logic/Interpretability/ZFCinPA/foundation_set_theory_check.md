@@ -74,6 +74,11 @@ links remain unchanged. The [publication](results/foundation-set-z-publication.j
 and [history](foundation-set-theory/z/history.json.gz) preserve the exact
 check. This closes the missing Foundation Z branch. Translation still needs
 the later bounded-consistency modules before its own fresh check.
+An [independent guard and API review](foundation-set-theory/z/peer-review.json)
+confirms the exact parents, namespace layout, artifact captures and limits.
+Its [history](foundation-set-theory/z/peer-history.json.gz) retains a
+corrected reviewer metadata check. This review runs no proof checker and
+does not add a full independent mathematical review of the Z source.
 The [route archive](foundation-set-theory/route-publication.json) preserves
 the dependency inventory, source reviews and authoring scripts separately
 from the actual proof results.

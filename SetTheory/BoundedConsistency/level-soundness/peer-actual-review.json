@@ -1,0 +1,60 @@
+{
+  "status": "EXISTING_ACTUAL_EVIDENCE_REVIEW_PASS",
+  "findings": [],
+  "verification": {
+    "path": "/tmp/zfc-bounded-level-soundness/run1/verification.json",
+    "sha256": "d7bf3c9883bb300ded740b067631a08fe658e6d6696ae9b95069157cbddd6929"
+  },
+  "source": {
+    "path": "/tmp/zfc-bounded-level-soundness/LevelSoundness.lean",
+    "sha256": "ba576d4759edddf7b9a2882709e6f2eba91d4980d772876ee8d0c0bd5c63fd08"
+  },
+  "audit": {
+    "path": "/tmp/zfc-bounded-level-soundness/Audit.lean",
+    "sha256": "25b8ba5b47cf5599c8c0235a7e2244d26dcbca8358afd10592742cfddb3c61f2"
+  },
+  "guard": {
+    "path": "/tmp/zfc-bounded-level-soundness/check.py",
+    "sha256": "25bbc5548846364aa0ab094048bcdeffbaf3d5357139c299d54c6d4c616549b3"
+  },
+  "reviewer_source": {
+    "path": "/tmp/zfc-bounded-level-soundness-peer/review_actual.py",
+    "sha256": "e569ee03be749fd8cb9d91903ab0b05d12ed6da053d79b1c277a0b8f0eaf90c4"
+  },
+  "full_binding_review": {
+    "path": "/tmp/zfc-bounded-level-soundness-peer/review.json",
+    "sha256": "9d11a9a4fa672b1cc74026a3ce3e0823b42dbc30830a0b26d105588ea4361263"
+  },
+  "named_axiom_probes": 21,
+  "typed_callers": 21,
+  "warnings": {
+    "source": 0,
+    "audit": 0,
+    "total": 0
+  },
+  "current_inputs": 134,
+  "projects": 20,
+  "tools": [
+    "Init"
+  ],
+  "source_seconds": 1.0682393526658416,
+  "audit_seconds": 0.3402234762907028,
+  "fresh_object": {
+    "module": "BoundedZFCConsistency.LevelSoundness",
+    "path": "/tmp/zfc-bounded-level-soundness/run1/cache/BoundedZFCConsistency/LevelSoundness.olean",
+    "sha256": "f761637fa8ac3b21342575436d8437fbd592bf3f24fb0b35678682f01c3d0af8",
+    "source_sha256": "ba576d4759edddf7b9a2882709e6f2eba91d4980d772876ee8d0c0bd5c63fd08"
+  },
+  "static_check_count": 190,
+  "scope": [
+    "Arbitrary internal formula code, variable map, renamed code and genuine universe environment; external fixed Nat level.",
+    "Environment graph carrier uses double union plus one adjoined value, reusing carrier-relative composition without assuming a universe set.",
+    "Both truth polarities travel through the external level induction and definability-relative code induction; the latter has an explicitly rendered Form invariant.",
+    "Binder cases use the lifted variable map and composed shifted environment. Switch cases preserve matching oriented rank bounds and use previous-level equivalences, not an assumed collapse theorem.",
+    "QF level-zero cases preserve codehood under renaming and reject both polarities when the code is not QF.",
+    "AxiomCodesTrueAt, LevelTwoValuedAt and LevelSoundnessAt are Prop definitions, not theorems proved here.",
+    "Only the final no-refutation implication consumes AxiomCodesTrueAt and LevelSoundnessAt; both appear unchanged in its typed client. No unconditional ZFC consistency claim.",
+    "Source prose about a properly larger internal axiom set is not a proved strictness theorem and must not be advertised as such."
+  ],
+  "reviewer_role": "opening_encoder independently reviewed full source/guard before inspecting existing actual evidence; no candidate execution or replay. Existing parent Level46 audit warnings and AxiomCode recursion8000 remain unchanged historical evidence."
+}

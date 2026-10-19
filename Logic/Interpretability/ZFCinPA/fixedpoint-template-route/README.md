@@ -1,0 +1,23 @@
+# FixedPoint and predicate-template provider route
+
+This is a source/API and existing-metadata inventory. No supplied program, Lean process, guard, build or download was invoked. Canonical sources are unchanged. Exact source, object, current companion and record hashes are in `route.json`.
+
+## Findings and immediate action
+
+`BoundedPAConsistency.ModelCodedPredicateTemplate` is **not a remaining accepted-provider gap**. Three maintained PASS records bind its exact current source. Select the coherent `TypedTemplateProofCompiler` and `ModelCodedPredicateTemplate` pairs from `model-coded-peano-core-verification.json` (b66d22f0…), with its original raw record (58831c0c…). Both canonical sources equal the retained compiled snapshots; both recorded objects still match. The selected closure is two project modules plus the recorded cached `Syntax.Proof.Coding` and `InductionSchemeDelta1` boundaries. No extra Template compilation is required.
+
+That record is legacy evidence: 21 before/after identities, five fresh modules and three audits in the whole replay, nine probes and 20 callers, zero client warnings and ten prerequisite warnings. The Template source itself had eight style warnings. It does not contain modern per-unit pre-audit captures or establish a shared 120-second/-j1 policy. Select the recorded actual objects, not unverified same-named central-cache objects. Current companion observations in this inventory do not retroactively extend historical captures.
+
+`Foundation.FirstOrder.Bootstrapping.FixedPoint` has a present central-cache object but no exact accepted target pair in the two searched maintained results directories. Its exact 226-line source is `cdc2f381549c4e3bdb7d67a221d6a57217db4eb82793082e5df61a9e87c5280f`, with no source proof-limit override. Its immediate imports are `Arithmetic.Basic.Model` and `Bootstrapping.Syntax`.
+
+The smallest fresh target check is **FixedPoint alone**, selecting the previously recorded Syntax cache pair from `model-coded-bind-free-verification.json` (c0013337…) and explicitly recording Arithmetic.Basic.Model as a current-only cached boundary. Syntax already reaches that same Model source transitively; the exact import path is recorded. This is dependency reuse, not an independently accepted Model check. If the root wants the immediate Model module freshly checked too, the optional two-unit route is **Arithmetic.Basic.Model → FixedPoint**, leaving Basic.Misc as the disclosed opaque cache boundary. Model is 106 lines and has no proof-limit override. Refreshing Misc as a third unit merely moves the opaque boundary to Order.Le; it does not certify the whole Foundation cache.
+
+For either route, preserve module companions and the existing sparse Foundation namespace mirror. A target-only Foundation overlay hid sibling objects in the earlier Model failure; later roots do not provide per-child fallback. Retain current cache observations and actual fresh overrides separately, exclude the old FixedPoint object at its fresh target, and use the already reviewed shared-120-second/-j1/-M4096 execution discipline only for the eventual new check. Runtime fit is unknown. This packet contains no executable guard.
+
+## Mathematical/API scope
+
+FixedPoint supplies represented numeral substitution and standard-syntax diagonal/fixed-point constructions over arithmetic theories extending IΣ₁, including parameterized and multiple fixed points. A focused eventual audit can exercise `Arithmetic.diagonal`, `Arithmetic.multidiagonal`, `Arithmetic.parameterized_diagonal₁`, and `Bootstrapping.Arithmetic.substNumerals_app_quote_quote` with exact typed signatures. `UniformStatement` imports it; its set-language uniform sentence uses a represented code builder rather than a nonexistent set-language numeral substitution operation. Checking FixedPoint alone does not check UniformStatement or its other imports.
+
+ModelCodedPredicateTemplate specializes a standard finite source formula/proof template at an arbitrary typed internal arithmetic predicate, under shift invariance in an arbitrary IΣ₁ model. The internal predicate may be nonstandard. The source proof tree remains standard finite Lean syntax; this is not a compiler for arbitrary internally coded source proofs. Its typed translation and Peano proof compiler support `SeparationKernel`, whose set-language specialization is a separate construction. The source's local transparency option is recorded unchanged.
+
+Neither route establishes validator consistency, a new all-internal schema theorem, or the final PA binary-machine endpoint. Negative discovery is limited to the two maintained result directories and recognized exact provider schemas, not every historical JSON string or cache file.

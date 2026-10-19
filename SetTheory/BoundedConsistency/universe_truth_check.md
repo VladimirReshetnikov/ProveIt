@@ -48,5 +48,6 @@ An [independent full-source and API review](universe-truth-level/peer-review.jso
 also checks the actual result and its limits; its
 [history](universe-truth-level/peer-history.json.gz) is retained separately.
 
-Bounded derivation soundness, axiom truth and the final PA/240-state
-consistency theorem remain later checks in this verification sequence.
+The subsequent [fixed-level soundness](level_soundness_check.md) and
+[axiom-truth](axiom_truth_check.md) checks now pass. The final PA/240-state
+consistency theorem remains pending in this verification sequence.
