@@ -29,14 +29,16 @@ the intended arithmetic sentence and an object-theory proof are connected to
 it. Completing the PA version would also serve the ZFC requirement, after
 checking the chosen arithmetic interpretation in ZFC.
 
-The [compensated244 endpoint](compensated244_binary.md) is the current closed
-external Lean baseline: blank nonhalting iff Con(ZFC). It extends the earlier
-[245-state endpoint](routing245_binary.md), which reuses the
+The [exact 240-state endpoint](rotation240_binary.md) is now the closed
+external Lean baseline: blank nonhalting iff the specified ZFC proof calculus
+is consistent. The [compensated244](compensated244_binary.md) and
+[245-state](routing245_binary.md) endpoints remain earlier baselines. The
+[rotated source calibration](calibrated_rotation240.md) reuses the
 [Choice calibration](choice_calibration254.md), including Choice in L and
-external first-order completeness. This discharges the
-external consistency comparison; it does not implement the represented proof
-translations or prove their correctness for every internal code in every PA
-model. The remaining obligations are recorded below.
+external first-order completeness. This closes the external consistency
+comparison for the literal 240-state machine. It does not supply the PA proof
+connecting that machine's arithmetic run graph to validator consistency.
+The arithmetic work and its current status are recorded below.
 
 The current arithmetic checkpoints are:
 
@@ -168,15 +170,16 @@ translation in IΣ₂, and the internal L-schema theorem supplies Choice transpo
 The validator biconditionals do not by themselves identify the literal binary
 run with the arithmetic scheduler.
 
-The active binary target is the [rotation240 machine](candidate-rotation240/README.md).
-Its exact table/fast lookup and [runtime contracts](rotation240_runtime.md) have
-actual Lean checks. The [409,691-step blank bootstrap](rotation240_bootstrap.md)
-and [full startup frame](rotation240_tree_frame.md) now have their own successful
-checks. The [source consistency calibration](calibrated_rotation240.md) also
-passes seven probes and nine typed callers. Complete decoder-site coverage
-and final binary composition remain separate until their actual checks finish.
-Compensated244 remains the smallest closed external Lean endpoint at this
-checkpoint. Earlier combined243/rotation244 results are retained as provenance.
+The active arithmetic target remains the [rotation240 machine](candidate-rotation240/README.md).
+Its [external binary endpoint](rotation240_binary.md) now passes nine probes
+and nine typed callers with zero warnings. It composes the
+[complete decoder coverage](rotation240_coverage_complete.md),
+[runtime contracts](rotation240_runtime.md), [409,691-step blank bootstrap](rotation240_bootstrap.md),
+[full startup frame](rotation240_tree_frame.md), and
+[source consistency calibration](calibrated_rotation240.md). This closes the
+external Lean endpoint for the exact table; the internal register/binary
+simulation and PA composition remain separate. Earlier compensated244,
+combined243 and rotation244 results are retained as provenance.
 The [exact 240-state arithmetic lookup](arithmetic_machine_graph_rotation240.md)
 now passes eight probes and eight typed callers, defining all 480 actions in
 every IOpen model. The [240-state arithmetic step](arithmetic_machine_step_rotation240.md)

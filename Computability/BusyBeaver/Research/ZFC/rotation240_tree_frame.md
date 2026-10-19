@@ -10,7 +10,8 @@ fuel. Its walk and step equations quantify over arbitrary paths and register
 files. The tree has 6,455 leaves, 6,454 internal nodes, depth 51 and one halt
 leaf. All 203 stored source rows are checked, including the changed row 169
 and its four reachable occurrences. This establishes the decoder's identity;
-each instruction site still needs its concrete binary coverage certificate.
+the [complete coverage proof](rotation240_coverage_complete.md) separately
+checks the concrete binary instruction sites.
 
 [`BootstrapFrameRotation240`](../../Lean/BusyBeaver/ZFC/BootstrapFrameRotation240.lean)
 composes the [exact 409,691-step blank startup](rotation240_bootstrap.md) with
@@ -41,9 +42,12 @@ copies of the successful runs. The guards retain historical scratch/provider
 paths; this packet does not provide a clean-checkout dependency build.
 
 These results discharge the initial tape-frame obligation for the
-[general runtime proof](rotation240_runtime.md). Complete decoder coverage,
-composition with source consistency calibration, and the internal PA theorem
-remain open. The original calculus and machine are attributed to Mira-Cult,
+[general runtime proof](rotation240_runtime.md). The
+[external binary endpoint](rotation240_binary.md) now composes that runtime,
+the complete decoder coverage and the register-source calibration from this
+exact frame. The internal PA theorem remains open.
+
+The original calculus and machine are attributed to Mira-Cult,
 upstream verification to Jeff Ketchersid, the register framework to Andrew
 James Wade, and the subsequent source rotations and reductions to their
 retained ProveIt and incoming-report attributions.
