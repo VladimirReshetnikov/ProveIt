@@ -2150,3 +2150,12 @@ ZIPs were retired at placement `197ce3dc67`. No Lean or PA endpoint is claimed f
 Batch 174 adds [Source 110](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-174.md),
 an independent certificate for the same 237-state table (it credits Source 106). The
 237-state candidate and its scope are unchanged.
+
+
+Batches 175 and 176 add
+[Sources 111–112](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-175.md)
+and [Sources 113–114](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-176.md).
+Source 112's construction is the [236-state candidate](candidate-rotated236/README.md);
+Sources 113 and 114 deliver the same table. The intake's search for 235, by iterating
+Source 112's rotation-and-fold method, found nothing sound. A 223-node equivalent source
+is recorded but not compiled.

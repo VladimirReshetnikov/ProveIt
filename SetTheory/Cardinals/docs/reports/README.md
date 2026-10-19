@@ -3090,3 +3090,15 @@ Batch 174 imports one more package as
 sources** (still 290 reports). Placement `1c72682b2b` retires its ZIP. Its 237-state
 table is Source 106's machine, which it credits; it adds an independent all-tape
 certificate of the fold and a fresh startup comparison.
+
+
+Batches 175 and 176 import four more packages as
+[Sources 111–112](set-theory/zfc-closure-kernels/intake-175.md) and
+[Sources 113–114](set-theory/zfc-closure-kernels/intake-176.md), giving this host **114
+sources** (still 290 reports). Placements `cc269f6062` and `0af33e8d0b` retire their ZIPs.
+Source 112's 236-state machine, a node-neutral source rotation that exposes a fold of 223
+into 182, is published as
+[`candidate-rotated236`](../../../../Computability/BusyBeaver/Research/ZFC/candidate-rotated236/README.md)
+after an independent replay. Sources 113 and 114 carry the same table. The intake's
+search below 236 found no sound fold, and recorded a 223-node equivalent source. No Lean
+or PA endpoint exists for these tables.

@@ -12,6 +12,16 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Queue status after batch 176
+
+Batches 175 and 176 imported `ZFC_Sub237_Research_2026-10-19.zip`,
+`ZFC236_Construction_2026-10-19.zip`, `ZFC236_Audit_and_Quantifier_Bootstrap_2026-10-19.zip`
+and `ZFC236_Reassociation_2026-10-19.zip` as Sources 111–114 of
+[ZFC closure kernels](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-176.md)
+(placements `cc269f6062`, `0af33e8d0b`). The smallest candidate is now the
+[236-state machine](../../Computability/BusyBeaver/Research/ZFC/candidate-rotated236/README.md).
+No archive is waiting.
+
 ## Queue status after batch 174
 
 Batch 174 imported `ZFC237_Verified_Construction_2026-10-19.zip` (arrival
@@ -860,6 +870,8 @@ ProveIt-era batches (from this directory):
 | 172 | Three manuscripts from `83fd358548`: placement `07194e5b4d` adds sources 101–103 to `set-theory/zfc-closure-kernels`, now 103 sources and still 290 reports. 562 members = 377 new files + 175 exact aliases + 10 archive-only; all three ZIPs retired. | `a2cd96c44f`: per-source notes; Sources 101/102 are one 239 table found twice, Source 103 a different 239 table; intake finding: their composition is a 238-state candidate, published in `754ed766b5`. | this commit | Combined 238: direct unbounded runtime (8,386 cases, 2,255,513 rules), exact 409,835-step startup, second route by guarded fold + guard; positive controls reproduce published counts, negative control fails. No Lean/PA endpoint. Catalogue PDF rebuilt and checked visually. |
 | 173 | Six manuscripts from `1cba633ec3` and `ec480205a1`: placement `197ce3dc67` adds sources 104–109, now 109 sources and still 290 reports. 1,162 members = 358 new files + 783 exact aliases + 21 archive-only; all six ZIPs retired. | `3c539e3f0d`: per-source notes; five packages give the batch-172 238 table, Source 106 a 237 fold, published in `f6c9b40dc1`; no combination below 237. | this commit | 237 runtime replays (2,261,369 rules); discovery and all-tape fold searches on the 237 table and its variants find nothing; Source 106's discovery receipt reproduced exactly. No Lean/PA endpoint. Catalogue PDF rebuilt and checked visually. |
 | 174 | One manuscript from `17ce14c2db`: placement `1c72682b2b` adds source 110, now 110 sources and still 290 reports. 138 members = 58 new files + 76 exact aliases + 4 archive-only; ZIP retired. | `intake-174.md` in the catalogue commit: the same 237 table as Source 106 (credited by the package), with an independent all-tape fold certificate. | this commit | Canonical census only; Source 106's runtime had already been replayed in batch 173. Catalogue PDF rebuilt and checked visually. |
+| 175 | Two manuscripts from `ecb4df12d2` and `0b5fec6980`: placement `cc269f6062` adds sources 111–112, now 112 sources and still 290 reports. 526 members = 249 new + 271 aliases + 6 archive-only; both ZIPs retired. | `f3b8d35049`: Source 111 (no machine below 237) and Source 112 (236 states); intake search below 236 and a 223-node source; candidate published in `91f271fa3e`. | this commit | 236 runtime replays (2,267,815 rules), startup, source graph and fold re-derived; no sound 235 fold found. Catalogue PDF rebuilt and checked visually. |
+| 176 | Two manuscripts from `b272323b09` and `b7d3e41404`: placement `0af33e8d0b` adds sources 113–114, now 114 sources and still 290 reports. 416 members = 218 new + 192 aliases + 6 archive-only; both ZIPs retired. | `3259f56ed5`: both repeat the one 236 table; census of all 236 tables and the combination answer. | this commit | Canonical census; finite screen of Source 112's four rejected 236 tables. |
 
 
 Batches 99 to 113 are the fifteen clusters into which the intake triaged
