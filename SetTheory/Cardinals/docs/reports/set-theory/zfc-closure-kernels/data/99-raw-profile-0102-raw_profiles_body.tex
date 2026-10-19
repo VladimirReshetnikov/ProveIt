@@ -1,0 +1,939 @@
+\section{What changes in the mathematical argument}
+
+ProveIt's source44 supplies FC15$^*$, its FC16$^*$ extensional control,
+and their ordinary ZFC consistency calibrations~\cite{source44}. The recent incoming
+\texttt{zfc-sub245-research-20261018.zip} replaces their full congruence
+completion by a quotient construction that preserves $V,C$ and
+reconstructs the remaining functions. Its final raw target has twenty
+clauses and 1134 bits; the extensional target has twenty-one and 1341 bits~\cite{incoming20261018}.
+
+The construction here does not attempt to turn every raw function into a
+well-defined quotient operation. It constructs an ordinary binary
+membership structure and proves that every required first-order closure
+instance holds in it. Raw assignment and class terms implement each fixed
+formula separately. This is why neither $C$ nor the incidence predicate
+has to descend to the quotient. It also explains why the proof cannot be
+replaced by the ordinary all-functions congruence theorem.
+
+The retained source dependency for the lower calibration is the following
+specific, full schema. For every equality-free membership formula
+$\varphi(x,y,\bar p)$, with unrestricted finite parameters, put
+\begin{align*}
+\operatorname{SB}_\varphi
+ &:=\forall x\,\exists u\,\forall y\,
+  \bigl(\varphi(x,y,\bar p)\to
+         \forall z(E(z,y)\to E(z,u))\bigr),\\
+\operatorname{Hull}_\varphi(c)
+ &:=\forall x,y\,
+  \bigl(((\forall z\,\neg E(z,x))\lor E(x,c))\land
+          \varphi(x,y,\bar p)\to E(y,c)\bigr)\\
+ &\hspace{9mm}\land\forall y\,
+       \bigl(E(y,c)\to\exists x\,\varphi(x,y,\bar p)\bigr).
+\end{align*}
+Raw EPSC consists of all instances
+$\operatorname{SB}_\varphi\to\exists c\,
+\operatorname{Hull}_\varphi(c)$ in a nonempty domain.
+Source44 and its cited raw-EPSC interpretation establish in ordinary ZFC
+\[
+\Con(\mathrm{raw\ EPSC})\longrightarrow\Con(\mathrm{ZFC}).
+\]
+Its separate extensional route says that Extensionality plus this full
+schema has the intended ZF-without-Foundation-or-Choice comparison. Those
+previous interpretations are named dependencies; this note proves the
+new finite-theory-to-schema interpretation in detail.
+
+\section{Exact eighteen-clause target}
+
+The language has two constants $d,q$, ten total functions
+\[
+ V^2,C^3,N^2,A^2,Q^2,W^3,Y^3,Z^3,H^2,D^1,
+\]
+and four binary predicates $E,\Inc,G,\Eq$. Superscripts are arities.
+$\Eq$ is an ordinary predicate, not built-in logical equality. In
+particular no congruence rule is supplied by the logic merely because a
+predicate is named $\Eq$. All eighteen clauses below are universally
+quantified in an equality-free first-order language. The constants $d,q$
+are independent; there is no axiom $q=N(d,d)$.
+
+Abbreviate the literal term pattern
+\[
+ R(b,t,x,y):=\Inc(C(C(b,d,x),q,y),t).
+\]
+The first fifteen rows are source44's guard-fused presentation with a
+primitive member selector, except that $q$ is a constant:
+\begin{align}
+&\Eq(V(C(s,j,z),j),z),\tag{01}\label{rp01}\\
+&\Eq(k,j)\lor\Eq(V(C(s,j,z),k),V(s,k)),\tag{02}\label{rp02}\\
+&\Inc(s,N(a,b))\lor\Inc(s,a),\tag{03}\label{rp03}\\
+&\Inc(s,N(a,b))\lor\Inc(s,b),\tag{04}\label{rp04}\\
+&\neg\Inc(s,N(a,b))\lor\neg\Inc(s,a)\lor\neg\Inc(s,b),\tag{05}\label{rp05}\\
+&\neg\Inc(s,A(j,k))\lor E(V(s,j),V(s,k)),\tag{06}\label{rp06}\\
+&\Inc(s,A(j,k))\lor\neg E(V(s,j),V(s,k)),\tag{07}\label{rp07}\\
+&\neg\Inc(C(s,j,z),a)\lor\Inc(s,Q(j,a)),\tag{08}\label{rp08}\\
+&\neg\Inc(s,Q(j,a))\lor\Inc(C(s,j,W(s,j,a)),a),\tag{09}\label{rp09}\\
+&G(b,t)\lor R(b,t,H(b,t),Y(b,t,u)),\tag{10}\label{rp10}\\
+&G(b,t)\lor E(Z(b,t,u),Y(b,t,u)),\tag{11}\label{rp11}\\
+&G(b,t)\lor\neg E(Z(b,t,u),u),\tag{12}\label{rp12}\\
+&\neg G(b,t)\lor\neg E(x,H(b,t))\lor\neg R(b,t,x,y)
+                  \lor E(y,H(b,t)),\tag{13}\label{rp13}\\
+&\neg G(b,t)\lor E(D(x),x)\lor\neg R(b,t,x,y)
+                  \lor E(y,H(b,t)),\tag{14}\label{rp14}\\
+&\neg G(b,t)\lor\neg E(y,H(b,t))\lor R(b,t,Y(b,t,y),y).\tag{15}\label{rp15}
+\end{align}
+There are exactly three further rows:
+\begin{align}
+&\neg\Eq(x,y)\lor\neg\Eq(x,z)\lor\Eq(y,z),\tag{16}\label{rp16}\\
+&\neg\Eq(x_0,y_0)\lor\neg\Eq(x_1,y_1)
+            \lor\neg E(x_0,x_1)\lor E(y_0,y_1),\tag{17}\label{rp17}\\
+&\neg\Eq(d,q).\tag{18}\label{rp18}
+\end{align}
+Call the resulting theory $\RP$. There is no congruence for any function and no
+congruence for $\Inc$ or $G$. Every local variable receives every ground
+term in the refutation semantics; no colliding substitution is discarded.
+
+\section{The quotient of data}
+
+Let $\mathcal T$ be the set of all ground terms of this finite signature.
+Let $v$ be a Boolean valuation of all ground atoms satisfying every
+ground instance of rows~\ref{rp01}--\ref{rp18}. Consistency yields such
+a valuation by first-order completeness and evaluation of ground terms;
+equivalently, simultaneous finite ground satisfiability yields it by
+propositional compactness. The added padding constructors of the numerical
+codec can be retained in $\mathcal T$ as well. No congruence is assumed
+for them, and every variable may receive a padded term.
+
+Put $s\sim t$ when $v(\Eq(s,t))=1$. This is an equivalence relation.
+For any ground $z$, row~\ref{rp01} with $s=j=d$ gives
+$\Eq(p_z,z)$ for $p_z=V(C(d,d,z),d)$. Row~\ref{rp16} with
+$(x,y,z)=(p_z,z,z)$ then gives $\Eq(z,z)$. Reflexivity plus the left
+Euclidean law yields symmetry and transitivity. Thus no separate
+reflexivity template is needed.
+
+Let $\mathcal A=\mathcal T/{\sim}$ and write $\cl t$ for the class
+of $t$. Define
+\[
+ E^{\mathcal A}(\cl s,\cl t)\quad\Longleftrightarrow\quad v(E(s,t))=1.
+\]
+Row~\ref{rp17} and symmetry make this independent of representatives.
+This is the only binary predicate that needs to descend. We do not define
+$\Inc^{\mathcal A}$, $G^{\mathcal A}$, or $C^{\mathcal A}$.
+Even $\cl s\mapsto\cl{V(s,j)}$ for a fixed raw selector need not be
+well-defined: evaluation has no congruence at all. The next two sections
+prove profile and closure lemmas for any finite list of distinct selector
+classes already available. Section~\ref{rp-infinity} first uses only
+one coordinate, then three coordinates, to prove that arbitrarily many
+such selectors exist. This order avoids assuming the selector supply
+that those closure arguments are used to establish.
+
+\section{Exact formula interpretation without a quotient change function}
+
+Fix an equality-free formula $\varphi$ in the language of $E$. Rename
+bound variables so that its finite list of free and bound names is
+pairwise distinct as syntactic names. For this lemma, assume a raw ground
+selector $j_w$ has been chosen for each name $w$, with pairwise
+inequivalent selectors. No claim of an arbitrarily large supply is yet
+needed. The data values
+assigned to different names may coincide; only their selector classes
+are chosen distinct. For any raw assignment term $s$, let
+\[
+ \alpha_s(w):=\cl{V(s,j_w)}\in\mathcal A.
+\]
+
+\begin{lemma}[Raw assignment update]\label{rp-update}
+For every raw value $z$ and every name $w$, the valuation associated with
+$C(s,j_w,z)$ agrees with $\alpha_s$ at all other names and gives
+$\cl z$ to $w$.
+\end{lemma}
+\begin{proof}
+For the updated coordinate use row~\ref{rp01}. For a different name
+$u$, the first literal of row~\ref{rp02}, instantiated at
+$(j,k)=(j_w,j_u)$, is false by the selector choice; its second literal
+is the desired equality of value classes. This holds even when the raw
+assignment, a data value, or several parameter values happen to equal or
+be equivalent to a selector. No such diagonal case is excluded.
+\end{proof}
+
+Use NAND and existential quantification as the Boolean and quantifier
+basis of finite first-order syntax. They express the usual connectives
+and universal quantification by fixed finite translations. A constantly
+true class is available as $N(B,N(B,B))$ for any fixed atomic class $B$;
+its NAND with itself is constantly false. Thus the arbitrary incidence
+profile of the constant $d$ is never treated as logical falsity.
+
+Construct a raw class term $t_\varphi$ by structural recursion:
+\[
+ t_{E(u,w)}=A(j_u,j_w),\quad
+ t_{\operatorname{Nand}(\psi,\theta)}=N(t_\psi,t_\theta),\quad
+ t_{\exists w\,\psi}=Q(j_w,t_\psi).
+\]
+
+\begin{lemma}[Raw class-profile truth lemma]\label{rp-truth}
+For every raw ground assignment $s$,
+\[
+ v(\Inc(s,t_\varphi))=1
+ \quad\Longleftrightarrow\quad
+ (\mathcal A,E^{\mathcal A})\models\varphi[\alpha_s].
+\]
+The class term remains raw; it is not replaced by a representative of
+its $\sim$-class.
+\end{lemma}
+\begin{proof}
+For atoms, rows~\ref{rp06}--\ref{rp07} give the exact equivalence
+between incidence and the raw $E$ atom on $V$ outputs. The definition
+of quotient membership turns this into the required semantic atom.
+Rows~\ref{rp03}--\ref{rp05} give precisely the NAND truth table at
+every raw assignment.
+
+For the existential step, assume first that
+$v(\Inc(s,Q(j_w,t_\psi)))=1$. The raw instance of row~\ref{rp09}
+supplies the raw witness
+$z=W(s,j_w,t_\psi)$ with
+$v(\Inc(C(s,j_w,z),t_\psi))=1$. The induction hypothesis and
+Lemma~\ref{rp-update} give a satisfying data value $\cl z$ for $w$.
+Conversely, if a value $a\in\mathcal A$ satisfies the existential
+matrix, choose any raw representative $z$ of $a$. The update lemma
+and induction hypothesis give the raw incidence at $C(s,j_w,z)$.
+Row~\ref{rp08} yields incidence at $Q(j_w,t_\psi)$.
+
+This argument preserves the exact witness term supplied by the raw
+row. It never replaces it by a canonical representative before applying
+$C$. Such a replacement would incorrectly require the deleted
+congruence of $C$ in its value argument. Likewise, the raw assignment
+$s$ and the raw class term $t_\psi$ stay literally fixed in both
+quantifier clauses. All quantified data values are covered because
+$\mathcal T\to\mathcal A$ is surjective.
+\end{proof}
+
+\section{Transfer of any available raw profile}
+
+Fix any binary relation $\varphi(x,y,\bar a)$ on $\mathcal A$, with
+the displayed data parameters held fixed. At this stage, assume that
+fixed raw terms $b,t$ have the following property for every pair of raw
+ground inputs $x_0,y_0$:
+\begin{equation}\label{rp-Rtruth}
+ v(R(b,t,x_0,y_0))=1
+ \quad\Longleftrightarrow\quad
+ \mathcal A\models\varphi(\cl{x_0},\cl{y_0},\bar a).
+\end{equation}
+This is a semantic identity for these fixed raw $b,t$ and all raw
+inputs. It supplies the particular invariance needed for this matrix;
+no general congruence of $R$, $C$, or $\Inc$ is assumed.
+
+\begin{lemma}[Raw-profile closure transfer]\label{rp-transfer}
+Under \eqref{rp-Rtruth}, the EPSC instance for this particular relation
+holds in the quotient membership structure.
+\end{lemma}
+\begin{proof}
+Assume $\operatorname{SB}_\varphi$ in $\mathcal A$. Fix the raw terms
+$b,t$ above and put $h=H(b,t)$. Suppose $v(G(b,t))=0$. The subset
+bound for the data value $\cl h$ has some data value $u$; take a raw
+representative $u_0$ of it. The instances of rows~\ref{rp10}--\ref{rp12}
+at the same raw key $(b,t,u_0)$ give
+\[
+ R(b,t,h,Y(b,t,u_0)),\quad
+ E(Z(b,t,u_0),Y(b,t,u_0)),\quad
+ \neg E(Z(b,t,u_0),u_0).
+\]
+By \eqref{rp-Rtruth} and quotient membership, these are an actual
+$\varphi$ output at $\cl h$ with a member outside its asserted bound.
+This contradicts $\operatorname{SB}_\varphi$. Hence $v(G(b,t))=1$.
+
+Take $c=\cl h$. If $E^{\mathcal A}(a,c)$ and
+$\varphi(a,a',\bar a)$, choose any raw representatives $x_0,y_0$ of
+$a,a'$. Row~\ref{rp13}, with the fixed raw $b,t$, and
+\eqref{rp-Rtruth} give $E^{\mathcal A}(a',c)$.
+
+If instead $a$ has no incoming member in the quotient, the raw atom
+$E(D(x_0),x_0)$ is false: $D(x_0)$ is some ground term, so its class
+would otherwise be an incoming member of $a$. Row~\ref{rp14} and
+\eqref{rp-Rtruth} again give closure for every output of $a$.
+There is no need to prove that $D$ itself is a well-defined quotient
+function or a member selector in arbitrary raw models.
+
+Finally, if $E^{\mathcal A}(a',c)$, choose a raw representative
+$y_0$. Row~\ref{rp15} gives
+$R(b,t,Y(b,t,y_0),y_0)$. By \eqref{rp-Rtruth}, the data value
+$\cl{Y(b,t,y_0)}$ is an actual supporting input for $a'$.
+The same single $h$ is used throughout; $H,Y,Z$ and the guard are
+never reconstructed separately at inconsistent representative choices.
+This proves both clauses of $\operatorname{Hull}_\varphi(c)$.
+\end{proof}
+
+\section{The closure rows force arbitrarily many selectors}\label{rp-infinity}
+
+For $a\in\mathcal A$ write
+$\operatorname{pred}(a)=\{z\in\mathcal A:E^{\mathcal A}(z,a)\}$.
+These are sets of the ambient ZFC proof; no extensionality of the
+membership structure is assumed.
+
+\begin{lemma}[At least three data classes]\label{rp-three}
+The quotient $\mathcal A$ has at least three elements.
+\end{lemma}
+\begin{proof}
+Only one assignment coordinate is needed for each relation in this
+paragraph. Let $T=N(d,N(d,d))$ and $F=N(T,T)$. The NAND rows make
+$\Inc(s,T)$ always true and $\Inc(s,F)$ always false, for every raw
+assignment $s$. Thus the profiles $R(b,F,x,y)$ and $R(b,T,x,y)$
+represent the constantly false and constantly true binary relations,
+independently of $b,x,y$.
+
+For the false relation, local subset boundedness is immediate, and the
+support part of Lemma~\ref{rp-transfer} gives an object $e$ with
+$\operatorname{pred}(e)=\varnothing$. Row~\ref{rp18} already gives
+two distinct classes. Suppose these are the only two elements, written
+$e,a$. Every predecessor set is contained in
+$\operatorname{pred}(a)$, because the only other column is empty.
+Consequently the true relation is locally subset bounded, with the
+same bound $a$ for every input. Its supported hull, using the empty
+input $e$, is a universal object $u$ with
+$\operatorname{pred}(u)=\mathcal A$.
+
+The class term $N(A(q,q),A(q,q))$ has profile
+$R(b,t,x,y)\leftrightarrow\neg E^{\mathcal A}(\cl y,\cl y)$:
+the last update at $q$ supplies exactly the value $y$. The universal
+object $u$ bounds this relation. Its hull $h$, again using the empty
+input and then global support, satisfies
+\[
+ E^{\mathcal A}(y,h)\quad\longleftrightarrow\quad
+ \neg E^{\mathcal A}(y,y)
+ \qquad(y\in\mathcal A).
+\]
+Taking $y=h$ is a contradiction. Thus there cannot be only two classes.
+No extra selector, evaluation congruence, or quantified class formula
+was used to establish this lemma.
+\end{proof}
+
+\begin{lemma}[Relative power objects with three coordinates]\label{rp-power}
+For every $a\in\mathcal A$ there is an object $a^+$ such that
+\[
+ \operatorname{pred}(a^+)
+   =\{y\in\mathcal A:\operatorname{pred}(y)
+                         \subseteq\operatorname{pred}(a)\}.
+\]
+\end{lemma}
+\begin{proof}
+Choose a fixed raw selector $r$ inequivalent to both $d,q$, using
+Lemma~\ref{rp-three}. Choose a raw representative $p$ of $a$ and put
+$b_p=C(d,r,p)$. The desired profile is
+\[
+ \varphi_p(x,y)=\forall z\,(E(z,y)\longrightarrow E(z,p)),
+\]
+which does not use its first free input $x$. Use selector $q$ for $y$,
+$r$ for the parameter, and $d$ for the bound variable $z$.
+For full explicitness, put
+\[
+ I=N(A(d,q),N(A(d,r),A(d,r))),\qquad
+ B=Q(d,N(I,I)),\qquad t=N(B,B).
+\]
+Here $I$ is the implication inside the universal quantifier, $B$ is
+its existential counterexample class, and $t$ is its negation.
+
+In $s=C(C(b_p,d,x),q,y)$, the $r$ coordinate still has value $a$
+and the $q$ coordinate has value $\cl y$. In $C(s,d,z)$ those two
+coordinates are preserved while the $d$ coordinate becomes $\cl z$.
+The truth lemma, or directly rows 01--09, therefore proves
+\eqref{rp-Rtruth} for this $\varphi_p$, for every raw $x,y$.
+Reusing $d$ for the bound variable is legitimate because the matrix
+is independent of the first input: the quantifier replaces that
+coordinate completely. This three-coordinate argument does not assume
+a fourth selector for a syntactically unused free name.
+
+Local subset boundedness holds with bound $a$ for every input.
+Lemma~\ref{rp-transfer} supplies $a^+=\cl{H(b_p,t)}$. The previously
+obtained empty input makes every $\varphi_p$ output a member of
+$a^+$; global support gives the reverse containment. This is exactly
+the displayed predecessor identity.
+\end{proof}
+
+\begin{theorem}[Infinite data quotient without function congruence]\label{rp-many}
+The quotient $\mathcal A$ has arbitrarily many distinct classes.
+\end{theorem}
+\begin{proof}
+Take $a_0$ with empty predecessor set and recursively choose
+$a_{n+1}=a_n^+$. The explicit raw term $H(C(d,r,p),t)$ in the previous
+proof can make each choice; it is unnecessary to make this operation
+descend as a quotient function. Since $a_0$ is a subset of itself in
+the predecessor sense, $a_0\in\operatorname{pred}(a_1)$, and
+\[
+ \operatorname{pred}(a_0)\subsetneq\operatorname{pred}(a_1).
+\]
+If $\operatorname{pred}(a)\subsetneq\operatorname{pred}(b)$, then
+every predecessor set contained in $\operatorname{pred}(a)$ is
+contained in $\operatorname{pred}(b)$. Hence
+$\operatorname{pred}(a^+)\subseteq\operatorname{pred}(b^+)$.
+This containment is strict: $b\in\operatorname{pred}(b^+)$ but
+$b\notin\operatorname{pred}(a^+)$, because
+$\operatorname{pred}(b)\nsubseteq\operatorname{pred}(a)$.
+Thus the predecessor sets of $a_0,a_1,\ldots$ form a strictly
+increasing chain. Distinct predecessor sets imply distinct quotient
+objects. Among any sufficiently long finite initial segment, arbitrarily
+many classes avoid the two distinguished classes of $d,q$.
+\end{proof}
+
+This replaces the earlier nineteen-clause variant's pairing argument.
+That variant retained
+$\neg\Eq(s,t)\lor\Eq(V(s,j),V(t,j))$ to show that raw pairs
+separate data classes. The new power-object proof removes that row
+entirely. The finite $n=2,3$ graph probes retained with the artifacts
+were exploratory diagnostics; this general proof, rather than those
+finite checks, is the justification for removing it.
+
+\section{Every full EPSC instance holds in the quotient}
+
+\begin{theorem}[Direct lower interpretation]\label{rp-lower}
+The quotient membership structure of every all-ground model of $\RP$
+satisfies every instance of full raw EPSC.
+\end{theorem}
+\begin{proof}
+Take any equality-free matrix $\varphi(x,y,p_1,\ldots,p_m)$ and any
+actual data parameters $a_1,\ldots,a_m\in\mathcal A$. Rectify its
+bound names. Set the selector for $x$ to the literal constant $d$ and
+the selector for $y$ to $q$. By Theorem~\ref{rp-many}, choose distinct
+additional selectors for every parameter and bound name, independently
+of all data values.
+
+Choose raw representatives of the parameters. Starting at raw $d$,
+perform finitely many $C$ updates at their selectors. The resulting
+raw term $b$ has the specified parameter values by
+Lemma~\ref{rp-update}; values at unused coordinates do not matter.
+With $t=t_\varphi$, Lemma~\ref{rp-truth} gives
+\eqref{rp-Rtruth} for all raw inputs. Lemma~\ref{rp-transfer} proves
+the required EPSC instance.
+\end{proof}
+
+The structure $\mathcal A$ may have many nonextensional or non-well-founded
+objects. The theorem establishes exactly the raw EPSC interface. The
+inherited hereditary interpretation is what supplies the FC15 route to
+ZF consistency; no assertion that $\mathcal A$ itself is ZF is made.
+
+\section{A direct upper expansion from a set-coded ZFC model}
+
+For clarity the upper model is described independently of the inherited
+FC15 completion. Work inside ordinary ZFC and assume $\Con(\mathrm{ZFC})$.
+Completeness and downward L\"owenheim--Skolem give a countably infinite
+set-coded model $M$ of ZFC. It need not be transitive, externally
+well-founded, or externally $\omega$-standard. Let the raw theory's
+carrier be the domain $|M|$, and interpret $E$ as $M$'s membership.
+Choose $d$ to be $M$'s empty set and $q$ to be a different object,
+for example its singleton. Interpret $\Eq$ as actual identity of domain
+elements.
+
+The operations $V,C$ are fixed first-order membership-definable
+operations in $M$. Normalize a code $s$ to the partial function graph
+it denotes if it is such a graph, and to the empty graph otherwise.
+Take $V(s,j)$ to be its value at $j$ when present and $d$ otherwise.
+Take $C(s,j,z)$ to be the graph obtained after that same normalization
+by deleting any old pair at $j$ and inserting $(j,z)$. Extensionality,
+Pairing, Separation and Union prove these definitions total and unique
+in ZFC. They satisfy the two assignment identities for every input,
+including invalid graph codes. The definition does not need external
+finiteness of an $M$-object.
+
+In the ambient ZFC proof, let $\operatorname{Def}(M)$ be the family of
+subsets of $|M|$ definable by finite pure-membership formulas with finite
+tuples of $M$ parameters. This family is countable. Choose a surjection
+$t\mapsto D_t$ from $|M|$ onto it, allowing repeated class names, and put
+$\Inc(s,t)$ iff $s\in D_t$. Choose:
+\begin{itemize}
+\item $N(a,b)$ to name the complement of $D_a\cap D_b$;
+\item $A(j,k)$ to name $\{s:E(V(s,j),V(s,k))\}$;
+\item $Q(j,a)$ to name $\{s:\exists z\ C(s,j,z)\in D_a\}$;
+\item $W(s,j,a)$ to be an actual witness of that last existential
+whenever it is true, and an arbitrary value otherwise;
+\item $D(x)$ to be some $E$-member when $x$ is nonempty and an
+arbitrary value otherwise.
+\end{itemize}
+All three class operations give pure-membership-definable classes,
+because $V,C$ are definable and each particular $D_t$ has such a
+definition. Their class names and witnesses can be chosen in the ambient
+ZFC model; they need not be definable in $M$. This gives rows 01--09.
+There is no prescribed relationship between $q$ and the chosen name
+$N(d,d)$, and none is required.
+
+For each fixed pair $(b,t)$, the relation $R(b,t,-,-)$ has an ordinary
+pure-membership definition over $M$, with finitely many parameters.
+The standard ZF argument proves its EPSC instance uniformly in that
+definition. Under local subset boundedness, each fiber is a set:
+separate the outputs inside the power set of any local subset bound.
+The fiber's exact extension is unique independently of the chosen bound.
+Replacement collects these exact fibers over a set of inputs. Starting
+with the fiber of the empty set, iterate
+\[
+ c\longmapsto c\cup\bigcup\{\{y:R(x,y)\}:x\in c\}
+\]
+over $M$'s natural numbers and take the union of the stages. Induction
+gives recurrent closure; the initial fiber gives closure from the unique
+empty object; every inserted element belongs to an actual fiber, giving
+global support. This is an ordinary formula-indexed ZF proof. Each
+Separation and Replacement use is an instance for the selected finite
+pure-membership formula, not a scheme for the expanded class language.
+
+Set $G(b,t)$ true exactly when the local subset-bound antecedent for
+this relation holds in $M$. If true, choose a supported hull as $H(b,t)$
+and a supporting input as $Y(b,t,y)$ for each of its members $y$.
+If false, classical negation of the antecedent gives
+\[
+ \exists x\,\forall u\,\exists y,z\,
+       [R(b,t,x,y)\land E(z,y)\land\neg E(z,u)].
+\]
+Choose $H(b,t)$ as this bad input, and $Y(b,t,u),Z(b,t,u)$ as the
+corresponding output and escaping member. Inactive choices are arbitrary.
+All shared witness requests have the identical key $(b,t)$ and opposite
+guards, so these definitions are compatible. Rows 10--15 follow directly.
+Rows 16--18 hold because equality is actual identity and $d\ne q$.
+
+All the objects in this construction are sets of the ambient ZFC proof.
+The syntax used to define $\operatorname{Def}(M)$ is that ambient
+theory's finite syntax, and its satisfaction relation is the set-coded
+satisfaction relation for $M$. No expanded-language truth predicate is
+asserted in $M$, and no external standardness assumption is made.
+
+\begin{theorem}[Ordinary ZFC consistency calibration]\label{rp-main}
+Using the explicitly named full raw-EPSC calibration, ZFC proves
+\[
+ \Con(\RP)\quad\longleftrightarrow\quad\Con(\mathrm{ZFC}).
+\]
+\end{theorem}
+\begin{proof}
+The upper model construction and soundness give the right-to-left
+implication. From consistency of $\RP$, completeness supplies an
+all-ground valuation; Theorem~\ref{rp-lower} constructs a model of
+full raw EPSC. Soundness and the inherited consistency interpretation
+give the other implication. Ground terms, valuations, equivalence
+classes and the finite structural recursion are set-coded inside ZFC.
+\end{proof}
+
+\section{Two nine-function alternatives and extensional controls}
+
+In row~\ref{rp14}, replace the member literal $E(D(x),x)$ by
+$E(Z(b,t,x),x)$, and delete the function $D$ from the signature.
+Call this target $\RPZ$. Its lower proof is unchanged: if $\cl x$
+is empty, the first endpoint of the new literal is still some raw
+ground term and cannot be a member. For the upper model, the existing
+$Z$ constraints occur only when $G(b,t)$ is false. When it is true,
+choose $Z(b,t,x)$ as a member of $x$ whenever one exists. The opposite
+branches have the identical key $(b,t)$ and never conflict. Thus
+\[
+ \mathrm{ZFC}\vdash\Con(\RPZ)\longleftrightarrow\Con(\mathrm{ZFC}).
+\]
+This changes the raw term from unary $D(x)$ to ternary $Z(b,t,x)$,
+adding two term nodes but removing one function. The extra nodes cost
+eight flat template bits. There is no claim that the representation
+with fewer functions necessarily compiles to fewer states.
+
+An additional nine-function target, $\RPV$, instead replaces
+$E(D(x),x)$ by $E(V(x,d),x)$ and deletes $D$. The lower proof is
+unchanged: for an empty quotient object the first endpoint of that
+literal, whatever raw term it is, cannot be a member. For its upper
+proof, use the standard constructible-universe relative-consistency
+theorem to choose a countable set-coded model
+$M\models\mathrm{ZFC}+V=L$ from $\Con(\mathrm{ZFC})$~\cite{godel1938}.
+Let $g(s)$ be the first member of a nonempty $s$ in the definable global
+well-order of $L$, and put $g(\varnothing)=d=\varnothing$. This is a
+pure-membership-definable total operation in $M$.
+
+For a set-coded partial function $F$ with $d$ in its domain, let
+$a=F(d)$ and define, using Kuratowski ordered pairs,
+\[
+ \operatorname{Enc}(F)=\{a,\langle F,a\rangle\}.
+\]
+The ordered pair has rank strictly greater than the rank of $a$.
+Thus an encoded record has exactly two members, its lower-rank member
+is uniquely $a$, and its higher-rank member uniquely recovers $F$.
+In particular $\operatorname{Enc}$ is injective and its image and
+decoding function are definable in $M$. For any raw object $s$, define
+its normalized graph $F_s$ to be its decoded graph when it is an encoded
+record, and otherwise the singleton function $\{(d,g(s))\}$.
+Interpret
+\[
+ V(s,j)=\begin{cases}F_s(j)&j\in\operatorname{dom}(F_s),\\d&\text{otherwise},\end{cases}
+ \qquad
+ C(s,j,z)=\operatorname{Enc}(F_s[j\mapsto z]).
+\]
+Updating preserves $d$ in the domain, and injective decoding recovers
+the updated graph exactly. Hence both assignment identities hold for
+every input. In addition, $V(s,d)\in s$ for every nonempty $s$:
+for an encoded record it is the literal member $F_s(d)$, and for an
+uncoded object it is $g(s)$.
+
+These $V,C$ are pure-membership-definable, so the earlier external
+class-code construction and formula-indexed ZFC hull argument apply
+without change. Row 14 is satisfied using the additional member
+property just proved. No symbol for $g$, $F_s$ or $\operatorname{Enc}$
+is added to the finite theory. The argument is valid inside an arbitrary
+set-coded model, since its uniqueness and rank comparisons are theorems
+of $M$; no external well-foundedness is assumed. Therefore
+\[
+ \mathrm{ZFC}\vdash\Con(\RPV)\leftrightarrow\Con(\mathrm{ZFC}).
+\]
+Its flat stream is 906 bits. The generic plain Huffman codec makes it
+one bit smaller than $\RPZ$, whereas the measured selective dictionary
+makes it one bit larger. Both are retained as compilation targets.
+
+Put $P(a,b)=C(C(d,d,a),q,b)$ and define the fully expanded NAND class term
+\[
+ \operatorname{Xor}(u,v)=N(N(u,N(u,v)),N(v,N(u,v))).
+\]
+Add the one clause
+\begin{equation}\label{rp-ext}
+ \Eq(j,d)\lor\Eq(j,q)\lor\Eq(a,b)
+ \lor\Inc\bigl(P(a,b),Q(j,\operatorname{Xor}(A(j,d),A(j,q)))\bigr).
+\end{equation}
+These extensional targets are $\RPE$ and $\RPEZ$.
+
+For unequal data classes $\cl a,\cl b$, choose a raw selector $j$
+inequivalent to $d,q$. The first three literals of
+\eqref{rp-ext} are false. Its incidence literal, expanded by the raw
+truth lemma and the update identities, says exactly that there is a
+data value belonging to exactly one of $\cl a,\cl b$. Thus the
+quotient membership is extensional. All colliding selector substitutions
+are covered by the explicit guards in the clause. The upper model is
+already extensional and satisfies the added row by the same profile
+identity. The inherited extensional EPSC calibration therefore gives
+\[
+ \mathrm{ZFC}\vdash\Con(\RPE)\leftrightarrow\Con(\mathrm{ZFC}),
+ \qquad
+ \mathrm{ZFC}\vdash\Con(\RPEZ)\leftrightarrow\Con(\mathrm{ZFC}).
+\]
+These controls avoid the raw hereditary interpretation at the lower
+boundary, while retaining the previously established extensional
+EPSC-to-ZF and Foundation/Choice consistency transports.
+
+\section{Why the distinct-constants clause remains necessary}
+
+The successful deletion of evaluation congruence does not justify
+also deleting $\neg\Eq(d,q)$. For the eighteen-clause raw target,
+that further deletion has a concrete model whose existence ZFC proves.
+Let the carrier be the hereditarily finite sets $\mathrm{HF}=V_\omega$,
+with actual membership and equality, and interpret both $d,q$ as the
+empty set. Interpret $V,C$ by the normalized finite-graph operations
+in the preceding upper construction. Every finite graph and update
+is still hereditarily finite, so those operations are total on HF.
+
+Externally in ZFC, enumerate the parameter-definable classes of HF and
+choose their class codes, Boolean operations, quantification operations,
+witnesses and member selectors as before. The decisive identity is now
+\[
+ C(C(b,d,x),q,y)=C(C(b,d,x),d,y)=C(b,d,y).
+\]
+Consequently every $R(b,t,x,y)$ is a unary profile $\psi_{b,t}(y)$,
+independent of $x$. Its subset-bound antecedent says precisely that
+there is $u\in\mathrm{HF}$ such that each selected $y$ is an actual
+subset of $u$. Any such profile is a subset of the finite set
+$\mathcal P(u)$, hence is itself a hereditarily finite set $h$.
+Choose that exact class extension as $H(b,t)$ whenever the guard is
+true. Closure from empty inputs, recurrent closure, and global support
+then all hold because membership in $h$ is exactly $\psi_{b,t}$.
+When the guard is false, choose the counterexamples $H,Y,Z$ by the
+same classical-negation argument as in the upper construction.
+
+All seventeen retained rows are satisfied. This is a set-coded model
+constructed in ZFC, so ZFC proves consistency of the theory obtained
+by that further deletion. Subject to consistency of ZFC, it therefore
+cannot also have the required ZFC-provable consistency equivalence,
+by the second incompleteness theorem. The raw binary closure interface
+needs the distinct update coordinates $d,q$; an infinite supply of other
+selector classes does not repair their collision. This countermodel
+also works for the member-fused raw variant.
+
+\section{Exact syntax cost and an executable finite refuter}
+
+The template format has a three-bit clause length, followed for each
+literal by one sign bit and a two-bit predicate index, followed by two
+prefix terms. Every term opcode has four bits. A zero clause length
+terminates the stream. In each clause variables are renamed in alphabetical
+order to local codes $0,1,2,3$. The remaining codes are $d,q$ and the
+listed functions. For $\RP$,
+\[
+ 4\text{ variable codes}+2\text{ constant codes}+10\text{ function codes}=16.
+\]
+The removed six-variable $C$ congruence row is what permits this dictionary.
+Restoring primitive $D$ would have forced five-bit opcodes in the old
+six-variable interface. This exact threshold, rather than a proportional
+state assumption, accounts for the encoding choice.
+
+\begin{center}\small
+\begin{tabular}{lrrrrrr}
+\toprule
+Theory & Clauses & Literals & Nodes & Functions & Bits & Bytes\\
+\midrule
+Source44 FC15$^*$, full completion &29&82&320&9&1616&202\\
+Incoming $U_{15}^{\circ}$ &20&53&228&9&1134&142\\
+$\RP$ &18&43&179&10&902&113\\
+$\RPZ$ &18&43&181&9&910&114\\
+$\RPV$ &18&43&180&9&906&114\\
+\midrule
+Source44 FC16$^*$, full completion &30&86&368&9&1823&228\\
+Incoming $U_{16}^{\circ}$ &21&57&276&9&1341&168\\
+$\RPE$ &19&47&217&10&1069&134\\
+$\RPEZ$ &19&47&219&9&1077&135\\
+\bottomrule
+\end{tabular}
+\end{center}
+The new raw target saves 232 bits relative to the latest 1134-bit
+completion, and 714 relative to the source44 full completion. All new
+rows use at most four variables. Maximum term depth is three in the
+raw targets and five in the extensional controls. Packed byte files
+have exactly two trailing padding bits in $\RP,\RPZ$, six in $\RPV$,
+and three in the extensional variants. The terminating zero clause header is already
+included in every reported bit count.
+
+The exact count is independently checked by
+\[
+ L=3c+3\ell+4n+3,
+\]
+where $c,\ell,n$ are clause, literal and term-node counts. For $\RP$
+this is $54+129+716+3=902$. The payload parser is a separate cursor
+decoder and recovers the canonical clauses exactly.
+
+The companion \texttt{raw\_profiles.py} also gives a total mathematical
+ground-term representation. Codes zero and one denote $d,q$. For a
+retained function with tag $i$ and argument tuple $\bar a$, use
+\[
+ \operatorname{code}(F_i(\bar a))=2+i+16\operatorname{tuple}(\bar a),
+\]
+where tuples use the source44 Cantor pairing and the unused tags are
+unary padding constructors. Every child code is smaller than its
+parent. At stage $b$, instantiate every local variable by every code
+$0,\ldots,b$. Encode the four predicates as ordinary propositional
+atoms on endpoint codes and decide the resulting finite CNF exactly.
+$\Eq$ is handled as the fourth predicate with the three retained rows;
+the solver does not silently restore the deleted congruences.
+
+The stage CNFs are nested and every ground instance eventually appears.
+If one is unsatisfiable, the theory is inconsistent. Conversely, if
+all are satisfiable, propositional compactness gives an all-ground
+valuation and its ordinary term structure is a model of the universal
+theory. The latter structure interprets all function symbols as raw
+term constructors and $\Eq$ as the given predicate; it does not identify
+terms by native logical equality. Therefore the ideal loop that halts
+on the first unsatisfiable stage has, in ZFC, nonhalting equivalent to
+$\Con(\RP)$ and hence to $\Con(\mathrm{ZFC})$.
+
+The implementation uses the retained exact source44 DPLL routine as a
+reference finite decision procedure. Its finite checks include independent
+template round trips, 2048 total ground-code round trips for each of the
+five variants, and checked satisfying valuations for the actual stage
+$b=0$ of each theory. These are representation and implementation checks,
+not evidence proving consistency or the unbounded theorem. Resource
+exceptions propagate; no timeout, memory limit, or incomplete run is an
+UNSAT verdict. No unbounded physical guarantee about CPython is asserted.
+
+Reproduce in this directory with:
+\begin{verbatim}
+python raw_profiles.py --output results
+python raw_profiles.py --output scratch-stage --stage 1
+python raw_profiles.py --output control19_results --evaluation-transport
+\end{verbatim}
+The five fully expanded clause JSON files, pure bit streams, packed bytes
+and exact metric records are in \texttt{results/}. The copied source44
+modules and their original repository license are in \texttt{reference/}.
+The optional third command reproduces the intermediate nineteen-clause
+variant and twenty-clause extensional control, which retain evaluation
+transport. The source44 full mathematical note is also copied into
+\texttt{reference/} for an offline statement of the inherited boundary.
+
+\section{A charged prefix-code and selective term-dictionary experiment}
+
+The fixed four-bit opcode format is deliberately simple. Its repeated
+local-variable codes make it an avoidable source of static data cost.
+The companion \texttt{encoding\_experiments.py} supplies a second,
+precisely defined generic codec. The signature and function arities are
+part of the decoder protocol, as they are in the preceding fixed-width
+format. For each base opcode, in the same fixed order, the stream starts
+with a four-bit field giving its canonical Huffman code length. A zero
+length means unused. Codes are assigned in order of length and then
+opcode. Three-bit clause lengths, literal sign and predicate fields,
+two prefix terms per literal, and the final zero clause header are all
+retained. Thus this is a complete static theory stream for its fixed
+decoder protocol; the lengths used to parse it are included in the count.
+No decoder program or signature-to-Turing-machine compilation is included.
+
+For $\RP$ the 64-bit length header and 734-bit body total 798 bits.
+For $\RPZ$ one fewer base opcode saves four header bits, giving
+$60+736=796$ bits. The same format gives the following comparison with
+the retained earlier clause sets. Their six variable slots, single
+constant and nine proper functions also give sixteen base opcodes.
+
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+Theory & Fixed opcodes & Huffman & Full fixed DAG & Selective dictionary\\
+\midrule
+Source44 FC15$^*$ &1616&1468&1977&---\\
+Incoming $U_{15}^{\circ}$ &1134&1020&1342&---\\
+$\RP$ &902&798&963&790\\
+$\RPZ$ &910&796&951&787\\
+$\RPV$ &906&795&966&788\\
+\midrule
+Source44 FC16$^*$ &1823&1672&2197&---\\
+Incoming $U_{16}^{\circ}$ &1341&1212&1566&---\\
+$\RPE$ &1069&972&1261&956\\
+$\RPEZ$ &1077&971&1245&953\\
+\bottomrule
+\end{tabular}
+\end{center}
+All entries are bits. The plain-Huffman column gives an identical-format
+comparison; the selective-dictionary search was run only for the new
+theories. A dash means not searched. Neither table column asserts a
+globally shortest possible encoding.
+
+The selective dictionary format starts with an Elias gamma code for
+$K+1$, where $K$ is its entry count. It extends the opcode alphabet by
+$K$ zero-arity references, supplies the four-bit canonical-Huffman length
+field for every base or reference opcode, serializes the $K$ definitions
+in increasing term-size order, then writes the full clause body.
+References inside definitions may point only to earlier entries.
+Variables in a definition are the already-normalized local variable
+slots of the enclosing clause when that definition is used. This is a
+shared syntax template, not a new first-order symbol or a new clause.
+The independently implemented decoder expands every reference to recover
+the exact original clause trees.
+
+For all three raw variants the best selected dictionary is
+\[
+ r_0=H(v_0,v_1),\qquad
+ r_1=C(C(v_0,d,v_2),q,v_3).
+\]
+For $\RPZ$, the header consists of three gamma bits for $K+1=3$
+and $4(15+2)=68$ code-length bits. The definitions cost 41 bits,
+and the entire clause body including its terminator costs 675 bits:
+\[
+ \boxed{71+41+675=787\text{ bits}.}
+\]
+For $\RP$ the corresponding sum is $75+41+674=790$.
+For $\RPV$ it is $71+41+676=788$.
+The reversed ranking of the two raw variants is a concrete reason to
+measure each actual representation instead of predicting cost from the
+number of functions or flat term nodes alone.
+
+The search enumerates every subset of the syntactically repeated
+compound subterms after the specified per-clause alphabetical variable
+normalization. There are ten candidates and 1024 subsets in each raw
+variant, thirteen candidates and 8192 subsets in each extensional
+variant. It verifies a complete encode/decode round trip for every
+candidate tested. This is exhaustive within those stated finite candidate
+sets; other variable permutations, other macro forms, other compression
+algorithms, and different decoder designs were not optimized. The fully
+materialized DAG column instead charges its node count, fixed-width
+function tags, every backward-reference edge, every literal root
+reference, and all clause framing. That particular generic format loses
+even though it eliminates every repeated compound subtree.
+
+Reproduce with:
+\begin{verbatim}
+python encoding_experiments.py --output encoding_results
+\end{verbatim}
+The pure Huffman and selective-dictionary streams, code-length tables,
+selected definitions, exact charge breakdowns, search counts and SHA-256
+digests are retained in \texttt{encoding\_results/}. The 787-bit encoding
+is a data and decoder design target. A blank-start machine must implement
+or specialize that decoding work, as well as the refuter and initializer.
+
+\section{Why a small UTM does not yet provide the state result}
+
+Neary and Woods supply a standard single-tape fifteen-state two-symbol
+UTM, with a finite input encoding of a bi-tag system and its dataword~\cite{nearywoods2009}.
+Its exterior tape is uniformly blank $c$; it does not require a weakly
+universal periodic background. However, their Equation (3) requires a
+specific finite frame, with the encoded production table to the left of
+the separator $G=bc$, optional $S=(cc)^2$ blocks, and encoded bi-tag
+data to the right. Its prescribed start is state $u_1$ with the head on
+the rightmost symbol of $G$. The blank-start initializer must establish
+this entire finite frame and that entry position.
+Their Table 1 encodes a data symbol $a_i$ as $(cb)^{8i-5}$, followed by
+the separator $bb$ in a dataword. Thus encoding a literal bit as $a_1$
+or $a_2$ takes eight or twenty-four tape cells. The 902-bit stream here
+contains 611 zeros and 291 ones. Under that particular bit-to-symbol
+mapping, its dataword alone occupies
+\[
+ 8\cdot611+24\cdot291=11872
+\]
+cells, before the encoded production table, control symbol, or markers.
+This is a measurement of that literal input encoding, not a lower bound
+on all ways of programming or initializing that UTM.
+
+The UTM's fifteen states contain no parser for these eighteen clauses.
+A real input must additionally specify a bi-tag program that enumerates
+terms, ground substitutions and valuations, evaluates clauses, exhausts
+each finite stage, and detects the refutation condition. An introspective
+printer could compress the repeated unary runs in that input, but its
+data mechanism, decompressor, return path and final UTM entry frame must
+all be compiled and counted. No such binary backend is supplied here.
+Consequently neither $15+113$ nor any ratio of 902 bits to a chosen
+bits-per-state rate is an established state bound.
+
+The useful next target is concrete: compile this four-variable,
+four-predicate ground-CNF refuter, including a measured data emitter,
+and measure the complete binary table from blank. The mathematical
+compression removes semantic congruence work as well as static rows,
+but only that compilation can establish whether it beats 245 states.
+
+\section{Provenance and proof status}
+
+The general finite assignment/class method is attributed to Harvey
+Friedman's \emph{Impossible Counting}, Section 4.1~\cite{friedman2017}.
+Its Theorem 4.1.3 constructs the expansion by externally enumerating
+parameter-definable classes over a countable model; the internal
+assignment operations and external class-code interpretation are distinct.
+The fifteen native
+closure rows and the raw/full-parameter EPSC consistency calibration are
+from ProveIt source44 and its cited earlier sources. The direct
+raw-profile interpretation, three-coordinate power-object proof of an
+infinite data quotient without any function congruence,
+independent-selector constants, and the resulting four-variable
+opcode reuse are the additions in this note. No wider historical priority
+claim is made.
+
+The source44 reference modules are copied with their repository license
+from the same directory as its note, under
+\path{code/44-nine-code-ground_kernel.py} and
+\path{code/44-nine-code-coded_extensional.py}. The current repository
+checkout used for provenance has commit
+\nolinkurl{fd1adfa19f8fe8da41444e3fa43b89a59d891067}. The earlier incoming
+report records its own source pin
+\nolinkurl{6446ff5668307a2ac6aee1896037f0b792090389}.
+The results are ordinary mathematical theorems with stated inherited
+calibrations and finite executable reference artifacts. They have not been
+serialized as Lean or Rocq proofs, and this note does not claim a represented
+PA endpoint. It provides no new literal binary transition table, no
+unconditional nonhalting or consistency theorem, and no minimality result.
+\begin{thebibliography}{9}
+\bibitem{source44}
+Vladimir Reshetnikov and ProveIt contributors,
+\emph{Finite class closure}, source44 research note and accompanying code.
+Repository version consulted 18 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/fd1adfa19f8fe8da41444e3fa43b89a59d891067/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/44-nine-notes-finite_class_closure.md}.
+
+\bibitem{incoming20261018}
+ProveIt incoming research archive,
+\emph{zfc-sub245-research-20261018.zip},
+\texttt{sections/formalism.tex}, 18 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/fd1adfa19f8fe8da41444e3fa43b89a59d891067/docs/incoming/zfc-sub245-research-20261018.zip}.
+
+\bibitem{friedman2017}
+Harvey M. Friedman,
+\emph{Impossible Counting}, manuscript dated 2 September 2017,
+Section 4.1, especially Theorems 4.1.2 and 4.1.3.
+\url{https://bpb-us-w2.wpmucdn.com/u.osu.edu/dist/1/1952/files/2014/01/ImpossibleCnt090217-2a5ewhm.pdf}.
+
+\bibitem{nearywoods2009}
+Turlough Neary and Damien Woods,
+\emph{Four Small Universal Turing Machines},
+Fundamenta Informaticae 91 (2009), 123--144,
+DOI \href{https://doi.org/10.3233/FI-2009-0036}{10.3233/FI-2009-0036}.
+Author deposit metadata:
+\url{https://mural.maynoothuniversity.ie/id/eprint/12416/}.
+Author PDF, Section 3, Equation (3), Tables 1--3 and 16:
+\url{https://mural.maynoothuniversity.ie/id/eprint/12416/1/Woods_FourSmall_2009.pdf}.
+The deposit explicitly notes that its PDF has incorrect page numbers;
+journal metadata here follows the deposit record.
+
+\bibitem{godel1938}
+Kurt G\"odel,
+\emph{The Consistency of the Axiom of Choice and of the Generalized
+Continuum-Hypothesis}, Proceedings of the National Academy of Sciences
+24 (1938), 556--557.
+DOI \href{https://doi.org/10.1073/pnas.24.12.556}{10.1073/pnas.24.12.556}.
+\url{https://pmc.ncbi.nlm.nih.gov/articles/PMC1077160/pdf/pnas01800-0034.pdf}.
+\end{thebibliography}

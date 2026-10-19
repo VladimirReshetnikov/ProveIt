@@ -1,0 +1,311 @@
+{
+  "table": "architectures/encoded_native_edge_68.tm",
+  "table_sha256": "87babb7eedeb7ed26c39b93d83a4fd09690959b831b741260ff4d92b35971721",
+  "start": 55,
+  "return": 68,
+  "reject": 54,
+  "working_states": 68,
+  "forced_one": [
+    13,
+    40,
+    48,
+    52
+  ],
+  "forced_zero": [
+    27,
+    28,
+    29,
+    30,
+    43,
+    55,
+    56,
+    63
+  ],
+  "allowed_reads": {
+    "0": [
+      0,
+      1
+    ],
+    "1": [
+      0,
+      1
+    ],
+    "2": [
+      0,
+      1
+    ],
+    "3": [
+      0,
+      1
+    ],
+    "4": [
+      0,
+      1
+    ],
+    "5": [
+      0,
+      1
+    ],
+    "6": [
+      0,
+      1
+    ],
+    "7": [
+      0,
+      1
+    ],
+    "8": [
+      0,
+      1
+    ],
+    "9": [
+      0,
+      1
+    ],
+    "10": [
+      0,
+      1
+    ],
+    "11": [
+      0,
+      1
+    ],
+    "12": [
+      0,
+      1
+    ],
+    "13": [
+      1
+    ],
+    "14": [
+      0,
+      1
+    ],
+    "15": [
+      0,
+      1
+    ],
+    "16": [
+      0,
+      1
+    ],
+    "17": [
+      0,
+      1
+    ],
+    "18": [
+      0,
+      1
+    ],
+    "19": [
+      0,
+      1
+    ],
+    "20": [
+      0,
+      1
+    ],
+    "21": [
+      0,
+      1
+    ],
+    "22": [
+      0,
+      1
+    ],
+    "23": [
+      0,
+      1
+    ],
+    "24": [
+      0,
+      1
+    ],
+    "25": [
+      0,
+      1
+    ],
+    "26": [
+      0,
+      1
+    ],
+    "27": [
+      0
+    ],
+    "28": [
+      0
+    ],
+    "29": [
+      0
+    ],
+    "30": [
+      0
+    ],
+    "31": [
+      0,
+      1
+    ],
+    "32": [
+      0,
+      1
+    ],
+    "33": [
+      0,
+      1
+    ],
+    "34": [
+      0,
+      1
+    ],
+    "35": [
+      0,
+      1
+    ],
+    "36": [
+      0,
+      1
+    ],
+    "37": [
+      0,
+      1
+    ],
+    "38": [
+      0,
+      1
+    ],
+    "39": [
+      0,
+      1
+    ],
+    "40": [
+      1
+    ],
+    "41": [
+      0,
+      1
+    ],
+    "42": [
+      0,
+      1
+    ],
+    "43": [
+      0
+    ],
+    "44": [
+      0,
+      1
+    ],
+    "45": [
+      0,
+      1
+    ],
+    "46": [
+      0,
+      1
+    ],
+    "47": [
+      0,
+      1
+    ],
+    "48": [
+      1
+    ],
+    "49": [
+      0,
+      1
+    ],
+    "50": [
+      0,
+      1
+    ],
+    "51": [
+      0,
+      1
+    ],
+    "52": [
+      1
+    ],
+    "53": [
+      0,
+      1
+    ],
+    "54": [
+      0,
+      1
+    ],
+    "55": [
+      0
+    ],
+    "56": [
+      0
+    ],
+    "57": [
+      0,
+      1
+    ],
+    "58": [
+      0,
+      1
+    ],
+    "59": [
+      0,
+      1
+    ],
+    "60": [
+      0,
+      1
+    ],
+    "61": [
+      0,
+      1
+    ],
+    "62": [
+      0,
+      1
+    ],
+    "63": [
+      0
+    ],
+    "64": [
+      0,
+      1
+    ],
+    "65": [
+      0,
+      1
+    ],
+    "66": [
+      0,
+      1
+    ],
+    "67": [
+      0,
+      1
+    ]
+  },
+  "proof_reasons": {
+    "13": "edge.mark_child: selected nonempty biased-reference field first cell is one; fused entry preserves it.",
+    "40": "loc.mark_next: next record exists by the remaining in-range index and its first tag cell is still one.",
+    "48": "reset_leave: biased copier returns on the rightmost counter one.",
+    "52": "reset_mark: all old markers were restored; first arena record tag starts with one.",
+    "27": "copy.back_one: reads old right zero of moving marker after erasing next source one.",
+    "28": "copy.restore_old_left: reads old left zero of moving marker.",
+    "29": "copy.restore_right: completion restores right marker zero.",
+    "30": "copy.restore_left: completion restores left marker zero.",
+    "43": "loc.restore_zero_counter: last counter one was erased immediately before the boundary check.",
+    "55": "fetch: permitted entry is on erased first tag cell.",
+    "56": "skip_separator: immediately preceding tag-field delimiter is zero.",
+    "63": "anchor(4): valid header has first-run length at most four, so fourth-count successor is separator zero."
+  },
+  "status": "Conservative ordinary-proof guard assignment, supported by the universal component/composition proofs; not inferred solely from traces.",
+  "entry_precondition": "Single fetch entry at selected erased tag; finite nonempty arena, tag0..3, in-range references encoded r+3 ones, single-one counter with zero left neighbor, gap >= chosen reference+2, valid fixed seven-cell mode header, all other fields unmarked.",
+  "scope": "Every internal visit of this literal component under its valid entry contract, including tag-mismatch rejection and the continued reject self-loop. New callers/internal entries require their own contract proof.",
+  "proof_files": [
+    "tag_and_encoded_edge_review.md",
+    "biased_reference_copy19_review.md",
+    "biased_reference_copy_review.md",
+    "locator_pipeline_review.md"
+  ],
+  "finite_support": "encoded_native_edge_independent_audit.json; 2112 calls verify each selected guard, supplementing the ordinary proof.",
+  "terminal_ports": "Return68 remains separate. Reject54 is conservatively both-symbol; do not use local unreachability to remove or pair it."
+}

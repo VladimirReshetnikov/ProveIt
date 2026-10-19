@@ -1,0 +1,169 @@
+# Research toward fewer than 245 states
+
+**No machine with fewer than 245 working states was found.** This package
+contains a different, verified 245-state control, new source transformations,
+an exact restricted grammar lower-bound certificate, and a complete
+initialization counterexample. It is prepared for incorporation into ProveIt.
+
+Read **report.pdf** for the mathematical report and the new machine's
+full transition table. **report.tex** and the included .tex sections rebuild it.
+
+## Main results
+
+| Result | Precise scope |
+|---|---|
+| New 245-state machine | 117 framework roles + 128 grammar rules; same original proof-search program |
+| Joint fine segmentation | Changes AX spelling from 702 to 682 coarse calls while retaining the exact 1,270 finest closed atoms |
+| 32 equality orientations | Same numerical theorems by local axiom replacement; arbitrary GIC matrix codes remain unchanged |
+| 32 additional converse-membership variants | Native full-schema refutation equivalence; separate numerical/compiled calibration obligations |
+| Best source dictionary metric | 493 calls versus the prior minimum 533; this is not a state reduction |
+| Exact grammar lower bound | At least 128 rules in one finite 797-word, 4,511-production universe with specified fixed projections |
+| Spare-zero runtime variant | Complete universal runtime proof passes, but all 245 blank starts have elementary classified behavior |
+
+The intended target remains a concrete binary table with at most 244 working
+states whose nonhalting is ZFC-provably equivalent to Con(ZFC).
+
+## Exact positive control
+
+**machine/machine.tm** has start 0, dispatcher 88, working states 0–244,
+and separate halt state 245. Every row writes a binary symbol and moves L/R.
+The tape is two-way infinite and initially all zero. Initialization is counted.
+
+Canonical SHA-256:
+
+~~~text
+7c9d2248deb02566a5cb48cac284fe33ec6f55ad64434c71cc1b628bbb7f55bd
+~~~
+
+**machine/machine_old.tm** uses the equivalent old labels, with start 95,
+dispatcher 96, and halt 254:
+
+~~~text
+7682e9b337783eb16386f6528d69c0c59d3cb909311d656d8e54824649337b55
+~~~
+
+The proof transports the inherited logical calibration to the exact new
+source grammar and table. It uses ordinary mathematical reasoning plus
+executable finite and universal-induction certificates. **No newly compiled
+Lean/Rocq theorem, serialized first-order ZFC derivation, or PA-internal
+endpoint is claimed.** The inherited package retains its own proof status.
+
+## Verification
+
+With Python 3.10+ and assertions enabled:
+
+~~~sh
+python3 -B code/verify_control.py
+python3 -B code/verify_experiments.py
+~~~
+
+These commands require no network, optimizer, third-party Python package,
+compiler, or proof assistant. Results go to new temporary directories unless
+--output specifies a new or empty directory.
+
+The control replay rebuilds both literal tables; checks all 6,460 source
+leaves and the 3,013-pair source bisimulation; rederives actual-table macro
+inductions; checks all 8,391 guarded affine cases; verifies all 54 bootstrap
+equations and all 8,390 nonhalting pointer successors; and reruns the exact
+407,915-step blank initialization with independent tape representations.
+
+The experiment replay verifies the rational branch certificate and its
+finite universe, audits selected search grammars, regenerates all 64 source
+variants, verifies every existing start of the spare-zero table, and reruns
+its local induction contracts. Four retained heuristic seeds are explicitly
+scanner-ineligible diagnostic objects, not accepted candidates.
+
+For the expensive expanded control-frame proof:
+
+~~~sh
+python3 -B code/verify_control.py --whole-frame
+~~~
+
+Its completed record is **certificates/whole-frame.json**: all 8,391 cases,
+2,313,473 symbolic rules, every one of the 490 transition rows, arbitrary
+primary registers, arbitrary gap 64+n, and an arbitrary nonempty spare suffix.
+The inherited checker is parameterized by exact source-text changes; the
+source-equality gate is included in each control replay.
+
+To rerun the spare-zero expanded proof:
+
+~~~sh
+python3 -B experiments/runtime/code/verify_spare_zero.py \
+  --package vendor/routing245 --whole-frame \
+  --output /tmp/spare-zero-whole-frame.json
+~~~
+
+Its frozen complete proof has 8,391 cases and 2,312,645 symbolic rules.
+Despite that recurrent proof, start 95 reaches state 42 at step 78 with
+head 4 and one-cells exactly {-3,-2,2}; the row 42/0 -> 1 R42 then gives a
+provable infinite rightward scan. Across all existing starts, 243 have
+certified blank-ray escape and two halt. The report states the exact
+second-incompleteness scope and distinguishes external truth from
+ZFC-provable equivalence.
+
+## Searching
+
+The frozen grammar is sufficient for verification. Optional joint search
+requires NumPy and SciPy:
+
+~~~sh
+python3 code/mixed_fine_grammar.py \
+  --package vendor/routing245 --output /tmp/mixed-control.json \
+  --target 128 --length 25 --seconds 120
+~~~
+
+To search a source orientation, additionally pass:
+
+~~~sh
+--modified-source theory/converse_source.json \
+--variant anchor0_r31_r51_r7c1_ev1_mu0
+~~~
+
+Such outputs are explicitly abstract theory-variant grammars. They must not
+be presented as calibrated machines until their changed source emitter and
+complete runtime/blank-start interfaces have been verified.
+
+**experiments/encoding/README.md** documents the annealers, exact rational
+certificate generation, row-order trials, orientation trials, scanner
+eligibility, and all recorded solver statuses.
+**experiments/runtime/README.md** gives every state-synthesis family, finite
+fuel/tape restrictions, fixture generation and mutation sanity controls.
+No heuristic failure or timeout is a global machine lower bound.
+
+## Files and integration
+
+- report.tex, report.pdf, sections/, and theory/*.tex: complete report.
+- machine/, grammar.json, certificates/: exact new 245-state control.
+- code/: joint optimizer, portable replay drivers, and transition-table renderer.
+- theory/: source generator, all 64 variants, mathematical proofs, and pinned inputs.
+- experiments/encoding/: exact restricted lower bound and grammar research.
+- experiments/runtime/: bounded state synthesis and the certified blank-start obstruction.
+- experiments/joint/: original solver run records.
+- vendor/routing245/: unchanged standalone baseline package and its provenance/licenses.
+- STATUS.json, PROVENANCE.json, NOTICE.txt, and SHA256SUMS: identity and scope.
+
+Run **make pdf** to rebuild the document, and **make check-table** to check all
+490 printed transition rows against the machine.
+
+Suggested repository destination:
+
+~~~text
+Computability/BusyBeaver/Research/ZFC/below245-joint-encoding/
+~~~
+
+The package should be indexed as research below 245 with a same-count
+control, not as a new 244-state bound. The existing candidate-routing245
+table and its identity remain the reference construction.
+
+## Provenance and credit
+
+The current inspected ProveIt commit is
+6446ff5668307a2ac6aee1896037f0b792090389. The baseline is the linked
+candidate-routing245 construction and its incoming zfc245-proof-20261018.zip.
+Its earlier pins and the upstream zf-254 commit are retained without being
+relabeled as the current revision.
+
+The original machine/theory work is attributed to Mira-Cult, the end-to-end
+Rocq verification to Jeff Ketchersid and collaborators, and the compiler/runtime
+framework to Andrew James Wade, together with the subsequent ProveIt research.
+All retained source notices and licenses are included.

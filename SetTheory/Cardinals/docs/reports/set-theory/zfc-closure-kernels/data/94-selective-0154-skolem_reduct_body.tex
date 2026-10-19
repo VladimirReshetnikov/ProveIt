@@ -1,0 +1,688 @@
+\newcommand{\srEq}{\mathsf{Eq}}
+\newcommand{\srInc}{\mathsf{Inc}}
+\newcommand{\srCon}{\operatorname{Con}}
+\newcommand{\srcl}[1]{\langle #1\rangle}
+\newcommand{\srrho}{\rho}
+\newtheorem{srtheorem}{Theorem}
+\newtheorem{srlemma}[srtheorem]{Lemma}
+
+\begin{abstract}
+The source44 nine-function closure kernels FC15$^*$ and FC16$^*$ have
+respectively 29 and 30 universal clauses after treating equality as a
+predicate and adding the published congruence completion. Seven function
+congruence clauses can be removed while preserving consistency, provably
+in ZFC. The resulting ground search retains function congruence only for
+assignment evaluation $V$ and assignment update $C$. Class constructors are reconstructed by
+their incidence profiles; witness functions are reconstructed after the
+equality quotient. The resulting exact payloads have 22 clauses, 58
+literals and 1,195 template bits, or 23 clauses, 62 literals and 1,402
+bits for the extensional control. Two further exact redundancies, for the
+branch guard and explicit reflexivity, give final payloads of 20 clauses,
+53 literals and 1,134 bits, or 21 clauses, 57 literals and 1,341 bits.
+The reduction is a theorem about a
+finite formalism and its refutation-search specification. No binary
+Turing machine or state saving is inferred from these counts.
+\end{abstract}
+
+\section{Exact target and source dependency}
+
+The starting point is the recommended, guard-fused, derived-member version
+of source44, not its twelve-function explanatory presentation. Its fixed
+signature has one constant $d$, the nine functions
+\[
+V^2,C^3,N^2,A^2,Q^2,W^3,Y^3,Z^3,H^2,
+\]
+and the binary predicates $E,\srInc,G$. Native FC15$^*$ uses genuine
+logical equality. The ground CNF representation instead uses the binary
+predicate $\srEq$. Superscripts indicate arity. All variables in every
+displayed clause are universally quantified over one common domain;
+colliding substitutions are included.
+
+Set
+\begin{align*}
+q&:=N(d,d),\\
+R(b,t,x,y)&:=\srInc(C(C(b,d,x),q,y),t),\\
+D^*(x)&:=W(C(d,q,x),d,A(d,q)).
+\end{align*}
+The fifteen native rows, with equality written as $\srEq$ for the ground
+representation, are exactly the following:
+\begin{align}
+&\srEq(V(C(s,j,z),j),z),\tag{01}\\
+&\srEq(k,j)\lor\srEq(V(C(s,j,z),k),V(s,k)),\tag{02}\\
+&\srInc(s,N(a,b))\lor\srInc(s,a),\tag{03}\\
+&\srInc(s,N(a,b))\lor\srInc(s,b),\tag{04}\\
+&\neg\srInc(s,N(a,b))\lor\neg\srInc(s,a)\lor\neg\srInc(s,b),\tag{05}\\
+&\neg\srInc(s,A(j,k))\lor E(V(s,j),V(s,k)),\tag{06}\\
+&\srInc(s,A(j,k))\lor\neg E(V(s,j),V(s,k)),\tag{07}\\
+&\neg\srInc(C(s,j,z),a)\lor\srInc(s,Q(j,a)),\tag{08}\\
+&\neg\srInc(s,Q(j,a))\lor\srInc(C(s,j,W(s,j,a)),a),\tag{09}\\
+&G(b,t)\lor R(b,t,H(b,t),Y(b,t,u)),\tag{10}\\
+&G(b,t)\lor E(Z(b,t,u),Y(b,t,u)),\tag{11}\\
+&G(b,t)\lor\neg E(Z(b,t,u),u),\tag{12}\\
+&\neg G(b,t)\lor\neg E(x,H(b,t))\lor\neg R(b,t,x,y)
+       \lor E(y,H(b,t)),\tag{13}\\
+&\neg G(b,t)\lor E(D^*(x),x)\lor\neg R(b,t,x,y)
+       \lor E(y,H(b,t)),\tag{14}\\
+&\neg G(b,t)\lor\neg E(y,H(b,t))\lor R(b,t,Y(b,t,y),y).\tag{15}
+\end{align}
+These are universal CNF clauses, not Horn rules: rows 02--04, 10--11 and
+14 have more than one positive literal. In particular, satisfiability
+and propositional compactness, rather than least Horn closure, are the
+correct semantic tools.
+
+For a list $\mathcal F$ of functions, let $\mathrm{EC}(\mathcal F)$ contain
+the following equality completion:
+\begin{align*}
+&\srEq(x,x),\\
+&\neg\srEq(x,y)\lor\neg\srEq(x,z)\lor\srEq(y,z),\\
+&\bigvee_{i<r}\neg\srEq(x_i,y_i)
+  \lor\srEq(F(x_0,\ldots,x_{r-1}),F(y_0,\ldots,y_{r-1}))
+  &&(F^r\in\mathcal F),\\
+&\neg\srEq(x_0,y_0)\lor\neg\srEq(x_1,y_1)
+  \lor\neg P(x_0,x_1)\lor P(y_0,y_1)
+  &&(P\in\{E,\srInc,G\}).
+\end{align*}
+The two equality laws give equivalence, and the last three rows make the
+predicates constant on equivalence classes. Our target $U_{15}^{VC}$
+consists of rows 01--15 and $\mathrm{EC}(\{V,C\})$. Thus it has seven
+completion rows: two equality laws, two function rows, and three predicate
+rows. No native row or predicate-congruence row is deleted.
+
+The source dependence is deliberately modular. Source44 supplies the
+ordinary ZFC-internalizable calibration
+\[
+\srCon(\mathrm{FC15}^*)\ \longleftrightarrow\ \srCon(\mathrm{ZFC}),
+\qquad
+\srCon(\mathrm{FC16}^*)\ \longleftrightarrow\ \srCon(\mathrm{ZFC}).
+\]
+The FC15$^*$ lower direction names the earlier full raw-EPSC hereditary
+interpretation; FC16$^*$ has the separate extensional lower route. The new
+proof below is a direct model reconstruction between the finite theories.
+It does not reprove or silently strengthen those inherited calibrations.
+
+\section{A quotient with reconstructed operations}
+
+Let $\mathcal T$ be the countable set of ground terms in the nine-function
+signature, with the source's seven unused unary padding constructors if
+using its total radix16 codec. Terms are ordered by their natural-number
+codes, with $d$ of code zero. Padding receives no congruence requirements.
+Assume a Boolean valuation $v$ satisfies every ground instance of
+$U_{15}^{VC}$. This is obtained in ZFC from consistency by completeness,
+or from finite ground satisfiability by propositional compactness.
+
+Define $t\sim u$ iff $v(\srEq(t,u))=1$, and let
+$\mathcal D=\mathcal T/{\sim}$. Write $\srcl t$ for the class of $t$.
+Each class is nonempty and consists of natural-number codes, so it has a
+least-coded representative $\srrho(a)$. This explicitly defined selector
+requires no arbitrary choice of an uncountable family. In particular,
+$\srrho(\srcl d)=d$.
+
+Predicate congruence makes
+\[
+P^{\mathcal D}(\srcl t,\srcl u)=v(P(t,u))
+\quad (P=E,\srInc,G)
+\]
+well-defined. Keep the two assignment operations by ordinary quotient:
+\[
+V^{\mathcal D}(\srcl t,\srcl u)=\srcl{V(t,u)},\qquad
+C^{\mathcal D}(\srcl t,\srcl u,\srcl w)=\srcl{C(t,u,w)}.
+\]
+Their retained congruence rows are exactly what makes these definitions
+independent of the chosen terms.
+
+For every other function $F$, define a \emph{new} operation by
+\begin{equation}\label{sr-reconstruct}
+F^{\mathcal D}(a_1,\ldots,a_r)
+  :=\srcl{F(\srrho(a_1),\ldots,\srrho(a_r))}.
+\end{equation}
+Set $d^{\mathcal D}=\srcl d$. Definition
+\eqref{sr-reconstruct} is meaningful for $N,A,Q,W,Y,Z,H$ without any
+congruence of the corresponding raw term constructors. It is not a
+quotient homomorphism for those constructors. In general one must \emph{not}
+assert
+\[
+F^{\mathcal D}(\srcl{t_1},\ldots,\srcl{t_r})
+   =\srcl{F(t_1,\ldots,t_r)}
+\]
+when arbitrary $t_i$ replace the least representatives. The proof proceeds
+by the defining contracts of the operations and by the placement of their
+witness occurrences, instead of making this false inference.
+
+\begin{srlemma}[Core reconstruction]\label{sr-core}
+The reconstructed structure satisfies native rows 01--09 with genuine
+equality. It satisfies
+\begin{align*}
+\srInc(s,N(a,b))&\longleftrightarrow
+                  \neg(\srInc(s,a)\land\srInc(s,b)),\\
+\srInc(s,A(j,k))&\longleftrightarrow E(V(s,j),V(s,k)),\\
+\srInc(s,Q(j,a))&\longleftrightarrow
+                  \exists z\,\srInc(C(s,j,z),a),
+\end{align*}
+where every symbol in these three displayed contracts is interpreted in
+$\mathcal D$. Moreover $q^{\mathcal D}=\srcl{N(d,d)}$.
+\end{srlemma}
+\begin{proof}
+For rows 01--02, choose representatives of the universal variables and use
+only quotient-preserved $V,C$. Ground equality then becomes actual equality
+of classes. For rows 03--05 fix the least representatives of $a,b$ and
+instantiate the three rows at any representative of $s$. Their Boolean
+combination gives precisely the NAND profile of the reconstructed
+$N(a,b)$. For rows 06--07 fix the representatives of $j,k$; the raw $V$
+applications have the required quotient values, proving the atom profile.
+
+For $Q(j,a)$ fix $j_0=\srrho(j)$ and $a_0=\srrho(a)$ and, for a given
+$s$, set $s_0=\srrho(s)$. If $\srInc(s,Q(j,a))$ holds, raw row 09 at
+$(s_0,j_0,a_0)$ supplies the ground witness $W(s_0,j_0,a_0)$. Its class is
+exactly the reconstructed $W(s,j,a)$ by \eqref{sr-reconstruct}; preservation
+of $C$ and predicate congruence give native row 09. Conversely each $z$ has
+a ground representative, and raw row 08 at that representative gives the
+reverse direction and native row 08. All these facts hold for every $s$,
+not just the least representative as a syntactic term. Finally both
+arguments used to reconstruct $N(d^{\mathcal D},d^{\mathcal D})$ have least
+representative $d$, proving the assertion about $q$.
+\end{proof}
+
+Two core consequences will be used at the only problematic nested terms.
+First, NAND at $(d,d)$ gives $d^{\mathcal D}\ne q^{\mathcal D}$: equality
+would identify a proposition with its negation. Thus
+\[
+P(x,y):=C(C(d,d,x),q,y)
+\]
+has projections $V(P(x,y),d)=x$ and $V(P(x,y),q)=y$ and is injective in
+both coordinates jointly. Put $a_0=P(q,d)$ and $a_{n+1}=P(d,a_n)$.
+The map $P(d,-)$ is injective and $a_0$ is outside its range, so its finite
+iterates are pairwise different. In particular there is a selector
+$j\notin\{d,q\}$; more generally there are as many distinct selectors as
+any fixed finite formula needs. This is a finite equational argument, not
+an assumption that one fixed named selector avoids $d,q$ in every model.
+
+Second, in \emph{every} structure satisfying the reconstructed core,
+\begin{equation}\label{sr-member}
+(\exists z\ E(z,x))\ \longrightarrow\ E(D^*(x),x).
+\end{equation}
+To check this, let $s=C(d,q,x)$. Since $d\ne q$, updating its $d$ coordinate
+to a member $z$ of $x$ gives values $z,x$ at $d,q$. The atom and existential
+contracts give $\srInc(s,Q(d,A(d,q)))$. Native row 09 with these actual
+reconstructed arguments supplies $W(s,d,A(d,q))=D^*(x)$, and the atom
+contract identifies it as a member of $x$.
+
+\begin{srlemma}[Joint reconstruction of the closure rows]\label{sr-closure}
+The reconstructed structure satisfies native rows 10--15.
+\end{srlemma}
+\begin{proof}
+Fix $b,t\in\mathcal D$, once and for all, and write
+$b_0=\srrho(b),t_0=\srrho(t)$ and $h_0=H(b_0,t_0)$. Thus the reconstructed
+$H(b,t)$ is $\srcl{h_0}$ in every one of the six rows. The guard is the
+single fixed value $v(G(b_0,t_0))$. Choosing representatives separately for
+the rows could lose this shared witness key; the present construction does
+not do that.
+
+All occurrences of $R$ preserve their meanings under the quotient, because
+their only proper operations are $C$ and the fixed ground abbreviation
+$q=N(d,d)$, whose class is exactly the reconstructed $q$. For example, for
+arbitrary ground $x_0,y_0$,
+\[
+v(R(b_0,t_0,x_0,y_0))
+ =R^{\mathcal D}(b,t,\srcl{x_0},\srcl{y_0}).
+\]
+The equality holds also when $x_0$ or $y_0$ is a raw witness application;
+that application is used as a ground argument, not assumed to commute with
+evaluation in the reconstructed language.
+
+If $G(b,t)$ is false, fix any $u$ and its representative $u_0$. The raw
+instances of rows 10--12 share $h_0,Y(b_0,t_0,u_0),Z(b_0,t_0,u_0)$. Their
+classes are exactly the reconstructed $H(b,t),Y(b,t,u),Z(b,t,u)$.
+Preservation of $R,E$ gives all three native rows. Rows 13--15 are already
+true through their guard.
+
+If $G(b,t)$ is true, rows 10--12 are guarded. For arbitrary $x,y$ choose
+$x_0=\srrho(x),y_0=\srrho(y)$. Raw row 13, with the same $b_0,t_0$, gives
+native row 13 because its witness is the same $h_0$. Raw row 15 gives
+native row 15 with reconstructed input $Y(b,t,y)$, since it uses exactly
+$Y(b_0,t_0,y_0)$.
+
+For row 14 distinguish two cases. If $x$ has a member in $\mathcal D$,
+the \emph{reconstructed} term $D^*(x)$ is a member by
+\eqref{sr-member}, so its positive literal makes the row true. If $x$ has
+no member, consider instead the literal in the \emph{raw} ground row 14:
+\[
+E\bigl(W(C(d,N(d,d),x_0),d,A(d,N(d,d))),x_0\bigr).
+\]
+Its value is false because the first endpoint has some class in
+$\mathcal D$ and no class belongs to $x$. The other literals are the
+preserved guard, $R$, and $E(y,H(b,t))$, so the raw row gives the desired
+closure and hence native row 14. There is no assertion that this raw
+$D^*$ term has the same class as the reconstructed evaluation of $D^*(x)$.
+\end{proof}
+
+\begin{srtheorem}[Finite-kernel equisatisfiability]\label{sr-main}
+The theories $U_{15}^{VC}$ and native FC15$^*$ have models simultaneously,
+by constructions provable in ZFC. In particular, ZFC proves
+\[
+\srCon(U_{15}^{VC})\ \longleftrightarrow\ \srCon(\mathrm{FC15}^*).
+\]
+Consequently, using the named source44 calibration, ZFC proves
+$\srCon(U_{15}^{VC})\leftrightarrow\srCon(\mathrm{ZFC})$.
+\end{srtheorem}
+\begin{proof}
+A native FC15$^*$ model interprets $\srEq$ as genuine equality and satisfies
+every retained completion row, so it gives a model of $U_{15}^{VC}$. For
+the other direction obtain an all-ground valuation, form the quotient
+above, and use Lemmas~\ref{sr-core} and~\ref{sr-closure} to obtain a full
+native FC15$^*$ model. Completeness in each direction converts model
+existence to syntactic consistency. Ground terms, valuation, quotient,
+least representatives and finite syntax are set-coded objects in ZFC.
+No claim of a serialized proof-assistant proof is made.
+\end{proof}
+
+\section{The 23-clause extensional control}
+
+Define expanded terms
+\[
+\operatorname{Xor}(u,v):=N(N(u,N(u,v)),N(v,N(u,v))),\qquad
+T_j:=\operatorname{Xor}(A(j,d),A(j,q)).
+\]
+FC16$^*$ adds to the fifteen native rows the following four-literal row:
+\begin{equation}\label{sr-ext-row}
+\srEq(j,d)\lor\srEq(j,q)\lor\srEq(a,b)
+ \lor\srInc(C(C(d,d,a),q,b),Q(j,T_j)).
+\end{equation}
+Let $U_{16}^{VC}$ add that same fully expanded raw clause to
+$U_{15}^{VC}$. It introduces no new function.
+
+\begin{srlemma}[Raw profiles recover extensionality]\label{sr-ext}
+The reconstructed quotient of every all-ground model of $U_{16}^{VC}$ has
+extensional $E$: distinct objects have a distinguishing incoming member.
+\end{srlemma}
+\begin{proof}
+Choose any $a\ne b$ in the quotient and a selector $j\notin\{d,q\}$,
+which exists by the reconstructed core. Let $a_0,b_0,j_0$ be ground
+representatives. Put
+\[
+s_0=C(C(d,d,a_0),q,b_0),\qquad
+t_0=\operatorname{Xor}(A(j_0,d),A(j_0,q)),
+\]
+where these are \emph{raw ground terms}, with $q$ expanded as $N(d,d)$.
+The three equality literals of the corresponding ground instance of
+\eqref{sr-ext-row} are false, so $v(\srInc(s_0,Q(j_0,t_0)))=1$.
+
+Raw rows 08--09, with these exact ground arguments, say
+\[
+v(\srInc(s_0,Q(j_0,t_0)))=1
+ \quad\Longleftrightarrow\quad
+\exists z_0\in\mathcal T\quad
+ v(\srInc(C(s_0,j_0,z_0),t_0))=1.
+\]
+For a ground $z_0$, repeated raw instances of rows 03--05 evaluate the
+displayed NAND tree as exclusive OR of its two atom incidences. Raw rows
+06--07 evaluate these atom incidences as
+\[
+E^{\mathcal D}(\srcl{z_0},a),\qquad
+E^{\mathcal D}(\srcl{z_0},b).
+\]
+Indeed $V,C$ are preserved, and updating the assignment $s_0$ at the fresh
+selector $j_0$ sets its value there to $\srcl{z_0}$ while retaining $a,b$
+at $d,q$. Therefore the true final literal supplies a distinguishing
+member. This argument is an induction on the \emph{raw incidence profiles};
+it does not identify $\srcl{t_0}$ with the value of the reconstructed
+$T_j$, or $\srcl{Q(j_0,t_0)}$ with the corresponding reconstructed term.
+\end{proof}
+
+Over the reconstructed core, extensionality now implies the actual native
+row \eqref{sr-ext-row}: if none of its equality guards holds, choose a
+distinguishing member and apply the reconstructed atom, NAND and existential
+contracts. Thus the reconstructed structure is a native FC16$^*$ model,
+not merely a structure satisfying an unexpanded informal schema. The
+reverse model implication again uses genuine equality. We obtain
+\[
+\mathrm{ZFC}\vdash
+\srCon(U_{16}^{VC})\leftrightarrow\srCon(\mathrm{FC16}^*)
+\leftrightarrow\srCon(\mathrm{ZFC}),
+\]
+where the last equivalence has the same inherited source44 status as before.
+
+\section{Two further completion rows can be removed}
+
+\subsection{Reconstructing the branch predicate}
+
+The guard $G$ need not itself descend through the equality quotient.
+Delete its four-literal predicate-congruence row, retain the congruence
+rows for $E$ and $\srInc$, and define instead
+\[
+G^{\mathcal D}(b,t):=v(G(\srrho(b),\srrho(t))).
+\]
+Every occurrence of $G$ in the native theory is the variable-only shared
+key $(b,t)$ of rows 10--15. Lemma~\ref{sr-closure} already fixes exactly
+these two representatives jointly before considering the branch and its
+$H,Y,Z$ witnesses. Therefore its proof applies verbatim with the new
+guard definition. The core, raw $D^*$ emptiness step and FC16$^*$
+extensionality argument never require transport of $G$ between arbitrary
+raw terms. The original native model still gives the reverse direction.
+This removes one row, four literals, eight term nodes and exactly 47
+template bits: the intermediate targets have 21/54/1,148 and
+22/58/1,355 clauses/literals/bits.
+
+This observation uses the exact occurrence pattern of the guard, not a
+general license to omit predicate congruence. In particular $E$ and
+$\srInc$ remain quotient predicates in the proof.
+
+\subsection{Reflexivity is already a consequence of native row 01}
+
+For an arbitrary ground term $z$, set $p_z=V(C(d,d,z),d)$. The instance
+of native row 01 with $s=j=d$ gives $\srEq(p_z,z)$. The retained
+left-Euclidean row at $(x,y,z)=(p_z,z,z)$ is
+\[
+\neg\srEq(p_z,z)\lor\neg\srEq(p_z,z)\lor\srEq(z,z).
+\]
+Together these derive $\srEq(z,z)$. Thus all-ground reflexivity is
+available without its explicit one-literal template. Symmetry and
+transitivity then follow from reflexivity and left Euclidean equality
+as before. This is an actual two-premise derivation, not an assumption
+that the equality predicate is reflexive by its name.
+
+Let $U_{15}^{\circ}$ contain the fifteen native clauses and exactly five
+completion clauses: left Euclidean equality, function congruence for
+$V,C$, and predicate congruence for $E,\srInc$. Let $U_{16}^{\circ}$
+also include the unchanged native extensionality clause. Derive global
+reflexivity first; form the quotient and reconstruct functions and guard
+as above. The proofs yield
+\[
+\begin{split}
+U_{15}^{\circ}\text{ has a model}
+  &\quad\Longleftrightarrow\quad\mathrm{FC15}^*\text{ has a model},\\
+U_{16}^{\circ}\text{ has a model}
+  &\quad\Longleftrightarrow\quad\mathrm{FC16}^*\text{ has a model}.
+\end{split}
+\]
+Both constructions are internalizable in ZFC. Applying the named native
+calibrations gives
+\[
+\mathrm{ZFC}\vdash
+\srCon(U_{15}^{\circ})\leftrightarrow\srCon(\mathrm{ZFC}),
+\qquad
+\mathrm{ZFC}\vdash
+\srCon(U_{16}^{\circ})\leftrightarrow\srCon(\mathrm{ZFC}).
+\]
+Removing the reflexivity template saves one clause, one literal, two
+term nodes and 14 more bits. The final targets are 20 clauses, 53
+literals and 1,134 bits, or 21 clauses, 57 literals and 1,341 bits.
+These are the smallest completions proved in this contribution; no
+minimality theorem is claimed.
+
+\section{Exact encoding comparison}
+
+The companion generator uses byte-exact copies of source44's
+\texttt{ground\_kernel.py} and \texttt{coded\_extensional.py}. It calls the
+existing clause generator unchanged and varies only the function list
+passed to its equality-completion routine. The original prefix template
+format uses a three-bit clause length, a sign bit and a two-bit predicate
+tag per literal, four-bit prefix term opcodes, and a terminating zero
+clause length. Six variable opcodes, one constant and nine function
+opcodes occupy all sixteen term codes. The same nine-function ground
+enumeration remains present in every variant.
+
+\begin{center}\small
+\begin{tabular}{llrrrr}
+\toprule
+Native theory & Function congruence retained & Clauses & Literals & Nodes & Bits\\
+\midrule
+FC15$^*$ & All nine (published control) &29&82&320&1616\\
+FC15$^*$ & $V,C,N,A,Q$ &25&67&268&1351\\
+FC15$^*$ & $V,C$ &22&58&238&1195\\
+FC15$^*$ & $V,C$; reconstruct $G$ &21&54&230&1148\\
+FC15$^*$ & Also derive reflexivity &20&53&228&1134\\
+\midrule
+FC16$^*$ & All nine (published control) &30&86&368&1823\\
+FC16$^*$ & $V,C,N,A,Q$ &26&71&316&1558\\
+FC16$^*$ & $V,C$ &23&62&286&1402\\
+FC16$^*$ & $V,C$; reconstruct $G$ &22&58&278&1355\\
+FC16$^*$ & Also derive reflexivity &21&57&276&1341\\
+\bottomrule
+\end{tabular}
+\end{center}
+All counts include equality completion. Native rows alone remain 15/35
+or 16/39 clauses/literals, so mixing a native count with a completed
+count would be misleading. The five-base control removes exactly four
+witness congruence rows, 15 literals and 265 bits. The two-assignment
+target removes seven rows, 24 literals, 82 term nodes and 421 bits.
+Its packed FC15$^*$ payload occupies 150 bytes with five trailing zero
+padding bits; FC16$^*$ occupies 176 bytes with six padding bits. Maximum
+local variable count remains six in the completed templates because $C$
+congruence is ternary. Maximum term depths remain three and six.
+
+With both further redundancies removed, the saving is nine completion
+rows, 29 literals, 92 term nodes and 482 bits relative to the published
+controls. The final packed payloads are 142 bytes with two padding bits
+for FC15$^*$ and 168 bytes with three padding bits for FC16$^*$. Every
+intermediate bit string is retained as a reproduction control.
+
+The source codec's independent recursive decoder parses the emitted stream
+and is compared with the original canonical clause trees. The bit strings,
+JSON trees, packed bytes and metrics are saved in
+\texttt{skolem\_reduct\_results/}. SHA256 values of the pure bit strings
+(without the text file's trailing newline) are
+\begin{quote}\small\ttfamily
+FC15: 8ffa8bcc38eb03ced7ee019a098988cdc52645112722ada8ceacbbfa3b852169\par
+FC16: 6c875817d9ff823b8bd1f6dc6271d0e1f5a88898da9fbabd440bdb0c81e7d0d5.
+\end{quote}
+For the final \texttt{raw\_guard\_derived\_reflexivity} streams, the
+corresponding hashes are
+\begin{quote}\small\ttfamily
+FC15: 81b2ba36e43c0da53961bb1ca059937e749d0624005876fc921bb7485db59bba\par
+FC16: 4a696a464ff72edf35072d8c0eaace39f51a408c27e0ecde5ae9f9e5a0d7758e.
+\end{quote}
+
+\section{A matching finite quotient checker}
+
+The existing ProveIt finite-quotient frontend represents a ground valuation
+by class labels and three predicate tables. For $k=0,1,\ldots$, put
+$B=2^k$. A candidate integer has exactly $kB+3B^2$ bits. Its low field
+contains labels $\pi(i)\in\{0,\ldots,B-1\}$ for $i<B$; the rest contains
+the $E,\srInc,G$ tables on label pairs. Equality is label equality.
+Thus reflexivity, the left-Euclidean law and predicate congruence require
+no separately instantiated runtime clauses.
+
+For the reduced target, the sole change to the function check is to retain
+tags 0 and 1, $V$ and $C$, instead of all tags 0 through 8. If two in-range
+applications of a retained function have coordinatewise equal argument
+labels, their output labels must agree. The other seven proper functions
+and the seven padding constructors are still in the total ground term
+codec; only their congruence obligations are absent. Native terms and all
+colliding variable assignments are unchanged.
+
+At stage $k$ retain a native ground instance iff all its endpoint term
+codes are below $B$. The radix16/Cantor codec has children below parents,
+so the code interval is subterm-closed. Every native ground instance is
+eventually retained as $B$ grows. Each candidate is checked against the
+retained function pairs and native instances. Exhausting the entire finite
+candidate range is UNSAT; a time limit, memory failure or incomplete run
+is not an UNSAT certificate.
+
+The same finite-label argument as in the existing frontend proves that a
+candidate exists iff the corresponding finite ground CNF with the reduced
+completion is satisfiable. Any satisfying valuation labels an object by
+the least member of its equality class and stores the induced predicate
+tables. Conversely any valid labeling gives all the equality and predicate
+rows and the two checked function rows. These finite CNFs are nested, and
+every ground clause occurs in some stage. Propositional compactness and
+Theorem~\ref{sr-main}, or its FC16$^*$ version, therefore establish in ZFC
+\[
+\text{every stage has a valid candidate}
+\quad\Longleftrightarrow\quad\srCon(\mathrm{ZFC}).
+\]
+Consequently the ideal program that halts at the first failed stage has
+the requested consistency contract. This is an executable specification
+to compile, not a finished small binary machine.
+
+The optional \texttt{raw\_guard=True} mode prices the guard corollary
+without requiring a larger candidate field. Keep class-indexed lookup for
+$E$ and $\srInc$, but use the original endpoint term codes $(a,b)$ as the
+indices of the $G$ table. That table still occupies $B^2$ bits. Its lookup
+rule is
+\[
+G(a,b)=\operatorname{bit}\bigl(W,\,kB+2+3(Ba+b)\bigr).
+\]
+No $G$ congruence is then silently imposed. A two-literal fixture has
+$\pi(0)=\pi(1)=0$, $G(0,0)$ true and $G(1,0)$ false: the raw-guard
+mode accepts and the original class-indexed mode rejects, as required.
+
+For the reflexivity corollary, finite label certificates still impose
+reflexivity structurally. At a small cutoff the displayed two-premise
+derivation may contain the larger term $p_z$ outside the interval, so
+this must be described as an admissibly strengthened stage sequence.
+It need not have the same satisfiability result as the unstrengthened
+finite subset at each cutoff. At the all-ground limit, however,
+reflexivity is a theorem of the reduced native theory. Adding it at every
+finite stage changes neither global ground satisfiability nor the
+compactness argument. This proves the same consistency contract for the
+final $U_{15}^{\circ},U_{16}^{\circ}$ targets.
+
+The bundled arithmetic function checker was independently compared with
+full decoded-term grouping on 1,440 random finite labelings. Local fixtures
+separate required from removable congruence: a noncongruent $W$ application
+is accepted in the two- and five-function modes and rejected in the
+nine-function mode; a noncongruent $N$ application is accepted only in the
+two-function mode; a noncongruent $V$ application is rejected. These have
+empty native clause lists and are explicitly \emph{local controls}, not
+finite models of FC15$^*$. The recorded native stages $k=0,1$ contain no
+kept native instances, so their SAT outputs are only staging regressions.
+The inherited explicit native $k=2$ witness, $2{,}097{,}728$, is also
+checked against twelve retained native clauses in each theory, and the
+zero candidate is rejected. This does not exhaust the $2^{56}$-candidate
+range or check any FC16$^*$ extensionality instance at this small cutoff.
+
+For a concrete code-interval comparison, the numbers of same-tag pairs
+examined by the function condition are
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+$B$& $V,C$ & $V,C,N,A,Q$ & All nine\\
+\midrule
+16&0&0&0\\
+32&2&5&9\\
+64&12&30&54\\
+128&56&140&252\\
+\bottomrule
+\end{tabular}
+\end{center}
+These counts measure explicit obligations at equal cutoffs, not runtime or
+machine states. Template emission, term arithmetic, label extraction,
+finite enumeration, register allocation and blank-tape initialization all
+remain part of a complete compiler budget. A nine-function signature and
+a 482-bit static reduction alone give no numerical upper bound below 245.
+
+\section{Why membership transport remains: a full FC15 countermodel}
+
+The retained $E$-congruence row cannot be removed from FC15$^*$ by the
+same argument. There is a concrete model in ZFC of \emph{all fifteen
+native rows and all the original completion rows except $E$ transport}.
+This strengthens the simple observation that the atom-profile argument
+does not by itself transport raw $E$ endpoints.
+
+Take the carrier $\mathbb N\times\{0,1\}$, write $\beta(x)$ for its first
+coordinate, and put $\iota(n)=(n,0)$. Let $p_j$ be the $j$th prime,
+starting at $p_0=2$, and define integer assignment operations
+\[
+v(s,j)=\nu_{p_j}(s+1),\qquad
+c(s,j,z)=\frac{s+1}{p_j^{v(s,j)}}p_j^z-1.
+\]
+The quotient in the definition of $c$ is an integer. Changing one prime
+exponent gives $v(c(s,j,z),j)=z$ and preserves $v(s,k)$ when $k\ne j$.
+Interpret the function symbols by
+\begin{align*}
+d&=\iota(0),\\
+V(s,j)&=\iota(v(\beta(s),\beta(j))),\\
+C(s,j,z)&=\iota(c(\beta(s),\beta(j),\beta(z))),\\
+N(a,b)&=\begin{cases}\iota(0)&\beta(a),\beta(b)\text{ both odd},\\
+                         \iota(1)&\text{otherwise},\end{cases}\\
+A(j,k)&=\iota(0),\qquad Q(j,a)=\iota(\beta(a)),\\
+W(s,j,a)&=(0,1),\qquad H(b,t)=\iota(0),\\
+Y(b,t,u)&=Z(b,t,u)=(\beta(u)+1,1).
+\end{align*}
+Interpret the predicates by
+\begin{align*}
+\srEq(x,y)&\quad\Longleftrightarrow\quad\beta(x)=\beta(y),\\
+\srInc(s,a)&\quad\Longleftrightarrow\quad\beta(a)\text{ is odd},\\
+G(b,t)&\quad\Longleftrightarrow\quad\beta(t)\text{ is even},\\
+E((n,i),(m,j))&\quad\Longleftrightarrow\quad n=m\ \land\ i=j=1.
+\end{align*}
+Every function's first output coordinate depends only on the first input
+coordinates. Thus \emph{all nine} function-congruence rows hold, as do
+equivalence and the $\srInc,G$ predicate rows.
+
+The prime-exponent laws verify native rows 01--02. NAND on parity verifies
+03--05. Every $V$ output has decoration zero, so $E(V(s,j),V(s,k))$ is
+false, agreeing with the constant-zero atom constructor in rows 06--07.
+Incidence is independent of its assignment argument, and $Q$ preserves
+its class-code parity, so rows 08--09 hold for the given constant $W$.
+
+For the closure rows, $R(b,t,x,y)$ is simply ``$\beta(t)$ is odd,'' independent
+of $x,y$. When $\beta(t)$ is even, $G$ is true and $R$ is empty. Rows 13--14
+are true through $\neg R$, and row 15 is true because $H=\iota(0)$ has
+no incoming $E$-member. When $\beta(t)$ is odd, $G$ is false and $R$ is full.
+Then rows 13--15 are guarded, row 10 is true through $R$, row 11 has the
+true diagonal edge $E(Y,Y)$, and row 12 is true because the first
+coordinate of $Z$ is one larger than that of $u$. This exhausts all rows.
+
+The failure of transport is genuinely ground. Let $w=W(d,d,d)=(0,1)$.
+Then $\srEq(w,d)$ and $E(w,w)$ hold, while $E(d,d)$ fails. The structure
+therefore refutes the $E$-congruence row on these named terms.
+Since ZFC constructs this model directly, it proves consistency of the
+corresponding weakened finite FC15 theory. Assuming ZFC is consistent,
+that weakened theory cannot have a ZFC-provable consistency equivalence
+to ZFC, by the second incompleteness theorem.
+
+This obstruction is deliberately scoped. It is \emph{not} a model of
+the weakened FC16$^*$ target: $q=\iota(1)$, and the ground selector
+$j=C(d,q,q)=\iota(2)$ avoids $d,q$. At $a=d,b=q$, all three equality
+guards of the added clause fail and its XOR incidence is false.
+No conclusion about removing $E$ congruence specifically from FC16$^*$
+is drawn. The delivered positive targets keep that row in both theories.
+The independent review includes exact evaluation of the original native
+templates on bounded samples of this infinite structure; that finite
+diagnostic supports the specification and does not replace the general
+proof above.
+
+\section{Reproduction, provenance and proof status}
+
+Run, with the standard Python library only,
+\begin{verbatim}
+python skolem_reduct.py --output skolem_reduct_results
+\end{verbatim}
+The generator writes exact payloads and \texttt{results.json}; a failed
+assertion raises an error. The top-level checker does not wrap resource
+errors as logical conclusions. The quotient argument is an ordinary
+mathematical proof with explicit ZFC-internal constructions. It has not
+been serialized as a Lean or Coq theorem, and no claim about CPython's
+unbounded physical execution is part of the theorem.
+
+This contribution extends the earlier source44 observation that unused
+padding functions can be forgotten before quotienting. The additional
+step is to reconstruct \emph{used} class and witness functions by their
+particular contracts while preserving only assignment operations. It does
+not justify deleting equality transport in the existing 245-state
+Hilbert/Tarski backend; that is a different proof system, and prior
+typed countermodels prohibit several such deletions. No claim of
+historical priority beyond the inspected repository is made.
+
+Primary repository sources, pinned for this delivery to ProveIt commit
+\texttt{6446ff5668307a2ac6aee1896037f0b792090389}, are:
+\begin{enumerate}
+\item Source44 mathematical specification and calibration:
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/6446ff5668307a2ac6aee1896037f0b792090389/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/44-nine-notes-finite_class_closure.md}.
+\item Exact native clause and equality-completion generator:
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/6446ff5668307a2ac6aee1896037f0b792090389/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/44-nine-code-ground_kernel.py}.
+\item Exact FC16$^*$ extension and independent prefix decoder:
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/6446ff5668307a2ac6aee1896037f0b792090389/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/44-nine-code-coded_extensional.py}.
+\item Accepted source audit, including inherited calibration boundaries:
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/6446ff5668307a2ac6aee1896037f0b792090389/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-155-source-44.md}.
+\item Existing finite quotient representation and checker:
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/6446ff5668307a2ac6aee1896037f0b792090389/Computability/BusyBeaver/Research/ZFC/finite_quotient_frontend.md}.
+\end{enumerate}
+The general finite assignment/class framework is attributed by source44
+to Harvey Friedman's \emph{Impossible Counting}, especially its
+Section~4.1; the present source44 native clauses and set-theoretic closure
+synthesis retain their original attribution. Byte-exact copies of the
+two generator modules, the source44 mathematical note and the repository
+license are in \texttt{reference/}; their hashes are included in the
+generated result.

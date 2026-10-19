@@ -1,0 +1,50 @@
+\subsection{A concrete failure of the naive 245-state compilation}
+The source association certificate does not by itself justify changing only
+the two rows of old state 178 and deleting old state 208.  The following exact
+finite computation identifies a failure of that proposed source-to-binary
+instruction contract.  It does not establish inequivalence of blank-tape
+halting, and it does not exclude a different simulation invariant.
+
+Use original state labels, dispatcher 96, head coordinate zero, marker at
+$-1$, and header at 40.  The program counter is
+\[
+ p=\mathtt{11101001001010100111000000}.
+\]
+The primary physical registers are $(0,1,0,3,5,8,13,21,34)$ and the spare list
+is $[0]$.  Encode each register by $B(v)=0\,1^{v+1}$, beginning at coordinate
+41, and set all other cells to zero.  The declared source instruction is
+decrement of logical register 1, namely physical register 2, whose value is
+zero.  Its prescribed successor is
+\[
+ p_{\mathrm{expected}}=\mathtt{1110100100101010011100001}.
+\]
+
+After 23 transitions the machine is in state 218 at coordinate 23 reading
+zero.  It moves left to state 154 at coordinate 22, also reading zero, and
+then returns to coordinate 23 in state 178.  At transition 26 the modified
+row sends the computation to state 16 instead of state 23.  This is a
+backward use of the decoder: the preceding bit, already read, is used again
+to select a continuation.  The direct source-tree rotation does not describe
+this additional use.
+
+The first selected register is nevertheless the intended physical register
+2: state 31 reaches the register boundary at transition 149, and state 95
+starts its decrement operation there after 267 transitions.  After 378
+transitions the machine returns to dispatcher 96 with head zero, the same
+header, and the complete unchanged register and spare file, but with
+\[
+ p_{\mathrm{actual}}=\mathtt{11101001001010100111000001}.
+\]
+The full expected and actual tapes differ at exactly two coordinates: cell
+24 should contain one but contains zero, and cell 25 should contain zero but
+contains one.  Thus the error is in the program-counter update, not in the
+first register selection.  At this returned counter, the declared rotated
+source decodes increment of logical register 6 (physical register 8, selector
+state 69), whereas the literal machine next enters selector state 60 for
+physical register 0 after 531 transitions.
+
+The accompanying independent dense-tape checker records these states and
+the complete-frame discrepancy in \texttt{rotation\_counterexample.json}.
+Failure of this local correspondence is a reason to reject this particular
+compilation certificate; it is not a claim that the two blank-tape machines
+have different halting behavior.

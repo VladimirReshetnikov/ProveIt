@@ -1,0 +1,343 @@
+{
+  "status": "ORDINARY_MATHEMATICAL_REVIEW_NO_SUBSTANTIVE_BLOCKER",
+  "scope": "Independent critical review of G transport deletion and derived Eq reflexivity, exact native-row checks, and fresh finite-code replay. This is not a kernel-checked theorem or binary TM construction.",
+  "reviewed_files": {
+    "skolem_reduct_body.tex": "44cf488f6b60a995037fa2ddc33023e0b0d793a9b29149e1b76f75fbb970109c",
+    "skolem_reduct.py": "f59b65cabd42b2f3366578d1cad519f053196ffecdd5f919b23c24c3588f5cc1",
+    "reference/ground_kernel.py": "2ceebc265a6d2dc5d487f4b9d078a53d6b37d7718184e6f2c6da920b6a4985fb",
+    "reference/coded_extensional.py": "57d8f48de761b2a0ce0cd29f63935b729da84e5e185a263fff331eba7f5d74f8"
+  },
+  "extends": "fc_assignment_review.json",
+  "accepted_corollaries": [
+    {
+      "name": "G_transport_omission",
+      "finding": "Define rebuilt G(b,t) using exactly raw G(rho(b),rho(t)). Every native guard is the same variable-only pair (b,t), and H/Y/Z use the same jointly fixed representatives. Core, D* emptiness split, and extensionality do not need raw G transport. E and Inc remain quotient predicates.",
+      "exact_native_G_occurrences": [
+        [
+          10,
+          "b",
+          "t"
+        ],
+        [
+          11,
+          "b",
+          "t"
+        ],
+        [
+          12,
+          "b",
+          "t"
+        ],
+        [
+          13,
+          "b",
+          "t"
+        ],
+        [
+          14,
+          "b",
+          "t"
+        ],
+        [
+          15,
+          "b",
+          "t"
+        ]
+      ]
+    },
+    {
+      "name": "Eq_reflexivity_omission",
+      "finding": "Native01 instantiated at s=j=d yields Eq(p_z,z), where p_z=V(C(d,d,z),d). Left Euclidean equality instantiated at (p_z,z,z) yields two copies of its negation or Eq(z,z). Thus Eq(z,z) is an all-ground consequence without an explicit reflexivity template.",
+      "native01_instance": [
+        [
+          true,
+          "Eq",
+          [
+            "V",
+            [
+              "C",
+              [
+                "d"
+              ],
+              [
+                "d"
+              ],
+              "z"
+            ],
+            [
+              "d"
+            ]
+          ],
+          "z"
+        ]
+      ],
+      "left_Euclidean_instance": [
+        [
+          false,
+          "Eq",
+          [
+            "V",
+            [
+              "C",
+              [
+                "d"
+              ],
+              [
+                "d"
+              ],
+              "z"
+            ],
+            [
+              "d"
+            ]
+          ],
+          "z"
+        ],
+        [
+          false,
+          "Eq",
+          [
+            "V",
+            [
+              "C",
+              [
+                "d"
+              ],
+              [
+                "d"
+              ],
+              "z"
+            ],
+            [
+              "d"
+            ]
+          ],
+          "z"
+        ],
+        [
+          true,
+          "Eq",
+          "z",
+          "z"
+        ]
+      ],
+      "AST_substitution_check": "PASS"
+    },
+    {
+      "name": "finite_stage_qualification",
+      "finding": "Label equality structurally imposes reflexivity even where p_z lies above the current endpoint cutoff. These are admissibly strengthened finite stages, not claimed exact truncations of the final no-reflexivity CNF. All-ground reflexivity is derived, so global satisfiability and compactness are unchanged."
+    },
+    {
+      "name": "raw_guard_checker",
+      "finding": "raw_guard=True uses raw endpoint codes for G, class labels for E/Inc, and label equality for Eq. The table still occupies B^2 bits. The exact two-literal class-splitting G fixture accepts in raw mode and rejects in class mode."
+    }
+  ],
+  "final_metrics": {
+    "fc15": {
+      "metrics": {
+        "clauses": 20,
+        "literals": 53,
+        "max_variables": 6,
+        "term_nodes": 228,
+        "max_term_depth": 3,
+        "template_bits": 1134,
+        "term_opcode_bits": 4,
+        "clause_lengths": {
+          "1": 1,
+          "2": 10,
+          "3": 4,
+          "4": 5
+        }
+      },
+      "saved_bits_vs_original": 482,
+      "packed_bytes": 142,
+      "trailing_zero_padding_bits": 2,
+      "payload_sha256": "81b2ba36e43c0da53961bb1ca059937e749d0624005876fc921bb7485db59bba",
+      "independent_roundtrip": true
+    },
+    "fc16": {
+      "metrics": {
+        "clauses": 21,
+        "literals": 57,
+        "max_variables": 6,
+        "term_nodes": 276,
+        "max_term_depth": 6,
+        "template_bits": 1341,
+        "term_opcode_bits": 4,
+        "clause_lengths": {
+          "1": 1,
+          "2": 10,
+          "3": 4,
+          "4": 6
+        }
+      },
+      "saved_bits_vs_original": 482,
+      "packed_bytes": 168,
+      "trailing_zero_padding_bits": 3,
+      "payload_sha256": "4a696a464ff72edf35072d8c0eaace39f51a408c27e0ecde5ae9f9e5a0d7758e",
+      "independent_roundtrip": true
+    }
+  },
+  "fresh_finite_replay": {
+    "status": "PASS",
+    "byte_identical_files": [
+      {
+        "file": "fc15_assignment_congruence.bin",
+        "sha256": "9d1f3f5c75959f419f289460e5731024f1baa096e8c7a7c918bcf58595121a21",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc15_assignment_congruence.bits",
+        "sha256": "a53d28d957526e23d34a9afe53d2db81a7a246dd5216a552dc0f11520f18820b",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc15_assignment_congruence.json",
+        "sha256": "5da8f9baadbab568b714b365bdfb65e04f16be6c4bb0add86704beb026f0175f",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc15_five_base_congruence.bits",
+        "sha256": "8f9be08973ae26ee1cff62963602ffe8a1a5ffe1f6c3c812c590c51c498c7700",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc15_raw_guard.bin",
+        "sha256": "5e6147d22d3d1e5f4accacc5f52d01eeee75cea4e8fccaeadf532521f59c6294",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc15_raw_guard.bits",
+        "sha256": "45d2ad52afeaf013d893f89a1e0d4b0d09c21fa363d87eccb6c551bd27e729a6",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc15_raw_guard.json",
+        "sha256": "8fb4bc64cf77dcb9264f97af2aa4d9bacfea766cc6942a6a90dbbeb796aeace8",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc15_raw_guard_derived_reflexivity.bin",
+        "sha256": "2cf13cd0cb6d2502da50a0d14706fd7851b6d39122755a2a4c8651bb9f3b86b4",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc15_raw_guard_derived_reflexivity.bits",
+        "sha256": "02dc38f6d0e55198763daf9114719d473beda75e686d8c85ff131263dd9d0231",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc15_raw_guard_derived_reflexivity.json",
+        "sha256": "90210e5ce0cd95e814e31d37f6984985ede6871a63d8d17d9e9b887c00691dd3",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc16_assignment_congruence.bin",
+        "sha256": "599c775ae425757a51076641fcad8dd1b74d0299d5ed712cbe55519071f8b625",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc16_assignment_congruence.bits",
+        "sha256": "dc27233c1ac29147f8ae7d5adeba3d1a2c26e339546c845d45a8b69e17375efa",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc16_assignment_congruence.json",
+        "sha256": "68a870c2d02321678384d349375603b2448888761f4bc56f8c47dee0dea1f99a",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc16_five_base_congruence.bits",
+        "sha256": "ca997589b85e4819ed3b7014bba2588ef6e13e5e9eb7cafa422e11b60404325d",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc16_raw_guard.bin",
+        "sha256": "4fa3e6786ac3d5977d399b20384afaaa690fbadd8da2b779005e8d2015e1eea9",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc16_raw_guard.bits",
+        "sha256": "324c90bf73994e89e28b521dd91e062d43619a768c3d72616b9af242cece99cb",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc16_raw_guard.json",
+        "sha256": "69078191f9c61d864b8a6063f84c908e271ac4d9a8c54f71ac4c6ac104bae875",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc16_raw_guard_derived_reflexivity.bin",
+        "sha256": "972951cb856681280364cb331a0f5d7b9f9d4b192a8820ba0f37aaa181045a34",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc16_raw_guard_derived_reflexivity.bits",
+        "sha256": "cbdb8cf7c865db1d348713e7997ddc28d252a0cb90f2e588ffbd39aec1e747fc",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "fc16_raw_guard_derived_reflexivity.json",
+        "sha256": "d77ad871f118f370ccf641907bb8d6191e45024f0e141af23a54653fde070ce8",
+        "byte_identical_to_author_output": true
+      },
+      {
+        "file": "results.json",
+        "sha256": "812467c019ee787c6c2d5121be3ca61f6c6e5688a2aca4f1b7fa86a4944605b3",
+        "byte_identical_to_author_output": true
+      }
+    ],
+    "independent_function_comparisons": 1440,
+    "G_splitting_control": [
+      {
+        "name": "G_can_split_an_equality_class",
+        "status": "PASS",
+        "B": 2,
+        "candidate": 16,
+        "raw_guard_accepts": true,
+        "class_guard_accepts": false,
+        "scope": "Two-literal local guard fixture, not a full theory model"
+      }
+    ],
+    "native_k2_witnesses": {
+      "fc15": {
+        "k": 2,
+        "B": 4,
+        "candidate_bits": 56,
+        "kept_native_instances": 12,
+        "witness": 2097728,
+        "assignment_accepts": true,
+        "all_nine_accepts": true,
+        "raw_guard_accepts": true,
+        "zero_candidate_rejected": true,
+        "scope": "Explicit native-stage SAT witness, no exhaustive k2 search"
+      },
+      "fc16": {
+        "k": 2,
+        "B": 4,
+        "candidate_bits": 56,
+        "kept_native_instances": 12,
+        "witness": 2097728,
+        "assignment_accepts": true,
+        "all_nine_accepts": true,
+        "raw_guard_accepts": true,
+        "zero_candidate_rejected": true,
+        "scope": "Explicit native-stage SAT witness, no exhaustive k2 search"
+      }
+    }
+  },
+  "E_transport_boundary": {
+    "status": "EXPLICIT_INFINITE_COUNTERMODEL_TO_SIMPLE_DELETION_IN_FC15",
+    "proof": "fc15_without_e_countermodel.tex",
+    "diagnostic_program": "fc15_without_e_countermodel.py",
+    "diagnostic_result": "fc15_without_e_countermodel.json",
+    "finding": "All fifteen native Eq-predicate clause templates, all nine function-congruence rows, Eq laws, and Inc/G transport have an explicit model while a ground E-transport instance fails. Thus even restoring all other completion rows cannot repair the simple E deletion.",
+    "scope": "Eq is interpreted by equal first coordinates on N x {0,1}, not genuine equality. The FC16 added row fails. Finite evaluations are diagnostics of the accompanying universal arithmetic proof.",
+    "total_diagnostic_assignments": 203478
+  },
+  "qualifications": [
+    "Inherited FC15*/FC16* calibrations to ZFC retain their cited ordinary-proof status.",
+    "No Lean/Coq kernel proof of the new reductions is supplied.",
+    "482 template bits saved does not imply a machine-state reduction."
+  ]
+}

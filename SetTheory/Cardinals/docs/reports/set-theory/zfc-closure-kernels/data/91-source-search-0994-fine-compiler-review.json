@@ -1,0 +1,199 @@
+{
+  "status": "PASS_CODE_REVIEW_AND_EXACT_MACRO_REPLAY",
+  "reviewed_sources_sha256": {
+    "audit_fine_grammar.py": "1b7dae5af4abe129b59198bb3d5553c73117e9e446c05a10ad9fa589d9a34eae",
+    "build_fine_machine.py": "c769e3552ebef1ff0b2db504bbb8148d1ea7b709dc39948b244be9be4da818c6"
+  },
+  "table_sha256": "070be2f3b32cfec9e3dcf4ef03f83a69c3ab787387db0a55e346a916aaa64a3b",
+  "closed_atoms": 44,
+  "fine_alphabet_symbols": 30,
+  "block_proofs": 4,
+  "complete_register_macros": 3,
+  "register_selectors": 9,
+  "core_rows_used": [
+    [
+      2,
+      0
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      4,
+      0
+    ],
+    [
+      4,
+      1
+    ],
+    [
+      6,
+      1
+    ],
+    [
+      20,
+      1
+    ],
+    [
+      28,
+      0
+    ],
+    [
+      28,
+      1
+    ],
+    [
+      31,
+      0
+    ],
+    [
+      31,
+      1
+    ],
+    [
+      38,
+      0
+    ],
+    [
+      38,
+      1
+    ],
+    [
+      40,
+      0
+    ],
+    [
+      40,
+      1
+    ],
+    [
+      44,
+      0
+    ],
+    [
+      44,
+      1
+    ],
+    [
+      48,
+      1
+    ],
+    [
+      56,
+      0
+    ],
+    [
+      56,
+      1
+    ],
+    [
+      60,
+      0
+    ],
+    [
+      60,
+      1
+    ],
+    [
+      63,
+      0
+    ],
+    [
+      63,
+      1
+    ],
+    [
+      64,
+      0
+    ],
+    [
+      64,
+      1
+    ],
+    [
+      69,
+      0
+    ],
+    [
+      73,
+      0
+    ],
+    [
+      73,
+      1
+    ],
+    [
+      75,
+      0
+    ],
+    [
+      75,
+      1
+    ],
+    [
+      83,
+      0
+    ],
+    [
+      83,
+      1
+    ],
+    [
+      95,
+      0
+    ],
+    [
+      95,
+      1
+    ],
+    [
+      109,
+      0
+    ],
+    [
+      109,
+      1
+    ],
+    [
+      112,
+      0
+    ],
+    [
+      112,
+      1
+    ],
+    [
+      131,
+      0
+    ],
+    [
+      131,
+      1
+    ],
+    [
+      255,
+      0
+    ],
+    [
+      255,
+      1
+    ]
+  ],
+  "word_identity": {
+    "status": "PASS",
+    "induction": "finite lists of arbitrary natural numbers",
+    "base": "C([])1 = 1B([])",
+    "cons": "C(v)C(A)1 = C(v)1B(A) = 1B(v)B(A)",
+    "identity": "C(A)1 = 1B(A)",
+    "reverse_identity": "1rev(C(A)) = rev(B(A))1"
+  },
+  "mathematical_scope": "Symbolic unary and structural list inductions preserve arbitrary contexts; no finite register bound.",
+  "unchanged_source_assessment": "The exact leaf-order, pinned-source comparison, RM branch bisimulation, all-instruction affine replay and exact blank tape replay provide the required gates for finer closed-token reassociation.",
+  "ax_override_boundary": "An AX override changes the represented source and cannot inherit the original exact numerical register-program bisimulation. Supply a modified source explicitly, check emitted control against it, and separately prove the calculus/consistency transport.",
+  "limitations": [
+    "This script does not prove Python checker soundness in a proof assistant.",
+    "The trial whole-tape replay and residual pointer normalization must still be run for any final candidate.",
+    "The source code reviewer is an ordinary mathematical/code review, not a static correctness proof of all programs."
+  ]
+}

@@ -1,0 +1,155 @@
+# Below 245: finite-kernel and compiler research
+
+**No machine with fewer than 245 working states is certified by this package.**
+The deliverable contains a smaller ZFC-equiconsistent finite formalism, a new
+verified 245-state table with source depth 47, and exact scoped results from
+searches for a smaller implementation. The complete explanation and proofs
+are in [report.pdf](report.pdf), with editable [report.tex](report.tex).
+
+## Main mathematical result
+
+The source44 FC15* ground-CNF completion can omit congruence for the used
+functions `N,A,Q,W,Y,Z,H`. The quotient keeps assignment operations `V,C`;
+class operations and witnesses are reconstructed from least-coded representatives.
+The branch predicate `G` can use the same raw representative key as its
+witnesses, so its congruence clause can also be omitted. Native row 01 and
+the retained left-Euclidean equality law imply reflexivity, making its
+separate clause redundant as well.
+
+| Native source | Published completed clauses / literals / bits | Smallest proved completed encoding |
+| --- | ---: | ---: |
+| FC15* | 29 / 82 / 1,616 | **20 / 53 / 1,134** |
+| FC16* extensional control | 30 / 86 / 1,823 | **21 / 57 / 1,341** |
+
+The saving is **482 template bits** in each theory, using the unchanged
+four-bit prefix term format. Packed sizes are 142 and 168 bytes, respectively.
+All nine proper term constructors remain in the codec. These counts exclude
+the finite satisfiability solver, term arithmetic, interpreter, binary
+implementation, and blank-tape initialization. They are not a TM state count.
+
+The exact model reconstruction is proved in `theory_work/skolem_reduct_body.tex`.
+Its comparison with `Con(ZFC)` explicitly uses the existing native FC15*/FC16*
+calibrations. The proof is ordinary mathematics with ZFC-internal constructions,
+not a new Lean or Rocq theorem. Intermediate encodings and local controls are
+retained to isolate each reduction. The finite label stages for the smallest
+encoding include reflexivity as a derived consequence; they are not claimed
+to be exact finite cutoffs of its raw clause list.
+
+## Concrete machine result
+
+`variant245/certificate/machine.tm` is a complete binary table with:
+
+- **245 working states**, labels `0..244`, start `0`, separate halt `245`;
+- 117 framework states and 128 grammar states;
+- maximum source-path depth **47**, down from 51; zero-run bound still 6;
+- 6,460 instruction leaves and 8,391 guarded instruction cases;
+- source bisimulation with 3,018 pairs and 6,034 edges;
+- actual-table universal macro proofs and independent frame composition;
+- a completed expanded-frame proof covering 490 literal rows and all 8,391
+  cases, with 2,239,582 symbolic rules;
+- the same complete 407,915-step blank bootstrap as the original 245-state table.
+
+Canonical table SHA-256:
+`1c29e7659b916c0cb31d26c26e73d08f0e3e7f6444560788ec554135aecbea85`.
+
+This is an additional ordinary-proof 245-state construction, not a state-count
+record or a new proof-assistant endpoint. The machine uses one two-way infinite
+binary tape, an all-zero initial tape, and only left/right moves. Initialization
+states are included in the count.
+
+## Results that constrain the search
+
+- The 44 closed program atoms have exact normal forms over 30 singleton closed
+  atoms. Existing compound implementations remain available without additional
+  framework cost. The independent checker verifies all 22 route projections,
+  all 54 bootstrap equations, and the original 6,460 ordered leaves.
+- The existing bootstrap equations force source address `1111000000`.
+  Consequently a five-zero source bound is impossible **under those equations**.
+  A new initializer may change the equations; concrete contracted tables reach
+  different formula-clean frames.
+- Direct scanner contraction produces a literal 244-state table with a wrong
+  first clean source-control return. All 8,391 guarded symbolic cases were
+  audited; 99 fail the sufficient procedure. Exact negative fixtures are
+  supplied. No eventual halting inequivalence is inferred from them.
+- The affected MP instruction is reached on the contracted machine's actual
+  blank run at step **835,524**. Its wrong first clean return occurs at step
+  **837,626**, with every tape cell checked independently by sparse and dense
+  interpreters. The expected and changed source forks next reach the root
+  with `T=0` and `T=4`, respectively. These finite differences still do not
+  decide eventual halting behavior or exclude another semantic contract.
+- A fully explicit infinite model shows why directly deleting membership
+  transport `E` from the 20-clause FC15 target fails: the resulting weaker
+  theory has a model constructible in ZFC. Exact ground terms witness the
+  transport failure. This countermodel does not satisfy FC16's added row,
+  so no corresponding conclusion is drawn for FC16.
+- Finite mutation sweeps checked 119,560 direct pair-merge recipes, 119,316
+  single-edge retargets, and 1,566 combined state-elimination recipes.
+  None supplied an accepted smaller table. These are bounded fixture results.
+- A restricted grammar MILP with 917 possible words, 3,384 productions,
+  43 frozen productions, at most two new helper words, and a 127-rule bound
+  was reported infeasible by HiGHS. The incumbent positive control passes
+  every structural constraint. This is not a global lower bound or an
+  independently checked unsatisfiability certificate.
+- Four timed six-zero grammar searches made 31,454,182 proposals in total,
+  with best grammar count 128. A separate unlocked five-zero gradient run
+  made 5,615,239 proposals and retained a non-target 132-rule checkpoint.
+
+## Reproduce
+
+Python 3.10+ and its standard library suffice for the default replay:
+
+```sh
+python3 -B code/verify.py
+```
+
+It verifies file hashes, extracts the unchanged baseline into a fresh temporary
+workspace, regenerates exact theory artifacts, checks grammar identities,
+rebuilds and audits the depth-47 table, and reproduces the scanner findings.
+It does not edit the frozen delivery files. The output directory is printed
+in failure logs or may be explicitly selected with `--output NEW_DIRECTORY`.
+
+To also recompile and repeat the finite mutation sweeps, install a C++17 compiler:
+
+```sh
+python3 -B code/verify.py --full
+```
+
+To repeat the slower fully expanded runtime proof as well:
+
+```sh
+python3 -B code/verify.py --full --whole-frame
+```
+
+The whole-frame replay took about seven minutes in the retained run; elapsed
+time depends on hardware and concurrent load. Heuristic annealing and the
+optional SciPy/HiGHS model are separate discovery experiments. Their component
+READMEs give exact seeds, inputs, restrictions and commands. Time-limited
+searches need not reproduce the same proposal count on another machine.
+
+Compile the report with a standard TeX Live installation:
+
+```sh
+latexmk -pdf -halt-on-error report.tex
+```
+
+## Repository integration and provenance
+
+All ProveIt inputs are pinned to commit
+`6446ff5668307a2ac6aee1896037f0b792090389`. See `SOURCE_PINS.json`,
+`reference/`, `NOTICE.txt`, and the per-component manifests. The original
+`zfc245-proof-20261018.zip` is included byte-for-byte, SHA-256
+`5a38b0e7475905584eabcb75912caa8d5f4149148e8c2a2439b2702a9de49ba1`.
+
+The directory can be incorporated under
+`Computability/BusyBeaver/Research/ZFC/`, with the ZIP retained under
+`docs/incoming/` if desired. The root verifier resolves paths relative to
+itself; it does not require this conversation's workspace. The full `.tex`
+proofs, machine tables, static payloads, checkers, search sources and retained
+logs are included. Compiled search binaries and Python caches are omitted.
+
+Files named `unverified_scanner244` or `unverified_scanner243` are diagnostic
+experiments. They must not be installed as proved consistency candidates.
+The verification success label `PASS_RESEARCH_ARTIFACTS_REPRODUCED` means
+the stated positive and negative findings were reproduced; it never means
+that the below-245 target has been reached.
+

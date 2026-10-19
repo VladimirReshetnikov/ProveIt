@@ -1,0 +1,29 @@
+{
+  "status": "UNKNOWN",
+  "meaning": "External process timeouts. Neither solver returned SAT or UNSAT; no result JSON was emitted.",
+  "runs": [
+    {
+      "source": "search_sym.py",
+      "states": 7,
+      "steps": 14,
+      "first": "free",
+      "fixed_one": false,
+      "exact": false,
+      "solver": "cadical195",
+      "external_timeout_seconds": 180,
+      "process_exit_code": 124
+    },
+    {
+      "source": "search_shared.py",
+      "states": 7,
+      "steps": 24,
+      "first": "1L",
+      "fixed_one": true,
+      "exact": false,
+      "solver": "cadical195",
+      "external_timeout_seconds": 180,
+      "process_exit_code": 124
+    }
+  ],
+  "note": "CaDiCaL does not support the PySAT interrupt method used by the script; these runs used an external timeout and a larger internal time limit. Use glucose42 for the script's built-in timeout."
+}

@@ -1,0 +1,55 @@
+% Report insert: scanner contraction only, not a runtime correctness theorem.
+\subsection{The shorter scanner preserves the blank bootstrap}
+\label{sec:short-scan-boot}
+The natural scanner edit deletes working state~74 and replaces the transition
+$58/0$ by $0\,L\,84$.  This edit alone is not a validated consistency machine:
+the original source has a known runtime counterexample to the shorter scanner.
+Nevertheless, its blank initialization succeeds, a useful fact when searching
+for a different source association with a smaller zero-run bound.
+
+\paragraph{Local contraction lemma.}
+Let the head scan position~$x$ in state~58, and suppose that the three tape
+cells $x,x-1,x-2$ all contain zero.  In the original machine, the three
+transitions
+\[
+ (58,x)\longrightarrow(74,x-1)\longrightarrow(84,x-2)
+       \longrightarrow(84,x-1)
+\]
+use respectively the rows
+\[
+ 58/0=0\,L\,74,\qquad
+ 74/0=0\,L\,84,\qquad
+ 84/0=0\,R\,84.
+\]
+The edited machine instead takes the single transition
+$(58,x)\longrightarrow(84,x-1)$.
+Both paths leave the entire tape unchanged and have exactly the same final
+state and head position.  Thus the edit contracts this local block by two
+moves.  All three zero assumptions are necessary for this argument; the
+absence of a use of $74/1$ alone would not establish the contraction.
+
+\paragraph{Exact bootstrap application.}
+A fresh sparse replay of the baseline's $410\,735$ moves finds exactly
+$1\,410$ entries through $58/0$.  Each has the required three-zero context.
+These three-move blocks do not overlap: their second and third states are~74
+and~84, so another block cannot begin in their interiors.  Replacing each
+block by the single edited transition therefore gives the identical blank
+bootstrap endpoint after
+\[
+ 410\,735-2\cdot1\,410=407\,915
+\]
+moves.  The endpoint is state~96, head position~$-5$, and exactly the same
+$351$ occupied tape cells as the baseline.  The marker, header, logical
+registers, and spare blocks consequently agree with the existing bootstrap
+certificate.  Independent sparse and dense interpreters both reproduce this
+shortened execution; the dense interpreter uses array-indexed transitions and
+a byte array tape, and does not share the sparse interpreter's transition or
+tape lookup implementation.
+
+The artifact \texttt{check\_short\_scan\_boot.py} replays the original trace,
+checks every local premise, executes the edited table with both interpreters,
+and writes \texttt{short-scan-boot.json}.  This is a finite bootstrap result
+and a general three-cell transition lemma.  It does not establish the shorter
+scanner's instruction contracts.  In particular, a source-level maximum zero
+run of six would still have to be checked against all transient decoder and
+counter-update configurations.

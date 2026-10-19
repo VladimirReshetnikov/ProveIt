@@ -1,0 +1,344 @@
+{
+  "status": "PASS_LOCAL_BOX_CONTRACTS_ONLY",
+  "new_working_rows": 488,
+  "edits": {
+    "75/0": "0 L 112",
+    "83/0": "1 L 112",
+    "131/0": "0 R 48"
+  },
+  "removed": 255,
+  "word_identity": {
+    "status": "PASS",
+    "base": "0 D([]) = B([]) 0",
+    "cons": "0 D(v) D(A) = B(v) 0 D(A) = B(v) B(A) 0",
+    "quantification": "all finite lists A of natural numbers"
+  },
+  "block_theorems": [
+    {
+      "name": "seek73_block",
+      "status": "PASS",
+      "universal": true,
+      "steps": "2+1*v",
+      "head_motion": "2+1*v",
+      "proof_rule_count": 3,
+      "trace": [
+        {
+          "rule": "literal",
+          "state": 73,
+          "read": 0,
+          "row": [
+            0,
+            "R",
+            83
+          ]
+        },
+        {
+          "rule": "literal",
+          "state": 83,
+          "read": 1,
+          "row": [
+            1,
+            "R",
+            73
+          ]
+        },
+        {
+          "rule": "unary-induction",
+          "state": 73,
+          "read": 1,
+          "row": [
+            1,
+            "R",
+            73
+          ],
+          "repetitions": "1*v"
+        }
+      ]
+    },
+    {
+      "name": "shift131_block",
+      "status": "PASS",
+      "universal": true,
+      "steps": "2+1*v",
+      "head_motion": "-2+-1*v",
+      "proof_rule_count": 3,
+      "trace": [
+        {
+          "rule": "literal",
+          "state": 131,
+          "read": 1,
+          "row": [
+            0,
+            "L",
+            112
+          ]
+        },
+        {
+          "rule": "unary-induction",
+          "state": 112,
+          "read": 1,
+          "row": [
+            1,
+            "L",
+            112
+          ],
+          "repetitions": "1*v"
+        },
+        {
+          "rule": "literal",
+          "state": 112,
+          "read": 0,
+          "row": [
+            1,
+            "L",
+            131
+          ]
+        }
+      ]
+    },
+    {
+      "name": "carry95_block",
+      "status": "PASS",
+      "universal": true,
+      "steps": "2+1*v",
+      "head_motion": "2+1*v",
+      "proof_rule_count": 3,
+      "trace": [
+        {
+          "rule": "literal",
+          "state": 95,
+          "read": 0,
+          "row": [
+            1,
+            "R",
+            109
+          ]
+        },
+        {
+          "rule": "literal",
+          "state": 109,
+          "read": 1,
+          "row": [
+            0,
+            "R",
+            95
+          ]
+        },
+        {
+          "rule": "unary-induction",
+          "state": 95,
+          "read": 1,
+          "row": [
+            1,
+            "R",
+            95
+          ],
+          "repetitions": "1*v"
+        }
+      ]
+    },
+    {
+      "name": "rollback112_block",
+      "status": "PASS",
+      "universal": true,
+      "steps": "2+1*v",
+      "head_motion": "-2+-1*v",
+      "proof_rule_count": 3,
+      "trace": [
+        {
+          "rule": "unary-induction",
+          "state": 112,
+          "read": 1,
+          "row": [
+            1,
+            "L",
+            112
+          ],
+          "repetitions": "1*v"
+        },
+        {
+          "rule": "literal",
+          "state": 112,
+          "read": 0,
+          "row": [
+            1,
+            "L",
+            131
+          ]
+        },
+        {
+          "rule": "literal",
+          "state": 131,
+          "read": 1,
+          "row": [
+            0,
+            "L",
+            112
+          ]
+        }
+      ]
+    }
+  ],
+  "increment": {
+    "name": "left_increment_with_two_zero_clearance",
+    "status": "PASS",
+    "universal": true,
+    "steps": "6+2*width_pre",
+    "head_motion": "-2",
+    "proof_rule_count": 8,
+    "trace": [
+      {
+        "rule": "finite-list-induction",
+        "theorem": "seek73_block",
+        "list": "pre",
+        "repetitions": "all finite list lengths",
+        "steps": "1*width_pre"
+      },
+      {
+        "rule": "literal",
+        "state": 73,
+        "read": 0,
+        "row": [
+          0,
+          "R",
+          83
+        ]
+      },
+      {
+        "rule": "literal",
+        "state": 83,
+        "read": 0,
+        "row": [
+          1,
+          "L",
+          112
+        ]
+      },
+      {
+        "rule": "literal",
+        "state": 112,
+        "read": 0,
+        "row": [
+          1,
+          "L",
+          131
+        ]
+      },
+      {
+        "rule": "finite-list-induction",
+        "theorem": "shift131_block",
+        "list": "pre",
+        "repetitions": "all finite list lengths",
+        "steps": "1*width_pre"
+      },
+      {
+        "rule": "literal",
+        "state": 131,
+        "read": 1,
+        "row": [
+          0,
+          "L",
+          112
+        ]
+      },
+      {
+        "rule": "literal",
+        "state": 112,
+        "read": 0,
+        "row": [
+          1,
+          "L",
+          131
+        ]
+      },
+      {
+        "rule": "literal",
+        "state": 131,
+        "read": 0,
+        "row": [
+          0,
+          "R",
+          48
+        ]
+      }
+    ]
+  },
+  "zero_decrement": {
+    "name": "short_zero_decrement",
+    "status": "PASS",
+    "universal": true,
+    "steps": "5+2*width_pre",
+    "head_motion": "-1",
+    "proof_rule_count": 7,
+    "trace": [
+      {
+        "rule": "finite-list-induction",
+        "theorem": "carry95_block",
+        "list": "pre",
+        "repetitions": "all finite list lengths",
+        "steps": "1*width_pre"
+      },
+      {
+        "rule": "literal",
+        "state": 95,
+        "read": 0,
+        "row": [
+          1,
+          "R",
+          109
+        ]
+      },
+      {
+        "rule": "literal",
+        "state": 109,
+        "read": 0,
+        "row": [
+          0,
+          "R",
+          75
+        ]
+      },
+      {
+        "rule": "literal",
+        "state": 75,
+        "read": 0,
+        "row": [
+          0,
+          "L",
+          112
+        ]
+      },
+      {
+        "rule": "literal",
+        "state": 112,
+        "read": 0,
+        "row": [
+          1,
+          "L",
+          131
+        ]
+      },
+      {
+        "rule": "literal",
+        "state": 131,
+        "read": 1,
+        "row": [
+          0,
+          "L",
+          112
+        ]
+      },
+      {
+        "rule": "finite-list-induction",
+        "theorem": "rollback112_block",
+        "list": "pre",
+        "repetitions": "all finite list lengths",
+        "steps": "1*width_pre"
+      }
+    ]
+  },
+  "global_status": "REJECTED: complete instruction fixture 5 fails. The real increment phase fills the pointer gap with ones, so the local two-zero clearance premise is unavailable; rollback crosses into the PC. No blank-start or consistency theorem.",
+  "gap_change_per_increment": -1,
+  "spare_count_change_per_increment": 0,
+  "table_sha256": "0ed2e09d128b2942528eeae58bc6a12a950312fbca72cd43c90b7526b964ee42"
+}

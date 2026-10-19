@@ -1,0 +1,1050 @@
+Fundamenta Informaticae 91 (2009) 105–126                                                                              105
+DOI 10.3233/FI-2009-0008
+IOS Press
+
+
+        Four Small Universal Turing Machines
+
+        Turlough Neary∗†
+        Boole Centre for Research in Informatics, University College Cork, Ireland.
+        tneary@cs.nuim.ie
+
+        Damien Woods‡
+        Department of Computer Science and Artificial Intelligence, University of Seville, Spain.
+        d.woods@cs.ucc.ie
+
+
+
+
+       Abstract. We present universal Turing machines with state-symbol pairs of (5, 5), (6, 4), (9, 3)
+       and (15, 2). These machines simulate our new variant of tag system, the bi-tag system and are the
+       smallest known single-tape universal Turing machines with 5, 4, 3 and 2-symbols, respectively. Our
+       5-symbol machine uses the same number of instructions (22) as the smallest known universal Turing
+       machine by Rogozhin. Also, all of the universal machines we present here simulate Turing machines
+       in polynomial time.
+
+       Keywords: small universal Turing machine, 2-tag system, bi-tag systems, Post system, computa-
+       tional complexity, polynomial time.
+
+
+
+
+1. Introduction
+Shannon [24] was the first to discuss the problem of finding the smallest possible universal Turing ma-
+chine. In 1962 Minsky [11] constructed a 7-state, 4-symbol universal Turing machine that simulates
+Turing machines via 2-tag systems [2]. Minsky’s technique of 2-tag simulation was extended by Ro-
+gozhin [23] to construct small universal Turing machines with state-symbol pairs of (24, 2), (10, 3),
+∗
+  Turlough Neary is funded by the Irish Research Council for Science, Engineering and Technology, and by Science Foundation
+Ireland Research Frontiers Programme grant number 07/RFP/CSMF641.
+†
+  Address for correspondence: Boole Centre for Research in Informatics, University College Cork, Ireland.
+‡
+  Damien Woods is supported by Junta de Andalucı́a grant TIC-581.
+106                             T. Neary and D. Woods / Four Small Universal Turing Machines
+
+
+
+                                 bc
+                   18
+                   17
+                   16
+                   15
+                   14
+                   13
+                   12
+                                      rs
+                   11
+      symbol       10
+                                                                                         u   : our new universal machines
+                                      bc
+                                                                                               that simulate bi-tag systems
+                    9
+                                                                                    rs
+                    8                                                                        : smallest known machines that
+                                                   rs
+                                                                                               directly simulate Turing Machines
+                    7
+                                                                                    bc
+                    6                      bc           rs                                   : universal machines of Rogozhin et al.
+                                                ubc          rs
+                                                                                               that simulate 2-tag systems
+                    5
+                                                        u    bc   rs
+                    4
+                                                                       u   bc
+                    3
+                                                                                                 u          u   bc   universal curve
+                    2
+                    1                                                                                                non-universal curve
+                    0
+                        0   1    2    3    4    5       6    7    8    9 10 11 12 13 14 15 16 17 18 19
+                                               state
+Figure 1: Current state-symbol plot of small universal Turing machines. The non-universal curve shows
+Turing machines that are known to have a decidable halting problem.
+
+(7, 4), (5, 5), (4, 6), (3, 10) and (2, 18). Subsequently some of these machines were reduced in size to
+give machines with state-symbol pairs of (3, 9) [7], (19, 2) [1] and (7, 4) [1]. Figure 1 is a state-symbol
+plot where the current smallest 2-tag simulators of Rogozhin et al. are plotted as circles.
+
+
+    Here we present universal Turing machines with state-symbol pairs of (5, 5), (6, 4), (9, 3) and (15, 2).
+The 5, 4, and 3-symbol machines have previously appeared in [16]. The new 15-state, 2-symbol machine
+we present here is a significant improvement on the 18-state, 2-symbol machine that appeared in [16].
+All of these machines simulate Turing machines via bi-tag systems and are plotted as triangles in Fig-
+ure 1. These machines improve the state of the art in small universal Turing machines and reduce the
+space between the universal and non-universal curves. Our 5-symbol machine uses the same number
+of instructions (22) as the current smallest known universal Turing machine (Rogozhin’s 6-symbol ma-
+chine [23]). Also, our 5-symbol machine has less instructions than Rogozhin’s 5-symbol machine. Since
+Minsky [11] constructed his 7-state, 4-symbol machine, a number of authors [1, 21, 23] have given 4-
+symbol machines. Rogozhin [23] improved on Minsky’s result by giving a 7-state, 4-symbol machine
+with 26 instructions and Baiocchi [1] further improved on this result to give a 7-state, 4-symbol machine
+with 25 instructions. Our 4-symbol machine is the first reduction in the number of states since Minsky’s
+machine. In fact, in 1991 Robinson [21] noted that when considering the numbers of states and symbols
+of the machines constructed since Minsky’s machine “there is no known such machine which decreases
+one parameter without increasing the other.” It is interesting to note that the current universal curve in
+Figure 1 is no longer symmetric about the line where the number of states is equal to the number of
+symbols. (For a brief period, the universal curve was symmetric following the work in [16].)
+                          T. Neary and D. Woods / Four Small Universal Turing Machines                   107
+
+
+
+    Recently, the simulation time overhead of Turing machines by 2-tag systems was improved from
+exponential [2] to polynomial [30]. More precisely, if M is a single tape deterministic Turing machine
+that runs in time t, then the universal Turing machines of Minsky and Rogozhin et al. now simulate M in
+O(t8 (log t)4 ) time. It turns out that the time overhead can be improved to O(t4 (log t)2 ) [13]. In earlier
+work [15] we gave the smallest known universal machines that directly simulate Turing machines. These
+machines run in time O(t2 ) and are plotted as squares in Figure 1. Our new universal Turing machines
+are polynomial time simulators of Turing machines. Specifically, our new machines simulate one-tape
+deterministic Turing machines, with a time overhead of O(t6 ): they simulate bi-tag systems (quadratic
+time overhead), which in turn simulate one tape deterministic Turing machines (cubic time overhead).
+    The halting problem has been shown to be decidable for the following state-symbol pairs: (2, 2) [5,
+18], (3, 2) [19], (2, 3) (Pavlotskaya, unpublished), (1, n) [4], and (n, 1) (trivial) for n ⩾ 1. Thus, these
+results induce the non-universal curve which is illustrated in Figure 1. More on small universal Turing
+machines, and related notions, can be found in [8, 9, 13, 29, 28].
+    In Section 2 we show that bi-tag systems simulate Turing machines. We begin by introducing the
+clockwise Turing machine, and then prove that it simulates Turing machines. Following this we introduce
+bi-tag systems and prove that they simulate clockwise Turing machines. Section 3 begins with the input
+encodings to each of the universal Turing machines. This is followed by an overview of the simulation
+algorithm used by our machines. Then, each of the universal Turing machines are given along with a
+more detailed look at their operation. The final part of the paper, Section 4, contains some discussion
+and conclusions. This paper is an extended version of the paper that appeared in [16], it contains new
+results, extra proofs and discussion.
+
+1.1. Preliminaries
+The Turing machines considered in this paper are deterministic and have one tape. Our universal Turing
+machine with m states and n symbols is denoted Um,n . We write c1 ⊢ c2 if a configuration c2 is obtained
+from c1 via a single computation step. We let c1 ⊢t c2 denote a sequence of t computation steps and let
+c1 ⊢∗ c2 denote 0 or more computation steps. Also, we let hxi denote the encoding of object x and ǫ
+denote the empty word.
+
+
+2. Bi-tag systems simulate Turing machines
+2.1. Clockwise Turing machines simulate Turing machines
+A clockwise Turing machine is a Turing machine that has a single tape, which is circular, and whose tape
+head moves only in a clockwise direction. The operation of clockwise Turing machines is quite similar
+to that of the circular Post machines of Kudlek and Rogozhin [6].
+
+Definition 2.1. (Clockwise Turing machine [14])
+A clockwise Turing machine is a tuple C = (Q, Σ, f, q1 , q|Q| ). Q and Σ are the finite sets of states and
+tape symbols, respectively. q1 ∈ Q is the start state and q|Q| ∈ Q is the halt state. The transition function
+f : Q × Σ → {Σ ∪ ΣΣ} × Q is undefined on state q|Q| and is defined for all q ∈ Q, q 6= q|Q|.
+   We write f as a list of clockwise transition rules. Each clockwise transition rule is a quadruple
+t = (qx , σ1 , v, qy ), with initial state qx , read symbol σ1 , write value v ∈ {Σ ∪ ΣΣ} and next state qy .
+108                         T. Neary and D. Woods / Four Small Universal Turing Machines
+
+
+                           (a)                                                              (b)
+             tape head                                                                                 σr σl
+                                                                                                  σ2           σ2
+                                                                                                  σ2           σ3
+                      . . . σ1 σ2 σ3 σ2 σ3 σ2 σ2 σ1 . . .                                              σ3 σ2
+
+
+Figure 2: (a) Example Turing machine tape contents. The Turing machine’s blank symbol is σ1 . (b)
+Clockwise Turing machine encoding of the Turing machine tape contents in (a), the symbols σr and σl
+encode the infinite sequence of blank symbols to the right and left of M ’s encoded tape contents.
+
+
+A clockwise transition rule is executed as follows: If the write value v is from Σ then the tape cell
+containing the read symbol is overwritten by v, if v is from ΣΣ then the cell containing the read symbol
+becomes two cells, each of which contain a symbol from v. The machine’s state becomes qy and the tape
+head moves clockwise by one tape cell. Here we define clockwise Turing machines to be deterministic.
+
+Lemma 2.1. Let M be a deterministic Turing machine with a single tape that computes in time t, then
+there is clockwise Turing machine CM that simulates the computation M in time O(t2 ) and space O(t).
+
+
+Proof:
+Let M = ({q1 , . . . , q|Q| }, {σ1 , . . . , σ|Σ| }, σ1 , f, q1 , {q|Q| }). Without loss of generality we can assume
+that M is a Turing machine that has the following restrictions: (i) the blank symbol σ1 does not appear
+as input to M , (ii) M may read the blank symbol σ1 but is not permitted to write it to the tape, (iii) M
+has exactly one final state. Due to the restrictions placed on M we know that when M reads a blank
+symbol it is either at the left or right end of its tape contents. We construct a clockwise Turing machine
+CM = (QC , ΣC , fC , q1 , q|Q| ) that simulates M , where QC , ΣC , fC are defined below.
+
+                                         ΣC = {σ2 , . . . , σ|Σ| , σr , σl , σm }
+
+The symbol σm is a special marker symbol and symbols σr and σl encode the infinite sequence of blank
+symbols to the right and left of M ’s encoded tape contents, respectively (see Figure 2).
+
+                             QC ={q1 , q1,2 , . . . , q1,|Σ| , q1,r , q1,r′ , q1,l ,
+                                      q2 , q2,2 , . . . , q2,|Σ| , q2,r , q2,r′ , q2,l ,
+                                            ..
+                                             .
+                                      q|Q|, q|Q|,2 , . . . , q|Q|,|Σ|, q|Q|,r , q|Q|,r′ , q|Q|,l }
+
+    We can think of right moves of M ’s tape head as clockwise moves of CM ’s tape head. Here we give
+right move transition rules followed by the clockwise transition rules that simulate them.
+
+                                       qx , σk , σj , R, qy          :    q x , σk , σj , q y                       (1)
+
+                                     qx , σ1 , σj , R, qy        :       q x , σl , σl σj , q y                     (2)
+                           T. Neary and D. Woods / Four Small Universal Turing Machines                     109
+
+
+
+where σk , σj 6= σ1 . The clockwise transition rule in Equation (2) simulates M printing the write symbol
+σj over the blank symbol immediately to the left of its tape contents. The clockwise transition rule’s
+write value σl σj ∈ ΣΣ also preserves σl ; the symbol that encodes the infinite sequence of blank symbols
+to the left of the tape contents.
+     The remaining right moving case is when M ’s tape head is over the blank symbol immediately to the
+right of its tape contents. In such a case CM ’s tape head is initially over σr , and then immediately after
+simulation of the transition rule, CM ’s tape head is again over σr . Immediately below are the clockwise
+transition rules that simulate this case.
+                                                                     qx , σr , σj σr , qy,r′   (∗)
+                        qx , σ1 , σj , R, qy    :
+                                                                     qy,r′ , σi , σi , qy,r′   (∗∗)
+
+where σi ∈ ΣC − {σm , σr }. The clockwise transition rule (*) prints M ’s encoded write symbol σj
+and sends CM ’s control into state qy,r′ . State qy,r′ moves CM ’s tape head around the tape to the cell
+containing σr . This completes the simulation of the transition rule.
+    Left moving transition rules are more difficult to simulate as CM ’s tape head moves only clockwise.
+CM begins by marking the current location of the tape head with the symbol σm . CM now moves
+each symbol clockwise by one cell. When CM ’s tape head reads σm the left move is complete. This
+process moves the tape head anti-clockwise relative to the tape contents, thus simulating a left move.
+Immediately below is given the clockwise transition rules that mark the tape head’s location with the
+symbol σm .
+
+                                    qx , σ1 , σj , L, qy     : qx , σl , σl σm , qy,j
+                                    qx , σ1 , σj , L, qy     : qx , σr , σm σj , qy,r
+                                   qx , σk , σj , L, qy      : qx , σk , σm , qy,j
+
+The clockwise transition rules that move each symbol clockwise by one cell are of the form:
+
+                                                    qy,n , σs , σn , qy,s
+
+where σs , σn ∈ ΣC − {σm }. When CM ’s tape head reads σm then CM is in a state of the form qy,s and
+the unique clockwise transition rule defined by the state-symbol pair (qy,s , σm ) will begin simulation of
+the next transition rule. This transition rule is of the form (qy , σ1 , σk , D, qz ) if σs = σr , σl and of the
+form (qy , σs , σk , D, qz ) if σs 6= σr , σl .
+    Input to M is encoded for CM by a finite state transducer. Given this encoded input CM simulates
+the sequence of t transition rules in M ’s computation and halts in state q|Q| the encoding of M ’s halt
+state q|Q|. CM uses space of O(t). A single computation step of M is simulated in O(t) steps of CM .
+Thus the computation time of CM is O(t2 ).                                                                     ⊓
+                                                                                                               ⊔
+
+2.2. Bi-tag systems simulate clockwise Turing machines
+In this section we present the bi-tag system, our new variant on the tag system, and prove that it simulates
+Turing machines via clockwise Turing machines. The operation of a bi-tag system is similar to that of
+a standard tag system [12]. Bi-tag systems are essentially 1-tag systems (and so they read and delete
+one symbol per timestep), augmented with additional context sensitive rules that read, and delete, two
+symbols per timestep.
+110                          T. Neary and D. Woods / Four Small Universal Turing Machines
+
+
+Definition 2.2. (Bi-tag system)
+A bi-tag system is a tuple (A, E, eh , P ). Here A and E are disjoint finite sets of symbols and eh ∈ E is
+the halt symbol. P is the finite set of productions. Each production is of one of the following 3 forms:
+                               P (a) = a,     P (e, a) ∈ AE,       P (e, a) ∈ AAE,
+where a ∈ A, e ∈ E, and P is defined on all elements of {A ∪ ((E − {eh }) × A)} and undefined on all
+elements of {eh } × A. Bi-tag systems are deterministic.
+A configuration of a bi-tag system is a word of the form w = A∗ (AE ∪ EA)A∗ . We call w the dataword.
+
+Definition 2.3. (BTS computation step)
+A production is applied in one of two ways:
+  (i) if s = as′ then as′ ⊢ s′ P (a),
+
+  (ii) if s = eas′ then eas′ ⊢ s′ P (e, a).
+    A bi-tag system computation is a finite sequence of computation steps that are consecutively applied
+to an initial dataword. If eh is the leftmost symbol in the dataword then the computation halts.
+
+Example 2.1. (Bi-tag system computation.) Let bi-tag system B1 = ({a0 , a1 }, {e0 , e1 , e2 }, e2 , P )
+where the set P = {a0 → a0 , a1 → a1 , e0 a0 → a1 e0 , e0 a1 → a1 e2 , e1 a0 → a0 e0 , e1 a1 → a1 e2 }.
+Given the word a1 e0 a0 , the computation of B1 proceeds as follows:
+
+               a1 e0 a0 ⊢ e0 a0 a1 ⊢ a1 a1 e0 ⊢ a1 e0 a1 ⊢ e0 a1 a1 ⊢ a1 a1 e2 ⊢ a1 e2 a1 ⊢ e2 a1 a1
+
+The computation halts as the halt symbol e2 has become the leftmost symbol.
+
+Lemma 2.2. Let C be a clockwise Turing machine that runs in time t, then there is a bi-tag system BC
+that simulates the computation of C in time O(t2 ) and space O(t).
+     Before giving the proof of Lemma 2.2 we explain the proof idea. Each A symbol of BC encodes a
+symbol of C’s tape alphabet. Each E symbol of BC encodes a state of C. The location of the E symbol
+in the dataword represents the location of C’s tape head, as illustrated in Figure 3.
+     Each clockwise transition rule of C is simulated in the following way. The change of state, symbol
+and tape head position is simulated by executing a P production over the E × A pair that encodes
+the current state and read symbol (see Figure 3(c)). A production is then applied to each symbol in
+the dataword. This moves the new E × A pair to the left of the dataword, in order to prepare for the
+simulation of the next clockwise transition rule.
+
+Proof:
+Let clockwise Turing machine C=({q1 , . . . , q|Q| }, {σ1 , . . . , σ|Σ| }, f, q1 , q|Q| ). We construct a bi-tag sys-
+tem BC that simulates C’s computation.
+
+                                           BC = (AC , EC , e|Q| , PC )
+
+where AC , EC , PC are defined below.
+
+                                              AC = {a1 , . . . , a|Σ| }
+                             T. Neary and D. Woods / Four Small Universal Turing Machines                            111
+
+
+
+                                                               (c) e2 0 0 0 1      apply e2 0 → 1e3
+
+            (a)   q2         (b)                                    0 0 1 1 e3     apply 0 → 0
+                                                                    0 1 1 e3 0     apply 0 → 0
+                   0                1
+                                                                    1 1 e3 0 0     apply 1 → 1
+              1        0        1       0        q3
+                   0                0                               1 e3 0 0 1     apply 1 → 1
+                                                               (d) e3 0 0 1 1      simulation complete
+
+Figure 3: Bi-tag system simulating the clockwise transition rule (q2 , 0, 1, q3 ). The clockwise Turing
+machine states q2 and q3 are encoded as e2 and e3 , respectively. The e symbols also mark the location
+of the simulated tape head. (a) A configuration of the clockwise Turing machine before execution of
+the clockwise transition rule. (b) A configuration of the clockwise Turing machine after execution of
+the clockwise transition rule. (c) Bi-tag system encoding of the configuration in (a). (d) Bi-tag system
+encoding of the configuration in (b).
+
+
+C’s tape symbols σ1 , . . . , σ|Σ| are encoded as a1 , . . . , a|Σ| , respectively.
+
+                                                 EC = {e1 , . . . , e|Q| }
+
+C’s states q1 , . . . , q|Q| are encoded as e1 , . . . , e|Q| , respectively, and the encoded halt state e|Q| is the halt
+symbol of BC .
+
+                                    PC = {a1 → a1 , . . . , a|Σ| → a|Σ| } ∪ PC′
+PC′ is the set of productions defined on (E − {e|Q| }) × A. There is one production in PC′ for each
+clockwise transition rule in C. Clockwise transition rules fall in two categories, those that write a single
+symbol from Σ and those that write a pair of symbols from ΣΣ. The two possible clockwise transition
+rules, and their encodings as productions, are as follows
+                                       (qx , σi , σj , qy )     :   ex ai → aj ey
+                                     (qx , σi , σj σk , qy )    :   ex ai → aj ak ey
+   We have constructed a bi-tag system BC that simulates C. BC uses O(t) space. To simulate a
+computation step of C, a production is applied to each symbol in the dataword that encodes the current
+configuration of C, as the example in Figure 3 illustrates. This takes O(t) steps and yields a new data-
+word that encodes the next configuration of C’s computation. In this way BC simulates t steps of C’s
+computation in time O(t2 ). The simulation halts when the halt symbol e|Q| that encodes the halt state of
+C becomes the leftmost symbol in the dataword.                                                         ⊓
+                                                                                                       ⊔
+
+   Given a single tape deterministic Turing machine M that runs in time t, we conclude from Lem-
+mata 2.1 and 2.2 that M is simulated by a bi-tag system in time O(t4 ). However this overhead is easily
+improved to O(t3 ) as the next theorem shows.
+
+Theorem 2.1. Let M be a deterministic Turing machine with a single tape that computes in time t, then
+there is a bi-tag system BM that simulates the computation of M in time O(t3 ) and space O(t).
+112                             T. Neary and D. Woods / Four Small Universal Turing Machines
+
+
+
+Proof:
+From Lemmata 2.1 and 2.2 a bi-tag system simulates the computation of M via a clockwise Turing
+machine CM . From Lemma 2.1 CM simulates M in time O(t2 ). However CM uses O(t) space, hence
+BM uses O(t) space. BM applies O(t) productions to simulate a clockwise transition rule of CM . Thus
+BM simulates O(t2 ) clockwise transition rules to simulate M via CM in time O(t3 ).               ⊓
+                                                                                                  ⊔
+
+
+3. Universal Turing machines
+In this section we give the input encoding to our universal Turing machines. Following this we give each
+machine and describe its operation by explaining how it simulates bi-tag systems. Let B = (A, E, eh , P )
+be a bi-tag system where A = {a1 , . . . , aq } and E = {e1 , . . . , eh }. The encoding of B as a word is
+denoted hBi. The encodings of symbols a ∈ A and e ∈ E are denoted hai and hei, respectively. The
+encodings of productions P (a) and P (e, a) are denoted as hP (a)i and hP (e, a)i, respectively.
+
+
+Definition 3.1. The encoding of a configuration of B is of the form
+                                                              
+                   . . . ccchBiS ∗ G(hAiN )∗ hAiN hEi ∪ hEihAiN (hAiN )∗ Dccc . . .                                (3)
+
+where hBi                                                 ∗
+                                 and Tables 1, 2 and 3, S and G are given by Table 1, and the word
+         is given by Equation (4)
+(hAiN )∗ hAiN hEi ∪ hEihAiN (hAiN )∗ D encodes B’s dataword via Table 1.
+
+                     hBi =HhP (eh−1 , aq )iV hP (eh−1 , aq−1 )i . . . V hP (eh−1 , a1 )i
+                             ..
+                              .
+                                                                                                                   (4)
+                                  V hP (e1 , aq )iV hP (e1 , aq−1 )i . . . V hP (e1 , a1 )i
+                                  V 2 hP (aq )iV 2 hP (aq−1 )i . . . V 2 hP (a1 )iV 3
+
+where V and H are given by Table 1. In Equation (3) the position of the tape head is over the rightmost
+symbol of G for U15,2 and is immediately to the right of hBiS ∗ G for each of the other Turing machines.
+The initial state is u1 and the blank symbol is c.
+
+                      hai i           hej i           heh i          S       G    N     D     V         H
+                         4i−1             4jq         4hq+3              2
+           U5,5      b                b           b             δ    d       ǫ    δ     ǫ     δ         cdδ
+           U6,4      b8i−5            b8jq      b8q(h+1)+5 δ         g2      ǫ    δ     b     δ     Equation (5)
+                         4i−1             4jq             4hq            2
+           U9,3      b                b               b              c       ǫ    δ     ǫ     δcc      bccbc
+           U15,2    (cb)8i−5         (cb)8jq    (cb)8hq+3 bb        (cc)2    bc   bb    ǫ     cb      bbcccb
+
+Table 1: Symbol values for Equations (3) and (4). The value of H for U6,4 is given by Equation (5) in
+Section 3.4.
+                             T. Neary and D. Woods / Four Small Universal Turing Machines                                 113
+
+
+
+                                                   hP (ej , ai )i                             hP (ej , ai )i
+                     hP (ai )i                  P (ej , ai ) = ak em                      P (ej , ai ) = ak eh
+      U5,5          δδd16i−6                    δδd16mq δd16k−6                          δδd16hq+14 δd16k−6
+      U6,4         δ 5 g 12i−10 δ            δ 4 g 12mq δδg 12k−10 δ                 δ 4 g 12q(h+1)+8 δδg 12k−10 δ
+      U9,3          δδccδc8i                    δccδδc8mq+2 δc8k                           δccδδc8hq+2 δc8k
+      U15,2   (cb)4 (cccb)2 (cc)8i−5     (cb)5 (cc)8mq (cccb)2 (cc)8k−5        (cb)3 (cccb)2 (cc)8hq+3 (cccb)2 (cc)8k−5
+
+Table 2: Encoding of P productions. Here ai , ak , av ∈ A and ej , em , eh ∈ E. Given in the rightmost
+column is the special encoding for productions which cause the halt symbol eh to be printed. Note U9,3
+encodes such productions, that print eh , in the same way as its other productions.
+
+
+
+                            hP (ej , ai )i                                             hP (ej , ai )i
+                      P (ej , ai ) = av ak em                                     P (ej , ai ) = av ak eh
+    U5,5            δd16mq δd16k−2 δd16v−6                                    δd16hq+14 δd16k−2 δd16v−6
+    U6,4      δ 2 g 12mq δδg 12hq+12k−4 δδg 12v−10 δ                   δ 2 g 12q(h+1)+8 δδg 12hq+12k−4 δδg 12v−10 δ
+    U9,3               δδc8mq+2 δc8k δc8v                                          δδc8hq+2 δc8k δc8v
+   U15,2 (cb)3 (cc)8mq (cccb)2 (cc)8k−5 (cccb)2 (cc)8v−5 cb(cccb)2 (cc)8hq+3 (cccb)2 (cc)8k−5 (cccb)2 (cc)8v−5
+
+                                       Table 3: See caption text for Table 2.
+
+
+3.1. Universal Turing machine algorithm overview
+
+Each of our universal Turing machines use the same basic simulation algorithm. Here we give a brief
+description of the algorithm by explaining how our machines locate and simulate a production. The
+encoded production to be simulated is located using a unary indexing method as illustrated in Figure 4.
+The encoded production, hP (ai )i or hP (ej , ai )i in Equation (4), is indexed (pointed to) by the number
+of symbols contained in the leftmost encoded symbol or pair of symbols in the encoded dataword (Equa-
+tion (3)). For illustration purposes we assume that we are using U9,3 . If the leftmost encoded symbol is
+hai i = b4i−1 (Table 1) then the value 4i − 1 is used to index hP (ai )i. If the leftmost encoded symbol
+is hej i = b4jq , and hai i = b4i−1 is adjacent, then the value 4jq + 4i − 1 is used to index hP (ej , ai )i.
+The number of b symbols in the encoded symbol, or pair of encoded symbols, is equal to the number of
+δc∗ words between the leftmost encoded symbol and the encoded production to be simulated. To locate
+this production, U9,3 simply changes one δc∗ word to δb∗ , for each b in the leftmost encoded symbol or
+pair of encoded symbols. This process continues until the δ that separates two encoded symbols in the
+dataword is read. Note from Equation (3) that there is no δ marker between each hej i and the hai i to
+its right, thus allowing hej ihai i to be read together during indexing. After indexing, our machines print
+the indexed production immediately to the right of the encoded dataword as shown in Figure 5. After
+the indexed production has been printed, then hBi, the encoding of B, is restored to its original value as
+illustrated in configurations (ii) and (iii) of Figure 5. This completes the simulation of the production.
+114                        T. Neary and D. Woods / Four Small Universal Turing Machines
+
+
+
+                            encoding of bi-tag system B             - ofencoding
+                                                                           dataword
+                                                                                    -
+                           δ · · · δ hP i δ hP i δ hP i δ hP i δ       b b b δ hai hei δ
+                                                                       hai-
+
+                           δ · · · δ hP i δ hP i δ hP i δ hP i δ        b b b δ hai hei δ
+                                                                        ⇑  tape head of U
+                           δ · · · δ hP i δ hP i δ hP i δ hP i δ       /b b b δ hai hei δ
+                                                               ⇑
+                           δ · · · δ hP i δ hP i δ hP i δ hP i /δ      /b b b δ hai hei δ
+                                                                          ⇑
+                           δ · · · δ hP i δ hP i δ hP i δ hP i /δ      /b /b b δ hai hei δ
+                                                        ⇑
+                           δ · · · δ hP i δ hP i δ hP i /δ hP i /δ     /b /b b δ hai hei δ
+                                                                             ⇑
+                           δ · · · δ hP i δ hP i δ hP i /δ hP i /δ     /b /b /b δ hai hei δ
+                                                 ⇑
+                 (i)       δ · · · δ hP i δ hPi /δ hP i /δ hP i /δ     /b /b /b δ hai hei δ
+                                              6                                 ⇑
+                                      indexed encoded
+                                         production
+
+
+Figure 4: Indexing of an encoded production during simulation of a production of B. The encoded
+production hP i, to be executed, is indexed by reading the leftmost encoded symbol hai in the encoded
+dataword and marking off δ symbols in the encoding of B.
+
+
+Extensive computer testing has been carried out on each of our universal Turing machines.
+
+
+
+3.2. U9,3
+
+               u1          u2         u3          u4         u5          u6          u7        u8     u9
+       c      bRu1      cLu3        cLu3        bLu9       cRu6         bLu4       δLu4       cRu7   bLu5
+       b     cLu2       cLu2        bLu4        bLu4                    bRu6       bRu7       cRu9   cRu8
+       δ     δRu3       δLu2        δRu1        δLu4       δLu8         δRu6       δRu7       δRu8   cRu1
+
+
+                                      Table 4: Table of behaviour for U9,3 .
+
+
+
+Example 3.1. (U9,3 simulating the execution of the production P (a1 ))
+This example is presented using three cycles. The tape head of U9,3 is given by an underline. The current
+state of U9,3 is given to the left in bold. The dataword a1 ej ai is encoded via Equation (3) and Table 1 as
+bbbδb4jq b4i−1 δ and P (a1 ) is encoded via Table 2 as hP (a1 )i = δδccδc8 . From Equation (3) we get the
+                                    T. Neary and D. Woods / Four Small Universal Turing Machines                             115
+
+
+                                        encoding of bi-tag system B          -
+                      (i)         δ · · · δ hP i δ c c c /δ hP i /δ hP i /δ        /b /b /b δ hai hei δ c c c · · ·
+                                                    hP-
+                                                       i                                    ⇑
+
+                                  δ · · · δ hP i δ c c c /δ hP i /δ hP i /δ        /b /b /b δ hai hei δ c c c · · ·
+                                                       ⇑
+                                  δ · · · δ hP i δ c c c/ /δ hP i /δ hP i /δ       /b /b /b δ hai hei δ c c c · · ·
+                                                                                                        ⇑
+                                  δ · · · δ hP i δ c c c/ /δ hP i /δ hP i /δ       /b /b /b δ hai hei δ b c c ···
+                                                    ⇑
+                                  δ · · · δ hP i δ c c/ c/ /δ hP i /δ hP i /δ      /b /b /b δ hai hei δ b c c · · ·
+                                                                                                          ⇑
+                                  δ · · · δ hP i δ c c/ c/ /δ hP i /δ hP i /δ      /b /b /b δ hai hei δ b b c c · · ·
+                                                   ⇑
+                                  δ · · · δ hP i δ c/ c/ c/ /δ hP i /δ hP i /δ     /b /b /b δ hai hei δ b b c c · · ·
+                                                                                                            ⇑
+                      (ii)        δ · · · δ hP i δ c/ c/ c/ /δ hP i /δ hP i /δ     /b /b /b δ hai hei δ b b b c · · ·
+                                                ⇑
+                                                                                             ofencoding
+                                                                                                 dataword
+                                                                                                          -
+                      (iii)       δ · · · δ hP i δ c c c δ hP i δ hP i δ           c c c c hai hei δ b b b c · · ·
+                                                                                            ⇑        hai
+                                                                                                        -
+
+Figure 5: Printing of an encoded production during simulation of a production of B. Over a number of
+timesteps, the encoded production hP i that was indexed in configuration (i) of Figure 4, is printed to the
+right of the encoded dataword.
+
+
+initial configuration:
+
+
+                              u1 , . . . hP (a2 )i(δcc)2 δδccδc8 δccδccδccbbbδb4jq b4i−1 δccc . . .
+
+
+Cycle 1 (Index next production). In Cycle 1 (Table 5), U9,3 reads the leftmost encoded symbol and
+locates the next encoded production to execute (see Figure 4). U9,3 scans right until it reads b in state u1 .
+Then U9,3 scans left in states u2 and u3 until it reads the subword δc∗ . This subword is changed to δb∗ as
+U9,3 scans right in states u1 and u3 . The process is repeated until U9,3 reads b in state u3 . This indicates
+that we have finished reading the leftmost encoded symbol, or pair of encoded symbols, and that the
+encoded production to be executed has been indexed. This signals the end of Cycle 1 and the beginning
+of Cycle 2.
+                 u1            u2        u3                              u4        u5        u6        u7        u8     u9
+       c        bRu1 cLu3 cLu3                                  c      bLu9 cRu6 bLu4 δLu4 cRu7 bLu5
+       b        cLu2          cLu2 bLu4                         b      bLu4                bRu6 bRu7
+       δ       δRu3           δLu2 δRu1                         δ      δLu4 δLu8 δRu6 δRu7 δRu8
+           Table 5: Cycle 1 of U9,3 .                                             Table 6: Cycle 2 of U9,3 .
+116                       T. Neary and D. Woods / Four Small Universal Turing Machines
+
+
+
+
+                ⊢              u2 , . . . hP (a2 )i(δcc)2 δδccδc8 δccδccδcccbbδb4jq b4i−1 δccc . . .
+                ⊢2             u3 , . . . hP (a2 )i(δcc)2 δδccδc8 δccδccδcccbbδb4jq b4i−1 δccc . . .
+                ⊢4             u1 , . . . hP (a2 )i(δcc)2 δδccδc8 δccδccδbbbbbδb4jq b4i−1 δccc . . .
+                ⊢44            u1 , . . . hP (a2 )i(δcc)2 δδccδc8 δbbδbbδbbbbbδb4jq b4i−1 δccc . . .
+                ⊢2             u4 , . . . hP (a2 )i(δcc)2 δδccδc8 δbbδbbδbbbbbδb4jq b4i−1 δccc . . .
+In the configuration immediately above the encoded production hP (a1 )i has been indexed and we have
+entered Cycle 2.
+
+Cycle 2 (Print production). Cycle 2 (Table 6) prints the encoded production, that was indexed in
+Cycle 1, immediately to the right of the encoded dataword (see Figure 5). U9,3 scans left in state u4 and
+records the next symbol of the encoded production to be printed. If U9,3 reads the subword ccc it enters
+state u6 , scans right, and prints b at the right end of the encoded dataword. A single b is printed for each
+cc pair that does not have δ immediately to its left. If U9,3 reads the subword cδcc it scans right in state
+u7 and prints δ at the right end of the encoded dataword. This process is repeated until the end of the
+encoded production is detected by reading the subword δδcc which causes U9,3 to enter Cycle 3.
+           ⊢13                    u4 , . . . hP (a2 )i(δcc)2 δδccδc6 cc(δbb)3 bbbδb4jq b4i−1 δccc . . .
+           ⊢3                     u6 , . . . hP (a2 )i(δcc)2 δδccδc6 bb(δbb)3 bbbδb4jq b4i−1 δccc . . .
+           ⊢4(jq+i)+14            u6 , . . . hP (a2 )i(δcc)2 δδccδc6 bb(δbb)3 bbbδb4jq b4i−1 δccc . . .
+           ⊢                      u4 , . . . hP (a2 )i(δcc)2 δδccδc6 bb(δbb)3 bbbδb4jq b4i−1 δbccc . . .
+In the configuration immediately above the first symbol of the encoded production hP (a1 )i has been
+printed. Following the printing of the final symbol of the encoded production we get:
+           ⊢∗                     u4 , . . . hP (a2 )i(δcc)2 δδccδb8 (δbb)3 bbbδb4jq b4i−1 δb3 δccc . . .
+           ⊢3                     u8 , . . . hP (a2 )i(δcc)2 δδbbδb8 (δbb)3 bbbδb4jq b4i−1 δb3 δccc . . .
+In the configuration immediately above we have finished printing the encoded production hP (a1 )i to the
+right of the dataword and we have entered Cycle 3.
+
+Cycle 3 (Restore tape). Cycle 3 (Table 7) restores hBi to its original value (see configurations (ii) and
+(iii) in Figure 5). The tape head of U9,3 scans right switching between states u8 and u9 changing b
+symbols to c symbols. This continues until U9,3 reads the δ marking the leftmost end of the dataword in
+u9 . Note from Tables 2 and 3 and Equation (4) that there is an even number of b symbols between each
+pair of δ symbols in hBi hence each δ symbol in hBi will be read in state u8 . Each ai symbol in the
+dataword is encoded by an odd number of b symbols (hai i = b4i−1 ) and hence the first δ symbol in the
+dataword will be read in state u9 . This δ symbol marks the left end of the new dataword and causes U9,3
+to enter state u1 thus completing Cycle 3 and the production simulation.
+            ⊢25                  u9 , . . . hP (a2 )i(δcc)2 δδccδc8 (δcc)3 cccδb4jq b4i−1 δb3 δccc . . .
+            ⊢                    u1 , . . . hP (a2 )i(δcc)2 δδccδc8 (δcc)3 ccccbb4jq−1 b4i−1 δb3 δccc . . .
+                             T. Neary and D. Woods / Four Small Universal Turing Machines                   117
+
+
+
+                                                         u8       u9
+                                                b      cRu9 cRu8
+                                                δ      δRu8 cRu1
+
+                                              Table 7: Cycle 3 of U9,3 .
+In the last configuration of Cycle 3 our example simulation of production P (a1 ) is complete.
+
+Theorem 3.1. Given a bi-tag system B that runs in time t the computation of B is simulated by U9,3 in
+time O(t2 ).
+
+Proof:
+In order to prove the correctness of U9,3 we prove that U9,3 simulates any possible P (a) or P (e, a)
+production of an arbitrary bi-tag system and, that U9,3 also simulates halting when the encoded halt
+symbol heh i is encountered. In Example 3.1 U9,3 simulates P (a1 ) for an arbitrary bi-tag system where
+a1 is the leftmost symbol in a fixed dataword. This example easily generalises to any production P (ai )
+where ai is the leftmost symbol in an arbitrary dataword. When some e ∈ E is the leftmost symbol in
+the dataword then some production P (e, a) must be executed. The simulation of P (a1 ) in Example 3.1
+is also used to verify the simulation of P (e, a). Note from Equation (3) that there is no δ marker between
+each hej i and the adjacent hai i to its right, thus hej i and hai i are read together during Cycle 1. Using the
+encoding in Definition 3.1, the number of b symbols in hej ihai i indexes hP (e, a)i. Thus, the indexing
+of hP (e, a)i is carried out in the same manner as the indexing of hP (a)i. The printing of production
+hP (e, a)i during Cycle 2 and the subsequent restoring of hBi during Cycle 3 proceed in the same manner
+as with P (a1 ).
+     If the encoded halt symbol heh i = b4hq is the leftmost symbol in the encoded dataword, and hai i =
+b 4−i is adjacent, this is encoded via Definition 3.1 as follows:
+
+            u1 , bccbchP (eh−1 , aq )iδcc . . . hP (a1 )i(δcc)3 (cc)∗ bb4hq−1 b4i−1 δ(hAiδ)∗ ccc . . .
+
+During Cycle 1, immediately after reading the (4hq + 3)th b symbol in the dataword, U9,3 scans left in
+u2 and we get the following:
+
+        ⊢∗ u2 , bccbchP (eh−1 , aq )iδcc . . . hP (a1 )i(δcc)3 (cc)∗ c4hq+3 b4i−4 δ(hAiδ)∗ ccc . . .
+        ⊢4 u5 , bbbbchP (eh−1 , aq )iδcc . . . hP (a1 )i(δcc)3 (cc)∗ c4hq+3 b4i−4 δ(hAiδ)∗ ccc . . .
+
+There is no transition rule in Table 4 for the case ‘when in u5 read b’, hence the computation halts.         ⊓
+                                                                                                              ⊔
+
+The proof of correctness given for U9,3 can be applied to the remaining machines in a straightforward
+way, so we do not restate it.
+
+3.3. U5,5
+The dataword a1 ej ai is encoded via Equation (3) and Table 1 as bbbδb4jq b4i−1 δ, and P (a1 ) is encoded
+via Table 2 as hP (a1 )i = δδd10 . From Equation (3) we get the initial configuration:
+
+            u1 , . . . δ2 hP (a2 )iδ2 δδd10 δδδbbbδb4jq b4i−1 δccc . . .
+118                        T. Neary and D. Woods / Four Small Universal Turing Machines
+
+
+
+                                           u1        u2         u3         u4         u5
+                                g        bLu1 gRu1 bLu3
+                                b        gLu1 gRu2 dRu5 gRu4 dRu3
+                                δ        cRu2 cRu2 δRu3 cRu4 dRu1
+                                c        δLu1 bLu3             δLu3       δLu3
+                                d        bLu1 gRu2 bLu5                   bLu2       bLu4
+
+                                        Table 8: Table of behaviour for U5,5 .
+Cycle 1 (Index next production). In Cycle 1 (Table 9) when U5,5 reads b in state u1 , it changes it to g
+and scans left until it reads δ. This δ is changed to c and U5,5 then enters state u2 and scans right until it
+reads g which causes it to re-enter state u1 . This process is repeated until U5,5 reads the δ that separates
+a pair of encoded symbols in the encoded dataword. This signals the end of Cycle 1 and the beginning
+of Cycle 2.
+         u1      u2              U5,5           u2        u3         u4         u5
+  g     bLu1 gRu1                   g                 bLu3
+  b     gLu1 gRu2                   b        gRu2                gRu4
+  δ     cRu2 cRu2                   δ        cRu2 δRu3 cRu4                                 U5,5      u3      u5
+  c     δLu1                        c        bLu3     δLu3 δLu3                              b      dRu5 dRu3
+  d     bLu1                        d        gRu2 bLu5           bLu2 bLu4                   δ      δRu3 dRu1
+  Table 9: Cycle 1 of U5,5 .                Table 10: Cycle 2 of U5,5 .                     Table 11: Cycle 3 of U5,5 .
+
+                ⊢3                  u1 , . . . δ2 hP (a2 )iδ2 δδd10 δδcgbbδb4jq b4i−1 δccc . . .
+                ⊢18                 u1 , . . . δ2 hP (a2 )iδ2 δδd10 cccgggδb4jq b4i−1 δccc . . .
+                ⊢                   u2 , . . . δ2 hP (a2 )iδ2 δδd10 cccgggcbb4jq−1 b4i−1 δccc . . .
+Cycle 2 (Print production). Cycle 2 (Table 10) begins with U5,5 scanning right and printing b to the
+right of the encoded dataword. Following this, U5,5 scans left in state u3 and records the next symbol of
+the encoded production to be printed. If U5,5 reads the subword dddd it enters state u2 , scans right, and
+prints b at the right end of the encoded dataword. If U5,5 reads the subword δdd it scans right in state
+u4 and prints δ at the right end of the encoded dataword. This process is repeated until the end of the
+encoded production is detected by reading δ in state u3 , which causes U5,5 to enter Cycle 3.
+                ⊢∗                  u3 , . . . δ2 hP (a2 )iδ2 δδd6 ddddδδδbbbδb4jq b4i−1 δbccc . . .
+                ⊢3                  u2 , . . . δ2 hP (a2 )iδ2 δδd6 dbbbδδδbbbδb4jq b4i−1 δbccc . . .
+                ⊢∗                  u3 , . . . δ2 hP (a2 )iδ2 δδddb8 δδδbbbδb4jq b4i−1 δbbbccc . . .
+                ⊢2                  u4 , . . . δ2 hP (a2 )iδ2 δδbbb8 δδδbbbδb4jq b4i−1 δbbbccc . . .
+                ⊢∗                  u3 , . . . δ2 hP (a2 )iδ2 δδbbb8 δδδbbbδb4jq b4i−1 δbbbδccc . . .
+Cycle 3 (Restore tape). In Cycle 3 (Table 11) the tape head of U5,5 scans right switching between states
+u3 and u5 changing b symbols to d symbols. This continues until U5,5 reads the δ marking the leftmost
+                           T. Neary and D. Woods / Four Small Universal Turing Machines                     119
+
+
+
+end of the encoded dataword in u5 . Note from Tables 2 and 3 and Equation (4) that there is an even
+number of d symbols between each pair of δ symbols in hBi hence each δ symbol in hBi will be read in
+state u3 . Each ai symbol in the dataword is encoded by an odd number of symbols (hai i = b4i−1 ) and
+hence the first δ symbol in the dataword will be read in state u5 . This causes U5,5 to enter state u1 thus
+completing Cycle 3 and the production simulation.
+
+               ⊢19                   u1 , . . . δ2 hP (a2 )iδ2 δδd10 δδδddddbb4jq−1 b4i−1 δbbbδccc . . .
+
+Halting for U5,5 . If the encoded halt symbol heh i = b4hq+3 δ is the leftmost symbol in the encoded
+dataword then this is encoded via Definition 3.1 as follows:
+
+                u1 , cdδhP (eh−1 , aq )iδ . . . δ2 hP (a1 )iδ3 (dd)∗ bb4hq+2 δ(hAiδ)∗ ccc . . .
+
+The computation continues as before until U5,5 enters Cycle 2 and scans left in u3 . Immediately after
+U5,5 reads the leftmost d during this leftward scan we get:
+
+        ⊢∗            u5 , cbδhP (eh−1 , aq )i′ δ . . . δ2 hP (a1 )i′ δ3 (dd)∗ b4hq+3 δ(hAiδ)∗ bccc . . .
+
+In the configuration above, hP i′ denotes the word in which all the d symbols in hP i are changed to b
+symbols. There is no transition rule in Table 8 for the case ‘when in u5 read c’ hence the computation
+halts.
+
+3.4. U6,4
+
+                                     u1       u2       u3       u4       u5         u6
+                             g     bLu1 gRu1 bLu3 bRu2                 bLu6        bLu4
+                             b     gLu1 gRu2 bLu5 gRu4 gRu6 gRu5
+                             δ     cRu2 cRu2 δLu5 cRu4 δRu5 gRu1
+                             c     δLu1 gRu5 δLu3 cRu5                 bLu3
+
+                                     Table 12: Table of behaviour for U6,4 .
+The dataword a1 ej ai is encoded via Equation (3) and Table (1) as bbbδb8jq b8i−5 δb. From Equation (3)
+we get the initial configuration:
+
+                u1 , . . . δ2 hP (a2 )iδ2 hP (a1 )iδδδbbbδb8jq b8i−5 δbccc . . .
+
+Cycle 1 (Index next production). In Cycle 1 (Table 13) when U6,4 reads b in state u1 it scans left until it
+reads δ. This δ is changed to c and U6,4 then enters state u2 and scans right until it reads g which causes
+it to re-enter state u1 . This process is repeated until U6,4 reads the δ that separates a pair of encoded
+symbols in the encoded dataword. This signals the end of Cycle 1 and the beginning of Cycle 2.
+
+Cycle 2 (Print production). Cycle 2 (Table 14) begins with U6,4 scanning right and printing bb to the
+right of the encoded dataword. Following this, U6,4 scans left in state u3 and records the next symbol of
+the encoded production to be printed. If U6,4 reads the subword gggδ or gggb it enters state u2 , scans
+120                           T. Neary and D. Woods / Four Small Universal Turing Machines
+
+
+
+         u1       u2                        u2      u3      u4      u5      u6
+  g     bLu1 gRu1                     g            bLu3 bRu2 bLu6 bLu4
+  b     gLu1 gRu2                      b gRu2 bLu5 gRu4                                               u5      u6
+  δ     cRu2 cRu2                     δ cRu2 δLu5 cRu4 δRu5                                    b    gRu6 gRu5
+  c     δLu1                           c gRu5 δLu3 cRu5 bLu3                                   δ    δRu5 gRu1
+Table 13: Cycle 1 of U6,4 .                  Table 14: Cycle 2 of U6,4 .                     Table 15: Cycle 3 of U6,4 .
+right, and prints bb at the right end of the encoded dataword. If U6,4 reads the subword δggb it scans
+right in state u4 and prints δb at the right end of the encoded dataword. This process is repeated until
+the end of the encoded production is detected by reading δ in state u5 , which causes U6,4 to enter Cycle 3.
+
+Cycle 3 (Restore tape). In Cycle 3 (Table 15) the tape head of U6,4 scans right switching between states
+u5 and u6 , changing b symbols to g symbols. This continues until U6,4 reads the δ marking the leftmost
+end of the encoded dataword in u6 . Note from Tables 2 and 3 and Equation (4) that there is an even
+number of g symbols between each pair of δ symbols in hBi, hence each δ symbol in hBi is read in state
+u5 . Each ai symbol in the dataword is encoded by an odd number of symbols (hai i = b8i−5 ) and hence
+the first δ symbol in the dataword is read in state u6 . This causes U6,4 to enter state u1 , thus completing
+Cycle 3 and the production simulation.
+
+Special case for U6,4 . If we are simulating a production of the form P (e, a) = av ak em we have a special
+case. Note from Table 3 and Cycle 2 that the simulation of P (e, a) = av ak em for U6,4 results in the
+word b8v−5 δb8hq+8k−3 δb8mq b being printed to the right of the dataword. From Table 1 it is clear that
+ak is not encoded in this word in its usual from. However when U6,4 reads the subword b8hq+8k−3 δ it
+indexes hP (ak )i in H which results in hak i being printed to the dataword. To see this, note that the value
+of H from Equation (4) for U6,4 is as follows:
+
+                              H = cgbV 2 hP (aq )iV 2 hP (aq−1 )i . . . V 2 hP (a1 )iV 3                             (5)
+
+The halting condition for U6,4 occurs in a similar manner to that of U5,5 . Halting occurs during the first
+scan left in Cycle 2 when U6,4 reads c in state u6 at the left end of hBi (note from Table 12 that there is
+no transition rule for state-symbol pair (u6 , c)).
+
+3.5. U15,2
+Example 3.2. (U15,2 simulating the execution of the production P (a1 ))
+The example dataword a1 ej ai is encoded via Equation (3) and Table (1) as cbcbcbbb(cb)8jq (cb)8i−5 bb
+and P (a1 ) is encoded via Table 2 as hP (a1 )i = (cb)4 (cccb)2 (cc)3 . Thus from Equation (3) we get the
+following initial configuration
+
+        u1 , . . . hP (a2 )i(cb)6 (cccb)2 (cc)3 cb cb cb bc cb cb cb bb (cb)8jq (cb)8i−5 bb cc . . .
+
+In this example we explain how U15,2 operates by considering how it treats pairs of symbols during each
+cycle. Thus, the extra whitespace between each pair of symbols is to improve readability and help illus-
+trate our explanation of U15,2 ’s operation.
+                               T. Neary and D. Woods / Four Small Universal Turing Machines                         121
+
+
+
+                      u1           u2         u3          u4           u5           u6      u7      u8
+             c       cRu2        bRu3        cLu7        cLu6         bRu1      bLu4       cLu8    bLu9
+             b       bRu1        bRu1        cLu5        bLu5         bLu4      bLu4       bLu7    bLu7
+                        u9           u10           u11          u12          u13          u14      u15
+                 c    cRu1          bLu11      cRu12        cRu13            cLu2        cLu3     cRu14
+                 b   bLu10                     bRu14        bRu12           bRu12        cRu15    bRu14
+
+                                        Table 16: Table of behaviour for U15,2 .
+Cycle 1 (Index next production). In Cycle 1 (Table 17) U15,2 scans right in states u1 , u2 and u3 until
+it reads the subword ccb which it changes to cbc. Following this, it scans left in states u4 , u5 and u6
+until it reads the subword cb. This cb is changed to bb and U15,2 re-enters state u1 and scans right. This
+process is repeated until U15,2 has finished reading the encoded read symbol hai i or symbols hai i and
+hej i. This occurs when the subword ccb no longer appears to the right of the tape head and signals the
+end of Cycle 1 and the beginning of Cycle 2.
+                                   u1         u2          u3           u4           u5      u6
+                           c     cRu2       bRu3         cLu7         cLu6     bRu1        bLu4
+                           b     bRu1       bRu1         cLu5         bLu5      bLu4       bLu4
+
+
+                                              Table 17: Cycle 1 of U15,2 .
+
+
+       ⊢3            u5 , . . . hP (a2 )i(cb)6 (cccb)2 (cc)3 cb cb cb bc bc cb cb bb (cb)8jq (cb)8i−5 bb cc . . .
+       ⊢4            u5 , . . . hP (a2 )i(cb)6 (cccb)2 (cc)3 cb cb cb bc bc cb cb bb (cb)8jq (cb)8i−5 bb cc . . .
+       ⊢4            u2 , . . . hP (a2 )i(cb)6 (cccb)2 (cc)3 cb cb bb bc bc cb cb bb (cb)8jq (cb)8i−5 bb cc . . .
+       ⊢20           u2 , . . . hP (a2 )i(cb)6 (cccb)2 (cc)3 cb bb bb bc bc bc cb bb (cb)8jq (cb)8i−5 bb cc . . .
+       ⊢28           u2 , . . . hP (a2 )i(cb)6 (cccb)2 (cc)3 bb bb bb bc bc bc bc bb (cb)8jq (cb)8i−5 bb cc . . .
+
+Note that in the configuration immediately above each cb subword in the encoded read symbol ha1 i =
+cbcbcb has been changed to the subword bc. Note also that the substring ccb which causes a scan to the
+left in u4 , u5 , and u6 no longer appears in the configuration to the right of the tape head. This causes
+U15,2 to enter Cycle 2.
+
+Cycle 2 (Print production). Cycle 2 (Table 18) begins with U15,2 scanning right and printing cb to the
+right of the encoded dataword. Following this, U15,2 scans left in states u7 , u8 , u9 , u10 and u11 and
+records the next symbol of the encoded production to be printed. If, during a scan left, U15,2 reads the
+subword ccc then it scans right in states u1 and u2 and changes the cc immediately to the right of the
+encoded dataword to cb. If, during a scan left, U15,2 reads the subword ccbcc it scans right in states u12
+and u13 and changes the first c to the right of the encoded dataword to b. This process is repeated until
+the end of the encoded production is detected by reading the subword bcbcc during the scan left. This
+causes U15,2 to enter Cycle 3.
+122                              T. Neary and D. Woods / Four Small Universal Turing Machines
+
+
+
+                  u1        u2         u3       u7       u8        u9        u10       u11       u12        u13
+        c       cRu2      bRu3       cLu7     cLu8     bLu9      cRu1      bLu11     cRu12      cRu13      cLu2
+        b       bRu1      bRu1       cLu5     bLu7     bLu7      bLu10               bRu14      bRu12     bRu12
+
+                                                Table 18: Cycle 2 of U15,2 .
+           ⊢∗          u1 , . . . hP (a2 )i(cb)6 (cccb)2 cc cc cc (bb)3 (bc)4 bb (cb)8jq (cb)8i−5 bb cc cc cc . . .
+           ⊢3          u7 , . . . hP (a2 )i(cb)6 (cccb)2 cc cc cc (bb)3 (bc)4 bb (cb)8jq (cb)8i−5 bb cb cc cc . . .
+           ⊢∗          u7 , . . . hP (a2 )i(cb)6 (cccb)2 cc cc cc (bb)3 (bc)4 bb (cb)8jq (cb)8i−5 bb cb cc cc . . .
+           ⊢3          u1 , . . . hP (a2 )i(cb)6 (cccb)2 cc cc bc (bb)3 (bc)4 bb (cb)8jq (cb)8i−5 bb cb cc cc . . .
+           ⊢∗          u7 , . . . hP (a2 )i(cb)6 (cccb)2 cc cc bc (bb)3 (bc)4 bb (cb)8jq (cb)8i−5 bb cb cb cc . . .
+
+
+Each time the substring ccc is read during a scan left in states u7 , u8 , and u9 U15,2 scans right and prints
+cb to the right of the encoded dataword. Thus we get:
+
+       ⊢∗        u7 , . . . hP (a2 )i(cb)6 cc cb cc cb cc bc bc (bb)3 (bc)4 bb (cb)8jq (cb)8i−5 bb (cb)3 cc cc . . .
+       ⊢5        u12 , . . . hP (a2 )i(cb)6 cc cb cc bb bc bc bc (bb)3 (bc)4 bb (cb)8jq (cb)8i−5 bb (cb)3 cc cc . . .
+       ⊢∗        u7 , . . . hP (a2 )i(cb)6 cc cb cc bb bc bc bc (bb)3 (bc)4 bb (cb)8jq (cb)8i−5 bb (cb)3 bc cc . . .
+
+Each time the substring ccbcc is read during a scan left in states u7 , u8 , u9 , u10 , and u11 U15,2 scans right
+and prints b to the right of the encoded dataword. Thus we get:
+
+      ⊢∗        u7 , . . . hP (a2 )i(cb)4 cb cb cc bb bc bb (bc)3 (bb)3 (bc)4 bb (cb)8jq (cb)8i−5 bb (cb)3 bb cc . . .
+      ⊢5        u14 , . . . hP (a2 )i(cb)4 cb bb bc bb bc bb (bc)3 (bb)3 (bc)4 bb (cb)8jq (cb)8i−5 bb (cb)3 bb cc . . .
+
+
+When the substring bcbcc is read during a scan left in states u7 , u8 , u9 , u10 , and u11 Cycle 2 is complete
+and Cycle 3 is entered. Thus in the configuration immediately above U15,2 has entered Cycle 3.
+
+Cycle 3 (Restore tape). In Cycle 3 (Table 19) the tape head of U15,2 scans right in states u14 and u15
+changing each bc to cc and each bb to cb. This continues until U15,2 reads c in state u14 . This c marks the
+leftmost end of the dataword. Note that during Cycles 1 and 2 each cc in hBi and each cb in the encoded
+read symbol are changed to the subwords bc. Also during Cycles 1 and 2, each cb subword in hBi is
+changed to the subword bb. Thus c will not be read in u14 until we encounter the subword cb at the left
+end of the next encoded symbol to be read in the dataword.
+
+  ⊢9        u15 , . . . hP (a2 )i(cb)4 cb cb cc cb cc cb (bc)3 (bb)3 (bc)4 bb cb (cb)8jq−1 (cb)8i−5 bb (cb)3 bb cc . . .
+  ⊢∗        u14 , . . . hP (a2 )i(cb)4 cb cb cc cb cc cb (cc)3 (cb)3 (cc)4 cb cb (cb)8jq−1 (cb)8i−5 bb (cb)3 bb cc . . .
+  ⊢3        u1 , . . . hP (a2 )i(cb)6 (cccb)2 (cc)3 (cb)3 (cc)4 bc cb (cb)8jq−1 (cb)8i−5 bb (cb)3 bb cc . . .
+                            T. Neary and D. Woods / Four Small Universal Turing Machines                              123
+
+
+
+In the configuration immediately above the example simulation of production hP (a1 )i is complete. The
+encoding of ha1 i = (cb)3 has been appended onto the right end of the dataword, the encoded tag system
+hBi has been restored to its original value and U15,2 is ready to read the encoded symbols hej i and hai i.
+
+                                           u3         u5         u14         u15
+                                   c                bRu1        cLu3        cRu14
+                                   b     cLu5                  cRu15        bRu14
+
+                                            Table 19: Cycle 3 of U15,2 .
+Halting for U15,2 . If the halt symbol eh , encoded as heh i = (cb)8hq+3 bb, is the leftmost symbol in the
+dataword then this is encoded via Definition 3.1 as follows:
+
+       u1 , bb cc cb hP (eh−1 , aq )i cb . . . (cb)2 hP (a1 )i(cb)3 ((cc2 ))∗ bc (cb)8hq+3 bb (hAi bb)∗ cc cc . . .
+
+The computation continues as before until U15,2 enters Cycle 2 and scans left in u7 , u8 , and u9 . This
+scan ends with the following configuration:
+
+⊢       u10 , bb bc bb hP (eh−1 , aq )i′ bb . . . (bb)2 hP (a1 )i′ (bb)3 ((bc)2 )∗ (bc)8hq+4 bb (hAi bb)∗ cb cc . . .
+
+In the configuration immediately above, hP i′ denotes the word in which each cc and cb subword in hP i
+is changed to the subword bc and bb, respectively. There is no transition rule in Table 16 for the case
+‘when in u10 read c’ hence the computation halts.
+
+
+4. Conclusion
+In order to determine the minimum size for universal Turing machines we must identify the largest
+possible non-universal Turing machine. Traditionally this has been done by proving the halting problem
+decidable for a given state-symbol pair. For example the decidability results given in Figure 1 imply that
+a universal Turing machine, that simulates any Turing machine M and halts if and only if M halts, is
+not possible for these state-symbol pairs. Hence these results give lower bounds on the size of universal
+machines of this type. The decidable halting problem curve in Figure 1 could be considered a non-
+universality curve in this sense. Thus, following the new universal machines presented in this work there
+are 39 state-symbol pairs that remain open.
+    There has been no improvement on universal Turing machine lower bound results since 1978, when
+Pavlotskaya [19] proved that the halting problem is decidable for 3-state, 2-symbol machines. The proof
+is quite long and complex, and improving on this result may well be difficult. As the state-symbol product
+increases, the number of possible machines increases exponentially. Thus it seems that a new approach
+needs to be taken. To find new lower bounds one possible method is to prove that some non-universal
+system simulates all of the Turing machines for a given state-symbol pair.
+    It has been noted in the literature that Minsky’s 7-state, 4 symbol machine [11], which simulates
+2-tag systems, mutilates the final output. While it is true that Minsky’s machine changes the final out-
+put by making one extra pass over the dataword before halting, this does not prevent his machine from
+simulating all Turing machines. This is due to the following fact. When Cocke and Minsky’s 2-tag algo-
+rithm [2] (or the algorithms given in [13] and [30]) is used to simulate Turing machines, this extra pass
+124                       T. Neary and D. Woods / Four Small Universal Turing Machines
+
+
+
+over the final dataword does not lose any information: in the sense that the simulated Turing machine’s
+final output can be retrieved by a (simple) decoding function.
+    Since Minsky’s universal machine all of the smallest universal Turing machines (including our bi-tag
+simulators) have used a similar algorithm. Rogozhin [22, 23] extended Minsky’s technique to establish
+the universal curve. There have been incremental reductions in the size of many of Rogozhin’s machines.
+However, the smallest of Rogozhin’s machines, the 6-symbol machine, has not been improved upon since
+it was first presented almost 30 years ago. In order to significantly reduce the space between the decidable
+halting problem curve and the universality curve we suspect that a radically new approach must be taken.
+Below we give three methods to aid in the search for smaller universal Turing machines.
+    The first approach is to look for some universal systems, other than 2-tag or bi-tag systems, that
+would require less instructions to simulate. Cyclic tag systems [3] may be used to give smaller machines.
+However, the operation of cyclic tag systems is similar to that of 2-tag and bi-tag systems so this may not
+give much of an improvement. Perhaps a simple universal cellular automaton could be simulated. The
+cellular automaton Rule 110 has given rise to very small weakly universal Turing machines [3, 17, 27].
+In the proof of universality of Rule 110, the initial condition contains a finite sequence of states that is
+repeated infinitely often to the left, and another finite sequence that is repeated infinitely often to the
+right. These small Turing machines that simulate it use a similar kind of initial condition and are thus
+said to be weakly universal. Perhaps a sufficiently simple universal cellular automaton could be found
+that allows us to construct small Turing machines that are universal, rather than only weakly universal.
+    Another approach is to simplify some existing universal model in order to make it easier to simulate.
+As an interesting example we will briefly consider small semi-weak machines (which are Turing ma-
+chines with an infinitely repeated word on one side of the input and the usual repeated blank symbol on
+the other side). Watanabe [25] gave a small semi-weakly universal Turing machine with 5 symbols and 6
+states that simulates Turing machines directly. Later, Watanabe [26] gave a small semi-weakly universal
+Turing machine with 4 symbols and 5 states that simulates restricted Turing machines. Watanabe noted
+that Turing machines with a binary {0, 1} tape alphabet, where the tape head always moves right on 1
+and left on 0, are universal. Because of this restriction, Watanabe’s encoded table of behaviour for each
+Turing machine had no need to include information about the direction of movement of the tape head.
+This in turn simplified the problem of simulating Turing machines.
+    A third approach is to find an encoding that allows many different operations to be carried out by the
+same group of instructions. For example, this approach aided in the construction of the smallest known
+universal Turing machines [15] that simulate Turing machine directly. The encoding used by these
+machines allowed each set of transition rules to serve more than one purpose. A single set of transition
+rules reads both the encoded current state and the encoded read symbol. Another set of transition rules (1)
+prints the encoded write symbol (2) moves the simulated tape head and (3) establishes the new encoded
+current state. Combining steps in this way has reduced the number of transition rules needed for these
+machines.
+    The small universal machines we have given here conform to the classical model used by Minsky [12]
+and Shannon [24]. Generalising the Turing machine model often allows us to find universal Turing
+machines with smaller state-symbol products, such as the small weakly universal machines in [3, 17, 27],
+and the semi-weakly universal machines in [25, 26, 29]. It is important to note that the decidability results
+given in Figure 1 do not give lower bounds for such machines. In order to give relevant lower bounds
+for these machines new decidability results must be given for these more general models. We note also
+that the weak machines in [3, 17] do not halt and thus proving the halting problem decidable does not
+                           T. Neary and D. Woods / Four Small Universal Turing Machines                     125
+
+
+
+immediately imply lower bounds relevant for these machines.
+    If we restrict the standard Turing machine model then the problem of finding machines with small
+state-symbol products often becomes more difficult. Some examples of restricted small universal Turing
+machines have been given by Margenstern [9]. Margenstern also gives a number of decidability results
+for restricted universal Turing machines.
+    By giving upper and lower bounds, some boundaries have been found for the smallest possible uni-
+versal machines in terms of numbers of states and symbols with respect to more general Turing machine
+models [10, 20]. However, there are many open questions remaining in the world of small universal Tur-
+ing machines. What are the trade-offs between number of states/symbols, space/time complexity, and
+encoding complexity in small universal Turing machines? How do the smallest possible universal ma-
+chines for the different generalisations and restrictions compare? Do the upper and lower bounds meet?
+That is, do there exist machines in the space between the smallest possible universal Turing machines
+and the largest machines with a decidable halting problem? To this day Shannon’s 50 year old question,
+regarding the smallest possible universal Turing machine, still remains unanswered.
+
+
+References
+ [1] C. Baiocchi. Three small universal Turing machines. In M. Margenstern and Y. Rogozhin, editors, Machines,
+     Computations, and Universality (MCU), volume 2055 of LNCS, pages 1–10, Chişinău, Moldova, May 2001.
+     Springer.
+ [2] J. Cocke and M. Minsky. Universality of tag systems with P = 2. Journal of the ACM, 11(1):15–20, Jan.
+     1964.
+ [3] M. Cook. Universality in elementary cellular automata. Complex Systems, 15(1):1–40, 2004.
+ [4] G. T. Hermann. The uniform halting problem for generalized one state Turing machines. In Proceedings,
+     Ninth Annual Symposium on Switching and Automata Theory, pages 368–372, Schenectady, New York, Oct.
+     1968. IEEE Computer Society Press.
+ [5] M. Kudlek. Small deterministic Turing machines. Theoretical Computer Science, 168(2):241–255, Nov.
+     1996.
+ [6] M. Kudlek and Y. Rogozhin. Small universal circular Post machines. Computer Science Journal of Moldova,
+     9(1):34–52, 2001.
+ [7] M. Kudlek and Y. Rogozhin. A universal Turing machine with 3 states and 9 symbols. In W. Kuich, G. Rozen-
+     berg, and A. Salomaa, editors, Developments in Language Theory, volume 2295 of LNCS, pages 311–318,
+     Vienna, May 2002. Springer.
+ [8] M. Margenstern. Frontier between decidablity and undecidablity: a survey. Theoretical Computer Science,
+     231(2):217–251, Jan. 2000.
+ [9] M. Margenstern. On quasi-unilateral universal Turing machines. Theoretical Computer Science, 257(1–
+     2):153–166, Apr. 2001.
+[10] M. Margenstern and L. Pavlotskaya. On the optimal number of instructions for universality of Turing ma-
+     chines connected with a finite automaton. International Journal of Algebra and Computation, 13(2):133–202,
+     Apr. 2003.
+[11] M. Minsky. Size and structure of universal Turing machines using tag systems. In Recursive Function Theory,
+     Symposium in Pure Mathematics, volume 5, pages 229–238, Provelence, 1962. AMS.
+126                         T. Neary and D. Woods / Four Small Universal Turing Machines
+
+
+
+[12] M. Minsky. Computation, finite and infinite machines. Prentice-Hall, New Jersey, 1967.
+[13] T. Neary. Small universal Turing machines. PhD thesis, Department of Computer Science, National Univer-
+     sity of Ireland, Maynooth, 2008.
+[14] T. Neary and D. Woods. A small fast universal Turing machine. Technical Report NUIM-CS-TR-2005-12,
+     Department of Computer Science, National University of Ireland, Maynooth, Dec. 2005.
+[15] T. Neary and D. Woods. Small fast universal Turing machines. Theoretical Computer Science, 362(1–3):171–
+     195, Oct. 2006.
+[16] T. Neary and D. Woods. Four small universal Turing machines. In J. Durand-Lose and M. Margenstern,
+     editors, Machines, Computations, and Universality (MCU), volume 4664 of LNCS, pages 242–254, Orléans,
+     France, Sept. 2007. Springer.
+[17] T. Neary and D. Woods. Small weakly universal Turing machines. Technical Report arXiv:0707.4489v1
+     [cs.CC], arXiv online report, July 2007.
+[18] L. Pavlotskaya. Solvability of the halting problem for certain classes of Turing machines. Mathematical
+     Notes (Springer), 13(6):537–541, June 1973. (Translated from Matematicheskie Zametki, Vol. 13, No. 6, pp.
+     899–909, June, 1973).
+[19] L. Pavlotskaya. Dostatochnye uslovija razreshimosti problemy ostanovki dlja mashin T’juring. Problemy
+     kibernetiki, 33:91–118, 1978. (Sufficient conditions for the halting problem decidability of Turing machines.
+     In Russian).
+[20] L. Priese. Towards a precise characterization of the complexity of universal and non-universal Turing ma-
+     chines. SIAM Journal of Computing, 8(4):508–523, Nov. 1979.
+[21] R. Robinson. Minsky’s small universal Turing machine. International Journal of Mathematics, 2(5):551–562,
+     1991.
+[22] Y. Rogozhin. Sem’ universal’nykh mashin T’juringa. In Fifth all union conference on Mathematical Logic,
+     Akad. Naul SSSR. Otdel. Inst. Mat., Novosibirsk, page 27, 1979. (Seven universal Turing machines. In
+     Russian).
+[23] Y. Rogozhin. Small universal Turing machines. Theoretical Computer Science, 168(2):215–240, Nov. 1996.
+[24] C. E. Shannon. A universal Turing machine with two internal states. Automata Studies, Annals of Mathemat-
+     ics Studies, 34:157–165, 1956.
+[25] S. Watanabe. 5-symbol 8-state and 5-symbol 6-state universal Turing machines. Journal of the ACM,
+     8(4):476–483, Oct. 1961.
+[26] S. Watanabe. 4-symbol 5-state universal Turing machine. Information Processing Society of Japan Magazine,
+     13(9):588–592, Sept. 1972.
+[27] S. Wolfram. A new kind of science. Wolfram Media, 2002.
+[28] D. Woods and T. Neary. The complexity of small universal Turing machines. Theoretical computer Science,
+     410(4-5):443–450, Feb. 2009.
+[29] D. Woods and T. Neary. Small semi-weakly universal Turing machines. Fundamenta Informaticae, 91:161–
+     177, 2009.
+[30] D. Woods and T. Neary. On the time complexity of 2-tag systems and small universal Turing machines.
+     In 47th Annual IEEE Symposium on Foundations of Computer Science (FOCS), pages 439–446, Berkeley,
+     California, Oct. 2006. IEEE.
+

@@ -1,0 +1,131 @@
+\section{An explicit boundary: FC15 without membership transport}
+\label{sec:fc15-e-countermodel}
+
+The $E$-congruence row cannot simply be deleted from the final
+20-clause FC15$^*$ target. There is a ZFC-explicit model of all fifteen
+native clause templates \emph{with source equality represented by the
+predicate $\operatorname{Eq}$}, together with every original completion
+row except transport for $E$. In particular, the model satisfies even
+all nine function-congruence rows. It does not interpret
+$\operatorname{Eq}$ as genuine equality. Thus this is not a model of
+the original native FC15$^*$ theory with genuine equality.
+
+\paragraph{Carrier and assignments.}
+Take $D=\mathbb N\times\{0,1\}$. Write $|a|$ for the first coordinate
+of $a$, put $\widehat n=(n,0)$, and let $\delta=(0,1)$. Interpret
+$d=\widehat0$ and
+\[
+\operatorname{Eq}(a,b)\quad\Longleftrightarrow\quad |a|=|b|.
+\]
+Let $p_j$ be the $j$th prime, indexed with $p_0=2$, and let
+$\nu_p(n)$ denote the exponent of $p$ in the positive integer $n$.
+For natural numbers $s,j,z$, define
+\[
+v(s,j)=\nu_{p_j}(s+1),\qquad
+c(s,j,z)=\frac{s+1}{p_j^{v(s,j)}}\,p_j^z-1.
+\]
+Both functions are total and natural-valued. Unique prime
+factorization gives
+\[
+v(c(s,j,z),j)=z,\qquad
+k\ne j\ \Longrightarrow\ v(c(s,j,z),k)=v(s,k).
+\]
+Set
+\[
+V(a,b)=\widehat{v(|a|,|b|)},\qquad
+C(a,b,z)=\widehat{c(|a|,|b|,|z|)}.
+\]
+The two displayed identities prove native assignment rows 01 and 02
+with the stipulated interpretation of $\operatorname{Eq}$.
+
+\paragraph{Profiles, guard, and witnesses.}
+Let $o(n)$ be one when $n$ is odd and zero otherwise. Interpret
+\[
+\begin{aligned}
+\operatorname{Inc}(s,a)&\quad\Longleftrightarrow\quad o(|a|)=1,\\
+N(a,b)&=\widehat{1-o(|a|)o(|b|)},&
+A(j,k)&=\widehat0,\\
+Q(j,a)&=\widehat{|a|},&
+W(s,j,a)&=\delta,\\
+H(b,t)&=\widehat0,&
+Y(b,t,u)&=Z(b,t,u)=(|u|+1,1).
+\end{aligned}
+\]
+The membership relation is the diagonal on decoration one alone:
+\[
+E((n,i),(m,j))\quad\Longleftrightarrow\quad i=j=1\ \text{and}\ n=m.
+\]
+Finally set
+\[
+G(b,t)\quad\Longleftrightarrow\quad |t|\text{ is even}.
+\]
+The three NAND rows 03--05 hold because incidence with $N(a,b)$ is
+exactly the NAND of incidence with $a$ and $b$. Every $V$ value has
+second coordinate zero. Hence $E(V(s,j),V(s,k))$ is always false,
+as is $\operatorname{Inc}(s,A(j,k))$; this proves rows 06 and 07.
+Incidence ignores its first argument and $Q$ preserves the parity of
+its second argument, so rows 08 and 09 hold. The noncanonical constant
+value of $W$ causes no failure of row 09.
+
+\paragraph{All six closure rows.}
+For the exact relation abbreviation in the native templates,
+\[
+R(b,t,x,y)=\operatorname{Inc}(C(C(b,d,x),q,y),t),
+\]
+we have $R(b,t,x,y)$ if and only if $|t|$ is odd, independently of
+$b,x,y$. If $|t|$ is odd, $G$ is false and $R$ is full. Row 10 then
+holds through $R$. Row 11 holds because $Y$ and $Z$ are identical
+elements on the decoration-one diagonal. Row 12 holds because the
+first coordinate of $Z(b,t,u)$ is $|u|+1$, so $E(Z(b,t,u),u)$ is
+false. Rows 13--15 are true through $\neg G$.
+
+If $|t|$ is even, $G$ is true and $R$ is empty. Rows 10--12 hold
+through $G$. Rows 13 and 14 hold through $\neg R$, regardless of the
+derived-member term $D^*$ in row 14. Row 15 holds because $H(b,t)$
+has decoration zero and therefore has no incoming $E$-edge.
+This proves all fifteen native templates for arbitrary elements of
+the infinite carrier, including every colliding variable assignment.
+
+\paragraph{Completion and a ground failure of $E$ transport.}
+The predicate $\operatorname{Eq}$ is an equivalence relation.
+Every function above has output first coordinate determined solely by
+the first coordinates of its inputs. Coordinatewise
+$\operatorname{Eq}$-equal arguments therefore give
+$\operatorname{Eq}$-equal outputs, proving all nine
+function-congruence rows. Incidence and the guard depend only on the
+first coordinate of their second argument, so both predicate transport
+rows hold. The selector $q=N(d,d)$ is $\widehat1$ and is not
+$\operatorname{Eq}$-equivalent to $d$.
+
+But the ground term $w=W(d,d,d)$ denotes $\delta$. Thus
+\[
+\operatorname{Eq}(w,d),\qquad E(w,w),\qquad \neg E(d,d)
+\]
+all hold. These falsify the $E$-transport instance moving both arguments
+from $w$ to $d$. The failure is witnessed by ground terms, not merely
+by unnamed elements of a larger structure. The whole construction is
+elementary arithmetic formalizable in ZFC. Consequently the
+19-clause FC15$^*$ predicate theory obtained by simply removing $E$
+transport from the final 20-clause target has a ZFC-provable model.
+This rules out that particular further deletion as a route to the
+required consistency contract; it does not rule out a different
+presentation or reconstruction with other axioms.
+
+\paragraph{The FC16$^*$ limitation is exact.}
+This model does not satisfy the additional coded-extensionality row.
+Choose $a=d=\widehat0$, $b=q=\widehat1$, and
+$j=C(d,q,q)=\widehat2$. All three equality guards are false. Both
+atomic class values $A(j,d),A(j,q)$ are $\widehat0$, their NAND
+exclusive-or class is $\widehat0$, and $Q$ preserves that value.
+The final incidence literal is therefore false as well. The model
+settles the simple deletion for FC15$^*$ only.
+
+\paragraph{Executable diagnostic.}
+The companion \texttt{fc15\_without\_e\_countermodel.py} independently
+evaluates the immutable native clause trees and all retained completion
+trees on every assignment from
+$\{0,1,2\}\times\{0,1\}$. Intermediate function values are evaluated
+as unbounded integers; the sample is not a finite carrier. It also
+checks the exact ground $E$-transport failure and the added FC16$^*$
+row failure. These finite evaluations are diagnostics of the displayed
+infinite-model proof, not a substitute for that proof.

@@ -1,0 +1,96 @@
+\section{A rigidity certificate for uniform increment retyping}
+\label{sec:increment-incidence}
+
+Consecutive increment instructions commute, even when they increment the
+same register.  This suggests changing which register is incremented by
+each physical decoder row while keeping the net increment of every
+consecutive increment block.  For the original Context246 layout, the
+following finite certificate rules out every nontrivial retyping of this
+specific kind.
+
+The literal register program has 2,601 increment occurrences, partitioned
+into 1,875 maximal consecutive increment blocks.  All 726 occurrences in
+the interiors of these blocks have their immediately preceding increment
+as their unique predecessor in the complete guarded instruction graph.
+The initial control is not an interior occurrence.  Thus each block is
+indeed a region in which all its increments execute consecutively after
+entry; the count is not based only on a visual source listing.
+
+Group increment occurrences by their existing physical source role
+$(q,b)$, where $q$ is the first state to reach the parent decoder cell and
+$b$ is its outgoing bit.  The 20 groups, in matrix-column order, are
+\[
+\begin{split}
+ &(12,1),(26,0),(46,0),(50,0),(54,0),(55,0),(66,0),\\
+ &(71,0),(81,0),(82,0),(90,0),(106,0),(114,0),(114,1),\\
+ &(142,1),(147,0),(167,0),(170,0),(218,1),(233,1).
+\end{split}
+\]
+Their original register labels in the same order are
+\[
+ (0,0,6,6,1,5,1,6,2,7,7,7,1,1,5,4,8,3,1,1).
+\]
+Each group has a unique original label across all its occurrences.
+
+The independent verifier derives these roles from the literal transition
+table.  For each parent path $p$, it runs from state 96 with the marker
+and bits of $p$ on an otherwise zero tape, stopping on the first arrival
+at cell $|p|$.  This permits the actual short left-and-right detours of
+borrowed handlers; simply following rightward transition targets would
+give an incorrect mapping.  In this data, all 2,338 distinct parent-path
+simulations terminate within 40 literal transitions and stay between
+cells 0 and 33.  A first-arrival simulation has not read any later cell,
+so its returned state is independent of the following leaf bit, remaining
+PC suffix, gap, and registers.  Its mapping agrees exactly with the
+producer's 20 groups and every row of the incidence matrix.
+
+Let $M\in\mathbb N^{1875\times20}$ be the incidence matrix: $M_{kg}$
+counts occurrences of group $g$ in increment block $k$.  Direct integer
+checks establish
+\[
+ \operatorname{rank}_{\mathbb Q}M=19,\qquad
+ \ker_{\mathbb Q}M
+ =\operatorname{span}_{\mathbb Q}
+ \{e_{(114,0)}-e_{(114,1)}\}.
+\]
+The upper bound follows by checking that columns $(114,0)$ and $(114,1)$
+are identical.  For the lower bound, the independently checked minor on
+zero-based rows
+\[
+ 0,1,2,3,4,5,6,10,12,13,14,16,17,26,33,162,210,1829,1834
+\]
+and zero-based columns, in this displayed order,
+\[
+ 7,1,0,9,3,16,17,15,6,10,11,8,4,5,12,18,19,14,2
+\]
+has determinant 2.  These finite facts are sufficient for the stated
+kernel; no floating-point rank decision is involved.
+
+\begin{theorem}[Uniform-retyping rigidity]
+Suppose a proposed change assigns a single register label to each of the
+20 existing groups, retaining one increment per occurrence and retaining
+the source topology and group membership.  If it preserves the total
+register increment vector of every maximal increment block, every group
+must retain its original register label.
+\end{theorem}
+\begin{proof}
+Represent a label $r$ by the nonnegative unit vector $e_r\in\mathbb N^9$.
+Let $X$ and $X_0$ be the $20\times9$ matrices whose rows are the proposed
+and original group vectors.  The hypothesis is $MX=MX_0$.
+For each register coordinate, its column of $X-X_0$ belongs to $\ker M$.
+The kernel certificate therefore fixes all group vectors except possibly
+those of $(114,0)$ and $(114,1)$, and fixes the sum of the latter two.
+Both original labels are register 1, so that sum must remain $2e_1$.
+The only two nonnegative unit vectors with sum $2e_1$ are $e_1$ and
+$e_1$.  Thus these two labels are fixed as well.
+\end{proof}
+
+This is an exact negative result for a useful finite search dimension.
+It is not a state lower bound.  It leaves open changes to decoder topology,
+context-dependent row splitting, block boundaries, cross-block register
+effects, and other simulation relations.  In particular, moving an
+increment across a separate transfer loop lies outside its hypotheses.
+The portable audit program is \texttt{check\_increment\_incidence.py};
+it uses an independent source parser, a dense literal interpreter, and
+exact rational elimination, and writes
+\texttt{increment\_incidence\_audit.json} with the full nonzero minor.

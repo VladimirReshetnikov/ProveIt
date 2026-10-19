@@ -1,0 +1,68 @@
+\section{A directly retained negation constructor and its literal realization}
+
+The concrete result of this grammar lane is a 247-state control, comprising
+130 grammar roles and 117 retained framework roles. The requested strict
+improvement on 245 states remains open. Within the retained framework a
+successful candidate must have at most 127 grammar roles.
+
+Let $C(x,y)=\binom{x+y+1}{2}+y$ denote the source Cantor pairing convention.
+At the clean constructor interface, with logical registers 6 and 7 zero,
+the old fine word and the new fine word have the same effect:
+\[
+  \mathtt{LNPQMVQPW}\ \equiv\ \mathtt{LMPW},\qquad
+  (t,s,0,0)\longmapsto (4C(t,1),s,0,0).
+\]
+The old word temporarily pushes the formula onto the stack and immediately
+pops it. The new word retains it in scratch storage while constructing the
+constant right argument. This identity has an unbounded arithmetic proof and
+a separate whole-source interface audit. It is not asserted from arbitrary
+scratch contents. The independent proof permits arbitrary register 6 provided
+register 7 is zero, in which case the paired left argument is their sum.
+
+All 30 negations in the original AX source can be contracted, reducing the
+fine word from 1,270 to 1,120 tokens. To make this useful at machine level,
+the backend changes AST112 from $(57,42)$ to $(40,42)$, AST113 from
+$(112,78)$ to $(112,77)$, and the source-state 237 pair from $(218,105)$ to
+$(218,124)$. The physical 218/read 0 projection 00 becomes $L$, while its
+projection 10 remains $VQPW$. This makes its variant0 implement $LM$ and
+retains its other variant. Related projection targets containing negation
+are changed coherently and checked individually.
+
+Transporting the earlier 128-rule grammar through these changes requires
+two routing carriers in the retained witness, yielding 130 roles. One serves
+the new 218 projection, and the other repairs an old use of the negation tree
+as a routing carrier: its 01 projection changes from $VQPW$ to $PW$.
+These costs describe this particular realization and are not lower bounds.
+
+The frozen control has 5,650 primitive source occurrences, maximum path depth
+52, and maximum zero run 6. Its changed-source reassociation certificate has
+2,584 pairs and 5,166 edges. Exact blank execution reaches the intended
+bootstrap interface after 407,915 steps. The independent runtime lane verifies
+all 7,311 guarded cases using 2,010,611 symbolic rules over unbounded counter
+values. These all-values checks must be distinguished from bounded execution
+samples. The symbolic proof, source interface argument and inherited logical
+calibration are separate parts of the full reasoning chain.
+
+Prior ProveIt intakes 158/159 already investigated pairing-shift negation,
+using $C(x,1)=C(0,x)+2$. The contribution here is the direct-retention
+implementation, the coordinated physical routing change, and its complete
+source occurrence and literal runtime checks. No general priority claim for
+negation optimization is made.
+
+The main completed searches retain 128 roles for DNE32 combined with trace-ideal
+mutations (8,083,093 proposals), 130 for the direct-LM original source
+(5,561,251 proposals), and130 for direct LM combined with DNE32
+(2,802,443 proposals). The independent finite auditors accept those saved
+witnesses. These negative search outcomes do not establish unrestricted
+minimality. Full provenance, exact words, inputs, logs and reproduction
+commands are supplied in the adjacent README and JSON artifacts.
+
+The final eight-DNE Church-layout combination revealed an inherited search
+bug: a reported 134-role witness tried to route through a physical terminal
+temporarily assigned a dictionary rule. Garbage collection removed that rule.
+The independent audit rejected the witness; the exact failed candidate and a
+regression reconstruction are retained. The repaired engine forbids descent
+through physical terminals and rechecks all projections after collection.
+Its final 90-second run yields a different, independently valid 134-role
+grammar in 1,611,191 proposals, still above the required 127. This case
+illustrates why reported search counts require independent witness checking.

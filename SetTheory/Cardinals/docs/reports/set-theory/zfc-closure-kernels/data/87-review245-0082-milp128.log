@@ -1,0 +1,62 @@
+model 2286 words 24402 productions
+constraints 146523 variables 29218 build_seconds 0.7558323480043327
+Running HiGHS 1.8.0 (git hash: 222cce7): Copyright (c) 2024 HiGHS under MIT licence terms
+Coefficient ranges:
+  Matrix [1e+00, 6e+01]
+  Cost   [1e+00, 1e+00]
+  Bound  [1e+00, 6e+01]
+  RHS    [1e+00, 1e+02]
+Presolving model
+28489 rows, 6259 cols, 112597 nonzeros  0s
+25316 rows, 5992 cols, 96906 nonzeros  0s
+Objective function is integral with scale 1
+
+Solving MIP model with:
+   25316 rows
+   5992 cols (4500 binary, 0 integer, 2 implied int., 1490 continuous)
+   96906 nonzeros
+MIP-Timing:        0.32 - starting analytic centre calculation
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic; L => Sub-MIP;
+     P => Empty MIP; R => Randomized rounding; S => Solve LP; T => Evaluate node; U => Unbounded;
+     z => Trivial zero; l => Trivial lower; u => Trivial upper; p => Trivial point
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+         0       0         0   0.00%   79              inf                  inf        0      0      0         0     0.3s
+         0       0         0   0.00%   107.475         inf                  inf        0      0      8       605     0.4s
+ L       0       0         0   0.00%   127.5           128                0.39%     3709    177    183      1621     4.0s
+         1       0         1 100.00%   127.5           128                0.39%     3709    177    183      2827     4.0s
+
+Solving report
+  Status            Optimal
+  Primal bound      128
+  Dual bound        128
+  Gap               0%
+  P-D integral      6.88340514898e-05
+  Solution status   feasible
+                    128 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            4.04 (total)
+                    0.00 (presolve)
+                    0.00 (solve)
+                    0.00 (postsolve)
+  Max sub-MIP depth 7
+  Nodes             1
+  Repair LPs        0 (0 feasible; 0 iterations)
+  LP iterations     2827 (total)
+                    0 (strong br.)
+                    1016 (separation)
+                    1192 (heuristics)
+RESULT         message: Optimization terminated successfully. (HiGHS Status 7: Optimal)
+        success: True
+         status: 0
+            fun: 128.0
+              x: [ 1.000e+00  1.000e+00 ...  6.100e+01  6.400e+01]
+ mip_node_count: 1
+ mip_dual_bound: 128.0
+        mip_gap: 0.0
+candidate 128 props (3, 6, 51)

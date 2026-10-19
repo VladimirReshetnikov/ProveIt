@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings through 18 October 2026. This report now reconciles eighty manuscripts.
+Intake findings through 18 October 2026. This report now reconciles one hundred manuscripts.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -8,6 +8,8 @@ the delivered base article is preserved, rather than rewritten as a unified arti
 No merged PDF is built. These are ordinary mathematical arguments and finite
 regression checks. The deliveries confer no formal status; subsequent Lean
 results and their exact scope are listed below.
+
+Batch 171 completes intake of the twenty older queued archives as [Sources 81–100](intake-171.md). All twenty retain useful theory, coding, compiler or audit material beyond their historical state counts. Placement `950e2f0ff6` retires every ZIP and preserves all 8,564 members through unchanged ancillary targets or recoverable arrival archives. All 38 selected jobs pass after one documented Python AST compatibility retry; the original failure remains recorded. See [the source index](intake-171.md) and [recovery/replay instructions](intake-171-reproduction.md). No new machine record or complete Lean/PA endpoint is claimed by this intake.
 
 The original machine target asks for an equivalence **provable in PA** between
 blank-tape non-halting and Con(ZFC), with fewer than 254 nonhalting states on a

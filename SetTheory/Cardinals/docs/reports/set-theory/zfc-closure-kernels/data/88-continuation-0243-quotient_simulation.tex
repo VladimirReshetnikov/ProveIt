@@ -1,0 +1,142 @@
+\section{A progress-preserving quotient of source continuations}
+\label{sec:continuation-quotient}
+
+The output program counter of a binary instruction need not be the literal
+counter chosen by the original compiler. What matters is that it represents
+the same future computation, with a progress condition sufficient to prevent
+silent divergence. This section states that replacement precisely.
+
+Let \(V\) be the finite set of source instruction occurrences. Every occurrence
+has one of the labels
+\[
+  \mathrm{halt},\qquad \mathrm{inc}(r),\qquad
+  \mathrm{decnz}(r),\qquad \mathrm{skip}.
+\]
+A break or continue occurrence is a skip with the successor obtained from its
+actual path operand. Increment and skip have one successor, decrement has
+successors ordered positive then zero in the distributed quotient certificate, and halt has none. The register file is
+an arbitrary vector \(R\in\mathbb N^9\). The graph therefore defines a
+deterministic register transition for every nonhalting configuration
+\((v,R)\).
+
+For the exact source, following only skip successors always reaches a
+non-skip occurrence. Let \(e(v)\) be that occurrence, and let \(\rho(v)\) be
+the number of skipped edges. The finite certificate establishes
+\[
+ \rho(v)=0\quad\hbox{at non-skip occurrences},\qquad
+ \rho(v)=1+\rho(s(v)),\quad e(v)=e(s(v))
+ \quad\hbox{at skip occurrences}.
+ \tag{Q1}
+\]
+In this instance \(\max_v\rho(v)=4\). These are exact finite graph identities,
+including absence of a skip-only cycle.
+
+A stable partition \(\pi\) of the non-skip occurrences respects their
+instruction labels, including the register operand, and satisfies
+\[
+ \pi(u)=\pi(v)
+ \ \Longrightarrow\
+ \pi(e(s_b(u)))=\pi(e(s_b(v)))
+ \tag{Q2}
+\]
+for each corresponding successor branch \(b\). The zero and positive
+successors of a decrement are compared in their specified order.
+The class of an arbitrary source occurrence is
+\(\bar\pi(v)=\pi(e(v))\).
+
+\paragraph{Source equivalence.}
+The quotient register machine has configurations
+\((\bar\pi(v),R)\); it executes the visible increment or decrement in the
+common class label, then passes to the class of the normalized successor.
+A halt class is terminal. Stability makes this transition well-defined:
+the labels select the same physical register and guard and induce the same
+register update. Induction on a finite halting computation proves
+\[
+ (v,R)\text{ halts in the source}
+ \quad\Longleftrightarrow\quad
+ (\bar\pi(v),R)\text{ halts in the quotient}.
+ \tag{Q3}
+\]
+The skip chains in (Q1) are finite, so neither direction discards a
+divergent silent computation.
+
+The independently reconstructed source has \(6{,}459\) internal decoder
+nodes, \(6{,}460\) instruction occurrences, and \(8{,}390\) guarded successor
+edges. The stable weak partition has \(4{,}530\) classes. The rank
+histogram, for ranks \(0,1,2,3,4\), is respectively
+\[
+  4{,}533,\quad1{,}804,\quad121,\quad1,\quad1.
+\]
+These counts describe the source continuation certificate, not a Turing
+machine state bound.
+
+\paragraph{Binary frame relation.}
+Write \(\mathcal F(v,R)\) for the set of complete canonical dispatch
+configurations whose next decoded source occurrence is \(v\) and whose nine
+primary registers are exactly \(R\). The frame relation includes the
+complete tape, a clean path with no nonzero residual suffix beyond the
+decoded occurrence, adequate separator distance, and the permitted nonempty
+spare suffix. Its allowed translation and spare freedom are inherited
+from the complete register-frame proof; they are not extra unconstrained
+erasures.
+
+For a nonhalting occurrence \(v\), let \(s(v,R)\) and \(R'\) be its exact
+guarded source successor and updated register vector. A proposed binary
+table must prove the following contract for every frame in
+\(\mathcal F(v,R)\): it has a positive finite literal run to a frame in
+\(\mathcal F(w,R')\), where
+\[
+ \bar\pi(w)=\bar\pi(s(v,R)),\qquad
+ \rho(w)\leq \rho(s(v,R)).
+ \tag{Q4}
+\]
+At a literal source halt occurrence the required contract is a finite
+binary halting run. The contracts are required for every possible actual
+starting occurrence, not merely one representative of each quotient class.
+
+\begin{theorem}[Halting equivalence under quotient return contracts]
+Assume the exact finite graph conditions \emph{(Q1)--(Q2)} and all complete
+binary contracts \emph{(Q4)}, including the halt contracts. From any
+configuration in \(\mathcal F(v,R)\), the binary machine halts if and only if
+the source register machine halts from \((v,R)\).
+\end{theorem}
+
+\begin{proof}
+Suppose first that the source halts. Let \(N\) be the number of nonhalting
+visible instructions on the quotient computation before its halt class.
+Induct on the lexicographically ordered pair \((N,\rho(v))\).
+
+If \(v\) is a literal halt, its binary halt contract applies. If \(v\) is a
+skip, its source successor has the same normalized class and registers,
+while (Q1) and (Q4) give
+\[
+ \rho(w)\leq \rho(s(v))=\rho(v)-1.
+\]
+Thus the second component decreases. If \(v\) is a visible nonhalting
+instruction, stability and the exact register update give a quotient
+computation from the output frame with \(N-1\) visible nonhalting
+instructions remaining. The first component decreases. Each binary
+segment is finite, so the induction constructs a finite binary halting run.
+In this particular graph the scalar measure \(5N+\rho(v)\) also strictly
+decreases at every nonhalting macro.
+
+Conversely suppose that the binary machine halts after \(t\) transitions.
+Use strong induction on \(t\). A literal source halt gives the conclusion
+immediately. Otherwise its contract supplies a positive segment of length
+\(k\) ending in an active complete output frame. Determinism and absorption
+of halting imply \(k<t\): an active configuration cannot occur at or after
+the known halting time. Apply the induction hypothesis to the remaining
+\(t-k\) transitions. The source beginning at the output frame halts.
+By (Q3) and the class equality in (Q4), the exact source successor
+\((s(v,R),R')\) also halts, and prepending the original source step proves
+that \((v,R)\) halts.
+\end{proof}
+
+The rank condition is essential to the forward implication. Positive binary
+duration alone would permit infinitely many returns among control counters
+in the same weak class without executing the next visible instruction.
+The exact rank inequality prevents that behavior. A successful table still
+needs universal instruction and register proofs and its own complete
+blank-tape bootstrap; the finite search fixtures are discovery evidence
+only.
+

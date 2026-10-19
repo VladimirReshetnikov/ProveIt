@@ -1,0 +1,223 @@
+{
+  "environment": {
+    "python": "3.12.14",
+    "z3_solver": "5.3.1",
+    "cpp": "Ubuntu 13.3.0-6ubuntu2~24.04"
+  },
+  "notes": [
+    "Commands reproduce the selected original solver constraints; output directories must exist. Runtime and timeout outcomes can vary with environment.",
+    "Original JSON outputs were retained byte for byte. Some runs predate addition of default-valued output fields; the command arrays state their complete non-default configuration.",
+    "Original runs used PYTHONPATH=/tmp/zfc-research-python. The delivered scripts import z3 normally and require an installed z3-solver package or a configured PYTHONPATH.",
+    "Driver changes after the runs add argument validation and import portability only; all satisfiability constraints used by these command arrays are unchanged.",
+    "UNSAT outputs are solver reports, without separately replayed proof objects; scope is the stated bounded family."
+  ],
+  "runs": [
+    {
+      "output": "results/scanner7-h32.json",
+      "command": [
+        "python3",
+        "synth_writable_scanner.py",
+        "--states",
+        "7",
+        "--horizon",
+        "32",
+        "--timeout",
+        "300000",
+        "--output",
+        "results/scanner7-h32.json"
+      ],
+      "status": "unknown",
+      "seconds": 300.0340312110002,
+      "reason": "timeout",
+      "scope": "Strict restoring interface; other constraints default."
+    },
+    {
+      "output": "results/scanner7-h16-mark-left.json",
+      "command": [
+        "python3",
+        "synth_writable_scanner.py",
+        "--states",
+        "7",
+        "--horizon",
+        "16",
+        "--timeout",
+        "120000",
+        "--first-write",
+        "1",
+        "--first-left",
+        "--output",
+        "results/scanner7-h16-mark-left.json"
+      ],
+      "status": "unknown",
+      "seconds": 120.01456004600004,
+      "reason": "timeout",
+      "scope": "Strict interface; first action marks and moves left."
+    },
+    {
+      "output": "results/scanner7-h32-flex.json",
+      "command": [
+        "python3",
+        "synth_writable_scanner_flexible.py",
+        "--states",
+        "7",
+        "--horizon",
+        "32",
+        "--timeout",
+        "180000",
+        "--first-write",
+        "1",
+        "--first-left",
+        "--long-room",
+        "16",
+        "--output",
+        "results/scanner7-h32-flex.json"
+      ],
+      "status": "unknown",
+      "seconds": 180.6979648689994,
+      "reason": "timeout",
+      "scope": "Flexible zero ray; first action marks and moves left."
+    },
+    {
+      "output": "results/scanner7-h32-flex-bfs.json",
+      "command": [
+        "python3",
+        "synth_writable_scanner_flexible.py",
+        "--states",
+        "7",
+        "--horizon",
+        "32",
+        "--timeout",
+        "180000",
+        "--first-write",
+        "1",
+        "--first-left",
+        "--long-room",
+        "16",
+        "--bfs-symmetry",
+        "--output",
+        "results/scanner7-h32-flex-bfs.json"
+      ],
+      "status": "unknown",
+      "seconds": 180.04421956899932,
+      "reason": "timeout",
+      "scope": "Flexible zero ray; marking first action and graph-reachable BFS naming."
+    },
+    {
+      "output": "results/scanner7-h16-read-bfs.json",
+      "command": [
+        "python3",
+        "synth_writable_scanner.py",
+        "--states",
+        "7",
+        "--horizon",
+        "16",
+        "--timeout",
+        "90000",
+        "--first-write",
+        "0",
+        "--first-left",
+        "--bfs-symmetry",
+        "--output",
+        "results/scanner7-h16-read-bfs.json"
+      ],
+      "status": "unknown",
+      "seconds": 90.01504487999955,
+      "reason": "timeout",
+      "scope": "Strict interface; preserving first action and graph-reachable BFS naming."
+    },
+    {
+      "output": "results/scanner7-h32-count4.json",
+      "command": [
+        "python3",
+        "synth_writable_scanner_flexible.py",
+        "--states",
+        "7",
+        "--horizon",
+        "32",
+        "--timeout",
+        "180000",
+        "--first-write",
+        "0",
+        "--first-left",
+        "--long-room",
+        "16",
+        "--bfs-symmetry",
+        "--reset-read1-prefix",
+        "4",
+        "--output",
+        "results/scanner7-h32-count4.json"
+      ],
+      "status": "unsat",
+      "seconds": 73.95109441200111,
+      "reason": null,
+      "scope": "Restricted family only: states 1 through 4 on read 1 preserve, move left, and reset to state 0."
+    },
+    {
+      "output": "results/scanner8-h16.json",
+      "command": [
+        "python3",
+        "synth_writable_scanner.py",
+        "--states",
+        "8",
+        "--horizon",
+        "16",
+        "--timeout",
+        "30000",
+        "--output",
+        "results/scanner8-h16.json"
+      ],
+      "status": "unknown",
+      "seconds": 30.024864046001312,
+      "reason": "timeout",
+      "scope": "Exploratory eight-state search before pinning the known control; unknown is not an inconsistency of the interface."
+    },
+    {
+      "output": "results/scanner8-control.json",
+      "command": [
+        "python3",
+        "synth_writable_scanner.py",
+        "--states",
+        "8",
+        "--horizon",
+        "16",
+        "--timeout",
+        "30000",
+        "--control",
+        "--output",
+        "results/scanner8-control.json"
+      ],
+      "status": "sat",
+      "seconds": 0.028796253998734755,
+      "reason": null,
+      "scope": "Positive control: exact eight-state read-only leftward counter is pinned."
+    },
+    {
+      "output": "results/scanner7-readonly-control.json",
+      "command": [
+        "python3",
+        "synth_writable_scanner.py",
+        "--states",
+        "7",
+        "--horizon",
+        "16",
+        "--timeout",
+        "30000",
+        "--readonly",
+        "--bfs-symmetry",
+        "--output",
+        "results/scanner7-readonly-control.json"
+      ],
+      "status": "unsat",
+      "seconds": 0.029163743000026443,
+      "reason": null,
+      "scope": "Negative control: every action is read-only and leftward; graph-reachable BFS naming."
+    }
+  ],
+  "independent_control_command": [
+    "python3",
+    "verify_scanner_control.py",
+    "results/scanner8-control.json",
+    "--output",
+    "results/scanner8-independent.json"
+  ]
+}

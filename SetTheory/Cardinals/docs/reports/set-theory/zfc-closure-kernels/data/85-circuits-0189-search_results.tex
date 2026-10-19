@@ -1,0 +1,229 @@
+\section{Search results and the scope of the negative evidence}
+\label{sec:search}
+
+This investigation did not infer a nonhalting theorem from finite testing.
+Finite prepared-frame tests serve as fast rejection gates for optimization
+recipes. A survivor would still require a universal simulation proof and
+an exact sufficient blank prefix. In particular, a failed affine proof
+with a fuel limit is an unresolved proof attempt unless a concrete
+counterexample is separately supplied. A search over a stated family is
+not a lower bound on arbitrary machines.
+
+\subsection{Why shortening the return scanner is a joint compiler problem}
+
+The inherited return scanner distinguishes the program counter from the
+long zero gap by looking for a sufficiently long zero run. Its chain is
+\[
+4,6,9,13,19,29,41,58,74,
+\]
+followed by state 84, which returns right to the dispatcher. An internal
+one restarts the scan at state 4. Removing the final detector state is
+an attractive one-state reduction, but maximum zero run in the static
+source words is not the whole invariant.
+
+As the prior \emph{Beyond 246} packet establishes, an arithmetic phase
+temporarily adds a zero next to a trailing zero run. Eighteen decrement
+sites with seven trailing zeros then create a run of eight zeros;
+both guards yield 36 bad cases for the shortened scanner. The shortest
+recorded problematic source word is
+\begin{center}\ttfamily 111010010010000000.\end{center}
+The issue already occurs before the arithmetic branch is distinguished.
+All these sites lie below the shared prefix
+\code{11101001001}. A static source-only count would incorrectly accept
+the scanner deletion.
+
+The new experiment applied all 238 options of the inherited closed
+reassociation/commutation generator to Context246 and tried the shorter
+scanner against each changed source program. Every option failed the
+early affine screen; none produced a candidate below 246 states. This
+does not show that no equivalent tree can support the shorter scanner.
+It only rules out acceptance by this checker of the recorded one-step
+rewrites under the existing encoding and interface.
+
+\subsection{An exhausted directed layout search with a defined cost gate}
+
+The next search changes the source tree globally at a shared subtree,
+interns equal subtrees, reuses matching entries in the original optimized
+decoder, and allocates new states for new subtree shapes. This is the
+source27 fingerprint-based emitter applied to the Context246 runtime.
+We measured its literal tables, not just the number of source DAG nodes.
+
+Let $g(T)$ be the number of working states syntactically reachable from
+old-label start 95. Let $b(T)$ be the number of classes of exact one-step
+transition bisimulation on that reachable graph. The implemented cost is
+\[
+ c(T)=\begin{cases}b(T)&g(T)\leq249,\\g(T)&g(T)>249.\end{cases}
+\]
+Thus the cost gate can exclude a graph with more than 249 states even
+if an uncomputed quotient would be small. The shape gate additionally
+requires maximum source zero run at most seven and maximum leaf depth
+at most 39. These gates are part of the search definition.
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Quantity & Ceiling 247 & Ceiling 248\\
+\midrule
+Expanded layouts &364&991\\
+Generated rewrite proposals &86,800&237,088\\
+Distinct rooted fingerprints encountered &84,700&230,351\\
+Unexpanded queue at stop &0&440\\
+Smallest charged state count &246&246\\
+Termination &Queue exhausted&Time limit\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The completed 247-gated run contains 56 accepted layouts of cost 246
+(including the initial layout) and 308 of cost 247. Its recorded boundary
+includes 776 proposals of cost 248. The claim is that the queue was
+exhausted for the specified \emph{fingerprint-deduplicated directed global
+shared-subtree rewrite algorithm and gates}. It is not an unqualified connected
+component under arbitrary inverse rewrites. Global rewriting followed by
+interning can coalesce an altered subtree with a previously existing one;
+the nominal inverse global rewrite need not undo exactly the previous
+operation. The visited-before-gate implementation is nevertheless valid
+for this directed search: the gates and the emitted cost are functions
+of the rooted interned layout up to fresh-state renumbering.
+
+The 248-gated run stopped after about 361 seconds with a nonempty queue.
+No exhaustive claim applies to it. The reproducibility instructions use
+its deterministic 991-layout expansion limit to reproduce the functional
+record independently of processor speed. Neither cost search substitutes
+for the runtime and initialization checks on a surviving candidate.
+
+\subsection{Reassociation with explicit control-target repair}
+
+A broader one-step experiment removed the closedness precondition.
+For each binary reassociation, it first required every increment and
+both decrement successors to retain their original leaf targets. It
+then tried to re-encode each unconditional jump with an existing break
+or continue kind leading to its required new target. Ties were resolved
+deterministically, preferring the same opcode and then the smaller
+operand. The independent complete leaf-graph certificate was the
+acceptance gate for the source program.
+
+There were 331 proposed global reassociations. Exactly 255 passed the
+source certificate, 46 failed an arithmetic-successor condition, and
+30 could not be repaired using the selected existing control encodings.
+These counts are for this deterministic repair policy, not all possible
+control encodings. Seven source-equivalent layouts had charged cost
+246. Five were exactly the already retained layouts; their 8,391
+universal binary cases passed. The other two stopped with affine fuel
+exhaustion. They are not certified binary machines, and no inference
+that they truly diverge follows from the fuel result. No emitted graph
+below 246 was found in this one-step family.
+
+The experiment demonstrates why a source compiler certificate and a
+binary runtime certificate must remain separate. Equal source subtrees
+can occur in new surrounding tape contexts; reusing an optimized literal
+entry based only on its fingerprint is a candidate emitter technique,
+not an unconditional correctness theorem.
+
+\subsection{Fusion domains and the role of the full invariant}
+
+For a 246-state table, there are $\binom{246}{2}=30,135$ unordered state
+pairs. The provider-row family identifies one pair and independently
+chooses each of the merged state's two rows from one of its two old
+providers, giving four recipes per pair and 120,540 recipes per table.
+The changed targets are redirected consistently. The exact literal
+family and rejection order are supplied in code.
+
+The synthesized-row family is different. It starts from a pair for
+which one quotient row already agrees, fixes that row, and permits the
+other row to be any binary write, direction, and successor among the
+245 retained working states and halt. That gives 984 choices. There
+are 352 row-sharing pairs for the baseline and layouts 0, 236, and 237;
+layout 233 has 353 and layout 235 has 351. Across all six tables this
+is 2,078,208 recipes per fixture-domain screen.
+
+Three domains must be distinguished. The first tests all 8,391 guards
+with finite prepared frames. The second merely removes the six excluded
+guards and uses 8,385 frames. The third respects the full nine-register
+product invariant at every source site and uses four representative
+vectors per feasible guard, for 33,540 complete frames per layout.
+Of the 8,385 earlier guard-only frames, 5,327 violate a certified mask
+for another register. Their failures therefore cannot refute a merger
+that is required to work only on the product invariant.
+
+\begin{center}
+\begin{tabular}{p{53mm}rrp{35mm}}
+\toprule
+Search on all six layouts & Recipes & Frames/layout & Survivors\\
+\midrule
+Provider rows, six guards excluded &723,240&8,385&0\\
+Provider rows, full product domain &723,240&33,540&0\\
+Synthesized row, six guards excluded &2,078,208&8,385&0\\
+Synthesized row, full product domain &2,078,208&33,540&0\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These are repeated screens of overlapping finite recipe families,
+not counts of that many distinct, globally inequivalent machines.
+All final product-domain frames satisfy the independently replayed
+mask invariant. They still form a finite representative set. A failed
+full-frame case rules out the exact required segment contract on that
+frame; it does not assert that a modified blank run reaches the frame.
+The baseline full-domain provider family was already searched in prior
+work. The changed layouts and the stronger-domain reruns are the new
+applications here.
+
+\subsection{The prefix-carry pulse state}
+
+State 255 supplies the extra prefix-carry pulse in Context246. Deleting
+it and modifying its incoming row is an apparent 245-state candidate,
+but simple versions do not preserve both increment and decrement. The
+new runtime experiments enlarged the repair family in two ways.
+
+The first contains 21 specified two-, three-, and four-row families
+over a fixed 100-action alphabet. Its assignment count is
+\[
+ 8\cdot100^2+10\cdot100^3+3\cdot100^4
+ =310,080,000.
+\]
+The second allows the incoming replacement and any one other retained
+row to range over 980 nonhalting actions, with 489 choices of the
+auxiliary row. It tests
+\[
+ 489\cdot980^2=469,635,600
+\]
+assignments. Neither family has a survivor under its recorded finite
+register-operation fixtures. The first family compares exact spare
+suffixes. The second permits the number of spare blocks to change,
+but requires a nonempty suffix consisting only of value-one blocks,
+with all nine primary values exact; its inputs also have only
+value-one spares. This is a different, weaker spare interface. The exact
+per-family state/row choices, action alphabets, fixture counts, and
+bounds are in the runtime README and JSON records. The two families
+overlap, so their counts are not added as a unique search population.
+
+This evidence applies to the preserved prefix-carry interface. It
+does not show that the pulse state is indispensable after changing
+the tape encoding, register boundaries, or source macro interface.
+The prior 244-state forward-carry attempt has a stronger but still
+local obstruction: its zero and one inputs can reach the same complete
+configuration after consuming a value-one spare, although their
+required branches differ. A deterministic common return cannot then
+recover the lost information. That prior collision argument must not
+be generalized to all smaller encodings.
+
+\subsection{Where the remaining opportunity lies}
+
+The most concrete new capability is to feed the full certified context
+to the compiler and runtime checker. It supports both a harmless extra
+zero-decrement test and source-level removal of an always-zero loop.
+The following section states the latter certificate precisely. A
+source edit must then be costed after decoder sharing, rather than
+valued by its number of removed instructions.
+
+A more radical next design would combine a different arithmetic phase
+encoding with the decoder, so that no intermediate tape creates the
+extra long zero run that currently prevents scanner shortening. The
+two-bit operation-phase protocol would have to retain whether it is
+initializing, selecting a register, or executing an operation; moving
+that information onto tape is useful only if its reader/writer costs
+less than the state saved. This is a proposed direction, not an
+implemented smaller machine or a proved saving. The supplied finite
+leaf maps, invariant-aware macro oracle, complete-frame contracts, and
+startup recognizer give explicit acceptance criteria for pursuing it.

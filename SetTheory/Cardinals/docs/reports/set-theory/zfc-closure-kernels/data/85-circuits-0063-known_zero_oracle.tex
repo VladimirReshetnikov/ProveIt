@@ -1,0 +1,68 @@
+% This is an includable section; the parent report supplies theorem environments.
+\section{A source invariant permits additional exact zero tests}
+\label{sec:runtime-known-zero}
+
+The prior product certificate associates with each instruction leaf $i$ nine
+nonempty masks $m_{i,r}\subseteq\{0,1,2\}$, or marks the leaf unreachable.
+The abstract labels $0,1,2$ denote the numerical sets $\{0\}$, $\{1\}$, and
+$\{2,3,\ldots\}$, respectively.  Its initial condition is $T=W=H=0$, with the other six
+logical registers arbitrary.  The checker reparses the original program and
+checks abstract transfer across every feasible edge; equality of all $8391$
+labelled control-flow edges transports this certificate to each new layout.
+The two verified blank bootstraps have logical registers
+$(3,0,0,0,3,0,0,0,0)$ and therefore satisfy this initial condition.
+
+The affine box denotes the entire encoded register file, including its finite
+nonempty spare suffix.  In the inherited interpreter, a box
+$\operatorname{plain}(\varnothing)$ denotes the unchanged input file.  Marking
+register $r$ is permitted only in this state and produces
+$\operatorname{mark}(r)$.  An increment or positive decrement produces
+$\operatorname{plain}(e)$ for a nonempty effect $e$; this state cannot be marked
+again.  The existing zero-decrement contract, starting in state $95$, restores
+the entire file and ends in state $112$, with no extra left-boundary cell.
+
+\paragraph{Additional rule.}
+At the start of a guarded instruction, intersect the selected register's mask
+with the actual zero or positive decrement guard.  Reject an empty
+intersection.  Convert the resulting masks from logical to physical register
+order using $(6,2,0,4,3,7,8,5,1)$.  In addition to all inherited oracle rules,
+allow
+\[
+ (95,\operatorname{mark}(r))\longmapsto
+ (112,\operatorname{plain}(\varnothing),0)
+ \qquad\text{if }m_r=\{0\}.
+\]
+The final zero is the additional left-boundary cell count.  This rule applies
+even when $r$ differs from the register named by the source instruction.
+
+\paragraph{Soundness.}
+Induct on the number of oracle calls before the unique nonempty effect.
+Initially, the boxed file is exactly the source input.  A mark operation only
+marks that file.  If the new rule applies, the selected value is zero by the
+source mask and the induction hypothesis.  The inherited zero-decrement
+contract therefore restores precisely the same entire file, including all
+other registers and all spares, and returns to the unchanged box state.
+The induction hypothesis is preserved.  After any nonempty increment or
+positive-decrement effect, marking is disabled, so this rule cannot be
+misapplied using a stale source mask.  Literal movement over the program-counter
+region and the boxed boundary uses the unchanged affine rules.  Consequently a
+successful exact-target derivation remains valid for every gap parameter and
+every complete file satisfying the product masks and the selected guard.
+
+The $42$ literal transition rows supporting the register and marking induction
+contracts must remain byte-for-byte equal to the Context246 baseline, with
+their targets intact.  The implementation enforces this condition before
+checking a candidate.  The endpoint still specifies the complete register file,
+all spares, the head, the program-counter residue, and the gap change; the rule
+does not permit unspecified garbage or ignore additional side effects.
+
+\paragraph{Limits of the result.}
+This is a compositional mathematical extension of the existing affine rule
+system, implemented as an ordinary Python checker.  It has not been integrated
+into a proof-assistant kernel in this archive.  The four concrete vectors per
+guard used in a separate finite merger screen are independent rejection
+fixtures; they do not prove this all-parameter rule.  Neither this rule nor
+those screens supply a machine with fewer than $246$ states.  Source-mask
+admissibility also does not imply that a particular register vector is reachable
+from the actual blank bootstrap, because the product invariant overapproximates
+reachability and forgets correlations.

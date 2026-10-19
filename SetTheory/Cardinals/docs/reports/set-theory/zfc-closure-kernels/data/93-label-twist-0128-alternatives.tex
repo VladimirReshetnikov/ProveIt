@@ -1,0 +1,78 @@
+% Body fragment; requires hyperref.
+\section{Alternative formalisms: what the existing evidence supports}
+\label{sec:alternative-formalisms}
+
+The shortest written set-theory axiom is not necessarily the cheapest
+consistency-search program. The logical engine must still perform
+instantiation, and the binary compiler charges for the repeated register
+operations that construct formulas. The following comparisons therefore
+separate mathematical calibration from an actual measured compiler output.
+
+\paragraph{Nonextensional CP plus full GIC.}
+This remains the strongest control for a small change to the present
+machine. The upstream theory uses native equality, a transitive
+power-container axiom CP, global-image collection, and irreflexivity.
+Its quotient interpretation supplies ZF, and the upstream formal theorem
+also calibrates consistency with ZFC; see
+\href{https://github.com/jeff87654/busy-beaver/blob/zf-254/ZF/m254/design/settheory.md}{the upstream set-theory proof}.
+The interpretation is already much smaller in its axiom inventory than
+the usual textbook presentation. Removing native membership-congruence
+rows raises the new logical obstacles proved in
+Section~\ref{sec:one-row-obstructions}. Source-level operation commutations
+instead preserve this established logical calibration.
+
+\paragraph{PSC with the full logical engine retained.}
+ProveIt's
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/6446ff5668307a2ac6aee1896037f0b792090389/Computability/BusyBeaver/Research/ZFC/logical_engine_completeness.md}{full-engine PSC control}
+replaces the theory emitter while retaining GEN, all eight logical rows,
+both vacuity components, and the four-tag codec. The reported Wade
+compilation gives $283$ working states with ordinary sharing and $279$
+with a specified Re-Pair seed, against $281$ for that backend's original
+control. These are useful emitter measurements. The report explicitly
+leaves the changed enumerator and binary simulation endpoints open.
+The Wade numbers cannot be subtracted directly from the routed
+$245$-state machine, whose compiler organization is different.
+
+\paragraph{Fixed labels in CP/GIC.}
+The mathematical normalization is valid when the complete logical engine
+and general guarded vacuity remain. But the exact fixed-emission study
+reports an expanded emission word growing from $186$ to $200$ tokens.
+Its best of $1272$ measured compiler runs has $283$ working states,
+against the same Wade $281$ control. Constants and offset binders have
+real construction costs. The source and detailed scope are in
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/6446ff5668307a2ac6aee1896037f0b792090389/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/30-minimize-fixed_emission-README.md}{the fixed CP/GIC emission report}.
+This is evidence against that particular implementation, not a lower
+bound for every fixed-label compiler.
+
+\paragraph{A complete equality-free frontend.}
+A Hilbert calculus with actual capture-avoiding substitution and the
+correct freshness condition is a legitimate alternative. It removes
+equality syntax at the cost of implementing those operations explicitly.
+The repository's complete reference checker specifies this interface,
+while its
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/6446ff5668307a2ac6aee1896037f0b792090389/Computability/BusyBeaver/Research/ZFC/typed_countermodel.md}{finite-sort counterinterpretation}
+shows why merely deleting equality from the present engine fails. That
+earlier obstruction applies to the reduced abstract calculus, including
+its literal C/G bundle, and has an ordinary PA formalizability argument.
+The new one-row obstructions above have a different, stronger retained
+logical basis. No complete smaller binary implementation of the
+capture-avoiding alternative is established here.
+
+\paragraph{One-parameter closure schemes.}
+Bare EPSC1 remains an open calibration problem in the repository, rather
+than an available replacement axiom. Its existing separation models do
+not refute every possible internal interpretation of ZFC. The precise
+remaining issue is constructing enough internally well-founded witnesses
+and the required finite combinations with only one ordinary matrix
+parameter. An existing repair adds exact BinaryUnion and recovers the
+full extensional interpretation, but it is an added operation with no
+new small complete binary implementation. These distinctions are set out
+in the pinned
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/6446ff5668307a2ac6aee1896037f0b792090389/Computability/BusyBeaver/Research/ZFC/epsc1_wf_frontier.md}{EPSC1 frontier note}.
+
+These alternatives remain useful mathematical and implementation targets.
+None of the cited measurements by itself establishes a machine below
+$245$ states with the required ZFC equivalence. The concrete novel
+contribution of this section's investigation is the one-row obstruction
+and the anchored-rank test for proposed repairs, which prevent an
+unjustified reuse of the original completeness proof.

@@ -1,0 +1,580 @@
+{
+  "status": "PARTIAL_RESULT",
+  "working_states": 245,
+  "scope": "Universal arithmetic only. No correct program-counter return or blank bootstrap established.",
+  "edits": {
+    "75/0": [
+      0,
+      "R",
+      63
+    ],
+    "48/0": [
+      1,
+      "L",
+      131
+    ],
+    "131/0": [
+      1,
+      "L",
+      33
+    ]
+  },
+  "removed": [
+    255
+  ],
+  "borrowed_state": 33,
+  "source_sha256": "303911c554284c49ce09042d8127feba4da260baae766e32260034aa3bdb82ee",
+  "spare_invariant": "Final spare equals1. Increment turns it into0 and appends1, preserving the invariant.",
+  "word_identity": {
+    "status": "PASS",
+    "induction": "finite lists of arbitrary natural numbers",
+    "base": "C([])1 = 1B([])",
+    "cons": "C(v)C(A)1 = C(v)1B(A) = 1B(v)B(A)",
+    "identity": "C(A)1 = 1B(A)",
+    "reverse_identity": "1rev(C(A)) = rev(B(A))1"
+  },
+  "blocks": [
+    {
+      "name": "seek73_block",
+      "status": "PASS",
+      "universal": true,
+      "steps": "2+1*v",
+      "head_motion": "2+1*v",
+      "proof_rule_count": 3,
+      "trace": [
+        {
+          "rule": "literal",
+          "state": 73,
+          "read": 0,
+          "row": [
+            0,
+            "R",
+            83
+          ]
+        },
+        {
+          "rule": "literal",
+          "state": 83,
+          "read": 1,
+          "row": [
+            1,
+            "R",
+            73
+          ]
+        },
+        {
+          "rule": "unary-induction",
+          "state": 73,
+          "read": 1,
+          "row": [
+            1,
+            "R",
+            73
+          ],
+          "repetitions": "1*v"
+        }
+      ]
+    },
+    {
+      "name": "carry95_block",
+      "status": "PASS",
+      "universal": true,
+      "steps": "2+1*v",
+      "head_motion": "2+1*v",
+      "proof_rule_count": 3,
+      "trace": [
+        {
+          "rule": "literal",
+          "state": 95,
+          "read": 0,
+          "row": [
+            1,
+            "R",
+            109
+          ]
+        },
+        {
+          "rule": "literal",
+          "state": 109,
+          "read": 1,
+          "row": [
+            0,
+            "R",
+            95
+          ]
+        },
+        {
+          "rule": "unary-induction",
+          "state": 95,
+          "read": 1,
+          "row": [
+            1,
+            "R",
+            95
+          ],
+          "repetitions": "1*v"
+        }
+      ]
+    },
+    {
+      "name": "return48_block",
+      "status": "PASS",
+      "universal": true,
+      "steps": "2+1*v",
+      "head_motion": "-2+-1*v",
+      "proof_rule_count": 3,
+      "trace": [
+        {
+          "rule": "literal",
+          "state": 48,
+          "read": 1,
+          "row": [
+            1,
+            "L",
+            63
+          ]
+        },
+        {
+          "rule": "unary-induction",
+          "state": 63,
+          "read": 1,
+          "row": [
+            1,
+            "L",
+            63
+          ],
+          "repetitions": "1*v"
+        },
+        {
+          "rule": "literal",
+          "state": 63,
+          "read": 0,
+          "row": [
+            0,
+            "L",
+            48
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rollback112_block",
+      "status": "PASS",
+      "universal": true,
+      "steps": "2+1*v",
+      "head_motion": "-2+-1*v",
+      "proof_rule_count": 3,
+      "trace": [
+        {
+          "rule": "unary-induction",
+          "state": 112,
+          "read": 1,
+          "row": [
+            1,
+            "L",
+            112
+          ],
+          "repetitions": "1*v"
+        },
+        {
+          "rule": "literal",
+          "state": 112,
+          "read": 0,
+          "row": [
+            1,
+            "L",
+            131
+          ]
+        },
+        {
+          "rule": "literal",
+          "state": 131,
+          "read": 1,
+          "row": [
+            0,
+            "L",
+            112
+          ]
+        }
+      ]
+    }
+  ],
+  "macros": [
+    {
+      "name": "positive_decrement",
+      "status": "PASS",
+      "universal": true,
+      "steps": "4+2*width_pre",
+      "motion": "0",
+      "trace": [
+        {
+          "rule": "finite-list-induction",
+          "theorem": "carry95_block",
+          "list": "pre",
+          "repetitions": "all finite list lengths",
+          "steps": "1*width_pre"
+        },
+        {
+          "rule": "literal",
+          "state": 95,
+          "read": 0,
+          "row": [
+            1,
+            "R",
+            109
+          ]
+        },
+        {
+          "rule": "literal",
+          "state": 109,
+          "read": 0,
+          "row": [
+            0,
+            "R",
+            75
+          ]
+        },
+        {
+          "rule": "literal",
+          "state": 75,
+          "read": 1,
+          "row": [
+            1,
+            "L",
+            63
+          ]
+        },
+        {
+          "rule": "literal",
+          "state": 63,
+          "read": 0,
+          "row": [
+            0,
+            "L",
+            48
+          ]
+        },
+        {
+          "rule": "finite-list-induction",
+          "theorem": "return48_block",
+          "list": "pre",
+          "repetitions": "all finite list lengths",
+          "steps": "1*width_pre"
+        }
+      ]
+    },
+    {
+      "name": "zero_decrement",
+      "status": "PASS",
+      "universal": true,
+      "steps": "7+2*width_pre",
+      "motion": "-1",
+      "trace": [
+        {
+          "rule": "finite-list-induction",
+          "theorem": "carry95_block",
+          "list": "pre",
+          "repetitions": "all finite list lengths",
+          "steps": "1*width_pre"
+        },
+        {
+          "rule": "literal",
+          "state": 95,
+          "read": 0,
+          "row": [
+            1,
+            "R",
+            109
+          ]
+        },
+        {
+          "rule": "literal",
+          "state": 109,
+          "read": 0,
+          "row": [
+            0,
+            "R",
+            75
+          ]
+        },
+        {
+          "rule": "literal",
+          "state": 75,
+          "read": 0,
+          "row": [
+            0,
+            "R",
+            63
+          ]
+        },
+        {
+          "rule": "literal",
+          "state": 63,
+          "read": 1,
+          "row": [
+            1,
+            "L",
+            63
+          ]
+        },
+        {
+          "rule": "literal",
+          "state": 63,
+          "read": 0,
+          "row": [
+            0,
+            "L",
+            48
+          ]
+        },
+        {
+          "rule": "literal",
+          "state": 48,
+          "read": 0,
+          "row": [
+            1,
+            "L",
+            131
+          ]
+        },
+        {
+          "rule": "literal",
+          "state": 131,
+          "read": 1,
+          "row": [
+            0,
+            "L",
+            112
+          ]
+        },
+        {
+          "rule": "finite-list-induction",
+          "theorem": "rollback112_block",
+          "list": "pre",
+          "repetitions": "all finite list lengths",
+          "steps": "1*width_pre"
+        }
+      ]
+    },
+    {
+      "name": "increment_spare_phase",
+      "status": "PASS",
+      "universal": true,
+      "steps": "17+2*width_middle+2*width_pre+2*x",
+      "motion": "-1",
+      "trace": [
+        {
+          "rule": "finite-list-induction",
+          "theorem": "seek73_block",
+          "list": "pre",
+          "repetitions": "all finite list lengths",
+          "steps": "1*width_pre"
+        },
+        {
+          "rule": "literal",
+          "state": 73,
+          "read": 0,
+          "row": [
+            0,
+            "R",
+            83
+          ]
+        },
+        {
+          "rule": "literal",
+          "state": 83,
+          "read": 0,
+          "row": [
+            1,
+            "R",
+            95
+          ]
+        },
+        {
+          "rule": "unary-induction",
+          "state": 95,
+          "read": 1,
+          "row": [
+            1,
+            "R",
+            95
+          ],
+          "repetitions": "1*x"
+        },
+        {
+          "rule": "finite-list-induction",
+          "theorem": "carry95_block",
+          "list": "middle",
+          "repetitions": "all finite list lengths",
+          "steps": "1*width_middle"
+        },
+        {
+          "rule": "literal",
+          "state": 95,
+          "read": 0,
+          "row": [
+            1,
+            "R",
+            109
+          ]
+        },
+        {
+          "rule": "literal",
+          "state": 109,
+          "read": 1,
+          "row": [
+            0,
+            "R",
+            95
+          ]
+        },
+        {
+          "rule": "unary-induction",
+          "state": 95,
+          "read": 1,
+          "row": [
+            1,
+            "R",
+            95
+          ],
+          "repetitions": "1"
+        },
+        {
+          "rule": "literal",
+          "state": 95,
+          "read": 0,
+          "row": [
+            1,
+            "R",
+            109
+          ]
+        },
+        {
+          "rule": "literal",
+          "state": 109,
+          "read": 0,
+          "row": [
+            0,
+            "R",
+            75
+          ]
+        },
+        {
+          "rule": "literal",
+          "state": 75,
+          "read": 0,
+          "row": [
+            0,
+            "R",
+            63
+          ]
+        },
+        {
+          "rule": "literal",
+          "state": 63,
+          "read": 0,
+          "row": [
+            0,
+            "L",
+            48
+          ]
+        },
+        {
+          "rule": "literal",
+          "state": 48,
+          "read": 0,
+          "row": [
+            1,
+            "L",
+            131
+          ]
+        },
+        {
+          "rule": "literal",
+          "state": 131,
+          "read": 0,
+          "row": [
+            1,
+            "L",
+            33
+          ]
+        },
+        {
+          "rule": "literal",
+          "state": 33,
+          "read": 1,
+          "row": [
+            0,
+            "L",
+            48
+          ]
+        },
+        {
+          "rule": "literal",
+          "state": 48,
+          "read": 1,
+          "row": [
+            1,
+            "L",
+            63
+          ]
+        },
+        {
+          "rule": "literal",
+          "state": 63,
+          "read": 0,
+          "row": [
+            0,
+            "L",
+            48
+          ]
+        },
+        {
+          "rule": "finite-list-induction",
+          "theorem": "return48_block",
+          "list": "middle",
+          "repetitions": "all finite list lengths",
+          "steps": "1*width_middle"
+        },
+        {
+          "rule": "literal",
+          "state": 48,
+          "read": 1,
+          "row": [
+            1,
+            "L",
+            63
+          ]
+        },
+        {
+          "rule": "unary-induction",
+          "state": 63,
+          "read": 1,
+          "row": [
+            1,
+            "L",
+            63
+          ],
+          "repetitions": "1+1*x"
+        },
+        {
+          "rule": "literal",
+          "state": 63,
+          "read": 0,
+          "row": [
+            0,
+            "L",
+            48
+          ]
+        },
+        {
+          "rule": "finite-list-induction",
+          "theorem": "return48_block",
+          "list": "pre",
+          "repetitions": "all finite list lengths",
+          "steps": "1*width_pre"
+        }
+      ]
+    }
+  ]
+}

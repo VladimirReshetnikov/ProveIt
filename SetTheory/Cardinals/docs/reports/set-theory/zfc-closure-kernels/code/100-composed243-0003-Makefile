@@ -1,0 +1,16 @@
+PYTHON ?= python3
+
+.PHONY: verify full pdf table
+
+verify:
+	$(PYTHON) -B code/verify.py
+
+full:
+	$(PYTHON) -B code/verify.py --expanded
+
+table:
+	$(PYTHON) -B code/render_table.py --check
+
+pdf: table
+	pdflatex -interaction=nonstopmode -halt-on-error report.tex
+	pdflatex -interaction=nonstopmode -halt-on-error report.tex

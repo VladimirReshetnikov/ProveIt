@@ -1,0 +1,107 @@
+\section{A 245-state local move-to-front transducer}
+
+This is a new local arithmetic transducer, not a complete consistency machine.
+Delete old state 255 from the pinned Prefix246 table and change exactly
+\[
+\delta(75,0)=(1,R,131),\qquad
+\delta(112,1)=(1,R,112),\qquad
+\delta(131,0)=(1,L,48).
+\]
+All other retained rows are unchanged. This leaves 245 working states and
+490 binary rows. The single former external incoming edge to 255 is replaced,
+so the displayed table is closed, with the same separate halt label 254.
+
+Write $B(v)=01^{v+1}$ and $C(v)=101^v$, extending both notations by
+concatenation to finite lists. A marked selected register has the form
+$B(A)00 1^x B(S)$, where $S$ is nonempty. Let the beginning of this word be
+cell zero. The complete left exterior is arbitrary and is preserved in the
+local claims below; the right exterior is blank for increment.
+
+\paragraph{Local theorem.}
+Positive decrement and increment retain their exact Prefix246 arithmetic
+contracts, including output tape, head, state and duration. On a selected
+zero, the new table has the contract
+\[
+ (95,0,\ell B(A)00B(S))
+ \longrightarrow
+ (112,-1,\ell B([0]\mathbin{+\!+}A\mathbin{+\!+}S))
+\]
+in $4\sum A+4|A|+9$ transitions. Thus the selected zero moves to the first
+register position, and the preceding register values move one position right.
+
+\paragraph{Proof of the zero contract.}
+The unchanged states 95 and 109 carry each block $B(v)$ to $C(v)$ in $v+2$
+right-moving steps. After traversing $A$, nine literal boundary transitions
+restore the selected $00$ and the compulsory leading $01$ of the following
+block to $0101$. They leave state 112 immediately to the left of the selected
+$B(0)$. No further cell of the following block is inspected.
+
+The changed leftward return now obeys the block identity
+\[
+ C(v)B(0)\longrightarrow B(0)B(v).
+\]
+To prove this, start state 112 on the rightmost cell of $C(v)$. Each of its
+$v$ terminal ones is crossed using the three-step literal cycle
+\[
+ (112,1)\mapsto(1,R,112),\quad
+ (112,0)\mapsto(1,L,131),\quad
+ (131,1)\mapsto(0,L,112).
+\]
+This swaps the adjacent word $10$ to $01$, moves the zero one cell left,
+and puts the head one cell left of its former position. Induction on $v$
+therefore moves the zero through all $v$ terminal ones in $3v$ steps. The
+remaining leading $10$ of $C(v)$ is changed to $01$ by the two literal rows
+$(112,0)\mapsto(1,L,131)$ and
+$(131,1)\mapsto(0,L,112)$. The head has crossed $v+2$ cells in $3v+2$
+steps. All cells outside $C(v)B(0)$ remain untouched.
+
+Structural induction on the prefix list, processing its last block first,
+gives $C(A)B(0)\longrightarrow B(0)B(A)$ in
+$3\sum A+2|A|$ steps. Adding the unchanged forward carry and the nine
+boundary moves yields the stated duration.
+
+\paragraph{Why the other local arithmetic contracts survive.}
+Positive decrement uses the unchanged row $(75,1)=(1,L,63)$ and never enters
+112 or 131. For increment, the old four-step blank-end closure
+$75,255,255,131$ is replaced by $75,131,48,63$; both closures write the same
+two terminal ones and reach exactly the same configuration in state 48.
+The remaining increment traversal rows are unchanged. Consequently the
+earlier ordinary induction proofs apply after substituting this literal
+four-step identity.
+
+\paragraph{The header continuation is still incompatible.}
+An exit in state 112 does not itself preserve the old branch protocol,
+because row $(112,1)$ has changed. This is a material limitation. Put the
+header at $-1$, zeros at $-2,-3$, and a first register $B(0)$ at cells
+$0,1$. From state 112 at head $-1$, the old table first reaches state 48
+at head $-4$ in three steps with one-set
+\[
+ \{-2,-1,1,3\},
+\]
+where cell 3 is an unchanged example exterior one. The new table first
+reaches the same state and head in five steps with one-set
+\[
+ \{-3,-2,0,1,3\}.
+\]
+The exact whole-tape continuation contract is different. Therefore this
+245-state table has no established conditional-instruction simulation or
+ZFC equivalence. Compiling source instructions with moved register names
+alone does not fix this additional control-region problem.
+
+\paragraph{A bounded compiler diagnostic.}
+Ignoring the unresolved header continuation, one can track the register-name
+permutation induced by moving a zero-tested register to the front. Under
+the supplied three-class product invariant, canonicalizing the names of
+registers known to be zero yields 11,117 reachable source-site/permutation
+pairs, over the unchanged 6,460-site source CFG. This overapproximate finite
+graph closes after 14,693 edges. It is a diagnostic showing that finite
+specialization need not incur all $9!$ permutations at every site; it is
+not a compiled decoder or a state-count bound. The accompanying JSON records
+the distribution and its scope.
+
+\paragraph{Evidence and proof boundary.}
+The executable verifier checks every finite row identity used above, the
+exact header obstruction, and 2,040 literal local operation instances. The
+unbounded assertions are the explicit ordinary induction arguments in this
+section, not an inference from the sampled runs. There is no new Lean/Rocq
+endpoint, serialized ZFC proof, or complete machine below 246 states here.

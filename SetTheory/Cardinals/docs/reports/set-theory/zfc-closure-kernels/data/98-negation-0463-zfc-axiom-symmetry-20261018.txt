@@ -1,0 +1,81 @@
+# Axiom-emission symmetries for ZFC consistency machines
+
+Research date: 18 October 2026 (UTC). Prepared for Vladimir Reshetnikov and the ProveIt project.
+
+**This archive does not contain a validated machine with fewer than 246 working states.** The requested numerical target remains open. The archive supplies a proved source-transformation family, a genuinely changed 201-node source control, and a fully checked composition of two prior 246-state variants.
+
+Read **[report/report.pdf](report/report.pdf)** for the complete mathematical argument, findings, provenance, and remaining obligations. Its editable source is **[report/report.tex](report/report.tex)**.
+
+## Contributions
+
+1. **Complete AX output-family transfer theorem.** A selector extracts any emitted output while restoring an arbitrary protected theorem-stack suffix. Replacement derivation-compiler blocks establish soundness and completeness for every fixed output order satisfying the exact AX interface. The inexpensive concrete family fixes GEN first and the gated bundle last, permutes all eight complete logical rows, and independently permutes their formal parameter roles. Twelve variants of the four-parameter Lukasiewicz row preserve its single destructive `u` read. The nominal family has `8! * 12 * 6^7 = 135444234240` settings. This is neither an exhaustive search nor a state-count claim.
+2. **A changed 201-node source.** Swapping `a,b` only in the Lukasiewicz row yields a different source word. A time-limited dictionary optimization returns a 201-node grammar with zero run 7, depth 39, and 6,460 leaves. Whole-source checks and an independent 15-helper, 292-pair source bisimulation pass. Existing 201-node counts retain their prior attribution. The new source has no certified binary compilation; its inherited-entry diagnostic is not a lower bound.
+3. **An exact composed 246-state control.** The prior 202-node source reassociation and prior alternate detector are compatible on a new exact binary table. All 8,391 guarded instruction cases pass, as does a direct whole-frame replay with 2,036,033 symbolic rules and complete blank initialization. The 246-state count and 409,449-step initialization are inherited from prior work, not new records.
+4. **Recorded finite searches.** The archive includes source/grammar campaigns and the 13,222-recipe composed-table fold ledger. No survivor below 246 was found. Fuel failures and solver timeouts are not impossibility proofs.
+
+## Exact successful machine
+
+The model is a single initially blank, two-way infinite binary tape; every transition writes and moves left or right, including entry into the separate halt label. All initialization states are counted.
+
+| Table | Working states | Start | Dispatch | Separate halt |
+|---|---:|---:|---:|---:|
+| `composed246/machine/zfc_composed246.tm` | 246, labels 0–245 | 0 | 88 | 246 |
+| `composed246/machine/zfc_composed246_old.tm` | 246 old labels | 95 | 96 | 254 |
+
+Canonical SHA-256:
+
+```text
+27281e721b970201c223663be2ef2d10653c54a27e9266b81a4a106b22bcc8c3
+```
+
+The exact table uses the **prior 202-node same-word reassociation**, not the new role-swapped 201-node source. The latter lives in a separate research directory and has no inferred machine table.
+
+The composition inherits an ordinary ZFC consistency-equivalence argument through the original safe-root/source/calculus calibration. There is no new end-to-end Lean or Rocq theorem about this exact table, no PA internalization, and no assertion of unconditional nonhalting or `Con(ZFC)`.
+
+## Quick reproduction
+
+Python 3.10 or newer with the standard library is enough for all included positive checks. From this archive root, run:
+
+```sh
+python3 -B verify_all.py
+```
+
+The driver first verifies `SHA256SUMS`, makes a temporary working copy, and runs the two exact logic checks, three source checks, and fast complete machine certificate. It leaves the delivered result records unchanged. Assertions must be enabled; do not use `-O`.
+
+For the additional direct whole-frame machine replay, which took about four minutes on the recorded host:
+
+```sh
+python3 -B verify_all.py --full
+```
+
+Each subdirectory also documents standalone commands. Running those directly may refresh its result JSON files. The original full-frame and finite fold-search results are included; rerunning negative searches is optional.
+
+## Contents
+
+| Path | Purpose |
+|---|---|
+| `report/` | Complete LaTeX manuscript and compiled PDF |
+| `logic/` | Transfer proof, exact stack/emitter checkers, twelve role maps, pinned small vendor inputs, logical audit |
+| `composed246/` | Exact tables, explicit fourteen-row delta, state bijection, complete source/runtime/blank certificates, portable dependencies, fold ledger |
+| `research/axiom_search/` | Changed source201, source checks, bounded search code and results, solver specification, attribution |
+| `research/root_search/` | Fresh pair-grammar and inherited-physical-dictionary searches, small bounded detector UNKNOWN control |
+| `research/detector_diagnostics/` | Optional C++ local synthesis, two failed finite-search records; no candidate machine |
+| `SOURCE_PINS.json` | Fixed source identities and incoming-archive hashes |
+| `VERIFICATION.json` | Final archive-level verification and review record |
+| `SHA256SUMS` | Integrity hashes for the shipped files, excluding itself |
+| `NOTICE.md` | Attribution and license scope |
+
+The numerical searches use only the standard library except the documented MILP discovery step (NumPy/SciPy), optional bounded detector synthesis (Z3), and optional stochastic detector discovery (a C++17 compiler). Saved source candidates are checked independently of those solvers. Time-limited solver incumbents are not promised to reproduce identically across hosts.
+
+The report can be rebuilt using:
+
+```sh
+cd report
+latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+```
+
+## Incorporation notes
+
+This is a research packet, suitable for a directory such as `Computability/BusyBeaver/Research/ZFC/axiom-symmetry-20261018/` or for retention as an incoming archive. It does not replace the current 246 baseline or export a new Lean endpoint. Preserve the local notices, imported-file manifests, and original result records when incorporating it.
+
+The next concrete target is a compiler/search that chooses physical decoder entries jointly with the proved AX symmetries. Under the current `127 + 119` decomposition, a certified 126-state sequence implementation without costs elsewhere would yield 245. The full entry-context and blank-start obligations still need to pass before such a count is accepted.

@@ -1,0 +1,16 @@
+[
+  {
+    "path": "code/verify_all.py",
+    "only_change": "Skip delivery manifest validation; retain exact semantic input bindings and all substantive checks",
+    "original_sha256": "a759ce9268ab87a97ae02971ad9aafcf01c86f03d184157d0919db64198c0a5d",
+    "adapted_sha256": "aa379ade6ab5b5abb2a8b9b321574d7c850af9b84dc864971dc012424ec78338",
+    "diff": "--- delivered/code/verify_all.py\n+++ run-copy/code/verify_all.py\n@@ -37,15 +37,8 @@\n     if out.exists() and any(out.iterdir()):\n         raise ValueError(\"The output directory must be empty; frozen results are never overwritten.\")\n     out.mkdir(parents=True, exist_ok=True)\n-    inventory = ROOT / \"SHA256SUMS\"\n     checked = 0\n-    for line in inventory.read_text().splitlines():\n-        expected, rel = line.split(\"  \", 1)\n-        path = ROOT / rel\n-        assert path.is_relative_to(ROOT) and path.is_file(), rel\n-        assert digest(path) == expected, (\"Artifact hash mismatch\", rel)\n-        checked += 1\n-    print(f\"PASS: {checked} delivered file hashes.\", flush=True)\n+    print(\"SKIPPED: delivery checksum manifests, per repository intake policy.\", flush=True)\n \n     env = os.environ.copy()\n     env[\"PYTHONDONTWRITEBYTECODE\"] = \"1\"\n"
+  },
+  {
+    "path": "code/verify.py",
+    "only_change": "Skip delivery manifest validation; retain exact semantic input bindings and all substantive checks",
+    "original_sha256": "1f3ec760ac980ec5c91be3d896b7fc6282b2d540a7afedd0627ed908f328477d",
+    "adapted_sha256": "a9562bc9fe2b7fd3a2b2434118439afa3c7baee45b2b1dfb24e0774b118d3cec",
+    "diff": "--- delivered/code/verify.py\n+++ run-copy/code/verify.py\n@@ -35,9 +35,7 @@\n     out.mkdir(parents=True,exist_ok=True)\n     parameterization=check_parameterization()\n     (out/'parameterization.json').write_text(json.dumps(parameterization,indent=2)+'\\n')\n-    manifest=json.loads((ROOT/'manifest.json').read_text())\n-    for rel,expected in manifest['sha256'].items():\n-        assert digest(ROOT/rel)==expected,('Artifact hash mismatch',rel)\n+    # Delivery checksum manifest intentionally not checked during intake.\n \n     def run(name,arguments):\n         log=out/(name+'.log')\n"
+  }
+]

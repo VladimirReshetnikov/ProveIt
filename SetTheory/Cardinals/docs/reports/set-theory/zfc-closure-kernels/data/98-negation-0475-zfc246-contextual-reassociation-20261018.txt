@@ -1,0 +1,87 @@
+# Below 246: contextual decoder reassociation and moving zero registers
+
+**No complete ZFC consistency machine with fewer than 246 working states is established by this contribution.**
+
+This archive records new source and local arithmetic results, exact experimental tables, independent reviews, and reproducible failures encountered while seeking such a machine. It is intended as research material for ProveIt. The complete mathematical account is in **report.pdf**, with editable source **report.tex** and the included section files.
+
+## What is new here
+
+1. **A stronger source reassociation theorem.** In Wade's structured register language, A;(B;C) and (A;B);C preserve every finite exit, exit level, and register vector whenever A has no escaping break and C has no escaping continue. B is unrestricted. The proof uses an exact finite-loop normal form and assumes no total termination. This is an ordinary mathematical proof, independently reviewed against RM.v; no new proof-assistant build is asserted.
+
+2. **A precise source-versus-microcode obstruction.** Reassociating old state 178 from (23,208) to (16,206) removes old state208 and yields an actual 245-state binary table. Its abstract source is bisimilar, including both decrement outcomes, and its complete 410,735-step blank bootstrap is unchanged. Its inherited instruction bridge nevertheless fails: a backward-peek use of state 178 changes the next program counter. An exact literal fixture records the input, all three dispatcher visits, complete tapes, and the successor-bit discrepancy.
+
+3. **A successful state-neutral reassociation.** Changing old state 226 to (190,207) preserves the source certificate, all 8,391 guarded affine instruction cases, and the exact blank bootstrap. The table remains 246 states because old 193 has another incoming edge.
+
+4. **A 245-state moving-zero local transducer.** Deleting 255 and changing three rows preserves the exact local increment and positive-decrement contracts. On zero decrement it moves the zero register block to the front. A universal block/list induction gives the complete local tape, state, head, and time contract. A separate five-transition header trace exposes the unresolved continuation. This is not a complete conditional interpreter or a calibrated blank machine.
+
+5. **Larger finite searches and a representation diagnostic.** The archive includes one/two-step source-reassociation searches, targeted contextual repairs, joint six-row runtime synthesis, and a closed source-site/register-permutation graph of 11,117 pairs. Their finite domains, horizon limits, expected failures, and missing whole-machine obligations are explicit.
+
+These results are additions relative to the supplied repository and incoming research examined in this session. No claim of priority over all programming-language or Turing-machine literature is made.
+
+## Status of each table
+
+All tables use original labels, start 95, dispatcher 96, and separate halt 254. Working-state counts exclude the halt state; numeric labels may have gaps.
+
+| File | Working states | Status |
+|---|---:|---|
+| reference/context246/machine/zfc_prefix246_old.tm | 246 | Unchanged reference baseline |
+| decoder/rotation_candidates/rotation178.tm | 245 | Rejected instruction-bridge experiment |
+| decoder/rotation_candidates/rotation190.tm | 246 | Rejected instruction-bridge experiment |
+| decoder/rotation_candidates/rotation219.tm | 246 | Rejected instruction-bridge experiment |
+| decoder/rotation_candidates/rotation226.tm | 246 | Passes source, full affine, and exact bootstrap checks |
+| kernel/candidate-mtf245-local.tm | 245 | Proved local transducer; incompatible header continuation |
+
+Neither rejected local contract nor finite wrong dispatcher tape proves that a mutant has a different eventual halting language. Neither is claimed reachable from its blank run. These findings are sufficient to withhold a completed consistency-machine claim.
+
+## Reproduce the principal findings
+
+Python 3.10 or later, standard library only:
+
+    python3 verify.py
+
+The verifier checks the delivered hash inventory when present. It reconstructs all four decoder proposals in a temporary directory and requires byte-identical tables, transformed sources, and source certificates. It independently checks all 4,533 operation pairs and 6,463 branches in each source certificate; reruns the inherited macro-induction premises; verifies the 42 macro support rows are unchanged; reproduces all documented affine outcomes; replays exact 410,735-step blank frames for the baseline and the178/226 tables; reproduces the literal178 discrepancy; and checks the moving-zero premises, 2,040 local fixtures, header obstruction, and permutation closure.
+
+The default verifier leaves delivered inputs unchanged. To save a fresh report:
+
+    python3 verify.py --output /path/to/recheck.json
+
+To check only the frozen archive inventory:
+
+    python3 verify.py --hashes-only
+
+Do not use Python's optimization flag -O: assertions are verification gates. The recorded integration run is in results/integration-verification.json. A top-level **PASS_RESEARCH_FINDINGS_REPRODUCED** includes required, correctly identified rejections. It does not mean that a 245-state consistency machine has passed.
+
+No external repository checkout or network connection is required for these checks. The independent audit sources and ordinary proofs are included; Lean/Rocq compilation is outside this reproduction target.
+
+## Build the report and optionally repeat searches
+
+The PDF requires pdfLaTeX with standard LaTeX packages:
+
+    make report
+
+All TeX inputs are included. Search reproduction additionally requires a C++17 compiler:
+
+    make search
+
+This optional target reruns the finite decoder and runtime search families and the time-bounded neutral walk. It takes substantially longer than the principal verifier and overwrites search-result records in the working copy. The walk's observed count varies with machine speed. A runtime search that hits its time limit is not an exhaustive no-survivor result; the delivered narrow and broad records both report COMPLETE.
+
+The six-row search permits endpoints at ticks 1–249, despite the result field named horizon having value 250. It exhausts only its specified 48 fixtures and successor alphabets. It is not a lower bound on the number of states, nor on arbitrary implementations of a register operation.
+
+## Logical scope
+
+The target is an ordinary ZFC proof of nonhalting iff the absence of a finite ZFC contradiction proof. The report distinguishes that target from an external proof-assistant theorem and from a serialized internal proof-code construction. The upstream syntactic calibration is audited, including the additional Foundation/Regularity equivalence in ZFC.Z_main.ZFCReg_equicons. No model-existence assumption is introduced.
+
+This session supplies no new complete sub246 simulation, no serialized internal ZFC proof, and no freshly compiled Lean/Rocq endpoint. The current source pins are:
+
+- ProveIt: 8e012a51d6e7fdad4d903089536427a813009a4f
+- Upstream zf-254: c132d7eae8158cd3a9850ea3eb7251158c3dd821
+
+See PROVENANCE.json for exact identities and source links.
+
+## Integration and attribution
+
+The entire directory can be incorporated under a research/report location. Preserve its experimental status labels. A useful integration should not register either 245-state table as an established consistency machine.
+
+reference/context246 is the unchanged, attributed historical reference package, except that interpreter-generated bytecode caches are omitted. Its embedded notices, inventories, relative paths, prior dates, and proof-status statements describe that historical package. The top-level report describes this contribution's current status.
+
+NOTICE.txt retains the upstream lineage and scope of copied material. The original reference licenses and attribution files remain in place. The helper decoder/rebracket_axioms.py is retained unchanged from an existing ProveIt report; its generic-backend CLI is not needed by this contribution. The primary-source excerpts in audit/primary_sources are unmodified and are not a standalone Rocq dependency closure.

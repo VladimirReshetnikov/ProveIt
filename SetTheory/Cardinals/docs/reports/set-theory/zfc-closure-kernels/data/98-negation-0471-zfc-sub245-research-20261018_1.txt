@@ -1,0 +1,200 @@
+# Below 245 states: finite kernels and checked encoding experiments
+
+**Status: research contribution; no machine below 245 states has passed the required checks.**
+
+The goal is a two-symbol, single-tape, blank-zero-start Turing machine with
+fewer than 245 working states satisfying
+
+\[
+\mathrm{ZFC}\vdash\neg\operatorname{Halt}(M)\leftrightarrow\operatorname{Con}(\mathrm{ZFC}).
+\]
+
+All initialization must be included. The separate halt state is not counted.
+The table in `evidence/scanner/second_short244.tm` is **explicitly rejected**;
+its successful blank prefix does not establish its runtime correctness.
+
+Read **`report.pdf`** for the complete mathematical argument, exact results,
+proof boundaries, and implementation tradeoffs. `report.tex` and the two
+included files in `report/` rebuild that report. The report has 28 pages.
+
+## Principal contributions
+
+The new assignment/class presentation uses six proper functions,
+`V,C,I,A,U,F`, and two non-equality predicates. Freezing a matrix's parameters
+permits the complete supported EPSC interface to be asserted in one guarded
+class row. A rich coordinate-fiber coding construction lets the same `F`
+value also carry a quantifier witness. The full proof is given for the S
+presentation; the B change preserves its models, and Qd is a definitional
+extension. The ordinary consistency calibration explicitly depends on the
+existing raw-EPSC or extensional-EPSC transports from ProveIt source44.
+
+| Recommended target | Constants | Native clauses / literals | Completed clauses / literals | Native flat bits | Completed flat bits | Completed sparse bits |
+|---|---:|---:|---:|---:|---:|---:|
+| FC13B | 1 | 13 / 26 | 23 / 57 | 1024 | 1499 | 1367 |
+| **FC14Qd** | **2** | **14 / 27** | **24 / 58** | **926** | **1401** | **1330** |
+| FC14B, extensional | 1 | 14 / 30 | 24 / 61 | 1215 | 1690 | 1553 |
+| **FC15Qd, extensional** | **2** | **15 / 31** | **25 / 62** | **1085** | **1560** | **1483** |
+
+The Qd constant is defined by the actual additional clause `q=I(d,d)`.
+Truth-only Q controls save another eight bits and have their own native-model
+transport proof. They are also included. None of these data costs is a binary
+machine state count, and fixed signature decoders are not included in the
+template-bit convention.
+
+The comparison applies the same optimizations to prior art. Source44's best
+tested original completed streams are 1616 / 1823 flat bits and 1543 / 1729
+sparse bits. Its optimized named-selector **native** controls are smaller
+than the new ones: 855 / 1022 flat bits, 811 / 975 sparse bits. A checker that
+handles equality directly must account for that disadvantage. Full constructor
+DAG encoding was also tested and loses against flat syntax in the principal
+comparisons.
+
+The prefix ground-term codec preserves the finite grounded clauses while
+making term names linear in tree size. On the identical substitution frontier
+`{d,V(d,d)}`, the largest original S endpoint costs 345 prefix bits or 346 bits
+as an integer, versus 63197 in the nested-Cantor representation. For Q/Qd it
+costs 285 / 286 bits versus 11796. The smaller numbers for Q/Qd's *different*
+first frontier `{d,q}` are separately labeled. Exact ideal refuters with fair
+enumeration and DPLL are supplied; parser, solver, enumeration, and binary
+initialization costs remain unmeasured.
+
+A three-function `V,C,F` channel control was also generated. Its raw completed
+template grows to 4357 bits and depth 56. It is a rejected encoding experiment
+with a proposed upper-model proof sketch, not an additional fully proved
+recommended endpoint.
+
+## Literal-machine results
+
+The untouched 245-state baseline passes a fresh complete executable replay:
+
+- 8391 universally guarded instruction cases and 2312645 expanded whole-frame rules.
+- 3013 source-bisimulation pairs, 6024 edges, and all 490 transition rows.
+- All 8390 nonhalting successor normalizations and 54 bootstrap equations.
+- Exact 407915-step blank initialization, with all one-cells and the zero exterior checked.
+- A separate 8385-fixture finite literal regression.
+
+The canonical table's SHA-256 is
+`17f4d430747c4a0cd580dc2cc13ea06a74ce7f51f12be4c2d12f6a646691dd13`.
+Current ProveIt documentation supports the ordinary ZFC endpoint. The
+245-state Lean endpoint remains open at complete instruction coverage and
+final composition; 246 states is the closed external Lean baseline. PA
+internalization also remains open. No new Lean or Rocq build was performed here.
+
+Deleting historical scanner state58 produces a 244-state table that reaches
+a safe blank frame after 818324 steps, but **99 universal instruction contracts
+fail**. The 50 failing sites are exactly the 49 decrement and one increment
+sites ending in six zeros. A standalone literal checker reproduces three full
+frame witnesses and the precise eight-transition false redispatch.
+
+Joint grammar/routing searches found no smaller accepted table. A conditional
+obstruction for caller183 explains a stalled five-zero search; rerouting that
+caller gives a feasible five-zero grammar, finally reduced to 135 rules. Even
+with the hypothesized 116-state framework it would cost 251 states. Ten
+completed additional grammar runs record 54653830 proposals. Finite-vocabulary
+integer optimization and current-table contextual merge searches are included
+with their exact bounded scopes. No negative result is a global lower bound.
+
+## Quick reproduction
+
+Use Python 3 with assertions enabled, never `python -O`. The logical and codec
+checks use only the standard library. Run from the extracted archive root:
+
+```sh
+python3 -B code/verify_package.py
+python3 -B code/reproduce_finite.py --output work/finite-reproduction
+python3 -B code/unpack_baseline.py
+python3 -B code/scanner_witness.py \
+  --package work/zfc245-proof-20261018 \
+  --output work/scanner-witness.json \
+  --affine-result evidence/scanner/second_scan_result.json
+python3 -B code/check_second_scan.py \
+  --package work/zfc245-proof-20261018 \
+  --output work/scanner-affine-replay
+```
+
+`verify_package.py` checks artifact identity only. `reproduce_finite.py` works
+on a disposable copy, regenerates the finite-theory/codec results, and runs
+the independent metric audit. The scanner affine replay is expected to emit
+`REJECTED` with 8292 passes and 99 failures. Its success is reproduction of the
+negative result, not acceptance of the candidate.
+
+For the full baseline replay, additionally provide a C++17 compiler:
+
+```sh
+python3 -B code/replay_164.py \
+  --package work/zfc245-proof-20261018 \
+  --output work/full-baseline-replay --whole-frame --literal
+```
+
+This takes several minutes. The inherited intake helper makes only its two
+documented delivery-manifest adaptations on a disposable copy. Semantic table
+and source identity checks remain. The actual run, adaptations, and evidence
+are in `evidence/baseline/`.
+
+For individual theory commands and the exact encoding formats, see
+`theory/README.md`. Optional `--whole-search` modes implement ideal unbounded
+refutation and are **not** smoke tests. They return successfully only for an
+exhausted UNSAT stage; host exceptions propagate rather than becoming logical
+refutations. Finite SAT stages are not finite models of the entire theory.
+
+## Research tools and inputs
+
+- `evidence/grammar/additional/REPRODUCE.md` contains the portable randomized
+  grammar-search commands, independent local audits, caller183 obstruction,
+  explicit repair, and final 135-rule checkpoint. Set `ZFC245_BASE` to the
+  extracted immutable reference package.
+- `code/milp_grammar.py` takes explicit `--package`, `--vocabulary`, and
+  `--output` paths. It needs NumPy and SciPy with `scipy.optimize.milp`.
+  `--free-routes` includes special entry choices. Supplied HiGHS results are
+  floating solver reports, not independently certified optima.
+- `code/search_safe_starts.py` groups blank starts by their exact normalized
+  first-one-write configurations, then applies the inherited `safe_seed254.py`
+  recognizer. Every positive gets an independent dense replay.
+- `code/local_merge.cpp`, `code/context_bypass.cpp`, and `code/action_bypass.cpp`
+  use the fixture compressed inside the baseline archive at
+  `inputs/state_reduction/candidate245-literal-cases.txt.gz`. They are finite
+  discovery filters. Compile with `g++ -O3 -std=c++17` and pass the decompressed
+  fixture as the first argument; run in a disposable output directory.
+- The ordinary pair-merge sweep uses the inherited
+  `code/state_reduction/resource_merge_search.cpp` inside that same archive.
+- Root-side `zero5-freeboot.*` files retained 18 optional bootstrap roots
+  despite their original name. Their limited scope is documented; the final
+  additional searches use the correct 14 required runtime roots.
+
+For example, the recorded free-route vocabulary can be extended with:
+
+```sh
+python3 -B code/milp_grammar.py \
+  --package work/zfc245-proof-20261018 \
+  --vocabulary evidence/grammar/words_l24.txt \
+  --output work/new-milp --seconds 90 --rounds 8 --free-routes
+```
+
+Every optimizer checkpoint is an abstract grammar unless a separate certificate
+establishes more. Ordered instruction-leaf equality alone does not prove
+control-flow equivalence after reassociation.
+
+## Sources and attribution
+
+Repository input: ProveIt commit
+`6446ff5668307a2ac6aee1896037f0b792090389`. Exact pinned URLs, Git blobs,
+source hashes, and section locators are in `theory/sources.json` and
+`PROVENANCE.json`. The original 245-state package is retained byte-for-byte
+under `reference/`, including its licenses and attribution.
+
+The original compact construction is attributed to Mira-Cult, verification
+to Jeff Ketchersid and collaborators, and the compiler framework to Andrew
+James Wade. ProveIt's prior machines and EPSC/class-kernel work retain their
+existing attribution. The general assignment/class method and earlier unary
+projection precedent are credited to Harvey Friedman's *Impossible Counting*,
+Section4.1. The new contribution is the specific frozen presentation and
+shared-coordinate witness argument, its measured encodings, the new checked
+experiments, and this synthesis. No global historical novelty claim is made.
+
+## Rebuild the PDF
+
+Run `pdflatex report.tex` twice from the archive root. The report uses standard
+LaTeX packages, with no external images. Its delivered compilation has no
+overfull boxes or unresolved references; all 28 rendered pages were visually
+inspected. `report/pdf-qa.json` records the layout check, and the final compiler
+log is included for reproducibility.

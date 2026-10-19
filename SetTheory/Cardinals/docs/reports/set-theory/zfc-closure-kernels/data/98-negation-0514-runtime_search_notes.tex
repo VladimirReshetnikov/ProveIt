@@ -1,0 +1,105 @@
+\section{Additional runtime superoptimization experiments}
+\label{sec:runtime-superoptimization}
+
+The experiments in this section are finite discovery searches on the exact
+old-label 245-state table whose SHA-256 is
+\texttt{f8dbeacdad5fd89c57e3f240781324b09110be8e0ccdb838a9c710fb28d2a267}.
+They provide reproducible exclusions for explicit bounded families. They do
+not establish state minimality, and a failure to finish within the specified
+clock does not exclude a slower correct implementation.
+
+\paragraph{A freely synthesized row after quotienting two states.}
+The search \texttt{shared\_row\_superopt.cpp} considers every pair of working
+states, excluding dispatcher 96, with one equal transition after identifying
+the two destinations. It redirects every incoming edge to the retained state,
+keeps that common row, and freely chooses the other row's write bit, direction,
+and destination. The destination ranges over every remaining working state
+and the halt state. The new initial state, if required, is the image of old
+state 95 under the quotient.
+
+This differs from selecting either of the two old rows: a successful row
+could use a third state's behavior, reverse direction, or change the written
+symbol. There are 344 eligible pairs and 337,120 complete candidate tables.
+None passes the inherited 8,385 complete-tape literal fixtures. The fixtures
+collectively exercise all 490 baseline transitions; their longest baseline
+run is 2,686 steps. Each candidate receives 20,000 steps per fixture on the
+represented interval $[-64,1983]$. Only 40 tables survive the first selected
+probes, and all are rejected by subsequent fixtures. The exact ledger is
+\texttt{shared-row-summary.json}.
+
+\paragraph{Coupled repair of the tail discriminator.}
+Old state 255 is entered only through row $(75,0)$. It is part of the shared
+arithmetic core that distinguishes a zero decrement from an increment reaching
+the right blank exterior. Removing this state and changing the predecessor
+alone was studied previously. Here the predecessor and a second repair row are
+synthesized jointly: neither mutation is required to work on its own.
+
+The local discovery fixtures are generated independently by
+\texttt{make\_macro\_cases.py}. They explicitly specify complete initial and
+target tapes for increment, positive decrement, and zero decrement, including
+a fixed nontrivial left context and several nonempty suffixes. There are 216
+fixtures, built from six prefix lists, four selected values, and four suffix
+lists. These values are finite samples, not a universal premise.
+
+The first coupled search chooses the repair row among the two rows of
+\[
+ \{2,4,6,7,10,14,20,42,48,63,73,75,83,95,109,112,131\},
+\]
+excluding the predecessor row itself. Both changed rows may write either bit,
+move in either direction, and target any state in that same set. All 152,592
+joint assignments are rejected within the 2,000-step local fixture clock.
+The broader run allows both destinations to range over all remaining working
+states and the halt state. All 31,693,200 joint assignments were rejected;
+none survived the first twelve probes. The exact ledger is
+\texttt{coupled-tail-alltargets-summary.json}. These two searches represent
+the interval $[-64,959]$ relative to the initial head.
+
+\paragraph{Seven jointly synthesized core rows and changed spare output.}
+The program \texttt{lazy\_core\_superopt.cpp} removes state 255 and synthesizes
+all seven rows
+\[
+ (109,0),(75,0),(75,1),(131,0),(131,1),(112,0),(112,1).
+\]
+The three forward-carry rows $(95,0),(95,1),(109,1)$ remain fixed. Each unknown
+row has 28 possible actions: either write bit, either direction, and a target
+in $\{95,109,75,131,112,48,63\}$. The nominal family consequently contains
+$28^7=13,492,928,512$ complete assignments.
+
+The search assigns a row when a fixture first reaches it. If an execution
+fails before reaching another unassigned row, no choice of those unvisited
+rows can change that execution within the clock. Thus backtracking prunes
+entire cylinders of assignments without imposing the previous searches'
+separability condition. Completion of the traversal is recorded explicitly.
+
+Three output contracts were searched separately: the baseline increment that
+appends a spare block of value 1, an increment appending a spare of value 0,
+and an increment appending no new block. Decrements retain their original
+contracts. All three seven-row traversals completed without a survivor on the
+216 fixtures with 300 steps per local run. The traversals visited respectively
+48,204,772, 49,833,532, and 48,732,656 assigned-row branches. The corresponding
+five-row subfamilies, fixing the two rows of state 112 as well, were also
+completed. Their represented interval is $[-32,223]$. Each recorded traversal
+had a 180-second wall-clock cap and completed before that cap; the reproduction
+wrapper permits 600 seconds to accommodate slower hardware. These altered
+spare contracts were included because spare values
+are auxiliary runtime data rather than additional logical registers.
+
+\paragraph{Scope and interpretation.}
+The quotient search uses complete instruction fixtures from the baseline.
+The coupled core searches use smaller local macro fixtures as discovery
+filters and would require subsequent whole-frame and blank-start proofs for
+any survivor. Every search has a finite tape interval and a finite clock.
+No table from these searches is promoted as a smaller ZFC machine.
+
+\paragraph{Validation of a changed source candidate.}
+The supplied \texttt{validate\_emitted.py} invokes two existing audit drivers
+without changing their inference rules. The whole-frame driver derives four
+block traversal lemmas, three arithmetic contracts, and nine register selectors
+on the actual emitted table, then checks every instruction and both guards
+of every decrement for nine independent natural register values, an arbitrary
+extra header gap, and an arbitrary nonempty spare suffix. The independent
+driver checks dense state renumbering, full-width residual-pointer identities,
+and an exact complete-tape replay of blank initialization. These runtime
+results concern the explicitly supplied source. Its comparison with the
+original enumerator, and any scratch-register preconditions used in that
+comparison, are separate proof obligations.

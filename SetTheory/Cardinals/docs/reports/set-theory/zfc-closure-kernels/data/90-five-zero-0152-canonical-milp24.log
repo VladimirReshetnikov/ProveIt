@@ -1,0 +1,59 @@
+MODEL 1756 words 14535 variables 25728 constraints
+Running HiGHS 1.8.0 (git hash: 222cce7): Copyright (c) 2024 HiGHS under MIT licence terms
+Coefficient ranges:
+  Matrix [1e+00, 1e+00]
+  Cost   [1e+00, 1e+00]
+  Bound  [1e+00, 1e+00]
+  RHS    [1e+00, 1e+00]
+Presolving model
+20995 rows, 14247 cols, 52931 nonzeros  0s
+13927 rows, 9589 cols, 34981 nonzeros  0s
+Objective function is integral with scale 1
+
+Solving MIP model with:
+   13927 rows
+   9589 cols (9589 binary, 0 integer, 0 implied int., 0 continuous)
+   34981 nonzeros
+MIP-Timing:        0.32 - starting analytic centre calculation
+
+Src: B => Branching; C => Central rounding; F => Feasibility pump; H => Heuristic; L => Sub-MIP;
+     P => Empty MIP; R => Randomized rounding; S => Solve LP; T => Evaluate node; U => Unbounded;
+     z => Trivial zero; l => Trivial lower; u => Trivial upper; p => Trivial point
+
+        Nodes      |    B&B Tree     |            Objective Bounds              |  Dynamic Constraints |       Work      
+Src  Proc. InQueue |  Leaves   Expl. | BestBound       BestSol              Gap |   Cuts   InLp Confl. | LpIters     Time
+
+         0       0         0   0.00%   123             inf                  inf        0      0      0         0     0.3s
+ R       0       0         0   0.00%   128             129                0.78%        0      0      0        78     0.4s
+
+99.9% inactive integer columns, restarting
+Model after restart has 4 rows, 5 cols (4 bin., 0 int., 0 impl., 0 cont.), and 9 nonzeros
+
+MIP-Timing:         0.4 - starting analytic centre calculation
+         0       0         0   0.00%   128             129                0.78%        0      0      0        78     0.4s
+ T       0       0         0   0.00%   128             128                0.00%        0      0      0        78     0.4s
+         1       0         1 100.00%   128             128                0.00%        0      0      0        78     0.4s
+
+Solving report
+  Status            Optimal
+  Primal bound      128
+  Dual bound        128
+  Gap               0%
+  P-D integral      0.000309258468391
+  Solution status   feasible
+                    128 (objective)
+                    0 (bound viol.)
+                    0 (int. viol.)
+                    0 (row viol.)
+  Timing            0.41 (total)
+                    0.00 (presolve)
+                    0.00 (solve)
+                    0.00 (postsolve)
+  Max sub-MIP depth 0
+  Nodes             1
+  Repair LPs        0 (0 feasible; 0 iterations)
+  LP iterations     78 (total)
+                    0 (strong br.)
+                    0 (separation)
+                    0 (heuristics)
+RESULT {'maxlen': 24, 'seconds': 0.5081772260000434, 'status': 0, 'message': 'Optimization terminated successfully. (HiGHS Status 7: Optimal)', 'objective': 128.0, 'words': 1756, 'variables': 14535, 'constraints': 25728}

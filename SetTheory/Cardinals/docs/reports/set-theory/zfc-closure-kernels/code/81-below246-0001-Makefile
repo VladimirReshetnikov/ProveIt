@@ -1,0 +1,7 @@
+.PHONY: pdf verify
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+
+verify:
+	python3 -B verify_bundle.py

@@ -1,0 +1,213 @@
+% Report section: include from a document loading amsmath, amssymb, booktabs,
+% array, and hyperref. Sources and logs are listed in the accompanying README.
+\section{Fine-atom grammar synthesis and a restricted obstruction}
+\label{sec:fine-atom-grammar}
+
+\paragraph{Outcome.}
+This investigation did not produce a machine with fewer than $245$ states.
+Its concrete contributions are an exact normalization of the decoder's
+closed program atoms, a generalized grammar search that exposes additional
+sharing opportunities, an independently checked obstruction to shortening
+the scanner while retaining the existing bootstrap equations, and a small
+finite-substrate mixed integer infeasibility result. These results are
+separate from the complete correctness argument for the existing $245$-state
+machine. No global state lower bound is asserted.
+
+The baseline is ProveIt commit
+\texttt{6446ff5668307a2ac6aee1896037f0b792090389}, using its recovered
+\texttt{zfc245-proof-20261018} submission. The final literal machine has
+$117$ framework states and $128$ grammar states. The abstract search files
+retain the historical field \texttt{framework\_states=118}, which predates
+removal of one scanner state; that field must not be mistaken for the final
+literal framework count.
+
+\subsection{An exact finer alphabet with the same physical implementations}
+
+The routed grammar writes its program as a word over $44$ closed atoms.
+Here ``closed'' means that neither a break nor a continue can escape the
+atom's root. For an AST node $t$, let $b(t)$ and $c(t)$ be the maximum numbers
+of external break and continue scopes required by $t$. An increment or halt
+has bounds $(0,0)$; a decrement has bounds $(1,0)$; explicit break and
+continue instructions have the evident bounds. For a binary node $(u,v)$,
+the frozen source uses
+\[
+ b(u,v)=\max\{b(u)-1,b(v),0\},\qquad
+ c(u,v)=\max\{c(u),c(v)-1,0\}.
+\]
+Consequently, when both children have bounds $(0,0)$, their binary node is
+ordinary composition of two closed programs and may be split into its two
+components without changing the ordered computation.
+
+Recursively split every such node, stopping when a child pair is not both
+closed. Applied independently to the $226$ immutable AST nodes, this gives
+an exact normal form over $30$ irreducible closed AST identifiers. All $30$
+occur as singleton atoms in the existing $44$-atom dictionary. The remaining
+$14$ atoms are exact words over those singleton atoms. There are no duplicate
+normal forms among the $44$ atoms, no duplicates among the original $127$
+sequence-state words, and no collision between an original sequence-state
+word and a terminal atom. Thus normalization alone merges no existing state.
+
+Several useful identities, using the existing letter names, are
+\[
+\begin{array}{rcl@{\qquad}rcl}
+ V&=&\mathtt{eijkl},&W&=&\mathtt{qkjGl},\\
+ R&=&\mathtt{qkjGllqkjG},&Y&=&\mathtt{eijkbIeijkfg},\\
+ S&=&\mathtt{qkjGlleijklqkjG},&o&=&\mathtt{qkg},\\
+ Z&=&(\mathtt{eijkfgeijkbI})^2,&p&=&\mathtt{EFg}.
+\end{array}
+\]
+The longer identities for $M,N,O,P,X,a$ are retained without abbreviation
+in \texttt{fine-atom-identities.json}, together with the underlying AST
+identifier lists. They are checked from the frozen source, rather than
+accepted as premises of the checker.
+
+The large AX word has $702$ letters in its original spelling and exactly
+$1270$ singleton fine atoms. Earlier work found a $533$-letter spelling in
+the fixed coarse dictionary, but the length of a spelling is not the number
+of binary grammar states. The synthesis objective here is different: use
+the fine normal form as the identity of a substring, while retaining all
+$44$ physical atom implementations as available terminals. Each existing
+compound atom therefore has zero \emph{additional} state cost, because its
+implementation is already included in the framework. A newly introduced
+binary concatenation costs one grammar state.
+
+This formulation can recognize a newly reassociated substring as an
+already implemented compound atom even when its coarse spelling differs.
+It also permits alternative cuts through the interior of a coarse atom's
+fine expansion. The original left/right entry masks remain attached to the
+physical terminal implementations; equal abstract words do not remove those
+orientation requirements. The resulting search is a useful extension of
+ordinary literal-word grammar reassociation, but the retained run did not
+cross the $128$-rule boundary.
+
+\subsection{Independent checks and the fixed-bootstrap scanner obstruction}
+
+\texttt{verify\_fine\_identities.py} uses only the Python standard library
+and does not import the search implementation. It rederives the closed-atom
+normal forms and checks each proposed rule's exact word, children, terminal
+orientation, and reachability. It also checks all $22$ consumed projections
+of the $11$ folded-entry route groups and all $54$ bootstrap equations.
+Expanding the actual immutable AST under the normalized grammar gives all
+$6460$ instruction leaves in their original order. The final search output
+has maximum source zero run $6$ and maximum source depth at most $64$;
+the precise depth and file identities are in its retained check result.
+These checks establish source and grammar facts. They are not a replacement
+for a complete parametric binary-machine simulation proof.
+
+There is a particularly simple obstruction to obtaining a five-zero source
+while retaining the existing bootstrap equations. Five of the frozen
+left-child equations force the chain
+\[
+\mathtt{eijkKCqkjGeU}
+\longrightarrow\mathtt{eijkKCqkjGe}
+\longrightarrow\mathtt{eijkKCqkjG}
+\longrightarrow\mathtt{eijkKC}
+\longrightarrow\mathtt{eijk}
+\longrightarrow\mathtt{e}.
+\]
+The fixed implementation of atom $\mathtt e$ is itself a binary AST node
+with an instruction as its left child. Thus this chain forces six
+consecutive zero choices. It is not merely an unused dictionary word:
+the frozen right branches
+\[
+\mathtt{AEFIEFCJ}\to\mathtt{EFIEFCJ}\to\mathtt{EFCJ}\to\mathtt J
+\]
+are in the original dispatcher root. The immutable AST of $J$ has the
+relevant sequence word as its right child. The full original source
+therefore retains the instruction address
+\[
+ \mathtt{1111000000}.
+\]
+The checker verifies that exact address, the old sequence state $172$, its
+AST identifier $221$, and the instruction reached there. This is a direct
+finite obstruction under the stated frozen equations. It does not prohibit
+a five-zero source after changing the bootstrap, the pertinent equations,
+or the implementation of an atom. In particular, it directs a shorter
+scanner search toward a new initialization proof instead of further
+optimization inside an impossible fixed-lock problem.
+
+\subsection{A finite grammar model with a positive control}
+
+The mixed integer experiment fixes the current route words and all complete
+productions traversed by their consumed projections. Together with the
+bootstrap equations, this freezes $43$ productions. This is intentionally
+stronger than permitting arbitrary alternative route targets with equivalent
+projections. Starting with the current normalized words and the $44$
+terminals, two rounds of rotation-generated subword closure produce $917$
+potential nonterminal words and $3384$ orientation-valid productions.
+
+For each candidate nonterminal $w$, let $x_w\in\{0,1\}$ indicate whether
+it is present. For each allowed production $w\to ab$, let
+$y_{w,a,b}\in\{0,1\}$ select that production. The model imposes
+\[
+ \sum_{(a,b):w\to ab}y_{w,a,b}=x_w,
+ \qquad y_{w,a,b}\le x_a,
+ \qquad y_{w,a,b}\le x_b,
+\]
+where a terminal child has no activation variable. Required roots are
+active and frozen productions have no alternative. Every child word is
+strictly shorter than its parent, so a feasible solution is an acyclic
+binary grammar. Unreachable active words may always be dropped.
+
+The key bounded experiment additionally imposes
+\[
+ \sum_w x_w\le127,
+ \qquad
+ \sum_{w\notin G_{128}}x_w\le2,
+\]
+where $G_{128}$ is the set of incumbent grammar words. It therefore allows
+at most two new helper words, while allowing other incumbent words to be
+removed or to use any permitted production in the finite substrate.
+No source zero-run or depth constraint is imposed in this model. Hence the
+scanner condition cannot be responsible for the reported infeasibility.
+
+SciPy's bundled HiGHS solver reports this model infeasible. A positive
+control constructs the exact binary variable assignment for the incumbent
+$128$-rule grammar and checks that it satisfies every structural constraint;
+the sole violated constraint under the tighter bound is the intended
+$127$-rule inequality. The initial infeasibility run took $8.187$ seconds;
+a fresh run including the positive control is retained separately. This is
+a solver-reported result for the explicit finite substrate, frozen routes,
+and two-helper restriction. It is not a proof-assistant theorem, a global
+minimality claim, or an obstruction to three or more new helper words.
+
+The unrestricted finite model timed out after $181.384$ seconds without an
+incumbent. The three-new-helper relaxation also timed out, after $90.037$
+seconds without an incumbent. Neither timeout supports a nonexistence
+claim. The model, generator, solver output, limits, and status records are
+included so that larger budgets or improved solver encodings can continue
+these investigations from concrete inputs.
+
+\subsection{Completed bounded searches}
+
+The independent search lanes completed as follows.
+\begin{center}
+\begin{tabular}{@{}lrrl@{}}
+\toprule
+Search & Proposals & Seconds & Best grammar count\\
+\midrule
+Literal-word routing, seed $8841$ & $14\,211\,995$ & $600.004$ & $128$\\
+Fine-atom routing, seed $9022$ & $6\,939\,406$ & $600.002$ & $128$\\
+Private-subtree cut/reparse, $20$ rounds & $563$ & $1.294$ & $128$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The last experiment replaces a selected word's entire private descendant
+subgraph in one proposal, using the remaining live words and the $44$
+physical terminals as the parsing dictionary. Its finite dictionary filter
+allows only one private zone of the incumbent to be rebuilt without
+increasing its immediate cost, which explains why this particular
+neighborhood gives little movement. This observation concerns that filter,
+not all possible coordinated grammar replacements.
+
+All timed search counts are historical run measurements. Reproduction on a
+different machine can execute a different number of proposals before the
+same time limit. None of these bounded searches is exhaustive over binary
+Turing machines, grammars, source encodings, or equiconsistent theories.
+
+The main next step suggested by this lane is joint synthesis over the
+exact fine-atom identities while allowing coordinated changes involving
+more than two helper words and alternative route targets. Any successful
+abstract reduction must then be realized as a literal transition table and
+passed through the complete source bisimulation, instruction coverage, and
+blank-initialization checks before it can support a smaller-machine claim.

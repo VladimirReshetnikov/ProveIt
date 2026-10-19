@@ -1,0 +1,74 @@
+{
+  "conclusion": "No sub-246 machine established; all jobs terminal.",
+  "pin": "7ba1598461c6e485c5aeb8f673c0b1d571f8012b",
+  "positive_control": {
+    "table": "reuse_control8.tm",
+    "working_states": 246,
+    "validation": "reuse_control8.complete_validation.json"
+  },
+  "terminal_unknown": [
+    {
+      "script": "synthesize_contextual_detector.py",
+      "output_requested": "contextual7_64.json",
+      "states": 7,
+      "steps": 64,
+      "prefix": 0,
+      "helpers": 19,
+      "cap_seconds": 1200,
+      "exit_code": 124,
+      "return_discipline": "first state/head return"
+    },
+    {
+      "script": "synthesize_contextual_detector.py",
+      "output_requested": "contextual7_64_markfirst.json",
+      "states": 7,
+      "steps": 64,
+      "prefix": 0,
+      "first_write": 1,
+      "helpers": 19,
+      "cap_seconds": 800,
+      "exit_code": 124,
+      "return_discipline": "first state/head return"
+    },
+    {
+      "script": "synthesize_detector_cnf.py",
+      "states": 7,
+      "steps": 24,
+      "borrow_right": 2,
+      "cap_seconds": 900,
+      "exit_code": 124
+    },
+    {
+      "script": "synthesize_detector_cnf.py",
+      "states": 7,
+      "steps": 20,
+      "borrow_left": 1,
+      "helpers": 8,
+      "cap_seconds": 900,
+      "exit_code": 124
+    },
+    {
+      "script": "synthesize_detector_cnf.py",
+      "states": 7,
+      "steps": 16,
+      "borrow_left": 1,
+      "borrow_right": 2,
+      "helpers": 8,
+      "cap_seconds": 900,
+      "exit_code": 124
+    }
+  ],
+  "bounded_unsat_results": [
+    "reuse_control7.json",
+    "cnf7_12_borrowboth_helpers8.json",
+    "contextual7_64_prefix4.json",
+    "restoring7_64_prefix4.json",
+    "sourcehelpers7_64_prefix5.json",
+    "sourcehelpers7_64_prefix4.json"
+  ],
+  "time_unbounded_fixed_window_results": [
+    "last_state_python_borrow2.json",
+    "last_state_python_borrow4.json"
+  ],
+  "scopes": "UNKNOWN is not UNSAT. UNSAT is confined to the recorded finite template. Exact-cycle enumeration is time-unbounded but fixes the first six scanner states and a finite readable window. No global lower bound is claimed."
+}

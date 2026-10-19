@@ -1,0 +1,34 @@
+\section{Exact affine commutations beyond disjoint register supports}
+
+An independent audit recognizes 22 of the 30 fine tokens as affine
+transformations on the nine registers.  It reads the actual closed AST,
+constructs the finite control graph, and accepts only the following cases:
+an increment-only terminating path, or a single decrement guard whose
+zero successor returns and whose positive successor adds a fixed vector
+before returning to that same guard.  The increment vector must have zero
+in the guard register.  In the second case the guard decreases once per
+round, so induction on its initial natural value proves termination and the
+exact transfer map.  No bounded execution or finite-field sampling is used
+to infer a transformation.
+
+A homogeneous $10\times10$ integer matrix represents each such map, with
+the final coordinate fixed at~1.  Equality $AB=BA$ then proves commutation
+on every natural register vector.  The audit supplies 44 commuting pairs
+whose register supports overlap, supplementing 134 already safe disjoint
+pairs, for 178 pairs in total.  For example,
+\[
+ W M\equiv M W,
+ \qquad N M\equiv M N.
+\]
+Here $W$ adds four times register~7 to register~1 and clears register~7;
+$M$ increments register~1.  Their writes overlap, but neither operation
+changes the other's controlling input.  Likewise $N$ adds register~2 to
+register~1 and clears register~2.  Pure footprint disjointness misses both
+identities.
+
+The supplied JSON contains the exact matrices, loop guards, increment
+vectors and finite control paths; the text file lists the 178 certified
+pairs for trace search.  A trace reordering using these pairs preserves
+the complete register transformation of the finite source word.  As with
+all source transformations, a resulting literal binary table still needs
+its own dispatcher and blank-start verification.

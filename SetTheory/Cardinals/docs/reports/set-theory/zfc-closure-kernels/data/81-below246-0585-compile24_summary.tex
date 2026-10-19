@@ -1,0 +1,90 @@
+\section{A complete compilation of the shorter-zero-run source}
+The reassociated source graph \texttt{rotation\_zero\_candidate\_24.json}
+contains 202 distinct pair subtrees, 6,460 instruction occurrences, and 8,391
+guarded instruction cases. Its maximum instruction-word length is 36 and
+its maximum zero run is six. The separate source certificate checks that
+every instruction and register argument is preserved, and that the successor
+of every guarded source instruction is conjugate to the original source
+under the occurrence-order correspondence.
+
+We compiled this graph into a \emph{250-state runtime}. This is a verified
+mechanism result; it does not meet the requested fewer-than-246 threshold,
+and its exact blank-start prefix has now also been verified separately.
+
+\subsection{Physical assignment and exact state accounting}
+The original 246-state table realizes 203 distinct source pair classes using
+191 physical decoder states and 55 support states. Its twelve savings depend
+on tape context and borrowed transition rows. For the new graph, matching
+unchanged subtrees and then matching the intervals of instruction occurrences
+assigns 182 pair classes to 173 old states. Twenty new inner pairs require
+states, while only eighteen old decoder states become available. Assigning
+these twenty pairs therefore gives 193 decoder states, nine shared-pair
+savings, and a preliminary total of 248 states.
+
+Three retained shared assignments do not implement their new source roles.
+We resolve them explicitly:
+\begin{center}
+\begin{tabular}{r r r l}
+Source node & Old shared state & Clone & Cause\\\hline
+7844 & 183 & 258 & A borrowed branch of state 237 changed.\\
+181 & 250 & 259 & Its preceding selector bit changed from one to zero.\\
+11555 & 244 & 260 & The two shared branch targets changed.\\
+\end{tabular}
+\end{center}
+The resulting decoder uses 196 states for 202 pair classes. Six shared
+assignments remain, at states 81, 143, 151, 153, 159, and 167. Together with
+the 55 unchanged support states, this gives 251 working states.
+The exact source-node assignment and every changed transition relative to
+the frozen 246-state table are recorded in \texttt{compile24\_summary.json}.
+
+There is also a control-flow borrowing issue that requires no new state.
+The old break handler at row $(120,1)$ enters state 61, whose read-one row
+used to erase another trailing one. Reassociation gives that row a decoder
+role. Both $(120,1)$ and the newly placed break row $(257,1)$ are instead set
+to $(0,\mathrm L,22)$. State 22 still has the required read-one erase
+transition to state 33. These locations have exactly three trailing ones,
+which is the condition required by this finite erase chain.
+
+\subsection{Scanner saving and validation}
+Delete state 74 and replace row $(58,0)$ by $(0,\mathrm L,84)$. The left
+scanner then recognizes eight consecutive zeros instead of nine. The
+shorter source words permit this scanner throughout every instruction
+phase, including the temporary marker configurations used by decrement.
+This removes one support state and gives 250 working states.
+
+The repaired 251-state table passes an independent dense-tape replay of all
+8,391 guarded instruction cases, comparing the entire tape and head against
+the declared result. This finite suite takes 3,635,404 transitions in total,
+with at most 762 transitions in any case. The shortened 250-state table
+passes the separate whole-frame affine checker for all 8,391 guarded cases,
+using the unchanged arbitrary-natural and finite-list register macro
+inductions. The domain includes every header distance at least 40,
+arbitrary primary register values satisfying the guard, and every nonempty
+valid spare suffix. The preserved spare suffix and any specified new block
+are included in the whole-tape equation. Source depth 36 needs no increase
+in the minimum distance of 40.
+
+The universal certificate is
+\texttt{compiled24\_scanner250\_audit.json}. The actual table is
+\texttt{compiled24\_scanner250.tm}, with SHA-256
+\texttt{e3d6e23d9970e1e3dceca66490e6a789e8b6cf692ab4d44fb911f591cb39a8b9}.
+The hash in the accompanying JSON is authoritative if this subsection is
+incorporated into a larger report.
+
+A separate exact literal replay starts this table in state 95 on the blank
+tape and reaches the admitted safe root after 407,983 transitions. It checks
+the complete tape, including all 167 spare blocks and the zero exterior.
+This finite prefix composes with the universal instruction theorem and the
+source conjugacy to give blank-start halting equivalence with the reference
+246-state construction. The resulting consistency calibration is an
+ordinary mathematical proof; no new proof-assistant kernel endpoint is
+claimed. The state count 250 remains above the requested threshold.
+
+\subsection{Bounded postcompilation reductions}
+Recomputed finite instruction fixtures exercise all 500 rows of the new
+250-state table. All 62,001 uniform state redirections and all 123,322
+mixed-read-row state folds fail those exact-frame tests. The former use
+4,000 transitions and at most 15 intermediate dispatcher visits per case;
+the latter use 6,000 transitions and at most 24 visits. Both use a
+512-cell window with coordinates $[-128,383]$. These are negative results
+for specified finite recipe families, not a lower bound on machine size.

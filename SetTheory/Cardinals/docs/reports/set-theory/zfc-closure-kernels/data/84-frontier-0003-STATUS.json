@@ -1,0 +1,119 @@
+{
+  "title": "At the 246-state frontier: new results and failed reductions",
+  "date": "2026-10-18",
+  "requested_working_state_bound": 245,
+  "verified_machine_below_246_found": false,
+  "new_closed_lean_or_coq_endpoint": false,
+  "new_internal_zfc_proof_object": false,
+  "ordinary_proofs_included": true,
+  "provenance": {
+    "ProveIt_commit": "79957d7b290ec807d434959a0c6ecc06ee90b419",
+    "vendored_upstream_commit": "297ab8df7e5de329605c3875b4934643b371a5e3"
+  },
+  "target": "ZFC proves: not Halt(M, blank) iff Con(ZFC), with <=245 working states",
+  "machine_model": {
+    "tapes": 1,
+    "symbols": 2,
+    "tape": "two-way infinite",
+    "initial_tape": "all zero",
+    "moves": [
+      "L",
+      "R"
+    ],
+    "separate_halt_not_counted": true,
+    "initialization_counted": true
+  },
+  "tables": [
+    {
+      "path": "baseline/zfc_prefix246.tm",
+      "role": "unchanged existing reference",
+      "working_states": 246,
+      "start": 0,
+      "dispatch": 88,
+      "halt": 246,
+      "sha256": "89cda615b3ea9fcac07ad6b08e0351faa34841a56935b6f5846d3920f13bc0fc"
+    },
+    {
+      "path": "baseline/zfc_prefix246_old.tm",
+      "role": "unchanged old-label reference",
+      "working_states": 246,
+      "start": 95,
+      "dispatch": 96,
+      "halt": 254,
+      "sha256": "303911c554284c49ce09042d8127feba4da260baae766e32260034aa3bdb82ee"
+    },
+    {
+      "path": "experiments/runtime/offset246_old.tm",
+      "role": "local arithmetic experiment; blank initializer unproved",
+      "working_states": 246,
+      "blank_consistency_equivalence_established": false
+    },
+    {
+      "path": "experiments/runtime/partial_prefix_left245_old.tm",
+      "role": "FAILED unchanged instruction interface; exact counterexamples retained",
+      "working_states": 245,
+      "blank_consistency_equivalence_established": false
+    },
+    {
+      "path": "experiments/proof/atomic-target-portable/original-raw-wade.tm",
+      "role": "raw compiler control",
+      "working_states": 281,
+      "new_binary_simulation_claim": false
+    },
+    {
+      "path": "experiments/proof/atomic-target-portable/atomic-target-raw-wade.tm",
+      "role": "modified raw compiler control",
+      "working_states": 285,
+      "new_binary_simulation_claim": false
+    }
+  ],
+  "results": {
+    "read_only_detector": {
+      "states_ruled_out": 7,
+      "time_bound": null,
+      "scope": "Isolated terminating read-only classifier; long input has a left-infinite zero region. Writes, additional shared states and opaque-marker access excluded.",
+      "evidence": "ordinary proof"
+    },
+    "bounded_detector": {
+      "states": 7,
+      "steps": 12,
+      "solver_status": "UNSAT",
+      "proof_certificate": "none",
+      "variables": 3485,
+      "clauses": 53560,
+      "longer_runs": "UNKNOWN"
+    },
+    "atomic_target": {
+      "predicate": "H mod4 =1",
+      "ordinary_internal_zfc_equivalence": true,
+      "raw_state_delta": 4,
+      "isolated_controls": 1024,
+      "full_nip_controls": 16384
+    },
+    "decoder": {
+      "emitted_variants": 9108,
+      "support_cover_at_least_246": 6102,
+      "sufficient_checker_rejections": 3006,
+      "independent_python_replay": "PASS",
+      "source_rebased_examples": 7,
+      "independent_source_edges": 58730
+    },
+    "runtime": {
+      "universal_local_contracts": 6,
+      "reference_blank_witness_time": 413871,
+      "reference_increment_steps": 2590,
+      "mutant_increment_steps": 1544,
+      "reference_pc": "01011",
+      "mutant_pc": "011",
+      "entry_recipes_per_fixture": 980,
+      "entry_survivors": 0
+    }
+  },
+  "limitations": [
+    "No verified sub246 machine",
+    "No new kernel-checked complete machine theorem",
+    "No DRAT/LRAT certificate for bounded UNSAT",
+    "No unconditional consistency or nonhalting claim",
+    "No global state-minimality claim"
+  ]
+}

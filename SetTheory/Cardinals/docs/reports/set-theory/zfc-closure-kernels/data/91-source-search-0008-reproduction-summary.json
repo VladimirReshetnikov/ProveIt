@@ -1,0 +1,122 @@
+{
+  "status": "PASS",
+  "working_states": 245,
+  "sub245_machine_found": false,
+  "canonical_sha256": "d193291ac92bc090a9b8a6e7d2c578928109633e12155cd0ce9fc1b5f66d2921",
+  "full_symbolic_replayed": false,
+  "default_frame_evidence": "Archived full replay linked by exact table/site hashes",
+  "checks": [
+    {
+      "check": "dne-formula-interface",
+      "status": "PASS",
+      "seconds": 0.046034074000090186,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/build/logic/check_dne_variants.py"
+      ]
+    },
+    {
+      "check": "boolean-formula-interface",
+      "status": "PASS",
+      "seconds": 0.040425250999760465,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/build/logic/boolean_bundle_variants.py",
+        "--check"
+      ]
+    },
+    {
+      "check": "macro-fine-bridge",
+      "status": "PASS",
+      "seconds": 0.057053571000324155,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/work/machine_reduction/audit_macro_fine_bridge.py",
+        "--dag",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/build/logic/snapshot/ZF/m254/coq/prog/Dag254.v",
+        "--grammar",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/build/runtime/inputs/closed-sequence-grammar-next22.json",
+        "--macro-map",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/build/logic/macro_to_fine.json",
+        "--rmpath",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/build/runtime/reference/jeff/ZF/m254/tools/prog/rmpath.py",
+        "--output",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/build/macro-fine-bridge.json",
+        "--certificates",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/build/macro-fine-bridge-certificates.json"
+      ]
+    },
+    {
+      "check": "locked-scanner-obstruction",
+      "status": "PASS",
+      "seconds": 0.030238055000154418,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/work/grammar_search/locked_scanner_obstruction.py",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/build/runtime",
+        "--output",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/build/locked-scanner-obstruction.json"
+      ]
+    },
+    {
+      "check": "locked-fine-scanner-obstruction",
+      "status": "PASS",
+      "seconds": 0.04097843300041859,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/work/grammar_search/locked_fine_scanner_obstruction.py",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/build",
+        "--candidate",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/machine/grammar.json",
+        "--output",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/build/locked-fine-scanner-obstruction.json"
+      ]
+    },
+    {
+      "check": "source-affine-blank",
+      "status": "PASS",
+      "seconds": 2.4093923159998667,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/build/runtime/code/build_source_machine.py",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/machine/grammar.json",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/build/normalized245",
+        "--short-scan",
+        "--padding",
+        "64"
+      ]
+    },
+    {
+      "check": "independent-frame",
+      "status": "PASS",
+      "seconds": 0.20489237800029514,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/work/machine_reduction/audit_frame_dynamic.py",
+        "--old-table",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/build/normalized245/machine_old.tm",
+        "--table",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/build/normalized245/machine.tm",
+        "--renumbering",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/build/normalized245/renumbering.json",
+        "--logical-sites",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/build/normalized245/sites_logical.json",
+        "--physical-sites",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/build/normalized245/sites_physical.json",
+        "--bootstrap",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/build/normalized245/blank_boot.json",
+        "--whole-frame-report",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/certificates/normalized245/whole-frame.json",
+        "--grammar",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/machine/grammar.json",
+        "--locks",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/work/fine_grammar/fine-lock54.txt",
+        "--require-seed",
+        "3,0,0,0,3,0,0,0,0",
+        "--output",
+        "/workspace/scratch/a19445e9aa35/output/zfc-below245-source-search-20261018/build/independent-frame-audit.json"
+      ]
+    }
+  ],
+  "scope": "Executable verification plus the explicit ordinary logical proof; no new proof-assistant endpoint."
+}

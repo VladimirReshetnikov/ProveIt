@@ -1,0 +1,306 @@
+% Standalone section: requires standard LaTeX, amsmath and amssymb.
+% Input from the parent research report with \input{interpreter/interpreter_results}.
+\section{Interpreter compression: a local saving and two integration barriers}
+\label{sec:interpreter-compression}
+
+The interpreter investigation produced a new local unary-register increment
+routine that permits deletion of one working state, together with explicit
+reasons that the resulting 244-state table does not implement the present
+Routing245 source program.  The local theorem is a statement about all natural
+register values and all finite lists of blocks.  Its proof below is by unary
+and list induction.  The integration failures are separate, finite,
+reproducible computations.  None of these results supplies a 244-state
+consistency machine.
+
+State numbers in this section are the original labels, with start state 95,
+dispatcher 96, and external halt state 254.  The reference table has 245
+working states and 490 transitions; these labels are distinct from the
+canonical numbering with start 0, dispatcher 88, and halt 245.  The supplied
+reference table is copied from the pinned Routing245 certificate, whose
+provenance is recorded in the parent report and in the accompanying notices.
+
+\subsection{Moving the register prefix instead of its suffix}
+
+Write
+\[
+ B(v)=0\,1^{v+1},\qquad D(v)=1^{v+1}0
+ \quad(v\in\mathbb N).
+\]
+For a finite list $A=(a_1,\ldots,a_k)$, let $B(A)$ and $D(A)$ be the
+respective concatenations, and set
+$w(A)=\sum_{i=1}^k(a_i+2)$.  Both concatenations are empty when $A$ is
+empty.  A register selected for increment is marked as $00\,1^x$; its
+unmarked representation would be $B(x)$.  The existing backend moves a
+suffix and supplies additional spare space.  The experiment instead
+slides the preceding register blocks and their header one cell left.
+
+The experimental table makes exactly these three edits:
+\begin{center}
+\begin{tabular}{c|c|c}
+State/read & Reference write/move/next & Experimental write/move/next\\
+\hline
+$75/0$  & $1,R,255$ & $0,L,112$\\
+$83/0$  & $1,R,95$  & $1,L,112$\\
+$131/0$ & $0,L,48$  & $0,R,48$
+\end{tabular}
+\end{center}
+It then removes both transitions of state 255.  All other rows are
+unchanged.  The file \texttt{left\_\allowbreak increment\_\allowbreak local244\_\allowbreak old.tm} has 244
+working states and is retained as an explicitly rejected integration
+experiment.
+
+\paragraph{Word identity.}
+For every finite natural-number list $A$,
+\begin{equation}
+ 0D(A)=B(A)0.\label{eq:left-increment-word}
+\end{equation}
+The empty-list case is $0=0$.  Since $0D(v)=B(v)0$, the inductive step is
+\[
+ 0D(v)D(A)=B(v)0D(A)=B(v)B(A)0.
+\]
+Thus this identity does not depend on testing finitely many block lengths.
+
+\paragraph{One-block transitions.}
+Starting in state 73 at the first symbol of $B(v)$, the machine passes the
+block to the right unchanged, returning to state 73 just after the block,
+in exactly $v+2$ moves.  The initial zero uses $73/0$ and the first one
+uses $83/1$; subsequent ones use the state-73 self-loop.  The edited row
+$83/0$ is consequently not used while seeking across an ordinary block.
+
+Starting in state 131 at the rightmost symbol of $B(v)$, the machine
+passes to its left, replacing $B(v)$ by $D(v)$, in exactly $v+2$ moves,
+and again ends in state 131.  Indeed, $131/1$ writes zero and enters
+state 112 moving left.  The $v$ remaining ones are traversed by the
+$112/1$ self-loop.  The leading zero is replaced by one using $112/0$,
+which returns to state 131 on its left.  This is a direct induction on
+$v$.  Induction on the number of blocks then gives the same two scan
+contracts for $B(A)$, with time $w(A)$, including $A=[]$.
+
+\paragraph{Local increment theorem.}
+Let $A,C$ be arbitrary finite lists of natural numbers and $x\in\mathbb N$.
+Consider the finite tape segment
+\begin{equation}
+ \xi\;0\,0\,1\; B(A)\;0\,0\,1^x\;B(C)\;\zeta,
+ \label{eq:left-increment-input}
+\end{equation}
+where the head is in state 73 at the first symbol of $B(A)$, or at the
+first following marked zero if $A$ is empty.  The contexts $\xi,\zeta$
+are arbitrary and will not be inspected.  After exactly $2w(A)+6$ moves,
+the tape segment is
+\begin{equation}
+ \xi\;0\,1\; B(A)\;0\,1^{x+2}\;B(C)\;\zeta,
+ \label{eq:left-increment-output}
+\end{equation}
+and state 48 scans the displayed header one immediately after $\xi0$.
+The head has moved two cells left of its initial location.  The two
+segments have equal length, so the unchanged right context occupies
+exactly its original tape cells.
+
+For the proof, first apply the state-73 list scan to $B(A)$, taking
+$w(A)$ moves.  On the marked pair of zeros, the next three transitions are
+\[
+ (73,0)\mapsto(0,R,83),\quad
+ (83,0)\mapsto(1,L,112),\quad
+ (112,0)\mapsto(1,L,131).
+\]
+They leave $1^{x+2}$ to the right of the head.  The reverse state-131
+list scan replaces $B(A)$ by $D(A)$ in $w(A)$ further moves.  At the old
+header and its two preceding zeros, the final three transitions are
+\[
+ (131,1)\mapsto(0,L,112),\quad
+ (112,0)\mapsto(1,L,131),\quad
+ (131,0)\mapsto(0,R,48).
+\]
+The resulting word is
+$\xi01\,0D(A)1^{x+2}B(C)\zeta$.
+Applying~\eqref{eq:left-increment-word} gives
+\eqref{eq:left-increment-output}.  The counts add to $2w(A)+6$;
+none of the transitions enters $1^x$, $B(C)$, or either exterior context.
+This also proves preservation of the suffix and the claimed uniformity
+in $x$ and $C$.
+
+The local effect is to increase the selected value by one and move its
+prefix and header left by one cell.  The distance from the instruction
+pointer to the header decreases by one.  The spare-block count is
+unchanged.  In particular, the two zero cells immediately preceding the
+header are a substantive precondition, not an optional formatting
+convention.
+
+\paragraph{Zero-decrement contraction.}
+There is a second useful local fact.  When state 75 scans a zero whose
+right neighbor is one, the reference machine performs
+\[
+ 75/0\to255/1\to131/1
+\]
+in three moves, leaves both cells unchanged, and finishes in state 112
+one cell to the left of the starting zero.  The replacement $75/0$
+transition performs precisely that transformation in one move.  The
+next-symbol premise is satisfied by the ordinary zero-decrement
+register contract with a following nonempty block.  The corresponding
+prefix carry and rollback scans yield time $2w(A)+5$, in place of
+$2w(A)+7$.  This contraction is not valid at an increment tail whose
+next cell is zero; the experiment changes that route jointly.
+
+\texttt{prove\_left\_increment.py} checks the unary block derivations
+and composes their list inductions using the inherited symbolic macro
+checker.  It adds the explicitly proved identity
+\eqref{eq:left-increment-word}.  Its output is labelled
+\texttt{PASS\_LOCAL\_BOX\_CONTRACTS\_ONLY}.  This is a replayable
+symbolic calculation with stated inference rules, accompanied here by
+the mathematical induction proof; it is not a proof-kernel certification
+of the whole experimental machine.
+
+\subsection{The unchanged dispatcher does not supply the local premise}
+
+During a genuine increment phase, the existing instruction protocol
+fills the pointer-to-header gap with ones.  The register routine therefore
+does not arrive at~\eqref{eq:left-increment-input}: the two required zero
+cells are absent.  The attempted rollback crosses the header into the
+instruction pointer.  A complete instruction fixture makes the failure
+explicit.
+
+Start at state 96 and head position zero, with pointer word $01010$,
+header distance 181, physical primary registers
+$(6,3,3,5,0,0,0,1,4)$, and 167 spare blocks of value one.  This is a
+well-formed dispatcher fixture for logical instruction $\mathrm{CI}_8$,
+whose physical register is 1.  After 976 moves, both tables enter state
+73 at cell 182, immediately after the header at 181; cells 179 and 180
+both contain one, directly exhibiting the failed local premise.
+The edited machine reaches a clean
+dispatcher frame after 1556 moves.  Its physical primary registers are
+correctly $(6,4,3,5,0,0,0,1,4)$, but its pointer has ones at positions
+$\{1,2\}$, represented by $0110$.  The required successor $01011$ has
+ones at $\{1,3,4\}$.  The altered gap and spare count are also recorded:
+\begin{center}
+\begin{tabular}{l|r|c|r|r}
+Execution & Moves & Pointer & Header distance & Spare count\\
+\hline
+Reference 245-state table & 2622 & $01011$ & 181 & 168\\
+Edited 244-state table & 1556 & $0110$ & 180 & 167
+\end{tabular}
+\end{center}
+Both outcomes are computed by independent sparse-set and dense-array
+transition interpreters, which agree on every tape one at their stated
+endpoints.  The changed pointer remains an error even if a proposed
+simulation relation were to permit a different gap and spare count.
+
+The fixture refutes the proposed unchanged-caller instruction contract.
+It is not asserted to be reachable from the blank tape, and it does not
+prove that every possible interpretation of the 244-state table is
+incorrect.  Those stronger assertions are unnecessary: the proposed
+modular proof cannot be composed, because this valid input to its
+existing dispatcher contract has the wrong successor.
+
+\subsection{A separate obstruction to automatic space closure}
+
+Even a corrected dispatcher would need a space-allocation argument.
+Suppose a proposed integration retains the present source execution and
+its pointer-root-overflow events, and satisfies the following resource
+rules: an increment decreases gap $g$ by one; a positive decrement
+increases $g$ by one; each existing pointer-root overflow increases $g$
+by one; other operations preserve $g$.  Let $I,D,O$ count these three
+events since the seed, and let $S$ be the sum of the nine primary
+registers.  The event counts are cumulative; an instruction may contribute
+both a register event and an overflow event.
+
+\paragraph{Resource invariant.}
+For every finite source execution satisfying these rules,
+\begin{equation}
+ g=g_0+D-I+O,\qquad S=S_0+I-D,
+ \qquad g+S-O=g_0+S_0.\label{eq:gap-invariant}
+\end{equation}
+The base case has all three counters zero.  An increment changes
+$(g,S)$ by $(-1,+1)$, a positive decrement by $(+1,-1)$, and an overflow
+changes $(g,O)$ by $(+1,+1)$.  Each preserves the last expression;
+simultaneous events add their changes.  Operations of the remaining
+types change none of these quantities.  Induction on the instruction
+sequence proves all of~\eqref{eq:gap-invariant}.
+
+For the actual Routing245 seed, $g_0=181$ and
+the logical registers are $(3,0,0,0,3,0,0,0,0)$, so $S_0=6$ and
+\begin{equation}
+ g+S=187+O.\label{eq:seed-gap-invariant}
+\end{equation}
+Preserving the existing frame lower bound $g\ge64$ would require
+$S\le123+O$ at every instruction boundary.
+
+Two independent interpreters execute the exact 6460-leaf Routing245
+source from this seed.  One follows a full binary trie and implements
+carry and branch stripping directly on words.  The other indexes
+zero-trimmed leaf words and uses integer addition and position lists.
+They agree on every source transition and every event count for 3235
+instructions.  Substitution into~\eqref{eq:seed-gap-invariant} gives:
+\begin{center}
+\begin{tabular}{r|r|r|r|r|r}
+Source step & $I$ & $D$ & $O$ & $S$ & Implied $g$\\
+\hline
+2738 & 936 & 814 & 4 & 128 & 63\\
+3235 & 1143 & 957 & 4 & 192 & $-1$
+\end{tabular}
+\end{center}
+The first line is the first failure of $g\ge64$; the second is the first
+negative gap.  The logical register vectors are respectively
+$(7,6,0,0,4,0,34,77,0)$ and $(7,19,0,0,4,0,19,143,0)$.
+These are exact source computations.  The gaps are counterfactual values
+deduced for the proposed allocation policy, not measurements from a
+verified 244-state execution.
+
+Thus repairing only the local entry condition is insufficient for this
+policy with the present source and control flow.  The negative gap also
+rules out merely lowering the frame bound to zero.  An integration must
+change the resource recurrence, or establish a changed source trace with
+sufficient extra allocation events.  Grammar and control transformations
+can change the frequency of root overflows; deliberate extension
+operations change the recurrence.  The obstruction applies to the
+specified policy and exact current execution, and does not establish a
+lower bound for all Turing machines or all interpreter designs.
+
+\subsection{Four reproducible finite compression screens}
+
+The investigation also applied four bounded compression screens directly
+to the exact 245-state table.  The supplied 8385 complete instruction
+fixtures exercise all 490 transition rows of the reference table; the
+longest reference fixture takes 2686 moves.  Each candidate run has fuel
+20,000 and tape range $[-64,1983]$.  No candidate met all relevant
+bounded checks:
+\begin{center}
+\begin{tabular}{l|r|r|r}
+Screen & Trials & Past quick probes & Survivors\\
+\hline
+Selected-row state-pair merges, exact tape & 119560 & 54 & 0\\
+Same pair merges, relaxed final frame & 119560 & 54 & 0\\
+Single-entry state splices & 133712 & 163 & 0\\
+Adaptive multi-entry splice search & 175680 & 712 & 0
+\end{tabular}
+\end{center}
+For a pair merge, each of the two retained read-symbol rows is selected
+from one of the two states, giving
+$4\binom{245}{2}=119560$ candidates.  Single-entry splicing considers
+137 states, excluding the start and dispatcher, with exactly one incoming
+edge from outside the state.  It changes that edge to any write bit,
+direction, and remaining target state: $137\cdot4\cdot244=133712$
+trials.  Other transitions are preserved.
+
+The multi-entry search first screens possible replacements for each
+incoming edge independently against the otherwise unchanged machine.
+It abandons a state as soon as an edge has no surviving replacement, and
+then combines alternatives for covered states, with a cap of 100,000
+combinations per state.  Its 175680 count is the number of individual
+edge-edit trials, not a count of joint candidate tables.  Simultaneous
+compensating edits that fail when applied alone are outside this search.
+
+The relaxed endpoint allows a translated head, a header gap of at least
+64, and any well-formed nonempty spare list.  It requires the same pointer
+bits in the first 64 cells, the same nine primary values, and a clean
+left marker.  This tests whether a local saving merely changes tape
+resources.  The zero-survivor results hold even under this relaxation
+for the stated search families.  They remain bounded computational
+screens: fuel exhaustion is not a nonhalting proof, and failure on an
+arbitrary valid fixture is not a proof about blank-tape reachability.
+
+The four C++ sources, compressed fixture, recorded results, local symbolic
+checks, and both exact counterexample scripts are included in
+\texttt{interpreter/}.  They delimit several inexpensive dead ends and
+isolate the missing ingredients of the more promising prefix-shifting
+idea: a compatible instruction-pointer protocol and an unbounded
+allocation mechanism with a proved frame invariant.

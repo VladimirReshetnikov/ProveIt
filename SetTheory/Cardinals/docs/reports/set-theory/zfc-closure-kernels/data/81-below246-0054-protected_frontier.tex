@@ -1,0 +1,103 @@
+% Compact research-frontier appendix, ordinary source theorem only.
+\section{The protected source frontier}
+\label{sec:protected-source-frontier}
+
+A second source search starts with the original 203-pair grammar and
+retains the decoder sharing that the first reassociation disrupted.
+The supplied best graph has 203 distinct pair subtrees and is exactly
+equivalent to the original register program for every natural-valued
+register file.  It reduces the number of decrement instruction paths
+ending in seven zero bits from 18 to five.  The shorter-scanner target is
+still incomplete for this graph.
+
+\begin{center}
+\begin{tabular}{lr}
+Quantity & Independently checked value\\\hline
+Unrolled instruction occurrences & 6,460\\
+Guarded successor cases & 8,391\\
+Distinct source pair subtrees & 203\\
+Maximum path depth & 41\\
+Maximum internal zero-run length & 7\\
+Preserved original pair-subtree classes & 93\\
+Preserved physical-state sharing classes & 12\\
+Preserved incoming context occurrences & 518\\
+Decrement paths ending in seven zeros & 5
+\end{tabular}
+\end{center}
+
+The graph is
+\texttt{rotation\_protected\_walk\_07\_candidate\_002.json}, with
+SHA-256
+\begin{quote}\ttfamily\small
+74031323c5473bc1ae6ec01d05d87e6abe08bafd730a1723e783e955f0c46f47.
+\end{quote}
+The compact specification and executable independent audit are
+\texttt{protected\_frontier\_spec.json} and
+\texttt{protected\_frontier\_audit.py}.  The audit reads the pinned
+literal source and original binary table.  It recomputes every original
+source-node entry state by literal simulation, expands the proposed
+graph, and compares all guarded successor leaf indices by Boolean-list
+arithmetic and direct tree decoding.  It independently checks the 93
+retained subtree classes and all 518 retained incoming contexts.
+
+\paragraph{Source theorem.}
+For every register file $R$, this graph and the original program have
+identical register instruction traces from their empty-PC roots, under
+the order-preserving bijection between instruction occurrences.
+
+\paragraph{Proof.}
+The two ordered leaf lists contain exactly the same operations and
+arguments, including all break and continue counts.  The initial leaves
+correspond, and all 8,391 guarded successor indices agree.  Therefore
+instruction-count induction preserves both the register file and the
+current leaf index.  The unique halt corresponds in both programs.
+This proves the trace statement and both directions of halting
+equivalence.\hfill$\square$
+
+The five remaining decrement occurrences are listed below by their
+zero-based index in the original left-to-right instruction list.  All
+decrement logical register $T$; each still has both guards included in
+the source certificate.
+\begin{center}
+\begin{tabular}{rrr}
+Leaf index & Zero-guard case & Positive-guard case\\\hline
+3104&4032&4033\\
+3184&4136&4137\\
+3847&4995&4996\\
+3927&5099&5100\\
+6154&7986&7987
+\end{tabular}
+\end{center}
+The JSON certificate contains their complete old and new paths, the full
+6,460-leaf correspondence, and every guarded successor.  These five
+occurrences are remaining code-layout obligations; the table does not
+represent a five-state machine saving.
+
+\subsection{What the remaining compiler problem requires}
+
+Preserving source subtrees and incoming decoder context does not cover
+all runtime uses of a physical state.  Terminal instruction handlers
+also borrow decoder transitions.  For example, the marker protocol
+uses a chain containing the original row $32/1$ followed by $46/0$.
+If a source rotation changes the role of state 46, merely keeping its
+old read-zero row at some other decoder location does not preserve the
+borrowed chain.  In contrast, an isolated borrowed terminal row can
+sometimes move with its physical state to a newly formed source pair,
+provided every incoming borrowed transition remains compatible.
+
+The precise continuation is consequently a constrained compiler search:
+associate physical state labels with grammar nodes, record the borrowed
+rows as fixed finite transition constraints, and transport labels during
+reassociation only when those constraints remain satisfied.  Ordinary
+source occurrences may be retargeted; every borrowed occurrence must
+retain its verified microcontract.  The terminal-dependency audit records
+54 such source-decoder rows.  This constraint set permits useful
+changes below a borrowed row without freezing its entire continuation
+subtree.
+
+The best protected graph above has a proved source theorem, while a
+physical 245-state realization is not established for it.  Before such
+a realization is claimed, its complete binary table must pass the
+universal instruction-frame checks and a safe blank-tape initialization
+proof.  The graph and finite certificates preserve a concrete research
+frontier for that remaining work.

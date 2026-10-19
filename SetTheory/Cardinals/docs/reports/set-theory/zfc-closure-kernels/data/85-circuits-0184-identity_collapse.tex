@@ -1,0 +1,89 @@
+\section{Deleting certified identity steps before decoder compilation}
+\label{sec:identity-collapse}
+
+The six excluded guarded cases suggest a source transformation that
+is different from a permutation of all leaves.  Each excluded group
+contains the positive branch of an always-zero decrement and its
+unreachable loop body.  Removing the whole loop also removes its
+feasible zero test, which is an identity operation.  The old and new
+source runs then take different numbers of source steps, so the
+equal-step leaf-map theorem alone does not apply.
+
+Let $G$ be the old register graph with the certified product invariant,
+and choose a set $D$ of leaves to delete.  Require every deleted leaf
+with nonempty invariant to be either an unconditional control operation
+or a decrement whose tested register is forced to zero by its mask.
+Such a deleted step changes no register.  Leaves with empty invariant
+may have arbitrary operations, since invariant preservation prevents
+their execution.  Require the directed graph of feasible deleted steps
+to contain no cycle.  Equivalently, assign deleted feasible leaves a
+natural-valued rank that strictly decreases whenever the next leaf is
+also deleted.  This requirement rules out an infinite run consisting
+solely of steps that the transformation removes.
+
+Starting from any reachable old leaf, repeatedly execute deleted
+identity steps until reaching a retained leaf.  Write $\nu(s)$ for
+the resulting retained leaf.  It is independent of the particular
+register values in the certified source product, because every feasible
+deleted decrement has only its zero guard.  The rank proves that this
+normalization terminates and leaves all registers unchanged.
+
+\begin{theorem}[Invariant identity-collapse certificate]
+Let $H$ be a new register graph and let $f$ bijectively map retained old
+leaves to new leaves.  Suppose $f$ sends the normalized old initial leaf to the
+new initial leaf, preserves retained register effects and halt tags,
+and, for every feasible guarded edge $s\to t$ from a retained old leaf,
+the corresponding new edge has target $f(\nu(t))$.  Then $G$ and $H$
+halt on exactly the same initial register files in the certified
+domain.  The invariant transported to new leaf $f(s)$ is the old
+invariant at $s$.
+\end{theorem}
+\begin{proof}
+Normalize the old initial leaf, taking finitely many identity steps.
+At a pair of corresponding retained and new leaves the registers agree,
+so the same decrement guard is selected.  Their common effect is
+followed in the old graph by finitely many deleted identity steps.
+The target equation restores the correspondence, and the old invariant
+still holds by induction.  Every new nonhalting source step therefore
+matches at least one old step and finitely many additional identity
+steps.  Halt tags agree at the related leaves.  Concatenating these
+finite segments proves one implication of finite halting; deleting the
+finite intervening identity segments from an old finite halt proves
+the other.  Termination of normalization prevents an infinite deleted
+segment from invalidating the correspondence.
+\end{proof}
+
+The accompanying \texttt{collapse\_cfg.py} checks this criterion for
+leaf-order matching of the retained sites.  Its default deletion set
+is
+\[
+ D=\{6316,6317,6318,6434,6435,6436\},
+\]
+the two loop triples identified in
+Section~\ref{sec:guard-invariant-transport}.  It independently checks
+the original product certificate, normalizes deleted feasible paths,
+rejects a deleted cycle or a feasible register change, and compares
+every feasible retained successor with the new graph.  Break and
+continue operands may be retargeted provided their actual leaf targets
+pass the check.  The criterion is an ordinary finite proof in ZFC;
+it does not itself certify a changed binary machine or its initializer.
+
+The three delivered source experiments pass this independent criterion:
+\[
+\begin{array}{l|r|r|r}
+\text{deleted loop}&\text{retained leaves}&
+\text{feasible retained cases}&\text{maximum skipped identity steps}\\\hline
+X\text{-transfer}&6457&8384&1\\
+T\text{-transfer}&6457&8384&1\\
+\text{both transfers}&6454&8383&1
+\end{array}
+\]
+All preserve initial leaf zero.  Their site lists are supplied as
+\path{verification/fusion/zero_specialization/}
+\texttt{collapseX.sites.json}, \texttt{collapseT.sites.json}, and
+\texttt{collapseXT.sites.json}.  Their independent certificates are
+\texttt{verification/proof/collapseX-independent.json} and the
+corresponding \texttt{T} and \texttt{XT} files.  This establishes a
+source-level optimization on the stated invariant.  It does not turn
+the costs of the experimentally emitted tables into binary-machine
+correctness theorems or supply a sub-$246$ construction.

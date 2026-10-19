@@ -1,0 +1,216 @@
+% Research proof note; not a standalone article and not a kernel-checked proof.
+\section{A sound enlargement of the contradiction target}
+\label{sec:atomic-target}
+
+This note concerns the exact numerical calculus \texttt{C254} and the unchanged
+enumeration algorithm, with one altered acceptance test.  All source references
+are to ProveIt commit
+\texttt{79957d7b290ec807d434959a0c6ecc06ee90b419}.
+The mathematics below is an ordinary proof formalizable in ZFC.  The new
+program and its binary compilation have not been proved in Lean or Coq.
+
+Write
+\[
+  \operatorname{wel}(i,j)=4P(i,j)+1,\qquad F=1=\operatorname{wel}(0,0),
+\]
+where $P$ is the bijective Cantor pairing used in \texttt{Code254.lean}.
+The formula decoded from $\operatorname{wel}(i,j)$ is the membership atom
+$v_i\in v_j$.  In particular, the entire residue class $1$ modulo $4$
+consists of membership atoms.
+
+\paragraph{Atomic-target lemma.}
+ZFC proves
+\[
+ \forall h\in\omega\;\bigl(\mathrm{C254}(h)\land h\equiv1\pmod4
+                   \ \longrightarrow\ \mathrm{C254}(F)\bigr).
+\tag{AT}
+\]
+Consequently ZFC proves
+\[
+ \bigl(\exists h\;\mathrm{C254}(h)\land h\equiv1\pmod4\bigr)
+       \quad\longleftrightarrow\quad \mathrm{C254}(F).
+\]
+
+\paragraph{Proof inside ZFC.}
+All syntax, proofs, natural numbers, and structures in this argument are sets.
+For a natural number $h\equiv1\pmod4$, take
+$(i,j)=P^{-1}(\lfloor h/4\rfloor)$, so $h=\operatorname{wel}(i,j)$.
+Let $\mathsf{N}$ be the actual first-order theory \texttt{NativeAx}:
+universal closures of the container principle, every native first-order
+global-image-collection instance, and irreflexivity.
+
+Suppose $\mathrm{C254}(\operatorname{wel}(i,j))$.  Consider any nonempty
+set-coded model $(D,E)$ of $\mathsf{N}$.  The ordinary, finite-induction
+soundness proof for C254 shows that the decoded atom holds for every valuation
+$e:\omega\to D$.  More precisely, the model adapters in
+\texttt{NativeTheory254.decoded\_of\_native} supply both
+$\forall x\in D\;\neg E(x,x)$ and the decoded bundle instances required by
+\texttt{Code254.c254\_sound}; \texttt{Code254.sat\_wel} identifies the
+conclusion as $E(e(i),e(j))$.
+Choose any $x\in D$ and use the constant valuation $e(k)=x$.
+The conclusion is $E(x,x)$, contrary to irreflexivity.
+Thus $\mathsf{N}$ has no nonempty set-coded model.
+
+First-order completeness, proved within ZFC by its usual Henkin construction,
+now gives a finite $\mathsf{N}$-refutation.  The reverse implication of
+\texttt{NativeTheory254.c254\_refutation\_iff} gives $\mathrm{C254}(F)$.
+This proves (AT).  For the displayed equivalence, the reverse direction uses
+the witness $h=F=1$.
+
+This argument does not assume that ZFC is sound, does not assert a set model of
+ZFC unconditionally, and does not require a transitive or externally
+well-founded model.  Completeness is applied to a coded first-order theory.
+The existing ordinary calibration from $\mathsf{N}$ to ZF, and the
+constructible-universe relative-consistency proof from ZF to ZFC, therefore
+yield as a theorem of ZFC
+\[
+ \exists h\;(\mathrm{C254}(h)\land h\equiv1\pmod4)
+       \quad\longleftrightarrow\quad
+       \exists p\;\operatorname{Proof}_{\mathrm{ZFC}}(p,\bot).
+\]
+
+There is a model-interface pitfall.  The completeness theorem,
+\texttt{Code254.c254\_complete}, supplies \texttt{ModelsEncodable}, whereas
+\texttt{c254\_sound} requires \texttt{ModelsDecoded}.  They are not identical
+definitions.  The proof above uses a \texttt{NativeAx} model and
+\texttt{decoded\_of\_native} directly.  An alternative route must first apply
+\texttt{native\_of\_encodable} and then \texttt{decoded\_of\_native}.
+
+\paragraph{Why accepting all odd codes is unsound.}
+The other odd residue class is not unused.  It encodes equality:
+$\operatorname{weq}(i,j)=4P(i,j)+3$.  In particular, $3$ decodes to
+$v_0=v_0$, an ordinary logical theorem.  The parity-only test therefore accepts
+a theorem in a consistent theory.  The distinction between residues $1$ and
+$3$ cannot be discarded on the argument above.
+
+\subsection{Transfer through the enumeration algorithm}
+
+The original NIP command at a command boundary has cache $H$ and packed stack
+$W$.  It halts when $H=1$.  Otherwise it replaces
+\[
+ (H,W)\ \longmapsto\ (\pi_1(P^{-1}(W)),\pi_2(P^{-1}(W))),
+\]
+with the other command-level fields unchanged (apart from the already
+specified NIP command parameter update).  Replace only the condition $H=1$
+by $H\equiv1\pmod4$.
+
+On every continuing transition the modified command has exactly the old
+output: a continuing modified command has $H\not\equiv1\pmod4$, hence
+$H\ne1$.  Therefore every continuing command prefix of the new enumerator is
+a command prefix of the old one.  The old invariant supplies
+$\mathrm{C254}(H)$ at every NIP entry.  A new halt gives the premise of (AT),
+so it implies a C254-refutation.  Conversely, if the old enumerator halts, the
+new one either halts earlier or follows its finite command prefix through the
+original $H=1$ acceptance.  This proves the same halting/refutation equivalence
+at the command level, without assuming consistency.
+
+The argument is an instance of the following reusable lemma.  If a decidable
+acceptance predicate $A$ satisfies $A(F)$ and
+\[
+ \forall h\;(\mathrm{C254}(h)\land A(h)\Rightarrow\mathrm{C254}(F)),
+\]
+and the modified enumerator changes only the acceptance test and retains
+identical outputs on every continuing command, then its halting predicate is
+equivalent to the original refutation predicate.  The low-level implementation
+must still be shown to realize that command and to terminate on every
+continuing branch.
+
+\subsection{An exact source macro and its universal local proof}
+
+Use logical registers $(N,T,W,A,D,H,X,Y,L)$, indexed $0$ through $8$.
+At NIP entry $X=Y=0$.  The following destructive test uses only $H$:
+\begin{verbatim}
+loop:
+  decrement H, or return if it is zero
+  decrement H, or halt   if it is zero
+  decrement H, or return if it is zero
+  decrement H, or return if it is zero
+  goto loop
+\end{verbatim}
+After a return, $H=0$, so the unchanged \texttt{pop(param2)} body supplies the
+same full register output as before.
+
+In the exact published 219-node source DAG, replace node 152 and add six nodes:
+\begin{verbatim}
+152 = (ENode 224, ENode 170)
+219 = (EDecnz 5, EBreak 1)
+220 = (ENode 219, EHalt)
+221 = (EDecnz 5, EContinue 4)
+222 = (EDecnz 5, ENode 221)
+223 = (ENode 220, ENode 222)
+224 = (EDecnz 5, ENode 223)
+\end{verbatim}
+All other nodes remain unchanged.  Node 170 is the old stack-pop routine.
+The exact tree paths relative to node 224 are
+\[
+\begin{array}{c|ccccccc}
+ \text{path}&0&1000&1001&101&110&1110&1111\\ \hline
+ \text{leaf}&\mathrm{DEC}\ H&\mathrm{DEC}\ H&\mathrm{BREAK}\ 1&
+ \mathrm{HALT}&\mathrm{DEC}\ H&\mathrm{DEC}\ H&\mathrm{CONTINUE}\ 4.
+\end{array}
+\]
+
+For clarity, let $u$ be any outer context reaching node 152; the macro's
+context is $u0$.  The actual \texttt{RegisterPath} decoder zero-extends and
+truncates its path at the consumed leaf depth before applying path arithmetic.
+For a positive first decrement, $u00$ increments to $u01$ and decodes the
+second decrement at $u01000$.  A zero second decrement changes that consumed
+path to $u0101$, the halt leaf.  A positive second decrement reaches
+$u01001$, the explicit break; that break reaches $u011$, which decodes the
+third decrement.  The remaining decrements have consumed paths $u0110$ and
+$u01110$.  A zero first, third, or fourth decrement applies one break and
+produces respectively $u1$, $u100$, or $u1000$.  These paths differ only by
+trailing zero bits, so all three decode the old pop routine at $u1$ with a
+zero local path; zero-extension and truncation at the next consumed leaf make
+that equivalence exact.  Four positive decrements reach $u01111$;
+\texttt{CONTINUE 4} removes its four terminal one bits and returns to $u0$.
+It follows that one complete positive cycle executes exactly six nonterminal
+leaves, preserves every register except $H$, and subtracts four from $H$.
+
+The residual cases $H=0,1,2,3$ execute respectively $1,2,4,5$ nonterminal
+leaves, ending at return, halt, return, return.  In every case the endpoint
+cache is zero.  Induction on $q$ for $H=4q+r$ therefore proves, for all natural
+inputs and all outer contexts, the exact terminal result and clock
+\[
+  6q+c_r,\qquad (c_0,c_1,c_2,c_3)=(1,2,4,5).
+\]
+The terminal halt or return leaf is not included in this clock.  Every other
+register remains untouched by the test.  This supplies the universal local
+termination and full-output argument; finite testing is only an independent
+implementation control.
+
+\subsection{Exact pricing and finite controls: a negative state result}
+
+The accompanying \texttt{atomic\_target\_experiment.py} reconstructs the pinned
+public Wade compiler from the repo's \texttt{recover\_wade\_dag.py} baseline.
+It compiles both full DAGs, garbage-collects unreachable binary states, and
+independently reextracts every live decision edge.  Each table has its sole
+undefined row, $(\texttt{1.inc},1)$, explicitly filled by a write-1/right/halt
+transition.  This totalization adds no working state.
+\[
+\begin{array}{l|rrrr}
+ &\text{decision states}&\text{framework states}&\text{total}&\text{rows}\\ \hline
+ \text{original published DAG}&219&62&281&562\\
+ \text{atomic-target DAG}&223&62&285&570\\
+ \text{difference}&+4&0&+4&+8
+\end{array}
+\]
+The new source makes old nodes 132 and 153 unreachable.  Its six new nodes
+still increase the reachable decision count by four.  This raw Wade result is
+not pricing for the separately optimized 246-state interpreter.
+
+The independent path interpreter tested the isolated macro for
+$0\le H\le1023$, preserving eight nonzero sentinel registers and checking both
+the complete endpoint and the exact clock.  It also ran the full original and
+modified NIP bodies for all $0\le H\le127$ and $0\le W\le63$, for 16,384
+complete test executions.  Every continuing output was exactly
+\[
+ (N,T,\pi_2(P^{-1}(W)),A,D,\pi_1(P^{-1}(W)),0,0,L).
+\]
+The evidence file records the finite checks, source hash, exact state counts,
+table hashes, totalization, and remaining proof limitations.
+
+The acceptance theorem is valid, but this concrete implementation is a
+negative control for the requested state reduction: it costs four additional
+states in the available raw compiler.  No machine below 246 states follows
+from it.

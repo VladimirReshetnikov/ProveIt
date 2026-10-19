@@ -1,0 +1,106 @@
+\section{Equality erasure by two-sided membership profiles}
+\label{sec:equality-erasure}
+
+Here is a short consistency comparison for the \emph{full} equality-free
+CP/GIC theory.  It completes the two-sided observational-profile route
+already mentioned in the repository's \texttt{logical\_engine\_completeness.md};
+no claim of priority for equality elimination is made.  It avoids rebuilding
+extensional set theory directly in the equality-free language.  Instead it
+first recovers the existing, nonextensional native theory with ordinary
+logical equality, after which the established native-to-ZFC calibration
+can be reused.
+
+Let $T_{=}$ be ordinary one-sorted first-order logic with equality, the
+original power-container axiom CP, irreflexivity IR, and GIC for every
+first-order formula, including formulas containing equality.  Let $T_{\rm ef}$
+be full equality-free first-order logic with CP, IR, and GIC restricted to
+equality-free matrices.  Parameters are allowed and universally closed in
+both schemas.  Their nonlogical axioms CP and IR have no equality atoms.
+
+For the sole binary membership predicate $R$, define
+\[
+ x\sim y\quad:\!\!\Longleftrightarrow\quad
+ [\forall z\,(R(z,x)\leftrightarrow R(z,y))]
+ \;\land\;
+ [\forall z\,(R(x,z)\leftrightarrow R(y,z))].
+\]
+The two directions are both necessary for the immediate argument.  Equality
+of incoming profiles alone preserves only the second slot of $R$; equality
+of outgoing profiles alone preserves only the first slot.
+
+\paragraph{Pure logical facts.}
+Equality-free first-order logic proves that $\sim$ is reflexive, symmetric,
+and transitive.  It also proves
+\[
+ x\sim x'\;\land\;y\sim y'
+ \quad\Longrightarrow\quad
+ [R(x,y)\leftrightarrow R(x',y')].
+\]
+The first profile component changes $y$ to $y'$, and the second changes
+$x$ to $x'$.  A formula induction therefore proves invariance of every
+formula after replacing its equality atoms by $\sim$, under replacement
+of assigned values by $\sim$-equivalent values.  Auxiliary quantifiers in
+this fixed definition are always renamed fresh.
+
+\paragraph{Quotient proof.}
+Given a set-coded model $\mathcal A$ of $T_{\rm ef}$, form the quotient
+$\mathcal A/{\sim}$ in ambient ZFC and put
+\[
+ [x]\;\widehat R\;[y]\quad\Longleftrightarrow\quad R(x,y).
+\]
+Congruence makes this well defined.  If $\varphi^\sim$ replaces equality
+atoms of $\varphi$ by the fixed displayed formula, then induction gives
+\[
+ (\mathcal A/{\sim})\models\varphi([\bar a])
+ \quad\Longleftrightarrow\quad
+ \mathcal A\models\varphi^\sim(\bar a).
+\]
+Surjectivity of the quotient map supplies the quantifier cases.  CP and IR
+are unchanged under this translation.  For each matrix $\varphi(x,y,\bar p)$,
+the translated axiom $\operatorname{GIC}_{\varphi}^{\sim}$ is precisely
+$\operatorname{GIC}_{\varphi^{\sim}}$, up to fresh bound-variable names.
+The latter is an axiom of $T_{\rm ef}$.  This argument permits arbitrary
+parameters, coincident parameter values, and arbitrary occurrences of
+equality in the original matrix.  Consequently the quotient satisfies
+$T_{=}$.  No extensionality of the original membership relation is assumed
+or concluded at this stage.
+
+Conversely, forgetting the equality symbol of a model of $T_{=}$ gives a
+model of $T_{\rm ef}$.  Formalized first-order completeness and the quotient
+construction give in ZFC
+\[
+ \operatorname{Con}(T_{\rm ef})
+ \quad\Longleftrightarrow\quad
+ \operatorname{Con}(T_{=}).
+\]
+Combining this with the existing calibration of the full native theory
+therefore gives the intended ZFC consistency strength for this genuinely
+equality-free first-order input.
+
+\paragraph{Uniform proof translation.}
+The quotient argument can be strengthened to a direct syntactic statement.
+Translation by $\varphi\mapsto\varphi^\sim$ commutes with the propositional
+connectives and quantifiers, modulo effective fresh renaming.  The standard
+equality axioms translate to fixed equality-free logical derivations of
+reflexivity and congruence.  Congruence for composite formulas is generated
+by structural recursion.  A translated GIC axiom is the GIC instance with
+translated matrix; CP and IR remain unchanged.  Induction on a finite proof
+thus gives a primitive-recursive proof translation from $T_{=}$ to
+$T_{\rm ef}$.  The reverse translation is the inclusion of the equality-free
+calculus in the equality-bearing one.  The required fresh-name bound can
+be chosen as one plus the maximum of all labels appearing in the current
+finite formula and its finite context; computation and formula recursion
+are primitive recursive.  This is an ordinary mathematical description of
+an internalizable translator.  This packet does not claim a serialized
+proof object or a newly compiled Lean theorem for it.
+
+\paragraph{Compiler implication and limitation.}
+This theorem supplies a simpler calibration interface for a complete
+equality-free proof search.  It does not validate deleting equality rows
+from the current numerical proof engine: those rows implement cross-variable
+instantiation and variable renaming.  The repository's typed-countermodel
+obstruction applies to that deletion.  An equality-free implementation must
+supply capture-avoiding substitution, a complete tableau mechanism, or a
+complete ground-instance checker.  The new register peephole in
+Section~\ref{sec:negation-peephole} has a more immediate measured target:
+it retains the entire existing logical engine and changes no formula code.

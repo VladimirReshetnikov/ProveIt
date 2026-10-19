@@ -1,0 +1,142 @@
+% Standalone section; the parent report supplies amsmath/amsthm.
+\section{Admitting nonzero formula and stack codes at startup}
+\label{sec:expanded-safe-roots}
+
+The existing safe-start theorem is stronger than the often-used
+truth/truth/empty-stack specialization.  In the logical register order
+$(N,T,W,A,D,H,X,Y,L)$, its exact premise is
+\[
+ C_{254}(T)\ \wedge\ C_{254}(H)\ \wedge\operatorname{Good}(W).
+\]
+The six other fields are unrestricted natural numbers.  This is the
+maintained interface
+\path{DirtyProgram254.path_halts_iff_native_refutation},
+with the safe predicate expanded by \texttt{safe\_iff}.  A nonzero formula
+field therefore need not invalidate a candidate initializer.  It requires
+a derivation certificate rather than an arbitrary numerical bound.
+
+The accompanying \texttt{safe\_start.py} supplies a sufficient recognizer.
+It does not decide theoremhood.  An unrecognized number remains unknown.
+In particular, a negative recognition result is not evidence that the
+number is not a theorem of the native calculus.
+
+Write
+\[
+ P(a,b)=\frac{(a+b)(a+b+1)}2+b,\quad
+ I(a,b)=4P(a,b),\quad
+ E(i,j)=4P(i,j)+1,
+\]
+\[
+ A(i,b)=4P(i,b)+2,\qquad Q(i,j)=4P(i,j)+3,
+ \qquad F=1,\qquad\neg a=I(a,F).
+\]
+The special code $0$ is an explicit theorem constructor.  It also satisfies
+$I(0,0)=0$; no decoding argument should silently treat this equality as a
+structural recursion into two smaller codes.
+
+\paragraph{Certificate judgments.}
+The positive judgment $\mathsf T(n)$ means $C_{254}(n)$.
+The negative judgment $\mathsf F(n)$ means $C_{254}(\neg n)$.
+The latter is still a derivability assertion; it is not
+$\neg C_{254}(n)$.  The recognizer uses only the following rules:
+\[
+\begin{array}{c@{\qquad}c@{\qquad}c}
+\mathsf T(0)&\mathsf T(Q(i,i))&\mathsf F(E(i,i)),\\[2mm]
+\dfrac{\mathsf T(b)}{\mathsf T(A(i,b))}&
+\dfrac{\mathsf T(b)}{\mathsf T(I(a,b))}&
+\mathsf T(I(a,a)),\\[4mm]
+\dfrac{\mathsf F(a)}{\mathsf T(I(a,b))}&
+\dfrac{\mathsf T(a)\quad\mathsf F(b)}{\mathsf F(I(a,b))}.&
+\end{array}
+\]
+
+\paragraph{Soundness of the base rules.}
+Truth is \texttt{C254.truth}.  Equality reflexivity and the negation of
+diagonal membership can be justified through the existing, specific
+logical completeness interface, without assuming consistency of any
+theory.  For an empty named-formula axiom predicate, the formulas
+$x_i=x_i$ and $(x_i\in x_i)\to(x_0\in x_0)$ are valid in every
+irreflexive structure under every valuation.  They contain no genuine
+bottom constructor.  \texttt{Tarski.alias\_complete} therefore supplies
+their derivations in the relative-falsity calculus.  Applying
+\texttt{Code254.c254\_of\_thmG}, with the vacuous axiom interpretation,
+gives exactly $C_{254}(Q(i,i))$ and $C_{254}(I(E(i,i),1))$.
+There is no issue involving the exceptional code $0$ in these two
+translations: both formulas consist only of atomic formulas and the
+one displayed implication, and $E(0,0)=1$.
+
+\paragraph{Soundness of the closure rules.}
+Generalization is a constructor of $C_{254}$.  A theorem consequent is
+handled by the derived $K$ theorem $b\to(a\to b)$ and modus ponens.
+Implication identity is derivable from $K$ and $S$.  The remaining two
+rules are instances of the propositional tautologies
+\[
+ (a\to F)\to(a\to b),\qquad
+ a\to\bigl((b\to F)\to((a\to b)\to F)\bigr).
+\]
+They are available for arbitrary numerical substitutions through
+\texttt{Code254.c254\_classical} and
+\texttt{Kalmar.tautology\_complete}.  Applying the certified premises by
+modus ponens proves the asserted conclusions.  These rules remain sound
+when one or both substituted codes are zero.
+
+\paragraph{Termination and implementation binding.}
+For $n>0$, every formula subcode used by the recognizer is a Cantor
+component of $\lfloor n/4\rfloor$ and is strictly smaller than $n$.
+Code zero is handled before recursive descent.  Consequently strong
+induction on $n$ proves that every positive or negative result has the
+stated derivability meaning.  The implementation uses an exact integer
+square root for Cantor inversion and has no floating-point size limit.
+The JSON certificate records the rule and its premises for every
+recognized signed code.
+
+\paragraph{Stack certificates.}
+The source stack is the stream with repeated Cantor unpairing, not a
+list encoding with an extra terminator symbol.  The source proves
+\[
+ \operatorname{Good}(0),\qquad
+ C_{254}(a)\wedge\operatorname{Good}(b)
+ \Longrightarrow\operatorname{Good}(P(a,b)).
+\]
+These are \texttt{Enum254.good\_zero} and \texttt{good\_cons}.
+For any nonzero natural number $z=P(a,b)$, the tail satisfies $b<z$.
+The certifier repeatedly unpairs $z$, requires a positive formula
+certificate for each head, and stops at zero.  Induction from the final
+zero stream proves \texttt{Good} for the original stack.  This justifies,
+for example, the nonzero safe stacks $3=P(2,0)$, $6=P(3,0)$ and
+$9=P(0,3)$.  Codes $1=P(1,0)$ and $2=P(0,1)$ receive no safe-stack
+certificate.
+
+\paragraph{Small examples.}
+The certified theorem codes at most $64$ are
+\[
+\begin{split}
+\{&0,2,3,4,6,12,14,16,19,20,22,24,26,32,34,36,38,40,42,\\
+  &48,50,51,52,54,56,58,60,62\}.
+\end{split}
+\]
+The corresponding recognized safe stack codes at most $64$ are
+\[
+\{0,3,6,9,10,18,21,24,27,31,42,48,51,54,61\}.
+\]
+These sets are sufficient, not asserted to be complete.  In particular,
+code $3$ is a safe theorem field even though it is not the special truth
+code.  A startup search can use these facts without changing the runtime
+calculus, register mapping, or state table.  An accepted startup must
+still satisfy the complete binary-frame invariant, including the clean
+program counter, distance bound, complete support, and spare-block
+conditions.  This section supplies the logical-root premise only.
+The stronger product invariant used to exclude six guarded source cases
+in Section~\ref{sec:guard-invariant-transport} starts with $T=W=H=0$.
+The broader safe-root recognizer does not itself establish that stronger
+invariant.  In the two successful initializers audited here, all three
+fields are zero, so both premises hold independently.
+
+\paragraph{Proof status and attribution.}
+The general safe-root interface, Cantor coding, numerical calculus,
+relative-falsity completeness, and stack lemmas are inherited from the
+ProveIt development and its attributed upstream work.  The present
+addition is the explicit sufficient certificate recognizer and its
+application to startup search.  The rule proof above is an ordinary
+mathematical proof; this packet makes no new Lean compilation claim for
+the recognizer or the base-rule corollaries.

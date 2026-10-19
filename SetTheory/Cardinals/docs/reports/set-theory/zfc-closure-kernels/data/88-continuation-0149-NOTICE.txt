@@ -1,0 +1,48 @@
+State experiment attribution and provenance
+==========================================
+
+Source repository: VladimirReshetnikov/ProveIt
+Pinned commit: c539ed64bfad3fa5a059bf040b06b6c91ded680e
+Underlying 254-state machine: Mira-Cult; upstream Rocq verification:
+Jeff Ketchersid (jeff87654/busy-beaver, branch zf-254). The compiler and
+register source incorporate work by Andrew James Wade and credited contributors.
+The complete existing attribution and licenses are retained in
+vendor/context246/NOTICE.txt and vendor/context246/sources/.
+
+This package retains the established prefix246 table and proof-checking
+kernels unchanged in vendor/context246. Candidate input tables under this
+folder derive from that construction. Names beginning s1/s2 denote the
+frozen compiler bases; s3/s7/s9 denote newly generated candidates described
+in the main report, not earlier independently published bounds.
+
+Unchanged prior research code used by this experiment set:
+
+source_decoder.py
+  Source: ProveIt docs/incoming archive 6: zfc-under246-research-20261018/research/agent_logic/verify_reassociation.py
+  SHA-256: ac82629f4475dbbf9700c5e73f952fb50bc5f53cbbad9401069c58893957e507
+
+permutation_bisim.cpp
+  Source: ProveIt docs/incoming archive 1: zfc-below246-research/search/reductions/code/permutation_bisim.cpp
+  SHA-256: 240dbf8005548b171302cba4883bf27612d39c1390ecb3ee570ec299da0b3356
+
+source_decoder.py is imported for its independent Decoder implementation.
+Its original standalone CLI and prior-package default paths are preserved;
+the portable state commands import the module and supply their own inputs.
+It is not a standalone entry point for this archive.
+
+permutation_rebracket.py contains small explicit module-loading and ordered
+leaf-traversal routines equivalent to those used by prior compile_rebracket.py;
+its unrelated candidate generator is not imported. The guarded affine
+semantics it calls remain the unchanged vendor/context246 implementation.
+
+The new C++ incoming-edge and scanner-compensation search files extend the
+new continuation-quotient matcher developed in this research session. They
+are finite discovery programs; their presence is not a universal machine
+correctness certificate. All runs use existing old-label tables and count
+working-state graph reachability explicitly.
+
+blank_start_survey.cpp adapts the prior initialization search in
+vendor/context246/search/seed_search.cpp. It removes the table mutations,
+raises the minimum frame distance to 64, adds complete input validation,
+and records every bounded endpoint. The cited prior source is retained
+unchanged in the vendor directory.

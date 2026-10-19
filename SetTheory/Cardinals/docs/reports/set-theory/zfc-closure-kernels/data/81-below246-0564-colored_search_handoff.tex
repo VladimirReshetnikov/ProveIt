@@ -1,0 +1,67 @@
+\section{Transported decoder colors: a bounded final attempt}
+The final search couples source reassociation to the physical transition
+table. A \emph{color} is an original physical decoder state. The source
+starts with 203 distinct pair classes assigned to 191 colors; twelve colors
+have two source roles. Each proposed association rotation transports the
+colors of unchanged ancestors and either preserves or exchanges the colors
+of its pivot and inner pair. Conflicting assignments after source
+hash-consing are rejected. The search retains the original 191 decoder
+colors and 55 support states, so every emitted table has 246 states.
+
+An independent literal trace extraction identifies 54 decoder rows used
+outside the positions of the declared source instruction word. These include
+both backward decoder aliases and rows borrowed by the register and control
+handlers. Every search candidate must keep all 54 literal transitions
+unchanged. This is substantially more precise than requiring their entire
+source subtrees to remain unchanged: some borrowed rows belong to ancestors
+whose other branch contains most of the theory program. The row list,
+transitions, example uses, and source classes are recorded in
+\texttt{original\_terminal\_dependencies.json}.
+
+The objective first minimizes the number of decrement leaves with seven
+trailing zeros, then the shorter trailing-zero histogram, then source depth.
+Internal zero runs are bounded by seven and depth by 46. Every admitted
+source graph keeps all register arguments and passes exact comparison of
+all 8,391 guarded source successors. This search neither changes the
+consistency-checking register program nor relies on sampled nonhalting.
+
+The first run tests 46,284 rotation/color recipes in approximately 41 seconds.
+It reaches a 203-pair, depth-39 graph with seven problematic decrement leaves,
+compared with eighteen initially. However, literal checking at header
+distance 50 rejects 39 instruction cases: preserving transition rows does
+not preserve the preceding selector bits on which shared-state aliases
+depend. That table is explicitly rejected as a runtime compilation.
+
+A second run also preserves the two preceding bits of every shared decoder
+occurrence and the four-bit suffix of every instruction word, including the
+left marker. It tests 29,232 recipes in approximately 18 seconds and reaches
+a depth-37 graph with fifteen problematic decrement leaves. Its complete
+246-state table passes all 8,391 finite instruction-frame tests at distance
+40, totaling 3,658,156 literal transitions with at most 762 per case. Deleting
+scanner state 74 gives a 245-state proposal, but exactly thirty cases fail:
+the zero and positive guards of those fifteen decrement leaves. Thus this
+attempt does not produce a valid machine below 246 states.
+
+The separate universal whole-frame audit also passes all 8,391 cases for
+the 246-state table, for every header distance at least 40, arbitrary primary
+registers under the named guard, and all finite nonempty spare suffixes.
+One case needs the elementary normalization $1^n1=1^{n+1}$ to avoid an
+indeterminate empty symbolic run. Joining these adjacent equal-symbol
+segments leaves the state, head, and tape denotation unchanged. The
+shortened 245-state proposal has exactly the same thirty failures in the
+universal checker. These final certificates are
+\texttt{colored\_context246\_audit.json} and
+\texttt{colored\_context245\_audit.json}; the portable checker is
+\texttt{check\_colored\_runtime.py} with \texttt{colored\_affine.py}.
+
+Both runs stop at a bounded plateau: at most twelve equal-score first moves
+are followed by a search over one additional rotation. The source, precise
+bounds, color assignments, best graphs, tables, and machine-readable results
+are retained. These negative results concern the specified search families.
+They do not establish that more extensive reassociation, a different
+coloring, or another tape protocol cannot achieve the target. The exact 246-state table also passes a separate
+blank-prefix replay: after 410,735 transitions it reaches the full admitted
+safe root, with the entire trajectory identical to the reference prefix.
+This finite certificate composes with its source and instruction theorems
+to give ordinary mathematical blank-start halting equivalence to the
+reference construction. No new kernel-checked endpoint is claimed.

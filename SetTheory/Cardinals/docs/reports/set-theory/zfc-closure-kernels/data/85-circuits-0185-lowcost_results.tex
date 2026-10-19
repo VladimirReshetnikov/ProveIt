@@ -1,0 +1,66 @@
+\section{Independent audit of five decoder reassociations}
+
+The experiment supplied five low-cost reassociations of the literal
+decoder tree, numbered $0,233,235,236,237$.  Each generated program passes
+the independent finite leaf-map certificate of
+Section~\ref{sec:leaf-cfg-transfer}: all $6,460$ leaves and $8,391$ guarded
+source cases preserve register effects, halting tags, and control-flow
+successors under the leaf-order map.  This check does not reuse the
+affine binary transition engine.
+
+For each supplied table, restricting to its certified runtime state set
+leaves exactly $246$ working states and $492$ binary rows.  All targets
+already remain inside that state set or point to the designated halt;
+no fallback transition is added.  The $42$ literal rows appearing in
+the block, marking, and register-operation induction proofs remain
+unchanged.  Their union with the $472$ rows read by the universal
+instruction checker is the entire $492$-row table.
+
+Every retained state was tried as a blank start for $1,000,000$ literal
+steps.  The search accepts only a complete clean root frame with at
+least one spare block and with the logical safe-root premise certified
+by Section~\ref{sec:expanded-safe-roots}.  It tracks the complete finite
+support of the tape rather than inspecting a bounded window.
+\[
+\begin{array}{c|r|r|r}
+\text{rotation}&\text{starts searched}&\text{sufficient roots}&
+\text{steps from start }95\\\hline
+0&246&1&410{,}723\\
+233&246&1&410{,}815\\
+235&246&0&\text{none within bound}\\
+236&246&0&\text{none within bound}\\
+237&246&0&\text{none within bound}
+\end{array}
+\]
+All other runs exhausted the search fuel.  They are not classified as
+nonhalting or as impossible initializers.  The larger formula/stack
+recognizer finds no additional sufficient root in this finite search.
+
+An independent sparse-set interpreter replays each successful prefix
+from an entirely blank tape and checks its complete endpoint support.
+Both arrive in original dispatcher state $96$ with head $-5$, marker
+$-6$, header $176$, an empty program counter, total distance $181$,
+physical primaries
+\[
+ [0,0,0,3,0,0,3,0,0],
+\]
+and $167$ spare blocks of value one.  Each support contains exactly
+$351$ one-cells.  Thus both have the same admitted logical root
+$(3,0,0,0,3,0,0,0,0)$ as the prior $246$-state construction.
+The different prefix lengths are literal measurements for the changed
+tables, not inherited bounds.
+
+Canonical tables and explicit renumberings are supplied for these two
+successful initializers.  Together with the universal binary
+instruction proof and the independent source-map certificate, they
+provide two additional $246$-state layouts for subsequent searches.
+They do not improve the working-state count.  The other three tables
+are runtime variants without a certified blank initializer in this
+audit.
+
+Finally, every one of the five tables has $246$ classes under ordinary
+exact state bisimulation.  Enumerating each table's $30,135$ unordered
+state pairs also yields no one-pair quotient compatible with all rows
+in the runtime proof.  These are precisely scoped observations about
+one-step quotients; they do not exclude a contextual multi-step fold,
+a different tape frame, or another compiler construction.

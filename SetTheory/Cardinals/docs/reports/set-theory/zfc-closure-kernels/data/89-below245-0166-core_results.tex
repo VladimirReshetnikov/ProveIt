@@ -1,0 +1,168 @@
+\section{Core reduction searches and a bootstrap obstruction}
+
+No binary blank-tape machine below 245 working states was certified in this
+component of the investigation. The new contribution is a collection of
+broader finite reduction searches and a rigorously checked example showing
+that even universally correct register operations need not preserve blank
+initialization.
+
+\subsection{The spare-zero resource variant}
+
+Write
+\[
+ B(v)=0\,1^{v+1},\qquad C(v)=1\,0\,1^v,
+\]
+and extend both encodings by concatenation to finite lists of natural
+numbers. The elementary identity
+\[
+ C(A)1=1 B(A)
+\]
+follows by induction on the list $A$. The routed machine uses this identity
+when its carry scan temporarily converts blocks of type $B$ into type $C$.
+The ordinary return scan and rollback scan restore their respective frames.
+
+Consider the exact old-label 245-state table, and change only
+\[
+ 255:\quad 0\mapsto 1 L 255
+ \qquad\hbox{to}\qquad
+ 255:\quad 0\mapsto 0 L 255.
+\]
+All other rows, including the start state 95, are initially retained. This
+modification will be called the spare-zero table; it is not a successful
+consistency construction.
+
+At the right end of an increment, the relevant local rows are
+\[
+\begin{array}{c|cc}
+ &0&1\\\hline
+ 75&1 R 255&1 L 63\\
+ 255&0 L 255&1 L 131\\
+ 131&0 L 48&0 L 112.
+\end{array}
+\]
+The sole changed write leaves a farther blank cell zero instead of making
+it one. Thus the new increment appends $B(0)$ where the original appends
+$B(1)$. The zero-decrement case reaches state 255 on the first one-cell of
+the following nonempty block and therefore does not use the changed row.
+Its rollback remains unchanged. Positive decrement is likewise unchanged.
+
+The universal local proof was replayed on the actual modified table. All
+four one-block inductions, the list-word identity, all three complete
+increment/decrement macros, and marking contracts pass. The only adaptation
+to the macro proof driver replaces the increment target's appended $B(1)$
+by $B(0)$. No execution rule is weakened. An independent literal check also
+passes all 8385 archived concrete instruction cases after changing exactly
+2599 increment targets in this way.
+
+This resource flexibility is legitimate inside the runtime invariant:
+spare blocks may have arbitrary natural values, and an increment still
+preserves a nonempty finite spare suffix. A complete whole-frame symbolic
+replay on the actual modified table also passes all 8391 guarded cases,
+using 2312645 symbolic rules and covering all 490 transition rows. It
+quantifies independent arbitrary primary register values, arbitrary gap
+$64+n$, and an arbitrary nonempty spare suffix, with minimum progress 13.
+The new proof is an auditable mathematical symbolic check, not a new
+proof-assistant endpoint. These results do not justify the blank
+initialization of the modified machine.
+
+\subsection{An explicit infinite continuation after 78 steps}
+
+\paragraph{Blank-ray lemma.}
+Suppose a binary Turing machine is in state $q$ at position $h$, every cell
+at or to the right of $h$ is zero, and
+\[
+ \delta(q,0)=(w,R,q)
+\]
+for $w\in\{0,1\}$. Then it does not halt. More precisely, after $n$ steps
+its state is $q$, its head is $h+n$, and it has changed exactly the cells
+$h,\ldots,h+n-1$ to $w$; all cells farther right remain zero. The analogous
+leftward statement also holds.
+
+\paragraph{Proof.}
+At $n=0$ the description is the premise. Assuming it at $n$, the scanned
+cell $h+n$ is zero, so the stated transition writes $w$, moves to $h+n+1$,
+and keeps state $q$. This proves the description at $n+1$. In particular,
+every finite prefix extends by one further nonhalting transition.
+
+Two independent exact interpreters, using sparse sets and dense arrays,
+check that the spare-zero table started at 95 on blank tape reaches after
+exactly 78 transitions
+\[
+ q=42,\qquad h=4,\qquad
+ \{x:T(x)=1\}=\{-3,-2,2\}.
+\]
+The literal row $\delta(42,0)=(1,R,42)$ and the displayed complete tape
+support satisfy the blank-ray lemma. Consequently, after an additional
+$n$ steps,
+\[
+ q=42,\qquad h=4+n,\qquad
+ \{x:T(x)=1\}=\{-3,-2,2\}\cup\{4,5,\ldots,3+n\}.
+\]
+This is an elementary proof of nonhalting, not a guess based on a long
+simulation or an unverified absence of a supported root.
+
+The same certificate generator checks every one of the 245 working states
+as a possible blank start. Exactly 243 starts reach a blank-ray self-loop.
+The other two starts halt:73 after 5380 transitions and 83 after 5379. There
+are no unresolved starts. Every endpoint is independently reproduced with
+the dense interpreter, and each escape endpoint is checked against its
+actual table row and entire finite one-cell support. Thus changing only the
+start state does not repair the intended calibration of this particular
+spare-zero table.
+
+The distinction between truth and provability matters here. If ZFC is
+consistent, the external statements ``this escaping machine does not halt''
+and $\operatorname{Con}(\mathrm{ZFC})$ are both true. The failure concerns
+the requested provable equivalence: under the usual hypotheses of the
+second incompleteness theorem, a consistent ZFC cannot prove its consistency
+by combining a proved nonhalting statement with such an equivalence. No
+absolute consistency or inconsistency assertion is made.
+
+\subsection{Broader finite reduction families}
+
+The single-incoming-edge search permits deletion of any state other than
+start 95 or dispatcher 96 having exactly one nonself incoming edge. That edge
+may choose an arbitrary write bit, either direction, and any retained working
+state as successor. All 137 eligible states were screened, giving
+\[
+ 137\cdot 244\cdot 4=133712
+\]
+concrete rewrite candidates. None survives the 8385 instruction fixtures.
+A second pass allows translated dispatcher frames, a different safe gap,
+and arbitrary nonempty spare contents; it also has no survivor.
+
+The contextual family allows 2--6 incoming edges and permits a different
+replacement for each caller. It first retains individually successful edge
+edits, then tests every combination when all incoming edges have an
+alternative. The run completes 161040 individual screens and 1908120
+composed rewrites, again without a survivor. This is a restricted
+compositional family: an edit requiring simultaneous mutually repairing
+changes may be missed by its individual-edge prefilter.
+
+A separate synthesizer replaces the four end-handler roles 75,112,131,255
+by three unrestricted two-row states. With five successor choices, the
+whole-instruction check explores 595777 partial-table nodes. A broader
+seventeen-successor family explores 7534057 nodes. Both have no survivor.
+The endpoint is the complete instruction frame, so intermediate tape edits
+and head positions may differ from the inherited implementation.
+
+Another synthesis removes state 63 and replaces the return roles 48,112,131
+by fresh rows, while retargeting 75/read 1. The all-left family explores 231420
+partial-table nodes; allowing both head directions explores 8312852. Both
+finish without a survivor. The spare-zero targets were also used in separate
+single-edge, contextual and end-handler searches; none yields a 244-state
+candidate.
+
+Every search has explicit finite bounds. Single-edge and contextual quick
+screens use 6000 transitions and final affected-case screens 10000. Whole
+instruction synthesis uses 4000. Concrete tape coordinates range from$-64$
+to 1983. The local end-handler screen uses 56 finite contexts and 120 steps,
+allowing an appended spare ofvalue 0 through 4. The archived baseline itself
+passes all 8385 fixtures in at most 2686 steps.
+
+These outcomes are not lower bounds on consistency-machine size. A correct
+candidate might require more time on a test input, different representation
+invariants, a new source program, a successor outside the chosen pool, or a
+synergistic edit excluded by the contextual prefilter. The results provide
+reproducible search evidence and a concrete bootstrap warning; they do not
+establish minimality.

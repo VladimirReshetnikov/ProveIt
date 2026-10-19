@@ -1,0 +1,119 @@
+\section{Transporting the six unreachable guarded cases}
+\label{sec:guard-invariant-transport}
+
+The prior \emph{Beyond 246} packet supplies a product invariant for the
+literal register program, with logical register order
+$(N,T,W,A,D,H,X,Y,L)$.  Its initial domain is
+\[
+ N,A,D,X,Y,L\in\mathbb N,\qquad T=W=H=0.
+\]
+This is a proper restriction of the general safe-root domain in
+Section~\ref{sec:expanded-safe-roots}.  The distinction matters when
+discarding source cases from a runtime search.
+
+\paragraph{Meaning of the finite certificate.}
+Partition the natural numbers into categories $0$, $1$, and $2^+$,
+where $2^+$ means at least two.  A mask is a nonempty subset of these
+three categories, represented by bits $1,2,4$.  For each of the
+$6,460$ leaves, the certificate gives either an empty invariant or
+the Cartesian product of nine masks.  Its initial masks are
+\[
+ (7,1,1,7,7,1,7,7,7).
+\]
+For increment, the category transfer is
+$0\mapsto1$, $1\mapsto2^+$, $2^+\mapsto2^+$.
+For a zero decrement guard only category zero is feasible, and it
+remains zero.  For a positive decrement, category one maps to zero,
+and category $2^+$ maps into $\{1,2^+\}$; zero is infeasible.
+All other registers remain unchanged.  Unconditional control
+instructions preserve the complete product.
+
+\begin{lemma}[Product-certificate soundness]
+If the initial product is included in the initial leaf's invariant,
+and the abstract image of every feasible guarded edge is included
+in its successor's invariant, every concrete source configuration
+reachable from the initial domain belongs to its selected leaf's
+invariant.  An edge with empty abstract source or empty guarded image
+cannot occur on such a run.
+\end{lemma}
+\begin{proof}
+Each displayed category transfer contains the category of every
+corresponding concrete successor.  Coordinatewise containment therefore
+implies containment for Cartesian products.  Induction on the finite
+number of source steps proves invariant membership.  A concrete
+enabled edge would have a represented source value and a nonempty
+abstract image, contradicting the claimed emptiness.  This proof is
+finite induction in ordinary ZFC and assumes no consistency statement.
+\end{proof}
+
+The independent checker reparses the exact source with SHA-256
+\path{1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746}.
+It checks all masks, the initial inclusion, and every feasible edge.
+There are $6,456$ leaves with nonempty invariant, $8,385$ feasible
+guarded cases, and $8,384$ feasible nonhalting edges.  Exactly the
+following six guarded cases are excluded:
+\[
+\begin{array}{r|r|l|l}
+\text{case index}&\text{leaf index}&\text{operation}&\text{reason}\\\hline
+8202&6316&\mathrm{CD}(X),\ X>0&X=0\text{ in the source mask}\\
+8203&6317&\mathrm{CI}(H)&\text{empty source invariant}\\
+8204&6318&\mathrm{CC}(2)&\text{empty source invariant}\\
+8358&6434&\mathrm{CD}(T),\ T>0&T=0\text{ in the source mask}\\
+8359&6435&\mathrm{CI}(X)&\text{empty source invariant}\\
+8360&6436&\mathrm{CC}(2)&\text{empty source invariant}
+\end{array}
+\]
+Both indices are zero-based.  Leaves are listed in lexicographic
+binary-address order.  Each decrement contributes its zero case first
+and its positive case second; every other leaf contributes one case.
+Consequently each excluded decrement case uses its positive guard.
+
+\paragraph{Why the exclusions survive the five reassociations.}
+For each new tree, the independent leaf-graph implementation of
+Section~\ref{sec:leaf-cfg-transfer} constructs all successors afresh.
+It checks the entire labeled tuple
+\[
+ (\text{leaf index},\text{opcode},\text{logical register if relevant},
+   \text{guard},\text{successor leaf index})
+\]
+for every one of the $8,391$ cases against the original tree.
+Break and continue operands may change when tree structure changes;
+their target leaf is the semantic control information.  The five
+audited reassociations preserve this full tuple, including the original
+opcode.  The checker then rechecks every product-closure inclusion
+against each new graph rather than merely copying the earlier result.
+Thus the invariant and the six case indices transport to every one
+of these runtime layouts.
+
+\paragraph{Binding to the exact binary fixtures and blank roots.}
+The finite instruction fixtures used in merge searches enumerate
+decrements by \texttt{positive=False,True}.  This is exactly the
+\texttt{zero=True,False} convention above.  The independent audit
+regenerates all source tapes and prescribed endpoint tapes, including
+register permutation, spare-tail growth, positive-decrement header
+shift, and root-carry head shift.  It compares every table row and
+every case in all six full corpora and their $8,385$-case restrictions.
+This closes the gap between a correct source certificate and a possible
+off-by-one or reversed-guard deletion in the search input.
+
+The same audit freshly replays both certified blank prefixes against
+the delivered old-label tables.  Their complete endpoint logical vector
+is $(3,0,0,0,3,0,0,0,0)$ and their program counter is empty.  In
+particular $T=W=H=0$ holds exactly.  Therefore the invariant applies to
+both blank machines.  For layouts $235,236,237$, it remains a conditional
+runtime invariant because this audit did not obtain a blank initializer.
+
+The machine search may omit these six cases when seeking a runtime
+proof on this invariant.  Passing the remaining finite fixtures still
+does not prove a uniform instruction contract: the universal binary
+segment proof, induction support, and any changed blank prefix must
+also be supplied.  Conversely, a negative fixture search excludes only
+its specified family and fixture domain.  The product masks are an
+overapproximation of reachability, so they do not establish that every
+allowed register tuple actually occurs.
+
+The prior mask certificate is preserved verbatim at
+\path{reference/guard-invariant/product-invariant.json}.
+The new independent checker is
+\texttt{code/proof/audit\_guard\_transport.py}, with its result in
+\texttt{verification/proof/guard-transport-independent.json}.

@@ -1,0 +1,98 @@
+{
+  "title": "Below246: contextual decoder reassociation and moving zero registers",
+  "prepared_date_utc": "2026-10-18",
+  "goal": "A binary blank-start TM with fewer than246 working states and an internal ZFC proof of nonhalting iff Con(ZFC).",
+  "goal_completed": false,
+  "complete_sub246_machine_certified": false,
+  "new_results": [
+    "generalized all-finite-exit source associativity theorem",
+    "245-state source-equivalent decoder experiment with explicit microcode obstruction",
+    "246-state neutral reassociation passing8391 affine cases and exact blank replay",
+    "245-state moving-zero local transducer with universal ordinary proof and header obstruction",
+    "expanded finite decoder and six-row runtime searches",
+    "11117-pair finite permutation-specialization diagnostic"
+  ],
+  "formal_status": {
+    "ordinary_mathematical_proofs": true,
+    "new_lean_rocq_build": false,
+    "serialized_internal_zfc_proof": false,
+    "state_count_lower_bound": false
+  },
+  "source_pins": {
+    "ProveIt": {
+      "url": "https://github.com/VladimirReshetnikov/ProveIt",
+      "commit": "8e012a51d6e7fdad4d903089536427a813009a4f"
+    },
+    "upstream": {
+      "url": "https://github.com/jeff87654/busy-beaver",
+      "branch_at_lookup": "zf-254",
+      "commit": "c132d7eae8158cd3a9850ea3eb7251158c3dd821"
+    }
+  },
+  "baseline": {
+    "path": "reference/context246",
+    "selected_from": "Supplied zfc-below246-research-20261018 archive in pinned ProveIt docs/incoming",
+    "scope": "Unchanged historical package; interpreter bytecode caches omitted. Historical metadata is retained as historical metadata."
+  },
+  "integration_adaptations": {
+    "search/*.py": "Imports adapted from incoming_research to decoder; search logic unchanged.",
+    "report.tex": "New integrated report, incorporating independently reviewed proof sections.",
+    "verify.py": "New portable integration checker; default checks all delivered inputs without mutation."
+  },
+  "reference_sources": {
+    "reference/context246/machine/zfc_prefix246_old.tm": {
+      "sha256": "303911c554284c49ce09042d8127feba4da260baae766e32260034aa3bdb82ee",
+      "bytes": 6452
+    },
+    "reference/context246/machine/zfc_prefix246.tm": {
+      "sha256": "89cda615b3ea9fcac07ad6b08e0351faa34841a56935b6f5846d3920f13bc0fc",
+      "bytes": 6396
+    },
+    "reference/context246/sources/Prog254.v": {
+      "sha256": "1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746",
+      "bytes": 181946
+    }
+  },
+  "new_tables": {
+    "decoder/rotation_candidates/rotation178.tm": {
+      "sha256": "8539768b4ab9e862233adf3b3a3839fabfbb90afd5b654268f43f13c9d1fdb0c",
+      "states": 245,
+      "rows": 490,
+      "start": 95,
+      "halt": 254,
+      "complete_sub246_consistency_claim": false
+    },
+    "decoder/rotation_candidates/rotation190.tm": {
+      "sha256": "7b98838b417414e399c9cbb10663b64fd50f2eaef2c5939156927a842e84fed8",
+      "states": 246,
+      "rows": 492,
+      "start": 95,
+      "halt": 254,
+      "complete_sub246_consistency_claim": false
+    },
+    "decoder/rotation_candidates/rotation219.tm": {
+      "sha256": "400e1a11febb1622621194cdf77746c3873910e6cf9763f0b57124a11f33b446",
+      "states": 246,
+      "rows": 492,
+      "start": 95,
+      "halt": 254,
+      "complete_sub246_consistency_claim": false
+    },
+    "decoder/rotation_candidates/rotation226.tm": {
+      "sha256": "50569fffdf642ec4747d0aa62dc2399b750929f73fa3bdcfeb1819d48106096a",
+      "states": 246,
+      "rows": 492,
+      "start": 95,
+      "halt": 254,
+      "complete_sub246_consistency_claim": false
+    },
+    "kernel/candidate-mtf245-local.tm": {
+      "sha256": "66f288f1f1c85577e4819a1b60f84b53520e9cd89d94deb4d35536b307fbdccc",
+      "states": 245,
+      "rows": 490,
+      "start": 95,
+      "halt": 254,
+      "complete_sub246_consistency_claim": false
+    }
+  }
+}

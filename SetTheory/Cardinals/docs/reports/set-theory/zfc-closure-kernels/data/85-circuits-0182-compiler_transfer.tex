@@ -1,0 +1,148 @@
+% Standalone section; the parent report supplies amsmath/amsthm.
+\section{A finite certificate for changing the decoder tree}
+\label{sec:leaf-cfg-transfer}
+
+Tree reassociation can shorten a decoder word or alter its zero runs,
+but it does not automatically preserve this register language's behavior.
+Break and continue count selected bits in the consumed path.  Their
+numerical operands refer to the enclosing tree structure, so an ordinary
+associativity claim for sequential programs is insufficient.
+The finite leaf graph gives a direct semantic certificate.
+
+Let $P$ be a finite full binary tree, with leaf-address set $L_P$ and the
+literal source operations $\mathrm{CI}(r)$, $\mathrm{CD}(r)$,
+$\mathrm{CB}(k)$, $\mathrm{CC}(k)$ and $\mathrm{CH}$.
+Write $d_P(w)$ for the unique leaf reached by reading the finite word
+$w$ followed by infinitely many zeros.  Write $u(w)$ for fixed-width
+binary increment modulo $2^{|w|}$, including $u(\epsilon)=\epsilon$.
+Let $s_b^k(w)$ remove the shortest suffix containing $k$ occurrences of
+bit $b$, or remove the whole word if fewer than $k$ occur.  For $k=0$
+it removes nothing.  These are precisely the source's
+\texttt{incPath} and \texttt{stripPath} operations, before any
+trailing-zero abbreviation.
+
+Define the leaf control graph by the following transitions.  Every
+edge carries the indicated register effect as well as its next leaf.
+\[
+\begin{array}{c|c|c}
+\text{leaf operation at }\alpha&\text{register effect}&\text{next leaf}\\\hline
+\mathrm{CI}(r)&R_r\gets R_r+1&d_P(u(\alpha))\\
+\mathrm{CD}(r),\ R_r>0&R_r\gets R_r-1&d_P(u(\alpha))\\
+\mathrm{CD}(r),\ R_r=0&\text{identity}&d_P(u(s_0^1(\alpha)))\\
+\mathrm{CB}(k)&\text{identity}&d_P(u(s_0^k(\alpha)))\\
+\mathrm{CC}(k)&\text{identity}&d_P(s_1^k(\alpha))\\
+\mathrm{CH}&\text{halt}&\text{none}.
+\end{array}
+\]
+
+\begin{lemma}[The selected leaf determines a source step]
+If source paths $w$ and $w'$ select the same leaf $\alpha$ in $P$,
+then their source executions from a common register file have the same
+register effect, halting status, and next selected leaf.  This assertion
+holds even if either path ends before the leaf or contains a suffix
+beyond the leaf.
+\end{lemma}
+\begin{proof}
+The decoder reads precisely the prefix $\alpha$ of length $|\alpha|$
+from the zero-padded path.  The source definition applies
+\texttt{consume} before executing the leaf.  Thus both inputs supply
+the literal word $\alpha$ to \texttt{execute}.  Its six cases are exactly
+the rows displayed above.  The tree is finite and full, so decoder fuel
+exhaustion is impossible when its fuel bound is at least the tree's
+maximum depth.  This is an essential distinction from treating every
+\texttt{none} result in a partial decoder as a genuine halt.
+\end{proof}
+
+\begin{theorem}[Finite compiler-map certificate]
+Let $P,Q$ be such trees and let $f:L_P\to L_Q$ be a total function.
+Suppose the following finite conditions hold:
+\begin{enumerate}
+\item $f(d_P(\epsilon))=d_Q(\epsilon)$.
+\item Increment and decrement leaves map to the same operation on the
+same logical register.  Halt leaves map to halt leaves and only halt
+leaves map to halt leaves.  Break and continue leaves may map to either
+kind of unconditional identity-effect control leaf.
+\item For every source leaf and each applicable guard, the next leaf
+commutes with $f$.  In particular, both the zero and positive decrement
+guards are checked separately.
+\end{enumerate}
+Then, for every initial register file $R$, the empty-path source runs
+of $P$ and $Q$ have identical register files at every source step,
+corresponding selected leaves under $f$, and the same halting status.
+In particular their halting statements are equivalent in ZFC.
+Neither injectivity nor surjectivity of $f$ is required.
+\end{theorem}
+\begin{proof}
+Relate $(w,R)$ and $(v,S)$ when $R=S$ and
+$d_Q(v)=f(d_P(w))$.  The first condition relates the initial states.
+The selected-leaf lemma and the second condition give matching effects
+and matching halt tags.  For a decrement, the common register file
+selects the same guard.  The third condition then relates the two
+successors.  Induction on the number of source steps gives the asserted
+correspondence up to any halt.  Halt-tag reflection and determinism
+give both directions of finite halting.  Extra target leaves cannot
+cause an extra reachable behavior: initiality and successor closure
+keep the target run in the image of $f$.
+\end{proof}
+
+The accompanying \texttt{leaf\_cfg.py} constructs this finite graph from
+a complete site list.  It rejects duplicate addresses, non-prefix-free
+addresses, incomplete binary trees, invalid opcodes, invalid operands,
+incomplete map domains, nonexistent images, mismatched effects or halt
+tags, and noncommuting successors.  Its default map pairs leaves in
+left-to-right order, which is useful for reassociation retaining leaf
+order.  An explicit map may also be supplied.
+
+A fresh self-comparison of the inherited site list contains $6,460$
+leaves and $8,391$ guarded cases.  It checks the implementation against
+the complete finite input rather than a selection of instructions.
+A three-leaf reassociation with two increments and a halt passes;
+replacing its second increment with a control leaf is rejected.
+These runs are checker validation, not a new optimized compiler result.
+Binding a changed tree to its generated source and binary table remains
+the responsibility of the compiler audit.
+
+\subsection{Composing the compiler certificate with a changed binary machine}
+
+For completeness, the final logical step is stated in a form that also
+permits a new tape encoding or detector.  The positive-segment
+composition principle is already present in the prior
+\emph{Beyond 246} packet; the finite-time reflection proof below
+spells out why unbounded macro duration creates no problem.
+
+Let $\Gamma$ be the deterministic register graph and $M$ a deterministic
+binary machine, with halting configurations made absorbing.  Let
+$\mathcal R(p,c)$ relate an active graph configuration to a complete
+binary configuration.  Assume a verified finite nonhalting blank prefix
+ends at $c_0$ related to an admitted logical root $p_0$.  Assume every
+active graph step has a binary simulation segment of length $k\geq1$
+with the prescribed complete endpoint and no halt.  Assume each graph
+halt has a finite binary halting segment.  All assumptions must be
+proved on the chosen invariant, for arbitrary represented registers,
+gaps and spare suffixes, not only on sampled values.
+
+If the graph halts, induction on its finite execution concatenates
+these segments and obtains a binary halt.  Conversely, use strong
+induction on a finite binary halting time $t$ from a related
+configuration.  If the graph is already at a halt leaf, it halts.  If
+it takes an active step, its segment ends active after $k\geq1$ moves.
+Since binary halting is absorbing, a halting time $t$ must satisfy
+$t>k$.  Apply the induction hypothesis to the related endpoint with
+halting time $t-k<t$.  This proves a finite graph halt.  No inference
+from a long finite sample and no infinite choice of witnesses is
+needed.  The finite blank prefix can be prefixed or removed using
+determinism and its nonhalting certificate.
+
+Finally, compose with the inherited equivalences
+\[
+ \operatorname{Halt}(\Gamma,p_0)
+ \longleftrightarrow C_{254}(1)
+ \longleftrightarrow\operatorname{Ref}(\mathrm{NativeAx})
+ \longleftrightarrow\operatorname{Ref}(\mathrm{ZF})
+ \longleftrightarrow\operatorname{Ref}(\mathrm{ZFC}).
+\]
+Classical negation gives the requested ZFC theorem.  A successful
+finite compiler-map certificate does not replace the universal binary
+segment proof or the new blank initialization.  Conversely, the latter
+proofs need not preserve old decoder paths or old macro exit labels,
+provided the complete related frames and positive progress are restored.

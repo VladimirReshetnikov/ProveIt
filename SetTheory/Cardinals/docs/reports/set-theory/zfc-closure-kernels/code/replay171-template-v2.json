@@ -1,0 +1,763 @@
+{
+  "schema": 1,
+  "status": "FROZEN_SOURCE_ONLY_PORTABLE_TEMPLATE",
+  "original_plan_pins": [
+    {
+      "name": "first-plan.json",
+      "sha256": "623a3377d6406ba59c4e281aa0bb5c8f999396683edad43ac0d1335d17f54997"
+    },
+    {
+      "name": "group-a/jobs.json",
+      "sha256": "188756f04a26c40a99c02560b721f5acb5c873349b603b8169d4c944ecb269dc"
+    },
+    {
+      "name": "group-b/jobs.json",
+      "sha256": "ec5e6787c2c9250fefb2f5897951282801e8f85dbab4477539d9872ac41b90c4"
+    },
+    {
+      "name": "group-c/jobs.json",
+      "sha256": "4dc14dc8ab75882fde5cf8d44c90e3c869c04bc781092ba40b03ceeb341fdbc4"
+    }
+  ],
+  "original_packages": {
+    "84": "/tmp/zfc-intake171/zfc-246-frontier-research-20261018/zfc-246-frontier",
+    "81": "/tmp/zfc-intake171/zfc-below246-research-20261018 (3)/zfc-below246-research-20261018",
+    "82": "/tmp/zfc-intake171/zfc246-contextual-reassociation-20261018/zfc246-contextual-reassociation-20261018",
+    "83": "/tmp/zfc-intake171/zfc-axiom-symmetry-20261018/zfc-axiom-symmetry-20261018",
+    "87": "/tmp/zfc-intake171/BusyBeaver_245_Review_Sources_2026-10-18/BusyBeaver_245_Review_2026-10-18",
+    "91": "/tmp/zfc-intake171/zfc-below245-source-search-20261018/zfc-below245-source-search-20261018",
+    "96": "/tmp/zfc-intake171/Shifted_Pairing_Companion_Sources_2026-10-18/Shifted_Pairing_Companion_2026-10-18",
+    "98": "/tmp/zfc-intake171/zfc-direct-negation-20261018/zfc-direct-negation-20261018",
+    "97": "/tmp/zfc-intake171/zfc-small-kernels-20261018/zfc-small-kernels-20261018",
+    "92": "/tmp/zfc-intake171/zfc-sub245-research-20261018 (1)/zfc-sub245-research-20261018",
+    "89": "/tmp/zfc-intake171/zfc-below245-research-20261018/zfc-below245-research-20261018",
+    "99": "/tmp/zfc-intake171/zfc-raw-profile-routing-20261018/zfc-raw-profile-routing-20261018",
+    "94": "/tmp/zfc-intake171/zfc-sub245-research-20261018/zfc-sub245-research-20261018",
+    "93": "/tmp/zfc-intake171/zfc-sub245-research-20261018 (2)/zfc-sub245-research-20261018",
+    "90": "/tmp/zfc-intake171/zfc-below245-research-20261018 (2)/zfc-below245-research-20261018",
+    "85": "/tmp/zfc-intake171/zfc-layout-circuits-20261018/zfc-layout-circuits-20261018",
+    "86": "/tmp/zfc-intake171/sub246-audit-and-alternatives-20261018/sub246-audit-and-alternatives",
+    "88": "/tmp/zfc-intake171/zfc-continuation-research-20261018/zfc-continuation-research-20261018",
+    "95": "/tmp/zfc-intake171/zfc245-semantic-search-20261018/zfc-below245-20261018",
+    "100": "/tmp/zfc-intake171/zfc243-composed-20261018/zfc243-composed-20261018"
+  },
+  "wrappers": {
+    "84": "zfc-246-frontier",
+    "81": "zfc-below246-research-20261018",
+    "82": "zfc246-contextual-reassociation-20261018",
+    "83": "zfc-axiom-symmetry-20261018",
+    "87": "BusyBeaver_245_Review_2026-10-18",
+    "91": "zfc-below245-source-search-20261018",
+    "96": "Shifted_Pairing_Companion_2026-10-18",
+    "98": "zfc-direct-negation-20261018",
+    "97": "zfc-small-kernels-20261018",
+    "92": "zfc-sub245-research-20261018",
+    "89": "zfc-below245-research-20261018",
+    "99": "zfc-raw-profile-routing-20261018",
+    "94": "zfc-sub245-research-20261018",
+    "93": "zfc-sub245-research-20261018",
+    "90": "zfc-below245-research-20261018",
+    "85": "zfc-layout-circuits-20261018",
+    "86": "sub246-audit-and-alternatives",
+    "88": "zfc-continuation-research-20261018",
+    "95": "zfc-below245-20261018",
+    "100": "zfc243-composed-20261018"
+  },
+  "jobs": [
+    {
+      "source": 84,
+      "name": "frontier-finite",
+      "package": "/tmp/zfc-intake171/zfc-246-frontier-research-20261018/zfc-246-frontier",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/code/verify.py",
+        "--output",
+        "{OUT}.json"
+      ]
+    },
+    {
+      "source": 81,
+      "package": "/tmp/zfc-intake171/zfc-below246-research-20261018 (3)/zfc-below246-research-20261018",
+      "name": "A01-phase",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/agent_logic/audit_phase.py"
+      ],
+      "cwd": "{COPY}",
+      "env": {},
+      "timeout": 1200,
+      "result_gates": [
+        "all_nine_arbitrary postfix obligations true",
+        "impossible guards8202,8203,8204,8358,8359,8360"
+      ]
+    },
+    {
+      "source": 81,
+      "package": "/tmp/zfc-intake171/zfc-below246-research-20261018 (3)/zfc-below246-research-20261018",
+      "name": "A01-erasure",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/agent_logic/erase_known_zero_loops.py"
+      ],
+      "cwd": "{COPY}",
+      "env": {},
+      "timeout": 1200,
+      "result_gates": [
+        "6454 leaves,8383 guards",
+        "all_retained_successors_compared true",
+        "Coq text output is inert, not compiled"
+      ]
+    },
+    {
+      "source": 82,
+      "package": "/tmp/zfc-intake171/zfc246-contextual-reassociation-20261018/zfc246-contextual-reassociation-20261018",
+      "name": "A02-moving-zero",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/kernel/verify_mtf.py",
+        "--baseline",
+        "{COPY}/reference/context246/machine/zfc_prefix246_old.tm"
+      ],
+      "cwd": "{COPY}",
+      "env": {},
+      "timeout": 1200,
+      "result_gates": [
+        "2040 local fixtures",
+        "complete_conditional_runtime false",
+        "header tape discrepancy"
+      ]
+    },
+    {
+      "source": 82,
+      "package": "/tmp/zfc-intake171/zfc246-contextual-reassociation-20261018/zfc246-contextual-reassociation-20261018",
+      "name": "A02-permutation-cfg",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/kernel/mtf_cfg.py",
+        "--program",
+        "{COPY}/reference/context246/sources/Prog254.v",
+        "--output",
+        "{OUT}.json"
+      ],
+      "cwd": "{COPY}",
+      "env": {},
+      "timeout": 1200,
+      "result_gates": [
+        "11117 pairs,14693 edges",
+        "independent_closure_pass true"
+      ]
+    },
+    {
+      "source": 83,
+      "package": "/tmp/zfc-intake171/zfc-axiom-symmetry-20261018/zfc-axiom-symmetry-20261018",
+      "name": "A03-selectors",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/logic/check_axiom_row_permutation.py"
+      ],
+      "cwd": "{COPY}/logic",
+      "env": {},
+      "timeout": 1200,
+      "result_gates": [
+        "40320 orders,403200 selector contracts",
+        "numeric_decoder_or_binary_TM_checked false"
+      ]
+    },
+    {
+      "source": 83,
+      "package": "/tmp/zfc-intake171/zfc-axiom-symmetry-20261018/zfc-axiom-symmetry-20261018",
+      "name": "A03-full-emitter",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/logic/check_full_row_emission.py"
+      ],
+      "cwd": "{COPY}/logic",
+      "env": {},
+      "timeout": 1200,
+      "result_gates": [
+        "40320 orders,12 rho8 maps",
+        "unchanged GEN/read/gate order"
+      ]
+    },
+    {
+      "source": 87,
+      "package": "/tmp/zfc-intake171/BusyBeaver_245_Review_Sources_2026-10-18/BusyBeaver_245_Review_2026-10-18",
+      "name": "A07-prepare-inputs",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/code/fetch_inputs.py",
+        "--archive",
+        "/tmp/zfc-intake171/zfc-below245-source-search-20261018/zfc-below245-source-search-20261018/reference/zfc245-proof-20261018.zip",
+        "--output",
+        "{COPY}/inputs"
+      ],
+      "cwd": "{COPY}",
+      "env": {},
+      "timeout": 1200,
+      "result_gates": [
+        "local archive only",
+        "17 allowlisted input files"
+      ]
+    },
+    {
+      "source": 87,
+      "package": "/tmp/zfc-intake171/BusyBeaver_245_Review_Sources_2026-10-18/BusyBeaver_245_Review_2026-10-18",
+      "name": "A07-table-boot",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/code/audit_table_and_boot.py"
+      ],
+      "cwd": "{COPY}",
+      "env": {
+        "B245_INPUTS": "{COPY}/inputs",
+        "B245_OUTPUT": "{COPY}/fresh-results"
+      },
+      "timeout": 1200,
+      "result_gates": [
+        "sparse/dense whole tape equality",
+        "245407915 and246410735 steps"
+      ]
+    },
+    {
+      "source": 87,
+      "package": "/tmp/zfc-intake171/BusyBeaver_245_Review_Sources_2026-10-18/BusyBeaver_245_Review_2026-10-18",
+      "name": "A07-source-certificate",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/code/audit_source_certificate.py"
+      ],
+      "cwd": "{COPY}",
+      "env": {
+        "B245_INPUTS": "{COPY}/inputs",
+        "B245_OUTPUT": "{COPY}/fresh-results"
+      },
+      "timeout": 1200,
+      "result_gates": [
+        "3013 pairs,6024 edges",
+        "literal original source binding"
+      ]
+    },
+    {
+      "source": 87,
+      "package": "/tmp/zfc-intake171/BusyBeaver_245_Review_Sources_2026-10-18/BusyBeaver_245_Review_2026-10-18",
+      "name": "A07-failed-candidates",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/code/build_failed_candidates.py"
+      ],
+      "cwd": "{COPY}",
+      "env": {
+        "B245_INPUTS": "{COPY}/inputs",
+        "B245_OUTPUT": "{COPY}/fresh-results"
+      },
+      "timeout": 1200,
+      "result_gates": [
+        "three exact diagnostic244 tables"
+      ]
+    },
+    {
+      "source": 87,
+      "package": "/tmp/zfc-intake171/BusyBeaver_245_Review_Sources_2026-10-18/BusyBeaver_245_Review_2026-10-18",
+      "name": "A07-finite-regression",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/code/finite_regression.py"
+      ],
+      "cwd": "{COPY}",
+      "env": {
+        "B245_INPUTS": "{COPY}/inputs",
+        "B245_OUTPUT": "{COPY}/fresh-results"
+      },
+      "timeout": 1200,
+      "result_gates": [
+        "baseline zero failures; mutants retain failures",
+        "finite only"
+      ]
+    },
+    {
+      "source": 87,
+      "package": "/tmp/zfc-intake171/BusyBeaver_245_Review_Sources_2026-10-18/BusyBeaver_245_Review_2026-10-18",
+      "name": "A07-quotient-drift",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/code/verify_quotient_and_drift.py"
+      ],
+      "cwd": "{COPY}",
+      "env": {
+        "B245_INPUTS": "{COPY}/inputs",
+        "B245_OUTPUT": "{COPY}/fresh-results"
+      },
+      "timeout": 1200,
+      "result_gates": [
+        "245 singleton quotient",
+        "77-step state42 rightward drift"
+      ]
+    },
+    {
+      "source": 91,
+      "package": "/tmp/zfc-intake171/zfc-below245-source-search-20261018/zfc-below245-source-search-20261018",
+      "name": "A11-dne64",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/work/theory_encoding/check_dne_variants.py"
+      ],
+      "cwd": "{COPY}/work/theory_encoding",
+      "env": {},
+      "timeout": 1200,
+      "result_gates": [
+        "64 masks,8 unchanged rows",
+        "GEN/read/protected stack/gate unchanged"
+      ]
+    },
+    {
+      "source": 91,
+      "package": "/tmp/zfc-intake171/zfc-below245-source-search-20261018/zfc-below245-source-search-20261018",
+      "name": "A11-boolean",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/work/theory_encoding/boolean_bundle_variants.py",
+        "--check"
+      ],
+      "cwd": "{COPY}/work/theory_encoding",
+      "env": {},
+      "timeout": 1200,
+      "result_gates": [
+        "6 truth schemas",
+        "all rewrites and1144 target replayed"
+      ]
+    },
+    {
+      "source": 96,
+      "package": "/tmp/zfc-intake171/Shifted_Pairing_Companion_Sources_2026-10-18/Shifted_Pairing_Companion_2026-10-18",
+      "name": "A16-prepare-local-archive",
+      "argv": [
+        "python3",
+        "-B",
+        "-c",
+        "from pathlib import Path; import hashlib,shutil; p=Path('/tmp/zfc-intake171/zfc-below245-source-search-20261018/zfc-below245-source-search-20261018/reference/zfc245-proof-20261018.zip'); assert hashlib.sha256(p.read_bytes()).hexdigest()=='5a38b0e7475905584eabcb75912caa8d5f4149148e8c2a2439b2702a9de49ba1'; d=Path('{COPY}')/'replay-inputs'; d.mkdir(exist_ok=False); shutil.copyfile(p,d/'source245.zip')"
+      ],
+      "timeout": 1200,
+      "result_gates": [
+        "own copy only; fixed local ZIP identity"
+      ]
+    },
+    {
+      "source": 96,
+      "package": "/tmp/zfc-intake171/Shifted_Pairing_Companion_Sources_2026-10-18/Shifted_Pairing_Companion_2026-10-18",
+      "name": "A16-prepare-inputs",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/code/fetch_inputs.py",
+        "--archive-dir",
+        "{COPY}/replay-inputs",
+        "--output",
+        "{COPY}"
+      ],
+      "cwd": "{COPY}",
+      "env": {},
+      "timeout": 1200,
+      "result_gates": [
+        "only pinned inert Dag254 recovered"
+      ]
+    },
+    {
+      "source": 96,
+      "package": "/tmp/zfc-intake171/Shifted_Pairing_Companion_Sources_2026-10-18/Shifted_Pairing_Companion_2026-10-18",
+      "name": "A16-shifted-source",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/code/shifted_source.py"
+      ],
+      "cwd": "{COPY}",
+      "env": {},
+      "timeout": 1200,
+      "result_gates": [
+        "219 baseline234 replacement",
+        "clean-entry fixed points",
+        "108 pair/4098 inverse cases"
+      ]
+    },
+    {
+      "source": 96,
+      "package": "/tmp/zfc-intake171/Shifted_Pairing_Companion_Sources_2026-10-18/Shifted_Pairing_Companion_2026-10-18",
+      "name": "A16-shapes",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/code/search_shapes.py"
+      ],
+      "cwd": "{COPY}",
+      "env": {},
+      "timeout": 1200,
+      "result_gates": [
+        "200 shapes,best232",
+        "470 dirty-contract cases"
+      ]
+    },
+    {
+      "source": 96,
+      "package": "/tmp/zfc-intake171/Shifted_Pairing_Companion_Sources_2026-10-18/Shifted_Pairing_Companion_2026-10-18",
+      "name": "A16-pairing-math",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/proof/check_shifted_pairing.py"
+      ],
+      "cwd": "{COPY}",
+      "env": {},
+      "timeout": 1200,
+      "result_gates": [
+        "65536 inverse/support",
+        "32800 forward pairs",
+        "naive own-code gate transport rejected"
+      ]
+    },
+    {
+      "source": 96,
+      "package": "/tmp/zfc-intake171/Shifted_Pairing_Companion_Sources_2026-10-18/Shifted_Pairing_Companion_2026-10-18",
+      "name": "A16-independent-cfg",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/independent-review/check.py"
+      ],
+      "cwd": "{COPY}",
+      "env": {},
+      "timeout": 1200,
+      "result_gates": [
+        "both serialized sources rebuilt exactly",
+        "all6 helper CFGs match proof normal forms",
+        "all external entries clean"
+      ]
+    },
+    {
+      "source": 98,
+      "package": "/tmp/zfc-intake171/zfc-direct-negation-20261018/zfc-direct-negation-20261018",
+      "name": "A18-negation",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/work/theory/audit_negation_peephole.py",
+        "--words",
+        "{COPY}/work/theory/church-results/fine_words.json"
+      ],
+      "cwd": "{COPY}/work/theory",
+      "env": {},
+      "timeout": 1200,
+      "result_gates": [
+        "30 original replacements",
+        "all9 final registers same",
+        "dirty scratch controls retained"
+      ]
+    },
+    {
+      "source": 98,
+      "package": "/tmp/zfc-intake171/zfc-direct-negation-20261018/zfc-direct-negation-20261018",
+      "name": "A18-affine",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/work/theory/audit_affine_commutation.py"
+      ],
+      "cwd": "{COPY}/work/theory",
+      "env": {},
+      "timeout": 1200,
+      "result_gates": [
+        "134 disjoint+44 overlapping=178"
+      ]
+    },
+    {
+      "source": 98,
+      "package": "/tmp/zfc-intake171/zfc-direct-negation-20261018/zfc-direct-negation-20261018",
+      "name": "A18-source-variants",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/work/theory/audit_source_variants.py"
+      ],
+      "cwd": "{COPY}/work/theory",
+      "env": {},
+      "timeout": 1200,
+      "result_gates": [
+        "135 variants,1919 clean contractions",
+        "distinct base formula equivalence not claimed"
+      ]
+    },
+    {
+      "source": 97,
+      "package": "/tmp/zfc-intake171/zfc-small-kernels-20261018/zfc-small-kernels-20261018",
+      "name": "b97-small-kernels",
+      "argv": [
+        "python3",
+        "-B",
+        "verify.py",
+        "--skip-hashes",
+        "--output",
+        "{OUT}"
+      ],
+      "cwd": "{COPY}",
+      "env": {},
+      "timeout": 600
+    },
+    {
+      "source": 92,
+      "package": "/tmp/zfc-intake171/zfc-sub245-research-20261018 (1)/zfc-sub245-research-20261018",
+      "name": "b92-frozen-kernel",
+      "argv": [
+        "python3",
+        "-B",
+        "code/reproduce_finite.py",
+        "--output",
+        "{OUT}"
+      ],
+      "cwd": "{COPY}",
+      "env": {},
+      "timeout": 2100
+    },
+    {
+      "source": 89,
+      "package": "/tmp/zfc-intake171/zfc-below245-research-20261018/zfc-below245-research-20261018",
+      "name": "b89-joint-experiments",
+      "argv": [
+        "python3",
+        "-B",
+        "code/verify_experiments.py",
+        "--output",
+        "{OUT}"
+      ],
+      "cwd": "{COPY}",
+      "env": {},
+      "timeout": 600,
+      "edits": [
+        {
+          "file": "theory/reference/logic/vendor_loader.py",
+          "before": "ast.dump(module, include_attributes=False).encode()",
+          "after": "ast.dump(module, include_attributes=False, show_empty=True).encode()"
+        }
+      ]
+    },
+    {
+      "source": 99,
+      "package": "/tmp/zfc-intake171/zfc-raw-profile-routing-20261018/zfc-raw-profile-routing-20261018",
+      "name": "b99-raw-profiles",
+      "argv": [
+        "python3",
+        "-B",
+        "reproduce.py",
+        "--output",
+        "{OUT}"
+      ],
+      "cwd": "{COPY}",
+      "env": {},
+      "timeout": 600,
+      "edits": [
+        {
+          "file": "reproduce.py",
+          "before": "result = {'integrity':integrity()}",
+          "after": "result = {'integrity':{'status':'OMITTED_DELIVERY_MANIFEST_FOR_REPOSITORY_INTAKE'}}"
+        }
+      ]
+    },
+    {
+      "source": 94,
+      "package": "/tmp/zfc-intake171/zfc-sub245-research-20261018/zfc-sub245-research-20261018",
+      "name": "b94-skolem-reduct",
+      "argv": [
+        "python3",
+        "-B",
+        "theory_work/skolem_reduct.py",
+        "--output",
+        "{OUT}"
+      ],
+      "cwd": "{COPY}",
+      "env": {},
+      "timeout": 180
+    },
+    {
+      "source": 94,
+      "package": "/tmp/zfc-intake171/zfc-sub245-research-20261018/zfc-sub245-research-20261018",
+      "name": "b94-no-e-countermodel",
+      "argv": [
+        "python3",
+        "-B",
+        "grammar_work/fc15_without_e_countermodel.py",
+        "--reference",
+        "{COPY}/theory_work/reference",
+        "--output",
+        "{OUT}.json"
+      ],
+      "cwd": "{COPY}",
+      "env": {},
+      "timeout": 180
+    },
+    {
+      "source": 93,
+      "package": "/tmp/zfc-intake171/zfc-sub245-research-20261018 (2)/zfc-sub245-research-20261018",
+      "name": "b93-source-logic-local",
+      "argv": [
+        "python3",
+        "-B",
+        "verify.py",
+        "--output",
+        "{OUT}"
+      ],
+      "cwd": "{COPY}",
+      "env": {},
+      "timeout": 1200,
+      "edits": [
+        {
+          "file": "grammar/reproduce.py",
+          "before": "    manifest = json.loads((BASE / 'manifest.json').read_text())\n    for name, digest in manifest['sha256'].items():\n        assert hashlib.sha256((BASE / name).read_bytes()).hexdigest() == digest, name\n",
+          "after": "    # Repository intake excludes delivery-manifest work; semantic checks below are unchanged.\n    manifest = {'sha256': {}}\n"
+        }
+      ]
+    },
+    {
+      "source": 90,
+      "package": "/tmp/zfc-intake171/zfc-below245-research-20261018 (2)/zfc-below245-research-20261018",
+      "name": "b90-finite-grammar",
+      "argv": [
+        "python3",
+        "-B",
+        "research/grammar/verify.py",
+        "--output",
+        "{OUT}"
+      ],
+      "cwd": "{COPY}",
+      "env": {},
+      "timeout": 180
+    },
+    {
+      "source": 90,
+      "package": "/tmp/zfc-intake171/zfc-below245-research-20261018 (2)/zfc-below245-research-20261018",
+      "name": "b90-theory-codec",
+      "argv": [
+        "python3",
+        "-B",
+        "research/theory/verify.py",
+        "--output",
+        "{OUT}"
+      ],
+      "cwd": "{COPY}",
+      "env": {},
+      "timeout": 600
+    },
+    {
+      "source": 85,
+      "package": "/tmp/zfc-intake171/zfc-layout-circuits-20261018/zfc-layout-circuits-20261018",
+      "name": "c-layout",
+      "argv": [
+        "python3",
+        "-B",
+        "verify.py",
+        "--skip-manifest",
+        "--output",
+        "{JOB}/result.json"
+      ],
+      "cwd": "{COPY}",
+      "timeout": 1200,
+      "scope": "All five8391-case runtime/source/macro certificates and both complete blank controls; no search campaign.",
+      "edits": [
+        {
+          "file": "verify.py",
+          "before": "    result['reference_manifest_files']=check_manifest(ROOT/'reference/context246/SHA256SUMS')",
+          "after": "    result['reference_manifest_files']=None  # intake policy: checksum manifest not run"
+        }
+      ]
+    },
+    {
+      "source": 86,
+      "package": "/tmp/zfc-intake171/sub246-audit-and-alternatives-20261018/sub246-audit-and-alternatives",
+      "name": "c-sub246",
+      "argv": [
+        "python3",
+        "-B",
+        "run_portable.py"
+      ],
+      "cwd": "{COPY}",
+      "timeout": 1200,
+      "scope": "35 selected component/generator/audit subprocesses across8 groups; writes portable-runs under disposable copy; no full-machine or Lean claim."
+    },
+    {
+      "source": 88,
+      "package": "/tmp/zfc-intake171/zfc-continuation-research-20261018/zfc-continuation-research-20261018",
+      "name": "c-continuation",
+      "argv": [
+        "python3",
+        "-B",
+        "code/verify.py",
+        "--output",
+        "{OUT}"
+      ],
+      "cwd": "{COPY}",
+      "timeout": 1200,
+      "scope": "29 subprocesses: source4, four controls runtime/bootstrap/canonical12, invariant/certificate4, quotient rebuild2, selector1, expected-negative scanners3, emission1, retargeted2."
+    },
+    {
+      "source": 95,
+      "package": "/tmp/zfc-intake171/zfc245-semantic-search-20261018/zfc-below245-20261018",
+      "name": "c-semantic",
+      "argv": [
+        "python3",
+        "-B",
+        "verify.py",
+        "--output",
+        "{JOB}/result.json"
+      ],
+      "cwd": "{COPY}",
+      "timeout": 1200,
+      "scope": "11 main subprocess jobs plus direct dirty-boot replay; foundations includes exact Hilbert/stack/matrix and250 source/runtime/boot checks. No optimizer or proof assistant in default path.",
+      "edits": [
+        {
+          "file": "verify.py",
+          "before": "    count = manifest_check(ROOT)",
+          "after": "    count = None  # intake policy: checksum manifest not run"
+        },
+        {
+          "file": "experiments/foundations/verify.py",
+          "before": "    for row in read('vendor_manifest.json')['files']:\n        assert sha(ROOT/row['path'])==row['sha256'],row['path']",
+          "after": "    # intake policy: checksum-only vendor-manifest loop not run"
+        }
+      ]
+    },
+    {
+      "source": 100,
+      "package": "/tmp/zfc-intake171/zfc243-composed-20261018/zfc243-composed-20261018",
+      "name": "c-composed243",
+      "argv": [
+        "python3",
+        "-B",
+        "research/finite-algebra/finite_algebra.py",
+        "--output",
+        "{JOB}/result.json"
+      ],
+      "cwd": "{COPY}",
+      "timeout": 1200,
+      "scope": "Seven finite-algebra controls and six cyclic finite-prefix witnesses. Cite maintained seven-job actual and expanded-equality records for the exact existing machine."
+    }
+  ],
+  "scope": "Selected substantive leaf jobs; no complete-delivery-wrapper or new formal endpoint claim.",
+  "compatibility": {
+    "minimum_python": "3.13",
+    "source89_adapter": "ast.dump show_empty=True preserves the original selected AST fingerprint; no fingerprint or mathematical gate relaxed.",
+    "rerun_plan_sha256": "f65e11f4a398f5e0b6f0c7f08a9698598ba226d8ca1a5f882900ca9c85ad9223",
+    "prior_template_sha256": "c1c4febba75f947b93ed0573cf3b36b8bd04dc13758d7997cb6590a3a202c6de"
+  }
+}

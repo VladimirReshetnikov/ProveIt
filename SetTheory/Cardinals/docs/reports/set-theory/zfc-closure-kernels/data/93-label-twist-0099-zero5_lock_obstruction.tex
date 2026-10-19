@@ -1,0 +1,41 @@
+\subsection{A finite obstruction to a five-zero search with the old bootstrap locks}
+
+Let the semantic atoms and their literal implementations be those of the
+245-state routing construction.  Suppose a candidate retains its required
+entry word \texttt{eijkKCqkjGeU} (the old state 172) and the following five
+left-child equations:
+\begin{align*}
+\texttt{eijkKCqkjGeU}&\xrightarrow{0}\texttt{eijkKCqkjGe},\\
+\texttt{eijkKCqkjGe}&\xrightarrow{0}\texttt{eijkKCqkjG},\\
+\texttt{eijkKCqkjG}&\xrightarrow{0}\texttt{eijkKC},\\
+\texttt{eijkKC}&\xrightarrow{0}\texttt{eijk},\\
+\texttt{eijk}&\xrightarrow{0}\texttt{e}.
+\end{align*}
+All five equations occur in the inherited 54-equation bootstrap lock.
+The fixed implementation of atom \texttt{e} has AST index 40; its left
+child is the instruction \(\operatorname{dec}(T)\).  Consequently the
+required entry has a leaf at relative address \texttt{000000}.  Its
+syntactic maximum zero run is therefore at least six.
+
+This is a finite proof: concatenate the five specified grammar edges and
+the one specified atomic edge.  It rules out a global five-zero bound in
+this constrained family independently of the time spent searching.  It
+does not rule out a smaller scanner justified by stronger reachable-frame
+invariants, nor a grammar with different initialization, different atoms,
+or released bootstrap equations.
+
+The obstruction also explains a dependency in releasing constraints.  In
+an ordered-word binary grammar, fixing either child fixes the split point
+and hence the other child.  Removing only the top left-child equation
+while retaining its right child \texttt{U} cannot change that split.  The
+rotation
+\[
+ ((\texttt{eijkKCqkjG}\;\texttt{e})\;\texttt{U})
+ \quad\longmapsto\quad
+ (\texttt{eijkKCqkjG}\;(\texttt{e}\;\texttt{U}))
+\]
+can keep the grammar-state count unchanged if the obsolete prefix word
+\texttt{eijkKCqkjGe} is also allowed to disappear.  Our associated
+discovery experiment therefore removes the four lock rows belonging to
+these two words, retains the other 50, and records a new exact blank-start
+proof as an outstanding obligation for every generated candidate.

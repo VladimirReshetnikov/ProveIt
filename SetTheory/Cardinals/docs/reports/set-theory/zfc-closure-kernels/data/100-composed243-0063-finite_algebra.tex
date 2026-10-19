@@ -1,0 +1,216 @@
+\section{A separate encoding direction: finite algebra certificates}
+\label{sec:finite-algebra}
+
+The successful small-machine construction can retain the already calibrated
+logical engine.  A separate research direction is to replace a future
+ground-clause frontend's explicit equality and function-congruence obligations
+by evaluation in finite total algebras.  The following finite-stage theorem
+and executable reference specify that direction precisely.  They give no
+additional binary-machine state reduction.
+
+This is an application of standard finite-model and ground-equality ideas,
+not a claim of a new general logical theorem.  Finite operation and predicate
+tables are the conventional representation used, for example, in
+\href{https://www.cs.unm.edu/~mccune/prover9/manual/2009-02A/mace4.html}
+{McCune's Mace4 documentation}.  The finite-ground consistency argument uses
+the ordinary Herbrand theorem with equality, as presented in
+\href{https://www.cs.toronto.edu/~sacook/csc438h/notes/page39.pdf}
+{Cook's notes on Herbrand's theorem, equality, and compactness}; see also
+\href{https://math.ucsd.edu/~sbuss/ResearchWeb/herbrandtheorem/paper.pdf}
+{Buss's proof-theoretic treatment}.
+
+\subsection{An exact finite-ground bound}
+
+A \emph{ground clause} is a finite disjunction of signed predicate or equality
+atoms whose arguments are finite terms with no variables.  Equality has its
+ordinary meaning.  Let $G$ be a finite collection of ground clauses, let $S$
+be the set of all distinct subterms occurring in $G$, and put
+\[
+ m=\max(1,|S|).
+\]
+Only the finite signature occurring in $G$ is relevant; an unused dummy
+constant may be added when it is empty.
+
+\paragraph{Theorem (finite-ground algebra bound).}
+\emph{The ground clause set $G$ is satisfiable in an arbitrary nonempty
+first-order structure if and only if it is satisfied by a structure whose
+carrier is exactly $\{0,\ldots,m-1\}$.  All its function symbols are total,
+and equality is literal equality of carrier elements.}
+
+\paragraph{Proof.}
+The reverse implication is immediate.  Suppose $\mathcal M\models G$.
+The set of values $\{t^{\mathcal M}:t\in S\}$ has at most $m$ elements.
+Embed it injectively in $\{0,\ldots,m-1\}$ by a map $j$; choose any element
+if $S$ is empty.  For every application $f(t_1,\ldots,t_r)\in S$, prescribe
+\[
+ f^{\mathcal A}\bigl(j(t_1^{\mathcal M}),\ldots,
+                       j(t_r^{\mathcal M})\bigr)
+   =j\bigl(f(t_1,\ldots,t_r)^{\mathcal M}\bigr).
+\]
+These prescriptions are compatible: equal input tuples in $\mathcal M$
+have equal outputs because $f^{\mathcal M}$ is a function.  This is exactly
+the congruence obligation that would otherwise have to be checked on a
+term-label certificate.  Assign an arbitrary carrier element, say zero,
+to every remaining input tuple, making $f^{\mathcal A}$ total.  Interpret
+predicates on tuples from the image of $j$ as in $\mathcal M$, and assign
+arbitrary truth values to other tuples.
+
+Induction on subterms gives $t^{\mathcal A}=j(t^{\mathcal M})$ for every
+$t\in S$.  Injectivity of $j$ preserves equality and disequality; predicate
+interpretation preserves all other atoms.  Thus every literal and clause
+has the same truth value, and $\mathcal A\models G$.  Extra carrier elements
+do not matter because only the listed ground clauses are required.
+\hfill$\square$
+
+The bound is sharp in general: $m$ distinct constant symbols together with
+all their pairwise disequalities require at least $m$ elements.  This theorem
+does not assert a finite model property for universally quantified theories.
+
+\subsection{One integer enumerates all candidate algebras}
+
+List the function symbols, including constants as functions of arity zero,
+and the non-equality predicate symbols.  Write
+\[
+ F_m=\sum_f m^{\operatorname{arity}(f)},\qquad
+ R_m=\sum_P m^{\operatorname{arity}(P)}.
+\]
+The number of total structures on the fixed carrier is exactly
+\[
+ C_m=m^{F_m}2^{R_m}.
+\]
+Encode a candidate by one integer $0\le W<C_m$.  The low mixed-radix field
+$U=W\bmod m^{F_m}$ stores the function-table values as base-$m$ digits.
+The field $V=\lfloor W/m^{F_m}\rfloor$ stores the predicate tables as bits.
+The case $m=1$ is included: all operation values are zero and $m^{F_m}=1$.
+
+For $\bar a\in\{0,\ldots,m-1\}^r$, use the ordinary base-$m$ tuple index
+\[
+ [a_1,\ldots,a_r]_m=\sum_{i=1}^r a_i m^{r-i}.
+\]
+With prefix offsets $o_f$ and $o_P$ in the corresponding tables, evaluation
+uses only
+\[
+ f^W(\bar a)=
+  \left\lfloor\frac{U}{m^{o_f+[\bar a]_m}}\right\rfloor\bmod m,
+ \qquad
+ P^W(\bar a)=\operatorname{bit}_{o_P+[\bar a]_m}(V).
+\]
+Evaluate ground terms from their children upwards.  An equality atom compares
+its two resulting carrier values.  The checker then evaluates each listed
+native clause.  There is no independent equality relation, partition-validity
+test, function-congruence pair loop, or predicate-congruence axiom enumeration.
+Repeated ground substitutions and identifications of distinct terms are
+allowed automatically because every term is evaluated on the same carrier.
+
+For one finite stage the decision algorithm enumerates $W=0,\ldots,C_m-1$.
+It returns satisfiable as soon as one candidate validates.  It returns
+unsatisfiable only after all $C_m$ candidates fail.  Resource exhaustion is
+an execution failure, never an unsatisfiability result.  A validating integer
+is a witness of finite-stage satisfiability; it is not a refutation certificate.
+
+\subsection{The unbounded consistency-search contract}
+
+Let $T$ be an effectively presented first-order theory.  Convert its axioms
+effectively to a recursively enumerable universal clause theory $T^{\rm sk}$
+using globally fresh Skolem symbols, preserving consistency, and add a dummy
+constant to ensure a nonempty ground-term language.  For an infinite schema,
+the procedure must enumerate every instance; the schema is not replaced by
+one fixed formula.
+
+Choose a computable sequence $G_0\subseteq G_1\subseteq\cdots$ of finite
+ground clause sets whose union is all ground instances of $T^{\rm sk}$.
+One total schedule simulates the axiom enumerator for $n$ steps and uses only
+ground terms generated by a finite dovetailed term enumeration by stage $n$;
+retain all earlier instances.  This avoids waiting for the $n$th emitted
+axiom when an enumeration is finite.  Every fixed source clause and every
+finite substitution eventually occur together.  Distinct variables may
+receive the same ground term.
+
+At stage $n$, calculate its subterm bound $m_n$ and perform the exact finite
+algebra decision above.  Halt at the first unsatisfiable stage; otherwise
+advance.  Every individual stage terminates mathematically.  The theorem and
+ground completeness with equality give
+\[
+ \begin{aligned}
+ \operatorname{Halt}(A_T)
+ &\iff\exists n\;G_n\text{ is unsatisfiable}\\
+ &\iff T^{\rm sk}\vdash\bot
+  \iff T\vdash\bot.
+ \end{aligned}
+\]
+For completeness, if every finite ground stage has a model, compactness
+gives a model of all ground instances.  The substructure generated by the
+ground terms satisfies the universal clause theory.  Conversely, a model
+of that theory satisfies every ground stage.  The use of actual function
+and predicate interpretations supplies equality congruence throughout.
+
+Consequently, an established effective consistency calibration of $T$ with
+ZFC would yield the required ordinary nonhalting equivalence for this ideal
+algorithm.  The delivered code implements the finite-ground checker, not
+the complete calibrated ZFC generator, a PA proof object, or its binary
+compilation.
+
+\paragraph{Why full finite-model search would be wrong.}
+Consider the satisfiable universal theory saying that $s$ is injective and
+that a constant $c$ is outside the image of $s$:
+\[
+ \forall x,y\,(s(x)=s(y)\to x=y),\qquad
+ \forall x\,(s(x)\ne c).
+\]
+It has no finite model.  Nevertheless, put $t_i=s^i(c)$ and check only
+the ground instances with $0\le i,j<n$, whose terms are among
+$t_0,\ldots,t_n$.  The $(n+1)$-cycle with $c=0$ satisfies that finite
+ground set: the wrapping edge is not one of the demanded instances.
+This is why the evaluator must not universally close its finite stage over
+all elements of the candidate algebra.
+
+\subsection{Cost and relation to the existing quotient frontend}
+
+The existing ProveIt
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Computability/BusyBeaver/Research/ZFC/finite_quotient_frontend.md}
+{finite quotient frontend} stores a label for every term code and checks
+function congruence explicitly.  Operation tables exchange that pair loop
+for term evaluation.  The exchange is a possible saving in interpreter
+control, with a substantial increase in candidate data and search time.
+
+For a fixed retained signature with one constant, five binary functions,
+four ternary functions, and three binary predicates, the exact sizes are
+\[
+ F_m=1+5m^2+4m^3,\qquad R_m=3m^2,
+ \qquad \log_2 C_m=(1+5m^2+4m^3)\log_2m+3m^2.
+\]
+These are the retained function arities recorded by the existing FC15*/FC16*
+frontend.  At $m=4$, the operation-table candidate requires $722$ bits,
+whereas its four-label/three-predicate-table comparator uses $56$ bits.
+Those are certificate-data counts, not TM-state counts.  A compiler must
+price term decoding, mixed-radix lookup, native-clause generation, stage and
+candidate counters, initialization, and the complete binary runtime.
+
+There is an additional interface issue: the existing radix-16 term codec
+contains padding symbols whose congruence is deliberately omitted before a
+reduct.  A same-stage adapter must respect that convention.  The generic
+checker below has an ordinary unpadded first-order signature and treats all
+declared functions as genuine functions.  It does not silently identify its
+stages with the existing padded stages.  Using the retained unpadded language
+is a direct correct target; matching an existing byte stream remains a
+separate obligation.
+
+\subsection{Executable evidence and remaining work}
+
+The accompanying \texttt{finite\_algebra.py} gives the exact finite checker,
+integer codec, exhaustive decision loop, and explicit-table witness encoder.
+Seven logical controls pass.  Five unsatisfiable controls exhaust all $4{,}244$
+candidate algebras in total, including function congruence, binary membership
+transport, and a nested congruence contradiction.  Two satisfiable controls
+show that functions need not be injective and that genuine disjunctive clauses
+are handled.  Six separately constructed cyclic witnesses validate the
+finite ground prefixes of the infinite-only theory above, for depths one
+through six.  The saved JSON records every bound, witness, and exhaustion
+count.
+
+These tests check material semantic boundaries of the reference interface;
+the unbounded theorem rests on the proof above.  The next concrete work is
+to supply an exact native-clause generator for a calibrated compact theory,
+choose and prove its term codec and stage schedule, and compile the complete
+finite evaluator and search loop.  No below-current-bound machine, historical
+priority claim, or PA-internal formalization is asserted for this alternative.
