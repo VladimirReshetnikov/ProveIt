@@ -1239,3 +1239,23 @@ consistently. The concrete Lean certificate also needs successor indices
 `s0`/`s1`, start/closure facts, and enough fuel for the terminal lookup.
 These integration obligations and W4–W7 remain open at this source-review
 checkpoint; the exact binary240 PA endpoint is not established by W1 alone.
+
+Upstream `c0b55cdc4a` changes the proposed W2–W5 route to the unfolding of
+`ofDag dag254 219`, instead of the Prog254 numbered interpreter in the earlier
+diagram. Its tree-generic represented interpreter applies `physOf`, and the
+certificate emitter permutes both catalogues before computing offsets. The
+[source review](rotation240_pa/upstream-review-c0b55cdc4a/README.md) confirms
+that this addresses the register-coordinate mismatch for the new data path.
+It statically counts 3,862 certificate entries, ten with unit offsets; this
+is not verification of their semantic obligations. The concrete wrapper
+currently checks only entries 0–9, with no all-entry check or concrete
+`halts_iff`. Its introductory claims have been corrected accordingly.
+
+The new DAG unfolding has 6,459 internal binary nodes and 6,460 leaves,
+including one halt. Its structured-semantics connection to the internal
+scheduler remains to be proved; the older Prog254 contracts cannot be applied
+to these new control numbers without a bridge. Full certificate checking,
+that internal connection, the binary240 simulation/startup, and final PA
+composition remain open. No local compiler or axiom audit was run for this
+upstream review; its nondefault and unlimited-heartbeat settings are recorded
+explicitly. The separate external 240-state coverage work remains unchanged.
