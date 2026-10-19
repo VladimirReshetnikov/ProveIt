@@ -1,6 +1,6 @@
 # Internal register-program prerequisites
 
-Three unchanged upstream modules now have fresh local Lean checks for the
+Four unchanged upstream modules now have fresh local Lean checks for the
 register side of the 240-state PA comparison.
 
 [`ArithmeticDagRun`](../../Lean/BusyBeaver/ZFC/ArithmeticDagRun.lean) proves
@@ -33,7 +33,19 @@ The [publication](results/arithmetic-l2-lib254-publication.json) preserves
 the selected historical binding without claiming a new check of its entire
 ancestor input collection.
 
-All three runs use one thread, 4,096 MiB and a shared 120-second source-and-audit
+[`ArithmeticL2Macros254`](../../Lean/BusyBeaver/ZFC/ArithmeticL2Macros254.lean)
+adds the stack and formula-constructor macros. Its
+[actual check](results/arithmetic-l2-macros254-verification.json) passes four
+probes and four typed callers with zero warnings, in 6.107 and 1.686 seconds.
+The source retains its 8,192 recursion and 4,000,000 heartbeat limits;
+the audit uses defaults and the guard reuses 41 project prerequisites.
+The full output records distinguish completed macros that restore clean
+scratch registers from the intermediate `pop110` and `read108` helpers,
+which intentionally leave their output in `s1`. The
+[publication](results/arithmetic-l2-macros254-publication.json) retains the
+unchanged source and these exact contracts.
+
+All four runs use one thread, 4,096 MiB and a shared 120-second source-and-audit
 deadline. The first two guards select 35 and 37 exact project prerequisites,
 respectively, from already checked parents, with three external source/object
 boundaries and Init/Omega. Inputs, first providers and fresh objects are
@@ -44,7 +56,7 @@ dependency cache.
 The [DagRun publication](results/arithmetic-dag-run-publication.json) and
 [DagControl publication](results/dag-control254-publication.json) preserve
 the source bindings, audits, guards, logs and author history. These are
-prerequisites of the remaining register macros and scheduler checks. The
+prerequisites of the remaining register-control and scheduler checks. The
 [final PA composition](rotation240_pa/final-composition-plan/README.md)
 still requires the remaining register and validator dependencies and its
 own successful compilation.

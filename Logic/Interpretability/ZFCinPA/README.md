@@ -238,6 +238,16 @@ internal formula codes in IΣ₂. One source unused-section-variable warning
 remains; the audit is warning-free. The full upstream chain is still being
 checked separately.
 
+The [quantifier translation check](r2quant.md) then passes eleven probes and
+fourteen typed callers for the unchanged `R2Quant` source. Its three existing
+unused-variable warnings are preserved; the corrected audit has no warnings.
+The rules keep their explicit context and variable-vacancy hypotheses.
+
+[Internal derivation translation](r2main.md) now passes nine probes and
+twelve typed callers. It covers all internal Tait derivations under IΣ₂
+and the explicit `AxOK` premise. Three source unused-section-variable
+warnings remain; the audit has none. Native axiom translation remains separate.
+
 ## Building
 
 From the repository root. Set `LEAN_NUM_THREADS=0` first if your machine cannot

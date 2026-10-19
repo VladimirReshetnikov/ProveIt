@@ -24,12 +24,16 @@ These are gaps in fresh local verification, not findings that the source
 proofs are false.
 
 After that inventory, [R2Neg](../../../../../../Logic/Interpretability/ZFCinPA/r2neg.md),
+[R2Quant](../../../../../../Logic/Interpretability/ZFCinPA/r2quant.md),
+[R2Main](../../../../../../Logic/Interpretability/ZFCinPA/r2main.md),
 [NativePeel](../../../../../../Logic/Interpretability/ZFCinPA/native_peel.md)
-and three [register-program prerequisites](../../arithmetic_register_prerequisites.md)
-passed, removing five of the 88 entries. NativePeel required one
+and four [register-program prerequisites](../../arithmetic_register_prerequisites.md)
+passed, removing eight of the 88 entries. NativePeel required one
 implicit-argument correction, with the failed original run preserved.
 The [first concrete bisimulation check](../control-bisim-first-check/README.md)
-hit the 4 GiB memory limit; splitting that finite proof remains work in progress.
+hit the 4 GiB memory limit; the
+[interval-joining helper](../../control_bisim_rotation240_split.md) passes,
+while splitting and checking the finite certificate remains work in progress.
 Subsequent actual records must update the remaining work; the frozen
 inventory itself stays unchanged. Checks retain
 the upstream source's declared limits and known warnings, while new audit
