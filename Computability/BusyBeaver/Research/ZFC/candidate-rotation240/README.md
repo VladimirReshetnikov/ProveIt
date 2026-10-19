@@ -16,6 +16,12 @@ statements. Nine theorem probes and nine typed callers pass with zero warnings.
 The equivalence inside PA remains open. No absolute consistency, unconditional
 nonhalting, minimality or two-sided independence from bare consistency is claimed.
 
+Smaller ordinary candidates now build on this table: the
+[238-state composition](../candidate-combined238/README.md) and the
+[**237-state candidate**](../candidate-composed237/README.md), the smallest known.
+They have executable unbounded certificates but no Lean endpoint. This 240-state
+table remains the smallest with one.
+
 ## How the state is saved
 
 First, rotate a transfer-plus-one loop at four occurrences in the register
