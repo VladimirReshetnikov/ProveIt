@@ -1175,3 +1175,44 @@ at extended environments. A concrete satisfaction formula supplies the
 definable subset of a closed stage. The final Replacement template and the
 internal instantiation/induction driver are still needed before `hSchema`
 is discharged. This update records source review, without a local rerun.
+
+## Claude lane: PA endpoint for the exact 240-state machine (claimed 2026-10-18)
+
+Vladimir asked the Claude lane on 2026-10-18 to complete the PA formalization
+for the [rotation240 candidate](candidate-rotation240/README.md). The intended
+final statement is `𝗣𝗔 ⊢ (∃t, blank240 halts by t) ↔ ¬Con(𝗭𝗙𝗖)` for the fixed
+arithmetic run graph of `machineRotation240`, with an all-Nat bridge to the
+actual Core run. The validator half is closed (`ValidatorConsistencyEquivalence`,
+`ArithmeticEnumeratorSeed246`). The remaining chain, in every IΣ₁ model, is
+
+```text
+binary240 halts from blank
+  ⟺ (fixed 409,691-step bootstrap)  binary240 halts from the seed frame
+  ⟺ (W6: per-site simulation)       Rotation240 control interpreter halts from the seed
+  ⟺ (W1+W3: internal bisimulation)  Prog254 control interpreter halts from the seed
+  ⟺ (W4+W5: control contracts)      arithmetic scheduler halts from seedValue
+  ⟺ validator accepts falsity  ⟺  ¬Con(ZFC).
+```
+
+Planned work items (Claude lane; new modules only, Codex modules are not edited):
+
+* **W1** a catalogue-generic statement of the represented control step and an
+  internal *offset segment bisimulation*: related test sites agree on the tested
+  register, untested registers may differ by a fixed standard offset (this covers
+  both transfer-plus-one rotations as well as the routing245 re-association), and
+  both clocks are positive per segment. Soundness is proved once for every IΣ₁
+  model; certificates are external finite data checked by `decide`.
+* **W2** the Rotation240 catalogue (6,455 leaves from `TreeRotation240`) and its
+  represented step, mirroring `FiniteControlTable254`/`ArithmeticControlStep254`.
+* **W3** the Prog254 ↔ Rotation240 certificate and its kernel check.
+* **W4** the scheduler-state encoding into the Prog254 register file and the
+  fetch-to-fetch composition for MP, DROP and NIP (contracts already exist).
+* **W5** the remaining AX bundle (controls 487 → the gate), via macro contracts
+  proved once per macro shape and instantiated at each occurrence.
+* **W6** the arithmetic port of the 252 binary chain to the 240 table
+  (`ArithmeticControlRun254.halts_iff_blank` analogue) and the 240 bootstrap.
+  It consumes the external 240 decoder coverage, which stays with the Codex lane.
+* **W7** the final composition, PA theorem, audit and documentation.
+
+Because W3 bisimulates Rotation240 against Prog254, the existing Prog254
+contracts (and W4/W5) also serve the 252-state machine's PA endpoint.
