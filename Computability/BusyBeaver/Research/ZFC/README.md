@@ -2139,3 +2139,8 @@ Five of them deliver the same 238-state table, the batch-172 composition. Source
 adds the fold to the [237-state candidate](candidate-composed237/README.md). All six
 ZIPs were retired at placement `197ce3dc67`. No Lean or PA endpoint is claimed for the
 238- or 237-state tables.
+
+
+Batch 174 adds [Source 110](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-174.md),
+an independent certificate for the same 237-state table (it credits Source 106). The
+237-state candidate and its scope are unchanged.

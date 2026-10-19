@@ -3083,3 +3083,10 @@ folds state 235 into 98 to give the
 which replays independently. No combination of the delivered ideas goes below 237,
 and further fold searches on the 237 table find nothing. No Lean or PA endpoint exists
 for these tables.
+
+
+Batch 174 imports one more package as
+[Source 110](set-theory/zfc-closure-kernels/intake-174.md), giving this host **110
+sources** (still 290 reports). Placement `1c72682b2b` retires its ZIP. Its 237-state
+table is Source 106's machine, which it credits; it adds an independent all-tape
+certificate of the fold and a fresh startup comparison.
