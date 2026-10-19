@@ -10,9 +10,11 @@ parameter of all seventeen inference rules.
 
 The module's `logicConForm` concerns bounded derivations from the empty
 context: it is a pure-logic consistency sentence. Some older docstrings call
-it `Con_n(ZFC)`, but its definition does not recognize ZFC axioms. The actual
-ZFC axiom predicate and reflection argument are later work. The semantic
-consequence/completeness theorem here retains its explicit hypothesis.
+it `Con_n(ZFC)`, but its definition does not recognize ZFC axioms. The
+[ZFC axiom predicate](axiom_code_check.md) has since been checked;
+the bounded-soundness argument is later work in this verification sequence.
+The semantic consequence/completeness theorem here retains its explicit
+hypothesis.
 
 The check passes sixteen named axiom probes and sixteen typed callers, with
 zero warnings and only standard Lean axioms. Source and audit took 4.735 and

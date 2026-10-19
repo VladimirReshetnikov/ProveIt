@@ -1465,7 +1465,9 @@ the outstanding upstream checks. The subsequent R2Neg, R2Quant, R2Main, R2Gic,
 NativePeel and
 [internal renaming/substitution](../../../../SetTheory/BoundedConsistency/internal_soundness_check.md),
 [coded-derivation soundness](../../../../SetTheory/BoundedConsistency/coded_derivation_check.md)
-and [rank/bound](../../../../SetTheory/BoundedConsistency/coded_rank_check.md)
+[rank/bound](../../../../SetTheory/BoundedConsistency/coded_rank_check.md),
+[ZFC axiom-code](../../../../SetTheory/BoundedConsistency/axiom_code_check.md)
+and [partial universe truth](../../../../SetTheory/BoundedConsistency/universe_truth_check.md)
 checks, the [compactness/completeness interfaces](../../../../Logic/FirstOrder/checked_interfaces.md)
 and ten [register-program modules](arithmetic_register_prerequisites.md)
 have passed. The first concrete control-bisimulation check hit the 4 GiB
@@ -1473,6 +1475,6 @@ memory limit; [all 3,862 entries and the assembled equivalence](control_bisim_ro
 now pass after splitting the certificate into 31 intervals, with the memory
 cap unchanged. The [register endpoint](arithmetic_register_endpoint240.md)
 now connects validator acceptance to the exact Rotation240 control seed in
-every IΣ₁ model. These results close twenty-one of the inventory's 88 missing
+every IΣ₁ model. These results close twenty-four of the inventory's 88 missing
 module checks, including all eleven register-side entries. The remaining
 validator checks and final PA composition are still pending.
