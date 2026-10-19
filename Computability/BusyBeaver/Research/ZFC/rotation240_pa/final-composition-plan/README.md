@@ -46,6 +46,10 @@ the [register endpoint](../../arithmetic_register_endpoint240.md) includes
 validator acceptance iff Rotation240 control halting from the exact seed.
 The common helper and 31 leaf modules are
 additional checked modules, outside that original inventory.
+The [Foundation Z dependency branch](../../../../../../Logic/Interpretability/ZFCinPA/foundation_set_theory_check.md)
+now also has fresh Model, Basic, ExistsUnique and Z checks, with the cached
+library boundaries explicitly retained. These external dependencies do not
+change the original 88-project-module census.
 Subsequent actual records must update the remaining work; the frozen
 inventory itself stays unchanged. Checks retain
 the upstream source's declared limits and known warnings, while new audit

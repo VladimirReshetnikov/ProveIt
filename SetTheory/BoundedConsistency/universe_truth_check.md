@@ -44,6 +44,9 @@ unused-variable-name warnings from named hypotheses in explicitly quantified
 types; all callers typecheck and all axiom reports are standard. These
 warnings are preserved in the [publication](results/universe-truth-level-publication.json)
 and [history](universe-truth-level/history.json.gz).
+An [independent full-source and API review](universe-truth-level/peer-review.json)
+also checks the actual result and its limits; its
+[history](universe-truth-level/peer-history.json.gz) is retained separately.
 
 Bounded derivation soundness, axiom truth and the final PA/240-state
 consistency theorem remain later checks in this verification sequence.

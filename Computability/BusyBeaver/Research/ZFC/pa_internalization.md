@@ -1462,9 +1462,9 @@ The [reviewed final-composition draft](rotation240_pa/final-composition-plan/REA
 now fixes the literal sentence bridge and both ZF/ZFC endpoints. It has no
 fresh compiler result. Its accompanying inventory and dependency plans track
 the outstanding upstream checks. The subsequent R2Neg, R2Quant, R2Main, R2Gic,
-NativePeel and
+NativePeel,
 [internal renaming/substitution](../../../../SetTheory/BoundedConsistency/internal_soundness_check.md),
-[coded-derivation soundness](../../../../SetTheory/BoundedConsistency/coded_derivation_check.md)
+[coded-derivation soundness](../../../../SetTheory/BoundedConsistency/coded_derivation_check.md),
 [rank/bound](../../../../SetTheory/BoundedConsistency/coded_rank_check.md),
 [ZFC axiom-code](../../../../SetTheory/BoundedConsistency/axiom_code_check.md)
 and [partial universe truth](../../../../SetTheory/BoundedConsistency/universe_truth_check.md)
@@ -1478,3 +1478,6 @@ now connects validator acceptance to the exact Rotation240 control seed in
 every IΣ₁ model. These results close twenty-four of the inventory's 88 missing
 module checks, including all eleven register-side entries. The remaining
 validator checks and final PA composition are still pending.
+The separate [Foundation set-theory dependency branch](../../../../Logic/Interpretability/ZFCinPA/foundation_set_theory_check.md)
+now has fresh Model, Basic, ExistsUnique and Z checks. These external
+dependency checks are additional to the original 88 project entries.
