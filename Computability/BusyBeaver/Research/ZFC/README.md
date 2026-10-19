@@ -112,6 +112,12 @@ The [table interpreter and packed-data prerequisites](rotation240_pa/table-prere
 pass another 14 probes and 20 callers with zero warnings. Their concrete-data
 audit checks the table interface and count; complete row equality remains a
 separate proof obligation.
+The [generic packed-table binding](rotation240_pa/table-binding/README.md)
+passes six probes and nine callers: complete per-leaf checks and exact length
+imply full table equality, with correct consumed-path successor resolution.
+The [internal carry and return contracts](arithmetic_carry_rotation240.md)
+pass 11 probes and 13 callers, proving complete unary-block tape effects at
+arbitrary internal register values for the exact 240-state transitions.
 
 The [**241-state candidate**](candidate-fold241/README.md) from `8c41b1fb7d`
 adds two local folds to the combined243 table. The last fold uses a bit written
