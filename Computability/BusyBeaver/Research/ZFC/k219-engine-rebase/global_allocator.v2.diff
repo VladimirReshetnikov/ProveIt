@@ -1,0 +1,25 @@
+--- global_allocator.py
++++ global_allocator_v2.py
+@@ -9,7 +9,7 @@
+ def need(x,m):
+  if not x:raise ValueError(m)
+ def node_id(n):return hashlib.sha256(repr(n).encode()).hexdigest()
+-def compile_tree(s,b,table,old_src,new_src,*,hypothetical_entries=False,require_pure_rows=True):
++def compile_tree(s,b,table,old_src,new_src,*,hypothetical_entries=False,require_pure_rows=True, protected_states=frozenset()):
+  groups,paths=b.decoder_map(table,old_src)
+  old_states=defaultdict(set)
+  for q,nodes in groups.items():
+@@ -24,6 +24,7 @@
+  pool=[];certificates=[];exclusions=Counter()
+  for q,nodes in sorted(groups.items()):
+   if q in(0,84):exclusions['start_or_dispatch']+=1;continue
++  if q in protected_states:exclusions['explicit_protection']+=1;continue
+   if any(n in live for n in nodes):exclusions['role_still_live']+=1;continue
+   if require_pure_rows and not all(table[q,bit][:2]==(bit,1) for bit in(0,1)):
+    exclusions['non_pure_own_rows']+=1;continue
+@@ -78,4 +79,4 @@
+    need(q in permitted,('Node binding mismatch',q,sorted(permitted)))
+  untouched={q for q,bit in table}-{84}-{x['state']for x in assignments}
+  need(all(compiled[q,bit]==table[q,bit] for q in untouched if q in reach for bit in(0,1)),'Preserved state row changed')
+- return compiled,dict(working_states=len(compiled)//2,pool_size=len(pool),pool_used=nextpool,fresh=fresh-fresh0,pool_certificates=certificates,pool_exclusions=dict(exclusions),assignments=assignments,require_pure_rows=require_pure_rows,retained_rows_unchanged=True,scope='Explicit syntactic incoming-edge certificates and exact decoder-prefix binding only; old context-sensitive retained entries and fresh generic leaves still require primitive-runtime verification.')
++ return compiled,dict(working_states=len(compiled)//2,pool_size=len(pool),pool_used=nextpool,fresh=fresh-fresh0,pool_certificates=certificates,pool_exclusions=dict(exclusions),assignments=assignments,require_pure_rows=require_pure_rows,protected_states=sorted(protected_states),retained_rows_unchanged=True,scope='Explicit syntactic incoming-edge certificates and exact decoder-prefix binding only; old context-sensitive retained entries and fresh generic leaves still require primitive-runtime verification.')
