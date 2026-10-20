@@ -79,7 +79,11 @@ and numeric labels preserves the literal gated bundle and gives finite
 refutation translations in both directions. It needs no separate quantified
 stability axiom. [K/S plus quantified stability](k218-quantifier-stability/README.md)
 has a separate ordinary calibration, with an independently checked finite
-proof DAG. Neither theory has yet produced a smaller verified machine.
+proof DAG. The respective [mixed-row](k218-ks-mixed-commutation/source-pricing/README.md)
+and [K/S+QS](k218-quantifier-stability/source-span-dp/README.md) source searches
+reach 209 and 208 distinct subtrees. [Context-aware allocation diagnostics](k218-context-allocation/README.md)
+explain why these source counts do not directly translate to machine savings.
+Neither theory has yet produced a smaller verified machine.
 The [five-value model](k219-fourth-parameter/finite-matrix/README.md)
 now excludes every membership-fourth restriction of rho8, even their union,
 while retaining the other native rows; adding K or explosion is outside
