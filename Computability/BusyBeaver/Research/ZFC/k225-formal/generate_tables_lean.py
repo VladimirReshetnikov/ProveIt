@@ -20,6 +20,9 @@ HEADER = {
     "221": ("The 221-state machine's table in K230 labels (`inputs/221/table_k230labels.tm` of the\n"
             "Rocq extension; native label 254 renamed 230); labels 79, 140, 175, 191, 192, 208, 219,\n"
             "226 and 229 are deleted, 230 is terminal."),
+    "219": ("The 219-state machine's table in K230 labels (`lean219/k219_k230labels.tm`: Source 140's\n"
+            "native table with halt 254 renamed 230 and its new states 301, 302 renamed into the freed\n"
+            "labels 102, 120); 230 is terminal."),
 }
 
 
