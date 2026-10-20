@@ -41,3 +41,9 @@ The driver pins both possible seed hashes and the two imported source files. `fi
 ## Structural obstruction retained separately
 
 Deleting state 301 with the earlier 87/0, 88/0 and 51/0 changes would leave 217 states, but the exact earlier 85-step blank prefix still applies. It enters state 35 and then writes right forever. The [literal transfer evidence](../candidate-k218/research/comparison.json) already records that failed route. This search did not repeat it or promote initialized-frame runtime correctness to a blank-tape theorem.
+
+## Every initial state fails for the exact delete301 table
+
+The follow-up [all-start packet](all-starts/README.md) rules out repairing this particular 217-state table merely by changing its initial state. Every one of its 217 working states, when started on blank tape, reaches a zero-reading self-loop moving into an entirely blank half-line. All future writes stay behind the head, so this is an inductive nonhalting obstruction, not a timeout classification.
+
+The 216 newly scanned starts require 1,702 transitions in total; start0 retains the earlier 85-step failure. A separate Python implementation replays all 217 complete tape prefixes, checks the ray hypotheses, and reproduces accepted K218's 312,909-step startup as a positive control. This proves only the stated obstruction for this exact table. Further row repairs and other 217-state constructions remain open.
