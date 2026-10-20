@@ -3136,3 +3136,8 @@ sources** (still 290 reports). Placement `5342a12e22` retires their ZIPs. Source
 conditional root and Source 128's merged equality row stack: the intake's
 [222-state machine](../../../../Computability/BusyBeaver/Research/ZFC/candidate-k222/README.md)
 is now the smallest known candidate. No proof assistant checks it yet.
+
+Batch 182 imports [Source 131](set-theory/zfc-closure-kernels/intake-182.md), an independent
+222 built from Sources 128 and 129, giving this host **131 sources** (still 290 reports).
+Placement `1ecc16754f` retires its ZIP. Its source is byte-identical to the intake's own second
+222 ([variant-bc](../../../../Computability/BusyBeaver/Research/ZFC/candidate-k222/variant-bc/README.md)).
