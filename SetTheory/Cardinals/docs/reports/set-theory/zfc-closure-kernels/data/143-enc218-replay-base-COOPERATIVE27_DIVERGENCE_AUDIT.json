@@ -1,0 +1,91 @@
+{
+  "status": "THREE_INDEPENDENT_DIVERGENCE_CERTIFICATES_ACCEPTED",
+  "native_sha256": "b255f8ee341d394c303d67a7fca7f8288ed9d4c40f075899fa64b13085aaca26",
+  "certificate_sha256": "6aec41302718d666ce7cdb0e606c185cad493042c3f1abf89ad06d3f13cfb41c",
+  "initial_ones": [
+    -1,
+    64,
+    66,
+    68,
+    70,
+    72,
+    74,
+    76,
+    78,
+    80,
+    82,
+    84
+  ],
+  "required_ones": [
+    -1,
+    1,
+    64,
+    66,
+    68,
+    70,
+    72,
+    74,
+    76,
+    78,
+    80,
+    82,
+    84
+  ],
+  "baseline_zero_cd8_steps": 602,
+  "new_prefix_steps": 30000,
+  "additional_period_steps": 10,
+  "results": [
+    {
+      "action": [
+        0,
+        -1,
+        113
+      ],
+      "status": "INDEPENDENT_DIVERGENCE_CERTIFICATE_ACCEPTED",
+      "prefix_steps": 10000,
+      "prefix_endpoint_exactly_replayed": true,
+      "no_earlier_clean_dispatch": true,
+      "prefix_head": -9996,
+      "period_steps": 2,
+      "shift": -2,
+      "entire_future_half_blank": true,
+      "excluded_right_half_unchanged": true,
+      "proof": "Each step moves strictly left. All future cells were zero and writes stay behind; induction gives an infinite two-state fresh-blank sweep."
+    },
+    {
+      "action": [
+        1,
+        -1,
+        66
+      ],
+      "status": "INDEPENDENT_DIVERGENCE_CERTIFICATE_ACCEPTED",
+      "prefix_steps": 10000,
+      "prefix_endpoint_exactly_replayed": true,
+      "no_earlier_clean_dispatch": true,
+      "prefix_head": -6664,
+      "period_steps": 6,
+      "shift": -4,
+      "entire_future_half_blank": true,
+      "excluded_right_half_unchanged": true,
+      "proof": "For every h<0 with state27 and all cells x<=h blank, the exact six-step block stays at x<=h, writes only h and h-2, and returns at h-4 with every x<=h-4 blank. Induction translates the block forever; discarded right cells are never read."
+    },
+    {
+      "action": [
+        1,
+        -1,
+        113
+      ],
+      "status": "INDEPENDENT_DIVERGENCE_CERTIFICATE_ACCEPTED",
+      "prefix_steps": 10000,
+      "prefix_endpoint_exactly_replayed": true,
+      "no_earlier_clean_dispatch": true,
+      "prefix_head": -9996,
+      "period_steps": 2,
+      "shift": -2,
+      "entire_future_half_blank": true,
+      "excluded_right_half_unchanged": true,
+      "proof": "Each step moves strictly left. All future cells were zero and writes stay behind; induction gives an infinite two-state fresh-blank sweep."
+    }
+  ],
+  "scope": "Three concrete source000/CD8 zero-register primitive-interface divergences only. No extra action enumeration; other reported filter totals not independently rechecked here. No claim about initialized blank-run divergence, global Con(ZFC) calibration, every interpretation, or all smaller machines."
+}
