@@ -47,3 +47,7 @@ Deleting state 301 with the earlier 87/0, 88/0 and 51/0 changes would leave 217 
 The follow-up [all-start packet](all-starts/README.md) rules out repairing this particular 217-state table merely by changing its initial state. Every one of its 217 working states, when started on blank tape, reaches a zero-reading self-loop moving into an entirely blank half-line. All future writes stay behind the head, so this is an inductive nonhalting obstruction, not a timeout classification.
 
 The 216 newly scanned starts require 1,702 transitions in total; start0 retains the earlier 85-step failure. A separate Python implementation replays all 217 complete tape prefixes, checks the ray hypotheses, and reproduces accepted K218's 312,909-step startup as a positive control. This proves only the stated obstruction for this exact table. Further row repairs and other 217-state constructions remain open.
+
+## Two bootstrap repairs fail a reachable source contract
+
+The [row36 repair packet](row36-repairs/README.md) tests Source146's `36/0 → 1 L 6` and `1 L 10` repairs on that delete301 core. The disputed CD8-zero interface is the first instruction of the accepted initialized source, so source reachability cannot exclude it. Both repairs jump through `CB1` and skip the transfer that should change `(R0,R8)` from `(3,0)` to `(4,3)` before source ordinal9. Six complete traces and a separate 5,576-transition replay establish this counterexample to the accepted interface and whole-block interpretation. A different modified-source calibration is not ruled out.

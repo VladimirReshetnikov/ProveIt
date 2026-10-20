@@ -1,0 +1,26 @@
+{
+  "status": "SOURCE_AND_BOUNDED_RECORD_REVIEW_PASS",
+  "findings": [],
+  "reviewer": "review_upstream_reflection",
+  "inputs": [
+    {
+      "path": "/tmp/k217-row36-reachability/check.py",
+      "sha256": "7baac5086035c8fa10518bfabab993d96f80d81f351bfe70a3ab6419270a5522"
+    },
+    {
+      "path": "/tmp/k217-row36-reachability/result.json",
+      "sha256": "b00c3611cc0c70e537166ffc1cd24deec840d58ecb31c262281f614d2f76c02a"
+    }
+  ],
+  "review": [
+    "Read full diagnostic source; transition execution updates exactly one scanned cell and one signed head position per row, retains all other tape cells, and records complete sparse supports.",
+    "Frame parser checks left sentinel/minimum support, complete reserved PC suffix, gap and first header, then every unary register/spare block through the last nonzero cell. Thus the reported endpoint is a whole frame rather than only a rank/PC code.",
+    "Exact initial site000/CD8 with R8=0 must leave the nearest left parent and choose0100/CD0, ordinal2. Accepted218 and delete301 core report that outcome; both row36 repairs instead first return to001/CB1, ordinal1.",
+    "Both actual records include the changed36/0 use at localtick459; followingCB1 returns toordinal9. Logical registers and remaining complete file stay explicit."
+  ],
+  "limits": [
+    "No candidate diagnostic rerun or transition-trace replay by this reviewer; existing result.json read as author execution evidence.",
+    "This is a counterexample to the unchanged first-return source interface from the accepted initialized frame. It does not prove a repaired machine cannot work with another initialization/seed, changed source semantics or a different simulation relation.",
+    "No complete runtime or blank-start equivalence for the patched217 tables is inferred."
+  ]
+}
