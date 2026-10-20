@@ -57,6 +57,25 @@ python3 -B Computability/BusyBeaver/Research/ZFC/k219-continuation-search/contro
 
 The top-level scripts resolve the exact maintained candidate files relative to this directory. Copies under `results/run*/` preserve executed bytes; they are historical snapshots rather than standalone relocated packages.
 
+## Equality hit2 compiler follow-up
+
+The separate [hit2 source](../k219-source-search/candidates/hit02.sites.json) has 207 DAG nodes and 4,744 leaves, with no right-child decrement. Its [all-natural source proof](../k219-source-search/proof.md) is separate from these compiler measurements.
+
+The unchanged [incremental compiler](compiler-inputs/measure.py) and its [protected variant](compiler-inputs/measure_protected.py) both reproduced the original 219 table exactly, then [rejected hit2](results/hit2-compiler-run1/result.json): its new right-child CI6 occurrence had no supported generic entry. No candidate table was emitted by that attempt.
+
+A separate exploratory successor proposes `1R13` for that occurrence, symmetric to the unique generic left-CI6 entry `0R13`. **Its right-context runtime contract is unverified.** With only that explicit hypothesis added, [measurement](results/hit2-ci6-compiler-run1/result.json) passes decoder-prefix binding and gives 220 states with origin reuse, or 240 with old states protected. Both retain state 302. Removing right-child decrements alone therefore does not remove this helper from these allocations; B1 and other retained routes still reach it. Because neither count improves on 219, no full symbolic-runtime or startup replay was run on these exploratory tables. They are not calibrated candidates.
+
+The [first measurement script](measure_hit2.py), [one-entry successor](measure_hit2_ci6.py), exact imported utility snapshots and both outcomes are preserved. Reproduce them with fresh output paths:
+
+```sh
+python3 -B Computability/BusyBeaver/Research/ZFC/k219-continuation-search/measure_hit2.py \
+  --output /tmp/k219-hit2-original-fresh
+python3 -B Computability/BusyBeaver/Research/ZFC/k219-continuation-search/measure_hit2_ci6.py \
+  --output /tmp/k219-hit2-ci6-fresh
+```
+
+The compiler adaptation and protected policy were authored by `opening_encoder`; these two measurement wrappers and the CI6 hypothesis were authored by `drop_contract`. Source utilities are retained from the pinned K221 package with their existing attribution. The alternative source and its mathematical proof were prepared independently by `review_upstream_reflection`.
+
 ## Scope and next direction
 
 The result exhausts only the stated candidate specifications under the recorded bounded filter. It leaves source reassociation, occurrence splitting, multistate changes, independently synthesized two-branch merges, and blank-specific invariants open. Window-exit failures dominate, so a useful next step is a source-aware proof of decoder-entry contexts or a coordinated source/allocator change, rather than interpreting these failures as proof of minimality. Source transformations are being investigated separately from this binary-state family.
