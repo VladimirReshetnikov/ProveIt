@@ -1,0 +1,12 @@
+--- attempt1
++++ attempt2
+@@ -166,7 +166,7 @@
+       'axiom_schemas_used':sorted({n['rule'] for n in nodes if n['rule'] not in ('mp','gen','hyp')}),'gen_only_on_closed_theorems':True,'bundle_gates':'c=max(a,b)+1, so c differs from both endpoints for every natural assignment','native_zero_alias_checked':True,'scope':'Finite parametric K/S+retained-row+Q-stability derivations; full arbitrary-native-code DNE follows by the separately stated strong induction. No machine/compiler/state-count claim.'}
+     out=Path(__file__).parent
+     (out/'result.json').write_text(json.dumps(rec,indent=2)+'\n')
+-    serial=[{**n,'open':sorted(n['open'])} for n in nodes]
+-    (out/'proof-dag.json').write_text(json.dumps({'nodes':serial,'outputs':outputs},separators=(',',':'))+'\n')
++    serialized_nodes=[{**n,'open':sorted(n['open'])} for n in nodes]
++    (out/'proof-dag.json').write_text(json.dumps({'nodes':serialized_nodes,'outputs':outputs},separators=(',',':'))+'\n')
+     print(json.dumps({'status':rec['status'],'nodes':len(nodes),'outputs':len(outputs),'proof_bytes':(out/'proof-dag.json').stat().st_size}))
+ if __name__=='__main__':main()
