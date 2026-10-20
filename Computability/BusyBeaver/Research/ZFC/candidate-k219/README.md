@@ -1,5 +1,9 @@
 # A 219-state binary Turing machine for Con(ZFC)
 
+The [218-state successor](../candidate-k218/README.md) is now the primary
+contender. This directory preserves its accepted predecessor and research
+history. The current search target is 217 states or fewer.
+
 This construction replaces the 220-state machine's equality routine with a
 smaller routine that shares an open subtree between cancellation and cleanup.
 Two compiler repairs turn that source saving into **219 working states and

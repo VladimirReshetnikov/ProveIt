@@ -42,7 +42,19 @@ nine typed callers pass with zero warnings. The internal PA equivalence for
 this exact 240-state machine is now checked too
 ([`BinaryConsistencyRotation240`](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/BinaryConsistencyRotation240.lean), 19 October 2026). See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md).
 
-The smallest **ordinary** candidate is now the [**219-state machine**](candidate-k219/README.md)
+The primary **ordinary** contender is now the [**218-state machine**](candidate-k218/README.md)
+from `c4568161bf`, imported as Source 144 in batch 188. Its 205-node source
+exposes a continuation that lets native 85 and 212 share a state using the bit
+written by their incoming edges. All six fresh jobs pass: 6,167 guarded cases,
+1,515,158 symbolic rules, all 436 rows and exact 312,909-step blank startup.
+Independent mathematical reviews confirm the source and final all-tape fold
+arguments. The complete unchanged-calculus comparison is formalizable in ZFC;
+the exact-K218 Lean and internal PA endpoints remain open. The row157 rewrite
+also gives a second checked 218 layout. Our next target is **217 states or fewer**.
+See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-188.md)
+and [reproduction guide](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-188-reproduction.md).
+
+Its predecessor is the [**219-state machine**](candidate-k219/README.md)
 of batch 186 (Source 140, arrival `26d5de6d21`). A clean equality routine
 shares an open subtree between cancellation and cleanup; two compiler repairs
 turn its 208-to-206 source-DAG saving into 219 working states. Seven selected
@@ -61,7 +73,7 @@ the row157 rewrite also works on each. The two failed-218 reports from
 tail lemma, alternative equality contracts, exact failed return edits and
 unresolved cases. A new [shifted-head fold search](k219-shifted-fold/README.md)
 finds no survivor among 1,031,840 candidates across the six layouts.
-The best count remains 219. See the [reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-187.md)
+Those combinations remained at 219; K218 above is the later improvement. See the [reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-187.md)
 for proof boundaries and the useful remaining directions.
 
 The predecessor is the [**220-state machine**](candidate-k220/README.md)

@@ -87,6 +87,15 @@ passed its source and audit checks. It proves blank nonhalting equivalent to
 the stated ZF and ZFC consistency propositions. Internal PA calibration remains
 open.
 
+The current primary contender is the [218-state machine](BusyBeaver/Research/ZFC/candidate-k218/README.md),
+with an ordinary proof formalizable in ZFC that blank nonhalting is equivalent
+to Con(ZFC). Fresh checks cover all 6,167 primitive cases and complete 312,909-step
+initialization. Its exact-table Lean and internal PA endpoints remain open;
+the [240-state PA theorem](BusyBeaver/Research/ZFC/rotation240_binary.md) and
+[221-state Lean endpoint](BusyBeaver/Research/ZFC/candidate-k221/README.md)
+retain their separate formal status. The active size target is 217 or fewer.
+The following paragraphs preserve earlier construction milestones.
+
 The [loop-rotation 244-state candidate](BusyBeaver/Research/ZFC/candidate-rotation244/README.md)
 from `d91a27b462` saves a different state. Combining it with the compensated fold
 gives a [243-state candidate](BusyBeaver/Research/ZFC/candidate-combined243/README.md).
@@ -95,7 +104,7 @@ independently computed blank prefix has 407,967 transitions. Five Lean units
 prove exact halting equivalence between the rotated 244 and combined 243 tables
 (83 probes, 39 callers, zero warnings). The ordinary proof supports the ZFC
 consistency calibration; the rotation's source/runtime connection and the
-internal PA proof remain open in Lean. Compensated244 remains the smallest
+internal PA proof remain open in Lean. At that stage, compensated244 was the smallest
 machine with the complete external Lean consistency endpoint.
 
 The [batch 168 reconciliation](../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-168.md)
@@ -106,17 +115,16 @@ symbolic rules, 482 rows and exact 408,419-step startup. The
 identifies all six later 242 tables with primary A, up to one state rename,
 so their composition gives the existing 241 candidate. A fresh joint
 equational packet has **1,750 complete bits**, without supplying a further
-binary-state bound or internal PA endpoint. Compensated244 remains the
-closed external Lean baseline; the complete 241 consistency endpoint remains open.
+binary-state bound or internal PA endpoint. The closed external Lean baseline at that stage was compensated244;
+the complete 241 consistency endpoint remained open.
 
 The [source-rotation 240-state candidate](BusyBeaver/Research/ZFC/candidate-rotation240/README.md)
 combines a previously proposed source rotation with a fold of inherited state
 90 into 72. The [batch 170 reconciliation](../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md)
 records all ten fresh checks passing, including 8,386 complete final runtime
 cases, 2,322,575 symbolic rules, all 480 rows and the exact 409,691-step blank
-startup. Its ordinary proof and fresh runtime evidence do not close the exact
-240-state Lean consistency theorem or internal PA comparison; compensated244
-remains the closed external Lean baseline. The theory countermodel,
+startup. The exact 240-state external Lean and internal PA comparisons
+have since been completed, as linked above. The theory countermodel,
 GIC/Collection-plus-Separation equivalence and bounded search limits are
 preserved separately from the machine claim.
 
