@@ -80,13 +80,12 @@ equivalence, source size, raw allocation and complete machine verification:
   calculus by finite proof transformations and saves 123 primitive
   occurrences, but increases distinct source subtrees from 206 to 241.
 - [Code-dependent fourth parameters](../k219-fourth-parameter/README.md)
-  give a new three-input proposal, `U=R(A,B)`. Eight Lean lemmas check the
-  algebraic obstruction to simpler replacements and conditional routes to
-  recovering the old axiom. Two further Lean lemmas check a fresh-label
-  argument and projection of the negative K core. The semantic K extraction
-  now allows non-Boolean quantifier outputs; full equiconsistency remains open. Three
-  measured membership layouts have 205 distinct subtrees, but the checked
-  allocations so far are larger and lack runtime certificates.
+  now have a [syntactic obstruction](../k219-fourth-parameter/diagonal-invariant/README.md):
+  Lean checks that the `U=R(A,B)` proposal is consistent and cannot derive
+  even `F → truth`. This rules out the required ZFC calibration by the
+  ordinary second-incompleteness argument. Earlier conditional semantic
+  lemmas remain valid, but their missing completeness premise cannot supply
+  that calibration. Other membership layouts are separate proposals.
 - [Source transformations](../k219-source-search/README.md) include exact
   control-flow comparisons, bounded sharing searches, and all-natural
   proofs of five alternate equality routines. The left-decrement hit2
@@ -112,6 +111,11 @@ equivalence, source size, raw allocation and complete machine verification:
   recorded obstructions from the later families remain in a blank-seeded
   window domain. These families overlap; the finite-window failures are not
   a lower bound.
+
+A separate [two-transition synthesis](../k219-two-row-synthesis/README.md)
+allows both merged actions to vary independently. Demand-driven pruning
+covers 21,486,528 complete assignments across 14 selected pairs on each seed;
+none passes its bounded local filter. This is not a lower bound.
 
 The merged [221-state Lean endpoint](../candidate-k221/README.md) is now
 closed upstream. That formal result is specific to its own table; the
