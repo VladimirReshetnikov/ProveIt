@@ -1,10 +1,23 @@
 # Which computed fourth parameters remain worth testing?
 
+**Current correction:** the proposed `U=R(A,B)` calibration is now ruled out by
+an explicit ZFC-formalizable syntactic consistency proof. The
+[Lean-checked invariant](diagonal-invariant/README.md) also proves that this
+calculus cannot derive `F → truth`. It retains every native seed/support
+bundle and even allows all identities and quantified monotonicity. Assuming
+ZFC is consistent, no ZFC-provable consistency equivalence with ZFC can hold
+for this modification. The earlier conditional semantic arguments below
+remain valid; a model-existence implication strong enough for calibration
+cannot be proved in ZFC from this consistency, assuming ZFC is consistent.
+The [prior version](diagonal-invariant/history/prior-README.md) is retained. Ordinary extensions rule out `R(B,A)`, `R(A,C)` and `R(C,A)`;
+only `R(A,B)` has been Lean-checked here. `R(B,C)` and `R(C,B)` remain separate.
+
 Replacing rho8's independent fourth parameter by a formula built from the
 other three would remove an input read. The existing HC countermodel excludes
 far more such replacements than its five originally stated examples. A
-membership-headed replacement escapes this particular obstruction, but its
-consistency strength is open. There is no new machine in this note.
+membership-headed replacement escapes that particular semantic obstruction,
+but `R(A,B)` is now excluded by the stronger syntactic invariant above.
+There is no new machine in this note.
 
 ## A uniform obstruction
 
@@ -69,15 +82,17 @@ Consider instead
 where the numerical **formula codes themselves** are the two variable
 labels. This has three independent input fields and makes no claim that
 U faithfully represents an arbitrary fourth formula. It is permitted by
-the user's consistency-only objective. Whether the resulting calculus is
-equiconsistent with ZFC remains to be proved.
+the user's consistency-only objective. The stronger syntactic result above
+now rules out the requested
+ZFC-provable consistency equivalence, assuming ZFC is consistent.
 
 One direction is immediate: every new rho8 instance is an instance of the
 old unrestricted schema. A finite proof in the proposed calculus is
 therefore already a proof in the original calculus. Consistency of the
-original implies consistency of the proposal. The missing direction is
-consistency of the proposal implying consistency of the original; the
-conditional model arguments below do not yet prove it.
+original implies consistency of the proposal. The reverse direction cannot
+supply the requested ZFC-provable
+calibration, by the syntactic consistency result above. The following
+conditional model arguments remain valid on their explicitly stated domains.
 
 The inherited HC model provably fails this family. Choose distinct
 `p,q ∈ HC`. The antichain encoding supplies a coordinate k with
@@ -190,8 +205,8 @@ second has no axiom dependencies. Native support, the full K extraction and
 model existence are not formalized in this small file. The earlier
 [Boolean-Q analysis](history/analysis.md) is retained as superseded history.
 
-The remaining gap is now sharper: consistency of the proposed code-coupled
-calculus has not been shown to produce a model with one designated value,
+The earlier gap was a ZFC proof that consistency of the proposed code-coupled
+calculus produces a model with one designated value,
 Boolean negation and the specified implication/quantifier laws. Ordinary
 classical completeness cannot be invoked to supply that missing strength.
 This is a conditional model-extraction result, not equiconsistency.
@@ -232,9 +247,11 @@ lean Computability/BusyBeaver/Research/ZFC/k219-fourth-parameter/Range.lean
 The [source measurements](../k219-pivot-fusion/README.md) now include all
 12 ordered membership/association layouts, with a minimum of 205 distinct
 subtrees. [Selective allocation](../k219-continuation-search/README.md)
-reaches 222 raw states for those layouts. The next obligations are the
-consistency calibration and a smaller verified implementation. Syntax
-savings alone are insufficient. The accepted
+reaches 222 raw states for those layouts. The `R(A,B)` consistency calibration
+is ruled out as above; a smaller
+verified implementation of it would not meet the objective. Other proposals
+need their own calibration and implementation. Syntax savings alone are
+insufficient. The accepted
 [219-state construction](../candidate-k219/README.md) retains unrestricted
 rho8 and is unaffected.
 

@@ -1,5 +1,12 @@
 # Fresh-label correction: exact Boolean quantifier values are unnecessary
 
+**Status correction:** the conditional semantic argument below remains valid,
+but [the checked syntactic invariant](diagonal-invariant/README.md) now proves
+consistency of the literal `U=R(A,B)` calculus and nonderivability of `F → truth`.
+A model-existence implication strong enough for calibration therefore cannot
+be proved in ZFC from that consistency, assuming ZFC is consistent.
+The [previous text](diagonal-invariant/history/prior-fresh-label.md) is preserved.
+
 Independent source-only analysis by opening_encoder, 20 October 2026.
 This is an addendum to [analysis.md](history/analysis.md), retained unchanged
 as history. The fresh-label lemma was proposed by root and independently
