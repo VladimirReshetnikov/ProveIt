@@ -1,0 +1,303 @@
+{
+  "status": "SEARCH_RECEIPTS_AND_SOURCE_CERTIFICATES",
+  "baseline_commit": "26d5de6d21fa354d50e0b84fe851c289925b8d72",
+  "baseline_source_sha256": "0f6d9d991e36dda1a7449edab72a799bb2d8c3de3ff853a26178b89bd1bc8789",
+  "searches": [
+    {
+      "name": "global_baseline",
+      "layers": 32,
+      "root_hashes": 1897711,
+      "best_dag": 206,
+      "quota_per_size": 100,
+      "max_dag": 208,
+      "receipt": "receipts/dag205_global_baseline.json"
+    },
+    {
+      "name": "global_rho6",
+      "layers": 30,
+      "root_hashes": 1069124,
+      "best_dag": 206,
+      "quota_per_size": 60,
+      "max_dag": 208,
+      "receipt": "receipts/dag205_global_rho6.json"
+    },
+    {
+      "name": "occurrence_local",
+      "layers": 15,
+      "root_hashes": 1812417,
+      "best_dag": 206,
+      "quota_per_size": 25,
+      "max_dag": 209,
+      "receipt": "receipts/dag205_occurrence_local.json"
+    },
+    {
+      "name": "zero_run5",
+      "layers": 19,
+      "roots": 354668,
+      "best_dag": 208,
+      "best_zero_run": 5,
+      "unseeded_historical_trajectory": true,
+      "receipt": "receipts/zero5_search.json"
+    },
+    {
+      "name": "zero_run5_fixed206",
+      "layers": 20,
+      "roots": 372228,
+      "best_dag": 206,
+      "remaining_violations": 14,
+      "receipt": "receipts/zero5_fixed206_search.json"
+    },
+    {
+      "name": "re_pair_full",
+      "trials": 2000,
+      "best_dag": 208,
+      "best_zero_run": 8,
+      "receipt": "receipts/re_pair_full.json"
+    },
+    {
+      "name": "re_pair_historical_freeze20",
+      "trials": 2000,
+      "best_dag": 206,
+      "historical_snapshot_only": true,
+      "receipt": "receipts/re_pair_freeze20.json"
+    },
+    {
+      "name": "re_pair_rho6_freeze08",
+      "trials": 3000,
+      "best_dag": 206,
+      "attained206": 462,
+      "rejected_heuristic_trials": 1329,
+      "receipt": "receipts/re_pair_rho6_3000.json"
+    },
+    {
+      "name": "delete198_single_incoming_action",
+      "tested": 872,
+      "passes_first_interface": 1,
+      "passes_all_tested_interfaces": 0,
+      "receipt": "receipts/delete198.json"
+    },
+    {
+      "name": "global_halt_reuse",
+      "layers": 8,
+      "root_hashes": 239819,
+      "best_dag": 206,
+      "quota_per_size": 60,
+      "max_dag": 208,
+      "seed": 219207,
+      "receipt": "receipts/dag205_halt_reuse.json",
+      "termination": "Stopped during the next layer; counts include completed layers only."
+    }
+  ],
+  "source_certificates": [
+    {
+      "name": "zero5_reassociation",
+      "checker": "scripts/verify_zero5.py",
+      "artifact": "artifacts/zero5_208.sites.json"
+    },
+    {
+      "name": "nop219",
+      "checker": "scripts/check_nop_source.py",
+      "receipt": "receipts/nop_source_equivalence.json"
+    },
+    {
+      "name": "halt_specialization",
+      "checker": "scripts/verify_halt_specialization.py",
+      "proof": "halt_specialization.md",
+      "variants": [
+        "reuse_e",
+        "six_leaf",
+        "six_leaf2"
+      ]
+    }
+  ],
+  "scope": "Finite search receipts and ordinary executable source proofs. No source lower bound, proof-assistant endpoint, or new TM state reduction is inferred from these search counts.",
+  "portable_smoke_checks": {
+    "source_artifact": "SAVED_ZERO5_SOURCE_CFG_PASS",
+    "nop_source": "FRESH_ZERO_INVARIANT_AND_NOP_STUTTERING_SOURCE_PASS",
+    "halt_specializations": [
+      "reuse_e",
+      "six_leaf",
+      "six_leaf2"
+    ],
+    "search_entrypoints": "One layer each of global, local, zero-run beams; two RePair trials; state198 CLI import/help.",
+    "full_state198_replay": "Original exhaustive receipt retained; portable edits change only dependencies and output paths."
+  },
+  "files": {
+    "README.md": {
+      "bytes": 8562,
+      "sha256": "bd36af919fcc31c50e583fde2378c9700e8a0e7060e8dc895476c1e70b625406"
+    },
+    "artifacts/halt_reuse_e.sites.json": {
+      "bytes": 188987,
+      "sha256": "2d95754caf3c0902003c5aa4e2503d3d60dd7d4f7993fa743b1f06601e333831"
+    },
+    "artifacts/halt_six_leaf.sites.json": {
+      "bytes": 188807,
+      "sha256": "0e8fb4a501f08f05d09cb0a55764a109bf280f6dae8bc31475c0f31c5ba571cc"
+    },
+    "artifacts/halt_six_leaf2.sites.json": {
+      "bytes": 188810,
+      "sha256": "1b89eedd9784f69c2d7a24ebf2ed81c587dc4298095c548904abd18ff8b3509f"
+    },
+    "artifacts/nop_zero_facts.json": {
+      "bytes": 94912,
+      "sha256": "a723ab0bfd2fd89ad0cb096f0187678090f5a50dab9f81e93b0bc889a9e9726d"
+    },
+    "artifacts/zero5_208.sites.json": {
+      "bytes": 190599,
+      "sha256": "ff36e015ab866bda899eb4651e9a4a1f82812ba8dd08777f012adc87b6d9aef1"
+    },
+    "halt_specialization.md": {
+      "bytes": 6547,
+      "sha256": "8949abba7eb9c8d2c668866e06ce62e79d0bea945a22a2b36f6ac800b989ca94"
+    },
+    "receipts/baseline_independent_audit.json": {
+      "bytes": 584,
+      "sha256": "d97712f6954d0e404d1605f7f30407e90a88e7150168481c6ef4cc58d9842e09"
+    },
+    "receipts/dag205_global_baseline.json": {
+      "bytes": 422,
+      "sha256": "e22dbd4c36a54586477638ccd190eaad99d9284b50fbe21ef61b153e62bd58f0"
+    },
+    "receipts/dag205_global_rho6.json": {
+      "bytes": 414,
+      "sha256": "43c660b5693f4d7a65abe6e02b7078ba0ddead486262ce7eb5bbc42bb84a4ec0"
+    },
+    "receipts/dag205_halt_reuse.json": {
+      "bytes": 412,
+      "sha256": "780e57903485c40ac94485473d474a55fb0c7390549012416618c2359407a5a0"
+    },
+    "receipts/dag205_occurrence_local.json": {
+      "bytes": 237,
+      "sha256": "72b2cbec2226e470fc0f5a1fc74224b1dbe8ba1c141cc20a25d385f6985ddd7b"
+    },
+    "receipts/dead_code_replacement.json": {
+      "bytes": 264,
+      "sha256": "47a0ee58955c2cee486c43e31b271bdc74c1995f848fe0b4c0bc83491b2ffd11"
+    },
+    "receipts/decoder_alias_inventory.json": {
+      "bytes": 18198,
+      "sha256": "570c7ed81292e81ad1a665ffd6f942018a4d0ba52a7f20279d4eb385e4bed953"
+    },
+    "receipts/delete198.json": {
+      "bytes": 140,
+      "sha256": "15fe219dbf044ec9cb457d21731e00ababeaec688ffe8f971596fdcb343a5f45"
+    },
+    "receipts/delete_zero_transfer.json": {
+      "bytes": 375,
+      "sha256": "f5c2b58a77b2f1f9657f56c00100f6be88e80dd559c06d2132df8c864881f36a"
+    },
+    "receipts/fresh_bucket8_invariant.json": {
+      "bytes": 690,
+      "sha256": "d162af506ae078f2b2a2bcdb9e85d01ca0026ab6b57ca60b56ade705739d0922"
+    },
+    "receipts/halt_reuse_e.json": {
+      "bytes": 1755,
+      "sha256": "15e3a00fa5c5a2dc8f832a07f8ed1a476bb820411c265d8f65865ceb17b42715"
+    },
+    "receipts/halt_six_leaf.json": {
+      "bytes": 1720,
+      "sha256": "87cd6eedf9c20ecb0ae54f192be23462f4b49438f7cf0837af27dbec43ac8cd1"
+    },
+    "receipts/halt_six_leaf2.json": {
+      "bytes": 1757,
+      "sha256": "ddcca5715cdeaecdf18d2c8352448d198125afb5255d80d80c6c059d79df1b12"
+    },
+    "receipts/nop_runtime.json": {
+      "bytes": 482,
+      "sha256": "e1c89b60369ebf9915c13eb94b2afa53e0d163a15f98907e60fb8543bb7f5dde"
+    },
+    "receipts/nop_source_equivalence.json": {
+      "bytes": 945,
+      "sha256": "29ef661c6d7c35ff8fde08f9f35b3666923c1b48a98b84ce5971bf7c167e1bf0"
+    },
+    "receipts/nop_startup.json": {
+      "bytes": 4789,
+      "sha256": "0b85e2425504fba708512c948d1fc6c7954d273e7c39fbee89754d1caf3f4c09"
+    },
+    "receipts/re_pair_freeze20.json": {
+      "bytes": 3473,
+      "sha256": "7b137ce2bb1a915ba8fe1b42fd7268907bdef1161ea732fda6a820b58f753a6e"
+    },
+    "receipts/re_pair_full.json": {
+      "bytes": 3251,
+      "sha256": "6fc75b9fbfc613767293168b361e2a343c7c530b645623dfba8abc83d24ec41f"
+    },
+    "receipts/re_pair_rho6_3000.json": {
+      "bytes": 2936,
+      "sha256": "079b8a505a78e8c49a01c678c2ca707cf37ef28f9df1ab157bb7fe8400f12e2a"
+    },
+    "receipts/re_pair_rho6_first2900.json": {
+      "bytes": 2842,
+      "sha256": "17eb252e854f130216c4b9791b9d3bf85719455cd00402636a4cf4ea72f8a9be"
+    },
+    "receipts/re_pair_rho6_last100.json": {
+      "bytes": 1368,
+      "sha256": "c46abd7c4a090ba195ef415e0ab1885c6e6a9c91abb47de78225fa6b9d6205d0"
+    },
+    "receipts/script_origins.json": {
+      "bytes": 808,
+      "sha256": "285693945fbeed63385b187f2dca8ab6938fd81f030fbfb5a563c482dc46525c"
+    },
+    "receipts/semantic_nop_replacement.json": {
+      "bytes": 32,
+      "sha256": "146ad2209bca2daf7b62cc22d8b91d283cd39ddabf9ce895466555ead740f78d"
+    },
+    "receipts/zero5_fixed206_search.json": {
+      "bytes": 14908,
+      "sha256": "00885769f983bb4e36218997e9074ac6faa4b4612e6f9b2fc60f4ce600f98492"
+    },
+    "receipts/zero5_protected_compilation.json": {
+      "bytes": 428,
+      "sha256": "e184ccfb3f53dd56557aa84ee6ba78e7bb2a7282a0bd16beed221e441a2eecf4"
+    },
+    "receipts/zero5_search.json": {
+      "bytes": 11640,
+      "sha256": "31a3c60995120536dc3a9f14e7a3cace3a084fd49e7cfd20069c153db80fcd67"
+    },
+    "receipts/zero5_source.json": {
+      "bytes": 1269,
+      "sha256": "403fcfd35af0c13b0800408ad8491f3d7e3d5ca2e3cd2c9ca9bb2d027d9a5cf0"
+    },
+    "replay_review.md": {
+      "bytes": 1793,
+      "sha256": "a49c8b46ae25a4c371169e9dfec8b3b998f76fbf3e16274720a09ebbcf816df7"
+    },
+    "scripts/check_nop_source.py": {
+      "bytes": 3076,
+      "sha256": "a2346bb145effbd9a9d9836c16407353253a702d67b216792dea7a53b6292422"
+    },
+    "scripts/dag205_search.py": {
+      "bytes": 3186,
+      "sha256": "025e162a16111b5c5aa7138ceb2eb088507cc540aa7f00611f6afd521006eb80"
+    },
+    "scripts/environment.py": {
+      "bytes": 1007,
+      "sha256": "5d128708ebedcaf2a4b1aac5a2698795d89830908d64f8afdf829d816ea2f875"
+    },
+    "scripts/forest_repair.py": {
+      "bytes": 5531,
+      "sha256": "c39a54f32dc0a2ee29a7ea9bdc6dbc458bb972eaa5db506459de508298849a54"
+    },
+    "scripts/local205_search.py": {
+      "bytes": 3465,
+      "sha256": "f16c7d870e409632a77778e9b1129c0e7556527d41e3c5d16a465260576b6ec8"
+    },
+    "scripts/search_spare198.py": {
+      "bytes": 1636,
+      "sha256": "b76a1ebdb50bbd534f2e54e7848c117b90f5eb173039ff40414b544c33078e78"
+    },
+    "scripts/verify_halt_specialization.py": {
+      "bytes": 7502,
+      "sha256": "063022c6c956bc2d7797f0a338da5b30167f8f17b06c3641147fb73e42c71f01"
+    },
+    "scripts/verify_zero5.py": {
+      "bytes": 890,
+      "sha256": "4dfc6f5a2a0b78aa0c4823a640f304804dc1d49834ef9dd9f03ec65160ff51f9"
+    },
+    "scripts/zero5_search.py": {
+      "bytes": 4170,
+      "sha256": "9b3d888a1807dc963b77273062eb42d7cbe9fc1dfbd2082ecb1236da75224a5f"
+    }
+  }
+}
