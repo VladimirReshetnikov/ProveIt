@@ -10,7 +10,10 @@ for this modification. The earlier conditional semantic arguments below
 remain valid; a model-existence implication strong enough for calibration
 cannot be proved in ZFC from this consistency, assuming ZFC is consistent.
 The [prior version](diagonal-invariant/history/prior-README.md) is retained. Ordinary extensions rule out `R(B,A)`, `R(A,C)` and `R(C,A)`;
-only `R(A,B)` has been Lean-checked here. `R(B,C)` and `R(C,B)` remain separate.
+only `R(A,B)` has been Lean-checked here. The new
+[six-orientation extension](six-orientations/README.md) also rules out
+`R(B,C)` and `R(C,B)` by ordinary syntactic proofs, treating each fixed
+orientation separately.
 
 Replacing rho8's independent fourth parameter by a formula built from the
 other three would remove an input read. The existing HC countermodel excludes
