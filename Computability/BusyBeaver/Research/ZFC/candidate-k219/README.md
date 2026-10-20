@@ -5,7 +5,17 @@ smaller routine that shares an open subtree between cancellation and cleanup.
 Two compiler repairs turn that source saving into **219 working states and
 438 transition rows**, including initialization. Its ordinary mathematical
 proof gives blank-tape nonhalting equivalent to Con(ZFC), formalizable in ZFC.
-**The exact 219-state Lean theorem and internal PA equivalence remain open.**
+**A closed Lean theorem covers this exact table** (2026-10-20):
+
+```lean
+KLower219.blank_halts_iff_zfc_refutation :
+  BlankHalts machine219 ↔ BProv ZFCax_s [] Form.fBot
+```
+
+`machine219` ([`KDense219`](../../../Lean/BusyBeaver/ZFC/KDense219.lean)) is the literal
+438-row table of [k219.tm](k219.tm) (canonical SHA-256 `02079501…`), and the proof uses only
+`propext`, `Classical.choice` and `Quot.sound`; its layers are described in
+[k225-formal](../k225-formal/README.md#the-219). The internal PA equivalence remains open.
 
 The complete public table is [k219.tm](k219.tm). It uses two symbols, blank 0,
 a two-way infinite single tape, L/R moves, initial state 0 and head at cell 0.
@@ -94,9 +104,8 @@ equivalence, source size, raw allocation and complete machine verification:
   searched 352,384 distinct candidate specifications without finding an
   accepted reduction. The finite-window failures are not a lower bound.
 
-The merged [221-state Lean endpoint](../candidate-k221/README.md) is now
-closed upstream. That formal result is specific to its own table; the
-exact 219-state Lean and internal PA endpoints remain open.
+The [221-state Lean endpoint](../candidate-k221/README.md) is closed, and so is this
+table's own (above); the internal PA endpoint remains open.
 
 ## Provenance and reproduction
 

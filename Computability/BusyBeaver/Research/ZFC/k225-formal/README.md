@@ -9,9 +9,9 @@ its exact table:
 * **Lean**: `KLower221.blank_halts_iff_zfc_refutation : BlankHalts machine221 ↔ BProv ZFCax_s [] ⊥`,
   axioms `propext`, `Classical.choice`, `Quot.sound` ([below](#lean)).
 
-The newer [219-state candidate](../candidate-k219/README.md) has an ordinary
-simulation/calibration argument; its exact-table Rocq, Lean and internal PA endpoints remain
-open. The rest of this page records the earlier 225/224 plan, except the Lean section, which
+The newer [219-state candidate](../candidate-k219/README.md) also has a closed **Lean** endpoint,
+`KLower219.blank_halts_iff_zfc_refutation` ([below](#the-219)); its Rocq and internal PA
+endpoints remain open. The rest of this page records the earlier 225/224 plan, except the Lean section, which
 describes the 221's endpoint.
 
 
@@ -82,6 +82,27 @@ since the AX chain of `dag222` makes decoder paths 180 bits deep (`RMBisim.decod
 
 Compile times on this machine: `KSource221` about 60 minutes, the boot chunks about 20 seconds
 each, the site batches about 3 minutes each; everything else is seconds.
+
+### The 219
+
+The [219](../candidate-k219/README.md) (Source 140) keeps the calculus, so the upper bound and the
+semantic lower chain are reused as they are. Its endpoint
+`KLower219.blank_halts_iff_zfc_refutation : BlankHalts machine219 ↔ BProv ZFCax_s [] ⊥` adds:
+
+- **Program**: [`Dag219`](../../../Lean/BusyBeaver/ZFC/Dag219.lean) is `dag222` with the equality test (node 123) replaced
+  by Source 140's routine on nodes 461–466 ([`make_dag219.py`](make_dag219.py)). The L2 modules
+  are forked by [`generate_l2q219.py`](generate_l2q219.py); every lemma rechecks except the
+  equality test's, which [`L2Control219`](../../../Lean/BusyBeaver/ZFC/L2Control219.lean) proves anew for the new routine
+  with the old statements. [`Seed219`](../../../Lean/BusyBeaver/ZFC/Seed219.lean): `dag219_seed_iff`.
+- **Source**: [`KSource219`](../../../Lean/BusyBeaver/ZFC/KSource219.lean) relates the 219's 4,744-leaf source to
+  `dag219` (2,237 certificate entries, none offset).
+- **Engine**: the table in K230 labels ([`lean219/`](lean219/), new states renamed into freed
+  labels) changes two engine rows; [`KTape219`](../../../Lean/BusyBeaver/ZFC/KTape219.lean) reruns K230's register proofs
+  against K230 patched at exactly those rows, unchanged ([`KEngine219`](../../../Lean/BusyBeaver/ZFC/KEngine219.lean)).
+- **Boot, sites, bridge**: the 312,617-step startup ([`KBoot219`](../../../Lean/BusyBeaver/ZFC/KBoot219.lean), 24 blocks),
+  all 4,744 decoder leaves ([`KSites219`](../../../Lean/BusyBeaver/ZFC/KSites219.lean)), and the literal
+  [`Machine 219`](../../../Lean/BusyBeaver/ZFC/KDense219.lean); composed in [`KEndpoint219`](../../../Lean/BusyBeaver/ZFC/KEndpoint219.lean) and
+  [`KLower219`](../../../Lean/BusyBeaver/ZFC/KLower219.lean).
 
 Build rule on this machine: one Lean module per `lake` invocation, one build at a time machine
 wide (see the BusyBeaver build notes).
