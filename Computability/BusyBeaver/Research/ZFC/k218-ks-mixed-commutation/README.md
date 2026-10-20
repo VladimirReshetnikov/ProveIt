@@ -67,3 +67,8 @@ It writes fresh `bridge-result.json` and `bridge-dag.json` beside the copied
 scripts. The library pin is checked before import. No external dependency,
 solver, network access or proof-assistant compiler is needed. The builder
 refuses to replace an existing result.
+
+A [separate K/S-only analysis](ks-only-gap/README.md) isolates the missing
+translated commutation theorem and rules out membership semantics based only
+on formula values, using the literal bundle at `(16,16,0)`. It does not settle
+K/S-only calibration.
