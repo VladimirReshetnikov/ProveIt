@@ -1,0 +1,166 @@
+% Standalone section; ordinary mathematical proof and a rejected compilation.
+\section{An inductive seed invariant and a specialized halt test}
+\label{sec:seed-invariant}
+
+The exact blank-start calibration supplies logical registers
+\[
+ (R_0,\ldots,R_8)=(3,0,0,0,3,0,0,0,0).
+\]
+This section records a sound way to exploit that seed.  It also records why
+one promising source optimization has not yet produced an accepted binary
+machine.  The rejected table must not be counted as a construction result.
+
+\subsection{Finite abstraction with an unbounded meaning}
+
+Fix a cutoff $C\geq4$ and modulus $M\geq1$.  Partition the naturals into
+the exact values $0,\ldots,C-1$ and the $M$ sets
+\[
+ B_j=\{n\geq C:n\equiv j\pmod M\}\qquad(0\leq j<M).
+\]
+A mask is a union of these buckets.  At each instruction occurrence the
+certificate gives a Cartesian product of nine masks, or the empty set.
+Its meaning is an overapproximation of all reachable register valuations.
+No upper bound on a register, execution time, or number of source iterations
+is assumed.
+
+Increment and positive decrement act on masks by their exact bucket images.
+These images can be computed from the representatives in
+$[C,C+2M)$, together with the exact values below $C$.  Beyond the cutoff,
+increment changes only the residue.  Decrement does likewise except at
+$n=C$, where it reaches the exact value $C-1$.  Including the next
+representative of that same residue handles both outcomes.  Thus this
+finite computation is justified for every natural number.
+
+At a decrement instruction, the zero edge intersects the selected register
+with $\{0\}$; the positive edge intersects it with the positive naturals
+and then applies decrement.  Increment changes just its selected register.
+Break and continue retain every register and follow their exact path
+successor.  The checker reconstructs every successor by binary path
+increment and suffix removal and rejects a nonzero unread suffix.
+
+The acceptance conditions are elementary: the initial masks contain the
+calibrated seed, and every abstract transition image is included in its
+target masks.  Induction on a finite source execution now proves the stated
+invariant.  A separate verification pass checks these conditions after the
+worklist computation has finished; it can also check an existing certificate
+without running that computation.  The standard-library-only program
+\texttt{portable\_seed\_invariant.py} implements both modes.
+
+For the retained DN4 source, $C=8$, $M=2$ gives $4745$ instruction
+occurrences and $6162$ nonempty edge obligations.  All obligations pass.
+There are three empty instruction masks and two decrement guards whose
+positive edges are impossible.  In particular, at source path
+\texttt{11101001010}, the unique initial increment of register $6$ in
+the NIP routine, its incoming mask is exactly $R_6=0$.  Its source
+index is $4599$ when indices start at zero.  The corresponding original
+source index is $4975$.  These facts are certified by the exact source
+hash recorded in \texttt{dn4\_seed\_invariant.json}.
+
+\subsection{A correct source specialization}
+
+Write $D_r$ for destructive decrement, $I_r$ for increment, and $H$ for
+halt.  A binary pair is the original structured register-machine cons
+cell: a zero decrement in its left child exits that cell normally,
+and a break or continue in its right child is handled by the inherited
+structured rules.  Let
+\[
+ U=(D_5,((D_5,\mathrm{continue}\ 1),\mathrm{break}\ 1)).
+\]
+This is the source routine hosted at normalized state $88$.  If its
+input register $R_5$ is zero, it returns normally.  If $R_5>0$, it
+clears $R_5$ and exits with one break.  The inner loop decreases $R_5$
+on every iteration, so both claims hold for arbitrary naturals.
+
+The original NIP halt test increments the initially zero scratch register
+$R_6$ and invokes the general destructive equality test on $R_5,R_6$.
+That test clears both registers and continues to halt precisely when they
+were equal.  Hence the complete original fragment halts precisely when
+the incoming $R_5=1$; otherwise it returns with $R_5=R_6=0$.
+
+Replace that fragment by
+\[
+ P=(D_5,(U,H)).
+\]
+For incoming $R_5=0$, the first decrement exits $P$, leaving zero.
+For $R_5=1$, it leaves zero, $U$ returns normally, and $H$ is executed.
+For $R_5\geq2$, it leaves a positive value, so $U$ clears the value
+and breaks past $H$.  Register $R_6$ is unchanged and therefore remains
+zero.  No other register changes.  Thus $P$ has exactly the original
+closed-fragment outcome, for every input satisfying $R_6=0$.
+
+Both fragments terminate, and the three cases above prove their full
+effect, not just agreement on sampled counter values.  The inductive
+entry invariant allows their substitution in the surrounding source
+program from the calibrated seed.  The binary interpreter may append a
+different number of spare blocks because fewer source increments occur;
+this does not change register-machine semantics, and the universal
+runtime theorem quantifies over arbitrary nonempty finite spare lists.
+
+\subsection{Why the direct binary patch is rejected}
+
+The source replacement shortens the original $5121$-leaf source to
+$5115$ leaves, or the DN4 source from $4745$ to $4739$ leaves.
+A direct attempt reuses normalized states $38,53,68$:
+state $38$ becomes the node $(P,Q_{69})$, state $53$ the node $P$,
+and state $68$ the node $(U,H)$.  Five transition rows change, and the
+physical state count remains $225$.
+
+The source decoder alone accepts this layout, but the complete binary
+runtime rejects it.  In particular, normalized row
+\[
+ (38,0)\longmapsto(0,\mathrm R,13)
+\]
+also serves as an interpreter helper while executing the unrelated
+increment-$8$ instruction at path \texttt{01010}.  The attempted
+specialization changes its target to $53$.  Having a unique logical
+decoder occurrence does not imply exclusive use as a physical Turing
+state.
+
+There is a direct finite counterexample.  Start the increment-$8$
+primitive at the normal dispatcher, with header width $64$, all nine
+primary registers zero, one zero-valued spare block, and blank exterior.
+The inherited table reaches the correct complete output frame after
+$636$ transitions: the path is \texttt{01011}, register $8$ is one,
+and a one-valued spare block has been appended.  The attempted table
+instead reaches a complete frame at that same next path after $648$
+transitions, with all primary registers still zero and its original
+single spare unchanged.  Thus it has performed a no-op in place of
+the required increment.  The complete input and output supports are
+recorded in \texttt{dn4\_nip\_rejection.json}.  The standalone checker
+\texttt{verify\_nip\_rejection.py} reconstructs the five-row patch and
+replays this counterexample directly from the accepted DN4 table.
+
+This is also relevant immediately to the calibrated computation:
+the increment at \texttt{01010} is the third source instruction from
+the seed, following a zero test of register $8$ and a positive decrement
+of register $0$.  In addition, a blank-start diagnostic finds $99$
+uses of the affected helper row in the inherited startup.  The changed
+table therefore has neither the required universal runtime certificate
+nor an inherited startup certificate.
+
+The source specialization and seed invariant remain usable research
+results.  A successful compilation must preserve or replace the
+interpreter helper, as well as the logical decoder edges.
+
+\subsection{A related arithmetic simplification}
+
+For the original dual-Cantor pairing
+$P(a,b)=\operatorname{tri}(a+b)+b$, one has
+\[
+ P(A,1)=P(0,A)+2.
+\]
+Consequently the negation code $4P(A,1)$ can be computed from a clean
+scratch pair by the existing pairing routine, two increments of
+scratch register $7$, and the existing multiplication-by-four routine.
+The two increments may also precede the pairing routine, since its
+output adds to register $7$.  The standalone Rocq file
+\texttt{PairAdd2.v} checks the arithmetic identity and the composition
+of these three register contracts without additional axioms.
+
+All fifteen binary parenthesizations and placements tested on each of
+the original and DN4 bases require at least $226$ states in the direct
+compilation.  They also expose four decoder-helper conflicts if
+negation state $184$ is overwritten in place.  These experiments are
+recorded as rejected candidates, not as reductions below $225$.
+The identity may have been used in earlier source variants; no
+priority claim is made for it here.

@@ -1,0 +1,58 @@
+{
+  "status": "PASS_FULL_DN_SOURCE_AND_SYMBOLIC_FORMULA",
+  "baseline_sha256": "86b28af08e646eb7da8b822f63a03173ef5182e5a2ebc0404008e1b2af41b55b",
+  "source_sha256": "915cbae8ce402e0415d88abeecbe2c720da6ce927e32009924b3a32a219acc30",
+  "source_metrics": {
+    "dag_nodes": 211,
+    "leaf_occurrences": 4745,
+    "maximum_depth": 38,
+    "maximum_zero_run": 6
+  },
+  "macro_checks": [
+    {
+      "name": "and",
+      "dag230_node": 178,
+      "source_path": "11101001001110101110",
+      "guard_nodes": 37
+    },
+    {
+      "name": "ex",
+      "dag230_node": 183,
+      "source_path": "11101001001110001110",
+      "guard_nodes": 37
+    },
+    {
+      "name": "neg",
+      "dag230_node": 218,
+      "source_path": "111010010011100011100",
+      "guard_nodes": 15
+    },
+    {
+      "name": "im",
+      "dag230_node": 119,
+      "source_path": "11101001001010",
+      "guard_nodes": 9
+    },
+    {
+      "name": "all",
+      "dag230_node": 180,
+      "source_path": "1110100100101",
+      "guard_nodes": 9
+    },
+    {
+      "name": "ac_s1s2",
+      "dag230_node": 192,
+      "source_path": "11101001001110111101111",
+      "guard_nodes": 2
+    }
+  ],
+  "replacement_paths": [
+    "1110100100111010111",
+    "11101001001110110101",
+    "111010010011101101101",
+    "111010010011101111011"
+  ],
+  "stack_contracts": "Both rewrites consume exactly two stack operands and preserve every lower stack entry; scratch registers return to zero.",
+  "formula_check": "Identical constructor expressions after recursive double-negation elimination; quantifier labels and freshness tests are unchanged.",
+  "scope": "Finite source and formula checks; the universal logical argument is full_dn_proof.tex, and binary runtime requires its separate certificate."
+}

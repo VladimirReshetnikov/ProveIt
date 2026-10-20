@@ -1,0 +1,36 @@
+{
+  "status": "ALL_REQUIRED_REPLAYS_PASS",
+  "final_candidate_replay": {
+    "receipt": "replay.json",
+    "status": "FULL_REPLAY_PASS",
+    "seconds": 157.58063908699842,
+    "fresh_final_runtime": true,
+    "upstream_mode": "quick audit within aggregate; separately freshly replayed as recorded below"
+  },
+  "upstream_full_replay": {
+    "receipt": "upstream225_full_replay.json",
+    "status": "FULL_REPLAY_PASS",
+    "seconds": 223.8914228720023,
+    "includes_fresh_225_and_226_runtimes": true
+  },
+  "package_pin_correction": {
+    "receipt": "raw_zip_source_pin_audit.json",
+    "description": "The first aggregate attempt stopped at a Dag230 input SHA pinned after CRLF-to-LF conversion. The final source checkers pin the authentic CRLF bytes in the unchanged ZIP. All 301 parsed nodes, machine/source bytes, and emitter contract are unchanged. The final aggregate reran from fresh extraction after this correction; the successful full upstream replay was retained separately."
+  },
+  "logical_helper": {
+    "actual_helper_roots": 68,
+    "actual_helper_proof_nodes": 59947,
+    "fusion_proof_nodes": 1563,
+    "fresh_emitter_sha256": "9ca4077ff110f7a644982eb23fa74b2ef361f79f17a7e402b093c4759d48909e"
+  },
+  "machine": {
+    "working_states": 224,
+    "rows": 448,
+    "runtime_cases": 6238,
+    "symbolic_steps": 1503342,
+    "canonical_sha256": "6361b0b29c2e0485bf8cf025dcf2606c2fac071f3f6e24fbde04016466d92168",
+    "startup_steps": 409835
+  },
+  "pdf_review": "pdf_qa.json",
+  "new_proof_assistant_kernel_build": false
+}

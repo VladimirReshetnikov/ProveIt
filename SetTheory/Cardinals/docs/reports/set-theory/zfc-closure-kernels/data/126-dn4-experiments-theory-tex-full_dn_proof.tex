@@ -1,0 +1,239 @@
+% Standalone section for incorporation into the main construction report.
+% This is an ordinary mathematical proof, not a claim of a new Rocq endpoint.
+\section{Changing the axiom constructor by eliminating double negations}
+\label{sec:full-dn}
+
+This section proves that the modified source searches exactly the same
+numeric theorems as the original K230/K225 source.  The source programs
+are not asserted to have the same register values at every boundary:
+the code of the set-theory axiom changes.  Instead, the two numeric
+calculi have identical sets of derivable codes.  In particular they
+derive the halting code simultaneously.
+
+\subsection{The numeric calculus, including its false code}
+
+Use the original dual-Cantor pairing function $P$ and code constructors
+\[
+ I(A,B)=4P(A,B),\qquad Q_xA=4P(x,A)+2,\qquad
+ M(x,y)=4P(x,y)+1,\qquad E(x,y)=4P(x,y)+3.
+\]
+Write $F=1$, $N A=I(A,F)$,
+$A\mathbin{\&}B=N I(A,N B)$, and
+$X_x A=NQ_xN A$.  These are abbreviations for functions on
+\emph{all} natural numbers; no well-formedness restriction is imposed
+on their arguments.  We use the named schematic letters only to make
+their syntactic nesting readable.
+
+Let $L$ be the numeric proof system retaining the original truth axiom
+$0$, the eight rows $\rho_1,\ldots,\rho_8$, modus ponens and
+generalization, but having no bundle axiom.  The following properties
+of $L$ do not use a bundle instance.
+
+\begin{enumerate}
+\item The retained \L ukasiewicz row $\rho_8$ derives the implicational
+axioms K, S and Peirce.  The explicit finite derivations are retained
+in \texttt{coq/logic/CD230.v}.
+\item $L\vdash I(F,A)$ for every $A$.  Indeed, K gives
+$F\to X_0Q_0A$, because $X_0Q_0A$ has the form $B\to F$;
+the retained row $\rho_6$ is $X_0Q_0A\to A$.  Transitivity gives
+$F\to A$.  This is exactly the argument for
+\texttt{thm\_F} in \texttt{Comp\_Prop230.v}.
+\item Consequently $L$ proves both $A\to NN A$ and $NN A\to A$.
+For the second direction, $NN A=(A\to F)\to F$ implies
+$(A\to F)\to A$ by the preceding explosion theorem, and Peirce
+with arguments $A,F$ finishes the proof.  This argument is uniform
+even when $A=0$ or its arithmetic code has a special decoding case.
+\item Mutual $L$-derivability is a congruence for $I$, $N$ and every
+$Q_x$.  The first two assertions are propositional consequences of
+K and S.  For the quantifier assertion, generalize a proof of
+$A\to B$ and apply the unchanged distribution row
+\[
+ \rho_2(x,A,B):\quad Q_x I(A,B)\to I(Q_xA,Q_xB).
+\]
+Repeat for the reverse implication.  There is no free-variable side
+condition here, since these are proofs of theorems and the numeric
+generalization rule is unrestricted.
+\end{enumerate}
+
+It follows that deletion of any syntactically adjacent pair $NN$,
+including below quantifiers, gives a mutually derivable numeric code.
+This direct numeric argument is preferable to reasoning only about a
+decoded formula: $F$ is literally the membership code $1$ in the
+machine's arithmetic, and the theorem that it serves as falsity in
+this proof system has just been supplied without using set theory.
+
+\subsection{The two local constructor replacements}
+
+The first replacement is
+\begin{align*}
+ X_x(A\mathbin{\&}B)
+ &=NQ_x\bigl(NN I(A,N B)\bigr),\\
+ J_x(A,B)&:=NQ_x I(A,N B).
+\end{align*}
+The two codes are mutually derivable in $L$.  On the source's postfix
+stack, this changes the closed sequence
+\[
+ \texttt{and; ex}\quad\longmapsto\quad
+ \texttt{neg; im; all; neg}.
+\]
+Starting with a top value $B$ and the two next stack operands $A,x$,
+both sequences finish with precisely one value above the same lower
+stack tail: the old value is $X_x(A\mathbin{\&}B)$, while the new
+value is $J_x(A,B)$.  Each constituent macro terminates normally,
+preserves the parameter and proof-list registers, and restores the
+two scratch registers to zero.  These are the contracts proved for
+\texttt{cons119}, \texttt{wal180}, \texttt{wn218},
+\texttt{wa178}, and \texttt{wex183} in
+\texttt{coq/prog/ProgLib230.v}.
+
+The second replacement is
+\begin{align*}
+ A\mathbin{\&}(B\mathbin{\&}C)
+ &=N I\bigl(A,NN I(B,N C)\bigr),\\
+ T(A,B,C)&:=N I\bigl(A,I(B,N C)\bigr),
+\end{align*}
+again a pair of mutually derivable codes.  Its source realization is
+\[
+ \texttt{and; and}\quad\longmapsto\quad
+ \texttt{neg; im; im; neg}.
+\]
+Starting with top $C$ and operands $B,A$, both words consume exactly
+those two operands.  They preserve the entire lower stack tail and
+the same clean-register boundary.  The following copy macro, used by
+the existing freshness gate, is retained in the same position.
+
+Binary-tree reassociations of these words are permitted because all
+the displayed macro boundaries are normal exits: no break, continue
+or halt escapes from a macro.  Internal loops are retained.  A
+reassociation is not justified merely by its leaf order if it moves
+an escaping control operation across a branch boundary.
+
+\subsection{The complete changed bundle}
+
+The following definitions give its exact arithmetic expression.
+Let
+\begin{align*}
+ S(a,b,c)&=Q_c I\bigl(M(c,a),M(c,b)\bigr),\\
+ R'(b,c,m)&=Q_b I\bigl(m,J_b(m,M(b,c))\bigr),\\
+ H'(a,b,c,m)&=Q_b I\bigl(M(b,c),
+   J_a(m,Q_a I(S(a,b,c),R'(b,c,m)))\bigr),\\
+ K'(a,b,c,m)&=J_c\bigl(I(m,M(b,c)),H'(a,b,c,m)\bigr),\\
+ V_M(a,b,c)&=I\bigl(M(a,b),Q_cM(a,b)\bigr),\\
+ V_E(a,b,c)&=I\bigl(E(a,b),Q_cE(a,b)\bigr),\\
+ B'(a,b,c)&=T\bigl(K'(a,b,c,c),V_M(a,b,c),V_E(a,b,c)\bigr).
+\end{align*}
+The original $K$ is obtained by replacing every $J_x(U,V)$ by
+$X_x(U\mathbin{\&}V)$, and the original bundle is
+$B(a,b,c)=K(a,b,c,c)\mathbin{\&}(V_M(a,b,c)\mathbin{\&}V_E(a,b,c))$.
+Successively applying the first local equivalence to the witness
+request, the local support block, and the outer closure block,
+then applying the second equivalence to the final bundle,
+proves, for all natural $a,b,c$,
+\[
+ L\vdash I(B(a,b,c),B'(a,b,c)),\qquad
+ L\vdash I(B'(a,b,c),B(a,b,c)).                 \tag{DN}
+\]
+No binder moves, no variable is renamed, and no quantifier side
+condition is introduced.  In particular, the reused $a$ and $b$
+labels and their shadowing have exactly the original scopes.
+
+The gate remains
+\[
+ G'(a,b,c)=
+ \begin{cases}
+  0,&c=a\text{ or }c=b,\\
+  B'(a,b,c),&\text{otherwise}.
+ \end{cases}
+\]
+On disabled inputs the old and new gates are literally equal; on
+enabled inputs (DN) gives mutual derivability.  The new bundle is
+an outer $N$ constructor, hence a multiple of four and therefore
+different from $F=1$.  Thus $G'(a,b,c)\ne1$ on every input, including
+the disabled cases.
+
+\subsection{Proof translations and exhaustive enumeration}
+
+Let $\mathcal C$ be the old numeric calculus and $\mathcal C'$ the
+calculus that changes only its enabled bundle axiom from $B$ to $B'$.
+Both contain $L$.  Induction on a finite proof in $\mathcal C$
+translates it to a proof of the \emph{same numeric conclusion} in
+$\mathcal C'$.  For a bundle-axiom line, use the corresponding $B'$
+axiom and the second implication in (DN), followed by modus ponens.
+Every other axiom and rule is copied unchanged.  The reverse
+translation uses the first implication in (DN).  These are effective
+finite syntactic proof transformations, formalizable in ZFC; in fact
+their construction uses only elementary reasoning about finite
+derivations.  Consequently
+\[
+ \forall n\quad
+ \bigl(\mathcal C\vdash n\ \Longleftrightarrow\
+       \mathcal C'\vdash n\bigr).             \tag{PT}
+\]
+
+The changed AX routine preserves the old proof-list reads, parameters,
+generalized-cache formula, and the eight logical axioms pushed on the
+stack.  Only its final top formula becomes $G'$.  Thus its boundary
+contract is exactly the old \texttt{ax1} contract with \texttt{gate}
+replaced by $G'$ and with \texttt{ax\_stack} unchanged.  The finite
+postfix checks above establish that no extra truth cell is inserted
+or deleted.  In particular this construction does not incorporate
+the separate proposed MP-stack simplification.
+
+The existing proof-enumerator soundness invariant transfers verbatim:
+the current formula, cached formula, and all stack entries are
+$\mathcal C'$-theorems.  An enabled AX produces a $\mathcal C'$ axiom,
+a disabled AX produces its truth axiom $0$, and all other commands
+retain their definitions.  Hence halting implies
+$\mathcal C'\vdash1$.
+
+For completeness, the existing proof-to-command compiler also
+transfers.  Its bundle block selects $G'$ with the same parameters;
+its other blocks depend only on the preserved stack positions,
+logical rows, MP, DROP, NIP, and the facts that a disabled gate is
+$0$ and every gate is different from $1$.  Both facts were proved
+above.  Candidate decoding and the strictly draining proof-list
+argument are unchanged.  The original bootstrap seed is
+\[
+ (\textit{prooflist},\textit{nextproof},\textit{top},
+   \textit{stack},\textit{param1},\textit{cache})
+       =(0,3,0,0,3,0),
+\]
+not the all-zero seed.  The original \texttt{START} command still
+has selector at least $3$, so the constructed halting command list
+has candidate number at least $3$ and is eventually examined from
+this seed.  The retained seed-completeness argument therefore gives
+\[
+ \text{modified source halts from the inherited seed}
+ \quad\Longleftrightarrow\quad \mathcal C'\vdash1.
+\]
+Combining this with (PT), the original K230 calibration, and a
+separate universal binary-runtime certificate for the changed
+transition table yields the desired equivalence with
+$\neg\operatorname{Con}(\mathrm{ZFC})$.  The logical step here
+is an ordinary proof formalizable in ZFC.  It is not advertised as
+a newly compiled, axiom-free Rocq end-to-end theorem.
+
+\subsection{Finite artifacts and the precise scope of checking}
+
+The three old \texttt{and;ex} chunks have source prefixes
+\texttt{1110100100111010111},
+\texttt{11101001001110110101}, and
+\texttt{111010010011101101101}.  The final
+\texttt{and;(and;copy)} chunk has prefix
+\texttt{111010010011101111011}.  These four changes remove eight
+uses of the 47-leaf negation constructor, a total of 376 primitive
+instruction occurrences: the source has 4745 leaves instead of 5121.
+This is a source-size statement, not a Turing-state bound.
+
+The companion \texttt{verify\_full\_dn\_semantics.py} checks the
+exact pinned old source; the six reused macro bodies against their
+K230 structured counterparts; the four replacement locations; the
+new instruction word and all source guard successors; both symbolic
+stack contracts; and equality of the old and new complete bundle
+expressions after recursive double-negation removal.  Macro-body
+comparison uses a distinguished normal-return marker and contracts
+only finite runs of commuting increments and jumps, with every
+decrement and branch retained.  Its checks are finite syntactic
+obligations supporting the mathematical proof above.  They do not
+replace the separate unbounded simulation check from the literal
+binary Turing table to this source.

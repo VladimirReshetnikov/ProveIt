@@ -1,0 +1,239 @@
+\section{Canonical equality vacuity for the exact K230 core}
+\label{sec:canonical-ve-transport}
+
+The ordinary equality interpretation from Source~116 also applies to the
+present K230 source.  It need not be routed through that source's older
+CP/GIC adapter.  The essential observation is that the current ordinary
+proof comparison in \texttt{CompleteBase230.v} and \texttt{Complete230.v}
+can be parameterized by an interpreted theorem predicate.  The following
+argument supplies the missing source-specific premise, while preserving
+the coupling between the emitted matrix code and its private output label.
+This is an ordinary mathematical proof, formalizable in ZFC by induction
+on finite formulas and finite derivations.  It is not a claim that a new
+exact-machine Rocq endpoint has been checked.
+
+\subsection{The two numeric calculi}
+
+Write $P(a,b)=\operatorname{tri}(a+b)+b$, and use the retained constructors
+\begin{align*}
+ I(A,B)&=4P(A,B), & M(a,b)&=4P(a,b)+1,\\
+ Q_a A&=4P(a,A)+2, & \mathsf{Eq}(a,b)&=4P(a,b)+3.
+\end{align*}
+Here $F=1$, $N A=I(A,F)$, $A\mathbin{\&}B=N I(A,N B)$, and
+$\exists_a A=N Q_a N A$.  Let $K(a,b,k,A)$ be the exact current core,
+with input label $a$, output label $b$, private container label $k$,
+and matrix code $A$.  In particular,
+\begin{align*}
+ S(a,b,k)&=Q_k I(M(k,a),M(k,b)),\\
+ R(b,k,A)&=Q_b I\bigl(A,\exists_b(A\mathbin{\&}M(b,k))\bigr),\\
+ K(a,b,k,A)&=\exists_k\Bigl(
+ I(A,M(b,k))\mathbin{\&}
+ Q_b I\bigl(M(b,k),\exists_a(A\mathbin{\&}
+ Q_a I(S(a,b,k),R(b,k,A)))\bigr)\Bigr).
+\end{align*}
+These expressions retain the repeated and shadowed binders of the source.
+
+The old enabled bundle at $(a,b,c)$ is
+\[
+ K(a,b,c,c)\mathbin{\&}
+ \bigl(I(M(a,b),Q_cM(a,b))\mathbin{\&}
+ I(\mathsf{Eq}(a,b),Q_c\mathsf{Eq}(a,b))\bigr).
+\]
+The proposed replacement changes only the final component to
+\[
+ I\bigl(\mathsf{Eq}(a,b),Q_{\mathsf{Eq}(a,b)}\mathsf{Eq}(a,b)\bigr).
+ \tag{CVE}
+\]
+The gate remains $c\ne a,b$.  Both calculi retain numeric truth $0$,
+all eight original logical rows, modus ponens, and closed-theorem
+generalization.  Denote them by $H_{\rm old}$ and $H_{\rm cve}$.
+Classically equivalent DN4 parenthesizations of the displayed bundles
+give the same argument, by quantified congruence.
+
+\paragraph{The easy direction.}
+For every $a,b$, the label
+$k=\mathsf{Eq}(a,b)=4P(a,b)+3$ is larger than both endpoints.  Projecting
+the old bundle at $(a,b,k)$ supplies (CVE).  The old bundle at $(a,b,c)$
+supplies its unchanged core and membership-vacuity components.  Classical
+conjunction introduction reconstructs every new enabled bundle.  Thus
+every $H_{\rm cve}$ derivation is an $H_{\rm old}$ derivation, and
+\[
+ \operatorname{Con}(H_{\rm old})
+ \ \Longrightarrow\ \operatorname{Con}(H_{\rm cve}).
+\]
+Conversely, the new calculus really supplies (CVE) for every $a,b$:
+choose any $c\ne a,b$ and project the enabled bundle.  Its membership
+vacuity is still available at every gated triple.  Retaining the original
+eighth logical row supplies classicality independently of these projections.
+
+\subsection{The equality-profile interpretation}
+
+For $z\ne a,b$, let
+\begin{align*}
+ L_{ab}(z)&=(M(z,a)\to M(z,b))\mathbin{\&}
+             (M(z,b)\to M(z,a)),\\
+ U_{ab}(z)&=(M(a,z)\to M(b,z))\mathbin{\&}
+             (M(b,z)\to M(a,z)),\\
+ E_{ab}^{z}&=(\forall_z L_{ab}(z))\mathbin{\&}
+             (\forall_z U_{ab}(z)),\\
+ E(a,b)&=E_{ab}^{\mathsf{Eq}(a,b)}.
+\end{align*}
+These are finite named formulas; the arrows, conjunctions and negations
+are subsequently encoded with the retained numeric constructors.
+Let $J$ preserve membership, implication, primitive negation and every
+universal binder, replacing only the equality atom $(a=b)$ by $E(a,b)$.
+
+The uniform bootstrap in Source~116, Sections~1--3 of
+\texttt{116-eqred-audit-mathematical\_audit.md}, applies to these exact
+retained logical rows.  It derives all interpreted logical axioms from
+full membership vacuity and (CVE).  In particular it handles equality
+witnesses, membership congruence, transitivity, and full vacuity for the
+\emph{interpreted} equality $E$.  Auxiliary labels are transported through
+a fresh maximum-plus-one label.  This includes coincidences with an
+endpoint's canonical auxiliary label and includes label~$0$.
+
+Consequently every theorem $p$ of the full pure named logic has a finite
+$H_{\rm cve}$ proof of $\operatorname{enc}(Jp)$.  This theorem is obtained
+by induction over the logical axiom, modus-ponens and closed-GEN
+constructors.  It does not assert that primitive full equality vacuity
+is derivable, and it does not assume that $J$ commutes with substitution
+or with a syntactic renaming operation.
+
+Define the theorem predicate
+\[
+ \mathcal Q_E(p)\quad\Longleftrightarrow\quad
+ H_{\rm cve}\vdash\operatorname{enc}(Jp).
+\]
+It is closed under pure logical consequences, modus ponens, and
+generalization.  These are exactly the properties used by the
+\texttt{Q}-based infrastructure of \texttt{CompleteBase230.v}.
+
+\subsection{Supplying the ordinary K core with an actual source code}
+
+Fix an arbitrary ordinary matrix $\varphi$.  Use precisely the current
+translation $p=\texttt{tr source\_names}\,\varphi$, with named output~$3$,
+input~$1$, and the retained ordinary treatment of bottom.  Let
+\[
+ c=\operatorname{enc}(\neg\neg p),\qquad
+ c'=\operatorname{enc}(\neg\neg Jp).
+\]
+The original code $c$ is exactly
+\texttt{ordinary\_code230}\,$\varphi$.  Both $c,c'>3$.  More strongly,
+both exceed every label occurring anywhere in $p$, including bound labels.
+For $c$ this is the finite-tree coding bound.  For $c'$ use the same
+bound and the fact that every original label is retained somewhere in
+$Jp$.  Each equality expansion uses both endpoints and only adds its
+auxiliary label.  No decoder inverse is required for this argument.
+
+Request the \emph{actual} enabled new bundle at $(1,3,c')$.  Its matrix
+argument is the number $c'$ itself, so the constructor equations give
+literally
+\[
+ K(1,3,c',c')
+  =\operatorname{enc}\bigl(\mathsf K(1,3,c',\neg\neg Jp)\bigr),
+\]
+where $\mathsf K$ is the displayed named version of the same core.
+Projection and double-negation equivalence, propagated under every
+connective and quantifier, therefore give
+\[
+ H_{\rm cve}\vdash
+ \operatorname{enc}\bigl(\mathsf K(1,3,c',Jp)\bigr).
+ \tag{1}
+\]
+Since the core contains no equality atom outside its matrix,
+\[
+ J\bigl(\mathsf K(1,3,c',p)\bigr)
+   =\mathsf K(1,3,c',Jp).
+ \tag{2}
+\]
+
+In the full ordinary named logic,
+\[
+ \mathsf K(1,3,c',p)\ \longleftrightarrow\
+ \mathsf K(1,3,c,p)
+ \tag{3}
+\]
+is a pure alpha-equivalence theorem.  Both private labels are absent
+from $p$ and differ from $1,3$.  Rename the outer container binder and
+the locally shadowing subset binder; the matrix and the input/output
+binders remain literal.  Equivalently their de Bruijn translations
+under an injective environment are equal, so the retained
+\texttt{Std\_alpha.alpha\_dB} theorem proves (3).
+If $c=c'$, (3) is identity.
+
+Apply the already established pure logical interpretation to (3), and
+use (1)--(2).  The result is
+\[
+ \boxed{\mathcal Q_E\bigl(
+   \mathsf K(1,3,\texttt{ordinary\_code230}\,\varphi,
+                 \texttt{tr source\_names}\,\varphi)\bigr).}
+ \tag{4}
+\]
+This is the exact counterpart of
+\texttt{Complete230.ordinary\_named\_core\_Q}.
+The reasoning never obtains a source instance with an independently
+chosen output coordinate.  It obtains the genuine $(c',c')$ instance
+first and derives the desired named theorem afterward.
+Possible collisions between $c$ and an auxiliary binder introduced
+inside $Jp$ cause no gap: the alpha theorem is proved for $p$ first and
+then interpreted as a whole.  No commuting law between $J$ and renaming
+is used.
+
+\subsection{Transport of the ordinary inconsistency proof}
+
+Replace the original predicate $Q$ by $\mathcal Q_E$ in the mathematical
+argument of \texttt{CompleteBase230.v} and \texttt{Complete230.v}.
+Define $TB_E$ to consist of closed ordinary readings
+$\operatorname{Lib}(n,p)$ whose named formula satisfies
+$\mathcal Q_E(p)$, with the same bound on free labels as before.
+Then:
+\begin{enumerate}
+\item The equality axioms belong to $TB_E$ because they are pure logical
+      theorems before interpretation.
+\item Ordinary ND proof discharge and the closed-formula round trip
+      use only interpreted pure logical theorems, MP and GEN.
+      In particular the original use of \texttt{alpha\_dB} is interpreted;
+      no new syntactic commutation premise is introduced.
+\item Equation~(4), the unchanged
+      \texttt{named\_source\_to\_kprime} argument, and finite proof
+      collection show that every ordinary K-prime axiom is provable from
+      $TB_E$.
+\item An ordinary contradiction yields
+      $\mathcal Q_E(\neg\forall_0(0=0))$.
+      Interpreted pure reflexivity and GEN also yield
+      $\mathcal Q_E(\forall_0(0=0))$.  Their numeric modus ponens gives
+      exactly $F=1$.
+\end{enumerate}
+The optional irreflexivity premise used by the existing bridge is still
+available: its named representative is $\neg M(0,0)$, unchanged by $J$,
+and its code is literally $I(F,F)$.
+
+The retained K-prime-to-ZFC finite-proof comparison now gives
+\[
+ \mathrm{ZFC}\vdash\bot\quad\Longrightarrow\quad
+ H_{\rm cve}\vdash F.
+\]
+Combining this implication with the easy direction and the existing
+K230 consistency calibration proves, in the ordinary syntactic sense,
+\[
+ \operatorname{Con}(H_{\rm cve})
+   \quad\longleftrightarrow\quad\operatorname{Con}(\mathrm{ZFC}).
+\]
+The bootstrap derivations, fresh-label choices, formula translations and
+finite-proof maps are all explicit operations on finite objects; their
+correctness inductions can be carried out in ZFC.  A machine-state claim
+still requires a correctly compiled literal source with the indicated
+row coverage, a full runtime certificate, and the blank-input simulation
+proof.  This section alone supplies no smaller transition table.
+
+\paragraph{Code-zero and relative-falsehood boundary.}
+The argument uses constructor homomorphism on finite encoded trees,
+not the false statement $\operatorname{enc}(D(n))=n$.  The source is
+requested at the explicitly constructed positive code $c'$, never at
+a recoding of an arbitrary decoder output.  The numeric falsehood is
+always $1$; under a logical negation it is fixed as the designated
+bottom.  The equality-profile bootstrap treats membership occurrences
+that collapse to $M(0,0)$ using the retained congruence and explosion
+derivations.  Thus neither the native truth-code alias at $0$ nor the
+relative membership interpretation of $1$ is silently replaced by an
+unrestricted raw-syntax renaming principle.

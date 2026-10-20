@@ -1,0 +1,439 @@
+{
+  "status": "CANONICAL_REL225_EXACT_CONSTRUCTION_PASS",
+  "input_sha256": {
+    "results/candidate225.klabels.tm": "0847184fa05327daefa45c7012ce2c75fe58bf03d1dc930fe152e9fac55b4fbc",
+    "results/sites225.json": "86b28af08e646eb7da8b822f63a03173ef5182e5a2ebc0404008e1b2af41b55b",
+    "baseline226/source/legacy_state_map.json": "8d77f4dcddc9966ba58b0cb8515d604334983e86b51580b546960b1e1d1a7151",
+    "baseline226/vendor/k230-rocq/coq/prog/Dag230.v": "7f44c6bc6cb2e5a7a30c1267738c8df7bfd8e036987721ac0bb6bdc326e54eaf"
+  },
+  "logical_changes": [
+    "Cancel eight negation constructors (four double-negation pairs) in the K bundle",
+    "Use membership-code binder kappa(a,b)=4*P(a,b)+1 in equality vacuity"
+  ],
+  "retained": [
+    "Eight logical rows",
+    "Full relational-vacuity family",
+    "Original c=a or c=b gate",
+    "Proof enumerator and nine-register encoding"
+  ],
+  "stages": [
+    {
+      "name": "baseline225",
+      "metrics": {
+        "dag_nodes": 211,
+        "leaf_occurrences": 5121,
+        "maximum_depth": 38,
+        "maximum_zero_run": 6
+      }
+    },
+    {
+      "name": "double_negation_fusion",
+      "metrics": {
+        "dag_nodes": 211,
+        "leaf_occurrences": 4745,
+        "maximum_depth": 38,
+        "maximum_zero_run": 6
+      },
+      "row_edits": [
+        {
+          "state": 116,
+          "read": 0,
+          "old": [
+            0,
+            1,
+            172
+          ],
+          "new": [
+            0,
+            1,
+            184
+          ]
+        },
+        {
+          "state": 116,
+          "read": 1,
+          "old": [
+            1,
+            1,
+            192
+          ],
+          "new": [
+            1,
+            1,
+            185
+          ]
+        },
+        {
+          "state": 153,
+          "read": 1,
+          "old": [
+            1,
+            -1,
+            172
+          ],
+          "new": [
+            1,
+            -1,
+            167
+          ]
+        },
+        {
+          "state": 167,
+          "read": 0,
+          "old": [
+            0,
+            1,
+            172
+          ],
+          "new": [
+            0,
+            1,
+            184
+          ]
+        },
+        {
+          "state": 167,
+          "read": 1,
+          "old": [
+            1,
+            1,
+            180
+          ],
+          "new": [
+            1,
+            1,
+            192
+          ]
+        },
+        {
+          "state": 172,
+          "read": 1,
+          "old": [
+            1,
+            1,
+            185
+          ],
+          "new": [
+            1,
+            1,
+            194
+          ]
+        },
+        {
+          "state": 185,
+          "read": 0,
+          "old": [
+            0,
+            1,
+            90
+          ],
+          "new": [
+            0,
+            1,
+            150
+          ]
+        },
+        {
+          "state": 185,
+          "read": 1,
+          "old": [
+            1,
+            1,
+            184
+          ],
+          "new": [
+            1,
+            1,
+            172
+          ]
+        },
+        {
+          "state": 192,
+          "read": 0,
+          "old": [
+            0,
+            1,
+            172
+          ],
+          "new": [
+            0,
+            1,
+            157
+          ]
+        },
+        {
+          "state": 192,
+          "read": 1,
+          "old": [
+            1,
+            1,
+            194
+          ],
+          "new": [
+            1,
+            1,
+            184
+          ]
+        }
+      ]
+    },
+    {
+      "name": "existential_reassociation",
+      "metrics": {
+        "dag_nodes": 210,
+        "leaf_occurrences": 4745,
+        "maximum_depth": 38,
+        "maximum_zero_run": 6
+      },
+      "row_edits": [
+        {
+          "state": 180,
+          "read": 0,
+          "old": [
+            0,
+            1,
+            184
+          ],
+          "new": [
+            0,
+            1,
+            152
+          ]
+        },
+        {
+          "state": 180,
+          "read": 1,
+          "old": [
+            1,
+            1,
+            153
+          ],
+          "new": [
+            1,
+            1,
+            192
+          ]
+        },
+        {
+          "state": 153,
+          "read": 1,
+          "old": [
+            1,
+            -1,
+            167
+          ],
+          "new": [
+            1,
+            1,
+            90
+          ]
+        }
+      ],
+      "source_equivalence": {
+        "status": "TWO_INDEPENDENT_GUARDED_CFG_RESOLVERS_AGREE",
+        "source_instructions": 4745,
+        "first_no_stray_checks": 6168,
+        "second_no_stray_checks": 6168
+      }
+    },
+    {
+      "name": "canonical_equality_binder",
+      "metrics": {
+        "dag_nodes": 210,
+        "leaf_occurrences": 4799,
+        "maximum_depth": 38,
+        "maximum_zero_run": 8
+      }
+    },
+    {
+      "name": "suffix_reassociation",
+      "metrics": {
+        "dag_nodes": 210,
+        "leaf_occurrences": 4799,
+        "maximum_depth": 38,
+        "maximum_zero_run": 6
+      },
+      "row_edits": [
+        {
+          "state": 224,
+          "read": 0,
+          "old": [
+            0,
+            1,
+            159
+          ],
+          "new": [
+            0,
+            1,
+            135
+          ]
+        },
+        {
+          "state": 135,
+          "read": 0,
+          "old": [
+            0,
+            1,
+            191
+          ],
+          "new": [
+            0,
+            1,
+            159
+          ]
+        },
+        {
+          "state": 135,
+          "read": 1,
+          "old": [
+            1,
+            1,
+            100
+          ],
+          "new": [
+            1,
+            1,
+            191
+          ]
+        },
+        {
+          "state": 225,
+          "read": 0,
+          "old": [
+            0,
+            1,
+            135
+          ],
+          "new": [
+            0,
+            1,
+            153
+          ]
+        },
+        {
+          "state": 225,
+          "read": 1,
+          "old": [
+            1,
+            1,
+            193
+          ],
+          "new": [
+            1,
+            1,
+            100
+          ]
+        },
+        {
+          "state": 100,
+          "read": 0,
+          "old": [
+            0,
+            1,
+            153
+          ],
+          "new": [
+            0,
+            1,
+            116
+          ]
+        },
+        {
+          "state": 100,
+          "read": 1,
+          "old": [
+            1,
+            1,
+            116
+          ],
+          "new": [
+            1,
+            1,
+            193
+          ]
+        },
+        {
+          "state": 191,
+          "read": 0,
+          "old": [
+            0,
+            1,
+            166
+          ],
+          "new": [
+            0,
+            1,
+            155
+          ]
+        }
+      ],
+      "source_equivalence": {
+        "status": "TWO_INDEPENDENT_GUARDED_CFG_RESOLVERS_AGREE",
+        "source_instructions": 4799,
+        "first_no_stray_checks": 6238,
+        "second_no_stray_checks": 6238
+      }
+    }
+  ],
+  "macro_checks": {
+    "Imp": {
+      "status": "ALL_REGISTER_LOCAL_BISIMULATION_PASS",
+      "test_pairs": 9
+    },
+    "All": {
+      "status": "ALL_REGISTER_LOCAL_BISIMULATION_PASS",
+      "test_pairs": 9
+    },
+    "Neg": {
+      "status": "ALL_REGISTER_LOCAL_BISIMULATION_PASS",
+      "test_pairs": 15
+    },
+    "And": {
+      "status": "ALL_REGISTER_LOCAL_BISIMULATION_PASS",
+      "test_pairs": 37
+    },
+    "Exists": {
+      "status": "ALL_REGISTER_LOCAL_BISIMULATION_PASS",
+      "test_pairs": 37
+    },
+    "AndExists": {
+      "status": "ALL_REGISTER_LOCAL_BISIMULATION_PASS",
+      "test_pairs": 73
+    },
+    "PushOne": {
+      "status": "ALL_REGISTER_LOCAL_BISIMULATION_PASS",
+      "test_pairs": 7
+    },
+    "PushC": {
+      "status": "ALL_REGISTER_LOCAL_BISIMULATION_PASS",
+      "test_pairs": 9
+    },
+    "RelationAtomAB": {
+      "status": "ALL_REGISTER_LOCAL_BISIMULATION_PASS",
+      "test_pairs": 25
+    },
+    "EqualityAtomAB": {
+      "status": "ALL_REGISTER_LOCAL_BISIMULATION_PASS",
+      "test_pairs": 25
+    },
+    "AllThenImp": {
+      "status": "ALL_REGISTER_LOCAL_BISIMULATION_PASS",
+      "test_pairs": 17
+    }
+  },
+  "blank_startup": {
+    "steps": 409835,
+    "head": -5,
+    "one_cells": 351,
+    "all_other_cells": 0,
+    "same_endpoint_as_original225": true
+  },
+  "working_states": 225,
+  "total_rows": 450,
+  "output_sha256": {
+    "candidate225.k.tm": "4526bd8cf2160ac5dfce039add0550e9788095f60ecc6b4462afd4ebbfd42790",
+    "candidate225.tm": "b5111f270791fd0686df6f99af25648d7cf6e00ad57091b25b58e068abcd1898",
+    "sites225.json": "309358206463f8e8d88d86304e7c9f2273e3cdde64984b6db20c412516010878"
+  },
+  "scope": "Exact finite construction, all-register local arithmetic bisimulations, two complete guarded-CFG checks, decoder-prefix checks, and complete blank startup. The accompanying universal-runtime certificate and logical calibration argument are separate required parts of the non-halting/consistency equivalence."
+}

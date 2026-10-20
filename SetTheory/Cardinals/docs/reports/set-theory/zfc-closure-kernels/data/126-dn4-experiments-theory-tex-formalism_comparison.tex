@@ -1,0 +1,208 @@
+% An input section; requires amsmath, amssymb, and hyperref in the parent.
+\section{Alternative formalisms and measured source experiments}
+\label{sec:theory-alternatives}
+
+The relevant objective is the number of working states of the complete
+binary machine, including its interpreter, decoder, initialization, and
+proof search.  Formula length, expanded source length, and the number of
+distinct source subtrees are useful intermediate measurements.  None is
+a state count.  In particular, a source subtree can disappear while its
+physical decoder state remains necessary as a helper for another routine.
+The experiments below exhibit this distinction directly.
+
+\subsection{Retaining the calibrated native K formalism}
+
+The strongest completed theory-level change in this investigation is the
+double-negation normalization proved in Section~\ref{sec:full-dn}.
+It retains the eight numeric logical rows, the native formula coding,
+the exact freshness gates, and the inherited enumeration scheme.  Its
+two local constructor identities are proved inside the bundle-free
+numeric logic for \emph{every} natural-number argument.  Thus they do
+not depend on interpreting every input as an ordinary well-formed formula.
+This gives a uniform proof translation in both directions, including
+the designated false code~$1$.
+
+The change removes eight uses of the 47-leaf negation macro, hence 376
+expanded primitive occurrences.  The selected DN4 source has 4745
+occurrences and 211 distinct source subtrees.  Its completed binary
+compilation still has 225 working states.  The 70 ordered binary-tree
+parenthesizations of the two new macro words were also explored; this
+finite search did not supply a machine below 225 states.  These are
+facts about the explored compilation family, not a lower bound for the
+formalism or for all possible encodings.
+
+\subsection{Equality reduction: useful existing theory, incomplete machine route}
+
+Equality is an attractive target because the current logical kernel
+contains equality witnesses, congruence rows, a Euclidean equality row,
+and equality vacuity.  There is already substantial prior work on this
+route in ProveIt.  In particular, Source~116 contains an ordinary
+consistency comparison based on membership-defined equality, uniform
+fresh-label transport, and an equality-free CP/GIC comparison theory.
+Its independently audited mathematical statement includes a system
+$H_{\mathrm{eq}}$ that keeps the original logical rows and full
+membership vacuity, while retaining only the canonical family
+\[
+ E(a,b)\longrightarrow Q_{\,w(a,b)}E(a,b),
+ \qquad w(a,b)=4P(a,b)+3,
+\]
+of primitive equality-vacuity instances.  Relative to the repository's
+stated CP/GIC and ordinary ZF/ZFC comparison theorems, this system is
+equiconsistent with ZFC.\footnote{Pinned at ProveIt commit
+\texttt{ad8cbe8249445f43408617e88a0edb668b00248d},
+\texttt{SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/},
+files \texttt{116-eqred-source\_binding-README.md} and
+\texttt{data/116-eqred-audit-mathematical\_audit.md}.
+The accompanying experiment manifest records their SHA-256 hashes.}
+
+That result does not authorize deleting every equality row or every
+equality-vacuity instance from the present numeric machine.  Its
+comparison equality uses both incoming and outgoing membership
+profiles; primitive equality still supplies the required existential
+witnesses in the proof interpretation.  The exact coupling between
+the emitted matrix code and its output-variable label is also part of
+the argument.  Source~116 explicitly separates its ordinary comparison
+from a changed enumerator, a binary runtime proof, and a state bound.
+We preserve that distinction here.  No new equality-free binary
+candidate was completed in this investigation, and the
+membership-defined-equality idea is not claimed as new.
+
+A targeted source experiment replaced only the last bundle component
+by this canonical equality-vacuity formula.  For any endpoint labels
+$a,b$, an AX choice with $c\ne a,b$ still supplies that component;
+classical projection of the bundle therefore makes the entire
+canonical family available.  Reusing the existing $E(a,b)$ construction
+for its binder initially preserved the 211-node source count but
+violated the decoder's path limit, producing a run of nine zeros.
+Re-parsing the affected closed suffix restored the six-zero bound,
+with 213 source nodes and 4801 primitive occurrences.  Its literal
+decoder probe has 227 states and passes internal decoder contracts.
+It has no full runtime or startup certificate, and is recorded as a
+cost experiment rather than a completed binary candidate.
+
+\subsection{A finite class theory as a different front end}
+
+A finitely axiomatized NBG presentation with the appropriate choice
+axiom is another equiconsistent route.  It can replace recognition of
+arbitrary set-theory schema instances by a fixed first-order axiom
+list.  The standard set-theoretic conservativity comparison and the
+finite-axiom option are discussed in Hester's direct comparison of
+NBG and ZFC theorem proving.\footnote{J.~Hester,
+\emph{Automated ZFC Theorem Proving with E}, 2019,
+Sections~2--3, \url{https://arxiv.org/abs/1902.00818}.}
+For a small consistency machine, however, the fixed list itself,
+class/set restrictions, formula construction, and a complete logical
+proof checker must all be encoded.  A shorter axiom catalogue does
+not settle this combined cost.  We did not implement a complete NBG
+front end or assign it a speculative binary state count.
+
+Proof-search speed is largely irrelevant to this particular objective:
+an arbitrarily slow exhaustive search is acceptable.  That makes a
+finite axiom list worth investigating even when its automated proofs
+are longer.  The decisive future comparison is a literal compiled
+table with its source, startup, and unbounded-runtime proofs, using
+the same binary-machine convention as K225.
+
+\subsection{Replacing the four-parameter propositional row}
+
+The native $\rho_8$ is a four-parameter \L ukasiewicz axiom.  Replacing
+it by K, S and Peirce permits removal of the fourth AX parameter read:
+\begin{align*}
+ \mathrm K(A,B)&=A\to(B\to A),\\
+ \mathrm S(A,B,C)&=(A\to(B\to C))\to((A\to B)\to(A\to C)),\\
+ \mathrm P(A,B)&=((A\to B)\to A)\to A.
+\end{align*}
+The two propositional bases are interderivable.  In the old-to-new
+direction, the retained \texttt{coq/logic/CD230.v} already supplies
+the derivations of these three schemas from $\rho_8$; the reverse
+direction is ordinary classical implicational completeness.  A full
+implementation must also update AX arity and the stack locations of
+the logical rows, since one pushed row becomes three.
+
+We constructed literal replacement sources using the existing closed
+formula-building macros, preserving the rest of the AX region.
+All six K/S/Peirce row orders were tried.  We then considered all
+$6\cdot6^3=1296$ choices of row order and independent permutations of
+the three numeric parameters for the three schemas.  An ordered
+binary-tree parser reused existing closed macro subtrees and enforced
+the decoder's six-zero path limit.  Its cost function counts new
+compound occurrences and then depth; it is not a proof that the
+resulting shared DAG is globally minimal.
+
+The best recorded source has 213 distinct subtrees and 5055 expanded
+primitive occurrences on the DN4 basis.  It emits
+$\mathrm P(b,a)$, $\mathrm K(a,c)$, then
+$\mathrm S(a,b,c)$.  Literal decoder recompilation gives 231 working
+states before the recorded exact state simplification, and 230
+afterwards.  Internal decoder contracts pass.  Startup and the full
+unbounded runtime were not certified for this larger experimental
+table.  Thus the experiment measures a real compiler cost but does
+not produce a smaller completed candidate.
+
+Two variants used a one-parameter classical schema in place of Peirce:
+\[
+ \mathrm D(A)=NN A\to A,
+ \qquad
+ \mathrm C(A)=((A\to F)\to A)\to A.
+\]
+K and the retained $\rho_6$ already prove $F\to A$, by the same
+argument used in Section~\ref{sec:full-dn}.  Thus K/S/D and K/S/C
+are also classical propositional bases.  In particular, C gives D:
+from $NN A$ and explosion, infer $(A\to F)\to A$, then apply C.
+These schemas reuse the existing negation macro.  All 648 distinct
+choices of row order and parameter assignment were examined for each
+variant; the third row has only three distinct parameter choices.
+The best sources again have 213 distinct subtrees, with 5043 leaves
+for D and 5049 for C.  Both literal probes compile to 230 states after
+the recorded exact simplification and pass internal decoder contracts.
+They have the same uncompleted runtime/startup status as the K/S/Peirce
+probe.
+
+\subsection{Permuting command and axiom parameters}
+
+The selectors for MP, DROP and NIP can be permuted bijectively while
+keeping all AX selectors $3+c$ fixed.  At the abstract command level,
+this merely reencodes finite proofs.  Both the original and DN4 sources
+have the same subtree counts for all six selector permutations.
+Swapping MP and DROP gave a 225-state literal probe and passed the
+32 representative primitive cases used in that probe.  This was not
+the full runtime suite.  Direct probes that moved NIP failed a
+primitive-engine contract because the affected decoder transition
+also serves as an engine helper; those tables were rejected.
+
+For an individual logical row, any permutation of its numeric $a,b,c$
+parameters leaves its complete instance set unchanged.  We tested all
+five nonidentity permutations separately in each of the eight rows,
+on both source bases; the fourth parameter of $\rho_8$ was held fixed.
+All 40 single-row variants per basis increased the distinct-subtree
+count, from 211 to between 212 and 222.  The best cases were the
+$b,c$ register swap in $\rho_1$ and $\rho_6$, and the $a,b$ swap in $\rho_8$.
+This finite experiment does not exclude a beneficial joint change in
+several rows.  A uniform $a,b$ swap in the emitted logical axioms and
+bundle also increased the count, to 214.
+
+\begin{center}
+\small
+\begin{tabular}{p{0.34\linewidth}rrp{0.28\linewidth}}
+\hline
+Experiment & Source DAG & TM states & Verification scope\\
+\hline
+Inherited K225 & 211 & 225 & Retained construction\\
+Full DN4 & 211 & 225 & Semantic proof; complete runtime\\
+MP/DROP swap on DN4 & 211 & 225 & Representative primitive probe\\
+Uniform $a,b$ swap & 214 & --- & Source measurement\\
+One logical row renamed & 212--222 & --- & Source measurement\\
+K/S/Peirce, basic best order & 214 & 231 & Internal decoder contracts\\
+K/S/Peirce, parameter search & 213 & 230 & Internal decoder contracts\\
+K/S/D or K/S/C, parameter search & 213 & 230 & Internal decoder contracts\\
+Canonical equality vacuity & 213 & 227 & Internal decoder contracts\\
+Equality-free or NBG front end & --- & --- & Theory comparison only\\
+\hline
+\end{tabular}
+\end{center}
+
+The positive deliverable from this theory branch is therefore the
+fully calibrated DN4 alternative at 225 states, together with
+reproducible negative measurements that constrain several natural
+routes.  None of the unpriced formalism changes or source-only
+experiments is counted as a machine below 225 states.
