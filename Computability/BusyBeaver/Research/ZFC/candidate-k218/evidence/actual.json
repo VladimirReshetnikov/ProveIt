@@ -1,0 +1,192 @@
+{
+  "exact_delivered_output_matches": [
+    {
+      "actual": "/tmp/zfc-intake188-opening/execution/output/construction/candidate.tm",
+      "delivered": "/tmp/zfc-intake188-opening/execution/packet/machine/k218.native.tm",
+      "equal": true,
+      "sha256": "2dfaba6da09b78291e534777cd30c5f0d68bd84faa670e868e779c396aeb308f"
+    },
+    {
+      "actual": "/tmp/zfc-intake188-opening/execution/output/construction/sites.json",
+      "delivered": "/tmp/zfc-intake188-opening/execution/packet/machine/sites218.json",
+      "equal": true,
+      "sha256": "b0169f2d477d0584ac70f9bdb79c3a78ef2bc700d080b3cd80976210235b80d9"
+    },
+    {
+      "actual": "/tmp/zfc-intake188-opening/execution/output/canonical/k218.tm",
+      "delivered": "/tmp/zfc-intake188-opening/execution/packet/machine/k218.tm",
+      "equal": true,
+      "sha256": "06d7a91c583739e17f8b33ce3e03d0aeaf9e1faa186c76d596418942fe2a8730"
+    },
+    {
+      "actual": "/tmp/zfc-intake188-opening/execution/output/runtime/cases.json",
+      "delivered": "/tmp/zfc-intake188-opening/execution/packet/portable/reference_results/cases.json",
+      "equal": true,
+      "sha256": "8180a18a947ea8d4a2990f32c41a4dfcfdf1e2898cfbc40ca5b8e1b5e2dd1866"
+    }
+  ],
+  "exclusions": [
+    "No wrapper/reproduce execution",
+    "No manifest/checksum-suite execution",
+    "No ancestor verification replay",
+    "No Rocq/Coq/Lean execution"
+  ],
+  "inputs_unchanged": true,
+  "jobs": [
+    {
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake188-opening/execution/packet/portable/build218.py",
+        "--parent",
+        "/tmp/zfc-intake188-opening/execution/baseline/K219_Construction_2026-10-20",
+        "--output",
+        "/tmp/zfc-intake188-opening/execution/output/construction"
+      ],
+      "inputs_unchanged": true,
+      "name": "01_construct",
+      "returncode": 0,
+      "seconds": 0.5651399549096823,
+      "stderr": "/tmp/zfc-intake188-opening/execution/logs/01_construct.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "/tmp/zfc-intake188-opening/execution/logs/01_construct.stdout.log",
+      "stdout_sha256": "07ed6ea83ad0a5fe1fd5977797e5347b90fcb04e5e0604521f63656667c14f54",
+      "timed_out": false,
+      "timeout_seconds": 60
+    },
+    {
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake188-opening/execution/packet/portable/check_classical218.py",
+        "--parent-sites",
+        "/tmp/zfc-intake188-opening/execution/baseline/K219_Construction_2026-10-20/machine/sites219.json",
+        "--old-sites",
+        "/tmp/zfc-intake188-opening/execution/output/construction/intermediate_sites205.json",
+        "--new-sites",
+        "/tmp/zfc-intake188-opening/execution/output/construction/sites.json",
+        "--old-table",
+        "/tmp/zfc-intake188-opening/execution/output/construction/intermediate219.tm",
+        "--unfolded-table",
+        "/tmp/zfc-intake188-opening/execution/output/construction/unfolded219.tm",
+        "--new-table",
+        "/tmp/zfc-intake188-opening/execution/output/construction/candidate.tm",
+        "--out",
+        "/tmp/zfc-intake188-opening/execution/output/independent_source_and_alias.json"
+      ],
+      "inputs_unchanged": true,
+      "name": "02_independent_source_fold",
+      "returncode": 0,
+      "seconds": 0.2146497555077076,
+      "stderr": "/tmp/zfc-intake188-opening/execution/logs/02_independent_source_fold.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "/tmp/zfc-intake188-opening/execution/logs/02_independent_source_fold.stdout.log",
+      "stdout_sha256": "a0d761135f2cbbf2098eb940e68fb9b788dc6c006f7289455edb42126d8e0d52",
+      "timed_out": false,
+      "timeout_seconds": 60
+    },
+    {
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake188-opening/execution/packet/portable/canonicalize218.py",
+        "--table",
+        "/tmp/zfc-intake188-opening/execution/output/construction/candidate.tm",
+        "--sites",
+        "/tmp/zfc-intake188-opening/execution/output/construction/sites.json",
+        "--output",
+        "/tmp/zfc-intake188-opening/execution/output/canonical"
+      ],
+      "inputs_unchanged": true,
+      "name": "03_canonical_startup",
+      "returncode": 0,
+      "seconds": 0.3146985415369272,
+      "stderr": "/tmp/zfc-intake188-opening/execution/logs/03_canonical_startup.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "/tmp/zfc-intake188-opening/execution/logs/03_canonical_startup.stdout.log",
+      "stdout_sha256": "f53184e66bbfb62d8d28f97e8d01db269e69cf8e71d72b15eb0d6222eb469280",
+      "timed_out": false,
+      "timeout_seconds": 60
+    },
+    {
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake188-opening/execution/packet/portable/check_blank_startup.py",
+        "/tmp/zfc-intake188-opening/execution/output/construction/candidate.tm",
+        "--output",
+        "/tmp/zfc-intake188-opening/execution/output/independent_blank_startup.json"
+      ],
+      "inputs_unchanged": true,
+      "name": "04_independent_blank_startup",
+      "returncode": 0,
+      "seconds": 0.21443295292556286,
+      "stderr": "/tmp/zfc-intake188-opening/execution/logs/04_independent_blank_startup.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "/tmp/zfc-intake188-opening/execution/logs/04_independent_blank_startup.stdout.log",
+      "stdout_sha256": "540585a58e5c8bc34a3a350f5f59404e6af2a456cd13c359f30d77eab76f7d85",
+      "timed_out": false,
+      "timeout_seconds": 60
+    },
+    {
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake188-opening/execution/packet/portable/check_runtime218.py",
+        "--baseline",
+        "/tmp/zfc-intake188-opening/execution/runtime-inputs/K221_Construction_2026-10-20",
+        "--table",
+        "/tmp/zfc-intake188-opening/execution/output/construction/candidate.tm",
+        "--sites",
+        "/tmp/zfc-intake188-opening/execution/output/construction/sites.json",
+        "--output",
+        "/tmp/zfc-intake188-opening/execution/output/runtime"
+      ],
+      "inputs_unchanged": true,
+      "name": "05_full_runtime",
+      "returncode": 0,
+      "seconds": 142.57898428477347,
+      "stderr": "/tmp/zfc-intake188-opening/execution/logs/05_full_runtime.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "/tmp/zfc-intake188-opening/execution/logs/05_full_runtime.stdout.log",
+      "stdout_sha256": "7afa24a8d9c28d405d920d50b067f23bf96a54f42394cf6bf535ef285fe1c659",
+      "timed_out": false,
+      "timeout_seconds": 180
+    },
+    {
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake188-opening/execution/packet/portable/audit_runtime218.py",
+        "--baseline",
+        "/tmp/zfc-intake188-opening/execution/runtime-inputs/K221_Construction_2026-10-20",
+        "--table",
+        "/tmp/zfc-intake188-opening/execution/output/construction/candidate.tm",
+        "--sites",
+        "/tmp/zfc-intake188-opening/execution/output/construction/sites.json",
+        "--runtime",
+        "/tmp/zfc-intake188-opening/execution/output/runtime",
+        "--driver",
+        "/tmp/zfc-intake188-opening/execution/packet/portable/check_runtime218.py",
+        "--canonical",
+        "/tmp/zfc-intake188-opening/execution/output/canonical/canonicalization.json",
+        "--output",
+        "/tmp/zfc-intake188-opening/execution/output/runtime_audit.json"
+      ],
+      "inputs_unchanged": true,
+      "name": "06_independent_runtime_audit",
+      "returncode": 0,
+      "seconds": 0.16434081178158522,
+      "stderr": "/tmp/zfc-intake188-opening/execution/logs/06_independent_runtime_audit.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "/tmp/zfc-intake188-opening/execution/logs/06_independent_runtime_audit.stdout.log",
+      "stdout_sha256": "89f8e76fa8deccf4bca3a94b948a1ced16351bf3b00b3a5c984d140cdb4ee7a0",
+      "timed_out": false,
+      "timeout_seconds": 60
+    }
+  ],
+  "plan_sha256": "bf6582419bd9568472abbd99848037de3c439e9eaa07c16ec982f7820b640d8d",
+  "scope": "Six direct construction, source/fold, startup, full symbolic-runtime and independent audit leaves. Full source closure reviewed; exact inherited engines selected only.",
+  "status": "FRESH_DIRECT_LEAVES_PASS",
+  "total_process_seconds": 144.05224630143493
+}
