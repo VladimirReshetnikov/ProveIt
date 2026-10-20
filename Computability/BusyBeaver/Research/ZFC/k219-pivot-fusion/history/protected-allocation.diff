@@ -1,0 +1,11 @@
+--- code/measure.py
++++ code/measure_protected.py
+@@ -97,7 +97,7 @@
+         if n != o: origins.setdefault(n, o)
+         walk(n[0], o[0]); walk(n[1], o[1])
+     walk(new_src, old_src)
+-    origins = {n: o for n, o in origins.items() if o not in live}
++    origins = {}  # Protected diagnostic: never repurpose an old decoder/helper state.
+     compiled = dict(table); mapped = dict(node_state); mapped[new_src] = 84
+     claimed = {84: new_src}; fresh = max(300, max(q for q, _ in table)+1)
+     nextfresh = fresh; reused = 0; leaves = {}

@@ -1,0 +1,3561 @@
+{
+  "status": "RELATIVE_FINITE_SCHEMA_DERIVATIONS_PASS",
+  "retained_axioms": [
+    "rho1",
+    "rho2",
+    "rho6",
+    "unrestricted rho8 via classical bridge",
+    "G"
+  ],
+  "assumptions": [
+    "Inherited all-native-code relative-classical bridge justifies each finitely checked tautology.",
+    "The gate is c!=a,b; choose fresh=max(a,b)+1 to recover ungated rho5.",
+    "No axiom of K is opened or translated; its original native Qcore and private label remain fixed."
+  ],
+  "conclusions": {
+    "new-to-old": {
+      "old_bundle": 14,
+      "rho5": 50
+    },
+    "old-to-new": {
+      "new_bundle": 5
+    }
+  },
+  "steps": {
+    "new-to-old": [
+      {
+        "index": 0,
+        "rule": "new-gated-bundle",
+        "formula": [
+          "I",
+          [
+            "I",
+            [
+              "I",
+              [
+                "E",
+                "a",
+                "a"
+              ],
+              [
+                "I",
+                [
+                  "R",
+                  "a",
+                  "b"
+                ],
+                [
+                  "Q",
+                  "c",
+                  [
+                    "R",
+                    "a",
+                    "b"
+                  ]
+                ]
+              ]
+            ],
+            [
+              "unchanged-Qcore",
+              "a",
+              "b",
+              "c"
+            ]
+          ],
+          [
+            "F"
+          ]
+        ],
+        "premises": [],
+        "detail": {
+          "gate": [
+            "c != a",
+            "c != b"
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "E",
+            "a",
+            "a"
+          ],
+          [
+            "I",
+            [
+              "R",
+              "a",
+              "b"
+            ],
+            [
+              "Q",
+              "c",
+              [
+                "R",
+                "a",
+                "b"
+              ]
+            ]
+          ]
+        ],
+        "premises": [
+          0
+        ],
+        "detail": {
+          "atoms": 4,
+          "valuations": 16
+        }
+      },
+      {
+        "index": 2,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "unchanged-Qcore",
+            "a",
+            "b",
+            "c"
+          ],
+          [
+            "F"
+          ]
+        ],
+        "premises": [
+          0
+        ],
+        "detail": {
+          "atoms": 4,
+          "valuations": 16
+        }
+      },
+      {
+        "index": 3,
+        "rule": "G",
+        "formula": [
+          "I",
+          [
+            "E",
+            [
+              "membership-code",
+              "a",
+              "a"
+            ],
+            "a"
+          ],
+          [
+            "I",
+            [
+              "E",
+              [
+                "membership-code",
+                "a",
+                "a"
+              ],
+              "a"
+            ],
+            [
+              "Q",
+              [
+                "membership-code",
+                "a",
+                "a"
+              ],
+              [
+                "E",
+                "a",
+                "a"
+              ]
+            ]
+          ]
+        ],
+        "premises": [],
+        "detail": [
+          "a",
+          "a",
+          [
+            "membership-code",
+            "a",
+            "a"
+          ]
+        ]
+      },
+      {
+        "index": 4,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "E",
+            [
+              "membership-code",
+              "a",
+              "a"
+            ],
+            "a"
+          ],
+          [
+            "Q",
+            [
+              "membership-code",
+              "a",
+              "a"
+            ],
+            [
+              "E",
+              "a",
+              "a"
+            ]
+          ]
+        ],
+        "premises": [
+          3
+        ],
+        "detail": {
+          "atoms": 2,
+          "valuations": 4
+        }
+      },
+      {
+        "index": 5,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "I",
+            [
+              "Q",
+              [
+                "membership-code",
+                "a",
+                "a"
+              ],
+              [
+                "E",
+                "a",
+                "a"
+              ]
+            ],
+            [
+              "F"
+            ]
+          ],
+          [
+            "I",
+            [
+              "E",
+              [
+                "membership-code",
+                "a",
+                "a"
+              ],
+              "a"
+            ],
+            [
+              "F"
+            ]
+          ]
+        ],
+        "premises": [
+          4
+        ],
+        "detail": {
+          "atoms": 2,
+          "valuations": 4
+        }
+      },
+      {
+        "index": 6,
+        "rule": "closed-theorem-GEN",
+        "formula": [
+          "Q",
+          [
+            "membership-code",
+            "a",
+            "a"
+          ],
+          [
+            "I",
+            [
+              "I",
+              [
+                "Q",
+                [
+                  "membership-code",
+                  "a",
+                  "a"
+                ],
+                [
+                  "E",
+                  "a",
+                  "a"
+                ]
+              ],
+              [
+                "F"
+              ]
+            ],
+            [
+              "I",
+              [
+                "E",
+                [
+                  "membership-code",
+                  "a",
+                  "a"
+                ],
+                "a"
+              ],
+              [
+                "F"
+              ]
+            ]
+          ]
+        ],
+        "premises": [
+          5
+        ],
+        "detail": [
+          "membership-code",
+          "a",
+          "a"
+        ]
+      },
+      {
+        "index": 7,
+        "rule": "rho2",
+        "formula": [
+          "I",
+          [
+            "Q",
+            [
+              "membership-code",
+              "a",
+              "a"
+            ],
+            [
+              "I",
+              [
+                "I",
+                [
+                  "Q",
+                  [
+                    "membership-code",
+                    "a",
+                    "a"
+                  ],
+                  [
+                    "E",
+                    "a",
+                    "a"
+                  ]
+                ],
+                [
+                  "F"
+                ]
+              ],
+              [
+                "I",
+                [
+                  "E",
+                  [
+                    "membership-code",
+                    "a",
+                    "a"
+                  ],
+                  "a"
+                ],
+                [
+                  "F"
+                ]
+              ]
+            ]
+          ],
+          [
+            "I",
+            [
+              "Q",
+              [
+                "membership-code",
+                "a",
+                "a"
+              ],
+              [
+                "I",
+                [
+                  "Q",
+                  [
+                    "membership-code",
+                    "a",
+                    "a"
+                  ],
+                  [
+                    "E",
+                    "a",
+                    "a"
+                  ]
+                ],
+                [
+                  "F"
+                ]
+              ]
+            ],
+            [
+              "Q",
+              [
+                "membership-code",
+                "a",
+                "a"
+              ],
+              [
+                "I",
+                [
+                  "E",
+                  [
+                    "membership-code",
+                    "a",
+                    "a"
+                  ],
+                  "a"
+                ],
+                [
+                  "F"
+                ]
+              ]
+            ]
+          ]
+        ],
+        "premises": [],
+        "detail": [
+          [
+            "membership-code",
+            "a",
+            "a"
+          ],
+          [
+            "I",
+            [
+              "Q",
+              [
+                "membership-code",
+                "a",
+                "a"
+              ],
+              [
+                "E",
+                "a",
+                "a"
+              ]
+            ],
+            [
+              "F"
+            ]
+          ],
+          [
+            "I",
+            [
+              "E",
+              [
+                "membership-code",
+                "a",
+                "a"
+              ],
+              "a"
+            ],
+            [
+              "F"
+            ]
+          ]
+        ]
+      },
+      {
+        "index": 8,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "Q",
+            [
+              "membership-code",
+              "a",
+              "a"
+            ],
+            [
+              "I",
+              [
+                "Q",
+                [
+                  "membership-code",
+                  "a",
+                  "a"
+                ],
+                [
+                  "E",
+                  "a",
+                  "a"
+                ]
+              ],
+              [
+                "F"
+              ]
+            ]
+          ],
+          [
+            "Q",
+            [
+              "membership-code",
+              "a",
+              "a"
+            ],
+            [
+              "I",
+              [
+                "E",
+                [
+                  "membership-code",
+                  "a",
+                  "a"
+                ],
+                "a"
+              ],
+              [
+                "F"
+              ]
+            ]
+          ]
+        ],
+        "premises": [
+          6,
+          7
+        ],
+        "detail": {
+          "atoms": 3,
+          "valuations": 8
+        }
+      },
+      {
+        "index": 9,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "I",
+            [
+              "Q",
+              [
+                "membership-code",
+                "a",
+                "a"
+              ],
+              [
+                "I",
+                [
+                  "E",
+                  [
+                    "membership-code",
+                    "a",
+                    "a"
+                  ],
+                  "a"
+                ],
+                [
+                  "F"
+                ]
+              ]
+            ],
+            [
+              "F"
+            ]
+          ],
+          [
+            "I",
+            [
+              "Q",
+              [
+                "membership-code",
+                "a",
+                "a"
+              ],
+              [
+                "I",
+                [
+                  "Q",
+                  [
+                    "membership-code",
+                    "a",
+                    "a"
+                  ],
+                  [
+                    "E",
+                    "a",
+                    "a"
+                  ]
+                ],
+                [
+                  "F"
+                ]
+              ]
+            ],
+            [
+              "F"
+            ]
+          ]
+        ],
+        "premises": [
+          8
+        ],
+        "detail": {
+          "atoms": 2,
+          "valuations": 4
+        }
+      },
+      {
+        "index": 10,
+        "rule": "rho1",
+        "formula": [
+          "I",
+          [
+            "Q",
+            [
+              "membership-code",
+              "a",
+              "a"
+            ],
+            [
+              "I",
+              [
+                "E",
+                [
+                  "membership-code",
+                  "a",
+                  "a"
+                ],
+                "a"
+              ],
+              [
+                "F"
+              ]
+            ]
+          ],
+          [
+            "F"
+          ]
+        ],
+        "premises": [],
+        "detail": [
+          [
+            "membership-code",
+            "a",
+            "a"
+          ],
+          "a"
+        ]
+      },
+      {
+        "index": 11,
+        "rule": "rho6",
+        "formula": [
+          "I",
+          [
+            "I",
+            [
+              "Q",
+              [
+                "membership-code",
+                "a",
+                "a"
+              ],
+              [
+                "I",
+                [
+                  "Q",
+                  [
+                    "membership-code",
+                    "a",
+                    "a"
+                  ],
+                  [
+                    "E",
+                    "a",
+                    "a"
+                  ]
+                ],
+                [
+                  "F"
+                ]
+              ]
+            ],
+            [
+              "F"
+            ]
+          ],
+          [
+            "E",
+            "a",
+            "a"
+          ]
+        ],
+        "premises": [],
+        "detail": [
+          [
+            "membership-code",
+            "a",
+            "a"
+          ],
+          [
+            "E",
+            "a",
+            "a"
+          ]
+        ]
+      },
+      {
+        "index": 12,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "E",
+          "a",
+          "a"
+        ],
+        "premises": [
+          9,
+          10,
+          11
+        ],
+        "detail": {
+          "atoms": 3,
+          "valuations": 8
+        }
+      },
+      {
+        "index": 13,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "R",
+            "a",
+            "b"
+          ],
+          [
+            "Q",
+            "c",
+            [
+              "R",
+              "a",
+              "b"
+            ]
+          ]
+        ],
+        "premises": [
+          1,
+          12
+        ],
+        "detail": {
+          "atoms": 3,
+          "valuations": 8
+        }
+      },
+      {
+        "index": 14,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "I",
+            [
+              "I",
+              [
+                "R",
+                "a",
+                "b"
+              ],
+              [
+                "Q",
+                "c",
+                [
+                  "R",
+                  "a",
+                  "b"
+                ]
+              ]
+            ],
+            [
+              "unchanged-Qcore",
+              "a",
+              "b",
+              "c"
+            ]
+          ],
+          [
+            "F"
+          ]
+        ],
+        "premises": [
+          13,
+          2
+        ],
+        "detail": {
+          "atoms": 3,
+          "valuations": 8
+        }
+      },
+      {
+        "index": 15,
+        "rule": "new-gated-bundle",
+        "formula": [
+          "I",
+          [
+            "I",
+            [
+              "I",
+              [
+                "E",
+                "a",
+                "a"
+              ],
+              [
+                "I",
+                [
+                  "R",
+                  "a",
+                  "b"
+                ],
+                [
+                  "Q",
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ],
+                  [
+                    "R",
+                    "a",
+                    "b"
+                  ]
+                ]
+              ]
+            ],
+            [
+              "unchanged-Qcore",
+              "a",
+              "b",
+              [
+                "fresh",
+                "a",
+                "b"
+              ]
+            ]
+          ],
+          [
+            "F"
+          ]
+        ],
+        "premises": [],
+        "detail": {
+          "gate": [
+            "c != a",
+            "c != b"
+          ]
+        }
+      },
+      {
+        "index": 16,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "E",
+            "a",
+            "a"
+          ],
+          [
+            "I",
+            [
+              "R",
+              "a",
+              "b"
+            ],
+            [
+              "Q",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "R",
+                "a",
+                "b"
+              ]
+            ]
+          ]
+        ],
+        "premises": [
+          15
+        ],
+        "detail": {
+          "atoms": 4,
+          "valuations": 16
+        }
+      },
+      {
+        "index": 17,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "unchanged-Qcore",
+            "a",
+            "b",
+            [
+              "fresh",
+              "a",
+              "b"
+            ]
+          ],
+          [
+            "F"
+          ]
+        ],
+        "premises": [
+          15
+        ],
+        "detail": {
+          "atoms": 4,
+          "valuations": 16
+        }
+      },
+      {
+        "index": 18,
+        "rule": "G",
+        "formula": [
+          "I",
+          [
+            "E",
+            [
+              "membership-code",
+              "a",
+              "a"
+            ],
+            "a"
+          ],
+          [
+            "I",
+            [
+              "E",
+              [
+                "membership-code",
+                "a",
+                "a"
+              ],
+              "a"
+            ],
+            [
+              "Q",
+              [
+                "membership-code",
+                "a",
+                "a"
+              ],
+              [
+                "E",
+                "a",
+                "a"
+              ]
+            ]
+          ]
+        ],
+        "premises": [],
+        "detail": [
+          "a",
+          "a",
+          [
+            "membership-code",
+            "a",
+            "a"
+          ]
+        ]
+      },
+      {
+        "index": 19,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "E",
+            [
+              "membership-code",
+              "a",
+              "a"
+            ],
+            "a"
+          ],
+          [
+            "Q",
+            [
+              "membership-code",
+              "a",
+              "a"
+            ],
+            [
+              "E",
+              "a",
+              "a"
+            ]
+          ]
+        ],
+        "premises": [
+          18
+        ],
+        "detail": {
+          "atoms": 2,
+          "valuations": 4
+        }
+      },
+      {
+        "index": 20,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "I",
+            [
+              "Q",
+              [
+                "membership-code",
+                "a",
+                "a"
+              ],
+              [
+                "E",
+                "a",
+                "a"
+              ]
+            ],
+            [
+              "F"
+            ]
+          ],
+          [
+            "I",
+            [
+              "E",
+              [
+                "membership-code",
+                "a",
+                "a"
+              ],
+              "a"
+            ],
+            [
+              "F"
+            ]
+          ]
+        ],
+        "premises": [
+          19
+        ],
+        "detail": {
+          "atoms": 2,
+          "valuations": 4
+        }
+      },
+      {
+        "index": 21,
+        "rule": "closed-theorem-GEN",
+        "formula": [
+          "Q",
+          [
+            "membership-code",
+            "a",
+            "a"
+          ],
+          [
+            "I",
+            [
+              "I",
+              [
+                "Q",
+                [
+                  "membership-code",
+                  "a",
+                  "a"
+                ],
+                [
+                  "E",
+                  "a",
+                  "a"
+                ]
+              ],
+              [
+                "F"
+              ]
+            ],
+            [
+              "I",
+              [
+                "E",
+                [
+                  "membership-code",
+                  "a",
+                  "a"
+                ],
+                "a"
+              ],
+              [
+                "F"
+              ]
+            ]
+          ]
+        ],
+        "premises": [
+          20
+        ],
+        "detail": [
+          "membership-code",
+          "a",
+          "a"
+        ]
+      },
+      {
+        "index": 22,
+        "rule": "rho2",
+        "formula": [
+          "I",
+          [
+            "Q",
+            [
+              "membership-code",
+              "a",
+              "a"
+            ],
+            [
+              "I",
+              [
+                "I",
+                [
+                  "Q",
+                  [
+                    "membership-code",
+                    "a",
+                    "a"
+                  ],
+                  [
+                    "E",
+                    "a",
+                    "a"
+                  ]
+                ],
+                [
+                  "F"
+                ]
+              ],
+              [
+                "I",
+                [
+                  "E",
+                  [
+                    "membership-code",
+                    "a",
+                    "a"
+                  ],
+                  "a"
+                ],
+                [
+                  "F"
+                ]
+              ]
+            ]
+          ],
+          [
+            "I",
+            [
+              "Q",
+              [
+                "membership-code",
+                "a",
+                "a"
+              ],
+              [
+                "I",
+                [
+                  "Q",
+                  [
+                    "membership-code",
+                    "a",
+                    "a"
+                  ],
+                  [
+                    "E",
+                    "a",
+                    "a"
+                  ]
+                ],
+                [
+                  "F"
+                ]
+              ]
+            ],
+            [
+              "Q",
+              [
+                "membership-code",
+                "a",
+                "a"
+              ],
+              [
+                "I",
+                [
+                  "E",
+                  [
+                    "membership-code",
+                    "a",
+                    "a"
+                  ],
+                  "a"
+                ],
+                [
+                  "F"
+                ]
+              ]
+            ]
+          ]
+        ],
+        "premises": [],
+        "detail": [
+          [
+            "membership-code",
+            "a",
+            "a"
+          ],
+          [
+            "I",
+            [
+              "Q",
+              [
+                "membership-code",
+                "a",
+                "a"
+              ],
+              [
+                "E",
+                "a",
+                "a"
+              ]
+            ],
+            [
+              "F"
+            ]
+          ],
+          [
+            "I",
+            [
+              "E",
+              [
+                "membership-code",
+                "a",
+                "a"
+              ],
+              "a"
+            ],
+            [
+              "F"
+            ]
+          ]
+        ]
+      },
+      {
+        "index": 23,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "Q",
+            [
+              "membership-code",
+              "a",
+              "a"
+            ],
+            [
+              "I",
+              [
+                "Q",
+                [
+                  "membership-code",
+                  "a",
+                  "a"
+                ],
+                [
+                  "E",
+                  "a",
+                  "a"
+                ]
+              ],
+              [
+                "F"
+              ]
+            ]
+          ],
+          [
+            "Q",
+            [
+              "membership-code",
+              "a",
+              "a"
+            ],
+            [
+              "I",
+              [
+                "E",
+                [
+                  "membership-code",
+                  "a",
+                  "a"
+                ],
+                "a"
+              ],
+              [
+                "F"
+              ]
+            ]
+          ]
+        ],
+        "premises": [
+          21,
+          22
+        ],
+        "detail": {
+          "atoms": 3,
+          "valuations": 8
+        }
+      },
+      {
+        "index": 24,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "I",
+            [
+              "Q",
+              [
+                "membership-code",
+                "a",
+                "a"
+              ],
+              [
+                "I",
+                [
+                  "E",
+                  [
+                    "membership-code",
+                    "a",
+                    "a"
+                  ],
+                  "a"
+                ],
+                [
+                  "F"
+                ]
+              ]
+            ],
+            [
+              "F"
+            ]
+          ],
+          [
+            "I",
+            [
+              "Q",
+              [
+                "membership-code",
+                "a",
+                "a"
+              ],
+              [
+                "I",
+                [
+                  "Q",
+                  [
+                    "membership-code",
+                    "a",
+                    "a"
+                  ],
+                  [
+                    "E",
+                    "a",
+                    "a"
+                  ]
+                ],
+                [
+                  "F"
+                ]
+              ]
+            ],
+            [
+              "F"
+            ]
+          ]
+        ],
+        "premises": [
+          23
+        ],
+        "detail": {
+          "atoms": 2,
+          "valuations": 4
+        }
+      },
+      {
+        "index": 25,
+        "rule": "rho1",
+        "formula": [
+          "I",
+          [
+            "Q",
+            [
+              "membership-code",
+              "a",
+              "a"
+            ],
+            [
+              "I",
+              [
+                "E",
+                [
+                  "membership-code",
+                  "a",
+                  "a"
+                ],
+                "a"
+              ],
+              [
+                "F"
+              ]
+            ]
+          ],
+          [
+            "F"
+          ]
+        ],
+        "premises": [],
+        "detail": [
+          [
+            "membership-code",
+            "a",
+            "a"
+          ],
+          "a"
+        ]
+      },
+      {
+        "index": 26,
+        "rule": "rho6",
+        "formula": [
+          "I",
+          [
+            "I",
+            [
+              "Q",
+              [
+                "membership-code",
+                "a",
+                "a"
+              ],
+              [
+                "I",
+                [
+                  "Q",
+                  [
+                    "membership-code",
+                    "a",
+                    "a"
+                  ],
+                  [
+                    "E",
+                    "a",
+                    "a"
+                  ]
+                ],
+                [
+                  "F"
+                ]
+              ]
+            ],
+            [
+              "F"
+            ]
+          ],
+          [
+            "E",
+            "a",
+            "a"
+          ]
+        ],
+        "premises": [],
+        "detail": [
+          [
+            "membership-code",
+            "a",
+            "a"
+          ],
+          [
+            "E",
+            "a",
+            "a"
+          ]
+        ]
+      },
+      {
+        "index": 27,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "E",
+          "a",
+          "a"
+        ],
+        "premises": [
+          24,
+          25,
+          26
+        ],
+        "detail": {
+          "atoms": 3,
+          "valuations": 8
+        }
+      },
+      {
+        "index": 28,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "R",
+            "a",
+            "b"
+          ],
+          [
+            "Q",
+            [
+              "fresh",
+              "a",
+              "b"
+            ],
+            [
+              "R",
+              "a",
+              "b"
+            ]
+          ]
+        ],
+        "premises": [
+          16,
+          27
+        ],
+        "detail": {
+          "atoms": 3,
+          "valuations": 8
+        }
+      },
+      {
+        "index": 29,
+        "rule": "closed-theorem-GEN",
+        "formula": [
+          "Q",
+          [
+            "fresh",
+            "a",
+            "b"
+          ],
+          [
+            "I",
+            [
+              "R",
+              "a",
+              "b"
+            ],
+            [
+              "Q",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "R",
+                "a",
+                "b"
+              ]
+            ]
+          ]
+        ],
+        "premises": [
+          28
+        ],
+        "detail": [
+          "fresh",
+          "a",
+          "b"
+        ]
+      },
+      {
+        "index": 30,
+        "rule": "rho2",
+        "formula": [
+          "I",
+          [
+            "Q",
+            [
+              "fresh",
+              "a",
+              "b"
+            ],
+            [
+              "I",
+              [
+                "R",
+                "a",
+                "b"
+              ],
+              [
+                "Q",
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ],
+                [
+                  "R",
+                  "a",
+                  "b"
+                ]
+              ]
+            ]
+          ],
+          [
+            "I",
+            [
+              "Q",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "R",
+                "a",
+                "b"
+              ]
+            ],
+            [
+              "Q",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "Q",
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ],
+                [
+                  "R",
+                  "a",
+                  "b"
+                ]
+              ]
+            ]
+          ]
+        ],
+        "premises": [],
+        "detail": [
+          [
+            "fresh",
+            "a",
+            "b"
+          ],
+          [
+            "R",
+            "a",
+            "b"
+          ],
+          [
+            "Q",
+            [
+              "fresh",
+              "a",
+              "b"
+            ],
+            [
+              "R",
+              "a",
+              "b"
+            ]
+          ]
+        ]
+      },
+      {
+        "index": 31,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "Q",
+            [
+              "fresh",
+              "a",
+              "b"
+            ],
+            [
+              "R",
+              "a",
+              "b"
+            ]
+          ],
+          [
+            "Q",
+            [
+              "fresh",
+              "a",
+              "b"
+            ],
+            [
+              "Q",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "R",
+                "a",
+                "b"
+              ]
+            ]
+          ]
+        ],
+        "premises": [
+          29,
+          30
+        ],
+        "detail": {
+          "atoms": 3,
+          "valuations": 8
+        }
+      },
+      {
+        "index": 32,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "Q",
+            [
+              "fresh",
+              "a",
+              "b"
+            ],
+            [
+              "R",
+              "a",
+              "b"
+            ]
+          ],
+          [
+            "I",
+            [
+              "E",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "fresh",
+                "a",
+                "b"
+              ]
+            ],
+            [
+              "Q",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "R",
+                "a",
+                "b"
+              ]
+            ]
+          ]
+        ],
+        "premises": [],
+        "detail": {
+          "atoms": 2,
+          "valuations": 4
+        }
+      },
+      {
+        "index": 33,
+        "rule": "closed-theorem-GEN",
+        "formula": [
+          "Q",
+          [
+            "fresh",
+            "a",
+            "b"
+          ],
+          [
+            "I",
+            [
+              "Q",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "R",
+                "a",
+                "b"
+              ]
+            ],
+            [
+              "I",
+              [
+                "E",
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ],
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ]
+              ],
+              [
+                "Q",
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ],
+                [
+                  "R",
+                  "a",
+                  "b"
+                ]
+              ]
+            ]
+          ]
+        ],
+        "premises": [
+          32
+        ],
+        "detail": [
+          "fresh",
+          "a",
+          "b"
+        ]
+      },
+      {
+        "index": 34,
+        "rule": "rho2",
+        "formula": [
+          "I",
+          [
+            "Q",
+            [
+              "fresh",
+              "a",
+              "b"
+            ],
+            [
+              "I",
+              [
+                "Q",
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ],
+                [
+                  "R",
+                  "a",
+                  "b"
+                ]
+              ],
+              [
+                "I",
+                [
+                  "E",
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ],
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ]
+                ],
+                [
+                  "Q",
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ],
+                  [
+                    "R",
+                    "a",
+                    "b"
+                  ]
+                ]
+              ]
+            ]
+          ],
+          [
+            "I",
+            [
+              "Q",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "Q",
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ],
+                [
+                  "R",
+                  "a",
+                  "b"
+                ]
+              ]
+            ],
+            [
+              "Q",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "I",
+                [
+                  "E",
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ],
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ]
+                ],
+                [
+                  "Q",
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ],
+                  [
+                    "R",
+                    "a",
+                    "b"
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+        "premises": [],
+        "detail": [
+          [
+            "fresh",
+            "a",
+            "b"
+          ],
+          [
+            "Q",
+            [
+              "fresh",
+              "a",
+              "b"
+            ],
+            [
+              "R",
+              "a",
+              "b"
+            ]
+          ],
+          [
+            "I",
+            [
+              "E",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "fresh",
+                "a",
+                "b"
+              ]
+            ],
+            [
+              "Q",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "R",
+                "a",
+                "b"
+              ]
+            ]
+          ]
+        ]
+      },
+      {
+        "index": 35,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "Q",
+            [
+              "fresh",
+              "a",
+              "b"
+            ],
+            [
+              "Q",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "R",
+                "a",
+                "b"
+              ]
+            ]
+          ],
+          [
+            "Q",
+            [
+              "fresh",
+              "a",
+              "b"
+            ],
+            [
+              "I",
+              [
+                "E",
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ],
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ]
+              ],
+              [
+                "Q",
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ],
+                [
+                  "R",
+                  "a",
+                  "b"
+                ]
+              ]
+            ]
+          ]
+        ],
+        "premises": [
+          33,
+          34
+        ],
+        "detail": {
+          "atoms": 3,
+          "valuations": 8
+        }
+      },
+      {
+        "index": 36,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "I",
+            [
+              "E",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "fresh",
+                "a",
+                "b"
+              ]
+            ],
+            [
+              "Q",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "R",
+                "a",
+                "b"
+              ]
+            ]
+          ],
+          [
+            "I",
+            [
+              "I",
+              [
+                "Q",
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ],
+                [
+                  "R",
+                  "a",
+                  "b"
+                ]
+              ],
+              [
+                "F"
+              ]
+            ],
+            [
+              "I",
+              [
+                "E",
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ],
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ]
+              ],
+              [
+                "F"
+              ]
+            ]
+          ]
+        ],
+        "premises": [],
+        "detail": {
+          "atoms": 2,
+          "valuations": 4
+        }
+      },
+      {
+        "index": 37,
+        "rule": "closed-theorem-GEN",
+        "formula": [
+          "Q",
+          [
+            "fresh",
+            "a",
+            "b"
+          ],
+          [
+            "I",
+            [
+              "I",
+              [
+                "E",
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ],
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ]
+              ],
+              [
+                "Q",
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ],
+                [
+                  "R",
+                  "a",
+                  "b"
+                ]
+              ]
+            ],
+            [
+              "I",
+              [
+                "I",
+                [
+                  "Q",
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ],
+                  [
+                    "R",
+                    "a",
+                    "b"
+                  ]
+                ],
+                [
+                  "F"
+                ]
+              ],
+              [
+                "I",
+                [
+                  "E",
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ],
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ]
+                ],
+                [
+                  "F"
+                ]
+              ]
+            ]
+          ]
+        ],
+        "premises": [
+          36
+        ],
+        "detail": [
+          "fresh",
+          "a",
+          "b"
+        ]
+      },
+      {
+        "index": 38,
+        "rule": "rho2",
+        "formula": [
+          "I",
+          [
+            "Q",
+            [
+              "fresh",
+              "a",
+              "b"
+            ],
+            [
+              "I",
+              [
+                "I",
+                [
+                  "E",
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ],
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ]
+                ],
+                [
+                  "Q",
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ],
+                  [
+                    "R",
+                    "a",
+                    "b"
+                  ]
+                ]
+              ],
+              [
+                "I",
+                [
+                  "I",
+                  [
+                    "Q",
+                    [
+                      "fresh",
+                      "a",
+                      "b"
+                    ],
+                    [
+                      "R",
+                      "a",
+                      "b"
+                    ]
+                  ],
+                  [
+                    "F"
+                  ]
+                ],
+                [
+                  "I",
+                  [
+                    "E",
+                    [
+                      "fresh",
+                      "a",
+                      "b"
+                    ],
+                    [
+                      "fresh",
+                      "a",
+                      "b"
+                    ]
+                  ],
+                  [
+                    "F"
+                  ]
+                ]
+              ]
+            ]
+          ],
+          [
+            "I",
+            [
+              "Q",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "I",
+                [
+                  "E",
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ],
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ]
+                ],
+                [
+                  "Q",
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ],
+                  [
+                    "R",
+                    "a",
+                    "b"
+                  ]
+                ]
+              ]
+            ],
+            [
+              "Q",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "I",
+                [
+                  "I",
+                  [
+                    "Q",
+                    [
+                      "fresh",
+                      "a",
+                      "b"
+                    ],
+                    [
+                      "R",
+                      "a",
+                      "b"
+                    ]
+                  ],
+                  [
+                    "F"
+                  ]
+                ],
+                [
+                  "I",
+                  [
+                    "E",
+                    [
+                      "fresh",
+                      "a",
+                      "b"
+                    ],
+                    [
+                      "fresh",
+                      "a",
+                      "b"
+                    ]
+                  ],
+                  [
+                    "F"
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+        "premises": [],
+        "detail": [
+          [
+            "fresh",
+            "a",
+            "b"
+          ],
+          [
+            "I",
+            [
+              "E",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "fresh",
+                "a",
+                "b"
+              ]
+            ],
+            [
+              "Q",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "R",
+                "a",
+                "b"
+              ]
+            ]
+          ],
+          [
+            "I",
+            [
+              "I",
+              [
+                "Q",
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ],
+                [
+                  "R",
+                  "a",
+                  "b"
+                ]
+              ],
+              [
+                "F"
+              ]
+            ],
+            [
+              "I",
+              [
+                "E",
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ],
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ]
+              ],
+              [
+                "F"
+              ]
+            ]
+          ]
+        ]
+      },
+      {
+        "index": 39,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "Q",
+            [
+              "fresh",
+              "a",
+              "b"
+            ],
+            [
+              "I",
+              [
+                "E",
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ],
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ]
+              ],
+              [
+                "Q",
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ],
+                [
+                  "R",
+                  "a",
+                  "b"
+                ]
+              ]
+            ]
+          ],
+          [
+            "Q",
+            [
+              "fresh",
+              "a",
+              "b"
+            ],
+            [
+              "I",
+              [
+                "I",
+                [
+                  "Q",
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ],
+                  [
+                    "R",
+                    "a",
+                    "b"
+                  ]
+                ],
+                [
+                  "F"
+                ]
+              ],
+              [
+                "I",
+                [
+                  "E",
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ],
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ]
+                ],
+                [
+                  "F"
+                ]
+              ]
+            ]
+          ]
+        ],
+        "premises": [
+          37,
+          38
+        ],
+        "detail": {
+          "atoms": 3,
+          "valuations": 8
+        }
+      },
+      {
+        "index": 40,
+        "rule": "rho2",
+        "formula": [
+          "I",
+          [
+            "Q",
+            [
+              "fresh",
+              "a",
+              "b"
+            ],
+            [
+              "I",
+              [
+                "I",
+                [
+                  "Q",
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ],
+                  [
+                    "R",
+                    "a",
+                    "b"
+                  ]
+                ],
+                [
+                  "F"
+                ]
+              ],
+              [
+                "I",
+                [
+                  "E",
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ],
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ]
+                ],
+                [
+                  "F"
+                ]
+              ]
+            ]
+          ],
+          [
+            "I",
+            [
+              "Q",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "I",
+                [
+                  "Q",
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ],
+                  [
+                    "R",
+                    "a",
+                    "b"
+                  ]
+                ],
+                [
+                  "F"
+                ]
+              ]
+            ],
+            [
+              "Q",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "I",
+                [
+                  "E",
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ],
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ]
+                ],
+                [
+                  "F"
+                ]
+              ]
+            ]
+          ]
+        ],
+        "premises": [],
+        "detail": [
+          [
+            "fresh",
+            "a",
+            "b"
+          ],
+          [
+            "I",
+            [
+              "Q",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "R",
+                "a",
+                "b"
+              ]
+            ],
+            [
+              "F"
+            ]
+          ],
+          [
+            "I",
+            [
+              "E",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "fresh",
+                "a",
+                "b"
+              ]
+            ],
+            [
+              "F"
+            ]
+          ]
+        ]
+      },
+      {
+        "index": 41,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "Q",
+            [
+              "fresh",
+              "a",
+              "b"
+            ],
+            [
+              "I",
+              [
+                "E",
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ],
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ]
+              ],
+              [
+                "Q",
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ],
+                [
+                  "R",
+                  "a",
+                  "b"
+                ]
+              ]
+            ]
+          ],
+          [
+            "I",
+            [
+              "I",
+              [
+                "Q",
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ],
+                [
+                  "I",
+                  [
+                    "E",
+                    [
+                      "fresh",
+                      "a",
+                      "b"
+                    ],
+                    [
+                      "fresh",
+                      "a",
+                      "b"
+                    ]
+                  ],
+                  [
+                    "F"
+                  ]
+                ]
+              ],
+              [
+                "F"
+              ]
+            ],
+            [
+              "I",
+              [
+                "Q",
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ],
+                [
+                  "I",
+                  [
+                    "Q",
+                    [
+                      "fresh",
+                      "a",
+                      "b"
+                    ],
+                    [
+                      "R",
+                      "a",
+                      "b"
+                    ]
+                  ],
+                  [
+                    "F"
+                  ]
+                ]
+              ],
+              [
+                "F"
+              ]
+            ]
+          ]
+        ],
+        "premises": [
+          39,
+          40
+        ],
+        "detail": {
+          "atoms": 4,
+          "valuations": 16
+        }
+      },
+      {
+        "index": 42,
+        "rule": "rho1",
+        "formula": [
+          "I",
+          [
+            "Q",
+            [
+              "fresh",
+              "a",
+              "b"
+            ],
+            [
+              "I",
+              [
+                "E",
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ],
+                [
+                  "fresh",
+                  "a",
+                  "b"
+                ]
+              ],
+              [
+                "F"
+              ]
+            ]
+          ],
+          [
+            "F"
+          ]
+        ],
+        "premises": [],
+        "detail": [
+          [
+            "fresh",
+            "a",
+            "b"
+          ],
+          [
+            "fresh",
+            "a",
+            "b"
+          ]
+        ]
+      },
+      {
+        "index": 43,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "Q",
+            [
+              "fresh",
+              "a",
+              "b"
+            ],
+            [
+              "Q",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "R",
+                "a",
+                "b"
+              ]
+            ]
+          ],
+          [
+            "I",
+            [
+              "Q",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "I",
+                [
+                  "Q",
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ],
+                  [
+                    "R",
+                    "a",
+                    "b"
+                  ]
+                ],
+                [
+                  "F"
+                ]
+              ]
+            ],
+            [
+              "F"
+            ]
+          ]
+        ],
+        "premises": [
+          35,
+          41,
+          42
+        ],
+        "detail": {
+          "atoms": 4,
+          "valuations": 16
+        }
+      },
+      {
+        "index": 44,
+        "rule": "rho6",
+        "formula": [
+          "I",
+          [
+            "I",
+            [
+              "Q",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "I",
+                [
+                  "Q",
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ],
+                  [
+                    "R",
+                    "a",
+                    "b"
+                  ]
+                ],
+                [
+                  "F"
+                ]
+              ]
+            ],
+            [
+              "F"
+            ]
+          ],
+          [
+            "R",
+            "a",
+            "b"
+          ]
+        ],
+        "premises": [],
+        "detail": [
+          [
+            "fresh",
+            "a",
+            "b"
+          ],
+          [
+            "R",
+            "a",
+            "b"
+          ]
+        ]
+      },
+      {
+        "index": 45,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "Q",
+            [
+              "fresh",
+              "a",
+              "b"
+            ],
+            [
+              "Q",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "R",
+                "a",
+                "b"
+              ]
+            ]
+          ],
+          [
+            "R",
+            "a",
+            "b"
+          ]
+        ],
+        "premises": [
+          43,
+          44
+        ],
+        "detail": {
+          "atoms": 3,
+          "valuations": 8
+        }
+      },
+      {
+        "index": 46,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "Q",
+            [
+              "fresh",
+              "a",
+              "b"
+            ],
+            [
+              "R",
+              "a",
+              "b"
+            ]
+          ],
+          [
+            "R",
+            "a",
+            "b"
+          ]
+        ],
+        "premises": [
+          31,
+          45
+        ],
+        "detail": {
+          "atoms": 3,
+          "valuations": 8
+        }
+      },
+      {
+        "index": 47,
+        "rule": "new-gated-bundle",
+        "formula": [
+          "I",
+          [
+            "I",
+            [
+              "I",
+              [
+                "E",
+                "u",
+                "a"
+              ],
+              [
+                "I",
+                [
+                  "R",
+                  "u",
+                  "b"
+                ],
+                [
+                  "Q",
+                  [
+                    "fresh",
+                    "a",
+                    "b"
+                  ],
+                  [
+                    "R",
+                    "a",
+                    "b"
+                  ]
+                ]
+              ]
+            ],
+            [
+              "unchanged-Qcore",
+              "a",
+              "b",
+              [
+                "fresh",
+                "a",
+                "b"
+              ]
+            ]
+          ],
+          [
+            "F"
+          ]
+        ],
+        "premises": [],
+        "detail": {
+          "gate": [
+            "c != a",
+            "c != b"
+          ]
+        }
+      },
+      {
+        "index": 48,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "E",
+            "u",
+            "a"
+          ],
+          [
+            "I",
+            [
+              "R",
+              "u",
+              "b"
+            ],
+            [
+              "Q",
+              [
+                "fresh",
+                "a",
+                "b"
+              ],
+              [
+                "R",
+                "a",
+                "b"
+              ]
+            ]
+          ]
+        ],
+        "premises": [
+          47
+        ],
+        "detail": {
+          "atoms": 4,
+          "valuations": 16
+        }
+      },
+      {
+        "index": 49,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "unchanged-Qcore",
+            "a",
+            "b",
+            [
+              "fresh",
+              "a",
+              "b"
+            ]
+          ],
+          [
+            "F"
+          ]
+        ],
+        "premises": [
+          47
+        ],
+        "detail": {
+          "atoms": 4,
+          "valuations": 16
+        }
+      },
+      {
+        "index": 50,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "E",
+            "u",
+            "a"
+          ],
+          [
+            "I",
+            [
+              "R",
+              "u",
+              "b"
+            ],
+            [
+              "R",
+              "a",
+              "b"
+            ]
+          ]
+        ],
+        "premises": [
+          48,
+          46
+        ],
+        "detail": {
+          "atoms": 4,
+          "valuations": 16
+        }
+      }
+    ],
+    "old-to-new": [
+      {
+        "index": 0,
+        "rule": "old-gated-bundle",
+        "formula": [
+          "I",
+          [
+            "I",
+            [
+              "I",
+              [
+                "R",
+                "a",
+                "b"
+              ],
+              [
+                "Q",
+                "c",
+                [
+                  "R",
+                  "a",
+                  "b"
+                ]
+              ]
+            ],
+            [
+              "unchanged-Qcore",
+              "a",
+              "b",
+              "c"
+            ]
+          ],
+          [
+            "F"
+          ]
+        ],
+        "premises": [],
+        "detail": {
+          "gate": [
+            "c != a",
+            "c != b"
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "R",
+            "a",
+            "b"
+          ],
+          [
+            "Q",
+            "c",
+            [
+              "R",
+              "a",
+              "b"
+            ]
+          ]
+        ],
+        "premises": [
+          0
+        ],
+        "detail": {
+          "atoms": 3,
+          "valuations": 8
+        }
+      },
+      {
+        "index": 2,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "unchanged-Qcore",
+            "a",
+            "b",
+            "c"
+          ],
+          [
+            "F"
+          ]
+        ],
+        "premises": [
+          0
+        ],
+        "detail": {
+          "atoms": 3,
+          "valuations": 8
+        }
+      },
+      {
+        "index": 3,
+        "rule": "old-rho5",
+        "formula": [
+          "I",
+          [
+            "E",
+            "u",
+            "a"
+          ],
+          [
+            "I",
+            [
+              "R",
+              "u",
+              "b"
+            ],
+            [
+              "R",
+              "a",
+              "b"
+            ]
+          ]
+        ],
+        "premises": [],
+        "detail": null
+      },
+      {
+        "index": 4,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "E",
+            "u",
+            "a"
+          ],
+          [
+            "I",
+            [
+              "R",
+              "u",
+              "b"
+            ],
+            [
+              "Q",
+              "c",
+              [
+                "R",
+                "a",
+                "b"
+              ]
+            ]
+          ]
+        ],
+        "premises": [
+          1,
+          3
+        ],
+        "detail": {
+          "atoms": 4,
+          "valuations": 16
+        }
+      },
+      {
+        "index": 5,
+        "rule": "classical-tautology-and-MP",
+        "formula": [
+          "I",
+          [
+            "I",
+            [
+              "I",
+              [
+                "E",
+                "u",
+                "a"
+              ],
+              [
+                "I",
+                [
+                  "R",
+                  "u",
+                  "b"
+                ],
+                [
+                  "Q",
+                  "c",
+                  [
+                    "R",
+                    "a",
+                    "b"
+                  ]
+                ]
+              ]
+            ],
+            [
+              "unchanged-Qcore",
+              "a",
+              "b",
+              "c"
+            ]
+          ],
+          [
+            "F"
+          ]
+        ],
+        "premises": [
+          4,
+          2
+        ],
+        "detail": {
+          "atoms": 4,
+          "valuations": 16
+        }
+      }
+    ]
+  },
+  "counts": {
+    "new_to_old_steps": 51,
+    "old_to_new_steps": 6,
+    "boolean_valuation_checks": 320
+  },
+  "limits": [
+    "Schema-level Python check, not Lean/Rocq and not an internal PA theorem.",
+    "No source interpreter or binary runtime is established by this check."
+  ]
+}
