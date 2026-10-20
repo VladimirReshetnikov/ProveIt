@@ -1,0 +1,17 @@
+# Closed-macro source pricing for K/S plus mixed commutation
+
+This bounded search found a **209-node source**, with5,057 primitive leaf occurrences, zero-run bound6, depth38 and eleven axiom outputs. It implements K/S in place of rho8 and `M(i,j,A)=Q_i NN(Q_j A) → NN(Q_j(Q_i A))` in place of rho4, retaining the remaining literal rows and gates. No QS row is added. The ordinary refutation calibration is independently reviewed in `/tmp/k218-ks-mixed-commutation/`; no Lean or new machine claim is made here.
+
+The exact primary218 source/table and utility modules are pinned in `input.json`. Original rho8 occupies the closed forest[135,486); original rho4 has exact postfix `abcQQbacQQI` at[1474,1773). The source recipes comprise72 K/S parameter-permutation/order words and6 mixed-row words, giving432 pairs and78 distinct words. All macro blocks are closed and produce the exact designated postfix formulas.
+
+The first literal splice/pruning experiment is preserved unchanged in `prepare.py`, `joint.py` and `joint-result.json`. It generated no zero-compatible source: pruning old rho4 creates a fixed suffix with leading-zero run12, independently of the replacement. The standalone DP costs in `dp-result.json` exclude the surrounding source and must not be reported as complete source costs.
+
+`joint_v2.py` repairs that layout by widening the second replacement to the exact closed enclosing subtree[648,4433). It retains the original primitive prefix/suffix around rho4 as closed factors, splitting any leading-six factor into closed children, and re-associates them around the new M formula. Its bounded outer beam processed60,198 joins plus31,104 joint combinations in4.25087 seconds. It found209-node valid-zero-bound source expressions.
+
+`prepare_v3.py` then updates the fixed-base costs and exposes one further closed layer of the fixed factors. Inner beam4 and outer beam3 processed653,232 outer joins plus62,208 joint combinations in13.10487 seconds. The found best remains209. Neither pass proves a grammar optimum; the earlier passes and their distinct settings remain available.
+
+`check_candidates_v2.py` and its output-path-only v3 successor independently compare all78 recipe ASTs to exact K/S/M forms. Both sets of16 retained sources pass complete primitive-word equality, both full CFG resolvers, equality to the canonical serial-macro reference, all4,094 unchanged instruction sites' guarded outgoing edges, unchanged first37 startup rows, and complete source metric checks. The widened repair preserves the original primitive word everywhere outside the two narrower formula intervals. The validator also checks that the widened replacement is closed.
+
+No M allocator, startup or runtime invocation was made in this packet. The numerical DAG cost is a source representation measurement, not a raw binary table count. The current primary218 table remains unchanged.
+
+A reproduction uses a fresh scratch directory containing the Python modules and `dp.cpp`, with the exact pinned primary218 repository inputs available. Run `python3 -B prepare.py`; compile `g++ -O2 -std=c++17 dp.cpp -o dp`; run `./dp < input.txt > dp-result.json`, `python3 -B joint.py`, `python3 -B joint_v2.py`, and `python3 -B check_candidates_v2.py`. For the finer bounded successor, run `python3 -B prepare_v3.py`, `./dp < input-v3.txt > dp-v3-result.json`, `python3 -B joint_v3.py`, and `python3 -B check_candidates_v3.py`. Save stdout/stderr separately and do not overwrite historical output directories. None of these commands invokes Lean or a machine runtime suite.

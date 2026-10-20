@@ -1,0 +1,75 @@
+--- qs/prepare.py
++++ mixed/prepare.py
+@@ -20,16 +20,23 @@
+ macros={'a':q(98),'b':q(12),'c':q(166),'F':q(184)[0],'I':q(90),'Q':(q(90),(('CI',1),('CI',1)))}
+ assert all(s.boundary(t)==(0,0,False) for t in macros.values())
+ I=lambda x,y:('I',x,y);Q=lambda x,y:('Q',x,y);N=lambda x:I(x,'F')
+-forms=[I('a',I('b','a')),I(I('a',I('b','c')),I(I('a','b'),I('a','c'))),I(N(N(Q('a','b'))),Q('a','b'))]
++forms=[I('a',I('b','a')),I(I('a',I('b','c')),I(I('a','b'),I('a','c')))]
++mixed=I(Q('a',N(N(Q('b','c')))),N(N(Q('b',Q('a','c')))))
+ def post(t):return post(t[1])+post(t[2])+t[0] if isinstance(t,tuple) else t
+-perms=list(itertools.permutations('abc'));recipes={}
+-for pp in itertools.product(perms,repeat=3):
++perms=list(itertools.permutations('abc'));recipes={};joint=[]
++ks_recipes=[];m_recipes=[]
++for pp in itertools.product(perms,repeat=2):
+  ws=[post(f).translate(str.maketrans('abc',''.join(p))) for f,p in zip(forms,pp)]
+- for order in itertools.permutations(range(3)):
+-  w=''.join(ws[i] for i in order);assert w not in recipes
+-  recipes[w]={'permutations':pp,'order':order,'formula_postfix':[ws[i] for i in order]}
++ for order in itertools.permutations(range(2)):
++  w=''.join(ws[i] for i in order)
++  recipes[w]={'kind':'KS','permutations':pp,'order':order,'formula_postfix':[ws[i] for i in order]};ks_recipes.append(w)
++for pp in perms:
++ w=post(mixed).translate(str.maketrans('abc',''.join(pp)))
++ recipes[w]={'kind':'mixed_rho4','permutation':pp,'formula_postfix':[w]};m_recipes.append(w)
++for k in ks_recipes:
++ for w in m_recipes:joint.append([k,w])
+ words=sorted(recipes);intervals={w[i:j] for w in words for i in range(len(w)) for j in range(i+1,len(w)+1)}
+-assert len(words)==1296 and len(intervals)==91002
++assert len(words)==78 and len(joint)==432
+ nodes=[];ids={}
+ def intern(t):
+  if t in ids:return ids[t]
+@@ -37,20 +44,23 @@
+  v=len(nodes);nodes.append(row);ids[t]=v;return v
+ intern(tree);old_count=len(nodes);old_trees=list(ids)
+ macro_ids={k:intern(t) for k,t in macros.items()}
+-HOLE=('HOLE',0);skeleton=m.splice(s,tree,135,486,HOLE)
++H0=('HOLE',0);H1=('HOLE',1)
++oldrho4=m.flat(m.serial([macros[x] for x in 'abcQQbacQQI']))
++assert m.flat(tree)[1474:1773]==oldrho4
++skeleton=m.splice(s,tree,1474,1773,H1)
++skeleton=m.splice(s,skeleton,135,486,H0)
+ base=set();context=[]
+ def fixed(t):
+- v=ids[t];base.add(v)
++ v=intern(t);base.add(v)
+  if not s.leaf(t):fixed(t[0]);fixed(t[1])
++@cache
++def has_hole(t):return t in(H0,H1)or(not s.leaf(t)and(has_hole(t[0])or has_hole(t[1])))
+ def mark(t):
+- if t==HOLE:return True
+- if s.leaf(t):fixed(t);return False
+- left,right=mark(t[0]),mark(t[1]);assert not(left and right)
+- if left:context.append([0,ids[t[1]]])
+- elif right:context.append([1,ids[t[0]]])
+- else:base.add(ids[t])
+- return left or right
+-assert mark(skeleton)
++ if t==H0:return 'H0'
++ if t==H1:return 'H1'
++ if not has_hole(t):fixed(t);return ids[t]
++ return [mark(t[0]),mark(t[1])]
++skeleton_expression=mark(skeleton)
+ # Both interval word and local guarded CFG must match before an old subtree is reused.
+ macro_flat={k:m.flat(t) for k,t in macros.items()};reused=[];rejected=[]
+ for old in old_trees:
+@@ -84,6 +94,6 @@
+ lines.extend(w+'\n' for w in words)
+ lines.extend(f'{r["word"]} {r["node"]}\n' for r in reused)
+ (P/'input.txt').write_text(''.join(lines))
+-record={'status':'EXACT_DP_INPUT_PREPARED','seed':str(seed),'seed_source_sha256':m.sha(raw),'seed_table_sha256':m.sha(tab),'helper_pins':{x:m.sha((P/x).read_bytes()) for x in ('source_language.py','build221.py','measure_pinned.py')},'identity_compiler_control':im,'baseline_metrics':s.metrics(tree),'nodes':nodes,'macro_ids':macro_ids,'context_bottom_up':context,'base_nodes':sorted(base),'old_node_count':old_count,'recipes':recipes,'distinct_intervals':len(intervals),'reused_old_closed_subtree_patterns':reused,'rejected_word_only_patterns':rejected,'replacement':[135,486],'AX_output_count':12,'settings':settings,'input_sha256':m.sha((P/'input.txt').read_bytes()),'scope':'No candidate or runtime claim. Whole replacement is a sequence of closed macros; exact literal formula postfixes retained.'}
++record={'status':'EXACT_DP_INPUT_PREPARED','seed':str(seed),'seed_source_sha256':m.sha(raw),'seed_table_sha256':m.sha(tab),'helper_pins':{x:m.sha((P/x).read_bytes()) for x in ('source_language.py','build221.py','measure_pinned.py')},'identity_compiler_control':im,'baseline_metrics':s.metrics(tree),'nodes':nodes,'macro_ids':macro_ids,'context_bottom_up':context,'skeleton_expression':skeleton_expression,'joint_recipes':joint,'base_nodes':sorted(base),'old_node_count':old_count,'recipes':recipes,'distinct_intervals':len(intervals),'reused_old_closed_subtree_patterns':reused,'rejected_word_only_patterns':rejected,'replacement':[[135,486],[1474,1773]],'AX_output_count':11,'settings':settings,'input_sha256':m.sha((P/'input.txt').read_bytes()),'scope':'Conditional cost only: proposed K/S plus mixed modal row, mathematical calibration pending independent proof. No machine/runtime claim; both replacements are exact closed macro sequences.'}
+ (P/'input.json').write_text(json.dumps(record,indent=2)+'\n')
+ print(json.dumps({'status':record['status'],'nodes':len(nodes),'fixed_base':len(base),'context':context,'words':len(words),'intervals':len(intervals),'old_closed_reuses':len(reused),'rejected':len(rejected),'macro_sizes':{k:len(v) for k,v in macro_flat.items()},'identity':im}))
