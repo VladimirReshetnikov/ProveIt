@@ -1,0 +1,20 @@
+--- attempt1/prepare.py
++++ current/prepare.py
+@@ -26,7 +26,7 @@
+     assert SRC.is_dir() and SRC!=OUT and SRC not in OUT.parents
+     assert not OUT.exists()
+     OUT.mkdir(); copy=OUT/'packet';shutil.copytree(SRC,copy)
+-    raw219=(copy/'portable/vendor/K219_Construction_2026-10-20.zip').read_bytes()
++    raw219=(copy/'vendor/K219_Construction_2026-10-20.zip').read_bytes()
+     z219=archive(raw219,'04813567f393b6c4015a96aba092159e9021703b4b662c7be69bd2a86497e31b')
+     parent=OUT/'baseline/K219_Construction_2026-10-20'
+     for name in ('machine/k219.native.tm','machine/sites219.json'):
+@@ -64,7 +64,7 @@
+     files=[code/n for n in ['source/reconstruct_source.py','source/dag_recipe.json','lineage/build_lineage.py','lineage/build218.py','lineage/source_equivalence.py','lineage/lineage_recipe.json','lineage/basis/direct188.tm','lineage/basis/direct188.sites.json','canonicalize.py','check_runtime.py']]
+     files += [runtime/n for n in pins]+[parent/'machine/k219.native.tm',parent/'machine/sites219.json']
+     files += sorted(p for p in source.iterdir() if p.is_file())
+-    files += sorted(p for d in ('machine','certificates/source','portable/reference_results') for p in (copy/d).rglob('*') if p.is_file())
++    files += sorted(p for d in ('machine','certificates/source','certificates/runtime') for p in (copy/d).rglob('*') if p.is_file())
+     dump(OUT/'plan.json',{'status':'SOURCE_REVIEWED_DIRECT_LEAVES_READY','reviewer':'opening_encoder','jobs':jobs,'cwd':str(copy),'inputs':[desc(p) for p in sorted(set(files))],
+       'ancestry_extraction_only':{'K219':sha(raw219),'K220':sha(raw220),'K221':sha(raw221)},
+       'exclusions':['No wrapper/reproduce execution','No manifest/checksum-suite execution','No ancestor verification replay','No Rocq/Coq/Lean execution','No delivered negative-control wrapper invocation'],
