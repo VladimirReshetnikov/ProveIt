@@ -1,10 +1,12 @@
 # Formal endpoints for the K-family candidates
 
-**Current state (2026-10-20).** The smallest candidate, the [221](../candidate-k221/README.md), has a
+**Current state (2026-10-20).** The [221](../candidate-k221/README.md) has a
 closed Rocq endpoint, `K221F.CorrectDense221.tm221_halts_iff_ZFC_inconsistent`, which `coqchk`
 independently rechecked ([rocq/](rocq/README.md)). Its calculus and program layer are in
 [rocq224/](rocq224/README.md). The Lean endpoint is in progress (layers below). The rest of this
-page records the earlier 225/224 plan.
+page records the earlier 225/224 plan. The newer [220-state candidate](../candidate-k220/README.md)
+has an ordinary simulation/calibration argument; its exact-table Lean and internal PA
+endpoints remain open.
 
 
 The [224](../candidate-k224/README.md) (Source 125) supersedes the 225 as the smallest

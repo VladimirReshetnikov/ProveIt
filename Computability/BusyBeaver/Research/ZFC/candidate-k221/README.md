@@ -1,9 +1,12 @@
 # K-theory 221-state candidate
 
+The later [220-state construction](../candidate-k220/README.md) improves this
+candidate. The formal status recorded below remains specific to the 221.
+
 This binary, single-tape machine has **221 working states**, including initialization, plus
 a separate halt state. It starts in state 0 at head 0 on an all-zero two-way infinite tape.
 Every transition moves left or right. The complete 442-row table is [zfc_k221.tm](zfc_k221.tm).
-**It is the smallest known candidate** whose blank-tape non-halting is equivalent to Con(ZFC).
+It was the smallest candidate at batch 183; its blank-tape non-halting is equivalent to Con(ZFC).
 
 The construction is **Source 132** (`K221_Construction_2026-10-20.zip`, arrival `c011e44bc2`),
 placed in `c92e98e674`. It starts from Source 131, the seed-K 222. That machine is the same

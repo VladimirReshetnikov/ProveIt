@@ -42,7 +42,17 @@ nine typed callers pass with zero warnings. The internal PA equivalence for
 this exact 240-state machine is now checked too
 ([`BinaryConsistencyRotation240`](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/BinaryConsistencyRotation240.lean), 19 October 2026). See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md).
 
-The smallest **ordinary** candidate is now the [**221-state machine**](candidate-k221/README.md) of batch 183
+The smallest **ordinary** candidate is now the [**220-state machine**](candidate-k220/README.md)
+of batch 185 (Source 138). A non-pure decoder re-encoding permits two closed
+source rotations and a predecessor-bit fold of native 202 into 171. The
+complete final runtime passes 6,167 cases and 1,516,421 symbolic rules, with
+exact 409,835-step blank startup. Source 139 contributes three equivalent
+220-state continuation layouts; their two row changes compose, but do not
+save another state. All 13 selected fresh jobs pass. The exact-220 Lean and
+internal PA endpoints remain open. See the [reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-185.md)
+and [replay guide](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-185-reproduction.md).
+
+Its predecessor is the [**221-state machine**](candidate-k221/README.md) of batch 183
 (Source 132). It takes the seed-K 222 (Source 128's merged equality row G with Source 129's
 seed root), applies three closed source rotations, and folds two decoder states that a helper
 separates by the bit to their left. Its source has the 222's leaf sequence and guarded CFG, so
