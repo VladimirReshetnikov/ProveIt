@@ -1,4 +1,27 @@
-# Rocq endpoint for the 224 — work in progress
+# Rocq endpoints for the 224 and the seed-K 222 — work in progress
+
+**Current target: the seed-K 222** ([candidate-k222/variant-bc](../../candidate-k222/variant-bc/README.md),
+the same source as Source 131). Its calibration is K's seed presentation, which Elliot Glazer's
+development already handles (`KPSeed.output_root_to_seed`, `KPrimeCore.seeded_core_to_kp0`), plus
+the 224's equality interpretation and Source 128's merged row G. The A + B 222 would also need the
+conditional-K interpretation, so it is not the first target.
+
+## The 222 layer (each file compiles; main statements closed)
+
+| File | Content |
+| --- | --- |
+| `Codes222.v` | `growG` (the merged equality row) and `bundle222 = -.(RV -> -.K_s)`, generated from the words of `dag222`, whose expressions match the pinned symbolic executor. |
+| `Thm222.v`, `CD222.v`, `Prop222.v` | The 222's calculus (rho7 replaced by G, the helper-free seed bundle) and the transferred propositional toolkit. |
+| `G222.v` | **The merged row recovers the old rows.** Reflexivity (rho1 at binder `wel x x`, G, existential monotonicity, rho6), the helper (`G(a,b,a)`), specialization at the helper binder, and `rho7_222`. Only G, rho1, rho2, rho6, MP, GEN and propositional logic are used. |
+| `Interp222.v` | `lprov224_thm222` and the composite `lprov_thm222 : lprov a -> thm222 (tau (th a))`. The equality interpretation `L224E.lprov_th` is reused unchanged. |
+| `Cert222Offsets.v` | Offset bisimulation (2,246 entries, 8 offset) between the 222's literal source and `ptree dag222`. `dag222` is `Dag230` with node 236's word carrying the G row and the seed bundle (`tools/make_dag222.py`). |
+
+Remaining for the 222: completeness through seed instances (the K instance at `(1,3,c)` with `c`
+taken from the interpreted matrix), soundness through Elliot's decoder (`output_root_to_seed` at
+the decoded level, G from rho7 plus the helper), the program layer on `dag222`, the TM side,
+composition and `coqchk`.
+
+## The 224 layer
 
 Target: `Dense.halts dense_tm Dense.c0 ↔ StandardZFC ⊢TC ⊥` for the literal table of
 [candidate-k224](../../candidate-k224/README.md). The files in `src/` compile against Elliot
