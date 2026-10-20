@@ -15,11 +15,16 @@ conditional-K interpretation, so it is not the first target.
 | `G222.v` | **The merged row recovers the old rows.** Reflexivity (rho1 at binder `wel x x`, G, existential monotonicity, rho6), the helper (`G(a,b,a)`), specialization at the helper binder, and `rho7_222`. Only G, rho1, rho2, rho6, MP, GEN and propositional logic are used. |
 | `Interp222.v` | `lprov224_thm222` and the composite `lprov_thm222 : lprov a -> thm222 (tau (th a))`. The equality interpretation `L224E.lprov_th` is reused unchanged. |
 | `Cert222Offsets.v` | Offset bisimulation (2,246 entries, 8 offset) between the 222's literal source and `ptree dag222`. `dag222` is `Dag230` with node 236's word carrying the G row and the seed bundle (`tools/make_dag222.py`). |
+| `Enum222.v`, `L1_Sound222.v`, `L1_Comp222.v`, `L1_222.v`, `Seed222.v` | Elliot's enumerator layer forked for `thm222` (`tools/gen_logic222.py`): `L1_222 : enum222_halts <-> thm222 1` and `seed222_iff_thm`. |
+| `Sound222.v` | **Soundness**, `thm222_sound : thm222 1 -> StandardZFC ⊢TC ⊥`. Every `thm222` code decodes to a formula valid in Elliot's decoded K230 theory plus IR. G is pure logic (Euclid, and LB6a vacuity at the binder `wel a b`). Each decoded seed bundle follows from the closed K230 bundle at the same roles: membership vacuity is a conjunct, and the seed core comes from the output-root core by the case split of `KPSeed.output_root_to_seed`. Elliot's `DecodedK230Ord_derivation_to_KPrimeOrd` then covers every role, degenerate ones included. |
+| `Complete222.v` | **Completeness**, `thm222_complete : StandardZFC ⊢TC ⊥ -> thm222 1`, through K0 (`K0_ZFc_inconsistent`). A wff counts when `thm222 (tau (th a))`; each `kp0` instance comes, by `seeded_core_to_kp0`, from one named seed bundle whose label is its own interpreted matrix code (`seed_code`, above 3 and not free in the matrix). The combined `thm222_iff_standardZFC` is **closed under the global context**. |
 
-Remaining for the 222: completeness through seed instances (the K instance at `(1,3,c)` with `c`
-taken from the interpreted matrix), soundness through Elliot's decoder (`output_root_to_seed` at
-the decoded level, G from rho7 plus the helper), the program layer on `dag222`, the TM side,
-composition and `coqchk`.
+These files are also the calculus of the [221](../../candidate-k221/README.md), whose source has
+the seed-K 222's primitive word and guarded control flow.
+
+Remaining for the 221: the program layer on `dag222` (`Dag222`, `ProgLib222`, `L2Root222`,
+`Main222`), the offset certificate from the 221's rotated source to `ptree dag222`, the TM side
+regenerated for the 221's table, composition and `coqchk`.
 
 ## The 224 layer
 
