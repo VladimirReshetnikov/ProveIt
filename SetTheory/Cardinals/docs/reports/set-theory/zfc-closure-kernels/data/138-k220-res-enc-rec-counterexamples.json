@@ -1,0 +1,237 @@
+{
+  "status": "TWO_REJECTED_PATCHES_REPLAYED",
+  "baseline_table_sha256": "e6dc479f09ded05dd1c0639b60a0c453483f42e6b77c29562d433cac528c1ecc",
+  "cases": [
+    {
+      "name": "drop50",
+      "status": "FALSIFIED",
+      "source_ordinal": 40,
+      "site": [
+        "11101001001000000",
+        "CD",
+        1
+      ],
+      "logical_registers": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "spares": [
+        1
+      ],
+      "extra_gap": 0,
+      "working_states": 220,
+      "initial_one_cells": [
+        -1,
+        0,
+        1,
+        2,
+        4,
+        7,
+        10,
+        64,
+        66,
+        68,
+        70,
+        72,
+        74,
+        76,
+        78,
+        80,
+        82,
+        84,
+        85
+      ],
+      "baseline_steps": 586,
+      "baseline_matches_expected": true,
+      "mutant_stop": "dispatch",
+      "mutant_steps": 662,
+      "actual": {
+        "state": 84,
+        "head": 0,
+        "one_cells": [
+          -1,
+          0,
+          1,
+          2,
+          4,
+          7,
+          10,
+          13,
+          64,
+          66,
+          68,
+          70,
+          72,
+          74,
+          76,
+          78,
+          80,
+          82,
+          84,
+          85
+        ]
+      },
+      "expected": {
+        "state": 84,
+        "head": 0,
+        "one_cells": [
+          -1,
+          0,
+          1,
+          2,
+          4,
+          7,
+          10,
+          15,
+          64,
+          66,
+          68,
+          70,
+          72,
+          74,
+          76,
+          78,
+          80,
+          82,
+          84,
+          85
+        ]
+      },
+      "mutant_trace": {
+        "file": "drop50.csv",
+        "rows": 662,
+        "sha256": "f56684b5f5c0392359b334c8545df9504e9b6bab3900b8ac370e0661758e694d"
+      },
+      "baseline_trace": {
+        "file": "drop50_baseline.csv",
+        "rows": 586,
+        "sha256": "0e9238989d26cb41ce3932caee842344e69d74d670e1832abab37a8ffc2fc208"
+      },
+      "scope": "Concrete valid source-interface frame; no claim that this frame occurs on the blank run."
+    },
+    {
+      "name": "drop198",
+      "status": "FALSIFIED",
+      "source_ordinal": 0,
+      "site": [
+        "000",
+        "CD",
+        8
+      ],
+      "logical_registers": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "spares": [
+        1
+      ],
+      "extra_gap": 0,
+      "working_states": 220,
+      "initial_one_cells": [
+        -1,
+        64,
+        66,
+        68,
+        70,
+        72,
+        74,
+        76,
+        78,
+        80,
+        82,
+        84,
+        85
+      ],
+      "baseline_steps": 602,
+      "baseline_matches_expected": true,
+      "mutant_stop": "dispatch",
+      "mutant_steps": 2010,
+      "actual": {
+        "state": 84,
+        "head": 0,
+        "one_cells": [
+          -1,
+          0,
+          4,
+          5,
+          66,
+          68,
+          70,
+          72,
+          74,
+          76,
+          78,
+          79,
+          81,
+          83,
+          85,
+          86,
+          88
+        ]
+      },
+      "expected": {
+        "state": 84,
+        "head": 0,
+        "one_cells": [
+          -1,
+          1,
+          64,
+          66,
+          68,
+          70,
+          72,
+          74,
+          76,
+          78,
+          80,
+          82,
+          84,
+          85
+        ]
+      },
+      "mutant_trace": {
+        "file": "drop198.csv",
+        "rows": 2010,
+        "sha256": "f663576206d296b8268fdef2af3875f0126aa9d98de65709c492d704cb4dadac"
+      },
+      "baseline_trace": {
+        "file": "drop198_baseline.csv",
+        "rows": 602,
+        "sha256": "7d87b0dce478ac440f0aec09ed081b0582c724f259016e512e4fdc49618fad2e"
+      },
+      "scope": "Concrete valid source-interface frame; no claim that this frame occurs on the blank run."
+    }
+  ],
+  "drop198_blank_divergence": {
+    "status": "EXACT_RIGHT_RAY_DIVERGENCE",
+    "steps_to_ray": 76,
+    "state": 35,
+    "head": 4,
+    "rightmost_one": 2,
+    "zero_row": [
+      1,
+      1,
+      35
+    ],
+    "trace": {
+      "file": "drop198_blank.csv",
+      "rows": 76,
+      "sha256": "d9bf2fb086ebbbe7585c91f8a7ff7eeffe4f40e7f62d181884d4464057f36ec2"
+    },
+    "reason": "From the recorded point the head sees a fresh zero forever; the transition moves right in the same working state."
+  }
+}
