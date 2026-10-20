@@ -1,0 +1,41 @@
+{
+  "status": "SOURCE_REVIEW_PASS",
+  "findings": [],
+  "reviewer_role": "Independent source reader; no candidate search, supplied helper, compiler, invariant construction or universal verifier executed by this review.",
+  "source": {
+    "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k219-continuation-search/search_hidden_states.py",
+    "sha256": "48c92b2aaf8b24ec77cbb4f8754a1d5c71e908eafd61eba624b66fff45acb292"
+  },
+  "actual_result": {
+    "path": "/tmp/zfc-k219-hidden-states-run1/result.json",
+    "sha256": "35da4e0f16e97ebf9bea8125510b112ce2e95aec45e91505691c046a75b2bc05"
+  },
+  "scope": "Full source read plus supporting unchanged domain/read/loader/encoder APIs; bounded existing result metadata checked.",
+  "reasoning": [
+    "The family deletes only a noninitial state with exactly one incoming row whose predecessor is distinct. Counting self loops rules out overlooked incoming paths; after deletion only the unique predecessor action varies.",
+    "The family enumerates both writes, both moves,218 remaining states plus halt:876 actions for each109/108 eligible states. All other rows retain exact state/head/tape identity.",
+    "Old endpoint cache is local to the fixed old table/hidden/entry/radius/fuel and indexed by the full window. Only positive old endpoints outside the hidden state are stored; changed new runs require positive common endpoints or both halt.",
+    "No read/write occurs outside the window before a join. Complete window equality with identical head/state gives complete tape equality because the exterior was untouched. Halting branch legitimately needs both halt, not equal final tape.",
+    "The old invariant begins with all binary windows at the initial state and closes both arbitrary newly exposed bits. It is an overapproximation, so rejected windows are not necessarily reachable counterexamples.",
+    "The relation does not include the deleted state; the strict single-entry gate and unchanged other rows justify this restricted boundary decomposition.",
+    "Actual report records190092 completed filter rejections and no survivor. Thus no independent universal verifier ran, and no218 construction or lower bound follows. Synthetic controls are16 finite contexts plus invalid early halt only."
+  ],
+  "limits": [
+    "Radius7 and fuel97 fixed; failure is failure to find this bounded diagram, not proof of inequivalence.",
+    "The wall deadline is checked between domain construction and search operations; it is not a hard process-kill guarantee. Actual reported duration is8.644s."
+  ],
+  "support": [
+    {
+      "path": "/tmp/zfc-k219-hidden-states-run1/search_v3.py",
+      "sha256": "87cd94b5cb8ecc1e1101fbd7cdab5def327632fd289ef6d4e23887f8ff2ad9de"
+    },
+    {
+      "path": "/tmp/zfc-k219-hidden-states-run1/check_joint_fold.py",
+      "sha256": "82d0b364dfdbc7433a58c3c3e7166ec6a32ac9268e0e516f5f113f1287f44031"
+    },
+    {
+      "path": "/tmp/zfc-k219-hidden-states-run1/controls.json",
+      "sha256": "9e5775a579aac100dc9bde9689fe5515bc84f5ae510db9a8d010bf143592999c"
+    }
+  ]
+}

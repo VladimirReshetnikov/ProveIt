@@ -1,0 +1,27 @@
+--- selective_v1
++++ selective_v2
+@@ -10,11 +10,13 @@
+ def dump(p,x):p.write_text(json.dumps(x,indent=2)+'\n')
+ class PrefixFailure(ValueError):
+  def __init__(self,detail):self.detail=detail;super().__init__(detail['reason'])
+-def decoder_map_trace(s,table,tree):
++def decoder_map_trace(s,table,tree,allowed=None):
+  """Same 100-step known-prefix check as build221, retaining first failing edge."""
+  groups=defaultdict(set);paths=defaultdict(list);routes={}
+  def visit(node,prefix,state,prior):
+   if s.leaf(node):return
++  if allowed is not None and state not in allowed(node):
++   raise PrefixFailure({'reason':'node_binding_mismatch','state':state,'permitted':sorted(allowed(node)),'prefix':prefix,'edge_trace':prior[-1] if prior else [],'all_trace':[x for edge in prior for x in edge]})
+   groups[state].add(node);paths[state].append(prefix);routes[prefix]=prior
+   for bit in (0,1):
+    if s.leaf(node[bit]):continue
+@@ -91,7 +93,8 @@
+             if z != 254 and z not in reach: reach.add(z); todo.append(z)
+     compiled = {k: v for k, v in compiled.items() if k[0] in reach}
+     capture.update(table=compiled, reused_states=sorted(reused_states), old_groups=groups)
+-    gg, path_map, routes = decoder_map_trace(s, compiled, new_src)
++    allowed = lambda n: old_states[n] if n in old_states and n != new_src else {mapped[n]}
++    gg, path_map, routes = decoder_map_trace(s, compiled, new_src, allowed)
+     for q, nodes in gg.items():
+         for n in nodes:
+             permitted = old_states[n] if n in old_states and n != new_src else {mapped[n]}
