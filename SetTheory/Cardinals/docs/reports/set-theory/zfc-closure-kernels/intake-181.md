@@ -98,7 +98,14 @@ so it needs no conditional-K interpretation.
 **Below 222.** Both 222s are already minimal under exact bisimulation, and the general left-bit
 fold scan finds no fold on either (52 and 38 half-matched pairs). A 221 would need a contextual
 fold that source rotations expose. The decomposed rotation-chain search (helper sub-goals per
-pair and read bit, levels 1–2 in full, level 3 local) runs on the B + C 222: SEARCH_RESULT
+pair and read bit, levels 1–2 in full, level 3 local) ran on the B + C 222:
+
+- it explored 75, 5,443 and 14,253 tables at the three levels, with zero run at most 7 along the way;
+- it recorded 1,128 helper sub-goals;
+- 24 tagged pairs had helper chains for both read bits, but none composed into an applicable fold
+  with final zero run at most 6: 0 fold tables built.
+
+**No 221 was found.** This is a bounded search, not a lower bound.
 
 ## Formal status
 
