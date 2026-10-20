@@ -4,7 +4,7 @@
 closed Rocq endpoint, `K221F.CorrectDense221.tm221_halts_iff_ZFC_inconsistent`, which `coqchk`
 independently rechecked ([rocq/](rocq/README.md)). Its calculus and program layer are in
 [rocq224/](rocq224/README.md). The Lean endpoint is in progress (layers below). The rest of this
-page records the earlier 225/224 plan. The newer [220-state candidate](../candidate-k220/README.md)
+page records the earlier 225/224 plan. The newer [219-state candidate](../candidate-k219/README.md)
 has an ordinary simulation/calibration argument; its exact-table Lean and internal PA
 endpoints remain open.
 

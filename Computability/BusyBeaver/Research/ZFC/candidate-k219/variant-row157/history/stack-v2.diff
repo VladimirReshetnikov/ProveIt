@@ -1,0 +1,11 @@
+--- stack_row157.py
++++ stack_row157_v2.py
+@@ -23,7 +23,7 @@
+  a=ap.parse_args();assert __debug__ and not os.environ.get('PYTHONOPTIMIZE')
+  assert sha(a.baseline)==BASE_SHA
+  t=parse(a.baseline);assert len(t)==438
+- expected={(157,1):(1,-1,148),(148,0):(0,1,186),(187,0):(0,1,186),(187,1):(1,-1,76),(76,1):(1,1,148)}
++ expected={(157,1):(1,-1,148),(148,0):(0,1,186),(187,0):(0,1,186),(187,1):(1,1,76),(76,1):(1,-1,148)}
+  assert {k:t[k] for k in expected}==expected
+  parent=json.loads(a.baseline_receipt.read_text());assert parent['table_sha256']==BASE_SHA
+  boot=parent['startup'];assert (boot['steps'],boot['native_state'],boot['head'],len(boot['one_cells']),boot['all_other_cells'])==(312617,84,-5,277,0)

@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings through 20 October 2026. This report now reconciles **139 manuscripts**.
+Intake findings through 20 October 2026. This report now reconciles **140 manuscripts**.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -8,6 +8,16 @@ the delivered base article is preserved, rather than rewritten as a unified arti
 No merged PDF is built. These are ordinary mathematical arguments and finite
 regression checks. The deliveries confer no formal status; subsequent Lean
 results and their exact scope are listed below.
+
+[Batch 186](intake-186.md) imports Source 140, the [219-state construction](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k219/README.md)
+from `26d5de6d21`. It shares an open equality subtree, with a generalized
+return and spare-preserving bypass. Seven selected fresh jobs pass, including
+6,167 symbolic runtime cases, 1,515,040 rules and exact 312,617-step startup.
+The intake also checks a same-size row157 alternative. The full HC countermodel
+rules out five restricted propositional schemes even with the native K support
+clause retained. All 110 original members remain recoverable; placement
+`24c7e68de7` retires the ZIP. [Reproduction](intake-186-reproduction.md).
+No exact-219 Lean/PA endpoint or 218-state result is claimed.
 
 Batches [184](intake-184.md) and [185](intake-185.md) complete Sources 137–139:
 the earlier 221 alternatives, a new [220-state construction](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k220/README.md),

@@ -1,5 +1,9 @@
 # A 220-state binary Turing machine for Con(ZFC)
 
+The later [219-state construction](../candidate-k219/README.md) replaces the
+equality routine and improves this result; these tables remain its checked
+predecessor and alternative layouts.
+
 This machine improves the 221-state construction by re-encoding a decoder edge,
 rotating its source twice, and merging two states using the preceding tape bit.
 The resulting **220 working states and 440 transition rows** implement the same
