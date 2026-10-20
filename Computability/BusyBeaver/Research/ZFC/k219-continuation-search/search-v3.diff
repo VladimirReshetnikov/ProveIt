@@ -1,0 +1,45 @@
+--- search_v2.py
++++ search_v3.py
+@@ -29,10 +29,12 @@
+   for bit in (0,1):
+    w,d,z=old[q,bit]
+    if new[keep,bit]==(w,d,phi(z)):continue
+-   patterns=[m for m in invariant[q] if ((m>>radius)&1)==bit]
+-   # Extremal windows often expose bad shared-tag actions immediately.
+-   patterns=sorted(patterns)
+-   if len(patterns)>2:patterns=[patterns[0],patterns[-1],*patterns[1:-1]]
++   pattern_key=('patterns',q,bit)
++   if pattern_key not in old_paths:
++    patterns=sorted(m for m in invariant[q] if ((m>>radius)&1)==bit)
++    if len(patterns)>2:patterns=[patterns[0],patterns[-1],*patterns[1:-1]]
++    old_paths[pattern_key]=patterns
++   patterns=old_paths[pattern_key]
+    for word in patterns:
+     key=(q,word)
+     if key not in old_paths:
+@@ -66,7 +68,7 @@
+  ap.add_argument('--output',type=Path,required=True)
+  ap.add_argument('--seconds',type=int,default=1200)
+  ap.add_argument('--max-candidates',type=int,default=350000)
+- ap.add_argument('--filter-radius',type=int,choices=(3,5),default=5)
++ ap.add_argument('--filter-radius',type=int,choices=(3,5,7),default=7)
+  ap.add_argument('--filter-fuel',type=int,choices=(9,97),default=97)
+  a=ap.parse_args()
+  if not __debug__ or os.environ.get('PYTHONOPTIMIZE'):ap.error('Assertions must be enabled')
+@@ -117,7 +119,7 @@
+       stats['filter_rejections']+=1;reject({**candidate,'stage':'bounded_filter','witness':failure});continue
+      hitdir=output/f'survivor-{total:06d}';hitdir.mkdir()
+      native=hitdir/'candidate.native.tm';native.write_bytes(encode(new,start))
+-     command=[sys.executable,'-B',str(output/'check_joint_fold.py'),'--old',str(oldpath),'--new',str(native),'--keep',str(keep),'--drop',str(drop),'--output',str(hitdir/'universal.json')]
++     command=[sys.executable,'-B',str(output/'check_joint_fold.py'),'--old',str(oldpath),'--new',str(native),'--keep',str(keep),'--drop',str(drop),'--radius',str(a.filter_radius),'--output',str(hitdir/'universal.json')]
+      remaining=a.seconds-(time.monotonic()-started)
+      if remaining<=0:stop='TIME_LIMIT';break
+      run_start=time.monotonic()
+@@ -152,6 +154,6 @@
+    if stop:break
+  finally:failures.close()
+  assert before=={p:digest(Path(p)) for p in before},'Input drift'
+- result={'status':'COMPLETE_BOUNDED_SEARCH' if stop is None else 'INCOMPLETE_'+stop,'seconds':time.monotonic()-started,'candidate_limit':a.max_candidates,'wall_limit':a.seconds,'filter_radius':a.filter_radius,'filter_fuel':a.filter_fuel,'attempted':total,'seeds':allstats,'hits':hits,'inputs':before,'search_sha256':digest(Path(__file__)),'rejection_stream_sha256':digest(output/'rejections.jsonl.gz'),'scope':'Two exact certified219 tables; unordered decoder-state pairs; inherited actions and all one-branch tag/helper actions when the other branch already agrees. The explicitly recorded finite-window/fuel filter is incomplete. Only radius5/fuel97 unchanged-checker successes are relative all-initial-tape certificates. No source reassociation, numeric sampling claim, global lower bound or proof-assistant endpoint.'}
++ result={'status':'COMPLETE_BOUNDED_SEARCH' if stop is None else 'INCOMPLETE_'+stop,'seconds':time.monotonic()-started,'candidate_limit':a.max_candidates,'wall_limit':a.seconds,'filter_radius':a.filter_radius,'filter_fuel':a.filter_fuel,'attempted':total,'seeds':allstats,'hits':hits,'inputs':before,'search_sha256':digest(Path(__file__)),'rejection_stream_sha256':digest(output/'rejections.jsonl.gz'),'scope':'Two exact certified219 tables; unordered decoder-state pairs; inherited actions and all one-branch tag/helper actions when the other branch already agrees. The explicitly recorded finite-window/fuel filter is incomplete. Only explicitly recorded radius/fuel97 unchanged-checker successes are relative all-initial-tape certificates. No source reassociation, numeric sampling claim, global lower bound or proof-assistant endpoint.'}
+  dump(output/'result.json',result);print(json.dumps(result,indent=2),flush=True)
+ if __name__=='__main__':main()

@@ -1,0 +1,11 @@
+--- reader-v1
++++ reader-v2
+@@ -17,7 +17,7 @@
+   assert r['status']=='COMPLETE_BOUNDED_SEARCH' and r['hits']==[]
+   assert sha(d/'search.py')==sha(P/source)==r['search_sha256']
+   assert sha(d/'check_joint_fold.py')==inputs['universal_checker']['sha256']
+-  assert (d/'inputs.json').read_bytes()==(P/'inputs.json').read_bytes()
++  assert json.loads((d/'inputs.json').read_text())==inputs
+   assert sha(d/'rejections.jsonl.gz')==r['rejection_stream_sha256'];checks+=5
+   totals=collections.Counter();families=collections.Counter();pairs=collections.defaultdict(set);reasons=collections.Counter();count=0
+   with gzip.open(d/'rejections.jsonl.gz','rt') as f:
