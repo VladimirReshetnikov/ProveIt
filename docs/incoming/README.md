@@ -12,13 +12,23 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
-## New arrival awaiting batch 186
+## Queue status after batch 186
 
-`K219_Construction_2026-10-20.zip` arrived in
-[`26d5de6d21`](https://github.com/VladimirReshetnikov/ProveIt/commit/26d5de6d21fa354d50e0b84fe851c289925b8d72)
-after placement of batch 185. It remains pending its own review, placement,
-reconciliation and catalogue entry. The completed 220 intake below does not
-certify that new delivery.
+`K219_Construction_2026-10-20.zip`, arrival
+[`26d5de6d21`](https://github.com/VladimirReshetnikov/ProveIt/commit/26d5de6d21fa354d50e0b84fe851c289925b8d72),
+is imported as [Source 140](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-186.md)
+and retired in placement `24c7e68de7`. All 110 members are accounted for. The host
+now has **140 sources**, the collection remains **290 reports**, and no archive
+is waiting.
+
+The [219-state candidate](../../Computability/BusyBeaver/Research/ZFC/candidate-k219/README.md)
+shares an open subtree in a generic equality macro, then adapts the decoder and
+return routes. Its ordinary source proof gives the same complete register state and control
+outcome at corresponding macro boundaries. Fresh final runtime and complete startup checks
+pass; no literal-219 Lean/Rocq or internal PA endpoint is claimed. Source 132's
+separately checked 221-state Rocq endpoint remains recorded beside this smaller
+ordinary construction. Arrival originals and all ancillary material remain
+recoverable through the placement map and intake instructions.
 
 ## Queue status after batch 185
 
@@ -958,6 +968,7 @@ ProveIt-era batches (from this directory):
 | 183 | Five manuscripts from `c011e44bc2`: placement `c92e98e674` adds sources 132–136, now 136 sources and still 290 reports. 613 members = 363 new + 229 aliases + 6 history aliases + 15 archive-only; all ZIPs retired. | the 221's rotations and fold, its CFG identity with the seed-K 222, the four 222s against the intake's, and the search below 221 | this commit | screen, exact startup and unbounded runtime of the 221; candidate-k221 published |
 | 184 | One manuscript from `a27b5391bb`: placement `abae578c29` adds Source 137 and retires its ZIP; 191 members = 156 new + 31 existing aliases + 1 history alias + 3 archive-only. | [intake-184.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-184.md): three same-size 221 continuation variants, all-tape local proofs, conditional source reductions and rejected experiments; delayed write completed with batch 185. | this commit | Full manuscript/proof review and exact placement/recovery accounting; delivered runtime/startup receipts retained as delivered, not freshly rerun for this batch. No exact-variant Lean/Rocq or internal PA endpoint. |
 | 185 | Two manuscripts from `7677a1f62f` and `bf01dd349a`: placement `de06ba50be` adds Sources 138–139; 175 members = 150 new + 7 existing aliases + 6 batch aliases + 2 history aliases + 10 archive-only. Both ZIPs retired; now 139 sources and still 290 reports. | [intake-185.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-185.md): nonpure decoder re-encoding and contextual fold to 220, three certified continuation alternatives, and separate theory/encoding research. | this commit | Fresh final 6,167-case symbolic runtime (1,516,421 rules), complete 409,835-step startup and independent audit; fresh alternative macro/window proofs, startup and independent core audit. Ancestor calibration reused, no recursive ancestor replay or checksum-manifest validation. No new literal-220 Lean/Rocq or internal PA endpoint. |
+| 186 | One manuscript from `26d5de6d21`: placement `24c7e68de7` adds Source 140; 110 members = 93 new + 2 existing aliases + 6 batch aliases + 1 history alias + 8 archive-only. ZIP retired; now 140 sources and still 290 reports. | [intake-186.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-186.md): clean open-tree equality sharing, exact 219-state decoder/return adaptation, retained calculus/codec research and scoped negative experiments. | this commit | Seven selected fresh jobs pass: source/build, full 6,167-case runtime (1,515,040 rules, all 438 rows, minimum duration 13), complete 312,617-step startup, independent audit and two supplements. Ancestor calibration reused. No literal-219 Lean/Rocq or internal PA endpoint. |
 
 
 Batches 99 to 113 are the fifteen clusters into which the intake triaged

@@ -3169,6 +3169,25 @@ with fresh macro/window proofs and complete startups. The new 220 tables have or
 mathematical proofs and executable symbolic certificates, not new literal-table Lean/Rocq
 or internal PA endpoints. Source 132's separately checked 221-state Rocq endpoint remains
 stated beside them. Research specimens and bounded negative searches remain explicitly
-uncertified. Both 220 archives are retired; the new 219-state delivery at `26d5de6d21`
-awaits its separate batch 186 intake. All original packages remain recoverable from
-arrival commits and exhaustive placement maps.
+uncertified. Both 220 archives are retired; the subsequent 219-state delivery is
+reconciled in batch 186 below. All original packages remain recoverable from arrival
+commits and exhaustive placement maps.
+
+
+Batch 186 imports [Source 140](set-theory/zfc-closure-kernels/intake-186.md), bringing
+the host to **140 sources** (still **290 reports**). Placement `24c7e68de7` accounts
+for all 110 members and retires the single ZIP. Its
+[219-state machine](../../../../Computability/BusyBeaver/Research/ZFC/candidate-k219/README.md)
+replaces four generic equality macros with a routine sharing an open subtree
+between cancellation and cleanup. Both routines terminate for arbitrary natural
+register values, clear the two operands, preserve every other register, and
+return the same control outcome. The complete source shrinks from 208 to 206
+DAG nodes while keeping 4,744 primitive occurrences. Decoder sharing and repaired
+return routes turn that source improvement into 219 working states and 438 rows.
+Seven selected fresh jobs pass, including all 6,167 unbounded runtime cases
+(1,515,040 symbolic rules), the exact 312,617-step complete startup and independent
+audits. Calculus/codec supplements and bounded negative searches retain their
+individual scopes. This is an ordinary mathematical construction with symbolic
+certificates, without a new literal-table Lean/Rocq or internal PA endpoint.
+The separate closed Rocq endpoint for Source 132's exact 221 remains available.
+The incoming queue is empty; original files remain recoverable from Git history.
