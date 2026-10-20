@@ -90,3 +90,11 @@ The named output must be fresh. These finite traces justify the stated
 counterexamples; they are not general runtime certificates.
 
 Independent source review is preserved in [source-peer.json](source-peer.json); it read the diagnostic and recorded outputs without rerunning the candidate. The separate fresh [replay result](replay-result.json) checks all 5,576 recorded physical transitions and 25 source steps.
+
+## A distinct two-context attempt
+
+The follow-up [eight scan-clone diagnostic](scan-clones/README.md) finds an exact
+bootstrap/runtime discriminator and proves a local unary-scan reuse lemma. Seven
+reused scan states then fail at reached source frames; the eighth remains bounded
+at 30,000 steps. Exact traces and the distant-prefix state-33 obstruction are
+preserved separately.

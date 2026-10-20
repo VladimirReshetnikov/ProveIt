@@ -1,0 +1,16 @@
+--- own-attempt1/review.py
++++ review.py
+@@ -50,11 +50,11 @@
+  if rule in axioms:assert f==axioms[rule]
+  elif rule=='gen':
+   j=row['parent'];assert 0<=j<i
+-  label=tup(row['label']);assert label==v(999)and999not in variables(forms[j])
++  label=tup(row['label']);assert label==v(999)and 999 not in variables(forms[j])
+   assert f==canonical(qall(label,forms[j]))
+  else:
+   assert rule=='condensed_mp'
+-  j,k=row['major'],row['minor'];assert 0<=j<i and0<=k<i
++  j,k=row['major'],row['minor'];assert 0<=j<i and 0<=k<i
+   assert row['minor_rename_offset']==1000
+   minor0=rename(forms[k],1000);assert variables(forms[j]).isdisjoint(variables(minor0))
+   env={int(k):tup(z)for k,z in row['substitution'].items()}

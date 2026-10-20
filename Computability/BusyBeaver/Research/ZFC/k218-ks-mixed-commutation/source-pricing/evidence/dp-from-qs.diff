@@ -1,0 +1,11 @@
+--- qs/dp.cpp
++++ mixed/dp.cpp
+@@ -52,7 +52,7 @@
+   for(auto &v:it->second.bylead)for(int id:v){int cur=id;for(auto [side,sib]:ctx)cur=side==0?make_node(cur,sib):make_node(sib,cur);if(nodes[cur].z>zero)continue;
+    bool dup=false;for(auto &x:best)if(x.global==cur)dup=true;if(dup)continue;
+    bool improved=best.empty()||better(cur,best.front().global);
+-   best.push_back({id,cur,w});sort(best.begin(),best.end(),[](auto&a,auto&b){return better(a.global,b.global);});if(best.size()>16)best.pop_back();
++   best.push_back({id,cur,w});sort(best.begin(),best.end(),[](auto&a,auto&b){return better(a.global,b.global);});/* Keep all per-word beam candidates for joint two-hole scoring. */
+    if(improved)cerr<<"BEST dag "<<base_count+nodes[cur].added.size()<<" depth "<<nodes[cur].depth<<" zero "<<nodes[cur].z<<" word "<<w<<"\n";
+   }
+  }

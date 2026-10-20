@@ -1,0 +1,52 @@
+--- accepted K218 driver
++++ relay217 driver
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Replay every unbounded primitive-interface proof for the exact K218 table.
++"""Replay every unbounded primitive-interface proof for the exact relay217 table.
+ 
+ The native table and source bytes are pinned below. The unchanged symbolic
+ runtime implementation and its helper are supplied by the bundled K221 parent.
+@@ -16,9 +16,9 @@
+ import sys
+ import time
+ 
+-EXPECTED_TABLE = '2dfaba6da09b78291e534777cd30c5f0d68bd84faa670e868e779c396aeb308f'
++EXPECTED_TABLE = '73deb3f0e1a6159646dcb153ad5082eddb6656f3cabbbba40e86bbef971b9111'
+ EXPECTED_SITES = 'b0169f2d477d0584ac70f9bdb79c3a78ef2bc700d080b3cd80976210235b80d9'
+-EXPECTED_STATES = 218
++EXPECTED_STATES = 217
+ EXPECTED_CASES = 6167
+ DEPENDENCIES = {
+     'portable/build221.py': '3359e8b40fefb162ca4aa1d5c5a99a368a937ec61f761c3ac6f26d573766acba',
+@@ -69,8 +69,8 @@
+ 
+     table_bytes = args.table.read_bytes()
+     sites_bytes = args.sites.read_bytes()
+-    require(sha(table_bytes) == EXPECTED_TABLE, 'Unexpected K218 table bytes')
+-    require(sha(sites_bytes) == EXPECTED_SITES, 'Unexpected K218 source bytes')
++    require(sha(table_bytes) == EXPECTED_TABLE, 'Unexpected relay217 table bytes')
++    require(sha(sites_bytes) == EXPECTED_SITES, 'Unexpected relay217 source bytes')
+     table = builder.read_table(table_bytes)
+     sites = json.loads(sites_bytes)
+     tree = source.tree(sites)
+@@ -80,8 +80,8 @@
+                         'maximum_depth': 38, 'maximum_zero_run': 6},
+             'Source metrics changed')
+     working = {q for q, bit in table}
+-    require(len(working) == EXPECTED_STATES and len(table) == 436,
+-            'Expected 218 working states and 436 rows')
++    require(len(working) == EXPECTED_STATES and len(table) == 434,
++            'Expected 217 working states and 434 rows')
+     require(0 in working and 84 in working and 254 not in working,
+             'Native start/dispatch/halt labels changed')
+     require(set(table) == {(q, bit) for q in working for bit in (0, 1)},
+@@ -134,7 +134,7 @@
+     receipt = {
+         'status': 'ALL_PRIMITIVE_INTERFACES_PROVED',
+         'working_states': EXPECTED_STATES,
+-        'transition_rows': 436,
++        'transition_rows': 434,
+         'source_metrics': metrics,
+         'cases': len(cases),
+         'expected_cases': EXPECTED_CASES,
