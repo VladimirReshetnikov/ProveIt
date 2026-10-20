@@ -1,0 +1,13 @@
+--- actual/run.py
++++ portable/run_replay.py
+@@ -1,6 +1,8 @@
+ from pathlib import Path
+-import hashlib,json,os,signal,subprocess,sys,time,traceback
+-E=Path('/tmp/zfc-intake187/opening-execution');plan=json.loads((E/'plan.json').read_text())
++import argparse,hashlib,json,os,signal,subprocess,sys,time,traceback
++ap=argparse.ArgumentParser(description='Run the prepared14 direct Source141 jobs serially, preserving raw logs and failures.')
++ap.add_argument('--workdir',type=Path,required=True);args=ap.parse_args()
++E=args.workdir.resolve();plan=json.loads((E/'plan.json').read_text())
+ assert not (E/'result.json').exists()
+ sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+ for p,h in plan['inputs'].items():assert sha(p)==h,p

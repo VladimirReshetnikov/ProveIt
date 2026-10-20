@@ -1,0 +1,305 @@
+{
+  "status": "PREPARED_PORTABLE_DIRECT_LEAF_PLAN",
+  "role": "opening_encoder portable adaptation of actually executed14-job source-reviewed plan; preparation is not a proof execution",
+  "packet": "/tmp/zfc-intake187/opening-portable-prepared/packet",
+  "pristine": "/tmp/zfc-intake187/K219_Alternatives_2026-10-20/K219_Alternatives_2026-10-20",
+  "baseline": "/tmp/zfc-intake187/opening-portable-prepared/recovered/K219_Construction_2026-10-20",
+  "recovered_archive_members": 110,
+  "inputs": {
+    "/tmp/zfc-intake187/opening-portable-prepared/packet/portable/construct.py": "63343866cbba0fb9d53e87849aeb2917e44d223847af0def43d298b3a899281b",
+    "/tmp/zfc-intake187/opening-portable-prepared/packet/portable/check_source.py": "2466b617fb899274f87c5922d7127ba8c0d28af2c7833b7b4ca2628ce65c265a",
+    "/tmp/zfc-intake187/opening-portable-prepared/packet/portable/check_runtime.py": "c32850ff6e2d22064d5bc4d56a02301547e6a425f37afaa4914a5812c1c79cce",
+    "/tmp/zfc-intake187/opening-portable-prepared/packet/portable/canonicalize.py": "2840d94326bef6b7d87d3680f9d4983bb0459d86e0486a9043242e3272e8daed",
+    "/tmp/zfc-intake187/opening-portable-prepared/packet/portable/reproduce.py": "98817ed31791e8f6d5557a37a9a454e383bf54773ea3e717aa3bfe993866762a",
+    "/tmp/zfc-intake187/opening-portable-prepared/packet/verification/independent_source_check.py": "105b207378a5daea77e92bb198d1687185c78a3f1035f6c4af94971828094cd2",
+    "/tmp/zfc-intake187/opening-portable-prepared/packet/verification/independent_small_audit.py": "d02db87dd8d16ad65cdd96659a0d04cf5de38b551baba1147124563e0bb98538",
+    "/tmp/zfc-intake187/opening-portable-prepared/packet/verification/independent_runtime_audit.py": "2706587efbfefa789043d181bfeda92d92a4803c1ea64b4aa97f039ae0c3dc15",
+    "/tmp/zfc-intake187/opening-portable-prepared/packet/verification/negative_controls.py": "b3be8961c68573add021e630b49b1ebe8484e204e9484da695652feccc12a138",
+    "/tmp/zfc-intake187/opening-portable-prepared/runtime-vendor/symbolic_runtime.py": "c22f1709a39277c59d163c613e250f27a9e239004a83f643f3bd7d44ad57f145",
+    "/tmp/zfc-intake187/opening-portable-prepared/runtime-vendor/independent_runtime.py": "0d1dae10b921cc302a2211d9251ca7ec131aa63ecb040ce66720894877700346",
+    "/tmp/zfc-intake187/opening-portable-prepared/legacy_mapping.json": "26a4bff859adcc510f1faf4364a597681fec014a136bc1d00dc9ce1904ad6bbf",
+    "/tmp/zfc-intake187/opening-portable-prepared/packet/vendor/K219_Construction_2026-10-20.zip": "04813567f393b6c4015a96aba092159e9021703b4b662c7be69bd2a86497e31b",
+    "/tmp/zfc-intake187/opening-portable-prepared/packet/machine/construction.json": "6d3ac72c28f5cf71bc464f85b3a5f27be1c6a3ce11a642d7c98476ef220b8068",
+    "/tmp/zfc-intake187/opening-portable-prepared/recovered/K219_Construction_2026-10-20/machine/k219.native.tm": "b255f8ee341d394c303d67a7fca7f8288ed9d4c40f075899fa64b13085aaca26",
+    "/tmp/zfc-intake187/opening-portable-prepared/recovered/K219_Construction_2026-10-20/machine/sites219.json": "0f6d9d991e36dda1a7449edab72a799bb2d8c3de3ff853a26178b89bd1bc8789"
+  },
+  "jobs": [
+    {
+      "name": "01_construct",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-portable-prepared/packet/portable/construct.py",
+        "--baseline",
+        "/tmp/zfc-intake187/opening-portable-prepared/recovered/K219_Construction_2026-10-20",
+        "--output",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine"
+      ],
+      "timeout_seconds": 60,
+      "cwd": "/tmp/zfc-intake187/opening-portable-prepared/packet"
+    },
+    {
+      "name": "02_independent_source",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-portable-prepared/packet/verification/independent_source_check.py",
+        "--original-source",
+        "/tmp/zfc-intake187/opening-portable-prepared/recovered/K219_Construction_2026-10-20/machine/sites219.json",
+        "--zero-source",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/zero_terminal/sites.json",
+        "--retagged-source",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/retagged/sites.json",
+        "--retagged-seed-source",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/retagged/sites.json",
+        "--combined-source",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/composed/sites.json",
+        "--original-table",
+        "/tmp/zfc-intake187/opening-portable-prepared/recovered/K219_Construction_2026-10-20/machine/k219.native.tm",
+        "--zero-table",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/zero_terminal/k219.native.tm",
+        "--retagged-table",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/retagged/k219.native.tm",
+        "--retagged-seed-table",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/composition_seed.tm",
+        "--combined-table",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/composed/k219.native.tm",
+        "--combined-native-table",
+        "/tmp/zfc-intake187/opening-portable-prepared/packet/machine/composed/k219.upstream-labels.tm",
+        "--output-dir",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/independent-source"
+      ],
+      "timeout_seconds": 60,
+      "cwd": "/tmp/zfc-intake187/opening-portable-prepared/packet"
+    },
+    {
+      "name": "03_source_zero_terminal",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-portable-prepared/packet/portable/check_source.py",
+        "--baseline",
+        "/tmp/zfc-intake187/opening-portable-prepared/recovered/K219_Construction_2026-10-20",
+        "--source",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/zero_terminal/sites.json",
+        "--variant",
+        "zero_terminal",
+        "--output",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/certificates/zero_terminal/source.json"
+      ],
+      "timeout_seconds": 60,
+      "cwd": "/tmp/zfc-intake187/opening-portable-prepared/packet"
+    },
+    {
+      "name": "04_canonical_zero_terminal",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-portable-prepared/packet/portable/canonicalize.py",
+        "--variant",
+        "zero_terminal",
+        "--table",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/zero_terminal/k219.native.tm",
+        "--source",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/zero_terminal/sites.json",
+        "--output",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/zero_terminal"
+      ],
+      "timeout_seconds": 60,
+      "cwd": "/tmp/zfc-intake187/opening-portable-prepared/packet"
+    },
+    {
+      "name": "03_source_retagged",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-portable-prepared/packet/portable/check_source.py",
+        "--baseline",
+        "/tmp/zfc-intake187/opening-portable-prepared/recovered/K219_Construction_2026-10-20",
+        "--source",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/retagged/sites.json",
+        "--variant",
+        "retagged",
+        "--output",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/certificates/retagged/source.json"
+      ],
+      "timeout_seconds": 60,
+      "cwd": "/tmp/zfc-intake187/opening-portable-prepared/packet"
+    },
+    {
+      "name": "04_canonical_retagged",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-portable-prepared/packet/portable/canonicalize.py",
+        "--variant",
+        "retagged",
+        "--table",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/retagged/k219.native.tm",
+        "--source",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/retagged/sites.json",
+        "--output",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/retagged"
+      ],
+      "timeout_seconds": 60,
+      "cwd": "/tmp/zfc-intake187/opening-portable-prepared/packet"
+    },
+    {
+      "name": "03_source_composed",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-portable-prepared/packet/portable/check_source.py",
+        "--baseline",
+        "/tmp/zfc-intake187/opening-portable-prepared/recovered/K219_Construction_2026-10-20",
+        "--source",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/composed/sites.json",
+        "--variant",
+        "composed",
+        "--output",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/certificates/composed/source.json"
+      ],
+      "timeout_seconds": 60,
+      "cwd": "/tmp/zfc-intake187/opening-portable-prepared/packet"
+    },
+    {
+      "name": "04_canonical_composed",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-portable-prepared/packet/portable/canonicalize.py",
+        "--variant",
+        "composed",
+        "--table",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/composed/k219.native.tm",
+        "--source",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/composed/sites.json",
+        "--output",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/composed"
+      ],
+      "timeout_seconds": 60,
+      "cwd": "/tmp/zfc-intake187/opening-portable-prepared/packet"
+    },
+    {
+      "name": "05_independent_small",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-portable-prepared/packet/verification/independent_small_audit.py",
+        "--release",
+        "/tmp/zfc-intake187/opening-portable-prepared/packet",
+        "--baseline",
+        "/tmp/zfc-intake187/opening-portable-prepared/recovered/K219_Construction_2026-10-20",
+        "--out",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/independent-small"
+      ],
+      "timeout_seconds": 60,
+      "cwd": "/tmp/zfc-intake187/opening-portable-prepared/packet"
+    },
+    {
+      "name": "06_runtime_zero_terminal",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-portable-prepared/packet/portable/check_runtime.py",
+        "--variant",
+        "zero_terminal",
+        "--table",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/zero_terminal/k219.native.tm",
+        "--source",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/zero_terminal/sites.json",
+        "--vendor",
+        "/tmp/zfc-intake187/opening-portable-prepared/runtime-vendor",
+        "--mapping",
+        "/tmp/zfc-intake187/opening-portable-prepared/legacy_mapping.json",
+        "--out",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/certificates/zero_terminal"
+      ],
+      "timeout_seconds": 180,
+      "cwd": "/tmp/zfc-intake187/opening-portable-prepared/packet"
+    },
+    {
+      "name": "06_runtime_retagged",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-portable-prepared/packet/portable/check_runtime.py",
+        "--variant",
+        "retagged",
+        "--table",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/retagged/k219.native.tm",
+        "--source",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/retagged/sites.json",
+        "--vendor",
+        "/tmp/zfc-intake187/opening-portable-prepared/runtime-vendor",
+        "--mapping",
+        "/tmp/zfc-intake187/opening-portable-prepared/legacy_mapping.json",
+        "--out",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/certificates/retagged"
+      ],
+      "timeout_seconds": 180,
+      "cwd": "/tmp/zfc-intake187/opening-portable-prepared/packet"
+    },
+    {
+      "name": "06_runtime_composed",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-portable-prepared/packet/portable/check_runtime.py",
+        "--variant",
+        "composed",
+        "--table",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/composed/k219.native.tm",
+        "--source",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/machine/composed/sites.json",
+        "--vendor",
+        "/tmp/zfc-intake187/opening-portable-prepared/runtime-vendor",
+        "--mapping",
+        "/tmp/zfc-intake187/opening-portable-prepared/legacy_mapping.json",
+        "--out",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/certificates/composed"
+      ],
+      "timeout_seconds": 180,
+      "cwd": "/tmp/zfc-intake187/opening-portable-prepared/packet"
+    },
+    {
+      "name": "07_independent_runtime",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-portable-prepared/packet/verification/independent_runtime_audit.py",
+        "--release",
+        "/tmp/zfc-intake187/opening-portable-prepared/packet",
+        "--zero",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/certificates/zero_terminal",
+        "--retagged",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/certificates/retagged",
+        "--composed",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/certificates/composed",
+        "--out",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/independent-runtime.json"
+      ],
+      "timeout_seconds": 60,
+      "cwd": "/tmp/zfc-intake187/opening-portable-prepared/packet"
+    },
+    {
+      "name": "08_negative_controls",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-portable-prepared/packet/verification/negative_controls.py",
+        "--baseline",
+        "/tmp/zfc-intake187/opening-portable-prepared/recovered/K219_Construction_2026-10-20",
+        "--vendor",
+        "/tmp/zfc-intake187/opening-portable-prepared/runtime-vendor",
+        "--certificates",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/certificates",
+        "--output",
+        "/tmp/zfc-intake187/opening-portable-prepared/output/negative-controls.json"
+      ],
+      "timeout_seconds": 60,
+      "cwd": "/tmp/zfc-intake187/opening-portable-prepared/packet"
+    }
+  ],
+  "scope": "Fresh source reconstruction, complete source/CFG transport, finite complete blank startups, three full unbounded symbolic primitive checks, independent receipt/block audit and malformed-input controls. No manifest/checksum suite, delivered wrapper, inherited suite, Coq/Rocq/Lean invocation. Inherited logical calibration not freshly replayed."
+}
