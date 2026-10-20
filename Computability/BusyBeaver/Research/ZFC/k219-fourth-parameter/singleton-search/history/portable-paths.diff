@@ -1,0 +1,15 @@
+--- original-search.py
++++ search.py
+@@ -7,9 +7,9 @@
+ """
+ from pathlib import Path
+ import argparse,hashlib,itertools,json,signal,time
+-ROOT=Path('/home/codex/.codex/worktrees/ec20/Proofs')
+-CODE=ROOT/'Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean'
+-KCODE=ROOT/'Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean'
++INPUTS=Path(__file__).resolve().parent/'inputs'
++CODE=INPUTS/'Code254.lean'
++KCODE=INPUTS/'KCode222.lean'
+ F,T,X=0,1,2
+ VALUES=range(3)
+ def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()

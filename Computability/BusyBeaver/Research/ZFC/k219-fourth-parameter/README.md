@@ -198,6 +198,13 @@ This is a conditional model-extraction result, not equiconsistency.
 
 ## Evidence and next test
 
+A separate [singleton algebra search](singleton-search/README.md) tested all
+78,732 three-value implication/quantifier/equality assignments, including
+non-designated equality and non-Boolean negation, with the literal full seed
+bundle. It found no restricted or unrestricted model. This excludes only
+that bounded constant-atom, shared-quantifier family; it does not establish
+the proposal's consistency calibration.
+
 The [finite checker](check_range.py) evaluates all 256 unrestricted instances,
 384 safe-choice cases, and the explicit native counterexample above. Its
 [receipt](result.json) records the exact scopes. The unbounded HC argument
