@@ -33,9 +33,10 @@ neither a general deduction theorem nor arbitrary implication-context
 transport may be assumed in this calculus. The earlier five-node theorem
 `(T → C) → (B → C)` is valid but does not supply that transport.
 
-Adding the single axiom code 16, all identities, B, S, or some other axiom that
-fails this model escapes **this particular obstruction**. None of those
-extensions is calibrated here. In particular, the separate
+Adding code 16, all identities, B or S escapes **this particular matrix**.
+A subsequent [syntactic proof](identities/README.md) rules out calibration of
+K + RAB even with every identity, covering fixed code 16. That new proof does
+not include QS, so the two consistency results cannot be combined. The separate
 [K/S plus quantified-stability calibration](../k218-quantifier-stability/README.md)
 is unaffected because its S row fails this model. The accepted
 [218-state candidate](../candidate-k218/README.md) keeps its original calculus;
@@ -64,6 +65,6 @@ Reproducing the stochastic discovery is optional: compile `search.cpp` with
 `12 3 1 218` (seconds, carrier size, designated-value count, seed). Wall-clock
 and proposal counts are diagnostic, not proof evidence.
 
-A [separate bounded follow-up](fixed-code16/README.md) added the single fixed
-axiom code 16. Three small matrix searches found no candidate; this extension
-remains open, and the diagnostic is separate from the proved obstruction.
+The [bounded fixed-code16 follow-up](fixed-code16/README.md) remains as history.
+Its three small searches found no candidate; the subsequent ordinary invariant
+now settles that extension negatively for calibration, without adding QS.
