@@ -73,10 +73,14 @@ search](k218-continuation-search/rotation-folds/README.md) tests 282,416 fold
 specifications after 25 closed rotations without a survivor; its bounds do
 not imply minimality.
 
-On the formalism side, [K/S plus quantified stability](k218-quantifier-stability/README.md)
-has a new ordinary consistency calibration, with an independently checked
-finite proof DAG. Its [first source pricing](k218-quantifier-stability/pricing/README.md)
-does not save states. The [five-value model](k219-fourth-parameter/finite-matrix/README.md)
+On the formalism side, [K/S with mixed commutation](k218-ks-mixed-commutation/README.md)
+has a reviewed ordinary equiconsistency proof: co-translating formula codes
+and numeric labels preserves the literal gated bundle and gives finite
+refutation translations in both directions. It needs no separate quantified
+stability axiom. [K/S plus quantified stability](k218-quantifier-stability/README.md)
+has a separate ordinary calibration, with an independently checked finite
+proof DAG. Neither theory has yet produced a smaller verified machine.
+The [five-value model](k219-fourth-parameter/finite-matrix/README.md)
 now excludes every membership-fourth restriction of rho8, even their union,
 while retaining the other native rows; adding K or explosion is outside
 that model's scope. A separate [three-value code-dependent model](k218-k-membership-obstruction/README.md)
