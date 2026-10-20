@@ -42,8 +42,20 @@ nine typed callers pass with zero warnings. The internal PA equivalence for
 this exact 240-state machine is now checked too
 ([`BinaryConsistencyRotation240`](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/BinaryConsistencyRotation240.lean), 19 October 2026). See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md).
 
-The smallest **ordinary** candidate is now the [**225-state machine**](candidate-k225/README.md) of batch 178
-(Source 124). It deletes K230 states 79, 140, 175, 208 and 229: the two ProveIt engine savings
+The smallest **ordinary** candidate is now the [**221-state machine**](candidate-k221/README.md) of batch 183
+(Source 132). It takes the seed-K 222 (Source 128's merged equality row G with Source 129's
+seed root), applies three closed source rotations, and folds two decoder states that a helper
+separates by the bit to their left. Its source has the 222's leaf sequence and guarded CFG, so
+the 222's calibration transfers. The intake replays its unbounded runtime proof (6,167 cases,
+1,514,663 rules), exact startup and screen. The steps to it were the
+[224](candidate-k224/README.md) (Source 125), the [223](candidate-k223/README.md) (Source 127)
+and the two [222s](candidate-k222/README.md) composed at batch 181. See the
+[batch 183 reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-183.md).
+No proof-assistant endpoint covers these; the Rocq work in progress is in
+[k225-formal/rocq224](k225-formal/rocq224/README.md).
+
+Before them, the [225-state machine](candidate-k225/README.md) of batch 178
+(Source 124) was the smallest. It deletes K230 states 79, 140, 175, 208 and 229: the two ProveIt engine savings
 below, Source 117's source layout and fold, and a final fold exposed by four rotations. The
 intake replays its unbounded runtime proof (6,656 cases, 1,608,136 rules) and exact startup.
 Source 123's 226 carries a closed Rocq endpoint that the intake has not yet rebuilt. See the

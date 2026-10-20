@@ -12,6 +12,14 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Queue status after batch 183
+
+Batch 183 imported five packages from `c011e44bc2` as Sources 132–136 of
+[ZFC closure kernels](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-183.md)
+(placement `c92e98e674`). The smallest candidate is now the
+[221-state machine](../../Computability/BusyBeaver/Research/ZFC/candidate-k221/README.md) of
+Source 132. No archive is waiting.
+
 ## Queue status after batch 182
 
 Batch 182 imported `K222_Construction_2026-10-20.zip` as Source 131 of
@@ -922,6 +930,7 @@ ProveIt-era batches (from this directory):
 | 180 | One manuscript from `281af27565`: placement `9b1fa851a9` adds source 127, now 127 sources and still 290 reports. 165 members = 131 new + 30 aliases + 1 history alias + 3 archive-only; ZIP retired. | the 223's conditional-K source, helper allocation and fold, decoder accounting, and the new formal obligations | this commit | screen, exact startup and unbounded runtime of the 223; candidate-k223 published |
 | 181 | Three manuscripts from `1f751b0aa4`, `076445a266` and `6ab3e41e4d`: placement `5342a12e22` adds sources 128–130, now 130 sources and still 290 reports. 347 members = 209 new + 126 aliases + 3 history aliases + 9 archive-only; all ZIPs retired. | comparison of the four 223s, which ideas stack, and the stacked 222 | this commit | screens, startups and runtimes of Sources 128 and 129; the 222's emitter, screen, startup and runtime; candidate-k222 published |
 | 182 | One manuscript from `98168e96eb`: placement `1ecc16754f` adds source 131, now 131 sources and still 290 reports. 123 members = 68 new + 51 aliases + 1 history alias + 3 archive-only; ZIP retired. | comparison with the intake's own B + C 222 (same source bytes, same sharing groups) | this commit | screen, exact startup and unbounded runtime of its table |
+| 183 | Five manuscripts from `c011e44bc2`: placement `c92e98e674` adds sources 132–136, now 136 sources and still 290 reports. 613 members = 363 new + 229 aliases + 6 history aliases + 15 archive-only; all ZIPs retired. | the 221's rotations and fold, its CFG identity with the seed-K 222, the four 222s against the intake's, and the search below 221 | this commit | screen, exact startup and unbounded runtime of the 221; candidate-k221 published |
 
 
 Batches 99 to 113 are the fifteen clusters into which the intake triaged

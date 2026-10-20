@@ -3141,3 +3141,9 @@ Batch 182 imports [Source 131](set-theory/zfc-closure-kernels/intake-182.md), an
 222 built from Sources 128 and 129, giving this host **131 sources** (still 290 reports).
 Placement `1ecc16754f` retires its ZIP. Its source is byte-identical to the intake's own second
 222 ([variant-bc](../../../../Computability/BusyBeaver/Research/ZFC/candidate-k222/variant-bc/README.md)).
+
+Batch 183 imports [Sources 132–136](set-theory/zfc-closure-kernels/intake-183.md), giving this
+host **136 sources** (still 290 reports). Placement `c92e98e674` retires their ZIPs. Source 132's
+[221-state machine](../../../../Computability/BusyBeaver/Research/ZFC/candidate-k221/README.md)
+is now the smallest known candidate: three source rotations and one tag fold on the seed-K 222.
+The four 222 packages reproduce the intake's two 222s. No proof assistant checks these yet.

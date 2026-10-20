@@ -3,7 +3,8 @@
 This binary, single-tape machine has **222 working states**, including initialization, plus
 a separate halt state. It starts in state 0 at head 0 on an all-zero two-way infinite tape.
 Every transition moves left or right. The complete 444-row table is [zfc_k222.tm](zfc_k222.tm).
-**It is the smallest known candidate** whose blank-tape non-halting is equivalent to Con(ZFC).
+It was the smallest known candidate until the [221](../candidate-k221/README.md) (Source 132),
+which applies three source rotations and a tag fold to the [seed-K 222](variant-bc/README.md).
 
 The machine is ProveIt's own composition, made at the batch 181 intake. It stacks two
 independent 223-state constructions that both start from the [224](../candidate-k224/README.md):
