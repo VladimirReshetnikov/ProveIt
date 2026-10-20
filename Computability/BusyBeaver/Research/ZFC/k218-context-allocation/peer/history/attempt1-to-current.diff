@@ -1,0 +1,35 @@
+--- attempt1-review_static.py
++++ review_static.py
+@@ -16,7 +16,7 @@
+   if not line.strip()or line.startswith('#'):continue
+   q,r,w,d,z=line.split();key=(int(q),int(r));row=(int(w),{'L':-1,'R':1}[d],int(z));need(key not in t,'Duplicate row');need(key[1]in(0,1)and row[0]in(0,1),'Binary row');t[key]=row
+  states={q for q,r in t};need(set(t)=={(q,r)for q in states for r in(0,1)},'Total rows');return t
+-old=table(ROOT/'candidate-k218/k218.native.tm');need(len(old)==436,'218 baseline');need(max(q for q,r in old)==301,'Native301 exists')
++old=table(ROOT/'candidate-k218/k218.native.tm');need(len(old)==436,'218 baseline');need(max(q for q,r in old)==302,'Native301 and302 exist')
+ a=(P/'history/context_allocate.py').read_text();b=(P/'context_allocate.py').read_text();anchor='old=s.tree('
+ need(a[a.index(anchor):]==b[b.index(anchor):],'Portable algorithm exact suffix')
+ need((P/'context_allocate.py').resolve().parents[5]==ROOT.parents[3],'Portable default repo path')
+@@ -32,7 +32,7 @@
+   if key[0]in oldstates and key[0]!=84:need(t[key]==old[key],'All retained old rows unchanged except84')
+  need(len({tuple(tuple(x)for x in a['rows'])for a in r['assignments']})==fresh,'Distinct new action pairs')
+  for assignment in r['assignments']:
+-  q=assignment['state'];need(q>=302,'Fresh state beyond native301')
++  q=assignment['state'];need(q>=303,'Fresh state beyond native302')
+   for bit,row in enumerate(assignment['rows']):need(t[q,bit]==tuple(row),'Fresh assignment matches table')
+  seen={0};todo=[0]
+  for q in todo:
+@@ -41,12 +41,12 @@
+    if z!=254 and z not in seen:seen.add(z);todo.append(z)
+  need(seen==states,'Exactly syntactically reachable states')
+  results.append({'name':name,'states':total,'fresh':fresh,'retired':r['retired'],'seconds_reported':r['seconds'],'claim':'Recorded root prefix-pass; independently checked table structure, assignments, retained rows and input identities. No prefix or primitive execution by reviewer.'})
+-fail=json.loads((P/'evidence/qs-context000/result.json').read_text());need(fail['status']=='REJECTED','First actual failure retained');need({300,301}<={a['state']for a in fail['assignments']},'Failed numbering occupied native301')
++fail=json.loads((P/'evidence/qs-context000/result.json').read_text());need(fail['status']=='REJECTED','First actual failure retained');need({300,301,302}<={a['state']for a in fail['assignments']},'Failed numbering occupied native301 and302')
+ protected=json.loads((P/'evidence/protected-result.json').read_text());need(len(protected['protected_states'])==38 and protected['status']=='REJECTED','38 helper protection rejected scope')
+ trace=[r for r in protected['old_live_helper_witnesses']if r['state']==69 and r['prefix']=='11010010011000'and r['bit']==0];need(len(trace)==1,'Old69 witness unique');need([t[0]for t in trace[0]['trace']]==[69,78,89],'Old helper sequence');need(trace[0]['trace'][-1][-1][-1]==104,'Old helper destination104')
+ rs=json.loads((P/'evidence/result.json').read_text());f=next(r for r in rs if 'changed_cells'in r);need(f['state']==17 and f['changed_cells']==[[16,1,0]]and f['attempted_states']==226,'First wrong-prefix diagnosis')
+ rs=json.loads((P/'evidence/result-protected.json').read_text());need(rs[0]['unexpected_unchanged_state']==183 and rs[0]['prefix']=='1101001001100110110','Protected wrong old role183')
+ f=next(r for r in rs if 'changed_cells'in r);a=next(a for a in f['ancestors']if a[0]==76);need([t[0]for t in a[3]]==[76,152,170,169,171,7,205]and a[3][-1][-1][-1]==183,'Wrong-context76 route')
+ inputs={str(f.relative_to(P)):{'sha256':sha(f),'bytes':f.stat().st_size}for f in sorted(P.rglob('*'))if f.is_file()}
+-r={'status':'INDEPENDENT_CONTEXT_ALLOCATOR_SOURCE_AND_RECORD_REVIEW_PASS','reviewer':'opening_encoder','role':'Author of the source-DP inputs and earlier rejected allocator policy, independent reader of root context-aware successor/localization. No candidate allocator, prefix simulator, primitive runtime or startup replay.','checks':checks,'inputs':inputs,'findings':[],'results':results,'source_review':['Full portable and executed source bodies match exactly after path setup.','Compatibility rejects changed prefix tape/head and recursively checks each internal child in its actual new prefix context. Leaves intentionally remain outside the proved contract.','Fresh numbering starts above native301; old rows are untouched except decoder root84 and syntactically unreachable removal. Final complete prefix check remains mandatory.','The old global-pool incoming-edge condition omitted multi-step helper uses. Protecting such helpers does not solve context-dependent old decoder placement; retained traces distinguish the two failures.','The100-step internal bound conservatively rejects slow or unresolved paths; no universal primitive behavior follows.','Portable driver has no seed/hash enforcement itself; this receipt pins the current published seed/input/library boundary and the documented records. Re-running against changed repository inputs would be a new experiment.'],'scope':'241/262 are conservative prefix-bound diagnostic table counts, not smaller machines or lower bounds. Literal leaf-entry actions, primitive runtime, startup and enumerator simulation remain unproved for these tables.'}
++r={'status':'INDEPENDENT_CONTEXT_ALLOCATOR_SOURCE_AND_RECORD_REVIEW_PASS','reviewer':'opening_encoder','role':'Author of the source-DP inputs and earlier rejected allocator policy, independent reader of root context-aware successor/localization. No candidate allocator, prefix simulator, primitive runtime or startup replay.','checks':checks,'inputs':inputs,'findings':[],'results':results,'source_review':['Full portable and executed source bodies match exactly after path setup.','Compatibility rejects changed prefix tape/head and recursively checks each internal child in its actual new prefix context. Leaves intentionally remain outside the proved contract.','Fresh numbering starts above native302; old rows are untouched except decoder root84 and syntactically unreachable removal. Final complete prefix check remains mandatory.','The old global-pool incoming-edge condition omitted multi-step helper uses. Protecting such helpers does not solve context-dependent old decoder placement; retained traces distinguish the two failures.','The100-step internal bound conservatively rejects slow or unresolved paths; no universal primitive behavior follows.','Portable driver has no seed/hash enforcement itself; this receipt pins the current published seed/input/library boundary and the documented records. Re-running against changed repository inputs would be a new experiment.'],'scope':'241/262 are conservative prefix-bound diagnostic table counts, not smaller machines or lower bounds. Literal leaf-entry actions, primitive runtime, startup and enumerator simulation remain unproved for these tables.'}
+ (O/'review.json').write_text(json.dumps(r,indent=2)+'\n');print(checks,sha(O/'review.json'))

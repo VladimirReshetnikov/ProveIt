@@ -56,7 +56,7 @@ alone is an insufficient machine-cost estimate.
 The exact successful results and prefix-only tables are in
 [QS evidence](evidence/qs-context000-v2/result.json) and
 [mixed evidence](evidence/m-context000/result.json). An initial own diagnostic
-mistakenly started fresh numbering at300, which collided with native301;
+mistakenly started fresh numbering at300, which collided with native301 and302;
 its [failed result](evidence/qs-context000/result.json) is retained. The
 successful version starts strictly above the largest existing state. The
 initial script version was not retained; it is not reconstructed as an
@@ -82,5 +82,9 @@ No separate process stdout/stderr files were captured.
 This packet uses the existing K221 source/decoder utilities and the earlier
 global allocator, with `opening_encoder`'s new source-search inputs. Root
 authored the failure localization, helper protection diagnostic and
-context-aware allocator. No new symbolic runtime, startup, proof-assistant
-check, smaller machine, or general state lower bound is claimed.
+context-aware allocator. An independent [source and metadata review](peer/review.json) by
+`opening_encoder` found no blocking defect, checking all published table rows,
+allocation counts, input identities and the two failure traces. It discloses
+authorship of the source-search inputs and does not replay candidate execution.
+No new symbolic runtime, startup, proof-assistant check, smaller machine, or
+general state lower bound is claimed.
