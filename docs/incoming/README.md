@@ -12,6 +12,16 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Queue status after batch 178
+
+Batch 177 imported `ZFC235_Construction_2026-10-19.zip` as Source 115 (placement
+`746e88f2f7`). Batch 178 imported the equality-reduction report and the eight K-family
+packages of `ac1dc06307`, `7bfe07ede0` and `680f058702` as Sources 116–124 of
+[ZFC closure kernels](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-178.md)
+(placement `ad8cbe8249`). The smallest candidate is now the
+[225-state machine](../../Computability/BusyBeaver/Research/ZFC/candidate-k225/README.md).
+No archive is waiting.
+
 ## Queue status after batch 176
 
 Batches 175 and 176 imported `ZFC_Sub237_Research_2026-10-19.zip`,
@@ -872,6 +882,8 @@ ProveIt-era batches (from this directory):
 | 174 | One manuscript from `17ce14c2db`: placement `1c72682b2b` adds source 110, now 110 sources and still 290 reports. 138 members = 58 new files + 76 exact aliases + 4 archive-only; ZIP retired. | `intake-174.md` in the catalogue commit: the same 237 table as Source 106 (credited by the package), with an independent all-tape fold certificate. | this commit | Canonical census only; Source 106's runtime had already been replayed in batch 173. Catalogue PDF rebuilt and checked visually. |
 | 175 | Two manuscripts from `ecb4df12d2` and `0b5fec6980`: placement `cc269f6062` adds sources 111–112, now 112 sources and still 290 reports. 526 members = 249 new + 271 aliases + 6 archive-only; both ZIPs retired. | `f3b8d35049`: Source 111 (no machine below 237) and Source 112 (236 states); intake search below 236 and a 223-node source; candidate published in `91f271fa3e`. | this commit | 236 runtime replays (2,267,815 rules), startup, source graph and fold re-derived; no sound 235 fold found. Catalogue PDF rebuilt and checked visually. |
 | 176 | Two manuscripts from `b272323b09` and `b7d3e41404`: placement `0af33e8d0b` adds sources 113–114, now 114 sources and still 290 reports. 416 members = 218 new + 192 aliases + 6 archive-only; both ZIPs retired. | `3259f56ed5`: both repeat the one 236 table; census of all 236 tables and the combination answer. | this commit | Canonical census; finite screen of Source 112's four rejected 236 tables. |
+| 177 | One manuscript from `0128d662fd`: placement `746e88f2f7` adds source 115, now 115 sources and still 290 reports. 104 members = 72 new + 28 aliases + 1 history alias + 3 archive-only; ZIP retired. | the 235-state machine and why the intake's two-level search missed it | this commit | finite screen and exact startup of the 235; unbounded runtime recorded with batch 178 |
+| 178 | Nine manuscripts from `aaf47dea43`, `ac1dc06307`, `7bfe07ede0` and `680f058702`: placement `ad8cbe8249` adds sources 116–124, now 124 sources and still 290 reports. 2,242 members = 1,006 new + 1,207 aliases + 1 history alias + 28 archive-only; all ZIPs retired. | census of the K-family tables, decoder accounting, the corrected combination analysis and the sub-225 search | this commit | unbounded runtime replays of every distinct K-family table and of the 235; candidate-k225 published |
 
 
 Batches 99 to 113 are the fifteen clusters into which the intake triaged

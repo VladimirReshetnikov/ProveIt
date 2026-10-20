@@ -42,7 +42,14 @@ nine typed callers pass with zero warnings. The internal PA equivalence for
 this exact 240-state machine is now checked too
 ([`BinaryConsistencyRotation240`](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/BinaryConsistencyRotation240.lean), 19 October 2026). See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md).
 
-The smallest **ordinary** candidate is now the [**228-state machine**](candidate-k228/README.md).
+The smallest **ordinary** candidate is now the [**225-state machine**](candidate-k225/README.md) of batch 178
+(Source 124). It deletes K230 states 79, 140, 175, 208 and 229: the two ProveIt engine savings
+below, Source 117's source layout and fold, and a final fold exposed by four rotations. The
+intake replays its unbounded runtime proof (6,656 cases, 1,608,136 rules) and exact startup.
+Source 123's 226 carries a closed Rocq endpoint that the intake has not yet rebuilt. See the
+[batch 178 reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-178.md).
+
+Before it, the [228-state machine](candidate-k228/README.md) was the smallest.
 It starts from Elliot Glazer's [230-state machine](https://github.com/elliotglazer/k230-rocq)
 (commit `3142e4d`), which replaces the calculus by a compact set theory K, equiconsistent
 with ZFC, and has a Rocq proof that it halts iff ZFC is inconsistent. k230 keeps ProveIt's
@@ -55,7 +62,8 @@ or Lean theorem covers the 228 itself. The other four ProveIt savings, down to t
 batch-177 235, sit on axiom subtrees that K does not have.
 
 Within the original calculus the smallest is the 235-state machine of batch 177
-(Source 115), placed in `746e88f2f7`; its reconciliation follows. Before it came the
+(Source 115), placed in `746e88f2f7`; see its
+[reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-177.md). Before it came the
 [**236-state machine**](candidate-rotated236/README.md)
 of batch 175 (Source 112). It applies a closed, node-neutral source rotation to the 237 table, costing four
 decoder rows, and the rotated row `177/1` exposes a fold of state 223 into 182 by the bit to its

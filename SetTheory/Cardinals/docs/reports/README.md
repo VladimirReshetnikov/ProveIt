@@ -3102,3 +3102,14 @@ into 182, is published as
 after an independent replay. Sources 113 and 114 carry the same table. The intake's
 search below 236 found no sound fold, and recorded a 223-node equivalent source. No Lean
 or PA endpoint exists for these tables.
+
+
+Batches 177 and 178 import ten more packages as
+[Source 115](set-theory/zfc-closure-kernels/intake-177.md) and
+[Sources 116–124](set-theory/zfc-closure-kernels/intake-178.md), giving this host **124
+sources** (still 290 reports). Placements `746e88f2f7` and `ad8cbe8249` retire their ZIPs.
+Source 115 reaches 235 states in the original calculus. Sources 117–124 work on Elliot
+Glazer's K230: the smallest is Source 124's
+[225-state machine](../../../../Computability/BusyBeaver/Research/ZFC/candidate-k225/README.md),
+and Source 123's 226 carries a closed Rocq endpoint, not yet rebuilt here. The intake
+replays every distinct table with its own unbounded runtime checker. A rotation-chain search below 225 was paused before it finished; no smaller machine is known.

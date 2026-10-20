@@ -4,8 +4,8 @@ This binary, single-tape machine has **228 working states**, including
 initialization, plus a separate halt state. It starts in state 0 at head 0
 on an all-zero two-way infinite tape. Every transition moves left or right.
 The complete 456-row table is [zfc_k228.tm](zfc_k228.tm).
-**It is the smallest known candidate** whose blank-tape non-halting is equivalent
-to Con(ZFC).
+It was the smallest known candidate until the K-family packages of batch 178; the smallest is
+now the [225-state machine](../candidate-k225/README.md).
 
 It removes two states from Elliot Glazer's 230-state machine
 ([`elliotglazer/k230-rocq`](https://github.com/elliotglazer/k230-rocq), commit
