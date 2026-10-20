@@ -17,6 +17,9 @@ HEADER = {
             "candidate224.k.tm`); labels 79, 140, 175, 191, 208 and 229 are deleted, 230 is terminal."),
     "225": ("The 225-state candidate's table in K230 labels (`inputs/225/table_k230labels.tm` of the\n"
             "Rocq extension); labels 79, 140, 175, 208 and 229 are deleted, 230 is terminal."),
+    "221": ("The 221-state machine's table in K230 labels (`inputs/221/table_k230labels.tm` of the\n"
+            "Rocq extension; native label 254 renamed 230); labels 79, 140, 175, 191, 192, 208, 219,\n"
+            "226 and 229 are deleted, 230 is terminal."),
 }
 
 

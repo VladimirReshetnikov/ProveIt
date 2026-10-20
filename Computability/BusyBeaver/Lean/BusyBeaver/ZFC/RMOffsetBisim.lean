@@ -150,9 +150,13 @@ theorem lookupO_all {f : OEntry → Bool} : ∀ {T : OTree} {j : Nat} {x : OEntr
       · exact lookupO_all h hall.1
       · exact lookupO_all h hall.2
 
+/-- Pointer decoding with room for 511-bit paths (`RMBisim.decode` stops at 127 bits; the 221's
+source tree is 180 deep along the AX chain). On shorter codes the two agree. -/
+def odecode (n : Nat) : List Bool := decodeAux 512 n []
+
 def ogetc (T : OTree) (j : Nat) : Option (List Bool × List Bool × Int) :=
   match lookupO T j with
-  | some (a, b, z, _, _) => some (decode a, decode b, z)
+  | some (a, b, z, _, _) => some (odecode a, odecode b, z)
   | none => none
 
 def countsOk (z z' : Int) (l1 l2 : List Nat) : Bool :=
@@ -174,7 +178,7 @@ def obranchOk (t1 t2 : Tree) (T : OTree) (A B : List Bool) (z : Int) (j : Nat) :
   | _, _, _ => false
 
 def oentryOk (t1 t2 : Tree) (T : OTree) (x : OEntry) : Bool :=
-  match tsite t1 (decode x.1), tsite t2 (decode x.2.1) with
+  match tsite t1 (odecode x.1), tsite t2 (odecode x.2.1) with
   | some (.halt, _), some (.halt, _) => true
   | some (.decnz r1, Q1), some (.decnz r2, Q2) =>
       Nat.beq r1 r2 && delta x.2.2.1 r1 == 0 &&
@@ -208,13 +212,13 @@ theorem obranchOk_good {t1 t2 : Tree} {T : OTree} {A B : List Bool} {z : Int} {j
   exact ⟨l1, P1, l2, P2, z', h1, h2, countsOk_ok hc, j, h3⟩
 
 theorem oentryOk_good {t1 t2 : Tree} {T : OTree} {x : OEntry} (h : oentryOk t1 t2 T x = true) :
-    OEntryGood t1 t2 (ORel T) (decode x.1) (decode x.2.1) x.2.2.1 := by
+    OEntryGood t1 t2 (ORel T) (odecode x.1) (odecode x.2.1) x.2.2.1 := by
   unfold oentryOk at h
   revert h
-  cases h1 : tsite t1 (decode x.1) with
+  cases h1 : tsite t1 (odecode x.1) with
   | none => intro h; cases h
   | some eQ1 =>
-  cases h2 : tsite t2 (decode x.2.1) with
+  cases h2 : tsite t2 (odecode x.2.1) with
   | none => obtain ⟨e1, _⟩ := eQ1; cases e1 <;> intro h <;> cases h
   | some eQ2 =>
   obtain ⟨e1, Q1⟩ := eQ1
