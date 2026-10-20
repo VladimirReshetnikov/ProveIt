@@ -73,6 +73,20 @@ search](k218-continuation-search/rotation-folds/README.md) tests 282,416 fold
 specifications after 25 closed rotations without a survivor; its bounds do
 not imply minimality.
 
+A [217-state marker relay](k218-continuation-search/marker-relay/README.md)
+repairs one bootstrap route and has proved local return lemmas, but its full
+runtime attempt fails at source ordinal 4569. A literal counterexample
+confirms that failure; this table is not an accepted contender. The
+[retagging obstruction](k218-continuation-search/marker-relay/retag-obstruction/proof.md)
+explains why changing that short backward jump from `CC2` to `CC3` cannot
+preserve the same instruction order and control-flow edges.
+A separately reviewed [protected-tail seed theorem](k217-protected-tail-seed/README.md)
+shows that the enumerator, starting at candidate zero or one with an empty
+proof-list pointer, never reads its initial stack. This permits arbitrary
+initial stack contents when the current formula and cache are theorems.
+It supplies an ordinary startup route after the relay's complete AX suffix,
+conditional on the still-missing correct binary runtime.
+
 On the formalism side, [K/S with mixed commutation](k218-ks-mixed-commutation/README.md)
 has a reviewed ordinary equiconsistency proof: co-translating formula codes
 and numeric labels preserves the literal gated bundle and gives finite
@@ -84,6 +98,11 @@ and [K/S+QS](k218-quantifier-stability/source-span-dp/README.md) source searches
 reach 209 and 208 distinct subtrees. [Context-aware allocation diagnostics](k218-context-allocation/README.md)
 explain why these source counts do not directly translate to machine savings.
 Neither theory has yet produced a smaller verified machine.
+The [K/S-only gap](k218-ks-mixed-commutation/ks-only-gap/README.md)
+isolates the remaining quantified commutation problem. The separate
+[restricted rho8 with explosion](k218-hf-efq/README.md) investigation derives
+closed-theorem double-negation elimination, but has no full consistency
+calibration or machine saving yet.
 The [five-value model](k219-fourth-parameter/finite-matrix/README.md)
 now excludes every membership-fourth restriction of rho8, even their union,
 while retaining the other native rows; adding K or explosion is outside
