@@ -1,0 +1,37 @@
+--- search.py
++++ search_v2.py
+@@ -66,6 +66,8 @@
+  ap.add_argument('--output',type=Path,required=True)
+  ap.add_argument('--seconds',type=int,default=1200)
+  ap.add_argument('--max-candidates',type=int,default=350000)
++ ap.add_argument('--filter-radius',type=int,choices=(3,5),default=5)
++ ap.add_argument('--filter-fuel',type=int,choices=(9,97),default=97)
+  a=ap.parse_args()
+  if not __debug__ or os.environ.get('PYTHONOPTIMIZE'):ap.error('Assertions must be enabled')
+  if not 1<=a.seconds<=1200 or not 1<=a.max_candidates<=350000:ap.error('Bounds may only be narrowed')
+@@ -87,7 +89,7 @@
+   for sd in inputs['seeds']:
+    oldpath=(ROOT/sd['path']).resolve();old,start=checker.read(oldpath)
+    assert len(old)==438 and {q for q,b in old}>=set(decoder_states)
+-   inv=checker.domain(old,start,3);paths={};stats={'seed':sd['name'],'attempted':0,'families':{},'filter_rejections':0,'universal_rejections':0,'universal_pass':0,'pairs':0,'matched_branch_pairs':0};allstats.append(stats)
++   inv=checker.domain(old,start,a.filter_radius);paths={};stats={'seed':sd['name'],'attempted':0,'families':{},'filter_rejections':0,'universal_rejections':0,'universal_pass':0,'pairs':0,'matched_branch_pairs':0};allstats.append(stats)
+    for keep,drop in itertools.combinations(decoder_states,2):
+     stats['pairs']+=1;phi=lambda q:keep if q==drop else q
+     new={(q,b):(w,d,phi(z)) for (q,b),(w,d,z) in old.items() if q!=drop}
+@@ -110,7 +112,7 @@
+      total+=1;stats['attempted']+=1;stats['families'][family]=stats['families'].get(family,0)+1
+      new[keep,0]=a0;new[keep,1]=a1
+      candidate={'seed':sd['name'],'id':total,'family':family,'keep':keep,'drop':drop,'rows':[list(a0),list(a1)]}
+-     failure=local_filter(old,new,inv,keep,drop,paths)
++     failure=local_filter(old,new,inv,keep,drop,paths,a.filter_fuel,a.filter_radius)
+      if failure is not None:
+       stats['filter_rejections']+=1;reject({**candidate,'stage':'bounded_filter','witness':failure});continue
+      hitdir=output/f'survivor-{total:06d}';hitdir.mkdir()
+@@ -150,6 +152,6 @@
+    if stop:break
+  finally:failures.close()
+  assert before=={p:digest(Path(p)) for p in before},'Input drift'
+- result={'status':'COMPLETE_BOUNDED_SEARCH' if stop is None else 'INCOMPLETE_'+stop,'seconds':time.monotonic()-started,'candidate_limit':a.max_candidates,'wall_limit':a.seconds,'attempted':total,'seeds':allstats,'hits':hits,'inputs':before,'search_sha256':digest(Path(__file__)),'rejection_stream_sha256':digest(output/'rejections.jsonl.gz'),'scope':'Two exact certified219 tables; unordered decoder-state pairs; inherited actions and all one-branch tag/helper actions when the other branch already agrees. Radius3/fuel9 filter is incomplete. Only radius5/fuel97 unchanged-checker successes are relative all-initial-tape certificates. No source reassociation, numeric sampling claim, global lower bound or proof-assistant endpoint.'}
++ result={'status':'COMPLETE_BOUNDED_SEARCH' if stop is None else 'INCOMPLETE_'+stop,'seconds':time.monotonic()-started,'candidate_limit':a.max_candidates,'wall_limit':a.seconds,'filter_radius':a.filter_radius,'filter_fuel':a.filter_fuel,'attempted':total,'seeds':allstats,'hits':hits,'inputs':before,'search_sha256':digest(Path(__file__)),'rejection_stream_sha256':digest(output/'rejections.jsonl.gz'),'scope':'Two exact certified219 tables; unordered decoder-state pairs; inherited actions and all one-branch tag/helper actions when the other branch already agrees. The explicitly recorded finite-window/fuel filter is incomplete. Only radius5/fuel97 unchanged-checker successes are relative all-initial-tape certificates. No source reassociation, numeric sampling claim, global lower bound or proof-assistant endpoint.'}
+  dump(output/'result.json',result);print(json.dumps(result,indent=2),flush=True)
+ if __name__=='__main__':main()

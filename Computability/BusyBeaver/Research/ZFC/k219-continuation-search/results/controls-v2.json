@@ -1,0 +1,55 @@
+{
+  "status": "SYNTHETIC_NONTRIVIAL_MERGE_CONTROLS_PASS",
+  "positive": {
+    "status": "INDEPENDENT_ALL_TAPE_JOINT_DIAGRAM_PASS",
+    "old_states": 6,
+    "new_states": 5,
+    "start_old": 0,
+    "start_new": 0,
+    "keep": 1,
+    "drop": 2,
+    "radius": 3,
+    "fuel": 9,
+    "inductive_window_contexts": 512,
+    "nontrivial_contexts": 64,
+    "changed_old_rows": [
+      [
+        2,
+        0
+      ],
+      [
+        2,
+        1
+      ]
+    ],
+    "positive_old_new_block_histogram": [
+      [
+        1,
+        1,
+        448
+      ],
+      [
+        3,
+        1,
+        64
+      ]
+    ],
+    "maximum_old_block": 3,
+    "maximum_new_block": 1,
+    "scope": "All binary initial tapes and integer head positions. The original window invariant is independently recomputed and checked inductive. Every original invariant configuration has strictly positive old/new blocks ending in mapped identical state, head, and entire tape, or both halt. No block reads outside its universally quantified finite window before joining. Positive uniformly bounded blocks give halting equivalence, not merely bounded-run agreement."
+  },
+  "negative_filter": {
+    "old_row": [
+      1,
+      0
+    ],
+    "window": 0,
+    "radius": 3,
+    "fuel": 9,
+    "reason": "new_halt_without_old_halt"
+  },
+  "negative_checker": "new halt without proved old halt: (1, 0), window 0",
+  "scope": "Known synthetic3/1 positive merge and invalid early halt. Validates these cases only, not all search rejections.",
+  "source_sha256": "356046fe67c6fa3b51b7a587a1dfb9f88ac45153b913aba77593e66745d1f0c8",
+  "search_source_sha256": "faecd6ad27e40ee0e6db165a38070d02c14aca619cb7267dce84039820624e32"
+}

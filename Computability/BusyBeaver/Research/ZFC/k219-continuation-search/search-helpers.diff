@@ -1,0 +1,31 @@
+--- search_v3.py
++++ search_helpers.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Bounded contextual decoder-state folds of the two certified K219 tables.
++"""Bounded folds involving K219 new/shared helpers 302, 301 or 108.
+ 
+ The fast finite-window join filter is only a discovery filter. Every retained
+ candidate is independently passed through the unchanged Source139 universal
+@@ -91,8 +91,12 @@
+   for sd in inputs['seeds']:
+    oldpath=(ROOT/sd['path']).resolve();old,start=checker.read(oldpath)
+    assert len(old)==438 and {q for q,b in old}>=set(decoder_states)
++   working_states={q for q,b in old};anchors=(302,301,108)
++   assert set(anchors)<=working_states and start not in anchors
++   pairs=sorted({tuple(sorted((anchor,q))) for anchor in anchors for q in working_states-{start,anchor}})
++   assert len(pairs)==648
+    inv=checker.domain(old,start,a.filter_radius);paths={};stats={'seed':sd['name'],'attempted':0,'families':{},'filter_rejections':0,'universal_rejections':0,'universal_pass':0,'pairs':0,'matched_branch_pairs':0};allstats.append(stats)
+-   for keep,drop in itertools.combinations(decoder_states,2):
++   for keep,drop in pairs:
+     stats['pairs']+=1;phi=lambda q:keep if q==drop else q
+     new={(q,b):(w,d,phi(z)) for (q,b),(w,d,z) in old.items() if q!=drop}
+     actions=[sorted({(old[q,b][0],old[q,b][1],phi(old[q,b][2])) for q in (keep,drop)}) for b in (0,1)]
+@@ -154,6 +158,6 @@
+    if stop:break
+  finally:failures.close()
+  assert before=={p:digest(Path(p)) for p in before},'Input drift'
+- result={'status':'COMPLETE_BOUNDED_SEARCH' if stop is None else 'INCOMPLETE_'+stop,'seconds':time.monotonic()-started,'candidate_limit':a.max_candidates,'wall_limit':a.seconds,'filter_radius':a.filter_radius,'filter_fuel':a.filter_fuel,'attempted':total,'seeds':allstats,'hits':hits,'inputs':before,'search_sha256':digest(Path(__file__)),'rejection_stream_sha256':digest(output/'rejections.jsonl.gz'),'scope':'Two exact certified219 tables; unordered decoder-state pairs; inherited actions and all one-branch tag/helper actions when the other branch already agrees. The explicitly recorded finite-window/fuel filter is incomplete. Only explicitly recorded radius/fuel97 unchanged-checker successes are relative all-initial-tape certificates. No source reassociation, numeric sampling claim, global lower bound or proof-assistant endpoint.'}
++ result={'status':'COMPLETE_BOUNDED_SEARCH' if stop is None else 'INCOMPLETE_'+stop,'seconds':time.monotonic()-started,'candidate_limit':a.max_candidates,'wall_limit':a.seconds,'filter_radius':a.filter_radius,'filter_fuel':a.filter_fuel,'anchor_states':[302,301,108],'pair_count_per_seed':648,'attempted':total,'seeds':allstats,'hits':hits,'inputs':before,'search_sha256':digest(Path(__file__)),'rejection_stream_sha256':digest(output/'rejections.jsonl.gz'),'scope':'Two exact certified219 tables; all unordered noninitial working-state pairs involving 302,301 or108; inherited actions and all one-branch tag/helper actions when the other branch already agrees. The explicitly recorded finite-window/fuel filter is incomplete. Only explicitly recorded radius/fuel97 unchanged-checker successes are relative all-initial-tape certificates. No source reassociation, numeric sampling claim, global lower bound or proof-assistant endpoint.'}
+  dump(output/'result.json',result);print(json.dumps(result,indent=2),flush=True)
+ if __name__=='__main__':main()
