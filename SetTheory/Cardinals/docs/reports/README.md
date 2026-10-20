@@ -3146,4 +3146,29 @@ Batch 183 imports [Sources 132–136](set-theory/zfc-closure-kernels/intake-183.
 host **136 sources** (still 290 reports). Placement `c92e98e674` retires their ZIPs. Source 132's
 [221-state machine](../../../../Computability/BusyBeaver/Research/ZFC/candidate-k221/README.md)
 is now the smallest known candidate: three source rotations and one tag fold on the seed-K 222.
-The four 222 packages reproduce the intake's two 222s. No proof assistant checks these yet.
+The four 222 packages reproduce the intake's two 222s. The subsequent closed Rocq check of the exact Source-132 table is recorded in its candidate README; that later result does not cover the rewritten alternatives below.
+
+
+Batch 184's [Source 137](set-theory/zfc-closure-kernels/intake-184.md) was placed in
+`abae578c29`; this catalogue completes its delayed reconciliation. All 191 members remain
+accounted for, including 156 new ancillary files and recoverable manuscript originals.
+Its three literal 221-state continuation variants preserve all-tape halting from state 0;
+conditional source simplifications, counterexamples and failed smaller experiments are
+retained with their hypotheses. Its delivered replay receipts are distinguished from fresh
+intake work.
+
+Batch 185 imports [Sources 138–139](set-theory/zfc-closure-kernels/intake-185.md), bringing
+the host to **139 sources** and leaving the collection at **290 reports**. Placement
+`de06ba50be` accounts for all 175 members and retires both ZIPs. Source 138's
+[220-state machine](../../../../Computability/BusyBeaver/Research/ZFC/candidate-k220/README.md)
+re-encodes a nonpure decoder edge, reassociates closed source blocks and shares two
+contextually distinguishable controls. It preserves the complete primitive program and
+calculus. The intake freshly replays its 6,167 unbounded runtime cases, exact 409,835-step
+startup and independent audit. Source 139 adds three same-size continuation alternatives,
+with fresh macro/window proofs and complete startups. The new 220 tables have ordinary
+mathematical proofs and executable symbolic certificates, not new literal-table Lean/Rocq
+or internal PA endpoints. Source 132's separately checked 221-state Rocq endpoint remains
+stated beside them. Research specimens and bounded negative searches remain explicitly
+uncertified. Both 220 archives are retired; the new 219-state delivery at `26d5de6d21`
+awaits its separate batch 186 intake. All original packages remain recoverable from
+arrival commits and exhaustive placement maps.
