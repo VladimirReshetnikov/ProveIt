@@ -19,9 +19,23 @@ K221F.CorrectDense221.tm221_halts_iff_ZFC_inconsistent :
 
 Here `dense_tm` is [zfc_k221.tm](zfc_k221.tm). The theorem is closed under the global context,
 and `coqchk` independently rechecked it against Elliot Glazer's K230 development
-(`PASS_CLOSED_KERNEL`, 2026-10-20). It is an external Rocq theorem: no Lean theorem covers this
-table yet, and there is no proof internal to PA. No absolute consistency, unconditional
-non-halting or minimality is claimed.
+(`PASS_CLOSED_KERNEL`, 2026-10-20).
+
+**A closed Lean theorem covers the same table** ([`KLower221`](../../../Lean/BusyBeaver/ZFC/KLower221.lean),
+2026-10-20):
+
+```lean
+KLower221.blank_halts_iff_zfc_refutation :
+  BlankHalts machine221 ↔ BProv ZFCax_s [] Form.fBot
+```
+
+Here `machine221` ([`KDense221`](../../../Lean/BusyBeaver/ZFC/KDense221.lean)) is the literal
+442-row table of [zfc_k221.tm](zfc_k221.tm), and `BlankHalts` is the blank-tape run of
+ProveIt's `Core` machine semantics. The proof uses only `propext`, `Classical.choice` and
+`Quot.sound`. Its layers are described in [k225-formal](../k225-formal/README.md#lean).
+
+Both are external theorems; there is no proof internal to PA. No absolute consistency,
+unconditional non-halting or minimality is claimed.
 
 ## What saves the state
 

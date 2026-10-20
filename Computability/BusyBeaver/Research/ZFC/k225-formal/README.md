@@ -1,10 +1,16 @@
 # Formal endpoints for the K-family candidates
 
-**Current state (2026-10-20).** The smallest candidate, the [221](../candidate-k221/README.md), has a
-closed Rocq endpoint, `K221F.CorrectDense221.tm221_halts_iff_ZFC_inconsistent`, which `coqchk`
-independently rechecked ([rocq/](rocq/README.md)). Its calculus and program layer are in
-[rocq224/](rocq224/README.md). The Lean endpoint is in progress (layers below). The rest of this
-page records the earlier 225/224 plan.
+**Current state (2026-10-20).** The smallest candidate, the [221](../candidate-k221/README.md), has
+two closed endpoints for its exact table:
+
+* **Rocq**: `K221F.CorrectDense221.tm221_halts_iff_ZFC_inconsistent`, which `coqchk`
+  independently rechecked ([rocq/](rocq/README.md)); its calculus and program layer are in
+  [rocq224/](rocq224/README.md);
+* **Lean**: `KLower221.blank_halts_iff_zfc_refutation : BlankHalts machine221 ↔ BProv ZFCax_s [] ⊥`,
+  axioms `propext`, `Classical.choice`, `Quot.sound` ([below](#lean)).
+
+The rest of this page records the earlier 225/224 plan, except the Lean section, which describes
+the 221's endpoint.
 
 
 The [224](../candidate-k224/README.md) (Source 125) supersedes the 225 as the smallest
@@ -42,22 +48,38 @@ target (1,093 s). The buildable extension, the receipts and the toolchain notes 
 
 ## Lean
 
-The statement reaches StandardZFC through K. ProveIt's Lean already has ports of Jeff's ZF/ZFC
-chain (Tarski completeness, quotient models, the Choice and Foundation calibration) and of the
-register-program machinery. Elliot's K-specific Rocq development has no Lean counterpart yet. The
-work splits into three layers.
+The 221's Lean endpoint is closed:
 
-| Layer | Statement | Route | Status |
-| --- | --- | --- | --- |
-| **A. Source** | `Halts p225 ⟨[], R⟩ ↔ Halts p230 ⟨[], R⟩` for every register file | [`RMOffsetBisim`](../../../Lean/BusyBeaver/ZFC/RMOffsetBisim.lean) (an offset extension of `RMBisim`) plus the generated [`KSource225`](../../../Lean/BusyBeaver/ZFC/KSource225.lean): the certificate and its mirror, kernel-checked in 16 chunks each | **done**: `KSource225.p225_halts_iff`, axioms `propext` and `Quot.sound` only ([audit](../../../Lean/BusyBeaver/ZFC/KSource225Audit.lean)); the module compiles in about 15 minutes |
-| **B. Machine** | blank halting of the 225 ↔ `Halts p225` from the startup registers `(3,0,0,0,3,0,0,0,0)` | port Elliot's TM side (`Runtime230Core`, `Tape230Blocks`, `Tape230Carry`, `Interpreter230Sites/Check`, `Sim230`, `Boot230`; about 2,800 hand-written lines). It checks every leaf by computation over the program tree, so it is table-parametric, unlike the 561 generated coverage modules of the 240 | **in progress.** Done: [`KZip`](../../../Lean/BusyBeaver/ZFC/KZip.lean) (trimmed list zippers, the counterpart of `Zip`/`TM230`); [`KRuntimeCore`](../../../Lean/BusyBeaver/ZFC/KRuntimeCore.lean) (the run-length symbolic executor, `exec_sound`, `sMatches_conc`); [`KTableCore`](../../../Lean/BusyBeaver/ZFC/KTableCore.lean) and the generated [`KTable230`](../../../Lean/BusyBeaver/ZFC/KTable230.lean)/[`KTable225`](../../../Lean/BusyBeaver/ZFC/KTable225.lean) ([`generate_tables_lean.py`](generate_tables_lean.py)); [`KTape`](../../../Lean/BusyBeaver/ZFC/KTape.lean) (`boxLemmas`: the four register routines, proved once for every table that agrees with K230 on the 23 engine states they read); [`KEngine225`](../../../Lean/BusyBeaver/ZFC/KEngine225.lean) (the 225 agrees, by `decide`) and [`KEngine224`](../../../Lean/BusyBeaver/ZFC/KEngine224.lean) (so does the 224). Next: the site checks, `Sim230`, `Boot230` |
-| **C1. Program → K** | `Halts p230` from the seed ↔ the K numerical calculus derives falsity | port Elliot's `coq/logic` (14 files, about 1,500 lines) and the program-to-enumerator part of `coq/prog`; reuse ProveIt's `Code254`, `Enum254` and `L2*` ports where K230 keeps Jeff's structure | to do |
-| **C2. K ↔ ZFC** | K's calculus proves falsity ↔ StandardZFC proves falsity | port Elliot's `coq/settheory` (61 files, about 6,100 lines: `KPrime*`, `KDecode*`, `KQuot*`, `KUpper*`); reuse ProveIt's ports of Jeff's quotient, well-founded and Choice calibration (`Quotient*`, `WFTheory`, `ChoiceCalibration254`, `ConstructibleChoice`) | to do |
+```lean
+KLower221.blank_halts_iff_zfc_refutation :
+  BlankHalts machine221 ↔ BProv ZFCax_s [] Form.fBot
+```
 
-The Lean endpoint composes A, B, C1 and C2. Layers B, C1 and C2 are independent ports and can
-proceed in parallel. Each needs the exact upstream statements it consumes pinned to
-`3142e4d`, and each should keep Elliot's file structure, so that the correspondence stays
-auditable.
+`machine221` is the literal 442-row table of [zfc_k221.tm](../candidate-k221/zfc_k221.tm), and
+`BlankHalts` is the blank-tape run of the repository's `Core` semantics (as for the 240). The
+proof uses `propext`, `Classical.choice` and `Quot.sound` only. Where Elliot Glazer's Rocq
+derives K's ZF interpretation syntactically, the Lean lower chain works with models.
+
+| Layer | Statement | Modules |
+| --- | --- | --- |
+| **Dense bridge** | the literal `Machine 221` halts on the blank tape iff its K230-label table `tm221` does | [`KDenseBridge`](../../../Lean/BusyBeaver/ZFC/KDenseBridge.lean) (generic), [`KDense221`](../../../Lean/BusyBeaver/ZFC/KDense221.lean) (`commutes`: all 442 rows, one kernel check), [`KTable221`](../../../Lean/BusyBeaver/ZFC/KTable221.lean) |
+| **Boot** | from the blank tape `tm221` reaches state 84 with the boot registers (`nextproof = 3`, `param1 = 3`) and 167 spare blocks after 409,835 steps | [`KBoot`](../../../Lean/BusyBeaver/ZFC/KBoot.lean), [`KFast221`](../../../Lean/BusyBeaver/ZFC/KFast221.lean) (balanced lookup tree), [`KBoot221`](../../../Lean/BusyBeaver/ZFC/KBoot221.lean) and 31 chunks of 2^14 steps |
+| **Sites** | every one of the 4,744 decoder leaves of the 221's source passes the symbolic site check | [`KSim`](../../../Lean/BusyBeaver/ZFC/KSim.lean) (`checkEdge`, port of `Interpreter230Sites/Check`), [`KSites221`](../../../Lean/BusyBeaver/ZFC/KSites221.lean) and 9 batches (106 kernel blocks) |
+| **Simulation** | the register program halts iff the machine does, from related configurations | [`KSim`](../../../Lean/BusyBeaver/ZFC/KSim.lean) (`halts_iff`, port of `Sim230`/`Sim230Main`), with K230's register lemmas ([`KTape`](../../../Lean/BusyBeaver/ZFC/KTape.lean), [`KEngine221`](../../../Lean/BusyBeaver/ZFC/KEngine221.lean)) and the symbolic executor ([`KRuntimeCore`](../../../Lean/BusyBeaver/ZFC/KRuntimeCore.lean)) |
+| **Source** | the 221's source halts from the boot registers iff `dag222` does iff `C222 F` | [`KSource221`](../../../Lean/BusyBeaver/ZFC/KSource221.lean) (WF tables, 2,247-entry offset certificate and mirror), [`Seed222`](../../../Lean/BusyBeaver/ZFC/Seed222.lean), [`L2Root222`](../../../Lean/BusyBeaver/ZFC/L2Root222.lean), [`Enum222`](../../../Lean/BusyBeaver/ZFC/Enum222.lean) |
+| **Upper bound** | `C222 F → ZF ⊢ ⊥` | [`KUpper222`](../../../Lean/BusyBeaver/ZFC/KUpper222.lean) (the seed property holds in L by reflection) |
+| **Lower chain** | `ZF ⊢ ⊥ → C222 F` | [`KEind222`](../../../Lean/BusyBeaver/ZFC/KEind222.lean) (`c222_complete`), [`KSeedModel222`](../../../Lean/BusyBeaver/ZFC/KSeedModel222.lean) (models of the derivable formulas have the seed property for equality-free relations), [`KIndisc222`](../../../Lean/BusyBeaver/ZFC/KIndisc222.lean) (indiscernibility quotient: all relations), [`KLowerSeed`](../../../Lean/BusyBeaver/ZFC/KLowerSeed.lean), [`KLowerRaw`](../../../Lean/BusyBeaver/ZFC/KLowerRaw.lean) (raw sets), [`KLowerRel`](../../../Lean/BusyBeaver/ZFC/KLowerRel.lean) / [`KLowerTag`](../../../Lean/BusyBeaver/ZFC/KLowerTag.lean) (the tagged domain `D_t`), [`KLowerEqv`](../../../Lean/BusyBeaver/ZFC/KLowerEqv.lean) / [`KLowerQHyp`](../../../Lean/BusyBeaver/ZFC/KLowerQHyp.lean) (coded bisimilarity; `D_t` satisfies [`KQHyp`](../../../Lean/BusyBeaver/ZFC/KQHyp.lean)), [`KProfileTC`](../../../Lean/BusyBeaver/ZFC/KProfileTC.lean) and `KQ1*` (the repository's quotient modules re-run on that interface), [`KQ1ZF`](../../../Lean/BusyBeaver/ZFC/KQ1ZF.lean) (ZF in the well-founded part) |
+| **Endpoint** | the composition, and ZF ↔ ZFC refutation | [`KEndpoint221`](../../../Lean/BusyBeaver/ZFC/KEndpoint221.lean), [`KLower221`](../../../Lean/BusyBeaver/ZFC/KLower221.lean) |
+
+The generators are in this directory: `generate_tables_lean.py`, `generate_dense221_lean.py`,
+`generate_boot221_lean.py`, `generate_sites221_lean.py`, `generate_source221_lean.py`,
+`generate_profile_tc.py` (six profile lemmas weakened to transitive containers) and
+`generate_kq1.py` (the quotient modules on the `QHyp` interface). Generated data is untrusted;
+the kernel re-checks it. The certificate decoder of `RMOffsetBisim` reads paths of up to 511 bits,
+since the AX chain of `dag222` makes decoder paths 180 bits deep (`RMBisim.decode` stops at 127).
+
+Compile times on this machine: `KSource221` about 60 minutes, the boot chunks about 20 seconds
+each, the site batches about 3 minutes each; everything else is seconds.
 
 Build rule on this machine: one Lean module per `lake` invocation, one build at a time machine
 wide (see the BusyBeaver build notes).
