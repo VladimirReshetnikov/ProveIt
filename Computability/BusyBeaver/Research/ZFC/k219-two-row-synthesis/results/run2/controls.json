@@ -1,0 +1,58 @@
+{
+  "status": "PASS",
+  "all_complete_tables": 576,
+  "survivors": 6,
+  "synthesis": {
+    "partial_checks": 169,
+    "rejection_leaves": 156,
+    "covered_rejections": 570,
+    "survivors": 6,
+    "pruned_by_assigned_count": {
+      "0": 0,
+      "1": 18,
+      "2": 138
+    },
+    "expected_complete_tables": 576,
+    "status": "COMPLETE"
+  },
+  "independent_positive": {
+    "status": "INDEPENDENT_ALL_TAPE_JOINT_DIAGRAM_PASS",
+    "old_states": 6,
+    "new_states": 5,
+    "start_old": 0,
+    "start_new": 0,
+    "keep": 1,
+    "drop": 2,
+    "radius": 3,
+    "fuel": 97,
+    "inductive_window_contexts": 512,
+    "nontrivial_contexts": 64,
+    "changed_old_rows": [
+      [
+        2,
+        0
+      ],
+      [
+        2,
+        1
+      ]
+    ],
+    "positive_old_new_block_histogram": [
+      [
+        1,
+        1,
+        448
+      ],
+      [
+        3,
+        1,
+        64
+      ]
+    ],
+    "maximum_old_block": 3,
+    "maximum_new_block": 1,
+    "scope": "All binary initial tapes and integer head positions. The original window invariant is independently recomputed and checked inductive. Every original invariant configuration has strictly positive old/new blocks ending in mapped identical state, head, and entire tape, or both halt. No block reads outside its universally quantified finite window before joining. Positive uniformly bounded blocks give halting equivalence, not merely bounded-run agreement."
+  },
+  "independent_negative": "new halt without proved old halt: (1, 0), window 0",
+  "scope": "Exact agreement with exhaustive prior filter on all 576 synthetic tables; independent known 3/1 merge and early-halt negative control only."
+}
