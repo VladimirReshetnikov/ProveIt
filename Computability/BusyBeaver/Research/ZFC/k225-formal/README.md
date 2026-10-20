@@ -1,4 +1,8 @@
-# Formal endpoints for the 225-state candidate
+# Formal endpoints for the 225- and 224-state candidates
+
+The [224](../candidate-k224/README.md) (Source 125) supersedes the 225 as the smallest
+candidate, so it is the target. The 225's endpoints are built first, because everything they
+need carries over except the 224's new logic; see [Retargeting to the 224](#retargeting-to-the-224).
 
 Target: for the exact table of [candidate-k225](../candidate-k225/README.md) (canonical SHA-256
 `f5d69a16…`), prove
@@ -39,7 +43,7 @@ work splits into three layers.
 | Layer | Statement | Route | Status |
 | --- | --- | --- | --- |
 | **A. Source** | `Halts p225 ⟨[], R⟩ ↔ Halts p230 ⟨[], R⟩` for every register file | [`RMOffsetBisim`](../../../Lean/BusyBeaver/ZFC/RMOffsetBisim.lean) (an offset extension of `RMBisim`) plus the generated [`KSource225`](../../../Lean/BusyBeaver/ZFC/KSource225.lean): the certificate and its mirror, kernel-checked in 16 chunks each | **done**: `KSource225.p225_halts_iff`, axioms `propext` and `Quot.sound` only ([audit](../../../Lean/BusyBeaver/ZFC/KSource225Audit.lean)); the module compiles in about 15 minutes |
-| **B. Machine** | blank halting of the 225 ↔ `Halts p225` from the startup registers `(3,0,0,0,3,0,0,0,0)` | port Elliot's TM side (`Runtime230Core`, `Tape230Blocks`, `Tape230Carry`, `Interpreter230Sites/Check`, `Sim230`, `Boot230`; about 2,800 hand-written lines). It checks every leaf by computation over the program tree, so it is table-parametric, unlike the 561 generated coverage modules of the 240 | **in progress.** Done: [`KZip`](../../../Lean/BusyBeaver/ZFC/KZip.lean) (trimmed list zippers, the counterpart of `Zip`/`TM230`); [`KRuntimeCore`](../../../Lean/BusyBeaver/ZFC/KRuntimeCore.lean) (the run-length symbolic executor, `exec_sound`, `sMatches_conc`); [`KTableCore`](../../../Lean/BusyBeaver/ZFC/KTableCore.lean) and the generated [`KTable230`](../../../Lean/BusyBeaver/ZFC/KTable230.lean)/[`KTable225`](../../../Lean/BusyBeaver/ZFC/KTable225.lean) ([`generate_tables_lean.py`](generate_tables_lean.py)); [`KTape`](../../../Lean/BusyBeaver/ZFC/KTape.lean) (`boxLemmas`: the four register routines, proved once for every table that agrees with K230 on the 23 engine states they read); [`KEngine225`](../../../Lean/BusyBeaver/ZFC/KEngine225.lean) (the 225 agrees, by `decide`). Next: the site checks, `Sim230`, `Boot230` |
+| **B. Machine** | blank halting of the 225 ↔ `Halts p225` from the startup registers `(3,0,0,0,3,0,0,0,0)` | port Elliot's TM side (`Runtime230Core`, `Tape230Blocks`, `Tape230Carry`, `Interpreter230Sites/Check`, `Sim230`, `Boot230`; about 2,800 hand-written lines). It checks every leaf by computation over the program tree, so it is table-parametric, unlike the 561 generated coverage modules of the 240 | **in progress.** Done: [`KZip`](../../../Lean/BusyBeaver/ZFC/KZip.lean) (trimmed list zippers, the counterpart of `Zip`/`TM230`); [`KRuntimeCore`](../../../Lean/BusyBeaver/ZFC/KRuntimeCore.lean) (the run-length symbolic executor, `exec_sound`, `sMatches_conc`); [`KTableCore`](../../../Lean/BusyBeaver/ZFC/KTableCore.lean) and the generated [`KTable230`](../../../Lean/BusyBeaver/ZFC/KTable230.lean)/[`KTable225`](../../../Lean/BusyBeaver/ZFC/KTable225.lean) ([`generate_tables_lean.py`](generate_tables_lean.py)); [`KTape`](../../../Lean/BusyBeaver/ZFC/KTape.lean) (`boxLemmas`: the four register routines, proved once for every table that agrees with K230 on the 23 engine states they read); [`KEngine225`](../../../Lean/BusyBeaver/ZFC/KEngine225.lean) (the 225 agrees, by `decide`) and [`KEngine224`](../../../Lean/BusyBeaver/ZFC/KEngine224.lean) (so does the 224). Next: the site checks, `Sim230`, `Boot230` |
 | **C1. Program → K** | `Halts p230` from the seed ↔ the K numerical calculus derives falsity | port Elliot's `coq/logic` (14 files, about 1,500 lines) and the program-to-enumerator part of `coq/prog`; reuse ProveIt's `Code254`, `Enum254` and `L2*` ports where K230 keeps Jeff's structure | to do |
 | **C2. K ↔ ZFC** | K's calculus proves falsity ↔ StandardZFC proves falsity | port Elliot's `coq/settheory` (61 files, about 6,100 lines: `KPrime*`, `KDecode*`, `KQuot*`, `KUpper*`); reuse ProveIt's ports of Jeff's quotient, well-founded and Choice calibration (`Quotient*`, `WFTheory`, `ChoiceCalibration254`, `ConstructibleChoice`) | to do |
 
@@ -50,3 +54,25 @@ auditable.
 
 Build rule on this machine: one Lean module per `lake` invocation, one build at a time machine
 wide (see the BusyBeaver build notes).
+
+## Retargeting to the 224
+
+The 224 keeps the K-family engine and changes the source. Its source enumerates the theorems
+of a calculus **K′**, not K. K′ cancels four double-negation pairs in K's formula and bundle,
+and it replaces equality vacuity by the canonical helper
+`Eq(a,b) → All(RelCode(a,b), Eq(a,b))` with `RelCode(a,b) = 4·P(a,b) + 1`. Then three
+rotations and the fold 191 → 157 save the state. The package
+(`portable/theory/` of Source 125) argues every step on paper.
+
+| Piece | For the 224 |
+| --- | --- |
+| TM side: runtime, register lemmas, interpreter, simulation, boot (Rocq forks; Lean layer B) | **carries over.** The checks run by computation on the literal table. The 224 agrees with K230 on the register states (`KEngine224`), and its startup is the same 409,835 steps. The Rocq forks are regenerated with K labels 79, 140, 175, 191, 208 and 229 disabled. |
+| Source: p224 against a program for K′ | **new.** p224 is not bisimilar to K230's source, since it emits different formulas. It is to be related to a K′ enumerator: the emitter contract, the fusion certificate (1,563 nodes) and eleven local register-program bisimulations ([`enumerator_adaptation.md`](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/125-k224-portable-theory-enumerator_adaptation.md)). |
+| Program → calculus | **adapted.** Elliot's `Enum230`/`L1_Comp230` interfaces with the gated bundle replaced, as in the note above. |
+| K′ ⊢ ⊥ ⇒ K ⊢ ⊥ | **new, easy.** The fused formulas are classically equivalent to K's, and the helper is an instance of K's vacuity. |
+| K ⊢ ⊥ ⇒ K′ ⊢ ⊥ | **new, the main work.** The equality-indiscernibility argument: Source 116's restricted-helper bootstrap plus a K-specific matrix/binder coupling ([`k_equality_helper_extension.md`](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/125-k224-portable-theory-k_equality_helper_extension.md); certificate: 68 closed roots, 59,947 nodes). |
+| K ↔ ZFC | **unchanged.** Elliot's `settheory` in Rocq; layer C2 in Lean. |
+
+Order of work: finish Lean layer B, which serves both tables. In Rocq, add the 224's K′
+calibration on top of Elliot's development and an adapted enumerator. Then compose with the
+regenerated TM side, as the 225 extension does.

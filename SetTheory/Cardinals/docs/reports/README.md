@@ -3113,3 +3113,12 @@ Glazer's K230: the smallest is Source 124's
 [225-state machine](../../../../Computability/BusyBeaver/Research/ZFC/candidate-k225/README.md),
 and Source 123's 226 carries a closed Rocq endpoint, not yet rebuilt here. The intake
 replays every distinct table with its own unbounded runtime checker. A rotation-chain search below 225 was paused before it finished; no smaller machine is known.
+
+Batch 179 imports two more packages as
+[Sources 125–126](set-theory/zfc-closure-kernels/intake-179.md), giving this host **126
+sources** (still 290 reports). Placement `4a59278837` retires their ZIPs. Source 125's
+[224-state machine](../../../../Computability/BusyBeaver/Research/ZFC/candidate-k224/README.md)
+is now the smallest known candidate; it searches a variant K′ of Elliot Glazer's K. Source 126
+is a second 225 with double negation normalized. The intake rebuilt the pinned Rocq 9.1.0 and
+rechecked Source 124's 225 end to end with `coqchk`, so the 225 is the smallest table with a
+kernel-checked endpoint. No proof assistant checks the 224 yet.

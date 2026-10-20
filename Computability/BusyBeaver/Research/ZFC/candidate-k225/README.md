@@ -3,7 +3,8 @@
 This binary, single-tape machine has **225 working states**, including initialization, plus
 a separate halt state. It starts in state 0 at head 0 on an all-zero two-way infinite tape.
 Every transition moves left or right. The complete 450-row table is [zfc_k225.tm](zfc_k225.tm).
-**It is the smallest known candidate** whose blank-tape non-halting is equivalent to Con(ZFC).
+It was the smallest known candidate until the [224](../candidate-k224/README.md) (Source 125),
+and it is **the smallest with a kernel-checked endpoint**: its Rocq theorem passes `coqchk`.
 
 It is Source 124 of the ZFC closure-kernels host (arrival `680f058702`; see the
 [batch 178 reconciliation](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-178.md)).
@@ -20,10 +21,15 @@ It composes three parts:
 - the delivered source and fold certificates, back to k230's source, whose Rocq theorem
   supplies the calibration.
 
-**No Rocq or Lean theorem exists for this table**, and no proof internal to PA. The smallest
-table with a closed Rocq endpoint is Source 123's 226 (`K226F.CorrectDense226`, not yet
-rebuilt here). No absolute consistency, unconditional non-halting, minimality, or two-sided
-independence from bare consistency is claimed.
+**Rocq endpoint.** `K225F.CorrectDense225.tm225_halts_iff_ZFC_inconsistent` states
+`Dense.halts dense_tm Dense.c0 ↔ StandardZFC ⊢TC ⊥` for the literal table above. It is closed
+under the global context, and `coqchk` independently rechecked it (`PASS_CLOSED_KERNEL`,
+2026-10-19). It extends Source 123's K226F extension; the sources, receipts and toolchain notes
+are in [k225-formal/rocq](../k225-formal/rocq/README.md). The Lean endpoint is in progress
+([k225-formal](../k225-formal/README.md)): the source equivalence (layer A) is proved, and the
+machine layer is under way. No proof internal to PA exists. No absolute consistency,
+unconditional non-halting, minimality, or two-sided independence from bare consistency is
+claimed.
 
 ## How the states are saved
 

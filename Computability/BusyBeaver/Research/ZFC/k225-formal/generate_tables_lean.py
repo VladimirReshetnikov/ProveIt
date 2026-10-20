@@ -2,6 +2,7 @@
 
   python generate_tables_lean.py K230.tm 230 OUT_DIR
   python generate_tables_lean.py table_k230labels.tm 225 OUT_DIR
+  python generate_tables_lean.py candidate224.k.tm 224 OUT_DIR
 
 The input is a `.tm` file in K230 labels (`q b w d n` rows). Labels without rows (K230's terminal
 state 230, and the labels a variant deletes) become `(none, none)`. The output module
@@ -12,6 +13,8 @@ import os, sys
 HEADER = {
     "230": ("K230's frozen table (Elliot Glazer's k230-rocq, `machine/k230.tm`, commit `3142e4d`),\n"
             "in K230's own labels; label 230 is the terminal state."),
+    "224": ("The 224-state candidate's table in K labels (Source 125, `portable/machine/results/\n"
+            "candidate224.k.tm`); labels 79, 140, 175, 191, 208 and 229 are deleted, 230 is terminal."),
     "225": ("The 225-state candidate's table in K230 labels (`inputs/225/table_k230labels.tm` of the\n"
             "Rocq extension); labels 79, 140, 175, 208 and 229 are deleted, 230 is terminal."),
 }
