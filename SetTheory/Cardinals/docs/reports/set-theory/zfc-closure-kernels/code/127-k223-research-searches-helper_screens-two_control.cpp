@@ -1,0 +1,132 @@
+// Adaptation: avoid computing unused exact domains when an explicit finite profile is supplied.
+#include <bits/stdc++.h>
+using namespace std;
+struct Row{int w,d,z;};struct Conf{int q,h,t;};
+Row tab[1024][2];bool exists_[1024];vector<int> states,invs[1024];
+int L=4,R=4,W,N,F,maxnew=33,maxold=33;
+struct Case{int input,t;vector<Conf> goals;};vector<Case> cases[2];
+int retained,deleted;long long contexttests=0;
+inline int mapped(int q){return q==deleted?retained:q;}
+
+struct Patch{int q,b;Row a;};vector<Patch>patches;vector<int>byedge[2048];
+vector<int>failededges;
+bool testcases(vector<Case>const&cs,int entry,int input,Row rt[2],bool complete,int pi=-1,bool savefail=false,int pj=-1){
+ for(auto const&c:cs){
+  contexttests++;int x=c.t,pos=0,s=entry;bool yes=false;vector<int>used;
+  for(int tt=0;tt<maxnew;++tt){
+   if(pos < -L||pos>R||s==254)break;
+   int bb=(x>>(L+pos))&1;
+   if(s==retained&&bb!=input&&!complete){yes=true;break;}
+   Row a;
+   if(s==retained)a=rt[bb];
+   else {if(savefail)used.push_back(2*s+bb);a=pi>=0&&patches[pi].q==s&&patches[pi].b==bb?patches[pi].a:pj>=0&&patches[pj].q==s&&patches[pj].b==bb?patches[pj].a:tab[s][bb];}
+   x=(x&~(1<<(L+pos)))|(a.w<<(L+pos));pos+=a.d;s=mapped(a.z);
+   for(auto const&g:c.goals)if(s==mapped(g.q)&&pos==g.h&&x==g.t){yes=true;break;}
+   if(yes)break;
+  }
+  if(!yes){if(savefail){sort(used.begin(),used.end());used.erase(unique(used.begin(),used.end()),used.end());failededges=move(used);}return false;}
+ }
+ return true;
+}
+bool test(int b,Row rt[2],bool complete,int pi=-1,bool savefail=false,int pj=-1){return testcases(cases[b],retained,b,rt,complete,pi,savefail,pj);}
+int main(int argc,char**argv){
+ if(argc<2)return 2;
+ if(argc>2)L=stoi(argv[2]);if(argc>3)R=stoi(argv[3]);if(argc>4)maxold=stoi(argv[4]);if(argc>5)maxnew=stoi(argv[5]);
+ W=L+R+1;N=1<<W;F=N-1;
+ ifstream f(argv[1]);string line;
+ while(getline(f,line)){if(line.empty()||line[0]=='#')continue;stringstream ss(line);int q,b,w,z;char d;ss>>q>>b>>w>>d>>z;tab[q][b]={w,d=='R'?1:-1,z};exists_[q]=true;}
+ for(int q=0;q<1024;++q)if(exists_[q])states.push_back(q);
+ if(argc<=7){
+ vector<vector<bool>>seen(1024,vector<bool>(N));queue<pair<int,int>>todo;
+ for(int m=0;m<N;++m){seen[95][m]=true;todo.push({95,m});}
+ while(!todo.empty()){
+  auto[q,m]=todo.front();todo.pop();invs[q].push_back(m);if(q==254)continue;
+  Row a=tab[q][(m>>L)&1];int x=(m&~(1<<L))|(a.w<<L);int ys[2];
+  if(a.d==1){ys[0]=x>>1;ys[1]=ys[0]|(1<<(W-1));}else{ys[0]=(x<<1)&F;ys[1]=ys[0]|1;}
+  for(int y:ys)if(!seen[a.z][y]){seen[a.z][y]=true;todo.push({a.z,y});}
+ }
+ }
+ if(argc>7){for(auto &v:invs)v.clear();ifstream dd(argv[7]);int q,m;while(dd>>q>>m)invs[q].push_back(m);}
+ vector<Case>pre[1024][2];long long contexts=0;
+ for(int q:states){
+  sort(invs[q].begin(),invs[q].end(),[](int a,int b){return ((uint64_t(a)*101)&F)<((uint64_t(b)*101)&F);});
+  for(int m:invs[q]){int b=(m>>L)&1;Case c{q,m,{}};int h=0,t=m,s=q;
+   for(int k=0;k<maxold;k++){
+    if(s==254||h<-L||h>R)break;
+    int bit=(t>>(L+h))&1;Row a=tab[s][bit];t=(t&~(1<<(L+h)))|(a.w<<(L+h));s=a.z;h+=a.d;c.goals.push_back({s,h,t});
+   }
+   pre[q][b].push_back(move(c));contexts++;
+  }
+ }
+ cerr<<"Searching L="<<L<<" R="<<R<<" maxold="<<maxold<<" maxnew="<<maxnew<<" contexts="<<contexts<<endl;
+ long long paircount=0,checked=0,candidate=0,partials=0;auto start=chrono::steady_clock::now();
+
+ if(argc<7){cerr<<"Need patches file"<<endl;return 2;}
+ ifstream patchesfile(argv[6]);int pq,pb,pw,pd,pz,plen;
+ while(patchesfile>>pq>>pb>>pw>>pd>>pz>>plen){int id=patches.size();patches.push_back({pq,pb,{pw,pd,pz}});byedge[2*pq+pb].push_back(id);}
+ cerr<<"Neutral helper patches "<<patches.size()<<endl;
+ long long helpchecked=0;
+ for(int p:states)for(int q:states)if(p==182&&q==768){
+  retained=p;deleted=q;
+  for(int b=0;b<2;++b){cases[b].clear();for(int s:{p,q})cases[b].insert(cases[b].end(),pre[s][b].begin(),pre[s][b].end());
+   stable_sort(cases[b].begin(),cases[b].end(),[](auto const&a,auto const&b){return ((uint64_t(a.t)*101)&F)<((uint64_t(b.t)*101)&F);});
+  }
+  vector<Row>baseok[2];Row rows[2];map<int,array<vector<Row>,2>> repairs;
+  for(int b=0;b<2;++b){
+   for(int w=0;w<2;++w)for(int d:{-1,1})for(int z:states)if(z!=deleted){
+    rows[b]={w,d,z};checked++;
+    if(test(b,rows,false,-1,true)){baseok[b].push_back(rows[b]);continue;}
+    vector<int>options;
+    for(int e:failededges)for(int pi:byedge[e])if(patches[pi].q!=p&&patches[pi].q!=q)options.push_back(pi);
+    sort(options.begin(),options.end());options.erase(unique(options.begin(),options.end()),options.end());
+    for(int pi:options){helpchecked++;if(test(b,rows,false,pi))repairs[pi][b].push_back(rows[b]);}
+   }
+  }
+  // A patch can also repair a conflict that appears only after both rows are filled.
+  for(Row a:baseok[0])for(Row b:baseok[1]){
+   rows[0]=a;rows[1]=b;
+   if(test(0,rows,true,-1,true)&&test(1,rows,true,-1,true)){
+    cout<<"BASE "<<p<<" "<<q<<" "<<a.w<<" "<<a.d<<" "<<a.z<<" "<<b.w<<" "<<b.d<<" "<<b.z<<endl;candidate++;
+   }else for(int e:failededges)for(int pi:byedge[e])if(patches[pi].q!=p&&patches[pi].q!=q)repairs[pi];
+  }
+  for(auto &[pi,rr]:repairs){
+   vector<Row>ok[2];
+   for(int b=0;b<2;b++){
+    ok[b]=rr[b];
+    for(auto a:baseok[b]){rows[b]=a;helpchecked++;if(test(b,rows,false,pi))ok[b].push_back(a);}
+   }
+   for(auto a:ok[0])for(auto b:ok[1]){
+    rows[0]=a;rows[1]=b;helpchecked++;
+    if(!test(0,rows,true,pi)||!test(1,rows,true,pi))continue;
+    Patch helper=patches[pi];
+    if(!testcases(pre[helper.q][helper.b],helper.q,helper.b,rows,true,pi))continue;
+    cout<<"HELPER "<<helper.q<<" "<<helper.b<<" "<<helper.a.w<<" "<<helper.a.d<<" "<<helper.a.z<<" FOLD "<<p<<" "<<q<<" "<<a.w<<" "<<a.d<<" "<<a.z<<" "<<b.w<<" "<<b.d<<" "<<b.z<<endl;candidate++;
+   }
+  }
+  // Distinct neutral helper changes may repair the two retained rows separately.
+  // Discovery only: simultaneous patch contexts are all checked before output.
+  vector<pair<int,Row>> mixed[2];
+  for(int b=0;b<2;b++){
+   for(Row r:baseok[b])mixed[b].push_back({-1,r});
+   for(auto const& item:repairs)for(Row r:item.second[b])mixed[b].push_back({item.first,r});
+  }
+  for(auto const& aa:mixed[0])for(auto const& bb:mixed[1]){
+   int pi=aa.first,pj=bb.first;
+   if(pi<0||pj<0||pi==pj)continue;
+   if(patches[pi].q==patches[pj].q&&patches[pi].b==patches[pj].b)continue;
+   rows[0]=aa.second;rows[1]=bb.second;helpchecked++;
+   if(!test(0,rows,true,pi,false,pj)||!test(1,rows,true,pi,false,pj))continue;
+   bool ok=true;
+   for(int ix:{pi,pj}){
+    Patch helper=patches[ix];
+    if(!testcases(pre[helper.q][helper.b],helper.q,helper.b,rows,true,pi,false,pj)){ok=false;break;}
+   }
+   if(!ok)continue;
+   cout<<"TWO_HELPERS ";
+   for(int ix:{pi,pj}){auto a=patches[ix];cout<<a.q<<" "<<a.b<<" "<<a.a.w<<" "<<a.a.d<<" "<<a.a.z<<" ";}
+   cout<<"FOLD "<<p<<" "<<q<<" "<<rows[0].w<<" "<<rows[0].d<<" "<<rows[0].z<<" "<<rows[1].w<<" "<<rows[1].d<<" "<<rows[1].z<<endl;candidate++;
+  }
+  if(++paircount%1000==0)cerr<<"pairs "<<paircount<<" checked "<<checked<<" helperchecks "<<helpchecked<<" found "<<candidate<<" secs "<<chrono::duration<double>(chrono::steady_clock::now()-start).count()<<endl;
+ }
+ cerr<<"FINISHED pairs "<<paircount<<" checked "<<checked<<" helperchecks "<<helpchecked<<" candidates "<<candidate<<" contexttests "<<contexttests<<" secs "<<chrono::duration<double>(chrono::steady_clock::now()-start).count()<<endl;
+}
