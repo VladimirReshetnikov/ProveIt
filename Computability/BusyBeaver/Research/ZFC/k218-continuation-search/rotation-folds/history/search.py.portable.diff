@@ -1,0 +1,23 @@
+--- actual/search.py
++++ portable/search.py
+@@ -2,17 +2,17 @@
+ from pathlib import Path
+ import argparse,collections,gzip,hashlib,itertools,json,sys,time,subprocess,importlib.util,os
+ sys.dont_write_bytecode=True
+-ROOT=Path('/home/codex/.codex/worktrees/ec20/Proofs')
++ROOT=Path(__file__).resolve().parents[6]
+ LIB=ROOT/'Computability/BusyBeaver/Research/ZFC/k218-continuation-search'
+ def load(n):
+  p=LIB/(n+'.py');spec=importlib.util.spec_from_file_location(n,p);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+ f=load('filter_source');ck=load('check_joint_fold')
+ 
+ def main():
+- ap=argparse.ArgumentParser();ap.add_argument('--out',type=Path,required=True);ap.add_argument('--seconds',type=int,default=180);a=ap.parse_args();a.out.mkdir();start=time.monotonic();results=[];hits=[];total=0;stop=None
++ ap=argparse.ArgumentParser();ap.add_argument('--out',type=Path,required=True);ap.add_argument('--inputs',type=Path,required=True);ap.add_argument('--seconds',type=int,default=180);a=ap.parse_args();a.out.mkdir();start=time.monotonic();results=[];hits=[];total=0;stop=None
+  records=gzip.open(a.out/'rejects.jsonl.gz','wt')
+  for seed in ['primary','contextual']:
+-  directory=Path('/tmp/k218-rotationfold')/seed
++  directory=a.inputs/seed
+   for rotation in json.loads((directory/'census.json').read_text())['rotations']:
+    if time.monotonic()-start>=a.seconds:stop='WALL';break
+    name=rotation['name'];src=directory/name/'native.tm';old,initial=ck.read(src);Q=sorted({q for q,bit in old});changed={rotation['q'],rotation['r']};assert len(Q)==218

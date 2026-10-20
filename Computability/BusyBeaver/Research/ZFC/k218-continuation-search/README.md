@@ -51,3 +51,11 @@ The 216 newly scanned starts require 1,702 transitions in total; start0 retains 
 ## Two bootstrap repairs fail a reachable source contract
 
 The [row36 repair packet](row36-repairs/README.md) tests Source146's `36/0 → 1 L 6` and `1 L 10` repairs on that delete301 core. The disputed CD8-zero interface is the first instruction of the accepted initialized source, so source reachability cannot exclude it. Both repairs jump through `CB1` and skip the transfer that should change `(R0,R8)` from `(3,0)` to `(4,3)` before source ordinal9. Six complete traces and a separate 5,576-transition replay establish this counterexample to the accepted interface and whole-block interpretation. A different modified-source calibration is not ruled out.
+
+## One source reassociation before folding
+
+The later [rotation experiment](rotation-folds/README.md) retained 12 primary and 13
+contextual source layouts, then rejected all 282,416 fold specifications within
+its bounded local-diagram family. Complete source and decoder-prefix checks
+pass, but the rotated parents have no runtime or blank-startup certification.
+No new candidate or lower bound follows.
