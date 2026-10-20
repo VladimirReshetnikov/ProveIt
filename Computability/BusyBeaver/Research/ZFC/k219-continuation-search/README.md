@@ -129,6 +129,36 @@ timeout 125s python3 -B Computability/BusyBeaver/Research/ZFC/k219-continuation-
 
 The [additional v3 peer](results/decoder-v3-source-peer.json) covers the original merge filter only. The [hidden-state source peer](results/hidden-state-source-peer.json) independently reviewed the generalized boundary filter and its completion metadata, without rerunning it or issuing a candidate certificate. The [follow-up metadata audit](results/followup-metadata-review.json) checks source snapshots, all recorded rejection specifications, eligibility, input hashes, raw allocator state counts and local links; it does not rerun or independently prove the failed diagrams.
 
+## Initial-state folds and the blank domain
+
+The earlier families excluded the initial state. A separate [start-state search](search_start_states.py) covers all 218 choices of retained state `q ≠ 0` on each seed. Each candidate maps old state 0 to q, removes state 0, redirects every incoming target 0 to q, and writes q as the new native initial state. It uses the same inherited-action or one-common-branch family; no other rows change except their mapped targets.
+
+The [actual result](results/start-states-run1/result.json) completed **19,184 specifications** in 5.907 seconds: 9,592 per seed, consisting overall of 1,704 inherited and 17,480 synthesized choices. Every target completed and no candidate survived the filter. The original all-initial-tape domain starts at old state 0; an independent checker call for a survivor would use old start 0 and new start q. The [synthetic controls](results/start-states-run1/controls.json) check a valid changed-start fold and reject an invalid early halt. No K219 candidate reached that checker.
+
+A separate [domain diagnostic](compare_blank_domain.py) starts only at state 0 with the central 15 cells zero, then admits either value for every shifted-in exterior bit. The resulting inductive closure overapproximates blank execution and any initial tape with that zero window. It does **not** justify equivalence on all initial tapes.
+
+| Seed | All-initial-tape contexts | Blank-seeded contexts | Removed |
+|---|---:|---:|---:|
+| K219 | 1,012,111 | 999,869 | 12,242 |
+| row157 | 1,012,495 | 1,000,253 | 12,242 |
+
+The [comparison](results/blank-domain-run1/result.json) completed in 8.731 seconds. Exactly 16 rows change, at states 0, 4, 40, 54, 66, 94, 97, 113 and 198. Allocated decoder domains are unchanged. Entry 66/read 0 falls from 4,096 to 3,584 contexts; each state-198 row falls from 2,048 to 1,920.
+
+The [restricted-domain audit](results/blank-rescreen-run1/result.json) then checks the first failed window of every candidate in the engine-anchor, two-action 66/198, hidden-198, generalized hidden-state and start-state families. **All 326,014 first obstructions remain in the smaller domain.** It completed in 6.645 seconds, so zero candidates needed a repeated trajectory run and no new survivor was produced. A restricted-domain survivor would require an independent blank-relative certificate; the universal checker is deliberately not called with that restricted invariant. These overlapping family counts are not a global count of distinct machines.
+
+Fresh-output reproduction, with enabled assertions:
+
+```sh
+timeout 120s python3 -B Computability/BusyBeaver/Research/ZFC/k219-continuation-search/search_start_states.py \
+  --output /tmp/k219-start-folds-fresh
+timeout 120s python3 -B Computability/BusyBeaver/Research/ZFC/k219-continuation-search/compare_blank_domain.py \
+  --output /tmp/k219-blank-domain-fresh
+timeout 120s python3 -B Computability/BusyBeaver/Research/ZFC/k219-continuation-search/rescreen_blank_failures.py \
+  --output /tmp/k219-blank-rescreen-fresh
+```
+
+The last command defaults to the published start-fold record; use `--start-run /tmp/k219-start-folds-fresh` to compare a fresh run instead. The actual start and rescreen jobs had 115-second internal deadlines and hard 120-second external timeouts. Their exact scratch sources, wording and freezes are retained in [lossless compressed history](history/start-and-blank-scratch.json.gz). [Provenance](results/start-blank-provenance.json) separates those executed bytes from the portable path/output adapters; no search was rerun during publication. The [19-atom equality follow-up](../k219-atom-extension/README.md) is recorded separately and also found no source-DAG reduction.
+
 ## Scope and next direction
 
 The result exhausts only the stated candidate specifications under the recorded bounded filters. It leaves source reassociation, occurrence splitting, multistate changes, general independently synthesized two-branch merges, and blank-specific invariants open. The two-action experiment above covers only its fixed write/direction family. Window-exit failures dominate, so a useful next step is a source-aware proof of decoder-entry contexts or a coordinated source/allocator change, rather than interpreting these failures as proof of minimality. Source transformations are being investigated separately from this binary-state family.

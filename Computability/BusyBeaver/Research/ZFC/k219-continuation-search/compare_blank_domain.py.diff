@@ -1,0 +1,16 @@
+--- /tmp/k219-blank-domain/compare.py
++++ compare_blank_domain.py
+@@ -1,8 +1,10 @@
+ from pathlib import Path
+ from collections import deque
+-import hashlib,importlib.util,json,time
+-P=Path(__file__).resolve().parent
+-BASE=Path('/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC')
++import argparse,hashlib,importlib.util,json,time
++ap=argparse.ArgumentParser(description='Compare universal and blank-seeded radius7 inductive domains.')
++ap.add_argument('--output',type=Path,required=True);args=ap.parse_args()
++P=args.output.resolve();P.mkdir(parents=True,exist_ok=False)
++BASE=Path(__file__).resolve().parent.parent
+ CHECKER=BASE/'candidate-k219/variant-row157/check_joint_fold.py'
+ sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+ assert sha(CHECKER)=='82d0b364dfdbc7433a58c3c3e7166ec6a32ac9268e0e516f5f113f1287f44031'

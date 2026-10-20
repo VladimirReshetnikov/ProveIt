@@ -1,0 +1,11 @@
+--- /tmp/k219-start-folds/search.py
++++ search_start_states.py
+@@ -1,7 +1,7 @@
+ """Universal-domain folds0→q, explicitly changing the initial state toq."""
+ from pathlib import Path
+ import argparse,collections,gzip,hashlib,itertools,json,subprocess,sys,time
+-BASE=Path('/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC')
++BASE=Path(__file__).resolve().parent.parent
+ SHARED=BASE/'k219-continuation-search'
+ sys.path.insert(0,str(SHARED))
+ import search_v3 as shared

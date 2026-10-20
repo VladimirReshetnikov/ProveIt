@@ -1,0 +1,34 @@
+--- run.py
++++ run.py
+@@ -5,20 +5,26 @@
+ import subprocess
+ import time
+ 
+-P = Path(__file__).resolve().parent
+-ap = argparse.ArgumentParser()
++HERE = Path(__file__).resolve().parent
++ap = argparse.ArgumentParser(description='Run one bounded C++ pass in a prepared directory; cost directory must be fresh.')
++ap.add_argument('--work', type=Path, required=True)
++ap.add_argument('--binary', type=Path, required=True)
+ ap.add_argument('--cost', type=int, choices=(4, 5), required=True)
+ a = ap.parse_args()
++P = a.work.resolve()
++binary = a.binary.resolve()
++assert P.is_dir() and binary.is_file()
+ out = P / f'cost{a.cost}'
+ out.mkdir(exist_ok=False)
+ sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+-inputs = {name: sha(P / name) for name in ('search', 'search.cpp', 'atoms.in', 'atoms.json', 'library.py', 'library-review.json')}
+-command = ['timeout', '110s', str(P / 'search'), str(P / 'atoms.in'), str(out / 'nodes'), str(a.cost)]
++paths = [binary, HERE / 'search.cpp', HERE / 'library.py'] + [P / name for name in ('atoms.in', 'atoms.json', 'library-review.json')]
++inputs = {str(path): sha(path) for path in paths}
++command = ['timeout', '110s', str(binary), str(P / 'atoms.in'), str(out / 'nodes'), str(a.cost)]
+ started = time.monotonic()
+ with (out / 'stdout.log').open('w') as log:
+     result = subprocess.run(command, stdout=log, stderr=subprocess.STDOUT)
+ elapsed = time.monotonic() - started
+-assert all(sha(P / name) == h for name, h in inputs.items())
++assert all(sha(Path(name)) == h for name, h in inputs.items())
+ text = (out / 'stdout.log').read_text()
+ record = {'status': 'COMPLETE' if result.returncode == 0 and text.rstrip().splitlines()[-1].startswith('DONE ') else 'BOUNDED_INCOMPLETE',
+           'command': command, 'exit_code': result.returncode, 'seconds': elapsed,
