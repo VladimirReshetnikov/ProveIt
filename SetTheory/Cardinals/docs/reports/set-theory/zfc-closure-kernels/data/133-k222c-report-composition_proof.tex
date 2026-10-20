@@ -1,0 +1,193 @@
+% Report-ready mathematical section. Requires amsmath, amssymb, amsthm.
+% All source-specific input names and figures should be supplied by the main report.
+\section{Why the two logical changes compose}
+\label{sec:composition-audit}
+
+There are two different mathematical comparisons in this construction.
+Changing the output-root K schema to the seed-request schema preserves
+the relevant consistency strength.  Merging the equality row with its
+helper preserves the entire native theorem set.  The second comparison
+does not depend on which set-theoretic schema is present, so it applies
+to the seed-request theory without repeating or strengthening its
+set-theoretic interpretation.
+
+\subsection{The exact theories being compared}
+
+Write $I(A,B)$ for the native implication constructor, $Q_i A$ for the
+native universal constructor, and $d_{ab}$ for its primitive equality
+atom.  The designated refutation target is the literal native code
+$F=1$.  Put $N(A)=I(A,F)$ and $X_iA=N(Q_iN(A))$.  These definitions are
+operations on natural-number codes, including the exceptional small
+codes; they are not an assumption that the total decoder is a globally
+injective constructor homomorphism.
+
+Let
+\[
+ \kappa(a,b)=4\left(\frac{(a+b)(a+b+1)}2+b\right)+1.
+\]
+The seed predecessor contains the old equality row and helper
+\[
+ \rho_7(a,b,c)=d_{ca}\to(d_{cb}\to d_{ab}),
+ \qquad E(a,b)=d_{ab}\to Q_{\kappa(a,b)}d_{ab}.
+\]
+Its actual enabled bundle has the grouping
+\[
+ B=N\bigl(I(V,I(E,T))\bigr),\qquad
+ T=Q_c I(H,N(W)),
+\]
+where $V$ is membership vacuity and $H,W$ are the exact inherited seed
+closure and witness request.  All four expressions depend on the actual
+source parameters.  The new source replaces $\rho_7$ by
+\[
+ G(a,b,c)=d_{ca}\to
+       \bigl(d_{cb}\to Q_{\kappa(a,b)}d_{ab}\bigr)
+\]
+and replaces the enabled bundle by
+\[
+ B'=N\bigl(I(V,T)\bigr).
+\]
+It retains the same gate $c\ne a,b$, all the other logical rows, the
+truth seed, modus ponens and theorem generalization.  The row $G$ is
+ungated and ranges over all triples, as did the deleted $\rho_7$.
+
+\subsection{A closed native derivation of the missing equality facts}
+
+The unchanged $\rho_8$ supplies the classical implicational basis.
+The unchanged $\rho_6(i,A)$ is $X_iQ_iA\to A$.  Because $X_iQ_iA$
+has the form $U\to F$, the implicational basis gives
+$F\to X_iQ_iA$, and hence $F\to A$.  Consequently ordinary Boolean
+tautologies with $F$ false can be used as abbreviations for finite
+native derivations.  This argument makes no freshness assumption about
+the label $0$ occurring in the decoded atom for $F$.
+
+From a closed theorem $A\to B$, theorem generalization followed by
+$\rho_2$ gives $Q_iA\to Q_iB$.  Classical contraposition gives
+$X_iA\to X_iB$.  Here a closed theorem means a derivation without open
+assumptions; its formula may have free numerical variable labels.
+
+The following two implications use only the retained rows:
+\[
+ Q_iA\to X_iA, \qquad Q_iQ_iA\to A.                 \tag{C1}
+\]
+For the first, use $\rho_1(i,i)$, namely $X_id_{ii}$.
+The quantified version of $A\to(d_{ii}\to A)$ and the normal
+quantifier-distribution rule give
+$Q_iA\to Q_i(d_{ii}\to A)$, while the existential consequence of
+that distribution gives
+$Q_i(d_{ii}\to A)\to(X_id_{ii}\to X_iA)$.
+The second implication follows by applying the first to $Q_iA$ and
+then $\rho_6(i,A)$.  This does not assume the unrestricted principle
+$Q_iA\to A$.
+
+Fix $x$, let $z=\kappa(x,x)$, and set $e=d_{xx}$.
+The instance $G(x,x,z)$, followed by propositional contraction, gives
+\[
+ d_{zx}\to Q_ze.
+\]
+Existential monotonicity and $\rho_1(z,x)$ yield $X_zQ_ze$;
+$\rho_6(z,e)$ then yields $d_{xx}$.  Thus primitive reflexivity is
+derived without using either of the deleted axioms.  Next,
+$G(a,b,a)$ and this reflexivity give the exact old helper
+\[
+                 d_{ab}\to Q_{\kappa(a,b)}d_{ab}.       \tag{C2}
+\]
+Generalize (C2) at $i=\kappa(a,b)$ and apply $\rho_2$:
+\[
+ Q_i d_{ab}\to Q_iQ_i d_{ab}.
+\]
+Composing with (C1) gives $Q_i d_{ab}\to d_{ab}$.  Composing this
+last implication with $G(a,b,c)$ recovers the literal old
+$\rho_7(a,b,c)$.  In the reverse direction, the old $\rho_7$ and
+the old helper immediately give $G$ by propositional composition.
+
+Every generalization above is applied to a theorem.  No quantifier is
+introduced while retaining an open hypothesis, no equality-substitution
+rule is silently added, and no unrestricted primitive equality-vacuity
+schema is assumed.
+
+\subsection{The seed bundle has its own exact propositional certificate}
+
+The three needed implications are
+\[
+ B\to B',\qquad B\to E,\qquad B'\to(E\to B).           \tag{C3}
+\]
+They are Boolean tautologies for the displayed native grouping.
+For clarity, $V,E,T$ can be treated as three arbitrary propositional
+atoms: $B$ means $V\land E\land\neg T$, while $B'$ means
+$V\land\neg T$.  Their exact code expressions are retained in (C3);
+no equality of differently associated numerical constructor terms is
+claimed.
+
+Every pair $(a,b)$ obtains its old helper from an enabled old bundle:
+choose $c=\max(a,b)+1$ and apply the second implication in (C3).
+The helper binder is $\kappa(a,b)$, independent of that gate parameter.
+Thus every new $G$ row is derivable in the old seed theory.  Conversely,
+the new $G$ rows supply (C2) for every pair, and the third implication in
+(C3) recovers each enabled old bundle from its corresponding new bundle.
+Disabled triples continue to emit the same truth seed.
+
+Write $\operatorname{Thm}_{\mathrm{s},E}(n)$ and
+$\operatorname{Thm}_{\mathrm{s},G}(n)$ for derivability of the native
+code $n$ in these two theories.  Replace each changed axiom leaf by the
+finite closed derivation above, preserve MP and GEN, and induct on the
+finite proof tree.  This establishes
+\[
+ \boxed{\quad
+ \operatorname{Thm}_{\mathrm{s},E}(n)
+ \ \longleftrightarrow\
+ \operatorname{Thm}_{\mathrm{s},G}(n)
+ \quad\text{for every natural }n.\quad}
+\]
+The substitutions are effective syntactic operations, the gate witness
+is explicit, and the proof-tree induction is an elementary
+arithmetical argument formalizable in ZFC.  In particular the
+distinguished target $n=1$ is preserved literally.  Composing this
+equivalence with the inherited seed-theory calibration gives the same
+internal ZFC-consistency equivalence for the new numerical source.
+
+There is a useful generalization for future source searches.  The same
+interderivation works for any total label function $\kappa(a,b)$:
+its use of $z=\kappa(x,x)$ never assumes that $z\ne x$.  To retain the
+inherited standard-equality consistency calibration, it suffices that
+$a\ne b$ imply $\kappa(a,b)\notin\{a,b\}$; there is no restriction
+on diagonal values.  This is precisely the general-helper hypothesis
+proved in the retained Source116 adapter.  All eight native
+\texttt{Imp}/\texttt{Rel}/\texttt{All}/\texttt{Eq} builders with
+either ordering of their two arguments satisfy it.  In particular,
+the implication builder's sole collision at $(0,0)$ is permitted.
+The released construction uses the displayed membership-code binder;
+this general logical statement is not an additional state-count claim
+for any of the other builders.
+
+\subsection{What carries over and what must be checked again}
+
+The inherited seed calibration treats $c$ simultaneously as matrix code
+and private container label.  Its soundness proof uses the exact total
+decoder, the special cases $D(0)$ and $D(1)$, and the theorem
+$c\notin\operatorname{FV}(D(c))$.  At $c=0$ the required statement
+is closedness; it is incorrect to assert that every bound name in
+$D(0)$ is strictly below zero.  Distinct active labels use the ordinary
+two-role abstraction; coincident active labels use the separate
+empty-set/singleton argument.  The lower interpretation translates
+equality into membership indiscernibility before choosing the padded
+matrix's native code as its private name.  The present literal
+theorem-set comparison leaves all these arguments unchanged.
+
+The conclusion about the binary machine additionally requires that the
+new emitter really produces $B'$ and $G$ with the stated parameter
+coverage, that its source enumeration is correct, that source-tree
+changes preserve execution, and that the final transition table
+simulates this source from the exact blank initialization.  The source
+and table checks in the main report discharge those separate
+obligations.  Neither propositional certificates nor bounded simulation
+alone discharge them.
+
+The combined finite proof DAG has 318 nodes, 293 formulas and 36 roots.
+It consists of the predecessor's 315-node G proof DAG and the three
+additional seed-order tautologies (C3).  An independent parser checks
+each MP edge, each theorem-GEN node, each permitted axiom instance and
+each truth-table tautology.  Its forward G roots contain neither an
+old-helper nor an old-$\rho_7$ leaf; its reverse roots contain no G leaf.
+These finite instances accompany the uniform proof just given.  They
+are not a newly compiled end-to-end Rocq or Lean theorem for the final
+machine bytes.

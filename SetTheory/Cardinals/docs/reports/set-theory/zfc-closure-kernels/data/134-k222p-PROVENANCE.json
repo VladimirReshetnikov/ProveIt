@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "title": "Two 222-state candidates for the consistency of ZFC",
+  "date": "2026-10-20",
+  "repository": {
+    "url": "https://github.com/VladimirReshetnikov/ProveIt",
+    "commit": "6ab3e41e4dcddfbd7f843bdf4be48ae5c7ba2430",
+    "research_directory": "Computability/BusyBeaver/Research/ZFC/"
+  },
+  "incoming_archives": [
+    {
+      "repository_path": "docs/incoming/K223_Construction_2026-10-20 (3).zip",
+      "role": "Primary seed-request K223 input",
+      "bytes": 4900736,
+      "sha256": "c20713d1cda1175ba9ef246e60bda5d193b5fe8fc431d9b9188c5f5b532c0f15",
+      "included_whole_in_this_packet": false
+    },
+    {
+      "repository_path": "docs/incoming/K223_Construction_2026-10-20 (2).zip",
+      "role": "Merged-equality G223 input",
+      "bytes": 4952852,
+      "sha256": "db9bfea47d5e97bb8d89641d4a027c5215398e8793864caaed6e81770dcdf39c",
+      "included_whole_in_this_packet": false
+    },
+    {
+      "repository_path": "docs/incoming/K223_Construction_And_Research_2026-10-20.zip",
+      "role": "Expanded merged-equality research and independent audit input",
+      "bytes": 5940060,
+      "sha256": "e33435752381f6912701136e57eae8d57e32ff3b875d04369ddb10cd301a8c88",
+      "included_whole_in_this_packet": false
+    }
+  ],
+  "published_conditional_k223": {
+    "repository_path": "Computability/BusyBeaver/Research/ZFC/candidate-k223/zfc_k223.tm",
+    "sha256": "7edafbb2395d39e3b0895a5e0f4da61e12a371b0af71ef4cfb1a43c06e7b917f",
+    "working_states": 223
+  },
+  "inherited_k230": {
+    "repository_url": "https://github.com/elliotglazer/k230-rocq",
+    "commit": "3142e4dd980f0be12f4abb636c4ae2528afc17eb",
+    "scope": "Inherited K theory and K/ZFC calibration; no newly compiled 222-state endpoint."
+  },
+  "unchanged_k224_archive": {
+    "path": "portable/vendor/K224_Construction_2026-10-20.zip",
+    "bytes": 4404250,
+    "sha256": "cf5db8d08a34f5661ad1266226809ed1f0099fd38374c66d127e1e06519c6887",
+    "repository_commit": "49ee7cfdc8e0364c6db3614675d141d66f9350ed",
+    "included_whole_in_this_packet": true
+  },
+  "primary": {
+    "construction": "Seed-request K plus merged equality G, closed reassociation, context-preserving decoder allocation, two exact folds.",
+    "canonical_table": {
+      "path": "portable/machine/candidate222.tm",
+      "bytes": 5748,
+      "sha256": "3bcf4678c9c576ae99a108c32038f035b42204289267d05a34ba2b37b32b6476"
+    },
+    "source": {
+      "path": "portable/machine/sites.json",
+      "bytes": 185379,
+      "sha256": "cc1fbb3a16dd446af9c7cdb678317d31060082e6794b9c7074ce02b46584a75e"
+    },
+    "parent_k_table": {
+      "path": "portable/machine/parent_seed_g224.k.tm",
+      "bytes": 5790,
+      "sha256": "e287d8685bcd75a93d8f01e24b9217381f487a7a970183c8fc2dbec439cc01f8"
+    },
+    "working_states": 222,
+    "terminal_label": 222,
+    "start_state": 0,
+    "alphabet": [
+      0,
+      1
+    ],
+    "blank": 0,
+    "tape": "two-way infinite, initially all zero",
+    "head": 0,
+    "transition_rows": 444,
+    "primitive_occurrences": 4744,
+    "distinct_subtrees": 208,
+    "primitive_leaf_kinds": 23,
+    "interior_nodes": 185,
+    "engine_and_initialization_states": 49,
+    "contextual_decoder_aliases": 12,
+    "folds_k_labels": [
+      {
+        "merge": 185,
+        "into": 118
+      },
+      {
+        "merge": 174,
+        "into": 159
+      }
+    ]
+  },
+  "alternative": {
+    "construction": "Published conditional-K223 plus merged equality G, helper deletion, reassociation and two exact folds.",
+    "canonical_table": {
+      "path": "portable/alternative/results/candidate222.tm",
+      "bytes": 5747,
+      "sha256": "60e21a040e58e2a2840b0f3d58ad3ee0e6ef4d0d5cdf1372d5a69355f1198ca1"
+    },
+    "source": {
+      "path": "portable/alternative/results/sites.json",
+      "bytes": 180550,
+      "sha256": "b8f0b7ef8b9f41329509335f844c5fce94ea9b6cfa8f8a3ca7ebb9fe8c736c13"
+    },
+    "working_states": 222,
+    "transition_rows": 444,
+    "primitive_occurrences": 4581,
+    "distinct_subtrees": 209,
+    "contextual_decoder_aliases": 13,
+    "additional_inherited_calibration": "Conditional-K interpretation with two-marker hereditary-domain construction."
+  },
+  "reproduction": {
+    "entry_point": "portable/reproduce.py",
+    "runtime": "Python >=3.10 standard library, assertions enabled",
+    "portable_manifest": {
+      "path": "portable/manifest.json",
+      "bytes": 14182,
+      "sha256": "66d6f00b4879db62d13b34dfdfe32b5b120b06e18421175a3de40b3d13b6c9d9"
+    },
+    "fresh_primary_full_replay": "validation/integrated_full_replay.json",
+    "final_portable_quick_replay": "validation/final_quick_replay.json",
+    "inherited_quick_replay": "validation/baseline_quick_replay.json",
+    "full_alternative_runtime": "portable/alternative/results/runtime222.json",
+    "network_required": false,
+    "proof_assistant_build_in_replay": false
+  },
+  "proof_status": {
+    "target": "ZFC proves Nonhalt(primary222, blank) iff Con(ZFC).",
+    "new_result": "Ordinary mathematical proof formalizable in ZFC, composed with explicitly pinned inherited calibration; executable exact finite and unbounded induction certificates.",
+    "new_end_to_end_Rocq_or_Lean_endpoint": false,
+    "unconditional_nonhalting_claim": false,
+    "absolute_consistency_claim": false,
+    "minimality_claim": false,
+    "new_checks": [
+      "Uniform closed G interderivation for the exact seed bundle",
+      "All-natural exact source/emitter binding",
+      "Full guarded control-flow preservation",
+      "Two independent all-tape fold checks",
+      "Sparse and independent dense blank startup",
+      "Fresh primary and alternative unbounded binary runtime derivations"
+    ],
+    "inherited_dependencies": "K/ZFC and seed-native calibration, logical bridge, proof enumerator architecture, primitive macro interfaces and runtime induction engine. See report, portable/source/seed_g_theory.md, and retained notices."
+  },
+  "report": {
+    "path": "report/main.pdf",
+    "bytes": 387255,
+    "sha256": "8c02e82364126f51fbbcadd9e4bc8866e7743e216f8178d2c2757a9ebf7585c5"
+  },
+  "new_material_license": "MIT-0; inherited components retain their own terms. See NOTICE.md and portable/vendor notices.",
+  "incorporation": "Supplied for repository integration; no repository push or publication performed."
+}

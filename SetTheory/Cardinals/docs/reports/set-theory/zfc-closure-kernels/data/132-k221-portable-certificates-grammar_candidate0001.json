@@ -1,0 +1,47 @@
+{
+  "status": "INDEPENDENT_EXACT_SOURCE_BISIMULATION_PASS",
+  "before_metrics": {
+    "primitive_occurrences": 4744,
+    "distinct_subtrees": 208,
+    "distinct_primitive_leaves": 23,
+    "internal_subtrees": 185,
+    "maximum_depth": 36,
+    "maximum_zero_run": 6
+  },
+  "after_metrics": {
+    "primitive_occurrences": 4744,
+    "distinct_subtrees": 208,
+    "distinct_primitive_leaves": 23,
+    "internal_subtrees": 185,
+    "maximum_depth": 38,
+    "maximum_zero_run": 6
+  },
+  "guarded_cases": 6167,
+  "entry_ordinal": 0,
+  "halt_ordinals": [
+    4609
+  ],
+  "graph_sha256": "e611c768778dd5acde930bbce0600b54de8e302f111e9c763de88b73af8243de",
+  "relation": "Equal instruction ordinals and equal nine natural register values; each guarded source step has exactly the same register update and successor ordinal.",
+  "scope": "All source executions, not merely reachable or bounded-register executions. The logical calculus is unchanged because the exact primitive stream and complete guarded CFG are unchanged. Binary runtime and blank startup are separate obligations.",
+  "baseline_sha256": "cc1fbb3a16dd446af9c7cdb678317d31060082e6794b9c7074ce02b46584a75e",
+  "candidate_sha256": "691684ec948c972bf67727d6d4cd1181a90a9203644ee3db3eae363280e3fac9",
+  "negative_controls": [
+    {
+      "name": "changed_register_instruction",
+      "status": "REJECTED",
+      "reason": "primitive sequence differs"
+    },
+    {
+      "name": "changed_control_depth",
+      "status": "REJECTED",
+      "reason": "primitive sequence differs"
+    },
+    {
+      "name": "nonclosed_reassociation_preserving_primitive_stream",
+      "status": "REJECTED",
+      "reason": "instruction-ordinal transition system differs"
+    }
+  ],
+  "checker_sha256": "2e7f7e18ad850214f21d688364b93879d6debacfa12bc8e846f1a46d1d8788d5"
+}

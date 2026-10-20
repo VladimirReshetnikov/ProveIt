@@ -1,0 +1,238 @@
+% Companion to composition_proof.tex. Only standard mathematics packages needed.
+\section{The inherited seed theory and the ZFC comparison}
+\label{sec:seed-calibration-audit}
+
+The set-theoretic ingredient is an existing first-order seed-request
+presentation.  The saving comes from its compilation together with the
+equality-row merger, not from discovering that presentation.  The primary
+formal source is Elliot Glazer's \texttt{k230-rocq} at commit
+\texttt{3142e4dd980f0be12f4abb636c4ae2528afc17eb}.  The relevant theorem
+statements and proofs were inspected at that exact commit; this audit
+does not claim a fresh compilation of them or of a final-machine
+endpoint.
+
+\subsection{Ordinary formulas and the two finite-proof reductions}
+
+Work in classical first-order logic with genuine equality, a nonempty
+domain and a binary relation $R$.  A matrix
+$\varphi(y,p,\bar q)$ has an output $y$, an input $p$, and finitely
+many parameters $\bar q$.  All bound variables below are chosen to avoid
+capture.  Define
+\begin{align*}
+ \operatorname{Sub}(p,u)
+   &:=\forall z\,(R(z,p)\to R(z,u)),\\
+ W_\varphi(p,C)
+   &:=(\exists y\,\varphi(y,p,\bar q))\to
+        \exists y\,(\varphi(y,p,\bar q)\land R(y,C)),\\
+ H_\varphi(C)
+   &:=\forall u\Bigl(R(u,C)\to
+       \bigl[(\exists p\,\varphi(u,p,\bar q))\land
+         \forall p(\operatorname{Sub}(p,u)\to W_\varphi(p,C))\bigr]\Bigr).
+\end{align*}
+Let $\mathsf K_s$ contain the universal closures of
+\[
+       \forall a\,\exists C\,
+            (W_\varphi(a,C)\land H_\varphi(C)).
+                                                        \tag{S}
+\]
+The inherited output-root theory $\mathsf K_o$ uses instead
+\[
+ \forall a\,\forall x\,\exists C\,
+       ((\varphi(x,a,\bar q)\to R(x,C))\land H_\varphi(C)).
+                                                        \tag{O}
+\]
+The closure in the actual upstream formula puts its support existential
+outside a conjunction.  The second conjunct rebinds that same input
+role, so the support witness is not free in it.  Moving the existential
+into the support conjunct is an ordinary capture-free first-order
+equivalence.  Likewise, the emitted witness request has the form
+\[
+ \forall y\bigl(\varphi(y,p,\bar q)\to
+             \exists y(\varphi(y,p,\bar q)\land R(y,C))\bigr).
+\]
+Its consequent has no free $y$, so it is equivalent to the displayed
+existential-premise definition of $W_\varphi$.
+
+First, $\mathsf K_o$ proves (S).  For fixed $a,\bar q$, split on
+whether $\varphi$ has an output at $a$.  If it does, apply (O) to a
+chosen output $x$.  The resulting $C$ contains such an output and has
+the required closure.  If it does not, apply (O) to any element of the
+nonempty domain; the resulting closure still holds, while the request
+is vacuous.  This is the object-level classical derivation
+\texttt{output\_root\_to\_seed} in \texttt{KPSeed.v};
+\texttt{kprime\_core\_to\_seed} in \texttt{KPrimeCore.v} adds the
+outer universal input.
+
+The upper relative-consistency theorem in
+\texttt{KUpperConsistency.v} is
+\nolinkurl{KPrimeOrdIR_standardZFC_inconsistent}.
+It transforms a finite refutation of
+$\mathsf K_o+\operatorname{IR}$ into a finite refutation of
+$\mathrm{StandardZFC}$, where
+$\operatorname{IR}:=\forall x\,\neg R(x,x)$.
+Its proof explicitly collects the finitely many required axioms and
+transfers their derivation through the constructible-class
+interpretation.  It does not assert that ZFC proves the existence of a
+set model of all its axioms.  Replacing each seed axiom in a finite
+refutation by the foregoing output-root derivation therefore gives
+\[
+ \mathsf K_s+\operatorname{IR}\vdash\bot
+       \quad\Longrightarrow\quad\mathrm{ZFC}\vdash\bot.
+                                                        \tag{U}
+\]
+
+For the converse use the factored upstream theory $\mathsf K_0$.
+Its witness $C$ must have support and satisfy
+\[
+ \forall p\Bigl(
+   [p=a\ \lor\ \exists u(R(u,C)\land\operatorname{Sub}(p,u))]
+     \to W_\varphi(p,C)\Bigr).                            \tag{F}
+\]
+Each witness for (S) satisfies this requirement.  If $p=a$, equality
+transports the root request.  In the other case the closure at $u$
+supplies the request for $p$.  Support is already part of that closure.
+The precise object-level derivation is
+\texttt{seeded\_core\_to\_kp0} in \texttt{KPrimeCore.v}.
+The quotient-transfer theorem \texttt{K0\_ZFc\_inconsistent} in
+\texttt{KQuotZFTransfer.v} sends a finite refutation of the stated ZF
+base to one of $\mathsf K_0$.  The Foundation and Choice
+relative-consistency reduction \texttt{ac\_reg\_relcon} supplies the
+preceding reduction from \texttt{StandardZFC}, exactly as composed in
+\texttt{KQuotZFC.v}.  Consequently
+\[
+ \mathrm{ZFC}\vdash\bot
+       \quad\Longrightarrow\quad\mathsf K_0\vdash\bot
+       \quad\Longrightarrow\quad\mathsf K_s\vdash\bot.
+                                                        \tag{L}
+\]
+The implications in (U) and (L) denote effective transformations
+between finite object-theory proofs.  Each additional seed conversion
+is a fixed finite logical template, applied to the matrix occurring in
+the input proof.  Arithmetizing these syntax transformations and
+inducting on finite derivations gives, internally in ZFC,
+\[
+ \operatorname{Con}(\mathsf K_s)
+ \ \longleftrightarrow\
+ \operatorname{Con}(\mathsf K_s+\operatorname{IR})
+ \ \longleftrightarrow\
+ \operatorname{Con}(\mathrm{ZFC}).
+\]
+This last internalization is an ordinary mathematical argument about
+finite syntax.  It does not identify Rocq's metatheory with ZFC.
+
+\subsection{Why the native source needs additional care}
+
+The ordinary schema has independent matrix and private-variable
+choices.  The numerical source intentionally uses the same natural
+number $c$ for both.  Its private label cannot be silently renamed
+after the source parameters are fixed.
+
+For soundness, the pinned total decoder $D$ has the following essential
+interface.  Code $0$ is a closed tautology; code $1$ is $R(0,0)$.
+The negation constructor is decoded as genuine named negation.  For an
+ordinary non-negation implication, the constructor equation has the
+side conditions that its consequent is not $1$ and its two arguments
+are not both $0$.  The quantifier, membership and equality constructor
+equations are unconditional.  The literal seed expression satisfies
+these conditions under its original gate $c\ne a,b$; in particular,
+the membership consequents involving the private label cannot be the
+exceptional atom $R(0,0)$.
+
+The required freshness theorem is
+$c\notin\operatorname{FV}(D(c))$ for every natural $c$.
+For $c>0$, all names occurring in $D(c)$ are smaller than $c$.
+For $c=0$, the decoder's tautology contains bound zeroes but is closed.
+These are the distinct statements \texttt{D\_names\_below},
+\texttt{D\_private\_fresh}, \texttt{D\_zero\_closed} and
+\texttt{D\_one} in \texttt{KDecodeFresh.v}.  The low-code distinction
+is needed; a blanket strict-bound claim at zero would be false.
+
+When $a\ne b$, the decoded labels are abstracted to the two ordinary
+matrix roles and its finite parameters.  When $a=b$, that abstraction
+does not apply.  In the latter case write $\psi(x)$ for the matrix
+with its single active label assigned $x$.  The literal request becomes
+\[
+ W(C)=(\exists x\,\psi(x))\to
+                 \exists x(\psi(x)\land R(x,C)),
+\]
+and the literal closure simplifies to
+\[
+ \forall u\bigl(R(u,C)\to[(\exists x\,\psi(x))\land W(C)]\bigr).
+\]
+The subset test is reflexive, and its inner role quantifiers shadow
+the member role, which explains this simplification.  If no witness
+exists, choose an empty container.  If a witness $x$ exists, choose
+the singleton $\{x\}$.  This proves soundness of every coincident-role
+instance in the upper interpretation.  Genuine named negation must be
+decoded before these first-order variable arguments; expanding it
+directly to the raw $R(0,0)$ atom would mishandle label zero.
+
+For completeness the inherited restricted-helper calculus interprets
+genuine equality as membership indiscernibility.  Fix the auxiliary
+$z=\operatorname{EqCode}(a,b)>a,b$ and use
+\[
+ E_R(a,b)=
+ [\forall z(R(z,a)\leftrightarrow R(z,b))]\land
+ [\forall z(R(a,z)\leftrightarrow R(b,z))].
+\]
+Let $\theta$ replace equality by this formula, genuine bottom by the
+designated native falsehood, and preserve the other logical
+constructors.  The Source116 and K224 logical adapters give finite
+derivations of the translations of the full equality-logic axioms from
+the retained rows, membership vacuity and the restricted helper.
+Their auxiliary-label transport is explicit: changing equality
+endpoints changes its chosen auxiliary, so literal commutation with
+arbitrary substitution or alpha conversion is not assumed.
+
+The order of the next construction is essential.  Choose a named
+ordinary matrix $f$ with distinct positive input and output names $1$
+and $3$, translate its equality first, and only then set
+\[
+       \psi=\theta(f),\qquad
+       p^+=\neg\neg\psi,\qquad
+       c=\operatorname{enc}(p^+).
+\]
+Padding makes $c>3$ and larger than every name in the translated
+matrix, including its newly inserted equality auxiliaries.  Now select
+the ordinary comparison instance with matrix $\neg\neg f$ and
+private container name $c$.  This is a permissible fresh-name choice
+in the ordinary schema.  Its outer seed template contains no equality
+except inside matrix occurrences, so its translation is literally the
+same template with matrix $\neg\neg\theta(f)$ and private name $c$.
+That matrix has native code exactly $c$.  Projection from the actual
+enabled source bundle at $(1,3,c)$, followed by the finite
+double-negation and conjunction conversions, therefore supplies the
+translated comparison axiom.  There is no circular attempt to choose
+the private name before computing its matrix code.
+
+Translating a finite ordinary seed refutation now gives a finite native
+derivation of $1$.  If irreflexivity is used, its closed named instance
+$\forall0\,\neg R(0,0)$ translates to
+$Q_0(F\to F)$, a generalized identity.  Conversely, decoding a native
+refutation, using the upper interpretations just described and the
+unchanged relative-falsity translation, gives a finite ZFC refutation.
+The G comparison in Section~\ref{sec:composition-audit} then transfers
+this exact native calibration to the new source.
+
+\subsection{The formalization boundary}
+
+The mathematical claim concerns the ordinary arithmetized consistency
+sentence and the exact blank-tape halting predicate.  Its proof combines
+the explicit finite logical transformations above with the emitter,
+enumeration, grammar and binary runtime arguments elsewhere in this
+report.  The executable proof DAG is checked by a small independent
+Python parser with truth-table verification of its propositional leaves.
+The runtime certificates are induction arguments over arbitrary
+register values and spare lists.  These are stronger evidence than
+bounded execution tests, but neither is a compiled theorem in a
+proof-assistant kernel.
+
+No new end-to-end Rocq or Lean theorem for the final 222-state bytes has
+been compiled in this work.  The remaining kernel-integration work is
+to formalize the seed numerical-calculus adapter and the G axiom
+interderivations, bind the exact source and grammar certificates to the
+program layer, import the final literal table and runtime certificate,
+and compose them with the inherited set-theoretic comparison.  This is
+a statement about what was and was not mechanically compiled; it does
+not turn the ordinary mathematical proof into a claim that the existing
+runtime checker alone has proved the theory calibration.

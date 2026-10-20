@@ -1,0 +1,271 @@
+\section{Startup and unbounded binary simulation}
+\label{sec:runtime}
+
+\subsection{Exact blank startup}
+
+Direct execution of the released machine from the all-zero tape reaches
+the complete expected dispatch frame after exactly 409,835 transitions.
+The canonical control state is 22 and the head is at $-5$. The logical
+primary registers are
+\[
+                     (3,0,0,0,3,0,0,0,0).
+\]
+The logical-to-physical register map is
+$(6,2,0,4,3,7,8,5,1)$, giving physical primary values
+$(0,0,0,3,0,0,3,0,0)$. There are 167 spare register blocks, each
+encoding one. The zero-gap parameter is 181, or 117 beyond the
+runtime checker's fixed 64-cell address allowance. Exactly 351 cells
+contain one; their complete positions are in the startup receipt, and
+every other tape cell is zero.
+
+The builder computes this endpoint with a sparse set of one-cells.
+An independent dense replay of the canonical table computes the same
+entire tape support, head, and control state. Its finite allocated
+window is only a computational implementation detail: leaving that
+window causes the check to fail, and no such event occurred. The
+infinite exterior therefore remains exactly zero. This finite startup
+check is exhaustive for this particular initial segment. It is separate
+from the unbounded theorem for subsequent instruction frames.
+
+\subsection{What the universal runtime checker establishes}
+
+Each primitive source instruction has a binary address. For each such
+address, the checker starts with its literal address in the dispatch
+frame, nine symbolic natural primary values, a symbolic extra zero gap,
+a symbolic first spare value, an arbitrary finite remaining spare list,
+and zero tape exteriors. It derives the exact successor frame or halt.
+For a decrement instruction it considers the zero and positive cases
+separately; the positive case represents its register as $n+1$ with
+arbitrary natural $n$.
+
+The proof engine uses three kinds of justified steps:
+\begin{enumerate}
+\item A literal transition from the supplied binary table.
+\item Induction over a natural run length when the literal transition
+      is a self-loop scanning in the direction of motion.
+\item Structural induction over a finite list of unary blocks, after
+      deriving its one-block schema from this exact table.
+\end{enumerate}
+The four list traversals are rederived, rather than accepted as
+unverified macro instructions. Unary blocks have forms
+$B(v)=0\,1^{v+1}$ and $C(v)=1\,0\,1^v$. The tape normalizer uses
+their proved concatenation identities, including
+$C(A)1=1B(A)$ for an arbitrary finite block list $A$ and its reversal.
+Opaque tape contexts cannot be inspected without an applicable proved
+rule. The checker rejects unknown reads and unclosed symbolic cases.
+
+The primary candidate passed all 6,167 guarded cases. It used
+1,488,390 symbolic rule applications, covered all 444 literal rows,
+and established a positive affine concrete duration for every
+instruction, with minimum constant term 13. Thus no simulated source
+step can disappear into a zero-time loop or an unproved divergent
+microprogram. The symbolic iteration cap limits the proof search the
+checker can complete; it never accepts a case just because the cap
+was reached. Natural register values and concrete running times are
+not bounded by that cap.
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Check & Seed plus $G$ & Conditional K plus $G$\\
+\midrule
+Working states & 222 & 222\\
+Literal rows & 444 & 444\\
+Guarded instruction cases & 6,167 & 5,956\\
+Symbolic rule applications & 1,488,390 & 1,443,614\\
+Rows covered & 444 & 444\\
+Minimum concrete duration & 13 & 13\\
+Blank startup transitions & 409,835 & 409,835\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All-row coverage is useful evidence that every literal row has been
+checked in some supported instruction context. It is not by itself a
+proof of the global behavior. That proof uses the frame invariants,
+exact endpoints, and positive progress at every simulated instruction.
+The executable checker is an ordinary mathematical verification program;
+its result is not a kernel-checked theorem in Rocq or Lean.
+
+\section{From the actual enumerator to consistency}
+\label{sec:chain}
+
+The finite transition folds and runtime certificates establish the
+implementation layers. To obtain the advertised consistency equivalence
+one must also know exactly what proof search the unchanged register
+program performs and why its nonzero initialization still searches all
+relevant proofs. This section records those inherited interfaces and
+their application to the changed source.
+
+\subsection{The changed row does not disturb proof extraction}
+
+The proof commands act on a persistent tuple $(t,w,d,h)$ consisting of
+the current formula, an encoded stack, an additive parameter counter,
+and a cached formula. An axiom command chooses its parameters through
+$a=d+x$, $b=h+y$, and its explicit $c,u$ fields, resets $d,h$ to zero,
+returns the gated bundle, and pushes the eight logical rows together
+with the generalized old cache and the old current formula. The exact
+ordering is retained, including the replacement of row $\rho_7$ by $G$
+at the same position.
+
+The soundness invariant says that the current formula, cache, and
+stack contents are theorems of the specified numerical theory. The
+truth seed is $0$. Axiom commands preserve theoremhood because their
+outputs are exactly the newly specified axiom instances; MP, DROP,
+NIP, and theorem generalization keep their old meanings. A halting
+NIP has cached code $1$, giving a refutation. All logical rows and
+enabled bundles have root constructors that exclude accidental code
+$1$; the disabled bundle is $0$.
+
+For the reverse implication the inherited proof compiler gives, for
+each finite derivation of formula $X$, a command block with the contract
+\[
+ (T,w,0,0)\ \longmapsto\ \text{halt or }(X,w,0,0)
+ \quad\text{for every }T,w.
+\]
+Its leaf-selection blocks use the positions of the eight logical rows,
+the unchanged disabled gate, and the fact that skipped rows are not
+$1$. These properties still hold. An arbitrary $G(a,b,c)$ instance
+can be selected by the axiom fields after the reset block makes $d=h=0$;
+the gate on the separately emitted bundle does not restrict this logical
+row. The bundle leaf now returns exactly~\eqref{eq:finalbundle}.
+The GEN and MP block proofs are unchanged. The corresponding pinned
+formal interfaces are \code{Enum230.v} and \code{L1_Comp230.v}; their
+precise ordinary adaptation is retained in the K224 packet.
+
+\subsection{A cofinal family handles the nonzero search cutoff}
+
+It would be insufficient to say that the enumerator eventually checks
+every small proof: its initialized next-proof counter is three and it
+retains state between candidates. The inherited construction provides
+an explicit way to obtain sufficiently large halting candidates.
+
+Let $\mathrm{Build}_F$ be the block for a derivation of $F=1$. For each
+$U\in\mathbb N$, use the resetting command
+\[
+ \mathrm{START}_U=\mathrm{AX}(0,1,1,U)
+\]
+and follow it by $\mathrm{Build}_F$ and
+$[\mathrm{DROP},\mathrm{NIP},\mathrm{NIP}]$.
+The reset command makes $d=h=0$ regardless of the retained state.
+It may change the stack and current formula, but the block contract
+holds for every such new pair. If the block has not already halted,
+the final three commands place $F$ in the cache and halt.
+
+If $R$ is the fixed encoded tail after the reset prefix, the complete
+candidate number is exactly
+\[
+ N_U=P\bigl(3,P(1,P(1,P(U,R)))\bigr).
+\]
+Since $P$ is at least either argument, $N_U\geq U$. Thus this is a
+cofinal family of halting candidate numbers, and $U\geq3$ suffices
+for the actual cutoff. The drain proof makes the positive residual
+command-list code decrease within a candidate; at a boundary the
+next-proof counter increases. Hence an appropriate $N_U$ is eventually
+started unless an earlier candidate already halts. The reset deals
+with any earlier retained state.
+
+This is a finite, explicit completeness argument for the actual seeded
+enumerator. It does not assume that a fixed finite command word has
+arbitrarily large encodings without exhibiting them.
+
+\subsection{The complete proof chain and its trust boundary}
+
+The following equivalences compose:
+\begin{align*}
+ M_{\mathrm{sG}}\text{ halts from blank}
+ &\longleftrightarrow
+    \text{the delivered register program halts from its seed},\\
+ &\longleftrightarrow T_{\mathrm{sG}}\text{ derives native code }1,\\
+ &\longleftrightarrow T_{\mathrm s}\text{ derives native code }1,\\
+ &\longleftrightarrow \mathrm{ZFC}\text{ has a finite refutation}.
+\end{align*}
+The first line uses complete startup and the unbounded runtime
+simulation of the independently identified source. The second is
+the proof-enumerator argument above. The third is
+Theorem~\ref{thm:deductive}. The fourth is the inherited seed/numerical
+calibration detailed in Sections~\ref{sec:seed} and~\ref{sec:native}.
+Negating these finite-existence statements gives
+Theorem~\ref{thm:main}.
+
+Every new operation is finite syntax manipulation, induction over a
+finite derivation or list, induction over a natural block length, or
+an exact finite execution. The stated inherited interpretations and
+proof transformations are also effective on finite proofs. These
+arguments admit the ordinary arithmetization in ZFC required by the
+user's target. This is distinct from claiming a completed internal PA
+formalization, or from claiming that a Python run proves the consistency
+of ZFC.
+
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.32\linewidth}>{\raggedright\arraybackslash}p{0.58\linewidth}}
+\toprule
+Layer & Evidence and scope\\
+\midrule
+New equality/bundle comparison & Uniform proof and newly checked closed
+proof DAG for the exact seed order.\\
+New source & Pinned inputs, symbolic expression identities, arbitrary-register
+macro bisimulations, full instruction-word and guarded-CFG checks.\\
+New table & Deterministic construction, exact row census and relabeling,
+two independently certified all-tape folds.\\
+Runtime and startup & Fresh all-natural instruction proofs on the literal
+table; sparse and independent dense blank execution.\\
+Inherited logical strength & K230/K224/seed223 finite-proof interpretations,
+exceptional-code bridge, equality interpretation, and K0-to-ZFC calibration.\\
+Proof-assistant status & No newly compiled end-to-end Rocq or Lean endpoint
+for either 222-state table.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The inherited dependencies are real mathematical premises of this
+construction. The new checks do not erase them, and retaining old
+formal sources or receipts is not the same as replaying every old
+kernel build. The reproduction instructions distinguish the new
+replay from an optional predecessor replay.
+
+\section{The second 222-state construction}
+\label{sec:alternative}
+
+A parallel construction begins with the published conditional-K223
+source and applies the same $G$ absorption. Its old core has the
+conditional root
+\[
+      \varphi(x,a)\to\exists C\,(R(x,C)\land H_\varphi(C)).
+\]
+The helper is removed from its bundle and the unconditional equality
+row is replaced by~\eqref{eq:g}. Exact symbolic macro execution and
+both complete guarded-CFG resolvers bind this new source to its stated
+formula. It has 4,581 primitive occurrences, 209 distinct subtrees,
+and maximum zero run six.
+
+Compilation initially gives 224 states. Two independently checked
+one-step folds identify historical state 135 with 118, then state 116
+with 159. The same kind of old scanned-zero invariant supports the
+first fold; the second is an identical-row quotient. The final table
+has 222 working states. Its K-labelled form has SHA-256
+\begin{center}\small\ttfamily
+7f0d5c464b738046fceacb8219d21e17b66e5820160ef2c0e984a4281c20faf5.
+\end{center}
+The archived alternative includes a canonical labeling, source, maps,
+checkers, and its own runtime and startup receipts. Its canonical file is
+\path{portable/alternative/results/candidate222.tm}, with SHA-256
+\begin{center}\small\ttfamily
+60e21a040e58e2a2840b0f3d58ad3ee0e6ef4d0d5cdf1372d5a69355f1198ca1.
+\end{center}
+
+Its 5,956 guarded runtime cases passed with 1,443,614 symbolic rule
+applications and all 444 rows covered. Sparse and dense startup
+reached the same intended frame after 409,835 transitions. The $G$
+interderivation is uniform in the set-theoretic core, so it transfers
+the published conditional candidate's ordinary calibration unchanged.
+That calibration includes an additional two-marker hereditary-domain
+interpretation relating conditional and unconditional K. It remains
+an explicitly inherited ordinary proof, with no new kernel discharge
+in this packet.
+
+The seed-plus-$G$ version is the primary recommendation because its
+set-theoretic comparison uses the existing seed-to-K0 route directly.
+The conditional variant is useful independent evidence that the
+equality saving composes with two structurally different K encodings.
+They have equal state counts and distinct sources and transition tables.

@@ -1,0 +1,72 @@
+{
+  "status": "G223_PHASES_PASS_WITH_SEPARATE_RUNTIME_RERUN",
+  "scope": "All seven initial construction/source/logic/fold/startup phases returned zero. The original overall driver receipt remains FAILED because its runtime phase could not write output when disk space was exhausted. That exact runtime phase was rerun separately and passed; no original full-driver pass is claimed.",
+  "original_driver_receipt": {
+    "status": "FAILED",
+    "mode": "full",
+    "phases": [
+      {
+        "name": "01_baseline224",
+        "returncode": 0,
+        "seconds": 59.4568613770025,
+        "log": "logs/01_baseline224.log"
+      },
+      {
+        "name": "02_construct_source",
+        "returncode": 0,
+        "seconds": 0.32426998099981574,
+        "log": "logs/02_construct_source.log"
+      },
+      {
+        "name": "03_exact_emitter",
+        "returncode": 0,
+        "seconds": 0.23633873299695551,
+        "log": "logs/03_exact_emitter.log"
+      },
+      {
+        "name": "04_finite_logic",
+        "returncode": 0,
+        "seconds": 0.05905339400487719,
+        "log": "logs/04_finite_logic.log"
+      },
+      {
+        "name": "05_independent_logic",
+        "returncode": 0,
+        "seconds": 0.03780289799760794,
+        "log": "logs/05_independent_logic.log"
+      },
+      {
+        "name": "06_all_tape_folds",
+        "returncode": 0,
+        "seconds": 0.04332230200088816,
+        "log": "logs/06_all_tape_folds.log"
+      },
+      {
+        "name": "07_canonical_and_blank",
+        "returncode": 0,
+        "seconds": 0.15753373999905307,
+        "log": "logs/07_canonical_and_blank.log"
+      },
+      {
+        "name": "08_unbounded_runtime",
+        "returncode": 1,
+        "seconds": 100.78931480900064,
+        "log": "logs/08_unbounded_runtime.log"
+      }
+    ],
+    "manifest": {
+      "files": 36,
+      "manifest_sha256": "1c38728f9d18d4877681565463f2d229b345dea1531891dd576f07a50ed5ae05"
+    },
+    "baseline": {
+      "status": "QUICK_REPLAY_PASS",
+      "archive_sha256": "cf5db8d08a34f5661ad1266226809ed1f0099fd38374c66d127e1e06519c6887",
+      "fresh_runtime": false
+    },
+    "error": "ValueError('Phase failed: 08_unbounded_runtime; see /workspace/scratch/bb42c456c70b/root_work/replay_g223/logs/08_unbounded_runtime.log')",
+    "seconds": 161.22594121200382
+  },
+  "original_runtime_failure_log": "Four exact-table list induction schemas proved\nProved 1000 of 5956 cases\nProved 2000 of 5956 cases\nProved 3000 of 5956 cases\nProved 4000 of 5956 cases\nProved 5000 of 5956 cases\nTraceback (most recent call last):\n  File \"/workspace/scratch/bb42c456c70b/logic_work/k223-2/K223_Construction_2026-10-20/portable/runtime223.py\", line 75, in <module>\n    path=a.output or a.results/'runtime223.json';result=audit(a.results,path) if a.audit_stored else prove(a.results,path)\n                                                                                                     ^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/bb42c456c70b/logic_work/k223-2/K223_Construction_2026-10-20/portable/runtime223.py\", line 47, in prove\n    casepath=output.with_name(output.stem+'_cases.json');b.dump(casepath,cases)\n                                                         ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/bb42c456c70b/logic_work/k223-2/K223_Construction_2026-10-20/portable/build223.py\", line 15, in dump\n    def dump(path, value): Path(path).write_text(json.dumps(value, indent=2) + '\\n')\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py\", line 1048, in write_text\n    return f.write(data)\n           ^^^^^^^^^^^^^\nOSError: [Errno 28] No space left on device\n",
+  "successful_fresh_runtime_receipt": "parent_G223_fresh_runtime.json",
+  "successful_runtime_receipt_sha256": "c5bbd4a8f3e7a67b97fd5f2a49cd88426a7219f2d42251a6d6c4c276879ea0f9"
+}

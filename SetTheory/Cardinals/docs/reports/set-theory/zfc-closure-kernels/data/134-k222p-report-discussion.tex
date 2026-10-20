@@ -1,0 +1,181 @@
+\section{Reproduction and incorporation into ProveIt}
+\label{sec:reproduce}
+
+The packet is intended to be unpacked as a self-contained research
+contribution. Its builders use Python's standard library, explicit local
+paths, and pinned input hashes. They do not need network access or an
+optimization search to reconstruct either delivered table. Assertions
+must remain enabled: do not use Python's \code{-O} or \code{-OO} options.
+
+From the packet root, the primary integrated replay is
+\begin{verbatim}
+python3 -B portable/reproduce.py \
+  --full --output-dir /tmp/k222-replay
+\end{verbatim}
+Use an initially empty output directory outside the packet. The replay
+checks input integrity; reconstructs the exact source; checks the new
+closed logical proofs and emitter; reconstructs the literal parent,
+folded, and canonically labelled tables; verifies the folds and startup;
+and freshly rederives all primary runtime cases. The main README
+documents optional predecessor and alternative replays and the exact
+success labels. Retained runtime summaries are hash-bound to their
+tables and sources, but they are distinguished from a fresh derivation.
+
+The main artifact groups are:
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.30\linewidth}>{\raggedright\arraybackslash}p{0.60\linewidth}}
+\toprule
+Path & Purpose\\
+\midrule
+\path{report/} & This report, editable LaTeX, generated complete table,
+and PDF.\\
+\path{portable/machine/} & Primary source, three labelings, exact parent,
+maps, startup and validation data.\\
+\path{portable/source/} & Deterministic source/emitter checker,
+pinned macro inputs, new logical certificate, and theory note.\\
+\path{portable/alternative/} & Conditional-K222 source, tables,
+independent construction/checks, and receipts.\\
+\path{portable/vendor/} & Unchanged pinned K224 archive with inherited
+proofs, licenses and nested dependencies.\\
+\path{research/} & Independent review and bounded exploratory results,
+clearly separated from the positive proof.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For repository integration, a suitable candidate directory is
+\path{Computability/BusyBeaver/Research/ZFC/candidate-seed-g222/}.
+The primary table, source, provenance, reproduction entry point,
+theory note, and receipts should be kept together. The alternative can
+be retained as an independent sibling or within the same research
+packet. The report and complete packet can enter the existing intake
+process. The root README and provenance identify which 223-state input
+belongs to which construction, avoiding ambiguity between similarly
+named incoming archives.
+
+The table appendix is generated from the canonical file. Rebuilding the
+PDF requires a standard LaTeX installation with the packages named in
+\path{report/main.tex}. All files necessary to the delivered PDF are
+included. Manifest hashes provide transport integrity; they do not
+substitute for any mathematical proof.
+
+\section{Other directions examined and their measured limits}
+
+The successful search attacked both the theory and the encoding.
+On the theory side, output-root K, conditional K, and seed-request K
+were compared through their actual existing source programs, and the
+merged equality theory was combined with the latter two. On the machine
+side, source sharing, address constraints, decoder helper preservation,
+and local state invariants were checked directly.
+
+A small additional experiment changed $G$'s canonical binder from
+$\cR(a,b)$ to $\cE(a,b)$ or $\cQ(a,b)$. The inherited general-helper
+theorem permits these positive-tag builders: each is larger than both
+endpoint labels. On the initial combined seed layout, the equality-code
+binder produced 4,746 occurrences and the same 208 subtrees; the
+quantifier-code binder produced 4,745 occurrences and 210 subtrees.
+Neither yielded a smaller source in that experiment. The unrepaired
+address patterns and full machine behavior of those variants were not
+certified, and they are not additional claimed consistency machines.
+
+A finite-context state-fold search also examined the three starting
+223-state tables and an intermediate equivalent 222-state table. Its search class
+used constant-bit invariants within radius eight and finite positive
+simulation blocks of at most twenty steps. No additional one-state fold
+was found in that class. This is an accurately scoped unsuccessful
+search, not a lower bound. It does not exclude wider contexts,
+different invariants, simultaneous multi-state transformations, or
+different source layouts.
+The retained receipts identify the exact searched bytes; the final
+primary table's last direct-row simplification was not searched again.
+
+More radical formalism changes remain possible but were not promoted
+to state-count claims here. A direct standard-ZFC proof recognizer would
+avoid the intermediate K interpretation but would need to implement
+its logical and schema recognizers compactly. A finite class-theory
+presentation could reduce axiom-schema machinery while increasing the
+vocabulary and proof-checker overhead. A purely membership-based
+source could eliminate primitive equality obligations while making
+its equality translations and auxiliary names more expensive. None
+of those qualitative observations supplies a literal table or a
+certified state count. The successful calibrated K compositions are
+the concrete results of this investigation.
+
+\section{Further research questions}
+\label{sec:future}
+
+\begin{enumerate}
+\item \textbf{Can the 208-subtree source retain thirteen aliases?}
+The primary source has one fewer subtree than the conditional variant,
+but the latter preserves one additional decoder alias. A compatible
+208-subtree layout with thirteen aliases would suggest 221 states at
+the same engine cost. The arithmetic is a target, not a compiler theorem:
+an actual table must retain helper paths and pass full runtime checking.
+
+\item \textbf{Can grammar selection optimize decoder sharing directly?}
+The current construction measures repeated subtrees, then checks
+whether contextual sharing survives. A joint solver could make source
+parenthesization, protected helper paths, and state assignment part of
+one optimization problem. A useful solver should emit independently
+checkable exact source and table certificates, so its search procedure
+does not enter the mathematical trust base.
+
+\item \textbf{Can a stronger invariant remove a further engine state?}
+The successful fold uses only two one-bit facts. Relations between
+two tape cells, frame delimiters, or control phases might support a
+reduction outside the searched radius-eight constant-fact class.
+The old/new invariant distinction must be preserved when several
+states take over each other's previously impossible branches.
+
+\item \textbf{Can the seed request absorb another logical obligation?}
+The $G$ construction succeeds because strengthening one row makes a
+separate helper redundant and the original row can be recovered.
+Other candidates should be tested first for literal interderivability
+using the retained weak quantifier calculus, before source compression
+is attempted. A semantic validity argument alone need not prove the
+required native-calculus comparison.
+
+\item \textbf{Can binder choice and arithmetic reuse be optimized together?}
+The general helper theorem allows several safe numerical binder
+functions. Merely replacing the formula-level binder did not improve
+the tested subtree counts. Computing an equality atom once and reusing
+its code, or exploiting a small tag difference between constructors,
+may change the arithmetic source more substantially. Such a change
+requires an arbitrary-stack macro contract and the same exact
+matrix/private-code discipline.
+
+\item \textbf{Can the new endpoint be made kernel-checked?}
+The most direct formalization tasks are the uniform $G$ interderivation
+for the exact seed bundle, the modified axiom-command interface, the
+finite source certificate, and the 222-state table simulation. The
+new all-tape folds are especially small candidates for an initial
+Rocq proof. Completing those tasks would improve the verification
+status without changing the machine.
+
+\item \textbf{How weak a metatheory proves the entire equivalence?}
+The present target is provability in ZFC. The new source transformations,
+finite syntax translations, and affine/list inductions are elementary,
+but weakening the global theorem to PA requires a precise internal
+analysis of every inherited consistency reduction. A proof in an
+external proof assistant does not by itself answer that question.
+\end{enumerate}
+
+\section{Attribution and conclusions}
+
+Glazer's K theory, seed formulation, K0 quotient interpretation, and
+consistency reductions are the mathematical foundation. The proof-search
+and compiler lineage includes the work credited by the pinned packets:
+Mira, Vladimir Reshetnikov's ProveIt project, Jeff's busy-beaver
+development, Andrew James Wade, BusyCoq, and the Coq Library of
+Undecidability. Existing licenses and notices remain in force for those
+materials. The incoming seed223 and merged-equality223 packets supply
+the two immediate ideas being combined.
+
+This investigation supplies two explicit 222-state candidates and a
+fully specified primary construction. The new source composition,
+exact literal tables, uniform source binding, all-tape folds, complete
+startup, and unbounded runtime checks form a reproducible improvement
+over the inspected 223-state baseline. The proof chain and its inherited
+premises are stated explicitly. Absolute consistency of ZFC,
+unconditional non-halting, minimality, and a new end-to-end
+proof-assistant endpoint are not consequences claimed by this work.

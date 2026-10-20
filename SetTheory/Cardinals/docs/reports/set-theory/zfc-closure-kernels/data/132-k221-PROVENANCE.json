@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-20",
+  "contribution": "K221 source rotations and inductive decoder fold",
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "predecessor": {
+    "archive": "portable/vendor/K222_Construction_2026-10-20.zip",
+    "sha256": "4f677d8253846069a77dcac648a0a2bfe002ec8530886924ae3eba71e97e00d7",
+    "canonical_table_sha256": "f5b4adcd5e0735a4a26dcc2316e69683df73bee0dbaf9e1082cd1e9318e8082a"
+  },
+  "machine": {
+    "path": "machine/k221.tm",
+    "working_states": 221,
+    "rows": 442,
+    "start": 0,
+    "halt": 221,
+    "dispatcher": 22,
+    "sha256": "6457dce8c91c5975fb405607567158ca92ad97331f2724503edc0d4ff74cab3c",
+    "native_sha256": "e6dc479f09ded05dd1c0639b60a0c453483f42e6b77c29562d433cac528c1ecc"
+  },
+  "source": {
+    "path": "machine/sites221.json",
+    "sha256": "691684ec948c972bf67727d6d4cd1181a90a9203644ee3db3eae363280e3fac9",
+    "primitive_occurrences": 4744,
+    "distinct_subtrees": 208,
+    "internal_subtrees": 185,
+    "aliases": 13,
+    "decoder_states": 172,
+    "other_states": 49,
+    "maximum_depth": 38,
+    "maximum_zero_run": 6,
+    "guarded_cases": 6167
+  },
+  "construction": {
+    "rotations": [
+      {
+        "q": 116,
+        "r": 172,
+        "s": 172,
+        "direction": "left",
+        "kind": "rewrite"
+      },
+      {
+        "q": 227,
+        "r": 215,
+        "s": 215,
+        "direction": "left",
+        "kind": "rewrite"
+      },
+      {
+        "q": 227,
+        "r": 224,
+        "s": 224,
+        "direction": "left",
+        "kind": "rewrite"
+      }
+    ],
+    "fold": {
+      "keep": 172,
+      "drop": 192,
+      "helpers": [
+        112,
+        "direct"
+      ],
+      "kind": "inductive_tag"
+    }
+  },
+  "proof_boundary": {
+    "ordinary_mathematical_equivalence_formalizable_in_ZFC": true,
+    "logical_calculus_unchanged": true,
+    "new_compiled_exact_Rocq_or_Lean_endpoint": false,
+    "new_internal_PA_endpoint": false,
+    "minimality": false
+  },
+  "verification": {
+    "runtime_status": "FULL_UNBOUNDED_RUNTIME_AND_EXACT_STARTUP_PASS",
+    "runtime_cases": 6167,
+    "symbolic_rule_applications": 1514663,
+    "all442_rows_used": true,
+    "minimum_instruction_steps": 13,
+    "blank_startup_steps": 409835,
+    "source_invariant_closure_checks": 32107,
+    "release": {
+      "status": "FINAL_RELEASE_VERIFIED",
+      "clean_full_status": "RESUMED_FULL_K221_REPLAY_PASS",
+      "clean_quick_status": "QUICK_K221_REPLAY_PASS",
+      "runtime_recovery": "The first clean-runtime process was interrupted after3000cases. All final6167cases were freshly restarted and completed; the interrupted partial run is not counted as success. Completed prior construction and local-proof phases were retained after exact executable-manifest verification.",
+      "all_packaged_portable_bytes_equal_clean_extraction": true,
+      "exact_case_certificates_match_packaged_reference": true,
+      "portable_manifest_sha256": "00154873f4256a9509a747004fa49ecd7e206cc428d1acca6acec6826dae0f70",
+      "canonical_table_sha256": "6457dce8c91c5975fb405607567158ca92ad97331f2724503edc0d4ff74cab3c",
+      "report_sha256": "d1afe9d678a6f0a939b1e1be6acbd0cd2b301d3d08401efd70c3a2b193185498"
+    }
+  },
+  "report": {
+    "path": "report/report.pdf",
+    "pages": 10,
+    "sha256": "d1afe9d678a6f0a939b1e1be6acbd0cd2b301d3d08401efd70c3a2b193185498"
+  }
+}

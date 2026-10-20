@@ -1,0 +1,308 @@
+% Article-ready mathematics for the conditional-G composition.
+% Requires amsmath, amssymb, amsthm; theorem environment names can be adjusted.
+\section{A logical composition theorem for the conditional G construction}
+\label{sec:conditional-g}
+
+The new combination uses two distinct existing improvements. The conditional
+K source changes the outer set-theoretic schema. The G source merges equality
+propagation with a restricted equality-vacuity helper. Their compatibility is
+not a consequence of subtracting their state savings: it follows first from a
+uniform deductive-equivalence theorem, and then from a separately checked
+source compiler and transition table.
+
+Write $I(A,B)=A\mathbin{\to}B$, $Q_iA=\operatorname{All}(i,A)$,
+$d_{ab}=\operatorname{Eq}(a,b)$ and $r_{ab}=\operatorname{Rel}(a,b)$.
+The designated falsehood is the exact native code $F=1=r_{00}$.
+Put $N(A)=I(A,F)$ and $\exists_iA=N(Q_iN(A))$. A closed proof means a
+proof without undischarged assumptions; its formula may contain free labels.
+Generalization is applied only to such closed proofs.
+
+\subsection{Uniformity in the core and in the helper binder}
+
+Let $\kappa\colon\mathbb N^2\to\mathbb N$ be any total function for the
+moment, and define
+\[
+ H_\kappa(a,b)=d_{ab}\to Q_{\kappa(a,b)}d_{ab},\qquad
+ G_\kappa(a,b,c)=d_{ca}\to
+       \bigl(d_{cb}\to Q_{\kappa(a,b)}d_{ab}\bigr).
+\]
+The eventual machine uses
+\[
+ \kappa(a,b)=4P(a,b)+1,\qquad
+ P(a,b)=\frac{(a+b)(a+b+1)}2+b.
+\]
+This binder exceeds both endpoint labels, but the syntactic fusion theorem
+does not require that inequality. Freshness is needed when calibrating the
+helper to ordinary equality semantics, not when proving its equivalence to
+the merged G row.
+
+Let $C(a,b,c)$ be an arbitrary family of native formula codes. It may be an
+unconditional K core, a conditional K core, or any other expression. Let
+$V(a,b,c)$ be another arbitrary family. For the effective version, assume
+that these native-code functions, $\kappa$, and the gate witness are primitive
+recursive, as they are in the present construction. Without this effectiveness
+assumption the same argument still gives deductive equivalence.
+Consider two numerical calculi with
+the same truth seed, modus ponens, closed generalization, and retained rows
+$\rho_1,\ldots,\rho_6,\rho_8$. The old calculus additionally has
+\[
+ \rho_7(a,b,c)=d_{ca}\to(d_{cb}\to d_{ab})
+\]
+for every triple and, whenever $c\notin\{a,b\}$, the bundle
+\[
+ B_{\mathrm{old}}(a,b,c)
+   =N\bigl(I(C(a,b,c),I(V(a,b,c),N(H_\kappa(a,b))))\bigr).
+\]
+The new calculus replaces $\rho_7$ by the \emph{ungated} row $G_\kappa$
+and replaces each enabled bundle by
+\[
+ B_{\mathrm{new}}(a,b,c)
+   =N\bigl(I(C(a,b,c),N(V(a,b,c)))\bigr).
+\]
+Disabled bundles remain the native truth seed $0$ in both calculi.
+
+\paragraph{Theorem (core-independent equality fusion).}
+The two calculi derive exactly the same native formula codes. The proof
+transformations are uniform finite syntactic transformations. In particular,
+their distinguished refutation predicates, derivability of code $1$, agree.
+The assertion remains valid for any common gate with an effective witness
+$w(a,b)$ satisfying the gate for every ordered pair; here one may take
+$w(a,b)=\max(a,b)+1$.
+
+\paragraph{Proof.}
+The unchanged $\rho_8/\rho_6$ bridge supplies classical propositional logic
+with designated falsehood $F$. In detail, the retained condensed-detachment
+derivations give K, S and Peirce from $\rho_8$; $\rho_6$ and K give
+$F\to A$; classical negation and double-negation elimination follow. The
+argument does not assume equality reflexivity, equality vacuity, G, or any
+set-theory axiom.
+
+Closed generalization and $\rho_2$ give universal monotonicity, and
+contraposition gives existential monotonicity. One also has, for every
+label $i$ and arbitrary native formula code $A$,
+\begin{equation}
+ Q_iA\longrightarrow\exists_iA.
+ \tag{S}
+\end{equation}
+Indeed $\rho_1(i,i)$ gives $\exists_i d_{ii}$. Generalizing
+$A\to(d_{ii}\to A)$ and distributing gives
+$Q_iA\to Q_i(d_{ii}\to A)$. The dual consequence of $\rho_2$ is
+$Q_i(d_{ii}\to A)\to(\exists_i d_{ii}\to\exists_iA)$, so propositional
+composition proves (S). Consequently
+\begin{equation}
+ Q_iQ_iA\longrightarrow\exists_iQ_iA\longrightarrow A,
+ \tag{D}
+\end{equation}
+using $\rho_6(i,A)$ in the last step. We have not assumed universal
+elimination $Q_iA\to A$ for arbitrary codes.
+
+Fix $x$ and set $z=\kappa(x,x)$ and $e=d_{xx}$. The G instance
+$G_\kappa(x,x,z)$ contracts propositionally to $d_{zx}\to Q_ze$.
+Existential monotonicity and $\rho_1(z,x)$ yield $\exists_zQ_ze$, so
+$\rho_6(z,e)$ proves $d_{xx}$. This proves reflexivity without using the
+deleted helper or $\rho_7$. Now $G_\kappa(a,b,a)$ and the proved
+$d_{aa}$ yield the exact helper $H_\kappa(a,b)$.
+
+Put $i=\kappa(a,b)$ and $e=d_{ab}$. Generalize the closed helper and
+distribute to obtain $Q_ie\to Q_iQ_ie$. Composing with (D) gives
+$Q_ie\to e$. Applied to the consequent of $G_\kappa(a,b,c)$, this
+recovers the literal old $\rho_7(a,b,c)$. Conversely old $\rho_7$
+followed by old $H_\kappa$ immediately proves G.
+
+The exact negative bundles satisfy the propositional implications
+\[
+ B_{\mathrm{old}}\to B_{\mathrm{new}},\quad
+ B_{\mathrm{old}}\to H_\kappa,\quad
+ B_{\mathrm{new}}\to(H_\kappa\to B_{\mathrm{old}}).
+\]
+For any $a,b$, choose $c=\max(a,b)+1$ to extract the needed helper from
+an enabled old bundle. This extraction is independent of the truth or form
+of $C(a,b,c)$: a bundle axiom is a conjunction, so its helper conjunct is
+available even when the conditional core's seed premise is false. In the
+new calculus, G supplies the helper directly. Replace changed axiom leaves
+by these finite closed derivations and preserve MP and closed GEN. Induction
+on a proof tree gives both proof transformations.\hfill$\square$
+
+\subsection{The exact conditional source formula}
+
+The source compiler works with the fused constructor
+\[
+ X(i,A,B)=N\bigl(Q_i I(A,N(B))\bigr),
+\]
+which is provably equivalent in the retained logical basis to
+$\exists_i(A\wedge B)$. At native parameters $a,b,c$ put $m=c$ and
+$k=c$. The \emph{same number} is the opaque matrix code and the private
+container-variable label. Define the following constructor expressions:
+\begin{align*}
+ r&=r_{bk},&
+ S&=Q_k(r_{ka}\to r_{kb}),\\
+ W&=Q_b(m\to X(b,m,r)),&
+ U&=Q_a(S\to W),\\
+ H&=Q_b(r\to X(a,m,U)),&
+ C_c&=m\to X(k,r,H).
+\end{align*}
+Full membership vacuity remains
+\[
+ V_R(a,b,c)=r_{ab}\to Q_c r_{ab}.
+\]
+The new source emits the eight old logical row positions, with G in the
+$\rho_7$ position, and the gated two-component bundle
+\begin{equation}
+ B_{c,G}(a,b,c)=
+ \begin{cases}
+  0,& c=a\text{ or }c=b,\\
+  N\bigl(I(C_c,N(V_R(a,b,c)))\bigr),&\text{otherwise}.
+ \end{cases}
+ \tag{CG}
+\end{equation}
+Its pre-fusion parent has the same conditional core and membership vacuity,
+old $\rho_7$, and the additional $H_\kappa$ conjunct. Applying the theorem
+with $C=C_c$ and $V=V_R$ proves deductive equivalence with that precise
+conditional-223 source theory. There is no return to the unconditional core
+at this step, and no invalid assumption that conditional and unconditional
+K have identical theorems.
+
+The disabled gate is unchanged. An enabled bundle in (CG) is an implication
+into $F=1$, hence its native code is positive and divisible by four; it can
+be neither $0$ nor $1$. The G row is also an implication with a positive
+quantified consequent. Thus the inherited non-target facts used by the
+proof enumerator remain applicable. The number and positions of logical
+rows, stack pushes, and fields consumed by AX remain unchanged.
+
+\subsection{Ordinary conditional K and its consistency calibration}
+
+For clarity, the conditional core corresponds to the ordinary schema
+\[
+ \forall a\,\forall x\,
+   \bigl(\varphi(x,a,\vec q)\to
+          \exists C\,(x\in C\wedge H_\varphi(C))\bigr),
+\]
+where
+\begin{align*}
+ W_\varphi(p,C)&=
+   (\exists y\,\varphi(y,p,\vec q))\to
+     \exists y\,(y\in C\wedge\varphi(y,p,\vec q)),\\
+ H_\varphi(C)&=\forall u\,
+ \left(u\in C\to
+ \left((\exists p\,\varphi(u,p,\vec q))\wedge
+       \forall p\,(p\subseteq u\to W_\varphi(p,C))\right)\right).
+\end{align*}
+Let $K_c$ be this schema plus genuine equality; add irreflexivity
+$\mathrm{IR}:\forall x\,x\notin x$. The inherited conditional-K argument
+establishes a uniform interpretation of the unconditional K schema plus IR
+inside $K_c+\mathrm{IR}$. The essential steps are recalled because
+conditional seeding alone does not prove the existence of a raw empty object.
+
+Conditional K first constructs exact singletons and pairs. A singleton of
+$a$ comes from the matrix $y=a$. For a pair $\{a,b\}$ choose a singleton
+$s=\{a\}$, so IR implies $s\ne a$, and use
+$(p=s\wedge y=a)\vee(p=a\wedge y=b)$ with seed $a$ at input $s$.
+Closure at the eligible input $p=a\subseteq a$ forces $b$ into the
+container, and support excludes all other members.
+
+Choose distinct markers $t,s$ with $s=\{t\}$. Put
+$Q(x)\equiv(t\in x\wedge s\in x)$ and let
+\[
+ \operatorname{Adm}(T)\equiv
+ \forall u\in T\,
+ \left(Q(u)\wedge\forall v\in u\,
+       (v=t\vee v=s\vee v\in T)\right).
+\]
+The interpreted domain is the finite, nonrecursive formula
+$D(x)\equiv\exists T\,(x\in T\wedge\operatorname{Adm}(T))$.
+It excludes both markers, is hereditary away from them, and contains the
+exact pair $\{t,s\}$, which is empty in the interpreted domain.
+
+The key closure lemma says that if $Q(C)$ holds and every non-marker
+member of $C$ belongs to $D$, then $D(C)$. Apply conditional K to
+$\operatorname{Sing}(y,p)\wedge(D(y)\vee y=C)$ with a singleton input
+for $C$. Support gives $Q$ on every resulting member; closure at singleton
+inputs puts every needed non-marker member into one common witnessing set.
+This avoids a hidden collection or choice of individual $D$-witnesses.
+
+To transfer an arbitrary $D$-relativized instance, choose singleton inputs
+$p_t=\{t\}$ and $p_s=\{s\}$, both outside $D$, and use the raw matrix
+\[
+ (p=p_t\wedge y=t)\vee(p=p_s\wedge y=s)
+ \vee\bigl(D(p)\wedge D(y)\wedge\varphi^D(y,p,\vec q)\bigr).
+\]
+Starting from an interpreted output forces both markers into the new
+container. Support puts every other member in $D$, and the closure lemma
+puts the container itself in $D$. An interpreted subset is a raw subset:
+its marker members are already in every interpreted containing object,
+and all other members are hereditary in $D$. Thus the interpreted domain
+satisfies conditional K and has an empty object. Splitting on the seed
+premise now proves unconditional K there. The reverse direction, from
+unconditional K to conditional K, simply retains the old container when
+the seed premise holds. These are effective finite-schema interpretations,
+so the inherited K/ZFC calibration yields
+\[
+ \operatorname{Con}(K_c+\mathrm{IR})
+ \longleftrightarrow\operatorname{Con}(\mathrm{ZFC}).
+\]
+
+\subsection{The numerical bridge and its freshness obligations}
+
+The restricted-helper calibration remains essential: deleting its conjunct
+is justified here only because G derives the exact helper. The inherited
+proof interprets primitive equality by membership indiscernibility while
+preserving membership, implication, and every binder. It supplies all old
+logical rows and their auxiliary-label transport, including coincidences.
+
+For the lower direction choose an ordinary matrix $f$ with input label $1$
+and output label $3$, apply the equality interpretation to obtain
+$\theta(f)$, double-negation-pad it, and \emph{then} choose
+\[
+ c=\operatorname{enc}(\neg\neg\theta(f)).
+\]
+The constructor-code induction gives $c>3$ and makes $c$ larger than
+every label in the padded interpreted matrix. Choose the comparison
+ordinary instance's private variable to be this $c$. The K skeleton is
+equality-free and commutes literally with $\theta$, so its interpreted
+matrix has actual native code $c$ and is exactly the source instance with
+$k=m=c$. This order of choices matters: choosing $c$ from $f$ before
+interpreting equality would generally give the wrong private name. The
+translated IR becomes the generalized identity $Q_0(F\to F)$.
+
+For the upper direction the inherited decoder theorem proves private-label
+freshness for every matrix code, including $0$ and $1$. One must not replace
+it by the false assertion that every label in the decoded formula for code
+$0$ is strictly below $0$. At enabled triples the decoded unconditional
+core entails the conditional core by the fresh-container quantifier rule;
+the inherited coincident-role and distinct-role cases are retained. G may
+either be checked in genuine equality semantics using the freshness of
+$\kappa(a,b)$, or, more directly, transported through the literal
+deductive-equivalence theorem back to the calibrated conditional source.
+
+All these transformations concern finite formulas and finite proof trees.
+Fresh names are selected by explicit maxima and the source encoding is a
+primitive-recursive function. They are formalizable in ZFC and yield its
+internal equivalence between the two finite-refutation predicates. They do
+not prove consistency of ZFC or unconditional non-halting of the machine.
+
+\subsection{Schematic certificate and remaining proof boundary}
+
+The new certificate \texttt{uniform\_g\_proof.json} has 57 proof nodes,
+53 formula expressions, and eight requested endpoints. Unlike a list of
+concrete numerical examples, its labels are formal terms generated by
+$a,b,c$ and an uninterpreted binary function $\kappa$. Its arbitrary core
+is a formula placeholder. A structural substitution induction shows that
+every evaluation of the label terms in natural numbers, including all
+coincidences and zero, maps each checked node to a permitted native proof
+node. The same argument permits replacement of the core placeholder by the
+exact conditional core above.
+
+The generator/checker and the separate checker
+\texttt{verify\_uniform\_g.py} validate all MP and closed-GEN edges, exact
+schema leaves, exact root endpoints, and the direction-specific absence of
+circular old/G premises. Propositional leaves are independently truth-table
+checked; they abbreviate the inherited $\rho_8/\rho_6$ classical bridge.
+Negative controls reject a circular helper premise, a changed G instance,
+and substitution of a different proved root for a requested endpoint.
+
+This certificate strengthens the executable evidence for the new logical
+composition. The ordinary two-marker interpretation, the restricted-helper
+and numerical K calibration, exact source binding, complete blank startup,
+and universal binary runtime are separate links. The result is not a new
+compiled Lean or Rocq endpoint. A literal machine theorem must compose those
+links for the exact delivered transition table.

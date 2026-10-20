@@ -1,0 +1,311 @@
+\section{The exact formula emitted by the new source}
+\label{sec:native}
+
+The native numerical constructors are
+\[
+ \cI(x,y)=4P(x,y),\quad \cR(x,y)=4P(x,y)+1,\quad
+ \cQ(x,y)=4P(x,y)+2,\quad \cE(x,y)=4P(x,y)+3.
+\]
+They encode implication, membership, universal quantification, and
+primitive equality. The first argument of $\cQ$ is a variable label.
+Set $\cF=1=\cR(0,0)$ and $\cN(t)=\cI(t,1)$. The usual negative
+encodings are $A(x,y)=\cN(\cI(x,\cN(y)))$ for conjunction and
+$X_i(x)=\cN(\cQ(i,\cN(x)))$ for existence.
+
+For every enabled triple $(a,b,c)$, define the literal expressions
+\begin{align}
+ r&=\cR(b,c),\nonumber\\
+ s&=\cQ(c,\cI(\cR(c,a),\cR(c,b))),\nonumber\\
+ w&=\cQ\bigl(b,\cI(c,\cN(\cQ(b,\cI(c,\cN(r)))))\bigr),\label{eq:literal-w}\\
+ u&=\cQ(a,\cI(s,w)),\nonumber\\
+ h&=\cQ\bigl(b,\cI(r,\cN(\cQ(a,\cI(c,\cN(u)))))\bigr),\label{eq:literal-h}\\
+ v&=\cI(\cR(a,b),\cQ(c,\cR(a,b))),\nonumber\\
+ \ell&=\cQ(c,\cI(h,\cN(w))).\nonumber
+\end{align}
+The new gated bundle is exactly
+\begin{equation}
+ B_{\mathrm{sG}}(a,b,c)=\cN\bigl(\cI(v,\ell)\bigr),
+ \qquad c\ne a,b.
+ \label{eq:finalbundle}
+\end{equation}
+For a disabled triple the emitter returns $0$. The new equality row is
+exactly
+\begin{equation}
+ \cI\bigl(\cE(c,a),\cI(\cE(c,b),
+                \cQ(\cR(a,b),\cE(a,b)))\bigr).
+ \label{eq:finalgcode}
+\end{equation}
+These are equations between arithmetic expression trees. In particular,
+the opaque matrix input is the literal number $c$ and the private
+container binder is that same literal number $c$.
+
+For distinct active roles $a\ne b$, after correct decoding and classical logical conversions,
+\eqref{eq:finalbundle} expresses
+\[
+ V_R(a,b,c)\ \land\ \exists C\,(H(C)\land W(a,C)).
+\]
+The ordering matters to the compiled source even though conjunction
+order is immaterial to classical provability. The two occurrences of
+$w$, including the one inside $h$, are literally the same expression.
+The formerly emitted helper
+$e=\cI(\cE(a,b),\cQ(\cR(a,b),\cE(a,b)))$
+has disappeared from the old seed bundle $\cN(\cI(v,\cI(e,\ell)))$.
+
+\subsection{Exceptional codes and coincident active labels}
+
+The pinned total decoder $D$ does not treat every numerical implication
+uniformly. It sends $0$ to a closed tautology, sends $1$ to $R(0,0)$,
+and interprets a native implication with consequent $1$ as genuine named
+negation. Other implications use the ordinary decoding identity subject
+to the exceptions at consequent $1$ and the pair $(0,0)$.
+
+The new source checker verifies the relevant side conditions uniformly
+on its exact expression trees. Intentional negations have consequent
+$1$. Every other consequent is a quantifier, an equality, a positive
+compound, or a membership atom known different from $1$ by the gate.
+The only potentially exceptional membership atoms in that position
+involve $b,c$ or $c,b$; the gate excludes their simultaneous zero case.
+At least one argument of every genuine implication is positive, so its
+code is not $0$. These finite structural arguments cover all natural
+parameter values and are not an enumeration of small codes.
+
+The inherited freshness statement is
+\[
+                    c\notin\FV(D(c))\qquad(c\in\mathbb N).
+\]
+For positive codes, all occurring names are smaller than the code. The
+special decoded formula at $c=0$ is closed, although it contains a bound
+occurrence of name $0$. At $c=1$ the only name is $0<1$. Consequently
+the actual private label is fresh even in those exceptional cases.
+
+When $a\ne b$, the inherited named-to-two-role abstraction identifies
+the decoded formula with the ordinary seed schema. When $a=b$, that
+abstraction cannot be used. Write $\psi(x)$ for the decoded matrix with
+its sole active name given value $x$. Renaming locally bound variables
+for readability gives
+\begin{align*}
+ W(C)&=(\exists x\,\psi(x))\to
+                   \exists x\,(\psi(x)\land R(x,C)),\\
+ H(C)&=\forall u\,(R(u,C)\to
+                  ((\exists x\,\psi(x))\land W(C))).
+\end{align*}
+The subset test has equal endpoints and is a tautology; rebinding the
+single active name shadows the outer member in the matrix positions.
+If no $\psi$ witness exists, an empty $C$ works. If a witness exists,
+its singleton works. These objects exist in the inherited upper
+interpretation. The split is on existence of a witness, not on the
+matrix's value at the old environment. This is the seed source's
+existing diagonal argument, unchanged by the independent $G$ row.
+
+\subsection{The lower comparison keeps the matrix-code coupling}
+
+The restricted equality helper supports the inherited interpretation
+of genuine equality by membership indiscernibility. For a safe
+auxiliary $z=\cE(a,b)>a,b$, put
+\[
+ E_R(a,b)=
+ [\forall z\,(R(z,a)\leftrightarrow R(z,b))]\land
+ [\forall z\,(R(a,z)\leftrightarrow R(b,z))].
+\]
+The translation $\theta$ replaces primitive equality by this formula,
+sends genuine bottom to $F$, and preserves membership, implication and
+universal binders. The inherited logical bootstrap proves the
+translations of the full equality calculus using safe-auxiliary
+transport, membership vacuity, and $H_\kappa$. It handles coincidences
+of names and does not assume that the chosen numerical auxiliary
+commutes literally with arbitrary substitution. Those are substantive
+inherited proofs, retained in the predecessor material, not consequences
+of the new machine's runtime checks.
+
+For an arbitrary ordinary named seed matrix $f$, first form
+\[
+ \psi=\theta(f),\qquad p^+=\neg\neg\psi,
+ \qquad c=\operatorname{enc}(p^+).
+\]
+Choose input name $1$ and output name $3$ in the ordinary comparison
+syntax. Padding gives $c>3$, and the code-label induction makes $c$
+fresh after all equality-translation auxiliaries have been introduced.
+Now choose the ordinary seed instance whose matrix is $\neg\neg f$
+and whose private name is this $c$. The outer seed template uses only
+membership and logical constructors, so its translation has matrix
+$\neg\neg\theta(f)$ and private label $c$. Its matrix code is exactly
+$c$. Thus its native encoding is the actual emitted instance at
+$(1,3,c)$, up to the explicitly derived conjunction and double-negation
+conversions. The gate is enabled.
+
+Choosing the code \emph{after} translating equality prevents a
+matrix/private-label mismatch. Theorem~\ref{thm:deductive} first
+recovers precisely the old seed calculus, so this established lower
+comparison can be used without redefining its equality translation.
+
+\section{Construction of the 208-subtree source}
+\label{sec:source}
+
+The deterministic source builder starts from the exact seed223 source
+and the pinned parent225 macro layout. It makes two semantic changes:
+the equality row becomes~\eqref{eq:finalgcode}, and the helper is removed
+from the seed bundle as in~\eqref{eq:finalbundle}. It then applies one
+closed reassociation. No optimization search is required to reproduce
+the released object.
+
+In the old complete instruction word, the equality row occupies the
+half-open interval $[486,786)$ and has 300 primitive occurrences. Its
+replacement has 409. The seed bundle occupies $[2541,4781)$ and has
+2,240 occurrences; its replacement has 1,913. Therefore
+\[
+                  4962+(409-300)+(1913-2240)=4744.
+\]
+The extra equality quantifier costs 109 occurrences. Removing the
+separate helper and a conjunction constructor saves 327. Every other
+primitive occurrence remains in its original order. The new bundle's
+postfix word has 65 macro invocations, down from 77.
+
+The checker symbolically executes both the old and new macro words and
+compares their expression trees with independently written formulas.
+It verifies nine macro contracts against the pinned
+\code{Dag230.v}/\code{ProgLib230.v} programs by finite bisimulation for
+arbitrary natural register vectors. These include the three parameter
+pushes, the constructors, and the push-one constituent. The proof
+contracts preserve the prior stack under the emitted formula and require
+the inherited clean scratch-register interface.
+
+The initial combined source has a consecutive run of seven zero bits in
+one source address. The existing reset routine supports the selected
+six-zero invariant, and the predecessor investigations showed that this
+constraint matters to actual runtime behavior. We apply the closed right
+rotation
+\[
+                  ((A,B),C)\longmapsto (A,(B,C))
+\]
+at source address \code{1110100100111000}. Each factor is a closed
+source program, meaning its break/continue effects do not escape the
+factor. Both independent guarded control-flow resolvers agree before
+and after the rotation. The entire primitive word is unchanged. The
+rotation is the same local repair used in the merged-equality predecessor;
+here it remains compatible with the seed composition.
+
+The result has 208 distinct subtrees: 185 interior nodes and 23 primitive
+leaf kinds. Its maximum address length is 36 and maximum zero run is 6.
+The independent reference-program comparison checks 6,167 guarded
+control-flow cases. An additional finite all-register bisimulation has
+1,176 paired boundaries; the inherited seed reconstruction has 1,240.
+The exported source receipt records the exact input hashes and formulas.
+
+\section{Compilation and two exact state reductions}
+\label{sec:folds}
+
+The machine builder is independent of the formula-emission checker.
+It reads the pinned K224 source and transition table and the independently
+certified final source. It matches unchanged subtrees, deterministically
+assigns compatible old decoder labels to changed nodes, and protects
+every state used inside an inherited decoder helper path. It checks
+every compound prefix occurrence and the exact state-to-subtree relation.
+There are 4,743 such occurrences, one for each internal occurrence in
+the full 4,744-leaf binary tree.
+
+The first output is a \emph{new} 224-state seed-plus-$G$ parent, not
+the old K224 machine or its old theory. Its K-labelled table has digest
+\begin{center}\small\ttfamily
+e287d8685bcd75a93d8f01e24b9217381f487a7a970183c8fc2dbec439cc01f8.
+\end{center}
+Two helper states initially retain no independent source role. The next
+two identifications let those helpers implement the two remaining
+source roles. All labels in this section are historical K labels; start
+is $0$ and halt is $254$.
+
+\subsection{Fold 1: state 185 into state 118}
+
+The only incoming transition to state 159 in the parent is
+\[
+       \delta(152,0)=(0,L,159).
+\]
+The only incoming transition to state 118 is
+\[
+       \delta(159,1)=(1,R,118).
+\]
+If $\tau$ denotes the tape and $h$ the head position, the assertions
+\begin{equation}
+ q=159\ \Longrightarrow\ \tau(h+1)=0,
+ \qquad q=118\ \Longrightarrow\ \tau(h)=0
+ \label{eq:foldinv}
+\end{equation}
+form an inductive invariant from start state $0$ on every binary tape.
+The first incoming transition writes the known zero immediately to the
+right of its new head. The second moves onto that known zero. Neither
+state is the start state. The independent checker verifies all literal
+rows and their target obligations; it does not infer the invariant from
+a sampled trace.
+
+The relevant old rows are
+\begin{center}
+\begin{tabular}{ccl}
+\toprule
+State & Read & Action\\
+\midrule
+118 & 0 & $(0,R,155)$\\
+118 & 1 & $(1,R,173)$, excluded by the old invariant\\
+185 & 0 & $(0,R,155)$\\
+185 & 1 & $(1,R,153)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Redirect targets 185 to 118, delete state 185, and replace the one row
+of 118 by $(1,R,153)$. Its zero row remains unchanged. Each of the
+three possible old branches now has exactly the same write and move,
+and the appropriately renamed target, in one new step.
+
+The assertion that 118 scans zero belongs to the \emph{old} parent
+machine. It must not be asserted for the folded machine: the new one
+row legitimately handles executions formerly in state 185. The proof
+relates old and new configurations at simulation boundaries and uses
+the invariant only on the old side.
+
+\subsection{Fold 2: state 174 into state 159}
+
+After the first fold, states 174 and 159 have identical rows:
+\[
+        \delta(q,0)=(0,R,166),\qquad
+        \delta(q,1)=(1,R,118),\qquad q\in\{174,159\}.
+\]
+Redirect 174 to 159 and delete it. This is a one-step quotient with no
+tape invariant required.
+
+\begin{proposition}[All-tape correctness of the two folds]
+For every binary tape $\tau:\mathbb Z\to\{0,1\}$ and every head
+position $h$, the 224-state parent halts from $(0,\tau,h)$ if and only
+if the final 222-state machine in historical labels does.
+\end{proposition}
+\begin{proof}
+For the first fold use~\eqref{eq:foldinv}, map state 185 to 118, and fix
+all other states. Each allowed old transition is simulated by one new
+transition with the same entire tape and head position. All ordinary
+rows have only their next state renamed. The second fold has the same
+property unconditionally. Compose the simulations. A finite old halt
+maps to a finite new halt. If the old run is infinite, its one-step
+images give an infinite deterministic new run; it cannot also halt.
+\end{proof}
+
+The independent fold checker accepts the supplied certificates and
+rejects three negative controls: an incorrect scanned-bit assertion,
+omission of the supporting invariant at 159, and the wrong retained
+one-row target. These checks establish the specific fold theorem;
+they are not used as evidence for the separate logical theory.
+
+\subsection{Canonical labels and the literal count}
+
+Breadth-first traversal from the start, visiting the read-zero edge
+before the read-one edge, produces canonical states $0,\ldots,221$.
+The unique missing target becomes halt $222$. The maps to historical
+K and legacy checker labels are included and checked row by row.
+All declared working states are reachable in the directed transition
+graph. This is a graph statement, not a claim that every state must
+occur in the actual blank-tape execution.
+
+The final decoder has 173 states for 185 interior source nodes, retaining
+twelve contextual aliases. The remaining engine and initialization
+states number 49. Thus the actual table realizes
+\[
+                49+185-12=222
+\]
+working states. The final count is verified directly from the complete
+444-row table and its reachable-state set.

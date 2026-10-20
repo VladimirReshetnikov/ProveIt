@@ -1,0 +1,507 @@
+{
+  "schema_version": 1,
+  "status": "QUICK_REPLAY_PASS",
+  "mode": "quick",
+  "upstream_runtime_mode": "stored_audit",
+  "fresh_local_Rocq_build": false,
+  "python_version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "assertions_enabled": true,
+  "output_dir": "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-replay",
+  "phases": [
+    {
+      "name": "01_manifest",
+      "status": "PASS",
+      "log": "logs/01_manifest.log",
+      "seconds": 0.05830161299672909,
+      "details": {
+        "files_checked": 77,
+        "bytes_checked": 66229974,
+        "manifest_sha256": "79d276b830d22100308cb5308a436206418a8089f833207de99c961aaf35ef5a"
+      }
+    },
+    {
+      "name": "02_extract_upstream",
+      "status": "PASS",
+      "log": "logs/02_extract_upstream.log",
+      "seconds": 0.1022455229976913,
+      "details": {
+        "archive_sha256": "75b58ce7b5840ef3a3158341f7cf1e601aab67d19ab147d96cf37d1186cb6cbc",
+        "members": 295,
+        "portable_root": "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-replay/upstream/K225_Construction_2026-10-19/portable"
+      }
+    },
+    {
+      "name": "03_replay_upstream225",
+      "status": "PASS",
+      "log": "logs/03_replay_upstream225.log",
+      "seconds": 9.197970740999153,
+      "details": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-replay/upstream/K225_Construction_2026-10-19/portable/reproduce.py",
+          "--output-dir",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-replay/baseline225"
+        ],
+        "returncode": 0
+      }
+    },
+    {
+      "name": "04_construct_rel225",
+      "status": "PASS",
+      "log": "logs/04_construct_rel225.log",
+      "seconds": 0.6715952860031393,
+      "details": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-input/K224_Construction_2026-10-20/portable/verification/construct_rel225.py",
+          "--baseline-root",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-replay/upstream/K225_Construction_2026-10-19/portable",
+          "--output",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-replay/rel225"
+        ],
+        "returncode": 0
+      }
+    },
+    {
+      "name": "05_check_emitter",
+      "status": "PASS",
+      "log": "logs/05_check_emitter.log",
+      "seconds": 0.03104116399481427,
+      "details": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-input/K224_Construction_2026-10-20/portable/verification/check_emitter.py",
+          "--baseline-root",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-replay/upstream/K225_Construction_2026-10-19/portable",
+          "--output",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-replay/rel225/emitter_contract.json"
+        ],
+        "returncode": 0
+      }
+    },
+    {
+      "name": "06_source_and_engine_binding",
+      "status": "PASS",
+      "log": "logs/06_source_and_engine_binding.log",
+      "seconds": 0.0024806099972920492,
+      "details": {
+        "byte_comparisons": {
+          "parent225/candidate225.k.tm": {
+            "sha256": "4526bd8cf2160ac5dfce039add0550e9788095f60ecc6b4462afd4ebbfd42790",
+            "size": 5818
+          },
+          "parent225/candidate225.tm": {
+            "sha256": "b5111f270791fd0686df6f99af25648d7cf6e00ad57091b25b58e068abcd1898",
+            "size": 5898
+          },
+          "parent225/sites225.json": {
+            "sha256": "309358206463f8e8d88d86304e7c9f2273e3cdde64984b6db20c412516010878",
+            "size": 187813
+          },
+          "parent225/construction.json": {
+            "sha256": "16771d7c12112c32eb2e72e4aba3da63ae9f87581ddb559a5b0a23adf1a62338",
+            "size": 9026
+          },
+          "parent225/macro_certificates.json": {
+            "sha256": "408525d4a7851eb03f3d0de16bdfd3fb600d1c3a73eae63e462b56132cfd7fa1",
+            "size": 28695
+          },
+          "parent225/bootstrap225.json": {
+            "sha256": "08c643d7e9debb38e86cdfaa5253df1ba31fc5328ddeaa8dbdf646dfd8625aa7",
+            "size": 22990
+          },
+          "parent225/helper_before_reassociation.json": {
+            "sha256": "e37f7648e01723ea593e797acd907036ece07fdee855a2d55b0fb49c009a64af",
+            "size": 187965
+          },
+          "parent225/emitter_contract.json": {
+            "sha256": "9ca4077ff110f7a644982eb23fa74b2ef361f79f17a7e402b093c4759d48909e",
+            "size": 15655
+          },
+          "machine/reference/rel225.k.tm": {
+            "sha256": "4526bd8cf2160ac5dfce039add0550e9788095f60ecc6b4462afd4ebbfd42790",
+            "size": 5818
+          },
+          "machine/reference/sites.json": {
+            "sha256": "309358206463f8e8d88d86304e7c9f2273e3cdde64984b6db20c412516010878",
+            "size": 187813
+          },
+          "machine/reference/legacy_state_map.json": {
+            "sha256": "8d77f4dcddc9966ba58b0cb8515d604334983e86b51580b546960b1e1d1a7151",
+            "size": 7037
+          },
+          "machine/vendor/symbolic_runtime.py": {
+            "sha256": "c22f1709a39277c59d163c613e250f27a9e239004a83f643f3bd7d44ad57f145",
+            "size": 12838
+          },
+          "machine/vendor/independent_runtime.py": {
+            "sha256": "0d1dae10b921cc302a2211d9251ca7ec131aa63ecb040ce66720894877700346",
+            "size": 6564
+          },
+          "theory/emitter_contract.json": {
+            "sha256": "9ca4077ff110f7a644982eb23fa74b2ef361f79f17a7e402b093c4759d48909e",
+            "size": 15655
+          }
+        }
+      }
+    },
+    {
+      "name": "07_build224",
+      "status": "PASS",
+      "log": "logs/07_build224.log",
+      "seconds": 0.03488823299994692,
+      "details": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-input/K224_Construction_2026-10-20/portable/machine/build224.py",
+          "--output",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-replay/machine"
+        ],
+        "returncode": 0
+      }
+    },
+    {
+      "name": "08_independent224",
+      "status": "PASS",
+      "log": "logs/08_independent224.log",
+      "seconds": 0.6390973059969838,
+      "details": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-input/K224_Construction_2026-10-20/portable/machine/check224.py",
+          "--results",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-replay/machine",
+          "--output",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-replay/machine/independent224.json"
+        ],
+        "returncode": 0
+      }
+    },
+    {
+      "name": "09_compare_final_artifacts",
+      "status": "PASS",
+      "log": "logs/09_compare_final_artifacts.log",
+      "seconds": 0.000775133004935924,
+      "details": {
+        "candidate224.k.tm": {
+          "sha256": "f886dd8d11e9705c5315140f68d5ae2f26c80afb015e08074c7e3da1414fa37f",
+          "size": 5791
+        },
+        "candidate224.tm": {
+          "sha256": "6361b0b29c2e0485bf8cf025dcf2606c2fac071f3f6e24fbde04016466d92168",
+          "size": 5804
+        },
+        "candidate224.legacy.tm": {
+          "sha256": "e8467b9745c7a05860797a209ed05ce0b41b72a44d96f00aad43630a589ccc2f",
+          "size": 5870
+        },
+        "sites.json": {
+          "sha256": "309358206463f8e8d88d86304e7c9f2273e3cdde64984b6db20c412516010878",
+          "size": 187813
+        },
+        "renumbering224.json": {
+          "sha256": "ae12c54b71d8c3f6def9c14f2526b3f483ae4151ed24e21535b0228db659db24",
+          "size": 13670
+        },
+        "construction224.json": {
+          "sha256": "b8962f690fbc8cc93fdbd1f76b4c4a9aec8cf632f6a5dedc7389828620685995",
+          "size": 1312
+        }
+      }
+    },
+    {
+      "name": "10_actual_rel_helper",
+      "status": "PASS",
+      "log": "logs/10_actual_rel_helper.log",
+      "seconds": 27.16458493800019,
+      "details": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-input/K224_Construction_2026-10-20/portable/theory/check_rel_helper_certificate.py",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-input/K224_Construction_2026-10-20/portable/theory/rel_helper_certificate.json",
+          "--output",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-replay/logic/rel_helper.json"
+        ],
+        "returncode": 0
+      }
+    },
+    {
+      "name": "11_closed_rel_fusion",
+      "status": "PASS",
+      "log": "logs/11_closed_rel_fusion.log",
+      "seconds": 0.07637139800499426,
+      "details": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-input/K224_Construction_2026-10-20/portable/theory/check_fusion_certificate.py",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-input/K224_Construction_2026-10-20/portable/theory/rel_helper_fusion_certificate.json",
+          "--output",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-replay/logic/rel_fusion.json"
+        ],
+        "returncode": 0
+      }
+    },
+    {
+      "name": "12_bind_fresh_emitter",
+      "status": "PASS",
+      "log": "logs/12_bind_fresh_emitter.log",
+      "seconds": 0.04010001400456531,
+      "details": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-input/K224_Construction_2026-10-20/portable/theory/bind_rel_fusion_certificate.py",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-replay/rel225/emitter_contract.json",
+          "--certificate",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-input/K224_Construction_2026-10-20/portable/theory/rel_helper_fusion_certificate.json",
+          "--output",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-replay/logic/fusion_binding.json"
+        ],
+        "returncode": 0
+      }
+    },
+    {
+      "name": "13_restore_source116",
+      "status": "PASS",
+      "log": "logs/13_restore_source116.log",
+      "seconds": 0.07285013799992157,
+      "details": {
+        "restoration_pins_checked": 17,
+        "scope": "Restored Source116 proof generators are untrusted inputs to local-rule checkers; finite numerical certificates supplement separate uniform mathematical arguments."
+      }
+    },
+    {
+      "name": "14_general_kappa",
+      "status": "PASS",
+      "log": "logs/14_general_kappa.log",
+      "seconds": 0.24606741200113902,
+      "details": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-replay/logic/source116/proofs/check_general_kappa.py"
+        ],
+        "returncode": 0
+      }
+    },
+    {
+      "name": "15_indiscernibility",
+      "status": "PASS",
+      "log": "logs/15_indiscernibility.log",
+      "seconds": 16.91927690999728,
+      "details": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-replay/logic/source116/proofs/replay_indiscernibility.py"
+        ],
+        "returncode": 0
+      }
+    },
+    {
+      "name": "16_independent_source116",
+      "status": "PASS",
+      "log": "logs/16_independent_source116.log",
+      "seconds": 3.978847042999405,
+      "details": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-replay/logic/source116/audit/check_independent.py"
+        ],
+        "returncode": 0
+      }
+    },
+    {
+      "name": "17_copy_stored_runtime",
+      "status": "PASS",
+      "log": "logs/17_copy_stored_runtime.log",
+      "seconds": 0.0013894229996367358,
+      "details": {
+        "copied": [
+          "universal224.json",
+          "universal224_cases.json"
+        ],
+        "scope": "Stored runtime evidence, not freshly derived."
+      }
+    },
+    {
+      "name": "18_audit_stored_runtime224",
+      "status": "PASS",
+      "log": "logs/18_audit_stored_runtime224.log",
+      "seconds": 0.1647256770011154,
+      "details": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-B",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-input/K224_Construction_2026-10-20/portable/machine/runtime224.py",
+          "--results",
+          "/workspace/scratch/bb42c456c70b/root_work/replay_g223/baseline-replay/machine",
+          "--audit-stored"
+        ],
+        "returncode": 0
+      }
+    }
+  ],
+  "proof_scope": {
+    "source": "All-natural-register local bisimulations; exact arithmetic emitter; complete guarded CFGs.",
+    "fold": "Whole-tape exact positive simulation blocks on arbitrary initial binary tapes.",
+    "logic": "Independent finite Hilbert/local-rule replay and exact fresh-emitter binding; uniform equiconsistency and private-code coupling remain mathematical arguments in the report.",
+    "source116": "Some drivers call proof generators as untrusted inputs and then check all produced nodes; this replay is not described as generator-free.",
+    "runtime": "Integrity, coverage, and positive-duration audit of retained unbounded runtime evidence; no fresh runtime derivation.",
+    "formal_status": "Executable ordinary mathematical certificates plus pinned inherited formal evidence; no new kernel check."
+  },
+  "seconds": 59.41858886599948,
+  "manifest": {
+    "files_checked": 77,
+    "bytes_checked": 66229974,
+    "manifest_sha256": "79d276b830d22100308cb5308a436206418a8089f833207de99c961aaf35ef5a"
+  },
+  "upstream_replay": {
+    "status": "QUICK_REPLAY_PASS",
+    "mode": "quick",
+    "fresh_local_Rocq_build": false,
+    "phases": [
+      "baseline226",
+      "construct225",
+      "independent225"
+    ],
+    "manifest_files_checked": 274,
+    "seconds": 9.152705986998626,
+    "stored_runtime": {
+      "status": "UNIVERSAL_MATHEMATICAL_PASS",
+      "cases": 6656,
+      "rows": 450,
+      "states": 225,
+      "symbolic_steps": 1608136,
+      "minimum_actual_steps": 13,
+      "table_sha256": "6aab1f0f98b3764ba43c05bd6aad0d6d77a7dbac576ab733c8b02664b4b04fc2",
+      "source_sha256": "86b28af08e646eb7da8b822f63a03173ef5182e5a2ebc0404008e1b2af41b55b",
+      "cases_sha256": "1937bfce292c6ffaa3e8a28c44df4a1fc0a59e6de7a2cb2f955b961a051fcaac"
+    },
+    "working_states": 225,
+    "rows": 450,
+    "source_leaves": 5121,
+    "source_dag_nodes": 211,
+    "maximum_zero_run": 6,
+    "maximum_depth": 38,
+    "startup_steps": 409835,
+    "scope": "Executable ordinary mathematical certificates with pinned inherited formal evidence; no new Rocq kernel build."
+  },
+  "source_links": {
+    "byte_comparisons": {
+      "parent225/candidate225.k.tm": {
+        "sha256": "4526bd8cf2160ac5dfce039add0550e9788095f60ecc6b4462afd4ebbfd42790",
+        "size": 5818
+      },
+      "parent225/candidate225.tm": {
+        "sha256": "b5111f270791fd0686df6f99af25648d7cf6e00ad57091b25b58e068abcd1898",
+        "size": 5898
+      },
+      "parent225/sites225.json": {
+        "sha256": "309358206463f8e8d88d86304e7c9f2273e3cdde64984b6db20c412516010878",
+        "size": 187813
+      },
+      "parent225/construction.json": {
+        "sha256": "16771d7c12112c32eb2e72e4aba3da63ae9f87581ddb559a5b0a23adf1a62338",
+        "size": 9026
+      },
+      "parent225/macro_certificates.json": {
+        "sha256": "408525d4a7851eb03f3d0de16bdfd3fb600d1c3a73eae63e462b56132cfd7fa1",
+        "size": 28695
+      },
+      "parent225/bootstrap225.json": {
+        "sha256": "08c643d7e9debb38e86cdfaa5253df1ba31fc5328ddeaa8dbdf646dfd8625aa7",
+        "size": 22990
+      },
+      "parent225/helper_before_reassociation.json": {
+        "sha256": "e37f7648e01723ea593e797acd907036ece07fdee855a2d55b0fb49c009a64af",
+        "size": 187965
+      },
+      "parent225/emitter_contract.json": {
+        "sha256": "9ca4077ff110f7a644982eb23fa74b2ef361f79f17a7e402b093c4759d48909e",
+        "size": 15655
+      },
+      "machine/reference/rel225.k.tm": {
+        "sha256": "4526bd8cf2160ac5dfce039add0550e9788095f60ecc6b4462afd4ebbfd42790",
+        "size": 5818
+      },
+      "machine/reference/sites.json": {
+        "sha256": "309358206463f8e8d88d86304e7c9f2273e3cdde64984b6db20c412516010878",
+        "size": 187813
+      },
+      "machine/reference/legacy_state_map.json": {
+        "sha256": "8d77f4dcddc9966ba58b0cb8515d604334983e86b51580b546960b1e1d1a7151",
+        "size": 7037
+      },
+      "machine/vendor/symbolic_runtime.py": {
+        "sha256": "c22f1709a39277c59d163c613e250f27a9e239004a83f643f3bd7d44ad57f145",
+        "size": 12838
+      },
+      "machine/vendor/independent_runtime.py": {
+        "sha256": "0d1dae10b921cc302a2211d9251ca7ec131aa63ecb040ce66720894877700346",
+        "size": 6564
+      },
+      "theory/emitter_contract.json": {
+        "sha256": "9ca4077ff110f7a644982eb23fa74b2ef361f79f17a7e402b093c4759d48909e",
+        "size": 15655
+      }
+    }
+  },
+  "machine_links": {
+    "candidate224.k.tm": {
+      "sha256": "f886dd8d11e9705c5315140f68d5ae2f26c80afb015e08074c7e3da1414fa37f",
+      "size": 5791
+    },
+    "candidate224.tm": {
+      "sha256": "6361b0b29c2e0485bf8cf025dcf2606c2fac071f3f6e24fbde04016466d92168",
+      "size": 5804
+    },
+    "candidate224.legacy.tm": {
+      "sha256": "e8467b9745c7a05860797a209ed05ce0b41b72a44d96f00aad43630a589ccc2f",
+      "size": 5870
+    },
+    "sites.json": {
+      "sha256": "309358206463f8e8d88d86304e7c9f2273e3cdde64984b6db20c412516010878",
+      "size": 187813
+    },
+    "renumbering224.json": {
+      "sha256": "ae12c54b71d8c3f6def9c14f2526b3f483ae4151ed24e21535b0228db659db24",
+      "size": 13670
+    },
+    "construction224.json": {
+      "sha256": "b8962f690fbc8cc93fdbd1f76b4c4a9aec8cf632f6a5dedc7389828620685995",
+      "size": 1312
+    }
+  },
+  "source116_restoration": {
+    "restoration_pins_checked": 17,
+    "scope": "Restored Source116 proof generators are untrusted inputs to local-rule checkers; finite numerical certificates supplement separate uniform mathematical arguments."
+  },
+  "logic_metrics": {
+    "actual_helper_roots": 68,
+    "actual_helper_proof_nodes": 59947,
+    "fusion_proof_nodes": 1563,
+    "fresh_emitter_sha256": "9ca4077ff110f7a644982eb23fa74b2ef361f79f17a7e402b093c4759d48909e"
+  },
+  "working_states": 224,
+  "rows": 448,
+  "source_leaves": 4799,
+  "source_dag_nodes": 210,
+  "maximum_depth": 38,
+  "maximum_zero_run": 6,
+  "startup_steps": 409835,
+  "canonical_table_sha256": "6361b0b29c2e0485bf8cf025dcf2606c2fac071f3f6e24fbde04016466d92168",
+  "runtime_cases": 6238,
+  "symbolic_steps": 1503342,
+  "minimum_actual_steps": 13,
+  "maximum_symbolic_steps": 403,
+  "all_rows_used": true
+}
