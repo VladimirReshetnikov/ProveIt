@@ -1,0 +1,177 @@
+{
+  "baseline": "K221 native e6dc479f09ded05dd1c0639b60a0c453483f42e6b77c29562d433cac528c1ecc",
+  "status": "NO_DIRECT_ENGINE_REDUCTION_ESTABLISHED_ON_ORIGINAL_K221",
+  "census": {
+    "working_states": 221,
+    "engine_or_auxiliary_states": 49,
+    "source_decoder_states": 172
+  },
+  "proof_scope": "Finite symbolic positive-block checks use sound finite-window overapproximations of blank-tape reachability, not execution samples. Negative results are only for the implemented local rewrite families.",
+  "checks": {
+    "one_row_engine_folds_radius3": {
+      "tested": 110500,
+      "found": [],
+      "seconds": 0.43655410399992434
+    },
+    "one_row_engine_folds_radius5": {
+      "tested": 110500,
+      "found": [],
+      "seconds": 0.4544562460000634
+    },
+    "one_row_engine_folds_radius7": {
+      "tested": 110500,
+      "found": [],
+      "seconds": 1.9327281809999022
+    },
+    "one_row_all_state_folds_radius5": {
+      "tested": 236028,
+      "found": [],
+      "seconds": 1.553462091000256
+    },
+    "two_row_engine_folds_radius5": {
+      "tested": 1627444,
+      "found": [],
+      "seconds": 11.43512524100015
+    },
+    "two_row_nonpure_folds_radius5": {
+      "tested": 3707496,
+      "found": [],
+      "seconds": 32.66207963600027
+    },
+    "head_shift_engine_folds_radius5": {
+      "found": [],
+      "tested": 8946080,
+      "seconds": 111.57640509700013
+    },
+    "restricted_source_row_usage": {
+      "rows": 442,
+      "unused": []
+    },
+    "uniform_spare_row_usage": {
+      "rows": 442,
+      "unused": []
+    }
+  },
+  "rejected_hypotheses": [
+    {
+      "idea": "Shorten eight-zero reset to seven zeros by removing native50",
+      "patch": "Delete50 rows and replace every target50 by75",
+      "counterexample": {
+        "source_ordinal": 40,
+        "pc": "11101001001000000",
+        "operation": "CD1 zero branch",
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "spares": [
+          1
+        ]
+      },
+      "reason": "The runtime introduces one further zero after the source PC. A terminal source run of six zeros becomes an internal temporary run of seven zeros. The short reset dispatches prematurely.",
+      "artifact": "counterexamples.json; ../traces/drop50.csv"
+    },
+    {
+      "idea": "Append spare0 instead of1 and delete native198",
+      "patch": "66/0 becomes1 L113; delete198",
+      "reason": "State 198 also participates in decrement lookahead and restoration. The CD8 zero case fails. More strongly, after exactly 76 blank-start transitions the patch has state35, head4 and rightmost one2; row35/0=(1,R,35) proves divergence on a fresh rightward zero ray.",
+      "status": "rejected_not_a_candidate",
+      "artifact": "counterexamples.json; ../traces/drop198_blank.csv"
+    }
+  ],
+  "invariant": {
+    "uniform_spares": "The exact blank frame has 167 spares, all 1. CI appends 1 and every other nonhalting source primitive preserves the spare list. Hence source-interface spares remain 1 and length is at least 167. The specialized symbolic source-frame cases still use all 442 rows; this is an overapproximation usage audit, not exact blank-run reachability."
+  },
+  "commutation_candidates": [
+    {
+      "size": 4,
+      "touch_a": [
+        7
+      ],
+      "touch_b": [
+        1,
+        6
+      ],
+      "dag": 208,
+      "zero": 6,
+      "node": [
+        [
+          "CI",
+          7
+        ],
+        [
+          [
+            "CD",
+            6
+          ],
+          [
+            [
+              "CI",
+              1
+            ],
+            [
+              "CC",
+              2
+            ]
+          ]
+        ]
+      ]
+    },
+    {
+      "size": 6,
+      "touch_a": [
+        6,
+        7
+      ],
+      "touch_b": [
+        4,
+        5
+      ],
+      "dag": 208,
+      "zero": 6,
+      "node": [
+        [
+          [
+            "CD",
+            7
+          ],
+          [
+            [
+              "CI",
+              6
+            ],
+            [
+              "CC",
+              2
+            ]
+          ]
+        ],
+        [
+          [
+            "CD",
+            4
+          ],
+          [
+            [
+              "CI",
+              5
+            ],
+            [
+              "CC",
+              2
+            ]
+          ]
+        ]
+      ]
+    }
+  ],
+  "kernel_audit": "No proof-assistant kernel check is claimed. Examination of the packaged unary and finite-list induction rules and bucket closure did not reveal a substantive flaw.",
+  "accepted_construction_note": "The separately validated K220 construction first changes the source encoding; these negative results concern the original K221 table."
+}

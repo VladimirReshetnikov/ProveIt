@@ -1,7 +1,7 @@
 # Formal endpoints for the K-family candidates
 
-**Current state (2026-10-20).** The smallest candidate, the [221](../candidate-k221/README.md), has
-two closed endpoints for its exact table:
+**Current state (2026-10-20).** The [221](../candidate-k221/README.md) has two closed endpoints for
+its exact table:
 
 * **Rocq**: `K221F.CorrectDense221.tm221_halts_iff_ZFC_inconsistent`, which `coqchk`
   independently rechecked ([rocq/](rocq/README.md)); its calculus and program layer are in
@@ -9,8 +9,10 @@ two closed endpoints for its exact table:
 * **Lean**: `KLower221.blank_halts_iff_zfc_refutation : BlankHalts machine221 ↔ BProv ZFCax_s [] ⊥`,
   axioms `propext`, `Classical.choice`, `Quot.sound` ([below](#lean)).
 
-The rest of this page records the earlier 225/224 plan, except the Lean section, which describes
-the 221's endpoint.
+The newer [219-state candidate](../candidate-k219/README.md) has an ordinary
+simulation/calibration argument; its exact-table Rocq, Lean and internal PA endpoints remain
+open. The rest of this page records the earlier 225/224 plan, except the Lean section, which
+describes the 221's endpoint.
 
 
 The [224](../candidate-k224/README.md) (Source 125) supersedes the 225 as the smallest

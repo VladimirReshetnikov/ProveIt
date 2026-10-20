@@ -1,0 +1,89 @@
+{
+  "jobs": [
+    {
+      "name": "build220",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake185/replay-construction-copy/portable/build220.py",
+        "--baseline",
+        "/tmp/zfc-intake185/parent221/K221_Construction_2026-10-20",
+        "--output",
+        "/tmp/zfc-intake185/construction-replay/build"
+      ],
+      "cwd": "/tmp/zfc-intake185/replay-construction-copy",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.665530419908464,
+      "log": "/tmp/zfc-intake185/construction-replay/build220.log"
+    },
+    {
+      "name": "canonical-startup",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake185/replay-construction-copy/portable/canonicalize220.py",
+        "--table",
+        "/tmp/zfc-intake185/construction-replay/build/candidate.tm",
+        "--source",
+        "/tmp/zfc-intake185/construction-replay/build/sites.json",
+        "--output",
+        "/tmp/zfc-intake185/construction-replay/canonical"
+      ],
+      "cwd": "/tmp/zfc-intake185/replay-construction-copy",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.4149714857339859,
+      "log": "/tmp/zfc-intake185/construction-replay/canonical-startup.log"
+    },
+    {
+      "name": "full-runtime",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake185/replay-construction-copy/portable/check_runtime220.py",
+        "--baseline",
+        "/tmp/zfc-intake185/parent221/K221_Construction_2026-10-20",
+        "--table",
+        "/tmp/zfc-intake185/construction-replay/build/candidate.tm",
+        "--sites",
+        "/tmp/zfc-intake185/construction-replay/build/sites.json",
+        "--output",
+        "/tmp/zfc-intake185/construction-replay/runtime"
+      ],
+      "cwd": "/tmp/zfc-intake185/replay-construction-copy",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 143.66589822713286,
+      "log": "/tmp/zfc-intake185/construction-replay/full-runtime.log"
+    },
+    {
+      "name": "independent-runtime-audit",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake185/replay-construction-copy/portable/audit_runtime220.py",
+        "--baseline",
+        "/tmp/zfc-intake185/parent221/K221_Construction_2026-10-20",
+        "--table",
+        "/tmp/zfc-intake185/construction-replay/build/candidate.tm",
+        "--sites",
+        "/tmp/zfc-intake185/construction-replay/build/sites.json",
+        "--runtime",
+        "/tmp/zfc-intake185/construction-replay/runtime",
+        "--driver",
+        "/tmp/zfc-intake185/replay-construction-copy/portable/check_runtime220.py",
+        "--prefold",
+        "/tmp/zfc-intake185/construction-replay/build/prefold.tm",
+        "--output",
+        "/tmp/zfc-intake185/construction-replay/independent-audit.json"
+      ],
+      "cwd": "/tmp/zfc-intake185/replay-construction-copy",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.6152383126318455,
+      "log": "/tmp/zfc-intake185/construction-replay/independent-runtime-audit.log"
+    }
+  ],
+  "scope": "Selected fresh construction, startup, final unbounded runtime and audit; no manifest audit or recursive ancestor replay."
+}

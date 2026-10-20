@@ -1,0 +1,47 @@
+{
+  "status": "INDEPENDENT_PRESEAL_AUDIT_PASS",
+  "approval": "Approved to seal the inspected staging payload; final archive membership, extraction, and byte identity remain a separate postseal audit.",
+  "original_default_snapshot_payload_files": 24,
+  "original_default_snapshot_files_all_byte_identical": true,
+  "inspected_preseal_payload_files": 70,
+  "isolated_default_replay_status": "SELF_CONTAINED_THREE_ALTERNATIVES_REPLAY_PASS",
+  "isolated_default_replay_seconds": 168.61634363800113,
+  "isolated_default_replay_mode": "inherited_certificate_audit",
+  "baseline_runtime_fresh_this_run": false,
+  "independent_core_audit_status": "INDEPENDENT_LITERAL_AND_ALL_TAPE_CORE_AUDIT_PASS",
+  "core_checks": [
+    "Four pinned native/canonical identities including baseline",
+    "Shared source SHA and exact baseline equality",
+    "220 nonhalting states and 440 rows per table",
+    "220 graph-reachable working states and BFS label bijections",
+    "91,337 inductive unrestricted-tape contexts",
+    "Single and joint strictly-positive whole-tape macro diamonds",
+    "Complete blank startup at step 409,835, native 84 / canonical 22, head -5, 351 one cells"
+  ],
+  "negative_controls": [
+    "Optimized Python mode rejected",
+    "Unexpected packet file rejected",
+    "Mutated table hash rejected",
+    "Immediate-halt corruption rejected independently for all three variants"
+  ],
+  "report": {
+    "pages": 10,
+    "pdf_sha256": "f1dea1c70ec3e0362c932f5ab958c2ba64c10b849b9447e4f075086a4f4794e4",
+    "tex_sha256": "3a86b13ffe45abb097b51c1909a1bfa666b103809dd38dec1f6cea603fab8cfe",
+    "content_review": "All-tape theorem, joint proof, inherited baseline calibration, and fresh/stored modes are accurately distinguished. No <=219 result, unconditional nonhalting, new exact-byte kernel endpoint, or minimality claim.",
+    "visual_review": "Independently inspected body-page contact sheet and final compact last page; no clipping, overlap, or orphan final page."
+  },
+  "exploratory": {
+    "count": 3,
+    "status": "FINITE_ONLY_NOT_CERTIFIED",
+    "exact_table_recipe_reconstruction": "PASS",
+    "finite_discovery_tests_freshly_replayed": false,
+    "unbounded_runtime_certification": false
+  },
+  "failures": [],
+  "caveats": [
+    "Default audits the inherited stored final baseline runtime rather than rederiving the complete 6,167-case induction. The prior independent full replay is retained separately.",
+    "No fresh Rocq/Lean kernel compilation was performed for exact K220 or alternative bytes.",
+    "Exploratory byte reconstruction does not prove semantic correctness."
+  ]
+}

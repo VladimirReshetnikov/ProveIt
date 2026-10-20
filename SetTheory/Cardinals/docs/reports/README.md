@@ -3146,4 +3146,48 @@ Batch 183 imports [Sources 132–136](set-theory/zfc-closure-kernels/intake-183.
 host **136 sources** (still 290 reports). Placement `c92e98e674` retires their ZIPs. Source 132's
 [221-state machine](../../../../Computability/BusyBeaver/Research/ZFC/candidate-k221/README.md)
 is now the smallest known candidate: three source rotations and one tag fold on the seed-K 222.
-The four 222 packages reproduce the intake's two 222s. No proof assistant checks these yet.
+The four 222 packages reproduce the intake's two 222s. The subsequent closed Rocq check of the exact Source-132 table is recorded in its candidate README; that later result does not cover the rewritten alternatives below.
+
+
+Batch 184's [Source 137](set-theory/zfc-closure-kernels/intake-184.md) was placed in
+`abae578c29`; this catalogue completes its delayed reconciliation. All 191 members remain
+accounted for, including 156 new ancillary files and recoverable manuscript originals.
+Its three literal 221-state continuation variants preserve all-tape halting from state 0;
+conditional source simplifications, counterexamples and failed smaller experiments are
+retained with their hypotheses. Its delivered replay receipts are distinguished from fresh
+intake work.
+
+Batch 185 imports [Sources 138–139](set-theory/zfc-closure-kernels/intake-185.md), bringing
+the host to **139 sources** and leaving the collection at **290 reports**. Placement
+`de06ba50be` accounts for all 175 members and retires both ZIPs. Source 138's
+[220-state machine](../../../../Computability/BusyBeaver/Research/ZFC/candidate-k220/README.md)
+re-encodes a nonpure decoder edge, reassociates closed source blocks and shares two
+contextually distinguishable controls. It preserves the complete primitive program and
+calculus. The intake freshly replays its 6,167 unbounded runtime cases, exact 409,835-step
+startup and independent audit. Source 139 adds three same-size continuation alternatives,
+with fresh macro/window proofs and complete startups. The new 220 tables have ordinary
+mathematical proofs and executable symbolic certificates, not new literal-table Lean/Rocq
+or internal PA endpoints. Source 132's separately checked 221-state Rocq endpoint remains
+stated beside them. Research specimens and bounded negative searches remain explicitly
+uncertified. Both 220 archives are retired; the subsequent 219-state delivery is
+reconciled in batch 186 below. All original packages remain recoverable from arrival
+commits and exhaustive placement maps.
+
+
+Batch 186 imports [Source 140](set-theory/zfc-closure-kernels/intake-186.md), bringing
+the host to **140 sources** (still **290 reports**). Placement `24c7e68de7` accounts
+for all 110 members and retires the single ZIP. Its
+[219-state machine](../../../../Computability/BusyBeaver/Research/ZFC/candidate-k219/README.md)
+replaces four generic equality macros with a routine sharing an open subtree
+between cancellation and cleanup. Both routines terminate for arbitrary natural
+register values, clear the two operands, preserve every other register, and
+return the same control outcome. The complete source shrinks from 208 to 206
+DAG nodes while keeping 4,744 primitive occurrences. Decoder sharing and repaired
+return routes turn that source improvement into 219 working states and 438 rows.
+Seven selected fresh jobs pass, including all 6,167 unbounded runtime cases
+(1,515,040 symbolic rules), the exact 312,617-step complete startup and independent
+audits. Calculus/codec supplements and bounded negative searches retain their
+individual scopes. This is an ordinary mathematical construction with symbolic
+certificates, without a new literal-table Lean/Rocq or internal PA endpoint.
+The separate closed Rocq endpoint for Source 132's exact 221 remains available.
+The incoming queue is empty; original files remain recoverable from Git history.

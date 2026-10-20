@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings through 18 October 2026. This report now reconciles one hundred manuscripts.
+Intake findings through 20 October 2026. This report now reconciles **140 manuscripts**.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -9,13 +9,34 @@ No merged PDF is built. These are ordinary mathematical arguments and finite
 regression checks. The deliveries confer no formal status; subsequent Lean
 results and their exact scope are listed below.
 
+[Batch 186](intake-186.md) imports Source 140, the [219-state construction](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k219/README.md)
+from `26d5de6d21`. It shares an open equality subtree, with a generalized
+return and spare-preserving bypass. Seven selected fresh jobs pass, including
+6,167 symbolic runtime cases, 1,515,040 rules and exact 312,617-step startup.
+The intake also checks a same-size row157 alternative. The full HC countermodel
+rules out five restricted propositional schemes even with the native K support
+clause retained. All 110 original members remain recoverable; placement
+`24c7e68de7` retires the ZIP. [Reproduction](intake-186-reproduction.md).
+No exact-219 Lean/PA endpoint or 218-state result is claimed.
+
+Batches [184](intake-184.md) and [185](intake-185.md) complete Sources 137–139:
+the earlier 221 alternatives, a new [220-state construction](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k220/README.md),
+and three equivalent 220-state continuation layouts. All 13 selected fresh
+220 checks pass, including 6,167 symbolic runtime cases, 1,516,421 rules and
+exact 409,835-step startup. The two new ZIPs are retired in `de06ba50be`;
+the earlier ZIP was already retired in `abae578c29`. All delivered members
+remain accounted for. [Recovery and replay](intake-185-reproduction.md)
+restore their original layouts. Exploratory NOP/occurrence variants remain
+uncertified, and no 219-state result or exact-220 Lean/PA endpoint is claimed.
+
 Batch 171 completes intake of the twenty older queued archives as [Sources 81–100](intake-171.md). All twenty retain useful theory, coding, compiler or audit material beyond their historical state counts. Placement `950e2f0ff6` retires every ZIP and preserves all 8,564 members through unchanged ancillary targets or recoverable arrival archives. All 38 selected jobs pass after one documented Python AST compatibility retry; the original failure remains recorded. See [the source index](intake-171.md) and [recovery/replay instructions](intake-171-reproduction.md). No new machine record or complete Lean/PA endpoint is claimed by this intake.
 
 The original machine target asks for an equivalence **provable in PA** between
 blank-tape non-halting and Con(ZFC), with fewer than 254 nonhalting states on a
-binary, two-way infinite, single tape. The maintained [compensated 244-state machine](../../../../../../Computability/BusyBeaver/Research/ZFC/compensated244_binary.md) closes
-the external Lean comparison with Con(ZFC), improving the earlier checked
-245-, 246- and 252-state endpoints; its internal PA comparison remains open. Several deliveries discuss provability in ZFC instead, and retain that
+binary, two-way infinite, single tape. The maintained [240-state machine](../../../../../../Computability/BusyBeaver/Research/ZFC/rotation240_binary.md)
+now has both its external Lean comparison and the internal PA equivalence
+with Con(ZFC), improving the earlier checked 244-, 245-, 246- and 252-state
+endpoints. The new 220's ordinary argument is separate from that formal result. Several deliveries discuss provability in ZFC instead, and retain that
 stated scope. The user's later stronger-theory allowance is governed by the
 [current project criterion](../../../../../../Computability/BusyBeaver/Research/ZFC/README.md):
 assumptions must stay within well-understood benchmarks widely believed

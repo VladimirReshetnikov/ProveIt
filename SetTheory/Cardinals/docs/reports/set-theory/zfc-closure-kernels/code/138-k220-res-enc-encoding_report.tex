@@ -1,0 +1,155 @@
+% Standalone section fragment; uses only ordinary LaTeX and amsmath.
+% Research receipts and scripts are in research/encoding/ in the release.
+\section{Engine and encoding experiments: scope and rejected shortcuts}
+\label{sec:engine-encoding-audit}
+
+The successful construction changes the source encoding before sharing an
+additional decoder state.  Several complementary experiments explain why a
+direct deletion from the original K221 table was less effective.  This section
+records reproducible finite results, not lower bounds for arbitrary Turing
+machines.  All state numbers below are K221's native labels.  The baseline has
+221 working states and 442 transition rows: 172 states implement source
+decoding, while 49 are engine or auxiliary states.  Its 4,744-leaf source tree
+has 208 distinct subtrees when identical subtrees are shared.  The supplement
+pins the baseline table and source by SHA-256.
+
+\subsection{Bounded local state-sharing searches}
+
+For each radius $r$, a finite abstract interpreter computes admitted
+$(2r+1)$-cell windows around the head, starting with the all-zero window in
+state 0.  When the head moves, the newly exposed boundary bit may independently
+be either 0 or 1.  Closure under this transition relation therefore
+overapproximates every actual blank-tape execution.  A proposed replacement
+block must reproduce the old transition's state, head position, and tape
+contents for every admitted window, without reading or writing outside that
+window.  Positive block lengths prevent a zero-step simulation argument.
+
+\begin{center}
+\begin{tabular}{lrr}
+Search family on the unchanged K221 table & Radius & Row choices tested\\
+\hline
+One altered row, pair involving an engine state & 3, 5, 7 & 110,500 each\\
+One altered row, any state pair & 5 & 236,028\\
+Two altered rows, pair involving an engine state & 5 & 1,627,444\\
+Two altered rows, pair involving a nonpure state & 5 & 3,707,496\\
+Engine pair with head displacement $\pm2$ & 5 & 8,946,080
+\end{tabular}
+\end{center}
+
+No fold passed these checks.  The one-row family retains a common direct
+branch after identifying the two states.  The two-row families instead require
+disjoint admitted windows and exclude such common branches; their replacement
+blocks cannot revisit the merged state except at the required endpoint.  A
+nonpure state has a row that changes its scanned bit or moves left.  The
+head-displacement family deletes a state whose incoming moves all agree,
+reverses those incoming moves, and compares configurations with the resulting
+two-cell displacement.  Ordinary blocks have at most 21 steps; displaced
+blocks have at most 23.  Counts are individual row-action choices considered
+by these implementations, not counts of distinct complete machines.
+They do not exhaust coupled rewrites, larger windows, longer blocks, or
+different source layouts.  In particular, they impose no obstruction on the
+successful re-encoding followed by a context-sensitive fold.
+
+\subsection{Two tempting 220-state tables that fail}
+
+\paragraph{Deleting state 50 from the reset scanner.}
+The zero branch of the reset chain passes through
+$2,3,5,9,15,23,34,50,75$.  Deleting state 50 and redirecting its incoming edges
+to 75 shortens the recognized zero run from eight to seven.  A scan of every
+source address finds that its longest zero run is six, and every six-zero run
+is terminal.  This fact initially suggests that seven zeros might suffice.
+It does not: the runtime introduces another zero immediately after the
+program-counter word before filling the remaining gap with ones.  A terminal
+six-zero source suffix can consequently become an internal transient run of
+seven zeros.
+
+The executable counterexample uses zero-based source ordinal 40, with address
+\texttt{11101001001000000} and instruction $\mathrm{CD}_1$ on its zero branch.
+All nine logical registers are zero, the spare list is $[1]$, and the extra
+gap is zero.  Starting at dispatcher 84 with head position 0, K221 returns the
+correct frame in 586 transitions.  The shortened scanner returns to the same
+dispatcher and head position after 662 transitions, but its program counter
+is wrong: the expected one at cell 15 has been replaced by a one at cell 13.
+Every other one-cell agrees.  This is an exact valid-interface counterexample;
+it does not assert that this particular interface frame is reached from the
+blank initial tape.
+
+\paragraph{Deleting state 198 by a spare-list shortcut.}
+The exact initialized frame contains 167 spares, all equal to 1.  Every source
+increment appends one more spare with value 1, and every other nonhalting
+primitive preserves the spare list.  Thus the all-one spare invariant is
+closed, and its length is always at least 167 at source boundaries.  However,
+state 198 also participates in decrement lookahead and restoration; its role
+cannot be inferred solely from its use while appending a spare.
+
+The rejected patch deletes state 198 and changes the zero row of state 66 to
+$(1,L,113)$.  A $\mathrm{CD}_8$ zero-branch frame at address \texttt{000},
+with zero registers, spare list $[1]$, and zero extra gap, gives an exact
+primitive-contract failure: the baseline completes in 602 transitions, while
+the patch returns a different tape after 2,010 transitions.  More decisively,
+the patch fails directly from the required blank initialization.  After
+exactly 76 transitions it is in state 35, with head at cell 4 and rightmost
+one at cell 2.  Its literal row is
+\[
+  \delta(35,0)=(1,R,35).
+\]
+Inductively, the head thereafter encounters a fresh zero at every step,
+writes a one behind itself, and moves right in state 35 forever.  The
+76-transition trace and this one row form a finite certificate of that
+divergence; no long simulation or conjecture about eventual behavior is used.
+Both rejected patches and their baseline comparisons are reconstructed by
+\texttt{scripts/counterexamples.py}, with exact tape sets and trace hashes in
+\texttt{receipts/counterexamples.json}.
+
+The specialized all-one-spare symbolic interface audit still uses every one
+of K221's 442 rows.  The same is true after omitting source branches ruled out
+by the packaged zero facts.  These are usage results for overapproximated
+interface families, not claims that every row occurs on the unique initialized
+execution.
+
+\subsection{Exact finite searches over axiom-emitter encodings}
+
+The eight universally enumerated logical rows can each be reparameterized
+bijectively without changing their axiom images.  Macro matching identifies
+the complete emitter intervals, including the fourth-argument reader attached
+to $\rho_8$.  Permuting the register slots for $a,b,c$ within an emitter leaves
+its binary syntax-tree shape and guarded control-flow structure intact.
+The fixed-shape optimization objective here is the number of distinct source
+subtrees, not a claim about the optimum achievable compiled state count.
+
+All $8\cdot6=48$ individual permutations were tested.  Exhausting their
+$6^8=1,679,616$ joint combinations gives minimum 208, attained exactly twice:
+the original source and the source that exchanges $b,c$ only in $\rho_6$.
+The second minimizer also compiles to 221 states.  The exhaustive counter
+precomputes unions of row-fragment subtrees and explicitly accounts for
+cross-boundary subtrees; its reduction is compared with ordinary exact
+interning on all 48 individual changes and 1,000 seeded joint changes.
+Swapping the equal-length $\rho_3,\rho_5$ emitters and repeating all
+1,679,616 parameter combinations gives minimum 217.  Twelve additional
+fourth-argument splice variants for $\rho_8$ give minimum 209 and do not
+produce a validated reduction.
+
+A separate exhaustive search tries all $8!=40,320$ row orders.  It factors
+the original program into irreducible closed atoms, moves each row's complete
+contiguous atom list, and retains the original binary concatenation shape
+over those atoms.  The original order is the unique 208-node minimum; the
+next smallest count is 225.  This exhausts that specified shape family,
+not all parenthesizations for every order.
+
+These row changes preserve the semantic enumeration for a concrete reason.
+Each moved emitter is closed; the fourth-argument reader moves with
+$\rho_8$ and consumes the same input field once.  The other row emitters leave
+that proof-list input unchanged.  Reordering the eight formulas changes only
+their stack depths, so the leaf compiler chooses the corresponding depth in
+its sequence of stack removals.  The generalization entry remains at depth
+9, and the discard count remains 10.  Every logical-row code differs from
+the halting sentinel 1.  Bijective parameter substitutions similarly
+reparameterize the universally supplied axiom arguments.  The binding
+receipts make these source intervals and macro matches explicit.
+
+The portable supplement contains these scripts, their finite receipts, and
+the small counterexample traces.  Register coalescing, unrestricted joint
+row reordering and reparenthesization, and global engine minimality were
+not established by this investigation.  These negative results guide
+subsequent work without strengthening the separate correctness claim for
+the accepted 220-state construction.

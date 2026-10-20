@@ -13,8 +13,8 @@ members:
 
 ## Source 132 — `K221_Construction_2026-10-20.zip` (prefix `132-k221-`)
 
-A **221-state machine**, canonical SHA-256 `6457dce8…`. It is now the smallest known
-candidate, published as
+A **221-state machine**, canonical SHA-256 `6457dce8…`. It was the smallest candidate
+at this intake; [batch 185](intake-185.md) subsequently supplies a 220. It is published as
 [candidate-k221](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k221/README.md).
 
 It starts from Source 131's seed-K 222. That machine is the same source as the intake's

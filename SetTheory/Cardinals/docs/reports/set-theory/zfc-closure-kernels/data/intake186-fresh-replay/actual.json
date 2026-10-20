@@ -1,0 +1,108 @@
+{
+  "jobs": [
+    {
+      "name": "source",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake186/execution-copy/portable/build_source219.py",
+        "--sites220",
+        "/tmp/zfc-intake185/recovery-check/K220_Construction_2026-10-20/machine/sites220.json",
+        "--out",
+        "/tmp/zfc-intake186/replay/source"
+      ],
+      "cwd": "/tmp/zfc-intake186/execution-copy",
+      "log": "/tmp/zfc-intake186/replay/source.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 2.11799053568393
+    },
+    {
+      "name": "construction",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake186/execution-copy/portable/build219.py",
+        "--baseline",
+        "/tmp/zfc-intake185/recovery-check/K220_Construction_2026-10-20",
+        "--sites",
+        "/tmp/zfc-intake186/replay/source/sites.json",
+        "--output",
+        "/tmp/zfc-intake186/replay/construction"
+      ],
+      "cwd": "/tmp/zfc-intake186/execution-copy",
+      "log": "/tmp/zfc-intake186/replay/construction.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 2.167750222608447
+    },
+    {
+      "name": "canonical-startup",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake186/execution-copy/portable/canonicalize219.py",
+        "--table",
+        "/tmp/zfc-intake186/replay/construction/candidate.tm",
+        "--sites",
+        "/tmp/zfc-intake186/replay/construction/sites.json",
+        "--output",
+        "/tmp/zfc-intake186/replay/canonical"
+      ],
+      "cwd": "/tmp/zfc-intake186/execution-copy",
+      "log": "/tmp/zfc-intake186/replay/canonical-startup.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.3648104351013899
+    },
+    {
+      "name": "full-runtime",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake186/execution-copy/portable/check_runtime219.py",
+        "--baseline",
+        "/tmp/zfc-intake185/parent221/K221_Construction_2026-10-20",
+        "--table",
+        "/tmp/zfc-intake186/replay/construction/candidate.tm",
+        "--sites",
+        "/tmp/zfc-intake186/replay/construction/sites.json",
+        "--output",
+        "/tmp/zfc-intake186/replay/runtime"
+      ],
+      "cwd": "/tmp/zfc-intake186/execution-copy",
+      "log": "/tmp/zfc-intake186/replay/full-runtime.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 143.30177969764918
+    },
+    {
+      "name": "independent-audit",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake186/execution-copy/portable/audit_runtime219.py",
+        "--baseline",
+        "/tmp/zfc-intake185/parent221/K221_Construction_2026-10-20",
+        "--table",
+        "/tmp/zfc-intake186/replay/construction/candidate.tm",
+        "--sites",
+        "/tmp/zfc-intake186/replay/construction/sites.json",
+        "--runtime",
+        "/tmp/zfc-intake186/replay/runtime",
+        "--driver",
+        "/tmp/zfc-intake186/execution-copy/portable/check_runtime219.py",
+        "--canonical",
+        "/tmp/zfc-intake186/replay/canonical/canonicalization.json",
+        "--output",
+        "/tmp/zfc-intake186/replay/runtime_audit.json"
+      ],
+      "cwd": "/tmp/zfc-intake186/execution-copy",
+      "log": "/tmp/zfc-intake186/replay/independent-audit.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.1645410656929016
+    }
+  ],
+  "scope": "Selected fresh K219 source, construction, startup, full final symbolic runtime and audit. No manifest validation or recursive ancestor replay; macro equivalence is independently reviewed written mathematics."
+}
