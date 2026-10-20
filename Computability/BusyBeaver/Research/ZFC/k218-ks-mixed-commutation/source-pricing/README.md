@@ -24,3 +24,13 @@ python3 -B check_candidates_v3.py > check-v3.stdout.log 2> check-v3.stderr.log
 ```
 
 The preparation adapter changes only the repository-path literal and executes no computation. Inner search caps are 120 seconds initially and 30 seconds for the finer pass; the outer factor search has a 120-second cap. The finer actual pass took 13.10 seconds for 653,232 outer joins and 62,208 complete-source beam combinations. Historical status strings written before the ordinary calibration review remain unchanged in the raw evidence.
+
+An [independent source review](peer/review.json) checked all 78 exact formula
+recipes and all 32 saved sources across both valid passes. Its own reader
+reconstructed every whole-source CFG by checking the two closed replacement
+intervals and all 4,094 unchanged rows, as well as the literal words, complete
+metrics and first 37 startup paths. It found no defect. This review did not
+execute the search, allocator or runtime; [its source](peer/review_static.py)
+and [tree reader](peer/tree_reader.py) are retained unchanged. The reader's
+original scratch paths bind the reviewed snapshots; it is a review record,
+while the preparation adapter above supplies the portable search reproduction.
