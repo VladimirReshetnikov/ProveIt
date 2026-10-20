@@ -37,8 +37,10 @@ rerunning the compiler. Opening also gives ordinary extensions to `R(B,A)`,
 `R(B,C)` or `R(C,B)`.
 
 Adding the K combinator escapes this invariant: `T → (B → T)` and truth yield
-`B → T` by MP, including the code4 excluded above. No calibration for that
-larger proposal is established. The [earlier README](history/prior-README.md)
+`B → T` by MP, including the code4 excluded above. A later [three-value code-dependent model](../../k218-k-membership-obstruction/README.md)
+now rules out that larger K extension too, even with quantified stability,
+by a different ordinary consistency proof. It does not change the scope of
+this earlier Lean invariant. The [earlier README](history/prior-README.md)
 and [fresh-label analysis](history/prior-fresh-label.md) remain unchanged in
 history. Their conditional semantic implications stay valid; a model-existence implication strong enough to yield Con(ZFC) cannot be
 proved in ZFC from this modified calculus's consistency, if ZFC is consistent.

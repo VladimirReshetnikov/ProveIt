@@ -66,7 +66,12 @@ retain useful arbitrary-clean-seed and fixed-power-of-two scheduler theorems,
 two freshly verified 219 layouts, and explicit failed startup repairs.
 The [all-start obstruction](k218-continuation-search/all-starts/README.md)
 shows that choosing another existing start cannot repair the exact delete301
-217 table. All three new archives have been imported and retired.
+217 table. All three new archives have been imported and retired. A [reachable repair
+counterexample](k218-continuation-search/row36-repairs/README.md) rejects the
+proposed row36 repairs for the accepted source. A [source-reassociation
+search](k218-continuation-search/rotation-folds/README.md) tests 282,416 fold
+specifications after 25 closed rotations without a survivor; its bounds do
+not imply minimality.
 
 On the formalism side, [K/S plus quantified stability](k218-quantifier-stability/README.md)
 has a new ordinary consistency calibration, with an independently checked
@@ -74,7 +79,11 @@ finite proof DAG. Its [first source pricing](k218-quantifier-stability/pricing/R
 does not save states. The [five-value model](k219-fourth-parameter/finite-matrix/README.md)
 now excludes every membership-fourth restriction of rho8, even their union,
 while retaining the other native rows; adding K or explosion is outside
-that model's scope. These theory results make no new machine-state claim.
+that model's scope. A separate [three-value code-dependent model](k218-k-membership-obstruction/README.md)
+now also rules out K plus `R(A,B)`-fourth rho8, even with quantified stability.
+It validates the literal coupled seed bundle but rejects the tiny formula
+`F → F` (code 16), leaving that additional-axiom proposal open. These theory
+results make no new machine-state claim.
 
 The primary 218-state machine’s predecessor is the [**219-state machine**](candidate-k219/README.md)
 of batch 186 (Source 140, arrival `26d5de6d21`). A clean equality routine

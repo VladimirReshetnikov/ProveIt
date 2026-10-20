@@ -26,3 +26,8 @@ timeout 190s python3 -B Computability/BusyBeaver/Research/ZFC/k218-continuation-
 ```
 
 The portable drivers change paths and entry-point arguments only; they are source-reviewed without a second search. Original executed versions and the exact portability differences are retained under `history/`. No submitted wrapper, ancestor suite, checksum manifest or proof assistant is invoked. A future fold survivor would still require its independent relative proof and the rotated parent's complete runtime and blank-startup obligations before a 217-state construction could be claimed.
+
+A [second-rotation follow-up](second-rotation/README.md) checked 1,387 additional
+closed rotation specifications across these 25 parents. None creates two
+states with literally identical pairs of transition rows. This small census
+does not include general state-fold synthesis after two rotations.
