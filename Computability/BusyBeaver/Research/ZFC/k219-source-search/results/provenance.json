@@ -1,0 +1,93 @@
+{
+  "status": "COMPLETED_BOUNDED_SOURCE_RESEARCH",
+  "reference": "candidate-k219 accepted219 source; Source140 alternate equality synthesis library",
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "audit.py",
+        "--output",
+        "/tmp/k219-source-search-audit.json"
+      ],
+      "exit_code": 0,
+      "result": "results/audit.json"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "search.py",
+        "--output",
+        "/tmp/k219-portable-rotations"
+      ],
+      "exit_code": 0,
+      "result": "results/rotations.json",
+      "stdout": "results/rotations.stdout.txt"
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "search.py",
+        "--affine",
+        "--output",
+        "/tmp/k219-portable-affine"
+      ],
+      "exit_code": 0,
+      "result": "results/affine.json",
+      "stdout": "results/affine.stdout.txt"
+    }
+  ],
+  "source": [
+    {
+      "path": "model.py",
+      "sha256": "fd3aa5dce31db9fafa6ad6a92ebec92e1d6c73ebeb72c11af714f6799c657f94",
+      "bytes": 4669
+    },
+    {
+      "path": "dag.py",
+      "sha256": "bb26338ae8b0b17dd4893c5c74e1d11aaee4f610896e219433d2f8267894dbc8",
+      "bytes": 1333
+    },
+    {
+      "path": "audit.py",
+      "sha256": "b08e1991e1a0365ca4f5d7bb06ea06195beea6c87d4e8f570b79bed188d6bd99",
+      "bytes": 5346
+    },
+    {
+      "path": "search.py",
+      "sha256": "ea477c69f9304d66ce30d4b2e5d63472b1d3b6252215f4b901f8baf967e2a6f8",
+      "bytes": 3806
+    },
+    {
+      "path": "proof.md",
+      "sha256": "18b0da82cc6a8fc4f7be862489b29663f6d7ba58b529ee8d73b9721310a1ef73",
+      "bytes": 8339
+    }
+  ],
+  "results": [
+    {
+      "path": "results/audit.json",
+      "sha256": "317444495a9d600b9278935c8c38835a05725e2abf1deb36b2b6c5485dd8fedf",
+      "bytes": 50200
+    },
+    {
+      "path": "results/rotations.json",
+      "sha256": "8b8f8e40c6f82ae6f2b9ab5d4bee911ad4679baf5764332644641d270ca01036",
+      "bytes": 5367
+    },
+    {
+      "path": "results/affine.json",
+      "sha256": "e62e6ff15a059470ec04963d17c2f9973de18157ddfda51f28e96226348d87e9",
+      "bytes": 5380
+    }
+  ],
+  "scope": "No smaller binary machine, no new runtime certificate or proof-assistant endpoint. Ordinary all-natural source proofs plus bounded finite and exact CFG evidence.",
+  "post_run_whitespace_only": {
+    "file": "model.py",
+    "change": "remove one extra final blank line; no token or behavior change",
+    "executed_sha256": "fd3aa5dce31db9fafa6ad6a92ebec92e1d6c73ebeb72c11af714f6799c657f94",
+    "published_sha256": "ae87685a907d6d0b6341ac6352e027068cc3dc87c61c01393b7afd6fee3f0839"
+  }
+}
