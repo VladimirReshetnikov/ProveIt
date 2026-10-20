@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-20",
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "contribution": "Three literal continuation-row alternatives with two independent universal positive-block equivalence proofs",
+  "baseline": {
+    "path": "vendor/K221_Construction_2026-10-20.zip",
+    "sha256": "a06c99b775193d9642a2734b7dd5fe7b72736fbdf9d9d8be438321d5e5d57ba4",
+    "native_sha256": "e6dc479f09ded05dd1c0639b60a0c453483f42e6b77c29562d433cac528c1ecc",
+    "canonical_sha256": "6457dce8c91c5975fb405607567158ca92ad97331f2724503edc0d4ff74cab3c",
+    "complete_inherited_chain_included": true
+  },
+  "variants": [
+    {
+      "name": "row103",
+      "native_path": "machine/row103/k221.native.tm",
+      "canonical_path": "machine/row103/k221.tm",
+      "mapping_receipt": "machine/row103/canonicalization.json",
+      "native_sha256": "59cc7866c35cb3b86dbc1fbbebff745c719ef18402bd28cbdfbbf63c9f2f0d8d",
+      "canonical_sha256": "f2f59296a6f7ed2e5a63eb389707d221c9f17e2aa01aa418abf5a9d67b011324",
+      "working_states": 221,
+      "graph_reachable_working_states": 221,
+      "rows": 442,
+      "start": 0,
+      "halt": 221,
+      "dispatcher": 22,
+      "observed_startup_steps": 409835
+    },
+    {
+      "name": "row157",
+      "native_path": "machine/row157/k221.native.tm",
+      "canonical_path": "machine/row157/k221.tm",
+      "mapping_receipt": "machine/row157/canonicalization.json",
+      "native_sha256": "0319319b73af348c9c2af06348afc87e2d3bd81b3ead85af90cfbc7cae8398cc",
+      "canonical_sha256": "f6740b4e9ea3d6da9e89f4366ecd0313d8a391235b75577f69fd9734e93b824e",
+      "working_states": 221,
+      "graph_reachable_working_states": 221,
+      "rows": 442,
+      "start": 0,
+      "halt": 221,
+      "dispatcher": 22,
+      "observed_startup_steps": 409835
+    },
+    {
+      "name": "both",
+      "native_path": "machine/both/k221.native.tm",
+      "canonical_path": "machine/both/k221.tm",
+      "mapping_receipt": "machine/both/canonicalization.json",
+      "native_sha256": "735a26bef15168bf696103f7f69a55472d98a4a1a4ae8eff653eb42bd7777ded",
+      "canonical_sha256": "87ae75a04848f14fe0108c5f21561a24856c02131195049d19ca97c2ddf5b79c",
+      "working_states": 221,
+      "graph_reachable_working_states": 221,
+      "rows": 442,
+      "start": 0,
+      "halt": 221,
+      "dispatcher": 22,
+      "observed_startup_steps": 409835
+    }
+  ],
+  "common_source": {
+    "path": "machine/sites221.json",
+    "sha256": "691684ec948c972bf67727d6d4cd1181a90a9203644ee3db3eae363280e3fac9",
+    "unchanged_from_baseline": true
+  },
+  "proof_boundary": {
+    "ordinary_all_tape_equivalence_from_unrestricted_state0": true,
+    "logical_endpoint_inherited_from_pinned_baseline": true,
+    "fresh_exact_byte_Rocq_Lean_endpoint": false,
+    "fresh_internal_PA_endpoint": false,
+    "unconditional_nonhalting": false,
+    "minimality": false,
+    "exploratory_candidates_certified": false
+  },
+  "checkers": {
+    "macro_diamonds": {
+      "path": "portable/verify_alternate_rows.py",
+      "sha256": "e7f521cc29a082f98c7fa9f1a5572e9dff2b7fe0c38b47f7746f1912ef73af43",
+      "adaptation": "Original proof logic retained, only portable CLI input/output and assertion-mode guard added",
+      "original_sha256": "cffdb9d7b5baa795da3390f6a9921858de0782cb7793519ed84bb1386d3efa99"
+    },
+    "independent_window": {
+      "path": "portable/check_joint_fold.py",
+      "sha256": "82d0b364dfdbc7433a58c3c3e7166ec6a32ac9268e0e516f5f113f1287f44031",
+      "original_retained_byte_for_byte": true
+    }
+  },
+  "exploratory": {
+    "grammar_seeds": 10,
+    "rho6_seeds": 1,
+    "status": "Source/schema and decoder evidence only, without complete binary runtime/startup certification"
+  },
+  "verification": {
+    "status": "SELF_CONTAINED_THREE_ALTERNATIVES_REPLAY_PASS",
+    "receipt": "verification/clean_replay.json",
+    "baseline_replayed": "Complete inherited quick audit chain",
+    "fresh_alternative_macro_proofs": true,
+    "fresh_independent_window_proofs": 3,
+    "fresh_native_and_canonical_startups": 6,
+    "independent_payload_audit": "verification/payload_audit.json",
+    "inventory_note": "Clean preflight replay tested construction and proof payload. The final archive inventory and extracted replay are audited separately at release.",
+    "independent_exact_decoder_binding": "verification/independent_decoder_{row103,row157,both}.json"
+  },
+  "report": {
+    "path": "report/report.pdf",
+    "pages": 10,
+    "sha256": "bca3992d0d758866ba549af1dacc00046e8cc7d859a6d089874af6c67b8c2d57",
+    "source": "report/report.tex",
+    "visual_validation": "report/validation.json"
+  }
+}
