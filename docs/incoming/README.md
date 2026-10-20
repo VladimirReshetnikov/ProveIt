@@ -12,6 +12,14 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Queue status after batch 180
+
+Batch 180 imported `K223_Construction_2026-10-20.zip` as Source 127 of
+[ZFC closure kernels](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-180.md)
+(placement `9b1fa851a9`). The smallest candidate is now the
+[223-state machine](../../Computability/BusyBeaver/Research/ZFC/candidate-k223/README.md).
+No archive is waiting.
+
 ## Queue status after batch 179
 
 Batch 179 imported `K224_Construction_2026-10-20.zip` and `ZFC_Compact_Search_2026-10-20.zip`
@@ -894,6 +902,7 @@ ProveIt-era batches (from this directory):
 | 177 | One manuscript from `0128d662fd`: placement `746e88f2f7` adds source 115, now 115 sources and still 290 reports. 104 members = 72 new + 28 aliases + 1 history alias + 3 archive-only; ZIP retired. | the 235-state machine and why the intake's two-level search missed it | this commit | finite screen and exact startup of the 235; unbounded runtime recorded with batch 178 |
 | 178 | Nine manuscripts from `aaf47dea43`, `ac1dc06307`, `7bfe07ede0` and `680f058702`: placement `ad8cbe8249` adds sources 116–124, now 124 sources and still 290 reports. 2,242 members = 1,006 new + 1,207 aliases + 1 history alias + 28 archive-only; all ZIPs retired. | census of the K-family tables, decoder accounting, the corrected combination analysis and the sub-225 search | this commit | unbounded runtime replays of every distinct K-family table and of the 235; candidate-k225 published |
 | 179 | Two manuscripts from `49ee7cfdc8` and `490a3c3bcd`: placement `4a59278837` adds sources 125–126, now 126 sources and still 290 reports. 423 members = 333 new + 82 aliases + 2 history aliases + 6 archive-only; both ZIPs retired. | the 224's three changes and its K′ calculus, the DN4 225, decoder accounting of both, and the formal status | this commit | screens, exact startups and unbounded runtimes of both tables; candidate-k224 published; the 225's Rocq endpoint rechecked with `coqchk` |
+| 180 | One manuscript from `281af27565`: placement `9b1fa851a9` adds source 127, now 127 sources and still 290 reports. 165 members = 131 new + 30 aliases + 1 history alias + 3 archive-only; ZIP retired. | the 223's conditional-K source, helper allocation and fold, decoder accounting, and the new formal obligations | this commit | screen, exact startup and unbounded runtime of the 223; candidate-k223 published |
 
 
 Batches 99 to 113 are the fifteen clusters into which the intake triaged

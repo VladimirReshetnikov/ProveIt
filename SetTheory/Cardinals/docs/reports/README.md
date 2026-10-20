@@ -3122,3 +3122,10 @@ is now the smallest known candidate; it searches a variant K′ of Elliot Glazer
 is a second 225 with double negation normalized. The intake rebuilt the pinned Rocq 9.1.0 and
 rechecked Source 124's 225 end to end with `coqchk`, so the 225 is the smallest table with a
 kernel-checked endpoint. No proof assistant checks the 224 yet.
+
+Batch 180 imports one more package as
+[Source 127](set-theory/zfc-closure-kernels/intake-180.md), giving this host **127 sources**
+(still 290 reports). Placement `9b1fa851a9` retires its ZIP. Its
+[223-state machine](../../../../Computability/BusyBeaver/Research/ZFC/candidate-k223/README.md)
+is now the smallest known candidate; it searches conditional K, calibrated by a two-marker
+hereditary-domain interpretation. No proof assistant checks it yet.
