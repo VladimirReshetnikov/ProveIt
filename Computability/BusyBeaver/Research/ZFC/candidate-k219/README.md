@@ -82,7 +82,9 @@ equivalence, source size, raw allocation and complete machine verification:
 - [Code-dependent fourth parameters](../k219-fourth-parameter/README.md)
   give a new three-input proposal, `U=R(A,B)`. Eight Lean lemmas check the
   algebraic obstruction to simpler replacements and conditional routes to
-  recovering the old axiom. Full equiconsistency remains open. Three
+  recovering the old axiom. Two further Lean lemmas check a fresh-label
+  argument and projection of the negative K core. The semantic K extraction
+  now allows non-Boolean quantifier outputs; full equiconsistency remains open. Three
   measured membership layouts have 205 distinct subtrees, but the checked
   allocations so far are larger and lack runtime certificates.
 - [Source transformations](../k219-source-search/README.md) include exact

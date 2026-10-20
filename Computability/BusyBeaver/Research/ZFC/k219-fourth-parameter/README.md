@@ -164,6 +164,38 @@ or prove a syntactic counterpart. Neither is established here. Arbitrary
 matrix semantics need not be atomically surjective; closing that gap is
 the research problem, not an assumption one can omit.
 
+## Fresh formula-code labels remove the Boolean-quantifier assumption
+
+A further [semantic argument](fresh-label.md) exploits the literal coupling
+in `U=R(A,B)`. For a nonzero formula code B, variable label B is fresh from
+that formula. In the instance A=C=truth, changing the assignment at label B
+to the value at label 0 preserves the formula's value b and makes R(0,B)
+irreflexive. The row becomes `L(t,b,t,0)=I(t,I(t,I(b,t)))`. Under the stated
+single-designated-value implication laws, validity forces `I(b,t)=t`.
+The zero code follows from the truth alias.
+
+This implication-to-truth law holds for every realized native formula value,
+without atomic surjectivity, a designated membership edge, or Boolean
+quantifier output. Together with Boolean negation and designatedness-based
+quantification, it allows one-way extraction of the full ordinary seed-K
+schema, including support. The exact `req/clos/nks/bundle222` definitions
+were checked: the argument needs the bare negative K component and does not
+assume that both conjuncts can be projected from the raw bundle. Recursively
+translated quantifiers receive double negation to keep matrix values Boolean.
+
+The separate [Lean file](FreshLabel.lean) checks the conditional fresh-label
+lemma and the negative-core projection. Its [actual receipt](fresh-label-lean.json)
+records a successful build; the first theorem uses only `propext`, and the
+second has no axiom dependencies. Native support, the full K extraction and
+model existence are not formalized in this small file. The earlier
+[Boolean-Q analysis](history/analysis.md) is retained as superseded history.
+
+The remaining gap is now sharper: consistency of the proposed code-coupled
+calculus has not been shown to produce a model with one designated value,
+Boolean negation and the specified implication/quantifier laws. Ordinary
+classical completeness cannot be invoked to supply that missing strength.
+This is a conditional model-extraction result, not equiconsistency.
+
 ## Evidence and next test
 
 The [finite checker](check_range.py) evaluates all 256 unrestricted instances,
@@ -190,11 +222,14 @@ python3 -B Computability/BusyBeaver/Research/ZFC/k219-fourth-parameter/check_ran
 lean Computability/BusyBeaver/Research/ZFC/k219-fourth-parameter/Range.lean
 ```
 
-The next useful experiment is to measure the actual source/decoder cost of
-building R(A,B) while removing the fourth-field read, and independently seek
-a refutation translation or a full-model obstruction. Syntax savings alone
-are insufficient. The accepted [219-state construction](../candidate-k219/README.md)
-retains unrestricted rho8 and is unaffected.
+The [source measurements](../k219-pivot-fusion/README.md) now include all
+12 ordered membership/association layouts, with a minimum of 205 distinct
+subtrees. [Selective allocation](../k219-continuation-search/README.md)
+reaches 222 raw states for those layouts. The next obligations are the
+consistency calibration and a smaller verified implementation. Syntax
+savings alone are insufficient. The accepted
+[219-state construction](../candidate-k219/README.md) retains unrestricted
+rho8 and is unaffected.
 
 Attribution: the implication algebra and full HC construction are from the
 K219 submission, imported as Source 140 from commit `26d5de6d21`. The general
