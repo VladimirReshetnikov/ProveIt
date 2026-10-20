@@ -1,0 +1,27 @@
+--- executed/prepare.py
++++ portable/prepare.py
+@@ -1,11 +1,8 @@
+ #!/usr/bin/env python3
+ """Reviewer-owned direct-leaf preparation; never invokes supplied code."""
+-import hashlib, io, json, shutil, stat, sys, zipfile
++import argparse, hashlib, io, json, shutil, stat, sys, zipfile
+ from pathlib import Path, PurePosixPath
+ 
+-BASE = Path('/tmp/zfc-intake188-opening')
+-SRC = BASE/'pristine/K218_Construction_2026-10-20'
+-OUT = BASE/'execution'
+ def sha(b): return hashlib.sha256(b).hexdigest()
+ def desc(p): return {'path': str(p), 'sha256': sha(p.read_bytes()), 'size': p.stat().st_size}
+ def dump(p,v): p.write_text(json.dumps(v,indent=2,sort_keys=True)+'\n')
+@@ -22,6 +19,11 @@
+     return z
+ def write(p,b): p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(b)
+ def main():
++    ap=argparse.ArgumentParser(description=__doc__)
++    ap.add_argument('--packet',type=Path,required=True)
++    ap.add_argument('--output',type=Path,required=True)
++    args=ap.parse_args();SRC=args.packet.resolve();OUT=args.output.resolve()
++    assert SRC.is_dir() and SRC!=OUT and SRC not in OUT.parents
+     assert not OUT.exists()
+     OUT.mkdir(); copy=OUT/'packet';shutil.copytree(SRC,copy)
+     raw219=(copy/'portable/vendor/K219_Construction_2026-10-20.zip').read_bytes()
