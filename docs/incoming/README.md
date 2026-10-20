@@ -12,6 +12,28 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Queue status after batch 187
+
+Three archives from arrivals `ffcdff81ad` and `0b0cec2d0d` are imported as
+[Sources 141–143](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-187.md).
+Placement `99fbf38bbd` retires all three ZIPs and accounts for every one of their
+274 members: 218 new files, 14 existing aliases, 28 batch aliases, one historical
+archive alias and 13 archive-only article/delivery members. The host now has
+**143 sources**; the collection remains **290 reports**. The batch-187 archives are
+cleared. Two later archives fetched at `253b3ff50e` and `f8ec6158f3` are reserved
+for batch 188; they are not included in this disposition.
+
+Source 141 adds three 219-state alternatives: guarded zero terminals, retagged
+reassociation, and their independently realized combination. The existing row157
+rewrite also composes with each at the same state count. Sources 142–143 preserve
+a full cofinal-bundle countermodel, a qualified core-only tail lemma, exact equality
+routines, partial compiler progress, concrete failed 218-state specimens and bounded
+search results. Six selected Source-142 finite checks pass; two retain an explicit
+unproved `cd59` assumption. No verified machine with at most 218 states, new
+literal-table Lean/Rocq endpoint or internal PA theorem is claimed.
+[Recovery and selected replay](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-187-reproduction.md)
+retain the original layouts and distinguish ordinary proofs from execution records.
+
 ## Queue status after batch 186
 
 `K219_Construction_2026-10-20.zip`, arrival
@@ -969,6 +991,7 @@ ProveIt-era batches (from this directory):
 | 184 | One manuscript from `a27b5391bb`: placement `abae578c29` adds Source 137 and retires its ZIP; 191 members = 156 new + 31 existing aliases + 1 history alias + 3 archive-only. | [intake-184.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-184.md): three same-size 221 continuation variants, all-tape local proofs, conditional source reductions and rejected experiments; delayed write completed with batch 185. | this commit | Full manuscript/proof review and exact placement/recovery accounting; delivered runtime/startup receipts retained as delivered, not freshly rerun for this batch. No exact-variant Lean/Rocq or internal PA endpoint. |
 | 185 | Two manuscripts from `7677a1f62f` and `bf01dd349a`: placement `de06ba50be` adds Sources 138–139; 175 members = 150 new + 7 existing aliases + 6 batch aliases + 2 history aliases + 10 archive-only. Both ZIPs retired; now 139 sources and still 290 reports. | [intake-185.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-185.md): nonpure decoder re-encoding and contextual fold to 220, three certified continuation alternatives, and separate theory/encoding research. | this commit | Fresh final 6,167-case symbolic runtime (1,516,421 rules), complete 409,835-step startup and independent audit; fresh alternative macro/window proofs, startup and independent core audit. Ancestor calibration reused, no recursive ancestor replay or checksum-manifest validation. No new literal-220 Lean/Rocq or internal PA endpoint. |
 | 186 | One manuscript from `26d5de6d21`: placement `24c7e68de7` adds Source 140; 110 members = 93 new + 2 existing aliases + 6 batch aliases + 1 history alias + 8 archive-only. ZIP retired; now 140 sources and still 290 reports. | [intake-186.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-186.md): clean open-tree equality sharing, exact 219-state decoder/return adaptation, retained calculus/codec research and scoped negative experiments. | this commit | Seven selected fresh jobs pass: source/build, full 6,167-case runtime (1,515,040 rules, all 438 rows, minimum duration 13), complete 312,617-step startup, independent audit and two supplements. Ancestor calibration reused. No literal-219 Lean/Rocq or internal PA endpoint. |
+| 187 | Three manuscripts from `ffcdff81ad` and `0b0cec2d0d`: placement `99fbf38bbd` adds Sources 141–143; 274 members = 218 new + 14 existing aliases + 28 batch aliases + 1 history alias + 13 archive-only. All three ZIPs retired; now 143 sources and still 290 reports. | [intake-187.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-187.md): three 219 alternatives, exact source composition, cofinal-bundle obstruction and qualified positive theory/source progress, with failed and partial compiler evidence retained. | this commit | Same-size row157 stacking is supported by a positive whole-tape diagram. Six Source-142 finite checks pass, including two explicitly conditional `cd59` audits. Final runtime, startup and encoding replay records are separately scoped in the intake. No verified ≤218 machine or new literal-table Lean/Rocq/PA endpoint. |
 
 
 Batches 99 to 113 are the fifteen clusters into which the intake triaged

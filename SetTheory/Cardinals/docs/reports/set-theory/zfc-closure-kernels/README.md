@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings through 20 October 2026. This report now reconciles **140 manuscripts**.
+Intake findings through 20 October 2026. This report now reconciles **143 manuscripts**.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -8,6 +8,19 @@ the delivered base article is preserved, rather than rewritten as a unified arti
 No merged PDF is built. These are ordinary mathematical arguments and finite
 regression checks. The deliveries confer no formal status; subsequent Lean
 results and their exact scope are listed below.
+
+[Batch 187](intake-187.md) imports Sources 141–143: three further 219-state
+source/table pairs and two research companions toward 218 states. The zero-terminal
+open identity and 81 retagged reassociations compose at source level; the composed
+physical table uses its own decoder realization. The row157 whole-tape rewrite can
+also be added to each without reducing the state count. The companions retain a
+full cofinal-bundle countermodel, a core-only tail result requiring full vacuity,
+all-natural equality routines, concrete failed specimens and partial interface
+proofs. No verified ≤218 machine is delivered. Placement `99fbf38bbd` preserves all
+274 members and retires three ZIPs; [reproduction](intake-187-reproduction.md)
+separates fresh selected checks, inherited calibration and unproved dependencies.
+Independent [Source 141](data/intake187-source141-review.json) and
+[Source 142](data/intake187-source142-review.json) reviews retain the detailed scopes.
 
 [Batch 186](intake-186.md) imports Source 140, the [219-state construction](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k219/README.md)
 from `26d5de6d21`. It shares an open equality subtree, with a generalized
@@ -36,7 +49,7 @@ blank-tape non-halting and Con(ZFC), with fewer than 254 nonhalting states on a
 binary, two-way infinite, single tape. The maintained [240-state machine](../../../../../../Computability/BusyBeaver/Research/ZFC/rotation240_binary.md)
 now has both its external Lean comparison and the internal PA equivalence
 with Con(ZFC), improving the earlier checked 244-, 245-, 246- and 252-state
-endpoints. The new 220's ordinary argument is separate from that formal result. Several deliveries discuss provability in ZFC instead, and retain that
+endpoints. The current 219's ordinary argument is separate from that formal result. Several deliveries discuss provability in ZFC instead, and retain that
 stated scope. The user's later stronger-theory allowance is governed by the
 [current project criterion](../../../../../../Computability/BusyBeaver/Research/ZFC/README.md):
 assumptions must stay within well-understood benchmarks widely believed

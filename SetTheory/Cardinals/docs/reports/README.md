@@ -3191,3 +3191,21 @@ individual scopes. This is an ordinary mathematical construction with symbolic
 certificates, without a new literal-table Lean/Rocq or internal PA endpoint.
 The separate closed Rocq endpoint for Source 132's exact 221 remains available.
 The incoming queue is empty; original files remain recoverable from Git history.
+
+
+Batch 187 imports [Sources 141–143](set-theory/zfc-closure-kernels/intake-187.md),
+bringing the host to **143 sources**, with **290 reports** unchanged. Placement
+`99fbf38bbd` retires all three arrivals and accounts for all 274 members. Source 141
+adds zero-terminal, retagged and composed 219-state alternatives, each with 438 rows
+and 4,744 source leaves. Their source identities preserve complete register/control
+outcomes; physical composition uses a separately realized decoder, not an inference
+from disjoint edits. The existing row157 rewrite also composes at the same state count.
+The two progress companions retain a full cofinal-bundle consistency obstruction,
+a core-only tail lemma requiring full vacuity, exact equality routines, partial
+220-state interface proofs and concrete failures of proposed 218-state folds.
+Six selected finite checks of the first companion pass; two remain conditional on
+unproved `cd59`. The [reproduction record](set-theory/zfc-closure-kernels/intake-187-reproduction.md)
+keeps final-machine, bounded-search and inherited-calibration evidence separate.
+No verified ≤218 machine or new exact-table Lean/Rocq/internal-PA endpoint is claimed.
+The three batch-187 archives are retired and recoverable from Git history. Two
+later arrivals, `253b3ff50e` and `f8ec6158f3`, await batch 188.
