@@ -81,9 +81,12 @@ now excludes every membership-fourth restriction of rho8, even their union,
 while retaining the other native rows; adding K or explosion is outside
 that model's scope. A separate [three-value code-dependent model](k218-k-membership-obstruction/README.md)
 now also rules out K plus `R(A,B)`-fourth rho8, even with quantified stability.
-It validates the literal coupled seed bundle but rejects the tiny formula
-`F → F` (code 16), leaving that additional-axiom proposal open. These theory
-results make no new machine-state claim.
+Its [all-natural Lean proof](k218-k-membership-obstruction/lean-model/README.md)
+now passes with 21 standard-axiom reports and zero warnings. A separate
+[syntactic invariant](k218-k-membership-obstruction/identities/README.md) also
+rules out K plus that restricted row even with every identity, including
+`F → F` (code 16). The latter proof excludes quantified stability; combining
+both additions remains outside these results. No machine-state saving follows.
 
 The primary 218-state machine’s predecessor is the [**219-state machine**](candidate-k219/README.md)
 of batch 186 (Source 140, arrival `26d5de6d21`). A clean equality routine

@@ -16,8 +16,12 @@ same code; preserving that coupling is essential to the proof.
 This gives an elementary consistency proof, formalizable in PA. Thus, assuming
 ZFC is consistent, no ZFC proof can identify this calculus's consistency with
 Con(ZFC). This is stronger than the earlier bounded searches' failure to find
-classical derivations. It is an ordinary mathematical result, **not a newly
-checked Lean or Rocq theorem**.
+classical derivations. A later [Lean formalization](lean-model/README.md) now
+checks the all-natural valuation, exact retained axioms and derivation induction,
+including nonderivability of falsum and code 16. Its 21 axiom reports use only
+Lean’s standard logical axioms. The ordinary PA-formalizability claim is not
+an internally arithmetized PA theorem; the checked source’s cache and native
+definition boundaries are documented separately.
 
 The [separate finite checker](check_model.py) actually passed and produced
 [the certificate](model-check.json). It checks every carrier assignment to the
