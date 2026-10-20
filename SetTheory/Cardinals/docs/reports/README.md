@@ -3129,3 +3129,10 @@ Batch 180 imports one more package as
 [223-state machine](../../../../Computability/BusyBeaver/Research/ZFC/candidate-k223/README.md)
 is now the smallest known candidate; it searches conditional K, calibrated by a two-marker
 hereditary-domain interpretation. No proof assistant checks it yet.
+
+Batch 181 imports three more 223-state packages as
+[Sources 128–130](set-theory/zfc-closure-kernels/intake-181.md), giving this host **130
+sources** (still 290 reports). Placement `5342a12e22` retires their ZIPs. Source 127's
+conditional root and Source 128's merged equality row stack: the intake's
+[222-state machine](../../../../Computability/BusyBeaver/Research/ZFC/candidate-k222/README.md)
+is now the smallest known candidate. No proof assistant checks it yet.

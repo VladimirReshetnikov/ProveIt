@@ -3,7 +3,8 @@
 This binary, single-tape machine has **223 working states**, including initialization, plus
 a separate halt state. It starts in state 0 at head 0 on an all-zero two-way infinite tape.
 Every transition moves left or right. The complete 446-row table is [zfc_k223.tm](zfc_k223.tm).
-**It is the smallest known candidate** whose blank-tape non-halting is equivalent to Con(ZFC).
+It was the smallest known candidate until the [222](../candidate-k222/README.md), which stacks
+it with Source 128's merged equality row.
 
 It is Source 127 of the ZFC closure-kernels host (arrival `281af27565`; see the
 [batch 180 reconciliation](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-180.md)).
