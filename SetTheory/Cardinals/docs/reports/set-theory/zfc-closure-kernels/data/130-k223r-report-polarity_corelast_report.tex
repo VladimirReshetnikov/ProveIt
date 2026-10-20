@@ -1,0 +1,245 @@
+% Addendum to logical_routes_report.tex. Requires amsmath, amssymb, hyperref.
+\section{Negated matrix enumeration and a final K conjunct}
+\label{sec:polarity-corelast}
+
+\noindent\textbf{Status.} The arguments in this section establish a new
+combination of a calibrated matrix family and classical formula fusions.
+They justify the exact axiom source below.  They do not by themselves
+establish a transition table with fewer than 224 states.
+
+\subsection{Putting the K component last}
+
+Write $I(X,Y)=X\to Y$, $N(X)=X\to F$, and
+$A(X,Y)=N(I(X,N(Y)))$, where $F=R(0,0)$ is the retained relative falsity.
+The original Lukasiewicz row and unchanged $\rho_6$ provide the classical
+propositional interface, including explosion for $F$ and double-negation
+elimination.  These are essential premises of the following fusions.
+
+Let $V$ be membership vacuity, $H$ the retained equality helper, and let
+the already fused K core have the syntactic form $N(U)$.  K224's bundle
+is classically equivalent to $K\wedge(V\wedge H)$.  Reorder the three
+components to $V\wedge(H\wedge K)$.  Its literal negative-conjunction
+expansion simplifies as follows:
+\begin{align*}
+ A(V,A(H,K))
+ &=N\!\left(V\to NN\!\left(H\to NK\right)\right)\\
+ &\leftrightarrow N\!\left(V\to\left(H\to NK\right)\right)\\
+ &=N\!\left(V\to\left(H\to NN U\right)\right)\\
+ &\leftrightarrow N\!\left(V\to(H\to U)\right).
+\end{align*}
+The conjunction reassociation preserves all three projections.  Relative
+to K224's already fused first-K layout, the final-K layout removes two
+further negation-constructor calls.  The pinned macro 218 has 47 fine
+instruction leaves, so this removes 94 expanded leaves before any
+subsequent source layout changes.  A shared decoder's state count need
+not fall by the same amount.
+
+The original gate still returns $0$ when $c=a$ or $c=b$.  An enabled gate
+still returns one formula, with the same three components.  This change
+does not alter the eight external logical-row positions, AX parameter
+reads, or stack-command semantics.  The reordered bundle still has an
+implication at its root and therefore cannot equal the target code $1$.
+
+\subsection{The new matrix family keeps the full endpoint family}
+
+The polarity proposal retains arbitrary AX endpoints $a,b$, the original
+gate $c\ne a,b$, full gated membership vacuity and the actual equality
+helper.  It changes only the matrix supplied to K:
+\[
+ \operatorname{kcore}(a,b,c,c)
+ \quad\longmapsto\quad
+ \operatorname{kcore}(a,b,c,\operatorname{wn}(c)).
+\]
+The private label remains $c$.  The opaque input code $c$ represents a
+formula $\psi$; the matrix is now $N\psi$.  The private label is therefore
+coupled to the code of $\psi$, not to the larger code of $N\psi$.
+No restriction to fixed endpoints is part of this proposal.
+
+For a precise fused expression, use the following abbreviations, with
+all quantifiers retaining their displayed named binders:
+\begin{align*}
+ R&=R(b,c),&
+ S&=\forall_c\bigl(R(c,a)\to R(c,b)\bigr),\\
+ T&=\forall_b(R\to\psi),&
+ W&=\forall_b(T\to\psi),\\
+ H_0&=\forall_a(S\to W),&
+ J&=N\forall_a(H_0\to\psi),\\
+ C&=\forall_b(R\to J),&
+ U&=\forall_c\bigl((N\psi\to R)\to N C\bigr).
+\end{align*}
+The negated-matrix K core is classically equivalent to $N U$.
+Consequently, with membership vacuity $V$ and equality helper $H$, the
+final-K bundle is
+\begin{equation}\label{eq:polarity-bundle}
+       N\bigl(V\to(H\to U)\bigr).
+\end{equation}
+This template has exactly four native negation-constructor calls: its
+outer negation, $N\psi$ in the root implication, $N C$, and the negation
+forming $J$.  K224's previous fused bundle has eight such calls.  The
+contents of the opaque input code are not counted as constructor calls.
+
+Here are the nontrivial local equivalences.  First commute the conjuncts
+inside the innermost existential:
+\[
+ \exists_b(N\psi\wedge R)
+ \leftrightarrow \exists_b(R\wedge N\psi)
+ \leftrightarrow N\forall_b(R\to\psi)=N T.
+\]
+The request then becomes
+\[
+ \forall_b(N\psi\to N T)
+ \leftrightarrow\forall_b(T\to\psi)=W
+\]
+by contraposition.  The support existential similarly satisfies
+\[
+ \exists_a(N\psi\wedge H_0)
+ \leftrightarrow\exists_a(H_0\wedge N\psi)
+ \leftrightarrow N\forall_a(H_0\to\psi)=J.
+\]
+Expanding the outer existential and conjunction gives $N U$.
+Finally apply the final-K fusion above.  All these rewrites are classical
+tautological equivalences in formula contexts.  Their extension through
+universal binders follows from closed GEN and $\rho_2$.  No quantifier is
+renamed, no substitution rule is assumed, and no binder freshness premise
+is needed for these local equivalences.
+
+\subsection{Uniform upper comparison, including all low codes}
+
+The pinned decoder treats implication to code $1$ as primitive named
+negation.  In \path{coq/settheory/KDecoder230.v}, the exact lemma
+\texttt{D\_wn} gives
+\[
+             D(\operatorname{wn}(c))=\operatorname{Wn}(D(c)).
+\]
+The lemma \texttt{D\_kcore} in
+\path{coq/settheory/KDecodeBundle.v} permits an arbitrary matrix code
+$m$, requiring only that the private label differ from the output label.
+Thus every enabled new core decodes exactly to
+\[
+          K\operatorname{Core}(a,b,c,\operatorname{Wn}(D(c))).
+\]
+The theorem \texttt{D\_private\_fresh} in
+\path{coq/settheory/KDecodeFresh.v} proves
+$\operatorname{fr}(c,D(c))=\mathrm{false}$ for every $c$, including zero.
+Primitive negation preserves this free-variable freshness.
+
+This observation avoids an unnecessary exceptional-code argument.
+$D(0)$ is the closed tautology
+\[
+ (\forall_0 E(0,0))\to(\forall_0 E(0,0)),
+\]
+so its negation remains closed, although label $0$ occurs bound inside
+it.  The upper comparison needs free-variable freshness, not the absence
+of every bound occurrence.  The relative-falsity/IR bridge is inherited;
+one must not replace this official decoder by a raw decoding that adds
+a free $R(0,0)$ inside every negation and then claim literal freshness.
+
+For distinct active endpoints, \texttt{ordinary\_to\_named\_source} in
+\path{coq/settheory/KDecodeReverse.v} applies to any private-fresh matrix.
+For coincident endpoints, \texttt{named\_same\_roles} in
+\path{coq/settheory/KDecodeDegenerate.v} applies to any such matrix, using
+the inherited empty-object and hosting consequences of ordinary K.
+Both therefore apply with matrix $\operatorname{Wn}(D(c))$.  Membership
+vacuity, the equality helper, the logical rows and the disabled truth seed
+retain their original upper comparison.  Conjunction rearrangement and
+the fusions above preserve it.  Every finite refutation in the proposed
+numerical theory consequently yields a finite ZFC refutation through the
+retained ordinary K+IR upper comparison.
+
+\subsection{Completeness with the actual negated input code}
+
+The converse must match the changed code/private-label coupling exactly.
+Let $f$ represent an arbitrary ordinary K matrix in genuine-bottom named
+syntax.  Choose its two active names $a,b$ to be distinct positive labels,
+reserve $0$, and choose the other free and bound names capture-free before
+any relative-falsity translation.  This is a subfamily of the emitted full
+$a,b$ family, sufficient to represent every ordinary matrix.  No numerical
+formula is subsequently renamed in a way that changes the protected
+relative falsity $F$.
+
+Let $\theta$ be the retained membership-indiscernibility interpretation
+of equality.  It preserves membership, implication and each old named
+binder, and sends genuine bottom to $F$.  Choose an odd integer
+$\ell=2m+1$ and form
+\[
+       q=N^{\ell}\theta(f),\qquad c=\operatorname{enc}(q),
+\]
+with enough padding that $c>\max(a,b)$.  Native negation strictly
+increases the numerical code, so this is an explicit terminating choice.
+The finite-tree code-label induction makes every label occurring in $q$
+strictly smaller than $c$.  In particular, $c$ is fresh in $\theta(f)$
+and in $f$, and the actual source gate is enabled.
+
+Choose the ordinary comparison instance
+\[
+              K\operatorname{Core}(a,b,c,N^{\ell+1}f).
+\]
+Its private label is chosen after computing the interpreted input code.
+The outer K wrapper is equality-free, so its translation is literally
+\[
+ \theta\bigl(K\operatorname{Core}(a,b,c,N^{\ell+1}f)\bigr)
+ =K\operatorname{Core}(a,b,c,Nq).
+\]
+The encoding on the right is exactly
+\[
+                 \operatorname{kcore}(a,b,c,\operatorname{wn}(c)),
+\]
+the new emitted core.  There is no use of the old matrix code and no
+assumption that the private label equals the new matrix's code.
+Since $\ell+1$ is even, the comparison matrix is classically equivalent
+to $f$.  Ordinary finite-proof translation and the full interpreted
+logical calculus therefore recover every finite K+IR refutation.  IR
+still translates to the generalized identity $\forall_0(F\to F)$.
+
+The argument works with the original Euclidean row or the calibrated Sym
+replacement, and with every helper $H_\kappa$ satisfying the retained
+off-diagonal freshness condition.  In particular,
+$\kappa(a,b)=4P(a,b)$ is allowed: its sole collision is
+$\kappa(0,0)=0$, and the interpreted diagonal equality $D(0,0)$ is already
+a membership-identity theorem.  No helper or primitive reflexivity is
+needed for that diagonal bridge.
+
+Writing $T^-_\kappa$ for the exact new numerical calculus, these
+effective finite-proof comparisons establish an ordinary theorem
+formalizable in ZFC:
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\neg\operatorname{Pr}_{T^-_\kappa}(F)
+       \leftrightarrow\operatorname{Con}(\mathrm{ZFC})\bigr).
+\]
+The changed enabled bundle is pointwise equivalent to the new
+negated-matrix core together with its two helper components.  It is not
+claimed pointwise equivalent to K224's old core at the same raw input
+$c$; the two-direction consistency argument above is what justifies the
+matrix-family change.
+
+\subsection{Evidence and unchanged enumeration interface}
+
+The artifact \path{check_polarity_fusion.py} generates and replays a
+19-step contextual-rewrite certificate from the literal unfused
+negated-matrix K bundle to Equation~\eqref{eq:polarity-bundle}.
+It checks five propositional rewrite schemas on all eight assignments
+to their three placeholders, checks the existential expansion literally,
+and checks every rewrite's exact formula context.  A removed
+contraposition step is rejected.  Its receipts confirm eight old versus
+four new template negation calls.  The quantified-context justification
+is the uniform GEN/$\rho_2$ proof described above, not a truth-table
+interpretation of quantification.
+
+The disabled gate, the eight logical rows and their order, AX parameter
+reads, and the count of formulas placed on the external proof stack are
+unchanged.  Both helper families are recoverable by projection from
+enabled bundles, and the new bundle still has code different from $1$.
+Thus the old leaf-selection and reset-prefix arguments require only the
+new bundle identity in their axiom premise.  The actual arithmetic
+emitter, its register effects, the shared decoder and the final transition
+table still require their separate construction and simulation checks.
+
+All named Rocq lemmas cited above are retained at K230 commit
+\begin{center}\small\ttfamily
+3142e4dd980f0be12f4abb636c4ae2528afc17eb
+\end{center}
+The short file
+\path{NegatedMatrixBridge_uncompiled.v} records the two immediate decoder
+and freshness corollaries; it has not been compiled here and is not a
+new formal verification endpoint.

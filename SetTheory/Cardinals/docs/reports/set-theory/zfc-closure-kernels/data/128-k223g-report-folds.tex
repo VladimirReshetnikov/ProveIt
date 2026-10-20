@@ -1,0 +1,158 @@
+\section{Three certified folds from 226 to 223 working states}
+\label{sec:threefolds}
+
+This section concerns the literal binary transition tables, independently of
+any interpretation of their source program.  Let $M_{226}$ be the corrected
+zero-run-six G-source table, and let $M_{223}$ be the result of the three
+transformations below.  Both machines start in state $K_0$ and use $K_{254}$
+as the distinguished halt label.  These labels are historical labels; the
+final table has exactly 223 working states and 446 transition rows.
+
+The parent table has SHA-256
+\begin{center}\small\ttfamily
+ e7069fe4dc12fe62ba66cd88c27a51bfd83d548daad07591d3e0b0afaf6afe3d
+\end{center}
+and the 223-state table has SHA-256
+\begin{center}\small\ttfamily
+ 5bcee335bc5cf45b6ebc6d1f97a10e3cc8aae2af303b82c5cc9ce506a4d22ed7.
+\end{center}
+
+\paragraph{Simulation principle.}
+A fold identifying an old state $v$ with a retained state $u$ maps control
+states by $\phi(v)=u$, fixing every other state, and leaves the head position
+and entire tape unchanged at simulation boundaries.  Every ordinary old row
+has its target renamed by $\phi$.  At the two exceptional old states, each
+possible old one-step transition must be realized by a nonempty finite block
+of new transitions with exactly the mapped endpoint.  The proof may assume
+an inductive invariant of the \emph{old} machine at that boundary.  No
+interior transition may halt.  This gives halting equivalence from every
+initial configuration satisfying the invariant: an infinite old computation
+produces infinitely many positive-length new blocks, while an old halt
+produces a finite new computation ending in the same halt state.
+
+For the present folds, the initial invariant imposes no restriction on the
+tape in start state $K_0$.  Thus each fold, and their composition, is valid
+for every initial binary tape and every initial head position.  The invariant
+is checked for every literal old row; an old branch can be excluded only
+when its scanned bit contradicts the invariant.
+
+\subsection{Fold 1: a bit immediately to the left selects the continuation}
+
+The incoming rows of $K_{157}$ all write zero and move right.  They are
+precisely the zero rows of $K_{192},K_{200},K_{209},K_{216},K_{221}$.
+The sole incoming row of $K_{191}$ is
+\[
+ \delta(K_{300},1)=(1,R,K_{191}).
+\]
+Consequently the cell immediately left of the head is zero in $K_{157}$
+and one in $K_{191}$.  Neither state is the initial state.
+
+Remove $K_{191}$, redirect every incoming target $K_{191}$ to $K_{157}$,
+and give $K_{157}$ the rows
+\[
+ \delta'(K_{157},0)=(0,L,K_{67}),\qquad
+ \delta'(K_{157},1)=(1,L,K_{187}).
+\]
+The four old one-step endpoints are implemented by the following blocks.
+Each displayed list gives the consecutive control states, including both
+endpoints.  In every case the old scanned cell is preserved, the final head
+is one cell to its right, and every other tape cell is unchanged.
+
+\begin{center}
+\begin{tabular}{cclc}
+Old state & Read & New state sequence & Steps\\
+\hline
+$157$ & $0$ & $157,67,151,90$ & $3$\\
+$157$ & $1$ & $157,187,186,86$ & $3$\\
+$191$ & $0$ & $157,67,152,159,118,155$ & $5$\\
+$191$ & $1$ & $157,187,76,148,173,182$ & $5$
+\end{tabular}
+\end{center}
+Only the old scanned cell and its immediate predecessor are visited.  This
+proves the reduction $226\longrightarrow225$ without any assumption about
+the rest of the tape.
+
+\subsection{Fold 2: use a branch that the old machine cannot take}
+
+In the intermediate 225-state table, the only incoming row of $K_{159}$ is
+\[
+ \delta(K_{152},0)=(0,L,K_{159}),
+\]
+so the cell one step right of the head contains zero in state $K_{159}$.
+The only incoming row of $K_{118}$ is
+\[
+ \delta(K_{159},1)=(1,R,K_{118}).
+\]
+Therefore $K_{118}$ always scans zero in this intermediate machine.  The
+following pair of assertions is a directly checked inductive invariant:
+\[
+ K_{159}\Longrightarrow\tau(h+1)=0,\qquad
+ K_{118}\Longrightarrow\tau(h)=0.
+\]
+Here $\tau$ is the tape and $h$ is the current head position.  The first
+assertion is established by the write of $K_{152}$; the second follows by
+the subsequent right move of $K_{159}$.
+
+The two states to be identified have rows
+\begin{center}
+\begin{tabular}{ccl}
+State & Read & Old action\\
+\hline
+$K_{118}$ & $0$ & $(0,R,K_{155})$\\
+$K_{118}$ & $1$ & $(1,R,K_{173})$, impossible under the invariant\\
+$K_{303}$ & $0$ & $(0,R,K_{155})$\\
+$K_{303}$ & $1$ & $(1,R,K_{153})$.
+\end{tabular}
+\end{center}
+Remove $K_{303}$ and redirect its incoming targets to $K_{118}$.  Keep the
+zero row of $K_{118}$ and change its one row to $(1,R,K_{153})$.
+The three possible old branches now agree with their mapped endpoints in
+exactly one new step.  This proves $225\longrightarrow224$.
+
+The invariant that $K_{118}$ scans zero belongs to the machine \emph{before}
+this fold.  After the fold, the one row is used for computations formerly
+in $K_{303}$.  It is neither necessary nor correct to assert that the one
+row remains unreachable in the new machine.  The proof uses the old
+invariant at each old simulation boundary and then composes the certified
+simulations.
+
+\subsection{Fold 3: identical predecessors}
+
+After the second fold, $K_{159}$ and $K_{302}$ have identical rows:
+\[
+ \delta(q,0)=(0,R,K_{166}),\qquad
+ \delta(q,1)=(1,R,K_{118}),\qquad q\in\{K_{159},K_{302}\}.
+\]
+Redirect $K_{302}$ to $K_{159}$ and delete its two rows.  This is an ordinary
+one-step quotient, valid for every tape and head position without any
+invariant.  The resulting table has 223 working states.  Every declared
+working state is reachable from $K_0$ in the directed transition graph.
+
+\paragraph{Conclusion.}
+The composition of the three positive-block simulations gives
+\[
+ M_{223}\text{ halts on }(K_0,\tau,h)
+ \quad\Longleftrightarrow\quad
+ M_{226}\text{ halts on }(K_0,\tau,h)
+\]
+for every binary tape $\tau:\mathbb Z\to\{0,1\}$ and every $h\in\mathbb Z$.
+In particular it applies to the all-zero tape.  The separate source and
+runtime argument identifying $M_{226}$ as the desired proof search may
+therefore be transported to the 223-state table.
+
+\paragraph{Independent check.}
+The self-contained Python program \texttt{check\_folds.py} uses only the
+standard library.  It reads the two literal tables and \texttt{folds.json}
+as data, checks the pinned hashes and total binary table format, verifies
+all invariant implications row by row, and executes the eleven exceptional
+blocks on their finite known patches.  Any read outside a known patch is
+rejected.  Hence acceptance covers every assignment to the infinite tape
+exterior.  The checker also checks every ordinary renamed row, exact equality
+with the delivered final table, and the final state count.  Its finite
+sixteen-step block bound limits the certificates it can accept; it never
+accepts an incomplete block.  The longest accepted block has five steps.
+
+The receipt is \texttt{fold\_certificate.json}.  Three negative controls
+are rejected: an incorrect predecessor-bit assertion, omission of the
+inductive support for the $K_{118}$ assertion, and a wrong value for the
+reclaimed one row.  Their receipt is \texttt{negative\_controls.json}.

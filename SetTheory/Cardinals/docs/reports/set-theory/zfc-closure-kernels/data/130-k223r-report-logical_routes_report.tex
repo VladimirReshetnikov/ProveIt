@@ -1,0 +1,326 @@
+% Report-ready section. Requires amsmath, amssymb, hyperref, booktabs,
+% tabularx. All paths below are relative to the pinned K224 archive unless
+% explicitly labelled as newly generated artifacts.
+\section{Logical compression and alternative presentations}
+\label{sec:logical-compression}
+
+\noindent\textbf{Status.} This section establishes a mathematically
+supported changed axiom source and finite proof-certificate evidence.
+These results alone do not construct or verify a machine with fewer than
+224 states.  A successful decoder and transition-table construction must
+be supplied separately.
+
+\subsection{The exact logical change supported here}
+
+The most direct supported change to the pinned K224 source replaces its
+Euclidean equality row
+\[
+ \rho_7(a,b,c):\quad E(c,a)\to\bigl(E(c,b)\to E(a,b)\bigr)
+\]
+by the symmetry row
+\[
+ \operatorname{Sym}(a,b):\quad E(a,b)\to E(b,a).
+\]
+The original Lukasiewicz propositional row, $\rho_1,\ldots,\rho_6$, MP,
+theorem generalization, membership vacuity, the fused K bundle, and both
+additional AX parameter reads are retained.  In particular, this change
+retains K224's restricted equality helper
+\[
+ H_{\kappa}(a,b):\quad E(a,b)\to\forall_{\kappa(a,b)} E(a,b),
+ \qquad \kappa(a,b)=4P(a,b)+1,
+\]
+where $P(a,b)=(a+b)(a+b+1)/2+b$.
+
+This reduction is already permitted by Source 116's
+\path{portable/theory/source116/proofs/general_kappa_equality_helper.md}.
+That theorem explicitly includes primitive symmetry as an alternative to
+$\rho_7$.  Its original set-theoretic application used CP/GIC.  The
+application to the present K source additionally uses K224's
+\path{portable/theory/k_equality_helper_extension.md}.  The contribution
+here is the explicit composition of those interfaces, its independent
+proof-certificate check, and its use as a current source-layout candidate.
+The symmetry theorem itself is prior work.
+
+The original postfix arithmetic word has eleven macro calls:
+\[
+ c\ a\ {\tt eq}\ c\ b\ {\tt eq}\ a\ b\ {\tt eq}\ {\tt im}\ {\tt im}.
+\]
+Symmetry needs seven:
+\[
+ a\ b\ {\tt eq}\ b\ a\ {\tt eq}\ {\tt im}.
+\]
+Both have the same stack effect and occupy one logical-row position.
+Saving four calls is a concrete source reduction; it is not a four-state
+saving.  Decoder layout and shared subexpressions determine the resulting
+machine size.
+
+\subsection{Why the restricted helper still suffices}
+
+Here $E$ is the primitive equality predicate.  Define a different formula,
+membership indiscernibility,
+\[
+ D(a,b)=
+ \bigl[\forall z\,(R(z,a)\leftrightarrow R(z,b))\bigr]
+ \mathbin{\wedge}
+ \bigl[\forall z\,(R(a,z)\leftrightarrow R(b,z))\bigr],
+ \qquad z=4P(a,b)+3.
+\]
+Conjunction, biconditional, negation and existence are expanded using the
+retained implication and relative-falsity syntax.  The explicit choice of
+$z$ matters: its numerical value changes with the endpoints.
+
+For distinct endpoints, $\kappa(a,b)$ is different from both.  The helper,
+Sym, and the two membership congruence rows yield all four membership
+implications under universal quantification at that safe auxiliary.
+The Source 116 membership-only transport proof then moves the auxiliary
+to $4P(a,b)+3$, giving $E(a,b)\to D(a,b)$.  For coincident endpoints,
+$D(a,a)$ is built from generalized propositional identities, so it needs
+neither primitive reflexivity nor an equality helper.  Thus the bridge
+$E(a,b)\to D(a,b)$ holds in every case.
+
+Closed existential monotonicity and the retained row
+$\rho_1(a,b)=\exists_a E(a,b)$ give $\exists_a D(a,b)$.  The remaining
+translated equality laws---including reflexivity, symmetry, Euclidean
+equality, both membership congruences, and full equality vacuity---are
+laws of $D$ proved in the membership fragment.  This is an interpretation
+of the full logical calculus; it does not assert that primitive $E$
+itself regains reflexivity or full equality vacuity.
+
+The dependencies are the original propositional basis, normal quantifier
+distribution $\rho_2$, quantifier commutation $\rho_4$, $\rho_6$, the
+witness row $\rho_1$, both membership congruences $\rho_3,\rho_5$,
+membership vacuity, the actual $H_\kappa$ family, Sym, MP and theorem GEN.
+The original $\rho_7$ is absent.  The retained $\rho_6$ is used both in
+quantifier metatheory and to derive explosion for the relative falsity
+$F=R(0,0)$.  Generalization under open assumptions and an unproved general
+substitution rule are not used as primitive rules.
+
+\subsection{The K matrix must be encoded after interpretation}
+
+Let $\theta$ replace every primitive equality atom by $D$, preserve
+membership, implication and each named universal binder, and send genuine
+bottom to $F$.  For an ordinary K matrix $f$, set
+\[
+ \psi=\theta(f),\qquad c=\operatorname{enc}(\neg\neg\psi).
+\]
+The native code-label bound makes $c$ larger than every label occurring
+in its matrix.  Double-negation padding gives $c>3$.  Choose the ordinary
+comparison axiom with input label $1$, output label $3$, private label
+$c$, and matrix $\neg\neg f$.  Ordinary K permits this fresh private
+label; it need not be the original matrix's old code.
+
+The outer K template contains no equality.  Consequently
+\[
+ \theta\bigl(K\operatorname{Core}(1,3,c,\neg\neg f)\bigr)
+ =K\operatorname{Core}(1,3,c,\neg\neg\psi),
+\]
+whose numerical encoding is exactly the emitted
+$\operatorname{kcore}(1,3,c,c)$.  Choosing $c$ after translating the matrix
+is the step that prevents an incorrect matrix-code/private-binder
+identification.  The propositional fusion already used in K224 does not
+depend on $\rho_7$, so it remains applicable.
+
+The full logical interpretation translates finite K+IR refutations to
+numerical derivations of $F$.  The interpreted IR is the generalized
+identity $\forall_0(F\to F)$.  Combining this effective translation with
+the retained K+IR/ZFC comparison proves the lower consistency direction.
+For the reverse direction, interpret primitive $E$ as genuine equality.
+Sym is valid, and $H_\kappa$ is ordinary atomic vacuity off the diagonal;
+on the diagonal, universal equality reflexivity validates it regardless
+of the chosen binder.  The original K and relative-falsity soundness
+arguments then apply.
+
+Let $T_{\rm Sym,REL}$ denote this exact numerical calculus.  These
+effective finite-proof comparisons establish, by an ordinary argument
+formalizable in ZFC,
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\neg\operatorname{Pr}_{T_{\rm Sym,REL}}(F)
+       \leftrightarrow \operatorname{Con}(\mathrm{ZFC})\bigr).
+\]
+The proof-search enumerator still needs its own source and machine
+simulation theorems.  Keeping the row count and AX reads unchanged permits
+the K224 block compiler to select the changed row in the same position;
+Sym's implication-root code cannot equal the target code $1$.  The
+reset-prefix and cofinal-cutoff arguments in
+\path{portable/theory/enumerator_adaptation.md} then have the same form.
+A measured transition table and the source-to-table verification remain
+separate obligations.
+
+\subsection{What the independent certificate establishes}
+
+The new generator and independent checker are
+\path{generate_symmetry_rel_helper.py} and
+\path{check_symmetry_rel_helper.py}.  The generator reuses the unchanged
+Source 116 proof constructors.  The checker accepts the exact new Sym
+leaf and the exact numerical REL helper, and rejects primitive $\rho_7$
+and full primitive equality-vacuity leaves.  The retained propositional
+interfaces K, S and truth-table tautologies are justified by the original
+Lukasiewicz row and unchanged $\rho_6$; this checker does not reprove that
+upstream propositional compilation.
+
+The delivered receipt checks 64 closed roots, 55,327 proof nodes and
+51,002 formulas.  Its leaves include 43 Sym uses and eight REL helpers,
+with zero $\rho_7$ or full primitive equality-vacuity uses.  All four
+negative controls---wrong helper binder, old helper, injected $\rho_7$,
+and wrong root---are rejected.  The certificate SHA-256 is
+\begin{center}\ttfamily\small
+010e84279550e184e36988d5b6e4602741888a9f8c10f2acd9b806049e6b0851.
+\end{center}
+These checks validate finite derivation DAGs and supplement the uniform
+mathematical proof.  They do not constitute a new Rocq or Lean kernel
+endpoint, an exhaustive proof over all labels, or a TM simulation proof.
+
+\subsection{A tempting quantifier reduction fails}
+
+Replacing
+\[
+ \rho_6(a,A):\quad \exists_a\forall_a A\to A
+\]
+by the shorter $\forall_a A\to A$ does not preserve the pure logical
+interface.  A two-world counterinterpretation proves this even if full
+primitive equality vacuity is granted, which is stronger than K224's
+actual REL helper.
+
+Take worlds $0,1$ with accessibility
+$\{(0,0),(0,1),(1,1)\}$.  Interpret every named universal quantifier as
+the same forward modal box, material implication classically, every
+membership atom as false at both worlds, and every primitive equality
+atom as true exactly at world $1$.  Relative falsity is genuinely false,
+so the defined existential is the usual diamond.  The frame validates
+normal distribution and $\Box A\to A$; all named boxes commute.
+Every equality witness exists through world $1$, including coincident
+labels.  Euclidean equality and membership congruences hold pointwise.
+All membership and equality vacuity instances hold because their truth
+sets are upward persistent.  The Lukasiewicz row is a classical tautology,
+and MP and theorem generalization preserve validity at both worlds.
+
+For the actual formula $A=E(0,0)$, however,
+\[
+ \llbracket A\rrbracket=\{1\},\qquad
+ \llbracket\Diamond\Box A\rrbracket=\{0,1\}.
+\]
+Thus the original $\rho_6$ fails at world $0$ and cannot be derived from
+the proposed retained logical rows.  The exhaustive finite check is
+\path{check_t_replacement_obstruction.py}, with receipt
+\path{evidence/t_replacement_obstruction.json}.  This is a countermodel
+for the pure logical calculus, not for K's set-theoretic axioms.  It rules
+out automatic reuse of the completeness proof; it does not by itself
+settle the consistency strength of a K-plus-T theory.
+
+Primitive equality reflexivity alone likewise does not recover primitive
+Sym.  In ordinary first-order semantics, let $E$ be a nonsymmetric
+reflexive preorder and let membership be empty.  The witness row, both
+congruences, all atomic vacuity, the quantifier rows and reflexivity hold,
+while Sym fails.  This observation blocks a direct symmetry derivation;
+it does not rule out every possible different interpretation.
+
+\subsection{Identifying parameters in the propositional single axiom}
+
+The retained Lukasiewicz row is
+\[
+ L(a,b,c,u)=((c\to u)\to a)\to((a\to c)\to(b\to c)).
+\]
+Its fourth parameter is a tempting source of parser savings.  Exhaustive
+small-matrix search finds that every one of the six pairwise parameter
+identifications produces an incomplete single-axiom system for classical
+implication.  Every obstruction already has three truth values and a
+single designated value.  The search and its explicit matrices are in
+\path{find_three_variable_l_matrices.py} and
+\path{evidence/three_variable_l_matrices.json}.
+
+For example, for $u=b$ use designated value $2$ and implication
+\[
+\begin{array}{c|ccc}
+ \to&0&1&2\\\hline
+ 0&1&2&2\\
+ 1&1&2&2\\
+ 2&1&1&2
+\end{array}
+\]
+Every instance of $L(a,b,c,b)$ has value $2$, and MP preserves designation
+because $2\to x$ is designated only when $x=2$.  Nevertheless $0\to0$
+has value $1$, Peirce's law fails at $a=b=0$, and the S axiom fails at
+$(a,b,c)=(0,1,0)$.  The other five identifications have similarly small
+matrices falsifying the K axiom.  Thus no pairwise identification can
+replace the existing propositional completeness proof.  This result is
+about the single implicational axiom with substitution and MP; it does
+not claim that the other retained quantifier or set-theory rows could
+never recover the missing strength by a different argument.
+
+\subsection{Safe additional source-layout choices}
+
+The file \path{safe_row_variants.json} gives explicit postfix words for
+several interderivable row families.  With $p=E(a,b)$ and $q=E(b,a)$,
+the symmetry family can be emitted as $p\to q$ (seven calls),
+$p\to(p\to q)$ (eleven), $\neg q\to\neg p$ (nine),
+$p\to\neg\neg q$ (nine), or $\neg(p\wedge\neg q)$ (nine).
+The longer variants may share more decoder structure, especially the
+contracted form ending in two implication constructors.
+
+With Sym retained, the witness row may use $\exists_a E(b,a)$ instead of
+$\exists_a E(a,b)$; existential monotonicity connects them.  Either
+membership-congruence row may independently reverse only its equality
+atom.  In $\rho_2$, $\rho_3$ and $\rho_5$, the two curried antecedents
+may be exchanged by the tautology
+$(A\to(B\to C))\leftrightarrow(B\to(A\to C))$.
+These choices preserve the number of calls in their respective rows.
+Independent AX parameter permutations, logical-row permutations, and all
+eight native helper binders are also justified by the retained proofs.
+Their state costs should be measured jointly with Sym, since a locally
+longer word can yield a smaller shared decoder.
+
+\subsection{Other equiconsistent presentations and their real costs}
+
+\begin{tabularx}{\linewidth}{@{}p{0.19\linewidth}XX@{}}
+\toprule
+Presentation & Consistency relationship & Encoding consideration\\
+\midrule
+Ordinary ZF & Equiconsistent with ZFC by constructibility & Removing Choice
+from a direct ZFC verifier helps only if its actual emitter cost exceeds
+the costs of the remaining schemas and their freshness/substitution checks.\\
+NBG & A finitely axiomatizable conservative class extension of ZFC & A
+finite axiom list removes schema enumeration but still needs its formulas,
+set/class discipline, a complete proof calculus and the bootstrap printer.\\
+CP/GIC & The repository's earlier compact closure presentation is calibrated
+to ZFC & Its successful logical reductions can transfer, but its emitter
+layout cannot be assumed cheaper than K's fused bundle.\\
+K+IR & The pinned K230 development supplies both finite-refutation
+comparisons with ZFC & It already exploits a compact repeated wrapper,
+native arithmetic codes, and shared construction macros.\\
+Equality-free K & Membership-profile quotient and equality interpretation
+recover the same consistency strength & Eliminating primitive equality
+syntax requires replacing its role in variable specialization and renaming;
+deleting equality rows alone is insufficient.\\
+\bottomrule
+\end{tabularx}
+
+ZF/ZFC equiconsistency comes from G\"odel's constructibility proof;
+NBG's finite axiomatization and conservativity concern a richer class
+language.  Neither result implies that the corresponding binary TM is
+small.  The relevant quantity is the complete blank-tape transition
+table after axiom generation, syntax handling, inference search, decoder,
+and initialization are included.  A universal interpreter or a
+Diophantine proof encoding similarly moves description size into its
+program or coefficients; without a short blank-tape printer and a
+two-direction finite-proof comparison, it gives no numerical improvement.
+An independent combinatorial statement also needs an explicit ZFC proof
+of the requested consistency equivalence; unprovability alone does not
+supply it.
+
+For K-specific statements, the primary references are the pinned
+\href{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/coq/logic/Codes230.v}
+{\texttt{Codes230.v}},
+\href{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/coq/logic/Comp_Prop230.v}
+{\texttt{Comp\_Prop230.v}}, and
+\href{https://github.com/elliotglazer/k230-rocq/blob/3142e4dd980f0be12f4abb636c4ae2528afc17eb/docs/proof-overview.md}
+{the K230 proof overview}, together with the exact retained Source 116
+and K224 files identified above.  G\"odel's primary account is
+\href{https://doi.org/10.1073/pnas.24.12.556}{\emph{The consistency of the
+axiom of choice and of the generalized continuum-hypothesis}}, PNAS
+24 (1938), 556--557.  Bernays' primary class-theory construction begins
+with \href{https://doi.org/10.2307/2268862}{\emph{A system of axiomatic
+set theory---Part I}}, JSL 2 (1937), 65--77; for an explicit modern
+set/class proof-theoretic treatment, see
+\href{https://home.inf.unibe.ch/ltg/publications/2011/kra11.pdf}
+{J. Kr\"ahenb\"uhl's 2011 dissertation}, Introduction and Chapter 2.

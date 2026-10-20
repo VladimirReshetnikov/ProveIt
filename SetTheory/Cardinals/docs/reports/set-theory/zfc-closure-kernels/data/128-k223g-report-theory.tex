@@ -1,0 +1,220 @@
+% A report-ready section. Requires only amsmath and amssymb.
+\section{Merging equality propagation and the canonical helper}
+\label{sec:merged-equality}
+
+The successful source reduction combines two obligations that the
+224-state construction emitted separately.  The original equality row was
+\[
+ \rho_7(a,b,c):\qquad
+ d_{ca}\longrightarrow(d_{cb}\longrightarrow d_{ab}),
+ \qquad d_{xy}:=\operatorname{Eq}(x,y),
+\]
+and the gated set-theory bundle contained the additional helper
+\[
+ H(a,b):\qquad d_{ab}\longrightarrow Q_{\kappa(a,b)}d_{ab}.
+\]
+Here $Q_iA$ abbreviates $\operatorname{All}(i,A)$ and
+\[
+ \kappa(a,b)=\operatorname{RelCode}(a,b)
+ =4\left(\frac{(a+b)(a+b+1)}2+b\right)+1.
+\]
+This natural number exceeds both $a$ and $b$, so it is a safe binder for
+the equality atom.  The replacement is the single logical row
+\[
+ \boxed{\quad
+ G(a,b,c):\qquad
+ d_{ca}\longrightarrow
+       \bigl(d_{cb}\longrightarrow Q_{\kappa(a,b)}d_{ab}\bigr).
+ \quad}                                                        \tag{G}
+\]
+The old helper is then removed from the set-theory bundle.  All remaining
+logical rows, including $\rho_1,\ldots,\rho_6$ and $\rho_8$, are retained.
+
+This change has a stronger justification than a new consistency
+interpretation: the old and new theories prove exactly the same native
+formula codes.  The proof below reconstructs the literal old $\rho_7$
+row and the literal old helper from $G$, and derives $G$ in the reverse
+direction.  No change to the previous equality interpretation or to the
+native K-matrix/code adapter is required.
+
+\subsection{Propositional and quantifier prerequisites}
+
+Use the exact designated falsehood $F=1=\operatorname{Rel}(0,0)$, with
+$\neg A=(A\to F)$ and $\exists_iA=\neg Q_i\neg A$.
+The classical propositional bridge is unchanged.  Its precise dependency
+is $\rho_8$ together with $\rho_6$: the condensed-detachment proofs in
+\texttt{CD230.v} derive K, S and Peirce from $\rho_8$; the theorem
+\texttt{thm\_F} in \texttt{Comp\_Prop230.v} derives $F\to A$ from K and
+$\rho_6(0,A)$; double-negation elimination follows.  Thus the
+propositional tautologies used below do not depend on $G$, $\rho_7$,
+equality vacuity, or a set-theory axiom.  In particular, no assumption that
+the raw label 0 in $F$ is syntactically closed is made.
+
+From a closed theorem $A\to B$, closed generalization and $\rho_2$ give
+quantified monotonicity
+\[
+ Q_iA\longrightarrow Q_iB.
+\]
+Classical contraposition gives its existential counterpart
+$\exists_iA\to\exists_iB$.  Every use of generalization in this section
+is on a closed theorem; there is no generalization of an open hypothesis.
+Here closed means that the derivation has no open assumptions; the formula
+may still contain free variable labels.
+
+Seriality is also available without equality reflexivity:
+\[
+ Q_iA\longrightarrow\exists_iA.                                \tag{S}
+\]
+Indeed $\rho_1(i,i)$ gives $\exists_i d_{ii}$.  Generalize the tautology
+$A\to(d_{ii}\to A)$, apply $\rho_2$, and use the existential consequence
+of $\rho_2$ to obtain
+$Q_i(d_{ii}\to A)\to(\exists_i d_{ii}\to\exists_iA)$.
+Composing these closed theorems proves (S).
+Applying it to $Q_iA$ and then applying $\rho_6(i,A)$ gives
+\[
+ Q_iQ_iA\longrightarrow\exists_iQ_iA\longrightarrow A.          \tag{D}
+\]
+The distinction between one and two quantifiers matters: (D) is uniform
+in every native formula code, while a one-quantifier elimination principle
+is not assumed.
+
+\subsection{Recovering reflexivity and the deleted helper}
+
+Fix a label $x$, and put $z=\kappa(x,x)$ and $e=d_{xx}$.  The instance
+$G(x,x,z)$ says
+\[
+ d_{zx}\longrightarrow(d_{zx}\longrightarrow Q_ze),
+\]
+and propositional contraction therefore gives
+$d_{zx}\to Q_ze$.  Existential monotonicity and $\rho_1(z,x)$ yield
+$\exists_zQ_ze$.  Finally $\rho_6(z,e)$ yields
+\[
+ d_{xx}.                                                       \tag{R}
+\]
+No equality reflexivity or helper axiom was used to establish (R).
+
+Set the third parameter of $G$ to $a$.  Its first antecedent is now the
+theorem $d_{aa}$, so (R) and $G(a,b,a)$ give
+\[
+ d_{ab}\longrightarrow Q_{\kappa(a,b)}d_{ab}.                   \tag{H}
+\]
+This is exactly the deleted helper, including its original native binder
+and all diagonal instances.
+
+\subsection{Recovering the literal original equality row}
+
+Let $e=d_{ab}$ and $i=\kappa(a,b)$.  Generalize the closed theorem (H)
+at $i$, and distribute the quantifier with $\rho_2$:
+\[
+ Q_ie\longrightarrow Q_iQ_ie.
+\]
+Compose this implication with (D).  This proves the particular
+one-quantifier elimination theorem
+\[
+ Q_{\kappa(a,b)}d_{ab}\longrightarrow d_{ab}.                   \tag{E}
+\]
+Composing the final consequent of $G(a,b,c)$ with (E) gives
+\[
+ d_{ca}\longrightarrow(d_{cb}\longrightarrow d_{ab}),
+\]
+which is the literal original $\rho_7(a,b,c)$ formula, with no equality
+translation.  Primitive symmetry is an immediate supplementary
+consequence: apply this recovered row with parameters $(b,a,a)$ and use
+(R) to conclude $d_{ab}\to d_{ba}$.
+
+Conversely, the old $\rho_7(a,b,c)$ followed by the old helper $H(a,b)$
+gives $G(a,b,c)$ by propositional composition.  Thus the replacement
+compresses the generator without weakening the native deductive theory.
+
+\subsection{Exact bundle transformation and axiom coverage}
+
+Let $K_{abc}$ denote the unchanged fused K core, and let
+\[
+ V_R(a,b,c)=
+   \operatorname{Rel}(a,b)\longrightarrow
+       Q_c\operatorname{Rel}(a,b).
+\]
+The original gate remains $c\notin\{a,b\}$.
+The exact old negative bundle was
+\[
+ B_{\rm old}(a,b,c)=
+  \neg\bigl(K_{abc}\to(V_R(a,b,c)\to\neg H(a,b))\bigr).
+\]
+The new bundle is the two-component negative conjunction
+\[
+ B_{\rm new}(a,b,c)=
+  \neg\bigl(K_{abc}\to\neg V_R(a,b,c)\bigr).
+\]
+The retained classical bridge proves all three exact transformations
+\[
+\begin{aligned}
+ B_{\rm old}&\longrightarrow B_{\rm new},\\
+ B_{\rm old}&\longrightarrow H,\\
+ B_{\rm new}&\longrightarrow(H\longrightarrow B_{\rm old}).
+\end{aligned}
+\]
+For every ordered pair $(a,b)$, a fresh gate parameter exists, for example
+$c=\max(a,b)+1$.  Consequently the old bundled theory supplies every
+helper needed to derive the independent new $G$ row.  Conversely the new
+$G$ row supplies (H) for every pair, so every old bundle is recovered from
+the corresponding new bundle.  These extractions use only the unchanged
+propositional bridge and the stated gate; they do not presuppose a K
+theorem or an equality interpretation.
+
+The independent $G$ row must cover all numerical triples, as the replaced
+$\rho_7$ row did.  The gated bundle must cover the same successful triples
+as before.  These are explicit source-generator obligations and should be
+checked together with the emitted formula AST; formula algebra alone is
+not a proof of runtime row coverage.
+
+\subsection{Deductive equivalence and inherited ZFC calibration}
+
+Write $\operatorname{Thm}_{224}(n)$ for derivability of native formula
+code $n$ from the old source theory, and
+$\operatorname{Thm}_{G}(n)$ for derivability from the modified source.
+Replace each changed axiom leaf by the closed finite derivation above and
+leave MP and closed GEN unchanged.  Induction on a derivation gives
+\[
+ \boxed{\qquad
+ \operatorname{Thm}_{224}(n)
+   \ \longleftrightarrow\ \operatorname{Thm}_{G}(n)
+ \quad\text{for every native code }n.
+ \qquad}
+\]
+The transformation is on literal codes.  It therefore preserves the
+distinguished refutation target $n=1$ and inherits the old ordinary
+consistency equivalence with ZFC.  In particular, the existing Source116
+membership-defined equality interpretation and the K private-label/code
+coupling proof are reused without modification: this construction first
+returns to their exact calibrated native source theory.
+
+The proof substitutions, fresh gate selection, and induction on finite
+derivations are elementary arithmetical constructions formalizable in
+ZFC.  This establishes the new source-theory obligation.  A theorem about
+the changed binary Turing machine still also requires its own exact
+source-compiler and transition-table simulation obligations; it does not
+follow merely from a bounded run or from the state count.
+
+\subsection{Finite proof certificates}
+
+The accompanying
+\texttt{merged\_euclidean\_helper\_certificate.py} exports closed proof
+DAGs and checks every axiom leaf, every MP edge, and closedness at each GEN
+node.  It then reloads the exported JSON and checks it again.  It uses
+only Python's standard library and the bundled proof representation in
+\texttt{combined\_helper\_certificate.py}.
+
+The roots include reflexivity, the deleted helper, equality-box
+elimination, literal $\rho_7$, symmetry, the reverse derivation of $G$,
+and all three exact negative-bundle transformations.  The numerical cases
+include label 0, repeated endpoint labels, and large labels.  The checker
+rejects old-helper or old-$\rho_7$ leaves in all forward-direction roots,
+and rejects $G$ leaves in the reverse-direction roots, so the claimed
+interderivation cannot be certified by a circular premise.
+
+The combined artifact has 315 proof nodes and 290 distinct formulas.  Its
+propositional \texttt{TAUT} leaves are independently truth-table checked
+and abbreviate the unchanged $\rho_8/\rho_6$ classical bridge described
+above.  These finite instances accompany the uniform mathematical proof;
+they are not represented as a new Rocq or Lean endpoint for the changed
+machine table.

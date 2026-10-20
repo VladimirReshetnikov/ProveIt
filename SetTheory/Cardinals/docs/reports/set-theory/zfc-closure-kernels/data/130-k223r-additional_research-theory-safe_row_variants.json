@@ -1,0 +1,44 @@
+{
+  "scope": "Source grammar search only: all formula variants below generate a family interderivable with the displayed old family in the retained SYM plus REL-helper calculus. No state saving or emitter simulation is asserted.",
+  "postfix_convention": "a,b,c,u push AX parameters; eq,rel,im,all,exists,and,not are the existing native formula constructors. All axiom rows remain and all AX parameter reads remain.",
+  "symmetry_variants": [
+    {"name": "sym", "word": ["a","b","eq","b","a","eq","im"], "formula": "Eab -> Eba", "macros": 7},
+    {"name": "sym_contract", "word": ["a","b","eq","a","b","eq","b","a","eq","im","im"], "formula": "Eab -> (Eab -> Eba)", "macros": 11},
+    {"name": "sym_contrapose", "word": ["b","a","eq","not","a","b","eq","not","im"], "formula": "not Eba -> not Eab", "macros": 9},
+    {"name": "sym_consequent_dne", "word": ["a","b","eq","b","a","eq","not","not","im"], "formula": "Eab -> not not Eba", "macros": 9},
+    {"name": "sym_denied_counterexample", "word": ["a","b","eq","b","a","eq","not","and","not"], "formula": "not (Eab and not Eba)", "macros": 9}
+  ],
+  "rho1_variants": [
+    {"name": "original", "word": ["a","a","b","eq","exists"], "formula": "Exists a Eab"},
+    {"name": "flip_equality", "word": ["a","b","a","eq","exists"], "formula": "Exists a Eba"}
+  ],
+  "rho2_variants": [
+    {"name": "original", "word": ["a","b","c","im","all","a","b","all","a","c","all","im","im"], "formula": "All a (b -> c) -> (All a b -> All a c)"},
+    {"name": "exchange_antecedents", "word": ["a","b","all","a","b","c","im","all","a","c","all","im","im"], "formula": "All a b -> (All a (b -> c) -> All a c)"}
+  ],
+  "rho3_variants": [
+    {"name": "original", "word": ["a","b","eq","c","a","rel","c","b","rel","im","im"], "formula": "Eab -> (Rca -> Rcb)"},
+    {"name": "flip_equality", "word": ["b","a","eq","c","a","rel","c","b","rel","im","im"], "formula": "Eba -> (Rca -> Rcb)"},
+    {"name": "exchange_antecedents", "word": ["c","a","rel","a","b","eq","c","b","rel","im","im"], "formula": "Rca -> (Eab -> Rcb)"},
+    {"name": "flip_and_exchange", "word": ["c","a","rel","b","a","eq","c","b","rel","im","im"], "formula": "Rca -> (Eba -> Rcb)"}
+  ],
+  "rho5_variants": [
+    {"name": "original", "word": ["c","a","eq","c","b","rel","a","b","rel","im","im"], "formula": "Eca -> (Rcb -> Rab)"},
+    {"name": "flip_equality", "word": ["a","c","eq","c","b","rel","a","b","rel","im","im"], "formula": "Eac -> (Rcb -> Rab)"},
+    {"name": "exchange_antecedents", "word": ["c","b","rel","c","a","eq","a","b","rel","im","im"], "formula": "Rcb -> (Eca -> Rab)"},
+    {"name": "flip_and_exchange", "word": ["c","b","rel","a","c","eq","a","b","rel","im","im"], "formula": "Rcb -> (Eac -> Rab)"}
+  ],
+  "equality_helper_binders": [
+    ["a","b","im"], ["b","a","im"],
+    ["a","b","rel"], ["b","a","rel"],
+    ["a","b","all"], ["b","a","all"],
+    ["a","b","eq"], ["b","a","eq"]
+  ],
+  "equivalence_arguments": {
+    "symmetry_variants": "Classical propositional tautologies under L and the F-explosion derived from unchanged B6c.",
+    "flip_equality": "Compose with the appropriate primitive SYM instance; for rho1 first apply closed existential monotonicity from normal K, GEN, and propositional logic.",
+    "exchange_antecedents": "The theorem (A -> (B -> C)) iff (B -> (A -> C)) is purely implicational and follows from L.",
+    "helpers": "Source116 general_kappa_equality_helper.md permits every displayed native builder; its only possible diagonal collision is Imp(0,0)=0 and is explicitly covered.",
+    "parameter_and_row_permutations": "Each row may additionally use an independent bijection of all AX parameter labels, and the eight rows may be reordered; adapt leaf-selection indices as in K224 enumerator_adaptation.md."
+  }
+}

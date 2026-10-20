@@ -1,0 +1,108 @@
+% Report-ready independent audit. Requires amsmath, amssymb, hyperref.
+\section{Independent audit of the K223 logical change}
+
+\noindent\textbf{Verdict.} The merged equality/helper argument is sound.
+It proves equality of the old and new sets of derivable native formula
+codes, not merely an external equiconsistency.  I found no circular use
+of deleted equality axioms, illicit generalization, missing zero-label
+case, or mismatch between the necessary G family and the stated emitter.
+This audit concerns the logical change and its source interface; the
+binary runtime and state folds have separate certificates.
+
+Write $e_{ab}=\operatorname{Eq}(a,b)$,
+$\kappa(a,b)=4P(a,b)+1$, and $Q_iA=\operatorname{All}(i,A)$.
+The unconditional replacement row is
+\[
+ G(a,b,c)=e_{ca}\to(e_{cb}\to Q_{\kappa(a,b)}e_{ab}).
+\]
+The following dependency order is valid for all natural parameters.
+
+First, the unchanged Lukasiewicz row gives K, S and Peirce.  The actual
+pinned \texttt{CD230.v} derivations use only that row and MP.  The proof
+of \texttt{Comp\_Prop230.thm\_F} uses K and retained $\rho_6(0,A)$ to
+derive $F\to A$, for $F=\operatorname{Rel}(0,0)$.  Classical tautologies
+with that relative falsity are therefore available before any equality
+bootstrap.  Neither equality vacuity nor G is needed for this bridge.
+
+Second, closed GEN and $\rho_2$ give universal and existential
+monotonicity.  From $\rho_1(i,i)=\exists_i e_{ii}$ and the tautology
+$A\to(e_{ii}\to A)$ one obtains
+\[
+ Q_iA\to\exists_iA,
+ \qquad Q_iQ_iA\to\exists_iQ_iA\to A.
+\]
+The second implication ends with $\rho_6(i,A)$.  This argument does not
+assume reflexivity and does not assume one-quantifier elimination.
+
+Third, set $z=\kappa(x,x)$, $d=e_{zx}$ and $e=e_{xx}$.
+Propositional contraction of $G(x,x,z)$ gives $d\to Q_ze$.
+Existential monotonicity and $\rho_1(z,x)$ give $\exists_zQ_ze$;
+$\rho_6(z,e)$ gives $e_{xx}$.  Reflexivity is thus recovered without
+either deleted axiom.
+
+Fourth, $G(a,b,a)$ and reflexivity at $a$ yield the literal deleted helper
+\[
+ H(a,b)=e_{ab}\to Q_{\kappa(a,b)}e_{ab}.
+\]
+Generalizing this closed theorem at $i=\kappa(a,b)$ and applying
+$\rho_2$ gives $Q_i e_{ab}\to Q_iQ_i e_{ab}$.  The second implication
+above now gives $Q_i e_{ab}\to e_{ab}$.  Composing with G recovers
+the literal old Euclidean row $e_{ca}\to(e_{cb}\to e_{ab})$.
+
+All displayed generalizations apply to theorems with no open assumptions.
+Their formulas may have free variable labels.  The derivations impose
+no freshness condition, so coincident labels and zero are included.
+In the actual REL case $\kappa(a,b)>\max(a,b)$ anyway.  The same
+syntactic interderivation even tolerates a diagonal binder collision;
+freshness matters separately when validating a chosen helper in ordinary
+equality semantics.
+
+For the reverse direction, old Euclidean equality and old H give G by
+propositional composition.  The gate causes no loss of H: for each pair
+$(a,b)$, the old bundle at $d=\max(a,b)+1$ supplies H, independently of
+G's third parameter.  Conversely, the G row is unconditional, so
+$G(a,b,a)$ is available even though the bundle with $c=a$ is disabled.
+This distinction is essential and is respected by
+\texttt{portable/verification/check\_g\_emitter.py}.
+
+The exact bundle change is from
+\[
+ \neg\bigl(K\to(RV\to\neg H)\bigr)
+ \quad\hbox{to}\quad
+ \neg\bigl(K\to\neg RV\bigr).
+\]
+Projection and recombination with H are classical tautologies.  The K
+core, full gated membership vacuity, truth seed, remaining rows, and
+inference rules retain their previous identity.  Replacing each changed
+axiom leaf by the derivations above therefore gives, for every native
+code $n$,
+\[
+ \operatorname{Thm}_{G}(n)\leftrightarrow
+ \operatorname{Thm}_{224}(n).
+\]
+This is a uniform finite-proof transformation formalizable in ZFC.  It
+returns to the exact K224 numerical theory, so the previous equality
+interpretation and K code/private-binder calibration need no change.
+
+\subsection*{Independent finite replay}
+
+The new \texttt{audit\_k223\_logic.py} imports no generator or bundled
+checker code.  It verifies well-formed natural-labelled formulas, exact
+axiom schemas, topological MP/GEN edges, Boolean tautologies, all 33
+claimed root formulas, and separation of old-theory and new-theory
+premises.  Replay passed all 315 nodes and 290 formulas, including 144 MP
+nodes, 22 GEN nodes, 75 TAUT leaves, and 16 G leaves.  The ten old-theory
+leaves occur only in the reverse-direction proofs.
+
+The checked proof SHA-256 is
+\begin{center}\ttfamily\small
+622653bffd6b72e952344a8439d012c3bd6ee33917880830196bc175d89f03c5.
+\end{center}
+Three additional negative controls were rejected: a wrong claimed root,
+an old-helper axiom supplying the correct forward root by a forbidden
+premise, and incorrect native G parameters.  The full receipt is
+\texttt{evidence/k223\_independent\_endpoint\_audit.json}.
+
+These finite checks supplement the uniform proof and the inherited
+propositional compilation.  They do not claim a new Rocq or Lean kernel
+endpoint for the 223-state machine.

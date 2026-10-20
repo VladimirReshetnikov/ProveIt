@@ -1,0 +1,259 @@
+% Report-ready appendix section; requires amsmath, amssymb, and hyperref.
+\section{Alternative formalisms and further reductions}
+\label{sec:exploration}
+
+The state-count objective concerns the complete binary machine, including
+its proof-search control, numeric syntax, source decoder, and blank-tape
+initialization.  The number of mathematical axiom schemes is therefore
+only an indirect cost measure.  A shorter formula can lose useful sharing
+in the source DAG; a slightly stronger row can save states by absorbing a
+separately emitted companion.  The merged row in
+Section~\ref{sec:merged-equality} exploits the latter effect.
+
+The investigations below are not a proof of minimality.  A rejected local
+compiler search does not exclude a different encoding, a different
+initialization, or a deeper source rewrite.  A logical obstruction is
+identified as such and is not promoted to a countermodel of the full K
+theory.
+
+\subsection{Choice of an equiconsistent set theory}
+
+\paragraph{The native K family.}
+The retained K route has a concrete advantage: its ordinary
+set-theoretic interpretation and its numeric proof-search infrastructure
+already exist.  The pinned Glazer development separates the source
+calculus, the K set theory, their logical interpretation, and the machine
+compilation obligations.  The present winning change preserves the exact
+native deductive theory, so all of this calibration can be inherited.
+The relevant upstream source is
+\url{https://github.com/elliotglazer/k230-rocq}, pinned at
+\texttt{3142e4dd980f0be12f4abb636c4ae2528afc17eb} in the baseline archive.
+
+Several apparent simplifications were already accounted for by the
+224-state baseline: the native membership-code equality helper, the fused
+double-negation constructors, and the separately documented conditional
+K core with fixed roles 0 and 1.  They are not counted as new reductions
+here.  In particular, changing from ZFC to a choice-free equiconsistent
+presentation does not remove an explicit choice row from the current
+machine: that reduction was already incorporated in its ordinary
+set-theory calibration.
+
+\paragraph{Finite class theories.}
+Predicative G\"odel--Bernays set theory, with the corresponding choice
+convention, is an appropriate alternative consistency target.  Its finite
+axiomatizations replace an unbounded comprehension schema by finitely
+many class constructions.  Farmer and Guttman describe the finite
+axiomatizability and relative-consistency interpretation of NBG in their
+mechanized-set-theory work.\footnote{William M. Farmer and Joshua D.
+Guttman, \emph{A Set Theory with Support for Partial Functions},
+\url{https://web.cs.wpi.edu/~guttman/pubs/set_theory_partial_fns.pdf}.}
+For GBC with global choice, conservativity over ZFC is discussed explicitly
+by Hamkins and Yao.\footnote{Joel David Hamkins and Bokai Yao,
+\emph{Reflection in second-order set theory with abundant urelements
+bi-interprets a supercompact cardinal},
+\url{https://arxiv.org/abs/2204.09766}.}
+
+This is a credible alternative frontend, but no smaller compiled NBG
+machine is claimed here.  The saving in schema enumeration must be
+balanced against the literal class-operation axioms, set/class guards,
+and any new term syntax.  Full impredicative Kelley--Morse comprehension
+cannot be substituted without a separate calibration: it has stronger
+consistency consequences than the predicative class theory.
+
+\paragraph{Reflection and level schemata.}
+Reflection can package much of set existence into a short mathematical
+scheme.  It remains essential to distinguish an external scheme ranging
+over each formula from a single internal assertion about a satisfaction
+predicate for all coded formulas.  Hamkins gives a compactness/reflection
+equiconsistency argument and explicitly distinguishes these two readings
+in his discussion of a one-scheme presentation.\footnote{Joel David
+Hamkins, answer dated 5 July 2024,
+\url{https://mathoverflow.net/questions/474492/474522}.}
+For a machine, a reflection frontend must still implement its formula
+enumeration and relativization, and must preserve the finite-fragment
+reading.  No checked source compiler or improved state count for this
+route is supplied here.
+
+\paragraph{Arithmetic and rewriting frontends.}
+A small register, term-rewriting, combinatory, or first-order arithmetic
+checker can encode finite ZFC refutations.  These are useful representation
+choices, but moving the verifier into one arithmetic axiom or one rewrite
+rule does not eliminate its encoded computation.  The concrete comparison
+must include the compiled interpreter and the blank-tape program seed.
+Within the current infrastructure, the four native constructor tags and
+shared pairing routines provide a more directly measurable target than a
+new universal interpreter with an unmeasured seed.
+
+\subsection{Other sound equality reductions}
+
+Write $d_{ab}=\operatorname{Eq}(a,b)$ and use the same native quantifiers
+and designated falsehood as in Section~\ref{sec:merged-equality}.
+All variants in this subsection retain the original
+$\rho_1,\ldots,\rho_6,\rho_8$, full gated membership vacuity, MP, and
+closed GEN unless explicitly stated otherwise.
+
+\paragraph{Primitive symmetry in place of the Euclidean row.}
+With a fresh canonical helper $d_{ab}\to Q_{\kappa(a,b)}d_{ab}$ retained,
+the existing Source116 membership-defined equality interpretation permits
+the ternary $\rho_7$ row to be replaced by $d_{ab}\to d_{ba}$.  This is a
+consistency interpretation, not automatically literal deductive
+equivalence on all primitive equality codes.  It is a useful source-cost
+experiment because all six ordered pairs of parameter roles enumerate
+the same binary symmetry family.
+
+\paragraph{A combined symmetric helper.}
+The single helper
+\[
+ d_{ab}\longrightarrow
+ Q_{\kappa(a,b)}(d_{ab}\wedge d_{ba})
+\]
+can replace both the canonical helper and the primitive symmetry row.
+For $D=d_{ab}\wedge d_{ba}$ it implies $D\to Q_\kappa D$.
+Generalize that closed theorem and use
+$Q_\kappa Q_\kappa D\to D$ to obtain $Q_\kappa D\to D$.
+Projection then recovers symmetry and the ordinary helper.  The reverse
+derivation from those two older premises is equally finite.  Exact
+certificates are in \texttt{combined\_helper\_certificate.py}.
+
+\paragraph{Double crossed helpers.}
+Another single helper is
+\[
+ C^2_\kappa(a,b):\qquad
+ d_{ab}\longrightarrow Q_{\kappa(a,b)}Q_{\kappa(a,b)}d_{ba}.
+\]
+The uniform theorem $Q_iQ_iA\to A$ immediately recovers symmetry.  The
+membership-only specialization lemmas then interpret equality without a
+separate primitive Eq-vacuity row.  Only off-diagonal helpers are needed:
+diagonal symmetry is propositional identity, and diagonal
+membership-indiscernibility is a theorem.  This frees the choice of
+source parameter roles.  The full interpreted equality laws are checked
+in \texttt{crossed\_box\_helper\_certificate.py} for both native and
+affine fresh binders.
+
+\paragraph{Self-specialization plus single crossed helpers.}
+The row $T(i,A):Q_iA\to A$, together with the gated helper
+$d_{ab}\to Q_c d_{ba}$ for $c\notin\{a,b\}$, derives symmetry in one
+composition.  Composing symmetry with the reversed helper at the same
+binder gives every full gated Eq-vacuity instance.  Thus the existing
+Source116 comparison applies.  The finite derivations have 5 and 9 proof
+nodes respectively in
+\texttt{specialization\_crossed\_helper\_certificate.py}.
+
+\subsection{A stronger new result: single crossed helpers without symmetry}
+
+The preceding $T$ row and second quantifier are not logically necessary
+if equality is interpreted by membership indiscernibility.  This yields
+an additional complete frontend family that may improve future source
+sharing, even if its current compiler cost does not beat the selected G
+construction.
+
+\paragraph{Full gated crossed helpers.}
+Retain only
+\[
+ C_1(a,b,c):\qquad d_{ab}\longrightarrow Q_c d_{ba},
+ \qquad c\notin\{a,b\},
+\]
+as the equality helper, and delete $\rho_7$ without adding $T$ or
+primitive symmetry.  For a membership implication $A$ with a fresh
+label $h$, membership-only vacuity gives $A\to Q_hA$.
+Generalizing it and composing with $Q_hQ_hA\to A$ gives
+\[
+ Q_hA\longrightarrow A.                                       \tag{F}
+\]
+Fix a third label $t$ and choose $h$ above $a,b,t$.
+From $C_1(a,b,h)$ and the reversed atomic congruence row, quantified
+monotonicity gives
+\[
+ d_{ab}\longrightarrow Q_h(R(b,t)\to R(a,t)).
+\]
+Apply (F).  This proves reverse membership congruence conditional on
+$d_{ab}$, although primitive equality symmetry has not been proved.
+The other membership position is identical.  These two reverse laws,
+together with the retained forward congruence laws, provide exactly the
+bidirectional membership Leibniz lemmas needed by Source116.
+
+For a safe auxiliary $z$, the crossed helper at $z$ and the resulting
+bidirectional membership consequences of $d_{ba}$ give
+$d_{ab}\to E^z(a,b)$.  Safe-auxiliary transport gives the exact baseline
+membership-defined equality $E(a,b)$, and $\rho_1$ yields
+$\exists_aE(a,b)$.  All translated equality laws then follow, without a
+primitive symmetry leaf or Eq-vacuity leaf.  The file
+\texttt{gated\_crossed\_helper\_certificate.py} checks the complete
+finite construction, including internal-binder collisions.
+
+\paragraph{Asymmetric canonical crossed helpers.}
+Even the full family of fresh binders can be restricted.  It suffices
+to emit
+\[
+ d_{ab}\longrightarrow Q_{\kappa(a,b)}d_{ba},\qquad a\ne b,
+\]
+provided, for distinct $a,b$,
+\[
+ \kappa(a,b)>\max(a,b),\qquad
+ \kappa(a,b)\ne\kappa(b,a).                                   \tag{A}
+\]
+For the direct $d_{ab}\to E^{\kappa(a,b)}(a,b)$ bridge, the reverse
+membership consequence of $d_{ba}$ uses its own binder $\kappa(b,a)$.
+The second part of (A) makes that binder fresh from the first one, so
+(F) applies.  All later auxiliary renamings can pass through a label
+above every endpoint and auxiliary in the membership matrix.  The first
+part of (A) then makes the helper binder fresh in those restricted
+Leibniz steps.  Arbitrary raw substitution is never assumed.
+
+Examples include the native membership code and its argument reversal,
+$a+2b+1$, and $2a+b+1$.  The native equality codes also satisfy (A),
+which may allow duplication of an already computed equality code instead
+of a separate binder construction.  The off-diagonal implication code,
+and Cantor pairing plus one, are further candidates.  The symmetric
+binder $a+b+1$ does not satisfy this particular asymmetric argument.
+
+The complete proof checker
+\file{canonical_crossed_helper_certificate.py} explicitly rejects
+helper-binder collisions in every restricted quantifier-free replacement.
+It checks native, reversed-native, and the two affine choices.  Its
+auxiliary transport uses an explicit fresh detour, and its roots include
+third labels equal to the helper binder.  None of $T$, $C^2$, symmetry,
+primitive Eq-vacuity, $\rho_7$, arbitrary substitution, or alpha-conversion
+is accepted as a proof leaf.
+
+\subsection{Obstructions that prevent tempting deletions}
+
+\paragraph{Canonical membership vacuity does not give full fresh vacuity.}
+Replacing all membership-vacuity instances by one canonical fresh binder
+per atom does not support the existing logical proof.  Let worlds be
+ordinary assignments into $\{0,1,2\}$, let quantifiers change the named
+coordinate, and interpret equality normally.  Put
+\[
+ R(i,j)(v)\quad\Longleftrightarrow\quad
+ v_i\ne v_j,\quad v_i\ne v_0,\quad v_j\ne v_0.
+\]
+Then $F=R(0,0)$ is always false.  Every canonical membership-vacuity
+instance with binder larger than both endpoints is valid: if an endpoint
+is 0 the antecedent is false, and otherwise the canonical binder misses
+the hidden coordinate 0.  But fresh vacuity at binder 0 for $R(1,2)$
+fails at $(v_0,v_1,v_2)=(0,1,2)$.  This is a countermodel of the proposed
+\emph{logical bootstrap}, not a claimed model of the K axioms.
+
+\paragraph{Adding $T$ does not make $\rho_6$ redundant.}
+Take worlds $(v,t)$ with assignments into $\{0,1\}$ and stages
+$t\in\{0,1\}$.  Let $Q_i$ quantify over all changes of coordinate $i$
+and all stages $s\ge t$.  These relations are reflexive and commute.
+Let Eq be ordinary equality and let
+$R(a,b)$ hold exactly when $t=1$ and $v_a\ne v_b$.
+This validates $T$, $\rho_1,\ldots,\rho_5$, the full positive gated
+membership and equality vacuity families, and the crossed helper.
+At stage 0 with $v_1\ne v_2$, however,
+$\exists_3Q_3R(1,2)$ is true and $R(1,2)$ is false.  Thus the indicated
+$\rho_6$ instance fails.  Again this is a logical obstruction; no K
+countermodel is claimed.
+
+\paragraph{The K support condition and false economy in propositional rows.}
+The baseline K analysis already supplies rational-order countermodels
+when a key support conjunct is dropped.  Those models have consistency
+provable in the ambient set theory, so that deletion cannot establish the
+desired target merely by reusing the old K proof.  Similarly, specializing
+the fourth parameter of the shortest implicational row to $F$ is not an
+automatic reduction: finite truth-value matrices can satisfy that
+specialization, MP, and explosion while failing K.  Such tests help rule
+out shortcuts, but neither test is a lower bound on all possible small
+machines.

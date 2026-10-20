@@ -1,0 +1,69 @@
+{
+  "status": "DISCOVERY_ACCOUNTING_NOTE",
+  "proof_relevance": "Exploration history only. The delivered 223-state machine is reproduced and proved without any search-count claim.",
+  "searches": [
+    {
+      "name": "closed_rotations_and_disjoint_register_commutations",
+      "script": "source_search.py",
+      "script_sha256": "b186687ed147d70e2446de0e5f56e9b939639def96758a3c6f05dbf888dadeae",
+      "objective": "distinct source subtrees, then zero run and depth; preserve all twelve original aliases",
+      "observed_console_evaluations": 1061256,
+      "count_provenance": "Recorded completion/progress console output from the construction session; full stdout was not saved as a file. This total is not inferred from the retained best-result file.",
+      "best_result_file": "search1/best.json",
+      "best_result_sha256": "dcf322ab7a9449472a5d265b43f04542272e2f6cc63d87474ad6123287b7bfb6",
+      "best_result_saved_evaluations": 143541,
+      "best_result_save_semantics": "The file is written only at initialization and strict improvement; its counter is not the final run total.",
+      "best_source_dag_nodes": 210,
+      "best_weighted_score": 198,
+      "result": "No state reduction; baseline weighted score 198 remains best."
+    },
+    {
+      "name": "independent_logical_row_parameter_permutations",
+      "script": "parameter_search.py",
+      "script_sha256": "482f52bc4948cb526a183eec1aaeff97e8df4cd99ded56fd379d460220d1a744",
+      "objective": "distinct subtrees minus retained aliases; fixed existing source parenthesization",
+      "observed_console_evaluations": 5902,
+      "count_provenance": "Recorded completion/progress console output from the construction session; full stdout was not saved as a file. This total is not inferred from the retained best-result file.",
+      "best_result_file": "param1/result.json",
+      "best_result_sha256": "8125a6eb1f1e78f5c43936a1989e8d3b28186f6b5d6aa047115262eb38960940",
+      "best_result_saved_evaluations": 0,
+      "best_result_save_semantics": "The file is written only at initialization and strict improvement; its counter is not the final run total.",
+      "best_source_dag_nodes": 210,
+      "best_weighted_score": 198,
+      "result": "No state reduction; baseline weighted score 198 remains best."
+    },
+    {
+      "name": "weighted_closed_rotations_and_commutations",
+      "script": "weighted_search.py",
+      "script_sha256": "dfbb00eba64b27fea14f67d42883725c8b2080a51a8370e63a1c744fb78aaf7f",
+      "objective": "distinct subtrees minus retained aliases, permitting loss of original aliases",
+      "observed_console_evaluations": 843846,
+      "count_provenance": "Recorded completion/progress console output from the construction session; full stdout was not saved as a file. This total is not inferred from the retained best-result file.",
+      "best_result_file": "weighted1/best.json",
+      "best_result_sha256": "409ca880e9735c50f88964d14522a711b334c59b27cbe06fc2994a7e50429115",
+      "best_result_saved_evaluations": 40882,
+      "best_result_save_semantics": "The file is written only at initialization and strict improvement; its counter is not the final run total.",
+      "best_source_dag_nodes": 210,
+      "best_weighted_score": 198,
+      "result": "No state reduction; baseline weighted score 198 remains best."
+    }
+  ],
+  "selected_candidate": {
+    "name": "seedrequest-s0-p0-r1-o120-hR",
+    "source_dag_nodes": 209,
+    "source_leaf_occurrences": 4962,
+    "maximum_depth": 37,
+    "maximum_zero_run": 6,
+    "retained_alias_savings": 12,
+    "weighted_score": 197,
+    "literal_working_states": 223,
+    "grammar_file": "grammar223.json",
+    "construction_receipt": "reconstruction.json"
+  },
+  "intermediate_non_candidate": {
+    "source_dag_nodes": 208,
+    "retained_alias_savings": 12,
+    "maximum_zero_run": 7,
+    "reason_not_promoted": "Exceeds the inherited source-address reset interface; no 222-state literal runtime proof was established."
+  }
+}

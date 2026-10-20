@@ -1,0 +1,550 @@
+\section{The seed-request theory and the exact numerical calculus}
+\label{sec:seed-theory}
+
+The successful change uses the \emph{seed-request} form of the K schema.
+The request at the root then repeats the request already used in the
+closure clause.  This makes the expanded source longer but gives its
+binary sequence grammar more reusable pieces.  The seed reformulation
+and its logical strength already occur in the pinned K230 proof:
+\code{KPSeed.v} defines \code{seed_root}, and \code{KPrimeCore.v} defines
+\code{seeded_core}.  The contribution here is its use as the actual
+emitted formula, together with a grammar and decoder layout that turn
+that repetition into a state saving.  We do not claim a new set theory
+or a new discovery of the seed equivalence~\cite{kpseed,kprimecore}.
+
+\subsection{An ordinary first-order presentation}
+
+Use classical first-order logic with genuine equality, a nonempty domain,
+and one binary relation $R$.  A matrix $\varphi(y,p,\bar q)$ has an output
+role $y$, an input role $p$, and any finite tuple of parameters $\bar q$.
+All displayed bound variables are chosen capture-free.  Put
+\begin{align}
+ \Sub(p,u)&:=\forall z\bigl(R(z,p)\to R(z,u)\bigr),
+ \label{eq:ks-sub}\\
+ W_\varphi(p,C)&:=
+   \bigl(\exists y\,\varphi(y,p,\bar q)\bigr)
+   \to\exists y\bigl(\varphi(y,p,\bar q)\land R(y,C)\bigr),
+ \label{eq:ks-request}\\
+ H_\varphi(C)&:=\forall u\Bigl(R(u,C)\to
+   \Bigl[\bigl(\exists p\,\varphi(u,p,\bar q)\bigr)
+   \land\forall p\bigl(\Sub(p,u)\to W_\varphi(p,C)\bigr)\Bigr]\Bigr).
+ \label{eq:ks-closure}
+\end{align}
+The first conjunct in the square brackets is \emph{support}: every member
+of $C$ is an output for some input.  The second conjunct requests witnesses
+for subsets of members of $C$.  The support witness is not an additional
+parameter of the later requests; their input quantifier binds a new role.
+
+Let $\mathsf K_{\mathrm s}$ contain equality logic and the universal
+closures, over $\bar q$, of all instances
+\begin{equation}
+  \forall a\,\exists C
+       \bigl(W_\varphi(a,C)\land H_\varphi(C)\bigr).
+  \label{eq:ks-schema}
+\end{equation}
+Let $\mathsf K_{\mathrm o}$ denote the inherited output-root theory,
+whose corresponding instance is
+\begin{equation}
+ \forall a\,\forall x\,\exists C
+ \bigl[(\varphi(x,a,\bar q)\to R(x,C))\land H_\varphi(C)\bigr].
+ \label{eq:ko-schema}
+\end{equation}
+The presentation of $H$ in~\eqref{eq:ks-closure} is classically equivalent
+to the exact upstream closure.  In that closure a support existential
+has the form $\exists p(\varphi(u,p,\bar q)\land J)$, and the first
+quantifier of $J$ rebinds $p$.  Thus $p$ is not free in $J$, and the
+existential can be moved into the first conjunct.  The upstream witness
+request uses
+\begin{equation}
+ \forall y\Bigl(\varphi(y,p,\bar q)\to
+       \exists y\bigl(\varphi(y,p,\bar q)\land R(y,C)\bigr)\Bigr).
+ \label{eq:ks-universal-request}
+\end{equation}
+The existential on the right has no free $y$, so this is classically
+equivalent to~\eqref{eq:ks-request}.  These are finite first-order proof
+transformations, with the variable conditions stated explicitly.
+
+\begin{theorem}[Calibration of the seed-request theory]
+\label{thm:ks-calibration}
+With $\IR:=\forall x\,\neg R(x,x)$, ZFC proves
+\[
+ \Con(\mathsf K_{\mathrm s})
+ \quad\longleftrightarrow\quad
+ \Con(\mathsf K_{\mathrm s}+\IR)
+ \quad\longleftrightarrow\quad
+ \Con(\mathrm{ZFC}).
+\]
+More precisely, the two inconsistency directions are effective
+transformations of finite derivations, formalizable in ZFC.
+\end{theorem}
+
+\begin{proof}
+First, $\mathsf K_{\mathrm o}$ proves every seed-request instance.  Fix
+$\varphi,a,\bar q$ and split classically on
+$\exists x\,\varphi(x,a,\bar q)$.  If an output $x$ exists, apply the
+output-root instance to that $x$.  Its root puts $x$ into $C$, hence gives
+$W_\varphi(a,C)$, and its closure gives $H_\varphi(C)$.  If there is no
+output, apply the output-root instance to any domain element; the
+resulting $C$ still has $H_\varphi(C)$, and its root request is vacuous.
+This is the argument formalized by \code{output_root_to_seed} in
+\code{KPSeed.v}, followed by \code{kprime_core_to_seed} in
+\code{KPrimeCore.v}~\cite{kpseed,kprimecore}.
+
+The pinned upper interpretation realizes $\mathsf K_{\mathrm o}+\IR$
+in the constructible universe.  In finite-proof form, the theorem
+\code{KPrimeOrdIR_standardZFC_inconsistent} in
+\code{KUpperConsistency.v} transforms each refutation of that theory
+into a ZFC refutation~\cite{k230}.  Replacing seed axioms by their
+output-root derivations therefore gives
+\[
+ \Con(\mathrm{ZFC})\quad\Longrightarrow\quad
+ \Con(\mathsf K_{\mathrm s}+\IR)\quad\Longrightarrow\quad
+ \Con(\mathsf K_{\mathrm s}).
+\]
+This use of a definable interpretation does not require a set model of
+all of ZFC inside ZFC.
+
+For the converse, consider the factored theory $\mathsf K_0$ from the
+same development.  Its schema asks for a $C$ satisfying support and
+\begin{equation}
+ \forall p\Bigl(
+   \bigl[p=a\ \lor\ \exists u(R(u,C)\land\Sub(p,u))\bigr]
+       \to W_\varphi(p,C)\Bigr).
+ \label{eq:ks-k0-request}
+\end{equation}
+Every witness $C$ to~\eqref{eq:ks-schema} satisfies these requirements.
+If $p=a$, equality transports the root request to $p$.  If
+$u\in C$ and $\Sub(p,u)$, the closure clause at $u$ supplies the request
+at $p$.  The first conjunct of that same closure supplies support.
+This is the finite derivation \code{seeded_core_to_kp0} in
+\code{KPrimeCore.v}, with only the displayed conjunction and request
+conversions~\cite{kprimecore}.
+
+The upstream quotient interpretation already factors through
+$\mathsf K_0$: \code{K0_ZFc_inconsistent} in
+\code{KQuotZFTransfer.v} transforms a refutation of its ZF base into a
+$\mathsf K_0$ refutation.  Composing it with the Foundation and Choice
+relative-consistency reduction \code{ac_reg_relcon}, as in
+\code{KQuotZFC.v}, gives
+\[
+ \mathrm{ZFC}\vdash\bot
+ \quad\Longrightarrow\quad
+ \mathsf K_0\vdash\bot
+ \quad\Longrightarrow\quad
+ \mathsf K_{\mathrm s}\vdash\bot.
+\]
+Here the first and last occurrences of $\vdash$ describe finite
+object-theory derivations; the implication between them is the
+metatheoretic proof transformation~\cite{kquot}.
+Adding $\IR$ preserves this direction.
+
+Each additional conversion above is a fixed finite logical template
+applied to an input matrix.  It composes with the inherited finite-proof
+transformations.  Coding these finite constructions and verifying them
+by induction in ZFC proves the stated internal equivalences.  This last
+claim is an ordinary mathematical formalizability argument, not an
+identification of Rocq's metatheory with ZFC.
+\end{proof}
+
+\subsection{The expression actually emitted}
+\label{sec:literal-ks}
+
+The native constructors are
+\begin{align*}
+ P(x,y)&=\frac{(x+y)(x+y+1)}2+y,\\
+ \cI(x,y)&=4P(x,y), & \cR(x,y)&=4P(x,y)+1,\\
+ \cQ(x,y)&=4P(x,y)+2, & \cE(x,y)&=4P(x,y)+3.
+\end{align*}
+The first argument of $\cQ$ is a variable label.  The other constructors
+represent implication, membership and primitive equality.  Write
+$\cF=1=\cR(0,0)$ and $\cN(t)=\cI(t,1)$.  For reference, the unfused
+negative encodings of conjunction and existence are
+\[
+ A(x,y)=\cN\bigl(\cI(x,\cN(y))\bigr),\qquad
+ X_v(x)=\cN\bigl(\cQ(v,\cN(x))\bigr).
+\]
+These equations specify natural-number operations; an equation between
+these codes is stronger than a logical equivalence of decoded formulas.
+
+The source retains the eight logical rows $\rho_1,\ldots,\rho_8$, the
+truth seed $0$, modus ponens, theorem generalization, and the gate
+$c\ne a,b$ from K224.  In particular it retains the restricted equality
+helper, rather than replacing it by unrestricted equality vacuity.
+The classical propositional derivations used below are available in
+this numerical core~\cite{klogic,k224}.  One useful detail is that
+relative falsity is sufficient: the retained $\rho_6$ has the form
+$X_v(\cQ(v,t))\to t$.  Since $X_v(\cQ(v,t))$ has the form $U\to\cF$,
+the derived implicational calculus gives
+$\cF\to X_v(\cQ(v,t))$ and hence $\cF\to t$.  Thus double-negation
+elimination and the negative conjunction rules do not require a new
+logical row or a freshness assumption about label $0$.
+
+For each enabled triple $(a,b,c)$, define the following exact arithmetic
+expressions, with $a$ the input label and $b$ the output label:
+\begin{align}
+ r&=\cR(b,c),\nonumber\\
+ s&=\cQ\bigl(c,\cI(\cR(c,a),\cR(c,b))\bigr),\nonumber\\
+ w&=\cQ\bigl(b,\cI(c,\cN(\cQ(b,\cI(c,\cN(r)))))\bigr),
+ \label{eq:literal-w}\\
+ u&=\cQ\bigl(a,\cI(s,w)\bigr),\nonumber\\
+ h&=\cQ\bigl(b,\cI(r,\cN(\cQ(a,\cI(c,\cN(u)))))\bigr),
+ \label{eq:literal-h}\\
+ v&=\cI\bigl(\cR(a,b),\cQ(c,\cR(a,b))\bigr),\nonumber\\
+ e&=\cI\bigl(\cE(a,b),\cQ(\cR(a,b),\cE(a,b))\bigr).
+ \label{eq:literal-v-e}
+\end{align}
+The actual released bundle is
+\begin{equation}
+ B_{223}(a,b,c)=
+ \cN\Bigl(\cI\Bigl(v,\cI\bigl(e,
+                   \cQ(c,\cI(h,\cN(w)))\bigr)\Bigr)\Bigr).
+ \label{eq:literal-bundle}
+\end{equation}
+For a disabled triple, the emitter returns $0$.
+
+In particular, the matrix is the literal natural number $c$, and the
+private container binder is the same literal number $c$.  It has not
+been replaced by the code of a more convenient decoded formula.
+The decoded content of~\eqref{eq:literal-bundle} is classically
+\begin{equation}
+ V_R(a,b,c)\land
+ \bigl(H_R(a,b)\land\exists c\,(H\land W)\bigr),
+ \label{eq:literal-bundle-content}
+\end{equation}
+where $V_R$ is membership vacuity, $H_R$ is the inherited equality helper,
+and $H,W$ are the named forms of~\eqref{eq:ks-closure}
+and~\eqref{eq:ks-universal-request}.  Their grouping and order matter
+for the source grammar even though they do not matter for classical
+provability.  The numerical core in isolation would be
+$\cN(\cQ(c,\cI(h,\cN(w))))$.  Placing it last in the bundle contributes
+one more outer negation; the resulting double negation cancels to the
+$\cQ(c,\cI(h,\cN(w)))$ visible in~\eqref{eq:literal-bundle}.
+This cancellation crosses the boundary between the reordered bundle and
+its seed core.
+
+\subsection{Decoding every enabled triple, including low codes}
+\label{sec:ks-decoding}
+
+The inherited total decoder $D$ treats two numerical cases specially:
+\[
+ D(0)=\bigl(\forall 0\,(0=0)\bigr)
+              \to\bigl(\forall 0\,(0=0)\bigr),
+ \qquad D(1)=R(0,0).
+\]
+For any $t$, it decodes $\cI(t,1)$ as genuine named negation of $D(t)$.
+For other implications, the exact theorem is
+\[
+ D(\cI(x,y))=D(x)\to D(y)
+ \quad\text{if }y\ne1\text{ and }(x,y)\ne(0,0).
+\]
+The atomic and universal-quantifier decoding identities are unconditional.
+These are \code{D_0}, \code{D_wn}, \code{D_wim}, \code{D_wel},
+\code{D_weq} and \code{D_wal} in \code{KDecoder230.v}~\cite{kdecode}.
+
+\begin{lemma}[Exact constructor interface]
+\label{lem:ks-decode-interface}
+For all naturals $a,b,c$ with $c\ne a,b$, applying $D$ to
+\eqref{eq:literal-bundle} gives exactly the stated named formula with
+matrix $D(c)$, before the ordinary classical conversions in
+\eqref{eq:literal-bundle-content}.  No non-negation implication is
+misread as a negation or as code $0$, and $B_{223}(a,b,c)>1$.
+\end{lemma}
+
+\begin{proof}
+Each intentional $\cN$ has literal consequent $1$, so use \code{D_wn}.
+At each other implication the consequent is a quantifier, a negation,
+or another positive compound code, except for the displayed membership
+consequents.  The potentially exceptional membership consequents are
+$\cR(c,b)$ and $\cR(b,c)$; the gate excludes $b=c$, so neither is
+$\cR(0,0)=1$.  The other cases follow immediately from their residues
+modulo $4$.  In each non-negation implication at least one argument is
+positive, ruling out $(0,0)$.  Induction over the finite displayed tree
+therefore applies the decoding identities at every constructor.
+The outer negation has a positive code divisible by $4$, hence exceeds
+$1$.  The included decoder-side-condition checker verifies this same
+finite, uniform constructor argument on the exact expression tree; it
+does not enumerate a bounded range of triples.
+\end{proof}
+
+The essential freshness theorem is
+\begin{equation}
+             c\notin\operatorname{FV}(D(c))
+             \quad\text{for every natural }c.
+ \label{eq:private-freshness}
+\end{equation}
+For $c>0$, every variable name, free or bound, occurring in $D(c)$ is
+strictly below $c$.  At $c=0$, the stronger assertion about all occurrences
+would be false: the displayed tautology contains bound $0$'s.  It is
+closed, which is precisely the property needed.  At $c=1$, the only name
+in $D(c)=R(0,0)$ is $0<1$.  These facts are proved by
+\code{D_names_below}, \code{D_private_fresh}, \code{D_zero_closed} and
+\code{D_one} in \code{KDecodeFresh.v}~\cite{kdecode}.
+
+If $a\ne b$, abstract the free named occurrences of $b$ as the output,
+those of $a$ as the input, and the finitely many other free names as
+parameters.  The environment equalities in \code{KDecodeAbstract.v}
+then identify the membership, subset, input rebinding, output rebinding
+and matrix clauses with the ordinary seed-request instance.  Their
+hypotheses are exactly $a\ne b$, $c\ne a,b$ and
+\eqref{eq:private-freshness}.  Thus this argument applies to every
+$D(c)$, including $D(0)$ and $D(1)$, rather than only to padded codes
+chosen for a later completeness argument~\cite{kdecode}.
+
+\begin{lemma}[Coincident active labels]
+\label{lem:ks-diagonal}
+When $a=b$ and $c\ne a$, the decoded seed core is valid in the upper
+set-theoretic interpretation.
+\end{lemma}
+
+\begin{proof}
+Fix the other free names and write $\psi(x)$ for $D(c)$ evaluated with
+its single active name $a=b$ assigned $x$.  The private label $c$ stays
+fresh.  Rename locally bound variables for readability.  The request
+becomes
+\[
+ W(C)=\bigl(\exists x\,\psi(x)\bigr)
+               \to\exists x\bigl(\psi(x)\land R(x,C)\bigr).
+\]
+In the subset test both endpoints now use the same active name, so it
+is $\forall z(R(z,p)\to R(z,p))$.  The support existential and subsequent
+request quantifiers rebind that same active name and shadow the member
+variable of the outer guard.  The remaining universal request is therefore
+$\forall p(\Sub(p,p)\to W(C))$; $W(C)$ has no free $p$, so this is
+equivalent to $W(C)$ in a nonempty domain.  Consequently the exact closure
+simplifies to
+\[
+ H(C)=\forall u\Bigl(R(u,C)\to
+                 \bigl[(\exists x\,\psi(x))\land W(C)\bigr]\Bigr).
+\]
+If $\neg\exists x\,\psi(x)$, choose an empty $C$: its request is vacuous
+and its closure has no members to check.  If a witness $x$ exists, choose
+$C=\{x\}$.  Then the same true existence statement and the same $W(C)$
+verify every guarded closure clause.  Empty sets and singletons are
+available in the constructible interpretation used for the upper
+consistency direction.  The case split is on existence of a witness,
+not on the matrix evaluated at the old value of the active variable.
+No two-distinct-role abstraction has been used in this case.
+\end{proof}
+
+Genuine named negation is used before the preceding first-order
+simplifications.  For example, at output label $0$ one must not infer
+freshness by expanding existence as an implication to the raw atom
+$R(0,0)$.  The correct decoding first uses \code{D_wn} and
+\code{D_wex}; the inherited relative-falsity/$\IR$ translation handles
+the numerical proof system afterwards.  Its exceptional-code and
+modus-ponens cases are unchanged~\cite{kdecode,klogic,k224}.
+
+\subsection{Why the inherited equality helper is sufficient}
+\label{sec:ks-equality}
+
+The two helper formulas in the literal bundle are
+\begin{align*}
+ V_R(a,b,c)&:\quad R(a,b)\to\forall c\,R(a,b),\quad c\ne a,b,\\
+ H_R(a,b)&:\quad (a=b)\to
+                    \forall_{\kappa(a,b)}(a=b),
+ \qquad \kappa(a,b)=\cR(a,b).
+\end{align*}
+Because $P(a,b)\ge\max(a,b)$, one has
+$\kappa(a,b)>\max(a,b)$, including $(a,b)=(0,0)$.
+Thus every $H_R$ is sound with genuine equality.  Every pair receives
+its helper in the numerical theory: choose any original bundle parameter
+$c\ne a,b$, and project the helper using the retained conjunction rules.
+Its binder is $\kappa(a,b)$ independently of that choice of $c$.
+
+For the lower consistency direction, use the inherited interpretation of
+equality by membership indiscernibility.  For each pair of names choose
+$z=\cE(a,b)>a,b$ and let
+\begin{equation}
+ E_{\!R}(a,b):=
+ \bigl[\forall z\,(R(z,a)\leftrightarrow R(z,b))\bigr]\land
+ \bigl[\forall z\,(R(a,z)\leftrightarrow R(b,z))\bigr].
+ \label{eq:ks-defined-equality}
+\end{equation}
+The biconditionals and conjunction are expanded in the relative-falsity
+syntax.  Let $\theta$ replace primitive equality by this fixed formula,
+replace genuine bottom by $\cF=R(0,0)$, and preserve membership,
+implication and each universal binder.
+
+The logical calibration restored in K224 from ProveIt Source~116 gives
+finite derivations of the translations of all full first-order equality
+axioms.  It derives membership-only fresh vacuity by induction, proves
+safe-auxiliary transport for~\eqref{eq:ks-defined-equality}, and supplies
+interpreted reflexivity, symmetry, transitivity, membership congruence,
+equality existence and vacuity for all coincidences of names.  The
+helper first supplies the off-diagonal bridge
+$(a=b)\to E_{\!R}(a,b)$; on the diagonal the defining membership
+identities already prove $E_{\!R}(a,a)$.  These are precisely the logical
+parts of Source~116 and the K224 helper calibration.  They use the eight
+retained logical rows, membership vacuity, $H_R$, modus ponens and
+theorem generalization, independently of the choice of set-theoretic
+schema~\cite{source116,k224}.
+
+This gives a proof interpretation into the smaller primitive-equality
+calculus.  It does not assert that all original \emph{primitive}
+equality-vacuity instances follow from $H_R$.  Nor does it require
+$\theta$ to commute literally with arbitrary substitution or alpha
+conversion: changing an equality's endpoints can change its numerical
+auxiliary $z$.  The explicit translated axiom derivations and auxiliary
+transport proofs are used at those steps.
+
+\subsection{Choosing the private label after interpreting the matrix}
+\label{sec:ks-code-coupling}
+
+The literal coupling of matrix code and binder is the main additional
+obligation in transferring an ordinary schema to this numerical theory.
+The equality interpretation usually changes the matrix's code, so
+choosing a private label from the old code would not establish the
+required source instance.
+
+Take a finite named representative $f$ of an arbitrary ordinary
+seed-request matrix.  Use input name $1$, output name $3$, distinct
+positive parameter names, and capture-free bound names, as in the
+pinned ordinary-to-named construction.  \emph{First} translate equality
+and then pad the translated matrix:
+\begin{equation}
+       \psi=\theta(f),\qquad
+       p^{+}=\neg\neg\psi,\qquad
+       c=\enc(p^{+}).
+ \label{eq:ks-code-choice}
+\end{equation}
+Here $\enc$ is the actual homomorphic native encoder, and the negations
+on the right are encoded using $\cN$.  The elementary code-label
+induction gives $c>3$, and every name in $p^{+}$ is strictly below $c$.
+In particular $c$ is fresh after all membership-indiscernibility
+auxiliaries have been inserted.  It is also fresh in $f$: the translation
+retains membership endpoints, equality endpoints and old binder names.
+
+Now choose the \emph{ordinary comparison instance} whose matrix is
+$\neg\neg f$ and whose private container name is this $c$.  Ordinary
+first-order K allows any fresh private name.  Double-negation equivalence,
+capture-free naming and universal closure recover the desired ordinary
+seed instance from this selected one.  The outer seed template contains
+only membership, implication, negation, quantifiers and matrix
+insertions.  It therefore commutes literally with $\theta$, once the
+matrix and private binder have been selected:
+\begin{equation}
+ \theta\bigl(\mathcal K_{\mathrm s}(1,3,c;\neg\neg f)\bigr)
+   =\mathcal K_{\mathrm s}(1,3,c;\neg\neg\theta(f)).
+ \label{eq:ks-theta-commutes}
+\end{equation}
+The matrix on the right has native code \emph{exactly} $c$.
+The native encoding of that right-hand formula is consequently the
+unfused seed template at the actual source parameters $(1,3,c)$.
+The gate is enabled.  Projecting the seed component of
+$B_{223}(1,3,c)$ and using the retained finite double-negation and
+conjunction derivations gives that unfused template in its required
+ordinary grouping.  No equality between fused and unfused numerical
+codes is being asserted.
+
+This order of construction removes a possible circularity.  The matrix
+is translated before its code is chosen; the ordinary comparison
+instance's private name is then chosen from that translated code.  There
+is no independent matrix integer and no subsequent replacement of the
+actual private label.  The argument extends K224's same coupling method
+from the output-root schema to the seed-request template~\cite{k224}.
+
+\begin{theorem}[Calibration of the literal numerical theory]
+\label{thm:ks-native-calibration}
+Let $\mathcal N_{223}$ be the native numerical calculus with the retained
+logical core and with the gated bundle~\eqref{eq:literal-bundle}.
+ZFC proves
+\[
+ \bigl(\mathcal N_{223}\text{ has a finite derivation of code }1\bigr)
+ \quad\longleftrightarrow\quad
+ \bigl(\mathrm{ZFC}\text{ has a finite refutation}\bigr).
+\]
+Thus ZFC proves
+$\Con(\mathcal N_{223})\leftrightarrow\Con(\mathrm{ZFC})$.
+\end{theorem}
+
+\begin{proof}
+For soundness, decode a finite numerical derivation with the pinned
+relative-falsity/$\IR$ proof translation.  Logical rows, truth code $0$,
+modus ponens and generalization use the unchanged inherited argument.
+Membership vacuity and $H_R$ are sound with genuine equality.  Every
+new core is interpreted in ZFC: for distinct active names use the upper
+interpretation constructed in the proof of
+Theorem~\ref{thm:ks-calibration}, together with the exact abstraction above; for
+coincident active names use Lemma~\ref{lem:ks-diagonal}.  The decoded
+conclusion is $R(0,0)$, contrary to the interpreted $\IR$.
+This yields a finite ZFC refutation from a finite numerical one.
+
+For completeness, a finite ZFC refutation gives a finite
+$\mathsf K_{\mathrm s}$ refutation by
+Theorem~\ref{thm:ks-calibration}.  Replace its finitely many schema
+instances by the ordinary comparison instances selected using
+\eqref{eq:ks-code-choice}.  Translate the resulting finite logical
+proof by $\theta$.  Section~\ref{sec:ks-equality} supplies every
+translated logical axiom, and~\eqref{eq:ks-theta-commutes} together with
+projection from the actual enabled bundles supplies every translated
+schema instance.  The translation preserves modus ponens and theorem
+generalization, and takes the conclusion to $\cF=1$.
+If the comparison proof is formulated with $\IR$ as well, choose its
+closed named instance $\forall0\,\neg R(0,0)$; its translation is the
+generalized identity $\forall0(\cF\to\cF)$.
+
+All selections in this argument are effective operations on finite
+syntax: finite maxima choose names, finite recursion translates and
+encodes formulas, and fixed logical proof templates perform the
+conversions.  The inherited reductions and these additional inductions
+can therefore be expressed and verified in ZFC.  The claim concerns
+finite proofs and holds internally under ordinary arithmetization; it
+is not an inference from tests on a finite collection of matrix codes.
+\end{proof}
+
+\subsection{Independent binding to the released source}
+\label{sec:ks-emitter-binding}
+
+The preceding theorem is a statement about the \emph{specified}
+numerical theory.  Its connection to the released register source is
+also checked independently.  The audit
+\code{audit_ks223_emitter.py} executes the recorded postfix word
+symbolically and compares the resulting tree with a separately written
+instance of~\eqref{eq:literal-bundle}.  The selected word has exactly
+$77$ macro invocations, using these eight pinned K230 macros:
+\begin{center}
+\begin{tabular}{@{}rl@{}}
+\toprule
+\textbf{Dag230 node} & \textbf{Stack operation}\\
+\midrule
+166 & Push the input label $a$ from register $4$\\
+121 & Push the output label $b$ from register $5$\\
+168 & Push the actual matrix/private value $c$ from register $3$\\
+119 & Apply $\cI$ to the top two operands\\
+181 & Apply $\cR$ to the top two operands\\
+180 & Apply $\cQ$ to the top two operands\\
+182 & Apply $\cE$ to the top two operands\\
+218 & Apply $\cN$ to the top operand\\
+\bottomrule
+\end{tabular}
+\end{center}
+Their contracts are the explicit \code{par166}, \code{par121},
+\code{par168}, \code{cons119}, \code{wel181}, \code{wal180},
+\code{weq182} and \code{wn218} lemmas of \code{ProgLib230.v} at the
+pinned upstream commit~\cite{k230}.  The symbolic execution preserves
+the old stack beneath the one emitted result.
+
+The audit compares each optimized macro with its pinned raw source by
+finite bisimulation for all natural register vectors.  It then constructs
+an independent right-associated sequence consisting of the six unchanged
+closed prefix blocks, the $77$ macros, and the two unchanged closed suffix
+blocks.  Its $4\,167$ primitive instruction occurrences match the released
+closed emitter region exactly, and the source outside that region is
+unchanged.  A second all-register bisimulation relates that canonical
+sequence to the released parenthesization.  Its complete certificate has
+$1\,240$ boundary pairs.  At related decrement boundaries both programs
+test the same register; both possible successors are related; and the
+finite intervening increment vectors agree.  Induction on these segments
+establishes the register contract for all executions, including
+nontermination.  This is a finite control-graph proof, not a runtime
+sample or a bounded counter test.
+
+The independent receipt also checks
+Lemma~\ref{lem:ks-decode-interface} against the exact symbolic tree.
+It records the source and grammar hashes, the $77$-macro word, all eight
+macro comparisons, and the complete emitter bisimulation.  The separate
+machine sections connect this source contract to exhaustive proof search,
+blank-tape initialization and the unbounded binary runtime.  Together
+those links apply Theorem~\ref{thm:ks-native-calibration} to the literal
+223-state transition table.  No newly compiled end-to-end Rocq or Lean
+endpoint for that table is claimed by this report.
