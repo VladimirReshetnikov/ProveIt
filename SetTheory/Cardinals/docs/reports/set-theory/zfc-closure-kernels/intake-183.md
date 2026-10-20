@@ -105,7 +105,15 @@ configuration in both contexts. Read bits that one side never sees are free slot
 **Calibration.** Replaying the 221's three rotations on Source 131's table, the detector finds
 exactly the delivered fold and its mirror.
 
-**Result.** Search from the 221 in progress; recorded below when complete.
+**Result: no 220 in this family.** From the 221 the search explored 19,041 tables:
+
+- all 74 first-level closed rotations, and every second-level rotation;
+- third-level rotations sharing a decoder state with the second;
+- rotations up to zero run 7, with tables screened at zero run 6 or less.
+
+No pair of states folds by the detector, for any table ([log](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k221/evidence/rotation_fold_search.txt)).
+This is a bounded negative, not a lower bound: deeper chains, other helper allocations, and
+folds whose helper needs more than seven steps lie outside it.
 
 ## Credit
 
@@ -115,4 +123,6 @@ under every source, and none claims priority.
 
 ## Non-claims
 
-No proof-assistant theorem for any of these tables. No PA endpoint. No minimality.
+Later the same day the 221 received a closed Rocq endpoint, which `coqchk` rechecked
+([k225-formal/rocq](../../../../../../Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/README.md)).
+No Lean theorem yet. No PA endpoint. No minimality.

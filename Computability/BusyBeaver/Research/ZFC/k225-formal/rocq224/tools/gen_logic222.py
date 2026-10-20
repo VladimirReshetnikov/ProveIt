@@ -59,5 +59,5 @@ fork("L1_Comp", "L1_Comp", common + [
     (r"blk \(bundle a b c\)", "blk (bundle222 a b c)")])
 fork("L1_", "L1_", [(r"\bthm230\b", "thm222"), (r"\benum230_halts\b", "enum222_halts"),
                     (r"\bL1_230\b", "L1_222")])
-fork("Seed", "Seed", [(r"\bthm230\b", "thm222"), (r"\bseed230\b", "seed222"),
+fork("Seed", "Seed", [(r"\bthm230\b", "thm222"), (r"seed230", "seed222"),
                       (r"\bT_true\b", "W_true")])

@@ -10,14 +10,18 @@ placed in `c92e98e674`. It starts from Source 131, the seed-K 222. That machine 
 composition as the intake's [variant-bc](../candidate-k222/variant-bc/README.md): Source 128's
 merged equality row G with Source 129's seed presentation of K.
 
-An ordinary mathematical proof, formalizable in ZFC, gives
+**A closed Rocq theorem covers this exact table** ([endpoint](../k225-formal/rocq/README.md)):
 
-  ZFC ⊢ (this machine does not halt from the blank tape ↔ Con(ZFC)),
+```coq
+K221F.CorrectDense221.tm221_halts_iff_ZFC_inconsistent :
+  Dense.halts dense_tm Dense.c0 <-> StandardZFC ⊢TC ⊥.
+```
 
-because the 221 runs the seed-K 222's register program unchanged (below). **No Rocq or Lean
-theorem exists for this table**, and no proof internal to PA. No absolute consistency,
-unconditional non-halting, minimality, or two-sided independence from bare consistency is
-claimed.
+Here `dense_tm` is [zfc_k221.tm](zfc_k221.tm). The theorem is closed under the global context,
+and `coqchk` independently rechecked it against Elliot Glazer's K230 development
+(`PASS_CLOSED_KERNEL`, 2026-10-20). It is an external Rocq theorem: no Lean theorem covers this
+table yet, and there is no proof internal to PA. No absolute consistency, unconditional
+non-halting or minimality is claimed.
 
 ## What saves the state
 
@@ -47,6 +51,11 @@ radius 8, computed from an unconstrained initial state.
 maximum zero run stays 6.
 
 ## Why the calibration transfers
+
+(The Rocq endpoint proves this transfer formally. The rotated source is offset-bisimilar to
+`dag222`, the structured seed-K 222 program, and the 222's calculus is proved equiconsistent
+with ZFC. The paragraphs below give the argument in prose.)
+
 
 The calibration is the seed-K 222's: Source 129's seed presentation of K, composed with
 Source 128's G equivalence. It needs only that the 221 runs the **same register program**,

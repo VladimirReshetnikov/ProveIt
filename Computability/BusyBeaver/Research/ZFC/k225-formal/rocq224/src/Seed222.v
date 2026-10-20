@@ -33,7 +33,7 @@ Proof.
   rewrite run_add, R. exact R'.
 Qed.
 
-Theorem seed230_complete : thm222 1 -> halts_from seed222.
+Theorem seed222_complete : thm222 1 -> halts_from seed222.
 Proof.
   intros H. destruct (compile 1 H) as [L HL].
   set (N := enc_fields (fields START) (enc_tail (L ++ SUFFIX))).
@@ -47,12 +47,12 @@ Proof.
   - apply program_halts, HL.
 Qed.
 
-Theorem seed230_sound : halts_from seed222 -> thm222 1.
+Theorem seed222_sound : halts_from seed222 -> thm222 1.
 Proof.
   intros [n [s [Hr Hs]]]. apply (halt_step s); [|exact Hs].
   apply (Inv_run n seed222 s); [|exact Hr].
   repeat split; [exact W_true|exact W_true|exact good_0].
 Qed.
 
-Theorem seed230_iff_thm : halts_from seed222 <-> thm222 1.
-Proof. split; [apply seed230_sound|apply seed230_complete]. Qed.
+Theorem seed222_iff_thm : halts_from seed222 <-> thm222 1.
+Proof. split; [apply seed222_sound|apply seed222_complete]. Qed.

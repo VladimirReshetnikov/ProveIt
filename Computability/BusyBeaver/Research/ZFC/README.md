@@ -51,8 +51,9 @@ the 222's calibration transfers. The intake replays its unbounded runtime proof 
 [224](candidate-k224/README.md) (Source 125), the [223](candidate-k223/README.md) (Source 127)
 and the two [222s](candidate-k222/README.md) composed at batch 181. See the
 [batch 183 reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-183.md).
-No proof-assistant endpoint covers these; the Rocq work in progress is in
-[k225-formal/rocq224](k225-formal/rocq224/README.md).
+The 221 has a closed Rocq endpoint, `K221F.CorrectDense221.tm221_halts_iff_ZFC_inconsistent`,
+which `coqchk` independently rechecked ([k225-formal/rocq](k225-formal/rocq/README.md)). Its
+Lean endpoint is in progress.
 
 Before them, the [225-state machine](candidate-k225/README.md) of batch 178
 (Source 124) was the smallest. It deletes K230 states 79, 140, 175, 208 and 229: the two ProveIt engine savings

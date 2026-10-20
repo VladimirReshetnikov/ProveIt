@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Cleanly compile and kernel-check the isolated 225/226/227/229-state extensions.
+"""Cleanly compile and kernel-check the isolated 221/225/226/227/229-state extensions.
 
 First run the pinned K230 reference build. This script verifies its source
 copies, reuses those compiled dependencies, and freshly compiles every selected
@@ -83,7 +83,13 @@ def check_variant(v, spec, reference):
             "Invalid dense transition.")
     require(any(line == "#! start 0" for line in inputs["dense"].read_text().splitlines()),
             "Dense machine must start at state zero.")
-    renumber = {q: i for i, q in enumerate(q for q in range(231) if q not in deleted)}
+    if "dense_labels" in spec:
+        labels = spec["dense_labels"]
+        require(len(labels) == v + 1 and labels[v] == 230 and len(set(labels)) == v + 1
+                and not set(labels) & deleted, "Bad explicit dense-to-sparse label list.")
+        renumber = {q: i for i, q in enumerate(labels)}
+    else:
+        renumber = {q: i for i, q in enumerate(q for q in range(231) if q not in deleted)}
     require(dense == {(renumber[q], b): (w, d, renumber[n])
                       for (q, b), (w, d, n) in sparse.items()}, "Dense/sparse table mismatch.")
     proof = ROOT / "coq" / str(v)
@@ -193,7 +199,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--reference", type=Path, default=ROOT.parent / "vendor/k230-rocq")
     parser.add_argument("--jeff-reference", type=Path, default=ROOT.parent / "vendor/jeff-reference")
-    parser.add_argument("--states", type=int, choices=(225, 226, 227, 229), default=225)
+    parser.add_argument("--states", type=int, choices=(221, 225, 226, 227, 229), default=221)
     parser.add_argument("--all", action="store_true", help="Check all three closed endpoints.")
     parser.add_argument("--coqc", default=os.environ.get("COQC") or shutil.which("coqc"))
     parser.add_argument("--check-only", action="store_true", help="Check pinned bytes and literal data without Rocq.")
