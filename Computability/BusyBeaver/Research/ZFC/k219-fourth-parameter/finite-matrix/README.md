@@ -17,6 +17,11 @@ native-zero and proof-induction arguments. This strengthens the earlier
 [six separate syntactic obstructions](../six-orientations/README.md).
 It is not a new Lean/PA kernel theorem or a machine-state result.
 
+The [mixed-union extension](mixed-union/README.md) proves that this same
+matrix also validates all `U=A`, `U=C`, `U=truth` and `U=F` families
+simultaneously with every membership-fourth instance. `U=B` is outside
+that theorem; the separate bounded diagnostics do not settle its calibration.
+
 The carrier is `{0,1,2,3,4}`, designated values are `{3,4}`, truth is 4,
 every membership atom (including falsity) is 2, and every equality atom is 3.
 The literal implication and uniform quantifier tables are in the unchanged

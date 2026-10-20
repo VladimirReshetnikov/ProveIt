@@ -18,6 +18,16 @@ strengthens this to their union and arbitrary membership fourth-input builders
 simultaneously, with an ordinary PA-formalizable consistency proof. That new
 model does not validate K or explosion.
 
+The [mixed-union extension](finite-matrix/mixed-union/README.md) adds
+`U=A`, `U=C`, `U=truth` and `U=F` simultaneously to all membership-fourth
+instances and still proves consistency by that five-value matrix. `U=B`
+remains outside this result. A different
+[code-dependent three-value model](../k218-k-membership-obstruction/README.md)
+now also rules out **K + RAB + quantified stability** with the retained
+native rows and full gated bundle. Its membership values depend on the
+literal argument codes; this does not change the five-value model's failure
+of K.
+
 Replacing rho8's independent fourth parameter by a formula built from the
 other three would remove an input read. The existing HC countermodel excludes
 far more such replacements than its five originally stated examples. A
