@@ -130,3 +130,8 @@ this local clone lemma, eight-candidate diagnostic and context comparison are
 new work by `drop_contract`, following root's proposed bootstrap-context test.
 No supplied wrapper, full runtime suite, proof compiler or broad action search
 was run for this packet.
+
+An [independent source and evidence review](peer-review.json) by
+`review_upstream_reflection` found no issue in the local lemma, the eight-state
+census, or the recorded scope. It did not rerun the candidates or replay. The
+receipt pins the original publication at commit `61b9332483`.
