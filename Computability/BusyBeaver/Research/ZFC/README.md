@@ -1,10 +1,10 @@
 # Smaller machines for Con(ZFC)
 
-The goal is a binary, single-tape machine with fewer than 254 nonhalting
-states whose halting status is independent of ZF. The original target was
-blank-tape nonhalting provably in **PA** equivalent to Con(ZFC). The search
-now also permits equivalence to consistency of an effectively axiomatized
-stronger theory, as clarified by the user on 17 October 2026. Each candidate
+The current goal is a binary, single-tape machine with **217 working states
+or fewer** whose blank-tape nonhalting is provably in **ZFC** equivalent to
+Con(ZFC). The original target was fewer than 254 states and equivalence
+provable in PA. An earlier search phase also permitted consistency of a
+well-understood stronger theory, as clarified on 17 October 2026. Each candidate
 must state the assumptions used for its two unprovability directions;
 consistency alone must not be confused with arithmetic soundness. The
 external Lean equivalence with Con(ZFC) is now proved for the exact
@@ -54,7 +54,29 @@ also gives a second checked 218 layout. Our next target is **217 states or fewer
 See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-188.md)
 and [reproduction guide](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-188-reproduction.md).
 
-Its predecessor is the [**219-state machine**](candidate-k219/README.md)
+The [contextual 218 alternative](candidate-k218/alternatives/contextual/README.md)
+from `3c7c3aa5a3` also passes six fresh checks: 6,167 cases, 1,514,325 rules,
+all 436 rows and a complete 312,701-step startup. Its graph is distinct, but
+its final fold shares the same two source roles as the primary; the savings
+do not stack. Its own row157 variant also remains at 218. See
+[batch 190](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-190.md).
+
+The two [batch-189 research reports](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-189.md)
+retain useful arbitrary-clean-seed and fixed-power-of-two scheduler theorems,
+two freshly verified 219 layouts, and explicit failed startup repairs.
+The [all-start obstruction](k218-continuation-search/all-starts/README.md)
+shows that choosing another existing start cannot repair the exact delete301
+217 table. All three new archives have been imported and retired.
+
+On the formalism side, [K/S plus quantified stability](k218-quantifier-stability/README.md)
+has a new ordinary consistency calibration, with an independently checked
+finite proof DAG. Its [first source pricing](k218-quantifier-stability/pricing/README.md)
+does not save states. The [five-value model](k219-fourth-parameter/finite-matrix/README.md)
+now excludes every membership-fourth restriction of rho8, even their union,
+while retaining the other native rows; adding K or explosion is outside
+that model's scope. These theory results make no new machine-state claim.
+
+The primary 218-state machine’s predecessor is the [**219-state machine**](candidate-k219/README.md)
 of batch 186 (Source 140, arrival `26d5de6d21`). A clean equality routine
 shares an open subtree between cancellation and cleanup; two compiler repairs
 turn its 208-to-206 source-DAG saving into 219 working states. Seven selected

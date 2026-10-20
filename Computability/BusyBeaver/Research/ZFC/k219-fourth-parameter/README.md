@@ -13,7 +13,10 @@ The [prior version](diagonal-invariant/history/prior-README.md) is retained. Ord
 only `R(A,B)` has been Lean-checked here. The new
 [six-orientation extension](six-orientations/README.md) also rules out
 `R(B,C)` and `R(C,B)` by ordinary syntactic proofs, treating each fixed
-orientation separately.
+orientation separately. The later [five-value model](finite-matrix/README.md)
+strengthens this to their union and arbitrary membership fourth-input builders
+simultaneously, with an ordinary PA-formalizable consistency proof. That new
+model does not validate K or explosion.
 
 Replacing rho8's independent fourth parameter by a formula built from the
 other three would remove an input read. The existing HC countermodel excludes

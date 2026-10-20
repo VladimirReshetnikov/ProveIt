@@ -8,9 +8,11 @@ have its consistency provably equivalent to Con(ZFC) in ZFC.
 
 The [R(A,B) invariant](../diagonal-invariant/README.md) is Lean-checked.
 The remaining five extensions here are **ordinary mathematical proofs**, not
-additional Lean builds. This result treats each fixed orientation separately;
-it does not cover the union of multiple orientations, an added classical
-basis, dominated `U≤A`, or every code-dependent membership builder.
+additional Lean builds. This syntactic result treats each fixed orientation separately.
+The later [five-value matrix](../finite-matrix/README.md) covers their union
+and arbitrary membership fourth-input builders simultaneously, by an ordinary
+PA-formalizable argument. Neither result covers adding K or a classical basis,
+or the separate dominated `U≤A` proposal.
 
 ## Why the remaining cases close
 

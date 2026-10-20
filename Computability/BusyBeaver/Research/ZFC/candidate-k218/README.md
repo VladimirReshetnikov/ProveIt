@@ -10,6 +10,12 @@ The complete table is [k218.tm](k218.tm). It uses two symbols, blank 0, a two-wa
 
 The [native table](k218.native.tm) retains predecessor labels, dispatcher 84 and halt 254. Its SHA-256 is `2dfaba6da09b78291e534777cd30c5f0d68bd84faa670e868e779c396aeb308f`. The [bijection and complete startup tape](canonicalization.json), [source](sites218.json), and [decoder allocation](decoder_allocation.json) bind the two presentations. **There is no newly compiled Lean/Rocq theorem for these exact bytes or internal PA endpoint.** No unconditional nonhalting or minimality claim is made.
 
+A distinct [verified contextual 218-state alternative](alternatives/contextual/README.md)
+is now published from `3c7c3aa5a3`. It passes complete runtime and blank startup
+checks, reaching the same initial frame 208 steps earlier. Its final saving
+merges the same two logical source roles, so it supplies another layout
+without a further state reduction. This table remains the primary contender.
+
 ## Why one state disappears
 
 A smaller source graph retains all 4,744 primitive instructions and their complete ordinal control graph while reducing distinct subtrees from 206 to 205. Its first physical allocation still uses 219 states. Five reassociations of a closed 52-instruction block then expose an existing decoder continuation without changing the source graph's size or behavior.
@@ -39,7 +45,7 @@ Fresh [execution evidence](evidence/actual.json) and [selected certificates](evi
 
 The existing rewrite `157/1: 1 L 148 -> 1 L 187` also works on K218. The [alternate native table](variant-row157/k218-row157.native.tm) and [canonical table](variant-row157/k218-row157.tm) still have 218 states. The unchanged independent checker freshly verifies 1,009,191 inductive window contexts, including 1,408 nontrivial contexts; positive old/new blocks are bounded by 2/3 transitions and a corrupted initial halt is rejected. See its [result](variant-row157/result.json). This is an all-initial-tape halting-equivalence proof, not a new literal startup-time measurement.
 
-The earlier attempt to delete state 301 would produce 217 states after three additional row changes. It still has exactly the same 85-step failed blank prefix and then writes ones forever while moving right in state 35. The [literal transfer record](research/comparison.json) preserves that obstruction; this table is not a consistency candidate.
+The earlier attempt to delete state 301 would produce 217 states after three additional row changes. It still has exactly the same 85-step failed blank prefix and then writes ones forever while moving right in state 35. The [literal transfer record](research/comparison.json) preserves that obstruction; this table is not a consistency candidate. The later [all-start audit](../k218-continuation-search/all-starts/README.md) proves that every one of its 217 possible working initial states reaches a blank ray, so changing only the start state cannot repair it.
 
 The previous zero-terminal, retagged and composed source transformations can still be expressed on the new source and each retains 205 distinct subtrees. Their physical patches are disjoint from the K218 changes, but full machine correctness is a separate obligation. The rho6 parameter rewrite also leaves 205 subtrees. These [source-only comparisons](research/stack-syntax.json) identify possible alternate layouts; they do not establish a 217-state construction.
 

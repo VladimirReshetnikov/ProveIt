@@ -50,3 +50,9 @@ that premise directly. Conversely the original classical calculus proves
 K/S/DNE. This uniform row is distinct from the previously uncalibrated fused
 proposal `NN(Q_i A)→A`. No new compiler or state-count measurement for either
 replacement is claimed in this packet.
+
+A [bounded source-pricing experiment](pricing/README.md) checked 3,888 direct
+replacement recipes. The shortest sources violate the required zero-run bound;
+all recipes satisfying that bound have 221 DAG nodes. The eight retained
+allocation attempts failed their startup-prefix checks, while the unchanged
+218-state control passed. This experiment produces no smaller machine.
