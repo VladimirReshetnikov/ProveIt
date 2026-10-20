@@ -95,7 +95,9 @@ turn its 208-to-206 source-DAG saving into 219 working states. Seven selected
 fresh jobs pass, including all 6,167 runtime cases, 1,515,040 symbolic rules
 and exact 312,617-step startup. The earlier row157 continuation rewrite
 also passes on this table, yielding a second 219 layout; row103 conflicts
-with its new return. No 218-state result or exact-219 Lean/PA endpoint follows.
+with its new return. Its exact-table Lean endpoint is closed
+(`KLower219.blank_halts_iff_zfc_refutation`, [k225-formal](k225-formal/README.md#the-219));
+the internal PA endpoint remains open.
 See [the reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-186.md)
 and [replay instructions](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-186-reproduction.md).
 
