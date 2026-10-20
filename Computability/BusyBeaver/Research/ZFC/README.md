@@ -53,6 +53,17 @@ with its new return. No 218-state result or exact-219 Lean/PA endpoint follows.
 See [the reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-186.md)
 and [replay instructions](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-186-reproduction.md).
 
+Batch 187 adds [three 219-state alternatives](candidate-k219/alternatives/README.md)
+from `ffcdff81ad`: zero-terminal equality, continue retagging and their
+composition. All three pass fresh full symbolic runtimes and complete startup;
+the row157 rewrite also works on each. The two failed-218 reports from
+`0b0cec2d0d` retain a full cofinal-bundle countermodel, a qualified core-only
+tail lemma, alternative equality contracts, exact failed return edits and
+unresolved cases. A new [shifted-head fold search](k219-shifted-fold/README.md)
+finds no survivor among 1,031,840 candidates across the six layouts.
+The best count remains 219. See the [reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-187.md)
+for proof boundaries and the useful remaining directions.
+
 The predecessor is the [**220-state machine**](candidate-k220/README.md)
 of batch 185 (Source 138). A non-pure decoder re-encoding permits two closed
 source rotations and a predecessor-bit fold of native 202 into 171. The

@@ -70,6 +70,24 @@ checks recover the identical 312,617-step complete frame. See the
 [result](variant-row157/result.json) and [reconstruction script](code/stack_row157.py).
 This is a second 219-state layout, not a 218-state construction.
 
+## Additional 219-state constructions
+
+The [alternative publication](alternatives/README.md) imports Source141's
+zero-terminal, retagged and composed layouts from `ffcdff81ad`. Their source
+changes commute, but the composed physical table needs a special `139/0`
+transition. Fourteen fresh jobs pass, including all 18,517 guarded runtime
+cases across the three machines and their complete startups. The row157
+rewrite works on all three, yielding six further layouts of the same size.
+
+The [failed-218 research reconciliation](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-187.md)
+also imports both reports from `0b0cec2d0d`. It preserves the cofinal-bundle
+countermodel, core-only tail lemma, shared-cancellation and Direct09/Direct13
+contracts, and the unresolved dominated-row and return-handler obligations.
+Seven explicit failed-handler examples persist across all six layouts.
+A [shifted-head fold search](../k219-shifted-fold/README.md) tests a different
+local-equivalence relation and completes 1,031,840 candidate checks without
+a survivor; this bounded negative is not a lower bound.
+
 ## Further minimization work
 
 Follow-up work on 20 October keeps this 219-state machine as the accepted
@@ -85,7 +103,9 @@ equivalence, source size, raw allocation and complete machine verification:
   even `F → truth`. This rules out the required ZFC calibration by the
   ordinary second-incompleteness argument. Earlier conditional semantic
   lemmas remain valid, but their missing completeness premise cannot supply
-  that calibration. Other membership layouts are separate proposals.
+  that calibration. An [ordinary extension](../k219-fourth-parameter/six-orientations/README.md)
+  rules out all six fixed distinct-input membership orientations separately;
+  combined or more general builders remain separate proposals.
 - [Source transformations](../k219-source-search/README.md) include exact
   control-flow comparisons, bounded sharing searches, and all-natural
   proofs of five alternate equality routines. The left-decrement hit2
