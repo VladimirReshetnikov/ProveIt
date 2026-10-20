@@ -97,11 +97,20 @@ equivalence, source size, raw allocation and complete machine verification:
   larger finite diagnostic; none improves the 206-node source, and the
   smallest measured raw allocation uses 220 states. Their all-natural
   contracts remain unproved.
+- [Expanded equality library](../k219-atom-extension/README.md) adds all
+  eligible subtrees of the accepted equality routine to the finite search.
+  Its 1,883 reported hits give no source smaller than 206 distinct subtrees.
+- [Engine rebasing](../k219-engine-rebase/README.md) measures five proved
+  equality routines on the older engine. Raw 219-state tables fail concrete
+  complete-tape primitive contracts; the attempted repairs do not improve
+  the accepted machine.
 - [Decoder and helper sharing](../k219-continuation-search/README.md)
   searched 352,384 distinct candidate specifications without finding an
   accepted reduction. Follow-up families include 190,092 attempts to
   eliminate a single-entry state by longer transition blocks, also without
-  a survivor. These families overlap; the finite-window failures are not
+  a survivor. A further 19,184 attempts include the initial state; all
+  recorded obstructions from the later families remain in a blank-seeded
+  window domain. These families overlap; the finite-window failures are not
   a lower bound.
 
 The merged [221-state Lean endpoint](../candidate-k221/README.md) is now
