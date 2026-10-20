@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "status": "FULL_K223_REPLAY_PASS",
+  "phases": [
+    {
+      "name": "portable_manifest",
+      "status": "PASS",
+      "result": {
+        "status": "EXACT_PORTABLE_MANIFEST_PASS",
+        "files": 31,
+        "bytes": 7811273,
+        "manifest_sha256": "716799255143a021a5626ea09cacb7a681c5dad0fe998ffa0621ae9902da1eba"
+      },
+      "seconds": 0.08333382799901301
+    },
+    {
+      "name": "extract_pinned_K224",
+      "status": "PASS",
+      "result": {
+        "status": "PINNED_PREDECESSOR_EXTRACTED",
+        "members": 124,
+        "archive_sha256": "cf5db8d08a34f5661ad1266226809ed1f0099fd38374c66d127e1e06519c6887"
+      },
+      "seconds": 0.9864012420002837
+    },
+    {
+      "name": "predecessor_certificates",
+      "status": "PASS",
+      "result": {
+        "status": "QUICK_REPLAY_PASS",
+        "log": "logs/predecessor.log",
+        "receipt": "predecessor_replay/replay.json",
+        "receipt_sha256": "82bb2ab24eadaae3adff9a023ddf2e7a73b4b2b0e15f0500b3354a30ea80bb67"
+      },
+      "seconds": 152.82370056299987
+    },
+    {
+      "name": "deterministic_223_construction",
+      "status": "PASS",
+      "result": {
+        "status": "DETERMINISTIC_223_RECONSTRUCTION_PASS",
+        "log": "logs/construction.log",
+        "receipt": "rebuilt223/reconstruction.json",
+        "receipt_sha256": "9b9982df6d4624d011811b2572e2f2df0dc6dab13b6916db99e912bc47772dce"
+      },
+      "seconds": 0.5977482639991649
+    },
+    {
+      "name": "published_bytes",
+      "status": "PASS",
+      "result": {
+        "candidate223.tm": {
+          "sha256": "c89d3f79ab12a3857092bb4b3d30bfc594079edc0f696b066ce4c386fd00f1b2",
+          "size": 5777
+        },
+        "candidate.k.tm": {
+          "sha256": "7e036b1bd05fe8a7e5877a8c5386cae603f4d689adeeb13754ee98dca998bfef",
+          "size": 5764
+        },
+        "candidate.legacy.tm": {
+          "sha256": "2d83dd47e1aedd4ed89f6a97d55e2ef6942fca39d55f8bb397536e64702715c3",
+          "size": 5842
+        },
+        "sites.json": {
+          "sha256": "df55079f114a6aa9ada970d7d857726e47e3a3dba2a721245ebbacfd4577c13c",
+          "size": 196116
+        },
+        "canonical_map.json": {
+          "sha256": "b40179ed23737b4167a880fd72c1db33a05c377dd8d84a13174c8e16ea3eba1f",
+          "size": 6867
+        }
+      },
+      "seconds": 0.0017561810000188416
+    },
+    {
+      "name": "independent_emitter_and_decoding",
+      "status": "PASS",
+      "result": {
+        "status": "INDEPENDENT_KS223_EMITTER_AND_NATIVE_DECODING_PASS",
+        "log": "logs/emitter.log",
+        "receipt": "emitter223.json",
+        "receipt_sha256": "11eb719c15081c7577f8c2de53f0e20eba997e141e0f952aa56f6bd1435f2cf4"
+      },
+      "seconds": 0.4160824099999445
+    },
+    {
+      "name": "fresh_unbounded_runtime_6449_cases",
+      "status": "PASS",
+      "result": {
+        "status": "UNIVERSAL_RUNTIME_PASS",
+        "log": "logs/runtime223.log",
+        "receipt": "runtime223/audit.json",
+        "receipt_sha256": "218ad39c7e82693aa28d83eb64d74ee120d5867e8d8b2d1d4ea9af00605fc0a0"
+      },
+      "seconds": 356.7635347310006
+    },
+    {
+      "name": "fresh_case_summary_identity",
+      "status": "PASS",
+      "result": {
+        "status": "ALL_6449_FRESH_CASE_SUMMARIES_IDENTICAL",
+        "sha256": "b66a7218b8dd1d1c6425dd03667a25203c99fda8cee4b3e820296b701f9dc1a2"
+      },
+      "seconds": 0.09827340099946014
+    },
+    {
+      "name": "final_input_integrity",
+      "status": "PASS",
+      "result": {
+        "status": "EXACT_PORTABLE_MANIFEST_PASS",
+        "files": 31,
+        "bytes": 7811273,
+        "manifest_sha256": "716799255143a021a5626ea09cacb7a681c5dad0fe998ffa0621ae9902da1eba"
+      },
+      "seconds": 0.13494208000156505
+    }
+  ],
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "assertions_enabled": true,
+  "fresh_k223_runtime": true,
+  "fresh_predecessor_runtimes": false,
+  "fresh_Rocq_or_Lean_build": false,
+  "proof_scope": {
+    "construction": "Exact deterministic source grammar, macro contracts, numerical emitter, decoder relation and table bytes.",
+    "independent_emitter": "All-register source bisimulation and uniform constructor decoding side conditions.",
+    "runtime": "Fresh induction for all nine natural registers, arbitrary natural gap/first spare and arbitrary finite remaining spare list.",
+    "theory": "Ordinary mathematical proof in report/main.tex and theory223.tex; no new kernel endpoint."
+  },
+  "seconds": 511.9422414259989
+}

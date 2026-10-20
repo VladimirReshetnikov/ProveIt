@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-20",
+  "contribution": "K222 merged-G and witness-request composition",
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "machine": {
+    "path": "machine/k222.tm",
+    "working_states": 222,
+    "rows": 444,
+    "start": 0,
+    "halt": 222,
+    "dispatcher": 22,
+    "sha256": "f5b4adcd5e0735a4a26dcc2316e69683df73bee0dbaf9e1082cd1e9318e8082a",
+    "native_sha256": "a85b0baf596c5559581344d02b0fb263f97dda2f9a0781f6c7e651cd236fd818"
+  },
+  "source": {
+    "path": "machine/sites222.json",
+    "sha256": "cc1fbb3a16dd446af9c7cdb678317d31060082e6794b9c7074ce02b46584a75e",
+    "primitive_occurrences": 4744,
+    "distinct_subtrees": 208,
+    "internal_subtrees": 185,
+    "decoder_states": 173,
+    "other_states": 49,
+    "maximum_depth": 36,
+    "maximum_zero_run": 6
+  },
+  "inputs": {
+    "merged_G": {
+      "commit": "1f751b0aa4d2ee47936982a7b23c780aa01007fc",
+      "archive_path": "docs/incoming/K223_Construction_2026-10-20 (2).zip",
+      "archive_sha256": "db9bfea47d5e97bb8d89641d4a027c5215398e8793864caaed6e81770dcdf39c",
+      "commit_url": "https://github.com/VladimirReshetnikov/ProveIt/commit/1f751b0aa4d2ee47936982a7b23c780aa01007fc"
+    },
+    "witness_seed": {
+      "commit": "076445a2664854d817f8a938731dcacc290dcd7b",
+      "archive_path": "docs/incoming/K223_Construction_2026-10-20 (3).zip",
+      "archive_sha256": "c20713d1cda1175ba9ef246e60bda5d193b5fe8fc431d9b9188c5f5b532c0f15",
+      "commit_url": "https://github.com/VladimirReshetnikov/ProveIt/commit/076445a2664854d817f8a938731dcacc290dcd7b"
+    },
+    "baseline224": {
+      "commit": "49ee7cfdc8e0364c6db3614675d141d66f9350ed",
+      "archive_sha256": "cf5db8d08a34f5661ad1266226809ed1f0099fd38374c66d127e1e06519c6887",
+      "archive_in_packet": "portable/vendor/K224_Construction_2026-10-20.zip"
+    },
+    "k230": {
+      "commit": "3142e4dd980f0be12f4abb636c4ae2528afc17eb",
+      "url": "https://github.com/elliotglazer/k230-rocq/tree/3142e4dd980f0be12f4abb636c4ae2528afc17eb"
+    },
+    "source_construction": "Prune the witness grammar helper; replace equality row with G; closed right rotation1110100100111000; helper-aware assignment162,26,37,11. Builder uses frozen exact table delta, not optimizer search. The independent emitter audit does not import the builder."
+  },
+  "verification": {
+    "runtime_status": "FULL_UNBOUNDED_RUNTIME_AND_EXACT_STARTUP_PASS",
+    "runtime_cases": 6167,
+    "symbolic_rule_applications": 1488390,
+    "all444_rows_used": true,
+    "minimum_instruction_steps": 13,
+    "blank_startup_steps": 409835,
+    "uniform_logic_nodes": 109,
+    "uniform_logic_formulas": 104,
+    "uniform_logic_roots": 9,
+    "source_invariant_closure_checks": 32107,
+    "fresh_input_candidates": {
+      "merged_G223": "FULL_REPLAY_PASS",
+      "witness223": "FULL_K223_REPLAY_PASS",
+      "receipts": [
+        "verification/fresh_merged_G223_replay.json",
+        "verification/fresh_witness223_replay.json"
+      ]
+    },
+    "release": {
+      "status": "FINAL_RELEASE_VERIFIED",
+      "clean_full_status": "FULL_K222_REPLAY_PASS",
+      "final_quick_status": "QUICK_K222_REPLAY_PASS",
+      "full_replay_executable_and_substantive_input_bytes_unchanged": true,
+      "only_changed_portable_files": [
+        "manifest.json",
+        "runtime/reference_results/independent_runtime_audit.json",
+        "runtime/reference_results/proof.json"
+      ],
+      "reason_for_reference_receipt_change": "Replace genuine discovery-driver receipt with genuine completed portable-driver receipt so quick mode verifies driver provenance. Exact case certificates, table, source and every executable are unchanged.",
+      "final_portable_manifest_sha256": "aeb87d8d37a6c5edb3b91a83ae810dbb2059aef00f3ef365c1f5aa3024a2f247",
+      "canonical_table_sha256": "f5b4adcd5e0735a4a26dcc2316e69683df73bee0dbaf9e1082cd1e9318e8082a",
+      "report_sha256": "b1a3811650aad85ae68e458b9ef19b2b7805860f41722488a3decb25daef5364"
+    }
+  },
+  "proof_boundary": {
+    "ordinary_mathematical_equivalence_formalizable_in_ZFC": true,
+    "new_compiled_exact_Rocq_or_Lean_endpoint": false,
+    "new_internal_PA_endpoint": false,
+    "minimality": false
+  },
+  "report": {
+    "path": "report/report.pdf",
+    "pages": 10,
+    "sha256": "b1a3811650aad85ae68e458b9ef19b2b7805860f41722488a3decb25daef5364"
+  }
+}
