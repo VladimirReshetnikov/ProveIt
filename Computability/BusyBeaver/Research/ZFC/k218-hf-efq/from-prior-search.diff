@@ -1,0 +1,32 @@
+--- /tmp/k218-k-membership/condense_modal.py
++++ condense.py
+@@ -16,7 +16,7 @@
+ def Ex(i,x):return N(Q(i,N(x)))
+ def var(i):return ('v',i)
+ a,b,c=map(var,range(3))
+-K=I(a,I(b,a));H=I(I(I(c,R(a,b)),a),I(I(a,c),I(b,c)))
++K=I(a,I(b,a));H=I(I(I(c,F),a),I(I(a,c),I(b,c)))
+ def norm(x,s):
+  if x[0]=='v' and x[1] in s:return norm(s[x[1]],s)
+  if x[0]=='I':return I(norm(x[1],s),norm(x[2],s))
+@@ -47,10 +47,10 @@
+  return f(x)
+ def size(x):return 1+size(x[1])+size(x[2]) if len(x)==3 else 1
+ p=Path(__file__).resolve().parent;start=time.monotonic();nodes=[];known={};queue=[];pairs=0
+-MAX=2500;SIZE=55;LIMIT=30
+-axioms=[('truth',T),('K',K),('restricted_rho8_RAB',H),('rho1',Ex(a,E(a,b))),('rho2',I(Q(a,I(b,c)),I(Q(a,b),Q(a,c)))),('rho3',I(E(a,b),I(R(c,a),R(c,b)))),('rho4',I(Q(a,Q(b,c)),Q(b,Q(a,c)))),('rho5',I(E(c,a),I(R(c,b),R(a,b)))),('rho6',I(Ex(a,Q(a,b)),b)),('G',I(E(c,a),I(E(c,b),Q(R(a,b),E(a,b)))))]
++MAX=2500;SIZE=55;LIMIT=15
++axioms=[('truth',T),('EFQ',I(F,a)),('restricted_rho8_F',H),('rho1',Ex(a,E(a,b))),('rho2',I(Q(a,I(b,c)),I(Q(a,b),Q(a,c)))),('rho3',I(E(a,b),I(R(c,a),R(c,b)))),('rho4',I(Q(a,Q(b,c)),Q(b,Q(a,c)))),('rho5',I(E(c,a),I(R(c,b),R(a,b)))),('rho6',I(Ex(a,Q(a,b)),b)),('G',I(E(c,a),I(E(c,b),Q(R(a,b),E(a,b)))))]
+ for label,x in axioms:known[x]=len(nodes);nodes.append({'formula':x,'rule':label});queue.append(x)
+-targets={'identity':I(a,a),'S':I(I(a,I(b,c)),I(I(a,b),I(a,c))),'EFQ':I(R(T,T),a)};found={};cursor=0
++targets={'identity':I(a,a),'K':K,'S':I(I(a,I(b,c)),I(I(a,b),I(a,c))),'Peirce':I(I(I(a,b),a),a),'DNE':I(N(N(a)),a),'QS':I(N(N(Q(a,b))),Q(a,b))};found={};cursor=0
+ while cursor<len(nodes) and len(nodes)<MAX and time.monotonic()-start<LIMIT:
+  n=len(nodes)
+  g=canon(Q(var(999),nodes[cursor]['formula']))
+@@ -74,5 +74,5 @@
+    if goal==target and label not in found:found[label]=len(nodes)-1;print('FOUND',label,found[label],flush=True)
+   if len(nodes)>=MAX or time.monotonic()-start>=LIMIT:break
+  cursor+=1
+-result={'status':'BOUNDED_SCHEMATIC_SEARCH_COMPLETE','seconds':time.monotonic()-start,'nodes':len(nodes),'processed':cursor,'pairs':pairs,'max_nodes':MAX,'max_term_size':SIZE,'seconds_cap':LIMIT,'found':found,'scope':'Truth, K, restricted RAB row, rho1-6, G, theorem-only GEN and actual MP instantiation. Gated bundle omitted, not weakened. No free renaming/substitution rule. Missing targets establish no unprovability result.'}
++result={'status':'BOUNDED_SCHEMATIC_SEARCH_COMPLETE','seconds':time.monotonic()-start,'nodes':len(nodes),'processed':cursor,'pairs':pairs,'max_nodes':MAX,'max_term_size':SIZE,'seconds_cap':LIMIT,'found':found,'scope':'Truth, explicit EFQ, restricted F row, rho1-6, G, theorem-only GEN and actual MP instantiation. Gated bundle omitted, not weakened. No free renaming/substitution rule. Missing targets establish no unprovability result.'}
+ (p/'modal-proof.json').write_text(json.dumps(nodes,separators=(',',':'))+'\n');(p/'modal-result.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result))

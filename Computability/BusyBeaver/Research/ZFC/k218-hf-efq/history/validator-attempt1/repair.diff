@@ -1,0 +1,31 @@
+--- validator-attempt1
++++ validate.py
+@@ -60,19 +60,25 @@
+  checks[name]={'nodes':len(forms),'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'all_universal_instantiations_and_closed_GEN_valid':True}
+ # Closed theorem transformations are exact MP constructions; the first
+ # generic node denotes a supplied closed derivation, not a new axiom.
++def instantiate(t,s):
++ if t[0]=='v':return s.get(t[1],t)
++ if len(t)==3:
++  a,b=instantiate(t[1],s),instantiate(t[2],s)
++  return I(a,b)if t[0]=='I'else(t[0],a,b)
++ return t
+ C=c;B=b
+ premise=N(N(C));major=I(premise,I(I(F,C),I(B,C)))
+-assert major==ev(AX['restricted_rho8_F'],{0:F,1:B,2:C})
++assert major==instantiate(AX['restricted_rho8_F'],{0:F,1:B,2:C})
+ step1=major[2];efq=I(F,C);assert step1[1]==efq
+ weaken=step1[2];assert weaken==I(B,C)
+ # At B=0, MP uses native truth; C=0 simply returns native zero.
+ truth_goal=I(T,C);assert truth_goal[1]==T and truth_goal[2]==C
+-Z=Q(a,N(Q(a,F)));rho6=ev(AX['rho6'],{1:F})
++Z=Q(a,N(Q(a,F)));rho6=instantiate(AX['rho6'],{1:F})
+ assert rho6==N(N(Z))
+ # The seven closed nodes consist of rho6, HF, MP, EFQ, MP,
+ # truth and MP. No open premise is generalized.
+ hf=I(N(N(Z)),I(I(F,Z),I(T,Z)))
+-assert hf==ev(AX['restricted_rho8_F'],{0:F,1:T,2:Z})
++assert hf==instantiate(AX['restricted_rho8_F'],{0:F,1:T,2:Z})
+ closed=[rho6,hf,hf[2],I(F,Z),I(T,Z),T,Z]
+ assert closed[1][1]==closed[0] and closed[2][1]==closed[3] and closed[4][1]==closed[5] and closed[4][2]==closed[6]
+ receipt={'status':'EXACT_SCHEMA_DAG_AND_CLOSED_BOOTSTRAP_VALIDATION_PASS','derivations':checks,'generic_admissible_rule':{'premise':premise,'conclusion':I(B,C),'additional_axioms':['HF(F,B,C)','EFQ(C)'],'additional_MP_steps':2,'DNE_additional_step':'B=0 and MP with native truth'},'closed_modal_bootstrap':{'formula':Z,'nodes':closed,'rules':['rho6(i,F)','HF(F,0,Z)','MP1,0','EFQ(Z)','MP2,3','truth','MP4,5'],'GEN_uses':0},'scope':'Every saved schema step is exact constructor instantiation plus MP or closed GEN. Bundle is omitted from bounded search. Pure-fragment invariant is an ordinary proof in findings.md; no full-calculus consistency/calibration inferred.'}
