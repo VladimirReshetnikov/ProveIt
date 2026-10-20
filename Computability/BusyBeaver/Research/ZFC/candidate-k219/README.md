@@ -70,6 +70,34 @@ checks recover the identical 312,617-step complete frame. See the
 [result](variant-row157/result.json) and [reconstruction script](code/stack_row157.py).
 This is a second 219-state layout, not a 218-state construction.
 
+## Further minimization work
+
+Follow-up work on 20 October keeps this 219-state machine as the accepted
+construction. The following research results distinguish logical
+equivalence, source size, raw allocation and complete machine verification:
+
+- [Independent-pivot fusion](../k219-pivot-fusion/README.md) preserves the
+  calculus by finite proof transformations and saves 123 primitive
+  occurrences, but increases distinct source subtrees from 206 to 241.
+- [Code-dependent fourth parameters](../k219-fourth-parameter/README.md)
+  give a new three-input proposal, `U=R(A,B)`. Eight Lean lemmas check the
+  algebraic obstruction to simpler replacements and conditional routes to
+  recovering the old axiom. Full equiconsistency remains open. Three
+  measured membership layouts have 205 distinct subtrees, but the checked
+  allocations so far are larger and lack runtime certificates.
+- [Source transformations](../k219-source-search/README.md) include exact
+  control-flow comparisons, bounded sharing searches, and all-natural
+  proofs of five alternate equality routines. The left-decrement hit2
+  trades the right-decrement issue for a new increment entry; its measured
+  raw allocation has not improved the state count.
+- [Decoder and helper sharing](../k219-continuation-search/README.md)
+  searched 352,384 distinct candidate specifications without finding an
+  accepted reduction. The finite-window failures are not a lower bound.
+
+The merged [221-state Lean endpoint](../candidate-k221/README.md) is now
+closed upstream. That formal result is specific to its own table; the
+exact 219-state Lean and internal PA endpoints remain open.
+
 ## Provenance and reproduction
 
 Source 140, `K219_Construction_2026-10-20.zip`, arrived in `26d5de6d21` and was
