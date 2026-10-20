@@ -15,7 +15,9 @@ native calibration transfers the equivalence to ZFC.
 
 This is a reviewed ordinary calibration. The [independent root review](root-review.md)
 read the complete proof, its atomic-stability prerequisites and the finite
-bridge checker and found no defect. The frozen proof retains its original
+bridge checker and found no defect. A second [source review](opening-review.json)
+by `opening_encoder` also found no defect and explicitly discloses authorship
+of the earlier Hilbert infrastructure. The frozen proof retains its original
 “proposal” header; this README records its subsequent review status.
 There is no new Lean/Rocq theorem, compiled source, transition table, runtime
 simulation or startup proof in this packet. K/S alone remains unresolved by
