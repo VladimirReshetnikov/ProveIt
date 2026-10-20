@@ -3226,3 +3226,27 @@ remain explicitly distinct. No newly compiled exact-K218 Lean/Rocq or internal P
 endpoint, or ≤217 result, is claimed. [Recovery and replay](set-theory/zfc-closure-kernels/intake-188-reproduction.md)
 preserve original layouts and proof boundaries. The two failed-search archives
 from 253b3ff50e/f8ec6158f3 remain pending batch 189.
+
+
+Batches 189–190 bring the closure-kernel host to **147 sources**, while the
+collection remains **290 reports**. [Sources 145–146](set-theory/zfc-closure-kernels/intake-189.md)
+retain two older research packages: alternative 219 layouts, full T-only
+countermodels, fixed public labels, generalized clean seeds, power-of-two
+scheduler completeness, and explicit initialized-core and encoding failures.
+Five selected Source-145 jobs pass, including both complete generic runtimes;
+Source 146's runtime is delivered evidence, with fresh finite checks separately
+recorded. Placement `d134378a07` accounts for all 1,036 members and retires both ZIPs.
+
+[Source 147](set-theory/zfc-closure-kernels/intake-190.md) supplies a distinct
+[contextual 218 alternative](../../../../Computability/BusyBeaver/Research/ZFC/candidate-k218/alternatives/contextual/README.md).
+Its 205-node source preserves the complete ordinal control graph. Preceding-bit
+routing implements two decoder roles through one state, with complete runtime
+and startup checked separately. Six fresh jobs pass: 6,167 unbounded cases,
+1,514,325 symbolic rules, all 436 rows, minimum duration 13 and 312,701-step
+blank initialization. A separate five-value matrix obstructs the plain
+membership-fourth-input proposal and all its membership orientations jointly;
+it is not part of the machine calibration. Placement `6ee648c500` accounts
+for all 102 members and retires the ZIP. The primary K218 remains unchanged.
+[Recovery](set-theory/zfc-closure-kernels/intake-190-reproduction.md) preserves
+the exact source/table lineage and inherited attribution. No new exact-table
+Lean/Rocq or internal PA endpoint, minimality or ≤217 result is claimed.
