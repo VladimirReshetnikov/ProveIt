@@ -81,7 +81,24 @@ The intake stacked **127 with 128**. The result is the
    - startup: exact, 409,835 steps;
    - screen: 0 failures.
 
-Open: whether 128 and 129 can be stacked with a new emitter, which would reach 185 nodes.
+**A second 222, from 128 and 129.** A new emitter makes this pair stack as well
+([variant-bc](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k222/variant-bc/README.md)).
+
+- **Emitter.** Source 129's bundle is `¬(RV → (H → ¬K_s))`, and its region is a binary
+  pattern over 164 closed units. Deleting H's 26 units and one implication unit gives
+  `¬(RV → ¬K_s)`.
+- **Source.** Add Source 128's G row and rotation: 4,744 leaves, **185 interior nodes**.
+- **Table.** Compiled against 129's table, then 128's two folds: 222 = 49 + 185 − 12.
+- **Checks.** Runtime `UNIVERSAL_MATHEMATICAL_PASS` (6,167 cases, 1,488,390 rules, all 444
+  rows); exact startup; screen 0 failures; emitter checked.
+
+Its calculus is K's seed presentation, already calibrated in Elliot Glazer's Rocq development,
+so it needs no conditional-K interpretation.
+
+**Below 222.** Both 222s are already minimal under exact bisimulation, and the general left-bit
+fold scan finds no fold on either (52 and 38 half-matched pairs). A 221 would need a contextual
+fold that source rotations expose. The decomposed rotation-chain search (helper sub-goals per
+pair and read bit, levels 1–2 in full, level 3 local) runs on the B + C 222: SEARCH_RESULT
 
 ## Formal status
 

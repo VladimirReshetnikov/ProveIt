@@ -89,4 +89,15 @@ Canonical SHA-256 `60e21a040e58e2a2840b0f3d58ad3ee0e6ef4d0d5cdf1372d5a69355f1198
 `027b5e1cd5cae6cd158f9490021c13b0df395d8d7187739204d049b98236b06a`; source
 `6e6a863fd475a7508e9afab8e76b5291bf0541b4b2999b71c6ecea5fcd41c3ae`.
 
+## A second 222
+
+Stacking Source 128 with Source 129 (seed root) instead gives an independent 222,
+49 + 185 − 12, also fully replayed: [variant-bc](variant-bc/README.md). Its calculus is the seed
+presentation of K, which Elliot Glazer's Rocq development already calibrates. That makes it the
+better proof-assistant target.
+
+**Below 222.** Both 222s are minimal under exact bisimulation, and neither has a direct
+left-bit fold. A rotation-chain fold search is recorded in the
+[batch 181 reconciliation](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-181.md).
+
 See [ATTRIBUTION.md](ATTRIBUTION.md).
