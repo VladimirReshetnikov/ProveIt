@@ -3208,4 +3208,21 @@ unproved `cd59`. The [reproduction record](set-theory/zfc-closure-kernels/intake
 keeps final-machine, bounded-search and inherited-calibration evidence separate.
 No verified ≤218 machine or new exact-table Lean/Rocq/internal-PA endpoint is claimed.
 The three batch-187 archives are retired and recoverable from Git history. Two
-later arrivals, `253b3ff50e` and `f8ec6158f3`, await batch 188.
+later arrivals, `253b3ff50e` and `f8ec6158f3`, are now reserved for batch 189.
+
+
+Batch 188 imports [Source 144](set-theory/zfc-closure-kernels/intake-188.md), bringing
+the host to **144 sources**, with **290 reports** unchanged. Placement `6ffbe92305`
+accounts for all 99 members and retires the K218 construction ZIP. The
+[218-state table](../../../../Computability/BusyBeaver/Research/ZFC/candidate-k218/README.md)
+has 436 rows. Its 205-node source preserves the complete 4,744-instruction word and
+control graph; five closed reassociations enable an origin-marker fold of 85/212.
+The ordinary proof retains the complete calibrated classical calculus, with final
+unbounded runtime and complete blank startup checked separately. All six fresh
+selected jobs pass: 6,167 cases, 1,515,158 rules, all 436 rows, minimum positive
+duration 12 and the complete 312,909-step startup. Formalism
+experiments, including the uncalibrated K/S route and a rejected runtime-only 218,
+remain explicitly distinct. No newly compiled exact-K218 Lean/Rocq or internal PA
+endpoint, or ≤217 result, is claimed. [Recovery and replay](set-theory/zfc-closure-kernels/intake-188-reproduction.md)
+preserve original layouts and proof boundaries. The two failed-search archives
+from 253b3ff50e/f8ec6158f3 remain pending batch 189.

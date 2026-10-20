@@ -12,6 +12,29 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Queue status after batch 188
+
+The [218-state construction](../../Computability/BusyBeaver/Research/ZFC/candidate-k218/README.md)
+from `c4568161bf` is imported as [Source 144](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-188.md).
+Placement `6ffbe92305` accounts for all 99 members: 64 new files, 4 existing aliases,
+18 batch aliases, one historical archive alias and 12 archive-only members. Its ZIP
+is retired. The host has **144 sources** and the collection remains **290 reports**.
+The two earlier failed-search archives from `253b3ff50e` and `f8ec6158f3` remain
+queued for batch 189; their findings are not conflated with the accepted construction.
+
+A 205-node source preserves all 4,744 primitive instructions and their complete
+control graph. Five closed reassociations expose an existing continuation;
+a marker written by unique incoming transitions then permits state 212 to share 85.
+The resulting table has 218 working states and 436 rows. Its ordinary proof preserves
+the calibrated classical calculus; final runtime and complete blank startup are
+separate certificates, documented in the [intake and reproduction](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-188-reproduction.md).
+Six selected fresh jobs pass: all 6,167 unbounded runtime cases, 1,515,158 symbolic
+rules, all 436 rows and the exact 312,909-step complete startup. The minimum
+positive duration constant is 12. The K/S formalism experiment remains
+uncalibrated and is not a premise of the result.
+No new exact-K218 Lean/Rocq or internal PA endpoint, unconditional nonhalting,
+minimality or machine with at most 217 states is claimed.
+
 ## Queue status after batch 187
 
 Three archives from arrivals `ffcdff81ad` and `0b0cec2d0d` are imported as
@@ -21,7 +44,7 @@ Placement `99fbf38bbd` retires all three ZIPs and accounts for every one of thei
 archive alias and 13 archive-only article/delivery members. The host now has
 **143 sources**; the collection remains **290 reports**. The batch-187 archives are
 cleared. Two later archives fetched at `253b3ff50e` and `f8ec6158f3` are reserved
-for batch 188; they are not included in this disposition.
+for the next intake (now batch 189); they are not included in this disposition.
 
 Source 141 adds three 219-state alternatives: guarded zero terminals, retagged
 reassociation, and their independently realized combination. The existing row157
@@ -992,6 +1015,7 @@ ProveIt-era batches (from this directory):
 | 185 | Two manuscripts from `7677a1f62f` and `bf01dd349a`: placement `de06ba50be` adds Sources 138–139; 175 members = 150 new + 7 existing aliases + 6 batch aliases + 2 history aliases + 10 archive-only. Both ZIPs retired; now 139 sources and still 290 reports. | [intake-185.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-185.md): nonpure decoder re-encoding and contextual fold to 220, three certified continuation alternatives, and separate theory/encoding research. | this commit | Fresh final 6,167-case symbolic runtime (1,516,421 rules), complete 409,835-step startup and independent audit; fresh alternative macro/window proofs, startup and independent core audit. Ancestor calibration reused, no recursive ancestor replay or checksum-manifest validation. No new literal-220 Lean/Rocq or internal PA endpoint. |
 | 186 | One manuscript from `26d5de6d21`: placement `24c7e68de7` adds Source 140; 110 members = 93 new + 2 existing aliases + 6 batch aliases + 1 history alias + 8 archive-only. ZIP retired; now 140 sources and still 290 reports. | [intake-186.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-186.md): clean open-tree equality sharing, exact 219-state decoder/return adaptation, retained calculus/codec research and scoped negative experiments. | this commit | Seven selected fresh jobs pass: source/build, full 6,167-case runtime (1,515,040 rules, all 438 rows, minimum duration 13), complete 312,617-step startup, independent audit and two supplements. Ancestor calibration reused. No literal-219 Lean/Rocq or internal PA endpoint. |
 | 187 | Three manuscripts from `ffcdff81ad` and `0b0cec2d0d`: placement `99fbf38bbd` adds Sources 141–143; 274 members = 218 new + 14 existing aliases + 28 batch aliases + 1 history alias + 13 archive-only. All three ZIPs retired; now 143 sources and still 290 reports. | [intake-187.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-187.md): three 219 alternatives, exact source composition, cofinal-bundle obstruction and qualified positive theory/source progress, with failed and partial compiler evidence retained. | this commit | Same-size row157 stacking is supported by a positive whole-tape diagram. Six Source-142 finite checks pass, including two explicitly conditional `cd59` audits. Final runtime, startup and encoding replay records are separately scoped in the intake. No verified ≤218 machine or new literal-table Lean/Rocq/PA endpoint. |
+| 188 | One manuscript from `c4568161bf`: placement `6ffbe92305` adds Source 144; 99 members = 64 new + 4 existing aliases + 18 batch aliases + 1 history alias + 12 archive-only. K218 ZIP retired; 144 sources, 290 reports. The two failed-search archives remain for 189. | [intake-188.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-188.md): calibrated classical 218 construction, 205-node source and origin-marker fold; ancillary theory/encoding limits retained. | this commit | Complete source graph preserved; all-tape checkpoint fold uses positive 1/3/5-step blocks. Six fresh jobs pass: 6,167 cases, 1,515,158 rules, all 436 rows, minimum duration 12 and complete 312,909-step startup. Inherited calibration remains separate. No new exact-table kernel/PA endpoint or ≤217 result. |
 
 
 Batches 99 to 113 are the fifteen clusters into which the intake triaged
