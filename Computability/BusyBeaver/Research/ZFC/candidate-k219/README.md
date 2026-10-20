@@ -90,13 +90,30 @@ equivalence, source size, raw allocation and complete machine verification:
   proofs of five alternate equality routines. The left-decrement hit2
   trades the right-decrement issue for a new increment entry; its measured
   raw allocation has not improved the state count.
+- [Extended equality discovery](../k219-equality-extension/README.md)
+  reconstructs 263 additional finite-search hits. Of these, 242 pass the
+  larger finite diagnostic; none improves the 206-node source, and the
+  smallest measured raw allocation uses 220 states. Their all-natural
+  contracts remain unproved.
 - [Decoder and helper sharing](../k219-continuation-search/README.md)
   searched 352,384 distinct candidate specifications without finding an
-  accepted reduction. The finite-window failures are not a lower bound.
+  accepted reduction. Follow-up families include 190,092 attempts to
+  eliminate a single-entry state by longer transition blocks, also without
+  a survivor. These families overlap; the finite-window failures are not
+  a lower bound.
 
 The merged [221-state Lean endpoint](../candidate-k221/README.md) is now
 closed upstream. That formal result is specific to its own table; the
 exact 219-state Lean and internal PA endpoints remain open.
+
+Upstream commit `17af6847e8` adds Lean proof sources for the 219 equality
+routine and structured program, including `L2Q.dag219_seed_iff`, the patched
+engine's register contracts, 24 kernel bootstrap blocks totaling 312,617
+steps, and the literal table's 438-action relabelling. The literal-source
+equivalence and complete decoder-site coverage have generators, but their
+219 theorem files and the final blank-tape composition are not yet committed.
+The [source review](lean-source-review/review.md) checks this scope and the
+literal table data without claiming a fresh local Lean build.
 
 ## Provenance and reproduction
 
