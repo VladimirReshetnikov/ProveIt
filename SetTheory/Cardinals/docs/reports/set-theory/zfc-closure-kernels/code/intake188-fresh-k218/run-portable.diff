@@ -1,0 +1,17 @@
+--- executed/run.py
++++ portable/run.py
+@@ -1,11 +1,12 @@
+ #!/usr/bin/env python3
+ """Reviewer-owned bounded serial runner for exactly the reviewed six leaves."""
+-import hashlib,json,os,signal,subprocess,time
++import argparse,hashlib,json,os,signal,subprocess,time
+ from pathlib import Path
+-BASE=Path('/tmp/zfc-intake188-opening/execution')
+ def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+ def dump(p,v):p.write_text(json.dumps(v,indent=2,sort_keys=True)+'\n')
+ def main():
++    ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--work',type=Path,required=True)
++    args=ap.parse_args();BASE=args.work.resolve()
+     plan=json.loads((BASE/'plan.json').read_text()); logs=BASE/'logs';logs.mkdir()
+     assert __debug__ and not (BASE/'result.json').exists()
+     env=dict(os.environ)

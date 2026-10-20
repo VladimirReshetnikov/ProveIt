@@ -1,0 +1,79 @@
+{
+  "status": "INDUCTIVE_ZERO_AND_EXACT_HALT_SPECIALIZATION_CONTEXT_PASS",
+  "variant": "six_leaf2",
+  "source_prefix": "1110100101",
+  "old_interval": [
+    4598,
+    4610
+  ],
+  "new_interval": [
+    4598,
+    4604
+  ],
+  "external_incoming": [
+    [
+      39,
+      4598
+    ]
+  ],
+  "normal_outgoing_old": [
+    [
+      4608,
+      4610
+    ]
+  ],
+  "normal_outgoing_new": [
+    [
+      4598,
+      4604
+    ],
+    [
+      4602,
+      4604
+    ]
+  ],
+  "old_abstract_entry": [
+    2,
+    3,
+    3,
+    1,
+    3,
+    3,
+    1,
+    1,
+    3
+  ],
+  "new_abstract_entry": [
+    2,
+    3,
+    3,
+    1,
+    3,
+    3,
+    1,
+    1,
+    3
+  ],
+  "bit_meanings": {
+    "1": "zero",
+    "2": "positive",
+    "3": "either"
+  },
+  "old_fixed_point_work_items": 19814,
+  "new_fixed_point_work_items": 19779,
+  "old_inductive_edges_rechecked": 6163,
+  "new_inductive_edges_rechecked": 6155,
+  "outside_guarded_edges_matched": 6150,
+  "source_metrics": {
+    "dag_nodes": 208,
+    "leaf_occurrences": 4738,
+    "maximum_depth": 38,
+    "maximum_zero_run": 6
+  },
+  "old_source_sha256": "0f6d9d991e36dda1a7449edab72a799bb2d8c3de3ff853a26178b89bd1bc8789",
+  "new_source_sha256": "1b89eedd9784f69c2d7a24ebf2ed81c587dc4298095c548904abd18ff8b3509f",
+  "zero_facts_sha256": "7524acc31bbb1b2ba84ad048d9498989e7b96c6098d3cd9703f187217990cc74",
+  "macro_contract": "Under R6=0, halt iff entry R5=1; otherwise return normally with R5=R6=0 and every other register unchanged.",
+  "unbounded_macro_proof": "Three cases R5=0, R5=1, R5>=2; the remaining clear loop decreases R5 until zero. See halt_specialization.md.",
+  "scope": "Executable ordinary finite induction and exact source context transport. This is not a proof-assistant kernel certificate or a compilation claim."
+}

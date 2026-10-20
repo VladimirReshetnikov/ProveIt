@@ -1,0 +1,18 @@
+--- compare.py
++++ compare-portable.py
+@@ -1,10 +1,11 @@
+ """Own literal/tree/CFG comparison; imports no submitted module."""
+ from pathlib import Path
+-import hashlib,json,collections
+-ROOT=Path('/home/codex/.codex/worktrees/ec20/Proofs')
+-PK=Path(__file__).resolve().parents[1]/'K218_Construction_2026-10-20'
++import hashlib,json,collections,argparse
++ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--repo',type=Path,required=True);ap.add_argument('--packet',type=Path,default=Path(__file__).resolve().parents[1]);ap.add_argument('--output',type=Path,required=True);args=ap.parse_args()
++ROOT=args.repo.resolve();PK=args.packet.resolve()
++assert not args.output.exists();args.output.mkdir(parents=True)
+ R=ROOT/'Computability/BusyBeaver/Research/ZFC'
+-OUT=Path(__file__).resolve().parent
++OUT=args.output
+ sha=lambda x:hashlib.sha256(x).hexdigest()
+ compact=lambda x:(json.dumps(x,separators=(',',':'))+'\n').encode()
+ def table(p):

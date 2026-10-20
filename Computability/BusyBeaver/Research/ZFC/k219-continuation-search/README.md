@@ -1,6 +1,6 @@
 # Bounded decoder-state sharing after K219
 
-This search found no certified 218-state machine. It enumerated 344,648 candidate specifications on the published [K219](../candidate-k219/README.md) and its [row157 variant](../candidate-k219/variant-row157/result.json), then repeated the same family with wider diagram bounds. Every candidate failed the bounded filter. These failures are neither semantic counterexamples nor a lower bound on the number of states.
+This search found no certified 218-state machine. The initial search enumerated 344,648 candidate specifications on the published [K219](../candidate-k219/README.md) and its [row157 variant](../candidate-k219/variant-row157/result.json), then repeated the same family with wider diagram bounds. Later searches covered engine pairs and deletion of single-entry checkpoints. Every such candidate failed its bounded filter. These failures are neither semantic counterexamples nor a lower bound on the number of states.
 
 ## Candidate family
 
@@ -76,8 +76,91 @@ python3 -B Computability/BusyBeaver/Research/ZFC/k219-continuation-search/measur
 
 The compiler adaptation and protected policy were authored by `opening_encoder`; these two measurement wrappers and the CI6 hypothesis were authored by `drop_contract`. Source utilities are retained from the pinned K221 package with their existing attribution. The alternative source and its mathematical proof were prepared independently by `review_upstream_reflection`.
 
+## Selective allocator protection on experimental R variants
+
+Three [fourth-parameter sources](../k219-pivot-fusion/README.md), RAB-left, RBC-left and RCA-right, have 205 DAG nodes but an **open consistency calibration**. Their original incremental allocations fail decoder-prefix checks; protecting all old states gives 230-state layouts. These sources do not currently satisfy the goal of a ZFC-calibrated machine with at most 218 states.
+
+The [selective allocator](selective_protection.py) keeps the original leaf-entry choices and protects reused state IDs implicated by the first failing prefix. Protection applies to the entire state, including all subtree aliases and incoming branches. It retains exact failed tables, prefix words, tape snapshots and transition traces. Each of the three sources is bounded to 64 attempts, with a shared 120-second limit and an external 125-second process bound. Each potential success is checked again by the unchanged full prefix walker and table roundtrip. The baseline control reproduces K219 exactly.
+
+The [first run](results/selective-run1/result.json) protected 15 states appearing in the failing prefix and produced 229-state layouts. A [narrow successor](selective_protection_v2.py) checks node-to-state binding at each node entry, exposing an earlier wrong-node arrival rather than descending until a later tape failure. Its [actual run](results/selective-run2/result.json) needed only states 131 and 145 protected and produced 222-state layouts for all three sources. Each run took two allocation attempts per source, completing in 1.215 and 1.226 seconds respectively. The [focused diff](selective-early-binding.diff) preserves the earlier run.
+
+The common bad prefix is `1110100100110111111100`: it arrives at state 303 instead of the required state 165. Its final edge originally follows `188/0=0L131`, `131/0=0R145`, `145/0=0R165`. In the failed allocation the last target becomes 303. State 131's encountered zero row is unchanged; the successor conservatively protects both reused state IDs on this edge. This is a concrete dependency of a context-sensitive decoder helper, not evidence that every protected state is necessary.
+
+These are greedy allocation measurements, not a minimum or a primitive/runtime proof. No layout reaches 219, so no full symbolic-runtime or startup replay was performed. Arithmetic helper preservation beyond the checked decoder prefixes and the proposed R-calculus calibration remain separate obligations. The unchanged-theory 219 candidate is unaffected.
+
+```sh
+timeout 125s python3 -B Computability/BusyBeaver/Research/ZFC/k219-continuation-search/selective_protection_v2.py \
+  --output /tmp/k219-selective-allocation-fresh
+```
+
+The [independent source review](results/independent-source-peer.json) concerns the original decoder merge enumerator, its limits and historical controls. It does not claim independent review of these later compiler measurements. Root reviewed the hit2 packet before its separate commit; the new selective packet has its own retained sources and results.
+
+## Engine entries and hidden checkpoints
+
+These follow-ups preserve the accepted 219 source theory. They operate on both exact published seed tables and leave candidate publications unchanged. Every run used radius 7 and fuel 97. The counts below overlap earlier families and each other; they are not a census of globally distinct machines.
+
+| Family | Specifications, both seeds | Seconds | Survivors |
+|---|---:|---:|---:|
+| [Engine anchors 198, 113, 66, 40, 54](results/engine-helpers-run1/result.json) | 19,064 | 5.611 | 0 |
+| [Two-action merge 198 → 66](results/66-198-run1/result.json) | 95,922 | 6.425 | 0 |
+| [Hidden checkpoint 198](results/hidden198-run1/result.json) | 1,752 | 4.221 | 0 |
+| [Every strict single-entry checkpoint](results/hidden-states-run1/result.json) | 190,092 | 8.644 | 0 |
+
+The [engine-anchor search](search_engine_helpers.py) applies the inherited-action/one-common-branch family to all 1,075 pairs per seed involving one of those five states and any other noninitial working state. Each seed supplies 4,288 inherited and 5,244 synthesized choices. No candidate reached the full checker. Its [diff](search-engine-helpers.diff) changes only the anchor family and corresponding metadata from the prior helper search.
+
+The [two-action experiment](search_66_198.py) maps old state 198 to 66, synthesizing both merged actions as write 1 / move left with independently chosen targets among the 218 remaining states and halt. This gives 219² choices per seed. The entry invariant is checked throughout the finite-window domain: state 66 has immediate-left 0 and second-left 1, whereas state 198 has immediate-left 1 and second-left 0. Both rows are still subject to the quotient relation, so this experiment is distinct from hiding state 198 entirely.
+
+The [hidden-198 experiment](search_hidden198.py) instead deletes state 198 and varies only its unique incoming action, `66/0`, over both writes, both directions and all remaining targets. Its boundary relation requires identical state, head and complete tape **only outside the deleted checkpoint**. At the changed entry it seeks positive old/new blocks to a common boundary, or a proof that both halt. All other boundary rows are exactly unchanged. It imposes no relation on arbitrary configurations in old state 198. Each seed has 4,096 entry windows in the inductive overapproximation.
+
+The [generalized search](search_hidden_states.py) applies this last method to every noninitial state with exactly one incoming row, counting self-loops and requiring a distinct predecessor. There are 109 eligible states in K219 (95 allocated decoder states and 14 other states), and 108 in row157 (94 and 14). Every eligible state completed all 876 actions; none had an empty entry domain. The result lists all eligible states, excluded states and reasons, and explicit completed/attempted counts. Old positive endpoints are cached separately for each hidden state and entry window. Its [synthetic controls](results/hidden-states-run1/controls.json) accept a three-old-step/one-new-step detour removal and reject an invalid early halt using the same cache. These controls cover those examples only.
+
+The engine-anchor run had a 1,200-second bound and an external 1,240-second timeout; each later run had a shared 120-second bound and external 125-second timeout. Exact executed sources and complete compressed rejection streams are retained beside each result. Hidden-state survivors would require a separate independent boundary-macro verifier; none was produced. No new full symbolic-runtime, startup, Lean or PA check is claimed by these searches. In particular, state 0 has incoming engine rows and is not a disposable startup-only state.
+
+```sh
+timeout 1240s python3 -B Computability/BusyBeaver/Research/ZFC/k219-continuation-search/search_engine_helpers.py \
+  --output /tmp/k219-engine-sharing-fresh
+timeout 125s python3 -B Computability/BusyBeaver/Research/ZFC/k219-continuation-search/search_66_198.py \
+  --output /tmp/k219-two-action-fresh
+timeout 125s python3 -B Computability/BusyBeaver/Research/ZFC/k219-continuation-search/search_hidden198.py \
+  --output /tmp/k219-hidden198-fresh
+timeout 125s python3 -B Computability/BusyBeaver/Research/ZFC/k219-continuation-search/search_hidden_states.py \
+  --output /tmp/k219-hidden-states-fresh
+```
+
+The [additional v3 peer](results/decoder-v3-source-peer.json) covers the original merge filter only. The [hidden-state source peer](results/hidden-state-source-peer.json) independently reviewed the generalized boundary filter and its completion metadata, without rerunning it or issuing a candidate certificate. The [follow-up metadata audit](results/followup-metadata-review.json) checks source snapshots, all recorded rejection specifications, eligibility, input hashes, raw allocator state counts and local links; it does not rerun or independently prove the failed diagrams.
+
+## Initial-state folds and the blank domain
+
+The earlier families excluded the initial state. A separate [start-state search](search_start_states.py) covers all 218 choices of retained state `q ≠ 0` on each seed. Each candidate maps old state 0 to q, removes state 0, redirects every incoming target 0 to q, and writes q as the new native initial state. It uses the same inherited-action or one-common-branch family; no other rows change except their mapped targets.
+
+The [actual result](results/start-states-run1/result.json) completed **19,184 specifications** in 5.907 seconds: 9,592 per seed, consisting overall of 1,704 inherited and 17,480 synthesized choices. Every target completed and no candidate survived the filter. The original all-initial-tape domain starts at old state 0; an independent checker call for a survivor would use old start 0 and new start q. The [synthetic controls](results/start-states-run1/controls.json) check a valid changed-start fold and reject an invalid early halt. No K219 candidate reached that checker.
+
+A separate [domain diagnostic](compare_blank_domain.py) starts only at state 0 with the central 15 cells zero, then admits either value for every shifted-in exterior bit. The resulting inductive closure overapproximates blank execution and any initial tape with that zero window. It does **not** justify equivalence on all initial tapes.
+
+| Seed | All-initial-tape contexts | Blank-seeded contexts | Removed |
+|---|---:|---:|---:|
+| K219 | 1,012,111 | 999,869 | 12,242 |
+| row157 | 1,012,495 | 1,000,253 | 12,242 |
+
+The [comparison](results/blank-domain-run1/result.json) completed in 8.731 seconds. Exactly 16 rows change, at states 0, 4, 40, 54, 66, 94, 97, 113 and 198. Allocated decoder domains are unchanged. Entry 66/read 0 falls from 4,096 to 3,584 contexts; each state-198 row falls from 2,048 to 1,920.
+
+The [restricted-domain audit](results/blank-rescreen-run1/result.json) then checks the first failed window of every candidate in the engine-anchor, two-action 66/198, hidden-198, generalized hidden-state and start-state families. **All 326,014 first obstructions remain in the smaller domain.** It completed in 6.645 seconds, so zero candidates needed a repeated trajectory run and no new survivor was produced. A restricted-domain survivor would require an independent blank-relative certificate; the universal checker is deliberately not called with that restricted invariant. These overlapping family counts are not a global count of distinct machines.
+
+Fresh-output reproduction, with enabled assertions:
+
+```sh
+timeout 120s python3 -B Computability/BusyBeaver/Research/ZFC/k219-continuation-search/search_start_states.py \
+  --output /tmp/k219-start-folds-fresh
+timeout 120s python3 -B Computability/BusyBeaver/Research/ZFC/k219-continuation-search/compare_blank_domain.py \
+  --output /tmp/k219-blank-domain-fresh
+timeout 120s python3 -B Computability/BusyBeaver/Research/ZFC/k219-continuation-search/rescreen_blank_failures.py \
+  --output /tmp/k219-blank-rescreen-fresh
+```
+
+The last command defaults to the published start-fold record; use `--start-run /tmp/k219-start-folds-fresh` to compare a fresh run instead. The actual start and rescreen jobs had 115-second internal deadlines and hard 120-second external timeouts. Their exact scratch sources, wording and freezes are retained in [lossless compressed history](history/start-and-blank-scratch.json.gz). [Provenance](results/start-blank-provenance.json) separates those executed bytes from the portable path/output adapters; no search was rerun during publication. The [19-atom equality follow-up](../k219-atom-extension/README.md) is recorded separately and also found no source-DAG reduction.
+
 ## Scope and next direction
 
-The result exhausts only the stated candidate specifications under the recorded bounded filter. It leaves source reassociation, occurrence splitting, multistate changes, independently synthesized two-branch merges, and blank-specific invariants open. Window-exit failures dominate, so a useful next step is a source-aware proof of decoder-entry contexts or a coordinated source/allocator change, rather than interpreting these failures as proof of minimality. Source transformations are being investigated separately from this binary-state family.
+The result exhausts only the stated candidate specifications under the recorded bounded filters. It leaves source reassociation, occurrence splitting, multistate changes, general independently synthesized two-branch merges, and blank-specific invariants open. The two-action experiment above covers only its fixed write/direction family. Window-exit failures dominate, so a useful next step is a source-aware proof of decoder-entry contexts or a coordinated source/allocator change, rather than interpreting these failures as proof of minimality. Source transformations are being investigated separately from this binary-state family.
 
 The two inputs and universal checker come from the maintained K219 publication and Source 139. The enumerator, bounded filter, controls and recorded runs were authored/executed by `drop_contract` on 20 October 2026; source review is recorded separately. The accepted candidate files were not edited.

@@ -1,10 +1,10 @@
 # Smaller machines for Con(ZFC)
 
-The goal is a binary, single-tape machine with fewer than 254 nonhalting
-states whose halting status is independent of ZF. The original target was
-blank-tape nonhalting provably in **PA** equivalent to Con(ZFC). The search
-now also permits equivalence to consistency of an effectively axiomatized
-stronger theory, as clarified by the user on 17 October 2026. Each candidate
+The current goal is a binary, single-tape machine with **217 working states
+or fewer** whose blank-tape nonhalting is provably in **ZFC** equivalent to
+Con(ZFC). The original target was fewer than 254 states and equivalence
+provable in PA. An earlier search phase also permitted consistency of a
+well-understood stronger theory, as clarified on 17 October 2026. Each candidate
 must state the assumptions used for its two unprovability directions;
 consistency alone must not be confused with arithmetic soundness. The
 external Lean equivalence with Con(ZFC) is now proved for the exact
@@ -42,7 +42,53 @@ nine typed callers pass with zero warnings. The internal PA equivalence for
 this exact 240-state machine is now checked too
 ([`BinaryConsistencyRotation240`](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/BinaryConsistencyRotation240.lean), 19 October 2026). See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md).
 
-The smallest **ordinary** candidate is now the [**219-state machine**](candidate-k219/README.md)
+The primary **ordinary** contender is now the [**218-state machine**](candidate-k218/README.md)
+from `c4568161bf`, imported as Source 144 in batch 188. Its 205-node source
+exposes a continuation that lets native 85 and 212 share a state using the bit
+written by their incoming edges. All six fresh jobs pass: 6,167 guarded cases,
+1,515,158 symbolic rules, all 436 rows and exact 312,909-step blank startup.
+Independent mathematical reviews confirm the source and final all-tape fold
+arguments. The complete unchanged-calculus comparison is formalizable in ZFC;
+the exact-K218 Lean and internal PA endpoints remain open. The row157 rewrite
+also gives a second checked 218 layout. Our next target is **217 states or fewer**.
+See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-188.md)
+and [reproduction guide](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-188-reproduction.md).
+
+The [contextual 218 alternative](candidate-k218/alternatives/contextual/README.md)
+from `3c7c3aa5a3` also passes six fresh checks: 6,167 cases, 1,514,325 rules,
+all 436 rows and a complete 312,701-step startup. Its graph is distinct, but
+its final fold shares the same two source roles as the primary; the savings
+do not stack. Its own row157 variant also remains at 218. See
+[batch 190](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-190.md).
+
+The two [batch-189 research reports](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-189.md)
+retain useful arbitrary-clean-seed and fixed-power-of-two scheduler theorems,
+two freshly verified 219 layouts, and explicit failed startup repairs.
+The [all-start obstruction](k218-continuation-search/all-starts/README.md)
+shows that choosing another existing start cannot repair the exact delete301
+217 table. All three new archives have been imported and retired. A [reachable repair
+counterexample](k218-continuation-search/row36-repairs/README.md) rejects the
+proposed row36 repairs for the accepted source. A [source-reassociation
+search](k218-continuation-search/rotation-folds/README.md) tests 282,416 fold
+specifications after 25 closed rotations without a survivor; its bounds do
+not imply minimality.
+
+On the formalism side, [K/S plus quantified stability](k218-quantifier-stability/README.md)
+has a new ordinary consistency calibration, with an independently checked
+finite proof DAG. Its [first source pricing](k218-quantifier-stability/pricing/README.md)
+does not save states. The [five-value model](k219-fourth-parameter/finite-matrix/README.md)
+now excludes every membership-fourth restriction of rho8, even their union,
+while retaining the other native rows; adding K or explosion is outside
+that model's scope. A separate [three-value code-dependent model](k218-k-membership-obstruction/README.md)
+now also rules out K plus `R(A,B)`-fourth rho8, even with quantified stability.
+Its [all-natural Lean proof](k218-k-membership-obstruction/lean-model/README.md)
+now passes with 21 standard-axiom reports and zero warnings. A separate
+[syntactic invariant](k218-k-membership-obstruction/identities/README.md) also
+rules out K plus that restricted row even with every identity, including
+`F → F` (code 16). The latter proof excludes quantified stability; combining
+both additions remains outside these results. No machine-state saving follows.
+
+The primary 218-state machine’s predecessor is the [**219-state machine**](candidate-k219/README.md)
 of batch 186 (Source 140, arrival `26d5de6d21`). A clean equality routine
 shares an open subtree between cancellation and cleanup; two compiler repairs
 turn its 208-to-206 source-DAG saving into 219 working states. Seven selected
@@ -52,6 +98,17 @@ also passes on this table, yielding a second 219 layout; row103 conflicts
 with its new return. No 218-state result or exact-219 Lean/PA endpoint follows.
 See [the reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-186.md)
 and [replay instructions](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-186-reproduction.md).
+
+Batch 187 adds [three 219-state alternatives](candidate-k219/alternatives/README.md)
+from `ffcdff81ad`: zero-terminal equality, continue retagging and their
+composition. All three pass fresh full symbolic runtimes and complete startup;
+the row157 rewrite also works on each. The two failed-218 reports from
+`0b0cec2d0d` retain a full cofinal-bundle countermodel, a qualified core-only
+tail lemma, alternative equality contracts, exact failed return edits and
+unresolved cases. A new [shifted-head fold search](k219-shifted-fold/README.md)
+finds no survivor among 1,031,840 candidates across the six layouts.
+Those combinations remained at 219; K218 above is the later improvement. See the [reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-187.md)
+for proof boundaries and the useful remaining directions.
 
 The predecessor is the [**220-state machine**](candidate-k220/README.md)
 of batch 185 (Source 138). A non-pure decoder re-encoding permits two closed

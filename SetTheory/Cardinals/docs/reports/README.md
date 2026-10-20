@@ -3191,3 +3191,62 @@ individual scopes. This is an ordinary mathematical construction with symbolic
 certificates, without a new literal-table Lean/Rocq or internal PA endpoint.
 The separate closed Rocq endpoint for Source 132's exact 221 remains available.
 The incoming queue is empty; original files remain recoverable from Git history.
+
+
+Batch 187 imports [Sources 141–143](set-theory/zfc-closure-kernels/intake-187.md),
+bringing the host to **143 sources**, with **290 reports** unchanged. Placement
+`99fbf38bbd` retires all three arrivals and accounts for all 274 members. Source 141
+adds zero-terminal, retagged and composed 219-state alternatives, each with 438 rows
+and 4,744 source leaves. Their source identities preserve complete register/control
+outcomes; physical composition uses a separately realized decoder, not an inference
+from disjoint edits. The existing row157 rewrite also composes at the same state count.
+The two progress companions retain a full cofinal-bundle consistency obstruction,
+a core-only tail lemma requiring full vacuity, exact equality routines, partial
+220-state interface proofs and concrete failures of proposed 218-state folds.
+Six selected finite checks of the first companion pass; two remain conditional on
+unproved `cd59`. The [reproduction record](set-theory/zfc-closure-kernels/intake-187-reproduction.md)
+keeps final-machine, bounded-search and inherited-calibration evidence separate.
+No verified ≤218 machine or new exact-table Lean/Rocq/internal-PA endpoint is claimed.
+The three batch-187 archives are retired and recoverable from Git history. Two
+later arrivals, `253b3ff50e` and `f8ec6158f3`, are now reserved for batch 189.
+
+
+Batch 188 imports [Source 144](set-theory/zfc-closure-kernels/intake-188.md), bringing
+the host to **144 sources**, with **290 reports** unchanged. Placement `6ffbe92305`
+accounts for all 99 members and retires the K218 construction ZIP. The
+[218-state table](../../../../Computability/BusyBeaver/Research/ZFC/candidate-k218/README.md)
+has 436 rows. Its 205-node source preserves the complete 4,744-instruction word and
+control graph; five closed reassociations enable an origin-marker fold of 85/212.
+The ordinary proof retains the complete calibrated classical calculus, with final
+unbounded runtime and complete blank startup checked separately. All six fresh
+selected jobs pass: 6,167 cases, 1,515,158 rules, all 436 rows, minimum positive
+duration 12 and the complete 312,909-step startup. Formalism
+experiments, including the uncalibrated K/S route and a rejected runtime-only 218,
+remain explicitly distinct. No newly compiled exact-K218 Lean/Rocq or internal PA
+endpoint, or ≤217 result, is claimed. [Recovery and replay](set-theory/zfc-closure-kernels/intake-188-reproduction.md)
+preserve original layouts and proof boundaries. The two failed-search archives
+from 253b3ff50e/f8ec6158f3 remain pending batch 189.
+
+
+Batches 189–190 bring the closure-kernel host to **147 sources**, while the
+collection remains **290 reports**. [Sources 145–146](set-theory/zfc-closure-kernels/intake-189.md)
+retain two older research packages: alternative 219 layouts, full T-only
+countermodels, fixed public labels, generalized clean seeds, power-of-two
+scheduler completeness, and explicit initialized-core and encoding failures.
+Five selected Source-145 jobs pass, including both complete generic runtimes;
+Source 146's runtime is delivered evidence, with fresh finite checks separately
+recorded. Placement `d134378a07` accounts for all 1,036 members and retires both ZIPs.
+
+[Source 147](set-theory/zfc-closure-kernels/intake-190.md) supplies a distinct
+[contextual 218 alternative](../../../../Computability/BusyBeaver/Research/ZFC/candidate-k218/alternatives/contextual/README.md).
+Its 205-node source preserves the complete ordinal control graph. Preceding-bit
+routing implements two decoder roles through one state, with complete runtime
+and startup checked separately. Six fresh jobs pass: 6,167 unbounded cases,
+1,514,325 symbolic rules, all 436 rows, minimum duration 13 and 312,701-step
+blank initialization. A separate five-value matrix obstructs the plain
+membership-fourth-input proposal and all its membership orientations jointly;
+it is not part of the machine calibration. Placement `6ee648c500` accounts
+for all 102 members and retires the ZIP. The primary K218 remains unchanged.
+[Recovery](set-theory/zfc-closure-kernels/intake-190-reproduction.md) preserves
+the exact source/table lineage and inherited attribution. No new exact-table
+Lean/Rocq or internal PA endpoint, minimality or ≤217 result is claimed.

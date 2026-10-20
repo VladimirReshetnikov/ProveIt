@@ -1,0 +1,23 @@
+# Alternative K219 tables and stacking review
+
+The three delivered alternatives all retain 219 working states. I read the complete construction script before testing, then independently parsed every transition. Native labels normalize the accepted table's 301/302 to 102/120; no other state disappears. Exact comparison and source/output hashes are in `comparison.json`.
+
+Zero-terminal changes 9 rows; retagged changes 3 disjoint rows. Their literal table union is **not** the delivered composed machine: union139/0 is0R99, whereas composed139/0 is0L139. The two source transformations compose, but their binary realizations require this separate row. No correctness claim is made for the literal union.
+
+The previously accepted row157 rewrite,157/1=1L148→1L187, touches none of those rows. I built three exact stacks and invoked the unchanged Source139 positive joint-diagram checker separately. All three pass with freshly recomputed radius7 domains, fuel97, and rejected initial-halt controls. Each has 1,664 nontrivial contexts and maximum old/new positive blocks 2/3. Total domain contexts: zero-terminal 1,019,753; retagged 1,019,279; composed 1,029,097. This establishes full-tape halting equivalence for all binary initial tapes from the shared start, relative to each delivered source table. It does not save a state, repeat their complete symbolic runtime, or add a Lean/PA endpoint.
+
+## Failed218 encoding supplement
+
+I read README.md and all of supplement.tex, then the complete return-contract capture, independent four-counterexample replay, divergence certificate checker, and state27 overlap/disjointness scripts. Its substantive distinctions are sound: exact source proofs and focused pilots differ from complete physical-machine certification; finite failed interfaces differ from blank-run counterexamples; window escapes/caps remain inconclusive.
+
+The baseline return302 (normalized120) has mixed source/arithmetic use. Its only external callers are103/1 and113/0. The captured1,432 frames include1,419 ordinary113 cases, four right-child zero-decrement exceptions, and nine103 cases; source119/1 also reaches103 arithmetically. All six new layouts retain the return's two rows and external caller pair. New source macros alter some actual entry frames, so baseline exceptional frame coverage must not be silently reused as full new coverage.
+
+I independently tested whether the new layouts repair the seven *explicit* known failures. `compare_failures.py` imports no supplied code. It reconstructs the fixed delete120/cooperative27 edit on each original alternative and its row157 stack. Every original literal trace for the four positive-CD8 wrong first-clean endpoints is unchanged. The three zero-CD8 divergence prefixes and their2/6-step periods also reproduce exactly, preserving the entire future-readable blank half-tape. All 42 specific obstructions persist in 182,964 literal transitions; `failure-transfer.json` records every case and used row set. These inputs are valid generic primitive frames, with no assertion that they occur in the initialized blank computation.
+
+No full 872-action rerun occurred. In particular, the supplement's 834 concrete-filter rejections, additional 3 divergence proofs and 35 unknown actions retain their original evidence levels; the remaining unknowns are not excluded by this comparison. State27's complete old/new frame languages are disjoint despite overlap at every fixed radius, leaving nonlocal discrimination open.
+
+Direct09 and Direct13 have explicit all-natural macro contracts, but their delivered raw tables have 220 states and only 115/131 selected generic cases checked; full runtime/startup remain open. Their helper303/122 and303/21 conflicts involve mixed arithmetic roles. The separate shared-cancellation raw220 table is NOT_PROVED, not refuted by these seven cooperative failures.
+
+## Next bounded family
+
+`search_shifted.py` subsequently completed the bounded discovery run. It covers common-direction incoming edges with a state-dependent head displacement±2, unlike the supplement's equal-head direct/delayed folds. Acceptance requires the independent frozen shifted checker to recompute the entire original domain. All six layouts completed: 1,031,840 candidates across 247,506 eligible pair-shifts, with no partial pair and no survivor. The cumulative search time was 152.664 seconds. Every first bounded rejection is preserved in a compressed stream; an independently written metadata auditor reconstructs each complete finite candidate family and compares every recorded action combination. These negatives do not prove semantic inequivalence or a lower bound.

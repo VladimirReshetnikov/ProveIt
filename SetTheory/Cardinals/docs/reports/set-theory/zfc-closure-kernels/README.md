@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings through 20 October 2026. This report now reconciles **140 manuscripts**.
+Intake findings through 20 October 2026. This report now reconciles **147 manuscripts**.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -8,6 +8,59 @@ the delivered base article is preserved, rather than rewritten as a unified arti
 No merged PDF is built. These are ordinary mathematical arguments and finite
 regression checks. The deliveries confer no formal status; subsequent Lean
 results and their exact scope are listed below.
+
+Batches [189](intake-189.md) and [190](intake-190.md) add Sources 145–147 and
+clear the queue. Placement `d134378a07` retains all 1,036 members of the two
+older research packages; `6ee648c500` retains all 102 members of the contextual
+alternative. All three ZIPs are retired, with original-layout recovery in the
+[189](intake-189-reproduction.md) and [190](intake-190-reproduction.md) guides.
+
+Source 145's two 219-state layouts pass five selected fresh jobs, including
+full 6,167/6,175-case runtimes and complete startup. Source 146's initialized
+218 core has a proved blank-start ray and is not a consistency machine; its
+alternative219 runtime remains delivered evidence. The retained ordinary
+proofs add full T-only countermodels, fixed-label specializations, arbitrary
+clean seeds and cofinal successful proof codes in every fixed power-of-two
+residue class. They supply design freedom, not a new ≤217 construction.
+
+Source 147's [contextual alternative](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k218/alternatives/contextual/README.md)
+has 218 states/436 rows and a distinct 205-node source allocation. All six
+selected fresh jobs pass: 6,167 unbounded cases, 1,514,325 symbolic rules,
+minimum positive duration 13, all 436 rows and exact 312,701-step startup.
+The same two source roles underlie both 218 folds, so their savings do not
+simply add. A separate five-value native-code model proves consistency of the
+plain membership-fourth-input proposal; constant membership interpretation
+also covers all six orientations together. Neither this supplement nor any
+changed logical basis is a premise of the alternative machine. The primary
+K218 remains unchanged; no new literal-table Lean/Rocq or internal PA endpoint
+or ≤217 result is claimed.
+
+[Batch 188](intake-188.md) adds Source 144, the [218-state construction](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k218/README.md).
+Its 205-node source preserves all 4,744 primitive instructions and ordinal control
+edges. Five closed reassociations expose a decoder continuation; unique incoming
+writes distinguish the 85/212 roles, giving a positive whole-tape fold and 436 rows.
+The classical calculus and inherited finite-refutation calibration are unchanged.
+All six fresh selected jobs pass, covering 6,167 unbounded cases, 1,515,158 rules,
+all 436 rows and minimum positive duration 12. The exact 312,909-step startup and
+runtime are separately recorded in
+[reproduction](intake-188-reproduction.md). K/S calibration remains open; its
+encoding insight is transferred without importing that assumption. No new literal
+K218 Lean/Rocq or internal PA endpoint, or ≤217 machine, is claimed. Placement
+`6ffbe92305` preserves all 99 members and retires this ZIP. The two failed-search reports
+were subsequently imported in batch 189. [Independent source review](intake188-source144-review.md).
+
+[Batch 187](intake-187.md) imports Sources 141–143: three further 219-state
+source/table pairs and two research companions toward 218 states. The zero-terminal
+open identity and 81 retagged reassociations compose at source level; the composed
+physical table uses its own decoder realization. The row157 whole-tape rewrite can
+also be added to each without reducing the state count. The companions retain a
+full cofinal-bundle countermodel, a core-only tail result requiring full vacuity,
+all-natural equality routines, concrete failed specimens and partial interface
+proofs. No verified ≤218 machine is delivered. Placement `99fbf38bbd` preserves all
+274 members and retires three ZIPs; [reproduction](intake-187-reproduction.md)
+separates fresh selected checks, inherited calibration and unproved dependencies.
+Independent [Source 141](data/intake187-source141-review.json) and
+[Source 142](data/intake187-source142-review.json) reviews retain the detailed scopes.
 
 [Batch 186](intake-186.md) imports Source 140, the [219-state construction](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k219/README.md)
 from `26d5de6d21`. It shares an open equality subtree, with a generalized
@@ -36,7 +89,7 @@ blank-tape non-halting and Con(ZFC), with fewer than 254 nonhalting states on a
 binary, two-way infinite, single tape. The maintained [240-state machine](../../../../../../Computability/BusyBeaver/Research/ZFC/rotation240_binary.md)
 now has both its external Lean comparison and the internal PA equivalence
 with Con(ZFC), improving the earlier checked 244-, 245-, 246- and 252-state
-endpoints. The new 220's ordinary argument is separate from that formal result. Several deliveries discuss provability in ZFC instead, and retain that
+endpoints. The current 218's ordinary argument is separate from that formal result. Several deliveries discuss provability in ZFC instead, and retain that
 stated scope. The user's later stronger-theory allowance is governed by the
 [current project criterion](../../../../../../Computability/BusyBeaver/Research/ZFC/README.md):
 assumptions must stay within well-understood benchmarks widely believed

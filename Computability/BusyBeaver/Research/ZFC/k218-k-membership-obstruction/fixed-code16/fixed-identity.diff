@@ -1,0 +1,11 @@
+--- original/search.cpp
++++ fixed-identity/search.cpp
+@@ -6,7 +6,7 @@
+ #include <vector>
+ using namespace std;
+ struct M {int n=3,nd=1,f=0,t=2;int z[4][36]; bool D(int x)const{return x>=n-nd;}int I(int a,int b)const{return z[0][n*a+b];}int R(int a,int b)const{return z[1][n*a+b];}int E(int a,int b)const{return z[2][n*a+b];}int Q(int a,int b)const{return z[3][n*a+b];}int N(int a)const{return I(a,f);}int Ex(int i,int a)const{return N(Q(i,N(a)));}int req(int b,int k,int m)const{return Q(b,I(m,N(Q(b,I(m,N(R(b,k)))))));}int clos(int a,int b,int k,int m)const{return Q(b,I(R(b,k),N(Q(a,I(m,N(Q(a,I(Q(k,I(R(k,a),R(k,b))),req(b,k,m)))))))));}int bundle(int a,int b,int c)const{return N(I(I(R(a,b),Q(c,R(a,b))),Q(c,I(clos(a,b,c,c),N(req(b,c,c))))));}
+- vector<int> scores()const{vector<int>s(9,0);for(int a=0;a<n;a++)for(int b=0;b<n;b++){s[0]+=!D(Ex(a,E(a,b)));s[5]+=!D(I(Ex(a,Q(a,b)),b));s[8]+=!D(I(a,I(b,a)));for(int c=0;c<n;c++){s[1]+=!D(I(Q(a,I(b,c)),I(Q(a,b),Q(a,c))));s[2]+=!D(I(E(a,b),I(R(c,a),R(c,b))));s[3]+=!D(I(Q(a,Q(b,c)),Q(b,Q(a,c))));s[4]+=!D(I(E(c,a),I(R(c,b),R(a,b))));s[6]+=!D(I(E(c,a),I(E(c,b),Q(R(a,b),E(a,b)))));s[7]+=!D(bundle(a,b,c));s[8]+=!D(I(I(I(c,R(a,b)),a),I(I(a,c),I(b,c))));}}return s;}
++ vector<int> scores()const{vector<int>s(10,0);s[9]=!D(I(f,f));for(int a=0;a<n;a++)for(int b=0;b<n;b++){s[0]+=!D(Ex(a,E(a,b)));s[5]+=!D(I(Ex(a,Q(a,b)),b));s[8]+=!D(I(a,I(b,a)));for(int c=0;c<n;c++){s[1]+=!D(I(Q(a,I(b,c)),I(Q(a,b),Q(a,c))));s[2]+=!D(I(E(a,b),I(R(c,a),R(c,b))));s[3]+=!D(I(Q(a,Q(b,c)),Q(b,Q(a,c))));s[4]+=!D(I(E(c,a),I(R(c,b),R(a,b))));s[6]+=!D(I(E(c,a),I(E(c,b),Q(R(a,b),E(a,b)))));s[7]+=!D(bundle(a,b,c));s[8]+=!D(I(I(I(c,R(a,b)),a),I(I(a,c),I(b,c))));}}return s;}
+  int score()const{auto v=scores();int s=0;for(int x:v)s+=x;return s;}
+ };
+ int main(int argc,char**argv){int sec=atoi(argv[1]),n=atoi(argv[2]),nd=atoi(argv[3]);unsigned seed=strtoul(argv[4],0,10);if(n<2||n>6||nd<1||nd>=n)return 3;mt19937 rng(seed);auto begin=chrono::steady_clock::now();M global;int best=99999;long long attempts=0;int restarts=0;

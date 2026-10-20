@@ -1,0 +1,26 @@
+--- history/check_known_models.py
++++ check.py
+@@ -1,8 +1,13 @@
+ """Own tiny carrier tests of named mixed fourth-input families, no supplied executable imports."""
+ from pathlib import Path
+ from itertools import product
+-import json,hashlib
+-P=Path('/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k219-fourth-parameter/finite-matrix/model.json')
++import argparse,json,hashlib
++ap=argparse.ArgumentParser()
++ap.add_argument('--model',type=Path,default=Path(__file__).resolve().parent.parent/'model.json')
++ap.add_argument('--output',type=Path,required=True)
++args=ap.parse_args();P=args.model
++assert hashlib.sha256(P.read_bytes()).hexdigest()=='639477b266ca069ae8298568d447c06a53924e4981e106434db9039b8f85f2d8'
++assert not args.output.exists()
+ old=json.loads(P.read_text())
+ models={'source147_five':{'I':old['table'],'R':[[2]*5 for _ in range(5)],'Q':old['Q'],'D':old['D'],'T':old['T'],'F':old['F']},'opening_three_candidate':{'I':[[1,2,2],[2,2,2],[1,1,2]],'R':[[1,0,2],[1,0,2],[1,0,0]],'Q':[1,1,2],'D':[2],'T':2,'F':0}}
+ results={}
+@@ -15,5 +20,6 @@
+   rows[key]={'carrier_assignments':n**3,'failures':len(bad),'failure_witnesses':bad}
+  results[name]={'model':m,'rows':rows}
+ r={'status':'EXISTING_MODEL_UNION_SCOPE_CHECK','models':results,'scope':'Only finite assignments for named fourth-input builders. A PASS extends an already sound model; failure refutes only that model, not the calculus. Opening three-value candidate remains pending independent native-row/AST validation.'}
+-p=Path(__file__).with_name('known-model-results.json');assert not p.exists();p.write_text(json.dumps(r,indent=2)+'\n')
++assert {k:v['failures'] for k,v in results['source147_five']['rows'].items()}=={'RAB':0,'A':0,'B':5,'C':0,'truth':0,'F':0}
++p=args.output;p.write_text(json.dumps(r,indent=2)+'\n')
+ for name,v in results.items():print(name,{k:r['failures']for k,r in v['rows'].items()})

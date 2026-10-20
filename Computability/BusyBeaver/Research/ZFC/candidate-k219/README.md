@@ -1,5 +1,9 @@
 # A 219-state binary Turing machine for Con(ZFC)
 
+The [218-state successor](../candidate-k218/README.md) is now the primary
+contender. This directory preserves its accepted predecessor and research
+history. The current search target is 217 states or fewer.
+
 This construction replaces the 220-state machine's equality routine with a
 smaller routine that shares an open subtree between cancellation and cleanup.
 Two compiler repairs turn that source saving into **219 working states and
@@ -80,6 +84,24 @@ checks recover the identical 312,617-step complete frame. See the
 [result](variant-row157/result.json) and [reconstruction script](code/stack_row157.py).
 This is a second 219-state layout, not a 218-state construction.
 
+## Additional 219-state constructions
+
+The [alternative publication](alternatives/README.md) imports Source141's
+zero-terminal, retagged and composed layouts from `ffcdff81ad`. Their source
+changes commute, but the composed physical table needs a special `139/0`
+transition. Fourteen fresh jobs pass, including all 18,517 guarded runtime
+cases across the three machines and their complete startups. The row157
+rewrite works on all three, yielding six further layouts of the same size.
+
+The [failed-218 research reconciliation](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-187.md)
+also imports both reports from `0b0cec2d0d`. It preserves the cofinal-bundle
+countermodel, core-only tail lemma, shared-cancellation and Direct09/Direct13
+contracts, and the unresolved dominated-row and return-handler obligations.
+Seven explicit failed-handler examples persist across all six layouts.
+A [shifted-head fold search](../k219-shifted-fold/README.md) tests a different
+local-equivalence relation and completes 1,031,840 candidate checks without
+a survivor; this bounded negative is not a lower bound.
+
 ## Further minimization work
 
 Follow-up work on 20 October keeps this 219-state machine as the accepted
@@ -90,22 +112,56 @@ equivalence, source size, raw allocation and complete machine verification:
   calculus by finite proof transformations and saves 123 primitive
   occurrences, but increases distinct source subtrees from 206 to 241.
 - [Code-dependent fourth parameters](../k219-fourth-parameter/README.md)
-  give a new three-input proposal, `U=R(A,B)`. Eight Lean lemmas check the
-  algebraic obstruction to simpler replacements and conditional routes to
-  recovering the old axiom. Full equiconsistency remains open. Three
-  measured membership layouts have 205 distinct subtrees, but the checked
-  allocations so far are larger and lack runtime certificates.
+  now have a [syntactic obstruction](../k219-fourth-parameter/diagonal-invariant/README.md):
+  Lean checks that the `U=R(A,B)` proposal is consistent and cannot derive
+  even `F → truth`. This rules out the required ZFC calibration by the
+  ordinary second-incompleteness argument. Earlier conditional semantic
+  lemmas remain valid, but their missing completeness premise cannot supply
+  that calibration. An [ordinary extension](../k219-fourth-parameter/six-orientations/README.md)
+  rules out all six fixed distinct-input membership orientations separately;
+  combined or more general builders remain separate proposals.
 - [Source transformations](../k219-source-search/README.md) include exact
   control-flow comparisons, bounded sharing searches, and all-natural
   proofs of five alternate equality routines. The left-decrement hit2
   trades the right-decrement issue for a new increment entry; its measured
   raw allocation has not improved the state count.
+- [Extended equality discovery](../k219-equality-extension/README.md)
+  reconstructs 263 additional finite-search hits. Of these, 242 pass the
+  larger finite diagnostic; none improves the 206-node source, and the
+  smallest measured raw allocation uses 220 states. Their all-natural
+  contracts remain unproved.
+- [Expanded equality library](../k219-atom-extension/README.md) adds all
+  eligible subtrees of the accepted equality routine to the finite search.
+  Its 1,883 reported hits give no source smaller than 206 distinct subtrees.
+- [Engine rebasing](../k219-engine-rebase/README.md) measures five proved
+  equality routines on the older engine. Raw 219-state tables fail concrete
+  complete-tape primitive contracts; the attempted repairs do not improve
+  the accepted machine.
 - [Decoder and helper sharing](../k219-continuation-search/README.md)
   searched 352,384 distinct candidate specifications without finding an
-  accepted reduction. The finite-window failures are not a lower bound.
+  accepted reduction. Follow-up families include 190,092 attempts to
+  eliminate a single-entry state by longer transition blocks, also without
+  a survivor. A further 19,184 attempts include the initial state; all
+  recorded obstructions from the later families remain in a blank-seeded
+  window domain. These families overlap; the finite-window failures are not
+  a lower bound.
+
+A separate [two-transition synthesis](../k219-two-row-synthesis/README.md)
+allows both merged actions to vary independently. Demand-driven pruning
+covers 21,486,528 complete assignments across 14 selected pairs on each seed;
+none passes its bounded local filter. This is not a lower bound.
 
 The [221-state Lean endpoint](../candidate-k221/README.md) is closed, and so is this
 table's own (above); the internal PA endpoint remains open.
+
+Upstream commit `17af6847e8` adds Lean proof sources for the 219 equality
+routine and structured program, including `L2Q.dag219_seed_iff`, the patched
+engine's register contracts, 24 kernel bootstrap blocks totaling 312,617
+steps, and the literal table's 438-action relabelling. The literal-source
+equivalence and complete decoder-site coverage have generators, but their
+219 theorem files and the final blank-tape composition are not yet committed.
+The [source review](lean-source-review/review.md) checks this scope and the
+literal table data without claiming a fresh local Lean build.
 
 ## Provenance and reproduction
 

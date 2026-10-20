@@ -1,0 +1,46 @@
+--- actual/prepare.py
++++ portable/prepare.py
+@@ -1,16 +1,34 @@
+ #!/usr/bin/env python3
+-import hashlib,json,shutil,sys
+-from pathlib import Path
+-B=Path('/tmp/zfc-intake189-opening');E=B/'execution'
+-P=Path('/tmp/zfc-intake188/drop-review/ZFC_218_State_Search_2026-10-20/ZFC_218_State_Search_2026-10-20')
++import argparse,hashlib,io,json,shutil,stat,sys,zipfile
++from pathlib import Path,PurePosixPath
+ def desc(p):return {'path':str(p),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}
++def archive(raw,expected):
++    assert hashlib.sha256(raw).hexdigest()==expected
++    z=zipfile.ZipFile(io.BytesIO(raw));seen=set();total=0
++    for i in z.infolist():
++        n=i.filename.rstrip('/');p=PurePosixPath(n)
++        assert n and not p.is_absolute() and "\\" not in n and ":" not in n and "\0" not in n
++        assert all(x not in ('','.','..') for x in n.split('/')) and n not in seen
++        assert stat.S_IFMT(i.external_attr>>16) in (0,stat.S_IFREG,stat.S_IFDIR) and not i.flag_bits&1
++        seen.add(n);total+=i.file_size
++        assert i.file_size<100_000_000 and total<500_000_000 and len(seen)<10000
++    return z
+ def main():
++    ap=argparse.ArgumentParser();ap.add_argument('--packet',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()
++    P=a.packet.resolve();E=a.output.resolve();B=Path(__file__).resolve().parent
++    assert P.is_dir() and P!=E and P not in E.parents
+     assert not E.exists();E.mkdir();packet=E/'packet';shutil.copytree(P,packet)
+-    prior=Path('/tmp/zfc-intake188-opening/execution');parent=E/'parent219';runtime=E/'runtime-inputs';out=E/'output';out.mkdir()
+-    # Reuse only exact already recovered data/engines, not any ancestor execution.
+-    shutil.copytree(prior/'baseline/K219_Construction_2026-10-20/machine',parent/'machine')
+-    shutil.copytree(prior/'runtime-inputs/K221_Construction_2026-10-20',runtime)
+-    py=sys.executable;direct=B/'review/direct.py'
++    parent=E/'parent219';runtime=E/'runtime-inputs';out=E/'output';out.mkdir()
++    z219=archive((packet/'vendor/K219_Construction_2026-10-20.zip').read_bytes(),'04813567f393b6c4015a96aba092159e9021703b4b662c7be69bd2a86497e31b')
++    for i in z219.infolist():
++        prefix='K219_Construction_2026-10-20/machine/'
++        if i.filename.startswith(prefix) and not i.is_dir():
++            q=parent/'machine'/i.filename[len(prefix):];q.parent.mkdir(parents=True,exist_ok=True);q.write_bytes(z219.read(i))
++    z220=archive(z219.read('K219_Construction_2026-10-20/portable/vendor/K220_Construction_2026-10-20.zip'),'132cbb326fcbf6e54957a03095c5f790e207f4ed8ebfb6ceb6e272f329e4ee00')
++    z221=archive(z220.read('K220_Construction_2026-10-20/portable/vendor/K221_Construction_2026-10-20.zip'),'a06c99b775193d9642a2734b7dd5fe7b72736fbdf9d9d8be438321d5e5d57ba4')
++    for n in ['portable/build221.py','portable/source_language.py','portable/runtime/vendor/symbolic_runtime.py','portable/runtime/vendor/independent_runtime.py','portable/runtime/reference_results/legacy_mapping.json']:
++        q=runtime/n;q.parent.mkdir(parents=True,exist_ok=True);q.write_bytes(z221.read('K221_Construction_2026-10-20/'+n))
++    py=sys.executable;direct=B/'direct.py'
+     jobs=[{'name':'01_closed_rho6_subtrees','argv':[py,'-B',str(packet/'verification/check_source_closure.py'),'--output',str(out/'rho6-closure.json')],'timeout_seconds':60}]
+     for index,(variant,mode) in enumerate([('rho6_219','source'),('nop219','source'),('rho6_219','runtime'),('nop219','runtime')],2):
+         argv=[py,'-B',str(direct),'--packet',str(packet),'--parent',str(parent),'--runtime-inputs',str(runtime),'--output',str(out/variant),'--variant',variant,'--mode',mode]

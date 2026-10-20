@@ -1,0 +1,11 @@
+--- v1/placement_review.py
++++ v2/placement_review.py
+@@ -7,7 +7,7 @@
+ def obj(ref,path):return git('rev-parse',f'{ref}:{path}').decode().strip()
+ def blob(b):return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()
+ commit=git('rev-parse','6ffbe92305').decode().strip();p=json.loads(git('show',f'{commit}:{MAP}'))
+-plan=json.loads(Path('/tmp/zfc-intake188/procedure-all/placement-plan.json').read_text())
++plan=json.loads(Path('/tmp/zfc-intake188/procedure/placement-plan.json').read_text())
+ assert p['counts']==plan['counts'] and p['manuscript_order']==[144]
+ counts=collections.Counter();targets=set();new=set();aliases=0;original_trees=set();conversions=[]
+ for source,proposal in zip(p['sources'],plan['sources']):

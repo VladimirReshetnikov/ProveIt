@@ -1,0 +1,41 @@
+{
+  "status": "SOURCE_AND_EXISTING_CONTROL_REVIEW_PASS",
+  "findings": [],
+  "reviewer_role": "review_upstream_reflection; independent full checker/source and finite-control record read. No checker, simulator or proof compiler invoked. Earlier reviews of the pinned unshifted checker/filter disclosed.",
+  "inputs": [
+    {
+      "path": "/tmp/k219-shifted-fold/check_shifted.py",
+      "sha256": "81ccd0ce5cb5fd46f865f8c8dfb325c751f7a6d556470fe32a076dd2d4b8642d"
+    },
+    {
+      "path": "/tmp/k219-shifted-fold/controls-v2.json",
+      "sha256": "f2a76c78dc15d731f82829d82418f6d8e3e5745ce133779cdfd4e1234dc5393b"
+    },
+    {
+      "path": "/tmp/k219-shifted-fold/history-v1/check_shifted.py",
+      "sha256": "c1110e6bf946a67d7c836f45ed055a55fec78d40275f1dfbdfdda9a5c0385326"
+    },
+    {
+      "path": "/tmp/k219-shifted-fold/history-v1/controls.json",
+      "sha256": "0b61226e5bf1f6633a2b1ae85591db3a8c31ecb26e739d0cecb55234d14569ff"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/candidate-k219/variant-row157/check_joint_fold.py",
+      "sha256": "82d0b364dfdbc7433a58c3c3e7166ec6a32ac9268e0e516f5f113f1287f44031"
+    }
+  ],
+  "proof_checks": [
+    "Initial drop is forbidden, so identical initial tapes and heads establish the relation. The retained target state and shifted source are distinguished by old state, not by the new state alone.",
+    "For q!=drop the shortcut compares equal read/write cells and requires new_direction=old_direction+offset(old_target). New action validation enforces directions +/-1. No shortcut applies to the shifted source.",
+    "For every source-invariant word, old simulation starts at relative head0 and new at offset(old_state). The common fixed window is centered on the old head; all reads/writes are checked inside it. Goal keys use mapped old state and old_head+offset(old_target).",
+    "Equality of the entire represented window, with exterior unmodified by either block, gives whole-tape equality at every nonhalting related endpoint. A head may leave the window only after its final accessed cell; matching such an endpoint does not read unknown exterior.",
+    "Both block lengths are positive and bounded by fuel. The inductive old reachability overapproximation applies at every future matched old configuration. Iterating deterministic positive blocks therefore preserves and reflects halting; both-halt branch needs no final tape/head equality.",
+    "Final checker always recomputes the pinned base.domain; supplied-invariant shortcut removed. The v2 delta changes only that trusted-input interface and the both-halt scope wording."
+  ],
+  "controls_review": "Existing v2 record matches checker hash: both shifts +/-2 have 6-to-5-state controls,512 contexts,64 nontrivial,448 blocks1/1 and64 blocks1/3. Both early-halt and wrong-incoming-direction corruptions rejected. No rerun or exhaustive completeness claim.",
+  "resolved_v1_precisions": [
+    "Optional supplied invariant was a trusted precondition; removed in v2 so every check recomputes the all-initial-tape domain.",
+    "Whole-tape endpoint claim now explicitly excludes the separate both-halt case."
+  ],
+  "scope": "Ordinary correctness audit of a finite checker and its synthetic controls. No K219 candidate exists in these records; no state lower bound or Lean/PA endpoint."
+}

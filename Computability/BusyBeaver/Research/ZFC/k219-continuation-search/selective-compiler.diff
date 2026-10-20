@@ -1,0 +1,45 @@
+--- original_compile_tree
++++ selective_compile_tree
+@@ -1,4 +1,4 @@
+-def compile_tree(s, b, table, old_src, new_src):
++def compile_tree(s, b, table, old_src, new_src, protected, capture):
+     """Incremental exploratory allocator, adapted from K220 recompile.py.
+ 
+     K219 has one duplicated subtree role. Unlike the older function-valued
+@@ -23,7 +23,7 @@
+     walk(new_src, old_src)
+     origins = {n: o for n, o in origins.items() if o not in live}
+     compiled = dict(table); mapped = dict(node_state); mapped[new_src] = 84
+-    claimed = {84: new_src}; fresh = max(300, max(q for q, _ in table)+1)
++    claimed = {84: new_src}; reused_states = []; fresh = max(300, max(q for q, _ in table)+1)
+     nextfresh = fresh; reused = 0; leaves = {}
+     for op in ['CI', 'CD', 'CC', 'CB', 'CH']:
+         for arg in ([None] if op == 'CH' else range(10)):
+@@ -38,8 +38,8 @@
+     def go(n):
+         nonlocal fresh, reused
+         if n in mapped: return mapped[n]
+-        if n in origins and origins[n] in node_state and len(groups[node_state[origins[n]]]) == 1 and node_state[origins[n]] not in claimed:
+-            q = node_state[origins[n]]; reused += 1
++        if n in origins and origins[n] in node_state and len(groups[node_state[origins[n]]]) == 1 and node_state[origins[n]] not in claimed and node_state[origins[n]] not in protected:
++            q = node_state[origins[n]]; reused += 1; reused_states.append(q)
+         else: q = fresh; fresh += 1
+         mapped[n] = q; claimed[q] = n
+         for bit, ch in enumerate(n):
+@@ -57,11 +57,14 @@
+             z = compiled[q, bit][2]
+             if z != 254 and z not in reach: reach.add(z); todo.append(z)
+     compiled = {k: v for k, v in compiled.items() if k[0] in reach}
+-    gg, _ = b.decoder_map(compiled, new_src)
++    capture.update(table=compiled, reused_states=sorted(reused_states), old_groups=groups)
++    gg, path_map, routes = decoder_map_trace(s, compiled, new_src)
+     for q, nodes in gg.items():
+         for n in nodes:
+             permitted = old_states[n] if n in old_states and n != new_src else {mapped[n]}
+-            require(q in permitted, ('Node binding mismatch', q, sorted(permitted)))
++            if q not in permitted:
++                path = next(p for p in path_map[q] if s.subtree(new_src, p) == n)
++                raise PrefixFailure({'reason':'node_binding_mismatch','state':q,'permitted':sorted(permitted),'prefix':path,'edge_trace':routes[path][-1] if routes[path] else [],'all_trace':[x for edge in routes[path] for x in edge]})
+     return compiled, {'working_states': len(compiled)//2, 'fresh': fresh-nextfresh,
+         'reused': reused, 'aliases': sum(len(ns)-1 for ns in gg.values()),
+         'decoder_states': len(gg), 'interior_roles': sum(map(len, gg.values())),

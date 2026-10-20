@@ -1,0 +1,39 @@
+--- /tmp/k219-blank-rescreen/search.py
++++ rescreen_blank_failures.py
+@@ -2,9 +2,9 @@
+ No blank-relative result is promoted without an independent verifier.
+ """
+ from pathlib import Path
+-import collections,gzip,hashlib,json,sys,time
+-from domains import blank_domain
+-BASE=Path('/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC')
++import argparse,collections,gzip,hashlib,json,sys,time
++from blank_domain import blank_domain
++BASE=Path(__file__).resolve().parent.parent
+ OWN=BASE/'k219-continuation-search';P=Path(__file__).resolve().parent
+ sys.path.insert(0,str(OWN))
+ import search_v3 as shared
+@@ -13,12 +13,13 @@
+ def dump(p,x):p.write_text(json.dumps(x,indent=2)+'\n')
+ def main():
+  if not __debug__ or sys.flags.optimize:raise ValueError('Assertions required')
+- out=P/'run1';out.mkdir(exist_ok=False);started=time.monotonic();deadline=started+115
++ ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--output',type=Path,required=True);ap.add_argument('--start-run',type=Path,default=OWN/'results/start-states-run1');args=ap.parse_args()
++ out=args.output.resolve();out.mkdir(parents=True,exist_ok=False);started=time.monotonic();deadline=started+115
+  inputs=json.loads((OWN/'inputs.json').read_text());checkerpath=(OWN/inputs['universal_checker']['path']).resolve();checker=shared.load_checker(checkerpath)
+  pins={str((OWN/d['path']).resolve()):d['sha256'] for d in inputs['seeds']+[inputs['universal_checker']]}
+  pins[str(OWN/'search_v3.py')]='87cd94b5cb8ecc1e1101fbd7cdab5def327632fd289ef6d4e23887f8ff2ad9de';pins[str(OWN/'search_hidden_states.py')]='48c92b2aaf8b24ec77cbb4f8754a1d5c71e908eafd61eba624b66fff45acb292'
+  assert all(sha(Path(p))==h for p,h in pins.items())
+- families=[('engine',OWN/'results/engine-helpers-run1','merge'),('dual66',OWN/'results/66-198-run1','merge'),('hidden198',OWN/'results/hidden198-run1','hidden'),('hidden_all',OWN/'results/hidden-states-run1','hidden'),('start',Path('/tmp/k219-start-folds/universal1'),'merge')]
++ families=[('engine',OWN/'results/engine-helpers-run1','merge'),('dual66',OWN/'results/66-198-run1','merge'),('hidden198',OWN/'results/hidden198-run1','hidden'),('hidden_all',OWN/'results/hidden-states-run1','hidden'),('start',args.start_run.resolve(),'merge')]
+  tables={};domains={};caches={};hiddencaches={}
+  for seed in inputs['seeds']:
+   old,start=checker.read((OWN/seed['path']).resolve());tables[seed['name']]=(old,start);domains[seed['name']]=blank_domain(old,start,7);caches[seed['name']]={}
+@@ -68,6 +69,6 @@
+    r['status']='COMPLETE' if r['processed']==r['candidate_count'] else 'INCOMPLETE_TIME_LIMIT'
+    if stop:break
+  assert all(sha(Path(p))==h for p,h in pins.items())
+- output={'status':'COMPLETE_BLANK_RESCREEN' if stop is None else 'INCOMPLETE_'+stop,'seconds':time.monotonic()-started,'families':stats,'rescreened':total,'hits':hits,'inputs':pins,'source_sha256':sha(Path(__file__)),'domain_source_sha256':sha(P/'domains.py'),'result_stream_sha256':sha(out/'rescreened.jsonl.gz'),'radius':7,'fuel':97,'limits':{'internal_seconds':115,'external_seconds':120},'scope':'Only prior rejection windows absent from the blank-seeded inductive domain are rerun. Retained windows still witness the same bounded rejection. Blank-relative discovery only, not all-initial-tape equivalence; independent verifier required for survivors.'}
++ output={'status':'COMPLETE_BLANK_RESCREEN' if stop is None else 'INCOMPLETE_'+stop,'seconds':time.monotonic()-started,'families':stats,'rescreened':total,'hits':hits,'inputs':pins,'source_sha256':sha(Path(__file__)),'domain_source_sha256':sha(OWN/'blank_domain.py'),'result_stream_sha256':sha(out/'rescreened.jsonl.gz'),'radius':7,'fuel':97,'limits':{'internal_seconds':115,'external_seconds':120},'scope':'Only prior rejection windows absent from the blank-seeded inductive domain are rerun. Retained windows still witness the same bounded rejection. Blank-relative discovery only, not all-initial-tape equivalence; independent verifier required for survivors.'}
+  dump(out/'result.json',output);print(json.dumps({k:v for k,v in output.items() if k not in('inputs','families')},indent=2))
+ if __name__=='__main__':main()

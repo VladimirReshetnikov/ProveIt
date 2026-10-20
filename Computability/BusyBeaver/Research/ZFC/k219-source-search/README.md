@@ -11,6 +11,17 @@ maximum depth38 and maximum zero-run6. Decoder states are a separate count.
 The submitted equality-hit library is retained as
 [Source140 data](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/140-k219-res-enc-eq_clean_hits.json).
 
+The successor [84 membership/equality stacks](hit11-and-stacking.md) also
+found no extra DAG saving: best205, matching the membership-only parents.
+That note proves hit11's all-natural contract and preserves all84 sources;
+the membership-calculus calibration remains open.
+
+The next [exact-backend allocation batch](allocation-results.md) tests six
+theory-preserving equality alternatives. No ≤218 allocation results: all six
+need an unavailable generic increment entry, and the separate CI6 hypothesis
+gives a minimum220 with decoder-prefix binding only. A32-source register-swap
+inventory finds no additional DAG saving and records further entry candidates.
+
 ## Results
 
 | Family | Measured result | Scope |

@@ -1,0 +1,71 @@
+{
+  "status": "EXACT_NATIVE_BINDING_AND_ACTUAL_REVIEW_PASS",
+  "source": {
+    "path": "/tmp/k218-k-rab-lean/KRABModel.lean",
+    "sha256": "0b60f823beb61eba14bc6ea051605549362c87ffa3b77e184de193781cf561c5"
+  },
+  "canonical_KCode222": {
+    "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean",
+    "sha256": "c12239ab4f2a12333187ff1b1d3b1375500362e6e0fad7ad708c057674e71a08"
+  },
+  "literal_bindings": [
+    {
+      "name": "growG",
+      "canonical_line": 34,
+      "new_line": 119,
+      "exact_whitespace_normalized_declaration": "def growG (a b c : Nat) : Nat := wim (weq c a) (wim (weq c b) (wal (wel a b) (weq a b)))"
+    },
+    {
+      "name": "req",
+      "canonical_line": 37,
+      "new_line": 120,
+      "exact_whitespace_normalized_declaration": "def req (b k m : Nat) : Nat := wal b (wim m (wn (wal b (wim m (wn (wel b k))))))"
+    },
+    {
+      "name": "clos",
+      "canonical_line": 40,
+      "new_line": 121,
+      "exact_whitespace_normalized_declaration": "def clos (a b k m : Nat) : Nat := wal b (wim (wel b k) (wn (wal a (wim m (wn (wal a (wim (wal k (wim (wel k a) (wel k b))) (req b k m))))))))"
+    },
+    {
+      "name": "nks",
+      "canonical_line": 45,
+      "new_line": 124,
+      "exact_whitespace_normalized_declaration": "def nks (a b c : Nat) : Nat := wal c (wim (clos a b c c) (wn (req b c c)))"
+    },
+    {
+      "name": "vrel",
+      "canonical_line": 48,
+      "new_line": 125,
+      "exact_whitespace_normalized_declaration": "def vrel (a b c : Nat) : Nat := wim (wel a b) (wal c (wel a b))"
+    },
+    {
+      "name": "bundle222",
+      "canonical_line": 51,
+      "new_line": 126,
+      "exact_whitespace_normalized_declaration": "def bundle222 (a b c : Nat) : Nat := wn (wim (vrel a b c) (nks a b c))"
+    }
+  ],
+  "actual_record_sha256": "47cc19cb9c3c83fa856279ebe10bce6399d479edc0b4f18e9a01ceef2c403b78",
+  "selected_Code254": {
+    "module": "BusyBeaver.ZFC.Code254",
+    "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean",
+    "source_sha256": "18311d4a28cba6778a0ba1a1ddee34f5c2dd5044a23958b63f46d0640be4e01e",
+    "object": "/tmp/zfc-native91-integration-yduvdh8f/BusyBeaver/ZFC/Code254.olean",
+    "object_sha256": "f030585bad7e2281cddc172dbc3169614a74d30a59cbff9dbd92c8626a9285b3"
+  },
+  "actual_first_Code254": {
+    "path": "/tmp/zfc-positive-simulation/run4/cache/BusyBeaver/ZFC/Code254.olean",
+    "resolved": "/tmp/zfc-native91-integration-yduvdh8f/BusyBeaver/ZFC/Code254.olean",
+    "sha256": "f030585bad7e2281cddc172dbc3169614a74d30a59cbff9dbd92c8626a9285b3"
+  },
+  "parent_record_sha256_after": "a13e02b88a5012f4c11590998605d75eac8f735cf57e44d10781f93700dab8ba",
+  "compiler_sha256_after": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550",
+  "source_snapshot_exact": true,
+  "source_object_compiler_unchanged_after": true,
+  "axiom_probes": 21,
+  "warnings": 0,
+  "source_local_options": {},
+  "added_axioms_or_sorry": false,
+  "scope": "Direct Code254 source/object pair and actual first cache provider checked. Inherited cached namespace is opaque; no transitive dependency replay or new PA/ZFC internalization claim. Six KCode222 definitions match canonical declarations; its theorem facade is not imported."
+}

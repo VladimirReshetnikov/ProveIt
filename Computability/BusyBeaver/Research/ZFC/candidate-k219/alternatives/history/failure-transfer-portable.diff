@@ -1,0 +1,19 @@
+--- executed
++++ portable
+@@ -3,4 +3,4 @@
+-import hashlib,json
+-HERE=Path(__file__).resolve().parent
+-PKT=Path('/tmp/zfc-intake187/K219_Alternatives_2026-10-20/K219_Alternatives_2026-10-20')
+-FAIL=Path('/tmp/zfc-intake187/research218_encoding_supplement_latex/replay/research218_encoding')
++import argparse,hashlib,json
++HERE=Path(__file__).resolve().parents[1]
++PKT=HERE
++FAIL=HERE/'data/encoding-inputs'
+@@ -47,0 +48 @@
++ ap=argparse.ArgumentParser();ap.add_argument('--output',type=Path,required=True);args=ap.parse_args();assert not args.output.exists()
+@@ -52 +53 @@
+-  variants[n]=PKT/f'machine/{n}/k219.native.tm';variants[n+'-row157']=HERE/(n+'-row157')/'table.native.tm'
++  variants[n]=PKT/f'machine/{n}/k219.native.tm';variants[n+'-row157']=HERE/'machine'/(n+'-row157')/'table.native.tm'
+@@ -83 +84 @@
+- (HERE/'failure-transfer.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps({k:v for k,v in result.items()if k!='variants'},indent=2))
++ args.output.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps({k:v for k,v in result.items()if k!='variants'},indent=2))

@@ -1,0 +1,20 @@
+--- reviewer-attempt1/finalize_review.py
++++ finalize_review.py
+@@ -21,7 +21,7 @@
+     assert r['status']=='ALL_PRIMITIVE_INTERFACES_PROVED' and (r['cases'],r['symbolic_steps'],r['minimum_actual_steps'])==(6167,1515158,12)
+     assert len(r['directly_used_native_rows'])==436 and a['status']=='INDEPENDENT_K218_RUNTIME_INTEGRITY_AND_COVERAGE_PASS'
+     supplied=j(E/'packet/portable/reference_results/runtime.json')
+-    assert {k:v for k,v in r.items() if k!='seconds'}=={k:v for k,v in supplied.items() if k!='seconds'}
++    assert {k:v for k,v in r.items() if k not in ('seconds','python_version')}=={k:v for k,v in supplied.items() if k not in ('seconds','python_version')}
+     pp=j(BASE/'portable-prepared/plan.json')
+     def norm(v,root):return json.loads(json.dumps(v).replace(str(root),'{WORK}'))
+     assert norm(plan,E)==norm(pp,BASE/'portable-prepared')
+@@ -30,7 +30,7 @@
+       'selected_inputs':plan['inputs'],'review_code':[d(R/n) for n in ('prepare.py','run.py','prepare_portable.py','run_portable.py','prepare-portable.diff','run-portable.diff','finalize_review.py')],
+       'portable_preparation':d(BASE/'portable-prepared/plan.json'),'portable_plan_path_normalized_equal':True,'portable_runtime_rerun':False,
+       'counts':{'jobs':6,'states':218,'rows':436,'source_dag_nodes':205,'leaves':4744,'runtime_cases':6167,'symbolic_steps':1515158,'startup_steps':312909,'startup_one_cells':277,'minimum_duration_constant':12},
+-      'raw_runtime_matches_delivered_except_seconds':True,'no_stderr':True,'all_selected_inputs_unchanged':True,'scope':plan['scope'],'exclusions':plan['exclusions'],
++      'raw_runtime_matches_delivered_except_seconds_and_python_version':True,'runtime_environment_differences':{k:{'actual':r[k],'delivered':supplied[k]} for k in ('seconds','python_version')},'own_reader_history':[d(p) for p in sorted((R/'history').rglob('*')) if p.is_file()],'no_stderr':True,'all_selected_inputs_unchanged':True,'scope':plan['scope'],'exclusions':plan['exclusions'],
+       'output_records':[d(p) for p in sorted(o.rglob('*')) if p.is_file()]}
+     (R/'review.json').write_text(json.dumps(receipt,indent=2,sort_keys=True)+'\n');print(h(R/'review.json'))
+ if __name__=='__main__':main()

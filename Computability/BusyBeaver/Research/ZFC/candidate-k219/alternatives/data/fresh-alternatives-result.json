@@ -1,0 +1,521 @@
+{
+  "status": "FRESH_DIRECT_LEAVES_PASS",
+  "plan_sha256": "0086d283f0bc8c433e9c1a5d70e2ef52269bd83fddbe075682c25bccf353d6df",
+  "jobs": [
+    {
+      "name": "01_construct",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-execution/packet/portable/construct.py",
+        "--baseline",
+        "/tmp/zfc-intake187/opening-execution/recovered/K219_Construction_2026-10-20",
+        "--output",
+        "/tmp/zfc-intake187/opening-execution/output/machine"
+      ],
+      "timeout_seconds": 60,
+      "cwd": "/tmp/zfc-intake187/opening-execution/packet",
+      "returncode": 0,
+      "timed_out": false,
+      "seconds": 0.11433822568506002,
+      "stdout": "/tmp/zfc-intake187/opening-execution/logs/01_construct.stdout.log",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr": "/tmp/zfc-intake187/opening-execution/logs/01_construct.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "02_independent_source",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-execution/packet/verification/independent_source_check.py",
+        "--original-source",
+        "/tmp/zfc-intake187/opening-execution/recovered/K219_Construction_2026-10-20/machine/sites219.json",
+        "--zero-source",
+        "/tmp/zfc-intake187/opening-execution/output/machine/zero_terminal/sites.json",
+        "--retagged-source",
+        "/tmp/zfc-intake187/opening-execution/output/machine/retagged/sites.json",
+        "--retagged-seed-source",
+        "/tmp/zfc-intake187/opening-execution/output/machine/retagged/sites.json",
+        "--combined-source",
+        "/tmp/zfc-intake187/opening-execution/output/machine/composed/sites.json",
+        "--original-table",
+        "/tmp/zfc-intake187/opening-execution/recovered/K219_Construction_2026-10-20/machine/k219.native.tm",
+        "--zero-table",
+        "/tmp/zfc-intake187/opening-execution/output/machine/zero_terminal/k219.native.tm",
+        "--retagged-table",
+        "/tmp/zfc-intake187/opening-execution/output/machine/retagged/k219.native.tm",
+        "--retagged-seed-table",
+        "/tmp/zfc-intake187/opening-execution/output/machine/composition_seed.tm",
+        "--combined-table",
+        "/tmp/zfc-intake187/opening-execution/output/machine/composed/k219.native.tm",
+        "--combined-native-table",
+        "/tmp/zfc-intake187/opening-execution/packet/machine/composed/k219.upstream-labels.tm",
+        "--output-dir",
+        "/tmp/zfc-intake187/opening-execution/output/independent-source"
+      ],
+      "timeout_seconds": 60,
+      "cwd": "/tmp/zfc-intake187/opening-execution/packet",
+      "returncode": 0,
+      "timed_out": false,
+      "seconds": 0.4651202028617263,
+      "stdout": "/tmp/zfc-intake187/opening-execution/logs/02_independent_source.stdout.log",
+      "stdout_sha256": "864015c274170b025ae2d88df714844fb008d0f85a9e98acc7010199984d9b6e",
+      "stderr": "/tmp/zfc-intake187/opening-execution/logs/02_independent_source.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "03_source_zero_terminal",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-execution/packet/portable/check_source.py",
+        "--baseline",
+        "/tmp/zfc-intake187/opening-execution/recovered/K219_Construction_2026-10-20",
+        "--source",
+        "/tmp/zfc-intake187/opening-execution/output/machine/zero_terminal/sites.json",
+        "--variant",
+        "zero_terminal",
+        "--output",
+        "/tmp/zfc-intake187/opening-execution/output/certificates/zero_terminal/source.json"
+      ],
+      "timeout_seconds": 60,
+      "cwd": "/tmp/zfc-intake187/opening-execution/packet",
+      "returncode": 0,
+      "timed_out": false,
+      "seconds": 0.3649372532963753,
+      "stdout": "/tmp/zfc-intake187/opening-execution/logs/03_source_zero_terminal.stdout.log",
+      "stdout_sha256": "2a6359c575d87353a339794eeeef5c72f0eedf36dd7ee74f50c81b4b680a5d8f",
+      "stderr": "/tmp/zfc-intake187/opening-execution/logs/03_source_zero_terminal.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "04_canonical_zero_terminal",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-execution/packet/portable/canonicalize.py",
+        "--variant",
+        "zero_terminal",
+        "--table",
+        "/tmp/zfc-intake187/opening-execution/output/machine/zero_terminal/k219.native.tm",
+        "--source",
+        "/tmp/zfc-intake187/opening-execution/output/machine/zero_terminal/sites.json",
+        "--output",
+        "/tmp/zfc-intake187/opening-execution/output/machine/zero_terminal"
+      ],
+      "timeout_seconds": 60,
+      "cwd": "/tmp/zfc-intake187/opening-execution/packet",
+      "returncode": 0,
+      "timed_out": false,
+      "seconds": 0.366892377845943,
+      "stdout": "/tmp/zfc-intake187/opening-execution/logs/04_canonical_zero_terminal.stdout.log",
+      "stdout_sha256": "c7e87cdc1a2b4e4ad5e837d860b4d7c687c0cb4de9d70d63b6a8e5825a6bd95c",
+      "stderr": "/tmp/zfc-intake187/opening-execution/logs/04_canonical_zero_terminal.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "03_source_retagged",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-execution/packet/portable/check_source.py",
+        "--baseline",
+        "/tmp/zfc-intake187/opening-execution/recovered/K219_Construction_2026-10-20",
+        "--source",
+        "/tmp/zfc-intake187/opening-execution/output/machine/retagged/sites.json",
+        "--variant",
+        "retagged",
+        "--output",
+        "/tmp/zfc-intake187/opening-execution/output/certificates/retagged/source.json"
+      ],
+      "timeout_seconds": 60,
+      "cwd": "/tmp/zfc-intake187/opening-execution/packet",
+      "returncode": 0,
+      "timed_out": false,
+      "seconds": 0.31475882697850466,
+      "stdout": "/tmp/zfc-intake187/opening-execution/logs/03_source_retagged.stdout.log",
+      "stdout_sha256": "2a6359c575d87353a339794eeeef5c72f0eedf36dd7ee74f50c81b4b680a5d8f",
+      "stderr": "/tmp/zfc-intake187/opening-execution/logs/03_source_retagged.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "04_canonical_retagged",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-execution/packet/portable/canonicalize.py",
+        "--variant",
+        "retagged",
+        "--table",
+        "/tmp/zfc-intake187/opening-execution/output/machine/retagged/k219.native.tm",
+        "--source",
+        "/tmp/zfc-intake187/opening-execution/output/machine/retagged/sites.json",
+        "--output",
+        "/tmp/zfc-intake187/opening-execution/output/machine/retagged"
+      ],
+      "timeout_seconds": 60,
+      "cwd": "/tmp/zfc-intake187/opening-execution/packet",
+      "returncode": 0,
+      "timed_out": false,
+      "seconds": 0.364972653798759,
+      "stdout": "/tmp/zfc-intake187/opening-execution/logs/04_canonical_retagged.stdout.log",
+      "stdout_sha256": "c7e87cdc1a2b4e4ad5e837d860b4d7c687c0cb4de9d70d63b6a8e5825a6bd95c",
+      "stderr": "/tmp/zfc-intake187/opening-execution/logs/04_canonical_retagged.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "03_source_composed",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-execution/packet/portable/check_source.py",
+        "--baseline",
+        "/tmp/zfc-intake187/opening-execution/recovered/K219_Construction_2026-10-20",
+        "--source",
+        "/tmp/zfc-intake187/opening-execution/output/machine/composed/sites.json",
+        "--variant",
+        "composed",
+        "--output",
+        "/tmp/zfc-intake187/opening-execution/output/certificates/composed/source.json"
+      ],
+      "timeout_seconds": 60,
+      "cwd": "/tmp/zfc-intake187/opening-execution/packet",
+      "returncode": 0,
+      "timed_out": false,
+      "seconds": 0.3649932546541095,
+      "stdout": "/tmp/zfc-intake187/opening-execution/logs/03_source_composed.stdout.log",
+      "stdout_sha256": "2a6359c575d87353a339794eeeef5c72f0eedf36dd7ee74f50c81b4b680a5d8f",
+      "stderr": "/tmp/zfc-intake187/opening-execution/logs/03_source_composed.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "04_canonical_composed",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-execution/packet/portable/canonicalize.py",
+        "--variant",
+        "composed",
+        "--table",
+        "/tmp/zfc-intake187/opening-execution/output/machine/composed/k219.native.tm",
+        "--source",
+        "/tmp/zfc-intake187/opening-execution/output/machine/composed/sites.json",
+        "--output",
+        "/tmp/zfc-intake187/opening-execution/output/machine/composed"
+      ],
+      "timeout_seconds": 60,
+      "cwd": "/tmp/zfc-intake187/opening-execution/packet",
+      "returncode": 0,
+      "timed_out": false,
+      "seconds": 0.3649937557056546,
+      "stdout": "/tmp/zfc-intake187/opening-execution/logs/04_canonical_composed.stdout.log",
+      "stdout_sha256": "c7e87cdc1a2b4e4ad5e837d860b4d7c687c0cb4de9d70d63b6a8e5825a6bd95c",
+      "stderr": "/tmp/zfc-intake187/opening-execution/logs/04_canonical_composed.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "05_independent_small",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-execution/packet/verification/independent_small_audit.py",
+        "--release",
+        "/tmp/zfc-intake187/opening-execution/packet",
+        "--baseline",
+        "/tmp/zfc-intake187/opening-execution/recovered/K219_Construction_2026-10-20",
+        "--out",
+        "/tmp/zfc-intake187/opening-execution/output/independent-small"
+      ],
+      "timeout_seconds": 60,
+      "cwd": "/tmp/zfc-intake187/opening-execution/packet",
+      "returncode": 0,
+      "timed_out": false,
+      "seconds": 1.1163124302402139,
+      "stdout": "/tmp/zfc-intake187/opening-execution/logs/05_independent_small.stdout.log",
+      "stdout_sha256": "6b88e0cad10db869a87a3ff0205825f033ab62eddcef831dfe6bba039934d72d",
+      "stderr": "/tmp/zfc-intake187/opening-execution/logs/05_independent_small.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "06_runtime_zero_terminal",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-execution/packet/portable/check_runtime.py",
+        "--variant",
+        "zero_terminal",
+        "--table",
+        "/tmp/zfc-intake187/opening-execution/output/machine/zero_terminal/k219.native.tm",
+        "--source",
+        "/tmp/zfc-intake187/opening-execution/output/machine/zero_terminal/sites.json",
+        "--vendor",
+        "/tmp/zfc-intake187/opening-execution/runtime-vendor",
+        "--mapping",
+        "/tmp/zfc-intake187/opening-execution/legacy_mapping.json",
+        "--out",
+        "/tmp/zfc-intake187/opening-execution/output/certificates/zero_terminal"
+      ],
+      "timeout_seconds": 180,
+      "cwd": "/tmp/zfc-intake187/opening-execution/packet",
+      "returncode": 0,
+      "timed_out": false,
+      "seconds": 145.72980506066233,
+      "stdout": "/tmp/zfc-intake187/opening-execution/logs/06_runtime_zero_terminal.stdout.log",
+      "stdout_sha256": "d4eda07ddaf467a5d00e16389b5d727872bcddb36126086f52917710794b2ba0",
+      "stderr": "/tmp/zfc-intake187/opening-execution/logs/06_runtime_zero_terminal.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "06_runtime_retagged",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-execution/packet/portable/check_runtime.py",
+        "--variant",
+        "retagged",
+        "--table",
+        "/tmp/zfc-intake187/opening-execution/output/machine/retagged/k219.native.tm",
+        "--source",
+        "/tmp/zfc-intake187/opening-execution/output/machine/retagged/sites.json",
+        "--vendor",
+        "/tmp/zfc-intake187/opening-execution/runtime-vendor",
+        "--mapping",
+        "/tmp/zfc-intake187/opening-execution/legacy_mapping.json",
+        "--out",
+        "/tmp/zfc-intake187/opening-execution/output/certificates/retagged"
+      ],
+      "timeout_seconds": 180,
+      "cwd": "/tmp/zfc-intake187/opening-execution/packet",
+      "returncode": 0,
+      "timed_out": false,
+      "seconds": 147.10228232108057,
+      "stdout": "/tmp/zfc-intake187/opening-execution/logs/06_runtime_retagged.stdout.log",
+      "stdout_sha256": "6f667f1b9bbcb1308c563b8ffcaa446fba2474729a59229e79315b75ad37a6b2",
+      "stderr": "/tmp/zfc-intake187/opening-execution/logs/06_runtime_retagged.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "06_runtime_composed",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-execution/packet/portable/check_runtime.py",
+        "--variant",
+        "composed",
+        "--table",
+        "/tmp/zfc-intake187/opening-execution/output/machine/composed/k219.native.tm",
+        "--source",
+        "/tmp/zfc-intake187/opening-execution/output/machine/composed/sites.json",
+        "--vendor",
+        "/tmp/zfc-intake187/opening-execution/runtime-vendor",
+        "--mapping",
+        "/tmp/zfc-intake187/opening-execution/legacy_mapping.json",
+        "--out",
+        "/tmp/zfc-intake187/opening-execution/output/certificates/composed"
+      ],
+      "timeout_seconds": 180,
+      "cwd": "/tmp/zfc-intake187/opening-execution/packet",
+      "returncode": 0,
+      "timed_out": false,
+      "seconds": 143.78710351046175,
+      "stdout": "/tmp/zfc-intake187/opening-execution/logs/06_runtime_composed.stdout.log",
+      "stdout_sha256": "f8c0f78764d433ff1ee6250332cd359bcf530981d5a1a8b824db21da771a3bf4",
+      "stderr": "/tmp/zfc-intake187/opening-execution/logs/06_runtime_composed.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "07_independent_runtime",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-execution/packet/verification/independent_runtime_audit.py",
+        "--release",
+        "/tmp/zfc-intake187/opening-execution/packet",
+        "--zero",
+        "/tmp/zfc-intake187/opening-execution/output/certificates/zero_terminal",
+        "--retagged",
+        "/tmp/zfc-intake187/opening-execution/output/certificates/retagged",
+        "--composed",
+        "/tmp/zfc-intake187/opening-execution/output/certificates/composed",
+        "--out",
+        "/tmp/zfc-intake187/opening-execution/output/independent-runtime.json"
+      ],
+      "timeout_seconds": 60,
+      "cwd": "/tmp/zfc-intake187/opening-execution/packet",
+      "returncode": 0,
+      "timed_out": false,
+      "seconds": 0.2647426649928093,
+      "stdout": "/tmp/zfc-intake187/opening-execution/logs/07_independent_runtime.stdout.log",
+      "stdout_sha256": "1b168595c40408767a8e3c83f65b9e88cf3da0b272a0ff8ea70a18daaff1454f",
+      "stderr": "/tmp/zfc-intake187/opening-execution/logs/07_independent_runtime.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "08_negative_controls",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/zfc-intake187/opening-execution/packet/verification/negative_controls.py",
+        "--baseline",
+        "/tmp/zfc-intake187/opening-execution/recovered/K219_Construction_2026-10-20",
+        "--vendor",
+        "/tmp/zfc-intake187/opening-execution/runtime-vendor",
+        "--certificates",
+        "/tmp/zfc-intake187/opening-execution/output/certificates",
+        "--output",
+        "/tmp/zfc-intake187/opening-execution/output/negative-controls.json"
+      ],
+      "timeout_seconds": 60,
+      "cwd": "/tmp/zfc-intake187/opening-execution/packet",
+      "returncode": 0,
+      "timed_out": false,
+      "seconds": 0.9662336800247431,
+      "stdout": "/tmp/zfc-intake187/opening-execution/logs/08_negative_controls.stdout.log",
+      "stdout_sha256": "8c284535341545a79a7dfed71973f4ef20183d39f79e64a604d72ba7f3014397",
+      "stderr": "/tmp/zfc-intake187/opening-execution/logs/08_negative_controls.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "python": "3.13.14 (main, Jun 23 2026, 15:18:27) [Clang 22.1.3 ]",
+  "scope": "Fresh source reconstruction, complete source/CFG transport, finite complete blank startups, three full unbounded symbolic primitive checks, independent receipt/block audit and malformed-input controls. No manifest/checksum suite, delivered wrapper, inherited suite, Coq/Rocq/Lean invocation. Inherited logical calibration not freshly replayed.",
+  "input_pins_after_unchanged": true,
+  "exact_delivered_comparisons": [
+    {
+      "variant": "zero_terminal",
+      "file": "k219.native.tm",
+      "sha256": "b8e431c2543c71e9fdb86faf38c21c8c7aa9c61eb735b059966e6127bbe5d821"
+    },
+    {
+      "variant": "zero_terminal",
+      "file": "k219.tm",
+      "sha256": "94bbad411990d3417d9fba2d5d0f9534ef280c519719cb30e34370031b5fc64e"
+    },
+    {
+      "variant": "zero_terminal",
+      "file": "k219.upstream-labels.tm",
+      "sha256": "51372a1b8013855459615cb93eb700076a87c78344d3fd3e6c07e1aece5032c5"
+    },
+    {
+      "variant": "zero_terminal",
+      "file": "sites.json",
+      "sha256": "4a8994303330d0d8031929ace7f61737db86aee7beb9cbdf3ba593a0315bc4c2"
+    },
+    {
+      "variant": "zero_terminal",
+      "file": "canonicalization.json",
+      "sha256": "de902ee57ba419c24a686a8561a8a185262e391da5f13358c7a94a7387045bb1"
+    },
+    {
+      "variant": "zero_terminal",
+      "file": "source.json",
+      "sha256": "5939f9bb5bc1ea086fec9c49df9343c6d354486d07bbe11ccf58aeac1c6bd541"
+    },
+    {
+      "variant": "zero_terminal",
+      "file": "startup.json",
+      "sha256": "5db78b3367340afb437117a80d3d47e9a7c6abb71b284dddb5a30b18d8769b61"
+    },
+    {
+      "variant": "zero_terminal",
+      "file": "cases.json",
+      "sha256": "c9a3ae062b3cab8c87ce2f40afe87e619ca8db20502fd9ecb75c3801f6bd92e5"
+    },
+    {
+      "variant": "zero_terminal",
+      "file": "canonical.tm",
+      "sha256": "94bbad411990d3417d9fba2d5d0f9534ef280c519719cb30e34370031b5fc64e"
+    },
+    {
+      "variant": "retagged",
+      "file": "k219.native.tm",
+      "sha256": "54cb4e3e2f947172474676a478c331e5073fce612f3fc7b5c13742a8aba9363f"
+    },
+    {
+      "variant": "retagged",
+      "file": "k219.tm",
+      "sha256": "5b0571dcedc70380155ce3828a56175aacb8e143f7ae722e5c013865331e3aea"
+    },
+    {
+      "variant": "retagged",
+      "file": "k219.upstream-labels.tm",
+      "sha256": "e109368d8079b9372cb792ef2e37dc5248939d98c2099aee1c4593e1df70f489"
+    },
+    {
+      "variant": "retagged",
+      "file": "sites.json",
+      "sha256": "ba259d31c81ec18b3bb5be6f2162ed0373b9bfdad1b184c551c7c09737956b4a"
+    },
+    {
+      "variant": "retagged",
+      "file": "canonicalization.json",
+      "sha256": "afde0863975a890ce2a4bde70ab043f0ca7d8d075b720253bfd8698a10984525"
+    },
+    {
+      "variant": "retagged",
+      "file": "source.json",
+      "sha256": "1e325025e68fbc0d251aaea2f5d3b6dcf363b2c3b3636415f3353bf0b747a172"
+    },
+    {
+      "variant": "retagged",
+      "file": "startup.json",
+      "sha256": "17c910e918adcb3b0be878ff46a2b8fd0a8a54d52be00feeb0644f508cc45a1d"
+    },
+    {
+      "variant": "retagged",
+      "file": "cases.json",
+      "sha256": "b4bf7c04241613ae46626da75a49d15c742c7210e182d432377ac3a3d61832fa"
+    },
+    {
+      "variant": "retagged",
+      "file": "canonical.tm",
+      "sha256": "5b0571dcedc70380155ce3828a56175aacb8e143f7ae722e5c013865331e3aea"
+    },
+    {
+      "variant": "composed",
+      "file": "k219.native.tm",
+      "sha256": "4de59b14b068fac0071463b7237b740630ccaa7159d4cb4f097fc77a45bffb5c"
+    },
+    {
+      "variant": "composed",
+      "file": "k219.tm",
+      "sha256": "4bc933cf2cde843bb96bfe7082271e96ce0e0031e4362f3b4a0921b8adef77ef"
+    },
+    {
+      "variant": "composed",
+      "file": "k219.upstream-labels.tm",
+      "sha256": "be7b593e272bef8c77dd9cc2248a7485302b6d43e155ea587322881842be0558"
+    },
+    {
+      "variant": "composed",
+      "file": "sites.json",
+      "sha256": "7f58e08a02ec892e968e19a16825ca200e7b8bb4366efeb8df1cc25d63c8e890"
+    },
+    {
+      "variant": "composed",
+      "file": "canonicalization.json",
+      "sha256": "5a884b1365e32f73d61735bdf7384a983c9a53c97ee37b427361c84758774874"
+    },
+    {
+      "variant": "composed",
+      "file": "source.json",
+      "sha256": "c9b7fc14a08a84024c94d86dc294c6f1a3901368f48203232989dcc8cb2ee86a"
+    },
+    {
+      "variant": "composed",
+      "file": "startup.json",
+      "sha256": "a0826b67f1010c322941e30722004668fa70bc3690e39aa006f481c7c89e82ac"
+    },
+    {
+      "variant": "composed",
+      "file": "cases.json",
+      "sha256": "c5e9de7ed6f83705dbb8165477975699ed0563b4d30557269f25f38bc556e9d2"
+    },
+    {
+      "variant": "composed",
+      "file": "canonical.tm",
+      "sha256": "4bc933cf2cde843bb96bfe7082271e96ce0e0031e4362f3b4a0921b8adef77ef"
+    }
+  ],
+  "runtime_records_equal_except_elapsed_seconds": true
+}

@@ -1,0 +1,186 @@
+{
+  "status": "REVIEWED_SELECTED_LEAVES_READY",
+  "jobs": [
+    {
+      "name": "01_closed_rho6_subtrees",
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake189-opening/execution/packet/verification/check_source_closure.py",
+        "--output",
+        "/tmp/zfc-intake189-opening/execution/output/rho6-closure.json"
+      ],
+      "timeout_seconds": 60
+    },
+    {
+      "name": "02_rho6_219_source",
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake189-opening/review/direct.py",
+        "--packet",
+        "/tmp/zfc-intake189-opening/execution/packet",
+        "--parent",
+        "/tmp/zfc-intake189-opening/execution/parent219",
+        "--runtime-inputs",
+        "/tmp/zfc-intake189-opening/execution/runtime-inputs",
+        "--output",
+        "/tmp/zfc-intake189-opening/execution/output/rho6_219",
+        "--variant",
+        "rho6_219",
+        "--mode",
+        "source"
+      ],
+      "timeout_seconds": 60
+    },
+    {
+      "name": "03_nop219_source",
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake189-opening/review/direct.py",
+        "--packet",
+        "/tmp/zfc-intake189-opening/execution/packet",
+        "--parent",
+        "/tmp/zfc-intake189-opening/execution/parent219",
+        "--runtime-inputs",
+        "/tmp/zfc-intake189-opening/execution/runtime-inputs",
+        "--output",
+        "/tmp/zfc-intake189-opening/execution/output/nop219",
+        "--variant",
+        "nop219",
+        "--mode",
+        "source"
+      ],
+      "timeout_seconds": 60
+    },
+    {
+      "name": "04_rho6_219_runtime",
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake189-opening/review/direct.py",
+        "--packet",
+        "/tmp/zfc-intake189-opening/execution/packet",
+        "--parent",
+        "/tmp/zfc-intake189-opening/execution/parent219",
+        "--runtime-inputs",
+        "/tmp/zfc-intake189-opening/execution/runtime-inputs",
+        "--output",
+        "/tmp/zfc-intake189-opening/execution/output/rho6_219",
+        "--variant",
+        "rho6_219",
+        "--mode",
+        "runtime"
+      ],
+      "timeout_seconds": 240
+    },
+    {
+      "name": "05_nop219_runtime",
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake189-opening/review/direct.py",
+        "--packet",
+        "/tmp/zfc-intake189-opening/execution/packet",
+        "--parent",
+        "/tmp/zfc-intake189-opening/execution/parent219",
+        "--runtime-inputs",
+        "/tmp/zfc-intake189-opening/execution/runtime-inputs",
+        "--output",
+        "/tmp/zfc-intake189-opening/execution/output/nop219",
+        "--variant",
+        "nop219",
+        "--mode",
+        "runtime"
+      ],
+      "timeout_seconds": 240
+    }
+  ],
+  "cwd": "/tmp/zfc-intake189-opening/execution/packet",
+  "inputs": [
+    {
+      "path": "/tmp/zfc-intake189-opening/review/direct.py",
+      "sha256": "ac2454672536eec20ed126948e25af291fb3082e256d206f6c98187c4b539ede"
+    },
+    {
+      "path": "/tmp/zfc-intake189-opening/execution/packet/verification/replay.py",
+      "sha256": "c5dbe84b9e7d4c2960d3ea775c1f66479b288f1f47fddc9c135d66147b2d7c3b"
+    },
+    {
+      "path": "/tmp/zfc-intake189-opening/execution/packet/verification/check_source_closure.py",
+      "sha256": "2c84e3bca33c063e047f803f27c4e5d60fa1dd49f7cd46dccf965d5a00bc40fd"
+    },
+    {
+      "path": "/tmp/zfc-intake189-opening/execution/packet/vendor/K219_Construction_2026-10-20.zip",
+      "sha256": "04813567f393b6c4015a96aba092159e9021703b4b662c7be69bd2a86497e31b"
+    },
+    {
+      "path": "/tmp/zfc-intake189-opening/execution/runtime-inputs/portable/build221.py",
+      "sha256": "3359e8b40fefb162ca4aa1d5c5a99a368a937ec61f761c3ac6f26d573766acba"
+    },
+    {
+      "path": "/tmp/zfc-intake189-opening/execution/runtime-inputs/portable/runtime/reference_results/legacy_mapping.json",
+      "sha256": "26a4bff859adcc510f1faf4364a597681fec014a136bc1d00dc9ce1904ad6bbf"
+    },
+    {
+      "path": "/tmp/zfc-intake189-opening/execution/runtime-inputs/portable/runtime/vendor/independent_runtime.py",
+      "sha256": "0d1dae10b921cc302a2211d9251ca7ec131aa63ecb040ce66720894877700346"
+    },
+    {
+      "path": "/tmp/zfc-intake189-opening/execution/runtime-inputs/portable/runtime/vendor/symbolic_runtime.py",
+      "sha256": "c22f1709a39277c59d163c613e250f27a9e239004a83f643f3bd7d44ad57f145"
+    },
+    {
+      "path": "/tmp/zfc-intake189-opening/execution/runtime-inputs/portable/source_language.py",
+      "sha256": "4b355b81373a06ce2d8d99f56ac88afee8bbbd934d21f4f2729d864d9807683f"
+    },
+    {
+      "path": "/tmp/zfc-intake189-opening/execution/parent219/machine/k219.native.tm",
+      "sha256": "b255f8ee341d394c303d67a7fca7f8288ed9d4c40f075899fa64b13085aaca26"
+    },
+    {
+      "path": "/tmp/zfc-intake189-opening/execution/parent219/machine/sites219.json",
+      "sha256": "0f6d9d991e36dda1a7449edab72a799bb2d8c3de3ff853a26178b89bd1bc8789"
+    },
+    {
+      "path": "/tmp/zfc-intake189-opening/execution/packet/machines/rho6_219/native.tm",
+      "sha256": "031394d436b6b80708dcfb9e1b31938012c31aad94790bb3060ea63eae015f3b"
+    },
+    {
+      "path": "/tmp/zfc-intake189-opening/execution/packet/machines/rho6_219/canonical.tm",
+      "sha256": "9d80edd25b9f598b7f79583e593c0781797193c93761294b79aa7bda0bdaf885"
+    },
+    {
+      "path": "/tmp/zfc-intake189-opening/execution/packet/machines/rho6_219/sites.json",
+      "sha256": "11f6694f72c65d7062998cc4419b8fd32452ceabe5637eee80e918cd2a2a72ec"
+    },
+    {
+      "path": "/tmp/zfc-intake189-opening/execution/packet/machines/rho6_219/state_map.json",
+      "sha256": "70bf6ba5206bd1e8af832bef865c77cac1aeace0db2d93f3667092e2bce3e674"
+    },
+    {
+      "path": "/tmp/zfc-intake189-opening/execution/packet/machines/nop219/native.tm",
+      "sha256": "90178e56e28c73fc3aec76751f94ef14cb567483d5536aaa127ce8c96d173db8"
+    },
+    {
+      "path": "/tmp/zfc-intake189-opening/execution/packet/machines/nop219/canonical.tm",
+      "sha256": "2a4e16838c8c29787a0cdc94e60823d260022684404183bd11fd6f40bd6c5b69"
+    },
+    {
+      "path": "/tmp/zfc-intake189-opening/execution/packet/machines/nop219/sites.json",
+      "sha256": "4d09638d564a350bb7fe97a893bcd22dd6bc902d3f63ff674821aa1e87feb803"
+    },
+    {
+      "path": "/tmp/zfc-intake189-opening/execution/packet/machines/nop219/state_map.json",
+      "sha256": "7dc38231c25d7628f2b19e980cb757a075370e8c8506fd50df1d0f9fed0588d9"
+    }
+  ],
+  "scope": "Two distinct219state variants: exact source/decoder/canonical binding, dual blank startup, full arbitrary-value symbolic runtime and ordered case comparison; source-only relative calibration separately reviewed.",
+  "exclusions": [
+    "No delivered replay.main or wrapper invocation",
+    "No manifest or checksum-suite invocation",
+    "No ancestor-suite replay",
+    "No Rocq/Coq/Lean or broad search execution"
+  ]
+}

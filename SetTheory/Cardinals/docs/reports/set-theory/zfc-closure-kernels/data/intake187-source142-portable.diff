@@ -1,0 +1,19 @@
+--- historical/replay_selected.py
++++ portable/intake187-source142-replay.py
+@@ -1,8 +1,13 @@
+ """Reviewed finite Source142 jobs, isolated from pristine intake and repository."""
+ from pathlib import Path
+-import difflib,hashlib,json,os,shutil,subprocess,sys,time
+-src=Path('/tmp/zfc-intake187/research218_progress_latex/research218_companion')
+-out=Path('/tmp/zfc-intake187-review-progress/replay1')
++import argparse,difflib,hashlib,json,os,shutil,subprocess,sys,time
++parser=argparse.ArgumentParser(description=__doc__)
++parser.add_argument('--packet',type=Path,required=True,help='Recovered research218_companion directory')
++parser.add_argument('--output',type=Path,required=True,help='New output directory; must not already exist')
++args=parser.parse_args()
++src=args.packet.resolve();out=args.output.resolve()
++if not (src/'checks/recheck.py').is_file():parser.error('--packet must contain checks/recheck.py')
++if out==src or src in out.parents:parser.error('--output must be outside --packet')
+ out.mkdir(exist_ok=False)
+ copy=out/'copy';shutil.copytree(src,copy)
+ original=copy/'checks/recheck.py';before=original.read_text()

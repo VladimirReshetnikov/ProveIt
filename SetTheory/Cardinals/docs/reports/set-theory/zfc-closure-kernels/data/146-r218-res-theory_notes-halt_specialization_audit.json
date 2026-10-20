@@ -1,0 +1,19 @@
+{
+  "status": "EXACT_RESTRICTED_HALT_SPECIALIZATION_AUDIT_PASS",
+  "source_sha256": "837e92d7b1c107330f160f654f6c36ff0b03dfbf6bc2b89c6f782eb7db4c4ce7",
+  "specialized_source_sha256": "fc3b722445cf800d0a565a53fbc66cbe13347cf9a3ff6b35088390a71e9b3e7c",
+  "entry_ordinal": 4598,
+  "entry_path": "1110100101",
+  "proved_precondition": "r6=0; all other registers arbitrary naturals",
+  "mathematical_cases": [
+    "x=0",
+    "x=1",
+    "x>=2"
+  ],
+  "termination": "Both blocks terminate for all natural x; their only loops monotonically decrease r5 or r6.",
+  "postcondition": "Halt iff initial r5=1. Otherwise normal exit. In both cases r5=r6=0; every other register unchanged.",
+  "closed_common_tail": true,
+  "outside_source_unchanged": true,
+  "supplementary_finite_tests": 257,
+  "scope": "The finite tests supplement the explicit all-natural mathematical proof; this does not verify the compiled binary transition table."
+}

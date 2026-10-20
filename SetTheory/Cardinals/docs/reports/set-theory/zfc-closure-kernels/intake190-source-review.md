@@ -1,0 +1,35 @@
+# Source 147: contextual218 independent proof review
+
+I read the complete main report, contextual detail and runtime/replay sections, source proof, deterministic lineage notes and constructors, the full dual source resolver, the runtime wrapper, attribution/provenance addendum, and the separate membership supplement. No supplied code, proof compiler, wrapper, search, simulation or manifest suite was executed. Root/Opening's fresh verification is a separate lane. No mathematical blocker was found in the stated ordinary construction proof.
+
+## Exact contribution and source relation
+
+The arrival `3c7c3aa5a3` supplies `K218_Contextual_Alternative_2026-10-20.zip`, internally still named `K218_Construction_2026-10-20`. It explicitly distinguishes itself from Source144 and disclaims priority and minimality. The predecessor remains exact K219 at `26d5de6d21fa354d50e0b84fe851c289925b8d72`, not the newer primary218 packet.
+
+The alternative native table is `3c64cf321c9ca11153901cdb19e7326b8bfbd0d3c8d94357ead127a9c9b491c1`; its source is `1dcd14a47c4f100316c71f8a346b84000f3d12efc29123d1cce212d4bbfa2efe`. Normalized labels102/120 replace native301/302 bijectively. The graph-canonical table differs from the primary218 graph; this establishes distinct tables up to the specified canonical labeling, not behavioral inequivalence.
+
+The source recipe is explicit finite data. It retains all4,744 ordered primitive operations/arguments and all6,166 nonhalting guarded successor edges, with one halt case. Dual arithmetic-cut and ancestor-interval resolvers implement the same stated pair semantics. Equality of the operation, argument, zero/positive guard, register update and successor proves strong ordinal/register-store bisimulation over every natural register vector. No unrestricted associativity law or finite-register sampling is assumed. The first37 addresses are a useful constraint, but are correctly not substituted for exact startup.
+
+The source has205 DAG nodes/182 interiors, depth38 and zero-run6. Physical lineage is `219→219→220→219→219→219→218`: explicit source reparses and allocations, direct188, rotations reusing12 and150, then deletion96. State79 is added;190 and96 are removed. The exact physical count is independent of the source DAG count. The two constructors explicitly reconstruct their bases and check the old rows; an unexplained discovery checkpoint is not treated as a proof premise.
+
+## Contextual fold and complete machine obligations
+
+Before the final fold,85 and96 share zero child98 but have one children12 and150. Nine old85 occurrence prefixes end0; four old96 prefixes end1. The new read-one row85→221 moves left. For preceding0 it follows85,221,188,12 in3 steps; for preceding1 it follows85,221,189,156,176,150 in5 steps. Each row writes exactly the scanned bit, only coordinates h and h−1 are touched, and the endpoint is the appropriate child at h+1. Therefore these are whole-tape identities for arbitrary exterior under the stated two-cell premise.
+
+This is not an all-tape quotient of85 and96 at arbitrary entries. The report correctly requires complete final-table primitive proofs, including shared arithmetic uses, positive decrements, gap and spare-tail behavior. The runtime wrapper iterates all source occurrences and both CD guards with no filtering; stored trace summaries are explicitly distinguished from fresh generated derivations. It checks positive affine durations, all436 rows, four exact block lemmas, and full startup support. The unchanged pinned symbolic engine's general soundness is inherited rather than newly re-proved in this peer.
+
+Delivered results state218 working states/436 rows,6,167 generic cases,1,514,325 symbolic operations, minimum duration13, and whole blank initialization312,701 steps to state84/head−5 with277 ones, logical seed `[3,0,0,0,3,0,0,0,0]`, header139, gap80 and130 spare ones. Both sparse and dense interpreters are described and checked by the wrapper against the entire finite support and zero exterior. These numbers are delivered claims here, not an independent execution receipt.
+
+Given exact startup and the universal primitive refinement, finite positive blocks give both directions of source/machine halting equivalence. The source bisimulation then transports the pinned upstream refutation calibration. All arguments use finite data and elementary induction available in ZFC, so the claimed result is the ordinary internal equivalence `ZFC ⊢ not Halts(blank) ↔ Con(ZFC)`. It asserts neither consistency nor unconditional nonhalting. There is no newly compiled exact-table Lean/Rocq endpoint in this packet.
+
+## Compatibility and smaller-machine relevance
+
+Drop's separate own comparison finds the primary218 and alternative218 keeper85 implement the same two source-subtree types, each with9+4 occurrences, using the same3/5-step predecessor-bit pattern through different allocated helper names. Thus the state savings cannot simply be added. The primary removes212; this layout adds79 and removes96+190, with65 common rows different. This is a distinct complete allocation that may be a useful search seed; it is not evidence for217. Any further stacking needs new entry contracts, complete runtime and blank startup for the combined table. The existing row157 experiment remains a separate exact-table check.
+
+## Separate mathematical supplement
+
+The nested `Membership_Fourth_Parameter_Obstruction_2026-10-20.zip` is useful research, explicitly not a premise of the machine. Its five-value algebra designates{3,4}, takes truth4/falsity2/equality3, interprets every membership atom as2, and uses non-Boolean native negation. Its written course-of-values construction handles every natural code and the zero truth alias; finite-derivation induction yields a PA-formalizable consistency proof for the plain R(A,B) fourth-input proposal. MP, GEN, every literal retained row and the full repeated-quantifier bundle are included. It permits equality code3 and all identities, but excludes K and EFQ, with concrete reachable-code failures. This does not contradict the earlier three-value/one-designated negative search or conditional FreshLabel statements.
+
+An independent ordinary consequence is stronger than the supplement's stated scope: constant membership value2 makes the same proof cover a **union of all six membership orientations**, or any allowed fourth input guaranteed to be a membership atom with arbitrary labels. The short complete table reduction and all-natural induction are in `membership-extension.md`. This strengthens our prior six separate orientation obstructions; no new formal-kernel or executed-check claim is made. It does not apply to the newly calibrated K/S plus quantified-stability basis.
+
+No actionable defect was found in the ordinary proof or the distinction between new and inherited evidence. The construction's finite-search records, PDF QA, original audit assertions and nested supplementary verifier have not been promoted to independent fresh results by this review.

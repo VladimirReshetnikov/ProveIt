@@ -1,0 +1,18 @@
+# Independent K/S + quantified-stability review
+
+No mathematical or proof-rule defect was found in the held ordinary proof. The precise replacement is **K, S, and `NN(Q_i A) → Q_i A`**, with all original truth/MP/GEN, rho1–rho6, merged G, and gated seed-bundle instances retained. This establishes the same derivable native codes as unrestricted rho8; it does not establish a new machine or a state count.
+
+I read the complete 172-line checker and the complete proof note, and compared their literal native definitions with `Code254.lean` and `KCode222.lean`. I did not execute the author's checker. My own inert reader independently checked all 2,134 saved proof-DAG nodes and 18 closed outputs, including the axiom formulas, bundle gate witness, MP edges, open-hypothesis sets, and theorem-only generalizations. It passed on its first invocation. The author's preserved Python shadowing failure and two-occurrence variable-name repair change no proof condition.
+
+The significant logical points are sound:
+
+- K and retained rho6 give explosion without classical logic. Necessitation of the closed explosion instance and rho1 give `Q_i F → F` for every label. The derived existential monotonicity also generalizes only a closed contraposition theorem.
+- The persistence lemma starts with the **double negation** of `A → Q_i A`. Its derivation of `NN A → A` uses normality, seriality, and rho6; it does not quietly assume quantified stability or universal instantiation. This is why the negative bundle suffices for membership atoms.
+- For arbitrary membership labels, `c=max(a,b)+1` is a genuine witness of the unchanged gate. The full literal `nks` term is retained, including both repeated/shadowed `a` quantifiers in `clos`; no truth assumption about that term enters its projection argument.
+- Equality reflexivity uses precisely the merged G label `k=R(a,a)`. Existential monotonicity carries `E(k,a) → Q_k E(a,a)` through rho1(k,a), after which rho6 removes `Ex_k Q_k`. G(a,b,a) then supplies equality persistence. No substitution, fresh-label renaming, or additional equality principle is assumed.
+- Strong induction is on actual natural codes, with native zero handled first. Every positive implication has strictly smaller right component; stability of that consequent suffices. Membership/equality are already covered, and the new QS axiom supplies the quantifier case. The alias `I(0,0)=0` therefore introduces no recursion cycle or missing base case. The proof works for arbitrary native parameters, rather than only formulas of a selected syntactic image.
+- The conditional rho8 proof uses the already obtained stability of its actual code C. The fourth code U remains unrestricted. Nodewise forward translation retains MP/GEN, while reverse translation uses the existing unrestricted classical propositional basis to prove K, S, and QS. The lower construction does not borrow that classical basis. The described course-of-values proof transformer is primitive recursive.
+
+This closes the logical obstruction identified in the submitted K/S-only supplement by adding an explicit quantified-stability row. It does not retroactively calibrate that weaker K/S-only proposal. The remaining work for a smaller candidate is exact source encoding/enumerator coverage, binary allocation, complete runtime/startup verification, and the requested machine-level theorem. No Lean/Rocq check or executable candidate was performed in this review.
+
+Reviewer role: `review_upstream_reflection`, independent of the proof/checker author `opening_encoder`. I previously reviewed the submitted K218 ordinary proof and its supplementary K/S-only obstruction; I did not author this new calibration proof.

@@ -1,0 +1,39 @@
+--- condensed.py
++++ condensed_v2.py
+@@ -27,6 +27,10 @@
+  if isinstance(t,str):return subst(s[t],s) if t in s else t
+  if t==0:return 0
+  return norm((t[0],subst(t[1],s),subst(t[2],s)))
++def instantiate(t,s):
++ if isinstance(t,str):return s.get(t,t)
++ if t==0:return 0
++ return norm((t[0],instantiate(t[1],s),instantiate(t[2],s)))
+ def nodes(t):return 1 if not isinstance(t,tuple) else 1+nodes(t[1])+nodes(t[2])
+ def unify(pairs):
+  s={}; todo=list(pairs)
+@@ -109,12 +113,12 @@
+   u,uc=rootmap[r['axiom']]; v,vc,_=canonical(u,uc);assert (t,cs)==(v,vc)
+  elif r['rule']=='gen':
+   p=allr[r['parent']];s=r['substitution']
+-  assert t==Q(r['label'],subst(p['formula'],s))
+-  assert cs==conditions([(subst(a,s),subst(b,s)) for a,b in p['conditions']])
++  assert t==Q(r['label'],instantiate(p['formula'],s))
++  assert cs==conditions([(instantiate(a,s),instantiate(b,s)) for a,b in p['conditions']])
+  else:
+   p,m=(allr[r[k]] for k in ('major','minor'));ps,ms=r['major_substitution'],r['minor_substitution']
+-  assert subst(p['formula'],ps)==I(subst(m['formula'],ms),t)
+-  cc=[(subst(a,s),subst(b,s)) for q,s in ((p,ps),(m,ms)) for a,b in q['conditions']]
++  assert instantiate(p['formula'],ps)==I(instantiate(m['formula'],ms),t)
++  cc=[(instantiate(a,s),instantiate(b,s)) for q,s in ((p,ps),(m,ms)) for a,b in q['conditions']]
+   assert cs==conditions(cc)
+ 
+ def main():
+@@ -164,7 +168,7 @@
+    s=unify([(mt,I('prem','out')),(nt,'prem')])
+    if s is None:continue
+    bindings=[{v:subst(w,s) for v,w in re.items()} for re in ren]
+-   cs=[(subst(u,bs),subst(v,bs)) for r,bs in zip((major,minor),bindings) for u,v in r['conditions']]
++   cs=[(instantiate(u,bs),instantiate(v,bs)) for r,bs in zip((major,minor),bindings) for u,v in r['conditions']]
+    add(subst('out',s),cs,{'rule':'mp','major':major['id'],'minor':minor['id'],'major_substitution':bindings[0],'minor_substitution':bindings[1],'depth':depth})
+   rounds.append({'depth':depth,'schemas':len(rs),'pairs':pairs,'stop':stop})
+   if stop:break
