@@ -1,0 +1,15 @@
+--- executed/measure.py
++++ portable/measure.py
+@@ -2,8 +2,10 @@
+ from pathlib import Path
+ import json,hashlib
+ import tree_reader as tr
+-R=Path('/home/codex/.codex/worktrees/ec20/Proofs')
+-O=Path(__file__).parent
++import argparse
++ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);args=ap.parse_args()
++R=args.repo.resolve()
++O=args.output;O.mkdir(exist_ok=False)
+ S=R/'Computability/BusyBeaver/Research/ZFC/candidate-k218/sites218.json'
+ oldrows=json.loads(S.read_text());tree=tr.parse(oldrows);oldcfg=tr.cfg(tree)
+ P=(('CD',6),('CC',2))

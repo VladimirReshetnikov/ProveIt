@@ -1,0 +1,11 @@
+--- own-draft1/measure.py
++++ measure.py
+@@ -16,7 +16,7 @@
+  walk(t);return seen
+ def metrics(t):
+  rs=tr.rows(t)
+- return {'dag_nodes':len(nodes(t)),'leaves':len(rs),'depth':max(len(p)for p,_,_in rs),'zero_run':max(len(z)for p,_,_in rs for z in p.split('1'))}
++ return {'dag_nodes':len(nodes(t)),'leaves':len(rs),'depth':max(len(p)for p,_,_ in rs),'zero_run':max(len(z)for p,_,_ in rs for z in p.split('1'))}
+ results=[]
+ for r in range(9):
+  entry={};actual={};extra=[];oi=0;ni=0

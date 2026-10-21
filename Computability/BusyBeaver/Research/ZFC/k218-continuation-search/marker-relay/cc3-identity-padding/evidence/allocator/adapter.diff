@@ -1,0 +1,30 @@
+--- /home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k218-context-allocation/context_allocate.py
++++ context_allocate.py
+@@ -9,14 +9,15 @@
+ sys.dont_write_bytecode=True
+ ap=argparse.ArgumentParser();ap.add_argument('--source',type=Path,required=True)
+ ap.add_argument('--output',type=Path,required=True)
+-ap.add_argument('--repo',type=Path,default=Path(__file__).resolve().parents[5]);args=ap.parse_args()
++ap.add_argument('--repo',type=Path,required=True)
++ap.add_argument('--table',type=Path,required=True);args=ap.parse_args()
+ base=args.repo/'Computability/BusyBeaver/Research/ZFC'
+ sys.path.insert(0,str(base/'k218-quantifier-stability/pricing'))
+ import source_language as s,build221 as b
+ seed=base/'candidate-k218'
+ old=s.tree(json.loads((seed/'sites218.json').read_text()))
+ new=s.tree(json.loads(args.source.read_text()))
+-T=b.read_table((seed/'k218.native.tm').read_bytes());groups,_=b.decoder_map(T,old)
++T=b.read_table(args.table.read_bytes());groups,_=b.decoder_map(T,old)
+ states=defaultdict(set)
+ for q,ns in groups.items():
+     for n in ns:states[n].add(q)
+@@ -81,7 +82,8 @@
+         if q in groups and q!=84:
+             assert ns<=groups[q],('old binding',q)
+     assert all(U[q,bit]==T[q,bit]for q in reach if q<fresh0 and q!=84 for bit in(0,1))
+-    out.update(status='CONTEXT_AWARE_PREFIX_PASS',working_states=len(U)//2,
++    if new==old: assert U==T, 'Identity allocation changed the baseline table'
++    out.update(status='CONTEXT_AWARE_PREFIX_PASS',identity_control=(U==T) if new==old else None,working_states=len(U)//2,
+         fresh=fresh-fresh0,retired=sorted({q for q,_ in T}-reach),used_old=dict(used_old),
+         assignments=assignments,rejected_old_placements=rejected,counts=dict(counter))
+     args.output.mkdir(exist_ok=False)
