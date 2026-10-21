@@ -8,6 +8,23 @@ ZFC proves: not Halt(K215, blank) ↔ Con(ZFC).
 
 This is an ordinary proof formalizable in ZFC. It does not assert unconditional nonhalting, a minimum-state bound, or a newly compiled exact 215 Lean/Rocq or internal PA endpoint.
 
+## Formal proofs (pending check)
+
+**Status: written, not yet kernel-checked.** The sources below have not been compiled; they are to
+be built on a machine with more memory. Until both builds pass, these are unchecked proof
+scripts, not theorems.
+
+- **Lean** (`Computability/BusyBeaver/Lean`): `KEndpoint215.blank_halts_iff_zfc_refutation :
+  BlankHalts machine215 ↔ BProv ZFCax_s [] Form.fBot`, in
+  [`KEndpoint215`](../../../Lean/BusyBeaver/ZFC/KEndpoint215.lean); build with
+  `lake build BusyBeaver.ZFC.KEndpoint215`.
+- **Rocq**: `K215F.CorrectDense215.tm215_halts_iff_ZFC_inconsistent`, the variant `215` of
+  [`rocq-extension`](../k225-formal/rocq/rocq-extension/README.md); build and `coqchk` with
+  `python3 build.py --states 215 --reference … --jeff-reference …` (its `--check-only` literal-data
+  check passes).
+
+The layers are described in [k225-formal](../k225-formal/README.md#the-215).
+
 ## Exact machine
 
 - [Dense table](k215.tm): start 0, working labels 0–214, halt 215.

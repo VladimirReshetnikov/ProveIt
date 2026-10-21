@@ -3,7 +3,7 @@
   python prepare_k218.py
 
 The 218 keeps the 219's calculus, engine rows and program: its 4,744-leaf source relates to
-dag219 by an offset certificate with no offsets, so `L2Q.dag219_seed_iff` is reused unchanged.
+dag219 by an offset certificate with no offsets, so `Dag219.seed_iff` is reused unchanged.
 This script writes
 
 1. `lean218/k218_k230labels.tm` (native table, halt 254 -> 230, new states 301, 302 -> the
@@ -76,6 +76,8 @@ derive("generate_source219_lean.py", "generate_source218_lean.py", [
     ("candidate-k219/sites219.json", "candidate-k218/sites218.json"),
     ("SITES219", "SITES218"),
     ("KSource219", "KSource218"),
+    ("the 219-state machine", "the 218-state machine"),
+    ("KEndpoint219", "KEndpoint218"),
     ("p219", "p218"),
     ("t219", "t218"),
     ("the 219's", "the 218's"),

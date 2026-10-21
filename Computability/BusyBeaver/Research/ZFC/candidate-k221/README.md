@@ -24,11 +24,11 @@ Here `dense_tm` is [zfc_k221.tm](zfc_k221.tm). The theorem is closed under the g
 and `coqchk` independently rechecked it against Elliot Glazer's K230 development
 (`PASS_CLOSED_KERNEL`, 2026-10-20).
 
-**A closed Lean theorem covers the same table** ([`KLower221`](../../../Lean/BusyBeaver/ZFC/KLower221.lean),
+**A closed Lean theorem covers the same table** ([`KEndpoint221`](../../../Lean/BusyBeaver/ZFC/KEndpoint221.lean),
 2026-10-20):
 
 ```lean
-KLower221.blank_halts_iff_zfc_refutation :
+KEndpoint221.blank_halts_iff_zfc_refutation :
   BlankHalts machine221 ↔ BProv ZFCax_s [] Form.fBot
 ```
 

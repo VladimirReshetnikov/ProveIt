@@ -26,6 +26,12 @@ HEADER = {
     "218": ("The 218-state machine's table in K230 labels (`lean218/k218_k230labels.tm`: Source 144's\n"
             "native table with halt 254 renamed 230 and the states 301, 302 renamed into the freed\n"
             "labels 102, 120, as for the 219); 230 is terminal."),
+    "215": ("The 215-state machine's table in K230 labels (`lean215/k215_k230labels.tm`: the 215's\n"
+            "native table with halt 254 renamed 230 and the states 301, 302 renamed into the freed\n"
+            "labels 102, 120, as for the 219); 230 is terminal."),
+    "217": ("The 217-state machine's table in K230 labels (`lean217/k217_k230labels.tm`: Source 152's\n"
+            "native table with halt 254 renamed 230 and the states 301, 302 renamed into the freed\n"
+            "labels 102, 120, as for the 219); 230 is terminal."),
 }
 
 

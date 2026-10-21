@@ -12,7 +12,7 @@ proof gives blank-tape nonhalting equivalent to Con(ZFC), formalizable in ZFC.
 **A closed Lean theorem covers this exact table** (2026-10-20):
 
 ```lean
-KLower219.blank_halts_iff_zfc_refutation :
+KEndpoint219.blank_halts_iff_zfc_refutation :
   BlankHalts machine219 ↔ BProv ZFCax_s [] Form.fBot
 ```
 

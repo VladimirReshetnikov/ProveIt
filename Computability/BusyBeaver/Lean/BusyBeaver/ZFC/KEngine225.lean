@@ -2,8 +2,8 @@ import BusyBeaver.ZFC.KTape
 import BusyBeaver.ZFC.KTable225
 
 /-!
-The 225's table (in K230 labels) keeps K230's register routines: it agrees with K230 on the 23
-engine states they read, so the register lemmas, and with them the symbolic executor's soundness,
+The 225's table (in K230 labels) keeps K230's register routines: it agrees with K230 on the 44
+engine rows they read, so the register lemmas, and with them the symbolic executor's soundness,
 hold for it.
 -/
 
@@ -11,9 +11,9 @@ namespace SetTheory.BusyBeaver.ZFC.KEngine225
 
 open KZip KRuntimeCore KTableCore KTape
 
-theorem tm225_agree : Agree tm225 tm230 boxStates := agree_of_agreeB (by decide)
+theorem tm225_agree : AgreeRows tm225 tm230 boxRows := by decide
 
-theorem tm225_box : BoxLemmas tm225 := boxLemmas tm225_agree
+theorem tm225_box : BoxLemmas tm225 := boxLemmas tm225_agree (.inl ⟨rfl, rfl, rfl⟩)
 
 /-- Every run the symbolic executor certifies on the 225's table is a run of the machine. -/
 theorem tm225_exec_sound {br : Branch} {tgt : SConf → Bool} (n : Nat) {vs : List Nat}
