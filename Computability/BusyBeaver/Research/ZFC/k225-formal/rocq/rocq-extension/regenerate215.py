@@ -178,6 +178,7 @@ def regenerate(reference, output):
             body = body.replace(a, "exists (@nil bool), R0, 65, (repeat 1 40).")
             assert body.count("d <= 40") >= 1, "Sim230 depth bound"
             body = body.replace("d <= 40", "d <= 48")
+            body = body.replace("Nat.leb d 40", "Nat.leb d 48").replace("Nat.leb _ 40", "Nat.leb _ 48")
         if name == "Interpreter230Check":
             assert body.count("Nat.leb (length Qs) 40") == 1
             body = body.replace("Nat.leb (length Qs) 40", "Nat.leb (length Qs) 48")

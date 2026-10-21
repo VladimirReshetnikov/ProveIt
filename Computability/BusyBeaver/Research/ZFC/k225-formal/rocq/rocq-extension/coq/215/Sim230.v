@@ -107,7 +107,7 @@ Proof.
   destruct (wf_walk p215 p215_wf P') as (e & d & W).
   pose proof (leaf_check _ _ _ W) as C.
   assert (Hd : d <= 48).
-  { unfold check_edge in C. rewrite firstn_pad_length in C. destruct (Nat.leb d 40) eqn:E; [|discriminate].
+  { unfold check_edge in C. rewrite firstn_pad_length in C. destruct (Nat.leb d 48) eqn:E; [|discriminate].
     apply Nat.leb_le, E. }
   exists e, d, k, ext. split; [exact W|]. split; [exact C|]. split; [exact Hd|]. split; [|exact (conj Hk Hext)].
   rewrite firstn_pad_length. f_equal.
@@ -127,7 +127,7 @@ Proof.
   set (n := length P + k - D0) in *.
   unfold rm_step in Hr'. rewrite W in Hr'. fold Q0 in Hr'.
   pose proof (vregs_length Rg ext Hext) as Hl.
-  unfold check_edge in C. rewrite HQ in C. destruct (Nat.leb d 40); [|discriminate].
+  unfold check_edge in C. rewrite HQ in C. destruct (Nat.leb d 48); [|discriminate].
   destruct e as [m|r|r|kk|kk|]; try discriminate.
   - (* inc *)
     destruct (Nat.ltb r 9) eqn:Er; [|discriminate]. apply Nat.ltb_lt in Er.
@@ -201,7 +201,7 @@ Proof.
   intros HI Hr [d' Ha]. destruct c as [P Rg].
   destruct (inv_view N T P Rg HI Hr) as (e & d & k & ext & W & C & _ & -> & _ & Hext).
   cbn [fst] in Ha. rewrite W in Ha. injection Ha as -> _.
-  unfold check_edge in C. destruct (Nat.leb _ 40); [|discriminate]. cbn [check_site] in C.
+  unfold check_edge in C. destruct (Nat.leb _ 48); [|discriminate]. cbn [check_site] in C.
   destruct (site_halt' _ C (length P + k - D0) (vregs Rg ++ ext) (vregs_length Rg ext Hext)) as (c & Hc & Hh).
   apply halts_evstep with (c' := c); [|apply progress_evstep, Hc].
   exists 0, c. split; [constructor | exact Hh].
