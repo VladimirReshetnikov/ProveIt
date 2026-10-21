@@ -1,0 +1,48 @@
+private theorem basisK (a b : A) : T (wim a (wim b a)) := b60 h a b
+private theorem basisP (a b : A) : T (wim (wim (wim a b) a) a) := b25 h a b
+
+private theorem composition_seed (a b c : A) : T (wim (wim a b) (wim (wim b c) (wim a c))) := cd91 h a b c
+
+private theorem compose_derived {a b c : A}
+    (hab : T (wim a b)) (hbc : T (wim b c)) : T (wim a c) :=
+  h.mp (h.mp (composition_seed h a b c) hab) hbc
+
+private theorem under_antecedent (z : A) {x y : A}
+    (hxy : T (wim x y)) : T (wim (wim z x) (wim z y)) :=
+  h.mp (h.mp (cd103 h (wim z x) (wim x y) (wim z y))
+    (composition_seed h z x y)) hxy
+
+/-- Lift Peirce followed by K twice, then apply composition. -/
+private theorem rho8_seed (a b c u : A) : T (rho8 L a b c u) := by
+  have hqd := compose_derived h (basisP h c u) (basisK h c b)
+  exact h.mp (under_antecedent h (wim (wim c u) a)
+    (under_antecedent h (wim a c) hqd)) (composition_seed h (wim c u) a c)
+
+end
+
+section
+variable {A : Type v} {L : Language A} {T : A → Prop}
+
+private theorem withSeed (h : Restricted L T) (a : A) :
+    WithSeed L (rho8 L a a a a) T where
+  toRestricted := h
+  truth := h.rho8 a a a a (L.refl a)
+
+/-- Restricted rows and modus ponens alone derive every unrestricted row. -/
+theorem rho8_all (h : Restricted L T) (a b c u : A) : T (rho8 L a b c u) :=
+  rho8_seed (withSeed h a) a b c u
+
+theorem composition (h : Restricted L T) (a b c : A) :
+    T (L.imp (L.imp a b) (L.imp (L.imp b c) (L.imp a c))) :=
+  composition_seed (withSeed h a) a b c
+
+/-- A proved implication lifts under any antecedent. -/
+theorem lift_right (h : Restricted L T) {a b : A} (hab : T (L.imp a b)) (x : A) :
+    T (L.imp (L.imp x a) (L.imp x b)) :=
+  under_antecedent (withSeed h a) x hab
+
+end
+#print axioms rho8_all
+#print axioms composition
+#print axioms lift_right
+end SetTheory.BusyBeaver.ZFC.DominatedImplication

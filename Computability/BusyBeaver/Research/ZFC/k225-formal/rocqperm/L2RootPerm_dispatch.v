@@ -99,43 +99,43 @@ Theorem root_sem s :
   (enum_step s = None -> exists m', sem (ENode 0) (enc s) XHalt m') /\
   (forall s', enum_step s = Some s' -> sem (ENode 0) (enc s) XNormal (enc s')).
 Proof.
-  unfold enum_step, decode, tupof.
+  unfold enum_step.
   destruct (if Nat.eqb (pl s) 0 then (np s, S (np s)) else (pred (pl s), np s)) as [pl1 np1] eqn:Hp.
   destruct (unP pl1) as [ac pl2] eqn:E1.
   pose proof (prefix_ok s _ _ _ _ Hp E1) as Hpre.
   set (m := mkSt np1 (tw s) (ws s) ac (d s) (h s) 0 0 pl2) in Hpre.
   destruct ac as [|[|[|c]]].
   - (* NIP *)
-    cbn [xstep]. split.
-    + intros Hn. destruct (Nat.eqb_spec (h s) 1) as [H1 | H1]; [|discriminate].
+    split.
+    + intros Hn. destruct (Nat.eqb_spec (h s) 1) as [H1 | H1]; [|destruct (unP (ws s)); discriminate].
       destruct (nip152_halt m eq_refl H1) as [m' Hm'].
       exists m'. apply (root_of _ _ _ Hpre); [|now right].
       apply disp_nip; [reflexivity | exact Hm' | now right].
     + intros s' Hs. destruct (Nat.eqb_spec (h s) 1) as [H1 | H1]; [discriminate|].
-      injection Hs as <-. destruct (unP (ws s)) as [h1 w1] eqn:Ew. cbn [fst snd].
+      destruct (unP (ws s)) as [h1 w1] eqn:Ew. injection Hs as <-.
       apply (root_of _ _ _ Hpre); [|now left].
       apply disp_nip; [reflexivity | | now left].
       eapply sem_conseq; [apply nip152; [reflexivity | reflexivity | exact H1]|].
       subst m. cbn [get set]. rewrite Ew. reflexivity.
   - (* DROP *)
-    cbn [xstep]. split; [discriminate|]. intros s' Hs. injection Hs as <-.
+    split; [discriminate|]. intros s' Hs. injection Hs as <-.
     apply (root_of _ _ _ Hpre); [|now left].
     apply (disp_1 _ 0); [reflexivity | | now left].
     apply disp_drop; [reflexivity|].
     eapply sem_conseq; [apply par121; reflexivity|]. reflexivity.
   - (* MP *)
-    destruct (unP pl2) as [x pl3] eqn:E2. cbn [xstep].
-    destruct (Nat.eqb (wim (tw s) (d s + x)) (h s)) eqn:Eb;
-      (split; [discriminate|]); intros s' Hs; injection Hs as <-;
-      (apply (root_of _ _ _ Hpre); [|now left]);
-      (apply (disp_1 _ 1); [reflexivity | | now left]);
-      (apply (disp_2 _ 0); [reflexivity | | now left]);
-      (apply disp_mp; [reflexivity|]);
-      (eapply sem_conseq; [apply mp484; reflexivity|]); subst m; cbn [get set]; rewrite E2; cbn [fst snd];
-      unfold enc; rewrite Eb; reflexivity.
+    split; [intros Hn; destruct (unP pl2); discriminate|].
+    intros s' Hs. destruct (unP pl2) as [x pl3] eqn:E2. injection Hs as <-.
+    apply (root_of _ _ _ Hpre); [|now left].
+    apply (disp_1 _ 1); [reflexivity | | now left].
+    apply (disp_2 _ 0); [reflexivity | | now left].
+    apply disp_mp; [reflexivity|].
+    eapply sem_conseq; [apply mp484; reflexivity|]. subst m. cbn [get set]. rewrite E2. cbn [fst snd].
+    unfold enc. destruct (Nat.eqb (wim (tw s) (d s + x)) (h s)); reflexivity.
   - (* AX *)
-    destruct (unP pl2) as [y pl3] eqn:E3. destruct (unP pl3) as [u pl4] eqn:E4. cbn [xstep].
-    split; [discriminate|]. intros s' Hs. injection Hs as <-.
+    split; [intros Hn; destruct (unP pl2) as [y pl3]; destruct (unP pl3); discriminate|].
+    intros s' Hs. destruct (unP pl2) as [y pl3] eqn:E3. destruct (unP pl3) as [u pl4] eqn:E4.
+    injection Hs as <-.
     apply (root_of _ _ _ Hpre); [|now left].
     apply (disp_1 _ (S (S c))); [reflexivity | | now left].
     apply (disp_2 _ (S c)); [reflexivity | | now left].
@@ -143,3 +143,4 @@ Proof.
     eapply sem_conseq; [apply (ax1 _ y pl3 u pl4); [reflexivity | reflexivity | exact E3 | exact E4]|].
     reflexivity.
 Qed.
+

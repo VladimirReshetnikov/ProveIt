@@ -3,8 +3,8 @@
 **Current state (2026-10-21).** The exact [215-state machine](../candidate-k215/README.md)
 has compiled correctness proofs in both Lean and Rocq. The original fresh Lean
 build checked 204 project modules; the current
-[proof simplification checkpoint](verification/k215/simplification/phase7/README.md)
-checks the 187-module closure and two endpoint clients with only the three
+[proof simplification checkpoint](verification/k215/simplification/phase8/README.md)
+checks the 188-module closure and two endpoint clients with only the three
 standard foundational axioms, with exact bindings for reused predecessor objects. Its zero-offset proposal is reconciled as
 [Source 167](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-204.md). Rocq's
 237 sources compile with closed endpoint assumption reports and recursive `coqchk`.
@@ -31,6 +31,12 @@ pointwise lifts. Its 454-line source preserves the exact unrestricted numerical
 row and all maintained callers; the unused distribution helper is removed.
 The 187-module endpoint and a fresh five-client legacy audit pass. The remaining
 proposals from batches 209–211 retain their separate pending reconciliation.
+
+Phase eight factors the implication proof through a representation-independent
+core and shares bundle semantics between both seed directions. Together these
+proof sources shrink by 9,465 bytes. The exact 188-module endpoint and fresh
+five-client legacy audit pass; selected adoption does not complete the incoming
+report reconciliation.
 
 The [221](../candidate-k221/README.md) also has two closed endpoints for its exact table:
 
@@ -152,11 +158,12 @@ layers are new; everything else is generated as for the 218 ([`prepare_k217.py`]
 data in [`lean217/`](lean217/)).
 
 - **Calculus**: `CDom` restricts rho8 to `u ≤ a` ([`KCodeDom`](../../../Lean/BusyBeaver/ZFC/KCodeDom.lean)). It derives exactly
-  `C222`'s codes: [`DomRho8`](../../../Lean/BusyBeaver/ZFC/DomRho8.lean) is a 52-step condensed-detachment
-  derivation of Łukasiewicz's axiom (rho8) from its dominated instances, one lemma per step
-  ([`rho8cd/`](rho8cd/README.md), which also renders the Rocq `DomRho8.v`). It replaces the
-  replay of Source 149's 3,728-node certificate ([`generate_domrho8_lean.py`](generate_domrho8_lean.py),
-  118 lemmas in its last form).
+  `C222`'s codes: [`DomRho8`](../../../Lean/BusyBeaver/ZFC/DomRho8.lean) derives the unrestricted row through the
+  representation-independent core [`DominatedImplication`](../../../Lean/BusyBeaver/ZFC/DominatedImplication.lean)
+  ([`generate_dominated_implication_lean.py`](generate_dominated_implication_lean.py)); the Rocq lane's `DomRho8.v` is a
+  52-step condensed-detachment derivation of Łukasiewicz's axiom (rho8) from its dominated instances
+  ([`rho8cd/`](rho8cd/README.md)). The replay of Source 149's 3,728-node certificate
+  ([`generate_domrho8_lean.py`](generate_domrho8_lean.py)) is history.
 - **Enumerator**: [`EnumDom`](../../../Lean/BusyBeaver/ZFC/EnumDom.lean) is `Enum222` with the AX fields `z, y, x` read as
   `U = d + z`, `A = U + x`, `B = h + y` (GEN at `U`, rho8 at `(A, B, c, U)`); soundness is unchanged
   and the compiler builds `CDom` derivations, the rho8 leaf being `AX(c, u, b, a - u)`

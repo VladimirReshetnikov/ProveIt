@@ -6,9 +6,9 @@ module and dependency sets, baseline sources, objects, and compiler logs.
 The ten audit reports use only `propext`, `Classical.choice`, and `Quot.sound`;
 neither audit has warnings. The project sources retain 34 linter warnings.
 
-The [subsequent simplification check](../simplification/phase7/README.md) rebuilds affected
+The [subsequent simplification check](../simplification/phase8/README.md) rebuilds affected
 modules with explicit predecessor bindings and reruns both endpoint audits. Its current
-closure contains 187 project modules (two fresh and 185 reused); the audits
+closure contains 188 project modules (8 fresh and 180 reused); the audits
 still have zero warnings and only the same three allowed axioms. The historical
 204-module receipts below are unchanged.
 
@@ -34,7 +34,7 @@ source inventory and toolchain queries.
 
 The driver uses a separate Lake workspace and project object directory; it does
 not load the repository's cached project objects. The shipped Lean core remains
-the compiler trust boundary. The current closure contains 187 project modules
+the compiler trust boundary. The current closure contains 188 project modules
 and only the external `Init` boundary. It checks the exact final module set and
 direct dependency edges, all source bytes, and all recorded object companions.
 

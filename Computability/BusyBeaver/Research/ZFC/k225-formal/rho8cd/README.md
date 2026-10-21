@@ -10,9 +10,10 @@ of that fact, short enough to be read as a list of lemmas, and renders it for bo
   `i major minor F [side conditions]`. Leaf `-1` is truth `Z`, leaf `-2` the dominated row
   `(((a>b)>c)>((c>a)>(d>a))) [b<=c]`; every other line follows from its major and minor premise
   by modus ponens after the most general unifier. The last line is the row with no side condition.
-* [`generate_domrho8_cd.py`](generate_domrho8_cd.py): renders `Lean/BusyBeaver/ZFC/DomRho8.lean`
-  (`--lean`) and the Rocq lane's `DomRho8.v` (`--rocq`, called by
-  `rocq/rocq-extension/regenerate215.py`). It recomputes each unifier, so every lemma states its
+* [`generate_domrho8_cd.py`](generate_domrho8_cd.py): renders the Rocq lane's `DomRho8.v` (`--rocq`,
+  called by `rocq/rocq-extension/regenerate215.py`) and a drop-in Lean `DomRho8.lean` (`--lean`; built
+  with `KCodeDom` in `4fdc59197a`, 254 lines, while the maintained Lean module goes through the
+  `DominatedImplication` core). It recomputes each unifier, so every lemma states its
   formula and applies its premises at explicit instances; each side condition `u ≤ a` is proved
   because `u` is a literal subterm of `a` (`le_l`/`le_r`), is `0`, or is a hypothesis of the lemma.
 * [`search/`](search): the untrusted search that found the derivation: a given-clause prover
@@ -23,7 +24,7 @@ of that fact, short enough to be read as a list of lemmas, and renders it for bo
 Regenerate and check:
 
 ```sh
-python generate_domrho8_cd.py --lean ../../../Lean/BusyBeaver/ZFC/DomRho8.lean
+python generate_domrho8_cd.py --lean DomRho8.lean            # the drop-in Lean rendering
 python ../rocq/rocq-extension/regenerate215.py   # writes coq/215/DomRho8.v among the rest
 ```
 

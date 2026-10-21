@@ -102,7 +102,7 @@ def check_variant(v, spec, reference):
         generated, stats = program_text(json.loads(inputs["sites"].read_text()))
         generated = f"(** Source sites SHA256 {sha(inputs['sites'])}. *)\n" + generated.replace("p227", f"p{v}")
         require(generated == (proof / f"Prog{v}.v").read_text(), "Source-tree serialization mismatch.")
-        require(sha(inputs["certificate"]) == sha(proof / inputs["certificate"].name),
+        require(sha(inputs["certificate"]) == sha(proof / f"Cert{v}Offsets.v"),
                 "Source-certificate serialization mismatch.")
     else:
         require(sha(inputs["sites"]) == sha(reference / "machine/sites230.json"),

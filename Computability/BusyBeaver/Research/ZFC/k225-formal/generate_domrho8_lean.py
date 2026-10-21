@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
-"""Generate DomRho8.lean: dominated rho8 instances derive every rho8 instance.
+"""Historical inline DomRho8 proof producer.
 
-Superseded: the maintained DomRho8.lean is rendered by rho8cd/generate_domrho8_cd.py from a
-52-step condensed-detachment derivation. This producer of the Source 149 replay is kept as history.
+The maintained generic core and adapter are produced by
+`generate_dominated_implication_lean.py`; this CLI retains the earlier inline
+certificate routes for reproducibility.
+
+Generate DomRho8.lean: dominated rho8 instances derive every rho8 instance.
 
   python generate_domrho8_lean.py CERTIFICATE_JSON OUT_LEAN [--plan PLAN | --no-plan | --templates CD230_V]
 
