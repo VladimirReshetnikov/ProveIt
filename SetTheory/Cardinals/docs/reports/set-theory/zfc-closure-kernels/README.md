@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings through 20 October 2026. This report now reconciles **161 manuscripts**.
+Intake findings through 20 October 2026. This report now reconciles **164 manuscripts**.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -8,6 +8,22 @@ the delivered base article is preserved, rather than rewritten as a unified arti
 No merged PDF is built. These are ordinary mathematical arguments and finite
 regression checks. The deliveries confer no formal status; subsequent Lean
 results and their exact scope are listed below.
+
+[Batch 199](intake-199.md) imports Sources 162–164 from `d1cda734a4`,
+`fb5a17f9df` and `c8029f50d3`. The new
+[composed215 allocation](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k215/alternatives/composed/README.md)
+and its exact state-renamed presentation pass a shared fresh runtime:
+6,176 cases, all430 rows and complete95,726-step blank initialization.
+The [rho6-permuted216](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k216/alternatives/rho6/README.md)
+has fresh source/startup evidence; its full runtime remains delivered.
+The new calibrated projection basis and parameter-free MP compiler supply
+research interfaces whose binary cost remains open. Seven plus four plus
+seven selected leaves pass; root independently checks the full215 actuals
+and the exact transfer. Placement `ed175ba03d` preserves all403 members and
+retires all three ZIPs; write `7de71bd17b` publishes the reconciliation and
+[reproduction](intake-199-reproduction.md). The host has164 sources and the
+collection290 reports. The queue is clear at this checkpoint, and the active
+goal remains **214 or fewer states**.
 
 [Batch 198](intake-198.md) imports Sources 160–161 from `001695a82b` and
 `7e8cc0ee93`. Both primary tables are exact state renamings of our accepted
@@ -19,8 +35,8 @@ alternative has a fresh 6,176-case runtime, all 430 rows and complete
 checked all-row bijections. Placement `b4209acc20` preserves all 149 members
 and retires both ZIPs; write `72b6378b15` publishes the evidence and
 [recovery instructions](intake-198-reproduction.md). The host now has
-161 sources, the collection 290 reports. Three newer archives are reserved
-for batch 199; the active target remains **214 or fewer states**.
+161 sources, the collection 290 reports. Those three newer archives are now reconciled in batch199 above;
+the active target remains **214 or fewer states**.
 
 [Batch 197](intake-197.md) accepts Source 159's two distinct
 [command-permuted 216-state alternatives](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k216/alternatives/permuted/README.md)

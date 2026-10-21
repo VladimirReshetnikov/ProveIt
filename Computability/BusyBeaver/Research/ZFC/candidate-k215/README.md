@@ -60,3 +60,9 @@ state renamings of this machine. A distinct
 [DROP/NIP/MP alternative](alternatives/commands120/README.md) has its own
 fresh full runtime and complete blank-start verification. Batch 198 preserves
 their attribution and evidence; all three remain at215 states.
+
+A later [distinct allocation](alternatives/composed/README.md) has the same
+source and a different transition graph. Its own complete runtime/startup
+passes, and an exact state bijection transfers that result to the second
+submitted presentation. The new logical interfaces in batch199 remain
+research toward214; they have not changed the current accepted state count.

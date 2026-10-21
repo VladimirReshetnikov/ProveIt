@@ -3341,3 +3341,12 @@ selected fresh checks, complete alternative runtime and independent review.
 The host has **161 sources**; the collection remains **290 reports**. Three
 new arrivals remain for batch 199. The active target is214; no new smaller
 machine or proof-assistant endpoint follows from this batch.
+
+[Batch 199](set-theory/zfc-closure-kernels/intake-199.md) adds Sources162–164:
+a distinct215 allocation with an exact renamed presentation, the rho6
+permutation216, and new calibrated projection/residual interfaces. Placement
+`ed175ba03d` preserves all403 members and retires all three ZIPs; write
+`7de71bd17b` publishes seven/four/seven selected fresh checks, an independently
+audited complete215 runtime/startup and exact transfer. The host has164
+sources, the collection290 reports. The queue is clear at this checkpoint;
+the active214-state goal remains open. [Recovery](set-theory/zfc-closure-kernels/intake-199-reproduction.md).
