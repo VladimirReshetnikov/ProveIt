@@ -1,0 +1,355 @@
+{
+  "status": "UNEXECUTED_ROOT_SELECTION_PROPOSAL",
+  "source": 157,
+  "package": "/tmp/zfc-intake196/scanner/extracted/ZFC_217_Scanner_Source_Research_2026-10-21",
+  "jobs": [
+    {
+      "name": "scanner-local",
+      "package": "/tmp/zfc-intake196/scanner/extracted/ZFC_217_Scanner_Source_Research_2026-10-21",
+      "cwd": "{COPY}",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/proofs/scanner/check_scanner.py",
+        "{COPY}/inputs/primary218.native.tm",
+        "--output",
+        "{OUT}/scanner-local.json"
+      ],
+      "env": {
+        "PYTHONOPTIMIZE": "",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "timeout": 120,
+      "expected": {
+        "status": "EXACT_LOCAL_WHOLE_TAPE_PROOF",
+        "cases": 3,
+        "steps": [
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            3,
+            3
+          ]
+        ],
+        "whole_tape_under_constrained_cells": true
+      },
+      "output_files": [
+        "{OUT}/scanner-local.json"
+      ]
+    },
+    {
+      "name": "literal-packet",
+      "package": "/tmp/zfc-intake196/scanner/extracted/ZFC_217_Scanner_Source_Research_2026-10-21",
+      "cwd": "{COPY}",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/code/check_packet.py"
+      ],
+      "env": {
+        "PYTHONOPTIMIZE": "",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "timeout": 120,
+      "expected": {
+        "status": "PACKET_LITERAL_EVIDENCE_PASS",
+        "new_verified_machine": false,
+        "startup_steps": 104082,
+        "root_seed": [
+          4,
+          3,
+          0,
+          0,
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        "wrong_interface_ordinal": 40,
+        "old_steps": 588,
+        "new_steps": 662
+      },
+      "output_files": [
+        "{COPY}/verification/packet.json"
+      ]
+    },
+    {
+      "name": "restricted-L-matrices",
+      "package": "/tmp/zfc-intake196/scanner/extracted/ZFC_217_Scanner_Source_Research_2026-10-21",
+      "cwd": "{COPY}",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/formalism/matrices/check_restricted_L.py"
+      ],
+      "env": {
+        "PYTHONOPTIMIZE": "",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "timeout": 120,
+      "expected": {
+        "status": "PASS",
+        "matrices": 2,
+        "retained_rows_each": 7,
+        "assignments_per_row": 27,
+        "S_counterexample": 2,
+        "K_counterexample": 1,
+        "excluded_full_bundle_values": [
+          1,
+          2
+        ]
+      },
+      "output_files": []
+    },
+    {
+      "name": "seed-reflexivity",
+      "package": "/tmp/zfc-intake196/scanner/extracted/ZFC_217_Scanner_Source_Research_2026-10-21",
+      "cwd": "{COPY}",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/formalism/seed/check_seed_reflexivity.py"
+      ],
+      "env": {
+        "PYTHONOPTIMIZE": "",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "timeout": 120,
+      "expected": {
+        "status": "PASS",
+        "closed_proof_nodes": 79,
+        "native_conclusion": 3
+      },
+      "output_files": []
+    },
+    {
+      "name": "local7-source-counterexample",
+      "package": "/tmp/zfc-intake196/scanner/extracted/ZFC_217_Scanner_Source_Research_2026-10-21",
+      "cwd": "{COPY}",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/formalism/source_counterexample/check_local7_source.py"
+      ],
+      "env": {
+        "PYTHONOPTIMIZE": "",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "timeout": 120,
+      "expected": {
+        "status": "PASS_SOURCE_COUNTEREXAMPLE",
+        "after_replacement_T": 5,
+        "after_wrong_MP_T": 1,
+        "suffix_halts": true,
+        "binary_run_claim": false
+      },
+      "output_files": []
+    },
+    {
+      "name": "source-recodings",
+      "package": "/tmp/zfc-intake196/scanner/extracted/ZFC_217_Scanner_Source_Research_2026-10-21",
+      "cwd": "{COPY}",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/source-layout/verify_sources.py"
+      ],
+      "env": {
+        "PYTHONOPTIMIZE": "",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "timeout": 120,
+      "expected": {
+        "status": "EXACT_SOURCE_RECODING_CERTIFICATES_PASS",
+        "records": 6,
+        "seed_nodes": 205,
+        "five_zero_sources": 5,
+        "five_zero_nodes": 206,
+        "all_leaves": 4751,
+        "two_CFG_resolvers": true,
+        "initializer37_equal": true
+      },
+      "output_files": [
+        "{COPY}/source-layout/receipts/verification.json"
+      ],
+      "edits": [
+        {
+          "file": "source-layout/verify_sources.py",
+          "before": "    manifest=json.loads((HERE/'manifest.json').read_text())\n    for rel,sha in manifest.items():\n        need(digest((HERE/rel).read_bytes())==sha,('Input changed',rel))\n",
+          "after": "    # Delivery-manifest replay omitted by intake policy; selected inputs are pinned in the replay plan.\n"
+        }
+      ]
+    }
+  ],
+  "inspected_closure": [
+    {
+      "path": "proofs/scanner/check_scanner.py",
+      "sha256": "9ae0e6410ac62d6d88c1445ddd434e35b1a5e5b9d42728686eacaef1f5f9ac6c",
+      "imports": [
+        "argparse",
+        "hashlib",
+        "json",
+        "pathlib"
+      ]
+    },
+    {
+      "path": "code/check_packet.py",
+      "sha256": "66efe6626434b1dc23484ea2da13b370b6963a1874741d1c5330a8c21bd12828",
+      "imports": [
+        "hashlib",
+        "json",
+        "pathlib",
+        "sys"
+      ]
+    },
+    {
+      "path": "formalism/matrices/check_restricted_L.py",
+      "sha256": "3266da95f8c37dd7e009cd739374d70241d7a8f97caf3b79a3d2f94732e5d213",
+      "imports": [
+        "hashlib",
+        "itertools",
+        "json",
+        "math",
+        "pathlib"
+      ]
+    },
+    {
+      "path": "formalism/seed/check_seed_reflexivity.py",
+      "sha256": "207500eb6b512a00491ec0e5961b9be7d9cafddd1736453a3c4663904fe36ce7",
+      "imports": [
+        "collections",
+        "hashlib",
+        "json",
+        "pathlib",
+        "sys"
+      ]
+    },
+    {
+      "path": "formalism/source_counterexample/check_local7_source.py",
+      "sha256": "08d97ab1a5e45a3f38badfe3e76fdb4d83d506d4d26e512ed9f4ec3665aaa96e",
+      "imports": [
+        "json",
+        "math"
+      ]
+    },
+    {
+      "path": "source-layout/verify_sources.py",
+      "sha256": "8e40bdf1f6a4f9e933974686ef23eeb976c6c1f7dca94590d80b155134bdede8",
+      "imports": [
+        "hashlib",
+        "json",
+        "pathlib",
+        "source_language",
+        "sys"
+      ]
+    },
+    {
+      "path": "source-layout/source_language.py",
+      "sha256": "4b355b81373a06ce2d8d99f56ac88afee8bbbd934d21f4f2729d864d9807683f",
+      "imports": [
+        "__future__",
+        "argparse",
+        "collections",
+        "functools",
+        "hashlib",
+        "json",
+        "pathlib",
+        "sys"
+      ]
+    }
+  ],
+  "selected_data": [
+    {
+      "path": "inputs/provenance.json",
+      "sha256": "baa726ffcd96ab5e42036323aba7ae101b3ee531ef9cf4885a811f8c3a562eb3"
+    },
+    {
+      "path": "inputs/primary218.native.tm",
+      "sha256": "2dfaba6da09b78291e534777cd30c5f0d68bd84faa670e868e779c396aeb308f"
+    },
+    {
+      "path": "inputs/dominated218.native.tm",
+      "sha256": "9c8505bf3731212192b83ee61dbc569085b4675ae9e0539843ae57d43ad9e886"
+    },
+    {
+      "path": "inputs/primary-sites.json",
+      "sha256": "b0169f2d477d0584ac70f9bdb79c3a78ef2bc700d080b3cd80976210235b80d9"
+    },
+    {
+      "path": "inputs/dominated-sites.json",
+      "sha256": "264fba90229974a53c2c5c943cf5fe8924327b6bbc31bd47e64d7f5c670b7495"
+    },
+    {
+      "path": "experiments/rejected-short-scanner217.native.tm",
+      "sha256": "0da4566fd7b13c783d2d7eed5bf1ff060228315d656699a47da72008981aed13"
+    },
+    {
+      "path": "experiments/rejected-scanner-relay217.native.tm",
+      "sha256": "77f2b01a167836a33f9743091b6950005d910ed52d073d607dc78a19d7568445"
+    },
+    {
+      "path": "experiments/rejected-equality-relay220.native.tm",
+      "sha256": "d739f031512253d7d4694c891a1eff78e51dcd40d0a80d8186b6adce4c7e8f43"
+    },
+    {
+      "path": "formalism/seed/seed_reflexivity_proof.json",
+      "sha256": "0a1484f925140f30c3b6b2b4cbbf183318e7f145cde6a85f44262cf0e97a4268"
+    },
+    {
+      "path": "source-layout/data/dominated203.json",
+      "sha256": "264fba90229974a53c2c5c943cf5fe8924327b6bbc31bd47e64d7f5c670b7495"
+    },
+    {
+      "path": "source-layout/data/seed205.json",
+      "sha256": "2181227b2284b4067d34e515b5b00be1d0e8f22100aacf4bc7d81efd5997cd5d"
+    },
+    {
+      "path": "source-layout/data/zero5_walk206.json",
+      "sha256": "e687def4ab91da810dc53975af0c74618d5f34d93ca20e779ce79d401cbdfd11"
+    },
+    {
+      "path": "source-layout/data/zero5_dp0.json",
+      "sha256": "95d69a495b847af45e2fd2d7aee3188f7dd45f8b8b05c6cbf981ccd3c6be62f5"
+    },
+    {
+      "path": "source-layout/data/zero5_dp1.json",
+      "sha256": "9211ac5bf0228bf4bb43dd1b0223b17f8fa775f456ec9aae688da2d9a8edcfa8"
+    },
+    {
+      "path": "source-layout/data/zero5_dp2.json",
+      "sha256": "b9cee5f9b708e5534e5df55edcda256413109520c957965358eb3540d83b8824"
+    },
+    {
+      "path": "source-layout/data/zero5_dp3.json",
+      "sha256": "0d6f46147b35623996bc058f607ad423a0716aca82526af409552eca85d55811"
+    }
+  ],
+  "adapter": {
+    "original": {
+      "path": "/tmp/zfc-intake196/scanner/extracted/ZFC_217_Scanner_Source_Research_2026-10-21/source-layout/verify_sources.py",
+      "sha256": "8e40bdf1f6a4f9e933974686ef23eeb976c6c1f7dca94590d80b155134bdede8"
+    },
+    "successor": {
+      "path": "/tmp/zfc-intake196/source157-review/verify_sources_intake.py",
+      "sha256": "fda27dd13316cfca146723c297be3dba7fc875816bdb38a6f096f31b935eb95c"
+    },
+    "exact_removed_text": "    manifest=json.loads((HERE/'manifest.json').read_text())\n    for rel,sha in manifest.items():\n        need(digest((HERE/rel).read_bytes())==sha,('Input changed',rel))\n",
+    "all_other_bytes_preserved": true,
+    "parsed_only": true,
+    "executed": false
+  },
+  "notes": [
+    "Use fresh full package copy; preserve pristine receipts. No delivered wrapper, search, optimizer, old full runtime, compiler, Rocq or manifest execution.",
+    "All selected mathematical checkers are standard-library-only; only source-layout imports the inspected local source_language.py.",
+    "code/check_packet.py retains its four selected source/input provenance pins. Those are mathematical input identity checks, not a package-wide delivery manifest replay.",
+    "Semantic expected fields must be audited in resulting JSON/stdout; zero process exit alone is insufficient.",
+    "The nonderivability argument and safe-seed theorem remain ordinary mathematical review beyond their finite certificates."
+  ]
+}

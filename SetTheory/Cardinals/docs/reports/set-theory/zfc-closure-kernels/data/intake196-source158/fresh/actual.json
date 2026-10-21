@@ -1,0 +1,112 @@
+{
+  "status": "SELECTED_LEAVES_PASS",
+  "source_packet": "/tmp/zfc-intake196/research/extracted/zfc217-research",
+  "disposable_packet": "/tmp/zfc-intake196/research/fresh1/packet",
+  "scope": "Only three authorized standalone leaves. No wrapper, manifest, ancestor, core runtime, search, compiler or proof assistant.",
+  "wall_cap_seconds_each": 60,
+  "inputs_before": {
+    "code/replay_seed3.py": "a5b0868c81ec27bcd39d6bdb5dfe39ee1b8fcf3bf943ce7e692a3e69edae5308",
+    "code/verify_action_variants.py": "00bb965167ae5db20d25671ef62f34c423978f2a21dc8d31bdeb23a7a8433613",
+    "code/verify_scanner_route.py": "e1612075ca202e27a9a8e69b590f1c60fe48da427a6961a725da6e0d705537c0",
+    "data/action-variants.txt": "8bdddabff28e56575d921808d738fab2ce9d6604434692b6a552cb834b789826",
+    "data/delete50.native.tm": "0da4566fd7b13c783d2d7eed5bf1ff060228315d656699a47da72008981aed13",
+    "data/k218.native.tm": "2dfaba6da09b78291e534777cd30c5f0d68bd84faa670e868e779c396aeb308f",
+    "data/seed3-proof.json": "d6fdd2a43fdf255e8b7a3ca3c16cbaec8f7a2730e7be9b3df2c2bc803a91e052",
+    "data/sites218.json": "b0169f2d477d0584ac70f9bdb79c3a78ef2bc700d080b3cd80976210235b80d9"
+  },
+  "jobs": [
+    {
+      "name": "seed3",
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "code/replay_seed3.py",
+        "--check-only",
+        "data/seed3-proof.json",
+        "--output",
+        "/tmp/zfc-intake196/research/fresh1/results/seed3"
+      ],
+      "cwd": "/tmp/zfc-intake196/research/fresh1/packet",
+      "returncode": 0,
+      "timeout": false,
+      "seconds": 0.06413581408560276,
+      "stdout": "/tmp/zfc-intake196/research/fresh1/logs/seed3.stdout",
+      "stderr": "/tmp/zfc-intake196/research/fresh1/logs/seed3.stderr",
+      "stdout_sha256": "a9e896022ce05daf0064c4dfb81b45ece4f977f51c530ddce39e066fb3cb7079",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "action-variants",
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "code/verify_action_variants.py",
+        "data/k218.native.tm",
+        "data/action-variants.txt",
+        "--output",
+        "/tmp/zfc-intake196/research/fresh1/results/action-variants.json"
+      ],
+      "cwd": "/tmp/zfc-intake196/research/fresh1/packet",
+      "returncode": 0,
+      "timeout": false,
+      "seconds": 0.0644356170669198,
+      "stdout": "/tmp/zfc-intake196/research/fresh1/logs/action-variants.stdout",
+      "stderr": "/tmp/zfc-intake196/research/fresh1/logs/action-variants.stderr",
+      "stdout_sha256": "88be619a8a447654b892e808eb23a5e88ff7cd230f110b745e237aaaa697edb8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "scanner-route",
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "code/verify_scanner_route.py",
+        "--accepted",
+        "data/k218.native.tm",
+        "--short",
+        "data/delete50.native.tm",
+        "--sites",
+        "data/sites218.json",
+        "--output",
+        "/tmp/zfc-intake196/research/fresh1/results/scanner-route.json"
+      ],
+      "cwd": "/tmp/zfc-intake196/research/fresh1/packet",
+      "returncode": 0,
+      "timeout": false,
+      "seconds": 0.11436465103179216,
+      "stdout": "/tmp/zfc-intake196/research/fresh1/logs/scanner-route.stdout",
+      "stderr": "/tmp/zfc-intake196/research/fresh1/logs/scanner-route.stderr",
+      "stdout_sha256": "d17d65acce9c6ec38cf769f9783ed881fa416dc916180b244050071ccf88b402",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "runner_sha256": "25099d37faab8bd0cbcfefe082c489af8be1f0c67db4f115aa4ac7602469a0f9",
+  "inputs_after": {
+    "code/replay_seed3.py": "a5b0868c81ec27bcd39d6bdb5dfe39ee1b8fcf3bf943ce7e692a3e69edae5308",
+    "code/verify_action_variants.py": "00bb965167ae5db20d25671ef62f34c423978f2a21dc8d31bdeb23a7a8433613",
+    "code/verify_scanner_route.py": "e1612075ca202e27a9a8e69b590f1c60fe48da427a6961a725da6e0d705537c0",
+    "data/action-variants.txt": "8bdddabff28e56575d921808d738fab2ce9d6604434692b6a552cb834b789826",
+    "data/delete50.native.tm": "0da4566fd7b13c783d2d7eed5bf1ff060228315d656699a47da72008981aed13",
+    "data/k218.native.tm": "2dfaba6da09b78291e534777cd30c5f0d68bd84faa670e868e779c396aeb308f",
+    "data/seed3-proof.json": "d6fdd2a43fdf255e8b7a3ca3c16cbaec8f7a2730e7be9b3df2c2bc803a91e052",
+    "data/sites218.json": "b0169f2d477d0584ac70f9bdb79c3a78ef2bc700d080b3cd80976210235b80d9"
+  },
+  "inputs_unchanged": true,
+  "outputs": [
+    {
+      "path": "results/action-variants.json",
+      "bytes": 9405,
+      "sha256": "364ab076575314a7dbb8d9e036d990d4af762cb0ea0d6b1fcd26a65d3181842c"
+    },
+    {
+      "path": "results/scanner-route.json",
+      "bytes": 3991,
+      "sha256": "66dd8820a8d7f98f0ba72e5c274ab0daca65481a4083ffba5d7fef7bafc445f8"
+    },
+    {
+      "path": "results/seed3/seed3-replay.json",
+      "bytes": 194,
+      "sha256": "fe9a9a0addc5f452153a473f7b3f8aebf18439550b85a6abb344918fec6fd084"
+    }
+  ]
+}

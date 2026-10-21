@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+from pathlib import Path
+import hashlib,json
+P=Path('/tmp/zfc-intake196/research/extracted/zfc217-research');O=Path('/tmp/zfc-intake196/research/review');F=Path('/tmp/zfc-intake196/research/fresh1')
+sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+full=['README.md','report.tex','SEARCHES.md','research/machine-search/README.md','research/source-search/README.md','research/formalism/formalism_research_note.md','research/formalism/formalism_research_note.tex','research/formalism/seed217_review.md','research/formalism/seed217_lemma.tex','code/replay_seed3.py','code/verify_action_variants.py','code/verify_scanner_route.py','verify.py','code/check_core217_runtime.py','research/machine-search/code/full_two_row.cpp','research/machine-search/code/full_shifted_two_row.cpp','research/machine-search/code/audit_results.py','research/machine-search/code/reproduce_controls.py','research/machine-search/code/verify_controls.py']
+full += ['research/formalism/'+n for n in ['reproduce_formalism.py','reversed_implication_price.py','reversed_implication_repair.py','wrapper_price.py','wrapper_precompute_price_bounded.py','classical_price.py','dual_rho6_price.py','dual_rho6_inplace.py','row_order_search.py','all_tag_permutations.py','all_four_tag_permutations.py','axiom_field_search.py','rebuild_core_variants.py']]
+read=[{'path':n,'sha256':sha(P/n),'lines':len((P/n).read_text().splitlines()),'scope':'full read'}for n in full]
+(O/'read-inventory.json').write_text(json.dumps(read,indent=2)+'\n')
+result={'status':'INDEPENDENT_MATH_AND_SELECTED_SOURCE_REVIEW_CLEAN','packet':str(P),'read_inventory':str(O/'read-inventory.json'),'read_inventory_sha256':sha(O/'read-inventory.json'),'dossier_sha256':sha(O/'dossier.md'),'actual':str(F/'actual.json'),'actual_sha256':sha(F/'actual.json'),'actual_review_sha256':sha(F/'actual-review.json'),'fresh_selected_jobs':3,'source_scripts_changed':False,'calibrated_new_217_machine':False,'no_broad_search_or_runtime_replay':True,'ordinary_results':'Seed3 with inherited K/S; clean-seed soundness/cofinal completeness; separate all-tape row refinements; exact scanner stopping obstruction.','open_results':['Constructor/cofinite bundle freshness converse calibration','New source/runtime for priced formalisms','Any automatic composition of individual rewrites'],'scope_limit':'Full ordinary manuscript/supplement read and all selected replay closure sources. Representative synthesis engines and all formalism pricing sources read; not a full independent line-by-line audit of every C++ specialization/vendor or a replay of stored broad searches.','research_separate':'/tmp/k216-source158-row-rebinding/run1/result.json','recorder_sha256':sha(Path(__file__))}
+(O/'review.json').write_text(json.dumps(result,indent=2)+'\n')
+H='SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels';items=[]
+def add(src,target):items.append({'source':str(src),'destination':H+'/'+target,'sha256':sha(src),'bytes':src.stat().st_size})
+for n in ['run_selected.py','review_actual.py','freeze_review.py']:add(O/n,'code/intake196-source158/'+n)
+for n in ['dossier.md','intake-synthesis.md','reproduction.md','read-inventory.json','review.json']:add(O/n,'data/intake196-source158/review/'+n)
+for f in [F/'actual.json',F/'actual-review.json',*sorted((F/'logs').iterdir()),*sorted((F/'results').rglob('*.json'))]:add(f,'data/intake196-source158/fresh/'+str(f.relative_to(F)))
+(O/'publication-map.json').write_text(json.dumps({'status':'PROPOSED_COPY_ONLY_NO_REPO_WRITES','items':items},indent=2)+'\n')
+print(json.dumps({'review_sha256':sha(O/'review.json'),'files_to_copy':len(items),'map':str(O/'publication-map.json')},indent=2))

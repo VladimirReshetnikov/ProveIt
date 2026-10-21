@@ -1,0 +1,203 @@
+{
+  "status": "EXACT_LOCAL_WHOLE_TAPE_PROOF",
+  "baseline_sha256": "2dfaba6da09b78291e534777cd30c5f0d68bd84faa670e868e779c396aeb308f",
+  "removed_state": 50,
+  "patches": [
+    [
+      34,
+      0,
+      1,
+      -1,
+      196
+    ],
+    [
+      77,
+      1,
+      0,
+      -1,
+      75
+    ]
+  ],
+  "assumptions": [
+    "At a scanned-zero entry to state34, a zero immediate left neighbor implies a zero second left neighbor.",
+    "Every ordinary non-scanner use of changed row77/1 is separately preserved or removed."
+  ],
+  "proof_scope": "Every bi-infinite binary completion of the constrained cells; translation invariant in the head coordinate.",
+  "cases": [
+    {
+      "name": "scanned_cell_is_one",
+      "constrained_cells": {
+        "0": 1
+      },
+      "old_steps": 1,
+      "new_steps": 1,
+      "old_trace": [
+        [
+          34,
+          0,
+          1,
+          1,
+          -1,
+          2
+        ]
+      ],
+      "new_trace": [
+        [
+          34,
+          0,
+          1,
+          1,
+          -1,
+          2
+        ]
+      ],
+      "endpoint": [
+        2,
+        -1,
+        {
+          "0": 1
+        }
+      ]
+    },
+    {
+      "name": "eighth_cell_is_one",
+      "constrained_cells": {
+        "-1": 1,
+        "0": 0
+      },
+      "old_steps": 2,
+      "new_steps": 4,
+      "old_trace": [
+        [
+          34,
+          0,
+          0,
+          0,
+          -1,
+          50
+        ],
+        [
+          50,
+          -1,
+          1,
+          1,
+          -1,
+          2
+        ]
+      ],
+      "new_trace": [
+        [
+          34,
+          0,
+          0,
+          1,
+          -1,
+          196
+        ],
+        [
+          196,
+          -1,
+          1,
+          1,
+          1,
+          122
+        ],
+        [
+          122,
+          0,
+          1,
+          0,
+          -1,
+          1
+        ],
+        [
+          1,
+          -1,
+          1,
+          1,
+          -1,
+          2
+        ]
+      ],
+      "endpoint": [
+        2,
+        -2,
+        {
+          "-1": 1,
+          "0": 0
+        }
+      ]
+    },
+    {
+      "name": "eighth_and_ninth_cells_are_zero",
+      "constrained_cells": {
+        "-2": 0,
+        "-1": 0,
+        "0": 0
+      },
+      "old_steps": 3,
+      "new_steps": 3,
+      "old_trace": [
+        [
+          34,
+          0,
+          0,
+          0,
+          -1,
+          50
+        ],
+        [
+          50,
+          -1,
+          0,
+          0,
+          -1,
+          75
+        ],
+        [
+          75,
+          -2,
+          0,
+          0,
+          1,
+          75
+        ]
+      ],
+      "new_trace": [
+        [
+          34,
+          0,
+          0,
+          1,
+          -1,
+          196
+        ],
+        [
+          196,
+          -1,
+          0,
+          0,
+          1,
+          77
+        ],
+        [
+          77,
+          0,
+          1,
+          0,
+          -1,
+          75
+        ]
+      ],
+      "endpoint": [
+        75,
+        -1,
+        {
+          "-2": 0,
+          "-1": 0,
+          "0": 0
+        }
+      ]
+    }
+  ]
+}
