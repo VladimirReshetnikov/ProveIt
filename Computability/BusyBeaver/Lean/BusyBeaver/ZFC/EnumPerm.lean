@@ -238,10 +238,6 @@ theorem cexec_cons_some {c : Cmd} {cs : List Cmd} {w w' : W} (h : cstep c w = so
     cexec (c :: cs) w = cexec cs w' := by
   simp only [cexec, h]
 
-theorem cexec_cons_none {c : Cmd} {cs : List Cmd} {w : W} (h : cstep c w = none) :
-    cexec (c :: cs) w = none := by
-  simp only [cexec, h]
-
 theorem execAt_pack (c : Cmd) (r np1 : Nat) (s : St) :
     execAt (pack c r) np1 s = (cstep c (toW s)).map fun w => ⟨r, np1, w.tw, w.ws, w.d, w.h⟩ := by
   simp only [execAt, decode_pack]
@@ -327,34 +323,39 @@ theorem reach (sd : St) (hpl : sd.pl = 0) : ∀ k : Nat,
             exact ⟨n + 1 + j, s', by rw [run_add (n + 1) j sd s1 hr1]; exact hr', h1⟩
       · exact Or.inr hh
 
-/-! ### Block contracts -/
-
-def pushL : List Nat → Nat → Nat
-  | [], S => S
-  | x :: L, S => P x (pushL L S)
+/-! ### Block contracts, by symbolic execution -/
 
 def nips : Nat → List Cmd
   | 0 => []
   | k + 1 => .nip :: nips k
 
-theorem cexec_nips_cons (k : Nat) (t x S d h : Nat) :
-    cexec (nips (k + 1)) ⟨t, P x S, d, h⟩ =
-      if h = 1 then none else cexec (nips k) ⟨t, S, d, x⟩ := by
-  simp only [nips, cexec, cstep, unP_P']
-  by_cases h1 : h = 1 <;> simp [h1]
+theorem ex_nil (w : W) : cexec [] w = some w := rfl
 
-/-- Popping a pushed list whose entries before the last are not the falsity code. -/
-theorem cexec_nips (t S d : Nat) : ∀ (L : List Nat) (h last : Nat),
-    h ≠ 1 → (∀ x, x ∈ L → x ≠ 1) →
-      cexec (nips (L.length + 1)) ⟨t, pushL (L ++ [last]) S, d, h⟩ = some ⟨t, S, d, last⟩
-  | [], h, last, hh, _ => by
-      simp only [List.nil_append, pushL, List.length_nil, Nat.zero_add]
-      rw [cexec_nips_cons, if_neg hh]; rfl
-  | x :: L, h, last, hh, hL => by
-      simp only [List.cons_append, pushL, List.length_cons]
-      rw [cexec_nips_cons, if_neg hh]
-      exact cexec_nips t S d L x last (hL x (List.mem_cons_self ..))
-        (fun y hy => hL y (List.mem_cons_of_mem _ hy))
+theorem ex_nip {t x S d h : Nat} {cs : List Cmd} (hh : h ≠ 1) :
+    cexec (.nip :: cs) ⟨t, P x S, d, h⟩ = cexec cs ⟨t, S, d, x⟩ := by
+  simp [cexec, cstep, hh, unP_P']
+
+theorem ex_nip1 {t S d : Nat} {cs : List Cmd} : cexec (.nip :: cs) ⟨t, S, d, 1⟩ = none := by
+  simp [cexec, cstep]
+
+/- `ex_drop` and `ex_ax` hold by `rfl`, but are stated through `cexec_cons_some`: as `rfl`
+lemmas, simp would leave the kernel to check `cexec (c :: cs) w ≡ cexec cs w'` by unfolding
+`cexec` on both sides, evaluating the pops of closed pairing numerals. -/
+theorem ex_drop {t S d h : Nat} {cs : List Cmd} :
+    cexec (.drop :: cs) ⟨t, S, d, h⟩ = cexec cs ⟨h, P t S, d, h⟩ := cexec_cons_some rfl
+
+theorem ex_ax {c x y t S d h : Nat} {cs : List Cmd} :
+    cexec (.ax c x y :: cs) ⟨t, S, d, h⟩ =
+      cexec cs ⟨gate (d + x) (h + y) c, axStack (d + x) h (h + y) c d t S, 0, 0⟩ :=
+  cexec_cons_some rfl
+
+theorem ex_mp_ok {x T S d h : Nat} {cs : List Cmd} (hw : wim T (d + x) = h) :
+    cexec (.mp x :: cs) ⟨T, S, d, h⟩ = cexec cs ⟨d + x, P 0 S, d + x, 0⟩ := by
+  simp [cexec, cstep, hw]
+
+theorem ex_mp_fail {x T S d h : Nat} {cs : List Cmd} (hw : wim T (d + x) ≠ h) :
+    cexec (.mp x :: cs) ⟨T, S, d, h⟩ = cexec cs ⟨0, S, d + x, 0⟩ := by
+  simp [cexec, cstep, hw]
 
 theorem wim_ne_one (a b : Nat) : wim a b ≠ 1 := by simp only [wim]; omega
 theorem wal_ne_one (a b : Nat) : wal a b ≠ 1 := by simp only [wal]; omega
@@ -364,19 +365,29 @@ theorem gate_ne_one (a b c : Nat) : gate a b c ≠ 1 := by
   · omega
   · exact wim_ne_one _ _
 
-/-- The first nine entries pushed by AX, top first; the tenth is the old `tw`. -/
-def axList (a h b c u : Nat) : List Nat :=
-  [rho1 a b, rho2 a b c, rho3 a b c, rho4 a b c, rho5 a b c, rho6 a c, growG a b c,
-   rho8 a b c u, wal u h]
+theorem gate_self (a b : Nat) : gate a b a = 0 := by simp [gate]
 
-theorem axStack_eq (a h b c u t w : Nat) :
-    axStack a h b c u t w = pushL (axList a h b c u ++ [t]) w := rfl
+/-- Every pushed row is a `wim` or a `wal`, so none is the falsity code. These are stated once
+with variables: the symbolic runs below must never ask the kernel to unfold a row at numerals,
+where nested pairings explode. -/
+theorem rho1_ne (a b : Nat) : rho1 a b ≠ 1 := wim_ne_one _ _
+theorem rho2_ne (a b c : Nat) : rho2 a b c ≠ 1 := wim_ne_one _ _
+theorem rho3_ne (a b c : Nat) : rho3 a b c ≠ 1 := wim_ne_one _ _
+theorem rho4_ne (a b c : Nat) : rho4 a b c ≠ 1 := wim_ne_one _ _
+theorem rho5_ne (a b c : Nat) : rho5 a b c ≠ 1 := wim_ne_one _ _
+theorem rho6_ne (a c : Nat) : rho6 a c ≠ 1 := wim_ne_one _ _
+theorem growG_ne (a b c : Nat) : growG a b c ≠ 1 := wim_ne_one _ _
+theorem rho8_ne (a b c u : Nat) : rho8 a b c u ≠ 1 := wim_ne_one _ _
 
-theorem axList_ne_one (a h b c u : Nat) : ∀ x, x ∈ axList a h b c u → x ≠ 1 := by
-  intro x hx
-  simp only [axList, List.mem_cons, List.not_mem_nil, or_false] at hx
-  rcases hx with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
-    first | exact wim_ne_one _ _ | exact wal_ne_one _ _
+/-- A popped entry is not the falsity code. -/
+macro "ne1" : tactic => `(tactic| first | assumption | (simp only [ne_eq, Nat.zero_add,
+  Nat.add_zero, Nat.zero_ne_one, rho1_ne, rho2_ne, rho3_ne, rho4_ne, rho5_ne, rho6_ne, growG_ne,
+  rho8_ne, wim_ne_one, wal_ne_one, gate_ne_one, not_false_eq_true]; done))
+
+/-- Symbolic execution of a block on an explicit register file. -/
+macro "xrun" : tactic => `(tactic| simp (disch := ne1) only
+  [ex_nil, ex_drop, ex_ax, ex_nip, ex_nip1, ex_mp_ok, axStack, gate_self, nips,
+    List.cons_append, List.nil_append, Nat.add_zero, Nat.zero_add])
 
 /-- A block maps `(T, S, 0, 0)` to `(X, S, 0, 0)` or halts. -/
 def Contract (p : List Cmd) (X : Nat) : Prop :=
@@ -384,44 +395,13 @@ def Contract (p : List Cmd) (X : Nat) : Prop :=
 
 def discard : List Cmd := [.mp 1, .ax 1 0 0] ++ nips 10
 
-theorem cstep_mp_fail (x T S d h : Nat) (hw : wim T (d + x) ≠ h) :
-    cstep (.mp x) ⟨T, S, d, h⟩ = some ⟨0, S, d + x, 0⟩ := by
-  simp [cstep, hw]
-
-theorem cstep_ax (c x y t S d h : Nat) :
-    cstep (.ax c x y) ⟨t, S, d, h⟩ =
-      some ⟨gate (d + x) (h + y) c, axStack (d + x) h (h + y) c d t S, 0, 0⟩ := rfl
-
-theorem gate_self (a b : Nat) : gate a b a = 0 := by simp [gate]
-
 theorem cexec_discard (T S : Nat) : cexec discard ⟨T, S, 0, 0⟩ = some ⟨0, S, 0, 0⟩ := by
   have hw : wim T (0 + 1) ≠ 0 := by
     simp only [wim, Nat.zero_add]
     have := le_P_right T 1
     omega
-  rw [discard, cexec_append]
-  simp only [cexec]
-  rw [cstep_mp_fail 1 T S 0 0 hw]
-  simp only
-  rw [cstep_ax]
-  simp only
-  rw [show gate (0 + 1 + 0) (0 + 0) 1 = 0 from gate_self _ _, axStack_eq]
-  exact cexec_nips 0 S 0 (axList (0 + 1 + 0) 0 (0 + 0) 1 (0 + 1)) 0 0 (by omega)
-    (axList_ne_one _ _ _ _ _)
-
-theorem cstep_nip (t S d h : Nat) (hh : h ≠ 1) :
-    cstep .nip ⟨t, S, d, h⟩ = some ⟨t, (unP S).2, d, (unP S).1⟩ := by
-  simp [cstep, hh]
-
-theorem cstep_nip_one (t S d : Nat) : cstep .nip ⟨t, S, d, 1⟩ = none := by
-  simp [cstep]
-
-theorem cstep_drop (t S d h : Nat) : cstep .drop ⟨t, S, d, h⟩ = some ⟨h, P t S, d, h⟩ :=
-  rfl
-
-theorem cstep_mp_ok (x T S d h : Nat) (hw : wim T (d + x) = h) :
-    cstep (.mp x) ⟨T, S, d, h⟩ = some ⟨d + x, P 0 S, d + x, 0⟩ := by
-  simp [cstep, hw]
+  rw [discard, List.cons_append, ex_mp_fail hw]
+  xrun
 
 /-- Setting the counter from a cleared state: `J u = MP u`, nothing for `u = 0`. -/
 def J (u : Nat) : List Cmd := if u = 0 then [] else [.mp u]
@@ -436,70 +416,23 @@ theorem cexec_J (u S : Nat) (rest : List Cmd) :
       intro h
       obtain ⟨_, h2⟩ := P_eq_zero (show P 0 u = 0 by simp only [wim, Nat.zero_add] at h; omega)
       exact hu h2
-    simp only [List.cons_append, List.nil_append]
-    rw [cexec_cons_some (cstep_mp_fail u 0 S 0 0 hw), Nat.zero_add]
-
-theorem pushL_append (L1 L2 : List Nat) (S : Nat) : pushL (L1 ++ L2) S = pushL L1 (pushL L2 S) := by
-  induction L1 with
-  | nil => rfl
-  | cons x L ih => simp only [List.cons_append, pushL, ih]
-
-/-- Pop down to a selected entry, make it current, and pop the rest. -/
-theorem select_entry (L1 : List Nat) (x : Nat) (L2 : List Nat) (last g h0 S : Nat)
-    (hh : h0 ≠ 1) (hg : g ≠ 1) (hx : x ≠ 1) (h1 : ∀ y, y ∈ L1 → y ≠ 1)
-    (h2 : ∀ y, y ∈ L2 → y ≠ 1) :
-    cexec (nips (L1.length + 1) ++ (.drop :: nips (L2.length + 2)))
-      ⟨g, pushL (L1 ++ x :: (L2 ++ [last])) S, 0, h0⟩ = some ⟨x, S, 0, last⟩ := by
-  have hs : pushL (L1 ++ x :: (L2 ++ [last])) S = pushL (L1 ++ [x]) (pushL (L2 ++ [last]) S) := by
-    rw [← pushL_append]; simp
-  rw [hs, cexec_append, cexec_nips g _ 0 L1 h0 x hh h1]
-  simp only
-  rw [cexec_cons_some (cstep_drop g _ 0 x)]
-  have := cexec_nips x S 0 (g :: L2) x last hx (fun y hy => by
-    cases List.mem_cons.mp hy with
-    | inl e => rw [e]; exact hg
-    | inr hy => exact h2 y hy)
-  rw [show L2.length + 2 = (g :: L2).length + 1 by simp]
-  simpa [pushL] using this
+    rw [List.singleton_append, ex_mp_fail hw, Nat.zero_add]
 
 /-- After `discard` and `J u`, `AX(c; a - u, b)` with `u ≤ a` pushes the rows at `(a, b, c, u)`. -/
 theorem cexec_discard_ax (T S a b c u : Nat) (hu : u ≤ a) (rest : List Cmd) :
     cexec (discard ++ (J u ++ (.ax c (a - u) b :: rest))) ⟨T, S, 0, 0⟩ =
-      cexec rest ⟨gate a b c, pushL (axList a 0 b c u ++ [0]) S, 0, 0⟩ := by
+      cexec rest ⟨gate a b c, axStack a 0 b c u 0 S, 0, 0⟩ := by
   rw [cexec_append, cexec_discard]
   simp only
-  rw [cexec_J, cexec_cons_some (cstep_ax c (a - u) b 0 S u 0)]
+  rw [cexec_J, ex_ax]
   simp only [Nat.zero_add, show u + (a - u) = a by omega]
-  rfl
 
-/-- The leaf block for the AX row at position `j`. -/
+/-- The leaf for the AX row at position `j`: pop to it, keep it, pop the rest. -/
 def leaf (j a b c u : Nat) : List Cmd :=
   discard ++ (J u ++ (.ax c (a - u) b :: (nips j ++ (.drop :: nips (11 - j)))))
 
-theorem leaf_contract (j a b c u x : Nat) (L1 L2 : List Nat) (hu : u ≤ a)
-    (hsplit : axList a 0 b c u = L1 ++ x :: L2)
-    (hj : L1.length + 1 = j) (hk : L2.length + 2 = 11 - j) : Contract (leaf j a b c u) x := by
-  intro T S
-  right
-  have hx : x ≠ 1 := axList_ne_one a 0 b c u x (by rw [hsplit]; simp)
-  have h1 : ∀ y, y ∈ L1 → y ≠ 1 := fun y hy => axList_ne_one a 0 b c u y (by rw [hsplit]; simp [hy])
-  have h2 : ∀ y, y ∈ L2 → y ≠ 1 := fun y hy => axList_ne_one a 0 b c u y (by rw [hsplit]; simp [hy])
-  rw [leaf, cexec_discard_ax T S a b c u hu, hsplit, ← hk, ← hj]
-  have := select_entry L1 x L2 0 (gate a b c) 0 S (by omega) (gate_ne_one a b c) hx h1 h2
-  simpa [List.append_assoc] using this
-
 /-- The bundle leaf. -/
 def bundleLeaf (a b c : Nat) : List Cmd := discard ++ (J 0 ++ (.ax c (a - 0) b :: nips 10))
-
-theorem bundle_contract (a b c : Nat) (h1 : c ≠ a) (h2 : c ≠ b) :
-    Contract (bundleLeaf a b c) (bundle222 a b c) := by
-  intro T S
-  right
-  rw [bundleLeaf, cexec_discard_ax T S a b c 0 (Nat.zero_le a)]
-  have hg : gate a b c = bundle222 a b c := by
-    simp [gate, h1, h2]
-  rw [hg, show nips 10 = nips ((axList a 0 b c 0).length + 1) from rfl]
-  exact cexec_nips (bundle222 a b c) S 0 (axList a 0 b c 0) 0 0 (by omega) (axList_ne_one _ _ _ _ _)
 
 /-- Generalization of a block's result: `B_X; DROP; J i; NIP; AX(i; 0, 0); NIP^9; DROP; NIP; NIP`. -/
 def genBlock (i : Nat) (p : List Cmd) : List Cmd :=
@@ -512,19 +445,9 @@ theorem gen_contract (i : Nat) {p : List Cmd} {H : Nat} (hp : Contract p H) :
   · left; rw [genBlock, cexec_append, hn]
   · right
     rw [genBlock, cexec_append, hs]
-    simp only
-    rw [cexec_cons_some (cstep_drop H S 0 0), cexec_J,
-      cexec_cons_some (cstep_nip 0 (P H S) i 0 (by omega))]
-    simp only [unP_P']
-    rw [cexec_cons_some (cstep_ax i 0 0 0 S i H)]
-    simp only [Nat.add_zero]
-    rw [show gate i H i = 0 from gate_self i H, axStack_eq]
-    exact select_entry
-      [rho1 i H, rho2 i H i, rho3 i H i, rho4 i H i, rho5 i H i, rho6 i i,
-        growG i H i, rho8 i H i i] (wal i H) [] 0 0 0 S
-      (by omega) (by omega) (wal_ne_one i H)
-      (fun y hy => axList_ne_one i H H i i y (by simp [axList] at hy ⊢; omega))
-      (by simp)
+    simp only [ex_drop]
+    rw [cexec_J]
+    xrun
 
 /-- Modus ponens on two blocks. -/
 def mpBlock (B : Nat) (pa pab : List Cmd) : List Cmd :=
@@ -537,37 +460,17 @@ theorem mp_contract {A B : Nat} {pa pab : List Cmd} (ha : Contract pa A)
   rcases ha T S with hn | hs
   · left; rw [mpBlock, cexec_append, hn]
   · rw [mpBlock, cexec_append, hs]
-    simp only
-    rw [cexec_cons_some (cstep_drop A S 0 0)]
+    simp only [ex_drop]
+    rw [cexec_append]
     rcases hab 0 (P A S) with hn2 | hs2
-    · left; rw [cexec_append, hn2]
-    · rw [cexec_append, hs2]
+    · left; rw [hn2]
+    · rw [hs2]
       simp only
-      rw [cexec_cons_some (cstep_nip (wim A B) (P A S) 0 0 (by omega))]
-      simp only [unP_P']
-      rw [cexec_cons_some (cstep_drop (wim A B) S 0 A)]
       by_cases hA : A = 1
-      · left
-        rw [hA, cexec_cons_none (cstep_nip_one 1 (P (wim 1 B) S) 0)]
-      · rw [cexec_cons_some (cstep_nip A (P (wim A B) S) 0 A hA)]
-        simp only [unP_P']
-        rw [cexec_cons_some (cstep_mp_ok B A S 0 (wim A B) (by simp))]
-        simp only [Nat.zero_add]
-        rw [cexec_cons_some (cstep_ax B 0 0 B (P 0 S) B 0)]
-        simp only [Nat.add_zero]
-        rw [show gate B 0 B = 0 from gate_self B 0, axStack_eq,
-          show nips 10 = nips ((axList B 0 0 B B).length + 1) from rfl, cexec_append,
-          cexec_nips 0 (P 0 S) 0 (axList B 0 0 B B) 0 B (by omega) (axList_ne_one _ _ _ _ _)]
-        simp only
-        rw [cexec_cons_some (cstep_drop 0 (P 0 S) 0 B)]
-        by_cases hB : B = 1
-        · left
-          rw [hB, cexec_cons_none (cstep_nip_one 1 (P 0 (P 0 S)) 0)]
-        · right
-          rw [cexec_cons_some (cstep_nip B (P 0 (P 0 S)) 0 B hB)]
-          simp only [unP_P']
-          rw [cexec_cons_some (cstep_nip B (P 0 S) 0 0 (by omega))]
-          simp [unP_P', cexec]
+      · left; subst hA; xrun
+      · by_cases hB : B = 1
+        · left; subst hB; xrun
+        · right; xrun
 
 /-- Every code of the dominated calculus has a block computing it. -/
 theorem build : ∀ {n : Nat}, CDom n → ∃ p : List Cmd, Contract p n := by
@@ -581,31 +484,31 @@ theorem build : ∀ {n : Nat}, CDom n → ∃ p : List Cmd, Contract p n := by
   | gen a _ ih =>
       obtain ⟨p, hp⟩ := ih
       exact ⟨_, gen_contract a hp⟩
-  | r1 a b => exact ⟨_, leaf_contract 1 a b 0 0 _ [] _ (Nat.zero_le a) rfl rfl rfl⟩
-  | r2 a b c => exact ⟨_, leaf_contract 2 a b c 0 _ [_] _ (Nat.zero_le a) rfl rfl rfl⟩
-  | r3 a b c => exact ⟨_, leaf_contract 3 a b c 0 _ [_, _] _ (Nat.zero_le a) rfl rfl rfl⟩
-  | r4 a b c => exact ⟨_, leaf_contract 4 a b c 0 _ [_, _, _] _ (Nat.zero_le a) rfl rfl rfl⟩
-  | r5 a b c => exact ⟨_, leaf_contract 5 a b c 0 _ [_, _, _, _] _ (Nat.zero_le a) rfl rfl rfl⟩
-  | r6 a b => exact ⟨_, leaf_contract 6 a 0 b 0 _ [_, _, _, _, _] _ (Nat.zero_le a) rfl rfl rfl⟩
-  | rG a b c => exact ⟨_, leaf_contract 7 a b c 0 _ [_, _, _, _, _, _] _ (Nat.zero_le a) rfl rfl rfl⟩
-  | r8 a b c u hu => exact ⟨_, leaf_contract 8 a b c u _ [_, _, _, _, _, _, _] _ hu rfl rfl rfl⟩
-  | bundle a b c h1 h2 => exact ⟨_, bundle_contract a b c h1 h2⟩
+  | bundle a b c h1 h2 =>
+      refine ⟨bundleLeaf a b c, fun T S => Or.inr ?_⟩
+      rw [bundleLeaf, cexec_discard_ax T S a b c 0 (Nat.zero_le a)]
+      xrun
+      simp [gate, h1, h2]
+  | r1 a b => exact ⟨leaf 1 a b 0 0, fun T S => Or.inr (by rw [leaf, cexec_discard_ax _ _ _ _ _ _ (by omega)]; xrun)⟩
+  | r2 a b c => exact ⟨leaf 2 a b c 0, fun T S => Or.inr (by rw [leaf, cexec_discard_ax _ _ _ _ _ _ (by omega)]; xrun)⟩
+  | r3 a b c => exact ⟨leaf 3 a b c 0, fun T S => Or.inr (by rw [leaf, cexec_discard_ax _ _ _ _ _ _ (by omega)]; xrun)⟩
+  | r4 a b c => exact ⟨leaf 4 a b c 0, fun T S => Or.inr (by rw [leaf, cexec_discard_ax _ _ _ _ _ _ (by omega)]; xrun)⟩
+  | r5 a b c => exact ⟨leaf 5 a b c 0, fun T S => Or.inr (by rw [leaf, cexec_discard_ax _ _ _ _ _ _ (by omega)]; xrun)⟩
+  | r6 a b => exact ⟨leaf 6 a 0 b 0, fun T S => Or.inr (by rw [leaf, cexec_discard_ax _ _ _ _ _ _ (by omega)]; xrun)⟩
+  | rG a b c => exact ⟨leaf 7 a b c 0, fun T S => Or.inr (by rw [leaf, cexec_discard_ax _ _ _ _ _ _ (by omega)]; xrun)⟩
+  | r8 a b c u hu => exact ⟨leaf 8 a b c u, fun T S => Or.inr (by rw [leaf, cexec_discard_ax _ _ _ _ _ _ hu]; xrun)⟩
 
 /-- `START_Y = AX(0; 1, Y)` resets the counter and cache from every state; with a block for 1
 and `DROP; NIP; NIP`, the list halts from every state. -/
 theorem program_none (Y : Nat) (p : List Cmd) (hp : Contract p F) :
     ∀ w, cexec (.ax 0 1 Y :: (p ++ [.drop, .nip, .nip])) w = none := by
-  intro w
-  obtain ⟨t, S, d, hh⟩ := w
-  rw [cexec_cons_some (cstep_ax 0 1 Y t S d hh), cexec_append]
-  rcases hp (gate (d + 1) (hh + Y) 0) (axStack (d + 1) hh (hh + Y) 0 d t S) with hn | hs
+  rintro ⟨t, S, d, h⟩
+  rw [ex_ax, cexec_append]
+  rcases hp (gate (d + 1) (h + Y) 0) (axStack (d + 1) h (h + Y) 0 d t S) with hn | hs
   · rw [hn]
   · rw [hs]
-    simp only
-    rw [cexec_cons_some (cstep_drop F _ 0 0)]
-    rw [cexec_cons_some (cstep_nip 0 _ 0 0 (by omega))]
-    simp only [unP_P']
-    exact cexec_cons_none (cstep_nip_one 0 _ 0)
+    simp only [F]
+    xrun
 
 theorem encL_ge (Y : Nat) (cs : List Cmd) : Y ≤ encL (.ax 0 1 Y) cs := by
   have key : ∀ r, Y ≤ pack (.ax 0 1 Y) r := fun r =>
