@@ -1,0 +1,147 @@
+{
+  "schema": "source162-seven-selected-leaves-v1",
+  "packet_inputs": {
+    "code/audit_decoder215.py": "b59c26f993fcb64e30bac101a96a764f966983d9bdd12071402a746bbc121b35",
+    "code/audit_table_and_blank.py": "0648b1b8947bcd285b8dd55d038fecc22181a1cb901594041225473155e54d1b",
+    "code/inputs/legacy_mapping.json": "26a4bff859adcc510f1faf4364a597681fec014a136bc1d00dc9ce1904ad6bbf",
+    "code/k215_decoder_plan.json": "e8fd85c3b476ffe862dee09658925066290ec433e34a453a4eb2b751106c94ed",
+    "code/k215_transition_recipe.json": "240ec19ea9ba70f5deec6b9aa230ec4ac5c8ec3904cce04dcb907e86cad8aa12",
+    "code/reconstruct215.py": "5053f4af29a536fd73ca48e6be3b0d7b6ef9a727591acb8eee07e7e3130cd47f",
+    "code/review_runtime215.py": "9f11c0000cc68f266a084aedc960d117d73a72854e5988e9ff7e79aaac1ded05",
+    "code/runtime/independent_runtime.py": "0d1dae10b921cc302a2211d9251ca7ec131aa63ecb040ce66720894877700346",
+    "code/runtime/symbolic_runtime.py": "7ca30fd11def00e973d8f30997e51fa2dd87ae2eff311ea8c9fc4ac08c9d774f",
+    "code/source_compare.py": "a1d39b2b983dc8498c58dd9b916be108b21848622cacadcf33c78cefb9480907",
+    "code/validate_runtime.py": "696a679f9124dcb6cca9fcd47ff3ec6282d3b1275ce707e26345f2e96d4fd439",
+    "evidence/runtime.json": "45971c3cded160e2787cc9edfebc66087fadcfc5e9b78cbe1d22c79f19352088",
+    "evidence/runtime_cases.json.gz": "c81f74348618cf7ffa0fea898f044ce71b7c1f2aff5e5ef04118c33b7333c2c5",
+    "evidence/startup.json.gz": "165ada9a22b5c389f8727d7be3e42b852599b8fffb91d16fbedd22743999b0a2",
+    "evidence/startup.trace.jsonl.gz": "c2a946b08c8bb2df17952febce40071f486e165022c480e5c74dfb92b7069e13",
+    "machine/canonicalization.json": "5971896ea1be8b94675a49d0324b0cc5529e626bb059379f6d221077cae1ac86",
+    "machine/k215.native.tm": "03739f080d023166773bc14e7e3a4d8157f81d44c28cd30fef46066b37cf3748",
+    "machine/k215.tm": "fd9de5a9702c6193350952ca85a43f65d288b20f234b7582549b6aaa7a5ce703",
+    "research/failed_allocation/candidate.native.tm": "289737cb4729000f9a68fa1a55a947189e9bfa1e833998590d168036c0c85598",
+    "research/failed_allocation/check_rejected_shortcut.py": "ece507d48abbcccacd7de8aea2886d7fcdb2e55f9515cb6dc69f98fc83960854",
+    "research/logical_restrictions/check_countermodels.py": "fb2b6b4f0e5315eb3bcd6f267b0c50d34249d9896f8b41b0947a54889a276ac8",
+    "research/logical_restrictions/countermodels.json": "5504de6d8348d82d141ab9c27a5e82eef19a118024eefc6d5cce01d7ad7eff9f",
+    "source/sites215.json": "17af207195179b2508bf91154cd00739374f8862207ca21b9a3cb9098aa6f5ba"
+  },
+  "parents": {
+    "parent_table": {
+      "sha256": "2efb7adf9cfcbea58197a2bde2610b22f58b647f05385bc716b036242be6fa6c",
+      "name": "k216.native.tm"
+    },
+    "parent_source": {
+      "sha256": "c865047ce7283521199e93ce74307821f3b3231742213329b7ac5e8a7ec0b6d2",
+      "name": "sites216.json"
+    },
+    "reference_source": {
+      "sha256": "8b5dc46f10d927b2db5e4bcb522d482779ec61c72c82717d7bf12fca3550a3bc",
+      "name": "sites216.json"
+    }
+  },
+  "jobs": [
+    {
+      "name": "reconstruct",
+      "timeout_seconds": 30,
+      "argv": [
+        "python3",
+        "-B",
+        "{packet}/code/reconstruct215.py",
+        "--parent-table",
+        "{parent_table}",
+        "--parent-source",
+        "{parent_source}",
+        "--reference-sites",
+        "{reference_source}",
+        "--output",
+        "{out}/rebuild"
+      ]
+    },
+    {
+      "name": "decoder",
+      "timeout_seconds": 30,
+      "argv": [
+        "python3",
+        "-B",
+        "{packet}/code/audit_decoder215.py",
+        "--parent-table",
+        "{parent_table}",
+        "--parent-source",
+        "{parent_source}",
+        "--candidate-table",
+        "{packet}/machine/k215.native.tm",
+        "--candidate-source",
+        "{packet}/source/sites215.json",
+        "--output",
+        "{out}/decoder.json"
+      ]
+    },
+    {
+      "name": "blank",
+      "timeout_seconds": 30,
+      "argv": [
+        "python3",
+        "-B",
+        "{packet}/code/audit_table_and_blank.py",
+        "--native",
+        "{packet}/machine/k215.native.tm",
+        "--canonical",
+        "{packet}/machine/k215.tm",
+        "--mapping",
+        "{packet}/machine/canonicalization.json",
+        "--trace",
+        "{packet}/evidence/startup.trace.jsonl.gz",
+        "--output",
+        "{out}/blank.json"
+      ]
+    },
+    {
+      "name": "restricted_matrices",
+      "timeout_seconds": 10,
+      "argv": [
+        "python3",
+        "-B",
+        "{packet}/research/logical_restrictions/check_countermodels.py",
+        "{packet}/research/logical_restrictions/countermodels.json",
+        "--output",
+        "{out}/countermodels.json"
+      ]
+    },
+    {
+      "name": "rejected_CB1",
+      "timeout_seconds": 10,
+      "argv": [
+        "python3",
+        "-B",
+        "{packet}/research/failed_allocation/check_rejected_shortcut.py",
+        "{packet}/research/failed_allocation/candidate.native.tm",
+        "{packet}/machine/k215.native.tm"
+      ]
+    },
+    {
+      "name": "full_runtime",
+      "timeout_seconds": 360,
+      "argv": [
+        "python3",
+        "-B",
+        "{packet}/code/validate_runtime.py",
+        "{packet}/machine/k215.native.tm",
+        "{packet}/source/sites215.json",
+        "{out}/runtime"
+      ]
+    },
+    {
+      "name": "saved_interface",
+      "timeout_seconds": 30,
+      "argv": [
+        "python3",
+        "-B",
+        "{packet}/code/review_runtime215.py",
+        "{packet}",
+        "--output",
+        "{out}/saved-interface.json"
+      ]
+    }
+  ],
+  "excluded": "No archive wrappers, manifests, ancestor certificates, proof assistants, solver or discovery search."
+}

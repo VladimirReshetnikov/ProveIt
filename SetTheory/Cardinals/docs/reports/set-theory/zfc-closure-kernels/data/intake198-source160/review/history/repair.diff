@@ -1,0 +1,11 @@
+--- review_saved-v1.py
++++ review_saved.py
+@@ -74,7 +74,7 @@
+  names=['reconstruct210','source210','blank-marker210','fold210','reconstruct120','source120','blank-marker120','fold120','runtime120'];need([j['name']for j in act['jobs']]==names,'ordered nine jobs')
+  jobs=[]
+  for j in act['jobs']:
+-  n=j['name'];need(j['returncode']==0 and j['timed_out']is False and 0<j['seconds']<j['cap_seconds'] and j['cap_seconds']==(360 if n=='runtime120'else90),'bounded success '+n)
++  n=j['name'];need(j['returncode']==0 and j['timed_out']is False and 0<j['seconds']<j['cap_seconds'] and j['cap_seconds']==(360 if n=='runtime120'else 90),'bounded success '+n)
+   need(j['argv'][1]=='-B'and '-O'not in j['argv'],'assertions enabled');out=(R/'logs'/f'{n}.stdout').read_text();need(not(R/'logs'/f'{n}.stderr').read_bytes()and'Traceback'not in out and'NOT_PROVED'not in out,'raw log '+n)
+   marker='EXACT_SOURCE_AND_TABLE_RECONSTRUCTION_PASS'if n.startswith('reconstruct')else'ALL_NATURAL_SOURCE_BISIMULATION_PASS'if n.startswith('source')else'MARKER_LEMMA_CANONICAL_ISOMORPHISM_AND_WHOLE_BLANK_PASS'if n.startswith('blank')else'INDEPENDENT_ALL_TAPE_JOINT_DIAGRAM_PASS'if n.startswith('fold')else'UNIVERSAL_MATHEMATICAL_PASS'
+   need(marker in out,'terminal raw marker '+n);jobs.append({k:j[k]for k in ('name','returncode','seconds','cap_seconds')})

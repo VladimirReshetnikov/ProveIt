@@ -1,0 +1,110 @@
+% Section fragment; the enclosing report supplies theorem environments.
+\section{The 215-state composition}
+\label{sec:composition215}
+
+The primary new table has 215 working states and 430 transition rows. It combines
+changes from two credited public 216-state predecessors: the partial-selector
+source layout and native 164/183 fold; the MP-only read schedule and 210 command
+permutation; and the contextual replacement of native row 81/0. Its additional
+contribution is an exact allocation in which these changes coexist. The public
+predecessors are preserved as unchanged, hash-pinned archives, with their
+original reports and attribution.
+
+\subsection{Source construction and logical correspondence}
+
+Start with the public partial-selector source, whose complete guarded ordinal
+graph is equal to that of K217. In its original primitive ordinals, delete
+$[23,37)$ and $[187,201)$, and replace each of $[228,254)$ and $[4659,4685)$ by the
+local counter read followed by the existing counter load. The 14-leaf read
+factors as $(W_{11},T_3)$, and the load has 26 leaves. Use
+\[
+  (W_{11},(T_3,L_{26}))
+\]
+for both replacements. Each of the three factors is closed and halt-free, so
+this association preserves every effect and guarded successor. It also keeps
+the maximum consecutive zero run at 6.
+
+Permute the three closed command bodies at paths
+\texttt{111}, \texttt{110101}, and \texttt{110100101} in order 210. Tags 0, 1, 2 select
+NIP, DROP, MP; a selector at least 3 still selects AX with residual selector $n-3$.
+The resulting source has 202 distinct subtrees, 4751 primitive occurrences,
+maximum depth 47, and maximum zero run 6.
+
+\begin{lemma}[Complete source correspondence]
+The composed 210 source and the public calibrated 210 source induce the same
+guarded transition system on primitive ordinals and all nine natural-number
+registers.
+\end{lemma}
+\begin{proof}
+The finite certificate compares their entire ordinal-indexed graphs. For an
+increment it records the register and successor; for a decrement it records the
+register and both the zero and positive successors; for break or continue it
+records the resolved identity successor; and for halt it records termination.
+An ancestor-interval algorithm and an independent binary-address arithmetic
+algorithm agree, including the no-stray-suffix condition. An additional source
+auditor checks the command selector partition, exact wire fields, and each
+normal return route. These graphs are literally equal for the two sources.
+Induction on abstract primitive steps therefore gives the identity
+correspondence on registers and ordinals, including termination, for every
+initial register vector. No formula-decoding assumption or experimental
+numeric bound is used.
+\end{proof}
+
+The numerical-calculus and command-calibration theorems of the public 210
+construction therefore apply unchanged. The new blank initialization reaches
+the same logical vector $(4,0,0,0,0,0,0,0,0)$ as that construction.
+
+\subsection{Constrained physical allocation}
+
+Of the new source's 179 internal subtree nodes, 157 retain old roles represented
+by 143 physical decoder states. The other 22 nodes are assigned injectively to a
+23-state pool consisting of retired decoder states and the dispatcher root.
+The assignment leaves only native 185 unused. The 50 remaining engine states,
+143 retained decoder states, and 22 assigned decoder states give
+\[
+  50+143+22=215.
+\]
+This is a count of the actual complete table: each working state has both
+binary transition rows, and 254 is its sole native external halt.
+
+Rows $(11,0),(26,0),(26,1),(37,0),(92,0),(213,0),(213,1)$ in the pool continue to
+serve arithmetic or marker helpers and are preserved exactly. The public local
+replacement $81/0=0L111$ frees row 92/1. Its original proof compares the two
+possible symbols immediately to the left of the head and gives an exact
+three-step whole-tape equality. Both inherited marker folds retain their
+literal provider fragments: the 69 fold uses 213, 92 and 90, while the 164 fold uses
+201, 195 and 196. Fresh independent local checks also verify the folds after
+unfolding them to their immediate predecessors.
+
+Relative to the public partial-selector 216 table, the new table changes 36
+retained rows, deletes both rows of 185, and introduces no state. The complete
+before/after recipe is \texttt{recipes/table210.json}. Its fixed assignment
+identifies every new node by source path, so reconstruction requires no
+optimization or search. The standard-library builder checks all internal
+prefixes against that assignment. The primary native table hash is
+\begin{center}\small\ttfamily
+04b4dbb537306f40f8965ad6a0ee6034e9953f079c233153e9696acdf06c2712.
+\end{center}
+
+\subsection{Endpoint proof}
+
+The finite source and allocation certificates are supplemented by the full
+whole-tape symbolic runtime. All 6176 guarded primitive cases are proved over
+all natural primary-register values, arbitrary natural extra gap, a nonempty
+finite spare list, and zero exterior. Every primitive block has positive finite
+clock. The independent inventory covers all 430 rows, with 1698790 ordered rule
+applications and minimum primitive clock 6. This supplies both directions of
+the source-to-machine simulation and excludes an additional halting exit.
+
+The complete blank prefix has 95726 transitions. Independent sparse and dense
+replays agree on every transition and the whole final tape. The endpoint is
+native dispatcher 84, head $-8$, extra gap 1, the register vector
+$(4,0,0,0,0,0,0,0,0)$, and 40 spare blocks of value 1. There are 95 one cells and the
+tape is zero everywhere else. Combining this initialization with the quantified
+runtime, the source-correspondence lemma, and the inherited calibration gives
+the ZFC-provable equivalence between nonhalting of the exact 215-state table and
+$\operatorname{Con}(\mathrm{ZFC})$.
+
+These are ordinary mathematical certificates formalizable in ZFC. No new
+proof-assistant-kernel endpoint, absolute consistency proof, or minimality
+among all equivalent machines is asserted.

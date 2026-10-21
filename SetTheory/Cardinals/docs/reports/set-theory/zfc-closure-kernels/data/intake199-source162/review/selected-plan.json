@@ -1,0 +1,148 @@
+{
+  "status": "SOURCE_REVIEWED_SELECTED_LEAF_PLAN_NOT_EXECUTED",
+  "packet": "/tmp/zfc-intake199/opening-source162/extracted/K215_Composed_Selector_2026-10-20",
+  "disposable_copy_required": true,
+  "parents": {
+    "parent_table": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/candidate-k216/k216.native.tm",
+      "sha256": "2efb7adf9cfcbea58197a2bde2610b22f58b647f05385bc716b036242be6fa6c"
+    },
+    "parent_source": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/candidate-k216/sites216.json",
+      "sha256": "c865047ce7283521199e93ce74307821f3b3231742213329b7ac5e8a7ec0b6d2"
+    },
+    "reference_source": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/candidate-k216/alternatives/permuted/sites216.json",
+      "sha256": "8b5dc46f10d927b2db5e4bcb522d482779ec61c72c82717d7bf12fca3550a3bc"
+    }
+  },
+  "jobs": [
+    {
+      "name": "reconstruct",
+      "timeout_seconds": 30,
+      "argv": [
+        "python3",
+        "-B",
+        "{packet}/code/reconstruct215.py",
+        "--parent-table",
+        "{parent_table}",
+        "--parent-source",
+        "{parent_source}",
+        "--reference-sites",
+        "{reference_source}",
+        "--output",
+        "{out}/rebuild"
+      ]
+    },
+    {
+      "name": "decoder",
+      "timeout_seconds": 30,
+      "argv": [
+        "python3",
+        "-B",
+        "{packet}/code/audit_decoder215.py",
+        "--parent-table",
+        "{parent_table}",
+        "--parent-source",
+        "{parent_source}",
+        "--candidate-table",
+        "{packet}/machine/k215.native.tm",
+        "--candidate-source",
+        "{packet}/source/sites215.json",
+        "--output",
+        "{out}/decoder.json"
+      ]
+    },
+    {
+      "name": "blank",
+      "timeout_seconds": 30,
+      "argv": [
+        "python3",
+        "-B",
+        "{packet}/code/audit_table_and_blank.py",
+        "--native",
+        "{packet}/machine/k215.native.tm",
+        "--canonical",
+        "{packet}/machine/k215.tm",
+        "--mapping",
+        "{packet}/machine/canonicalization.json",
+        "--trace",
+        "{packet}/evidence/startup.trace.jsonl.gz",
+        "--output",
+        "{out}/blank.json"
+      ]
+    },
+    {
+      "name": "restricted_matrices",
+      "timeout_seconds": 10,
+      "argv": [
+        "python3",
+        "-B",
+        "{packet}/research/logical_restrictions/check_countermodels.py",
+        "{packet}/research/logical_restrictions/countermodels.json",
+        "--output",
+        "{out}/countermodels.json"
+      ]
+    },
+    {
+      "name": "rejected_CB1",
+      "timeout_seconds": 10,
+      "argv": [
+        "python3",
+        "-B",
+        "{packet}/research/failed_allocation/check_rejected_shortcut.py",
+        "{packet}/research/failed_allocation/candidate.native.tm",
+        "{packet}/machine/k215.native.tm"
+      ]
+    },
+    {
+      "name": "full_runtime",
+      "timeout_seconds": 360,
+      "argv": [
+        "python3",
+        "-B",
+        "{packet}/code/validate_runtime.py",
+        "{packet}/machine/k215.native.tm",
+        "{packet}/source/sites215.json",
+        "{out}/runtime"
+      ]
+    },
+    {
+      "name": "saved_interface",
+      "timeout_seconds": 30,
+      "argv": [
+        "python3",
+        "-B",
+        "{packet}/code/review_runtime215.py",
+        "{packet}",
+        "--output",
+        "{out}/saved-interface.json"
+      ]
+    }
+  ],
+  "notes": [
+    "Retain separate stdout/stderr/exit/time/input-before-after for every actual job.",
+    "Saved-interface reads supplied saved records; independently compare fresh runtime cases and startup with these exact deterministic records. It is not itself a symbolic proof replay.",
+    "Source164 may be graph-isomorphic to162; Reflection owns complete430-row transfer. One full runtime suffices if that exact relation is frozen.",
+    "No verify.py, manifest suite, ancestor suite, solver, discovery search, Lean or Rocq.",
+    "Duplicate logical certificate/checkers and helper81 diamond do not need another replay."
+  ],
+  "execution_closure": {
+    "code/check_row81_diamond.py": "a6f81dc4c56aa03cd50d6173833b5a4a4ae6268b5d0ab7c0de1eb3f0d9d285ce",
+    "code/review_runtime215.py": "9f11c0000cc68f266a084aedc960d117d73a72854e5988e9ff7e79aaac1ded05",
+    "code/source_compare.py": "a1d39b2b983dc8498c58dd9b916be108b21848622cacadcf33c78cefb9480907",
+    "code/audit_decoder215.py": "b59c26f993fcb64e30bac101a96a764f966983d9bdd12071402a746bbc121b35",
+    "code/validate_runtime.py": "696a679f9124dcb6cca9fcd47ff3ec6282d3b1275ce707e26345f2e96d4fd439",
+    "code/audit_composite_blank.py": "01569ef072f7d5617a245a974eab9ddafcbe6eadfcb5526c69eb9ff09173822c",
+    "code/reconstruct215.py": "5053f4af29a536fd73ca48e6be3b0d7b6ef9a727591acb8eee07e7e3130cd47f",
+    "code/audit_table_and_blank.py": "0648b1b8947bcd285b8dd55d038fecc22181a1cb901594041225473155e54d1b",
+    "code/runtime/symbolic_runtime.py": "7ca30fd11def00e973d8f30997e51fa2dd87ae2eff311ea8c9fc4ac08c9d774f",
+    "code/runtime/independent_runtime.py": "0d1dae10b921cc302a2211d9251ca7ec131aa63ecb040ce66720894877700346",
+    "code/inputs/legacy_mapping.json": "26a4bff859adcc510f1faf4364a597681fec014a136bc1d00dc9ce1904ad6bbf",
+    "code/k215_transition_recipe.json": "240ec19ea9ba70f5deec6b9aa230ec4ac5c8ec3904cce04dcb907e86cad8aa12",
+    "code/k215_decoder_plan.json": "e8fd85c3b476ffe862dee09658925066290ec433e34a453a4eb2b751106c94ed",
+    "research/logical_restrictions/check_countermodels.py": "fb2b6b4f0e5315eb3bcd6f267b0c50d34249d9896f8b41b0947a54889a276ac8",
+    "research/logical_restrictions/countermodels.json": "5504de6d8348d82d141ab9c27a5e82eef19a118024eefc6d5cce01d7ad7eff9f",
+    "research/failed_allocation/check_rejected_shortcut.py": "ece507d48abbcccacd7de8aea2886d7fcdb2e55f9515cb6dc69f98fc83960854"
+  }
+}
