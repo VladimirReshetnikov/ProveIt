@@ -1,0 +1,202 @@
+{
+  "status": "PASS_EXACT_SOURCE_COMMAND_PERMUTATION",
+  "baseline219_sha256": "0f6d9d991e36dda1a7449edab72a799bb2d8c3de3ff853a26178b89bd1bc8789",
+  "frozen202_sha256": "abb7229877759170b61dfcfe21ca0889b3df2f91f4215383817a125eb0f8996c",
+  "candidate_sha256": "ee1f7c7cb216a80315449371b040ee094728a655439954225ed4be4635296680",
+  "permutation": "120",
+  "reference_metrics": {
+    "dag_nodes": 205,
+    "leaf_occurrences": 4751,
+    "guarded_cases": 6176,
+    "maximum_depth": 37,
+    "maximum_zero_run": 8
+  },
+  "frozen_metrics": {
+    "dag_nodes": 202,
+    "leaf_occurrences": 4751,
+    "guarded_cases": 6176,
+    "maximum_depth": 44,
+    "maximum_zero_run": 6
+  },
+  "candidate_metrics": {
+    "dag_nodes": 202,
+    "leaf_occurrences": 4751,
+    "guarded_cases": 6176,
+    "maximum_depth": 44,
+    "maximum_zero_run": 6
+  },
+  "all_primitive_guarded_cases_checked": 6176,
+  "reference_cfg_sha256": "7cdd54713aa156c4209d1fdd27a9c183e52be11c2836a34afb19778b921a9a44",
+  "candidate_cfg_sha256": "ed0f06b1f9abf59575f8e836a4a6f4e66bee89f35a3d80c7fba25ad2c9a16acc",
+  "independent_cfg_resolvers": [
+    "structured ancestor stacks",
+    "binary address counter"
+  ],
+  "literal_external_primitive_occurrences": 4593,
+  "AX_subtree_unchanged": true,
+  "body_paths_in_tag_order": [
+    "111",
+    "110101",
+    "110100101"
+  ],
+  "body_boundary_demands": [
+    [
+      0,
+      0
+    ],
+    [
+      0,
+      0
+    ],
+    [
+      0,
+      0
+    ]
+  ],
+  "selector_partition": [
+    {
+      "selector": 0,
+      "residual_selector": 0,
+      "command": "DROP",
+      "entry_ordinal": 4725,
+      "decrement_test_ordinals": [
+        23
+      ]
+    },
+    {
+      "selector": 1,
+      "residual_selector": 0,
+      "command": "NIP",
+      "entry_ordinal": 4698,
+      "decrement_test_ordinals": [
+        23,
+        24
+      ]
+    },
+    {
+      "selector": 2,
+      "residual_selector": 0,
+      "command": "MP",
+      "entry_ordinal": 4591,
+      "decrement_test_ordinals": [
+        23,
+        24,
+        25
+      ]
+    },
+    {
+      "selector_minimum": 3,
+      "residual_selector": "selector - 3",
+      "command": "AX",
+      "entry_ordinal": 26,
+      "decrement_test_ordinals": [
+        23,
+        24,
+        25
+      ]
+    }
+  ],
+  "wire_fields": {
+    "MP": [
+      2,
+      "x"
+    ],
+    "DROP": [
+      0
+    ],
+    "NIP": [
+      1
+    ],
+    "AX": [
+      "c+3",
+      "y",
+      "x"
+    ]
+  },
+  "normal_return_routes": [
+    {
+      "command": "DROP",
+      "body_entry": 4725,
+      "normal_return_wrappers": [],
+      "final_target": 0
+    },
+    {
+      "command": "NIP",
+      "body_entry": 4698,
+      "normal_return_wrappers": [
+        {
+          "ordinal": 4724,
+          "op": "CB",
+          "target": 0
+        }
+      ],
+      "final_target": 0
+    },
+    {
+      "command": "MP",
+      "body_entry": 4591,
+      "normal_return_wrappers": [
+        {
+          "ordinal": 4697,
+          "op": "CB",
+          "target": 4724
+        },
+        {
+          "ordinal": 4724,
+          "op": "CB",
+          "target": 0
+        }
+      ],
+      "final_target": 0
+    }
+  ],
+  "halting_primitive_occurrences": 1,
+  "symbolic_command_packing": {
+    "MP": [
+      "P",
+      2,
+      [
+        "P",
+        "x",
+        "R"
+      ]
+    ],
+    "DROP": [
+      "P",
+      0,
+      "R"
+    ],
+    "NIP": [
+      "P",
+      1,
+      "R"
+    ],
+    "AX": [
+      "P",
+      "c+3",
+      [
+        "P",
+        "y",
+        [
+          "P",
+          "x",
+          "R"
+        ]
+      ]
+    ]
+  },
+  "cofinal_padding_packing": [
+    "P",
+    3,
+    [
+      "P",
+      "Y",
+      [
+        "P",
+        1,
+        "R"
+      ]
+    ]
+  ],
+  "scope": "Finite source structure and exhaustive guarded control graph; mathematical all-natural macro and calculus contracts are inherited; no binary runtime or bootstrap claim."
+}
