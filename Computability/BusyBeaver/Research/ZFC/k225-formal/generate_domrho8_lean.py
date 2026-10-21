@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 """Generate DomRho8.lean: dominated rho8 instances derive every rho8 instance.
 
+Superseded for the maintained Lean proof: DomRho8.lean is now a compatibility adapter over the
+generic DominatedImplication.lean, produced by
+verification/k215/simplification/proposals/proof-core/generation/generation/regenerate.py.
+This script still renders the earlier single-module proof from the same certificate.
+
   python generate_domrho8_lean.py CERTIFICATE_JSON OUT_LEAN [--plan PLAN | --no-plan | --templates CD230_V]
 
 The exact Source149 input uses a guarded lemma hierarchy by default. Its pinned CD230
