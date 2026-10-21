@@ -1,0 +1,149 @@
+{
+  "status": "PASS",
+  "scope": "Exhaustive finite local hypotheses; global all-tape induction is in the report",
+  "old_sha256": "9683d6ed9628e6ce407c315b08f5da3d063da94e92706f275ca0f33e8272e4b2",
+  "new_sha256": "e5907f08e0752eada0e25bbf33680341e80e5fe94b52b409aea1ed039edda252",
+  "working_states": 215,
+  "rows": 430,
+  "window_offsets": [
+    -2,
+    -1,
+    0,
+    1,
+    2
+  ],
+  "local_assignments_total": 6912,
+  "invariant_compatible_assignments_checked": 6872,
+  "incompatible_assignments_excluded_by_inductive_invariant": 40,
+  "three_step_blocks_checked": 16,
+  "initial_invariant_assignments": 32,
+  "changed_rows": [
+    {
+      "state": 52,
+      "read": 0,
+      "old": [
+        0,
+        1,
+        154
+      ],
+      "new": [
+        0,
+        -1,
+        176
+      ]
+    },
+    {
+      "state": 156,
+      "read": 1,
+      "old": [
+        1,
+        1,
+        176
+      ],
+      "new": [
+        1,
+        1,
+        52
+      ]
+    },
+    {
+      "state": 165,
+      "read": 0,
+      "old": [
+        0,
+        1,
+        176
+      ],
+      "new": [
+        0,
+        1,
+        52
+      ]
+    },
+    {
+      "state": 176,
+      "read": 0,
+      "old": [
+        0,
+        1,
+        168
+      ],
+      "new": [
+        0,
+        1,
+        185
+      ]
+    },
+    {
+      "state": 176,
+      "read": 1,
+      "old": [
+        1,
+        1,
+        150
+      ],
+      "new": [
+        1,
+        1,
+        129
+      ]
+    },
+    {
+      "state": 193,
+      "read": 0,
+      "old": [
+        0,
+        1,
+        176
+      ],
+      "new": [
+        0,
+        1,
+        52
+      ]
+    }
+  ],
+  "incoming_52": {
+    "(190, 1)": [
+      1,
+      1,
+      52
+    ],
+    "(193, 1)": [
+      1,
+      1,
+      52
+    ]
+  },
+  "incoming_176": {
+    "(156, 1)": [
+      1,
+      1,
+      176
+    ],
+    "(165, 0)": [
+      0,
+      1,
+      176
+    ],
+    "(193, 0)": [
+      0,
+      1,
+      176
+    ]
+  },
+  "incoming_156": {
+    "(189, 1)": [
+      1,
+      -1,
+      156
+    ]
+  },
+  "invariant": [
+    "q = 52 implies tape[h-1] = 1",
+    "q = 176 and tape[h] = 0 imply tape[h-1] = 0",
+    "q = 156 implies tape[h+1] = 1"
+  ],
+  "generic_lean_theorem": "PositiveSimulation.halts_iff",
+  "exact_table_lean_endpoint": "Not claimed by this Python certificate"
+}

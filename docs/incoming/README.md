@@ -12,6 +12,16 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Queue status after batch 206
+
+`K215_Proof_Simplification_2026-10-21 (2).zip` (arrival `53269bcab1`) is a
+different packet from batch 205's archive of the same name: a Coq symmetry
+theorem for the actual offset checker and a compact-certificate equality, a
+Lean ordinary-bisimulation source proof, and a CM215 transport. All its
+tables are already in the repository. Placed whole as delivered as
+[proposals/k215-simplification-2](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/README.md).
+Nothing was rerun. The queue is clear.
+
 ## Queue status after batch 205
 
 Batch 205 received six K215 proof-simplification packets (arrival

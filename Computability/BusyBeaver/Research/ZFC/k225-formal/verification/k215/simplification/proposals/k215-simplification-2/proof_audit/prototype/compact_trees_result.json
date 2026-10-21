@@ -1,0 +1,37 @@
+{
+  "status": "PASS_EXACT_AST_ROUNDTRIP_NOT_KERNEL_COMPILED",
+  "kernel_compiled": false,
+  "input_sha256": "43093f181bfdd86408a7c88bbf8c0d99ada494b5e3780ae9d93cff05502dbe67",
+  "output_sha256": "008a1cad31f4038692e35cf9b3b69d7dce0a045b904c4cdd6172b92c195c946b",
+  "input_bytes": 456548,
+  "output_bytes": 245190,
+  "saved_bytes": 211358,
+  "original_tree_block_bytes": 246012,
+  "shared_tree_block_bytes": 34654,
+  "shared_definitions": 427,
+  "roots": {
+    "t215": {
+      "leaves": 4751,
+      "height": 47,
+      "distinct_subtrees": 202,
+      "distinct_internal_nodes": 179
+    },
+    "tD": {
+      "leaves": 4751,
+      "height": 178,
+      "distinct_subtrees": 283,
+      "distinct_internal_nodes": 260
+    }
+  },
+  "checks": [
+    "exact input AST equals fully unfolded output AST for each root",
+    "all shared references point to earlier declarations",
+    "all public definitions and theorem statements retained",
+    "entire certificate and suffix from theorem t215_eq retained byte-for-byte",
+    "all source before the two tree definitions retained byte-for-byte"
+  ],
+  "remaining_gate": "Rebuild KSource215Data and all affected endpoint consumers with pinned Lean; compare endpoint axioms and timings.",
+  "standalone_tree_identities_kernel_checked": true,
+  "standalone_check_log": "build_logs/SharedTreeIdentity.log",
+  "standalone_check_scope": "Exact abstract-tree identities only; production endpoint not replayed"
+}
