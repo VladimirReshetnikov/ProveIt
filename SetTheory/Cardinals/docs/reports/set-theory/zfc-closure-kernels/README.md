@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings through 20 October 2026. This report now reconciles **156 manuscripts**.
+Intake findings through 20 October 2026. This report now reconciles **159 manuscripts**.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -9,8 +9,31 @@ No merged PDF is built. These are ordinary mathematical arguments and finite
 regression checks. The deliveries confer no formal status; subsequent Lean
 results and their exact scope are listed below.
 
-[Batch 195](intake-195.md) accepts Source 156 as the new
-[**primary 216-state machine**](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k216/README.md).
+[Batch 197](intake-197.md) accepts Source 159's two distinct
+[command-permuted 216-state alternatives](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k216/alternatives/permuted/README.md)
+from `d59b441882`. All ten selected checks pass, including both complete
+6,176-case runtimes and exact blank starts. Moving field reads into the
+commands that need them is compatible with Source 156's partial selector.
+Their original composition is the new
+[**215-state primary contender**](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k215/README.md),
+with its own exact-table runtime and startup evidence. This is an ordinary
+ZFC consistency-equivalence proof; the exact-table Lean/PA endpoint remains
+open. The active search now targets **214 or fewer states**.
+[Recovery/reproduction](intake-197-reproduction.md) preserves both
+submitted alternatives independently of the new composition. Placement
+`607e98b59d` accounts for all 72 members and retires the ZIP.
+
+[Batch 196](intake-196.md) imports Sources 157–158: scanner counterexamples,
+clean-seed theorems, source recodings, logical fragment obstructions and
+failed allocation searches. Nine selected fresh leaves pass. Sixty of 62
+individual row rewrites transfer to K216, without a joint saving. Placement
+`943e1685eb` accounts for all 343 members and retires both ZIPs.
+[Recovery/reproduction](intake-196-reproduction.md) retains every original
+and distinguishes historical evidence from fresh checks. The host now has
+159 sources and the collection remains 290 reports; the intake queue is clear.
+
+[Batch 195](intake-195.md) accepts Source 156 as the then-primary
+[**216-state machine**](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k216/README.md).
 A partial-selector reparse preserves all 4,751 primitives and their complete
 control graph, repairs contextual sharing, and allows states 164/183 to
 share one state. All five fresh leaves pass: 6,176 arbitrary-natural cases,
@@ -19,9 +42,8 @@ share one state. All five fresh leaves pass: 6,176 arbitrary-natural cases,
 accepted dominated calculus; exact-table Lean/internal PA endpoints remain
 open. Placement `58615b1aa1` accounts for all 41 members and retires the ZIP.
 [Recovery/reproduction](intake-195-reproduction.md) preserves original layouts,
-proof reviews and raw fresh evidence. The active target is **215 or fewer**;
-two research archives at `d3d6b8c14e` remain queued for batch 196, and the
-alternative216 at `d59b441882` for batch197.
+proof reviews and raw fresh evidence. The later batches 196–197 are now processed above; their composition reaches
+the 215-state target with separately checked final evidence.
 
 [Batch 194](intake-194.md) compares `673c87a878` as Source 155: it is the same
 217-state machine under `188→213→210→188`, with an identical source and the
@@ -32,7 +54,7 @@ checks pass; a separate fixed-label core has an ordinary calibration but costs
 accounts for all 57 members and retires the ZIP. [Recovery/reproduction](intake-194-reproduction.md)
 preserve both the additional exposition and the optional theory experiment.
 The later 216 candidate at `6ec69081ca` is accepted in batch 195 above.
-Two reports at `d3d6b8c14e` remain reserved for batch 196.
+The two reports at `d3d6b8c14e` are now retained in batch 196.
 
 [Batch 193](intake-193.md) imports the two different research archives at
 `1e87618cf2` as Sources 153–154. Placement `ff23f24af8` accounts for all 544
@@ -149,7 +171,7 @@ blank-tape non-halting and Con(ZFC), with fewer than 254 nonhalting states on a
 binary, two-way infinite, single tape. The maintained [240-state machine](../../../../../../Computability/BusyBeaver/Research/ZFC/rotation240_binary.md)
 now has both its external Lean comparison and the internal PA equivalence
 with Con(ZFC), improving the earlier checked 244-, 245-, 246- and 252-state
-endpoints. The current 218's ordinary argument is separate from that formal result. Several deliveries discuss provability in ZFC instead, and retain that
+endpoints. The current 215's ordinary argument is separate from that formal result. Several deliveries discuss provability in ZFC instead, and retain that
 stated scope. The user's later stronger-theory allowance is governed by the
 [current project criterion](../../../../../../Computability/BusyBeaver/Research/ZFC/README.md):
 assumptions must stay within well-understood benchmarks widely believed

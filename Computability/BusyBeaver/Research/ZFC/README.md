@@ -1,6 +1,6 @@
 # Smaller machines for Con(ZFC)
 
-The current goal is a binary, single-tape machine with **215 working states
+The current goal is a binary, single-tape machine with **214 working states
 or fewer** whose blank-tape nonhalting is provably in **ZFC** equivalent to
 Con(ZFC). The original target was fewer than 254 states and equivalence
 provable in PA. An earlier search phase also permitted consistency of a
@@ -42,24 +42,36 @@ nine typed callers pass with zero warnings. The internal PA equivalence for
 this exact 240-state machine is now checked too
 ([`BinaryConsistencyRotation240`](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/BinaryConsistencyRotation240.lean), 19 October 2026). See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md).
 
-The primary **ordinary** contender is now the [**216-state machine**](candidate-k216/README.md)
-from `6ec69081ca`, imported as Source 156 in batch 195. A partial-selector
-reparse preserves the entire primitive word and guarded control graph while
-repairing contextual sharing; written origin bits then let native 164 and
-183 share one state. The source still has 203 distinct subtrees.
-All five fresh checks pass: 6,176 arbitrary-natural runtime cases, 1,709,992
-symbolic rules, all 432 rows, minimum duration 13 and complete 313,133-step
-blank startup. Independent mathematical and physical/source reviews agree.
-The complete ordinary proof gives a ZFC-provable equivalence with Con(ZFC);
-exact-K216 Lean and internal PA endpoints remain open. The active target is
-**215 or fewer**. See [intake195](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-195.md)
-and [reproduction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-195-reproduction.md).
+The primary **ordinary** contender is now the [**215-state machine**](candidate-k215/README.md).
+It combines the command-local field reader and command ordering of
+`d59b441882` with the partial selector from `6ec69081ca`. Both earlier
+marker folds remain valid. The source has 202 distinct subtrees; reallocation
+deletes one state and changes 35 retained rows, giving 430 binary rows
+including initialization. All 6,176 arbitrary-natural runtime cases pass,
+with 1,698,790 symbolic rules, every row covered and minimum positive
+duration 6. Independent replay checks every one of the 95,714 blank steps
+in both native and dense formats and the entire final tape.
 
-The [previous K217](candidate-k217/README.md) remains the exact immediate
-parent. K216 retains its 69/400 fold and adds a compatible 164/183 fold;
-this saving therefore stacks. Both retain Source 149's dominated-rho8
-calibration. Two further research reports at `d3d6b8c14e` are under review
-as batch 196.
+The complete ordinary proof gives
+`ZFC ⊢ (¬Halt(K215, blank) ↔ Con(ZFC))` and reaches the requested 215-state
+target. The active search now asks for **214 or fewer**. The exact-K215 Lean
+and internal PA endpoints remain open; the
+formal 240-state result above retains its separate status. See the
+[proof and reproducible evidence](candidate-k215/proof.md).
+
+The [partial-selector K216](candidate-k216/README.md) remains the immediate
+physical parent. [Batch 197](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-197.md)
+imports the two distinct [command-permuted K216 alternatives](candidate-k216/alternatives/permuted/README.md)
+from `d59b441882`; all ten selected fresh checks pass. The 215 composition
+has separate exact-table checks, and neither submitted 216 table is
+relabelled as the smaller result. [Batch 196](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-196.md)
+preserves scanner/encoding/clean-seed research from `d3d6b8c14e`, with nine
+fresh selected leaves and explicit failed-search boundaries. All three ZIPs
+are imported and retired.
+
+The [previous K217](candidate-k217/README.md) supplied the 69/400 fold;
+K216 adds the compatible 164/183 fold. Both persist in K215, with the same
+accepted dominated-rho8 calculus calibration.
 
 The later [exposed-marker presentation](candidate-k217/presentations/exposed-marker/README.md)
 from `673c87a878` is exactly the same machine under `188→213→210→188`, with
