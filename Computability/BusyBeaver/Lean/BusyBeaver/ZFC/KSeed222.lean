@@ -16,6 +16,8 @@ decoded matrix `dec c` defines at roles `a` (input) and `b` (output), then the d
 covered; the label `c` is never free in its own decoded matrix (`sat_dec_agree`).
 -/
 
+set_option maxRecDepth 2048
+
 namespace SetTheory.BusyBeaver.ZFC.KSeed222
 
 open SetTheory.BusyBeaver.ZFC.Tarski
@@ -76,139 +78,118 @@ def SeedProp (mem : V → V → Prop) (Q : V → V → Prop) (A : V) : Prop :=
 def matrixRel (mem : V → V → Prop) (e : Nat → V) (a b c : Nat) (x y : V) : Prop :=
   Tarski.Sat mem (update (update e a x) b y) (dec c)
 
-/-! ## The decoded bundle from the seed property -/
+/-! ## Shared semantic normalization -/
 
-section Bundle
+/-- The seed property depends only on the binary relation's truth values. -/
+theorem seedProp_congr (mem : V → V → Prop) (A : V) {Q Q' : V → V → Prop}
+    (hQ : ∀ x y, Q x y ↔ Q' x y) : SeedProp mem Q A ↔ SeedProp mem Q' A := by
+  simp only [SeedProp, hQ]
 
-variable (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
-include hirr
+namespace BundleSemantics
 
-theorem bundle_of_seed (e : Nat → V) (a b c : Nat) (hca : c ≠ a) (hcb : c ≠ b)
+theorem update_idem (e : Nat → V) (i : Nat) (d d' : V) :
+    update (update e i d) i d' = update e i d' := by
+  funext n; by_cases h : n = i <;> simp [update, h]
+
+theorem update_swap (e : Nat → V) {i j : Nat} (hij : i ≠ j) (d d' : V) :
+    update (update e i d) j d' = update (update e j d') i d := by
+  funext n; by_cases hi : n = i <;> by_cases hj : n = j <;> simp_all [update]
+
+theorem update_self (e : Nat → V) (i : Nat) : update e i (e i) = e := by
+  funext n; by_cases h : n = i <;> simp_all [update]
+
+theorem sat_dec_update (mem : V → V → Prop) (e : Nat → V) (c : Nat) (d : V) :
+    Tarski.Sat mem (update e c d) (dec c) ↔ Tarski.Sat mem e (dec c) :=
+  sat_dec_agree mem c _ _ fun _ hn => update_other _ _ hn
+
+theorem neg_forall_imp (P Q : V → Prop) :
+    (¬ ∀ x, P x → ¬ Q x) ↔ ∃ x, P x ∧ Q x := by
+  constructor
+  · intro h
+    exact Classical.byContradiction fun hn => h fun x hx hq => hn ⟨x, hx, hq⟩
+  · rintro ⟨x, hx, hq⟩ h; exact h x hx hq
+
+theorem req_iff (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
+    (E : Nat → V) (b c : Nat) (hcb : c ≠ b) :
+    Tarski.Sat mem E (dec (req b c c)) ↔
+      ∀ y, Tarski.Sat mem (update E b y) (dec c) →
+        ∃ z, Tarski.Sat mem (update E b z) (dec c) ∧ mem z (E c) := by
+  simp only [req, sat_wal, sat_wim, sat_wn mem hirr, sat_wel,
+    update_idem, update_same, update_other _ _ hcb, neg_forall_imp]
+
+theorem clos_iff (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
+    (E : Nat → V) (a b c : Nat) (hab : a ≠ b) (hca : c ≠ a) (hcb : c ≠ b) :
+    Tarski.Sat mem E (dec (clos a b c c)) ↔
+      ∀ y, mem y (E c) → ∃ x, matrixRel mem E a b c x y ∧
+        ∀ x', (∀ w, mem w x' → mem w y) →
+          ∀ y', matrixRel mem E a b c x' y' →
+            ∃ z, matrixRel mem E a b c x' z ∧ mem z (E c) := by
+  simp only [clos, sat_wal, sat_wim, sat_wn mem hirr, sat_wel, req_iff mem hirr _ b c hcb,
+    update_same, update_other _ _ hca, update_other _ _ hcb,
+    update_other _ _ (Ne.symm hca), update_other _ _ (Ne.symm hcb),
+    update_other _ _ (Ne.symm hab), update_idem, neg_forall_imp]
+  simp only [matrixRel, update_swap _ hab, update_idem]
+
+theorem matrix_marker (mem : V → V → Prop) (e : Nat → V) (a b c : Nat)
+    (hca : c ≠ a) (hcb : c ≠ b) (C x y : V) :
+    matrixRel mem (update e c C) a b c x y ↔ matrixRel mem e a b c x y := by
+  simp only [matrixRel, update_swap _ hca, update_swap _ hcb, sat_dec_update]
+
+theorem bundle_iff_seed (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
+    (e : Nat → V) (a b c : Nat) (hab : a ≠ b) (hca : c ≠ a) (hcb : c ≠ b) :
+    Tarski.Sat mem e (dec (bundle222 a b c)) ↔
+      SeedProp mem (matrixRel mem e a b c) (e a) := by
+  have hRV : Tarski.Sat mem e (dec (vrel a b c)) := by
+    simp only [vrel, sat_wim, sat_wal, sat_wel,
+      update_other _ _ (Ne.symm hca), update_other _ _ (Ne.symm hcb)]
+    exact fun h _ => h
+  simp only [bundle222, sat_wn mem hirr, sat_wim, hRV, true_implies, nks, sat_wal,
+    neg_forall_imp, SeedProp]
+  apply exists_congr
+  intro C
+  rw [clos_iff mem hirr _ a b c hab hca hcb, req_iff mem hirr _ b c hcb]
+  simp only [matrix_marker mem e a b c hca hcb, update_same]
+  simp only [matrixRel, update_swap _ hcb, sat_dec_update, update_self]
+  exact and_comm
+
+theorem diagonal_bundle_of_seed (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
+    (e : Nat → V) (a c : Nat) (hca : c ≠ a)
+    (h : SeedProp mem (matrixRel mem e a a c) (e a)) :
+    Tarski.Sat mem e (dec (bundle222 a a c)) := by
+  obtain ⟨C, hroot, hcl⟩ := h
+  have hr : Tarski.Sat mem (update e c C) (dec (req a c c)) := by
+    rw [req_iff mem hirr _ a c hca]
+    simpa only [matrixRel, update_self, update_idem, update_swap _ hca,
+      sat_dec_update, update_same] using hroot
+  have hc : Tarski.Sat mem (update e c C) (dec (clos a a c c)) := by
+    simp only [clos, sat_wal, sat_wim, sat_wn mem hirr, sat_wel,
+      req_iff mem hirr _ a c hca, update_same,
+      update_other _ _ (Ne.symm hca), update_idem, neg_forall_imp,
+      update_swap _ hca, sat_dec_update]
+    intro y hy
+    obtain ⟨x, hx, _⟩ := hcl y hy
+    refine ⟨y, ?_, fun x' _ => ?_⟩
+    · simpa only [matrixRel, update_idem] using hx
+    · simpa only [matrixRel, update_idem] using hroot
+  have hRV : Tarski.Sat mem e (dec (vrel a a c)) := by
+    simp only [vrel, sat_wim, sat_wal, sat_wel, update_other _ _ (Ne.symm hca)]
+    exact fun h _ => h
+  simp only [bundle222, sat_wn mem hirr, sat_wim, hRV, true_implies,
+    nks, sat_wal, neg_forall_imp]
+  exact ⟨C, hc, hr⟩
+
+end BundleSemantics
+
+/-- The decoded bundle follows from the seed property, including coincident input/output roles. -/
+theorem bundle_of_seed (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
+    (e : Nat → V) (a b c : Nat) (hca : c ≠ a) (hcb : c ≠ b)
     (h : SeedProp mem (matrixRel mem e a b c) (e a)) :
     Tarski.Sat mem e (dec (bundle222 a b c)) := by
-  obtain ⟨C, hroot, hcl⟩ := h
-  simp only [bundle222]
-  rw [sat_wn mem hirr, sat_wim]
-  intro hall
-  -- membership vacuity holds outright
-  have hRV : Tarski.Sat mem e (dec (vrel a b c)) := by
-    simp only [vrel]
-    rw [sat_wim, sat_wel, sat_wal]
-    intro hm d
-    rw [sat_wel, update_other _ _ (Ne.symm hca), update_other _ _ (Ne.symm hcb)]
-    exact hm
-  have hN := hall hRV
-  simp only [nks] at hN
-  rw [sat_wal] at hN
-  have hC := hN C
-  rw [sat_wim, sat_wn mem hirr] at hC
-  -- the request at a given input, read through the matrix relation
-  have hreq : ∀ (E' : Nat → V) (x : V), (∀ n, n ≠ c → n ≠ b →
-        E' n = update e a x n) → E' c = C →
-      (∀ y', matrixRel mem e a b c x y' → ∃ z, matrixRel mem e a b c x z ∧ mem z C) →
-      Tarski.Sat mem E' (dec (req b c c)) := by
-    intro E' x hE' hEc hQ
-    simp only [req]
-    rw [sat_wal]
-    intro y
-    rw [sat_wim, sat_wn mem hirr, sat_wal]
-    intro hy hnone
-    have hy' : matrixRel mem e a b c x y := by
-      unfold matrixRel
-      refine (sat_dec_agree mem c _ _ ?_).mp hy
-      intro n hn
-      by_cases hnb : n = b
-      · subst hnb; simp [update]
-      · rw [update_other _ _ hnb, update_other _ _ hnb, hE' n hn hnb]
-    obtain ⟨z, hz, hzC⟩ := hQ y hy'
-    have hz' := hnone z
-    rw [sat_wim, sat_wn mem hirr, sat_wel] at hz'
-    apply hz'
-    · refine (sat_dec_agree mem c _ _ ?_).mpr hz
-      intro n hn
-      by_cases hnb : n = b
-      · subst hnb; simp [update]
-      · rw [update_other _ _ hnb, update_other _ _ hnb, update_other _ _ hnb, hE' n hn hnb]
-    · rw [update_same, update_other _ _ hcb, update_other _ _ hcb, hEc]
-      exact hzC
-  apply hC
-  · -- the closure
-    simp only [clos]
-    rw [sat_wal]
-    intro y
-    rw [sat_wim, sat_wel, update_same, update_other _ _ hcb, update_same, sat_wn mem hirr,
-      sat_wal]
-    intro hyC hnone
-    obtain ⟨x, hxy, hsub⟩ := hcl y hyC
-    by_cases hab : a = b
-    · -- degenerate roles: the matrix sees only the output
-      subst hab
-      apply (sat_wim mem _ _ _).mp (hnone y) ?_ |> (sat_wn mem hirr _ _).mp
-      · rw [sat_wal]
-        intro x'
-        rw [sat_wim]
-        intro _
-        refine hreq _ y ?_ ?_ ?_
-        · intro n hn hnb
-          simp only [update, hnb, hn, if_false]
-        · simp [update, hca]
-        · intro y' hy'
-          have hy'' : matrixRel mem e a a c y y' := by
-            unfold matrixRel at hy' ⊢
-            refine (sat_ext mem _ _ _ ?_).mp hy'
-            intro n _; by_cases hn : n = a <;> simp [update, hn]
-          obtain ⟨z, hz, hzC⟩ := hsub y (fun w hw => hw) y' hy''
-          refine ⟨z, ?_, hzC⟩
-          unfold matrixRel at hz ⊢
-          refine (sat_ext mem _ _ _ ?_).mp hz
-          intro n _; by_cases hn : n = a <;> simp [update, hn]
-      · unfold matrixRel at hxy
-        refine (sat_dec_agree mem c _ _ ?_).mpr hxy
-        intro n hn
-        by_cases hna : n = a
-        · subst hna; simp [update]
-        · simp [update, hna, hn]
-    · -- ordinary roles
-      apply (sat_wim mem _ _ _).mp (hnone x) ?_ |> (sat_wn mem hirr _ _).mp
-      · rw [sat_wal]
-        intro x'
-        rw [sat_wim]
-        intro hsubx
-        have hsub' : ∀ w, mem w x' → mem w y := by
-          intro w hw
-          rw [sat_wal] at hsubx
-          have := hsubx w
-          rw [sat_wim, sat_wel, sat_wel, update_same, update_other _ _ (Ne.symm hca),
-            update_other _ _ (Ne.symm hcb)] at this
-          rw [update_same] at this
-          rw [update_other _ _ (Ne.symm hab), update_other _ _ (Ne.symm hab), update_same] at this
-          exact this hw
-        refine hreq _ x' ?_ ?_ (hsub x' hsub')
-        · intro n hn hnb
-          by_cases hna : n = a
-          · subst hna; simp [update]
-          · simp [update, hna, hnb, hn]
-        · simp [update, hca, hcb]
-      · unfold matrixRel at hxy
-        refine (sat_dec_agree mem c _ _ ?_).mpr hxy
-        intro n hn
-        by_cases hna : n = a
-        · subst hna; simp [update, hab]
-        · by_cases hnb : n = b
-          · subst hnb; simp [update, hna]
-          · simp [update, hna, hnb, hn]
-  · -- the seed request at the input `e a`
-    refine hreq (update e c C) (e a) ?_ ?_ ?_
-    · intro n hn _
-      rw [update_other _ _ hn]
-      by_cases hna : n = a
-      · subst hna; simp [update]
-      · simp [update, hna]
-    · rw [update_same]
-    · exact hroot
+  by_cases hab : a = b
+  · subst b; exact BundleSemantics.diagonal_bundle_of_seed mem hirr e a c hca h
+  · exact (BundleSemantics.bundle_iff_seed mem hirr e a b c hab hca hcb).mpr h
 
-end Bundle
-
+#print axioms BundleSemantics.bundle_iff_seed
 #print axioms bundle_of_seed
 
 end SetTheory.BusyBeaver.ZFC.KSeed222
