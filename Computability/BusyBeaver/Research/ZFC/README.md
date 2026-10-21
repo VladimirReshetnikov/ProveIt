@@ -42,19 +42,24 @@ nine typed callers pass with zero warnings. The internal PA equivalence for
 this exact 240-state machine is now checked too
 ([`BinaryConsistencyRotation240`](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/BinaryConsistencyRotation240.lean), 19 October 2026). See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md).
 
-The primary **ordinary** contender is now the [**217-state machine**](candidate-k217/README.md)
-from `8a1796545e`, imported as Source 152 in batch 192. Three closed rotations
-expose an existing decoder selector in the dominated-rho8 source; a marker
-written by unique incoming edges then lets native 69 and 400 share one state.
-Its 203-subtree source preserves the complete primitive word and control graph.
-All five fresh checks pass: 6,176 arbitrary-natural runtime cases, 1,616,558
-symbolic rules, all 434 rows, minimum duration 13 and complete 312,617-step blank
-startup. Two ordinary reviews and an independent reconstruction agree.
-The complete proof gives a ZFC-provable equivalence with Con(ZFC); exact-K217
-Lean and internal PA endpoints remain open. The active target is **215 or fewer**, following the latest goal update.
-The new `6ec69081ca` 216-state candidate is under separate review as batch 195.
-See [intake192](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-192.md)
-and [reproduction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-192-reproduction.md).
+The primary **ordinary** contender is now the [**216-state machine**](candidate-k216/README.md)
+from `6ec69081ca`, imported as Source 156 in batch 195. A partial-selector
+reparse preserves the entire primitive word and guarded control graph while
+repairing contextual sharing; written origin bits then let native 164 and
+183 share one state. The source still has 203 distinct subtrees.
+All five fresh checks pass: 6,176 arbitrary-natural runtime cases, 1,709,992
+symbolic rules, all 432 rows, minimum duration 13 and complete 313,133-step
+blank startup. Independent mathematical and physical/source reviews agree.
+The complete ordinary proof gives a ZFC-provable equivalence with Con(ZFC);
+exact-K216 Lean and internal PA endpoints remain open. The active target is
+**215 or fewer**. See [intake195](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-195.md)
+and [reproduction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-195-reproduction.md).
+
+The [previous K217](candidate-k217/README.md) remains the exact immediate
+parent. K216 retains its 69/400 fold and adds a compatible 164/183 fold;
+this saving therefore stacks. Both retain Source 149's dominated-rho8
+calibration. Two further research reports at `d3d6b8c14e` are under review
+as batch 196.
 
 The later [exposed-marker presentation](candidate-k217/presentations/exposed-marker/README.md)
 from `673c87a878` is exactly the same machine under `188→213→210→188`, with

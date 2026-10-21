@@ -87,13 +87,13 @@ passed its source and audit checks. It proves blank nonhalting equivalent to
 the stated ZF and ZFC consistency propositions. Internal PA calibration remains
 open.
 
-The current primary contender is the [218-state machine](BusyBeaver/Research/ZFC/candidate-k218/README.md),
+The current primary contender is the [216-state machine](BusyBeaver/Research/ZFC/candidate-k216/README.md),
 with an ordinary proof formalizable in ZFC that blank nonhalting is equivalent
-to Con(ZFC). Fresh checks cover all 6,167 primitive cases and complete 312,909-step
-initialization. Its exact-table Lean and internal PA endpoints remain open;
-the [240-state PA theorem](BusyBeaver/Research/ZFC/rotation240_binary.md) and
-[221-state Lean endpoint](BusyBeaver/Research/ZFC/candidate-k221/README.md)
-retain their separate formal status. The active size target is 217 or fewer.
+to Con(ZFC). Five fresh checks cover all 6,176 primitive cases, all 432 rows
+and complete 313,133-step initialization. Its exact-table Lean and internal PA
+endpoints remain open; the [240-state PA theorem](BusyBeaver/Research/ZFC/rotation240_binary.md)
+and [221-state endpoint](BusyBeaver/Research/ZFC/candidate-k221/README.md)
+retain their separate formal status. The active size target is 215 or fewer.
 The following paragraphs preserve earlier construction milestones.
 
 The [loop-rotation 244-state candidate](BusyBeaver/Research/ZFC/candidate-rotation244/README.md)

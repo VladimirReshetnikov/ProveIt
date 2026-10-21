@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings through 20 October 2026. This report now reconciles **155 manuscripts**.
+Intake findings through 20 October 2026. This report now reconciles **156 manuscripts**.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -8,6 +8,20 @@ the delivered base article is preserved, rather than rewritten as a unified arti
 No merged PDF is built. These are ordinary mathematical arguments and finite
 regression checks. The deliveries confer no formal status; subsequent Lean
 results and their exact scope are listed below.
+
+[Batch 195](intake-195.md) accepts Source 156 as the new
+[**primary 216-state machine**](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k216/README.md).
+A partial-selector reparse preserves all 4,751 primitives and their complete
+control graph, repairs contextual sharing, and allows states 164/183 to
+share one state. All five fresh leaves pass: 6,176 arbitrary-natural cases,
+1,709,992 symbolic rules, all 432 rows, minimum duration 13 and complete
+313,133-step blank initialization. The ordinary ZFC equivalence retains the
+accepted dominated calculus; exact-table Lean/internal PA endpoints remain
+open. Placement `58615b1aa1` accounts for all 41 members and retires the ZIP.
+[Recovery/reproduction](intake-195-reproduction.md) preserves original layouts,
+proof reviews and raw fresh evidence. The active target is **215 or fewer**;
+two research archives at `d3d6b8c14e` remain queued for batch 196, and the
+alternative216 at `d59b441882` for batch197.
 
 [Batch 194](intake-194.md) compares `673c87a878` as Source 155: it is the same
 217-state machine under `188→213→210→188`, with an identical source and the
@@ -17,9 +31,8 @@ checks pass; a separate fixed-label core has an ordinary calibration but costs
 211 source subtrees and has no binary implementation. Placement `7fff7bc909`
 accounts for all 57 members and retires the ZIP. [Recovery/reproduction](intake-194-reproduction.md)
 preserve both the additional exposition and the optional theory experiment.
-The primary is unchanged. The later 216 candidate at `6ec69081ca` is queued
-for batch 195, and two reports at `d3d6b8c14e` for batch 196. The updated
-active target is 215 or fewer states.
+The later 216 candidate at `6ec69081ca` is accepted in batch 195 above.
+Two reports at `d3d6b8c14e` remain reserved for batch 196.
 
 [Batch 193](intake-193.md) imports the two different research archives at
 `1e87618cf2` as Sources 153–154. Placement `ff23f24af8` accounts for all 544

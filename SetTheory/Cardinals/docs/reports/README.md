@@ -3295,7 +3295,20 @@ canonical maps and 4,750 source-prefix roles compare. Three selected fresh
 construction/fold/fixed-core leaves pass. The optional fixed1,3 core is
 ordinarily calibrated but costs 211 source subtrees and has no binary table.
 Placement `7fff7bc909` retains all 57 members and retires the ZIP; the host now
-has 155 sources and the collection remains 290 reports. Three subsequent
-archives are queued for batches 195–196; the active target is now 215 or fewer.
+had 155 sources and the collection remains 290 reports. The later 216
+submission is imported in batch 195 below; two research reports await batch196.
 [Recovery and reproduction](set-theory/zfc-closure-kernels/intake-194-reproduction.md)
 separate inherited and freshly executed evidence.
+
+
+[Batch 195](set-theory/zfc-closure-kernels/intake-195.md) imports Source 156
+from `6ec69081ca` as the new [primary 216-state machine](../../../../Computability/BusyBeaver/Research/ZFC/candidate-k216/README.md).
+A partial selector and contextual sharing repair preserve all 4,751 source
+primitives and allow the 164/183 marker fold. Five fresh checks pass: 6,176
+cases, 1,709,992 symbolic rules, all 432 rows, minimum duration 13 and complete
+313,133-step initialization. The ordinary ZFC consistency equivalence inherits
+the accepted dominated calculus; exact-table Lean/PA endpoints remain open.
+Placement `58615b1aa1` accounts for all 41 members and retires the ZIP. The
+host has 156 sources; the collection remains 290 reports. The active target
+is 215 or fewer. [Recovery/reproduction](set-theory/zfc-closure-kernels/intake-195-reproduction.md)
+retains every original and distinguishes fresh evidence from inherited proofs.

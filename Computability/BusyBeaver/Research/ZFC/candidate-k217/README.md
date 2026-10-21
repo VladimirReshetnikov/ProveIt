@@ -1,6 +1,6 @@
 # K217: 217 working states for ZFC consistency
 
-**Accepted after five selected fresh checks passed.** The exact table and full blank-start result are the primary candidate at the ordinary reviewed mathematical-proof level.
+**Accepted after five selected fresh checks passed.** The exact table and full blank-start result were accepted at the ordinary reviewed mathematical-proof level.
 
 The exact binary machine below has **217 working states and 434 transition rows, including blank initialization**, with a separate halt. Its reviewed ordinary proof, composed with the pinned inherited numerical-calculus calibration, establishes
 
@@ -8,7 +8,7 @@ The exact binary machine below has **217 working states and 434 transition rows,
 ZFC proves: not Halt(K217, blank) ↔ Con(ZFC).
 ```
 
-This is the primary 217-state construction. The continuing target is **216 or fewer working states**. The statement is an equivalence proved by ordinary mathematics formalizable in ZFC; it does not assert unconditional nonhalting, a minimum-state bound, or a newly compiled exact-table Lean/Rocq or internal PA endpoint.
+This is the accepted 217-state predecessor. The new [primary K216](../candidate-k216/README.md) retains this fold and adds a partial-selector reduction; the continuing target is **215 or fewer working states**. The statement is an equivalence proved by ordinary mathematics formalizable in ZFC; it does not assert unconditional nonhalting, a minimum-state bound, or a newly compiled exact-table Lean/Rocq or internal PA endpoint.
 
 ## Exact machine
 
