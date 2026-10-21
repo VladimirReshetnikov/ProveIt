@@ -1,0 +1,37 @@
+{
+  "status": "PASS",
+  "helper_sha256": "394c03111005c68429d7e855f1086b4e6ff76017d663f2c2ca4f86c1b34f4560",
+  "original_map_unchanged": true,
+  "controls": [
+    {
+      "control": "changed-sha",
+      "exit_code": 1,
+      "seconds": 0.08848530985414982,
+      "argv": [
+        "python3",
+        "SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/intake208-recover.py",
+        "--verify-only",
+        "--map",
+        "/tmp/zfc-intake208-opening/changed-sha.json"
+      ],
+      "modified_map_sha256": "e1c2cadfe2a7dc3487f85a7ba874f1ab7c4de9a8ccc33ca341b104166904d84b",
+      "stdout": "Traceback (most recent call last):\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/intake208-recover.py\", line 169, in <module>\n    main()\n    ~~~~^^\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/intake208-recover.py\", line 123, in main\n    require((len(original), sha(original), blob(original)) ==\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n            (x['bytes'], x['sha256'], x['git_blob']), 'Original member identity mismatch')\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/intake208-recover.py\", line 24, in require\n    raise ValueError(message)\nValueError: Original member identity mismatch\n",
+      "stdout_sha256": "828a77ccb51a21233e89fd60397372269bfc7da7cbaa9a20a4033e31ec015490"
+    },
+    {
+      "control": "missing-member",
+      "exit_code": 1,
+      "seconds": 0.06756494846194983,
+      "argv": [
+        "python3",
+        "SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/intake208-recover.py",
+        "--verify-only",
+        "--map",
+        "/tmp/zfc-intake208-opening/missing-member.json"
+      ],
+      "modified_map_sha256": "7f95c0339b646971bc0253beaf3feba99a3347331c0ec8234e1d36e628a3036e",
+      "stdout": "Traceback (most recent call last):\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/intake208-recover.py\", line 169, in <module>\n    main()\n    ~~~~^^\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/intake208-recover.py\", line 100, in main\n    require(len(rows) == plan['member_count'] == 405 and\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n            sum(x['bytes'] for x in rows) == plan['expanded_bytes'] == 11969815,\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n            'Wrong original census')\n            ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/intake208-recover.py\", line 24, in require\n    raise ValueError(message)\nValueError: Wrong original census\n",
+      "stdout_sha256": "5ecd9abafafce16d17a6ecab0579329e2a64c461134ab9118ddfb108e2377157"
+    }
+  ]
+}

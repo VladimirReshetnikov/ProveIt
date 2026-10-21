@@ -12,6 +12,18 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Queue status after batch 208 placement
+
+The three archives from `aa66d0a33f` are placed as Sources 176–178 in
+[zfc-closure-kernels](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake208-placement.md).
+The exact recovery map accounts for all 405 outer members and separately
+inventories the two embedded historical archives. Their ZIPs are retired in
+this placement; the written reconciliation and catalogue follow separately.
+No submitted executable was run. Selected Lean simplifications are checked
+in isolation before integration; no new full endpoint follows from placement.
+Sources 165–166 retain their pending written follow-up. The incoming ZIP
+queue is clear at this checkpoint.
+
 ## Current proof work after batch 207
 
 The exact K215 Lean endpoint passes the [phase-five simplification checkpoint](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase5/README.md): 184 modules, including 37 freshly compiled affected modules, and both endpoint audits with standard axioms only. Batches 205–207 below preserve proposals as delivered; those imports do not promote their prototypes to new formal results. Supplementary mathematical reconciliation and exact recovery records are being integrated separately. The active goal is simplifying the checked Lean proofs; earlier 214-state target and queue statements are historical.
