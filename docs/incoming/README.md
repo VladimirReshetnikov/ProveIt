@@ -20,9 +20,11 @@ endpoint clients pass fresh checks in the 197-module union; 189 providers retain
 exact phase-nine bindings. The phase-nine Home/decoder and all 6,176 branch checks
 remain in place. Report intake and reconciliation statuses below remain separate.
 
-## Current queue after upstream batch 211
+## Current queue
 
-There are no loose ZIPs in this directory at this checkpoint. Upstream
+`K215_Checked_Affine_Core_and_CM215_2026-10-21.zip` arrived in `6f0d42d368` and is pending intake. Its [arrival inventory](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase10/upstream-merge/incoming-pending.json) records the exact archive; it remains here until placement and review.
+
+Before this arrival there were no loose ZIPs after upstream batch 211. Upstream
 placements `32d378522c`, `05eaa1d466` and `d7105dd57d` extracted and retired
 the ten packets in batches 209–211, including the guarded-core and proof-core
 arrivals formerly listed here. Their independent mathematical reconciliation
