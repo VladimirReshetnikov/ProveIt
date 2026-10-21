@@ -1,8 +1,12 @@
 # Formal endpoints for the K-family candidates
 
 **Current state (2026-10-21).** The exact [215-state machine](../candidate-k215/README.md)
-has compiled correctness proofs in both Lean and Rocq. Lean's 204 project modules and
-two endpoint clients pass with only its three standard foundational axioms; Rocq's
+has compiled correctness proofs in both Lean and Rocq. The original fresh Lean
+build checked 204 project modules; the current
+[proof simplification checkpoint](verification/k215/simplification/phase5/README.md)
+checks the 184-module closure and two endpoint clients with only the three
+standard foundational axioms. Its zero-offset proposal is reconciled as
+[Source 167](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-204.md). Rocq's
 237 sources compile with closed endpoint assumption reports and recursive `coqchk`.
 See the [215 verification record](verification/k215/README.md) for statements, evidence,
 repairs, and reproduction commands. The internal PA endpoint remains open.

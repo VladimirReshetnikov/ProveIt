@@ -210,3 +210,22 @@ needs explicit `--source hybrid215/source.sites.json`; its default old scratch
 filename is absent. Kernel adoption requires the maintained toolchain and
 exact endpoint/assumption checks. None of these possible follow-ups is counted
 as completed here.
+
+## Verification addendum, 21 October 2026
+
+The [phase-five checkpoint](../../../../../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase5/README.md)
+now checks the ordinary four-field certificate with its 512-fuel decoder. All 16
+chunks and both unchanged endpoint audits pass. The 184-module closure comprises
+37 freshly compiled modules and 147 hash-bound predecessor objects; all ten
+endpoint axiom reports use only the standard Lean axioms. The separate legacy
+refresh checks 15 extra modules and five retained interfaces. This implements
+the useful zero-offset proposal without changing the literal K215 machine.
+The completed records and independent reviews are linked at that checkpoint,
+including the separately retained outer-session exit143 observation.
+
+The [catalogue validation](data/intake204-catalogue/validation.json) preserves
+the 290-report census and rebuilt manifest. Upstream placement 557b6aac99 and
+this report were prepared in parallel for the same delivery. Merge d02faebe5f
+preserves both records as complementary parts of batch204; this Source 167
+reconciliation does not assert a second arrival or a fresh alternative-machine
+replay. The original intake text above records its earlier verification state.

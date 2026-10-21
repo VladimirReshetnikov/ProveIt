@@ -2,8 +2,10 @@
 
 The literal [K215 machine](candidate-k215/README.md) now has **compiled Lean and Rocq
 correctness proofs**: blank-tape halting iff ZFC has a finite refutation, and
-nonhalting iff syntactic consistency of ZFC. Lean's full 204-module project closure
-and two explicit clients pass with standard axioms only; Rocq's 237 selected sources,
+nonhalting iff syntactic consistency of ZFC. Lean's original fresh build checked
+204 project modules; the [current simplification checkpoint](k225-formal/verification/k215/simplification/phase5/README.md)
+checks a 184-module closure and two explicit clients with standard axioms only.
+Rocq's 237 selected sources,
 four closed endpoint reports and recursive `coqchk` pass. See the
 [formal verification record](k225-formal/verification/k215/README.md).
 The earlier target

@@ -1,0 +1,161 @@
+{
+  "status": "PASS_PREFLIGHT_READ_ONLY_CONTROLS",
+  "checks": [
+    {
+      "name": "publish.py exact live receipt flags",
+      "status": "PASS"
+    },
+    {
+      "name": "review_saved.py exact live receipt flags",
+      "status": "PASS"
+    },
+    {
+      "name": "exact complete phase4 and nested earlier checkpoint",
+      "status": "PASS"
+    },
+    {
+      "name": "changed trusted sibling phase4_evidence.py",
+      "status": "REJECTED",
+      "exception": "AssertionError"
+    },
+    {
+      "name": "changed trusted sibling phase3_evidence.py",
+      "status": "REJECTED",
+      "exception": "AssertionError"
+    },
+    {
+      "name": "resealed nested archive extra.olean",
+      "status": "REJECTED",
+      "exception": "AssertionError"
+    },
+    {
+      "name": "resealed nested archive extra.olean.server",
+      "status": "REJECTED",
+      "exception": "AssertionError"
+    },
+    {
+      "name": "resealed nested archive extra.pyc",
+      "status": "REJECTED",
+      "exception": "AssertionError"
+    },
+    {
+      "name": "resealed nested archive ../escape",
+      "status": "REJECTED",
+      "exception": "AssertionError"
+    },
+    {
+      "name": "resealed nested archive /absolute",
+      "status": "REJECTED",
+      "exception": "AssertionError"
+    },
+    {
+      "name": "resealed nested removed-module log",
+      "status": "REJECTED",
+      "exception": "AssertionError"
+    },
+    {
+      "name": "exact offset removal",
+      "status": "PASS"
+    },
+    {
+      "name": "missing extra module",
+      "status": "REJECTED",
+      "exception": "AssertionError"
+    },
+    {
+      "name": "extra current module",
+      "status": "REJECTED",
+      "exception": "AssertionError"
+    },
+    {
+      "name": "old offset module retained",
+      "status": "REJECTED",
+      "exception": "AssertionError"
+    },
+    {
+      "name": "valid overlay with an extra retained predecessor",
+      "status": "PASS"
+    },
+    {
+      "name": "reused wrong same-byte provider",
+      "status": "REJECTED",
+      "exception": "AssertionError"
+    },
+    {
+      "name": "reused regular file",
+      "status": "REJECTED",
+      "exception": "AssertionError"
+    },
+    {
+      "name": "fresh symlink",
+      "status": "REJECTED",
+      "exception": "AssertionError"
+    },
+    {
+      "name": "removed predecessor missing",
+      "status": "REJECTED",
+      "exception": "AssertionError"
+    },
+    {
+      "name": "removed module in current overlay",
+      "status": "REJECTED",
+      "exception": "AssertionError"
+    },
+    {
+      "name": "unexpected current provider",
+      "status": "REJECTED",
+      "exception": "AssertionError"
+    },
+    {
+      "name": "unexpected current companion",
+      "status": "REJECTED",
+      "exception": "AssertionError"
+    },
+    {
+      "name": "directory symlink hides providers",
+      "status": "REJECTED",
+      "exception": "AssertionError"
+    },
+    {
+      "name": "broken reused symlink",
+      "status": "REJECTED",
+      "exception": "AssertionError"
+    },
+    {
+      "name": "basis symlink",
+      "status": "REJECTED",
+      "exception": "AssertionError"
+    },
+    {
+      "name": "fresh target missing",
+      "status": "REJECTED",
+      "exception": "AssertionError"
+    }
+  ],
+  "positive_count": 5,
+  "negative_count": 22,
+  "predecessor_actual_summary": {
+    "project_modules": 185,
+    "fresh_modules": 10,
+    "reused_modules": 175,
+    "typed_clients": 2,
+    "axiom_reports": 10,
+    "project_warnings": 31,
+    "audit_warnings": 0,
+    "basis_fresh_modules": 9,
+    "basis_reused_modules": 176,
+    "exact_source_imports_and_dependency_sets": true,
+    "compiler_sha256": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550",
+    "result_sha256": "922b1d31b398eef236de4fc4d6e6d5d3776900a1d155f4e723eed108a590e041",
+    "basis_result_sha256": "b686d4ad3358f73921277227201084cc21219540e63e3a2d903aa292a6fb7f22"
+  },
+  "input_packet_unchanged": true,
+  "sources": {
+    "evidence.py": "f9cdedd2f33f521bb8b6dd4f86c19ca563713fc1bea6c6cdfa557bf995469ddb",
+    "review.py": "a98dab5ab91f086f9a59c5531b3e73f8b5831ff1e3917c72819211f418758045",
+    "phase4_evidence.py": "b4ab585495b0cd412bc4f57b76052c83b5ff64074b028da8cab0fb4bfa33fdfc",
+    "phase3_evidence.py": "c38abffae13302fb70e6dfee08b1acc129bd0f64c91d067e9e43c8f0a48d6243",
+    "preflight_controls.py": "0f0a83ac92e8aedd8fa0645e08c95282d222c4f3af0e962b1ff50e2df8faaadd"
+  },
+  "scope": "Only exact saved phase4/nested evidence, in-memory metadata mutations, extracted current set guards and tiny disposable provider files. No phase5 actual PASS, compiler or archived-code execution claim."
+}

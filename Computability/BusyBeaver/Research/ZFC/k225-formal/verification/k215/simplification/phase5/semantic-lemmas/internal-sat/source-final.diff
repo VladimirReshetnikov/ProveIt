@@ -1,0 +1,256 @@
+--- baseline/InternalSat.lean
++++ InternalSat.lean
+@@ -163,15 +163,10 @@
+ theorem fZeroOrSuccF_spec (H : ZFAxioms mem) (n : V) (e : Nat → V) :
+     Sat mem (scons n e) fZeroOrSuccF ↔
+       (n = vempty H ∨ ∃ m, mem m (omegaV H) ∧ n = vsucc H m) := by
+-  constructor
+-  · rintro (h | ⟨m, hm, hs⟩)
+-    · exact Or.inl ((fEmptyF_spec H (scons n e) 0).mp h)
+-    · exact Or.inr ⟨m, (fNatF_spec H (scons m (scons n e)) 0).mp hm,
+-        (fSuccF_spec H (scons m (scons n e)) 1 0).mp hs⟩
+-  · rintro (h | ⟨m, hm, hs⟩)
+-    · exact Or.inl ((fEmptyF_spec H (scons n e) 0).mpr h)
+-    · exact Or.inr ⟨m, (fNatF_spec H (scons m (scons n e)) 0).mpr hm,
+-        (fSuccF_spec H (scons m (scons n e)) 1 0).mpr hs⟩
++  exact or_congr (fEmptyF_spec H (scons n e) 0)
++    (exists_congr fun m => and_congr
++      (fNatF_spec H (scons m (scons n e)) 0)
++      (fSuccF_spec H (scons m (scons n e)) 1 0))
+ 
+ /-- **Every internal natural is zero or a successor.**  The induction is
+ immediate; what it buys is a case analysis that external recursion cannot
+@@ -1020,30 +1015,8 @@
+       fun h => h.imp (fNumF_spec H 1 1 ee').mpr (fNumF_spec H 1 0 ee').mpr⟩)
+   have h6 := fJustQuantF_spec H ee c_i e_i b_i s_i a_i 6 1 0 hE.1
+   have h7 := fJustQuantF_spec H ee c_i e_i b_i s_i a_i 7 0 1 hE.1
+-  unfold Justified
+-  constructor
+-  · rintro (h | h | h | h | h | h | h | h)
+-    · exact Or.inl (h0.mp h)
+-    · exact Or.inr (Or.inl (h1.mp h))
+-    · exact Or.inr (Or.inr (Or.inl (h2.mp h)))
+-    · exact Or.inr (Or.inr (Or.inr (Or.inl (h3.mp h))))
+-    · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl (h4.mp h)))))
+-    · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl (h5.mp h))))))
+-    · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl
+-        (h6.mp h)))))))
+-    · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr
+-        (h7.mp h)))))))
+-  · rintro (h | h | h | h | h | h | h | h)
+-    · exact Or.inl (h0.mpr h)
+-    · exact Or.inr (Or.inl (h1.mpr h))
+-    · exact Or.inr (Or.inr (Or.inl (h2.mpr h)))
+-    · exact Or.inr (Or.inr (Or.inr (Or.inl (h3.mpr h))))
+-    · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl (h4.mpr h)))))
+-    · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl (h5.mpr h))))))
+-    · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl
+-        (h6.mpr h)))))))
+-    · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr
+-        (h7.mpr h)))))))
++  exact or_congr h0 (or_congr h1 (or_congr h2 (or_congr h3
++    (or_congr h4 (or_congr h5 (or_congr h6 h7))))))
+ 
+ /-! ## Certificates
+ 
+@@ -1115,124 +1088,63 @@
+ 
+ /-! ### Inverting the step at a known tag
+ 
+-Codes carrying different tags are different sets, so at a code of known shape
+-exactly one of the eight clauses can apply.  Each lemma below discards the
+-other seven by `formCode_tag_ne` and reads off the surviving one. -/
++Codes carrying different tags are different sets. The shared equalities below
++compare the tags in Nat and identify the surviving payload, so each inversion
++lemma reads only its relevant clause. -/
++
++/-- Equality of coded pairs reduces to equality of their components. -/
++private theorem pair_eq_iff (H : ZFAxioms mem) (a b c d : V) :
++    kpair H a b = kpair H c d ↔ a = c ∧ b = d :=
++  ⟨kpair_inj H a b c d, by rintro ⟨rfl, rfl⟩; rfl⟩
++
++/-- External constructor tags are compared in Nat, not by unfolding their sets. -/
++private theorem numeral_eq_iff (H : ZFAxioms mem) (m n : Nat) :
++    natV H m = natV H n ↔ m = n :=
++  ⟨natV_inj H m n, fun h => congrArg (natV H) h⟩
+ 
+ theorem justified_memAtom (H : ZFAxioms mem) {A R S e b i j : V}
+     (h : Justified H A R S (kpair H (natV H 0) (kpair H i j)) e b) :
+     b = vbit H (mem (kpair H (applyV H e i) (applyV H e j)) R) := by
+-  unfold Justified at h
+-  rcases h with ⟨i', j', _, _, hc, hb⟩ | ⟨i', j', _, _, hc, _⟩ | ⟨hc, _⟩ |
+-    ⟨_, _, _, _, hc, _, _, _⟩ | ⟨_, _, _, _, hc, _, _, _⟩ |
+-    ⟨_, _, _, _, hc, _, _, _⟩ | ⟨_, hc, _⟩ | ⟨_, hc, _⟩
+-  · obtain ⟨-, hp⟩ := kpair_inj H _ _ _ _ hc
+-    obtain ⟨hi, hj⟩ := kpair_inj H _ _ _ _ hp
+-    rw [hb, hi, hj]
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
++  simp [Justified, pair_eq_iff, numeral_eq_iff] at h
++  rcases h with ⟨_, _, _, _, ⟨rfl, rfl⟩, hb⟩
++  exact hb
+ 
+ theorem justified_eqAtom (H : ZFAxioms mem) {A R S e b i j : V}
+     (h : Justified H A R S (kpair H (natV H 1) (kpair H i j)) e b) :
+     b = vbit H (applyV H e i = applyV H e j) := by
+-  unfold Justified at h
+-  rcases h with ⟨i', j', _, _, hc, _⟩ | ⟨i', j', _, _, hc, hb⟩ | ⟨hc, _⟩ |
+-    ⟨_, _, _, _, hc, _, _, _⟩ | ⟨_, _, _, _, hc, _, _, _⟩ |
+-    ⟨_, _, _, _, hc, _, _, _⟩ | ⟨_, hc, _⟩ | ⟨_, hc, _⟩
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · obtain ⟨-, hp⟩ := kpair_inj H _ _ _ _ hc
+-    obtain ⟨hi, hj⟩ := kpair_inj H _ _ _ _ hp
+-    rw [hb, hi, hj]
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
++  simp [Justified, pair_eq_iff, numeral_eq_iff] at h
++  rcases h with ⟨_, _, _, _, ⟨rfl, rfl⟩, hb⟩
++  exact hb
+ 
+ theorem justified_bot (H : ZFAxioms mem) {A R S e b : V}
+     (h : Justified H A R S (kpair H (natV H 2) (vempty H)) e b) :
+     b = natV H 0 := by
+-  unfold Justified at h
+-  rcases h with ⟨_, _, _, _, hc, _⟩ | ⟨_, _, _, _, hc, _⟩ | ⟨hc, hb⟩ |
+-    ⟨_, _, _, _, hc, _, _, _⟩ | ⟨_, _, _, _, hc, _, _, _⟩ |
+-    ⟨_, _, _, _, hc, _, _, _⟩ | ⟨_, hc, _⟩ | ⟨_, hc, _⟩
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact hb
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
++  simp [Justified, pair_eq_iff, numeral_eq_iff] at h
++  exact h
+ 
+ theorem justified_imp (H : ZFAxioms mem) {A R S e b c1 c2 : V}
+     (h : Justified H A R S (kpair H (natV H 3) (kpair H c1 c2)) e b) :
+     ∃ b1 b2, mem (satTriple H c1 e b1) S ∧ mem (satTriple H c2 e b2) S ∧
+       b = vbit H (b1 = natV H 1 → b2 = natV H 1) := by
+-  unfold Justified at h
+-  rcases h with ⟨_, _, _, _, hc, _⟩ | ⟨_, _, _, _, hc, _⟩ | ⟨hc, _⟩ |
+-    ⟨d1, d2, b1, b2, hc, k1, k2, hb⟩ | ⟨_, _, _, _, hc, _, _, _⟩ |
+-    ⟨_, _, _, _, hc, _, _, _⟩ | ⟨_, hc, _⟩ | ⟨_, hc, _⟩
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · obtain ⟨-, hp⟩ := kpair_inj H _ _ _ _ hc
+-    obtain ⟨h1, h2⟩ := kpair_inj H _ _ _ _ hp
+-    refine ⟨b1, b2, ?_, ?_, hb⟩
+-    · rw [h1]; exact k1
+-    · rw [h2]; exact k2
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
++  simp [Justified, pair_eq_iff, numeral_eq_iff] at h
++  rcases h with ⟨_, _, ⟨rfl, rfl⟩, b1, k1, b2, k2, hb⟩
++  exact ⟨b1, b2, k1, k2, hb⟩
+ 
+ theorem justified_and (H : ZFAxioms mem) {A R S e b c1 c2 : V}
+     (h : Justified H A R S (kpair H (natV H 4) (kpair H c1 c2)) e b) :
+     ∃ b1 b2, mem (satTriple H c1 e b1) S ∧ mem (satTriple H c2 e b2) S ∧
+       b = vbit H (b1 = natV H 1 ∧ b2 = natV H 1) := by
+-  unfold Justified at h
+-  rcases h with ⟨_, _, _, _, hc, _⟩ | ⟨_, _, _, _, hc, _⟩ | ⟨hc, _⟩ |
+-    ⟨_, _, _, _, hc, _, _, _⟩ | ⟨d1, d2, b1, b2, hc, k1, k2, hb⟩ |
+-    ⟨_, _, _, _, hc, _, _, _⟩ | ⟨_, hc, _⟩ | ⟨_, hc, _⟩
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · obtain ⟨-, hp⟩ := kpair_inj H _ _ _ _ hc
+-    obtain ⟨h1, h2⟩ := kpair_inj H _ _ _ _ hp
+-    refine ⟨b1, b2, ?_, ?_, hb⟩
+-    · rw [h1]; exact k1
+-    · rw [h2]; exact k2
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
++  simp [Justified, pair_eq_iff, numeral_eq_iff] at h
++  rcases h with ⟨_, _, ⟨rfl, rfl⟩, b1, k1, b2, k2, hb⟩
++  exact ⟨b1, b2, k1, k2, hb⟩
+ 
+ theorem justified_or (H : ZFAxioms mem) {A R S e b c1 c2 : V}
+     (h : Justified H A R S (kpair H (natV H 5) (kpair H c1 c2)) e b) :
+     ∃ b1 b2, mem (satTriple H c1 e b1) S ∧ mem (satTriple H c2 e b2) S ∧
+       b = vbit H (b1 = natV H 1 ∨ b2 = natV H 1) := by
+-  unfold Justified at h
+-  rcases h with ⟨_, _, _, _, hc, _⟩ | ⟨_, _, _, _, hc, _⟩ | ⟨hc, _⟩ |
+-    ⟨_, _, _, _, hc, _, _, _⟩ | ⟨_, _, _, _, hc, _, _, _⟩ |
+-    ⟨d1, d2, b1, b2, hc, k1, k2, hb⟩ | ⟨_, hc, _⟩ | ⟨_, hc, _⟩
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · obtain ⟨-, hp⟩ := kpair_inj H _ _ _ _ hc
+-    obtain ⟨h1, h2⟩ := kpair_inj H _ _ _ _ hp
+-    refine ⟨b1, b2, ?_, ?_, hb⟩
+-    · rw [h1]; exact k1
+-    · rw [h2]; exact k2
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
++  simp [Justified, pair_eq_iff, numeral_eq_iff] at h
++  rcases h with ⟨_, _, ⟨rfl, rfl⟩, b1, k1, b2, k2, hb⟩
++  exact ⟨b1, b2, k1, k2, hb⟩
+ 
+ theorem justified_all (H : ZFAxioms mem) {A R S e b c1 : V}
+     (h : Justified H A R S (kpair H (natV H 6) c1) e b) :
+@@ -1240,20 +1152,8 @@
+         mem (satTriple H c1 (econs H d e) (natV H 1)) S) ∨
+     (b = natV H 0 ∧ ∃ d, mem d A ∧
+         mem (satTriple H c1 (econs H d e) (natV H 0)) S) := by
+-  unfold Justified at h
+-  rcases h with ⟨_, _, _, _, hc, _⟩ | ⟨_, _, _, _, hc, _⟩ | ⟨hc, _⟩ |
+-    ⟨_, _, _, _, hc, _, _, _⟩ | ⟨_, _, _, _, hc, _, _, _⟩ |
+-    ⟨_, _, _, _, hc, _, _, _⟩ | ⟨d1, hc, hcase⟩ | ⟨_, hc, _⟩
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · obtain ⟨-, h1⟩ := kpair_inj H _ _ _ _ hc
+-    rw [h1]
+-    exact hcase
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
++  simp [Justified, pair_eq_iff, numeral_eq_iff] at h
++  exact h
+ 
+ theorem justified_ex (H : ZFAxioms mem) {A R S e b c1 : V}
+     (h : Justified H A R S (kpair H (natV H 7) c1) e b) :
+@@ -1261,20 +1161,8 @@
+         mem (satTriple H c1 (econs H d e) (natV H 0)) S) ∨
+     (b = natV H 1 ∧ ∃ d, mem d A ∧
+         mem (satTriple H c1 (econs H d e) (natV H 1)) S) := by
+-  unfold Justified at h
+-  rcases h with ⟨_, _, _, _, hc, _⟩ | ⟨_, _, _, _, hc, _⟩ | ⟨hc, _⟩ |
+-    ⟨_, _, _, _, hc, _, _, _⟩ | ⟨_, _, _, _, hc, _, _, _⟩ |
+-    ⟨_, _, _, _, hc, _, _, _⟩ | ⟨_, hc, _⟩ | ⟨d1, hc, hcase⟩
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · exact absurd hc (formCode_tag_ne H (by decide) _ _)
+-  · obtain ⟨-, h1⟩ := kpair_inj H _ _ _ _ hc
+-    rw [h1]
+-    exact hcase
++  simp [Justified, pair_eq_iff, numeral_eq_iff] at h
++  exact h
+ 
+ /-! ## Functionality
+ 

@@ -1,0 +1,97 @@
+--- v1/evidence.py
++++ v2/evidence.py
+@@ -8,7 +8,9 @@
+ PRIMARY, UNION, EXTRA = 184, 199, 15
+ STANDARD = {'propext', 'Classical.choice', 'Quot.sound'}
+ CLIENTS = ('root222', 'root219', 'rootDom', 'rootPerm', 'offset_checker')
+-SUFFIXES = {'.olean', '.ilean', '.vo', '.vos', '.vok', '.pyc', '.pyo'}
++CLIENT_PREFIX = 'SetTheory.BusyBeaver.ZFC.LegacyAudit.'
++SUPERVISOR_SHA = 'a3cf7cc38004bca5e2a2df10c607fe5353896c0454069b4ff24d6b5176c32fbd'
++SUFFIXES = {'.olean', '.ilean', '.vo', '.vos', '.vok', '.pyc', '.pyo', '.o', '.so', '.a', '.glob'}
+ 
+ def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+ def digest(b): return hashlib.sha256(b).hexdigest()
+@@ -25,6 +27,20 @@
+     basis=J('execution/basis-result.json'); old=J('execution/basis-completed.json')
+     live=J('execution/basis-review.json'); before=J('execution/before.json'); tool=J('execution/toolchain.json')
+     prep=J('preparation/prepared-inventory.json'); pi=prep['primary']; ui=prep['union']
++    prepared=J('preparation/prepared.json')
++    assert prepared['primary_modules']==PRIMARY and prepared['union_modules']==UNION and prepared['expected_axiom_reports']==5
++    for n,h in prepared['files'].items(): assert digest(m['preparation/'+n])==h
++    driver_sha=digest(m['preparation/build.py'])
++    runner_paths=[p for p,h in before.items()if p.endswith('/build.py')and h==driver_sha]
++    assert len(runner_paths)==1
++    preparation_dir=Path(runner_paths[0]).parent
++    for n in ('build.py','LegacyAudit.lean','prepared-inventory.json'):
++        assert before[str(preparation_dir/n)]==digest(m['preparation/'+n])
++    assert digest(m['execution/supervisor.py'])==SUPERVISOR_SHA
++    assert any(p.endswith('/verification/k215/lean/build.py')and h==SUPERVISOR_SHA for p,h in before.items())
++    audit=J('execution/audit/record.json')
++    audit_log=Path(audit['log']);assert audit_log.name=='compiler.log'and audit_log.parent.name=='audit'
++    run_dir=audit_log.parent.parent
+     assert inv==ui and len(pi['modules'])==PRIMARY and len(inv['modules'])==UNION
+     assert inv['external_imports']==pi['external_imports']==['Init']
+     rows={r['module']:r for r in inv['modules']}; prows={r['module']:r for r in pi['modules']}
+@@ -68,7 +84,8 @@
+         imports=[x for line in source.decode().splitlines()if line.startswith('import ')for x in line[7:].split()]
+         assert imports==r['imports']
+         source_root=r['source'][:-len(mod.replace('.','/')+'.lean')].rstrip('/')
+-        cache=Path(rec['command'][5]).parents[len(mod.split('.'))-1]
++        cache=run_dir/'objects'
++        assert rec['log']==str(run_dir/Path(base).relative_to('execution')/'compiler.log')
+         expected=[tool['lean']['path'],'-j1','-M12288','--root='+source_root,'-o',str(cache/(mod.replace('.','/')+'.olean')),r['source']]
+         assert rec['command']==expected
+         assert rec['compiler_sha256']==tool['lean']['sha256'] and rec['exit_code']==0 and not rec['timed_out']
+@@ -86,7 +103,7 @@
+     directory=str(Path(audit['log']).parent)
+     assert audit['command']==[tool['lean']['path'],'-j1','-M12288','--root='+directory,'-o',directory+'/LegacyAudit.olean',directory+'/LegacyAudit.lean']
+     reports=re.findall(r"'([^']+)' (?:depends on axioms: \[([^]]*)\]|does not depend on any axioms)",text)
+-    assert len(reports)==5 and {n.rsplit('.',1)[-1]for n,_ in reports}==set(CLIENTS)
++    assert len(reports)==5 and {n for n,_ in reports}=={CLIENT_PREFIX+c for c in CLIENTS}
+     assert audit['expected_axiom_reports']==5 and not audit['timed_out']
+     assert all({x.strip()for x in a.split(',')if x.strip()}<=STANDARD for _,a in reports)
+     assert audit['reports']==re.findall(r'depends on axioms: \[([^]]*)\]',text)
+@@ -103,10 +120,15 @@
+     for n in ('inventory.json','toolchain.json'):add('basis/'+n,basis/n)
+     for n in ('build.py','LegacyAudit.lean','prepared-inventory.json','prepared.json','driver-from-phase4.diff','README.md','evidence.py','review.py','review_saved.py','publish.py'):
+         add('preparation/'+n,preparation/n)
++    for p in sorted((preparation/'history/publication-v1').rglob('*')):
++        if p.is_file(): add('preparation/history/publication-v1/'+p.relative_to(preparation/'history/publication-v1').as_posix(),p)
++    if (preparation/'controls.json').exists():add('preparation/controls.json',preparation/'controls.json')
+     return m
+ 
+ def live_check(run,basis,preparation):
+     m=collect(run,basis,preparation); result=validate(m)
++    assert Path(read(run/'audit/record.json')['log']).parent.parent==run
++    assert not any(p.is_symlink()and p.is_dir()for p in (run/'objects').rglob('*'))
+     for p,h in read(run/'before.json').items():assert sha(p)==h,p
+     done=read(run/'completed.json'); old=read(run/'basis-completed.json')
+     inv=read(run/'inventory.json')
+--- v1/review_saved.py
++++ v2/review_saved.py
+@@ -16,11 +16,15 @@
+  assert lr['result_sha256']==digest(m['execution/result.json'])
+  assert lr['evidence_manifest']=={n:idx[n]for n in idx if not n.startswith('publication/')}
+  assert all(s[k]==v for k,v in lr.items()if k!='evidence_manifest')
++ assert all(lr[k]==v and s[k]==v for k,v in r.items()if k!='status')
+  ref=read(a.packet/'primary-reference.json');assert ref==json.loads(m['publication/primary-reference.json'])
++ assert set(ref['files'])=={'execution.tar.gz','index.json','result.json','live-review.json'}
++ assert ref['original_result_sha256']==digest(m['execution/basis-result.json'])
+  if a.primary_packet:
+   for name,h in ref['files'].items():assert sha(a.primary_packet/name)==h
+   pr=read(a.primary_packet/'result.json');pl=read(a.primary_packet/'live-review.json')
+   assert all(pr[k]==v for k,v in json.loads(m['execution/basis-result.json']).items())
+   assert pl==json.loads(m['execution/basis-review.json'])
++  assert pr['execution_archive_sha256']==ref['files']['execution.tar.gz']
+  r.update(primary_packet_hashes_checked=bool(a.primary_packet),scope=r['scope']+' Primary archive is not duplicated or revalidated internally by this reader.')
+  save(a.output,r);print(json.dumps(r,indent=2))
+--- v1/publish.py
++++ v2/publish.py
+@@ -9,6 +9,7 @@
+  primary=a.primary_packet.resolve();pr=read(primary/'result.json');pl=read(primary/'live-review.json')
+  assert all(pr[k]==v for k,v in read(a.run/'basis-result.json').items())
+  assert pl==read(a.run/'basis-review.json')
++ assert sha(primary/'execution.tar.gz')==pr['execution_archive_sha256']
+  ref={'scope':'Exact separate primary184 packet; its complete proof evidence is linked, not duplicated.',
+       'repository_path':'Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase5/lean',
+       'files':{n:sha(primary/n)for n in ('execution.tar.gz','index.json','result.json','live-review.json')},

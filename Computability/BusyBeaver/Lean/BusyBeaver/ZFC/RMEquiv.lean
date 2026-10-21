@@ -432,36 +432,29 @@ theorem fwd (W : WF p nn) {e : Edge} {R : Regs} {x : Exit} {R' : Regs} (h : Run 
   | halt R =>
       intro Q P F E
       exact ⟨0, ⟨P, R⟩, rfl, Q.length, walk_leaf W F (fun _ h => by cases h) E⟩
-  | carBrk1 n R R' h ih =>
-      intro Q P F E
-      obtain ⟨N, P', hr, E'⟩ := ih (Q ++ [false]) P (fol_snoc false F) (E.trans (ipeq_snoc_false Q).symm)
-      exact ⟨N, P', hr, by simpa only [target, brk_car1] using E'⟩
-  | carBrkS n k R R' h ih =>
-      intro Q P F E
-      obtain ⟨N, P', hr, E'⟩ := ih (Q ++ [false]) P (fol_snoc false F) (E.trans (ipeq_snoc_false Q).symm)
-      exact ⟨N, P', hr, by simpa only [target, brk_carS] using E'⟩
-  | carCont n k R R' h ih =>
-      intro Q P F E
-      obtain ⟨N, P', hr, E'⟩ := ih (Q ++ [false]) P (fol_snoc false F) (E.trans (ipeq_snoc_false Q).symm)
-      exact ⟨N, P', hr, by simpa only [target, cont_car] using E'⟩
+  -- All exits through the car use the same zero-padded child path.
+  | carBrk1 n R R' h ih
+  | carBrkS n k R R' h ih
+  | carCont n k R R' h ih
   | carHalt n R R' h ih =>
       intro Q P F E
-      exact ih (Q ++ [false]) P (fol_snoc false F) (E.trans (ipeq_snoc_false Q).symm)
-  | cdrNormal n R R1 R' h1 h2 ih1 ih2 =>
+      simpa only [Reaches, target, brk_car1, brk_carS, cont_car] using
+        ih (Q ++ [false]) P (fol_snoc false F) (E.trans (ipeq_snoc_false Q).symm)
+  -- Once the car finishes normally, prepend its path run to the cdr's run.
+  | cdrNormal n R R1 R' h1 h2 ih1 ih2
+  | cdrBrk n k R R1 R' h1 h2 ih1 ih2
+  | cdrContS n k R R1 R' h1 h2 ih1 ih2
+  | cdrHalt n R R1 R' h1 h2 ih1 ih2 =>
       intro Q P F E
       obtain ⟨N1, P1, hr1, E1⟩ :=
         ih1 (Q ++ [false]) P (fol_snoc false F) (E.trans (ipeq_snoc_false Q).symm)
       simp only [target, incPath_snoc_false] at E1
-      obtain ⟨N2, P2, hr2, E2⟩ := ih2 (Q ++ [true]) P1 (fol_snoc true F) E1
-      simp only [target, incPath_snoc_true] at E2
-      exact ⟨N1 + N2, P2, by rw [run_add, hr1]; exact hr2, E2.trans (ipeq_snoc_false _)⟩
-  | cdrBrk n k R R1 R' h1 h2 ih1 ih2 =>
-      intro Q P F E
-      obtain ⟨N1, P1, hr1, E1⟩ :=
-        ih1 (Q ++ [false]) P (fol_snoc false F) (E.trans (ipeq_snoc_false Q).symm)
-      simp only [target, incPath_snoc_false] at E1
-      obtain ⟨N2, P2, hr2, E2⟩ := ih2 (Q ++ [true]) P1 (fol_snoc true F) E1
-      exact ⟨N1 + N2, P2, by rw [run_add, hr1]; exact hr2, by simpa only [target, brk_cdr] using E2⟩
+      have hcdr := reaches_pre hr1 (ih2 (Q ++ [true]) P1 (fol_snoc true F) E1)
+      first
+      | simpa only [Reaches, target, brk_cdr, cont_cdrS] using hcdr
+      | obtain ⟨N2, P2, hr2, E2⟩ := hcdr
+        simp only [target, incPath_snoc_true] at E2
+        exact ⟨N2, P2, hr2, E2.trans (ipeq_snoc_false _)⟩
   | cdrCont1 n R R1 R2 R' x h1 h2 h3 ih1 ih2 ih3 =>
       intro Q P F E
       obtain ⟨N1, P1, hr1, E1⟩ :=
@@ -469,22 +462,7 @@ theorem fwd (W : WF p nn) {e : Edge} {R : Regs} {x : Exit} {R' : Regs} (h : Run 
       simp only [target, incPath_snoc_false] at E1
       obtain ⟨N2, P2, hr2, E2⟩ := ih2 (Q ++ [true]) P1 (fol_snoc true F) E1
       simp only [target, cont_cdr1] at E2
-      have hr : run (ofDag p nn) (N1 + N2) ⟨P, R⟩ = some ⟨P2, R2⟩ := by rw [run_add, hr1]; exact hr2
-      exact reaches_pre hr (ih3 Q P2 F E2)
-  | cdrContS n k R R1 R' h1 h2 ih1 ih2 =>
-      intro Q P F E
-      obtain ⟨N1, P1, hr1, E1⟩ :=
-        ih1 (Q ++ [false]) P (fol_snoc false F) (E.trans (ipeq_snoc_false Q).symm)
-      simp only [target, incPath_snoc_false] at E1
-      obtain ⟨N2, P2, hr2, E2⟩ := ih2 (Q ++ [true]) P1 (fol_snoc true F) E1
-      exact ⟨N1 + N2, P2, by rw [run_add, hr1]; exact hr2, by simpa only [target, cont_cdrS] using E2⟩
-  | cdrHalt n R R1 R' h1 h2 ih1 ih2 =>
-      intro Q P F E
-      obtain ⟨N1, P1, hr1, E1⟩ :=
-        ih1 (Q ++ [false]) P (fol_snoc false F) (E.trans (ipeq_snoc_false Q).symm)
-      simp only [target, incPath_snoc_false] at E1
-      obtain ⟨N2, hn⟩ := ih2 (Q ++ [true]) P1 (fol_snoc true F) E1
-      exact ⟨N1 + N2, hn_pre hr1 hn⟩
+      exact reaches_pre hr1 (reaches_pre hr2 (ih3 Q P2 F E2))
 
 /-! ## Path runs are simulated by structured runs -/
 

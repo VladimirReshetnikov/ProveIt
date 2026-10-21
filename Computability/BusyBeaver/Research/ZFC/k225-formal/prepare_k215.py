@@ -14,8 +14,8 @@ between the PC marker and the register header (one more than `KSim.D0`; the cand
    by checked substitutions in the 221/219 generators.
 
 The forward-only `generate_source215_lean.py` and compact
-`generate_sites215_lean.py` are maintained directly. Offset-bisimulation symmetry
-supplies the reverse source implication; the site facade composes the checked
+`generate_sites215_lean.py` are maintained directly. Ordinary bisimulation with
+512-step pointer decoding supplies both source implications; the site facade composes the checked
 blocks without repeating their paths.
 """
 import json

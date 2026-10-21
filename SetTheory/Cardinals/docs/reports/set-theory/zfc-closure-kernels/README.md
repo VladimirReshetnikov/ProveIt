@@ -11,16 +11,20 @@ No merged PDF is built. These are ordinary mathematical arguments and finite
 regression checks. The deliveries confer no formal status; subsequent Lean
 results and their exact scope are listed below.
 
+The [phase-five verification addendum](intake-204.md#verification-addendum-21-october-2026)
+records the completed 184-module Lean check, all 16 ordinary certificate chunks
+and both unchanged endpoint audits. The exact K215 machine remains fixed.
+
 [Batch 204](intake-204.md) reconciles Source 167 from `05d063acef`:
 proof-simplification proposals, the ordinary GC–ZC215 compiler/scheduler
 argument and an SB215 return correction. Placement `ec445a5246` preserves all
 82 members and retires only that ZIP. The older symmetry proposal is already
 implemented in the checked K215 proof. The useful four-field zero-offset
 certificate proposal must preserve the 512-fuel decoder; 128 fuel changes
-622 of the supplied path pairs. Its implementation is being checked separately.
+622 of the supplied path pairs. Its implementation is checked in phase five, linked above.
 
-The [completed phase-four checkpoint](../../../../../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase4/README.md)
-remains the formal Lean status cited here while the next rebuild runs. The
+At intake time, the [completed phase-four checkpoint](../../../../../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase4/README.md)
+was the completed formal Lean status while the next rebuild ran. The
 exact formalized 215-state machine and Rocq endpoint are unchanged by this
 intake. GC–ZC215 runtime/startup records remain submitted evidence, and its
 proof prototypes remain uncompiled delivery material. No delivered code was
@@ -3003,7 +3007,7 @@ for the different permuted252 table, including actual boot, all decoder sites,
 runtime, native calculus, Power and Foundation. `ZFCBoundPerm252` proves
 Con(ZFC)→its nonhalting. Choice removal and PA internalization remain separate.
 `Code254History.accepts_iff_check` now gives numeric evaluation for every proof
-code, while the156-unit integration freshly checks History, the first part of
+code, while the 156-unit integration freshly checks History, the first part of
 constructible satisfaction absoluteness and their umbrella. This is not a
 fresh156-module rebuild. The reports' older binary/Foundation gaps are historical.
 At that checkpoint the new dirty-stack theorem, different table's enormous

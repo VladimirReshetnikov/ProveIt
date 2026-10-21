@@ -425,11 +425,6 @@ theorem lookupC_all {f : Entry → Bool} : ∀ {T : CTree} {j : Nat} {x : Entry}
       · exact lookupC_all h hall.1
       · exact lookupC_all h hall.2
 
-def getc (T : CTree) (j : Nat) : Option (List Bool × List Bool) :=
-  match lookupC T j with
-  | some (a, b, _, _) => some (decode a, decode b)
-  | none => none
-
 def lbeq : List Bool → List Bool → Bool
   | [], [] => true
   | x :: a, y :: b => (x == y) && lbeq a b
@@ -459,8 +454,19 @@ theorem cntEq_ok {l1 l2 : List Nat} (h : cntEq l1 l2 = true) (i : Nat) : cnt l1 
   · simp only [List.mem_append, not_or] at hi
     rw [cnt_zero hi.1, cnt_zero hi.2]
 
+/-! A certificate denotes exactly the paths returned by its decoder. Soundness
+requires no numeric size bound or other property of that decoder. -/
+namespace WithDecoder
+
+variable (decode : Nat → List Bool)
+
+def getc (T : CTree) (j : Nat) : Option (List Bool × List Bool) :=
+  match lookupC T j with
+  | some (a, b, _, _) => some (decode a, decode b)
+  | none => none
+
 def branchOk (t1 t2 : Tree) (T : CTree) (A B : List Bool) (j : Nat) : Bool :=
-  match seg t1 segFuel A, seg t2 segFuel B, getc T j with
+  match seg t1 segFuel A, seg t2 segFuel B, getc decode T j with
   | some (l1, P1), some (l2, P2), some (Q1, Q2) => cntEq l1 l2 && lbeq P1 Q1 && lbeq P2 Q2
   | _, _, _ => false
 
@@ -468,15 +474,15 @@ def entryOk (t1 t2 : Tree) (T : CTree) (x : Entry) : Bool :=
   match tsite t1 (decode x.1), tsite t2 (decode x.2.1) with
   | some (.halt, _), some (.halt, _) => true
   | some (.decnz r1, Q1), some (.decnz r2, Q2) =>
-      Nat.beq r1 r2 && branchOk t1 t2 T (incPath Q1) (incPath Q2) x.2.2.1 &&
-        branchOk t1 t2 T (breakPath 1 Q1) (breakPath 1 Q2) x.2.2.2
+      Nat.beq r1 r2 && branchOk decode t1 t2 T (incPath Q1) (incPath Q2) x.2.2.1 &&
+        branchOk decode t1 t2 T (breakPath 1 Q1) (breakPath 1 Q2) x.2.2.2
   | _, _ => false
 
 /-- The relation a certificate tree denotes: the pairs its lookup returns. -/
-def Rel (T : CTree) (P1 P2 : List Bool) : Prop := ∃ j, getc T j = some (P1, P2)
+def Rel (T : CTree) (P1 P2 : List Bool) : Prop := ∃ j, getc decode T j = some (P1, P2)
 
 theorem branchOk_good {t1 t2 : Tree} {T : CTree} {A B : List Bool} {j : Nat}
-    (h : branchOk t1 t2 T A B j = true) : BranchGood t1 t2 (Rel T) A B := by
+    (h : branchOk decode t1 t2 T A B j = true) : BranchGood t1 t2 (Rel decode T) A B := by
   unfold branchOk at h
   revert h
   cases h1 : seg t1 segFuel A with
@@ -485,7 +491,7 @@ theorem branchOk_good {t1 t2 : Tree} {T : CTree} {A B : List Bool} {j : Nat}
   cases h2 : seg t2 segFuel B with
   | none => intro h; cases h
   | some lP2 =>
-  cases h3 : getc T j with
+  cases h3 : getc decode T j with
   | none => intro h; cases h
   | some Q =>
   intro h
@@ -497,8 +503,8 @@ theorem branchOk_good {t1 t2 : Tree} {T : CTree} {A B : List Bool} {j : Nat}
   rw [← lbeq_ok e1, ← lbeq_ok e2] at h3
   exact ⟨l1, P1, l2, P2, h1, h2, cntEq_ok hc, j, h3⟩
 
-theorem entryOk_good {t1 t2 : Tree} {T : CTree} {x : Entry} (h : entryOk t1 t2 T x = true) :
-    EntryGood t1 t2 (Rel T) (decode x.1) (decode x.2.1) := by
+theorem entryOk_good {t1 t2 : Tree} {T : CTree} {x : Entry} (h : entryOk decode t1 t2 T x = true) :
+    EntryGood t1 t2 (Rel decode T) (decode x.1) (decode x.2.1) := by
   unfold entryOk at h
   revert h
   cases h1 : tsite t1 (decode x.1) with
@@ -514,15 +520,15 @@ theorem entryOk_good {t1 t2 : Tree} {T : CTree} {x : Entry} (h : entryOk t1 t2 T
   · simp only [Bool.and_eq_true] at h
     obtain ⟨⟨hr, hj⟩, hk⟩ := h
     rw [Nat.eq_of_beq_eq_true hr] at h1
-    exact Or.inr ⟨_, Q1, Q2, h1, h2, branchOk_good hj, branchOk_good hk⟩
+    exact Or.inr ⟨_, Q1, Q2, h1, h2, branchOk_good decode hj, branchOk_good decode hk⟩
   · exact Or.inl ⟨Q1, Q2, h1, h2⟩
 
 def check (t1 t2 : Tree) (T : CTree) : Bool :=
-  branchOk t1 t2 T [] [] 0 && allC (entryOk t1 t2 T) T
+  branchOk decode t1 t2 T [] [] 0 && allC (entryOk decode t1 t2 T) T
 
-theorem check_bisim {t1 t2 : Tree} {T : CTree} (hs : branchOk t1 t2 T [] [] 0 = true)
-    (ha : allC (entryOk t1 t2 T) T = true) : Bisim t1 t2 (Rel T) := by
-  refine ⟨branchOk_good hs, fun P1 P2 ⟨j, hj⟩ => ?_⟩
+theorem check_bisim {t1 t2 : Tree} {T : CTree} (hs : branchOk decode t1 t2 T [] [] 0 = true)
+    (ha : allC (entryOk decode t1 t2 T) T = true) : Bisim t1 t2 (Rel decode T) := by
+  refine ⟨branchOk_good decode hs, fun P1 P2 ⟨j, hj⟩ => ?_⟩
   unfold getc at hj
   revert hj
   cases hl : lookupC T j with
@@ -532,13 +538,41 @@ theorem check_bisim {t1 t2 : Tree} {T : CTree} (hs : branchOk t1 t2 T [] [] 0 = 
       obtain ⟨a, b, c, d⟩ := x
       simp only [Option.some.injEq, Prod.mk.injEq] at hj
       obtain ⟨rfl, rfl⟩ := hj
-      exact entryOk_good (x := (a, b, c, d)) (lookupC_all hl ha)
+      exact entryOk_good decode (x := (a, b, c, d)) (lookupC_all hl ha)
 
 /-- **Checked certificates give halting equivalence**, in both directions. -/
+theorem check_halts_iff {p1 p2 : Program} {T : CTree}
+    (hs : branchOk decode (ptree p1) (ptree p2) T [] [] 0 = true)
+    (ha : allC (entryOk decode (ptree p1) (ptree p2) T) T = true) (R : Registers) :
+    Halts p1 ⟨[], R⟩ ↔ Halts p2 ⟨[], R⟩ :=
+  (check_bisim decode hs ha).halts_iff R
+
+end WithDecoder
+
+/-! The original API retains its exact 128-fuel decoding behavior. -/
+
+abbrev getc := WithDecoder.getc decode
+abbrev branchOk := WithDecoder.branchOk decode
+abbrev entryOk := WithDecoder.entryOk decode
+abbrev Rel := WithDecoder.Rel decode
+abbrev check := WithDecoder.check decode
+
+theorem branchOk_good {t1 t2 : Tree} {T : CTree} {A B : List Bool} {j : Nat}
+    (h : branchOk t1 t2 T A B j = true) : BranchGood t1 t2 (Rel T) A B :=
+  WithDecoder.branchOk_good decode h
+
+theorem entryOk_good {t1 t2 : Tree} {T : CTree} {x : Entry} (h : entryOk t1 t2 T x = true) :
+    EntryGood t1 t2 (Rel T) (decode x.1) (decode x.2.1) :=
+  WithDecoder.entryOk_good decode h
+
+theorem check_bisim {t1 t2 : Tree} {T : CTree} (hs : branchOk t1 t2 T [] [] 0 = true)
+    (ha : allC (entryOk t1 t2 T) T = true) : Bisim t1 t2 (Rel T) :=
+  WithDecoder.check_bisim decode hs ha
+
 theorem check_halts_iff {p1 p2 : Program} {T : CTree}
     (hs : branchOk (ptree p1) (ptree p2) T [] [] 0 = true)
     (ha : allC (entryOk (ptree p1) (ptree p2) T) T = true) (R : Registers) :
     Halts p1 ⟨[], R⟩ ↔ Halts p2 ⟨[], R⟩ :=
-  (check_bisim hs ha).halts_iff R
+  WithDecoder.check_halts_iff decode hs ha R
 
 end SetTheory.BusyBeaver.ZFC.RMBisim

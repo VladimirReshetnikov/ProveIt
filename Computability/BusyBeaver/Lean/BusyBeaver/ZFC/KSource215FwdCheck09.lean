@@ -2,10 +2,10 @@ import BusyBeaver.ZFC.KSource215Data
 
 namespace SetTheory.BusyBeaver.ZFC.KSource215
 
-open RegisterPath RMBisim RMOffsetBisim
+open RegisterPath RMBisim
 set_option maxRecDepth 65536
 set_option maxHeartbeats 8000000
 
-theorem fwd_ok9 : allO fwdF fwd9 = true := by decide +kernel
+theorem fwd_ok9 : allC fwdF fwd9 = true := by decide +kernel
 
 end SetTheory.BusyBeaver.ZFC.KSource215

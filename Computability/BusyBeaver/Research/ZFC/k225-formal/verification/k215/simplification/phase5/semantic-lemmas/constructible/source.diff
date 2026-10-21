@@ -1,0 +1,92 @@
+--- baseline/ConstructibleAbs.lean
++++ ConstructibleAbs.lean
+@@ -113,6 +113,15 @@
+ variable (H : ZFAxioms mem) (hR : Regular mem) (hP : ∀ a, ∃ p, ∀ x, mem x p ↔ Sub mem x a)
+ include H hR hP
+ 
++/-- Bounded quantifiers agree because every member of a constructible set is constructible. -/
++private theorem forall_memL_iff (A : {x // InL H hP x}) (P : V → Prop) :
++    (∀ x : {x // InL H hP x}, memL H hP x A → P x.1) ↔ ∀ x, mem x A.1 → P x :=
++  ⟨fun h x hx => h ⟨x, inL_trans H hR hP A.2 hx⟩ hx, fun h x hx => h x.1 hx⟩
++
++private theorem exists_memL_iff (A : {x // InL H hP x}) (P : V → Prop) :
++    (∃ x : {x // InL H hP x}, memL H hP x A ∧ P x.1) ↔ ∃ x, mem x A.1 ∧ P x :=
++  ⟨fun ⟨x, hx, h⟩ => ⟨x.1, hx, h⟩, fun ⟨x, hx, h⟩ => ⟨⟨x, inL_trans H hR hP A.2 hx⟩, hx, h⟩⟩
++
+ /-- Equality of a constructible set with an ambient set, by extensionality. -/
+ theorem val_eq {u : {x // InL H hP x}} {v : V} (hv : ∀ z, mem z v → InL H hP z)
+     (h : ∀ z : {x // InL H hP x}, mem z.1 u.1 ↔ mem z.1 v) : u.1 = v :=
+@@ -148,9 +157,7 @@
+     exact inL_trans H hR hP (inL_trans H hR hP a.2 hva) hzv
+   · rw [show mem z.1 (vunion (L_zfAxioms H hR hP) a).1 ↔ _ from
+       vunion_spec (L_zfAxioms H hR hP) a z, vunion_spec H]
+-    constructor
+-    · rintro ⟨v, h1, h2⟩; exact ⟨v.1, h1, h2⟩
+-    · rintro ⟨v, h1, h2⟩; exact ⟨⟨v, inL_trans H hR hP a.2 h2⟩, h1, h2⟩
++    simpa only [memL, and_comm] using exists_memL_iff H hR hP a (fun v => mem z.1 v)
+ 
+ theorem val_vcup (a b : {x // InL H hP x}) :
+     (vcup (L_zfAxioms H hR hP) a b).1 = vcup H a.1 b.1 := by
+@@ -169,17 +176,10 @@
+ theorem inductive_iff (c : {x // InL H hP x}) :
+     inductiveV (L_zfAxioms H hR hP) c ↔ inductiveV H c.1 := by
+   unfold inductiveV
+-  refine and_congr ?_ ?_
+-  · show mem (vempty (L_zfAxioms H hR hP)).1 c.1 ↔ _
+-    rw [val_vempty H hR hP]
+-  · constructor
+-    · intro h y hy
+-      have : mem (vsucc (L_zfAxioms H hR hP) ⟨y, inL_trans H hR hP c.2 hy⟩).1 c.1 :=
+-        h ⟨y, inL_trans H hR hP c.2 hy⟩ hy
+-      rwa [val_vsucc H hR hP] at this
+-    · intro h y hy
+-      show mem (vsucc (L_zfAxioms H hR hP) y).1 c.1
+-      rw [val_vsucc H hR hP]; exact h y.1 hy
++  change (mem (vempty (L_zfAxioms H hR hP)).1 c.1 ∧
++    ∀ y : {x // InL H hP x}, mem y.1 c.1 → mem (vsucc (L_zfAxioms H hR hP) y).1 c.1) ↔ _
++  simp only [val_vempty H hR hP, val_vsucc H hR hP]
++  exact and_congr Iff.rfl (forall_memL_iff H hR hP c fun y => mem (vsucc H y) c.1)
+ 
+ theorem inL_omega : InL H hP (omegaV H) := inL_ord H hR hP (ord_omega H)
+ 
+@@ -427,20 +427,15 @@
+     rw [val_satTriple H hR hP, val_econs H hR hP he.1.1, val_natV H hR hP]
+   have hc1 : ∀ c1 : V, c.1 = kpair H (natV H t) c1 → InL H hP c1 := fun c1 h =>
+     (inL_kpair H hR hP (h ▸ c.2)).2
+-  constructor
+-  · rintro ⟨c1, hc, h⟩
+-    refine ⟨c1.1, (codeEq_iff H hR hP t c c1).1 hc, ?_⟩
+-    rcases h with ⟨hb, hall⟩ | ⟨hb, d, hd, hdS⟩
+-    · exact Or.inl ⟨(natEq_iff H hR hP b u).1 hb, fun d hd =>
+-        (hT c1 ⟨d, inL_trans H hR hP A.2 hd⟩ u).1 (hall ⟨d, inL_trans H hR hP A.2 hd⟩ hd)⟩
+-    · exact Or.inr ⟨(natEq_iff H hR hP b v).1 hb, d.1, hd, (hT c1 d v).1 hdS⟩
+-  · rintro ⟨c1, hc, h⟩
+-    let c1' : {x // InL H hP x} := ⟨c1, hc1 c1 hc⟩
+-    refine ⟨c1', (codeEq_iff H hR hP t c c1').2 hc, ?_⟩
+-    rcases h with ⟨hb, hall⟩ | ⟨hb, d, hd, hdS⟩
+-    · exact Or.inl ⟨(natEq_iff H hR hP b u).2 hb, fun d hd => (hT c1' d u).2 (hall d.1 hd)⟩
+-    · exact Or.inr ⟨(natEq_iff H hR hP b v).2 hb, ⟨d, inL_trans H hR hP A.2 hd⟩, hd,
+-        (hT c1' ⟨d, inL_trans H hR hP A.2 hd⟩ v).2 hdS⟩
++  simp only [codeEq_iff H hR hP, natEq_iff H hR hP, hT]
++  have hall (c1 : {x // InL H hP x}) := forall_memL_iff H hR hP A
++    (fun d => mem (satTriple H c1.1 (econs H d e.1) (natV H u)) S.1)
++  have hex (c1 : {x // InL H hP x}) := exists_memL_iff H hR hP A
++    (fun d => mem (satTriple H c1.1 (econs H d e.1) (natV H v)) S.1)
++  simp only [hall, hex]
++  constructor
++  · rintro ⟨c1, hc, h⟩; exact ⟨c1.1, hc, h⟩
++  · rintro ⟨c1, hc, h⟩; exact ⟨⟨c1, hc1 c1 hc⟩, hc, h⟩
+ 
+ /-- **The certificate step relation is absolute** (at a genuine environment). -/
+ theorem justified_iff :
+@@ -928,8 +923,8 @@
+   · rw [show mem S.1 (Gdef (L_zfAxioms H hR hP) (L_power H hR hP) X).1 ↔ _ from
+       gdef_spec (L_zfAxioms H hR hP) (L_power H hR hP) X S, gdef_spec H hP]
+     refine and_congr ?_ (or_congr ?_ ?_)
+-    · exact ⟨fun h z hz => h ⟨z, inL_trans H hR hP S.2 hz⟩ hz, fun h z hz => h z.1 hz⟩
+-    · exact ⟨fun h z hz => h ⟨z, inL_trans H hR hP S.2 hz⟩ hz, fun h z hz => h z.1 hz⟩
++    · exact forall_memL_iff H hR hP S (fun z => mem z X.1)
++    · exact forall_memL_iff H hR hP S (fun _ => False)
+     · refine ⟨def_down H hR hP X S, fun h => ?_⟩
+       obtain ⟨S', hS', hdef⟩ := def_up H hR hP X h
+       rwa [show S' = S from Subtype.ext hS'] at hdef

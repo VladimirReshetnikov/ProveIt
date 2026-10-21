@@ -11,7 +11,7 @@ import hashlib
 def partition_source(source: str) -> dict[str, str]:
     s = source
     namespace='SetTheory.BusyBeaver.ZFC.KSource215'
-    header=f'namespace {namespace}\n\nopen RegisterPath RMBisim RMOffsetBisim\nset_option maxRecDepth 65536\nset_option maxHeartbeats 8000000\n\n'
+    header=f'namespace {namespace}\n\nopen RegisterPath RMBisim\nset_option maxRecDepth 65536\nset_option maxHeartbeats 8000000\n\n'
     end=f'\nend {namespace}\n'
     assert s.count('namespace '+namespace)==1 and s.rstrip().endswith('end '+namespace)
     fw=s.index('theorem fwd_start :')

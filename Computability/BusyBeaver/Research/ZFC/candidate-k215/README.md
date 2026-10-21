@@ -30,6 +30,11 @@ statements, raw reports, retained build history, and reproduction routes.
   [serial Rocq driver](../k225-formal/verification/k215/rocq/README.md), including
   `--kernel`, to compile the exact source closure and recursively run `coqchk`.
 
+The [current Lean simplification checkpoint](../k225-formal/verification/k215/simplification/phase5/README.md)
+checks the 184-module closure and both endpoint clients, retaining exact bindings
+for reused predecessor objects. The literal machine and theorem statements are
+unchanged.
+
 The layers are described in [k225-formal](../k225-formal/README.md#the-215).
 
 ## Exact machine
