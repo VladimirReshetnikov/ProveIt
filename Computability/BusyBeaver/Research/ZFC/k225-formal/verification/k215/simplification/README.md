@@ -30,7 +30,9 @@ stable program data and transition-lookup transport, for 187 modules. It checks
 512-step decoder and all 4,751 leaves. The full source partition is 375,335 bytes
 in 19 files; its additional generic normalized checker is 6,365 bytes.
 Four root interfaces and the retained offset checker passed a separate phase-five
-refresh; that historical result is distinct from the current primary check.
+refresh. The [phase-six continuity review](phase6/legacy-continuity/README.md)
+rechecks their unchanged 45-module audit dependency set and the 15 retained legacy
+modules, without another legacy compilation or audit.
 
 The [latest checkpoint](phase6/README.md),
 [fifth checkpoint](phase5/README.md),

@@ -25,6 +25,7 @@ The seed proof obtains a derivable named bundle and uses the existing semantic e
 - `lean/` preserves the completed primary run and its independent post-audit review, with an exact reference to the published phase-five evidence. No compiled objects are shipped.
 - `proof-sources/` preserves the source changes, regeneration and structural controls, independent peers, and all isolated attempts, including the failed cleanup attempt. Its saved reader deliberately does not establish the full endpoint.
 - [lean/review/root-actual-review.json](lean/review/root-actual-review.json) records a separate byte review of the complete current and predecessor provider sets.
+- [Legacy continuity](legacy-continuity/README.md) rechecks the 15 retained legacy modules and the historical five-client audit against the current providers. No legacy module or client was compiled again.
 
 To compile every current project module afresh, use a new output directory from the repository root:
 
