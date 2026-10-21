@@ -1,0 +1,335 @@
+\begingroup
+\newcommand{\ctP}{\mathsf P}
+\newcommand{\ctI}{\mathsf I}
+\newcommand{\ctQ}{\mathsf Q}
+\newcommand{\ctD}{\mathcal D}
+\newcommand{\ctS}{\mathsf S}
+\newcommand{\ctMP}{\mathsf{MP}}
+\newcommand{\ctAX}{\mathsf{AX}}
+\newcommand{\ctH}{\mathsf H}
+\newcommand{\ctPush}{\mathsf{PUSH}}
+\newcommand{\ctDiscard}{\mathsf{DISCARD}}
+\newcommand{\ctBlock}{\mathcal B}
+
+\section{A 201-subtree source: transfer-pop and cache-return inference}
+\label{sec:cache-calculus}
+
+This construction combines the transfer-pop proof enumerator
+of~\cite{transfer} with cache-return modus ponens from~\cite{cachemp},
+rebased onto the accepted K215 source~\cite{k215}. The combination needs
+a new proof compiler: cache-return inference no longer supplies the
+dummy stack entry consumed when its result is transferred to the current
+formula. Reserving that entry before compiling the premises resolves
+the mismatch. The resulting literal programs have 201 distinct source
+subtrees, one fewer than the accepted source. This section proves their
+ordinary source-level consistency calibration. It does not identify a
+214-state binary machine or infer a physical state count from the
+source count; allocation, full-tape simulation, and blank initialization
+are separate obligations.
+
+\subsection{Numerical calculus and exact command interface}
+
+Use Cantor pairing and the unchanged implication and quantifier codes:
+\[
+ \ctP(a,b)=\frac{(a+b)(a+b+1)}2+b,\qquad
+ \ctI(a,b)=4\ctP(a,b),\qquad
+ \ctQ_i a=4\ctP(i,a)+2.
+\]
+Truth is code0 and falsity is code1. In particular,
+$\ctI(0,0)=0$. Write $[x;w]=\ctP(x,w)$ and use right-nested
+pairing for longer stacks. This is numerical notation, not an
+injective encoding of finite lists: $[0;0]=0$, and both projections
+of zero are zero.
+
+Let $\ctD$ be the accepted dominated numerical calculus: truth,
+numerical MP, theorem-only generalization, the seven retained logical
+rows $R_1,\ldots,R_7$, the complete gated theory bundle, and
+\[
+ L(A,B,C,U)=
+ \ctI\bigl(\ctI(\ctI(C,U),A),
+             \ctI(\ctI(A,C),\ctI(B,C))\bigr),\qquad U\leq A.
+\]
+These rows and the full bundle are retained literally. In particular,
+none of the bundle's support or atomic-vacuity material is removed.
+The inherited finite propositional certificate recovers unrestricted
+$\rho_8$ for every natural code; the accepted calibration then gives
+\begin{equation}
+ \ctD\vdash1\quad\Longleftrightarrow\quad
+ \exists p\;\operatorname{Proof}_{\mathrm{ZFC}}(p,\bot).
+ \label{eq:ct-inherited}
+\end{equation}
+The present theorem uses this existing mathematical
+calibration~\cite{k215}; it is not a new proof-assistant verification
+of that dependency. Formula decoding and well-formedness tests are
+not added to the numerical calculus.
+
+The proof enumerator has a new operational language with unchanged
+axiom strength. In particular, the operand of MP remains an
+arbitrary natural increment; inference is not restricted to a fixed
+consequent or a fixed parameter. Successful inference, cache movement,
+and stack restoration are reorganized together. Treating either command
+change in isolation would miss the obstruction solved by the reserved
+zero, and would not justify transferring the old completeness theorem.
+
+At command boundaries the work tuple is $(t,w,d,h)$: current formula,
+paired stack, additive parameter, and cached formula. If
+$\operatorname{unpair}(w)=(x,v)$, the direct transfer command is
+\[
+ \ctS(t,w,d,h)=
+ \begin{cases}
+  \mathsf{halt},&h=1,\\
+  (h,v,d,x),&h\ne1.
+ \end{cases}
+\]
+For $Y=d+x$, cache-return inference has the exact equation
+\[
+ \ctMP(x)(t,w,d,h)=
+ \begin{cases}
+  (0,w,0,Y),&\ctI(t,Y)=h,\\
+  (0,w,Y,0),&\ctI(t,Y)\ne h.
+ \end{cases}
+\]
+The successful branch clears the parameter and leaves the conclusion
+in cache; it does not push a dummy zero. The failed branch is unchanged.
+
+The axiom command $\ctAX(c;x,y)$ is unchanged. Set
+$U=d$, $A=d+x$, $B=h+y$, and $C=c$. Its result is
+\begin{align*}
+ t'&=G(A,B,c),& d'&=0,&h'&=0,\\
+ w'&=[R_1,\ldots,R_7,L(A,B,c,U),\ctQ_U h,t;w].
+\end{align*}
+Here $G$ is the original full bundle when $c\ne A,B$, and zero
+otherwise. The quantified entry uses the incoming cache, before adding
+$y$. Every logical row is an implication code and hence differs from1;
+the quantified entry is nonzero of residue2 modulo4. The gate is also
+never1: an enabled bundle is implication-coded, and a disabled gate
+is zero. These facts hold for arbitrary raw operands.
+
+\subsection{Literal construction and eight variants}
+
+In the accepted tree, replace the successful-MP subtree at
+\path{11010010111} by $(\mathrm{CD}_4,
+(\mathrm{CI}_5,\mathrm{CC}_2))$. Delete the DROP selector layer
+by replacing \path{11010} with its current descendant
+\path{11010010}. Finally replace the old NIP body at \path{111}
+by a transfer body. The direct body is the closed composition
+\[
+ \mathsf{clearT};\mathsf{copyH};\mathsf{oldNIP}.
+\]
+The first part clears current; the second is the old DROP cache-copy
+tail, preserving cache and clearing scratch. Old NIP then tests that
+cache and pops the stack. Both parenthesizations implement precisely
+the direct $\ctS$ equation.
+
+Alternatively use
+$\mathsf{oldDROP};\mathsf{oldNIP};\mathsf{oldNIP}$, abbreviated
+DNN. Its nonhalting map is the same, but it also halts if incoming
+$t=1$. It is therefore an early-halting refinement of direct transfer.
+Each body has two parenthesizations, and each program has two small
+selector orders, giving eight literal variants:
+\begin{center}
+\begin{tabular}{lrrrrr}
+\toprule
+Transfer body&Variants&Distinct subtrees&Leaves&Depth&Zero run\\
+\midrule
+Direct&4&201&4709&44&6\\
+DNN&4&201&4752&44&6\\
+\bottomrule
+\end{tabular}
+\end{center}
+For the ordinary order, wire fields are
+\[
+ f(\ctS)=[0],\qquad f(\ctMP(x))=[1,x],\qquad
+ f(\ctAX(c;x,y))=[c+2,y,x].
+\]
+The \texttt{swap01} order exchanges only the first two selectors:
+$f(\ctS)=[1]$ and $f(\ctMP(x))=[0,x]$. AX fields stay fixed.
+The first two selector decrements prove these partitions for all
+natural fields: zero selects the first body, one the second, and
+$c+2$ enters AX with residual $c$.
+
+The independent source audit reconstructs all eight files, checks both
+CFG resolvers, and verifies all 4565 primitive effects and internal
+successors of AX. Its unique exterior edge still reaches the common
+branch continuation. Thus AX is not incorrectly assumed closed when
+its required outer continuation is supplied by the selector.
+
+\subsection{Soundness on all raw candidate words}
+
+Call a work tuple safe if current, cache, and every successive decoded
+stack head are $\ctD$-theorems. No theoremhood condition is imposed
+on $d$. AX preserves safety by its inherited axiom and generalization
+contracts. Failed MP inserts truth; successful MP derives $Y$ from
+$t$ and $\ctI(t,Y)$, places it in cache, and inserts truth in current.
+Transfer only moves theorem codes. Its cache-one guard, or either guard
+of DNN, therefore witnesses a theorem equal to falsity. Consequently
+every actual halt from a safe seed yields $\ctD\vdash1$. This argument
+quantifies over all natural command fields, including unintended or
+nondecodable inputs; it does not presuppose a valid compiled proof word.
+
+\subsection{Structural blocks recovered without DROP}
+
+Put $D_0=\ctAX(0;0,0)$ and define
+\begin{align*}
+ \ctH&=D_0;\ctS^{11},\\
+ \ctPush&=D_0;\ctS^9;\ctMP(0),\\
+ \ctDiscard&=\ctMP(1);\ctAX(1;0,0);\ctS^{10};\ctMP(0).
+\end{align*}
+From $(t,[x;w],d,h)$, the first ten shifts of $\ctH$ yield
+$(\ctQ_dh,[x;w],0,t)$. Their tests inspect only zero and the nine
+generated nonfalsity entries. The eleventh shift halts exactly when
+$t=1$, otherwise returning $(t,w,0,x)$. Thus $\ctH$ preserves
+current while popping one old stack entry and resetting the parameter.
+It intentionally does not test the original cache before AX erases it.
+
+After nine shifts in $\ctPush$, current is the dominated row,
+cache is $\ctQ_dh$, and stack is $[t;w]$. The final MP necessarily
+fails because an implication code has residue0 and this cache has
+residue2. Hence PUSH never halts and returns $(0,[t;w],0,0)$ for
+every natural input tuple.
+
+DISCARD starts from $(t,w,0,0)$. Its first MP fails since
+$\ctI(t,1)>0$. AX has $U=A=c=1$ and gate zero. Ten shifts give
+$(\ctQ_1 0,w,0,0)$; the final MP fails because
+$\ctI(\ctQ_1 0,0)>0$. Thus DISCARD never halts and returns
+$(0,w,0,0)$. Finally, from current, cache, and parameter zero, define
+$J(0)$ to be empty and $J(u)=\ctMP(u)$ when $u>0$. The latter is
+a forced failure setting $d=u$. Omitting $\ctMP(0)$ is essential:
+the zero alias would make it succeed.
+
+For DNN, the extra top test does not invalidate these exact auxiliary
+claims: every tested gate and generated entry is nonfalsity. The old
+top remains untested in PUSH, and its sole test in H is the intended
+last shift.
+
+These blocks use the axiom emitter as a source of temporary storage.
+Its fixed ten-entry output preserves the old current formula behind nine
+safe entries; repeated transfers can recover that saved value or leave
+it on the stack without a primitive DROP command. The intermediate
+logical rows need not be useful premises in the proof being compiled.
+Their exact stack positions, their nonfalsity tags, and the quantified
+entry's residue are sufficient. This distinction matters for compression:
+a command that is expensive as an isolated arithmetic routine can supply
+several structural operations through already shared source subtrees.
+The resulting proof words can be very long. No execution-time advantage
+is required for a consistency machine, whose specification asks only
+whether a finite halting run exists.
+
+\subsection{The strong theorem-block compiler}
+
+For every derivable code $X$, construct a finite block $\ctBlock_X$
+which, from \emph{every} $(t,w,0,0)$, either halts or returns exactly
+$(X,w,0,0)$. Arbitrary incoming $t,w$ need not be safe. This universal
+completeness contract is distinct from the safe-run soundness invariant.
+Truth uses DISCARD. The axiom cases are
+\begin{align*}
+ R_j:\quad&\ctDiscard;\ctAX(c;a,b);\ctS^{j+1};\ctH^{9-j}
+                    &&(1\leq j\leq7),\\
+ L(a,b,c,u):\quad&\ctDiscard;J(u);\ctAX(c;a-u,b);\ctS^9;\ctH
+                    &&(u\leq a),\\
+ G(a,b,c):\quad&\ctDiscard;\ctAX(c;a,b);\ctH^{10}
+                    &&(c\ne a,b).
+\end{align*}
+The indicated shifts select the desired row; the H repetitions preserve
+it and remove exactly the remaining generated entries, ending with
+saved zero in cache. The underlying stack is restored. All auxiliary
+MP calls are forced failures, so cache-return success does not affect
+these calculations.
+
+Generalization uses
+\[
+ \ctBlock_{\ctQ_iX}=
+ \ctBlock_X;\ctPush;J(i);\ctS;\ctAX(i;0,0);\ctS^{10}.
+\]
+After PUSH, setter, and transfer, the state is $(0,w,i,X)$. That
+transfer tests incoming cache zero, not the newly popped $X$. AX has
+zero gate and generates $\ctQ_iX$ immediately above saved zero;
+ten shifts return $(\ctQ_iX,w,0,0)$. This includes $i=0$ and
+$X=1$, subject only to permitted earlier halting.
+
+\paragraph{MP with a protected zero.}
+For premises $A$ and $\ctI(A,Y)$ define
+\begin{multline*}
+ \ctBlock_Y=\ctDiscard;\ctPush;
+ \ctBlock_{\ctI(A,Y)};\ctPush;
+ \ctBlock_A;\ctPush;\\
+ \ctS;\ctS;\ctMP(Y);\ctS.
+\end{multline*}
+If no earlier halt occurs, its exact state trace is
+\begin{align*}
+ (t,w,0,0)&\longmapsto(0,[0;w],0,0)\\
+ &\longmapsto(0,[\ctI(A,Y),0;w],0,0)\\
+ &\longmapsto(0,[A,\ctI(A,Y),0;w],0,0)\\
+ &\longmapsto(0,[\ctI(A,Y),0;w],0,A)\\
+ &\longmapsto(A,[0;w],0,\ctI(A,Y))\\
+ &\longmapsto(0,[0;w],0,Y)\\
+ &\longmapsto(Y,w,0,0).
+\end{align*}
+The second transfer may halt if $A=1$, and the final transfer halts
+if $Y=1$. Otherwise the displayed equations hold. Premise blocks
+preserve their entire incoming stacks, which protects the reserved zero
+until it compensates for the final pop. Without this reservation, that
+pop would destroy an arbitrary original stack head. Pairing identities
+validate the trace even at $A=Y=w=0$; no list freeness is assumed.
+
+Induction on a finite derivation proves the strong contract. A proof
+DAG can be expanded to a finite tree before compiling the major premise
+first. DNN transfers the contract unchanged: runs agree with the direct
+version until DNN possibly halts earlier. If $\ctBlock_1$ returns,
+append H to detect its current falsity. Thus $\ctBlock_1;\ctH$
+succeeds from every $(t,w,0,0)$.
+
+\subsection{Cofinal successful candidates and the source theorem}
+
+Let $F(fs,r)$ right-fold the command fields above residual $r$, and set
+\[
+ \operatorname{tail}([])=0,\qquad
+ \operatorname{tail}(k::L)=1+F(f(k),\operatorname{tail}(L)).
+\]
+A continuation first decrements its positive proof-list pointer;
+a fresh candidate decodes without that outer successor. Put
+$R=\operatorname{tail}(\ctBlock_1;\ctH)$. For each natural $z$,
+\[
+ N_z=\ctP\bigl(2,\ctP(z,\ctP(1,R))\bigr)
+\]
+starts with $\ctAX(0;1,z)$ in either selector order. This resets
+$d=h=0$ from every retained tuple. Its current and stack may be
+arbitrary, precisely as allowed by the strong contract. Since
+$N_z\geq z$, successful candidates are cofinal beyond every fixed
+finite startup cutoff.
+
+Every nonhalting positive continuation strictly decreases: after its
+predecessor operation, each field reader takes a Cantor right projection
+no larger than that predecessor. The natural-counter macros terminate.
+Hence each nonhalting candidate drains, and sequential enumeration
+reaches a successful $N_z$ unless it has already halted.
+
+\begin{theorem}[Source consistency calibration]
+For each of the eight literal transfer/cache programs, started with
+the unchanged enumerator scheduler and a safe initialized frame,
+halting is equivalent to $\ctD\vdash1$. Consequently, using
+\eqref{eq:ct-inherited}, its nonhalting is equivalent in ZFC to
+$\operatorname{Con}(\mathrm{ZFC})$.
+\end{theorem}
+
+\begin{proof}
+Safe-run soundness gives the forward implication. A native refutation
+gives the strong block and cofinally many successful candidates, proving
+the reverse implication. These finite syntactic transformations and
+natural-number arguments are formalizable in ZFC. A binary realization
+requires its own exact runtime and initializer proofs.
+\end{proof}
+
+\paragraph{Open parity-alarm experiment.}
+A separate 205-subtree, 5025-leaf source replaces emitted equality
+$E(a,b)=4\ctP(a,b)+3$ by $\ctI(E(a,b),1)$, interprets raw
+residue3 atoms as disequality, and tests cache parity with the four-leaf
+scanner $(\mathrm{CD}_5,((\mathrm{CD}_5,\mathrm{CC}_2),\mathrm{CH}))$.
+Constant assignments in an irreflexive model make both odd atom classes
+false. However, the false witness $1=\operatorname{Rel}(0,0)$ adds
+syntactic variable0 to the equality representation. Semantic validity
+alone does not establish support-sensitive vacuity or the exact
+formula/binder coupling in the gated bundle. A revised encoder and
+reverse calibration remain to be proved; this experiment is not covered
+by the theorem above.
+\endgroup

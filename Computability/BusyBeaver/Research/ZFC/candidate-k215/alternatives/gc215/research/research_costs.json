@@ -1,0 +1,508 @@
+{
+  "status": "RESEARCH_COST_LEDGER",
+  "repository_commit": "34b63b3b197b0a5f285a229d91bc163fcc42ab93",
+  "date": "2026-10-21",
+  "cost_definition": "DAG nodes include all distinct binary source subtrees, including leaves. These are source costs, not Turing-machine state counts. Leaf occurrences count the unshared AST.",
+  "scope": "Exact source constructions and recorded bounded experiments only. Delivered representative source costs are reproducible offline. Optimizer search histories are archived receipts, not rerun by verify.py, and unsuccessful searches are not lower bounds on machine size.",
+  "inputs": {
+    "primary_k215": {
+      "file": "research/sources/inputs/k215.sites.json",
+      "sha256": "17af207195179b2508bf91154cd00739374f8862207ca21b9a3cb9098aa6f5ba",
+      "metrics": {
+        "dag_nodes": 202,
+        "leaf_occurrences": 4751,
+        "maximum_depth": 47,
+        "maximum_zero_run": 6
+      },
+      "historical_id": "ProveIt/Computability/BusyBeaver/Research/ZFC/candidate-k215/sites215.json"
+    },
+    "direct_st215": {
+      "file": "reference/st215.sites.json",
+      "sha256": "212cf0ffde43c1cc22c183dd8bf0b3a699396f96c9942ee92a7cc372cd273ca9",
+      "metrics": {
+        "dag_nodes": 201,
+        "leaf_occurrences": 4732,
+        "maximum_depth": 44,
+        "maximum_zero_run": 6
+      },
+      "historical_id": "incoming/ST215_Direct_Transfer_2026-10-21/source/st215.sites.json"
+    },
+    "transfer_parent": {
+      "file": "research/sources/inputs/transfer-parent.sites.json",
+      "sha256": "05e7caa159d95cdf9ee254d313c44c52369ac91e52cbc23d54b15f0b64b95922",
+      "metrics": {
+        "dag_nodes": 201,
+        "leaf_occurrences": 4775,
+        "maximum_depth": 44,
+        "maximum_zero_run": 6
+      },
+      "historical_id": "incoming/ST215_Direct_Transfer_2026-10-21/inputs/transfer-parent.sites.json"
+    },
+    "gen_c": {
+      "file": "source/gc215.sites.json",
+      "sha256": "3b4e8203227f4be6d868ffdfb8d1a6311f5ac9a647dadf8386eb8f0de509ce57",
+      "metrics": {
+        "dag_nodes": 202,
+        "leaf_occurrences": 4732,
+        "maximum_depth": 44,
+        "maximum_zero_run": 6
+      },
+      "historical_id": "st215.sites-gen3.sites.json"
+    }
+  },
+  "experiments": [
+    {
+      "id": "gen_c",
+      "title": "Use tag register C as GEN binder",
+      "input": "direct_st215",
+      "input_sha256": "212cf0ffde43c1cc22c183dd8bf0b3a699396f96c9942ee92a7cc372cd273ca9",
+      "output": {
+        "file": "source/gc215.sites.json",
+        "sha256": "3b4e8203227f4be6d868ffdfb8d1a6311f5ac9a647dadf8386eb8f0de509ce57",
+        "metrics": {
+          "dag_nodes": 202,
+          "leaf_occurrences": 4732,
+          "maximum_depth": 44,
+          "maximum_zero_run": 6
+        },
+        "historical_id": "st215.sites-gen3.sites.json"
+      },
+      "status": "SELECTED_215_STATE_CANDIDATE",
+      "scope": "Exactly two leaf operands change: ordinal44 CD4->CD3 and ordinal49 CI4->CI3. Original guarded-CFG targets and every source address are unchanged. The extra source DAG node is absorbed by a conditional physical alias, not by claiming DAG count equals state count.",
+      "binary_table": {
+        "file": "machine/gc215.native.tm",
+        "sha256": "a5d8dfeb92a6ae843692c65b5eaf69b845b08b48d65dc011ba8a457e4faec67d",
+        "states": 215,
+        "runtime_cases": 6151,
+        "runtime_rows": 430,
+        "symbolic_rules": 1617679,
+        "blank_steps": 68710,
+        "historical_id": "../machine_work/GEN_C215.native.tm"
+      },
+      "evidence": [
+        "evidence/source.json",
+        "evidence/runtime.json",
+        "evidence/bootstrap.json"
+      ]
+    },
+    {
+      "id": "top_guard",
+      "title": "Move the transfer halt test to incoming T; fuse test with clearing T",
+      "input": "direct_st215",
+      "input_sha256": "212cf0ffde43c1cc22c183dd8bf0b3a699396f96c9942ee92a7cc372cd273ca9",
+      "output": {
+        "file": "research/sources/top23-final.sites.json",
+        "sha256": "3bfc8091e3b36c76a7d45f0d0e61bf23aab80b89dac12f2b327541e4b696c5a3",
+        "metrics": {
+          "dag_nodes": 203,
+          "leaf_occurrences": 4720,
+          "maximum_depth": 44,
+          "maximum_zero_run": 6
+        },
+        "historical_id": "top23-final.sites.json"
+      },
+      "status": "SOURCE_PRICED_NO_215_ALLOCATION",
+      "scope": "23-leaf transfer macro, versus35 in the incoming ST source. The tested narrow allocation was short two roles; optional MILP timed out without an incumbent. This is not a state lower bound.",
+      "macro_leaves": 23,
+      "evidence": [
+        "research/sources/receipts/alloc_top23_final__allocation.json"
+      ]
+    },
+    {
+      "id": "top_guard_copyclear",
+      "title": "Top guard with the existing H-copy loop followed by H-clear",
+      "input": "direct_st215",
+      "input_sha256": "212cf0ffde43c1cc22c183dd8bf0b3a699396f96c9942ee92a7cc372cd273ca9",
+      "output": {
+        "file": "research/sources/top-copyclear.sites.json",
+        "sha256": "931910fc17df97d0f495d280c71e78447a08673b5369f33a6225719d6d094f91",
+        "metrics": {
+          "dag_nodes": 203,
+          "leaf_occurrences": 4726,
+          "maximum_depth": 44,
+          "maximum_zero_run": 6
+        },
+        "historical_id": "top-copyclear.sites.json"
+      },
+      "status": "SOURCE_PRICED_NO_215_ALLOCATION",
+      "scope": "Same203-node DAG as the shorter transfer. The machine-search agent found the narrow allocation short two roles.",
+      "macro_leaves": 29
+    },
+    {
+      "id": "fused_cache_guard",
+      "title": "Consume H while checking H=1, then pop W into H",
+      "input": "direct_st215",
+      "input_sha256": "212cf0ffde43c1cc22c183dd8bf0b3a699396f96c9942ee92a7cc372cd273ca9",
+      "output": {
+        "file": "research/sources/fused25-simple.sites.json",
+        "sha256": "5e664a590ffa319d0785590975081960832c1b8d70c3524b5d906b9f9bd278d4",
+        "metrics": {
+          "dag_nodes": 205,
+          "leaf_occurrences": 4722,
+          "maximum_depth": 44,
+          "maximum_zero_run": 6
+        },
+        "historical_id": "fused25-simple.sites.json"
+      },
+      "status": "SOURCE_PRICED_NO_215_ALLOCATION",
+      "scope": "25-leaf macro preserves the original direct transfer contract for every natural input. Twelve tested equivalent layouts all had205 DAG nodes; the subsequent bounded beam found no smaller source.",
+      "macro_leaves": 25,
+      "evidence": [
+        "research/sources/receipts/beam_fused25__result.json"
+      ]
+    },
+    {
+      "id": "guardless_transfer",
+      "title": "Remove the transfer halt test",
+      "input": "direct_st215",
+      "input_sha256": "212cf0ffde43c1cc22c183dd8bf0b3a699396f96c9942ee92a7cc372cd273ca9",
+      "output": {
+        "file": "research/sources/unguarded19-simple0.sites.json",
+        "sha256": "aebc15d60983f0fbbe83943aa280527ccd61ad0cb4e7d8ae4d430ef6ff24674c",
+        "metrics": {
+          "dag_nodes": 198,
+          "leaf_occurrences": 4716,
+          "maximum_depth": 44,
+          "maximum_zero_run": 6
+        },
+        "historical_id": "unguarded19-simple0.sites.json"
+      },
+      "status": "INVALID_AS_STANDALONE_CANDIDATE",
+      "scope": "The198-node source has no halt instruction at all. It is only a base for moving the test into another command; it cannot establish the requested halting equivalence.",
+      "macro_leaves": 19
+    },
+    {
+      "id": "ax_entry_guard",
+      "title": "Guard incoming T=1 at AX entry, with guardless transfer",
+      "input": "direct_st215",
+      "input_sha256": "212cf0ffde43c1cc22c183dd8bf0b3a699396f96c9942ee92a7cc372cd273ca9",
+      "output": {
+        "file": "research/sources/axguard-110100100.sites.json",
+        "sha256": "6b385dd8bd7b08a71ca02d5f9f32563321002e61fd92d84bad0bc7126d4a6665",
+        "metrics": {
+          "dag_nodes": 205,
+          "leaf_occurrences": 4722,
+          "maximum_depth": 44,
+          "maximum_zero_run": 6
+        },
+        "historical_id": "axguard-110100100.sites.json"
+      },
+      "status": "ABSTRACTLY_CALIBRATED_SOURCE_PRICED",
+      "scope": "Best of the three recorded guard placements was205 nodes; the other two were206 and207. No binary candidate was accepted."
+    },
+    {
+      "id": "fused_gen",
+      "title": "Fuse GEN temporary-stack traffic into direct register copies and pairing",
+      "input": "gen_c",
+      "input_sha256": "3b4e8203227f4be6d868ffdfb8d1a6311f5ac9a647dadf8386eb8f0de509ce57",
+      "output": {
+        "file": "research/sources/fused-gen-best.sites.json",
+        "sha256": "a7094ffdc5650b0bf59e744fa2eecfe653b79eca9f5d49e18e9fea53a06dd5d0",
+        "metrics": {
+          "dag_nodes": 206,
+          "leaf_occurrences": 4702,
+          "maximum_depth": 44,
+          "maximum_zero_run": 6
+        },
+        "historical_id": "fused-gen-best.sites.json"
+      },
+      "status": "SOURCE_PRICED_NO_215_ALLOCATION",
+      "scope": "Four scratch-register schedules, four increment orders, and five Catalan associations:80 explicit recipes. Best within this finite family is206 nodes. This does not exhaust all fused GEN implementations.",
+      "macro_leaves_before": 81,
+      "macro_leaves_after": 51,
+      "recipes": 80,
+      "evidence": [
+        "research/sources/receipts/fused-gen-pricing.json"
+      ],
+      "historical_generator_id": "fused_gen_price.py",
+      "generator_scope": "Historical research script identifier; generator not included. The exact resulting source and all cost metrics are included and independently auditable."
+    },
+    {
+      "id": "destructive_gen",
+      "title": "Consume H during GEN and let later B field start at zero",
+      "input": "gen_c",
+      "input_sha256": "3b4e8203227f4be6d868ffdfb8d1a6311f5ac9a647dadf8386eb8f0de509ce57",
+      "output": {
+        "file": "research/sources/genC-consumeH.sites.json",
+        "sha256": "c3d32127af909b2feb349cb0d978dc849195bfd3165695b59aeff14498441756",
+        "metrics": {
+          "dag_nodes": 205,
+          "leaf_occurrences": 4728,
+          "maximum_depth": 44,
+          "maximum_zero_run": 6
+        },
+        "historical_id": "genC-consumeH.sites.json"
+      },
+      "status": "SOURCE_PRICE_ONLY",
+      "scope": "Saves four leaves but costs205 DAG nodes. This changes incidental AX row parameters; no whole-command calibration or binary runtime was completed for this probe."
+    },
+    {
+      "id": "mirror_formula_codec",
+      "title": "Reverse Cantor arguments in all formula constructors while retaining stack coding",
+      "input": "direct_st215",
+      "input_sha256": "212cf0ffde43c1cc22c183dd8bf0b3a699396f96c9942ee92a7cc372cd273ca9",
+      "output": {
+        "file": "research/sources/mirrored-formulas.sites.json",
+        "sha256": "a54ac622ffc439375ebdb4e39ac77f41d4362c4cfde60b444a57932294bf6c0b",
+        "metrics": {
+          "dag_nodes": 208,
+          "leaf_occurrences": 4732,
+          "maximum_depth": 44,
+          "maximum_zero_run": 6
+        },
+        "historical_id": "mirrored-formulas.sites.json"
+      },
+      "status": "SOURCE_PRICED_ABSTRACT_CODEC_ARGUMENT",
+      "scope": "Only the81 formula pair sites change; stack pairing stays unchanged. The tested literal source costs208 nodes. A primitive-recursive code-bijection approach was explored; no215-state allocation or all-natural runtime was produced."
+    },
+    {
+      "id": "restricted_rho6",
+      "title": "Emit rho6(U,A) early, with U<=A, while reusing the consumed cache register",
+      "input": "direct_st215",
+      "input_sha256": "212cf0ffde43c1cc22c183dd8bf0b3a699396f96c9942ee92a7cc372cd273ca9",
+      "output": {
+        "file": "research/sources/restricted-rho6-unswapped-0.sites.json",
+        "sha256": "753b24b69d311eb0a057320cb0f6e64c092809a253882bfdabf81ab3db7725f9",
+        "metrics": {
+          "dag_nodes": 217,
+          "leaf_occurrences": 4731,
+          "maximum_depth": 37,
+          "maximum_zero_run": 8
+        },
+        "historical_id": "restricted-rho6-unswapped-0.sites.json"
+      },
+      "status": "LOGICAL_RESTRICTION_PROVED_SOURCE_PRICE_ONLY",
+      "scope": "The padding theorem recovers arbitrary rho6 from the restricted family. The source probe consumes H after GEN, copies U into H, reads x into H, emits rho6(U,U+x), consumes U while building L, and reads y into D. Later rows remain in their original physical orientation. This tested layout has maximum zero-run8 and is not compatible with the current scanner without further work.",
+      "logical_proof_owner": "formalism",
+      "companion_global_swap": {
+        "file": "research/sources/restricted-rho6-0.sites.json",
+        "sha256": "1dc5b8379d862f017c4f1baaf67f30439881e8c489de248bf8279d2a0dda92e3",
+        "metrics": {
+          "dag_nodes": 224,
+          "leaf_occurrences": 4731,
+          "maximum_depth": 37,
+          "maximum_zero_run": 8
+        },
+        "historical_id": "restricted-rho6-0.sites.json"
+      },
+      "historical_generator_id": "build_restricted_rho6_unswapped.py",
+      "generator_scope": "Historical research script identifier; generator not included. The exact resulting source and all cost metrics are included and independently auditable."
+    },
+    {
+      "id": "joint_row_permutations",
+      "title": "Combine direct transfer with known joint rho2/rho4 parameter permutation",
+      "input": "direct_st215",
+      "input_sha256": "212cf0ffde43c1cc22c183dd8bf0b3a699396f96c9942ee92a7cc372cd273ca9",
+      "output": {
+        "file": "research/sources/ST_joint24.sites.json",
+        "sha256": "df5ea44c1532060c8ead071f5551b467857c531016272189b64cdf4e8a6fabf6",
+        "metrics": {
+          "dag_nodes": 201,
+          "leaf_occurrences": 4732,
+          "maximum_depth": 44,
+          "maximum_zero_run": 6
+        },
+        "historical_id": "ST_joint24.sites.json"
+      },
+      "status": "SOURCE_PRICED_NO_NEW_CANDIDATE",
+      "scope": "The unchanged K215 row-permutation census already exists in the incoming corpus. This combination retained201 DAG nodes but narrow allocation failed; optional allocation timed out. No novelty claim is made for the permutation itself.",
+      "companion": {
+        "file": "research/sources/ST_joint246.sites.json",
+        "sha256": "2d9643da973af13c3210bb9c9d22159ec2f76c470ed815173f3eabbec458b217",
+        "metrics": {
+          "dag_nodes": 201,
+          "leaf_occurrences": 4732,
+          "maximum_depth": 44,
+          "maximum_zero_run": 6
+        },
+        "historical_id": "ST_joint246.sites.json"
+      },
+      "evidence": [
+        "research/sources/receipts/alloc_ST24__allocation.json",
+        "research/sources/receipts/alloc_ST24_optional__result.json"
+      ]
+    },
+    {
+      "id": "rotating_pop",
+      "title": "Use NIP;DROP;NIP as the sole stack primitive",
+      "input": "transfer_parent",
+      "input_sha256": "05e7caa159d95cdf9ee254d313c44c52369ac91e52cbc23d54b15f0b64b95922",
+      "output": {
+        "file": "research/sources/rotate.sites.json",
+        "sha256": "164e561be3e482263c75338c2f4b2f84b574b4faf1970c61a680251e92c91334",
+        "metrics": {
+          "dag_nodes": 201,
+          "leaf_occurrences": 4775,
+          "maximum_depth": 44,
+          "maximum_zero_run": 6
+        },
+        "historical_id": "rotate.sites.json"
+      },
+      "status": "PRIOR_COMPARATOR_UNCALIBRATED",
+      "scope": "The215-state table was found byte-identical to an incoming comparison artifact. Although universal primitive runtime and startup were checked, a top-preserving pop needed by the strong compiler was not obtained. This is not a new calibrated candidate.",
+      "binary_sha256": "48ab9f08d14c13864f979fb6efae95183b5de587e36a9cb11418a710cda4750e",
+      "evidence": [
+        "research/sources/receipts/rotate_runtime1__runtime.json",
+        "research/sources/receipts/rotate_bootstrap__bootstrap.json"
+      ]
+    },
+    {
+      "id": "theorem_binder",
+      "title": "Use the incoming theorem as GEN binder by deleting the first parameter push",
+      "input": "primary_k215",
+      "input_sha256": "17af207195179b2508bf91154cd00739374f8862207ca21b9a3cb9098aa6f5ba",
+      "output": {
+        "file": "research/sources/gen-theorem-binder.sites.json",
+        "sha256": "69c8865743bbeaaee6795eed7714662eb7a2cb070287685938ee60e1b36b0d92",
+        "metrics": {
+          "dag_nodes": 203,
+          "leaf_occurrences": 4725,
+          "maximum_depth": 47,
+          "maximum_zero_run": 6
+        },
+        "historical_id": "gen-theorem-binder.sites.json"
+      },
+      "status": "UNCALIBRATED_SOURCE_PROBE",
+      "scope": "203 nodes. This also loses the saved old top and restricts GEN binders to theorem codes; no adequate calibration was established."
+    }
+  ],
+  "beam_searches": [
+    {
+      "input_sha256": "17af207195179b2508bf91154cd00739374f8862207ca21b9a3cb9098aa6f5ba",
+      "best_dag_nodes": 202,
+      "trials": 168943,
+      "unique_roots": 164699,
+      "completed_rounds": 28,
+      "affine_commutations": true,
+      "seed": 219206,
+      "status": "BOUNDED_BEAM_NO_IMPROVEMENT",
+      "scope": "Seeded finite-width source reassociation/commutation search; not exhaustive, and not a minimality or impossibility result.",
+      "historical_directory_id": "beam215",
+      "receipt": "research/sources/receipts/beam215__result.json"
+    },
+    {
+      "input_sha256": "212cf0ffde43c1cc22c183dd8bf0b3a699396f96c9942ee92a7cc372cd273ca9",
+      "best_dag_nodes": 201,
+      "trials": 183884,
+      "unique_roots": 179360,
+      "completed_rounds": 30,
+      "affine_commutations": true,
+      "seed": 219206,
+      "status": "BOUNDED_BEAM_NO_IMPROVEMENT",
+      "scope": "Seeded finite-width source reassociation/commutation search; not exhaustive, and not a minimality or impossibility result.",
+      "historical_directory_id": "beamST215",
+      "receipt": "research/sources/receipts/beamST215__result.json"
+    },
+    {
+      "input_sha256": "3b4e8203227f4be6d868ffdfb8d1a6311f5ac9a647dadf8386eb8f0de509ce57",
+      "best_dag_nodes": 202,
+      "trials": 181374,
+      "unique_roots": 178720,
+      "completed_rounds": 30,
+      "affine_commutations": false,
+      "seed": 219206,
+      "status": "BOUNDED_BEAM_NO_IMPROVEMENT",
+      "scope": "Seeded finite-width source reassociation/commutation search; not exhaustive, and not a minimality or impossibility result.",
+      "historical_directory_id": "beam_genC",
+      "receipt": "research/sources/receipts/beam_genC__result.json"
+    },
+    {
+      "input_sha256": "5e664a590ffa319d0785590975081960832c1b8d70c3524b5d906b9f9bd278d4",
+      "best_dag_nodes": 205,
+      "trials": 179641,
+      "unique_roots": 177004,
+      "completed_rounds": 30,
+      "affine_commutations": false,
+      "seed": 219206,
+      "status": "BOUNDED_BEAM_NO_IMPROVEMENT",
+      "scope": "Seeded finite-width source reassociation/commutation search; not exhaustive, and not a minimality or impossibility result.",
+      "historical_directory_id": "beam_fused25",
+      "receipt": "research/sources/receipts/beam_fused25__result.json"
+    }
+  ],
+  "gen_c_row_permutation_census": {
+    "input_sha256": "3b4e8203227f4be6d868ffdfb8d1a6311f5ac9a647dadf8386eb8f0de509ce57",
+    "recipes": 279936,
+    "best_dag_nodes": 202,
+    "minimizers": 4,
+    "scope": "Exhaustive only over the6^7 independent row-parameter permutations at the exact existing source associations. This is the modified GEN_C seed, not a repeat of the unchanged-seed census.",
+    "evidence": "research/sources/receipts/genC_combo__row_combinations_results.json"
+  },
+  "allocation_caution": "The first GEN_C216 synthesis omitted protection of engine row134/0 and failed its very first universal primitive case. It is rejected. Adding134/0 protection produced parent SHA f0b7ae5e41fb6445afd1bf5e1618f6dd059c1dacbce47d3f81086ef69da33629, which passed6151 cases/all432 rows. Only the repaired parent underlies selected215.",
+  "receipt_files": [
+    {
+      "file": "research/sources/receipts/alloc_top23_final__allocation.json",
+      "sha256": "e06b4026a4a68f068db8e5e4c9253d629e4d02c66513e72aea7378e7d6ee4273",
+      "historical_id": "alloc_top23_final/allocation.json",
+      "scope": "Verbatim historical receipt; its internal workspace paths are provenance identifiers, not package-relative file references. Optimizer searches are not rerun by the main verifier."
+    },
+    {
+      "file": "research/sources/receipts/beam_fused25__result.json",
+      "sha256": "c269a9676469ab6c8ca30db9da30ce73846e3fd1692edc4e6be55690c58986fa",
+      "historical_id": "beam_fused25/result.json",
+      "scope": "Verbatim historical receipt; its internal workspace paths are provenance identifiers, not package-relative file references. Optimizer searches are not rerun by the main verifier."
+    },
+    {
+      "file": "research/sources/receipts/fused-gen-pricing.json",
+      "sha256": "8f2b006aac9dcd4e0058437bf7ab2ef3bce651217d56629e2f2d4c63c5c1844e",
+      "historical_id": "fused-gen-pricing.json",
+      "scope": "Verbatim historical receipt; its internal workspace paths are provenance identifiers, not package-relative file references. Optimizer searches are not rerun by the main verifier."
+    },
+    {
+      "file": "research/sources/receipts/alloc_ST24__allocation.json",
+      "sha256": "92a0a243a3e743ea1d35a6ac53a41a8a43500b4bd4b28dba3227f6c5e5524fc0",
+      "historical_id": "alloc_ST24/allocation.json",
+      "scope": "Verbatim historical receipt; its internal workspace paths are provenance identifiers, not package-relative file references. Optimizer searches are not rerun by the main verifier."
+    },
+    {
+      "file": "research/sources/receipts/alloc_ST24_optional__result.json",
+      "sha256": "1b911b2ceedf5f380b051fff5a03e37bb4798f342a39f82fb172009662af1d16",
+      "historical_id": "alloc_ST24_optional/result.json",
+      "scope": "Verbatim historical receipt; its internal workspace paths are provenance identifiers, not package-relative file references. Optimizer searches are not rerun by the main verifier."
+    },
+    {
+      "file": "research/sources/receipts/rotate_runtime1__runtime.json",
+      "sha256": "0c958149a7568983079f2906e2c06319b16131a784324531d6ee1c8991bb8416",
+      "historical_id": "rotate_runtime1/runtime.json",
+      "scope": "Verbatim historical receipt; its internal workspace paths are provenance identifiers, not package-relative file references. Optimizer searches are not rerun by the main verifier."
+    },
+    {
+      "file": "research/sources/receipts/rotate_bootstrap__bootstrap.json",
+      "sha256": "19c2873741dcb2a9b67604e759a7fea8c7e93b4a1ea0a41fde8969d516205836",
+      "historical_id": "rotate_bootstrap/bootstrap.json",
+      "scope": "Verbatim historical receipt; its internal workspace paths are provenance identifiers, not package-relative file references. Optimizer searches are not rerun by the main verifier."
+    },
+    {
+      "file": "research/sources/receipts/beam215__result.json",
+      "sha256": "dc33b4b34ac2ffbeceb80a579a5053f5bc5826a0cfc3428d549998fd4ff48137",
+      "historical_id": "beam215/result.json",
+      "scope": "Verbatim historical receipt; its internal workspace paths are provenance identifiers, not package-relative file references. Optimizer searches are not rerun by the main verifier."
+    },
+    {
+      "file": "research/sources/receipts/beamST215__result.json",
+      "sha256": "a444fb4560ad67b283679c4bdddf7eccf259c1c6d3df803dbc02cbc54e6750ed",
+      "historical_id": "beamST215/result.json",
+      "scope": "Verbatim historical receipt; its internal workspace paths are provenance identifiers, not package-relative file references. Optimizer searches are not rerun by the main verifier."
+    },
+    {
+      "file": "research/sources/receipts/beam_genC__result.json",
+      "sha256": "0f1be31035f519f89d15133dedb27e87135f3e3be847357f30b635a22be187a0",
+      "historical_id": "beam_genC/result.json",
+      "scope": "Verbatim historical receipt; its internal workspace paths are provenance identifiers, not package-relative file references. Optimizer searches are not rerun by the main verifier."
+    },
+    {
+      "file": "research/sources/receipts/genC_combo__row_combinations_results.json",
+      "sha256": "b0f5805bf2f3ca26d7f26cd1c0475160f2acab94bfcea9810c29b97766072955",
+      "historical_id": "genC_combo/row_combinations_results.json",
+      "scope": "Verbatim historical receipt; its internal workspace paths are provenance identifiers, not package-relative file references. Optimizer searches are not rerun by the main verifier."
+    },
+    {
+      "file": "research/sources/receipts/genC216safe_runtime__runtime.json",
+      "sha256": "30ef4270fb2cd75e62c391f2dce7e95881c320efb0b134b0601e9e982e8795f5",
+      "historical_id": "genC216safe_runtime/runtime.json",
+      "scope": "Verbatim historical receipt; its internal workspace paths are provenance identifiers, not package-relative file references. Optimizer searches are not rerun by the main verifier."
+    }
+  ],
+  "path_convention": "All file/evidence/receipt paths are relative to the extracted archive root. Fields explicitly named historical_id, historical_directory_id, or historical_generator_id identify the original research workspace and are not archive paths. Verbatim receipts retain their original internal metadata.",
+  "cost_audit": "python3 research/sources/audit_costs.py"
+}

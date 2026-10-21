@@ -1,0 +1,169 @@
+\section{A source scheduler with a shared refill continuation}
+\label{sec:refill-scheduler}
+
+This section proves the semantic change used by the proposed state-13
+elimination. It concerns the register source alone. The exact binary
+allocation, quantified runtime checks, and blank-tape entry are separate
+obligations. The logical calculus and every command body remain unchanged.
+
+\subsection{The two prefixes}
+
+Use the inherited logical register order
+\[
+ (N,T,W,A,D,H,X,Y,L)=(R_0,R_1,\ldots,R_8).
+\]
+Here $N$ is the next-candidate counter, $L$ is the remaining proof-list
+code, $T,W,H$ hold the current theorem, theorem stack, and theorem cache,
+and $X,Y$ are scratch registers. A normal command boundary has
+$A=X=Y=0$. The rest of this section assumes a genuine source-root entry
+with these scratch conditions.
+
+Let a binary pair denote source composition, and put
+\[
+ G=(\mathrm{CD}_8,\mathrm{CB}_1),\qquad
+ F=(\mathrm{CD}_0,(\mathrm{CI}_8,(\mathrm{CI}_6,\mathrm{CC}_3))),
+ \qquad H_0=(\mathrm{CD}_6,\mathrm{CC}_2).
+\]
+Write $B$ for the entire remaining source, beginning with the first
+Cantor-unpairing reader. The accepted source has outer expression
+\begin{equation}
+ ((G,(F,(\mathrm{CI}_0,H_0))),B).
+ \label{eq:old-refill-source}
+\end{equation}
+The proposed source has outer expression
+\begin{equation}
+ ((G,(F,(\mathrm{CI}_0,(H_0,\mathrm{CB}_1)))),B).
+ \label{eq:new-refill-source}
+\end{equation}
+The added final break returns to the root. The positive branch of $G$
+still skips the entire refill prefix and enters $B$. These control claims
+must be checked from the literal source addresses; they are not inferred
+from associativity of arbitrary open source subtrees.
+
+\begin{lemma}[Exact refill effect]
+\label{lem:refill-effect}
+At a root with $X=0$, the accepted prefix acts as follows:
+\[
+ \begin{array}{c|c|c}
+ &\text{counter at entry to }B&\text{list at entry to }B\\\hline
+ L>0&N&L-1\\
+ L=0&N+1&N.
+ \end{array}
+\]
+The proposed prefix has the same positive-list case. If $L=0$ and
+$N=n>0$, it enters $B$ with counter $n+1$ and list $n-1$.
+If $L=N=0$, it enters $B$ with counter $2$ and list $0$.
+Every case terminates, restores $X=0$, and leaves all other logical
+registers unchanged.
+\end{lemma}
+
+\begin{proof}
+A positive list takes one decrement in $G$ and its following break
+enters $B$. A zero list skips this break and enters $F$. Each iteration
+of $F$ decreases $N$ once and increases both $L$ and $X$ once. Since
+initially $L=X=0$, after exactly $n$ iterations the values are
+$(N,L,X)=(0,n,n)$. The following increment sets $N=1$.
+The $H_0$ continuation decreases $X$ and returns to that increment,
+so it terminates with $(N,L,X)=(n+1,n,0)$.
+This is the accepted prefix's entry to $B$. The added prefix reaches
+$B$ after exactly $7n+7$ source primitives when $n>0$, after $19$
+when $n=0$, and after $2$ when the incoming list is positive.
+
+In the proposed prefix, the added break instead returns to $G$.
+If $n>0$, $G$ decreases $L=n$ to $n-1$ and enters $B$, giving the
+claimed result. If $n=0$, the state at this extra return is
+$(N,L,X)=(1,0,0)$. One more refill gives $(2,1,0)$; the next visit to
+$G$ decreases the list to zero and enters $B$. Thus even the exceptional
+zero-counter case has a finite prefix and the asserted exact values.
+\end{proof}
+
+\subsection{Simulation and consistency calibration}
+
+\begin{theorem}[Refill-continuation calibration]
+\label{thm:refill-calibration}
+The proposed source, from any genuine root satisfying the inherited
+scratch conditions and theorem-valued $T,H,W$, halts if and only if
+native falsity $1$ is derivable in the accepted dominated calculus.
+Consequently its nonhalting is equivalent, in ordinary mathematics
+formalizable in ZFC, to $\operatorname{Con}(\mathrm{ZFC})$.
+\end{theorem}
+
+\begin{proof}
+All command bodies, field readers, their returns, and the sole halting
+instruction are unchanged. The prefix only modifies $N,L,X$, and
+restores the scratch condition. Therefore the inherited all-natural
+soundness invariant for $T,H,W$ is preserved. A halt still tests a
+cached theorem equal to $1$, proving the soundness direction.
+
+For completeness, first consider a positive initial list. It executes
+exactly the inherited command decoder: the leading decrement changes
+$L=v>0$ to $v-1$, and every field reader returns a tail no greater than
+its input. Each nonhalting command therefore strictly decreases a
+positive incoming list. Its arithmetic macros terminate and restore
+the scratch conditions. The initial list consequently drains after
+finitely many commands unless it halts earlier.
+
+Now suppose a fresh refill starts with $L=0$ and $N=n>0$.
+Lemma~\ref{lem:refill-effect} says its first raw candidate is $n-1$.
+The counter is $n+1$ while that candidate is being executed, and is
+preserved by every command body. When the list next drains, the new
+candidate is $(n+1)-1=n$. Repeating gives the consecutive candidates
+\[
+ n-1,n,n+1,n+2,\ldots.
+\]
+When the initial refill has $n=0$, the lemma gives first candidate zero
+with counter $2$; the subsequent candidates are $1,2,3,\ldots$.
+Thus every case enumerates all candidates above a finite cutoff and
+fully drains each before advancing.
+
+The inherited strong proof compiler supplies, for any derivation of
+$1$, a finite command word which halts from every incoming retained
+tuple after a reset prefix. If $R$ is the encoded fixed suffix, its
+successful first-candidate codes are
+\[
+ N_Y=P\bigl(3,P(Y,P(1,R))\bigr)\geq Y\qquad(Y\in\mathbb N).
+\]
+Choose $Y$ above the finite cutoff. Earlier candidates terminate or
+halt, so the proposed scheduler reaches a successful one unless it has
+already halted. This proves completeness.
+
+Equivalently, there is a stuttering simulation at command boundaries:
+relate an accepted-source counter $N_o$ to the proposed-source counter
+$N_n=N_o+1$, with identical other registers and list. The positive-list
+case is identical. In the zero-list case both enter $B$ with list $N_o$;
+the counter difference remains one after the proposed extra root visit.
+The one exceptional proposed start $N_n=L=0$ is handled by the finite
+prefix calculated in the lemma. The candidate-by-candidate argument
+above also covers arbitrary finite initial partial lists directly.
+\end{proof}
+
+\paragraph{Exact inherited premises.}
+The command equations, strict draining argument, strong proof compiler,
+and cofinal family are the results of
+\texttt{candidate-k216/alternatives/permuted/proof.md}, transported to
+K215 by the two independent ordinal control-graph checks in
+\texttt{candidate-k215/proof.md}. These are repository paths relative to
+\texttt{Computability/BusyBeaver/Research/ZFC/}, pinned at commit
+\texttt{2762b8a183830b1f5a30cf059ffb4d92e77cddde}. This section changes
+only the refill schedule and supplies its new ordinary proof; it is not
+a newly compiled Lean or Rocq artifact.
+
+\subsection{A second calibrated scheduler, if an increment is cheaper}
+
+For possible future allocation, replacing the added break by an extra
+$\mathrm{CI}_0$ leaves positive-list execution unchanged and advances the
+next-candidate counter by two on each fresh refill. Both parities have
+cofinally many successful codes in the inherited compiler family.
+Indeed, put $K=P(1,R)$ and $v=P(Y,K)$. Then
+\[
+ d=P(Y+4,K)-P(Y,K)=4(Y+K)+10=2\bigl(2(Y+K)+5\bigr),
+\]
+while $P(3,v)=(v^2+9v+12)/2$. Hence
+\[
+ N_{Y+4}-N_Y=\frac{d(2v+d+9)}2
+\]
+is odd. Replacing $4$ by $8$ makes the corresponding difference even.
+Thus $Y$ and $Y+4$ produce opposite parities, and increasing either by
+multiples of $8$ gives an unbounded family of the same parity. This proves
+completeness for either fixed stride-two progression. No state reduction
+is asserted for this alternative.

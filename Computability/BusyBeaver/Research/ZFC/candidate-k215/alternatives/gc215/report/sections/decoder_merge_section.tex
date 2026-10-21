@@ -1,0 +1,68 @@
+\section{The conditional fold that pays for the new source node}
+
+The recompiled source using the $C$ parameter in the generalization row has
+202 distinct source subtrees. A corrected literal allocation first produces
+216 working states. The required return to 215 states uses a new conditional
+decoder fold; no existing conditional-marker helper is copied into a spare
+state. An already present decoder chain supplies the required dispatch.
+
+Let $T$ denote the corrected 216-state table and $N$ the resulting 215-state
+table. Define $\phi(310)=129$ and $\phi(q)=q$ otherwise. The construction deletes
+the two rows of state 310, redirects every target 310 to 129, and replaces
+the remaining row $129/1$ by $1L216$. All other rows are retained, subject
+only to the target redirection. In this table the sole redirected incoming
+row is $312/0$.
+
+\begin{center}
+\begin{tabular}{c|cc}
+Original state & Read 0 & Read 1\\\hline
+129 & $0R154$ & $1R189$\\
+310 & $0R154$ & $1R86$
+\end{tabular}
+\end{center}
+
+The complete incoming-row census is particularly simple. State 129 has only
+the incoming row $211/1=1R129$, and state 310 has only the incoming row
+$312/0=0R310$. Neither state is the initial control. Therefore, on every
+execution starting in control 0, an arrival at old state 129 has a one
+immediately to its left, while an arrival at old state 310 has a zero there.
+This statement holds on arbitrary initial binary tapes.
+
+Both old roles agree on read 0. On read 1, the new row moves left to state
+216 and reads this origin marker. For marker one, its execution is
+\[
+ 129 \xrightarrow{1L}216\xrightarrow{1R}178\xrightarrow{1R}189.
+\]
+For marker zero, the execution is
+\[
+ 129\xrightarrow{1L}216\xrightarrow{0R}157
+     \xrightarrow{1L}148\xrightarrow{0R}186\xrightarrow{1R}86.
+\]
+Every write reproduces the symbol already present. Both paths end one cell
+to the right of the original head, in exactly the control required by the
+corresponding old role. No exterior tape cell is read. Thus one old step
+is simulated by respectively three or five new steps on read 1, and by one
+new step on read 0.
+
+At every other old state, one step commutes with $\phi$. Induction therefore
+matches the complete old computation from control 0 with the new computation
+at a sequence of boundaries having identical tapes and heads and controls
+related by $\phi$. Each matching block has positive length at most five.
+Consequently $T$ and $N$ halt together, on every initial tape from control 0.
+The claim is not equivalence from arbitrary old control 310 with an arbitrary
+unconstrained left marker.
+
+The independent checker reads the literal tables, verifies the complete
+incoming census and all four local blocks, checks all redirected rows, and
+checks that all 215 surviving working states remain graph reachable. It also
+produces a dense table with working controls $0,\ldots,214$ and separate halt
+control 215, and verifies the exact state-label bijection. The native table
+uses separate halt control 254. Universal primitive simulation and the blank
+bootstrap are independently checked obligations; the finite fold proof alone
+does not establish their premises.
+
+One allocator repair is essential to this construction. Row $134/0=0R17$
+must be protected because the existing engine can enter it through
+$11/0=0L26$ and $26/0=0R134$. A prefix-only decoder audit does not detect a
+change to that engine use. The uncorrected 216-state allocation failed its
+first arbitrary-natural primitive contract, and is not a candidate.

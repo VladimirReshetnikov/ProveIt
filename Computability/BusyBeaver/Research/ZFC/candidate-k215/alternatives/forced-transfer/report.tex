@@ -1,0 +1,315 @@
+\pdfoutput=1
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=23mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs,array,enumitem,fancyhdr,xurl,titlesec}
+\usepackage[colorlinks=true,linkcolor=black,urlcolor=black,citecolor=black]{hyperref}
+\hypersetup{pdftitle={FT215: a forced-transfer 215-state construction},pdfauthor={Research contribution for the ProveIt project}}
+\titleformat{\section}{\large\bfseries}{\thesection}{0.8em}{}
+\titlespacing*{\section}{0pt}{13pt}{5pt}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}\setlength{\emergencystretch}{2em}
+\setlist{nosep,leftmargin=1.5em,topsep=3pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Command variants and exact machine calibration}\fancyhead[R]{\small 21 October 2026}\fancyfoot[C]{\thepage}
+\newcommand{\file}[1]{{\small\path{#1}}}
+\newcommand{\MP}{\mathsf{MP}}
+\newcommand{\AX}{\mathsf{AX}}
+\newcommand{\PUSH}{\mathsf{PUSH}}
+\newcommand{\DISCARD}{\mathsf{DISCARD}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\begin{document}
+{\LARGE\bfseries FT215: a forced-transfer 215-state construction}\par
+\vspace{5pt}
+{\large A new scheduler, two 216-state companions, and further compiler results}\par
+21 October 2026\par
+
+\section{Results and status}
+\textbf{A materially different calibrated 215-state construction is obtained; 214 states remain open.} It inserts an actual transfer before every ordinary raw candidate, retaining the ST215 command language and changing just one physical transition. Its all-natural stack debt is exactly seven, not zero. Complete primitive runtime, exact source binding, blank initialization, protected-stack soundness and exhaustive-search completeness have been checked separately.
+
+Two additional completed physical results have 216 states: cache-return MP in the new direct-transfer layout, and composite transfer with a constant-bias footer and odd-candidate enumeration. Further abstract results give a strong compiler for automatic MP-plus-transfer, an all-natural credit bound, and a safe split presentation of the set-theoretic bundle. These companions and abstract results are not misrepresented as 214-state machines.
+
+The cache-return interface and its original strong compiler are inherited research, not newly invented here. The new contribution is its exact ST-layout physical realization and verification. The retained numerical calculus, source arithmetic, logical interpretation and finite-refutation comparison with ZFC are explicit inherited dependencies. This report supplies no new exact-table Lean or Rocq endpoint.
+
+The latest inspected upstream snapshot is ProveIt main commit
+\begin{quote}\small\ttfamily\nolinkurl{c9dc79323429112c698100f3226a6e4d56c8b782}.\end{quote}
+The original donor intake was commit \file{b6fb232916d008383e7cf2990d68ddb30fded7db}; its integrated-alternatives predecessor \file{70f50bee5a2a48013645e3c223e9ab7a494fc878} supplies the calibrated ST215 direct-transfer donor. Source and archive hashes are pinned in the packet. Existing calibrated 215-state constructions are not relabeled as results of this investigation.
+
+\section{Exact numerical interfaces}
+Write
+\[
+ P(a,b)=\frac{(a+b)(a+b+1)}2+b,\quad I(a,b)=4P(a,b),\quad Q_i a=4P(i,a)+2,
+ \quad [x;w]=P(x,w).
+\]
+Truth is zero and refutation code is one. All operations act on every natural number, including the intentional aliases $I(0,0)=P(0,0)=0$. No unique formula decoding is assumed. The accepted numerical calculus retains truth, numerical MP, theorem-only generalization, seven logical rows, the full original gated set-theoretic bundle and the dominated classical schema
+\[
+ L(A,B,C,U)=I\bigl(I(I(C,U),A),I(I(A,C),I(B,C))\bigr),\qquad U\le A.
+\]
+The inherited comparison identifies a finite numerical refutation with a finite ZFC refutation. A separately replayed finite certificate recovers the unrestricted classical schema using 3,728 proof nodes and 5,160 term nodes. This certificate is one dependency, not the entire set-theoretic comparison.
+
+Use work store $(t,w,d,h)$: top, numerical stack, additive parameter and cache. Direct transfer has interface
+\[
+ S(t,[x;v],d,h)=\begin{cases}\mathrm{halt},&h=1,\\(h,v,d,x),&h\ne1.\end{cases}
+\]
+Composite transfer $S_c=\mathrm{DROP};\mathrm{NIP};\mathrm{NIP}$ has the same nonhalting map but halts when either incoming $t=1$ or $h=1$. The extra top guard is sound on protected theorem-valued stores and is an early-halting refinement in strong compiler arguments.
+
+AX is unchanged in all three concrete machines. Put $U=d$, $A=d+x$, $B=h+y$, $C=c$. It makes the full bundle its top when $c\ne A,B$, and truth zero otherwise; pushes
+\[
+ r_1,\ldots,r_7,L(A,B,C,U),Q_Uh,t
+\]
+above the old stack; and resets $d=h=0$. There are exactly ten saved heads. The first nine are nonfalsity codes. Fields are $S=[0]$, $\MP(x)=[1,x]$ and $\AX(c;x,y)=[c+2,y,x]$.
+
+\section{The materially different 215-state construction}
+The new machine retains the ST215 direct-transfer command language but changes its scheduler. At each refill it performs a real transfer before executing the next ordinary candidate. Its trace is
+\[
+ S;W(0);\ S;W(1);\ S;W(2);\ S;W(3);\ \cdots,
+\]
+where $W(n)$ is the ordinary three-command word with predecessor decoding at positive internal continuations. This is neither a reassociation of the same command trace nor the published ZC zero-credit scheduler. It is a materially different 215-state alternative, \textbf{not a 214-state construction}.
+
+The source change is exceptionally small. Replace subtree $H_0$ at path \file{0000111} by $(H_0,\mathrm{CB}1)$. The new source has 201 distinct DAG nodes and 4,733 leaves. In this association the inserted CB1 at ordinal 9 returns to selector ordinal 24, \emph{not} to root zero. Full ordinal-CFG transport under
+\[
+ j(i)=\begin{cases}i,&i<9,\\i+1,&i\ge9\end{cases}
+\]
+shows that the only changed old edge is the zero branch of ordinal 7, which now reaches the insertion instead of the reader. Two independent resolvers verify this fact and literal equality everywhere else.
+
+At a root boundary with $L=0$, counter $N=n>0$, and clean selector/scratch, refill copies $n$ into $L$, increments $N$, and clears scratch. The inserted CB1 enters selector with $A=0$, thus selecting S. The literal S body accesses only registers $1,2,5,6,7$, not $N,A,L$. It therefore leaves the copied positive cursor unchanged. Returning to root decrements it and reads raw candidate $n-1$. Internal candidate decoding is unchanged. Starting with $N=1$ gives exactly the displayed schedule. Positive continuations strictly descend, so every nonhalting candidate finishes and every raw candidate is eventually reached.
+
+The physical table changes just one transition from its ST215 donor:
+\[
+ \text{native state 8, read 1:}\qquad 1\mathrm{R}13\ \longrightarrow\ 1\mathrm{R}103.
+\]
+The exact table has 215 working states, excluding the halt state. Native start is zero; the canonical table uses working labels $0,\ldots,214$ and halt label 215. All working states are graph reachable. A fresh universal runtime proof covers all 6,152 guarded primitive cases, 1,617,650 symbolic rules and all 430 transition rows, with minimum duration five and append-zero spares.
+
+The refill insertion was inspired by the received ZC215 construction. Its effect differs because the surrounding source association differs: ZC's return reaches the root, whereas this source selects an actual transfer. A rooted, read-symbol-labelled graph comparison, also allowing global left/right reflection, finds no match against the frozen 67-table prior-215 corpus at commit \file{29e2cc4c557c04d3358e41e566bd7c582844ff4e} plus 11 additional ZC/ST/context tables. This is a finite-corpus distinctness result, not a claim of worldwide priority or classification of arbitrary machine equivalences. A separately archived current-tree comparison examines 622 Research table paths represented by 395 unique hash-verified blobs, plus nine table members from two current documentation archives. Of those 404 contents, 401 parse in the supported format and none matches by the same rooted/reflection test; three old nonmatching-format files remain unparsed. This larger comparison is archival evidence, not rerun by the portable core checker.
+
+\subsection*{Completeness despite the forced transfers}
+The command effects and inherited ST strong compiler are unchanged. A numerical refutation supplies a finite universally halting word after a leading AX reset: the reset clears parameter/cache and the strong compiler tolerates arbitrary incoming top and stack. The ordinary encoder supplies a raw candidate for that word, with all zero-valued fields and predecessor continuations handled exactly. Before that candidate, the new forced S either already halts or merely changes the arbitrary incoming tuple. The leading AX absorbs that change. Exhaustive enumeration and finite draining therefore preserve completeness.
+
+\subsection*{Soundness requires seven credits, not zero}
+The actual blank run reaches dispatcher 84 after 70,506 transitions, at head $-2$, source ordinal 59, gap zero and logical registers
+\[
+ (N,T,W,A,D,H,X,Y,L)=(1,0,0,0,0,0,0,18,0).
+\]
+Independent native dense, native sparse and canonical sparse runs agree on the entire tape. An independent 177-instruction source bridge starts at AX entry 26 from
+\[
+ (1,0,2,0,0,0,0,0,0).
+\]
+Completing this inherited terminating AX gives ten explicit theorem heads above opaque tail 2, theorem-valued top/cache and clean scheduler scratch with $N=1,L=0$. The bridge identifies a suffix of that computation; it does not require literal evaluation of the enormous intermediate formula codes.
+
+Tail 2 is \emph{not} wholly safe: $2=P(0,1)$ and $1=P(1,0)$, so its second decoded head would be refutation one. Track an explicit theorem-head wrapper rather than a numerically inferred list length. Conservative command credits are S $=-1$, MP $=0$, AX $=10$, ignoring successful-MP zero pushes.
+
+\begin{theorem}[Exact forced-transfer debt]
+Every finite prefix of $S;W(0);S;W(1);\cdots$ has conservative balance at least $-7$. This minimum is attained by the forced S immediately before candidate 3. Ten initial theorem heads therefore leave at least three safe heads throughout every nonhalting run.
+\end{theorem}
+\begin{proof}
+Let $s(n)$ count S occurrences in $W(n)$, $g(0)=0$, $g(r)=s(r-1)$ for $r>0$, and $A(N)=\sum_{n<N}s(n)$. Exact parsing gives
+\[
+ s(P(0,y))=1+g(y),\quad s(P(1,y))=g(f(y)),\quad
+ s(P(a,y))=g(f^2(y))\quad(a\ge2).
+\]
+Strong induction proves $A(N)\le N$. Here are the details behind the infinite extension. Let $T_q=q(q+1)/2$ and let $r(L)$ count nonempty Cantor diagonal blocks below $L$. The right projection enumerates $(0),(0,1),(0,1,2),\ldots$. A zero-at-zero sequence whose positive prefix sums are at most length minus one has pullback sums at most $L-r(L)$. For $g$, its prefix sum is $A(L-1)\le L-1$. Applying the bound twice gives $H(L),H_2(L)\le L-r(L)$ for the first and second pullbacks. At a complete triangular boundary,
+\[
+ A(T_q)=q+A(q-1)+H(q-1)+\sum_{\ell=1}^{q-2}H_2(\ell)
+ \le T_q-\left(\sum_{\ell=1}^{q-1}r(\ell)-(q-1)\right)\le T_q.
+\]
+For $N=T_q+j$, a partial diagonal contains AX roots and then one MP root. For $j\le q-1$ its extra cost is $H_2(j)\le j$; for $j=q$ the cost is at most $H_2(q-1)+g(f(q-1))\le q-1$, since $g(m)\le m$ and $f(q-1)\le r(q-1)$. The small cases and $q=1$ are direct. All remaining induction indices are strictly smaller than $N$.
+
+Before or within candidate $n$, at least $n-2q-1$ earlier candidates have contributed a root AX, where $q\le\sqrt{2n}$. There are at most $n+1$ forced transfers and at most $A(n+1)\le n+1$ ordinary transfers. Thus balance is at least
+\[
+ 10(n-2q-1)-(n+1)-A(n+1)\ge8n-20\sqrt{2n}-12.
+\]
+This is positive at $n=32$ and increasing thereafter. Exact finite evaluation of every prefix through candidates $0,\ldots,31$ gives minimum $-7$ and exit balance 155. The opening balances are $-2$ after $S;W(0)$, $-3$ after $S;W(1)$, $-6$ after $S;W(2)$, and $-7$ at the next forced S, before candidate 3's AX. The finite base plus the analytic bound establishes both the global bound and its sharpness.
+\end{proof}
+
+The wrapper invariant makes every tested cache a theorem code; no forced transfer reaches the opaque tail. Hence any halt yields a numerical refutation. Conversely, the strong compiler and exhaustive schedule make every numerical refutation cause a halt. With the inherited finite-refutation comparison, this exact blank-start 215-state machine halts if and only if ZFC is inconsistent. These are ordinary finite mathematical proofs with owned executable runtime/CFG/base checks, formalizable in ZFC; no new exact-table Lean or Rocq certification is claimed.
+
+\section{The cache-return 216-state construction}
+Let $y=d+x$. Its modus ponens command is
+\[
+ \MP_c(x)(t,w,d,h)=
+ \begin{cases}(0,w,0,y),&I(t,y)=h,\\(0,w,y,0),&I(t,y)\ne h.\end{cases}
+\]
+Successful MP places its consequence in cache, drains the additive parameter and leaves the stack untouched. This differs materially from the usual top-return command, whose success retains $d=y$ and pushes a dummy zero.
+
+The source is literally the calibrated ST215 tree with its successful-MP subtree at \file{00110111} replaced by
+\[
+ (\mathrm{CD}4,(\mathrm{CI}5,\mathrm{CC}2)).
+\]
+The replaced body has 26 leaves; the replacement has three. The whole source has 201 distinct DAG nodes and 4,709 primitive occurrences. An independent exact-tree checker verifies that every other subtree is unchanged, including AX, scheduler, failed MP and direct S. The successful comparison enters with $T=H=X=Y=0$ and $D=y$. Induction on natural $D$ proves that the closed replacement loop terminates with $H=y,D=0$ and all other registers unchanged. The new physical label 313 is a comparison/success parent, not an extra implementation of the already shared move itself.
+
+\subsection*{Inherited compiler, independently checked in this binding}
+Put $D_0=\AX(0;0,0)$ and define
+\[
+ H=D_0;S^{11},\qquad \PUSH=D_0;S^9;\MP_c(0),
+\]
+\[
+ \DISCARD=\MP_c(1);\AX(1;0,0);S^{10};\MP_c(0).
+\]
+$H$ removes one old head while preserving arbitrary incoming top, resets the parameter and leaves the removed head in cache, or halts on incoming top one. PUSH never halts and returns $(0,[t;w],0,0)$. Its MP comparison necessarily fails because the cached quantifier code has residue two while implication codes have residue zero. DISCARD returns $(0,w,0,0)$ from every $(t,w,0,0)$ using two forced failures. A parameter setter $J(u)$ is empty for $u=0$ and $\MP_c(u)$ for $u>0$, from all-zero work registers. This zero exception avoids the successful truth alias.
+
+The strong induction produces, for every theorem $X$, a block $B_X$ that from \emph{every} natural $(t,w,0,0)$ halts or returns exactly $(X,w,0,0)$. Row, bundle and generalization blocks use MP only through the forced-failure auxiliaries, so their inherited calculations are unchanged. The new inference block for premises $A,I(A,Y)$ is
+\[
+ \DISCARD;\PUSH;B_{I(A,Y)};\PUSH;B_A;\PUSH;S;S;\MP_c(Y);S.
+\]
+The reserved zero gives the exact pre-MP store $(A,[0;w],0,I(A,Y))$. Successful MP gives $(0,[0;w],0,Y)$; final S either halts when $Y=1$ or gives $(Y,w,0,0)$. No unproved dummy push is assumed. A compiled one followed by H is universally halting after the usual initial parameter-reset AX.
+
+The old ordinary transfer-first field codec and cofinal padding remain unchanged. MP has conservative stack effect zero, so the inherited two-credit bound from candidate one remains sufficient. The actual initial AX supplies ten theorem heads above the opaque initial tail described below. Thus soundness and completeness are both retained, by separate arguments.
+
+\section{The composite constant-bias 216-state construction}
+This machine retains ordinary top-return MP:
+\[
+ \MP(x)(t,w,d,h)=
+ \begin{cases}(y,[0;w],y,0),&I(t,y)=h,\\(0,w,y,0),&I(t,y)\ne h,\end{cases}\quad y=d+x,
+\]
+and uses $S_c$ rather than direct S. A common footer $\mathrm{CI}6;\mathrm{CC}2$ follows every completed command. The source has 202 DAG nodes and 4,777 primitive occurrences. The common increment is ordinal 4,775 and the root return is ordinal 4,776, at addresses 10 and 11. The two changed old return edges are the MP/AX return at ordinal 4,696 and S's finishing zero branch at ordinal 4,772. Every old return now reaches the footer; there is no bypass.
+
+Two independent full-CFG resolvers check these assertions. The entire prelude, 4,565-leaf AX, 106-leaf MP and 78-leaf composite transfer remain literally identical to their calibrated predecessor subtrees. In particular, this is not the erroneous ancestor-sensitive return from the previous scratch-biased experiment.
+
+Every command leaves bias one. At positive residual $L$, the scheduler's predecessor and biased first read cancel, so the next first field comes from unpairing $L$ itself. Empty-cursor refill copies the old candidate counter and advances it by two. Starting from the actual initial AX, candidates are exactly $1,3,5,\ldots$ unless the machine halts earlier. Every nonhalting candidate drains in finitely many commands because the right Cantor projection $f(L)<L$ for $L>0$.
+
+For a universally halting command word with fields $a_1,\ldots,a_m$, use
+\[
+ E(r)=P(a_1,P(a_2,\ldots,P(a_m,r)\ldots)),\qquad r\ge1.
+\]
+No successor wrappers are needed. Every intended continuation is positive; the unused final residual is never reached. The inherited dyadic-prefix lemma supplies cofinally many odd values of $E(r)$, so odd enumeration is complete, not merely conjectured fair.
+
+Here is the arithmetic reason. With $F(z)=z(2z+1)=T_{2z}$,
+\[
+ F(z)-F(w)=(z-w)(2z+2w+1),
+\]
+so $F$ permutes residues modulo every $2^k$. Since $P(a,b)=T_{a+b+1}-a-1$, one can force any output residue modulo $2^k$ by fixing a right-argument residue modulo $2^{k+1}$. Iterating over the fixed outer fields gives a tail class modulo $2^{k+m}$ for any desired output class. Positive representatives are unbounded, and $E(r)\ge r$. Taking the odd output class completes the argument. The lemma is inherited; its use for this exact common-footer machine is the new application.
+\section{Shared startup and the constant-bias resource proof}
+Both 216-state tables start in native state zero. Each reaches the same complete frame after 70,506 transitions: dispatcher 84, head $-2$, ordinal 58, gap zero, 63 spare blocks, and registers $(1,0,0,0,0,0,0,18,0)$. The source bridge is 177 instructions from AX entry 25 and seed $(1,0,2,0,0,0,0,0,0)$. Start 74 instead follows an outward blank ray and is not a substitute. The verifier reconstructs each full tape, including its blank exterior, and independently checks each source bridge.
+
+For cache-return MP the inherited ordinary schedule and two-credit bound suffice. For composite constant bias, the exact odd schedule admits a stronger nonnegative conservative balance. Let $s(n)$ count S commands under the direct-unpair continuation codec, $g(0)=0$, $g(n)=s(n)$ for $n>0$, and $A(N)=\sum_{n<N}s(n)$. The S-root recurrence is now
+\[
+ s(P(0,y))=1+g(y),
+\]
+with MP and AX suffixes $g(f(y))$ and $g(f^2(y))$. Although visually similar to the forced-transfer recurrence, $g$ has a different definition: there is no internal predecessor here.
+
+The same diagonal pullback induction gives $A(N)\le N$. Its exact triangular boundary is
+\[
+ A(T_q)=q+G(q)+H(q-1)+\sum_{\ell=1}^{q-2}H_2(\ell),
+ \qquad G(q)=A(q)-1\le q-1.
+\]
+This adjusted boundary term is essential. Partial diagonals are handled as in the preceding proof. For any candidate subsequence beginning at one with gaps one or two, root AX credits and the counting theorem give the prefix lower bound
+\[
+ 10\left\lfloor\frac{n-1}{2}\right\rfloor-20q-10-(n+1)
+ \ge4n-20\sqrt{2n}-21,
+\]
+positive for $n\ge64$. Exact finite minimization through candidate 63 has minimum $-3$ for arbitrary such gaps. For the actual odd sequence, exact finite evaluation gives minimum zero and final balance 254. Hence its entire infinite schedule has nonnegative balance. The initial AX's ten safe heads remain as a lower margin above unsafe tail 2. Composite S first pushes a safe top and then pops twice; its minimum internal depth is its final depth, so charging it one pop protects the entire macro, not just its boundaries.
+
+\section{A new strong compiler for automatic MP plus transfer}
+Define $M(x)=\MP_c(x);S$, retaining explicit S and AX. With $y=d+x$, successful M halts if $y=1$ and otherwise gives $(y,\operatorname{tail}(w),0,\operatorname{head}(w))$; failed M gives $(0,\operatorname{tail}(w),y,\operatorname{head}(w))$.
+
+The key unconditional identity, including successful truth aliases, is
+\[
+ M(0):(t,w,0,h)\longmapsto(0,\operatorname{tail}(w),0,\operatorname{head}(w)).
+\]
+It never halts: on success its consequent is zero, and on failure MP clears cache before S. Let $D_0=\AX(0;0,0)$. Then
+\begin{align*}
+ \PUSH&=D_0;M(0)^9;D_0;M(0)^{10},\\
+ \DISCARD&=D_0;M(0)^{10};D_0;M(0)^{10}
+\end{align*}
+return respectively $(0,[t;w],0,0)$ and $(0,w,0,0)$ from arbitrary work stores, without halting. The second AX creates the required zero cache without risking a test of an arbitrary saved top. Keep $H=D_0;S^{11}$ and use the uniform parameter setter $J(u)=\PUSH;M(u)$, including $u=0$.
+
+The usual row, bundle and generalization blocks now work through these auxiliaries. The inference block becomes
+\[
+ \DISCARD;\PUSH;B_{I(A,Y)};\PUSH;B_A;\PUSH;S;S;M(Y).
+\]
+Before M it has $(A,[0;w],0,I(A,Y))$; M itself consumes the reserved zero and returns $(Y,w,0,0)$ or halts. This proves the arbitrary-store strong compiler, not merely correctness from an already safe stack.
+
+Both S and M now cost one head, while AX contributes ten. For ordinary candidates $1,2,3,\ldots$, let $k(n)$ count both negative commands, $g(0)=0$, $g(r)=k(r-1)$, and $B(N)=\sum_{n<N}k(n)$. The exact root counts are
+\[
+ k(P(0,y))=1+g(y),\quad k(P(1,y))=1+g(f(y)),\quad
+ k(P(a,y))=g(f^2(y))\ (a\ge2).
+\]
+The extra one on the MP root must not be omitted. Strong induction gives $B(N)\le2N$: zero-at-zero pullbacks save two per nonempty diagonal block, and
+\[
+ B(T_q)=q+B(q-1)+(q-1)+H(q-1)+\sum_{\ell=1}^{q-2}H_2(\ell)
+ <2T_q.
+\]
+At a partial diagonal the MP root adds $1+g(f(q-1))$, giving at most $2q-1$ additional cost. Earlier root AX credits then yield
+\[
+ 10(n-2q-2)-2(n+1)\ge8n-20\sqrt{2n}-22>0\quad(n\ge32).
+\]
+Exact evaluation of candidates 1--31 gives minimum $-3$, attained after candidate 2, and exit balance 178. Ten initial safe heads would leave at least seven. The analytic argument supplies the infinite theorem; the longer recurrence checks are only corroboration.
+
+This interface has a 201-node, 4,709-leaf abstract source. Of 4,862 tested associations of ten closed factors, 48 preserve the intended CFG, but the measured allocations fail primitive-entry or dirty-prefix checks. No calibrated native table accompanies this compiler. The scheduler cutoff and blank initialization remain required before applying its credit theorem to a new binary machine.
+
+\section{A safe cofinal split of the theory bundle}
+Let $R(a,b)=4P(a,b)+1$, let $V(a,b,c)$ be the full original vacuity instance, and let $K(a,b,k)=N(\operatorname{nks}(a,b,k,k))$ be the positive support-bearing seed core, with both the actual matrix code and private label equal to $k$. Emit two independently extractable heads:
+\[
+ \text{first: }\begin{cases}V(a,b,c),&c\ne a,b,\\0,&\text{otherwise},\end{cases}
+ \qquad\text{top: }K(a,b,R(a,b)+c)\quad\text{unconditionally}.
+\]
+The old gate applies only to V and its original $c$. Since $R(a,b)>\max(a,b)$, every K head is an enabled old core. Every original enabled V is still directly available. Every tail K with $k\ge R(a,b)$ is available by taking $c=k-R(a,b)$. These may be different calls, which is why independent extraction is part of the interface.
+
+The lower finite-refutation transformation needs no new native padding theorem. The accepted lower proof uses pinned public roles $(1,3)$ and the actual seed code $k=N(N(m))$ after naming and equality interpretation. Here
+\[
+ N(x)=I(x,1)=2(x+1)(x+2)+4\ge8,
+ \qquad k\ge N(8)=184>R(1,3)=53.
+\]
+Thus one call supplies the exact required $K(1,3,k)$ with $c_K=k-53\ge131$, and another supplies $V(1,3,k)$ with $c_V=k$. For $J=\operatorname{nks}(1,3,k,k)$, the retained propositional rows derive
+\[
+ V\to((J\to F)\to((V\to J)\to F)).
+\]
+From V and $K=N(J)$ this reconstructs the old named bundle $N(V\to J)$. No assumption that the native code F already decodes as object-language falsum is needed. The remaining accepted lower proof is replayed for the new proof predicate with this replacement; one does not literally apply lemmas hard-coded to a different predicate. Nor is arbitrary native double-negation elimination or code-level alpha-conversion being assumed.
+
+For the upper transformation, both emitted components have uniform finite derivations in the accepted ordinary interpretation. This yields effective finite-refutation transformations in both directions with ZFC, while allowing a different native theorem set. The separately included review records the precise inherited proof interfaces and pinned source hashes. It is an ordinary mathematical argument, not a new proof-assistant build.
+
+An eleven-head AX interface makes both components extractable: top V, first saved head K, then the old ten heads. The cache-return compiler adjusts to
+\[
+ H=D_0;S^{12},\quad \PUSH=D_0;S^{10};\MP_c(0),\quad
+ \DISCARD=\MP_c(1);\AX(1;0,0);S^{11};\MP_c(0).
+\]
+The old inference block is unchanged. One implementation with twelve adjusted C-loads has 212 source nodes. A shift/build/restore implementation has 210 nodes across 1,430 tested associations. Representative allocations fail dirty-prefix checks. These are source prices, not 210/212-state machines and not evidence of a global lower bound.
+
+\section{Physical validation, exact identifiers and scope}
+All three selected machines use two tape symbols. Counts exclude the separate halt state. Native starts are zero and native halt label is 254; canonical starts are zero and halt labels are respectively 215, 216 and 216. Exact native and canonical tables, state bijections, source leaves and ordered runtime case censuses are separate packet artifacts. No raw source-node count is substituted for a state count.
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+Machine & States & Guarded cases & Symbolic rules & Rows\\\midrule
+Forced transfer &215&6,152&1,617,650&430\\
+Cache return &216&6,121&1,612,284&432\\
+Composite constant bias &216&6,211&1,627,559&432\\\bottomrule
+\end{tabular}
+\end{center}
+The universal primitive contracts quantify over all independent natural registers at each guard, arbitrary extra tape gap and every nonempty finite list of natural spare values. Increment appends spare value zero. Literal transitions, natural-number induction and independently rebuilt finite-list schemas justify the cases; these are not random finite tests. The complete tape and zero exterior are included. Source macro binding and mathematical consistency calibration are additional obligations, separately established above.
+
+Native table SHA-256 values, in the same order, are
+\begin{quote}\small\ttfamily
+\nolinkurl{2bfeff91aadd2da3d942a5e7d03b280354a841c0961eace5b43b73da764cecac}\\
+\nolinkurl{c5ac07ac6425fb531d1227c16e294c98375446f3a249b57783d83525ab3cadee}\\
+\nolinkurl{f43976a279d1fa2b35608d23ee6d186ade50511386d280703e9941794690bcaf}.
+\end{quote}
+Source SHA-256 values are
+\begin{quote}\small\ttfamily
+\nolinkurl{b64d9fa23d97e7c81154468e9a62a5d8e12b39709d2a4d45c5ca9a4e40ca51ce}\\
+\nolinkurl{11e5b1173ca24b406999880c1d874b1e40e74b12334c5db3559440e535384bb9}\\
+\nolinkurl{3511c2772d815348e0113c790dfd1494bb2d824701c17ef762daaa89e3c8040c}.
+\end{quote}
+
+\section{Qualified negative results and verification correction}
+The completed cache-return AX row-order search tested all 5,040 permutations under three closed-cover associations, or 15,120 screens. The minimum source count remained 201. Exact CFG transport and compiler index transport were checked for 106 unique minimum sources. Of 212 donor-allocation trials, only the two unchanged controls allocated at 216 states. Closed rotations later produced 123 distinct 201-node, maximum-zero-six sources; all 246 subsequent pricing trials either rejected decoder prefixes or produced raw 262-state layouts. Five protected-allocation representatives were infeasible in the stated restricted model. These bounded searches do not establish a lower bound on source or machine size.
+
+A test-harness correction is important for interpreting finite physical screens. Native state 84 is reused internally: its first re-entry need not be a primitive boundary. The unchanged CI8 positive control reaches internal state-84 visits at 156 and 312 steps, but its true clean boundary at 630. The old first-84 append-search receipt is excluded. Even rejection at a wrong \emph{first clean boundary} does not exclude later stuttering to the target. Accordingly earlier finite fold negatives are only first-clean-boundary refinement screens; the stronger unrestricted $313\to164$ exclusion is withdrawn. No claim here depends on those invalid negative interpretations. The final universal positive runtime checks instead prove the required complete-tape primitive contract.
+
+\section{Further research and reproduction}
+\begin{enumerate}
+\item Can the new forced-transfer scheduler be reduced to 214 states without sacrificing its exact source interface or seven-credit protection?
+\item Can the cache-return implementation avoid the decoder collision represented by added state 313, rather than merely shortening its source?
+\item Can stuttering-aware physical synthesis search for the exact target frame instead of rejecting every intermediate dispatcher or clean-frame visit?
+\item Can automatic transfer after MP be physically realized while retaining its proved compiler and three-credit invariant?
+\item Can safe cofinal unbundling share more arithmetic/source structure without weakening the retained full V family or independent head-extraction contract?
+\item Can the exact table, source binding, startup and credit theorem be combined into a checked Lean or Rocq endpoint, making the inherited and newly proved dependencies explicit?
+\end{enumerate}
+Run the owned portable checker with Python's standard library and assertions enabled:
+\begin{quote}\small\ttfamily
+\verb|python3 -I -B verify.py --work /fresh/empty/output|\\
+\verb|python3 -I -B verify.py --runtime --work /fresh/full/output|
+\end{quote}
+The output directory must be empty and outside the packet. The first command checks exact source identities, both CFG resolvers, whole-tape startups, source bridges, finite credit bases, distinctness and the inherited dominated certificate. The second additionally rebuilds all 18,484 universal guarded cases and compares the exact ordered censuses. It does not turn the written infinite mathematical arguments into proof-assistant certificates. Negative search receipts are explicitly archival scope evidence, not rerun by the core verifier.
+
+Full FT215 table: \file{forced215/machine.tm}. Companion tables and proofs are included; \file{MANIFEST.json} pins all artifacts.
+\end{document}

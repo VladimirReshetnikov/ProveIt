@@ -1,0 +1,504 @@
+\section{Complete calibration of the private-binder transfer source}
+\label{sec:genc-calibration}
+
+The source \file{source/gc215.sites.json} uses the original single
+cache guard.  This section proves its complete command-level calibration.
+Its only logical-interface change is that the ninth
+AX output generalizes with the independently supplied private parameter
+$C$, rather than the incoming counter $U$.  The argument below supplies
+both directions of the refutation equivalence, the exact wire packing,
+and the protected-tail bridge needed for the measured blank initialization.
+The source and binary runtime contracts are separate, explicitly identified
+premises; finite execution tests are not used to infer these unbounded
+mathematical statements.
+
+\subsection{The retained numerical calculus}
+
+For all natural numbers define
+\[
+ P(a,b)=\frac{(a+b)(a+b+1)}2+b,
+ \quad I(a,b)=4P(a,b),\quad a\to b=I(a,b),
+\]
+and
+\[
+ R(a,b)=4P(a,b)+1,\qquad Q_a b=4P(a,b)+2,
+ \qquad E(a,b)=4P(a,b)+3.
+\]
+Truth is $0$, the refutation target is $1$, $NX=I(X,1)$, and
+$\exists_aX=N(Q_a(NX))$.  In particular $I(0,0)=0$ and $R(0,0)=1$.
+Every parameter ranges over every natural number, including numbers that
+are not conventional syntactic formula codes.
+
+Let $\mathcal D$ be the inherited dominated native calculus.  Its rules
+are truth, exact numerical modus ponens, and theorem-only generalization:
+\[
+ \mathcal D\vdash0,\qquad
+ \frac{\mathcal D\vdash X\quad\mathcal D\vdash I(X,Y)}
+      {\mathcal D\vdash Y},\qquad
+ \frac{\mathcal D\vdash X}{\mathcal D\vdash Q_iX}.
+\]
+For specificity, write the seven \emph{emitted} row functions as
+\begin{align*}
+ R_1(a,b,c)&=\exists_aE(a,b),\\
+ R_2(a,b,c)&=Q_a(b\to c)\to(Q_ab\to Q_ac),\\
+ R_3(a,b,c)&=E(a,b)\to(R(c,a)\to R(c,b)),\\
+ R_4(a,b,c)&=Q_aQ_bc\to Q_bQ_ac,\\
+ R_5(a,b,c)&=E(c,a)\to(R(c,b)\to R(a,b)),\\
+ R_6(a,b,c)&=(\exists_aQ_ac)\to c,\\
+ R_7(a,b,c)&=E(c,a)\to\bigl(E(c,b)\to Q_{R(a,b)}E(a,b)\bigr).
+\end{align*}
+The middle argument of $R_6$ is unused.  This explicitly respects the
+repository's correction that its sixth output is $\rho_6(a,c)$.
+The eighth family is
+\[
+ L(A,B,C,U)=((C\to U)\to A)\to((A\to C)\to(B\to C)),
+ \qquad U\le A.
+\]
+The full inherited gated seed bundle is retained literally.  To specify it,
+put
+\begin{align*}
+ \mathcal B(b,k,m)&=Q_b\bigl(m\to NQ_b(m\to NR(b,k))\bigr),\\
+ \mathcal S(a,b,k)&=Q_k(R(k,a)\to R(k,b)),\\
+ \mathcal C(a,b,k,m)&=Q_b\bigl(R(b,k)\to
+      NQ_a(m\to NQ_a(\mathcal S(a,b,k)\to\mathcal B(b,k,m)))\bigr),\\
+ \mathcal J(a,b,c)&=Q_c\bigl(\mathcal C(a,b,c,c)
+                              \to N\mathcal B(b,c,c)\bigr),\\
+ \mathcal V(a,b,c)&=R(a,b)\to Q_cR(a,b),\\
+ \operatorname{Bundle}(a,b,c)&=N\bigl(\mathcal V(a,b,c)
+                                          \to\mathcal J(a,b,c)\bigr).
+\end{align*}
+It is an axiom when $c\ne a$ and $c\ne b$.  Define the gated output
+$\Gamma(a,b,c)$ to be this bundle when both inequalities hold and $0$
+otherwise.  No support-bearing part of this bundle is deleted.
+
+The previously established calibration of $\mathcal D$ is used as a
+premise~\cite{dominated,st215}: ZFC proves that a finite $\mathcal D$-derivation of $1$ exists
+if and only if a finite ZFC refutation exists.  This premise includes the
+inherited all-natural certificate recovering unrestricted $L$ from its
+dominated instances.  The present change does not alter any axiom or rule
+of $\mathcal D$; it changes how one command samples theorem generalization.
+
+\subsection{Exact commands and field order}
+
+At a command boundary use $(t,w,d,h)$ for top, numerical stack, additive
+counter, and cache.  Write $[x;w]=P(x,w)$ and use right nesting for a
+longer explicit list.  For every natural $w$, let
+$(\operatorname{head}(w),\operatorname{tail}(w))$ be its Cantor unpairing;
+in particular the two projections of zero are zero.
+
+The exact transfer command is
+\[
+ S(t,w,d,h)=
+ \begin{cases}
+  \mathsf{halt},&h=1,\\
+  (h,\operatorname{tail}(w),d,\operatorname{head}(w)),&h\ne1.
+ \end{cases}
+\]
+It tests the \emph{incoming cache}, not the incoming top or the newly
+popped head.  For $v=d+x$, the exact MP command is
+\[
+ \mathsf{MP}(x)(t,w,d,h)=
+ \begin{cases}
+  (v,[0;w],v,0),&I(t,v)=h,\\
+  (0,w,v,0),&I(t,v)\ne h.
+ \end{cases}
+\]
+For $\mathsf{AX}(c;x,y)$ put
+\[
+ U=d,\qquad A=d+x,\qquad B=h+y,\qquad C=c.
+\]
+The new exact AX equation is
+\begin{align*}
+ t'&=\Gamma(A,B,C),&d'&=0,&h'&=0,\\
+ w'&=[R_1(A,B,C),\ldots,R_7(A,B,C),
+          L(A,B,C,U),Q_C h,t;w].
+\end{align*}
+The $h$ inside $Q_Ch$ is the incoming cache, before adding $y$.
+Only this ninth head differs from the parent interface, whose ninth head
+was $Q_Uh$.  The inequality $U\le A$ holds on every natural input.
+The gate and first eight heads are implication codes and hence cannot
+equal $1$.  The ninth head has residue $2$ modulo $4$, so it is neither
+$0$ nor $1$.  The saved incoming top is the tenth head.
+
+The actual field order is
+\[
+ \operatorname{fields}(S)=[0],\qquad
+ \operatorname{fields}(\mathsf{MP}(x))=[1,x],\qquad
+ \operatorname{fields}(\mathsf{AX}(c;x,y))=[c+2,y,x].
+\]
+The notation after the semicolon lists the counter increment before the
+cache increment; the wire reads the cache increment first.  These are the
+old YX fields, not an XY variant.
+
+\subsection{Structural macros and a strong proof compiler}
+
+Define
+\[
+ D=\mathsf{AX}(0;0,0),\qquad H=D;S^{11},\qquad
+ \mathsf{PUSH}=D;S^9;\mathsf{MP}(0).
+\]
+Concatenation denotes execution in the displayed order.  For every natural
+input these macros terminate, possibly by the stated halt, and satisfy
+\[
+ H(t,w,d,h)=
+ \begin{cases}
+  \mathsf{halt},&t=1,\\
+  (t,\operatorname{tail}(w),0,\operatorname{head}(w)),&t\ne1,
+ \end{cases}
+ \qquad
+ \mathsf{PUSH}(t,w,d,h)=(0,[t;w],0,0).
+\]
+To verify both equations, let $a_1,\ldots,a_8,q,t$ be the ten AX
+heads, where now $q=Q_0h$.  The first ten shifts test only $0$,
+$a_1,\ldots,a_8,q$, all different from $1$.  After ten shifts the
+tuple is $(q,w,0,t)$.  The eleventh therefore has exactly the displayed
+top-falsity guard and pop effect.  After nine shifts, instead, the tuple
+is $(a_8,[t;w],0,q)$.  Its final MP necessarily fails because the cache
+has tag two and every $I(a_8,0)$ has tag zero.  Thus PUSH never halts,
+even when the original top or cache is $1$.  In particular, $H$ is not
+silently identified with the parent's cache-guarded NIP.
+
+A strong block $B_X$ will satisfy, for \emph{every} pair of natural
+numbers $t,w$,
+\[
+ B_X(t,w,0,0)=\mathsf{halt}\quad\hbox{or}\quad(X,w,0,0).
+ \tag{SC}
+\]
+No theoremhood assumption is made about this arbitrary input top or stack.
+Define
+\[
+ \mathsf{DISCARD}=\mathsf{MP}(1);\mathsf{AX}(1;0,0);
+                      S^{10};\mathsf{MP}(0).
+\]
+On $(t,w,0,0)$ the first MP fails, since $I(t,1)>0$, and returns
+$(0,w,1,0)$.  The AX has $A=C=1$, so its gate is zero.  Ten shifts
+give $(Q_1 0,w,0,0)$.  Since $Q_1 0>0$, the final MP fails and returns
+$(0,w,0,0)$.  This proves (SC) for truth, with no halt.
+On a cleared tuple $(0,w,0,0)$ put
+\[
+ J(u)=
+ \begin{cases}
+  \text{empty word},&u=0,\\
+  \mathsf{MP}(u),&u>0.
+ \end{cases}
+\]
+It returns $(0,w,u,0)$.  The empty case is essential: $\mathsf{MP}(0)$
+would succeed by $I(0,0)=0$ and introduce an unwanted explicit zero head.
+
+\paragraph{Axiom retrieval.}
+For a retained row at position $1\le j\le7$, use
+\[
+ B_{R_j(a,b,c)}=
+ \mathsf{DISCARD};\mathsf{AX}(c;a,b);S^{j+1};H^{9-j}.
+\]
+After $j+1$ shifts the selected row is top, and exactly $9-j$ of
+the ten generated heads remain above the original stack.  The last is
+the saved zero.  Each $H$ preserves the selected, non-$1$ implication
+code and removes one of these heads.  The final cache is therefore zero
+and the original stack is restored exactly.  For any desired
+$L(a,b,c,u)$ with $u\le a$, use
+\[
+ B_{L(a,b,c,u)}=
+ \mathsf{DISCARD};J(u);\mathsf{AX}(c;a-u,b);S^9;H.
+\]
+Here $U=u$, $A=a$, $B=b$, and $C=c$; the single $H$ removes saved zero.
+For an enabled full bundle use
+\[
+ B_{\operatorname{Bundle}(a,b,c)}=
+ \mathsf{DISCARD};\mathsf{AX}(c;a,b);H^{10}.
+\]
+Its implication-coded top is preserved as all ten generated heads are
+removed.  These calculations apply to exact native codes, including
+zero-valued row instances.
+
+\paragraph{The new generalization block.}
+Given $B_X$, set
+\[
+ B_{Q_iX}=B_X;\mathsf{PUSH};S;\mathsf{AX}(i;0,0);S^{10}.
+ \tag{GEN-C}
+\]
+If the premise block returns, PUSH gives $(0,[X;w],0,0)$ and the single
+shift gives $(0,w,0,X)$.  That shift tests incoming cache zero, so it is
+valid also for $X=1$.  AX now has $C=i$ and its ninth head is exactly
+$Q_iX$, followed by saved zero.  Ten shifts return $(Q_iX,w,0,0)$.
+This is precisely where using the private binder changes the compiler:
+the parent's $J(i)$ is omitted.  Here $A=0$ and $B=X$, so the AX gate
+need not vanish when $i$ differs from both.  It is nevertheless an
+implication code, and the first shift safely overwrites it.  The proof
+does not rely on a false zero-gate assertion.
+
+\paragraph{Modus ponens, with the major compiled first.}
+Let $M=I(A,B)$, and assume strong blocks for $A$ and $M$.  Put
+\[
+ B_B=B_M;\mathsf{PUSH};B_A;\mathsf{PUSH};S;S;
+       \mathsf{MP}(B);\mathsf{AX}(B;0,0);S^{11}.
+ \tag{MP-C}
+\]
+Unless an earlier permitted halt occurs, the first four blocks give
+$(0,[A,M;w],0,0)$.  Two shifts either halt on $A=1$ or give
+$(A,w,0,M)$.  The next MP succeeds by literal numerical equality and
+returns $(B,[0;w],B,0)$.  The cleanup AX has $A=C=B$, hence zero
+gate, and its saved tenth head is $B$.  After ten shifts the tuple is
+$(Q_B0,[0;w],0,B)$.  The eleventh halts if $B=1$, or returns
+$(B,w,0,0)$ otherwise.  This proves (SC).  When $A=B=0$, also $M=0$;
+the successful zero-alias MP still intentionally pushes one explicit
+zero, and the cleanup removes exactly that zero.  No nonzero-formula
+assumption is hidden in the argument.
+
+Induction on a finite native derivation now gives (SC) for every theorem.
+A finite proof DAG may first be expanded into a finite proof tree;
+compiling the major before the minor introduces no circular dependency.
+If $\mathcal D\vdash1$, the fixed finite word
+\[
+                         B_1;H
+\]
+halts from every $(t,w,0,0)$: either $B_1$ already halts, or its result
+has top $1$, which the eleventh transfer of $H$ detects.
+
+\subsection{Exact packing and cofinal successful candidates}
+
+For a finite field list $f$ and residual $r$, let $F(f,r)$ be its
+right-nested Cantor pairing above $r$.  Define the encoded proof tail by
+\[
+ \operatorname{tailcode}([])=0,\qquad
+ \operatorname{tailcode}(k::L)
+   =1+F\bigl(\operatorname{fields}(k),\operatorname{tailcode}(L)\bigr).
+\]
+At a positive proof pointer the source first decrements, then reads the
+command's one, two, or three fields.  Thus a positive encoded tail
+executes its next command and leaves the indicated successor tail.
+A freshly fetched candidate has no outer successor: its initial command
+is decoded directly.
+
+Let $r=\operatorname{tailcode}(B_1;H)$.  For every natural $Y$ choose
+\[
+                 N_Y=P\bigl(2,P(Y,P(1,r))\bigr).
+ \tag{Cofinal}
+\]
+With the actual YX field order this first executes
+$\mathsf{AX}(0;1,Y)$ and leaves residual $r$.  The first AX terminates
+and resets counter and cache to zero.  Its resulting top and stack may
+be arbitrary; the universal contract of $B_1;H$ still ensures a halt.
+Cantor domination gives $N_Y\ge Y$, so successful candidates lie beyond
+every finite startup cutoff.
+
+Every nonhalting positive proof pointer $p$ drains strictly: after its
+initial decrement, the next residual is obtained by right projections
+of $p-1$, so it is at most $p-1<p$.  Each source command terminates or
+halts by its all-natural macro contract.  Therefore a candidate cannot
+block the scheduler forever.  The next-candidate counter increases by
+one, so the scheduler eventually reaches any chosen $N_Y$ above its
+initial cutoff, unless it halts earlier.  This proves completeness
+without a finite search bound or an additional fairness assumption.
+
+\subsection{An all-natural protected-tail theorem}
+
+The actual blank initializer enters a partial AX computation, not an
+ordinary zero-stack root.  The following schedule theorem proves that
+the arbitrary numerical suffix underneath its safe heads is never exposed.
+It depends only on the exact three field lengths and command balances,
+so changing the generalization binder does not change its combinatorics.
+
+Let $f$ be the right Cantor projection and $T_s=s(s+1)/2$.  Let $W(n)$
+be the finite syntactic command word parsed from fresh candidate $n$,
+ignoring possible semantic halts, and put $\mathcal R(0)=[]$ and
+$\mathcal R(r)=W(r-1)$ for $r>0$.  If
+$\operatorname{unpair}(n)=(a,y)$, then exactly
+\[
+ W(n)=
+ \begin{cases}
+  S;\mathcal R(y),&a=0,\\
+  \mathsf{MP};\mathcal R(f(y)),&a=1,\\
+  \mathsf{AX};\mathcal R(f(f(y))),&a\ge2.
+ \end{cases}
+ \tag{Schedule}
+\]
+Payloads are still read; they are irrelevant only to the following
+conservative balance.  Give $S,\mathsf{MP},\mathsf{AX}$ balances
+$-1,0,+10$, respectively.  Successful MP actually adds a further
+theorem zero, which this estimate may safely ignore.  Write $b(n)$
+for the total balance of $W(n)$ and
+$B(k)=\sum_{n<k}b(n)$.  Define $g(0)=0$ and $g(r)=b(r-1)$ for $r>0$.
+Strict residual descent makes these definitions well founded.  Induction
+also proves that $W(n)$ has at most $n+1$ commands: its residual is at
+most $n$.  Consequently every prefix of $\mathcal R(r)$ has balance
+at least $-r$.
+
+\paragraph{Prefix pullback.}
+If a sequence $q(0),q(1),\ldots$ has nonnegative initial partial sums,
+then the sequence $q(f(0)),q(f(1)),\ldots$ does too.  Indeed, increasing
+inputs to $f$ enumerate the consecutive blocks
+$[0],[0,1],[0,1,2],\ldots$.  Any initial segment consists of complete
+such blocks and an initial part of the next one.  Apply this observation
+twice for $q(f(f(y)))$.  We use $q(r)=g(r)+1$, for which
+\[
+ \sum_{r<k}q(r)=1+B(k-1)+(k-1)\qquad(k\ge1).
+ \tag{Shift}
+\]
+Thus previously established inequalities $B(j)+j\ge0$ supply the
+needed nonnegative partial sums.  Using unshifted $g$ here would be
+invalid, since the new tag order has negative initial balances.
+
+\paragraph{Every complete diagonal from $s=2$ is prefix nonnegative.}
+We prove this jointly with $B(k)+k\ge0$ and $B(T_s)\ge-3$, by induction
+on the Cantor diagonal.  The base is
+\[
+ W(0)=[S],\qquad W(1)=[\mathsf{MP}],\qquad W(2)=[S,S],
+\]
+giving $B(0),B(1),B(2),B(3)=0,-1,-1,-3$.
+For $s\ge2$, the candidates $T_s+y$ have selector $s-y$.
+The first $s-1$ start with AX, the next with MP, and the last with S.
+The first $k$ AX candidates have total balance
+\[
+ 10k+\sum_{y<k}g(f(f(y)))\ge9k,\qquad 0\le k\le s-1,
+\]
+by prefix pullback and (Shift).  All required earlier indices are at
+most $s-2<T_s$, so this does not assume the induction conclusion.
+Before AX candidate $y$ the balance is at least $9y$; its AX adds $10$
+and its suffix loses at most $f(f(y))\le y$ at any prefix.  Its
+nonempty prefixes therefore have balance at least $8y+10>0$.
+After the AX portion the balance is at least $9(s-1)$.  The MP
+candidate's suffix loses at most $s-1$, leaving at least $8(s-1)$
+throughout.  The last S costs one and its suffix loses at most $s$,
+leaving at least
+\[
+                         8(s-1)-1-s=7s-9>0.
+\]
+Thus the entire diagonal is prefix nonnegative and has nonnegative final
+balance.  Since its starting $B$ is at least $-3$, all its candidate
+boundaries have $B(k)\ge-3$; their $k\ge3$ then gives $B(k)+k\ge0$.
+This closes the simultaneous induction for every natural diagonal and
+every command prefix, including recursively decoded suffixes.
+
+\paragraph{Exact conservative credit at any cutoff.}
+Given $N$, choose $T_s\le N<T_{s+1}$ and set
+$E(N)=\max(3,T_{s+1})$.  Let $d(N)$ be the negative of the minimum
+prefix balance, including the empty prefix, of the finite word
+\[
+                    W(N);W(N+1);\cdots;W(E(N)-1).
+\]
+Every later complete diagonal is prefix nonnegative.  Hence $d(N)$
+is exactly the conservative credit needed for the whole infinite
+syntactic schedule beginning at $N$, not an estimate extrapolated from
+a finite enumeration.  With an initial positive proof pointer $p$,
+let $b,m$ be the total and minimum-prefix balances of $\mathcal R(p)$.
+The required credit is
+\[
+                         \max(0,-m,d(N)-b).
+\]
+In particular $E(1)=3$ and $W(1);W(2)=[\mathsf{MP},S,S]$, so
+\[
+                              d(1)=2.
+ \tag{Credit}
+\]
+
+\paragraph{Protection and soundness.}
+Represent the stack as a finite explicit list of native theorem heads
+above a fixed arbitrary numerical tail $J$.  Suppose top and cache are
+native theorems and the explicit list has at least the required credit.
+Returning AX adds ten theorem heads: eight axiom instances, $Q_Ch$ by
+theorem generalization, and the saved theorem top.  Returning MP either
+preserves the list or adds theorem zero.  Before each returning S the
+conservative explicit length is at least one, since its subsequent
+length is nonnegative.  Hence it removes an explicit theorem head and
+never decodes $J$.  It transfers theorem codes; if it halts, its incoming
+cache $1$ is already a theorem.  This proves that every halt on the
+protected run supplies a native refutation.
+
+The explicit length is a proof invariant, not the size of a numerical
+list encoding.  Although $P(0,0)=0$, the identity
+$\operatorname{unpair}(P(x,v))=(x,v)$ holds for all $x,v$.  An explicit
+zero wrapper may therefore be counted, pushed, and popped even when its
+integer representation coincides with the underlying zero tail.  No
+injective encoding of finite list length is assumed.  Defining $W$ while
+ignoring halts also introduces no nonhalting assumption: when a halt
+occurs, the argument applies to its finite executed prefix.
+
+\paragraph{Eight safe heads suffice after an arbitrary AX.}
+There is a useful stronger bootstrap variant.  Even if the incoming
+top and cache of the \emph{first} AX are arbitrary, its gate is an axiom
+or truth, its new cache is zero, and its first eight heads are valid
+native axioms.  The ninth head $Q_C(\mathrm{old}\ h)$ need not be a
+theorem.  Absorb it, the saved old top, and the whole old stack into
+the single arbitrary tail
+\[
+                     J=[Q_C(\mathrm{old}\ h),\mathrm{old}\ t;
+                                                       \mathrm{old}\ w].
+\]
+There are then eight explicit safe heads above $J$.  At $N=1,p=0$,
+(Credit) protects that suffix with a permanent conservative margin of
+at least six.  One must not instead assume that generalizing an arbitrary
+dirty cache makes it a theorem.
+
+\subsection{Application to the exact measured blank frame}
+
+The separately replayed bootstrap receipt for this candidate gives the
+following complete correspondence.  After $68{,}710$ binary transitions
+from a blank tape, the machine is at dispatcher state $84$, head $-2$,
+header $62$, gap zero, and source address
+\texttt{00110010010110010}, which is primitive ordinal $58$.  Its logical
+registers, in the recorded order $(N,T,W,A,D,H,X,Y,L)$, are
+\[
+                         (1,0,0,0,0,0,0,18,0),
+\]
+with all $63$ spare registers zero.  The physical register named $A$
+in this tuple carries the private parameter called $C$ in the AX
+equations; it is distinct from their derived formula parameter $A=d+x$.
+The receipt compares the entire
+finite set of $100$ one-cells, not merely those displayed register values.
+Its independently replayed source trace starts at AX entry ordinal $25$
+with
+\[
+                         (1,0,2,0,0,0,0,0,0)
+\]
+and reaches the same source ordinal and registers after exactly $177$
+source primitives.  These concrete execution facts are premises supplied
+by the bound trace and source-CFG checks, not conclusions of the present
+logical argument.
+
+This synthetic entry is $\mathsf{AX}(0;0,0)$ at work tuple
+$(t,w,d,h)=(0,2,0,0)$, with next candidate $N=1$ and empty proof pointer.
+By the all-natural AX contract, its remaining computation terminates and
+reaches
+\[
+ t=d=h=0,\qquad
+ w=[R_1(0,0,0),\ldots,R_7(0,0,0),L(0,0,0,0),Q_00,0;2].
+\]
+All ten displayed heads are native theorems.  The gate is zero because
+$C=A=B=0$.  The ninth head is $Q_00$ in both parent and new interfaces,
+but the generalization proof above covers every other input as well.
+The numerical suffix $2$ must remain protected: its repeated unpairing
+eventually yields falsity, since $2=P(0,1)$ and $1=P(1,0)$.
+The next-candidate value is still $1$ and the proof pointer is still zero.
+The required credit is only two, so the ten safe heads leave a permanent
+conservative margin of at least eight.  Alternatively the general
+eight-head argument applies with margin six without using theoremhood of
+the saved input fields.
+
+Consequently the partial-AX frame suffices: the all-natural source/runtime
+contracts advance it to the protected root without literally evaluating
+its enormous later formula codes.  A coincident register projection alone
+would not justify this step; the complete frame, source ordinal, scheduler
+fields, spare registers, and whole-tape trace are the separately checked
+physical premises.
+
+\paragraph{Calibration theorem and formalization scope.}
+Assume the exact source command equations, the all-natural binary
+simulation of that source, and the complete blank-to-source frame above.
+Then ZFC proves
+\[
+ \text{the new blank-tape machine halts}
+ \quad\Longleftrightarrow\quad
+ \mathcal D\vdash1
+ \quad\Longleftrightarrow\quad
+ \neg\operatorname{Con}(\mathrm{ZFC}).
+\]
+The forward implication is the protected-tail theorem; the reverse is
+the strong compiler and cofinal candidate construction.  Both are uniform
+finite arithmetic arguments and combine with the inherited native
+calibration inside ZFC.  Taking negations gives the requested equivalence
+between nonhalting and $\operatorname{Con}(\mathrm{ZFC})$.
+This is an ordinary mathematical proof tied to the new literal interface
+and its separately checked physical certificates.  It does not assert a
+new Lean or Rocq kernel endpoint for this exact transition table merely
+because an endpoint exists for an earlier 215-state table.

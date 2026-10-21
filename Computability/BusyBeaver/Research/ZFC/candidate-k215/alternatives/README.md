@@ -23,6 +23,12 @@ report, placed in batch 200, whose write is still to come.
 | [direct-transfer](direct-transfer/INTAKE.md) | direct 35-leaf transfer command via contextual reassociation | batch 202 |
 | [conditional-marker](conditional-marker/INTAKE.md) | two decoder roles merged by a predecessor-marker selector | batch 202 |
 | [rebalanced](rebalanced/INTAKE.md) | rebalanced addresses, maximum depth 41 | batch 202 |
+| [dr215](dr215/INTAKE.md) | direct transfer with the rho6 permutation | batch 204 |
+| [forced-transfer](forced-transfer/INTAKE.md) | a forced transfer before every candidate, debt seven | batch 204 |
+| [zero-credit](zero-credit/INTAKE.md) | DROP 0 / NIP 1 tags, exhaustive enumeration needing no stack credit | batch 204 |
+| [gc215](gc215/INTAKE.md) | AX tag as generalization binder, conditional decoder merge | batch 204 |
+| [context-returns](context-returns/INTAKE.md) | history-dependent decoder returns; two machines, one with depth 46 | batch 204 |
+| [gc-zc215](gc-zc215/INTAKE.md) | gc215 combined with zero-credit enumeration | batch 204 |
 | [transfer215](../../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/166-transfer-mach-README.md) (Source 166) | transfer-pop command, 201-node source, partial-AX startup | batch 200 |
 | [cb1_215](../../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/165-frontier-machine-search-README.md) (Source 165) | CB1 appended to the restoration loop; changed enumeration, calibrated by a separate scheduler proof | batch 200 |
 
@@ -31,7 +37,8 @@ behavior, so it is not listed separately. `zero-spare-transfer`, `mp-first-trans
 `direct-transfer` descend from `transfer215`; `zero-spare-mp-first` combines `zero-spare` with
 `mp-first-transfer`.
 
-Batches 201 and 202 placed only distinct implementations. Deliveries whose machines were state
-renamings, re-associations or re-allocations of tables already here, and research-only packets,
-were retired without placement; the batch-201 and batch-202 entries in `docs/incoming/README.md`
+Batches 201, 202 and 204 placed only distinct implementations. Deliveries whose machines were state
+renamings, re-associations, re-allocations or register conjugates of tables already here, refuted
+machines and research-only packets,
+were retired without placement; the batch-201, -202 and -204 entries in `docs/incoming/README.md`
 list them with their arrival commits.

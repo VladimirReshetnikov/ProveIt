@@ -1,0 +1,87 @@
+\subsection{A quantified axiom sampler with a strict numerical bound}
+\label{sec:quantifier-padding}
+Let $P(a,b)=(a+b)(a+b+1)/2+b$, $I(a,b)=4P(a,b)$,
+$F=1$, $\neg A=I(A,F)$, and
+$Q_iA=4P(i,A)+2$.  Existential quantification means the literal numerical
+operation $E_i A=\neg Q_i\neg A$.  The sixth native axiom is
+\[
+ R_6(i,A)=(E_iQ_i A)\to A.
+\]
+All parameters below range over natural numbers, whether or not they
+are images of an ordinary formula encoder.
+
+\paragraph{Strict matrix restriction.}
+Retain the native implication basis, normality $R_2$, modus ponens,
+and generalization of closed theorems. Replace the sixth axiom family
+by only its instances with $i<A$. The resulting numerical calculus
+derives every unrestricted sixth-row instance, at its original code.
+The weaker restriction $i\leq A$ therefore has the same property.
+
+For a proof, fix $i,A$, and put
+\[
+ e=i+1,\qquad W=I(e,e),\qquad M=I(W,A).
+\]
+The identity formula $W$ is a theorem of K and S. Consequently the
+same two implication schemas prove both $A\to M$ and $M\to A$.
+All these are closed theorems. Generalization and $R_2$ transport the
+first implication through $Q_i$. Implicational contraposition,
+normality, and contraposition once more give monotonicity of the
+literal operation $E_i$. Thus
+\[
+ E_iQ_i A\longrightarrow E_iQ_i M.
+\]
+The restricted axiom $R_6(i,M)$ and $M\to A$ now give $R_6(i,A)$.
+This argument uses neither the unrestricted sixth row nor explosion.
+In particular it does not silently replace relative falsity by an
+ordinary primitive false constant.
+
+The restriction is met for every numerical input, including zero:
+\[
+ W=8(i+1)(i+2),\qquad
+ M\geq4W=32(i+1)(i+2)>i.
+\]
+The last inequality has the positive polynomial witness
+$32i^2+95i+64$. A positive padding parameter avoids the exceptional
+identity $I(0,0)=0$ entirely.
+
+The supplied independent checker verifies a forward Hilbert certificate
+with 107 nodes and 124 expression nodes. Its only inference and axiom
+kinds are K (28), S (21), MP (53), $R_2$ (2), closed generalization (2),
+and a single strictly permitted $R_6$ instance. It checks every exact
+inference and the full dependency closure. The existing dominated-$R_8$
+certificate supplies K and S independently of $R_6$; the construction is
+therefore noncircular.
+
+\paragraph{Arbitrary finite cutoffs.}
+More generally, for any specified total primitive-recursive function $g$,
+retaining only matrices $A>g(i)$ still recovers the full sixth row.
+Replace $e$ above by $g(i)+1$. Only the padding parameter changes:
+all $Q_i$ operators retain binder $i$, and
+$M\ge32(g(i)+1)(g(i)+2)>g(i)$. For each $g$ whose totality is formalized
+in ZFC, the finite proof replacement and the resulting equality of
+all native theorem codes are formalizable there. This claim concerns a
+full numerical tail for each binder, not an arbitrary sparse cofinal
+subset of matrices.
+
+\paragraph{Source interface and remaining allocation problem.}
+The accepted AX command sets $U=d$ and $A=d+x$. Replacing just its
+sixth output by $R_6(U,A)$ would enumerate all pairs with $U\leq A$.
+The preceding theorem supplies its exact logical completeness.
+A desired restricted row $R_6(i,b)$ is selected from a clean source
+state by
+\[
+ \mathsf{DISCARD};\mathsf J(i);
+ \mathsf{AX}(0;b-i,0);
+ S^{7};H^{3}.
+\]
+All other source compiler blocks retain their contracts if the other AX
+outputs and reset behavior remain unchanged. An unrestricted-row proof
+is first translated using the 107-node certificate.
+
+This is an actionable logical interface, not yet a smaller machine.
+In the current postfix emitter, $U$ has already been consumed into the
+partial eighth-row formula before the sixth row is constructed. A new
+emission schedule or temporary-storage arrangement is still needed to
+turn this restriction into a physical saving. In particular, incrementing
+the common $A$ input would change other axioms and is not justified by
+this sixth-row theorem.
