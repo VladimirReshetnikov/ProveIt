@@ -1,0 +1,50 @@
+/tmp/k215-enumperm-simplification/run1/EnumPerm.lean:178:4: error: Tactic `split` failed: Could not split an `if` or `match` expression in the goal
+
+Hint: Use `set_option trace.split.failure true` to display additional diagnostic information
+
+case h_1
+s : St
+ht : C222 s.tw
+hh : C222 s.h
+hw : Good s.ws
+x✝ : Option St
+s'✝ : St
+heq✝ :
+  (match (unP (fetch s).fst).fst with
+    | 0 =>
+      if s.h = 1 then none
+      else
+        some
+          { pl := (unP (fetch s).fst).snd, np := (fetch s).snd, tw := s.tw, ws := (unP s.ws).snd, d := s.d,
+            h := (unP s.ws).fst }
+    | 1 => some { pl := (unP (fetch s).fst).snd, np := (fetch s).snd, tw := s.h, ws := P s.tw s.ws, d := s.d, h := s.h }
+    | 2 =>
+      some
+        (if wim s.tw (s.d + (unP (unP (fetch s).fst).snd).fst) = s.h then
+          { pl := (unP (unP (fetch s).fst).snd).snd, np := (fetch s).snd, tw := s.d + (unP (unP (fetch s).fst).snd).fst,
+            ws := P 0 s.ws, d := s.d + (unP (unP (fetch s).fst).snd).fst, h := 0 }
+        else
+          { pl := (unP (unP (fetch s).fst).snd).snd, np := (fetch s).snd, tw := 0, ws := s.ws,
+            d := s.d + (unP (unP (fetch s).fst).snd).fst, h := 0 })
+    | c.succ.succ.succ =>
+      some
+        { pl := (unP (unP (unP (fetch s).fst).snd).snd).snd, np := (fetch s).snd,
+          tw := gate (s.d + (unP (unP (unP (fetch s).fst).snd).snd).fst) (s.h + (unP (unP (fetch s).fst).snd).fst) c,
+          ws :=
+            axStack (s.d + (unP (unP (unP (fetch s).fst).snd).snd).fst) s.h (s.h + (unP (unP (fetch s).fst).snd).fst) c
+              s.d s.tw s.ws,
+          d := 0, h := 0 }) =
+    some s'✝
+⊢ Inv s'✝
+/tmp/k215-enumperm-simplification/run1/EnumPerm.lean:182:10: error: Invalid `⟨...⟩` notation: The expected type `C222 F` has more than one constructor
+
+Note: This notation can only be used when the expected type is an inductive type with a single constructor
+/tmp/k215-enumperm-simplification/run1/EnumPerm.lean:183:2: error: No goals to be solved
+/tmp/k215-enumperm-simplification/run1/EnumPerm.lean:426:33: error: Application type mismatch: The argument
+  rfl
+has type
+  ?m.56 = ?m.56
+but is expected to have type
+  True
+in the application
+  Or.inl rfl

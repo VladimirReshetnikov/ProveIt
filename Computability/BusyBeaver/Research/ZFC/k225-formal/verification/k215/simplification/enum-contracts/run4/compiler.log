@@ -1,0 +1,46 @@
+/tmp/k215-enumperm-simplification/run4/EnumPerm.lean:456:35: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  cexec (Cmd.ax 1 0 0 :: (nips 10 ++ [])) { tw := 0, ws := S, d := 0 + 1, h := 0 }
+in the target expression
+  (match
+      match cstep (Cmd.ax 1 0 0) { tw := 0, ws := S, d := 0 + 1, h := 0 } with
+      | some w' => some w'
+      | none => none with
+    | some w' => cexec (nips 10 ++ []) w'
+    | none => none) =
+    some { tw := 0, ws := S, d := 0, h := 0 }
+
+T S : Nat
+hw : wim T (0 + 1) ≠ 0
+⊢ (match
+      match cstep (Cmd.ax 1 0 0) { tw := 0, ws := S, d := 0 + 1, h := 0 } with
+      | some w' => some w'
+      | none => none with
+    | some w' => cexec (nips 10 ++ []) w'
+    | none => none) =
+    some { tw := 0, ws := S, d := 0, h := 0 }
+/tmp/k215-enumperm-simplification/run4/EnumPerm.lean:576:35: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  cexec (Cmd.ax c a b :: (nips 10 ++ [])) { tw := 0, ws := S, d := 0, h := 0 }
+in the target expression
+  cexec ((if True then [] else [Cmd.mp 0]) ++ Cmd.ax c a b :: (nips 10 ++ [])) { tw := 0, ws := S, d := 0, h := 0 } =
+    some { tw := bundle222 a b c, ws := S, d := 0, h := 0 }
+
+a b c : Nat
+h1 : c ≠ a
+h2 : c ≠ b
+T S : Nat
+⊢ cexec ((if True then [] else [Cmd.mp 0]) ++ Cmd.ax c a b :: (nips 10 ++ [])) { tw := 0, ws := S, d := 0, h := 0 } =
+    some { tw := bundle222 a b c, ws := S, d := 0, h := 0 }
+/tmp/k215-enumperm-simplification/run4/EnumPerm.lean:575:16: warning: This simp argument is unused:
+  if_pos rfl
+
+Hint: Omit it from the simp argument list.
+  simp only [J, i̵f̵_̵p̵o̵s̵ ̵r̵f̵l̵,̵ ̵List.nil_append, Nat.sub_zero]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/k215-enumperm-simplification/run4/EnumPerm.lean:575:28: warning: This simp argument is unused:
+  List.nil_append
+
+Hint: Omit it from the simp argument list.
+  simp only [J, if_pos rfl, L̵i̵s̵t̵.̵n̵i̵l̵_̵a̵p̵p̵e̵n̵d̵,̵ ̵Nat.sub_zero]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

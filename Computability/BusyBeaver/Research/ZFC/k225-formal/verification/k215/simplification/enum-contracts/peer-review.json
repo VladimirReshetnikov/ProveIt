@@ -1,0 +1,32 @@
+{
+  "status": "SOURCE_API_PEER_CLEAN",
+  "reviewer": "review_upstream_reflection",
+  "files": {
+    "/tmp/k215-enumperm-simplification/EnumPerm.before.lean": "ac2104253130cc9d8a0c2f5fb38d02a2b4f7a7c8d1a81f20dea607d39bc8a1d4",
+    "/tmp/k215-enumperm-simplification/EnumPerm.final.lean": "416c55448c3421d4c3ef1ab9136f0fc1062222d10dfad227ff895197ccef476a",
+    "/tmp/k215-enumperm-simplification/source.diff": "b62fdf07ee5824bde82c47191ed8ef8e2be3f63e16eb543221712e16a65c4372",
+    "/tmp/k215-enumperm-simplification/run5/EnumPerm.lean": "75d7d3f299e0abef80ee2f7c7096dd3227e0f8f3f75c5315251de5081ee8a62d",
+    "/tmp/k215-enumperm-simplification/run5/result.json": "c92e27bc1a07f4d18f2eb2f23b58bfcea4f36f1df47e982468555c900f614ccc",
+    "/tmp/k215-enumperm-simplification/run5/compiler.log": "48817f3ae7f445c065bf65d52422ff5a82240fe717eb885f441d5fe6028b1971",
+    "/tmp/k215-enumperm-simplification/run6/compiler.log": "48817f3ae7f445c065bf65d52422ff5a82240fe717eb885f441d5fe6028b1971"
+  },
+  "findings": [],
+  "existing_declarations": 91,
+  "changed_proofs": [
+    "step_inv",
+    "halt_step",
+    "execAt_pack",
+    "cexec_discard",
+    "bundle_contract",
+    "gen_contract",
+    "mp_contract"
+  ],
+  "argument": [
+    "step_sound unifies the four command branches without weakening Inv or the falsity conclusion; successful MP uses the same two invariant proofs.",
+    "Contract.continue explicitly propagates either an early halt or the claimed continuation result; gen_contract and both MP block contracts retain their early-halt branches.",
+    "cexec_ax_pop uses all nine non-falsity AX entries, then loads the old current code on the tenth pop without testing it; arbitrary prior cache and continuation are preserved.",
+    "The MP proof still handles A=1 and B=1 as early halts and retains the two-zero stack cleanup. The zero counter and raw pairing alias behavior are unchanged."
+  ],
+  "actual_acknowledgment": "Read the saved run5 source/log/result and matching run6 axiom log. No compiler rerun and no independent transitive-provider or final endpoint audit.",
+  "scope": "Full three new helper proofs and seven changed proofs read in their command/invariant/compiler context; all prior statements and executable definitions independently compared."
+}

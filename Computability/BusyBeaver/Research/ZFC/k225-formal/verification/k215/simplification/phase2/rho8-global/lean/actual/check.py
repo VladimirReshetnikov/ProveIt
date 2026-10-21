@@ -1,0 +1,6 @@
+from pathlib import Path
+import hashlib,importlib.util,json,os,signal,sys
+P=Path(__file__).resolve().parent;repo=Path('/home/codex/.codex/worktrees/ec20/Proofs');s=importlib.util.spec_from_file_location('safe',repo/'Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/lean/build.py');m=importlib.util.module_from_spec(s);s.loader.exec_module(m)
+signal.signal(signal.SIGTERM,lambda *_: (_ for _ in ()).throw(KeyboardInterrupt()))
+out=P/('run'+str(1+len(list(P.glob('run[0-9]*')))));out.mkdir();src=P/'WithAudit.lean';snap=out/src.name;snap.write_bytes(src.read_bytes());env=os.environ.copy();env['LEAN_PATH']='/tmp/k215-proof-simplification/root/objects';env['LEAN_NUM_THREADS']='1'
+cmd=['/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean','-j1','-M12288','--root='+str(out),'-o',str(out/'WithAudit.olean'),str(snap)];row={'source_sha256':m.sha(src),'source_snapshot':str(snap),'command':cmd,'scope':'Isolated candidate, canonical unchanged; current checked root objects.'};ok=m.run_locked(cmd,repo,env,Path('/tmp/proveit-k215-proof-build.lock'),out/'compiler.log',120,row,out/'result.json');print(json.dumps(row,indent=2));print((out/'compiler.log').read_text());sys.exit(0 if ok else 1)

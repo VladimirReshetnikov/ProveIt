@@ -195,24 +195,35 @@ theorem cstep_none : ∀ (c : Cmd) {w : W}, cstep c w = none → w.h = 1
   | .drop, ⟨_, _, _, _⟩, e | .ax .., ⟨_, _, _, _⟩, e => by cases e
   | .mp _, ⟨_, _, _, _⟩, e => by simp only [cstep] at e; split at e <;> cases e
 
+/-- One decoded command either preserves the invariant or halts with derivable falsity. -/
+theorem step_sound {s : St} (hs : Inv (toW s)) :
+    match enumStep s with
+    | some s' => Inv (toW s')
+    | none => C222 F := by
+  cases h : enumStep s with
+  | none =>
+      simp only [enumStep, execAt, Option.map_eq_none_iff] at h
+      have hh := hs.2.1
+      rw [cstep_none _ h] at hh
+      exact hh
+  | some s' =>
+      simp only [enumStep, execAt, Option.map_eq_some_iff] at h
+      obtain ⟨w, hw, rfl⟩ := h
+      exact cstep_inv _ hs hw
+
 theorem run_inv : ∀ (n : Nat) {s s' : St}, Inv (toW s) → run n s = some s' → Inv (toW s')
   | 0, s, s', hs, h => by cases h; exact hs
   | n + 1, s, s', hs, h => by
       unfold run at h
       split at h
       · rename_i s1 h1
-        simp only [enumStep, execAt, Option.map_eq_some_iff] at h1
-        obtain ⟨w, hw, rfl⟩ := h1
-        exact run_inv n (cstep_inv _ hs hw) h
+        exact run_inv n (by simpa only [h1] using step_sound hs) h
       · cases h
 
 /-- Soundness: halting yields a derivation of code 1. -/
 theorem sound {s : St} (hs : Inv (toW s)) : HaltsFrom s → C222 F := by
   rintro ⟨n, s', hrun, hstep⟩
-  simp only [enumStep, execAt, Option.map_eq_none_iff] at hstep
-  have := (run_inv n hs hrun).2.1
-  rw [cstep_none _ hstep] at this
-  exact this
+  simpa only [hstep] using step_sound (run_inv n hs hrun)
 
 /-! ## Completeness: compiling derivations into candidates -/
 

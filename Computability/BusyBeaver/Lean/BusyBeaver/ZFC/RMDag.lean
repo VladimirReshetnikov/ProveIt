@@ -86,6 +86,7 @@ inductive IterHalts (p : Prog) : Regs → Prop
 
 /-! ## Determinism -/
 
+/-- Align the car results, then the cdr results, then any restarted run. -/
 theorem run_det {p : Prog} {e : Edge} {R : Regs} {x : Exit} {R' : Regs}
     (h : Run p e R x R') : ∀ {y : Exit} {R'' : Regs}, Run p e R y R'' → x = y ∧ R' = R'' := by
   induction h with
@@ -104,119 +105,52 @@ theorem run_det {p : Prog} {e : Edge} {R : Regs} {x : Exit} {R' : Regs}
   | brkS => intro y R'' h2; cases h2; exact ⟨rfl, rfl⟩
   | contS => intro y R'' h2; cases h2; exact ⟨rfl, rfl⟩
   | halt => intro y R'' h2; cases h2; exact ⟨rfl, rfl⟩
-  | carBrk1 n R R' h ih =>
+  -- A non-normal car fixes the whole node result.
+  | carBrk1 _ _ _ _ ih
+  | carBrkS _ _ _ _ _ ih
+  | carCont _ _ _ _ _ ih
+  | carHalt _ _ _ _ ih =>
       intro y R'' h2
-      cases h2 with
-      | carBrk1 _ _ _ h' => exact ⟨rfl, (ih h').2⟩
-      | carBrkS _ _ _ _ h' => cases (ih h').1
-      | carCont _ _ _ _ h' => cases (ih h').1
-      | carHalt _ _ _ h' => cases (ih h').1
-      | cdrNormal _ _ _ _ h' _ => cases (ih h').1
-      | cdrBrk _ _ _ _ _ h' _ => cases (ih h').1
-      | cdrCont1 _ _ _ _ _ _ h' _ _ => cases (ih h').1
-      | cdrContS _ _ _ _ _ h' _ => cases (ih h').1
-      | cdrHalt _ _ _ _ h' _ => cases (ih h').1
-  | carBrkS n k R R' h ih =>
-      intro y R'' h2
-      cases h2 with
-      | carBrk1 _ _ _ h' => cases (ih h').1
-      | carBrkS _ k' _ _ h' => have := ih h'; cases this.1; exact ⟨rfl, this.2⟩
-      | carCont _ _ _ _ h' => cases (ih h').1
-      | carHalt _ _ _ h' => cases (ih h').1
-      | cdrNormal _ _ _ _ h' _ => cases (ih h').1
-      | cdrBrk _ _ _ _ _ h' _ => cases (ih h').1
-      | cdrCont1 _ _ _ _ _ _ h' _ _ => cases (ih h').1
-      | cdrContS _ _ _ _ _ h' _ => cases (ih h').1
-      | cdrHalt _ _ _ _ h' _ => cases (ih h').1
-  | carCont n k R R' h ih =>
-      intro y R'' h2
-      cases h2 with
-      | carBrk1 _ _ _ h' => cases (ih h').1
-      | carBrkS _ _ _ _ h' => cases (ih h').1
-      | carCont _ k' _ _ h' => have := ih h'; cases this.1; exact ⟨rfl, this.2⟩
-      | carHalt _ _ _ h' => cases (ih h').1
-      | cdrNormal _ _ _ _ h' _ => cases (ih h').1
-      | cdrBrk _ _ _ _ _ h' _ => cases (ih h').1
-      | cdrCont1 _ _ _ _ _ _ h' _ _ => cases (ih h').1
-      | cdrContS _ _ _ _ _ h' _ => cases (ih h').1
-      | cdrHalt _ _ _ _ h' _ => cases (ih h').1
-  | carHalt n R R' h ih =>
-      intro y R'' h2
-      cases h2 with
-      | carBrk1 _ _ _ h' => cases (ih h').1
-      | carBrkS _ _ _ _ h' => cases (ih h').1
-      | carCont _ _ _ _ h' => cases (ih h').1
-      | carHalt _ _ _ h' => exact ⟨rfl, (ih h').2⟩
-      | cdrNormal _ _ _ _ h' _ => cases (ih h').1
-      | cdrBrk _ _ _ _ _ h' _ => cases (ih h').1
-      | cdrCont1 _ _ _ _ _ _ h' _ _ => cases (ih h').1
-      | cdrContS _ _ _ _ _ h' _ => cases (ih h').1
-      | cdrHalt _ _ _ _ h' _ => cases (ih h').1
-  | cdrNormal n R R1 R' h1 h2 ih1 ih2 =>
+      cases h2 <;> first
+      | rename_i h'
+        obtain ⟨he, hR⟩ := ih h'
+        cases he <;> cases hR <;> exact ⟨rfl, rfl⟩
+      | rename_i h' h''
+        cases (ih h').1
+      | rename_i h' h'' h'''
+        cases (ih h').1
+  -- A normal car fixes the intermediate registers before the cdr is compared.
+  | cdrNormal _ _ _ _ _ _ ih1 ih2
+  | cdrBrk _ _ _ _ _ _ _ ih1 ih2
+  | cdrContS _ _ _ _ _ _ _ ih1 ih2
+  | cdrHalt _ _ _ _ _ _ ih1 ih2 =>
       intro y R'' h3
       cases h3 with
-      | carBrk1 _ _ _ h' => cases (ih1 h').1
-      | carBrkS _ _ _ _ h' => cases (ih1 h').1
-      | carCont _ _ _ _ h' => cases (ih1 h').1
-      | carHalt _ _ _ h' => cases (ih1 h').1
-      | cdrNormal _ _ R1' _ h' h'' => rw [← (ih1 h').2] at h''; exact ⟨rfl, (ih2 h'').2⟩
-      | cdrBrk _ _ _ R1' _ h' h'' => rw [← (ih1 h').2] at h''; cases (ih2 h'').1
-      | cdrCont1 _ _ R1' _ _ _ h' h'' _ => rw [← (ih1 h').2] at h''; cases (ih2 h'').1
-      | cdrContS _ _ _ R1' _ h' h'' => rw [← (ih1 h').2] at h''; cases (ih2 h'').1
-      | cdrHalt _ _ R1' _ h' h'' => rw [← (ih1 h').2] at h''; cases (ih2 h'').1
-  | cdrBrk n k R R1 R' h1 h2 ih1 ih2 =>
-      intro y R'' h3
-      cases h3 with
-      | carBrk1 _ _ _ h' => cases (ih1 h').1
-      | carBrkS _ _ _ _ h' => cases (ih1 h').1
-      | carCont _ _ _ _ h' => cases (ih1 h').1
-      | carHalt _ _ _ h' => cases (ih1 h').1
-      | cdrNormal _ _ R1' _ h' h'' => rw [← (ih1 h').2] at h''; cases (ih2 h'').1
-      | cdrBrk _ _ _ R1' _ h' h'' =>
-          rw [← (ih1 h').2] at h''; have := ih2 h''; cases this.1; exact ⟨rfl, this.2⟩
-      | cdrCont1 _ _ R1' _ _ _ h' h'' _ => rw [← (ih1 h').2] at h''; cases (ih2 h'').1
-      | cdrContS _ _ _ R1' _ h' h'' => rw [← (ih1 h').2] at h''; cases (ih2 h'').1
-      | cdrHalt _ _ R1' _ h' h'' => rw [← (ih1 h').2] at h''; cases (ih2 h'').1
+      | cdrCont1 _ _ _ _ _ _ h' h'' _ =>
+          rw [← (ih1 h').2] at h''
+          cases (ih2 h'').1
+      | _ => first
+        | rename_i h'
+          cases (ih1 h').1
+        | rename_i h' h''
+          obtain ⟨he, hR⟩ := ih1 h'
+          cases he
+          cases hR
+          obtain ⟨he, hR⟩ := ih2 h''
+          cases he <;> cases hR <;> exact ⟨rfl, rfl⟩
   | cdrCont1 n R R1 R2 R' x h1 h2 h3 ih1 ih2 ih3 =>
       intro y R'' h4
       cases h4 with
-      | carBrk1 _ _ _ h' => cases (ih1 h').1
-      | carBrkS _ _ _ _ h' => cases (ih1 h').1
-      | carCont _ _ _ _ h' => cases (ih1 h').1
-      | carHalt _ _ _ h' => cases (ih1 h').1
-      | cdrNormal _ _ R1' _ h' h'' => rw [← (ih1 h').2] at h''; cases (ih2 h'').1
-      | cdrBrk _ _ _ R1' _ h' h'' => rw [← (ih1 h').2] at h''; cases (ih2 h'').1
-      | cdrCont1 _ _ R1' R2' _ _ h' h'' h''' =>
+      | cdrCont1 _ _ _ _ _ _ h' h'' h''' =>
           rw [← (ih1 h').2] at h''
           rw [← (ih2 h'').2] at h'''
           exact ih3 h'''
-      | cdrContS _ _ _ R1' _ h' h'' => rw [← (ih1 h').2] at h''; cases (ih2 h'').1
-      | cdrHalt _ _ R1' _ h' h'' => rw [← (ih1 h').2] at h''; cases (ih2 h'').1
-  | cdrContS n k R R1 R' h1 h2 ih1 ih2 =>
-      intro y R'' h3
-      cases h3 with
-      | carBrk1 _ _ _ h' => cases (ih1 h').1
-      | carBrkS _ _ _ _ h' => cases (ih1 h').1
-      | carCont _ _ _ _ h' => cases (ih1 h').1
-      | carHalt _ _ _ h' => cases (ih1 h').1
-      | cdrNormal _ _ R1' _ h' h'' => rw [← (ih1 h').2] at h''; cases (ih2 h'').1
-      | cdrBrk _ _ _ R1' _ h' h'' => rw [← (ih1 h').2] at h''; cases (ih2 h'').1
-      | cdrCont1 _ _ R1' _ _ _ h' h'' _ => rw [← (ih1 h').2] at h''; cases (ih2 h'').1
-      | cdrContS _ _ _ R1' _ h' h'' =>
-          rw [← (ih1 h').2] at h''; have := ih2 h''; cases this.1; exact ⟨rfl, this.2⟩
-      | cdrHalt _ _ R1' _ h' h'' => rw [← (ih1 h').2] at h''; cases (ih2 h'').1
-  | cdrHalt n R R1 R' h1 h2 ih1 ih2 =>
-      intro y R'' h3
-      cases h3 with
-      | carBrk1 _ _ _ h' => cases (ih1 h').1
-      | carBrkS _ _ _ _ h' => cases (ih1 h').1
-      | carCont _ _ _ _ h' => cases (ih1 h').1
-      | carHalt _ _ _ h' => cases (ih1 h').1
-      | cdrNormal _ _ R1' _ h' h'' => rw [← (ih1 h').2] at h''; cases (ih2 h'').1
-      | cdrBrk _ _ _ R1' _ h' h'' => rw [← (ih1 h').2] at h''; cases (ih2 h'').1
-      | cdrCont1 _ _ R1' _ _ _ h' h'' _ => rw [← (ih1 h').2] at h''; cases (ih2 h'').1
-      | cdrContS _ _ _ R1' _ h' h'' => rw [← (ih1 h').2] at h''; cases (ih2 h'').1
-      | cdrHalt _ _ R1' _ h' h'' => rw [← (ih1 h').2] at h''; exact ⟨rfl, (ih2 h'').2⟩
+      | _ => first
+        | rename_i h'
+          cases (ih1 h').1
+        | rename_i h' h''
+          rw [← (ih1 h').2] at h''
+          cases (ih2 h'').1
 
 /-! ## Composition rules -/
 
