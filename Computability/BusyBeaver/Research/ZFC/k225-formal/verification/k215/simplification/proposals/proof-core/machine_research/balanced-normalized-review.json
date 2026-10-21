@@ -1,0 +1,32 @@
+{
+  "scope": "Independent read-only mathematical source review; no new kernel run by this reviewer.",
+  "files": [
+    {
+      "path": "BalancedNormalized.v",
+      "sha256": "a5388ca13b90d8a557e2bc5071972073f88a81e61035d57914b6160525c8d0f0"
+    },
+    {
+      "path": "Source215BalancedNormalized.v",
+      "sha256": "df3419ac78866cf5eac28f570e689edb8ebe8873458f7a828c33d2cf16e45aa6"
+    },
+    {
+      "path": "NormalizedBisim.v",
+      "sha256": "54e6dd78fce3a0621f64008d48bd4bb7eeb9bd3394e00865ad8f7b868372e38c"
+    },
+    {
+      "path": "BalancedBisim.v",
+      "sha256": "9ce453967005bb7662064a2281f07503560cc82b565253750f2e541c6c4e2303"
+    }
+  ],
+  "findings": [
+    "nbranchTree_flatten is exact refinement through getTree_flatten under valid; the latter reduces to verified lookup/nth_error equality.",
+    "nentryTree_flatten is pointwise exact and allTree_flatten transfers universal checking over all entries, yielding ncheckTree_flatten.",
+    "ncheckTree_halts_iff invokes the existing normalized checker soundness theorem for every register store; no bounded execution premise is added.",
+    "Trailing-zero instruction pointers are handled by imported hn_ipeq. The normalized simulator consumes a real decrement transition before using induction.",
+    "normalized_tree_exact independently guards the untrusted buildTree fuel/truncation construction; normalized_tree_valid supplies the lookup invariant.",
+    "2851 actual lookups equals one initial lookup plus two for each of the1425 nonhalting entries. Halt-row target indices are unused.",
+    "32961 balanced-tree node visits versus2033059 list cells is a structural cost comparison, not a measured end-to-end speedup. The reported full concrete module time is slower than its baseline."
+  ],
+  "blocking_issues_found": [],
+  "claim_boundary": "No review of the entire inherited ZFC/consistency calibration was performed here."
+}

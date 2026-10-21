@@ -21,4 +21,6 @@ The isolated candidate check also passes with zero warnings and five reports usi
 
 The [primary evidence](lean/README.md) references the exact [phase-six packet](../phase6/README.md) rather than duplicating its ancestry. Sources, raw compiler output, failed attempts where present, producer controls, independent reviews and all provider bindings are retained; compiled objects are excluded. This is an incremental check, not a fresh compilation of all project modules. The maintained [fresh build driver](../../lean/README.md) remains the full-rebuild route.
 
-This checkpoint adopts the independently reviewed pointwise component. It does not complete the separate mathematical reconciliation of all batch-209/210 reports. Decoder framing and primitive/return integration remain future proof-shortening work. No new Rocq compilation, smaller machine, minimum-state bound or internal-PA endpoint is claimed.
+This checkpoint adopts the independently reviewed pointwise component. It does not complete the separate mathematical reconciliation of all reports from batches 209–211. Decoder framing and primitive/return integration remain future proof-shortening work. No new Rocq compilation, smaller machine, minimum-state bound or internal-PA endpoint is claimed.
+
+The subsequent [origin merge](upstream-merge/README.md) retains this checked checkpoint and queues the smaller, representation-independent core for separate kernel and producer checks.

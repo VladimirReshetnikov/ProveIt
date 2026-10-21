@@ -1,0 +1,425 @@
+{
+  "schema": "K215-balanced-normalized-v1",
+  "scope": "Exact all-register source equivalence, not full binary/ZFC endpoint",
+  "toolchain": "The Coq Proof Assistant, version 8.18.0\ncompiled with OCaml 4.14.1",
+  "compiler_sha256": "f14ab0c140bdfdb31c7e7e1f20379703973376480a4eea2d43d0fa56ddae03ec",
+  "sources": [
+    {
+      "name": "Compat818.v",
+      "delivered_sha256": "969b1efdcfed9ac232f23e7fccaac44d4c8ec3b9d81dc3367ab916eb00dc213e",
+      "compiled_sha256": "969b1efdcfed9ac232f23e7fccaac44d4c8ec3b9d81dc3367ab916eb00dc213e"
+    },
+    {
+      "name": "deps/K230/RM.v",
+      "delivered_sha256": "27e7dec443c3caf11a2c446744532a5c8077c6128b0e278542ceb911b823d181",
+      "compiled_sha256": "27e7dec443c3caf11a2c446744532a5c8077c6128b0e278542ceb911b823d181"
+    },
+    {
+      "name": "deps/K230/RMEquiv.v",
+      "delivered_sha256": "9fa6fe7612e90b2450ca8e4d12ed9f90c239c74cdb86d665cd54ef7ca7304f39",
+      "compiled_sha256": "094995f339318e5c68841ab4ee59a7c0770f40ae1e3bae6f6c14358b55d3b0f5"
+    },
+    {
+      "name": "deps/K230/Prog230.v",
+      "delivered_sha256": "b795e411095048db7849efe621d6b9fef4da3523167c7848ade26e3c715b83cc",
+      "compiled_sha256": "b795e411095048db7849efe621d6b9fef4da3523167c7848ade26e3c715b83cc"
+    },
+    {
+      "name": "deps/K230P/Bisim230.v",
+      "delivered_sha256": "3fdb11731542fa31e4c3974575da38db6917aa10a81d58757d9b023d6c42f38a",
+      "compiled_sha256": "3fdb11731542fa31e4c3974575da38db6917aa10a81d58757d9b023d6c42f38a"
+    },
+    {
+      "name": "deps/K215F/Prog215.v",
+      "delivered_sha256": "6cc81c19652b26467b584e5a9f550becfea10e550a7cadd416d64a616c05b010",
+      "compiled_sha256": "6cc81c19652b26467b584e5a9f550becfea10e550a7cadd416d64a616c05b010"
+    },
+    {
+      "name": "deps/K215F/DagPerm.v",
+      "delivered_sha256": "ba2b28487ae978bd27b0d804e9b2bde6d9adcd1dd575de55572465c050b86aa1",
+      "compiled_sha256": "ba2b28487ae978bd27b0d804e9b2bde6d9adcd1dd575de55572465c050b86aa1"
+    },
+    {
+      "name": "PathCodec.v",
+      "delivered_sha256": "6fa7196f1004004f9aa420d9918eee5749e9b26b702711b9c5fb0dbfc45ae7bf",
+      "compiled_sha256": "6fa7196f1004004f9aa420d9918eee5749e9b26b702711b9c5fb0dbfc45ae7bf"
+    },
+    {
+      "name": "BisimMirror.v",
+      "delivered_sha256": "443d5b1a3bb179100660b68f9bddf40530de5a6113e30ac9e6ea209ab829283f",
+      "compiled_sha256": "443d5b1a3bb179100660b68f9bddf40530de5a6113e30ac9e6ea209ab829283f"
+    },
+    {
+      "name": "NormalizedBisim.v",
+      "delivered_sha256": "54e6dd78fce3a0621f64008d48bd4bb7eeb9bd3394e00865ad8f7b868372e38c",
+      "compiled_sha256": "54e6dd78fce3a0621f64008d48bd4bb7eeb9bd3394e00865ad8f7b868372e38c"
+    },
+    {
+      "name": "NormalizedCert215.v",
+      "delivered_sha256": "5744d146fe58f5cb4d59db06e140003522d23f72990513d4f01e28cabec07bfd",
+      "compiled_sha256": "5744d146fe58f5cb4d59db06e140003522d23f72990513d4f01e28cabec07bfd"
+    },
+    {
+      "name": "BalancedBisim.v",
+      "delivered_sha256": "9ce453967005bb7662064a2281f07503560cc82b565253750f2e541c6c4e2303",
+      "compiled_sha256": "9ce453967005bb7662064a2281f07503560cc82b565253750f2e541c6c4e2303"
+    },
+    {
+      "name": "BalancedNormalized.v",
+      "delivered_sha256": "a5388ca13b90d8a557e2bc5071972073f88a81e61035d57914b6160525c8d0f0",
+      "compiled_sha256": "a5388ca13b90d8a557e2bc5071972073f88a81e61035d57914b6160525c8d0f0"
+    },
+    {
+      "name": "Source215BalancedNormalized.v",
+      "delivered_sha256": "df3419ac78866cf5eac28f570e689edb8ebe8873458f7a828c33d2cf16e45aa6",
+      "compiled_sha256": "df3419ac78866cf5eac28f570e689edb8ebe8873458f7a828c33d2cf16e45aa6"
+    },
+    {
+      "name": "NormalizedSource215.v",
+      "delivered_sha256": "6b62e09e3b7e227c82fb9a565b0d911d1efa5532e01c32523304db562400aecd",
+      "compiled_sha256": "6b62e09e3b7e227c82fb9a565b0d911d1efa5532e01c32523304db562400aecd"
+    }
+  ],
+  "checks": [
+    {
+      "name": "Compat818.v",
+      "command": [
+        "/dev/shm/zfc_59b6900405ab/coq818/usr/bin/coqc",
+        "-Q",
+        "deps/K230",
+        "K230",
+        "-Q",
+        "deps/K230P",
+        "K230P",
+        "-Q",
+        "deps/K215F",
+        "K215F",
+        "Compat818.v"
+      ],
+      "exit_code": 0,
+      "seconds": 0.25,
+      "max_rss_kib": 214288,
+      "closed_reports": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "deps_K230_RM.v",
+      "command": [
+        "/dev/shm/zfc_59b6900405ab/coq818/usr/bin/coqc",
+        "-Q",
+        "deps/K230",
+        "K230",
+        "-Q",
+        "deps/K230P",
+        "K230P",
+        "-Q",
+        "deps/K215F",
+        "K215F",
+        "deps/K230/RM.v"
+      ],
+      "exit_code": 0,
+      "seconds": 0.345,
+      "max_rss_kib": 292468,
+      "closed_reports": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "deps_K230_RMEquiv.v",
+      "command": [
+        "/dev/shm/zfc_59b6900405ab/coq818/usr/bin/coqc",
+        "-Q",
+        "deps/K230",
+        "K230",
+        "-Q",
+        "deps/K230P",
+        "K230P",
+        "-Q",
+        "deps/K215F",
+        "K215F",
+        "deps/K230/RMEquiv.v"
+      ],
+      "exit_code": 0,
+      "seconds": 2.624,
+      "max_rss_kib": 442912,
+      "closed_reports": 2,
+      "log_sha256": "e48860f73316a42d574e923cda848bcb6d474abd18fef10499e88630d5a78335"
+    },
+    {
+      "name": "deps_K230_Prog230.v",
+      "command": [
+        "/dev/shm/zfc_59b6900405ab/coq818/usr/bin/coqc",
+        "-Q",
+        "deps/K230",
+        "K230",
+        "-Q",
+        "deps/K230P",
+        "K230P",
+        "-Q",
+        "deps/K215F",
+        "K215F",
+        "deps/K230/Prog230.v"
+      ],
+      "exit_code": 0,
+      "seconds": 12.028,
+      "max_rss_kib": 506908,
+      "closed_reports": 0,
+      "log_sha256": "86315cc013f019d23eb4871c0f434cad2e536fb2b41c1646282775d5e5c5b04d"
+    },
+    {
+      "name": "deps_K230P_Bisim230.v",
+      "command": [
+        "/dev/shm/zfc_59b6900405ab/coq818/usr/bin/coqc",
+        "-Q",
+        "deps/K230",
+        "K230",
+        "-Q",
+        "deps/K230P",
+        "K230P",
+        "-Q",
+        "deps/K215F",
+        "K215F",
+        "deps/K230P/Bisim230.v"
+      ],
+      "exit_code": 0,
+      "seconds": 0.768,
+      "max_rss_kib": 418616,
+      "closed_reports": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "deps_K215F_Prog215.v",
+      "command": [
+        "/dev/shm/zfc_59b6900405ab/coq818/usr/bin/coqc",
+        "-Q",
+        "deps/K230",
+        "K230",
+        "-Q",
+        "deps/K230P",
+        "K230P",
+        "-Q",
+        "deps/K215F",
+        "K215F",
+        "deps/K215F/Prog215.v"
+      ],
+      "exit_code": 0,
+      "seconds": 0.464,
+      "max_rss_kib": 421232,
+      "closed_reports": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "deps_K215F_DagPerm.v",
+      "command": [
+        "/dev/shm/zfc_59b6900405ab/coq818/usr/bin/coqc",
+        "-Q",
+        "deps/K230",
+        "K230",
+        "-Q",
+        "deps/K230P",
+        "K230P",
+        "-Q",
+        "deps/K215F",
+        "K215F",
+        "deps/K215F/DagPerm.v"
+      ],
+      "exit_code": 0,
+      "seconds": 9.701,
+      "max_rss_kib": 825556,
+      "closed_reports": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "PathCodec.v",
+      "command": [
+        "/dev/shm/zfc_59b6900405ab/coq818/usr/bin/coqc",
+        "-Q",
+        "deps/K230",
+        "K230",
+        "-Q",
+        "deps/K230P",
+        "K230P",
+        "-Q",
+        "deps/K215F",
+        "K215F",
+        "PathCodec.v"
+      ],
+      "exit_code": 0,
+      "seconds": 0.342,
+      "max_rss_kib": 317280,
+      "closed_reports": 2,
+      "log_sha256": "e48860f73316a42d574e923cda848bcb6d474abd18fef10499e88630d5a78335"
+    },
+    {
+      "name": "BisimMirror.v",
+      "command": [
+        "/dev/shm/zfc_59b6900405ab/coq818/usr/bin/coqc",
+        "-Q",
+        "deps/K230",
+        "K230",
+        "-Q",
+        "deps/K230P",
+        "K230P",
+        "-Q",
+        "deps/K215F",
+        "K215F",
+        "BisimMirror.v"
+      ],
+      "exit_code": 0,
+      "seconds": 0.823,
+      "max_rss_kib": 430536,
+      "closed_reports": 2,
+      "log_sha256": "e48860f73316a42d574e923cda848bcb6d474abd18fef10499e88630d5a78335"
+    },
+    {
+      "name": "NormalizedBisim.v",
+      "command": [
+        "/dev/shm/zfc_59b6900405ab/coq818/usr/bin/coqc",
+        "-Q",
+        "deps/K230",
+        "K230",
+        "-Q",
+        "deps/K230P",
+        "K230P",
+        "-Q",
+        "deps/K215F",
+        "K215F",
+        "NormalizedBisim.v"
+      ],
+      "exit_code": 0,
+      "seconds": 1.064,
+      "max_rss_kib": 434112,
+      "closed_reports": 2,
+      "log_sha256": "e48860f73316a42d574e923cda848bcb6d474abd18fef10499e88630d5a78335"
+    },
+    {
+      "name": "NormalizedCert215.v",
+      "command": [
+        "/dev/shm/zfc_59b6900405ab/coq818/usr/bin/coqc",
+        "-Q",
+        "deps/K230",
+        "K230",
+        "-Q",
+        "deps/K230P",
+        "K230P",
+        "-Q",
+        "deps/K215F",
+        "K215F",
+        "NormalizedCert215.v"
+      ],
+      "exit_code": 0,
+      "seconds": 5.563,
+      "max_rss_kib": 566516,
+      "closed_reports": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "BalancedBisim.v",
+      "command": [
+        "/dev/shm/zfc_59b6900405ab/coq818/usr/bin/coqc",
+        "-Q",
+        "deps/K230",
+        "K230",
+        "-Q",
+        "deps/K230P",
+        "K230P",
+        "-Q",
+        "deps/K215F",
+        "K215F",
+        "BalancedBisim.v"
+      ],
+      "exit_code": 0,
+      "seconds": 1.207,
+      "max_rss_kib": 433924,
+      "closed_reports": 2,
+      "log_sha256": "e48860f73316a42d574e923cda848bcb6d474abd18fef10499e88630d5a78335"
+    },
+    {
+      "name": "BalancedNormalized.v",
+      "command": [
+        "/dev/shm/zfc_59b6900405ab/coq818/usr/bin/coqc",
+        "-Q",
+        "deps/K230",
+        "K230",
+        "-Q",
+        "deps/K230P",
+        "K230P",
+        "-Q",
+        "deps/K215F",
+        "K215F",
+        "BalancedNormalized.v"
+      ],
+      "exit_code": 0,
+      "seconds": 1.259,
+      "max_rss_kib": 428884,
+      "closed_reports": 2,
+      "log_sha256": "e48860f73316a42d574e923cda848bcb6d474abd18fef10499e88630d5a78335"
+    },
+    {
+      "name": "Source215BalancedNormalized.v",
+      "command": [
+        "/dev/shm/zfc_59b6900405ab/coq818/usr/bin/coqc",
+        "-Q",
+        "deps/K230",
+        "K230",
+        "-Q",
+        "deps/K230P",
+        "K230P",
+        "-Q",
+        "deps/K215F",
+        "K215F",
+        "Source215BalancedNormalized.v"
+      ],
+      "exit_code": 0,
+      "seconds": 15.741,
+      "max_rss_kib": 602972,
+      "closed_reports": 3,
+      "log_sha256": "4af9eb94dad92ce988343e3382c65b35c183ebdfc23e6c0b9b419505527e8751"
+    },
+    {
+      "name": "NormalizedSource215.v",
+      "command": [
+        "/dev/shm/zfc_59b6900405ab/coq818/usr/bin/coqc",
+        "-Q",
+        "deps/K230",
+        "K230",
+        "-Q",
+        "deps/K230P",
+        "K230P",
+        "-Q",
+        "deps/K215F",
+        "K215F",
+        "NormalizedSource215.v"
+      ],
+      "exit_code": 0,
+      "seconds": 9.238,
+      "max_rss_kib": 457844,
+      "closed_reports": 2,
+      "log_sha256": "d46f71a2ed22c46a4e1c3364af588cd74bf74ffbee4e7658bd1742cde942e037"
+    },
+    {
+      "name": "coqchk_Source215BalancedNormalized",
+      "command": [
+        "/dev/shm/zfc_59b6900405ab/coq818/usr/bin/coqchk",
+        "-Q",
+        "deps/K230",
+        "K230",
+        "-Q",
+        "deps/K230P",
+        "K230P",
+        "-Q",
+        "deps/K215F",
+        "K215F",
+        "-silent",
+        "Source215BalancedNormalized"
+      ],
+      "exit_code": 0,
+      "seconds": 313.451,
+      "max_rss_kib": 365436,
+      "closed_reports": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "complete": true,
+  "recursive_kernel_check": "passed",
+  "total_seconds": 374.868
+}

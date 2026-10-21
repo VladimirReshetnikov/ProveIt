@@ -1,0 +1,56 @@
+% Include-only mathematical supplement; amsmath and amssymb suffice.
+\subsection{A checked obstruction to recovering atomic vacuity from the logical rows alone}
+
+The late-matrix inflation experiment replaces the accepted bundle guard
+$c\ne a,b$ by $c>a+b$.  Its open lower bridge includes recovering enough
+membership vacuity.  The following countermodel shows that the retained
+\emph{logical rows alone} cannot recover every missing instance.  This is
+not a countermodel of the complete restricted set-theoretic bundle calculus.
+
+Take the domain $D=\{0,1\}$ and valuations $e:\mathbb N\to D$.  Interpret
+implication, falsity, equality and quantifiers by their usual Boolean and
+coordinate-update operations, but interpret membership atoms by
+\[
+             e\models R(a,b)
+       \quad\Longleftrightarrow\quad e(0)=0\ \land\ e(a)\ne e(b).
+\]
+Every atom thus has one additional dependence on coordinate $0$.  In
+particular $R(a,a)$ is always false, so the native falsity alias $R(0,0)$
+is respected.
+
+All retained propositional and quantifier schemas remain valid:
+$\rho_1=\exists_i(i=j)$,
+$\rho_2=\forall_i(A\to B)\to(\forall_i A\to\forall_i B)$,
+$\rho_4=\forall_i\forall_j A\to\forall_j\forall_i A$, and
+$\rho_6=(\exists_i\forall_i A)\to A$.
+The equality-congruence rows $\rho_3,\rho_5$ preserve the same hidden
+factor $e(0)=0$ on both sides.  Ordinary equality transitivity and
+\emph{every} equality-vacuity instance are valid as well, hence so is the
+merged equality row whenever its helper binder differs from its two
+endpoint labels.  The unrestricted propositional $\rho_8$ is valid;
+restricting it by numerical domination only weakens the fragment.
+Theorem-only generalization and modus ponens preserve validity.
+
+For $c>a+b$, the binder $c$ differs from $0,a,b$.  Updating it changes
+none of the three coordinates used by $R(a,b)$, so every permitted
+membership-vacuity instance is valid.  However, at
+$e(0)=e(1)=0$, $e(2)=1$,
+\[
+                R(1,2)\longrightarrow\forall_0 R(1,2)
+\]
+is false: its antecedent is true and updating coordinate $0$ to $1$
+falsifies the quantified atom.  Consequently this formula has no proof
+from the stated logical fragment, even after adding all equality-vacuity
+instances.  The standalone Lean file \texttt{HiddenCoordinate.lean}
+formalizes this stronger fragment, checks every axiom, proves induction
+on derivations, and proves this nonderivability theorem.  Lean 4.32.0
+accepts it; its reported axioms are only \texttt{propext},
+\texttt{Classical.choice}, and \texttt{Quot.sound}.
+
+The practical implication is narrow: an attempted proof using only the
+old logical rows and cofinally fresh atomic vacuity cannot finish the
+large-matrix bridge.  A successful lower reduction must use additional
+consequences of the restricted seed bundles or build a different
+refutation interpretation.  No conclusion about the consistency strength
+of the full restricted calculus, or about existence of a 214-state
+machine, follows from this countermodel.

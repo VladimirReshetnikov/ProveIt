@@ -1,0 +1,205 @@
+/- Forked by Research/ZFC/k225-formal/generate_l2k222.py from L2Control254.lean for dag222 (Elliot Glazer's Dag230 with the 222's AX node). -/
+import BusyBeaver.ZFC.L2Macros222
+
+/-!
+Control subroutines of the 219-node program (L2, part 3): the destructive
+equality test, the fetch of the next command, and the MP and NIP branches.
+
+`if_eq(scratch1, param2, body)` decrements both registers together; the
+body runs iff they were equal, and both are zero afterwards.
+-/
+
+namespace SetTheory.BusyBeaver.ZFC.L2K
+
+open RMDag Dag222 Code254
+
+attribute [local irreducible] Code254.P
+
+def dist (a b : Nat) : Nat := if b ≥ a then b - a else a - b
+
+/-- The joint decrement loop (node 124). -/
+theorem loop124 : ∀ (a : Nat) (st : AS), st.s1 = a →
+    Rn (.node 124) st { st with s1 := 0, p2 := dist st.s1 st.p2 }
+  | 0, st, ha => by
+      have h := skip (p := dag222) (n := 124) rfl (Run.decZero 6 (enc st) (by simp [enc, ha]))
+      apply rn_eq h
+      cases st; simp only at ha; subst ha; simp [dist]
+  | a + 1, st, ha => by
+      have hdec := Run.decPos (p := dag222) 6 (enc st) a (by simp [enc, ha])
+      rw [upd_s1] at hdec
+      by_cases hp : st.p2 = 0
+      · -- param2 exhausted: move the remainder back and stop.
+        have h126 : Rn (.node 126) { st with s1 := a } { st with s1 := a } :=
+          skip (p := dag222) (n := 126) rfl (Run.decZero 5 _ (by simp [enc, hp]))
+        have h127 : Rn (.node 127) { st with s1 := a } { st with s1 := 0, p2 := st.p2 + a + 1 } :=
+          rn_eq (seqAS (n := 127) rfl (loop207 _) (inc_AS 5 (by omega) _)) (by simp [updAS, enc])
+        have h125 := seqAS (n := 125) rfl h126 h127
+        have := seqAS (n := 124) rfl hdec h125
+        apply rn_eq this
+        cases st; simp only at ha hp; subst ha; subst hp; simp [dist]
+      · obtain ⟨b, hb⟩ : ∃ b, st.p2 = b + 1 := ⟨st.p2 - 1, by omega⟩
+        have hdec5 := Run.decPos (p := dag222) 5 (enc { st with s1 := a }) b (by simp [enc, hb])
+        rw [upd_p2] at hdec5
+        have h126 : Run dag222 (.node 126) (enc { st with s1 := a }) (.cont 1)
+            (enc { { st with s1 := a } with p2 := b }) :=
+          cont_cdr (p := dag222) (n := 126) (k := 0) rfl hdec5 (Run.contS 1 _)
+        have h125 : Run dag222 (.node 125) (enc { st with s1 := a }) (.cont 1)
+            (enc { { st with s1 := a } with p2 := b }) :=
+          Run.carCont 125 0 _ _ (by exact h126)
+        have hrest := loop124 a { { st with s1 := a } with p2 := b } rfl
+        have := restart (p := dag222) (n := 124) rfl hdec h125 hrest
+        apply rn_eq this
+        cases st; simp only at ha hb; subst ha; subst hb; simp [dist]
+
+theorem dist_eq_zero {a b : Nat} : dist a b = 0 ↔ a = b := by
+  unfold dist; split <;> omega
+
+/-- The equality test (node 123): normal iff equal, otherwise break one level. -/
+theorem ifeq_eq (st : AS) (h : st.s1 = st.p2) :
+    Run dag222 (.node 123) (enc st) .normal (enc { st with s1 := 0, p2 := 0 }) := by
+  have h124 := loop124 st.s1 st rfl
+  have hz : enc { st with s1 := 0, p2 := dist st.s1 st.p2 } 5 = 0 := by
+    simp [enc, dist_eq_zero.mpr h]
+  have h128 := skip (p := dag222) (n := 128) rfl (Run.decZero 5 _ hz)
+  have := seqAS (n := 123) rfl h124 h128
+  apply rn_eq this
+  simp [dist_eq_zero.mpr h]
+
+theorem ifeq_ne (st : AS) (h : st.s1 ≠ st.p2) :
+    Run dag222 (.node 123) (enc st) (.brk 1) (enc { st with s1 := 0, p2 := 0 }) := by
+  have h124 := loop124 st.s1 st rfl
+  obtain ⟨c, hc⟩ : ∃ c, dist st.s1 st.p2 = c + 1 := ⟨dist st.s1 st.p2 - 1, by
+    have := (not_congr dist_eq_zero).mpr h; omega⟩
+  have hdec := Run.decPos (p := dag222) 5 (enc { st with s1 := 0, p2 := dist st.s1 st.p2 }) c
+    (by simp [enc, hc])
+  rw [upd_p2] at hdec
+  have h129 : Run dag222 (.node 129) (enc { { st with s1 := 0, p2 := dist st.s1 st.p2 } with p2 := c })
+      (.brk 1) (enc { st with s1 := 0, p2 := 0 }) := by
+    have hc199 := loop199 { { st with s1 := 0, p2 := dist st.s1 st.p2 } with p2 := c }
+    have h' := brk_cdr (p := dag222) (n := 129) (k := 0) rfl hc199 (Run.brkS 0 _)
+    have e : ({ { { st with s1 := 0, p2 := dist st.s1 st.p2 } with p2 := c } with p2 := 0 } : AS) =
+        { st with s1 := 0, p2 := 0 } := by cases st; rfl
+    rw [e] at h'; exact h'
+  have h128 := brk_cdr (p := dag222) (n := 128) (k := 0) rfl hdec h129
+  exact brk_cdr (p := dag222) (n := 123) (k := 0) rfl h124 h128
+
+/-! ## Uses of the equality test -/
+
+/-- `if_eq(s1, param2, par1)` (node 130). -/
+theorem ifeq_par1 (st : AS) (h2 : st.s2 = 0) :
+    Rn (.node 130) st (if st.s1 = st.p2
+      then { st with s1 := 0, p2 := 0, tw := st.p1, ws := P st.tw st.ws }
+      else { st with s1 := 0, p2 := 0 }) := by
+  by_cases h : st.s1 = st.p2
+  · rw [if_pos h]
+    exact seqAS (n := 130) rfl (ifeq_eq st h) (par1 _ ⟨rfl, h2⟩)
+  · rw [if_neg h]
+    exact skip (p := dag222) (n := 130) rfl (ifeq_ne st h)
+
+/-- `if_eq(s1, param2, clear tw)` (node 131), the gate test. -/
+theorem ifeq_clear (st : AS) :
+    Rn (.node 131) st (if st.s1 = st.p2
+      then { st with s1 := 0, p2 := 0, tw := 0 } else { st with s1 := 0, p2 := 0 }) := by
+  by_cases h : st.s1 = st.p2
+  · rw [if_pos h]
+    exact seqAS (n := 131) rfl (ifeq_eq st h) (loop214 _)
+  · rw [if_neg h]
+    exact skip (p := dag222) (n := 131) rfl (ifeq_ne st h)
+
+/-- The rotated next-candidate loop of Dag230 (nodes 136/300):
+`np++; while s1 {s1--; np++}`. -/
+theorem loop136 : ∀ (k : Nat) (st : AS), st.s1 = k →
+    Rn (.node 136) st { st with np := st.np + k + 1, s1 := 0 } := by
+  intro k
+  induction k with
+  | zero =>
+      intro st h
+      have hinc : Run dag222 (.inc 0) (enc st) .normal (enc { st with np := st.np + 1 }) := by
+        have := Run.inc (p := dag222) 0 (enc st)
+        rwa [show enc st 0 = st.np from rfl, upd_np] at this
+      have hz : Run dag222 (.decnz 6) (enc { st with np := st.np + 1 }) (.brk 1)
+          (enc { st with np := st.np + 1 }) := Run.decZero 6 _ (by simp [enc, h])
+      have h300 : Run dag222 (.node 300) (enc { st with np := st.np + 1 }) .normal
+          (enc { st with np := st.np + 1 }) := Run.carBrk1 300 _ _ hz
+      have := Run.cdrNormal (p := dag222) 136 _ _ _ hinc h300
+      have e : ({ st with np := st.np + 1 } : AS) = { st with np := st.np + 0 + 1, s1 := 0 } := by
+        cases st; simp only at h; subst h; rfl
+      rw [e] at this
+      exact this
+  | succ k ih =>
+      intro st h
+      have hinc : Run dag222 (.inc 0) (enc st) .normal (enc { st with np := st.np + 1 }) := by
+        have := Run.inc (p := dag222) 0 (enc st)
+        rwa [show enc st 0 = st.np from rfl, upd_np] at this
+      have hdec : Run dag222 (.decnz 6) (enc { st with np := st.np + 1 }) .normal
+          (enc { st with np := st.np + 1, s1 := k }) := by
+        have := Run.decPos (p := dag222) 6 (enc { st with np := st.np + 1 }) k (by simp [enc, h])
+        rwa [upd_s1] at this
+      have h300 : Run dag222 (.node 300) (enc { st with np := st.np + 1 }) (.cont 1)
+          (enc { st with np := st.np + 1, s1 := k }) :=
+        Run.cdrContS 300 0 _ _ _ hdec (Run.contS 1 _)
+      have hrest := ih { st with np := st.np + 1, s1 := k } rfl
+      have := Run.cdrCont1 (p := dag222) 136 _ _ _ _ _ hinc h300 hrest
+      have e2 : ({ ({ st with np := st.np + 1, s1 := k } : AS) with
+          np := (({ st with np := st.np + 1, s1 := k } : AS)).np + k + 1, s1 := 0 } : AS) =
+          { st with np := st.np + (k + 1) + 1, s1 := 0 } := by
+        cases st; simp only; congr 1; omega
+      rw [e2] at this
+      exact this
+
+/-! ## Fetch, MP and NIP -/
+
+/-- The fetch (node 133): a nonzero proof list is decremented; an exhausted
+one loads the next candidate. -/
+theorem fetch_pos (st : AS) (v : Nat) (hv : st.pl = v + 1) : Rn (.node 133) st { st with pl := v } := by
+  have hdec := Run.decPos (p := dag222) 8 (enc st) v (by simp [enc, hv])
+  rw [upd_pl] at hdec
+  have h134 := brk_cdr (p := dag222) (n := 134) (k := 0) rfl hdec (Run.brkS 0 _)
+  exact skip (p := dag222) (n := 133) rfl h134
+
+theorem fetch_zero (st : AS) (hpl : st.pl = 0) (h1 : st.s1 = 0) :
+    Rn (.node 133) st { st with pl := st.np, np := st.np + 1 } := by
+  have h134 : Rn (.node 134) st st :=
+    skip (p := dag222) (n := 134) rfl (Run.decZero 8 (enc st) (by simp [enc, hpl]))
+  have h135 := seqAS (n := 135) rfl (loop194 st)
+    (loop136 _ _ rfl)
+  have := seqAS (n := 133) rfl h134 h135
+  apply rn_eq this
+  cases st; simp only at hpl h1; subst hpl; subst h1; simp [updAS, enc]
+
+/-- The MP branch (node 150). -/
+theorem mp_branch (st : AS) (hc : Clean st) :
+    Rn (.node 150) st (if wim st.tw st.p1 = st.p2
+      then { st with tw := st.p1, ws := P 0 st.ws, p2 := 0 }
+      else { st with tw := 0, p2 := 0 }) := by
+  have := seqAS (n := 150) rfl (seqAS (n := 161) rfl (par1 st hc) (cons _ hc))
+    (seqAS (n := 151) rfl (loop216 _) (ifeq_par1 _ hc.2))
+  apply rn_eq this
+  obtain ⟨h1, h2⟩ := hc
+  cases st; simp only at h1 h2; subst h1; subst h2
+  simp only [ofNat_P, Nat.zero_add]
+
+/-- The NIP branch (node 152) when the cache is not the falsity code. -/
+theorem nip_branch (st : AS) (hc : Clean st) (hh : st.p2 ≠ 1) :
+    Rn (.node 152) st { st with p2 := (Cantor.ofNat st.ws).1, ws := (Cantor.ofNat st.ws).2 } := by
+  have hinc := inc_AS 6 (by omega) st
+  have hne : (updAS st 6 (enc st 6 + 1)).s1 ≠ (updAS st 6 (enc st 6 + 1)).p2 := by
+    simp only [updAS, enc, hc.1]; omega
+  have h132 := skip (p := dag222) (n := 132) rfl (ifeq_ne _ hne)
+  have h153 := seqAS (n := 153) rfl h132 (pop_p2 _ ⟨rfl, hc.2⟩)
+  have := seqAS (n := 152) rfl hinc h153
+  apply rn_eq this
+  obtain ⟨h1, h2⟩ := hc
+  cases st; simp only at h1 h2; subst h1; subst h2; simp [updAS, enc]
+
+/-- The NIP branch halts on the falsity code. -/
+theorem nip_halt (st : AS) (hc : Clean st) (hh : st.p2 = 1) :
+    ∃ R', Run dag222 (.node 152) (enc st) .halt R' := by
+  have hinc := inc_AS 6 (by omega) st
+  have heq : (updAS st 6 (enc st 6 + 1)).s1 = (updAS st 6 (enc st 6 + 1)).p2 := by
+    simp only [updAS, enc, hc.1, hh]
+  have h132 := halt_cdr (p := dag222) (n := 132) rfl (ifeq_eq _ heq) (Run.halt _)
+  have h153 := halt_car (p := dag222) (n := 153) rfl h132
+  exact ⟨_, halt_cdr (p := dag222) (n := 152) rfl hinc h153⟩
+
+end SetTheory.BusyBeaver.ZFC.L2K

@@ -1,0 +1,397 @@
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeed222.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeed222.lean
+@@ -15,6 +15,8 @@
+ `dec (bundle222 a b c)` holds. Both the ordinary roles (`a ≠ b`) and the degenerate ones are
+ covered; the label `c` is never free in its own decoded matrix (`sat_dec_agree`).
+ -/
++
++set_option maxRecDepth 2048
+ 
+ namespace SetTheory.BusyBeaver.ZFC.KSeed222
+ 
+@@ -76,139 +78,118 @@
+ def matrixRel (mem : V → V → Prop) (e : Nat → V) (a b c : Nat) (x y : V) : Prop :=
+   Tarski.Sat mem (update (update e a x) b y) (dec c)
+ 
+-/-! ## The decoded bundle from the seed property -/
++/-! ## Shared semantic normalization -/
+ 
+-section Bundle
++/-- The seed property depends only on the binary relation's truth values. -/
++theorem seedProp_congr (mem : V → V → Prop) (A : V) {Q Q' : V → V → Prop}
++    (hQ : ∀ x y, Q x y ↔ Q' x y) : SeedProp mem Q A ↔ SeedProp mem Q' A := by
++  simp only [SeedProp, hQ]
+ 
+-variable (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
+-include hirr
++namespace BundleSemantics
+ 
+-theorem bundle_of_seed (e : Nat → V) (a b c : Nat) (hca : c ≠ a) (hcb : c ≠ b)
++theorem update_idem (e : Nat → V) (i : Nat) (d d' : V) :
++    update (update e i d) i d' = update e i d' := by
++  funext n; by_cases h : n = i <;> simp [update, h]
++
++theorem update_swap (e : Nat → V) {i j : Nat} (hij : i ≠ j) (d d' : V) :
++    update (update e i d) j d' = update (update e j d') i d := by
++  funext n; by_cases hi : n = i <;> by_cases hj : n = j <;> simp_all [update]
++
++theorem update_self (e : Nat → V) (i : Nat) : update e i (e i) = e := by
++  funext n; by_cases h : n = i <;> simp_all [update]
++
++theorem sat_dec_update (mem : V → V → Prop) (e : Nat → V) (c : Nat) (d : V) :
++    Tarski.Sat mem (update e c d) (dec c) ↔ Tarski.Sat mem e (dec c) :=
++  sat_dec_agree mem c _ _ fun _ hn => update_other _ _ hn
++
++theorem neg_forall_imp (P Q : V → Prop) :
++    (¬ ∀ x, P x → ¬ Q x) ↔ ∃ x, P x ∧ Q x := by
++  constructor
++  · intro h
++    exact Classical.byContradiction fun hn => h fun x hx hq => hn ⟨x, hx, hq⟩
++  · rintro ⟨x, hx, hq⟩ h; exact h x hx hq
++
++theorem req_iff (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
++    (E : Nat → V) (b c : Nat) (hcb : c ≠ b) :
++    Tarski.Sat mem E (dec (req b c c)) ↔
++      ∀ y, Tarski.Sat mem (update E b y) (dec c) →
++        ∃ z, Tarski.Sat mem (update E b z) (dec c) ∧ mem z (E c) := by
++  simp only [req, sat_wal, sat_wim, sat_wn mem hirr, sat_wel,
++    update_idem, update_same, update_other _ _ hcb, neg_forall_imp]
++
++theorem clos_iff (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
++    (E : Nat → V) (a b c : Nat) (hab : a ≠ b) (hca : c ≠ a) (hcb : c ≠ b) :
++    Tarski.Sat mem E (dec (clos a b c c)) ↔
++      ∀ y, mem y (E c) → ∃ x, matrixRel mem E a b c x y ∧
++        ∀ x', (∀ w, mem w x' → mem w y) →
++          ∀ y', matrixRel mem E a b c x' y' →
++            ∃ z, matrixRel mem E a b c x' z ∧ mem z (E c) := by
++  simp only [clos, sat_wal, sat_wim, sat_wn mem hirr, sat_wel, req_iff mem hirr _ b c hcb,
++    update_same, update_other _ _ hca, update_other _ _ hcb,
++    update_other _ _ (Ne.symm hca), update_other _ _ (Ne.symm hcb),
++    update_other _ _ (Ne.symm hab), update_idem, neg_forall_imp]
++  simp only [matrixRel, update_swap _ hab, update_idem]
++
++theorem matrix_marker (mem : V → V → Prop) (e : Nat → V) (a b c : Nat)
++    (hca : c ≠ a) (hcb : c ≠ b) (C x y : V) :
++    matrixRel mem (update e c C) a b c x y ↔ matrixRel mem e a b c x y := by
++  simp only [matrixRel, update_swap _ hca, update_swap _ hcb, sat_dec_update]
++
++theorem bundle_iff_seed (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
++    (e : Nat → V) (a b c : Nat) (hab : a ≠ b) (hca : c ≠ a) (hcb : c ≠ b) :
++    Tarski.Sat mem e (dec (bundle222 a b c)) ↔
++      SeedProp mem (matrixRel mem e a b c) (e a) := by
++  have hRV : Tarski.Sat mem e (dec (vrel a b c)) := by
++    simp only [vrel, sat_wim, sat_wal, sat_wel,
++      update_other _ _ (Ne.symm hca), update_other _ _ (Ne.symm hcb)]
++    exact fun h _ => h
++  simp only [bundle222, sat_wn mem hirr, sat_wim, hRV, true_implies, nks, sat_wal,
++    neg_forall_imp, SeedProp]
++  apply exists_congr
++  intro C
++  rw [clos_iff mem hirr _ a b c hab hca hcb, req_iff mem hirr _ b c hcb]
++  simp only [matrix_marker mem e a b c hca hcb, update_same]
++  simp only [matrixRel, update_swap _ hcb, sat_dec_update, update_self]
++  exact and_comm
++
++theorem diagonal_bundle_of_seed (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
++    (e : Nat → V) (a c : Nat) (hca : c ≠ a)
++    (h : SeedProp mem (matrixRel mem e a a c) (e a)) :
++    Tarski.Sat mem e (dec (bundle222 a a c)) := by
++  obtain ⟨C, hroot, hcl⟩ := h
++  have hr : Tarski.Sat mem (update e c C) (dec (req a c c)) := by
++    rw [req_iff mem hirr _ a c hca]
++    simpa only [matrixRel, update_self, update_idem, update_swap _ hca,
++      sat_dec_update, update_same] using hroot
++  have hc : Tarski.Sat mem (update e c C) (dec (clos a a c c)) := by
++    simp only [clos, sat_wal, sat_wim, sat_wn mem hirr, sat_wel,
++      req_iff mem hirr _ a c hca, update_same,
++      update_other _ _ (Ne.symm hca), update_idem, neg_forall_imp,
++      update_swap _ hca, sat_dec_update]
++    intro y hy
++    obtain ⟨x, hx, _⟩ := hcl y hy
++    refine ⟨y, ?_, fun x' _ => ?_⟩
++    · simpa only [matrixRel, update_idem] using hx
++    · simpa only [matrixRel, update_idem] using hroot
++  have hRV : Tarski.Sat mem e (dec (vrel a a c)) := by
++    simp only [vrel, sat_wim, sat_wal, sat_wel, update_other _ _ (Ne.symm hca)]
++    exact fun h _ => h
++  simp only [bundle222, sat_wn mem hirr, sat_wim, hRV, true_implies,
++    nks, sat_wal, neg_forall_imp]
++  exact ⟨C, hc, hr⟩
++
++end BundleSemantics
++
++/-- The decoded bundle follows from the seed property, including coincident input/output roles. -/
++theorem bundle_of_seed (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
++    (e : Nat → V) (a b c : Nat) (hca : c ≠ a) (hcb : c ≠ b)
+     (h : SeedProp mem (matrixRel mem e a b c) (e a)) :
+     Tarski.Sat mem e (dec (bundle222 a b c)) := by
+-  obtain ⟨C, hroot, hcl⟩ := h
+-  simp only [bundle222]
+-  rw [sat_wn mem hirr, sat_wim]
+-  intro hall
+-  -- membership vacuity holds outright
+-  have hRV : Tarski.Sat mem e (dec (vrel a b c)) := by
+-    simp only [vrel]
+-    rw [sat_wim, sat_wel, sat_wal]
+-    intro hm d
+-    rw [sat_wel, update_other _ _ (Ne.symm hca), update_other _ _ (Ne.symm hcb)]
+-    exact hm
+-  have hN := hall hRV
+-  simp only [nks] at hN
+-  rw [sat_wal] at hN
+-  have hC := hN C
+-  rw [sat_wim, sat_wn mem hirr] at hC
+-  -- the request at a given input, read through the matrix relation
+-  have hreq : ∀ (E' : Nat → V) (x : V), (∀ n, n ≠ c → n ≠ b →
+-        E' n = update e a x n) → E' c = C →
+-      (∀ y', matrixRel mem e a b c x y' → ∃ z, matrixRel mem e a b c x z ∧ mem z C) →
+-      Tarski.Sat mem E' (dec (req b c c)) := by
+-    intro E' x hE' hEc hQ
+-    simp only [req]
+-    rw [sat_wal]
+-    intro y
+-    rw [sat_wim, sat_wn mem hirr, sat_wal]
+-    intro hy hnone
+-    have hy' : matrixRel mem e a b c x y := by
+-      unfold matrixRel
+-      refine (sat_dec_agree mem c _ _ ?_).mp hy
+-      intro n hn
+-      by_cases hnb : n = b
+-      · subst hnb; simp [update]
+-      · rw [update_other _ _ hnb, update_other _ _ hnb, hE' n hn hnb]
+-    obtain ⟨z, hz, hzC⟩ := hQ y hy'
+-    have hz' := hnone z
+-    rw [sat_wim, sat_wn mem hirr, sat_wel] at hz'
+-    apply hz'
+-    · refine (sat_dec_agree mem c _ _ ?_).mpr hz
+-      intro n hn
+-      by_cases hnb : n = b
+-      · subst hnb; simp [update]
+-      · rw [update_other _ _ hnb, update_other _ _ hnb, update_other _ _ hnb, hE' n hn hnb]
+-    · rw [update_same, update_other _ _ hcb, update_other _ _ hcb, hEc]
+-      exact hzC
+-  apply hC
+-  · -- the closure
+-    simp only [clos]
+-    rw [sat_wal]
+-    intro y
+-    rw [sat_wim, sat_wel, update_same, update_other _ _ hcb, update_same, sat_wn mem hirr,
+-      sat_wal]
+-    intro hyC hnone
+-    obtain ⟨x, hxy, hsub⟩ := hcl y hyC
+-    by_cases hab : a = b
+-    · -- degenerate roles: the matrix sees only the output
+-      subst hab
+-      apply (sat_wim mem _ _ _).mp (hnone y) ?_ |> (sat_wn mem hirr _ _).mp
+-      · rw [sat_wal]
+-        intro x'
+-        rw [sat_wim]
+-        intro _
+-        refine hreq _ y ?_ ?_ ?_
+-        · intro n hn hnb
+-          simp only [update, hnb, hn, if_false]
+-        · simp [update, hca]
+-        · intro y' hy'
+-          have hy'' : matrixRel mem e a a c y y' := by
+-            unfold matrixRel at hy' ⊢
+-            refine (sat_ext mem _ _ _ ?_).mp hy'
+-            intro n _; by_cases hn : n = a <;> simp [update, hn]
+-          obtain ⟨z, hz, hzC⟩ := hsub y (fun w hw => hw) y' hy''
+-          refine ⟨z, ?_, hzC⟩
+-          unfold matrixRel at hz ⊢
+-          refine (sat_ext mem _ _ _ ?_).mp hz
+-          intro n _; by_cases hn : n = a <;> simp [update, hn]
+-      · unfold matrixRel at hxy
+-        refine (sat_dec_agree mem c _ _ ?_).mpr hxy
+-        intro n hn
+-        by_cases hna : n = a
+-        · subst hna; simp [update]
+-        · simp [update, hna, hn]
+-    · -- ordinary roles
+-      apply (sat_wim mem _ _ _).mp (hnone x) ?_ |> (sat_wn mem hirr _ _).mp
+-      · rw [sat_wal]
+-        intro x'
+-        rw [sat_wim]
+-        intro hsubx
+-        have hsub' : ∀ w, mem w x' → mem w y := by
+-          intro w hw
+-          rw [sat_wal] at hsubx
+-          have := hsubx w
+-          rw [sat_wim, sat_wel, sat_wel, update_same, update_other _ _ (Ne.symm hca),
+-            update_other _ _ (Ne.symm hcb)] at this
+-          rw [update_same] at this
+-          rw [update_other _ _ (Ne.symm hab), update_other _ _ (Ne.symm hab), update_same] at this
+-          exact this hw
+-        refine hreq _ x' ?_ ?_ (hsub x' hsub')
+-        · intro n hn hnb
+-          by_cases hna : n = a
+-          · subst hna; simp [update]
+-          · simp [update, hna, hnb, hn]
+-        · simp [update, hca, hcb]
+-      · unfold matrixRel at hxy
+-        refine (sat_dec_agree mem c _ _ ?_).mpr hxy
+-        intro n hn
+-        by_cases hna : n = a
+-        · subst hna; simp [update, hab]
+-        · by_cases hnb : n = b
+-          · subst hnb; simp [update, hna]
+-          · simp [update, hna, hnb, hn]
+-  · -- the seed request at the input `e a`
+-    refine hreq (update e c C) (e a) ?_ ?_ ?_
+-    · intro n hn _
+-      rw [update_other _ _ hn]
+-      by_cases hna : n = a
+-      · subst hna; simp [update]
+-      · simp [update, hna]
+-    · rw [update_same]
+-    · exact hroot
++  by_cases hab : a = b
++  · subst b; exact BundleSemantics.diagonal_bundle_of_seed mem hirr e a c hca h
++  · exact (BundleSemantics.bundle_iff_seed mem hirr e a b c hab hca hcb).mpr h
+ 
+-end Bundle
+-
++#print axioms BundleSemantics.bundle_iff_seed
+ #print axioms bundle_of_seed
+ 
+ end SetTheory.BusyBeaver.ZFC.KSeed222
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedModel222.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedModel222.lean
+@@ -45,15 +45,8 @@
+ theorem sat_req (E : Nat → V) (b c : Nat) (hcb : c ≠ b) :
+     Tarski.Sat mem E (dec (req b c c)) ↔
+       ∀ y, Tarski.Sat mem (update E b y) (dec c) →
+-        ∃ z, Tarski.Sat mem (update E b z) (dec c) ∧ mem z (E c) := by
+-  simp only [req, sat_wal, sat_wim, sat_wn mem hirr, sat_wel, update_idem, update_same,
+-    update_other _ _ hcb]
+-  refine forall_congr' fun y => imp_congr_right fun _ => ?_
+-  constructor
+-  · intro h
+-    exact Classical.byContradiction fun hne => h fun z hz hzc => hne ⟨z, hz, hzc⟩
+-  · rintro ⟨z, hz, hzc⟩ hall
+-    exact hall z hz hzc
++        ∃ z, Tarski.Sat mem (update E b z) (dec c) ∧ mem z (E c) :=
++  BundleSemantics.req_iff mem hirr E b c hcb
+ 
+ /-- Reading the matrix at any valuation that agrees with the role assignment off the label. -/
+ theorem matrix_iff {e E : Nat → V} {a b c : Nat} {x y : V}
+@@ -64,95 +57,8 @@
+ /-- **The bundle gives the seed property** (ordinary roles). -/
+ theorem seed_of_bundle (e : Nat → V) (a b c : Nat) (hab : a ≠ b) (hca : c ≠ a) (hcb : c ≠ b)
+     (h : Tarski.Sat mem e (dec (bundle222 a b c))) :
+-    SeedProp mem (matrixRel mem e a b c) (e a) := by
+-  simp only [bundle222] at h
+-  rw [sat_wn mem hirr, sat_wim] at h
+-  have hN : ¬ Tarski.Sat mem e (dec (nks a b c)) := fun hn => h fun _ => hn
+-  simp only [nks] at hN
+-  rw [sat_wal] at hN
+-  obtain ⟨C, hC⟩ : ∃ C, ¬ Tarski.Sat mem (update e c C)
+-      (dec (wim (clos a b c c) (wn (req b c c)))) :=
+-    Classical.byContradiction fun hne => hN fun C => Classical.byContradiction fun hc => hne ⟨C, hc⟩
+-  rw [sat_wim, sat_wn mem hirr] at hC
+-  have hcl : Tarski.Sat mem (update e c C) (dec (clos a b c c)) :=
+-    Classical.byContradiction fun hn => hC fun h' => absurd h' hn
+-  have hrq : Tarski.Sat mem (update e c C) (dec (req b c c)) :=
+-    Classical.byContradiction fun hn => hC fun _ => hn
+-  have hac : a ≠ c := Ne.symm hca
+-  have hbc : b ≠ c := Ne.symm hcb
+-  have hba : b ≠ a := Ne.symm hab
+-  refine ⟨C, ?_, ?_⟩
+-  · -- the request at the input `e a`
+-    intro y hy
+-    have hy' : Tarski.Sat mem (update (update e c C) b y) (dec c) := by
+-      refine (matrix_iff mem hirr (x := e a) (y := y) ?_).mpr hy
+-      intro n hn
+-      by_cases hnb : n = b
+-      · subst hnb; simp [update, hn]
+-      · by_cases hna : n = a
+-        · subst hna; simp [update, hnb, hn]
+-        · simp [update, hnb, hna, hn]
+-    obtain ⟨z, hz, hzC⟩ := (sat_req mem hirr _ b c hcb).mp hrq y hy'
+-    refine ⟨z, (matrix_iff mem hirr ?_).mp hz, by rwa [update_same] at hzC⟩
+-    intro n hn
+-    by_cases hnb : n = b
+-    · subst hnb; simp [update, hn]
+-    · by_cases hna : n = a
+-      · subst hna; simp [update, hnb, hn]
+-      · simp [update, hnb, hna, hn]
+-  · -- the closure
+-    intro y hyC
+-    simp only [clos] at hcl
+-    rw [sat_wal] at hcl
+-    have h1 := hcl y
+-    rw [sat_wim, sat_wel, update_same, update_other _ _ hcb, update_same, sat_wn mem hirr,
+-      sat_wal] at h1
+-    obtain ⟨x, hx⟩ : ∃ x, ¬ Tarski.Sat mem (update (update (update e c C) b y) a x)
+-        (dec (wim c (wn (wal a (wim (wal c (wim (wel c a) (wel c b))) (req b c c)))))) :=
+-      Classical.byContradiction fun hne => h1 hyC fun x => Classical.byContradiction fun hc =>
+-        hne ⟨x, hc⟩
+-    rw [sat_wim, sat_wn mem hirr] at hx
+-    have hm : Tarski.Sat mem (update (update (update e c C) b y) a x) (dec c) :=
+-      Classical.byContradiction fun hn => hx fun h' => absurd h' hn
+-    have hall : Tarski.Sat mem (update (update (update e c C) b y) a x)
+-        (dec (wal a (wim (wal c (wim (wel c a) (wel c b))) (req b c c)))) :=
+-      Classical.byContradiction fun hn => hx fun _ => hn
+-    refine ⟨x, (matrix_iff mem hirr ?_).mp hm, ?_⟩
+-    · intro n hn
+-      by_cases hna : n = a
+-      · subst hna; simp [update, hab, hn]
+-      · by_cases hnb : n = b
+-        · subst hnb; simp [update, hna, hn]
+-        · simp [update, hna, hnb, hn]
+-    · intro x' hsub y' hy'
+-      rw [sat_wal] at hall
+-      have h3 := hall x'
+-      rw [sat_wim, update_idem] at h3
+-      have hsub' : Tarski.Sat mem (update (update (update e c C) b y) a x')
+-          (dec (wal c (wim (wel c a) (wel c b)))) := by
+-        rw [sat_wal]
+-        intro w
+-        rw [sat_wim, sat_wel, sat_wel, update_same, update_other _ _ hac, update_other _ _ hbc,
+-          update_same, update_other _ _ hba, update_same]
+-        exact hsub w
+-      have h4 := (sat_req mem hirr _ b c hcb).mp (h3 hsub')
+-      have hy'' : Tarski.Sat mem (update (update (update (update e c C) b y) a x') b y') (dec c) := by
+-        refine (matrix_iff mem hirr (x := x') (y := y') ?_).mpr hy'
+-        intro n hn
+-        by_cases hnb : n = b
+-        · subst hnb; simp [update, hn]
+-        · by_cases hna : n = a
+-          · subst hna; simp [update, hnb, hn]
+-          · simp [update, hnb, hna, hn]
+-      obtain ⟨z, hz, hzC⟩ := h4 y' hy''
+-      refine ⟨z, (matrix_iff mem hirr ?_).mp hz, ?_⟩
+-      · intro n hn
+-        by_cases hnb : n = b
+-        · subst hnb; simp [update, hn]
+-        · by_cases hna : n = a
+-          · subst hna; simp [update, hnb, hn]
+-          · simp [update, hnb, hna, hn]
+-      · rwa [update_other _ _ hca, update_other _ _ hcb, update_same] at hzC
++    SeedProp mem (matrixRel mem e a b c) (e a) :=
++  (BundleSemantics.bundle_iff_seed mem hirr e a b c hab hca hcb).mp h
+ 
+ end Conv
+ 
+@@ -249,20 +155,13 @@
+     simp only [ψ', negNF, enc, wim] at h2 h3 ⊢; omega
+   have hs := seed_of_bundle mem hirr e 0 1 (enc ψ') (by omega) (by omega) (by omega)
+     (hT _ (derivable_bundle ψ' hψ' 0 1 (by omega) (by omega)) e)
+-  obtain ⟨C, h1, h2⟩ := hs
+   have hiff : ∀ x y, matrixRel mem e 0 1 (enc ψ') x y ↔ Tarski.Sat mem (update (update e 0 x) 1 y) ψ := by
+     intro x y
+     unfold matrixRel
+     rw [Code254Models.sat_encode_decode mem hirr]
+     simp only [ψ', negNF, Tarski.Sat]
+     exact ⟨fun h => Classical.byContradiction fun hn => h hn, fun h h' => h' h⟩
+-  refine ⟨C, fun y hy => ?_, fun y hy => ?_⟩
+-  · obtain ⟨z, hz, hzC⟩ := h1 y ((hiff _ _).mpr hy)
+-    exact ⟨z, (hiff _ _).mp hz, hzC⟩
+-  · obtain ⟨x, hx, hsub⟩ := h2 y hy
+-    refine ⟨x, (hiff _ _).mp hx, fun x' hx' y' hy' => ?_⟩
+-    obtain ⟨z, hz, hzC⟩ := hsub x' hx' y' ((hiff _ _).mpr hy')
+-    exact ⟨z, (hiff _ _).mp hz, hzC⟩
++  exact (seedProp_congr mem (e 0) hiff).mp hs
+ 
+ #print axioms seed_eqFree
+ 

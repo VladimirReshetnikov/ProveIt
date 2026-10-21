@@ -1,0 +1,116 @@
+\section{A broader folding search and an explicit helper-borrowing obstruction}
+\label{sec:two-branch-folds}
+
+No verified machine with 214 or fewer working states was obtained in this investigation. We can nevertheless make the next search more precise: allow \emph{both} transition branches of the retained control to change, factor their proof obligations, and preserve the existing obligations of every borrowed helper. The last requirement is substantive. We give a literal 214-state trial for which all four intended selector blocks are correct, yet another live use of its borrowed helper violates the uniform runtime contract.
+
+All input tables are pinned to repository commit \texttt{aa66d0a33f1f}. The full commit identifier, repository paths and SHA-256 values are in \texttt{inputs/source-index.json}. The corpus consists of 22 byte-distinct 215-working-state tables; byte distinction is not a claim that all 22 rooted transition graphs are pairwise nonisomorphic. These searches do not establish a lower bound on the size of a machine realizing the desired consistency equivalence.
+
+
+\paragraph{Upstream refresh.}
+Before packaging, we reviewed the predecessor-specific elimination packet integrated at commit \texttt{b0663213602b}. Its grammar edits only external rows whose old target is the deleted control, permits different replacements for those rows, and admits later exact old/new joins. The folding grammar here redirects the deleted control to one retained control and may change both retained rows, even when they did not previously target the deleted control, while freezing helper interiors. These are complementary restricted grammars with overlap. The finite-window method and positive-simulation argument are shared ideas, without a historical-priority claim. All 21 upstream table hashes occur in our corpus; FM215 is our additional input. Exact reviewed-file hashes and corpus overlap appear in \texttt{evidence/upstream-refresh.json}.
+
+\subsection{Two-branch folding with unchanged helper interiors}
+
+Let $T$ be a deterministic binary transition table with separate halt $H$. A configuration is $(q,h,\tau)$, where $\tau:\mathbb Z\to\{0,1\}$. Choose distinct working controls $q,r$, with $r$ different from the initial control. Let $\phi(r)=q$ and let $\phi$ fix every other control, including $H$. The candidate deletes $r$, redirects every target $r$ to $q$, and changes only the two rows of $q$.
+
+Assume that, for each read bit $b$, the old rows have common write and movement components:
+\[
+ T(q,b)=(w_b,d_b,t_{q,b}),\qquad
+ T(r,b)=(w_b,d_b,t_{r,b}),\qquad d_b\in\{-1,1\}.
+\]
+Their targets need not agree for either bit. Let $W_p$ be an inductive set of local tape windows at old control $p$. It must include every window at the initial control and be closed under writing the center, shifting with the head, and admitting both possible fresh exterior bits. Induction on the concrete run proves that every reachable old configuration has its window in $W_p$. This is an overapproximation; a member of $W_p$ need not be concretely reachable.
+
+\paragraph{Folding proposition.}
+For each bit $b$, suppose one fixed replacement action $a_b$ has the following property for both $p=q$ and $p=r$, on every admitted window whose center is $b$. Starting at control $q$ with that full tape, the candidate performs a positive finite block ending at
+\[
+ \bigl(\phi(t_{p,b}),\ h+d_b,\ \tau[h\mapsto w_b]\bigr).
+\]
+The block reads no unspecified exterior cell and every strict interior control avoids $q,r,H$. Then, from the initial control, the candidate and $T$ halt equivalently on every initial binary tape and at every initial head position.
+
+\paragraph{Proof.}
+At an old control outside $\{q,r\}$, one candidate transition gives the image of the old successor under $\phi$, with identical tape and head. At either folded control, the assumed block gives precisely the same property after a positive number of candidate transitions. The exclusion of changed controls from strict interiors ensures that an old helper execution remains an execution of the candidate after target renaming; no unchecked recursive use of a changed row is hidden inside a certificate. The window invariant supplies the hypotheses at every old reachable boundary. Concatenation gives a positive-duration simulation preserving the halt control and containing no halt in a strict interior. If the old run halts, its finite block expansion halts. If it is infinite, the positive block lengths produce arbitrarily long prefixes of the deterministic candidate run without halting. This proves both halting directions. No consistency assumption is used. \hfill$\square$
+
+\paragraph{Exact three-transition instance.}
+For current bit $b$, select an existing helper $u_b$. Let $m$ be the predecessor symbol at offset $-d_b$. It suffices, for every permitted origin/marker pair, to have
+\[
+ T(u_b,m)=(m,d_b,s),\qquad
+ T(s,w_b)=(w_b,d_b,t),\qquad
+ \phi(t)=\phi(t_{p,b}),
+\]
+with $u_b,s\notin\{q,r,H\}$. Set
+\[
+ T'(q,b)=(w_b,-d_b,u_b).
+\]
+The head goes backward, forward to the written cell, and forward to its required final position. The marker is preserved and the only net write is $w_b$ at the original head. A direct one-transition branch is also permitted when the two mapped targets agree.
+
+\paragraph{Why the branch obligations factor.}
+The replacement action for read zero never executes inside a read-one certificate, or conversely: strict interiors avoid the retained control entirely. Consequently the two rows can be synthesized independently and combined whenever both admissible-action sets are nonempty. This removes the previous requirement that one branch already be identical. It also avoids a quadratic search over pairs of row assignments. The broader helper-walk implementation computes valid literal entry-action profiles first, then intersects them for each proposed state pair and rejects profiles whose interiors touch either merged control.
+
+The broader implementation uses literal endpoint profiles, an explicit restriction: it does not identify two distinct first-action targets merely because a later quotient would identify them. Its recorded scope must be retained when interpreting a no-result outcome.
+
+\subsection{Completed searches and their exact scope}
+
+The first independent implementation checks the direct/three-transition instance with a radius-three invariant. Across 22 input tables it examines 468,218 ordered retained/deleted pair choices satisfying the common write/move condition. In 458,714 choices, both \emph{mapped} target branches differ. No complete fold is found.
+
+The second implementation permits frozen-helper walks of up to 64 transitions using a radius-five invariant, hence an eleven-cell known window. It considers the same 468,218 ordered pair choices. A profile must preserve the exact old write, head displacement and literal target for every admitted old window. The two selected profiles must avoid the merged controls in their strict interiors. There are 26,458 successful individual profiles across the corpus, but no state pair has compatible complete profiles for both branches. Reading outside the known window is recorded as unresolved; it is not a claim that a longer or wider proof is impossible. These two search totals overlap and must not be added as independent candidate counts.
+
+A nontrivial positive control tests the mechanism. A synthetic 216-state table splits the old origin markers between controls 69 and 400, and gives them different targets for \emph{both} input bits. The search recovers
+\[
+ 69/0=0L213,\qquad69/1=1L213
+\]
+after folding 400 into 69. Four independent literal three-transition replays verify both marker values and both current bits, with arbitrary untouched exterior tape. This fixture checks the implementation; it has no asserted ZFC calibration.
+
+A separate experiment combines the existing history-return table with the inherited contextual-helper resynthesis algorithm. It examines 3,143 helper specifications, with 1,435 decoder-prefix passes and 480 delivery-class passes. All 480 fail the symbolic runtime prover. Their failure reasons include an undischarged possibly-empty run, entry into opaque context, or a derivation that does not close. These are \emph{proof failures}, not 480 independently established semantic counterexamples. The newly explicit counterexample below has a stronger status.
+
+\subsection{Nineteen partial targets and the 52/154 example}
+
+The new two-branch search records nineteen unordered primary-K215 pairs for which both mapped targets differ but one branch already has a three-transition helper. Their exact rows and helpers are retained in \texttt{partial-two-branch-targets.json}. Thus the expanded search supplies concrete missing obligations rather than only a negative count.
+
+The pair $(52,154)$ is particularly transparent. The old rows are
+\[
+\begin{array}{c|cc}
+ &0&1\\\hline
+52&0R154&1R150\\
+154&0R166&1R12.
+\end{array}
+\]
+Every old incoming edge to 52 writes one and moves right; every old incoming edge to 154 writes zero and moves right. Their predecessor markers therefore distinguish the two roles on every run entering from the initial control. For the zero branch, helper 211 already suffices:
+\[
+\begin{array}{c|cc}
+\text{marker }0&211\xrightarrow{0R}159&159\xrightarrow{0R}166\\
+\text{marker }1&211\xrightarrow{1R}129&129\xrightarrow{0R}154.
+\end{array}
+\]
+After redirecting 154 to 52, this gives the required mapped endpoint in both cases.
+
+The one branch must instead end in 12 for marker zero and in 150 for marker one. State 117 has the useful existing zero row $117/0=0R134$, followed by $134/1=1R12$. Changing its other row to $117/1=1R176$ would supply $176/1=1R150$ on the marker-one side. This suggests the concrete trial
+\[
+ 52/0:=0L211,\qquad
+ 52/1:=1L117,\qquad
+ 117/1:=1R176,
+\]
+with every target 154 redirected to 52 and control 154 removed. It has exactly 214 working states and 428 transition rows. All four intended selector blocks are correct, and the independent verifier checks them as whole-tape local calculations.
+
+However, old row $117/1=0L302$ is a live CB1 entry. Borrowing it is unsound for the inherited runtime interface. Use the accepted source site of zero-based ordinal 4724,
+\[
+ \texttt{11011},\qquad\mathrm{CB},1,
+\]
+with all nine logical registers zero, gap zero and a single zero-valued spare. This is a valid uniform runtime frame. Its initial head is zero and its one cells are
+\[
+ \{-1,0,1,3,4,64,66,68,70,72,74,76,78,80,82,84\}.
+\]
+The parent returns to a clean dispatcher frame after 163 transitions, with head $-1$ and one cells
+\[
+ \{-2,64,66,68,70,72,74,76,78,80,82,84\}.
+\]
+The trial returns after 588 transitions, with head zero and one cells
+\[
+ \{-1,0,1,3,4,8,64,66,68,70,72,74,76,78,80,82,84\}.
+\]
+The discrepancy is an exact finite counterexample. The independent verifier checks the input hashes, reconstructs the trial from its three-row recipe, checks the source ordinal, and replays all transitions. It imports no symbolic runtime, allocator, or search module. This refutes the trial's claimed uniform primitive simulation; it makes no statement about the trial's blank-run halting behavior or consistency equivalence.
+
+The practical research target is consequently precise: realize the missing one-branch selector while preserving the live CB1 role of 117, perhaps by a coordinated relocation of that role. Merely proving the four new selector blocks does not discharge this obligation. The supplied trial is named \texttt{REJECTED-52-154-214.native.tm} and must remain outside the accepted-candidate inventory.
+
+\subsection{Further research questions}
+
+Can the nineteen partial two-branch folds be completed using coordinated helper relocations whose old and new uses share one verified block certificate? Can a compiler choose source associations specifically to make the required origin markers available, while pricing every relocated primitive entry? Can the branch-profile search use a richer inductive tape abstraction without recreating the full symbolic primitive proof for every rejected table? Finally, can the positive-stuttering proposition be exposed as a small certified optimizer interface, so a successful candidate carries a finite, kernel-checked transport proof from an existing exact endpoint? These questions retain the actual remaining obligations instead of replacing them by a source-DAG count or a successful blank prefix.

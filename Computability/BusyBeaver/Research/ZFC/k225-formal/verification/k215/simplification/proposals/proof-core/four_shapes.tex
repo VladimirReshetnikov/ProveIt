@@ -1,0 +1,35 @@
+\subsection{Four explicit implication schemes suffice}
+\label{sec:four}
+The actual finite derivation uses only four shapes of witness for the restricted row. This permits a stronger formulation than a relation closed under every implication context.
+
+\begin{theorem}[Four-scheme completeness]
+Let $A$ be any type, $\impop$ any binary operation, and $\T$ any predicate closed under modus ponens. It suffices to supply the following four families, with all displayed variables arbitrary:
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Family & Supplied row & Position of $u$ in the first argument\\
+\midrule
+Same & $\Rho{u}{b}{c}{u}$ & empty path\\
+Right & $\Rho{x\impop u}{b}{c}{u}$ & $R$\\
+Left--left & $\Rho{(u\impop x)\impop y}{b}{c}{u}$ & $LL$\\
+Left--left--right & $\Rho{((x\impop u)\impop y)\impop z}{b}{c}{u}$ & $LLR$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Then $\T(\Rho{a}{b}{c}{u})$ for every $a,b,c,u$.
+\end{theorem}
+No order relation, hereditary closure, numerical comparison, injectivity, truth element or decoder appears in the hypothesis. These are four \emph{schemes}, each with arbitrarily many instances; no minimality claim is made.
+
+The proof specializes the nine guarded leaves of the compressed derivation. The right witness occurs at \code{b1}; left--left--right at \code{b31}; left--left at \code{cd62}, \code{cd64} and \code{cd67}; the empty path at \code{b0}, \code{cd34}, \code{cd82} and the seed. Every intervening conditional helper passes its exact witness unchanged. A deterministic generator inventories these uses and emits the checked proof. This theorem does not follow just by supplying the four-path relation to Theorem~\ref{thm:rho}, because that relation lacks the latter theorem's full operand-insertion closure.
+
+The separate numerical calculus $C\mathrm{Four}$ keeps all other $C222$ rules, including truth, generalization and the original two bundle guards. Only $\rho_8$ is replaced by these four families. The delivered Lean file \code{KCodeFourShape.lean} proves
+\[
+ \forall n\in\mathbb N,\quad C\mathrm{Four}(n)\longleftrightarrow C222(n),
+ \qquad
+ \neg C\mathrm{Four}(F)\longleftrightarrow\neg C222(F).
+\]
+The first equivalence covers all codes, without a formula-decoding premise. This is stronger than equiconsistency alone. The existing $C222$ calibration therefore transfers by composition.
+
+The abstract theorem passed fresh Lean compilation and a separate direct Rocq port with recursive \code{coqchk}. The numerical equivalence passed a fresh 13-module Lean build. Its three public axiom reports are empty. The numerical adapter has not been ported to Rocq in this packet.
+
+This supplies a concrete alternative propositional interface for an enumerator. Constructing a small fixed collection of contexts may be cheaper than checking a relation between arbitrary codes, but the extra parameters and larger terms may instead cost states. Only the propositional interface loses arithmetic side conditions; the remaining code calculus keeps its original arithmetic operations and bundle guards. No compiled smaller TM follows automatically.

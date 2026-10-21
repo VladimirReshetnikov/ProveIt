@@ -30,7 +30,7 @@ Phase seven replaces the dominated-implication deduction development with two
 pointwise lifts. Its 454-line source preserves the exact unrestricted numerical
 row and all maintained callers; the unused distribution helper is removed.
 The 187-module endpoint and a fresh five-client legacy audit pass. The remaining
-batch-209/210 proposals retain their separate pending reconciliation.
+proposals from batches 209–211 retain their separate pending reconciliation.
 
 The [221](../candidate-k221/README.md) also has two closed endpoints for its exact table:
 

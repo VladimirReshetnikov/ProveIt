@@ -1,0 +1,68 @@
+--- a/K215F/SeedPerm.v
++++ b/K215F/SeedPerm.v
+@@ -1,58 +1,23 @@
+-(** k225-formal/rocqperm/SeedPerm.v (SHA256 723bd2fa87a5c5cfd4b6f29a5374ca1e6713de7f673a51e0380c436cbc197802) under namespace K215F. *)
+-(** * SeedPerm: the 215's bootstrap starts candidate 4 with every other register zero.
+-    The proof search is complete from that state (Source 159's cofinal argument): the program
+-    START 4 ++ Build_F ++ SUFFIX has candidate number P 3 (P 4 (P 1 r)) >= 4. *)
++(** * SeedPerm: the unchanged seed endpoint from arbitrary-state completeness.
++    The three old public endpoint statements are preserved exactly. *)
+ From Coq Require Import Arith Lia List.
+ From K230L Require Import Codes230.
+ From K215F Require Import Codes222 Thm222 ThmDom EnumPerm L1_SoundPerm L1_CompPerm.
+-Import ListNotations.
+ 
+ Definition seedPerm : state := mkState 0 4 0 0 0 0.
+ 
+-Lemma reach_from seed k : pl seed = 0 ->
+-  halts_from seed \/ exists n s, run n seed = Some s /\ pl s = 0 /\ np s = np seed + k.
++Theorem enum_from_iff seed : Inv seed -> (halts_from seed <-> thm222 1).
+ Proof.
+-  intros Hseed. induction k as [|k [Hh | [n [s [R [P0 N0]]]]]].
+-  - right. exists 0, seed. split; [reflexivity|]. split; [exact Hseed|lia].
+-  - left. exact Hh.
+-  - destruct (enum_step s) as [s1|] eqn:E.
+-    + pose proof (step_pl s s1 E) as [H1 H2]. rewrite P0 in H1, H2. cbn in H1, H2.
+-      destruct (drain (pl s1) s1 (le_n _)) as [[j [s2 [R2 Hhalt]]] | [j [s2 [R2 [P2 N2]]]]].
+-      * left. exists (n + S j), s2. split; [|exact Hhalt].
+-        rewrite run_add, R. cbn. now rewrite E.
+-      * right. exists (n + S j), s2. split; [rewrite run_add, R; cbn; now rewrite E|].
+-        split; [exact P2|lia].
+-    + left. exists n, s. now split.
+-Qed.
+-
+-Lemma halts_from_reached seed n s : run n seed = Some s ->
+-  halts_from s -> halts_from seed.
+-Proof.
+-  intros R [j [s' [R' H]]]. exists (n + j), s'. split; [|exact H].
+-  rewrite run_add, R. exact R'.
++  intro HI. split; [|apply enum_complete_from].
++  intros [n [s [Hr Hs]]]. exact (halt_step s (Inv_run n seed s HI Hr) Hs).
+ Qed.
+ 
+ Theorem seedPerm_complete : thm222 1 -> halts_from seedPerm.
+-Proof.
+-  intros H. destruct (compile 1 (thmDom_of_thm222 1 H)) as [L HL].
+-  set (N := enc_fields (fields (START 4)) (enc_tail (L ++ SUFFIX))).
+-  assert (HN : 4 <= N).
+-  { unfold N, START, fields, enc_fields. cbn [fold_right].
+-    pose proof (P_ge_l 4 (P 1 (enc_tail (L ++ SUFFIX)))).
+-    pose proof (P_ge_r 3 (P 4 (P 1 (enc_tail (L ++ SUFFIX))))). lia. }
+-  destruct (reach_from seedPerm (N - 4) eq_refl) as [Hh | [n [s [R [P0 N0]]]]];
+-    [exact Hh|].
+-  apply (halts_from_reached seedPerm n s R).
+-  apply (run_first (START 4) (L ++ SUFFIX) s P0).
+-  - change (np s = N). unfold seedPerm in N0. cbn [np] in N0. lia.
+-  - apply program_halts, HL.
+-Qed.
++Proof. exact (enum_complete_from seedPerm). Qed.
+ 
+ Theorem seedPerm_sound : halts_from seedPerm -> thm222 1.
+ Proof.
+-  intros [n [s [Hr Hs]]]. apply (halt_step s); [|exact Hs].
+-  apply (Inv_run n seedPerm s); [|exact Hr].
+-  repeat split; [exact W_true|exact W_true|exact good_0].
++  apply enum_from_iff. repeat split; [exact W_true|exact W_true|exact good_0].
+ Qed.
+ 
+ Theorem seedPerm_iff_thm : halts_from seedPerm <-> thm222 1.

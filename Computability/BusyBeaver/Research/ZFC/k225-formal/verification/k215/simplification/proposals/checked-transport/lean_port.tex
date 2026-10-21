@@ -1,0 +1,34 @@
+\subsection{A concrete Lean adaptation}
+
+The corresponding Lean sources are under \path{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/}. Their current \path{EnumPerm.lean} and \path{SeedPerm.lean} were inspected at the refreshed pin; exact Git blobs are recorded in \path{lean-sources.json}. No new Lean implementation or compilation is supplied here \cite{leanenum}.
+
+In namespace \path{SetTheory.BusyBeaver.ZFC.EnumPerm}, the state \code{St} has fields \code{pl}, \code{np}, \code{tw}, \code{ws}, \code{d}, and \code{h}. Its \code{HaltsFrom} convention is the same successful-prefix convention used above. The source already exposes the relevant interfaces:
+\begin{itemize}
+\item \code{step\_eq}, \code{decode\_le}, and the definition of \code{fetch} supply the pointer-decrease and refill bounds.
+\item \code{run\_succ} and \code{run\_add} compose finite executions.
+\item \code{build} supplies a command-list contract from a derivation; \code{program\_none} proves the self-initializing word halts from every working-register tuple.
+\item \code{encL\_ge} supplies the cofinal code bound, and \code{exec\_list} transfers the compiled command word to \code{HaltsFrom}.
+\end{itemize}
+
+The existing \code{drain} and \code{reach} prove two scheduler inductions. The existing \code{complete} and \code{halts\_iff} require \code{s.pl = 0}. Porting \code{find\_candidate\_bounded} removes that premise by one strong induction on $R_N(s)$. The proposed stronger interfaces, using the current falsity code, are
+\begin{lstlisting}
+complete_from (s : St) : C222 Code254.F -> HaltsFrom s
+Inv (toW s) -> (HaltsFrom s <-> C222 Code254.F)
+\end{lstlisting}
+The current public statements can remain as wrappers.
+
+A useful Lean proof detail is to normalize the refill arithmetic explicitly. With $p=\np(s)<N$, rewrite
+\[
+ N-p=(N-(p+1))+1
+\]
+and distribute multiplication. Both old and new ranks then share the summand $(N-(p+1))(N+1)$, so cancellation leaves the linear bound $\pl(s')<N+1$. Do not ask linear arithmetic automation to invent a nonlinear multiplication identity. The draining case only cancels an unchanged first summand.
+
+For completeness, choose $Y=\np(s)$ and compile the existing word
+\begin{lstlisting}
+.ax 0 1 Y :: (p ++ [.drop, .nip, .nip])
+\end{lstlisting}
+using \code{build}, \code{encL\_ge}, the new bounded lemma, \code{program\_none}, \code{exec\_list}, and \code{run\_add}. Soundness continues to use \code{Inv (toW s)}. This is a direct port of the checked Rocq argument, with the actual Lean interfaces identified.
+
+Lean's seed layer is already small: \code{EnumPerm.seed} is $\langle 0, 4, 0, 0, 0, 0\rangle$; \code{seed\_iff} is its consistency-calculus interface; \path{L2Perm.dagPerm_seed_iff} composes \code{enc\_seed}, \code{iter\_iff}, and that interface. It does not duplicate the scheduler induction in the way the old Rocq seed source did. Preserve these statement types rather than claiming a second Lean seed-proof reduction that is not present.
+
+The refreshed upstream \path{KSeedModel222.lean} already replaces an encoding-round-trip proof route with \path{Code254Models.sat_encode_decode}, uses \code{derivable\_named\_bundle}, and preserves \code{seed\_eqFree}. That semantic simplification is credited as completed upstream work. The proposed rank adaptation addresses the remaining scheduler interface independently.

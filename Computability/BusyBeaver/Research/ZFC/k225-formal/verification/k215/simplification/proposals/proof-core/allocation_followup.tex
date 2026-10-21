@@ -1,0 +1,42 @@
+\subsection{A concrete FT215 follow-up}
+The new table changes native rows $26/0:0R134\mapsto0R194$ and
+$26/1:1R38\mapsto1L114$, leaving all other rows and the source unchanged.
+It still has 215 working states. An independent local checker computes 971,847
+reachable abstract pairs of a control state and a 15-bit window, beginning with
+all windows at state 0. Sliding a window supplies both possible exterior bits,
+so this is an inductive overapproximation for every initial tape, including the
+blank tape. For all 4,736 eligible row 26 windows, positive old/new traces join
+with identical control, head and tape before any exterior read. No additional
+modified row is executed in the strict new-trace interior. Exact positive block
+matching therefore transports halting in both directions. This is an ordinary
+finite mathematical certificate, not a proof-assistant theorem.
+
+For row 26/0, the next bit is 0 and both paths take two steps:
+$26\to 134\to17$ and $26\to194\to17$.
+For row 26/1, the next two bits are 00; the verified old/new durations are
+$(3,5)$ for 1,920 windows and $(5,7)$ for 128 windows.
+Fresh symbolic verification independently proves all 6,152 arbitrary-natural
+primitive cases on each exact table, using the inherited whole-tape induction
+rules. The original/new rule counts are 1,617,650/1,618,486. The exact blank
+checkpoint at old step 70,506 is reached at new step 70,526.
+
+The two edits free engine rows 38/0 and 134/0 but introduce obligations at
+46/0, 107/1, 114/0, 114/1, 126/0 and 194/0. Thus engine rows increase 144 to 148 and
+engine states 80 to 82. This makes the two-step 26/0 shortcut a more attractive
+future starting point than the longer 26/1 detour.
+
+A bounded global allocation retains the current source and its 15 contextual
+aliases and protects 210 engine, helper and initial-bootstrap rows. Its control
+reconstructs exactly the 215-state table. Attempts to delete 38 or 134 both fail.
+Independently of the MILP solver, each attempt exhibits 115 distinct decoder
+roles whose entire allowed union has only 114 physical slots. The full Hall
+witness is included. This proves an obstruction only for the stated pinned
+alias and protected row model; it is not a 214-state impossibility result.
+
+After the edits, the remaining entrances are native row $188/1$ to state 38 at source prefix 11,
+whose left child is CI6, and native row $312/1$ to state 134 at prefix 001, whose left child is CD3.
+Both right children are nonterminal. Native labels are not consecutive: label 312 is a physical state, while the table still has only 215 distinct working labels. Further progress must change the source
+role structure, introduce another contextual alias, or separately reimplement
+one of the protected engine/helper obligations. The new four-shape rho8 theorem
+suggests another emitter language, but its nested implication constructors and
+branching must be costed in a literal allocation before claiming a state saving.

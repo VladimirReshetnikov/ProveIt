@@ -1,0 +1,376 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=24mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs,longtable,array,enumitem,xcolor,listings}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\usepackage{xurl}
+\hypersetup{pdftitle={A Representation-Independent Implication Core for K215},pdfauthor={Research contribution for the ProveIt project},pdfsubject={Checked proof simplifications and bounded state-reduction research}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}\lhead{K215: a smaller implication proof core}\rhead{21 October 2026}\cfoot{\thepage}
+\setlength{\headheight}{14pt}\setlength{\emergencystretch}{3em}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
+\setlist{itemsep=2pt,topsep=4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newcommand{\impop}{\mathbin{\Rightarrow}}
+\newcommand{\Rho}[4]{\rho(#1,#2,#3,#4)}
+\newcommand{\T}{\mathcal T}
+\newcommand{\Con}{\operatorname{Con}}\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\pin}{\texttt{aa66d0a33f1f8237a348899eb8095b045a502832}}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,frame=single,rulecolor=\color{black!20}}
+\input{results_macros.tex}
+\title{A Representation-Independent Implication Core for K215\\\large Checked proof reductions, certificate refinements,\\and a bounded search below 215 states}
+\author{Research contribution for Vladimir Reshetnikov's ProveIt project}
+\date{21 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The main result is a stronger and smaller replacement for the dominated-$\rho_8$ completeness proof used by K215. The new theorem applies to an arbitrary implication operation and a reflexive relation closed under placing a related term inside either operand. Restricted $\rho_8$ instances and modus ponens suffice: no distinguished true numeral, least element, numerical encoding, injectivity, decoding, or identity $0\impop0=0$ is needed. A compressed finite derivation retains 84 of the original 117 numbered helper schemas; the main unrestricted-$\rho_8$ theorem depends on 82. A direct composition/exchange argument replaces the local deduction calculus. The generic result is checked in Lean and Rocq, and a numerical Lean adapter preserves the current public interface. A further checked specialization shows that four explicit implication-context schemes suffice, with no order relation at all. A numerical client proves equality with the existing $C222$ calculus for every code.
+
+A second checked contribution composes the incoming 1,426-entry normalized source certificate with balanced lookup, using an exact refinement theorem rather than a new semantic simulation proof. An optional Lean patch makes the register-to-tape halting bridge an instance of an existing positive-simulation theorem. We compare alternative 215-state machines by proof obligation, prove a logical obstruction to one restricted-vacuity recovery strategy, and search a different family of state eliminations. No verified 214-state machine is produced.
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+
+\section{Outcome and exact baseline}
+The most useful immediate change is to replace the numerical dominated-implication derivation by an abstract proof core and a thin numerical adapter. This removes assumptions from the mathematical theorem as well as source from the maintained proof. It does not change the Turing-machine table.
+
+The baseline is repository commit \pin, retrieved through the GitHub connector. The public K215 readme records a 215-working-state deterministic binary machine with a separate halt and initialization included. Its convention is one initially blank two-way infinite tape and left/right moves only. The accepted dense table has SHA-256
+\begin{center}\small\ttfamily
+fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090.
+\end{center}
+The mathematical target remains
+\[
+\mathrm{ZFC}\vdash \neg\Halt(K215,\mathrm{blank})\ \longleftrightarrow\ \Con(\mathrm{ZFC}).
+\]
+The existing external Lean and Rocq theorems connect blank-start halting to a finite syntactic ZFC refutation. They do not assert unconditional nonhalting or an internal PA endpoint. The maintained Lean phase-five checkpoint records a 184-module endpoint closure, with exact bindings for reused predecessor objects~\cite{k215,phase5}. These baseline facts are repository records; the new focused checks below are separately documented.
+
+\subsection{Prior work included in the review}
+The review includes the three ZIP files added at the baseline commit, not merely the maintained proof subtree:
+\begin{itemize}
+\item \code{Affine_Proof_Cores_and_Transport_2026-10-21.zip};
+\item \code{K215_Certificate_Refinements_2026-10-21.zip};
+\item \code{K215_Checked_Simplifications_2026-10-21.zip}.
+\end{itemize}
+These packets already contain or discuss ordinary zero-offset certificates, the 1,426-entry normalized certificate, balanced lookup for an earlier 2,240-entry certificate, marker transport, decoder certificates, concrete zero-credit enumeration, and several large restricted searches. Those ideas are not presented here as new discoveries. The new source-checker result is the checked composition of the normalized and balanced refinements. The positive-simulation theorem is also inherited; the new contribution there is its checked integration into the current \code{KSim} interface.
+
+\subsection{Evidence levels}
+\begin{center}
+\begin{tabular}{P{0.29\linewidth}P{0.61\linewidth}}
+\toprule
+Component & Evidence and precise boundary\\
+\midrule
+Implication cores & Generic and four-scheme theorems checked in Lean and Rocq; unchanged numerical client and exact $C\mathrm{Four}\leftrightarrow C222$ checked in Lean. Full K215 endpoint not rebuilt.\\
+Normalized plus balanced source proof & Exact all-register source equivalence, fresh compilation and recursive \code{coqchk}. Source layer only.\\
+Positive simulation integration & Current Lean types and axiom reports compared before and after. First-use total source size increases.\\
+Hidden-coordinate obstruction & Lean nonderivability theorem for a specified logical fragment, not the full set-theoretic bundle.\\
+State reduction & Bounded exact-local search and controls. No accepted 214-state table and no state-count lower bound.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{A stronger dominated-implication theorem}
+\label{sec:abstract}
+The old proof is phrased over natural-number codes. Its architecture obscures which numerical facts are actually needed. The new derivation separates the implication calculus from its encoding.
+
+\begin{definition}
+A \emph{dominance language} consists of a type $A$, a binary operation $x\impop y$ on $A$, and a relation $\preceq$ satisfying
+\begin{align}
+ a&\preceq a,\\
+ u\preceq x&\ \Longrightarrow\ u\preceq(x\impop y),\\
+ u\preceq y&\ \Longrightarrow\ u\preceq(x\impop y).
+\end{align}
+There is no separate transitivity or antisymmetry requirement. Define
+\[
+\Rho{a}{b}{c}{u}
+ =((c\impop u)\impop a)\impop((a\impop c)\impop(b\impop c)).
+\]
+A predicate $\T\subseteq A$ is closed under modus ponens if
+\[
+ \T(x\impop y)\ \text{and}\ \T(x)\quad\Longrightarrow\quad\T(y).
+\]
+\end{definition}
+
+\begin{theorem}[Restricted rows suffice]
+\label{thm:rho}
+Let $(A,\impop,\preceq)$ be a dominance language. Suppose $\T$ is closed under modus ponens and
+\[
+ u\preceq a\quad\Longrightarrow\quad\T(\Rho{a}{b}{c}{u})
+ \qquad(a,b,c,u\in A).
+\]
+Then every unrestricted row belongs to $\T$:
+\[
+ \T(\Rho{a}{b}{c}{u})\qquad(a,b,c,u\in A).
+\]
+The same assumptions derive composition and distribution:
+\begin{align*}
+\T\bigl((a\impop b)\impop((b\impop c)\impop(a\impop c))\bigr),\\
+\T\bigl((a\impop(b\impop c))\impop((a\impop b)\impop(a\impop c))\bigr).
+\end{align*}
+\end{theorem}
+
+The conclusion assumes no distinguished element $0$, known theorem at that element, least-element property, pairing function, or decoder. The operation need not be injective; different expressions may denote the same element. This directly accommodates codes that need not decode to ordinary formulas.
+
+\subsection{Eliminating the initial theorem assumption}
+An intermediate bootstrap is conveniently proved assuming one theorem $\T(\tau)$. This can be discharged internally. For any argument $a$ of the desired conclusion, choose
+\[
+ \tau=\Rho{a}{a}{a}{a}.
+\]
+Reflexivity gives $a\preceq a$, so the restricted-row premise proves $\T(\tau)$. Instantiate the bootstrap with this $\tau$.
+
+No global nonemptiness assumption is required: the first supplied argument supplies the seed. For an empty carrier the universal statement is vacuous. The private seeded presentation is a proof organization device, not an axiom of the public theorem.
+
+\subsection{Compressing the finite bootstrap}
+The baseline module has 117 numbered helper schemas: 58 bootstrap lemmas and 59 condensed-detachment lemmas. A search for alternative instances of existing schemas produced thirteen new two-premise modus-ponens steps. Replacing those steps and taking the acyclic dependency closure removes 33 numbered schemas. The result retains 84; 82 lie in the dependency closure of the main unrestricted-row result. The two additional schemas preserve the exported distribution theorem.
+
+Each replacement is an explicit proof term. The generator selects substitutions, but Lean or Rocq checks the resulting formulas and modus-ponens applications. The archive contains the pinned input, replacement plan, generated proofs, and compiler receipts. No optimality claim is made for the remaining 84 schemas.
+
+For example, two of the new dependency edges are
+\[
+ \code{cd75}\ \longleftarrow\ (\code{b52},\code{cd92}),\qquad
+ \code{cd103}\ \longleftarrow\ (\code{cd104},\code{cd69}).
+\]
+The complete substitutions appear in the delivered source. The graph is topologically sorted before emission; numbered labels retain provenance rather than prescribing file order.
+
+The compressed graph no longer needs the special-zero derivations. Two remaining proofs of the distinguished numeral can use the private seed hypothesis instead. All normalizations using $wim(0,0)=0$ then disappear from the abstract derivation. The final generic Lean core imports only \code{Init}.
+
+\subsection{A direct final argument replaces deduction}
+\label{sec:direct}
+The earlier final step introduced a local proof syntax, proved its soundness, proved a deduction theorem by induction, and discharged several hypotheses. That machinery proves more than this target requires.
+
+The finite bootstrap supplies
+\begin{align*}
+ B'(x,y,z)&=(x\impop y)\impop((y\impop z)\impop(x\impop z)),\\
+ C(x,y,z)&=(x\impop(y\impop z))\impop(y\impop(x\impop z)),\\
+ K(x,y)&=x\impop(y\impop x),\\
+ P(x,y)&=((x\impop y)\impop x)\impop x.
+\end{align*}
+From $B'$ and modus ponens, derived implications compose. From $B'$ and $C$, an established implication can be transported under a fixed antecedent:
+\[
+ \T(x\impop y)\quad\Longrightarrow\quad
+ \T\bigl((z\impop x)\impop(z\impop y)\bigr).
+\]
+To obtain this, exchange the two antecedents of $B'(z,x,y)$ with $C$, then apply modus ponens with $x\impop y$.
+
+Set
+\[
+ d=c\impop u,\quad f=d\impop a,\quad g=a\impop c,\quad q=d\impop c.
+\]
+Composition gives $\T(f\impop(g\impop q))$. Peirce gives $\T(q\impop c)$. Transporting Peirce under $g$ and composing gives
+\[
+ \T(f\impop(g\impop c)).
+\]
+Finally, $K(c,b)$ gives $\T(c\impop(b\impop c))$. Transport that implication under $g$ and compose again:
+\[
+ \T(f\impop(g\impop(b\impop c)))
+   =\T(\Rho{a}{b}{c}{u}).
+\]
+This uses no general deduction theorem and no distribution schema in the final step. The two substantive hypotheses $f$ and $g$ are each used once. Distribution remains exported for compatibility.
+
+\subsection{A syntactic corollary}
+\begin{corollary}[Subterm restriction]
+On the free language of implication trees, let $u\preceq a$ mean that $u$ is a subterm of $a$. Modus ponens and only those $\rho_8$ instances for which $u$ is a subterm of $a$ derive every unrestricted $\rho_8$ instance.
+\end{corollary}
+\begin{proof}
+Subterm satisfies reflexivity and both operand-insertion rules. Apply Theorem~\ref{thm:rho}.
+\end{proof}
+The delivered Lean example also proves equality of the restricted and full derivability predicates. This is an alternative formulation of the propositional component, not yet a smaller TM implementation: recognizing subterms may cost more than the present numerical restriction.
+\input{four_shapes.tex}
+
+\section{The numerical adapter and verification}
+\label{sec:adapter}
+For the present coding, use $A=\mathbb N$, $\impop=wim$, and $\preceq=\leq$. Existing pairing inequalities prove operand insertion. The adapter retains the public declarations \code{DomImp}, \code{le_l}, \code{le_r}, \code{sub}, \code{wim00}, \code{composition}, \code{distribution}, and \code{rho8_all}. The compatibility record retains \code{truth}, although the new result does not use it.
+
+The stronger interface \code{rho8_all_of_restricted} assumes only modus ponens and the dominated rows. The original \code{rho8_all} immediately applies it. Keeping the old declarations avoids a simultaneous client rewrite.
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Presentation & Bytes & Lines\\
+\midrule
+Baseline \code{DomRho8.lean} & 30,114 & 517\\
+Initial pruned numerical proof & 21,218 & 387\\
+Final generic core & \CoreBytes & \CoreLines\\
+Final numerical adapter & \AdapterBytes & \AdapterLines\\
+Core plus adapter & \CombinedBytes & \CombinedLines\\
+\bottomrule
+\end{tabular}
+\end{center}
+The combined count includes the new core rather than presenting the adapter alone as the entire proof. Optional examples, drivers, and archived input are separate. The main improvement is the weaker theorem interface and elimination of the deduction calculus; line counts depend on formatting.
+
+The exact numerical-client dependencies were fetched at the pinned commit and freshly compiled. Both the initial numerical reduction and final adapter were checked with the unchanged \code{KCodeDom.cdom_iff_c222} client. No old project objects were reused for the focused clean check. The main clean Lean closure contains 28 modules, including the generic core, numerical client, optional simulation adapter and subterm example. A separate fresh 13-module closure checks the four-scheme numerical client; the two closures contain 30 distinct project modules. The generic result's printed axiom set is empty; the existing numerical interfaces retain only \code{propext} and \code{Quot.sound}. Exact reports are included.
+
+The Rocq abstract core directly ports the finite proof terms. Its carrier, operation, relation and predicate are parameters. Fresh compilation and recursive \code{coqchk} passed; the exported unrestricted-row, composition and distribution theorems are closed under the global context. The maintained complete Rocq endpoint has not been switched or rebuilt here.
+
+\section{Normalized certificates with balanced lookup}
+\label{sec:source}
+Incoming work separately establishes two refinements. Trailing-zero normalization identifies paths with the same implicit infinite zero extension, reducing the source certificate from 2,240 entries to 1,426. Balanced storage replaces linear list indexing by lookup in a certified binary tree. The present contribution checks their composition.
+
+\subsection{Exact refinement replaces a new semantic proof}
+For a valid certificate tree $T$, the inherited theorem gives
+\[
+ \operatorname{getTree}(T,j)
+ =\operatorname{getc}(\operatorname{flatten}(T),j).
+\]
+The new \code{BalancedNormalized.v} lifts this equality through branch and entry checks and traversal of the entries:
+\[
+ \operatorname{ncheckTree}(p,q,T)
+ =\operatorname{ncheck}(p,q,\operatorname{flatten}(T)).
+\]
+The normalized checker's existing soundness theorem then supplies the equivalence. No additional induction on machine execution and no new restriction on register values is introduced.
+
+The concrete theorem is
+\[
+ \forall R,\quad
+ \operatorname{rm\_halts}(p215,([],R))
+ \longleftrightarrow
+ \operatorname{rm\_halts}(dagPerm,([],R)).
+\]
+The register file $R$ is arbitrary. Bounded segment extraction constructs a finite certificate; it does not bound the execution in this semantic theorem.
+
+The tree constructor is untrusted. Separate kernel-checked statements establish exact flattening, validity, 1,426 entries and height 12. The complete concrete theorem was freshly compiled with Coq 8.18.0 and recursively checked by \code{coqchk}. The compatibility shim for inherited Rocq 9.1 source is documented and retained.
+
+\subsection{Operation counts are not a speedup claim}
+There is one entry branch and two outgoing branches for each of 1,425 non-halt entries, hence 2,851 lookups. Row 19 is the sole halt entry. Exact counts are
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Representation & Visited nodes or cells\\
+\midrule
+Linear list, normalized certificate & 2,033,059\\
+Balanced tree, normalized certificate & 32,961\\
+Maximum balanced lookup depth & 12\\
+\bottomrule
+\end{tabular}
+\end{center}
+This is about 61.7 times less counted lookup work. It is not a corresponding runtime claim. The complete new concrete module took 15.741 seconds in this run, versus 9.238 seconds for the normalized list module. The new module also constructs and proves properties of the tree; these are not repeated controlled benchmarks. The recursive concrete audit took 313.451 seconds, and the full recorded run took 374.868 seconds.
+
+Keep this as a verified optional storage refinement, and measure the production build before preferring it. The normalized list certificate may be the simpler immediate integration choice. Saving one class of evaluator operations does not establish a faster full proof.
+
+\section{A reusable halting bridge: benefit and cost}
+An earlier FM215 proof-compression proposal supplies a generic positive-simulation theorem. We instantiate it at the current \code{KSim} definitions, replacing the specialized halting proof by one application and preserving the public theorem types.
+
+The reusable principle relates source and target configurations at checkpoints. Each source step corresponds to a positive finite number of target steps, restoring the relation at the next checkpoint. A terminal source configuration leads to target halting after finitely many target steps. The reverse halting implication follows from deterministic execution and strictly positive simulated progress. Positivity prevents an infinite source run from being represented by finitely many target steps and cannot be dropped when replacing bespoke fuel arguments.
+
+The focused integration changes \code{KSim.lean} from 355 lines and 16,074 bytes to 324 lines and 14,758 bytes. Public type and axiom reports compare identically. However, first use adds 99 inherited generic-theorem lines and 63 adapter lines. Total source grows by 131 lines in this isolated adoption.
+
+This is useful when shared across machines or compiler stages. It is not the leading compression result for a one-machine endpoint. The packet labels it optional, attributes the generic theorem, and records its check separately.
+
+\section{Which other 215-state candidate is easier?}
+The smallest new mathematical obligation and the shortest route to another complete formal endpoint are different criteria.
+\begin{center}
+\begin{tabular}{P{0.22\linewidth}P{0.34\linewidth}P{0.32\linewidth}}
+\toprule
+Candidate & Attraction & Remaining work\\
+\midrule
+Primary K215 & Accepted complete proofs; directly benefits from the new core. & Integrate and rebuild the production closure.\\
+CM215 & Existing compiled concrete dense/Core equivalence to K215. & Compile the final ZFC adapter with the accepted endpoint closure.\\
+M124 / FM215 & Small local marker invariant; existing finite transport checker. & Connect native arbitrary-tape transport to the dense/zipper endpoint.\\
+ZC215 / GC--ZC215 & Cleaner scheduler through strict tag-lowering credit. & Physical decoder, primitive, return and startup adapters.\\
+\bottomrule
+\end{tabular}
+\end{center}
+For the quickest additional formal endpoint, CM215 is the pragmatic choice. It retains the source, calculus, scheduler and startup frame; six changed physical rows are handled by a local invariant and two three-step simulation blocks. Its incoming Core bridge is recorded compiled, while its final ZFC adapter explicitly was not compiled with the full endpoint closure. Composition is mathematically short, but the unbuilt closure should not be described as checked.
+
+For the smallest local mathematical argument, M124/FM215 is attractive. Its generic checker packages marker invariants and whole-tape transport once. They are distinct literal machines; keep each table's exact identity and checker instance.
+
+For an independently cleaner source proof, zero-credit variants remove reserve/debt reasoning. Concrete Cantor-code and scheduler properties are already checked in incoming work. Remaining cost lies in the physical adapter rather than the credit inequality alone.
+
+This packet supplies no new complete alternative-machine endpoint. It recommends the least remaining work from the current inventory and retains primary K215 as the immediate integration target.
+
+\section{Searching for 214 states}
+The new bounded search considers \emph{edge-specific elimination}. To remove a state $q$, different incoming transitions may choose different replacement write symbols, directions and target states. This is more flexible than identifying $q$ with one globally chosen survivor.
+
+The checker constructs an inductive finite overapproximation of local tape contexts, starting from every inspected tape window at the initial control state and searches for positive bounded joins between old and replacement executions. New entering bits are unconstrained, so the invariant covers every initial tape, including the blank tape. Leaving the inspected window before an exact join is rejected. A replacement cannot reach the removed state or an unresolved patched row before joining. This defines a conservative local search family; lack of a certificate does not prove a replacement globally incorrect.
+
+Seven 215-state tables were examined, with 214 removable labels apiece, giving 1,498 table/label pairs in each run:
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Radius / join cap & Replacement rows & Edges with replacements & Full eliminations\\
+\midrule
+5 / 64 & 1,291,720 & 4 & 0\\
+7 / 192 & 1,299,460 & 13 & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are attempted replacement actions, not distinct complete machines, and not an exhaustive search of 214-state tables. Pinned inputs, controls and the exact C++ source are included.
+
+The forced-transfer table admits two incoming-edge shortcuts. The following separate check certifies their simultaneous use and follows the resulting allocation constraints. Neither shortcut alone deletes its former target state.
+\input{allocation_followup.tex}
+
+\subsection{Why removing truth does not automatically remove a boot state}
+The new calculus theorem does not by itself eliminate a physical instruction. In K215, zero also serves as a stack terminator and initial register value. Startup constructs an interpreter frame and enumeration counter; there is no separate physical instruction whose only purpose is to assert $\T(0)$.
+
+In the current coding, the all-zero restricted-$\rho_8$ row already derives zero. The abstract result broadens permissible encodings, but a different encoding still needs source and tape invariants. Reinterpreting a startup zero without those invariants would not establish a smaller correct machine.
+
+A useful next compiler target is to combine local engine shortcuts with decoder reallocation. A reachable state can have an unneeded symbol row available for a decoder role. The required saving may therefore involve both the engine schedule and decoder assignment. No theorem here guarantees that this will reach 214.
+
+\section{A logical obstruction to one recovery strategy}
+A separate source-reduction proposal restricts atomic vacuity to a cofinal set of indices. One tempting proof strategy is to recover all ordinary atomic-vacuity instances from the remaining logical rules. The following model blocks that logical-only strategy.
+
+Let $e:\mathbb N\to\{0,1\}$ be a valuation. Interpret equality ordinarily, quantifiers by coordinate updates, and implication classically. Set
+\[
+ R(a,b)[e]\quad\Longleftrightarrow\quad e(0)=0\ \text{and}\ e(a)\ne e(b).
+\]
+The displayed arguments are $a,b$, but the relation also depends on coordinate zero.
+
+The checked fragment includes ordinary equality/quantifier rows $r_1$--$r_7$, unrestricted propositional $r_8$, generalization, all equality-vacuity instances with the usual distinct-index conditions, the merged equality row, and relation-vacuity only when
+\[
+ a+b<c:\qquad R(a,b)\to\forall c\,R(a,b).
+\]
+All these instances are valid. The cofinal restriction makes $c$ different from $0,a,b$, preserving the hidden coordinate.
+
+But
+\[
+ R(1,2)\to\forall0\,R(1,2)
+\]
+is false when $e(0)=e(1)=0$ and $e(2)=1$: changing coordinate zero to one destroys the relation. Soundness yields a formal nonderivability theorem. \code{HiddenCoordinate.lean} contains the complete definitions, row-by-row semantics, soundness induction and witness.
+
+This is not a model of the set-theoretic seed bundles. It does not refute equiconsistency of the full restricted calculus or establish that a TM candidate is wrong. It blocks deriving all missing vacuity instances from this logical fragment alone. A successful proof may use the bundles, interpret the weakened calculus differently, or prove equiconsistency without recovering every ordinary first-order axiom.
+
+\section{Integration and reproduction}
+Recommended order:
+\begin{enumerate}
+\item Add the generic implication core and replace \code{DomRho8.lean} with its compatibility adapter. Update the generator too, so regeneration preserves the new proof.
+\item Recheck \code{KCodeDom.cdom_iff_c222} and the two production K215 endpoint clients. The delivered focused client check is not a substitute for the production dependency-closure gate.
+\item Instantiate the checked Rocq abstract core in the maintained numerical lane, then run its full endpoint build and assumption audit.
+\item Adopt the incoming normalized source certificate. Treat balanced storage as optional and measure production cost.
+\item Use the positive-simulation adapter where shared reuse justifies its additional source. Do not count the smaller \code{KSim} file alone as net compression.
+\item For another endpoint, finish CM215's adapter closure or the M124/FM215 native-to-dense bridge, binding exact table hashes.
+\end{enumerate}
+The archive includes proof sources, deterministic generation data, patches, pinned minimal dependencies, receipts and logs, and search artifacts. It excludes compiled objects, toolchains, full repository copies and superseded whole incoming archives. The lightweight audit checks hashes, counts and bindings. Proof-assistant replays are separate explicit commands.
+
+\subsection{Remaining limits}
+No new complete 214-state machine is claimed. The generic theorem simplifies a calibration layer. The separate $C\mathrm{Four}$ adapter does prove equality of derivability with $C222$, but no source enumerator or tape machine for that presentation has been compiled here. The full production Lean and Rocq endpoint closures were not rebuilt after these edits. The preserved interfaces and focused checks make the replacement concrete, but the integration gate remains necessary.
+
+The next mathematical question is which restricted implication presentations admit a cheaper enumerator. The next compiler question is whether the local engine shortcuts release enough symbol rows to remove a decoder state. This packet provides checked proof cores and concrete local constraints for those questions.
+
+\clearpage
+\appendix
+\section{Trust and provenance}
+The main implication results are finite proof terms checked by the proof assistants. Search and generators choose substitutions and a dependency order; they introduce no new axioms. The source-checker refinement reuses the inherited register semantics and segment proof. Its finite evaluations are kernel-checked, and recursive \code{coqchk} audits the concrete theorem.
+
+The generic core retains the baseline Source 149/CD230 provenance and records thirteen replacement steps. Normalized and balanced components retain both incoming notices. Simulation extraction is attributed to the earlier FM215 proposal. Reference machine tables are identified by exact paths and hashes, not state counts alone.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{k215} ProveIt, K215 candidate and verification index, commit \pin.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/aa66d0a33f1f8237a348899eb8095b045a502832/Computability/BusyBeaver/Research/ZFC/candidate-k215}
+\bibitem{phase5} ProveIt, phase-five ordinary certificates and shared semantic lemmas.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/aa66d0a33f1f8237a348899eb8095b045a502832/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase5}
+\bibitem{dom} ProveIt, baseline \code{DomRho8.lean} and \code{KCodeDom.lean}.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/aa66d0a33f1f8237a348899eb8095b045a502832/Computability/BusyBeaver/Lean/BusyBeaver/ZFC}
+\bibitem{incoming} ProveIt, three additional proof-research packets in the baseline commit.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/commit/aa66d0a33f1f8237a348899eb8095b045a502832}
+\bibitem{alternatives} ProveIt, K215 alternatives at the same pin.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/aa66d0a33f1f8237a348899eb8095b045a502832/Computability/BusyBeaver/Research/ZFC/candidate-k215/alternatives}
+\bibitem{packet} Accompanying \code{K215_Proof_Core_2026-10-21.zip}. Its manifest, local proof receipts, pinned-source records and scripts supply evidence for the new measurements and theorem checks reported here.
+\end{thebibliography}
+\end{document}

@@ -20,24 +20,34 @@ both unchanged endpoint clients and a fresh five-client legacy audit. It adopts
 the independently reviewed pointwise-implication component; the report intake
 and reconciliation statuses below remain separate.
 
-## Current queue after upstream batches 209–210
+## Current queue after upstream batch 211
 
-`K215_Guarded_Proof_Core_and_Refinements_2026-10-21.zip` and
-`K215_Proof_Core_2026-10-21.zip` are new arrivals awaiting intake.
-Upstream placements `32d378522c` and `05eaa1d466` extracted and retired the
-six packets in batches 209–210, including the earlier automatic-certificate
-and quotient-detachment arrivals. Their independent mathematical reconciliation
+There are no loose ZIPs in this directory at this checkpoint. Upstream
+placements `32d378522c`, `05eaa1d466` and `d7105dd57d` extracted and retired
+the ten packets in batches 209–211, including the guarded-core and proof-core
+arrivals formerly listed here. Their independent mathematical reconciliation
 remains pending. The numbered host coverage below remains through Source 178;
 Sources 165–166 also retain their earlier pending follow-ups.
 
-The [origin merge boundary](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/upstream-merge/README.md)
-retains the checked phase-six proof sources while preserving the new proposals.
+The [phase-seven origin merge boundary](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/upstream-merge/README.md)
+keeps the completed proof sources and records the next generic-core proposal.
 Queue-clear statements, proof-status paragraphs and ledger rows below retain
 their earlier checkpoints.
 
 ## Supplemental reconciliation through Source 178
 
 [Batch 205 and its Source 174 appendix](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-205.md), [batch 207](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-207.md) and [batch 208](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-208.md) reconcile Sources 168–178. The host now has 178 numbered sources, written coverage of 1–164 and 167–178, and pending Source 165/166 follow-ups; the collection stays at 290 reports. Supplemental commits `0359ebda60`, `dada10165b` and `7e320f376c` preserve exact recovery alongside the upstream placements, without duplicate source numbering; write `1937bbc8a5` completes the batch-208 reconciliation. The later [phase-six Lean checkpoint](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/README.md) now passes for 187 project modules and both typed endpoint clients, with unchanged machine and theorem statements. Its reused providers retain exact phase-five bindings. The later placements and arrivals have the separate pending review scope stated above.
+
+## Queue status after batch 211
+
+Four K215 proof-simplification packets (arrivals `af67cd0525`, `465923c184`,
+`e4d84048de`) were placed whole as delivered under
+[proposals/](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/README.md)
+(`proof-core`, `checked-transport`, `semantic-normal-forms`, `guarded-core`),
+omitting copies of already placed packets and repository tables. Their only
+215-state table not in the repository is an unverified allocation experiment
+(`proof-core/machine_research/ft-frontier/`), not an alternative. Nothing was
+rerun. The queue is clear.
 
 ## Queue status after batch 208 placement
 

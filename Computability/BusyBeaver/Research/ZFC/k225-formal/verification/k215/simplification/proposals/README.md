@@ -4,9 +4,9 @@
 checks the normalized source certificate, stable-program split, physical-table
 lookup adapter, seed-model cleanup and pointwise dominated-implication proof
 for the same K215 endpoint. The original
-placement descriptions below retain their delivery scope. Batches 209–210 need
+placement descriptions below retain their delivery scope. Batches 209–211 need
 independent reconciliation; their extracted files do not extend the completed
-checkpoint. The [origin merge record](../phase6/upstream-merge/README.md) explains
+checkpoint. The [origin merge record](../phase7/upstream-merge/README.md) explains
 the deferred production edits.
 
 Six research packets, each placed whole and byte-identical (logs stay out by the ignore rules),
@@ -31,6 +31,10 @@ packets' own. Each archive is recoverable with `git show a6b3a30011:docs/incomin
 | [composition-address-bounds](composition-address-bounds/README.md) | `K215_Proof_Composition_and_Address_Bounds_2026-10-21` (batch 210) | normalized + balanced lookup with a recursive kernel audit; decoder windows generated from the literal source walk; CM215 equivalence in the repository's stream semantics (Coq, closed); a 206-subtree source without six-zero runs (no new machine) |
 | [further-simplifications](further-simplifications/README.md) | `K215_Further_Proof_Simplifications_2026-10-21` (batch 210) | return-to-dispatch runtime contract and decoder factoring; calibration with fresh-variable padding; audits of recent production changes. `recent_commits/sources/` and `recent_commits/phase5_refresh/production/` (repository copies) omitted |
 | [rocq-composition](rocq-composition/README.md) | `Rocq_Certificate_Composition_and_Arithmetic_Summaries_2026-10-21` (batch 210) | certificate composition and arithmetic loop summaries: finite checks and uncompiled proposals. `review/automatic/` (a copy of `automatic-certificates`) omitted |
+| [proof-core](proof-core/README.md) | `K215_Proof_Core_2026-10-21` (batch 211) | a compatible smaller `DomRho8` factored through an abstract carrier (30,114 -> 22,278 bytes); four first-argument rho schemes suffice (Lean and Rocq, abstract); normalized + balanced Rocq wrapper; an optional KSim positive-simulation adapter |
+| [checked-transport](checked-transport/README.md) | `K215_Checked_Transport_and_Seed_Rank_2026-10-21` (batch 211) | checked Context215 transport and native-to-sparse adapter (Coq 8.18, `coqchk`); one scheduler rank replacing three inductions; `Local Opaque P wim ...` (a soundness module 43 s -> 0.8 s). `state_reduction/inputs/` (repository tables) omitted |
+| [semantic-normal-forms](semantic-normal-forms/README.md) | `K215_Semantic_Normal_Forms_and_AX9_2026-10-21` (batch 211) | one bundle/seed semantic lemma removing 120 lines from two Lean files (signatures kept); exact drain normalization (Coq); AX10 = DROP;AX9 factorization (Coq) |
+| [guarded-core](guarded-core/README.md) | `K215_Guarded_Proof_Core_and_Refinements_2026-10-21` (batch 211) | a 189-vertex guarded arithmetic core of the source graph (research); positive-address trie; review of earlier packets. Copies of placed packets (`checked/extracted/`, `affine/extracted/`, `refinements/incoming/`) omitted |
 | [fm215-compression](fm215-compression/README.md) | `zfc-fm215-proof-compression-2026-10-21` | shared decoder contexts (234 roles cover 4,750 internal occurrences); FM215 with a compiled Lean transport; a compiled logical obstruction. `machine/inherited_notices/` and `machine/tables/` (repository copies) omitted |
 
 **FM215 is not a new alternative.** It differs from M124 (`candidate-k215/alternatives/dr215/markers/

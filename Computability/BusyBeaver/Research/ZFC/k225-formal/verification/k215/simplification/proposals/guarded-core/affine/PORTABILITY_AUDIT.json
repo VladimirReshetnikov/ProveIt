@@ -1,0 +1,63 @@
+{
+  "status": "PASS",
+  "checker_sha256": "4c6cc5a1aeadd10b687a180f3171d4a241a4c1f4dd440fc5d8de95b0d673a806",
+  "output_sha256": {
+    "GUARDED_CORE.json": "15a315b4e87f966bd8d7bde577fa18d06e4d750720bd3e9d4404d9547605bd86",
+    "GUARDED_CORE_COMPACT.json": "be4c2309ad188fa314213b5cd0cb066aeade11c19c50f5ef14b96a57b1957cc7",
+    "CLEAR_ZERO_COUNTEREXAMPLES.json": "67f572bcf83349082cddde2e9fd145692aea7b0fb7a0f1da97e874e0ce9fac1e",
+    "OWN_AUDIT.json": "b86fb9126fe3265697df876c553a0c7d5a2f8fd7bd06fd3c7994f1fd8efc4a6a"
+  },
+  "cases": [
+    {
+      "case": "isolated normal replay without sibling directories",
+      "returncode": 0,
+      "outputs_byte_identical": true
+    },
+    {
+      "case": "optimization flags=['-O'] environment=None",
+      "returncode": 1,
+      "rejected_before_output_changes": true
+    },
+    {
+      "case": "optimization flags=['-OO'] environment=None",
+      "returncode": 1,
+      "rejected_before_output_changes": true
+    },
+    {
+      "case": "optimization flags=[] environment='1'",
+      "returncode": 1,
+      "rejected_before_output_changes": true
+    },
+    {
+      "case": "optimization flags=['-E'] environment='1'",
+      "returncode": 1,
+      "rejected_before_output_changes": true
+    },
+    {
+      "case": "optimization flags=['-I'] environment='1'",
+      "returncode": 1,
+      "rejected_before_output_changes": true
+    },
+    {
+      "case": "optimization flags=['-I'] environment='0'",
+      "returncode": 1,
+      "rejected_before_output_changes": true
+    },
+    {
+      "case": "missing phase-five source",
+      "returncode": 1,
+      "rejected_before_output_changes": true
+    },
+    {
+      "case": "tampered phase-five source",
+      "returncode": 1,
+      "rejected_before_output_changes": true
+    },
+    {
+      "case": "mutated phase-five Git pin",
+      "returncode": 1,
+      "rejected_before_output_changes": true
+    }
+  ],
+  "scope": "Portability and fail-closed checks only; unchanged semantic results; no received programs executed"
+}
