@@ -42,22 +42,28 @@ nine typed callers pass with zero warnings. The internal PA equivalence for
 this exact 240-state machine is now checked too
 ([`BinaryConsistencyRotation240`](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/BinaryConsistencyRotation240.lean), 19 October 2026). See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md).
 
-The primary **ordinary** contender is now the [**218-state machine**](candidate-k218/README.md)
-from `c4568161bf`, imported as Source 144 in batch 188. Its 205-node source
-exposes a continuation that lets native 85 and 212 share a state using the bit
-written by their incoming edges. All six fresh jobs pass: 6,167 guarded cases,
-1,515,158 symbolic rules, all 436 rows and exact 312,909-step blank startup.
-Independent mathematical reviews confirm the source and final all-tape fold
-arguments. The complete unchanged-calculus comparison is formalizable in ZFC;
-the exact-K218 Lean and internal PA endpoints remain open. The row157 rewrite
-also gives a second checked 218 layout. Our next target is **216 states or fewer**.
-See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-188.md)
-and [reproduction guide](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-188-reproduction.md).
+The primary **ordinary** contender is now the [**217-state machine**](candidate-k217/README.md)
+from `8a1796545e`, imported as Source 152 in batch 192. Three closed rotations
+expose an existing decoder selector in the dominated-rho8 source; a marker
+written by unique incoming edges then lets native 69 and 400 share one state.
+Its 203-subtree source preserves the complete primitive word and control graph.
+All five fresh checks pass: 6,176 arbitrary-natural runtime cases, 1,616,558
+symbolic rules, all 434 rows, minimum duration 13 and complete 312,617-step blank
+startup. Two ordinary reviews and an independent reconstruction agree.
+The complete proof gives a ZFC-provable equivalence with Con(ZFC); exact-K217
+Lean and internal PA endpoints remain open. The active target is **216 or fewer**.
+See [intake192](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-192.md)
+and [reproduction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-192-reproduction.md).
+
+The former [primary K218](candidate-k218/README.md) from `c4568161bf` remains
+published with its 205-node source, state 85/212 fold, complete runtime/startup
+and same-size row157 variant. Its source roles differ from the new dominated
+layout, so the two savings cannot simply be counted twice.
 
 The [contextual 218 alternative](candidate-k218/alternatives/contextual/README.md)
 from `3c7c3aa5a3` also passes six fresh checks: 6,167 cases, 1,514,325 rules,
 all 436 rows and a complete 312,701-step startup. Its graph is distinct, but
-its final fold shares the same two source roles as the primary; the savings
+its final fold shares the same two source roles as the former primary K218; the savings
 do not stack. Its own row157 variant also remains at 218. See
 [batch 190](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-190.md).
 
@@ -71,8 +77,9 @@ folds do not directly stack. Two further complete 218 variants
 [permute command tags](candidate-k218/alternatives/dmn/README.md).
 The reports also add calibrated H/PW and self-vacuity bases, codec transport
 and concrete startup obstructions. Their four archives are imported and retired.
-The later **217-state claim at `8a1796545e` is under review**; it is not counted
-as accepted until its distinct source, runtime and complete startup are checked.
+The later Source 152 construction builds on the dominated layout and is now
+accepted as the primary 217 above. Two additional research archives at
+`1e87618cf2` are being compared with the retained results.
 
 The two [batch-189 research reports](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-189.md)
 retain useful arbitrary-clean-seed and fixed-power-of-two scheduler theorems,

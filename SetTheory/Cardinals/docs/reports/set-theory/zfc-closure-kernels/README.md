@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings through 20 October 2026. This report now reconciles **151 manuscripts**.
+Intake findings through 20 October 2026. This report now reconciles **152 manuscripts**.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -8,6 +8,18 @@ the delivered base article is preserved, rather than rewritten as a unified arti
 No merged PDF is built. These are ordinary mathematical arguments and finite
 regression checks. The deliveries confer no formal status; subsequent Lean
 results and their exact scope are listed below.
+
+[Batch 192](intake-192.md) accepts Source 152 as the new
+[**primary 217-state construction**](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k217/README.md).
+Three closed rotations of Source 149 expose a selector; a predecessor-bit fold
+then deletes native 400 without adding a state. All five fresh leaves pass:
+6,176 arbitrary-natural runtime cases, 1,616,558 rules, all 434 rows, minimum
+duration 13, and complete 312,617-step blank startup. Its ordinary ZFC-provable
+equivalence inherits the dominated calculus calibration. The exact-table
+Lean/internal PA endpoint remains open. Placement `bf087d590f` accounts for
+all 39 members and retires the ZIP. [Recovery/replay](intake-192-reproduction.md)
+retain original attribution and independent reviews. The target is now 216 or
+fewer; two other reports at `1e87618cf2` remain queued separately.
 
 [Batch 191](intake-191.md) imports four reports from `7071e5041e` as Sources
 148–151. All 936 members are accounted for in placement `4a1218d878`, and all
@@ -1420,7 +1432,7 @@ strings. All mathematical checks terminate; memory or interruption failures
 are errors. The tested eight-line example is a **392-bit non-refutation**.
 The independent audit additionally exercises all eight opcodes in eleven lines
 and 609bits. Tests include 6,044 binding and 2,700 PSC semantic comparisons,
-17 negatives, depth6,000, all392 truncations, all131,071 strings through16bits
+17 negatives, depth6,000, all 392 truncations, all131,071 strings through16bits
 (92 valid derivations, no refutations), 2,160 field mutations, 1,600 independent
 opening/UI comparisons and 1,001 bit mutations. The actual old emitter checks
 100,000 matrices in each of base3/base4, 204 additional wrappers and 14,336

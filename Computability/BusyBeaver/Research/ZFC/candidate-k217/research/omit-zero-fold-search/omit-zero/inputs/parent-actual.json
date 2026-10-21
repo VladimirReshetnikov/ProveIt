@@ -1,0 +1,119 @@
+{
+  "status": "FIVE_SELECTED_LEAVES_PASS",
+  "scope": "Five selected fresh leaves. No wrapper, manifest, parent verification, proof assistant, broad search or logical certificate replay. Source149 parent calibration and fresh eight jobs inherited.",
+  "jobs": [
+    {
+      "name": "reconstruct",
+      "argv": [
+        "/home/codex/.local/bin/python",
+        "-B",
+        "/tmp/zfc-intake192/fresh1/packet/code/reconstruct217.py",
+        "--base",
+        "/tmp/zfc-intake192/fresh1/parent/K218_Dominated_Rho8_2026-10-20",
+        "--output",
+        "/tmp/zfc-intake192/fresh1/rebuilt"
+      ],
+      "cwd": "/tmp/zfc-intake192/fresh1/packet",
+      "timeout_seconds": 60,
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.7657644841820002,
+      "receipt": "/tmp/zfc-intake192/fresh1/rebuilt/construction.json",
+      "status": "DETERMINISTIC_K217_RECONSTRUCTION_PASS",
+      "accepted": true
+    },
+    {
+      "name": "source-fold",
+      "argv": [
+        "/home/codex/.local/bin/python",
+        "-B",
+        "/tmp/zfc-intake192/fresh1/packet/code/audit_source_fold.py",
+        "--base",
+        "/tmp/zfc-intake192/fresh1/parent/K218_Dominated_Rho8_2026-10-20",
+        "--candidate",
+        "/tmp/zfc-intake192/fresh1/packet/machine",
+        "--out",
+        "/tmp/zfc-intake192/fresh1/source-fold.json"
+      ],
+      "cwd": "/tmp/zfc-intake192/fresh1/packet",
+      "timeout_seconds": 60,
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.9161606645211577,
+      "receipt": "/tmp/zfc-intake192/fresh1/source-fold.json",
+      "status": "INDEPENDENT_SOURCE_ROTATION_AND_ALL_TAPE_FOLD_PASS",
+      "accepted": true
+    },
+    {
+      "name": "blank",
+      "argv": [
+        "/home/codex/.local/bin/python",
+        "-B",
+        "/tmp/zfc-intake192/fresh1/packet/code/audit_blank.py",
+        "--directory",
+        "/tmp/zfc-intake192/fresh1/packet/machine",
+        "--canonical",
+        "/tmp/zfc-intake192/fresh1/packet/machine/k217.tm",
+        "--output",
+        "/tmp/zfc-intake192/fresh1/blank.json"
+      ],
+      "cwd": "/tmp/zfc-intake192/fresh1/packet",
+      "timeout_seconds": 60,
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.7154887216165662,
+      "receipt": "/tmp/zfc-intake192/fresh1/blank.json",
+      "status": "INDEPENDENT_FINITE_STARTUP_AND_TABLE_PASS",
+      "accepted": true
+    },
+    {
+      "name": "local-fold",
+      "argv": [
+        "/home/codex/.local/bin/python",
+        "-B",
+        "/tmp/zfc-intake192/fresh1/packet/code/check_joint_fold.py",
+        "--old",
+        "/tmp/zfc-intake192/fresh1/packet/machine/unfolded218.native.tm",
+        "--new",
+        "/tmp/zfc-intake192/fresh1/packet/machine/k217.native.tm",
+        "--keep",
+        "69",
+        "--drop",
+        "400",
+        "--radius",
+        "7",
+        "--fuel",
+        "97",
+        "--output",
+        "/tmp/zfc-intake192/fresh1/fold-window.json"
+      ],
+      "cwd": "/tmp/zfc-intake192/fresh1/packet",
+      "timeout_seconds": 90,
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 2.0694441478699446,
+      "receipt": "/tmp/zfc-intake192/fresh1/fold-window.json",
+      "status": "INDEPENDENT_ALL_TAPE_JOINT_DIAGRAM_PASS",
+      "accepted": true
+    },
+    {
+      "name": "runtime",
+      "argv": [
+        "/home/codex/.local/bin/python",
+        "-B",
+        "/tmp/zfc-intake192/fresh1/parent/K218_Dominated_Rho8_2026-10-20/binary/code/validate_native.py",
+        "/tmp/zfc-intake192/fresh1/packet/machine/k217.native.tm",
+        "/tmp/zfc-intake192/fresh1/packet/machine/sites217.json",
+        "/tmp/zfc-intake192/fresh1/runtime"
+      ],
+      "cwd": "/tmp/zfc-intake192/fresh1/packet",
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 161.70451156329364,
+      "receipt": "/tmp/zfc-intake192/fresh1/runtime/runtime.json",
+      "status": "UNIVERSAL_MATHEMATICAL_PASS",
+      "accepted": true
+    }
+  ]
+}

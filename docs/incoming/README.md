@@ -12,6 +12,26 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Queue status after batch 192
+
+The 217-state submission from `8a1796545e` is accepted as the new
+[primary contender](../../Computability/BusyBeaver/Research/ZFC/candidate-k217/README.md)
+and imported as [Source 152](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-192.md).
+Placement `bf087d590f` retires its ZIP and accounts for all 39 members: 26 new,
+three existing aliases, one historical parent archive and nine archive-only.
+The host has **152 sources**; the collection remains **290 reports**.
+
+All five selected fresh jobs pass: 6,176 runtime cases, 1,616,558 symbolic rules,
+all 434 rows, minimum duration 13 and complete 312,617-step blank startup.
+The ordinary ZFC equivalence inherits Source 149's exact dominated-rho8
+calibration; no new exact-table Lean/PA endpoint or minimality is claimed.
+The active target is **216 or fewer states**.
+[Recovery/reproduction](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-192-reproduction.md)
+retain both proof reviews and independent reconstruction.
+The two research archives `ZFC_218_Research_2026-10-20.zip` and
+`ZFC_218_Research_2026-10-20 (1).zip`, from `1e87618cf2`, remain queued for
+batch 193. They are separate from the similarly named earlier deliveries.
+
 ## Queue status after batch 191
 
 The four archives from `7071e5041e` are imported as
@@ -1058,7 +1078,8 @@ ProveIt-era batches (from this directory):
 | 188 | One manuscript from `c4568161bf`: placement `6ffbe92305` adds Source 144; 99 members = 64 new + 4 existing aliases + 18 batch aliases + 1 history alias + 12 archive-only. K218 ZIP retired; 144 sources, 290 reports. The two failed-search archives remain for 189. | [intake-188.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-188.md): calibrated classical 218 construction, 205-node source and origin-marker fold; ancillary theory/encoding limits retained. | this commit | Complete source graph preserved; all-tape checkpoint fold uses positive 1/3/5-step blocks. Six fresh jobs pass: 6,167 cases, 1,515,158 rules, all 436 rows, minimum duration 12 and complete 312,909-step startup. Inherited calibration remains separate. No new exact-table kernel/PA endpoint or ≤217 result. |
 | 189 | Two manuscripts from `253b3ff50e` and `f8ec6158f3`: placement `d134378a07` retires both ZIPs; 1,036 members = 883 new + 83 existing aliases + 45 batch aliases + 2 history aliases + 23 archive-only. Sources 145–146, 146 sources and 290 reports. | [intake-189.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-189.md): same-size alternatives, T-only countermodels, fixed public variables, generalized clean seeds and fixed-power-of-two schedules, initialized-core failure and bounded encoding searches. | this commit | Five fresh Source-145 jobs pass, including both full runtimes. Source 146 runtime remains delivered; own literal/startup/ray checks are fresh. Historical membership calibration is superseded by later obstructions. No ≤217 result. |
 | 190 | One manuscript from `3c7c3aa5a3`: placement `6ee648c500` retires its ZIP; 102 members = 69 new + 10 existing aliases + 13 batch aliases + 1 history alias + 9 archive-only. Source 147; 147 sources, 290 reports; queue cleared. | [intake-190.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-190.md): distinct contextual 218 construction, exact source/lineage, complete initialization and separate five-value obstruction. | this commit | Six fresh jobs pass: 6,167 cases, 1,514,325 rules, all 436 rows, minimum duration 13 and 312,701-step startup. Same-size row157 variant is separate. No new literal-table kernel/PA endpoint, priority, minimality or ≤217 claim. |
-| 191 | Four manuscripts from `7071e5041e`: placement `4a1218d878` retires all four ZIPs; 936 members = 724 new + 130 existing aliases + 56 batch aliases + 26 archive-only. Sources 148–151; 151 sources, 290 reports. | [intake-191.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-191.md): dominated-rho8 theorem equivalence and 203-node source, H/PW and self-vacuity calibrations, crossover and two complete 218 variants. | this commit | Fresh jobs: eight Source148, eight Source149, five Source150, two Source151 runtimes plus its separate source/startup audit. Dominated218: 6,176 cases/1,616,989 rules/436 rows/min13/startup312,605. No ≤217 result from this batch, minimality or new Lean/PA endpoint. Later `8a1796545e` queued separately. |
+| 191 | Four manuscripts from `7071e5041e`: placement `4a1218d878` retires all four ZIPs; 936 members = 724 new + 130 existing aliases + 56 batch aliases + 26 archive-only. Sources 148–151; 151 sources, 290 reports. | [intake-191.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-191.md): dominated-rho8 theorem equivalence and 203-node source, H/PW and self-vacuity calibrations, crossover and two complete 218 variants. | this commit | Fresh jobs: eight Source148, eight Source 149, five Source150, two Source151 runtimes plus its separate source/startup audit. Dominated218: 6,176 cases/1,616,989 rules/436 rows/min 13/startup312,605. No ≤217 result from this batch, minimality or new Lean/PA endpoint. Later `8a1796545e` queued separately. |
+| 192 | One manuscript at `8a1796545e`: placement `bf087d590f` retires its ZIP;39 members =26 new +3 existing aliases +1 historical parent +9 archive-only. Source 152;152 sources,290 reports. | [intake-192.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-192.md): three closed source rotations and predecessor-marker fold yield the primary 217. | this commit | Five fresh jobs pass: 6,176 cases/1,616,558 rules/434 rows/min 13/startup 312,617;962,479 all-tape fold contexts and negative control. Ordinary ZFC calibration inherited from 149; no new exact-table Lean/PA endpoint. Target 216; two research ZIPs queued for 193. |
 
 
 Batches 99 to 113 are the fifteen clusters into which the intake triaged

@@ -3264,3 +3264,14 @@ scoped research. [Recovery/replay](set-theory/zfc-closure-kernels/intake-191-rep
 retains all originals and separates fresh selected runs from delivered searches.
 No ≤217 result, minimality or new exact-table Lean/PA endpoint follows from this
 batch; the later `8a1796545e` submission is a separate intake.
+
+[Batch 192](set-theory/zfc-closure-kernels/intake-192.md) accepts Source 152 as the
+[primary 217-state construction](../../../../Computability/BusyBeaver/Research/ZFC/candidate-k217/README.md).
+Three closed source rotations expose a selector for the 69/400 predecessor-bit
+fold. All five fresh checks pass, including 6,176 arbitrary-natural cases,
+1,616,558 symbolic rules, all 434 rows, minimum duration 13 and exact 312,617-step
+complete blank startup. The ordinary ZFC consistency equivalence inherits
+Source 149's numerical calibration; the exact-table Lean/PA endpoint remains open.
+Placement `bf087d590f` accounts for all 39 members and retires the ZIP. The host
+now has152 sources; the collection remains290 reports. The target is216 or fewer,
+with two separate reports at `1e87618cf2` queued for 193.

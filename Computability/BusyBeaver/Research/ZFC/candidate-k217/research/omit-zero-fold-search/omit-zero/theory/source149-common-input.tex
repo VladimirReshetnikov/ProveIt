@@ -1,0 +1,276 @@
+% Included by dominated_rho8.tex. Requires its notation and theorem environments.
+\section{The calibrated implementation with the original common input}
+\label{sec:dominated-common-input}
+
+The implementation considered here retains the original common additive
+read and all three non-AX branches.  The theorem proved in this section concerns
+that implementation, including the source rebracketing ultimately used
+for the proposed machine.  Preserving source addresses is useful for
+retaining an established initializer, but is not by itself a proof of a
+binary blank-tape startup.
+
+\subsection{Exact command semantics and macro evaluation}
+
+Write the retained tuple as $(t,w,d,h)$ before the common read.  The
+stack notation $[x_1,\ldots,x_k;w]$ denotes right-nested pairing,
+with $\unp(0)=(0,0)$.  The exact non-AX command equations are
+\begin{align*}
+ \MP(z)(t,w,d,h)&=
+ \begin{cases}
+ (d+z,\pr(0,w),d+z,0),&I(t,d+z)=h,\\
+ (0,w,d+z,0),&I(t,d+z)\ne h;
+ \end{cases}\\
+ \DROP(z)(t,w,d,h)&=(h,\pr(t,w),d+z,h),\\
+ \NIP(z)(t,w,d,h)&=
+ \begin{cases}
+ \mathsf{halt},&h=1,\\
+ (t,w',d+z,h'),&(h',w')=\unp(w),\ h\ne1.
+ \end{cases}
+\end{align*}
+Even DROP and NIP retain an additive field; all compiler uses of their
+fields below are zero.
+The AX arguments are written in actual wire order as
+\[
+ \AX(c,z,y,x),\qquad
+ f(\AX(c,z,y,x))=[c+3,z,y,x].
+\]
+Its numerical parameters are
+\[
+ U=d+z,\qquad A=U+x,\qquad B=h+y,\qquad C=c.
+\]
+Define the gated top by
+\[
+ G(A,B,c)=\begin{cases}
+ 0,&c=A\text{ or }c=B,\\
+ \operatorname{bundle}_{219}(A,B,c),&\text{otherwise}.
+ \end{cases}
+\]
+Write $R_1,\ldots,R_7$ for the seven retained rows, including the merged
+equality row, in the inherited stack order, and write
+$Q_Uh=4\pr(U,h)+2$ for the universal-quantifier code.  The AX output is
+\begin{align*}
+ t'&=G(A,B,c),&d'&=0,&h'&=0,\\
+ w'&=[R_1(A,B,c),\ldots,R_7(A,B,c),L(A,B,c,U),Q_Uh,t;w].
+\end{align*}
+Here the body of the generalized formula is the \emph{incoming} cache
+$h$, before addition of $y$.  Since $U\leq U+x=A$, every raw AX command
+produces an admissible dominated-row instance.
+
+The reference source \texttt{a194\_b194\_f1.json} keeps the old common
+read before dispatch.  Its replaced AX prefix has the closed macro word
+\[
+ \begin{aligned}
+ &a,\ b,\ Q,\ c,\ a,\ \operatorname{read}_H,\
+       \operatorname{read}_D,\ I,\\
+ &a,\ I,\ a,\ c,\ I,\ b,\ c,\ I,\ I,\ I.
+ \end{aligned}
+\]
+The macro $a$ loads the current $D$ while preserving it and pushing the
+old top; $b$ does the same for $H$; and $c$ loads the selector.
+After $a,b,Q$, the formula $Q_Uh$ has been constructed.  The next $c,a$
+places $C,U$ in the partially constructed axiom.  The two field readers
+then replace $H$ by $B$ and $D$ by $A$ without changing the loaded top
+$U$.  The next $I$ forms $C\Imp U$.  All later $a$ loads read $A$ and
+all later $b$ loads read $B$, so the remaining word constructs exactly
+$L(A,B,C,U)$.  The inherited subsequent construction of the other rows
+and the gated bundle is unchanged.  Every component here is an inherited
+all-natural, normally returning macro, restoring zero scratch registers
+at its boundary.
+
+The theoremhood invariant is therefore preserved: top, cache, and
+every stack head are dominated-calculus theorems.  MP applies the exact
+numerical modus-ponens rule on success, and inserts truth on failure.
+DROP and nonhalting NIP only move theorem codes; their additive counters
+are not assumed to be theorem codes.  Generalizing
+an arbitrary cached theorem with the arbitrary natural binder $U$ is
+allowed.  A halt can occur only when a NIP finds theorem cache $1$.
+This establishes command soundness for every raw candidate, including
+commands with nonzero DROP or NIP additive fields.
+
+\subsection{An explicit strong block compiler}
+
+A block for $F$ must halt or return $(F,w,0,0)$ from every $(t,w,0,0)$.
+The following blocks use only the exact command equations above.
+Define
+\[
+ D_0=[\MP(1),\AX(1,0,0,0)]\;\NIP(0)^{10}.
+\]
+It returns $(0,w,0,0)$ from every $(t,w,0,0)$: MP fails because
+$I(t,1)>0$, then AX has $U=A=C=1$ and zero gate.  Ten NIPs discard its
+nine generated entries and saved zero top.  Those nine entries are
+nonfalsity codes, so no halting test interrupts this calculation.
+Thus $D_0$ is also the truth block.
+
+For a dominated-row instance $L(a,b,c,u)$ with $u\leq a$, use
+\[
+ D_0\;[\AX(c,u,b,a-u)]\;\NIP(0)^8\;[\DROP(0)]\;\NIP(0)^3.
+\]
+The AX receives $d=h=0$, hence its parameters are exactly
+$U=u$, $A=a$, $B=b$, $C=c$.  The suffix selects the eighth stack row,
+then restores the underlying stack and zero cache.
+For a retained row $R_j(a,b,c)$, $1\leq j\leq7$, use
+\[
+ D_0\;[\AX(c,0,b,a)]\;\NIP(0)^j\;[\DROP(0)]\;\NIP(0)^{11-j}.
+\]
+For a permitted gated bundle use
+\[
+ D_0\;[\AX(c,0,b,a)]\;\NIP(0)^{10}.
+\]
+In these last two cases the unused fourth argument is $U=0$, so it
+satisfies the required bound for every $a$.
+
+If $\mathcal B_F$ produces $F$, generalization with binder $i$ is compiled
+as
+\begin{multline*}
+ \mathcal B_F\;[\DROP(0),\NIP(0),\AX(i,i,0,0)]\\
+ {}\NIP(0)^9\;[\DROP(0),\NIP(0),\NIP(0)].
+\end{multline*}
+After the first two commands, the retained tuple is $(0,w,0,F)$.
+The common AX field sets $U=i$, and $x=y=0$ gives $A=C=i$,
+$B=F$.  Its gate is zero and its ninth stack entry is $Q_iF$.
+The selection suffix restores $(Q_iF,w,0,0)$.
+
+For modus ponens, given blocks for $F$ and $F\Imp G$, use
+\begin{multline*}
+ \mathcal B_F\;[\DROP(0)]\;\mathcal B_{F\Imp G}\;\\
+ [\NIP(0),\DROP(0),\NIP(0),\MP(G),\AX(G,0,0,0)]\;\\
+ \NIP(0)^{10}\;[\DROP(0),\NIP(0),\NIP(0)].
+\end{multline*}
+Unless a prior NIP halts, the two hypotheses reach top and cache in the
+required order and MP succeeds.  The reset AX has $U=A=C=G$ and zero
+gate; it preserves the derived conclusion among its saved stack entries.
+The remaining commands return $(G,w,0,0)$ or halt if a cache already
+contains $1$.  Early halting is permitted by the block contract.
+
+Induction on a finite dominated-calculus derivation now proves this
+strong block contract for every derived natural code.  No numerical
+bound is tested at runtime: each row leaf supplies the nonnegative
+literal $a-u$ in its final field.  Theorem~\ref{thm:exact} then compiles
+any unrestricted K219 numerical derivation into the same source.
+
+\subsection{Exact packing and cofinal enumeration}
+
+The four command wire formats are
+\[
+ \begin{aligned}
+ f(\MP(z))&=[0,z], &f(\DROP(z))&=[1,z],\\
+ f(\NIP(z))&=[2,z],&f(\AX(c,z,y,x))&=[c+3,z,y,x].
+ \end{aligned}
+\]
+Let $E(fs,r)$ be the right fold of $\pr$ over the field list $fs$, ending
+in $r$.  Use the tail successor convention
+$\enc([])=0$ and $\enc(k::L)=1+E(f(k),\enc(L))$.  A first candidate
+is packed without the outer successor.  Every reader starts with zero
+scratches and returns a tail no larger than its input.  The initial
+decrement on each positive proof list therefore gives strict draining
+of every nonhalting candidate, including an arbitrary initial partial
+proof list.
+
+If $\DD\vdash1$, let $\mathcal B_1$ be its strong block and put
+\[
+ R=\enc\bigl(\mathcal B_1[\DROP(0),\NIP(0),\NIP(0)]\bigr).
+\]
+For each padding value $Y\in\mathbb N$, prepend
+$\AX(0,1,1,Y)$.  This AX resets counter and cache to zero from every
+incoming retained tuple.  The block then halts or returns top $1$,
+and the final three commands halt in the latter case.  The corresponding
+candidate number is exactly
+\[
+ N_Y=\pr(3,\pr(1,\pr(1,\pr(Y,R))))\geq Y.
+\]
+Thus the family of refuting candidates is cofinal, uniformly in all
+incoming top, stack, counter, and cache values.  Choosing one beyond the
+initial next-candidate cutoff, and using finite list draining, proves
+completeness from every clean source root.  Soundness requires only the
+usual theoremhood of top, cache, and stack heads.
+
+\subsection{Arbitrary initial selector and scratch values}
+
+The six-field seed extension can be proved directly for this source.
+Write its nine registers as
+\[
+ s=(N,T,W,A,D,H,X,Y,L),
+\]
+where $A$ is now the selector register, $D$ the additive counter, $X,Y$
+the two scratches, and $L$ the proof list.  Define
+\[
+ (N',X',n)=
+ \begin{cases}
+ (N+X+1,0,N),&L=0,\\
+ (N,X,L-1),&L>0,
+ \end{cases}
+ \qquad (u,v)=\unp(\pr(X',Y)+n).
+\]
+The virtual clean root state is
+\[
+ s^*=(N',T,W,0,D,H,0,0,\pr(A+u,v)+1).
+\]
+The unchanged fetch and selector-read prefix takes \emph{both} $s$ and
+$s^*$ to exactly
+\[
+ (N',T,W,A+u,D,H,0,0,v).
+\]
+Indeed, if $L=0$, the fetch macro copies $N$ into the proof list, adds
+it to the existing scratch $X$, transfers that sum back to $N$, and
+increments $N$.  Its result is $N+X+1$, scratch zero, and proof list
+$N$.  If $L>0$, fetch simply decrements $L$.  The selector reader starts
+its unpair walk at $(X',Y)$ and advances by $n$, ending at $(u,v)$.
+Its transfer loops add $u$ to the old selector and move $v$ into the
+proof list, clearing both scratches.  From $s^*$, the positive proof
+list decrements to $\pr(A+u,v)$ and a zero-scratch read returns
+$(A+u,v)$, giving the same state.
+
+This agreement occurs \emph{before} the retained common read.  Therefore
+both runs execute that read and all later commands identically.
+The map preserves the formula data $T,W,H$.  The clean-root calibration
+and this identity imply the following exact result.
+\begin{corollary}[Common-input source from six arbitrary fields]
+For every $N,A,D,X,Y,L\in\mathbb N$, the modified common-input source
+started at its genuine root with state
+\[
+ (N,0,0,A,D,0,X,Y,L)
+\]
+halts if and only if $\DD\vdash1$, equivalently if and only if
+$\CC_{219}\vdash1$.
+\end{corollary}
+This is a one-time root absorption, not permission to perturb scratches
+between commands.  A binary initializer must still reach a complete
+represented root frame with the required head position, dispatcher,
+register words, header, gap, spare list, and exterior tape.  The source
+theorem enlarges the permitted logical seed values; it does not remove
+any physical representation obligation.
+
+\subsection{Source provenance and exact proof status}
+
+The source constructor's \texttt{--common} mode reconstructs the
+206-distinct-subtree reference source from the accepted K219 source.
+It removes the former cache-field read, replaces the former fourth-field
+construction by a copy of the old counter, and schedules the new reads
+after that copy.  Its default placement is named \texttt{after\_u}.
+A separate exact ordinal control-flow comparison checks later
+rebracketings of this reference source.  The reference and its calibrated
+rebracketing have 4,751 primitive occurrences.
+
+The candidate source recorded for this theorem is
+\texttt{source\_0059.json}, with SHA-256
+\begin{center}\ttfamily\footnotesize
+264fba90229974a53c2c5c943cf5fe8924327b6bbc31bd47e64d7f5c670b7495.
+\end{center}
+Its reported structural counts are 203 distinct subtrees, maximum depth
+45, and maximum zero run 6.  The independent source check establishes
+exact ordinal CFG equality with \texttt{a194\_b194\_f1.json}; all 186
+original primitive paths outside the AX subtree at address
+\texttt{11101001001} preserve their opcode and operand exactly.
+The 6,176 guarded decoder cases are checked separately by the source
+verification artifacts; their exact receipt is included as
+\texttt{evidence/common\_source\_receipt.json}.  These counts and finite checks identify the
+source and its control-flow representation; they are not substituted
+for the all-natural macro argument or the universal block compiler.
+
+This section is an ordinary mathematical source/calculus proof.
+Together with the finite dominated-row certificate, it supplies the
+logical and enumeration components of a ZFC-formalizable calibration.
+No newly compiled Lean or Rocq endpoint for this modified source is
+asserted here.  The exact binary transition table, its all-natural
+runtime contracts, and its complete blank-tape startup must be verified
+by the separately supplied machine artifacts.

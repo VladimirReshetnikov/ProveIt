@@ -1,5 +1,9 @@
 # A 218-state binary Turing machine for Con(ZFC)
 
+The current primary contender is the [217-state construction](../candidate-k217/README.md)
+from `8a1796545e`. This former primary and its verified 218-state alternatives
+remain published for comparison.
+
 This machine has **218 working states and 436 transition rows, including initialization**. Its ordinary mathematical proof gives
 
 ```text
@@ -14,15 +18,15 @@ A distinct [verified contextual 218-state alternative](alternatives/contextual/R
 is now published from `3c7c3aa5a3`. It passes complete runtime and blank startup
 checks, reaching the same initial frame 208 steps earlier. Its final saving
 merges the same two logical source roles, so it supplies another layout
-without a further state reduction. This table remains the primary contender.
+without a further state reduction. This remains the reference layout for the 218-state alternatives.
 
 Further complete 218-state alternatives from `7071e5041e` are now published:
 [dominated rho8](alternatives/dominated/README.md), with 203 source subtrees;
 [omitted MP zero push](alternatives/omit-zero/README.md); and
 [DMN command tags](alternatives/dmn/README.md). Each has separately checked
 full runtime and blank startup, with ordinary source/calculus calibration.
-None reduces the working-state count below 218. The later 217-state claim
-at `8a1796545e` is being reviewed separately.
+None reduces the working-state count below 218. The later [217-state construction](../candidate-k217/README.md)
+at `8a1796545e` passed review and is now primary.
 
 ## Why one state disappears
 

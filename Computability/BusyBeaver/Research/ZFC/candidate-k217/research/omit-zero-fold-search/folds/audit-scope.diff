@@ -1,0 +1,14 @@
+--- previous-audit.py
++++ audit_results.py
+@@ -4,9 +4,9 @@
+ import json,gzip,hashlib,itertools
+ R=Path(__file__).resolve().parent
+ out=[]
+-for name in ['run1']:
++for name in ['baseline-run1','omit-run1']:
+  p=R/name/'result.json'
+- if not p.exists():continue
++ assert p.is_file(), ('missing actual terminal result', name)
+  j=json.loads(p.read_text());assert j['status']=='COMPLETE_BOUNDED_SEARCH'
+  seed=next(Path(x)for x in j['inputs']if x.endswith('.tm'));T={}
+  for line in seed.read_text().splitlines():

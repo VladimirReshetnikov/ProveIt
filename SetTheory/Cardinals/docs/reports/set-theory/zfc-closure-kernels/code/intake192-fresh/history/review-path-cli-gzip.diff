@@ -1,0 +1,34 @@
+--- historical
++++ portable
+@@ -1,9 +1,21 @@
+ from pathlib import Path
+ import json,gzip,hashlib
+-P=Path('/tmp/zfc-intake192/fresh1');D=P/'packet';B=P/'parent/K218_Dominated_Rho8_2026-10-20'
+-load=lambda p:json.loads(p.read_text());sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
++import argparse
++parser=argparse.ArgumentParser(description='Review saved K217 records only; never runs a candidate.')
++parser.add_argument('--records',type=Path,required=True,help='Saved fresh-record directory, plain or publication layout')
++parser.add_argument('--packet',type=Path,required=True,help='Recovered original K217 packet')
++parser.add_argument('--parent',type=Path,required=True,help='Extracted original nested K218 dominated parent')
++parser.add_argument('--output',type=Path,required=True,help='New review JSON file')
++args=parser.parse_args()
++P=args.records.resolve();D=args.packet.resolve();B=args.parent.resolve()
++def load(p):
++    return json.loads(p.read_bytes() if p.is_file() else gzip.decompress(Path(str(p)+'.gz').read_bytes()))
++sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
++def saved_path(recorded):
++    historical_root=Path(a['jobs'][0]['cwd']).parent
++    return P/Path(recorded).relative_to(historical_root)
+ a=load(P/'actual.json');assert a['status']=='FIVE_SELECTED_LEAVES_PASS'and len(a['jobs'])==5
+-assert all(j['accepted']and j['exit_code']==0 and not j['timed_out']and Path(j['receipt']).is_file()for j in a['jobs'])
++assert all(j['accepted']and j['exit_code']==0 and not j['timed_out']and saved_path(j['receipt']).is_file()for j in a['jobs'])
+ assert all((P/'logs'/(j['name']+'.stderr')).read_bytes()==b'' for j in a['jobs'])
+ for name in ['k217.native.tm','k217.tm','sites217.json','unfolded218.native.tm']:assert(P/'rebuilt'/name).read_bytes()==(D/'machine'/name).read_bytes()
+ c=load(P/'runtime/runtime_cases.json');sites=load(D/'machine/sites217.json');r=load(P/'runtime/runtime.json');st=load(P/'runtime/startup.json');b=load(P/'blank.json');f=load(P/'fold-window.json');s=load(P/'source-fold.json')
+@@ -31,4 +43,5 @@
+ assert s['status']=='INDEPENDENT_SOURCE_ROTATION_AND_ALL_TAPE_FOLD_PASS'and s['complete_final_folded_decoder_binding']and len(s['rotations'])==3
+ old=load(D/'evidence/runtime.json');diff=[k for k in sorted(set(old)|set(r))if old.get(k)!=r.get(k)];assert diff==['seconds']
+ result={'status':'INDEPENDENT_FRESH_RECORD_REVIEW_PASS','actual_sha256':sha(P/'actual.json'),'jobs':5,'runtime_cases':len(c),'symbolic_rules':sum(x['symbolic_steps']for x in c),'covered_rows':len(used),'minimum_duration':13,'runtime_seconds':r['seconds'],'startup_steps':312617,'one_cells':277,'fresh_startup_trace_events':len(st['trace']),'independent_blank_stored_trace_rows':0,'startup_independent_complete_support_equal':True,'fresh_cases_identical_delivery':True,'runtime_metadata_differences':diff,'fold_contexts':962479,'negative_control_rejected':True,'scope':'Read-only audit of fresh selected process/output records. No candidate rerun, manifest validation, logical parent replay or proof assistant. Ordinary source and inherited calibration reviewed separately.'}
+-(P/'actual-review.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))
++with args.output.open('x') as output:output.write(json.dumps(result,indent=2)+'\n')
++print(json.dumps(result,indent=2))

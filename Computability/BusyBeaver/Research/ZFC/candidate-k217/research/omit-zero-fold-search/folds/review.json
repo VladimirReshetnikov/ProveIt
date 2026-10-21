@@ -1,0 +1,69 @@
+{
+  "status": "ACTUAL_TWO_SEED_BOUNDED_FOLD_METADATA_REVIEW_PASS",
+  "role": "opening_encoder authored the metadata-only driver adapters, executed both bounded searches, and independently enumerated family membership/counts with a separate reader. No claim of an independent author peer here.",
+  "runs": [
+    {
+      "name": "baseline-run1",
+      "result_sha256": "ce847ba69629b2c34f4793ea86550961d2c87107ac67adb2792fbe8c56a03996",
+      "status": "COMPLETE_BOUNDED_SEARCH",
+      "ordered_pairs": 46872,
+      "specifications": 647136,
+      "seconds": 36.594010840170085,
+      "input_domain_contexts": 962959,
+      "process_exit": 0,
+      "survivors": 0
+    },
+    {
+      "name": "omit-run1",
+      "result_sha256": "fec31e0b29eb57c75d3f89214b269cfc385340644da0810c2049b9afe8afabf1",
+      "status": "COMPLETE_BOUNDED_SEARCH",
+      "ordered_pairs": 46872,
+      "specifications": 645408,
+      "seconds": 36.677798747085035,
+      "input_domain_contexts": 962447,
+      "process_exit": 0,
+      "survivors": 0
+    }
+  ],
+  "total_specs": 1292544,
+  "metadata_audit_sha256": "f30e36cd51da6d38386b7f7f9685ea96e7b20d2c1235b7765678c8116d4ebfb0",
+  "checks": [
+    "Exact driver metadata substitutions only; same pinned local filter and independent checker",
+    "All input bytes unchanged",
+    "All ordered distinct state pairs, including initial-state orientations",
+    "All compressed rejection records read: sequential IDs, unique candidate rows per pair, exact family membership/counts, radius7/fuel97",
+    "Both external processes and own metadata audit exited0; no stderr",
+    "No filter survivor, so independent acceptance checker never invoked"
+  ],
+  "scope": "Two distinct seeds, one bounded family per seed. Neither semantic counterexamples nor a global state lower bound. No216 candidate, full shortened-source primitive replay, or proof assistant claim.",
+  "files": {
+    "audit-scope.diff": "b656fa5fb5cea92cf842e39bf0cca6b5913281a9ef5004eeba12448c2c356930",
+    "audit.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "audit.stdout": "736cc7553db455510279d3aa8d6d39255ced3a52d377d889e88f4bcc2f618777",
+    "audit_results.original.py": "f694983402f4948c2559f6ff17bdb7324d93bc998e089a9366606034780a6b16",
+    "audit_results.py": "97ff9cb116b602526ca9aa7c305dddf997e3692933494d0c6ae25eb6751430ce",
+    "baseline-run1/inputs.json": "93d56b1a8407c84056914c4fa06c21d833174f525733ba8cfd08420637ef4e7f",
+    "baseline-run1/rejections.jsonl.gz": "5bada6627fa9fa54fde0eb88fd8d31fa702d818c800d0113f1babfd8b36795ad",
+    "baseline-run1/result.json": "ce847ba69629b2c34f4793ea86550961d2c87107ac67adb2792fbe8c56a03996",
+    "baseline-run1.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "baseline-run1.stdout": "65cd7592580a3c461bc82ff02c067c2766690c8f8b51a5a4edbe92912d3346b4",
+    "check_joint_fold.py": "82d0b364dfdbc7433a58c3c3e7166ec6a32ac9268e0e516f5f113f1287f44031",
+    "filter_source.py": "87cd94b5cb8ecc1e1101fbd7cdab5def327632fd289ef6d4e23887f8ff2ad9de",
+    "freeze.json": "cd420dd8770841d30948263d069e68b1c9109893f965f6d712abb9418b5cadaa",
+    "metadata-audit.json": "f30e36cd51da6d38386b7f7f9685ea96e7b20d2c1235b7765678c8116d4ebfb0",
+    "omit-freeze.json": "76606bd70869631ff4fa1ed46026ec74faeab841f4ae7e47029096b4cdd3b489",
+    "omit-run1/inputs.json": "ec9e72b462083bce6152946ea66ee6bdfe0908d6437ade322ae6c5635930aa8c",
+    "omit-run1/rejections.jsonl.gz": "1728e47c664d7e50b2d3a9412c753139aa70ece0ccc659f9b68ee78d09a0a2bd",
+    "omit-run1/result.json": "fec31e0b29eb57c75d3f89214b269cfc385340644da0810c2049b9afe8afabf1",
+    "omit-run1.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "omit-run1.stdout": "d722d788cdc3f4471d46f4b68f6abf6ca245e7610d4bd6530897440540121720",
+    "search-217.diff": "6d366c75e7ea80b1c620a9f0016622fff4919faa8bd221ce4bf9070f29e042cb",
+    "search-omit.diff": "d0ffd19731df3ed0352ace6b1fe20f417cb6885113d9d53b6ee1c97bdc735b86",
+    "search.original.py": "880d23b9614f8241e46098640395b4c4f63ff922f02032e0708d2fbb89cbeaf9",
+    "search.py": "77407cfa06b7b0679e30aa9f4fb08efeb9e943bf1e9632fbce66b7c769ca1806",
+    "search_omit.py": "806ce0d0aa355dd7cff071906c3da3319ffcd83c09b4024fa415910d4b881290",
+    "seed217-omit.native.tm": "4bf19df7560fec7cc58aa4c8b57bc4803c05a55f210a5152a611939fc9197e98",
+    "seed217.native.tm": "b235f7d0403460ff00d274d7d030fec6ba3562127035165e3ead555237c83088",
+    "sites217.json": "9eac900e83742470893ea433cb0868e9ff6296f905cd6f3359b7a2c0e3114655"
+  }
+}

@@ -1,0 +1,345 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,longtable,array,enumitem,microtype}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\newcommand{\N}{\mathsf N}
+\newcommand{\C}{\mathcal C}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,frame=single,rulecolor=\color{black!15},xleftmargin=5pt,xrightmargin=5pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small ProveIt: search below 218 states}
+\fancyhead[R]{\small Research checkpoint}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\hypersetup{pdftitle={A search below 218 states for Con(ZFC)},pdfauthor={Research prepared for ProveIt},pdfsubject={Verified 218-state variants, source compression, and scoped negative results}}
+\title{A Search Below 218 States for $\Con(\mathrm{ZFC})$\\[5pt]\large Verified variants, alternative calculi, and unresolved reductions}
+\author{Research checkpoint prepared for the ProveIt project}
+\date{20 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+\noindent
+No justified machine with 217 or fewer working states was obtained.
+This report records the results that survived verification: two new 218-state
+variants, an explicit proof-compiler repair for omission of a redundant stack
+operation, a 16-instruction Cantor-stack push in place of the existing
+19-instruction push, independently checked source invariants, and concrete
+obstructions to several attempted state deletions. Two source constructions
+reach 204 DAG nodes, but neither supplies the required logical calibration
+and valid physical allocation. Large finite searches exclude the documented
+families only. The accompanying archive contains literal machine tables,
+source files, portable verifiers, certificates, and the experimental sources.
+It is a research checkpoint, not a claimed improvement of the 218-state bound.
+\end{abstract}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+
+\section{Target, baseline, and evidence standard}
+The target is a binary, deterministic, single-tape Turing machine $M$ with a
+two-way infinite tape, initially all zero, such that
+\[
+ \mathrm{ZFC}\vdash\bigl(\neg\operatorname{Halt}(M,\mathrm{blank})
+ \leftrightarrow\Con(\mathrm{ZFC})\bigr),
+\]
+using at most 217 working states. Moves are $L$ or $R$. The terminal state
+has no outgoing transitions and is not counted. A smaller count in another
+machine model would not settle this target.
+
+All experiments start from ProveIt commit
+\begin{center}\small\code{9adcaff0a72486ecc81242e0eca86e428c74879e}.\end{center}
+The baseline is the repository's \code{candidate-k218}, whose ordinary
+mathematical calibration is inherited, not re-proved from the ZFC axioms
+in this investigation~\cite{repo}. Its native labels have initial state 0,
+dispatcher 84, and terminal label 254. It has 218 working states and 436 rows.
+The source has 205 distinct DAG nodes, 4,744 primitive occurrences, maximum
+address depth 38, and maximum zero run 6. In the physical allocation, 168
+decoder states represent 183 roles, with 15 shared roles; the other 50 states
+serve execution and initialization. Thus a one-node source reduction need
+not reduce the actual machine by one state.
+
+The archive uses three explicit evidence levels. Exact finite checks establish
+literal table identities, finite startup configurations, or counterexamples.
+The symbolic runtime engine proves arbitrary-natural unary traversals and
+arbitrary finite spare-list traversals by mathematical induction. Neither
+kind is a newly accepted Lean or Rocq theorem. Finally, the logical calibration
+and source arithmetic arguments are ordinary mathematical proofs; open
+calibration obligations are labeled as such. Search failures are never used
+as lower bounds.
+
+\begin{center}
+\small
+\begin{tabular}{p{57mm}rrp{57mm}}
+\toprule
+Construction & DAG & States & Status\\
+\midrule
+Pinned baseline &205&218&Inherited calibration; exact baseline files\\
+Omit successful-MP dummy push &205&218&Full runtime and blank-start replay; compiler repair below\\
+Swap MP and DROP command tags &205&218&Full runtime and blank-start replay; command recoding below\\
+Merged NIP/DROP command &204&223&Raw prefix allocation; completeness open\\
+K/S-only implication basis &204&---&Calibration open; proposed allocations fail\\
+Reversed stack, PUSH16 &206&229&Arithmetic proof; raw allocation only\\
+Reassociated source specimen &204&---&Existing decoder marker obligations fail\\
+\bottomrule
+\end{tabular}
+\end{center}
+A dash means no valid physical machine was established. The 223- and 229-state
+entries are raw allocation counts, not complete machine-correctness claims.
+
+\section{Two fully replayed 218-state alternatives}
+\subsection{Native notation and command semantics}
+Let
+\[
+ P(x,y)=\frac{(x+y)(x+y+1)}2+y,
+\quad I(A,B)=4P(A,B),
+\]
+\[
+ R(a,b)=4P(a,b)+1,\quad Q_aB=4P(a,B)+2,\quad E(a,b)=4P(a,b)+3.
+\]
+Write $F=R(0,0)=1$ and $\N A=I(A,F)$. The designated theorem code 0 is
+interpreted as truth. These conventions are native to the inherited calculus;
+raw natural codes and numeric binder labels require their own calibration.
+The work tuple is $(t,S,d,h)$: current theorem, theorem stack, additive
+parameter, and cached theorem. The stack is Cantor-coded, with code 0 behaving
+as an infinite tail of theorem 0.
+
+For $B=d+x$, successful MP recognizes $h=I(t,B)$. Its baseline result is
+$(B,P(0,S),B,0)$. A failed MP returns $(0,S,B,0)$.
+DROP(0) maps $(t,S,d,h)$ to $(h,P(t,S),d,h)$.
+NIP(0) halts if $h=1$; otherwise it pops the next stack theorem into $h$,
+leaving $t$ unchanged. AX emits nine proved formulas, followed on the stack
+by the previous current theorem and previous stack. Its current result is a
+gated set-theoretic bundle or 0. The command parameter order is
+\code{Cmd.ax c x y u}; in particular, \code{ax B 0 0 0} sets $c=B$,
+not $x=B$.
+
+\subsection{Omitting the dummy zero after successful MP}
+Change only the successful branch to
+\[
+ (t,S,d,h)\longmapsto(B,S,B,0),\qquad B=d+x.
+\]
+The source edit deletes the 19-leaf PUSH subtree at address \code{111110}
+and promotes its seven-leaf COPY sibling at \code{111111} to
+\code{11111}. The packaged verifier reconstructs these exact bytes.
+There are now 4,725 primitive occurrences but still 205 DAG nodes.
+Only native transition row $164/1$ changes.
+
+\begin{proposition}
+Under the inherited source semantics and cofinal command enumeration, the
+modified enumerator halts exactly when the same native calculus derives $F$.
+\end{proposition}
+\begin{proof}
+Soundness follows from the same invariant: all current, cached, and stacked
+formulas are theorems. A successful MP now leaves a sound stack unchanged.
+For completeness, use the existing compiler contract: from arbitrary current
+value $T$ and stack $S$, with $d=h=0$, the compiled derivation either halts or
+returns $(X,S,0,0)$ for its conclusion $X$.
+
+The leaf and generalization blocks are unchanged. The discard block forces
+MP failure: it compares the zero cache with $I(T,1)>0$. Thus it never depends
+on the modified branch. Only the MP compiler's cleanup changes. After the
+successful new MP, its state is $(B,S,B,0)$. The original tail was
+\[
+ \operatorname{AX}(B,0,0,0);\ \operatorname{NIP}^{10};\
+ \operatorname{DROP}(0);\ \operatorname{NIP}(0);\ \operatorname{NIP}(0).
+\]
+Delete its final NIP. If $L$ denotes the nine emitted theorem entries,
+the new tail has the exact trace
+\begin{align*}
+ (B,S,B,0)&\longmapsto(0,L::B::S,0,0)\\
+ &\longmapsto(0,S,0,B)\\
+ &\longmapsto(B,0::S,0,B)\\
+ &\longmapsto(B,S,0,0).
+\end{align*}
+If a NIP sees $F$ earlier, it already halts soundly. In particular, $B=F$
+halts at the final step instead of returning, as the disjunctive compiler
+contract permits. Induction on the derivation therefore transfers with this
+single cleanup deletion. Finite program packing and cofinal enumeration
+are unchanged. The reference definitions are \code{Contract},
+\code{discard}, \code{mpBlock}, and \code{mp_contract} in
+\code{Enum222.lean}, included for reference.
+\end{proof}
+This is a complete local repair of the inherited ordinary compiler argument;
+no modified Lean theorem is claimed. In particular, the source is intentionally
+\emph{not} ordinal-trace-equivalent to the old source. An early receipt's
+inherited wording suggesting that obligation was corrected before packaging.
+
+\subsection{Swapping MP and DROP tags}
+The second variant retains every command body and uses tag 0 for DROP, tag 1
+for MP, and tag 2 for NIP; tags at least 3 retain the axiom command. The baseline
+uses MP, DROP, NIP in that order. The closed source bodies at addresses
+\code{111}, \code{110101}, and \code{110100101} are permuted literally.
+Their selector scratch register is zero on entry. The verifier checks the
+closed-boundary conditions, both control-flow constructions, and the exact
+source bytes. Only native rows $135/1$ and $185/1$ change.
+
+This gives a computable bijection on finite command programs, preserving
+command parameters and command semantics. Every compiled refutation therefore
+has a recoded finite program. The inherited reset/padding construction gives
+arbitrarily large encodings of such a refutation: vary the fourth parameter
+of a prepended AX, whose output consists entirely of theorems and which resets
+$d=h=0$. That parameter participates in the emitted classical axiom, but the
+subsequent compiler accepts the resulting arbitrary current theorem and stack.
+Thus the enumeration tail from either initial counter eventually examines a
+refuting program. Soundness is unchanged. The blank computation reaches a clean seed with
+candidate counter 2 rather than 3; the inherited safe-start/cofinality argument
+covers either seed. Thus initialization time changes without changing the
+finite-refutation criterion.
+
+\subsection{Exact operational certificates}
+The bundled unchanged runtime engine was replayed with a fresh portable driver
+against both variants. It proves every primitive interface for independent
+arbitrary natural primary registers, extra gap, first spare value, and an
+arbitrary finite remaining spare list. The endpoint comparison includes the
+entire tape, head, and state. The bound 4,000 limits proof construction, not
+the represented values or concrete execution time. An independent audit
+checks complete ordered guard coverage, positive affine durations, all literal
+row coverage, and rederives the four unary-block schemas directly from rows.
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Variant & Guarded interfaces & Symbolic rules & Minimum duration\\
+\midrule
+Omit dummy push &6,142&1,511,359&12\\
+Swap MP/DROP (DMN) &6,167&1,516,795&12\\
+\bottomrule
+\end{tabular}
+\end{center}
+Both use all 436 rows. A second implementation, using a dense two-sided tape,
+independently verifies the complete blank endpoint against a directly
+constructed frame, without invoking the original frame decoder:
+\begin{center}
+\begin{tabular}{lrrrrr}
+\toprule
+Variant & Steps & Head & Extra gap & Unit spares & One cells\\
+\midrule
+Baseline &312,909&$-5$&80&130&277\\
+Omit dummy push &312,909&$-5$&80&130&277\\
+DMN &123,776&$-4$&23&72&159\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every endpoint is native dispatcher 84 at root source address. Baseline and
+omission have logical vector $(3,0,0,0,3,0,0,0,0)$; DMN has
+$(2,0,0,0,2,0,0,0,0)$. All cells outside the recorded finite support are zero.
+Canonical tables relabel working states to $0,\ldots,217$ and halt to 218;
+the archive contains the exact bijections.
+
+\input{sections/formalism}
+\input{sections/source}
+\input{sections/runtime}
+
+\section{What would actually close the remaining gap?}
+The computational evidence favors changes to the shared source and its physical
+representation together. Reducing primitive occurrences alone is insufficient:
+PUSH16 saves 279 occurrences but loses enough decoder sharing to increase the
+raw state count. A 204-node DAG is also insufficient: the merged command
+requires a new completeness compiler and the K/S-only proposal requires a
+calibration theorem, while both need a valid physical construction.
+
+Three concrete unresolved tasks remain worth distinguishing.
+\begin{enumerate}
+\item \textbf{Calibrate the actual K/S-only generated calculus.} A proof using
+all equality rows, commuting quantifiers, and the negative set kernel could
+settle whether its 204-node source has the needed consistency strength.
+The small Heyting countermodel rules out only the proposed modal induction;
+it does not model the complete set calculus. A successful argument would
+still need a new physical allocation.
+\item \textbf{Compile proofs for the merged command.} A continuation-based
+compiler that preserves the desired premise while crossing AX's nine extra
+outputs would address its exact completeness obstruction. The current
+223-state allocation would then need six further physical savings.
+\item \textbf{Redesign the decoder's stored context.} The original 218-state
+improvement reused a preceding tape marker. The current negative search
+families restrict local joins, offsets, and helper changes. A different
+invariant or representation could permit a reduction outside those families.
+The provided ternary certificate gives a verified starting domain, but it
+is an overapproximation of concrete reachability.
+\end{enumerate}
+Other calculi offer conceptual alternatives, but their specification size is
+not their binary-machine cost. Pfenning's analysis of short implicational
+bases informed the basis substitutions~\cite{pfenning}. Andr\'eka and
+N\'emeti give a translation of set theory into weak logics with three
+commuting modalities~\cite{andreka}; no competitive source encoder for that
+translation was constructed here. Neither reference supplies an unmeasured
+state-count saving.
+
+\section{Archive map and reproduction}
+The archive is self-contained for its stated new checks. It does not contain
+a complete Lean build of the inherited repository, and copied reference files
+are not advertised as such a build.
+\begin{center}
+\small
+\begin{tabular}{p{67mm}p{84mm}}
+\toprule
+Path & Contents\\
+\midrule
+\code{variants/omit-zero/} & Native and canonical 218-state tables, exact source, original receipts\\
+\code{variants/dmn/} & Native and canonical 218-state tables, command-permuted source, original receipts\\
+\code{code/} & Portable fresh runtime replay and independent receipt/source audit\\
+\code{vendor/portable/} & Unchanged, hash-pinned parent runtime and source utilities\\
+\code{evidence/} & Fresh receipts produced by the packaged driver and audit\\
+\code{experiments/formalism/} & Formula experiments, finite countermodels, exact compiler notes\\
+\code{experiments/source_compression/} & PUSH16, 204-node sources, prefix-code sweep, invariant certificates\\
+\code{experiments/machine_compression/} & Rejected 217-state tables, concrete witnesses, search scopes and source\\
+\code{baseline/}, \code{references/} & Pinned inherited table/source and relevant repository definitions\\
+\code{MANIFEST.json} & SHA-256 for every packaged non-manifest file\\
+\bottomrule
+\end{tabular}
+\end{center}
+Paths in the detailed experimental sections are relative to the corresponding
+checkpoint directory. Each checkpoint has its own README. The root manifest
+is authoritative for the complete package.
+
+From the extracted archive root, run:
+\begin{lstlisting}
+python3 code/verify.py
+python3 code/replay_runtime.py omit-zero
+python3 code/replay_runtime.py dmn
+python3 experiments/source_compression/code/verify_checkpoint.py
+python3 experiments/source_compression/code/verify_invariants.py
+\end{lstlisting}
+The first command audits the saved receipts and reruns exact finite checks.
+The next two rederive all symbolic interfaces. The source commands reconstruct
+selected edits and check the invariant certificates; the ternary check needs
+a C++17 compiler. Use Python 3 with assertions enabled. These commands need
+no Python packages or network access. Optional searches have their own limits.
+
+Rebuild this report by running \code{pdflatex} twice on
+\code{zfc-217-state-search.tex}; all TeX fragments are included.
+
+\begin{thebibliography}{9}
+\small\raggedright
+\setlength{\itemsep}{2pt}
+\setlength{\parskip}{0pt}
+\bibitem{repo}
+Vladimir Reshetnikov and ProveIt contributors.
+\emph{ProveIt: candidate-k218}, pinned commit
+\code{9adcaff0a72486ecc81242e0eca86e428c74879e}, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/9adcaff0a72486ecc81242e0eca86e428c74879e/Computability/BusyBeaver/Research/ZFC/candidate-k218}.
+See the included upstream proof summary and provenance.
+\bibitem{pfenning}
+Frank Pfenning. \emph{Single Axioms in the Implicational Propositional Calculus}.
+CADE, 1988. \url{https://www.cs.cmu.edu/~fp/papers/cade88.pdf}.
+\bibitem{andreka}
+Hajnal Andr\'eka and Istv\'an N\'emeti.
+\emph{Formalizing set theory in weak logics, searching for the weakest logic with G\"odel's incompleteness property}.
+arXiv:1111.0995, 2011. \url{https://arxiv.org/abs/1111.0995}.
+\end{thebibliography}
+\end{document}
