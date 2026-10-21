@@ -12,6 +12,21 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Queue status for batch 204
+
+`Proof_Simplification_and_GC-ZC215_2026-10-21.zip` (arrival `05d063acef`)
+is placed as Source 167 of `zfc-closure-kernels`: 61 new ancillary files,
+14 exact existing members,4 duplicates within the delivery and 3 manuscript
+files retained in the arrival archive. The [placement record and full map](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake204-placement.md)
+preserve all 82 members and the nested SB correction. Only this ZIP is retired.
+Other new archives remain pending; this is not a queue-clearance claim.
+
+The proposal uses the older `c9dc793234` proof snapshot. Symmetry is already
+implemented in the maintained K215 proof; the new zero-offset/generic 512-decoder
+plan is being investigated separately. No delivered executable was run and no
+new formal endpoint status is assigned by placement. The written reconciliation
+follows separately; existing Source 165/166 follow-up work is untouched.
+
 ## Queue status after batch 203
 
 `Feedback_Scheduling_and_Corrected_217_2026-10-21.zip` (arrival `1083e2b5ff`)
