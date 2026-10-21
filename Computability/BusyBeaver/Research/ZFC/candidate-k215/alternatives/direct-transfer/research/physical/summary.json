@@ -1,0 +1,46 @@
+{
+  "status": "NO_214_STATE_RESULT",
+  "bounded_fold_searches": [
+    {
+      "seed": "inputs/k215.native.tm",
+      "radius": 5,
+      "fuel": 97,
+      "specifications": 316292,
+      "hits": 0,
+      "receipt": "evidence/k215-radius5.json"
+    },
+    {
+      "seed": "inputs/k215.native.tm",
+      "radius": 7,
+      "fuel": 97,
+      "specifications": 316292,
+      "hits": 0,
+      "receipt": "evidence/k215-radius7.json"
+    },
+    {
+      "seed": "inputs/short-transfer.append-one.native.tm",
+      "radius": 7,
+      "fuel": 97,
+      "specifications": 309444,
+      "hits": 0,
+      "receipt": "evidence/short-radius7.json"
+    }
+  ],
+  "direct_quotient_screen": {
+    "seed": "inputs/short-transfer.append-one.native.tm",
+    "baseline_cases": 6151,
+    "candidates": 91164,
+    "survivors": 0,
+    "spare_values": [
+      0
+    ],
+    "gap": 0,
+    "register_values": "All zero; the tested register is one in the positive-decrement case.",
+    "baseline_step_limit": 10000,
+    "candidate_step_limit": "3 times baseline steps plus 100",
+    "finite_tape_cells": 512,
+    "receipt": "evidence/direct-merge.stderr.txt",
+    "generated_cases_sha256": "8f976509206e1a8cbc1e38335bf1733c535cd8179607d9e0922af0d0536002ad"
+  },
+  "scope": "Bounded search failures only. No semantic impossibility, lower bound, or blank-tape nonhalting claim. The short-transfer search seed uses append-one; the final primary candidate uses append-zero."
+}

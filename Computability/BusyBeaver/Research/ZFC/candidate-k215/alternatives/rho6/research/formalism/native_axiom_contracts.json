@@ -1,0 +1,536 @@
+{
+  "parent_source_sha256": "17af207195179b2508bf91154cd00739374f8862207ca21b9a3cb9098aa6f5ba",
+  "definitions": {
+    "P(a,b)": "(a+b)(a+b+1)/2+b",
+    "I(a,b)": "4*P(a,b)",
+    "R(a,b)": "4*P(a,b)+1",
+    "Q_i(a)": "4*P(i,a)+2",
+    "E(a,b)": "4*P(a,b)+3",
+    "T": "0",
+    "F": "1",
+    "N(a)": "I(a,F)",
+    "Ex_i(a)": "N(Q_i(N(a)))"
+  },
+  "rows": [
+    {
+      "name": "rho1",
+      "expression": "Ex_A E(A,B)",
+      "span": [
+        2412,
+        2643
+      ],
+      "postfix": "aabEFIQFI",
+      "expression_AST": [
+        "I",
+        [
+          "Q",
+          "A",
+          [
+            "I",
+            [
+              "E",
+              "A",
+              "B"
+            ],
+            "F"
+          ]
+        ],
+        "F"
+      ]
+    },
+    {
+      "name": "rho2",
+      "expression": "I(Q_A(I(B,C)),I(Q_A(B),Q_A(C)))",
+      "span": [
+        2062,
+        2412
+      ],
+      "postfix": "abcIQabQacQII",
+      "expression_AST": [
+        "I",
+        [
+          "Q",
+          "A",
+          [
+            "I",
+            "B",
+            "C"
+          ]
+        ],
+        [
+          "I",
+          [
+            "Q",
+            "A",
+            "B"
+          ],
+          [
+            "Q",
+            "A",
+            "C"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "rho3",
+      "expression": "I(E(A,B),I(R(C,A),R(C,B)))",
+      "span": [
+        1766,
+        2062
+      ],
+      "postfix": "abEcaRcbRII",
+      "expression_AST": [
+        "I",
+        [
+          "E",
+          "A",
+          "B"
+        ],
+        [
+          "I",
+          [
+            "R",
+            "C",
+            "A"
+          ],
+          [
+            "R",
+            "C",
+            "B"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "rho4",
+      "expression": "I(Q_A(Q_B(C)),Q_B(Q_A(C)))",
+      "span": [
+        1467,
+        1766
+      ],
+      "postfix": "abcQQbacQQI",
+      "expression_AST": [
+        "I",
+        [
+          "Q",
+          "A",
+          [
+            "Q",
+            "B",
+            "C"
+          ]
+        ],
+        [
+          "Q",
+          "B",
+          [
+            "Q",
+            "A",
+            "C"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "rho5",
+      "expression": "I(E(C,A),I(R(C,B),R(A,B)))",
+      "span": [
+        1171,
+        1467
+      ],
+      "postfix": "caEcbRabRII",
+      "expression_AST": [
+        "I",
+        [
+          "E",
+          "C",
+          "A"
+        ],
+        [
+          "I",
+          [
+            "R",
+            "C",
+            "B"
+          ],
+          [
+            "R",
+            "A",
+            "B"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "rho6",
+      "expression": "I(Ex_A(Q_A(C)),C)",
+      "span": [
+        888,
+        1171
+      ],
+      "postfix": "aacQFIQFIcI",
+      "expression_AST": [
+        "I",
+        [
+          "I",
+          [
+            "Q",
+            "A",
+            [
+              "I",
+              [
+                "Q",
+                "A",
+                "C"
+              ],
+              "F"
+            ]
+          ],
+          "F"
+        ],
+        "C"
+      ]
+    },
+    {
+      "name": "growG",
+      "expression": "I(E(C,A),I(E(C,B),Q_(R(A,B))(E(A,B))))",
+      "span": [
+        479,
+        888
+      ],
+      "postfix": "caEcbEabRabEQII",
+      "expression_AST": [
+        "I",
+        [
+          "E",
+          "C",
+          "A"
+        ],
+        [
+          "I",
+          [
+            "E",
+            "C",
+            "B"
+          ],
+          [
+            "Q",
+            [
+              "R",
+              "A",
+              "B"
+            ],
+            [
+              "E",
+              "A",
+              "B"
+            ]
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "rho8",
+      "expression": "I(I(I(C,U),A),I(I(A,C),I(B,C)))",
+      "constraint": "U<=A"
+    }
+  ],
+  "bundle": {
+    "V(A,B,C)": "I(R(A,B),Q_C(R(A,B)))",
+    "NKS_postfix": "cbbcRacaccaRcbRIQbcbcbcRFIIQFIIQIQFIIQFIIQbcbcbcRFIIQFIIQFIIQ",
+    "NKS_expression": "Q(C,I(Q(B,I(R(B,C),I(Q(A,I(C,I(Q(A,I(Q(C,I(R(C,A),R(C,B))),Q(B,I(C,I(Q(B,I(C,I(R(B,C),F))),F))))),F))),F))),I(Q(B,I(C,I(Q(B,I(C,I(R(B,C),F))),F))),F)))",
+    "raw_bundle": "N(I(V(A,B,C),NKS(A,B,C)))",
+    "gate": "g(A,B,C)=0 if C=A or C=B; otherwise raw_bundle(A,B,C)",
+    "NKS_AST": [
+      "Q",
+      "C",
+      [
+        "I",
+        [
+          "Q",
+          "B",
+          [
+            "I",
+            [
+              "R",
+              "B",
+              "C"
+            ],
+            [
+              "I",
+              [
+                "Q",
+                "A",
+                [
+                  "I",
+                  "C",
+                  [
+                    "I",
+                    [
+                      "Q",
+                      "A",
+                      [
+                        "I",
+                        [
+                          "Q",
+                          "C",
+                          [
+                            "I",
+                            [
+                              "R",
+                              "C",
+                              "A"
+                            ],
+                            [
+                              "R",
+                              "C",
+                              "B"
+                            ]
+                          ]
+                        ],
+                        [
+                          "Q",
+                          "B",
+                          [
+                            "I",
+                            "C",
+                            [
+                              "I",
+                              [
+                                "Q",
+                                "B",
+                                [
+                                  "I",
+                                  "C",
+                                  [
+                                    "I",
+                                    [
+                                      "R",
+                                      "B",
+                                      "C"
+                                    ],
+                                    "F"
+                                  ]
+                                ]
+                              ],
+                              "F"
+                            ]
+                          ]
+                        ]
+                      ]
+                    ],
+                    "F"
+                  ]
+                ]
+              ],
+              "F"
+            ]
+          ]
+        ],
+        [
+          "I",
+          [
+            "Q",
+            "B",
+            [
+              "I",
+              "C",
+              [
+                "I",
+                [
+                  "Q",
+                  "B",
+                  [
+                    "I",
+                    "C",
+                    [
+                      "I",
+                      [
+                        "R",
+                        "B",
+                        "C"
+                      ],
+                      "F"
+                    ]
+                  ]
+                ],
+                "F"
+              ]
+            ]
+          ],
+          "F"
+        ]
+      ]
+    ],
+    "full_bundle_AST": [
+      "I",
+      [
+        "I",
+        [
+          "I",
+          [
+            "R",
+            "A",
+            "B"
+          ],
+          [
+            "Q",
+            "C",
+            [
+              "R",
+              "A",
+              "B"
+            ]
+          ]
+        ],
+        [
+          "Q",
+          "C",
+          [
+            "I",
+            [
+              "Q",
+              "B",
+              [
+                "I",
+                [
+                  "R",
+                  "B",
+                  "C"
+                ],
+                [
+                  "I",
+                  [
+                    "Q",
+                    "A",
+                    [
+                      "I",
+                      "C",
+                      [
+                        "I",
+                        [
+                          "Q",
+                          "A",
+                          [
+                            "I",
+                            [
+                              "Q",
+                              "C",
+                              [
+                                "I",
+                                [
+                                  "R",
+                                  "C",
+                                  "A"
+                                ],
+                                [
+                                  "R",
+                                  "C",
+                                  "B"
+                                ]
+                              ]
+                            ],
+                            [
+                              "Q",
+                              "B",
+                              [
+                                "I",
+                                "C",
+                                [
+                                  "I",
+                                  [
+                                    "Q",
+                                    "B",
+                                    [
+                                      "I",
+                                      "C",
+                                      [
+                                        "I",
+                                        [
+                                          "R",
+                                          "B",
+                                          "C"
+                                        ],
+                                        "F"
+                                      ]
+                                    ]
+                                  ],
+                                  "F"
+                                ]
+                              ]
+                            ]
+                          ]
+                        ],
+                        "F"
+                      ]
+                    ]
+                  ],
+                  "F"
+                ]
+              ]
+            ],
+            [
+              "I",
+              [
+                "Q",
+                "B",
+                [
+                  "I",
+                  "C",
+                  [
+                    "I",
+                    [
+                      "Q",
+                      "B",
+                      [
+                        "I",
+                        "C",
+                        [
+                          "I",
+                          [
+                            "R",
+                            "B",
+                            "C"
+                          ],
+                          "F"
+                        ]
+                      ]
+                    ],
+                    "F"
+                  ]
+                ]
+              ],
+              "F"
+            ]
+          ]
+        ]
+      ],
+      "F"
+    ],
+    "full_bundle_postfix": "abRcabRQIcbbcRacaccaRcbRIQbcbcbcRFIIQFIIQIQFIIQFIIQbcbcbcRFIIQFIIQFIIQIFI",
+    "source_spans": {
+      "V": [
+        2643,
+        2885
+      ],
+      "NKS": [
+        2885,
+        4482
+      ],
+      "bundle": [
+        2643,
+        4556
+      ]
+    }
+  },
+  "command_state": "(t,S,d,h)",
+  "commands": {
+    "wire_order": "NIP=0, DROP=1, MP=2 with extra numeric field z; AX has fields [c+3,y,x]",
+    "MP(z)": "b=d+z; if I(t,b)=h then (b,P(0,S),b,0) else (0,S,b,0)",
+    "DROP": "(h,P(t,S),d,h)",
+    "NIP": "halt if h=1; else unpair(S)=(x,S') and return (t,S',d,x)",
+    "AX(c,y,x)": "U=d,A=d+x,B=h+y,C=c; return (g(A,B,C),[rho1,rho2,rho3,rho4,rho5,rho6,growG,rho8,Q_U(h),t]S,0,0)"
+  },
+  "source_scope": "Literal formula spans except rho8's interspersed parameter-read prefix; exact formulas decoded from macro postfix words. Existing arbitrary-natural macro contracts and native-calculus consistency calibration are inherited."
+}

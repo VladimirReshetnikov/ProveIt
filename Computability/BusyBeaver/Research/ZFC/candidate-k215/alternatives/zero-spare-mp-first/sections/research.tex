@@ -1,0 +1,23 @@
+\section{A rejected 215-state experiment and a reusable new lemma}
+The latest archives include a separate scratch-biased short-transfer experiment. Its 6,152-case physical certificate is not a consistency calibration. Our audit finds a stronger problem than the stated open cofinality question: its literal program does not implement its advertised scheduler.
+
+The original return was \texttt{CC3} at address \texttt{10011}. Replacing that leaf by the pair \texttt{(CI6,CC3)} moves the continue instruction to \texttt{100111}. A structured continue counts right ancestors; the newly introduced right ancestor changes its target. Two independently implemented control-flow resolvers agree over all 4,733 source occurrences. At ordinal 4697, this \texttt{CC3} returns to the selector at ordinal 23, \emph{not} the scheduler at ordinal 0. A direct semantic repair at that address would require \texttt{CC4}, whose physical realization is a separate obligation.
+
+After a normal AX or MP, the selector, cache, and arithmetic scratches are zero. The extra \texttt{CI6} makes scratch $X=1$. The wrong return therefore enters the short-transfer branch, clears the active top, and executes its cache-copy restoration phase with this preexisting scratch unit. That phase creates $H=1$. The subsequent NIP test reaches the halt instruction, independently of the stack and other retained natural data. If the incoming top is $t$, the source reaches CH after $2t+15$ nonhalting primitives; the retained $t=42$ witness has 99 such steps, followed by CH itself. We do not claim a measured whole-blank binary halting time. The archived startup enters an AX suffix, whose totality and physical realization give the mathematical connection to this unavoidable false halt.
+
+The portable rejection audit retains the exact source and table, two control-flow reconstructions, the complete local witness, and its provenance. This illustrates why a full arbitrary-natural primitive certificate can be correct while the overall program is wrong. The rejected bytes are not included as a successful second consistency machine.
+
+\subsection{Adjacent successful candidates for the intended biased schedule}
+A useful new encoding lemma survives independently of those rejected bytes. Consider the \emph{intended} stateful schedule with S tagged 0, MP tagged 1, AX tagged at least 2, and bias 0 after S versus bias 1 after MP or AX. At a positive residual $r$, it reads $r-1+b$, where $b$ is the bias; a fresh candidate is read without bias. Consequently, if $n=P(a,y)$, its fresh word starts with S and continues at $y-1$ when $a=0,y>0$; starts with MP and continues at $f(y)$ when $a=1,f(y)>0$; or starts with AX and continues at $f(f(y))$ when $a\ge2$ and that residual is positive. Zero residual terminates the word. Each positive recursive argument is smaller than $n$.
+
+Assume $r>0$ is a fresh code for a suffix that halts from \emph{every} natural work tuple. For any $v\ge1$, set
+\[
+u=P(1,r),\qquad y=P(v,u),\qquad n=P(2,y).
+\]
+The elementary identities
+\[
+n+1=P(1,y+1),\quad y+1=P(v-1,u+1),\quad u+1=P(0,r+1)
+\]
+show that candidate $n$ executes $\mathrm{AX}(0;1,v)$ followed by the universal suffix $W(r)$, while candidate $n+1$ executes $\mathrm{MP}(v-1)$, then S, then the same suffix. Both halt from every initial tuple, either earlier or in that suffix. As $v$ grows, these adjacent successful pairs are cofinal. An increasing enumeration with jumps of at most two cannot skip both members of any such pair above its starting point.
+
+This is a conditional mathematical theorem, not a calibration of the rejected source. To use it in a repaired machine still requires a literal parser correspondence, a stateful strong wire compiler, and a soundness invariant. The attached note states these premises explicitly. No repaired 214- or 215-state machine is asserted on the strength of this lemma alone.

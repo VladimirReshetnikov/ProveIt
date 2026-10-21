@@ -1,0 +1,17 @@
+{
+  "status": "RESEARCH_HISTORY_NOTE",
+  "records": [
+    {
+      "experiment": "Initial broad finite grid for literal DNNN command",
+      "result": "The explicit 100000 primitive-step cap was exceeded before a result at top=0,cache=0,x=0,y=3,tail=2.",
+      "interpretation": "This was a computation-cap failure, not a return-equation counterexample. The nested Cantor stack makes the inherited unary pairing macro expensive.",
+      "followup": "Restricted the deliberately finite guard grid to each top/cache/x/y in {0,1,2}, tail=0. All 81 cases passed, with maximum 4316 primitive steps. The all-natural DNNN proof remains separate.",
+      "record_type": "Tool-transcript summary, not a reconstructed raw shell log"
+    },
+    {
+      "experiment": "Parent review of stack-interface checker",
+      "result": "The first helper allowed early halt in every check, including macros whose theorem claims totality.",
+      "followup": "Added explicit allowed/forbidden/required halt policies. PUSH and DISCARD now forbid halt; H2 top1, H2 first1, and terminal1 require halt. All 79 cases passed again."
+    }
+  ]
+}

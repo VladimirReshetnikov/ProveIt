@@ -1,0 +1,201 @@
+% Include-only supplement: requires amsmath, amssymb.
+\section{An experimental alternative: replace rejection by matrix inflation}
+\label{sec:large-matrix-research}
+
+This section gives a new source experiment and separates three claims: a
+proved ordinary first-order padding lemma, an ordinary compiler proof for
+an exactly specified restricted numerical calculus, and an unresolved
+lower consistency reduction. It supplies no smaller accepted binary
+machine. In particular, it must not be used as a second proof of the
+215-state machine in the main part of this report.
+
+\subsection{The concrete source transformation}
+
+Use the accepted numerical constructors
+\[
+ P(x,y)=\frac{(x+y)(x+y+1)}2+y,\quad I(x,y)=4P(x,y),\quad
+ Q_iX=4P(i,X)+2,\quad F=1,\quad T=0.
+\]
+The accepted AX command starts with numerical parameters
+\(U=d,\ A=d+x,\ B=h+y,\ c\), where \(d,h\) are its incoming
+counter and cache. Its logical rows and generalization output are left
+unchanged. Immediately before the final theory bundle is constructed,
+replace the matrix/private-label parameter by
+\[
+                         C=c+A+B+1.                 \tag{LM}
+\]
+Emit the existing literal bundle \(\mathrm{bundle}_{222}(A,B,C)\)
+unconditionally, and clear the three parameter counters on exit. Since
+\(C>A+B\), both old inequalities \(C\ne A,B\) hold automatically.
+The two final equality comparisons are therefore unnecessary for these
+newly emitted bundles.
+
+The source implements (LM) with two preserving additions and one
+increment. A preserving addition from register \(i\) into register 3,
+using initially zero scratch register 6, first decrements \(i\) while
+incrementing registers 3 and 6, then transfers register 6 back to
+\(i\). Both loops terminate by a decreasing natural counter. Thus the
+parameters \(A,B\) and every other register retain their exact values;
+only register 3 changes, and the scratch is again zero. Each addition
+has seven primitive occurrences. The old 34-occurrence final comparison
+and cleanup segment is replaced by six occurrences clearing registers
+3, 5, and 4. The net saving is thirteen primitive occurrences.
+
+The deterministic source script pins the accepted K215 source hash,
+retains the old first bundle factor literally after the insertion, and
+checks every unchanged exterior instruction and guarded edge with two
+independent control-flow resolvers. It also checks 1,728 finite addition
+and cleanup interfaces. The all-natural statement follows from the loop
+argument above, not from those finite probes. The source has
+\[
+ \begin{array}{c|r}
+ \text{distinct source subtrees}&206\\
+ \text{primitive occurrences}&4,738\\
+ \text{guarded primitive cases}&6,155\\
+ \text{maximum address depth}&46\\
+ \text{maximum zero run}&6
+ \end{array}
+\]
+with 39 newly occurring and 35 removed source subtrees. These are source
+metrics, not a binary-state count. No physical allocation or blank-tape
+initialization has been certified for this experiment.
+
+\subsection{A cofinal padding lemma for ordinary first-order set theory}
+
+Here the logical background is ordinary first-order logic, and the input
+matrix is a well-formed formula of numerical code \(c\). The following
+lemma does not assume that every arbitrary numerical code decodes.
+Let the two public variable labels be \(a,b\), and set
+\[
+ s=a+b+1,\qquad e=4P(s,s)+3,\qquad t=I(e,e),\qquad
+                   \widehat c=I(t,c).
+\]
+The code \(e\) is the explicitly well-formed atom \(v_s=v_s\).
+Consequently \(t\) codes the tautology
+\((v_s=v_s)\to(v_s=v_s)\), and \(\widehat c\) codes that tautology
+implying the original matrix. It is therefore uniformly equivalent to
+the original matrix, also under quantification and when the original
+matrix is truth. No numerical zero alias is used to manufacture a
+nonzero formula.
+
+For all natural \(x,y\), \(I(x,y)\geq4(x+y)\). It follows directly
+that \(\widehat c>a+b\). Also \(\widehat c>c,s\). Under the standard
+native constructor coding, every variable label appearing in a positive
+well-formed formula is strictly smaller than its code; this follows by
+induction from the strict component bounds of each positive constructor.
+Truth has no free variables. Hence the label \(\widehat c\) is fresh
+for its own decoded body, including the added tautological antecedent.
+
+Consider an ordinary first-order axiom schema whose private bound
+variable can be alpha-renamed to any fresh variable, and whose matrix
+occurrences respect uniform formula equivalence. The seed-K schema has
+these properties: its witness, support, and subset-closure clauses are
+built from the matrix by the usual logical operations. Replacing its
+matrix by the padded equivalent matrix and choosing private label
+\(\widehat c\) gives an allowed instance with code exceeding \(a+b\).
+Replacement of equivalent formulas and alpha-conversion then recover
+the original schema instance. Thus restricting the \emph{ordinary
+first-order seed-K schema} to these large matrix codes preserves its
+ordinary first-order deductive strength.
+
+The qualifications in the previous paragraph matter. The actual machine
+also obtains atomic quantifier vacuity from the same bundle. Ordinary
+first-order logic already contains the corresponding logical principles;
+the restricted numerical calculus discussed next has to recover them
+from its own retained rows. The padding lemma does not supply that
+recovery.
+
+\subsection{The exact restricted calculus and its source compiler}
+
+Define \(\mathcal D_{>}\) by retaining native truth, MP, theorem-only
+GEN, all seven accepted logical rows, and every accepted dominated
+\(\rho_8(A,B,c,U)\) instance with \(U\leq A\). Replace only the bundle
+schema by
+\[
+          \mathrm{bundle}_{222}(a,b,C),\qquad C>a+b.
+\]
+All these are axioms of the accepted numerical calculus, so
+\(\mathcal D_{>}\) is a literal subcalculus. The modified AX command
+emits exactly its logical rows at the old parameters and its bundle at
+\(C=c+A+B+1\). Every allowed bundle is enumerable by choosing
+\(c=C-A-B-1\); the other rows remain independently selectable.
+
+For completeness, one must repair the old reset argument: the new top
+bundle is always emitted, whereas the old reset exploited a disabled
+bundle. The repair uses its literal constructor shape. Every emitted
+bundle is
+\[
+                         g=I(z,1)
+\]
+for some natural \(z\). Hence \(g\ne1\), and injectivity of Cantor
+pairing gives \(I(g',0)\ne I(z,1)\) for every \(g'\).
+
+Write a command-boundary state as \((t,S,d,h)\), with encoded stack
+\(S\). Let \(N\) denote NIP, and put
+\[
+ H=\operatorname{AX}(0;0,0)N^{10},\qquad
+               \operatorname{RESET}=HH\operatorname{MP}(0).
+\]
+After one \(H\), the state is \((g_1,S,0,t)\). The first nine NIPs
+load newly emitted constructor codes, none equal to 1; the tenth loads
+the old current value only on exit, without testing it. The second AX
+overwrites that cache before another NIP. After the second \(H\), the
+state is \((g_2,S,0,g_1)\). The final MP checks
+\(I(g_2,0)=g_1\), which is impossible by the displayed constructor
+shapes. Therefore RESET returns exactly \((0,S,0,0)\) from every
+numerical incoming tuple, without an early halt. This also preserves a
+stack whose protected old entries are arbitrary or equal to falsity.
+The identity \(P(0,0)=0\) causes no problem: pairing and unpairing are
+used literally and the old stack is never inspected.
+
+All the usual strong compiler blocks now work with this RESET. A block
+for a theorem \(X\), from an arbitrary work tuple and protected stack
+\(S\), either halts or returns \((X,S,0,0)\). For row selection, after
+RESET and the usual parameter setter \(J(U)\), execute AX and
+\(N^j\operatorname{DROP}N^{11-j}\) to select row \(j\),
+\(1\leq j\leq9\). The ninth row is the cached generalization.
+The inserted top bundle is merely pushed and discarded during selection;
+its non-falsity constructor shape is sufficient, and it need not be zero.
+For a desired bundle with \(C>a+b\), use
+\[
+ \operatorname{RESET};\operatorname{AX}(C-a-b-1;a,b);N^{10}.
+\]
+Here the last two AX arguments specify the increments producing
+\(A=a,B=b\); their actual wire order remains the accepted YX order.
+The GEN block and the original MP-premise block preserve their same
+stack equations after this reset replacement. In the MP block, the
+extra top bundle is discarded before the protected success zero; every
+cache test is either a generated non-falsity code or a derived premise,
+so an early halt is permitted by the strong contract.
+
+Induction on a \(\mathcal D_{>}\) derivation therefore supplies finite
+compiler blocks. Append DROP, NIP, NIP to a block for code 1 to obtain a
+halting block. The unchanged number scheduler is complete for every
+finite initial cutoff: an arbitrary large first AX selector, followed
+by RESET and a fixed refutation block, gives a cofinal family of
+candidate numbers. Soundness is the original theorem/stack invariant,
+now with the smaller bundle schema. These are ordinary, all-natural
+source-level arguments; they are not a physical runtime theorem.
+
+\subsection{The unresolved lower bridge}
+
+The large-matrix bundle also supplies only the following atomic-vacuity
+instances:
+\[
+          R(a,b)\longrightarrow Q_C R(a,b),\qquad C>a+b.
+\]
+The accepted numerical proof system used this bundle to obtain vacuity
+for every \(C\ne a,b\). Neither semantic matrix padding nor an appeal
+to ordinary first-order completeness can silently fill that gap.
+A proof of the lower reduction must work in \(\mathcal D_{>}\) and
+recover enough of the missing logical interface, or give a different
+finite-refutation translation that bypasses it.
+
+Accordingly, the current conclusions are deliberately limited: the
+ordinary seed-K schema restriction is harmless under a full ordinary
+first-order background; the modified source searches exactly the
+specified restricted numerical calculus under the inherited arithmetic
+macro contracts and the reset proof above; and that numerical calculus
+is a subcalculus of the accepted one. Its equivalence in consistency to
+ZFC, and any smaller binary realization, remain open. The source and
+its audit are included to make this next experiment concrete.

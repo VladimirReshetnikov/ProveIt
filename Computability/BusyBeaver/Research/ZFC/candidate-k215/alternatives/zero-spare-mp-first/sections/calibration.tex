@@ -1,0 +1,62 @@
+\section{The command calculus and the protected tail}
+The theory being searched is the inherited numerical calculus, whose theorem codes are natural numbers. Code 0 is truth and code 1 is falsity. Its calibration with ZFC is an inherited theorem, not an inference from running the machine. Arbitrary natural numbers, including codes without a first-order reading, are permitted as parameters. This flexibility does not permit an unproved code to be used as a premise.
+
+Let $P(x,y)=(x+y)(x+y+1)/2+y$, and let $f(n)$ be the second component of the inverse Cantor pairing. The native constructors used below are $I(a,b)=4P(a,b)$ and $Q_i(a)=4P(i,a)+2$. A stack with explicit heads $x_1,\ldots,x_k$ and tail $J$ means the iterated numerical code $P(x_1,P(x_2,\ldots,P(x_k,J)))$. This is a representation with a specified list of heads, not a claim about a unique list length. In particular $P(0,0)=0$ creates no difficulty: the identities for unpairing still recover each designated wrapper when it is consumed.
+
+At a command boundary the work registers are $(t,w,d,h)$, consisting of the current theorem, stack, additive parameter counter, and cached theorem. The command alphabet is
+\[
+\mathrm{MP}(x):[0,x],\qquad S:[1],\qquad
+\mathrm{AX}(c;x,y):[c+2,y,x].
+\]
+The transfer command is the literal composite old-DROP; old-NIP; old-NIP. If $w=P(z,v)$ it returns $(h,v,d,z)$, unless the incoming $h=1$ or $t=1$, in which case it halts. Both tests matter. Its temporary internal push means that the internal implementation does not reach farther into the old stack than its net one-head removal.
+
+Numerical $\mathrm{MP}(x)$ sets $y=d+x$ and tests whether $h=I(t,y)$. Success returns $(y,P(0,w),y,0)$; failure returns $(0,w,y,0)$. It does not remove an old stack head. AX emits the accepted logical and set-theoretic axiom codes, including the dominated eighth logical row, with parameters $U=d$, $A=d+x$, $B=h+y$, $C=c$. Thus $U\le A$ holds for all natural inputs. It resets $d,h$ and prepends ten heads, of which the generalization of the incoming cache and the saved incoming top require care when these inputs are untrusted.
+
+\subsection{The dirty initialization is not a theorem-valued state}
+The literal blank prefix ends inside AX. Its matching virtual source entry has
+\[
+(N,t,w,A,d,h,X,Y,L)=(0,0,0,0,1,1,0,0,0).
+\]
+ The remaining encoded fields are zero. Completion therefore uses $U=A=B=1$, $C=0$. The returned top is the enabled set-theoretic bundle, and the new cache is truth. The resulting explicit stack is
+\[
+[\rho_1,\ldots,\rho_7,L(1,1,0,1),Q_1(1),0;0].
+\]
+The first eight heads are theorems by the inherited axiom contracts. We make \emph{no} theoremhood assertion about $Q_1(1)$. Its code is 18, and the two-head suffix is the arbitrary numerical tail
+\[
+J=P(18,P(0,0))=171.
+\]
+It remains to prove that this suffix is never exposed by the actual search. An unjustified claim that the whole startup stack consists of theorems would invalidate the construction.
+
+\subsection{An infinite credit theorem, not a finite simulation}
+Assign conservative weights $\operatorname{wt}(\mathrm{MP})=0$, $\operatorname{wt}(S)=-1$, $\operatorname{wt}(\mathrm{AX})=10$. Successful MP can only improve the resulting bound. Let $W(n)$ be the syntactic command word of a freshly fetched candidate, continuing syntactically even if execution would halt. Put $R(0)=\epsilon$ and $R(r)=W(r-1)$ for $r>0$. If $n=P(a,y)$, the actual decoder satisfies
+\[
+W(n)=\begin{cases}
+\mathrm{MP};R(f(y)),&a=0,\\
+S;R(y),&a=1,\\
+\mathrm{AX};R(f(f(y))),&a\ge2.
+\end{cases}
+\]
+Every positive recursive argument decreases; every prefix of $R(r)$ has weight at least $-r$. The initial words are $W(0)=\mathrm{MP}$, $W(1)=S$, and $W(2)=\mathrm{MP}$, so the cumulative minimum through these candidates is $-1$.
+
+Here is the unbounded diagonal argument underlying the inherited credit theorem. Write $b(n)=\operatorname{wt}(W(n))$, $B(k)=\sum_{n<k}b(n)$, and $g(0)=0$, $g(r)=b(r-1)$ for $r>0$. For $q(r)=g(r)+1$, for $k\ge1$ the first $k$ terms sum to $k+B(k-1)$. The induction invariant $B(j)+j\ge0$ therefore makes all these prefixes nonnegative. The sequence $f(0),f(1),\ldots$ is the concatenation $[0],[0,1],[0,1,2],\ldots$. Consequently pulling a nonnegative-prefix sequence back by $f$, once or twice, preserves nonnegative prefix sums.
+
+Maintain also $B(T_s)\ge-1$, where $T_s=s(s+1)/2$; the three initial words establish this at $s=2$. On Cantor diagonal $s\ge2$, the first $s-1$ candidates start with AX, followed by one S candidate and one MP candidate. The first $k$ AX candidates have weight at least $9k$. Inside the AX candidate at position $y$, its initial $+10$ and its continuation bound give relative weight at least $8y+10$. After all AX candidates the balance is at least $9(s-1)$. During the S candidate it is at least $8s-9$, and during the final MP candidate at least $7s-9>0$. All recursive information used here comes from earlier diagonals. Thus every diagonal from $s=2$ is prefix-safe relative to its beginning, preserving $B(T_s)\ge-1$ and $B(j)+j\ge0$ and completing the induction.
+
+\begin{theorem}[One-head conservative debt]
+Every prefix of the infinite syntactic search from candidate 0 has weight at least $-1$. The first S attains $-1$. For the semantic conclusion, start at a source root with next candidate 0, empty proof pointer, normalized selector and scratch registers, theorem-valued top and cache, and eight explicit theorem heads above an arbitrary tail. The additive counter may be any natural number. Then at least seven such heads remain at every command boundary; the arbitrary tail is never popped into an active theorem register.
+\end{theorem}
+The conclusion uses explicit wrapper counts, not numerical stack size. Before any S, at least one protected theorem head is available. Each possible halt therefore tests a theorem-valued falsity code, including the extra top test inside the composite S. This proves soundness without any assumption about the buried suffix.
+
+\section{Completeness and the scope of the equivalence}
+The inherited transfer compiler has a strong block contract over an \emph{arbitrary retained stack}: with $d=h=0$ and normalized parser scratches, but arbitrary retained $t,w$, it constructs each derivable code $F$ as $(F,w,0,0)$, or halts earlier. Its cleanup and command composition proofs distinguish the actual two-guard S from the single-guard abstraction. Early halting is permitted in the completeness contract; soundness for the actual run is supplied separately by the protected-tail invariant.
+
+The MP-first change is a translation of command tags and their literal field encoding, not a change of the numerical theory. An initial AX reset supplies the zero counter/cache precondition independently of the incoming natural work tuple. The cofinal padding proof supplies successful encodings above every finite candidate cutoff when falsity is derivable. Each preceding nonhalting candidate terminates, because its arithmetic operations terminate and its positive continuation code strictly decreases. In the present source the scheduler enumerates every candidate successively. Hence a finite numerical refutation eventually causes a halt. No bounded search experiment establishes this assertion; the strong block and cofinality proofs are retained in the packet.
+
+Combining that completeness theorem, protected-tail soundness, the exact blank prefix, and the arbitrary-natural physical simulation yields
+\[
+\begin{aligned}
+\text{Blank halting} &\Longleftrightarrow \text{the numerical calculus derives 1}\\
+&\Longleftrightarrow \neg\operatorname{Con}(\mathrm{ZFC}).
+\end{aligned}
+\]
+Equivalently its nonhalting expresses syntactic ZFC consistency. These are ordinary mathematical arguments intended to be formalizable in ZFC, with executable symbolic certificates for the physical runtime. They are not a new proof-assistant kernel endpoint for this table, do not prove unconditional nonhalting, and do not prove minimality.

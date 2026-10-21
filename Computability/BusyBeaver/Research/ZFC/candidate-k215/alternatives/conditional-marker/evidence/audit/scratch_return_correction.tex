@@ -1,0 +1,89 @@
+\section{A correction to the archived scratch-biased experiment}
+\label{sec:scratch-return-correction}
+
+The incoming \texttt{T215\_Transfer\_2026-10-20} packet contains an
+experimental short-transfer table with 215 states and a complete quantified
+primitive-runtime certificate.  Its logical calibration was explicitly left
+open.  The accompanying description of its scheduler is incorrect: a source
+reassociation changes the destination of the final backward jump.
+This does not affect the accepted composite-transfer machine in that packet.
+
+The affected native table has SHA-256
+\begin{center}\small\path{f08bed9e62b9f43237b65c465d2f1bfc17474637b4b02785ca7f1813827bb0ce}\end{center}
+and the source has SHA-256
+\begin{center}\small\path{2407f815551b4aba335c9bf041e15e8ce3cfb9ad830d89539f3bcf123462371a}\end{center}
+These identities select the research object precisely; no primary candidate
+file is altered by this audit.
+
+\subsection{The extra right child changes the jump}
+In this structured source language, $\mathrm{CC}(k)$ cuts its binary address
+immediately before the $k$th one encountered from the right and resumes at
+the first leaf below that prefix.  Before insertion, the return leaf was
+\texttt{CC3} at address \texttt{10011}, which cuts to the empty prefix.
+Replacing that leaf by $(\mathrm{CI6},\mathrm{CC3})$ puts the final leaf at
+\texttt{100111}.  This address has four ones.  Cutting at the third one from
+the right now retains prefix \texttt{100}, whose first leaf is source
+ordinal 23, the command selector.  It does not return to scheduler ordinal 0.
+
+The literal source rows are
+\[
+ 4696:\ \mathrm{CI6},\qquad
+ 4697:\ \mathrm{CC3}\longrightarrow 23,\qquad
+ 23:\ \mathrm{CD3}.
+\]
+Changing only the source operand to \texttt{CC4} would restore target 0,
+but that is a different source.  Its distinct-subtree count is 203, compared
+with 201 for the erroneous source, and no same-size physical repair follows
+merely from retagging it.
+
+\subsection{An all-natural erroneous-return theorem}
+Write the registers in the order
+$(N,T,W,A,D,H,X,Y,L)$.  At ordinal 4696 suppose $A=H=X=0$;
+the remaining six registers are arbitrary natural numbers.  Then the literal
+source reaches its halting primitive, ordinal 4718, after exactly
+$2T+15$ nonhalting primitive transitions.
+
+To prove this, the first instruction sets $X=1$.  The incorrect jump enters
+the selector, where $A=0$ routes to the short-transfer body.  Its clear loop
+sets $T=0$ in $2T+1$ steps.  The copy of $H$ into $T$ executes zero loop
+iterations because $H=0$, but its restoring loop transfers the residual
+$X=1$ into $H$.  Thus $H=1$ and $X=0$.  The inherited NIP guard then tests
+this manufactured 1 and enters its halting primitive.  The stack $W$ is not
+read.  The remaining literal path has fixed length, giving $2T+15$.
+The independent script supplies the complete 15-step witness for $T=0$ and
+checks the general formula on a separate finite grid; the argument above is
+the all-natural justification.
+
+\subsection{Connection to the actual blank run}
+The independent audit replays all 69,744 binary transitions in the archived
+blank prefix.  It reaches native dispatcher 84, head $-2$, at source ordinal
+64 with registers
+\[
+ (1,4,0,0,0,0,3,10,0).
+\]
+An independently resolved source CFG reproduces this frame after 172
+primitive transitions from AX entry 25 and seed
+\[
+ (1,0,3,0,0,0,0,0,0).
+\]
+The entire AX interval $[25,4590)$ has exactly the same ordered primitive
+word and ordinal control-flow graph as the pinned parent.  Its inherited
+all-natural termination contract therefore applies.  This zero-parameter
+AX has selector parameter $c=0$, hence gate $T=0$, and exits at ordinal 4696
+with $A=H=X=0$.
+The preceding theorem then reaches CH in 15 further nonhalting source
+transitions.  Executing that CH halts the binary machine, by its separately
+supplied complete primitive-runtime theorem.
+
+This is an eventual-halting proof using the inherited AX contract and
+quantified binary simulation.  We have not executed the entire enormous
+unary AX computation or claimed an exact total binary halting time.
+The concrete 69,744-step blank prefix and the 15-step source suffix are
+separately replayed.  The experiment consequently cannot serve as a
+nonhalting consistency witness under $\mathrm{Con}(\mathrm{ZFC})$.
+
+The exact safe-stack observation remains useful for a future corrected
+scheduler: $W=3=P(2,0)$ and $2=Q_0(0)$ is a theorem by generalization of
+truth.  Thus this particular seed has a theorem-valued entire stack; it
+does not require a protected-unsafe-tail estimate.  That observation does
+not repair the wrong control-flow edge.

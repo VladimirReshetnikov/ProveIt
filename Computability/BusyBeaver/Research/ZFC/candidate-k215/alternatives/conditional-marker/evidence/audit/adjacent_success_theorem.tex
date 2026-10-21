@@ -1,0 +1,102 @@
+\section{Adjacent successful codes for a stateful scheduler}
+\label{sec:adjacent-success}
+
+The following source-level result applies to a proposed repaired scheduler,
+not to the erroneous physical experiment of
+Section~\ref{sec:scratch-return-correction}.  It closes a cofinality issue
+for a parser whose residual bias depends on the preceding command.
+
+Let
+\[
+ P(a,b)=\frac{(a+b)(a+b+1)}2+b.
+\]
+Use command fields
+\[
+ f(S)=[0],\quad f(M(x))=[1,x],\quad
+ f(A(c;x,y))=[c+2,y,x].
+\]
+Put $b(S)=0$ and $b(M)=b(A)=1$.  After a command, a positive continuation
+$L$ is decoded from $L-1+b$; the remaining fields are decoded by ordinary
+Cantor projections.  At an empty continuation, a fresh candidate $N$ is
+decoded without bias and the next-candidate counter increases by $1+b$.
+
+\subsection{Encoding finite command words}
+Write $F(f,r)$ for right folding the finite field list $f$ into $r$ by $P$.
+For a command word ending in two copies of $S$, define its fresh-code
+encoding recursively from the right: the final $S$ has code 0, and a
+preceding command $k$ with next-word code $e$ has code
+\[
+ C(k::w)=F\bigl(f(k),e+1-b(k)\bigr).
+\]
+Every proper suffix except the last singleton $S$ has positive code.
+Indeed the last pair $SS$ has code $P(0,1)=2$; all earlier prefixes have
+positive code because either their selector is positive or their residual
+is $e+1>0$.  The only zero next-code is preceded by $S$, so its continuation
+is 1.  Thus no $b=1$ command accidentally ends a candidate instead of
+executing a required zero-code suffix.  Induction proves exact decoding of
+the whole word.
+
+All candidates terminate unless a command halts.  If a positive continuation
+is $L$, the next raw code is at most $L$.  For every positive $n$, the right
+Cantor projection is strictly less than $n$.  After reading the first field,
+the residual is therefore strictly less than $L$, and later field reads
+cannot increase it.  Termination of the command arithmetic is inherited.
+
+\subsection{A universal halting core}
+Assume the retained calculus has a refutation and the inherited strong
+compiler supplies a word $B_1$ which, from every $(t,w,0,0)$, either halts
+or returns $(1,w,0,0)$.  For the direct transfer
+$S(t,[x;v],d,h)=(h,v,d,x)$ with halt guard $h=1$, put
+\[
+ H=A(0;0,0);S^{11}.
+\]
+The exact ten-head AX contract shows that $H$ halts when its incoming top is
+1.  Therefore
+\[
+ K=A(0;0,0);B_1;H;S;S
+\]
+halts from every natural work tuple $(t,w,d,h)$: the first AX resets counter
+and cache to zero, $B_1$ satisfies its universal contract, and $H$ detects
+the returned 1.  The two final $S$ commands only guarantee encodability;
+they need not execute.  It is essential to use $H$, not simply $S;S$:
+the direct transfer does not test its incoming top.
+Let $r=C(K)>0$.
+
+\subsection{Cofinal pairs of consecutive successes}
+For every $Y\ge1$ define
+\[
+ n_Y=P\bigl(2,P(Y,P(1,r))\bigr).
+\]
+The candidate $n_Y$ decodes as $A(0;1,Y)$ followed by the universal core $K$.
+For $a>0$ the diagonal identity
+\[
+ P(a,b)+1=P(a-1,b+1)
+\]
+follows directly from the definition.  Applying it three times gives
+\[
+ \begin{split}
+ n_Y+1
+ &=P\bigl(1,P(Y,P(1,r))+1\bigr)\\
+ &=P\bigl(1,P(Y-1,P(1,r)+1)\bigr)\\
+ &=P\bigl(1,P(Y-1,P(0,r+1))\bigr).
+ \end{split}
+\]
+Consequently $n_Y+1$ decodes as $M(Y-1);S;K$: after $M$ the positive
+residual $P(0,r+1)$ is read with bias 1, giving $S$ and residual $r+1$;
+after $S$ bias 0 turns that residual back into raw code $r$.
+Both neighboring candidates therefore halt from every work tuple, either
+before the core or within it.  Since $P$ dominates both arguments,
+$n_Y\ge Y$, so these adjacent pairs occur cofinally.
+
+Finally, every infinite nonhalting fresh-candidate sequence has strictly
+positive steps of size at most 2.  Beyond any current counter, the first
+visited member at least $n_Y$ is either $n_Y$ or $n_Y+1$; it cannot jump over
+both.  This contradicts the universal success of the pair.  The argument
+allows the choice between steps 1 and 2 to depend on the complete prior
+execution; it does not assume a fixed parity class or that every candidate
+is visited.
+
+This theorem supplies the missing cofinality mechanism for the intended
+stateful parser.  It is a mathematical interface for a future corrected
+physical implementation, not a claim that the archived CC3 table implements
+that parser.
