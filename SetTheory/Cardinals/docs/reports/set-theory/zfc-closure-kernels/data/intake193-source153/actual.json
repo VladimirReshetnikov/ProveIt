@@ -1,0 +1,173 @@
+{
+  "status": "SIX_SELECTED_PROCESSES_EXIT_ZERO_PENDING_RESULT_AUDIT",
+  "selected_names": [
+    "peirce-models",
+    "residual-blocks",
+    "residual-source",
+    "two-adic-source",
+    "literal-deltas",
+    "weak-caller-counterexamples"
+  ],
+  "scope": "Six reviewed cheap selected leaves, no optional jobs, runtime, manifest or ancestor wrapper.",
+  "jobs": [
+    {
+      "name": "peirce-models",
+      "argv": [
+        "/home/codex/.local/bin/python",
+        "-B",
+        "/tmp/zfc-intake193/source153-execution/packet/theory/peirce_hc_countermodels.py",
+        "--out",
+        "/tmp/zfc-intake193/source153-execution/outputs/peirce.json"
+      ],
+      "cwd": "/tmp/zfc-intake193/source153-execution/packet",
+      "exit_code": 0,
+      "timeout": false,
+      "timeout_seconds": 120,
+      "seconds": 0.11450804676860571,
+      "expected": {
+        "four_value.status": "FINITE_PREMISES_PASS",
+        "four_value.restricted_rho8_checks": 256,
+        "five_value.status": "FINITE_PREMISES_PASS",
+        "five_value.restricted_rho8_checks": 500,
+        "five_value.K_failures": [
+          [
+            1,
+            3
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            3,
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "name": "residual-blocks",
+      "argv": [
+        "/home/codex/.local/bin/python",
+        "-B",
+        "/tmp/zfc-intake193/source153-execution/packet/theory/counter_salt_blocks.py",
+        "--out",
+        "/tmp/zfc-intake193/source153-execution/outputs/residual-blocks.json"
+      ],
+      "cwd": "/tmp/zfc-intake193/source153-execution/packet",
+      "exit_code": 0,
+      "timeout": false,
+      "timeout_seconds": 120,
+      "seconds": 0.21446939557790756,
+      "expected": {
+        "status": "PASS",
+        "source.comparator_cases": 289,
+        "source.repaired_gate_cases": 729,
+        "source.nip_cases": 17,
+        "source.dirty_reader_cases": 1089,
+        "source.dirty_reload_cases": 289,
+        "blocks.status": "SYMBOLIC_BLOCK_COMPOSITIONS_PASS",
+        "blocks.generalization_cases": 3,
+        "blocks.modus_ponens_cases": 9
+      }
+    },
+    {
+      "name": "residual-source",
+      "argv": [
+        "/home/codex/.local/bin/python",
+        "-B",
+        "/tmp/zfc-intake193/source153-execution/packet/encoding/reproduce.py",
+        "--output-dir",
+        "/tmp/zfc-intake193/source153-execution/outputs/encoding"
+      ],
+      "cwd": "/tmp/zfc-intake193/source153-execution/packet",
+      "exit_code": 0,
+      "timeout": false,
+      "timeout_seconds": 120,
+      "seconds": 2.0678347228094935,
+      "expected": {
+        "encoding_reproduction.json.status": "PASS_ENCODING_REPRODUCTION",
+        "reconstructed_source_sha256": "dc32510df9ffb07c2e106d835f735baff4a19989198a7f5bfec3f34e0046559d",
+        "arithmetic.json.cases_per_macro": 4165,
+        "counter_salt_source_audit.json.status": "PASS_LITERAL_SOURCE_MACRO_CROSS_AUDIT",
+        "counter_salt_source_audit.json.source_leaf_count": 4741
+      }
+    },
+    {
+      "name": "two-adic-source",
+      "argv": [
+        "/home/codex/.local/bin/python",
+        "-B",
+        "/tmp/zfc-intake193/source153-execution/packet/experiments/two_adic/reproduce.py",
+        "--output-dir",
+        "/tmp/zfc-intake193/source153-execution/outputs/two-adic"
+      ],
+      "cwd": "/tmp/zfc-intake193/source153-execution/packet",
+      "exit_code": 0,
+      "timeout": false,
+      "timeout_seconds": 120,
+      "seconds": 0.4652584819123149,
+      "expected": {
+        "summary.json.status": "PASS_SOURCE_COST_AND_FINITE_HELPERS",
+        "summary.json.helper_diagnostic_cases": 644,
+        "matched_dag": 225,
+        "matched_leaves": 5958
+      }
+    },
+    {
+      "name": "literal-deltas",
+      "argv": [
+        "/home/codex/.local/bin/python",
+        "-B",
+        "/tmp/zfc-intake193/source153-execution/packet/machine/rebuild.py",
+        "--baseline219",
+        "/tmp/zfc-intake193/source153-execution/baseline219"
+      ],
+      "cwd": "/tmp/zfc-intake193/source153-execution/packet",
+      "exit_code": 0,
+      "timeout": false,
+      "timeout_seconds": 120,
+      "seconds": 0.16458092350512743,
+      "expected": {
+        "stdout_json_states": [
+          218,
+          219,
+          223
+        ],
+        "exact_four_occurrence_replacements": [
+          "weak218_rejected",
+          "zero_guard219"
+        ]
+      }
+    },
+    {
+      "name": "weak-caller-counterexamples",
+      "argv": [
+        "/home/codex/.local/bin/python",
+        "-B",
+        "/tmp/zfc-intake193/source153-execution/packet/machine/replay_gate_counterexample.py",
+        "--baseline219",
+        "/tmp/zfc-intake193/source153-execution/baseline219",
+        "--output",
+        "/tmp/zfc-intake193/source153-execution/outputs/weak-counterexamples"
+      ],
+      "cwd": "/tmp/zfc-intake193/source153-execution/packet",
+      "exit_code": 0,
+      "timeout": false,
+      "timeout_seconds": 120,
+      "seconds": 1.015949617139995,
+      "expected": {
+        "gate_counterexample.json.status": "EXACT_VALID_INTERFACE_FRESHNESS_GATE_COUNTEREXAMPLE",
+        "cache_forge_counterexample.json.status": "EXACT_VALID_INTERFACE_CACHED_ONE_FORGERY",
+        "gate_steps": [
+          16342,
+          12398
+        ],
+        "cache_steps": [
+          14420,
+          11056
+        ]
+      }
+    }
+  ]
+}

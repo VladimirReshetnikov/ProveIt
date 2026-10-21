@@ -3274,4 +3274,28 @@ complete blank startup. The ordinary ZFC consistency equivalence inherits
 Source 149's numerical calibration; the exact-table Lean/PA endpoint remains open.
 Placement `bf087d590f` accounts for all 39 members and retires the ZIP. The host
 now has152 sources; the collection remains290 reports. The target is216 or fewer,
-with two separate reports at `1e87618cf2` queued for 193.
+with the two separate reports at `1e87618cf2` subsequently imported in 193.
+
+[Batch 193](set-theory/zfc-closure-kernels/intake-193.md) adds Sources 153–154,
+bringing the host to 154 sources while the collection remains 290 reports.
+Placement `ff23f24af8` retains all 544 members and retires two research ZIPs.
+Six and five fresh selected leaves pass; independent record audits separate
+finite checks from ordinary calibrations and delivered full runtimes. The
+reports add Peirce and T/B obstructions, negative-equality/dual-B calibration,
+residual-counter freedom, inverse detachment and shifted-codec research.
+Cache-return MP composes with the accepted 217 source but still has 217 states;
+whole source/startup checks and 645,408 bounded negative fold specifications
+do not supply a new full runtime or a 216 construction. [Recovery](set-theory/zfc-closure-kernels/intake-193-reproduction.md)
+preserves all original layouts. The later `673c87a878` delivery is compared in intake 194.
+
+[Batch 194](set-theory/zfc-closure-kernels/intake-194.md) imports Source 155 from
+`673c87a878`. Its 217 table is identical to the primary under a three-state
+permutation, with the identical source and no stackable saving. All 434 rows,
+canonical maps and 4,750 source-prefix roles compare. Three selected fresh
+construction/fold/fixed-core leaves pass. The optional fixed1,3 core is
+ordinarily calibrated but costs 211 source subtrees and has no binary table.
+Placement `7fff7bc909` retains all 57 members and retires the ZIP; the host now
+has 155 sources and the collection remains 290 reports. Three subsequent
+archives are queued for batches 195–196; the active target is now 215 or fewer.
+[Recovery and reproduction](set-theory/zfc-closure-kernels/intake-194-reproduction.md)
+separate inherited and freshly executed evidence.

@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings through 20 October 2026. This report now reconciles **152 manuscripts**.
+Intake findings through 20 October 2026. This report now reconciles **155 manuscripts**.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -8,6 +8,29 @@ the delivered base article is preserved, rather than rewritten as a unified arti
 No merged PDF is built. These are ordinary mathematical arguments and finite
 regression checks. The deliveries confer no formal status; subsequent Lean
 results and their exact scope are listed below.
+
+[Batch 194](intake-194.md) compares `673c87a878` as Source 155: it is the same
+217-state machine under `188→213→210→188`, with an identical source and the
+exact independently preserved candidate025 tables. All 434 rows and 4,750
+source-prefix roles check. Its saving cannot stack. Three fresh selected
+checks pass; a separate fixed-label core has an ordinary calibration but costs
+211 source subtrees and has no binary implementation. Placement `7fff7bc909`
+accounts for all 57 members and retires the ZIP. [Recovery/reproduction](intake-194-reproduction.md)
+preserve both the additional exposition and the optional theory experiment.
+The primary is unchanged. The later 216 candidate at `6ec69081ca` is queued
+for batch 195, and two reports at `d3d6b8c14e` for batch 196. The updated
+active target is 215 or fewer states.
+
+[Batch 193](intake-193.md) imports the two different research archives at
+`1e87618cf2` as Sources 153–154. Placement `ff23f24af8` accounts for all 544
+members and retires both ZIPs. Six residual/Peirce/source checks and five
+negative-equality/codec/MP checks pass, with independent semantic-record audits.
+The reports add full countermodels, calibrated source changes and useful
+rejected experiments. Cache-return MP composes with the primary 217 source,
+with exact decoder/CFG and unchanged-startup checks, but still has 217 states
+and lacks a fresh modified full runtime. Its 645,408 bounded fold candidates
+yield no survivor. [Recovery/reproduction](intake-193-reproduction.md) retain
+all originals and exact fresh scopes. The later `673c87a878` is imported and compared separately in batch 194.
 
 [Batch 192](intake-192.md) accepts Source 152 as the new
 [**primary 217-state construction**](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k217/README.md).
@@ -19,7 +42,7 @@ equivalence inherits the dominated calculus calibration. The exact-table
 Lean/internal PA endpoint remains open. Placement `bf087d590f` accounts for
 all 39 members and retires the ZIP. [Recovery/replay](intake-192-reproduction.md)
 retain original attribution and independent reviews. The target is now 216 or
-fewer; two other reports at `1e87618cf2` remain queued separately.
+fewer; the two other reports at `1e87618cf2` are now imported in batch 193.
 
 [Batch 191](intake-191.md) imports four reports from `7071e5041e` as Sources
 148–151. All 936 members are accounted for in placement `4a1218d878`, and all

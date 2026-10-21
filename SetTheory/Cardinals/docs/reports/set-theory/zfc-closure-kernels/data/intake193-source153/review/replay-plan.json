@@ -1,0 +1,345 @@
+{
+  "status": "SOURCE_REVIEWED_PROPOSAL_NOT_EXECUTED",
+  "source": 153,
+  "archive": {
+    "path": "original.zip",
+    "sha256": "895e4635c050736beee57e517b0f2645884865330279812a2a49cb42a6c29557"
+  },
+  "placeholders": {
+    "COPY": "Fresh disposable copy of the complete extracted153 packet. Never pristine.",
+    "OUT": "Fresh external output directory, created by root runner before invocation.",
+    "BASE219": "Read-only directory with the exact two legacy files listed below; use existing recovered parent or copy the two host files without invoking parent code."
+  },
+  "baseline_inputs": [
+    {
+      "relative_target": "machine/k219.native.tm",
+      "host_file": "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/140-k219-machine-k219.native.tm",
+      "sha256": "b255f8ee341d394c303d67a7fca7f8288ed9d4c40f075899fa64b13085aaca26"
+    },
+    {
+      "relative_target": "machine/sites219.json",
+      "host_file": "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/140-k219-machine-sites219.json",
+      "sha256": "0f6d9d991e36dda1a7449edab72a799bb2d8c3de3ff853a26178b89bd1bc8789"
+    }
+  ],
+  "jobs": [
+    {
+      "source": 153,
+      "name": "peirce-models",
+      "package": "/tmp/zfc-intake193/small/extracted/ZFC_218_Research_2026-10-20",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/theory/peirce_hc_countermodels.py",
+        "--out",
+        "{OUT}/peirce.json"
+      ],
+      "cwd": "{COPY}",
+      "env": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": ""
+      },
+      "timeout": 120,
+      "reviewed_closure": [
+        "theory/peirce_hc_countermodels.py"
+      ],
+      "expected": {
+        "four_value.status": "FINITE_PREMISES_PASS",
+        "four_value.restricted_rho8_checks": 256,
+        "five_value.status": "FINITE_PREMISES_PASS",
+        "five_value.restricted_rho8_checks": 500,
+        "five_value.K_failures": [
+          [
+            1,
+            3
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            3,
+            2
+          ]
+        ]
+      },
+      "reason": "Distinct full-HC-model finite premises; ordinary infinite-domain argument remains separate."
+    },
+    {
+      "source": 153,
+      "name": "residual-blocks",
+      "package": "/tmp/zfc-intake193/small/extracted/ZFC_218_Research_2026-10-20",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/theory/counter_salt_blocks.py",
+        "--out",
+        "{OUT}/residual-blocks.json"
+      ],
+      "cwd": "{COPY}",
+      "env": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": ""
+      },
+      "timeout": 120,
+      "reviewed_closure": [
+        "theory/counter_salt_blocks.py"
+      ],
+      "expected": {
+        "status": "PASS",
+        "source.comparator_cases": 289,
+        "source.repaired_gate_cases": 729,
+        "source.nip_cases": 17,
+        "source.dirty_reader_cases": 1089,
+        "source.dirty_reload_cases": 289,
+        "blocks.status": "SYMBOLIC_BLOCK_COMPOSITIONS_PASS",
+        "blocks.generalization_cases": 3,
+        "blocks.modus_ponens_cases": 9
+      },
+      "reason": "New source repair and explicit compiler blocks; BUILD remains an induction premise."
+    },
+    {
+      "source": 153,
+      "name": "residual-source",
+      "package": "/tmp/zfc-intake193/small/extracted/ZFC_218_Research_2026-10-20",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/encoding/reproduce.py",
+        "--output-dir",
+        "{OUT}/encoding"
+      ],
+      "cwd": "{COPY}",
+      "env": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": ""
+      },
+      "timeout": 120,
+      "reviewed_closure": [
+        "encoding/reproduce.py",
+        "encoding/source_experiments.py",
+        "encoding/check_arithmetic.py",
+        "encoding/audit_counter_salt_source.py"
+      ],
+      "expected": {
+        "encoding_reproduction.json.status": "PASS_ENCODING_REPRODUCTION",
+        "reconstructed_source_sha256": "dc32510df9ffb07c2e106d835f735baff4a19989198a7f5bfec3f34e0046559d",
+        "arithmetic.json.cases_per_macro": 4165,
+        "counter_salt_source_audit.json.status": "PASS_LITERAL_SOURCE_MACRO_CROSS_AUDIT",
+        "counter_salt_source_audit.json.source_leaf_count": 4741
+      },
+      "reason": "Reconstruct actual208 source and inspect exact command AST using disclosed accelerations."
+    },
+    {
+      "source": 153,
+      "name": "two-adic-source",
+      "package": "/tmp/zfc-intake193/small/extracted/ZFC_218_Research_2026-10-20",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/experiments/two_adic/reproduce.py",
+        "--output-dir",
+        "{OUT}/two-adic"
+      ],
+      "cwd": "{COPY}",
+      "env": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": ""
+      },
+      "timeout": 120,
+      "reviewed_closure": [
+        "experiments/two_adic/reproduce.py"
+      ],
+      "expected": {
+        "summary.json.status": "PASS_SOURCE_COST_AND_FINITE_HELPERS",
+        "summary.json.helper_diagnostic_cases": 644,
+        "matched_dag": 225,
+        "matched_leaves": 5958
+      },
+      "reason": "Different helper implementation and useful dirty-accumulator counterexample, not a codec calibration."
+    },
+    {
+      "source": 153,
+      "name": "literal-deltas",
+      "package": "/tmp/zfc-intake193/small/extracted/ZFC_218_Research_2026-10-20",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/machine/rebuild.py",
+        "--baseline219",
+        "{BASE219}"
+      ],
+      "cwd": "{COPY}",
+      "env": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": ""
+      },
+      "timeout": 120,
+      "reviewed_closure": [
+        "machine/rebuild.py"
+      ],
+      "expected": {
+        "stdout_json_states": [
+          218,
+          219,
+          223
+        ],
+        "exact_four_occurrence_replacements": [
+          "weak218_rejected",
+          "zero_guard219"
+        ]
+      },
+      "reason": "Fresh exact literal reconstruction of different weak/zero-guard allocations; no runtime."
+    },
+    {
+      "source": 153,
+      "name": "weak-caller-counterexamples",
+      "package": "/tmp/zfc-intake193/small/extracted/ZFC_218_Research_2026-10-20",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/machine/replay_gate_counterexample.py",
+        "--baseline219",
+        "{BASE219}",
+        "--output",
+        "{OUT}/weak-counterexamples"
+      ],
+      "cwd": "{COPY}",
+      "env": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": ""
+      },
+      "timeout": 120,
+      "reviewed_closure": [
+        "machine/replay_gate_counterexample.py",
+        "machine/finite_frames.py"
+      ],
+      "expected": {
+        "gate_counterexample.json.status": "EXACT_VALID_INTERFACE_FRESHNESS_GATE_COUNTEREXAMPLE",
+        "cache_forge_counterexample.json.status": "EXACT_VALID_INTERFACE_CACHED_ONE_FORGERY",
+        "gate_steps": [
+          16342,
+          12398
+        ],
+        "cache_steps": [
+          14420,
+          11056
+        ]
+      },
+      "reason": "Different complete caller counterexamples; no blank reachability claim."
+    }
+  ],
+  "optional_jobs": [
+    {
+      "source": 153,
+      "name": "compound-obstruction",
+      "package": "/tmp/zfc-intake193/small/extracted/ZFC_218_Research_2026-10-20",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/theory/compound_fourth_obstruction.py",
+        "--out",
+        "{OUT}/compound.json"
+      ],
+      "cwd": "{COPY}",
+      "env": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": ""
+      },
+      "timeout": 120,
+      "reviewed_closure": [
+        "theory/compound_fourth_obstruction.py"
+      ],
+      "expected": {
+        "status": "FINITE_PREMISES_PASS",
+        "generated_subalgebra_restricted_rho8_checks": 202
+      },
+      "reason": "Self-contained proof-premise cross-check only; result already subsumed by Sources145/146."
+    },
+    {
+      "source": 153,
+      "name": "drop50-counterexample",
+      "package": "/tmp/zfc-intake193/small/extracted/ZFC_218_Research_2026-10-20",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/experiments/drop50/check.py",
+        "--baseline219",
+        "{BASE219}",
+        "--output",
+        "{OUT}/drop50.json"
+      ],
+      "cwd": "{COPY}",
+      "env": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": ""
+      },
+      "timeout": 120,
+      "reviewed_closure": [
+        "experiments/drop50/check.py"
+      ],
+      "expected": {
+        "status": "EXPECTED_COUNTEREXAMPLE_REPRODUCED",
+        "results.rejected218.steps": 662
+      },
+      "reason": "Precise old reset-state failure, lower priority than new residual mechanism."
+    },
+    {
+      "source": 153,
+      "name": "zero-guard-blank",
+      "package": "/tmp/zfc-intake193/small/extracted/ZFC_218_Research_2026-10-20",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/machine/check_blank_prefix.py",
+        "{COPY}/machine/zero_guard219/machine.native.tm",
+        "{OUT}/zero-guard-blank.json",
+        "--limit",
+        "400000"
+      ],
+      "cwd": "{COPY}",
+      "env": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONOPTIMIZE": ""
+      },
+      "timeout": 120,
+      "reviewed_closure": [
+        "machine/check_blank_prefix.py"
+      ],
+      "expected": {
+        "status": "SPARSE_DENSE_COMPLETE_BLANK_PREFIX_PASS",
+        "steps": 313845,
+        "working_states": 219,
+        "logical_registers": [
+          3,
+          0,
+          0,
+          0,
+          3,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "reason": "Finite complete startup of distinct two-row219 layout; does not replace whole runtime."
+    }
+  ],
+  "execution_review": {
+    "selected_imports": "Only stated local closure and Python standard library. Encoding wrapper invokes only its local reviewed source audit.",
+    "assertions_required": true,
+    "network": false,
+    "new_dependencies": false,
+    "shell_subprocess": false,
+    "delivered_edits": []
+  },
+  "not_selected": [
+    "portable/reproduce.py (manifest and inherited replay wrapper)",
+    "portable/audit_receipts.py (stored integrity is not fresh symbolic proof)",
+    "portable/make_release.py (delivery mutation)",
+    "full primitive runtime for weak218/zero_guard219/counter_salt223",
+    "all C++ searches",
+    "ancestor suites",
+    "TeX or proof-assistant builds"
+  ]
+}

@@ -1,6 +1,6 @@
 # Smaller machines for Con(ZFC)
 
-The current goal is a binary, single-tape machine with **216 working states
+The current goal is a binary, single-tape machine with **215 working states
 or fewer** whose blank-tape nonhalting is provably in **ZFC** equivalent to
 Con(ZFC). The original target was fewer than 254 states and equivalence
 provable in PA. An earlier search phase also permitted consistency of a
@@ -51,9 +51,19 @@ All five fresh checks pass: 6,176 arbitrary-natural runtime cases, 1,616,558
 symbolic rules, all 434 rows, minimum duration 13 and complete 312,617-step blank
 startup. Two ordinary reviews and an independent reconstruction agree.
 The complete proof gives a ZFC-provable equivalence with Con(ZFC); exact-K217
-Lean and internal PA endpoints remain open. The active target is **216 or fewer**.
+Lean and internal PA endpoints remain open. The active target is **215 or fewer**, following the latest goal update.
+The new `6ec69081ca` 216-state candidate is under separate review as batch 195.
 See [intake192](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-192.md)
 and [reproduction](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-192-reproduction.md).
+
+The later [exposed-marker presentation](candidate-k217/presentations/exposed-marker/README.md)
+from `673c87a878` is exactly the same machine under `188→213→210→188`, with
+the identical source. All 434 rows and source-prefix roles compare, and its
+native bytes exactly match the independent candidate025 already preserved
+with K217. The six-versus-nine parent-row edit count reflects label choices;
+the savings cannot stack. Its separate fixed1,3-core appendix costs 211 source
+subtrees and is not part of the machine. See
+[batch 194](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-194.md).
 
 The former [primary K218](candidate-k218/README.md) from `c4568161bf` remains
 published with its 205-node source, state 85/212 fold, complete runtime/startup
@@ -78,8 +88,16 @@ folds do not directly stack. Two further complete 218 variants
 The reports also add calibrated H/PW and self-vacuity bases, codec transport
 and concrete startup obstructions. Their four archives are imported and retired.
 The later Source 152 construction builds on the dominated layout and is now
-accepted as the primary 217 above. Two additional research archives at
-`1e87618cf2` are being compared with the retained results.
+accepted as the primary 217 above.
+
+[Batch 193](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-193.md)
+imports the two additional reports at `1e87618cf2`: residual-counter and
+negative-equality calibrations, full Peirce/T/B countermodels, inverse
+detachment, shifted codecs and shorter MP returns. Eleven selected fresh
+leaves pass. The [cache-return composition](candidate-k217/research/cache-return/README.md)
+has 4,728 leaves with exact source/startup checks, but remains at 217 states;
+its bounded 645,408-specification fold search finds no survivor. Its modified
+universal runtime remains unexecuted. Both source ZIPs are imported and retired.
 
 The two [batch-189 research reports](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-189.md)
 retain useful arbitrary-clean-seed and fixed-power-of-two scheduler theorems,

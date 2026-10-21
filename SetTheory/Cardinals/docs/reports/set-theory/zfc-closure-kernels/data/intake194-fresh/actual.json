@@ -1,0 +1,69 @@
+{
+  "status": "THREE_SELECTED_LEAVES_AND_EXPECTED_GATES_PASS",
+  "scope": "Three new selected leaves on copy, source-reviewed omission of provenance-manifest loop only; no runtime, startup, parent wrapper, checksum manifest or proof assistant.",
+  "jobs": [
+    {
+      "name": "construct",
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake194/fresh1/packet/code/construct217.py",
+        "--baseline-table",
+        "/tmp/zfc-intake194/fresh1/packet/machine/baseline218.native.tm",
+        "--baseline-source",
+        "/tmp/zfc-intake194/fresh1/packet/machine/baseline_sites218.json",
+        "--output",
+        "/tmp/zfc-intake194/fresh1/outputs/rebuilt"
+      ],
+      "cwd": "/tmp/zfc-intake194/fresh1/packet",
+      "code": 0,
+      "timeout": false,
+      "cap_seconds": 60,
+      "seconds": 0.26463350001722574,
+      "script_sha256": "ae2b3c9fec168ab485e667900d3ce335d04d19f4a4d56bcb60a2d797c4453655"
+    },
+    {
+      "name": "four-cases",
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake194/fresh1/packet/code/check_fold217_four_cases.py",
+        "--old",
+        "/tmp/zfc-intake194/fresh1/outputs/rebuilt/prefold218.native.tm",
+        "--new",
+        "/tmp/zfc-intake194/fresh1/outputs/rebuilt/k217.native.tm",
+        "--output",
+        "/tmp/zfc-intake194/fresh1/outputs/four-cases.json"
+      ],
+      "cwd": "/tmp/zfc-intake194/fresh1/packet",
+      "code": 0,
+      "timeout": false,
+      "cap_seconds": 60,
+      "seconds": 0.06451945286244154,
+      "script_sha256": "1de68d7960f49562af80b3b7f82183dea998915397975531faa3a9d0ae164624"
+    },
+    {
+      "name": "fixed-core",
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake194/fresh1/packet/appendix/fixed_core/verify_fixed_core.py",
+        "/tmp/zfc-intake194/fresh1/packet/appendix/fixed_core",
+        "--output",
+        "/tmp/zfc-intake194/fresh1/outputs/fixed-core.json"
+      ],
+      "cwd": "/tmp/zfc-intake194/fresh1/packet",
+      "code": 0,
+      "timeout": false,
+      "cap_seconds": 60,
+      "seconds": 1.466965701431036,
+      "script_sha256": "629f54e45df95cc84f8a5705fd198586e0ac57f133c782a7456edc063edb6b2b"
+    }
+  ],
+  "checks": {
+    "four_rebuilt_artifacts_exact": true,
+    "four_local_cases": true,
+    "negative_control_rejected": true,
+    "fixed_core_entire_receipt_equals_delivered": true
+  }
+}

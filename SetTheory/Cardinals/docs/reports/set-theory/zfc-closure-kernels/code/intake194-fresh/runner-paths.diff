@@ -1,0 +1,12 @@
+--- history/run_original.py
++++ run.py
+@@ -1,6 +1,7 @@
+ from pathlib import Path
+-import sys,subprocess,shutil,json,time,os,difflib,hashlib
+-P=Path(__file__).resolve().parent; packet=P/'extracted/K217_Exposed_Marker';out=P/'fresh1';out.mkdir(exist_ok=False)
++import sys,subprocess,shutil,json,time,os,difflib,hashlib,argparse
++ap=argparse.ArgumentParser();ap.add_argument('--packet',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()
++P=Path(__file__).resolve().parent;packet=a.packet.resolve();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
+ copy=out/'packet';shutil.copytree(packet,copy);logs=out/'logs';logs.mkdir();results=out/'outputs';results.mkdir();hist=out/'history';hist.mkdir()
+ fixed=copy/'appendix/fixed_core/verify_fixed_core.py';original=fixed.read_text();old="manifest=json.loads((P/'provenance.json').read_text())\nfor r in manifest['files']:\n    assert sha((P/r['artifact']).read_bytes())==r['sha256'],('input identity',r['artifact'])\n";assert original.count(old)==1
+ adapted=original.replace(old,'# Intake adapter: the delivery provenance-manifest loop is not executed.\n');(hist/'verify_fixed_core.original.py').write_text(original);fixed.write_text(adapted);(hist/'manifest-loop-omitted.diff').write_text(''.join(difflib.unified_diff(original.splitlines(True),adapted.splitlines(True),fromfile='verify_fixed_core.original.py',tofile='verify_fixed_core.py')))

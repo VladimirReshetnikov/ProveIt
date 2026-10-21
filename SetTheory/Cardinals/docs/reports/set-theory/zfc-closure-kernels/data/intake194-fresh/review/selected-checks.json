@@ -1,0 +1,96 @@
+{
+  "status": "PROPOSED_UNEXECUTED",
+  "variables": {
+    "COPY": "fresh disposable copy of K217_Exposed_Marker",
+    "OUT": "fresh output directory outside COPY"
+  },
+  "wall_seconds_each": 60,
+  "leaves": [
+    {
+      "name": "construct",
+      "argv": [
+        "python3",
+        "-B",
+        "COPY/code/construct217.py",
+        "--baseline-table",
+        "COPY/machine/baseline218.native.tm",
+        "--baseline-source",
+        "COPY/machine/baseline_sites218.json",
+        "--output",
+        "OUT/rebuilt"
+      ],
+      "expected": [
+        "k217.native.tm",
+        "k217.tm",
+        "prefold218.native.tm",
+        "sites217.json",
+        "reconstruction.json"
+      ],
+      "checks": "Compare four reconstructed data files to exact delivered files; source and 4-row/fold construction only"
+    },
+    {
+      "name": "four-cases",
+      "argv": [
+        "python3",
+        "-B",
+        "COPY/code/check_fold217_four_cases.py",
+        "--old",
+        "OUT/rebuilt/prefold218.native.tm",
+        "--new",
+        "OUT/rebuilt/k217.native.tm",
+        "--output",
+        "OUT/four-cases.json"
+      ],
+      "expected_status": "INDEPENDENT_LITERAL_FOUR_CASE_FOLD_PASS",
+      "expected_census": {
+        "old_working_states": 218,
+        "new_working_states": 217,
+        "unchanged_mapped_rows": 432,
+        "cases": 4
+      }
+    },
+    {
+      "name": "fixed-core",
+      "argv": [
+        "python3",
+        "-B",
+        "COPY/appendix/fixed_core/verify_fixed_core_selected.py",
+        "COPY/appendix/fixed_core",
+        "--output",
+        "OUT/fixed-core.json"
+      ],
+      "adapter": "Retain original verify_fixed_core.py; remove only manifest=json.loads((P/provenance.json).read_text()) and the following for r in manifest[files]/assert SHA loop. All mathematical/data/reconstruction assertions unchanged. Record exact diff.",
+      "expected_status": "EXACT_FIXED_CORE_SOURCE_RECONSTRUCTION_PASS",
+      "expected_metrics": [
+        [
+          211,
+          4718,
+          46,
+          9
+        ],
+        [
+          210,
+          4673,
+          46,
+          9
+        ],
+        [
+          210,
+          4673,
+          47,
+          6
+        ]
+      ],
+      "scope": "Symbolic formula emission under inherited macro contracts; closed source splices/two CFG resolvers; no revised whole AX compiler or binary claim"
+    }
+  ],
+  "not_selected": [
+    "verify_all.py",
+    "parent verify_all.py",
+    "verify_runtime217.py",
+    "audit217.py",
+    "review_k217.py",
+    "Rocq",
+    "manifest-validation"
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "status": "EXACT_FIXED_CORE_SOURCE_RECONSTRUCTION_PASS",
+  "source_only": true,
+  "baseline_metrics": {
+    "dag_nodes": 203,
+    "leaf_occurrences": 4751,
+    "maximum_depth": 45,
+    "maximum_zero_run": 6
+  },
+  "construction_interval": [
+    2657,
+    4570
+  ],
+  "macro_contracts": "Inherited closed parameter loads push old top, preserve parameters, and clear scratch; I/R/Q construct literal numerical operations. Constants use push-zero plus increments of top only.",
+  "reports": [
+    {
+      "file": "fixed13_direct211.json",
+      "sha256": "28bed81217da333bf794619d12ea2b5462ee1f00a46acb82d8e179980279d5ef",
+      "labels": [
+        1,
+        3
+      ],
+      "private_code": "c+4",
+      "metrics": {
+        "dag_nodes": 211,
+        "leaf_occurrences": 4718,
+        "maximum_depth": 46,
+        "maximum_zero_run": 9
+      },
+      "macro_tokens": 72,
+      "emitted_formulas": [
+        "N(nks(1,3,c+4))",
+        "gated V(a,b,c)"
+      ],
+      "outside_AX_primitives_preserved": 186,
+      "gate": "Original two equality gates now guard V; the fixed core is built before V with its own code>=offset.",
+      "calibration": "ordinary fixed-core theorem applies directly"
+    },
+    {
+      "file": "fixed01_direct210.json",
+      "sha256": "309f8a185c8545534bb5fac14594e64912d7c410ec7baab97e4e78a3cfefe354",
+      "labels": [
+        0,
+        1
+      ],
+      "private_code": "c+2",
+      "metrics": {
+        "dag_nodes": 210,
+        "leaf_occurrences": 4673,
+        "maximum_depth": 46,
+        "maximum_zero_run": 9
+      },
+      "macro_tokens": 72,
+      "emitted_formulas": [
+        "N(nks(0,1,c+2))",
+        "gated V(a,b,c)"
+      ],
+      "outside_AX_primitives_preserved": 186,
+      "gate": "Original two equality gates now guard V; the fixed core is built before V with its own code>=offset.",
+      "calibration": "requires a separate variable-renaming adaptation of the lower proof; not a premise of the proved fixed1,3 theorem"
+    },
+    {
+      "file": "fixed01_reassociated210.json",
+      "sha256": "5b60e1d3d3e39f64ee0e64a5edade0663303e7a224dd38ef2929dfb16425776d",
+      "metrics": {
+        "dag_nodes": 210,
+        "leaf_occurrences": 4673,
+        "maximum_depth": 47,
+        "maximum_zero_run": 6
+      },
+      "validation": "exact primitive word and full guarded CFG equal the direct0,1 source",
+      "calibration": "same separate variable-renaming obligation as direct0,1; not used by K217 or fixed1,3 theorem"
+    }
+  ],
+  "scope": "Finite exact construction, all-natural symbolic emitted formula equality under inherited macro contracts, closed splice checks, exact CFG checks, and metrics. No binary compilation, startup, universal binary runtime, or complete altered command-block compiler is claimed. The 1,3 calculus theorem is proved in the accompanying ordinary mathematical text; the 0,1 theorem adaptation is not supplied."
+}

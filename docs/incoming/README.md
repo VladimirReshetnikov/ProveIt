@@ -12,6 +12,34 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Queue status after batch 194
+
+`K217_Exposed_Marker.zip` from `673c87a878` is imported as
+[Source 155](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-194.md)
+and retired in placement `7fff7bc909`. All 57 members are accounted for:
+31 new, 20 existing aliases, one historical parent and five archive-only.
+The host has **155 sources**, the collection **290 reports**. Three subsequent archives are queued: the 216-state
+submission at `6ec69081ca` for batch 195, and two research reports at
+`d3d6b8c14e` for batch 196. The active goal is now **215 or fewer states**. The machine is exactly the accepted 217 under three state labels;
+its source is identical and its saving cannot stack. Three fresh selected
+leaves pass. Its additional fixed-label theory/source experiment remains
+separate. [Comparison and tables](../../Computability/BusyBeaver/Research/ZFC/candidate-k217/presentations/exposed-marker/README.md),
+[recovery/reproduction](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-194-reproduction.md).
+
+## Queue status after batch 193
+
+The two research archives from `1e87618cf2` are imported as
+[Sources 153–154](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-193.md)
+and retired in placement `ff23f24af8`. All 544 members remain accounted for:
+433 new files, 49 existing aliases, 34 batch aliases, two historical parents
+and 26 archive-only members. The host has **154 sources**, the collection
+**290 reports**. Six selected Source-153 leaves and five Source-154 leaves
+pass; ordinary calibrations, new countermodels and bounded failures retain
+their scopes. Cache-return composes with the primary 217 source but saves no
+state. [Recovery/reproduction](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-193-reproduction.md).
+The later `K217_Exposed_Marker.zip` at `673c87a878` is imported as
+Source 155 / batch 194; its machine is identical up to state labels.
+
 ## Queue status after batch 192
 
 The 217-state submission from `8a1796545e` is accepted as the new
@@ -29,7 +57,7 @@ The active target is **216 or fewer states**.
 [Recovery/reproduction](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-192-reproduction.md)
 retain both proof reviews and independent reconstruction.
 The two research archives `ZFC_218_Research_2026-10-20.zip` and
-`ZFC_218_Research_2026-10-20 (1).zip`, from `1e87618cf2`, remain queued for
+`ZFC_218_Research_2026-10-20 (1).zip`, from `1e87618cf2`, were subsequently imported in
 batch 193. They are separate from the similarly named earlier deliveries.
 
 ## Queue status after batch 191
@@ -123,8 +151,9 @@ retain the original layouts and distinguish ordinary proofs from execution recor
 [`26d5de6d21`](https://github.com/VladimirReshetnikov/ProveIt/commit/26d5de6d21fa354d50e0b84fe851c289925b8d72),
 is imported as [Source 140](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-186.md)
 and retired in placement `24c7e68de7`. All 110 members are accounted for. The host
-now has **140 sources**, the collection remains **290 reports**, and no archive
-is waiting.
+now has **140 sources**, the collection remains **290 reports**. Three subsequent archives are queued: the 216-state
+submission at `6ec69081ca` for batch 195, and two research reports at
+`d3d6b8c14e` for batch 196. The active goal is now **215 or fewer states**.
 
 The [219-state candidate](../../Computability/BusyBeaver/Research/ZFC/candidate-k219/README.md)
 shares an open subtree in a generic equality macro, then adapts the decoder and
@@ -1080,6 +1109,8 @@ ProveIt-era batches (from this directory):
 | 190 | One manuscript from `3c7c3aa5a3`: placement `6ee648c500` retires its ZIP; 102 members = 69 new + 10 existing aliases + 13 batch aliases + 1 history alias + 9 archive-only. Source 147; 147 sources, 290 reports; queue cleared. | [intake-190.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-190.md): distinct contextual 218 construction, exact source/lineage, complete initialization and separate five-value obstruction. | this commit | Six fresh jobs pass: 6,167 cases, 1,514,325 rules, all 436 rows, minimum duration 13 and 312,701-step startup. Same-size row157 variant is separate. No new literal-table kernel/PA endpoint, priority, minimality or ≤217 claim. |
 | 191 | Four manuscripts from `7071e5041e`: placement `4a1218d878` retires all four ZIPs; 936 members = 724 new + 130 existing aliases + 56 batch aliases + 26 archive-only. Sources 148–151; 151 sources, 290 reports. | [intake-191.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-191.md): dominated-rho8 theorem equivalence and 203-node source, H/PW and self-vacuity calibrations, crossover and two complete 218 variants. | this commit | Fresh jobs: eight Source148, eight Source 149, five Source150, two Source151 runtimes plus its separate source/startup audit. Dominated218: 6,176 cases/1,616,989 rules/436 rows/min 13/startup312,605. No ≤217 result from this batch, minimality or new Lean/PA endpoint. Later `8a1796545e` queued separately. |
 | 192 | One manuscript at `8a1796545e`: placement `bf087d590f` retires its ZIP;39 members =26 new +3 existing aliases +1 historical parent +9 archive-only. Source 152;152 sources,290 reports. | [intake-192.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-192.md): three closed source rotations and predecessor-marker fold yield the primary 217. | this commit | Five fresh jobs pass: 6,176 cases/1,616,558 rules/434 rows/min 13/startup 312,617;962,479 all-tape fold contexts and negative control. Ordinary ZFC calibration inherited from 149; no new exact-table Lean/PA endpoint. Target 216; two research ZIPs queued for 193. |
+| 193 | Two manuscripts at `1e87618cf2`: placement `ff23f24af8` retires both ZIPs; 544 members = 433 new + 49 existing aliases + 34 batch aliases + 2 historical parents + 26 archive-only. Sources 153–154; 154 sources, 290 reports. | [intake-193.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-193.md): residual and negative-equality calibrations, Peirce/T/B obstructions, codec research, cache-return composition and failed specimens. | this commit | Six plus five fresh selected leaves and independent semantic reviews; no old full runtime/manifest/ancestor/kernel replay. Cache217 has full source/unchanged startup checks and 645,408 bounded negative fold specifications, no ≤216 result. |
+| 194 | One manuscript at `673c87a878`: placement `7fff7bc909` retires its ZIP; 57 members = 31 new + 20 existing aliases + 1 historical parent + 5 archive-only. Source 155; 155 sources, 290 reports. | [intake-194.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-194.md): same 217 machine under three labels; separate fixed1,3-core theorem and 211-subtree emitter. | this commit | All 434 rows, canonical maps and 4,750 source-prefix roles compare; three selected fresh leaves pass. No duplicate runtime/startup/parent/manifest/kernel replay; no stackable reduction or ≤216 candidate. |
 
 
 Batches 99 to 113 are the fifteen clusters into which the intake triaged

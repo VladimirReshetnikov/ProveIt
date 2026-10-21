@@ -63,3 +63,13 @@ The [omit-zero composition and first 216 searches](research/omit-zero-fold-searc
 retain a reviewed source/startup combination and two bounded negative searches.
 The modified layout still has 217 states; no fresh shortened-source universal
 runtime or 216-state result is claimed there.
+
+The [cache-return composition](research/cache-return/README.md) further shortens
+the successful-MP suffix to three leaves. Exact source bindings and the whole
+parent startup check, but it still has 217 states and lacks a fresh modified
+universal runtime. Its 645,408 bounded fold specifications yielded no survivor.
+
+The later [exposed-marker presentation](presentations/exposed-marker/README.md)
+from `673c87a878` has the identical source and the same 434-row machine under
+`188→213→210→188`. Its saving cannot stack; its separate fixed-label theory
+appendix remains source-only research.
