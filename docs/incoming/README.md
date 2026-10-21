@@ -12,6 +12,38 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Queue status after batch 200
+
+Batch 200 received twelve archives and, at Vladimir's direction, kept only the
+materially distinct 215-state implementations. Every incoming table was put in
+rooted breadth-first canonical form and compared with the repository's tables
+and with each other. A machine was kept only if it is not a state renaming of
+an existing table and it changes the command language or enumeration, the
+spare representation, or the startup and its calibration. Five machines were
+placed as delivered, without rerunning anything, under
+[candidate-k215/alternatives/](../../Computability/BusyBeaver/Research/ZFC/candidate-k215/alternatives/README.md).
+Each has an `INTAKE.md` listing the omitted members, which remain recoverable
+from the arrival commit.
+
+| Archive | Arrival | Decision |
+|---|---|---|
+| `K215_Alternative_Encodings_2026-10-21.zip` | `cd59611687` | primary kept as `reencoded`; its secondary changes only the rho6 sampler (Source 163's semantic source) |
+| `Z215_Zero_Spare_2026-10-21.zip` | `cd59611687` | kept as `zero-spare` |
+| `K215_Zero_Spare_Command_Compositions_2026-10-21.zip` | `7571649843` | primary kept as `zero-spare-z201`; secondary byte-identical to the next row's machine |
+| `Zero_Spare_Transfer_215_and_Alternatives_2026-10-21.zip` | `7571649843` | primary kept as `zero-spare-transfer`; two source re-associations and a 216-state variant dropped |
+| `T215_Transfer_2026-10-20.zip` | `7571649843` | kept as `mp-first-transfer` |
+| `MP0_Transfer_215.zip` | `7571649843` | dropped: a state renaming of `mp-first-transfer` |
+| `Transfer_Pop_215_Materially_Different_2026-10-21.zip` | `2c77edead6` | dropped: the same table as Source 166's `transfer215` |
+| `ZFC_Encoding_Research_2026-10-21.zip` | `7571649843` | dropped: a source rotation with q50 acceleration and a one-row speed-up of K215 |
+| `ZFC_214_State_Investigation_2026-10-21.zip` | `ead95b5b33` | dropped: its 215 table is intake 199's allocation 1; the rest is 214 research |
+| `zfc-state-reduction-research-2026-10-21.zip` | `c6a799a34c` | dropped: the same allocation; the rest is 214 research |
+| `ZFC214_Research_2026-10-21.zip` | `ead95b5b33` | dropped: 214 research only, no 215 implementation |
+| `zfc214-research.zip` | `b74074eacb` | dropped: 214 research only, no 215 implementation |
+
+No numbered Sources were added and no write report was made: the placed
+machines carry their delivered proofs and are not yet independently checked.
+The queue is clear. The active target remains **214 or fewer states**.
+
 ## Queue status after batch 199
 
 [Batch 199](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-199.md)

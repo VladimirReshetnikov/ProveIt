@@ -1,0 +1,555 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,xcolor,enumitem,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,urlcolor=blue!40!black,citecolor=blue!40!black]{hyperref}
+\hypersetup{pdftitle={Z215: Zero-Valued Spare Blocks and a Two-Truth Startup},pdfauthor={Research prepared for Vladimir Reshetnikov's ProveIt repository}}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ZFC}{\mathrm{ZFC}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\CalD}{\mathcal D}
+\newcommand{\MP}{\mathsf{MP}}
+\newcommand{\DROP}{\mathsf{DROP}}
+\newcommand{\NIP}{\mathsf{NIP}}
+\newcommand{\AX}{\mathsf{AX}}
+\newcommand{\CI}{\mathsf{CI}}
+\newcommand{\pathfile}[1]{\texttt{\nolinkurl{#1}}}
+\title{\textbf{Z215: Zero-Valued Spare Blocks\protect\\and a Two-Truth Startup}\\[0.6em]
+\large A materially different 215-state binary machine for $\Con(\ZFC)$}
+\author{Research prepared for Vladimir Reshetnikov's ProveIt repository\\
+\small ChatGPT research collaboration; inherited work attributed in Section~\ref{sec:provenance}}
+\date{21 October 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct a concrete 215-working-state, two-symbol Turing machine
+whose blank-tape nonhalting is, by an ordinary proof formalizable in ZFC,
+equivalent to $\Con(\ZFC)$.  Relative to the accepted primary K215 table,
+the new machine changes its initial state from 0 to 74 and changes one
+write bit, at native row $(198,0)$, from one to zero.  This small table
+change alters an unbounded physical invariant: every source increment
+appends a zero-valued spare block of length two instead of a unit-valued
+block of length three.  The unchanged symbolic runtime checker proves
+all 6,176 guarded primitive cases under the new policy.
+
+The new blank startup reaches a source seed with stack
+$5=P(0,P(0,1))$, containing a hidden falsity code.  Its calibration needs
+a new theorem: the actual variable-field Cantor enumeration, starting
+at candidate 1, has conservative stack debt at most two.  A diagonal
+induction with an explicit finite base proves that the hidden tail is
+never read.  This extends the class of usable startup configurations
+beyond stacks whose entire decoded contents are theorems.
+
+A second fully checked 215-state construction combines a previously
+proposed refill scheduler with a different command order.  On the
+formalism side, a 22-node certificate derives identity, weakening, and
+Peirce's law from subterm-bounded instances of the dominated
+Łukasiewicz row without a truth constant or zero alias.  This last
+result is deliberately partial: it does not establish full calibration
+of an alternative implication encoding.  No 214-state construction or
+state lower bound is claimed.  The archive includes exact machines,
+sources, deterministic reconstruction, compressed runtime evidence,
+independent audits, proof text, and all six command-order search statuses.
+\end{abstract}
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Result, exact identity, and scope}
+\label{sec:result}
+
+The principal deliverable is \textbf{Z215}.  It has 215 working states,
+two tape symbols, a two-way infinite initially zero tape, and one
+designated halting state, which is not counted among the working
+states.  Every working state has a transition for each symbol.  The
+initialization is part of the machine: there is no prewritten input and
+no uncounted setup state.
+
+The immediate parent is the accepted primary K215 at repository commit
+\pathfile{32498004963846db7655eedce7e94f8c88f6fa8a}
+\cite{repo,k215}.  The complete native edit is:
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Item & Parent K215 & Z215 \\
+\midrule
+Initial native state & 0 & 74 \\
+Row $(198,0)$ & write 1, move L, enter 40 & write 0, move L, enter 40 \\
+All other transition rows & \multicolumn{2}{c}{identical} \\
+\bottomrule
+\end{tabular}
+\end{center}
+The native dispatcher is 84 and the native halt label is 254.  Native
+labels are historical, not the state count.  The supplied dense
+presentation renames the initial state to 0, has working states
+$0,\ldots,214$, dispatcher 83, and halt 215.  Both presentations are
+bound by an explicit bijection and complete startup replay.
+
+\begin{theorem}[Main result]
+\label{thm:main}
+For the exact binary table \pathfile{machine/z215.tm}, the inherited
+numerical-calculus calibration, the new two-truth seed theorem, the
+complete finite blank prefix, and the quantified primitive simulation
+give an ordinary proof formalizable in ZFC of
+\[
+ \ZFC\vdash
+ \bigl(\neg\Halt(\mathrm{Z215},\mathrm{blank})
+       \longleftrightarrow\Con(\ZFC)\bigr).
+\]
+Equivalently, the machine halts exactly when there is a finite ZFC proof
+of contradiction.  This equivalence does not assume the consistency
+of ZFC.
+\end{theorem}
+
+The source program is unchanged from the accepted primary K215.  Thus
+the main result makes a new physical representation and initialization
+argument, while explicitly inheriting the parent numerical calculus and
+strong proof compiler.  It does not claim to reprove the entire
+historical ZFC calibration from first principles in this report.
+Section~\ref{sec:calculus} states that imported interface precisely.
+
+This is a material change even though only one transition's write bit
+changes.  The parent has 189 transition rows writing one; Z215 has 188.
+Consequently it is not a state renaming of the parent, even allowing
+global tape reflection.  More substantially, its physical spare-block
+policy differs after every source increment.  The report proves a
+uniform statement about this policy rather than relying on a long
+sample run.  All 215 states are reachable in the directed transition
+graph from the designated start; this graph fact is not a claim that
+every state is visited on the particular blank computation.
+
+\paragraph{Exact hashes.}
+The native table SHA-256 is
+\begin{quote}\small\ttfamily
+\nolinkurl{423c755b04ed0cd5be199178686657bf721540b858d0fb8f491239622d6d99fa}.
+\end{quote}
+The dense table SHA-256 is
+\begin{quote}\small\ttfamily
+\nolinkurl{d7a9d557cd08ddb0ebb1960b7fed4892db64bd38af5e0c4ae3bff9a594838825}.
+\end{quote}
+The unchanged source SHA-256 is
+\begin{quote}\small\ttfamily
+\nolinkurl{17af207195179b2508bf91154cd00739374f8862207ca21b9a3cb9098aa6f5ba}.
+\end{quote}
+The package manifest binds every delivered file.  The two machine
+presentations are plain text: after the initial-state directive, each
+row is \pathfile{state read write direction next}.
+
+\input{sections/machine_section.tex}
+
+\section{The inherited numerical calculus and exact source interface}
+\label{sec:calculus}
+
+\subsection{Raw codes, the dominated row, and the imported theorem}
+
+Use the Cantor pairing function
+\[
+ P(a,b)=\frac{(a+b)(a+b+1)}2+b,
+ \qquad I(a,b)=4P(a,b),\qquad Q_i a=4P(i,a)+2.
+\]
+Truth is code 0 and falsity is code 1.  In particular $I(0,0)=0$;
+decoding is not an injective map from a conventional formula grammar.
+All numerical arguments below range over every natural number.
+No well-formedness test is added to avoid unwanted raw codes.
+
+The inherited dominated calculus $\CalD$ has truth, exact numerical
+modus ponens, theorem-only generalization, the seven retained logical
+rows $R_1,\ldots,R_7$, the gated theory bundle, and
+\[
+ L(A,B,C,U)=
+ I\bigl(I(I(C,U),A),I(I(A,C),I(B,C))\bigr),\qquad U\le A.
+\]
+The accepted dominated-rho8 calibration and its all-natural theorem-set
+comparison give the imported equivalence
+\begin{equation}
+ \CalD\vdash1\quad\Longleftrightarrow\quad
+ \exists p\;\operatorname{Proof}_{\ZFC}(p,\bot).
+ \label{eq:import}
+\end{equation}
+The exact inherited command calibration is included as
+\pathfile{baseline/source_calibration.tex}; the accepted primary
+composition proof and its provenance are also retained.  The complete
+historical definitions of the seven rows and theory bundle remain the
+pinned repository definitions \cite{dominated,permuted}.
+Equation~\eqref{eq:import} is an explicit dependency, not a conclusion
+of the finite transition audits in this submission.
+
+The primary source has 4,751 primitive occurrences and 202 distinct
+subtrees.  Its register order is
+\[
+ (N,T,W,A,D,H,X,Y,L).
+\]
+Here $N$ is the next candidate number, $T$ the current theorem, $W$ the
+encoded stack, $A$ the selector scratch register, $D$ an additive
+counter, $H$ the cached formula, $X,Y$ scratch registers, and $L$ the
+remaining command list.  At every nonhalting command return,
+$A=X=Y=0$.  Only candidate fetch changes $N$.
+
+\subsection{The four arithmetic commands}
+
+At a command boundary abbreviate $(T,W,D,H)$ as $(t,w,d,h)$ and use
+$[x_1,\ldots,x_k;w]$ for right-nested pairing over tail $w$.
+The tag and payload field lists are
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+Tag & Command & Fields including tag & Extra fields \\
+\midrule
+0 & $\NIP$ & $[0]$ & 0 \\
+1 & $\DROP$ & $[1]$ & 0 \\
+2 & $\MP(x)$ & $[2,x]$ & 1 \\
+$c+3$ & $\AX(c;x,y)$ & $[c+3,y,x]$ & 2 \\
+\bottomrule
+\end{tabular}
+\end{center}
+The variable field arity matters in the new scheduling proof.  A theorem
+for an older source with a common payload reader does not directly apply.
+An independent literal source audit checks the selector branches, every
+access to $L$, the four identical field-reader control graphs, and the
+precise candidate/continuation conventions.
+
+The inherited command equations are
+\begin{align*}
+ \MP(x)(t,w,d,h)&=
+ \begin{cases}
+ (d+x,P(0,w),d+x,0),& I(t,d+x)=h,\\
+ (0,w,d+x,0),&I(t,d+x)\ne h,
+ \end{cases}\\
+ \DROP(t,w,d,h)&=(h,P(t,w),d,h),\\
+ \NIP(t,w,d,h)&=
+ \begin{cases}
+ \mathsf{halt},&h=1,\\
+ (t,w',d,h'),&(h',w')=\operatorname{unpair}(w),\ h\ne1.
+ \end{cases}
+\end{align*}
+The NIP test occurs \emph{before} the stack pop.  The only source halt
+is at ordinal 4736; the first stack read on its nonhalting path is at
+4737.  This order is independently checked against the exact source.
+
+For $\AX(c;x,y)$ put $U=d$, $A=d+x$, $B=h+y$, $C=c$.
+Let $G(A,B,c)$ be zero when $c=A$ or $c=B$, and the retained theory
+bundle otherwise.  Then
+\begin{align*}
+ t'&=G(A,B,c),&d'&=0,&h'&=0,\\
+ w'&=[R_1(A,B,c),\ldots,R_7(A,B,c),
+       L(A,B,c,U),Q_Uh,t;w].
+\end{align*}
+The $h$ in $Q_Uh$ is the incoming cache.  Every raw payload satisfies
+$U\le A$ because $A=d+x$.  AX adds ten stack entries.  A successful MP
+adds one; an unsuccessful MP adds none.  DROP adds one and NIP removes
+one when it does not halt.
+
+If the current top, cache, and accessible stack entries are
+$\CalD$-theorems, each equation preserves this property.  Successful
+MP is precisely numerical modus ponens, and an unsuccessful MP inserts
+truth.  AX uses only permitted rows, theorem-only generalization, and
+the gated bundle.  This is a statement over arbitrary natural codes,
+including non-decodable codes.  The new work is to prove that the
+untrusted part of the initial stack is never accessible.
+
+\subsection{Strong compilation and cofinal completeness}
+
+The inherited strong compiler assigns a finite block $\mathcal B_X$ to
+each finite $\CalD$-derivation of $X$.  From every $(t,w,0,0)$, for
+\emph{arbitrary} $t,w$, it either halts or returns $(X,w,0,0)$.
+The arbitrary-tail quantifier is essential here.  It does not require
+that $w$ decode entirely into theorems.
+
+For clarity, one key reset is
+\[
+ \mathsf{Discard}=[\MP(1),\AX(1;0,0)]\NIP^{10}.
+\]
+When the counter and cache are zero, the first MP fails because
+$I(t,1)>0$.  The next AX has $U=A=c=1$, so its gate is zero.
+Its generated stack entries and saved zero top can be removed without
+examining $w$, yielding $(0,w,0,0)$.  The inherited proof gives the
+remaining axiom, generalization, and modus-ponens block constructions
+explicitly; all calculations use the command equations above.
+
+For a refutation block, prepend $\AX(0;1,Y)$ to reset the counter and
+cache, then execute $\mathcal B_1,\DROP,\NIP,\NIP$.  Unless a previous
+halt has already occurred, the last two NIPs first load and then test
+the falsity code.  If $R$ is the fixed encoded suffix, the resulting
+first-candidate numbers have the cofinal form
+\begin{equation}
+ N_Y=P\bigl(3,P(Y,P(1,R))\bigr)\ge Y.
+ \label{eq:cofinal}
+\end{equation}
+This handles any finite cutoff of candidate enumeration.
+
+Every command starting with a positive residual list first decrements
+it once.  All subsequent field-reader tails are no greater than their
+inputs.  Thus every nonhalting candidate drains in finitely many
+commands.  The numerical macros terminate on all natural inputs.
+Consequently enumeration starting at candidate 1 eventually reaches a
+successful code from~\eqref{eq:cofinal} whenever $\CalD\vdash1$,
+regardless of the contents of the retained tail.
+
+\input{sections/protected_tail.tex}
+
+\section{Combining the source theorem and the exact binary machine}
+\label{sec:combine}
+
+The blank prefix reaches the source root with
+\[
+ (N,T,W,A,D,H,X,Y,L)=(1,0,5,0,0,0,0,0,0).
+\]
+Since $5=P(0,P(0,1))$, this seed has exactly the required two truth
+entries above tail $S=1$.  It would be unsound to assert that all
+successively decoded heads of this stack are theorems: the third head
+is the falsity code.  The two-truth theorem proves that this head is
+never read on any nonhalting source prefix.  Initial top and cache
+are truth, and the counter and scratch conditions are satisfied.
+
+If Z215 halts, its exact finite startup has not halted and the positive
+primitive simulation places that halt at the source NIP cache test.
+The accessible-prefix invariant implies $\CalD\vdash1$.  By
+\eqref{eq:import}, ZFC has a finite proof of contradiction.
+
+Conversely, a ZFC proof of contradiction gives a finite
+$\CalD$-refutation by~\eqref{eq:import}.  The strong compiler and
+cofinality~\eqref{eq:cofinal} give a successful enumerated command
+candidate above the startup cutoff.  All preceding nonhalting
+candidates drain.  The source therefore halts after finitely many
+primitives, and each such primitive is simulated in a positive finite
+number of binary transitions.  Thus Z215 halts.
+
+These two implications prove Theorem~\ref{thm:main}.  The quantified
+runtime argument uses finite lists, induction over unary lengths, and
+affine transition counts; the schedule proof uses induction on natural
+Cantor diagonals.  The compiler is primitive recursive on finite
+derivations.  Each ingredient can be expressed and proved in ZFC.
+We do not invoke the truth of $\Con(\ZFC)$ while establishing the
+equivalence, nor infer unconditional nonhalting from it.
+
+\input{research/command_family/family_section.tex}
+
+\input{sections/alias_free_section.tex}
+
+\section{Reproduction, evidence, and proof boundaries}
+\label{sec:reproduce}
+
+The archive is designed to be placed under the repository's research
+directory.  The ordinary proofs are in this report and the retained
+Markdown/LaTeX sources.  Exact table identity and the finite premises
+have separate executable checks.  Python 3.10 or later suffices for the
+verification scripts; no optimizer, network access, or third-party
+Python module is required.
+
+\paragraph{Quick verification.}
+From the extracted archive directory run:
+\begin{verbatim}
+python3 -B verify.py
+\end{verbatim}
+This checks the manifest; reconstructs Z215 from the pinned parent
+using only the two stated edits; verifies the dense bijection and
+directed state count; replays the complete blank prefix on both tables;
+reconstructs the exact terminal tape including its zero exterior;
+checks every ordered saved runtime case and positive affine duration;
+recomputes the finite scheduling premises in independent programs;
+checks the source-specific field and halting-test obligations; and
+forward-checks every inference in the alias-free certificate.  It also
+runs the secondary packet's portable reconstruction and audit suite.
+
+\paragraph{Full symbolic runtime reproduction.}
+To re-execute every symbolic proof case, choose a nonexistent directory:
+\begin{verbatim}
+python3 -B replay_runtime.py --out /tmp/z215-runtime
+\end{verbatim}
+This invokes the unchanged inherited symbolic checker with the
+existing spare append parameter set to zero.  The wrapper rederives the
+four arbitrary-block lemmas and all guarded source cases.  It then
+runs the independent finite audit and compares the deterministic
+machine, case, and startup artifacts with the delivered copies.
+The elapsed-time field is naturally machine-dependent.  On the
+research run the symbolic phase took about 133 seconds; this is a
+reproduction observation, not a complexity claim.
+
+The additional construction has its own commands in
+\pathfile{research/command_family/README.md}.  Its full symbolic replay
+is independent of the main machine's replay.  The research-only and
+rejected machines are explicitly labelled in that packet, so a source
+decoder check cannot be mistaken for blank-tape calibration.
+
+\paragraph{What the checks establish.}
+The full runtime checker constructs an ordinary mathematical proof
+using explicit induction schemas over arbitrary unary values and finite
+lists.  Its finite execution bound constrains certificate construction,
+not the values of the simulated registers.  The saved-case audit checks
+the receipts, identities, durations, and complete concrete trace; it
+does not independently reconstruct every symbolic induction step.
+The source-focused reviewer uses its own control-graph resolver and
+direct command-word expansion.  The report's unbounded diagonal proof
+is also separately reviewed in prose.
+
+There is \emph{no new exact-table Lean or Rocq kernel endpoint} in this
+submission.  There is also no independently established internal PA
+endpoint.  Those are distinct deliverables from the ordinary proof
+formalizable in ZFC.  The inherited numerical-calculus theorem is
+identified explicitly rather than hidden behind a successful script
+exit code.  No finite blank simulation alone is used to establish
+nonhalting, completeness, or safety of arbitrary raw codes.
+
+\paragraph{Building the paper.}
+With a standard TeX Live installation, run \pathfile{pdflatex report.tex}
+twice from the archive root.  The appendix is generated from the dense
+table by \pathfile{code/make_machine_table.py}; its delivered text is
+also manifest-bound.  The report is intended to remain useful even
+without executing the programs: it contains the exact edits, proof
+interfaces, all-natural scheduling argument, and complete dense table.
+
+\section{What changes the search for 214 states}
+\label{sec:next}
+
+The experiments did not produce a 214-state machine.  They do produce
+two concrete changes to the search space.
+
+First, the physical representation need not preserve the parent's spare
+value.  The old proof already quantified over arbitrary natural spare
+values; changing the appended value is a parameter change in that
+invariant, provided the whole engine is rechecked.  Z215 realizes this
+with one write bit and a new usable startup.  A future attempt can
+search for an allocator or engine fold that exploits the fact that
+new spares are zero, rather than treating every old unit-spare writer
+as semantically mandatory.  Simply removing or redirecting its writer
+is not justified: arbitrary existing spare values remain in the
+quantified domain, and decoder visits to the same states must still be
+handled.
+
+Second, a usable blank seed need not decode into an entirely theorem-
+valued stack.  A finite prefix of safe entries can protect an arbitrary
+tail if the exact enumeration has a finite certified debt bound.
+This is a new acceptance criterion for candidate start states and
+allocations.  It matters because a small source or correct primitive
+engine can still have an unsuitable blank computation.  The rejected
+order-021 table, which actually halts, is a concrete negative control.
+
+The most direct follow-up tasks are:
+\begin{enumerate}
+\item \textbf{Exploit the zero-spare engine invariant in allocation.}
+Search for a real 214-state fold, then prove all primitive cases with
+the exact new table.  State-count synthesis without startup and
+runtime obligations is insufficient.
+\item \textbf{Search start states using certified finite debt.}
+Classify candidate seed stacks by accessible theorem prefixes, not
+only by whether every decoded entry is already safe.  The value two
+here is specific to the current command order and field arities.
+\item \textbf{Relax irrelevant physical preservation.}
+An alternative engine could recycle or truncate spare blocks while
+preserving the primary register projection and a sufficient supply of
+spares.  Such a change would require new frame and progress theorems;
+the current checks preserve the old spare list exactly.
+\item \textbf{Automate schedule bounds for other field grammars.}
+The diagonal proof combines command weights, payload arities, and
+iterated Cantor projections.  Synthesizing these bounds could turn
+many previously rejected startups into proved seeds.  The proof must
+remain about the literal source's decoder.
+\item \textbf{Complete an alias-free propositional basis.}
+The 22-node certificate below the dominated row removes reliance on
+truth and zero aliases for three useful formulas.  Deriving the
+remaining composition/distribution strength and checking full
+raw-code calibration would be a substantive step toward changing
+the implication tag.  Identity, weakening, and Peirce alone do not
+complete that project.
+\item \textbf{Combine the two successful changes only with a fresh proof.}
+The shared-refill scheduler and zero-valued spare policy are separate
+proved constructions here.  Their naive composition need not retain
+either blank startup.  A new composition needs its own exact prefix
+and source-seed argument.
+\item \textbf{Export a kernel-checked exact-table endpoint.}
+Translate the finite source facts, induction schemas, scheduling
+argument, and inherited calibration into the repository's formal
+proof framework.  This strengthens assurance without being a state
+reduction by itself.
+\end{enumerate}
+
+The formalism exploration was kept subordinate to its required
+equiconsistency obligation.  Allowing junk codes is useful, but it
+does not license an unchecked change to implication, generalization,
+or the theory gate.  The main candidate changes only a physical
+representation and the admissible startup class, so its dependence on
+the already calibrated all-natural calculus is explicit and narrow.
+
+\section{Provenance and attribution}
+\label{sec:provenance}
+
+The accepted K215 source, binary engine, dominated numerical calculus,
+source compiler, and symbolic induction machinery are inherited from
+the pinned ProveIt repository and its submitted research packets
+\cite{repo,k215,dominated,permuted}.  Their original notices and license
+texts are retained under \pathfile{baseline/} and \pathfile{licenses/}.
+The shared-CB1 refill idea used by the secondary construction was
+already present in the latest incoming investigation
+\cite{investigation}; this report credits that idea and contributes its
+new composition, allocation, and full verification.
+
+The inherited notices credit, within their respective scopes, Mira and
+ProveIt, Elliot Glazer's compact theory work, Jeff's busy-beaver/Rocq
+reference, Andrew James Wade's compiler ancestry, BusyCoq, and the Coq
+Library of Undecidability.  The current submission does not alter their
+attribution or relicense their components.  The subterm proof-search
+code also retains the attribution of the repository tools from which
+it was adapted.
+
+New contributions in this package are the exact zero-spare table and
+startup; its fresh quantified runtime verification; the current
+variable-field debt-two theorem and source-specific independent review;
+the secondary scheduler/command-order composition; the alias-free
+22-node certificate and forward checker; and the reproducible artifact
+and search accounting.  Independent reviews refer to separate checking
+work within this collaboration, not external human endorsement.
+
+\clearpage
+\appendix
+\section{Complete dense transition table}
+\label{app:table}
+
+The initial state is 0.  The working states are $0,\ldots,214$ and the
+halting state is $H=215$.  Entry $wDq$ means write symbol $w$, move in
+direction $D\in\{L,R\}$, and enter state $q$.  The two groups of columns
+are independent continuations of the same table.  This appendix is
+generated directly from \pathfile{machine/z215.tm}.
+\input{machine_table.tex}
+
+\begin{thebibliography}{9}
+\bibitem{repo}
+Vladimir Reshetnikov and contributors.
+\emph{ProveIt, Computability/BusyBeaver/Research/ZFC}.
+Snapshot \pathfile{32498004963846db7655eedce7e94f8c88f6fa8a}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/32498004963846db7655eedce7e94f8c88f6fa8a/Computability/BusyBeaver/Research/ZFC}.
+\bibitem{k215}
+ProveIt contributors. \emph{Accepted primary candidate K215: ordinary
+composition proof, machine, source, and verification}.
+At the snapshot above, \pathfile{candidate-k215/}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/32498004963846db7655eedce7e94f8c88f6fa8a/Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md}.
+\bibitem{dominated}
+ProveIt contributors. \emph{Dominated-rho8 numerical calculus and its
+all-natural consistency calibration}.
+At the same snapshot, \pathfile{candidate-k218/alternatives/dominated/proof.md}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/32498004963846db7655eedce7e94f8c88f6fa8a/Computability/BusyBeaver/Research/ZFC/candidate-k218/alternatives/dominated/proof.md}.
+\bibitem{permuted}
+ProveIt contributors. \emph{Command-local field reader, permuted
+commands, and strong source calibration}.
+At the same snapshot, \pathfile{candidate-k216/alternatives/permuted/}.
+The exact inherited LaTeX supplement is retained in
+\pathfile{baseline/source_calibration.tex}.
+\bibitem{investigation}
+ProveIt contributors. \emph{ZFC214 investigation, 21 October 2026}.
+\pathfile{docs/incoming/zfc214-investigation-2026-10-21.zip}, introduced
+at the pinned snapshot.  The relevant scheduler proof sections and
+exact comparison tables are retained in the secondary research packet.
+\end{thebibliography}
+\end{document}

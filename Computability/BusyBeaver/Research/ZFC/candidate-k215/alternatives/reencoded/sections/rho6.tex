@@ -1,0 +1,43 @@
+\section{A second physical allocation with a different axiom sampler}
+\label{sec:rho6-alternative}
+A complementary alternative changes the \emph{source command effect}, rather than only its encoding. It emits $\rho_6(A,B)$ in place of $\rho_6(A,C)$, where
+\[
+ \rho_6(a,b)=(\exists_a Q_a b)\to b.
+\]
+The universal numerical calculus is still the same: only the way a command supplies an instance is changed. This sampler idea and its composed source are already recorded in public intake 199 at ProveIt commit
+\file{7de71bd17b85db67529e8f10083c066ab0ed0c56}. Our contribution is a distinct physical allocation and its completed verification, not priority for the sampler idea.
+
+Relative to the primary \emph{earlier} K215 table, not the counter-one table of this report, the new native table changes exactly two rows:
+\[
+\begin{array}{c|c|c}
+\text{row}&\text{old action}&\text{new action}\\\hline
+199/1&1R166&1R12\\
+206/0&0R186&0R76
+\end{array}
+\]
+No state is added or removed. Its native table SHA-256 is
+\begin{quote}\small\path{a96732bd55c9412cbfd4bc3019200f364b3e3169f58e9a495dd98b072fb2d648}\end{quote}
+Its canonical table SHA-256 is
+\begin{quote}\small\path{bfa5ad02c53193656ed135588416bd05bdc72ffa2de92e3f6ed13556268df0d4}\end{quote} The four changed primitive operands are at zero-based ordinals $959,964,1137,1142$, changing register index 3 to 5. The source interval $[888,1171)$ is the 283-leaf sixth-axiom emitter. The tree retains 202 distinct subtrees and 4,751 leaves. Its exact source SHA-256 is
+\begin{quote}\small\path{19da13e482ea0f3d57432aad852bdf2448093e58a6e3b3873ac744eae7440693}\end{quote}
+
+\subsection{All-natural sampler theorem}
+Conjugate the old emitter by swapping its parameter registers 3 and 5. The literal interval changes only the four listed CI/CD operands; all guarded successors remain fixed. The old emitter preserves its parameter registers and clears its scratches. Consequently the conjugate restores the same full input parameter store, constructs $\rho_6(A,B)$, and pushes the old current theorem on the same underlying stack. This is a stepwise all-natural register conjugacy, not an assumption that arbitrary derived formulas may be renamed or that a finite test set exhausts numerical inputs.
+
+Every emitted code is therefore an instance of the same universally quantified native axiom. Other axiom emitters, the dominated fourth parameter, theorem-only generalization, and the literal gated bundle remain unchanged. The old theoremhood invariant still proves halting soundness for all raw codes.
+
+Completeness needs an adjusted strong compiler for the sixth row. For arbitrary $a,b$, use
+\[
+ \mathsf{Discard};\mathsf{AX}(a;a,b);
+ \mathsf{NIP}^{6};\mathsf{DROP};\mathsf{NIP}^{5}.
+\]
+After Discard, the top and counter/cache are zero and the underlying stack is the original $w$. This AX has $U=0,A=a,B=b,C=a$ and wire fields $[a+3,b,a]$. The bundle gate fails because $C=A$, so the new top is zero. After six pops, $\rho_6(a,b)$ is cached. DROP makes it current and pushes one extra zero. Five more pops remove that extra zero and the four remaining entries, ending with the saved old top zero in cache. The underlying stack is restored and $D=H=0$.
+
+All intermediate axiom entries are implications, the generalized cache has tag 2, and the saved top is zero, so none is the refutation code 1. The other strong row blocks retain their selection positions and cleanup counts. Their unused sixth entry has changed but remains a nonfalsity theorem. MP, GEN, the strong compiler induction, exact candidate packing, and cofinal refutation padding are unchanged. This proves consistency equivalence for the new source.
+
+\subsection{Physical distinction and initialization}
+Reconstructing the decoder from the changed source and table is essential. An earlier inherited-allocation attempt kept stale roles and failed finite tests; that failure was not a proof that the two-row construction needed an extra state.
+
+The new table is not an initial-state-preserving labelled-graph relabeling of either the old primary table or the public intake-199 allocation. The latter differs at 62 literal state/symbol keys; a forced rooted mapping also reaches a written-symbol/direction conflict, so this distinction does not rely on native label choices alone.
+
+Its blank prefix is unchanged: neither modified row is executed before the certified root. Independent literal replay reaches the genuine source root after 95,714 transitions, with head $-8$, gap 1, 40 all-one spares, and $(N,T,W,A,D,H,X,Y,L)=(4,0,0,0,0,0,0,0,0)$. The complete sparse tape and dense relabeling are checked against the prefix receipt. The separate fresh arbitrary-natural runtime verification passes all 6,176 guarded cases, using 1,699,838 symbolic rules with minimum affine duration 6 and coverage of all 430 rows. Its exact table bindings and certificates are supplied with the secondary artifacts. The two machines in this report have independent physical certificates; their common state count is not used to transfer one proof to the other.

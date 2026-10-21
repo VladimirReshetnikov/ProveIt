@@ -1,0 +1,36 @@
+\section{A generalized counter seed and the actual blank trace}
+\label{sec:seed}
+Write the nine logical registers in the order
+$(N,T,W,A,D,H,X,Y,L)$. Here $N$ is the next candidate index, $T$ the current theorem, $W$ the encoded stack, $A$ the command selector, $D$ the additive counter, $H$ the theorem cache, $X,Y$ scratches, and $L$ the remaining proof-list code.
+
+\begin{theorem}[Arbitrary-counter root calibration]
+At a genuine source root, let $N=n$ and $D=d$ be arbitrary naturals, let $A=X=Y=L=0$, and suppose $T,H$ and all stack heads of $W$ are numerical theorems. Then source halting is equivalent to numerical inconsistency. In particular the theorem applies to $n=4,d=1,T=H=W=0$.
+\end{theorem}
+\begin{proof}
+Soundness does not require $D=0$. In an AX command the old counter is $U=d$ and its new parameter is $A=d+x$, so the dominated-row requirement $U\le A$ holds for every natural payload $x$. The seven other axiom rows, theorem-only generalization, and the gated literal bundle retain their old soundness arguments. MP is numerical detachment when its equality test succeeds and produces truth otherwise. DROP and NIP only move theorem codes. The sole halting test is cached falsity $H=1$. Thus a halt implies inconsistency even when the initial counter is nonzero.
+
+For the converse, take the strong compiled block $\mathcal B_1$ for a numerical derivation of falsity and append $S=[\mathsf{DROP},\mathsf{NIP},\mathsf{NIP}]$. The strong compiler works from every retained top and stack once $D=H=0$; it either halts or returns $(T,W,D,H)=(1,w,0,0)$ with the original stack $w$. The suffix then loads and tests falsity.
+
+For each natural $y\ge1$, prefix this list by
+$\mathsf{Start}_y=\mathsf{AX}(0;1,y)$. For arbitrary incoming $d,h$, this command has $U=d$, $A=d+1$, $B=h+y$, and $C=0$. Both gate inequalities hold because $A,B>0$. More importantly, irrespective of the incoming top, stack, or counter, the command sets $D=H=0$. Its new top and stack need not be prescribed: the strong block explicitly quantifies over arbitrary such data. Any earlier halt is already sufficient for the completeness direction.
+
+Put $R=\operatorname{enc}_{210}(\mathcal B_1S)$. The exact first-candidate integer for the prefixed list is
+\[
+ n_y=P\bigl(3,P(y,P(1,R))\bigr)\ge y.
+\]
+There is no outer successor on a first candidate. Subsequent positive proof-list entries have the inherited successor convention. Choose $y\ge\max(1,n)$. Every preceding candidate either halts or drains in finite time: its first command performs finite arithmetic; each subsequent command strictly decreases its positive list remainder. The scheduler restores its selector and scratches and advances $N$. Consequently it reaches $n_y$ unless a halt has already occurred. That candidate resets the counter/cache, executes the compiled refutation, and halts. This proof does not assume a bound on the unknown counter carried into the successful candidate.
+\end{proof}
+
+\subsection{Literal blank initialization}
+Exact simulation from the defined blank configuration reaches, after 716,307 transitions,
+\[
+ q=84,\quad h=-9,\quad g=152,\qquad
+ (N,T,W,A,D,H,X,Y,L)=(4,0,0,0,1,0,0,0,0),
+\]
+in native labels and absolute tape coordinates. The spare list consists of 185 ones. The complete finite set of nonzero tape cells is supplied as a receipt and is checked, not merely the nine decoded numbers.
+
+The leading one is exactly at $h-1=-10$. The next one is at $h+64+g=207$, so all 64 program-counter cells are zero. This is a genuine source root rather than an interior instruction with a conveniently decodable tail. The decoder checks the full unary-register frame, spare list, and zero exterior. No halt occurs in the verified prefix.
+
+The zero current theorem and cache are truth; the zero stack has only truth under the inherited zero-pairing alias. The generalized theorem applies with $n=4,d=1$. Combining it with source bisimulation and the positive unbounded binary simulation proves the claimed blank-start consistency equivalence. All arguments concern finite tables, natural-number induction, primitive-recursive proof transformations, and finite derivations, and are formalizable in ZFC without assuming its consistency.
+
+A separate reachability check contains the new counter-one seed in the old closed abstract invariant: its ternary class is 83 and its four-class index is 259. A fresh ternary closure reproduces the same bitmap. This is a useful cross-check, but it is not used as a substitute for either the arbitrary-counter theorem or the all-natural binary runtime proof.

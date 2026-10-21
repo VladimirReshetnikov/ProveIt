@@ -1,0 +1,92 @@
+\section{Secondary construction: protecting an unsafe generalization tail}
+\subsection{The transfer-pop language}
+The second source has three commands: composite transfer-pop $S$ at tag 0, MP at tag 1, and AX at tags $c+2$, with field lists $[0]$, $[1,x]$, and $[c+2,y,x]$. Its MP and AX meanings agree with the preceding source. The actual $S$ is old DROP; old NIP; old NIP. Therefore it halts if \emph{either} the incoming top or cache is 1; otherwise, writing $P^{-1}(w)=(x,v)$, its normal result is
+\[
+                             S(t,w,d,h)=(h,v,d,x).
+\]
+A cache-only halt description would be incomplete. The imported compiler first analyzes that idealized weaker guard and then lifts it to the actual composite by early-halting refinement. On safe actual executions, both extra tests concern theorem codes, preserving soundness; in the completeness contract an earlier halt is already success.
+
+The initial-state/append-row change leaves all 4,775 source primitives unchanged. The complete AX subtree comprises 4,565 leaves; an independent comparison verifies both their literal operations and their relative paths against the parent.
+
+\subsection{An exact interior source boundary, not an invented root}
+After 73,172 binary transitions from blank tape, the machine is at native dispatcher 84, head $-2$, gap zero, with 65 natural spare words. The logical tuple is
+\[
+                        (0,6,0,0,1,1,10,1,0).
+\]
+Its source ordinal is 119, with address \texttt{11010011000110110110}. This address is \emph{not} zero. Both native and canonical simulators compare every transition and the whole terminal tape; no claim of a root seed is made at this point.
+
+A separate structured-source interpreter begins at AX entry ordinal 25 with
+\[
+                         (N,T,W,A,D,H,X,Y,L)=(0,0,0,0,1,1,0,0,0)
+\]
+and reaches exactly the observed ordinal 119 and entire register store after 177 primitives. The remaining AX execution is total on these natural inputs. Positive unbounded primitive simulation therefore transports the binary machine through the same remaining source suffix. Literal execution of its potentially enormous output codes is not required.
+
+\subsection{Eight safe heads, one deliberately untrusted head}
+The virtual complete AX has $U=A=B=1,C=0$. Its gate is \emph{enabled}, because $0\ne1$ on both tests. Its output top is the accepted bundle $K(1,1,0)$, and it resets counter/cache to zero. Its stack is
+\[
+[R_1(1,1,0),\ldots,R_7(1,1,0),L(1,1,0,1),Q_1(1),0;0].
+\]
+The first eight heads are theorems: the seven retained rows and the dominated row with $U=A=1$. The incoming cache 1 has not been established to be a theorem. We therefore do \emph{not} claim that its generalization $Q_1(1)$ is a theorem.
+
+Instead isolate an arbitrary suffix
+\[
+       J=P(Q_1(1),P(0,0))=P(18,0)=171.
+\]
+The represented stack consists of eight explicit theorem heads above $J$. The top is a theorem bundle and the cache is truth. The next-candidate counter remains $N=0$ and the proof-list remainder is zero. The following unbounded scheduler argument protects that suffix forever, without any theoremhood assumption on its contents.
+
+\subsection{The infinite schedule has conservative debt three}
+Write $f(n)$ for the right projection of Cantor pairing and $T_s=s(s+1)/2$. Let $W(n)$ be the finite syntactic command word of a freshly fetched candidate, ignoring possible semantic halts. Put $R(0)=[]$ and $R(r)=W(r-1)$ for $r>0$. If $P^{-1}(n)=(a,y)$, the exact source field arities give
+\[
+W(n)=\begin{cases}
+S;R(y),&a=0,\\
+\mathsf{MP};R(f(y)),&a=1,\\
+\mathsf{AX};R(f(f(y))),&a\ge2.
+\end{cases}
+\]
+These words terminate by strict descent of the recursive index. Each $R(r)$ has at most $r$ commands. Assign conservative stack balances $-1,0,+10$ to $S$, MP, AX. A successful MP adds a further theorem zero; ignoring it only weakens the protection bound.
+
+Let $b(n)$ be the balance of $W(n)$, $B(k)=\sum_{n<k}b(n)$, $g(0)=0$, and $g(r)=b(r-1)$ for $r>0$. If a sequence $q$ has nonnegative initial partial sums, so does $q(f(0)),q(f(1)),\ldots$: the projection sequence concatenates $[0],[0,1],[0,1,2],\ldots$. The assertion follows by summing complete blocks and one partial block, and can be applied twice.
+
+Use the shifted sequence $q(r)=g(r)+1$. Its first $k\ge1$ terms sum to $1+B(k-1)+(k-1)$. The exceptional candidates are
+\[
+                         W(0)=S,\qquad W(1)=\mathsf{MP},\qquad W(2)=SS,
+\]
+so $B(0),B(1),B(2),B(3)=0,-1,-1,-3$, and $B(k)+k\ge0$ through $k=3$.
+
+Induct on the Cantor diagonal $s\ge2$. Its first $s-1$ candidates start with AX, followed by one MP candidate and one S candidate. For the first $k$ AX candidates the balance is
+\[
+10k+\sum_{y<k}g(f(f(y)))\ge9k,
+\]
+by the twice-applied prefix lemma. It uses only previously proved inequalities at indices below $T_s$, so the induction is not circular. Inside AX candidate $y$, its continuation loses at most $y$, giving lower bound $9y+10-y=8y+10$. The following MP candidate loses at most $s-1$, leaving at least $8(s-1)$. The final S and its continuation lose at most $1+s$, leaving
+\[
+                              8(s-1)-1-s=7s-9>0.
+\]
+Every command prefix of the diagonal is therefore nonnegative relative to its start. The diagonal boundary remains at least $-3$, and $B(k)+k\ge0$ continues to hold, completing the induction. The global conservative minimum from cutoff zero is exactly $-3$, attained in the exceptional first three candidates.
+
+\begin{lemma}[Protection of the unsafe suffix]
+Starting with eight theorem heads above $J$, theorem-valued top/cache, $N=L=0$, the arbitrary suffix $J$ is never exposed during a nonhalting execution. At least five explicit theorem heads remain above it at every command boundary.
+\end{lemma}
+\begin{proof}
+Track the explicit wrapper length using the conservative balance. AX adds ten theorem heads once the active top/cache are safe; MP preserves or adds a theorem head. Before an $S$ pop the conservative count is at least one more than its post-pop count, which is at least five. Thus it removes a safe head. Inside composite $S$, DROP first pushes a temporary theorem top, the first NIP removes that temporary head, and the second removes precisely the safe old head accounted for by the balance. Its two halt tests also inspect only theorems.
+
+The wrapper is an explicitly maintained finite list above a fixed tail, not a claim that its length is recoverable from the encoded integer. This handles $P(0,0)=0$: the exact identity $P^{-1}(P(x,v))=(x,v)$ still supports each push/pop. The induction applies to every finite actual prefix; defining a syntactic schedule while ignoring halts does not assume nonhalting.
+\end{proof}
+Consequently every actual halt certifies numerical falsity as a theorem. This supplies soundness despite the initial untrusted cache and buried code 18.
+
+\subsection{Completeness is inherited through a strong arbitrary-stack compiler}
+The transfer source has a complete named-command compiler, not merely a theoremhood invariant. Its strong contract is the same: from every $(t,w,0,0)$, a block for $F$ either halts or returns $(F,w,0,0)$. The parent packet contains the full derivation and its separate composite-guard review.
+
+Two structural macros explain why removing primitive DROP does not lose completeness. Put $D_0=\mathsf{AX}(0;0,0)$. Then
+\[
+ \mathsf{PUSH}=D_0;S^9;\mathsf{MP}(0),\qquad
+ \mathsf{POP}=D_0;S^{11}.
+\]
+For the ideal cache-guard transfer, PUSH returns $(0,P(t,w),0,0)$ on every input, and POP preserves a nonfalsity top while popping one old head and resetting the counter, or halts when the top is 1. For the actual composite, any additional earlier halt is allowed by the strong compiler contract. If no such halt occurs, the displayed normal outputs remain identical. This early-halting distinction is essential; PUSH is not asserted to be nonhalting on arbitrary unsafe inputs for the actual composite.
+
+Axiom selection, theorem generalization, and numerical detachment are built from these macros with exact ten-entry stack cleanup. A compiled derivation of 1, followed by POP, halts on every retained top/stack after the counter and cache are reset. Prefix by $\mathsf{AX}(0;1,y)$ as before. Its first-candidate integer is now
+\[
+                              P(2,P(y,P(1,R)))\ge y,
+\]
+because AX begins at tag 2. These successful candidates are cofinal. Finite draining of earlier candidates proves completeness from cutoff zero. The arbitrary tail $J$ causes no obstruction: the compiler's input contract explicitly permits it, while the independent credit argument proves actual-run soundness.
+
+The exact interior bootstrap, total AX suffix, credit theorem, strong compiler, and unbounded binary simulation therefore establish the blank-start consistency equivalence for the secondary table.

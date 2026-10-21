@@ -1,0 +1,24 @@
+\section{Verification layers and reproducibility}
+The archive separates the following claims. Passing one layer is not treated as proving the next.
+\begin{enumerate}
+\item \textbf{Literal machine.} Parse both transitions of every working state, verify all targets, count 215 working states and 430 rows, and check the native/normalized/canonical bijections. The canonical table in the appendix is generated from the machine file.
+\item \textbf{Source identity.} Check the entire primitive word and complete guarded ordinal control graph against the calibrated primary source. This proves the all-natural source bisimulation, not binary execution.
+\item \textbf{Binary runtime.} Recheck 6,176 guarded symbolic cases against the exact table and source. These use inductive scan/list lemmas and positive affine durations, rather than a fixed cutoff on register values.
+\item \textbf{Blank prefix.} Independently replay all 716,307 transitions from zero tape and compare the entire final sparse tape. Decode its full frame and zero program counter; do not accept the first superficially well-formed interior frame.
+\item \textbf{Source consistency.} Use the explicit numerical-calculus calibration, strong proof compiler, finite draining, and the new arbitrary-counter root theorem. This is what connects physical halting with ZFC inconsistency.
+\item \textbf{Distinctness.} Check the graph-refinement certificate and exact source/table differences against the three pinned baselines. This excludes a mere relabeling relative to those inputs, not every possible previously published construction.
+\end{enumerate}
+
+The ordinary proof engine and its certificates are executable mathematical evidence. They are not a newly checked PA proof object, and this work does not supply a new exact-table Lean/Rocq endpoint. The inherited set-theoretic calibration is explicitly part of the provenance chain; this work does not claim to formalize it afresh. Runtime replay by the same checker is a fresh execution, not an independent second proof algorithm. The additional sparse-tape initializer and graph/source audits are independently implemented checks of their respective finite claims.
+
+\subsection{What did not work toward 214}
+A separate 214-state initialized core implements the original register source in all 6,176 unbounded primitive cases. It is \emph{not} a blank-start construction: starting it from any of its 214 existing states on blank tape leads to a verified outward ray. Consequently it cannot be substituted for the present 215-state machine. Context-sensitive startup repair remains open.
+
+Three further 214-state tables passed an initially too-small macro sample. Broader admitted inputs exposed incorrect arithmetic, including an actual blank-run mismatch for one table. Those tables are not certified alternatives and are not included among the claimed results. This experience motivates explicitly distinguishing finite search filters from unbounded contracts and from a changed source that would require its own consistency proof.
+
+\subsection{Provenance}
+The public project is
+\url{https://github.com/VladimirReshetnikov/ProveIt}, in
+\file{Computability/BusyBeaver/Research/ZFC/}. The numerical dominated-row recovery traces back to commit
+\file{7071e5041ee316d087661b658362feed159901ef}; the local-input permutation parent is commit
+\file{d59b4418821c598c4703f0a60b1f7cbae4f3bcf6}. The previous composed K215 packet supplies the immediate source/runtime reference and reproduced calibration sections. Its two state tables, and the later helper-role variant, are pinned in the comparison evidence. Attribution and inherited licenses accompany the code rather than being replaced by a claim that this is an independent new calculus.

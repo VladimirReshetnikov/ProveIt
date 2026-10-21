@@ -1,0 +1,179 @@
+{
+  "status": "MATHEMATICS_AUDIT_PASS",
+  "commutation": {
+    "status": "PASS",
+    "reader": "Independent inline schema reader; no generator or Hilbert-helper import",
+    "stored_nodes": 600,
+    "output_dependency_nodes": 488,
+    "output_dependencies_have_no_hypotheses": true,
+    "rule_counts": {
+      "DNE": 4,
+      "K": 122,
+      "S": 99,
+      "gen": 5,
+      "hyp": 36,
+      "mp": 323,
+      "oriented_rho4": 1,
+      "rho2": 5,
+      "rho6": 5
+    },
+    "reachable_rule_counts": {
+      "DNE": 4,
+      "K": 122,
+      "S": 99,
+      "gen": 5,
+      "mp": 247,
+      "oriented_rho4": 1,
+      "rho2": 5,
+      "rho6": 5
+    },
+    "oriented_axiom_nodes": [
+      70
+    ],
+    "only_oriented_axiom_labels": [
+      "a",
+      "b"
+    ],
+    "oriented_axiom_matrix": "not(Box_b(Box_a(x)))",
+    "all_five_GEN_premises_closed": true,
+    "exact_closed_outputs": [
+      "reversed_commutation",
+      "symmetry_unit"
+    ],
+    "negative_controls": [
+      {
+        "case": "opposite orientation inserted as axiom",
+        "rejected": true,
+        "reason": "opposite orientation or changed labels used as an axiom"
+      },
+      {
+        "case": "GEN on an open hypothesis",
+        "rejected": true,
+        "reason": "node 29: GEN under an open hypothesis"
+      }
+    ]
+  },
+  "scheduler_credit": {
+    "status": "FINITE_CORROBORATION_PASS",
+    "scope": "The universal bound is proved in proofs/permuted_credit.md; this check corroborates the indexing and recurrence",
+    "tags": {
+      "MP": 0,
+      "S": 1,
+      "AX": "c+2"
+    },
+    "guard_scope": "Either single-guard S or two-guard composite S'; common normal-return stack effect only",
+    "conservative_weights": {
+      "MP": 0,
+      "S": -1,
+      "AX": 10
+    },
+    "candidate_summaries": 500000,
+    "explicit_words": 1000,
+    "complete_diagonals": 997,
+    "minimum_from_cutoffs_zero_and_one": -1,
+    "exact_conservative_credit_at_cutoff_one": 1,
+    "ten_head_initial_margin": 9,
+    "credits_first_twenty": [
+      1,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ]
+  },
+  "dominated_rho8": {
+    "status": "INHERITED_INDEPENDENT_READER_PASS",
+    "scope": "Fixed full dominated-rho8 certificate; no generator, search, binary runtime, or full set-theory calibration",
+    "reader": "reference/transfer-parent/checks/check_fixed_certificate.py",
+    "normalization": "Only I(T,T)=T; T is native zero, integer leaf zero is a metavariable",
+    "substitution_scope": "Complete simultaneous schematic instantiation, not an unrestricted numerical inference rule",
+    "result": {
+      "verified": true,
+      "proof_nodes": 3728,
+      "term_table_nodes": 5160,
+      "rule_counts": {
+        "dominated_rho8": 1260,
+        "mp_substitution": 55,
+        "truth": 1,
+        "substitution": 410,
+        "mp": 2002
+      },
+      "exact_roots": {
+        "I": {
+          "node": 17,
+          "term": "(p0 -> p0)"
+        },
+        "K": {
+          "node": 60,
+          "term": "(p0 -> (p1 -> p0))"
+        },
+        "P": {
+          "node": 25,
+          "term": "(((p0 -> p1) -> p0) -> p0)"
+        },
+        "cd59": {
+          "node": 57,
+          "term": "((p0 -> p1) -> (((p0 -> p2) -> p0) -> p1))"
+        },
+        "B": {
+          "node": 1152,
+          "term": "((p0 -> p1) -> ((p1 -> p2) -> (p0 -> p2)))"
+        },
+        "S": {
+          "node": 3680,
+          "term": "((p0 -> (p1 -> p2)) -> ((p0 -> p1) -> (p0 -> p2)))"
+        },
+        "rho8": {
+          "node": 3727,
+          "term": "(((p2 -> p3) -> p0) -> ((p0 -> p2) -> (p1 -> p2)))"
+        }
+      },
+      "root_ancestor_count": 3716,
+      "domination_zero_count": 224,
+      "domination_depth_counts": {
+        "0": 164,
+        "1": 755,
+        "3": 3,
+        "2": 112,
+        "4": 2
+      },
+      "maximum_subterm_depth": 4,
+      "MP_with_truth_as_major_nodes": [],
+      "explicit_renaming_count": 55,
+      "nonidentity_renaming_count": 55
+    }
+  },
+  "input_sha256": {
+    "formalism/ordered_commutation_dag.json": "a9167755d1b6b17f6103af9831a483713475de04f1600a77eb38b074862cb3cc",
+    "proofs/permuted_credit.md": "573bd9b35a79c8ca6904409ca248db40ae13fc4d1d15f9c28d8db48de9898b83",
+    "reference/transfer-parent/inputs/dominated_rho8_full_certificate.json": "3cf18a5fe9f187b50b79d97b84535ce9bf776305728b0cdfe17285e94f028452",
+    "reference/transfer-parent/checks/check_fixed_certificate.py": "a3600a4d775029d246806a8e307f4b5e5fd0a0e0aea900f58982a70b4ff030c2"
+  },
+  "checker_sha256": "6bd3f8f832160181e28b8b197d7ccc6e1ddba5936de95b031d09379ef58c054a",
+  "remaining_premises": [
+    "The inherited complete native-calculus/ZFC calibration",
+    "Classical DNE follows from the inherited classical propositional interface, including retained rho6",
+    "The ordinary all-natural induction in proofs/permuted_credit.md",
+    "The selected machine's own exact source contracts, whole-tape runtime, and blank startup"
+  ],
+  "not_claimed": [
+    "Lean/Rocq kernel certification",
+    "a 214-state machine",
+    "a physical state saving from ordered rho4"
+  ]
+}

@@ -1,0 +1,423 @@
+\section{Protecting an arbitrary stack tail with two truth entries}
+\label{sec:two-truth-tail}
+
+The new blank initialization reaches the logical source root with
+\[
+ (N,T,W,A,D,H,X,Y,L)=(1,0,5,0,0,0,0,0,0).
+\]
+The stack code $5$ is not a stack consisting entirely of theorems:
+with the inherited Cantor pairing convention,
+\begin{equation}
+ P(a,b)=\frac{(a+b)(a+b+1)}2+b,\qquad
+ 5=P(0,P(0,1)).
+ \label{eq:tail-five}
+\end{equation}
+It contains two truth entries above a tail whose first entry is falsity.
+It would therefore be incorrect to invoke the usual invariant that
+\emph{every} decoded stack entry is a theorem. We prove instead that the
+actual scheduler never reaches that tail.
+
+The proof concerns the current source: command order
+$\mathrm{NIP},\mathrm{DROP},\mathrm{MP}$, with fields read only by the
+commands that need them. The earlier protected-tail theorem for a common
+field reader and order $\mathrm{MP},\mathrm{DROP},\mathrm{NIP}$ does not
+supply this conclusion. Both the command order and the field arities
+matter below.
+
+\subsection{The exact schedule and its conservative stack balance}
+
+Let $f(n)$ be the second component of the inverse of $P$.
+Write a freshly selected candidate as $n=P(t,y)$.
+Its first command and remaining proof-list pointer $r$ are
+\begin{equation}
+\begin{array}{c|c|r|c}
+ t&\text{command}&\text{conservative stack change}&r\\ \hline
+ 0&\mathrm{NIP}&-1&y\\
+ 1&\mathrm{DROP}&+1&y\\
+ 2&\mathrm{MP}&0&f(y)\\
+ t\geq3&\mathrm{AX}&+10&f(f(y)).
+\end{array}
+\label{eq:tail-command-arities}
+\end{equation}
+For MP the first unpairing of $y$ supplies its additive field.
+For AX the two unpairings supply its two fields; its remaining
+parameter is $c=t-3$. NIP and DROP have no additional field.
+If $r>0$, continuation fetch decrements it before decoding, so the next
+packed command is $r-1$. If $r=0$, the candidate is finished.
+
+Define a finite command word $\mathcal W(n)$ recursively by taking the
+first command in \eqref{eq:tail-command-arities}, followed by
+$\mathcal W(r-1)$ when $r>0$. The pairing inequalities give
+$r\leq y\leq n$, so this recursion is well founded. In particular,
+\begin{equation}
+ |\mathcal W(n)|\leq n+1.
+ \label{eq:tail-word-length}
+\end{equation}
+Indeed, a nonempty recursive suffix has length at most $r$ by induction.
+A nonhalting source run from $N=1,L=0$ executes
+$\mathcal W(1),\mathcal W(2),\ldots$ in that order. Registers containing
+formulas affect MP success and possible halting, but do not change this
+schedule before a halt.
+
+The conservative change is exact for DROP, AX and a nonhalting NIP.
+A successful MP pushes a truth entry, while an unsuccessful MP leaves
+the stack alone; assigning MP the value zero is therefore a lower
+bound. AX pushes the old top, one generalized cache formula, and eight
+logical rows, irrespective of whether its theory-bundle gate is open.
+A halting NIP is treated as having change $-1$ only in the abstract word:
+the actual run has already stopped before its pop.
+
+Let $b(n)$ be the total conservative balance of $\mathcal W(n)$ and let
+$m(n)$ be its minimum prefix balance, including the empty prefix.
+If the first-command change is $\delta$ and its suffix pointer is $r$,
+then
+\begin{align}
+ b(n)&=\delta+\begin{cases}b(r-1)&r>0,\\0&r=0,\end{cases}\notag\\
+ m(n)&=\min\left(0,\delta+
+               \begin{cases}m(r-1)&r>0,\\0&r=0.\end{cases}\right).
+ \label{eq:tail-recursions}
+\end{align}
+Set $B(-1)=0$ and $B(n)=\sum_{i=0}^n b(i)$.
+Since every command has change at least $-1$,
+\begin{equation}
+ m(r-1)\geq-r\qquad(r>0).
+ \label{eq:tail-suffix-loss}
+\end{equation}
+We use the same bound with value zero for an empty suffix.
+
+\begin{theorem}[Exact conservative debt]
+\label{thm:tail-exact-debt}
+Every command prefix of
+$\mathcal W(0)\mathcal W(1)\mathcal W(2)\cdots$ has conservative
+balance at least $-3$. Every command prefix after omitting
+$\mathcal W(0)$ has balance at least $-2$, and this latter lower bound
+is attained. Furthermore, $B(n)\geq7$ for every $n\geq6$.
+\end{theorem}
+
+The assertion is about this conservative accounting. It does not claim
+that two initial truth entries are necessary for every actual execution:
+successful MP commands can supply extra entries.
+
+\subsection{An exact finite base}
+
+Write $\Delta_s=s(s+1)/2$. Cantor diagonal $s$ consists, in order, of
+\[
+ P(s-y,y)=\Delta_s+y,\qquad 0\leq y\leq s.
+\]
+The base covers the complete diagonals $0,\ldots,35$, namely the 666
+candidates $0,\ldots,665$ because $\Delta_{36}=666$.
+
+\begin{lemma}[Finite base]
+\label{lem:tail-finite-base}
+For $0\leq n\leq665$,
+\[
+ B(n-1)+m(n)\geq-3.
+\]
+For $6\leq n\leq665$, $B(n)\geq7$, and $B(665)=5762$.
+The first six values of $B(n)$ are
+$-1,0,-2,-2,-2,-2$.
+\end{lemma}
+
+\begin{proof}
+These statements follow by exact integer evaluation of
+\eqref{eq:tail-recursions}. The following complete algorithm specifies
+the calculation. All array references on its right sides are to
+smaller indices, as proved above.
+\begin{verbatim}
+b = []; m = []; length = []; B = []
+total = 0
+for n in range(666):
+    t, y = unpair(n)
+    if t == 0:   delta, r = -1, y
+    elif t == 1: delta, r =  1, y
+    elif t == 2: delta, r =  0, second(y)
+    else:        delta, r = 10, second(second(y))
+    assert r == 0 or r - 1 < n
+    b.append(delta + (b[r-1] if r else 0))
+    m.append(min(0, delta + (m[r-1] if r else 0)))
+    length.append(1 + (length[r-1] if r else 0))
+    assert length[n] <= n + 1
+    assert total + m[n] >= -3
+    total += b[n]
+    B.append(total)
+assert min(B[6:]) == 7
+assert B[665] == 5762
+assert B[:6] == [-1, 0, -2, -2, -2, -2]
+\end{verbatim}
+Here the inverse is evaluated without floating point:
+if $d=\lfloor(\sqrt{8n+1}-1)/2\rfloor$ and $e=n-\Delta_d$,
+then $\operatorname{unpair}(n)=(d-e,e)$.
+The supplied independent checker uses integer square root.
+Its loop invariant is exactly the definition of $b,m,B$ and
+\eqref{eq:tail-word-length}; thus this is a finite proof of the induction
+base, not a bounded replacement for the infinite assertion.
+\end{proof}
+
+For example, the first ten total word balances are
+\[
+ -1,\ 1,\ -2,\ 0,\ 0,\ 0,\ 10,\ 0,\ 2,\ -3.
+\]
+Candidate 5 begins with NIP at global balance $B(4)=-2$,
+so its first command attains $-3$.
+
+\subsection{Two prefix-sum transforms under unpairing}
+
+Introduce
+\[
+ g(0)=0,\qquad g(r)=b(r-1)\ (r>0),\qquad
+ G(t)=\sum_{r=0}^t g(r)=B(t-1).
+\]
+All prefix sums in this subsection are inclusive unless an upper
+condition $y<k$ is written. The proposed lower bound for $G$ is
+\begin{equation}
+ p(0),\ldots,p(6)=(0,-1,0,-2,-2,-2,-2),
+ \qquad p(t)=7\quad(t\geq7).
+ \label{eq:tail-p}
+\end{equation}
+
+On successive complete Cantor diagonals, the sequence of second
+coordinates is
+\[
+ (0),\quad(0,1),\quad(0,1,2),\quad\ldots.
+\]
+Consequently, if $t=\Delta_d+e$ with $0\leq e\leq d$, then
+\begin{equation}
+ H(t):=\sum_{y=0}^t g(f(y))
+       =\sum_{j=0}^{d-1}G(j)+G(e).
+ \label{eq:tail-first-transform}
+\end{equation}
+Whenever the relevant inequalities $G(j)\geq p(j)$ are available, this
+gives
+\[
+ H(t)\geq q(t),\qquad
+ q(\Delta_d+e):=\sum_{j=0}^{d-1}p(j)+p(e).
+\]
+
+The negative part of this explicit auxiliary sequence is small.
+The following table records its complete finite calculation through
+$t=44$, or $d=8$:
+\[
+\begin{array}{c|r|r}
+ d&\min_{0\leq e\leq d}q(\Delta_d+e)&
+ \displaystyle\sum_{e=0}^d\min(0,q(\Delta_d+e))\\ \hline
+ 0&0&0\\
+ 1&-1&-1\\
+ 2&-2&-4\\
+ 3&-3&-7\\
+ 4&-5&-20\\
+ 5&-7&-37\\
+ 6&-9&-58\\
+ 7&-11&-74\\
+ 8&-4&-23
+\end{array}
+\]
+For $d\geq9$,
+\[
+ \sum_{j=0}^{d-1}p(j)=7d-58\geq5,\qquad p(e)\geq-2,
+\]
+so $q(t)\geq3$ for $t\geq45$. We have therefore proved, for all $t$,
+\begin{equation}
+ q(t)\geq-11,\qquad
+ \sum_{t\geq0}\min(0,q(t))=-224.
+ \label{eq:tail-q-negative}
+\end{equation}
+
+Apply the same diagonal identity a second time. For $k>0$, write
+$k-1=\Delta_d+e$. Then
+\begin{align}
+ S(k)&:=\sum_{y=0}^{k-1}g(f(f(y)))\notag\\
+     &=\sum_{j=0}^{d-1}H(j)+H(e)\notag\\
+     &\geq\sum_{j=0}^{d-1}q(j)+q(e)
+      \geq-224-11=-235.
+ \label{eq:tail-235}
+\end{align}
+For $k=0$ the same lower bound is immediate.
+
+Only finite prefix hypotheses are needed for this reasoning. If
+$G(t)\geq p(t)$ is known for $0\leq t\leq M$, every displayed instance
+with $k\leq M+1$ follows: every argument introduced by the two diagonal
+decompositions is at most the original argument. This finite observation
+prevents any circular use of the desired global estimate.
+
+\subsection{The induction over all later diagonals}
+
+We now prove Theorem~\ref{thm:tail-exact-debt}. Suppose $s\geq36$ and
+the conclusions have been proved before diagonal $s$.
+In particular $G(t)\geq p(t)$ is known for $0\leq t\leq s$:
+its largest required earlier index is $s-1<\Delta_s$.
+Thus \eqref{eq:tail-235} applies throughout the current diagonal.
+
+Its first $s-2$ candidates, at $y=0,\ldots,s-3$, are AX words.
+After the first $k$ complete AX words their relative balance is
+\begin{equation}
+ A(k)=10k+\sum_{y=0}^{k-1}b(f(f(y))-1)
+     =10k+S(k)\geq10k-235,
+ \label{eq:tail-AX-complete}
+\end{equation}
+where the summand is zero when $f(f(y))=0$.
+Within the next AX word, its initial command adds ten and its suffix
+has minimum at least $-f(f(k))\geq-k$ by
+\eqref{eq:tail-suffix-loss}. For $k\geq26$, the balance after that
+initial command and at every later prefix of its suffix is at least
+\[
+ 10k-235+10-k=9k+10-235\geq0.
+\]
+The balance before the initial command is also nonnegative because
+$10k-235\geq0$.
+
+For the remaining finite set $0\leq k\leq25$, direct evaluation using
+\eqref{eq:tail-recursions} verifies both
+\begin{equation}
+ A(k)\geq0,\qquad
+ A(k)+10+
+ \begin{cases}
+   m(f(f(k))-1)&f(f(k))>0,\\
+   0&f(f(k))=0
+ \end{cases}
+ \geq0.
+ \label{eq:tail-short-AX}
+\end{equation}
+These are the 26 short AX checks in the independent finite-base
+checker. They involve only earlier candidate values. Hence every
+command prefix in the entire AX portion is nonnegative relative to
+the beginning of its diagonal.
+
+The last three candidates on diagonal $s$ are, in order,
+MP at $y=s-2$, DROP at $y=s-1$, and NIP at $y=s$.
+Their conservative losses, including every internal prefix, are at most
+\[
+ s-2,\qquad s-2,\qquad s+1,
+\]
+respectively. For DROP, its own $+1$ offsets one unit of the possible
+loss of its suffix of length at most $s-1$. For NIP, its initial
+$-1$ is added to a possible suffix loss of $s$. These bounds include
+the complete words as well as their prefixes, so they may be added.
+The total loss of the final three words is at most $3s-3$.
+
+After the AX portion, \eqref{eq:tail-AX-complete} gives balance at least
+$10(s-2)-235$. Every subsequent prefix is therefore at least
+\[
+ 10(s-2)-235-(3s-3)=7s-252\geq0
+\]
+relative to the start of the diagonal. Thus no prefix of this diagonal
+falls below its initial global balance. That initial balance is at
+least seven by the induction hypothesis. This proves both the global
+prefix bound and $B(n)\geq7$ on the entire new diagonal.
+Lemma~\ref{lem:tail-finite-base} starts the induction.
+
+Finally, $\mathcal W(0)$ is one NIP and has balance $-1$.
+Removing it raises every later prefix balance by one. The bound becomes
+$-2$, and the first NIP in candidate 5 attains it, as observed above.
+This completes the proof of Theorem~\ref{thm:tail-exact-debt}.
+
+\subsection{Soundness above an arbitrary retained tail}
+
+Let $\mathcal D$ denote the inherited calibrated numerical calculus.
+It contains truth code $0$, is closed under numerical modus ponens and
+generalization, contains the eight logical rows emitted by AX, and
+contains its gated theory bundle whenever the gate succeeds.
+A failed gate returns truth. No assumption of consistency is made.
+
+For a finite list $J$ of numbers and an arbitrary natural tail $S$,
+define
+\[
+ \operatorname{push}([],S)=S,\qquad
+ \operatorname{push}(x::J,S)=P(x,\operatorname{push}(J,S)).
+\]
+This is a representation invariant, not a claim that numerical stack
+codes have a unique finite length.
+
+\begin{theorem}[Two initial truth entries suffice]
+\label{thm:tail-source-sound}
+At a genuine current-source root, suppose $N=1,L=0$ and the selector and
+scratch registers are zero. Suppose $T$ and $H$ are $\mathcal D$-theorems,
+$D$ is arbitrary, and
+\[
+ W=P(0,P(0,S))
+\]
+for an arbitrary natural number $S$.
+Every nonhalting command preserves theoremhood of the current formula
+and cache, and the execution never reads $S$ as a stack.
+If it halts, $\mathcal D$ derives $1$.
+\end{theorem}
+
+\begin{proof}
+Track the stack as $\operatorname{push}(J,S)$, initially $J=[0,0]$,
+with every member of $J$ a theorem. DROP pushes the theorem-valued
+current formula and changes the top to the theorem-valued cache.
+AX pushes ten theorem-valued entries and returns a theorem-valued
+bundle or truth, with cache zero. An unsuccessful MP returns truth;
+a successful MP obtains its new top by numerical modus ponens and
+pushes an additional truth entry.
+
+Before any possible pop, the length of $J$ equals two plus the
+conservative balance so far plus the number of successful MP commands.
+Theorem~\ref{thm:tail-exact-debt} bounds the conservative balance after
+the prospective NIP pop below by $-2$. Therefore its value before that
+pop is at least $-1$, and $J$ is nonempty. A nonhalting NIP consequently
+reads a theorem from $J$, never from $S$. The identity
+$\operatorname{unpair}(P(x,z))=(x,z)$ justifies this step even at the
+alias $P(0,0)=0$: a conceptual leading zero is tracked by the invariant
+even when its numerical insertion leaves the stack code unchanged.
+
+If NIP halts before its pop, its incoming cache equals $1$.
+That cache is a theorem by the same induction, so a native refutation
+exists. There is no appeal to the theoremhood of the arbitrary tail.
+\end{proof}
+
+\subsection{Completeness and the actual startup}
+
+For completeness, the current command compiler supplies a strong
+finite block for each numerical derivation of a code $X$. From every
+tuple $(t,w,0,0)$ of top, stack, counter and cache, that block either
+halts earlier or returns $(X,w,0,0)$. The retained tail $w$ is arbitrary
+in this contract; it need not be a stack of theorems.
+
+For a derivation of $1$, append $\mathrm{DROP};\mathrm{NIP};
+\mathrm{NIP}$ to its strong block. If the block has not already halted,
+these three commands push the newly derived $1$, read it into the cache,
+and halt. Prepend
+\[
+ \mathrm{START}_Y=\mathrm{AX}(c=0;x=1,y=Y).
+\]
+This command clears the counter and cache regardless of their incoming
+values, so the strong block applies above whichever stack it leaves.
+If $R$ is the continuation encoding of the fixed suffix, the initial
+candidate code for this entire successful word is exactly
+\begin{equation}
+ n_Y=P(3,P(Y,P(1,R)))\geq Y.
+ \label{eq:tail-cofinal}
+\end{equation}
+AX fields are ordered $[c+3,y,x]$. Nonempty continuations have an outer
+successor, whereas the first command of a freshly selected candidate
+does not; these conventions are the reason that
+\eqref{eq:tail-cofinal} also covers the zero NIP tag.
+
+Every earlier candidate drains after finitely many commands unless it
+halts, by the strict descent of the suffix index. Arithmetic command
+macros terminate and preserve the next-candidate counter. Thus
+\eqref{eq:tail-cofinal} ensures that any refutation eventually causes
+halting, from every finite cutoff and every retained working tuple.
+
+\begin{corollary}[Calibration of the new seed]
+\label{cor:tail-seed-calibration}
+The current source started at
+$(1,0,5,0,0,0,0,0,0)$ halts if and only if $\mathcal D$ derives $1$.
+Through the inherited numerical-calculus calibration, its nonhalting
+is equivalent to $\operatorname{Con}(\mathrm{ZFC})$, by ordinary
+reasoning formalizable in ZFC.
+\end{corollary}
+
+\begin{proof}
+Equation~\eqref{eq:tail-five} and Theorem~\ref{thm:tail-source-sound}
+give soundness with $S=1$. The arbitrary-tail strong compiler and
+\eqref{eq:tail-cofinal} give completeness. The inherited calibration
+identifies numerical refutability with a finite ZFC refutation.
+\end{proof}
+
+This section establishes the source-level initial-condition theorem.
+The complete binary runtime theorem, the exact finite blank startup,
+and their binding to the released transition table remain separate
+parts of the machine proof. The finite calculations here prove the
+stated induction base and constants; the diagonal induction supplies
+the assertion for all future candidates.

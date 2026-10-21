@@ -1,0 +1,363 @@
+\pdfoutput=1
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=23mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs,array,enumitem,fancyhdr,xurl,titlesec}
+\usepackage[colorlinks=true,linkcolor=black,urlcolor=black,citecolor=black]{hyperref}
+\hypersetup{pdftitle={A zero-spare transfer machine with 215 states},pdfauthor={Research contribution for the ProveIt project}}
+\titleformat{\section}{\large\bfseries}{\thesection}{0.8em}{}
+\titlespacing*{\section}{0pt}{13pt}{5pt}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}\setlength{\emergencystretch}{2em}
+\setlist{nosep,leftmargin=1.5em,topsep=3pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Zero-spare transfer215 and alternatives}\fancyhead[R]{\small 21 October 2026}\fancyfoot[C]{\thepage}
+\newcommand{\file}[1]{{\small\path{#1}}}
+\newcommand{\MP}{\mathsf{MP}_0}
+\newcommand{\AX}{\mathsf{AX}}
+\newcommand{\PUSH}{\mathsf{PUSH}}
+\newcommand{\DISCARD}{\mathsf{DISCARD}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\begin{document}
+{\LARGE\bfseries A zero-spare transfer machine\\with 215 states}\par
+\vspace{5pt}
+{\large A new resource-policy combination, protected startup, and further alternatives}\par
+21 October 2026\par
+
+\section{Result and exact scope}
+\textbf{A new calibrated 215-working-state candidate is provided. The 214-state target remains open.} The candidate combines the previously established three-command transfer-pop source with the recently published zero-spare allocation policy. It changes the value of every newly appended spare from one to zero and uses a different blank start. Its new initialization proof protects an unsafe generalization output below eight safe theorem heads. This is not a new proof language: the earlier transfer compiler is unchanged.
+
+The new native table has 430 transition rows, designated start 74 and separate halt label 254. The supplied canonical table has start 0, dispatcher 81 and separate halt label 215. All 215 working states are graph reachable. The unchanged source has \textbf{201 source DAG nodes}, 4,775 primitive occurrences and 6,209 guarded primitive cases. Source nodes are not Turing-machine states.
+
+The complete append-zero runtime replay proves all 6,209 arbitrary-natural cases, using 1,611,489 symbolic rules and all 430 rows. A separate 73,172-transition literal blank run reaches a full represented source frame; an exact 177-primitive source trace identifies that frame inside an initial AX. The all-natural AX contract and a protected-credit induction then complete the blank-start argument. Relative to the inherited numerical-calculus/ZFC calibration, this is an ordinary mathematical proof that the machine halts exactly when ZFC is inconsistent. \textbf{No new Lean or Rocq theorem for these exact machine bytes is claimed.}
+
+A further genuinely changed command language omits successful MP's dummy zero push. Its complete compiler and protected startup are established, but its checked physical implementation has \textbf{216 states}, not 215. Other results include an NDN adjacency obstruction, calibrated prefix recodings, and bounded source costs. The modal-B theorem-equality claim is withdrawn; refutation equivalence remains open.
+
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.30\linewidth}>{\raggedright\arraybackslash}p{0.31\linewidth}>{\raggedright\arraybackslash}p{0.31\linewidth}@{}}
+\toprule Direction & Mathematical status & Exact physical status\\\midrule
+Zero-spare transfer & Complete inherited compiler; new protected startup & 215 states; 6,209 universal runtime cases\\
+MP without a zero push & New complete compiler; protected credit transfers & 216 states; 6,184 universal runtime cases\\
+NIP--DROP--NIP & Obstruction for fixed AX row order & Not a binary-state lower bound\\
+Delete AX saved top & Conditional completeness transport & 204 source nodes / 217 allocated states; not calibrated\\
+Prefix recoding & All-natural logical calibration & Best nonuniform source 213 nodes; no physical improvement\\
+Modal-B replacement & Theorem equality false; refutation equivalence open & No calibrated machine\\
+\bottomrule
+\end{tabular}\end{center}
+
+\section{The new resource policy and exact machine}
+Let
+\[
+ P(a,b)=\frac{(a+b)(a+b+1)}2+b,\qquad I(a,b)=4P(a,b),\qquad Q_a b=4P(a,b)+2,
+\]
+with truth zero, falsity one, and stack notation $[x;w]=P(x,w)$. The transfer source uses the three operations $S$, MP and AX with one, two and three scheduler fields. Its complete compiler, closed-body source binding, arithmetic macro calibration and unbounded credit proof are included in the primary component.
+
+Relative to the previous append-one transfer table, the native transition change is exactly
+\[
+ (198,0):\quad 1L40\ \longrightarrow\ 0L40,
+\]
+and the designated start changes from zero to 74. This one-row edit changes an unbounded operational policy: every CI primitive now appends $B(0)=01$ instead of $B(1)=011$. The runtime accepts arbitrary natural spare values, but it still has to prove the \emph{new} appended block. The fresh checker calls its append-zero contract and rederives every literal step, unary induction and finite-list schema on the new table. It does not inherit an append-one result merely because the source is unchanged.
+
+The native and canonical table SHA-256 identifiers are, respectively,
+\begin{quote}\small\ttfamily
+\nolinkurl{29a6ed4a594d7f974cf267a9e6b665af34c9afd8dd7abbbecf0b538ecab151e0}\\
+\nolinkurl{60eae1c30d214f71c65a207087dc716ba4cdad2a1a62c51e9e107434a0ceb4f1}.
+\end{quote}
+The source SHA-256 is
+\begin{quote}\small\ttfamily
+\nolinkurl{05e7caa159d95cdf9ee254d313c44c52369ac91e52cbc23d54b15f0b64b95922}.
+\end{quote}
+
+The source is reconstructed, not merely hash-compared: remove the old DROP selector at subtree \texttt{1101}, retaining the closed MP/AX inner body and root branch; replace the NIP body at \texttt{111} by $(\mathrm{oldDROP};\mathrm{oldNIP});\mathrm{oldNIP}$. Independently calculated control-flow graphs verify each relocated closed body's primitive and internal/exit edges. The two selector decrements implement $S=0$, MP$=1$, AX$\ge2$, with the residual selector supplying AX's private parameter. The exact row recipe and canonical state bijection are replayed separately.
+
+\subsection*{Attribution and material difference}
+The published zero-spare parent is \href{https://github.com/VladimirReshetnikov/ProveIt/commit/cd596116875419a0cc1b0665cc1c58c7b9f5a135}{commit \texttt{cd596116875419a0}}, artifact \file{Z215_Zero_Spare_2026-10-21.zip}. It retains the earlier four-command calculus. The other parent is our already delivered append-one transfer construction, now itself present in \href{https://github.com/VladimirReshetnikov/ProveIt/commit/7342ae8c96c325bb8340291f43d7573866a77cd7}{commit \texttt{7342ae8c96c325bb}}. The contribution here is their new combination and its exact unsafe-tail startup proof, not discovery of either parent's policy or language.
+
+The respective numbers of transitions writing one are 190 for append-one transfer, 188 for the published zero-spare parent, and 189 for the new combination. This invariant rules out state renaming, even without fixing the start, and also rules out a global left/right reflection between these parents and the new table. A replayable forced-map comparison additionally rejects rooted, read/write/direction-preserving state isomorphism against all 18 other pinned presentations in the 19-table comparison set. A separate archived audit finds no identical rooted transition graph among 93 standalone table members of the inspected packet collection. These are finite, explicitly pinned comparisons, not a global novelty claim or a claim that every compared table is independently calibrated.
+
+\subsection*{Two additional protected 215-state layouts}
+Two compact companion layouts have the same command semantics and the same protected-startup conclusion. Reassociating the transfer body from $(D;N);N$ to $D;(N;N)$ changes 78 source addresses but preserves all 4,775 guarded ordinal effects and successors. Its full append-zero runtime covers 6,209 cases with 1,611,366 symbolic rules, all 430 rows and minimum duration eight. A latest-source reparse also preserves the guarded ordinal graph; its full runtime uses 1,665,757 rules, all 430 rows and minimum duration seven. Each has its own exact 73,172-step full blank frame and 177-primitive source bridge, not merely an assumed shared initializer.
+
+The first companion's native table hash begins \texttt{b49dd77f055ed4e9}; the reparse table's begins \texttt{d8c4b6ce210467c6}. Complete pins, censuses and owned replay are in their named components. Exact graph checks distinguish the first from the primary and the reparse from all 20 preceding/current comparison tables. These are implementation alternatives, not additional proof languages or reductions below 215.
+
+\section{Blank startup with an unsafe generalization output}
+Native start 74 on an all-zero tape reaches dispatcher 84 after exactly 73,172 transitions, with head $-2$ and source ordinal 119. The complete logical register store is
+\[
+ (N,T,W,A,D,H,X,Y,L)=(0,6,0,0,1,1,10,1,0).
+\]
+The full frame has gap zero, 65 spares $[0,0,1,0,\ldots,0]$ (62 trailing zeros), and exactly 107 one-cells. Sparse-native, dense-native and canonical simulations agree on the entire tape, not just a local window. The represented source address is \texttt{11010011000110110110}.
+
+An independent abstract-source run begins at AX entry ordinal 25 with
+\[
+ (N,T,W,A,D,H,X,Y,L)=(0,0,0,0,1,1,0,0,0)
+\]
+and takes exactly 177 primitive transitions to the displayed frame. This is equality of ordinal and \emph{all nine} logical registers. It does not assert equal physical gap/spare histories for a hypothetical earlier binary run. The arbitrary-gap/arbitrary-spare runtime theorem permits continuation from the actual complete blank frame.
+
+Complete that AX using its terminating all-natural contract. Its parameters are $c=x=y=0$, $U=D=1$, $A=D+x=1$, $B=H+y=1$. The output top is the enabled native bundle at $(1,1,0)$. The first eight stack heads are the seven retained rows and the dominated row $L(1,1,0,1)$, with $1\le1$. Every one is an axiom instance. Counter, cache and proof pointer become zero; next candidate remains $N=0$.
+
+The ninth head is
+\[
+ Q_1(1)=4P(1,1)+2=18.
+\]
+\textbf{It is not assumed to be a theorem.} The incoming cache one was unsafe. The saved old top and old stack are both zero, so the suffix below the eight safe heads is exactly
+\[
+ J=P(18,P(0,0))=171.
+\]
+Treat all of $J$ as an opaque arbitrary tail. No consistency assumption is used to label its contents safe.
+
+\subsection*{Why the tail can never be exposed}
+Here is the unbounded scheduler argument; the full induction is included in \file{primary/proofs/protected_credit.md}. Let $f$ be Cantor's right projection, $T_s=s(s+1)/2$, $R(0)=\epsilon$, and $R(r)=W(r-1)$ for $r>0$. If $\operatorname{unpair}(n)=(a,y)$, the exact candidate words obey
+\[
+ W(n)=\begin{cases}
+ S;R(y),&a=0,\\
+ \mathrm{MP};R(f(y)),&a=1,\\
+ \AX;R(f^2(y)),&a\ge2.
+ \end{cases}
+\]
+Give $S$ balance $-1$, MP balance zero and AX balance ten. A residual $R(r)$ has at most $r$ commands, hence minimum prefix balance at least $-r$. Put $b(n)=\operatorname{bal}W(n)$, $B(k)=\sum_{n<k}b(n)$, $g(0)=0$, $g(r)=b(r-1)$ and $q(r)=g(r)+1$.
+
+The values of $f$ occur in blocks $[0],[0,1],[0,1,2],\ldots$. Nonnegative prefix sums of $q$ therefore imply the same property for $q\circ f$ and $q\circ f^2$. Their needed input sums are $1+B(k-1)+(k-1)$. Joint induction on Cantor diagonals proves $B(k)+k\ge0$ and every command prefix within each diagonal $s\ge2$ nonnegative relative to that diagonal's beginning. Indeed, the first $k$ AX candidates have total balance at least $9k$. Within AX candidate $y$, all nonempty prefixes have balance at least $8y+10$. The MP candidate has lower bound $8(s-1)$; the final S candidate has lower bound $7s-9>0$. Only earlier candidate indices occur in the pullback, so the induction is not circular.
+
+The exceptional words are $W(0)=[S]$, $W(1)=[\mathrm{MP}]$, $W(2)=[S,S]$. Their cumulative minimum is $-3$. Every later diagonal has nonnegative relative command-prefix balance. Thus enumeration from zero needs exactly three conservative safe heads. Eight initial heads leave a permanent margin of at least five.
+
+For composite $S=\mathrm{DROP};\mathrm{NIP};\mathrm{NIP}$, DROP temporarily pushes the safe top; the first NIP removes that temporary head, and the second consumes the one safe head supplied by the bound. All tested values are theorems. AX thereafter adds ten theorem heads because its incoming top/cache are now safe. MP preserves the safe prefix and may add theorem zero. The chosen finite wrapper list remains valid even when $P(0,0)=0$; it counts explicit heads, not the magnitude or an injectively encoded length of the stack integer.
+
+Hence every future halt witnesses a native refutation and $J$ is never exposed. Conversely, the complete transfer compiler works over arbitrary underlying stacks and provides successful candidates above every cutoff after an initial AX reset. Each candidate drains finitely. A native refutation therefore eventually causes a halt. Together with the inherited numerical/ZFC bridge, the new blank machine has the claimed consistency calibration. Completing the enormous AX numerically is neither attempted nor needed: its all-natural terminating contract supplies that step.
+
+\section{Removing the successful MP zero push}
+Using the same numerical constructors, a command-boundary store is $(t,w,d,h)$: top, stack, additive counter and cache. Retain the delivered transfer command $S$ and AX exactly. If $w=[x;v]$, then
+\[
+ S(t,w,d,h)=\begin{cases}\mathsf{halt},&h=1\text{ or }t=1,\\
+ (h,v,d,x),&\text{otherwise}.
+ \end{cases}
+\]
+Only successful MP changes. With $y=d+x$, define
+\[
+ \MP(x)(t,w,d,h)=
+ \begin{cases}
+  (y,w,y,0),&I(t,y)=h,\\
+  (0,w,y,0),&I(t,y)\ne h.
+ \end{cases}
+\]
+The stack is unchanged in both branches. The old successful command returned $(y,[0;w],y,0)$. All arguments and stacks are arbitrary naturals; the numerical alias $I(0,0)=0$ is retained intentionally.
+
+\subsection*{Soundness and structural blocks}
+The safe invariant is unchanged: top, cache and each accessible stack head are native theorems. On success $\MP$ applies numerical MP to theorem $t$ and theorem $I(t,y)$; on failure it supplies theorem zero. Neither branch changes the stack. The already established soundness of $S$ and AX, including $S$'s top-falsity guard, therefore gives command-level soundness from safe or correctly protected seeds.
+
+Put $\Delta=\AX(0;0,0)$. Substituting $\MP$ for MP preserves these structural contracts:
+\begin{align*}
+ H&=\Delta;S^{11},\\
+ \PUSH&=\Delta;S^9;\MP(0),\\
+ \DISCARD&=\MP(1);\AX(1;0,0);S^{10};\MP(0).
+\end{align*}
+$H$ halts or sends $(t,[x;w],d,h)$ to $(t,w,0,x)$. It uses no MP. $\PUSH$ sends every $(t,w,d,h)$ exactly to $(0,[t;w],0,0)$ without halting. After nine shifts, only saved $t$ remains over $w$; the final target is zero, and both branches of $\MP(0)$ now have the same top/cache/counter and leave that stack intact.
+
+$\DISCARD$ sends every $(t,w,0,0)$ exactly to $(0,w,0,0)$ without halting. Its first comparison must fail since $I(t,1)>0$; the last $\MP(0)$ clears the top without adding a head. The counter-loading macro $J(u)$ may remain empty for $u=0$ and equal $\MP(u)$ otherwise. In fact $\MP(0)$ would now also be safe because its zero-alias success does not push anything.
+
+Consequently the old strong blocks for truth, retained rows, the dominated row, the full gated bundle and generalization remain valid after this substitution. Only the inductive MP block needs a repair.
+
+\subsection*{The repaired major first MP block}
+For a native theorem $X$, require the universal strong contract
+\[
+ B_X(t,w,0,0)\quad\text{halts or returns}\quad(X,w,0,0)
+ \tag{Strong}
+\]
+for arbitrary natural $t,w$. Suppose $B_A$ and $B_M$ satisfy this contract, with $M=I(A,B)$. Define
+\[
+ \begin{split}
+ B_B={}&\DISCARD;\PUSH;B_M;\PUSH;B_A;\PUSH;S;S;\\
+       &\MP(B);\AX(B;0,0);S^{11}.
+ \end{split}
+\]
+The first two commands explicitly reserve the zero formerly created by successful MP. Ignoring permitted sound earlier halts, the exact intermediate stores are
+\begin{align*}
+ (t,w,0,0)&\longmapsto(0,[0;w],0,0),\\
+ &\longmapsto(0,[M,0;w],0,0),\\
+ &\longmapsto(0,[A,M,0;w],0,0),\\
+ &\longmapsto(A,[0;w],0,M),\\
+ &\xrightarrow{\MP(B)}(B,[0;w],B,0).
+\end{align*}
+The last tuple is exactly the delivered compiler's old post-MP tuple. $\AX(B;0,0)$ gates to zero, saves $B$ as its tenth generated head and clears counter/cache. Ten transfers give $(Q_B0,[0;w],0,B)$. The eleventh halts if $B=1$ and otherwise yields $(B,w,0,0)$, proving (Strong).
+
+When $A=B=0$, $M=I(0,0)=0$ and the intended comparison succeeds. It inserts no extra zero; exactly the reserved zero is removed by cleanup. When $w=0$, a saved zero can numerically alias its suffix because $P(0,0)=0$. This does not invalidate the calculation: $\operatorname{unpair}(P(x,v))=(x,v)$ holds for every natural pair. The proof tracks an explicit wrapper list over a fixed suffix, not an injectively encoded stack length.
+
+\begin{theorem}[Complete no push command compiler]
+The modified three-command language compiles every native theorem with (Strong), and compiles a refutation into a successful candidate above every finite enumeration cutoff.
+\end{theorem}
+\begin{proof}
+Truth, all axioms and generalization use the preserved strong blocks. The repaired block above handles the inductive numerical MP rule, so induction over finite proof trees gives (Strong). For a refutation use $B_1;H$. A first $\AX(0;1,Y)$ resets counter/cache and leaves an arbitrary top/stack, exactly the inputs admitted by the strong contract. The old field packing therefore gives cofinal candidates
+\[
+ N_Y=P(2,P(Y,P(1,R))),\qquad R=\operatorname{tail}(B_1;H).
+\]
+The unchanged positive predecessor-tail scheduler drains after each command, so every nonhalting candidate is finite and every sufficiently large successful candidate is eventually reached.
+\end{proof}
+
+\subsection*{Protected credit and the physical separation}
+The delivered new-tag scheduler theorem assigned conservative balances $S=-1$, MP$=0$, AX$=10$. It deliberately ignored the successful-MP zero push. The same proof applies to $\MP$ without change, now with exact MP stack balance. At a proved root with next candidate one, zero proof pointer, theorem top/cache and ten explicit theorem heads over an arbitrary tail, the permanent conservative margin remains eight.
+
+This command theorem alone does not identify a physical blank initializer. The current 216-state table is a separate artifact. Relative to the protected transfer215 table, the isolated omission allocation changes native $100/1$ from $1R164$ to $1R313$ and adds state $313=(0R77,1R114)$, leaving arithmetic states 11 and 26 intact. The missing side effect loses a contextual decoder sharing; fewer primitive operations do not automatically imply fewer physical states.
+
+The initialized proof covers 6,184 cases and a width-eleven window overapproximation with 35,804 local points; its declared scope excludes initialization. The literal 68,442-step blank-prefix receipt is separate. A further exact check reproduces the full 174-primitive AX trace from ordinal 25 with registers $(1,0,4,0,0,0,0,0,0)$ to ordinal 55 with $(1,11,2,0,0,0,0,0,0)$, then matches the entire blank frame with 59 spare ones and 150 one-cells. The omission source first differs at ordinal 4670. AX itself is unchanged, so its complete command contract and the conserved credit theorem finish the bridge, not the finite prefix alone.
+
+\section{An adjacency obstruction for NIP DROP NIP}
+Consider $R=\mathrm{oldNIP};\mathrm{oldDROP};\mathrm{oldNIP}$ with unchanged AX output order. For $w=[x;v]$ it halts if incoming $h=1$ or popped $x=1$, and otherwise
+\[
+ R(t,[x;v],d,h)=(x,v,d,t).
+\]
+This is not the earlier NIP--DROP variant. In particular its cache need not equal zero or its current top, so that earlier invariant cannot be reused.
+
+Define a relation on naturals by
+\[
+ E(u,v)\iff\forall z\,\bigl(u=I(v,z)\ \Longrightarrow\ u=v=z=0\bigr).
+\]
+Maintain $E(h,t)$ and $E$ for every consecutive pair in the infinite decoded chain $[t;w]$. Both hold at the all-zero seed. The cache/top relation immediately forces every successful MP to have $t=y=h=0$.
+
+\subsection*{AX preserves the relation by exact structural mismatches}
+AX's output chain is
+\[
+ [G,R_1,R_2,R_3,R_4,R_5,R_6,R_7,L,Q_Uh,t;w],
+\]
+with cache zero. Thus $E(0,G)$ holds; the final saved-$t$ link to the old stack is inherited. Each remaining adjacency forbids a nontrivial implication match:
+\begin{itemize}
+\item For $G$ to have $R_1$ as antecedent, the full-bundle structure would force its quantifier-coded component to equal $1$. If $G=0$, the positive $R_1$ already prevents a match.
+\item The antecedents of $R_1,R_2,R_4$ are quantifier-coded, whereas their following rows $R_2,R_3,R_5$ are implication-coded.
+\item The antecedents of $R_3,R_5,R_7$ are equality-coded, whereas their followers $R_4,R_6,L$ are implication-coded.
+\item $R_6=I(\exists_aQ_ac,c)$ cannot have $R_7$ as antecedent: injectivity would force $R_7$'s implication-coded consequent to equal $1$.
+\item $L$'s antecedent is implication-coded but its next head $Q_Uh$ is quantifier-coded. That head itself cannot be an implication major for saved $t$.
+\end{itemize}
+These arguments range over all natural parameters. The implication constructor is injective on pairs even at the raw zero alias, so no syntactic well-formedness assumption is hidden in the tag comparisons.
+
+If $R$ returns, its new cache/top pair was an old adjacent chain pair and the chain loses its first node. On MP failure, inserting a zero top/cache preserves $E(0,v)$; on success, the invariant forces all relevant values to zero, and the possible pushed zero preserves every adjacency. The same proof works when the successful-MP zero push is omitted.
+
+\begin{theorem}[Fixed row order obstruction]
+From the clean all-zero seed, every command sequence over $R$, MP and the unchanged AX has only trivial successful MP outputs. Its top, cache and decoded stack never contain $1$, and neither halt guard can fire.
+\end{theorem}
+\begin{proof}
+The adjacency induction above forces successful MP output zero. Initially every accessible value differs from one. AX adds implication rows, a quantifier head, an implication-or-zero gate and the saved old top, all different from one. MP only produces or pushes zero; $R$ moves old values. Induction therefore preserves the non-one property as well as the adjacency invariant.
+\end{proof}
+The theorem rules out the intended nontrivial finite-refutation compiler for this fixed interface. It is not a state lower bound, an obstruction to every row permutation, or a nonhalting theorem for an unidentified physical blank initializer. An exposed unsafe tail or an entry before the invariant has been established is outside its clean-seed hypothesis.
+
+Useful PUSH and CLEAN macros do not contradict the theorem. With $D_1=\AX(1;0,0)$, $D_1;R^9;\mathrm{MP}(0)$ returns $(0,[t;w],0,0)$, because the final implication comparison fails by its consequent. A subsequent $R$ restores the top or halts on $t=1$. Such macros never manufacture the missing nontrivial adjacent MP pair.
+
+\section{Deleting AX saved top remains conditional}
+Let $D,N$ be the old DROP and NIP, and let $\AX_{\rm del}$ delete only AX's first push-and-clear of incoming top. Two exact interface facts suffice for a completeness transport:
+\begin{enumerate}
+\item With incoming $h=0$, $D;\AX_{\rm del}$ has the full old AX effect: $D$ first creates the store that the deleted prefix would have created.
+\item With incoming $t=0$, $\AX_{\rm del}$ has old AX's effect except that the final saved zero under the nine generated heads is absent.
+\end{enumerate}
+Every old strong-compiler AX call outside generalization has cache zero and can therefore be replaced by $D;\AX_{\rm del}$. Generalization needs the separate block
+\[
+ B_X;D;J(i);N;\AX_{\rm del}(i;0,0);N^9;D;N.
+\]
+After the first four components the store is $(0,w,i,X)$. The deleted AX supplies the eight implication rows and $Q_iX$ but no saved zero. Nine NIPs give $(0,w,0,Q_iX)$, without testing $X$. DROP and one NIP then return $(Q_iX,w,0,0)$. This also handles $X=1$ and $i=0$; a second final NIP would incorrectly over-pop the arbitrary suffix.
+
+An independent review approves this completeness calculation \emph{conditional on the exact interface facts}. It does not establish raw-input soundness. A changed quantifier index such as $t+d$ is allowed by generalization, but the literal row/gate parameters, dominated condition $U\le A$, reset behavior and field arities still require checks. The tested 204-node / 217-state price is not a calibrated machine and gives no improvement at the requested ceiling.
+
+\section{Complete dualization repairs NDN but costs more}
+The fixed-interface adjacency obstruction must not be generalized to every NDN system. Let $J(t,w,d,h)=(h,w,d,t)$ swap top and cache. Changing \emph{both} logical commands to $\mathrm{MP}^{*}=J\mathrm{MP}J$ and $\AX^{*}=J\AX J$, while keeping $R$ unchanged, gives an exact dual normal-state interface:
+\[
+ J S J(t,[x;v],d,h)=(x,v,d,t).
+\]
+For $y=d+x$, $\mathrm{MP}^{*}(x)$ tests $I(h,y)=t$. Success returns $(0,[0;w],y,y)$ and failure returns $(0,w,y,0)$. AX generalizes incoming top, saves incoming cache, and returns the gate in the cache. Its complete equation is
+\[
+ \AX^{*}(c;x,y)(t,w,d,h)=
+ (0,[r_1,\ldots,r_7,L(A,B,c,d),Q_dt,h;w],0,G(A,B,c)),
+\]
+where $A=d+x$ and $B=t+y$.
+
+Ignoring only halt guards, conjugacy transports every exact compiled block to
+\[
+ (0,w,0,h)\longmapsto(0,w,0,X).
+\]
+Restoring $R$'s real guards can only interrupt it with an earlier halt. Appending $R$ to a compiled refutation catches cache one. Soundness follows because both guard operands are accessible theorems and successful MP caches a theorem conclusion. The same one/two/three field scheduler and balances $-1,0,10$ give cofinal completeness and conditional protected-tail soundness.
+
+The guards of $R$ are not the conjugates of all the old $S$ guards, so this is an exact normal-map transport plus a separate halt-or-return argument, not equality of halt sets. Literal register swaps in the source cost 219, 219 and 220 source DAG nodes across the three tested layouts. No favorable physical allocation or blank initializer is claimed. Reversing only the MP comparison is not the proved construction.
+
+\section{Prefix recoding has a complete logical calibration}
+The independently reviewed Q-priority constructors are
+\[
+ I'(a,b)=2P(a,b),\quad Q'_ab=4P(a,b)+3,\quad
+ R'(a,b)=8P(a,b)+1,\quad E'(a,b)=8P(a,b)+5.
+\]
+Their images partition all naturals into even numbers, $3\bmod4$, $1\bmod8$, and $5\bmod8$. Each constructor is injective; only $I'(0,0)=0$, and every positive value strictly exceeds both children. Also $R'(0,0)=1$, preserving the literal halt code.
+
+Define $F(0)=0$. For positive $n$, uniquely decode $n=C(a,b)$ in the old four-tag algebra and set $F(n)=C'(F(a),F(b))$. The children are smaller, so the recursion is total. Define $G$ in the other direction. Induction proves both inverse identities; the constructor equations also hold at zero, where the self-decomposition is explicitly stopped. Thus this is an isomorphism on the \emph{entire numerical carrier}, not just parsed formula codes.
+
+Every unrestricted finite proof transports under $F$: constructor-polynomial axiom expressions, exact numerical MP, theorem GEN and equality/disequality gates are preserved. A number serving simultaneously as a formula, binder and private label receives the \emph{same} image in every occurrence. The full private bundle is transported, not replaced by an unproved formula-only interpretation. Since $F(1)=1$, unrestricted refutations correspond in both directions.
+
+\subsection*{Domination is a separate certificate obligation}
+$F$ is not order-preserving: $3<4$ but $F(3)=5>2=F(4)$. Therefore one must not transport $U\le A$ through it. Instead, in each encoding independently, the pinned finite implicational certificate derives unrestricted $\rho_8$ from dominated instances. At every dominated leaf, the fourth argument is either zero or an explicit implication subterm of the first. Constructor domination proves the inequality uniformly, including zero aliases.
+
+The fresh independent checker verifies all 3,728 proof nodes and 5,160 term nodes. Its 1,260 dominated-leaf witnesses comprise 224 zero cases, 164 equal cases, and 872 proper-subterm cases of depths one through four. This gives the chain
+\begin{align*}
+ \text{old dominated refutation}&\Longleftrightarrow\text{old unrestricted refutation}\\
+ &\Longleftrightarrow\text{new unrestricted refutation}\\
+ &\Longleftrightarrow\text{new dominated refutation}.
+\end{align*}
+The middle step is the all-natural algebra isomorphism; the outside steps are distinct certificate theorems. This is logical calibration relative to the inherited numerical-calculus/ZFC bridge, not a physical state bound or a new proof-assistant endpoint.
+
+\subsection*{Exact search scope and source costs}
+There are exactly five complete ordered four-leaf binary prefix-tree shapes. With least-significant-bit-first decoding, assign the all-zero leaf to implication, the value-one leaf to membership, and assign quantifier/equality to the remaining leaves in either order. This gives ten codings in this explicitly bounded family. The same recursive isomorphism and separate domination argument apply.
+
+A whole-constructor rebuild tested 18 layouts for each coding, 180 total. Its unchanged control itself costs 205 nodes, exposing a four-node association penalty. A source-preserving screen then tested 513 edits and restored the exact 201-node control. The best nonuniform source costs 213 nodes; Q-priority costs 214. These are \emph{source counts}, not 213- or 214-state machines.
+
+The uniform quantifier/equality swap $I=4P$, $R=4P+1$, $Q=4P+3$, $E=4P+2$ reaches 202 nodes. Among 1,458 tag-skeleton configurations, its 128 minima collapse to exactly two complete ASTs. Independent row permutations over both ASTs cover $2\cdot6^7=559,872$ configurations without improvement. Protected physical pricing of all eight joint minima gives 219 or 221 states.
+
+Holding the optimal equality skeleton fixed, all $2^{22}=4,194,304$ quantifier-tag orientations were counted. The minimum is 202 at exactly the two global orientations. The owned exact cost formula is a bit-union count over 176 known subtrees plus 44 mixed-dependent nodes, less one possible equality decided by a 16-entry table. An independent full-AST reconstruction agrees on 224 controls. This is exhaustion of that fixed skeleton's 22 choices, not of every encoding, joint equality choice, source association or physical allocation.
+
+\subsection*{An exact upstream constructor correction}
+The source-only experiment \file{swap_Q_E.json}, under \file{data/constructor-variants/}, in \href{https://github.com/VladimirReshetnikov/ProveIt/commit/b74074eacb936164d85e0f1aea5a8254412ade48}{commit \texttt{b74074eacb936164}} misses one quantifier application split across AST subtrees. Original primitive interval $[1574,1603)$ becomes $[1575,1604)$ but still computes $4P+2$, the new equality constructor, rather than the intended new quantifier $4P+3$. On arguments $(0,0)$ it gives two instead of three. The complete literal census has 22 quantifier occurrences, including this split second quantifier in $\rho_4$.
+
+An owned inert-input check reproduces the exact words, interval shift, source hashes and unchanged following 26-primitive context. This is a mismatch in that particular source translation. No inspected primary or secondary advertised 215-state table depends on the experiment, and the generic all-natural constructor-calibration theorem is unaffected. The correction must not be presented as invalidating unrelated 215-state machines.
+
+\section{A two-constructor covering algebra collapses}
+A separate negative theorem concerns $I(a,b)=2P(a,b)+2$ and $Q(a,b)=2P(a,b)+3$, whose images cover all codes at least two. Let $R,E$ be \emph{any} total numerical functions. Retain the intended full classical implicational strength, theorem GEN, distribution, existence, both membership substitutions, original $\rho_6$, and every original gated bundle. Then the calculus derives falsity one, independently of $R,E$.
+
+Original $\rho_6$ first supplies explosion $1\to A$ for every natural $A$, and the existence/distribution rows give $Q_i1\to1$. Strong induction on raw codes then proves either $A$ or its native negation for every code: zero is truth, one has its identity negation, and every larger code decomposes into a strictly smaller implication or quantified matrix. No independent atomic generators remain. It follows that $Q_iA\leftrightarrow A$ for all $i,A$.
+
+Existence now proves every equality code; the substitution rows make every membership code equivalent to $r=R(0,0)$. In the original gated bundle, the allowed instance $(a,b,c)=(1,1,0)$ reduces to $r$, while $(0,0,1)$ reduces to its native negation. MP derives one.
+
+The full-strength hypothesis is essential. Because this algebra loses $I(0,0)=0$, the old dominated certificate must not be silently reused; a restricted basis lacking the intended implicational strength would need its own calibration. The theorem rules out this atom-free full-strength covering design, not arbitrary two-constructor calculi or variable-length encodings reserving atomic images.
+
+\section{Modal B theorem equality fails but refutation equivalence is open}
+Replacing original $(\exists_iQ_iA)\to A$ by $A\to Q_i\exists_iA$ does \emph{not} preserve the entire numerical theorem set. In the original raw algebra, interpret native zero as true, native one as true, all equality atoms as false, quantifiers as identity, and implication as Boolean implication. Membership atoms other than $R(0,0)$ may be false. The zero alias is respected. Every retained row, the proposed modal-B row and full gated bundle are true, but original $\rho_6$ at $A=E(0,0)$ is false.
+
+The invalid earlier equivalence argument silently used unconditional double-negation elimination relative to native one. Pure classical implication does not make an arbitrary designated atom into bottom. Original $\rho_6$ derives explosion and supplies that missing property; a replacement cannot inherit it for free.
+
+This countermodel \emph{does not refute equiconsistency}. A relative translation proves $Q_i1\leftrightarrow1$ and recovers double-negation elimination for regular formulas satisfying $1\to A$. Original $\rho_6$ is derivable for regular matrices. The unresolved obligations are transporting the full subset premise in its negative polarity and respecting the coupled matrix-code/private-binder identity. A formula-only regularization does not automatically solve either. The correct status is disproved theorem-set equality and open refutation calibration, not impossibility and not an established consistency machine.
+
+\section{Other complete languages and bounded source experiments}
+A selected-AX/automatic-stack-MP design reduces the abstract alphabet to two commands. Selected AX chooses one retained row, the dominated row, the gate, or generalization; MP pops its major premise automatically and halts on a successful conclusion one. Its compiler has the universal contract $(t,w,0,0)\mapsto\mathsf{halt}$ or $(X,[t;w],0,0)$, and major-first proof compilation supplies completeness without DROP, NIP or transfer.
+
+The corrected concrete source has 225 nodes and 4,996 primitive occurrences. The preliminary 223-node count omitted the consuming-GEN cleanup and is not the complete design. No full symbolic source certificate, binary allocation, blank initializer or new scheduler-credit proof is claimed. The abstract compiler and its unfavourable implementation price are separate results.
+
+Other exact bounded source experiments include:
+\begin{itemize}
+\item Direct MP implication arithmetic saves 27 primitive occurrences by avoiding a stack round trip, but all 132 seven-factor associations for each tested scratch/baseline/success variant cost at least 210 transfer-source nodes or 211 four-command nodes.
+\item A common additive field before dispatch costs 204 nodes and 218 allocated states in the tested layouts. A dirty-counter AX reader has minimum 206 nodes over all 1,430 nine-factor associations.
+\item Longer transfer bodies $D;N^k$ have source minima 202 for $k=3,4$ and 203 for $k=5,8$, with protected allocated prices at least 216. These are prices, not completeness assertions.
+\item All 858 fine-factor omitted-MP assemblies, including a justified commuting of field read past PUSH, yield five 201-node / 216-state minima. The remaining layouts cost more; only the retained best tables receive the stated prefix checks.
+\item Consuming the MP counter on success costs 202 nodes / 217 allocated states without its dummy push and 203 / 218 with it.
+\end{itemize}
+These families are expressly bounded. They neither prove a physical lower bound nor exclude untested implementations of the same abstract interfaces.
+
+\section{A sharper separation of runtime from blank startup}
+For the exact earlier delete-301 table, every initialized source-runtime visit to native state $35$ reading zero has a one within seven cells to the left. A fresh all-natural replay covers all 6,209 guards, observes 9,546 symbolic entries, accounts for 4,773 unary accelerations, and checks that none of the four finite-list schemas hides a state-35 visit. Strict interiors of its zero-scanning unary loop have a one immediately to the left.
+
+The same exact table's blank start reaches state 35 after 85 steps at head seven with only one-cells $\{-3,-2\}$, so its nearest left one is nine cells away. Thus a width-eleven overapproximation could conflate startup and runtime even though a wider invariant separates them. The compact checker reconstructs a sound width-nineteen cover of 16,722 contexts without the 119 MB exploratory trace.
+
+On that cover, all 856 tested one-row first actions, with old catch-up at most 40 steps and new catch-up at most 256, leave only the original action $1R35$. This is a bounded local synthesis failure, not a proof that a wider-context multirow repair is impossible. All statements here are pinned to the \emph{old} row-198 resource policy. A later zero-spare variant is a different table and is not covered by the old all-start ray theorem.
+
+\section{Reproduction, evidence boundaries and open work}
+The packet has clearly separated parts. \file{primary/} contains the new calibrated zero-spare transfer215, complete source/table reconstruction, canonical map, universal runtime census, exact blank/AX witnesses, compiler and protected-credit arguments. \file{mp0_216/} is the separately calibrated 216-state no-push alternative, not another claim at the requested ceiling. \file{secondary_association/} and \file{optional_reparse/} contain the two companion 215-state layouts. \file{supplement/} contains the other mathematical results, exact comparison inputs and selected owned checks. Rejected tables are confined to \file{negative_controls/}; comparison inputs are inert, not promoted candidates.
+
+The primary and MP0 replay commands require only Python 3's standard library with assertions enabled. Each rederives its full arbitrary-natural runtime census and writes into a fresh external output directory. The supplementary checks replay the prefix certificate, exact constructor mismatch, all 171 comparisons among the 19 pinned tables, and the state-35 universal separator. Replaying the final bounded state-35 action screen additionally needs a C++17 compiler. No network, received scripts, proof search or repository checkout is required.
+
+The runtime census records every guarded source primitive with its affine duration and symbolic-step count. Its hash alone does not prove which table was checked; the replay rebuilds and authenticates that table, invokes append zero explicitly, and checks its literal transitions. Likewise, finite checks of 500,000 scheduler candidates corroborate indexing but do not replace the written all-natural induction. Search-scope receipts and the 93-member upstream audit are archived evidence, not all regenerated by the compact runner. Inherited mathematical arguments remain distinct from executable source/whole-tape verification and from a proof-assistant theorem.
+
+Promising open questions are whether MP0's final decoder distinction can be eliminated without losing a complete arbitrary-spare primitive contract; whether a different NDN row order escapes the proved adjacency invariant; and whether a prefix recoding can reduce physical allocation rather than only arithmetic leaves. The modal-B relative translation has the explicit remaining obligations described above. The bounded local screens do not establish a 215-state lower bound.
+
+\subsection*{Pinned sources and attribution}
+The resource-policy source is \href{https://github.com/VladimirReshetnikov/ProveIt/commit/cd596116875419a0cc1b0665cc1c58c7b9f5a135}{zero-spare commit \texttt{cd596116875419a0}}. The comparison snapshot is \href{https://github.com/VladimirReshetnikov/ProveIt/commit/ead95b5b336818a53c89b8c3d5249822e0570939}{\texttt{ead95b5b336818a5}}; it is not an assertion about all future repository additions. The prior transfer packet was incorporated byte-for-byte at \href{https://github.com/VladimirReshetnikov/ProveIt/commit/7342ae8c96c325bb8340291f43d7573866a77cd7}{\texttt{7342ae8c96c325bb}}. Earlier underlying constructions include the \href{https://github.com/VladimirReshetnikov/ProveIt/commit/7071e5041ee316d087661b658362feed159901ef}{dominated-row source}, \href{https://github.com/VladimirReshetnikov/ProveIt/commit/d59b4418821c598c4703f0a60b1f7cbae4f3bcf6}{permuted source}, and \href{https://github.com/VladimirReshetnikov/ProveIt/commit/6ec69081ca2a4abc03c35b573e22eb0d939a6324}{partial-selector source}. The \href{https://github.com/VladimirReshetnikov/ProveIt/commit/a61476422532a5d3b7dec11fc7a92751fe0d60f8}{related accepted 215-state table} is not substituted for our exact byte-pinned input.
+
+Full inherited notices, source hashes and licenses accompany each component. The present contribution is the zero-spare/transfer composition and its protected startup, the no-push compiler, the stated new algebraic arguments and owned verification. It neither claims authorship of the underlying numerical calculus nor a new formal proof-assistant endpoint. The earlier delivered archives remain unmodified.
+\end{document}

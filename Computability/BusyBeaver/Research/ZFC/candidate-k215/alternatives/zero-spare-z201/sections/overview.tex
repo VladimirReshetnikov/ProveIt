@@ -1,0 +1,53 @@
+\section{Exact results and construction boundaries}
+Each machine is deterministic, has one bi-infinite binary tape, and moves left or right at each transition. There are 215 working states, 430 transition rows, and a separate halt label. No nonblank tape is supplied externally. The claimed conclusion for each literal table $M$ is
+\[
+\mathrm{ZFC}\vdash\bigl(\operatorname{Halts}(M,\mathrm{blank})
+\leftrightarrow\exists p\,\operatorname{Proof}_{\mathrm{ZFC}}(p,\bot)\bigr).
+\]
+Equivalently, blank nonhalting is provably equivalent in ZFC to $\Con(\mathrm{ZFC})$. This does not prove actual nonhalting, consistency of ZFC, or a lower bound on the required states.
+
+\begin{center}\small
+\begin{tabular}{lrr}\toprule
+& NIP/MP/DROP & Transfer-pop\\\midrule
+Working states &215&215\\
+Binary transition rows &430&430\\
+Primitive source occurrences &4,751&4,775\\
+Distinct source subtrees &202&201\\
+Guarded primitive cases &6,176&6,209\\
+Symbolic rule applications &1,697,188&1,611,489\\
+Minimum affine duration constant &6&7\\
+Literal prefix used in proof &570,263&73,172\\
+Prefix endpoint &Safe source root&Interior AX frame\\\bottomrule
+\end{tabular}
+\end{center}
+Source DAG nodes are not physical states: the second source has 201 nodes but its machine has 215 states. Neither an initialized 214-state runtime nor a rejected 214-state table is substituted for these blank-start machines.
+
+\subsection{A small table change with a nontrivial proof obligation}
+For each construction, begin with its own pinned public 215-state parent, retain its source, change native row $198/0$ from $1L40$ to $0L40$, and designate native state 74 as initial rather than 0. All other rows are unchanged. The parent sources differ: the first is the previously uncalibrated order-201 command allocation; the second is the calibrated transfer-pop source. Their parents and exact recipes are included separately.
+
+The changed row makes every source increment append a spare word
+$B(0)=01$ rather than $B(1)=011$, where $B(v)=0\,1^{v+1}$. From matched frames, the appended spare region after $k$ increments has $2k$ rather than $3k$ cells. This saves $k$ cells in that region, not necessarily $k$ cells of total space at matched binary times. No general running-time improvement is asserted.
+
+A different start state alone would not justify material novelty. Here the physical backend changes, and each combination requires a new source-level initialization argument. The first repairs an order that the public packet retained only as research. The second combines a different three-command language with zero spares and an unsafe-cache bootstrap that the previous unit-spare proof did not cover.
+
+The number of one-writing rows falls by one relative to each unit-spare parent, excluding state-renaming equivalence even with global tape reflection. Further exact rooted graph comparisons against pinned public alternatives are included. These are bounded comparison claims, not assertions of global priority.
+
+\subsection{Pinned tables}
+\noindent\begin{minipage}{\linewidth}Primary native SHA-256:
+\begin{quote}\small\path{ef49b414d3d8a08050654d225d4b6ec2972fc73d1bed2f277b5cfded88bdc101}\end{quote}\end{minipage}\par
+\noindent\begin{minipage}{\linewidth}Primary canonical SHA-256:
+\begin{quote}\small\path{21218bcf54b3feec8813b8266955f05de4f7f07c9a176ab830199f6747628f67}\end{quote}\end{minipage}\par
+\noindent\begin{minipage}{\linewidth}Secondary native SHA-256:
+\begin{quote}\small\path{29a6ed4a594d7f974cf267a9e6b665af34c9afd8dd7abbbecf0b538ecab151e0}\end{quote}\end{minipage}\par
+\noindent\begin{minipage}{\linewidth}Secondary canonical SHA-256:
+\begin{quote}\small\path{60eae1c30d214f71c65a207087dc716ba4cdad2a1a62c51e9e107434a0ceb4f1}\end{quote}\end{minipage}\par
+Native tables start at 74 and halt at 254; their canonical tables start at 0 and halt at 215. Exact bijections are supplied. File hashes bind the literal serialization as well as the transition content.
+
+\section{Representation and the zero-spare simulation}
+The logical registers are ordered $(N,T,W,A,D,H,X,Y,L)$: next candidate, current theorem, encoded stack, selector residue, additive counter, theorem cache, two scratches, and proof-list remainder. The physical tape stores a fixed-width binary source address, a padding gap, unary primary registers, and a nonempty finite list of spare registers. The spare values need not be theorem codes and have no logical role.
+
+The inherited symbolic checker is parameterized by the appended spare value. Here that parameter is zero, and the changed append block is rederived against each exact table. The domain still includes every natural primary register tuple and padding gap, arbitrary nonempty finite lists of natural spare values, and the complete zero exterior. In particular, mixed zero/one spare lists reached during bootstrap are permitted.
+
+Unary scan and spare-list induction establish unbounded primitive contracts. Every guarded occurrence has a positive affine binary duration, so repeated source execution corresponds to genuine progress. A finite search cutoff for finding a symbolic derivation is not a bound on the natural registers quantified by a successful derivation. Conversely, a timeout would not prove a contract false. Full successful inventories are supplied separately for both tables.
+
+The logical arguments below are independent of spare values. They nevertheless cannot replace the binary proof: the altered append row, source routing, each guard, and each exact initial configuration all require their own verified bindings.

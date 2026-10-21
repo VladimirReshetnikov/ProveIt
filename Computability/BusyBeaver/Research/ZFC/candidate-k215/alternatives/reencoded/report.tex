@@ -1,0 +1,37 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=24mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs,longtable,array,enumitem,fancyhdr,xurl}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\file}[1]{{\small\path{#1}}}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.6em,topsep=3pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small K215: a different encoding and counter seed}\fancyhead[R]{\small 21 October 2026}\fancyfoot[R]{\thepage}
+\hypersetup{pdftitle={Two alternative 215-state ZFC consistency machines},pdfauthor={Research contribution for the ProveIt project}}
+\begin{document}
+\begin{center}
+{\LARGE\bfseries Two alternative 215-state\par ZFC consistency machines}\par\vspace{8pt}
+{\large Re-encoding the source and admitting a nonzero initial counter}\par\vspace{5pt}
+{Research contribution for Vladimir Reshetnikov's ProveIt project}\par
+{21 October 2026 UTC}
+\end{center}
+\begin{abstract}
+We give two binary, single-tape, blank-start machines with 215 working states whose nonhalting is equivalent to the consistency of ZFC. The primary construction is a source re-encoding. This is an alternative construction, not a 214-state result. Its transition graph is not a relabeling of the three compared 215-state baselines. Relative to the primary baseline, it changes 17 transition rows and 4,519 source instruction addresses, while retaining the same 4,751 primitive operations and their complete guarded ordinal control graph. The number of addresses containing six consecutive zero bits decreases from 37 to 33; the source DAG remains at 202 nodes.
+
+The important additional proof obligation is initialization. The new machine reaches its genuine source root after 716,307 transitions with next-candidate register 4 and additive counter 1, rather than the old zero-counter seed. We prove that an arbitrary natural initial counter is harmless: command soundness already permits it, and a cofinal family of refutation programs begins by resetting it. Fresh unbounded runtime verification establishes all 6,176 guarded primitive cases for this literal table. The resulting proof is ordinary mathematics formalizable in ZFC, not a newly kernel-checked Lean or Rocq theorem. The calculus itself is inherited unchanged; the primary contribution is a materially different physical encoding and a more flexible initialization theorem. A second table gives a distinct physical allocation of the recently published sixth-axiom sampler source, together with its adjusted strong compiler and separate runtime and blank-start verification.
+\end{abstract}
+\setcounter{tocdepth}{1}\tableofcontents
+\input{sections/construction}
+\input{sections/theory}
+\input{sections/command_calibration}
+\input{sections/seed}
+\input{sections/rho6}
+\input{sections/verification}
+\clearpage\appendix
+\section{Complete canonical transition table}
+Start state 0, head coordinate 0, and an everywhere-zero tape are part of the definition. Working states are $0,\ldots,214$; $H$ denotes halt label 215, which has no outgoing transitions. An entry $wDq$ means write $w$, move one cell in direction $D$, and enter state $q$. The appendix is generated from the supplied canonical table.
+\input{sections/full_table}
+\end{document}

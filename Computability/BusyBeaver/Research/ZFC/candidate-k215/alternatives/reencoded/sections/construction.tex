@@ -1,0 +1,45 @@
+\section{Result, distinction, and scope}
+The machine uses one bi-infinite binary tape and moves left or right at every step. It has 215 working states and 430 transition rows. Including the halt label gives 216 labels, not 216 working states. All working states are reachable in the directed transition graph; this is not a claim that every state occurs on the blank computation.
+
+The desired conclusion is
+\[
+\mathrm{ZFC}\vdash
+\bigl(\operatorname{Halts}(M,\mathrm{blank})
+\leftrightarrow\exists p\,\operatorname{Proof}_{\mathrm{ZFC}}(p,\bot)\bigr).
+\]
+Equivalently, ZFC proves that blank nonhalting of $M$ is equivalent to $\Con(\mathrm{ZFC})$. No assertion of actual nonhalting, consistency of ZFC, minimality, or priority over every unpublished construction is made.
+
+\subsection{What is materially different?}
+The primary reference is the earlier composed-command/partial-selector K215 construction. A second reference permutes the DROP and NIP tags. A recent public variant exchanges two helper roles, at native labels 11 and 134. The new table is not isomorphic to any of these as a transition graph preserving the input symbol, written symbol, and move direction, even when the initial state is not distinguished. Joint color refinement distinguishes the respective graph multisets in 3, 3, and 2 rounds. This is a finite certificate of nonisomorphism, not a general graph-isomorphism heuristic: unequal refinement multisets preclude an isomorphism.
+
+Against the primary reference, 17 retained transition rows change and 4,519 of the 4,751 primitive addresses change. Against the other two references, the literal native-label differences comprise 33 and 22 rows respectively. Native-label differences alone would not prove material novelty; the graph certificate and different blank computation provide the stronger evidence.
+
+The old primary reaches a clean $(N,D)=(4,0)$ source root after 95,714 steps. The new table reaches $(N,D)=(4,1)$ after 716,307 steps. These are different physical computations and different proof boundaries. The old initializer certificate cannot simply be copied to the new table.
+
+The logical calculus and abstract register program are unchanged. In particular, this is not a new axiomatization of set theory, a new command calculus, or a further reduction in state count. The change is a different allocation of an equivalent source encoding, plus a proof that a less restrictive initialized counter is sufficient.
+
+\subsection{Pinned artifacts}
+The native transition table has SHA-256
+\begin{quote}\small\path{f5acfbb2e3d0e2b61350454a098a217d3457710311e9dbf02135098fdbe8d36d}\end{quote}
+The normalized discovery table has SHA-256
+\begin{quote}\small\path{6aab0397336a198c8fd765803864a69134508175e637d563d6bea8aabbe7b416}\end{quote}
+The exact indented source-site file has SHA-256
+\begin{quote}\small\path{704a0449c4164c39464f714e08c435d656f96c024e336ff27d091166772816fe}\end{quote}
+These hashes identify literal files, including their serialization. The native, normalized, and dense canonical tables are explicitly bijective relabelings of this one construction. The machine definition is the table, not its name or these state-label conventions.
+
+\section{Equivalent source encoding and physical verification}
+\label{sec:source-correspondence}
+The source has 4,751 primitive occurrences and 202 distinct subtrees. Reassociation changes source addresses and the corresponding physical routing, while preserving the literal left-to-right operation/operand word and both guarded successor choices at every conditional primitive. The first 37 primitive addresses remain fixed. The maximum address depth increases from 47 to 49. The number of addresses containing a run of six zero bits decreases from 37 to 33. This last quantity counts addresses, not states or individual zero runs, and is not claimed to be a complexity lower bound.
+
+\begin{lemma}[All-natural source correspondence]
+Relate the old and new source configurations when their primitive ordinals and all nine natural-valued registers agree. This relation is a strong step-for-step bisimulation, preserving halt.
+\end{lemma}
+\begin{proof}
+At each ordinal the primitive operation and operand are identical. Therefore its arithmetic update and guard outcome agree on every natural store. The complete guarded ordinal control graphs agree, so the next ordinal or halting result agrees as well. Induction on execution length gives the claim. This argument has no bounded-register assumption and no formula-decoding premise.
+\end{proof}
+
+Source correspondence does not by itself prove that the reallocated binary table implements that source. A separate symbolic runtime check treats every primitive occurrence, splitting decrement cases according to zero or positive input. The fresh check proves all 6,176 cases and uses 1,753,058 symbolic rules. The minimum constant term in the certified affine transition duration is 6; all duration coefficients are nonnegative. Thus every source primitive corresponds to a positive finite binary execution, ruling out a zero-time simulation loophole.
+
+The representation contracts allow arbitrary natural primary registers, an arbitrary natural padding gap, and a nonempty finite spare list, together with a completely zero exterior. Scan and list lemmas are inductive, not bounded test traces. Address decoding, both guarded exits, the represented output values, and the tape outside the represented frame remain separate proof obligations. The supplied proof machinery rechecks these rather than inferring them from the source DAG size.
+
+The source/calculus bridge is inherited from the earlier composed K215 and its local-input K216 parent. The following sections reproduce the numerical calculus and explicit command compiler to make clear exactly which mathematics is retained. The final seed theorem extends their stated initialization boundary; it does not silently identify the new counter value with zero.

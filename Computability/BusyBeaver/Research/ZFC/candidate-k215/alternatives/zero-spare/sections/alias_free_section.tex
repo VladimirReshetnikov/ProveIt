@@ -1,0 +1,119 @@
+\section{An implication fragment independent of the truth alias}
+\label{sec:alias-free-IKP}
+
+The inherited full dominated-$\rho_8$ certificate uses the literal
+arithmetic identity $I(0,0)=0$. This creates a separate issue when
+considering an implication constructor with a nonzero residue tag.
+The following new finite derivation removes that dependence for
+identity, weakening, and Peirce's law. It does not claim the whole
+classical-basis or encoding-calibration theorem.
+
+For this section let $X$ be any set, let $I:X\times X\to X$ be any
+binary operation, written $a\to b$, and let $\operatorname{Th}$ be a
+predicate on $X$. Define
+\[
+ L(a,b,c,u)=((c\to u)\to a)\to((a\to c)\to(b\to c)).
+\]
+
+\begin{theorem}[Two subterm schemas derive $I,K,P$]
+\label{thm:alias-free-IKP}
+Suppose $\operatorname{Th}$ is closed under modus ponens and contains
+every instance of
+\[
+ \mathrm A_0:\ L(u,b,c,u),\qquad
+ \mathrm A_1:\ L(z\to u,b,c,u).
+\]
+Then it contains every instance of
+\[
+ p\to p,\qquad p\to(q\to p),\qquad ((p\to q)\to p)\to p.
+\]
+No truth constant, equation on $I$, injectivity, order, or interpretation
+of members of $X$ as formulas is assumed.
+\end{theorem}
+
+\begin{proof}
+The following is a complete 22-node schematic derivation.
+Its notation is Polish implication: $Cuv$ means $u\to v$, and letters
+are metavariables universally quantified independently in each row.
+$\mathrm{CD}(i,j)$ means instantiate major row $i$ and minor row $j$
+so that the minor is exactly the antecedent of the major, then apply
+modus ponens. Every required substitution is explicitly stored in
+\texttt{research/alias\_free/alias\_free\_ikp.json}; the table gives the resulting schemas.
+
+\begin{center}
+\small
+\begin{tabular}{rll}
+Node&Rule&Conclusion\\ \hline
+0&$\mathrm{A}_0$&\texttt{CCCabbCCbaCca}\\
+1&$\mathrm{A}_1$&\texttt{CCCabCcbCCCcbaCda}\\
+2&$\mathrm{CD}(1,0)$&\texttt{CCCCCabbCabCbCabCcCbCab}\\
+3&$\mathrm{CD}(1,1)$&\texttt{CCCCCabbCabCbbCcCbb}\\
+4&$\mathrm{CD}(1,3)$&\texttt{CCCaCbbCCCcbbCcbCdCCCcbbCcb}\\
+5&$\mathrm{CD}(4,0)$&\texttt{CaCCCbbbCbb}\\
+6&$\mathrm{CD}(5,0)$&\texttt{CCCaaaCaa}\\
+7&$\mathrm{CD}(1,6)$&\texttt{CCCaaCaaCbCaa}\\
+8&$\mathrm{CD}(7,7)$&\texttt{CaCCbbCbb}\\
+9&$\mathrm{CD}(8,0)$&\texttt{CCaaCaa}\\
+10&$\mathrm{CD}(7,9)$&\texttt{CaCbb}\\
+11&$\mathrm{CD}(10,0)$&\texttt{Caa}\\
+12&$\mathrm{CD}(1,11)$&\texttt{CCCabaCca}\\
+13&$\mathrm{CD}(1,12)$&\texttt{CCCabCbcCdCbc}\\
+14&$\mathrm{CD}(2,12)$&\texttt{CaCbCcb}\\
+15&$\mathrm{CD}(14,0)$&\texttt{CaCba}\\
+16&$\mathrm{CD}(1,13)$&\texttt{CCCaCbcCdbCeCdb}\\
+17&$\mathrm{CD}(16,0)$&\texttt{CaCCCCbcdcCbc}\\
+18&$\mathrm{CD}(17,0)$&\texttt{CCCCabcbCab}\\
+19&$\mathrm{CD}(1,18)$&\texttt{CCCabCCabcCdCCabc}\\
+20&$\mathrm{CD}(19,12)$&\texttt{CaCCCbcbb}\\
+21&$\mathrm{CD}(20,0)$&\texttt{CCCabaa}\\
+
+\end{tabular}
+\end{center}
+Rows 11, 15 and 21 are the three asserted schemas.
+The independent forward checker evaluates all stored substitutions and
+checks exact antecedent and consequent equality at each of the twenty
+modus-ponens nodes. It checks the two axiom shapes structurally.
+There is no implication normalization, truth leaf, unification, or
+search in that checker. The resulting finite derivation is valid under
+every valuation in $X$: equal formal expressions have equal evaluations,
+whether or not distinct expressions can have the same value.
+\end{proof}
+
+\begin{corollary}[Application to every nonnegative implication tag]
+\label{cor:alias-free-tags}
+Let $P$ be Cantor pairing and let $I_j(a,b)=4P(a,b)+j$ with $j\geq0$.
+Any numerical calculus closed under modus ponens and containing
+$L(A,B,C,U)$ whenever $U\leq A$, using $I_j$ as implication, derives
+every numerical instance of identity, weakening, and Peirce.
+\end{corollary}
+
+\begin{proof}
+For $\mathrm A_0$, the restriction is $u\leq u$.
+For $\mathrm A_1$, it is $u\leq I_j(z,u)$.
+Cantor pairing dominates each coordinate, and hence
+$I_j(z,u)\geq u$. Theorem~\ref{thm:alias-free-IKP} now applies directly
+to $X=\mathbb N$. Its argument includes every natural assignment,
+including zero, aliases, and codes not decoded by a conventional
+formula grammar.
+\end{proof}
+
+In particular, this corollary applies to the proposed
+$I_3/R_1/Q_0/E_2$ constructor assignment, in which the old equation
+$I(0,0)=0$ is absent. It establishes three exact logical interfaces for
+that encoding without translating the numerical order or the shared
+formula-code/variable-label namespace.
+
+The remaining gap is explicit. This certificate does not derive
+distribution $S$, composition $B$, or the unrestricted four-argument
+$L$ schema. The earlier full certificate therefore cannot yet be
+replaced by this fragment to obtain the alternate encoding's complete
+consistency calibration. The unresolved derivations are further
+research questions; incomplete searches are not evidence that they
+are impossible. The released zero-spare machine retains the inherited
+implication constructor and its existing full calibration, so its
+correctness does not depend on resolving this separate question.
+
+The proof search adapted the repository's existing
+condensed-detachment helpers. The new contribution is the two-schema
+derivation, its explicit-substitution certificate, and its independent
+forward checker; the search infrastructure is inherited.

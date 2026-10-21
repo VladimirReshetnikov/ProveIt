@@ -1,0 +1,191 @@
+% Include-ready section. Requires amsmath/amssymb; defines no global macros.
+\section{A calculus reduction: one orientation of quantifier commutation}
+\label{sec:ordered-commutation}
+
+The numerical calculus permits a useful reduction independently of any
+particular binary allocation.  Only one direction of quantifier
+commutation is needed for each pair of distinct labels.  The result
+preserves the exact native theorem codes, so it avoids any translation
+of the code-dependent seed bundle.
+
+\subsection{Definitions and hypotheses}
+
+Write
+\[
+ P(u,v)=\frac{(u+v)(u+v+1)}2+v,\qquad
+ I(U,V)=4P(U,V),\qquad Q_a(U)=4P(a,U)+2,
+\]
+and let the native falsity code be $F=1$.  In the formulas below,
+$U\to V$ denotes the native code $I(U,V)$, and
+\[
+ \neg U=I(U,F),\qquad
+ \Box_a U=Q_a(U),\qquad
+ \Diamond_a U=\neg\Box_a\neg U.
+\]
+These are numerical constructors.  Parameters denote arbitrary natural
+numbers, and no assumption that a parameter decodes as an ordinary
+formula is needed.  In particular, $I(0,0)=0$ is retained literally.
+
+The proof uses the classical propositional interface K, S, and
+$\neg\neg U\to U$, together with numerical modus ponens,
+\emph{theorem-only} generalization, and the retained rows
+\begin{align}
+ \rho_2(a;U,V)&:
+ \Box_a(U\to V)\to(\Box_a U\to\Box_a V),
+ \label{eq:ordered-normality}\\
+ \rho_6(a;U)&:
+ \Diamond_a\Box_a U\to U.
+ \label{eq:ordered-counit}
+\end{align}
+For the current dominated calculus, the classical interface is supplied
+by the inherited dominated-$\rho_8$ calibration together with the retained $\rho_6$ row.  It is an explicit premise
+of the present reduction, rather than a new consequence of a finite
+truth-table calculation. The falsity interface can be seen explicitly:
+K gives $F\to\Diamond_i\Box_i X$, and composition with $\rho_6$
+gives $F\to X$. The inherited classical implicational interface
+then yields double-negation elimination. No meaning is assigned to
+code 1 by a truth-table test.
+
+\paragraph{Theorem.}
+For each unordered pair of distinct natural labels, select one
+orientation $(a,b)$.  Retain the commutation axiom only in that
+orientation, for every natural matrix code $X$:
+\begin{equation}
+ \Box_a\Box_b X\to\Box_b\Box_a X.
+ \label{eq:ordered-retained}
+\end{equation}
+Keep all other axioms and rules unchanged.  Then every omitted
+commutation instance is derivable at exactly its original native code.
+Consequently the restricted and unrestricted calculi derive precisely
+the same natural numbers.  One possible selection is $a<b$; diagonal
+instances require no commutation axiom.
+
+\subsection{Finite derivation of the opposite direction}
+
+We first record two admissible transformations on \emph{closed}
+theorems.  Normality and theorem-only generalization take
+$U\to V$ to $\Box_i U\to\Box_i V$.  Classical contraposition then
+gives the corresponding diamond monotonicity
+$\Diamond_i U\to\Diamond_i V$.
+
+Applying~\eqref{eq:ordered-counit} to $\neg U$, taking its
+contrapositive, and eliminating double negations gives the unit
+\begin{equation}
+ U\to\Box_i\Diamond_i U.
+ \label{eq:ordered-unit}
+\end{equation}
+More explicitly, contraposition initially yields
+$\neg\neg U\to\neg\neg(\Box_i\Diamond_i U)$.
+Compose this with double-negation introduction at $U$ and elimination
+at $\Box_i\Diamond_i U$ to obtain~\eqref{eq:ordered-unit}.
+It follows that a closed theorem $\Diamond_i U\to V$ gives the
+closed theorem
+\begin{equation}
+ U\to\Box_i V.
+ \label{eq:ordered-adjunction}
+\end{equation}
+Indeed, generalize the given closed theorem, apply normality, and
+compose with~\eqref{eq:ordered-unit}.  No open hypothesis is generalized.
+
+Fix arbitrary numerical labels $a,b$ and matrix code $X$, and set
+\[
+ Y=\Box_b\Box_a X.
+\]
+Use the retained orientation~\eqref{eq:ordered-retained} only at the
+matrix $\neg Y$.  Classical contraposition, with double-negation
+transport inside the two boxes, yields
+\begin{equation}
+ \Diamond_b\Diamond_a Y\to\Diamond_a\Diamond_b Y.
+ \label{eq:ordered-dual}
+\end{equation}
+The double-negation transports in this step are important at the level
+of literal numerical codes: the nested diamonds are expanded as
+$\neg\Box_b\neg\neg\Box_a\neg Y$ and its counterpart, rather
+than identified with the unnormalized expressions by fiat.
+
+Now compose three closed theorems:
+\[
+ \Diamond_b\Diamond_a Y
+ \longrightarrow \Diamond_a\Diamond_b Y
+ \longrightarrow \Diamond_a\Box_a X
+ \longrightarrow X.
+\]
+The first is~\eqref{eq:ordered-dual}.  The second is diamond
+monotonicity applied to
+$\Diamond_b\Box_b(\Box_a X)\to\Box_a X$.
+The third is~\eqref{eq:ordered-counit} at $(a,X)$.
+Apply~\eqref{eq:ordered-adjunction} first at label $b$, then at label
+$a$.  This gives, successively,
+\[
+ \Diamond_a Y\to\Box_b X,
+ \qquad Y\to\Box_a\Box_b X.
+\]
+Substituting the definition of $Y$ proves the missing orientation
+\[
+ \Box_b\Box_a X\to\Box_a\Box_b X.
+\]
+For $a=b$, the commutation formula is an identity $Z\to Z$, already
+derivable from K and S.  Every leaf of an unrestricted finite proof can
+therefore be replaced by a finite restricted proof.  The converse
+inclusion is immediate because every retained axiom was available
+before.  The replacement leaves every other native axiom code,
+including the gated seed bundle, unchanged.
+
+\subsection{Certificate and separate audit}
+
+The supplied generator \texttt{ordered\_commutation.py} writes a
+600-node finite schematic Hilbert certificate.  Its two closed outputs
+are the reversed commutation theorem and the unit
+\eqref{eq:ordered-unit}.  The generator checks its output using the
+pinned inherited \texttt{hilbert.py} reader.
+
+A separately implemented standard-library reader,
+\texttt{independent\_ordered\_audit.py}, imports neither that generator
+nor its proof kernel.  It reconstructs the allowed axiom schemas and
+checks every parent index, modus-ponens match, open-hypothesis set,
+generalization premise, and final formula.  Its actual result is
+\texttt{INDEPENDENT\_ORDERED\_COMMUTATION\_AUDIT\_PASS}.
+The audit establishes the following exact finite facts:
+\begin{itemize}
+ \item All 600 stored nodes pass the reader.  The dependency graph of the
+ two outputs contains 488 nodes and no hypothesis nodes.
+ \item There is exactly one oriented-commutation axiom instance, at
+ node 70.  Its ordered labels are $(a,b)$ and its matrix is precisely
+ $\neg(\Box_b\Box_a X)$.  No opposite-direction instance is admitted
+ as an axiom.
+ \item All five generalization nodes have closed premises.
+ \item The only axiom interfaces used are K, S, double-negation
+ elimination, $\rho_2$, $\rho_6$, and the stated orientation of
+ commutation.
+\end{itemize}
+
+The certificate uses syntactic tree equality as a sufficient condition
+for equality of instantiated numerical codes.  It never infers
+constructor injectivity or treats schematic instantiation as a new
+object-level substitution rule.  Evaluating each schematic parameter at
+arbitrary naturals turns the checked graph into a finite native proof;
+the zero alias causes no exception.
+
+This is an executable finite proof certificate and a separate reader
+audit.  It is not a new Lean or Rocq kernel endpoint.  The derivations of
+the K/S/classical interface from dominated $\rho_8$ and retained $\rho_6$ remain the identified
+inherited premise; the present certificate does not recheck that larger
+certificate.
+
+\subsection{Scope for machine optimization}
+
+Because the restriction preserves every native theorem code, the
+existing consistency calibration transfers to a source that enumerates
+this restricted commutation family and all the other required rows.
+This conclusion supplies a logical interface for source optimization;
+it does not by itself supply a smaller binary machine.
+
+In particular, imposing $a\le b$ on the \emph{entire} present AX command
+is not justified by this theorem.  Its other schemas share the same
+parameters.  The existing equality-reflexivity argument, for example,
+uses $\rho_1(f(x,x),x)$ with a fresh merged-equality binder
+$f(x,x)>x$, and such an instance lies outside that proposed global
+restriction.  Recovering those other rows and preserving the exact
+seed-bundle calibration would require additional proofs.  A concrete
+state saving also requires a source, an allocation, an arbitrary-value
+runtime proof, and an exact blank-start connection.

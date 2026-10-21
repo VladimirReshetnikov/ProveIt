@@ -1,0 +1,62 @@
+{
+  "status": "BOTH_CLEAN_ZIP_FULL_RUNTIME_REPLAYS_PASS",
+  "date_utc": "2026-10-21",
+  "scope": "Both complete subpackets were independently zipped and freshly extracted. Their verifiers were invoked from an unrelated working directory with only extracted package files and Python standard-library dependencies. Every extracted file was compared byte-for-byte with the corresponding frozen release subpacket. Report and aggregate checks are separately covered by final combined default verification. No new proof-assistant kernel endpoint or completed214 blank-start machine is claimed.",
+  "primary": {
+    "command": "python3 -B primary/verify.py --full-runtime NEW_EXTERNAL_DIRECTORY",
+    "status": "PASS",
+    "guarded_cases": 6176,
+    "symbolic_steps": 1697188,
+    "minimum_duration_constant": 6,
+    "fresh_symbolic_seconds": 295.7629199649964,
+    "all_runtime_cases_exactly_match": true,
+    "complete_startup_trace_exactly_matches": true,
+    "native_table_sha256": "ef49b414d3d8a08050654d225d4b6ec2972fc73d1bed2f277b5cfded88bdc101",
+    "source_sha256": "0b7e1e035796b954b96a358b8e634b921abb36118ce84baf02b4e61c29b95c80",
+    "copied_tree": {
+      "files": 78,
+      "inventory_sha256": "287ddbb053b5127fa252af5cc67a67145a992cad24568445ebb74bfa2c84b309",
+      "copied_tree_byte_identical": true
+    }
+  },
+  "secondary": {
+    "command": "python3 -B secondary/verify.py --runtime --work NEW_EXTERNAL_DIRECTORY",
+    "status": "PASS",
+    "guarded_cases": 6209,
+    "symbolic_steps": 1611489,
+    "minimum_duration_constant": 7,
+    "all_runtime_cases_match_after_JSON_normalization": true,
+    "all_block_certificates_match_after_JSON_normalization": true,
+    "native_and_dense_full_blank_trace_match": true,
+    "native_table_sha256": "29a6ed4a594d7f974cf267a9e6b665af34c9afd8dd7abbbecf0b538ecab151e0",
+    "source_sha256": "05e7caa159d95cdf9ee254d313c44c52369ac91e52cbc23d54b15f0b64b95922",
+    "copied_tree": {
+      "files": 128,
+      "inventory_sha256": "6e27273a66b1f4e394449cfeddeb7805a917bbb855d4bc70082c6d2f70101a63",
+      "copied_tree_byte_identical": true
+    }
+  },
+  "aggregate_preflight": {
+    "status": "PASS",
+    "exact_manifest_before_and_after": true,
+    "both_default_modules": true,
+    "new_pair_nonisomorphic_even_after_reflection": true
+  },
+  "optimization_rejection": [
+    {
+      "script": "verify.py",
+      "returncode": 1,
+      "diagnostic": "RuntimeError: Run with Python assertions enabled. -O and -OO are not supported."
+    },
+    {
+      "script": "primary/verify.py",
+      "returncode": 1,
+      "diagnostic": "Run without -O: assertions are required for verification."
+    },
+    {
+      "script": "secondary/verify.py",
+      "returncode": 1,
+      "diagnostic": "RuntimeError: Verification requires assertions; do not use -O or PYTHONOPTIMIZE"
+    }
+  ]
+}

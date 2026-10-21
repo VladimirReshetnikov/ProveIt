@@ -1,0 +1,134 @@
+{
+  "bounded_search_receipts": {
+    "scope": "Only hashes and report structure are checked here. Optional run_search.py reruns each finite-window search. A failed search does not establish minimality.",
+    "seeds": [
+      {
+        "candidate_count": 629160,
+        "ordered_rejections_sha256": "f8cbf9f2c5de937dc6c33655be25a8eec25c4a6594f9377d8c43510f04c9dd58",
+        "seed": "permuted",
+        "seed_sha256": "485ca26885508bdaf76ecd8f46827b64518ca1d9e32de81b2a8ac2904a49d9f2"
+      },
+      {
+        "candidate_count": 625736,
+        "ordered_rejections_sha256": "29839f9803e7baab6adb22be701713e121a3bbfce7cebaf5a06b150f4fadcc3e",
+        "seed": "simple",
+        "seed_sha256": "faf7bc3d856db1495cfd5a65c41b6926f71ddf26bf5116c32015c14657e0529e"
+      },
+      {
+        "candidate_count": 625736,
+        "ordered_rejections_sha256": "e7434f9297bb588368dd82918416c822480423af4321598906cdcc823e2fef52",
+        "seed": "simple-permuted",
+        "seed_sha256": "2ced63a8fedcf1b6661aec98e330950f6d20466b1966b86b8079a9f6490a810b"
+      },
+      {
+        "candidate_count": 620600,
+        "ordered_rejections_sha256": "8a72e25cdf8334899e5bec25d2fce9df11f17babfc4d355f391b4fced66bb5be",
+        "seed": "context-root",
+        "seed_sha256": "4859c0409b1674105b756a817f41329e684df30f62b56c38fd3b6271d1a3e88b"
+      }
+    ],
+    "status": "RECEIPT_BINDING_PASS_SEARCH_NOT_RERUN",
+    "total_recorded_specs": 2501232
+  },
+  "graph_comparisons": {
+    "candidate": {
+      "canonical_sha256": "20897f68e52a8707920b4b08544ad22026ca5085526f2bfa71fc490ede7372d3",
+      "graph_reachable_states": 215,
+      "left_rows": 81,
+      "one_writing_rows": 190,
+      "working_states": 215
+    },
+    "candidate_source_sha256": "8ddb942f0f1d8e2e3b12ab7217c7232eb553cd288fca38dbf9b0eded73893dd5",
+    "candidate_table_sha256": "485ca26885508bdaf76ecd8f46827b64518ca1d9e32de81b2a8ac2904a49d9f2",
+    "comparison_reachable_state_counts": [
+      214,
+      215
+    ],
+    "provenance_manifest_sha256": "855968e747e958740c599f91469def4575175ff40b3267262b89ebe52deb7db1",
+    "scope": "Read/write/direction-labelled rooted graph isomorphism, with arbitrary state renaming and optional global tape reflection. Candidate has all 215 states graph-reachable. No claim of exhaustive historical novelty or semantic inequivalence.",
+    "status": "EXACT_ROOTED_GRAPH_DISTINCTNESS_PASS",
+    "unique_raw_comparison_tables": 47,
+    "unique_rooted_comparison_graphs": 23
+  },
+  "invalid_allocation_negative_control": {
+    "expected_successor": "11010101",
+    "logical_registers": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "scope": "The abstract 35-leaf command is not refuted; this particular decoder allocation fails at a legitimate whole-tape primitive frame.",
+    "site": [
+      "110101000",
+      "CD",
+      1
+    ],
+    "site_index": 4590,
+    "source_sha256": "8333fc4a28c5befd656dde56aab2e9c2855b63baa2c6257a93ea6e1ee52e558d",
+    "spares": [
+      0
+    ],
+    "status": "CONCRETE_INVALID_ALLOCATION_COUNTEREXAMPLE_REPLAYED",
+    "steps": 634,
+    "table_sha256": "2ced63a8fedcf1b6661aec98e330950f6d20466b1966b86b8079a9f6490a810b"
+  },
+  "startup_obstructions": {
+    "all_start_variants": [
+      {
+        "append": 0,
+        "effective_table_sha256": "1ded4700fa7babd008fb101e7295d10ec21dab1599a1eb52ca7f69c41e1b7c2a",
+        "first_write_states": [
+          0,
+          4,
+          16,
+          35,
+          66,
+          74,
+          97
+        ],
+        "initial_states": 214,
+        "maximum_first_write_to_ray_steps": 78,
+        "zero_only_cycle_initial_states": 11
+      },
+      {
+        "append": 1,
+        "effective_table_sha256": "d792d3e42135c636b32f7bff440d2e60dd491c82248236a06126b531aea51bad",
+        "first_write_states": [
+          0,
+          4,
+          16,
+          35,
+          66,
+          74,
+          97,
+          198
+        ],
+        "initial_states": 214,
+        "maximum_first_write_to_ray_steps": 85,
+        "zero_only_cycle_initial_states": 11
+      }
+    ],
+    "maximum_one_bit_steps": 379,
+    "one_bit_cases": 856,
+    "one_bit_counts": {
+      "0": {
+        "HALT": 1,
+        "RAY": 427
+      },
+      "1": {
+        "HALT": 1,
+        "RAY": 427
+      }
+    },
+    "runtime214_input_sha256": "1ded4700fa7babd008fb101e7295d10ec21dab1599a1eb52ca7f69c41e1b7c2a",
+    "scope": "Only this 214-state runtime-fold core and the two values of row 198/0. Every old initial state diverges on blank tape. Every one-bit entry either halts explicitly or reaches an outward ray. Consequently one newly added initial state with unchanged existing rows has only these outcomes: its zero transition enters an old state with blank or one-bit tape, or self-loops outwards. This classifies those initializers; it is not a general 214-state lower bound.",
+    "status": "EXACT_BLANK_AND_ONE_BIT_CLASSIFICATIONS_PASS"
+  },
+  "status": "BINARY_RESEARCH_EVIDENCE_PASS"
+}

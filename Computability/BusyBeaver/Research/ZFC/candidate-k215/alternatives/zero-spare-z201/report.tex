@@ -1,0 +1,42 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=24mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs,longtable,array,enumitem,fancyhdr,xurl}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\file}[1]{{\small\path{#1}}}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.6em,topsep=3pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Two zero-spare command compositions at 215 states}\fancyhead[R]{\small 21 October 2026}\fancyfoot[R]{\thepage}
+\hypersetup{pdftitle={Two zero-spare command compositions at 215 states},pdfauthor={Research contribution for the ProveIt project}}
+\begin{document}
+\begin{center}
+{\LARGE\bfseries Two zero-spare command compositions\par at 215 states}\par\vspace{8pt}
+{\large Finite removal of unsafe bootstrap data and protection of an unsafe tail}\par\vspace{5pt}
+{Research contribution for Vladimir Reshetnikov's ProveIt project}\par
+{21 October 2026 UTC}
+\end{center}
+\begin{abstract}
+We construct two materially different binary, single-tape, blank-start machines with 215 working states. Neither is a 214-state result. Both combine the recently published zero-valued spare allocator with a different command language and a new initialization proof. The numerical calculus and its ZFC calibration are explicitly inherited.
+
+The first machine uses command order NIP/MP/DROP. Its first complete source frame is \emph{unsafe}: finite initialization temporarily places the falsity code in both active theorem registers. Rather than asserting an invalid invariant there, we verify a further finite prefix. Failed numerical detachment removes the unsafe data, and after 570,263 binary transitions the machine reaches an ordinary safe root with next-candidate index 5 and additive counter 1. An arbitrary-counter calibration theorem then applies.
+
+The second uses the three-command transfer-pop language. After 73,172 transitions it reaches a rigorously matched interior AX frame. Completing that AX leaves eight theorem heads above a generalization code not established to be a theorem. We do not call that code a theorem: an unbounded credit theorem bounds all future stack debt by three, permanently protecting the arbitrary suffix below at least five theorem heads. The two distinct initialization arguments are accompanied by full arbitrary-natural primitive runtime proofs and exact literal tables. These are ordinary mathematical proofs formalizable in ZFC, with executable certificates, not new Lean/Rocq kernel endpoints or claims of minimum state count.
+\end{abstract}
+\setcounter{tocdepth}{1}\tableofcontents
+\input{sections/overview}
+\input{sections/theory}
+\input{sections/primary}
+\input{sections/secondary}
+\input{sections/verification}
+\clearpage\appendix
+\section{Complete canonical table: NIP/MP/DROP machine}
+The working labels are $0,\ldots,214$, the initial state is 0, and $H$ is halt label 215 with no outgoing rows. Initially the tape is everywhere zero and the head is at coordinate 0. An entry $wDq$ writes $w$, moves one cell in direction $D$, and enters $q$.
+\input{sections/table_primary}
+\clearpage
+\section{Complete canonical table: transfer-pop machine}
+The same conventions apply, with its own bijection from native labels. These tables are different machines, not two relabelings of one table.
+\input{sections/table_secondary}
+\end{document}

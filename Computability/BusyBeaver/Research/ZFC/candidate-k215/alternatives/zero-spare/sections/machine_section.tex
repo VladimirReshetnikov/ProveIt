@@ -1,0 +1,188 @@
+\section{The zero-spare binary machine}
+\label{sec:z215-machine}
+
+The binary construction changes the policy for allocating unused register
+blocks.  Its source program is the accepted $4{,}751$-instruction K215 source;
+the logical operations on its nine primary registers remain the same.  The
+new initial state reaches a different source seed, whose soundness requires
+the two-truth-prefix theorem proved below.
+
+\subsection{Exact table and state conventions}
+
+Use one two-way infinite tape, alphabet $\{0,1\}$, an initially zero tape,
+initial head position $0$, and moves $L,R$ only.  Native labels are retained
+from the accepted K215 table.  Make exactly these changes:
+\[
+ \text{initial state: }0\longmapsto74,
+ \qquad
+ \delta(198,0): (1,L,40)\longmapsto(0,L,40).
+\]
+Every other transition, including both rows of state $0$ and the row
+$\delta(198,1)=(1,L,113)$, is unchanged.  The resulting table has
+$215$ working states and $430$ rows.  Native halt label $254$ has no outgoing
+rows and is excluded from the count.  All $215$ working states are reachable
+from $74$ in the finite transition graph; this graph assertion makes no claim
+that all states occur on the particular blank run.
+
+For the dense presentation, list native state $74$ first and the remaining
+working labels in increasing order, then number this list $0,\ldots,214$.
+Map native halt $254$ to dense halt $215$.  Native dispatcher $84$ becomes
+dense dispatcher $83$.  The supplied canonicalization file records both
+directions of this exact bijection.  Thus the delivered dense machine starts
+in state $0$ and has the usual consecutive working labels.
+
+This construction is not a state renaming of K215.  The old table has $189$
+rows writing symbol $1$; the new table has $188$.  That count is invariant
+under state renaming.  More substantively, every source increment now appends
+a zero-valued spare rather than a one-valued spare, changing tape growth
+throughout an unbounded run.
+
+\subsection{Physical frames and the spare policy}
+
+Write
+\[
+ B(v)=0\,1^{v+1},\qquad C(v)=1\,0\,1^v \quad(v\in\mathbb N).
+\]
+The primary logical register order is
+$(N,T,W,A,D,H,X,Y,L)$.  The physical file order is
+$(W,L,T,D,A,Y,N,H,X)$, followed by a nonempty finite list $S$ of natural-valued
+spares.  No theoremhood condition is imposed on these spare values.
+
+A frame has the dispatcher at head position $h$, a marker $1$ at $h-1$, a
+binary control address $p$ starting at $h$, enough following zeros to put a
+header $1$ at $h+64+g$, and then the nine primary blocks and the spare blocks.
+Here $g\in\mathbb N$, $|p|\leq64$, and the whole remaining exterior is zero.
+In symbols, its finite distinguished part is
+\[
+ 1\;p\;0^{64+g-|p|}\;1\;
+ B(W)B(L)B(T)B(D)B(A)B(Y)B(N)B(H)B(X)B(S).
+\]
+The head is at the beginning of $p$; if $p$ is empty it scans the first zero
+after the marker.  The notation $B(S)$ means concatenation of the spare
+blocks.  Addresses with trailing zeros are interpreted by the unchanged
+binary source dispatcher.  In particular the empty address denotes the
+source root.
+
+Let the frame projection forget $h,g,S$ and retain the resolved source
+instruction together with the nine logical registers.  The change at198/0
+affects only the newly allocated spare.  Under the accepted engine it is
+$B(1)=011$; here it is $B(0)=01$.  Each corresponding increment frame is
+therefore one tape cell shorter at the end of its file.  No primary value or
+source successor is changed by this allocation choice.
+
+Starting from otherwise matched frames, after $k$ source increments the
+newly appended spare region has $2k$ cells and $k$ ones, instead of
+$3k$ cells and $2k$ ones. Thus that region is exactly one third shorter.
+This comparison is at corresponding source boundaries; it is not a claim
+about total tape space at equal binary times or about runtime speed.
+
+\begin{lemma}[Quantified primitive simulation]
+\label{lem:z215-primitive}
+For every primitive occurrence of the pinned source, every applicable
+decrement guard, every natural primary register tuple, every natural gap,
+and every nonempty finite natural spare list, the corresponding Z215 frame
+executes a finite positive number of binary transitions to its prescribed
+successor frame.  An increment appends one zero spare.  Other nonhalting
+primitives preserve the spare list.  A source halt reaches the binary halt;
+no nonhalting primitive block reaches it.
+\end{lemma}
+
+\begin{proof}
+A fresh execution of the supplied symbolic prover derives all
+$6{,}176$ guarded cases for the $4{,}751$ primitive occurrences. The saved
+per-case records are receipts of that execution, not a dump of every
+derivation event; the complete process is reproducible with the included
+code. It uses the unchanged inherited checker, with its existing allocation
+parameter set to zero. The argument represents complete tapes by finite symbolic words,
+unary runs of affine length, finite lists of blocks, and zero exteriors.
+
+Its elementary rules are literal transition steps, induction over a unary
+run when the exact row is a scan-direction self-loop, and induction over a
+finite block list after a one-block lemma has been derived from the exact
+table.  The four block lemmas have native entries $64,0,40,97$: respectively
+rightward $B$ preservation, rightward $B$-to-$C$ conversion, leftward $B$
+preservation, and leftward $C$-to-$B$ conversion.  Each crosses one arbitrary
+block of value $v$ in exactly $v+2$ steps.  Concatenation uses the elementary
+identity $C(S)1=1B(S)$ and its reversal.  These are unary and list inductions,
+not tests on a bounded set of register values.
+
+Thirteen affine slots represent a constant, the gap, nine independent
+primary parameters, the first spare value, and the total width of the
+remaining spare list.  A positive decrement uses one plus its parameter
+for the selected register; its zero branch fixes that register to zero.
+Every resulting duration has nonnegative integer coefficients and a positive
+constant.  The minimum constant across the complete cases is $6$.
+
+The derivations contain $1{,}698{,}790$ symbolic rule applications.  Together
+with the four block schemas they account for all $430$ literal rows.  The
+ordered case file binds each result to its source occurrence and guard;
+the exact table and source hashes bind the certificates to the delivered
+bytes.  Every case closes with the specified whole-tape endpoint, including
+the unbounded zero exterior, proving the stated contract.
+\end{proof}
+
+For clarity, the exact endpoint also tracks counter carries and head motion.
+If $\varepsilon\in\{0,1\}$ is the source address-increment overflow and
+$d=1$ for a positive decrement, $d=0$ otherwise, then the successor frame
+has head $h-\varepsilon$ and gap $g+d+\varepsilon$.  Continue instructions
+have no increment overflow.  These changes disappear under the frame
+projection; they are retained in the whole-tape certificates.
+
+\subsection{The complete blank prefix}
+
+Starting at native $74$ on the zero tape, the machine reaches the source-root
+frame after exactly $117{,}004$ transitions.  Its values are
+\[
+ \begin{gathered}
+ q=84,\qquad h=-4,\qquad \text{header}=80,\qquad g=20,\\
+ (N,T,W,A,D,H,X,Y,L)=(1,0,5,0,0,0,0,0,0).
+ \end{gathered}
+\]
+There are exactly $67$ spare blocks.  The third and eighth have value $1$;
+every other spare has value $0$.  The physical primary values are
+$(5,0,0,0,0,0,1,0,0)$.  The complete tape has $86$ one-cells, with least
+position $-5$ and greatest position $240$; all other cells are zero.
+
+These assertions are an exact finite computation.  An independent audit
+replays every one of the $117{,}004$ transitions in both the native and dense
+presentations, then reconstructs the entire terminal frame from its stated
+primary and spare blocks.  The reconstructed set of one-cells equals the
+replayed set.  Thus the initial configuration of the source theorem is
+established, including the otherwise essential dirty stack value $W=5$;
+a merely plausible-looking intermediate register frame is not being used.
+
+\begin{theorem}[Frame projection and positive-duration lift]
+\label{thm:z215-lift}
+From the displayed blank-start frame, the projection of Z215 at successive
+primitive boundaries is exactly the run of the pinned source from
+$(1,0,5,0,0,0,0,0,0)$.  The binary machine halts if and only if that source
+run halts.
+\end{theorem}
+
+\begin{proof}
+Apply Lemma~\ref{lem:z215-primitive} inductively.  The successor spare list
+remains finite and nonempty, so the lemma can always be applied again.  It
+preserves the exact logical effect and source successor, while the projection
+forgets harmless changes of position, gap, and spare contents.  Every
+nonhalting primitive has a finite duration at least $6$.  Consequently an
+infinite source run yields infinitely many binary transitions, and these
+finite consecutive blocks exhaust its deterministic binary execution.
+There can be no extra binary halt between source boundaries.  Conversely,
+a finite source run ending at its halt instruction reaches the binary halt
+in that instruction's finite block.  Prepending the exact blank prefix
+establishes the equivalence from the actual zero tape.
+\end{proof}
+
+Combining this lift with the two-truth-prefix source theorem and inherited
+numerical-calculus calibration gives, by ordinary reasoning formalizable in
+ZFC,
+\[
+ \mathrm{ZFC}\ \vdash\
+ \bigl(\operatorname{Halt}(\mathrm{Z215},\mathrm{blank})
+       \leftrightarrow\neg\operatorname{Con}(\mathrm{ZFC})\bigr).
+\]
+Equivalently its blank nonhalting is provably equivalent to
+$\operatorname{Con}(\mathrm{ZFC})$.  The finite symbolic certificates and
+their induction rules supply an ordinary mathematical proof.  They are not
+a newly compiled exact-table Lean or Rocq theorem, nor a new internal-PA
+endpoint.  No unconditional nonhalting or state-minimality claim is made.

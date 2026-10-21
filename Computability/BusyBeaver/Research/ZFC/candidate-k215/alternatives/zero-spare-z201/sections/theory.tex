@@ -1,0 +1,184 @@
+\section{The numerical calculus and its consistency calibration}
+\label{sec:native-calibration}
+
+The present construction uses the dominated-parameter calculus supplied in
+\file{K218_Dominated_Rho8_2026-10-20.zip}.  This is a recent input to the
+repository, distinct from its primary, unchanged-calculus K218 table.
+Its logical theorem is inherited through the 217-state parent. Both present constructions retain that numerical calculus. Their new contributions are the zero-spare command compositions and exact bootstrap calibration below.  This distinction is essential for identifying
+which argument supplies each part of the result.
+
+\subsection{Raw numerical operations}
+
+For natural numbers put
+\[
+ P(a,b)=\frac{(a+b)(a+b+1)}2+b,
+ \qquad I(a,b)=4P(a,b),\qquad a\to b:=I(a,b).
+\]
+The remaining constructors are
+\[
+ R(a,b)=4P(a,b)+1,\quad Q_a b=4P(a,b)+2,
+ \quad E(a,b)=4P(a,b)+3.
+\]
+Raw truth is $T=0$ and the refutation target is $F=1=R(0,0)$.
+Write $NX=I(X,F)$ and $\exists_a X=N(Q_a(NX))$.  In particular,
+$I(0,0)=0$: zero is simultaneously the designated initial theorem and
+an implication code.  All quantified schema parameters below range over
+\emph{every natural number}.  No test that a number decodes as a conventional
+formula is introduced.
+
+Let $\mathcal C$ be the accepted native calculus, called \texttt{C222} in
+the inherited interfaces and used by K219.  It has truth, numerical modus
+ponens, and theorem-only generalization:
+\[
+ \frac{\mathcal C\vdash X\quad \mathcal C\vdash I(X,Y)}
+      {\mathcal C\vdash Y},
+ \qquad
+ \frac{\mathcal C\vdash X}{\mathcal C\vdash Q_aX}.
+\]
+Its eight logical rows comprise the following seven retained families
+and the unrestricted family $L$ displayed below:
+\begin{align*}
+ \rho_1(a,b)&=\exists_a E(a,b),\\
+ \rho_2(a,b,c)&=Q_a(b\to c)\to(Q_ab\to Q_ac),\\
+ \rho_3(a,b,c)&=E(a,b)\to(R(c,a)\to R(c,b)),\\
+ \rho_4(a,b,c)&=Q_aQ_bc\to Q_bQ_ac,\\
+ \rho_5(a,b,c)&=E(c,a)\to(R(c,b)\to R(a,b)),\\
+ \rho_6(a,b)&=(\exists_a Q_ab)\to b,\\
+ G(a,b,c)&=E(c,a)\to\bigl(E(c,b)\to Q_{R(a,b)}E(a,b)\bigr),\\
+ L(A,B,C,U)&=((C\to U)\to A)\to((A\to C)\to(B\to C)).
+\end{align*}
+
+The accepted set-theoretic information remains in the literal gated seed
+bundle.  To specify this inherited object, define
+\begin{align*}
+ B(b,k,m)&=Q_b\bigl(m\to NQ_b(m\to NR(b,k))\bigr),\\
+ S(a,b,k)&=Q_k\bigl(R(k,a)\to R(k,b)\bigr),\\
+ C(a,b,k,m)&=Q_b\bigl(R(b,k)\to
+           NQ_a(m\to NQ_a(S(a,b,k)\to B(b,k,m)))\bigr),\\
+ J(a,b,c)&=Q_c\bigl(C(a,b,c,c)\to NB(b,c,c)\bigr),\\
+ V(a,b,c)&=R(a,b)\to Q_cR(a,b),\\
+ \operatorname{Bundle}(a,b,c)&=N\bigl(V(a,b,c)\to J(a,b,c)\bigr).
+\end{align*}
+A bundle is an axiom when $c\ne a$ and $c\ne b$.  Both occurrences of
+$c$ as matrix code and private label are retained literally.  We neither
+remove these gates nor replace the bundle by an informal set-theoretic
+analogue.  The source returns truth instead when a gate fails.
+
+The established native calibration supplies finite-refutation
+transformations between $\mathcal C\vdash F$ and ZFC inconsistency.
+That inherited result is a premise of the present construction.  It is
+supported by the repository's native-calculus developments and their
+connection to the compact set theory underlying K230; it is not proved
+anew by a transition-table simulation.
+
+For provenance, the dominated package pins its K219 inputs to ProveIt
+revision \path{f8ec6158f3bdc885139ee395ae34fe44c3251b9f} and includes
+its exact native interfaces and finite logic certificate.  Earlier proof-assistant endpoints concern their own exact tables. The
+native-calculus bridges, dominated theorem and present source/runtime
+arguments must all be included to reach the new table. No new exact-215
+proof-assistant endpoint or internal PA proof object is asserted here.
+
+\subsection{Why a dominated fourth parameter is sufficient}
+
+Define $\mathcal D$ by retaining all of the preceding clauses, except
+that its $L(A,B,C,U)$ axiom requires
+\[
+                         U\le A.                 \tag{D}
+\]
+This is an ordinary inequality between natural codes, not a syntactic
+freshness test and not an inequality of semantic truth values.
+
+\begin{theorem}[Inherited dominated-parameter theorem]
+For every natural code $n$,
+\[
+                  \mathcal D\vdash n
+             \quad\Longleftrightarrow\quad
+                  \mathcal C\vdash n.
+\]
+The proof is uniform in arbitrary native codes, including zero and
+all degenerate constructor coincidences.
+\end{theorem}
+
+The easy direction follows because every dominated instance is already
+an unrestricted instance.  For the converse, the inherited finite
+certificate derives the entire unrestricted $L$ schema from truth,
+modus ponens, and dominated instances alone.  Here are the arithmetic
+and proof-theoretic facts that make that certificate meaningful.
+
+First, $P(a,b)\ge a,b$ for all naturals.  If $a+b=s\ge1$, then
+$s(s+1)/2\ge s$, and the case $s=0$ is immediate.  Consequently
+$I(a,b)\ge a,b$.  If a schematic term $U$ is literally a subterm of an
+implication term $A$, then $U\le A$ under every numerical assignment.
+The same conclusion holds whenever $U=T$.  This remains true when some
+implications evaluate to zero.  The finite checker uses precisely these
+sufficient conditions for all dominated leaves.
+
+Second, every certificate node denotes a universally quantified
+\emph{numerical} statement.  Replacing one of its metavariables by an
+implication term is therefore universal instantiation.  It does not
+assume a general substitution rule inside the object calculus, and it
+does not rename the numerical labels of a previously decoded atom.
+At an MP node, equality of the instantiated antecedent and minor is
+checked exactly.  The sole native normalization is $I(T,T)=T$.
+
+The unrestricted-row certificate has the following exact inventory:
+\begin{center}
+\begin{tabular}{lr}
+\hline
+Item & Count\\
+\hline
+Proof nodes & 3,728\\
+Shared term nodes & 5,160\\
+Dominated-$L$ leaves & 1,260\\
+Truth leaves & 1\\
+MP steps with explicit substitutions & 55\\
+Direct universal-instantiation steps & 410\\
+Direct MP steps & 2,002\\
+Maximum checked subterm depth & 4\\
+\hline
+\end{tabular}
+\end{center}
+These are finite proof objects, not samples of numerical assignments.
+The implication-subterm inequality proves each axiom side condition for
+all assignments; induction through the checked proof proves the
+schematic result for all assignments.
+
+The certificate first obtains identity, weakening $K$, Peirce's law,
+composition, and distribution $S$:
+\begin{align*}
+ K&:p\to(q\to p),\\
+ \mathrm P&:((p\to q)\to p)\to p,\\
+ \mathrm B&:(p\to q)\to((q\to r)\to(p\to r)),\\
+ S&:(p\to(q\to r))\to((p\to q)\to(p\to r)).
+\end{align*}
+A key intermediate theorem is
+\[
+ (p\to q)\to\bigl(((p\to r)\to p)\to q\bigr).
+\]
+The successful inherited proof of that theorem adds the dominated
+context $A=((z\to U)\to v)\to w$; the fourth argument lies three
+implication edges inside the first.  The rest of the fixed derivation
+reaches unrestricted $L$.  The complete certificate and its checkers
+are included with the inherited dependency, so the large intermediate
+formulas need not be expanded into the body of this article.
+
+For clarity, the final passage from $K,S,\mathrm P$ to $L$ has a short
+ordinary explanation.  Temporarily assume
+$H=(C\to U)\to A$ and $J=A\to C$.  Under the additional assumption
+$C\to U$, two MPs give $A$ and then $C$.  The deduction transformation
+justified by $K,S$ gives $(C\to U)\to C$.  Peirce's law at $C,U$
+gives $C$.  Weakening gives $B\to C$, and discharging $J,H$ yields
+exactly $L(A,B,C,U)$.  No generalization is used under these temporary
+assumptions.  The supplied certificate expands this deduction argument
+into explicit schema instances and MP steps.
+
+Replacing each unrestricted-$L$ leaf of a finite $\mathcal C$ proof by
+this fixed derived proof gives a finite $\mathcal D$ proof of the same
+code.  All other axioms and both rules are retained literally, proving
+the theorem.  Combining it with the inherited native calibration gives
+\[
+       \mathcal D\vdash1
+       \quad\Longleftrightarrow\quad
+       \text{there is a finite ZFC refutation}.       \tag{C1}
+\]
+
