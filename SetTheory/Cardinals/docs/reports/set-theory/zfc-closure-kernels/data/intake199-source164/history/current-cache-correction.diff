@@ -1,0 +1,11 @@
+--- dossier-before.md
++++ dossier.md
+@@ -30,7 +30,7 @@
+ 
+ ## Parameter-free MP and residual compiler
+ 
+-This second genuinely new result uses exact command states (t,S,d,h). MP consumes no candidate field. Success returns `(d,[0]++S,d,0)`; failure returns `(0,S,d,0)`. AX uses absolute A=x, B=h+y, U=old d, then leaves residual d=max(A−C−1,0) (or the stated opposite max(C−A−1,0)). Its ordered stack is eight axiom values, the GEN value, and old t, with the gated bundle in the cache as before.
++This second genuinely new result uses exact command states (t,S,d,h). MP consumes no candidate field. Success returns `(d,[0]++S,d,0)`; failure returns `(0,S,d,0)`. AX uses absolute A=x, B=h+y, U=old d, then leaves residual d=max(A−C−1,0) (or the stated opposite max(C−A−1,0)). Its ordered stack is eight axiom values, the GEN value, and old t, with the gated bundle as the current theorem value and cache zero.
+ 
+ Two zero AXs with ten pops each reset arbitrary initial t/cache/residual without reaching NIP with cache1. SET(v)=AX(0,0,v+1); NIP^10; DROP; NIP preserves t and S, sets d=v, and halts exactly when old t=1. The opposite residual uses its separately stated fields. Row selection uses NIP^j, DROP, NIP^(11−j). The strong induction compiler permits arbitrary residual on return, retains t while arranging MP's required d, and handles raw P(0,0), decreasing wire cursors, RESET and a cofinal START family. These all-natural count/stack arguments check out.
+ 

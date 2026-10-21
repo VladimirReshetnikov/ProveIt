@@ -1,0 +1,1 @@
+An inert identity lookup first looked for the inherited independent classical reader under Source149/theory and got FileNotFoundError after the certificate and first-reader identities had passed. It was located under Source149/audits; exact bytes then matched. No supplied code was invoked and no proof evidence was changed.

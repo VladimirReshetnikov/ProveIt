@@ -1,0 +1,13 @@
+--- review_saved-v1.py
++++ review_saved.py
+@@ -15,8 +15,8 @@
+  return out
+ 
+ def main():
+- ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--run',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()
+- run=a.run.resolve();r=load(run/'actual.json');p=Path(r['disposable_packet']);o=run/'outputs'
++ ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--run',type=Path,required=True);ap.add_argument('--packet',type=Path,help='Explicit recovered/disposable packet when the saved absolute path is unavailable');ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()
++ run=a.run.resolve();r=load(run/'actual.json');p=a.packet.resolve() if a.packet else Path(r['disposable_packet']);o=run/'outputs'
+  assert r['status']=='PASS_PROCESS_AND_INPUT_BINDINGS' and r['wall_cap_seconds_per_job']==60
+  assert r['inputs_unchanged'] and r['before']==r['after']==r['original']==r['original_after']
+  for n,b in r['before'].items():assert ident(p/n)==b

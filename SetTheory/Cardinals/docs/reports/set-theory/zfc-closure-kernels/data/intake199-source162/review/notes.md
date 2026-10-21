@@ -1,0 +1,39 @@
+# Source162 independent source / physical / logical review
+
+The77-file archive has SHA-256 `c08d25311f7b0264251f378c112f123dd381d82ae0e19550925bc1b3157a951d` and Git blob `9b09d9e5d3145862cead7b1158fb341554c5ccca`, read from origin/main `c8029f50d324910a36694c39a1e62f5720c36f4c`. Safe extraction rejected absolute/traversal/symlink/duplicate members; no archive code was invoked.
+
+## Finding and relationship to accepted215
+
+No mathematical or selected-code-closure defect found. Source162 uses **exactly** the accepted215 source bytes `17af207195179b2508bf91154cd00739374f8862207ca21b9a3cb9098aa6f5ba`:202 distinct subtrees,4,751 primitive occurrences,depth47,zero-run6. It independently composes the same four closed field-reader edits, the same closed read/load reassociation, and command order210. There is no additional source saving to stack.
+
+Its native table `03739f080d023166773bc14e7e3a4d8157f81d44c28cd30fef46066b37cf3748` and canonical table `fd9de5a9702c6193350952ca85a43f65d288b20f234b7582549b6aaa7a5ce703` have215 working states/430 rows. Native labels equal those of accepted215 but33 literal rows differ. The initial-preserving rooted transition graphs are **not isomorphic**: the forced map reaches accepted115 at submitted214, whose read-one actions differ (1R versus0L). The packet reports95,726 blank steps versus accepted215's95,714, to the same complete clean source frame. This is a distinct allocation, not an improvement in state count. A separate fresh runtime is warranted unless another new packet is shown to be exactly isomorphic to this one; source identity alone does not transfer runtime.
+
+Relative to its actual Partial Selector216 parent, the recipe deletes native224, adds none, and changes35 retained rows. My own inert parser checked every printed canonical row against the430-row file and every printed changed row against the exact parent/final files. The two existing marker selectors are retained; the81/0 helper diamond is asserted before read-one92 is reassigned. Its two- or three-step proof covers both predecessor bits, arbitrary exterior, and exact restoration. Decoder-prefix binding is explicitly kept separate from primitive return correctness.
+
+## Full ordinary theorem scope
+
+I read all595 main-report lines and all mathematical/physical appendices (exact calculus,190-line compiler, clean startup, restriction models, changed rows, printed full table). The exact numeric I/R/Q/E constructors, truth0=I(0,0), falsity1, theorem-only GEN, U≤A, and literal full Bundle with c used both as private label/matrix and gates c≠A,B are retained. No arbitrary formula-substitution principle is introduced. The dominated certificate's universal schema instances and implication-subterm inequalities cover all natural codes, including0.
+
+The command equations preserve theorem-valued top/cache/all unpair heads, including failed MP truth and the successful zero push. The strong compiler resets with MP(1), gated AX, and10 NIPs; omitting MP(0) in J(0) handles the zero alias. Its retained-row/L/bundle/GEN/MP selections have the correct positions and restore the arbitrary stack. Every GEN input is already a theorem. The first candidate encoding omits the outer successor; later commands include it. Finite draining and the cofinal family P(3,P(Y,P(1,R)))≥Y give completeness beyond actual cutoff4, from the clean zero stack/cache/top. Positive finite primitive clocks provide both binary/source halting directions.
+
+The source/native-calculus and unrestricted-native/ZFC calibration are inherited with explicit attribution. No new exact215 Lean/Rocq endpoint, internal PA object, unconditional nonhalting, or state minimality is claimed. The final seed has logical registers[4,0,0,0,0,0,0,0,0],gap1,40 unit spares,95 one-cells,head−8/header57; reported startup is95,726 with visited range[-18,199]. These remain submitted results until a fresh run is separately recorded.
+
+## New restricted-logic obstruction
+
+Two explicit3-value algebras, designated truth0, respectively cover the simultaneous U=A/truth restrictions and U=B/C restrictions. The first falsifies Peirce at values(2,2); the second falsifies K at(2,0) and Peirce at(2,1). They preserve I(0,0)=0 and MP. My independent finite table reader checked all108 restricted instances and all six listed counterexamples without invoking delivery code. The semantic argument extends the pure native implication fragment by well-founded code evaluation with arbitrary nonimplication atoms; truth's zero alias is consistent with the displayed equation.
+
+This is a precise **implication-only nonderivability result**, not a model of rho1–6, EqMix, GEN, or the full gated bundle. The submission keeps that limitation explicit. It does not settle full-calculus equiconsistency for U=B, nor supply a new source reduction. Existing full-theory results for some other restrictions are stronger but are not silently attributed to this packet. No literature-priority claim is made.
+
+## Retained failures and useful physical lesson
+
+The rejected215 table `289737cb...` used CB1 shortcut0L40 at wrappers117/214. Its supplied literal isolated-frame witness returns the wrong control support{0,1,2,6} after44 steps at ordinal4697 instead of{0,1,3,4}. Final rows117/1 and214/1 use0L302; the supplied corrected witness returns exact whole frame after156 steps. These records are plainly marked historical failure, separate from positive evidence. A theorem-valued earlier nonzero seed cannot repair a primitive contract failure. The final construction uses the clean seed instead.
+
+The retained tag120 table/source are research artifacts without a positive runtime claim here. The two original parent ZIPs retain complete inherited provenance/licensing; the packet credits the source language, numerical calibration, dominated proof, macro contracts and symbolic engine separately from new allocation/audits. New material uses predecessor MIT No Attribution terms without relicensing third-party history.
+
+## Selected executable closure and proposed fresh leaves
+
+Full selected reconstruction/source/prefix/diamond/startup/saved-audit/runtime wrapper/countermodel/failure-check code was read. Reconstruction, source comparison and all finite audits use only stdlib. audit_decoder imports only reconstruct215; validate_runtime imports source_compare plus the two runtime files and legacy mapping. The latter three inputs are byte-identical to the already reviewed accepted215 runtime closure (identity receipt adjacent). Runtime wrapper uses the same exact block/unary/list induction rules and4000 symbolic-proof fuel, checks all guarded cases and row coverage, and separately verifies the exact clean blank seed. No solver or discovery script is needed.
+
+Recommended direct leaves on a disposable copy: deterministic reconstruction; exact decoder binding; sparse/native plus dense/canonical complete blank/trace audit; new four-matrix checker; isolated rejected/corrected CB1 frame witness; fresh full runtime; then saved receipt/interface review against fresh deterministic case data. The duplicate source comparator is optional because reconstruction already checks full graph and the new source is exact accepted bytes. The old helper diamond and dominated proof need no repeat: the diamond is unchanged from accepted parent work, and certificate plus both forward checkers are exact Source149 bytes, independently compared here. Do not invoke verify.py, its manifest/ancestor suite, the discovery matrix search, or proof compilers. Exact argv/pins are in selected-plan.json.
+
+Authorship: this reviewer authored the earlier accepted215 composition/allocation. This is an independent review of the new submitted allocation, not an external-human endorsement. Only own inert data readers were executed; no supplied script, machine run, symbolic runtime, or proof compiler was executed in this review.
