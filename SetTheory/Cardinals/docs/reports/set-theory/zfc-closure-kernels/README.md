@@ -1,6 +1,8 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings through 20 October 2026. This report now reconciles **164 manuscripts**.
+Intake findings through 21 October 2026. This report has **167 numbered sources**.
+The written reconciliations cover Sources 1–164 and 167; Sources 165–166 retain
+their earlier placements and separate follow-up work.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -8,6 +10,24 @@ the delivered base article is preserved, rather than rewritten as a unified arti
 No merged PDF is built. These are ordinary mathematical arguments and finite
 regression checks. The deliveries confer no formal status; subsequent Lean
 results and their exact scope are listed below.
+
+[Batch 204](intake-204.md) reconciles Source 167 from `05d063acef`:
+proof-simplification proposals, the ordinary GC–ZC215 compiler/scheduler
+argument and an SB215 return correction. Placement `ec445a5246` preserves all
+82 members and retires only that ZIP. The older symmetry proposal is already
+implemented in the checked K215 proof. The useful four-field zero-offset
+certificate proposal must preserve the 512-fuel decoder; 128 fuel changes
+622 of the supplied path pairs. Its implementation is being checked separately.
+
+The [completed phase-four checkpoint](../../../../../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase4/README.md)
+remains the formal Lean status cited here while the next rebuild runs. The
+exact formalized 215-state machine and Rocq endpoint are unchanged by this
+intake. GC–ZC215 runtime/startup records remain submitted evidence, and its
+proof prototypes remain uncompiled delivery material. No delivered code was
+executed; only the new [exact-layout recovery helper](code/recover-intake204.py)
+was tested. Other incoming archives remain pending. The active work concerns
+simplifying the completed K215 proofs; the older entries below retain their
+historical search goals and verification statuses.
 
 [Batch 199](intake-199.md) imports Sources 162–164 from `d1cda734a4`,
 `fb5a17f9df` and `c8029f50d3`. The new

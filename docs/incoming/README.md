@@ -12,20 +12,24 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
-## Queue status for batch 204
+## Queue status after batch 204
 
 `Proof_Simplification_and_GC-ZC215_2026-10-21.zip` (arrival `05d063acef`)
-is placed as Source 167 of `zfc-closure-kernels`: 61 new ancillary files,
-14 exact existing members,4 duplicates within the delivery and 3 manuscript
-files retained in the arrival archive. The [placement record and full map](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake204-placement.md)
-preserve all 82 members and the nested SB correction. Only this ZIP is retired.
-Other new archives remain pending; this is not a queue-clearance claim.
+is placed and [reconciled as Source 167](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-204.md)
+of `zfc-closure-kernels`. Placement `ec445a5246` accounts for all 82 members:
+61 new ancillary files, 14 exact existing members, four duplicates within the
+delivery and three manuscript files retained in the arrival archive. The
+[placement record and recovery map](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake204-placement.md)
+also retain the nested SB correction. Only this ZIP was retired. Other new
+archives remain pending; the Source 165/166 follow-up work is untouched.
 
 The proposal uses the older `c9dc793234` proof snapshot. Symmetry is already
-implemented in the maintained K215 proof; the new zero-offset/generic 512-decoder
-plan is being investigated separately. No delivered executable was run and no
-new formal endpoint status is assigned by placement. The written reconciliation
-follows separately; existing Source 165/166 follow-up work is untouched.
+implemented in the maintained K215 proof; the zero-offset/generic 512-decoder
+proposal is being checked separately. GC–ZC215 and the SB correction remain
+separately scoped ordinary research and submitted evidence. No delivered code
+was run and no new formal endpoint status follows from this intake. The
+written reconciliation uses the permitted continuation-note format; no
+unified LaTeX/PDF rebuild is claimed.
 
 ## Queue status after batch 203
 
@@ -1276,6 +1280,7 @@ ProveIt-era batches (from this directory):
 | 197 | One manuscript at `d59b441882`: placement `607e98b59d` retires its ZIP;72 members =55 new +10 existing aliases +1 historical parent +6 archive-only. Source159;159 sources,290 reports. | [intake-197.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-197.md): two command-permuted216s; separate original composition gives215. | this commit | Ten submitted-alternative checks pass. Original215 passes6176 cases /1698790 rules /all430 rows /minimum6 /95714-step complete blank, independently audited. Ordinary ZFC equivalence; exact215 Lean/PA endpoint open. |
 | 198 | Two manuscripts at `001695a82b` and `7e8cc0ee93`: placement `b4209acc20` retires both ZIPs;149 members =83 new +46 existing aliases +2 historical parents +18 archive-only. Sources160–161. | [intake-198.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-198.md), write `72b6378b15`: two isomorphic primary presentations and distinct command-order215. | this commit | Nine plus three selected fresh leaves pass. Secondary runtime:6176 cases/1698845 rules/all430 rows/min9/96284-step full blank. Primary runtime transfers through complete bijections. No214-state result or new exact-table Lean/PA endpoint. Three arrivals queued for199. |
 | 199 | Three manuscripts at `d1cda734a4`, `fb5a17f9df`, `c8029f50d3`: placement `ed175ba03d` retires all ZIPs;403 members =207 new +156 existing aliases +13 batch aliases +7 historical aliases +20 archive-only. Sources162–164. | [intake-199.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-199.md), write `7de71bd17b`: distinct215 allocation and renamed counterpart, rho6 variant, calibrated projection/residual interfaces. | this commit | Seven/four/seven fresh leaves pass. Shared215 runtime:6176 cases/1698790 rules/all430 rows/min6/full95726-step blank. Independent root audit and exact164 transfer; no214 success or new exact-table Lean/PA endpoint. |
+| 204 | Source 167 from `05d063acef`: placement `ec445a5246` retires only its ZIP; 82 members = 61 new + 14 existing exact + 4 delivery duplicates + 3 archive-only. | [intake-204.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-204.md): existing proof symmetry, new zero-offset certificate proposal, separate GC–ZC215 argument and SB correction. | this commit | No delivered executable run; own recovery reconstructs all 82 members. Completed K215 proof status is unchanged; delivered prototypes are uncompiled and GC runtime/startup remain submitted evidence. 167 sources placed, with 165/166 written follow-up pending; 290 reports. Other incoming archives remain pending. |
 
 
 
