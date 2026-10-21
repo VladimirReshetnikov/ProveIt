@@ -1,0 +1,33 @@
+\subsection{A contextual replacement for the native state-81 helper}
+All state labels in this subsection are native labels.  Let the head be at
+cell $h$, let the current state be $81$, and suppose the scanned symbol is
+$0$.  No restriction is imposed on any other cell of the two-way infinite
+tape.  Put $b=t(h-1)\in\{0,1\}$.
+
+The K217 fragment and the replacement fragment execute the following paths:
+\begin{center}
+\begin{tabular}{ccllll}
+\toprule
+$b$ & Fragment & Start & Step 1 & Step 2 & Step 3 \\
+\midrule
+$0$ & K217 & $(81,h)$ & $(92,h-1)$ & $(104,h)$ & $(123,h+1)$ \\
+$0$ & K216 & $(81,h)$ & $(111,h-1)$ & $(104,h)$ & $(123,h+1)$ \\
+$1$ & K217 & $(81,h)$ & $(92,h-1)$ & $(107,h)$ & $(21,h+1)$ \\
+$1$ & K216 & $(81,h)$ & $(111,h-1)$ & $(128,h)$ & $(21,h+1)$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+Each first and third transition reads and preserves the known zero at $h$.
+Each second transition reads and preserves $b$ at $h-1$.  These are the only
+cells inspected.  Therefore both fragments take exactly three transitions,
+reach the same state and head position, and preserve the entire tape.  This
+is a whole-tape local equality for arbitrary external context, rather than
+a test over bounded counter values.
+
+The replacement changes native row $81/0$ from $0L92$ to $0L111$.  The two
+possible successor routes use $111/0=0R104$, $111/1=1R128$,
+$104/0=0R123$, and $128/0=0R21$.  Thus this use of the engine no longer
+requires the original $92/1=1R107$ row.  Other uses of the reallocated decoder
+are discharged by the complete source-to-machine primitive certificate;
+the local equality alone is not a certificate for arbitrary additional
+row changes.

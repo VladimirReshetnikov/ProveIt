@@ -1,0 +1,13 @@
+--- delivered/source-layout/verify_sources.py
++++ copy/source-layout/verify_sources.py
+@@ -11,9 +11,7 @@
+ 
+ def main():
+     need(__debug__ and not sys.flags.optimize,'Run with Python assertions enabled')
+-    manifest=json.loads((HERE/'manifest.json').read_text())
+-    for rel,sha in manifest.items():
+-        need(digest((HERE/rel).read_bytes())==sha,('Input changed',rel))
++    # Delivery-manifest replay omitted by intake policy; selected inputs are pinned in the replay plan.
+     baseline=json.loads((HERE/'data/dominated203.json').read_text())
+     old=s.tree(baseline);oldgraph,oldchecks=s.graph_arithmetic(baseline)
+     need(oldgraph==s.graph_intervals(baseline),'Baseline CFG resolvers disagree')

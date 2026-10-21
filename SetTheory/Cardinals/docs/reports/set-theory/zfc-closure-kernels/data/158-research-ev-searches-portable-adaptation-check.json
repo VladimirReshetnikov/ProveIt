@@ -1,0 +1,29 @@
+{
+  "purpose": "Verify portable adaptations; does not add candidate-search evidence",
+  "regenerated_inputs": [
+    {
+      "file": "cases.txt",
+      "sha256": "8930b7fb7295989e01fc69cacf21f88b98a399a7ffe6f0df50133e5238db6b29",
+      "matches_original": true
+    },
+    {
+      "file": "source.txt",
+      "sha256": "30d8c24179a0121519499e8045febb46fd456e40cda6c8d9ff3ed2f563287801",
+      "matches_original": true
+    }
+  ],
+  "cpp_syntax_check": {
+    "command": "g++ -std=c++20 -fsyntax-only",
+    "translation_units": [
+      "search_boot.cpp",
+      "replay_survivors.cpp",
+      "search_two.cpp",
+      "search_two_restore51.cpp",
+      "search_relay.cpp",
+      "search_cc2_bridge.cpp"
+    ],
+    "all_passed": true
+  },
+  "rotation_smoke": "portable-smoke.json",
+  "rotation_smoke_scope": "depth 0; 217 initial states of the unchanged core only"
+}

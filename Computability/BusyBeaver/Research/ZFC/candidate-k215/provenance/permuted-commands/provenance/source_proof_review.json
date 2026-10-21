@@ -1,0 +1,68 @@
+{
+  "status": "PASS_INDEPENDENT_PROOF_REVIEW",
+  "review_scope": "Mathematical source/calculus argument; no additional binary runtime test",
+  "parent_reference_tree_exactly_equals_new_audit_reference": true,
+  "reference_metrics": {
+    "dag_nodes": 205,
+    "leaf_occurrences": 4751,
+    "guarded_cases": 6176,
+    "maximum_depth": 37,
+    "maximum_zero_run": 8
+  },
+  "baseline_sha256": "0f6d9d991e36dda1a7449edab72a799bb2d8c3de3ff853a26178b89bd1bc8789",
+  "next_candidate_register_uses": [
+    [
+      2,
+      "0100",
+      "CD",
+      0
+    ],
+    [
+      6,
+      "0110",
+      "CI",
+      0
+    ]
+  ],
+  "blocking_findings": [],
+  "checks": [
+    "All-natural numerical-calculus equivalence inherited without formula decoder or freshness filter",
+    "Discard never touches underlying stack and J(0) avoids I(0,0)=0 stack-alias corner",
+    "AX push order: R1..R7,L,Q_U(old h),saved old top",
+    "Row-selection counts j then DROP then 11-j NIPs",
+    "Generalization takes binder old d before additive x, and body incoming h before additive y",
+    "MP receives antecedent in top and implication in cache; preserves underlying stack through reset and selection",
+    "Strong blocks tolerate arbitrary top and arbitrary entire stack, including junk and early falsity",
+    "START_Y uniformly resets d,h; YX first candidate is P(3,P(Y,P(1,R))) with no outer successor",
+    "Positive tail encoding guarantees strict draining, including tag-zero NIP and unpair(0)=(0,0)",
+    "Cofinal N_Y>=Y supplies a halting candidate beyond actual cutoff4",
+    "Final full-register command-boundary and fresh-fetch contracts explicitly support enumeration and finite draining",
+    "Ordinary return wrappers route every moved closed body back to source ordinal 0 without another arithmetic command",
+    "The final finite checker asserts a unique halting primitive"
+  ],
+  "reviewed_input_sha256": {
+    "formalism-work/source-calibration/source_calibration.tex": "53aa8956201ed70d9aa2bb1a254b121cf742542382a1d690aea69a23c1c65669",
+    "formalism-work/source-calibration/audit_command_permutation.py": "4c6148578edbff50d33706ad57676e6e6dddfc13b4f6587c5205f7c8b4fe8310",
+    "parent218/K218_Dominated_Rho8_2026-10-20/theory/dominated_core.tex": "d906f5f1e22465b970ec9b0617b5a3f1d5a27d7d6eb68d17f8b4abd4383602ab",
+    "parent218/K218_Dominated_Rho8_2026-10-20/theory/dominated_rho8.tex": "99c98a67f4c7101dddd6fa36089a4a52baf98592faf4eefa2361d742e7c1ba8d",
+    "parent218/K218_Dominated_Rho8_2026-10-20/source/build_dominated_source.py": "79036d8b1d85c37927fd9db67c49a8d8c3f8684359d4598c009f31d6c1a790ba",
+    "parent218/K218_Dominated_Rho8_2026-10-20/theory/evidence/KCode222.lean": "c12239ab4f2a12333187ff1b1d3b1375500362e6e0fad7ad708c057674e71a08"
+  },
+  "clarification_status": "RESOLVED: The final text explicitly states zero selector and scratches at nonhalting command boundaries, preservation of N outside fetch, the exact L remainder, and one increment of N at fresh fetch. It also states the expanded row-code justification.",
+  "normal_return_routes_reviewed": {
+    "last_body": [
+      0
+    ],
+    "middle_body": [
+      4724,
+      0
+    ],
+    "innermost_body": [
+      4697,
+      4724,
+      0
+    ],
+    "wrappers_are_unconditional_breaks": true,
+    "unique_halting_primitive_check": true
+  }
+}

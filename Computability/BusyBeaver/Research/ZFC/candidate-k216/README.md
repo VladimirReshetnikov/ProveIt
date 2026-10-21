@@ -1,6 +1,6 @@
 # K216: partial-selector construction
 
-**Accepted after five selected fresh checks and the independent saved-record audit passed.** This is the primary 216-state candidate at the reviewed ordinary mathematical-proof level. The next target is **215 or fewer working states**.
+**Accepted after five selected fresh checks and the independent saved-record audit passed.** This remains the reviewed partial-selector 216-state construction. The new [215-state primary contender](../candidate-k215/README.md) combines its selector with the [command-permuted alternatives](alternatives/permuted/README.md), with separate final runtime and blank-start checks.
 
 The submitted machine has **216 working states and 432 binary transition rows, including blank initialization**, with a separate halt. Its ordinary proof composes the accepted dominated-calculus calibration, source correspondence, local selector fold, full primitive contracts, and complete startup. With the fresh obligations below discharged, the resulting claim is
 

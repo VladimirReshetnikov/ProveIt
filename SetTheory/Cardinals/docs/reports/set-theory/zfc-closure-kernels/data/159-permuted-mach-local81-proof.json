@@ -1,0 +1,140 @@
+{
+  "status": "EXACT_THREE_STEP_EQUIVALENCE",
+  "cases": [
+    {
+      "left_bit": 0,
+      "table": "K217",
+      "trace": [
+        [
+          81,
+          0,
+          0,
+          0,
+          -1,
+          92
+        ],
+        [
+          92,
+          -1,
+          0,
+          0,
+          1,
+          104
+        ],
+        [
+          104,
+          0,
+          0,
+          0,
+          1,
+          123
+        ]
+      ],
+      "endpoint_state": 123,
+      "endpoint_head": 1,
+      "entire_tape_unchanged": true
+    },
+    {
+      "left_bit": 0,
+      "table": "K216",
+      "trace": [
+        [
+          81,
+          0,
+          0,
+          0,
+          -1,
+          111
+        ],
+        [
+          111,
+          -1,
+          0,
+          0,
+          1,
+          104
+        ],
+        [
+          104,
+          0,
+          0,
+          0,
+          1,
+          123
+        ]
+      ],
+      "endpoint_state": 123,
+      "endpoint_head": 1,
+      "entire_tape_unchanged": true
+    },
+    {
+      "left_bit": 1,
+      "table": "K217",
+      "trace": [
+        [
+          81,
+          0,
+          0,
+          0,
+          -1,
+          92
+        ],
+        [
+          92,
+          -1,
+          1,
+          1,
+          1,
+          107
+        ],
+        [
+          107,
+          0,
+          0,
+          0,
+          1,
+          21
+        ]
+      ],
+      "endpoint_state": 21,
+      "endpoint_head": 1,
+      "entire_tape_unchanged": true
+    },
+    {
+      "left_bit": 1,
+      "table": "K216",
+      "trace": [
+        [
+          81,
+          0,
+          0,
+          0,
+          -1,
+          111
+        ],
+        [
+          111,
+          -1,
+          1,
+          1,
+          1,
+          128
+        ],
+        [
+          128,
+          0,
+          0,
+          0,
+          1,
+          21
+        ]
+      ],
+      "endpoint_state": 21,
+      "endpoint_head": 1,
+      "entire_tape_unchanged": true
+    }
+  ],
+  "premise": "State 81, head h, tape[h]=0; all other tape cells arbitrary.",
+  "conclusion": "Both tables reach state 123 if tape[h-1]=0, otherwise state 21, at h+1 after exactly three transitions, leaving the entire tape unchanged.",
+  "scope": "Local replacement only; the complete table has additional source-decoder changes."
+}

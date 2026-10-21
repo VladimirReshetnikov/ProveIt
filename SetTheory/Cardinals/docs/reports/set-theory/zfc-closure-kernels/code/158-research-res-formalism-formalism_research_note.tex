@@ -1,0 +1,661 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  11pt,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Logical Calibration and Source Experiments at K218},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Logical Calibration and Source Experiments at K218}
+\author{}
+\date{21 October 2026}
+
+\begin{document}
+\maketitle
+
+\hypertarget{logical-calibration-and-source-experiments-at-k218}{%
+\section{Logical calibration and source experiments at
+K218}\label{logical-calibration-and-source-experiments-at-k218}}
+
+Pinned upstream revision:
+\texttt{704b87442afbd571833a628cd558f1d207fd8b2f}.
+
+This note records completed mathematical work and reproducible source
+experiments. It does \textbf{not} assert the existence of a verified
+217-state machine. The tempting deletion of scanner state 50 has a valid
+logical seed, but fails a required physical primitive contract. None of
+the source experiments below supplies a replacement physical proof.
+
+\hypertarget{the-exact-optimization-target}{%
+\subsection{1. The exact optimization
+target}\label{the-exact-optimization-target}}
+
+The accepted native K218 table has 218 working states, a source tree
+with 4744 primitive occurrences and 205 distinct subtree nodes, maximum
+source depth 38, and maximum consecutive left-edge run 6. The
+source-node count is an optimization proxy, not the number of working
+states. Contextual decoder aliases, two roles of a shared physical
+state, primitive helpers, complete blank startup, and arbitrary
+clean-frame runtime must all survive a proposed reduction.
+
+The native formula coding uses Cantor pairing
+
+\[
+P(a,b)=\frac{(a+b)(a+b+1)}2+b
+\]
+
+and constructors
+
+\[
+I(a,b)=4P(a,b),\quad R(a,b)=4P(a,b)+1,\quad
+Q_a b=4P(a,b)+2,\quad E(a,b)=4P(a,b)+3.
+\]
+
+The truth alias is 0, the falsity code is 1, negation is
+\texttt{I(A,1)}, and existential quantification is
+\texttt{N(Q\_i(N\ A))}. All natural numbers are legitimate formula
+codes; object-variable labels are also arbitrary natural numbers. In
+particular, a code transformation must act coherently on formula
+arguments \textbf{and} labels. Restricting attention to a familiar
+syntactic subset can silently lose the calibration theorem.
+
+The two retained logical rows most sensitive to attempted simplification
+are the unrestricted four-parameter classical axiom
+
+\[
+((C\to U)\to A)\to((A\to C)\to(B\to C))
+\]
+
+and the gated bundle, emitted for every \texttt{c\ !=\ a,b}. The latter
+carries both the set-theoretic comprehension component and atomic
+membership vacuity
+
+\[
+R(a,b)\to Q_c R(a,b).
+\]
+
+An apparently harmless restriction on the bundle therefore changes the
+available quantifier logic as well as the set-theoretic axiom family.
+
+\hypertarget{a-rechecked-clean-seed-theorem-with-no-consistency-assumption}{%
+\subsection{2. A rechecked clean-seed theorem, with no consistency
+assumption}\label{a-rechecked-clean-seed-theorem-with-no-consistency-assumption}}
+
+The general seed theorem and the cofinal \texttt{START\_U} argument are
+already present in the pinned upstream note
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/704b87442afbd571833a628cd558f1d207fd8b2f/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/146-r218-res-src218-general_seed_lemma.md}{\emph{General
+logical seeds for the 218 startup search}}, which also credits an
+earlier K224 adaptation. The contribution here is an independent check
+against the exact maintained source interfaces, its specialization to
+current formula 3, and a portable independently replayed equality
+certificate; discovery of the general theorem is not claimed.
+
+\hypertarget{statement}{%
+\subsubsection{Statement}\label{statement}}
+
+Let an abstract enumerator state have a derivable current formula
+\texttt{tw}, a derivable cache \texttt{h}, and a theorem-valued stack
+\texttt{ws}. The candidate counter \texttt{np}, additive parameter
+\texttt{d}, and remaining proof-list pointer \texttt{pl} may be
+arbitrary natural numbers. Then
+
+\[
+\operatorname{Halts}(s)\quad\Longleftrightarrow\quad C_{222}(1).
+\]
+
+This is an ordinary finite-proof statement. Neither direction assumes
+\texttt{Con(ZFC)}. Together with the inherited finite-refutation
+calibration and a correct source-to-machine simulation it gives the
+desired equivalence at any such clean seed.
+
+\hypertarget{soundness}{%
+\subsubsection{Soundness}\label{soundness}}
+
+The upstream invariant is exactly
+
+\[
+C_{222}(\mathrm{tw})\;\land\;C_{222}(\mathrm h)\;\land\;\operatorname{Good}(\mathrm{ws}).
+\]
+
+It imposes no restriction on \texttt{np,d,pl}. Each command preserves
+the invariant. Only NIP halts; its halting branch requires the cache to
+equal falsity. Thus any finite halting run yields a finite native
+derivation of 1. This argument is already universal in the initial
+working state.
+
+\hypertarget{completeness-beyond-a-finite-candidate-cutoff}{%
+\subsubsection{Completeness beyond a finite candidate
+cutoff}\label{completeness-beyond-a-finite-candidate-cutoff}}
+
+The existing proof compiler gives, from any derivation of 1, a finite
+command list \texttt{p} satisfying its uniform contract: for every
+current formula \texttt{T} and every stack \texttt{S}, execution from
+\texttt{(tw,ws,d,h)=(T,S,0,0)} either halts or returns
+\texttt{(1,S,0,0)}.
+
+Prepend the command
+
+\[
+\mathrm{START}_U=\mathrm{AX}(c=0,x=1,y=1,u=U).
+\]
+
+Its literal command equation resets \texttt{d=h=0}, regardless of their
+previous values. Append \texttt{DROP(0),NIP(0),NIP(0)} to \texttt{p}. If
+\texttt{p} has not already halted, this suffix pushes 1, loads 1 into
+the cache, and halts. Therefore this complete command list halts from
+every working tuple.
+
+Let \texttt{r} be one plus the candidate encoding of the fixed nonempty
+suffix. The candidate number of the complete list is
+
+\[
+N_U=P(3,P(1,P(1,P(U,r)))).
+\]
+
+Since pairing is at least either argument,
+\texttt{N\_U\ \textgreater{}=\ U}. Choose
+\texttt{U\ \textgreater{}=\ np}. Every positive proof-list pointer
+strictly decreases during a nonhalting command; a list boundary starts
+the next candidate and increases the counter by one. An initial partial
+list first drains without changing the counter. Consequently the run
+either halts earlier or eventually starts candidate \texttt{N\_U} and
+halts there. This proves completeness for every finite cutoff.
+
+The exact source representation is
+
+\[
+\operatorname{toAS}(s)=[np,tw,ws,0,d,h,0,0,pl].
+\]
+
+The inspected source correspondence is universal in \texttt{s}; it does
+not require the historical bootstrap values. A clean source root
+therefore needs no special protected-tail argument.
+
+\hypertarget{the-scanner-deletions-seed-is-admissible}{%
+\subsubsection{The scanner deletion's seed is
+admissible}\label{the-scanner-deletions-seed-is-admissible}}
+
+Deleting physical scanner state 50 and changing the zero transition of
+state 34 from \texttt{0\ L\ 50} to \texttt{0\ L\ 75} was observed
+independently by the machine workstream to reach
+
+\[
+[np,tw,ws,ac,d,h,s_1,s_2,pl]=[4,3,0,0,3,0,0,0,0].
+\]
+
+Here 3 is \texttt{E(0,0)}, not \texttt{I(0,0)}. Equality reflexivity is
+derivable from the retained merged equality row, rho1, rho2, rho6,
+theorem-only generalization, and the propositional basis. Thus
+\texttt{tw=3} is a theorem; \texttt{h=0} and the empty stack satisfy the
+invariant, and the cutoff/additive values are harmless by the theorem
+above.
+
+For a useful explicit derivation, write \texttt{r=R(x,x)} and
+\texttt{X=E(r,x)}. The merged equality row gives
+\texttt{X\ -\textgreater{}\ (X\ -\textgreater{}\ Q\_r\ E(x,x))};
+propositional contraction gives
+\texttt{X\ -\textgreater{}\ Q\_r\ E(x,x)}. Generalization and rho2 give
+existential monotonicity, hence
+\texttt{Ex\_r\ X\ -\textgreater{}\ Ex\_r\ Q\_r\ E(x,x)}. Rho1 proves
+\texttt{Ex\_r\ X}; rho6 proves
+\texttt{Ex\_r\ Q\_r\ E(x,x)\ -\textgreater{}\ E(x,x)}. Two modus ponens
+steps finish. At \texttt{x=0} the conclusion is native code 3.
+
+A closed 79-node certificate for this derivation is included, together
+with an independent checker. The upstream generator constructs 96 nodes
+before unused nodes are removed. The checker verifies literal axiom
+shapes, topological premise references, modus ponens, and closed-theorem
+generalization. K and S are treated as the already proved consequences
+of the unrestricted native classical row; their derivations from that
+row are inherited, not newly expanded by this certificate. No new Lean
+or Rocq theorem is claimed to have compiled.
+
+The physical deletion remains rejected: its arbitrary-clean-frame CD1
+zero case can create a transient seven-zero run even though the static
+source-path maximum is six. Logical admissibility of the new seed does
+not repair that failure.
+
+\hypertarget{calibrated-transformations-that-were-priced}{%
+\subsection{3. Calibrated transformations that were
+priced}\label{calibrated-transformations-that-were-priced}}
+
+\hypertarget{independent-parameter-renaming-and-row-ordering}{%
+\subsubsection{Independent parameter renaming and row
+ordering}\label{independent-parameter-renaming-and-row-ordering}}
+
+Every complete axiom schema is emitted over all natural parameters.
+Independently permuting \texttt{(a,b,c)} within such a complete row
+leaves the native axiom family unchanged. For the bundle, only
+exchanging \texttt{a,b} was used, keeping its private field \texttt{c}
+and gate synchronized. The unrestricted classical row retains its
+separate fourth parameter \texttt{U}.
+
+The eight unconditional schema rows can also be reordered as whole
+outputs. They read stable parameters and push the same finite collection
+of theorem instances; the one extraction of \texttt{U} moves with its
+own row. The generalized cached theorem and gated final bundle remain in
+their original roles. Soundness is unchanged, and the proof compiler can
+select the relocated stack entries. This requires the corresponding
+stack-index update when turning a source experiment into a complete
+formal enumerator proof; no binary runtime certificate is claimed for a
+reordered source here.
+
+The fixed source scaffold was exhaustively tested for all
+\texttt{8!\ =\ 40320} row orders. None reduced 205 source DAG nodes. A
+separate bounded beam search tested 81208 independent field-assignment
+profiles and likewise found no reduction below 205. These are finite
+experiment results, not lower bounds over all encodings.
+
+\hypertarget{the-dual-of-rho6}{%
+\subsubsection{The dual of rho6}\label{the-dual-of-rho6}}
+
+The ordinary row
+
+\[
+L_i(A):\quad \neg Q_i\neg Q_i A\to A
+\]
+
+may be replaced by
+
+\[
+D_i(A):\quad A\to Q_i\neg Q_i\neg A.
+\]
+
+The two full schemas are interderivable with the unchanged classical
+basis, rho2, and theorem-only generalization. From
+\texttt{L\_i(neg\ A)}, classical contraposition and double-negation
+elimination give \texttt{D\_i(A)}. Conversely, apply \texttt{D\_i} to
+\texttt{neg\ A}; lift the classical theorem
+\texttt{neg\ neg\ A\ \textless{}-\textgreater{}\ A} through the required
+quantifiers using rho2 and theorem generalization, and contrapose. This
+gives \texttt{L\_i(A)}. The conversions are finite derivation
+transformations uniform in all native codes and do not assume quantified
+stability as an additional axiom.
+
+The in-place scaffold costs 207 nodes for the best dual variant. An
+exhaustive one-hole parenthesization search of 201552 cases found a
+206-node dual source, but its maximum zero run is 7. The unchanged row
+also costs 207 when constrained to that one-hole representation: the
+representation itself loses useful sharing across the row boundary.
+These figures therefore must not be compared as if one-hole substitution
+preserved the baseline 205-node grammar.
+
+\hypertarget{nonzero-tag-permutations-and-implication-orientation}{%
+\subsubsection{Nonzero-tag permutations and implication
+orientation}\label{nonzero-tag-permutations-and-implication-orientation}}
+
+If implication keeps tag 0, any permutation of the three nonzero
+constructor tags is an exact code conjugacy. The same is true of
+reversing the two arguments of the implication constructor, provided the
+MP matcher reverses its pair as well. Define the translation recursively
+on every positive natural code, translate both constructor arguments
+including object labels, and set \texttt{tau(0)=0}. Every positive code
+has strictly smaller Cantor components; the translation and its inverse
+are therefore well founded. It preserves gate inequalities, the merged
+row's label \texttt{R(a,b)}, and the self-coded private field of the
+bundle. Finite derivations translate in both directions, and falsity
+translates to the new membership tag.
+
+This is stronger than a relabeling of familiar formula syntax: it covers
+all natural-code junk and all numeric labels. It is the appropriate
+reason these transformations preserve the consistency calibration.
+
+All six nonzero-tag permutations were priced in 87 local literal
+layouts; identity remained best at 205 nodes. Extending the source
+census to all 18 tag assignments with a nonzero membership falsity gave
+183 layouts and no improvement. The assignments with zero equality or
+zero universal-quantifier tag are \textbf{not} covered by the preceding
+exact-conjugacy proof: the special zero alias changes, and a separate
+interpretation argument would be needed. Those additional cases were
+only source prices, and their best nonidentity cost was 206 with
+excessive zero runs.
+
+Reversing implication changes many postfix word patterns. Keeping the
+old macro scaffold gave 273 nodes before the MP correction and 277 after
+it. A 75-second bounded grammar reconstruction tested 2609 layouts and
+reduced that cost to 219 nodes, with maximum zero run 12. No tested
+reconstructed layout had maximum zero run at most six. The grammar
+reconstruction is heuristic and proves no lower bound.
+
+\hypertarget{direct-mp-pairers}{%
+\subsubsection{Direct MP pairers}\label{direct-mp-pairers}}
+
+The usual source emits the candidate implication by a push-copy of the
+target and a generic implication macro. It uses 53 primitive
+occurrences. Two direct arithmetic implementations were found:
+
+\begin{itemize}
+\tightlist
+\item
+  Reversed implication: copy register 4 into zero register 6 while
+  preserving 4 via zero register 7, then run the existing pair-and-scale
+  macro. This computes \texttt{4P(B,T)} in register 1 using 23 leaves
+  and preserves the theorem stack.
+\item
+  Ordinary implication: move register 1 into zero register 6, copy
+  register 4 back into 1 via zero register 7, and use the same
+  pair-and-scale macro. This computes \texttt{4P(T,B)} using 26 leaves.
+\end{itemize}
+
+The copies are elementary unary loops. The reversed copy is
+
+\begin{verbatim}
+((CD4,(CI7,(CI6,CC3))),(CD7,(CI4,CC2))).
+\end{verbatim}
+
+Finite source checks cover 147 input stencils for each pairer and
+compare every register. Their general arithmetic contracts follow by the
+two counted loops and the inherited pair-and-scale contract; no new
+physical macro verification is asserted. Despite eliminating many
+primitive occurrences, the ordinary direct pairer increases the full
+grammar from 205 to 212 nodes. This is a concrete example of a
+leaf-count saving that loses at the shared-state level.
+
+\hypertarget{alternative-classical-bases}{%
+\subsubsection{Alternative classical
+bases}\label{alternative-classical-bases}}
+
+Two standard complete classical implicational bases were priced after
+removing the unrestricted four-parameter row and its fourth-field
+extraction: K/B/Peirce and K/S/Peirce. Each family was tested in 3888
+fixed-layout combinations of field assignments, row orders, and
+top-level associations. Minimum costs were 210 and 212 nodes,
+respectively. No claim is made that these searches cover all short
+classical bases or all source layouts.
+
+\hypertarget{new-gate-removal-ideas-and-the-unresolved-logical-obstruction}{%
+\subsection{4. New gate-removal ideas and the unresolved logical
+obstruction}\label{new-gate-removal-ideas-and-the-unresolved-logical-obstruction}}
+
+\hypertarget{constructor-wrappers}{%
+\subsubsection{Constructor wrappers}\label{constructor-wrappers}}
+
+The gate tests \texttt{c\ !=\ a,b} because the bundle needs a fresh
+private numeric label. One might replace \texttt{c} by a larger code,
+then emit the bundle unconditionally. Two proposed wrappers are
+
+\[
+k=I(Q_a b,c),\qquad k=Q_{I(a,b)}c.
+\]
+
+Both are strictly greater than \texttt{a,b,c}, including the all-zero
+case. The first uses the positivity of the quantifier tag; the second
+has an outer positive quantifier tag. Thus each wrapped axiom is a valid
+old bundle instance, and soundness as a subsystem is immediate. In
+contrast, \texttt{I(a,I(b,c))} is not fresh at the all-zero input and
+cannot remove the gate without another guard.
+
+There are plausible translations for the set-theoretic matrix component.
+For the first wrapper, renaming numeric labels to codes of the form
+\texttt{I(l,l)} makes the decoded antecedent tautological. For the
+second, renaming all ordinary object labels into the membership-tag
+alphabet makes the extra implication-tag binder absent from the
+translated matrix, so its outer quantifier is vacuous.
+
+These observations are \textbf{not a calibration proof}. The same bundle
+supplies atomic vacuity. After wrapping, the available vacuity instances
+are only
+
+\[
+R(a,b)\to Q_{k(a,b,c)}R(a,b).
+\]
+
+The constructor's injectivity makes the available binder ranges for
+different pairs \texttt{(a,b)} largely disjoint. The inherited
+equality-by-indiscernibility interpretation explicitly needs
+unrestricted atomic vacuity for all distinct labels. A finite formula
+containing several atoms needs a common supply of usable fresh binders;
+semantic harmlessness of the wrapped matrix does not supply that. No
+proof of equiconsistency was obtained for either wrapper calculus.
+
+The source prices were also unfavorable. Replacing all 13 private-field
+reads by a shared wrapper and replacing the gate by the necessary
+register cleanup gave a minimum 209 nodes among 672 layouts.
+Precomputing the wrapper once and restoring the current theorem/stack
+gave 211 nodes among 144 representative complete layouts. Neither result
+is a calibrated candidate.
+
+\hypertarget{cofinite-freshness}{%
+\subsubsection{Cofinite freshness}\label{cofinite-freshness}}
+
+A better logical version is
+
+\[
+k=a+b+c+1.
+\]
+
+For each fixed atom \texttt{R(a,b)}, varying \texttt{c} makes every
+sufficiently large binder available. For any finite set of atoms the
+permitted binder sets therefore have a common cofinite intersection.
+This removes the disjoint-range obstruction of the constructor wrappers
+and suggests a locally finite cylindric or Henkin-style completeness
+argument.
+
+That argument remains open. A single global renaming of all variable
+labels does not suffice: requiring a binder above the sum of an atom's
+two labels can yield incompatible inequalities when different variables
+serve alternately as binders and arguments. For example, demands
+involving \texttt{R(x,z)} under \texttt{y} and \texttt{R(y,z)} under
+\texttt{x} would force both \texttt{y\textgreater{}x+z} and
+\texttt{x\textgreater{}y+z}. A proof must change the finite derivation
+or build a suitable model interpretation; it cannot simply assert that
+all finitely many labels can be made large.
+
+There is also a semantic support issue: high-label atomic vacuity alone
+does not establish that an atom depends only on its two displayed
+coordinates. A relation interpreted as ordinary membership conjoined
+with a predicate of one low coordinate illustrates the missing
+inference. This observation is not a countermodel to the complete
+proposed set-theoretic theory; it identifies why the existing
+completeness proof cannot be reused unchanged.
+
+\hypertarget{alternative-physical-layouts-of-the-unbooted-core}{%
+\subsection{5. Alternative physical layouts of the unbooted
+core}\label{alternative-physical-layouts-of-the-unbooted-core}}
+
+At the end of the investigation, the inherited zero-terminal, retagged,
+and composed K219 patches were transferred to the runtime-correct but
+unbooted core217. The corresponding K218 source variants all retain 205
+distinct source nodes. The published alternative tables use normalized
+labels 102 and 120, so literal differences must instead be taken from
+their \texttt{upstream-labels} versions. The deleted 301/1 patch is
+omitted only after checking that both its old and new actions coincide
+with the retained 88/1 branch.
+
+All three transferred tables, and each one's optional row157
+alternative, have 217 states, 434 rows, and a valid
+decoder-prefix/source binding. Direct blank execution from all 217
+working initial states still reaches provable blank rays for all six
+tables. No unbounded runtime claim was made for these transferred
+variants: their literal initialization already fails.
+
+The three base variants were then searched under physical source
+rotations. The depth-eight search was exhaustive \textbf{within its
+stated traversal}: each next rotation must touch a transition used by
+the current start 0 blank prefix; every resulting layout is tested from
+all 217 initial states, with the engine's ray reuse and depth-aware
+deduplication. Each variant produced exactly the following receipt:
+
+\begin{longtable}[]{@{}lr@{}}
+\toprule\noalign{}
+Quantity & Value \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Maximum rotation depth & 8 \\
+Accepted traversal visits & 4579 \\
+Distinct stored layout/source keys & 4241 \\
+Required blank-start runs & 62324 \\
+Complete source frames found & 0 \\
+Maximum final finite support & 8 \\
+Traversal status & Complete \\
+\end{longtable}
+
+Separate depth-sixteen runs stopped at their 90-second bounds. They
+visited 11099,10912, and10169 layouts for zero-terminal, retagged, and
+composed respectively, with no frame. They are not described as
+exhaustive. Neither the shallow exhaustion nor the stopped deep runs
+rules out arbitrary coordinated source-layout changes.
+
+The standalone \texttt{rebuild\_core\_variants.py} reconstructs all six
+literal tables from the pinned core alone, using the inherited checked
+patch data. Every output was compared byte-for-byte to the table used in
+these searches. The source sidecars and depth-eight receipts are
+included; the archive's portable rotation engine can replay the searches
+directly with \texttt{-\/-table}, \texttt{-\/-sites},
+\texttt{-\/-active-start0}, and \texttt{-\/-depth\ 8}.
+
+\hypertarget{reproduction-and-trust-boundaries}{%
+\subsection{6. Reproduction and trust
+boundaries}\label{reproduction-and-trust-boundaries}}
+
+All scripts are standard-library Python. Their default relative layout
+expects this note and the scripts in \texttt{research/formalism}, with
+the following minimal upstream files at
+\texttt{research/ProveIt/Computability/BusyBeaver/Research/ZFC/}:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{candidate-k218/sites218.json};
+\item
+  \texttt{candidate-k218/k218.native.tm};
+\item
+  \texttt{k218-quantifier-stability/pricing/source\_language.py};
+\item
+  \texttt{k218-quantifier-stability/pricing/build221.py};
+\item
+  \texttt{k218-quantifier-stability/pricing/measure\_pinned.py}.
+\end{itemize}
+
+Recreating the seed certificate additionally uses
+\texttt{k218-quantifier-stability/check\_derivation.py}. Checking the
+included seed certificate needs no upstream files:
+
+\begin{verbatim}
+python3 replay_seed3.py --check-only seed3-certificate/seed3-proof.json --output checked-seed3
+\end{verbatim}
+
+The source census scripts read literal pinned table/source files. The
+paired source-graph resolvers check the generated tree's control-flow
+interpretation; they do not certify binary execution. The exploratory
+allocator checks decoder prefix behavior and can reject a grammatically
+attractive source because a contextual alias no longer has its required
+prefix. A successful allocation would still leave complete startup and
+arbitrary-register runtime obligations.
+
+The two main source inputs have SHA256 digests:
+
+\begin{verbatim}
+sites218.json   b0169f2d477d0584ac70f9bdb79c3a78ef2bc700d080b3cd80976210235b80d9
+k218.native.tm  2dfaba6da09b78291e534777cd30c5f0d68bd84faa670e868e779c396aeb308f
+\end{verbatim}
+
+The independently checked seed proof has SHA256
+
+\begin{verbatim}
+d6fdd2a43fdf255e8b7a3ca3c16cbaec8f7a2730e7be9b3df2c2bc803a91e052
+\end{verbatim}
+
+The logical results above are useful reusable lemmas and calibrated
+search directions. They are not a substitute for an accepted 217-state
+runtime certificate.
+
+\hypertarget{reproduction-entry-point-and-references}{%
+\subsubsection{Reproduction entry point and
+references}\label{reproduction-entry-point-and-references}}
+
+For the selected fast census and MP checks, run
+
+\begin{verbatim}
+python3 reproduce_formalism.py --upstream /path/to/ProveIt --experiment core
+\end{verbatim}
+
+The argument can also name the \texttt{Research/ZFC} directory directly.
+\texttt{-\/-verify-only} checks all five pinned dependencies and replays
+the independent seed certificate. The groups \texttt{classical},
+\texttt{dual}, \texttt{fields}, \texttt{wrappers}, and
+\texttt{implication} reproduce the corresponding larger searches;
+\texttt{all} runs every selected group. The time-bounded heuristic runs
+can evaluate different numbers of trials on different computers, so
+their exact historical receipts remain separate from a fresh replay.
+
+The mathematical interfaces were inspected in the following files at the
+pinned commit: \texttt{Code254.lean} for native constructors,
+\texttt{KCode222.lean} for the retained calculus,
+\texttt{KEqCodes222.lean} for equality reflexivity,
+\texttt{Enum222.lean} for the stack invariant and uniform command
+compiler, \texttt{L2Root219.lean} for the universal source-root map, and
+\texttt{KEind222.lean} for the use of atomic membership vacuity in the
+equality-by-indiscernibility interpretation. These are in
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/704b87442afbd571833a628cd558f1d207fd8b2f/Computability/BusyBeaver/Lean/BusyBeaver/ZFC}{the
+repository's Lean ZFC directory}.
+
+The K/B/Peirce basis is the Bernays--Tarski system described in Frank
+Pfenning's
+\href{https://www.cs.cmu.edu/~fp/papers/cade88.pdf}{\emph{Single Axioms
+in the Implicational Propositional Calculus}}, section2.1. A formal
+development of the same basis is
+\href{https://isa-afp.org/browser_info/current/AFP/Implicational_Logic/Implicational_Logic.html}{\emph{Implicational
+Logic} in the Archive of Formal Proofs}. These references justify the
+classical basis comparison; they do not supply any source-runtime claim.
+
+\end{document}

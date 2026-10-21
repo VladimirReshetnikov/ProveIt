@@ -3296,7 +3296,7 @@ construction/fold/fixed-core leaves pass. The optional fixed1,3 core is
 ordinarily calibrated but costs 211 source subtrees and has no binary table.
 Placement `7fff7bc909` retains all 57 members and retires the ZIP; the host now
 had 155 sources and the collection remains 290 reports. The later 216
-submission is imported in batch 195 below; two research reports await batch196.
+submission is imported in batch 195 below; two research reports follow in batch196.
 [Recovery and reproduction](set-theory/zfc-closure-kernels/intake-194-reproduction.md)
 separate inherited and freshly executed evidence.
 
@@ -3312,3 +3312,23 @@ Placement `58615b1aa1` accounts for all 41 members and retires the ZIP. The
 host has 156 sources; the collection remains 290 reports. The active target
 is 215 or fewer. [Recovery/reproduction](set-theory/zfc-closure-kernels/intake-195-reproduction.md)
 retains every original and distinguishes fresh evidence from inherited proofs.
+
+[Batch 196](set-theory/zfc-closure-kernels/intake-196.md) adds Sources 157–158
+at `d3d6b8c14e`: scanner/clean-seed/source-encoding research and precisely
+scoped failed searches. Placement `943e1685eb` preserves all 343 members and
+retires both archives. Nine selected fresh leaves pass. The original
+K216 follow-up transfers 60 of 62 individual row rewrites, with no joint
+state reduction. [Recovery](set-theory/zfc-closure-kernels/intake-196-reproduction.md).
+
+[Batch 197](set-theory/zfc-closure-kernels/intake-197.md) adds Source 159 at
+`d59b441882`: two distinct command-permuted 216-state machines. Ten selected
+fresh checks pass, including both 6,176-case runtimes and complete startup.
+Placement `607e98b59d` preserves all 72 members and retires the archive.
+[Recovery](set-theory/zfc-closure-kernels/intake-197-reproduction.md) retains
+both alternatives. Combining their command-local reader with Source 156's
+partial selector gives the independently checked
+[215-state primary machine](../../../../Computability/BusyBeaver/Research/ZFC/candidate-k215/README.md).
+The ordinary proof gives a ZFC-provable equivalence with Con(ZFC); its own
+full runtime and exact blank start are documented separately. No new
+exact-table Lean/PA endpoint or minimum-state theorem is claimed. The host
+has **159 sources**, the collection **290 reports**, and the queue is clear.

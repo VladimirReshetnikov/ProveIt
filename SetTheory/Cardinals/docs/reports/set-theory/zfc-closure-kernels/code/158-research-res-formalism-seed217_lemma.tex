@@ -1,0 +1,62 @@
+\subsection{A nonzero theorem at the new bootstrap}
+The new complete source frame has register vector
+\[
+ (\mathsf{np},\mathsf{tw},\mathsf{ws},\mathsf{ac},d,h,s_1,s_2,\mathsf{pl})
+ =(4,3,0,0,3,0,0,0,0).
+\]
+Here native code $3=E(0,0)$ is an equality theorem; native $I(0,0)=0$.
+In particular, neither the counter cutoff four nor the nonzero additive
+parameter invalidates the enumeration argument.
+
+\begin{lemma}[Admissibility of the new logical seed]
+The unchanged native enumerator, started from the displayed clean root
+vector, halts if and only if the retained calculus $C_{222}$ derives its
+falsum code $F=1$.
+\end{lemma}
+\begin{proof}
+First, $C_{222}\vdash E(x,x)$ for every natural $x$.
+Put $r=R(x,x)$ and $X=E(r,x)$. The merged equality axiom is
+$X\to(X\to Q_rE(x,x))$; contraction gives
+$X\to Q_rE(x,x)$. Existential monotonicity, derived by contraposition,
+closed generalization and $\rho_2$, gives
+$\exists_rX\to\exists_rQ_rE(x,x)$.
+Apply $\rho_1(r,x)$ and then $\rho_6(r,E(x,x))$.
+Specializing $x=0$ proves the new current formula $3$.
+
+Thus the usual invariant holds initially: the current formula and cache
+are theorems and every decoded stack entry is a theorem. The empty stack
+is the all-zero stream, and zero is truth. The invariant imposes no
+condition on the candidate counter or additive parameter. Every command
+preserves it, and a halting NIP tests a cached falsum. This proves
+soundness without assuming consistency.
+
+For completeness, compile any derivation of $F$ to a finite block $p$
+whose contract is universal in the current formula $T$ and underlying
+stack $S$: from $(T,S,0,0)$ it either halts or returns $(F,S,0,0)$.
+For any natural $U$, the command
+$\operatorname{START}_U=\operatorname{AX}(0,1,1,U)$ resets the additive
+parameter and cache to zero. Hence
+\[
+ \operatorname{START}_U\mathbin{+\!+}p\mathbin{+\!+}
+ [\operatorname{DROP}(0),\operatorname{NIP}(0),\operatorname{NIP}(0)]
+\]
+halts from every working tuple. If $R$ is the encoded pointer of the fixed
+nonempty suffix, its complete candidate number is
+\[
+ N_U=P\bigl(3,P(1,P(1,P(U,R)))\bigr)\geq U.
+\]
+Choose $U=4$. Nonzero proof-list pointers strictly decrease on every
+nonhalting command; when the pointer is zero, the candidate counter
+increments. Consequently the run eventually executes candidate $N_U$
+unless it already halted. This establishes completeness above cutoff four.
+All constructions are finite syntactic transformations and natural-number
+inductions formalizable in ZFC.
+\end{proof}
+
+The existing $\texttt{L2Root219.toAS}$ is precisely
+$[\mathsf{np},\mathsf{tw},\mathsf{ws},0,d,h,0,0,\mathsf{pl}]$;
+its root-step correspondence is universal in the enumerator state.
+The accepted K218 source equivalence is universal in the register vector.
+Thus this lemma fits the unchanged source directly. A complete binary
+bootstrap and the primitive-runtime bridge remain separate physical
+obligations; the lemma does not substitute for either of them.
