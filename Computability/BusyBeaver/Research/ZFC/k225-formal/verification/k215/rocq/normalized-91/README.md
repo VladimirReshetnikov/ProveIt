@@ -19,7 +19,9 @@ and [coqchk.txt](coqchk.txt) the recursive checker's context summary. Its global
 `Stdlib.Logic.Eqdep.Eq_rect_eq.eq_rect_eq`, exactly as for the baseline; the endpoint statements
 depend on none of them (their closed reports), and no constant relies on type-in-type, unsafe
 fixpoints or assumed positivity. Every compiled source is byte-identical to the committed
-`coq/215/` tree. Compilation took 504 s (the closure before these changes: 607 s on the same
+`coq/215/` tree of `b8802a9772` (the origin merge `f46b58faf8` brought back the older offset-
+certificate sources, retained there as the last checked boundary; they were re-landed byte for byte
+once this kernel record existed). Compilation took 504 s (the closure before these changes: 607 s on the same
 machine).
 
 What the closure now contains, against the 237-module baseline of [`../README.md`](../README.md):

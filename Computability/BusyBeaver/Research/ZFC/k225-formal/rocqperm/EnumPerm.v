@@ -10,15 +10,14 @@
       3 + c   AX    y x    : U := d; A := d + x; b := h + y; push tw, wal U h, rho8 .. rho1 at
                              (A, b, c) with rho8's fourth argument U;
                              tw := (if c = A or c = b then 0 else bundle222 A b c); d := 0; h := 0
-    The first command of a candidate is read from the candidate number itself; later commands are
-    read from prooflist - 1. *)
+    One step decodes the next command ([decode]) and runs it on the working registers
+    ([xstep]). The first command of a candidate is read from the candidate number itself; later
+    commands are read from prooflist - 1. *)
 From Coq Require Import Arith Lia Bool.
 From K230L Require Import Codes230.
 From NS Require Import Codes222.
 
 Record state : Type := mkState { pl : nat; np : nat; tw : nat; ws : nat; d : nat; h : nat }.
-
-Definition s0 : state := mkState 0 0 0 0 0 0.
 
 (** the stack after AX: [tw] pushed first, then GEN of the cache at [u], then rho8 .. rho1 *)
 Definition ax_stack (a h b c u t w : nat) : nat :=
@@ -27,22 +26,38 @@ Definition ax_stack (a h b c u t w : nat) : nat :=
 
 Definition gate (a b c : nat) : nat := if Nat.eqb c a || Nat.eqb c b then 0 else bundle222 a b c.
 
+(** ** Commands on the working registers (current, stack, counter, cache) *)
+Inductive cmd : Type := CNIP | CDROP | CMP (x : nat) | CAX (c x y : nat).
+
+Definition tup : Type := (nat * nat * nat * nat)%type.
+
+Definition xstep (k : cmd) (q : tup) : option tup :=
+  let '(t, w, dd, hh) := q in
+  match k with
+  | CNIP => if Nat.eqb hh 1 then None else Some (t, snd (unP w), dd, fst (unP w))
+  | CDROP => Some (hh, P t w, dd, hh)
+  | CMP x => Some (if Nat.eqb (wim t (dd + x)) hh then (dd + x, P 0 w, dd + x, 0) else (0, w, dd + x, 0))
+  | CAX c x y => Some (gate (dd + x) (hh + y) c, ax_stack (dd + x) hh (hh + y) c dd t w, 0, 0)
+  end.
+
+(** the command packed at [z], and the rest pointer *)
+Definition decode (z : nat) : cmd * nat :=
+  let '(ac, r) := unP z in
+  match ac with
+  | 0 => (CNIP, r)
+  | 1 => (CDROP, r)
+  | 2 => let '(x, r') := unP r in (CMP x, r')
+  | S (S (S c)) => let '(y, r') := unP r in let '(x, r'') := unP r' in (CAX c x y, r'')
+  end.
+
+Definition tupof (s : state) : tup := (tw s, ws s, d s, h s).
+
 Definition enum_step (s : state) : option state :=
   let '(pl1, np1) := if Nat.eqb (pl s) 0 then (np s, S (np s)) else (pred (pl s), np s) in
-  let '(ac, pl2) := unP pl1 in
-  match ac with
-  | 0 => if Nat.eqb (h s) 1 then None
-         else let '(h1, w1) := unP (ws s) in Some (mkState pl2 np1 (tw s) w1 (d s) h1)
-  | 1 => Some (mkState pl2 np1 (h s) (P (tw s) (ws s)) (d s) (h s))
-  | 2 => let '(x, pl3) := unP pl2 in
-         Some (if Nat.eqb (wim (tw s) (d s + x)) (h s)
-               then mkState pl3 np1 (d s + x) (P 0 (ws s)) (d s + x) 0
-               else mkState pl3 np1 0 (ws s) (d s + x) 0)
-  | S (S (S c)) =>
-      let '(y, pl3) := unP pl2 in
-      let '(x, pl4) := unP pl3 in
-      let b := h s + y in
-      Some (mkState pl4 np1 (gate (d s + x) b c) (ax_stack (d s + x) (h s) b c (d s) (tw s) (ws s)) 0 0)
+  let '(k, r) := decode pl1 in
+  match xstep k (tupof s) with
+  | Some (t, w, dd, hh) => Some (mkState r np1 t w dd hh)
+  | None => None
   end.
 
 (** [run n s]: n steps from s, [None] if a step halts on the way *)
@@ -51,5 +66,3 @@ Fixpoint run (n : nat) (s : state) : option state :=
   | 0 => Some s
   | S n => match enum_step s with Some s' => run n s' | None => None end
   end.
-
-Definition enum_halts : Prop := exists n s, run n s0 = Some s /\ enum_step s = None.

@@ -1,4 +1,4 @@
-(** k225-formal/rocqperm/L1_CompPerm.v (SHA256 3b4de4f5196c48def488bcbfa413ea4afcf0026db1a5afca1f21b341aa235aaf) under namespace K215F. *)
+(** k225-formal/rocqperm/L1_CompPerm.v (SHA256 d54da9860c193ba78e0d37bf6a4ff662162ce1b3687d0dce3e31811f9e05e8a1) under namespace K215F. *)
 (** * L1_CompPerm: [thm222 1] implies that the 215's enumerator halts.
 
     As L1_Comp222, for Source 159's commands: a derivation of the dominated calculus [thmDom]
@@ -13,9 +13,7 @@ From K230L Require Import Codes230.
 From K215F Require Import Codes222 EnumPerm Thm222 ThmDom.
 Import ListNotations.
 
-(** ** Commands and their encoding *)
-Inductive cmd : Type := CNIP | CDROP | CMP (x : nat) | CAX (c x y : nat).
-
+(** ** The encoding of commands, inverse to [decode] *)
 Definition fields (k : cmd) : list nat :=
   match k with
   | CNIP => [0] | CDROP => [1] | CMP x => [2; x] | CAX c x y => [S (S (S c)); y; x]
@@ -26,18 +24,21 @@ Definition enc_fields (fs : list nat) (r : nat) : nat := fold_right P r fs.
 Fixpoint enc_tail (L : list cmd) : nat :=
   match L with [] => 0 | k :: L => S (enc_fields (fields k) (enc_tail L)) end.
 
-(** ** Command semantics on (current, stack, counter, cache) *)
-Definition tup : Type := (nat * nat * nat * nat)%type.
+Lemma decode_fields k r : decode (enc_fields (fields k) r) = (k, r).
+Proof.
+  unfold decode. destruct k as [| |x|c x y]; cbn [fields enc_fields fold_right];
+    rewrite unP_P; cbn -[P unP]; rewrite ?unP_P; cbn -[P unP]; rewrite ?unP_P; reflexivity.
+Qed.
 
-Definition xstep (k : cmd) (q : tup) : option tup :=
-  let '(t, w, dd, hh) := q in
-  match k with
-  | CNIP => if Nat.eqb hh 1 then None else Some (t, snd (unP w), dd, fst (unP w))
-  | CDROP => Some (hh, P t w, dd, hh)
-  | CMP x => Some (if Nat.eqb (wim t (dd + x)) hh then (dd + x, P 0 w, dd + x, 0) else (0, w, dd + x, 0))
-  | CAX c x y => Some (gate (dd + x) (hh + y) c, ax_stack (dd + x) hh (hh + y) c dd t w, 0, 0)
-  end.
+Lemma decode_le z : snd (decode z) <= z.
+Proof.
+  unfold decode. pose proof (unP_le z) as [_ L1]. destruct (unP z) as [ac r]. cbn in L1.
+  pose proof (unP_le r) as [_ L2]. destruct (unP r) as [x r'] eqn:E. cbn in L2.
+  pose proof (unP_le r') as [_ L3]. destruct (unP r') as [y r'']. cbn in L3.
+  destruct ac as [|[|[|c]]]; cbn; lia.
+Qed.
 
+(** ** Running command lists *)
 Fixpoint exec (L : list cmd) (q : tup) : option tup :=
   match L with
   | [] => Some q
@@ -50,8 +51,6 @@ Proof.
   revert q; induction L1 as [|k L1 IH]; intro q; [reflexivity|].
   cbn. destruct (xstep k q); [apply IH | reflexivity].
 Qed.
-
-Definition tupof (s : state) : tup := (tw s, ws s, d s, h s).
 
 (** ** One enumerator step executes one command *)
 Lemma step_read s k r np1 :
@@ -66,13 +65,7 @@ Proof.
   assert (E : (if Nat.eqb (pl s) 0 then (np s, S (np s)) else (pred (pl s), np s))
               = (enc_fields (fields k) r, np1)).
   { destruct H as [[-> ->] | [-> [-> ->]]]; reflexivity. }
-  rewrite E. clear E H. unfold tupof.
-  destruct s as [pl0 np0 t w dd hh]; cbn [tw ws d h].
-  destruct k as [| |x|c x y]; cbn [fields enc_fields fold_right]; rewrite !unP_P; cbn [xstep].
-  - destruct (Nat.eqb hh 1); [reflexivity|]. now destruct (unP w).
-  - reflexivity.
-  - destruct (Nat.eqb (wim t (dd + x)) hh); reflexivity.
-  - reflexivity.
+  now rewrite E, decode_fields.
 Qed.
 
 Definition halts_from (s : state) : Prop := exists n s', run n s = Some s' /\ enum_step s' = None.
@@ -109,18 +102,10 @@ Proof.
                np1 = (if Nat.eqb (pl s) 0 then S (np s) else np s))
     by (destruct (Nat.eqb (pl s) 0); now injection E as <- <-).
   destruct Hl as [-> ->]. clear E.
-  set (z := if Nat.eqb (pl s) 0 then np s else pred (pl s)).
-  pose proof (unP_le z) as [_ L1].
-  destruct (unP z) as [ac pl2] eqn:E2. cbn in L1.
-  destruct ac as [|[|[|c]]].
-  - destruct (Nat.eqb (h s) 1); [discriminate|]. destruct (unP (ws s)).
-    intro H; injection H as <-; cbn [pl np]; lia.
-  - intro H; injection H as <-; cbn [pl np]; lia.
-  - pose proof (unP_le pl2) as [_ L2]. destruct (unP pl2) as [x pl3] eqn:E3. cbn in L2.
-    destruct (Nat.eqb (wim (tw s) (d s + x)) (h s)); intro H; injection H as <-; cbn [pl np]; lia.
-  - pose proof (unP_le pl2) as [_ L2]. destruct (unP pl2) as [y pl3] eqn:E3. cbn in L2.
-    pose proof (unP_le pl3) as [_ L3]. destruct (unP pl3) as [x pl4] eqn:E4. cbn in L3.
-    intro H; injection H as <-; cbn [pl np]; lia.
+  pose proof (decode_le (if Nat.eqb (pl s) 0 then np s else pred (pl s))) as L.
+  destruct (decode _) as [k r]. cbn in L.
+  destruct (xstep k (tupof s)) as [[[[t w] dd] hh]|]; [|discriminate].
+  intro H; injection H as <-. cbn [pl np]. split; [exact L | reflexivity].
 Qed.
 
 Lemma run_add n m s :
@@ -145,24 +130,25 @@ Proof.
       * left. exists 0, s. split; [reflexivity | exact E].
 Qed.
 
-Lemma reach m : enum_halts \/ exists n s, run n s0 = Some s /\ pl s = 0 /\ np s = m.
+Lemma reach sd k : pl sd = 0 ->
+  halts_from sd \/ exists n s, run n sd = Some s /\ pl s = 0 /\ np s = np sd + k.
 Proof.
-  induction m as [|m [Hh | [n [s [R [P0 N0]]]]]].
-  - right. exists 0, s0. repeat split.
+  intros Hsd. induction k as [|k [Hh | [n [s [R [P0 N0]]]]]].
+  - right. exists 0, sd. split; [reflexivity|]. split; [exact Hsd | lia].
   - left. exact Hh.
   - destruct (enum_step s) as [s1|] eqn:E.
     + pose proof (step_pl s s1 E) as [H1 H2]. rewrite P0 in H1, H2. cbn in H1, H2.
-      destruct (drain (pl s1) s1 (le_n _)) as [[k [s2 [R2 H2']]] | [k [s2 [R2 [P2 N2]]]]].
-      * left. exists (n + S k), s2. split; [|exact H2'].
+      destruct (drain (pl s1) s1 (le_n _)) as [[j [s2 [R2 H2']]] | [j [s2 [R2 [P2 N2]]]]].
+      * left. exists (n + S j), s2. split; [|exact H2'].
         rewrite run_add, R. cbn. now rewrite E.
-      * right. exists (n + S k), s2. split; [rewrite run_add, R; cbn; now rewrite E|].
+      * right. exists (n + S j), s2. split; [rewrite run_add, R; cbn; now rewrite E|].
         split; [exact P2 | lia].
     + left. exists n, s. now split.
 Qed.
 
-Lemma halts_from_reach n s : run n s0 = Some s -> halts_from s -> enum_halts.
+Lemma halts_from_reached sd n s : run n sd = Some s -> halts_from s -> halts_from sd.
 Proof.
-  intros R [k [s' [R' H]]]. exists (n + k), s'. split; [|exact H].
+  intros R [j [s' [R' H]]]. exists (n + j), s'. split; [|exact H].
   rewrite run_add, R. exact R'.
 Qed.
 
@@ -340,12 +326,18 @@ Proof.
   unfold SUFFIX. rewrite ex_drop, ex_nip by lia. apply ex_nip1.
 Qed.
 
-Theorem enum_complete : thm222 1 -> enum_halts.
+(** Completeness from any state between candidates: the program [START Y ++ Build_F ++ SUFFIX]
+    with [Y] the state's own candidate counter has candidate number [P 3 (P Y (P 1 r)) >= Y]. *)
+Theorem complete_from sd : pl sd = 0 -> thm222 1 -> halts_from sd.
 Proof.
-  intro H. destruct (compile 1 (thmDom_of_thm222 1 H)) as [L HL].
-  set (N := enc_fields (fields (START 0)) (enc_tail (L ++ SUFFIX))).
-  destruct (reach N) as [Hh | [n [s [R [P0 N0]]]]]; [exact Hh|].
-  apply (halts_from_reach n s R).
-  apply (run_first (START 0) (L ++ SUFFIX) s P0 N0).
-  apply program_halts. exact HL.
+  intros Hsd H. destruct (compile 1 (thmDom_of_thm222 1 H)) as [L HL].
+  set (Y := np sd). set (N := enc_fields (fields (START Y)) (enc_tail (L ++ SUFFIX))).
+  assert (HN : Y <= N).
+  { unfold N, START, fields, enc_fields. cbn [fold_right].
+    pose proof (P_ge_l Y (P 1 (enc_tail (L ++ SUFFIX)))).
+    pose proof (P_ge_r 3 (P Y (P 1 (enc_tail (L ++ SUFFIX))))). lia. }
+  destruct (reach sd (N - Y) Hsd) as [Hh | [n [s [R [P0 N0]]]]]; [exact Hh|].
+  apply (halts_from_reached sd n s R).
+  apply (run_first (START Y) (L ++ SUFFIX) s P0); [unfold Y in *; lia|].
+  apply program_halts, HL.
 Qed.
