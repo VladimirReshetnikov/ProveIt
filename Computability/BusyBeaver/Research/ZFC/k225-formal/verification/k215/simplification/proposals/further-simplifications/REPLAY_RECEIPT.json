@@ -1,0 +1,179 @@
+{
+  "status": "PASS_FINITE_REPLAY_NOT_KERNEL_PROOF",
+  "manifest_sha256": "e25798ea3de7aab722c154c4290e2f49ccf4e91e82c453467e3d3db13e1aa885",
+  "manifest_files": 329,
+  "verifier_sha256": "1d3eac21a2f63f591bc3c79a5871145f8309c57035b20661fc0b389ab347416b",
+  "python": "3.12.14",
+  "received_code_executed": false,
+  "lean_or_rocq_compiled": false,
+  "original_packet_unchanged": true,
+  "checks": [
+    {
+      "name": "source_pins",
+      "script": "check_source_pins.py",
+      "exit_code": 0,
+      "archived_outputs_byte_equal": [
+        "SOURCE_PIN_CHECKS.json"
+      ],
+      "stdout_json_equals": null,
+      "stdout_sha256": "c73437e5a448730efe6d6a9eb518ebcb5c87f501da6c89ccdad2095f5e929365",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 0.31
+    },
+    {
+      "name": "recorded_receipt_consistency",
+      "script": "recent_commits/verify_receipts.py",
+      "exit_code": 0,
+      "archived_outputs_byte_equal": [
+        "recent_commits/STATIC_AUDIT.json"
+      ],
+      "stdout_json_equals": null,
+      "stdout_sha256": "e5a3c2999f3e14b30421dcca98c0537147df124ce1a5dc0c48c4157652965229",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 0.162
+    },
+    {
+      "name": "phase5_production_consistency",
+      "script": "recent_commits/phase5_refresh/verify_phase5.py",
+      "exit_code": 0,
+      "archived_outputs_byte_equal": [
+        "recent_commits/phase5_refresh/STATIC_AUDIT.json"
+      ],
+      "stdout_json_equals": null,
+      "stdout_sha256": "d0fc73c05d63ff18e47fb55a91340ae989a13d94ff03ef120195b32458f7d603",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 0.272
+    },
+    {
+      "name": "decoder_factoring",
+      "script": "runtime_contexts/factor_decoder.py",
+      "exit_code": 0,
+      "archived_outputs_byte_equal": [
+        "runtime_contexts/decoder_factored_certificate.json",
+        "runtime_contexts/decoder_factored_result.json"
+      ],
+      "stdout_json_equals": null,
+      "stdout_sha256": "903157605693c90b4dc40177aa920d0760db0d9200bbedb39e9288776c03aa0a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 1.383
+    },
+    {
+      "name": "home_profile",
+      "script": "runtime_contexts/profile_home.py",
+      "exit_code": 0,
+      "archived_outputs_byte_equal": [
+        "runtime_contexts/home_profile.json",
+        "runtime_contexts/home_cuts.json"
+      ],
+      "stdout_json_equals": null,
+      "stdout_sha256": "f524dd7d856390c3a0dddc0bc22512c9be30889842e04f0cf9f3535b4c55d490",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 10.782
+    },
+    {
+      "name": "home_independent",
+      "script": "runtime_contexts/verify_home.py",
+      "exit_code": 0,
+      "archived_outputs_byte_equal": [
+        "runtime_contexts/home_independent_result.json"
+      ],
+      "stdout_json_equals": null,
+      "stdout_sha256": "47aa3626682c88ecf35113d09535ef2f7f5003a6461c96ea01daafa83bdbc7e4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 10.967
+    },
+    {
+      "name": "optional_boundary",
+      "script": "runtime_boundary_optional/check_boundary_optional.py",
+      "exit_code": 0,
+      "archived_outputs_byte_equal": [
+        "runtime_boundary_optional/boundary_optional_result.json"
+      ],
+      "stdout_json_equals": null,
+      "stdout_sha256": "9be6ef25d8d5edb961858a4fee04da69a0ee0fa9dd0ce09419196bc820c04b6d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 4.194
+    },
+    {
+      "name": "fresh_padding",
+      "script": "calibration/check_fresh_padding.py",
+      "exit_code": 0,
+      "archived_outputs_byte_equal": [
+        "calibration/finite_checks.json"
+      ],
+      "stdout_json_equals": null,
+      "stdout_sha256": "df744948f757b6291794cd3849db74499b7d3755d539b6942a10b61d83ce13a5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 3.26
+    },
+    {
+      "name": "dag_wellformedness",
+      "script": "wellformedness/check_wellformedness.py",
+      "exit_code": 0,
+      "archived_outputs_byte_equal": [
+        "wellformedness/check_result.json",
+        "wellformedness/computed_summaries.json"
+      ],
+      "stdout_json_equals": null,
+      "stdout_sha256": "7b91ed9602f25df030ac581a6a7648419678ec16b65151378f7d768bd9b953f4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 0.534
+    },
+    {
+      "name": "terminal_contract",
+      "script": "terminal_contract/check_terminal_contract.py",
+      "exit_code": 0,
+      "archived_outputs_byte_equal": [],
+      "stdout_json_equals": "terminal_contract/result.json",
+      "stdout_sha256": "733bcea499dceafd9ac69013a2569873367b938acfeb4acb6fb5638a205e2545",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 0.609
+    },
+    {
+      "name": "independent_review",
+      "script": "review/check_independent.py",
+      "exit_code": 0,
+      "archived_outputs_byte_equal": [
+        "review/independent_result.json"
+      ],
+      "stdout_json_equals": null,
+      "stdout_sha256": "03362acf826d378b11d0bbd9d456e3de0e4f8691556393ff5dc569feb29bcbb4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 1.992
+    },
+    {
+      "name": "named_kernel_review",
+      "script": "review/check_named_kernel.py",
+      "exit_code": 0,
+      "archived_outputs_byte_equal": [
+        "review/named_kernel_result.json"
+      ],
+      "stdout_json_equals": null,
+      "stdout_sha256": "3ae0893970634115fae3e5f54d16ab5afdaedf95d42f058b10a5bdc6a2c965fb",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 6.147
+    },
+    {
+      "name": "runtime_rejections",
+      "script": "runtime_contexts/test_rejections.py",
+      "exit_code": 0,
+      "archived_outputs_byte_equal": [
+        "runtime_contexts/rejection_controls.json"
+      ],
+      "stdout_json_equals": null,
+      "stdout_sha256": "b2d8499c313c3c12c62e142de84df8395bd31daaef9189a0af42dcad3c12eab7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 10.678
+    },
+    {
+      "name": "outer_isolation",
+      "script": "tests/test_outer_verifier.py",
+      "exit_code": 0,
+      "archived_outputs_byte_equal": [],
+      "stdout_json_equals": "OUTER_NEGATIVE_CONTROLS.json",
+      "stdout_sha256": "184c15990d6476902964b08bacb096a6809acee68eb995e2d10050025e1c5728",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 5.239
+    }
+  ]
+}

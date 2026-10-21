@@ -12,17 +12,24 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
-## Current pending arrivals after batch 208
+## Current queue after upstream batches 209–210
 
-`K215_Automatic_Certificates_2026-10-21.zip` (`5314ca0e6b`) and
-`K215_Proof_and_Quotient_Detachment_2026-10-21.zip` (`b07002a86b`)
-are under review. They arrived after batch 208 and remain pending.
-The queue-clear statements, proof-status paragraphs and ledger rows below
-retain their earlier checkpoints.
+`K215_Guarded_Proof_Core_and_Refinements_2026-10-21.zip` and
+`K215_Proof_Core_2026-10-21.zip` are new arrivals awaiting intake.
+Upstream placements `32d378522c` and `05eaa1d466` extracted and retired the
+six packets in batches 209–210, including the earlier automatic-certificate
+and quotient-detachment arrivals. Their independent mathematical reconciliation
+remains pending. The numbered host coverage below remains through Source 178;
+Sources 165–166 also retain their earlier pending follow-ups.
+
+The [origin merge boundary](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/upstream-merge/README.md)
+retains the checked phase-six proof sources while preserving the new proposals.
+Queue-clear statements, proof-status paragraphs and ledger rows below retain
+their earlier checkpoints.
 
 ## Supplemental reconciliation through Source 178
 
-[Batch 205 and its Source 174 appendix](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-205.md), [batch 207](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-207.md) and [batch 208](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-208.md) reconcile Sources 168–178. The host now has 178 numbered sources, written coverage of 1–164 and 167–178, and pending Source 165/166 follow-ups; the collection stays at 290 reports. Supplemental commits `0359ebda60`, `dada10165b` and `7e320f376c` preserve exact recovery alongside the upstream placements, without duplicate source numbering; write `1937bbc8a5` completes the batch-208 reconciliation. The later [phase-six Lean checkpoint](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/README.md) now passes for 187 project modules and both typed endpoint clients, with unchanged machine and theorem statements. Its reused providers retain exact phase-five bindings. The two later arrivals listed above remain pending.
+[Batch 205 and its Source 174 appendix](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-205.md), [batch 207](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-207.md) and [batch 208](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-208.md) reconcile Sources 168–178. The host now has 178 numbered sources, written coverage of 1–164 and 167–178, and pending Source 165/166 follow-ups; the collection stays at 290 reports. Supplemental commits `0359ebda60`, `dada10165b` and `7e320f376c` preserve exact recovery alongside the upstream placements, without duplicate source numbering; write `1937bbc8a5` completes the batch-208 reconciliation. The later [phase-six Lean checkpoint](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/README.md) now passes for 187 project modules and both typed endpoint clients, with unchanged machine and theorem statements. Its reused providers retain exact phase-five bindings. The later placements and arrivals have the separate pending review scope stated above.
 
 ## Queue status after batch 208 placement
 
@@ -39,6 +46,24 @@ queue is clear at this checkpoint.
 ## Current proof work after batch 207
 
 The exact K215 Lean endpoint passes the [phase-five simplification checkpoint](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase5/README.md): 184 modules, including 37 freshly compiled affected modules, and both endpoint audits with standard axioms only. Batches 205–207 below preserve proposals as delivered; those imports do not promote their prototypes to new formal results. Supplementary mathematical reconciliation and exact recovery records are being integrated separately. The active goal is simplifying the checked Lean proofs; earlier 214-state target and queue statements are historical.
+
+## Queue status after batch 210
+
+Five K215 proof-simplification packets (four from `834bddda1b`, and
+`K215_Proof_and_Quotient_Detachment_2026-10-21.zip`) were placed whole as
+delivered under
+[proposals/](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/README.md)
+(`quotient-detachment`, `proof-refinements`, `composition-address-bounds`,
+`further-simplifications`, `rocq-composition`), omitting copies of repository
+content. They have no new tables. Nothing was rerun. The queue is clear.
+
+## Queue status after batch 209
+
+`K215_Automatic_Certificates_2026-10-21.zip` (arrival `5314ca0e6b`) was
+placed whole as delivered as
+[proposals/automatic-certificates](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/README.md),
+omitting `search214/inputs/` (copies of 21 repository tables). It has no new
+tables. Nothing was rerun. The queue is clear.
 
 ## Queue status after batch 208
 

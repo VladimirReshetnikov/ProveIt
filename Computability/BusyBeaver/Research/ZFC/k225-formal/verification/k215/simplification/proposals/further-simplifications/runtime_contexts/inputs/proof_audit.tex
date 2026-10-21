@@ -1,0 +1,333 @@
+\section{Audit of the existing formal proofs}
+\label{sec:proof-audit}
+
+The inspected ProveIt revision is
+\texttt{b6c7087477e51c017003bd729e712c8969733223}.
+The repository already contains three proof-simplification checkpoints.
+Consequently, deriving a shared AX-word interpreter, removing the reverse
+Lean source certificate, or replacing the original expanded dominated-rule
+derivation would repeat work already present in this revision.\cite{verification,phase3}
+
+The current Lean primary dependency closure has 185 project modules,
+compared with 204 at the original full-build checkpoint. The latest
+phase-three record freshly rebuilds nine affected modules and binds the
+176 reused objects to their earlier checked sources, dependencies, objects
+and logs. Its two explicit audit clients produce ten reports containing
+only \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}.
+This is an incremental check of the complete dependency closure, not a
+fresh compilation of all 185 modules in this session. The original Rocq
+record reports 237 selected sources, four closed endpoint assumption
+reports and a recursive \texttt{coqchk}. Subsequent simplification records
+retain that baseline and identify the affected rebuilt modules.
+
+The precise endpoint in Lean is
+\begin{verbatim}
+KEndpoint215.blank_halts_iff_zfc_refutation :
+  BlankHalts machine215 <-> BProv ZFCax_s [] Form.fBot
+\end{verbatim}
+The Rocq dense endpoint is
+\texttt{tm215\_halts\_iff\_ZFC\_inconsistent} in
+\path{k225-formal/rocq/rocq-extension/coq/215/CorrectDense215.v}.
+Both refer to the primary machine's literal dense table. The core
+composition is already short: the Lean endpoint is a direct application
+of the shared \texttt{KEndpoint} theorem, and Rocq rewrites the dense/sparse
+equivalence and applies its sparse endpoint. Shortening those final lines
+has little mathematical value. The substantial work is in the reusable
+simulation and calculus layers, and in the machine-specific certificates.\cite{endpoint}
+
+\begin{center}
+\begin{tabular}{lrr}
+\hline
+Proof source & Original bytes & Current bytes\\
+\hline
+Lean dominated implication & 689,857 & 35,185\\
+Lean AX routine & 202,222 & 7,563\\
+Lean source data & 653,569 & 456,548\\
+Lean site-coverage facade & 107,243 & 14,916\\
+Lean register determinism & 17,209 & 12,988\\
+Rocq dominated implication & 921,691 & 22,673\\
+\hline
+\end{tabular}
+\end{center}
+
+These are the repository's recorded source-byte comparisons, rather than
+measurements of the size of the resulting kernel proof terms. They also
+do not count every retained historical receipt as removed repository data.\cite{simplification}
+The current Lean dominated-rule argument has a 61-lemma bootstrap,
+81 reused conditional schemas, eight numerical dominance hypotheses, and
+a deduction theorem. The 629-node/735-instruction certificate remains
+the checked Rocq rendering; it is not the current Lean rendering.
+
+The audit sources are the primary verification README, the simplification
+README, the phase-three README and its Lean record, and the actual endpoint
+files. Useful current source anchors are
+\texttt{KEndpoint215.lean:43} (the endpoint),
+\texttt{KSim.lean:317} (positive-step halting transfer),
+\texttt{RMOffsetBisim.lean:287} (one certificate gives equivalence),
+\texttt{L2AxiomsPerm.lean:100} (AX-word composition), and
+\texttt{DomRho8.lean:597} (the unrestricted dominated-row conclusion).
+All of these anchors refer to the pinned revision above.
+
+\subsection{A concrete remaining simplification in Rocq}
+
+The Lean source correspondence now uses a single forward certificate and
+the mathematical symmetry of an offset bisimulation. The current Rocq
+\texttt{Source215.v} still separately evaluates
+\begin{verbatim}
+certificate_forward : ocheck (ptree p215) (ptree dagPerm) Cert215 = true
+certificate_backward :
+  ocheck (ptree dagPerm) (ptree p215) (omirror Cert215) = true
+\end{verbatim}
+with \texttt{vm\_compute} (lines 8--13), and the same directory's
+\texttt{OffsetBisim230.v:167}, \texttt{ocheck\_iff}, requires both results.
+Thus the same mathematical
+improvement remains available in the Rocq lane.
+
+The appropriate addition is the generic theorem
+\begin{verbatim}
+ocheck_mirror t1 t2 C :
+  ocheck t1 t2 C = true ->
+  ocheck t2 t1 (omirror C) = true.
+\end{verbatim}
+Its proof has five small ingredients. Lookup in \texttt{omirror C} is
+lookup in \texttt{C} followed by swapping the two paths and negating the
+integer offset. The identity
+$\delta(-z,i)=-\delta(z,i)$ turns each old count equation into its reverse.
+A simple completeness lemma for \texttt{counts\_ok}, paired with the
+existing \texttt{counts\_ok\_sound}, avoids reasoning about the order of
+the duplicate register indices in its test list. These facts transfer a
+branch check, then an entry check, then the initial and universal checks.
+The initial offset is zero, so it is fixed by negation. This removes the
+second whole-certificate evaluation while preserving the exact theorem
+and every table/source input. This Rocq change is a proposed port; the
+new files in this packet do not claim to have compiled it.
+
+\subsection{Use a verified parent as the proof boundary}
+
+For a small transition-table edit, the most effective next simplification
+is often a direct equivalence proof with the already verified machine.
+The entire numerical-calculus calibration, proof enumeration, source
+bisimulation, site coverage and blank initializer can then remain behind
+one proved interface. The new obligation is a local simulation theorem
+about the changed transition graph.
+
+This applies especially well to the new FM215 construction below. The
+existing conditional-marker alternative CM215 also has an ordinary
+all-tape equivalence with the primary machine, but its invariant needs
+an extra fact about state 156 and a two-step incoming path. FM215 uses two
+unconditional predecessor-marker facts, each established by the
+immediately preceding transition. Its additional correctness proof is
+therefore structurally simpler.
+
+This comparison is about the additional proof after the primary endpoint
+has been proved. It is not a claim that changing the table removes the
+underlying set-theoretic calibration. Likewise, the rebalanced-address
+alternative's maximum source depth of 41 can reduce some certificate
+arithmetic, but a shorter address is not itself a shorter correctness
+argument. The composed allocation shares the primary source and seed,
+which makes it a conservative candidate for reusing the existing
+certificate pipeline, but it still needs its own physical runtime
+certificates unless an additional direct equivalence is established.
+
+\section{A reusable positive simulation theorem}
+\label{sec:positive-simulation}
+
+Let $f:X\to X\cup\{\bot\}$ and $g:Y\to Y\cup\{\bot\}$ be deterministic
+partial transition functions. A configuration is terminal precisely when
+its transition is $\bot$. Let $R\subseteq X\times Y$ satisfy:
+\begin{enumerate}
+\item If $R(x,y)$ and $f(x)=x'$, then some $y'$ satisfies $R(x',y')$
+  and $y\mathrel{\longrightarrow_g^{k}}y'$ for some $k\geq1$.
+\item If $R(x,y)$ and $f(x)=\bot$, then the $g$-computation from $y$
+  halts after finitely many steps.
+\end{enumerate}
+Then $R(x,y)$ implies that $f$ halts from $x$ if and only if $g$ halts
+from $y$. The relation need not be injective, surjective, or functional.
+Reachability invariants can simply be included in $R$.
+
+For the forward implication, induct on the finite source computation,
+concatenating the finitely many target blocks. For the reverse implication,
+induct on the number $t$ of successful target steps before termination.
+If the source is terminal, the conclusion is immediate. Otherwise its
+next step is simulated by a block of length $k\geq1$. This block cannot
+extend past the target's terminal configuration: determinism and the
+absence of a transition there would contradict its certified successful
+completion. Hence $k\leq t$, and the induction hypothesis applies at the
+next related boundary with the strictly smaller bound $t-k$.
+
+Positive progress is essential. If zero-length target blocks were
+allowed, a nonhalting source self-loop could be related to a terminal
+target forever. No uniform upper bound on block lengths is needed for
+halting equivalence. In FM215 there is nevertheless the useful exact
+bound $k\in\{1,3\}$.
+
+The supplied \texttt{PositiveSimulation.lean} is a generic extraction of
+the final argument in the repository's \texttt{KSim.halts\_iff}. It uses
+arbitrary configuration types and deterministic partial transitions, so
+it can also serve machine-to-machine optimizations. It is not presented
+as a new abstract computability theorem. Its value is as a small reusable
+formal interface. The accompanying execution receipt records a successful
+Lean 4.32.0 compilation of this theorem. Its printed dependencies are
+exactly \texttt{propext} and \texttt{Quot.sound}.
+
+\section{FM215: the short correctness argument}
+\label{sec:fm-proof}
+
+Write $T$ for the primary native K215 table and $N$ for FM215. Define the
+state map
+\[
+ \phi(127)=124,\qquad \phi(q)=q\quad(q\neq127).
+\]
+The two relevant old states have rows
+\[
+\begin{array}{c|cc}
+ &0&1\\\hline
+124&0R62&1R138\\
+127&0R14&1R138.
+\end{array}
+\]
+Their entire incoming-edge census is
+$104/1=1R124$ and $110/0=0R127$. Hence, on every old computation from
+initial control zero and on every initial tape,
+\[
+ q=124\Longrightarrow u(h-1)=1,\qquad
+ q=127\Longrightarrow u(h-1)=0,
+\]
+where $u$ denotes the current tape and $h$ the current head position.
+Call this two-clause assertion $\mathcal I$. It holds initially because control
+zero is neither exceptional state, and it holds after \emph{every}
+old transition: the two possible destination states force their marker
+through their unique incoming edge. In particular its preservation
+requires no hypothesis about the preceding tape.
+
+FM215 changes exactly four rows:
+\[
+\begin{array}{c|cc}
+\text{row}&\text{primary K215}&\text{FM215}\\\hline
+124/0&0R62&0L127\\
+127/0&0R14&0R8\\
+127/1&1R138&1R109\\
+110/0&0R127&0R124.
+\end{array}
+\]
+The existing provider rows are $8/0=0R14$ and $109/0=0R62$.
+At simulation boundaries relate configurations with the same entire tape
+and head, old invariant $\mathcal I$, and new control $\phi(q)$.
+An ordinary old transition is simulated by one new transition. On the
+common read-one branch, both old exceptional states go to 138, and their
+new representative 124 does the same.
+
+On an exceptional read-zero branch, let the predecessor marker be $m$.
+The new computation is
+\[
+ (124,h)\longrightarrow(127,h-1)
+ \longrightarrow(x_m,h)\longrightarrow(a_m,h+1),
+\]
+where $(x_0,a_0)=(8,14)$ and $(x_1,a_1)=(109,62)$.
+The three writes are respectively $0,m,0$, each equal to the value
+already present. Thus the entire tape is unchanged. The invariant picks
+the correct old destination, and the head has moved right exactly once.
+All three internal controls have a transition, so no halt is hidden in
+the block. The state map fixes the terminal label 254.
+
+The positive simulation theorem now proves halting equivalence on all
+binary initial tapes, with any initial head position, from control zero.
+If $z(t)$ counts the old read-zero visits to states 124 or 127 in a
+successful prefix of length $t$, the exact corresponding new duration is
+\[
+ t+2z(t),\qquad t\leq t+2z(t)\leq3t.
+\]
+This is a statement about arbitrary whole tapes, not a finite sample of
+register values and not an inference from the blank prefix.
+
+\subsection{How the formal certificate binds the machine}
+
+\texttt{FM215Data.lean} embeds both complete native tables and defines
+functional tapes $\mathbb Z\to\{0,1\}$. The ambient label type is
+\texttt{Fin 512}, because the native tables use labels up to 302. This
+is an indexing device: exactly 215 labels have working rows, and every
+outgoing target is a working label or the separate terminal label 254.
+The finite ambient type does not assert a 512-state machine.
+
+\texttt{FM215.lean}'s \texttt{incoming} theorem checks the two required
+incoming-row properties for every ambient state and both symbols.
+\texttt{outer} checks all unchanged and redirected rows under $\phi$.
+Both are finite kernel decisions. The subsequent proofs establish
+invariant preservation, the complete three-step tape identity, and the
+one-or-three-step simulation. The endpoint is
+\begin{verbatim}
+FM215.all_tapes_halts_iff (h : Int) (t : Tape) :
+  Halts (step old) (0,h,t) <-> Halts (step new) (0,h,t).
+\end{verbatim}
+The actual file uses the corresponding structure notation and qualified
+\path{PositiveSimulation.Halts}. The blank instance is obtained by
+$h=0$ and the constantly false tape.
+
+All three supplied modules were compiled successfully in this session
+with the official Lean 4.32.0 release, commit
+\texttt{8c9756b28d64dab099da31a4c09229a9e6a2ef35}. The generic theorem
+and both FM215 endpoints report exactly \texttt{propext} and
+\texttt{Quot.sound}; there is no admitted theorem, extra assumption, or
+native evaluation oracle. The final compiler logs contain no warnings.
+\texttt{fm215-kernel-receipt.json} binds the checked sources, compiled
+objects and logs by SHA-256. The successful sequential run took about
+26 seconds in this environment; this is a reproducibility datum rather
+than a comparative benchmark. The generic proof file has 99 lines,
+the FM215 proof file 172, and the table-and-semantics file 918, counting
+comments and blank lines. The first two files together are 10,375 bytes.
+\texttt{check\_fm215.py} reproduces the compilation and the binding audit
+without any dependency on the ProveIt project build.
+
+The independent \texttt{check\_lean\_bindings.py} reads every literal Lean
+row and compares it with the exact \texttt{.tm} input. It also checks the
+ambient bound, so a large numerical literal cannot silently wrap under
+\texttt{Fin}'s numeral instance. The primary native SHA-256 is
+\begin{verbatim}
+9683d6ed9628e6ce407c315b08f5da3d063da94e92706f275ca0f33e8272e4b2
+\end{verbatim}
+and the FM215 native SHA-256 is
+\begin{verbatim}
+3ece1233f11d33375425221c5bcedba941e073763912990eabf321197772dce5
+\end{verbatim}
+The data audit is separate from the Lean compiler check. An exact-table
+theorem in functional-tape semantics is also separate from composing the
+repository's existing \texttt{KEndpoint215} theorem, whose interface uses
+its own dense and zipper semantics. The outstanding imported bridge has
+two specific parts: identify the old native table with
+\texttt{KTable215.lean}'s \texttt{tm215} on working and terminal controls
+under the repository's renaming $254\mapsto230$, $301\mapsto102$,
+$302\mapsto120$; and relate functional tapes to \texttt{KZip}'s two
+finite lists, proving the one-step and terminal cases. The existing
+\texttt{KDenseBridge} already supplies the dense-to-zipper side.
+Alternatively one can adapt that generic bridge directly from Core's
+finite-support tapes to functional tapes, using the native dense
+relabelling. Then the new blank equivalence composes with
+\texttt{KEndpoint215}. An endpoint for the new dense table also uses
+FM215's supplied canonicalization map. These bridges must be explicit
+if a new end-to-end Lean consistency endpoint is claimed. No new blank
+bootstrap or calculus derivation is needed. Ordinary mathematical
+composition with the established primary calibration already gives
+the desired ZFC equivalence.
+
+\subsection{Independent check of the existing CM215 route}
+
+For comparison, \texttt{check\_cm215.py} in this packet independently checks
+the existing six-row conditional-marker alternative against the exact
+primary bytes. Its invariant is
+\[
+ q=52\Rightarrow u(h-1)=1,\quad
+ (q=176\ \&\ u(h)=0)\Rightarrow u(h-1)=0,\quad
+ q=156\Rightarrow u(h+1)=1.
+\]
+An old radius-two tape window determines the radius-one invariant after
+one L/R transition. Enumerating all 32 such windows per working control
+is therefore an exact finite proof-obligation check for arbitrary tapes.
+Of 6,880 state/window combinations, 6,840 satisfy the invariant. All
+preserve it and pass the whole-window block identity; 6,824 use one step
+and 16 use three. The checker also verifies the supplied native/dense
+bijection. It does not import the earlier symbolic runtime checker,
+the earlier blank trace, or the source calculus. The ordinary locality
+argument lifts these finite obligations to whole tapes because every
+read and write lies inside the certified window and exterior cells are
+untouched. The simpler FM215 invariant is the reason to prefer its new
+formal proof as the next compact endpoint.

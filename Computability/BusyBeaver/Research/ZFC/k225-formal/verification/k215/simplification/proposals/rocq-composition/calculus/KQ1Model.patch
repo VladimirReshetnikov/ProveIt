@@ -1,0 +1,131 @@
+--- research215_round10_calculus/upstream/KQ1Model.lean	2026-10-21 12:56:38.391585514 -0700
++++ research215_round10_calculus/KQ1Model.proposed.lean	2026-10-21 12:56:39.111142903 -0700
+@@ -1,5 +1,6 @@
+ /- Forked by Research/ZFC/k225-formal/generate_kq1.py from QuotientModel.lean onto the KQHyp.QHyp interface; do not edit. -/
+ import BusyBeaver.ZFC.KQHyp
++import BusyBeaver.ZFC.QuotientModel
+ 
+ /-!
+ The actual quotient structure of an equality-free CP/GIC model.
+@@ -47,93 +48,22 @@
+     Member mem x y ↔ Member mem x' y' :=
+   (member_left_congr mem witness h hxx').trans (member_right_congr mem witness h hyy')
+ 
+-def memberForm (i j : Nat) : Form :=
+-  fEx (fAnd (fMem 0 (j + 1)) (eqvForm (i + 1) 0))
++abbrev memberForm := QuotientModel.memberForm
++
++abbrev translate := QuotientModel.translate
++
++abbrev RelSat (mem : V → V → Prop) (env : Nat → V) := QuotientModel.RelSat mem env
+ 
+ theorem sat_memberForm (mem : V → V → Prop) (env : Nat → V) (i j : Nat) :
+-    Sat mem env (memberForm i j) ↔ Member mem (env i) (env j) := by
+-  constructor
+-  · rintro ⟨z, hz, hE⟩
+-    exact ⟨z, hz, (sat_eqvForm mem _ (i + 1) 0).mp hE⟩
+-  · rintro ⟨z, hz, hE⟩
+-    exact ⟨z, hz, (sat_eqvForm mem _ (i + 1) 0).mpr hE⟩
+-
+-def translate : Form → Form
+-  | fMem i j => memberForm i j
+-  | fEq i j => eqvForm i j
+-  | fBot => fBot
+-  | fImp a b => fImp (translate a) (translate b)
+-  | fAnd a b => fAnd (translate a) (translate b)
+-  | fOr a b => fOr (translate a) (translate b)
+-  | fAll a => fAll (translate a)
+-  | fEx a => fEx (translate a)
+-
+-def RelSat (mem : V → V → Prop) (env : Nat → V) : Form → Prop
+-  | fMem i j => Member mem (env i) (env j)
+-  | fEq i j => Eqv mem (env i) (env j)
+-  | fBot => False
+-  | fImp a b => RelSat mem env a → RelSat mem env b
+-  | fAnd a b => RelSat mem env a ∧ RelSat mem env b
+-  | fOr a b => RelSat mem env a ∨ RelSat mem env b
+-  | fAll a => ∀ x, RelSat mem (scons x env) a
+-  | fEx a => ∃ x, RelSat mem (scons x env) a
++    Sat mem env (memberForm i j) ↔ Member mem (env i) (env j) :=
++  QuotientModel.sat_memberForm mem env i j
+ 
+ theorem sat_translate (mem : V → V → Prop) (phi : Form) (env : Nat → V) :
+-    Sat mem env (translate phi) ↔ RelSat mem env phi := by
+-  induction phi generalizing env with
+-  | fMem i j => exact sat_memberForm mem env i j
+-  | fEq i j => exact sat_eqvForm mem env i j
+-  | fBot => exact Iff.rfl
+-  | fImp a b iha ihb => exact imp_congr (iha env) (ihb env)
+-  | fAnd a b iha ihb => exact and_congr (iha env) (ihb env)
+-  | fOr a b iha ihb => exact or_congr (iha env) (ihb env)
+-  | fAll a ih => exact forall_congr' (fun x => ih (scons x env))
+-  | fEx a ih => exact exists_congr (fun x => ih (scons x env))
++    Sat mem env (translate phi) ↔ RelSat mem env phi :=
++  QuotientModel.sat_translate mem phi env
+ 
+-theorem equalityFree_translate (phi : Form) : EqualityFree (translate phi) := by
+-  induction phi with
+-  | fMem i j => exact ⟨True.intro, equalityFree_eqvForm (i + 1) 0⟩
+-  | fEq i j => exact equalityFree_eqvForm i j
+-  | fBot => trivial
+-  | fImp _ _ iha ihb => exact ⟨iha, ihb⟩
+-  | fAnd _ _ iha ihb => exact ⟨iha, ihb⟩
+-  | fOr _ _ iha ihb => exact ⟨iha, ihb⟩
+-  | fAll _ ih => exact ih
+-  | fEx _ ih => exact ih
+-
+-theorem relSat_congr (mem : V → V → Prop) (witness : V) (h : QHyp mem)
+-    (phi : Form) (env env' : Nat → V) (he : ∀ i, Eqv mem (env i) (env' i)) :
+-    RelSat mem env phi ↔ RelSat mem env' phi := by
+-  induction phi generalizing env env' with
+-  | fMem i j => exact member_congr mem witness h (he i) (he j)
+-  | fEq i j =>
+-    constructor
+-    · intro hij
+-      exact h.trans (h.symm (he i))
+-        (h.trans hij (he j))
+-    · intro hij
+-      exact h.trans (he i)
+-        (h.trans hij (h.symm (he j)))
+-  | fBot => exact Iff.rfl
+-  | fImp a b iha ihb => exact imp_congr (iha env env' he) (ihb env env' he)
+-  | fAnd a b iha ihb => exact and_congr (iha env env' he) (ihb env env' he)
+-  | fOr a b iha ihb => exact or_congr (iha env env' he) (ihb env env' he)
+-  | fAll a ih =>
+-    apply forall_congr'
+-    intro x
+-    apply ih
+-    intro n
+-    cases n with
+-    | zero => exact h.refl x
+-    | succ n => exact he n
+-  | fEx a ih =>
+-    apply exists_congr
+-    intro x
+-    apply ih
+-    intro n
+-    cases n with
+-    | zero => exact h.refl x
+-    | succ n => exact he n
++theorem equalityFree_translate (phi : Form) : EqualityFree (translate phi) :=
++  QuotientModel.equalityFree_translate phi
+ 
+ def modelSetoid (mem : V → V → Prop) (witness : V) (h : QHyp mem) : Setoid V where
+   r := Eqv mem
+@@ -200,6 +130,16 @@
+       rw [mk_scons] at hqx
+       exact hqx
+ 
++/-- Satisfaction respects bisimilar environments, via their equal quotient images. -/
++theorem relSat_congr (mem : V → V → Prop) (witness : V) (h : QHyp mem)
++    (phi : Form) (env env' : Nat → V) (he : ∀ i, Eqv mem (env i) (env' i)) :
++    RelSat mem env phi ↔ RelSat mem env' phi := by
++  have henv : (fun i => mk mem witness h (env i)) =
++      (fun i => mk mem witness h (env' i)) :=
++    funext fun i => (mk_eq_iff mem witness h (env i) (env' i)).mpr (he i)
++  rw [← sat_quotient mem witness h phi env,
++    ← sat_quotient mem witness h phi env', henv]
++
+ theorem quotient_extensional (mem : V → V → Prop) (witness : V) (h : QHyp mem)
+     (x y : Domain mem witness h)
+     (hMembers : ∀ z, quotientMember mem witness h z x ↔ quotientMember mem witness h z y) :

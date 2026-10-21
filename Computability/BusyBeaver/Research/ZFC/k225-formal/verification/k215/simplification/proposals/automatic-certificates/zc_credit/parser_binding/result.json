@@ -1,0 +1,71 @@
+{
+  "status": "PASS",
+  "scope": "Finite extracted-code/parser comparison and literal isolated source reader/refill/dispatch contracts; not a full source or binary correctness proof",
+  "candidate_range": [
+    0,
+    1000
+  ],
+  "upper_bound_exclusive": true,
+  "matched_extracted_Coq_words": 1000,
+  "matched_literal_field_reader_cases": 4000,
+  "matched_literal_refill_cases": 1000,
+  "matched_literal_positive_continuation_cases": 1000,
+  "matched_literal_dispatch_cases": 1000,
+  "literal_source_steps": 19686389,
+  "source_leaf_count": 4752,
+  "raw_zero": [
+    0,
+    0,
+    [
+      [
+        0
+      ]
+    ]
+  ],
+  "trailing_zero_example": [
+    2,
+    2,
+    [
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ]
+  ],
+  "hashes": {
+    "ConcretePrefixCredit.v": "4109b9a16345dcdfe01c924f795fad2cda64e1250d4a6cbe439fe0cef4cfdcec",
+    "ExtractCodec.v": "1ec1a3c6324df93161227d139c32d38ef616f0696aed368dc3ad5bca2c5b7771",
+    "codec_driver.ml": "b5a4f4eca5a1c622556752e7d7731579044e9f28c6c0ceb25cecd5fb207d4b93",
+    "check_parser_binding.py": "3916bc7b1919763b1bcceeebe3c84a1be554ab75d8025d213ad9472bcada15f3",
+    "zc215.sites.json": "5f2df4a6c25098d27b20b744b5f8ab3db6ebc8a37e1f01a9abdafc035297563f",
+    "reference_check_tag_lowering.py": "60aa868f0e52979bf6e998466cbad269e30e0a779fcc1c8fcca7b3b49e036220",
+    "reference_source_language.py": "4b355b81373a06ce2d8d99f56ac88afee8bbbd934d21f4f2729d864d9807683f",
+    "extracted_words.jsonl": "8c43cadd4f904a8ae6ed33be7b77a5d5b025cf779b4609b9d3fb0f233180e92f"
+  },
+  "build_commands": [
+    [
+      "coqc",
+      "-q",
+      "ConcretePrefixCredit.v"
+    ],
+    [
+      "coqc",
+      "-q",
+      "ExtractCodec.v"
+    ],
+    [
+      "ocamlc",
+      "-c",
+      "codec.mli"
+    ],
+    [
+      "ocamlc",
+      "-o",
+      "codec_driver",
+      "codec.ml",
+      "codec_driver.ml"
+    ]
+  ]
+}

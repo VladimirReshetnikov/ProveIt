@@ -1,0 +1,142 @@
+\section{Source paths now generate the shared decoder proof}
+\label{sec:decoder-source-paths}
+
+The incoming checked-decoder packet already supplied a sound finite-window
+executor, a theorem composing finite chains of restored windows, and a concrete
+certificate for K215. Its concrete data comprise 281 distinct local blocks,
+234 context roles, 371 internal role edges, and 97 primitive-entry edges.
+Those data and their three Lean modules are reused unchanged here. The
+remaining gap was semantic: a caller still had to supply every window premise
+of a \texttt{Chain}, and the identification of the certificate's source with
+the upstream source had only been checked outside the kernel.
+
+The new component closes both gaps. It proves that the actual source path
+provides all the window facts, and it identifies the certificate's expanded
+source with the literal upstream source by kernel reduction. It thus promotes
+the shared decoder construction from local block soundness to a theorem about
+complete decoder traversal of the repository's source program.
+
+\subsection{Exact theorem and hypotheses}
+
+Write $\operatorname{Walk}_{215}(P)=(e,d)$ for the repository's
+\texttt{RegisterPath.walk} on \texttt{KSource215.p215}, with the same
+$\texttt{nnodes}+1$ fuel and root used upstream. Let
+$Q=\operatorname{consume}(P,d)$, so $|Q|=d$; this operation incorporates both
+implicit zero padding and truncation of an instruction-pointer input.
+Let $t:\mathbb Z\to\{0,1\}$ be an arbitrary complete tape, and let $a$ be the
+initial head position. Assume
+\[
+ t(a-1)=1,\qquad t(a+i)=Q_i\quad(0\leq i<d).
+\]
+No condition is imposed on the other tape cells. The theorem
+\texttt{DecoderSourceBinding.upstream\_walk\_reaches} proves the existence of
+an execution length $N$, an entry state $q$, a scanned bit $b$, and the matching
+primitive operation and argument, such that
+\[
+ d-1\leq N\leq 7(d-1),\qquad
+ \operatorname{run}_{K215}^{N}(84,a,t)
+   =(q,a+d-1,t).
+\]
+In particular the entire tape is restored, including its unrestricted
+exterior. The final bit is $b=t(a+d-1)$. A certified role binds this state and
+bit to the exact source primitive $e$ and to the literal K215 action selected
+there. The execution ends just before that primitive action is performed.
+
+The result is uniform in $P$, $e$, $d$, $a$, and $t$. It is not limited to the
+blank-tape startup or a finite collection of sampled runs. Its source-word
+hypothesis is the natural premise at a decoder entry; the existing register
+representation and cleanliness invariant are responsible for establishing
+that premise when this result is connected to the whole interpreter.
+
+\subsection{How the proof composes}
+
+The proof introduces two elementary tape predicates.
+\texttt{Reads $t$ $a$ $w$} says that the list $w$ occurs starting at position
+$a$. \texttt{Before $t$ $a$ $s$} says that the context $s$ ends immediately
+before $a$. The generic list lemmas show that appending the currently scanned
+bit extends this context, taking a suffix preserves its right alignment, and
+a right-aligned context implies the overlay equality required by a local
+block. Thus a block's finite-window hypothesis is derived from the source
+word itself.
+
+A role stores a source node, a decoder state, and a context of at most two
+preceding bits. The source-path induction has two cases. For an internal
+edge, the structural certificate identifies the child role, its updated
+context, and the block to execute. The just-proved tape lemmas establish that
+block's window premise. The induction hypothesis supplies the child's chain,
+and \texttt{Chain.more} prepends the certified block. For a primitive edge,
+zero internal steps remain; the certificate provides the exact native
+transition row and its source leaf. This proves
+\texttt{source\_path\_chain}. Applying the incoming
+\texttt{chain\_sound} theorem gives the full-tape execution.
+
+There is no duplicate concrete structural check. The generic theorem
+\texttt{edgeSpec\_of\_check} extracts the semantic facts from the existing
+Boolean \texttt{edgeCheck}. The theorem \texttt{edges\_of\_structure}
+then derives them for every role from the already checked
+\texttt{K215Decoder.structure\_checked}. The inherited
+\texttt{all\_blocks\_checked} theorem supplies all local execution facts.
+A small additional finite duration check verifies that every block takes
+between one and seven steps. Induction on a chain proves the displayed
+bounds, since each internal block advances the restored head by exactly one
+source bit.
+
+\subsection{Kernel binding to the upstream source}
+
+The inherited certificate represents its source as 202 nodes: 179 internal
+binary nodes and 23 distinct primitive leaves. The upstream register source
+uses a 179-node DAG whose edges contain the primitive operations directly.
+Their numbering conventions therefore differ. The adapter defines an explicit
+expansion of the certificate nodes into the upstream \texttt{RMBisim.Tree}
+type, translating the five operation tags into the corresponding
+\texttt{RegisterPath.Edge} constructors.
+
+The exact identity
+\[
+ \operatorname{sourceTree}(\texttt{sourceNodes},203,\texttt{sourceRoot})
+   =\texttt{KSource215.t215}
+\]
+is proved by \texttt{rfl}. It is a kernel-checked definitional equality, with
+no assumed correspondence and no external hash used as a proof premise.
+The generic theorem \texttt{source\_path\_of\_leaf} converts every
+upstream \texttt{SiteCoverage.LeafAt} witness through this identity into a
+source-DAG path. Finally the existing \texttt{twalk\_leafAt},
+\texttt{walk\_root}, and consumed-prefix equality connect the theorem to
+\texttt{RegisterPath.walk}. The pinned source has 4,751 primitive occurrences,
+with path depths from 3 to 47, as also recorded by the supplied source audit.
+
+\subsection{Verification and remaining integration}
+
+The portable component contains two new Lean modules, three unchanged
+incoming decoder modules, and ten unchanged upstream source modules. Its
+reproduction driver compiles this 15-module closure from source with official
+Lean 4.32.0; Mathlib and prebuilt repository objects are unnecessary. The
+source index identifies each inherited file and binds its bytes to repository
+commit \texttt{aa66d0a33f}. Compiler receipts and logs accompany the component. The delivered verification
+combines successful builds in the same session, with exact source, object,
+and imported-object hashes; the two new modules were recompiled against that
+closure. A subsequent single fresh replay was interrupted by an operating-system
+termination while rebuilding the already verified source-data module, so it is
+recorded as a resource failure rather than a successful complete replay.
+The literal source-tree identity has no axioms. Both the complete source-path
+and upstream-walk endpoints report only \texttt{propext},
+\texttt{Classical.choice}, and \texttt{Quot.sound}; no admitted theorem or
+native evaluator is introduced.
+
+This closes the source-path and source-expansion obligations of the incoming
+shared-decoder proposal. To replace \texttt{KSites215}, the next step is to
+compose this theorem with context-parametric primitive-operation and pointer
+return contracts. The existing 97 entry bindings identify the required
+interfaces; they do not by themselves prove those operations. An adapter
+between the native integer-tape presentation here and the repository's
+renamed K230-label zipper presentation must also be supplied. In particular,
+\texttt{KSim.Covered} currently requires a successful per-leaf Boolean check;
+a reusable semantic-coverage interface would allow the shared traversal and
+primitive contracts to feed its simulation theorem directly.
+
+The benefit is a precise change in proof organization: internal decoding is
+proved through 234 reusable contexts rather than separately for 4,750 internal
+source occurrences. The full endpoint's compilation-time improvement remains
+to be measured after primitive and return integration. The machine itself is
+unchanged, and this decoder result does not constitute a 214-state
+construction.

@@ -1,0 +1,138 @@
+\section{A checked CM215 transport in the accepted Rocq semantics}
+\label{sec:cm-native-stream}
+
+The conditional-marker alternative CM215 was already present in the repository.
+The contribution here is a new connection to the accepted formal endpoint:
+its equivalence to K215 is now proved directly in the \emph{same} Rocq
+state and tape types as \texttt{K215F.Dense215}. This avoids an additional
+representation theorem between an integer-indexed tape and the native
+coinductive streams. The result concerns the existing 215-state table; it
+is not a new 214-state construction.
+
+\subsection{Exact artifact and native statement}
+
+The packet retains the existing dense \texttt{marker215.tm}, with 215 working
+states and 430 transition rows, and generates its literal
+\texttt{CM215Table.v}. Its SHA-256 is
+\begin{quote}\small\ttfamily
+1f4f084f7293e2b042d5746039f793ff72ed429083b504970c939a5515e666cf.
+\end{quote}
+The reference table and the four imported K215 semantics files are unmodified
+copies from commit \texttt{aa66d0a33f1f8237a348899eb8095b045a502832}.
+The code uses the accepted type of bounded states, \texttt{bnat 215}, and
+native configurations
+\[
+   c=(q,(\ell,b,r)),\qquad
+   \ell,r:\operatorname{Stream}(\operatorname{Bool}).
+\]
+Here $b$ is the scanned bit, and the stream heads are the two adjacent bits.
+The physical position is implicit in this centered tape representation.
+
+The newly compiled theorem \texttt{all\_tapes\_equihalting} states
+\[
+ \forall\ell,b,r,\quad
+ \operatorname{Halts}_{\mathrm{Dense}}(K215,(0,(\ell,b,r)))
+ \ \longleftrightarrow\
+ \operatorname{Halts}_{\mathrm{Dense}}(CM215,(0,(\ell,b,r))).
+\]
+Thus both sides use the actual \texttt{Dense.halts} of the accepted
+Rocq development. The theorem quantifies all initial binary tapes at control
+zero, including tapes that do not encode registers. It does not assert an
+unconditional equivalence from arbitrary initial internal control states.
+
+\begin{center}
+\begin{tabular}{ccll}
+\hline
+State & Read & K215 row & CM215 row\\
+\hline
+52  &0& $0\,R\,149$ & $0\,L\,170$\\
+151 &1& $1\,R\,170$ & $1\,R\,52$\\
+160 &0& $0\,R\,170$ & $0\,R\,52$\\
+170 &0& $0\,R\,163$ & $0\,R\,178$\\
+170 &1& $1\,R\,145$ & $1\,R\,125$\\
+184 &0& $0\,R\,170$ & $0\,R\,52$\\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{A three-clause invariant replaces a full runtime proof}
+
+Define $\phi(170)=52$ and $\phi(q)=q$ otherwise, and let
+$F(q,t)=(\phi(q),t)$. The invariant on the \emph{old} machine is
+\begin{align*}
+ q=52  &\implies \operatorname{hd}(\ell)=1,\\
+ q=170\ \wedge\ b=0 &\implies \operatorname{hd}(\ell)=0,\\
+ q=151 &\implies \operatorname{hd}(r)=1.
+\end{align*}
+It is immediate at control zero. Its induction step follows from three finite
+incoming-row facts. Every transition into 52 writes one and moves right.
+Every transition into 151 writes one and moves left. A transition into 170
+either writes zero and moves right, or comes from 151 and moves right. In the
+latter case the third invariant clause says that the new scanned bit is one,
+so the conditional clause at 170 has a false antecedent. This auxiliary
+clause is what turns the otherwise historical argument into an ordinary
+one-step invariant proof.
+
+Outside 52 and 170, the transition tables commute with $\phi$. At either
+special state with scanned bit one, both behaviors take one right-moving
+step to 145. With scanned bit zero, CM215 moves left to 170, reads the origin
+marker, moves right through 125 or 178, and takes one further right-moving
+step to 149 or 163. The three steps reproduce the old single step exactly,
+including the entire two-sided stream tape. The proof destructs a stream
+constructor where needed; it does not assume a general extensionality
+principle for streams or functions.
+
+All finite row obligations, including halting reflection, are bundled into
+one decidable predicate and checked over all 216 bounded controls and both
+bits. This includes the distinguished terminal control. The certificate
+\texttt{checked\_facts} is proved by kernel reduction; its computation took
+approximately $0.07$ seconds in the development run. The generator and the
+Python input audit are not trusted: the theorem itself checks the literal
+Coq table and the certificate soundness.
+
+\subsection{One positive simulation proves both halting directions}
+
+The general lemma \texttt{positive\_transport}, written over the native
+\texttt{Dense} semantics, assumes preservation of an invariant, agreement
+of halting at synchronized configurations, and a positive target path for
+every old step. A forward induction transports a finite old run. For the
+reverse direction, the existing BusyCoq theorem
+\texttt{progress\_halts} extracts an old halting point from a terminating
+new run: an unbounded sequence of old steps would produce an unbounded
+sequence of positive new blocks. This uses no separately generated reverse
+certificate. The CM215 instance supplies blocks of length one or three.
+
+The practical consequence is that CM215 needs neither a new blank-start
+replay nor a new proof of all decoder sites. The accepted K215 calibration,
+source proof, and symbolic runtime are reused through a theorem at their
+final machine semantics. This is a particularly economical way to certify
+local changes to an already accepted candidate.
+
+\subsection{Verification and the remaining endpoint boundary}
+
+Coq 8.18.0 compiled the nine-source reproduction closure, comprising the
+three pinned BusyCoq sources, four exact K215 table/semantics sources, and
+the two new CM215 files. Both \texttt{all\_tapes\_equihalting} and
+\texttt{blank\_halts\_iff} print \emph{Closed under the global context}.
+The matching \texttt{coqchk} recursively rechecked \texttt{CM215Stream}.
+The inherited tactic library imports some unused axioms; the two target
+assumption reports, which follow their actual dependency terms, are closed.
+The reproduction driver checks all input hashes and independently binds
+all 430 textual machine rows to the literal Coq table.
+
+The accompanying \texttt{CM215Endpoint.v} is a short integration client
+composing \texttt{blank\_halts\_iff} with the existing
+\texttt{tm215\_halts\_iff\_ZFC\_inconsistent}. That client and the full
+inherited endpoint closure were not rebuilt here. Its source is explicitly
+labelled integration-only and excluded from the standalone reproduction
+command. The freshly verified contribution is the exact-semantic,
+all-tapes equivalence; the existing accepted K215 endpoint supplies the
+calibration when the client is integrated.
+
+CM215 is therefore a good immediate alternative when proof reuse is the
+criterion. The related M124 marker construction has an even simpler local
+invariant, with two unconditional predecessor-bit clauses, and is a
+promising next instance of the same native transport interface. Neither
+choice removes the substantive inherited calibration from the initial
+correctness argument; each sharply limits what must be reproved for the
+changed physical table.

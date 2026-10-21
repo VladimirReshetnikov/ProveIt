@@ -1,0 +1,97 @@
+% Inclusion section for the main research report; requires amsmath and amssymb.
+\section{A checked direct proof of unrestricted \(\rho_8\)}
+\label{sec:rho8-direct}
+
+Relative to ProveIt commit
+\texttt{53269bcab1efc0f82d3022645bd7cf0c22d84959},
+the accompanying Lean patch reduces \texttt{DomRho8.lean} from
+\(30{,}114\) to \(26{,}709\) bytes, a reduction of \(3{,}405\) bytes
+(\(11.31\%\)). It proves the identical \texttt{rho8\_all} statement,
+and the unchanged immediate adapter \texttt{KCodeDom} also compiles.
+This comparison is with the current, already simplified source.
+
+Write \(a\to b\) for the arithmetic code \(\operatorname{wim}(a,b)\).
+The predicate \(T\) contains truth code \(0\), is closed under modus
+ponens, and contains the dominated rows
+\[
+ \rho_8(a,b,c,u)
+ =
+ ((c\to u)\to a)\to((a\to c)\to(b\to c))
+ \qquad (u\le a).
+\]
+The desired theorem removes the condition \(u\le a\).
+Every variable here ranges over all natural-number codes; no
+well-formedness or injectivity assumption is introduced.
+
+The retained hierarchy provides
+\[
+\begin{aligned}
+ K(a,b)&:\quad a\to(b\to a),\\
+ J(a,b,c)&:\quad (a\to b)\to(((a\to c)\to a)\to b),\\
+ B(a,b,c)&:\quad (a\to b)\to((b\to c)\to(a\to c)).
+\end{aligned}
+\]
+Two other retained schemas are
+\[
+\begin{aligned}
+ \mathrm{cd99}(a,b,x)&:\quad
+       (a\to b)\to(a\to(x\to b)),\\
+ \mathrm{cd88}(a,x,b)&:\quad
+       (a\to(x\to b))\to((x\to a)\to(x\to b)).
+\end{aligned}
+\]
+Thus two applications of modus ponens establish the derived rule
+\[
+ T(a\to b)\quad\Longrightarrow\quad
+ T((x\to a)\to(x\to b)).
+ \tag{Lift}
+\]
+The orientation of \(B\) matters: a known right-hand implication
+cannot simply be supplied as its first curried premise.
+
+Set
+\[
+ q=(c\to u)\to c,\qquad
+ f=(c\to u)\to a,\qquad
+ g=a\to c,\qquad
+ d=b\to c.
+\]
+Applying \(J(c,d,u)\) to \(K(c,b)\) gives \(T(q\to d)\).
+Composition gives \(T(f\to(g\to q))\).
+Two instances of \textup{(Lift)} give
+\[
+ T\bigl((f\to(g\to q))\to(f\to(g\to d))\bigr).
+\]
+One final modus ponens therefore proves \(T(\rho_8(a,b,c,u))\).
+
+This construction retains all \(58\) needed bootstrap schemas and
+\(52\) CD schemas, omitting \(\mathrm{cd100},\ldots,\mathrm{cd106}\).
+It removes the auxiliary \texttt{Proof} relation, its soundness theorem,
+and the two deduction lemmas. The classical content remains in \(J\);
+the simplification removes a general metatheorem from this particular
+derivation.
+
+Lean \(4.32.0\) freshly compiled the \(13\)-module closure through
+\texttt{KCodeDom}. Both the new root and the unchanged adapter have
+assumption reports \texttt{[propext, Quot.sound]}.
+A direct Coq mirror also freshly compiled under Coq \(8.18.0\), with
+the two pinned arithmetic/code dependencies unchanged, and passed
+independent \texttt{coqchk}. Its root is closed under the global context.
+The direct mirror is \(24{,}352\) bytes and \(440\) lines, compared with
+\(22{,}673\) bytes and \(1{,}169\) lines for the current reflected proof.
+It offers a common direct proof structure; it is not a Coq byte-count
+improvement.
+
+The Lean graph slice removes the incidental exported helper
+\texttt{distribution}; the unchanged endpoint adapter does not use it.
+Retaining that helper and its seven schemas is an alternative when
+complete helper-API compatibility is desired. The patch also normalizes
+CRLF to LF before checking the pinned CD230 template hash, allowing
+byte-exact regeneration from the current Git checkout.
+
+These checks concern the dominated-row logical interface. They are not
+a fresh rebuild of the complete binary-machine-to-ZFC endpoint, an
+internal ZFC or PA arithmetization, or a reduction in the number of
+machine states. The ordinary repository endpoint build remains the
+integration gate. Exact sources, patches, hashes, generator receipts,
+compiler logs and the independent kernel-check log accompany this report.

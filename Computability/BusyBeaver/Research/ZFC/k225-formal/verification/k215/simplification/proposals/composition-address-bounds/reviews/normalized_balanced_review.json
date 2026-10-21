@@ -1,0 +1,38 @@
+{
+  "reviewer": "state_reduction subagent",
+  "review_scope": "Independent code, data-binding, receipt, and report section 2 review; no new proof compilation or recursive kernel audit performed during this review.",
+  "package": "/dev/shm/proveit-20261021-research/release/K215_Proof_Composition_and_Address_Bounds_2026-10-21/normalized_balanced",
+  "report_sha256_at_review": "ff4a6a5e67e209e944dff4158123302ee77d330b12200e5447f521c7edbbca3b",
+  "verdict": "No blocking correctness or scope defect found. Two minor exposition/provenance improvements recommended.",
+  "checks": [
+    "Reviewed NormalizedBalanced.v refinement proof and its reuse of the inherited normalized soundness theorem; validity and exact flattened data are explicit premises.",
+    "Reviewed literal Source215NormalizedBalanced theorem and exported integration facade: all-register source halting equivalence for actual Prog215.p215 and DagPerm.dagPerm, without a certificate-generator premise.",
+    "Compared both source files byte for byte with git objects at aa66d0a33f1f8237a348899eb8095b045a502832 and 56e487ce8fa4cf63ad169ffe0cd2944e9fc62dd3; all four comparisons and recorded SHA-256 values agree.",
+    "Verified all 1426 JSON certificate rows decode to the delivered packed Coq rows, accounting for opposite path-bit packing conventions. All 2851 queried indices are in range.",
+    "Replayed lookup_metrics.py without compilation: 1426 entries, 2851 queries, 2033059 list visits, 32961 balanced-tree visits, maximum depth 12.",
+    "Inspected LookupCost215.v: the kernel-level accounting uses the actual tsite classification, charges the initial query and two successors for each decrement, and zero successors for halt. This matches the claimed constructor-visit metric.",
+    "Checked hashes of all 15 proof source inputs, the adapted RMEquiv source, reproduce.py, and all 18 successful compile/audit logs against the delivered receipt. No mismatches; all listed checks exit zero; assumption-report counts agree and no Axioms report appears.",
+    "Checked that reproduction-script generated facade and typed client are byte-identical to the delivered integration examples.",
+    "Inspected reproduction commands and the explicit separation of source equivalence, optional concrete cost compilation, and still-unrebuilt production Rocq 9.1 full machine-to-ZFC closure."
+  ],
+  "findings": [
+    {
+      "severity": "minor",
+      "location": "report.tex section 2, Exact work counts; normalized_balanced/lookup_metrics.json",
+      "finding": "The package reproducer recomputes the normalized 1426-entry rows. The older 2240-entry figures (5018706 list visits and 54514 tree visits) are inherited constants in the delivered metrics JSON; the four-row table currently does not explicitly identify that provenance. This does not affect the new kernel-checked 32961 count or source theorem.",
+      "suggestion": "Label the older rows as inherited and cite their exact packet/census, or include their small original-data census reproducer."
+    },
+    {
+      "severity": "minor",
+      "location": "report.tex section 2, asymptotic indexing paragraph",
+      "finding": "The O(N log^2 N) binary-operation bound implicitly assumes query indices have O(log N) bits. The immediately preceding all-indices height bound also covers arbitrarily large out-of-range indices, whose binary arithmetic cost need not satisfy that assumption. All actual concrete queried indices are in range, so the concrete counts are unaffected.",
+      "suggestion": "State the bit-operation bound for in-range indices (or indices represented in O(log N) bits)."
+    }
+  ],
+  "scope_notes": [
+    "The 2381-byte generic module size is expressly a glue-module measure, not the total proof library.",
+    "The report correctly excludes instruction decoding, segment execution, comparisons, construction, elaboration and kernel normalization from constructor-visit counts; no runtime-speedup conclusion is justified or asserted.",
+    "The source theorem and public facade are the audited concrete objects; this is not a claimed rebuild of all 237 production endpoint sources.",
+    "The independent review checks receipt consistency, not a new rerun of its recorded compiler/kernel commands."
+  ]
+}

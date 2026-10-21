@@ -36,4 +36,6 @@ python3 Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/lean
 
 The maintained driver uses one compiler worker, a shared lock, a 12 GiB memory limit, and bounded module/audit processes. The historical incremental driver additionally requires the preserved phase-five cache. Saved-evidence readers need no compiler; their READMEs give the exact commands and predecessor reference.
 
+The subsequent [origin merge](upstream-merge/README.md) preserves these checked sources while retaining newer report placements for separate review.
+
 The native table, dense table and source hashes remain the accepted K215 hashes. No new Rocq compilation, smaller TM, minimum-state bound, unconditional nonhalting result or internal-PA endpoint is claimed. Affine contraction, decoder factoring, alternative-machine transports and concrete zero-credit integration retain the gaps stated in their intake notes.

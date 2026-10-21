@@ -1,5 +1,13 @@
 # Proof-simplification proposals for the K215 endpoints (batch 205)
 
+**Current maintained status.** The [sixth Lean checkpoint](../phase6/README.md)
+checks the normalized source certificate, stable-program split, physical-table
+lookup adapter and seed-model cleanup for the same K215 endpoint. The original
+placement descriptions below retain their delivery scope. Batches 209–210 need
+independent reconciliation; their extracted files do not extend the completed
+checkpoint. The [origin merge record](../phase6/upstream-merge/README.md) explains
+the deferred production edits.
+
 Six research packets, each placed whole and byte-identical (logs stay out by the ignore rules),
 delivered in arrival commit `a6b3a30011`. Nothing was rerun at intake; compilation claims are the
 packets' own. Each archive is recoverable with `git show a6b3a30011:docs/incoming/NAME.zip`.
@@ -16,6 +24,12 @@ packets' own. Each archive is recoverable with `git show a6b3a30011:docs/incomin
 | [checked-simplifications](checked-simplifications/README.md) | `K215_Checked_Simplifications_2026-10-21` (batch 208, arrival `aa66d0a33f`) | `normalized_rocq/`: a compiled Rocq source checker over the 1,426 normalized entries, its soundness, the exact all-register theorem and a same-name facade (Coq 8.18; data 109,958 bytes against 1,499,170); `decoder_lean/`: a compiled arbitrary-tape framed-window library instantiated with the 281 decoder blocks (does not yet replace `KSites215`); a concrete Rocq zero-credit codec for ZC215 |
 | [certificate-refinements](certificate-refinements/README.md) | `K215_Certificate_Refinements_2026-10-21` (batch 208) | a balanced-tree Rocq certificate lookup proved equal to the list checker (54,514 vs 5,018,706 lookup visits; a speed, not a size, change); one generic checker for the M124, FM215 and M125 marker variants; `CantorCredit.v` for ZC215 |
 | [affine-cores](affine-cores/README.md) | `Affine_Proof_Cores_and_Transport_2026-10-21` (batch 208) | an affine contraction of the drain loops (research); a context215 transport sketch; `calculus/REMOVE_THREE_INDUCTIONS.patch`, which drops three formula inductions from `KSeedModel222.lean` (in K215's closure) by reusing the semantic round trip. Uncompiled |
+| [automatic-certificates](automatic-certificates/README.md) | `K215_Automatic_Certificates_2026-10-21` (batch 209, arrival `5314ca0e6b`) | `rocq_normalized/`: the normalized Rocq source checker again, with an application-tested integration patch (Coq 8.18, recursive `coqchk`); `lean_auto/`: correspondence inferred from the literal trees and kernel-checked, the same tuples accepted by the Rocq checker (`rocq_auto/`), so one generator can serve both lanes; ZC215 codec and credit proofs. `search214/inputs/` (21 repository tables) omitted |
+| [quotient-detachment](quotient-detachment/README.md) | `K215_Proof_and_Quotient_Detachment_2026-10-21` (batch 210) | `proof_simplification/`: a smaller direct proof of `DomRho8.rho8_all` (Lean 517 -> 453 lines, the deduction development replaced by a two-step implication lifting; generator patch) and a direct Rocq mirror (440 lines, no reflection interpreter); a checked quotient detachment rule (research) |
+| [proof-refinements](proof-refinements/README.md) | `K215_Proof_Refinements_2026-10-21` (batch 210) | balanced lookup over the normalized certificate (Coq 8.18); a Lean theorem deriving every decoder context from the source DAG; one early-halting row-selection theorem for all nine AX rows (Coq 8.18, `coqchk`) |
+| [composition-address-bounds](composition-address-bounds/README.md) | `K215_Proof_Composition_and_Address_Bounds_2026-10-21` (batch 210) | normalized + balanced lookup with a recursive kernel audit; decoder windows generated from the literal source walk; CM215 equivalence in the repository's stream semantics (Coq, closed); a 206-subtree source without six-zero runs (no new machine) |
+| [further-simplifications](further-simplifications/README.md) | `K215_Further_Proof_Simplifications_2026-10-21` (batch 210) | return-to-dispatch runtime contract and decoder factoring; calibration with fresh-variable padding; audits of recent production changes. `recent_commits/sources/` and `recent_commits/phase5_refresh/production/` (repository copies) omitted |
+| [rocq-composition](rocq-composition/README.md) | `Rocq_Certificate_Composition_and_Arithmetic_Summaries_2026-10-21` (batch 210) | certificate composition and arithmetic loop summaries: finite checks and uncompiled proposals. `review/automatic/` (a copy of `automatic-certificates`) omitted |
 | [fm215-compression](fm215-compression/README.md) | `zfc-fm215-proof-compression-2026-10-21` | shared decoder contexts (234 roles cover 4,750 internal occurrences); FM215 with a compiled Lean transport; a compiled logical obstruction. `machine/inherited_notices/` and `machine/tables/` (repository copies) omitted |
 
 **FM215 is not a new alternative.** It differs from M124 (`candidate-k215/alternatives/dr215/markers/
