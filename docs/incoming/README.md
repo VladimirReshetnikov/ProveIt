@@ -12,6 +12,23 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Queue status after batch 198
+
+[Batch 198](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-198.md)
+imports Sources 160–161 and retires both ZIPs in placement `b4209acc20`.
+All 149 members remain recoverable; write `72b6378b15` publishes the full
+comparison, nine plus three selected fresh checks and the distinct 215-state
+command-order alternative. Both primary presentations are exact state
+renamings of our accepted 215, so their savings cannot stack. The host has
+**161 sources** and the collection **290 reports**. The active target remains
+**214 or fewer states**, with ordinary ZFC calibration and exact-table
+Lean/internal-PA status kept separate.
+
+Three arrivals are reserved for batch 199: `K215_Composed_Selector.zip`
+(`d1cda734a4`), `K216_Rho6_Permutation_2026-10-21.zip` (`fb5a17f9df`) and
+`K215_Construction_and_Research_2026-10-21.zip` (`c8029f50d3`). They are under
+review; this queue statement does not imply their acceptance.
+
 ## Queue status after batches 196–197
 
 All three later archives are imported and retired. [Batch 196](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-196.md)
@@ -1150,6 +1167,7 @@ ProveIt-era batches (from this directory):
 | 195 | One manuscript at `6ec69081ca`: placement `58615b1aa1` retires its ZIP; 41 members = 27 new + 5 existing aliases + 1 batch alias + 1 historical parent + 7 archive-only. Source 156; 156 sources, 290 reports. | [intake-195.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-195.md): partial-provider source reparse, contextual repair and 164/183 marker fold give the primary216. | this commit | Five fresh selected leaves pass: 6,176 cases / 1,709,992 rules / all432 rows / minimum13 / startup313,133. All-natural source/ordinary calibration and all-tape local fold reviewed separately; exact216 Lean/PA endpoints open. Goal215 continues. |
 | 196 | Two manuscripts at `d3d6b8c14e`: placement `943e1685eb` retires both ZIPs;343 members =271 new +46 existing aliases +11 batch aliases +15 archive-only. Sources157–158. | [intake-196.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-196.md), write `771c774c8c`: scanner/seed/encoding research and scoped failures. | this commit | Nine selected fresh leaves pass. Sixty of62 separate row rewrites transfer to216; no joint saving. Fragment models and incomplete searches retain their limitations. |
 | 197 | One manuscript at `d59b441882`: placement `607e98b59d` retires its ZIP;72 members =55 new +10 existing aliases +1 historical parent +6 archive-only. Source159;159 sources,290 reports. | [intake-197.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-197.md): two command-permuted216s; separate original composition gives215. | this commit | Ten submitted-alternative checks pass. Original215 passes6176 cases /1698790 rules /all430 rows /minimum6 /95714-step complete blank, independently audited. Ordinary ZFC equivalence; exact215 Lean/PA endpoint open. |
+| 198 | Two manuscripts at `001695a82b` and `7e8cc0ee93`: placement `b4209acc20` retires both ZIPs;149 members =83 new +46 existing aliases +2 historical parents +18 archive-only. Sources160–161. | [intake-198.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-198.md), write `72b6378b15`: two isomorphic primary presentations and distinct command-order215. | this commit | Nine plus three selected fresh leaves pass. Secondary runtime:6176 cases/1698845 rules/all430 rows/min9/96284-step full blank. Primary runtime transfers through complete bijections. No214-state result or new exact-table Lean/PA endpoint. Three arrivals queued for199. |
 
 
 

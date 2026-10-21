@@ -53,3 +53,10 @@ The [independent prospective review](reviews/review.json) and [ordinary review n
 The initial allocator gate required one global representative per logical node and rejected eight valid retained 108 occurrences. A separate local-entry reader checked their exact `101` contexts and unchanged entry rows. The original failed gate remains, together with the later reader's local 81 exception and parser-typo corrections. No machine or source bytes changed during these corrections. Pending-status drafts, the disposable solver setup, exact scripts, identity control and raw logs remain in [the research packet](research/composition-allocation/).
 
 [NOTICE.md](NOTICE.md), [original partial-selector attribution](provenance/partial-selector/provenance/ATTRIBUTION.md), [original command-permutation attribution](provenance/permuted-commands/provenance/ATTRIBUTION.md), and [licenses/](licenses/) preserve all inherited contributions and terms. The source transformation, numerical theorem, compiler and checker ancestry are distinct from this composition and allocation. `opening_encoder` authored the composition/allocation and this exposition; `review_upstream_reflection` independently reviewed the proof and audited the actual runtime/blank evidence; root selected and ran the fresh validation and publishes the result.
+
+
+Two later [composed presentations](presentations/composed/README.md) are exact
+state renamings of this machine. A distinct
+[DROP/NIP/MP alternative](alternatives/commands120/README.md) has its own
+fresh full runtime and complete blank-start verification. Batch 198 preserves
+their attribution and evidence; all three remain at215 states.

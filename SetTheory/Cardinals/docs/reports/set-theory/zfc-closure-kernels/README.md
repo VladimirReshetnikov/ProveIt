@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings through 20 October 2026. This report now reconciles **159 manuscripts**.
+Intake findings through 20 October 2026. This report now reconciles **161 manuscripts**.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -8,6 +8,19 @@ the delivered base article is preserved, rather than rewritten as a unified arti
 No merged PDF is built. These are ordinary mathematical arguments and finite
 regression checks. The deliveries confer no formal status; subsequent Lean
 results and their exact scope are listed below.
+
+[Batch 198](intake-198.md) imports Sources 160–161 from `001695a82b` and
+`7e8cc0ee93`. Both primary tables are exact state renamings of our accepted
+215; their savings cannot stack. Source 160 also supplies a distinct
+[DROP/NIP/MP215 alternative](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k215/alternatives/commands120/README.md).
+Nine selected Source-160 jobs and three Source-161 jobs pass; the distinct
+alternative has a fresh 6,176-case runtime, all 430 rows and complete
+96,284-step blank initialization. The primary runtime transfers through
+checked all-row bijections. Placement `b4209acc20` preserves all 149 members
+and retires both ZIPs; write `72b6378b15` publishes the evidence and
+[recovery instructions](intake-198-reproduction.md). The host now has
+161 sources, the collection 290 reports. Three newer archives are reserved
+for batch 199; the active target remains **214 or fewer states**.
 
 [Batch 197](intake-197.md) accepts Source 159's two distinct
 [command-permuted 216-state alternatives](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k216/alternatives/permuted/README.md)
@@ -30,7 +43,8 @@ individual row rewrites transfer to K216, without a joint saving. Placement
 `943e1685eb` accounts for all 343 members and retires both ZIPs.
 [Recovery/reproduction](intake-196-reproduction.md) retains every original
 and distinguishes historical evidence from fresh checks. The host now has
-159 sources and the collection remains 290 reports; the intake queue is clear.
+159 sources at that checkpoint and the collection remains 290 reports.
+The later queue is recorded above.
 
 [Batch 195](intake-195.md) accepts Source 156 as the then-primary
 [**216-state machine**](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k216/README.md).

@@ -3332,3 +3332,12 @@ The ordinary proof gives a ZFC-provable equivalence with Con(ZFC); its own
 full runtime and exact blank start are documented separately. No new
 exact-table Lean/PA endpoint or minimum-state theorem is claimed. The host
 has **159 sources**, the collection **290 reports**, and the queue is clear.
+
+[Batch 198](set-theory/zfc-closure-kernels/intake-198.md) adds Sources 160–161:
+two composed215 primary presentations and a distinct command-order215.
+All 149 members are preserved in placement `b4209acc20`; both archives are
+retired. Write `72b6378b15` records the all-row isomorphisms, nine plus three
+selected fresh checks, complete alternative runtime and independent review.
+The host has **161 sources**; the collection remains **290 reports**. Three
+new arrivals remain for batch 199. The active target is214; no new smaller
+machine or proof-assistant endpoint follows from this batch.

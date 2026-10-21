@@ -1102,6 +1102,12 @@ model satisfies the actual C/G bundle with either quantifier row. The later
 compiler measurements. Full ordinary equality-free PSC and CP/GIC retain their
 separate mathematical consistency calibrations.
 
+[Batch 198](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-198.md)
+adds two exact state-renamed presentations of the primary215 and a separately
+checked [command-order215 alternative](candidate-k215/alternatives/commands120/README.md).
+Their savings cannot be counted again. The active target remains214; three
+new submissions are under review as batch199.
+
 ## Intake and theory minimization
 
 [Intake batch 143](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md)
