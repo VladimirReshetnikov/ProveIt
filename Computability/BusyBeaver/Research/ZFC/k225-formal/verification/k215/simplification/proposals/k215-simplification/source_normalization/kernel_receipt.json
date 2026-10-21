@@ -1,0 +1,309 @@
+{
+  "schema": "K215-normalized-source-kernel-v1",
+  "baseline_commit": "b6c7087477e51c017003bd729e712c8969733223",
+  "actual_repository_commit": "b6c7087477e51c017003bd729e712c8969733223",
+  "toolchain": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+  "complete": true,
+  "kernel_checked": true,
+  "build_mode": "Incremental isolated build; every final local Lean source hash is bound to a successful kernel compile. A fresh 30-module serial reproduction driver is supplied.",
+  "scope": "Exact all-register source-program halting equivalence; not a rebuilt complete machine-to-consistency endpoint.",
+  "theorem": "SetTheory.BusyBeaver.ZFC.KSource215.p215_halts_iff",
+  "statement": "forall R : Registers, Halts p215 ([], R) iff Halts pathDagPerm ([], R)",
+  "axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "generic_checker_axioms": [
+    "propext",
+    "Quot.sound"
+  ],
+  "checked_entries": 1426,
+  "checked_branches_including_initial": 2851,
+  "new_local_modules": 22,
+  "upstream_dependencies": [
+    {
+      "module": "RegisterPath",
+      "source_sha256": "a1457f32034eb4da50c8755610a366805260aac711424bba8b516ccab4e5b879",
+      "olean_sha256": "a79741d33e4007df10f6ed17e6518f6bdc618024f36861acf326ae23b779e036",
+      "status": "Compiled earlier in the same isolated build and imported by successful checked local modules; original timing not retained."
+    },
+    {
+      "module": "RMDag",
+      "source_sha256": "55a47480da9cb00e5420b896c3a8c72ec1f51081d610874903f932311231076d",
+      "olean_sha256": "7ded8c01bafaf2e35b7f77192361c03045b887411b66214cc6ee407f8fbb8fc4",
+      "status": "Compiled earlier in the same isolated build and imported by successful checked local modules; original timing not retained."
+    },
+    {
+      "module": "RMEquiv",
+      "source_sha256": "cc696ec1d000e9201506f652987d94ba17661114ba785b8dcb09b4f958a32a57",
+      "olean_sha256": "35c3430007427146e7aad4900a81f0a87068aa208fa021b14a58b800c6517498",
+      "status": "Compiled earlier in the same isolated build and imported by successful checked local modules; original timing not retained."
+    },
+    {
+      "module": "RMBisim",
+      "source_sha256": "68c28a182eed06c0f8d266f0d79d8f884f086228a4794da00da51cf02dbbb13b",
+      "olean_sha256": "efdbd11ba9b02680d67d68d5d0276e1120718d28750b00a7fba8c465850c4dea",
+      "status": "Compiled earlier in the same isolated build and imported by successful checked local modules; original timing not retained."
+    },
+    {
+      "module": "Dag222",
+      "source_sha256": "9e73e2d6ac692c33b07efde7faa08545fdd61ca692ec03e21afe2ffe99a7cb71",
+      "olean_sha256": "29b7ce3485027f22f74a235d07e749f386157be107b14c79cc4875a9e2fb08df",
+      "status": "Compiled earlier in the same isolated build and imported by successful checked local modules; original timing not retained."
+    },
+    {
+      "module": "Dag219",
+      "source_sha256": "fd3bdfcd5048dd7205b66fcce323bb78017a3137dcd04cc3ef9c0788334ac3ad",
+      "olean_sha256": "20b913f9ea01d8ed5bc5c05892f8c8f0f9f3a2918e4ef77dd1dc1742b2ef5782",
+      "status": "Compiled earlier in the same isolated build and imported by successful checked local modules; original timing not retained."
+    },
+    {
+      "module": "DagDom",
+      "source_sha256": "9d52a871ea029099dd192fb66cf0ef802c4f9ed6e8c32d3a7b3661ce343af5aa",
+      "olean_sha256": "6ab0e94cc68bbdb10eb36cc4e476ffbe3fd04e33a4171eda62af302fd51de8b7",
+      "status": "Compiled earlier in the same isolated build and imported by successful checked local modules; original timing not retained."
+    },
+    {
+      "module": "DagPerm",
+      "source_sha256": "11ccf62cf09e41b8f85e1c7d6aa56aeca0c0d211e119fb5309d5fb1ac6a96123",
+      "olean_sha256": "7ae00e50e29eb1aceeb14985a429ebcf1b02d0fbb9250f8b691adc12b44e7024",
+      "status": "Compiled earlier in the same isolated build and imported by successful checked local modules; original timing not retained."
+    }
+  ],
+  "minimal_import_closure_modules": 30,
+  "modules": [
+    {
+      "module": "RMNormalizedBisim",
+      "exit_code": 0,
+      "wall_seconds": 2.199,
+      "max_rss_kib": 506328,
+      "source_sha256": "0bf96f856d1df2ddafa7b5525ba518ded4a72dcb1dc69ab875338a62b26b55b9",
+      "olean_sha256": "3557f71583d55282d357066083752afc7a46ad05ed284802c2bd6e6930b34d6d",
+      "stdout": "'SetTheory.BusyBeaver.ZFC.RMNormalizedBisim.ibeq_ok' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.RMNormalizedBisim.tsite_ipeq' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.RMNormalizedBisim.check_halts_iff' depends on axioms: [propext, Quot.sound]\n",
+      "stderr": ""
+    },
+    {
+      "module": "KSource215Programs",
+      "exit_code": 0,
+      "wall_seconds": 64.622,
+      "max_rss_kib": 2297208,
+      "source_sha256": "c19c3199d6ef6cee708a4fb66b2fd24f6dbcc69c000148a18debcc50adab8665",
+      "olean_sha256": "18ecb9e077338d4a1a379606493c38ff49cecced31e930d3af196f5025b55aa8",
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "module": "KSource215Data",
+      "exit_code": 0,
+      "wall_seconds": 40.387,
+      "max_rss_kib": 783508,
+      "source_sha256": "34c8e09ca8655cf060ad0ff69f1e0455ad3eda3d0c221d2c104fcb34d5070b0a",
+      "olean_sha256": "870bbe39606c31aeaf223585128130c2c820ba38c2536ebe262c7cfc220d5f74",
+      "stdout": "'SetTheory.BusyBeaver.ZFC.KSource215.t215_eq' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.KSource215.tD_eq' depends on axioms: [propext, Classical.choice, Quot.sound]\n",
+      "stderr": ""
+    },
+    {
+      "module": "KSource215NormalizedData",
+      "exit_code": 0,
+      "wall_seconds": 6.436,
+      "max_rss_kib": 635788,
+      "source_sha256": "83c46738a46e78f36df24e21eed1cc3d89c86a86c2c04595b1d43be81a42358e",
+      "olean_sha256": "f946066bbbcfe2c50e53e1a82874f489372151b88c985bd83aaf3433bdcc71fb",
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "module": "KSource215NormalizedCheck00",
+      "exit_code": 0,
+      "wall_seconds": 5.822,
+      "max_rss_kib": 1084840,
+      "source_sha256": "462cbe647968549be5d86f86fdc7decef809a7b57c12c51611aed4c046e5ecf5",
+      "olean_sha256": "f479fbaf5b2d54cb41e3c7cc160e194f8af5f17f2c53b11d03033c808a38c10a",
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "module": "KSource215NormalizedCheck01",
+      "exit_code": 0,
+      "wall_seconds": 13.153,
+      "max_rss_kib": 1485324,
+      "stdout": "",
+      "stderr": "",
+      "source_sha256": "caa764a0839b90915f9ed8b4f9812c0c932b21f41c0d68e4943054242e0d9999",
+      "olean_sha256": "a312e2f81f82116b02df634295621e8a0dd31dd57a353d1833856b4efd7c4fea"
+    },
+    {
+      "module": "KSource215NormalizedCheck02",
+      "exit_code": 0,
+      "wall_seconds": 14.489,
+      "max_rss_kib": 1874020,
+      "stdout": "",
+      "stderr": "",
+      "source_sha256": "18c8d38dfc5b3e80bb2d07067e5af2a03b3e060ae7dab55139782e17563df97f",
+      "olean_sha256": "a2a93e9b1fbed744067c620813baebfa23fa078c1da69b778f8525218e5721fe"
+    },
+    {
+      "module": "KSource215NormalizedCheck03",
+      "exit_code": 0,
+      "wall_seconds": 14.759,
+      "max_rss_kib": 2205088,
+      "stdout": "",
+      "stderr": "",
+      "source_sha256": "7aa2c601ca9a1121156946d7e30f4f37a484129edc4d0c6fdccf2001a26e61ce",
+      "olean_sha256": "7c311769ccea43ed5d1cce4ce3e478ee6126cff3d7e4b3bfd5488d4ca31e3496"
+    },
+    {
+      "module": "KSource215NormalizedCheck04",
+      "exit_code": 0,
+      "wall_seconds": 19.548,
+      "max_rss_kib": 2428000,
+      "stdout": "",
+      "stderr": "",
+      "source_sha256": "40bb3942537d6dbc6dffc18eff57705b7011ecf5a2d5b50a5c4bf939b7987d95",
+      "olean_sha256": "62298bb0a9c674b3bf6549051a833529a1a21fa74aab57bd5d95a03a459841d4"
+    },
+    {
+      "module": "KSource215NormalizedCheck05",
+      "exit_code": 0,
+      "wall_seconds": 24.077,
+      "max_rss_kib": 2614676,
+      "stdout": "",
+      "stderr": "",
+      "source_sha256": "1a042c3001d2cac028ed0e51b7d5f3447a3a37b392c4361f4671bdea3500c85d",
+      "olean_sha256": "ee9204ebac820fe42f0636a2058cf9054b9aff773740d65858c64290e2b9c6e9"
+    },
+    {
+      "module": "KSource215NormalizedCheck06",
+      "exit_code": 0,
+      "wall_seconds": 23.959,
+      "max_rss_kib": 2977936,
+      "stdout": "",
+      "stderr": "",
+      "source_sha256": "dec4fef068116d1c07e3bfe2da040d8109d9d84ca9c01702d97f4465ff8627d7",
+      "olean_sha256": "04afae2cc4a9156cda638502eead807736bcd2fdaaddefb83956ef39d5eb1578"
+    },
+    {
+      "module": "KSource215NormalizedCheck07",
+      "exit_code": 0,
+      "wall_seconds": 44.576,
+      "max_rss_kib": 3153416,
+      "stdout": "",
+      "stderr": "",
+      "source_sha256": "b1c6f97f2562f14e10950c9ee58230cf5de061754bf5e81e0a87e08a632395f7",
+      "olean_sha256": "c24279a49bbc2d5634f1caf14b50c176d77227e8d7fa9543c31acbc3db99aee2"
+    },
+    {
+      "module": "KSource215NormalizedCheck08",
+      "exit_code": 0,
+      "wall_seconds": 34.912,
+      "max_rss_kib": 1420424,
+      "stdout": "",
+      "stderr": "",
+      "source_sha256": "e285905e1ba97dbbff11d28997e764323a9747e31744642964716684ee85c8d9",
+      "olean_sha256": "41155e8b6b4e404c8e6c8b4cb1157d331aff60d5e4196eaec001a21aa7afcf34"
+    },
+    {
+      "module": "KSource215NormalizedCheck09",
+      "exit_code": 0,
+      "wall_seconds": 29.541,
+      "max_rss_kib": 1451964,
+      "stdout": "",
+      "stderr": "",
+      "source_sha256": "2bf70f3028958035a8e57c5278e5f03f912244a3057e3ba3f19e9f5799f64b2b",
+      "olean_sha256": "921e6cea1296cadd05006a3fbbb3a34669bd1ef8527cd2ee60832f6f026fc8ee"
+    },
+    {
+      "module": "KSource215NormalizedCheck10",
+      "exit_code": 0,
+      "wall_seconds": 34.323,
+      "max_rss_kib": 1470072,
+      "stdout": "",
+      "stderr": "",
+      "source_sha256": "b147d5e470d032e1878430de712c5b0dc52d9fbcab1564ada82482b960c71652",
+      "olean_sha256": "9a6e2e5250459d41405befd1bbc6c039336ee0270bf932ee18f1bb59cbf7995b"
+    },
+    {
+      "module": "KSource215NormalizedCheck11",
+      "exit_code": 0,
+      "wall_seconds": 45.411,
+      "max_rss_kib": 1529428,
+      "stdout": "",
+      "stderr": "",
+      "source_sha256": "8cb3255eac02956627083ca6673fdcffccc70e533cf124fd56126dc525bca8d9",
+      "olean_sha256": "f20fcd1e9b0e367fd835b5201b55b86441582d48a6d0d8b7865b06de543084b9"
+    },
+    {
+      "module": "KSource215NormalizedCheck12",
+      "exit_code": 0,
+      "wall_seconds": 43.746,
+      "max_rss_kib": 1626904,
+      "stdout": "",
+      "stderr": "",
+      "source_sha256": "3ed957973a52a99e3765c5212e0d9790a9036e59f910a112b79da511944b3bda",
+      "olean_sha256": "be03982c48fb585c50fd8e2909032edae17fc7c5ac52beba5de0fab2483bacaa"
+    },
+    {
+      "module": "KSource215NormalizedCheck13",
+      "exit_code": 0,
+      "wall_seconds": 53.209,
+      "max_rss_kib": 1689548,
+      "stdout": "",
+      "stderr": "",
+      "source_sha256": "61172e51e0e598afcf3a531aa0689a7cc041ee2bcdd5566b0e451cf432be55c5",
+      "olean_sha256": "a5ae9f4b0e88fd806f2fa52f726764eabbfe760992aa80c7821ce111f1e02c57"
+    },
+    {
+      "module": "KSource215NormalizedCheck14",
+      "exit_code": 0,
+      "wall_seconds": 51.376,
+      "max_rss_kib": 1741688,
+      "stdout": "",
+      "stderr": "",
+      "source_sha256": "067bc547ecb9c061e38055b33beff399f9a526efe38e4ca14ce93f45cd02ec6c",
+      "olean_sha256": "55b5df818c4f6dd2f7060375151c9e7fa85787255049fe7070f210bc92d2a13f"
+    },
+    {
+      "module": "KSource215NormalizedCheck15",
+      "exit_code": 0,
+      "wall_seconds": 57.25,
+      "max_rss_kib": 1508524,
+      "stdout": "",
+      "stderr": "",
+      "source_sha256": "9bf98d7a9a1dc3b91c92df617bcff7167e0c800cd18f3beb235467980ca407e6",
+      "olean_sha256": "e04744c1085c306f628f17ba3aa3da1dbafb2c5f373bf2b66dbeb554a50b480a"
+    },
+    {
+      "module": "KSource215Normalized",
+      "exit_code": 0,
+      "wall_seconds": 0.976,
+      "max_rss_kib": 496564,
+      "stdout": "'SetTheory.BusyBeaver.ZFC.KSource215Normalized.p215_halts_iff' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n",
+      "stderr": "",
+      "source_sha256": "4cc7f0958a0fa3479c8df1cc32e53346b72a0e324840f8671a39c1a114c09184",
+      "olean_sha256": "d3cf5ee010273e5abba1e9db07977abdfb919a7a9e2a4fb24432c9b17f92de9c"
+    },
+    {
+      "module": "KSource215",
+      "exit_code": 0,
+      "wall_seconds": 0.343,
+      "max_rss_kib": 492756,
+      "stdout": "'SetTheory.BusyBeaver.ZFC.KSource215.p215_halts_iff' depends on axioms: [propext, Classical.choice, Quot.sound]\n",
+      "stderr": "",
+      "source_sha256": "172767d4eb6234be0b2614cf76ad28a34a1812e3ac019694f56d91a94f4f1f9e",
+      "olean_sha256": "324830ce09714f9e1115c41ec43188a3ea9ff0139be359108d6d5321347d91d3"
+    }
+  ],
+  "sum_recorded_local_compile_seconds": 625.114,
+  "timing_note": "Sum of per-process elapsed times; some evidence-only recompiles overlap, so this is not elapsed time of a clean build.",
+  "peak_recorded_local_rss_kib": 3153416,
+  "input_sha256": {
+    "KSource215Data.lean": "43093f181bfdd86408a7c88bbf8c0d99ada494b5e3780ae9d93cff05502dbe67",
+    "sites215.json": "17af207195179b2508bf91154cd00739374f8862207ca21b9a3cb9098aa6f5ba",
+    "gen_cert.py": "e2425e4589d204c284856f75a9ae1fe49fcc0873a150892da7652b2f19b981aa",
+    "dagperm_nodes.json": "227d316cd61ce4781405c5abbd53e9f206bc70111c6c7f9237ecf7baf0a8517a"
+  },
+  "certificate_sha256": "6d30d89253629525b0af3066c7fec67b052c07413938fc7a94dd96ab1ff406e2",
+  "old_to_normalized_sha256": "0408e07ed92142c147debe1ed41116a80b74848c3e8ec8d74c175772d3cec950",
+  "regeneration_check": "All four packaged generators ran successfully and reproduced every checked generated Lean source byte, certificate byte, and old-to-normalized map byte exactly."
+}

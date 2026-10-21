@@ -1,0 +1,133 @@
+% Include-only mathematical note. Requires amsmath, amssymb, amsthm.
+\section{An obstruction to the large-matrix logical recovery}
+\label{sec:tail-quantifier-obstruction}
+
+The existing large-matrix experiment removes the final comparison gates by
+emitting the seed bundle only at parameters $c>a+b$. Its report explicitly
+leaves recovery of the missing atomic-vacuity interface open. The following
+result closes one proposed route: that interface cannot be recovered from
+the retained logical rows alone. It does not decide whether the seed theory
+itself supplies a different consistency reduction.
+
+Write $R(a,b)$ and $E(a,b)$ for membership and equality atoms, and
+$Q_i A$ for the named universal-quantifier constructor. Let
+$\mathcal L_{>}$ contain truth, modus ponens, theorem generalization, the
+unrestricted classical implicational basis, the rows $\rho_1,\ldots,\rho_6$
+of \texttt{Code254.lean}, and the merged equality row
+\[
+ E(c,a)\to\bigl(E(c,b)\to Q_{r(a,b)}E(a,b)\bigr),
+ \qquad r(a,b)=4P(a,b)+1.
+\]
+Its membership-vacuity axioms are only
+\[
+ R(a,b)\to Q_cR(a,b) \qquad(c>a+b).
+\]
+Allowing the unrestricted classical basis makes the obstruction stronger:
+the accepted dominated $\rho_8$ instances are a subfamily of it.
+No seed-K bundles or other nonlogical axioms are included in
+$\mathcal L_{>}$.
+
+\paragraph{Theorem.}
+The formula $R(2,3)\to Q_1R(2,3)$ is not derivable in
+$\mathcal L_{>}$. In particular, the retained logical subsystem does not
+recover atomic vacuity at every distinct binder.
+
+\paragraph{Proof.}
+For any nonempty set $D$ and irreflexive binary relation $R_D$, take worlds
+to be all sequences $e:\mathbb N\to D$. Interpret atoms by
+\[
+ e\models R(a,b)\iff R_D(e(a),e(b)),\qquad
+ e\models E(a,b)\iff e(a)=e(b).
+\]
+Interpret implication and falsity classically, and replace ordinary
+single-variable quantification by \emph{tail quantification}:
+\[
+ e\models Q_i A
+ \iff
+ \forall f\bigl[(\forall k<i,\ f(k)=e(k))\Longrightarrow f\models A\bigr].
+\]
+The relations $e\sim_i f\iff\forall k<i,\ e(k)=f(k)$ are equivalence
+relations. They are nested, and
+\[
+ \sim_i\circ\sim_j=\sim_{\min(i,j)},\qquad
+ Q_iQ_jA\ \equiv\ Q_{\min(i,j)}A.
+\]
+This identity is an identity of the semantics for every formula $A$;
+it is not a new inference rule.
+
+All retained logical rows are valid. Normality of universal
+quantification proves $\rho_2$, and the displayed identity proves
+$\rho_4$. The row $\rho_6$, $(\exists_iQ_iA)\to A$, is valid because
+if an $i$-accessible world satisfies $Q_iA$, then the original world is
+among its $i$-accessible worlds. The row $\rho_1$, $\exists_i E(i,j)$,
+is valid: if $j<i$, assign coordinate $i$ the fixed value $e(j)$;
+otherwise assign coordinates $i,j$ a common value of $D$. Both changes
+preserve the prefix below $i$. Equality substitution proves $\rho_3$
+and $\rho_5$. For the merged equality row, $r(a,b)>a,b$, so
+$r(a,b)$-accessible worlds preserve coordinates $a,b$; the two equality
+premises imply their equality there as well. The classical
+implicational axioms are tautologies. Global validity is closed under
+modus ponens and under every $Q_i$, as required by theorem
+generalization.
+
+If $c>a+b$, then $a,b<c$, so $c$-accessible worlds preserve both
+arguments of $R(a,b)$. Thus all permitted atomic-vacuity rows are valid.
+The designated numerical falsity $R(0,0)$ is false everywhere, since
+$R_D$ is irreflexive. The numerical truth alias $I(0,0)=0$ is harmless:
+both sides evaluate to true. Equivalently, compose this interpretation
+with the repository's recursive numerical decoder; its implication and
+quantifier equations remain valid with these semantics.
+
+Finally choose $D=\{0,1\}$ and $R_D(x,y)\iff x<y$. Let $e(2)=0$
+and $e(3)=1$. Then $e\models R(2,3)$. There is a world $f\sim_1 e$
+with $f(2)=f(3)=0$, so $f\not\models R(2,3)$ and
+$e\not\models Q_1R(2,3)$. Hence the proposed implication is not valid
+in a semantics validating every axiom and inference rule of
+$\mathcal L_{>}$, and therefore is not derivable.\hfill$\square$
+
+\paragraph{What this resolves and what it leaves open.}
+Ordinary first-order matrix padding, or an unproved appeal to arbitrary
+variable renaming, cannot complete the missing logical bridge. A proof
+that transforms an allowed high-binder vacuity instance into the displayed
+low-binder instance must use additional nonlogical assumptions or a rule
+not present in $\mathcal L_{>}$. This result does not assert that the
+full large-matrix calculus has this countermodel: its seed bundles have
+not been shown valid in tail semantics. It neither proves nor disproves
+that full calculus's equiconsistency with ZFC, and gives no state-count
+lower bound.
+
+\paragraph{Executable finite audit.}
+\texttt{check\_tail\_quantifiers.py} checks the counterexample on the
+16 assignments of coordinates $0,1,2,3$, all indicated atomic rows with
+parameters in that range, and the universal algebraic laws used for
+quantifiers. It checks normality from the finite accessibility relations,
+not by sampling formulas, and checks $\rho_6$ and commutation for all
+65,536 propositions on those 16 worlds. The finite audit is an independent
+sanity check of the displayed example and semantics.
+
+\paragraph{Compiled Lean interface.}
+\texttt{TailQuantifiers.lean} additionally formalizes the all-natural
+tail semantics, the validity of each displayed logical row, soundness of
+an inductive proof system, and the explicit non-derivability conclusion.
+It imports only \texttt{Init} and was compiled with Lean 4.32.0. Its
+logical interface is stronger than the one needed here: it admits every
+membership-vacuity binder larger than both atom indices, and every merged
+equality helper binder larger than both equality indices. The theorem
+\texttt{not\_valid\_missing\_vacuity} has no axioms; the soundness and
+non-derivability theorems use only \texttt{propext},
+\texttt{Classical.choice}, and \texttt{Quot.sound}. There are no
+\texttt{sorry} or \texttt{admit} declarations. The file treats named
+logical formulas as predicates on worlds; the extension through the
+repository's numerical decoder is the ordinary constructor argument
+above, not a newly compiled numeric-calculus bridge. Neither the Lean
+file nor the finite audit includes the seed-K theory bundles.
+
+\paragraph{Pinned repository sources.}
+This note concerns the pinned ProveIt revision, in particular its
+large-matrix formalism supplement\cite{largematrix},
+\path{BusyBeaver/ZFC/Code254.lean},
+\path{BusyBeaver/ZFC/KCode222.lean}, and
+\path{BusyBeaver/ZFC/KThmK.lean}. The logical schemas above are their
+literal named-formula interpretations. This is a new obstruction proof;
+the large-matrix source experiment and the numerical calculus are inherited
+work.

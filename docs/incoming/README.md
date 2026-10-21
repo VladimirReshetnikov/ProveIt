@@ -12,6 +12,16 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Queue status after batch 205
+
+Batch 205 received six K215 proof-simplification packets (arrival
+`a6b3a30011`). They were placed whole as delivered under
+[k225-formal/verification/k215/simplification/proposals/](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/README.md),
+omitting only copies of repository files, and indexed there with their status
+against `main`. The only new 215-state table, FM215, differs from batch 204's
+M124 in one row (127/1), so it was not placed as an alternative; its compiled
+Lean transport is kept as proof material. Nothing was rerun. The queue is clear.
+
 ## Queue status after batch 204
 
 Batch 204 received nine archives, all 215-state ZFC work, and, at Vladimir's

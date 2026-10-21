@@ -1,0 +1,169 @@
+No verified 214-state machine was obtained in this investigation.  We did
+implement and execute a larger local-fold search whose acceptance condition
+is deliberately chosen to support a short correctness transfer.  The search
+is an additional reproducible negative result, not a lower bound.
+
+The six inputs are literal native tables from the pinned ProveIt snapshot:
+primary K215,
+CM215 (conditional markers), ST215 (direct transfer), the zero-spare-transfer
+alternative, the MP-first-transfer alternative, and K215-R41 (rebalanced
+addresses).  The input manifest records the complete repository path, Git
+blob identity, byte length, and SHA-256 digest of each table.  Five declare
+initial control~0; zero-spare-transfer declares initial control~74.  Every
+input has 215 working states, 430 rows, and separate halt label~254.
+
+\subsection{A finite invariant that does not depend on bounded blank runs}
+
+Fix a deterministic binary machine $M$ and a radius $k\geq1$.  Its abstract
+states are
+\[
+ (q,v),\qquad q\in Q\cup\{H\},\quad
+ v\in\{0,1\}^{2k+1}.
+\]
+Here $v$ describes the cells at offsets $-k,\ldots,k$ from the current head.
+Start with \emph{all} words $v$ at the declared initial control.  For each
+abstract transition, write the prescribed center bit, move the window one
+cell, and allow either value for the newly exposed boundary bit.  Let
+$A_k$ be the least set closed under these transitions.
+
+\paragraph{Window invariant.}
+For every initial binary tape, every finite configuration reached from the
+declared initial control has its control/window pair in $A_k$.
+
+\paragraph{Proof.}
+The initial pair belongs by construction.  Suppose the claim holds before
+one machine step.  The actual read bit is the center of the stored window,
+so the abstract and actual transitions choose the same row and write the
+same bit.  Their window shifts agree on every cell retained in the window.
+The one newly exposed actual bit is either zero or one, and both choices
+were admitted by the abstract rule.  Closure of $A_k$ proves the induction
+step.  No bound on the number of actual steps or on the support of the
+initial tape is used.\hfill$\square$
+
+The implementation checks closure a second way: the fixed-point builder
+uses integer bit operations, whereas the control checker converts each word
+to a tuple and implements shifting by slicing and concatenation.  This
+independent finite check is useful evidence about the implementation; it is
+not described as a proof-assistant kernel check.
+
+\subsection{A certificate format that transfers the existing endpoint}
+
+Choose distinct working controls $a,b$, retain $a$, and remove $b$.  If the
+initial control is one of these, retain that control.  Define
+\[
+ \phi(b)=a,\qquad \phi(q)=q\quad(q\ne b),\qquad
+ \Phi(q,T,h)=(\phi(q),T,h).
+\]
+Redirect every remaining transition target through $\phi$.  The two rows
+of the retained state may both be replaced; other rows are unchanged apart
+from target redirection.  The following local obligation is enough:
+for each old entry $(q,v)\in A_k$ with $q\in\{a,b\}$, the proposed machine,
+starting in control $a$ with window $v$, executes a positive finite block to
+the projection of the old one-step result.  The block must have the same
+final head displacement and the same complete tape effect.  It may not
+read outside the represented window.
+
+\paragraph{Local-fold transfer theorem.}
+If every local obligation holds, then the proposed machine $N$ and $M$
+halt on exactly the same initial binary tapes, from their declared initial
+controls.  Consequently an already proved blank-tape consistency equivalence
+for $M$ transfers to $N$ without re-proving the proof-search compiler or the
+calculus-to-ZFC reduction.
+
+\paragraph{Proof.}
+For an old step outside $\{a,b\}$, its projected counterpart is one new
+step.  For a step at either merged control, the window invariant supplies
+an admitted local context, and the certificate supplies a positive block.
+Cells outside the window are untouched, so the local tape comparison is a
+comparison of the entire tapes.  Induction on the length of an old run
+therefore constructs its projected new run.  Old finite halting gives new
+finite halting, because $\phi$ preserves the distinct halt control.  If the
+old run is infinite, the sum of positive block lengths is unbounded.  The
+new deterministic run consequently has arbitrarily long nonhalting prefixes
+and cannot halt.  These two cases give the equivalence.\hfill$\square$
+
+This is a conventional simulation argument; the contribution here is its
+use as the explicit synthesis contract and the reproducible search on the
+current tables.  It is not presented as a new general theorem of automata
+theory.
+
+\subsection{Search family and measured result}
+
+The executed search used $k=4$, hence nine-cell windows, and at most 48
+new steps per old step.  It examined all $\binom{215}{2}=23{,}005$ state
+pairs for each table.  It allows both retained rows to change, rather than
+requiring an identical row on the other read symbol.  For each row, all
+choices of write bit, L/R move, and remaining working or halt destination
+are considered: $2\cdot2\cdot215=860$ actions.
+
+The helper fragment must remain unchanged, and neither merged control may
+be visited internally before the matching endpoint.  This restriction makes
+the two branch problems independent: the search indexes possible finite
+helper blocks, then intersects their admissible first actions over every
+abstract entry window.  It need not enumerate the Cartesian product of two
+row-action sets.  A helper is rejected if it exceeds the step bound, exits
+the window, halts early, or fails to reach a required matching endpoint
+within the bounds. Only the selected final boundary must match; intermediate
+visits to other possible endpoints are permitted.
+
+Different old controls may admit the same abstract window and require
+different projected endpoints.  This is \emph{not} grounds for rejecting the
+pair: a common deterministic new trajectory can reach those endpoints at
+different positive times.  The executed search permits this.  Its index
+retains every distinct endpoint encountered along a helper trajectory,
+rather than committing to one global stopping time.  An explicit control
+checks a common trajectory that matches one old branch in one step and the
+other in three steps.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Input & Abstract pairs & Branch searches & All folds & Survivors\\
+\hline
+Primary K215 & 27,579 & 23,187 & 23,005 & 0\\
+CM215 & 27,723 & 23,180 & 23,005 & 0\\
+ST215 & 27,783 & 23,182 & 23,005 & 0\\
+Zero-spare transfer & 27,957 & 23,188 & 23,005 & 0\\
+MP-first transfer & 27,773 & 23,187 & 23,005 & 0\\
+K215-R41 & 27,615 & 23,190 & 23,005 & 0\\
+\hline
+\end{tabular}
+\end{center}
+
+``Abstract pairs'' counts $(q,v)$ in $A_4$, including admitted halt
+windows.  ``Branch searches'' counts independent row-synthesis problems; the
+second read symbol is considered only if the first has a surviving action.
+Across the six tables, 138,030 state pairs were considered;
+the number is not a count of physically distinct candidate machines.
+The known 69/400 marker fold is recovered after explicitly unfolding it,
+with exactly three steps in all 16 admitted radius-three zero-branch
+contexts.  An early-halt replacement and a wrong-selector replacement are
+both rejected.  The direct local simulator and indexed block implementation
+agree on the positive control.
+
+These results rule out neither longer blocks nor helpers that revisit a
+merged control, wider invariants, multiple simultaneous merges, changes to
+other rows, altered source programs, or different formalisms.  Moreover the
+abstract invariant can admit contexts that no actual computation reaches.
+The result therefore says only that this bounded, explicitly stated proof
+method found no successor among these six inputs.  The Python checker is
+ordinary executable evidence; this packet does not assert a newly compiled
+214-state correctness theorem.
+
+\subsection{The next useful extension}
+
+The most promising extension of this particular method is to synthesize
+two or more local edits together, permitting a helper to revisit a rewritten
+control under a strictly decreasing finite rank.  This keeps a finite
+termination certificate while escaping the independent-branch restriction.
+The objective should include the size of the required invariant and transfer
+proof as well as the state count.  For a promising result, minimize its
+invariant to a small collection of bit predicates before generating Lean
+or Rocq code.  Importing tens of thousands of abstract contexts into the
+kernel would defeat the proof-simplification goal when a few inductive
+clauses suffice, as they do for CM215.
+
+The supplied reproduction entry point checks exact inputs and controls by
+default; \texttt{python3 search214/reproduce.py --search} additionally replays all six
+searches and compares every stable receipt field.  No solver, network
+access, or third-party Python package is required.

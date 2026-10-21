@@ -1,0 +1,9 @@
+# Attribution and scope
+
+The new six-row Marker215 transformation, its guarded predecessor invariant, all-tape simulation proof from the designated start, deterministic builder and literal proof-hypothesis checker were prepared by the machine-reduction research lane in the present ChatGPT collaboration for Vladimir Reshetnikov's ProveIt repository. The independent audit lane reviewed the local proof, comparison corpus, and saved machine evidence; the root agent is responsible for the final research report.
+
+This construction is derived from the primary accepted K215 at repository commit `75716498437bfc7291d5900cab2983a11fd54bac`. That candidate's own attribution is preserved verbatim in `licenses/NOTICE.primary215.md`; its shipped license and source-pin files are also retained. The parent attributes the composition/allocation to `opening_encoder`, its independent proof review to `review_upstream_reflection`, and distinguishes those contributions from the earlier partial-selector and command-permutation constructions, numerical-calculus calibration, compiler, binary architecture and runtime checker.
+
+The source program and the copied standard-library symbolic checker are unchanged. The new proof does not re-prove the inherited numerical consistency calibration from first principles; it proves exact start0 equihalting with the accepted primary K215 and separately reruns the full quantified physical runtime check.
+
+The full packet additionally contributes the stride-two command compiler, its direct61-leaf variant and infinite protected-stack argument, the independent77-table comparison and literal-evidence audits, and the exact scratch-return and rejected214 counterexamples. The source-packing and final helper-reuse files are bounded research records only. Retained upstream interfaces, sources and utilities are identified in the reference copies and subpacket provenance. All original license and notice files are preserved.
