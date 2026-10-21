@@ -6,9 +6,9 @@ module and dependency sets, baseline sources, objects, and compiler logs.
 The ten audit reports use only `propext`, `Classical.choice`, and `Quot.sound`;
 neither audit has warnings. The project sources retain 34 linter warnings.
 
-The [subsequent simplification check](../simplification/phase5/README.md) rebuilds affected
-modules against this pinned baseline and reruns both endpoint audits. Its current
-closure contains 184 project modules; the audits
+The [subsequent simplification check](../simplification/phase6/README.md) rebuilds affected
+modules with explicit predecessor bindings and reruns both endpoint audits. Its current
+closure contains 187 project modules (35 fresh and 152 reused); the audits
 still have zero warnings and only the same three allowed axioms. The historical
 204-module receipts below are unchanged.
 
@@ -34,7 +34,7 @@ source inventory and toolchain queries.
 
 The driver uses a separate Lake workspace and project object directory; it does
 not load the repository's cached project objects. The shipped Lean core remains
-the compiler trust boundary. The current closure contains 184 project modules
+the compiler trust boundary. The current closure contains 187 project modules
 and only the external `Init` boundary. It checks the exact final module set and
 direct dependency edges, all source bytes, and all recorded object companions.
 
@@ -55,11 +55,16 @@ all ten reports and rejects axioms outside `propext`, `Classical.choice`, and
 
 The original source certificate was partitioned into a data module, 32 independent
 kernel checks, and the public facade. The current forward-only certificate uses
-16 checks and the generic symmetry theorem; see the
-[second simplification checkpoint](../simplification/phase2/README.md). That original partition retained every declaration statement and proof body. Further repairs use one typed congruence lemma and
-local irreducibility for the dominated-axiom certificate, and narrow namespace
-openings in the dispatch and seed proofs. The endpoint statements, machine,
-certificate nodes, and semantic assumptions are unchanged. All four failed
+16 checks and the generic symmetry theorem. The
+[second simplification checkpoint](../simplification/phase2/README.md) records that reduction;
+[phase six](../simplification/phase6/README.md) checks 1,426 normalized entries using
+512 decoding steps and separates the stable program/tree from certificate data.
+The original partition retained every declaration statement and proof body.
+The original elaboration repairs used one typed congruence lemma and local
+irreducibility for dominated implication, and narrow namespace openings in the
+dispatch and seed proofs. Those repairs left the endpoint statements, machine,
+certificate nodes and semantic assumptions unchanged; later certificate reductions
+are recorded in their respective simplification checkpoints. All four failed
 attempts remain in the [execution history](actual/attempts.json): the original
 monolithic 900-second timeout and three elaboration failures. Their partial
 outputs and axiom reports are excluded from the final closure.

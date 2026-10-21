@@ -3,8 +3,9 @@
 The literal [K215 machine](candidate-k215/README.md) now has **compiled Lean and Rocq
 correctness proofs**: blank-tape halting iff ZFC has a finite refutation, and
 nonhalting iff syntactic consistency of ZFC. Lean's original fresh build checked
-204 project modules; the [current simplification checkpoint](k225-formal/verification/k215/simplification/phase5/README.md)
-checks a 184-module closure and two explicit clients with standard axioms only.
+204 project modules; the [current simplification checkpoint](k225-formal/verification/k215/simplification/phase6/README.md)
+checks a 187-module closure and two explicit clients with standard axioms only.
+Unchanged modules retain exact predecessor source, dependency, object and log bindings.
 Rocq's 237 selected sources,
 four closed endpoint reports and recursive `coqchk` pass. See the
 [formal verification record](k225-formal/verification/k215/README.md).
@@ -22,7 +23,7 @@ external Lean equivalence with Con(ZFC) is now proved for the exact
 [`BinaryConsistencyRotation240`](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/BinaryConsistencyRotation240.lean) checks
 `𝗣𝗔 ⊢ Con(𝗭𝗙𝗖) ↔ ¬Halts(M₂₄₀, blank)` (already in IΣ₂, and likewise for ZF), with
 the standard axioms only.
-The current formal task uses both Lean and Rocq.
+The current simplification work is Lean-only; the checked Rocq endpoint is preserved.
 An intended set-theoretic meaning is optional: any effectively presented
 theory or proof calculus is eligible once its consistency calibration is proved.
 The complete compiled search, including its data and initialization, is the

@@ -3372,3 +3372,50 @@ was tested. The current completed K215 proofs retain their status. Other
 incoming archives remain pending; no smaller machine, lower bound or new
 internal-PA result is claimed. The reconciliation-note format needs no merged
 article/PDF rewrite; the collection catalogue is rebuilt separately.
+
+[Batch 205](set-theory/zfc-closure-kernels/intake-205.md) reconciles
+Sources 168–173, with Source 174 in its
+[batch-206 appendix](set-theory/zfc-closure-kernels/intake-205.md#appendix-source-174-separately-revised-batch-206).
+[Batch 207](set-theory/zfc-closure-kernels/intake-207.md) adds Source 175.
+Upstream placements `35ba151c3b`, `69e6d97fc2` and `62f0f95e2b` are retained;
+supplements `0359ebda60` and `dada10165b` bind exact recovery of all 851,
+360 and 1,132 outer members, including original source and license variants.
+Nested archives are inventoried separately. These additions extend the same
+report; together with batch 208 below, the host has **178 numbered sources**,
+written reconciliations for Sources **1–164 and 167–178**, and pending
+Source **165/166** follow-ups.
+The collection and category counts remain **290 reports**.
+
+The notes distinguish the completed 184-module K215 Lean checkpoint from
+delivered normalized-certificate, balanced-lookup and transport proposals.
+The balanced lookup and stable-program import split are further proof-engineering
+opportunities; submitted timing ratios are not fresh kernel benchmarks.
+Relative alternative-machine proofs retain their stated hypotheses. No
+supplied executable or compiler was run during these supplemental intakes;
+only the new streaming recovery helpers and rejection controls were tested.
+Historical queue and formal
+status statements above retain their original scope. The reconciliation-note
+exception preserves the base article; the collection catalogue is updated
+without rebuilding that article.
+
+[Batch 208](set-theory/zfc-closure-kernels/intake-208.md) adds Sources 176–178
+from `aa66d0a33f`; write `1937bbc8a5` records the reconciliation.
+Parallel upstream placement `8e3066c70b` and our
+`df67839df1`/`aecdc78a8b` placement are reconciled by `7e320f376c`:
+348 immutable Git references, 39 retained ancillary files and 18 arrival-only
+main documents recover all 405 outer members. The two embedded historical
+archives are counted separately; 206 duplicate ancillary files were removed
+only after exact alias and before/after recovery controls passed.
+
+The manuscripts contribute axiom/run-transport ideas, balanced certificate
+storage, a generic three-instance marker theorem, concrete Cantor credit and
+framed decoder proofs. Current Lean already uses balanced certificate storage;
+the physical-table lookup proposal is distinct. Submitted proof receipts,
+finite search negatives and missing production adapters retain their scope.
+The later [phase-six Lean checkpoint](../../../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/README.md)
+now checks the same endpoint over 187 project modules and two typed clients.
+It integrates the normalized 1,426-entry certificate, stable-program dependency
+split, fast transition lookup and seed-model cleanup; reused providers remain
+bound to phase five. The two later `5314ca0e6b`/`b07002a86b` archives remain pending.
+These kernel checks are separate from intake. Placement or source review alone
+still supplies no smaller machine, whole-endpoint proof or performance result.
