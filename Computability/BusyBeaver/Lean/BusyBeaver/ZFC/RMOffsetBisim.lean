@@ -16,7 +16,8 @@ for the change of offset.
 This is the counterpart of `OffsetBisim230.v` in Source 123 of the ZFC
 closure-kernels host (`K226_ZFC_Construction`, the K226F Rocq extension of Elliot
 Glazer's k230-rocq), developed independently on top of `RMBisim`; as there, the
-two directions are separate checks (`omirror` negates the offsets).
+semantic relation is symmetric: swapping the sites and negating offsets gives
+the converse, so one checked certificate establishes halting equivalence.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.RMOffsetBisim
@@ -26,6 +27,10 @@ open RMEquiv (HN)
 
 /-- The offset carried by register `i`. -/
 def delta (z : Int) (i : Nat) : Int := if i = 5 then z else 0
+
+@[simp] theorem delta_neg (z : Int) (i : Nat) : delta (-z) i = -delta z i := by
+  unfold delta
+  split <;> simp
 
 /-- Register files related by offset `z`. -/
 def Related (z : Int) (R1 R2 : Registers) : Prop := ∀ i, (R1 i : Int) = R2 i + delta z i
@@ -55,6 +60,31 @@ def OEntryGood (t1 t2 : Tree) (S : List Bool → List Bool → Int → Prop) (P1
 structure OBisim (t1 t2 : Tree) (S : List Bool → List Bool → Int → Prop) : Prop where
   start : OBranchGood t1 t2 S [] [] 0
   step : ∀ P1 P2 z, S P1 P2 z → OEntryGood t1 t2 S P1 P2 z
+
+/-- Reverse both program sites and the register offset. -/
+theorem OBranchGood.symm {t1 t2 : Tree} {S : List Bool → List Bool → Int → Prop}
+    {A B : List Bool} {z : Int} (h : OBranchGood t1 t2 S A B z) :
+    OBranchGood t2 t1 (fun P2 P1 z => S P1 P2 (-z)) B A (-z) := by
+  obtain ⟨l1, P1, l2, P2, z', h1, h2, hc, hS⟩ := h
+  refine ⟨l2, P2, l1, P1, -z', h2, h1, fun i => ?_, ?_⟩
+  · have := hc i
+    simp only [delta_neg]
+    omega
+  · simpa only [Int.neg_neg] using hS
+
+/-- Offset segment bisimulation is symmetric; one certificate proves both directions. -/
+theorem OBisim.symm {t1 t2 : Tree} {S : List Bool → List Bool → Int → Prop}
+    (h : OBisim t1 t2 S) : OBisim t2 t1 (fun P2 P1 z => S P1 P2 (-z)) := by
+  refine ⟨?_, ?_⟩
+  · simpa using h.start.symm
+  · intro P2 P1 z hS
+    rcases h.step P1 P2 (-z) hS with ⟨Q1, Q2, h1, h2⟩ | ⟨r, Q1, Q2, h1, h2, hz, hj, hk⟩
+    · exact Or.inl ⟨Q2, Q1, h2, h1⟩
+    · refine Or.inr ⟨r, Q2, Q1, h2, h1, ?_, ?_, ?_⟩
+      · simp only [delta_neg] at hz
+        omega
+      · simpa only [Int.neg_neg] using hj.symm
+      · simpa only [Int.neg_neg] using hk.symm
 
 section Sound
 
@@ -252,5 +282,12 @@ theorem ocheck_halts {p1 p2 : Program} {T : OTree}
     (ha : allO (oentryOk (ptree p1) (ptree p2) T) T = true) (R : Registers) :
     Halts p1 ⟨[], R⟩ → Halts p2 ⟨[], R⟩ :=
   (ocheck_bisim hs ha).halts R
+
+/-- A single checked offset certificate gives halting equivalence for every register file. -/
+theorem ocheck_halts_iff {p1 p2 : Program} {T : OTree}
+    (hs : obranchOk (ptree p1) (ptree p2) T [] [] 0 0 = true)
+    (ha : allO (oentryOk (ptree p1) (ptree p2) T) T = true) (R : Registers) :
+    Halts p1 ⟨[], R⟩ ↔ Halts p2 ⟨[], R⟩ :=
+  ⟨(ocheck_bisim hs ha).halts R, (ocheck_bisim hs ha).symm.halts R⟩
 
 end SetTheory.BusyBeaver.ZFC.RMOffsetBisim

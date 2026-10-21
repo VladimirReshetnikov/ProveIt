@@ -1,14 +1,14 @@
 """Generate BusyBeaver/ZFC/KSource215.lean: the 215's source program and dagPerm halt alike.
 
-`p215` is the 215's rotated 4,744-leaf source (candidate-k215/sites215.json), hash-consed
+`p215` is the 215's rotated 4,751-leaf source (candidate-k215/sites215.json), hash-consed
 as in Source 123's `source_data.program_text`. The other side is `dagPerm` itself, read as a path
 program (`RMEquiv.ofDag dagPerm 467`); its well-formedness tables (heights, break and continue
 bounds) are computed here and re-checked by the kernel, as in `generate_rmequiv254.py`. The
-offset certificate comes from `gen_cert.py` (2,237 entries, none offset). Everything emitted
+offset certificate comes from `gen_cert.py` (2,240 entries, none offset). Everything emitted
 is untrusted; the kernel re-checks it in chunks. dagPerm is written by make_dagPerm.py.
 
 Usage (from the repository root):
-    python Computability/BusyBeaver/Research/ZFC/k225-formal/generate_source215_lean.py DAG219_NODES_JSON DAG219_SITES_JSON"""
+    python Computability/BusyBeaver/Research/ZFC/k225-formal/generate_source215_lean.py DAGPERM_NODES_JSON DAGPERM_SITES_JSON"""
 import json, sys
 from functools import lru_cache
 from pathlib import Path
@@ -71,7 +71,6 @@ def main():
     n1, r1 = dag(L1)
     n2, r2 = dag(L2)
     entries = generate(Tree(L1), Tree(L2))
-    mirror = [(b, a, -z, j, k) for a, b, z, j, k in entries]
     nz = sum(1 for e in entries if e[2] != 0)
     out = f"""import BusyBeaver.ZFC.RMOffsetBisim
 import BusyBeaver.ZFC.RMEquiv
@@ -86,7 +85,7 @@ well-formedness tables (root height {H[0]}) are re-checked by the kernel. The ro
 `dagPerm` differ by closed reassociations, the AX node's chain layout and the equality test's
 layout, so an offset segment bisimulation relates them: {len(entries)} pairs of register-test
 sites, {nz} of them offset. The certificate is from `k225-formal/gen_cert.py` and is checked here
-in chunks, with its mirror for the converse.
+once in chunks; generic offset-bisimulation symmetry supplies the converse.
 
 `p215_halts_iff` and `path_iff_iter` relate the source to `dagPerm` iterated; the program layer
 (`L2Perm.dagPerm_seed_iff`) is composed with them in `KEndpoint215`, so this module depends on the program
@@ -122,15 +121,14 @@ theorem path_iff_iter (R : RMDag.Regs) :
     Halts pathDagPerm ⟨[], R⟩ ↔ RMDag.IterHalts DagPerm.dagPerm R :=
   RMEquiv.halts_iff_iterHalts wf222 R
 
-/-! ## The 219's source -/
+/-! ## The 215's source -/
 
 """
-    out += program("p215", n1, r1, f"The 219's source as a {len(n1)}-node DAG (root {r1}).") + "\n"
-    out += "/-- The 219's decoder tree, written out. -/\ndef t215 : Tree :=\n  " + literal_tree(n1, r1) + "\n\n"
+    out += program("p215", n1, r1, f"The 215's source as a {len(n1)}-node DAG (root {r1}).") + "\n"
+    out += "/-- The 215's decoder tree, written out. -/\ndef t215 : Tree :=\n  " + literal_tree(n1, r1) + "\n\n"
     out += "/-- dagPerm's decoder tree, written out. -/\ndef tD : Tree :=\n  " + literal_tree(n2, r2) + "\n\n"
     out += "theorem t215_eq : ptree p215 = t215 := by rfl\n\ntheorem tD_eq : ptree pathDagPerm = tD := by rfl\n\n"
-    out += "/-! ## Forward certificate (219 → dagPerm) -/\n\n" + cert_block("fwd", entries, "t215", "tD")
-    out += "\n/-! ## Mirrored certificate (dagPerm → 219) -/\n\n" + cert_block("bwd", mirror, "tD", "t215")
+    out += "/-! ## Forward certificate (215 → dagPerm) -/\n\n" + cert_block("fwd", entries, "t215", "tD")
     out += """
 theorem fwd_start' : obranchOk (ptree p215) (ptree pathDagPerm) fwdCert [] [] 0 0 = true := by
   rw [t215_eq, tD_eq]; exact fwd_start
@@ -138,15 +136,10 @@ theorem fwd_start' : obranchOk (ptree p215) (ptree pathDagPerm) fwdCert [] [] 0 
 theorem fwd_all' : allO (oentryOk (ptree p215) (ptree pathDagPerm) fwdCert) fwdCert = true := by
   rw [t215_eq, tD_eq]; exact fwd_all
 
-theorem bwd_start' : obranchOk (ptree pathDagPerm) (ptree p215) bwdCert [] [] 0 0 = true := by
-  rw [t215_eq, tD_eq]; exact bwd_start
 
-theorem bwd_all' : allO (oentryOk (ptree pathDagPerm) (ptree p215) bwdCert) bwdCert = true := by
-  rw [t215_eq, tD_eq]; exact bwd_all
-
-/-- **The 219's source and dagPerm halt alike**, from every register file. -/
+/-- **The 215's source and dagPerm halt alike**, from every register file. -/
 theorem p215_halts_iff (R : Registers) : Halts p215 ⟨[], R⟩ ↔ Halts pathDagPerm ⟨[], R⟩ :=
-  ⟨ocheck_halts fwd_start' fwd_all' R, ocheck_halts bwd_start' bwd_all' R⟩
+  ocheck_halts_iff fwd_start' fwd_all' R
 
 #print axioms p215_halts_iff
 

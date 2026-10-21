@@ -3,9 +3,9 @@
 **Both proof lanes pass** (2026-10-21), for the same literal machine.
 
 The fresh full builds below were recorded at `613f9cf28a`. Subsequent
-[proof simplifications](simplification/README.md) also pass: affected modules were
+[proof simplifications](simplification/phase2/README.md) also pass: affected modules were
 rebuilt and the endpoint assumption reports rerun against that pinned baseline.
-The current Lean endpoint closure contains 201 project modules.
+The current Lean endpoint closure contains 185 project modules.
 
 | System | Completed checks | Endpoint assumptions |
 | --- | --- | --- |
@@ -50,7 +50,7 @@ applies the state-renaming equivalence to its sparse
 endpoint. The large literal tables and arithmetic certificates are kernel-checked
 data, while these final compositions stay small.
 
-The [Lean reproduction driver](lean/README.md), using Lean 4.32.0, now selects 201
+The [Lean reproduction driver](lean/README.md), using Lean 4.32.0, now selects 185
 project modules and then two explicit endpoint clients; the original fresh build
 selected 204. The
 [Rocq reproduction driver](rocq/README.md), using Rocq 9.1.0 and rocq-stdlib 9.0.0,
@@ -59,7 +59,7 @@ same compiler lock and run one proof compiler at a time. Lean's shipped core and
 Rocq's installed standard library are explicit toolchain boundaries.
 
 The Lean endpoint clients have zero warnings; the original full build retained
-34 project linter warnings, and the simplified closure retains 31. Rocq's global `coqchk -o` context lists three utility axioms
+34 project linter warnings, and the subsequent records list the remaining project linters. Rocq's global `coqchk -o` context lists three utility axioms
 from imported libraries, detailed on its [evidence page](rocq/README.md). None occur
 in the four endpoint dependency reports, which are closed.
 

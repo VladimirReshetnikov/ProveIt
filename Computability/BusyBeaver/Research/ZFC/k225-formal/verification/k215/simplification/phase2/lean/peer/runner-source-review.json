@@ -1,0 +1,78 @@
+{
+  "status": "SOURCE_AND_LIVE_BINDING_PEER_NO_BLOCKER",
+  "reviewer": "drop_contract",
+  "files": {
+    "driver": {
+      "path": "/tmp/k215-proof-phase2/build.py",
+      "sha256": "1f00fd361cf82b795b8391ce0f9e6a6722aedf5020e697bc2e14eb9603f4a68c"
+    },
+    "reviewed_helper": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/lean/build.py",
+      "sha256": "a3cf7cc38004bca5e2a2df10c607fe5353896c0454069b4ff24d6b5176c32fbd"
+    },
+    "owner": {
+      "path": "/tmp/k215-proof-phase2/lean-run1/owner.json",
+      "sha256": "b985171e8be7269c4f6b36058af033710c682a1addee04e07a57426a0030c6b3"
+    },
+    "inventory": {
+      "path": "/tmp/k215-proof-phase2/lean-run1/inventory.json",
+      "sha256": "24e2608e04b3b3283ef4982d708b6f7db9ebdc47e4a0b1a26f569ef3e2034ffb"
+    },
+    "toolchain": {
+      "path": "/tmp/k215-proof-phase2/lean-run1/toolchain.json",
+      "sha256": "d65727850c08f80fbfc8880f05688fdecca54260e4bca3c08d991b67541709bd"
+    },
+    "old_source": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMDag.lean",
+      "sha256": "0778684743ad28b70dedcf13f92811f94557072bdc1d1bca6a26f6a4d2400110"
+    },
+    "trimmed_source": {
+      "path": "/tmp/k215-concision-round2/root/run008/workspace/BusyBeaver/ZFC/RMDag.lean",
+      "sha256": "55a47480da9cb00e5420b896c3a8c72ec1f51081d610874903f932311231076d"
+    },
+    "trimmed_actual": {
+      "path": "/tmp/k215-concision-round2/root/run008/result.json",
+      "sha256": "d107bd7f9526d60d3e3ac9e438c4e70131e2aa8432a556814b25e0573d1011b0"
+    },
+    "old_module_actual": {
+      "path": "/tmp/k215-proof-phase2/lean-run1/attempts/001-BusyBeaver.ZFC.RMDag/record.json",
+      "sha256": "7b8534f1dd6563924ddfb8124e35af3045095c5a655b54406be21b0f0df6fb9f"
+    }
+  },
+  "source_read": [
+    "Complete130-line phase2 runner",
+    "Imported inventory and process-group/lock supervisor",
+    "Typed-audit gating and all10 permitted-axiom reports",
+    "Frozen185 source/import inventory and exact RMDag source/object identity"
+  ],
+  "current_scope": {
+    "project_modules": 185,
+    "external_imports": [
+      "Init"
+    ],
+    "build_still_running": true,
+    "no_terminal_closure_or_final_audit_claim": true
+  },
+  "findings": [],
+  "observations": [
+    "Phase1 records, raw logs and object hashes are mutually bound before copying only the selected185 objects into a fresh private cache.",
+    "Reuse requires current source hash, exact direct dependency object map and output object hash; reused fresh records also bind their raw log.",
+    "Changed modules compile serially under the common lock using the reviewed supervisor, which kills and waits for the compiler process group before unlocking on timeout or interruption.",
+    "Both typed audit sources are copied and source-pinned;2+8 reports are required, with no warnings/errors and only standard Lean axioms allowed.",
+    "The copied toolchain.json is explicitly a historical204-module identity boundary; the current closure claim is the separate185-module inventory."
+  ],
+  "finalization": {
+    "removed_source_bytes": 1,
+    "change": "one trailing LF only",
+    "identical_object_sha256": "7ded8c01bafaf2e35b7f77192361c03045b887411b66214cc6ee407f8fbb8fc4",
+    "recommendation": "After terminal success preserve the original owner/inventory/completed records unchanged. Add a final-current inventory/ledger whose sole source-origin change is RMDag -> the trimmed source and its actual run008 check; require exact output-object identity. Keep typed audit objects and reports unchanged and pin them explicitly.",
+    "final_read_only_gates": [
+      "Rehash all185 final private objects and every referenced raw log after the typed audits.",
+      "Recheck exact current source hashes/direct dependencies and all relevant toolchain identities.",
+      "Verify that only the RMDag source/origin entry changes and all compiled object hashes, including typed endpoints, are unchanged."
+    ],
+    "driver_scope_note": "The running driver checks private objects before typed audits but does not repeat the full private-object map afterward. The final independent read-only audit should close that publication check; no live driver mutation is requested."
+  },
+  "own_reader_history": "An initial import-order assertion forgot the explicitly allowed Init import and failed before any result. Correcting that reader check to admit Init yielded185 current source hashes and valid project import order. No proof code or build state changed.",
+  "limits": "No compiler invocation, canonical mutation, complete final actual review, internal PA derivation or new trusted dependency claim."
+}

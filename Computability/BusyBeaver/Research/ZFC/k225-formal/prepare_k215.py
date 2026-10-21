@@ -10,9 +10,11 @@ between the PC marker and the register header (one more than `KSim.D0`; the cand
 
 1. `lean215/k215_k230labels.tm` (native table, halt 254 -> 230, new states 301, 302 -> the
    freed labels 102, 120, as for the 219) and `lean215/labels.json` (dense -> sparse);
-2. `generate_boot215_lean.py`, `generate_source215_lean.py` (p215 against dagPerm),
-   `generate_sites215_lean.py` and `generate_dense215_lean.py`, by checked substitutions in the
-   221/219 generators.
+2. `generate_boot215_lean.py`, `generate_sites215_lean.py` and
+   `generate_dense215_lean.py`, by checked substitutions in the 221/219 generators.
+
+The forward-only `generate_source215_lean.py` is maintained directly; the generic
+offset-bisimulation symmetry theorem supplies its reverse implication.
 """
 import json
 from pathlib import Path
@@ -71,27 +73,6 @@ derive("generate_boot221_lean.py", "generate_boot215_lean.py", [
     ("then 167 spare", "then 40 spare"),
     ("table221.length = 229", f"table215.length = {tlen}"),
     ("221", "215"),
-])
-
-derive("generate_source219_lean.py", "generate_source215_lean.py", [
-    ('"Computability/BusyBeaver/Research/ZFC/candidate-k219/sites219.json"',
-     '"Computability/BusyBeaver/Research/ZFC/candidate-k215/sites215.json"'),
-    ("candidate-k219/sites219.json", "candidate-k215/sites215.json"),
-    ("SITES219", "SITES215"),
-    ("import BusyBeaver.ZFC.Dag219", "import BusyBeaver.ZFC.DagPerm"),
-    ("Dag219.dag219", "DagPerm.dagPerm"),
-    ("pathDag219", "pathDagPerm"),
-    ("dag219", "dagPerm"),
-    ("Dag219.seed_iff", "L2Perm.dagPerm_seed_iff"),
-    ("KSource219", "KSource215"),
-    ("KEndpoint219", "KEndpoint215"),
-    ("the 219-state machine", "the 215-state machine"),
-    ("p219", "p215"),
-    ("t219", "t215"),
-    ("the 219's", "the 215's"),
-    ("generate_source219_lean.py", "generate_source215_lean.py"),
-    ('from generate_source225_lean import dag, program, literal_tree, cert_block  # noqa: E402', 'from generate_source225_lean import dag, program, literal_tree, cert_block  # noqa: E402\nfrom partition_source215_lean import write_partition  # noqa: E402'),
-    ('TARGET.write_text(out, encoding="utf-8", newline="\\n")', 'write_partition(TARGET, out)'),
 ])
 
 derive("generate_sites221_lean.py", "generate_sites215_lean.py", [

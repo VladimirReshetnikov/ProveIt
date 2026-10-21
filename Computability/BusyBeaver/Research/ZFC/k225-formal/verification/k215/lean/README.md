@@ -6,9 +6,9 @@ module and dependency sets, baseline sources, objects, and compiler logs.
 The ten audit reports use only `propext`, `Classical.choice`, and `Quot.sound`;
 neither audit has warnings. The project sources retain 34 linter warnings.
 
-The [subsequent simplification check](../simplification/README.md) rebuilds affected
+The [subsequent simplification check](../simplification/phase2/README.md) rebuilds affected
 modules against this pinned baseline and reruns both endpoint audits. Its current
-closure contains 201 project modules and 31 project linter warnings; the audits
+closure contains 185 project modules; the audits
 still have zero warnings and only the same three allowed axioms. The historical
 204-module receipts below are unchanged.
 
@@ -34,7 +34,7 @@ source inventory and toolchain queries.
 
 The driver uses a separate Lake workspace and project object directory; it does
 not load the repository's cached project objects. The shipped Lean core remains
-the compiler trust boundary. The current closure contains 201 project modules
+the compiler trust boundary. The current closure contains 185 project modules
 and only the external `Init` boundary. It checks the exact final module set and
 direct dependency edges, all source bytes, and all recorded object companions.
 
@@ -53,9 +53,10 @@ renaming, boot, site coverage, and source correspondence. The driver requires
 all ten reports and rejects axioms outside `propext`, `Classical.choice`, and
 `Quot.sound`.
 
-The source certificate is partitioned into a data module, 32 independent kernel
-checks, and the public facade. The partition retains every original declaration
-statement and proof body. Further repairs use one typed congruence lemma and
+The original source certificate was partitioned into a data module, 32 independent
+kernel checks, and the public facade. The current forward-only certificate uses
+16 checks and the generic symmetry theorem; see the
+[second simplification checkpoint](../simplification/phase2/README.md). That original partition retained every declaration statement and proof body. Further repairs use one typed congruence lemma and
 local irreducibility for the dominated-axiom certificate, and narrow namespace
 openings in the dispatch and seed proofs. The endpoint statements, machine,
 certificate nodes, and semantic assumptions are unchanged. All four failed

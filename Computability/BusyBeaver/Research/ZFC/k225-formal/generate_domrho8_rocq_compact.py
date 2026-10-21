@@ -8,6 +8,10 @@ used by rho8_all. No Python assertion is a premise of the exported theorem.
 
 The earlier-schema reuse optimization was developed with the parallel Lean
 reflection implementation. Both start from the same delivered certificate.
+
+The CLI replays the shared finite proof plan for the exact Source 149 input.
+Other certificates keep the greedy route unless --plan is supplied; --no-plan
+explicitly selects that route. Neither the plan nor the renderer is trusted.
 """
 from pathlib import Path
 import argparse
@@ -15,10 +19,21 @@ import hashlib
 import json
 
 ROOT = Path(__file__).resolve().parent
+ORIGINAL_SHA256 = '3cf18a5fe9f187b50b79d97b84535ce9bf776305728b0cdfe17285e94f028452'
 
 
-def render(certificate, generic_path, output, metadata=None):
-    data = json.loads(certificate.read_text())
+def render(certificate, generic_path, output, metadata=None, plan_path=None):
+    certificate_bytes = certificate.read_bytes()
+    plan_inputs = {}
+    if plan_path is not None:
+        from rho8plan.replay import replay
+        plan_bytes = plan_path.read_bytes()
+        plan_inputs = {
+            'original_certificate_sha256': hashlib.sha256(certificate_bytes).hexdigest(),
+            'proof_plan_sha256': hashlib.sha256(plan_bytes).hexdigest(),
+            'plan_replay_sha256': hashlib.sha256((ROOT / 'rho8plan/replay.py').read_bytes()).hexdigest()}
+        certificate_bytes = replay(certificate_bytes, json.loads(plan_bytes))
+    data = json.loads(certificate_bytes)
     assert data['format'] == 'term_dag_v1'
     terms, index = [], {}
 
@@ -197,7 +212,7 @@ def render(certificate, generic_path, output, metadata=None):
     generic = generic_path.read_text()
     marker = 'End Certificate.\nPrint Assumptions Certificate.check_sound.'
     assert generic.count(marker) == 1
-    certificate_sha = hashlib.sha256(certificate.read_bytes()).hexdigest()
+    certificate_sha = hashlib.sha256(certificate_bytes).hexdigest()
     lines = [f'''(** Compact replay of Source 149's dominated-rho8 certificate.
     Certificate SHA256: {certificate_sha}.
     Retained original nodes: {len(needed_nodes)}; instructions: {len(steps)};
@@ -253,7 +268,7 @@ Print Assumptions rho8_all.
         'steps': len(steps),
         'generic_sha256': hashlib.sha256(generic_path.read_bytes()).hexdigest(),
         'source_sha256': hashlib.sha256(output.read_bytes()).hexdigest(),
-        'source_bytes': output.stat().st_size}
+        'source_bytes': output.stat().st_size, **plan_inputs}
     if metadata is not None:
         metadata.write_text(json.dumps(result, indent=2) + '\n')
     return result
@@ -267,8 +282,17 @@ def main():
                         default=ROOT / 'rocqdom/DomRho8Reflection.v')
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--metadata', type=Path)
+    plans = parser.add_mutually_exclusive_group()
+    plans.add_argument('--plan', type=Path,
+                       help='Replay this finite proof plan before rendering.')
+    plans.add_argument('--no-plan', action='store_true',
+                       help='Use only the greedy earlier-schema optimization.')
     args = parser.parse_args()
-    print(json.dumps(render(args.certificate, args.generic, args.output, args.metadata)))
+    plan = args.plan
+    if (plan is None and not args.no_plan
+            and hashlib.sha256(args.certificate.read_bytes()).hexdigest() == ORIGINAL_SHA256):
+        plan = ROOT / 'rho8plan/plan.json'
+    print(json.dumps(render(args.certificate, args.generic, args.output, args.metadata, plan)))
 
 
 if __name__ == '__main__':

@@ -1,0 +1,22 @@
+{
+  "status": "PASS_SOURCE_AND_SAVED_EVIDENCE_PEER",
+  "reviewer": "opening_encoder",
+  "authorship": "Independent source review; no authorship of this RMDag refactor and no compiler invocation.",
+  "original_sha256": "1acc3a55d22db81eb03748a7b58d2492d449999516bddae75cd39d886d7099c7",
+  "final_sha256": "0778684743ad28b70dedcf13f92811f94557072bdc1d1bca6a26f6a4d2400110",
+  "all_other_source_code_unchanged": true,
+  "run_det_statement_unchanged": true,
+  "ordinary_checks": [
+    "Atomic instruction inversions are unchanged, including decPos/decZero exclusion and equal predecessor values.",
+    "All four non-normal car cases use the car induction hypothesis; normal-car competitors contradict its exit, while equal car exits align registers and determine the node exit.",
+    "The four non-restarting cdr cases first align intermediate registers using the normal-car induction hypothesis, then compare cdr exits/registers. A cdrCont1 competitor contradicts normal/brk/cont(k+2)/halt.",
+    "The restarting cdrCont1 case aligns both intermediate states before invoking the strictly smaller restarted-run induction hypothesis. Other car/cdr shapes are excluded by the corresponding exit equality.",
+    "Break and continue counters retain their original one-level consumption rules; no termination assumption or infinite-run claim is introduced.",
+    "first/rename_i select proof branches only; all branches are ordinary equality elimination, constructor disjointness and induction hypotheses."
+  ],
+  "run006_axiom_report": "[propext]",
+  "run006_record_sha256": "af6ef8ea12cf656e1869d472f6ec654a633f2ca992fade63bddffbfd7d00e3f6",
+  "run007_record_sha256": "c66d245f9e063d03a60aa9ff2c2400ad4e1e0d8e302d70195e81abaa9524ba91",
+  "run007_final_source_pass": true,
+  "findings": []
+}

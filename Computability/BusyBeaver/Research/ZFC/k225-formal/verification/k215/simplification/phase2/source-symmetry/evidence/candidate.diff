@@ -1,0 +1,283 @@
+--- Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMOffsetBisim.lean
++++ /tmp/k215-offset-symmetry/candidate/lean/RMOffsetBisim.lean
+@@ -16,7 +16,8 @@
+ This is the counterpart of `OffsetBisim230.v` in Source 123 of the ZFC
+ closure-kernels host (`K226_ZFC_Construction`, the K226F Rocq extension of Elliot
+ Glazer's k230-rocq), developed independently on top of `RMBisim`; as there, the
+-two directions are separate checks (`omirror` negates the offsets).
++semantic relation is symmetric: swapping the sites and negating offsets gives
++the converse, so one checked certificate establishes halting equivalence.
+ -/
+ 
+ namespace SetTheory.BusyBeaver.ZFC.RMOffsetBisim
+@@ -26,6 +27,10 @@
+ 
+ /-- The offset carried by register `i`. -/
+ def delta (z : Int) (i : Nat) : Int := if i = 5 then z else 0
++
++@[simp] theorem delta_neg (z : Int) (i : Nat) : delta (-z) i = -delta z i := by
++  unfold delta
++  split <;> simp
+ 
+ /-- Register files related by offset `z`. -/
+ def Related (z : Int) (R1 R2 : Registers) : Prop := ∀ i, (R1 i : Int) = R2 i + delta z i
+@@ -55,6 +60,31 @@
+ structure OBisim (t1 t2 : Tree) (S : List Bool → List Bool → Int → Prop) : Prop where
+   start : OBranchGood t1 t2 S [] [] 0
+   step : ∀ P1 P2 z, S P1 P2 z → OEntryGood t1 t2 S P1 P2 z
++
++/-- Reverse both program sites and the register offset. -/
++theorem OBranchGood.symm {t1 t2 : Tree} {S : List Bool → List Bool → Int → Prop}
++    {A B : List Bool} {z : Int} (h : OBranchGood t1 t2 S A B z) :
++    OBranchGood t2 t1 (fun P2 P1 z => S P1 P2 (-z)) B A (-z) := by
++  obtain ⟨l1, P1, l2, P2, z', h1, h2, hc, hS⟩ := h
++  refine ⟨l2, P2, l1, P1, -z', h2, h1, fun i => ?_, ?_⟩
++  · have := hc i
++    simp only [delta_neg]
++    omega
++  · simpa only [Int.neg_neg] using hS
++
++/-- Offset segment bisimulation is symmetric; one certificate proves both directions. -/
++theorem OBisim.symm {t1 t2 : Tree} {S : List Bool → List Bool → Int → Prop}
++    (h : OBisim t1 t2 S) : OBisim t2 t1 (fun P2 P1 z => S P1 P2 (-z)) := by
++  refine ⟨?_, ?_⟩
++  · simpa using h.start.symm
++  · intro P2 P1 z hS
++    rcases h.step P1 P2 (-z) hS with ⟨Q1, Q2, h1, h2⟩ | ⟨r, Q1, Q2, h1, h2, hz, hj, hk⟩
++    · exact Or.inl ⟨Q2, Q1, h2, h1⟩
++    · refine Or.inr ⟨r, Q2, Q1, h2, h1, ?_, ?_, ?_⟩
++      · simp only [delta_neg] at hz
++        omega
++      · simpa only [Int.neg_neg] using hj.symm
++      · simpa only [Int.neg_neg] using hk.symm
+ 
+ section Sound
+ 
+@@ -253,4 +283,11 @@
+     Halts p1 ⟨[], R⟩ → Halts p2 ⟨[], R⟩ :=
+   (ocheck_bisim hs ha).halts R
+ 
++/-- A single checked offset certificate gives halting equivalence for every register file. -/
++theorem ocheck_halts_iff {p1 p2 : Program} {T : OTree}
++    (hs : obranchOk (ptree p1) (ptree p2) T [] [] 0 0 = true)
++    (ha : allO (oentryOk (ptree p1) (ptree p2) T) T = true) (R : Registers) :
++    Halts p1 ⟨[], R⟩ ↔ Halts p2 ⟨[], R⟩ :=
++  ⟨(ocheck_bisim hs ha).halts R, (ocheck_bisim hs ha).symm.halts R⟩
++
+ end SetTheory.BusyBeaver.ZFC.RMOffsetBisim
+--- Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215.lean
++++ /tmp/k215-offset-symmetry/candidate/lean/KSource215.lean
+@@ -15,22 +15,6 @@
+ import BusyBeaver.ZFC.KSource215FwdCheck13
+ import BusyBeaver.ZFC.KSource215FwdCheck14
+ import BusyBeaver.ZFC.KSource215FwdCheck15
+-import BusyBeaver.ZFC.KSource215BwdCheck00
+-import BusyBeaver.ZFC.KSource215BwdCheck01
+-import BusyBeaver.ZFC.KSource215BwdCheck02
+-import BusyBeaver.ZFC.KSource215BwdCheck03
+-import BusyBeaver.ZFC.KSource215BwdCheck04
+-import BusyBeaver.ZFC.KSource215BwdCheck05
+-import BusyBeaver.ZFC.KSource215BwdCheck06
+-import BusyBeaver.ZFC.KSource215BwdCheck07
+-import BusyBeaver.ZFC.KSource215BwdCheck08
+-import BusyBeaver.ZFC.KSource215BwdCheck09
+-import BusyBeaver.ZFC.KSource215BwdCheck10
+-import BusyBeaver.ZFC.KSource215BwdCheck11
+-import BusyBeaver.ZFC.KSource215BwdCheck12
+-import BusyBeaver.ZFC.KSource215BwdCheck13
+-import BusyBeaver.ZFC.KSource215BwdCheck14
+-import BusyBeaver.ZFC.KSource215BwdCheck15
+ 
+ namespace SetTheory.BusyBeaver.ZFC.KSource215
+ 
+@@ -44,27 +28,16 @@
+   unfold fwdCert
+   simp only [allO, fwd_ok0, fwd_ok1, fwd_ok2, fwd_ok3, fwd_ok4, fwd_ok5, fwd_ok6, fwd_ok7, fwd_ok8, fwd_ok9, fwd_ok10, fwd_ok11, fwd_ok12, fwd_ok13, fwd_ok14, fwd_ok15, Bool.and_self]
+ 
+-theorem bwd_start : obranchOk tD t215 bwdCert [] [] 0 0 = true := by decide +kernel
+-
+-theorem bwd_all : allO bwdF bwdCert = true := by
+-  unfold bwdCert
+-  simp only [allO, bwd_ok0, bwd_ok1, bwd_ok2, bwd_ok3, bwd_ok4, bwd_ok5, bwd_ok6, bwd_ok7, bwd_ok8, bwd_ok9, bwd_ok10, bwd_ok11, bwd_ok12, bwd_ok13, bwd_ok14, bwd_ok15, Bool.and_self]
+-
+ theorem fwd_start' : obranchOk (ptree p215) (ptree pathDagPerm) fwdCert [] [] 0 0 = true := by
+   rw [t215_eq, tD_eq]; exact fwd_start
+ 
+ theorem fwd_all' : allO (oentryOk (ptree p215) (ptree pathDagPerm) fwdCert) fwdCert = true := by
+   rw [t215_eq, tD_eq]; exact fwd_all
+ 
+-theorem bwd_start' : obranchOk (ptree pathDagPerm) (ptree p215) bwdCert [] [] 0 0 = true := by
+-  rw [t215_eq, tD_eq]; exact bwd_start
+ 
+-theorem bwd_all' : allO (oentryOk (ptree pathDagPerm) (ptree p215) bwdCert) bwdCert = true := by
+-  rw [t215_eq, tD_eq]; exact bwd_all
+-
+-/-- **The 219's source and dagPerm halt alike**, from every register file. -/
++/-- **The 215's source and dagPerm halt alike**, from every register file. -/
+ theorem p215_halts_iff (R : Registers) : Halts p215 ⟨[], R⟩ ↔ Halts pathDagPerm ⟨[], R⟩ :=
+-  ⟨ocheck_halts fwd_start' fwd_all' R, ocheck_halts bwd_start' bwd_all' R⟩
++  ocheck_halts_iff fwd_start' fwd_all' R
+ 
+ #print axioms p215_halts_iff
+ 
+--- Computability/BusyBeaver/Research/ZFC/k225-formal/generate_source215_lean.py
++++ /tmp/k215-offset-symmetry/candidate/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_source215_lean.py
+@@ -1,14 +1,14 @@
+ """Generate BusyBeaver/ZFC/KSource215.lean: the 215's source program and dagPerm halt alike.
+ 
+-`p215` is the 215's rotated 4,744-leaf source (candidate-k215/sites215.json), hash-consed
++`p215` is the 215's rotated 4,751-leaf source (candidate-k215/sites215.json), hash-consed
+ as in Source 123's `source_data.program_text`. The other side is `dagPerm` itself, read as a path
+ program (`RMEquiv.ofDag dagPerm 467`); its well-formedness tables (heights, break and continue
+ bounds) are computed here and re-checked by the kernel, as in `generate_rmequiv254.py`. The
+-offset certificate comes from `gen_cert.py` (2,237 entries, none offset). Everything emitted
++offset certificate comes from `gen_cert.py` (2,240 entries, none offset). Everything emitted
+ is untrusted; the kernel re-checks it in chunks. dagPerm is written by make_dagPerm.py.
+ 
+ Usage (from the repository root):
+-    python Computability/BusyBeaver/Research/ZFC/k225-formal/generate_source215_lean.py DAG219_NODES_JSON DAG219_SITES_JSON"""
++    python Computability/BusyBeaver/Research/ZFC/k225-formal/generate_source215_lean.py DAGPERM_NODES_JSON DAGPERM_SITES_JSON"""
+ import json, sys
+ from functools import lru_cache
+ from pathlib import Path
+@@ -71,7 +71,6 @@
+     n1, r1 = dag(L1)
+     n2, r2 = dag(L2)
+     entries = generate(Tree(L1), Tree(L2))
+-    mirror = [(b, a, -z, j, k) for a, b, z, j, k in entries]
+     nz = sum(1 for e in entries if e[2] != 0)
+     out = f"""import BusyBeaver.ZFC.RMOffsetBisim
+ import BusyBeaver.ZFC.RMEquiv
+@@ -86,7 +85,7 @@
+ `dagPerm` differ by closed reassociations, the AX node's chain layout and the equality test's
+ layout, so an offset segment bisimulation relates them: {len(entries)} pairs of register-test
+ sites, {nz} of them offset. The certificate is from `k225-formal/gen_cert.py` and is checked here
+-in chunks, with its mirror for the converse.
++once in chunks; generic offset-bisimulation symmetry supplies the converse.
+ 
+ `p215_halts_iff` and `path_iff_iter` relate the source to `dagPerm` iterated; the program layer
+ (`L2Perm.dagPerm_seed_iff`) is composed with them in `KEndpoint215`, so this module depends on the program
+@@ -122,15 +121,14 @@
+     Halts pathDagPerm ⟨[], R⟩ ↔ RMDag.IterHalts DagPerm.dagPerm R :=
+   RMEquiv.halts_iff_iterHalts wf222 R
+ 
+-/-! ## The 219's source -/
++/-! ## The 215's source -/
+ 
+ """
+-    out += program("p215", n1, r1, f"The 219's source as a {len(n1)}-node DAG (root {r1}).") + "\n"
+-    out += "/-- The 219's decoder tree, written out. -/\ndef t215 : Tree :=\n  " + literal_tree(n1, r1) + "\n\n"
++    out += program("p215", n1, r1, f"The 215's source as a {len(n1)}-node DAG (root {r1}).") + "\n"
++    out += "/-- The 215's decoder tree, written out. -/\ndef t215 : Tree :=\n  " + literal_tree(n1, r1) + "\n\n"
+     out += "/-- dagPerm's decoder tree, written out. -/\ndef tD : Tree :=\n  " + literal_tree(n2, r2) + "\n\n"
+     out += "theorem t215_eq : ptree p215 = t215 := by rfl\n\ntheorem tD_eq : ptree pathDagPerm = tD := by rfl\n\n"
+-    out += "/-! ## Forward certificate (219 → dagPerm) -/\n\n" + cert_block("fwd", entries, "t215", "tD")
+-    out += "\n/-! ## Mirrored certificate (dagPerm → 219) -/\n\n" + cert_block("bwd", mirror, "tD", "t215")
++    out += "/-! ## Forward certificate (215 → dagPerm) -/\n\n" + cert_block("fwd", entries, "t215", "tD")
+     out += """
+ theorem fwd_start' : obranchOk (ptree p215) (ptree pathDagPerm) fwdCert [] [] 0 0 = true := by
+   rw [t215_eq, tD_eq]; exact fwd_start
+@@ -138,15 +136,10 @@
+ theorem fwd_all' : allO (oentryOk (ptree p215) (ptree pathDagPerm) fwdCert) fwdCert = true := by
+   rw [t215_eq, tD_eq]; exact fwd_all
+ 
+-theorem bwd_start' : obranchOk (ptree pathDagPerm) (ptree p215) bwdCert [] [] 0 0 = true := by
+-  rw [t215_eq, tD_eq]; exact bwd_start
+ 
+-theorem bwd_all' : allO (oentryOk (ptree pathDagPerm) (ptree p215) bwdCert) bwdCert = true := by
+-  rw [t215_eq, tD_eq]; exact bwd_all
+-
+-/-- **The 219's source and dagPerm halt alike**, from every register file. -/
++/-- **The 215's source and dagPerm halt alike**, from every register file. -/
+ theorem p215_halts_iff (R : Registers) : Halts p215 ⟨[], R⟩ ↔ Halts pathDagPerm ⟨[], R⟩ :=
+-  ⟨ocheck_halts fwd_start' fwd_all' R, ocheck_halts bwd_start' bwd_all' R⟩
++  ocheck_halts_iff fwd_start' fwd_all' R
+ 
+ #print axioms p215_halts_iff
+ 
+--- Computability/BusyBeaver/Research/ZFC/k225-formal/partition_source215_lean.py
++++ /tmp/k215-offset-symmetry/candidate/Computability/BusyBeaver/Research/ZFC/k225-formal/partition_source215_lean.py
+@@ -1,4 +1,4 @@
+-"""Partition KSource215 into data, individual kernel checks, and its unchanged facade.
++"""Partition KSource215 into data, individual kernel checks, and its facade.
+ 
+ Only module boundaries change. The transformer checks that every original declaration
+ statement and proof body is preserved. Generated data is still checked by Lean's kernel.
+@@ -14,18 +14,18 @@
+     header=f'namespace {namespace}\n\nopen RegisterPath RMBisim RMOffsetBisim\nset_option maxRecDepth 65536\nset_option maxHeartbeats 8000000\n\n'
+     end=f'\nend {namespace}\n'
+     assert s.count('namespace '+namespace)==1 and s.rstrip().endswith('end '+namespace)
+-    fw=s.index('theorem fwd_start :');mirror=s.index('/-! ## Mirrored certificate');bw=s.index('theorem bwd_start :')
+-    common=s[:fw]+s[mirror:bw]+end
++    fw=s.index('theorem fwd_start :')
++    common=s[:fw]+end
+     files={'KSource215Data.lean':common};mapping=[];order=['KSource215Data']
+-    for direction in ['fwd','bwd']:
++    for direction in ['fwd']:
+      for i in range(16):
+       name=f'{direction}_ok{i}';pat=rf'(?m)^theorem {name} : [^\n]+\n';matches=list(re.finditer(pat,s));assert len(matches)==1
+       decl=matches[0][0];assert decl.endswith(' := by decide +kernel\n')
+       module=f'KSource215{direction.title()}Check{i:02d}'
+       files[module+'.lean']='import BusyBeaver.ZFC.KSource215Data\n\n'+header+decl+end
+       order.append(module);mapping.append({'declaration':name,'module':module,'original_line':s[:matches[0].start()].count('\n')+1,'declaration_sha256':hashlib.sha256(decl.encode()).hexdigest()})
+-    facade=s[fw:mirror]+s[bw:]
+-    for direction in ['fwd','bwd']:
++    facade=s[fw:]
++    for direction in ['fwd']:
+      facade,n=re.subn(rf'(?m)^theorem {direction}_ok\d+ : [^\n]+\n\n?', '',facade);assert n==16
+     files['KSource215.lean']='\n'.join('import BusyBeaver.ZFC.'+n for n in order)+'\n\n'+header+facade
+     order.append('KSource215')
+@@ -51,7 +51,7 @@
+     for name,text in files.items():
+      for decl,body in declarations(text).items():assert decl not in after,(name,decl);after[decl]=body
+     assert before==after,(set(before)^set(after),[k for k in before.keys()&after.keys()if before[k]!=after[k]])
+-    assert len(mapping)==32 and len(order)==34
++    assert len(mapping)==16 and len(order)==18
+     return files
+ 
+ 
+--- Computability/BusyBeaver/Research/ZFC/k225-formal/prepare_k215.py
++++ /tmp/k215-offset-symmetry/candidate/Computability/BusyBeaver/Research/ZFC/k225-formal/prepare_k215.py
+@@ -10,9 +10,11 @@
+ 
+ 1. `lean215/k215_k230labels.tm` (native table, halt 254 -> 230, new states 301, 302 -> the
+    freed labels 102, 120, as for the 219) and `lean215/labels.json` (dense -> sparse);
+-2. `generate_boot215_lean.py`, `generate_source215_lean.py` (p215 against dagPerm),
+-   `generate_sites215_lean.py` and `generate_dense215_lean.py`, by checked substitutions in the
+-   221/219 generators.
++2. `generate_boot215_lean.py`, `generate_sites215_lean.py` and
++   `generate_dense215_lean.py`, by checked substitutions in the 221/219 generators.
++
++The forward-only `generate_source215_lean.py` is maintained directly; the generic
++offset-bisimulation symmetry theorem supplies its reverse implication.
+ """
+ import json
+ from pathlib import Path
+@@ -73,27 +75,6 @@
+     ("221", "215"),
+ ])
+ 
+-derive("generate_source219_lean.py", "generate_source215_lean.py", [
+-    ('"Computability/BusyBeaver/Research/ZFC/candidate-k219/sites219.json"',
+-     '"Computability/BusyBeaver/Research/ZFC/candidate-k215/sites215.json"'),
+-    ("candidate-k219/sites219.json", "candidate-k215/sites215.json"),
+-    ("SITES219", "SITES215"),
+-    ("import BusyBeaver.ZFC.Dag219", "import BusyBeaver.ZFC.DagPerm"),
+-    ("Dag219.dag219", "DagPerm.dagPerm"),
+-    ("pathDag219", "pathDagPerm"),
+-    ("dag219", "dagPerm"),
+-    ("Dag219.seed_iff", "L2Perm.dagPerm_seed_iff"),
+-    ("KSource219", "KSource215"),
+-    ("KEndpoint219", "KEndpoint215"),
+-    ("the 219-state machine", "the 215-state machine"),
+-    ("p219", "p215"),
+-    ("t219", "t215"),
+-    ("the 219's", "the 215's"),
+-    ("generate_source219_lean.py", "generate_source215_lean.py"),
+-    ('from generate_source225_lean import dag, program, literal_tree, cert_block  # noqa: E402', 'from generate_source225_lean import dag, program, literal_tree, cert_block  # noqa: E402\nfrom partition_source215_lean import write_partition  # noqa: E402'),
+-    ('TARGET.write_text(out, encoding="utf-8", newline="\\n")', 'write_partition(TARGET, out)'),
+-])
+-
+ derive("generate_sites221_lean.py", "generate_sites215_lean.py", [
+     ('HERE.parent / "candidate-k221" / "sites_logical.json"', 'HERE.parent / "candidate-k215" / "sites215.json"'),
+     ("221", "215"),

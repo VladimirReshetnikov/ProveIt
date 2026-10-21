@@ -1,0 +1,54 @@
+--- generate_domrho8_lean.674.py
++++ generate_domrho8_lean.629.py
+@@ -1,7 +1,10 @@
+ #!/usr/bin/env python3
+ """Generate DomRho8.lean: dominated rho8 instances derive every rho8 instance.
+ 
+-  python generate_domrho8_lean.py CERTIFICATE_JSON OUT_LEAN
++  python generate_domrho8_lean.py CERTIFICATE_JSON OUT_LEAN [--plan PLAN | --no-plan]
++
++For the exact Source149 input, the maintained rho8plan is replayed by default, without a
++solver. Other inputs retain greedy pruning; --no-plan also selects that generic route.
+ 
+ The certificate is Source 149's `theory/dominated_rho8_full_certificate.json` (term_dag_v1:
+ a shared term table over implication, truth and variables, and 3,728 proof nodes whose rules
+@@ -14,11 +17,35 @@
+ proof `u ≤ a` that its fourth argument is a literal subterm of its first (or truth), using
+ only that implication codes dominate both inputs.
+ """
++import argparse
++import hashlib
++import importlib.util
+ import json
+-import sys
+-
+-src, out = sys.argv[1], sys.argv[2]
+-d = json.load(open(src))
++from pathlib import Path
++
++parser = argparse.ArgumentParser(description=__doc__)
++parser.add_argument("certificate", type=Path)
++parser.add_argument("output", type=Path)
++options = parser.add_mutually_exclusive_group()
++options.add_argument("--plan", type=Path, help="use an explicit original-node plan")
++options.add_argument("--no-plan", action="store_true", help="use only greedy schema pruning")
++args = parser.parse_args()
++src, out = args.certificate, args.output
++raw = src.read_bytes()
++original149 = "3cf18a5fe9f187b50b79d97b84535ce9bf776305728b0cdfe17285e94f028452"
++if args.plan or (not args.no_plan and hashlib.sha256(raw).hexdigest() == original149):
++    # The shared replay validates its input hash, substitutions and acyclic order.
++    # Its output remains untrusted: the direct proofs below are checked by Lean.
++    directory = Path(__file__).resolve().with_name("rho8plan")
++    plan_path = args.plan or directory / "plan.json"
++    spec = importlib.util.spec_from_file_location("rho8_plan", directory / "replay.py")
++    replay = importlib.util.module_from_spec(spec)
++    spec.loader.exec_module(replay)
++    d = json.loads(replay.replay(raw, json.loads(plan_path.read_text())))
++    print("replayed original-node plan:", len(d["nodes"]), "proof nodes")
++else:
++    # Other term_dag_v1 inputs retain the generic, solver-free rendering interface.
++    d = json.loads(raw)
+ assert d["format"] == "term_dag_v1"
+ T, N = d["term_table"], d["nodes"]
+ 

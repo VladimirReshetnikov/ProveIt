@@ -1,0 +1,77 @@
+{
+  "status": "PASS",
+  "input_pins": {
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/lean217/dominated_rho8_full_certificate.json": "3cf18a5fe9f187b50b79d97b84535ce9bf776305728b0cdfe17285e94f028452",
+    "/tmp/k215-domrho8-global629/adoption/generate_domrho8_lean.py": "2f864fed2dbda4aa1571f3b0338adea2898dd6683807b444ab014c12768b2278",
+    "/tmp/k215-domrho8-global629/adoption/rho8plan/plan.json": "e89edabf20ad34f93e154929ee8c681cdfa16daf3a040de4eb8fc28ebda3adaf",
+    "/tmp/k215-domrho8-global629/adoption/rho8plan/replay.py": "3813fbf80f2362456b72994caf6f143c0199620b8aed54e1c7dbb75cdfe4b52d"
+  },
+  "generator_sha256": "2f864fed2dbda4aa1571f3b0338adea2898dd6683807b444ab014c12768b2278",
+  "source_sha256": "87f7f42765fbba7fa762e2516e115cffe64d19db17213487f5705e1b38c4959c",
+  "kernel_source_prefix_exact": true,
+  "kernel_record_sha256": "7f3ad41356a83d5d5a97524800f4766b2fb0f0e606fce5b65072df404dc38fbe",
+  "api_sha256": "d3a9a18ca15528a966cb3d600368e7ccac8429e032f7b46b6a9c3887ee60cc42",
+  "inputs_unchanged": true,
+  "cases": [
+    {
+      "case": "default",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/k215-domrho8-global629/adoption/generate_domrho8_lean.py",
+        "/tmp/k215-domrho8-global629/adoption/original-certificate.json",
+        "/tmp/k215-domrho8-global629/adoption/default.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 0.2133033089339733,
+      "output_sha256": "87f7f42765fbba7fa762e2516e115cffe64d19db17213487f5705e1b38c4959c",
+      "exact_expected_bytes": true
+    },
+    {
+      "case": "generic",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/k215-domrho8-global629/adoption/generate_domrho8_lean.py",
+        "/tmp/k215-domrho8-global629/certificate.json",
+        "/tmp/k215-domrho8-global629/adoption/generic.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 0.18080849666148424,
+      "output_sha256": "87f7f42765fbba7fa762e2516e115cffe64d19db17213487f5705e1b38c4959c",
+      "exact_expected_bytes": true
+    },
+    {
+      "case": "no-plan",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/k215-domrho8-global629/adoption/generate_domrho8_lean.py",
+        "/tmp/k215-domrho8-global629/adoption/original-certificate.json",
+        "/tmp/k215-domrho8-global629/adoption/no-plan.lean",
+        "--no-plan"
+      ],
+      "exit_code": 0,
+      "seconds": 0.46215866785496473,
+      "output_sha256": "92b8ec86d4fd038755800e785a2178dd1c995267fa75d2828a55ec4e86d9c5a6",
+      "exact_expected_bytes": true
+    },
+    {
+      "case": "explicit",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/k215-domrho8-global629/adoption/generate_domrho8_lean.py",
+        "/tmp/k215-domrho8-global629/adoption/original-certificate.json",
+        "/tmp/k215-domrho8-global629/adoption/explicit.lean",
+        "--plan",
+        "/tmp/k215-domrho8-global629/adoption/rho8plan/plan.json"
+      ],
+      "exit_code": 0,
+      "seconds": 0.21164458710700274,
+      "output_sha256": "87f7f42765fbba7fa762e2516e115cffe64d19db17213487f5705e1b38c4959c",
+      "exact_expected_bytes": true
+    }
+  ],
+  "scope": "Generator-only replay/compatibility controls; the exact output plus API clients was kernel checked in run1. No solver or additional compiler invocation."
+}
