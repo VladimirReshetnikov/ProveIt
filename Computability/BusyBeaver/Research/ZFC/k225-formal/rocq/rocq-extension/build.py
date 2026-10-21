@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Cleanly compile and kernel-check the isolated 221/225/226/227/229-state extensions.
+"""Cleanly compile and kernel-check the isolated 218/221/225/226/227/229-state extensions.
 
 First run the pinned K230 reference build. This script verifies its source
 copies, reuses those compiled dependencies, and freshly compiles every selected
@@ -199,7 +199,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--reference", type=Path, default=ROOT.parent / "vendor/k230-rocq")
     parser.add_argument("--jeff-reference", type=Path, default=ROOT.parent / "vendor/jeff-reference")
-    parser.add_argument("--states", type=int, choices=(221, 225, 226, 227, 229), default=221)
+    parser.add_argument("--states", type=int, choices=(218, 221, 225, 226, 227, 229), default=218)
     parser.add_argument("--all", action="store_true", help="Check all three closed endpoints.")
     parser.add_argument("--coqc", default=os.environ.get("COQC") or shutil.which("coqc"))
     parser.add_argument("--check-only", action="store_true", help="Check pinned bytes and literal data without Rocq.")
