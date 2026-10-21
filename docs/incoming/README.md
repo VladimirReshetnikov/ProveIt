@@ -12,9 +12,9 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
-## Queue status after batch 200
+## Queue status after batch 201
 
-Batch 200 received twelve archives and, at Vladimir's direction, kept only the
+Batch 201 received twelve archives and, at Vladimir's direction, kept only the
 materially distinct 215-state implementations. Every incoming table was put in
 rooted breadth-first canonical form and compared with the repository's tables
 and with each other. A machine was kept only if it is not a state renaming of
@@ -43,6 +43,11 @@ from the arrival commit.
 No numbered Sources were added and no write report was made: the placed
 machines carry their delivered proofs and are not yet independently checked.
 The queue is clear. The active target remains **214 or fewer states**.
+
+Batch 200 is the earlier placement `fc750e0e30` of Sources 165–166
+(`zfc214-investigation-2026-10-21.zip`, `Transfer_Compiler_201_Nodes_214_Target_Unmet_2026-10-21.zip`)
+in zfc-closure-kernels; its write is still to come. This batch's placement
+commit `0c8ee615db` calls itself batch 200 in error.
 
 ## Queue status after batch 199
 

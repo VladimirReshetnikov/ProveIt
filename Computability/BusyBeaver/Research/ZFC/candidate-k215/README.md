@@ -91,6 +91,6 @@ passes, and an exact state bijection transfers that result to the second
 submitted presentation. The new logical interfaces in batch199 remain
 research toward214; they have not changed the current accepted state count.
 
-Batch 200 placed five more materially distinct 215-state machines, as
+Batch 201 placed five more materially distinct 215-state machines, as
 delivered and not yet independently checked. The
-[alternatives index](alternatives/README.md) lists all seven alternatives.
+[alternatives index](alternatives/README.md) lists all nine alternatives, including two placed as Sources 165–166.
