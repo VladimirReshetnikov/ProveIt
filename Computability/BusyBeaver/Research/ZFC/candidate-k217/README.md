@@ -87,3 +87,9 @@ The later [exposed-marker presentation](presentations/exposed-marker/README.md)
 from `673c87a878` has the identical source and the same 434-row machine under
 `188→213→210→188`. Its saving cannot stack; its separate fixed-label theory
 appendix remains source-only research.
+
+Batch 203 placed a different working 217-state machine, the corrected
+constant-bias/stride-two construction of the
+[feedback-scheduling packet](alternatives/feedback-stride2/INTAKE.md), as
+delivered and not yet independently checked. It does not change the state
+count.

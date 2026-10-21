@@ -299,4 +299,3 @@ theorem clear {n r : Nat} (hn : p.nodes n = (.decnz r, .cont 1)) :
       rw [ih _ (by simp), upd_upd]
 
 end SetTheory.BusyBeaver.ZFC.RMDag
-

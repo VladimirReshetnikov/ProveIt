@@ -1,0 +1,34 @@
+\section{Construction and comparison baseline}
+The inspected repository snapshot is \texttt{f5b2db607f8}, including batch 200, commit \texttt{0c8ee615db0}. That batch explicitly distinguishes materially different command languages, enumeration, spare representations, and startup calibrations from mere state renamings, source reassociations, or speed-ups. We use that stricter screen here.
+
+The parent is the MP-first transfer implementation published in the \emph{T215 Transfer} packet. Its source is preserved exactly: 4,775 primitive occurrences, 201 distinct source subtrees, maximum source depth 44, and maximum zero run 6. The only physical row change is
+\[
+\text{native state 198 on symbol 0:}\qquad 1L40\ \longmapsto\ 0L40.
+\]
+The initial state is changed from native 0 to native 74. The new table still has 215 working states and 430 transitions. The designated native dispatcher is 84 and the halt label is 254. A supplied bijection puts the machine in dense form with initial 0, working labels 0 through 214, and halt 215.
+
+In the runtime representation, a spare value $n$ occupies the unary block $B(n)=01^{n+1}$. Every source increment now appends $B(0)=01$ rather than $B(1)=011$. Arbitrary finite nonempty lists of natural spare values are allowed in the simulation invariant. The one changed write is therefore a change to the runtime storage mechanism, not just a transient bootstrap adjustment.
+
+Relative to the previously delivered zero-spare transfer machine, MP and S exchange command tags. That changes both the physical dispatch graph and the candidate words being enumerated. In particular the old zero-spare transfer proof needed conservative credit 3, whereas this source needs credit 1. Relative to the unit-spare MP-first machine, spare allocation and blank initialization both change. The new composition is not presented as the invention of either constituent technique.
+
+\subsection{Exact file identities}
+The native table is identified by SHA-256
+\begin{quote}\small\path{0f201336eda34691f2892c217431bdd2524e813d805645cb0b4a23e58168f7d9}.\end{quote}
+The dense table is identified by
+\begin{quote}\small\path{7207d21fad2859064dd145511ebd28866bd227ef54ec6ed6e1b0c3960b452a86}.\end{quote}
+The unchanged source is identified by
+\begin{quote}\small\path{8ddb942f0f1d8e2e3b12ab7217c7232eb553cd288fca38dbf9b0eded73893dd5}.\end{quote}
+The manifest and construction recipe bind the source, both tables, the map between labels, and all evidence. Hashes identify artifacts; they do not replace the mathematical arguments.
+
+\subsection{The complete blank-tape connection}
+Literal native/dense lockstep execution reaches dispatcher 84 after exactly 73,172 transitions, at head coordinate $-2$, with gap 0 and source address
+\[
+\texttt{11010011000110110110}\qquad\text{(ordinal 119).}
+\]
+In logical register order $(N,T,W,A,D,H,X,Y,L)$, the frame has values
+\[
+(0,6,0,0,1,1,10,1,0).
+\]
+Its 65 spare blocks are all 0 except the third, which is 1. Its complete tape has 107 one-cells. The audit reconstructs \emph{every} primary and spare block, the source-address region, header, and zero exterior; finding dispatcher 84 alone would not establish a valid source frame.
+
+A separate source-control-flow replay starts at AX entry ordinal 25 with values $(0,0,0,0,1,1,0,0,0)$. After 177 primitive steps it reaches exactly ordinal 119 and the register vector above. This identifies the physical initialization as a genuine interior AX computation. It does not assert that cache 1 is a theorem, nor that the address is the source root. The remaining all-natural AX suffix is handled by the source theorem and full physical simulation.

@@ -1,0 +1,52 @@
+{
+  "status": "PASS_SOURCE_REVIEW_PENDING_PHASE3_KERNEL",
+  "reviewer": "drop_contract",
+  "origin": "c9dc79323429112c698100f3226a6e4d56c8b782",
+  "commits": [
+    "e29d22cfe6d5dad5ba24a71381b276478391ab40",
+    "c9dc79323429112c698100f3226a6e4d56c8b782"
+  ],
+  "files": [
+    {
+      "target": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2AxiomsPerm.lean",
+      "source": "/tmp/k215-upstream-l1-successor/upstream/L2AxiomsPerm.lean",
+      "sha256": "2ba0ed921752a8c6a51792d64458caeccc6b6e77037328c94d4db03f07f4dd72",
+      "bytes": 7563,
+      "lines": 161
+    },
+    {
+      "target": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2RootPerm.lean",
+      "source": "/tmp/k215-upstream-l1-successor/upstream/L2RootPerm.lean",
+      "sha256": "5bb690d1991cfea88fc3f529c08ce9e4a5bdf58e6d601b785274951d3e54ccfa",
+      "bytes": 8651,
+      "lines": 179
+    },
+    {
+      "target": "Computability/BusyBeaver/Research/ZFC/k225-formal/generate_l2axiomsdom.py",
+      "source": "/tmp/k215-upstream-l1-successor/upstream/generate_l2axiomsdom.py",
+      "sha256": "300789aaa1fb71e6a0724dc05afd46b0e69a2df97c52ec80b1ae8c44b8c3553b",
+      "bytes": 20223,
+      "lines": 487
+    }
+  ],
+  "integrated_enum_sha256": "caf5fe9e486f3807b4f6521cce6e623976719500940c4b0c45adf247f45fd7be",
+  "findings": [],
+  "source_review": [
+    "All13 AX effects are unchanged record updates, factored through pushA/popA; every direct run proof cites the corresponding existing L2Perm macro contract.",
+    "The156-atom word and literal457\u2013460 gate remain exact. f236,l236,c236,ax_eval statements and generic word composition remain unchanged.",
+    "Cleanliness is preserved because atom effects and gate do not alter the two scratch registers.",
+    "dec_brk uses the existing positive decrement and brk_cdr; pass consumes the inner break through skip and reintroduces the outer break; fall uses the zero decrement before the body.",
+    "DROP/MP/AX compose those level contracts at selectors1/2/3+c; all preexisting Root declaration statements are unchanged.",
+    "The integrated Enum preserves exact upstream decode/cstep/toW/fetch/enumStep/run/gate/axStack definitions and is compatible with the new consumers.",
+    "Removed wrappers and the changed argument order of AXAtom.run have no external production consumers in the four proof roots searched.",
+    "Generator input validation and Dom-mode active AST remain unchanged; independent literal-template substitution reconstructs the new Perm file exactly without executing the generator."
+  ],
+  "static_result_sha256": "a66e0a405acac542b6ce18346546349478006f1f02b504046d94339a2dfac920",
+  "compiler_invoked": false,
+  "supplied_generator_executed": false,
+  "canonical_mutations_by_reviewer": false,
+  "current_source_observation": "Root adopted the exact three reviewed blobs while this read-only review completed. No new actual kernel claim is made here.",
+  "historical_boundary": "Earlier five-module/three-client PASS in upstream-l1 applies to prior AX/Root bytes. It remains unchanged. The final phase3 closure will check this successor.",
+  "minor_provenance_note": "c9dc commit prose states198\u2192172 lines; exact stored Root blob is179 lines. The actual reduction across AX and Root is81 lines.",
+  "own_history": "One statement-extractor attempt included a comment after equation-style axWordEval; corrected before the successful static check. No proof-source or compiler failure."
+}

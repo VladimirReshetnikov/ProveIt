@@ -1,0 +1,117 @@
+% Include-only section; requires amsmath, amssymb.
+\section{Consecutive successful codes for an abstract biased parser}
+\label{sec:biased-parser-synchronization}
+
+This section proves an arithmetic completeness tool for a possible future
+encoding.  It is not a description of the archived scratch-biased table,
+whose source continuation is incorrect, and it is not needed to calibrate
+ST215, whose candidate counter advances normally by one.  In particular,
+no additional physical state bound or implementation claim follows here.
+
+Let $P$ be Cantor pairing and $f$ its right projection.  Consider an
+abstract parser with a bit $b\in\{0,1\}$, set to zero after S and to one
+after MP or AX.  At a positive continuation pointer $L$, it decodes the
+first field from $L-1+b$ and reads all further command fields by ordinary
+right projection.  A fresh candidate is decoded without bias.  Use
+\[
+\begin{split}
+ \operatorname{fields}(\mathsf S)&=[0],\\
+ \operatorname{fields}(\mathsf{MP}(x))&=[1,x],\\
+ \operatorname{fields}(\mathsf{AX}(c;x,y))&=[c+2,y,x].
+\end{split}
+\]
+The retained arithmetic store may be arbitrary and need not be determined
+by the pointer or bias.  Assume fresh-candidate numbers increase by either
+one or two; the choice of increment may depend on the entire prior run.
+
+\paragraph{A consecutive synchronization pair.}
+For any $r>0$, put
+\[
+ a=P(2,P(1,P(0,r))),\qquad z=P(1,a),\qquad n=P(1,z).
+\]
+Fresh candidate $n$ parses
+\[
+                  \mathsf{MP}(1);\mathsf{AX}(0;0,1)
+\]
+and reaches pointer $r$ with bias one.  Indeed its first command leaves
+pointer $a$ and sets bias one, so the next selector is decoded from $a$,
+without an effective decrement.  The three AX fields are $[2,1,0]$.
+
+For every $z\ge0$, the elementary Cantor identity is
+\[
+                         P(1,z)+1=P(0,z+1).
+\]
+Consequently fresh candidate $n+1$ begins with S, leaving pointer $z+1$
+and bias zero.  Unless that S already halts, the next selector is read
+from $z=P(1,a)$, so it is MP with argument two and remaining pointer
+$P(1,P(0,r))$.  Its bias is one, and the next MP therefore has argument
+zero and leaves pointer $r$.  Thus the second word is
+\[
+                       \mathsf S;\mathsf{MP}(2);\mathsf{MP}(0),
+\]
+and it too reaches pointer $r$, bias one, or halts sooner.
+
+This synchronizes only the parser position and bias.  It does \emph{not}
+assert equality of the two retained arithmetic stores.  A common suffix
+must therefore begin with a reset before using a compiler whose input
+requires zero counter and cache.
+
+\paragraph{Positive-tail word encoding.}
+Let $F(\vec a,r)$ be right-nested pairing of a finite field list over
+residual $r$, and let $\beta(k)$ be the bias produced by command $k$.
+For a finite command word $V$ and a positive unused tail $q$, define
+\[
+\begin{split}
+ E_b([],q)&=q,\\
+ E_b(k::V,q)&=1-b+
+       F(\operatorname{fields}(k),E_{\beta(k)}(V,q)).
+\end{split}
+\]
+Pairing dominates its right argument, so induction gives
+$E_b(V,q)\ge q>0$.  From this pointer and bias $b$, the parser subtracts
+$1-b$ and obtains exactly the nested fields of $k$.  It then reaches
+the suffix pointer with precisely the bias required by the induction
+hypothesis.  Thus it executes all of $V$, unless a command halts earlier,
+and leaves $q$ if the whole word returns.
+
+The positivity of the unused tail is necessary.  With base tail zero,
+one would obtain $E_1([\mathsf S],0)=0$, which the scheduler would treat
+as a fresh fetch; the intended final S would never execute.  The positive
+tail avoids this zero alias without changing any command field.
+
+\paragraph{Cofinal successful pairs.}
+Suppose a strong refutation block $B_1;H$ halts from every
+$(t,w,0,0)$, as in the inherited short-transfer compiler.  Let $V$ be
+an AX reset followed by that block.  It is successful from every retained
+store.  For each $q\ge1$, take $r=E_1(V,q)$ and construct the consecutive
+pair $n(r),n(r)+1$ above.  The first synchronization word reaches $V$
+from some retained store; the second either halts or does the same.
+Therefore both codes are successful from every initial retained store.
+Moreover
+\[
+                           n(r)\ge r\ge q,
+\]
+so these successful consecutive pairs are cofinal.
+
+Every strictly increasing integer sequence with gaps at most two meets
+every sufficiently late consecutive pair.  Otherwise, on first crossing
+$n$, it would jump from a value at most $n-1$ to a value at least $n+2$,
+a gap of at least three.  This argument does not assume that the gap
+choices are independent of the candidate, parser bias or arithmetic data.
+Thus skipping at most one candidate cannot defeat the successful pairs.
+
+Each nonhalting candidate also drains.  For $L>0$, the first unpairing
+input $v=L-1+b$ satisfies $0\le v\le L$.  If $v=0$, its right projection
+is zero and is less than $L$.  If $v>0$, then $f(v)<v\le L$; equality
+$f(v)=v$ would force the triangular part of $P$ to vanish and hence
+$v=0$.  Further command fields only decrease the residual.  Every step
+therefore strictly decreases the positive continuation pointer.  The
+scheduler reaches each subsequent selected candidate in finitely many
+commands unless it has already halted.
+
+These are all-natural arithmetic arguments.  The companion checker
+\texttt{check\_biased\_sync.py} corroborates the two
+parsed prefixes for 1,000 positive residuals and checks 18 positive-tail
+word encodings.  Those finite checks do not establish an implementation,
+protected-tail soundness, or a physical state count.  An implementation
+using this lemma would still need those separate obligations.

@@ -1,0 +1,401 @@
+\section{A new complete compiler for a two-head transfer command}
+\label{sec:stride-two}
+
+The theory-side contribution is a three-command language whose transfer
+operation consumes two old stack heads at once. A deliberate use of the
+native zero implication supplies the missing parity control. The proof below
+establishes a complete command compiler and the required infinite stack-credit
+bound. A physical allocation, its arbitrary-natural runtime certificate, and
+its exact blank initialization remain separate obligations.
+
+The inherited basis is the numerical calculus and emitter of
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/75716498437bfc7291d5900cab2983a11fd54bac/Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md}{accepted K215},
+the separately reviewed dominated-$\rho_8$ calibration, and the incoming
+MP0-transfer215 source. No new proof of the full native-calculus/ZFC
+interpretation is claimed in this section.
+
+\subsection{The precise command equations}
+
+Write
+\[
+ P(a,b)=\frac{(a+b)(a+b+1)}2+b,
+ \qquad I(a,b)=4P(a,b),\qquad Q_i(a)=4P(i,a)+2.
+\]
+Truth is $0$ and falsity is $1$. Every parameter is a natural number, with
+no formula-decoding premise. Put $[x;S]=P(x,S)$, and write a work state as
+$(t,S,d,h)$: current formula, stack, additive parameter, and cache. In
+particular $I(0,0)=0$ and $[0;0]=0$ are actual numerical identities.
+
+The retained command $\mathsf{MP}(x)$ sets $y=d+x$. If $I(t,y)=h$ it
+returns $(y,[0;S],y,0)$; otherwise it returns $(0,S,y,0)$. The retained
+command $\mathsf{AX}(c;x,y)$ sets
+\[
+ U=d,\qquad A=d+x,\qquad B=h+y,\qquad C=c
+\]
+and returns
+\[
+ \bigl(G(A,B,C),[r_1,\ldots,r_7,L(A,B,C,U),Q_U(h),t;S],0,0\bigr).
+\]
+The first seven rows, literal gated bundle $G$, and dominated row $L$ are
+the inherited emitter. The gate is zero when $C=A$ or $C=B$ and is the
+positive native bundle otherwise. All nine newly generated stack entries
+and the gate differ from $1$. The rows are native theorems; $Q_U(h)$ is
+a theorem when $h$ is. Numerical domination $U\leq A$ holds automatically.
+
+Replace the old stack commands by
+\[
+ \mathsf S_2=\mathsf{oldDROP};\mathsf{oldNIP};
+              \mathsf{oldNIP};\mathsf{oldNIP}.
+\]
+Writing $S=[x,y;V]$, its exact nonhalting equation is
+\begin{equation}
+ \mathsf S_2(t,[x,y;V],d,h)=(h,V,d,y).
+ \label{eq:stride2-command}
+\end{equation}
+It halts exactly when $h=1$, $t=1$, or $x=1$. The final popped value $y$
+is not tested at this step. These are the three inherited NIP tests,
+which successively see $h$, the pushed old current $t$, and $x$.
+
+If current, cache, and all exposed stack heads are native theorems,
+every nonhalting command preserves that condition. Every halt exhibits
+theorem $1$. Successful MP is exact native detachment, while failure
+yields truth. This proves soundness on theorem-safe states, including
+states containing nondecodable numerical codes.
+
+\subsection{A constructor lemma and two exact macros}
+
+The sixth retained row and the dominated row are
+\begin{align*}
+ r_6(A,B)&=I\bigl(I(Q_A(I(Q_A(B),1)),1),B\bigr),\\
+ L(A,B,C,U)&=I\bigl(I(I(C,U),A),I(I(A,C),I(B,C))\bigr),
+ \qquad U\leq A.
+\end{align*}
+For all these parameters,
+\begin{equation}
+ I(r_6(A,B),0)\ne L(A,B,C,U).
+ \label{eq:stride2-nondetach}
+\end{equation}
+Indeed $r_6>0$, so the left side is positive. Equality with a nonzero
+right side, followed by Cantor injectivity at the outer implication,
+would force $I(I(A,C),I(B,C))=0$. The zero law for $I$ gives
+$A=B=C=0$. Domination then gives $U=0$ and $L=0$, a contradiction.
+Equality with a zero right side is already impossible. This argument
+explicitly handles the exceptional truth alias.
+
+Let $D_0=\mathsf{AX}(0;0,0)$ and define
+\begin{align*}
+ H_2&=D_0;\mathsf S_2^6,\\
+ \mathsf{PUSH}&=D_0;\mathsf S_2^4;
+       \mathsf{MP}(0);\mathsf{MP}(0);\mathsf S_2;\mathsf{MP}(0).
+\end{align*}
+For arbitrary numerical inputs, $H_2$ either halts or returns
+\[
+ (t,[x,y;V],d,h)\longmapsto(t,V,0,y).
+\]
+Its exact halt condition is $t=1$ or $x=1$. After the first AX and five
+shifts the state is $(r_8,[x,y;V],0,t)$. The sixth shift gives the claimed
+result; every earlier tested generated value is constructor-safe. Thus
+$H_2$ removes two old heads while preserving the current theorem.
+
+The PUSH macro is total, even when incoming current or cache equals $1$,
+and has the exact equation
+\begin{equation}
+ \mathsf{PUSH}(t,S,d,h)=(0,[t;S],0,0).
+ \label{eq:stride2-push}
+\end{equation}
+After $D_0;\mathsf S_2^4$ the state is
+$(r_6,[Q_d(h),t;S],0,r_8)$. The first MP fails by
+\eqref{eq:stride2-nondetach}. The second succeeds by $I(0,0)=0$ and
+pushes zero. The shift removes that zero and $Q_d(h)$, leaving
+$(0,[t;S],0,Q_d(h))$. The final MP fails by the disjoint quantifier and
+implication tags. It clears the cache. No old stack cell or saved current
+is tested during this macro.
+
+\subsection{A strong compiler interface and all axiom positions}
+
+For a theorem code $X$, require a finite block $B_X$ satisfying
+\begin{equation}
+ B_X:(t,S,0,0)\longmapsto
+       \text{halt, or }(X,S,0,0)
+ \quad\text{for all raw }t,S.
+ \label{eq:stride2-strong}
+\end{equation}
+Early halt is an allowed completeness outcome. Soundness is asserted only
+from theorem-safe states, not from arbitrary raw theorem data.
+
+Define
+\[
+ \mathsf{DISCARD}=\mathsf{MP}(1);\mathsf{AX}(1;0,0);H_2^5.
+\]
+The first MP fails against cache zero, since $I(t,1)>0$. It gives
+$(0,S,1,0)$. The AX has $U=A=C=1$, so its gate is zero. It supplies ten
+safe heads, ending with old current zero. Five pair cleanups remove
+exactly those heads and return $(0,S,0,0)$ without halting or reading $S$.
+This is the truth compiler.
+
+Put $J(0)$ equal to the empty word and $J(u)=\mathsf{MP}(u)$ for $u>0$,
+used after DISCARD. It sets the parameter to $u$ and preserves the stack,
+with current and cache zero. The omitted zero case is essential:
+$\mathsf{MP}(0)$ deliberately pushes a zero and serves as our parity
+adjustment.
+
+Fix $(A,B,C,U)$ with $U\leq A$. For an even position
+$j\in\{2,4,6,8\}$, use
+\begin{equation}
+ \mathsf{DISCARD};J(U);\mathsf{AX}(C;A-U,B);
+       \mathsf S_2^{j/2+1};H_2^{(8-j)/2}.
+ \label{eq:stride2-even}
+\end{equation}
+After the shifts, current is $r_j$ and exactly $8-j$ generated heads
+remain over $S$. Pair cleanup removes them while retaining $r_j$. The
+final cached value is the saved old current zero, even when no cleanup
+remains. Hence this is a strong compiler for $r_j$.
+
+For odd $j\in\{1,3,5,7,9\}$ insert one zero below the future packet by
+MP(0) after DISCARD, and one above the packet afterward. The upper padding
+word is
+\[
+ \mathsf{PAD}_G=
+ \begin{cases}
+  \mathsf{MP}(0),&C=A\text{ or }C=B,\\
+  \mathsf{MP}(0);\mathsf{MP}(0),&\text{otherwise}.
+ \end{cases}
+\]
+The positive-gate case first clears the current by a failing MP; the next
+MP succeeds. Thus exactly one zero is pushed in either case. This is a
+metalevel choice on known numerical axiom parameters, not a new command.
+Use
+\begin{equation}
+ \begin{split}
+ \mathsf{DISCARD};\mathsf{MP}(0);J(U);
+ \mathsf{AX}(C;A-U,B);\mathsf{PAD}_G;\\
+ \mathsf S_2^{(j+3)/2};H_2^{(9-j)/2}.
+ \end{split}
+ \label{eq:stride2-odd}
+\end{equation}
+The explicit packet immediately after padding is
+$[0,r_1,\ldots,r_9,0,0;S]$, of length twelve. The shifts put $r_j$ on
+top and leave $9-j$ heads, an even number. Cleanup removes these and
+leaves cache zero. This selects every odd row, including the quantified
+ninth position, with the exact interface \eqref{eq:stride2-strong}.
+
+All first seven native rows may choose $U=0$. Dominated $\rho_8$ uses
+the specified $U$. A permitted bundle has the simpler strong compiler
+\[
+ \mathsf{DISCARD};\mathsf{AX}(C;A,B);H_2^5.
+\]
+The gate remains on top as its ten generated stack entries are removed.
+All pairing arguments use $\operatorname{unpair}(P(x,v))=(x,v)$; no
+separate nil/cons constructor or positivity of an explicit zero wrapper
+is assumed.
+
+\subsection{Generalization and detachment}
+
+Given $B_X$, the following is a strong compiler for $Q_i(X)$:
+\begin{equation}
+ \begin{split}
+ \mathsf{DISCARD};\mathsf{MP}(0);B_X;
+ \mathsf{PUSH};\mathsf{MP}(0);J(i);\mathsf S_2;\\
+ \mathsf{AX}(i;0,0);\mathsf{MP}(0);\mathsf S_2^6.
+ \end{split}
+ \label{eq:stride2-gen}
+\end{equation}
+Before $J(i)$ the exact state is $(0,[0,X,0;S],0,0)$. The shift after
+$J(i)$ returns $(0,[0;S],i,X)$. It does not test $X$, which is its second
+popped head. The AX has $U=A=C=i$, zero gate, and ninth output $Q_i(X)$.
+The final MP supplies the upper parity zero; six shifts perform the
+$j=9$ odd selection and return $(Q_i(X),S,0,0)$. Every GEN operation in
+the underlying calculus is theorem-only; no open assumption is
+generalized.
+
+Suppose $B_M$ compiles $M=I(A,B)$ and $B_A$ compiles $A$. A strong
+compiler for $B$ is
+\begin{equation}
+ \begin{split}
+ \mathsf{DISCARD};\mathsf{MP}(0);B_M;
+ \mathsf{PUSH};\mathsf{MP}(0);B_A;\\
+ \mathsf{PUSH};\mathsf{MP}(0);
+ \mathsf S_2;\mathsf S_2;\mathsf{MP}(B);H_2.
+ \end{split}
+ \label{eq:stride2-mp}
+\end{equation}
+Immediately before the shifts, the state is
+\[
+ (0,[0,A,0,I(A,B),0;S],0,0).
+\]
+The shifts give $(A,[0;S],0,I(A,B))$, or halt early at $A=1$.
+MP succeeds and returns $(B,[0,0;S],B,0)$. The final $H_2$ removes the
+two zeros, resets parameter and cache, and preserves $B$, or halts at
+$B=1$. The proof includes $A=B=0$ and the zero implication alias.
+
+Finite derivation induction now supplies \eqref{eq:stride2-strong} for
+every theorem of the dominated native calculus. Combine this with the
+inherited finite dominated-row proof transformation and native-calculus
+calibration. If $1$ has a derivation, $B_1;H_2$ halts from every
+$(t,S,0,0)$: its final cleanup tests the saved current $1$ before reading
+any old stack head. An initial AX resets arbitrary numeric parameter and
+cache, extending this completeness word to arbitrary work data.
+
+\subsection{Enumeration and the new two-head credit theorem}
+
+The source uses $\mathsf{MP}=0$, $\mathsf S_2=1$, and
+$\mathsf{AX}(c)=c+2$. The field lists are $[0,x]$, $[1]$, and
+$[c+2,y,x]$, respectively. Right-fold Cantor pairing encodes a field
+list, and every nonempty continuation is one plus its field encoding.
+Positive continuation pointers are decremented before reading the next
+command. Thus every nonhalting candidate drains finitely. The extra
+closed NIP changes neither the scheduler nor the field readers.
+
+Let $r$ encode the continuation $B_1;H_2$. The fresh candidates
+\[
+ n_Y=P(2,P(Y,P(1,r)))\geq Y
+\]
+decode as $\mathsf{AX}(0;1,Y)$ followed by that continuation. The prefix
+resets parameter and cache. These successful candidates are cofinal when
+a refutation exists, proving completeness for every finite cutoff.
+
+Soundness above an arbitrary buried stack tail requires a new bound:
+assign conservative balances $0,-2,10$ to MP, $\mathsf S_2$, and AX.
+Successful MP pushes can only improve the balance. Let $f$ be the right
+Cantor projection, $R(0)=[]$, and $R(r)=W(r-1)$ for $r>0$, where $W(n)$
+is the complete syntactic word of fresh candidate $n$. Then
+\[
+ W(P(a,y))=
+ \begin{cases}
+  \mathsf{MP};R(f(y)),&a=0,\\
+  \mathsf S_2;R(y),&a=1,\\
+  \mathsf{AX};R(f(f(y))),&a\geq2.
+ \end{cases}
+\]
+There are at most $n+1$ commands in $W(n)$, so every prefix of $R(r)$
+has balance at least $-2r$.
+
+Let $b(n)$ be total candidate balance, $B(k)=\sum_{n<k}b(n)$, and
+$g(0)=0$, $g(r)=b(r-1)$ for $r>0$. The Cantor prefix-pullback lemma
+states that nonnegative initial sums of $q$ imply nonnegative initial
+sums of $q\circ f$ and $q\circ f\circ f$. Indeed the sequence $f(n)$
+concatenates $[0]$, $[0,1]$, $[0,1,2]$, and so on. Apply it to $q=g+2$;
+its first $k$ terms sum to $2+B(k-1)+2(k-1)$.
+
+Put $T_s=s(s+1)/2$. Joint induction proves $B(k)+2k\geq0$,
+$B(T_s)\geq-2$, and nonnegative relative balance at every command prefix
+within each diagonal $s\geq2$. Such a diagonal has $s-1$ AX-first words,
+then an $\mathsf S_2$-first word, then an MP-first word. The first $k$
+AX words have total balance at least $8k$ by double pullback. Inside AX
+word $y$, the lower bound is
+\[
+ 8y+10-2f(f(y))\geq6y+10>0.
+\]
+Through the penultimate word it is at least
+\[
+ 8(s-1)-2-2(s-1)=6(s-1)-2,
+\]
+and through the final word it is at least
+\[
+ 6(s-1)-2-2f(s)\geq4s-8\geq0.
+\]
+Every pullback index is below the current diagonal start. The first
+three words are MP, $\mathsf S_2$, MP, with cumulative balances
+$0,0,-2,-2$. This establishes the base and completes the induction.
+More explicitly, the prefix bounds give
+$B(k)\geq B(T_s)\geq-2$ at each candidate boundary in the current
+diagonal, hence $B(k)+2k\geq0$ there; the diagonal end establishes
+$B(T_{s+1})\geq-2$. The pullback sums use only already established
+earlier values. Their formula for the first $k$ terms applies for
+$k\geq1$, while the empty partial sum is zero.
+
+The infinite schedule therefore has minimum conservative prefix balance
+exactly $-2$, also from cutoff $N=1$. Ten initial theorem heads supply
+permanent margin eight above an arbitrary encoded suffix. Every
+$\mathsf S_2$ consumes two explicit theorem heads; its three guards test
+theorem values. This is an infinite-prefix theorem, not an inference
+from a finite simulation.
+
+\subsection{A direct 61-leaf implementation of the same transfer}
+
+The 104-leaf composite body has a shorter source alternative,
+\[
+ \mathsf S_2^{\mathrm{dir}}=
+ \mathsf{CLEAR}_T;\mathsf{COPY}_{H\to T};
+ \mathsf{oldNIP};\mathsf{oldNIP},
+\]
+where the copy preserves $H$. Its nine-leaf prefix is inherited from
+the incoming direct one-head transfer implementation; the two-head use
+and complete stride-two compiler are new here. The literal prefix is
+\begin{quote}\ttfamily\small
+CLEAR\_T = (CD1, CC1)\\
+COPY\_H = ((CD5,(CI1,(CI6,CC3))), (CD6,(CI5,CC2))).
+\end{quote}
+Registers 1, 5, and 6 are current $T$, cache $H$, and scratch $X$.
+At an inherited command boundary $X=0$. Clearing $T$ takes $2t+1$
+source steps. The first copy loop performs $h$ decrements of $H$,
+incrementing $T$ and $X$, and ends at $(T,H,X)=(h,0,h)$ in $4h+1$
+steps. The second transfers $X$ back into $H$ in $3h+1$ steps.
+Thus ordinary induction on the counters gives the total prefix contract
+\[
+ (t,S,d,h;X=0)\longmapsto(h,S,d,h;X=0)
+\]
+in $2t+7h+3$ source steps, preserving every other register. The formulas
+include $t=0$ and $h=0$.
+
+OldNIP tests its incoming cache, and on a nonhalting return pops one
+stack head into that cache while preserving current and parameter.
+Two such calls therefore give
+\[
+ \mathsf S_2^{\mathrm{dir}}(t,[x,y;V],d,h)=
+ \begin{cases}
+  \mathrm{halt},&h=1\text{ or }x=1,\\
+  (h,V,d,y),&\text{otherwise}.
+ \end{cases}
+\]
+Only the composite's old-current test is omitted. No two-way behavioral
+equivalence is asserted. All displayed normal-return equations and
+stack balances are identical, so the strong compiler still applies.
+The essential terminal test remains: after $D_0$ and five direct shifts
+the state is $(r_8,[x,y;V],0,t)$. The sixth tests saved current $t$
+through its cache. Hence $H_2$ still halts exactly when $t=1$ or $x=1$,
+and $B_1;H_2$ still detects every returned refutation. PUSH and DISCARD
+remain total; the two shifts in the MP compiler still test $A$ through
+cache, and the final $H_2$ still detects $B=1$.
+
+The five direct source associations have 202 distinct subtrees, 4,758
+primitive occurrences, and 6,187 guarded cases, with the same depth 44
+and maximum zero run six. Their command body contains
+$2+7+26+26=61$ leaves instead of 104, saving 43 primitive occurrences.
+This is a source-size result. It does not establish a physical state
+reduction. The same infinite credit proof applies because the command
+fields and the two-head stack consumption are unchanged.
+
+\subsection{Exact source transformation and verification boundary}
+
+The pinned parent source has SHA-256
+\begin{quote}\ttfamily\small
+8ddb942f0f1d8e2e3b12ab7217c7232eb553cd288fca38dbf9b0eded73893dd5.
+\end{quote}
+At address \texttt{110101}, replace its $((D,N),N)$ by a binary
+association of $D,N,N,N$. Each old body has 26 primitives and zero
+escaping break/continue demand. NIP contains an intentional halt, which
+is retained. The five supplied associations each have 202 distinct
+subtrees, 4,801 primitive occurrences, 6,245 guarded cases, maximum depth
+44, and maximum zero run six. The source builder checks both complete
+CFG resolvers and exact transport of all 4,697 exterior instructions
+and 6,103 exterior edges.
+
+The stack checker passes 79 interface cases, with totality enforced for
+PUSH and DISCARD and mandatory halting enforced for the designated
+$H_2$ tests. It independently evaluates 11,232 numerical instances of
+the constructor lemma. The credit recurrence is corroborated for
+100,000 candidates and 444 complete diagonals. A separate literal source
+checker evaluates 81 DNNN register cases and confirms exactly the three
+claimed guards, with 57 guarded halts. Its direct-command option checks
+81 further cases and confirms the two direct guards, with 45 guarded
+halts. Both source forms pass the same 79 interface checks and the same
+constructor and credit corroborations. These finite checks support the written all-natural
+proof; they do not replace it. Inductive premise-block placeholders
+stand for \eqref{eq:stride2-strong}, not asserted machine transitions.
+
+An exact binary result additionally requires a literal transition table,
+an initialization-inclusive state count, every arbitrary-natural
+primitive runtime case for this exact source, and a complete blank trace
+to an admissible frame. The construction and proof in this section do
+not alone establish those physical obligations.

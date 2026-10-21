@@ -18,14 +18,20 @@ report, placed in batch 200, whose write is still to come.
 | [zero-spare-z201](zero-spare-z201/INTAKE.md) | NIP/MP/DROP order with zero spares | batch 201 |
 | [zero-spare-transfer](zero-spare-transfer/INTAKE.md) | transfer-pop with append-zero spares | batch 201 |
 | [mp-first-transfer](mp-first-transfer/INTAKE.md) | transfer enumeration with MP first | batch 201 |
+| [rho6](rho6/INTAKE.md) | rho6 parameter permutation; two machines, on the 120 and 210 command orders | batch 202 |
+| [zero-spare-mp-first](zero-spare-mp-first/INTAKE.md) | zero spares on the MP-first transfer machine, dirty-cache startup | batch 202 |
+| [direct-transfer](direct-transfer/INTAKE.md) | direct 35-leaf transfer command via contextual reassociation | batch 202 |
+| [conditional-marker](conditional-marker/INTAKE.md) | two decoder roles merged by a predecessor-marker selector | batch 202 |
+| [rebalanced](rebalanced/INTAKE.md) | rebalanced addresses, maximum depth 41 | batch 202 |
 | [transfer215](../../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/166-transfer-mach-README.md) (Source 166) | transfer-pop command, 201-node source, partial-AX startup | batch 200 |
 | [cb1_215](../../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/165-frontier-machine-search-README.md) (Source 165) | CB1 appended to the restoration loop; changed enumeration, calibrated by a separate scheduler proof | batch 200 |
 
 Source 165's `normalized215` is a local stuttering normalization of `cb1_215` with the same blank
-behavior, so it is not listed separately. `zero-spare-transfer` and `mp-first-transfer` both
-descend from `transfer215`.
+behavior, so it is not listed separately. `zero-spare-transfer`, `mp-first-transfer` and
+`direct-transfer` descend from `transfer215`; `zero-spare-mp-first` combines `zero-spare` with
+`mp-first-transfer`.
 
-Batch 201 kept only materially distinct implementations. Deliveries whose machines were state
-renamings or re-associations of tables already here, and research-only packets, were retired
-without placement; the batch-201 entry in `docs/incoming/README.md` lists them with their arrival
-commits.
+Batches 201 and 202 placed only distinct implementations. Deliveries whose machines were state
+renamings, re-associations or re-allocations of tables already here, and research-only packets,
+were retired without placement; the batch-201 and batch-202 entries in `docs/incoming/README.md`
+list them with their arrival commits.

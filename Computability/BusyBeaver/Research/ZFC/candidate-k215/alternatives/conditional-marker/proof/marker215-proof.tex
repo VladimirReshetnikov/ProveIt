@@ -1,0 +1,186 @@
+\section{A new 215-state marker allocation}
+\label{sec:marker215}
+
+Let $K$ denote the repository's primary accepted K215 table with SHA-256
+\texttt{9683d6ed9628e6ce407c315b08f5da3d063da94e92706f275ca0f33e8272e4b2}.
+The construction below changes six transition rows, retains exactly the same
+215 working labels and 430 binary transitions, and leaves the source program
+unchanged.  The new table $M$ has SHA-256
+\texttt{e5907f08e0752eada0e25bbf33680341e80e5fe94b52b409aea1ed039edda252}.
+Start, dispatcher and halt retain native labels $0,84,254$ respectively.
+The dense version starts at $0$, uses working labels $0,\ldots,214$, and halts
+at label $215$.
+
+The idea is to let the tape cell immediately preceding the head retain part
+of the logical control state.  Logical roles 52 and 176 become one role at
+physical state 52.  The old physical label 176 is reused as the marker reader.
+Unlike an unconditional state merge, the proof must account for the exceptional
+incoming edge from state 156.  That edge is harmless precisely because it
+forces the current cell to the branch on which both roles already agree.
+
+\subsection{The six-row construction}
+
+A transition is written $w D q$, with write symbol $w$, direction $D$, and
+next control state $q$.  The changed rows are
+\[
+\begin{array}{c|c|c|c}
+ q&\text{read}&K&M\\\hline
+ 52&0&0R154&0L176\\
+ 156&1&1R176&1R52\\
+ 165&0&0R176&0R52\\
+ 176&0&0R168&0R185\\
+ 176&1&1R150&1R129\\
+ 193&0&0R176&0R52
+\end{array}
+\]
+All unlisted rows are identical.  In particular,
+\[
+ K(52,1)=K(176,1)=M(52,1)=1R150,
+ \qquad M(185,0)=0R168,\quad M(129,0)=0R154.
+\]
+The complete incoming-edge census in $K$ is
+\[
+\begin{array}{c|l}
+\text{destination}&\text{incoming transitions}\\\hline
+52&190/1=1R52,\quad 193/1=1R52\\
+176&156/1=1R176,\quad 165/0=0R176,\quad193/0=0R176\\
+156&189/1=1L156.
+\end{array}
+\]
+These are exhaustive statements about the literal table, not observations
+from a finite blank run.
+
+\subsection{A reachable-branch invariant}
+
+\paragraph{Lemma.}
+For every run of $K$ starting in control state 0, on an arbitrary initial
+two-way binary tape and at an arbitrary initial head position:
+\begin{enumerate}
+\item every entry into state 52 has a one immediately to the left;
+\item every entry into state 176 which scans zero has a zero immediately to
+      the left.
+\end{enumerate}
+
+\paragraph{Proof.}
+The first assertion follows from the two incoming transitions to 52, both
+of which write one and move right.  The incoming transitions $165/0$ and
+$193/0$ similarly write zero and move right before entering 176.
+The remaining incoming edge is $156/1$.  Since the run starts at 0, every
+entry into 156 has a predecessor; its unique predecessor is $189/1$, which
+writes one and moves left.  If 156 then follows its one branch, it moves right
+back onto the very cell just written by 189, so the current cell at entry to
+176 is one.  This exceptional edge can therefore never produce the zero
+branch under discussion.  No assumption about uninspected tape cells is
+used.\hfill$\square$
+
+\subsection{Exact all-tape simulation from the designated start}
+
+\paragraph{Theorem.}
+For every initial binary tape $\tau$ and every initial head position $h$, the
+runs of $K$ and $M$ starting at $(0,h,\tau)$ halt simultaneously in the sense
+of equihalting.  More precisely, there is a strictly increasing sequence of
+simulation times $t_n$ with $t_0=0$ such that the $n$th configuration of $K$
+and the $t_n$th configuration of $M$ have exactly the same whole tape and head,
+and their controls are related by
+\[
+ \phi(q)=\begin{cases}52,&q=176,\\q,&q\ne176.\end{cases}
+\]
+Each increment $t_{n+1}-t_n$ is one or three.  It is three exactly when $K$
+executes row $52/0$ or $176/0$.
+
+\paragraph{Proof.}
+For every $q\notin\{52,176\}$, the new transition equals the old transition
+followed by $\phi$ on its target.  Thus these source steps transfer in one
+step, without changing the comparison tape or head.  The one branches of
+52 and 176 agree and also transfer in one step.
+
+It remains to consider a zero branch.  If the old state is 52, the lemma
+provides predecessor marker one.  The new machine executes
+\[
+ 52 \xrightarrow{0L}176
+ \xrightarrow{1R}129
+ \xrightarrow{0R}154.
+\]
+If the old state is 176, the predecessor marker is zero and the new machine
+executes
+\[
+ 52 \xrightarrow{0L}176
+ \xrightarrow{0R}185
+ \xrightarrow{0R}168.
+\]
+Each block reads only the original current cell and its predecessor,
+preserves both symbols, and finishes one cell to the right.  It therefore
+has exactly the whole-tape effect of the corresponding old transition.
+Induction on the old run length proves the displayed simulation relation.
+Both inserted blocks have finite positive length and contain no halt.
+Consequently a finite halt transfers in both directions; an infinite old
+run produces infinitely many new steps; and the new run cannot remain
+forever within one inserted block.\hfill$\square$
+
+If a finite old execution of length $n$ has $v(n)$ visits to the two specified
+zero rows, its corresponding new execution has the exact length
+\[
+ t_n=n+2v(n),\qquad n\le t_n\le3n.
+\]
+The theorem deliberately quantifies arbitrary tapes only at the designated
+start control.  It does not claim equivalence from arbitrary controls such
+as 156 or 176, where the predecessor invariant need not hold.
+
+\paragraph{Consistency calibration.}
+The preceding theorem is a finite transition argument followed by elementary
+induction, formalizable in ZFC.  Combining it with the repository's accepted
+ordinary calibration of $K$ gives
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\neg\operatorname{Halt}(M,\mathrm{blank})\bigr)
+ \;\longleftrightarrow\;\operatorname{Con}(\mathrm{ZFC}).
+\]
+This transfers the accepted calibration, including its underlying numerical
+calculus and compiler.  It is not an assertion of unconditional nonhalting
+or a claim that a new complete Lean/Rocq endpoint has been kernel checked.
+
+\subsection{Fresh independent checks and measured effect}
+
+The complete inherited symbolic-runtime checker was rerun on the new literal
+bytes and unchanged source, rather than relying solely on the transfer theorem.
+It proved all 6,176 expected arbitrary-natural primitive cases using
+1,701,542 symbolic rules.  All 430 transition rows are accounted for, every
+affine duration is positive, and the minimum constant duration is six.
+The represented domain includes arbitrary natural primary-register values,
+an arbitrary natural gap, and every nonempty finite spare list, with the
+entire zero exterior included.  These are quantified mathematical checks,
+not bounded register-value tests; they remain outside a proof-assistant kernel.
+
+The whole blank startup takes 95,714 transitions and ends at native dispatcher
+84, head $-8$, header 57, gap one, logical registers
+$(4,0,0,0,0,0,0,0,0)$, and forty unit spares.  The complete terminal tape has
+95 one-cells.  An independently written literal checker replays the stored
+trace on both the native and dense tables, constructs the expected whole tape
+from the frame parameters, checks the reversible dense-state map, and verifies
+the finite incoming-edge and local-block hypotheses above.
+
+Relative to the accepted primary case records, the durations of 5,632 primitive
+cases are unchanged, 128 cases gain two steps, and 416 cases gain six steps.
+The coefficients of every unbounded affine variable and all net head motions
+are unchanged.  Thus 544 quantified primitive cases use a changed execution,
+even though the finite blank startup happens not to encounter the folded zero
+branches.
+
+The new table has one more left-moving transition than the primary table,
+which already rules out a pure state renaming.  A separate exact rooted
+deterministic transition-graph comparison, also allowing global tape
+reflection, found no match among 77 distinct 215-state tables recovered from
+twelve incoming research archives and the accepted candidate directory.
+This is a comparison against that explicit audited corpus, not a claim of
+exhaustive novelty among all possible machines.
+
+\subsection{Why the construction is useful for the 214-state target}
+
+This allocation is cost-neutral: one physical role is freed by sharing the
+two logical roles, and that same label is spent on a new marker selector.
+It is therefore a genuine 215-state alternative rather than a 214-state
+claim.  A later source reassociation that makes an existing state implement
+$0R185/1R129$ at all required contexts would remove the need for the extra
+selector label.  More generally, the lemma permits an incoming marker anomaly
+when that anomaly forces the common branch.  Requiring every incoming edge
+to carry the same marker would miss precisely this opportunity.

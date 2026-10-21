@@ -12,6 +12,46 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Queue status after batch 203
+
+`Feedback_Scheduling_and_Corrected_217_2026-10-21.zip` (arrival `1083e2b5ff`)
+arrived while batch 202 was being pushed. It has no new working 215-state
+machine: its `feedback215` table, the earlier scratch-biased short-transfer
+experiment, is rejected by its own return-target counterexample. Its
+`companion217` is a working constant-bias/stride-two 217-state machine that
+is not a state renaming of K217 or of any repository table, so the packet
+was placed whole as delivered under
+[candidate-k217/alternatives/feedback-stride2/](../../Computability/BusyBeaver/Research/ZFC/candidate-k217/alternatives/feedback-stride2/INTAKE.md),
+with its feedback-scheduler theorem. Nothing was rerun. The queue is clear.
+
+## Queue status after batch 202
+
+Batch 202 received six archives, all 215-state ZFC machines, and, at Vladimir's
+direction, discarded versions that are essentially duplicates and preserved
+unique alternatives. The 376 incoming tables were put in rooted breadth-first
+canonical form and compared with the repository's tables and with each other;
+each delivered primary was also compared, by source, with the placed
+alternatives. Five archives were placed as delivered, without rerunning
+anything, under
+[candidate-k215/alternatives/](../../Computability/BusyBeaver/Research/ZFC/candidate-k215/alternatives/README.md),
+each with an `INTAKE.md`; copies of parents and baselines were omitted and
+remain recoverable from the arrival commit.
+
+| Archive | Arrival | Decision |
+|---|---|---|
+| `K215_Rho6_Permutations_2026-10-21.zip` | `fddedc979d` | kept as `rho6`: two machines (rho6 on the 120 and 210 command orders), each fully checked |
+| `ZFC_K215_Rebalanced_2026-10-21.zip` | `fddedc979d` | kept as `rebalanced`: maximum address depth 41 |
+| `K215_Zero_Spare_MP_First_2026-10-21.zip` | `34b63b3b19` | kept as `zero-spare-mp-first` |
+| `ST215_Direct_Transfer_2026-10-21.zip` | `34b63b3b19` | kept as `direct-transfer` |
+| `ZFC_Conditional_Marker_215_2026-10-21.zip` | `34b63b3b19` | kept as `conditional-marker` |
+| `ZFC_215_R6_and_Short_Transfer_2026-10-21.zip` | `34b63b3b19` | dropped: `rotated215` has a byte-identical source and the same 716,307-step D = 1 startup as `alternatives/reencoded`, differing only in state allocation; its research `runtime215` table is rejected by its authors as a blank machine |
+
+The rho6_210 table is the one batch 201 dropped as the unproved secondary of
+`K215_Alternative_Encodings`; it now arrives with a complete proof. No
+numbered Sources were added and no write report was made: the placed machines
+carry their delivered proofs and are not yet independently checked. The queue
+is clear. The active target remains **214 or fewer states**.
+
 ## Queue status after batch 201
 
 Batch 201 received twelve archives and, at Vladimir's direction, kept only the

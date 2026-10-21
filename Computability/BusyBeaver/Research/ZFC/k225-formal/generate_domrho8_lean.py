@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Generate DomRho8.lean: dominated rho8 instances derive every rho8 instance.
 
-  python generate_domrho8_lean.py CERTIFICATE_JSON OUT_LEAN [--plan PLAN | --no-plan]
+  python generate_domrho8_lean.py CERTIFICATE_JSON OUT_LEAN [--plan PLAN | --no-plan | --templates CD230_V]
 
-For the exact Source149 input, the maintained rho8plan is replayed by default, without a
-solver. Other inputs retain greedy pruning; --no-plan also selects that generic route.
+The exact Source149 input uses a guarded lemma hierarchy by default. Its pinned CD230
+templates are found in the repository or supplied with --templates. An explicit --plan
+retains original-node replay; --no-plan and other inputs retain the generic direct route.
 
 The certificate is Source 149's `theory/dominated_rho8_full_certificate.json` (term_dag_v1:
 a shared term table over implication, truth and variables, and 3,728 proof nodes whose rules
@@ -23,16 +24,367 @@ import importlib.util
 import json
 from pathlib import Path
 
+GUARDED_HEAD = """import BusyBeaver.ZFC.Code254
+
+/-!
+Dominated rho8 derives unrestricted rho8, for arbitrary natural codes.
+
+The proof has three layers. A 61-lemma bootstrap from Source 149 gives identity,
+weakening, Peirce and the implication-transport lemma. The original CD230 lemma
+hierarchy then derives composition and distribution. We retain 81 of its 107
+schemas; eight carry one explicit numerical dominance hypothesis. Keeping these
+hypotheses avoids expanding each schema at every substitution instance.
+Finally a small deduction theorem and Peirce's law give the unrestricted row.
+
+The bootstrap is Source 149's original nodes0..60; the CD230 templates are its
+pinned adaptation of the upstream condensed-detachment derivation. Every emitted
+step is an ordinary Lean proof. The source producer is untrusted. The only code
+normalization is the proved identity `wim 0 0 = 0`; numerical injectivity,
+formula decoding and ZFC consistency are not assumptions.
+-/
+
+namespace SetTheory.BusyBeaver.ZFC.DomRho8
+
+open Code254
+
+/-- Truth, modus ponens and the dominated rho8 instances. -/
+structure DomImp (T : Nat → Prop) : Prop where
+  truth : T 0
+  mp : ∀ {a b : Nat}, T (wim a b) → T a → T b
+  rho8 : ∀ a b c u : Nat, u ≤ a → T (Code254.rho8 a b c u)
+
+theorem le_l {u x : Nat} (y : Nat) (h : u ≤ x) : u ≤ wim x y :=
+  Nat.le_trans h (by have := le_P_left x y; simp only [wim]; omega)
+
+theorem le_r {u y : Nat} (x : Nat) (h : u ≤ y) : u ≤ wim x y :=
+  Nat.le_trans h (by have := le_P_right x y; simp only [wim]; omega)
+
+/-- A substitution: the valuation sending variable `i` to the `i`-th code. -/
+def sub (l : List Nat) (i : Nat) : Nat := l.getD i 0
+
+theorem wim00 : wim 0 0 = 0 := by simp [wim, P, Cantor.toNat, Cantor.tri]
+attribute [local irreducible] wim
+
+section
+variable {T : Nat → Prop} (h : DomImp T)
+include h
+
+"""
+
+GUARDED_MIDDLE = """
+end
+
+section
+variable {T : Nat → Prop} (h : DomImp T)
+include h
+private theorem basisI (a : Nat) : T (wim a a) := b17 h a
+private theorem basisK (a b : Nat) : T (wim a (wim b a)) := b60 h a b
+private theorem basisP (a b : Nat) : T (wim (wim (wim a b) a) a) := b25 h a b
+private theorem basisJ (a b c : Nat) : T (wim (wim a b) (wim (wim (wim a c) a) b)) := b57 h a b c
+
+"""
+
+GUARDED_TAIL = """theorem composition (a b c : Nat) : T (wim (wim a b) (wim (wim b c) (wim a c))) := cd91 h a b c
+theorem distribution (a b c : Nat) : T (wim (wim a (wim b c)) (wim (wim a b) (wim a c))) := cd106 h a b c
+/-! Deduction is used only after deriving K and S from the dominated rows. -/
+private inductive Proof (T : Nat → Prop) : List Nat → Nat → Prop
+  | ax {G a} : T a → Proof T G a
+  | hyp {G a} : a ∈ G → Proof T G a
+  | mp {G a b} : Proof T G (wim a b) → Proof T G a → Proof T G b
+
+private theorem proof_sound {G : List Nat} {a : Nat} (d : Proof T G a)
+    (hG : ∀ x, x ∈ G → T x) : T a := by
+  induction d with
+  | ax ht => exact ht
+  | hyp hm => exact hG _ hm
+  | mp _ _ ih1 ih2 => exact h.mp ih1 ih2
+
+private theorem discharge_aux {a : Nat} {G' : List Nat} {b : Nat}
+    (d : Proof T G' b) : ∀ G : List Nat, G' = a :: G → Proof T G (wim a b) := by
+  induction d with
+  | ax hb => intro G _; exact .mp (.ax (basisK h _ a)) (.ax hb)
+  | hyp hm =>
+      intro G hG
+      subst hG
+      cases List.mem_cons.mp hm with
+      | inl he => subst he; exact .ax (basisI h _)
+      | inr hin => exact .mp (.ax (basisK h _ a)) (.hyp hin)
+  | mp _ _ ih1 ih2 =>
+      intro G hG
+      exact .mp (.mp (.ax (distribution h _ _ _)) (ih1 G hG)) (ih2 G hG)
+
+private theorem discharge {G : List Nat} {a b : Nat}
+    (d : Proof T (a :: G) b) : Proof T G (wim a b) :=
+  discharge_aux h d G rfl
+
+/-- Every unrestricted instance follows by deduction and Peirce's law. -/
+theorem rho8_all (a b c u : Nat) : T (Code254.rho8 a b c u) := by
+  let f := wim (wim c u) a
+  let g := wim a c
+  have hc : Proof T [wim c u, b, g, f] c :=
+    .mp (.hyp (List.mem_cons_of_mem _ (List.mem_cons_of_mem _ (List.mem_cons_self ..))))
+      (.mp (.hyp (List.mem_cons_of_mem _ (List.mem_cons_of_mem _ (List.mem_cons_of_mem _ (List.mem_cons_self ..)))))
+        (.hyp (List.mem_cons_self ..)))
+  have closedC : Proof T [b, g, f] c :=
+    .mp (.ax (basisP h c u)) (discharge h hc)
+  have result : Proof T [] (Code254.rho8 a b c u) :=
+    discharge h (discharge h (discharge h closedC))
+  exact proof_sound h result (by intro x hx; cases hx)
+
+end
+#print axioms rho8_all
+#print axioms composition
+#print axioms distribution
+end SetTheory.BusyBeaver.ZFC.DomRho8
+"""
+
+def render_guarded(certificate_bytes, template_bytes):
+    """Render the small guarded hierarchy; all output inferences are kernel checked.
+
+    This specialized route binds the immutable Source149 inputs. Other certificates
+    are handled by the generic renderer below, not by assumptions about this layout.
+    """
+    from functools import cache
+    import re
+    assert hashlib.sha256(certificate_bytes).hexdigest() == "3cf18a5fe9f187b50b79d97b84535ce9bf776305728b0cdfe17285e94f028452"
+    assert hashlib.sha256(template_bytes).hexdigest() == "c788460c8dd0f4dda4440cae4595d73723223b385825d18df2bf94b52764d087"
+    data = json.loads(certificate_bytes)
+    terms, nodes = data["term_table"], data["nodes"][:61]
+    assert data["format"] == "term_dag_v1"
+    assert {k:data["roots"][k] for k in ("I","K","P","cd59")} == {"I":17,"K":60,"P":25,"cd59":57}
+    truth = "T"
+
+    def norm(t):
+        if not isinstance(t, tuple): return t
+        a,b = map(norm,t)
+        return truth if a == truth and b == truth else (a,b)
+
+    def contains(a,u):
+        return a == u or isinstance(a,tuple) and (contains(a[0],u) or contains(a[1],u))
+
+    def variables(t):
+        return set().union(*map(variables,t)) if isinstance(t,tuple) else {t} if isinstance(t,int) else set()
+
+    def substitute(t,e):
+        return (substitute(t[0],e),substitute(t[1],e)) if isinstance(t,tuple) else e[t] if isinstance(t,int) else truth
+
+    def boot_lean(t):
+        if isinstance(t,tuple): return "(wim "+boot_lean(t[0])+" "+boot_lean(t[1])+")"
+        return "v"+str(t) if isinstance(t,int) else "0"
+
+    def boot_bound(u,a):
+        if u == truth: return "(Nat.zero_le _)"
+        if u == a: return "(Nat.le_refl _)"
+        assert isinstance(a,tuple)
+        if contains(a[0],u): return "(le_l "+boot_lean(a[1])+" "+boot_bound(u,a[0])+")"
+        assert contains(a[1],u)
+        return "(le_r "+boot_lean(a[0])+" "+boot_bound(u,a[1])+")"
+
+    @cache
+    def expression(i):
+        t = terms[i]
+        return (expression(t[0]),expression(t[1])) if isinstance(t,list) else t["var"] if isinstance(t,dict) else truth
+
+    forms = [expression(n["term"]) for n in nodes]
+
+    def rename(a,b,e):
+        if isinstance(a,int):
+            assert isinstance(b,int) and e.setdefault(a,b) == b
+        elif a == truth: assert b == truth
+        else:
+            assert isinstance(b,tuple)
+            rename(a[0],b[0],e); rename(a[1],b[1],e)
+
+    def bootstrap_call(i,e):
+        args = {v:norm(e[v]) for v in variables(forms[i])}
+        raw = substitute(forms[i],args)
+        output = norm(raw)
+        pf = "(b"+str(i)+" h"+"".join(" "+boot_lean(args[v]) for v in sorted(args))+")"
+        if raw != output:
+            pf = "(show T "+boot_lean(output)+" from by simpa only [wim00] using "+pf+")"
+        return pf,output
+
+    bootstrap = []
+    for i,node in enumerate(nodes):
+        assert node["id"] == i
+        f,r = forms[i],node["rule"]
+        if r["kind"] == "truth":
+            assert f == truth
+            pf = "h.truth"
+        elif r["kind"] == "dominated_rho8":
+            (cu,a),((aa,c),(b,cc)) = f
+            ccc,u = cu
+            assert c == cc == ccc and a == aa
+            pf = "(show T "+boot_lean(f)+" from by simpa only [Code254.rho8] using h.rho8 "+boot_lean(a)+" "+boot_lean(b)+" "+boot_lean(c)+" "+boot_lean(u)+" "+boot_bound(u,a)+")"
+        else:
+            assert r["kind"] == "mp_substitution"
+            major,minor = r["major"],r["minor"]
+            assert major < i and minor < i
+            me = {int(k):expression(v) for k,v in r["major_substitution"].items()}
+            ie = {int(k):expression(v) for k,v in r["minor_substitution"].items()}
+            ma,mi = substitute(forms[major],me),substitute(forms[minor],ie)
+            assert isinstance(ma,tuple)
+            rho = {}
+            rename(norm(ma[1]),f,rho)
+            assert len(set(rho.values())) == len(rho)
+            # This is the certificate's documented consequent-renaming convention.
+            # Variables absent from the conclusion are instantiated by truth0.
+            for v in variables(ma) | variables(mi): rho.setdefault(v,truth)
+            me = {v:substitute(t,rho) for v,t in me.items()}
+            ie = {v:substitute(t,rho) for v,t in ie.items()}
+            pm,tm = bootstrap_call(major,me)
+            pi,ti = bootstrap_call(minor,ie)
+            if tm == truth:
+                pm = "(show T (wim 0 0) from by simpa only [wim00] using "+pm+")"
+                tm = (truth,truth)
+            assert tm == (ti,f)
+            pf = "(h.mp "+pm+" "+pi+")"
+        names = " ".join("v"+str(v) for v in sorted(variables(f)))
+        binder = " ("+names+" : Nat)" if names else ""
+        bootstrap.append("private theorem b"+str(i)+binder+" : T "+boot_lean(f)+" :=\n  "+pf+"\n")
+
+    def parse(text):
+        tokens = re.findall(r"[()]|[^\s()]+",text)
+        index = 0
+        def one():
+            nonlocal index
+            t=tokens[index]; index+=1
+            if t != "(": return t
+            out=[]
+            while tokens[index] != ")": out.append(one())
+            index+=1
+            return tuple(out)
+        result=one()
+        assert index == len(tokens)
+        return result
+
+    rows={int(m[1]):(m[2].split(),parse(m[3]),parse("("+m[4]+")")) for m in re.finditer(
+        r"Lemma cd_(\d+) \((.*?) : nat\) : thm230 (.*?)\.\s*Proof\. exact \((.*?)\)\. Qed\.",
+        template_bytes.decode(),re.S)}
+    assert set(rows) == set(range(107))
+
+    def term(t,e,normalize=True):
+        if isinstance(t,str): return truth if t == "0" else e[t]
+        assert len(t) == 3 and t[0] == "wim"
+        pair=(term(t[1],e,normalize),term(t[2],e,normalize))
+        return norm(pair) if normalize else pair
+
+    def subst(t,e):
+        return norm((subst(t[0],e),subst(t[1],e))) if isinstance(t,tuple) else e.get(t,t)
+
+    def lean(t):
+        return "(wim "+lean(t[0])+" "+lean(t[1])+")" if isinstance(t,tuple) else "0" if t == truth else t
+
+    base={2,3,6,8,9,12,13,15,16,17,25,39,40,59}
+    @cache
+    def guards(n):
+        if n in base:return frozenset()
+        if n == 0:return frozenset({("v1","v2")})
+        names,_,body=rows[n]
+        e={v:v for v in names}
+        def walk(t):
+            if t[0] == "T_mp":
+                assert len(t)==5 and t[1:3]==("_","_")
+                return walk(t[3]) | walk(t[4])
+            j=int(t[0][3:]); assert j<n
+            args=[term(x,e) for x in t[1:]]
+            assert len(args)==len(rows[j][0])
+            env=dict(zip(rows[j][0],args))
+            instantiated={(subst(u,env),subst(a,env)) for u,a in guards(j)}
+            return {(u,a) for u,a in instantiated if u!=truth and not contains(a,u)}
+        return frozenset(walk(body))
+    assert not guards(91) and not guards(106)
+    assert max(map(lambda n:len(guards(n)),rows)) == 1
+
+    used=set()
+    def use(n):
+        if n in used:return
+        used.add(n)
+        if n in base or n==0:return
+        def walk(t):
+            if t[0]=="T_mp":walk(t[3]);walk(t[4])
+            else:use(int(t[0][3:]))
+        walk(rows[n][2])
+    use(91);use(106)
+    assert len(used)==81 and sum(bool(guards(n)) for n in used)==8
+
+    def bound(u,a,available):
+        if u==truth:return "(Nat.zero_le _)"
+        if u==a:return "(Nat.le_refl _)"
+        if (u,a) in available:return available[(u,a)]
+        if isinstance(a,tuple):
+            if contains(a[0],u):return "(le_l "+lean(a[1])+" "+bound(u,a[0],available)+")"
+            if contains(a[1],u):return "(le_r "+lean(a[0])+" "+bound(u,a[1],available)+")"
+        raise ValueError("unproved numerical guard")
+
+    patterns=[("basisI",("a","a")),("basisK",("a",("b","a"))),
+              ("basisP",((("a","b"),"a"),"a")),
+              ("basisJ",(("a","b"),((("a","c"),"a"),"b")))]
+    def match(p,t,e):
+        if isinstance(p,str):
+            if p in e:return e[p]==t
+            e[p]=t;return True
+        return isinstance(t,tuple) and match(p[0],t[0],e) and match(p[1],t[1],e)
+    def basis(t):
+        for name,p in patterns:
+            e={}
+            if match(p,t,e):return "("+name+" h "+" ".join(lean(e[x]) for x in ("a","b","c") if x in e)+")"
+        assert isinstance(t,tuple)
+        return "(h.mp (basisK h "+lean(t[1])+" "+lean(t[0])+") "+basis(t[1])+")"
+
+    lemmas=[]
+    for n,(names,wanted,body) in rows.items():
+        if n not in used:continue
+        e={v:v for v in names}
+        gs=sorted(guards(n),key=repr)
+        available={g:"hb"+str(i) for i,g in enumerate(gs)}
+        bind=" ".join("(hb"+str(i)+" : "+lean(u)+" ≤ "+lean(a)+")" for i,(u,a) in enumerate(gs))
+        def walk(t):
+            if t[0]=="T_mp":
+                mi,miout=walk(t[3]);ma,maout=walk(t[4])
+                if maout==truth:maout=(truth,truth)
+                assert maout[0]==miout
+                return "(h.mp "+ma+" "+mi+")",maout[1]
+            j=int(t[0][3:]);assert j<n
+            args=[term(x,e) for x in t[1:]]
+            env=dict(zip(rows[j][0],args))
+            bs=[bound(subst(u,env),subst(a,env),available) for u,a in sorted(guards(j),key=repr)]
+            pf="(cd"+str(j)+" h "+" ".join(map(lean,args))+(" "+" ".join(bs) if bs else "")+")"
+            output=term(rows[j][1],env)
+            if term(rows[j][1],env,False)!=output:
+                pf="(show T "+lean(output)+" from by simpa only [wim00] using "+pf+")"
+            return pf,output
+        if n==0:
+            pf="(show T "+lean(term(wanted,e))+" from by simpa only [Code254.rho8] using h.rho8 v2 v3 v0 v1 hb0)"
+        elif n in base:pf=basis(term(wanted,e))
+        else:
+            pf,output=walk(body)
+            assert output==term(wanted,e)
+        lemmas.append("private theorem cd"+str(n)+" ("+" ".join(names)+" : Nat) "+bind+" :\n    T "+lean(term(wanted,e))+" := by\n  simpa only [wim00] using "+pf+"\n")
+    return GUARDED_HEAD+"\n".join(bootstrap)+GUARDED_MIDDLE+"\n".join(lemmas)+"\n"+GUARDED_TAIL
+
+
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("certificate", type=Path)
 parser.add_argument("output", type=Path)
 options = parser.add_mutually_exclusive_group()
 options.add_argument("--plan", type=Path, help="use an explicit original-node plan")
 options.add_argument("--no-plan", action="store_true", help="use only greedy schema pruning")
+parser.add_argument("--templates", type=Path, help="CD230 template file for the guarded Source149 route")
 args = parser.parse_args()
+if args.templates and (args.plan or args.no_plan):
+    parser.error("--templates cannot be combined with --plan or --no-plan")
 src, out = args.certificate, args.output
 raw = src.read_bytes()
 original149 = "3cf18a5fe9f187b50b79d97b84535ce9bf776305728b0cdfe17285e94f028452"
+if not args.plan and not args.no_plan and hashlib.sha256(raw).hexdigest() == original149:
+    template_path = args.templates or (Path(__file__).resolve().parents[5] /
+        "SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/149-dom-theory-ev-CD230.v")
+    out.write_text(render_guarded(raw, template_path.read_bytes()), encoding="utf-8", newline="\n")
+    print("wrote guarded hierarchy:61 bootstrap +81 CD templates + deduction")
+    raise SystemExit(0)
+if args.templates:
+    parser.error("--templates requires the exact original Source149 certificate")
 if args.plan or (not args.no_plan and hashlib.sha256(raw).hexdigest() == original149):
     # The shared replay validates its input hash, substitutions and acyclic order.
     # Its output remains untrusted: the direct proofs below are checked by Lean.

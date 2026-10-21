@@ -1,0 +1,167 @@
+% Include-only section; requires amsmath, amssymb, amsthm, booktabs.
+\section{A productive-adjacency obstruction for rotating pop}
+\label{sec:rotating-obstruction}
+
+The archived packet \texttt{MP0\_Transfer\_215.zip} contains a physically
+validated experimental 215-state table, \texttt{research/rotate-pop215/R.native.tm},
+whose refutational completeness is explicitly left open. Its command
+\[
+ \mathsf R(t,[x;v],d,h)=(x,v,d,t)
+\]
+halts instead when $h=1$ or $x=1$. Here $[x;v]=P(x,v)$, with Cantor
+pairing $P$, and $\operatorname{unpair}(0)=(0,0)$. The following argument
+shows that the missing compiler cannot be repaired while keeping this
+interface and the literal AX row order. It uses no consistency assumption,
+no model of set theory, and no theoremhood invariant.
+
+Put $I(a,b)=4P(a,b)$, $Q_a b=4P(a,b)+2$, $E(a,b)=4P(a,b)+3$,
+$M(a,b)=4P(a,b)+1$, $F=1$, and $NX=I(X,F)$. Define
+$\exists_aX=NQ_aNX$. The actual AX output is
+\[
+ (G,[r_1,r_2,r_3,r_4,r_5,r_6,r_7,L,Q_Uh,t;w],0,0),
+\]
+where $U=d$, $A=d+x$, $B=h+y$, $C=c$, the $r_j$ are exactly
+\begin{align*}
+ r_1&=\exists_AE(A,B),\\
+ r_2&=I(Q_A I(B,C),I(Q_AB,Q_AC)),\\
+ r_3&=I(E(A,B),I(M(C,A),M(C,B))),\\
+ r_4&=I(Q_AQ_BC,Q_BQ_AC),\\
+ r_5&=I(E(C,A),I(M(C,B),M(A,B))),\\
+ r_6&=I(\exists_AQ_AC,C),\\
+ r_7&=I(E(C,A),I(E(C,B),Q_{M(A,B)}E(A,B))),\\
+ L&=I(I(I(C,U),A),I(I(A,C),I(B,C))).
+\end{align*}
+The gate $G$ is either zero or the literal full bundle
+\[
+ G=I(I(V,J),F),\qquad V=I(M(A,B),Q_CM(A,B)).
+\]
+The contents of $J$ are immaterial to the argument: the full inherited
+term is retained. Thus the result does not weaken the underlying theory.
+
+Call a pair $(m,a)$ \emph{productive} when
+\[
+             \exists b>0\quad m=I(a,b).
+\]
+For a command store, consider the ordered spine
+$h,t,x_1,x_2,\ldots$, where $x_i$ are successive heads of its encoded
+stack. A spine is \emph{blocked} when none of its entries is $1$ and
+none of its adjacent pairs is productive. The all-zero spine is blocked.
+This definition is numerical; it does not require that an entry decode
+to a conventional formula.
+
+\paragraph{The AX adjacency lemma.}
+Every newly introduced adjacent pair of the AX spine
+\[
+ 0,G,r_1,r_2,r_3,r_4,r_5,r_6,r_7,L,Q_Uh,t,x_1,\ldots
+\]
+is unproductive. The existing suffix beginning with $t$ is unchanged.
+For the pair beginning with zero this follows from the exact implication
+alias $I(a,b)=0\Longleftrightarrow a=b=0$. For the remaining pairs,
+injectivity of $I$ reduces a possible match $m=I(a,b)$ to equality
+between the antecedent of $m$ and $a$. The following table gives the
+contradictory outer tags; nested comparisons use injectivity once more.
+
+\begin{center}\small
+\begin{tabular}{lll}
+\toprule
+Pair & Required equality & Contradiction modulo $4$\\
+\midrule
+$(G,r_1)$, enabled gate & $V=Q_A N E(A,B)$ & $0\ne2$\\
+$(r_1,r_2)$ & $Q_A N E(A,B)=r_2$ & $2\ne0$\\
+$(r_2,r_3)$ & $Q_A I(B,C)=r_3$ & $2\ne0$\\
+$(r_3,r_4)$ & $E(A,B)=r_4$ & $3\ne0$\\
+$(r_4,r_5)$ & $Q_AQ_BC=r_5$ & $2\ne0$\\
+$(r_5,r_6)$ & $E(C,A)=r_6$ & $3\ne0$\\
+$(r_6,r_7)$ & $Q_A N Q_AC=E(C,A)$ & $2\ne3$\\
+$(r_7,L)$ & $E(C,A)=L$ & $3\ne0$\\
+$(L,Q_Uh)$ & $I(I(C,U),A)=Q_Uh$ & $0\ne2$\\
+$(Q_Uh,t)$ & $Q_Uh=I(t,b)$ & $2\ne0$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For a disabled gate $G=0$, the zero-pair argument applies. All generated
+entries are different from $1$: the gate and eight rows have tag zero,
+and $Q_Uh$ has tag two. This includes the possible alias $L=0$; no
+positivity of $L$ is assumed. The inequality $U\le A$ is not needed.
+
+\paragraph{Preservation theorem.}
+Every finite word of the rotating-pop commands, MP and AX preserves a
+blocked spine and never halts when begun at a blocked spine. In
+particular, this holds for every finite word from $t=h=w=0$, with
+arbitrary additive counter and arbitrary raw command parameters.
+
+\emph{Proof.} AX preserves the property by the adjacency lemma.
+Rotating pop maps the spine $h,t,x_1,x_2,\ldots$ to
+$t,x_1,x_2,\ldots$, a suffix. Its two tested entries are not $1$.
+For MP put $y=d+x$. If it succeeds, $h=I(t,y)$, so blockedness forces
+$y=0$. The returned spine is $0,0,0,x_1,x_2,\ldots$. If it fails,
+the returned spine is $0,0,x_1,x_2,\ldots$. Every new pair beginning
+with zero is unproductive, and every new entry is zero. In either
+case blockedness is preserved. Induction on the word proves the claim.
+This proof also covers every numerical zero-stack alias.\hfill$\square$
+
+\paragraph{The actual dirty-tail initialization.}
+The preceding argument has a finite-prefix form. For any fixed raw tail
+$J$, maintain a finite explicit head list $X$ over $J$ such that the
+finite spine $[h,t]+X$ is blocked. AX adds ten explicit heads, R consumes
+one, and MP adds either zero heads or one zero head. Whenever the
+current explicit head list is nonempty, the same preservation proof
+applies. Thus an external scheduler credit bound protects \emph{blocked}
+heads just as it protects theorem-valued heads; the latter interpretation
+is unnecessary here.
+
+For the archived R table, the supplied exact blank startup reaches the
+interior of the unchanged AX at source ordinal $55$, with registers
+$[1,11,2,0,0,0,0,0,0]$. Its recorded AX-prefix match completes to next
+candidate $1$, empty proof pointer, $t=d=h=0$, and
+\[
+ [r_1(0,0,0),\ldots,r_7(0,0,0),L(0,0,0,0),Q_0 0,0;4].
+\]
+The displayed ten-head prefix is blocked by the lemma, independently
+of the tail $4=P(1,1)$. The unchanged wire arities are one field for
+R (tag zero), two fields for MP (tag one), and three fields for AX
+(tags at least two). The inherited all-natural Cantor-diagonal credit
+proof assigns weights $-1,0,10$ and proves that every schedule prefix
+from candidate $1$ has weight at least $-2$. Consequently at least
+eight explicit blocked heads remain throughout the actual execution.
+The buried $1$ heads are never reached. The source therefore never
+halts, by an ordinary proof formalizable in ZFC. Combining the supplied
+positive-duration primitive simulation and the complete blank prefix
+gives the same unconditional nonhalting statement for the exact R table.
+
+This last exact-table conclusion is conditional on those independently
+specified physical certificates; the new proof here establishes the
+command-level obstruction and its protected-prefix transport. It does
+not rerun the large physical certificates. The checker accompanying this
+section verifies all ten literal adjacency obstructions and the exact
+numerical gate/row formulas used in this proof. It does not claim to
+be a proof-assistant kernel check.
+
+\paragraph{A fixed theorem defeats the proposed strong compiler.}
+The calibrated numerical calculus proves
+\[
+                   X=I(0,Q_0 0)=I(0,2)=20.
+\]
+Indeed truth gives zero, GEN gives $Q_0 0=2$, and the derived
+propositional K schema gives $2\to(0\to2)$; one MP gives $X$.
+The dominated calculus inherits that K schema from its established
+propositional recovery certificate. A strong block for $X$, applied
+to the all-zero store, would have to halt or return
+$(20,0,0,0)$. The preservation theorem excludes halting. The alleged
+return has spine $0,20,0,0,\ldots$, containing the productive adjacent
+pair $(20,0)$ because $20=I(0,2)$ and $2>0$. Hence the return is
+also impossible. No strong compiler for all numerical theorems exists,
+even for this fixed elementary theorem; this conclusion does not use
+any consistency or incompleteness assumption.
+
+\paragraph{Consequence for refutational completeness.}
+More generally, no block can take a blocked all-zero store to a
+return state with top $1$ or to a halt. If a
+refutation-complete compiler for the calibrated ZFC calculus existed
+and were provable in ZFC, the unconditional nonhalting proof would
+yield $\operatorname{Con}(\mathrm{ZFC})$ in ZFC. Under the usual
+consistency assumption this contradicts the second incompleteness
+theorem. The obstruction is specifically caused by preserving the
+literal AX order while replacing transfer-pop with rotating pop.
+Changing that order, emitting an additional bridge pair, or changing
+the return map would need a new analysis.

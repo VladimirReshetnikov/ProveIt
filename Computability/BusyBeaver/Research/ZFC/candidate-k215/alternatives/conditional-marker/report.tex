@@ -1,0 +1,639 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,listings,needspace}
+\usepackage[hidelinks,breaklinks]{hyperref}
+\hypersetup{pdftitle={A 215-State ZFC Consistency Machine via Conditional Origin Markers},pdfauthor={ChatGPT-assisted research for Vladimir Reshetnikov},pdfsubject={Exact machine construction, two-head transfer compiler, and experimental return correction},pdfkeywords={ZFC, consistency, Turing machine, Busy Beaver, conditional origin marker}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{Conditional origin markers and ZFC consistency}\fancyhead[R]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\definecolor{codebg}{gray}{0.965}
+\lstset{basicstyle=\ttfamily\footnotesize,backgroundcolor=\color{codebg},breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{gray!25}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\AX}{\mathsf{AX}}
+\newcommand{\MP}{\mathsf{MP}}
+\newcommand{\SII}{\mathsf{S}_2}
+\newcommand{\Kold}{\mathsf{K}_{215}}
+\newcommand{\Knew}{\mathsf{CM}_{215}}
+\title{A 215-State ZFC Consistency Machine\ via Conditional Origin Markers\\[0.6em]\large A new exact machine, a two-head transfer calculus,\ and a correction to an experimental return path}
+\author{ChatGPT-assisted research for Vladimir Reshetnikov's ProveIt repository}
+\date{21 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct an explicit deterministic binary Turing machine $\Knew$ with
+215 working states, including initialization, and a separate halt. Its
+native transition table differs in six rows from the accepted $\Kold$ at
+ProveIt commit \texttt{75716498437bfc7291d5900cab2983a11fd54bac}.
+An ordinary mathematical proof establishes, for every initial binary tape
+from the designated initial state, halting equivalence of the two machines.
+Consequently the inherited consistency calibration gives
+\[
+ \ZFC\vdash\bigl(\neg\Halt(\Knew,\mathrm{blank})\leftrightarrow\Con(\ZFC)\bigr).
+\]
+The new construction merges two decoder roles and reuses the released label
+as a marker-reading helper. The origin invariant is required only on the
+symbol on which the old roles disagree; a seemingly incompatible incoming
+edge is harmless because it forces the other symbol. This yields a
+materially different 215-state graph, independently distinguished from
+77 prior tables, and a short whole-tape correctness argument. Fresh
+symbolic verification discharges all 6,176 primitive cases; an independent
+finite replay checks the complete 95,714-step blank prefix.
+
+On the formalism side, we prove completeness and a uniform protected-stack
+bound for a three-command language whose transfer removes two stack heads.
+Five composite and five direct source variants have 202 distinct subtrees;
+the direct command uses 61 primitives instead of 104. A qualifying binary
+allocation is not claimed. Finally, we identify an exact control-flow
+error in the incoming scratch-biased short-transfer experiment. We have not
+obtained a verified 214-state machine.
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+
+\section{Results, scope, and conventions}
+
+The principal deliverable is a complete new 215-state machine, rather than
+a proposed edit awaiting a runtime check. The accompanying dense table uses
+working labels $0,\ldots,214$, initial state $0$, and halt $215$. The native
+presentation preserves the predecessor's labels, has initial state $0$,
+dispatcher $84$, and halt $254$. These are exactly the same machine under
+the supplied bijection. The state count includes every initialization state.
+There is one two-way infinite tape, alphabet $\{0,1\}$, an initially zero
+tape, an initial head position of zero, and only left and right moves.
+
+\begin{center}
+\begin{tabular}{p{0.37\textwidth}p{0.55\textwidth}}
+\toprule
+Result & Established status \\
+\midrule
+Exact $\Knew$ table & 215 working states; 430 total transition rows. \\
+Comparison with $\Kold$ & Ordinary all-tape halting-equivalence proof from state $0$. \\
+Consistency calibration & Inherited accepted numerical-calculus theorem plus the new equivalence. \\
+Literal runtime & All 6,176 arbitrary-natural primitive contracts passed afresh. \\
+Blank initialization & All 95,714 transitions independently replayed in both presentations. \\
+Two-head transfer language & New ordinary compiler and infinite protected-stack theorem; source artifacts supplied. \\
+214 states & No qualifying machine established. \\
+Proof-assistant endpoint & No newly compiled Lean or Rocq endpoint asserted. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The repository's current exact-215 Lean and Rocq sources are explicitly
+marked as written but not kernel-checked in the inspected revision
+\cite{K215}. We retain that distinction. Our local equivalence proof is
+short enough to formalize separately, but a Python mathematical checker
+is not a Lean or Rocq kernel.
+
+The inherited source, mathematical calibration, and implementation are
+separate objects. A complete source implementation theorem establishes
+that a physical table executes a specified numerical program. A calibration
+theorem establishes that this program searches precisely for the relevant
+refutations. Section~\ref{sec:correction} illustrates why both must be
+checked.
+
+\section{The accepted baseline and its mathematical interface}
+\label{sec:baseline}
+
+The pinned baseline is the native table with SHA-256
+\begin{lstlisting}
+9683d6ed9628e6ce407c315b08f5da3d063da94e92706f275ca0f33e8272e4b2
+\end{lstlisting}
+The unmodified source has SHA-256
+\begin{lstlisting}
+17af207195179b2508bf91154cd00739374f8862207ca21b9a3cb9098aa6f5ba
+\end{lstlisting}
+It contains 4,751 primitive occurrences, 202 distinct source subtrees, and
+6,176 guarded primitive cases. Its ordinary proof combines the dominated
+numerical calculus, a strong command compiler with cofinal proof codes,
+a whole-tape binary implementation, and a finite blank startup
+\cite{K215proof,K215reproduction}.
+
+For orientation, the numerical constructors use Cantor pairing
+\[
+ P(a,b)=\frac{(a+b)(a+b+1)}2+b,
+ \qquad I(a,b)=4P(a,b),\qquad Q_a(b)=4P(a,b)+2.
+\]
+Truth is code $0$, falsity is code $1$, and the alias $I(0,0)=0$ is retained.
+Other native constructors and the exact gated theory bundle are unchanged.
+The eighth logical row is
+\[
+ L(A,B,C,U)=I\bigl(I(I(C,U),A),\ I(I(A,C),I(B,C))\bigr),
+ \qquad U\le A.
+\]
+The inherited finite derivation recovers unrestricted instances of this
+row from the dominated instances, and the inherited native-calculus
+comparison calibrates refutation with syntactic inconsistency of ZFC
+\cite{dominated}. None of these calibrations is replaced by a new semantic
+interpretation of arbitrary formula codes.
+
+For the principal machine result we need only the following accepted
+interface, with the exact baseline bytes fixed:
+\begin{equation}\label{eq:baseline}
+ \ZFC\vdash\bigl(\Halt(\Kold,\mathrm{blank})
+                    \leftrightarrow\neg\Con(\ZFC)\bigr).
+\end{equation}
+We transfer this statement by an all-tape machine equivalence. Thus the
+principal result does not depend on the new two-head language or on any
+experimental scheduler described later.
+
+\section{Conditional origin markers}
+\label{sec:general}
+
+A usual predecessor-marker fold requires the entire history of one state
+to have one predecessor bit and the entire history of another state to
+have the opposite bit. This condition can be weakened. If the two states
+already agree on the current symbol, their origin need not be recovered
+on that branch.
+
+\begin{lemma}[A conditional marker replacement]\label{lem:marker}
+Let a deterministic binary machine $T$ have distinct noninitial,
+nonhalting states $p,q$ with
+\[
+ T(p,0)=(0,R,a_1),\qquad T(q,0)=(0,R,a_0),\qquad
+ T(p,1)=T(q,1).
+\]
+Suppose that along every run from its specified initial state, on every
+initial tape, the following conditional invariants hold:
+\begin{enumerate}
+\item at state $p$ reading zero, the cell immediately to the left is one;
+\item at state $q$ reading zero, the cell immediately to the left is zero.
+\end{enumerate}
+Let $x_0,x_1$ be existing nonhalting provider states, distinct from $p,q$,
+with $T(x_i,0)=(0,R,a_i)$, and assume $a_i\ne q$.
+Construct $N$ by redirecting old incoming edges to
+$q$ into $p$, setting
+\[
+ N(p,0)=(0,L,q),\quad
+ N(q,0)=(0,R,x_0),\quad N(q,1)=(1,R,x_1),
+\]
+and replacing every non-overridden row $(w,D,r)$ by $(w,D,\phi(r))$,
+where $\phi(q)=p$ and $\phi(r)=r$ for $r\ne q$.
+This rule includes the common read-one row at $p$.
+The displayed provider rows are therefore retained, and the new internal
+helper states are not halts.
+Then $T$ and $N$ halt equivalently from their specified common initial
+state, on every initial tape.
+\end{lemma}
+
+\begin{proof}
+Relate complete configurations by the same tape and head and by the state
+map $\phi$. Every ordinary old transition is simulated by one new
+transition, including the common read-one transition of $p$ and $q$.
+On the exceptional branch, let the current head be at $h$, the current
+cell be zero, and the predecessor marker be $i$. The new machine executes
+\[
+ (p,h)\longrightarrow(q,h-1)\longrightarrow(x_i,h)
+              \longrightarrow(a_i,h+1).
+\]
+The three writes reproduce the values already present: zero, the marker
+$i$, and zero. Every other cell is untouched. The conditional invariant
+chooses exactly the endpoint of the old transition. Therefore one old
+step has the same full-tape effect as either one or three new steps.
+
+Induction on old time constructs a concatenated new computation from the
+same initial configuration. Each simulation block has strictly positive
+length at most three. A finite old halt is reached by the new computation.
+An infinite old computation supplies an infinite new computation; by
+determinism this is the actual new run, so it cannot halt earlier. This
+also gives the reverse implication. The argument is valid for arbitrary
+tapes and does not inspect any cell outside the two-cell local block.
+\end{proof}
+
+The lemma does not require a one-to-one map on the old control states.
+The old label $q$ denotes a decoder role before the transformation and an
+internal helper after it. This is why the construction is state-neutral:
+one role is merged, and the released label supplies the helper. A state
+saving would additionally require an existing compatible helper.
+
+\begin{corollary}[Exact time transfer]\label{cor:time}
+For every finite old computation with $t$ transitions, let $z$ count its
+visits to the two old states on the read-zero branch. The corresponding
+new computation has exactly $t+2z$ transitions. In particular its length
+lies between $t$ and $3t$.
+\end{corollary}
+
+\section{The concrete 215-state construction}
+\label{sec:construction}
+
+Use $p=52$, $q=176$, $a_0=168$, $a_1=154$, $x_0=185$, and $x_1=129$.
+The baseline rows are
+\[
+\begin{array}{c|cc}
+ &0&1\\\hline
+52&0R154&1R150\\
+176&0R168&1R150
+\end{array}
+\]
+and the providers satisfy $185/0=0R168$ and $129/0=0R154$.
+Here $wDq$ denotes writing $w$, moving in direction $D$, and entering $q$.
+
+\subsection{Why the apparently incompatible caller is safe}
+
+The complete incoming-edge census is finite and exact:
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Old destination & Incoming row & Information established \\
+\midrule
+52 & $190/1=1R52$ & Left predecessor is one. \\
+52 & $193/1=1R52$ & Left predecessor is one. \\
+176 & $165/0=0R176$ & Left predecessor is zero. \\
+176 & $193/0=0R176$ & Left predecessor is zero. \\
+176 & $156/1=1R176$ & Current cell is one, by the preceding row. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The last row cannot simply be ignored: its predecessor marker is one,
+which would violate an unconditional origin invariant for state $176$.
+However, the \emph{only} incoming edge to state $156$ is
+\[
+ 189/1=1L156.
+\]
+It writes one at a cell, steps left, and, if followed by $156/1$, returns
+right to that same written cell. Consequently this arrival at $176$
+always reads one. The two old roles agree there. Every arrival at $176$
+that actually reads zero must instead come from $165/0$ or $193/0$, and
+has predecessor zero. State $52$ always has predecessor one. Neither
+state is initial. This proves both premises of Lemma~\ref{lem:marker}
+for every run from state zero on every tape.
+
+\subsection{The six changed transition rows}
+
+All rows other than the following six remain byte-for-byte identical in
+the native tables:
+\begin{center}
+\begin{tabular}{ccll}
+\toprule
+State & Read & Baseline & New machine \\
+\midrule
+52 & 0 & $0R154$ & $0L176$ \\
+156 & 1 & $1R176$ & $1R52$ \\
+165 & 0 & $0R176$ & $0R52$ \\
+176 & 0 & $0R168$ & $0R185$ \\
+176 & 1 & $1R150$ & $1R129$ \\
+193 & 0 & $0R176$ & $0R52$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+In the new machine, the zero-marker block is
+\[
+ 52\longrightarrow176\longrightarrow185\longrightarrow168,
+\]
+and the one-marker block is
+\[
+ 52\longrightarrow176\longrightarrow129\longrightarrow154.
+\]
+Both leave the whole tape unchanged and move one cell right, precisely as
+the respective old read-zero row did. Ordinary decoder visits to $185$
+and $129$ retain their original behavior. Their displayed zero rows are
+not modified.
+
+\begin{theorem}[Exact all-tape equivalence]\label{thm:alltape}
+For every initial binary tape $\tau$ with head at zero,
+\[
+ \Halt(\Knew,0,\tau)\quad\Longleftrightarrow\quad
+ \Halt(\Kold,0,\tau).
+\]
+The simulation has the exact time relation in Corollary~\ref{cor:time}.
+\end{theorem}
+\begin{proof}
+The incoming census establishes the conditional invariants, the provider
+rows establish the two local blocks, and every remaining transition
+commutes with $\phi(176)=52$. Apply Lemma~\ref{lem:marker}.
+\end{proof}
+
+This theorem concerns the designated initial state. It deliberately does
+not quantify over arbitrary starts inside a merged role with an invalid
+marker. In particular, starting the new helper label $176$ as if it were
+the old decoder role would describe a different initial configuration.
+
+The complete native and dense tables are supplied in the archive. Their
+SHA-256 hashes are respectively
+\begin{lstlisting}
+e5907f08e0752eada0e25bbf33680341e80e5fe94b52b409aea1ed039edda252
+1f4f084f7293e2b042d5746039f793ff72ed429083b504970c939a5515e666cf
+\end{lstlisting}
+Every working state is reachable in the finite directed transition graph.
+This graph reachability statement is not a claim that every state is
+visited on the blank run.
+
+\section{Consistency equivalence and the extent of the proof}
+
+\begin{theorem}[The requested consistency statement]\label{thm:zfc}
+For the exact supplied 215-state machine,
+\[
+ \ZFC\vdash\left(\neg\Halt(\Knew,\mathrm{blank})
+                      \leftrightarrow\Con(\ZFC)\right).
+\]
+\end{theorem}
+\begin{proof}
+Blank-tape halting for a fixed finite transition table and its finite
+computation codes are arithmetically definable. Arbitrary tape functions
+and their finite updates are also directly definable in ZFC. The finite
+incoming-edge checks and the two local tape calculations are formalizable
+in ZFC. Ordinary induction proves the configuration simulation, and
+positive block lengths prove preservation of halting and nonhalting.
+Hence Theorem~\ref{thm:alltape} is formalizable in ZFC. Combine its blank
+instance with the accepted calibration~\eqref{eq:baseline} and apply
+classical negation.
+\end{proof}
+
+The consistency of ZFC is not an assumption used to prove this
+\emph{equivalence}. If ZFC is consistent, the machine does not halt; if a
+finite ZFC refutation exists, it does halt. We make no unconditional
+consistency or nonhalting assertion and no minimum-state claim. We also
+make no unqualified two-sided independence claim: consistency assumptions
+for different unprovability directions must be stated separately.
+
+The new proof depends on the pinned baseline's ordinary calibration.
+It does not re-prove the entire inherited native-calculus development.
+Copies of its relevant expositions, exact input tables, source, hashes,
+notices, and the fresh local evidence are included to make that dependency
+reviewable.
+
+\section{Fresh implementation and independent evidence}
+\label{sec:verification}
+
+The source program is unchanged. A fresh run of the inherited symbolic
+checker on the new table proves every primitive case with arbitrary natural
+primary registers, arbitrary natural gap, and an arbitrary nonempty finite
+list of natural spare-block values. Unary scan rules are justified by
+induction on unary length, and spare-block traversals by list induction.
+The representation includes the complete tape and zero exterior. These
+are unbounded mathematical contracts; the time limit on constructing
+the finite certificates does not bound represented register values.
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Quantity & Baseline & $\Knew$ \\
+\midrule
+Working states & 215 & 215 \\
+Transition rows & 430 & 430 \\
+Distinct source subtrees & 202 & 202 \\
+Primitive occurrences & 4,751 & 4,751 \\
+Guarded primitive cases & 6,176 & 6,176 \\
+Symbolic proof rules & 1,698,790 & 1,701,542 \\
+Minimum constant duration & 6 & 6 \\
+Blank prefix length & 95,714 & 95,714 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+An independent reader checks the ordered case indices and guards, every
+saved row reference, the exact table/source hashes, and full row coverage.
+All 430 rows are accounted for. Compared with the baseline's case records,
+5,632 affine durations are identical, 128 increase by two, and 416 increase
+by six. Every variable coefficient and every stated motion remains
+identical. Thus 544 arbitrary-natural primitive cases actually use the
+changed mechanism. The new table is not merely a modification to an
+unobserved transition.
+
+The complete blank trace is independently replayed against both native
+and dense tables. Its terminal frame is
+\[
+\begin{gathered}
+ \text{native state }84,\quad\text{head }-8,\quad
+ \text{header }57,\quad\text{gap }1,\\
+ (N,T,W,A,D,H,X,Y,L)=(4,0,0,0,0,0,0,0,0),
+\end{gathered}
+\]
+with forty unit-valued spare blocks, 95 one-cells, and zero elsewhere.
+The new marker-zero branch is not used in this particular finite startup;
+that explains the identical prefix length. The arbitrary-natural runtime
+cases and the all-tape proof cover its later uses.
+
+The ordinary equivalence theorem could transfer the accepted correctness
+without a second full primitive proof. The fresh proof and independent
+record audit are nevertheless useful here because the artifact requested
+is an exact new table, and they check both its emitted bytes and its
+compatibility with the existing verification pipeline.
+
+\subsection{A reproducible test of material difference}
+
+The new graph has one additional left-moving transition and one fewer
+right-moving transition than the baseline. Consequently no state renaming
+can identify them. The rooted graphs, including read symbols, written
+symbols, directions, and the halt, were additionally compared with 77
+unique 215-state tables drawn from the checked-out candidate directory
+and all twelve incoming archives. None agrees, either directly or after
+left/right reflection. The inventory and comparison receipt retain exact
+hashes. This is a bounded novelty statement about that explicit corpus,
+not a claim to have searched every historical machine.
+
+There is a concrete structural change: old roles $52$ and $176$ now share
+one boundary state, while label $176$ becomes a predecessor-reading
+helper. A useful future allocator may be able to share that helper with
+another role. The present construction itself retains 215 states.
+
+\input{sections/stride2.tex}
+\input{sections/correction.tex}
+
+\section{The attempted 214-state routes and their limits}
+\label{sec:search}
+
+We investigated both source packing and direct binary changes before
+selecting the verified result. Source DAG counts were used as a search
+measure, never as a substitute for a physical state count.
+
+A closed-reassociation beam with the existing partial selector frozen
+examined 801 sources and retained a best count of 202 subtrees. A wider
+beam that allowed changes inside its unused children examined 94,227
+sources in a bounded run and found 202-subtree presentations with depth
+41 instead of 47. Four representative attempts to allocate these shallower
+sources into the existing protected row pool were infeasible under that
+specific allocation policy. This does not rule out a different allocator.
+
+Two further beams allowed the more general association
+$(A,(B,C))\leftrightarrow((A,B),C)$ whenever $A$ has no escaping forward
+jump and $C$ has no escaping backward jump; the middle block may be open.
+Every saved result was checked by both full source CFG resolvers.
+The bounded runs examined 69,868 and 106,432 source trees. Their best
+saved value of ``DAG nodes plus twice maximum zero run'' was 214,
+corresponding to 202 nodes and zero-run length six. This numerical score
+is a source-search score, \emph{not} a 214-state result.
+
+Deleting native scanner state $50$ and redirecting $34/0$ to $75$
+produces a 214-state table and a calibrated finite blank prefix, but the
+complete arbitrary-natural runtime attempt does not pass. Of the 6,176
+cases, 6,104 pass and 72 cases at 37 source sites fail to be certified.
+Those sites are exactly the addresses ending in six zeros.
+
+The archive gives an actual counterexample, beyond this failure to derive
+the contracts. At source ordinal 26, the primitive is $\mathrm{CD}(1)$
+at address \texttt{1101001001000000}. Take all nine logical registers
+zero, gap zero, spare list $[0]$, native dispatcher 84, and head zero.
+The full initial tape support is
+\[
+\{-1,0,1,3,6,9,64,66,68,70,72,74,76,78,80,82,84\}.
+\]
+The baseline reaches its first clean dispatcher frame after 588 steps,
+with the required address \texttt{110100100100001}. The shortened table
+reaches its first clean dispatcher frame after 662 steps, but its address
+is \texttt{1101001001001}: one cell at position 14 has moved to position
+12, while all other one-cells agree. Both complete traces are independently
+replayed by the supplied counterexample checker.
+This disproves the proposed arbitrary-frame implementation contract.
+It does not establish a separate claim about that table's blank-run
+consistency equivalence. Section~\ref{sec:questions} makes the remaining
+source/interface question explicit.
+
+The two-head transfer source has 202 subtrees. In the first direct protected
+allocation, eight changed roles competed for seven usable existing role
+slots, and the model was infeasible. The other source associations and
+possible global reallocation remain research. This is not a physical
+lower bound on the new formalism.
+
+The state-neutral conditional-marker construction was chosen because it
+has a complete local theorem and passes the exact implementation checks.
+We do not relabel a failed 214-state search as a successful reduction.
+
+\section{Further research questions}\label{sec:questions}
+
+\begin{enumerate}
+\item \textbf{Can the new helper be shared?} The old decoder role $176$
+now occupies the boundary state $52$. The released label implements
+$0R185/1R129$. An allocation that supplies that selector with another
+existing state would turn this particular construction into a 214-state
+one. Its caller-context and ordinary decoder obligations must be checked
+together.
+
+\item \textbf{Can two conditional folds use one helper?} Separate safe
+folds can be state-neutral, while a common helper might make their
+composition save a state. The concrete marker relations give a small
+finite search target; the helper must avoid recursive dependence on either
+merged role.
+
+\item \textbf{Can six-zero return suffixes be eliminated at no net cost?}
+The failed scanner shortening isolates 37 source addresses. A semantics-
+preserving reparse, a different control encoding, or a contextual bypass
+that repairs those exact returns could make the deletion of state $50$
+useful. A smaller maximum source depth alone is insufficient.
+
+\item \textbf{How far does two-head transfer generalize?} The new proof
+uses successful $\MP(0)$ as explicit parity padding and a non-detachment
+identity to recover a total PUSH. For transfers that remove $k$ heads,
+what finite padding and packet-selection conditions yield an equally
+strong compiler? What is the actual binary cost of those languages?
+
+\item \textbf{Can the two-head source be allocated within 215 states?}
+Its 202-node source count is close to the accepted source count, but
+contextual engine overlaps matter. The five exact source variants give
+concrete starting points for a role allocator or a different return
+encoding.
+
+\item \textbf{Can marker proofs be synthesized with small checked
+certificates?} The successful invariant uses a two-transition fact about
+an anomalous caller. A finite analysis of neighboring tape cells could
+synthesize such guarded origin assertions, then emit a small independent
+certificate of every incoming case.
+
+\item \textbf{Can future source edits automatically certify return
+binding?} The short-transfer failure changes the target of a continuation
+when one branch bit is inserted. A source transformation should emit
+both old and new complete guarded CFGs, or a stated semantic relation,
+before any logical compiler theorem is transferred.
+
+\Needspace{6\baselineskip}
+\item \textbf{Can the exact new table receive a compiled formal endpoint?}
+The all-tape conditional-marker lemma offers a short route from an eventual
+checked $\Kold$ endpoint. It should be formalized at the literal-table
+level, with the two-step caller guard and the positive simulation-block
+lengths made explicit.
+\end{enumerate}
+
+\section{Reproduction and artifact map}
+\label{sec:reproduction}
+
+The archive is intended to be unpacked as one directory. The main machine,
+source, literal six-row recipe, canonicalization map, baseline inputs,
+ordinary proof, symbolic checker, independently written audits, and
+compressed evidence are included. The main standard-library validation
+entry point is:
+\begin{lstlisting}
+python3 -B verify.py
+\end{lstlisting}
+It verifies immutable input hashes, reconstructs both tables, checks the
+conditional-marker proof data, audits the saved arbitrary-natural cases,
+replays both complete blank traces, runs the two-head interface checks,
+and reproduces the return-target counterexample. It does not invoke an
+optimizer or download dependencies.
+
+To rederive the full symbolic primitive proof in a new directory:
+\begin{lstlisting}
+python3 -B verify.py --runtime /absolute/path/to/fresh-runtime
+\end{lstlisting}
+This optional step can take several minutes. It reruns the mathematical
+checker; the ordinary source/calculus calibration remains the explicitly
+stated proof dependency. The saved proof and complete runtime are bound
+to the exact table hashes printed above.
+
+The document is built with ordinary pdfLaTeX:
+\begin{lstlisting}
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{lstlisting}
+The root manifest lists every shipped file with its SHA-256. Runtime
+records are compressed losslessly. Failed searches and hypothetical
+corrected sources are kept under \texttt{research/}, apart from the
+accepted \texttt{machine/} directory.
+
+\section*{Attribution and proof ownership}
+
+The accepted K215 table, its numerical calculus, dominated-row derivation,
+source compiler, original runtime checker, and preceding marker folds
+are inherited from the ProveIt contributors and the upstream work cited
+in the retained notices. This packet contributes the conditional
+$52/176$ marker construction and its local proof, its fresh verification
+and independent comparison, the two-head transfer compiler and credit
+argument, and the explicit short-transfer return correction. The new
+source-side theorem is separate from the main machine calibration.
+Original licenses and notices are preserved. No authorship of the
+inherited 215-state calibration is claimed.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{K215} ProveIt contributors, \emph{K215: 215 working states for ZFC
+consistency}, inspected at commit
+\texttt{75716498437bfc7291d5900cab2983a11fd54bac}, 21 October 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/75716498437bfc7291d5900cab2983a11fd54bac/Computability/BusyBeaver/Research/ZFC/candidate-k215}{Pinned candidate directory on GitHub}.
+\bibitem{K215proof} ProveIt contributors, \emph{Ordinary proof of the combined
+215 machine}, \texttt{candidate-k215/proof.md}, same pinned commit.
+A copy is included in \texttt{reference/}.
+\bibitem{K215reproduction} ProveIt contributors, \emph{Reproduction and
+evidence scope}, \texttt{candidate-k215/reproduction.md}, same pinned commit.
+\bibitem{dominated} ProveIt contributors, \emph{Dominated-rho8 construction},
+\path{candidate-k218/alternatives/dominated/proof.md}, same pinned commit.
+\bibitem{transfer} ProveIt incoming packet, \emph{Complete proof compiler for
+the three-command NIP-transfer enumerator}, retained under
+\path{T215_Transfer_2026-10-20/reference/transfer-parent/proofs/}.
+This is a source of inherited interfaces, not a proof of the literal
+scratch-biased source corrected here.
+\bibitem{MP0} ProveIt incoming packet, \emph{MP0 Transfer 215},
+\path{docs/incoming/MP0_Transfer_215.zip}, same pinned commit.
+The exact source and native table hashes used for the two-head derivative
+are retained in its source-construction record.
+\bibitem{short} ProveIt incoming packet, \emph{Short-transfer experiments:
+rejected implementations and one open 215-state machine},
+\path{docs/incoming/T215_Transfer_2026-10-20.zip},
+\texttt{research/short-transfer/}. The scratch-biased table and source
+are identified by full hashes in Section~\ref{sec:correction}.
+\end{thebibliography}
+\end{document}

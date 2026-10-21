@@ -1,5 +1,11 @@
 # Rocq K215 build
 
+The [later compact-certificate check](../simplification/phase2/rho8-global/rocq/README.md)
+rebuilds all seven affected modules and obtains four closed endpoint reports.
+Its 735-instruction rendering has 22,673 bytes, and a focused recursive check of
+the changed dominated-rule module passes. This incremental result preserves the
+original full-build and recursive endpoint receipts below.
+
 **Status: `PASS_CLOSED_KERNEL`** (2026-10-21). All 237 modules compiled with
 Rocq 9.1.0, OCaml 4.14.2 and rocq-stdlib 9.0.0. The matching `coqchk` recursively
 rechecked `K215F.CorrectDense215` with no `-admit` or `-norec` option.

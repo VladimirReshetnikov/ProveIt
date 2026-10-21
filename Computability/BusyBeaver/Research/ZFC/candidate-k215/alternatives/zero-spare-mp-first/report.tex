@@ -1,0 +1,33 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=24mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs,longtable,array,enumitem,fancyhdr,xurl}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newcommand{\file}[1]{{\small\path{#1}}}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.6em,topsep=3pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Zero-spare MP-first proof search}\fancyhead[R]{\small 21 October 2026}\fancyfoot[R]{\thepage}
+\hypersetup{pdftitle={Zero-spare MP-first proof search at 215 states},pdfauthor={Research contribution for the ProveIt project}}
+\begin{document}
+\begin{center}
+{\LARGE\bfseries Zero-spare MP-first proof search\par at 215 states}\par\vspace{8pt}
+{\large A new composition with seven permanently protected theorem heads}\par\vspace{5pt}
+{Research contribution for Vladimir Reshetnikov's ProveIt project}\par
+{21 October 2026 UTC}
+\end{center}
+\begin{abstract}
+We construct a materially different 215-working-state, binary, single-tape machine started on an everywhere blank tape. Its command language is the newly published MP-first transfer language; its physical allocator uses zero-valued spare blocks instead of the parent's unit-valued blocks. Neither feature is claimed as newly invented in isolation. Their combination has a different transition graph and a different initialization proof. The exact 73,172-step blank prefix reaches a matched interior axiom-emission frame with an initially unsafe cache. Completion of that axiom leaves eight theorem heads above a suffix whose theoremhood is not assumed. A Cantor-diagonal credit theorem for the MP-first enumeration bounds all future conservative debt by one, permanently protecting the suffix below at least seven heads.
+
+The machine is accompanied by its full transition table, source, construction recipe, exact native/dense startup replay, and arbitrary-natural primitive-runtime certificate. The numerical calculus and its ZFC calibration are inherited with explicit attribution. This is a new composition and ordinary mathematical proof, not a claim of 214 states, minimum size, unconditional nonhalting, or a newly compiled proof-assistant endpoint for these exact bytes.
+\end{abstract}
+\setcounter{tocdepth}{1}\tableofcontents
+\input{sections/construction}
+\input{sections/calibration}
+\input{sections/evidence}
+\input{sections/research}
+\clearpage\appendix
+\section{Complete canonical transition table}
+The working labels are $0,\ldots,214$. The initial state is 0; halt $H$ denotes label 215 and has no outgoing transitions. The initial head is at coordinate 0 on an all-zero tape. An entry $wDq$ writes $w$, moves one cell in direction $D$, and enters $q$. This is the complete machine, not a preinitialized simulator.
+\input{sections/table}
+\end{document}

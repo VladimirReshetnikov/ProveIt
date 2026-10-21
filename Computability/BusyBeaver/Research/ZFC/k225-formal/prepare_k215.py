@@ -10,11 +10,13 @@ between the PC marker and the register header (one more than `KSim.D0`; the cand
 
 1. `lean215/k215_k230labels.tm` (native table, halt 254 -> 230, new states 301, 302 -> the
    freed labels 102, 120, as for the 219) and `lean215/labels.json` (dense -> sparse);
-2. `generate_boot215_lean.py`, `generate_sites215_lean.py` and
-   `generate_dense215_lean.py`, by checked substitutions in the 221/219 generators.
+2. `generate_boot215_lean.py` and `generate_dense215_lean.py`,
+   by checked substitutions in the 221/219 generators.
 
-The forward-only `generate_source215_lean.py` is maintained directly; the generic
-offset-bisimulation symmetry theorem supplies its reverse implication.
+The forward-only `generate_source215_lean.py` and compact
+`generate_sites215_lean.py` are maintained directly. Offset-bisimulation symmetry
+supplies the reverse source implication; the site facade composes the checked
+blocks without repeating their paths.
 """
 import json
 from pathlib import Path
@@ -72,11 +74,6 @@ derive("generate_boot221_lean.py", "generate_boot215_lean.py", [
     ("a gap of 181 blank cells, and 176 register", "a gap of 65 blank cells, and 49 register"),
     ("then 167 spare", "then 40 spare"),
     ("table221.length = 229", f"table215.length = {tlen}"),
-    ("221", "215"),
-])
-
-derive("generate_sites221_lean.py", "generate_sites215_lean.py", [
-    ('HERE.parent / "candidate-k221" / "sites_logical.json"', 'HERE.parent / "candidate-k215" / "sites215.json"'),
     ("221", "215"),
 ])
 

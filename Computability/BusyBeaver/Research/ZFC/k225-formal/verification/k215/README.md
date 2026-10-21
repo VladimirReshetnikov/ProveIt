@@ -3,7 +3,7 @@
 **Both proof lanes pass** (2026-10-21), for the same literal machine.
 
 The fresh full builds below were recorded at `613f9cf28a`. Subsequent
-[proof simplifications](simplification/phase2/README.md) also pass: affected modules were
+[proof simplifications](simplification/phase3/README.md) also pass: affected modules were
 rebuilt and the endpoint assumption reports rerun against that pinned baseline.
 The current Lean endpoint closure contains 185 project modules.
 

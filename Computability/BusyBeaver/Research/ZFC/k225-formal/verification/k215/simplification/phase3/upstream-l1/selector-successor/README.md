@@ -1,0 +1,11 @@
+# Direct AX effects and selector-level proofs
+
+Two later upstream commits simplify the proof after the earlier [general L1 integration](../README.md): `e29d22cfe6` replaces per-atom effect/run/cleanliness wrappers with two effect shapes, and `c9dc793234` replaces repeated selector-tree proofs with `dec_brk`, `pass` and `fall`. The exact files contain 161 AX lines and 179 Root lines, down from 223 and 198: 81 further lines removed. The commit prose's 172-line Root count differs from its 179-line blob.
+
+The 156-atom AX word, gate, `f236`, `l236`, `c236`, `ax_eval`, and every existing Root declaration statement remain unchanged. Direct atom proofs use the existing transferred macro contracts. The three selector lemmas describe positive decrement, propagation of an inner break, and zero-selector fall-through. The numerical command behavior and the final machine/theory endpoint are unchanged by these proof rewrites.
+
+The reviewed version is compatible with the integrated `EnumPerm` source `caf5fe9e…fd7be`. Removed atom wrappers have no external production callers; `AXAtom.run` changes its internal argument order, and its local caller is updated. The fixed gate/stack semantics used by AX remain identical to upstream.
+
+[review.json](review.json) records the full ordinary/source review. [static-checks.json](static-checks.json) records exact statement/word checks and an independent reconstruction of the Perm template. The supplied generator was parsed as data and never executed. Removing the Perm-only branches and template from its AST leaves the older Dom generator code exactly unchanged. These checks do not replace Lean compilation: the earlier passing packet covers the earlier AX/Root bytes, while the coordinated phase-three build checks this successor.
+
+[source-map.json](source-map.json) binds the exact Git blobs and intended canonical paths. [source-history.tar.gz](source-history.tar.gz), indexed by [index.json](index.json), retains both revisions, diffs, full commit attribution, the own static checker, and its small corrected-parser history. No compiled objects are included. The changes are attributed to Vladimir Reshetnikov and the recorded Claude coauthor; the independent review and static checks are separate. No additional compiler was invoked and this review made no canonical edits.

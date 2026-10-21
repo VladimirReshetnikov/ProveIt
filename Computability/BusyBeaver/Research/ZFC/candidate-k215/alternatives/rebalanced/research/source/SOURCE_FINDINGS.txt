@@ -1,0 +1,173 @@
+SOURCE-SEARCH RESULT: A REBALANCED 215-STATE MACHINE
+=================================================
+
+Frozen candidate
+---------------
+The selected table is ../../machine/k215r.native.tm, with its complete source
+../../machine/sites215r.json. It has 215 working states and 430 transitions.
+All state counts exclude the separate halt state. It starts on the blank binary
+tape, in native state 0 with head at 0, and uses only left and right moves.
+
+The original search history contained fourteen rotations. Two pairs of inverse
+row operations commute with every intervening operation, so four steps can be
+deleted. Root and the source-search agent independently found the same deletion,
+at original indices 0,3,8,11. Both ten-step reconstructions produce exactly the
+same native table, dense table, and complete source as the fourteen-step history.
+
+Native table SHA-256:
+8cfb95be77f8f8819ac7dc5c92297cf32b5104cbdf22aea925ab38de9c4443b9
+Dense table SHA-256 (BFS labels, dispatcher 23, halt 215):
+27a2a4f452f9fcb1e84ba6f78d0f952ea438eca00d415cc6b0ef4298d35086a4
+Source SHA-256:
+46ab3fdabc6ade3c6e4b5f08a0a59af66eb96f3992124ab6b71b8c3f1a05bf35
+
+Compared with accepted candidate-k215, the native table changes nineteen rows
+on eleven states. Its rooted deterministic transition graph is not isomorphic
+to that of the primary candidate: BFS canonical forms differ. No physical state
+has been deleted. This is a new 215-state source layout, not a 214-state result.
+
+The source retains all 4,751 ordered primitives, all 6,176 guarded primitive
+cases, and exactly the same ordinal control-flow graph. It still has 202
+distinct source subtrees and maximum zero run 6. Its longest source address is
+41 bits rather than 47. Sum of the 4,751 address lengths falls from 160,305 to
+149,265, a reduction of 11,040 bits (6.8869 percent). The respective unweighted
+mean lengths are 33.7413176173 and 31.4175962955. There are 3,734 shorter
+addresses, 698 unchanged lengths, and 319 longer addresses. These are static
+source-address measurements, not a claim about the frequency of instructions
+in the actual infinite computation. The independent duration comparison finds all nonconstant coefficients
+unchanged, 1,427 cases faster, 3,827 slower, and 922 equal. New minus old
+constant terms range from -12 to +12 and sum to +15,528 over the unweighted
+case list. Thus shorter source addresses do not give a uniformly faster
+machine; no execution-frequency weighting is claimed.
+
+Ten deterministic rotations
+---------------------------
+Each row gives native parent q, native child m, direction, and the leaf counts
+of factors A,B,C. A left rotation replaces (A,(B,C)) by ((A,B),C); a right
+rotation performs the reverse change. Every factor is closed and halt-free.
+Each rotated parent has one source occurrence in this shortened recipe.
+
+  1. q203 m101 left:   503, 401, 2778
+  2. q223 m132 right:  919, 123, 1028
+  3. q203 m204 left:   904, 56, 2722
+  4. q177 m203 right:  960, 2722, 103
+  5. q203 m215 right:  2070, 652, 103
+  6. q203 m223 right:  919, 1151, 755
+  7. q181 m177 right:  960, 2825, 134
+  8. q188 m181 left:   189, 960, 2959
+  9. q204 m101 right:  503, 401, 56
+ 10. q142 m143 left:   27, 67, 52
+
+Ordinary proof structure
+------------------------
+1. At source level, a closed factor has no break or continuation whose target
+   escapes that factor, and contains no halt instruction. The inherited boundary
+   calculation verifies (0,0,false) for each factor. Reassociation preserves its
+   ordered execution, normal exit, and divergence. Thus associativity of closed
+   sequential factors is a source-program equivalence, including nontermination.
+
+2. The reconstruction also checks the whole result without relying solely on
+   that local theorem: ordered opcode/register lists are equal by ordinal; the
+   complete guarded control graph is equal under each of two independently
+   written graph resolvers. The identity map on the ordinal instruction number
+   and all nine natural registers is therefore a bisimulation of the two
+   source programs. This preserves the accepted command compiler and its
+   calibration to the dominated numerical calculus without changing any axiom,
+   proof rule, raw numerical-code convention, or enumeration hypothesis.
+
+3. Every physical rotation uses two literal pure decoder rows. Both read
+   symbols are preserved and the head moves one cell right. The new table is
+   the stated four-row redirection. This does not assert all-tape equivalence
+   between the old and new complete Turing machines: their program-counter
+   encodings differ. The reconstruction instead checks all 4,750 actual
+   internal decoder prefixes against the new source and then relies on the
+   full arbitrary-natural primitive theorem for the actual table.
+
+4. The unchanged inherited symbolic runtime checker completed all 6,176 cases
+   on this exact table/source, with no failed cases. Its report status is
+   UNIVERSAL_MATHEMATICAL_PASS. The cases quantify over arbitrary natural
+   register values, an arbitrary natural gap, and a nonempty arbitrary finite
+   spare list; their unary/list induction certificates are stronger than a
+   finite sample of numeric inputs. The fresh run took 134.448450074 seconds.
+   This is an ordinary mathematical checker, not a new Lean/Rocq kernel proof.
+
+5. The exact blank execution reaches the same calibrated frame as the primary
+   K215 after 95,714 transitions: native dispatcher 84, head -8, gap 1, logical
+   registers [4,0,0,0,0,0,0,0,0], forty unit spares, and the whole zero exterior.
+   The saved startup.json includes the complete transition trace and final tape.
+   The independent encoding-agent audit replays every transition in this prefix
+   and verifies the exact final tape and zero exterior.
+
+6. Composing source bisimulation, the new primitive theorem, positive runtime
+   progress, the exact blank prefix, and the accepted calculus calibration gives
+   the requested ordinary equivalence formalizable in ZFC. It does not prove
+   Con(ZFC), absolute nonhalting, a new PA-internal endpoint, or an exact-table
+   proof-assistant endpoint. No new formalism is needed for this candidate.
+
+Useful search boundaries and side results
+----------------------------------------
+A closed-only AST beam of width 256 explored 319,346 distinct sources before a
+180-second search cap. It found 202-subtree sources of depth 40 but no smaller
+DAG. The best depth-40 source could not be allocated by the inherited restricted
+injective role-pool allocator: 35 new roles had at most about 28 compatible
+available physical states. That is a restriction of that allocator, not a
+state-count lower bound.
+
+A generalized source search allowed explicit changes of CB/CC depth operands,
+provided both complete ordinal CFGs stayed equal. It considered 40,606 proposed
+rotations, accepted 29,629 syntactically admissible retaggings, and encountered
+20,578 distinct resulting sources before its 180-second cap. No improvement
+on the 202-subtree boundary was found in that run. This is a bounded negative.
+
+A targeted zero-run search reduced the number of source addresses containing
+six consecutive zeros from 37 to two at 204 source subtrees. One additional
+closed rotation of a repeated 160-leaf factor, with factors of sizes 52,28,80,
+removes the last two occurrences. The exact zero5/sites.json has 205 distinct
+subtrees, 4,751 leaves, depth 45 and maximum zero run 5; its complete source
+word and guarded CFG equal the accepted primary source. A subsequent width-256
+closed beam, constrained to zero run at most 5, reached a fixed frontier after
+76,207 distinct sources and retained 205 as its best DAG count. Physical role-
+pool allocation failed (108 new roles, at most about 89 candidates per role).
+No binary state-count saving follows from this source-only result. It gives a
+concrete scanner/source tradeoff to revisit with a different allocator.
+
+Safe register renaming was also tried. Five direct exchanges of the candidate
+counter N (register 0) with nonformula registers 3,4,6,7,8 were synthesized.
+Exchanges with 3,4,7 failed early symbolic cases; exchange with 6 failed literal
+decoder-prefix checks. These failures are checker failures, not by themselves
+semantic impossibility proofs. Exchanging N with L (0 and 8) passed all 6,176
+symbolic runtime cases, but the literal blank run halts after 15,607 steps.
+Thus its otherwise-correct interpreter does not have a calibrated blank seed.
+This is a useful concrete example of why a runtime theorem alone is insufficient.
+The corresponding exchange in commands120 halts after 5,151 steps; the composed
+allocation variant halts after 15,613 steps. None is an accepted candidate.
+
+A C++ scanner checked every one of the 215 possible start states of the N/L
+exchange, up to one million transitions per start. It found 210 exact outward
+rays, three halts, and two still-unresolved bounded runs (start states 66,94),
+and no safe root frame. Do not state that this proves every start impossible.
+The same scanner on the accepted primary table recovers its exact 95,714-step
+seed from start 0, with the complete correct register/spare list. The source,
+positive control, and per-start records are retained.
+
+Packaged supplement
+-------------------
+verify.py checks the zero-run-five source against the packet's exact baseline,
+reconstructs the N/L exchange from the baseline, and replays its blank halt.
+zero5/ contains the exact source and a fresh finite equivalence audit.
+register-swap08/ contains its table, source, full-run summary, blank-halt
+summary, and all-start records. The full ordered N/L runtime case records
+were not retained in that exploratory run; the runtime summary is not a
+substitute for them. The packet's unchanged runtime checker can reproduce
+those records using the command in README.txt.
+search-summaries.json records the bounded searches without their giant
+frontiers or all proposed candidate tables.
+scan_swap_starts.cpp and all-starts-control.json retain the scanner and its
+accepted-primary positive control.
+The main successful candidate, complete runtime records, source constructor,
+independent review and recipe are elsewhere in this packet.
+
+Preserve the original ProveIt/Wade source utilities and licensing notices when
+packaging code. The source-search agent authored the new search/reconstruction
+scripts and the selected rotations; the calculus, machine engine, source parser
+utilities, symbolic runtime, and baseline K215 retain their original ancestry.

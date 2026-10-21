@@ -1,43 +1,32 @@
 # Shorter checked K215 proofs
 
-The exact 215-state machine and all endpoint statements are unchanged. The
-simplified proofs pass incremental kernel checks against the
-[original full-build baseline](../README.md) at `613f9cf28a`.
+The literal 215-state machine and its halting and nonhalting endpoint statements
+are unchanged. The [latest Lean check](phase3/README.md) validates the 185-module
+primary closure and both typed endpoint clients, using the pinned original
+full-build objects for unchanged modules. All ten endpoint reports use only
+`propext`, `Classical.choice`, and `Quot.sound`; both audits have zero warnings.
 
-| Proof source | Before | After | Reduction |
-| --- | ---: | ---: | ---: |
-| [Lean dominated implication](../../../../../../Lean/BusyBeaver/ZFC/DomRho8.lean) | 689,857 bytes | 135,417 bytes | 80.4% |
-| [Lean AX routine](../../../../../../Lean/BusyBeaver/ZFC/L2AxiomsPerm.lean) | 202,222 bytes | 10,091 bytes | 95.0% |
-| [Rocq dominated implication](../../../rocq/rocq-extension/coq/215/DomRho8.v) | 921,691 bytes | 23,678 bytes | 97.4% |
+| Proof source | Original | Current |
+| --- | ---: | ---: |
+| Lean dominated implication | 689,857 bytes | 35,185 bytes |
+| Lean AX routine | 202,222 bytes | 7,563 bytes |
+| Lean source data | 653,569 bytes | 456,548 bytes |
+| Lean site-coverage facade | 107,243 bytes | 14,916 bytes |
+| Lean register determinism | 17,209 bytes | 12,988 bytes |
+| Rocq dominated implication | 921,691 bytes | 22,673 bytes |
 
-The implication certificate reuses exact substitution instances of earlier
-proved schemas and retains only the final theorem's dependencies: 674 of the
-original 3,728 nodes. Lean checks the retained proofs directly; Rocq checks 780
-instructions using a small interpreter with a generic soundness proof. Both
-optimizers are untrusted proof producers.
+The main changes share mathematical arguments instead of repeating their
+instances. Offset-bisimulation symmetry eliminates sixteen reverse-certificate
+modules; guarded implication lemmas avoid expanded substitutions; one general
+enumerator theorem covers both starts; and the AX routine composes a finite
+word of existing macro contracts. The import closure shrinks from 204 to 185
+project modules. The four root interfaces also pass a separate refresh.
 
-The AX routine now composes existing macro contracts with one induction over a
-156-entry word. A finite kernel check binds the word to the literal program;
-symbolic evaluation proves the same complete register-state effect.
-
-[Root iteration](../../../../../../Lean/BusyBeaver/ZFC/RMDagIteration.lean) and
-[program transfer](../../../../../../Lean/BusyBeaver/ZFC/Dag219Bisim.lean) share their induction arguments.
-Separating the program bisimulation from its legacy seed endpoint reduces the
-current K215 import closure from 204 to 201 project modules. The legacy facade
-and all four root interfaces remain available. The existing selection contract
-also shortens `EnumPerm.gen_contract`.
-
-The [Lean endpoint check](lean/README.md) validates all 201 current modules plus
-14 additional legacy dependencies, then compiles both typed endpoint clients.
-All ten axiom reports use only `propext`, `Classical.choice`, and `Quot.sound`;
-the clients have zero warnings. The
-[Rocq check](rocq/README.md) recompiles all seven affected modules, obtains four
-closed endpoint reports, and recursively checks the changed dominated-rule
-module. These checks reuse hash-bound baseline objects; they are not new full
-closure replays.
-
-Local details and exact generation checks are retained for the
-[Lean certificate](lean-rho8/README.md), [AX word](ax-word/README.md), and
-[Rocq certificate](rocq/README.md). The original machine, certificates, attribution,
-full-build receipts and failed-attempt history remain available. No axiom,
-admission, or weaker theorem statement was introduced.
+The [latest checkpoint](phase3/README.md),
+[second checkpoint](phase2/README.md), and
+[first checkpoint](phase1-README.md) retain their respective sources, kernel
+records, generator controls, independent reviews and failed attempts. The
+[original full-build baseline](../README.md) and attribution are preserved.
+Subsequent checks are incremental and keep every reused source/dependency/object
+binding explicit. The endpoint is an external proof-assistant theorem; this work
+does not supply an internal PA derivation or a minimum-size theorem.

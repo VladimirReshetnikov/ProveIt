@@ -6,7 +6,7 @@ module and dependency sets, baseline sources, objects, and compiler logs.
 The ten audit reports use only `propext`, `Classical.choice`, and `Quot.sound`;
 neither audit has warnings. The project sources retain 34 linter warnings.
 
-The [subsequent simplification check](../simplification/phase2/README.md) rebuilds affected
+The [subsequent simplification check](../simplification/phase3/README.md) rebuilds affected
 modules against this pinned baseline and reruns both endpoint audits. Its current
 closure contains 185 project modules; the audits
 still have zero warnings and only the same three allowed axioms. The historical

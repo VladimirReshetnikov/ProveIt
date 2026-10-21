@@ -93,4 +93,5 @@ research toward214; they have not changed the current accepted state count.
 
 Batch 201 placed five more materially distinct 215-state machines, as
 delivered and not yet independently checked. The
-[alternatives index](alternatives/README.md) lists all nine alternatives, including two placed as Sources 165–166.
+[alternatives index](alternatives/README.md) lists every alternative, including two placed as Sources 165–166
+and the five unique alternatives placed in batch 202.

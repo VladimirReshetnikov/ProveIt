@@ -47,61 +47,42 @@ theorem dispatch_nip_halt (st : AS) (hc : Clean st) (h0 : st.ac = 0) (hh : st.p2
   exact ⟨R', halt_cdr (p := dagPerm) (n := 141) rfl
     (skip (p := dagPerm) (n := 142) rfl (Run.decZero 3 _ (by simp [enc, h0]))) hR'⟩
 
-theorem dispatch_drop (st : AS) (hc : Clean st) :
-    Rn (.node 141) { st with ac := 1 } { st with ac := 0, tw := st.p2, ws := P st.tw st.ws } := by
-  have hdec := Run.decPos (p := dagPerm) 3 (enc { st with ac := 1 }) 0 (by simp [enc])
+/-! The selector levels 142, 145, 148: a level `a = (DEC ac, b)` decrements; with `b = (c, BREAK)`
+and `c = (a', body)`, the next level `a'` either dispatches and breaks out (`pass`) or falls
+through at `ac = 0` to the body (`fall`); either way `b` then breaks out of the level. -/
+
+theorem dec_brk {a b : Nat} (ha : dagPerm.nodes a = (.decnz 3, .node b)) {st : AS} (k : Nat)
+    (hk : st.ac = k + 1) {R : Regs} (hb : Run dagPerm (.node b) (enc { st with ac := k }) (.brk 1) R) :
+    Run dagPerm (.node a) (enc st) (.brk 1) R := by
+  have hdec := Run.decPos (p := dagPerm) 3 (enc st) k (by simp [enc, hk])
   rw [upd_ac] at hdec
-  let st0 : AS := { { st with ac := 1 } with ac := 0 }
-  have h145 : Rn (.node 145) st0 st0 :=
-    skip (p := dagPerm) (n := 145) rfl (Run.decZero 3 (enc st0) (by simp [st0, enc]))
-  have h144 := seqAS (n := 144) rfl h145 (par2 st0 hc)
-  have h143 := brk_cdr (p := dagPerm) (n := 143) (k := 0) rfl h144 (Run.brkS 0 _)
-  have h142 := brk_cdr (p := dagPerm) (n := 142) (k := 0) rfl hdec h143
-  have := skip (p := dagPerm) (n := 141) rfl h142
-  apply rn_eq this
-  cases st; rfl
+  exact brk_cdr (k := 0) ha hdec hb
+
+theorem pass {b c a' : Nat} {e : Edge} (hb : dagPerm.nodes b = (.node c, .brk 1))
+    (hc : dagPerm.nodes c = (.node a', e)) {R R' : Regs} (h : Run dagPerm (.node a') R (.brk 1) R') :
+    Run dagPerm (.node b) R (.brk 1) R' :=
+  brk_cdr (k := 0) hb (skip hc h) (Run.brkS 0 _)
+
+theorem fall {b c a' x : Nat} {e : Edge} (hb : dagPerm.nodes b = (.node c, .brk 1))
+    (hc : dagPerm.nodes c = (.node a', e)) (ha' : dagPerm.nodes a' = (.decnz 3, .node x))
+    {st st' : AS} (h0 : st.ac = 0) (he : Run dagPerm e (enc st) .normal (enc st')) :
+    Run dagPerm (.node b) (enc st) (.brk 1) (enc st') :=
+  brk_cdr (k := 0) hb (seq hc (skip ha' (Run.decZero 3 _ (by simp [enc, h0]))) he) (Run.brkS 0 _)
+
+theorem dispatch_drop (st : AS) (hc : Clean st) :
+    Rn (.node 141) { st with ac := 1 } { st with ac := 0, tw := st.p2, ws := P st.tw st.ws } :=
+  skip rfl (dec_brk rfl 0 rfl (fall rfl rfl rfl rfl (par2 { st with ac := 0 } hc)))
 
 theorem dispatch_mp (st : AS) (hc : Clean st) :
     Rn (.node 141) { st with ac := 2 }
-      (mpOut { st with ac := 0, pl := (Cantor.ofNat st.pl).2, p1 := st.p1 + (Cantor.ofNat st.pl).1 }) := by
-  have hdec1 := Run.decPos (p := dagPerm) 3 (enc { st with ac := 2 }) 1 (by simp [enc])
-  rw [upd_ac] at hdec1
-  have hdec2 := Run.decPos (p := dagPerm) 3 (enc { { st with ac := 2 } with ac := 1 }) 0 (by simp [enc])
-  rw [upd_ac] at hdec2
-  let st0 : AS := { { { st with ac := 2 } with ac := 1 } with ac := 0 }
-  have h148 : Rn (.node 148) st0 st0 :=
-    skip (p := dagPerm) (n := 148) rfl (Run.decZero 3 (enc st0) (by simp [st0, enc]))
-  have h147 := seqAS (n := 147) rfl h148 (mp484 st0 hc)
-  have h146 := brk_cdr (p := dagPerm) (n := 146) (k := 0) rfl h147 (Run.brkS 0 _)
-  have h145 := brk_cdr (p := dagPerm) (n := 145) (k := 0) rfl hdec2 h146
-  have h144 := skip (p := dagPerm) (n := 144) rfl h145
-  have h143 := brk_cdr (p := dagPerm) (n := 143) (k := 0) rfl h144 (Run.brkS 0 _)
-  have h142 := brk_cdr (p := dagPerm) (n := 142) (k := 0) rfl hdec1 h143
-  have := skip (p := dagPerm) (n := 141) rfl h142
-  apply rn_eq this
-  cases st; rfl
+      (mpOut { st with ac := 0, pl := (Cantor.ofNat st.pl).2, p1 := st.p1 + (Cantor.ofNat st.pl).1 }) :=
+  skip rfl (dec_brk rfl 1 rfl (pass rfl rfl (dec_brk rfl 0 rfl
+    (fall rfl rfl rfl rfl (mp484 { st with ac := 0 } hc)))))
 
 theorem dispatch_ax (st : AS) (hc : Clean st) (c : Nat) :
-    Rn (.node 141) { st with ac := c + 3 } (f236 { st with ac := c }) := by
-  have hdec1 := Run.decPos (p := dagPerm) 3 (enc { st with ac := c + 3 }) (c + 2) (by simp [enc])
-  rw [upd_ac] at hdec1
-  have hdec2 := Run.decPos (p := dagPerm) 3 (enc { { st with ac := c + 3 } with ac := c + 2 }) (c + 1)
-    (by simp [enc])
-  rw [upd_ac] at hdec2
-  have hdec3 := Run.decPos (p := dagPerm) 3
-    (enc { { { st with ac := c + 3 } with ac := c + 2 } with ac := c + 1 }) c (by simp [enc])
-  rw [upd_ac] at hdec3
-  have e : ({ { { { st with ac := c + 3 } with ac := c + 2 } with ac := c + 1 } with ac := c } : AS) =
-      { st with ac := c } := by cases st; rfl
-  rw [e] at hdec3
-  have h148 := brk_cdr (p := dagPerm) (n := 148) (k := 0) rfl hdec3 (ax_leaf _ hc)
-  have h147 := skip (p := dagPerm) (n := 147) rfl h148
-  have h146 := brk_cdr (p := dagPerm) (n := 146) (k := 0) rfl h147 (Run.brkS 0 _)
-  have h145 := brk_cdr (p := dagPerm) (n := 145) (k := 0) rfl hdec2 h146
-  have h144 := skip (p := dagPerm) (n := 144) rfl h145
-  have h143 := brk_cdr (p := dagPerm) (n := 143) (k := 0) rfl h144 (Run.brkS 0 _)
-  have h142 := brk_cdr (p := dagPerm) (n := 142) (k := 0) rfl hdec1 h143
-  exact skip (p := dagPerm) (n := 141) rfl h142
+    Rn (.node 141) { st with ac := c + 3 } (f236 { st with ac := c }) :=
+  skip rfl (dec_brk rfl (c + 2) rfl (pass rfl rfl (dec_brk rfl (c + 1) rfl
+    (pass rfl rfl (dec_brk rfl c rfl (ax_leaf _ hc))))))
 
 /-! ## One root run is one enumerator step -/
 
@@ -132,7 +113,7 @@ theorem root_step (s : EnumPerm.St) :
     | some s' => Rn (.node 0) (toAS s) (toAS s')
     | none => ∃ R', Run dagPerm (.node 0) (enc (toAS s)) .halt R' := by
   have hf := fetch_run s
-  unfold EnumPerm.enumStep EnumPerm.execAt
+  unfold EnumPerm.enumStep EnumPerm.execAt EnumPerm.decode
   generalize (EnumPerm.fetch s).1 = pl1 at hf ⊢
   generalize (EnumPerm.fetch s).2 = np1 at hf ⊢
   have hc : ∀ np tw ws ac p1 p2 pl, Clean (⟨np, tw, ws, ac, p1, p2, 0, 0, pl⟩ : AS) := fun _ _ _ _ _ _ _ =>
@@ -144,7 +125,7 @@ theorem root_step (s : EnumPerm.St) :
   generalize hx : (Cantor.ofNat pl2).1 = x at ⊢
   generalize hp3 : (Cantor.ofNat pl2).2 = pl3 at ⊢
   generalize hac : (Cantor.ofNat pl1).1 = ac at hread ⊢
-  rcases ac with _ | _ | _ | c
+  rcases ac with _ | _ | _ | c <;> simp only [EnumPerm.cstep, EnumPerm.toW]
   · -- NIP
     by_cases hh : s.h = 1
     · simp only [hh, if_true]
@@ -162,14 +143,11 @@ theorem root_step (s : EnumPerm.St) :
     exact rn_eq this (by simp [toAS])
   · -- MP
     have := hread (dispatch_mp ⟨np1, s.tw, s.ws, 0, s.d, s.h, 0, 0, pl2⟩ (hc _ _ _ _ _ _ _))
-    simp only [hx, hp3] at this
-    simp only
-    split
-    · rename_i hw
-      simp only [mpOut, hw, if_true] at this
+    simp only [hx, hp3, mpOut] at this
+    by_cases hw : wim s.tw (s.d + x) = s.h
+    · simp only [hw, if_true, Option.map] at this ⊢
       exact rn_eq this (by simp [toAS])
-    · rename_i hw
-      simp only [mpOut, hw, if_false] at this
+    · simp only [hw, if_false, Option.map] at this ⊢
       exact rn_eq this (by simp [toAS])
   · -- AX
     have := hread (dispatch_ax ⟨np1, s.tw, s.ws, 0, s.d, s.h, 0, 0, pl2⟩ (hc _ _ _ _ _ _ _) c)

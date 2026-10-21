@@ -1,0 +1,75 @@
+% Include-only section; requires amsmath, amssymb, booktabs.
+\section{A control-flow error in the archived scratch-biased experiment}
+\label{sec:scratch-correction}
+
+The scratch-biased 215-state experiment in
+\texttt{T215\_Transfer\_2026-10-20.zip} has a successful quantified
+primitive-runtime certificate, but its README's high-level command
+description is incorrect. Replacing a continuation leaf by a two-leaf
+subtree changed the continuation's target. This defect is visible in
+the literal source independently of physical allocation.
+
+The pre-insertion continuation was $\mathsf{CC}(3)$ at binary path
+$10011$. Its three right ancestors are at indices $0,3,4$, so the
+third outward right ancestor is the root and the continuation returns
+to source ordinal zero. The replacement subtree
+$(\mathsf{CI}(6),\mathsf{CC}(3))$ places the continuation at $100111$.
+There are now four right ancestors, at indices $0,3,4,5$. Its third
+outward right ancestor has prefix $100$, whose first leaf is source
+ordinal $23$. Thus the literal edge is
+\[
+       4697:\ \mathsf{CC}(3)\longrightarrow23,
+\]
+not an edge to zero. The added right branch must be counted in a
+relative continuation instruction.
+
+\paragraph{Exact unconditional halting suffix.}
+At ordinal $4696$, assume only that logical registers
+$A=H=X=0$; write the arbitrary current top as $T=t$. Other logical
+registers are irrelevant to the following suffix. The actual execution
+is:
+\begin{enumerate}
+ \item Ordinal $4696$ increments scratch $X$ to one; ordinal $4697$
+ returns to $23$.
+ \item The zero selector $A$ takes the zero branch at $23$, reaching
+ ordinal $4698$, the top-clear loop. That loop clears $T$ in exactly
+ $2t+1$ source steps and does not change $H$ or $X$.
+ \item The copy-cache code begins at $4700$. Its $H$ loop is skipped
+ because $H=0$, while its scratch-restoration loop consumes the
+ outstanding $X=1$ and increments $H$ to one.
+ \item The inherited NIP test begins at $4707$ and recognizes
+ precisely this $H=1$. It reaches the halt primitive at ordinal
+ $4718$.
+\end{enumerate}
+Counting transitions from $4696$ to the halt primitive gives exactly
+\[
+                            2t+15.
+\]
+The proof is a single unary-loop induction plus the eleven fixed
+post-clear edges. No inference about a very long simulated prefix is
+needed.
+
+Both AX and MP return to $4696$ with $A=H=X=0$ according to their
+unchanged arithmetic contracts. In particular, the supplied 69,744-step
+blank trace and 172-step AX-prefix match put the exact table inside
+the AX begun with registers $[1,0,3,0,0,0,0,0,0]$. Completing that AX
+returns with gate/top zero and the required zero selector/cache/scratch.
+The source then reaches its halt primitive after fifteen further source
+transitions. Subject to the supplied complete primitive simulation, the
+archived exact binary table therefore halts on blank tape
+\emph{unconditionally}. It cannot provide the requested nonhalting
+equivalence when ZFC is consistent.
+
+The correction does not dispute the primitive runtime checker: that
+checker correctly implements the literal source. The failed boundary
+is between the literal source and the advertised high-level parser.
+Consequently the proposed first-field bias, candidate steps of one or
+two, and cofinality problem do not describe this exact machine. Those
+ideas may remain relevant to a repaired source that actually returns
+to its scheduler, but cannot calibrate these bytes.
+
+The accompanying independent checker resolves both complete guarded
+control graphs, verifies the changed edge, records the exact fifteen-step
+suffix at $t=0$, and checks the affine count for $0\le t\le31$.
+The finite count check corroborates the explicit unary-loop proof; it
+does not replace that proof or rerun the full physical certificates.
