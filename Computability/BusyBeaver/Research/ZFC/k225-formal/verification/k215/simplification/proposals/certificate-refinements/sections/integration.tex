@@ -1,0 +1,194 @@
+\section{Proof architecture and integration plan}\label{sec:integration}
+
+\subsection{Which proof should be shortened?}
+
+There are three different optimization targets. Minimizing the additional
+proof for a variant favors a short transport from an accepted machine.
+Minimizing an independent semantic proof favors a simple enumerator and
+stable command contracts. Minimizing the maintained build favors compact
+data, efficient checked lookup, and a small affected dependency closure.
+One candidate need not optimize all three.
+
+\begin{longtable}{@{}P{.25\textwidth}P{.31\textwidth}P{.38\textwidth}@{}}
+\toprule
+Choice & Main advantage & Remaining cost\\\midrule\endhead
+Primary K215 & Both complete endpoints already exist; new source theorem
+has the exact required type & Adopt checked refinements and rebuild the
+affected clients\\[4pt]
+M124 / FM215 / M125 & Two incoming-edge invariants; one shared finite
+checker; arbitrary-tape transfer & Native/dense/zipper bridge and endpoint
+composition; same inherited calibration\\[4pt]
+CM215 & Very short transfer already delivered; existing concrete dense/Core
+bridge & One extra origin case; final full-endpoint replay\\[4pt]
+ZC215 & Concrete exhaustive scheduler; one occurrence injection handles an
+arbitrary opaque stack tail & Exact source, binary runtime, startup, and
+calibration connections\\[4pt]
+Direct / forced variants & Potential source or allocation freedoms &
+Derived command contracts, protected-tail accounting, and completeness
+arguments can be more involved\\[4pt]
+Rebalanced / reencoded variants & Smaller addresses or changed enumeration
+parameters & Fewer addresses or lower cutoffs do not alone reduce the
+number of semantic obligations\\
+\bottomrule
+\end{longtable}
+
+The first recommendation is therefore to keep the primary machine while
+simplifying its proof. For an additional machine, use the two-marker
+family if the smallest new invariant is the priority, or CM215 if the
+already supplied representation bridge saves the most integration work.
+For a substantially independent scheduler proof, develop ZC215 around
+the concrete theorem in Section~\ref{sec:credit}. These are judgments
+from the inspected obligations, not measured rankings of complete future
+proof developments \cite{alternatives,incoming}.
+
+\subsection{Recommended sequence for the current endpoint}
+
+\begin{enumerate}
+\item \textbf{Freeze the public interfaces and exact table.}
+Retain the native and dense table hashes and the public source theorem
+\code{p215\_dagPerm}. Keep the final statements phrased in terms of the
+same numerical ZFC-refutation predicate. This lets downstream proofs
+remain clients of stable statements.
+
+\item \textbf{Use the already checked one-sided source argument.}
+The incoming zero-offset result permits ordinary bisimulation; symmetry
+supplies the reverse implication. Reuse its compact path codec and exact
+certificate rather than maintaining offset arithmetic and a second
+expensive mirrored computation in this instance. The generic offset
+theory may remain available for other machines.
+
+\item \textbf{Adopt the balanced checker behind that interface.}
+Move the new modules into the maintained namespace, reuse the existing
+imported dependencies, and replace the body of \code{p215\_dagPerm} by
+the proved balanced body. Update the certificate producer together with
+its output so that regeneration preserves the change. Build
+\code{Correct215} and \code{CorrectDense215} under the maintained Rocq
+toolchain and retain fresh assumption reports.
+
+\item \textbf{Combine normalization and balanced storage only after an
+exact binding proof.}
+The incoming Lean normalization reduces 2,240 checkpoints to 1,426.
+Balanced storage and semantic normalization address different costs and
+can be combined. However, the structural packet's canonical certificate
+does not pass the unchanged raw-pointer checker. Port the proved decoding
+or canonical-address correspondence, then prove equality with the
+appropriate checker specification. This packet has not compiled the
+combined 1,426-entry balanced instance.
+
+\item \textbf{Measure the complete affected build.}
+Separate generator time, data/exactness compilation, certificate
+evaluation, and downstream theorem compilation. Report a cold build and
+an incremental build with exact reused-object bindings. The current
+single-run source timing does not predict the total.
+\end{enumerate}
+
+The same architecture is suitable for Lean, but the balanced implementation
+in this delivery is Coq source. It should not be described as a new checked
+Lean optimization. The incoming Lean ordinary and normalized lanes are the
+starting point for that port.
+
+\subsection{Keep four small semantic interfaces}
+
+The clearest maintained mathematical proof separates four statements:
+\begin{enumerate}
+\item \textbf{Numerical logic.} A syntactic ZFC refutation exists exactly
+when the numerical proof system can produce its designated contradiction.
+Preserve the actual contracts for arbitrary natural codes, aliases, and
+nondecodable values. Adding an unproved well-formed-formula restriction
+would change the problem.
+\item \textbf{Enumeration and commands.} Establish command soundness and
+strong completeness against the exact candidate order. For ZC215, the
+closed prefix-credit theorem is the one reusable safety interface.
+Successful bounded traces cannot replace exhaustive-order or completeness
+arguments.
+\item \textbf{Source and binary execution.} Connect semantic steps by
+positive finite blocks on a quantified tape representation. A generic
+positive-stuttering theorem discharges halting transport once block
+contracts and progress are known. Keep exact source/table binding as a
+finite check.
+\item \textbf{Initialization.} Prove one exact complete postconfiguration:
+control, head, every represented field, spare layout, and zero exterior.
+Structured scan summaries can shorten the finite proof. The incoming
+semantic seed round-trip and startup-summary proposals are useful
+candidates for this layer, but their new formal versions were not checked
+here.
+\end{enumerate}
+
+For variants, state these interfaces once and prove only the changed
+contract. A small instance that reuses a complete parent theorem reduces
+additional maintenance, while the parent's
+logical dependency closure remains part of the assurance argument.
+
+\subsection{Artifacts and reproduction}
+
+The ZIP is a self-contained review packet for the three new formal results.
+It contains sources and selected successful receipts, with no compiled
+proof caches or installed toolchain.
+
+\begin{center}
+\begin{tabular}{@{}P{.26\textwidth}P{.68\textwidth}@{}}\toprule
+Path & Contents\\\midrule
+\code{report.tex}, \code{sections/} & Complete LaTeX source of this report\\
+\code{report.pdf} & Rendered report\\
+\code{balanced\_lookup/} & Generic refinement, exact 2,240-entry source
+instance, inherited minimal dependencies, metrics and receipts\\
+\code{marker\_certificate/} & Generic finite checker, three instances,
+literal native tables, dense M125 table and renaming, finite audit\\
+\code{zero\_credit/} & Concrete Cantor scheduler proof, candidate comparison,
+incoming inventory, independent marker review\\
+\code{state\_search/} & Restricted synthesis code, controls, exact counts,
+input provenance, M125 table inventory\\
+\code{evidence/} & Independent review of balanced lookup\\
+\code{manifest.json} & Size and SHA-256 of every distributed file except
+the manifest itself\\\bottomrule
+\end{tabular}
+\end{center}
+
+From the extracted root, run the following commands separately:
+\begin{verbatim}
+python3 verify_packet.py
+python3 build_pdf.py
+python3 balanced_lookup/reproduce.py --output /tmp/k215-balanced-fresh
+python3 balanced_lookup/lookup_metrics.py
+python3 marker_certificate/build.py --out /tmp/k215-marker-fresh
+python3 marker_certificate/verify.py --output /tmp/k215-marker-finite.json
+python3 zero_credit/build.py --out /tmp/k215-credit-fresh
+\end{verbatim}
+
+The proof commands require Coq 8.18.0 and its standard library; the balanced
+folder includes its small inherited dependency closure. The generic
+recursive audit can be added with \code{--check-generic}; the ordinary
+baseline can be rebuilt with \code{--benchmark}. The other two proof
+drivers include recursive checks. Use fresh output paths to preserve
+the supplied receipts.
+
+PDF rebuilding requires a standard LaTeX installation with the packages
+listed in \code{report.tex}. Python integrity and finite-table checks need
+no third-party packages. The state search additionally needs a C++17
+compiler and the pinned ProveIt checkout:
+\begin{verbatim}
+python3 state_search/run_search.py \
+  --repo /absolute/path/to/ProveIt --out /tmp/k215-search-fresh
+\end{verbatim}
+
+\code{verify\_packet.py} checks file hashes and recorded evidence bindings;
+it is not a replacement for the proof-assistant runs. Logs with zero bytes
+are expected for successful \code{coqchk -silent} calls, and their exit
+statuses are separately recorded. Preserved notices identify inherited
+construction, semantics, and proposal material.
+
+\subsection{Acceptance criteria for a future 214-state claim}
+
+A successful next construction should provide the literal complete binary
+table with at most 214 working states, exact initialization included,
+and a checked route to the same refutation predicate. A transport route
+should prove a complete initial-configuration relation, whole-tape
+preservation at boundaries, positive progress, designated-halt
+preservation and reflection, and an exact representation bridge.
+An independent route should discharge the four semantic interfaces above.
+State labels, graph isomorphism, a long nonhalting trace, or an informal
+claim that a state is \emph{unused} do not supply those obligations.
+
+The deliverable advances the proof infrastructure and supplies additional
+checked 215-state instances. The missing one-state reduction remains an
+open construction problem in this investigation.

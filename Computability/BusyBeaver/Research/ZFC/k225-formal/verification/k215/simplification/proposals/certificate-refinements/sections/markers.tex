@@ -1,0 +1,176 @@
+\section{One finite checker for a family of marker variants}\label{sec:markers}
+
+\subsection{The family already present in the proposals}
+
+M124 and FM215 are closely related members of the same predecessor-marker
+family. An exact comparison finds that 429 of their 430 rows agree; their
+only difference is
+\[
+ (127,1):\quad 1R59\quad\hbox{versus}\quad 1R109.
+\]
+Both providers satisfy the required zero-return equation:
+\[
+ (59,0)=(109,0)=(125,0)=0R62.
+\]
+The earlier M124 note explicitly permits providers 109 and 125. Accordingly,
+we do not claim a new marker idea for the provider-125 instance. The new
+contribution is a generic verified checker that packages the shared argument,
+and its compiled application to three exact tables \cite{incoming}.
+
+The crucial parent rows are
+\begin{center}
+\begin{tabular}{@{}crr@{}}\toprule
+Old role & Read 0 & Read 1\\\midrule
+124 & $0R62$ & $1R138$\\
+127 & $0R14$ & $1R138$\\\bottomrule
+\end{tabular}
+\end{center}
+Every old incoming row to role 124 writes a 1 and moves right; every old
+incoming row to role 127 writes a 0 and moves right. Thus the bit immediately
+left of the head distinguishes the two logical roles. The roles can be
+identified at new control 124, while physical control 127 is reused to read
+that origin marker.
+
+\subsection{Generic rule and finite obligations}
+
+Let the two old roles be \(a,b\), with a common one-successor \(w\) and
+zero-successors \(u,v\). Define \(\phi(b)=a\) and \(\phi(q)=q\) otherwise.
+The old zero transitions preserve zero and move right to \(u,v\); both old
+one transitions preserve one and move right to \(w\). Let \(r_0,r_1\) be
+existing return providers. The new local rows have the following shape:
+\begin{align*}
+ (a,0)&\mapsto 0Lb,&(a,1)&\mapsto 1R\phi(w),\\
+ (b,0)&\mapsto 0Rr_0,&(b,1)&\mapsto 1Rr_1,\\
+ (r_0,0)&\mapsto 0R\phi(v),&(r_1,0)&\mapsto 0R\phi(u).
+\end{align*}
+Outside \(a,b\), the new table agrees with the old table after mapping
+source controls and target controls by \(\phi\).
+
+The Boolean checker verifies these exact shapes, every ordinary row, both
+incoming marker conditions, equal finite table lengths, distinct noninitial
+roles, nonidentification with halt, and absence of outgoing halt rows. Its
+soundness theorem covers indices beyond the stored tables as well: the
+finite lookup returns \code{None} there, and equal lengths preserve that
+behavior. No assumption about a particular startup or source register frame
+is hidden in the concrete checks.
+
+Here \(\Halt\) means reaching the designated halt label under the totalized
+step function, which fixes a configuration on a missing row. The concrete
+closure checks below identify this predicate with conventional halting.
+
+\begin{theorem}[Generic checked marker fold]
+If \code{check O N a b halt u v w r0 r1 = true}, then for every complete
+Boolean tape \(t:\Z\to\{0,1\}\) and every head position \(h\),
+\[
+ \Halt(O,(0,h,t))\quad\Longleftrightarrow\quad\Halt(N,(0,h,t)).
+\]
+\end{theorem}
+\begin{proof}
+The old invariant consists of exactly two clauses:
+\[
+ q=a\Longrightarrow t(h-1)=1,
+ \qquad
+ q=b\Longrightarrow t(h-1)=0.
+\]
+It holds initially because \(a,b\ne0\). Each incoming-row condition
+reestablishes its marker after one old step. An ordinary old transition is
+matched by one new transition under \(\phi\). At either merged role on
+read 1, the common one-successor gives the same one-step result. On read 0,
+the new machine moves left to the selector, reads and preserves the origin
+marker, moves right to the corresponding provider, then preserves the zero
+and moves right to the required successor. The full tape is unchanged by
+these three steps; the final head and mapped control match the old step.
+
+Induction gives, for every old execution length \(n\), a new length \(m\)
+with \(n\le m\le3n\) and identical tape/head at the matching boundary.
+An old halt therefore transfers to a new halt. Conversely, suppose the new
+machine halts by time \(n\). Simulate \(n\) old steps, reaching a matching
+new time \(m\ge n\). Halt is absorbing in the totalized semantics, so the
+new machine is still halted at \(m\). The checked equivalence
+\(\phi(q)=\mathrm{halt}\iff q=\mathrm{halt}\) forces the old boundary
+to be halted as well. This proves the reverse implication without another
+local simulation or any fairness premise.
+\end{proof}
+
+The timing lemma is \code{timed\_simulation}; the checked finite endpoint
+is \code{checked\_fold}. The generic source has 322 lines. The three
+instances plus their explicit proposition-transfer corollary and audits
+have 35 lines, with literal generated table data counted separately. This
+is useful reuse, not a claim that the first generic implementation is
+shorter than one preexisting hand proof.
+
+\subsection{Concrete instances and M125 table}
+
+All three instances set
+\[
+ (a,b,\mathrm{halt},u,v,w,r_0)=(124,127,254,62,14,138,8),
+\]
+and choose \(r_1\) as follows:
+\begin{center}
+\begin{tabular}{@{}llr@{}}\toprule
+Instance & Provider $r_1$ & Working states\\\midrule
+M124 & 59 & 215\\
+FM215 & 109 & 215\\
+M125, supplied here & 125 & 215\\\bottomrule
+\end{tabular}
+\end{center}
+
+M125's exact four replacements relative to the primary native table are
+\begin{center}
+\begin{tabular}{@{}crr@{}}\toprule
+Row & Primary K215 & M125\\\midrule
+$110/0$ & $0R127$ & $0R124$\\
+$124/0$ & $0R62$ & $0L127$\\
+$127/0$ & $0R14$ & $0R8$\\
+$127/1$ & $1R138$ & $1R125$\\\bottomrule
+\end{tabular}
+\end{center}
+Its native SHA-256 is
+\begin{center}\small\ttfamily
+9359aa5ca6dee6db1ec26a32b47d9e95593c6de749ae53f6208ac4ef369256d3.
+\end{center}
+The archive includes both native and dense tables, the exact bijective
+renaming, and their hashes. Each has 215 working controls and 430 rows,
+with all working controls reachable in the transition graph. Graph
+reachability is used for this structural census, not as a claim that all
+controls occur in the blank computation.
+
+The original native labels occupy 303 list slots in the formal data. The
+unused slots are absent transitions, not working states. The finite audit
+checks complete binary rows on the working controls and closure of every
+target into the working controls or the designated halt. Starting from 0
+on any tape therefore cannot reach a nonhalt missing-row slot. This relates
+the totalized formal predicate, which means reaching label 254, to the
+conventional halting interpretation of these exact machines.
+
+\subsection{Fresh verification and precise scope}
+
+The generic module, literal tables, and concrete instances compiled from
+fresh sources. Six printed assumption reports are closed, and recursive
+\code{coqchk -silent MarkerInstances} passed. A separate independent review
+checked the finite checker and every literal row. The no-op-sharing tape
+update is proved pointwise equal to ordinary tape update; no function
+extensionality axiom is used.
+
+An independent finite simulator additionally checks each synchronization
+boundary through the complete calibrated blank prefix. For M124, FM215,
+and M125 alike, 95,714 old steps correspond to 95,840 new steps, with exactly
+63 three-step blocks. Both sides end at native control 84, head $-8$, and
+the same complete tape containing 95 ones. These observations corroborate
+the literal bindings. The arbitrary-tape theorem, not the finite prefix,
+supplies the unbounded halting conclusion.
+
+The compiled result is a native table-to-table theorem in this packet's
+arbitrary-tape semantics. A formal bridge to the maintained zipper/dense
+representation and composition with the full ZFC endpoint remain separate
+integration tasks. Ordinary mathematical composition with the exact K215
+calibration gives the same ZFC-formalizable consistency equivalence, but
+that is not advertised as a freshly rebuilt complete assistant endpoint.
+
+A corpus comparison found no rooted state-bijection or global-reflection
+match for the explicit M125 table among 2,248 tracked \code{.tm} paths and
+87 direct \code{.tm} members of the seven incoming archives. The qualifying
+subset contains 640 complete numeric 215-state tables. One lacks an explicit
+start header and is compared using start 0, as recorded. This is an inventory
+fact about explicit tables. Because provider 125 was already described,
+it supplies no discovery-priority claim for the construction.

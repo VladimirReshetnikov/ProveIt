@@ -1,0 +1,38 @@
+{
+  "source_sha256": "c5074d499f176bfaac8b0a19c5823a96061b42193af00b65b28efaf4c8d7c133",
+  "source_bytes": 14514,
+  "source_lines": 393,
+  "closed_assumption_reports": 5,
+  "results": [
+    {
+      "stage": "version",
+      "command": [
+        "coqc",
+        "--version"
+      ],
+      "exit_code": 0,
+      "seconds": 0.045
+    },
+    {
+      "stage": "compile",
+      "command": [
+        "coqc",
+        "TagLowering.v"
+      ],
+      "exit_code": 0,
+      "seconds": 4.706
+    },
+    {
+      "stage": "kernel",
+      "command": [
+        "coqchk",
+        "-silent",
+        "TagLowering"
+      ],
+      "exit_code": 0,
+      "seconds": 77.657
+    }
+  ],
+  "claim": "Concrete Cantor parse/encode inverse, tag-lowering injection, all finite prefix credit and positive credit before NIP.",
+  "not_claimed": "Exact binary-machine/source adapter or new Lean/Rocq ZFC consistency endpoint."
+}

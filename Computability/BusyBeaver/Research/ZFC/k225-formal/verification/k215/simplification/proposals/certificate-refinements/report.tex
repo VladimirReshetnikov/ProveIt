@@ -1,0 +1,71 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs,longtable,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue,pdftitle={Verified certificate refinements for K215},pdfauthor={Research collaboration for Vladimir Reshetnikov}}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Verified certificate refinements for K215}
+\fancyhead[R]{\small 21 October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\title{\textbf{Verified certificate refinements for K215}\\[8pt]
+\large Balanced source checking, a reusable marker theorem,\\
+and concrete zero-credit enumeration}
+\author{Research and integration packet for Vladimir Reshetnikov's ProveIt}
+\date{21 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We inspect the current 215-state ZFC-consistency machines, the existing Lean
+and Rocq correctness developments, and all seven proposal archives in
+\code{docs/incoming}. Three further formal contributions are supplied.
+First, a balanced, binary-indexed certificate checker proves the exact K215
+source equivalence for every register file, with the old checker as its
+verified specification. Second, one finite-table checker proves arbitrary-tape
+halting equivalence for the M124/FM215 marker family, including the explicitly
+instantiated provider-125 member. Third, the actual Cantor command encoding
+and exhaustive schedule satisfy the zero-credit prefix theorem, with no
+abstract parsing or scheduler hypotheses. All new formal contributions were
+compiled using Coq 8.18.0, with closed theorem assumption reports; the precise
+recursive-check scopes are recorded. A wider local-fold search found no
+successful reduction to 214 states. We do not claim a 214-state machine, a
+state-count lower bound, or a fresh rebuild of the complete inherited
+consistency endpoint. The report distinguishes existing proposals, new
+verified refinements, finite corroboration, and remaining integration work.
+\end{abstract}
+\noindent\textbf{Repository pin.}
+\code{53269bcab1efc0f82d3022645bd7cf0c22d84959}.\\
+\textbf{Machine convention.} One two-way infinite binary tape, initially zero;
+head and initial control at 0; L/R moves only; 215 working states, with a
+separate halt excluded from the count. Initialization is included.
+\newpage
+\tableofcontents
+\newpage
+\input{sections/results}
+\input{sections/balanced}
+\input{sections/markers}
+\input{sections/credit}
+\input{sections/reduction}
+\input{sections/integration}
+\input{sections/references}
+\end{document}

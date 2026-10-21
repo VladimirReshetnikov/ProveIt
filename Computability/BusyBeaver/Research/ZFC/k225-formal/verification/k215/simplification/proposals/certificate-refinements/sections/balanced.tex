@@ -1,0 +1,144 @@
+\section{Verified balanced source certificates}\label{sec:balanced}
+
+\subsection{Removing a representation cost}
+
+The ordinary source certificate is a list of checkpoint entries
+\((P_i,Q_i,j_i,k_i)\). The paths \(P_i,Q_i\) name corresponding source sites;
+\(j_i,k_i\) name the paired continuations of a decrement test. The existing
+checker retrieves a continuation with
+\code{nth\_error C (N.to\_nat j)}. A single access can traverse a linear
+prefix of \(C\), even when its index is already represented in binary.
+Repeated accesses create a quadratic worst-case indexing component.
+
+The program semantics do not require a list. Nor does the soundness proof
+need to trust an external random-access implementation. We replace storage
+by a tree and prove equality with the original list lookup. This lets the
+existing soundness theorem remain the specification. The incoming ordinary
+checker and mirror theorem provide the semantic foundation \cite{incoming}.
+
+\begin{definition}[Certificate tree]
+A certificate tree is empty, a leaf containing one checkpoint entry, or a
+node \(\operatorname{Node}(c,L,R)\) with binary natural cut \(c\).
+Its flattening is the list of leaves in left-to-right order. Validity means
+that every node's cut equals the number of leaves in its left subtree,
+and that both subtrees are valid.
+\end{definition}
+
+Lookup at \(j\) follows \(L\) if \(j<c\), otherwise \(R\) at \(j-c\).
+A leaf succeeds only for index zero; an empty tree returns no entry. Binary
+\code{N} values are used for cuts and indices throughout lookup. In
+particular, invalid indices retain the original failure behavior.
+
+\begin{theorem}[Lookup refinement]\label{thm:lookup}
+For every valid certificate tree \(T\) and every \(j\in\N\),
+\[
+ \operatorname{lookup}(T,j)=
+ \operatorname{nth\_error}(\operatorname{flatten}(T),\operatorname{toNat}(j)).
+\]
+\end{theorem}
+\begin{proof}
+Induct on \(T\). Empty and singleton lists give the two base cases,
+including out-of-range failure. At a node, validity identifies the cut with
+the left list length. If \(j<c\), the list-append lookup law selects that
+left list and the induction hypothesis applies. If \(j\ge c\), the other
+append lookup law selects the right list at the subtracted index. The
+binary-to-natural subtraction identity supplies exactly the original index.
+No assumption that \(j\) is in range is used.
+\end{proof}
+
+\begin{theorem}[Checker refinement]
+For valid \(T\) and arbitrary source decoder trees \(t_1,t_2\),
+\[
+ \operatorname{checkTree}(t_1,t_2,T)=
+ \operatorname{check}(t_1,t_2,\operatorname{flatten}(T)).
+\]
+\end{theorem}
+\begin{proof}
+Transport Theorem~\ref{thm:lookup} through the existing continuation,
+segment, and entry checks. The tree-wide Boolean fold equals a list-wide
+\code{forallb} over its flattening by structural induction. Combining these
+identities gives the result, including the initial continuation check.
+The segment interpreter and all register effects are unchanged.
+\end{proof}
+
+Consequently a true tree-validity check and a true forward certificate imply
+the same halting equivalence as the original ordinary bisimulation theorem.
+The incoming one-sided symmetry theorem supplies the reverse direction;
+no second expensive mirrored certificate evaluation is introduced.
+
+\subsection{Exact K215 theorem}
+
+\code{Cert215Tree.v} constructs a concrete tree from \code{Plain215}.
+The kernel checks its validity, exact flattening identity, 2,240 entries,
+and height 13, counting the leaf. A general structural lemma bounds lookup
+depth by tree height; the concrete bound therefore holds for every binary
+index, including invalid indices.
+
+\begin{theorem}[Compiled exact source equivalence]
+For every natural-valued register file \(R\),
+\[
+ \operatorname{rm\_halts}(p_{215},([],R))
+ \quad\Longleftrightarrow\quad
+ \operatorname{rm\_halts}(\mathrm{dagPerm},([],R)).
+\]
+\end{theorem}
+
+The compiled name is \code{Source215Balanced.p215\_dagPerm\_balanced}.
+It uses the exact current programs, not models with the same leaf counts.
+The byte bindings for \code{Prog215.v}, \code{DagPerm.v}, and the original
+offset certificate are recorded in the package. The new generic module has
+194 lines, its exact tree wrapper 23, and the source theorem 21. These are
+reusable additions; they are not advertised as a reduction in total source
+lines. Their purpose is a simpler certificate representation with a verified
+implementation boundary.
+
+The certificate construction itself need not be trusted. Even if a generator
+or the fuel-based builder produced a wrong tree, the exact flattening,
+validity, and forward-check theorems would fail to compile. This is a useful
+division of responsibility: the generator searches or compresses; the kernel
+checks the resulting finite object against an explicit specification.
+
+\subsection{Measured work and build-time limits}
+
+The exact certificate contains 2,239 decrement checkpoints and one halt.
+Its two branch accesses per decrement, plus the initial access, give 4,479
+lookups. The independent census gives:
+
+\begin{center}
+\begin{tabular}{@{}lrr@{}}\toprule
+Quantity & List representation & Balanced representation\\\midrule
+Traversal nodes visited & 5,018,706 & 54,514\\
+Mean nodes per access & 1,120.50 & 12.17\\
+Maximum balanced depth & --- & 13\\\bottomrule
+\end{tabular}
+\end{center}
+
+The indexing traversal decreases by a factor of about 92.06. For balanced
+\(n\)-entry trees and \(O(n)\) accesses, the node visits are
+\(O(n\log n)\). Charging binary comparison and subtraction bit by bit
+gives \(O(n\log^2 n)\) indexing work for in-range indices. This is an
+analysis of the indexing component; source decoding, segment execution,
+proof reconstruction, and kernel checking are additional work.
+
+One matched observation in the shared environment produced:
+
+\begin{center}
+\begin{tabular}{@{}lrr@{}}\toprule
+Measurement & Plain & Balanced\\\midrule
+\code{Time vm\_compute} transaction & 16.008 s & 11.314 s\\
+Complete source-module compiler process & 33.103 s & 24.772 s\\\bottomrule
+\end{tabular}
+\end{center}
+
+Those are illustrative single observations, approximately 29.3\% and 25.2\%
+lower respectively. The new tree-construction/exactness module itself took
+13.159 seconds. Thus this experiment does \emph{not} establish a first-build
+speedup, and it makes no whole-endpoint timing claim. A maintained generator
+could emit the balanced tree directly and keep exact flattening as a
+separate audit target; that design has not been measured here.
+
+All three new modules compiled with closed assumption reports. A separate
+recursive \code{coqchk} of the generic checker and its dependencies passed.
+The concrete source theorem was kernel-checked during compilation, but was
+not the target of that separate recursive invocation. The complete inherited
+ZFC endpoint was not rebuilt.
