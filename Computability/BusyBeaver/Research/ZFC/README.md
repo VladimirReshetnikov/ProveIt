@@ -178,7 +178,7 @@ fresh jobs pass, including all 6,167 runtime cases, 1,515,040 symbolic rules
 and exact 312,617-step startup. The earlier row157 continuation rewrite
 also passes on this table, yielding a second 219 layout; row103 conflicts
 with its new return. Its exact-table Lean endpoint is closed
-(`KLower219.blank_halts_iff_zfc_refutation`, [k225-formal](k225-formal/README.md#the-219));
+(`KEndpoint219.blank_halts_iff_zfc_refutation`, [k225-formal](k225-formal/README.md#the-219));
 the internal PA endpoint remains open.
 See [the reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-186.md)
 and [replay instructions](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-186-reproduction.md).
@@ -215,9 +215,9 @@ and the two [222s](candidate-k222/README.md) composed at batch 181. See the
 [batch 183 reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-183.md).
 The 221 has a closed Rocq endpoint, `K221F.CorrectDense221.tm221_halts_iff_ZFC_inconsistent`,
 which `coqchk` independently rechecked ([k225-formal/rocq](k225-formal/rocq/README.md)), and a
-closed Lean endpoint, `KLower221.blank_halts_iff_zfc_refutation`
+closed Lean endpoint, `KEndpoint221.blank_halts_iff_zfc_refutation`
 ([k225-formal](k225-formal/README.md#lean)). The 219 has a closed Lean endpoint too,
-`KLower219.blank_halts_iff_zfc_refutation` ([k225-formal](k225-formal/README.md#the-219)).
+`KEndpoint219.blank_halts_iff_zfc_refutation` ([k225-formal](k225-formal/README.md#the-219)).
 
 Before them, the [225-state machine](candidate-k225/README.md) of batch 178
 (Source 124) was the smallest. It deletes K230 states 79, 140, 175, 208 and 229: the two ProveIt engine savings

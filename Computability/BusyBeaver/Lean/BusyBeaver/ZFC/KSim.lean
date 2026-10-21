@@ -22,7 +22,8 @@ open KZip KRuntimeCore RegisterPath RegisterPathClean
 
 /-! ## Sites -/
 
-/-- Cells between the PC marker and the register header: at least `D0`; the boot leaves 181. -/
+/-- Cells between the PC marker and the register header: at least `D0`. The boots leave 181
+(the 221), 144 (the 219, 218, 217) and 65 (the 215). -/
 def D0 : Nat := 64
 
 def growth : BoxSt → Nat
@@ -56,23 +57,25 @@ def physOf (r : Nat) : Nat := [6, 2, 0, 4, 3, 7, 8, 5, 1].getD r 0
 
 def vregs (R : Registers) : List Nat := physOrder.map R
 
-/-- The per-leaf check: the symbolic run from the site reaches the successor's dispatch. -/
+/-- The per-leaf check: the symbolic run from the site reaches the successor's dispatch. Site
+paths have at most 48 bits (the 217's source reaches 45), so they and their successors fit in
+the `D0` cells before the register header. -/
 def checkEdge (M : TMN) (Q : List Bool) : Edge → Bool
-  | .inc r => decide (Q.length ≤ 40) && decide (r < 9) &&
+  | .inc r => decide (Q.length ≤ 48) && decide (r < 9) &&
       runTo M none Q (tgtConf (incPath Q) (allOnes Q) (.plain (.inc (physOf r))))
-  | .decnz r => decide (Q.length ≤ 40) && decide (r < 9) &&
+  | .decnz r => decide (Q.length ≤ 48) && decide (r < 9) &&
       runTo M (some (physOf r, true)) Q
         (tgtConf (breakPath 1 Q) (allOnes (stripPath false 1 Q)) (.plain .none)) &&
       runTo M (some (physOf r, false)) Q (tgtConf (incPath Q) (allOnes Q) (.plain (.dec (physOf r))))
-  | .brk k => decide (Q.length ≤ 40) &&
+  | .brk k => decide (Q.length ≤ 48) &&
       runTo M none Q (tgtConf (breakPath k Q) (allOnes (stripPath false k Q)) (.plain .none))
-  | .cont k => decide (Q.length ≤ 40) &&
+  | .cont k => decide (Q.length ≤ 48) &&
       runTo M none Q (tgtConf (continuePath k Q) false (.plain .none))
-  | .halt => decide (Q.length ≤ 40) && runHalt M Q
+  | .halt => decide (Q.length ≤ 48) && runHalt M Q
   | .node _ => false
 
 theorem checkEdge_length {M : TMN} {Q : List Bool} {e : Edge} (h : checkEdge M Q e = true) :
-    Q.length ≤ 40 := by
+    Q.length ≤ 48 := by
   cases e <;> simp_all [checkEdge]
 
 /-! ## The concrete meaning of `start` and `tgtConf` -/
@@ -194,7 +197,7 @@ def Rel (p : Program) (c : Configuration) (T : Conf) : Prop :=
 
 /-- The tape seen from the leaf the walk reaches. -/
 theorem rel_view {p : Program} {c : Configuration} {T : Conf} {e : Edge} {d : Nat}
-    (hc : Rel p c T) (hw : walk p (p.nnodes + 1) p.root c.path 0 = some (e, d)) (hd : d ≤ 40) :
+    (hc : Rel p c T) (hw : walk p (p.nnodes + 1) p.root c.path 0 = some (e, d)) (hd : d ≤ 48) :
     ∃ k ext, D0 ≤ c.path.length + k ∧ ext ≠ [] ∧
       T = conc (c.path.length + k - D0) (vregs c.registers ++ ext) (start (consume c.path d)) := by
   obtain ⟨hcl, k, ext, hk, hext, rfl⟩ := hc

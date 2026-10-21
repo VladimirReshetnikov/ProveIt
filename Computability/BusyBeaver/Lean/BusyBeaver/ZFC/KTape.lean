@@ -6,9 +6,11 @@ The four register lemmas of the K-family engine (port of K230's `Tape230Blocks.v
 `Tape230Carry.v`; the initial list, scan and marker proofs there are adapted from Jeff Ketchersid's
 m254 `Box.v`).
 
-They are proved once, for every table that agrees with K230 on the 23 engine states the register
-operations read (`boxStates`, found by tracing; the proofs below confirm the list suffices). The
-result is `boxLemmas : Agree M tm230 boxStates → BoxLemmas M`, the hypothesis of
+They are proved once, for every table that agrees with K230 on the 44 engine rows the register
+operations read (`boxRows`: both rows of 21 states and the read-1 rows of 113 and 198, found by
+tracing; the proofs below confirm the list suffices) and ends the increment either as K230 does,
+returning through 198 and 113, or with the 219's bypass `198/0 → 1 L 40` (`IncTail`). The result
+is `boxLemmas : AgreeRows M tm230 boxRows → IncTail M → BoxLemmas M`, the hypothesis of
 `KRuntimeCore.exec_sound`.
 -/
 
@@ -19,6 +21,22 @@ open KZip KRuntimeCore KTableCore
 /-- The engine states read by the mark, increment and decrement routines. -/
 def boxStates : List Nat :=
   [0, 1, 2, 3, 16, 22, 25, 32, 33, 36, 40, 48, 51, 54, 55, 60, 64, 66, 74, 94, 97, 113, 198]
+
+/-- The rows they read: all of them except the read-0 rows of 113 and 198. -/
+def boxRows : List (Nat × Bool) :=
+  boxStates.flatMap fun q => (if q = 113 ∨ q = 198 then [] else [(q, false)]) ++ [(q, true)]
+
+/-- `M` and `N` agree on the rows `rs`. -/
+abbrev AgreeRows (M N : TMN) (rs : List (Nat × Bool)) : Prop := ∀ r ∈ rs, M r.1 r.2 = N r.1 r.2
+
+/-- The end of the increment: K230's return through 198 and 113, or the 219's bypass. -/
+def IncTail (M : TMN) : Prop :=
+  (M 198 false = some (true, false, 198) ∧ M 198 true = some (true, false, 113) ∧
+    M 113 false = some (false, false, 40)) ∨ M 198 false = some (true, false, 40)
+
+theorem AgreeRows.row {M N : TMN} {rs : List (Nat × Bool)} (h : AgreeRows M N rs) {q : Nat}
+    {b : Bool} {r : Option (Bool × Bool × Nat)} (hq : (q, b) ∈ rs) (e : N q b = r) : M q b = r :=
+  (h _ hq).trans e
 
 /-! ## List facts -/
 
@@ -118,8 +136,8 @@ theorem stL {M : TMN} {q q' : Nat} {b w : Bool} {l r : List Bool} {X : Conf}
 
 /-- One concrete step, its row read from K230 through the agreement hypothesis. -/
 macro "go" h:term : tactic => `(tactic| first
-  | refine stR (Agree.row $h (by decide) rfl) ?_
-  | refine stL (Agree.row $h (by decide) rfl) ?_)
+  | refine stR (AgreeRows.row $h (by decide) rfl) ?_
+  | refine stL (AgreeRows.row $h (by decide) rfl) ?_)
 
 theorem zc_blank (q : Nat) (l : List Bool) : zc q l [] = zc q l [false] := by
   simp [zc, trim_cons]
@@ -198,15 +216,15 @@ theorem carryR_rev (vs : List Nat) (l : List Bool) :
 
 section Box
 
-variable {M : TMN} (hA : Agree M tm230 boxStates)
+variable {M : TMN} (hA : AgreeRows M tm230 boxRows)
 include hA
 
 theorem sk_self (j : Nat) (hj : j < 9) : M (sk j) true = some (true, true, sk j) := by
-  have : ∀ j, j < 9 → sk j ∈ boxStates ∧ tm230 (sk j) true = some (true, true, sk j) := by decide
+  have : ∀ j, j < 9 → (sk j, true) ∈ boxRows ∧ tm230 (sk j) true = some (true, true, sk j) := by decide
   exact hA.row (this j hj).1 (this j hj).2
 
 theorem sk_next (j : Nat) (hj : j < 8) : M (sk (j + 1)) false = some (false, true, sk j) := by
-  have : ∀ j, j < 8 → sk (j + 1) ∈ boxStates ∧ tm230 (sk (j + 1)) false = some (false, true, sk j) := by
+  have : ∀ j, j < 8 → (sk (j + 1), false) ∈ boxRows ∧ tm230 (sk (j + 1)) false = some (false, true, sk j) := by
     decide
   exact hA.row (this j hj).1 (this j hj).2
 
@@ -328,7 +346,8 @@ theorem box_dec0 (r : Nat) (l : List Bool) (vs : List Nat) (hr : r < 9) (hl : 10
       refine (rollback hA pre l _).trans (Reach.of_eq ?_)
       simp [sepsR_app, sepsR_cons]
 
-theorem box_inc (r : Nat) (l : List Bool) (vs : List Nat) (hr : r < 9) (hl : 10 ≤ vs.length) :
+theorem box_inc (hI : IncTail M) (r : Nat) (l : List Bool) (vs : List Nat) (hr : r < 9)
+    (hl : 10 ≤ vs.length) :
     Reach M (zc 64 l (sepsM r vs)) (zl 40 l (sepsR (incr r vs ++ [1]))) := by
   obtain ⟨pre, v, rest, rfl, rfl⟩ := split_at vs r (by omega)
   rw [sepsM_split, incr_split]
@@ -348,21 +367,33 @@ theorem box_inc (r : Nat) (l : List Bool) (vs : List Nat) (hr : r < 9) (hl : 10 
   rw [zc_blank]
   go hA
   rw [zc_blank]
-  go hA
-  rw [zl_cons]
-  go hA
-  rw [zl_cons]
-  go hA
-  rw [carryR_rev, show (sepsR rest).reverse ++ true :: (List.replicate v true ++ true :: false ::
-      ((sepsR pre).reverse ++ l)) = (sepsR (pre ++ (v + 1) :: rest)).reverse ++ l by
-    simp [sepsR_app, sepsR_cons, List.replicate_succ, rep_comm]]
-  refine (ret_file_any hA _ l _).trans (Reach.of_eq ?_)
-  simp [sepsR_app, sepsR_cons]
+  rcases hI with ⟨h1, h2, h3⟩ | h1
+  · refine stL h1 ?_
+    rw [zl_cons]
+    refine stL h2 ?_
+    rw [zl_cons]
+    refine stL h3 ?_
+    rw [carryR_rev, show (sepsR rest).reverse ++ true :: (List.replicate v true ++ true :: false ::
+        ((sepsR pre).reverse ++ l)) = (sepsR (pre ++ (v + 1) :: rest)).reverse ++ l by
+      simp [sepsR_app, sepsR_cons, List.replicate_succ, rep_comm]]
+    refine (ret_file_any hA _ l _).trans (Reach.of_eq ?_)
+    simp [sepsR_app, sepsR_cons]
+  · refine stL h1 ?_
+    rw [zl_cons]
+    go hA
+    rw [zl_cons]
+    go hA
+    rw [carryR_rev, show (sepsR rest).reverse ++ true :: (List.replicate v true ++ true :: false ::
+        ((sepsR pre).reverse ++ l)) = (sepsR (pre ++ (v + 1) :: rest)).reverse ++ l by
+      simp [sepsR_app, sepsR_cons, List.replicate_succ, rep_comm]]
+    refine (ret_file_any hA _ l _).trans (Reach.of_eq ?_)
+    simp [sepsR_app, sepsR_cons]
 
-/-- The register lemmas hold for every table that agrees with K230 on `boxStates`. -/
-theorem boxLemmas : BoxLemmas M where
+/-- The register lemmas hold for every table that agrees with K230 on `boxRows` and ends the
+increment either way. -/
+theorem boxLemmas (hI : IncTail M) : BoxLemmas M where
   mark q r l vs hq hl := box_mark hA q r l vs hq hl
-  inc r l vs hr hl := box_inc hA r l vs hr hl
+  inc r l vs hr hl := box_inc hA hI r l vs hr hl
   dec0 r l vs hr hl hz := box_dec0 hA r l vs hr hl hz
   decp r l vs hr hl hz := box_decp hA r l vs hr hl hz
 

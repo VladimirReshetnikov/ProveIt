@@ -32,6 +32,20 @@ The immediate parent is the [dominated-rho8 K218](../candidate-k218/alternatives
 
 This removes state 400, adds no state, and changes nine retained rows relative to the parent. The source's entire primitive word and guarded ordinal control graph remain equal. The final local merge also has a separate all-initial-tape theorem from state 0, with positive one- or three-step matching blocks. This is a new physical reduction of the dominated layout, not a direct patch to the earlier primary K218.
 
+## Formal proofs (pending check)
+
+**Status: written, not yet kernel-checked.** The sources below have not been compiled; they are to
+be built on a machine with more memory. Until both builds pass, these are unchecked proof
+scripts, not theorems.
+
+- **Lean**: `KEndpoint217.blank_halts_iff_zfc_refutation`, in
+  [`KEndpoint217`](../../../Lean/BusyBeaver/ZFC/KEndpoint217.lean)
+  (`lake build BusyBeaver.ZFC.KEndpoint217`).
+- **Rocq**: `K217F.CorrectDense217.tm217_halts_iff_ZFC_inconsistent`, variant `217` of
+  [`rocq-extension`](../k225-formal/rocq/rocq-extension/README.md) (`build.py --states 217`).
+
+The layers are described in [k225-formal](../k225-formal/README.md#the-217).
+
 ## Verification and reproduction
 
 All five selected fresh leaves passed on the exact released bytes: deterministic reconstruction, independent source/fold audit, independent blank audit, independent local-fold checker, and full quantified runtime. The [actual-record review](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/intake192-fresh/actual-review.json) confirms that every regenerated ordered runtime case equals its delivered counterpart; only the runtime timing field differs.
