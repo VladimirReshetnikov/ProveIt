@@ -7,6 +7,9 @@ From Coq Require Import Arith Lia Bool.
 From K230L Require Import Codes230.
 From NS Require Import Codes222 EnumPerm Thm222.
 
+(** The proof uses constructor lemmas, never numeric expansion of formula codes. *)
+Local Opaque P wim wal wex weq wel.
+
 Definition popn (k w : nat) : nat := Nat.iter k (fun w => snd (unP w)) w.
 Definition goodstack (w : nat) : Prop := forall k, thm222 (fst (unP (popn k w))).
 

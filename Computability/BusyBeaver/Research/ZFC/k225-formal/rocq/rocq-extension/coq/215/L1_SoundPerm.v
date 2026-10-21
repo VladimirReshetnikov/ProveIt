@@ -1,4 +1,4 @@
-(** k225-formal/rocqperm/L1_SoundPerm.v (SHA256 e24147cd8bb03f0c8e5d1982c0a6450c9ed64c32f48fc4de42e4866fdf837f89) under namespace K215F. *)
+(** k225-formal/rocqperm/L1_SoundPerm.v (SHA256 ad1cf5cc3ab147d17ed61e4ffe6637fd0362955b5372cab074295492b3c7833b) under namespace K215F. *)
 (** * L1_SoundPerm: if the 215's enumerator halts, then [thm222 1].
 
     As L1_Sound222: the current formula, the cache and every entry of the stack stream are
@@ -7,6 +7,9 @@
 From Coq Require Import Arith Lia Bool.
 From K230L Require Import Codes230.
 From K215F Require Import Codes222 EnumPerm Thm222.
+
+(** The proof uses constructor lemmas, never numeric expansion of formula codes. *)
+Local Opaque P wim wal wex weq wel.
 
 Definition popn (k w : nat) : nat := Nat.iter k (fun w => snd (unP w)) w.
 Definition goodstack (w : nat) : Prop := forall k, thm222 (fst (unP (popn k w))).
