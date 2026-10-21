@@ -1,0 +1,31 @@
+{
+  "status": "PASS_SOURCE_REVIEW",
+  "reviewer": "drop_contract",
+  "files": {
+    "evidence.py": "b4ab585495b0cd412bc4f57b76052c83b5ff64074b028da8cab0fb4bfa33fdfc",
+    "capture.py": "e3b354168a24182bcb7742d77340a2f3900facd8f8d03616a58a75ba4012edb9",
+    "review.py": "ffe046503542b8d3a65aae3b34d0bd35fb120ad1ab949438d04cfc6d7fff2e3b",
+    "review_saved.py": "8528d7035ade5aa6e64c394deb54437a1253a976abf600b1dfb743f4958b849c",
+    "publish.py": "f6bb5ed55179b8b73ed14375b52ec3add23fff724612059b1ef0085dc297e884",
+    "control.py": "455c33c0f22d24e4a19cc4463c46f17ef911c04c17a6a0077a46b6ccb451bf01",
+    "phase3_evidence.py": "c38abffae13302fb70e6dfee08b1acc129bd0f64c91d067e9e43c8f0a48d6243"
+  },
+  "read_scope": "Full six phase4 helper sources; byte identity of trusted predecessor validator to the previously reviewed phase3 source.",
+  "conclusions": [
+    "Nested phase3 provenance is checked by the exact trusted local validator; no archived source is imported or executed.",
+    "Both inventories enforce exact 185-module target closure and dependency order. Every current source/import/log and fresh compiler argv is checked; reused bindings equal the immutable predecessor records.",
+    "The two typed clients retain exact predecessor source hashes and the same 2+8 standard-axiom reports.",
+    "Live review separately rehashes all185 current and185 basis objects, audit objects, compiler/core identities and raw logs, then recollects evidence after these checks.",
+    "Archive readers reject duplicate/unsafe/nonregular members and binary multi-suffixes. Publisher requires fresh output and a matching complete live receipt.",
+    "Saved review explicitly limits itself to archived source/record/log consistency and optional current-source matching, without a live-object claim."
+  ],
+  "observed_owner_records": {
+    "controls_sha256": "7b18ee895b0d18a1859f20514ca886e3e5df6ad1275a04811cf185f5f3b03cf3",
+    "negative_controls": 21,
+    "live_review_sha256": "40caca0a2a45d01e458b93c6250cb215aab373e1d1c9506d082748c35e391adf",
+    "current_fresh": 10,
+    "current_reused": 175
+  },
+  "limitations": "No helper, compiler or control was executed by this reviewer. Owner actual receipts were read only. No duplicate full provider or archive audit is claimed.",
+  "findings": []
+}

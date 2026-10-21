@@ -164,6 +164,35 @@ theorem halts_pre {p : Program} {n : Nat} {c c' : Configuration} (h1 : run p n c
   obtain ⟨m, c'', h, ha⟩ := h2
   exact ⟨n + m, c'', by rw [run_add, h1]; exact h, ha⟩
 
+/-- A halt leaf has no outgoing transition. -/
+theorem atHalt_step {p : Program} {c : Configuration} (h : AtHalt p c) :
+    step p c = none := by
+  obtain ⟨d, hd⟩ := h
+  simp only [step, hd, execute]
+
+/-- Remove a successfully executed prefix from a halting run. -/
+theorem hn_after {p : Program} {n N : Nat} {c c' : Configuration}
+    (hr : run p n c = some c') (h : HN p N c) :
+    ∃ N', N = n + N' ∧ HN p N' c' := by
+  induction n generalizing N c with
+  | zero =>
+      simp only [run, Option.some.injEq] at hr
+      subst c'
+      exact ⟨N, by omega, h⟩
+  | succ n ih =>
+      cases N with
+      | zero =>
+          obtain ⟨d, h0, hh⟩ := h
+          simp only [run, Option.some.injEq] at h0
+          subst d
+          simp only [run, atHalt_step hh] at hr
+          contradiction
+      | succ N =>
+          obtain ⟨d, hs, hn⟩ := hn_succ h
+          simp only [run, hs] at hr
+          obtain ⟨N', he, h'⟩ := ih hr hn
+          exact ⟨N', by omega, h'⟩
+
 theorem hn_step {p : Program} {N : Nat} {P : List Bool} {R : Registers} {e : Edge}
     {Q : List Bool} {c' : Configuration} (hs : tsite (ptree p) P = some (e, Q)) (he : e ≠ .halt)
     (hl : execute e Q R = some c') (h : HN p N ⟨P, R⟩) : ∃ N', N = N' + 1 ∧ HN p N' c' := by
@@ -272,51 +301,11 @@ theorem seg_run (p : Program) : ∀ (f : Nat) (P : List Bool) (l : List Nat) (P'
 
 theorem seg_hn (p : Program) : ∀ (f : Nat) (P : List Bool) (l : List Nat) (P' : List Bool)
     (R : Registers) (N : Nat), seg (ptree p) f P = some (l, P') → HN p N ⟨P, R⟩ →
-    ∃ N' R', N' ≤ N ∧ HN p N' ⟨P', R'⟩ ∧ ∀ i, R' i = R i + cnt l i
-  | 0, _, _, _, _, _, h, _ => by simp [seg] at h
-  | f + 1, P, l, P', R, N, h, hN => by
-      simp only [seg] at h
-      revert h
-      cases ht : tsite (ptree p) P with
-      | none => intro h; cases h
-      | some eQ =>
-          obtain ⟨e, Q⟩ := eQ
-          cases e with
-          | inc r =>
-              intro h
-              simp only at h
-              revert h
-              cases hs : seg (ptree p) f (incPath Q) with
-              | none => intro h; cases h
-              | some lP =>
-                  obtain ⟨l1, P1⟩ := lP
-                  intro h
-                  simp only [Option.some.injEq, Prod.mk.injEq] at h
-                  obtain ⟨rfl, rfl⟩ := h
-                  obtain ⟨N1, rfl, h1⟩ := hn_step ht (by intro h; cases h) rfl hN
-                  obtain ⟨N', R', hle, h', hR⟩ := seg_hn p f _ _ _ _ _ hs h1
-                  exact ⟨N', R', by omega, h', fun i => by rw [hR, update_succ, cnt]; omega⟩
-          | brk k =>
-              intro h
-              obtain ⟨N1, rfl, h1⟩ := hn_step ht (by intro h; cases h) rfl hN
-              obtain ⟨N', R', hle, h', hR⟩ := seg_hn p f _ _ _ _ _ h h1
-              exact ⟨N', R', by omega, h', hR⟩
-          | cont k =>
-              intro h
-              obtain ⟨N1, rfl, h1⟩ := hn_step ht (by intro h; cases h) rfl hN
-              obtain ⟨N', R', hle, h', hR⟩ := seg_hn p f _ _ _ _ _ h h1
-              exact ⟨N', R', by omega, h', hR⟩
-          | decnz r =>
-              intro h
-              simp only [Option.some.injEq, Prod.mk.injEq] at h
-              obtain ⟨rfl, rfl⟩ := h
-              exact ⟨N, R, Nat.le_refl N, hN, fun i => by simp [cnt]⟩
-          | halt =>
-              intro h
-              simp only [Option.some.injEq, Prod.mk.injEq] at h
-              obtain ⟨rfl, rfl⟩ := h
-              exact ⟨N, R, Nat.le_refl N, hN, fun i => by simp [cnt]⟩
-          | node m => intro h; cases h
+    ∃ N' R', N' ≤ N ∧ HN p N' ⟨P', R'⟩ ∧ ∀ i, R' i = R i + cnt l i := by
+  intro f P l P' R N hs hN
+  obtain ⟨n, R', hr, hR⟩ := seg_run p f P l P' R hs
+  obtain ⟨N', he, h'⟩ := hn_after hr hN
+  exact ⟨N', R', by omega, h', hR⟩
 
 /-! ## Segment bisimulations -/
 

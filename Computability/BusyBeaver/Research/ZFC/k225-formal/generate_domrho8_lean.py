@@ -186,6 +186,9 @@ def render_guarded(certificate_bytes, template_bytes):
         return (expression(t[0]),expression(t[1])) if isinstance(t,list) else t["var"] if isinstance(t,dict) else truth
 
     forms = [expression(n["term"]) for n in nodes]
+    # Equal schemas share their earliest proof, preserving the Source149 IDs.
+    canonical = {i: next(j for j in range(i + 1) if forms[j] == f)
+                 for i, f in enumerate(forms)}
 
     def rename(a,b,e):
         if isinstance(a,int):
@@ -196,6 +199,9 @@ def render_guarded(certificate_bytes, template_bytes):
             rename(a[0],b[0],e); rename(a[1],b[1],e)
 
     def bootstrap_call(i,e):
+        i = canonical[i]
+        if forms[i] == truth:
+            return "h.truth", truth
         args = {v:norm(e[v]) for v in variables(forms[i])}
         raw = substitute(forms[i],args)
         output = norm(raw)
@@ -204,9 +210,11 @@ def render_guarded(certificate_bytes, template_bytes):
             pf = "(show T "+boot_lean(output)+" from by simpa only [wim00] using "+pf+")"
         return pf,output
 
-    bootstrap = []
+    bootstrap = {}
     for i,node in enumerate(nodes):
         assert node["id"] == i
+        if canonical[i] != i or forms[i] == truth:
+            continue
         f,r = forms[i],node["rule"]
         if r["kind"] == "truth":
             assert f == truth
@@ -241,7 +249,7 @@ def render_guarded(certificate_bytes, template_bytes):
             pf = "(h.mp "+pm+" "+pi+")"
         names = " ".join("v"+str(v) for v in sorted(variables(f)))
         binder = " ("+names+" : Nat)" if names else ""
-        bootstrap.append("private theorem b"+str(i)+binder+" : T "+boot_lean(f)+" :=\n  "+pf+"\n")
+        bootstrap[i] = "private theorem b"+str(i)+binder+" : T "+boot_lean(f)+" :=\n  "+pf+"\n"
 
     def parse(text):
         tokens = re.findall(r"[()]|[^\s()]+",text)
@@ -275,10 +283,22 @@ def render_guarded(certificate_bytes, template_bytes):
     def lean(t):
         return "(wim "+lean(t[0])+" "+lean(t[1])+")" if isinstance(t,tuple) else "0" if t == truth else t
 
+    # A template conclusion already proved in the bootstrap needs no second
+    # derivation. Equality is literal after naming its universally bound codes.
+    named_boot = {i: substitute(f, {v: "v" + str(v) for v in variables(f)})
+                  for i, f in enumerate(forms) if canonical[i] == i}
+    reused = {}
+    for n, (names, wanted, _) in rows.items():
+        target = term(wanted, {v: v for v in names})
+        for i, f in named_boot.items():
+            if f == target:
+                assert variables(forms[i]) == {int(v[1:]) for v in names}
+                reused[n] = i
+                break
     base={2,3,6,8,9,12,13,15,16,17,25,39,40,59}
     @cache
     def guards(n):
-        if n in base:return frozenset()
+        if n in base or n in reused:return frozenset()
         if n == 0:return frozenset({("v1","v2")})
         names,_,body=rows[n]
         e={v:v for v in names}
@@ -300,13 +320,13 @@ def render_guarded(certificate_bytes, template_bytes):
     def use(n):
         if n in used:return
         used.add(n)
-        if n in base or n==0:return
+        if n in base or n in reused or n==0:return
         def walk(t):
             if t[0]=="T_mp":walk(t[3]);walk(t[4])
             else:use(int(t[0][3:]))
         walk(rows[n][2])
     use(91);use(106)
-    assert len(used)==81 and sum(bool(guards(n)) for n in used)==8
+    assert 91 in used and 106 in used
 
     def bound(u,a,available):
         if u==truth:return "(Nat.zero_le _)"
@@ -334,7 +354,7 @@ def render_guarded(certificate_bytes, template_bytes):
 
     lemmas=[]
     for n,(names,wanted,body) in rows.items():
-        if n not in used:continue
+        if n not in used or n in reused:continue
         e={v:v for v in names}
         gs=sorted(guards(n),key=repr)
         available={g:"hb"+str(i) for i,g in enumerate(gs)}
@@ -349,7 +369,14 @@ def render_guarded(certificate_bytes, template_bytes):
             args=[term(x,e) for x in t[1:]]
             env=dict(zip(rows[j][0],args))
             bs=[bound(subst(u,env),subst(a,env),available) for u,a in sorted(guards(j),key=repr)]
-            pf="(cd"+str(j)+" h "+" ".join(map(lean,args))+(" "+" ".join(bs) if bs else "")+")"
+            if j in reused:
+                i = reused[j]
+                assert not bs
+                assert subst(named_boot[i], env) == term(rows[j][1], env)
+                pf = "(b" + str(i) + " h " + " ".join(lean(env["v" + str(v)])
+                       for v in sorted(variables(forms[i]))) + ")"
+            else:
+                pf="(cd"+str(j)+" h "+" ".join(map(lean,args))+(" "+" ".join(bs) if bs else "")+")"
             output=term(rows[j][1],env)
             if term(rows[j][1],env,False)!=output:
                 pf="(show T "+lean(output)+" from by simpa only [wim00] using "+pf+")"
@@ -361,7 +388,28 @@ def render_guarded(certificate_bytes, template_bytes):
             pf,output=walk(body)
             assert output==term(wanted,e)
         lemmas.append("private theorem cd"+str(n)+" ("+" ".join(names)+" : Nat) "+bind+" :\n    T "+lean(term(wanted,e))+" := by\n  simpa only [wim00] using "+pf+"\n")
-    return GUARDED_HEAD+"\n".join(bootstrap)+GUARDED_MIDDLE+"\n".join(lemmas)+"\n"+GUARDED_TAIL
+    # Retain only actual proof dependencies after schema reuse. Source149 node
+    # labels remain stable, making each retained statement easy to cross-check.
+    keep = set()
+    def retain(i):
+        if i in keep:
+            return
+        keep.add(i)
+        for parent in map(int, re.findall(r"\bb(\d+)\b", bootstrap[i].split(":=", 1)[1])):
+            assert parent < i
+            retain(parent)
+    for i in map(int, re.findall(r"\bb(\d+)\b", GUARDED_MIDDLE + "\n".join(lemmas))):
+        retain(i)
+    header = GUARDED_HEAD.replace("A 61-lemma bootstrap", "A " + str(len(keep)) + "-lemma bootstrap")
+    header = header.replace("We retain 81 of its 107\nschemas; eight carry", "We retain " +
+                            str(len(lemmas)) + " of its 107\nschemas; " +
+                            str(sum(bool(guards(n)) for n in used if n not in reused)) + " carry")
+    header = header.replace("The bootstrap is Source 149's original nodes0..60;",
+                            "The bootstrap shares and prunes Source 149's original nodes0..60;")
+    header = header.replace("Every emitted\nstep is", "Duplicate template conclusions reuse bootstrap lemmas. Every emitted\nstep is")
+    print("retained bootstrap", len(keep), "CD templates", len(lemmas),
+          "reused template conclusions", len(used & reused.keys()))
+    return header+"\n".join(bootstrap[i] for i in sorted(keep))+GUARDED_MIDDLE+"\n".join(lemmas)+"\n"+GUARDED_TAIL
 
 
 parser = argparse.ArgumentParser(description=__doc__)
@@ -381,7 +429,7 @@ if not args.plan and not args.no_plan and hashlib.sha256(raw).hexdigest() == ori
     template_path = args.templates or (Path(__file__).resolve().parents[5] /
         "SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/149-dom-theory-ev-CD230.v")
     out.write_text(render_guarded(raw, template_path.read_bytes()), encoding="utf-8", newline="\n")
-    print("wrote guarded hierarchy:61 bootstrap +81 CD templates + deduction")
+    print("wrote shared guarded hierarchy and deduction")
     raise SystemExit(0)
 if args.templates:
     parser.error("--templates requires the exact original Source149 certificate")
