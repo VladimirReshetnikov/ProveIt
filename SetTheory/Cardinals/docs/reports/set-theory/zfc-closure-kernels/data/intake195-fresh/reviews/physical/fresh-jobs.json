@@ -1,0 +1,111 @@
+{
+  "status": "REVIEWED_DIRECT_LEAF_PLAN_NOT_EXECUTED",
+  "package": "/tmp/zfc-intake195/extracted/K216_Partial_Selector_2026-10-20",
+  "accepted_parent": "/tmp/zfc-intake192/review-upstream/extracted/K217_Dominated_Continuation_2026-10-20",
+  "jobs": [
+    {
+      "name": "reconstruct",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/code/reconstruct216.py",
+        "--parent",
+        "{PARENT}",
+        "--out",
+        "{OUT}/rebuilt"
+      ],
+      "cwd": "{COPY}",
+      "timeout": 1200,
+      "env": {
+        "PYTHONOPTIMIZE": "0",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "gate": "Exact reconstructed five source/table files"
+    },
+    {
+      "name": "source",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/code/source_equivalence.py",
+        "--baseline",
+        "{PARENT}/machine/sites217.json",
+        "--candidate",
+        "{COPY}/source/sites216.json",
+        "--out",
+        "{OUT}/source"
+      ],
+      "cwd": "{COPY}",
+      "timeout": 1200,
+      "env": {
+        "PYTHONOPTIMIZE": "0",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "gate": "ALL_NATURAL_SOURCE_BISIMULATION_PASS; 6175 edges; exact deterministic output bytes"
+    },
+    {
+      "name": "blank-marker",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/code/audit216.py",
+        "--out",
+        "{OUT}/blank-marker.json"
+      ],
+      "cwd": "{COPY}",
+      "timeout": 1200,
+      "env": {
+        "PYTHONOPTIMIZE": "0",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "gate": "MARKER_LEMMA_CANONICAL_ISOMORPHISM_AND_WHOLE_BLANK_PASS; 216/432; 313133 complete native/dense blank steps"
+    },
+    {
+      "name": "fold",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/code/check_joint_fold.py",
+        "--old",
+        "{COPY}/machine/prefold217.native.tm",
+        "--new",
+        "{COPY}/machine/k216.native.tm",
+        "--keep",
+        "164",
+        "--drop",
+        "183",
+        "--radius",
+        "4",
+        "--fuel",
+        "20",
+        "--output",
+        "{OUT}/fold-window.json"
+      ],
+      "cwd": "{COPY}",
+      "timeout": 1200,
+      "env": {
+        "PYTHONOPTIMIZE": "0",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "gate": "INDEPENDENT_ALL_TAPE_JOINT_DIAGRAM_PASS; 27527 contexts;48 nontrivial;negative control REJECTED"
+    },
+    {
+      "name": "runtime",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/code/validate_native.py",
+        "{COPY}/machine/k216.native.tm",
+        "{COPY}/source/sites216.json",
+        "{OUT}/runtime"
+      ],
+      "cwd": "{COPY}",
+      "timeout": 1200,
+      "env": {
+        "PYTHONOPTIMIZE": "0",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "gate": "JSON runtime UNIVERSAL_MATHEMATICAL_PASS,6176/6176,no failures; separate CALIBRATED_DIRTY_ROOT_SEED exact startup; ordered raw case and row-coverage postaudit required"
+    }
+  ]
+}

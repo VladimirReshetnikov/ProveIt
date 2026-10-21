@@ -1,0 +1,18 @@
+--- actual entry_routes_v2.py
++++ portable entry_routes.py
+@@ -5,2 +5,4 @@
+-import hashlib,json
+-R=Path('/home/codex/.codex/worktrees/ec20/Proofs');B=R/'Computability/BusyBeaver/Research/ZFC/candidate-k218';P=Path('/tmp/k217-relocate122')
++import hashlib,json,argparse
++ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,required=True);ap.add_argument('--census',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);args=ap.parse_args()
++assert not args.output.exists(), 'output must be fresh'
++R=args.repo.resolve();B=R/'Computability/BusyBeaver/Research/ZFC/candidate-k218'
+@@ -15 +17 @@
+-census=json.loads((P/'census.json').read_text()); paths=census['paths']['122']; groups={'CD5_CC1':[p for p in paths if p[-1]=='0'],'CD1_CC1':[p for p in paths if p[-1]=='1']}
++census=json.loads(args.census.read_text()); paths=census['paths']['122']; groups={'CD5_CC1':[p for p in paths if p[-1]=='0'],'CD1_CC1':[p for p in paths if p[-1]=='1']}
+@@ -60,2 +62,3 @@
+-out={'status':'EXISTING_ENTRY_DIAGNOSTIC_COMPLETE','scope':'Only existing entry states at unchanged head/prefix; speculative122 full-flip and10 reroute present. Exact endpoints for all six source-prefix cases; exterior never read. Caller row51/0 or196/1 encountered during a helper is unresolved, not a negative equivalence theorem. No transition synthesis, no whole runtime or boot claim.','bound':97,'controls':controls,'groups':results,'pins':{str(p):hashlib.sha256(p.read_bytes()).hexdigest()for p in(B/'k218.native.tm',B/'sites218.json',P/'census.json',Path(__file__))}}
+-(P/'entry-routes1/result.json').write_text(json.dumps(out,indent=2)+'\n')
++out={'status':'EXISTING_ENTRY_DIAGNOSTIC_COMPLETE','scope':'Only existing entry states at unchanged head/prefix; speculative122 full-flip and10 reroute present. Exact endpoints for all six source-prefix cases; exterior never read. Caller row51/0 or196/1 encountered during a helper is unresolved, not a negative equivalence theorem. No transition synthesis, no whole runtime or boot claim.','bound':97,'controls':controls,'groups':results,'pins':{str(p):hashlib.sha256(p.read_bytes()).hexdigest()for p in(B/'k218.native.tm',B/'sites218.json',R/'Computability/BusyBeaver/Research/ZFC/k218-continuation-search/marker-relay/relay217.native.tm',args.census,Path(__file__))}}
++args.output.parent.mkdir(parents=True,exist_ok=True)
++args.output.write_text(json.dumps(out,indent=2)+'\n')

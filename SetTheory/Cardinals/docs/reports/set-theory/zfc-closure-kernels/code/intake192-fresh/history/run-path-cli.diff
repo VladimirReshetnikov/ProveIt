@@ -1,0 +1,17 @@
+--- historical
++++ portable
+@@ -1,7 +1,12 @@
+ from pathlib import Path
+ import json,subprocess,shutil,sys,time,zipfile,stat
+-ROOT=Path('/tmp/zfc-intake192/review-upstream/extracted/K217_Dominated_Continuation_2026-10-20')
+-OUT=Path('/tmp/zfc-intake192/fresh1');OUT.mkdir(exist_ok=False)
++import argparse
++parser=argparse.ArgumentParser(description='Replay only the five selected K217 leaves on a fresh copy.')
++parser.add_argument('--packet',type=Path,required=True,help='Recovered K217_Dominated_Continuation_2026-10-20 directory')
++parser.add_argument('--output',type=Path,required=True,help='New scratch directory')
++args=parser.parse_args()
++ROOT=args.packet.resolve()
++OUT=args.output.resolve();OUT.mkdir(exist_ok=False)
+ P=OUT/'packet';shutil.copytree(ROOT,P);B=OUT/'parent'
+ with zipfile.ZipFile(P/'parent/K218_Dominated_Rho8_2026-10-20.zip')as z:
+  for i in z.infolist():

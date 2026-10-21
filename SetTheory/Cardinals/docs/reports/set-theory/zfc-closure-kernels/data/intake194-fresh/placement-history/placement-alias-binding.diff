@@ -1,0 +1,26 @@
+--- place-v1.py
++++ place.py
+@@ -2,7 +2,7 @@
+ import json, subprocess, zipfile, stat
+ repo=Path.cwd()
+ p=json.loads(Path('/tmp/zfc-intake194/procedure/placement-plan.json').read_text())
+-fresh=Path('/tmp/zfc-intake194/placement-fresh'); fresh.mkdir(exist_ok=False)
++fresh=Path('/tmp/zfc-intake194/placement-fresh2'); fresh.mkdir(exist_ok=False)
+ new=[]; n=0
+ for s in p['sources']:
+  archive=repo/s['archive']
+@@ -18,10 +18,12 @@
+    data=z.read(info); fp=dest/rel; fp.parent.mkdir(parents=True,exist_ok=True); fp.write_bytes(data)
+    assert subprocess.check_output(['git','hash-object','--stdin'],input=data).decode().strip()==m['blob']
+    if m['role']=='new':
+-    target=repo/m['target']; assert not target.exists(); target.parent.mkdir(parents=True,exist_ok=True); target.write_bytes(data); new.append(m['target'])
++    target=repo/m['target']; assert not target.exists() or target.read_bytes()==data; target.parent.mkdir(parents=True,exist_ok=True); target.write_bytes(data); new.append(m['target'])
+    elif m['role'] in ('existing-alias','batch-alias'):
+-    assert (repo/m['target']).read_bytes()==data
++    if m['role']=='batch-alias': assert (repo/m['target']).read_bytes()==data
+     if m['role']=='existing-alias':
++     assert subprocess.check_output(['git','show',m['current_ref']+':'+m['target']])==data
++     subprocess.run(['git','diff','--quiet',m['current_ref'],'--',m['target']],check=True)
+      h=m['original_introduction']; assert subprocess.check_output(['git','rev-parse',h['commit']+':'+h['path']],text=True).strip()==m['blob']
+    elif m['role']=='history-alias':
+     h=m['history']; assert subprocess.check_output(['git','show',h['commit']+':'+h['path']])==data

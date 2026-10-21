@@ -1,0 +1,131 @@
+{
+  "status": "REPRODUCIBLE_INVESTIGATION_NO_CERTIFIED_217_BLANK_MACHINE",
+  "input_hashes": {
+    "baseline218/k218.native.tm": "2dfaba6da09b78291e534777cd30c5f0d68bd84faa670e868e779c396aeb308f",
+    "baseline218/sites218.json": "b0169f2d477d0584ac70f9bdb79c3a78ef2bc700d080b3cd80976210235b80d9",
+    "core217/core.native.tm": "c3d90a672481086329d8ed93da24a885d80a553ae6298b3a6444bea0fd5cee53",
+    "data/runtime_rewrites.txt": "0f4887d4a0eb777478ccd46f03299afc11d2d7a0341d493f9a4ef25ae4b6495d"
+  },
+  "context_cases": 30835,
+  "baseline_contexts": {
+    "steps": 17602319,
+    "windows": 185553,
+    "radius": 9
+  },
+  "core_contexts": {
+    "steps": 17603079,
+    "windows": 185633,
+    "radius": 9
+  },
+  "onespare_contexts": {
+    "steps": 17507469,
+    "windows": 185519,
+    "radius": 9
+  },
+  "finite_discovery": [
+    {
+      "task": "complete",
+      "specifications": 322028,
+      "unordered_pairs": 23653,
+      "survivors": 0,
+      "local_fuel": 197
+    },
+    {
+      "task": "onespare",
+      "specifications": 322028,
+      "unordered_pairs": 23653,
+      "survivors": 0,
+      "local_fuel": 197
+    },
+    {
+      "task": "two-row",
+      "assignments_tested": 7116941,
+      "survivors": 0,
+      "local_fuel": 97
+    },
+    {
+      "task": "runtime-rewrites",
+      "edits": 378014,
+      "survivors": 492,
+      "local_fuel": 197
+    }
+  ],
+  "initializers": {
+    "one_edit_every_start": {
+      "edits": 492,
+      "initial_states": 217,
+      "cases": 106764,
+      "frames": 0,
+      "rays": 106764,
+      "limits": 0,
+      "halts": 0
+    },
+    "two_edits_start_zero": {
+      "distinct_row_pairs": 118928,
+      "frames": 0,
+      "rays": 118838,
+      "limits": 90,
+      "halts": 0
+    },
+    "step_limit": 1500000,
+    "ray_scope": "A detected outward zero-reading self-loop gives an inductive infinite continuation.",
+    "limit_scope": "Unresolved; no conclusion about later behavior."
+  },
+  "preliminary_correction": {
+    "apparent_hits": 40,
+    "completed_symbolic_rejections": 40,
+    "earlier_interim_rejections": 25,
+    "concrete_failure_site": 3126,
+    "baseline_intermediate_dispatch_steps": [
+      150,
+      318
+    ],
+    "baseline_complete_return": 596,
+    "candidate_incorrect_return": 626
+  },
+  "raw_alternate_frame": {
+    "change": "51/0 -> 1 L 6",
+    "working_states": 217,
+    "blank_start_frame_steps": 532731,
+    "head": -17,
+    "gap": 1,
+    "logical_registers": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "spares": {
+      "zero_prefix": 73,
+      "one_suffix": 180,
+      "total": 253
+    },
+    "source_mask_counterexample": {
+      "site_index": 0,
+      "operation": "CD8 positive",
+      "registers": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "spares": [
+        1
+      ],
+      "gap": 0,
+      "incorrect_return_steps": 4738
+    },
+    "scope": "Exploratory raw frame only; existing masked primitive theorem fails, while behavior from the alternate seed is not settled."
+  },
+  "interpretation": "Finite local filters do not imply a lower bound on equivalent machines. Symbolic rejections are failed proof attempts; explicit traces supply concrete counterexamples only for the stated frames."
+}

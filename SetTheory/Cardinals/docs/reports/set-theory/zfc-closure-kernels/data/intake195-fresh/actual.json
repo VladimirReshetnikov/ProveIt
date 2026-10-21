@@ -1,0 +1,115 @@
+{
+  "status": "FIVE_SELECTED_LEAVES_PASS",
+  "scope": "Five fresh direct leaves on a disposable copy. No wrapper, checksum-manifest validation, parent suite, broad search, or proof assistant. Ordinary Source149/152 calibration is inherited.",
+  "jobs": [
+    {
+      "name": "reconstruct",
+      "argv": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "/tmp/zfc-intake195/fresh/packet/code/reconstruct216.py",
+        "--parent",
+        "/tmp/zfc-intake195/fresh/parent/K217_Dominated_Continuation_2026-10-20",
+        "--out",
+        "/tmp/zfc-intake195/fresh/rebuilt"
+      ],
+      "cwd": "/tmp/zfc-intake195/fresh/packet",
+      "timeout_seconds": 60,
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.11518764868378639,
+      "receipt": null,
+      "status": "EXACT_SOURCE_AND_TABLE_RECONSTRUCTION_PASS",
+      "accepted": true
+    },
+    {
+      "name": "source",
+      "argv": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "/tmp/zfc-intake195/fresh/packet/code/source_equivalence.py",
+        "--baseline",
+        "/tmp/zfc-intake195/fresh/parent/K217_Dominated_Continuation_2026-10-20/machine/sites217.json",
+        "--candidate",
+        "/tmp/zfc-intake195/fresh/packet/source/sites216.json",
+        "--out",
+        "/tmp/zfc-intake195/fresh/source"
+      ],
+      "cwd": "/tmp/zfc-intake195/fresh/packet",
+      "timeout_seconds": 60,
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.5654615117236972,
+      "receipt": "/tmp/zfc-intake195/fresh/source/verification.json",
+      "status": "ALL_NATURAL_SOURCE_BISIMULATION_PASS",
+      "accepted": true
+    },
+    {
+      "name": "blank-marker",
+      "argv": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "/tmp/zfc-intake195/fresh/packet/code/audit216.py",
+        "--out",
+        "/tmp/zfc-intake195/fresh/blank-marker.json"
+      ],
+      "cwd": "/tmp/zfc-intake195/fresh/packet",
+      "timeout_seconds": 60,
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.615361038595438,
+      "receipt": "/tmp/zfc-intake195/fresh/blank-marker.json",
+      "status": "MARKER_LEMMA_CANONICAL_ISOMORPHISM_AND_WHOLE_BLANK_PASS",
+      "accepted": true
+    },
+    {
+      "name": "local-fold",
+      "argv": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "/tmp/zfc-intake195/fresh/packet/code/check_joint_fold.py",
+        "--old",
+        "/tmp/zfc-intake195/fresh/packet/machine/prefold217.native.tm",
+        "--new",
+        "/tmp/zfc-intake195/fresh/packet/machine/k216.native.tm",
+        "--keep",
+        "164",
+        "--drop",
+        "183",
+        "--radius",
+        "4",
+        "--fuel",
+        "20",
+        "--output",
+        "/tmp/zfc-intake195/fresh/fold-window.json"
+      ],
+      "cwd": "/tmp/zfc-intake195/fresh/packet",
+      "timeout_seconds": 90,
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.22224579565227032,
+      "receipt": "/tmp/zfc-intake195/fresh/fold-window.json",
+      "status": "INDEPENDENT_ALL_TAPE_JOINT_DIAGRAM_PASS",
+      "accepted": true
+    },
+    {
+      "name": "runtime",
+      "argv": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "/tmp/zfc-intake195/fresh/packet/code/validate_native.py",
+        "/tmp/zfc-intake195/fresh/packet/machine/k216.native.tm",
+        "/tmp/zfc-intake195/fresh/packet/source/sites216.json",
+        "/tmp/zfc-intake195/fresh/runtime"
+      ],
+      "cwd": "/tmp/zfc-intake195/fresh/packet",
+      "timeout_seconds": 360,
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 181.92248559556901,
+      "receipt": "/tmp/zfc-intake195/fresh/runtime/runtime.json",
+      "status": "UNIVERSAL_MATHEMATICAL_PASS",
+      "accepted": true
+    }
+  ]
+}

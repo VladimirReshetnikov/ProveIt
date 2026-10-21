@@ -1,0 +1,13 @@
+--- actual census.py
++++ portable census.py
+@@ -3,2 +3,4 @@
+-import json,hashlib
+-R=Path('/home/codex/.codex/worktrees/ec20/Proofs');B=R/'Computability/BusyBeaver/Research/ZFC/candidate-k218'
++import json,hashlib,argparse
++ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);args=ap.parse_args()
++assert not args.output.exists(), 'output must be fresh'
++R=args.repo.resolve();B=R/'Computability/BusyBeaver/Research/ZFC/candidate-k218'
+@@ -31 +33,2 @@
+-Path('/tmp/k217-relocate122/census.json').write_text(json.dumps(result,indent=2)+'\n')
++args.output.parent.mkdir(parents=True,exist_ok=True)
++args.output.write_text(json.dumps(result,indent=2)+'\n')

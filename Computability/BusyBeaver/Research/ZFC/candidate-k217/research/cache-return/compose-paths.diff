@@ -1,0 +1,18 @@
+--- compose.py
++++ compose_portable.py
+@@ -1,10 +1,12 @@
+ from pathlib import Path
+-import sys,json,gzip,hashlib
+-R=Path('/home/codex/.codex/worktrees/ec20/Proofs')
++import sys,json,gzip,hashlib,argparse
++ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()
++assert __debug__ and not sys.flags.optimize
++R=a.repo.resolve()
+ sys.path.insert(0,str(R/'Computability/BusyBeaver/Research/ZFC/k218-quantifier-stability/pricing'))
+ import source_language as s
+ import build221 as b
+-P=Path(__file__).resolve().parent;O=P/'run2';O.mkdir(exist_ok=False)
++P=Path(__file__).resolve().parent;O=a.output.resolve();O.mkdir(parents=True,exist_ok=False)
+ C=R/'Computability/BusyBeaver/Research/ZFC/candidate-k217';B=R/'Computability/BusyBeaver/Research/ZFC/candidate-k219'
+ H=R/'SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/intake192-fresh'
+ sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();load=lambda p:json.loads(p.read_text())

@@ -1,0 +1,27 @@
+--- search.original.py
++++ search.py
+@@ -17,10 +17,10 @@
+ def main():
+  ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--seed',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);ap.add_argument('--seconds',type=int,default=110);a=ap.parse_args()
+  assert __debug__ and not os.getenv('PYTHONOPTIMIZE') and 1<=a.seconds<=110
+- assert digest(a.seed) in ('2dfaba6da09b78291e534777cd30c5f0d68bd84faa670e868e779c396aeb308f','3376bd149d5f35c03b3dabc79f095d2d2e674cf2e0e1c09a7de09431d8e74153')
++ assert digest(a.seed) == 'b235f7d0403460ff00d274d7d030fec6ba3562127035165e3ead555237c83088'
+  assert all(digest(HERE/n)==h for n,h in PINS.items())
+  filt=load('filter_source');check=load('check_joint_fold')
+- a.output.mkdir(parents=True,exist_ok=False);started=time.monotonic();old,start=check.read(a.seed);Q=sorted({q for q,b in old});assert len(Q)==218 and len(old)==436
++ a.output.mkdir(parents=True,exist_ok=False);started=time.monotonic();old,start=check.read(a.seed);Q=sorted({q for q,b in old});assert len(Q)==217 and len(old)==434
+  inputs={str(p.resolve()):digest(p)for p in [a.seed,Path(__file__),HERE/'filter_source.py',HERE/'check_joint_fold.py']};dump(a.output/'inputs.json',inputs)
+  I=check.domain(old,start,7);paths={};stats={'attempted':0,'completed_pairs':0,'started_pairs':0,'total_ordered_pairs':len(Q)*(len(Q)-1),'inherited':0,'one_common_action':0,'filter_rejected':0,'independent_rejected':0,'independent_pass':0,'independent_incomplete':0};hits=[];stop=None;pending=None;witnesses=gzip.open(a.output/'rejections.jsonl.gz','wt')
+  try:
+@@ -54,9 +54,9 @@
+     dump(hd/'execution.json',{'command':command,'exit_code':code,'timed_out':timed,'seconds':time.monotonic()-t,'candidate':spec})
+     if timed:stats['independent_incomplete']+=1;stop='WALL_LIMIT';break
+     if code!=0:stats['independent_rejected']+=1;witnesses.write(json.dumps({**spec,'stage':'independent_checker','record':str(hd/'execution.json')})+'\n');pending=None;continue
+-    proof=json.loads((hd/'universal.json').read_text());assert proof['status']=='INDEPENDENT_ALL_TAPE_JOINT_DIAGRAM_PASS'and proof['old_states']==218 and proof['new_states']==217 and proof['negative_control']['status']=='REJECTED'
++    proof=json.loads((hd/'universal.json').read_text());assert proof['status']=='INDEPENDENT_ALL_TAPE_JOINT_DIAGRAM_PASS'and proof['old_states']==217 and proof['new_states']==216 and proof['negative_control']['status']=='REJECTED'
+     stats['independent_pass']+=1;hits.append({**spec,'native_sha256':digest(native),'proof':str(hd/'universal.json')});pending=None;dump(a.output/'hits.json',hits)
+-    print('INDEPENDENT_217_PASS',json.dumps(hits[-1]),flush=True);stop='FIRST_VERIFIED_SURVIVOR';break
++    print('INDEPENDENT_216_PASS',json.dumps(hits[-1]),flush=True);stop='FIRST_VERIFIED_SURVIVOR';break
+    if stop:break
+    stats['completed_pairs']+=1
+    if stats['completed_pairs']%5000==0:print('PROGRESS',stats['completed_pairs'],stats['attempted'],round(time.monotonic()-started,2),flush=True)

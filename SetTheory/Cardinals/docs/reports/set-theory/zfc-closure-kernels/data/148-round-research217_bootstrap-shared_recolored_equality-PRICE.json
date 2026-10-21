@@ -1,0 +1,76 @@
+{
+  "status": "ALLOCATOR_FAILURE_NOT_A_STATE_PRICE",
+  "baseline_table_sha256": "2dfaba6da09b78291e534777cd30c5f0d68bd84faa670e868e779c396aeb308f",
+  "baseline_source_sha256": "b0169f2d477d0584ac70f9bdb79c3a78ef2bc700d080b3cd80976210235b80d9",
+  "source_sha256": "4ae5b941374e5fac2bd4f3d2b0515927d9c84c1506c644c7c6f53af775500fab",
+  "source_nodes": 209,
+  "primitive_occurrences": 4747,
+  "equality_calls": 4,
+  "producer_edits": [
+    {
+      "source_index": 4580,
+      "path": "110100100111011101010",
+      "old": [
+        "CI",
+        6
+      ],
+      "new": [
+        "CI",
+        3
+      ]
+    },
+    {
+      "source_index": 4598,
+      "path": "1101001010",
+      "old": [
+        "CI",
+        6
+      ],
+      "new": [
+        "CI",
+        3
+      ]
+    },
+    {
+      "source_index": 4706,
+      "path": "1110110",
+      "old": [
+        "CI",
+        6
+      ],
+      "new": [
+        "CI",
+        3
+      ]
+    }
+  ],
+  "first_producer_path": "11010010011101101",
+  "restoration_ast": [
+    [
+      "CD",
+      6
+    ],
+    [
+      [
+        "CI",
+        3
+      ],
+      [
+        "CC",
+        2
+      ]
+    ]
+  ],
+  "restoration_already_existing": true,
+  "new_leaf_interfaces": [
+    [
+      "CD",
+      5,
+      "1"
+    ]
+  ],
+  "proof": "For arbitrary cacheb, selectorc and other registers, withR6=0: the first existing duplicate clearsR3 intoR6/R7; existingT63 then restoresc toR3 while clearingR6. E35 clearsR3/R5 and has the same equality exit as the old E56. It leaves the savedR7 copy untouched. At the other three producersR3=R6=0, so directCI6\u2192CI3 retargeting followed byE35 has the same endpoint and equality exit as the old producer/E56. In particular NIP halts exactly at cache1. No consistency assumption is used.",
+  "scope": "One exact combined source candidate. Source arithmetic contracts and raw allocation do not certify new right-childCD5 engine semantics, whole-machine runtime or blank initialization.",
+  "error": "AssertionError(('no leaf interface', ('CD', 5), 1))",
+  "seconds": 0.35609702800866216
+}

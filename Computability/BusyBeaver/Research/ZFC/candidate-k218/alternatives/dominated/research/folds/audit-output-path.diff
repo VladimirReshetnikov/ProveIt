@@ -1,0 +1,11 @@
+--- audit_results.original.py
++++ audit_results.py
+@@ -4,7 +4,7 @@
+ import json,gzip,hashlib,itertools
+ R=Path(__file__).resolve().parent
+ out=[]
+-for name in ['baseline-run1','row157-run1']:
++for name in ['run1']:
+  p=R/name/'result.json'
+  if not p.exists():continue
+  j=json.loads(p.read_text());assert j['status']=='COMPLETE_BOUNDED_SEARCH'

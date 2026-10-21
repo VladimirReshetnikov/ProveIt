@@ -1,0 +1,32 @@
+--- /tmp/zfc-intake193/large/extracted/ZFC_218_Research_2026-10-20/research/machine/vendor/K221_minimal/portable/runtime/vendor/symbolic_runtime.py
++++ /tmp/zfc-intake192/fresh1/parent/K218_Dominated_Rho8_2026-10-20/binary/code/runtime/symbolic_runtime.py
+@@ -157,7 +157,7 @@
+     assert 95 in working and 96 in working and 254 not in working
+     assert len(table)==2*len(working) and all((q,b) in table for q in working for b in (0,1))
+     assert {row[2] for row in table.values()}-working=={254}
+-    assert isinstance(sites,list) and len(sites)==6455
++    assert isinstance(sites,list) and len(sites)==4581
+     leaves=set();prefixes=set()
+     for row in sites:
+         assert isinstance(row,list) and len(row)==3
+@@ -172,16 +172,16 @@
+     assert not leaves.intersection(prefixes)
+     assert all(p+b in leaves or p+b in prefixes for p in prefixes for b in ('0','1'))
+     assert len(prefixes)==len(leaves)-1
+-    # The complete rotation240 source list is independently source-calibrated separately.
++    # The complete QT source list is independently source-calibrated separately.
+     # Pin its canonical serialization here; generic runtime rules are unchanged.
+     encoded=(json.dumps(sites,indent=2)+'\n').encode()
+-    assert hashlib.sha256(encoded).hexdigest()=='74b1e7f73cc3ffe7761e36ab2d57a26e0ba34d3ac624f2472799e6ac41d5a51d'
+-    return {'working_states':len(working),'leaf_count':len(leaves),'complete_binary_tree':True,'maximum_depth':max(map(len,leaves)),'exact_rotation240_source_pin':True,'source_equivalence_checked_separately':True}
++    assert hashlib.sha256(encoded).hexdigest()=='a05f93768858315df92bdf1c7a55fc38d2a873ac7998e31fd361dbb04b90e024'
++    return {'working_states':len(working),'leaf_count':len(leaves),'complete_binary_tree':True,'maximum_depth':max(map(len,leaves)),'exact_boundary_reassociated_source_pin':True,'source_equivalence_checked_separately':True}
+ 
+ 
+ 
+ def main():
+-    ap=argparse.ArgumentParser();ap.add_argument('--table',type=Path,default=Path(__file__).resolve().parents[1]/'baseline/rotation240/zfc_rotation240_old.tm');ap.add_argument('--sites',type=Path,default=Path(__file__).resolve().parents[1]/'baseline/rotation240/sites_logical.json');ap.add_argument('--output',type=Path,default=Path(__file__).resolve().parent/'baseline240_universal.json');ap.add_argument('--limit',type=int);ap.add_argument('--append',type=int,default=1);args=ap.parse_args()
++    ap=argparse.ArgumentParser();ap.add_argument('--table',type=Path,default=r.BASE/'candidate-routing245/zfc_routing245_old.tm');ap.add_argument('--sites',type=Path,default=r.BASE/'certificate__sites_logical.json');ap.add_argument('--output',type=Path,default=r.OUT/'baseline245_universal_summary.json');ap.add_argument('--limit',type=int);ap.add_argument('--append',type=int,default=1);args=ap.parse_args()
+     table=r.table(args.table);ss=json.loads(args.sites.read_text());started=time.monotonic()
+     input_facts=validate_inputs(table,ss)
+     checker_hash=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()

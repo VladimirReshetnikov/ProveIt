@@ -1,0 +1,9 @@
+# Addendum: stronger result already available for the proposed full-bundle gate
+
+The Source150 manuscript, `report.tex` lines455–462, accurately presents its own finding as a failure of the inherited vacuity proof after replacing the original gate by `c>max(a,b)`. Its earlier definition at lines125–144 attaches the gate to the complete support-bearing seed-plus-vacuity bundle, rather than only the seed core. No separate supply of all original low-label vacuity instances is proposed there.
+
+For that exact **full-bundle** interpretation, a stronger result is already retained in Source142. Its `companion.tex` theorem at lines136–140 and proof at187–243 construct a ZFC model for every complete bundle with `c>max(a,b)`, while retaining unrestricted rho8 and all other native logical rules. Consequently ZFC proves consistency of this restricted calculus. Subject to Con(ZFC) and the usual second-incompleteness hypotheses, it cannot have the required ZFC-formalizable lower calibration to Con(ZFC).
+
+This supersedes an *open-route reading* of item9 in `notes.md`; the original receipt remains historical and unchanged. It does not contradict the submission's narrower statement that its local proof failure alone is not an impossibility theorem. The separate Source142 positive cofinal-*core* result retains every original membership-vacuity instance and therefore is a different calculus; it cannot rescue the full-bundle restriction without paying for that extra family.
+
+Sources read: the exact submitted Source150 gate paragraph and bundle definition; maintained `SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake187-source142-review.md`; the original Source142 full-bundle theorem and relevant exact gate/proof statements in `/tmp/zfc-intake187/research218_progress_latex/research218_companion/companion.tex`. No supplied execution or new formal verification was performed.
