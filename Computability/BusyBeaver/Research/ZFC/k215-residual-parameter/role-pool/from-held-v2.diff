@@ -1,0 +1,30 @@
+--- allocate-v2.py
++++ allocate_from215.py
+@@ -32,13 +32,12 @@
+ def main():
+  ap=argparse.ArgumentParser();ap.add_argument('--source',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);ap.add_argument('--limit',type=int,default=30);ap.add_argument('--fresh',type=int,default=0);a=ap.parse_args()
+  a.output.mkdir(parents=True,exist_ok=False)
+- table=K/'candidate-k216/machine/k216.native.tm'
+- if not table.exists():table=K/'candidate-k216/k216.native.tm'
+- src=K/'candidate-k216/sites216.json'
++ table=K/'candidate-k215/k215.native.tm'
++ src=K/'candidate-k215/sites215.json'
+  T=b.read_table(table.read_bytes());old=s.tree(json.loads(src.read_text()));new=s.tree(json.loads(a.source.read_text()))
+- assert sha(table)=='2efb7adf9cfcbea58197a2bde2610b22f58b647f05385bc716b036242be6fa6c'
+- assert sha(src)=='c865047ce7283521199e93ce74307821f3b3231742213329b7ac5e8a7ec0b6d2'
+- original=dict(T);assert T[81,0]==(0,-1,92);T[81,0]=(0,-1,111)
++ assert sha(table)=='9683d6ed9628e6ce407c315b08f5da3d063da94e92706f275ca0f33e8272e4b2'
++ assert sha(src)=='17af207195179b2508bf91154cd00739374f8862207ca21b9a3cb9098aa6f5ba'
++ original=dict(T);assert T[81,0]==(0,-1,111) # Accepted215 already contains the reviewed repair.
+  assert [T[k]for k in[(111,0),(111,1),(104,0),(128,0)]]==[(0,1,104),(1,1,128),(0,1,123),(0,1,21)]
+  groups,oldpaths=b.decoder_map(T,old);oldstates=defaultdict(set)
+  for q,ns in groups.items():
+@@ -112,7 +111,7 @@
+   for n in newnodes:
+    for q in list(domains[n]):
+     if any(t not in domains[ch]for ch,t in reqs[n,q]):domains[n].remove(q);changed=True
+- receipt={'status':'PENDING','scope':'Synthesis and complete literal decoder prefix binding only; engine protections are inherited synthesis filters. No primitive, all-natural runtime, blank startup, calibration or candidate acceptance claimed.','source':str(a.source),'source_sha256':sha(a.source),'table':str(table),'table_sha256':sha(table),'old_source_sha256':sha(src),'engine_filter':{'path':str(ENGINE),'sha256':sha(ENGINE),'not_current_runtime_proof':True},'native_repair':[81,0,0,-1,111],'new_nodes':len(newnodes),'fixed_nodes':len(fixed),'fixed_states':len(used),'pool':pool,'protected_rows':len(protected),'helpers':len(helper),'incompatible_old':incompatible,'domain_sizes':[len(domains[n])for n in newnodes],'metrics':s.metrics(new),'code_sha256':sha(Path(__file__))}
++ receipt={'status':'PENDING','scope':'Synthesis and complete literal decoder prefix binding only; engine protections are inherited synthesis filters. No primitive, all-natural runtime, blank startup, calibration or candidate acceptance claimed.','source':str(a.source),'source_sha256':sha(a.source),'table':str(table),'table_sha256':sha(table),'old_source_sha256':sha(src),'engine_filter':{'path':str(ENGINE),'sha256':sha(ENGINE),'not_current_runtime_proof':True},'native_repair':'Already present in accepted215; no pre-allocation mutation','new_nodes':len(newnodes),'fixed_nodes':len(fixed),'fixed_states':len(used),'pool':pool,'protected_rows':len(protected),'helpers':len(helper),'incompatible_old':incompatible,'domain_sizes':[len(domains[n])for n in newnodes],'metrics':s.metrics(new),'code_sha256':sha(Path(__file__))}
+  def finish():
+   (a.output/'allocation.json').write_text(json.dumps(receipt,indent=2)+'\n');print(json.dumps({k:v for k,v in receipt.items()if k not in('assignments','changed_rows','binding_failures','incompatible_old')},indent=2),flush=True)
+  if any(not d for d in domains.values()):receipt['status']='EMPTY_DOMAIN';finish();return

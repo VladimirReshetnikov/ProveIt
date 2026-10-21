@@ -1,0 +1,388 @@
+\section{A parameter-free modus-ponens command using a retained gate residual}
+\label{sec:residual-parameter}
+
+This section proves completeness of an exact revised command language.  Its
+purpose is to remove the numeric input field of the MP command.  It is a
+semantic theorem about the command interpreter below, not by itself a claim
+about the number of states of a compiled binary machine.  The literal source
+splice, compiler cost, and binary runtime obligations must be reported
+separately.
+
+The useful observation is that a number discarded by AX's final freshness
+comparison can serve as the consequent parameter of a later MP.  It need not
+be the original AX argument.  A surjective residual suffices, because a dummy
+AX can set the parameter while the actual proof premises are protected on the
+theorem stack.
+
+\subsection{Exact command interpreter}
+
+Write a work state as $(t,S,d,h)$: current theorem code, theorem stack,
+numeric parameter, and cached theorem code.  Stacks use the same Cantor
+pairing as the accepted machine, with $[x]S=P(x,S)$.  A displayed finite list
+is pushed with its leftmost entry at the top.  The empty stream convention is
+$P^{-1}(0)=(0,0)$.  Write $I(a,b)=4P(a,b)$, $Q_i(a)=4P(i,a)+2$, and
+$F=1$.
+
+Let $\rho_1,\ldots,\rho_8$ denote the unchanged native numerical rows;
+the seventh entry is the repository's \nolinkurl{growG} row.  Only $\rho_8$
+uses the fourth input.  Let
+\[
+ g(a,b,c)=
+ \begin{cases}
+  0,&c=a\text{ or }c=b,\\
+  \operatorname{bundle}(a,b,c),&\text{otherwise},
+ \end{cases}
+ \qquad
+ k(c,a)=\max\{a-c-1,0\}.
+\]
+Every $\rho_j$, every $Q_i(a)$, and every value of $g$ differs from $1$.
+This is an exact constructor-tag fact, independent of derivability: the
+rows and nonzero bundle are implication codes, and $Q$ has tag two.
+
+The new commands have the following complete effects:
+\begin{align*}
+ \mathsf{DROP}(t,S,d,h)&=(h,[t]S,d,h),\\
+ \mathsf{NIP}(t,[x]S,d,h)&=
+  \begin{cases}\mathsf{halt},&h=1,\\(t,S,d,x),&h\ne1,\end{cases}\\
+ \mathsf{MP}(t,S,d,h)&=
+  \begin{cases}(d,[0]S,d,0),&I(t,d)=h,\\(0,S,d,0),&I(t,d)\ne h.\end{cases}
+\end{align*}
+In particular, none of these three commands reads a numeric field.
+For $\mathsf{AX}(c,y,x)$, put $a=x$, $b=h+y$, and $u=d$, using the
+\emph{old} values of $d,h$.  Its effect is
+\[
+ (t,S,d,h)\longmapsto
+ \bigl(g(a,b,c),
+ [\rho_1(a,b),\ldots,\rho_8(a,b,c,u),Q_u(h),t]S,
+ k(c,a),0\bigr).
+\]
+The suppressed arguments of $\rho_2,\ldots,\rho_7$ are exactly those
+of the accepted emitter.  There are nine new theorem entries and then the
+old current code, so AX pushes exactly ten entries.
+
+This interpreter emits unrestricted $\rho_8$: the old parameter $u$ and the
+new absolute input $a$ are independent.  That is sound for the original
+native calculus.  It does not rely on the dominated-row certificate.
+
+\paragraph{Opposite-residual variant.}
+The same command-calibration theorem holds if AX instead returns
+\[
+ k_X(c,a)=\max\{c-a-1,0\}.
+\]
+In that variant replace the setter below by
+\[
+ \mathsf{SET}_X(v)=
+ \mathsf{AX}(v+1,v+1,0);N^{10};\mathsf{DROP};\mathsf{NIP}.
+\]
+For incoming cache zero this has $a=0$ and $b=c=v+1$, hence gate zero and
+$k_X(c,a)=v$.  The proof that it preserves the current theorem and old
+stack is identical.  RESET and the generalization AX use $a=c=0$, so both
+residuals are zero there; the leaf and bundle contracts leave the output
+parameter unconstrained.  Every subsequent compiler argument therefore
+applies with this single setter replacement.  This variant corresponds
+to retaining the scratch-counter remainder, whose transfer to $D$ can
+reuse the source's existing scratch-to-parameter transfer macro.
+
+\subsection{Why this residual is available at the source level}
+
+In the accepted source the gate first consumes the old cache while comparing
+$b$ with $c$.  It then transfers $a$ from register $D$ to the now-zero cache
+register $H$ and performs the second comparison.  In the optimized K217
+comparison it repeatedly decrements $H$ first and then its scratch copy of
+$c$.  If $a>c$, the first exhausted scratch check leaves $a-c-1$ in $H$;
+if $a\le c$, $H$ is zero before the unequal cleanup or equality branch.
+The unequal cleanup ordinarily clears both remainders and skips the branch
+that clears the current bundle.  Replace \emph{only its clearing loop for
+$H$ in this second comparison} by the transfer $H\to D$.  Then the
+comparison still clears the bundle exactly when $c=a$, its scratch and cache
+registers still finish at zero, and $D$ finishes at $k(c,a)$.  The first
+comparison and its clearing behavior remain unchanged.
+
+Here is the exhaustive case analysis for the optimized comparison.  If
+$a=c$, the paired decrements exhaust both counters together, the equality
+branch clears the current bundle, and $D$ stays zero.  If $a>c$, the $c$
+paired iterations are followed by one additional decrement of $H$; its
+remaining $a-c-1$ units are transferred to $D$, and the current bundle is
+preserved.  If $c>a$, the $a$ paired iterations are followed by one
+additional decrement of the scratch counter; $H$ is already zero, so the
+transfer is empty, the scratch remainder is cleared, and the current bundle
+is preserved.  These cases prove the residual contract for arbitrary
+natural inputs, beyond the finite numerical tests.
+
+The other proposed local change makes the AX input $a$ absolute.  After GEN
+has used the old parameter as its quantifier label, the old parameter is
+loaded for the subformula $C\mathbin{\to}U$ of $\rho_8$.  Consume it on
+this final use instead of copying and restoring it.  The subsequent additive
+read into $D$ then starts at zero, and therefore reads $a=x$.  All formula
+values emitted before and after this load have the values in the displayed
+AX contract.  These statements specify the source obligations; they must be
+checked against the literal placement of the relevant macros, rather than
+inferred just from register names.
+
+\subsection{The exact helper blocks}
+
+Let $N^j$ mean $j$ repetitions of $\mathsf{NIP}$.  Command sequences are
+written from left to right in execution order.  Early halting is acceptable
+for a proof block: the purpose of the full interpreter is to halt precisely
+when a refutation exists.
+
+\paragraph{Reset.}
+Define
+\[
+ \mathsf{RESET}
+  =\bigl(\mathsf{AX}(0,0,0);N^{10}\bigr)^2.
+\]
+For \emph{every} numerical work state, including arbitrary initial cache
+and current values,
+\[
+ \mathsf{RESET}(t,S,d,h)=(0,S,0,0).
+\]
+There is no early halt in this block.  In its first half AX has $a=c=0$,
+so its gate and residual are both zero.  The ten NIPs successively pop nine
+entries known not to equal $1$, followed by the old $t$.  The latter is not
+tested by that last NIP: the result is $(0,S,0,t)$.  The second AX resets
+the cache before another NIP can inspect it.  The same calculation now pops
+an old current value of zero and gives $(0,S,0,0)$.  This distinction between
+the cache checked on entry and the entry popped on exit is essential.
+
+\paragraph{Parameter setter preserving the current theorem.}
+For any target natural number $v$, define
+\[
+ \mathsf{SET}(v)=
+ \mathsf{AX}(0,0,v+1);N^{10};\mathsf{DROP};\mathsf{NIP}.
+\]
+Starting with cache zero,
+\[
+ \mathsf{SET}(v)(t,S,d,0)
+  =\mathsf{halt}\quad\text{or}\quad(t,S,v,0).
+\]
+More precisely, this block halts exactly when $t=1$.  The first gate is zero
+because $b=c=0$, and the residual is
+$k(0,v+1)=v$.  After ten NIPs the state is $(0,S,v,t)$.  DROP changes it to
+$(t,[0]S,v,t)$; the final NIP either halts on $t=1$, or pops the pushed zero
+and restores $(t,S,v,0)$.  Both the current theorem and every old stack entry
+are preserved.  In particular, an arbitrary implication can safely be held
+current while this setter runs, because implication codes differ from $1$.
+
+\paragraph{Selecting an emitted row.}
+Suppose AX was entered with current value zero and returns
+\[
+ (g,[r_1,\ldots,r_9,0]S,d',0),\qquad
+ g\ne1,\quad r_1,\ldots,r_9\ne1.
+\]
+For $1\le j\le9$, the block
+\[
+ N^j;\mathsf{DROP};N^{11-j}
+\]
+returns exactly $(r_j,S,d',0)$.  The first $j$ NIPs put $r_j$ in the cache.
+DROP makes it current and pushes $g$.  The remaining stack prefix consists
+of $g$, the $9-j$ following rows, and the old zero current value, a total
+of $11-j$ entries.  All cache values tested during these pops differ from
+$1$.  This proves both the offset and the exact restoration of the old
+stack.
+
+\subsection{Compilation of every native derivation}
+
+Call a finite block $p$ a compiler block for $X$ when, for every
+$(t,S,d,h)$, execution either halts or returns $(X,S,d',0)$ for some
+$d'$.  There is no precondition on any of the four initial values.
+The old stack is restored exactly; the numeric output parameter need not
+be zero.  The following induction constructs such a block for every native
+derivable code.
+
+\paragraph{Truth.}
+Use $\mathsf{RESET}$, whose exact contract was proved above.
+
+\paragraph{Native row $j$, $1\le j\le8$.}
+To obtain the row at parameters $(a,b,c,u)$, use
+\[
+ \mathsf{RESET};\mathsf{SET}(u);\mathsf{AX}(c,b,a);
+ N^j;\mathsf{DROP};N^{11-j}.
+\]
+After RESET the current value and cache are zero.  SET therefore finishes
+without halting and supplies the desired old parameter $u$.  AX reads
+$a,b,c$ independently and emits the desired row.  The selection contract
+finishes with that row current, the original stack restored, and cache zero.
+Unused parameters of the earlier rows can be chosen arbitrarily.
+
+\paragraph{Native bundle.}
+When $c\ne a,b$, use
+\[
+ \mathsf{RESET};\mathsf{AX}(c,b,a);N^{10}.
+\]
+The gate equals the requested bundle, and the ten safe pops remove the
+nine emitted rows and the old current zero.  The bundle remains current,
+the old stack is restored, and the cache is zero.
+
+\paragraph{Generalization.}
+If $p$ is a compiler block for $H$, a compiler block for $Q_i(H)$ is
+\[
+ p;\mathsf{SET}(i);\mathsf{DROP};\mathsf{NIP};
+ \mathsf{AX}(0,0,0);N^9;\mathsf{DROP};N^2.
+\]
+If $p$ or SET halts, the required alternative already holds.  Otherwise the
+state after SET is $(H,S,i,0)$.  DROP and NIP give $(0,S,i,H)$.
+The next AX emits $Q_i(H)$ in its ninth stack position and has gate zero,
+because $a=c=0$.  Its old current entry is zero.  The row-selection contract
+with $j=9$ gives $(Q_i(H),S,0,0)$.
+
+\paragraph{Modus ponens.}
+If $p_A$ and $p_{I(A,B)}$ compile the two premises, use
+\[
+ p_A;\mathsf{DROP};p_{I(A,B)};\mathsf{SET}(B);
+ \mathsf{NIP};\mathsf{DROP};\mathsf{NIP};\mathsf{MP};\mathsf{NIP}.
+\]
+After the premise blocks and SET, unless there has already been a halt,
+the state is
+\[
+ (I(A,B),[A]S,B,0).
+\]
+The premise $A$ has remained below every temporary AX output.  The next
+three commands give
+\[
+ (I(A,B),S,B,A)
+ \longmapsto (A,[I(A,B)]S,B,A)
+ \longmapsto (A,S,B,I(A,B)).
+\]
+If $A=1$, the last of these NIPs halts instead, which is an allowed outcome.
+Otherwise the parameter-free MP succeeds and produces $(B,[0]S,B,0)$.
+The final NIP removes that success zero, giving $(B,S,B,0)$.  No read of an
+MP parameter is needed.  This argument uses the original success behavior
+that pushes zero; an omit-zero MP would omit the final cleanup NIP as well.
+
+This completes a finite structural induction on native derivations.  It
+does not presume any substitution rule, well-formedness test, or decoding
+of arbitrary numerical formula codes.
+
+\subsection{Soundness, enumeration, and the refutation equivalence}
+
+The soundness invariant is the accepted one: the current code, the cached
+code, and every theorem-stack entry are native derivable.  The numeric
+parameter $d$ has no theoremhood requirement.  DROP and NIP preserve this
+invariant.  MP either returns truth or applies native modus ponens to its
+two invariant premises.  AX emits native axioms and a generalization of
+the old cached theorem; its gated output is either truth or an admissible
+native bundle.  Its arbitrary residual changes only the unconstrained
+parameter.  Consequently every halt, which occurs only upon NIP observing
+cached code $1$, yields a native refutation.
+
+Conversely, compile a native proof of $1$.  By the universal compiler
+contract, either its block already halts or it returns $(1,S,d',0)$.
+Appending $\mathsf{DROP};\mathsf{NIP};\mathsf{NIP}$ then halts: the first
+NIP places the current falsity code in the cache, and the second detects it.
+Thus there is a finite command word which halts from every work state.
+
+The accepted exhaustive candidate shell still applies with the shorter
+command grammar.  For a continuation code $z$, pack one command as
+\[
+ \begin{array}{c|c}
+ \mathsf{MP}&P(0,z)\\
+ \mathsf{DROP}&P(1,z)\\
+ \mathsf{NIP}&P(2,z)\\
+ \mathsf{AX}(c,y,x)&P(c+3,P(y,P(x,z))).
+ \end{array}
+\]
+More formally, define the list cursor by $E([])=0$ and
+$E(c::p)=1+\operatorname{pack}(c,E(p))$.  The natural number enumerated
+for the nonempty list $c::p$ is $\operatorname{pack}(c,E(p))=E(c::p)-1$;
+fetch loads this raw number at candidate entry, and decrements the positive
+cursor before subsequent commands.  Thus a final MP with raw packed value
+$P(0,0)=0$ is represented by cursor $1$, not by an empty cursor.  Each
+command in an in-progress candidate strictly reduces
+the positive cursor: fetch decrements it once, and subsequent Cantor tail
+projections do not increase it.  Hence each candidate terminates or halts,
+and the outer shell eventually reaches every later candidate number.
+If bootstrap starts after some finite candidate index, prepend an arbitrary
+AX with a sufficiently large matrix input to the universally halting word;
+it remains universally halting, and its encoded candidate can be made
+arbitrarily large.  This establishes completeness independently of which
+finite initial candidates bootstrap skips.
+
+Therefore the exhaustive command interpreter, started from a theorem-safe
+seed with finite candidate index, halts if and only if the unchanged
+native numerical calculus derives $1$.  A theorem-safe seed means that
+its current value, cache, and stack entries are native derivable; it places
+no restriction on the numeric parameter.  The zero work state, or the
+accepted bootstrap's theorem-safe work state, meets this condition.
+Arbitrary initial work states are used only in the universal completeness
+contract, not in the soundness assertion.  For example, an arbitrary cache
+already containing $1$ would trivially halt on NIP.
+Composing with the repository's
+accepted native-calculus calibration gives the same ZFC consistency
+comparison.  All constructions above are finite syntactic transformations
+and elementary integer identities, so their mathematical proofs are
+formalizable in ZFC.  A new exact-table mechanization has not been supplied
+by this command-level argument.
+
+\subsection{Source anchors and verification scope}
+
+The raw stack alias $[0]0=P(0,0)=0$ causes no exception in these proofs:
+every stack step uses the exact identity $P^{-1}(P(x,S))=(x,S)$, which
+also holds for $x=S=0$.  Displayed list lengths count the planned finite
+pops, without assuming that the numerical stack has a separate end marker.
+
+The older Lean comparison computes an absolute distance internally; that
+internal description must not be substituted for the one-sided residual
+of the optimized literal K217 gate.  Both comparisons implement the same
+destructive equality interface before this modification.
+
+The inherited register and macro contracts are in
+\nolinkurl{L2Lib254.lean}, \nolinkurl{L2Macros254.lean},
+\nolinkurl{L2Control254.lean}, \nolinkurl{L2Axioms254.lean}, and
+\nolinkurl{L2Root254.lean}, under
+\nolinkurl{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/} at repository commit
+\nolinkurl{d3d6b8c14e1ddff37eb1417c5448caa41cfd6da7}.
+In particular, \nolinkurl{loop124}, \nolinkurl{ifeq_ne}, and
+\nolinkurl{ifeq_clear} identify the exact destructive comparison;
+\nolinkurl{l71} composes the two gates.  The stack order and native compiler
+comparison are given by \nolinkurl{Enum222.lean}'s \nolinkurl{axList},
+\nolinkurl{axStack_eq}, \nolinkurl{select_entry}, and \nolinkurl{build}.
+The proof above is a new mathematical adaptation of those interfaces, not
+a claim that those existing Lean files already verify the revised program.
+
+\paragraph{Relation to later upstream residual-counter research.}
+While this investigation was in progress, upstream intake 193 published
+Source153, including \nolinkurl{theory/counter_salt.tex}.  That work already
+establishes the useful principle that the parameter register need not hold
+a theorem and may retain an arithmetic comparison residual.  Its repaired
+reader transfers the residual before command decoding; AX leaves
+$\max(c-a-1,0)$, and failed MP leaves
+$a+\max(I(t,a)-h-1,0)$, where $a=d+x$.  It retains an explicit MP input
+$x$, and its compiler restores the former zero-parameter interface.
+
+The present contribution should therefore not be described as the invention
+of residual-counter freedom.  The distinct step is a \emph{parameter-free
+MP}: an AX setter supplies any desired consequent while preserving the
+current implication and protecting the other premise below the temporary
+AX stack prefix.  The theorem above uses an absolute AX input, consumes
+the old $U$ only after its final use, and permits a nonzero parameter at
+compiler-block exits.  These choices differ from Source153's reported
+contract.  Neither the existing residual freedom nor this new logical
+compilation result alone establishes a smaller binary transition table.
+
+For exact attribution, Source153 arrived in ProveIt commit
+\begin{center}\footnotesize\ttfamily
+1e87618cf2c291cae16a66724f5c76b271e90c45
+\end{center}
+as \nolinkurl{docs/incoming/ZFC_218_Research_2026-10-20 (1).zip}.
+The retained reference is the archive member
+\nolinkurl{ZFC_218_Research_2026-10-20/theory/counter_salt.tex},
+whose exact SHA-256 is
+\begin{center}\footnotesize\ttfamily
+19571441839a01021193dd25db163576ada1752b8ba20acf0b858a061f1b127c.
+\end{center}
+The 11,715-byte original TeX, its attribution and license, and the precise
+archive/member hashes and URL are preserved in the supplied semantic
+references, with provenance in \nolinkurl{SOURCE153_PINS.json}.
+
+The accompanying \nolinkurl{check_residual_contracts.py} passes 4,619 exact
+integer cases for the helper contracts, all row-selection positions,
+the generalization and MP induction steps, terminal falsity detection, and
+command packing, including 432 additional opposite-residual setter cases.
+It uses three permitted instantiations of the AX
+safe-row interface, including all-zero rows, and tests protected stacks
+containing falsity as well as the zero-stack alias.  Premise-block test
+oracles implement the induction hypothesis and are explicitly not machine
+instructions.  Consequently this checker is a focused check of stack and
+command algebra; it does not evaluate the complete native emitter, prove
+the universal theorem, or establish the binary compilation.

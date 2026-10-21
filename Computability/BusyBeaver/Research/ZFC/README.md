@@ -1114,6 +1114,15 @@ checked [command-order215 alternative](candidate-k215/alternatives/commands120/R
 Their savings cannot be counted again. The active target remains214; those three
 submissions are now reconciled in batch199 above.
 
+The new [additive residual compiler](k215-residual-parameter/PUBLICATION.md)
+removes MP's numeric input while retaining the existing additive AX reader.
+Its ordinary source proof uses a preserving setter and a three-AX reset;
+5,915 finite interface checks support the proof. The best retained source
+has 206 DAG nodes. One protected role-pool allocation is infeasible, and a
+conservative allocation is larger than 215; no smaller binary machine follows.
+The exact sources, failed gates, allocation domains and portable checks are
+published to support further work toward 214.
+
 ## Intake and theory minimization
 
 [Intake batch 143](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md)
