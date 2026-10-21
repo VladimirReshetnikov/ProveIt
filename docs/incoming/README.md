@@ -22,7 +22,7 @@ remain in place. Report intake and reconciliation statuses below remain separate
 
 ## Current queue
 
-`K215_Checked_Affine_Core_and_CM215_2026-10-21.zip` arrived in `6f0d42d368` and is pending intake. Its [arrival inventory](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase10/upstream-merge/incoming-pending.json) records the exact archive; it remains here until placement and review.
+Batch 212 places `K215_Checked_Affine_Core_and_CM215_2026-10-21.zip` (arrival `6f0d42d368`) as Source 179 in the existing [ZFC closure-kernels report](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake212-placement.md). All 862 members are accounted for: 338 new ancillary files, 462 exact immutable Git aliases, 24 delivery aliases and 38 arrival-only members (six manuscript members and 32 logs excluded by existing Git ignore rules). Only this ZIP is retired in the placement commit; the written reconciliation and catalogue follow separately. No supplied executable or compiler was run. The [arrival inventory](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase10/upstream-merge/incoming-pending.json) retains its earlier pending status.
 
 Before this arrival there were no loose ZIPs after upstream batch 211. Upstream
 placements `32d378522c`, `05eaa1d466` and `d7105dd57d` extracted and retired

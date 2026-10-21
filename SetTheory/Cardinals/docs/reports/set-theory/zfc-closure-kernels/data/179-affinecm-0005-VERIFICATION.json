@@ -1,0 +1,152 @@
+{
+  "title": "K215: Checked Affine Cores and a Completed CM215 Endpoint",
+  "date": "2026-10-21",
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "reviewed_commit": "56e487ce8fa4cf63ad169ffe0cd2944e9fc62dd3",
+  "formal_receipts": {
+    "affine_core": {
+      "path": "affine_core/PROOF_RESULTS.json",
+      "sha256": "60ccf17788f6eef07cfdb95d9cb0e3c3b36c9ef132ee14c7ac9794d9c0e7b5be",
+      "status": "PASS_COMPILED_CLOSED_RECURSIVE"
+    },
+    "baseline": {
+      "path": "lean_integration/evidence/baseline/verification.json",
+      "sha256": "8bbb190f9191dcc357c64dd243dd2028c7e60581115247206202f92b2687656b",
+      "status": "PASS"
+    },
+    "cm215": {
+      "path": "lean_integration/evidence/cm215/integration_receipt.json",
+      "sha256": "e11742cd04c275ffcffa01179a275bdfb92b3c647d2124c943c9ea0a8bdf5d21",
+      "status": "PASS"
+    },
+    "calculus": {
+      "path": "lean_integration/evidence/calculus/calculus_receipt.json",
+      "sha256": "f9289752844e1b517fd58e2d4b4f196dc31c3d4f6db8fec804b79d4bac9ac94f",
+      "status": "PASS"
+    },
+    "resume": {
+      "path": "lean_integration/evidence/baseline/resume_receipt.json",
+      "sha256": "aaa57d28a5b9d879aeb475805d5303ee6fb432d35ec9d62a7611e24f4da9ec12",
+      "status": "PASS"
+    },
+    "lean_summary": {
+      "path": "lean_integration/SUMMARY.json",
+      "sha256": "0335ba24837016cdc614bce3d2d19ad04b23281c2d5621b493a7a6d7522b8495",
+      "status": "PASS"
+    }
+  },
+  "lean_metrics": {
+    "baseline_successful_project_modules": 184,
+    "baseline_typed_audits": 2,
+    "baseline_successful_project_compiler_seconds": 3566.0399529339957,
+    "baseline_all_186_successful_compiler_seconds": 3566.9805951569942,
+    "cm215_modules": 8,
+    "cm215_compiler_seconds": 24.55297380200136,
+    "cm215_axiom_reports": 14,
+    "cm215_axiom_sets": [
+      [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      [
+        "Quot.sound",
+        "propext"
+      ],
+      [
+        "propext"
+      ]
+    ],
+    "calculus_modules": 14,
+    "calculus_compiler_seconds": 27.5666024739985,
+    "calculus_axiom_reports": 19,
+    "calculus_axiom_sets": [
+      [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      [
+        "Quot.sound",
+        "propext"
+      ],
+      [
+        "propext"
+      ]
+    ],
+    "resume_seconds": 1.5143633789994055,
+    "resume_new_compiler_attempts": 0,
+    "cm215_exact_axioms": {
+      "SetTheory.BusyBeaver.ZFC.CM215Endpoint.blank_halts_iff_zfc_refutation": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "SetTheory.BusyBeaver.ZFC.CM215Endpoint.nonhalting_iff_zfc_consistency": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "CM215.IntegrationAudit.exact_finite_run_endpoint": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "CM215.IntegrationAudit.exact_nonhalting_endpoint": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "CM215.IntegrationAudit.literal_rows": [
+        "propext"
+      ]
+    },
+    "calculus_seed_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "source_scopes": {
+    "baseline": "184 project modules: 180 byte-identical originals and 4 explicit proof-body batching overlays; 2 typed audits.",
+    "refactored": "179 byte-identical originals and 5 disclosed proof modules; all 10 affected project modules and 4 clients recompiled.",
+    "coq": "17 modules; exact all-register source/core equivalences and source facade; 25 closed assumption reports; recursive coqchk. No full production Rocq binary/ZFC rebuild."
+  },
+  "retained_core": {
+    "checkpoint_vertices": 1426,
+    "drains": 1059,
+    "retained_vertices": 367,
+    "retained_tests": 366,
+    "retained_halts": 1,
+    "retained_edges": 732,
+    "maximum_rank": 6,
+    "working_binary_states": 215,
+    "generated_graph_and_location_bytes": 284987,
+    "scope": "Retained-set closure for an accelerated relation using the original graph data."
+  },
+  "state_search": {
+    "verified_214_or_fewer_consistency_machine": false,
+    "relaxed_spare_tables": 24824,
+    "short_survivors": 59,
+    "wrong_outputs": 50,
+    "exact_cycles": 9,
+    "coordinated_provider_tables": 639,
+    "coordinated_wrong_outputs": 338,
+    "outward_blank_rays": 223,
+    "literal_cycles": 5,
+    "unexpected_halts": 2,
+    "bounded_failures": 71,
+    "noappend_quantified_increment_occurrences": 1900,
+    "noappend_zero_decrement_contract": "FAILED",
+    "layout_variants": 3,
+    "layout_result": "No state saved: 215 working states in each direct rewire. Source transformations and unproved physical runtime are distinguished.",
+    "scope": "Primitive contracts and bounded experiments do not decide mutated blank-run consistency calibration."
+  },
+  "reproduction": {
+    "ordinary_audit": "python3 verify.py",
+    "coq": "See affine_core/README.md",
+    "lean": "See lean_integration/README.md",
+    "report": "python3 build_report.py"
+  },
+  "performance_scope": "Compiler times are observations from the recorded environment, not a comparative full-build speed claim."
+}
