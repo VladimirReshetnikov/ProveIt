@@ -1,0 +1,98 @@
+{
+  "status": "PASS_OUTER_AND_OWNED_CHECKER_NEGATIVE_CONTROLS",
+  "checks": {
+    "clean_relocated_copy": "passed",
+    "explicit_optimization_rejections": {
+      "verify_release.py": [
+        "-O",
+        "-OO",
+        "PYTHONOPTIMIZE=1",
+        "PYTHONOPTIMIZE=2",
+        "PYTHONOPTIMIZE=0",
+        "-E plus PYTHONOPTIMIZE=1",
+        "-I plus PYTHONOPTIMIZE=1"
+      ],
+      "check_source_pins.py": [
+        "-O",
+        "-OO",
+        "PYTHONOPTIMIZE=1",
+        "PYTHONOPTIMIZE=2",
+        "PYTHONOPTIMIZE=0",
+        "-E plus PYTHONOPTIMIZE=1",
+        "-I plus PYTHONOPTIMIZE=1"
+      ],
+      "affine/review_owned.py": [
+        "-O",
+        "-OO",
+        "PYTHONOPTIMIZE=1",
+        "PYTHONOPTIMIZE=2",
+        "PYTHONOPTIMIZE=0",
+        "-E plus PYTHONOPTIMIZE=1",
+        "-I plus PYTHONOPTIMIZE=1"
+      ],
+      "checked/audit_received.py": [
+        "-O",
+        "-OO",
+        "PYTHONOPTIMIZE=1",
+        "PYTHONOPTIMIZE=2",
+        "PYTHONOPTIMIZE=0",
+        "-E plus PYTHONOPTIMIZE=1",
+        "-I plus PYTHONOPTIMIZE=1"
+      ],
+      "checked/check_decoder_prefixes.py": [
+        "-O",
+        "-OO",
+        "PYTHONOPTIMIZE=1",
+        "PYTHONOPTIMIZE=2",
+        "PYTHONOPTIMIZE=0",
+        "-E plus PYTHONOPTIMIZE=1",
+        "-I plus PYTHONOPTIMIZE=1"
+      ],
+      "refinements/audit_refinements.py": [
+        "-O",
+        "-OO",
+        "PYTHONOPTIMIZE=1",
+        "PYTHONOPTIMIZE=2",
+        "PYTHONOPTIMIZE=0",
+        "-E plus PYTHONOPTIMIZE=1",
+        "-I plus PYTHONOPTIMIZE=1"
+      ],
+      "refinements/verify_positive_trie.py": [
+        "-O",
+        "-OO",
+        "PYTHONOPTIMIZE=1",
+        "PYTHONOPTIMIZE=2",
+        "PYTHONOPTIMIZE=0",
+        "-E plus PYTHONOPTIMIZE=1",
+        "-I plus PYTHONOPTIMIZE=1"
+      ],
+      "guarded_review/independent_verify.py": [
+        "-O",
+        "-OO",
+        "PYTHONOPTIMIZE=1",
+        "PYTHONOPTIMIZE=2",
+        "PYTHONOPTIMIZE=0",
+        "-E plus PYTHONOPTIMIZE=1",
+        "-I plus PYTHONOPTIMIZE=1"
+      ]
+    },
+    "changed_owned_checker": "rejected",
+    "changed_received_data": "rejected",
+    "changed_manifest": "rejected",
+    "unlisted_file": "rejected",
+    "missing_file": "rejected",
+    "payload_symlink": "rejected",
+    "directory_symlink": "rejected",
+    "direct_checker_changed_input_rejections": {
+      "affine/review_owned.py": "rejected_without_output_write",
+      "checked/audit_received.py": "rejected_without_output_write",
+      "checked/check_decoder_prefixes.py": "rejected_without_output_write",
+      "refinements/audit_refinements.py": "rejected_without_output_write",
+      "refinements/verify_positive_trie.py": "rejected_without_output_write",
+      "guarded_review/independent_verify.py": "rejected_without_output_write"
+    },
+    "restored_copy": "passed"
+  },
+  "original_packet_unchanged": true,
+  "received_code_executed": false
+}

@@ -1,0 +1,46 @@
+\subsection{What was executed}
+
+The following verification levels should remain separate when this contribution is integrated:
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.35\textwidth}>{\raggedright\arraybackslash}p{.58\textwidth}@{}}
+\toprule
+Component & Recorded check\\
+\midrule
+Native transport and literal bindings & Actual Coq compilation; closed assumptions for selected endpoints\\
+Exact repository semantic adapter & Ten-module minimal closure compiled; recursive \code{coqchk} of \code{ContextLiteralSparse} passed\\
+Rank and opacity refactor & Ten project modules and a typed client compiled; six closed reports; recursive \code{coqchk} passed\\
+32-mask Context family & Independent finite audit and ordinary all-tape block proof; no all-mask kernel theorem claimed\\
+Two state-fold search variants & Completed scoped searches on the 22 exact inputs; raw receipts included\\
+214-state rejected trial & Independent literal replay of four intended blocks and the 163/588-step CB1 counterexample\\
+Complete ZFC client & Exact integration source supplied; full dependency closure not freshly compiled\\
+Lean adaptation & Proposed in the report; no new Lean implementation or compilation supplied\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The recorded toolchain is Coq 8.18.0 compiled with OCaml 4.14.1. The production lane's Rocq 9.1 build is not claimed as rerun. The scheduler's private build copies change only the standard-library import spelling from \code{Stdlib} to \code{Coq}; the adapter uses exact pinned BusyCoq and machine-source files. A tactic dependency contains declarations of global axioms, but the selected theorem-level assumption reports are closed. The presence of an imported declaration does not by itself mean that the checked endpoint uses it.
+
+\subsection{Artifact layout and replay}
+
+The archive is self-contained for the minimal proof builds and finite checks. It includes editable \path{report.tex} and its section inputs, the compiled PDF, \path{transport/}, \path{adapter/}, \path{rocq_seed_rank/}, \path{comparison/}, and \path{state_reduction/}. The last directory has the exact 22 native input tables, source sites, inherited symbolic-filter modules and notices, the nineteen-pair catalog, positive control, explicitly rejected trial, complete finite traces, scripts and evidence receipts.
+
+From the extracted archive root, first run the fast audits:
+\begin{lstlisting}
+python3 -B reproduce.py --out /tmp/k215-quick
+\end{lstlisting}
+To repeat the two minimal kernel-checked proof components, use a different fresh output directory:
+\begin{lstlisting}
+python3 -B reproduce.py --out /tmp/k215-proofs --proofs
+\end{lstlisting}
+The \code{--full-search} and \code{--context-search} flags optionally repeat the two corpus searches and the inherited contextual-helper filter. The component scripts are also independently usable; see the root README. None of these minimal commands builds the full ZFC endpoint client. Rebuild the report with \code{pdflatex report.tex} twice. Use output directories outside the source archive so generated objects do not obscure its provenance.
+
+\subsection{Exact machine and source binding}
+
+The byte-level table audit and kernel table checks serve different purposes: the former binds delivered native files to Coq literals and known source bytes; the latter proves the finite table identities used in the theorems. Both are included. The exact native SHA-256 values are:
+\begin{lstlisting}
+old.tm
+9683d6ed9628e6ce407c315b08f5da3d063da94e92706f275ca0f33e8272e4b2
+new.tm  (Context215)
+da20914ad9bda3f75de0381f2c05a7b5e67d26199b57b870a5ea3b72511ab627
+\end{lstlisting}
+The archive root manifest records file hashes. Per-component provenance records retain source commits, paths, licenses and exact input digests. \path{latest-refresh.json} records the five unchanged relevant Git blobs at the newer upstream pin; \path{state_reduction/evidence/upstream-refresh.json} records the scope and corpus overlap of the separately inspected latest search. No whole-diff review is implied by these targeted checks.

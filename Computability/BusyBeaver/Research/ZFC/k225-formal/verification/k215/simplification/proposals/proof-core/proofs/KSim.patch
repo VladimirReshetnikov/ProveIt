@@ -1,0 +1,50 @@
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean
+@@ -1,3 +1,4 @@
++import PositiveSimulationK
+ import BusyBeaver.ZFC.KRuntimeCore
+ import BusyBeaver.ZFC.RegisterPathClean
+ import BusyBeaver.ZFC.SiteCoverage
+@@ -315,40 +316,8 @@
+ 
+ /-- **Simulation.** The register program halts iff the machine halts, from related configurations. -/
+ theorem halts_iff (hNH : ∀ b, M 230 b = none) {c : Configuration} {T : Conf} (hc : Rel p c T) :
+-    RegisterPath.Halts p c ↔ KZip.Halts M T := by
+-  constructor
+-  · rintro ⟨N, c', hr, hh⟩
+-    induction N generalizing c T with
+-    | zero =>
+-        simp only [RegisterPath.run, Option.some.injEq] at hr
+-        subst hr
+-        exact sim_halt B hcov hNH hc hh
+-    | succ N ih =>
+-        simp only [RegisterPath.run] at hr
+-        cases hs : step p c with
+-        | none => rw [hs] at hr; simp at hr
+-        | some c1 =>
+-            rw [hs] at hr
+-            obtain ⟨T1, h1, hR⟩ := sim_step B hcov hc hs
+-            exact Halts.of_reach hR.reach (ih h1 hr)
+-  · rintro ⟨cf, ⟨t, ht⟩, hstop⟩
+-    induction t using Nat.strongRecOn generalizing c T with
+-    | ind t ih =>
+-        cases hs : step p c with
+-        | none => exact ⟨0, c, rfl, sim_stop B hcov hs⟩
+-        | some c1 =>
+-            obtain ⟨T1, h1, j, hj⟩ := sim_step B hcov hc hs
+-            have hle : j + 1 ≤ t := by
+-              refine Nat.not_lt.mp fun hlt => ?_
+-              have e1 : j + 1 = t + (j + 1 - t) := by omega
+-              rw [e1, KZip.run_add, ht] at hj
+-              obtain ⟨m, hm⟩ : ∃ m, j + 1 - t = m + 1 := ⟨j - t, by omega⟩
+-              rw [hm] at hj
+-              simp [KZip.run, hstop] at hj
+-            have e2 : t = (j + 1) + (t - (j + 1)) := by omega
+-            rw [e2, KZip.run_add, hj] at ht
+-            obtain ⟨N, c', hr, hh⟩ := ih (t - (j + 1)) (by omega) h1 ht
+-            exact ⟨N + 1, c', by simp only [RegisterPath.run, hs]; exact hr, hh⟩
++    RegisterPath.Halts p c ↔ KZip.Halts M T :=
++  PositiveSimulationK.halts_iff (sim_step B hcov) (sim_halt B hcov hNH) (sim_stop B hcov) hc
+ 
+ end Sim
+ 

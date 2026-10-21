@@ -1,0 +1,23 @@
+The exact semantic attachment is now supplied in \path{adapter/NativeSparseAdapter.v}. The map from native labels to the maintained sparse labels is
+\[
+301\mapsto102,\qquad302\mapsto120,\qquad254\mapsto230,
+\]
+with all other labels unchanged. A finite Boolean certificate checks transition correspondence, active-label bounds and the unique active terminal. A separate certificate checks closure of targets. The active invariant excludes the fifteen disabled sparse working labels. The two stream types are related by a coinductive observational relation; no stream or function extensionality axiom is needed.
+
+The compiled theorem in \path{adapter/ContextLiteralSparse.v} is exactly
+\begin{lstlisting}
+context_literal_blank_halts_iff_sparse :
+  NativeContext.halts LiteralBindings.literal_new NativeContext.blank <->
+  K215F.TM230.TM230.halts K215F.TM230.tm K215F.TM230.TM230.c0.
+\end{lstlisting}
+This is a concrete theorem about the supplied literal table and the actual maintained endpoint predicate, with no generic simulation or calibration premise. All ten minimal dependency modules were compiled, and \code{coqchk} recursively accepted \code{ContextLiteralSparse}. The selected native, literal-binding, adapter and composition theorems report closed assumptions.
+
+The final ZFC composition is provided separately in \path{adapter/ContextZFCClient.v}. It imports the actual maintained \code{K215F.Correct215} endpoint
+\begin{lstlisting}
+tm215_sparse_halts_iff_ZFC_inconsistent
+\end{lstlisting}
+and would give
+\[
+ \Halt(B,\mathrm{blank})\ \longleftrightarrow\ (\mathrm{StandardZFC}\vdash_{TC}\bot),
+\]
+then the corresponding negated equivalence. It postulates no foundational theorem. However, this client and the complete 237-source ZFC closure were \emph{not} freshly compiled here. Its composition is explicit and mathematically immediate from the checked adapter and the existing endpoint, but it must not be advertised as a newly executed end-to-end build. Compile that small client in the maintained full K215 lane to record the final integration check.

@@ -1,0 +1,44 @@
+Independent final review: DrainAffine.v and DrainInstances.v
+
+Result: PASS_INDEPENDENT_SOURCE_AND_LITERAL_REVIEW
+
+Reviewed SHA-256 hashes:
+DrainAffine.v
+  2e57aecc31478eddfe145278f542b9a66cacfcbba472f087f3e483bbdfe0c085
+DrainInstances.v
+  0eaa89bd4b0d85b942c4d479a29048d02d0b6120dc18a358c78e0a7a7e78bb8b
+input_graph.json
+  1bb3dbf084ef69d4c0464381afd200bb8ac3330d521890697344c6c8e0bbf0c3
+drain_ranks.json
+  e77fc89de9929b4eb405ed23955cb14c3a6d8336e4e437eaedd1ba0665071e3b
+
+No statement-level or corner-case error was found. Replacing natural control
+labels by binary N labels changes representation, not the argument. Counters,
+step counts, and ranks remain natural numbers. drain_run correctly executes
+R_r positive traversals plus one zero-exit transition and returns register r
+to d_r. It permits d_r to be nonzero. The premise c_r = 0 ensures descent.
+
+The reviewer independently parsed and compared ALL 1,426 generated literal
+rows with input_graph.json, including all register indices, successor labels,
+and accumulated increment vectors. The first successor is the nonzero branch,
+and its decrement occurs before the increment vector is added, matching the
+upstream structural graph convention. Every vector has nine entries; every
+test uses register 0 through 8. Keys are unique and both branch targets are
+closed in the literal key set. All 1,059 drain entries and all 1,059 rank
+assignments match the reference data. The maximum rank is six. There are 367
+retained vertices including exactly one Stop, and entry zero is retained.
+The generated-source and input-data hashes match input_binding.json.
+
+The inspected compiler logs contain six 'Closed under the global context'
+reports for the generic module and five for its literal instance. The author
+reports recursive coqchk return code zero; the reviewer did not repeat that
+expensive check. Its silent log is present. This review is independent source
+analysis and an all-row data comparison, not an additional compilation run.
+
+normalize_halts_iff is a halting equivalence between configurations of the
+SAME literal graph. Finite-fuel preservation does not require a rank. The
+rank proof separately ensures that six drain macros suffice to reach a
+non-drain configuration. Six macros are not six graph steps or six binary-TM
+steps. Neither source-to-graph adequacy nor equivalence to a separately encoded
+367-vertex affine machine is supplied here. The 367 count concerns control-
+graph vertices, not binary Turing-machine states.

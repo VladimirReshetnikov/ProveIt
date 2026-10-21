@@ -1,0 +1,113 @@
+--- a/K215F/L1_CompPerm.v
++++ b/K215F/L1_CompPerm.v
+@@ -130,39 +130,45 @@
+   cbn. destruct (enum_step s); [apply IH | reflexivity].
+ Qed.
+ 
+-Lemma drain k : forall s, pl s <= k ->
+-  halts_from s \/ exists n s', run n s = Some s' /\ pl s' = 0 /\ np s' = np s.
+-Proof.
+-  induction k as [|k IH]; intros s Hk.
+-  - right. exists 0, s. split; [reflexivity|]. split; [lia | reflexivity].
+-  - destruct (pl s) as [|p] eqn:Ep.
+-    + right. exists 0, s. split; [reflexivity | now split].
+-    + destruct (enum_step s) as [s1|] eqn:E.
+-      * pose proof (step_pl s s1 E) as [H1 H2]. rewrite Ep in H1, H2. cbn in H1, H2.
+-        destruct (IH s1 ltac:(lia)) as [Hh | [n [s2 [R [P0 N0]]]]].
+-        -- left. exact (halts_from_step s s1 E Hh).
+-        -- right. exists (S n), s2. cbn. rewrite E. split; [exact R|]. split; [exact P0|]. lia.
+-      * left. exists 0, s. split; [reflexivity | exact E].
+-Qed.
+-
+-Lemma reach m : enum_halts \/ exists n s, run n s0 = Some s /\ pl s = 0 /\ np s = m.
+-Proof.
+-  induction m as [|m [Hh | [n [s [R [P0 N0]]]]]].
+-  - right. exists 0, s0. repeat split.
+-  - left. exact Hh.
+-  - destruct (enum_step s) as [s1|] eqn:E.
+-    + pose proof (step_pl s s1 E) as [H1 H2]. rewrite P0 in H1, H2. cbn in H1, H2.
+-      destruct (drain (pl s1) s1 (le_n _)) as [[k [s2 [R2 H2']]] | [k [s2 [R2 [P2 N2]]]]].
+-      * left. exists (n + S k), s2. split; [|exact H2'].
+-        rewrite run_add, R. cbn. now rewrite E.
+-      * right. exists (n + S k), s2. split; [rewrite run_add, R; cbn; now rewrite E|].
+-        split; [exact P2 | lia].
+-    + left. exists n, s. now split.
+-Qed.
+-
+-Lemma halts_from_reach n s : run n s0 = Some s -> halts_from s -> enum_halts.
+-Proof.
+-  intros R [k [s' [R' H]]]. exists (n + k), s'. split; [|exact H].
++(** One ranking argument replaces candidate drainage and repeated reach inductions.
++    It applies even when the initial proof-list pointer is nonzero. *)
++Definition candidate_rank (N : nat) (s : state) : nat :=
++  (N - np s) * (N + 1) + pl s.
++
++Lemma candidate_rank_step N s s' : np s <= N ->
++  ~ (pl s = 0 /\ np s = N) -> enum_step s = Some s' ->
++  np s' <= N /\ candidate_rank N s' < candidate_rank N s.
++Proof.
++  intros Hnp Hnot Estep. pose proof (step_pl s s' Estep) as [Hp Hn].
++  unfold candidate_rank. destruct (pl s) as [|p] eqn:Epl.
++  - cbn in Hp, Hn. assert (Hlt : np s < N) by lia.
++    split; [lia|]. assert (Hsub : N - np s' + 1 = N - np s) by lia. nia.
++  - cbn in Hp, Hn. rewrite Hn. split; [exact Hnp|lia].
++Qed.
++
++(** The witness is bounded by the initial rank; no invariant on formula registers
++    or the stack is needed for this scheduler theorem. *)
++Lemma find_candidate_bounded N s : np s <= N ->
++  exists n t, n <= candidate_rank N s /\ run n s = Some t /\
++    (enum_step t = None \/ (pl t = 0 /\ np t = N)).
++Proof.
++  intros Hnp. remember (candidate_rank N s) as m eqn:Em.
++  revert s Em Hnp. induction m using lt_wf_ind. intros s Em Hnp.
++  destruct (Nat.eq_dec (pl s + (N - np s)) 0) as [Eend|Enot].
++  - exists 0, s. split; [lia|]. split; [reflexivity|]. right; lia.
++  - destruct (enum_step s) as [s'|] eqn:E.
++    + destruct (candidate_rank_step N s s' Hnp ltac:(intros [Hp Hn]; lia) E)
++        as [Hnp' Hrank].
++      destruct (H (candidate_rank N s') ltac:(lia) s' eq_refl Hnp')
++        as [n [t [Hn [Hr Hend]]]].
++      exists (S n), t. split; [lia|]. split; [cbn; now rewrite E|exact Hend].
++    + exists 0, s. split; [lia|]. split; [reflexivity|]. now left.
++Qed.
++
++Lemma halts_from_reached seed n s : run n seed = Some s ->
++  halts_from s -> halts_from seed.
++Proof.
++  intros R [j [s' [R' H]]]. exists (n + j), s'. split; [|exact H].
+   rewrite run_add, R. exact R'.
+ Qed.
+ 
+@@ -340,12 +346,23 @@
+   unfold SUFFIX. rewrite ex_drop, ex_nip by lia. apply ex_nip1.
+ Qed.
+ 
++(** The compiler is complete from EVERY enumerator state. In particular, no
++    proof-list boundary assumption and no fixed bootstrap counter are needed. *)
++Theorem enum_complete_from seed : thm222 1 -> halts_from seed.
++Proof.
++  intro H. destruct (compile 1 (thmDom_of_thm222 1 H)) as [L HL].
++  set (Y := np seed).
++  set (N := enc_fields (fields (START Y)) (enc_tail (L ++ SUFFIX))).
++  assert (HN : np seed <= N).
++  { unfold N, START, fields, enc_fields. cbn [fold_right].
++    pose proof (P_ge_l Y (P 1 (enc_tail (L ++ SUFFIX)))).
++    pose proof (P_ge_r 3 (P Y (P 1 (enc_tail (L ++ SUFFIX))))). unfold Y in *; lia. }
++  destruct (find_candidate_bounded N seed HN) as [n [s [_ [R [Hs|[P0 N0]]]]]].
++  - exists n, s. now split.
++  - apply (halts_from_reached seed n s R).
++    apply (run_first (START Y) (L ++ SUFFIX) s P0 N0).
++    apply program_halts. exact HL.
++Qed.
++
+ Theorem enum_complete : thm222 1 -> enum_halts.
+-Proof.
+-  intro H. destruct (compile 1 (thmDom_of_thm222 1 H)) as [L HL].
+-  set (N := enc_fields (fields (START 0)) (enc_tail (L ++ SUFFIX))).
+-  destruct (reach N) as [Hh | [n [s [R [P0 N0]]]]]; [exact Hh|].
+-  apply (halts_from_reach n s R).
+-  apply (run_first (START 0) (L ++ SUFFIX) s P0 N0).
+-  apply program_halts. exact HL.
+-Qed.
++Proof. exact (enum_complete_from s0). Qed.

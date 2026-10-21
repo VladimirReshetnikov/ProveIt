@@ -1,0 +1,103 @@
+\section{A checked uniform scheduler and seed proof}
+\label{sec:seed-rank}
+
+The current production Rocq compiler proves three related progress facts
+separately: it drains a positive proof-list pointer, reaches successive
+candidates from the zero start, and repeats the candidate argument from the
+bootstrap seed.  We replace these inductions by one numerical rank, retaining
+the exact command semantics and the existing public endpoints.
+
+For a chosen candidate number $N$ and state $s$ with $\mathrm{np}(s)\leq N$, set
+\[
+ R_N(s)=(N-\mathrm{np}(s))(N+1)+\mathrm{pl}(s).
+\]
+The existing \texttt{step\_pl} theorem describes every successful enumerator
+step.  If $\mathrm{pl}(s)>0$, the candidate counter is unchanged and the
+proof-list pointer decreases strictly.  If $\mathrm{pl}(s)=0$, then
+$\mathrm{np}(s')=\mathrm{np}(s)+1$ and
+$\mathrm{pl}(s')\leq\mathrm{np}(s)$.  Unless the desired boundary
+$\mathrm{pl}(s)=0$, $\mathrm{np}(s)=N$ has already been reached, the latter
+case has $\mathrm{np}(s)<N$.  Consequently
+\[
+ R_N(s')-R_N(s)
+ \leq \mathrm{np}(s)-(N+1)<0.
+\]
+The next counter remains at most $N$ in both cases.
+
+\paragraph{Checked bounded-search theorem.}
+The new \texttt{find\_candidate\_bounded} proves that there exist a natural
+number $n\leq R_N(s)$ and a state $t$ such that the existing run function
+executes $n$ successful steps from $s$ to $t$, and either $t$ takes a halting
+step or $t$ is the boundary for candidate $N$.  This is proved by well-founded
+induction on $R_N(s)$.  The halting transition itself, when counted, takes one
+additional step; the theorem uses the repository's convention of witnessing
+the last nonhalting configuration.
+
+\paragraph{Completeness from every initial state.}
+The existing derivation compiler supplies a command word $L$ with contract
+\texttt{blk 1 L} whenever $\mathrm{thm222}(1)$ holds.  The already proved
+\texttt{program\_halts} theorem states that
+\texttt{START Y :: L ++ SUFFIX} halts from every working-register tuple.
+Taking $Y=\mathrm{np}(s)$, its exact candidate number is
+\[
+ N=P\bigl(3,P(Y,P(1,\mathrm{enc\_tail}(L\mathbin{+\!+}\mathrm{SUFFIX})))\bigr)
+ \geq Y.
+\]
+The inequality follows directly from the retained Cantor-pairing inequalities.
+The rank theorem reaches this candidate or an earlier halt.  The resulting
+new theorem is
+\[
+ \forall s,\qquad
+ \mathrm{thm222}(1)\ \Longrightarrow\ \mathrm{halts\_from}(s).
+\]
+It assumes neither a zero proof-list pointer nor a particular candidate
+counter or working-register value.
+
+For the converse we retain precisely the existing invariant
+\[
+ \mathrm{Inv}(s)=
+ \mathrm{thm222}(\mathrm{tw}(s))\ \land\
+ \mathrm{thm222}(\mathrm{h}(s))\ \land\
+ \mathrm{goodstack}(\mathrm{ws}(s)).
+\]
+The checked \texttt{enum\_from\_iff} theorem states
+\[
+ \forall s,\qquad \mathrm{Inv}(s)\Longrightarrow
+ \bigl(\mathrm{halts\_from}(s)\iff\mathrm{thm222}(1)\bigr).
+\]
+Thus every state $\mathrm{mkState}(p,n,0,0,d,0)$ is a valid start, for arbitrary
+$p,n,d$.  This gives future bootstrap proofs a more flexible interface.  It
+does not prove a shorter physical bootstrap trace.  The invariant cannot be
+removed from the converse: an unjustified falsity code placed directly in the
+initial cache can cause an immediate NIP halt.
+
+\paragraph{A separate opacity improvement.}
+Adding
+\texttt{Local Opaque P wim wal wex weq wel} to
+\texttt{L1\_SoundPerm.v} leaves every theorem statement and existing proof
+script unchanged.  Those proofs use constructor and inverse lemmas; they do
+not require numerical expansion of formula codes.  The observed module
+compilation time fell from $43.290$ seconds in the initial run to $0.810$
+seconds in a focused trial and $0.665$ seconds in the final fresh build.
+These are host-local Coq~8.18 measurements, not a controlled full-project
+benchmark or an asserted Rocq~9.1 speedup.
+
+\paragraph{Size and verification.}
+The compiler and seed files together shrink from $18\,100$ to $17\,209$
+bytes; the seed file shrinks from $59$ to $24$ lines.  Including the opacity
+annotation, all three edited files shrink from $22\,105$ to $21\,335$ bytes.
+The universal theorem is stronger even though its compiler file alone grows.
+All ten required project modules and a typed interface client compile afresh
+under Coq~8.18.0, with six closed assumption reports.  Summed compiler time is
+$16.996$ seconds; the separate recursive \texttt{coqchk} pass succeeds in
+$66.483$ seconds.  Exact sources, patches, compiler commands, hashes and raw
+logs accompany the report.
+
+The public types of \texttt{enum\_complete},
+\texttt{seedPerm\_complete}, \texttt{seedPerm\_sound}, and
+\texttt{seedPerm\_iff\_thm} are preserved and independently elaborated by the
+client.  The production \texttt{MainPerm} composition consumes the unchanged
+last theorem.  Its full binary-machine-to-ZFC dependency closure was not
+rebuilt in this focused check.  Integration should update both the maintained
+\texttt{rocqperm} templates and their generated \texttt{K215F} copies, then
+rebuild the ordinary production endpoint.

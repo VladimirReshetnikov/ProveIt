@@ -1,0 +1,444 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=25mm,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,xcolor,enumitem,fancyhdr,listings}
+\usepackage[breaklinks,colorlinks,linkcolor=navy,urlcolor=teal,citecolor=navy]{hyperref}
+\definecolor{navy}{HTML}{19364A}
+\definecolor{teal}{HTML}{147D82}
+\definecolor{pale}{HTML}{F2F6F7}
+\hypersetup{pdftitle={Checked transport and seed-rank proofs for K215},pdfauthor={ProveIt research contribution, prepared with AI assistance}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\sffamily K215: checked transport and seed rank}\fancyhead[R]{\small 21 October 2026}\fancyfoot[C]{\thepage}
+\renewcommand{\arraystretch}{1.15}
+\setlength{\parskip}{5pt}\setlength{\parindent}{0pt}
+\setlist{itemsep=3pt,topsep=5pt,leftmargin=20pt}
+\clubpenalty=10000 \widowpenalty=10000 \displaywidowpenalty=10000
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\np}{\operatorname{np}}
+\newcommand{\pl}{\operatorname{pl}}
+\newcommand{\Inv}{\operatorname{Inv}}
+\newcommand{\code}[1]{\texttt{#1}}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,showstringspaces=false,backgroundcolor=\color{pale},frame=single,rulecolor=\color{pale},xleftmargin=5pt,xrightmargin=5pt}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\color{navy}\sffamily
+{\Large ProveIt research report\par}
+\vspace{18mm}
+{\Huge\bfseries Checked transport and\par seed-rank proofs for K215\par}
+\vspace{8mm}
+{\Large A concrete Context215 equivalence,\par a stronger enumerator interface,\par and a scoped search below 215 states\par}
+\vspace{14mm}
+\normalfont\color{black}
+\begin{abstract}
+This report advances proof simplification at a pinned current ProveIt snapshot. It supplies a concrete Rocq/Coq transport proof for the five-row Context215 patch, based on a seven-state tape invariant and an exact simulation of entire tapes. The invariant's nontrivial preservation obligations are restricted to eleven incoming rows. A separate checked refactor replaces three scheduler inductions by one natural-valued rank and proves completeness of the numerical enumerator from every initial state; soundness retains its necessary derivability invariant. Local opacity removes unnecessary normalization of arithmetic formula codes. The report compares alternative 215-state candidates without conflating paper proofs, local kernel checks, and complete ZFC endpoints. An expanded finite search admits both-branch state folds, checks 22 literal tables, and exhibits a precise valid-frame counterexample to a tempting 214-state construction. No verified machine with 214 or fewer states is claimed. Source files, patches, literal tables, independent audits, build receipts, and reproducible search artifacts accompany the report.
+\end{abstract}
+\vfill
+\begin{tabular}{@{}ll@{}}
+Baseline & \texttt{aa66d0a33f1f8237a348899eb8095b045a502832}\\
+Date & 21 October 2026\\
+Preparation & Research contribution prepared with AI assistance\\
+Scope & Additive artifacts for review and integration into ProveIt
+\end{tabular}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\newpage
+
+\section{Results and their exact status}
+
+The most effective immediate strategy is to retain the accepted K215 endpoint and simplify reusable proof interfaces around it. The current repository already records compiled external Lean and Rocq equivalences for the literal 215-state machine. Its internal PA endpoint is separately marked open. This report does not change that distinction or assert unconditional nonhalting. The mathematical target remains
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\neg\Halt(M,\mathrm{blank})\leftrightarrow\Con(\mathrm{ZFC})\bigr).
+\]
+A proof assistant's external theorem about a consistency predicate and a formal derivability statement \emph{inside} a particular arithmetic theory are different deliverables. The existing 240-state internal PA theorem is also a separate result \cite{baseline,formal}.
+
+The baseline already incorporates ordinary zero-offset certificates, shared implication facts, AX-word contracts, and semantic-lemma reuse. Three additional ZIP submissions in \path{docs/incoming} were read before choosing this contribution. In particular, the newest affine-core packet already contains the ordinary six-block Context215 proof and an independent finite checker, while explicitly leaving its exact compiled attachment open \cite{incoming}. Repeating those calculations alone would not provide a new proof result.
+
+During this investigation, main advanced to \texttt{b0663213602b3635258150c58ffe105a2e0ba44f}. Its automatic-certificate packet already supplies further ordinary-certificate compression, automatic source-certificate extraction, concrete zero-credit codec work, and a 21-table predecessor-specific elimination search. Its latest Lean change reuses the semantic round-trip result. These are credited as existing work, not proposed here as new contributions \cite{refresh}. The three edited Rocq modules and the two literal sparse-machine modules were individually fetched at this newer pin and have exactly the same Git blobs as at the baseline. The refresh was targeted; no complete audit of all intervening files is claimed.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.25\textwidth}>{\raggedright\arraybackslash}p{.45\textwidth}>{\raggedright\arraybackslash}p{.23\textwidth}@{}}
+\toprule
+Contribution & What is established & Boundary\\
+\midrule\endhead
+Concrete transport & Exact old/new native tables, arbitrary initial tape at control 0, complete tape preservation, positive simulation & Kernel checked through the actual sparse K215 halting predicate\\
+Ranked scheduler & Bounded search for any chosen candidate; completeness from every initial enumerator state & Checked against the exact numerical calculus and compiler\\
+Soundness opacity & Existing soundness statements and scripts survive local opacity of arithmetic constructors & A measured module improvement, not a whole-project benchmark\\
+Alternative comparison & Distinguishes shortest mathematical argument from least remaining integration work & Grounded in inspected current sources and incoming packets\\
+State-fold search & A complementary both-branch fold template and a reproducible failed 214-state trial & A bounded search, not a minimality theorem\\
+\bottomrule
+\end{longtable}
+
+The numerical state count is unchanged by the proof refactors. Likewise, compressing a source graph or a proof certificate does not by itself shorten the physical Turing machine. The archive maintains those quantities separately.
+
+\section{A direct transport proof for Context215}
+\label{sec:transport}
+
+Let $A$ be the accepted native K215 table and $B$ the Context215 table. Native start control is 0; the separate terminal control is 254. Each table has 215 working controls and 430 binary transition rows. The five changes are all retargetings: their written bit and head direction agree with the corresponding old row.
+
+\begin{center}
+\begin{tabular}{@{}rcll@{}}
+\toprule
+Control & Read & Old action & New action\\
+\midrule
+13 & 1 & $1\,L\,31$ & $1\,L\,81$\\
+27 & 1 & $0\,L\,40$ & $0\,L\,302$\\
+83 & 1 & $0\,L\,42$ & $0\,L\,57$\\
+156 & 1 & $1\,R\,176$ & $1\,R\,52$\\
+198 & 0 & $1\,L\,40$ & $1\,L\,54$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These table changes are inherited from the existing Context215 contribution \cite{context}. The new formalization uses an inductive tape invariant and a short transient-state relation. It does not rerun the 6,176 primitive contracts, the source-program correspondence, or the numerical-calculus calibration.
+
+\subsection{Tape representation and the invariant}
+
+A configuration is $(q,L,b,R)$, where $q$ is the control, $b$ is the scanned bit, and $L,R$ are infinite binary streams, nearest cell first. A transition removes the nearest bit from the direction of travel and prepends its written bit to the opposite stream. Thus a local calculation can prove equality of the entire resulting configuration by constructor equality. No finite truncation of the exterior tape is assumed. The native development uses no stream extensionality axiom.
+
+Write $\ell_0,\ell_1$ for the first two bits of $L$, and $r_0$ for the first bit of $R$. Define $J$ by the following clauses; at every unlisted control it is true.
+
+\begin{center}
+\begin{tabular}{@{}rl@{}}
+\toprule
+Control & Required condition\\
+\midrule
+13 & $\ell_0=1\ \lor\ [\ell_0=0\land(\ell_1=1\lor b=0)]$\\
+27 & $\ell_0=0$\\
+38 & $\ell_0=1$\\
+42 & $\ell_0=1\lor r_0=0$\\
+83 & $\ell_0=1$\\
+156 & $r_0=1$\\
+198 & $\ell_0=1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{lemma}[Inductive guard invariant]
+Every old-machine configuration reached from control 0, with an arbitrary initial tape and scanned bit, satisfies $J$.
+\end{lemma}
+\begin{proof}
+The initial assertion is immediate because control 0 is unlisted. Every transition whose destination is unlisted trivially preserves $J$. Filtering the complete old table by the seven listed destination controls leaves exactly eleven rows:
+\[
+\begin{gathered}
+8/1\to13,\quad26/1\to38,\quad28/1\to42,\quad
+38/0\to13,\quad42/0\to13,\\
+66/0\to198,\quad73/1\to83,\quad83/1\to42,\quad
+95/0\to27,\quad109/1\to42,\quad189/1\to156.
+\end{gathered}
+\]
+The kernel checks that this list is precisely the filtered literal table. Each remaining obligation is a finite stream calculation.
+
+For example, an entry to 13 from 38 writes zero and moves right. The previous control-38 clause supplies the one at the next cell to the left. An entry from 42 also writes zero and moves right. Its old clause supplies either the required left one or a zero at the newly scanned cell. The latter possibility cannot trigger the patched read-one row. The clause at 42 itself follows either from an incoming right-moving write-one, or from $83/1$, which writes zero and moves left. Induction over old steps proves the claim.
+\end{proof}
+
+This proof needs only the old-machine invariant. A separate new-machine history classification is unnecessary. The finite filtering step also avoids a large tactic proof with 430 repeated row obligations: the generic noncritical-row lemma handles all other rows at once.
+
+\subsection{A transient relation on complete configurations}
+
+Relate identical configurations. In addition, relate the following old/new control pairs with \emph{identical full tape streams and head position}:
+
+\begin{center}
+\begin{tabular}{@{}rcll@{}}
+\toprule
+Old & New & Tape guard & New steps per old step\\
+\midrule
+31 & 81 & $b=0,\ \ell_0=1$ & 3\\
+31 & 81 & $b=1,\ r_0=1$ & 1\\
+47 & 57 & $b=1$ & 1\\
+40 & 302 & $b=0$ & 1\\
+42 & 57 & $b=1$ & 1\\
+176 & 52 & $b=1$ & 1\\
+40 & 54 & $b=1$ & 1\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The first case is the only delayed excursion. The old read-zero transition at 31 reaches 21 in one step. The new execution traverses
+\[
+81\longrightarrow111\longrightarrow128\longrightarrow21
+\]
+in three steps. The extra left excursion reads the known one, preserves it, and returns across the known zero. Its endpoint is exactly the old endpoint. The read-one 31/81 case proceeds to the 47/57 case, which then synchronizes. Every other pair synchronizes in one step.
+
+\begin{lemma}[Positive-step simulation]
+If $J(c)$ and $c\mathrel{\mathcal R}d$, then for some $k\in\{1,2,3\}$,
+\[
+ \operatorname{step}_A(c)\mathrel{\mathcal R}\operatorname{run}_B(k,d).
+\]
+In the concrete proof $k$ is always 1 or 3. Moreover, $c$ has control 254 if and only if $d$ does.
+\end{lemma}
+\begin{proof}
+For an identical pair, an unchanged row produces identical successors. Each changed row enters the corresponding transient pair; $J$ supplies its tape guard. For a transient pair, the literal transitions give the complete configurations described above. None of the nonidentity pairs uses control 254, so halting reflection follows immediately.
+\end{proof}
+
+\begin{theorem}[All-tape Context215 equivalence]
+For every pair of initial streams $L,R$ and scanned bit $b$,
+\[
+ \Halt(A,(0,L,b,R))\quad\Longleftrightarrow\quad\Halt(B,(0,L,b,R)).
+\]
+Consequently the blank-tape nonhalting predicates are equivalent.
+\end{theorem}
+\begin{proof}
+Iteration of the preceding lemma gives, for every $n$, a natural $m$ with
+\[
+ n\le m\le3n,\qquad
+ \operatorname{run}_A(n,c_0)\mathrel{\mathcal R}
+ \operatorname{run}_B(m,c_0).
+\]
+Old halting at $n$ therefore gives new halting at $m$.
+
+For the reverse direction, suppose the new machine halts at time $n$. Apply the simulation to \emph{old} time $n$. It gives a related new configuration at some time $m\ge n$. Terminal control 254 is absorbing, so that new configuration still has control 254. Reflection through $\mathcal R$ implies that the old configuration at time $n$ has control 254. This proves both directions without constructing a separate reverse simulation.
+\end{proof}
+
+The positive lower bound on the simulated duration is essential to this argument. A relation permitting arbitrarily many old steps to correspond to zero new steps would not supply $m\ge n$ and would not justify this reverse implication.
+
+\subsection{Literal tables, terminal conventions, and attachment}
+
+\path{NativeContext.v} contains the old table as a literal list. \path{LiteralBindings.v} contains all 430 rows of the new table and proves that they equal the rowwise patch of the old table. It also checks the working-state count, row counts, unchanged working-label list, and closure of transition targets. The independent byte audit binds these literals to the submitted native files and their SHA-256 values.
+
+The native interpreter totalizes an absent row by leaving its configuration unchanged, and defines halting as reaching 254. Agreement with the intended binary-machine semantics requires the domain obligation: every reachable nonterminal control must have both rows. The complete tables have that property, and all their targets are working labels or 254. The adapter to the existing BusyCoq semantics must retain this obligation because BusyCoq interprets an absent row as halting. An unproved correspondence between these conventions would be a real gap.
+
+\input{transport_status.tex}
+
+\section{One rank for the numerical scheduler}
+\label{sec:rank}
+
+The second contribution changes the enumerator proof rather than a transition row. Let $\np(s)$ be the next-candidate counter and $\pl(s)$ the current proof-list pointer. The existing exact \code{step\_pl} lemma implies that every successful step has one of two forms:
+\begin{enumerate}
+\item If $\pl(s)>0$, then $\np$ is unchanged and $\pl(s')\le\pl(s)-1$.
+\item If $\pl(s)=0$, then $\np(s')=\np(s)+1$ and $\pl(s')\le\np(s)$.
+\end{enumerate}
+These are arithmetic facts about the existing candidate decoder, not assumptions about whether the current formula or stack entries are derivable.
+
+Fix a candidate number $N$ and assume $\np(s)\le N$. Define
+\[
+ \boxed{\quad R_N(s)=(N-\np(s))(N+1)+\pl(s).\quad}
+\]
+The intended boundary is $\pl(s)=0$ and $\np(s)=N$.
+
+\begin{lemma}[Bounded candidate search]
+From a state satisfying $\np(s)\le N$, at most $R_N(s)$ successful steps reach either a state whose next step halts or the boundary for candidate $N$.
+\end{lemma}
+\begin{proof}
+A draining step leaves the first summand unchanged and decreases the second by at least one. A nonboundary refill has $\np(s)<N$, so $\np(s')\le N$ and
+\[
+ R_N(s')-R_N(s)
+ \le -(N+1)+\np(s)<0.
+\]
+Thus every successful nonboundary step strictly decreases a natural-valued rank. Strong induction on that rank gives the stated bound, allowing an earlier halting step as an alternative. If one counts the final halting transition itself, the bound is $R_N(s)+1$; the theorem's displayed bound counts the successful prefix to the state that takes that transition.
+\end{proof}
+
+The theorem \code{find\_candidate\_bounded} replaces separate drainage, zero-seed reachability, and seed-4 reachability arguments. This is also a better interface for future startup optimization: the scheduler proof no longer requires the actual bootstrap to leave an empty proof-list pointer or one specific next-candidate number.
+
+\subsection{Completeness from every initial enumerator state}
+
+The existing numerical compiler gives, from a derivation of falsity code 1, a finite command word $L$ satisfying its block contract. Its existing \code{program\_halts} theorem is already independent of the initial working registers. A self-initializing wrapper has the form
+\[
+ \mathrm{START}(Y)\ ::\ L\mathbin{+\!+}\mathrm{SUFFIX}.
+\]
+The exact candidate encoding used by the proof is
+\[
+ N=P\bigl(3,P(Y,P(1,\operatorname{enc\_tail}(L\mathbin{+\!+}\mathrm{SUFFIX})))\bigr).
+\]
+Taking $Y=\np(s)$, the inherited Cantor-pairing inequalities give $N\ge Y$. The rank lemma therefore reaches this halting word or an earlier halt from every initial state.
+
+\begin{theorem}[Arbitrary-state completeness, checked]
+For the exact current numerical calculus and enumerator,
+\[
+ \forall s,\qquad \operatorname{thm222}(1)\ \Longrightarrow\
+ \operatorname{halts\_from}(s).
+\]
+\end{theorem}
+
+No restriction on the initial proof-list pointer, candidate counter, arithmetic counter, formula, stack, or cache is required for this implication. This assertion is stronger than the previous seed-specific completeness theorem.
+
+The converse is different. The existing soundness invariant $\Inv(s)$ requires derivability of the current formula, the cache, and every entry in the stack stream. Combining it with the new theorem gives the checked interface
+\[
+ \forall s,\quad\Inv(s)\Longrightarrow
+ \bigl(\operatorname{halts\_from}(s)\leftrightarrow\operatorname{thm222}(1)\bigr).
+\]
+It imposes no extra condition on $\pl$, $\np$, or the arithmetic counter. In particular, the proof covers all states \code{mkState p n 0 0 d 0} for arbitrary naturals $p,n,d$.
+
+The invariant must not be omitted. For example, an initial cache containing falsity code 1 can cause a NIP halt without establishing that the code was derivable. The unconditional new theorem is completeness; the equivalence is conditional on the ordinary soundness invariant.
+
+\subsection{Compatibility and measured proof cost}
+
+The typed client checks the exact existing types of \code{enum\_complete}, \code{seedPerm\_complete}, \code{seedPerm\_sound}, and \code{seedPerm\_iff\_thm}. The production \code{MainPerm.v} composition consumes the unchanged final interface. The audited generated production tree has no other consumers of the removed private scheduler helpers.
+
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Source scope & Before & After\\
+\midrule
+Compiler and seed, bytes & 18,100 & 17,209\\
+All three edited files, bytes & 22,105 & 21,335\\
+Seed file, lines & 59 & 24\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The compiler file grows because it proves a stronger result; the combined source shrinks. The more significant improvement is eliminating separate scheduler induction patterns and exposing a reusable theorem for arbitrary initial states. Lines and bytes alone do not measure conceptual proof cost.
+
+All ten required project modules and one typed client were freshly compiled under Coq 8.18.0, with six closed assumption reports and a successful recursive \code{coqchk}. The only compatibility transformation in private build copies changes the standard-library import spelling \code{Stdlib} to \code{Coq}. No compatibility axiom is introduced. The complete binary-machine-to-ZFC closure was not rebuilt for this refactor.
+
+For integration, update both the maintained \path{rocqperm/} templates and the generated \path{rocq/rocq-extension/coq/215/} files. Template imports use \code{NS} where the generated proof copies use \code{K215F}. Regenerate metadata and run the normal production endpoint build after applying the edits.
+
+\input{lean_port.tex}
+
+\section{Prevent unnecessary unfolding of arithmetic codes}
+
+The soundness module uses abstract constructor and inverse lemmas. It does not need to normalize the arithmetic implementation of formula codes. The declaration
+\begin{lstlisting}
+Local Opaque P wim wal wex weq wel.
+\end{lstlisting}
+prevents incidental conversion from expanding those definitions during its proofs. Every existing theorem statement and proof script in that module remains unchanged. The underlying mathematical constants retain their definitions; local opacity introduces no axiom.
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Observed \code{L1\_SoundPerm.v} build & Seconds\\
+\midrule
+Initial unmodified module & 43.290\\
+Isolated opacity trial & 0.810\\
+Final fresh focused closure & 0.665\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These measurements are local observations on Coq 8.18 on the execution host. They are not a controlled whole-project benchmark and do not establish a particular production Rocq 9.1 speedup. The complete final focused compilation took 16.996 seconds in summed subprocess times; its separate recursive kernel check took 66.483 seconds. Raw logs and toolchain information are included.
+
+The same engineering principle applies to Lean: expose small constructor and eliminator interfaces, and keep large arithmetic definitions out of routine simplification sets. A corresponding Lean change should be measured and compiled locally before claiming a speedup; this report does not label an unexecuted Lean port as checked.
+
+\section{Which 215-state candidate is easier to prove?}
+
+There are two distinct comparisons. To simplify the \emph{complete established endpoint}, primary K215 is the preferred target because its substantial calibration and compiler proofs already exist. To add another endpoint, one should minimize the additional adapter obligations, which may favor a near-identical table over a conceptually simpler source language.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.17\textwidth}>{\raggedright\arraybackslash}p{.37\textwidth}>{\raggedright\arraybackslash}p{.39\textwidth}@{}}
+\toprule
+Candidate & Advantage & Status in the inspected repository and incoming records\\
+\midrule\endhead
+Primary K215 & Existing compiled Lean and Rocq endpoints; direct target of the rank refactor & Rebuild production closure after applying changes\\
+M124, FM215, M125 & Small inspected local invariant, with two marker clauses & Incoming packet already has generic compiled Coq instances; native-to-repository adapter is separate\\
+CM215 & Actual Core/dense bridge is recorded compiled & Final ZFC adapter and its complete closure are explicitly not freshly compiled in the reviewed packet\\
+Context215 & Five row changes; eleven-row invariant slice; transparent complete-tape simulation & This report adds the checked concrete transport and exact sparse-semantics attachment\\
+ZC215 & Clean independent stack-credit scheduler argument & Current incoming refinements already check the real Cantor codec and occurrence injection; full physical/source attachments remain\\
+GC215/GC-ZC215 & Counter-free generalization, optionally combined with the credit argument & Source and runtime arguments are substantial, but there is no complete new kernel endpoint in the reviewed material\\
+\bottomrule
+\end{longtable}
+
+These alternatives are not interchangeable proof-status labels. A compiled generic transport theorem is not automatically a compiled concrete instance. A concrete instance in a custom tape semantics is not automatically attached to the repository's endpoint. A recorded earlier build is also different from a fresh local build in this report.
+
+Primary K215 starts with a zero stack and does not need the arbitrary-tail debt theorem that motivates ZC215. Consequently it would be misleading to advertise ZC215 as deleting such a debt argument from the existing primary proof. Its benefit is an independent scheduler design and a potentially cleaner route for different bootstrap conditions.
+
+The lower-risk recommendation is therefore to integrate the rank/opacity refactor into primary K215 and attach Context215 through exact table transport. For a second 215-state endpoint, Context215 is now the most concrete recommendation from this investigation because that additional semantic attachment has actually been checked. If the criterion is the shortest human local argument, M124/FM215/M125 have the smaller two-marker invariant. Both routes inherit the difficult foundational calibration from primary K215; neither independently removes it. A more radical calculus or source-language change should be justified by a quantified reduction in proof obligations or by an actual physical state saving.
+
+\subsection{A compositional family and an exact clock observation}
+
+All five altered-block interiors avoid every altered row. Applying any subset of the retargetings therefore preserves the same ordinary all-tape halting argument: selected blocks use the new path, omitted blocks retain the old transition. An independent finite audit verifies all 32 masks, each with 215 graph-reachable working controls. Their rooted read-labelled write/move graphs are pairwise nonisomorphic, including under global tape reflection.
+
+This is a compositional corollary of already published retargetings, not a claim to 32 historically new machine architectures. The complete five-patch concrete instance is kernel checked here; the all-mask family is reported at the ordinary proof plus independent finite-audit level.
+
+At synchronized block boundaries, the old/new step counts satisfy
+\[
+ T_S=T+2N,
+\]
+where $N$ counts completed read-one state-13 blocks with the zero predecessor, provided that patch is selected. Other blocks have equal durations. No strict block interior halts, so the same identity holds for halting times. Since each delayed old block consumes two steps, $T\le T_S\le2T$. This sharper bound is a separate ordinary block-count corollary. The kernel theorem presented in Section~\ref{sec:transport} supplies the coarser $n\le m\le3n$ bound and should not be cited as proving the sharper one.
+
+\section{Search for 214 states: results and an explicit obstruction}
+\label{sec:search}
+
+No verified machine with 214 or fewer working states was obtained. The contribution is a more general exact local fold template, a reproducible search scope, and a concrete counterexample that explains why one apparently attractive 214-state table does not satisfy the accepted uniform compiler contract.
+
+\input{reduction_section.tex}
+
+These computations do not prove that K215 is minimal. They also do not exclude a fold needing a reachable-tape invariant, a longer return, an altered source encoding, a different initializer, or a different numerical calculus. A failed symbolic proof search is especially weak negative evidence unless accompanied by an explicit contradicting run.
+
+\section{Integration strategy and further research questions}
+
+\subsection{Immediate integration order}
+
+\begin{enumerate}
+\item Apply the three generated Rocq source patches and their corresponding maintained template changes. Preserve the existing public seed interfaces, refresh generated-file provenance, and rebuild the production endpoint.
+\item Add the native Context215 transport and its literal table bindings as a small independent component. Keep the raw table hashes and domain checks alongside the proof.
+\item Use the supplied checked native-to-sparse semantic adapter, then compile its small ZFC composition client inside the maintained full dependency closure. Record which adapter and endpoint modules were freshly compiled rather than inheriting a broad status label.
+\item Port the single-rank enumerator theorem to Lean against the current \code{EnumPerm}/\code{SeedPerm} definitions. Prove the exact pointer-decrease and refill inequalities once and reuse the existing compiler's reset wrapper.
+\item Keep unsuccessful physical candidates in a clearly labelled research directory with counterexample receipts; do not promote them to accepted candidates on the basis of row count alone.
+\end{enumerate}
+
+\subsection{Questions with concrete next experiments}
+
+\begin{enumerate}
+\item \textbf{Can the arbitrary-state enumerator theorem simplify the physical boot theorem?}
+The new interface allows arbitrary initial proof-list, candidate, and arithmetic counters once the formula/cache/stack invariant is established. Identify which binary boot conditions were proved solely to meet the old seed theorem. Removing such proof obligations is immediate in principle; removing physical initialization transitions requires a separate state-level construction.
+
+\item \textbf{Can Context215 transport be factored into a small reusable checker?}
+The current proof exposes a useful schema: a finite inductive guard map, a reflected slice of incoming rows, and an exact transient relation with a positive time bound. A generic verified checker could accept these data and emit both halting directions. Any such checker must include transition-domain closure and explicit treatment of terminal behavior.
+
+\item \textbf{Can the two remaining branch requirements in the partial fold catalog be made compatible?}
+The 52/154 example identifies a shared helper whose desired replacement conflicts with a live CB1 return. A profitable next search should either prove a distinguishing reachable context at that helper, route that return elsewhere with its complete contract, or alter the source so the two roles cease to share the same bit pattern. Repeating the same unguarded merge is already ruled out by the supplied valid-frame witness.
+
+\item \textbf{Can a new source encoding reduce decoder cost without increasing the trusted proof surface?}
+Source-node counts and allocated-state counts diverge because engine/decoder row sharing is constrained. Evaluate proposed command reordering, code changes, or weaker calculi only after compiling their initializer, literal source, row allocation, and complete runtime contracts.
+
+\item \textbf{How much of the current source-certificate proof can be removed by definitional equality?}
+The newest proposals already normalize ordinary zero-offset bisimulations and use balanced lookup. When normalized source graphs are literally equal, direct kernel-checked equality is a simpler attachment than an affine-loop contraction certificate. Affine contraction is more useful when comparing genuinely different loops; it should be introduced only for that need.
+
+\item \textbf{Can the formal dependence on foundational axioms be made easier to audit?}
+Keep exact theorem-level assumption reports distinct from declarations imported into a library's global environment. The standalone native transport and ranked scheduler have closed reports. The supplied semantic bridge has now also passed a recursive check against its exact pinned dependencies and prints closed theorem-level reports. Preserve that evidence when integrating it into the full lane.
+\end{enumerate}
+
+\section{Reproduction, provenance, and limits}
+
+\input{verification.tex}
+
+All final source changes are supplied additively. The remote repository was not modified or published by this task. The archive is intended for review and subsequent integration. Original source licenses and attribution records are retained; the numerical calculus, its ZFC calibration, the accepted machine, the Context215 retargetings, and existing runtime frameworks are inherited work.
+
+This report does not claim global priority for the rank function, opacity technique, or positive-stuttering method. Its concrete contribution is their checked application to the current literal artifacts, the stronger enumerator interface, and the precisely scoped physical search. It does not prove \(\Con(\mathrm{ZFC})\), unconditional nonhalting, or an impossibility theorem for 214-state machines.
+
+\begingroup\footnotesize\raggedright\setlength{\parskip}{0pt}
+\begin{thebibliography}{9}\setlength{\itemsep}{2pt}
+\bibitem{baseline}
+ProveIt contributors, \emph{Smaller machines for Con(ZFC)}, pinned snapshot
+\texttt{aa66d0a33f1f8237a348899eb8095b045a502832}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/aa66d0a33f1f8237a348899eb8095b045a502832/Computability/BusyBeaver/Research/ZFC/README.md}{Repository overview}.
+
+\bibitem{formal}
+ProveIt contributors, \emph{Formal endpoints for the K-family candidates}; K215 verification and simplification records at the same snapshot.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/aa66d0a33f1f8237a348899eb8095b045a502832/Computability/BusyBeaver/Research/ZFC/k225-formal/README.md}{Formal architecture and endpoint status}.
+
+\bibitem{context}
+ProveIt contributors, \emph{History returns, a shallower 215-state machine, and new source calculi}, 21 October 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/aa66d0a33f1f8237a348899eb8095b045a502832/Computability/BusyBeaver/Research/ZFC/candidate-k215/alternatives/context-returns/README.md}{Context-return candidate and provenance}.
+
+\bibitem{incoming}
+ProveIt incoming research packets, \emph{K215 Checked Simplifications}, \emph{K215 Certificate Refinements}, and \emph{Affine Proof Cores and Transport}, 21 October 2026, exact files at the pinned snapshot.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/aa66d0a33f1f8237a348899eb8095b045a502832/docs/incoming}{Incoming packet directory}.
+
+\bibitem{rocq}
+Elliot Glazer and contributors, \emph{k230-rocq}, commit\newline
+\texttt{3142e4dd980f0be12f4abb636c4ae2528afc17eb}; Jeff's busy-beaver reference, commit
+\texttt{c132d7eae8158cd3a9850ea3eb7251158c3dd821}.
+\href{https://github.com/elliotglazer/k230-rocq/tree/3142e4dd980f0be12f4abb636c4ae2528afc17eb}{Pinned formal reference};
+\href{https://github.com/jeff87654/busy-beaver/tree/c132d7eae8158cd3a9850ea3eb7251158c3dd821}{pinned machine-semantics reference}.
+
+\bibitem{refresh}
+ProveIt contributors, \emph{Automatic certificates and targeted elimination search}, and the semantic round-trip Lean update, refreshed snapshot
+\texttt{b0663213602b3635258150c58ffe105a2e0ba44f}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b0663213602b3635258150c58ffe105a2e0ba44f/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/automatic-certificates/README.md}{Automatic-certificate packet};
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/b0663213602b3635258150c58ffe105a2e0ba44f}{semantic round-trip commit}.
+
+
+\bibitem{leanenum}
+ProveIt contributors, \emph{EnumPerm.lean} and \emph{SeedPerm.lean}, refreshed snapshot \texttt{b0663213602b}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b0663213602b3635258150c58ffe105a2e0ba44f/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumPerm.lean}{Lean enumerator and compiler};
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b0663213602b3635258150c58ffe105a2e0ba44f/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SeedPerm.lean}{Lean seed interfaces}.
+
+\end{thebibliography}
+\endgroup
+\end{document}

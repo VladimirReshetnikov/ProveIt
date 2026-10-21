@@ -1,0 +1,25 @@
+/-- An equivalent presentation as four explicit axiom families. -/
+structure FourAxioms {A : Type v} (L : Language A) (T : A → Prop) : Prop where
+  mp : ∀ {a b : A}, T (L.imp a b) → T a → T b
+  same : ∀ a b c, T (rho8 L a b c a)
+  right : ∀ x u b c, T (rho8 L (L.imp x u) b c u)
+  ll : ∀ u x y b c, T (rho8 L (L.imp (L.imp u x) y) b c u)
+  llr : ∀ x u y z b c, T (rho8 L (L.imp (L.imp (L.imp x u) y) z) b c u)
+
+private theorem restricted_of_four {A : Type v} {L : Language A} {T : A → Prop}
+    (h : FourAxioms L T) : Restricted L T where
+  mp := h.mp
+  rho8 := by
+    intro a b c u hu
+    cases hu with
+    | same => exact h.same _ b c
+    | right x u => exact h.right x u b c
+    | ll u x y => exact h.ll u x y b c
+    | llr x u y z => exact h.llr x u y z b c
+
+theorem all_of_four {A : Type v} {L : Language A} {T : A → Prop}
+    (h : FourAxioms L T) (a b c u : A) : T (rho8 L a b c u) :=
+  rho8_all (restricted_of_four h) a b c u
+
+#print axioms all_of_four
+end SetTheory.BusyBeaver.ZFC.FourShapeImplication

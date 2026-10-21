@@ -1,0 +1,54 @@
+{
+  "status": "PASS",
+  "steps": [
+    {
+      "name": "literal-table-audit",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/dev/shm/proveit-20261021/deliverable/K215_Checked_Transport_and_Seed_Rank_2026-10-21/transport/generate_tables.py",
+        "--check",
+        "--output",
+        "/dev/shm/proveit-20261021/archive-quick-replay/literal-table.json"
+      ],
+      "exit": 0,
+      "seconds": 0.07061062600041623,
+      "log_sha256": "f42d9deeffaf5c5eaea09513af35f9e2b338c281fd4fe622fe40f00a9e156cb5"
+    },
+    {
+      "name": "context-family-audit",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/dev/shm/proveit-20261021/deliverable/K215_Checked_Transport_and_Seed_Rank_2026-10-21/comparison/audit_context_family.py",
+        "--old",
+        "/dev/shm/proveit-20261021/deliverable/K215_Checked_Transport_and_Seed_Rank_2026-10-21/transport/old.tm",
+        "--new",
+        "/dev/shm/proveit-20261021/deliverable/K215_Checked_Transport_and_Seed_Rank_2026-10-21/transport/new.tm",
+        "--output",
+        "/dev/shm/proveit-20261021/archive-quick-replay/context-family.json"
+      ],
+      "exit": 0,
+      "seconds": 0.09397690699915984,
+      "log_sha256": "270b9f5f8cb6f8478d1315e58439cff47d8b35f1619988cdf411ca1ed3dc388d"
+    },
+    {
+      "name": "reduction-checks",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "/dev/shm/proveit-20261021/deliverable/K215_Checked_Transport_and_Seed_Rank_2026-10-21/state_reduction/code/reproduce.py",
+        "--output",
+        "/dev/shm/proveit-20261021/archive-quick-replay/reduction"
+      ],
+      "exit": 0,
+      "seconds": 6.249522624999372,
+      "log_sha256": "bb75106e8a4b5c6f33551472574eaecd80e4e4cf72b8179bea4f35f1b3da97ff"
+    }
+  ],
+  "excluded": [
+    "Full Correct215/ZFC endpoint closure",
+    "Lean compilation"
+  ],
+  "manifest_files": 149
+}

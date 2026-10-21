@@ -1,0 +1,250 @@
+{
+  "scope": "Owned data-checker portability and rejection tests only; no incoming code or proof assistant run.",
+  "results": [
+    {
+      "script": "audit_received.py",
+      "test": "isolated relocated directory and unrelated cwd",
+      "exit_code": 0,
+      "expected": "pass",
+      "stdout_sha256": "08bdc1283a4d08fde138c0389893e4caee614351dc496e750927f2654912de54",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "diagnostic_tail": []
+    },
+    {
+      "script": "audit_received.py",
+      "test": "-O",
+      "exit_code": 1,
+      "expected": "reject",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3f7d5df539c283f9ed5456c0bc736167b8ca2cf8289050d08f2a4cf0817a5e4b",
+      "diagnostic_tail": [
+        "Audit requires assertions: reject -O, -OO, and nonempty PYTHONOPTIMIZE."
+      ]
+    },
+    {
+      "script": "audit_received.py",
+      "test": "-OO",
+      "exit_code": 1,
+      "expected": "reject",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3f7d5df539c283f9ed5456c0bc736167b8ca2cf8289050d08f2a4cf0817a5e4b",
+      "diagnostic_tail": [
+        "Audit requires assertions: reject -O, -OO, and nonempty PYTHONOPTIMIZE."
+      ]
+    },
+    {
+      "script": "audit_received.py",
+      "test": "PYTHONOPTIMIZE=1",
+      "exit_code": 1,
+      "expected": "reject",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3f7d5df539c283f9ed5456c0bc736167b8ca2cf8289050d08f2a4cf0817a5e4b",
+      "diagnostic_tail": [
+        "Audit requires assertions: reject -O, -OO, and nonempty PYTHONOPTIMIZE."
+      ]
+    },
+    {
+      "script": "audit_received.py",
+      "test": "PYTHONOPTIMIZE=2",
+      "exit_code": 1,
+      "expected": "reject",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3f7d5df539c283f9ed5456c0bc736167b8ca2cf8289050d08f2a4cf0817a5e4b",
+      "diagnostic_tail": [
+        "Audit requires assertions: reject -O, -OO, and nonempty PYTHONOPTIMIZE."
+      ]
+    },
+    {
+      "script": "audit_received.py",
+      "test": "PYTHONOPTIMIZE=0",
+      "exit_code": 1,
+      "expected": "reject",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3f7d5df539c283f9ed5456c0bc736167b8ca2cf8289050d08f2a4cf0817a5e4b",
+      "diagnostic_tail": [
+        "Audit requires assertions: reject -O, -OO, and nonempty PYTHONOPTIMIZE."
+      ]
+    },
+    {
+      "script": "audit_received.py",
+      "test": "-E with PYTHONOPTIMIZE=1",
+      "exit_code": 1,
+      "expected": "reject",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3f7d5df539c283f9ed5456c0bc736167b8ca2cf8289050d08f2a4cf0817a5e4b",
+      "diagnostic_tail": [
+        "Audit requires assertions: reject -O, -OO, and nonempty PYTHONOPTIMIZE."
+      ]
+    },
+    {
+      "script": "check_decoder_prefixes.py",
+      "test": "isolated relocated directory and unrelated cwd",
+      "exit_code": 0,
+      "expected": "pass",
+      "stdout_sha256": "01350c7625e46933f6cc32cd3e38c367e22661190665e6d6af1ad4ee4f9ffae8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "diagnostic_tail": []
+    },
+    {
+      "script": "check_decoder_prefixes.py",
+      "test": "-O",
+      "exit_code": 1,
+      "expected": "reject",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3f7d5df539c283f9ed5456c0bc736167b8ca2cf8289050d08f2a4cf0817a5e4b",
+      "diagnostic_tail": [
+        "Audit requires assertions: reject -O, -OO, and nonempty PYTHONOPTIMIZE."
+      ]
+    },
+    {
+      "script": "check_decoder_prefixes.py",
+      "test": "-OO",
+      "exit_code": 1,
+      "expected": "reject",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3f7d5df539c283f9ed5456c0bc736167b8ca2cf8289050d08f2a4cf0817a5e4b",
+      "diagnostic_tail": [
+        "Audit requires assertions: reject -O, -OO, and nonempty PYTHONOPTIMIZE."
+      ]
+    },
+    {
+      "script": "check_decoder_prefixes.py",
+      "test": "PYTHONOPTIMIZE=1",
+      "exit_code": 1,
+      "expected": "reject",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3f7d5df539c283f9ed5456c0bc736167b8ca2cf8289050d08f2a4cf0817a5e4b",
+      "diagnostic_tail": [
+        "Audit requires assertions: reject -O, -OO, and nonempty PYTHONOPTIMIZE."
+      ]
+    },
+    {
+      "script": "check_decoder_prefixes.py",
+      "test": "PYTHONOPTIMIZE=2",
+      "exit_code": 1,
+      "expected": "reject",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3f7d5df539c283f9ed5456c0bc736167b8ca2cf8289050d08f2a4cf0817a5e4b",
+      "diagnostic_tail": [
+        "Audit requires assertions: reject -O, -OO, and nonempty PYTHONOPTIMIZE."
+      ]
+    },
+    {
+      "script": "check_decoder_prefixes.py",
+      "test": "PYTHONOPTIMIZE=0",
+      "exit_code": 1,
+      "expected": "reject",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3f7d5df539c283f9ed5456c0bc736167b8ca2cf8289050d08f2a4cf0817a5e4b",
+      "diagnostic_tail": [
+        "Audit requires assertions: reject -O, -OO, and nonempty PYTHONOPTIMIZE."
+      ]
+    },
+    {
+      "script": "check_decoder_prefixes.py",
+      "test": "-E with PYTHONOPTIMIZE=1",
+      "exit_code": 1,
+      "expected": "reject",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3f7d5df539c283f9ed5456c0bc736167b8ca2cf8289050d08f2a4cf0817a5e4b",
+      "diagnostic_tail": [
+        "Audit requires assertions: reject -O, -OO, and nonempty PYTHONOPTIMIZE."
+      ]
+    },
+    {
+      "script": "audit_received.py",
+      "test": "received proof source mutation",
+      "exit_code": 1,
+      "expected": "reject",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "34a51d58a56ab45fbdf4fe93afa7bc9500dae7721db8cf722a0b9da285eced31",
+      "diagnostic_tail": [
+        "AssertionError: normalized_rocq/NormalizedBisim.v"
+      ]
+    },
+    {
+      "script": "audit_received.py",
+      "test": "received manifest mutation",
+      "exit_code": 1,
+      "expected": "reject",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "b98faf1ac356806a292c1ffbba43b3b2739e2d43c62308831a1c0045471d901f",
+      "diagnostic_tail": [
+        "AssertionError: Received manifest changed"
+      ]
+    },
+    {
+      "script": "audit_received.py",
+      "test": "bundled prior comparison mutation",
+      "exit_code": 1,
+      "expected": "reject",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "8c86b119d81c3fb77783bfeb8e7becd9a8a88c8832b780c2f69eae2661ad4692",
+      "diagnostic_tail": [
+        "AssertionError: Prog215.v"
+      ]
+    },
+    {
+      "script": "check_decoder_prefixes.py",
+      "test": "decoder certificate mutation",
+      "exit_code": 1,
+      "expected": "reject",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e939de527fa0ece87186cd0af10bd363b191d019e716c9d8b60b06b0842a43b9",
+      "diagnostic_tail": [
+        "Pinned decoder input changed: decoder_context_certificate.json"
+      ]
+    },
+    {
+      "script": "check_decoder_prefixes.py",
+      "test": "literal machine mutation",
+      "exit_code": 1,
+      "expected": "reject",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "5358d5bc264c03525d50a779b0979ff8ac7232982b27dd2089caa28628523431",
+      "diagnostic_tail": [
+        "Pinned decoder input changed: k215.native.tm"
+      ]
+    },
+    {
+      "script": "check_decoder_prefixes.py",
+      "test": "source sites mutation",
+      "exit_code": 1,
+      "expected": "reject",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "dc60acbcab5baa0975ca6d8fdd73e2097740bea1f256263d9342874aef74932a",
+      "diagnostic_tail": [
+        "Pinned decoder input changed: sites215.json"
+      ]
+    },
+    {
+      "script": "audit_received.py",
+      "test": "restored data final replay",
+      "exit_code": 0,
+      "expected": "pass",
+      "stdout_sha256": "08bdc1283a4d08fde138c0389893e4caee614351dc496e750927f2654912de54",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "diagnostic_tail": []
+    },
+    {
+      "script": "check_decoder_prefixes.py",
+      "test": "restored data final replay",
+      "exit_code": 0,
+      "expected": "pass",
+      "stdout_sha256": "01350c7625e46933f6cc32cd3e38c367e22661190665e6d6af1ad4ee4f9ffae8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "diagnostic_tail": []
+    }
+  ],
+  "status": "PASS",
+  "owned_checker_sha256": {
+    "audit_received.py": "a70d2ba5748ca85795e7f7fa34cda6cf3044f73b31dddc6d6c190eb409870606",
+    "check_decoder_prefixes.py": "cf9405bf0d480455b5bca4e1da92ef6e579c8d2b126aa35c9e0e6d5733bcfdae"
+  },
+  "input_files_preserved": true,
+  "comparison_inputs_bundled": 4,
+  "old_research_tree_required": false,
+  "optimization_rejections": 12,
+  "changed_input_rejections": 6,
+  "isolated_positive_replays": 4
+}

@@ -1,0 +1,35 @@
+import Init
+
+/-!
+Four explicit implication-axiom shapes suffice.
+
+This separate extension specializes the checked 84-helper proof to the only
+four dominance paths actually used: empty, R, LL and LLR. It does not assume
+that Allowed is closed under arbitrary implication contexts; it is not.
+Each former closure proof is replaced by its exact shape constructor.
+No truth constant, decoder, injectivity, numerical order, or equality law is
+required. Original Source 149 / CD230 ancestry and the current compression
+are preserved; see the accompanying generator and attribution.
+-/
+namespace SetTheory.BusyBeaver.ZFC.FourShapeImplication
+
+universe v
+
+structure Language (A : Type v) where
+  imp : A → A → A
+
+/-- Exactly four allowed paths from the first argument to the fourth:
+empty, right, left-left, and left-left-right. -/
+inductive Allowed {A : Type v} (L : Language A) : A → A → Prop where
+  | same (u : A) : Allowed L u u
+  | right (x u : A) : Allowed L u (L.imp x u)
+  | ll (u x y : A) : Allowed L u (L.imp (L.imp u x) y)
+  | llr (x u y z : A) : Allowed L u (L.imp (L.imp (L.imp x u) y) z)
+
+def rho8 {A : Type v} (L : Language A) (a b c u : A) : A :=
+  L.imp (L.imp (L.imp c u) a) (L.imp (L.imp a c) (L.imp b c))
+
+structure Restricted {A : Type v} (L : Language A) (T : A → Prop) : Prop where
+  mp : ∀ {a b : A}, T (L.imp a b) → T a → T b
+  rho8 : ∀ a b c u : A, Allowed L u a → T (FourShapeImplication.rho8 L a b c u)
+
