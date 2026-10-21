@@ -132,7 +132,7 @@ theorem root_step (s : EnumPerm.St) :
     | some s' => Rn (.node 0) (toAS s) (toAS s')
     | none => ∃ R', Run dagPerm (.node 0) (enc (toAS s)) .halt R' := by
   have hf := fetch_run s
-  unfold EnumPerm.enumStep EnumPerm.execAt
+  unfold EnumPerm.enumStep EnumPerm.execAt EnumPerm.decode
   generalize (EnumPerm.fetch s).1 = pl1 at hf ⊢
   generalize (EnumPerm.fetch s).2 = np1 at hf ⊢
   have hc : ∀ np tw ws ac p1 p2 pl, Clean (⟨np, tw, ws, ac, p1, p2, 0, 0, pl⟩ : AS) := fun _ _ _ _ _ _ _ =>
@@ -144,7 +144,7 @@ theorem root_step (s : EnumPerm.St) :
   generalize hx : (Cantor.ofNat pl2).1 = x at ⊢
   generalize hp3 : (Cantor.ofNat pl2).2 = pl3 at ⊢
   generalize hac : (Cantor.ofNat pl1).1 = ac at hread ⊢
-  rcases ac with _ | _ | _ | c
+  rcases ac with _ | _ | _ | c <;> simp only [EnumPerm.cstep, EnumPerm.toW]
   · -- NIP
     by_cases hh : s.h = 1
     · simp only [hh, if_true]
@@ -162,14 +162,11 @@ theorem root_step (s : EnumPerm.St) :
     exact rn_eq this (by simp [toAS])
   · -- MP
     have := hread (dispatch_mp ⟨np1, s.tw, s.ws, 0, s.d, s.h, 0, 0, pl2⟩ (hc _ _ _ _ _ _ _))
-    simp only [hx, hp3] at this
-    simp only
-    split
-    · rename_i hw
-      simp only [mpOut, hw, if_true] at this
+    simp only [hx, hp3, mpOut] at this
+    by_cases hw : wim s.tw (s.d + x) = s.h
+    · simp only [hw, if_true, Option.map] at this ⊢
       exact rn_eq this (by simp [toAS])
-    · rename_i hw
-      simp only [mpOut, hw, if_false] at this
+    · simp only [hw, if_false, Option.map] at this ⊢
       exact rn_eq this (by simp [toAS])
   · -- AX
     have := hread (dispatch_ax ⟨np1, s.tw, s.ws, 0, s.d, s.h, 0, 0, pl2⟩ (hc _ _ _ _ _ _ _) c)
