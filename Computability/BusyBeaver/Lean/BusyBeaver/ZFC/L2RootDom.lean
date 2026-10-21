@@ -1,4 +1,5 @@
 /- Forked by Research/ZFC/k225-formal/generate_l2rootdom.py from L2Root222.lean for dagDom. -/
+import BusyBeaver.ZFC.RMDagIteration
 import BusyBeaver.ZFC.L2AxiomsDom
 
 /-!
@@ -11,8 +12,9 @@ dominated AX word, which `ax_eval` (`L2AxiomsDom`) evaluates to EnumDom's AX ste
 
 namespace SetTheory.BusyBeaver.ZFC.L2Dom
 
-open RMDag DagDom Code254
-open L2K (AS enc Clean upd_ac)
+open RMDag DagDom
+open Code254 (P wim F)
+open L2K (AS enc Clean upd_ac P_zero_zero)
 
 attribute [local irreducible] Code254.P
 
@@ -117,7 +119,7 @@ theorem fetch_run (s : EnumDom.St) :
   · obtain ⟨v, hv⟩ : ∃ v, s.pl = v + 1 := ⟨s.pl - 1, by omega⟩
     have := fetch_pos (toAS s) v (by simp [toAS, hv])
     apply rn_eq this
-    simp [toAS, EnumDom.fetch, h, hv]
+    simp [toAS, EnumDom.fetch, hv]
 
 /-- The two reads after the fetch. -/
 theorem reads_run (np pl1 tw ws d h : Nat) {X : AS}
@@ -198,45 +200,11 @@ theorem root_none {s : EnumDom.St} (h : EnumDom.enumStep s = none) :
 
 /-- L2: iterating the program root halts iff the enumerator halts. -/
 theorem iter_iff (s : EnumDom.St) :
-    IterHalts dagDom (enc (toAS s)) ↔ ∃ n s', EnumDom.run n s = some s' ∧ EnumDom.enumStep s' = none := by
-  constructor
-  · intro h
-    suffices H : ∀ R, IterHalts dagDom R → ∀ s, R = enc (toAS s) →
-        ∃ n s', EnumDom.run n s = some s' ∧ EnumDom.enumStep s' = none from H _ h s rfl
-    intro R hR
-    induction hR with
-    | halt R R' hrun =>
-        intro s hs
-        subst hs
-        match he : EnumDom.enumStep s with
-        | none => exact ⟨0, s, rfl, he⟩
-        | some s1 => exact absurd (run_det hrun (root_some he)).1 (by simp)
-    | next R R' hrun _ ih =>
-        intro s hs
-        subst hs
-        match he : EnumDom.enumStep s with
-        | none =>
-            obtain ⟨R'', h''⟩ := root_none he
-            exact absurd (run_det hrun h'').1 (by simp)
-        | some s1 =>
-            have e := (run_det hrun (root_some he)).2
-            obtain ⟨n, s', h1, h2⟩ := ih s1 e
-            exact ⟨n + 1, s', by simp only [EnumDom.run, he]; exact h1, h2⟩
-  · rintro ⟨n, s', hrun, hstep⟩
-    induction n generalizing s with
-    | zero =>
-        simp only [EnumDom.run] at hrun
-        cases hrun
-        obtain ⟨R', h'⟩ := root_none hstep
-        exact IterHalts.halt _ _ h'
-    | succ n ih =>
-        simp only [EnumDom.run] at hrun
-        split at hrun
-        · rename_i s1 he
-          exact IterHalts.next _ _ (root_some he) (ih s1 hrun)
-        · cases hrun
+    IterHalts dagDom (enc (toAS s)) ↔ ∃ n s', EnumDom.run n s = some s' ∧ EnumDom.enumStep s' = none :=
+  RMDag.iter_halts_iff EnumDom.enumStep EnumDom.run (fun s => enc (toAS s))
+    (fun _ => rfl) (fun n s => by cases h : EnumDom.enumStep s <;> simp only [EnumDom.run, h])
+    (fun h => root_some h) (fun h => root_none h) s
 
-/-- The enumerator's own halting predicate, from the zero state. -/
 theorem iter_iff_halts : IterHalts dagDom (enc (toAS EnumDom.s0)) ↔ EnumDom.Halts := iter_iff _
 
 /-- The first two candidates (MP on truth, then DROP) lead to `nextproof = 2`

@@ -21,7 +21,7 @@ def fork(text, subs):
 
 
 root = (D / "L2Root222.lean").read_text(encoding="utf-8")
-root = root[root.index("import BusyBeaver.ZFC.L2Axioms222"):]
+root = "import BusyBeaver.ZFC.RMDagIteration\n" + root[root.index("import BusyBeaver.ZFC.L2Axioms222"):]
 root = fork(root, [
     ("import BusyBeaver.ZFC.L2Axioms222", "import BusyBeaver.ZFC.L2AxiomsDom", 1),
     ("""L2: one run of the root of the seed-K 222 program dag222 is one enumerator step.
@@ -35,7 +35,7 @@ the reads and the dispatch are dag222's nodes, re-proved for dagDom; the AX leaf
 dominated AX word, which `ax_eval` (`L2AxiomsDom`) evaluates to EnumDom's AX step.""", 1),
     ("namespace SetTheory.BusyBeaver.ZFC.L2K", "namespace SetTheory.BusyBeaver.ZFC.L2Dom", 1),
     ("end SetTheory.BusyBeaver.ZFC.L2K", "end SetTheory.BusyBeaver.ZFC.L2Dom", 1),
-    ("open RMDag Dag222 Code254", "open RMDag DagDom Code254\nopen L2K (AS enc Clean upd_ac)", 1),
+    ("open RMDag Dag222 Code254", "open RMDag DagDom\nopen Code254 (P wim F)\nopen L2K (AS enc Clean upd_ac P_zero_zero)", 1),
     ("dag222", "dagDom", None),
     ("Enum222.", "EnumDom.", None),
     ("/-- L2 composed with L1: the seed-K 222 program dagDom, iterated from the boot registers",

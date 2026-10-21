@@ -594,21 +594,12 @@ theorem gen_contract (i : Nat) {p : List Cmd} {H : Nat} (hp : Contract p H) :
     rw [cexec_cons_some (cstep_ax i 0 0 0 S i H)]
     simp only [Nat.add_zero]
     rw [show gate i H i = 0 from gate_self i H, axStack_eq]
-    have hsplit : axList i H H i i ++ [0] =
-        [rho1 i H, rho2 i H i, rho3 i H i, rho4 i H i, rho5 i H i, rho6 i i, growG i H i,
-          rho8 i H i i] ++ [wal i H] ++ [0] := rfl
-    rw [hsplit, pushL_append, pushL_append]
-    have hL : ∀ y, y ∈ [rho1 i H, rho2 i H i, rho3 i H i, rho4 i H i, rho5 i H i, rho6 i i,
-        growG i H i, rho8 i H i i] → y ≠ 1 := fun y hy =>
-      axList_ne_one i H H i i y (by simp [axList] at hy ⊢; omega)
-    rw [show nips 9 = nips ([rho1 i H, rho2 i H i, rho3 i H i, rho4 i H i, rho5 i H i, rho6 i i,
-        growG i H i, rho8 i H i i].length + 1) from rfl, ← pushL_append]
-    rw [cexec_nips' 0 (pushL [0] S) 0 _ 0 (wal i H) _ (by omega) hL]
-    rw [cexec_cons_some (cstep_drop 0 (pushL [0] S) 0 (wal i H))]
-    rw [cexec_cons_some (cstep_nip (wal i H) (P 0 (pushL [0] S)) 0 (wal i H) (wal_ne_one i H))]
-    simp only [unP_P', pushL]
-    rw [cexec_cons_some (cstep_nip (wal i H) (P 0 S) 0 0 (by omega))]
-    simp [unP_P', cexec]
+    exact select_entry
+      [rho1 i H, rho2 i H i, rho3 i H i, rho4 i H i, rho5 i H i, rho6 i i,
+        growG i H i, rho8 i H i i] (wal i H) [] 0 0 0 S
+      (by omega) (by omega) (wal_ne_one i H)
+      (fun y hy => axList_ne_one i H H i i y (by simp [axList] at hy ⊢; omega))
+      (by simp)
 
 /-- Modus ponens on two blocks. -/
 def mpBlock (B : Nat) (pa pab : List Cmd) : List Cmd :=

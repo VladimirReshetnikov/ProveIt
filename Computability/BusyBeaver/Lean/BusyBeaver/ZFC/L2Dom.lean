@@ -1,5 +1,6 @@
 import BusyBeaver.ZFC.DagDom
-import BusyBeaver.ZFC.Dag219Equiv
+import BusyBeaver.ZFC.Dag219Bisim
+import BusyBeaver.ZFC.L2Control222
 import BusyBeaver.ZFC.RMTransfer
 
 /-!

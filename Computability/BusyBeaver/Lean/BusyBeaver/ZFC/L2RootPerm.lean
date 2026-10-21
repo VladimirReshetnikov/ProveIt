@@ -1,3 +1,4 @@
+import BusyBeaver.ZFC.RMDagIteration
 import BusyBeaver.ZFC.L2AxiomsPerm
 
 /-!
@@ -116,7 +117,7 @@ theorem fetch_run (s : EnumPerm.St) :
   · obtain ⟨v, hv⟩ : ∃ v, s.pl = v + 1 := ⟨s.pl - 1, by omega⟩
     have := fetch_pos (toAS s) v (by simp [toAS, hv])
     apply rn_eq this
-    simp [toAS, EnumPerm.fetch, h, hv]
+    simp [toAS, EnumPerm.fetch, hv]
 
 /-- The selector read after the fetch. -/
 theorem read_run (np pl1 tw ws d h : Nat) {X : AS}
@@ -192,42 +193,9 @@ theorem root_none {s : EnumPerm.St} (h : EnumPerm.enumStep s = none) :
 /-- L2: iterating the program root halts iff the enumerator halts. -/
 theorem iter_iff (s : EnumPerm.St) :
     IterHalts dagPerm (enc (toAS s)) ↔
-      ∃ n s', EnumPerm.run n s = some s' ∧ EnumPerm.enumStep s' = none := by
-  constructor
-  · intro h
-    suffices H : ∀ R, IterHalts dagPerm R → ∀ s, R = enc (toAS s) →
-        ∃ n s', EnumPerm.run n s = some s' ∧ EnumPerm.enumStep s' = none from H _ h s rfl
-    intro R hR
-    induction hR with
-    | halt R R' hrun =>
-        intro s hs
-        subst hs
-        match he : EnumPerm.enumStep s with
-        | none => exact ⟨0, s, rfl, he⟩
-        | some s1 => exact absurd (run_det hrun (root_some he)).1 (by simp)
-    | next R R' hrun _ ih =>
-        intro s hs
-        subst hs
-        match he : EnumPerm.enumStep s with
-        | none =>
-            obtain ⟨R'', h''⟩ := root_none he
-            exact absurd (run_det hrun h'').1 (by simp)
-        | some s1 =>
-            have e := (run_det hrun (root_some he)).2
-            obtain ⟨n, s', h1, h2⟩ := ih s1 e
-            exact ⟨n + 1, s', by simp only [EnumPerm.run, he]; exact h1, h2⟩
-  · rintro ⟨n, s', hrun, hstep⟩
-    induction n generalizing s with
-    | zero =>
-        simp only [EnumPerm.run] at hrun
-        cases hrun
-        obtain ⟨R', h'⟩ := root_none hstep
-        exact IterHalts.halt _ _ h'
-    | succ n ih =>
-        simp only [EnumPerm.run] at hrun
-        split at hrun
-        · rename_i s1 he
-          exact IterHalts.next _ _ (root_some he) (ih s1 hrun)
-        · cases hrun
+      ∃ n s', EnumPerm.run n s = some s' ∧ EnumPerm.enumStep s' = none :=
+  RMDag.iter_halts_iff EnumPerm.enumStep EnumPerm.run (fun s => enc (toAS s))
+    (fun _ => rfl) (fun n s => by cases h : EnumPerm.enumStep s <;> simp only [EnumPerm.run, h])
+    (fun h => root_some h) (fun h => root_none h) s
 
 end SetTheory.BusyBeaver.ZFC.L2Perm

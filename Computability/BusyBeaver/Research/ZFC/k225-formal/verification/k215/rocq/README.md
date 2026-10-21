@@ -4,6 +4,12 @@
 Rocq 9.1.0, OCaml 4.14.2 and rocq-stdlib 9.0.0. The matching `coqchk` recursively
 rechecked `K215F.CorrectDense215` with no `-admit` or `-norec` option.
 
+These are the original full-build receipts at `613f9cf28a`. The
+[subsequent compact-proof check](../simplification/rocq/README.md) recompiles all
+seven affected modules, reruns the four closed endpoint reports, and recursively
+checks the changed dominated-rule module against the preserved baseline. It
+does not claim a second full 237-module replay.
+
 The sparse and dense endpoints each printed exactly two
 `Closed under the global context` reports and no `Axioms:` report. Their final
 statements establish halting iff `StandardZFC ⊢TC ⊥`, and nonhalting iff its
@@ -13,7 +19,7 @@ the source SHA-256 is
 `17af207195179b2508bf91154cd00739374f8862207ca21b9a3cb9098aa6f5ba`.
 Separate Python runtime checks are not premises of these proofs.
 
-- [Live source/object/log audit](actual/actual-review.json): all 237 current sources,
+- [Original source/object/log audit](actual/actual-review.json): all 237 baseline sources,
   exact snapshots, imported objects, compiler commands and output logs agree.
 - Raw endpoint reports: [sparse](actual/K215F.Correct215.log),
   [dense](actual/K215F.CorrectDense215.log).

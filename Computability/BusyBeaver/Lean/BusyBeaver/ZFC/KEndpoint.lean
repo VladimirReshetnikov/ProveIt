@@ -2,7 +2,6 @@ import BusyBeaver.ZFC.KLowerQHyp
 import BusyBeaver.ZFC.KUpper222
 import BusyBeaver.ZFC.KSim
 import BusyBeaver.ZFC.KDenseBridge
-import BusyBeaver.ZFC.Seed222
 
 /-!
 The endpoint composition of the K-family machines, once for all of them.

@@ -1,10 +1,16 @@
 # Serial Lean check of the 215-state endpoint
 
-The fresh Lean check passed: all 204 project modules and both closed-client
+The original fresh Lean check passed: all 204 project modules and both closed-client
 audits compiled. The [final record](actual/final-review.json) binds the exact
-module and dependency sets, current sources, objects, and compiler logs.
+module and dependency sets, baseline sources, objects, and compiler logs.
 The ten audit reports use only `propext`, `Classical.choice`, and `Quot.sound`;
 neither audit has warnings. The project sources retain 34 linter warnings.
+
+The [subsequent simplification check](../simplification/README.md) rebuilds affected
+modules against this pinned baseline and reruns both endpoint audits. Its current
+closure contains 201 project modules and 31 project linter warnings; the audits
+still have zero warnings and only the same three allowed axioms. The historical
+204-module receipts below are unchanged.
 
 The portable driver rebuilds the exact project import closure of
 `BusyBeaver.ZFC.KEndpoint215` from current source, then checks two explicit
@@ -28,7 +34,7 @@ source inventory and toolchain queries.
 
 The driver uses a separate Lake workspace and project object directory; it does
 not load the repository's cached project objects. The shipped Lean core remains
-the compiler trust boundary. The current closure contains 204 project modules
+the compiler trust boundary. The current closure contains 201 project modules
 and only the external `Init` boundary. It checks the exact final module set and
 direct dependency edges, all source bytes, and all recorded object companions.
 

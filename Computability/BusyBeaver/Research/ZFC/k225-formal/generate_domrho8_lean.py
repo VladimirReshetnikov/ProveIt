@@ -6,7 +6,8 @@
 The certificate is Source 149's `theory/dominated_rho8_full_certificate.json` (term_dag_v1:
 a shared term table over implication, truth and variables, and 3,728 proof nodes whose rules
 are a dominated rho8 leaf, the truth leaf, modus ponens, a substitution instance, or modus
-ponens of two substitution instances). It is untrusted: every term becomes a definition
+ponens of two substitution instances). Exact earlier-schema instances are reused and unused dependencies are pruned. The optimizer
+and certificate are untrusted: every retained term becomes a definition
 `tK : (Nat → Nat) → Nat` (a code under a valuation of the variables) and every node a theorem
 `nK : ∀ v, T (tK v)` about an arbitrary predicate `T` closed under the three rules
 (`DomImp`). Lean checks each step by definitional unfolding; a dominated leaf carries the
@@ -20,6 +21,94 @@ src, out = sys.argv[1], sys.argv[2]
 d = json.load(open(src))
 assert d["format"] == "term_dag_v1"
 T, N = d["term_table"], d["nodes"]
+
+
+def reduce_certificate(terms, nodes):
+    """Reuse exact instances of earlier schemas, then retain the root's dependencies.
+
+    This is only proof production: the resulting substitutions, dominated leaves and
+    modus-ponens steps are all emitted below as ordinary Lean proofs.
+    """
+    sizes = []
+    for term in terms:
+        sizes.append(1 + sum(sizes[c] for c in term) if isinstance(term, list) else 1)
+
+    def match(pattern, target, env, seen):
+        if (pattern, target) in seen:
+            return True
+        seen.add((pattern, target))
+        p, t = terms[pattern], terms[target]
+        if isinstance(p, dict):
+            return env.setdefault(p["var"], target) == target
+        if p == "T":
+            return t == "T"
+        return (isinstance(t, list) and match(p[0], t[0], env, seen)
+                and match(p[1], t[1], env, seen))
+
+    schemas, rules = [], []
+    for i, node in enumerate(nodes):
+        for parent in schemas:
+            if sizes[nodes[parent]["term"]] > sizes[node["term"]]:
+                continue
+            env = {}
+            if match(nodes[parent]["term"], node["term"], env, set()):
+                rules.append({"kind": "substitution", "parent": parent, "substitution": env})
+                break
+        else:
+            schemas.append(i)
+            rules.append(node["rule"])
+
+    used_nodes, used_terms = set(), set()
+
+    def visit_node(i):
+        if i in used_nodes:
+            return
+        used_nodes.add(i)
+        for field in ("major", "minor", "parent"):
+            if field in rules[i]:
+                parent = rules[i][field]
+                assert parent < i
+                visit_node(parent)
+
+    def visit_term(i):
+        if i in used_terms:
+            return
+        used_terms.add(i)
+        if isinstance(terms[i], list):
+            for child in terms[i]:
+                assert child < i
+                visit_term(child)
+
+    visit_node(len(nodes) - 1)
+    for i in used_nodes:
+        visit_term(nodes[i]["term"])
+        for field in ("substitution", "major_substitution", "minor_substitution"):
+            for term in rules[i].get(field, {}).values():
+                visit_term(term)
+    # Conversion proofs also use zero and the certificate's named variables.
+    for i, term in enumerate(terms):
+        if term == "T" or isinstance(term, dict):
+            visit_term(i)
+
+    node_ids = {old: new for new, old in enumerate(sorted(used_nodes))}
+    term_ids = {old: new for new, old in enumerate(sorted(used_terms))}
+    reduced_terms = [[term_ids[c] for c in terms[i]] if isinstance(terms[i], list)
+                     else terms[i] for i in sorted(used_terms)]
+    reduced_nodes = []
+    for i in sorted(used_nodes):
+        rule = dict(rules[i])
+        for field in ("major", "minor", "parent"):
+            if field in rule:
+                rule[field] = node_ids[rule[field]]
+        for field in ("substitution", "major_substitution", "minor_substitution"):
+            if field in rule:
+                rule[field] = {v: term_ids[t] for v, t in rule[field].items()}
+        reduced_nodes.append({"id": node_ids[i], "term": term_ids[nodes[i]["term"]], "rule": rule})
+    return reduced_terms, reduced_nodes
+
+
+original_terms, original_nodes = len(T), len(N)
+T, N = reduce_certificate(T, N)
 
 
 def kind(i):
@@ -96,8 +185,9 @@ contains every instance `rho8 a b c u = ((c → u) → a) → ((a → c) → (b 
 argument is numerically at most its first (`DomImp`), `rho8_all` derives every instance.
 Codes need not decode: the argument uses only that an implication code dominates both inputs.
 
-The derivation is Source 149's certificate (`theory/dominated_rho8_full_certificate.json`,
-3,728 nodes over 5,160 shared terms; I, Peirce and K first, then B and S, then rho8).
+The derivation reduces Source 149's certificate by exact substitution into earlier theorem
+schemas, then prunes unused dependencies. Every retained step and substitution is checked by
+Lean; the optimizer is not trusted. See the generator for the finite input and reduction.
 Generated by `Computability/BusyBeaver/Research/ZFC/k225-formal/generate_domrho8_lean.py`:
 the term `tK` is a code under a valuation `v` of the certificate's nine variables, and node
 `nK` derives it for every valuation; substitution instances re-instantiate the valuation.
@@ -268,7 +358,8 @@ for k, node in enumerate(N):
 
 for i, key in enumerate(X):
     body = "0" if key[0] == "T" else f"v {key[1]}" if key[0] == "v" else f"wim (t{key[1]} v) (t{key[2]} v)"
-    w(f"def t{i} (v : Nat → Nat) : Nat := {body}")
+    binder = "_v" if key[0] == "T" else "v"
+    w(f"def t{i} ({binder} : Nat → Nat) : Nat := {body}")
 w("")
 w("theorem wim00 : wim 0 0 = 0 := by simp [wim, P, Cantor.toNat, Cantor.tri]")
 w("")
@@ -313,5 +404,6 @@ end
 end SetTheory.BusyBeaver.ZFC.DomRho8
 """)
 open(out, "w", encoding="utf-8", newline="\n").write("\n".join(L))
+print("reduced", original_nodes, "proof nodes to", len(N), "and", original_terms, "terms to", len(T))
 print("wrote", out, len(T), "certificate terms,", len(X) - len(T), "uncollapsed,",
       len(CL), "conversions,", len(N), "nodes")

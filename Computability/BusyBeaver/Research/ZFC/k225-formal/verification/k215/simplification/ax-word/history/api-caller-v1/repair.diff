@@ -1,0 +1,18 @@
+--- Audit-v1.lean
++++ Audit.lean
+@@ -1,7 +1,7 @@
+ import BusyBeaver.ZFC.L2AxiomsPerm
+ 
+-open SetTheory.BusyBeaver.ZFC
+-open L2Perm L2K (AS Clean)
++namespace SetTheory.BusyBeaver.ZFC.L2Perm
++open L2K (AS Clean)
+ 
+ example (st : AS) (hc : Clean st) : Rn (.node 236) st (f236 st) := l236 st hc
+ example (st : AS) (hc : Clean st) : Clean (f236 st) := c236 st hc
+@@ -17,3 +17,5 @@
+ #print axioms l236
+ #print axioms c236
+ #print axioms ax_eval
++
++end SetTheory.BusyBeaver.ZFC.L2Perm
