@@ -1,14 +1,14 @@
 (** Kernel-checked equivalence of the 215's source with dagPerm, for every natural-valued
-    register file. The normalized certificate compares pointers modulo their implicit false
-    suffix (1,426 entries) and is checked in one direction; the mirror lemma gives the other. *)
+    register file. *)
 From Coq Require Import List.
-From K230 Require Import RM.
+From K230 Require Import RM Prog230.
 From K230P Require Import Bisim230.
-From K215F Require Import Prog215 DagPerm NormalizedBisim NormalizedCert215.
+From K215F Require Import Prog215 OffsetBisim230 Cert215Offsets DagPerm.
 Import ListNotations.
-Lemma certificate_normalized :
-  NCheck.check (ptree p215) (ptree dagPerm) normalized_certificate = true.
-Proof. vm_compute. reflexivity. Qed.
+Lemma certificate_forward : ocheck (ptree p215) (ptree dagPerm) Cert215 = true.
+Proof. Time vm_compute. reflexivity. Qed.
+Lemma certificate_backward : ocheck (ptree dagPerm) (ptree p215) (omirror Cert215) = true.
+Proof. Time vm_compute. reflexivity. Qed.
 Theorem p215_dagPerm R : rm_halts p215 ([],R) <-> rm_halts dagPerm ([],R).
-Proof. exact (NCheck.check_one_sided_iff p215 dagPerm normalized_certificate certificate_normalized R). Qed.
+Proof. exact (ocheck_iff p215 dagPerm Cert215 certificate_forward certificate_backward R). Qed.
 Print Assumptions p215_dagPerm.

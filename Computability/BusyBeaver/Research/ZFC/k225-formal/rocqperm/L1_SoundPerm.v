@@ -1,14 +1,10 @@
 (** * L1_SoundPerm: if the 215's enumerator halts, then [thm222 1].
 
     As L1_Sound222: the current formula, the cache and every entry of the stack stream are
-    theorems (stream entries past the end read as 0 = truth). Every command preserves this,
-    and only NIP halts, on the cached code 1. *)
+    theorems (stream entries past the end read as 0 = truth). *)
 From Coq Require Import Arith Lia Bool.
 From K230L Require Import Codes230.
 From NS Require Import Codes222 EnumPerm Thm222.
-
-(** The proof uses constructor lemmas, never numeric expansion of formula codes. *)
-Local Opaque P wim wal wex weq wel.
 
 Definition popn (k w : nat) : nat := Nat.iter k (fun w => snd (unP w)) w.
 Definition goodstack (w : nat) : Prop := forall k, thm222 (fst (unP (popn k w))).
@@ -37,11 +33,10 @@ Proof.
   intro k. rewrite E. exact W_true.
 Qed.
 
-(** the working registers hold theorems *)
-Definition InvT (q : tup) : Prop :=
-  let '(t, w, _, hh) := q in thm222 t /\ thm222 hh /\ goodstack w.
+Definition Inv (s : state) : Prop := thm222 (tw s) /\ thm222 (h s) /\ goodstack (ws s).
 
-Definition Inv (s : state) : Prop := InvT (tupof s).
+Lemma Inv_s0 : Inv s0.
+Proof. repeat split; [exact W_true | exact W_true | exact good_0]. Qed.
 
 Lemma gate_thm a b c : thm222 (gate a b c).
 Proof.
@@ -50,40 +45,29 @@ Proof.
   apply Nat.eqb_neq in E1, E2. now apply W_bundle.
 Qed.
 
-Lemma xstep_inv k q q' : InvT q -> xstep k q = Some q' -> InvT q'.
-Proof.
-  destruct q as [[[t w] dd] hh]. intros [Ht [Hh Hw]].
-  destruct k as [| |x|c x y]; cbn [xstep].
-  - destruct (Nat.eqb hh 1); [discriminate|]. destruct (good_pop _ Hw) as [H1 H2].
-    intro E; injection E as <-. cbn [InvT]. now repeat split.
-  - intro E; injection E as <-. cbn [InvT]. repeat split; [exact Hh | exact Hh | now apply good_push].
-  - destruct (Nat.eqb (wim t (dd + x)) hh) eqn:E; intro H; injection H as <-; cbn [InvT].
-    + apply Nat.eqb_eq in E. repeat split.
-      * apply (W_mp t); [exact Ht | now rewrite E].
-      * exact W_true.
-      * apply good_push; [exact W_true | exact Hw].
-    + repeat split; [exact W_true | exact W_true | exact Hw].
-  - intro E; injection E as <-. cbn [InvT]. repeat split.
-    + apply gate_thm.
-    + exact W_true.
-    + unfold ax_stack. repeat apply good_push; try assumption; constructor; assumption.
-Qed.
-
-Lemma xstep_none k q : InvT q -> xstep k q = None -> thm222 1.
-Proof.
-  destruct q as [[[t w] dd] hh]. intros [_ [Hh _]].
-  destruct k as [| |x|c x y]; cbn [xstep]; try discriminate.
-  destruct (Nat.eqb hh 1) eqn:E; [|discriminate].
-  intros _. apply Nat.eqb_eq in E. now rewrite <- E.
-Qed.
-
 Lemma Inv_step s s' : Inv s -> enum_step s = Some s' -> Inv s'.
 Proof.
-  unfold enum_step, Inv. intros Hs.
+  intros [Ht [Hh Hw]]. unfold enum_step.
   destruct (if Nat.eqb (pl s) 0 then _ else _) as [pl1 np1].
-  destruct (decode pl1) as [k r].
-  destruct (xstep k (tupof s)) as [[[[t w] dd] hh]|] eqn:X; [|discriminate].
-  intro E; injection E as <-. exact (xstep_inv k _ _ Hs X).
+  destruct (unP pl1) as [ac pl2].
+  destruct ac as [|[|[|c]]].
+  - destruct (Nat.eqb (h s) 1); [discriminate|].
+    destruct (good_pop _ Hw) as [H1 H2]. destruct (unP (ws s)) as [h1 w1] eqn:E.
+    intro H; injection H as <-. repeat split; cbn [tw h ws]; [exact Ht | exact H1 | exact H2].
+  - intro H; injection H as <-. repeat split; cbn [tw h ws]; [exact Hh | exact Hh | now apply good_push].
+  - destruct (unP pl2) as [x pl3].
+    destruct (Nat.eqb (wim (tw s) (d s + x)) (h s)) eqn:E; intro H; injection H as <-.
+    + apply Nat.eqb_eq in E. repeat split; cbn [tw h ws].
+      * apply (W_mp (tw s)); [exact Ht | now rewrite E].
+      * exact W_true.
+      * apply good_push; [exact W_true | exact Hw].
+    + repeat split; cbn [tw h ws]; [exact W_true | exact W_true | exact Hw].
+  - destruct (unP pl2) as [y pl3]. destruct (unP pl3) as [x pl4].
+    intro H; injection H as <-. repeat split; cbn [tw h ws].
+    + apply gate_thm.
+    + exact W_true.
+    + unfold ax_stack.
+      repeat apply good_push; try assumption; constructor; assumption.
 Qed.
 
 Lemma Inv_run n s s' : Inv s -> run n s = Some s' -> Inv s'.
@@ -96,9 +80,18 @@ Qed.
 
 Lemma halt_step s : Inv s -> enum_step s = None -> thm222 1.
 Proof.
-  unfold enum_step, Inv. intros Hs.
+  intros [Ht [Hh Hw]]. unfold enum_step.
   destruct (if Nat.eqb (pl s) 0 then _ else _) as [pl1 np1].
-  destruct (decode pl1) as [k r].
-  destruct (xstep k (tupof s)) as [[[[t w] dd] hh]|] eqn:X; [discriminate|].
-  intros _. exact (xstep_none k _ Hs X).
+  destruct (unP pl1) as [ac pl2].
+  destruct ac as [|[|[|c]]]; try discriminate.
+  - destruct (Nat.eqb (h s) 1) eqn:E.
+    + intros _. apply Nat.eqb_eq in E. now rewrite <- E.
+    + destruct (unP (ws s)); discriminate.
+  - destruct (unP pl2). discriminate.
+  - destruct (unP pl2) as [y pl3]. destruct (unP pl3). discriminate.
+Qed.
+
+Theorem enum_sound : enum_halts -> thm222 1.
+Proof.
+  intros [n [s [H1 H2]]]. exact (halt_step s (Inv_run n s0 s Inv_s0 H1) H2).
 Qed.

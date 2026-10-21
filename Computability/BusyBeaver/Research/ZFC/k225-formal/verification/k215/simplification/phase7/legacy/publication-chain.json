@@ -1,0 +1,76 @@
+{
+  "status": "PASS_READ_ONLY_PUBLICATION_CHAIN",
+  "scope": "Actual live review, capture, and saved current-source review; no compiler invocation or canonical mutation. Return codes observed from the three completed exec sessions; no duration assertion.",
+  "result_sha256": "b02f58cfc04f7e5653c44a5b3c95455ede465f7ef8f131e44a7be47af66967bd",
+  "helper_freeze_sha256": "e1a74c57840e16c44a9c8d560cab15aea17bb8fe9f4caf84780480c421db817d",
+  "helper_peer_sha256": "754329dafb5d5758e820bdfe6bff0f65ab2088434be3bdbb6acf3fa5ac9dcd31",
+  "steps": [
+    {
+      "name": "live",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/k215-phase7-legacy-publication/review.py",
+        "--run",
+        "/tmp/k215-phase7-legacy/run1",
+        "--preparation",
+        "/tmp/k215-phase7-legacy",
+        "--repo",
+        "/home/codex/.codex/worktrees/ec20/Proofs",
+        "--stdout",
+        "/tmp/k215-phase7-legacy/run1.stdout",
+        "--output",
+        "/tmp/k215-phase7-legacy-publication/live-review-run1.json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "ded8fa9850f0d4d5c69096cfe7a978875b410fbe4c28e4411fe8c3c1c723efd1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "publish",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/k215-phase7-legacy-publication/publish.py",
+        "--run",
+        "/tmp/k215-phase7-legacy/run1",
+        "--preparation",
+        "/tmp/k215-phase7-legacy",
+        "--repo",
+        "/home/codex/.codex/worktrees/ec20/Proofs",
+        "--stdout",
+        "/tmp/k215-phase7-legacy/run1.stdout",
+        "--live-review",
+        "/tmp/k215-phase7-legacy-publication/live-review-run1.json",
+        "--out",
+        "/tmp/k215-phase7-legacy-publication/packet"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "baf0828cf468809d5a15af714e4b55a7550991a93dea1b09b545382b6391b8f1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "saved",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/k215-phase7-legacy-publication/packet/review_saved.py",
+        "--packet",
+        "/tmp/k215-phase7-legacy-publication/packet",
+        "--basis-repo",
+        "/home/codex/.codex/worktrees/ec20/Proofs",
+        "--repo",
+        "/home/codex/.codex/worktrees/ec20/Proofs",
+        "--output",
+        "/tmp/k215-phase7-legacy-publication/saved-review-run1.json"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "df2987bf602aa3323eaf13a70c5ed62bd8fbb9df920ae1ccdde36a75269948c3",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "outputs": {
+    "live-review-run1.json": "ded8fa9850f0d4d5c69096cfe7a978875b410fbe4c28e4411fe8c3c1c723efd1",
+    "saved-review-run1.json": "df2987bf602aa3323eaf13a70c5ed62bd8fbb9df920ae1ccdde36a75269948c3"
+  }
+}

@@ -3,10 +3,10 @@
 **Both proof lanes pass** (2026-10-21), for the same literal machine.
 
 The fresh full builds below were recorded at `613f9cf28a`. Subsequent
-[proof simplifications](simplification/phase6/README.md) also pass: affected modules were
+[proof simplifications](simplification/phase7/README.md) also pass: affected modules were
 rebuilt and both endpoint assumption audits rerun with explicit predecessor bindings.
-The current Lean endpoint closure contains 187 project modules: 35 freshly
-compiled and 152 reused from phase five. Both audits have zero warnings and
+The current Lean endpoint closure contains 187 project modules: two freshly
+compiled and 185 reused from phase six. Both audits have zero warnings and
 ten reports using only the same three standard axioms; the project logs retain
 22 linter warnings. This is an incremental checkpoint, not a second full fresh build.
 

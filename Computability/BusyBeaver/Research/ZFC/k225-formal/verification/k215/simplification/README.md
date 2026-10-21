@@ -1,14 +1,14 @@
 # Shorter checked K215 proofs
 
 The literal 215-state machine and its halting and nonhalting endpoint statements
-are unchanged. The [latest Lean check](phase6/README.md) validates the 187-module
+are unchanged. The [latest Lean check](phase7/README.md) validates the 187-module
 primary closure and both typed endpoint clients, using hash-bound predecessor
 objects for unchanged modules. All ten endpoint reports use only
 `propext`, `Classical.choice`, and `Quot.sound`; both audits have zero warnings.
 
 | Proof source | Original | Current |
 | --- | ---: | ---: |
-| Lean dominated implication | 689,857 bytes | 30,114 bytes |
+| Lean dominated implication | 689,857 bytes | 26,770 bytes |
 | Lean AX routine | 202,222 bytes | 7,563 bytes |
 | Lean source data, including stable program | 653,569 bytes | 368,995 bytes |
 | Lean site-coverage facade | 107,243 bytes | 14,956 bytes |
@@ -29,12 +29,14 @@ stable program data and transition-lookup transport, for 187 modules. It checks
 1,426 normalized entries rather than the earlier ordinary 2,240, preserving the
 512-step decoder and all 4,751 leaves. The full source partition is 375,335 bytes
 in 19 files; its additional generic normalized checker is 6,365 bytes.
-Four root interfaces and the retained offset checker passed a separate phase-five
-refresh. The [phase-six continuity review](phase6/legacy-continuity/README.md)
-rechecks their unchanged 45-module audit dependency set and the 15 retained legacy
-modules, without another legacy compilation or audit.
+Phase seven replaces the dominated-implication deduction theorem with two
+pointwise lifts and removes the unused distribution derivation. Its source drops
+from 517 to 454 lines. Four root interfaces and the retained offset checker pass
+a [fresh five-client audit](phase7/legacy/README.md) against all 202 providers;
+the 15 legacy modules retain their exact direct-dependency bindings.
 
-The [latest checkpoint](phase6/README.md),
+The [latest checkpoint](phase7/README.md),
+[sixth checkpoint](phase6/README.md),
 [fifth checkpoint](phase5/README.md),
 [fourth checkpoint](phase4/README.md),
 [third checkpoint](phase3/README.md),

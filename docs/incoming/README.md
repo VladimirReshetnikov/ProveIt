@@ -12,18 +12,25 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
-## Current queue after upstream batches 209–210
+## Current Lean proof checkpoint
 
-`K215_Guarded_Proof_Core_and_Refinements_2026-10-21.zip` and
-`K215_Proof_Core_2026-10-21.zip` are new arrivals awaiting intake.
-Upstream placements `32d378522c` and `05eaa1d466` extracted and retired the
-six packets in batches 209–210, including the earlier automatic-certificate
-and quotient-detachment arrivals. Their independent mathematical reconciliation
+The [seventh simplification checkpoint](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/README.md)
+checks the exact K215 endpoint over 187 project modules (two fresh, 185 reused),
+both unchanged endpoint clients and a fresh five-client legacy audit. It adopts
+the independently reviewed pointwise-implication component; the report intake
+and reconciliation statuses below remain separate.
+
+## Current queue after upstream batch 211
+
+There are no loose ZIPs in this directory at this checkpoint. Upstream
+placements `32d378522c`, `05eaa1d466` and `d7105dd57d` extracted and retired
+the ten packets in batches 209–211, including the guarded-core and proof-core
+arrivals formerly listed here. Their independent mathematical reconciliation
 remains pending. The numbered host coverage below remains through Source 178;
 Sources 165–166 also retain their earlier pending follow-ups.
 
-The [origin merge boundary](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/upstream-merge/README.md)
-retains the checked phase-six proof sources while preserving the new proposals.
+The [phase-seven origin merge boundary](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/upstream-merge/README.md)
+keeps the completed proof sources and records the next generic-core proposal.
 Queue-clear statements, proof-status paragraphs and ledger rows below retain
 their earlier checkpoints.
 

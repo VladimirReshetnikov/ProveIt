@@ -1,11 +1,6 @@
 #!/usr/bin/env python3
 """Generate DomRho8.lean: dominated rho8 instances derive every rho8 instance.
 
-Superseded for the maintained Lean proof: DomRho8.lean is now a compatibility adapter over the
-generic DominatedImplication.lean, produced by
-verification/k215/simplification/proposals/proof-core/generation/generation/regenerate.py.
-This script still renders the earlier single-module proof from the same certificate.
-
   python generate_domrho8_lean.py CERTIFICATE_JSON OUT_LEAN [--plan PLAN | --no-plan | --templates CD230_V]
 
 The exact Source149 input uses a guarded lemma hierarchy by default. Its pinned CD230
@@ -33,19 +28,16 @@ GUARDED_HEAD = """import BusyBeaver.ZFC.Code254
 
 /-!
 Dominated rho8 derives unrestricted rho8, for arbitrary natural codes.
+Pointwise lifting follows the proposal in commit b07002a86b.
 
-The proof has three layers. A 61-lemma bootstrap from Source 149 gives identity,
-weakening, Peirce and the implication-transport lemma. The original CD230 lemma
-hierarchy then derives composition and distribution. We retain 81 of its 107
-schemas; eight carry one explicit numerical dominance hypothesis. Keeping these
-hypotheses avoids expanding each schema at every substitution instance.
-Finally a small deduction theorem and Peirce's law give the unrestricted row.
+This revision retains the current upstream bootstrap and guarded implication
+schemas only through cd99. The final argument uses a pointwise implication
+lifting lemma twice. It needs neither the auxiliary syntactic Proof relation
+nor its deduction theorem nor the distribution derivation cd100 through cd106.
 
-The bootstrap is Source 149's original nodes0..60; the CD230 templates are its
-pinned adaptation of the upstream condensed-detachment derivation. Every emitted
-step is an ordinary Lean proof. The source producer is untrusted. The only code
-normalization is the proved identity `wim 0 0 = 0`; numerical injectivity,
-formula decoding and ZFC consistency are not assumptions.
+The exact numerical constructors, the dominated hypothesis, and the public
+rho8_all statement are unchanged. All inherited derivation steps below retain
+their attribution to ProveIt, Source 149, and the CD230 templates.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.DomRho8
@@ -82,64 +74,32 @@ end
 section
 variable {T : Nat → Prop} (h : DomImp T)
 include h
-private theorem basisI (a : Nat) : T (wim a a) := b17 h a
 private theorem basisK (a b : Nat) : T (wim a (wim b a)) := b60 h a b
-private theorem basisP (a b : Nat) : T (wim (wim (wim a b) a) a) := b25 h a b
 private theorem basisJ (a b c : Nat) : T (wim (wim a b) (wim (wim (wim a c) a) b)) := b57 h a b c
 
 """
 
 GUARDED_TAIL = """theorem composition (a b c : Nat) : T (wim (wim a b) (wim (wim b c) (wim a c))) := cd91 h a b c
-theorem distribution (a b c : Nat) : T (wim (wim a (wim b c)) (wim (wim a b) (wim a c))) := cd106 h a b c
-/-! Deduction is used only after deriving K and S from the dominated rows. -/
-private inductive Proof (T : Nat → Prop) : List Nat → Nat → Prop
-  | ax {G a} : T a → Proof T G a
-  | hyp {G a} : a ∈ G → Proof T G a
-  | mp {G a b} : Proof T G (wim a b) → Proof T G a → Proof T G b
 
-private theorem proof_sound {G : List Nat} {a : Nat} (d : Proof T G a)
-    (hG : ∀ x, x ∈ G → T x) : T a := by
-  induction d with
-  | ax ht => exact ht
-  | hyp hm => exact hG _ hm
-  | mp _ _ ih1 ih2 => exact h.mp ih1 ih2
+/-- Lift a proved implication pointwise under one arbitrary antecedent.
+This uses cd99 and cd88; the orientation of composition alone would not suffice. -/
+theorem lift_right {a b : Nat} (hab : T (wim a b)) (x : Nat) :
+    T (wim (wim x a) (wim x b)) :=
+  h.mp (cd88 h a x b) (h.mp (cd99 h a b x) hab)
 
-private theorem discharge_aux {a : Nat} {G' : List Nat} {b : Nat}
-    (d : Proof T G' b) : ∀ G : List Nat, G' = a :: G → Proof T G (wim a b) := by
-  induction d with
-  | ax hb => intro G _; exact .mp (.ax (basisK h _ a)) (.ax hb)
-  | hyp hm =>
-      intro G hG
-      subst hG
-      cases List.mem_cons.mp hm with
-      | inl he => subst he; exact .ax (basisI h _)
-      | inr hin => exact .mp (.ax (basisK h _ a)) (.hyp hin)
-  | mp _ _ ih1 ih2 =>
-      intro G hG
-      exact .mp (.mp (.ax (distribution h _ _ _)) (ih1 G hG)) (ih2 G hG)
-
-private theorem discharge {G : List Nat} {a b : Nat}
-    (d : Proof T (a :: G) b) : Proof T G (wim a b) :=
-  discharge_aux h d G rfl
-
-/-- Every unrestricted instance follows by deduction and Peirce's law. -/
+/-- Every unrestricted rho8 row follows without distribution or a deduction theorem. -/
 theorem rho8_all (a b c u : Nat) : T (Code254.rho8 a b c u) := by
+  let q := wim (wim c u) c
   let f := wim (wim c u) a
   let g := wim a c
-  have hc : Proof T [wim c u, b, g, f] c :=
-    .mp (.hyp (List.mem_cons_of_mem _ (List.mem_cons_of_mem _ (List.mem_cons_self ..))))
-      (.mp (.hyp (List.mem_cons_of_mem _ (List.mem_cons_of_mem _ (List.mem_cons_of_mem _ (List.mem_cons_self ..)))))
-        (.hyp (List.mem_cons_self ..)))
-  have closedC : Proof T [b, g, f] c :=
-    .mp (.ax (basisP h c u)) (discharge h hc)
-  have result : Proof T [] (Code254.rho8 a b c u) :=
-    discharge h (discharge h (discharge h closedC))
-  exact proof_sound h result (by intro x hx; cases hx)
+  have hqd : T (wim q (wim b c)) :=
+    h.mp (basisJ h c (wim b c) u) (basisK h c b)
+  exact h.mp (lift_right h (lift_right h hqd g) f) (composition h (wim c u) a c)
 
 end
 #print axioms rho8_all
 #print axioms composition
-#print axioms distribution
+#print axioms lift_right
 end SetTheory.BusyBeaver.ZFC.DomRho8
 """
 
@@ -152,7 +112,12 @@ def render_guarded(certificate_bytes, template_bytes):
     from functools import cache
     import re
     assert hashlib.sha256(certificate_bytes).hexdigest() == "3cf18a5fe9f187b50b79d97b84535ce9bf776305728b0cdfe17285e94f028452"
-    assert hashlib.sha256(template_bytes).hexdigest() == "c788460c8dd0f4dda4440cae4595d73723223b385825d18df2bf94b52764d087"
+    # These exact LF and CRLF inputs have the same reviewed template text.
+    # Preserve their bytes; reject every other input before rendering.
+    assert hashlib.sha256(template_bytes).hexdigest() in {
+        "591da0f7ddbc0cfcebde16aa439a9e6ec5c0a1049ab5bcf5cb90662fdf1b5f65",
+        "c788460c8dd0f4dda4440cae4595d73723223b385825d18df2bf94b52764d087",
+    }
     data = json.loads(certificate_bytes)
     terms, nodes = data["term_table"], data["nodes"][:61]
     assert data["format"] == "term_dag_v1"
@@ -318,7 +283,7 @@ def render_guarded(certificate_bytes, template_bytes):
             instantiated={(subst(u,env),subst(a,env)) for u,a in guards(j)}
             return {(u,a) for u,a in instantiated if u!=truth and not contains(a,u)}
         return frozenset(walk(body))
-    assert not guards(91) and not guards(106)
+    assert all(not guards(n) for n in (88, 91, 99))
     assert max(map(lambda n:len(guards(n)),rows)) == 1
 
     used=set()
@@ -330,8 +295,9 @@ def render_guarded(certificate_bytes, template_bytes):
             if t[0]=="T_mp":walk(t[3]);walk(t[4])
             else:use(int(t[0][3:]))
         walk(rows[n][2])
-    use(91);use(106)
-    assert 91 in used and 106 in used
+    for root in (88, 91, 99):
+        use(root)
+    assert {88, 91, 99} <= used
 
     def bound(u,a,available):
         if u==truth:return "(Nat.zero_le _)"
@@ -405,13 +371,7 @@ def render_guarded(certificate_bytes, template_bytes):
             retain(parent)
     for i in map(int, re.findall(r"\bb(\d+)\b", GUARDED_MIDDLE + "\n".join(lemmas))):
         retain(i)
-    header = GUARDED_HEAD.replace("A 61-lemma bootstrap", "A " + str(len(keep)) + "-lemma bootstrap")
-    header = header.replace("We retain 81 of its 107\nschemas; eight carry", "We retain " +
-                            str(len(lemmas)) + " of its 107\nschemas; " +
-                            str(sum(bool(guards(n)) for n in used if n not in reused)) + " carry")
-    header = header.replace("The bootstrap is Source 149's original nodes0..60;",
-                            "The bootstrap shares and prunes Source 149's original nodes0..60;")
-    header = header.replace("Every emitted\nstep is", "Duplicate template conclusions reuse bootstrap lemmas. Every emitted\nstep is")
+    header = GUARDED_HEAD
     print("retained bootstrap", len(keep), "CD templates", len(lemmas),
           "reused template conclusions", len(used & reused.keys()))
     return header+"\n".join(bootstrap[i] for i in sorted(keep))+GUARDED_MIDDLE+"\n".join(lemmas)+"\n"+GUARDED_TAIL
@@ -434,7 +394,7 @@ if not args.plan and not args.no_plan and hashlib.sha256(raw).hexdigest() == ori
     template_path = args.templates or (Path(__file__).resolve().parents[5] /
         "SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/149-dom-theory-ev-CD230.v")
     out.write_text(render_guarded(raw, template_path.read_bytes()), encoding="utf-8", newline="\n")
-    print("wrote shared guarded hierarchy and deduction")
+    print("wrote shared guarded hierarchy and pointwise lifting")
     raise SystemExit(0)
 if args.templates:
     parser.error("--templates requires the exact original Source149 certificate")
