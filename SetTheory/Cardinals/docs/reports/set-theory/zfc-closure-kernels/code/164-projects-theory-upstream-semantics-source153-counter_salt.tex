@@ -1,0 +1,243 @@
+\section{A sound use of an uncleared counter: transfer the residual into the parameter}
+\label{sec:dirty-counter-salt}
+
+This section distinguishes three different proposals.  Replacing the four
+equality tests by a comparator which leaves either scratch register dirty
+is unsafe.  Leaving only register~6 dirty avoids a forged cache, but it
+still corrupts the first freshness test and the proof enumeration.  A
+repaired variant has an ordinary, unconditional correctness argument:
+clear register~6 between the two freshness tests, and transfer its value
+into the additive parameter register~4 at the start of every command.
+The latter transfer deliberately changes the enumerated commands' effective
+parameters.  The resulting proof search is nevertheless sound and complete.
+The measured repaired source has 208 DAG nodes; this is a semantic result,
+not a claim of a machine with at most 218 states.
+
+\subsection{The asymmetric comparator and its exact residual}
+
+Write $D_i$ for decrement, $I_i$ for increment, $C_j$ for continue through
+$j$ right ancestors, and $B_j$ for break through $j$ left ancestors, with
+the same source-tree conventions as the K219 report.  The asymmetric
+comparator found in the independent encoding search is
+\[
+ E_a=\bigl((D_5,((D_6,C_2),(I_6,(D_5,C_1)))),(D_6,B_1)\bigr).
+\]
+For inputs $(r_5,r_6)=(u,v)$ it terminates, preserves every other register,
+and has the following contract:
+\[
+\begin{array}{c|c|c}
+\text{condition}&\text{outcome}&(r_5,r_6)\\\hline
+u=v&\mathrm{Normal}&(0,0)\\
+u>v&\mathrm{Break}_1&(0,0)\\
+u<v&\mathrm{Break}_1&(0,v-u-1).
+\end{array}
+\]
+To prove the contract, cancel one unit from each register while both are
+positive.  If register~6 becomes zero first, the $I_6$ branch installs one
+unit in register~6 and clears register~5; the final $D_6$ consumes that
+unit and $B_1$ reports inequality.  If register~5 becomes zero first,
+the final $D_6$ either reports equality at zero or leaves the stated
+positive-side residual.  Induction on $u+v$ proves termination.
+
+At the NIP test the second input is exactly~1.  Hence
+$\max(1-u-1,0)=0$, and this comparator is an exact clean replacement at
+that call site for every cache value.
+
+The two AX tests compare $(b,c)$ and $(a,c)$ in that order.  Without a
+repair, the second pair of inputs becomes
+\[
+ (a,\ c+\max(c-b-1,0)).
+\]
+For example, $(a,b,c)=(2,0,2)$ first leaves a residual~1, then compares
+$(2,3)$.  Both comparisons report inequality and the final scratch is
+clean, so the unmodified caller admits the prohibited bundle
+$\operatorname{bundle}(2,0,2)$.  This is a concrete incorrect gate,
+not merely a missing scratch invariant.
+
+For comparison, the more aggressive comparator that may leave register~5
+dirty has a second, direct defect.  Start the AX gate with
+$(a,b,c)=(3,0,1)$ and clean scratch registers.  Its first comparison
+$(0,1)$ leaves $(r_5,r_6)=(0,0)$, and its second comparison $(3,1)$ leaves
+$(r_5,r_6)=(1,0)$.  Register~5 is the cache tested by NIP.  An immediately
+following NIP therefore halts without a cached proof of code~1.  This is
+an exact source-command counterexample to the inherited soundness
+invariant.  It does not by itself prove that the particular command
+sequence is reached by that variant from its blank-tape initialization.
+
+\subsection{Why leaving the residual in the input reader is insufficient}
+
+Let $T(d)=d(d+1)/2$ and use the existing Cantor pairing
+$P(a,b)=T(a+b)+b$.  The source unpairing loop, entered on a stream $n$
+with register~6 equal to $d$ and register~7 zero, returns
+\[
+ \operatorname{unP}(n+T(d)).
+\]
+Indeed its internal pair starts at $(d,0)$, whose Cantor code is $T(d)$,
+and each consumed stream unit advances that code by one.  Its returned
+tail is still at most $n$: that tail starts at zero, increases by at most
+one per unit, and is occasionally reset to zero.
+
+Thus, while the proof stream is nonempty, the residual merely changes
+which natural command fields are read.  At an empty stream, however, the
+counter-reloading loop copies the next-proof counter $N$ into register~6
+additively.  It reads candidate $N$ but increments the next-proof counter
+to $N+d+1$.  Candidate numbers can therefore be skipped.  The original
+fairness theorem does not apply to this proposal.
+
+\subsection{The repaired enumerator}
+
+Make exactly these source changes:
+\begin{enumerate}
+\item Use $E_a$ at all four equality call sites.
+\item Clear register~6 between the two AX comparisons, before copying the
+saved $c$ into register~6 for the second comparison.
+\item At the root of every command iteration, execute the existing
+transfer $6\mathbin{\to}4$, namely $(D_6,(I_4,C_2))$.
+\end{enumerate}
+The third operation preserves the proof stream, next-proof counter,
+cache, current formula, and formula stack.  It only adds the residual
+to the free, additive parameter.  Consequently every command is decoded
+by the original clean reader and the next-proof counter increments by
+exactly one.
+
+At boundaries immediately after this transfer, the altered abstract
+machine has the original tuple $(t,w,d,h)$.  Its only semantic changes are
+the following updates to $d$:
+\[
+\begin{array}{c|c}
+\text{command case}&\text{new parameter value}\\\hline
+\mathrm{AX}(c,x,y,u),\ a=d+x
+ &\max(c-a-1,0)\\
+\text{failed }\mathrm{MP}(x),\ a=d+x
+ &a+\max(I(t,a)-h-1,0).
+\end{array}
+\]
+Successful MP, NIP, and DROP have their original behavior.  AX still
+emits exactly the original logical rows and the exactly gated original
+bundle, and clears its cache.  Failed MP still emits truth code~0 and
+clears its cache.  Since $d$ is an arbitrary natural parameter, induction
+on commands proves the original theorem-valued stack/cache invariant.
+NIP therefore halts only on a derivation of code~1.
+
+\subsection{An explicit completeness repair}
+
+The following proof-compiler changes establish completeness; they do not
+need any new source instructions.  Write $\mathrm{AX}_0$ for the command
+with $c=x=y=u=0$.  When entered with cache zero, it has $b=c=0$, so the
+bundle is suppressed, its final register~6 residual is zero, and its
+parameter and cache are both zero.  As in K219, it pushes the old current
+formula, one generalization, and eight logical rows.
+
+First replace the compiler's DISCARD block by
+\[
+ \mathrm{DISCARD}_a
+   =[\mathrm{MP}(1),\mathrm{AX}_0]\;\mathbin{+\!+}\;
+     \mathrm{NIP}^{10}.
+\]
+It maps $(t,w,d,0)$ to $(0,w,0,0)$ for every natural $d$.
+The first MP fails because $I(t,d+1)>0$, whereas the cache is zero.
+Its arbitrary residual is absorbed into $d$ before $\mathrm{AX}_0$;
+that command then resets the parameter.  The ten NIPs remove the eight
+rows, the generalization, and the old current formula~0.
+
+Define a parameter reset that preserves the current formula and stack:
+\[
+ \mathrm{RESET}_a
+  =[\mathrm{AX}_0]\;\mathbin{+\!+}\;
+   \mathrm{NIP}^{10}\;\mathbin{+\!+}\;
+   [\mathrm{DROP},\mathrm{NIP}].
+\]
+For every $(t,w,d,0)$ it either halts (when the restored cache is~1) or
+ends in $(t,w,0,0)$.  After the ten NIPs the current formula is~0 and
+the cache is $t$.  DROP restores $t$ while pushing~0, and the final NIP
+either recognizes $t=1$ or pops that~0 into the cache.
+
+Use $\mathrm{DISCARD}_a$ in every axiom-leaf block and append
+$\mathrm{RESET}_a$ after the ordinary selection of the desired emitted
+row or bundle.  The selected formula, underlying stack, zero parameter,
+and zero cache then satisfy exactly the old block contract (with early
+halting allowed).  The old GEN construction already calls AX with
+$a=c$, so its residual is zero.  The successful MP construction also
+uses $a=c$ in its following AX reset.  Those two constructions therefore
+continue to satisfy their old contracts once their premise blocks have
+been replaced.
+
+For completeness, here are all block constructors explicitly.  In the
+display below juxtaposition means concatenation, $N=\mathrm{NIP}$,
+$D=\mathrm{DROP}$, $A(c,x,y,u)=\mathrm{AX}(c,x,y,u)$, and $L_X$ denotes
+the already compiled premise block with canonical output $(X,w,0,0)$.
+The displayed row index is its position in the emitted stack:
+$j=1$ is $\rho_1$, $j=6$ is $\rho_6$, $j=7$ is $G$, and $j=8$ is $L$.
+The eight logical rows, generalization, and old current formula occupy
+the first ten stack positions.
+\[
+\begin{aligned}
+L_{\top}
+  &=\mathrm{DISCARD}_a,\\
+L_{\operatorname{row}_j(a,b,c,u)}
+  &=\mathrm{DISCARD}_a\,[A(c,a,b,u)]\,N^j\,[D]\,N^{11-j}
+       \,\mathrm{RESET}_a \quad(1\leq j\leq8),\\
+L_{\operatorname{gated\ bundle}(a,b,c)}
+  &=\mathrm{DISCARD}_a\,[A(c,a,b,0)]\,N^{10}
+       \,\mathrm{RESET}_a,\\
+L_{Q_i X}
+  &=L_X\,[D,N,A(i,i,0,0)]\,N^9\,[D,N,N],\\
+L_B
+  &=L_A\,[D]\,L_{I(A,B)}\,[N,D,N,\mathrm{MP}(B),A(B,0,0,0)]
+       \,N^{10}\,[D,N,N].
+\end{aligned}
+\]
+Each identity is a partial-correctness contract allowing earlier halting.
+For the GEN block the emitted generalization is $Q_iX$, its AX has
+$a=c=i$, and exactly nine NIPs select that generalization.  For the MP
+block the two premise blocks arrange the cached implication $I(A,B)$
+and current antecedent $A$; successful MP sets the parameter to $B$.
+The following AX has $a=c=B$, and its ten NIPs restore the desired result
+without a residual.  If a tested intermediate cache is code~1, the
+machine has already halted on the required refutation.
+
+Induction on a native derivation now compiles it into a block with the
+old canonical interface.  An initial $\mathrm{AX}_0$, even from an
+arbitrary cache and parameter, clears both of them and has zero residual;
+the current formula and enlarged stack may be arbitrary.  A compiled
+derivation of code~1 works from that interface and the original final
+$[\mathrm{DROP},\mathrm{NIP},\mathrm{NIP}]$ test halts.  The clean reader still strictly decreases every
+nonempty proof stream, and the next-proof counter advances by one at
+each empty stream.  Thus this fixed finite refutation program is
+eventually reached.  The repaired source halts if and only if the
+unchanged native calculus derives~1.
+
+Both directions are ordinary arithmetizable arguments in ZFC.  Combining
+them with the unchanged native-calculus calibration supplied in the
+pinned K219 construction gives, for this repaired \emph{source program},
+\[
+\mathrm{ZFC}\vdash
+ \bigl(\text{the repaired source does not halt}\bigr)
+ \ \Longleftrightarrow\ \operatorname{Con}(\mathrm{ZFC}).
+\]
+This conclusion uses the baseline calibration theorem; the changed
+source's soundness, fairness, and proof-block completeness are the new
+arguments supplied here.
+
+\subsection{Measured source cost}
+
+The all-asymmetric source has 205 DAG nodes.  The new clear-6 loop adds
+one previously absent subtree; its attachment adds one subtree; and
+the root transfer's attachment adds one subtree.  The transfer itself
+was already present in the source.  The resulting four examined
+associations all have 208 DAG nodes, 4741 primitive occurrences, maximum
+depth~38 or~39, and maximum zero run~6.  The 223-state primitive-interface
+implementation supplied later has a complete symbolic runtime proof;
+its required blank-tape startup calibration remains open.
+
+The standalone \texttt{counter\_salt\_blocks.py} checks the comparator
+and the altered gate with an independent compositional source-tree
+interpreter.  Its JSON receipt separately records bounded source cases
+and symbolic checks of every block constructor above, with arbitrary
+underlying stack tails and arbitrary natural parameters.  The symbolic
+checker retains formula constructors; it rejects an unresolved branch
+comparison instead of assuming its outcome.  Premise blocks in the
+GEN/MP checks are explicit induction hypotheses.  These checks support
+the stated unbounded source and compiler arguments; they do not assert
+an independently certified binary runtime for the repaired source.
+
