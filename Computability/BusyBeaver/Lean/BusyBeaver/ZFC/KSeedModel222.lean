@@ -5,6 +5,11 @@ import BusyBeaver.ZFC.Code254Models
 /-!
 The models that the completeness theorem of the 222/221 calculus quantifies over.
 
+The semantic round-trip proof below adapts the Affine Proof Cores and Transport
+packet in commit aa66d0a33f, extending the earlier Structural Proof Simplification
+proposal. Its three redundant formula inductions are replaced by the existing
+Code254Models.sat_encode_decode theorem and the double-negation code bound.
+
 `seed_of_bundle` is the converse of `KSeed222.bundle_of_seed` for ordinary roles: in an
 irreflexive structure a decoded seed bundle `dec (bundle222 a b c)` (with `a ≠ b`) says exactly
 that the seed property holds for the relation its matrix `dec c` defines.
@@ -55,6 +60,7 @@ theorem sat_req (E : Nat → V) (b c : Nat) (hcb : c ≠ b) :
   · rintro ⟨z, hz, hzc⟩ hall
     exact hall z hz hzc
 
+omit hirr in
 /-- Reading the matrix at any valuation that agrees with the role assignment off the label. -/
 theorem matrix_iff {e E : Nat → V} {a b c : Nat} {x y : V}
     (h : ∀ n, n ≠ c → E n = update (update e a x) b y n) :
@@ -85,18 +91,18 @@ theorem seed_of_bundle (e : Nat → V) (a b c : Nat) (hab : a ≠ b) (hca : c �
   · -- the request at the input `e a`
     intro y hy
     have hy' : Tarski.Sat mem (update (update e c C) b y) (dec c) := by
-      refine (matrix_iff mem hirr (x := e a) (y := y) ?_).mpr hy
+      refine (matrix_iff mem (x := e a) (y := y) ?_).mpr hy
       intro n hn
       by_cases hnb : n = b
-      · subst hnb; simp [update, hn]
+      · subst hnb; simp [update]
       · by_cases hna : n = a
         · subst hna; simp [update, hnb, hn]
         · simp [update, hnb, hna, hn]
     obtain ⟨z, hz, hzC⟩ := (sat_req mem hirr _ b c hcb).mp hrq y hy'
-    refine ⟨z, (matrix_iff mem hirr ?_).mp hz, by rwa [update_same] at hzC⟩
+    refine ⟨z, (matrix_iff mem ?_).mp hz, by rwa [update_same] at hzC⟩
     intro n hn
     by_cases hnb : n = b
-    · subst hnb; simp [update, hn]
+    · subst hnb; simp [update]
     · by_cases hna : n = a
       · subst hna; simp [update, hnb, hn]
       · simp [update, hnb, hna, hn]
@@ -117,12 +123,12 @@ theorem seed_of_bundle (e : Nat → V) (a b c : Nat) (hab : a ≠ b) (hca : c �
     have hall : Tarski.Sat mem (update (update (update e c C) b y) a x)
         (dec (wal a (wim (wal c (wim (wel c a) (wel c b))) (req b c c)))) :=
       Classical.byContradiction fun hn => hx fun _ => hn
-    refine ⟨x, (matrix_iff mem hirr ?_).mp hm, ?_⟩
+    refine ⟨x, (matrix_iff mem ?_).mp hm, ?_⟩
     · intro n hn
       by_cases hna : n = a
-      · subst hna; simp [update, hab, hn]
+      · subst hna; simp [update, hab]
       · by_cases hnb : n = b
-        · subst hnb; simp [update, hna, hn]
+        · subst hnb; simp [update, hna]
         · simp [update, hna, hnb, hn]
     · intro x' hsub y' hy'
       rw [sat_wal] at hall
@@ -137,20 +143,20 @@ theorem seed_of_bundle (e : Nat → V) (a b c : Nat) (hab : a ≠ b) (hca : c �
         exact hsub w
       have h4 := (sat_req mem hirr _ b c hcb).mp (h3 hsub')
       have hy'' : Tarski.Sat mem (update (update (update (update e c C) b y) a x') b y') (dec c) := by
-        refine (matrix_iff mem hirr (x := x') (y := y') ?_).mpr hy'
+        refine (matrix_iff mem (x := x') (y := y') ?_).mpr hy'
         intro n hn
         by_cases hnb : n = b
-        · subst hnb; simp [update, hn]
+        · subst hnb; simp [update]
         · by_cases hna : n = a
-          · subst hna; simp [update, hnb, hn]
+          · subst hna; simp [update, hnb]
           · simp [update, hnb, hna, hn]
       obtain ⟨z, hz, hzC⟩ := h4 y' hy''
-      refine ⟨z, (matrix_iff mem hirr ?_).mp hz, ?_⟩
+      refine ⟨z, (matrix_iff mem ?_).mp hz, ?_⟩
       · intro n hn
         by_cases hnb : n = b
-        · subst hnb; simp [update, hn]
+        · subst hnb; simp [update]
         · by_cases hna : n = a
-          · subst hna; simp [update, hnb, hn]
+          · subst hna; simp [update, hnb]
           · simp [update, hnb, hna, hn]
       · rwa [update_other _ _ hca, update_other _ _ hcb, update_same] at hzC
 
@@ -160,45 +166,7 @@ end Conv
 
 /-! ## Derivable bundles for every equality-free matrix -/
 
-theorem enc_pos : ∀ f : NF, 0 < enc f
-  | rel i j => by simp [enc, wel]
-  | NF.eq i j => by simp [enc, weq]
-  | NF.bot => by simp [enc, F]
-  | imp a b => by
-      have h1 := enc_pos a
-      have h2 := le_P_left (enc a) (enc b)
-      simp only [enc, wim]; omega
-  | all i a => by simp [enc, wal]
-
-/-- Codes of named formulas decode back, up to the alias `⊥ ↦ x₀ ∈ x₀`, which re-encodes to `F`. -/
-theorem enc_dec_enc : ∀ f : NF, enc (dec (enc f)) = enc f
-  | rel i j => by simp only [enc]; rw [dec_wel]; rfl
-  | NF.eq i j => by simp only [enc]; rw [dec_weq]; rfl
-  | NF.bot => by simp only [enc]; rw [dec_F]; exact wel_zero_zero
-  | imp a b => by
-      have h := enc_pos a
-      simp only [enc]
-      rw [dec_wim (by omega)]
-      simp only [enc, enc_dec_enc a, enc_dec_enc b]
-  | all i a => by
-      simp only [enc]
-      rw [dec_wal]
-      simp only [enc, enc_dec_enc a]
-
-theorem eqFree_dec_enc : ∀ f : NF, EqFree f → EqFree (dec (enc f))
-  | rel i j, _ => by simp only [enc]; rw [dec_wel]; trivial
-  | NF.eq _ _, h => h.elim
-  | NF.bot, _ => by simp only [enc]; rw [dec_F]; trivial
-  | imp a b, h => by
-      have hp := enc_pos a
-      simp only [enc]
-      rw [dec_wim (by omega)]
-      exact ⟨eqFree_dec_enc a h.1, eqFree_dec_enc b h.2⟩
-  | all i a, h => by
-      simp only [enc]
-      rw [dec_wal]
-      exact eqFree_dec_enc a h
-
+/-- Equality interpretation fixes equality-free named formulas. -/
 theorem th_eqFree : ∀ f : NF, EqFree f → KEind222.th f = f
   | rel _ _, _ => rfl
   | NF.eq _ _, h => h.elim
@@ -227,11 +195,11 @@ theorem eqFree_bundleNF (a b k : Nat) {m : NF} (hm : EqFree m) : EqFree (bundleN
 /-- Named formulas whose interpreted codes are derivable in the 222/221 calculus. -/
 def DerivableNF (f : NF) : Prop := C222 (enc (KEind222.th f))
 
-theorem derivable_bundle (ψ : NF) (hψ : EqFree ψ) (a b : Nat) (ha : enc ψ ≠ a) (hb : enc ψ ≠ b) :
-    DerivableNF (dec (bundle222 a b (enc ψ))) := by
+theorem derivable_named_bundle (ψ : NF) (hψ : EqFree ψ) (a b : Nat)
+    (ha : enc ψ ≠ a) (hb : enc ψ ≠ b) :
+    DerivableNF (bundleNF a b (enc ψ) ψ) := by
   unfold DerivableNF
-  rw [← enc_bundleNF, th_eqFree _ (eqFree_dec_enc _ (eqFree_bundleNF _ _ _ hψ)), enc_dec_enc,
-    enc_bundleNF]
+  rw [th_eqFree _ (eqFree_bundleNF _ _ _ hψ), enc_bundleNF]
   exact C222.bundle a b (enc ψ) ha hb
 
 /-- **A model of the derivable formulas has the seed property for every equality-free relation**,
@@ -243,12 +211,15 @@ theorem seed_eqFree (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
   let ψ' := negNF (negNF ψ)
   have hψ' : EqFree ψ' := ⟨⟨hψ, trivial⟩, trivial⟩
   have hbig : 1 < enc ψ' := by
-    have h1 := enc_pos ψ
-    have h2 := le_P_left (enc (negNF ψ)) F
-    have h3 := le_P_left (enc ψ) F
-    simp only [ψ', negNF, enc, wim] at h2 h3 ⊢; omega
+    have h := le_P_right (enc (negNF ψ)) F
+    change 1 < 4 * P (enc (negNF ψ)) F
+    unfold F at h ⊢
+    omega
   have hs := seed_of_bundle mem hirr e 0 1 (enc ψ') (by omega) (by omega) (by omega)
-    (hT _ (derivable_bundle ψ' hψ' 0 1 (by omega) (by omega)) e)
+    (by
+      rw [← enc_bundleNF]
+      exact (Code254Models.sat_encode_decode mem hirr _ e).mpr
+        (hT _ (derivable_named_bundle ψ' hψ' 0 1 (by omega) (by omega)) e))
   obtain ⟨C, h1, h2⟩ := hs
   have hiff : ∀ x y, matrixRel mem e 0 1 (enc ψ') x y ↔ Tarski.Sat mem (update (update e 0 x) 1 y) ψ := by
     intro x y
