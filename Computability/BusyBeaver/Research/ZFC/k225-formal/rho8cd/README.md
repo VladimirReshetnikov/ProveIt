@@ -14,9 +14,10 @@ lists of lemmas, and renders them for both lanes:
   operand, the interface of the representation-independent core (phase eight). Its three public
   theorems depend on no axioms; `DomRho8.lean` is the unchanged Nat adapter.
 * [`derivation.txt`](derivation.txt) (52 steps, uses truth `Z` = the code 0): the row alone.
-  `--rocq` renders the Rocq lane's `DomRho8.v` (called by `rocq/rocq-extension/regenerate215.py`);
-  `--lean` renders the same derivation as a drop-in Nat `DomRho8.lean` (built with `KCodeDom` in
-  `4fdc59197a`).
+  `--rocq` renders a Rocq `DomRho8.v` (11,190 bytes; compiled with `ThmDom`, closed under the global
+  context; adopted in `4fdc59197a`, while the maintained Rocq tree keeps its checked certificate replay,
+  see [the status note](PROVEIT_STATUS.md)); `--lean` renders the same derivation as a drop-in Nat
+  `DomRho8.lean` (built with `KCodeDom` in `4fdc59197a`).
 
 Format: one line per formula, `i major minor F [side conditions]`. Leaf `-1` is truth `Z`, leaf
 `-2` the dominated row `(((a>b)>c)>((c>a)>(d>a))) [b<=c]`; every other line follows from its major
@@ -37,7 +38,7 @@ truth) and, with `NOZ=1` and the two extra `GOALS`, to the 58-step core.
 
 ```sh
 python generate_domrho8_cd.py --derivation derivation_core.txt --core ../../../../Lean/BusyBeaver/ZFC/DominatedImplication.lean
-python ../rocq/rocq-extension/regenerate215.py      # writes coq/215/DomRho8.v among the rest
+python generate_domrho8_cd.py --rocq DomRho8.v       # the Rocq rendering (not in regenerate215.py)
 python generate_domrho8_cd.py --lean DomRho8.lean    # the drop-in Nat rendering
 
 cd search && cargo build --release

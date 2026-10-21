@@ -1,0 +1,33 @@
+--- baseline/KHomeReady.lean
++++ candidate/KHomeReady.lean
+@@ -16,14 +16,6 @@
+ 
+ def ready (M : TMN) : Bool :=
+   rowsCheck M && FramedWindow.check (KZipTape.table M) 18 2 0 cells 84 2
+-
+-private theorem rowsCheck_sound {M : TMN} (h : rowsCheck M = true) : KHome.Rows M := by
+-  simp only [rowsCheck, Bool.and_eq_true, List.all_eq_true] at h
+-  constructor
+-  · intro i hi
+-    exact of_decide_eq_true (h.1 i (List.mem_range.mpr hi))
+-  · intro i hi
+-    exact of_decide_eq_true (h.2 i (List.mem_range.mpr (by omega)))
+ 
+ private theorem overlay_eq (xs : FramedWindow.Cells) (t : FramedWindow.Tape)
+     (h : ∀ p ∈ xs, t p.1 = p.2) : FramedWindow.overlay xs t = t := by
+@@ -59,7 +51,14 @@
+ 
+ theorem ready_sound {M : TMN} (h : ready M = true) : KHome.Rows M ∧ KHome.Boundary M := by
+   simp only [ready, Bool.and_eq_true] at h
+-  exact ⟨rowsCheck_sound h.1, boundary_of_check h.2⟩
++  refine ⟨?_, boundary_of_check h.2⟩
++  have hr := h.1
++  simp only [rowsCheck, Bool.and_eq_true, List.all_eq_true] at hr
++  constructor
++  · intro i hi
++    exact of_decide_eq_true (hr.1 i (List.mem_range.mpr hi))
++  · intro i hi
++    exact of_decide_eq_true (hr.2 i (List.mem_range.mpr (by omega)))
+ 
+ /-- A positive Home shortcut, otherwise exactly the old abstract step. -/
+ def homeStep (M : TMN) (br : Branch) (s : SConf) : Option (SConf × Bool) :=
