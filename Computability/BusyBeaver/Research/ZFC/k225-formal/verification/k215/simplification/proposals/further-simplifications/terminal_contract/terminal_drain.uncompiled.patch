@@ -1,0 +1,52 @@
+--- PositiveStutter.lean
++++ TerminalDrain.uncompiled.lean
+@@ -1,3 +1,8 @@
++/- UNCOMPILED research draft. Adapted from the attributed ProveIt
++proposals/k215-transport/formal/PositiveStutter.lean at
++beaabc8e3ba961a8892d35a0683c2ed52e4ab4dc. Original proof code is inherited.
++The change weakens terminal agreement to eventual terminal halting; it
++does not claim a new mathematical discovery or a new compiled endpoint. -/
+ import Init
+ 
+ /-!
+@@ -5,14 +10,14 @@
+ 
+ This file is independent of the ProveIt development.  A terminal configuration
+ has no successor.  A successful finite run contains no earlier terminal
+-configuration.  One positive block simulation, plus terminal agreement at
++configuration.  One positive block simulation, plus terminal halting preservation at
+ related configurations, suffices for equivalence of finite halting.
+ 
+ The positivity hypothesis is essential to the reverse implication: it lets
+ the proof consume a strictly positive part of a terminating target run.
+ -/
+ 
+-namespace PositiveStutter
++namespace TerminalDrain
+ 
+ universe u v
+ 
+@@ -77,7 +82,7 @@
+ structure Simulation {A : Type u} {B : Type v}
+     (stepA : A → Option A) (stepB : B → Option B)
+     (R : A → B → Prop) : Prop where
+-  terminal : ∀ {a b}, R a b → (stepA a = none ↔ stepB b = none)
++  terminal : ∀ {a b}, R a b → stepA a = none → Halts stepB b
+   advance : ∀ {a b a'}, R a b → stepA a = some a' →
+     ∃ k b', 0 < k ∧ run stepB k b = some b' ∧ R a' b'
+ 
+@@ -91,7 +96,7 @@
+   | zero =>
+     simp only [run, Option.some.injEq] at hn
+     subst d
+-    exact halt_now ((hS.terminal hab).mp hd)
++    exact hS.terminal hab hd
+   | succ n ih =>
+     cases he : stepA a with
+     | none =>
+@@ -129,4 +134,4 @@
+ #print axioms Simulation.halts_iff
+ #print axioms Simulation.nonhalting_iff
+ 
+-end PositiveStutter
++end TerminalDrain

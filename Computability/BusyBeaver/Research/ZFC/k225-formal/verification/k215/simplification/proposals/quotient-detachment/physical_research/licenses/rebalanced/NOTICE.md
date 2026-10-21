@@ -1,0 +1,11 @@
+# Attribution and proof scope
+
+This packet was prepared for Vladimir Reshetnikov's ProveIt project in a ChatGPT research collaboration on 21 October 2026. The source-search task constructed the physical reassociation candidate and source-side experiments. The encoding task independently reviewed the frozen candidate and investigated contextual helper folds. The formalism task developed the matrix-inflation experiment and its stated proof boundary. The coordinating task simplified the recipe independently, checked blank binding, investigated spare-zero initialization, assembled the report, and packaged the reproducible artifacts.
+
+This work inherits the accepted primary `candidate-k215` at ProveIt commit `75716498437bfc7291d5900cab2983a11fd54bac`. The immediate K215, partial-selector, command-permutation, dominated-rho8, and earlier constructions retain their original attribution. The compact numerical calculus, ordinary ZFC calibration, machine architecture, source/arithmetic compiler, and symbolic runtime induction checker are inherited work, not new inventions claimed by this packet.
+
+The inherited notices credit, within their stated scopes, Mira and ProveIt, Elliot Glazer's compact theory K/K230 work, Jeff's busy-beaver/Rocq reference, Andrew James Wade's compiler ancestry, BusyCoq, and the Coq Library of Undecidability. The exact licenses and upstream K215 notice are preserved under `licenses/`; original vendor headers are retained. New repository material follows the project's MIT No Attribution terms. This does not relicense third-party components.
+
+The accepted new result is an ordinary mathematically verified 215-state alternative. Its rooted transition graph differs from the three accepted 215-state graphs examined, and its exact source/runtime/startup checks pass. No discovery-priority claim, 214-state result, minimality theorem, unconditional nonhalting claim, or new Lean/Rocq/internal-PA endpoint is asserted. The formalism and failed-initialization experiments are separately labeled and are not premises in the main consistency proof.
+
+The independent review is separate review work inside this collaboration, not an external human endorsement. Exact inputs, executed checks, results, and unresolved obligations determine the scope of the claims.

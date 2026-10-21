@@ -1,0 +1,207 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs,longtable,tabularx,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,listings,xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue]{hyperref}
+\hypersetup{pdftitle={K215: Composing Checked Proofs and Testing Smaller Address Bounds},pdfauthor={ProveIt research contribution},pdfsubject={Checked proof components, CM215 transport, and restricted source-layout bounds}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small K215: proof composition and address bounds}\fancyhead[R]{\small 21 October 2026}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\setlist{topsep=4pt,itemsep=3pt,parsep=0pt}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!18},xleftmargin=3pt,xrightmargin=3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\bits}{\{0,1\}}
+\newcommand{\code}[1]{\texttt{#1}}
+\title{\textbf{K215: Composing Checked Proofs\\and Testing Smaller Address Bounds}\\[5pt]\large Exact source certificates, whole decoder paths,\\native machine transport, and research toward 214 states}
+\author{Research contribution prepared for Vladimir Reshetnikov's \texttt{ProveIt}}
+\date{21 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The accepted K215 machine already has complete Lean and Rocq correctness endpoints. The useful next step is to compose the smaller checked components and remove representation boundaries between them. This packet combines the incoming 1,426-entry normalized source certificate with verified balanced lookup, proves the exact all-register source equivalence, and preserves the public Rocq interface. Its indexing workload is 32,961 tree-node visits; the original 2,240-entry list certificate uses 5,018,706 visits under the same counting convention. These are exact indexing counts, not a whole-build speedup claim. Additional components connect the checked decoder blocks to whole paths of the literal source, and transport the existing CM215 alternative directly in the repository's stream-tape semantics. A separate address-allocation study proves an exact capacity criterion for ordered binary associations and constructs a source with a smaller maximum zero run while preserving both guarded control-flow graphs. The packet records the remaining physical allocation and endpoint-integration obligations. No correct machine with 214 or fewer states is claimed.
+\end{abstract}
+\noindent\textbf{Repository pin.} The source checkout is
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/aa66d0a33f1f8237a348899eb8095b045a502832}{\code{aa66d0a33f1f8237a348899eb8095b045a502832}}.
+The additional commits through
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/56e487ce8fa4cf63ad169ffe0cd2944e9fc62dd3}{\code{56e487ce8fa4cf63ad169ffe0cd2944e9fc62dd3}}
+were reviewed. The maintained BusyBeaver Lean tree and the K225 Rocq tree are unchanged between those pins. Inputs and compiler receipts in this archive identify the exact bytes used.
+\newpage
+\tableofcontents
+\newpage
+
+\section{The goal and the present proof boundary}
+The target convention is a deterministic Turing machine with one two-way infinite binary tape, blank input, left and right moves only, and a separate halting state. Initialization is included in the count of working states. The desired mathematical statement is
+\[
+ \mathrm{ZFC}\vdash\bigl(\neg\Halt(M,\mathrm{blank})\leftrightarrow\Con(\mathrm{ZFC})\bigr).
+\]
+For K215, the repository already supplies the ordinary mathematical argument and external proof-assistant theorems relating halting to the existence of a finite ZFC refutation. The accepted dense table has 215 working states and 430 transition rows, with SHA-256
+\begin{center}\small\texttt{fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090}.\end{center}
+Its source has 202 distinct subtrees and 4,751 primitive occurrences. These counts describe different objects: source subtrees, occurrence paths, and physical machine states must be priced separately. The current maintained Lean endpoint closure contains 184 project modules; the original fresh full build used 204 Lean modules and 237 Rocq sources \cite{primary,verification,phase5}.
+
+The endpoint composition has five substantive interfaces: dense-state renaming; blank initialization; binary execution versus source execution; source equivalence versus the calibrated enumerator; and the connection between numerical derivations and ZFC refutations. This packet changes proof presentations and adds relative transport results. It does not encode a new derivation inside ZFC's own proof syntax. It also does not prove unconditional nonhalting or the minimality of 215 states.
+
+\subsection{What the incoming proposals already established}
+The newest incoming proposals are essential inputs~\cite{incoming}. The report does not count their conclusions as new results of this packet. In particular:
+\begin{itemize}
+\item The maintained Lean proof already uses ordinary source bisimulation, one-direction certificate checking with symmetry, shared semantic lemmas, and shorter implication and axiom-routine proofs.
+\item The checked-simplifications packet already supplies a 1,426-entry normalized Rocq checker, its all-register source theorem, a compatible public facade, and local Lean decoder blocks with an arbitrary-tape framing theorem.
+\item The certificate-refinements packet already supplies balanced lookup for the older 2,240-entry certificate, a generic marker-variant checker, and concrete zero-credit scheduler results.
+\item The automatic-certificates packet supplies a source-correspondence generator whose output is checked in both proof lanes. The producer is outside the logical trust boundary.
+\item The affine-cores and quotient-detachment packets contain additional source/control abstractions and logical simplifications. None supplies an accepted 214-state machine.
+\end{itemize}
+The main new work is at the joins: combining normalization with indexed lookup; deriving decoder window premises from a whole literal source path; and using the repository's native tape semantics for an alternative machine. The address experiment addresses a distinct physical obstacle.
+
+\section{Normalized certificates with balanced lookup}
+\label{sec:balanced}
+\subsection{Exact statement and preserved interface}
+The source programs are the unchanged repository definitions \code{Prog215.p215} and \code{DagPerm.dagPerm}. For every natural-valued register file $R$, the delivered theorem proves
+\[
+ \operatorname{rm\_halts}(p215,([],R))
+ \quad\longleftrightarrow\quad
+ \operatorname{rm\_halts}(dagPerm,([],R)).
+\]
+The new theorem is \code{p215\_dagPerm\_normalized\_balanced}; the exported facade retains the established name and type:
+\begin{lstlisting}
+K215F.Source215.p215_dagPerm :
+  forall R, rm_halts p215 ([], R) <-> rm_halts dagPerm ([], R).
+\end{lstlisting}
+A separate typed client elaborates that interface. The source files are compared byte for byte with the pinned repository definitions. Their SHA-256 identities are recorded in \code{upstream\_binding.json}.
+
+\subsection{Why the normalized certificate is legitimate}
+A stored instruction pointer is a finite bit list, while the interpreter reads an implicit infinite tail of false bits. Define
+\[
+ P\sim Q\quad\Longleftrightarrow\quad
+ \forall i\geq0,\;\operatorname{bit}(P,i)=\operatorname{bit}(Q,i),
+\]
+where an index beyond the list length returns false. This identifies trailing false padding only. In particular it does not justify replacing a consumed leaf path by a shorter path when evaluating break or continue. The interpreter continues to use its actual consumed path; normalization is applied only to completed segment endpoints.
+
+The incoming \code{NormalizedBisim} checker already proves this discipline sound. An entry has two pointer representatives and two successor indices. The checker follows increment-only segments on both programs, compares their register increment counts, and checks equivalence of their endpoints under $\sim$. At a decrement checkpoint it checks the tested register and both branches. The existing theorem \code{hn\_ipeq} moves a halting computation between equivalent pointer representatives without changing its register file or step bound. A genuine decrement step supplies the strict descent needed in the simulation induction. Generic mirroring supplies the reverse implication.
+
+Normalization reduces the concrete certificate from 2,240 to 1,426 entries: 1,425 decrement checkpoints and one halt checkpoint. This reduction and its soundness proof are inherited. The present addition combines it with balanced storage.
+
+\subsection{A small refinement theorem composes the two optimizations}
+A certificate tree has empty, leaf, and binary-node constructors. Every binary node stores the number of entries in its left child. Let $\operatorname{flat}(T)$ be its leaf list. A tree is valid when every stored left size agrees with the actual left subtree size. The inherited balanced library proves
+\[
+ \operatorname{lookup}(T,j)=
+ \operatorname{nth\_error}(\operatorname{flat}(T),j)
+ \qquad(\operatorname{valid}(T)).
+\]
+The proof is a structural induction: the left branch uses the left prefix of the flattened list, and the right branch subtracts the verified left size.
+
+The new \code{NormalizedBalanced.v} uses that lookup in the normalized branch checker. Its core theorem is the exact Boolean equality
+\begin{equation}
+ \operatorname{ncheckTree}(t_1,t_2,T)
+ =\operatorname{ncheck}(t_1,t_2,\operatorname{flat}(T)),
+ \qquad\operatorname{valid}(T).
+ \label{eq:refinement}
+\end{equation}
+To prove it, first replace one tree lookup by its flattened-list lookup. That gives branch equality. Case analysis on the two decoded instructions gives entry equality. Finally, induction on the certificate tree identifies its conjunction of leaf checks with the list's \code{forallb}. The normalized soundness theorem then applies unchanged.
+
+\begin{theorem}[Composed certificate soundness]
+If $T$ satisfies its checked size invariant and the normalized tree checker accepts $p_1,p_2,T$, then for every register file $R$,
+\[
+ \operatorname{rm\_halts}(p_1,([],R))\leftrightarrow
+ \operatorname{rm\_halts}(p_2,([],R)).
+\]
+\end{theorem}
+\begin{proof}
+The Boolean validity test implies tree validity. Equation~\eqref{eq:refinement} converts the accepted tree check to the inherited normalized list check. Apply its one-sided equivalence theorem, which uses the previously proved mirror theorem for the converse. No certificate generator is a premise.
+\end{proof}
+The generic composition module is 2,381 bytes. The concrete theorem is a small application of this result to the checked tree. These sizes describe the new glue, not the whole proof library. The old normalized and balanced soundness libraries are retained with attribution.
+
+\subsection{Exact work counts and their interpretation}
+For each successor query, count the list or tree constructors visited to find its entry. Include the initial checkpoint query, and omit successor queries for the halt entry. The exact census is:
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Certificate & Entries & Queries & Visits & Max. tree depth\\
+\midrule
+Original list & 2,240 & 4,479 & 5,018,706 & --\\
+Original balanced tree & 2,240 & 4,479 & 54,514 & 13\\
+Normalized list & 1,426 & 2,851 & 2,033,059 & --\\
+Normalized balanced tree & 1,426 & 2,851 & 32,961 & 12\\
+\bottomrule
+\end{tabular}
+\end{center}
+The first two rows are inherited from the certificate-refinements packet,
+whose \path{balanced_lookup/evidence/lookup_metrics.json} is copied into
+this component's \path{verification/inherited_old_certificate/} directory.
+The included \code{lookup\_metrics.py} independently recomputes the last two
+rows; it does not claim to replay the older input.
+Thus the composed presentation uses about $39.54\%$ fewer indexing visits than the older balanced certificate. The combined normalization and indexing reduce indexing visits by a factor of about $152.26$ relative to the original list. The new count is also proved in Coq from the literal program and tree; the accounting function classifies each checkpoint using the actual \code{tsite} function.
+
+These figures do not include instruction decoding, segment execution, path comparisons, tree construction, type elaboration, or kernel normalization of proof terms. In particular the ratio is not a runtime speedup. The source tree and its exact flattening are checked separately. The height theorem bounds every lookup, including an out-of-range one, by 12 visited nodes.
+
+For a balanced $N$-entry certificate issuing $O(N)$ queries, this indexing component takes $O(N\log N)$ node visits. For in-range indices, or more generally indices represented with $O(\log N)$ bits, charging linear cost for binary comparison and subtraction gives the conservative $O(N\log^2N)$ bit-operation bound for indexing. Other checker components retain their existing costs.
+
+\subsection{Verification and adoption}
+The proof is compiled with Coq 8.18.0, using the inherited compatibility lemmas for names from the repository's Rocq 9.1 lane. Those compatibility lemmas are proved, and the selected assumption reports are closed. The source theorem and typed public facade are kernel-checked. The separate concrete recursive audit and its exact receipt are included with the component.
+
+The production adoption step is to keep the established public interface, add the composed checker to the source-generation/build manifest, and rebuild \code{Correct215} and \code{CorrectDense215} under the maintained Rocq toolchain. The complete 237-source machine-to-ZFC closure is not rebuilt by this source-layer experiment. The automatically inferred certificate can be fed to the same checker; soundness depends only on acceptance, not on how its data was produced.
+
+\input{sections/decoder.tex}
+\input{sections/cm215.tex}
+\input{sections/address.tex}
+
+\section{Which 215-state candidate is easier to prove?}
+The answer depends on the proof one wants to maintain; the inherited inventory records the exact alternative tables~\cite{alternatives}. For an absolute end-to-end theorem, primary K215 remains the most economical choice because its entire calibration, source, runtime, and startup chain is already checked. For an additional exact 215-state endpoint obtained by transport, CM215 is particularly attractive. The delivered native stream proof connects its actual transition function to the repository's exact dense K215 semantics. That avoids a separate representation theorem between an integer-indexed tape and the native stream tape.
+
+M124 and FM215 remain useful alternatives when minimizing the local marker invariant. Earlier proposals reduce their transport to two marker conditions and a generic finite checker. Their advantage is the small local argument; the corresponding native endpoint adapter still has to be maintained. A small local invariant alone is insufficient to establish a short complete independent calibration proof.
+
+For a fresh scheduler argument, ZC215 has the clearest high-level simplification. Its injective lowering of NIP codes to earlier DROP codes removes the reserve/debt bookkeeping in the canonical enumeration argument. The recent packets already make the Cantor codec and prefix-credit reasoning concrete. A proof about that arithmetic scheduler still requires the literal source-loop and physical-machine adapters. The present work therefore recommends CM215 for the shortest additional relative endpoint and retains K215 as the primary absolute endpoint.
+
+\section{A practical integration sequence}
+The generated data, generic soundness proofs, and public interfaces should have separate ownership. A single producer may emit Lean and Rocq certificates; each kernel checker must independently accept its literal output. Data-generation success and proof-assistant acceptance should have separate receipts.
+
+\begin{enumerate}
+\item Preserve the literal accepted machine and the established endpoint names while integrating the normalized balanced source facade. Rebuild its direct consumers before attempting a broader proof refactor.
+\item Use the source-path decoder theorem to replace repeated occurrence-specific framing premises. Preserve the primitive-entry and return contracts as explicit interfaces until their native semantic adapters have been checked.
+\item Add CM215 through the native relative equivalence theorem. Its ZFC endpoint is a composition with the existing K215 theorem; the relative theorem should remain independently usable and auditable.
+\item Keep address/run-length synthesis in a research directory. Before promoting a smaller table, require exact source binding, a quantified primitive runtime argument, complete blank initialization, and a halting-preserving simulation with positive progress.
+\item Update the maintained generators and dependency manifests along with any proof replacement. A short facade whose generator still emits the old proof is an incomplete maintenance change.
+\end{enumerate}
+The 512-step source decoder used by K215 must remain explicit. The maintained phase-five record observes that replacing it by the legacy 128-step decoder changes 622 certificate entries \cite{phase5}. A data-format simplification is not permission to weaken that decoding interface.
+
+\section{Further research questions}
+\subsection{Joint optimization of zero runs and sharing}
+The address-capacity theorem gives exact feasibility for a fixed ordered sequence of closed atoms. The physical problem also rewards repeated subtrees. Can a dynamic program maintain Pareto-optimal pairs consisting of incoming-zero capacity and reusable subtree signatures, without enumerating all Catalan associations? A useful next result would price the five-zero source against the actual available transition-row roles, rather than minimizing distinct subtrees as a proxy.
+
+\subsection{A verified decoder compiler at the maintained interface}
+The new path theorem ends at a correctly labelled primitive entry. The next compression step is to combine it with the maintained primitive/return contracts in one generic compiler theorem. The key proof obligation is the representation relation between the framed integer-tape semantics and the endpoint's native tape semantics. Proving that relation once would remove a recurring boundary from future decoder experiments.
+
+\subsection{Runtime synthesis with abstract spare storage}
+The source simulation hides spare registers existentially, while some local runtime contracts prescribe their exact physical output. A broader contract could preserve the nine logical registers and continuation while permitting a different nonempty valid spare suffix and legal gap. This could admit state reuse that exact whole-tape joins reject. The abstraction must be proved closed under all primitive operations, including repeated allocation and deallocation, before it can justify a smaller table.
+
+\subsection{A source proof expressed by local transformations}
+The current certificate is small enough to check, and the automatic generator removes manual pairing. A further reduction could replace part of the large finite relation by proofs of shared local transformations: closed sequence reassociation, commuting independent increments, and certified drain-loop substitution. The resulting proof should still bind the literal two source programs and handle break/continue using consumed paths. The affine-cores proposal supplies useful data for comparing this approach with direct normalized equality.
+
+\subsection{Internal formalization and robust verification budgets}
+The external machine/refutation equivalence and an encoded proof within ZFC are different deliverables. A future internalization should state the coding of runs, finite derivations, and the simulation proof explicitly. Separately, reproducible performance work should measure a clean complete endpoint build, not infer a speedup from certificate bytes or lookup visits. The present exact counts give a stable component-level benchmark for that experiment.
+
+\section{Reproduction, contents, and scope}
+The archive contains the report source and PDF, source-level proof components, exact inherited inputs needed by the focused builds, finite/source checks, and compiler receipts. It omits proof-assistant installations and generated proof objects. Component READMEs give the precise commands and toolchain versions. The top-level verifier checks released identities and lightweight source/data claims; proof compilation is an explicit additional action.
+
+The mathematical results in the packet have different scopes. The normalized balanced source equivalence and decoder/transport theorems are checked in proof assistants. The alphabetic capacity criterion has an ordinary proof and executable exhaustive controls. The new source layout has complete finite source/CFG comparisons. The latter do not constitute a new binary-machine correctness theorem. No lower bound on the size of all ZFC-consistency machines is inferred from the bounded allocation and search results.
+
+\paragraph{Attribution.}
+K215, its calibration, its source compiler, the accepted runtime and startup proofs, and the incoming normalized/balanced/framed-block libraries are inherited contributions. The new material is the composition and adapters identified above, the source-address capacity application and its implementation, and this report. Existing notices and licenses are retained in the component directories. The preorder tree encoding behind the capacity argument is classical; the application to this machine's zero-run constraints is the contribution here \cite{lukasiewicz}.
+
+\begin{thebibliography}{9}
+\bibitem{primary} Vladimir Reshetnikov and contributors. \emph{K215: 215 working states for ZFC consistency}. ProveIt, pinned commit \code{aa66d0a33f}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/aa66d0a33f1f8237a348899eb8095b045a502832/Computability/BusyBeaver/Research/ZFC/candidate-k215/README.md}{Repository description and exact-table identities}.
+\bibitem{verification} ProveIt contributors. \emph{Formal correctness of the exact 215-state machine}. Same pin. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/aa66d0a33f1f8237a348899eb8095b045a502832/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/README.md}{Verification record and theorem boundaries}.
+\bibitem{phase5} ProveIt contributors. \emph{Ordinary certificates and shared semantic lemmas}. Same pin. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/aa66d0a33f1f8237a348899eb8095b045a502832/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase5/README.md}{Maintained phase-five simplifications}.
+\bibitem{incoming} ProveIt incoming research packets. \emph{K215 Checked Simplifications}; \emph{K215 Certificate Refinements}; \emph{Affine Proof Cores and Transport}; \emph{K215 Automatic Certificates}; \emph{K215 Proof and Quotient Detachment}. 21 October 2026. Archive identities and inherited components are recorded in this packet's provenance files; placement records are available in \href{https://github.com/VladimirReshetnikov/ProveIt/blob/56e487ce8fa4cf63ad169ffe0cd2944e9fc62dd3/docs/incoming/README.md}{the incoming index}.
+\bibitem{alternatives} ProveIt contributors. \emph{Materially distinct 215-state alternatives}. Same source pin. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/aa66d0a33f1f8237a348899eb8095b045a502832/Computability/BusyBeaver/Research/ZFC/candidate-k215/alternatives/README.md}{Alternative table inventory and status}.
+\bibitem{lukasiewicz} C. Banderier, C. Krattenthaler, A. Krinik, D. Kruchinin, V. Kruchinin, D. Nguyen, and M. Wallner. \emph{Explicit formulas for enumeration of lattice paths: basketball and the kernel method}. arXiv:1609.06473v2, 2017. Proposition 2.6 reviews the preorder/\L ukasiewicz correspondence. \url{https://aimath.org/~dtn/papers/1.pdf}.
+\end{thebibliography}
+\end{document}

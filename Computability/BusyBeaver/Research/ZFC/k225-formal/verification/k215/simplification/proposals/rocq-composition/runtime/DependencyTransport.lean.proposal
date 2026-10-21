@@ -1,0 +1,32 @@
+/- Owned generic design. NOT compiled in this workspace.
+   The missing KRuntimeCore adapter is a case split on sstep, not a new machine proof. -/
+namespace RuntimeDependency
+variable {Key Row State : Type}
+abbrev Table (Key Row : Type) := Key → Row
+variable (step : Table Key Row → State → Option (State × Bool))
+variable (reads : State → List Key)
+
+def AgreesAt (M N : Table Key Row) (ks : List Key) : Prop :=
+  ∀ k ∈ ks, M k = N k
+
+/-- A supplied trace preserves the exact progress flag, not only final state. -/
+inductive Trace (M : Table Key Row) : State → List (State × Bool) → Prop
+  | nil (s) : Trace M s []
+  | cons {s t m xs} : step M s = some (t,m) → Trace M t xs →
+      Trace M s ((t,m)::xs)
+
+def TraceAgree (M N : Table Key Row) : State → List (State × Bool) → Prop
+  | _, [] => True
+  | s, (t,_)::xs => AgreesAt M N (reads s) ∧ TraceAgree M N t xs
+
+/-- Only this local extensionality fact requires inspection of the interpreter. -/
+theorem transport
+    (locality : ∀ M N s, AgreesAt M N (reads s) → step M s = step N s)
+    {M N : Table Key Row} {s : State} {xs : List (State × Bool)}
+    (h : Trace step M s xs) (ha : TraceAgree reads M N s xs) :
+    Trace step N s xs := by
+  induction h with
+  | nil s => exact Trace.nil s
+  | @cons s t m xs hs ht ih =>
+      exact Trace.cons ((locality M N s ha.1) ▸ hs) (ih ha.2)
+end RuntimeDependency

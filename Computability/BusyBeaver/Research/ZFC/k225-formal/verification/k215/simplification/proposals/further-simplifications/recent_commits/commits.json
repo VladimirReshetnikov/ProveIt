@@ -1,0 +1,59 @@
+[
+  {
+    "sha": "beaabc8e3ba961a8892d35a0683c2ed52e4ab4dc",
+    "date": "2026-10-21T19:23:42Z",
+    "message": "Proof simplification proposal",
+    "parents": [
+      "69e6d97fc2ea6da87b718109b1c8614a0927a621"
+    ]
+  },
+  {
+    "sha": "69e6d97fc2ea6da87b718109b1c8614a0927a621",
+    "date": "2026-10-21T19:22:32Z",
+    "message": "Place batch 206: revised K215 proof-simplification packet, retire its archive\n\nK215_Proof_Simplification_2026-10-21 (2).zip (arrival 53269bcab1) differs from batch 205's archive of the same name: coq/ proves symmetry for the actual offset checker and the compact/original certificate equality (Coq 8.18, coqchk), plain_source/ checks the ordinary zero-offset source equivalence in Lean (70 modules), formal_cm215/ transports CM215 to KDense215.machine215. All its tables are already in the repository. Placed whole and byte-identical as k225-formal/verification/k215/simplification/proposals/k215-simplification-2/ (logs stay out by the ignore rules), indexed in proposals/README.md; nothing rerun; the queue is clear.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "parents": [
+      "255607b737802c3c716671875ac5b8ce6b24375f"
+    ]
+  },
+  {
+    "sha": "255607b737802c3c716671875ac5b8ce6b24375f",
+    "date": "2026-10-21T19:06:41Z",
+    "message": "Merge remote-tracking branch 'origin/main' into claude/busy-beaver-zfc-formalization-e75dc8",
+    "parents": [
+      "35ba151c3bd6289161e0c1eee864ac4328e611a0",
+      "53269bcab1efc0f82d3022645bd7cf0c22d84959"
+    ]
+  },
+  {
+    "sha": "53269bcab1efc0f82d3022645bd7cf0c22d84959",
+    "date": "2026-10-21T19:05:28Z",
+    "message": "Proof simplification proposal",
+    "parents": [
+      "a6b3a3001110bee41c906452b5f36cb5b8501968"
+    ]
+  },
+  {
+    "sha": "35ba151c3bd6289161e0c1eee864ac4328e611a0",
+    "date": "2026-10-21T19:04:28Z",
+    "message": "Place batch 205: six K215 proof-simplification packets, retire 6 archives\n\nThe six packets of a6b3a30011 propose shorter K215 proofs. Each is placed\nwhole and byte-identical under k225-formal/verification/k215/simplification/\nproposals/ (logs, TeX auxiliaries and checksum lists stay out by the ignore\nrules), omitting only copies of repository files (zfc-k215-transport/\nreference/, fm215-compression machine/inherited_notices/ and machine/tables/).\nproposals/README.md indexes them with their status against main:\n- realized: the single Lean source certificate (RMOffsetBisim.OBisim.symm);\n- open: the single-certificate Rocq source proof with a compact path codec\n  (zfc215-simplification/source_proof/Source215Simple.v, Coq 8.18), the\n  trailing-zero quotient of the Lean certificate (2,240 -> 1,426,\n  k215-simplification), the calibration round-trip patch (structural), and\n  shared decoder contexts for KSites215 (fm215-compression, structural);\n- CM215 <-> K215 and M124 <-> K215 transport proofs (positive stuttering),\n  compiled standalone, are formal endpoints for those alternatives once\n  their adapters compile.\n\nThe only new 215-state table, FM215, differs from batch 204's M124 in one\nrow (127/1 -> 109 instead of 59), so it was not placed as an alternative.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "parents": [
+      "a6b3a3001110bee41c906452b5f36cb5b8501968"
+    ]
+  },
+  {
+    "sha": "a6b3a3001110bee41c906452b5f36cb5b8501968",
+    "date": "2026-10-21T18:54:30Z",
+    "message": "Proof simplification proposals",
+    "parents": [
+      "557b6aac99b836a8ab61fb210ba9d59061586202"
+    ]
+  },
+  {
+    "sha": "557b6aac99b836a8ab61fb210ba9d59061586202",
+    "date": "2026-10-21T18:41:02Z",
+    "message": "Place batch 204: six unique 215-state alternatives, retire 9 archives\n\nDiscard essential duplicates, preserve unique alternatives (direction for\nthese batches). All 578 incoming .tm tables were put in rooted breadth-first\ncanonical form and compared with every repository table and with each other.\n\nPlaced as delivered (byte-identical, nothing rerun) under\ncandidate-k215/alternatives/, each with an INTAKE.md:\n- dr215 (DR215_research, 2a11b6d29f): direct transfer + rho6 permutation,\n  repaired strong selector. late_comparison/ (ZC215 copies) omitted.\n- forced-transfer (FT215_Forced_Transfer, 6101f25c72): S;W(0);S;W(1);...\n  scheduler, conservative debt seven. cache216/, composite216/ omitted.\n- zero-credit (ZC215_Research, a10b2c302c): DROP 0 / NIP 1 tags and\n  exhaustive enumeration; NIP->DROP lowering injects pops into earlier pushes,\n  so no AX stack credit is needed. reference/ (parent copies) omitted.\n- gc215 (ZFC_GC215, dfe1f22bdf): the AX tag as generalization binder, paid\n  for by a conditional decoder merge. reference/ (corpus, gc216) omitted.\n- context-returns (ZFC_K215_Context_Transfers, b6fb232916): history-dependent\n  decoder returns; k215-context and the principal k215-shallow (depth 46).\n  upstream/ (K215 copies) omitted.\n- gc-zc215 (Proof_Simplification_and_GC-ZC215, 05d063acef): gc215 combined\n  with zero-credit enumeration; zc215 copies and the inert 216 allocation\n  omitted. Its proof_refactor/ goes to k225-formal/verification/k215/\n  simplification/proposal-2026-10-21/ with an INTAKE.md recording which\n  proposals main already realizes (Lean OBisim.symm) and which are open\n  (Rocq mirror check, compact Rocq certificate).\n\nRetired without placement:\n- ZFC_ST215_Rho6_and_New_Routes (b872b34ff4): the same table as dr215.\n- NW215_counter_stack (dfe1f22bdf): K215's source conjugated by the register\n  permutation 0 <-> 2, a renaming of registers.\n- SB215_ZFC (2a11b6d29f): refuted. The correction review shipped in\n  gc-zc215/correction/ shows that in SB215 and SB215-AB the return after AX\n  reaches selector ordinal 23, not the scheduler, so the NIP test halts on\n  cache 1 from the blank tape.\n\nAdds six index rows and the batch-204 queue entry. No numbered Sources, no\nwrite report; the queue is clear.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "parents": [
+      "05d063acef885d47be5a2ce6645b046f98f7ea02"
+    ]
+  }
+]

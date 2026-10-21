@@ -1,0 +1,35 @@
+{
+  "status": "PASS_BYTE_EXACT_BOTH_LANGUAGES",
+  "checks": [
+    {
+      "generator": "Lean",
+      "command": [
+        "python3",
+        "/dev/shm/k215-98d671b816d1-work/proof/generator/generate_domrho8_lean.py",
+        "/dev/shm/k215-98d671b816d1-work/proof/inputs/dominated_rho8_full_certificate.json",
+        "/dev/shm/k215-98d671b816d1-work/proof/verification/regenerated.lean",
+        "--templates",
+        "/dev/shm/k215-98d671b816d1-work/proof/inputs/149-dom-theory-ev-CD230.v"
+      ],
+      "exit_code": 0,
+      "stdout": "retained bootstrap 58 CD templates 52 reused template conclusions 11\nwrote shared guarded hierarchy and pointwise lifting\n",
+      "stderr": "",
+      "generated_sha256": "0368667979f56c6f47456ec91e3942d9b6bb5b7254741ef9a9deb6c40f3f8790",
+      "byte_identical": true
+    },
+    {
+      "generator": "Coq",
+      "command": [
+        "python3",
+        "/dev/shm/k215-98d671b816d1-work/proof/generator/generate_domrho8_rocq_direct.py",
+        "/dev/shm/k215-98d671b816d1-work/proof/formal/BusyBeaver/ZFC/DomRho8.lean",
+        "/dev/shm/k215-98d671b816d1-work/proof/verification/regenerated.v"
+      ],
+      "exit_code": 0,
+      "stdout": "Mirrored 112 helper declarations; bytes 24352\nInput SHA256 0368667979f56c6f47456ec91e3942d9b6bb5b7254741ef9a9deb6c40f3f8790\nOutput SHA256 5844ac4217c5901e8e56b017d867763d13a1e57f7c9fbb2438287a7540aa9d19\n",
+      "stderr": "",
+      "generated_sha256": "5844ac4217c5901e8e56b017d867763d13a1e57f7c9fbb2438287a7540aa9d19",
+      "byte_identical": true
+    }
+  ]
+}

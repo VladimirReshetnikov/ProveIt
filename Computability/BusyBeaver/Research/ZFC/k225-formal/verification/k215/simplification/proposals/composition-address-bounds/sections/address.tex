@@ -1,0 +1,186 @@
+\section{A different state-reduction direction: bound address runs before shortening the scanner}
+\label{sec:runlength}
+
+The source layout exposes a route that is distinct from merging physical
+states.  The accepted K215 source has 202 distinct subtrees, 4,751 primitive
+occurrences, maximum address depth 47, and maximum consecutive-zero run six.
+The conditional-marker research packet already records a failed experiment
+that deletes native state 50 and redirects row $34/0$ from $0L50$ to $0L75$.
+On the original source, 72 guarded cases are unproved at 37 addresses ending
+in six zeros; one has a concrete wrong-successor trace.  Consequently, merely
+deleting that scanner state is not justified.  Instead, first change the
+source association to eliminate six-zero runs, while preserving every
+primitive and guarded successor, and only then attempt the shorter scanner.
+This section supplies such a source transformation and an exact feasibility
+theorem for the permitted source grammar.  It does not supply a successful
+214-state allocation.
+
+\subsection{An exact alphabetic capacity criterion}
+
+Fix a maximum zero-run length $Z$.  A closed source block has capacity $c$ if
+it can be represented so that its addresses obey this limit even when entered
+after any run of at most $c$ zeros.  Capacity $-1$ means no admissible
+representation even with incoming run zero.  This definition concerns all
+address prefixes: checking every leaf address is equivalent, since every
+internal prefix extends to a leaf.  At a binary node, the left edge extends
+the incoming zero run by one and the right edge resets it to zero.  Thus two
+fixed children with capacities $a,b$ have capacity
+\[
+ a\mathbin{\star}b=
+ \begin{cases}a-1,&a\ge1\text{ and }b\ge0,\\-1,&\text{otherwise.}\end{cases}
+\]
+
+\paragraph{Theorem (alphabetic capacity).}
+Let $c_1,\ldots,c_n$ be the nonnegative capacities of ordered atoms whose
+association is free, and let $r\ge0$ be an incoming zero run.  For $n=1$,
+feasibility is exactly $r\le c_1$.  For $n\ge2$, some full binary association
+of these atoms is feasible if and only if
+\begin{equation}
+ \sum_{i=1}^{k}c_i-k\ \ge\ r
+ \qquad(1\le k<n).
+ \label{eq:capacity-prefix}
+\end{equation}
+In particular, its greatest feasible incoming run is
+$\min_{1\le k<n}(\sum_{i=1}^{k}c_i-k)$ if this is nonnegative; otherwise there
+is no feasible association.  If any atom has capacity $-1$, there is likewise
+no feasible association.  The feasibility test and a witnessing association
+can be produced in linear time in $n$.
+
+\paragraph{Proof.}
+Use the standard preorder tree-slot encoding of a full ordered binary tree.
+Let $d_i$ count the internal nodes opened immediately before its $i$th leaf.
+Equivalently, $d_i$ is the number of consecutive left edges on the final
+part of that leaf's address.  For the first leaf, its entering run is
+$r+d_1$; for every later leaf a preceding right edge has reset the run, so
+its entering run is $d_i$.  The full-tree conditions are
+\[
+ \sum_{i=1}^{n}d_i=n-1,
+ \qquad \sum_{i=1}^{k}d_i\ge k\quad(1\le k<n),
+ \qquad d_i\ge0.
+\]
+Indeed, opening an internal node increases the number of pending child
+slots by one; consuming a leaf decreases it by one.  The displayed prefix
+conditions say that at least one slot remains until the last leaf, when
+none remains.  They also give the converse construction of a unique full
+binary tree from this preorder sequence.
+
+Feasibility requires $d_1\le c_1-r$ and $d_i\le c_i$ for $i>1$.
+Applying these bounds to each proper prefix proves
+\eqref{eq:capacity-prefix}.  Conversely, assume those inequalities.  Set
+$c'_1=c_1-r$ and $c'_i=c_i$ otherwise, and begin with budget $B=n-1$.
+Successively choose $d_i=\min(c'_i,B)$ and replace $B$ by $B-d_i$.
+The prefix inequalities imply that the first $n-1$ capacities already
+cover the whole budget; hence $d_n=0$ and $B$ ends at zero.  For every
+$k<n$, the greedy prefix sum is
+$\min(\sum_{i\le k}c'_i,n-1)\ge k$.  It therefore defines a full tree,
+and each atom receives an allowed entering run.  A stack reads the resulting
+preorder sequence and constructs the tree in linear time.  The one-atom
+case has no connecting edges and is immediate.  This is an application of
+standard preorder/\L ukasiewicz tree encoding, not a claim of novelty for
+that encoding~\cite{lukasiewicz}.\hfill$\square$
+
+The independent checker compares this formula with exhaustive Catalan
+recursion over every ordered capacity vector of lengths one through seven
+with entries in $\{-1,0,1,2,3\}$.  All 97,655 vectors agree.  For the 13,516
+feasible vectors, every allowed incoming capacity is reconstructed and
+independently evaluated, totaling 25,190 constructive checks.  These finite
+checks corroborate the proof above; the proof does not infer a universal
+claim from those tests.
+
+\subsection{The permitted source class, and its exact minimum zero run}
+
+The source language records each subtree's outgoing-control boundary as a
+triple.  A factor is \emph{closed} when this is $(0,0,\mathrm{false})$:
+there is no escaping forward or backward jump and no halt.  The permitted
+rewrite is
+\[
+ A;(B;C)\quad\longleftrightarrow\quad(A;B);C
+ \qquad\text{when }A,B,C\text{ are closed}.
+\]
+These transformations preserve the ordered primitive word and all guarded
+successors, including both branches of a conditional decrement.  They may
+be performed independently at arbitrary occurrences.  Flatten each maximal
+association of closed factors into its ordered atomic sequence.  Its atoms
+cannot be split by a permitted rotation at their root; recursive rotations
+inside an atom preserve its boundary.  Therefore the capacity theorem,
+applied recursively to these sequences and the fixed remaining nodes,
+decides the entire closed-associativity class, not a bounded rotation beam.
+
+For this K215 source the least possible maximum zero run in that class is
+\textbf{five}.  There is a particularly small lower-bound certificate.  At
+prefix \texttt{1101001001111}, the source contains a 13-leaf fragment spanning
+ordinals 4578--4590.  Write $D_j$ for $\mathrm{CD}(j)$, $B_j$ for
+$\mathrm{CB}(j)$, and $C_j$ for $\mathrm{CC}(j)$, and use juxtaposition in
+parentheses for binary sequencing.  Define
+\[
+\begin{aligned}
+ A&=(D_5,((D_6,C_2),B_1)),\\
+ B&=(A,D_6),\\
+ C&=((D_5,C_1),((D_6,C_2),B_1)),\\
+ D&=(B,C),\qquad E=(D,(D_1,C_1)),\qquad F=(E,B_1).
+\end{aligned}
+\]
+The fragment is $F$.  Its leftmost path passes through
+$F,E,D,B,A,D_5$, giving five consecutive left edges.  At each of these five
+binary nodes at least one child is open.  A permitted rotation requires
+both children of its root to be closed, and boundary values are invariant
+under permitted rewrites.  None of these five nodes can therefore rotate,
+and it also cannot be split as the binary child of a rotation at its parent: that would require both of its children to be closed. Rotations at ancestors can therefore only move the entire unchanged fragment.
+Every source in this class retains a five-zero run.  The supplied source
+achieves five, completing this source-class optimality proof.  This is
+not a lower bound on Turing-machine states or on more general source edits.
+
+\subsection{A compact verified source, and the remaining physical problem}
+
+A deterministic greedy run applies nine globally shared closed rotations,
+reducing the 37 six-zero-ending addresses to zero.  A subsequent bounded
+search retains that property and reduces depth by two more.  The final
+transformation consists of thirteen globally shared rotations:
+
+\begin{center}
+\begin{tabular}{lrrrr}
+Source & Distinct subtrees & Primitives & Depth & Max. zero run\\\hline
+Accepted K215 & 202 & 4,751 & 47 & 6\\
+After nine rotations & 206 & 4,751 & 45 & 5\\
+Final supplied source & 206 & 4,751 & 43 & 5
+\end{tabular}
+\end{center}
+
+At every rotation, two separate CFG resolvers check the same complete
+6,175-edge guarded graph, and the 4,751-entry primitive word is unchanged.
+Consequently the identity relation on register values and ordinal program
+counters is a source-level bisimulation, preserving finite halting and
+infinite execution.  The final source is
+\texttt{sites\_zero5\_206.json}.  Its literal transformation certificate
+stores 362 shared tree nodes and thirteen old/new node pairs in only
+3,720 bytes.  An independent replay checks the closedness premises,
+reconstructs every global substitution, and reproduces the exact final
+source bytes.  No optimizer is needed for this replay.
+
+The first search examined 1,702 rotation specifications and 1,688 distinct
+roots over nine greedy rounds.  The second examined 27,360 specifications
+and 13,574 distinct roots over seven rounds with beam width 24 and at most
+206 source nodes.  It found no reduction below 206 in that bounded search.
+The exact minimum zero run proved above must not be confused with a minimum
+DAG-size claim: 206 is a constructive upper bound, not a proved optimum.
+
+Two actual physical-allocation attempts delete state 50 and impose
+$34/0=0L75$.  Both use the inherited engine-row filter with state-50 rows
+removed, explicitly as a \emph{conditional synthesis assumption}; the
+sufficiency of the shortened scanner still requires a complete new runtime
+proof.  The retained-context allocator has 115 new logical roles and 201
+protected rows, and fails by an empty assignment domain.  Releasing every
+pure decoder role leaves 156 new roles and 153 protected rows; HiGHS reports
+its 18,328-variable, 593-constraint integer model infeasible.  These failures
+concern those two restricted allocation policies, whose guards may be more
+restrictive than necessary.  They do not establish a lower bound for
+arbitrary allocations or machines.
+
+The concrete next target is therefore a layout with zero runs at most five
+that either preserves more of K215's contextual role sharing or permits a
+broader joint source/engine allocation.  The new 206-node source supplies
+an exact semantic starting point and removes the specific six-zero-address
+obstruction, but it is not yet a 214-state machine.  Any successful allocation
+still needs every quantified primitive contract, literal blank startup, and
+an exact-table transport or runtime proof before a consistency equivalence
+can be asserted.
