@@ -2,12 +2,12 @@
 
 Source archive `Zero_Spare_Transfer_215_and_Alternatives_2026-10-21.zip`, arrival commit `7571649843`; pinned ProveIt commit `cd59611687`.
 
-Placed in batch 200 as delivered: every staged file is byte-identical to the archive (checksum
+Placed in batch 201 as delivered: every staged file is byte-identical to the archive (checksum
 lists stay out by the root ignore rules). Nothing was rerun or reviewed at intake; the claims below
 are the delivery's. The delivery README is `README.md`. The complete archive is recoverable with
 `git show 7571649843:docs/incoming/Zero_Spare_Transfer_215_and_Alternatives_2026-10-21.zip > Zero_Spare_Transfer_215_and_Alternatives_2026-10-21.zip`.
 
-**Why this machine was kept.** Batch 200 kept only materially distinct 215-state implementations
+**Why this machine was kept.** Batch 201 kept only materially distinct 215-state implementations
 (Vladimir's direction, 21 October 2026). Its table is not a state renaming of any table already in
 the repository or elsewhere in the batch (rooted breadth-first canonical form; intake check), and
 its design differs: the three-command transfer-pop source (Source 166's language) with the append-zero spare policy and a newly proved protected blank startup (73,172 steps).
