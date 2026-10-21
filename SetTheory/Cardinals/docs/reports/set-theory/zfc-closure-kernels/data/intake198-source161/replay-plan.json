@@ -1,0 +1,22 @@
+{
+  "status": "SOURCE_REVIEWED_PROPOSAL_NOT_EXECUTED",
+  "packet": "/tmp/zfc-intake198/extracted/K215_Composed_Selectors_2026-10-20/K215_Composed_Selectors_2026-10-20",
+  "working_directory": "Fresh disposable copy of packet",
+  "per_leaf_wall_seconds": 60,
+  "required_leaves": [
+    {
+      "argv": ["python3", "-B", "code/reconstruct.py", "--parent", "reference/partial216", "--output", "<fresh-output>/rebuilt"],
+      "gate": "PASS_EXACT_K215_RECONSTRUCTION;215states430rows4751leaves;36retained-row changes/delete185; source/native/dense/canonicalization bytes equal delivered"
+    },
+    {
+      "argv": ["python3", "-B", "code/audit_source.py", "--reference", "reference/permuted216/sites210.json", "--candidate", "source/sites215.json", "--out", "<fresh-output>/source.json"],
+      "gate": "PASS;4751primitives202DAG6175guarded edges6176includinghalt; exact whole primitive word and both resolvers agree; final depth47/zero6"
+    }
+  ],
+  "optional_leaf": {
+    "argv": ["python3", "-B", "code/negative_control.py", "--table", "machine/k215.native.tm", "--sites", "source/sites215.json", "--out", "<fresh-output>/negative-control.json"],
+    "gate": "PASS_MUTATION_REJECTED;original unbounded4697 CB1 passes,135/1->0L10 mutation fails with fresh block lemmas; specific defect detection only"
+  },
+  "not_selected": ["verify.py", "repack.py", "parent verify scripts", "full runtime", "blank replay", "manifest validation", "Coq/Rocq", "Lean", "TeX build"],
+  "transfer": "All430 literal rows and initial/dispatcher/halt anchors conjugate accepted K215; exact source and all stored cases/traces match under explicit relabeling. Accepted prior runtime and startup evidence transfer without replay."
+}
