@@ -1,0 +1,120 @@
+\section{Attempt to remove another state}\label{sec:reduction}
+
+\subsection{What was searched}
+
+No 214-state candidate passed the new search. The search covers 21 named
+native 215-state tables, 155,277 eligible state-pair/table combinations,
+and 133,827,040 replacement-action checks. All complete pairs failed this
+particular sufficient local proof test. These numbers do not count distinct
+complete machines, and failure does not establish different blank behavior.
+
+For old controls \(q<r\), neither initially active, identify \(r\) with \(q\)
+and map every target accordingly. If the two old rows for a symbol agree
+after that identification, retain their shared action. Otherwise the
+backward-history contexts for the two old roles must be disjoint, and the
+search tries all writes, directions, and retained working targets for the
+new row. Unlike an identical-row-only screen, both symbol rows may change.
+When both change, the proof of either row is forbidden to use the other
+changed row; this makes independently accepted choices compose.
+
+The context overapproximation uses backward graph histories of depth four.
+A history can stop early at the initial state, leaving the other cells
+unconstrained. Read guards remove inconsistent histories; writes and
+moves update the known relative cells. For each compatible history, a
+symbolic local execution branches on every unknown initial tape bit.
+Success requires a positive block with exactly the old one-step head
+displacement, mapped successor control, and whole-tape mutation.
+Every extra changed cell must be restored.
+
+The bounds are 45 microsteps and 200 explored symbolic nodes per local
+block. A premature halt, an unsupported transition, or exhaustion of a
+bound rejects that proof attempt. In particular, exhaustion is not a
+semantic counterexample. The C++ search is not itself a kernel-verified
+decision procedure. A positive result would still need an explicit table,
+certificate, and independent proof before being advertised as a new
+consistency machine.
+
+\begin{center}
+\small
+\begin{tabular}{@{}lrr@{}}\toprule
+Input family & Eligible pairs & Action checks\\\midrule
+K215 & 7,467 & 6,436,264\\
+commands120 & 7,434 & 6,408,016\\
+composed & 7,445 & 6,414,008\\
+marker & 7,280 & 6,271,912\\
+context & 7,501 & 6,463,656\\
+shallow & 7,507 & 6,461,944\\
+direct & 7,443 & 6,414,864\\
+dr215 & 7,432 & 6,410,584\\
+forced & 7,453 & 6,421,712\\
+gc-zc & 7,131 & 6,138,376\\
+gc215 & 7,197 & 6,195,728\\
+mp-first & 7,392 & 6,372,064\\
+rebalanced & 7,381 & 6,363,504\\
+reencoded & 7,541 & 6,505,600\\
+rho6-120 & 7,434 & 6,413,152\\
+rho6-210 & 7,455 & 6,431,128\\
+zero-credit & 7,372 & 6,353,232\\
+zero-spare & 7,393 & 6,372,920\\
+zero-spare-mp & 7,318 & 6,308,720\\
+zero-spare-transfer & 7,319 & 6,309,576\\
+zero-spare-z201 & 7,382 & 6,360,080\\\midrule
+Total & 155,277 & 133,827,040\\\bottomrule
+\end{tabular}
+\end{center}
+
+There were zero surviving complete pairs in every row. The native paths
+and exact input hashes are retained in \code{state\_search/results.json}.
+The primary K215 screen alone accounts for 7,467 pairs and 6,436,264
+action checks. A pair with no passing first-row action is rejected before
+the second row is searched; hence multiplying the action count by another
+row count would misstate the experiment.
+
+\subsection{Controls and relationship to earlier searches}
+
+The supplied controls accept the known 69/400 marker fold, reject a
+premature-halt corruption, reject the cyclic 8/127 return provider, and
+accept a synthetic two-row marker fold. The synthetic example also rejects
+wrong or unspecified predecessor markers. These exercise the exact risks
+of confusing an origin selector, permitting a zero-progress cycle, or
+accepting a block with an unsupported tape premise.
+
+The repository already records a 3,567-pair, 20-step two-row screen in the
+zero-spare work, and a much larger shared-selector search in DR215. Thus
+the present contribution is a new implementation and wider table coverage
+within a documented restricted family, not the invention of two-row
+folding \cite{searchprior}. The executed source hashes, controls, and counts
+are supplied so that future runs can be compared without conflating their
+search spaces.
+
+\subsection{What remains plausible}
+
+The negative result leaves several substantive possibilities open:
+\begin{enumerate}
+\item \textbf{Coordinated replacement rows.} Allow the two changed rows to
+call each other, and verify their joint positive block instead of proving
+each independently. A successful certificate must exclude a circular
+provider such as the failed 8/127 construction.
+\item \textbf{More extensive tape context.} Search a longer history or a
+small relational invariant, then check it inductively on all incoming
+edges. The present records do not determine whether deeper justified
+contexts, longer local blocks, or coordinated row changes would be the
+more effective extension.
+\item \textbf{Source changes that remove a physical role.} Use the concrete
+zero-credit theorem to decouple scheduler safety from the number of heads
+added by AX. A modified axiom bundle must still preserve numerical
+soundness and strong completeness; credit alone does not justify deleting
+an axiom or its binary implementation.
+\item \textbf{Joint startup and allocation changes.} Reuse a control only
+when its two behaviors are separated by a proved tape phase invariant.
+An initializer that is finished in the blank run can still share controls
+with the indefinite proof search, but this requires exact entry and return
+conditions rather than graph reachability alone.
+\end{enumerate}
+
+These are proposed directions, not constructions. In particular, the
+two-marker rule merges two logical roles but reuses the released physical
+control as the selector. It therefore saves no state. A genuine 214-state
+result needs to absorb that selector into existing controls, remove
+another role, or alter a more global encoding. There is no lower-bound
+conclusion from the present search.

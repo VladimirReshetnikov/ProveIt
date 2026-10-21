@@ -1,0 +1,158 @@
+\section{A concrete zero-credit theorem for ZC215}\label{sec:credit}
+
+\subsection{Why this is a distinct simplification}
+
+ZC215 uses DROP tag 0, NIP tag 1, MP tag 2, and AX tags at least 3. Its
+proposed refill enumerates every raw candidate in order $0,1,2,\ldots$.
+The ordinary proof in the repository gives an injective map from NIP
+occurrences to DROPs in strictly earlier candidates \cite{zerocredit}.
+The existing GC--ZC abstract prototype assumes the key lowering and
+injectivity properties. The new \code{CantorCredit.v} proves those
+properties for the actual codec, proves total unique decoding, and constructs
+the literal schedule prefix. It therefore closes a specific formal gap;
+it does not claim discovery of the injection itself.
+
+In the project's command semantics, DROP pushes one theorem head and NIP
+removes one. The conservative credit assignment is
+\[
+ \mathrm{DROP}=+1,\qquad \mathrm{NIP}=-1,
+ \qquad\mathrm{MP}=\mathrm{AX}=0.
+\]
+The current AX can add further heads, but the proof below does not need them.
+That is what makes it useful for future source simplification.
+
+\subsection{Exact codec, including zero}
+
+Put
+\[
+ P(x,y)=\frac{(x+y)(x+y+1)}2+y.
+\]
+The formal file uses the standard-library Cantor pairing with this
+orientation. Complete command fields are:
+\begin{center}
+\begin{tabular}{@{}ll@{}}\toprule
+Command & Field sequence\\\midrule
+DROP & $[0]$\\
+NIP & $[1]$\\
+MP$(x)$ & $[2,x]$\\
+AX$(c;x,y)$ & $[c+3,y,x]$\\\bottomrule
+\end{tabular}
+\end{center}
+For fields $a_1,\ldots,a_r$, define
+\[
+ E([a_1,\ldots,a_r],z)=P(a_1,P(a_2,\ldots,P(a_r,z)\ldots)).
+\]
+For a nonempty command word $L$, its raw code is defined backward by
+\begin{align*}
+ \rho([k])&=E(\operatorname{fields}(k),0),\\
+ \rho(k::L)&=E(\operatorname{fields}(k),1+\rho(L))
+ \quad(L\ne[]).
+\end{align*}
+In particular $\rho([\mathrm{DROP}])=0$. Zero is a valid nonempty raw
+candidate; a terminal DROP in a longer word is distinguished by the
+positive continuation at its predecessor. Discarding this zero alias would
+break the exact scheduler argument.
+
+\begin{lemma}[Concrete decoding]
+Every $n\in\N$ is the code of a unique nonempty command word $W(n)$.
+The supplied executable decoder satisfies
+\[
+ \rho(W(n))=n,\qquad W(\rho(L))=L.
+\]
+\end{lemma}
+\begin{proof}
+Invert Cantor pairing for the outer tag, then consume precisely the fields
+prescribed by that tag. This yields a unique command and residual $r$.
+For $r=0$, the word terminates. For $r>0$, recurse on $r-1$.
+The residual is at most the enclosing code, so $r-1<n$ in the recursive
+case. Strong induction proves existence; command-field injectivity and
+the successor continuation convention prove uniqueness. The concrete
+fuel-based decoder uses $n+1$ as a sufficient recursion bound. Its default
+fuel-exhaustion branch is proved unreachable under that bound.
+\end{proof}
+
+No formula-decoding or theoremhood assumption occurs here. The result
+concerns all raw natural codes, exactly as needed when malformed formula
+codes or numerical aliases are permitted by the numerical calculus.
+
+\subsection{Occurrence injection and prefix safety}
+
+\begin{theorem}[Strict lowering of a selected NIP]
+Let command position $j$ of a nonempty word $L$ be NIP. Let $L'$ be
+obtained by replacing just that command with DROP. Then
+\[
+ \rho(L')<\rho(L),
+\]
+and position $j$ of $W(\rho(L'))$ is DROP.
+\end{theorem}
+\begin{proof}
+The replacement preserves the command arity, all other fields, and every other
+command. At the changed tag, with residual $r$, the exact decrease is
+\[
+ P(1,r)-P(0,r)=r+1>0.
+\]
+Every surrounding successor and pairing in the earlier command prefix
+preserves strict inequality. The round-trip decoder theorem supplies the
+claim about the same position in the lowered word.
+\end{proof}
+
+Retaining the position is essential: the objects counted are occurrences,
+not merely command values or candidate indices. Map a NIP occurrence
+$(L,j)$ to $(L',j)$. This map is injective, because replacing the image
+DROP at that same position by NIP recovers $L$ exactly.
+
+\begin{theorem}[Concrete exhaustive prefix credit]\label{thm:credit}
+For every $n,j\in\N$, consider the schedule prefix consisting of
+\[
+ W(0)W(1)\cdots W(n-1)
+ \quad\hbox{followed by the first $j$ positions of }W(n).
+\]
+Its number of NIP occurrences is at most its number of DROP occurrences.
+If the next actual command is NIP, the strict inequality already holds
+immediately before that command.
+\end{theorem}
+\begin{proof}
+Each included NIP is mapped injectively to a DROP in a strictly smaller raw
+candidate. That candidate is complete in the same prefix, so all image
+occurrences are already included. Injectivity proves the weak inequality.
+Apply it to the prefix including one further NIP: its NIP count increases
+by one, while its DROP count does not. This yields the strict inequality
+for the prefix immediately before that NIP.
+\end{proof}
+
+The formal weak inequality is \code{exhaustive\_schedule\_zero\_credit}.
+The strict version is \code{exhaustive\_credit\_before\_nip}.
+They have no abstract scheduling premises.
+The concrete finite list \code{schedule\_cut n j} contains all
+positions of the earlier candidates and $j$ positions of the current one.
+If $j$ exceeds its length, extra positions have no command and contribute
+neither kind; ordinary execution prefixes use the actual length bound.
+
+\subsection{Application and remaining machine work}
+
+Represent the current numerical stack as a list of explicit theorem heads
+above a fixed arbitrary opaque natural tail $J$. Begin with no explicit
+heads. DROP increases the protected length, NIP decreases it, and the
+remaining commands conservatively do not decrease it. The strict part of
+Theorem~\ref{thm:credit} ensures a protected head exists whenever a NIP is
+about to execute. Thus it never inspects $J$. In the actual current ZC
+proposal, this includes the initialized tail $J=5$ without asserting that
+5 itself encodes a theorem stack \cite{zerocredit}.
+
+This argument applies to executed commands before the first halt once the
+machine/source bridge establishes the literal schedule: all earlier
+candidates have then completed without halting. It cannot justify a physical
+implementation that skips a candidate or returns to the wrong control.
+The new file does not model that physical implementation. Its remaining
+interfaces are exact parsing by the source, exact refill order, command
+soundness and strong completeness, positive binary simulation, startup,
+and the inherited numerical-calculus/ZFC calibration.
+
+\code{CantorCredit.v} has 408 lines. It compiled, printed nine closed
+assumption reports, and passed recursive \code{coqchk}. These results
+make the ZC scheduler argument a reusable concrete theorem. They do not
+remove the obligations needed for a complete ZC215 endpoint, and they do
+not reduce the number of physical states. In particular, the present
+primary K215's zero initialized stack already avoids this arbitrary-tail
+credit argument; adopting ZC solely to shorten that existing endpoint
+would not automatically be beneficial.
