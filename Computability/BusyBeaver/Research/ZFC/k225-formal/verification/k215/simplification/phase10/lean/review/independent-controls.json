@@ -1,0 +1,104 @@
+{
+  "status": "PASS_PURE_METADATA_CONTROLS",
+  "source_sha256": "b9192219c63400ac6d15992dad5ff4dd19e01c74611b5400ce6f42f109d9a9be",
+  "positive": 5,
+  "negative": 14,
+  "checks": [
+    {
+      "label": "relative source",
+      "expected_accept": true,
+      "actual_accept": true
+    },
+    {
+      "label": "relative raw log",
+      "expected_accept": true,
+      "actual_accept": true
+    },
+    {
+      "label": "reject /absolute",
+      "expected_accept": false,
+      "actual_accept": false
+    },
+    {
+      "label": "reject a/../b",
+      "expected_accept": false,
+      "actual_accept": false
+    },
+    {
+      "label": "reject a/./b",
+      "expected_accept": false,
+      "actual_accept": false
+    },
+    {
+      "label": "reject x.olean",
+      "expected_accept": false,
+      "actual_accept": false
+    },
+    {
+      "label": "reject x.olean.private",
+      "expected_accept": false,
+      "actual_accept": false
+    },
+    {
+      "label": "reject x.olean.server",
+      "expected_accept": false,
+      "actual_accept": false
+    },
+    {
+      "label": "reject x.pyo",
+      "expected_accept": false,
+      "actual_accept": false
+    },
+    {
+      "label": "reject x.vo",
+      "expected_accept": false,
+      "actual_accept": false
+    },
+    {
+      "label": "reject x.tar.gz",
+      "expected_accept": false,
+      "actual_accept": false
+    },
+    {
+      "label": "reject x.zip",
+      "expected_accept": false,
+      "actual_accept": false
+    },
+    {
+      "label": "generic core empty axioms",
+      "expected_accept": true,
+      "actual_accept": true
+    },
+    {
+      "label": "generic client empty axioms",
+      "expected_accept": true,
+      "actual_accept": true
+    },
+    {
+      "label": "numeric exact two axioms",
+      "expected_accept": true,
+      "actual_accept": true
+    },
+    {
+      "label": "reject generic choice",
+      "expected_accept": false,
+      "actual_accept": false
+    },
+    {
+      "label": "reject generic propext",
+      "expected_accept": false,
+      "actual_accept": false
+    },
+    {
+      "label": "reject numeric choice",
+      "expected_accept": false,
+      "actual_accept": false
+    },
+    {
+      "label": "reject numeric missing report axiom",
+      "expected_accept": false,
+      "actual_accept": false
+    }
+  ],
+  "scope": "Only AST-extracted local filename and isolated axiom-profile guards. No packet collection, live-object audit, proof compiler or supplied producer invocation."
+}

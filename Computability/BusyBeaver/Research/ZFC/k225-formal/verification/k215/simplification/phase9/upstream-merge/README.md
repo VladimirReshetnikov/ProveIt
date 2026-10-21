@@ -1,5 +1,7 @@
 # Upstream condensed-detachment proposal
 
+This is the historical merge record at `35e2d8fa8c`. The [phase-ten successor](../../phase10/README.md) now adopts the compiled generic adaptation; the source-boundary statements below describe the earlier merge.
+
 Merge `159397838a` adds the research from `4fdc59197a`: a 52-step condensed-detachment derivation, its renderer and untrusted search sources. The eight research files are preserved byte-for-byte. Their reported focused Lean check is upstream evidence, not a new run here.
 
 The eleven adopted Lean sources and all 197 selected module sources retain the phase-nine checked bytes. The four changed Rocq production files retain the exact earlier checkpoint; their proposed replacements remain available in merged Git history. No generator, search program or proof compiler ran for this merge. [merge.json](merge.json) records all thirteen upstream paths and decisions. The [host status note](../../../../../rho8cd/PROVEIT_STATUS.md) separates the delivery README from maintained regeneration.

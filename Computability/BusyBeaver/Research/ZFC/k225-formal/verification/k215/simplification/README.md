@@ -1,14 +1,15 @@
 # Shorter checked K215 proofs
 
 The literal 215-state machine and its halting and nonhalting endpoint statements
-are unchanged. The [latest Lean check](phase8/README.md) validates the 188-module
-primary closure and both typed endpoint clients, using hash-bound predecessor
-objects for unchanged modules. All ten endpoint reports use only
+are unchanged. The [latest Lean check](phase10/README.md) validates the 192-module
+endpoint closure, five decoder-prefix modules and both typed endpoint clients.
+Eight modules were freshly compiled; 189 providers retain exact phase-nine
+transitive source/import bindings. All ten endpoint reports use only
 `propext`, `Classical.choice`, and `Quot.sound`; both audits have zero warnings.
 
 | Proof source | Original | Current |
 | --- | ---: | ---: |
-| Lean dominated implication, core plus adapter | 689,857 bytes | 22,058 bytes |
+| Lean dominated implication, core plus adapter | 689,857 bytes | 17,419 bytes |
 | Lean AX routine | 202,222 bytes | 7,563 bytes |
 | Lean source data, including stable program | 653,569 bytes | 368,995 bytes |
 | Lean site-coverage facade | 107,243 bytes | 14,956 bytes |
@@ -39,8 +40,14 @@ one semantic equivalence between both seed directions. The two proof groups
 shrink from 45,316 to 35,851 bytes, counting both the new core and its adapter.
 Its [legacy check](phase8/legacy/README.md) retains all 15 extra interfaces and
 reruns the five-client audit against 203 current providers.
+Phase nine shares the Home return proof and checks exact source-to-zipper decoder
+entry. Its nine fresh site batches retain all 6,176 outcomes and take 16.41 minutes,
+against a historical 27.49 minutes. Phase ten adopts the generic 52-step derivation
+and six compatibility lemmas, saving another 4,639 bytes and 51 lines in the core.
 
-The [latest checkpoint](phase8/README.md),
+The [latest checkpoint](phase10/README.md),
+[ninth checkpoint](phase9/README.md),
+[eighth checkpoint](phase8/README.md),
 [seventh checkpoint](phase7/README.md),
 [sixth checkpoint](phase6/README.md),
 [fifth checkpoint](phase5/README.md),

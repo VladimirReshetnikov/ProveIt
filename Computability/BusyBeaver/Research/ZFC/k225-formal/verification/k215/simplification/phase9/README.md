@@ -41,4 +41,4 @@ The next step is to factor primitive/continuation contracts behind the exact dec
 
 The [bounded single-use census](next-inlining/README.md) considers fifteen proof files. Four small private inlinings are proposed (335 bytes / nine lines), with retained public statements and executable definitions unchanged in the source comparison. These candidates are uncompiled and the generated core still needs producer synchronization; named invariant and seed-semantic boundaries are retained.
 
-The [subsequent origin merge](upstream-merge/README.md) preserves this checked checkpoint and imports a new 52-step condensed-detachment proposal. Its generic Lean adaptation is under review; no new Rocq implementation is adopted.
+The [subsequent origin merge](upstream-merge/README.md) preserved this checkpoint and imported a 52-step condensed-detachment proposal. The [phase-ten successor](../phase10/README.md) now adopts its checked generic Lean adaptation and preserves these Home/decoder proofs. This packet remains a historical phase-nine record; its current-source option is intended for the original source checkpoint. No new Rocq implementation was adopted.

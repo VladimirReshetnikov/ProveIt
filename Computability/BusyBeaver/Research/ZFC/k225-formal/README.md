@@ -3,7 +3,7 @@
 **Current state (2026-10-21).** The exact [215-state machine](../candidate-k215/README.md)
 has compiled correctness proofs in both Lean and Rocq. The original fresh Lean
 build checked 204 project modules; the current
-[proof simplification checkpoint](verification/k215/simplification/phase9/README.md)
+[proof simplification checkpoint](verification/k215/simplification/phase10/README.md)
 checks the 192-module endpoint closure, five decoder-prefix modules and both closed
 endpoint clients with only the three standard axioms and exact predecessor bindings. Its zero-offset proposal is reconciled as
 [Source 167](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-204.md). Rocq's
@@ -43,6 +43,15 @@ retaining all 6,176 branch outcomes. All nine site batches are freshly checked i
 16.41 minutes (historical phase-six total: 27.49 minutes). The exact source-to-zipper
 decoder prefix is checked separately; primitive factoring remains open. Both closed
 endpoint clients and the original executor API controls pass.
+
+Phase ten shortens the generic implication core by 4,639 bytes and 51 lines, with
+the numeric adapter and all public types preserved. Eight affected modules and
+both endpoint clients pass fresh checks; 189 providers retain exact phase-nine
+bindings in the 197-module union.
+
+The [later 58-step proposal](verification/k215/simplification/phase10/upstream-merge/README.md)
+removes the temporary seed wrapper and may save another 755 bytes and 35 lines.
+It is preserved as reviewed source; the checked phase-ten core and producer remain in place.
 
 The [221](../candidate-k221/README.md) also has two closed endpoints for its exact table:
 
@@ -165,13 +174,13 @@ data in [`lean217/`](lean217/)).
 
 - **Calculus**: `CDom` restricts rho8 to `u ≤ a` ([`KCodeDom`](../../../Lean/BusyBeaver/ZFC/KCodeDom.lean)). It derives exactly
   `C222`'s codes: [`DomRho8`](../../../Lean/BusyBeaver/ZFC/DomRho8.lean) derives the unrestricted row through the
-  representation-independent core [`DominatedImplication`](../../../Lean/BusyBeaver/ZFC/DominatedImplication.lean),
-  a 58-step condensed-detachment derivation of Łukasiewicz's axiom (rho8), composition and prefixing from
-  modus ponens and the dominated rows alone ([`rho8cd/`](rho8cd/README.md)). The Rocq lane keeps its checked
-  certificate replay; rho8cd's 52-step Rocq rendering of the row is a proposal
-  ([status](rho8cd/PROVEIT_STATUS.md)). The replay of Source 149's 3,728-node certificate
-  ([`generate_domrho8_lean.py`](generate_domrho8_lean.py)) and its compression
-  ([`generate_dominated_implication_lean.py`](generate_dominated_implication_lean.py)) are history.
+  representation-independent core [`DominatedImplication`](../../../Lean/BusyBeaver/ZFC/DominatedImplication.lean)
+  ([`generate_dominated_implication_lean.py`](generate_dominated_implication_lean.py)). The separate
+  [rho8cd derivation](rho8cd/PROVEIT_STATUS.md) now supplies the shorter generic Lean core;
+  the [phase-ten K215 check](verification/k215/simplification/phase10/README.md) preserves all public interfaces.
+  The checked Rocq sources are retained.
+  The replay of Source 149's 3,728-node certificate
+  ([`generate_domrho8_lean.py`](generate_domrho8_lean.py)) is history.
 - **Enumerator**: [`EnumDom`](../../../Lean/BusyBeaver/ZFC/EnumDom.lean) is `Enum222` with the AX fields `z, y, x` read as
   `U = d + z`, `A = U + x`, `B = h + y` (GEN at `U`, rho8 at `(A, B, c, U)`); soundness is unchanged
   and the compiler builds `CDom` derivations, the rho8 leaf being `AX(c, u, b, a - u)`

@@ -1,0 +1,1 @@
+Unexecuted predecessor: rejected during root source review because importlib.exec_module would execute the delivered historical generator. Superseded by a self-contained maintained reader treating the exact original Lean source and derivation only as pinned data. No generation or supplied execution occurred.

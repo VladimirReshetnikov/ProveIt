@@ -1,0 +1,1 @@
+First metadata pass incorrectly expected every inherited compact ledger row to retain an exit_code field. RegisterPath is a source/object/log-bound compact reuse record. Successor checks PASS/origin for compact inherited rows, actual exit/timed_out fields where present, and reads warnings from exact logs. No proof/compiler failure occurred.

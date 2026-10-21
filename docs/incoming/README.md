@@ -14,16 +14,17 @@ a report at one of the destinations of section 2.
 
 ## Current Lean proof checkpoint
 
-The [ninth simplification checkpoint](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/README.md)
-checks the exact K215 endpoint over 192 project modules and five additional decoder-prefix
-modules. All nine site batches are freshly checked using a shared Home return proof;
-both unchanged endpoint clients and the executor/gate controls pass. The earlier
-legacy audit retains its unchanged 46-module source closure. Report intake and
-reconciliation statuses below remain separate.
+The [tenth simplification checkpoint](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase10/README.md)
+shortens the generic implication core by 23.94%. Eight affected modules and both
+endpoint clients pass fresh checks in the 197-module union; 189 providers retain
+exact phase-nine bindings. The phase-nine Home/decoder and all 6,176 branch checks
+remain in place. Report intake and reconciliation statuses below remain separate.
 
-## Current queue after upstream batch 211
+## Current queue
 
-There are no loose ZIPs in this directory at this checkpoint. Upstream
+`K215_Checked_Affine_Core_and_CM215_2026-10-21.zip` arrived in `6f0d42d368` and is pending intake. Its [arrival inventory](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase10/upstream-merge/incoming-pending.json) records the exact archive; it remains here until placement and review.
+
+Before this arrival there were no loose ZIPs after upstream batch 211. Upstream
 placements `32d378522c`, `05eaa1d466` and `d7105dd57d` extracted and retired
 the ten packets in batches 209–211, including the guarded-core and proof-core
 arrivals formerly listed here. Their independent mathematical reconciliation

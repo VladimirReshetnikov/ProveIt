@@ -2,14 +2,13 @@
 
 **Both proof lanes pass** (2026-10-21), for the same literal machine.
 
-The fresh full builds below were recorded at `613f9cf28a`. Subsequent
-[proof simplifications](simplification/phase9/README.md) also pass: affected modules were
-rebuilt using transitive source bindings and both endpoint audits rerun. The current
-Lean endpoint closure has 192 modules; five decoder-prefix modules are checked in
-the 197-module union (20 fresh, 13 checked isolated, 164 direct phase-eight providers).
-All nine site batches are fresh. Both audits have zero warnings and ten reports using
-only the same standard axioms; project logs retain 21 linters. This is an incremental
-checkpoint, not a second full fresh build.
+The fresh full builds below were recorded at `613f9cf28a`. The current
+[Lean simplification checkpoint](simplification/phase10/README.md) retains a
+192-module endpoint closure plus five decoder-prefix modules. Eight modules were
+freshly compiled after shortening the generic implication core by 23.94%; 189
+providers retain exact phase-nine source/import bindings. Both endpoint clients
+were freshly checked with ten standard-axiom reports and zero warnings. The nine
+site batches retain their phase-nine checks; inherited project logs have 21 linters.
 
 | System | Completed checks | Endpoint assumptions |
 | --- | --- | --- |
