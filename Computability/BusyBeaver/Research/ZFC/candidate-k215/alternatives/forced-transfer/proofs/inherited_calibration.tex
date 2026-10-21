@@ -1,0 +1,324 @@
+% Include-only supplement. Requires amsmath and amssymb.
+% The finite source checker is audit_command_permutation.py.
+\begingroup
+\newcommand{\Kp}{\mathsf P}
+\newcommand{\Ki}{\mathsf I}
+\newcommand{\Kq}{\mathsf Q}
+\newcommand{\Kd}{\mathcal D}
+\newcommand{\Kax}{\mathsf{AX}}
+\newcommand{\Kmp}{\mathsf{MP}}
+\newcommand{\Kdrop}{\mathsf{DROP}}
+\newcommand{\Knip}{\mathsf{NIP}}
+\newcommand{\Kenc}{\operatorname{enc}}
+\newcommand{\Kblk}{\mathcal B}
+\newcommand{\Kdiscard}{\mathsf{Discard}}
+
+\section{All-natural calibration of the permuted command source}
+\label{sec:k216-source-calibration}
+
+The source-level change that makes the new initialization possible is a
+permutation of the three small command selectors. The arithmetic
+commands and the dominated axiom family are unchanged. This section
+proves that the permutation preserves the full consistency calibration,
+including raw candidate numbers, the zero alias, arbitrary formula
+codes, and the actual source seed with next-candidate register $4$.
+It does not infer a binary runtime theorem from a source subtree count;
+the binary runtime and blank-tape certificates are separate obligations.
+
+\subsection{Exact finite source identity}
+
+Write
+\[
+ \Kp(a,b)=\frac{(a+b)(a+b+1)}2+b,\qquad
+ \Ki(a,b)=4\Kp(a,b),\qquad
+ \Kq_i a=4\Kp(i,a)+2.
+\]
+The native truth and falsity codes are respectively $0$ and $1$.
+In particular, $\Ki(0,0)=0$. Let $\Kd$ be the dominated numerical
+calculus of the preceding dominated-rho8 construction: truth, numerical
+modus ponens, theorem-only generalization, the seven retained logical
+rows, the gated theory bundle, and
+\[
+ L(A,B,C,U)=
+ \Ki\bigl(\Ki(\Ki(C,U),A),
+            \Ki(\Ki(A,C),\Ki(B,C))\bigr),\qquad U\leq A.
+\]
+The inherited finite propositional certificate proves equality of the
+$\Kd$ and K219 theorem sets for \emph{every natural code}. Together with
+the inherited numerical-calculus-to-ZFC calibration, it gives
+\begin{equation}
+ \Kd\vdash1\quad\Longleftrightarrow\quad
+ \exists p\;\operatorname{Proof}_{\mathrm{ZFC}}(p,\bot).
+ \label{eq:k216-inherited-calibration}
+\end{equation}
+No well-formedness or successful formula-decoding test is inserted into
+this equivalence.
+
+The source checker first reconstructs the 205-subtree noncommon-input
+reference directly from the pinned K219 source. Its independently
+implemented structured-control and address-counter interpreters agree
+on every primitive and every branch outcome. The resulting guarded
+ordinal control graph is exactly that of the frozen 202-subtree source
+with SHA-256
+\begin{center}\ttfamily\footnotesize
+abb7229877759170b61dfcfe21ca0889b3df2f91f4215383817a125eb0f8996c.
+\end{center}
+Thus the frozen source has the arithmetic command semantics proved in
+the dominated-rho8 report, with counter/cache field order YX.
+
+In this frozen source, the MP, DROP, and NIP bodies occur at paths
+$111$, $110101$, and $110100101$, respectively. They contain
+$106$, $26$, and $26$ primitive occurrences. Each has zero escaping
+break and continuation demand. NIP contains the halting primitive;
+all its nonhalting exits are normal returns. The branch-skipping
+instructions outside the three bodies remain fixed when the bodies
+are permuted. The checker traces their ordinary continuations: the
+last body returns directly to source ordinal $0$, the middle body
+returns through the unconditional break at $4724$, and the innermost
+body returns through the breaks at $4697$ and $4724$. Each route ends
+at ordinal $0$ without another arithmetic command.
+
+For the source denoted $210$, put NIP, DROP, and MP in these three
+selector positions. For $120$, put DROP, NIP, and MP there instead.
+The exact selector partitions and wire formats are
+\[
+\begin{array}{c|c|c|c|c}
+ &\text{selector }0&\text{selector }1&\text{selector }2
+ &\text{selector }c+3\\\hline
+210&\Knip&\Kdrop&\Kmp&\Kax(c;x,y)\\
+120&\Kdrop&\Knip&\Kmp&\Kax(c;x,y)
+\end{array}
+\]
+and
+\begin{align*}
+ f_{210}(\Knip)&=[0],& f_{210}(\Kdrop)&=[1],&
+ f_{210}(\Kmp(x))&=[2,x],\\
+ f_{120}(\Knip)&=[1],& f_{120}(\Kdrop)&=[0],&
+ f_{120}(\Kmp(x))&=[2,x],\\
+ f_\pi(\Kax(c;x,y))&=[c+3,y,x]&& (\pi=210,120).
+\end{align*}
+The semicolon in $\Kax(c;x,y)$ separates the selector parameter from
+the counter increment $x$ and cache increment $y$; it does not denote
+wire order.
+
+The independent checker proves these partitions directly from the three
+selector decrement tests, at primitive ordinals $23,24,25$. In the
+$210$ source, their zero branches lead to NIP at ordinal $4725$, DROP
+at $4698$, and MP at $4591$. Three positive outcomes enter AX at ordinal
+$26$, with residual selector $c$. This last case is the symbolic case
+of every input selector at least $3$, not a finite sampling of large
+selectors.
+
+Both sources have 202 distinct subtrees, 4,751 primitive occurrences,
+6,176 guarded primitive cases, maximum address depth 44, and maximum
+zero run 6. All 4,593 primitive occurrences exterior to the replaced
+bodies, including the entire AX subtree, remain literal. The checker
+also verifies that each candidate tree is \emph{exactly} the indicated
+permutation of the frozen tree. The candidate source hashes are
+\begin{center}\footnotesize\ttfamily
+210: 8b5dc46f10d927b2db5e4bcb522d482779ec61c72c82717d7bf12fca3550a3bc\\
+120: ee1f7c7cb216a80315449371b040ee094728a655439954225ed4be4635296680.
+\end{center}
+
+\subsection{Command equations and soundness for raw codes}
+
+At a command boundary write the retained tuple as $(t,w,d,h)$: top,
+encoded stack, additive counter, and cached formula. The notation
+$[x_1,\ldots,x_k;w]$ means right-nested pairing, and
+$\operatorname{unpair}(0)=(0,0)$. The exact command equations, independent
+of which small tag names the command, are
+\begin{align*}
+ \Kmp(x)(t,w,d,h)&=
+ \begin{cases}
+ (d+x,\Kp(0,w),d+x,0),&\Ki(t,d+x)=h,\\
+ (0,w,d+x,0),&\Ki(t,d+x)\ne h;
+ \end{cases}\\
+ \Kdrop(t,w,d,h)&=(h,\Kp(t,w),d,h),\\
+ \Knip(t,w,d,h)&=
+ \begin{cases}
+ \mathsf{halt},&h=1,\\
+ (t,w',d,h'),&(h',w')=\operatorname{unpair}(w),\ h\ne1.
+ \end{cases}
+\end{align*}
+For $\Kax(c;x,y)$ put
+\[
+ U=d,\qquad A=d+x,\qquad B=h+y,\qquad C=c,
+\]
+and let $G(A,B,c)$ be zero when $c=A$ or $c=B$, and the retained theory
+bundle otherwise. In the inherited stack order its output is
+\begin{align*}
+ t'&=G(A,B,c),& d'&=0,&h'&=0,\\
+ w'&=[R_1(A,B,c),\ldots,R_7(A,B,c),L(A,B,c,U),\Kq_Uh,t;w].
+\end{align*}
+Here the $h$ in $\Kq_Uh$ is the incoming cache, before adding $y$.
+The bound $U\leq A$ holds for every raw payload because $A=d+x$.
+
+A body with no escaping break or continuation has the same effect at
+any of the three command positions. The branch wrappers route every
+normal return back to the command loop. Consequently the equations
+above hold for the permuted sources on every natural input tuple,
+including payloads arising from incomplete or otherwise unintended
+candidate encodings.
+
+\paragraph{Soundness invariant.}
+If $t$, $h$, and every successive head of $w$ are $\Kd$-theorems,
+every nonhalting command preserves that property. A successful MP is
+exact numerical modus ponens; a failed MP inserts truth $0$. DROP and
+NIP only move theorem codes. AX inserts retained axioms, a valid
+dominated-row instance, a generalization of a theorem, and either a
+permitted bundle or truth. The only halt is the NIP test $h=1$.
+Therefore halting from any such safe seed implies $\Kd\vdash1$.
+This argument quantifies over all natural codes and does not discard
+``junk'' candidates.
+
+\subsection{An explicit compiler retained under the tag change}
+
+For completeness, a strong block $\Kblk_X$ must, from every $(t,w,0,0)$,
+either halt or return $(X,w,0,0)$. The command lists below use command
+\emph{names}; their concrete wire encodings use $f_{210}$ or $f_{120}$.
+Concatenation denotes sequential execution, and a superscript on a
+command denotes repetition.
+
+Define
+\[
+ \Kdiscard=[\Kmp(1),\Kax(1;0,0)]\Knip^{10},\qquad
+ J(u)=\begin{cases}[],&u=0,\\{}[\Kmp(u)],&u>0.\end{cases}
+\]
+The first MP fails because $\Ki(t,1)>0$, whereas the incoming cache is
+zero. The following AX has $U=A=c=1$ and a zero gate. Its nine newly
+generated codes are all different from $1$, and its saved old top is
+zero. Hence ten NIPs return exactly $(0,w,0,0)$.
+The block $J(u)$ maps $(0,w,0,0)$ to $(0,w,u,0)$: if $u>0$,
+$\Ki(0,u)>0$ forces failure. Omitting MP when $u=0$ avoids the extra
+stack zero that a successful $\Kmp(0)$ would insert.
+
+Truth uses $\Kdiscard$. A dominated-row leaf with $U\leq A$ uses
+\[
+ \Kdiscard\;J(U)\;[\Kax(c;A-U,B)]\;\Knip^8\;[\Kdrop]\;\Knip^3.
+\]
+For retained row $R_j(A,B,c)$, where $1\leq j\leq7$, use
+\[
+ \Kdiscard\;[\Kax(c;A,B)]\;\Knip^j\;[\Kdrop]\;\Knip^{11-j}.
+\]
+For a permitted bundle use
+$\Kdiscard[\Kax(c;A,B)]\Knip^{10}$.
+These suffixes select the indicated top or stack entry and restore the
+underlying stack and zero cache. After expanding the negation and
+existential abbreviations, all eight row codes are implications,
+and $\Kq_Uh\equiv2\pmod4$, so none of these generated stack codes is
+falsity $1$.
+
+Given a block for $X$, a block for $\Kq_iX$ is
+\[
+ \Kblk_X\;[\Kdrop]\;J(i)\;[\Knip,\Kax(i;0,0)]\;
+ \Knip^9\;[\Kdrop,\Knip,\Knip].
+\]
+After DROP and $J(i)$, the current top and cache are zero, the counter
+is $i$, and $X$ is the first stack head. NIP places $X$ in the cache.
+AX then has $U=A=c=i$, so its top gate is zero and its ninth generated
+stack entry is exactly $\Kq_iX$. The selection suffix returns that code
+with the original stack and zero counter and cache.
+
+Given blocks for $X$ and $\Ki(X,Y)$, use
+\begin{multline*}
+ \Kblk_X\;[\Kdrop]\;\Kblk_{\Ki(X,Y)}\;
+ [\Knip,\Kdrop,\Knip,\Kmp(Y),\Kax(Y;0,0)]\\
+ {}\Knip^{10}\;[\Kdrop,\Knip,\Knip].
+\end{multline*}
+Unless an earlier NIP has halted, the two premises reach the top and
+cache in the required order, and MP succeeds. The reset AX has
+$U=A=c=Y$ and a zero gate. The final selection returns $Y$ with the
+original stack and zero counter and cache, or halts if a tested cache
+is already $1$.
+
+Induction on a finite $\Kd$ derivation proves the strong block contract
+for every derived natural code. The construction is primitive recursive
+on the derivation. The new selectors alter only the wire names of these
+commands, so every calculation above applies verbatim to both permuted
+sources.
+
+\subsection{Exact packing and cofinality from the actual cutoff}
+
+For a finite field list $fs$ and tail $r$, write $E(fs,r)$ for its
+right-folded Cantor pairing. Command tails are encoded by
+\[
+ \Kenc_\pi([])=0,\qquad
+ \Kenc_\pi(k::L)=1+E(f_\pi(k),\Kenc_\pi(L)).
+\]
+A newly enumerated candidate is loaded directly from its number. A
+subsequent command is decoded from one less than the current positive
+proof-list value. Thus the number for a whole first candidate
+$k::L$ is $E(f_\pi(k),\Kenc_\pi(L))$, without an outer successor.
+This distinction is essential when NIP has tag zero.
+
+Every field reader returns a tail no greater than its input. Therefore
+one command starting from a positive proof-list value $v$ returns a
+proof-list value at most $v-1$, unless it halts. All arithmetic macros
+terminate on all natural inputs. The full macro contracts also restore
+selector $A=0$ and scratches $X=Y=0$ at every nonhalting command return;
+they preserve $N$ outside candidate fetch and leave $L$ equal to the
+unconsumed unpairing remainder. At fresh fetch the source loads $N$
+as the new candidate and increments $N$ exactly once. Every nonhalting
+candidate therefore drains after finitely many commands; the search
+then proceeds to the next candidate. In particular, zero selectors or
+zero field tails do not cause an omitted case or a nonhalting inner
+computation.
+
+Suppose $\Kd\vdash1$, let $\Kblk_1$ be its compiled block, and put
+\[
+ S=[\Kdrop,\Knip,\Knip],\qquad
+ R=\Kenc_\pi(\Kblk_1S).
+\]
+For any natural padding value $Y$, prepend
+$\operatorname{Start}_Y=\Kax(0;1,Y)$. It sets the counter and cache to
+zero from every incoming retained tuple. Thus
+$[\operatorname{Start}_Y]\Kblk_1S$ halts from every incoming tuple:
+the block either halts, or returns top $1$ and zero cache, and $S$
+then puts $1$ in the cache and tests it.
+Its exact first-candidate number is
+\begin{equation}
+ N_Y=\Kp\bigl(3,\Kp(Y,\Kp(1,R))\bigr)\geq Y.
+ \label{eq:k216-cofinal}
+\end{equation}
+The inequality follows from the coordinate inequalities for Cantor
+pairing. This gives a cofinal family of successful candidates for both
+permutations. Choose $Y\geq4$. The successful candidate $N_Y$ is at or
+beyond the actual initial next-candidate value $4$. Finite draining of
+earlier candidates guarantees that the search reaches it unless a halt
+has already occurred. More generally the same proof works beyond every
+natural cutoff, and after every finite initial partial candidate.
+
+\paragraph{Source calibration theorem.}
+For either source permutation, started at its genuine source root with
+register tuple
+\[
+ (N,T,W,A,D,H,X,Y,L)=(4,0,0,0,0,0,0,0,0),
+\]
+ZFC proves
+\[
+ \operatorname{Halt}_{\rm source}
+ \quad\Longleftrightarrow\quad\Kd\vdash1
+ \quad\Longleftrightarrow\quad
+ \exists p\;\operatorname{Proof}_{\mathrm{ZFC}}(p,\bot).
+\]
+\emph{Proof.} The zero top, zero cache, and all heads of the zero stack
+are truth theorems. The soundness invariant proves the forward
+implication. The explicit compiler, cofinal family
+\eqref{eq:k216-cofinal}, and draining argument prove the reverse
+implication. Equation~\eqref{eq:k216-inherited-calibration} gives the
+last equivalence. The argument uses finite source identities,
+primitive-recursive proof and word transformations, and induction on
+natural numbers and finite derivations. It is formalizable in ZFC
+without assuming $\operatorname{Con}(\mathrm{ZFC})$.
+
+Combining this theorem with a separate exact binary runtime simulation
+and a blank-tape trace to the displayed represented source root yields
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\text{the corresponding binary machine does not halt on blank tape}\bigr)
+ \ \longleftrightarrow\ \operatorname{Con}(\mathrm{ZFC}).
+\]
+The trace's tape header, head position, gap and spare-word requirements
+belong to that binary certificate; they are not consequences of the
+source calibration alone.
+\endgroup

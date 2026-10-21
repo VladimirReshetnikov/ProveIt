@@ -1,0 +1,488 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=24mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,xcolor}
+\usepackage{fancyhdr,xurl}
+\usepackage[colorlinks=true,linkcolor=teal!65!black,urlcolor=teal!65!black,citecolor=teal!65!black]{hyperref}
+\hypersetup{pdftitle={GC215: Command-tag Generalization and Conditional Decoder Sharing},pdfauthor={Prepared for Vladimir Reshetnikov's ProveIt project}}
+\setlist{nosep,leftmargin=*}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}\fancyhf{}
+\lhead{\small GC215 / ProveIt research contribution}
+\rhead{\small 21 October 2026}
+\cfoot{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\file}[1]{\path{#1}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\title{\vspace{-1.5em}\textbf{GC215: Command-tag Generalization\\and Conditional Decoder Sharing}\\[0.5em]
+\large A new binary 215-state candidate for the consistency of ZFC}
+\author{Prepared for Vladimir Reshetnikov's ProveIt project\\
+\small AI-assisted construction with separate logical, source, and machine reviews}
+\date{21 October 2026\\\small Repository pin: \texttt{34b63b3b197b0a5f285a229d91bc163fcc42ab93}}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct GC215, a deterministic one-tape, two-symbol Turing machine with
+215 nonhalting states, including its blank-tape initialization.  Using the
+accepted ProveIt numerical-calculus calibration at the pinned revision, an
+ordinary mathematical argument formalizable in ZFC proves
+\[
+ \neg\Halt(\mathrm{GC215},\mathrm{blank})\ \longleftrightarrow\ \Con(\mathrm{ZFC}).
+\]
+The machine changes the proof language: an axiom command generalizes its cached
+theorem using the command's private parameter rather than its incoming
+arithmetic counter.  This removes a counter-loading command from compiled
+generalization steps.  The extra source decoder role is paid for by a new
+conditional merge using an existing tape marker and existing helper states.
+The exact table passes all 6,151 arbitrary-natural primitive contracts,
+covering all 430 rows, and its complete blank computation reaches the
+calibrated source frame after 68,710 transitions.  The packet also gives a new
+107-node proof that the sixth numerical axiom may be restricted to matrices
+larger than their binder while preserving every raw theorem code.
+No 214-state machine was obtained.  The new table has no new compiled
+Lean/Rocq endpoint in this packet; its proof uses explicit inherited
+calibration together with fresh ordinary source, runtime, and startup proofs.
+\end{abstract}
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Result, exact convention, and what is new}
+
+GC215 has one two-way infinite tape, initially all zero; a head initially at
+position zero; symbols $0,1$; and moves $L,R$ only.  Every working state has
+one transition for each read symbol.  The dense presentation has working
+states $0,\ldots,214$, initial state $0$, and a separate halt $215$ with no
+outgoing rows.  A native presentation retains historical diagnostic labels;
+its halt is $254$ and its dispatcher is $84$.  The dense dispatcher is $81$.
+The complete dense table is printed in Appendix~\ref{app:table}.
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Measured or checked quantity & GC215\\
+\midrule
+Working states / transition rows & $215\,/\,430$\\
+Source primitive occurrences / distinct subtrees & $4{,}732\,/\,202$\\
+Maximum source address length / zero run & $44\,/\,6$\\
+Universal guarded primitive cases & $6{,}151$\\
+Symbolic proof rules in the fresh runtime check & $1{,}617{,}679$\\
+Rows covered by those cases & all $430$\\
+Minimum constant term of a duration & $5$\\
+Complete blank initialization prefix & $68{,}710$ steps\\
+Checkpoint one-cells / zero-valued spare registers & $100\,/\,63$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The exact delivered identities are:
+\begin{description}[style=nextline]
+\item[Dense table, \file{machine/gc215.tm}]
+\nolinkurl{ccabf998e346356edb33a829a8c2ab7a24b69f032349e9228f53e2295337ec0f}
+\item[Native table, \file{machine/gc215.native.tm}]
+\nolinkurl{a5d8dfeb92a6ae843692c65b5eaf69b845b08b48d65dc011ba8a457e4faec67d}
+\item[Source, \file{source/gc215.sites.json}]
+\nolinkurl{3b4e8203227f4be6d868ffdfb8d1a6311f5ac9a647dadf8386eb8f0de509ce57}
+\end{description}
+
+The immediate source and physical predecessor is the pending
+\file{ST215_Direct_Transfer_2026-10-21.zip} packet in the pinned repository
+\cite{st215}.  That predecessor already has the direct single-cache-guard
+transfer command and a complete 215-state construction.  Neither that
+transfer idea nor its original compiler is claimed as new here.
+
+The present changes are substantive at both command and machine levels.
+The old AX command emits $Q_U(\mathrm{old}\ h)$, where $U$ is the incoming
+counter.  GC215 emits $Q_C(\mathrm{old}\ h)$, where $C$ is supplied by the
+command tag.  Its strong proof compiler therefore omits $J(i)$ in a
+generalization of binder $i$.  For $i>0$, this removes one MP command and its
+two numerical fields from that compiled proof block.  The source has one
+more distinct subtree than ST215.  A new physical merge of roles 129 and 310
+returns the working-state count to 215.  This is not a state renaming, a
+reflection, or just a different list of table rows.
+
+No uniform total-runtime improvement is asserted.  Numerical parameter sizes
+and proof words change, so a shorter block need not give a simple uniform
+binary-time comparison.  The measured blank prefix is 1,796 steps shorter
+than ST215's 70,506-step prefix; this is only a startup comparison.
+
+\subsection{The proof boundary}
+
+The repository's primary K215 now has compiled Lean and Rocq endpoints
+\cite{k215}.  Those endpoints concern that earlier exact table.  We do not
+transfer a proof-assistant endpoint merely by preserving the state count.
+The present theorem is an ordinary ZFC-formalizable proof composed from:
+the inherited native-calculus/ZFC calibration, the fresh command compiler,
+the literal source change, the arbitrary-natural binary simulation, and the
+complete finite blank prefix.  The inherited dominated-$\rho_8$ certificate
+is checked afresh but is only one part of that dependency chain.
+
+All proof claims concern finite syntactic refutations.  The construction
+does not decide whether ZFC is consistent, prove unconditional nonhalting,
+or establish a lower bound on the number of states required.
+
+\section{A two-operand source change and a reproducible allocation}
+
+The ordered primitive source uses increment, guarded decrement, break,
+continue, and halt.  Registers are numbered $0,\ldots,8$ and interpreted as
+$(N,T,W,A,D,H,X,Y,L)$ in the inherited convention.  Register $3$ is the
+decoded residual command tag, not the logical parameter called $A$ in an
+AX equation.  Register $4$ is the additive counter and register $5$ is the
+cache.  Confusing these two uses of ``A'' would change the proposed sampler.
+
+Relative to ST215, the literal source modifications are exactly:
+\begin{center}
+\begin{tabular}{@{}rlll@{}}
+\toprule
+Ordinal & Source address & Old & New\\
+\midrule
+44 & \texttt{0011001000100} & \texttt{CD4} & \texttt{CD3}\\
+49 & \texttt{00110010001110} & \texttt{CI4} & \texttt{CI3}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All 4,732 source addresses and all guarded control-flow targets remain
+unchanged.  Two independently organized CFG resolvers agree.  The changed
+seven-leaf interval $[44,51)$ is a closed copying macro.  Starting with
+$T=X=0$ and $C=c$, its first loop decrements $C$ while incrementing $T$ and
+$X$, and its second loop moves $X$ back to $C$.  It terminates with
+$(C,T,X)=(c,c,0)$ and leaves every other register unchanged.  The two loop
+variants are $C$ and $X$ respectively.  This is an all-natural argument,
+also obtainable by conjugating the old copy macro by the interchange of
+registers 3 and 4.
+
+The surrounding stack push is unchanged.  Therefore the first generalized
+AX formula uses $C$ in place of $U$, while all parameter registers and all
+subsequent AX computations retain their values.  The check binds this
+closed macro to the exact two source sites; the arithmetic argument supplies
+the quantified semantic effect.
+
+An allocator first produces a corrected 216-state table, delivered as
+\file{reference/gc216.native.tm}.  It is then reduced by the local proof in
+the next section.  Replay does not require that allocator or a solver:
+\file{source/table_recipe.json} lists all changes to the pinned ST215 table
+and the final merge.  The verifier rebuilds the parent and candidate bytes
+exactly, then checks the dense state bijection.
+
+The first allocation attempt accidentally overwrote an engine use of
+$134/0$.  It passed a decoder-prefix audit but failed the very first
+universal primitive case.  That rejected table is not the candidate.
+The corrected allocation protects the row, and both corrected 216 and final
+215 tables were fully checked.  This is a concrete reason to distinguish
+source-node allocation from a binary runtime proof.
+
+\input{sections/decoder_merge_section}
+\input{sections/genc_calibration_section}
+
+\section{Physical verification and its exact scope}
+\label{sec:physical}
+
+\subsection{Universal primitive contracts}
+
+For each source occurrence, the checker reconstructs the entire symbolic
+tape frame.  Every decrement occurrence has a zero and a positive case;
+other primitives have one case.  The resulting 6,151 cases quantify over
+the natural register values allowed by their guards, the gap, the first
+spare value, and an arbitrary finite remaining spare list.  They include
+the complete zero exterior.  They are not a finite list of sample register
+assignments.
+
+The proof engine uses three rule forms: literal table transitions, induction
+on the length of a uniform unary run, and structural induction over a finite
+list after checking a one-block schema on the actual table.  It first
+rederives the four required block schemas.  The fresh final run used
+1,617,679 rules, covered all 430 rows, and returned a positive affine
+duration in every case.  Each duration has thirteen slots: the constant,
+gap, nine primary values, the first spare value, and the remaining-list
+width.  Every coefficient is nonnegative and the smallest constant is five.
+
+Positive durations matter: they connect an infinite source computation to
+an infinite binary computation and prevent a purported simulation from
+using zero-time steps.  Per-case correspondence also proves that a finite
+source halt reaches the separate binary halt.
+
+The saved compressed records contain the ordered case metadata.  The default
+verifier audits their identities, complete case order, affine durations, row
+coverage, and block schemas.  With \texttt{--runtime}, it reconstructs every
+case from the table and compares the complete resulting records with the
+saved ones.  These are distinct replay modes, and neither is advertised as
+a proof-assistant kernel check.
+
+\subsection{A complete blank-prefix witness}
+
+The finite witness starts from control zero, head zero, and an empty set of
+one-cells.  It records and replays every one of the 68,710 literal
+transitions.  Its endpoint is compared with a separately constructed whole
+frame, including the complete finite one-set and the zero exterior.
+A second startup reader imports none of the compiler, runtime, or primary
+bootstrap utilities: it executes both native and dense tables in a bounded
+bytearray, checks every saved delta and every source-prefix record, and
+compares the complete final tape.  Its observed head interval is $[-12,226]$.
+The source alignment is a fresh 177-primitive execution from the synthetic
+AX entry; it is not an identification based only on the apparent top value.
+The exact values and protected-tail argument are given in the calibration
+section above.
+
+There is no need to execute the rest of AX numerically until its very large
+formula codes have all been materialized on tape.  The all-natural AX
+termination argument and the primitive simulation advance the matched
+partial command to its protected root.  The startup proof therefore uses a
+finite concrete prefix and a quantified continuation theorem, with their
+boundary made explicit.
+
+\subsection{Comparison with current inputs}
+
+The novelty census covers the pinned repository and all six then-current ZIP
+inputs under \file{docs/incoming}.  It contains 399 complete, graph-reachable
+215-state table files, 128 distinct literal tables, and 86 graph families
+after quotienting by arbitrary state renaming and global tape reflection.
+All 128 literal representatives and their provenance are included.
+
+The comparison checker constructs the forced rooted state bijection,
+preserving read symbols, written symbols, and moves.  A second comparison
+reverses every move.  Every comparison with GC215 fails, with a finite
+conflict witness.  Thus GC215 is absent from this corpus under either
+equivalence.  This does not assert semantic inequivalence of general Turing
+machines, or priority over every unpublished construction.
+
+\section{Formalism-side work: an axiom restriction that survives exact codes}
+
+The new candidate itself retains the accepted numerical calculus.  A separate
+question was whether a smaller sampler could use fewer instances of an
+expensive axiom.  The next result succeeds without needing a translation of
+the set-theoretic bundle or a well-formedness test.  It is not yet implemented
+in GC215.
+
+\input{sections/quantifier_padding_section}
+
+The secondary reader \file{checks/check_quantifier_independent.py} checks
+the 107-node proof using independent schema matching and expands the exact
+Cantor polynomial.  For its padding matrix $M$ and target matrix $b$, it
+obtains
+\begin{align*}
+ M-i={}&128i^4+768i^3+32i^2b+1680i^2+96ib\\
+       &+1583i+2b^2+70b+544>0.
+\end{align*}
+Every coefficient is a nonnegative integer and the constant is positive.
+This is a symbolic all-natural certificate, not a bounded numerical check.
+
+The main implementation obstacle is register lifetime.  In the current AX
+schedule, the old $U$ has already been consumed into the eighth formula by
+the time the sixth row is built.  A new schedule can emit
+$\rho_6(U,U+x)$ earlier, consume the old cache destructively, and retime
+the other parameter reads.  A concrete source prototype reached 4,731
+primitive occurrences but 217 distinct subtrees and a zero run of eight.
+Its shorter word is not a smaller verified machine.  That source remains
+research, with no 215-state allocation or blank calibration claimed.
+
+\section{Other calibrated encodings and command interfaces}
+
+\input{sections/constructor_orientation_section}
+
+The first implementation that reverses every formula pair keeps the stack
+codec unchanged and uses a register-conjugated pairing macro.  It costs
+208 distinct source subtrees, seven more than the direct ST215 source.  Its
+mathematical equivalence is complete; a competitive physical allocation was
+not obtained.  This result does not justify transporting the numerical
+dominance inequality through a nonmonotone code permutation.
+
+\input{sections/guard_relocation_section}
+
+The incoming-top guard has a particularly strong compiler: every proof block
+returns its theorem before a final falsity-test command.  A 23-primitive
+implementation reduced the transfer word from 35 primitives but raised the
+whole-source DAG to 203.  In the tested allocation models it lacked two
+usable full decoder roles.  Relocating the test to MP or AX is also logically
+sound, but no smaller completed table resulted here.  These are alternative
+interfaces; the delivered GC215 still uses the original incoming-cache guard.
+
+\section{What the unsuccessful reductions establish}
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{48mm}r>{\raggedright\arraybackslash}p{65mm}@{}}
+\toprule
+Construction or change & Source DAG & Status in this packet\\
+\midrule
+Direct ST215 predecessor & 201 & Inherited complete 215-state parent\\
+Command-tag generalization & 202 & GC215: complete new 215-state candidate\\
+23-leaf top-guard transfer & 203 & Calibrated source; tested allocation short by two roles\\
+Fused 51-leaf generalization prefix & 206 & Thirty fewer leaves; no state saving\\
+All four formula pair orders reversed & 208 & Exact code calibration; larger source\\
+Early restricted-$\rho_6$ sampler & 217 & Source prototype; no small binary candidate\\
+Strict fourth-parameter bound $U<A$ & --- & I, K, Peirce proved; full basis unresolved\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The source and state counts are separate throughout.  Fewer primitive
+occurrences do not imply fewer distinct source subtrees, and fewer subtrees
+do not automatically free physical states whose rows also serve the runtime
+engine.  The new GC215 construction succeeds precisely because its additional
+role has a tape context that permits an existing physical selector.
+
+\subsection{Strict fourth-parameter dominance is only partially recovered}
+
+The existing full dominance certificate uses $U\le A$.  Its 1,260 leaves
+include 164 with $U=A$, so replacing the condition by $U<A$ is not a change
+of notation.  We found a separate finite proof of all identity, K, and
+Peirce instances from strict leaves and truth.  Its expanded certificate has
+148 proof nodes and 187 term nodes.  The checker covers the zero aliases by
+an exhaustive symbolic zero/nonzero support argument: a nonzero proper
+implication context strictly dominates its fourth input, while a completely
+collapsed target is truth zero.
+
+This does not recover S, composition, or the unrestricted eighth family.
+Bounded proof searches did not close those obligations.  No machine using
+strict $U<A$ is claimed equiconsistent with ZFC on the strength of this
+fragment alone.
+
+\subsection{Why deleting the last scanner state did not work}
+
+The current physical scanner recognizes an eight-zero delimiter.  A simple
+deletion shortens that threshold to seven, but source addresses with six
+zeros can temporarily acquire a seventh zero during primitive execution.
+The known deletion therefore fails genuine primitive contracts.  The prior
+full census records 72 unproved contracts across 37 source occurrences:
+22 CD1, 11 CD2, two CD8, and two CI1. A concrete CD1 counterexample
+establishes that the proposed deletion is incorrect; the other unproved
+contracts are not individually claimed as semantic counterexamples.
+
+Source reassociation eliminating every run of six zeros reached 205 DAG
+nodes for the primary K215 source and 204 for the ST source, too expensive
+to offset one scanner state.  We also considered the weaker demand of
+excluding six-zero suffixes only at increment/decrement leaves.  For a
+full-CFG-preserving rewrite of these programs, this relaxation gives no
+advantage: every source leaf is graph reachable, and a non-fallthrough
+CB/CC/CH leaf in a left-child position would make its right sibling
+unreachable.  Thus every control leaf ends in one, and a six-zero terminal
+suffix must already belong to an increment or decrement.  The separate
+proof note states the exact structured-source assumptions.  Changing those
+assumptions, for example by adding unreachable padding, remains a different
+construction problem.
+
+\subsection{Local machine synthesis has a bounded negative result}
+
+We derived sound finite-window invariants by overapproximating both choices
+for every tape bit entering the window.  The radius-five invariant for the
+primary K215 table was independently checked over 87,795 configurations and
+175,526 nonhalting successor obligations.  Such closure is an inductive
+all-tape fact from the designated initial control, not an empirical bound on
+execution time.
+
+Several explicitly bounded rewrite searches used these invariants: direct
+state folds, conditional-marker folds, two-row folds with positive local
+joins, and small shared selectors.  The final GC215 two-sided fold search
+tested 19,835,232 branch candidates with a 48-step join cap and found no
+further state deletion.  This is a negative result only for that finite
+candidate family.  It is not a proof that 214 states are impossible.
+
+A small positive engine result is preserved separately.  The sole incoming
+row to state 26 is $11/0=0L26$, so its right neighbor is known to be zero.
+Consequently $26/0$ may be redirected from 134 to 194: the next read is zero,
+and both providers have $0R17$ on zero.  This exact two-step replacement
+removes that particular engine dependence on $134/0$.  It changes no state
+count by itself, is not part of the delivered GC215 table, and requires new
+allocation/runtime checks before being combined with other edits.
+
+\subsection{A rejected transfer did not receive a calibration by analogy}
+
+The rotation $R=\mathsf{NIP};\mathsf{DROP};\mathsf{NIP}$ admitted useful
+PUSH and reset macros, but the attempted proof compiler could not remove
+generated axiom heads below a selected theorem while preserving that theorem.
+Ordinary Hilbert completeness does not supply the missing stack operation.
+Its literal table also turned out to be a pre-existing incoming comparison
+artifact.  It is not counted as a new or calibrated result here.
+
+\section{Reproduction, integration, and trust}
+
+The archive is self-contained for its new finite checks and runtime replay.
+Its inherited set-theoretic calibration is precisely pinned and attributed;
+it is not re-proved from the ZFC axioms in this packet.  The main commands,
+run from the extracted directory with Python assertions enabled, are:
+\begin{quote}\ttfamily
+python3 verify.py\\
+python3 verify.py --runtime
+\end{quote}
+The first verifies the file manifest, literal construction, source/CFG
+identities, conditional fold, dense labels, complete blank trace, both new
+logical certificates, inherited dominated certificate, and corpus comparison.
+It audits saved runtime metadata and rederives the block schemas.  The second
+also reconstructs all 6,151 universal primitive cases.  Solver libraries are
+not needed.  The verifier writes its results to a temporary directory unless
+\texttt{--work} specifies a destination.
+
+\file{evidence/portable_full_replay.json} records a fresh full replay of the
+packaged files.  \file{MANIFEST.json} and \file{SHA256SUMS} bind the final
+files.  The paper can be rebuilt by two ordinary \texttt{pdflatex} passes in
+\file{report/}.  Its source includes the full dense table; the verifier checks all 430
+printed transition entries against the delivered machine file.
+
+The verification code is intentionally executed inherited code where marked;
+historical notices claiming otherwise describe earlier packets.  The
+logical checkers validate explicit finite proof data.  The symbolic runtime
+checker validates an induction-based proof system on exact table rows.
+The remaining trust boundary is ordinary mathematical review of those rules,
+the command arithmetic, and the pinned native-calculus calibration.  A new
+Lean or Rocq endpoint would reduce that boundary, but is not claimed here.
+
+\section*{Attribution}
+\addcontentsline{toc}{section}{Attribution}
+
+The ProveIt contributors and the earlier Wade machine/source work supply the
+numerical calculus, arithmetic macros, source language, physical engine,
+compact proof-search architecture, and earlier reductions.  The dominated
+single-axiom certificate, direct transfer compiler, protected-credit method,
+and much of the symbolic verifier are inherited.  The prior general
+constructor-transport argument is explicitly credited in the orientation
+section.  The new work in this packet is the command-tag generalization
+interface, its exact source and table, the new conditional decoder fold,
+complete new verification, the quantifier-padding theorem and finite proof,
+and the scoped supplementary investigations.  All inherited license and
+notice files are retained under \file{licenses/} and \file{reference/}.
+
+\begin{thebibliography}{9}
+\bibitem{k215}
+ProveIt contributors, \emph{K215: 215 working states for ZFC consistency},
+ordinary proof and compiled-endpoint documentation, pinned revision
+\texttt{34b63b3b197b0a5f285a229d91bc163fcc42ab93}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/34b63b3b197b0a5f285a229d91bc163fcc42ab93/Computability/BusyBeaver/Research/ZFC/candidate-k215}.
+\bibitem{st215}
+ProveIt incoming contribution, \emph{ST215 Direct Transfer},
+\file{ST215_Direct_Transfer_2026-10-21.zip}, at the same pinned revision.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/34b63b3b197b0a5f285a229d91bc163fcc42ab93/docs/incoming/ST215_Direct_Transfer_2026-10-21.zip}.
+\bibitem{dominated}
+ProveIt contributors, \emph{Ordinary proof boundary of the dominated-rho8
+machine}, K218 dominated alternative, with the inherited 3,728-node
+certificate and calibration references.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/34b63b3b197b0a5f285a229d91bc163fcc42ab93/Computability/BusyBeaver/Research/ZFC/candidate-k218/alternatives/dominated/proof.md}.
+\bibitem{recoding}
+ProveIt incoming/placed contribution, \emph{Zero-spare transfer215 and further
+alternatives}, prefix-recoding and raw-code calibration sections, same pin.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/34b63b3b197b0a5f285a229d91bc163fcc42ab93/Computability/BusyBeaver/Research/ZFC/candidate-k215/alternatives/zero-spare-transfer/report.tex}.
+\end{thebibliography}
+
+\clearpage
+\appendix
+\section{Complete dense transition table}
+\label{app:table}
+
+Start in state $0$ on an all-zero two-way tape, head at position $0$.
+There are 215 working states.  In each read column, $wDq$ means write $w$,
+move in direction $D$, and enter $q$.  The symbol $H$ denotes the separate
+halt state $215$.  All listed transitions are also provided in the
+five-column plain-text machine file.
+
+\input{sections/dense_table}
+
+\end{document}

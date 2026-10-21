@@ -1,0 +1,159 @@
+\subsection{Moving the sole falsity guard to a register that is about to be overwritten}
+\label{sec:guard-relocation}
+The logical proof search need not test falsity at the same command boundary
+as earlier candidates.  This gives several command interfaces while retaining
+the accepted numerical calculus and its exact full AX bundle.  The point is
+to choose a guard whose register handling can share work with the surrounding
+source macro.
+
+Use the work tuple $(t,w,d,h)$ and Cantor stack notation $[x;w]=P(x,w)$.
+The macro names in this subsection are local to the chosen alternative
+interface. Let $A_0(c;x,y)$ denote the predecessor AX command: with
+$U=d$, $A=d+x$, $B=h+y$, $C=c$, it returns the full gate and
+\[
+ [R_1,\ldots,R_7,L(A,B,C,U),Q_Uh,t;w],
+ \qquad d=h=0.
+\]
+Its gate and first eight new heads have tag zero; the ninth has tag two.
+The enabled gate is itself an implication code, since it is the literal
+negation $N(V_0\to J_0)$.  In particular none of these nine heads or the
+gate equals native falsity~$1$.
+
+\paragraph{A top guard on transfer gives a total proof compiler.}
+Define
+\[
+ S_T(t,w,d,h)=
+ \begin{cases}
+  \mathsf{halt},&t=1,\\
+  (h,\operatorname{tail}(w),d,\operatorname{head}(w)),&t\ne1.
+ \end{cases}
+\]
+Keep AX and MP unchanged.  Put
+\[
+ D=\mathsf{AX}(0;0,0),\qquad
+ H=D;S_T^{11},\qquad
+ \mathsf{PUSH}=D;S_T^9;\mathsf{MP}(0).
+\]
+For every natural input these macros terminate normally and satisfy
+\[
+ H(t,w,d,h)=(t,\operatorname{tail}(w),0,\operatorname{head}(w)),
+ \qquad
+ \mathsf{PUSH}(t,w,d,h)=(0,[t;w],0,0).
+\]
+Indeed, the first eleven transfer guards after AX inspect only its gate,
+zero, its first eight heads, and its ninth head.  The saved incoming top
+appears as output of the eleventh shift and is never tested.  Thus $H$
+returns even when $t=1$.  After nine shifts PUSH has a tag-two cache;
+its final MP necessarily fails against a tag-zero implication.
+
+The reset macro
+\[
+ \mathsf{DISCARD}=\mathsf{MP}(1);\mathsf{AX}(1;0,0);
+ S_T^{10};\mathsf{MP}(0)
+\]
+returns $(0,w,0,0)$ from every $(t,w,0,0)$.  Define $J(0)$ to be empty
+and $J(u)=\mathsf{MP}(u)$ for $u>0$ on a cleared input.  These give a
+total, exact compiler $B_X(t,w,0,0)=(X,w,0,0)$ for every native theorem $X$.
+The blocks are as follows, with $M=I(A,B)$:
+\begin{align*}
+ B_0&=\mathsf{DISCARD},\\
+ B_{R_j(a,b,c)}&=\mathsf{DISCARD};\mathsf{AX}(c;a,b);
+ S_T^{j+1};H^{9-j}, &&1\le j\le7,\\
+ B_{L(a,b,c,u)}&=\mathsf{DISCARD};J(u);\mathsf{AX}(c;a-u,b);
+ S_T^9;H, &&u\le a,\\
+ B_{\operatorname{Bundle}(a,b,c)}&=
+ \mathsf{DISCARD};\mathsf{AX}(c;a,b);H^{10},\\
+ B_{Q_iX}&=B_X;\mathsf{PUSH};J(i);S_T;
+ \mathsf{AX}(i;0,0);S_T^{10},\\
+ B_B&=B_M;\mathsf{PUSH};B_A;\mathsf{PUSH};S_T;S_T;
+ \mathsf{MP}(B);\mathsf{AX}(B;0,0);S_T^{11}.
+\end{align*}
+Each axiom block selects the indicated head and removes exactly the
+remaining generated heads through the saved zero.  In GEN the lone shift
+tests top zero and loads $X$ into cache immediately before AX.  In MP the
+two shifts both test top zero and leave $(A,w,0,M)$.  The literal MP succeeds,
+pushing one zero.  The cleanup AX has zero gate and its eleven shifts
+remove precisely that zero.  Its last guard tests $Q_B0$, so even $B=1$
+returns normally.  The alias $I(0,0)=0$ is handled by this same successful
+MP calculation.  Structural induction on the finite proof establishes the
+total compiler without a theoremhood condition on incoming $t,w$.
+The final word $B_1;S_T$ therefore halts.
+
+\paragraph{A guard at AX entry gives the usual strong compiler.}
+Alternatively make transfer total,
+\[
+ S_0(t,w,d,h)=(h,\operatorname{tail}(w),d,\operatorname{head}(w)),
+\]
+and define $\mathsf{AX}^{\dagger}$ to halt exactly when incoming $t=1$,
+otherwise performing exactly $A_0$.  Keep MP unchanged.  The displayed
+compiler blocks, with $S_0$ and $\mathsf{AX}^{\dagger}$ substituted, now
+obey the strong contract: they halt or return exactly $(X,w,0,0)$.
+
+Here $H$ and PUSH halt precisely on incoming top one.  DISCARD remains
+total because its first MP clears the top before any guard.  All axiom
+blocks enter AX with top zero or a selected implication code.  GEN may
+halt in PUSH if $X=1$, which satisfies the strong contract.  MP may halt
+in its second PUSH if $A=1$, or at cleanup AX if $B=1$; otherwise every
+displayed state equality holds.  These are all new halting cases, and the
+old numerical zero aliases require no additional exception.  The fixed
+suffix $B_1;\mathsf{AX}^{\dagger}(0;0,0)$ halts from every top/stack pair
+with counter/cache zero.
+
+\paragraph{The same guard may instead be placed at MP entry.}
+With total $S_0$ and unguarded AX, the displayed blocks terminate normally
+with their exact outputs.  Add a test of incoming $t=1$ to the entry of
+just one chosen command.  Until that test halts, execution follows exactly
+the total command computation; thus every block now either halts or
+returns its former exact output.  Actual-run theoremhood makes every new
+halt sound.  Appending that guarded command to $B_1$ gives completeness.
+In particular one may guard MP instead of AX and use the final suffix
+$B_1;\mathsf{MP}^{\dagger}(0)$.  This is useful when the tested top is
+already being copied or cleared inside the MP implementation.  It does
+not require inserting guards into both commands.
+
+\paragraph{Soundness, protected tails, and cofinal completeness.}
+On safe runs the tested top is always a native theorem.  Both interfaces
+therefore halt only with a native derivation of~1.  Their normal command
+outputs preserve theoremhood.  The protected-tail balance proof also
+applies unchanged: the three command costs remain $-1,0,+10$, and each
+returning transfer removes exactly one explicit theorem head.  In the
+second interface an AX halt is already sound, while each returning AX
+still adds ten heads.  Thus the existing all-natural credit theorem,
+including $d(1)=2$, applies to both interfaces.
+
+The fields remain $[0]$, $[1,x]$, and $[c+2,y,x]$.
+If $R$ is the encoded residual for the corresponding fixed refutation
+suffix, each candidate
+\[
+ N_Y=P\bigl(2,P(Y,P(1,R))\bigr)
+\]
+first executes $\mathsf{AX}(0;1,Y)$ (or its guarded version), then the
+suffix.  It either halts on that first call or resets counter/cache and
+executes a successful compiled refutation.  Since $N_Y\ge Y$, successful
+candidates occur beyond every finite startup cutoff.  The unchanged
+scheduler's positive residual strictly decreases after decrement and field
+decoding, so it eventually reaches such a candidate unless it has halted
+earlier.  Under the inherited native-calculus calibration, either source
+interface has halting equivalent to inconsistency of ZFC.
+
+These are complete command-level proofs.  The source implementation must
+still prove its exact guard and normal output contracts, scratch
+restoration, and wire decoding.  Physical allocation, all-tape simulation,
+and blank initialization are separate obligations; a smaller source DAG
+or finite sample alone does not discharge them.
+
+\paragraph{An independently chosen generalization binder.}
+A further compatible change is to replace only AX's ninth head $Q_Uh$ by
+$Q_Ch$, keeping all eight logical rows and the saved top unchanged.
+Soundness still follows from unrestricted theorem generalization.
+H and PUSH require only the ninth head's tag two, so their contracts and
+all axiom and MP blocks remain valid.  Writing $S$ for the transfer operation of the chosen alternative,
+the GEN block simplifies to
+\[
+ B_{Q_iX}=B_X;\mathsf{PUSH};S;\mathsf{AX}(i;0,0);S^{10}.
+\]
+Before AX the state is $(0,w,0,X)$, so the ninth head is exactly $Q_iX$
+and the tenth is zero.  The old counter-setting block $J(i)$ is omitted.
+Here the AX gate need not vanish, because $A=0$ and $B=X$; it remains an
+implication code and the first transfer safely overwrites it.  This detail
+also makes the construction valid with the top-guard transfer.

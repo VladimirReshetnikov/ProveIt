@@ -1,0 +1,385 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs,longtable,array,xcolor}
+\usepackage[margin=25mm,headheight=14pt]{geometry}
+\usepackage{fancyhdr}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={ZC215: a 215-state ZFC-consistency machine},pdfauthor={Research contribution for Vladimir Reshetnikov's ProveIt project},pdfsubject={Zero-credit tag-lowering proof and exact binary Turing machine}}
+\usepackage{enumitem}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\parskip}{5pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small ZC215: zero-credit enumeration}
+\fancyhead[R]{\small Research contribution, 21 October 2026}
+\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\D}{\mathsf{DROP}}
+\newcommand{\N}{\mathsf{NIP}}
+\newcommand{\MP}{\mathsf{MP}}
+\newcommand{\AX}{\mathsf{AX}}
+\newcommand{\Nat}{\mathbb{N}}
+\newcommand{\file}[1]{\texttt{\path{#1}}}
+\title{\vspace{-12mm}\textbf{ZC215: a 215-state ZFC-consistency machine}\par\vspace{3mm}
+\large Exhaustive enumeration, tag lowering, and an opaque initial stack}
+\author{Research contribution prepared for Vladimir Reshetnikov's ProveIt project}
+\date{21 October 2026}
+\begin{document}
+\maketitle\thispagestyle{empty}
+\begin{abstract}
+We construct a binary, two-way-tape Turing machine with 215 working states whose blank nonhalting is equivalent to $\Con(\mathrm{ZFC})$ by ordinary reasoning formalizable in ZFC. The machine combines DROP-first command tags, a shared CB1 refill, zero-valued spare blocks, and an alternate blank entry. It differs from the accepted \texttt{commands120} table in two transition rows and its initial state. A new tag-lowering injection proves that every prefix of the exhaustive command stream contains at least as many DROP operations as NIP operations. Thus the entire initial numerical stack may be arbitrary junk: no initialized reserve of theorem heads is needed, even if every axiom-generated stack entry is ignored for this counting argument. The exact table passes 6,177 arbitrary-value guarded runtime obligations and a complete 117,004-step blank initialization audit. We also give a seven-shift synchronization theorem for a different abstract enumerator, exhibit a concrete false halt in its archived implementation, and record a fresh-binder source experiment. No 214-state machine or new proof-assistant endpoint is claimed.
+\end{abstract}
+
+\section{Result and verification boundary}
+
+Let $M_{\rm ZC215}$ be the dense transition table in Appendix~\ref{app:table}, initially in state 0 with its head at cell 0 of an all-zero tape. It has 215 working states, 430 transition rows, alphabet $\{0,1\}$, and only left and right moves. State 215 is the separate halt state and has no outgoing transitions. Initialization is part of the machine; no input, oracle, or prewritten tape is supplied.
+
+\begin{theorem}\label{thm:main}
+For the delivered literal table,
+\[
+ \mathrm{ZFC}\ \vdash\quad
+ \neg\Halt(M_{\rm ZC215},\mathrm{blank})
+ \ \longleftrightarrow\ \Con(\mathrm{ZFC}).
+\]
+Here consistency means absence of a finite syntactic ZFC refutation, with the proof encoding used by the inherited ProveIt calibration.
+\end{theorem}
+
+The theorem is supported by an ordinary mathematical proof, explicit inherited calibration results, and a fresh executable symbolic derivation of the complete binary simulation. The executable checker uses induction over arbitrary unary lengths and arbitrary finite spare lists; it is not a bounded search over register values. It is also not a proof-assistant kernel. The primary parent K215 has compiled Lean and Rocq endpoints in the repository, but this contribution does not extend those endpoints to the new table. This distinction is part of the release status, not an implicit verification claim.
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}\toprule
+Quantity & ZC215 \\\midrule
+Working states / transition rows & 215 / 430 \\
+Graph-reachable working states & 215 \\
+Distinct source subtrees / primitive occurrences & 202 / 4,752 \\
+Maximum source depth / consecutive zero run & 47 / 6 \\
+Guarded arbitrary-value runtime cases & 6,177 \\
+Symbolic rule applications in fresh replay & 1,698,860 \\
+Transition rows covered by the runtime proof & 430 \\
+Minimum constant term of a runtime duration & 9 \\
+Literal blank startup transitions & 117,004 \\\bottomrule
+\end{tabular}
+\end{center}
+
+The source-subtree count is a compression metric, not a count of physical Turing states. Graph reachability likewise does not assert that every state is visited on the particular blank trajectory.
+
+\section{The exact construction}
+
+\subsection{Pinned parent and table changes}
+
+The immediate parent is \file{candidate-k215/alternatives/commands120} at ProveIt revision
+\begin{center}\small\texttt{29e2cc4c557c04d3358e41e566bd7c582844ff4e}.\end{center}
+It assigns command tags $\D=0$, $\N=1$, $\MP=2$, and $\AX\geq3$. Frozen copies of its native table and source are included in \file{reference/commands120/}. In the parent's native labels, make exactly the following changes:
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}\toprule
+Component & Parent & ZC215 \\\midrule
+Initial state & 0 & 74 \\
+Transition at $(8,1)$ & $1\,R\,13$ & $1\,R\,103$ \\
+Transition at $(198,0)$ & $1\,L\,40$ & $0\,L\,40$ \\\bottomrule
+\end{tabular}
+\end{center}
+
+The first row change enables the shared CB1 refill. The second changes newly appended spare blocks from $B(1)=011$ to $B(0)=01$, where $B(v)=0\,1^{v+1}$. The native dispatcher is 84 and the native halt label is 254. Native labels are inherited and need not be consecutive. Breadth-first relabeling from state 74, inspecting input 0 before input 1, gives the delivered dense table: start 0, dispatcher 25, halt 215. \file{machine/canonicalization.json} records the entire bijection.
+
+\subsection{The exact source change}
+
+The register source is a binary tree of primitive instructions. Its relevant scheduler subtree is
+\[
+ ((G,(F,(\mathrm{CI}0,H_0))),B),\qquad
+ \begin{cases}
+ G=(\mathrm{CD}8,\mathrm{CB}1),\\
+ F=(\mathrm{CD}0,(\mathrm{CI}8,(\mathrm{CI}6,\mathrm{CC}3))),\\
+ H_0=(\mathrm{CD}6,\mathrm{CC}2).
+ \end{cases}
+\]
+Replace $H_0$ at tree path \texttt{0111} by $(H_0,\mathrm{CB}1)$. No other source subtree changes. The new CB1 is primitive occurrence 9, numbered from zero. All old occurrences retain their instructions under the ordinal map $j(i)=i$ for $i<9$ and $j(i)=i+1$ for $i\geq9$. The sole changed old control-flow edge is the zero branch of old occurrence 7: it now reaches the inserted CB1, which returns to occurrence 0. Every other guarded edge is transported exactly. Two independently implemented control-flow resolvers check the complete graph.
+
+\file{code/reconstruct.py} derives the source and both presentations of the table from the frozen parent, checks the parent hashes, checks the two guarded graph constructions, and compares the resulting files byte for byte. Thus the construction is a short reproducible delta, rather than an unexplained table found by a search.
+
+\subsection{What is materially different}
+
+The individual ingredients have repository ancestry: DROP-first command order, CB1 refills, alternate blank entry, and zero spare appending are not claimed as separate first discoveries. Their verified combination is new among the inspected tables. More significantly, their combination changes the proof invariant. The scheduler starts at raw candidate 0 and protects an arbitrary initial stack without decoding even its first head. Section~\ref{sec:credit} proves this with a tag-order argument that does not use the positive stack contribution of AX.
+
+For comparison, the release preserves all 67 parseable 215-state \texttt{.tm} tables present in the pinned checkout, representing 16 rooted transition-graph classes. Canonical comparison found no equality to ZC215 under a rooted state renaming or under that renaming followed by global tape reflection. This establishes a finite, reproducible novelty check within that corpus. It is not a claim about every historical archive or about arbitrary semantic equivalence.
+
+\section{Numerical calculus and command contracts}\label{sec:calculus}
+
+\subsection{The inherited consistency calibration}
+
+Use Cantor pairing and the numerical constructors
+\[
+ P(a,b)=\frac{(a+b)(a+b+1)}2+b,\qquad
+ I(a,b)=4P(a,b),\qquad Q_i(a)=4P(i,a)+2.
+\]
+Truth is code 0 and falsity is code 1. In particular $I(0,0)=0$ is a real alias, not an excluded corner case. Codes are arbitrary natural numbers. The source never checks that a candidate denotes a well-formed first-order formula.
+
+The retained calculus consists of truth, numerical modus ponens, theorem-only generalization, seven logical rows, the gated set-theory seed bundle, and the dominated row
+\[
+ L(A,B,C,U)=((C\mathbin{\to}U)\mathbin{\to}A)
+       \mathbin{\to}((A\mathbin{\to}C)\mathbin{\to}(B\mathbin{\to}C)),
+ \qquad U\leq A,
+\]
+where each arrow is $I$. The seventh retained row is the merged equality row; the earlier unrestricted eighth row is recovered by the inherited finite derivation from dominated instances. The seed bundle is exactly the parent's bundle, including its gate. No schema, formula substitution rule, or first-order soundness condition is silently added.
+
+We use the parent's calibration theorem: native derivability of code 1 is equivalent, by finite proof transformations formalizable in ZFC, to the existence of a ZFC refutation. The detailed ancestry and numerical definitions are recorded in the pinned repository and the included references~\cite{parent,dominated,compiler}. This contribution changes neither that calculus nor its command bodies. It supplies a new scheduler, a new safety proof, and a fresh physical binding.
+
+\subsection{The four command equations}
+
+Write $(t,w,d,h)$ for top, numerical stack, additive counter, and cached formula. A finite explicit stack $[x_1,\ldots,x_k;w]$ means $P(x_1,P(x_2,\ldots P(x_k,w)\ldots))$. The incoming tail $w$ need not encode any particular list.
+
+\begin{align*}
+ \D &: (t,w,d,h)\longmapsto(h,P(t,w),d,h),\\
+ \N &: \text{halt if }h=1;\quad
+       \text{otherwise }(t,w,d,h)\longmapsto(t,v,d,x),
+       \quad P(x,v)=w.
+\end{align*}
+For $\MP(x)$ put $y=d+x$. If $I(t,y)=h$, return $(y,P(0,w),y,0)$; otherwise return $(0,w,y,0)$.
+
+For $\AX(c;x,y)$ put $U=d$, $A=d+x$, $B=h+y$, $C=c$. Its new top is the gated bundle $\mathcal B(A,B,c)$; its counter and cache become zero; its new stack is
+\[
+ [R_1(A,B,c),\ldots,R_7(A,B,c),L(A,B,c,U),Q_U(h),t;w].
+\]
+The bundle is 0 when $c=A$ or $c=B$. The quantifier entry uses the incoming cache $h$, before adding $y$. The dominated side condition is automatic because $A=U+x$.
+
+If top and cache are theorems, DROP pushes a theorem, MP preserves theoremhood and never removes a stack head, and AX pushes ten theorem heads. NIP is safe whenever it has a protected theorem head available, and is the only command that may halt. Its halt test is on the old cache. The important task is therefore to prove that NIP never reads the unprotected initial tail. No interpretation of arbitrary junk codes is needed for that task.
+
+\section{Exact enumeration and the tag-lowering theorem}\label{sec:credit}
+
+\subsection{The refill launches every raw candidate}
+
+The nine logical registers are $(N,T,W,A,D,H,X,Y,L)$, with $X$ the refill scratch and $L$ the command residual. At the source root $X=0$. If $L>0$, the root decrements it and the reader receives $L-1$, leaving $N$ unchanged. If $L=0$ and $N=n>0$, the two unary transfer loops establish
+\[
+ (N,L,X)=(n+1,n,0).
+\]
+The inserted CB1 returns to the root; the root then decrements $L$ and the reader receives $n-1$. The harmless exceptional case $N=L=0$ performs one additional refill and reads 0 with counter 2. The actual initialized values $N=1,L=0$ therefore launch exactly
+\[
+ 0,1,2,3,\ldots.
+\]
+Each nonhalting candidate finishes. Positive continuations are decremented before their first field is read, and each Cantor projection is at most its input. The next raw continuation is consequently strictly smaller than the current raw candidate. The arithmetic command macros are terminating natural-number loops. Malformed or undecodable formula codes cannot block enumeration.
+
+\subsection{Raw codes are a bijection with nonempty command words}
+
+The command fields are
+\[
+ \D:[0],\qquad \N:[1],\qquad
+ \MP(x):[2,x],\qquad \AX(c;x,y):[c+3,y,x].
+\]
+For a field list define $E([a_1,\ldots,a_r],v)$ by right-nesting $P$, with final tail $v$. For a nonempty command word $K$, define its raw encoding $\rho$ recursively:
+\[
+ \rho([k])=E(\operatorname{fields}(k),0),\qquad
+ \rho(k::K)=E(\operatorname{fields}(k),1+\rho(K)).
+\]
+Let $W(n)$ be the syntactic parse of raw candidate $n$. Unique field counts and strict descent give
+\[
+ \rho(W(n))=n,\qquad W(\rho(K))=K.
+\]
+These identities include $\rho([\D])=0$. A raw zero is a one-command candidate; an empty continuation is distinguished by the predecessor's zero residual. A final DROP inside a longer word uses positive residual 1. Losing this distinction would invalidate the argument.
+
+\begin{theorem}[Tag lowering]\label{thm:tag}
+Every finite command prefix of $W(0)W(1)W(2)\cdots$ contains at least as many DROP occurrences as NIP occurrences. Thus assigning balances $+1,-1,0,0$ to DROP, NIP, MP, AX gives nonnegative balance at every command boundary.
+\end{theorem}
+
+\begin{proof}
+Identify an occurrence by $(n,j)$, the $j$th command of $W(n)$. For a NIP occurrence, change just that command to DROP, leaving all other commands and payloads unchanged, and let $m$ be the raw encoding of the resulting word. Both commands consume one field, so the new word parses exactly as specified and its $j$th command is DROP.
+
+Cantor pairing is strictly increasing in either coordinate. Lowering tag 1 to 0 strictly lowers the encoded suffix at the changed command. Every enclosing successor and pairing in the earlier command prefix preserves strict inequality. Hence $m<n$.
+
+The map $(n,j)\mapsto(m,j)$ is injective: from an image DROP occurrence, changing it back to NIP and re-encoding recovers the unique original occurrence. Every NIP in a finite execution prefix therefore has a distinct DROP image in a strictly earlier, already completed candidate. All those images lie in the same prefix. Counting proves the assertion.
+\end{proof}
+
+This proof uses no finite testing, diagonal estimate, theoremhood, or AX credit. The earlier independent Cantor-diagonal proof, which assigns AX credit 10, is retained in \file{proofs/zero_debt_review.md} as a separate corroborating argument. The injection is stronger and shorter.
+
+\begin{proposition}[Arbitrary-tail safety]\label{prop:tail}
+For every $J\in\Nat$, start the source at
+\[
+ (N,T,W,A,D,H,X,Y,L)=(1,0,J,0,0,0,0,0,0).
+\]
+Throughout every nonhalting execution, the top, cache, and an explicit finite list of stack heads are numerical theorems; the original tail $J$ is never exposed to NIP. Any halt gives a numerical derivation of 1.
+\end{proposition}
+
+\begin{proof}
+Initially the explicit list has length zero and top/cache are theorem 0. Maintain a list of theorem heads above the fixed tail $J$. DROP adds one; NIP removes one; MP never reduces the length; AX adds ten. The actual protected length is therefore at least the conservative DROP-minus-NIP balance. Theorem~\ref{thm:tag}, applied to the prefix ending at a NIP, implies that at least one head is available immediately before that pop. It cannot read $J$. The command equations preserve the invariant. A halt tests a theorem-valued cache equal to 1.
+\end{proof}
+
+Explicit list length is a logical witness, not a function of the magnitude of the numerical code. The identity $\operatorname{unpair}(P(x,v))=(x,v)$ holds even at $x=v=0$. Thus zero aliases do not undermine the protected-list argument.
+
+The general mechanism is reusable: exhaustive increasing enumeration by a strictly coordinate-monotone, uniquely parsed nested code makes a smaller-tag push pay for a larger-tag pop of the same arity. It gives prefix safety, not merely a favorable average. It also shows why this proof cannot simply be applied to a schedule that skips candidate numbers or starts at an arbitrary positive cutoff.
+
+\section{Completeness and composition}\label{sec:complete}
+
+\subsection{The strong compiler survives arbitrary junk}
+
+The inherited command compiler has a stronger interface than a theorem-stack precondition. For every derived code $X$, it produces a block $B_X$ sending every $(t,w,0,0)$ to $(X,w,0,0)$, or halting earlier, for arbitrary natural $t,w$. Its elementary reset is
+\[
+ \operatorname{Discard}=\MP(1);\AX(1;0,0);\N^{10},
+ \qquad J(0)=\varepsilon,\quad J(u)=\MP(u)\ (u>0).
+\]
+Against cache 0, $I(t,1)>0$ forces MP failure. The following AX has the zero gate $U=A=c=1$. Its generated entries are implications or quantifiers, hence never code 1; ten pops recover the original stack and cache 0. Omitting $\MP(0)$ in $J(0)$ avoids its possible successful extra push.
+
+From reset values, retained row $j$ is selected by
+\[
+ \AX(c;A,B);\N^j;\D;\N^{11-j},
+\]
+and the dominated row uses
+\[
+ J(U);\AX(c;A-U,B);\N^8;\D;\N^3.
+\]
+The permitted bundle uses $\AX(c;A,B);\N^{10}$. Generalization from a strong block $B_X$ uses
+\[
+ B_X;\D;J(i);\N;\AX(i;0,0);\N^9;\D;\N;\N.
+\]
+For MP from $X$ and $I(X,Y)$, use
+\begin{align*}
+ &B_X;\D;B_{I(X,Y)};\N;\D;\N;\MP(Y);\\
+ &\hspace{18mm}\AX(Y;0,0);\N^{10};\D;\N;\N.
+\end{align*}
+Direct substitution in the equations of Section~\ref{sec:calculus} verifies selection and restoration, including $X=0$, $Y=0$, and numerical aliases. Induction on a finite derivation proves the strong compiler. The fuller inherited argument is included in \file{reference/command-compiler.md}.
+
+If 1 is derivable, append $\D;\N;\N$ to $B_1$ and prepend a resetting $\AX(0;1,Y)$. This word halts from arbitrary incoming work registers, either at an earlier test or at its final test of 1. If $R$ is the encoded remaining continuation, its raw candidate number is
+\[
+ P(3,P(Y,P(1,R)))\geq Y.
+\]
+Thus successful words occur arbitrarily far out. Our schedule reaches every candidate in order unless a previous semantic halt has already occurred. This proves completeness without requiring any particular interpretation of the starting $J$.
+
+\subsection{The exact blank frame}
+
+Starting from the all-zero tape, literal execution of the native table reaches dispatcher 84 after exactly 117,004 transitions, with head $-4$, header cell 80, gap 20, and source address empty. Its logical registers are
+\[
+ (1,0,5,0,0,0,0,0,0).
+\]
+The physical block order is $(5,0,0,0,0,0,1,0,0)$. The logical-to-physical index map is $(6,2,0,4,3,7,8,5,1)$, numbered from zero. There are 67 spare blocks: the third and eighth have value 1, and all others have value 0. Exactly 86 tape cells contain 1; the leftmost is $-5$ and the rightmost is 240. Every other cell is zero.
+
+The complete list of one-cells is in \file{evidence/blank_startup.json}. Separate literal simulators reconstruct this entire frame, including the exterior, rather than checking selected registers in an intermediate configuration. Proposition~\ref{prop:tail} applies with $J=5$. No part of 5 has to be decoded as a safe initial theorem head.
+
+\subsection{The arbitrary-value binary binding}
+
+For each source occurrence, and separately for both guards of every decrement, the preserved symbolic engine proves a whole-tape binary block. Its domain quantifies over nine independent natural register values, an arbitrary natural gap, and an arbitrary nonempty finite spare list. Symbolic tape atoms represent unary runs and a finite-list tail; literal table steps, unary-loop induction, and separately proved one-block list traversals justify the reductions.
+
+The fresh proof uses the new table and source, with append value 0. All 6,177 cases pass. Each duration is an affine expression in 13 nonnegative slots; all coefficients are nonnegative and the smallest constant term is 9. Together with the generic traversal lemmas, the proof accounts for all 430 transition rows. The release preserves the per-case census and reruns the derivation, comparing every resulting case with that census.
+
+Consequently every nonhalting source step is implemented by a finite, strictly positive number of binary transitions, and the source halt is implemented by the unique binary halt. Positive durations rule out collapsing an infinite source run into a finite binary run. Combining this simulation, the exact blank frame, arbitrary-tail soundness, strong completeness, and the inherited consistency calibration proves Theorem~\ref{thm:main}.
+
+\section{A second idea: synchronizing a skipped-candidate schedule}\label{sec:seven}
+
+We also studied a substantially different three-command design, with shift $S$ at tag 0, MP at tag 1, and AX at tags at least 2. After $S$ the parser bias is 0; after MP or AX it is 1. A positive continuation $L$ is read as $L-1+b$. This design tries to shorten a transfer by allowing a dirty scratch to carry useful bias.
+
+The following is a theorem about the \emph{specified abstract scheduler}. The archived physical scratch-biased table does not implement it; Section~\ref{sec:bug} gives an exact counterexample.
+
+Let $e(n)$ be 0 when the last syntactic command of raw candidate $n$ is $S$, and 1 otherwise. With first candidate $n_0$ and initial bias $b_*$, the intended launch sequence is
+\[
+ n_1=n_0+1+b_*,\qquad n_{j+1}=n_j+1+e(n_{j-1})\quad(j\geq1).
+\]
+The delay matters: the next counter was incremented at the beginning of the current candidate. Steps are 1 or 2; cofinality alone does not guarantee visiting any particular successful code.
+
+\begin{lemma}[Forced hit]
+If $k\geq n_0+2$, $e(k-2)=e(k-1)=1$, and $e(k)=0$, then $k+3$ is launched, unless the machine has already halted.
+\end{lemma}
+\begin{proof}
+If $k$ is visited, its predecessor is $k-1$ or $k-2$, so the next visit is $k+2$; the ending bit at $k$ then forces $k+3$. If $k$ is skipped, $k-1$ is visited, followed by $k+1$; the ending bit at $k-1$ then forces $k+3$.
+\end{proof}
+
+Set $F(x)=P(0,1+x)$, which prepends one $S$. For $x>0$, exact Cantor decoding gives
+\[
+ e(F^7(x)-5)=1,\qquad e(F^7(x)-4)=1,\qquad
+ e(F^7(x)-3)=e(x).
+\]
+Thus $e(x)=0$ makes $F^7(x)$ a forced hit. One way to verify the identities is to use
+\[
+ F(x)+1=P(x+2,0),\quad F(x)-1=P(1,x),
+\]
+first at the fourth iterate, and then apply
+$e(F^3(z)-j)=e(z+3-j)$ for $z>2$ and $j=3,4,5$.
+
+The AX wrapper $A(q)=P(c+2,P(v,P(u,q)))$ preserves all three neighbor ending bits for $q>5$. Varying $v$ makes the wrapped codes unbounded. A universal refutation word can start with an additional reset and end syntactically with three $S$ commands appended after its guaranteed halt. The appended shifts ensure ending bit 0 and avoid the zero-continuation encoding exception. Seven shifts and an AX wrapper therefore produce a cofinal family of successful codes that this skipped-candidate scheduler is \emph{forced} to visit.
+
+\file{research/seven_shift_synchronizer.md} supplies the full encoding and boundary argument. A separate all-natural protected-credit proof for this abstract scheduler, with an explicit finite base and asymptotic induction, is in \file{research/biased_credit_proof.md}; its finite component has a reproducible checker. These are useful specification-level results. They do not certify the rejected table or supply a corrected 215-state allocation.
+
+\section{A rejected shortcut and a concrete false halt}\label{sec:bug}
+
+The archived \texttt{T215\_Transfer\_2026-10-20} short-transfer experiment inserts CI6 immediately before a CC3 return. Before insertion the CC3 address is \texttt{10011}; after insertion it is \texttt{100111}. The new address has four one-ancestors. Removing the last three leaves prefix \texttt{100}, whose first primitive is ordinal 23, the command dispatch. It does not return to source root 0 as required by the proposed parser equations.
+
+This is a semantic failure even though that archived table passes its own primitive runtime obligations. A valid all-truth frame at MP-entry ordinal 4590, with registers $(1,0,0,0,0,0,0,0,0)$, reaches a source halt after 40 primitive transitions. From the corresponding literal binary frame with gap 0 and spare list $[0]$, the table halts after exactly 23,142 binary transitions. A shorter suffix beginning at ordinal 4696 halts after 15 primitive transitions. Complete traces, initial and final one-cells, hashes, and a replay script are included.
+
+This counterexample invalidates the claimed scheduler interface from valid theorem frames. We do not give an unverified numerical time for a false halt from that table's blank start. The affected historical table is included only under \file{research/rejected_scratch_transfer/}, and is not the ZC215 candidate.
+
+A bounded repair search tested all 1,720 single-row redirects of the relevant \texttt{311/1} slot against two proposed corrected return contracts. None passed. Separate local helper searches also failed their global decoder obligations. These are negative results for the stated local searches, not proofs that a corrected 214- or 215-state implementation is impossible. The seven-shift theorem removes a logical obstacle; the physical return remains an engineering obstacle.
+
+\section{Formalism-side experiment: flexible fresh binders}\label{sec:formalism}
+
+Another branch changes the merged equality row itself. Let $E(a,b)=4P(a,b)+3$ and choose a primitive-recursive binder function $f$ satisfying
+\[
+ a\ne b\ \Longrightarrow\ f(a,b)\notin\{a,b\}.
+\]
+The inherited fresh-binder theorem permits
+\[
+ G_f(a,b,c)=E(c,a)\to(E(c,b)\to Q_{f(a,b)}E(a,b))
+\]
+in place of the original binder, with the other rows, gated bundle, numerical MP, and theorem-only GEN retained. It proves consistency equivalence with ZFC, not equality of native theorem sets. Its proof recovers the equality row, interprets equality as indiscernibility in the equality-free seed calibration, and uses freshness only where required. The full inherited argument is included in \file{reference/fresh_binder_proof.md}.
+
+We composed the choice $f_Q(a,b)=4P(a,b)+2$ with the accepted transfer201 source. Since $P(a,b)\geq a+b$, this binder exceeds both inputs. Replace the final CI1 at path
+\begin{center}\texttt{110100111010101100001011}\end{center}
+by $(\mathrm{CI}1,\mathrm{CI}1)$. The resulting source has 201 distinct subtrees, 4,776 primitive occurrences, depth 44, and maximum zero run 6. It has 6,210 intended guarded source cases, but no accepted physical runtime certificate.
+
+The extra increment does not increase the number of distinct source subtrees because its pair is already shared elsewhere. This makes it a concrete example of a formalism change that is mathematically larger in one emitter but neutral in the source compression metric. The command selection counts and non-falsity side conditions survive. A corrected restricted allocation model was infeasible; 22 locally valid helper patches all failed complete decoder checks. The delivered \file{research/transfer_gq.sites.json} is therefore a calibrated source experiment, not an additional binary result.
+
+We also composed four binder families with four neutral source variants each. The resulting compression metrics, common to the four variants within each family, were:
+\begin{center}
+\begin{tabular}{@{}lrr@{}}\toprule
+Binder $f(a,b)$ & Distinct source subtrees & Primitive occurrences \\\midrule
+$4P(a,b)+2$ & 201 & 4,776 \\
+$4P(a,b)$ & 202 & 4,774 \\
+$4P(a,b)+3$ & 203 & 4,777 \\
+$a+b+1$ & 203 & 4,729 \\\bottomrule
+\end{tabular}
+\end{center}
+All four satisfy the required off-diagonal freshness condition. The sum binder saves many primitive occurrences but loses subtree sharing; shortening the arithmetic word alone therefore does not predict a smaller physical machine. The 16 initial allocation attempts all failed in their restricted model, whose first selector protections were inherited from an older allocation policy. The corrected negative result stated above concerns the Q-binder model only. Representative sources and the complete search summary are included; these searches give no general lower bound.
+
+\section{Reproduction, provenance, and remaining work}
+
+The archive is portable and uses Python's standard library for its main checks. From the extracted directory run
+\begin{verbatim}
+python3 -B verify.py --out /tmp/zc215-check
+python3 -B verify.py --runtime --out /tmp/zc215-full-check
+\end{verbatim}
+Choose output paths that do not already exist. Assertions must remain enabled; do not use Python's \texttt{-O} option. The first command checks all released hashes, exact reconstruction, full source transport, literal startup, saved runtime records, and the finite comparison corpus. The second additionally rederives every arbitrary-value runtime case. It does not merely trust a success flag in the archive.
+
+The tag-lowering proof is in \file{proofs/tag_lowering_credit.md}; its finite encoding audit is supplementary to the mathematical injection. Research scripts and receipts distinguish abstract specifications, rejected tables, and successful construction evidence. Build this report with \file{build_report.sh}; the printed table is generated from the same dense machine and included as \file{machine_table.tex}.
+
+The main new contribution is a concrete 215-state combination with a stronger zero-reserve proof, not a one-state improvement. Its tag-lowering argument separates stack safety from the amount of axiom output and permits arbitrary initialized junk tails. Future source simplifications can exploit that freedom, but deleting any AX output still requires a revised strong compiler and a fresh binary proof. The seven-shift result gives a second route once its physical return is repaired. The fresh-binder source gives an independent formalism-level degree of freedom.
+
+The most valuable next formalization step is an exact-table Lean or Rocq endpoint for ZC215. The main open compression target remains 214 working states. Neither a minimum-state theorem nor unconditional nonhalting is asserted. The proof establishes the requested equivalence inside ZFC; it does not establish $\Con(\mathrm{ZFC})$ within ZFC.
+
+\begin{thebibliography}{9}\small\raggedright
+\bibitem{parent} V. Reshetnikov et al., ProveIt, accepted K215 construction and command-order alternatives, revision \texttt{29e2cc4c557c04d3358e41e566bd7c582844ff4e}. See the \href{https://github.com/VladimirReshetnikov/ProveIt/tree/29e2cc4c557c04d3358e41e566bd7c582844ff4e/Computability/BusyBeaver/Research/ZFC}{pinned ZFC research directory}, especially \file{candidate-k215/README.md}, \file{proof.md}, and \file{alternatives/commands120/README.md}. Relevant snapshots are included under \file{reference/}.
+\bibitem{dominated} ProveIt, \file{candidate-k218/alternatives/dominated/proof.md}, same revision. Inherited numerical-calculus and dominated-row consistency calibration. The parent proof records the dependency and the compiled exact-table endpoints for primary K215.
+\bibitem{compiler} ProveIt, command-permutation ordinary proof, preserved as \file{reference/command-compiler.md}. This supplies the numerical command equations, strong arbitrary-stack compiler, and treatment of raw zero aliases. Its older physical startup figures refer to its own machines, not ZC215.
+\bibitem{fresh} ProveIt, Source 165 fresh-binder theorem, preserved as \file{reference/fresh_binder_proof.md}. Its original inspected revision is retained in that file; the source-side composition in this report uses the pinned current transfer source.
+\bibitem{archive} ProveIt historical submission \file{docs/incoming/T215_Transfer_2026-10-20.zip}, recovered at revision prefix \texttt{7571649843}. Only the rejected short-transfer table, source, original explanatory text, and exact counterexample relevant here are included in the research appendix files.
+\end{thebibliography}
+
+\appendix
+\section{File identities}
+All digests below are SHA-256. \file{MANIFEST.json} covers every released file except itself; generated LaTeX auxiliary files are excluded.\par
+\textbf{Native table, start 74 / halt 254}\par
+\texttt{fd9571a0d9bd7a01ab141585e79e956a0a029a608afa8b1ca421e6c4dddbdb47}
+
+\textbf{Dense table, start 0 / halt 215}\par
+\texttt{6df5f605cc0d99d4cf51b8425eee4cdfb8997aeef3b84abe6d6f11b7e0dcd083}
+
+\textbf{Source primitive occurrences}\par
+\texttt{5f2df4a6c25098d27b20b744b5f8ab3db6ebc8a37e1f01a9abdafc035297563f}
+
+\clearpage
+\section{Complete 215-state transition table}\label{app:table}
+Each entry is ``write, direction, next state.'' The two columns for a state are its actions on reading 0 and 1. $H$ is halt label 215. The blank tape is all 0, the initial state is 0, and the head initially scans cell 0. States 0 through 214 are the 215 working states. There are no omitted working-state rows.
+
+\input{machine_table.tex}
+\end{document}

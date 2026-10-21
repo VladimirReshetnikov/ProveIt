@@ -1,0 +1,244 @@
+% Include-only section; requires amsmath, amssymb, booktabs.
+\section{Independent ST215 bootstrap and calibration review}
+\label{sec:st215-independent-review}
+
+The append-zero, start-zero ST215 table passes an independent literal
+blank-tape replay and a complete synthetic-AX prefix comparison.  The
+result closes the dirty-tail initialization obligation for the ordinary
+short-transfer calculus.  The independent check does not infer the
+initialization from a plausible local pattern: it compares the entire
+finite set of one-cells and all nine logical registers.
+
+\subsection{Exact finite evidence}
+
+The literal table has 430 defined transitions, one for each symbol in
+each of 215 nonhalting states.  State 254 is its only undefined target.
+Starting in state zero with a blank tape and head at zero, after exactly
+70,506 binary transitions it reaches the following complete frame:
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Quantity & Value\\
+\midrule
+Native dispatcher state & 84\\
+Head position & $-2$\\
+Header position and gap & $62$, gap zero\\
+Source ordinal & 58, primitive $\mathsf{CI}(7)$\\
+Source path & \texttt{00110010010110010}\\
+Logical register order & $(N,T,W,A,D,H,X,Y,L)$\\
+Logical register values & $(1,0,0,0,0,0,0,18,0)$\\
+Spare blocks & 63, all zero-valued\\
+One-cells on the entire tape & 100, from $-3$ through $225$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The phrase ``from $-3$ through $225$'' gives the minimum and maximum,
+not a contiguous run.  The full 100-cell set appears in the JSON receipt.
+
+Here is an independent description of the reconstructed frame.  Relative
+to the dispatcher head, place a guard at $-1$, the one-bits of the source
+path at their zero-based positions, and a header at 64.  The logical-to-
+physical block permutation is
+\[
+                         (6,2,0,4,3,7,8,5,1).
+\]
+Beginning at position 65, each block is a separator zero followed by
+$v+1$ one-cells for its value $v$.  Encode the nine permuted logical
+registers followed by the 63 zero spare blocks, and translate by $-2$.
+This construction gives exactly the tape obtained by direct execution;
+there are no unexamined one-cells outside the frame.
+
+Two independently formulated source-control resolvers, one using subtree
+interval endpoints and one using arithmetic cuts of binary paths, agree
+on all 4,732 primitive leaves.  The resolved graph is also identical to
+the complete unrotated context-root short-transfer graph.  In particular,
+the AX/MP continuation at ordinal 4696, $\mathsf{CC}(3)$, returns to
+ordinal zero.  This is the continuation that the archived scratch-biased
+experiment failed to preserve.  Independent subtree interning counts
+201 distinct source DAG nodes.
+
+The source trace starts at AX entry ordinal 25 with
+\[
+                      (1,0,2,0,0,0,0,0,0).
+\]
+After exactly 177 source transitions it reaches ordinal 58 with
+\[
+                      (1,0,0,0,0,0,0,18,0),
+\]
+exactly the register store of the binary frame.  The complete 178-row
+trace, including both endpoints, is retained in the receipt.  This
+synthetic prefix is a continuation witness: the argument does not claim
+that the actual blank run previously passed through that AX-entry store.
+Determinism identifies their futures once they reach the same ordinal
+and complete logical store, and the whole-tape simulation identifies
+that source future with the actual native future.
+
+The independent table hash agrees with the complete runtime receipt.
+That receipt reports 6,151 guarded cases, all 430 literal rows covered,
+1,617,630 symbolic rules, no failures, and minimum duration five.  The
+independent finite checker here does not rerun those symbolic cases;
+its role is to establish the exact initial frame and source-prefix bridge
+to which that all-natural simulation theorem applies.
+
+\subsection{Completion of the partial AX}
+
+Write $P$ for Cantor pairing, $[x;w]=P(x,w)$,
+$I(x,y)=4P(x,y)$, and $Q_i x=4P(i,x)+2$.  Truth has code zero and
+falsity has code one.  For a command store use $(t,w,d,h)$ for top,
+encoded stack, additive counter and cached formula.
+
+The synthetic AX has parameters
+\[
+       (t,w,d,h)=(0,2,0,0),\qquad (c,x,y)=(0,0,0).
+\]
+Its inherited all-natural arithmetic contract terminates and yields
+\[
+  (t,d,h)=(0,0,0),\qquad N=1,\quad L=0,
+\]
+with stack
+\[
+ [r_1(0,0,0),\ldots,r_7(0,0,0),
+   L(0,0,0,0),Q_0 0,0;2].
+\]
+The first eight displayed heads are literal axiom instances, the ninth
+is the generalization $Q_0 0=2$ of truth, and the tenth is saved truth.
+Thus all ten explicit heads are theorems of the calibrated numerical
+calculus.  The gate is zero because $c=A=B=0$.  The remaining tail is
+raw integer two; it is not assumed safe.  Indeed
+$2=P(0,1)$ and $1=P(1,0)$, so that tail contains a falsity head.
+
+Only the finite 177-step prefix is executed in the bridge check.  The
+termination and result of the much larger remaining AX are supplied by
+its arithmetic contract.  Literal simulation of the enormous encoded
+output is unnecessary and is not claimed.
+
+\subsection{Protected-tail soundness}
+
+The actual source implements the following short transfer:
+\[
+ \mathsf S(t,[x;v],d,h)=
+ \begin{cases}
+    \text{halt},&h=1,\\
+    (h,v,d,x),&h\ne1.
+ \end{cases}
+\]
+It tests only the incoming cache.  In particular, it is distinct from
+the longer composite transfer that also tests the incoming top.  MP and
+AX retain their inherited equations.  The field arities are one for
+S (tag zero), two for MP (tag one), and three for AX (tags at least two).
+
+The all-natural scheduler credit proof applies to exactly those tags and
+arities.  Give S weight $-1$, MP weight zero, and AX weight ten, ignoring
+the additional zero head of a successful MP.  Starting with fresh
+candidate one and an empty proof pointer, every finite schedule prefix
+has weight at least $-2$.  The exceptional initial schedule is
+$W(1);W(2)=[\mathsf{MP},\mathsf S,\mathsf S]$; every later complete
+Cantor diagonal is prefix-safe.  Thus the ten theorem heads produced
+above leave at least eight protected explicit theorem heads forever.
+
+For clarity, the credit proof uses the exact recurrences
+\[
+\begin{aligned}
+ W(n)&=\mathsf S;R(y) &&\text{if }\operatorname{unpair}(n)=(0,y),\\
+ W(n)&=\mathsf{MP};R(f(y)) &&\text{if }\operatorname{unpair}(n)=(1,y),\\
+ W(n)&=\mathsf{AX};R(f(f(y))) &&\text{if }\operatorname{unpair}(n)=(a,y),\ a\ge2,
+\end{aligned}
+\]
+where $f$ is right projection, $R(0)$ is empty, and $R(p)=W(p-1)$
+for $p>0$.  In particular, AX takes two further projections after its
+selector, not three.  Its proof is an induction over complete Cantor
+diagonals, not a bound inferred from a finite simulation.
+
+Maintain a finite explicit list of theorem heads over the fixed tail
+two.  AX adds ten such heads.  MP preserves the list or adds theorem
+zero.  Each S has at least one explicit head available before popping,
+because the conservative count after its decrement remains at least
+eight.  Thus it cannot expose the tail.  Its new top and cache are
+theorems; a halt witnesses theorem one.  This argument counts explicit
+wrappers, not numerical code size, so it includes the alias $P(0,0)=0$.
+No assertion that all raw integers are formulas, or that the buried
+tail consists of formulas, is used.
+
+\subsection{Refutational completeness}
+
+The inherited strong compiler is already proved for this exact short
+S, rather than by treating it as equivalent to old NIP.  Put
+$D=\mathsf{AX}(0;0,0)$ and
+\[
+                    H=D;\mathsf S^{11}.
+\]
+It satisfies, from every natural store,
+\[
+ H(t,[x;w],d,h)=
+ \begin{cases}
+   \text{halt},&t=1,\\
+   (t,w,0,x),&t\ne1.
+ \end{cases}
+\]
+The first ten S tests inspect the new non-falsity rows; the eleventh
+tests the saved incoming top.  For every theorem $X$, the compiler
+constructs a finite block $B_X$ which, from every $(t,w,0,0)$, either
+halts or returns exactly $(X,w,0,0)$.  The arbitrary-store quantifier
+is essential here: it covers any preserved stack tail and every top
+produced by a resetting AX.
+
+If the calculus proves one, the fixed word $B_1;H$ therefore halts
+from every such reset store.  Let $F(\vec a,r)$ denote right-nested
+pairing of a finite field list over residual $r$, and define
+\[
+ \operatorname{tail}([])=0,\qquad
+ \operatorname{tail}(k::V)=1+
+       F(\operatorname{fields}(k),\operatorname{tail}(V)).
+\]
+The positive residual is decremented before decoding its command, so
+this is the exact continuation encoding.  Put
+$R=\operatorname{tail}(B_1;H)$.  For every $Y\in\mathbb N$, the fresh
+candidate
+\[
+                  N_Y=P(2,P(Y,P(1,R)))
+\]
+begins with $\mathsf{AX}(0;1,Y)$ and then executes $B_1;H$.
+The initial AX resets the counter and cache, and the strong compiler
+handles its arbitrary resulting top and stack.  Therefore every $N_Y$
+is successful from every retained store, and $N_Y\ge Y$ gives cofinality.
+
+Every nonhalting residual command decreases the positive proof pointer:
+the next residual is a right projection of its predecessor, with further
+projections for MP and AX.  Each candidate therefore drains in finitely
+many commands, and the unchanged next-candidate counter advances by
+one.  From next candidate one the scheduler must reach a successful
+$N_Y$, unless it halts sooner.  This proves refutational completeness
+without any bound on the size of a proof or its code.
+
+\subsection{Result and exact proof boundary}
+
+Combining these arguments gives
+\[
+ \mathsf{ST215}\text{ halts on blank tape}
+ \quad\Longleftrightarrow\quad
+ \text{the inherited dominated numerical calculus proves }1.
+\]
+The established calibration of that unchanged calculus to ZFC then
+gives, by ordinary reasoning formalizable in ZFC,
+\[
+ \mathrm{ZFC}\ \vdash\
+ \bigl(\mathsf{ST215}\text{ does not halt on blank tape}
+       \ \longleftrightarrow\ \operatorname{Con}(\mathrm{ZFC})\bigr).
+\]
+This conclusion uses the inherited arithmetic contracts and calculus
+calibration, the all-natural protected-credit and strong-compiler proofs,
+the exact finite startup/AX bridge, and the complete symbolic primitive
+simulation.  Each supplies a different boundary; no finite test replaces
+an unbounded theorem.  The source rotation preserves the full control
+graph, and the bootstrap passes into an unchanged AX, so neither step
+requires a new logical axiom schema or a claim that junk codes decode
+to ordinary formulas.  This review does not claim that a new Lean or
+Rocq endpoint has been compiled.
+
+The accompanying independent files are
+\begin{center}\small\ttfamily
+check\_st215\_bootstrap.py\\
+st215\_bootstrap\_independent.json
+\end{center}
+They bind the source and native bytes by SHA-256 and include the complete
+finite witnesses.

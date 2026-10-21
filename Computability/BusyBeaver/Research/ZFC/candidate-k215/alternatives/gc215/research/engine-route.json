@@ -1,0 +1,45 @@
+{
+  "status": "OPTIONAL_ENGINE_ROUTE_PASS",
+  "parent_sha256": "a5d8dfeb92a6ae843692c65b5eaf69b845b08b48d65dc011ba8a457e4faec67d",
+  "variant_sha256": "0898d59511db281fc3b9f2f81f55a347cbe61bbd881fc5096e72c12909b41549",
+  "blocks": [
+    {
+      "read": 0,
+      "right_marker": 0,
+      "old_steps": 2,
+      "new_steps": 2,
+      "final_state": 17,
+      "head_delta": 2,
+      "tape_unchanged": true
+    },
+    {
+      "read": 1,
+      "right_marker": 0,
+      "old_steps": 1,
+      "new_steps": 1,
+      "final_state": 38,
+      "head_delta": 1,
+      "tape_unchanged": true
+    }
+  ],
+  "incoming26": [
+    [
+      11,
+      0,
+      0,
+      -1,
+      26
+    ]
+  ],
+  "changed_row": [
+    26,
+    0,
+    0,
+    1,
+    194
+  ],
+  "scope": "Halting equivalence for all initial tapes and head positions from control0. This optional variant is not the packaged GC215 table.",
+  "proof": "Every reachable26 has right neighbor0 because its sole incoming row11/0 writes0 and moves left. On read0, the old two-step route26->134->17 and new26->194->17 agree exactly. On read1 the unchanged row exits to38. All other rows agree. Positive-block induction applies.",
+  "allocation_note": "This discharges the engine constraint on134/0 arising from26. Other uses of134/0, including decoder uses, still require their own allocation and runtime checks.",
+  "checker_sha256": "ff44e44eb3c53bdcb8475eb01cc2dfee0f74aa7ba1e548ce476c3f327a41d9fd"
+}

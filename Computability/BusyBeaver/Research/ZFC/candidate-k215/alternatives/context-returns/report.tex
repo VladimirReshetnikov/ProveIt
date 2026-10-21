@@ -1,0 +1,675 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=0.86in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,multicol}
+\usepackage{microtype,xcolor}
+\usepackage{enumitem}
+\usepackage[hyphens]{url}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,
+ pdftitle={History-dependent returns and a shallower 215-state ZFC machine},
+ pdfauthor={Research contribution for ProveIt},pdfsubject={Exact Turing machines, consistency search, and source-calibrated compilation}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.7em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\blank}{\mathsf{blank}}
+\newcommand{\Nat}{\mathbb N}
+\newcommand{\Kbase}{K_{215}}
+\newcommand{\Kctx}{K_{215}^{\mathrm{hist}}}
+\newcommand{\Ksh}{K_{215}^{\mathrm{shallow}}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\pin}{\texttt{75716498437bfc7291d5900cab2983a11fd54bac}}
+\title{History-dependent returns and a shallower\newline 215-state ZFC machine\\[4pt]
+\large Exact transition certificates, a three-command cache calculus,\newline and semantic refutation alarms}
+\author{Research contribution for the ProveIt repository}
+\date{21 October 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We give two explicit deterministic, two-symbol, blank-tape machines with
+215 working states, including initialization, and an additional terminal
+state. The first changes five transitions of the pinned accepted K215
+machine. Six short, context-dependent blocks prove its blank halting
+equivalence by positive-duration stuttering. The useful observation is that
+the preceding one or two transitions have already written the marker bits
+needed to choose an existing return path. This releases two rows from the
+register-engine obligation without adding a state.
+
+The second machine combines those returns with a different decoder
+allocation and a closed source reassociation. It has maximum source-address
+depth 46 rather than 47, changes 1,042 primitive addresses, and has a
+transition graph that is not a relabelling of the accepted table. Both
+machines pass fresh quantified runtime derivations for all 6,176 guarded
+primitive cases and independent complete blank-prefix checks. Using the
+repository's inherited numerical-calculus calibration, ordinary reasoning
+formalizable in ZFC gives
+\(\neg\Halt(M,\blank)\leftrightarrow\Con(\ZFC)\) for each machine.
+
+On the calculus side, we give a complete proof compiler for a three-command
+transfer/cache design with 201 distinct source subtrees, and a sound
+extension of the falsity alarm to every membership-atom code. These are
+separate source-level results. No 214-state machine is claimed. The
+remaining allocation obstruction and the precise scope of the negative
+searches are recorded so that the next reduction can build on concrete
+evidence.
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+
+\section{Results, conventions, and the pinned starting point}
+
+The starting point is the repository's accepted
+\path{Computability/BusyBeaver/Research/ZFC/candidate-k215} at commit
+\begin{center}\small\pin.\end{center}
+Its ordinary proof identifies blank halting with a finite ZFC refutation
+\cite{k215}. The exact native table has SHA-256
+\begin{center}\footnotesize\ttfamily
+9683d6ed9628e6ce407c315b08f5da3d063da94e92706f275ca0f33e8272e4b2.
+\end{center}
+This input theorem and the inherited numerical calibration are credited
+inputs, not new results of this packet. The new transition proofs, source
+reassociation, exact tables, runtime runs, and source-calculus compiler
+composition are supplied here.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Construction & TM states & Source subtrees & Leaves & Depth\\
+\midrule
+Pinned \(\Kbase\) & 215 & 202 & 4,751 & 47\\
+History-return \(\Kctx\) & 215 & 202 & 4,751 & 47\\
+Shallower decoder \(\Ksh\) & 215 & 202 & 4,751 & 46\\
+Direct transfer/cache source & --- & 201 & 4,709 & 44\\
+Membership-alarm source & --- & 206 & 4,746 & 47\\
+\bottomrule
+\end{tabular}
+\caption{Accepted physical counts and separately measured source counts.
+A dash means that no accepted physical machine of the target size is supplied
+for that source. Source subtrees include distinct primitive leaves.}
+\end{table}
+
+The machine model is a two-way infinite tape indexed by \(\mathbb Z\), with
+alphabet \(\{0,1\}\), initially all zero. A row \((q,b)\mapsto(w,d,z)\)
+writes \(w\), moves one cell in direction \(d\in\{L,R\}\), and enters
+\(z\). Native start is 0 and native halt is 254. All 215 working labels
+have both read rows; halt has none. The nonconsecutive native labels are
+inherited names, not extra states. Dense versions use working labels
+\(0,\ldots,214\) and halt 215. Initialization is inside each counted table;
+there is no externally supplied program tape or uncounted preprocessing.
+
+The source consists of a full binary tree whose leaves are increments
+\(\mathsf{CI}_j\), guarded decrements \(\mathsf{CD}_j\), structured breaks
+\(\mathsf{CB}_k\), structured continues \(\mathsf{CC}_k\), and halt
+\(\mathsf{CH}\). The nine logical registers have order
+\((N,T,W,A,D,H,X,Y,L)\). A source-subtree count is a measure of shared
+program syntax. It is not the binary state count: physical states can share
+decoder and register-engine duties, and some decoder roles depend on a
+known preceding tape bit.
+
+The principal files are \path{machine/k215-shallow.native.tm} and
+\path{machine/k215-shallow.tm}. The simpler bridge is
+\path{machine/k215-context.native.tm}. Its small delta makes the new engine
+argument particularly easy to audit. The source tables, complete compressed
+runtime cases, exact startup traces, independent checkers, mathematical
+notes, and inherited notices are included. A manifest pins every file.
+
+\section{Using transition history as an already available marker}
+\label{sec:returns}
+
+\subsection{The five literal row changes}
+
+Define \(\Kctx\) by changing exactly the following five rows of \(\Kbase\).
+All labels in the proof below are native labels.
+\begin{center}
+\begin{tabular}{@{}rcll@{}}
+\toprule
+State & Read & Old write/move/target & New write/move/target\\
+\midrule
+13  & 1 & \(1,L,31\)   & \(1,L,81\)\\
+27  & 1 & \(0,L,40\)   & \(0,L,302\)\\
+83  & 1 & \(0,L,42\)   & \(0,L,57\)\\
+156 & 1 & \(1,R,176\)  & \(1,R,52\)\\
+198 & 0 & \(1,L,40\)   & \(1,L,54\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+The new native table has SHA-256
+\begin{center}\footnotesize\ttfamily
+da20914ad9bda3f75de0381f2c05a7b5e67d26199b57b870a5ea3b72511ab627.
+\end{center}
+No label is added or removed. All 430 rows remain defined, and all working
+states are reachable in the underlying directed transition graph.
+
+The argument does not assert that these two tables act alike from every
+arbitrary configuration. Their modified entries are equivalent on contexts
+forced by actual incoming transitions. That is sufficient for runs from
+the fixed start state, and it exposes sharing opportunities that a
+context-free state minimizer misses.
+
+\subsection{The exact incoming-context lemmas}
+
+Write \(a_i\) for the tape symbol \(i\) cells from the head at entry.
+Every entry to state 27 is through \(95/0=0R27\), so \(a_{-1}=0\).
+Every entry to state 83 is through \(73/1=1R83\), so \(a_{-1}=1\).
+Every entry to state 156 is through \(189/1=1L156\), so \(a_{1}=1\).
+Every entry to state 198 is through \(66/0=1R198\), so \(a_{-1}=1\).
+These statements hold in both tables. None of those entry states is the
+start state.
+
+The state-13 entry needs a two-transition suffix. Its possible incoming
+edges are \(8/1=1R13\), \(38/0=0R13\), and \(42/0=0R13\). Enumerating all
+two-edge incoming histories in each literal table establishes
+\begin{equation}
+ q=13\ \land\ a_0=1
+ \quad\Longrightarrow\quad
+ a_{-1}=1\ \lor\ (a_{-1}=0\land a_{-2}=1).
+ \label{eq:history}
+\end{equation}
+The finite checker retains the latest write at each position while walking
+the two edges backwards. It deliberately includes some read-incompatible
+histories: this is an overapproximation, so checking the displayed property
+on all retained histories is sound. An actual two-step suffix is always
+represented. State 13 is neither the initial state nor a possible
+one-transition successor of it, so there is no unhandled short-prefix
+exception.
+
+This use of history costs no machine state. The marker is already on the
+tape because the incoming edge wrote it. The proof, rather than a new
+runtime flag, carries the knowledge of that marker.
+
+\subsection{Six complete local blocks}
+
+The table lists the exact state paths. The entry bit and context columns
+give every cell that the corresponding trace reads. No other tape cell is
+inspected, so arbitrary contents outside the listed cells are allowed.
+
+\begin{center}\small
+\begin{tabular}{@{}llp{3.5cm}p{3.8cm}r@{}}
+\toprule
+Entry & Context & Old state path & New state path & Final head\\
+\midrule
+\(13/1\)& \(a_{-1}=0,a_{-2}=1\)&
+\(13\to31\to21\)&\(13\to81\to111\to128\to21\)&0\\
+\(13/1\)& \(a_{-1}=1\)&
+\(13\to31\to47\to16\)&\(13\to81\to57\to16\)&\(-1\)\\
+\(27/1\)& \(a_{-1}=0\)&
+\(27\to40\to4\)&\(27\to302\to4\)&\(-2\)\\
+\(83/1\)& \(a_{-1}=1\)&
+\(83\to42\to16\)&\(83\to57\to16\)&\(-2\)\\
+\(156/1\)& \(a_{1}=1\)&
+\(156\to176\to150\)&\(156\to52\to150\)&2\\
+\(198/0\)& \(a_{-1}=1\)&
+\(198\to40\to54\)&\(198\to54\to54\)&\(-2\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+In the first case both tapes are unchanged; the new trace takes four
+transitions instead of two. In the second case both erase the entry cell
+and leave the predecessor one unchanged. The third case erases the entry
+one. The fourth erases both adjacent ones. The fifth changes no tape cell.
+The sixth changes the entry zero to one. In every case the final state,
+head, and entire tape are identical. Every strict interior transition of
+every listed block is outside the set of five modified rows.
+
+\begin{theorem}[Exact history-return equivalence]
+From the fixed blank start,
+\[
+ \Halt(\Kctx,\blank)\quad\Longleftrightarrow\quad
+ \Halt(\Kbase,\blank).
+\]
+The equivalence follows from a finite, positive-duration stuttering
+simulation and is formalizable in ZFC.
+\end{theorem}
+\begin{proof}
+Couple the two runs at identical configurations. If their next row is
+unmodified, take the same single transition. Otherwise the incoming-context
+lemma selects one of the six blocks. Both blocks are defined, do not halt
+internally, and finish at an identical configuration. Their strict
+interiors contain no modified row, so no nested replacement obligation is
+being assumed. Iterate.
+
+All block durations are positive and at most four. Thus infinitely many
+coupled blocks cannot represent a finite run on either side, and a finite
+halting prefix on either side yields one on the other. The entry-history
+facts hold independently in both literal tables, including after earlier
+replacements. This proves both directions without assuming consistency of
+ZFC or eventual nonhalting.
+\end{proof}
+
+The independent checker \path{code/verify_context.py} reads the two frozen
+tables directly. It checks the exact delta, all incoming guards, all local
+traces, arbitrary exterior preservation, strict-interior separation, full
+state count, canonical dense renaming, and the complete finite blank
+prefix. It imports neither the allocator nor the symbolic runtime.
+
+\subsection{What the engine change buys}
+
+A fresh symbolic census of engine execution uses 142 transition rows,
+compared with 144 for the accepted table. The removed obligations are
+\(31/0\) and \(42/1\); no previously unused engine row is added. This is a
+statement about engine-phase use, not a statement that these rows are
+unreachable in the full machine. They still have decoder roles.
+
+The count is established by rederiving every primitive case and separating
+source-address reading from engine execution at each dispatcher visit.
+A primitive may revisit the dispatcher internally, so simply treating all
+rows after the first dispatch as engine rows gives an incorrect census.
+The included census records use the corrected phase distinction.
+
+Freeing an engine obligation enlarges the allowed decoder allocation. It
+does not by itself save a working state. Conversely, keeping the old
+destination of a row that the engine no longer uses would conceal this
+opportunity from an allocator that freezes whole states.
+
+\section{A different 215-state decoder}
+\label{sec:shallow}
+
+\subsection{One exact source rewrite}
+
+Let the accepted source tree be \(S\). At its path
+\begin{center}\ttfamily 11010010011101010110011100\end{center}
+the subtree is \(((A,B),C)\). Replace this single occurrence by
+\((A,(B,C))\). The factors contain 539, 380, and 123 primitive occurrences,
+respectively. Each has zero escaping break and continuation demand and
+contains no halt. Thus this is a reassociation of three closed sequential
+blocks. It changes no primitive opcode, register operand, or control depth.
+
+The emitted source is pinned by SHA-256
+\begin{center}\footnotesize\ttfamily
+c85089b913dcf446da5039843a43c15129efe88c8ee47a673b5b74600ae42ace.
+\end{center}
+Its source graph is checked twice: first by address arithmetic, including
+the no-stray-suffix condition on each successor, and independently by
+subtree intervals and ancestor unwinding. Both resolvers produce exactly
+the accepted ordered effects and guarded successor ordinals, including
+the initial ordinal and the halt leaf.
+
+\begin{lemma}[Identity simulation of the source]
+For every tuple of nine natural register values, the accepted source and
+the reassociated source have identical register effects and branch targets
+at every matching primitive ordinal. In particular they have the same
+halting behavior from every matching source configuration.
+\end{lemma}
+\begin{proof}
+Both source graphs are finite and literally equal. At an increment,
+decrement, break, continue, or halt ordinal, the effect and each guarded
+target agree. Induction on execution length proves the identity
+simulation. No bound on a register value is used.
+\end{proof}
+
+There remain 202 distinct source subtrees and 4,751 primitive leaves.
+Exactly 1,042 leaf addresses change, their total address length decreases
+by 416, and maximum address depth decreases from 47 to 46. Maximum zero
+run remains 6. These are literal source measurements, not estimates of
+wall-clock speed or of the time before any possible refutation.
+
+\subsection{The frozen physical table}
+
+We allocate the rewritten source against the history-return engine, using
+an engine-row filter and known-prefix checks. The resulting table
+\(\Ksh\) has SHA-256
+\begin{center}\footnotesize\ttfamily
+7dafe445beb74f66b24d4e540136b5a47d0dfc6c1b877dcb8edce1526a608537.
+\end{center}
+It has 215 working states and 430 rows. The allocator changes 191 literal
+rows relative to the pinned table. Part of this large row delta is decoder
+relabelling, so the number alone would not establish a meaningful change.
+The substantive differences are the history-dependent engine returns and
+the changed source-address tree.
+
+An independent finite graph check proves that the new table is not a
+rooted, read-labelled, write/move-preserving state renaming of the original.
+For example, the abstract read-label word \code{000000} gives different
+write/move actions in the two rooted transition graphs. This is a graph
+witness, not a claim that those reads form a blank-tape execution. A dense
+canonical table and its complete native-to-dense bijection are supplied.
+
+The allocator's prefix acceptance is only a synthesis result. The physical
+table is accepted here because of the separate exact runtime and startup
+checks described next. The proof does not infer binary correctness from
+the source-node count, the MILP result, or a finite sample of register
+values.
+
+\section{Complete blank starts and quantified binary runtime}
+\label{sec:runtime}
+
+Both new tables reach the following complete calibrated frame after
+95,740 transitions from a blank tape:
+\[
+\begin{gathered}
+q=84,\qquad \text{head}=-8,\qquad \text{header}=57,\qquad \text{gap}=1,\\
+(N,T,W,A,D,H,X,Y,L)=(4,0,0,0,0,0,0,0,0),\\
+\text{spares}=[1]^{40}.
+\end{gathered}
+\]
+The tape has exactly 95 one cells and is zero everywhere else. This is the
+same complete frame as the accepted machine, whose prefix takes 95,714
+transitions. There are 13 visits to the slower state-13 context in that
+prefix, accounting exactly for the additional 26 transitions.
+
+The independent frame reconstruction uses the physical order
+\((W,L,T,D,A,Y,N,H,X)\). There is a one marker at \(-9\), a header one at
+57, then unary tokens \(0\,1^{v+1}\) for the nine physical register values
+and forty spare values. This independently gives 95 one cells, with last
+one at 199. The checker reconstructs this set from the advertised
+register frame and separately replays every recorded transition; equality
+of the sets establishes the full zero exterior, not just a displayed tape
+window.
+
+The source seed has zero formula, stack, and cache registers. Its next
+candidate value is 4. The inherited calibration expressly permits such a
+finite cutoff: the proof compiler has cofinally many successful candidate
+numbers whenever a refutation exists. The frame is therefore calibrated
+without pretending that the enumerator starts at candidate zero.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Verification quantity & Pinned table & \(\Kctx\) & \(\Ksh\)\\
+\midrule
+Working states & 215 & 215 & 215\\
+Guarded primitive cases & 6,176 & 6,176 & 6,176\\
+Symbolic inference steps & 1,698,790 & 1,699,668 & 1,697,385\\
+Minimum constant duration & 6 & 6 & 6\\
+Blank-prefix transitions & 95,714 & 95,740 & 95,740\\
+\bottomrule
+\end{tabular}
+\caption{Counts of proof work and exact startup execution. The symbolic
+inference totals are not TM running times.}
+\end{table}
+
+The fresh runtime derivations use the repository's archived affine-symbolic
+checker, with the native table supplied explicitly. Each source increment,
+break, continue, and halt contributes one guard case; each decrement has
+zero and positive cases. The 4,751 occurrences therefore give 6,176 cases.
+Each derivation quantifies over all natural primary register values
+consistent with its guard, an arbitrary natural gap, and a nonempty
+arbitrary finite spare list, including an arbitrary first spare and tail.
+
+The proof rules consist of literal table transitions, induction over unary
+scan lengths, and four separately derived list-block schemas. There is no
+fixed maximum register value, proof length, or spare-list length in those
+claims. The complete normalized frame and zero exterior are part of the
+primitive contracts. Every reported affine duration has a positive
+constant term and nonnegative variable coefficients; the minimum constant
+is 6. Thus an unbounded source run corresponds to an unbounded binary run.
+
+The exact table and source hashes, the checker and helper hashes, case
+identities, and failures list are recorded in the runtime receipts. All
+cases succeed. The independent shallow-decoder audit additionally checks
+the complete unique guard coverage and binds the receipt to the included
+runtime code. The compressed case lists and startup traces are included
+without discarding difficult or exceptional entries.
+
+These are ordinary mathematical derivations carried out by executable
+checkers and independently reviewed arguments. They are not newly compiled
+Lean or Rocq proofs of these exact tables. The packet does not claim a
+proof-assistant kernel result, a PA endpoint, or an unconditional proof of
+nonhalting.
+
+\section{The resulting consistency equivalences}
+
+\begin{theorem}[The supplied 215-state machines]
+For each \(M\in\{\Kctx,\Ksh\}\), ordinary reasoning formalizable in ZFC
+establishes
+\begin{align*}
+ \Halt(M,\blank)&\quad\longleftrightarrow\quad\neg\Con(\ZFC),\\
+ \neg\Halt(M,\blank)&\quad\longleftrightarrow\quad\Con(\ZFC).
+\end{align*}
+Here consistency is the same arithmetized absence of a finite ZFC
+refutation used in the pinned source calibration.
+\end{theorem}
+\begin{proof}
+For \(\Kctx\), Section~\ref{sec:returns} proves blank halting equivalence
+to the accepted exact table. Compose with that table's calibrated theorem
+\cite{k215,calibration,dominated}. The fresh runtime and blank checks supply
+an additional direct audit of the same implementation.
+
+For \(\Ksh\), the independent blank replay reaches the calibrated source
+root. The quantified primitive-runtime theorem relates every finite source
+step to a finite positive-duration binary block. The equal source graph of
+Section~\ref{sec:shallow} identifies that source with the calibrated
+accepted source on all register values. Its command soundness invariant,
+complete proof-block compiler, cofinal padding, and strictly draining
+candidate reader yield halting exactly when the dominated numerical
+calculus proves its falsity code. The inherited calibration identifies that
+event with a finite ZFC refutation. The reverse simulation and positive
+durations exclude an extra binary infinite behavior inside a source
+primitive. The finite initial prefix then gives the blank-input statement.
+\end{proof}
+
+The consistency statement is not assumed in this proof of an equivalence.
+If ZFC is consistent, the theorem has the expected unprovability
+consequence; it does not license claiming that ZFC proves its own
+consistency. All mathematical results needed beyond the new finite machine
+and source arguments are identified in the cited repository calibration.
+
+\input{sections/cache_calculus.tex}
+\input{sections/membership_alarm.tex}
+
+\section{What the searches establish, and what remains open}
+\label{sec:search}
+
+The source and physical searches were run against the pinned 215 table,
+not against a stale larger candidate. Their useful output is both the
+explicit alternatives above and a more specific account of why several
+attractive source reductions do not immediately lower the binary count.
+
+\subsection{Source size and physical sharing are different objectives}
+
+The successful-MP implementation can be shortened in several ways.
+Returning the result in the cache or omitting the dummy stack push each
+gives a 202-subtree source at this stage. Combining cache return with the
+three-command transfer system gives 201 subtrees. Nevertheless, ordinary
+row-protected allocation at 215 states failed for the tested direct,
+reassociated, and opcode-swapped versions. It also failed with the two new
+engine freedoms from Section~\ref{sec:returns}.
+
+One concrete reason is that an old successful-MP subprogram participates
+in a context-sensitive marker fold. Removing its useful semantic work can
+also remove its physical sharing opportunity. For the 201-subtree design,
+the global allocation still needs 133 newly assigned decoder roles plus
+32 fixed physical decoder states. Matching this total to the old total
+does not guarantee compatibility with the surviving engine rows and
+helper destinations.
+
+A diagnostic relaxation identifies particular obstructions: allowing the
+allocator to overwrite any one of the protected rows \(26/0\), \(26/1\),
+\(37/0\), or \(302/0\) permits a 215-state prefix allocation of the direct 201-subtree
+source. These relaxed outputs are \emph{not accepted machines}; they would
+alter engine execution without a proof. Moving the engine's \(37/0\)
+return to another existing provider did not by itself resolve the entire
+allocation. This narrows a future attack to a concrete selector interface
+instead of suggesting that one missing source node is automatically one
+missing binary state.
+
+\subsection{Finite search boundaries}
+
+The recorded searches include 287 global source-reassociation candidates,
+of which 216 passed the exact graph condition. Thirty-one distinct
+202-subtree ties were saved; none in that family had 201 subtrees. A
+cache-return-specific search considered 729 local reassociations with
+structured-control-depth repair and obtained 137 valid graph candidates,
+again without a 201-subtree improvement of that source. These are bounded
+families of syntax transformations, not lower bounds over all source
+programs.
+
+On the physical side, 56,658 existing-helper context-fold specifications
+were checked on the original table and 58,788 on the history-return table,
+with no additional accepted fold. Another 26,896 ordered direct-context
+contractions had no survivor. A local retargeting search considered
+274,631 specifications and supplied the exact history-dependent blocks
+used here. Its failure to find a state deletion does not imply that every
+possible multirow redesign is impossible.
+
+A final search synthesized both rows of an existing helper while
+contracting a decoder pair. It emitted 336 structural 214-state trials;
+none passed the exact symbolic block/primitive derivation filter. These
+rejected trials are not candidate solutions. Separately, freeing all
+admissible singleton nonpure decoder roles simultaneously gave a valid
+215-state control allocation, but still no allocation for the direct
+201-subtree source. The recorded negative results remain relative to their
+specified synthesis and proof-rule families.
+
+The membership-alarm source search enumerated 28,452 structured scanner
+specifications with four cache decrements and one each of halt, continue,
+and break. It accepted three exact four-phase scanner graphs. Its best
+complete source had 206 distinct subtrees. The acceptance condition was an
+exact finite control graph establishing the all-natural residue behavior,
+not testing the first several hundred cache values.
+
+There is also an exact zero/positive abstract-state analysis of the
+accepted source. It identifies the always-zero decrement at the beginning
+of the successful-MP dummy push and two consequent unreachable leaves.
+Deleting that empty transfer alone produces 203 source subtrees: duplicated
+surrounding structure offsets the local deletion. This is another example
+of why raw leaf savings can be misleading.
+
+\subsection{The next concrete targets}
+
+The strongest uncompleted target is the three-command cache-return source.
+It has a complete source-level consistency compiler and fewer distinct
+subprograms, but its engine/decoder overlap still needs a successful exact
+allocation. A useful next experiment is a multirow redesign of the
+state-26 selector, paired with allocation of its old decoder role; a local
+engine return that is correct only after entry through state 11 must be
+checked under that specific entry contract and then subjected to the full
+runtime checker.
+
+The other target is a cheaper code family for a semantic alarm. The
+membership class demonstrates that the alarm need not be a distinguished
+literal falsity number. The challenge is to make the safe class cheap to
+recognize without increasing the cost of all formula constructors or
+silently breaking the source's numerical binder and support conditions.
+The separate negative-equality parity note marks precisely that remaining
+calibration obligation.
+
+The two accepted machines in this packet are implementation alternatives
+at 215 states. The 201-subtree calculus and semantic alarm are substantive
+formalism directions. Neither is described as an achieved 214-state
+breakthrough, and no exhaustive optimality or global novelty claim is
+made. Existing cache-return and transfer-pop ideas are credited to the
+integrated repository reports \cite{cachemp,transfer}. The newest incoming
+binary ZIP submissions were not available as readable source through the
+text retrieval interface, so priority comparisons are limited to the
+integrated material actually inspected.
+
+\clearpage
+\section{Reproduction and incorporation}
+
+Run the following from the extracted packet directory with Python 3.10 or
+later. The finite checks and the symbolic runtime use the standard library.
+The allocator alone needs NumPy and SciPy and is not needed to verify the
+frozen machines.
+\begin{verbatim}
+python3 code/verify_context.py
+python3 code/audit_shallow.py
+python3 code/audit_runtime_receipts.py
+python3 research/verify_cache_transfer.py
+python3 research/build_cache_transfer.py
+\end{verbatim}
+The last command also reruns explicitly labelled finite command regressions.
+The separate all-natural command proof is in this report and
+\path{research/cache_transfer_proof.md}.
+
+To rederive the unbounded primitive contracts rather than only checking
+their archived receipts:
+\begin{verbatim}
+python3 code/runtime-inputs/validate_native.py \
+  machine/k215-context.native.tm machine/sites215.json \
+  reproduction/context-runtime
+
+python3 code/runtime-inputs/validate_native.py \
+  machine/k215-shallow.native.tm machine/sites-shallow.json \
+  reproduction/shallow-runtime
+\end{verbatim}
+The exact checker code is vendored with its inherited notices. These runs
+write complete startup traces and per-guard case records, so their output
+is larger than a short success log. A failure to derive a case would be a
+failed certificate, not automatically a counterexample to the machine's
+semantics.
+
+Compile the paper with \code{pdflatex report.tex} twice, or use the included
+\path{Makefile}. The dense full transition table in the appendix is
+generated from the frozen native shallow-decoder table by
+\path{code/audit_runtime_receipts.py}. Thus the PDF also contains a complete
+machine specification; the machine-readable tables remain the preferred
+input for independent work.
+
+The packet is intended as an additive research contribution. Inherited
+tables, utilities, checker code, mathematical calibration, notices, and
+attributions retain their existing identity and terms. The root README
+states the exact new claims, source-only results, proof status, and file
+layout. The archive contains no claim that the new exact tables have been
+compiled through a proof-assistant kernel.
+
+\clearpage
+\begingroup\raggedright
+\begin{thebibliography}{9}
+\bibitem{k215}
+ProveIt contributors, \emph{Ordinary proof of the combined215 machine},
+\path{Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md},
+commit \pin.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/75716498437bfc7291d5900cab2983a11fd54bac/Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md}{Pinned source}.
+
+\bibitem{calibration}
+ProveIt contributors, \emph{All-natural calibration of the permuted command
+source}, candidate-k215 provenance, \path{permuted-commands/sections/source_calibration.tex},
+same commit. A copy is included as \path{upstream/source_calibration.tex}.
+
+\bibitem{dominated}
+ProveIt contributors, \emph{Dominated numerical-calculus proof},
+\path{Computability/BusyBeaver/Research/ZFC/candidate-k218/alternatives/dominated/proof.md},
+same commit.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/75716498437bfc7291d5900cab2983a11fd54bac/Computability/BusyBeaver/Research/ZFC/candidate-k218/alternatives/dominated/proof.md}{Pinned source}.
+
+\bibitem{code254}
+ProveIt contributors, \emph{Code254.lean},
+\path{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean},
+same commit; in particular the literal membership constructor, its
+decoding/satisfaction lemmas, and code soundness.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/75716498437bfc7291d5900cab2983a11fd54bac/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean}{Pinned source}.
+
+\bibitem{cachemp}
+ProveIt contributors, \emph{Cache-return modus-ponens proof}, integrated
+report \path{54-cachemp-proofs-cache_mp_proof.md},
+\path{SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/},
+same commit. The cache-return interface predates the present composition.
+
+\bibitem{transfer}
+ProveIt contributors, \emph{Complete proof compiler for the three-command
+NIP-transfer enumerator}, integrated report
+\path{166-transfer-proofs-transfer_compiler.md}, in the same report
+directory and commit; see also its composite-transfer review.
+\end{thebibliography}
+\endgroup
+
+\clearpage
+\appendix
+\section{Complete dense transition table for the shallower 215-state machine}
+
+Start in state 0 on an all-zero two-way tape. The working states are
+\(0,\ldots,214\); the only terminal state is 215. An entry \(wDz\)
+means write \(w\), move in direction \(D\), and enter \(z\). Each line
+below gives both read cases for three working states. The final empty right
+block is only table layout, not a missing transition.
+
+\input{sections/transition_table.tex}
+\end{document}

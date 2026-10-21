@@ -1,0 +1,158 @@
+\section{A semantic alarm: every membership atom detects inconsistency}
+\label{sec:membership-alarm}
+
+The halting test need not recognize one distinguished contradiction code.
+It may recognize any decidable family of codes that contains that
+contradiction and contains no theorem under the consistency hypothesis.
+This observation separates the semantic choice of a halting predicate from
+the cost of implementing it.  The following application changes the alarm
+from equality with~$1$ to the congruence $h\equiv1\pmod4$.
+It is an alternative source-level construction; the physical allocation
+reported below does not produce a new 215-state machine.
+
+\subsection{A general replacement principle}
+
+Let $\mathcal D$ be the calibrated numerical calculus, with falsity code
+$f$, and let $E$ be its refutation enumerator.  At command boundaries,
+assume the usual invariant: the current formula, the cache, and every
+decoded stack head are $\mathcal D$-theorems.  The original alarm halts
+when the cache is~$f$.  Its other commands preserve this invariant, and
+its proof compiler and scheduler establish refutation completeness.
+
+\begin{proposition}[Semantic alarm replacement]
+\label{prop:semantic-alarm}
+Let $A\subseteq\mathbb N$ be decidable, with $f\in A$.  Suppose ZFC proves
+\[
+ \operatorname{Con}(\mathrm{ZFC})\ \Longrightarrow\
+ \forall a\in A\;\neg(\mathcal D\vdash a).
+\]
+Replace the original alarm by membership in $A$, preserving its complete
+nonhalting command effect.  From any calibrated seed, the modified
+enumerator halts exactly when ZFC is syntactically inconsistent.
+\end{proposition}
+
+\begin{proof}
+Under $\operatorname{Con}(\mathrm{ZFC})$, the invariant excludes an alarm
+value at every command boundary.  Each nonhalting modified command has
+the old invariant-preserving effect, so the new enumerator cannot halt.
+
+For the converse, compare the two enumerators from the same raw boundary
+state.  Until the new one halts, their boundary stores coincide.  When
+the old alarm would halt, its cache is $f\in A$, so the new alarm also
+halts, unless it has already halted earlier.  Induction on a finite old
+halting execution proves that every such execution is detected by the
+new enumerator.  Applying the old refutation-completeness theorem gives
+the result.  This comparison does not assume that the starting store is
+safe: its only premise is equality of the nonhalting command effects.
+\end{proof}
+
+A sufficient semantic condition is that, assuming consistency, each
+$a\in A$ has a counterassignment in a model in which numerical
+derivations are sound.  The model and assignment may depend on $a$.
+The application below uses one nonempty model and one constant assignment
+to refute every member of the alarm family simultaneously.
+
+\subsection{All raw codes of residue one}
+
+Write
+\[
+ P(i,j)=\frac{(i+j)(i+j+1)}2+j,
+ \qquad R(i,j)=4P(i,j)+1.
+\]
+The total numerical decoder used in the inherited calibration satisfies
+$\operatorname{dec}(R(i,j))=\operatorname{Rel}(i,j)$.
+Its membership and soundness lemmas are \texttt{dec\_wel},
+\texttt{sat\_wel}, and \texttt{c254\_sound} in
+\texttt{Code254.lean}.\cite{code254}
+Cantor unpairing gives, for every natural $h$,
+\[
+ h\equiv1\pmod4
+ \quad\Longleftrightarrow\quad
+ \exists i,j\in\mathbb N\;h=R(i,j).
+\]
+Indeed, unpairing $(h-1)/4$ supplies the required indices.  Thus every
+accepted raw number is a membership atom.  No restriction to numbers
+emitted by a proof compiler, no freshness test, and no separate
+well-formedness test is present.  The truth alias~$0$ is excluded.
+
+\begin{lemma}
+In a nonempty irreflexive native model satisfying the calibrated bundles,
+no membership-atom code is derivable in $\mathcal D$.
+\end{lemma}
+
+\begin{proof}
+Let the model have domain $V$ and relation $\in_M$, with
+$\neg(v\in_M v)$ for every $v\in V$.  Choose $v\in V$ and put
+$e(k)=v$ for every natural variable index~$k$.
+If $\mathcal D\vdash R(i,j)$, code soundness makes its decoded formula
+true under every assignment, hence under~$e$.  The literal atom clause
+then gives $v\in_M v$, a contradiction.  The argument applies also when
+$i\ne j$: distinct variable names may receive the same value.
+The dominated calculus is contained in the calibrated unrestricted
+calculus, so its soundness follows directly; the stronger theorem-set
+equality established for dominated $\rho_8$ is not needed in this
+direction.\cite{dominated}
+\end{proof}
+
+The model-existence step is conditional and takes place within ZFC.
+From the syntactic statement $\operatorname{Con}(\mathrm{ZFC})$, the
+first-order completeness theorem supplies a set-coded model of ZFC.
+The inherited native/ZFC interpretation then supplies a nonempty native
+model satisfying the exact gated bundles.  Its membership relation is
+irreflexive, as required by the calibrated semantics.\cite{k215,code254}
+No transitive model and no externally well-founded model is assumed.
+Foundation is used through what the model satisfies, not through an
+external well-foundedness claim about its relation.
+Consequently ZFC proves
+\[
+ \operatorname{Con}(\mathrm{ZFC})\Longrightarrow
+ \forall h\in\mathbb N\,
+   \bigl(\mathcal D\vdash h\Longrightarrow h\not\equiv1\pmod4\bigr).
+\]
+This is precisely the soundness premise of
+Proposition~\ref{prop:semantic-alarm}, with $f=1$.
+
+The actual-run argument covers unintended command encodings as well as
+compiled proof words: the old invariant says that the cache is a theorem
+at every alarm entry.  Conversely, $1\equiv1\pmod4$, so every old
+refutation is still detected.  The strong compiler's ``halt or return
+exactly'' contracts, its cofinal padding above arbitrary finite cutoffs,
+and the decreasing continuation rank therefore transfer unchanged for
+completeness.\cite{k215}
+Expanding the alarm further to all odd numbers would be unsound for
+this encoding: the equality code $4P(i,i)+3$ is derivable and has odd
+parity.  The distinction between the two atomic tags is essential.
+
+\subsection{Exact scanner and measured cost}
+
+The residue test can destructively scan the cache with a four-phase
+cycle.  Each phase tests for zero and otherwise decrements it.  The
+zero exits of phases $0,1,2,3$ are respectively
+\[
+  \text{return},\qquad\text{halt},\qquad
+  \text{return},\qquad\text{return}.
+\]
+Four positive decrements return to phase~$0$.
+Induction on the quotient in $h=4q+r$ proves the exact behavior for
+every natural cache value, and every normal exit has cache zero.
+Appending the unchanged stack-pop tail gives precisely the old NIP
+nonhalting output, including its scratch-register conditions.
+
+The supplied search exhausts a declared finite family of seven-leaf
+structured scanners: four cache decrements, one halt, one backward
+continue, and one forward break, with closed control flow.
+It checks their resolved phase graphs rather than testing finitely many
+cache values.  Of 28,452 specifications, three have the required graph.
+The best resulting complete source has 206 distinct subtrees,
+4,746 primitive occurrences, maximum depth~47, and maximum zero run~6.
+The exact source is \texttt{sites-atomhalt-best.json}; its search record
+and reconstruction program accompany it.
+
+The attempted 215-state allocation was infeasible in the declared
+protected-row allocation model.  This is neither a lower bound for the
+formalism nor a claim of a 206-state Turing machine: 206 counts source
+subtrees.  No accepted 214- or 215-state binary implementation of this
+alarm is supplied.  A future implementation must still prove its
+all-natural primitive runtime and reach a calibrated blank-tape seed.
+The semantic theorem remains independent of that unresolved encoding
+cost, and no global priority claim is made for the replacement principle.

@@ -1,0 +1,88 @@
+\subsection{Sixteen calibrated formula encodings from one native calculus}
+\label{sec:constructor-orientation}
+There is a separate way to trade source operations without weakening the
+logic: reverse the physical pair order independently for each formula
+constructor.  The ordinary stack and proof-list pairing can remain unchanged.
+The general all-code constructor-transport method and the separate
+domination argument are inherited from the pinned zero-spare-transfer
+report's prefix-recoding section~\cite{recoding}.  Here they are specialized to the
+sixteen operand orientations and independently checked; the general
+method is not claimed as new.
+
+Write $J_r(a,b)=4P(a,b)+r$ for tags $r=0,1,2,3$, respectively implication,
+membership, universal quantification and equality.  For an arbitrary bit
+vector $e\in\{0,1\}^4$, put
+\[
+ J^e_r(a,b)=
+ \begin{cases}
+ 4P(a,b)+r,&e_r=0,\\
+ 4P(b,a)+r,&e_r=1.
+ \end{cases}
+\]
+All constructors, including constructor-valued numerical labels inside
+other constructors, use this same chosen interpretation.  Truth and falsity
+remain the literal numbers zero and one.
+
+\paragraph{All-natural isomorphism.}
+Define $F_e(0)=0$.  For $n>0$, write uniquely $n=4P(a,b)+r$ and set
+\[
+ F_e(n)=J^e_r(F_e(a),F_e(b)).
+\]
+Both children are strictly below $n$, including the cases $n=1,2,3$,
+whose two children are zero.  This is primitive-recursive
+course-of-values recursion.  For every natural $a,b$ and tag $r$,
+\[
+ F_e(J_r(a,b))=J^e_r(F_e(a),F_e(b)).
+\]
+The only zero-input case is $J_0(0,0)=0$, where the equation still holds.
+The map fixes one because $1=J_1(0,0)$.  Strong induction on $n$ now proves
+$F_e(F_e(n))=n$: each tag's swap occurs twice, and both child subcodes
+satisfy the induction hypothesis.  Thus $F_e$ is an involution on
+\emph{all} natural codes, not only conventionally well-formed formulas.
+
+The unrestricted native calculi are exactly isomorphic under $F_e$.
+Every schema and theorem-only generalization step transports by the
+constructor identity; numerical MP transports by exact equality.
+Numerical labels transform along with formula codes.  The full bundle's
+gate $C\ne A,B$ is preserved by injectivity, and its literal falsity one
+is fixed.  Hence
+\[
+ \mathcal C\vdash n\quad\Longleftrightarrow\quad
+ \mathcal C_e\vdash F_e(n).
+\]
+
+\paragraph{The dominance bound requires a separate argument.}
+The map does not preserve numerical order: reversing implication exchanges
+the codes $I(1,0)=4$ and $I(0,1)=8$.  It would therefore be incorrect to
+transport $U\le A$ through $F_e$ without further work.
+
+Instead interpret the accepted 3,728-node dominated-row certificate using
+the new implication constructor.  Its1,260 eighth-row leaves have fourth
+parameter either zero (224 leaves), the entire first parameter (164), or
+an implication subterm of the first parameter (872).  Thus every bound
+uses only
+\[
+ I(0,0)=0,\qquad I(a,b)\ge a,\qquad I(a,b)\ge b.
+\]
+Both physical orientations satisfy these identities and inequalities.
+The exact MP equations and zero normalization in the certificate also
+remain valid.  Consequently the oriented dominated calculus
+$\mathcal D_e$ recovers its unrestricted eighth row and has exactly the
+same theorem codes as $\mathcal C_e$.  In particular,
+\[
+ \mathcal D_e\vdash1
+ \ \Longleftrightarrow\ 
+ \mathcal C_e\vdash1
+ \ \Longleftrightarrow\ 
+ \mathcal C\vdash1
+ \ \Longleftrightarrow\ 
+ \operatorname{Incon}(\mathrm{ZFC}),
+\]
+where the final comparison is the inherited native-calculus calibration.
+
+This supplies sixteen safe encoding choices for source optimization.
+An actual edit must establish the selected constructor consistently at
+every formula call while preserving the stack and scheduler interfaces.
+An indiscriminate reversal of a shared pairing helper need not do that.
+Physical allocation, primitive simulation, and blank initialization
+remain separate obligations.

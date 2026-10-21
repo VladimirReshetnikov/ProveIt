@@ -12,7 +12,68 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Current queue after arrival `a6b3a30011`
+
+Six new proof proposals are pending intake:
+
+- `K215_Proof_Simplification_2026-10-21.zip`
+- `K215_Proof_Transport_2026-10-21.zip`
+- `Structural_Proof_Simplification_2026-10-21.zip`
+- `ZFC215_Proof_Simplification_2026-10-21.zip`
+- `ZFC_K215_Proof_Transport_2026-10-21.zip`
+- `zfc-fm215-proof-compression-2026-10-21.zip`
+
+These are the six ZIPs currently present at `a6b3a30011`; listing them is not
+an intake or validation. The active work is simplifying the already compiled
+K215 Lean proofs. Earlier queue-clear and 214-state-target statements
+below describe their historical placement checkpoints.
+
 ## Queue status after batch 204
+
+Batch 204 has two parallel records for the same `05d063acef` delivery.
+Upstream placement `557b6aac99` recorded the nine archive decisions below.
+The separate placement `ec445a5246` and written reconciliation `845040a1fd`
+preserve that delivery as Source 167 in `zfc-closure-kernels`; catalogue update
+`95f6c84974` follows it. Source 167 is supplementary reconciliation of this
+same batch, not another arrival or a renumbered batch. All historical
+batch-204 filenames, receipts and the written table row are retained.
+The upstream statement that no Sources or write report were added describes
+its alternative-machine placement alone. The two records assert no new
+independent execution of those alternative machines. Sources 165–166 retain
+their existing placements and pending written follow-up.
+
+### Alternative-machine placement recorded by `557b6aac99`
+
+Batch 204 received nine archives, all 215-state ZFC work, and, at Vladimir's
+direction, discarded essential duplicates and preserved unique alternatives.
+The 578 incoming tables were compared in rooted breadth-first canonical form
+with the repository's and each other's. Six machines were placed as delivered,
+without rerunning anything, under
+[candidate-k215/alternatives/](../../Computability/BusyBeaver/Research/ZFC/candidate-k215/alternatives/README.md),
+each with an `INTAKE.md`; copies of parents and 216-state variants were
+omitted and remain recoverable from the arrival commit.
+
+| Archive | Arrival | Decision |
+|---|---|---|
+| `DR215_research_2026-10-21.zip` | `2a11b6d29f` | kept as `dr215` (direct transfer with the rho6 permutation) |
+| `FT215_Forced_Transfer_2026-10-21.zip` | `6101f25c72` | kept as `forced-transfer`; `cache216` and `composite216` omitted (216 states) |
+| `ZC215_Research_2026-10-21.zip` | `a10b2c302c` | kept as `zero-credit` |
+| `ZFC_GC215_2026-10-21.zip` | `dfe1f22bdf` | kept as `gc215` |
+| `ZFC_K215_Context_Transfers_2026-10-21.zip` | `b6fb232916` | kept as `context-returns` (two machines) |
+| `Proof_Simplification_and_GC-ZC215_2026-10-21.zip` | `05d063acef` | GC-ZC215 kept as `gc-zc215`; its `proof_refactor/` placed as [k225-formal/verification/k215/simplification/proposal-2026-10-21](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposal-2026-10-21/INTAKE.md) |
+| `ZFC_ST215_Rho6_and_New_Routes_2026-10-21.zip` | `b872b34ff4` | dropped: its machine is the same table as `dr215` |
+| `NW215_counter_stack_2026-10-21.zip` | `dfe1f22bdf` | dropped: K215's source conjugated by the register permutation 0 <-> 2, a renaming of registers rather than a new design |
+| `SB215_ZFC_2026-10-21.zip` | `2a11b6d29f` | dropped: refuted. The correction in `gc-zc215/correction/` shows that in both SB215 and SB215-AB the return after AX reaches selector ordinal 23 instead of the scheduler, forcing the NIP test to halt on a cache of 1 from the blank tape |
+
+No numbered Sources were added and no write report was made: the placed
+machines carry their delivered proofs and are not yet independently checked.
+The queue is clear. The active target remains **214 or fewer states**.
+
+### Supplementary Source 167 reconciliation
+
+The following record describes the parallel single-archive placement and
+write. Its reference to other pending archives belongs to that checkpoint;
+the current pending queue is the six proof proposals listed above.
 
 `Proof_Simplification_and_GC-ZC215_2026-10-21.zip` (arrival `05d063acef`)
 is placed and [reconciled as Source 167](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-204.md)
