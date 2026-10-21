@@ -40,3 +40,5 @@ The [timing data](timings.json) bind the raw logs. Fresh site objects are byte-i
 The next step is to factor primitive/continuation contracts behind the exact decoder port. A source-only first CB1 suffix design, with 86 literal occurrences and an explicit length guard, is preserved in the packet as uncompiled research. It does not yet replace Boolean coverage.
 
 The [bounded single-use census](next-inlining/README.md) considers fifteen proof files. Four small private inlinings are proposed (335 bytes / nine lines), with retained public statements and executable definitions unchanged in the source comparison. These candidates are uncompiled and the generated core still needs producer synchronization; named invariant and seed-semantic boundaries are retained.
+
+The [subsequent origin merge](upstream-merge/README.md) preserves this checked checkpoint and imports a new 52-step condensed-detachment proposal. Its generic Lean adaptation is under review; no new Rocq implementation is adopted.
