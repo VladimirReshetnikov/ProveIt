@@ -5,6 +5,11 @@ import BusyBeaver.ZFC.Code254Models
 /-!
 The models that the completeness theorem of the 222/221 calculus quantifies over.
 
+The semantic round-trip proof below adapts the Affine Proof Cores and Transport
+packet in commit aa66d0a33f, extending the earlier Structural Proof Simplification
+proposal. Its three redundant formula inductions are replaced by the existing
+Code254Models.sat_encode_decode theorem and the double-negation code bound.
+
 `seed_of_bundle` is the converse of `KSeed222.bundle_of_seed` for ordinary roles: in an
 irreflexive structure a decoded seed bundle `dec (bundle222 a b c)` (with `a ≠ b`) says exactly
 that the seed property holds for the relation its matrix `dec c` defines.
@@ -55,6 +60,7 @@ theorem sat_req (E : Nat → V) (b c : Nat) (hcb : c ≠ b) :
   · rintro ⟨z, hz, hzc⟩ hall
     exact hall z hz hzc
 
+omit hirr in
 /-- Reading the matrix at any valuation that agrees with the role assignment off the label. -/
 theorem matrix_iff {e E : Nat → V} {a b c : Nat} {x y : V}
     (h : ∀ n, n ≠ c → E n = update (update e a x) b y n) :
@@ -85,18 +91,18 @@ theorem seed_of_bundle (e : Nat → V) (a b c : Nat) (hab : a ≠ b) (hca : c �
   · -- the request at the input `e a`
     intro y hy
     have hy' : Tarski.Sat mem (update (update e c C) b y) (dec c) := by
-      refine (matrix_iff mem hirr (x := e a) (y := y) ?_).mpr hy
+      refine (matrix_iff mem (x := e a) (y := y) ?_).mpr hy
       intro n hn
       by_cases hnb : n = b
-      · subst hnb; simp [update, hn]
+      · subst hnb; simp [update]
       · by_cases hna : n = a
         · subst hna; simp [update, hnb, hn]
         · simp [update, hnb, hna, hn]
     obtain ⟨z, hz, hzC⟩ := (sat_req mem hirr _ b c hcb).mp hrq y hy'
-    refine ⟨z, (matrix_iff mem hirr ?_).mp hz, by rwa [update_same] at hzC⟩
+    refine ⟨z, (matrix_iff mem ?_).mp hz, by rwa [update_same] at hzC⟩
     intro n hn
     by_cases hnb : n = b
-    · subst hnb; simp [update, hn]
+    · subst hnb; simp [update]
     · by_cases hna : n = a
       · subst hna; simp [update, hnb, hn]
       · simp [update, hnb, hna, hn]
@@ -117,12 +123,12 @@ theorem seed_of_bundle (e : Nat → V) (a b c : Nat) (hab : a ≠ b) (hca : c �
     have hall : Tarski.Sat mem (update (update (update e c C) b y) a x)
         (dec (wal a (wim (wal c (wim (wel c a) (wel c b))) (req b c c)))) :=
       Classical.byContradiction fun hn => hx fun _ => hn
-    refine ⟨x, (matrix_iff mem hirr ?_).mp hm, ?_⟩
+    refine ⟨x, (matrix_iff mem ?_).mp hm, ?_⟩
     · intro n hn
       by_cases hna : n = a
-      · subst hna; simp [update, hab, hn]
+      · subst hna; simp [update, hab]
       · by_cases hnb : n = b
-        · subst hnb; simp [update, hna, hn]
+        · subst hnb; simp [update, hna]
         · simp [update, hna, hnb, hn]
     · intro x' hsub y' hy'
       rw [sat_wal] at hall
@@ -137,20 +143,20 @@ theorem seed_of_bundle (e : Nat → V) (a b c : Nat) (hab : a ≠ b) (hca : c �
         exact hsub w
       have h4 := (sat_req mem hirr _ b c hcb).mp (h3 hsub')
       have hy'' : Tarski.Sat mem (update (update (update (update e c C) b y) a x') b y') (dec c) := by
-        refine (matrix_iff mem hirr (x := x') (y := y') ?_).mpr hy'
+        refine (matrix_iff mem (x := x') (y := y') ?_).mpr hy'
         intro n hn
         by_cases hnb : n = b
-        · subst hnb; simp [update, hn]
+        · subst hnb; simp [update]
         · by_cases hna : n = a
-          · subst hna; simp [update, hnb, hn]
+          · subst hna; simp [update, hnb]
           · simp [update, hnb, hna, hn]
       obtain ⟨z, hz, hzC⟩ := h4 y' hy''
-      refine ⟨z, (matrix_iff mem hirr ?_).mp hz, ?_⟩
+      refine ⟨z, (matrix_iff mem ?_).mp hz, ?_⟩
       · intro n hn
         by_cases hnb : n = b
-        · subst hnb; simp [update, hn]
+        · subst hnb; simp [update]
         · by_cases hna : n = a
-          · subst hna; simp [update, hnb, hn]
+          · subst hna; simp [update, hnb]
           · simp [update, hnb, hna, hn]
       · rwa [update_other _ _ hca, update_other _ _ hcb, update_same] at hzC
 
@@ -232,4 +238,3 @@ theorem seed_eqFree (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
 #print axioms seed_eqFree
 
 end SetTheory.BusyBeaver.ZFC.KSeed222
-

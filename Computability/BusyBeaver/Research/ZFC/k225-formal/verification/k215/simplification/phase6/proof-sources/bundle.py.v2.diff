@@ -1,0 +1,24 @@
+--- v1/bundle.py
++++ v2/bundle.py
+@@ -10,18 +10,18 @@
+  'seed':Path('/tmp/k215-seed-semantic-simplification'),
+  'seed-peer':Path('/tmp/k215-seed-semantic-peer'),
+ }
+-BAD={'.olean','.ilean','.o','.so','.a','.pyc','.vo','.vos','.vok','.glob','.exe'}
++BAD={'.olean','.ilean','.o','.so','.a','.pyc','.pyo','.vo','.vos','.vok','.glob','.exe'}
+ def sha(b):return hashlib.sha256(b).hexdigest()
+ def capture():
+  contents={};paths={}
+  def add(p,name):
+-  assert not p.is_symlink()and p.is_file();assert p.suffix not in BAD
++  assert not p.is_symlink()and p.is_file();assert not (set(p.suffixes) & BAD)
+   data=p.read_bytes();data.decode('utf-8');assert name not in contents
+   contents[name]=data;paths[str(p)]=name
+  for tag,base in TREES.items():
+   for p in sorted(base.rglob('*')):
+    rel=p.relative_to(base)
+-   if p.is_symlink()or not p.is_file()or {'objects','__pycache__'}&set(rel.parts)or p.suffix in BAD:continue
++   if p.is_symlink()or not p.is_file()or {'objects','__pycache__'}&set(rel.parts)or bool(set(p.suffixes) & BAD):continue
+    add(p,tag+'/'+rel.as_posix())
+  for name in ['adoption.json','pre-run-inventory.json']:
+   add(Path('/tmp/k215-proof-phase6')/name,'adoption/'+name)

@@ -1,7 +1,7 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings through 21 October 2026. This report has **167 numbered sources**.
-The written reconciliations cover Sources 1–164 and 167; Sources 165–166 retain
+Intake findings through 21 October 2026. This report has **178 numbered sources**.
+The written reconciliations cover Sources 1–164 and 167–178; Sources 165–166 retain
 their earlier placements and separate follow-up work.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
@@ -14,6 +14,32 @@ results and their exact scope are listed below.
 The [phase-five verification addendum](intake-204.md#verification-addendum-21-october-2026)
 records the completed 184-module Lean check, all 16 ordinary certificate chunks
 and both unchanged endpoint audits. The exact K215 machine remains fixed.
+The later [phase-six checkpoint](../../../../../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/README.md)
+checks 187 project modules and both endpoint clients. It replaces the ordinary
+2,240-entry relation with 1,426 normalized entries, preserving the literal source
+and the 512-step decoder; unchanged providers remain hash-bound to phase five.
+
+[Batch 205](intake-205.md) reconciles Sources 168–173; its
+[batch-206 appendix](intake-205.md#appendix-source-174-separately-revised-batch-206)
+covers Source 174. [Batch 207](intake-207.md) covers Source 175. These extend
+the upstream placements with exact recovery records in `0359ebda60` and
+`dada10165b`, retaining all 851, 360 and 1,132 outer members respectively.
+The delivered normalized-certificate, balanced-lookup and proof-transport
+proposals are distinguished from the completed phase-five proof. No supplied
+program or compiler was run for those supplemental reconciliations.
+
+[Batch 208](intake-208.md) reconciles Sources 176–178 from `aa66d0a33f`:
+affine/axiom transport, certificate-storage and concrete-credit refinements,
+and framed decoder evidence; the written reconciliation is committed in
+`1937bbc8a5`. Its parallel placements preserve all 405 outer
+members; supplement `7e320f376c` reuses upstream assets while retaining
+39 exact ancillary files and both embedded historical archives. Maintained
+Lean already has balanced certificate storage. The separate phase-six
+integration now passes for the selected K215 changes linked above. The other
+submitted adapters and alternative-machine claims keep their intake scope.
+`K215_Automatic_Certificates_2026-10-21.zip` and
+`K215_Proof_and_Quotient_Detachment_2026-10-21.zip` remain pending and are
+outside the 178-source count.
 
 [Batch 204](intake-204.md) reconciles Source 167 from `05d063acef`:
 proof-simplification proposals, the ordinary GC–ZC215 compiler/scheduler

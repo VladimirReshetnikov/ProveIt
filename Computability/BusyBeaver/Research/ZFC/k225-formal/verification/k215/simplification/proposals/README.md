@@ -1,5 +1,13 @@
 # Proof-simplification proposals for the K215 endpoints (batch 205)
 
+**Current maintained status.** The [sixth Lean checkpoint](../phase6/README.md)
+checks the normalized source certificate, stable-program split, physical-table
+lookup adapter and seed-model cleanup for the same K215 endpoint. The original
+placement descriptions below retain their delivery scope. Batches 209–210 need
+independent reconciliation; their extracted files do not extend the completed
+checkpoint. The [origin merge record](../phase6/upstream-merge/README.md) explains
+the deferred production edits.
+
 Six research packets, each placed whole and byte-identical (logs stay out by the ignore rules),
 delivered in arrival commit `a6b3a30011`. Nothing was rerun at intake; compilation claims are the
 packets' own. Each archive is recoverable with `git show a6b3a30011:docs/incoming/NAME.zip`.

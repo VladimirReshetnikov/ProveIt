@@ -1,0 +1,328 @@
+--- a/Computability/BusyBeaver/Research/ZFC/README.md
++++ b/Computability/BusyBeaver/Research/ZFC/README.md
+@@ -3,8 +3,9 @@
+ The literal [K215 machine](candidate-k215/README.md) now has **compiled Lean and Rocq
+ correctness proofs**: blank-tape halting iff ZFC has a finite refutation, and
+ nonhalting iff syntactic consistency of ZFC. Lean's original fresh build checked
+-204 project modules; the [current simplification checkpoint](k225-formal/verification/k215/simplification/phase5/README.md)
+-checks a 184-module closure and two explicit clients with standard axioms only.
++204 project modules; the [current simplification checkpoint](k225-formal/verification/k215/simplification/phase6/README.md)
++checks a 187-module closure and two explicit clients with standard axioms only.
++Unchanged modules retain exact predecessor source, dependency, object and log bindings.
+ Rocq's 237 selected sources,
+ four closed endpoint reports and recursive `coqchk` pass. See the
+ [formal verification record](k225-formal/verification/k215/README.md).
+@@ -22,7 +23,7 @@
+ [`BinaryConsistencyRotation240`](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/BinaryConsistencyRotation240.lean) checks
+ `𝗣𝗔 ⊢ Con(𝗭𝗙𝗖) ↔ ¬Halts(M₂₄₀, blank)` (already in IΣ₂, and likewise for ZF), with
+ the standard axioms only.
+-The current formal task uses both Lean and Rocq.
++The current simplification work is Lean-only; the checked Rocq endpoint is preserved.
+ An intended set-theoretic meaning is optional: any effectively presented
+ theory or proof calculus is eligible once its consistency calibration is proved.
+ The complete compiled search, including its data and initialization, is the
+--- a/Computability/BusyBeaver/Research/ZFC/candidate-k215/README.md
++++ b/Computability/BusyBeaver/Research/ZFC/candidate-k215/README.md
+@@ -30,10 +30,12 @@
+   [serial Rocq driver](../k225-formal/verification/k215/rocq/README.md), including
+   `--kernel`, to compile the exact source closure and recursively run `coqchk`.
+ 
+-The [current Lean simplification checkpoint](../k225-formal/verification/k215/simplification/phase5/README.md)
+-checks the 184-module closure and both endpoint clients, retaining exact bindings
+-for reused predecessor objects. The literal machine and theorem statements are
+-unchanged.
++The [current Lean simplification checkpoint](../k225-formal/verification/k215/simplification/phase6/README.md)
++checks the 187-module closure: 35 freshly compiled modules and 152 reused
++modules with exact predecessor bindings. Both endpoint clients pass; the ten
++axiom reports use only the three standard axioms and have zero audit warnings.
++The project logs retain 22 linter warnings. The literal machine and theorem
++statements are unchanged; this is an incremental check, not a new fresh 187-module build.
+ 
+ The layers are described in [k225-formal](../k225-formal/README.md#the-215).
+ 
+--- a/Computability/BusyBeaver/Research/ZFC/k225-formal/README.md
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/README.md
+@@ -3,9 +3,9 @@
+ **Current state (2026-10-21).** The exact [215-state machine](../candidate-k215/README.md)
+ has compiled correctness proofs in both Lean and Rocq. The original fresh Lean
+ build checked 204 project modules; the current
+-[proof simplification checkpoint](verification/k215/simplification/phase5/README.md)
+-checks the 184-module closure and two endpoint clients with only the three
+-standard foundational axioms. Its zero-offset proposal is reconciled as
++[proof simplification checkpoint](verification/k215/simplification/phase6/README.md)
++checks the 187-module closure and two endpoint clients with only the three
++standard foundational axioms, with exact bindings for reused predecessor objects. Its zero-offset proposal is reconciled as
+ [Source 167](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-204.md). Rocq's
+ 237 sources compile with closed endpoint assumption reports and recursive `coqchk`.
+ See the [215 verification record](verification/k215/README.md) for statements, evidence,
+@@ -14,15 +14,17 @@
+ The supplemental reconciliations of
+ [Sources 168–174](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-205.md)
+ and [Source 175](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-207.md)
+-separate delivered normalized-certificate and transport proofs from uncompiled
+-balanced-lookup and import-splitting proposals. They preserve the completed
+-checkpoint above; they do not certify a new endpoint or alternate machine.
++retain the delivered normalized-certificate, lookup, dependency and transport
++proposals with their original status. The later phase-six checkpoint above
++checks selected adaptations for the same K215 endpoint; the intake records do
++not certify the other proposals or an alternate machine.
+ 
+ [Sources 176–178](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-208.md)
+ add affine/axiom transport, certificate and concrete-credit refinements, and
+ framed decoder evidence. Maintained Lean already has balanced certificate
+-storage. Selected phase-six integration is in progress; the completed
+-phase-five endpoint above remains the verified checkpoint.
++storage. Phase six now checks normalized source correspondence, stable-program
++imports, fast transition lookup and the seed-model cleanup. Decoder factoring,
++relative transports and concrete zero-credit integration retain their separate gaps.
+ 
+ The [221](../candidate-k221/README.md) also has two closed endpoints for its exact table:
+ 
+@@ -189,10 +191,12 @@
+ - **Program**: [`DagPerm`](../../../Lean/BusyBeaver/ZFC/DagPerm.lean) is `dagDom` with the root reading only the selector,
+   MP reading its field (node 484), the AX word's read of `x` moved after its first `I`, and the
+   permuted dispatch ([`make_dagperm.py`](make_dagperm.py)); the candidate's source relates to it by
+-  2,240 certificate entries, none offset. The Lean source proof uses
+-  [`KSource215Data`](../../../Lean/BusyBeaver/ZFC/KSource215Data.lean), 32 independent kernel
+-  checks, and the unchanged public [`KSource215`](../../../Lean/BusyBeaver/ZFC/KSource215.lean)
+-  composition theorem. [`L2Perm`](../../../Lean/BusyBeaver/ZFC/L2Perm.lean) transfers the `L2K` lemmas,
++  1,426 normalized certificate entries, preserving the 512-step decoder.
++  The earlier phase-five ordinary certificate had 2,240 entries.
++  [`KSource215Program`](../../../Lean/BusyBeaver/ZFC/KSource215Program.lean) holds the stable
++  literal program/tree; [`KSource215Data`](../../../Lean/BusyBeaver/ZFC/KSource215Data.lean)
++  supplies the relation to 16 independent kernel checks and the unchanged public
++  [`KSource215`](../../../Lean/BusyBeaver/ZFC/KSource215.lean) composition theorem. [`L2Perm`](../../../Lean/BusyBeaver/ZFC/L2Perm.lean) transfers the `L2K` lemmas,
+   [`L2AxiomsPerm`](../../../Lean/BusyBeaver/ZFC/L2AxiomsPerm.lean) is the regenerated AX word and
+   [`L2RootPerm`](../../../Lean/BusyBeaver/ZFC/L2RootPerm.lean) the re-proved dispatch and root step.
+ - **Machine**: the 95,714-step startup to the root with `nextproof = 4`, 65 zero cells before the
+--- a/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md
++++ b/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md
+@@ -14,6 +14,10 @@
+ The [phase-five verification addendum](intake-204.md#verification-addendum-21-october-2026)
+ records the completed 184-module Lean check, all 16 ordinary certificate chunks
+ and both unchanged endpoint audits. The exact K215 machine remains fixed.
++The later [phase-six checkpoint](../../../../../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/README.md)
++checks 187 project modules and both endpoint clients. It replaces the ordinary
++2,240-entry relation with 1,426 normalized entries, preserving the literal source
++and the 512-step decoder; unchanged providers remain hash-bound to phase five.
+ 
+ [Batch 205](intake-205.md) reconciles Sources 168–173; its
+ [batch-206 appendix](intake-205.md#appendix-source-174-separately-revised-batch-206)
+@@ -31,7 +35,8 @@
+ members; supplement `7e320f376c` reuses upstream assets while retaining
+ 39 exact ancillary files and both embedded historical archives. Maintained
+ Lean already has balanced certificate storage. The separate phase-six
+-integration is running; no complete phase-six result is claimed here.
++integration now passes for the selected K215 changes linked above. The other
++submitted adapters and alternative-machine claims keep their intake scope.
+ `K215_Automatic_Certificates_2026-10-21.zip` and
+ `K215_Proof_and_Quotient_Detachment_2026-10-21.zip` remain pending and are
+ outside the 178-source count.
+--- a/SetTheory/Cardinals/docs/reports/README.md
++++ b/SetTheory/Cardinals/docs/reports/README.md
+@@ -3412,7 +3412,10 @@
+ framed decoder proofs. Current Lean already uses balanced certificate storage;
+ the physical-table lookup proposal is distinct. Submitted proof receipts,
+ finite search negatives and missing production adapters retain their scope.
+-The completed phase-five endpoint remains the reference while the selected
+-phase-six Lean integration runs. The two later `5314ca0e6b`/`b07002a86b` archives
+-remain pending. No new smaller machine, whole-endpoint proof or performance
+-result follows merely from placement or a source-level review.
++The later [phase-six Lean checkpoint](../../../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/README.md)
++now checks the same endpoint over 187 project modules and two typed clients.
++It integrates the normalized 1,426-entry certificate, stable-program dependency
++split, fast transition lookup and seed-model cleanup; reused providers remain
++bound to phase five. The two later `5314ca0e6b`/`b07002a86b` archives remain pending.
++These kernel checks are separate from intake. Placement or source review alone
++still supplies no smaller machine, whole-endpoint proof or performance result.
+--- a/docs/incoming/README.md
++++ b/docs/incoming/README.md
+@@ -17,11 +17,12 @@
+ `K215_Automatic_Certificates_2026-10-21.zip` (`5314ca0e6b`) and
+ `K215_Proof_and_Quotient_Detachment_2026-10-21.zip` (`b07002a86b`)
+ are under review. They arrived after batch 208 and remain pending.
+-The queue-clear statements below describe their earlier checkpoints.
++The queue-clear statements, proof-status paragraphs and ledger rows below
++retain their earlier checkpoints.
+ 
+ ## Supplemental reconciliation through Source 178
+ 
+-[Batch 205 and its Source 174 appendix](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-205.md), [batch 207](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-207.md) and [batch 208](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-208.md) reconcile Sources 168–178. The host now has 178 numbered sources, written coverage of 1–164 and 167–178, and pending Source 165/166 follow-ups; the collection stays at 290 reports. Supplemental commits `0359ebda60`, `dada10165b` and `7e320f376c` preserve exact recovery alongside the upstream placements, without duplicate source numbering; write `1937bbc8a5` completes the batch-208 reconciliation. Phase five is complete; the selected phase-six Lean integration is running and has no full-check result yet. The two later arrivals listed above remain pending.
++[Batch 205 and its Source 174 appendix](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-205.md), [batch 207](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-207.md) and [batch 208](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-208.md) reconcile Sources 168–178. The host now has 178 numbered sources, written coverage of 1–164 and 167–178, and pending Source 165/166 follow-ups; the collection stays at 290 reports. Supplemental commits `0359ebda60`, `dada10165b` and `7e320f376c` preserve exact recovery alongside the upstream placements, without duplicate source numbering; write `1937bbc8a5` completes the batch-208 reconciliation. The later [phase-six Lean checkpoint](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/README.md) now passes for 187 project modules and both typed endpoint clients, with unchanged machine and theorem statements. Its reused providers retain exact phase-five bindings. The two later arrivals listed above remain pending.
+ 
+ ## Queue status after batch 208 placement
+ 
+--- a/SetTheory/Cardinals/docs/reports/manifest.tex
++++ b/SetTheory/Cardinals/docs/reports/manifest.tex
+@@ -174,11 +174,12 @@
+ the current K215 proof status does not formalize the new alternative.
+ Batches~205--208 reconcile eleven further proof-proposal packets. Exact
+ streaming recovery preserves their original bytes and historical records;
+-normalized certificates, balanced lookup and relative transport are separated
+-from the completed phase-five 184-module Lean checkpoint. Sources~165--166
+-still await their written follow-up. Two later \texttt{5314ca0e6b}/\texttt{b07002a86b}
+-arrivals remain pending. Selected phase-six Lean integration is running; no
+-full phase-six result is claimed here. The collection remains 290 reports.
++normalized certificates, balanced lookup and relative transport retain their
++intake scope. A later phase-six check validates the same K215 endpoint over
++187 project modules and two typed clients, with exact predecessor bindings.
++Sources~165--166 still await their written follow-up. Two later
++\texttt{5314ca0e6b}/\texttt{b07002a86b} arrivals remain pending.
++The collection remains 290 reports.
+ The next paragraphs describe the historical collection before those two
+ consolidations. On 29 September 2026 the two Lipparini Problem~6.2 reports
+ were unified, and the finite-height transfinite-word report was integrated
+@@ -9044,9 +9045,12 @@
+ The normalized checker identifies canonical trailing-zero program boundaries
+ while preserving arbitrary registers and the literal 512-fuel decoder. Its
+ 1,426-row proposal overlaps the independent graph and canonical-row analyses;
+-the current phase-five checker still certifies the ordinary 2,240-row source.
+-Balanced transition lookup and stable-program import separation are further
+-proof-engineering opportunities, not newly checked endpoints. The delivered
++at that intake, the phase-five checker certified the ordinary 2,240-row relation.
++The later phase-six result below checks the normalized 1,426-row relation for the
++same source; this does not erase or relabel the historical certificate.
++At that intake, balanced transition lookup and stable-program import separation
++remained proof-engineering proposals; their selected adaptations are checked in
++phase six below. The delivered
+ Python lookup ratio is not a Lean kernel benchmark. Relative CM215/FM215
+ transport proofs retain their concrete refinement hypotheses; FM215's row
+ 127/1 differs from the older M124 comparison. A finite labeled-quotient
+@@ -9087,9 +9091,15 @@
+ 
+ The host now has 178 numbered sources and written coverage of Sources~1--164
+ and~167--178; Sources~165--166 remain pending. The collection still has
+-290 reports. The completed phase-five K215 endpoint remains the reference
+-while selected phase-six Lean integration runs. No full phase-six result,
+-new smaller machine or internal-PA endpoint is claimed here. The two later
++290 reports. The later phase-six K215 check passes for 187 project modules:
++35 freshly compiled and 152 reused with exact predecessor bindings.
++Both unchanged typed clients pass, with ten standard-axiom reports and zero
++audit warnings; the project logs retain 22 linter warnings. It checks
++1,426 normalized certificate entries with the literal 512-step decoder,
++all 16 certificate chunks and all nine site batches. Stable program data,
++fast transition lookup and the seed-model cleanup are integrated separately
++from the delivered proposals. This incremental check does not claim a fresh
++187-module replay, a smaller machine or an internal-PA endpoint. The two later
+ \texttt{5314ca0e6b}/\texttt{b07002a86b} archives remain pending.
+ 
+ {\raggedright\footnotesize Placements \texttt{b07d1a27b}, \texttt{ac4287e5b}, \texttt{3cc6ba5b1}, \texttt{f31ba244b}, \texttt{520bcb2a1}, \texttt{30e6d1fd1}, \texttt{a9a313b79}, \texttt{a6823de93}, \texttt{65c776f4be}, \texttt{b123527ff4}, \texttt{6135ffef4b}, \texttt{d1636c9af8}, \texttt{799bcd094d}, \texttt{7755fdc9a8}, \texttt{e2ceaa6f8c}, \texttt{78b528440a}, \texttt{901dd50056}, \texttt{f7ba71df2d}, \texttt{c5d81a0d28}, \texttt{a1dc32a6fd}, \texttt{47507759e7}, \texttt{46e8518e0e}, \texttt{500381f8f1}, \texttt{6619bd0002}, \texttt{07194e5b4d}, \texttt{197ce3dc67}, \texttt{1c72682b2b}, \texttt{cc269f6062}, \texttt{0af33e8d0b}, \texttt{746e88f2f7}, \texttt{ad8cbe8249}, \texttt{4a59278837}, \texttt{9b1fa851a9}, \texttt{5342a12e22}, \texttt{1ecc16754f}, \texttt{c92e98e674}, \texttt{abae578c29}, \texttt{de06ba50be}, \texttt{24c7e68de7}, \texttt{99fbf38bbd}, \texttt{6ffbe92305}, \texttt{d134378a07}, \texttt{6ee648c500}, \texttt{4a1218d878}, \texttt{bf087d590f}, \texttt{ff23f24af8}, \texttt{7fff7bc909}, \texttt{58615b1aa1}, \texttt{943e1685eb}, \texttt{607e98b59d}, \texttt{b4209acc20}, \texttt{ed175ba03d}, \texttt{fc750e0e30}, \texttt{ec445a5246}, \texttt{35ba151c3b}, \texttt{69e6d97fc2}, \texttt{62f0f95e2b}, \texttt{0359ebda60}, \texttt{dada10165b}, \texttt{8e3066c70b}, \texttt{df67839df1}, \texttt{aecdc78a8b}, \texttt{7e320f376c};
+--- a/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/README.md
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/README.md
+@@ -1,7 +1,7 @@
+ # Shorter checked K215 proofs
+ 
+ The literal 215-state machine and its halting and nonhalting endpoint statements
+-are unchanged. The [latest Lean check](phase5/README.md) validates the 184-module
++are unchanged. The [latest Lean check](phase6/README.md) validates the 187-module
+ primary closure and both typed endpoint clients, using hash-bound predecessor
+ objects for unchanged modules. All ten endpoint reports use only
+ `propext`, `Classical.choice`, and `Quot.sound`; both audits have zero warnings.
+@@ -10,9 +10,10 @@
+ | --- | ---: | ---: |
+ | Lean dominated implication | 689,857 bytes | 30,114 bytes |
+ | Lean AX routine | 202,222 bytes | 7,563 bytes |
+-| Lean source data | 653,569 bytes | 432,131 bytes |
+-| Lean site-coverage facade | 107,243 bytes | 14,916 bytes |
++| Lean source data, including stable program | 653,569 bytes | 368,995 bytes |
++| Lean site-coverage facade | 107,243 bytes | 14,956 bytes |
+ | Lean register determinism | 17,209 bytes | 12,988 bytes |
++| Lean seed-model proof | 11,711 bytes | 10,710 bytes |
+ | Rocq dominated implication | 921,691 bytes | 22,673 bytes |
+ 
+ The main changes share mathematical arguments instead of repeating their
+@@ -22,11 +23,17 @@
+ contracts; and the AX routine composes a finite word of existing macro contracts.
+ A general run-prefix lemma removes a duplicated segment induction. Ordinary
+ bisimulation removes the zero-offset layer; shared tag and bounded-quantifier
+-lemmas shorten semantic proofs. The import closure shrinks from 204 to 184
+-project modules. Four root interfaces and the retained offset checker pass a
+-separate refresh.
++lemmas shorten semantic proofs. Through phase five the import closure shrank
++from 204 to 184 project modules. Phase six adds normalized correspondence,
++stable program data and transition-lookup transport, for 187 modules. It checks
++1,426 normalized entries rather than the earlier ordinary 2,240, preserving the
++512-step decoder and all 4,751 leaves. The full source partition is 375,335 bytes
++in 19 files; its additional generic normalized checker is 6,365 bytes.
++Four root interfaces and the retained offset checker passed a separate phase-five
++refresh; that historical result is distinct from the current primary check.
+ 
+-The [latest checkpoint](phase5/README.md),
++The [latest checkpoint](phase6/README.md),
++[fifth checkpoint](phase5/README.md),
+ [fourth checkpoint](phase4/README.md),
+ [third checkpoint](phase3/README.md),
+ [second checkpoint](phase2/README.md), and
+--- a/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/README.md
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/README.md
+@@ -3,9 +3,12 @@
+ **Both proof lanes pass** (2026-10-21), for the same literal machine.
+ 
+ The fresh full builds below were recorded at `613f9cf28a`. Subsequent
+-[proof simplifications](simplification/phase5/README.md) also pass: affected modules were
+-rebuilt and the endpoint assumption reports rerun against that pinned baseline.
+-The current Lean endpoint closure contains 184 project modules.
++[proof simplifications](simplification/phase6/README.md) also pass: affected modules were
++rebuilt and both endpoint assumption audits rerun with explicit predecessor bindings.
++The current Lean endpoint closure contains 187 project modules: 35 freshly
++compiled and 152 reused from phase five. Both audits have zero warnings and
++ten reports using only the same three standard axioms; the project logs retain
++22 linter warnings. This is an incremental checkpoint, not a second full fresh build.
+ 
+ | System | Completed checks | Endpoint assumptions |
+ | --- | --- | --- |
+@@ -50,7 +53,7 @@
+ endpoint. The large literal tables and arithmetic certificates are kernel-checked
+ data, while these final compositions stay small.
+ 
+-The [Lean reproduction driver](lean/README.md), using Lean 4.32.0, now selects 184
++The [Lean reproduction driver](lean/README.md), using Lean 4.32.0, now selects 187
+ project modules and then two explicit endpoint clients; the original fresh build
+ selected 204. The
+ [Rocq reproduction driver](rocq/README.md), using Rocq 9.1.0 and rocq-stdlib 9.0.0,
+--- a/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/lean/README.md
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/lean/README.md
+@@ -6,9 +6,9 @@
+ The ten audit reports use only `propext`, `Classical.choice`, and `Quot.sound`;
+ neither audit has warnings. The project sources retain 34 linter warnings.
+ 
+-The [subsequent simplification check](../simplification/phase5/README.md) rebuilds affected
+-modules against this pinned baseline and reruns both endpoint audits. Its current
+-closure contains 184 project modules; the audits
++The [subsequent simplification check](../simplification/phase6/README.md) rebuilds affected
++modules with explicit predecessor bindings and reruns both endpoint audits. Its current
++closure contains 187 project modules (35 fresh and 152 reused); the audits
+ still have zero warnings and only the same three allowed axioms. The historical
+ 204-module receipts below are unchanged.
+ 
+@@ -34,7 +34,7 @@
+ 
+ The driver uses a separate Lake workspace and project object directory; it does
+ not load the repository's cached project objects. The shipped Lean core remains
+-the compiler trust boundary. The current closure contains 184 project modules
++the compiler trust boundary. The current closure contains 187 project modules
+ and only the external `Init` boundary. It checks the exact final module set and
+ direct dependency edges, all source bytes, and all recorded object companions.
+ 
+@@ -55,11 +55,16 @@
+ 
+ The original source certificate was partitioned into a data module, 32 independent
+ kernel checks, and the public facade. The current forward-only certificate uses
+-16 checks and the generic symmetry theorem; see the
+-[second simplification checkpoint](../simplification/phase2/README.md). That original partition retained every declaration statement and proof body. Further repairs use one typed congruence lemma and
+-local irreducibility for the dominated-axiom certificate, and narrow namespace
+-openings in the dispatch and seed proofs. The endpoint statements, machine,
+-certificate nodes, and semantic assumptions are unchanged. All four failed
++16 checks and the generic symmetry theorem. The
++[second simplification checkpoint](../simplification/phase2/README.md) records that reduction;
++[phase six](../simplification/phase6/README.md) checks 1,426 normalized entries using
++512 decoding steps and separates the stable program/tree from certificate data.
++The original partition retained every declaration statement and proof body.
++The original elaboration repairs used one typed congruence lemma and local
++irreducibility for dominated implication, and narrow namespace openings in the
++dispatch and seed proofs. Those repairs left the endpoint statements, machine,
++certificate nodes and semantic assumptions unchanged; later certificate reductions
++are recorded in their respective simplification checkpoints. All four failed
+ attempts remain in the [execution history](actual/attempts.json): the original
+ monolithic 900-second timeout and three elaboration failures. Their partial
+ outputs and axiom reports are excluded from the final closure.

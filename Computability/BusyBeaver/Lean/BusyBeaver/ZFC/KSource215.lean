@@ -22,22 +22,22 @@ open RegisterPath RMBisim
 set_option maxRecDepth 65536
 set_option maxHeartbeats 8000000
 
-theorem fwd_start : WithDecoder.branchOk decode215 t215 tD fwdCert [] [] 0 = true := by decide +kernel
+theorem fwd_start : RMNormalizedBisim.WithDecoder.branchOk decode215 t215 tD fwdCert [] [] 0 = true := by decide +kernel
 
 theorem fwd_all : allC fwdF fwdCert = true := by
   unfold fwdCert
   simp only [allC, fwd_ok0, fwd_ok1, fwd_ok2, fwd_ok3, fwd_ok4, fwd_ok5, fwd_ok6, fwd_ok7, fwd_ok8, fwd_ok9, fwd_ok10, fwd_ok11, fwd_ok12, fwd_ok13, fwd_ok14, fwd_ok15, Bool.and_self]
 
-theorem fwd_start' : WithDecoder.branchOk decode215 (ptree p215) (ptree pathDagPerm) fwdCert [] [] 0 = true := by
+theorem fwd_start' : RMNormalizedBisim.WithDecoder.branchOk decode215 (ptree p215) (ptree pathDagPerm) fwdCert [] [] 0 = true := by
   rw [t215_eq, tD_eq]; exact fwd_start
 
-theorem fwd_all' : allC (WithDecoder.entryOk decode215 (ptree p215) (ptree pathDagPerm) fwdCert) fwdCert = true := by
+theorem fwd_all' : allC (RMNormalizedBisim.WithDecoder.entryOk decode215 (ptree p215) (ptree pathDagPerm) fwdCert) fwdCert = true := by
   rw [t215_eq, tD_eq]; exact fwd_all
 
 
 /-- **The 215's source and dagPerm halt alike**, from every register file. -/
 theorem p215_halts_iff (R : Registers) : Halts p215 ⟨[], R⟩ ↔ Halts pathDagPerm ⟨[], R⟩ :=
-  WithDecoder.check_halts_iff decode215 fwd_start' fwd_all' R
+  RMNormalizedBisim.WithDecoder.check_halts_iff decode215 fwd_start' fwd_all' R
 
 #print axioms p215_halts_iff
 

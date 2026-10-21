@@ -4,8 +4,9 @@
 as in Source 123's `source_data.program_text`. The other side is `dagPerm` itself, read as a path
 program (`RMEquiv.ofDag dagPerm 487`); its well-formedness tables (heights, break and continue
 bounds) are computed here and re-checked by the kernel, as in `generate_rmequiv254.py`. The
-certificate comes from `gen_cert.py` (2,240 entries, all offsets zero). Its
-four-field ordinary rendering uses the generic checker with 512 steps of pointer decoding. Everything emitted
+literal certificate comes from `gen_cert.py` (2,240 zero-offset entries). The
+Source168 trailing-zero quotient reduces it to 1,426 entries; the decoder-parametric
+normalized checker uses an explicit 512-step pointer decoder. Everything emitted
 is untrusted; the kernel re-checks it in chunks. dagPerm is written by make_dagPerm.py.
 
 Usage (from the repository root):
@@ -65,6 +66,41 @@ def lit(xs):
     return "[" + ",\n  ".join(rows) + "]"
 
 
+def trailing_false_quotient(entries):
+    """Quotient both endpoint paths, preserving the root and both successors.
+
+    The normalization and saturated checker originate in Source168 / batch205A.
+    This producer checks the quotient of the maintained literal certificate;
+    Lean independently checks the emitted normalized certificate. Path trimming
+    is never applied before a consumed-path increment or break operation.
+    """
+    def trim(path):
+        end = len(path)
+        while end and not path[end - 1]:
+            end -= 1
+        return tuple(path[:end])
+
+    index, representatives, old_to_new = {}, [], []
+    for a, b, z, _j, _k in entries:
+        assert z == 0, "the normalized certificate requires zero offsets"
+        key = (trim(a), trim(b))
+        if key not in index:
+            index[key] = len(representatives)
+            representatives.append(key)
+        old_to_new.append(index[key])
+    assert entries and old_to_new[0] == 0
+    quotient = [None] * len(representatives)
+    for i, (_a, _b, _z, j, k) in enumerate(entries):
+        assert 0 <= j < len(entries) and 0 <= k < len(entries)
+        q = old_to_new[i]
+        a, b = representatives[q]
+        row = (a, b, 0, old_to_new[j], old_to_new[k])
+        assert quotient[q] is None or quotient[q] == row, "inconsistent quotient successors"
+        quotient[q] = row
+    assert all(row is not None for row in quotient)
+    return quotient
+
+
 def ordinary_tree(entries, lo, hi):
     if hi - lo == 1:
         a, b, z, j, k = entries[lo]
@@ -88,8 +124,8 @@ def cert_block(prefix, entries, t1, t2):
         return f".branch {size} ({assemble(lo, mid)}) ({assemble(mid, hi)})"
 
     out.append(f"def {prefix}Cert : CTree := {assemble(0, len(parts))}\n")
-    out.append(f"abbrev {prefix}F : Entry → Bool := WithDecoder.entryOk decode215 {t1} {t2} {prefix}Cert\n")
-    out.append(f"theorem {prefix}_start : WithDecoder.branchOk decode215 {t1} {t2} {prefix}Cert [] [] 0 = true := by decide +kernel\n")
+    out.append(f"abbrev {prefix}F : Entry → Bool := RMNormalizedBisim.WithDecoder.entryOk decode215 {t1} {t2} {prefix}Cert\n")
+    out.append(f"theorem {prefix}_start : RMNormalizedBisim.WithDecoder.branchOk decode215 {t1} {t2} {prefix}Cert [] [] 0 = true := by decide +kernel\n")
     for i in range(len(parts)):
         out.append(f"theorem {prefix}_ok{i} : allC {prefix}F {prefix}{i} = true := by decide +kernel\n")
     oks = ", ".join(f"{prefix}_ok{i}" for i in range(len(parts)))
@@ -104,9 +140,11 @@ def main():
     L1, L2 = load(SITES215), load(dag_sites)
     n1, r1 = dag(L1)
     n2, r2 = dag(L2)
-    entries = generate(Tree(L1), Tree(L2))
+    literal_entries = generate(Tree(L1), Tree(L2))
+    entries = trailing_false_quotient(literal_entries)
+    assert len(literal_entries) == 2240 and len(entries) == 1426
     nz = sum(1 for e in entries if e[2] != 0)
-    out = f"""import BusyBeaver.ZFC.RMBisim
+    out = f"""import BusyBeaver.ZFC.RMNormalizedBisim
 import BusyBeaver.ZFC.RMEquiv
 import BusyBeaver.ZFC.DagPerm
 
@@ -117,9 +155,11 @@ The source program of the 215-state machine and `dagPerm` halt alike, from every
 hash-consed DAG ({len(n1)} nodes). `pathDagPerm` is `dagPerm` read as a path program; its
 well-formedness tables (root height {H[0]}) are re-checked by the kernel. The rotated source and
 `dagPerm` differ by closed reassociations, the AX node's chain layout and the equality test's
-layout, so an ordinary segment bisimulation relates them: {len(entries)} pairs of register-test
-sites. Every certificate offset is zero; the four-field data omits that redundant field. The certificate is from `k225-formal/gen_cert.py` and is checked here
-once in chunks; generic bisimulation symmetry supplies the converse. Pointer decoding uses
+layout. The {len(literal_entries)} literal checkpoint pairs from `gen_cert.py` are quotiented by
+trailing-zero equivalence on both paths, leaving {len(entries)} normalized pairs. The quotient
+preserves the root and both successor classes; the kernel checks all resulting obligations
+in sixteen chunks. The normalized relation supplies an all-register bisimulation and its
+converse. The normalization is adapted from Source168 / batch205A. Pointer decoding uses
 512 fuel, preserving the original paths (some exceed the legacy 128-fuel decoder).
 
 `p215_halts_iff` and `path_iff_iter` relate the source to `dagPerm` iterated; the program layer
@@ -167,23 +207,23 @@ theorem path_iff_iter (R : RMDag.Regs) :
     out += "def decode215 (n : Nat) : List Bool := decodeAux 512 n []\n\n"
     out += cert_block("fwd", entries, "t215", "tD")
     out += """
-theorem fwd_start' : WithDecoder.branchOk decode215 (ptree p215) (ptree pathDagPerm) fwdCert [] [] 0 = true := by
+theorem fwd_start' : RMNormalizedBisim.WithDecoder.branchOk decode215 (ptree p215) (ptree pathDagPerm) fwdCert [] [] 0 = true := by
   rw [t215_eq, tD_eq]; exact fwd_start
 
-theorem fwd_all' : allC (WithDecoder.entryOk decode215 (ptree p215) (ptree pathDagPerm) fwdCert) fwdCert = true := by
+theorem fwd_all' : allC (RMNormalizedBisim.WithDecoder.entryOk decode215 (ptree p215) (ptree pathDagPerm) fwdCert) fwdCert = true := by
   rw [t215_eq, tD_eq]; exact fwd_all
 
 
 /-- **The 215's source and dagPerm halt alike**, from every register file. -/
 theorem p215_halts_iff (R : Registers) : Halts p215 ⟨[], R⟩ ↔ Halts pathDagPerm ⟨[], R⟩ :=
-  WithDecoder.check_halts_iff decode215 fwd_start' fwd_all' R
+  RMNormalizedBisim.WithDecoder.check_halts_iff decode215 fwd_start' fwd_all' R
 
 #print axioms p215_halts_iff
 
 end SetTheory.BusyBeaver.ZFC.KSource215
 """
     write_partition(TARGET, out)
-    print(f"wrote {TARGET}: {len(entries)} entries ({nz} offset), {len(n1)} / {len(n2)} DAG nodes, "
+    print(f"wrote {TARGET}: {len(literal_entries)} literal / {len(entries)} normalized entries ({nz} offset), {len(n1)} / {len(n2)} DAG nodes, "
           f"root height {H[0]}, {len(out) // 1024} KB")
 
 

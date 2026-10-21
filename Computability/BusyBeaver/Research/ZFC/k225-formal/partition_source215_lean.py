@@ -1,4 +1,4 @@
-"""Partition KSource215 into data, individual kernel checks, and its facade.
+"""Partition KSource215 into stable program data, certificate data, checks, and its facade.
 
 Only module boundaries change. The transformer checks that every original declaration
 statement and proof body is preserved. Generated data is still checked by Lean's kernel.
@@ -16,7 +16,27 @@ def partition_source(source: str) -> dict[str, str]:
     assert s.count('namespace '+namespace)==1 and s.rstrip().endswith('end '+namespace)
     fw=s.index('theorem fwd_start :')
     common=s[:fw]+end
-    files={'KSource215Data.lean':common};mapping=[];order=['KSource215Data']
+    stable_names = ['p215Nodes', 'p215', 't215', 't215_eq']
+    stable = []
+    for name in stable_names:
+        matches = list(re.finditer(r'(?m)^(?:def|theorem) ' + name + r'\b', common))
+        assert len(matches) == 1, name
+        start = matches[0].start()
+        stop = common.index('\n\n', start)
+        stable.append(common[start:stop])
+        common = common[:start] + common[stop + 2:]
+    # These comments described the moved declarations, not the retained certificate.
+    for comment in ["/-! ## The 215's source -/\n\n",
+                    "/-- The 215's source as a 179-node DAG (root 178). -/\n",
+                    "/-- The 215's decoder tree, written out. -/\n"]:
+        assert common.count(comment) == 1
+        common = common.replace(comment, '')
+    stable_module = ('import BusyBeaver.ZFC.RMBisim\n\n'
+                     '/-! Stable K215 program declarations, independent of source certificates. -/\n\n'
+                     + header + '\n\n'.join(stable) + '\n' + end)
+    common = 'import BusyBeaver.ZFC.KSource215Program\n' + common
+    files={'KSource215Program.lean':stable_module, 'KSource215Data.lean':common}
+    mapping=[];order=['KSource215Data']
     for direction in ['fwd']:
      for i in range(16):
       name=f'{direction}_ok{i}';pat=rf'(?m)^theorem {name} : [^\n]+\n';matches=list(re.finditer(pat,s));assert len(matches)==1
@@ -51,7 +71,7 @@ def partition_source(source: str) -> dict[str, str]:
     for name,text in files.items():
      for decl,body in declarations(text).items():assert decl not in after,(name,decl);after[decl]=body
     assert before==after,(set(before)^set(after),[k for k in before.keys()&after.keys()if before[k]!=after[k]])
-    assert len(mapping)==16 and len(order)==18
+    assert len(mapping)==16 and len(order)==18 and len(files)==19
     return files
 
 

@@ -3,13 +3,28 @@
 **Current state (2026-10-21).** The exact [215-state machine](../candidate-k215/README.md)
 has compiled correctness proofs in both Lean and Rocq. The original fresh Lean
 build checked 204 project modules; the current
-[proof simplification checkpoint](verification/k215/simplification/phase5/README.md)
-checks the 184-module closure and two endpoint clients with only the three
-standard foundational axioms. Its zero-offset proposal is reconciled as
+[proof simplification checkpoint](verification/k215/simplification/phase6/README.md)
+checks the 187-module closure and two endpoint clients with only the three
+standard foundational axioms, with exact bindings for reused predecessor objects. Its zero-offset proposal is reconciled as
 [Source 167](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-204.md). Rocq's
 237 sources compile with closed endpoint assumption reports and recursive `coqchk`.
 See the [215 verification record](verification/k215/README.md) for statements, evidence,
 repairs, and reproduction commands. The internal PA endpoint remains open.
+
+The supplemental reconciliations of
+[Sources 168–174](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-205.md)
+and [Source 175](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-207.md)
+retain the delivered normalized-certificate, lookup, dependency and transport
+proposals with their original status. The later phase-six checkpoint above
+checks selected adaptations for the same K215 endpoint; the intake records do
+not certify the other proposals or an alternate machine.
+
+[Sources 176–178](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-208.md)
+add affine/axiom transport, certificate and concrete-credit refinements, and
+framed decoder evidence. Maintained Lean already has balanced certificate
+storage. Phase six now checks normalized source correspondence, stable-program
+imports, fast transition lookup and the seed-model cleanup. Decoder factoring,
+relative transports and concrete zero-credit integration retain their separate gaps.
 
 The [221](../candidate-k221/README.md) also has two closed endpoints for its exact table:
 
@@ -176,10 +191,12 @@ program ([`prepare_k215.py`](prepare_k215.py), data in [`lean215/`](lean215/)); 
 - **Program**: [`DagPerm`](../../../Lean/BusyBeaver/ZFC/DagPerm.lean) is `dagDom` with the root reading only the selector,
   MP reading its field (node 484), the AX word's read of `x` moved after its first `I`, and the
   permuted dispatch ([`make_dagperm.py`](make_dagperm.py)); the candidate's source relates to it by
-  2,240 certificate entries, none offset. The Lean source proof uses
-  [`KSource215Data`](../../../Lean/BusyBeaver/ZFC/KSource215Data.lean), 32 independent kernel
-  checks, and the unchanged public [`KSource215`](../../../Lean/BusyBeaver/ZFC/KSource215.lean)
-  composition theorem. [`L2Perm`](../../../Lean/BusyBeaver/ZFC/L2Perm.lean) transfers the `L2K` lemmas,
+  1,426 normalized certificate entries, preserving the 512-step decoder.
+  The earlier phase-five ordinary certificate had 2,240 entries.
+  [`KSource215Program`](../../../Lean/BusyBeaver/ZFC/KSource215Program.lean) holds the stable
+  literal program/tree; [`KSource215Data`](../../../Lean/BusyBeaver/ZFC/KSource215Data.lean)
+  supplies the relation to 16 independent kernel checks and the unchanged public
+  [`KSource215`](../../../Lean/BusyBeaver/ZFC/KSource215.lean) composition theorem. [`L2Perm`](../../../Lean/BusyBeaver/ZFC/L2Perm.lean) transfers the `L2K` lemmas,
   [`L2AxiomsPerm`](../../../Lean/BusyBeaver/ZFC/L2AxiomsPerm.lean) is the regenerated AX word and
   [`L2RootPerm`](../../../Lean/BusyBeaver/ZFC/L2RootPerm.lean) the re-proved dispatch and root step.
 - **Machine**: the 95,714-step startup to the root with `nextproof = 4`, 65 zero cells before the

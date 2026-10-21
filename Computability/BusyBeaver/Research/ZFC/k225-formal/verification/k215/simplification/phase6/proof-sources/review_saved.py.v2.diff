@@ -1,0 +1,31 @@
+--- v1/review_saved.py
++++ v2/review_saved.py
+@@ -1,8 +1,10 @@
+ """Read saved feature evidence only. Does not invoke proof tools or assert full phase6 success."""
+ from pathlib import Path,PurePosixPath
+ import argparse,json,hashlib,tarfile,re
+-BAD={'.olean','.ilean','.o','.so','.a','.pyc','.vo','.vos','.vok','.glob','.exe'}
++BAD={'.olean','.ilean','.o','.so','.a','.pyc','.pyo','.vo','.vos','.vok','.glob','.exe'}
+ sha=lambda b:hashlib.sha256(b).hexdigest()
++GENERIC_REPORTS=['SetTheory.BusyBeaver.ZFC.NormalizedCheckerAudit.'+n for n in ['default128','default_lookup','generic_endpoint','explicit512','default_endpoint','long_decoding','old_decoding','equivalent_padding','different_bit','missing_lookup']]
++SEED_REPORTS=['SetTheory.BusyBeaver.ZFC.KSeed222.seed_of_bundle','SetTheory.BusyBeaver.ZFC.KSeed222.seed_eqFree','SetTheory.BusyBeaver.ZFC.SeedSemanticAudit.same_endpoint','SetTheory.BusyBeaver.ZFC.KSeed222.derivable_named_bundle']
+ def review(directory):
+  summary=json.loads((directory/'summary.json').read_text());idx=json.loads((directory/'index.json').read_text());raw=(directory/'evidence.tar.gz').read_bytes()
+  assert sha(raw)==summary['archive_sha256']and sha((directory/'index.json').read_bytes())==summary['index_sha256']
+@@ -10,7 +12,7 @@
+  with tarfile.open(directory/'evidence.tar.gz','r:gz')as t:
+   for m in t.getmembers():
+    p=PurePosixPath(m.name);assert m.isfile()and not p.is_absolute()and '..'not in p.parts
+-   assert p.suffix not in BAD and not {'objects','__pycache__'}&set(p.parts)
++   assert not (set(p.suffixes) & BAD) and not {'objects','__pycache__'}&set(p.parts)
+    assert m.name not in data and m.name in idx;data[m.name]=t.extractfile(m).read();data[m.name].decode('utf-8')
+    assert len(data[m.name])==idx[m.name]['bytes']and sha(data[m.name])==idx[m.name]['sha256']
+  assert data.keys()==idx.keys()and len(data)==summary['members']
+@@ -35,6 +37,7 @@
+   assert r['helper_sha256']=='a3cf7cc38004bca5e2a2df10c607fe5353896c0454069b4ff24d6b5176c32fbd'
+   assert len(r['basis_objects'])==184
+   reports=re.findall(r"'([^']+)' (?:depends on axioms: \[([^]]*)\]|does not depend on any axioms)",log.decode());assert [list(x)for x in reports]==r['axiom_reports']and len(reports)==nreports
++  assert [name for name,_ in reports]==(GENERIC_REPORTS if module=='RMNormalizedBisim' else SEED_REPORTS)
+   assert all({z.strip()for z in ax.split(',')if z.strip()}<={'propext','Classical.choice','Quot.sound'}for _,ax in reports)
+   if status=='PASS':assert 'error:'not in log.decode()and r['object_sha256']
+   else:assert 'error:'in log.decode()

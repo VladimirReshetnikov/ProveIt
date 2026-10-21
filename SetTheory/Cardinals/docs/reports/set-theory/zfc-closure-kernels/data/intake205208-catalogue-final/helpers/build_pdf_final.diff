@@ -1,0 +1,18 @@
+--- build_pdf.py
++++ build_pdf_final.py
+@@ -6,6 +6,7 @@
+ import argparse,hashlib,json,os,re,signal,subprocess,time
+ from pathlib import Path
+ from update_status import terminal
++EXPECTED_MANIFEST='ef043815775ba99b97e337622807d1c97169d0f2b3c81f955255c65b18e0c033'
+ MANIFEST='SetTheory/Cardinals/docs/reports/manifest.tex'
+ def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+ def save(p,v):p.write_text(json.dumps(v,indent=2)+'\n')
+@@ -17,6 +18,7 @@
+  assert values==r['values']
+  for f in r['files']:assert sha(a.repo/f['path'])==f['after_sha256'],f['path']
+  pin=next(f['after_sha256'] for f in r['files'] if f['path']==MANIFEST)
++ assert pin==EXPECTED_MANIFEST
+  src=(a.repo/MANIFEST).resolve();out=a.out.resolve();out.mkdir(parents=True,exist_ok=False)
+  (out/'source.tex').write_bytes(src.read_bytes());cwd=(a.repo/'SetTheory/Cardinals/docs/reports').resolve()
+  result=dict(status='RUNNING',source=str(src),source_sha256=pin,status_record_sha256=sha(a.status_record),builder_sha256=sha(Path(__file__)),values=values,jobs=[],canonical_pdf_modified=False)

@@ -12,6 +12,37 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Current queue after upstream batches 209–210
+
+`K215_Guarded_Proof_Core_and_Refinements_2026-10-21.zip` and
+`K215_Proof_Core_2026-10-21.zip` are new arrivals awaiting intake.
+Upstream placements `32d378522c` and `05eaa1d466` extracted and retired the
+six packets in batches 209–210, including the earlier automatic-certificate
+and quotient-detachment arrivals. Their independent mathematical reconciliation
+remains pending. The numbered host coverage below remains through Source 178;
+Sources 165–166 also retain their earlier pending follow-ups.
+
+The [origin merge boundary](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/upstream-merge/README.md)
+retains the checked phase-six proof sources while preserving the new proposals.
+Queue-clear statements, proof-status paragraphs and ledger rows below retain
+their earlier checkpoints.
+
+## Supplemental reconciliation through Source 178
+
+[Batch 205 and its Source 174 appendix](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-205.md), [batch 207](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-207.md) and [batch 208](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-208.md) reconcile Sources 168–178. The host now has 178 numbered sources, written coverage of 1–164 and 167–178, and pending Source 165/166 follow-ups; the collection stays at 290 reports. Supplemental commits `0359ebda60`, `dada10165b` and `7e320f376c` preserve exact recovery alongside the upstream placements, without duplicate source numbering; write `1937bbc8a5` completes the batch-208 reconciliation. The later [phase-six Lean checkpoint](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/README.md) now passes for 187 project modules and both typed endpoint clients, with unchanged machine and theorem statements. Its reused providers retain exact phase-five bindings. The later placements and arrivals have the separate pending review scope stated above.
+
+## Queue status after batch 208 placement
+
+The three archives from `aa66d0a33f` are placed as Sources 176–178 in
+[zfc-closure-kernels](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake208-placement.md).
+The exact recovery map accounts for all 405 outer members and separately
+inventories the two embedded historical archives. Their ZIPs are retired in
+this placement; the written reconciliation and catalogue follow separately.
+No submitted executable was run. Selected Lean simplifications are checked
+in isolation before integration; no new full endpoint follows from placement.
+Sources 165–166 retain their pending written follow-up. The incoming ZIP
+queue is clear at this checkpoint.
+
 ## Current proof work after batch 207
 
 The exact K215 Lean endpoint passes the [phase-five simplification checkpoint](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase5/README.md): 184 modules, including 37 freshly compiled affected modules, and both endpoint audits with standard axioms only. Batches 205–207 below preserve proposals as delivered; those imports do not promote their prototypes to new formal results. Supplementary mathematical reconciliation and exact recovery records are being integrated separately. The active goal is simplifying the checked Lean proofs; earlier 214-state target and queue statements are historical.
@@ -1389,6 +1420,10 @@ ProveIt-era batches (from this directory):
 | 198 | Two manuscripts at `001695a82b` and `7e8cc0ee93`: placement `b4209acc20` retires both ZIPs;149 members =83 new +46 existing aliases +2 historical parents +18 archive-only. Sources160–161. | [intake-198.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-198.md), write `72b6378b15`: two isomorphic primary presentations and distinct command-order215. | this commit | Nine plus three selected fresh leaves pass. Secondary runtime:6176 cases/1698845 rules/all430 rows/min9/96284-step full blank. Primary runtime transfers through complete bijections. No214-state result or new exact-table Lean/PA endpoint. Three arrivals queued for199. |
 | 199 | Three manuscripts at `d1cda734a4`, `fb5a17f9df`, `c8029f50d3`: placement `ed175ba03d` retires all ZIPs;403 members =207 new +156 existing aliases +13 batch aliases +7 historical aliases +20 archive-only. Sources162–164. | [intake-199.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-199.md), write `7de71bd17b`: distinct215 allocation and renamed counterpart, rho6 variant, calibrated projection/residual interfaces. | this commit | Seven/four/seven fresh leaves pass. Shared215 runtime:6176 cases/1698790 rules/all430 rows/min6/full95726-step blank. Independent root audit and exact164 transfer; no214 success or new exact-table Lean/PA endpoint. |
 | 204 | Source 167 from `05d063acef`: placement `ec445a5246` retires only its ZIP; 82 members = 61 new + 14 existing exact + 4 delivery duplicates + 3 archive-only. | [intake-204.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-204.md): existing proof symmetry, new zero-offset certificate proposal, separate GC–ZC215 argument and SB correction. | this commit | No delivered executable run; own recovery reconstructs all 82 members. Completed K215 proof status is unchanged; delivered prototypes are uncompiled and GC runtime/startup remain submitted evidence. 167 sources placed, with 165/166 written follow-up pending; 290 reports. Other incoming archives remain pending. |
+| 205 | Sources 168–173 from `a6b3a30011`; upstream `35ba151c3b`, supplement `0359ebda60`. All 851 members recover exactly. | [intake-205.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-205.md): normalized certificates, source transport and preserved research limitations. | written reconciliation; catalogue follow-up | No supplied execution; own streaming recovery and negative controls pass. Existing exact K215 formal status retained. |
+| 206 | Source 174 from `53269bcab1`; upstream `69e6d97fc2`, supplement `dada10165b`. All 360 members recover exactly. | [Source 174 appendix](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-205.md#appendix-source-174-separately-revised-batch-206). | written reconciliation; catalogue follow-up | Ordinary source-certificate and relative transport claims retain their delivered boundaries; no new compiler run. |
+| 207 | Source 175 from `beaabc8e3b`; upstream `62f0f95e2b`, supplement `dada10165b`. All 1,132 outer members recover exactly; nested 82/18-member archives counted separately. | [intake-207.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-207.md): balanced lookup, dependency split and scoped proof proposals. | written reconciliation; catalogue follow-up | Sources 168–175 reconciled; 165/166 follow-ups remain pending. Later batch 208 and current pending arrivals are recorded separately. |
+| 208 | Sources 176–178 from `aa66d0a33f`; parallel upstream `8e3066c70b` and own `df67839df1`/`aecdc78a8b`, supplement `7e320f376c`. All 405 outer members recover; nested 165/360 separately. | [intake-208.md](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-208.md): transport, certificate/credit and decoder refinements. | written reconciliation; catalogue follow-up | 178 sources; written 1–164 and 167–178; 165/166 pending; 290 reports. Phase five complete, selected phase-six integration running. The `5314ca0e6b`/`b07002a86b` archives remain pending. |
 
 
 
