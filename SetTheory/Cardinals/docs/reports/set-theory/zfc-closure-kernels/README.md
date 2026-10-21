@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings through 20 October 2026. This report now reconciles **147 manuscripts**.
+Intake findings through 20 October 2026. This report now reconciles **151 manuscripts**.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -8,6 +8,18 @@ the delivered base article is preserved, rather than rewritten as a unified arti
 No merged PDF is built. These are ordinary mathematical arguments and finite
 regression checks. The deliveries confer no formal status; subsequent Lean
 results and their exact scope are listed below.
+
+[Batch 191](intake-191.md) imports four reports from `7071e5041e` as Sources
+148–151. All 936 members are accounted for in placement `4a1218d878`, and all
+four ZIPs are retired. The new [dominated-parameter 218 alternative](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k218/alternatives/dominated/README.md)
+restricts rho8 to U≤A without losing any native theorem. Its 203-subtree source
+and complete 218-state table pass eight fresh checks, including 6,176 runtime
+cases and exact 312,605-step startup. Two other complete 218 variants omit a
+redundant MP push or permute command tags. The H/PW basis, self-vacuity and
+codec transport retain useful calibration arguments; a crossover217 still has
+a proved blank-start ray. [Reproduction](intake-191-reproduction.md) records
+selected fresh checks and the full review scope. No ≤217 result follows from
+this batch; the later `8a1796545e` candidate is a separate intake.
 
 Batches [189](intake-189.md) and [190](intake-190.md) add Sources 145–147 and
 clear the queue. Placement `d134378a07` retains all 1,036 members of the two

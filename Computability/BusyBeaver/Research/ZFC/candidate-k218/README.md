@@ -16,6 +16,14 @@ checks, reaching the same initial frame 208 steps earlier. Its final saving
 merges the same two logical source roles, so it supplies another layout
 without a further state reduction. This table remains the primary contender.
 
+Further complete 218-state alternatives from `7071e5041e` are now published:
+[dominated rho8](alternatives/dominated/README.md), with 203 source subtrees;
+[omitted MP zero push](alternatives/omit-zero/README.md); and
+[DMN command tags](alternatives/dmn/README.md). Each has separately checked
+full runtime and blank startup, with ordinary source/calculus calibration.
+None reduces the working-state count below 218. The later 217-state claim
+at `8a1796545e` is being reviewed separately.
+
 ## Why one state disappears
 
 A smaller source graph retains all 4,744 primitive instructions and their complete ordinal control graph while reducing distinct subtrees from 206 to 205. Its first physical allocation still uses 219 states. Five reassociations of a closed 52-instruction block then expose an existing decoder continuation without changing the source graph's size or behavior.

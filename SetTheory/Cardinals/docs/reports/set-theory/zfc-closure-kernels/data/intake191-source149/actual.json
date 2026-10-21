@@ -1,0 +1,214 @@
+{
+  "status": "SELECTED_LEAVES_EXITED_ZERO",
+  "runner_source": {
+    "path": "/tmp/zfc-intake191-independent-review/replay.py",
+    "sha256": "6f6796120992e0b31d8d46c6e515ef190d9a0f823829c7ad1bcf4ac83381c0dc"
+  },
+  "original_packet": "/tmp/zfc-intake191/K218_Dominated_Rho8_2026-10-20/K218_Dominated_Rho8_2026-10-20",
+  "disposable_copy": "/tmp/zfc-intake191-source149-run1/copy",
+  "input_pins_before": {
+    "audits/audit_blank_independent.py": "4d14364e7c18396edbf293e8150a4fb2b58b59adb7bc0840a4fe73c550c8ac84",
+    "audits/audit_classical_independent.py": "480104aba76f5d31dfa175406234de6585793f8a2fd904cc335a8ca0f691453f",
+    "audits/audit_compact.py": "d091928de7bcb8c0baa07c52403a47a3f4f6d3b1cca04f0c5bdba09ccb48ca59",
+    "audits/verify_source_schedule.py": "9a644fc4ef0fe300ac7fbaa2b76240c1aa6a1612eb6abff9d26b4807180f5632",
+    "binary/code/inputs/legacy_mapping.json": "26a4bff859adcc510f1faf4364a597681fec014a136bc1d00dc9ce1904ad6bbf",
+    "binary/code/rebuild_table.py": "f7a4446f952047d7c96a8d5f2709ab6a3de914d054638d808224afeb66e472f6",
+    "binary/code/runtime/independent_runtime.py": "0d1dae10b921cc302a2211d9251ca7ec131aa63ecb040ce66720894877700346",
+    "binary/code/runtime/symbolic_runtime.py": "7ca30fd11def00e973d8f30997e51fa2dd87ae2eff311ea8c9fc4ac08c9d774f",
+    "binary/code/validate_native.py": "49b0a77bafa3549cef72e381352eeadad28937519ec5463c3cf3bee545f6f7e2",
+    "binary/machine/k218.compact.tm": "60cd61b3972bf4854be1e14327f873bdd75a6a40ee022ec778898b4d29399f76",
+    "binary/machine/k218.native.tm": "9c8505bf3731212192b83ee61dbc569085b4675ae9e0539843ae57d43ad9e886",
+    "binary/machine/k219.baseline.native.tm": "b255f8ee341d394c303d67a7fca7f8288ed9d4c40f075899fa64b13085aaca26",
+    "binary/machine/sites218.json": "264fba90229974a53c2c5c943cf5fe8924327b6bbc31bd47e64d7f5c670b7495",
+    "binary/machine/transition_recipe.json": "d06612f8c4991cfbba1e4873b19f3c0129d7834269ed34acfe985fe063fbf4af",
+    "binary/provenance/unfolded221.reference.tm": "cc4e0acb570f877099d7e4934c2ec976cb1d1967145f8877886eb2a41fc8d747",
+    "source/baseline_sites219.json": "0f6d9d991e36dda1a7449edab72a799bb2d8c3de3ff853a26178b89bd1bc8789",
+    "source/build_dominated_source.py": "79036d8b1d85c37927fd9db67c49a8d8c3f8684359d4598c009f31d6c1a790ba",
+    "source/sites218.json": "264fba90229974a53c2c5c943cf5fe8924327b6bbc31bd47e64d7f5c670b7495",
+    "theory/check_classical_compact.py": "21bb2310088c8dce095b4f4c8c055012c1a068e3d7dfa7254d23e9f29d8fd9b5",
+    "theory/dominated_rho8_full_certificate.json": "3cf18a5fe9f187b50b79d97b84535ce9bf776305728b0cdfe17285e94f028452"
+  },
+  "jobs": [
+    {
+      "name": "logic-shared",
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "theory/check_classical_compact.py",
+        "theory/dominated_rho8_full_certificate.json"
+      ],
+      "cwd": "/tmp/zfc-intake191-source149-run1/copy",
+      "timeout_seconds": 45,
+      "seconds": 0.1141954381018877,
+      "returncode": 0,
+      "timed_out": false,
+      "stdout": "/tmp/zfc-intake191-source149-run1/logs/logic-shared.stdout",
+      "stderr": "/tmp/zfc-intake191-source149-run1/logs/logic-shared.stderr",
+      "stdout_sha256": "d2fe92101da8c5b324bbc811e8028348142006a8c5ca2f4efbdd55e3079ae8a4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "logic-independent",
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "audits/audit_classical_independent.py",
+        "theory/dominated_rho8_full_certificate.json"
+      ],
+      "cwd": "/tmp/zfc-intake191-source149-run1/copy",
+      "timeout_seconds": 45,
+      "seconds": 0.16460786201059818,
+      "returncode": 0,
+      "timed_out": false,
+      "stdout": "/tmp/zfc-intake191-source149-run1/logs/logic-independent.stdout",
+      "stderr": "/tmp/zfc-intake191-source149-run1/logs/logic-independent.stderr",
+      "stdout_sha256": "7b332ac2b8ad8d30a25d5da037081d2bd3e77817de8c7a1eb0c63daee55a903a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "source-build",
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "source/build_dominated_source.py",
+        "source/baseline_sites219.json",
+        "/tmp/zfc-intake191-source149-run1/results/source",
+        "--common",
+        "--equivalent",
+        "source/sites218.json"
+      ],
+      "cwd": "/tmp/zfc-intake191-source149-run1/copy",
+      "timeout_seconds": 45,
+      "seconds": 0.3650700384750962,
+      "returncode": 0,
+      "timed_out": false,
+      "stdout": "/tmp/zfc-intake191-source149-run1/logs/source-build.stdout",
+      "stderr": "/tmp/zfc-intake191-source149-run1/logs/source-build.stderr",
+      "stdout_sha256": "b0f98ad02257b1cc2affc49a9366d0d08a6e2efc3086482d49dfdf247dd53b2d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "source-independent",
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "audits/verify_source_schedule.py",
+        "source/baseline_sites219.json",
+        "source/sites218.json",
+        "--common"
+      ],
+      "cwd": "/tmp/zfc-intake191-source149-run1/copy",
+      "timeout_seconds": 45,
+      "seconds": 0.26444469299167395,
+      "returncode": 0,
+      "timed_out": false,
+      "stdout": "/tmp/zfc-intake191-source149-run1/logs/source-independent.stdout",
+      "stderr": "/tmp/zfc-intake191-source149-run1/logs/source-independent.stderr",
+      "stdout_sha256": "467764778505a2fa5e7a9078342122b2404c4eed313bcb8f449feddfddd693ce",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "table-reconstruction",
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "binary/code/rebuild_table.py",
+        "binary/machine/k219.baseline.native.tm",
+        "binary/machine/transition_recipe.json",
+        "/tmp/zfc-intake191-source149-run1/results/rebuilt.native.tm"
+      ],
+      "cwd": "/tmp/zfc-intake191-source149-run1/copy",
+      "timeout_seconds": 45,
+      "seconds": 0.06427882239222527,
+      "returncode": 0,
+      "timed_out": false,
+      "stdout": "/tmp/zfc-intake191-source149-run1/logs/table-reconstruction.stdout",
+      "stderr": "/tmp/zfc-intake191-source149-run1/logs/table-reconstruction.stderr",
+      "stdout_sha256": "6171b792e1056790ca4b73fdab8095c2e3e64ec82a7a8ccc8528e7122bca1173",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "compact-bijection",
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "audits/audit_compact.py",
+        "binary/machine/k218.native.tm",
+        "binary/machine/k218.compact.tm",
+        "binary/machine/transition_recipe.json"
+      ],
+      "cwd": "/tmp/zfc-intake191-source149-run1/copy",
+      "timeout_seconds": 45,
+      "seconds": 0.06413361988961697,
+      "returncode": 0,
+      "timed_out": false,
+      "stdout": "/tmp/zfc-intake191-source149-run1/logs/compact-bijection.stdout",
+      "stderr": "/tmp/zfc-intake191-source149-run1/logs/compact-bijection.stderr",
+      "stdout_sha256": "c95accab2ed0ad3424015f951309cf7f2f167fa86e6ee71506c3b1ca9d58cb30",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "blank-independent",
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "audits/audit_blank_independent.py",
+        "binary/machine/k218.native.tm",
+        "binary/provenance/unfolded221.reference.tm"
+      ],
+      "cwd": "/tmp/zfc-intake191-source149-run1/copy",
+      "timeout_seconds": 45,
+      "seconds": 0.4147729491814971,
+      "returncode": 0,
+      "timed_out": false,
+      "stdout": "/tmp/zfc-intake191-source149-run1/logs/blank-independent.stdout",
+      "stderr": "/tmp/zfc-intake191-source149-run1/logs/blank-independent.stderr",
+      "stdout_sha256": "d4b71e2ee5b5371d7e423c61561d6f66abe644655fe5e5e4d1a065906ea12cb1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "startup-and-universal-runtime",
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "binary/code/validate_native.py",
+        "binary/machine/k218.native.tm",
+        "binary/machine/sites218.json",
+        "/tmp/zfc-intake191-source149-run1/results/runtime"
+      ],
+      "cwd": "/tmp/zfc-intake191-source149-run1/copy",
+      "timeout_seconds": 240,
+      "seconds": 165.6141611430794,
+      "returncode": 0,
+      "timed_out": false,
+      "stdout": "/tmp/zfc-intake191-source149-run1/logs/startup-and-universal-runtime.stdout",
+      "stderr": "/tmp/zfc-intake191-source149-run1/logs/startup-and-universal-runtime.stderr",
+      "stdout_sha256": "c08a7f7c43014e32041db8a4811e575f341cc63754e30b31627b74d7726cda81",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "scope": "Selected finite forward proof/source/table/startup checks and one complete arbitrary-natural runtime derivation. No manifest validation, proof search, ancestors or proof-assistant execution.",
+  "input_pins_after": {
+    "audits/audit_blank_independent.py": "4d14364e7c18396edbf293e8150a4fb2b58b59adb7bc0840a4fe73c550c8ac84",
+    "audits/audit_classical_independent.py": "480104aba76f5d31dfa175406234de6585793f8a2fd904cc335a8ca0f691453f",
+    "audits/audit_compact.py": "d091928de7bcb8c0baa07c52403a47a3f4f6d3b1cca04f0c5bdba09ccb48ca59",
+    "audits/verify_source_schedule.py": "9a644fc4ef0fe300ac7fbaa2b76240c1aa6a1612eb6abff9d26b4807180f5632",
+    "binary/code/inputs/legacy_mapping.json": "26a4bff859adcc510f1faf4364a597681fec014a136bc1d00dc9ce1904ad6bbf",
+    "binary/code/rebuild_table.py": "f7a4446f952047d7c96a8d5f2709ab6a3de914d054638d808224afeb66e472f6",
+    "binary/code/runtime/independent_runtime.py": "0d1dae10b921cc302a2211d9251ca7ec131aa63ecb040ce66720894877700346",
+    "binary/code/runtime/symbolic_runtime.py": "7ca30fd11def00e973d8f30997e51fa2dd87ae2eff311ea8c9fc4ac08c9d774f",
+    "binary/code/validate_native.py": "49b0a77bafa3549cef72e381352eeadad28937519ec5463c3cf3bee545f6f7e2",
+    "binary/machine/k218.compact.tm": "60cd61b3972bf4854be1e14327f873bdd75a6a40ee022ec778898b4d29399f76",
+    "binary/machine/k218.native.tm": "9c8505bf3731212192b83ee61dbc569085b4675ae9e0539843ae57d43ad9e886",
+    "binary/machine/k219.baseline.native.tm": "b255f8ee341d394c303d67a7fca7f8288ed9d4c40f075899fa64b13085aaca26",
+    "binary/machine/sites218.json": "264fba90229974a53c2c5c943cf5fe8924327b6bbc31bd47e64d7f5c670b7495",
+    "binary/machine/transition_recipe.json": "d06612f8c4991cfbba1e4873b19f3c0129d7834269ed34acfe985fe063fbf4af",
+    "binary/provenance/unfolded221.reference.tm": "cc4e0acb570f877099d7e4934c2ec976cb1d1967145f8877886eb2a41fc8d747",
+    "source/baseline_sites219.json": "0f6d9d991e36dda1a7449edab72a799bb2d8c3de3ff853a26178b89bd1bc8789",
+    "source/build_dominated_source.py": "79036d8b1d85c37927fd9db67c49a8d8c3f8684359d4598c009f31d6c1a790ba",
+    "source/sites218.json": "264fba90229974a53c2c5c943cf5fe8924327b6bbc31bd47e64d7f5c670b7495",
+    "theory/check_classical_compact.py": "21bb2310088c8dce095b4f4c8c055012c1a068e3d7dfa7254d23e9f29d8fd9b5",
+    "theory/dominated_rho8_full_certificate.json": "3cf18a5fe9f187b50b79d97b84535ce9bf776305728b0cdfe17285e94f028452"
+  },
+  "inputs_unchanged": true
+}

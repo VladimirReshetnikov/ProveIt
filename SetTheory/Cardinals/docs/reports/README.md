@@ -3250,3 +3250,17 @@ for all 102 members and retires the ZIP. The primary K218 remains unchanged.
 [Recovery](set-theory/zfc-closure-kernels/intake-190-reproduction.md) preserves
 the exact source/table lineage and inherited attribution. No new exact-table
 Lean/Rocq or internal PA endpoint, minimality or ≤217 result is claimed.
+
+[Batch 191](set-theory/zfc-closure-kernels/intake-191.md) adds Sources 148–151
+from `7071e5041e`, bringing the host to 151 sources while the collection remains
+290 reports. Placement `4a1218d878` accounts for all 936 members and retires four
+ZIPs. A numerical U≤A restriction preserves every native theorem and gives a
+203-subtree source with a fully checked 218-state allocation. Its eight fresh
+jobs include 6,176 runtime cases, 1,616,989 symbolic rules, all 436 rows and
+exact 312,605-step startup. Two further 218 variants omit a redundant stack
+push or permute command tags. H/PW and self-vacuity calibrations, codec
+transport, full and fragment countermodels, and initialized217 failures remain
+scoped research. [Recovery/replay](set-theory/zfc-closure-kernels/intake-191-reproduction.md)
+retains all originals and separates fresh selected runs from delivered searches.
+No ≤217 result, minimality or new exact-table Lean/PA endpoint follows from this
+batch; the later `8a1796545e` submission is a separate intake.

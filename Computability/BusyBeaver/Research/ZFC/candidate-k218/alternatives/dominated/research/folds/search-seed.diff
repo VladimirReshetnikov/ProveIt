@@ -1,0 +1,11 @@
+--- search.original.py
++++ search.py
+@@ -17,7 +17,7 @@
+ def main():
+  ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--seed',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);ap.add_argument('--seconds',type=int,default=110);a=ap.parse_args()
+  assert __debug__ and not os.getenv('PYTHONOPTIMIZE') and 1<=a.seconds<=110
+- assert digest(a.seed) in ('2dfaba6da09b78291e534777cd30c5f0d68bd84faa670e868e779c396aeb308f','3376bd149d5f35c03b3dabc79f095d2d2e674cf2e0e1c09a7de09431d8e74153')
++ assert digest(a.seed) == '9c8505bf3731212192b83ee61dbc569085b4675ae9e0539843ae57d43ad9e886'
+  assert all(digest(HERE/n)==h for n,h in PINS.items())
+  filt=load('filter_source');check=load('check_joint_fold')
+  a.output.mkdir(parents=True,exist_ok=False);started=time.monotonic();old,start=check.read(a.seed);Q=sorted({q for q,b in old});assert len(Q)==218 and len(old)==436

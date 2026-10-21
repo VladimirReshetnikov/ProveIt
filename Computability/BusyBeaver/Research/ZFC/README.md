@@ -1,6 +1,6 @@
 # Smaller machines for Con(ZFC)
 
-The current goal is a binary, single-tape machine with **217 working states
+The current goal is a binary, single-tape machine with **216 working states
 or fewer** whose blank-tape nonhalting is provably in **ZFC** equivalent to
 Con(ZFC). The original target was fewer than 254 states and equivalence
 provable in PA. An earlier search phase also permitted consistency of a
@@ -50,7 +50,7 @@ written by their incoming edges. All six fresh jobs pass: 6,167 guarded cases,
 Independent mathematical reviews confirm the source and final all-tape fold
 arguments. The complete unchanged-calculus comparison is formalizable in ZFC;
 the exact-K218 Lean and internal PA endpoints remain open. The row157 rewrite
-also gives a second checked 218 layout. Our next target is **217 states or fewer**.
+also gives a second checked 218 layout. Our next target is **216 states or fewer**.
 See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-188.md)
 and [reproduction guide](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-188-reproduction.md).
 
@@ -60,6 +60,19 @@ all 436 rows and a complete 312,701-step startup. Its graph is distinct, but
 its final fold shares the same two source roles as the primary; the savings
 do not stack. Its own row157 variant also remains at 218. See
 [batch 190](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-190.md).
+
+[Batch 191](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-191.md)
+adds a [dominated-rho8 218 alternative](candidate-k218/alternatives/dominated/README.md):
+restricting U≤A preserves every native theorem while shrinking the source to
+203 distinct subtrees. All eight fresh checks pass, including 6,176 runtime
+cases, 1,616,989 rules and exact 312,605-step startup. Existing final contextual
+folds do not directly stack. Two further complete 218 variants
+[omit a redundant MP push](candidate-k218/alternatives/omit-zero/README.md) or
+[permute command tags](candidate-k218/alternatives/dmn/README.md).
+The reports also add calibrated H/PW and self-vacuity bases, codec transport
+and concrete startup obstructions. Their four archives are imported and retired.
+The later **217-state claim at `8a1796545e` is under review**; it is not counted
+as accepted until its distinct source, runtime and complete startup are checked.
 
 The two [batch-189 research reports](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-189.md)
 retain useful arbitrary-clean-seed and fixed-power-of-two scheduler theorems,

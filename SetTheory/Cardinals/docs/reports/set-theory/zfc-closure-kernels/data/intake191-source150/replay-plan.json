@@ -1,0 +1,95 @@
+{
+  "status": "SOURCE_REVIEWED_PROPOSED_SELECTED_LEAVES_NOT_EXECUTED",
+  "package": "/tmp/zfc-intake191/ZFC_217_Investigation_2026-10-20/ZFC_217_Investigation_2026-10-20",
+  "copy_required": true,
+  "in_place_writes": [
+    "formalism/*_receipt.json",
+    "formalism/self_vacuity_proof_dag.json"
+  ],
+  "jobs": [
+    {
+      "name": "self-vacuity-proof",
+      "argv": [
+        "python3",
+        "-B",
+        "check_self_vacuity.py"
+      ],
+      "cwd": "{COPY}/formalism",
+      "timeout": 120,
+      "expected": "FINITE_HILBERT_RULE_REPLAY_PASS;1110 nodes;5 closed endpoints; proof hashbc5dc3b13b2dcea285ee5865dd7be11ec69e8b660c78e7dd6daf7233c505cd9f"
+    },
+    {
+      "name": "fixed-b-countermodels",
+      "argv": [
+        "python3",
+        "-B",
+        "check_fixed_b_countermodels.py"
+      ],
+      "cwd": "{COPY}/formalism",
+      "timeout": 120,
+      "expected": "EXPLICIT_FOUR_VALUE_COUNTERMODELS_PASS;64 restricted instances each;512 full-native retained AST cases; B=truth remains propositional only"
+    },
+    {
+      "name": "persistent-negation",
+      "argv": [
+        "python3",
+        "-B",
+        "check_persistent_negation.py"
+      ],
+      "cwd": "{COPY}/formalism",
+      "timeout": 120,
+      "expected": "PERSISTENT_NEGATION_FRAGMENT_COUNTERMODEL_PASS;16 elements;256 K/4096 S/256 normality/16 rho6"
+    },
+    {
+      "name": "core-quick",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/core217/check_core.py",
+        "--output",
+        "{OUT}/core-quick"
+      ],
+      "cwd": "{COPY}",
+      "timeout": 120,
+      "expected": "INITIALIZED_CORE_ONLY_BLANK_START_REFUTED;217/434;ray85;baseline312909"
+    },
+    {
+      "name": "preliminary-failure",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/root-search/code/check_preliminary_failure.py",
+        "--packet-root",
+        "{COPY}",
+        "--output",
+        "{OUT}/preliminary-failure"
+      ],
+      "cwd": "{COPY}",
+      "timeout": 120,
+      "expected": "CONCRETE_RUNTIME_COUNTEREXAMPLE;site3126;baseline596,candidate626;intermediate150/318"
+    },
+    {
+      "name": "raw-frame",
+      "argv": [
+        "python3",
+        "-B",
+        "{COPY}/root-search/code/check_raw_frame.py",
+        "--packet-root",
+        "{COPY}",
+        "--output",
+        "{OUT}/raw-frame"
+      ],
+      "cwd": "{COPY}",
+      "timeout": 120,
+      "expected": "SOURCE_MASK_RUNTIME_COUNTEREXAMPLE;blank532731;253spares73zero+180one;site0CD8positive4738"
+    }
+  ],
+  "excluded": [
+    "all wrappers/manifests/checksum suites",
+    "Coq/Rocq",
+    "delivered compiled executables",
+    "broad or inherited searches",
+    "full runtime unless separately selected"
+  ],
+  "notes": "All six cheap closures read. The joint checker matches exactly the previously full-read accepted Source139 copy. Price driver read but helper closure not newly reread; symbolic runtime engine not newly reread in full. No execution authorization inferred by this plan."
+}

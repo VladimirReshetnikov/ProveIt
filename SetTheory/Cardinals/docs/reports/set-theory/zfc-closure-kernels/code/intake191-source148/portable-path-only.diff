@@ -1,0 +1,13 @@
+--- actual/replay_selected.py
++++ portable/replay_portable.py
+@@ -2,8 +2,8 @@
+ """Root-authorized selected leaf replay; never executes wrappers or manifests."""
+ from pathlib import Path
+ import hashlib,json,os,shutil,subprocess,sys,time
+-P=Path('/tmp/zfc-intake191/K217_Search_Round_2026-10-20/K217_Search_Round_2026-10-20')
+-D=Path(sys.argv[1]).resolve(); D.mkdir(exist_ok=False)
++P=Path(sys.argv[1]).resolve()
++D=Path(sys.argv[2]).resolve(); D.mkdir(exist_ok=False)
+ C=D/'copy';shutil.copytree(P,C);(D/'logs').mkdir()
+ H=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+ jobs=[

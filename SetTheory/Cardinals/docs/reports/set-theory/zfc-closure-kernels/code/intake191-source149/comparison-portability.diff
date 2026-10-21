@@ -1,0 +1,21 @@
+--- history/source_compare.py
++++ source_compare.py
+@@ -1,12 +1,13 @@
+ """Own source-tree comparison; reads data only, no submitted code or machine run."""
+ from pathlib import Path
+-import json,hashlib,sys
+-sys.path.insert(0,'/tmp/k217-cc3-identity-padding')
++import json,hashlib,sys,argparse
++sys.path.insert(0,str(Path(__file__).resolve().parent))
+ import tree_reader as tr
+-R=Path('/home/codex/.codex/worktrees/ec20/Proofs')
++ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,required=True);ap.add_argument('--packet',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);args=ap.parse_args()
++R=args.repo.resolve()
+ B=R/'Computability/BusyBeaver/Research/ZFC'
+-A=Path('/tmp/zfc-intake191/K218_Dominated_Rho8_2026-10-20/K218_Dominated_Rho8_2026-10-20')
+-O=Path(__file__).parent
++A=args.packet.resolve()
++O=args.output.resolve();O.mkdir(exist_ok=False,parents=True)
+ paths={'baseline219':B/'candidate-k219/sites219.json','primary218':B/'candidate-k218/sites218.json','contextual218':B/'candidate-k218/alternatives/contextual/machine/sites218.json','dominated_reference':A/'source/dominated_zyx206.json','dominated_final':A/'source/sites218.json'}
+ trees={k:tr.parse(json.loads(p.read_text()))for k,p in paths.items()}
+ def at(t,p):
