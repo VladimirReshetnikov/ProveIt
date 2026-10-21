@@ -7,7 +7,7 @@
 // carry at most MAXC open side conditions and MAXW tokens; the weight is the length plus CPEN per
 // side condition, or HW when the clause generalizes a hint (Veroff's hints strategy).  Prints the
 // proof DAG as `i major minor formula [conditions]`, read by ../generate_domrho8_cd.py.
-// Environment: NOZ=1 drops the truth axiom Z; GOALS="F;G;..." adds goals (all must be proved;
+// Environment: NOZ=1 drops the truth axiom Z; UNR=1 drops the side condition of the row; GOALS="F;G;..." adds goals (all must be proved;
 // `#GOAL i F` lines name the lemma proving each).
 // Untrusted: the kernels check the rendered derivation.
 //
@@ -190,7 +190,7 @@ fn main() {
         heap.push(Reverse((w, pend.len() - 1)));
     };
     if std::env::var("NOZ").is_err() { push(Thm { t: vec![ZT], c: vec![], maj: -1, min: -1 }, &mut seen, &mut heap, &mut pend); }
-    push(Thm { t: ax.clone(), c: vec![(vec![q], vec![r])], maj: -2, min: -2 }, &mut seen, &mut heap, &mut pend);
+    push(Thm { t: ax.clone(), c: if std::env::var("UNR").is_ok() { vec![] } else { vec![(vec![q], vec![r])] }, maj: -2, min: -2 }, &mut seen, &mut heap, &mut pend);
     let t0 = std::time::Instant::now();
     let mut steps = 0;
     while let Some(Reverse((_w, pi))) = heap.pop() {

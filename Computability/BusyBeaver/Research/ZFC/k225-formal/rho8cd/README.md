@@ -19,6 +19,15 @@ lists of lemmas, and renders them for both lanes:
   see [the status note](PROVEIT_STATUS.md)); `--lean` renders the same derivation as a drop-in Nat
   `DomRho8.lean` (built with `KCodeDom` in `4fdc59197a`).
 
+* [`derivation_luk.txt`](derivation_luk.txt) (56 steps, unrestricted row, no truth): K, Peirce,
+  composition and S. `--luk` rewrites the `Lukasiewicz` namespace of
+  [`Lean/BusyBeaver/ZFC/Lukasiewicz.lean`](../../../../Lean/BusyBeaver/ZFC/Lukasiewicz.lean) (it ported the
+  107-step CD254 DAG; the Tarski bridge after the namespace is kept verbatim); `--rocq-cd` renders the
+  Rocq `CD222.v` with `thm_K`, `thm_P`, `thm_B`, `thm_S`.
+
+[`rocq-proposal/`](rocq-proposal/README.md) holds the two Rocq renderings, compiled with their users,
+as proposals for the peer's Rocq checkpoint.
+
 Format: one line per formula, `i major minor F [side conditions]`. Leaf `-1` is truth `Z`, leaf
 `-2` the dominated row `(((a>b)>c)>((c>a)>(d>a))) [b<=c]`; every other line follows from its major
 and minor premise by modus ponens after the most general unifier; `#GOAL i F` names the line
@@ -38,7 +47,9 @@ truth) and, with `NOZ=1` and the two extra `GOALS`, to the 58-step core.
 
 ```sh
 python generate_domrho8_cd.py --derivation derivation_core.txt --core ../../../../Lean/BusyBeaver/ZFC/DominatedImplication.lean
-python generate_domrho8_cd.py --rocq DomRho8.v       # the Rocq rendering (not in regenerate215.py)
+python generate_domrho8_cd.py --derivation derivation_luk.txt --luk ../../../../Lean/BusyBeaver/ZFC/Lukasiewicz.lean
+python generate_domrho8_cd.py --rocq DomRho8.v       # the Rocq renderings (not in regenerate215.py)
+python generate_domrho8_cd.py --derivation derivation_luk.txt --rocq-cd CD222.v
 python generate_domrho8_cd.py --lean DomRho8.lean    # the drop-in Nat rendering
 
 cd search && cargo build --release
