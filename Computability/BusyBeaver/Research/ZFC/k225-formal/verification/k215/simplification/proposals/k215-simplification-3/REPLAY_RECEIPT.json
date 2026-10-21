@@ -1,0 +1,200 @@
+{
+  "status": "PASS_FINITE_REPLAY_NOT_KERNEL_PROOF",
+  "manifest_sha256": "1984ee09f61669b06075f6e0d39b303529c44b5742e2271d967dc19caca3cb22",
+  "manifest_files": 1089,
+  "python": "3.12.14",
+  "received_code_executed": false,
+  "lean_or_rocq_compiled": false,
+  "original_packet_unchanged": true,
+  "checks": [
+    {
+      "name": "lean_snapshot",
+      "script": "lean/verify_snapshot.py",
+      "exit_code": 0,
+      "archived_outputs_equal": [],
+      "stdout_sha256": "3b245449cbdea9e0512e3afe1ce08fad054f1fd59b29d20920311643c66ccdb7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 0.107
+    },
+    {
+      "name": "lean_forward",
+      "script": "lean/profiling/profile_forward_checks.py",
+      "exit_code": 0,
+      "archived_outputs_equal": [
+        "lean/profiling/forward_profile.json"
+      ],
+      "stdout_sha256": "65d2496a4ed38259af319b34849030e9cb2b9a5ee9cff6c85943190f7a4a7e01",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 1.75
+    },
+    {
+      "name": "lean_cfg",
+      "script": "lean/profiling/verify_lean_canonical_cfg.py",
+      "exit_code": 0,
+      "archived_outputs_equal": [
+        "lean/profiling/canonical_cfg_result.json"
+      ],
+      "stdout_sha256": "ecbbcd6e851e6b95940a5a0693e3894617d14f4539a6c0a2a54eff00536e4f24",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 1.414
+    },
+    {
+      "name": "lean_walker",
+      "script": "lean/profiling/profile_walker_sharing.py",
+      "exit_code": 0,
+      "archived_outputs_equal": [
+        "lean/profiling/walker_sharing_result.json"
+      ],
+      "stdout_sha256": "89b5b141bed9ccb2f0628e23c2f95381b3d66581c599890acd4dcebb1c2622c1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 14.195
+    },
+    {
+      "name": "lean_canonical_rows",
+      "script": "lean/profiling/build_canonical_rows.py",
+      "exit_code": 0,
+      "archived_outputs_equal": [
+        "lean/profiling/canonical_rows.json",
+        "lean/profiling/canonical_rows_result.json"
+      ],
+      "stdout_sha256": "90b8ad2d4c27c11b7850319bb515fe721cab11ec151071059cc71fcf9d4a9aa0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 2.438
+    },
+    {
+      "name": "lean_minimization",
+      "script": "lean/profiling/minimization/minimize_canonical_cfg.py",
+      "exit_code": 0,
+      "archived_outputs_equal": [
+        "lean/profiling/minimization/minimization_result.json",
+        "lean/profiling/minimization/quotient_certificate.json"
+      ],
+      "stdout_sha256": "2b3c1d905f39178ba89b280fe18f380b757ed428f76529a4927379687a6ecd53",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 22.978
+    },
+    {
+      "name": "rocq_certificate",
+      "script": "rocq/prototype.py",
+      "exit_code": 0,
+      "archived_outputs_equal": [
+        "rocq/prototype_result.json",
+        "rocq/PackedCert215.v",
+        "rocq/PackedCertAudit.v",
+        "rocq/Source215Plain.v"
+      ],
+      "stdout_sha256": "6db6c0e28479159c8381b3e8d0204ce281c4b303cdcd951344b6efe880fef5b0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 1.634
+    },
+    {
+      "name": "rocq_cfg",
+      "script": "rocq/compare_flat_cfg.py",
+      "exit_code": 0,
+      "archived_outputs_equal": [
+        "rocq/flat_cfg_result.json",
+        "rocq/p215_flat_cfg.json",
+        "rocq/dagPerm_flat_cfg.json"
+      ],
+      "stdout_sha256": "1ab0330194adfd3e18e2af6a589a7840e1fb1b7223cfd000557580be5be809f8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 1.059
+    },
+    {
+      "name": "rocq_rewrites",
+      "script": "rocq/analyze_cfg_rewrites.py",
+      "exit_code": 0,
+      "archived_outputs_equal": [
+        "rocq/cfg_rewrite_result.json",
+        "rocq/common_block_cfg.json",
+        "rocq/cfg_swap_locations.json",
+        "rocq/two_node_swap_result.json",
+        "rocq/checkpoint_aliases.json"
+      ],
+      "stdout_sha256": "4051977ca7fca7f716eb5a2f7dab67fd7fb223e31111f50adf2c1bff9a6ba448",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 3.939
+    },
+    {
+      "name": "candidate_interfaces",
+      "script": "candidates/audit_candidate_interfaces.py",
+      "exit_code": 0,
+      "archived_outputs_equal": [],
+      "stdout_sha256": "f8f3170c99fb98ed034da5226108f6dafceac0f95a2704656a83f062986f30f5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 0.727
+    },
+    {
+      "name": "cm_transport",
+      "script": "transport/check_transport.py",
+      "exit_code": 0,
+      "archived_outputs_equal": [
+        "transport/evidence/certificate.json",
+        "transport/evidence/result.json"
+      ],
+      "stdout_sha256": "d8327fda7ff008e92ca1528b241ee9266957d3d0ccf589d73e546cf47f2cb86b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 0.249
+    },
+    {
+      "name": "runtime",
+      "script": "runtime/profile_runtime.py",
+      "exit_code": 0,
+      "archived_outputs_equal": [
+        "runtime/profile_result.json"
+      ],
+      "stdout_sha256": "1ae77f569eacc622e7c9d16177507ce849186f84b66afefbe84866a96b2fbecf",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 35.621
+    },
+    {
+      "name": "window_reduction",
+      "script": "window_reduction/verify.py",
+      "exit_code": 0,
+      "archived_outputs_equal": [
+        "window_reduction/verification.json"
+      ],
+      "stdout_sha256": "01e88ac43a975110c2caa10c0b18a716b0c1c474012a4ac5cebc40717fa874ee",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 6.019
+    },
+    {
+      "name": "enumeration",
+      "script": "enumeration/check_length_padding.py",
+      "exit_code": 0,
+      "archived_outputs_equal": [],
+      "stdout_sha256": "439aaecb887509fc7dbe57ebafd21ce8841a98ffee1f98d1291d9c467d7474ed",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 0.517
+    },
+    {
+      "name": "gc_zc_intake_data",
+      "script": "new_intake/gc_zc215/audit_received_data.py",
+      "exit_code": 0,
+      "archived_outputs_equal": [
+        "new_intake/gc_zc215/independent_intake_audit.json"
+      ],
+      "stdout_sha256": "5a12c6e93672e865019d4df6977994e90a700e825c114542cbccbe009d190532",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 0.381
+    },
+    {
+      "name": "rocq_hardening",
+      "script": "rocq/test_hardening.py",
+      "exit_code": 0,
+      "archived_outputs_equal": [],
+      "stdout_sha256": "1feb52109294249e3c0c7a98cb429847370cd6a2f38859b1ce117fb7cbbb4f8c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 9.352
+    },
+    {
+      "name": "window_negative_controls",
+      "script": "window_reduction/test_rejection.py",
+      "exit_code": 0,
+      "archived_outputs_equal": [],
+      "stdout_sha256": "757d25bd862fd294f347cd8596c95305557ace6de585408fbf744b5e2bd7ff8d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "python_replay_seconds_not_proof_assistant_benchmark": 1.339
+    }
+  ]
+}

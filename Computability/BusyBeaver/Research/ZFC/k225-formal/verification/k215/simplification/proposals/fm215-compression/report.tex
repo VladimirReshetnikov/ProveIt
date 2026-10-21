@@ -1,0 +1,533 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=25mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,enumitem,xcolor}
+\usepackage{fancyvrb,fancyhdr}
+\usepackage[breaklinks,colorlinks,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Proof compression for the ZFC busy-beaver construction},pdfauthor={Research collaboration for ProveIt},pdfsubject={FM215, exact-table Lean equivalence, decoder certificates and bounded 214-state search}}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{fontsize=\small}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{4pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small ProveIt: ZFC machine proof compression}
+\fancyhead[R]{\small 21 October 2026}
+\fancyfoot[C]{\thepage}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halts}{\operatorname{Halts}}
+\newcommand{\repo}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b6c7087477e51c017003bd729e712c8969733223/#1}{#2}}
+\newcommand{\zfcroot}{Computability/BusyBeaver/Research/ZFC/}
+\newtheorem{proposition}{Proposition}[section]
+\title{Proof compression for the ZFC\ busy-beaver construction\\[5pt]
+\large A new four-row 215-state variant, checked local equivalence,\\
+context certificates, and limits of the 214-state search}
+\author{Research packet for Vladimir Reshetnikov's ProveIt repository}
+\date{21 October 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+The most economical way to certify nearby machines is to prove a small
+whole-tape simulation against the already certified primary K215 and reuse
+its calculus calibration. We construct a distinct 215-state machine,
+FM215, by changing four transition rows. Two immediate incoming-edge facts
+give its invariant; every parent transition is simulated by one or three
+new transitions. The generic transfer theorem and the exact-table,
+all-initial-tapes equivalence have been compiled in Lean 4.32.0 with only
+\texttt{propext} and \texttt{Quot.sound} as reported dependencies.
+
+For shortening the parent proof itself, we identify a remaining Rocq
+certificate-symmetry port and construct a 234-role finite certificate for
+the parent's 4,750 internal decoder-prefix occurrences. The latter is an
+executable internal-decoder certificate, not yet a Lean or Rocq runtime
+replacement. A separate compiled Lean countermodel excludes a logic-only
+recovery step proposed for the large-matrix experiment, without deciding
+that experiment's full equiconsistency. A bounded search of 1,761,648 local
+replacement rows across 15 machines, together with a separate helper
+search, yields no verified 214-state machine. The packet includes exact
+tables, proofs, scripts, receipts, source pins and inherited notices.
+\end{abstract}
+
+\section*{Decisions and scope}
+\addcontentsline{toc}{section}{Decisions and scope}
+\begin{enumerate}
+\item \textbf{Use FM215 for a compact incremental correctness proof.}
+  It has a simpler invariant than the existing conditional-marker CM215.
+  It remains a 215-state machine: the removed logical role is reused as
+  a physical selector, so no physical state is saved.
+\item \textbf{Refactor the shared proof boundary before regenerating large
+  certificates.} Positive simulation, one-way certificate symmetry, and
+  context-indexed decoder sharing target actual repeated obligations.
+\item \textbf{Keep the 214-state question open.} No 214-state candidate
+  is offered as correct. The search limits and the logical obstruction
+  are explicitly restricted results, not lower bounds.
+\end{enumerate}
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{What is proved, and which machine is meant}
+\label{sec:status}
+
+All repository comparisons use the fixed commit
+\begin{center}\texttt{b6c7087477e51c017003bd729e712c8969733223}.\end{center}
+Here ``primary K215'' means the native table at
+\path{candidate-k215/k215.native.tm}, whose exact hash appears in
+Section~\ref{sec:fm-proof}. The machine convention is one two-way infinite
+binary tape, initially all zero; every transition moves left or right;
+the halt label is separate from the working-state count. Initialization
+is part of the machine. FM215 has 430 working transition rows and 215
+working states. Its native start, dispatcher and halt labels are
+$0,84,254$; its dense labels are $0,\ldots,214$, with start $0$,
+dispatcher $83$ and halt $215$. The supplied bijection specifies the
+renaming exactly.
+
+Let $\operatorname{Ref}_{\mathrm{ZFC}}$ denote existence of a finite
+refutation in the ZFC calculus calibrated by the repository, and define
+$\Con(\mathrm{ZFC})=\neg\operatorname{Ref}_{\mathrm{ZFC}}$. The inherited
+primary theorem and the new ordinary simulation argument compose as
+\[
+ \Halts(\mathrm{FM215},\mathbf 0)
+ \;\longleftrightarrow\;
+ \Halts(\mathrm{K215},\mathbf 0)
+ \;\longleftrightarrow\;
+ \operatorname{Ref}_{\mathrm{ZFC}}.
+\]
+Negating this equivalence gives the requested
+\[
+ \mathrm{ZFC}\ \vdash\
+ \neg\Halts(\mathrm{FM215},\mathbf 0)
+ \;\longleftrightarrow\;\Con(\mathrm{ZFC}).
+\]
+The added argument consists of finite table facts and induction on runs
+and is formalizable in ZFC. This statement does not assume or establish
+$\Con(\mathrm{ZFC})$, and therefore does not assert unconditional
+nonhalting. As with the repository's documented verification boundary,
+an external proof-assistant theorem is distinguished from an explicitly
+encoded object-theory derivation. This packet does not emit the code of a
+ZFC or PA proof of the displayed statement.\cite{verification}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.26\textwidth}>{\raggedright\arraybackslash}p{.35\textwidth}>{\raggedright\arraybackslash}p{.33\textwidth}@{}}
+\toprule
+Claim & Evidence in this packet & Exact limitation\\
+\midrule
+\endhead
+FM215 and primary K215 equihalt from state 0 on every tape &
+Compiled Lean theorem, exact literal-table binding audit, ordinary proof &
+Functional tapes; the adapter to the repository's zipper/dense endpoint
+is described but not compiled here.\\[5pt]
+FM215 has the same calibrated blank entry &
+Complete synchronized 95,714/95,840-step prefix with identical whole tape &
+Supporting check; unbounded equivalence follows from the Lean simulation.\\[5pt]
+Internal decoder has 234 context roles &
+468 checked branch rules and source-DAG expansion equality &
+Primitive first-row binding only; primitive runtime remains to be proved.\\[5pt]
+Missing low-binder vacuity is not logically recoverable &
+Ordinary countermodel and compiled Lean named logical interface &
+Excludes nonlogical seed bundles; no full-calculus inconsistency claim.\\[5pt]
+No successful 214-state reduction in tested families &
+Reproducible search scripts and counts &
+Bounded templates and overapproximate invariants; no machine lower bound.\\
+\bottomrule
+\end{longtable}
+
+\input{sections/proof_audit.tex}
+
+\section{A context certificate for the primary decoder}
+\label{sec:decoder}
+
+The next substantial shared-proof improvement is to replace repeated
+prefix-level decoder checks by a certificate over shared source nodes
+and the physical context that their implementation actually uses. It is
+not enough to hash-cons the source tree alone: the same subtree can have
+different physical entry controls, and some decoder paths inspect one or
+two preceding bits. A proof must retain those distinctions.
+
+The exact \path{sites215.json} input has 4,751 primitive leaves and 4,750
+internal-prefix occurrences. Its maximally shared syntactic DAG has 202
+nodes: 179 internal nodes and 23 distinct primitive labels including their
+arguments. Pairing each internal node with its physical entry control
+gives 180 roles. We then refine a role by the last at most two bits of the
+sentinel-and-prefix string $1p$:
+\[
+ r=(v,q,\operatorname{suffix}_2(1p)).
+\]
+The resulting certificate has \textbf{234 roles}. At the root the sentinel
+suffix is the one-bit string $1$ and the physical control is 84.
+
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Measured object & Count\\
+\midrule
+Expanded internal-prefix occurrences & 4,750\\
+Shared internal source nodes & 179\\
+Internal source-node/control pairs & 180\\
+Pairs refined by one preceding bit & 196\\
+Pairs refined by two preceding bits & 234\\
+Internal branch rules in the two-bit certificate & 371\\
+Primitive-entry branch rules & 97\\
+Distinct primitive first-transition signatures & 68\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The larger number of roles after adding context is deliberate: source
+sharing and physical correctness require different equivalence relations.
+Two bits suffice for this certificate; no minimality assertion is made.
+Refining by three, four or five bits would yield 296, 388 or 523 roles.
+These counts are obtained from the actual literal table and source, not
+from an estimate based on source-tree depth.
+
+\subsection{The finite check and its whole-tape meaning}
+
+For an internal branch, instantiate the role's suffix immediately to the
+left of head position zero and put the branch bit at zero. Execute the
+literal table until the head first reaches position one. The certificate
+requires a positive number of steps, at most seven; every read and write
+must stay inside the explicitly represented suffix and current cell;
+every represented cell must be restored; and the final control must be
+the target role's control. The target source node must be the appropriate
+child and its suffix must be
+\[
+ \operatorname{suffix}_2(s\,b),
+\]
+where $s$ is the previous suffix and $b$ the branch bit.
+
+The validator also checks the DAG's acyclic child order, expands it to the
+exact pinned leaf list, checks the exact root role, rejects duplicate
+roles, and requires every supplied role to be reachable from the root.
+All two branches of every role are checked. For a primitive child the
+rule binds its operation and argument to the literal first transition
+from the role's control and branch bit.
+
+\begin{proposition}[Internal traversal]
+Suppose a full binary tape contains the sentinel and source address
+prefix expected at an internal decoder role, with the head at the next
+address bit. The internal rules of the supplied certificate take the
+machine to the appropriate next role, preserve the entire tape, and
+advance the head by one address cell in a positive finite number of
+transitions. Iterating these rules reaches the correct primitive entry
+for every source address.
+\end{proposition}
+
+\begin{proof}
+For one internal branch, all inspected cells are in the explicit local
+window. Agreement on that window makes the concrete full-tape run follow
+the same transitions as the finite check. The full exterior is neither
+read nor written. The check restores the window, so all tape cells are
+preserved; its suffix equation establishes the next role's precondition.
+Induct along the finite source address. The verified DAG child relation
+ensures that each branch selects the corresponding source child. At a
+leaf, the checked primitive-entry rule identifies its first transition.
+No claim about execution beyond that first primitive transition is used.
+\end{proof}
+
+Across the expanded internal occurrences, there are 4,749 internal-child
+edges: 4,355 take one transition, 303 take three, 90 take five, and one
+takes seven. The maximum backward read is two cells. Thus the certificate
+captures the real local decoder behavior, including its longer blocks.
+
+The implementation is \path{checks/decoder_contexts.py}. The data and
+receipt are in \path{evidence/decoder_context_certificate.json} and
+\path{evidence/decoder_context_receipt.json}. This is an ordinary finite
+certificate with a stated soundness argument. No Lean or Rocq theorem
+for this new checker has yet been compiled.
+
+\subsection{How to turn this into a smaller formal proof}
+
+The proposed implementation sequence is concrete:
+\begin{enumerate}
+\item Define a finite source DAG and its expansion, and prove one generic
+  equality between DAG traversal and tree traversal. Keep the present
+  source semantics unchanged.
+\item Define a role with source node, physical state and a suffix of at
+  most two bits. Prove a generic local-frame lemma for functional tapes
+  or the existing zipper interface.
+\item Reflect each of the 371 internal and 97 primitive-entry rules into
+  the kernel. Use the generic path-induction theorem to cover arbitrary
+  address prefixes. This replaces repeated expansions of the same
+  internal simulation facts by one reference to the role certificate.
+\item Separately provide the existing quantified runtime contracts for
+  the primitive entries, generalizing over the preserved address prefix
+  and exterior as needed. The 68 first-transition signatures are useful
+  grouping keys; they are not 68 already proved runtime contracts.
+\item Compose these contracts at the shared site-coverage interface,
+  retain the old endpoint as a regression target, and measure kernel term
+  sizes and rebuild times before removing historical proof data.
+\end{enumerate}
+
+The present certificate establishes that substantial decoder repetition
+can be shared soundly. It does not justify a numerical claim that the
+whole correctness proof will shrink by $4750/234$, nor that the existing
+guarded runtime obligations disappear. Its benefit must ultimately be
+measured in the full build, not inferred from source counts alone.
+
+\section{A practical proof architecture}
+\label{sec:architecture}
+
+The repository already shares much of its calculus and compiler proof.
+The appropriate next architecture makes three interfaces explicit rather
+than moving all certificates into a new monolithic development.
+
+\paragraph{Machine equivalence for small mutations.}
+Use \texttt{PositiveSimulation.halts\_iff} as a common interface for
+transition-table edits. A candidate provides its invariant, state/configuration
+relation, local positive blocks and terminal case. The endpoint then
+reuses the parent's proof. FM215 is a compiled example. For a Rocq port,
+the same induction on the remaining target halting time applies; it
+requires neither an infinite trace nor an independent reverse simulation.
+
+The direct route for incorporating FM215 into the existing Lean tree is
+to identify the embedded native rows with the repository's K230 labels
+(including $254\mapsto230$, $301\mapsto102$, $302\mapsto120$), prove the
+functional-tape step relation equivalent to \texttt{KZip} or the core tape
+semantics, and compose \texttt{KEndpoint215}. The existing
+\texttt{KDenseBridge} already supplies the dense/zipper portion of the
+parent interface. The new dense machine then uses its supplied finite
+renaming. This adapter is the remaining mechanical integration task; it
+does not require redoing the calculus or the 95,714-step initialization.
+
+\paragraph{Finite structural certificates for compiler output.}
+Use an indexed source DAG and context roles for the decoding skeleton;
+retain quantified contracts for register primitives. Prove the checker
+sound once and evaluate only small, machine-specific propositions. Bind
+each theorem to a literal table and source representation. A file hash is
+an excellent audit key, but it is not a substitute for the literal data
+or an equality proved in the kernel.
+
+\paragraph{A stable calibration interface.}
+Keep the numerical-calculus/ZFC equivalence behind its named theorem.
+Expose explicit hypotheses for numerical guards and encoding side
+conditions. Do not repeat the already completed shared AX interpreter,
+Lean mirror-certificate removal, or guarded dominated-rule refactor.
+The remaining Rocq mirror theorem is the smallest immediate source-level
+change; the decoder certificate is the larger structural project.
+\cite{phase3,source215,offsetbisim,leansim}
+
+For one or two alternatives, direct simulation is likely to be much less
+work than proving a general optimizing compiler. If many future machines
+will use arbitrary reallocation and reencoding, a verified certificate
+checker becomes more attractive: its initial proof cost is amortized over
+new tables. Candidate selection should therefore compare three quantities:
+physical state count, number of distinct proof contexts, and strength of
+the required tape invariant. A source tree with fewer nodes or shorter
+addresses does not automatically win on the latter two.
+
+\input{sections/tail_quantifier_obstruction.tex}
+
+\section{What the search toward 214 establishes}
+\label{sec:search}
+
+The search uses the primary K215, thirteen pinned alternatives and FM215.
+It begins with a sound local invariant: for each state, collect reachable
+seven-cell windows centered at the head. Initially state zero admits all
+128 windows, representing arbitrary initial tapes. Under each literal
+transition, shift the window and admit both values of the newly exposed
+exterior bit. Taking the least fixed point gives an overapproximation of
+the concrete reachable windows. This abstraction is inductive but loses
+long-range tape correlations.
+
+The broadest completed family examines pairs of noninitial controls with
+identical other-symbol transitions and different selected-symbol
+transitions. For that selected symbol, the two sets of admitted seven-bit
+windows must be nonempty and disjoint. It deletes one of the pair,
+redirects every incoming edge to the survivor, and tries each write,
+direction and surviving working-state target for the differing row;
+halt is excluded as a replacement target. Both choices of survivor are
+tested. The symbolic comparison is required to match the parent's
+mapped endpoint, head and all inspected tape cells for every admitted
+seven-cell window, branching on previously unknown exterior cells.
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Search family & Cases & Successful candidates\\
+\midrule
+Full-window differing-row replacements & 1,761,648 & 0\\
+Adjacent-marker subfamily (included above) & 710,480 & 0\\
+Separate two-helper-row resynthesis & 88,395 & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The broad family has 1,029 eligible control pairs. Its replacement count
+is $1029\cdot2\cdot(2\cdot2\cdot214)=1{,}761{,}648$ across the 15
+tables. The symbolic exploration limits are 32 transitions, 13 inspected
+cells and 200 symbolic nodes, with the initial seven cells and at most six
+new exterior cells. The adjacent-marker subfamily uses 415 pairs and an
+eight-cell inspection limit. These are nested counts, not independent
+searches to add together. An earlier 190,032-case read-zero/right-moving
+search is also a subset and is not counted again.
+
+The separate helper search checks $415\cdot213=88{,}395$ pair/helper
+choices. It allows both rows of one helper to change, imposes the exact
+three-step selector effects, and preserves old helper uses through a
+two-step equality on every symbol admitted by the window invariant.
+Those restrictions define its scope. An exploration-limit exit is
+unresolved, not a counterexample. A mismatch on an abstract window can
+also be caused by the overapproximation; it does not by itself reject the
+candidate's actual blank-tape behavior.
+
+The retained scripts and per-table receipts make the family and counts
+inspectable. No search ranges over all 214-state tables. In particular,
+source changes, global role reallocations, richer tape invariants and
+longer simulation blocks remain outside these families. The result is no
+verified candidate, not evidence of a 215-state lower bound.
+
+One promising fold has a more informative failure than a bound exit. In
+the commands120 table, merge controls 78 and 210, redirect entries to 78,
+and replace $78/0$ by $0R201$. On source leaf 25, address
+$1101001000$ and command CD3, take all nine registers zero, one zero spare
+and gap zero. The parent returns to the correct successor address after
+610 transitions; this 214-state trial returns after 594 transitions with
+the one at address-cell position 8 lost and a one spuriously added at
+position 11. The supplied independent checker verifies the valid input
+frame, exact source leaf, both full output tapes and the literal trial.
+This refutes the proposed uniform primitive-runtime contract. It does not
+by itself decide the trial's blank-run equivalence. Its table is explicitly
+retained as rejected research under \path{machine/research/}.
+
+\subsection{Where to search next}
+
+FM215 isolates the unresolved resource question precisely: its logical
+role merger consumes the freed control as the predecessor selector. To
+save a physical state, that selector behavior must be implemented by an
+already live helper without breaking the helper's old uses, or several
+roles must be reallocated together.
+
+The next useful search is therefore a multi-row synthesis problem. Fix a
+small neighborhood, allow two or more helpers to change, give each its
+reachable tape contexts, and ask for positive local simulation blocks.
+Use symbolic counterexamples to refine the contexts. For every apparent
+winner, produce a certificate accepted by the same generic simulation
+interface used here. An SMT or SAT solution is a proposal generator; the
+small kernel theorem should remain the acceptance criterion.
+
+A second route changes the source or proof enumeration. It can make a
+larger physical difference, but it must carry a consistency-calibration
+argument before its state count is meaningful. Section~\ref{sec:tail-quantifier-obstruction}
+shows why one tempting removal of numerical comparison gates cannot be
+justified by logic-only vacuity recovery. It leaves theory-specific
+translations open. Startup shortening alone is also insufficient: changing
+the initial entry without preserving its complete calibrated tape creates
+a new global invariant obligation.
+
+\section{Novelty, reproducibility and incorporation}
+\label{sec:reproduction}
+
+The four-row construction was compared with every \texttt{.tm} path in
+the pinned ZFC tree: 622 paths, with no missing or unparsable table. Of
+these, 321 are complete graph-reachable 215-state tables, representing
+84 distinct rooted transition graphs. FM215 matches none, even allowing
+global left/right reflection. \path{machine/novelty_current_tree.json}
+records each current Git blob and SHA-256. This is novelty relative to
+that exact corpus; no claim about all unpublished machines or priority
+outside the repository is made.
+
+The dense FM215 table has SHA-256
+\begin{verbatim}
+1b602d3b37887060ce2d992cf3036f540e8ccff5d37ab06c80f19f1edd38cbc6
+\end{verbatim}
+Its 95,840-step blank prefix contains 63 stretched parent steps, giving
+$95{,}714+2\cdot63=95{,}840$. At that boundary the whole tape, not just a
+bounded observation window, equals the parent's tape: dispatcher 84,
+head $-8$, 95 one-cells and zeros elsewhere. The inherited interpretation
+is registers $[4,0,0,0,0,0,0,0,0]$, gap one, and forty unit spares.
+This agreement is checked by the independent sparse-tape simulator.
+
+\subsection{Files and commands}
+
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{.24\textwidth}>{\raggedright\arraybackslash}p{.68\textwidth}}
+\toprule
+Location & Contents\\
+\midrule
+\path{report.tex}, \path{sections/} & This report's complete editable source.\\
+\path{report.pdf} & Compiled and visually inspected report.\\
+\path{formal/} & Three FM215 Lean modules, exact native tables, compiler
+logs, receipt, binding checker, and independent CM215 comparison.\\
+\path{machine/} & Native/dense FM215, renaming, builder, startup/local
+checks, pinned comparison tables, novelty and search scripts/receipts.\\
+\path{checks/}, \path{evidence/} & Decoder context certificate and audit;
+bundle verification entry point and receipts.\\
+\path{research/tail-quantifiers/} & Lean obstruction proof, finite audit,
+compiler log and exact source/compiler receipt.\\
+\path{inputs/}, \path{provenance/} & Exact source inputs, inherited
+licenses/notices, and pinned upstream evidence references.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+From the packet root, the following commands require no ProveIt checkout
+and no network access after the tools are installed:
+\begin{verbatim}
+python3 -B verify_all.py
+python3 formal/check_fm215.py --lean /absolute/path/to/lean
+lean research/tail-quantifiers/TailQuantifiers.lean
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+The default verifier uses Python's standard library and rechecks the
+construction, exact literal bindings, local/startup simulations, decoder
+certificate, CM215 comparison, finite countermodel and receipt source
+hashes. It does not silently describe saved compiler logs as a fresh
+kernel run. The explicit Lean commands replay the kernel proofs and
+require Lean 4.32.0; no Mathlib project is required. The FM215 driver sets
+its local import path. Generated compiled objects are intentionally not
+part of the portable source packet.
+
+The full novelty audit additionally needs the pinned ProveIt Git tree.
+The two search scripts use standard Node.js and are optional, longer
+reproductions; their precise commands are in the top-level README. The
+archive manifest binds the shipped files. Rebuilding logs or the PDF can
+change their hashes, so compare the manifest before regeneration.
+
+\subsection{Recommended repository integration order}
+
+First add FM215 and its standalone equivalence as a named alternative,
+with the explicit ordinary composition and the remaining Lean adapter
+identified. Then complete that adapter and, if desired, port the small
+positive-simulation proof to Rocq. Next port Rocq's mirror-certificate
+symmetry. Finally integrate the context certificate behind the existing
+site-coverage interface and benchmark the full dependency closure.
+This order yields a small reviewable theorem at each step and preserves
+the current certified parent as a stable comparison point.
+
+The parent construction, numerical calculus, ZFC calibration, compiler
+ancestry and previously accepted alternatives remain inherited work.
+The packet's new contributions are the FM215 four-row transformation and
+checked equivalence, the decoder context certificate, the named logical
+obstruction and its proof, and the bounded search/audit work. Original
+notices and licenses are retained. The report does not claim a fresh full
+rebuild of the repository's existing Lean or Rocq development.
+
+\begin{thebibliography}{10}
+\bibitem{verification}
+ProveIt, \repo{Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/README.md}{K215 formal verification record}, pinned revision above.
+\bibitem{phase3}
+ProveIt, \repo{Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase3/README.md}{Phase-three proof-simplification record}.
+\bibitem{primary}
+ProveIt, \repo{Computability/BusyBeaver/Research/ZFC/candidate-k215/README.md}{Primary K215 candidate and provenance}.
+\bibitem{endpoint}
+ProveIt, \repo{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean}{\texttt{KEndpoint215.lean}}.
+\bibitem{leansim}
+ProveIt, \repo{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean}{\texttt{KSim.lean}} and
+\repo{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMOffsetBisim.lean}{\texttt{RMOffsetBisim.lean}}.
+\bibitem{source215}
+ProveIt, \repo{Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215/Source215.v}{Rocq \texttt{Source215.v}}.
+\bibitem{offsetbisim}
+ProveIt, \repo{Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215/OffsetBisim230.v}{Rocq \texttt{OffsetBisim230.v}}.
+\bibitem{cm}
+ProveIt, \repo{Computability/BusyBeaver/Research/ZFC/candidate-k215/alternatives/conditional-marker/README.md}{Conditional-marker alternative}.
+\bibitem{largematrix}
+ProveIt, \repo{Computability/BusyBeaver/Research/ZFC/candidate-k215/alternatives/rebalanced/research/formalism/formalism_supplement.tex}{Large-matrix formalism experiment}.
+\bibitem{simplification}
+ProveIt, \repo{Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/README.md}{Proof-simplification checkpoints and source-byte comparisons}.
+\end{thebibliography}
+\end{document}

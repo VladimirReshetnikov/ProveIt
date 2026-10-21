@@ -12,21 +12,40 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
-## Current queue after arrival `a6b3a30011`
+## Current proof work after batch 207
 
-Six new proof proposals are pending intake:
+The exact K215 Lean endpoint passes the [phase-five simplification checkpoint](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase5/README.md): 184 modules, including 37 freshly compiled affected modules, and both endpoint audits with standard axioms only. Batches 205–207 below preserve proposals as delivered; those imports do not promote their prototypes to new formal results. Supplementary mathematical reconciliation and exact recovery records are being integrated separately. The active goal is simplifying the checked Lean proofs; earlier 214-state target and queue statements are historical.
 
-- `K215_Proof_Simplification_2026-10-21.zip`
-- `K215_Proof_Transport_2026-10-21.zip`
-- `Structural_Proof_Simplification_2026-10-21.zip`
-- `ZFC215_Proof_Simplification_2026-10-21.zip`
-- `ZFC_K215_Proof_Transport_2026-10-21.zip`
-- `zfc-fm215-proof-compression-2026-10-21.zip`
+## Queue status after batch 207
 
-These are the six ZIPs currently present at `a6b3a30011`; listing them is not
-an intake or validation. The active work is simplifying the already compiled
-K215 Lean proofs. Earlier queue-clear and 214-state-target statements
-below describe their historical placement checkpoints.
+`K215_Proof_Simplification_2026-10-21(1).zip` (arrival `beaabc8e3b`), a third
+packet of that name, holds finite replays and uncompiled proof drafts for the
+K215 endpoints. Placed as delivered as
+[proposals/k215-simplification-3](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/README.md),
+omitting `lean/snapshot/` (730 files mirroring this repository) and a copy of
+batch 204's archive. Its one table not in the repository, `common-pop215`, is a
+comparison input copied from an undelivered packet with no proof of its own,
+so it was not placed as an alternative. Nothing was rerun. The queue is clear.
+
+## Queue status after batch 206
+
+`K215_Proof_Simplification_2026-10-21 (2).zip` (arrival `53269bcab1`) is a
+different packet from batch 205's archive of the same name: a Coq symmetry
+theorem for the actual offset checker and a compact-certificate equality, a
+Lean ordinary-bisimulation source proof, and a CM215 transport. All its
+tables are already in the repository. Placed whole as delivered as
+[proposals/k215-simplification-2](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/README.md).
+Nothing was rerun. The queue is clear.
+
+## Queue status after batch 205
+
+Batch 205 received six K215 proof-simplification packets (arrival
+`a6b3a30011`). They were placed whole as delivered under
+[k225-formal/verification/k215/simplification/proposals/](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/README.md),
+omitting only copies of repository files, and indexed there with their status
+against `main`. The only new 215-state table, FM215, differs from batch 204's
+M124 in one row (127/1), so it was not placed as an alternative; its compiled
+Lean transport is kept as proof material. Nothing was rerun. The queue is clear.
 
 ## Queue status after batch 204
 

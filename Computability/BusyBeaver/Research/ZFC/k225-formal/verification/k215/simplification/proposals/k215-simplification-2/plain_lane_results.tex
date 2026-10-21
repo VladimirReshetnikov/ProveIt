@@ -1,0 +1,22 @@
+\subsection{A newly checked ordinary source theorem}
+
+The delivered \code{plain_source/} implementation has now passed its complete isolated source-level replay with Lean 4.32.0. The final theorem is
+\begin{lstlisting}
+KSource215PlainAudit.source_halts_iff_iter
+    (R : RegisterPath.Registers) :
+  RegisterPath.Halts KSource215.p215 ⟨[], R⟩ ↔
+    RMDag.IterHalts DagPerm.dagPerm R
+\end{lstlisting}
+The theorem concerns every initial register file, not just the particular file used by the blank bootstrap. It first proves the exact public \code{KSource215.p215_halts_iff} interface between the actual source program and the actual path program \code{pathDagPerm}, then composes the unchanged path-to-iterative semantics theorem. The exact 487-node DAG well-formedness check is included.
+
+The new generic checker, \code{RMPlainCodec.check_halts_iff}, reuses the ordinary bisimulation theorem. That theorem, \code{RMBisim.Bisim.halts_iff}, already includes symmetry. Its relation contains no integer offset. The selected import closure contains no \code{RMOffsetBisim}. Eight underlying semantics and DAG modules are unchanged, hash-pinned copies of the repository modules. Both compact trees are bound to the actual source-program definitions by compiled exact equalities.
+
+The chosen decoder is \code{totalDecode n := decodeAux n n []}. It uses input-dependent fuel rather than a fixed path-length cap; the actual recursion stops after the binary path has been consumed. All 2,240 entries, the root-entry obligation, and every branch were checked by the ordinary kernel. Independent parsing also confirms that each entry is exactly the projection $(a,b,0,j,k)\mapsto(a,b,j,k)$ and that the original relation-tree structure and successor indices are retained.
+
+The new generic checker has 113 lines and 4,639 bytes, compared with 293 lines and 13,151 bytes for the offset checker omitted from this lane. Tree sharing plus removal of redundant zero-offset fields reduces the monolithic data prototype from 456,548 to 220,643 bytes, or 51.67\%. The split data/facade files actually shipped total 224,084 bytes, a 50.92\% reduction after their additional composition overhead. These are representation measurements, not claimed reductions in the entire endpoint proof or its running time.
+
+To fit the available memory, the finite well-formedness and certificate decisions are partitioned. All 70 selected project modules compiled during this session, with source, object, dependency and raw-log bindings retained. The packet contains a portable serial fresh-build runner. Historical failed large evaluations are marked separately and are not counted as successful checks. This partitioning is not a claim that the overall module count is smaller.
+
+The composition itself illustrates another proof simplification: combine already checked Boolean facts through a generic lemma with abstract parameters. The helper \code{allC_of_halves} composes two child certificates without asking elaboration to normalize the entire concrete parent a second time. The semantic obligation is unchanged.
+
+The final source-to-path equivalence reports only \code{propext} and \code{Quot.sound}. Composing with the existing path-to-iterative theorem additionally reports \code{Classical.choice}. Exact tree bindings and DAG well-formedness report only \code{propext}. No new axiom declaration, admitted theorem, or \code{native_decide} is introduced. The remaining production gate is to integrate the maintained generators and rebuild the affected binary/ZFC endpoint consumers; this source-level replay does not claim that larger rebuild.

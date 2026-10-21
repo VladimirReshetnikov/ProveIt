@@ -1,0 +1,1455 @@
+{
+  "status": "PASS_EXACT_ORDINARY_SOURCE_EQUIVALENCE",
+  "commit": "b6c7087477e51c017003bd729e712c8969733223",
+  "toolchain": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+  "compiler_sha256": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550",
+  "selected_module_count": 70,
+  "all_selected_sources_compiled_in_this_session": true,
+  "upstream_identical_module_count": 8,
+  "source_bytes": 346638,
+  "generic_checker_bytes": 4639,
+  "generic_checker_lines": 113,
+  "original_offset_checker_bytes": 13151,
+  "original_offset_checker_lines": 293,
+  "original_data_bytes": 456548,
+  "shared_only_data_bytes": 245190,
+  "ordinary_monolithic_data_bytes": 220643,
+  "split_data_modules_bytes": 224084,
+  "certificate_entries": 2240,
+  "nonzero_offsets": 0,
+  "maximum_path_length": 176,
+  "path_occurrences_over_128_bits": 622,
+  "no_RMOffsetBisim_in_import_closure": true,
+  "axiom_report": "'SetTheory.BusyBeaver.ZFC.KSource215PlainAudit.source_halts_iff' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.KSource215PlainAudit.source_halts_iff_iter' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.KSource215.t215_eq' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.KSource215.tD_eq' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.KSource215.wfCheck222' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.RMPlainCodec.check_halts_iff' depends on axioms: [propext, Quot.sound]\n",
+  "scope": "Exact p215 source to actual DagPerm iterative halting, every register file. Binary KEndpoint215 and Rocq endpoints were not replayed in this packet.",
+  "remaining_gate": "Integrate maintained generator, rebuild production affected closure and typed KEndpoint215 clients; compare endpoint axioms and measure whole-build costs.",
+  "selected": [
+    {
+      "module": "BusyBeaver.ZFC.RegisterPath",
+      "source": "BusyBeaver/ZFC/RegisterPath.lean",
+      "source_sha256": "a1457f32034eb4da50c8755610a366805260aac711424bba8b516ccab4e5b879",
+      "source_bytes": 7073,
+      "object_sha256": "a79741d33e4007df10f6ed17e6518f6bdc618024f36861acf326ae23b779e036",
+      "log": "build_logs/RegisterPath.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/RegisterPath.json",
+      "dependencies": [
+        {
+          "module": "Init",
+          "boundary": "shipped Lean core"
+        }
+      ],
+      "upstream_identical": true,
+      "upstream_sha256": "a1457f32034eb4da50c8755610a366805260aac711424bba8b516ccab4e5b879"
+    },
+    {
+      "module": "BusyBeaver.ZFC.RMDag",
+      "source": "BusyBeaver/ZFC/RMDag.lean",
+      "source_sha256": "55a47480da9cb00e5420b896c3a8c72ec1f51081d610874903f932311231076d",
+      "source_bytes": 12988,
+      "object_sha256": "7ded8c01bafaf2e35b7f77192361c03045b887411b66214cc6ee407f8fbb8fc4",
+      "log": "build_logs/RMDag.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/RMDag.json",
+      "dependencies": [],
+      "upstream_identical": true,
+      "upstream_sha256": "55a47480da9cb00e5420b896c3a8c72ec1f51081d610874903f932311231076d"
+    },
+    {
+      "module": "BusyBeaver.ZFC.RMEquiv",
+      "source": "BusyBeaver/ZFC/RMEquiv.lean",
+      "source_sha256": "cc696ec1d000e9201506f652987d94ba17661114ba785b8dcb09b4f958a32a57",
+      "source_bytes": 31517,
+      "object_sha256": "35c3430007427146e7aad4900a81f0a87068aa208fa021b14a58b800c6517498",
+      "log": "build_logs/RMEquiv.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/RMEquiv.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.RegisterPath",
+          "object_sha256": "a79741d33e4007df10f6ed17e6518f6bdc618024f36861acf326ae23b779e036"
+        },
+        {
+          "module": "BusyBeaver.ZFC.RMDag",
+          "object_sha256": "7ded8c01bafaf2e35b7f77192361c03045b887411b66214cc6ee407f8fbb8fc4"
+        }
+      ],
+      "upstream_identical": true,
+      "upstream_sha256": "cc696ec1d000e9201506f652987d94ba17661114ba785b8dcb09b4f958a32a57"
+    },
+    {
+      "module": "BusyBeaver.ZFC.RMBisim",
+      "source": "BusyBeaver/ZFC/RMBisim.lean",
+      "source_sha256": "68c28a182eed06c0f8d266f0d79d8f884f086228a4794da00da51cf02dbbb13b",
+      "source_bytes": 22419,
+      "object_sha256": "efdbd11ba9b02680d67d68d5d0276e1120718d28750b00a7fba8c465850c4dea",
+      "log": "build_logs/RMBisim.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/RMBisim.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.RMEquiv",
+          "object_sha256": "35c3430007427146e7aad4900a81f0a87068aa208fa021b14a58b800c6517498"
+        }
+      ],
+      "upstream_identical": true,
+      "upstream_sha256": "68c28a182eed06c0f8d266f0d79d8f884f086228a4794da00da51cf02dbbb13b"
+    },
+    {
+      "module": "BusyBeaver.ZFC.RMPlainCodec",
+      "source": "BusyBeaver/ZFC/RMPlainCodec.lean",
+      "source_sha256": "2599316b50251195d74d8b1f9b30cab257cd89eaa88840e137c8559bb67caa6c",
+      "source_bytes": 4639,
+      "object_sha256": "51272c56665f04498ec5378e88d3150a6fe16c698223da8a2c208287b7f93781",
+      "log": "build_logs/RMPlainCodec.log",
+      "log_sha256": "06a508b1a9467fbc7af5cd2fa4615c36472a4b2f2457ebeaa17d55d02e5477a6",
+      "compile_receipt": "build_logs/RMPlainCodec.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.RMBisim",
+          "object_sha256": "efdbd11ba9b02680d67d68d5d0276e1120718d28750b00a7fba8c465850c4dea"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.Dag222",
+      "source": "BusyBeaver/ZFC/Dag222.lean",
+      "source_sha256": "9e73e2d6ac692c33b07efde7faa08545fdd61ca692ec03e21afe2ffe99a7cb71",
+      "source_bytes": 17955,
+      "object_sha256": "29b7ce3485027f22f74a235d07e749f386157be107b14c79cc4875a9e2fb08df",
+      "log": "build_logs/Dag222.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/Dag222.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.RMDag",
+          "object_sha256": "7ded8c01bafaf2e35b7f77192361c03045b887411b66214cc6ee407f8fbb8fc4"
+        }
+      ],
+      "upstream_identical": true,
+      "upstream_sha256": "9e73e2d6ac692c33b07efde7faa08545fdd61ca692ec03e21afe2ffe99a7cb71"
+    },
+    {
+      "module": "BusyBeaver.ZFC.Dag219",
+      "source": "BusyBeaver/ZFC/Dag219.lean",
+      "source_sha256": "fd3bdfcd5048dd7205b66fcce323bb78017a3137dcd04cc3ef9c0788334ac3ad",
+      "source_bytes": 1051,
+      "object_sha256": "20b913f9ea01d8ed5bc5c05892f8c8f0f9f3a2918e4ef77dd1dc1742b2ef5782",
+      "log": "build_logs/Dag219.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/Dag219.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.Dag222",
+          "object_sha256": "29b7ce3485027f22f74a235d07e749f386157be107b14c79cc4875a9e2fb08df"
+        }
+      ],
+      "upstream_identical": true,
+      "upstream_sha256": "fd3bdfcd5048dd7205b66fcce323bb78017a3137dcd04cc3ef9c0788334ac3ad"
+    },
+    {
+      "module": "BusyBeaver.ZFC.DagDom",
+      "source": "BusyBeaver/ZFC/DagDom.lean",
+      "source_sha256": "9d52a871ea029099dd192fb66cf0ef802c4f9ed6e8c32d3a7b3661ce343af5aa",
+      "source_bytes": 1683,
+      "object_sha256": "6ab0e94cc68bbdb10eb36cc4e476ffbe3fd04e33a4171eda62af302fd51de8b7",
+      "log": "build_logs/DagDom.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/DagDom.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.Dag219",
+          "object_sha256": "20b913f9ea01d8ed5bc5c05892f8c8f0f9f3a2918e4ef77dd1dc1742b2ef5782"
+        }
+      ],
+      "upstream_identical": true,
+      "upstream_sha256": "9d52a871ea029099dd192fb66cf0ef802c4f9ed6e8c32d3a7b3661ce343af5aa"
+    },
+    {
+      "module": "BusyBeaver.ZFC.DagPerm",
+      "source": "BusyBeaver/ZFC/DagPerm.lean",
+      "source_sha256": "11ccf62cf09e41b8f85e1c7d6aa56aeca0c0d211e119fb5309d5fb1ac6a96123",
+      "source_bytes": 1143,
+      "object_sha256": "7ae00e50e29eb1aceeb14985a429ebcf1b02d0fbb9250f8b691adc12b44e7024",
+      "log": "build_logs/DagPerm.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/DagPerm.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.DagDom",
+          "object_sha256": "6ab0e94cc68bbdb10eb36cc4e476ffbe3fd04e33a4171eda62af302fd51de8b7"
+        }
+      ],
+      "upstream_identical": true,
+      "upstream_sha256": "11ccf62cf09e41b8f85e1c7d6aa56aeca0c0d211e119fb5309d5fb1ac6a96123"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215WfData",
+      "source": "BusyBeaver/ZFC/KSource215WfData.lean",
+      "source_sha256": "5e57c7ee6b4b5ee9de42c865032a6c93b7ba4c47a3d34ae233b8fec04ae56ba9",
+      "source_bytes": 5462,
+      "object_sha256": "ef93959afec649648b5b11d5260c3248966725dfdb71883bfddd4f36f08ab382",
+      "log": "build_logs/KSource215WfData.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215WfData.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.RMPlainCodec",
+          "object_sha256": "51272c56665f04498ec5378e88d3150a6fe16c698223da8a2c208287b7f93781"
+        },
+        {
+          "module": "BusyBeaver.ZFC.RMEquiv",
+          "object_sha256": "35c3430007427146e7aad4900a81f0a87068aa208fa021b14a58b800c6517498"
+        },
+        {
+          "module": "BusyBeaver.ZFC.DagPerm",
+          "object_sha256": "7ae00e50e29eb1aceeb14985a429ebcf1b02d0fbb9250f8b691adc12b44e7024"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215WfCheck00",
+      "source": "BusyBeaver/ZFC/KSource215WfCheck00.lean",
+      "source_sha256": "a475450a038b5d76498ced38c3438b45a77b5eb8c27eb71d8f84d0c5486d6399",
+      "source_bytes": 420,
+      "object_sha256": "d073013d8ab8d0d6bd22527e6129dc8fd4168805f5db0567b3061388db72bdf8",
+      "log": "build_logs/KSource215WfCheck00.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215WfCheck00.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfData",
+          "object_sha256": "ef93959afec649648b5b11d5260c3248966725dfdb71883bfddd4f36f08ab382"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215WfCheck01",
+      "source": "BusyBeaver/ZFC/KSource215WfCheck01.lean",
+      "source_sha256": "f832369bd15616a77b1c968210fb4f49547aa125f8a1003bb5b51064103f2239",
+      "source_bytes": 430,
+      "object_sha256": "291dc56449dfa6d727a55875eeac3600620bf0158f038585d1e7d25c2b17adcc",
+      "log": "build_logs/KSource215WfCheck01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215WfCheck01.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfData",
+          "object_sha256": "ef93959afec649648b5b11d5260c3248966725dfdb71883bfddd4f36f08ab382"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215WfCheck02",
+      "source": "BusyBeaver/ZFC/KSource215WfCheck02.lean",
+      "source_sha256": "96d9c4135b558b6a890a97cad3a9c27f67e85ea42ea83b84066b70ca8bce6b06",
+      "source_bytes": 430,
+      "object_sha256": "0d1dceb1749018f878e7f1b39c09c91f7f2e80a9ae7c1fa49ee16fdc9547a503",
+      "log": "build_logs/KSource215WfCheck02.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215WfCheck02.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfData",
+          "object_sha256": "ef93959afec649648b5b11d5260c3248966725dfdb71883bfddd4f36f08ab382"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215WfCheck03",
+      "source": "BusyBeaver/ZFC/KSource215WfCheck03.lean",
+      "source_sha256": "379d2ef802049dfcc0aa0804b101110ed82c05951c181ea22a566497874afc5a",
+      "source_bytes": 458,
+      "object_sha256": "fd134b0362e07ccad9116784a5a2d0e648a9120d4d0a7a9aaddcffe1f78551c6",
+      "log": "build_logs/KSource215WfCheck03.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215WfCheck03.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfData",
+          "object_sha256": "ef93959afec649648b5b11d5260c3248966725dfdb71883bfddd4f36f08ab382"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215WfCheck04",
+      "source": "BusyBeaver/ZFC/KSource215WfCheck04.lean",
+      "source_sha256": "aa874a6b3cfac5d0484174d6f12401af936d077facbcfd621d39b15095824e40",
+      "source_bytes": 462,
+      "object_sha256": "bcb6a34feec16c9c54171f541e7914110ab224247f1b0d9f4a54c6645eb5125d",
+      "log": "build_logs/KSource215WfCheck04.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215WfCheck04.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfData",
+          "object_sha256": "ef93959afec649648b5b11d5260c3248966725dfdb71883bfddd4f36f08ab382"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215WfCheck05",
+      "source": "BusyBeaver/ZFC/KSource215WfCheck05.lean",
+      "source_sha256": "d93a29d690789383817ec2995c66c4c948543c87885dcb2ded63b91424835bd6",
+      "source_bytes": 462,
+      "object_sha256": "edeaea08c04717cfe6d4233c0a21dd26268ba01566e953a2d9c4262c66e0b71f",
+      "log": "build_logs/KSource215WfCheck05.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215WfCheck05.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfData",
+          "object_sha256": "ef93959afec649648b5b11d5260c3248966725dfdb71883bfddd4f36f08ab382"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215WfCheck06",
+      "source": "BusyBeaver/ZFC/KSource215WfCheck06.lean",
+      "source_sha256": "037fd50d94d39fe7bfea854973f83b8d91a2ee6c3dbf75ff9d1e86b78e7fedb2",
+      "source_bytes": 462,
+      "object_sha256": "fc0755d8026249817f42344c9b6c637be8dd9a238e3dc219a9939ff7bdadfcd9",
+      "log": "build_logs/KSource215WfCheck06.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215WfCheck06.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfData",
+          "object_sha256": "ef93959afec649648b5b11d5260c3248966725dfdb71883bfddd4f36f08ab382"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215WfCheck07",
+      "source": "BusyBeaver/ZFC/KSource215WfCheck07.lean",
+      "source_sha256": "b9d274cea5fbc2b600272157a295cc0eff8390b687b3bd0b9b6a3f9ac83db3f8",
+      "source_bytes": 462,
+      "object_sha256": "35c58c7801fa2713d3f1789e2279255eb0cd535305be712768abf943d421f3f4",
+      "log": "build_logs/KSource215WfCheck07.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215WfCheck07.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfData",
+          "object_sha256": "ef93959afec649648b5b11d5260c3248966725dfdb71883bfddd4f36f08ab382"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215WfCheck08",
+      "source": "BusyBeaver/ZFC/KSource215WfCheck08.lean",
+      "source_sha256": "f9a388665085cd3420fa0c1a627e26fd4f5c9f22169b292a8e5f659b24c8dbdc",
+      "source_bytes": 462,
+      "object_sha256": "e18f3b75029ff31cc0c49a6b49c6e9708926d67dbc4875e2b8c3d94910069c48",
+      "log": "build_logs/KSource215WfCheck08.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215WfCheck08.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfData",
+          "object_sha256": "ef93959afec649648b5b11d5260c3248966725dfdb71883bfddd4f36f08ab382"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215WfCheck09",
+      "source": "BusyBeaver/ZFC/KSource215WfCheck09.lean",
+      "source_sha256": "9d1c16a9b926b0127acb258b05cd08aed717b6f838206691a534b469c70506e2",
+      "source_bytes": 462,
+      "object_sha256": "5b9da437bdeacee1f3b161be2cd23f25b566d20ab088ec9ac2d7b91d15f90381",
+      "log": "build_logs/KSource215WfCheck09.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215WfCheck09.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfData",
+          "object_sha256": "ef93959afec649648b5b11d5260c3248966725dfdb71883bfddd4f36f08ab382"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215WfCheck10",
+      "source": "BusyBeaver/ZFC/KSource215WfCheck10.lean",
+      "source_sha256": "7583d5109257b8568ba327dde96fe77572d1298026d3fe3f66b8005b1acae52f",
+      "source_bytes": 462,
+      "object_sha256": "44aeaa2945d730e96235a19b98ca59209b4f6a4cfdd7926b3e2f280572daf591",
+      "log": "build_logs/KSource215WfCheck10.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215WfCheck10.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfData",
+          "object_sha256": "ef93959afec649648b5b11d5260c3248966725dfdb71883bfddd4f36f08ab382"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215WfCheck11",
+      "source": "BusyBeaver/ZFC/KSource215WfCheck11.lean",
+      "source_sha256": "9419db96abfcb9b6b247a6b661ef8fa667628233e190a7a7801da434d03920f6",
+      "source_bytes": 462,
+      "object_sha256": "c1ead7f21f7db5d5ea96e92cdd905d9ae702104640835690b686b9e548506c86",
+      "log": "build_logs/KSource215WfCheck11.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215WfCheck11.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfData",
+          "object_sha256": "ef93959afec649648b5b11d5260c3248966725dfdb71883bfddd4f36f08ab382"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215WfCheck12",
+      "source": "BusyBeaver/ZFC/KSource215WfCheck12.lean",
+      "source_sha256": "a592cc280f5513765b9377b647143424aee680af494ab58c78dcd82656238e59",
+      "source_bytes": 462,
+      "object_sha256": "566d70c10c83644d607ff698ed725f54f6e7ab5dbeb5ca12043d4a25b40da25b",
+      "log": "build_logs/KSource215WfCheck12.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215WfCheck12.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfData",
+          "object_sha256": "ef93959afec649648b5b11d5260c3248966725dfdb71883bfddd4f36f08ab382"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215WfCheck13",
+      "source": "BusyBeaver/ZFC/KSource215WfCheck13.lean",
+      "source_sha256": "944840ce244ee38dfe2907b6f7d0dc75f4a7f211b8b8650535417ba94cc6ae58",
+      "source_bytes": 462,
+      "object_sha256": "206481c4aa54a834b6e839e4d31f27fbbe62bd09ad1bb335486ad59a01a5a61a",
+      "log": "build_logs/KSource215WfCheck13.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215WfCheck13.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfData",
+          "object_sha256": "ef93959afec649648b5b11d5260c3248966725dfdb71883bfddd4f36f08ab382"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215WfCheck14",
+      "source": "BusyBeaver/ZFC/KSource215WfCheck14.lean",
+      "source_sha256": "15bef15bf6827eaac92f7d77e5f6489f43dbec45dd7f3df098fdeed86e6c205b",
+      "source_bytes": 462,
+      "object_sha256": "e92122f922ac5cf6ba6e9767b13e528e6d8980438c5b9ce2b31a9238f4fec987",
+      "log": "build_logs/KSource215WfCheck14.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215WfCheck14.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfData",
+          "object_sha256": "ef93959afec649648b5b11d5260c3248966725dfdb71883bfddd4f36f08ab382"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215WfCheck15",
+      "source": "BusyBeaver/ZFC/KSource215WfCheck15.lean",
+      "source_sha256": "9d409c4b24572397829b32e00c50eee3d068a24ede661d9e1e2a74bba9320b59",
+      "source_bytes": 337,
+      "object_sha256": "512025ecd72424ec089eb511c2bd8f950a9056f60dd83cb3248d82c18358fb2e",
+      "log": "build_logs/KSource215WfCheck15.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215WfCheck15.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfData",
+          "object_sha256": "ef93959afec649648b5b11d5260c3248966725dfdb71883bfddd4f36f08ab382"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215DagData",
+      "source": "BusyBeaver/ZFC/KSource215DagData.lean",
+      "source_sha256": "49bd35d623065863b84b61ac8e8ece425d70110b95763432b24e9861548cf1fe",
+      "source_bytes": 4318,
+      "object_sha256": "282ffd925ba9d6e92b3b0ffb1e52ab8eabc34b27da774a3cf23b0c0d494360cc",
+      "log": "build_logs/KSource215DagData.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215DagData.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfCheck00",
+          "object_sha256": "d073013d8ab8d0d6bd22527e6129dc8fd4168805f5db0567b3061388db72bdf8"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfCheck01",
+          "object_sha256": "291dc56449dfa6d727a55875eeac3600620bf0158f038585d1e7d25c2b17adcc"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfCheck02",
+          "object_sha256": "0d1dceb1749018f878e7f1b39c09c91f7f2e80a9ae7c1fa49ee16fdc9547a503"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfCheck03",
+          "object_sha256": "fd134b0362e07ccad9116784a5a2d0e648a9120d4d0a7a9aaddcffe1f78551c6"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfCheck04",
+          "object_sha256": "bcb6a34feec16c9c54171f541e7914110ab224247f1b0d9f4a54c6645eb5125d"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfCheck05",
+          "object_sha256": "edeaea08c04717cfe6d4233c0a21dd26268ba01566e953a2d9c4262c66e0b71f"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfCheck06",
+          "object_sha256": "fc0755d8026249817f42344c9b6c637be8dd9a238e3dc219a9939ff7bdadfcd9"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfCheck07",
+          "object_sha256": "35c58c7801fa2713d3f1789e2279255eb0cd535305be712768abf943d421f3f4"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfCheck08",
+          "object_sha256": "e18f3b75029ff31cc0c49a6b49c6e9708926d67dbc4875e2b8c3d94910069c48"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfCheck09",
+          "object_sha256": "5b9da437bdeacee1f3b161be2cd23f25b566d20ab088ec9ac2d7b91d15f90381"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfCheck10",
+          "object_sha256": "44aeaa2945d730e96235a19b98ca59209b4f6a4cfdd7926b3e2f280572daf591"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfCheck11",
+          "object_sha256": "c1ead7f21f7db5d5ea96e92cdd905d9ae702104640835690b686b9e548506c86"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfCheck12",
+          "object_sha256": "566d70c10c83644d607ff698ed725f54f6e7ab5dbeb5ca12043d4a25b40da25b"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfCheck13",
+          "object_sha256": "206481c4aa54a834b6e839e4d31f27fbbe62bd09ad1bb335486ad59a01a5a61a"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfCheck14",
+          "object_sha256": "e92122f922ac5cf6ba6e9767b13e528e6d8980438c5b9ce2b31a9238f4fec987"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215WfCheck15",
+          "object_sha256": "512025ecd72424ec089eb511c2bd8f950a9056f60dd83cb3248d82c18358fb2e"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215TreeData",
+      "source": "BusyBeaver/ZFC/KSource215TreeData.lean",
+      "source_sha256": "d8eb3e3900a9fddbb90515bdcfded0419ab25142b0aaa3417bbf1702cf11bd83",
+      "source_bytes": 41476,
+      "object_sha256": "7ddf6766e1e7ea528283db70898c17864bbed3dab951ea171532d3da56972eac",
+      "log": "build_logs/KSource215TreeData.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215TreeData.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215DagData",
+          "object_sha256": "282ffd925ba9d6e92b3b0ffb1e52ab8eabc34b27da774a3cf23b0c0d494360cc"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215CertData",
+      "source": "BusyBeaver/ZFC/KSource215CertData.lean",
+      "source_sha256": "bb4befa07233fe8a373f54b35c55ca04cfac362f3ad8a21800930679d07eb276",
+      "source_bytes": 172629,
+      "object_sha256": "9cd10abdaacb7377fe98bda7b18ba8cb5ec175efb0d6096f4f00b1052f28a03a",
+      "log": "build_logs/KSource215CertData.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215CertData.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215TreeData",
+          "object_sha256": "7ddf6766e1e7ea528283db70898c17864bbed3dab951ea171532d3da56972eac"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215Data",
+      "source": "BusyBeaver/ZFC/KSource215Data.lean",
+      "source_sha256": "f730e3870c5458064b7b061a5da9a62c1c556fb7f476490c2e361ee819d6ef6b",
+      "source_bytes": 199,
+      "object_sha256": "a639648f32bf072a1f7ecbe51eef562ccc09876096b13b406229223e516ec2ae",
+      "log": "build_logs/KSource215Data.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215Data.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertData",
+          "object_sha256": "9cd10abdaacb7377fe98bda7b18ba8cb5ec175efb0d6096f4f00b1052f28a03a"
+        }
+      ],
+      "upstream_identical": false,
+      "upstream_sha256": "43093f181bfdd86408a7c88bbf8c0d99ada494b5e3780ae9d93cff05502dbe67"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck00",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck00.lean",
+      "source_sha256": "ad3e11aac0eabdbce60d623f4fd6c34db1b5956cd10378264aedb1a8dd74bbbd",
+      "source_bytes": 289,
+      "object_sha256": "09dd35f6226cc777527168e1cde132e5b7602710043acb001bc7056e3ed9a84c",
+      "log": "build_logs/KSource215FwdCheck00.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck00.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215Data",
+          "object_sha256": "a639648f32bf072a1f7ecbe51eef562ccc09876096b13b406229223e516ec2ae"
+        }
+      ],
+      "upstream_identical": false,
+      "upstream_sha256": "98b37653df83703d87e8c276ee2fc1ec1039af0a6be1472065acdd603deb920d"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck01",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck01.lean",
+      "source_sha256": "e40b4dd05dba87b535eda170a5902d24740f78c7755a23037b7e7a7f2a58c455",
+      "source_bytes": 289,
+      "object_sha256": "c748a0e7a8963bb82ae5bc4f133c1b0818972f4d5a61c4e11d94912ae3f08e5b",
+      "log": "build_logs/KSource215FwdCheck01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck01.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215Data",
+          "object_sha256": "a639648f32bf072a1f7ecbe51eef562ccc09876096b13b406229223e516ec2ae"
+        }
+      ],
+      "upstream_identical": false,
+      "upstream_sha256": "1cddfea65de52776c214fc4143dcce043dfbe45b0e8ceca91e885d3bf8da164b"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck02",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck02.lean",
+      "source_sha256": "29f441ee5bbd51bddb7eecfca430dd7c22c2230fc386afe5e8b43a791d61f78f",
+      "source_bytes": 289,
+      "object_sha256": "cdf6d8a3f56064773384acbc15d7bd2633ca3b56fc87e5507004db036e5cafe8",
+      "log": "build_logs/KSource215FwdCheck02.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck02.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215Data",
+          "object_sha256": "a639648f32bf072a1f7ecbe51eef562ccc09876096b13b406229223e516ec2ae"
+        }
+      ],
+      "upstream_identical": false,
+      "upstream_sha256": "3169008c1babeb874732981ad5e333ccb9e547bc67352bc96e898b4ae552b6c4"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck03",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck03.lean",
+      "source_sha256": "d72a4499c9e4a7492e8d3987e950b623ebeb4bf03c34a5553ac37bfd6a850369",
+      "source_bytes": 289,
+      "object_sha256": "ab495cd1721c91c2d3f4e75bddeb4c69fb57689bfbfc0974ad1249c684540783",
+      "log": "build_logs/KSource215FwdCheck03.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck03.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215Data",
+          "object_sha256": "a639648f32bf072a1f7ecbe51eef562ccc09876096b13b406229223e516ec2ae"
+        }
+      ],
+      "upstream_identical": false,
+      "upstream_sha256": "f710b6e23d4c85272adb6bbdc9c1809fd802bb5e14f5e0a3d9ccc13692429241"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck04",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck04.lean",
+      "source_sha256": "1888cd08397fc2a830e0f9fb541ca3fa5f8e2e38c23c5a7d0eb652e0b6865396",
+      "source_bytes": 289,
+      "object_sha256": "e03c4ada10203b0764201d40bd8b9dba06e18a913b7be831be5fce5a839f5dcd",
+      "log": "build_logs/KSource215FwdCheck04.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck04.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215Data",
+          "object_sha256": "a639648f32bf072a1f7ecbe51eef562ccc09876096b13b406229223e516ec2ae"
+        }
+      ],
+      "upstream_identical": false,
+      "upstream_sha256": "80d2d1769aa0e2df264faefe3868df2c64d850eadfa7e9b371bfdc42e172f529"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck05",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck05.lean",
+      "source_sha256": "5a8941eb6dfe6ed542e169e664f44e7b7466461c74a204d094061de3449a8cc7",
+      "source_bytes": 289,
+      "object_sha256": "cdf1365bd817ed05790366d4dc7904d62a3563f14257b27d1c611eaf18b0c9f2",
+      "log": "build_logs/KSource215FwdCheck05.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck05.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215Data",
+          "object_sha256": "a639648f32bf072a1f7ecbe51eef562ccc09876096b13b406229223e516ec2ae"
+        }
+      ],
+      "upstream_identical": false,
+      "upstream_sha256": "6b371542b8fbcf63c7aab7b41889db0856c732d66e911d9a156f70b547933b7e"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215CertParts",
+      "source": "BusyBeaver/ZFC/KSource215CertParts.lean",
+      "source_sha256": "01b208ad7a033269a74d8e2be69dab67d47a4154d5f423e30b9e7c46935f368e",
+      "source_bytes": 359,
+      "object_sha256": "4765ad3208d8ae4bc7f23859f0211bc2800c69d6e5df37e29c0e26866d443e9e",
+      "log": "build_logs/KSource215CertParts.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215CertParts.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215Data",
+          "object_sha256": "a639648f32bf072a1f7ecbe51eef562ccc09876096b13b406229223e516ec2ae"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215CertCompose",
+      "source": "BusyBeaver/ZFC/KSource215CertCompose.lean",
+      "source_sha256": "1da775cf5d7deee60c2dcad48cca8ec433030a276320ffa41b49da65732086cd",
+      "source_bytes": 560,
+      "object_sha256": "b817cf70b26c63d5f213fdc36e7bafe545784e4391551647dbd3c18e73364a0f",
+      "log": "build_logs/KSource215CertCompose.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215CertCompose.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertParts",
+          "object_sha256": "4765ad3208d8ae4bc7f23859f0211bc2800c69d6e5df37e29c0e26866d443e9e"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck06A",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck06A.lean",
+      "source_sha256": "d69515d8664a62eeed62c3c34460954716fd284140cb958dcbeccc24fdddd5ad",
+      "source_bytes": 305,
+      "object_sha256": "9279271d962279acd24e45fc369d66707ddf589798d40ac57d53c20b4cb4a50d",
+      "log": "build_logs/KSource215FwdCheck06A.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck06A.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertParts",
+          "object_sha256": "4765ad3208d8ae4bc7f23859f0211bc2800c69d6e5df37e29c0e26866d443e9e"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck06B",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck06B.lean",
+      "source_sha256": "2ae4ab249af4c3259ec43f8eb750883724af01659f6916d56b17e74792afe527",
+      "source_bytes": 306,
+      "object_sha256": "20fdc7a24ba6e36ed169748aae7fc412153fd22ceda1617f4b3c0f9f4d74e3d0",
+      "log": "build_logs/KSource215FwdCheck06B.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck06B.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertParts",
+          "object_sha256": "4765ad3208d8ae4bc7f23859f0211bc2800c69d6e5df37e29c0e26866d443e9e"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck06",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck06.lean",
+      "source_sha256": "e17c1ad64725be82b3cc4aadf6250ffc976d78fcec52daed8b6ea937b8639ffd",
+      "source_bytes": 335,
+      "object_sha256": "9ee809406b42692b48cd52ed79c5d829843d042f4a108976a6d36907d81ea682",
+      "log": "build_logs/KSource215FwdCheck06.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck06.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertCompose",
+          "object_sha256": "b817cf70b26c63d5f213fdc36e7bafe545784e4391551647dbd3c18e73364a0f"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck06A",
+          "object_sha256": "9279271d962279acd24e45fc369d66707ddf589798d40ac57d53c20b4cb4a50d"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck06B",
+          "object_sha256": "20fdc7a24ba6e36ed169748aae7fc412153fd22ceda1617f4b3c0f9f4d74e3d0"
+        }
+      ],
+      "upstream_identical": false,
+      "upstream_sha256": "c848742e74f43899c9760be75e024d0e9c22d3097d0047652b667e1f4d5832a4"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck07A",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck07A.lean",
+      "source_sha256": "c9a6f3332d2eb90ebf8801ca76b25182825277480c8c65a1fea6777df28a11fa",
+      "source_bytes": 305,
+      "object_sha256": "7d4462e680771071380dfd9e33c8fe05535c6dfb7c0e0af23409e02b6e7d11d5",
+      "log": "build_logs/KSource215FwdCheck07A.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck07A.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertParts",
+          "object_sha256": "4765ad3208d8ae4bc7f23859f0211bc2800c69d6e5df37e29c0e26866d443e9e"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck07B",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck07B.lean",
+      "source_sha256": "2a8d98bba963ed7c283aa9ba92decc12d53c87b813be6cfdb249497b332cb4c5",
+      "source_bytes": 306,
+      "object_sha256": "1d62aa5843b041957c1375c2d62dbb520e8c1c3f46a942d94096a5d47c59d9b8",
+      "log": "build_logs/KSource215FwdCheck07B.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck07B.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertParts",
+          "object_sha256": "4765ad3208d8ae4bc7f23859f0211bc2800c69d6e5df37e29c0e26866d443e9e"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck07",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck07.lean",
+      "source_sha256": "425a7656dbde1a34c1cbd1f031b4cb75510c5824ac6fbf6d849d83dd8a5fd6ba",
+      "source_bytes": 335,
+      "object_sha256": "5e640e6c158d264436ae50425ec8ffdf8c3b6f64eb37366148faec49b652e8e8",
+      "log": "build_logs/KSource215FwdCheck07.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck07.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertCompose",
+          "object_sha256": "b817cf70b26c63d5f213fdc36e7bafe545784e4391551647dbd3c18e73364a0f"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck07A",
+          "object_sha256": "7d4462e680771071380dfd9e33c8fe05535c6dfb7c0e0af23409e02b6e7d11d5"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck07B",
+          "object_sha256": "1d62aa5843b041957c1375c2d62dbb520e8c1c3f46a942d94096a5d47c59d9b8"
+        }
+      ],
+      "upstream_identical": false,
+      "upstream_sha256": "484e790e5b1e139545061f53e969965e6537b8cfac60576596fe2569ad647240"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck08A",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck08A.lean",
+      "source_sha256": "7e36ad7ce40939fb89d42414ca9f6e5de8e88a932b347d04a31a4e6bbfac8fd2",
+      "source_bytes": 305,
+      "object_sha256": "2c38a59d06570ed9ca562f7f3a3c47c095cc69f3374c3494bb7e518cd0867276",
+      "log": "build_logs/KSource215FwdCheck08A.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck08A.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertParts",
+          "object_sha256": "4765ad3208d8ae4bc7f23859f0211bc2800c69d6e5df37e29c0e26866d443e9e"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck08B",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck08B.lean",
+      "source_sha256": "9ef269ffd7b5bd01dc98fd8f0b356e46a0d525bca9966468f2819e833e562846",
+      "source_bytes": 306,
+      "object_sha256": "fc1580085ba61137d43422ffe9711449db18b1d5f2e91e3f86bd94b1a12a9bd5",
+      "log": "build_logs/KSource215FwdCheck08B.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck08B.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertParts",
+          "object_sha256": "4765ad3208d8ae4bc7f23859f0211bc2800c69d6e5df37e29c0e26866d443e9e"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck08",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck08.lean",
+      "source_sha256": "8699d0664b2d0b16232c41923b051d082ed558cd97243b3901e1cceb4fe631d3",
+      "source_bytes": 335,
+      "object_sha256": "7417a5532c5cea76f5d423ba4bb50bc369ae177d7ebb6d71239b8353dbaa6a3d",
+      "log": "build_logs/KSource215FwdCheck08.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck08.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertCompose",
+          "object_sha256": "b817cf70b26c63d5f213fdc36e7bafe545784e4391551647dbd3c18e73364a0f"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck08A",
+          "object_sha256": "2c38a59d06570ed9ca562f7f3a3c47c095cc69f3374c3494bb7e518cd0867276"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck08B",
+          "object_sha256": "fc1580085ba61137d43422ffe9711449db18b1d5f2e91e3f86bd94b1a12a9bd5"
+        }
+      ],
+      "upstream_identical": false,
+      "upstream_sha256": "dd27ee3b7d424c95aa7333f8b937fd05a1b2ea08b8b6cb99ced512922ccf1ea4"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck09A",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck09A.lean",
+      "source_sha256": "70adbd4738d2c9cc4431b0578ffd61448bda5301c7cad9082a790963047b4505",
+      "source_bytes": 305,
+      "object_sha256": "11266f343da65a44c89a28c5ba810d0f155a954d777da4f98869a9b5c6c2c2a6",
+      "log": "build_logs/KSource215FwdCheck09A.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck09A.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertParts",
+          "object_sha256": "4765ad3208d8ae4bc7f23859f0211bc2800c69d6e5df37e29c0e26866d443e9e"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck09B",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck09B.lean",
+      "source_sha256": "1c4acc74d868f31be7224ab0dabbeea137488f6b7d1729d0dd4e941fa41c3334",
+      "source_bytes": 306,
+      "object_sha256": "d190006584c4cda39bf38318720c0d0aff54f093b612d00d9da3ebdc0a475c92",
+      "log": "build_logs/KSource215FwdCheck09B.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck09B.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertParts",
+          "object_sha256": "4765ad3208d8ae4bc7f23859f0211bc2800c69d6e5df37e29c0e26866d443e9e"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck09",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck09.lean",
+      "source_sha256": "7e48a3170692e97c1a044feed134277c5c10206183dbc1b4cfcc6c2699213da5",
+      "source_bytes": 335,
+      "object_sha256": "6c8927216eaae3d67059c79516023bed80316c518cd9e1fbdeac5f9f701d6e85",
+      "log": "build_logs/KSource215FwdCheck09.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck09.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertCompose",
+          "object_sha256": "b817cf70b26c63d5f213fdc36e7bafe545784e4391551647dbd3c18e73364a0f"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck09A",
+          "object_sha256": "11266f343da65a44c89a28c5ba810d0f155a954d777da4f98869a9b5c6c2c2a6"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck09B",
+          "object_sha256": "d190006584c4cda39bf38318720c0d0aff54f093b612d00d9da3ebdc0a475c92"
+        }
+      ],
+      "upstream_identical": false,
+      "upstream_sha256": "6570c4e6d5bacbcfe24856bea7499b4050be93c74f419383d94fe5033be51c85"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck10A",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck10A.lean",
+      "source_sha256": "55dc4308cc783e4cd7cc62576b096f2a561e279777391e980a0c4b2768b8a104",
+      "source_bytes": 307,
+      "object_sha256": "8e06b7e37b4577e5ee91f2fca7c8484be7d1831e691780c64bb71b2dfebc2d68",
+      "log": "build_logs/KSource215FwdCheck10A.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck10A.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertParts",
+          "object_sha256": "4765ad3208d8ae4bc7f23859f0211bc2800c69d6e5df37e29c0e26866d443e9e"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck10B",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck10B.lean",
+      "source_sha256": "9c92614593485900b387eeaa6dbad1f263e853fa5705156fa292b01aadbdd622",
+      "source_bytes": 308,
+      "object_sha256": "a96869fa7f61e3526194b3844163c1f02fe0250171b7b44147378a72002fe564",
+      "log": "build_logs/KSource215FwdCheck10B.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck10B.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertParts",
+          "object_sha256": "4765ad3208d8ae4bc7f23859f0211bc2800c69d6e5df37e29c0e26866d443e9e"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck10",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck10.lean",
+      "source_sha256": "ea6deb2f0b1ce628fb994bfb5de6ccc9ba07776710580a5c93eb978039f16539",
+      "source_bytes": 340,
+      "object_sha256": "8a36ff77f2c84e6f79f92764130174a571561f2fc3769c1edbdc21422982055e",
+      "log": "build_logs/KSource215FwdCheck10.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck10.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertCompose",
+          "object_sha256": "b817cf70b26c63d5f213fdc36e7bafe545784e4391551647dbd3c18e73364a0f"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck10A",
+          "object_sha256": "8e06b7e37b4577e5ee91f2fca7c8484be7d1831e691780c64bb71b2dfebc2d68"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck10B",
+          "object_sha256": "a96869fa7f61e3526194b3844163c1f02fe0250171b7b44147378a72002fe564"
+        }
+      ],
+      "upstream_identical": false,
+      "upstream_sha256": "662ea44787cd7951d94bf376cb5f3fd8d2da4f6d387b39220a9351d5d4fb535a"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck11A",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck11A.lean",
+      "source_sha256": "915ed7c66aa9808f6e59c6a6ad46f8a97c0e1ef0bd1c231c846072f1d71356e0",
+      "source_bytes": 307,
+      "object_sha256": "6531d97d2d2dd80fe18fae0fdf2a97f8a2ef415af984f79e49d495976a908a2b",
+      "log": "build_logs/KSource215FwdCheck11A.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck11A.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertParts",
+          "object_sha256": "4765ad3208d8ae4bc7f23859f0211bc2800c69d6e5df37e29c0e26866d443e9e"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck11B",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck11B.lean",
+      "source_sha256": "fb2dd444b082396ab3f1748213656b2e80c9e742765ab899a88a4fa5289ede62",
+      "source_bytes": 308,
+      "object_sha256": "ef6174a773e83d4d298ee2156b60db491c336b568d9c4f13bc6dabef221c1e66",
+      "log": "build_logs/KSource215FwdCheck11B.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck11B.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertParts",
+          "object_sha256": "4765ad3208d8ae4bc7f23859f0211bc2800c69d6e5df37e29c0e26866d443e9e"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck11",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck11.lean",
+      "source_sha256": "ae73fbe29ff74e730d244d9635d1bb2bfaa84f94122f626496a7b8e0cc511513",
+      "source_bytes": 340,
+      "object_sha256": "9ffe25e621f3c8e7cad9995d4819124dbcefffec36e3336e462617348e4d94a0",
+      "log": "build_logs/KSource215FwdCheck11.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck11.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertCompose",
+          "object_sha256": "b817cf70b26c63d5f213fdc36e7bafe545784e4391551647dbd3c18e73364a0f"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck11A",
+          "object_sha256": "6531d97d2d2dd80fe18fae0fdf2a97f8a2ef415af984f79e49d495976a908a2b"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck11B",
+          "object_sha256": "ef6174a773e83d4d298ee2156b60db491c336b568d9c4f13bc6dabef221c1e66"
+        }
+      ],
+      "upstream_identical": false,
+      "upstream_sha256": "0bd8254d2a69bf0742000d907c1001f942e348a31f14193aec885c944141da19"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck12A",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck12A.lean",
+      "source_sha256": "117f0e3da185abc2f5b644955badbd2d633b5f99d40df59735f7b733d2831013",
+      "source_bytes": 307,
+      "object_sha256": "349802da0dc9ced31c31d818454243110a2eeff29f0003bedc07693bf0a38423",
+      "log": "build_logs/KSource215FwdCheck12A.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck12A.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertParts",
+          "object_sha256": "4765ad3208d8ae4bc7f23859f0211bc2800c69d6e5df37e29c0e26866d443e9e"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck12B",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck12B.lean",
+      "source_sha256": "97063d697ac059b4790249370f8e279b9b3645d5f07d52cecf36387c497a7490",
+      "source_bytes": 308,
+      "object_sha256": "af10ffb8774242f6480f069a8bd49c4f4b927d68297ff8d3742971b8100fab86",
+      "log": "build_logs/KSource215FwdCheck12B.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck12B.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertParts",
+          "object_sha256": "4765ad3208d8ae4bc7f23859f0211bc2800c69d6e5df37e29c0e26866d443e9e"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck12",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck12.lean",
+      "source_sha256": "11740b8fb16e7cc9d1d8ad1b82447b59ce5eb178e895ed7b721da36fb7c1d100",
+      "source_bytes": 340,
+      "object_sha256": "723739c0bda8a8d0bd54e7c70f239afbaf76d25a58997c2195fac1c6013baffe",
+      "log": "build_logs/KSource215FwdCheck12.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck12.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertCompose",
+          "object_sha256": "b817cf70b26c63d5f213fdc36e7bafe545784e4391551647dbd3c18e73364a0f"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck12A",
+          "object_sha256": "349802da0dc9ced31c31d818454243110a2eeff29f0003bedc07693bf0a38423"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck12B",
+          "object_sha256": "af10ffb8774242f6480f069a8bd49c4f4b927d68297ff8d3742971b8100fab86"
+        }
+      ],
+      "upstream_identical": false,
+      "upstream_sha256": "89f1a6bb2cf24a64a3d5a6f4fb8d3e2a92ee3bc5e17eb076af29b5320f55b828"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck13A",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck13A.lean",
+      "source_sha256": "e7b77a9e1c17dda0323825e7580a81820d133268ffd32f77c53587bc2e1f6383",
+      "source_bytes": 307,
+      "object_sha256": "dfc314300b1e35bb4a3245a85433a156d96f7f040f4c5f0885af15844d567c84",
+      "log": "build_logs/KSource215FwdCheck13A.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck13A.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertParts",
+          "object_sha256": "4765ad3208d8ae4bc7f23859f0211bc2800c69d6e5df37e29c0e26866d443e9e"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck13B",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck13B.lean",
+      "source_sha256": "7ed08e486c0c7fc3d9eb73a71a3cbec7f21d6bd96870082a7e6aa72d0a1fb8f5",
+      "source_bytes": 308,
+      "object_sha256": "0ac077d1668b40b8269802a6d8d14feaadf0dbde2f86e0fa7c5fcaee62c392dc",
+      "log": "build_logs/KSource215FwdCheck13B.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck13B.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertParts",
+          "object_sha256": "4765ad3208d8ae4bc7f23859f0211bc2800c69d6e5df37e29c0e26866d443e9e"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck13",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck13.lean",
+      "source_sha256": "7384112777064923c91e10fb397003c4cc1981dcea834abd5851d095f45887d6",
+      "source_bytes": 340,
+      "object_sha256": "a54df642b42fac44ca171af44860b7414db07f87563e7e65456e9c38a15b9575",
+      "log": "build_logs/KSource215FwdCheck13.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck13.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertCompose",
+          "object_sha256": "b817cf70b26c63d5f213fdc36e7bafe545784e4391551647dbd3c18e73364a0f"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck13A",
+          "object_sha256": "dfc314300b1e35bb4a3245a85433a156d96f7f040f4c5f0885af15844d567c84"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck13B",
+          "object_sha256": "0ac077d1668b40b8269802a6d8d14feaadf0dbde2f86e0fa7c5fcaee62c392dc"
+        }
+      ],
+      "upstream_identical": false,
+      "upstream_sha256": "3178caf571b8f4406b6dd2617f472d72ae9343625315751403cd9580ea65d280"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck14A",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck14A.lean",
+      "source_sha256": "c91a2c8713bb83dfc16793ed790df8f2ae7556cea47ef1180370cae18e685db4",
+      "source_bytes": 307,
+      "object_sha256": "0c9ede5faf3491bdf25acf6e7b19bc1936381edd995f1362e5997954bb16ea1a",
+      "log": "build_logs/KSource215FwdCheck14A.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck14A.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertParts",
+          "object_sha256": "4765ad3208d8ae4bc7f23859f0211bc2800c69d6e5df37e29c0e26866d443e9e"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck14B",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck14B.lean",
+      "source_sha256": "47cca292f7e2b31340a433f718089c623377de6b9dfffa4936d7c272e90f4003",
+      "source_bytes": 308,
+      "object_sha256": "894c1605cebfb6c5512589dfb30bfb7438dd2d783c5f04b70703a373a71de829",
+      "log": "build_logs/KSource215FwdCheck14B.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck14B.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertParts",
+          "object_sha256": "4765ad3208d8ae4bc7f23859f0211bc2800c69d6e5df37e29c0e26866d443e9e"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck14",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck14.lean",
+      "source_sha256": "487c3c88431604e3269b6700a619e1eac60f815bbddf5fa1e3a64e9daf692daf",
+      "source_bytes": 340,
+      "object_sha256": "e834f2ddab0c3da7c009b83066abbd1de6ed896d7e0a6f0e4e70e393a4af7274",
+      "log": "build_logs/KSource215FwdCheck14.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck14.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertCompose",
+          "object_sha256": "b817cf70b26c63d5f213fdc36e7bafe545784e4391551647dbd3c18e73364a0f"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck14A",
+          "object_sha256": "0c9ede5faf3491bdf25acf6e7b19bc1936381edd995f1362e5997954bb16ea1a"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck14B",
+          "object_sha256": "894c1605cebfb6c5512589dfb30bfb7438dd2d783c5f04b70703a373a71de829"
+        }
+      ],
+      "upstream_identical": false,
+      "upstream_sha256": "25a33016ee1b5dfc8861558017ad3ee893f3d6efb6daaaf598792005a4255bd7"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck15A",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck15A.lean",
+      "source_sha256": "7c389d0d911ddcff61a8791f3d5bd18e45f13ebbb194aada3ef65259f5912278",
+      "source_bytes": 307,
+      "object_sha256": "b04615d92980e00620a603ccae60950cb71171deb188444e5213769d5fe5ee11",
+      "log": "build_logs/KSource215FwdCheck15A.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck15A.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertParts",
+          "object_sha256": "4765ad3208d8ae4bc7f23859f0211bc2800c69d6e5df37e29c0e26866d443e9e"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck15B",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck15B.lean",
+      "source_sha256": "37d980d488548981b1ab0eeefe93fac2779e40bc2caffbbb38baa8990e125fd3",
+      "source_bytes": 308,
+      "object_sha256": "7f8fd070ac6331886e6b5494e09e5eedd84e09b7cafa668f5f90548dc12617b5",
+      "log": "build_logs/KSource215FwdCheck15B.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck15B.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertParts",
+          "object_sha256": "4765ad3208d8ae4bc7f23859f0211bc2800c69d6e5df37e29c0e26866d443e9e"
+        }
+      ],
+      "upstream_identical": false
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck15",
+      "source": "BusyBeaver/ZFC/KSource215FwdCheck15.lean",
+      "source_sha256": "63fed9b9dc6c7214851288abc030c528fd6b37cdbb77c70cae35b9ea64ba72b6",
+      "source_bytes": 340,
+      "object_sha256": "befa85fc854d0ec78bf3aa18d6b78d9714905bd15e7a3d9ff801216f72824ebe",
+      "log": "build_logs/KSource215FwdCheck15.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile_receipt": "build_logs/KSource215FwdCheck15.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215CertCompose",
+          "object_sha256": "b817cf70b26c63d5f213fdc36e7bafe545784e4391551647dbd3c18e73364a0f"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck15A",
+          "object_sha256": "b04615d92980e00620a603ccae60950cb71171deb188444e5213769d5fe5ee11"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck15B",
+          "object_sha256": "7f8fd070ac6331886e6b5494e09e5eedd84e09b7cafa668f5f90548dc12617b5"
+        }
+      ],
+      "upstream_identical": false,
+      "upstream_sha256": "90d8d85332c730943fd0a9809b8b16489320443505dba8fd51d8a7deb79bff75"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215",
+      "source": "BusyBeaver/ZFC/KSource215.lean",
+      "source_sha256": "74b1e957b34662afa4ddec9b31a20543a7e723897f71d9e26ad85ded379e9114",
+      "source_bytes": 1892,
+      "object_sha256": "f32a87304c16f2feab5b1e8828ac813fc5f83aa13c804279ef87b5728578f4b0",
+      "log": "build_logs/KSource215.log",
+      "log_sha256": "019636b3dbf6978a030ab7b1c89fbf8d734f8bf48b24ae2e64d3f7449b2e25a7",
+      "compile_receipt": "build_logs/KSource215.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215Data",
+          "object_sha256": "a639648f32bf072a1f7ecbe51eef562ccc09876096b13b406229223e516ec2ae"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck00",
+          "object_sha256": "09dd35f6226cc777527168e1cde132e5b7602710043acb001bc7056e3ed9a84c"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck01",
+          "object_sha256": "c748a0e7a8963bb82ae5bc4f133c1b0818972f4d5a61c4e11d94912ae3f08e5b"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck02",
+          "object_sha256": "cdf6d8a3f56064773384acbc15d7bd2633ca3b56fc87e5507004db036e5cafe8"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck03",
+          "object_sha256": "ab495cd1721c91c2d3f4e75bddeb4c69fb57689bfbfc0974ad1249c684540783"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck04",
+          "object_sha256": "e03c4ada10203b0764201d40bd8b9dba06e18a913b7be831be5fce5a839f5dcd"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck05",
+          "object_sha256": "cdf1365bd817ed05790366d4dc7904d62a3563f14257b27d1c611eaf18b0c9f2"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck06",
+          "object_sha256": "9ee809406b42692b48cd52ed79c5d829843d042f4a108976a6d36907d81ea682"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck07",
+          "object_sha256": "5e640e6c158d264436ae50425ec8ffdf8c3b6f64eb37366148faec49b652e8e8"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck08",
+          "object_sha256": "7417a5532c5cea76f5d423ba4bb50bc369ae177d7ebb6d71239b8353dbaa6a3d"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck09",
+          "object_sha256": "6c8927216eaae3d67059c79516023bed80316c518cd9e1fbdeac5f9f701d6e85"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck10",
+          "object_sha256": "8a36ff77f2c84e6f79f92764130174a571561f2fc3769c1edbdc21422982055e"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck11",
+          "object_sha256": "9ffe25e621f3c8e7cad9995d4819124dbcefffec36e3336e462617348e4d94a0"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck12",
+          "object_sha256": "723739c0bda8a8d0bd54e7c70f239afbaf76d25a58997c2195fac1c6013baffe"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck13",
+          "object_sha256": "a54df642b42fac44ca171af44860b7414db07f87563e7e65456e9c38a15b9575"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck14",
+          "object_sha256": "e834f2ddab0c3da7c009b83066abbd1de6ed896d7e0a6f0e4e70e393a4af7274"
+        },
+        {
+          "module": "BusyBeaver.ZFC.KSource215FwdCheck15",
+          "object_sha256": "befa85fc854d0ec78bf3aa18d6b78d9714905bd15e7a3d9ff801216f72824ebe"
+        }
+      ],
+      "upstream_identical": false,
+      "upstream_sha256": "1134a4bfd8d9b877566906aa284fbb855a669aa1894737010f74dd3283ba59f5"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215PlainAudit",
+      "source": "BusyBeaver/ZFC/KSource215PlainAudit.lean",
+      "source_sha256": "502e6af7cc2c3ce633e7a9d5814f6ea7c10b4f5fc85def995a7bdf200869d75d",
+      "source_bytes": 870,
+      "object_sha256": "5a38cb6a42d3fa607118d859cc93b691f46f6cb3ecf04b2081c989d9c9102fd6",
+      "log": "build_logs/KSource215PlainAudit.log",
+      "log_sha256": "2af1fb71cd3956ef4f948dcd8ea514259c97f4c896d2cb68fb5f7e830f31b876",
+      "compile_receipt": "build_logs/KSource215PlainAudit.json",
+      "dependencies": [
+        {
+          "module": "BusyBeaver.ZFC.KSource215",
+          "object_sha256": "f32a87304c16f2feab5b1e8828ac813fc5f83aa13c804279ef87b5728578f4b0"
+        }
+      ],
+      "upstream_identical": false
+    }
+  ]
+}

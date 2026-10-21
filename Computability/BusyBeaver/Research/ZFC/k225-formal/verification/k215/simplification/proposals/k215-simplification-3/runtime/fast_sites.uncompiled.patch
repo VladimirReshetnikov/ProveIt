@@ -1,0 +1,851 @@
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KFastSites215.lean
+@@ -0,0 +1,23 @@
++import BusyBeaver.ZFC.KFast215
++import BusyBeaver.ZFC.KSim
++
++/-!
++UNCOMPILED RESEARCH DRAFT. No new evaluator or semantic axiom is introduced.
++Install as BusyBeaver/ZFC/KFastSites215.lean before trying the accompanying patch.
++The existing fast215 theorem binds the balanced lookup tree to the literal table.
++-/
++
++namespace SetTheory.BusyBeaver.ZFC.KFastSites215
++
++open KBoot KBoot215 KTableCore KSim SiteCoverage RMBisim
++
++theorem fast_eq : fastOf tt215 = tm215 :=
++  funext fun q => funext fun b => fast215 q b
++
++theorem allSites_of_fast {revPrefix : List Bool} {t : Tree}
++    (h : allSites (checkEdge (fastOf tt215)) revPrefix t = true) :
++    allSites (checkEdge tm215) revPrefix t = true := by
++  rw [← fast_eq]
++  exact h
++
++end SetTheory.BusyBeaver.ZFC.KFastSites215
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch000.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch000.lean
+@@ -1,5 +1,6 @@
+ import BusyBeaver.ZFC.KSource215
+ import BusyBeaver.ZFC.KSim
++import BusyBeaver.ZFC.KFastSites215
+ import BusyBeaver.ZFC.KTable215
+ 
+ /-! The 215's decoder sites, blocks 0 to 11 (319 leaves).
+@@ -13,72 +14,72 @@
+ theorem block_0 :
+     allSites (KSim.checkEdge tm215) [false]
+       (descend KSource215.t215 [false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 14 leaves. -/
+ theorem block_1 :
+     allSites (KSim.checkEdge tm215) [false, true]
+       (descend KSource215.t215 [true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 1 leaves. -/
+ theorem block_2 :
+     allSites (KSim.checkEdge tm215) [false, false, true, true]
+       (descend KSource215.t215 [true, true, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 1 leaves. -/
+ theorem block_3 :
+     allSites (KSim.checkEdge tm215) [false, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 1 leaves. -/
+ theorem block_4 :
+     allSites (KSim.checkEdge tm215) [false, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 52 leaves. -/
+ theorem block_5 :
+     allSites (KSim.checkEdge tm215) [false, false, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 29 leaves. -/
+ theorem block_6 :
+     allSites (KSim.checkEdge tm215) [true, false, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, false, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 52 leaves. -/
+ theorem block_7 :
+     allSites (KSim.checkEdge tm215) [false, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 14 leaves. -/
+ theorem block_8 :
+     allSites (KSim.checkEdge tm215) [false, false, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 27 leaves. -/
+ theorem block_9 :
+     allSites (KSim.checkEdge tm215) [false, true, false, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, false, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 67 leaves. -/
+ theorem block_10 :
+     allSites (KSim.checkEdge tm215) [false, true, true, false, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, false, true, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 52 leaves. -/
+ theorem block_11 :
+     allSites (KSim.checkEdge tm215) [true, true, true, false, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, false, true, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ end SetTheory.BusyBeaver.ZFC.KSites215
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch001.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch001.lean
+@@ -1,5 +1,6 @@
+ import BusyBeaver.ZFC.KSource215
+ import BusyBeaver.ZFC.KSim
++import BusyBeaver.ZFC.KFastSites215
+ import BusyBeaver.ZFC.KTable215
+ 
+ /-! The 215's decoder sites, blocks 12 to 23 (515 leaves).
+@@ -13,72 +14,72 @@
+ theorem block_12 :
+     allSites (KSim.checkEdge tm215) [false, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 54 leaves. -/
+ theorem block_13 :
+     allSites (KSim.checkEdge tm215) [false, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 27 leaves. -/
+ theorem block_14 :
+     allSites (KSim.checkEdge tm215) [false, false, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 80 leaves. -/
+ theorem block_15 :
+     allSites (KSim.checkEdge tm215) [false, true, false, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, false, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 2 leaves. -/
+ theorem block_16 :
+     allSites (KSim.checkEdge tm215) [false, true, true, false, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, false, true, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 80 leaves. -/
+ theorem block_17 :
+     allSites (KSim.checkEdge tm215) [true, true, true, false, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, false, true, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 2 leaves. -/
+ theorem block_18 :
+     allSites (KSim.checkEdge tm215) [false, false, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 80 leaves. -/
+ theorem block_19 :
+     allSites (KSim.checkEdge tm215) [false, true, false, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, false, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 52 leaves. -/
+ theorem block_20 :
+     allSites (KSim.checkEdge tm215) [false, false, true, true, false, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, false, true, true, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 29 leaves. -/
+ theorem block_21 :
+     allSites (KSim.checkEdge tm215) [true, false, true, true, false, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, false, true, true, false, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 1 leaves. -/
+ theorem block_22 :
+     allSites (KSim.checkEdge tm215) [true, true, true, false, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, false, true, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 29 leaves. -/
+ theorem block_23 :
+     allSites (KSim.checkEdge tm215) [false, true, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ end SetTheory.BusyBeaver.ZFC.KSites215
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch002.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch002.lean
+@@ -1,5 +1,6 @@
+ import BusyBeaver.ZFC.KSource215
+ import BusyBeaver.ZFC.KSim
++import BusyBeaver.ZFC.KFastSites215
+ import BusyBeaver.ZFC.KTable215
+ 
+ /-! The 215's decoder sites, blocks 24 to 35 (579 leaves).
+@@ -13,72 +14,72 @@
+ theorem block_24 :
+     allSites (KSim.checkEdge tm215) [false, true, true, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, true, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 52 leaves. -/
+ theorem block_25 :
+     allSites (KSim.checkEdge tm215) [false, false, true, true, true, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, true, true, true, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 29 leaves. -/
+ theorem block_26 :
+     allSites (KSim.checkEdge tm215) [true, false, true, true, true, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, true, true, true, false, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 20 leaves. -/
+ theorem block_27 :
+     allSites (KSim.checkEdge tm215) [false, false, true, true, true, true, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, true, true, true, true, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 56 leaves. -/
+ theorem block_28 :
+     allSites (KSim.checkEdge tm215) [false, true, false, true, true, true, true, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, true, true, true, true, false, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 47 leaves. -/
+ theorem block_29 :
+     allSites (KSim.checkEdge tm215) [true, true, false, true, true, true, true, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, true, true, true, true, false, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 26 leaves. -/
+ theorem block_30 :
+     allSites (KSim.checkEdge tm215) [true, true, true, true, true, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, true, true, true, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 27 leaves. -/
+ theorem block_31 :
+     allSites (KSim.checkEdge tm215) [false, false, false, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, false, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 80 leaves. -/
+ theorem block_32 :
+     allSites (KSim.checkEdge tm215) [false, true, false, false, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, false, false, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 2 leaves. -/
+ theorem block_33 :
+     allSites (KSim.checkEdge tm215) [false, true, true, false, false, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, false, false, true, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 80 leaves. -/
+ theorem block_34 :
+     allSites (KSim.checkEdge tm215) [true, true, true, false, false, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, false, false, true, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 80 leaves. -/
+ theorem block_35 :
+     allSites (KSim.checkEdge tm215) [false, true, false, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, false, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ end SetTheory.BusyBeaver.ZFC.KSites215
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch003.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch003.lean
+@@ -1,5 +1,6 @@
+ import BusyBeaver.ZFC.KSource215
+ import BusyBeaver.ZFC.KSim
++import BusyBeaver.ZFC.KFastSites215
+ import BusyBeaver.ZFC.KTable215
+ 
+ /-! The 215's decoder sites, blocks 36 to 47 (515 leaves).
+@@ -13,72 +14,72 @@
+ theorem block_36 :
+     allSites (KSim.checkEdge tm215) [false, true, true, false, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, false, true, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 52 leaves. -/
+ theorem block_37 :
+     allSites (KSim.checkEdge tm215) [true, true, true, false, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, false, true, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 56 leaves. -/
+ theorem block_38 :
+     allSites (KSim.checkEdge tm215) [false, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 2 leaves. -/
+ theorem block_39 :
+     allSites (KSim.checkEdge tm215) [false, false, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 26 leaves. -/
+ theorem block_40 :
+     allSites (KSim.checkEdge tm215) [false, false, false, true, false, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, false, true, false, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 52 leaves. -/
+ theorem block_41 :
+     allSites (KSim.checkEdge tm215) [false, false, true, false, false, true, false, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, false, true, false, false, true, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 29 leaves. -/
+ theorem block_42 :
+     allSites (KSim.checkEdge tm215) [true, false, true, false, false, true, false, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, false, true, false, false, true, false, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 56 leaves. -/
+ theorem block_43 :
+     allSites (KSim.checkEdge tm215) [false, true, true, false, false, true, false, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, false, true, false, false, true, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 52 leaves. -/
+ theorem block_44 :
+     allSites (KSim.checkEdge tm215) [false, false, true, true, true, false, false, true, false, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, false, true, false, false, true, true, true, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 29 leaves. -/
+ theorem block_45 :
+     allSites (KSim.checkEdge tm215) [true, false, true, true, true, false, false, true, false, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, false, true, false, false, true, true, true, false, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 1 leaves. -/
+ theorem block_46 :
+     allSites (KSim.checkEdge tm215) [true, true, true, true, false, false, true, false, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, false, true, false, false, true, true, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 80 leaves. -/
+ theorem block_47 :
+     allSites (KSim.checkEdge tm215) [false, true, false, true, false, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, false, true, false, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ end SetTheory.BusyBeaver.ZFC.KSites215
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch004.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch004.lean
+@@ -1,5 +1,6 @@
+ import BusyBeaver.ZFC.KSource215
+ import BusyBeaver.ZFC.KSim
++import BusyBeaver.ZFC.KFastSites215
+ import BusyBeaver.ZFC.KTable215
+ 
+ /-! The 215's decoder sites, blocks 48 to 59 (592 leaves).
+@@ -13,72 +14,72 @@
+ theorem block_48 :
+     allSites (KSim.checkEdge tm215) [true, true, false, true, false, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, false, true, false, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 80 leaves. -/
+ theorem block_49 :
+     allSites (KSim.checkEdge tm215) [false, true, true, false, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, false, true, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 52 leaves. -/
+ theorem block_50 :
+     allSites (KSim.checkEdge tm215) [true, true, true, false, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, false, true, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 56 leaves. -/
+ theorem block_51 :
+     allSites (KSim.checkEdge tm215) [false, true, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 52 leaves. -/
+ theorem block_52 :
+     allSites (KSim.checkEdge tm215) [false, false, true, true, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, true, true, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 29 leaves. -/
+ theorem block_53 :
+     allSites (KSim.checkEdge tm215) [true, false, true, true, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, true, true, false, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 52 leaves. -/
+ theorem block_54 :
+     allSites (KSim.checkEdge tm215) [false, false, true, true, true, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, true, true, true, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 29 leaves. -/
+ theorem block_55 :
+     allSites (KSim.checkEdge tm215) [true, false, true, true, true, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, true, true, true, false, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 80 leaves. -/
+ theorem block_56 :
+     allSites (KSim.checkEdge tm215) [false, true, true, true, true, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, true, true, true, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 52 leaves. -/
+ theorem block_57 :
+     allSites (KSim.checkEdge tm215) [false, false, true, true, true, true, true, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, true, true, true, true, true, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 29 leaves. -/
+ theorem block_58 :
+     allSites (KSim.checkEdge tm215) [true, false, true, true, true, true, true, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, true, true, true, true, true, false, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 1 leaves. -/
+ theorem block_59 :
+     allSites (KSim.checkEdge tm215) [true, true, true, true, true, true, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, true, true, true, true, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ end SetTheory.BusyBeaver.ZFC.KSites215
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch005.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch005.lean
+@@ -1,5 +1,6 @@
+ import BusyBeaver.ZFC.KSource215
+ import BusyBeaver.ZFC.KSim
++import BusyBeaver.ZFC.KFastSites215
+ import BusyBeaver.ZFC.KTable215
+ 
+ /-! The 215's decoder sites, blocks 60 to 71 (681 leaves).
+@@ -13,72 +14,72 @@
+ theorem block_60 :
+     allSites (KSim.checkEdge tm215) [false, true, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 56 leaves. -/
+ theorem block_61 :
+     allSites (KSim.checkEdge tm215) [false, true, true, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, true, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 47 leaves. -/
+ theorem block_62 :
+     allSites (KSim.checkEdge tm215) [true, true, true, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, true, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 80 leaves. -/
+ theorem block_63 :
+     allSites (KSim.checkEdge tm215) [false, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 26 leaves. -/
+ theorem block_64 :
+     allSites (KSim.checkEdge tm215) [false, false, false, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, false, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 80 leaves. -/
+ theorem block_65 :
+     allSites (KSim.checkEdge tm215) [false, true, false, false, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, false, false, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 56 leaves. -/
+ theorem block_66 :
+     allSites (KSim.checkEdge tm215) [true, true, false, false, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, false, false, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 52 leaves. -/
+ theorem block_67 :
+     allSites (KSim.checkEdge tm215) [false, true, false, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, false, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 80 leaves. -/
+ theorem block_68 :
+     allSites (KSim.checkEdge tm215) [true, true, false, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, false, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 52 leaves. -/
+ theorem block_69 :
+     allSites (KSim.checkEdge tm215) [false, false, true, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, true, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 52 leaves. -/
+ theorem block_70 :
+     allSites (KSim.checkEdge tm215) [false, true, false, true, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, true, false, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 80 leaves. -/
+ theorem block_71 :
+     allSites (KSim.checkEdge tm215) [false, true, true, false, true, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, true, false, true, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ end SetTheory.BusyBeaver.ZFC.KSites215
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch006.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch006.lean
+@@ -1,5 +1,6 @@
+ import BusyBeaver.ZFC.KSource215
+ import BusyBeaver.ZFC.KSim
++import BusyBeaver.ZFC.KFastSites215
+ import BusyBeaver.ZFC.KTable215
+ 
+ /-! The 215's decoder sites, blocks 72 to 83 (685 leaves).
+@@ -13,72 +14,72 @@
+ theorem block_72 :
+     allSites (KSim.checkEdge tm215) [true, true, true, false, true, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, true, false, true, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 56 leaves. -/
+ theorem block_73 :
+     allSites (KSim.checkEdge tm215) [false, false, true, true, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, true, true, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 52 leaves. -/
+ theorem block_74 :
+     allSites (KSim.checkEdge tm215) [false, false, true, false, true, true, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, true, true, false, true, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 52 leaves. -/
+ theorem block_75 :
+     allSites (KSim.checkEdge tm215) [true, false, true, false, true, true, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, true, true, false, true, false, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 80 leaves. -/
+ theorem block_76 :
+     allSites (KSim.checkEdge tm215) [true, true, false, true, true, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, true, true, false, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 47 leaves. -/
+ theorem block_77 :
+     allSites (KSim.checkEdge tm215) [false, true, true, true, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, true, true, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 56 leaves. -/
+ theorem block_78 :
+     allSites (KSim.checkEdge tm215) [false, true, true, true, true, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, true, true, true, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 47 leaves. -/
+ theorem block_79 :
+     allSites (KSim.checkEdge tm215) [true, true, true, true, true, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, true, true, true, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 56 leaves. -/
+ theorem block_80 :
+     allSites (KSim.checkEdge tm215) [false, true, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 56 leaves. -/
+ theorem block_81 :
+     allSites (KSim.checkEdge tm215) [false, true, true, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, true, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 47 leaves. -/
+ theorem block_82 :
+     allSites (KSim.checkEdge tm215) [false, false, true, true, true, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, true, true, true, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 56 leaves. -/
+ theorem block_83 :
+     allSites (KSim.checkEdge tm215) [false, true, false, true, true, true, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, true, true, true, false, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ end SetTheory.BusyBeaver.ZFC.KSites215
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch007.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch007.lean
+@@ -1,5 +1,6 @@
+ import BusyBeaver.ZFC.KSource215
+ import BusyBeaver.ZFC.KSim
++import BusyBeaver.ZFC.KFastSites215
+ import BusyBeaver.ZFC.KTable215
+ 
+ /-! The 215's decoder sites, blocks 84 to 95 (674 leaves).
+@@ -13,72 +14,72 @@
+ theorem block_84 :
+     allSites (KSim.checkEdge tm215) [true, true, false, true, true, true, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, true, true, true, false, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 56 leaves. -/
+ theorem block_85 :
+     allSites (KSim.checkEdge tm215) [false, false, true, true, true, true, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, true, true, true, true, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 52 leaves. -/
+ theorem block_86 :
+     allSites (KSim.checkEdge tm215) [false, false, true, false, true, true, true, true, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, true, true, true, true, false, true, false, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 52 leaves. -/
+ theorem block_87 :
+     allSites (KSim.checkEdge tm215) [true, false, true, false, true, true, true, true, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, true, true, true, true, false, true, false, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 80 leaves. -/
+ theorem block_88 :
+     allSites (KSim.checkEdge tm215) [true, true, false, true, true, true, true, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, true, true, true, true, false, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 47 leaves. -/
+ theorem block_89 :
+     allSites (KSim.checkEdge tm215) [false, true, true, true, true, true, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, true, true, true, true, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 56 leaves. -/
+ theorem block_90 :
+     allSites (KSim.checkEdge tm215) [false, true, true, true, true, true, true, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, true, true, true, true, true, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 47 leaves. -/
+ theorem block_91 :
+     allSites (KSim.checkEdge tm215) [true, true, true, true, true, true, true, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, true, true, true, true, true, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 56 leaves. -/
+ theorem block_92 :
+     allSites (KSim.checkEdge tm215) [false, true, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 47 leaves. -/
+ theorem block_93 :
+     allSites (KSim.checkEdge tm215) [true, true, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 56 leaves. -/
+ theorem block_94 :
+     allSites (KSim.checkEdge tm215) [false, true, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 78 leaves. -/
+ theorem block_95 :
+     allSites (KSim.checkEdge tm215) [true, true, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ end SetTheory.BusyBeaver.ZFC.KSites215
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch008.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch008.lean
+@@ -1,5 +1,6 @@
+ import BusyBeaver.ZFC.KSource215
+ import BusyBeaver.ZFC.KSim
++import BusyBeaver.ZFC.KFastSites215
+ import BusyBeaver.ZFC.KTable215
+ 
+ /-! The 215's decoder sites, blocks 96 to 104 (191 leaves).
+@@ -13,54 +14,54 @@
+ theorem block_96 :
+     allSites (KSim.checkEdge tm215) [true, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 6 leaves. -/
+ theorem block_97 :
+     allSites (KSim.checkEdge tm215) [true, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 13 leaves. -/
+ theorem block_98 :
+     allSites (KSim.checkEdge tm215) [true, true, true, true, false, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 70 leaves. -/
+ theorem block_99 :
+     allSites (KSim.checkEdge tm215) [false, true, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, true, false]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 36 leaves. -/
+ theorem block_100 :
+     allSites (KSim.checkEdge tm215) [true, true, false, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, false, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 1 leaves. -/
+ theorem block_101 :
+     allSites (KSim.checkEdge tm215) [true, true, false, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, false, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 26 leaves. -/
+ theorem block_102 :
+     allSites (KSim.checkEdge tm215) [true, false, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, false, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 1 leaves. -/
+ theorem block_103 :
+     allSites (KSim.checkEdge tm215) [true, true, false, true, true]
+       (descend KSource215.t215 [true, true, false, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ /-- 26 leaves. -/
+ theorem block_104 :
+     allSites (KSim.checkEdge tm215) [true, true, true]
+       (descend KSource215.t215 [true, true, true]) = true := by
+-  decide +kernel
++  exact KFastSites215.allSites_of_fast (by decide +kernel)
+ 
+ end SetTheory.BusyBeaver.ZFC.KSites215

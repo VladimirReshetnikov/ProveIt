@@ -1,0 +1,19 @@
+-- Proposed extension to KRuntimeCore, not compiled or claimed kernel-checked.
+-- Existing BoxLemmas and sstep_sound are reused unchanged.
+def execCount (M : TMN) (br : Branch) : Nat → SConf → Bool → Option (SConf × Bool)
+  | 0, s, moved => some (s, moved)
+  | n + 1, s, moved => do
+      let (s', m) ← sstep M br s
+      execCount M br n s' (moved || m)
+
+-- Induct on n, apply sstep_sound once, compose Reach. If final moved=true
+-- and initial moved=false, split the first step's m and compose Reach1.
+-- Required statement, with the same Valid and BoxLemmas assumptions:
+-- execCount M br n s false = some (s', true) ->
+-- Reach1 M (conc gap vs s) (conc gap vs s').
+--
+-- Then checkEdgeCount stores one Nat per branch (two for CD), performs
+-- execCount once and sMatches once. sMatches_conc transports the endpoint.
+-- The branch assumption, exact table, full symbolic configuration and positive
+-- progress bit remain in the theorem; no intermediate dispatch is a boundary.
+-- A CH branch checks state230 at the endpoint instead of sMatches.

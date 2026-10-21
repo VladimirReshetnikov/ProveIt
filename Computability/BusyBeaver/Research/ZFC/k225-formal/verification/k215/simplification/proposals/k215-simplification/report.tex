@@ -1,0 +1,657 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,microtype}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{booktabs,longtable,tabularx,array,enumitem,xcolor,listings,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{url}
+\hypersetup{pdftitle={Shorter correctness proofs for K215},pdfauthor={Research contribution prepared for ProveIt}}
+\setlength{\parskip}{5pt}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=2pt,topsep=4pt}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\bit}{\operatorname{bit}}
+\newcommand{\canon}{\operatorname{can}}
+\newcommand{\K}{K_{215}}
+\newcommand{\CM}{\mathrm{CM}_{215}}
+\newcommand{\repo}{\texttt{VladimirReshetnikov/ProveIt}}
+\newcommand{\pin}{\texttt{b6c7087477e51c017003bd729e712c8969733223}}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!20},showstringspaces=false}
+\pagestyle{fancy}\fancyhf{}\lhead{Shorter correctness proofs for K215}\rhead{ProveIt research note}\cfoot{\thepage}
+\input{results.tex}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.8in}
+{\Large\color{blue!45!black} COMPUTABILITY / PROOF ENGINEERING\par}
+\vspace{0.35in}
+{\huge\bfseries Shorter correctness proofs\par for K215\par}
+\vspace{0.25in}
+{\Large Path normalization, shared source trees,\par and a certified six-row machine transfer\par}
+\vspace{0.4in}
+{\large Research contribution prepared for ProveIt\par 21 October 2026\par}
+\vspace{0.5in}
+\begin{abstract}
+The primary 215-state consistency machine already has compiled Lean and Rocq
+endpoints. The useful next step is to reduce the additional proof required by
+a change, and to remove representational duplication from its existing
+certificate. We give two concrete contributions. First, identifying source
+paths that differ only in implicit trailing zero bits reduces the source
+certificate from 2,240 paired checkpoints to 1,426, a reduction of 814
+checkpoints (36.34\%). A new Lean checker proves the soundness of this
+quotient using the repository's existing segment-bisimulation theorem;
+the complete concrete replacement source theorem is kernel-checked.
+Second, the existing conditional-marker machine CM215 admits a short relative
+correctness proof: three local tape invariants imply that each K215 step is
+simulated by one or three CM215 steps. We provide a kernel-checked Lean
+proof for every initial binary tape and every initial head position, with
+initial control 0. A reusable positive-stuttering theorem is also checked
+in Coq. These results reuse the existing ZFC calibration.
+
+The state-reduction search is reported separately and with its exact scope.
+This contribution does not claim a verified machine with 214 or fewer
+working states, or a lower bound of 215.
+\end{abstract}
+\vfill
+\small Repository snapshot: \repo\\
+\small Commit: \pin\\
+\small Model: two symbols, one two-way infinite tape, blank start, L/R moves; the halt is excluded from the working-state count.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\newpage
+
+\section{Answers and the exact verification boundary}
+
+\textbf{How should the current proofs be shortened?} Treat equivalent source
+addresses as the same checkpoint; preserve sharing when reflecting source
+trees into the kernel; and prove small machine changes directly against a
+previously verified machine. The first change reduces a specific current
+certificate by more than one third. The last change gives a small proof for
+an already published alternative without repeating the logical calibration,
+enumerator, compiler, runtime, and initialization developments.
+
+\textbf{Is another 215-state candidate easier to prove correct?} Yes, in the
+important sense of \emph{additional proof effort relative to the existing
+K215 endpoint}: the conditional-marker alternative CM215 is an especially
+good choice. It differs from K215 in six transition rows and has the same
+source program. Its relative proof works on arbitrary tapes. CM215 was
+already in the repository; the new contribution here is its compact checked
+relative proof and the proposed integration route, not a new discovery of
+the machine.
+
+\textbf{Is a correct 214-state candidate constructed here?} No. The accompanying
+searches examine a precisely specified family of state-merger and local-macro
+transformations and find no accepted reduction. This is useful evidence
+about a search family, not a statement about all 214-state machines.
+
+\begin{table}[ht]
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.30\textwidth}Y@{}}
+\toprule
+Item & Status and scope\\\midrule
+Primary K215 consistency endpoint & Existing repository result in Lean and Rocq; the exact dense machine halts iff there is a finite ZFC refutation.\\
+CM215 relative theorem & New Lean kernel check: arbitrary tape and head, initial control 0; exact literal tables; only standard logical axioms.\\
+Positive-stuttering theorem & New standalone Lean and Coq proofs; no arithmetic or set-theoretic calibration assumptions.\\
+Normalized source checker & New Lean soundness theorem; it saturates certificate entries under equality of zero-extended paths.\\
+Concrete normalized certificate & \NormalizedStatus\\
+214-state result & No verified candidate obtained; no minimality claim.\\
+\bottomrule
+\end{tabularx}
+\caption{The new work and its verification boundary.}
+\end{table}
+
+This report fixes one repository snapshot. All machine bytes, source
+measurements, and new proofs
+refer to the commit on the title page. In particular, earlier descriptions
+of a 204-module Lean closure describe a historical fresh build; the current
+simplification record reports a 185-module closure with an incremental
+recheck. Neither number measures the size of the new relative proof
+\cite{verification,phase3}.
+
+\section{What has already been simplified}
+
+The primary endpoint has a deliberately layered structure
+\cite{endpoint,formal}. Its statement, in the repository's notation, is
+\begin{lstlisting}
+BlankHalts machine215 <-> BProv ZFCax_s [] Form.fBot
+\end{lstlisting}
+and its nonhalting companion is obtained by negation. The endpoint does not
+prove unconditional nonhalting. The external theorem is also distinct from
+an object-language PA proof of the same equivalence; the latter remains a
+separate goal for this exact 215-state table.
+
+\begin{tabularx}{\textwidth}{@{}p{0.27\textwidth}Y@{}}
+\toprule
+Layer & Main responsibility\\\midrule
+Logical calibration & Relate derivability of numerical falsity to finite ZFC refutation; handle arbitrary natural formula codes.\\
+Proof enumeration & Show that the command language searches exactly the refutations relevant to the calibration.\\
+Source correspondence & Relate the actual rotated source to the arithmetic/DAG enumerator.\\
+Binary runtime & Interpret the source in the literal binary table, including registers, spares, decoder sites, and positive durations.\\
+Startup and numbering & Connect the blank tape to the source start and the native labels to the published dense table.\\
+\bottomrule
+\end{tabularx}
+
+Several attractive ideas are already implemented at the pin and should not
+be advertised as new recommendations. The forward source certificate already
+uses symmetry instead of a second mirrored certificate. The dominated
+implication proof already shares 61 bootstrap lemmas and 81 conditional
+schemas; its Lean source was reduced from 128,177 to 35,185 bytes. The
+enumerator theorem already handles general valid between-candidate starts.
+The site-coverage facade already reuses the same checked blocks with far
+less repeated path syntax. Recent commits also use symbolic command
+execution in \texttt{EnumPerm}, shared selector-level lemmas in
+\texttt{L2RootPerm}, and direct effects in the AX interpreter
+\cite{phase3,recent}.
+
+Our changes address duplication that survives those improvements. They
+also suggest a policy for future work: maintain a small set of semantic
+interfaces, and make each candidate carry only the evidence that changes at
+one of those interfaces. The total state count and the extra proof cost are
+different objectives; a useful search should record both.
+
+\section{Quotient source paths by their implicit zero extension}
+\label{sec:paths}
+
+\subsection{The redundancy}
+
+The source decoder reads a finite Boolean path as an infinite stream padded
+with zeros. Thus the stored words $P$, $P0$, and $P00$ are different lists
+but designate the same stream. A certificate keyed by literal lists can
+store several checkpoints for the same semantic address.
+
+\begin{definition}
+For a finite Boolean word $P$, let $\bit(P,i)$ be its $i$th bit, or zero
+when $i$ is outside the word. Define
+\[
+ P\sim Q\quad\Longleftrightarrow\quad
+ \forall i\in\mathbb N,\ \bit(P,i)=\bit(Q,i).
+\]
+Let $\canon(P)$ be $P$ with all trailing zero bits removed.
+\end{definition}
+
+Then $P\sim Q$ if and only if $\canon(P)=\canon(Q)$. Internal zeros and
+leading zeros must be retained. This is a semantic quotient of addresses,
+not a heuristic deletion of bits from a compiled program.
+
+The pinned source certificate contains 2,240 paired checkpoints, all with
+offset zero. Normalizing both paths and preserving their paired successor
+links yields 1,426 entries: 1,425 decrement checkpoints and one halt
+checkpoint. Every decrement has two branch obligations, giving 2,850 branch
+segments plus one initial segment, or 2,851 segment checks. The halt entry
+has its own terminal check. The 814 removed entries account for
+\[
+ \frac{2240-1426}{2240}=0.363392857142\ldots.
+\]
+These are counts of certificate obligations, not measured reductions in
+wall-clock time or in the entire proof development.
+
+The certificate builder retains an explicit map from each old checkpoint
+to its new representative. It checks preservation of both successor links
+and both paths. Consequently, its numerical reduction can be audited
+without trusting a graph-minimization heuristic. More aggressive effect
+graph quotienting is possible, but is not needed to obtain almost all the
+observed sharing.
+
+An independent reconstruction confirms that the quotient fibers consist of
+707 singletons, 624 pairs, and 95 triples. Thus their number is 1,426 and
+their total population is $707+2\cdot624+3\cdot95=2240$. This second checker
+does not import the certificate producer's path or graph routines.
+
+\subsection{Why the quotient is sound}
+
+The repository already proves the critical semantic facts for its relation
+\texttt{RMEquiv.ipeq}: decoding and register execution respect equality of
+zero-extended streams. The new module proves the specific observation lemma
+needed by the existing certificate checker:
+\[
+ P\sim Q\ \Longrightarrow\
+ \operatorname{tsite}(\operatorname{ptree}(p),P)
+ =\operatorname{tsite}(\operatorname{ptree}(p),Q).
+\]
+This transfers both the observed instruction and the consumed prefix. It
+is stronger than merely comparing the next opcode.
+
+This distinction is essential: raw finite-path increment does not respect
+$\sim$. For example, $[1]\sim[1,0]$, while their finite-path increments are
+$[0]$ and $[1,1]$. The checker first obtains the equal \emph{consumed leaf
+paths} from the decoder, and performs successor arithmetic on those paths.
+It does not increment a trimmed stored pointer directly.
+
+Let $C$ be the finite table of paired representatives. Instead of making
+the certificate relation literal table membership, define
+\[
+ \mathcal R_C(P,Q)\quad\Longleftrightarrow\quad
+ \exists(A,B)\in C,\quad P\sim A\ \land\ Q\sim B.
+\]
+The relation is the saturation of the finite table under the semantic
+equivalence of paths. Each branch check compares its resulting paths with
+the stored successor representatives using a Boolean decision procedure
+for $\sim$, rather than ordinary list equality.
+
+\begin{theorem}[Normalized source-certificate soundness]
+Suppose the initial segment of each source reaches related checkpoints,
+and every entry of $C$ passes the normalized checker. Then, for every
+register file $R$, the two programs halt alike from their empty-path
+configurations with registers $R$.
+\end{theorem}
+
+\begin{proof}
+The Boolean path comparator is proved sound for $\sim$. A successful
+branch check therefore supplies exactly the existing segment-bisimulation
+branch contract, with final paths related by $\mathcal R_C$. A successful
+entry check supplies matching halts or matching decrement instructions
+and their two branch contracts. For an arbitrary pair in the saturated
+relation, choose its stored representatives. The observation lemma makes
+the representative entry contract also a contract for the original pair.
+Thus the finite certificate defines a bisimulation in the repository's
+existing sense. Its already proved halting-equivalence theorem gives the
+conclusion. No new induction over unbounded register values is required.
+\end{proof}
+
+The implementation is the theorem \texttt{check\_halts\_iff} in the module
+\texttt{RMNormalizedBisim}. Its axiom report is
+\texttt{[propext, Quot.sound]}; in particular, it does not assume consistency,
+formula well-formedness, or the truth of the numerical calculus.
+
+\subsection{Partition finite checks and keep shared trees shared}
+
+Two additional costs arose during verification. The pinned source data
+checks a 487-node well-formedness table in one kernel reduction, using
+linked-table lookups. It also prints reflected trees with repeated shared
+subtrees expanded at many occurrences. The unchanged data module failed
+to complete within the available memory during a fresh local attempt;
+isolating the components identified the monolithic well-formedness check
+as an immediate bottleneck. The failed attempts are environmental
+verification results, not evidence against the already published proof.
+
+The first repair partitions that same finite well-formedness proposition
+into fifteen 32-element checks and one seven-element check. A small
+arithmetic argument assembles them into the original
+\texttt{wfCheck222} statement. This changes the reduction workload, not the
+program, the proposition, or the trusted axioms. The partitioned check
+compiled successfully in the new development.
+
+The second repair is to name each distinct reflected subtree once, and
+prove its decoder correspondence from the correspondences of its children.
+A generic adequate-fuel statement avoids evaluating unnecessarily large
+fuel numerals at every occurrence. A small final theorem then identifies
+the shared reflected root with the exact program's tree. Sharing is safe
+because Lean checks those equalities; an untrusted generator merely chooses
+names and emits the finite DAG.
+
+\TreeStatus
+
+The compiled public facade retains the theorem \texttt{p215\_halts\_iff}
+in \texttt{KSource215}, with its original statement: for every register
+file $R$, $p_{215}$ and \texttt{pathDagPerm} halt alike from the empty
+path with registers $R$. Its axiom report contains exactly
+\texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}.
+This is a check of the complete source-correspondence replacement, separate
+from a fresh build of the entire machine-to-ZFC endpoint. The analogous
+normalized source checker in Rocq remains a porting task; the standalone
+Coq result in this packet is the positive-stuttering theorem below.
+
+This optimization is independent of path normalization. Their combination
+addresses both the number of semantic obligations and the representation
+of the data used by each obligation. A reduction in generated source bytes
+must be reported separately from a reduction in kernel time, peak memory,
+or trusted assumptions.
+
+\section{CM215: a small relative correctness proof}
+\label{sec:marker}
+
+\subsection{The exact six-row patch}
+
+CM215 is the repository's conditional-marker alternative
+\cite{marker}. It retains 215 working states. In the following table all
+labels are native, and a row is written as \emph{write, move, next control}.
+
+\begin{center}
+\begin{tabular}{@{}rrll@{}}
+\toprule
+Control & Read & K215 & CM215\\\midrule
+52 & 0 & $0,R,154$ & $0,L,176$\\
+156 & 1 & $1,R,176$ & $1,R,52$\\
+165 & 0 & $0,R,176$ & $0,R,52$\\
+176 & 0 & $0,R,168$ & $0,R,185$\\
+176 & 1 & $1,R,150$ & $1,R,129$\\
+193 & 0 & $0,R,176$ & $0,R,52$\\\bottomrule
+\end{tabular}
+\end{center}
+
+All other rows are unchanged. The two old decoder roles 52 and 176 agree
+on reading one, and differ on reading zero. Their origins can be recovered
+from the bit immediately to the left when the current bit is zero. CM215
+uses control 52 for the two old roles and reuses physical label 176 as the
+selector. Define
+\[
+ \phi(q)=\begin{cases}52,&q=176,\\q,&q\ne176.\end{cases}
+\]
+For a configuration $c=(q,h,T)$, let $\Phi(c)=(\phi(q),h,T)$.
+The map is not a bijective renaming; the interpretation of the reused
+physical label changes between the machines.
+
+\subsection{The three local invariants}
+
+For a K215 configuration $(q,h,T)$, use the invariant
+\begin{align*}
+ q=52&\ \Longrightarrow\ T(h-1)=1,\\
+ q=176\ \land\ T(h)=0&\ \Longrightarrow\ T(h-1)=0,\\
+ q=156&\ \Longrightarrow\ T(h+1)=1.
+\end{align*}
+It holds at initial control 0 for every tape and head. The third clause
+records the exceptional route through 156; retaining it is what makes the
+proof of preservation an ordinary one-step induction.
+
+\begin{lemma}[Local invariant preservation]
+Every K215 step preserves the three clauses above.
+\end{lemma}
+
+\begin{proof}
+The finite incoming-edge facts are checked against every row of the exact
+table. Each entry to 52 moves right after writing one, hence leaves one
+immediately to the left. Each entry to 156 moves left after writing one,
+hence leaves one immediately to the right. Each ordinary entry to 176
+moves right after writing zero, leaving the required left zero. The sole
+exception is the read-one transition out of 156. By the third invariant,
+the cell to which it moves is one. Thus the antecedent $T(h)=0$ of the
+second invariant is false on this exceptional entry. These facts cover all
+incoming rows, including those not observed on the blank run.
+\end{proof}
+
+The finite facts are kernel decisions over the literal table, and the tape
+argument is symbolic. There is no finite cutoff on tape length, register
+size, or elapsed run time.
+
+\subsection{The one-step or three-step simulation}
+
+\begin{lemma}[Exact local simulation]
+For every K215 configuration satisfying the invariant, one K215 step is
+simulated from its image under $\Phi$ by either one or three CM215 steps.
+At the resulting boundary, control is related by $\phi$, head positions
+agree, and the entire tape functions agree.
+\end{lemma}
+
+\begin{proof}
+Outside old controls 52 and 176, the row equality after applying $\phi$ is
+a finite check, including the three retargeted incoming rows. At either
+special control on reading one, the common transition gives a one-step
+simulation. At old control 52 on reading zero, CM215 moves left to its
+selector 176. The invariant supplies a one there. The selector moves right
+to provider 129, which realizes the old continuation to 154. The tape bits
+written on the detour equal the bits already present. At old control 176
+on reading zero, the left marker is zero, so the same selector chooses
+provider 185 and realizes the continuation to 168. Both detours take three
+steps and leave the head and complete tape equal to the corresponding old
+one-step result.
+\end{proof}
+
+If $z(t)$ is the number of old steps among the first $t$ using a read-zero
+row of 52 or 176, the constructed simulation schedule is exactly
+\[
+ \tau(t)=t+2z(t),\qquad t\le\tau(t)\le3t.
+\]
+The inequalities express the positivity needed to reflect halting. They
+are not a state-count improvement.
+
+\subsection{Why positivity proves both directions}
+
+Let $f:A\to A$ and $g:B\to B$ be totalized deterministic step functions,
+and let $H_A,H_B$ be terminal predicates. We totalize an actual halting
+configuration by a self-step; this convention does not add a working
+state or a legal stay-put transition to the released machine.
+
+\begin{theorem}[Positive-stuttering transfer]
+Suppose $I$ is invariant under $f$, $I(a_0)$ holds, $H_B$ persists under
+$g$, and $H_B(\Phi(a))\leftrightarrow H_A(a)$. Suppose also that for every
+$a$ satisfying $I$ there is a natural number $k\ge1$ with
+\[
+ g^k(\Phi(a))=\Phi(f(a)).
+\]
+Then
+\[
+ (\exists n\ H_A(f^n(a_0)))
+ \quad\Longleftrightarrow\quad
+ (\exists m\ H_B(g^m(\Phi(a_0)))).
+\]
+No uniform upper bound on the positive macro lengths is needed.
+\end{theorem}
+
+\begin{proof}
+Induction constructs, for every $n$, a time $t_n\ge n$ with
+$g^{t_n}(\Phi(a_0))=\Phi(f^n(a_0))$. A source halt therefore yields a
+target halt at the corresponding boundary. Conversely, suppose the target
+is terminal at time $m$. Choose the boundary $t_m\ge m$. Persistence makes
+the target terminal at that boundary as well, and terminal reflection
+makes $f^m(a_0)$ terminal. Thus intermediate target steps cannot conceal
+an early target halt. The lower bound $t_n\ge n$ is precisely where
+positive, rather than merely nonnegative, macro lengths are used.
+\end{proof}
+
+This theorem is short in both assistants. The Coq version additionally
+exposes the useful conclusion
+$H_B(g^n(\Phi(a_0)))\Rightarrow H_A(f^n(a_0))$ under the same assumptions.
+Its assumption reports are closed under the global context, and recursive
+\texttt{coqchk} is included in the verification record.
+
+\begin{theorem}[Checked CM215 relative endpoint]
+For every binary tape $T:\mathbb Z\to\{0,1\}$ and every head position
+$h\in\mathbb Z$,
+\[
+ \Halt(\K,(0,h,T))\quad\Longleftrightarrow\quad
+ \Halt(\CM,(0,h,T)).
+\]
+\end{theorem}
+
+\begin{proof}
+Apply positive-stuttering transfer to the three-clause invariant and the
+local simulation. Initial control 0 satisfies the invariant independently
+of $T$ and $h$. The state map preserves and reflects the designated halt.
+The target terminal is absorbing in the totalized semantics.
+\end{proof}
+
+The new Lean theorem is \texttt{CM215.halts\_iff}; its axiom report is
+\texttt{[propext, Quot.sound]}. The exact table generator checks the parent
+and alternative native byte hashes before emitting the common dense
+numbering. The 216th element of the semantic state type is the already
+existing halt; there are still 215 working states.
+
+\AdapterStatus
+
+At the mathematical level, composition with the repository's primary
+endpoint immediately gives
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\neg\Halt(\CM,\mathrm{blank})\leftrightarrow\Con(\mathrm{ZFC})\bigr).
+\]
+For a fully compiled named endpoint in the repository, use the explicit
+machine-semantics adapter described in the artifact status, and compose
+with \texttt{KEndpoint215.blank\_halts\_iff\_zfc\_refutation}. This last
+composition reuses the entire existing calibration proof.
+
+\section{Which 215-state alternative should be formalized next?}
+
+The relevant comparison is the proof boundary that changes, not just the
+length of the source program or the number of edited transition rows.
+The repository's alternatives index distinguishes several such boundaries
+\cite{alternatives}.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.28\textwidth}>{\raggedright\arraybackslash}p{0.39\textwidth}@{}}
+\toprule
+Alternative & Principal change & Consequence for proof effort\\\midrule
+\endhead
+Conditional-marker CM215 & Six local rows, unchanged source & Best immediate relative proof: three tape facts and bounded macros; no new source or startup argument.\\
+Rebalanced addresses & Shallower source/address layout & May reduce decoder depth, but needs a new exact source/site/runtime correspondence. Shallower data alone does not establish shorter proofs.\\
+Reencoded, additive-counter $D=1$ start & Addresses and initial seed $N=4,D=1$ & Requires a changed-seed lemma and exact physical allocation/startup correspondence; the enumeration cutoff remains 4.\\
+Zero-spare variants & Increment refill and blank seed & Reuse the arbitrary-spare runtime contract, while checking append-zero refill, changed startup, and protected-tail credit.\\
+Direct-transfer and MP-first transfer & Command operation and enumeration & Shorter command bodies may save implementation cost, but require the corresponding stack-credit, guard, and enumeration arguments.\\
+Rho6 parameter variants & Sampler reparameterization & Keep the same numerical axioms; require the repaired axiom-selection compiler/runtime correspondence.\\
+\bottomrule
+\end{longtable}
+
+This is a ranking for obtaining a small, auditable additional correctness
+proof now. It is not a claim that CM215 would have the simplest proof if
+every machine had to be developed from scratch. Nor is it a claim that
+other variants cannot eventually produce a smaller machine.
+
+For future alternatives, a practical interface is a certificate consisting
+of a configuration map, a small inductive invariant, terminal compatibility,
+and positive macro simulations. The invariant must describe configurations
+at simulation boundaries, not arbitrary controls inside a helper detour.
+That distinction prevents an overstrong and sometimes false all-control
+equivalence statement.
+
+\section{The attempt to reach 214 states}
+\label{sec:search}
+
+\input{search-results.tex}
+
+\subsection{Why the obvious selector deletion is not free}
+
+The conditional-marker construction merges two logical roles but spends
+the released physical label on a selector. Its state count is therefore
+unchanged. A genuine reduction would have to implement that selector using
+an existing compatible state or a provably terminating existing macro,
+while preserving all its other uses. Similar-looking rows do not suffice:
+the candidate's transient controls, tape writes, and return positions must
+be correct in every reachable boundary context.
+
+The already retained return-scanner deletion example is a useful warning
+about the scope of experiments. The published CM215 packet gives a concrete
+valid-frame failure of a tempting 214-state deletion at addresses ending
+in six zeros. That counterexample rules out the proposed runtime contract;
+it does not by itself prove that every possible blank-run calibration of
+that table is impossible \cite{marker}. Our searches preserve this
+distinction.
+
+\subsection{A better synthesis target}
+
+The proof results suggest a focused next search. Optimize the pair
+\[
+ (\text{working states},\ \text{new proof obligations})
+\]
+lexicographically or as a Pareto frontier. Let a synthesizer propose a
+state fold and a small local invariant together. A checker should accept
+only after verifying that the invariant is inductive for every relevant
+row, that the helper runs have positive length, and that their complete
+tape effects match. Counterexamples should refine the invariant or reject
+the proposed fold, rather than being discarded because they were not seen
+on a bounded blank run.
+
+There are two useful extensions beyond the current search family. First,
+allow two modified helper states and a phase bit encoded in an already
+present marker. Second, allow the simulation boundary to shift by one
+cell, with an explicit tape relation. Either may expose a fold that a
+same-head, same-tape-boundary search cannot express. Neither is claimed
+to have succeeded here. Both can reuse positive-stuttering transfer once
+their local contracts are proved.
+
+At the source level, quotienting equal effects and arranging shared
+continuations can also reduce physical cost, but a smaller source DAG
+does not automatically yield fewer binary states. Allocation, startup,
+and context-sensitive engine rows remain part of the count. Any future
+214 claim must provide the complete literal table, not only a smaller
+source expression.
+
+\section{Integration and reproducibility}
+
+\subsection{Suggested integration order}
+
+\begin{enumerate}
+\item Add the generic positive-stuttering lemmas as small independent
+modules. Their terminal-persistence and positive-duration assumptions
+should be visible in their public statements.
+\item Add the exact CM215 relative proof, table binding, and machine
+adapter. Keep the primary K215 endpoint as the calibration authority.
+Expose the alternative endpoint by transitivity.
+\item Add the normalized source checker alongside the old checker. Retain
+the exact old-to-new certificate map and the source pin as audit data.
+\item Replace the primary source-certificate facade only after the complete
+new certificate and exact program/tree equalities pass the kernel. Compare
+axiom reports and endpoint statements; do not infer success from a
+generator exit code.
+\item Benchmark time and peak memory in a serial, pinned build after
+integration. Obligation counts and source bytes are already exact, but
+performance comparisons require comparable resource settings.
+\end{enumerate}
+
+The delivered archive contains the report source and PDF, the new Lean and
+Coq modules, exact machine inputs, deterministic generators/checkers,
+certificate data, scoped state-search code and results, provenance, and
+verification logs. The README gives commands relative to the extracted
+archive and the repository root. Generated compiler objects and downloaded
+toolchains are not part of the deliverable.
+
+\subsection{Trusted and untrusted components}
+
+The Python generators and searchers are untrusted producers. The relevant
+formal theorems are accepted only when the assistant kernel checks their
+proof terms. Finite Boolean checks use ordinary kernel reflection; no
+\texttt{sorry}, \texttt{Admitted}, or custom consistency axiom is used in
+the new checked modules. Hashes bind copied machine bytes to a pinned
+source; they are not substitutes for the semantic proof.
+
+The local blanket rebuild attempt is not reported as a successful fresh
+K215 endpoint replay. It exposed missing package registration for a
+repository-local dependency and the memory-heavy source-data expansion.
+Those logs are kept separate from the successful new theorem checks. The
+existing published K215 result remains the cited baseline; the new
+relative theorem, generic normalized checker, and complete replacement
+source theorem have their own direct kernel checks.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item Can path normalization and shared tree reification become a common
+Lean/Rocq certificate format, so both kernels consume one source-specific
+data object with small independent checkers?
+\item Can the CM215 configuration relation be expressed directly in the
+existing zipper semantics, eliminating one representation adapter and
+making subsequent local patches almost entirely finite certificates?
+\item Can an existing runtime role implement the conditional selector
+under a stronger, still cheaply inductive boundary invariant, thereby
+turning the state-neutral marker fold into a genuine 214-state result?
+\item How much additional compression is obtained by quotienting source
+checkpoints by register-effect bisimulation after removing trailing-zero
+duplication? What is the extra soundness proof cost?
+\item Can proof-aware synthesis discover its own finite-state invariant
+and positive ranking function, rather than relying on a chosen window
+radius and macro bound?
+\item Which remaining part of the external K215 equivalence is the most
+economical bridge to an internal PA proof, and which of the new finite
+certificates can be reused verbatim there?
+\end{enumerate}
+
+The immediate mathematical result is a small checked route from an existing
+215-state endpoint to a distinct 215-state machine. The immediate
+proof-engineering result is an exact reduction in source-certificate
+redundancy with a checked semantic justification. A 214-state construction
+remains open after the searches reported here.
+
+\begin{thebibliography}{9}
+\bibitem{endpoint} ProveIt, \emph{KEndpoint215.lean}, pinned commit
+\texttt{b6c7087477}.\newline
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b6c7087477e51c017003bd729e712c8969733223/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean}{Exact Lean endpoint and its component interfaces}.
+\bibitem{formal} ProveIt, \emph{k225-formal/README.md}, same pin.\newline
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b6c7087477e51c017003bd729e712c8969733223/Computability/BusyBeaver/Research/ZFC/k225-formal/README.md}{Formal proof architecture and the 215-state construction}.
+\bibitem{verification} ProveIt, \emph{verification/k215/lean/README.md}, same pin.\newline
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b6c7087477e51c017003bd729e712c8969733223/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/lean/README.md}{Historical fresh verification, current closure, and reproduction boundary}.
+\bibitem{phase3} ProveIt, \emph{simplification/phase3/README.md}, same pin.\newline
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b6c7087477e51c017003bd729e712c8969733223/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase3/README.md}{Already adopted simplifications and their checked status}.
+\bibitem{recent} ProveIt, commits \texttt{1d264e552f} and \texttt{b6c7087477}.\newline
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/b6c7087477e51c017003bd729e712c8969733223}{Merged symbolic-execution and step-soundness refactors}.
+\bibitem{marker} ProveIt, \emph{candidate-k215/alternatives/conditional-marker}, same pin.\newline
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b6c7087477e51c017003bd729e712c8969733223/Computability/BusyBeaver/Research/ZFC/candidate-k215/alternatives/conditional-marker/README.md}{Published CM215 table, ordinary proof, attribution, and negative examples}.
+\bibitem{alternatives} ProveIt, \emph{candidate-k215/alternatives/README.md}, same pin.\newline
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b6c7087477e51c017003bd729e712c8969733223/Computability/BusyBeaver/Research/ZFC/candidate-k215/alternatives/README.md}{Index of materially distinct 215-state alternatives}.
+\end{thebibliography}
+\end{document}
