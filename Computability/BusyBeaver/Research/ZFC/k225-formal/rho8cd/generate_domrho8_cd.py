@@ -2,13 +2,21 @@
 """Render DomRho8 (Lean and Rocq) from a condensed-detachment derivation.
 
   python generate_domrho8_cd.py [--derivation derivation.txt] [--lean OUT.lean] [--rocq OUT.v]
+  python generate_domrho8_cd.py --derivation derivation_core.txt --core DominatedImplication.lean
 
 The derivation (found by the untrusted search in search/) lists formulas over
 implication `>`, the code `Z` = 0 (with Z > Z = Z) and variables a, b, ...  Line
 `i j k F [C]` says that F follows by modus ponens from major j and minor k, under
 side conditions C (`x<=y`).  Leaf -1 is truth `Z`; leaf -2 is the dominated row
-((a>b)>c)>((c>a)>(d>a)) [b<=c], i.e. `rho8 c d a b` with `b <= c`.  The last
-line must generalize that row with no side condition.
+((a>b)>c)>((c>a)>(d>a)) [b<=c], i.e. `rho8 c d a b` with `b <= c`.  Lines
+`#GOAL i F` name the lemma proving each public statement (by default the last line,
+which must then generalize that row with no side condition).
+
+--core renders a derivation without truth (no leaf -1 and no Z) as the
+representation-independent DominatedImplication module: an arbitrary binary
+connective with a reflexive `below` relation closed under insertion into either
+operand.  Its goals are the row, composition ((a>b)>((b>c)>(a>c))) and
+prefixing ((a>b)>((c>a)>(c>b))).
 
 Each step becomes one lemma.  The renderer recomputes the most general unifier,
 so the premises' instances are explicit and every `u <= a` is proved from
@@ -134,15 +142,18 @@ ROW = parse('(((a>b)>c)>((c>a)>(d>a)))')
 
 
 def read(path):
-    rows = {}
+    rows, goals = {}, []
     for line in path.read_text(encoding='utf-8').splitlines():
+        if line.startswith('#GOAL '):
+            _, i, f = line.split(' ')
+            goals.append((int(i), parse(f)))
         if not line.strip() or line.startswith(('#', 'PROOF')):
             continue
         i, j, k, f, cs = line.split(' ', 4)
         cs = cs.strip()[1:-1]
         cons = [tuple(parse(x) for x in c.split('<=')) for c in split(cs)] if cs else []
         rows[int(i)] = (int(j), int(k), parse(f), cons)
-    return rows
+    return rows, goals or [(max(rows), ROW)]
 
 
 def split(s):
@@ -157,7 +168,13 @@ def split(s):
     return parts + [cur]
 
 
-def steps(rows):
+def steps(rows, core=False):
+    out = []
+    names = _steps(rows, out, core)
+    return out, names
+
+
+def _steps(rows, out, core):
     """Yield (name, formula, side conditions, major, minor) with explicit instances.
 
     major/minor are (kind, name, arguments, side-condition instances) where kind is
@@ -180,7 +197,8 @@ def steps(rows):
         res = norm(subst(y, su))
         side = [tuple(norm(subst(x, su)) for x in c) for c in jc + mc]
         side = [c for c in side if not (c[0] == Z or subterm(*c))]
-        # a side-condition variable occurring nowhere else is chosen: lhs := Z, rhs := lhs
+        # a side-condition variable occurring nowhere else is chosen: lhs := Z (core: rhs), rhs := lhs;
+        # other variables lost by the unifier become Z (core: the lemma's first variable)
         free = {}
         changed = True
         while changed:
@@ -193,7 +211,7 @@ def steps(rows):
                         variables(d[1], other)
                 a, b = c
                 if isinstance(a, int) and a >= 0 and a not in other and a not in variables(b, []):
-                    free[a] = Z
+                    free[a] = b if core else Z
                 elif isinstance(b, int) and b >= 0 and b not in other and b not in variables(a, []):
                     free[b] = a
                 else:
@@ -212,7 +230,7 @@ def steps(rows):
                     return (fin(x[0]), fin(x[1]))
                 if x == Z:
                     return Z
-                return fin(free[x]) if x in free else ren.get(x, Z)
+                return fin(free[x]) if x in free else ren.get(x, variables(t, [])[0] if core else Z)
             return norm(fin(subst(v, su)))
 
         def premise(ix, shift, f, fc):
@@ -227,17 +245,32 @@ def steps(rows):
             hb = [tuple(norm(value(x)) for x in c) for c in fc]
             return (names[ix], names[ix], args, hb, has_zz(value(f)))
 
-        yield (names[i], t, cons, premise(j, 0, jt, jc), premise(m, off, *rows[m][2:]))
+        out.append((names[i], t, cons, premise(j, 0, jt, jc), premise(m, off, *rows[m][2:])))
     return names
 
 
 # ---------- rendering ----------
 
+class Var:
+    """A named variable of a public statement."""
+    def __init__(self, name):
+        self.name = name
+
+    def __eq__(self, other):
+        return isinstance(other, Var) and other.name == self.name
+
+    def __hash__(self):
+        return hash(self.name)
+
+
 class Syntax:
-    def __init__(self, rocq):
-        self.rocq = rocq
+    def __init__(self, mode):
+        self.rocq = mode == 'rocq'
+        self.core = mode == 'core'
 
     def term(self, t, top=True):
+        if isinstance(t, Var):
+            return t.name
         if isinstance(t, tuple):
             s = 'wim %s %s' % (self.term(t[0], False), self.term(t[1], False))
             return s if top else '(' + s + ')'
@@ -246,10 +279,10 @@ class Syntax:
     def le(self, u, a, hyps):
         if (u, a) in hyps:
             return 'hb%d' % hyps.index((u, a))
-        if u == Z:
+        if u == Z and not self.core:
             return '(Nat.le_0_l _)' if self.rocq else '(Nat.zero_le _)'
         if u == a:
-            return '(le_n _)' if self.rocq else '(Nat.le_refl _)'
+            return '(le_n _)' if self.rocq else '(L.refl _)' if self.core else '(Nat.le_refl _)'
         if isinstance(a, tuple) and subterm(u, a[0]):
             return '(le_l %s %s)' % (self.term(a[1], False), self.le(u, a[0], hyps))
         if isinstance(a, tuple) and subterm(u, a[1]):
@@ -259,6 +292,7 @@ class Syntax:
     def use(self, p, hyps):
         kind, name, args, hb, _ = p
         if kind == 'truth':
+            assert not self.core, 'the core has no truth'
             return '(dtruth h)' if self.rocq else 'h.truth'
         if kind == 'row':
             pa, q, r, s = (args + [Z] * 4)[:4]
@@ -275,16 +309,25 @@ class Syntax:
             variables(c[0], vs)
             variables(c[1], vs)
         binders = ' '.join('v%d' % v for v in sorted(vs))
-        hyps = ''.join(' (hb%d : %s %s %s)' % (k, self.term(a), '<=' if self.rocq else '≤', self.term(b))
+        hyps = ''.join(' (hb%d : %s %s %s)' % (k, self.term(a), '<=' if self.rocq else '≼' if self.core else '≤',
+                                                self.term(b))
                        for k, (a, b) in enumerate(cons))
         mp = '%s %s' % (self.use(major, cons), self.use(minor, cons))
         if self.rocq:
             assert not (major[4] or minor[4]), 'Rocq rendering expects Z-normal instances'
             return 'Lemma %s%s%s :\n  T (%s).\nProof. exact (dmp h _ _ %s). Qed.\n' % (
                 name, ' ' + binders if binders else '', hyps, self.term(t), mp)
+        assert not (self.core and (major[4] or minor[4]))
         body = ('by simpa only [wim00] using h.mp ' if major[4] or minor[4] else 'h.mp ') + mp
         return 'private theorem %s%s%s :\n    T (%s) :=\n  %s\n' % (
-            name, ' (%s : Nat)' % binders if binders else '', hyps, self.term(t), body)
+            name, ' (%s : %s)' % (binders, 'A' if self.core else 'Nat') if binders else '', hyps,
+            self.term(t), body)
+
+    def instance(self, lemma, goal, names):
+        """Arguments applying the lemma for formula `lemma` to the goal (variables -> names)."""
+        s = match(lemma, goal, {})
+        name = lambda x: rename(x, lambda v: Var(names[v]))
+        return ' '.join(self.term(name(s[v]), False) for v in sorted(variables(lemma, [])))
 
 
 LEAN_HEAD = '''import BusyBeaver.ZFC.Code254
@@ -330,7 +373,7 @@ include h
 '''
 
 LEAN_TAIL = '''/-- Every rho8 instance follows from the dominated ones. -/
-theorem rho8_all (a b c u : Nat) : T (Code254.rho8 a b c u) := {last} h c u a b
+theorem rho8_all (a b c u : Nat) : T (Code254.rho8 a b c u) := {row}
 
 end
 #print axioms rho8_all
@@ -368,22 +411,100 @@ Local Opaque wim.
 
 ROCQ_TAIL = '''(** Every rho8 instance follows from the dominated ones. *)
 Theorem rho8_all a b c u : T (rho8 a b c u).
-Proof. exact ({last} c u a b). Qed.
+Proof. exact ({row}). Qed.
 
 End Derivation.
 Print Assumptions rho8_all.
 '''
 
 
-def render(rows, rocq):
-    syn = Syntax(rocq)
-    body = [syn.lemma(*s) for s in steps(rows)]
-    last = 'd%d' % len(body)
-    final = rows[max(rows)][2]
-    match(final, ROW, {})       # the last lemma generalizes the unrestricted row ...
-    assert not rows[max(rows)][3]  # ... with no side condition
-    head, tail = (ROCQ_HEAD, ROCQ_TAIL) if rocq else (LEAN_HEAD, LEAN_TAIL)
-    return head.format(n=len(body)) + '\n'.join(body) + '\n' + tail.format(last=last)
+COMPOSITION = parse('((a>b)>((b>c)>(a>c)))')
+PREFIX = parse('((a>b)>((c>a)>(c>b)))')
+ROW_NAMES = ['c', 'u', 'a', 'b']       # rho8 a b c u = ((c > u) > a) > ((a > c) > (b > c))
+
+
+def render(rows, goals, mode):
+    syn = Syntax(mode)
+    lemmas, names = steps(rows, mode == 'core')
+    body = [syn.lemma(*s) for s in lemmas]
+    need = [(ROW, ROW_NAMES)] + ([(COMPOSITION, ['a', 'b', 'c']), (PREFIX, ['a', 'b', 'x'])] if mode == 'core' else [])
+    use = {}
+    for goal, vnames in need:
+        i = next(i for i, g in goals if g == goal)
+        assert not rows[i][3], 'a public statement has no side condition'
+        use[goal] = '%s h %s' % (names[i], syn.instance(rows[i][2], goal, vnames)) if mode != 'rocq' else \
+            '%s %s' % (names[i], syn.instance(rows[i][2], goal, vnames))
+    head, tail = {'lean': (LEAN_HEAD, LEAN_TAIL), 'rocq': (ROCQ_HEAD, ROCQ_TAIL), 'core': (CORE_HEAD, CORE_TAIL)}[mode]
+    return head.format(n=len(body)) + '\n'.join(body) + '\n' + tail.format(
+        row=use[ROW], composition=use.get(COMPOSITION), prefix=use.get(PREFIX))
+
+
+CORE_HEAD = '''import Init
+
+/-!
+A representation-independent dominated implication theorem.
+
+`rho8 L a b c u` is Lukasiewicz's single axiom ((c → u) → a) → ((a → c) → (b → c)) of the
+implicational calculus; `Restricted` grants it only when `u` is below `a`. The {n} lemmas
+below are one condensed-detachment derivation of the unrestricted row, composition and
+prefixing from modus ponens and the restricted rows alone, generated by
+`Research/ZFC/k225-formal/rho8cd/generate_domrho8_cd.py --core` from `rho8cd/derivation_core.txt`
+(found by the untrusted search in `rho8cd/search/`). Each side condition holds by reflexivity
+and insertion into an implication operand, or is a hypothesis of the lemma; no truth value,
+formula decoder, injectivity or transitivity is assumed.
+-/
+namespace SetTheory.BusyBeaver.ZFC.DominatedImplication
+
+universe v
+
+structure Language (A : Type v) where
+  imp : A → A → A
+  below : A → A → Prop
+  refl : ∀ a, below a a
+  grow_left : ∀ {{u x : A}} (y : A), below u x → below u (imp x y)
+  grow_right : ∀ {{u y : A}} (x : A), below u y → below u (imp x y)
+
+def rho8 {{A : Type v}} (L : Language A) (a b c u : A) : A :=
+  L.imp (L.imp (L.imp c u) a) (L.imp (L.imp a c) (L.imp b c))
+
+structure Restricted {{A : Type v}} (L : Language A) (T : A → Prop) : Prop where
+  mp : ∀ {{a b : A}}, T (L.imp a b) → T a → T b
+  rho8 : ∀ a b c u : A, L.below u a → T (DominatedImplication.rho8 L a b c u)
+
+section
+variable {{A : Type v}} {{L : Language A}} {{T : A → Prop}}
+local notation "wim" => L.imp
+local infix:50 " ≼ " => L.below
+
+private theorem le_l {{u x : A}} (y : A) (h : u ≼ x) : u ≼ wim x y :=
+  L.grow_left y h
+private theorem le_r {{u y : A}} (x : A) (h : u ≼ y) : u ≼ wim x y :=
+  L.grow_right x h
+
+variable (h : Restricted L T)
+include h
+
+'''
+
+CORE_TAIL = '''/-- Restricted rows and modus ponens alone derive every unrestricted row. -/
+theorem rho8_all (a b c u : A) : T (rho8 L a b c u) :=
+  {row}
+
+theorem composition (a b c : A) :
+    T (L.imp (L.imp a b) (L.imp (L.imp b c) (L.imp a c))) :=
+  {composition}
+
+/-- A proved implication lifts under any antecedent. -/
+theorem lift_right {{a b : A}} (hab : T (L.imp a b)) (x : A) :
+    T (L.imp (L.imp x a) (L.imp x b)) :=
+  h.mp ({prefix}) hab
+
+end
+#print axioms rho8_all
+#print axioms composition
+#print axioms lift_right
+end SetTheory.BusyBeaver.ZFC.DominatedImplication
+'''
 
 
 def main():
@@ -391,11 +512,12 @@ def main():
     ap.add_argument('--derivation', type=Path, default=HERE / 'derivation.txt')
     ap.add_argument('--lean', type=Path)
     ap.add_argument('--rocq', type=Path)
+    ap.add_argument('--core', type=Path)
     a = ap.parse_args()
-    rows = read(a.derivation)
-    for path, rocq in ((a.lean, False), (a.rocq, True)):
+    rows, goals = read(a.derivation)
+    for path, mode in ((a.lean, 'lean'), (a.rocq, 'rocq'), (a.core, 'core')):
         if path:
-            path.write_text(render(rows, rocq), encoding='utf-8', newline='\n')
+            path.write_text(render(rows, goals, mode), encoding='utf-8', newline='\n')
 
 
 if __name__ == '__main__':

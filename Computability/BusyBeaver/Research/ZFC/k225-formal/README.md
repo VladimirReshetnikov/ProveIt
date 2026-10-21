@@ -49,6 +49,10 @@ the numeric adapter and all public types preserved. Eight affected modules and
 both endpoint clients pass fresh checks; 189 providers retain exact phase-nine
 bindings in the 197-module union.
 
+The [later 58-step proposal](verification/k215/simplification/phase10/upstream-merge/README.md)
+removes the temporary seed wrapper and may save another 755 bytes and 35 lines.
+It is preserved as reviewed source; the checked phase-ten core and producer remain in place.
+
 The [221](../candidate-k221/README.md) also has two closed endpoints for its exact table:
 
 * **Rocq**: `K221F.CorrectDense221.tm221_halts_iff_ZFC_inconsistent`, which `coqchk`
