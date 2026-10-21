@@ -1,0 +1,9 @@
+The independent live evidence audit passed for all 237 freshly compiled Rocq modules and the recursive kernel check. Both sparse and dense endpoint files print two `Closed under the global context` reports: all four final theorems have no axiom dependencies. The exact accepted machine has 215 working states, 430 actions and 4,751 expanded source leaves.
+
+[review.json](review.json) binds current canonical sources, staged source snapshots, all direct dependency objects, compiler commands, logs, toolchain binaries and final checker inputs. [check_actual.py](check_actual.py) performs only read-only metadata and literal-data checks; it invokes no compiler. Its observed fresh result is preserved here, alongside [raw endpoint and kernel evidence](raw).
+
+The recursive `coqchk -silent -o K215F.CorrectDense215` run exited 0 without `-admit` or `-norec`. Its global imported context lists `inj_pair2`, `proof_irrelevance` and `eq_rect_eq`; these are unused utility axioms, distinct from the four closed endpoint reports. No unsafe typing, fixpoint or positivity flags are reported. The historical actual runner pinned compiler/checker binaries and versions; this review does not invent a full historical installed-stdlib input capture.
+
+The sparse final proof is two rewrites and the calibrated source theorem; the dense proof is one rewrite and the sparse theorem. Their negated equivalences follow by rewriting. This proves blank halting iff a finite StandardZFC refutation, and nonhalting iff its absence. It is not an internal PA derivation or an unconditional assertion of nonhalting. The interrupted transparent DomRho8 attempt remains in the full author archive and is excluded from the successful closure.
+
+Reproduce the metadata audit against a retained build with `python3 -B check_actual.py --build BUILD --repo REPO --output NEW_RESULT.json`; the output must be fresh.

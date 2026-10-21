@@ -1,0 +1,70 @@
+--- executed-build_serial.py
++++ portable-build.py
+@@ -5,12 +5,7 @@
+ """
+ from pathlib import Path
+ import argparse,fcntl,hashlib,json,os,re,shutil,signal,subprocess,time
+-ROOT=Path('/tmp/k215-rocq-complete')
+-REF=ROOT/'k230-rocq'; JEFF=ROOT/'jeff-busy-beaver'
+-REPO=Path('/home/codex/.codex/worktrees/ec20/Proofs')
+-EXT=REPO/'Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension'
+-WORK=ROOT/'work'; WORK.mkdir(exist_ok=True)
+-COQC=Path('/home/codex/.opam/proofs-rocq91/bin/coqc')
++EXT=Path(__file__).resolve().parents[3]/'rocq'/'rocq-extension'
+ def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+ def write(p,x): Path(p).write_text(json.dumps(x,indent=2)+'\n')
+ def uncomment(s):
+@@ -36,7 +31,19 @@
+         raise
+     return proc
+ def main():
+-    ap=argparse.ArgumentParser();ap.add_argument('--plan-only',action='store_true');ap.add_argument('--kernel',action='store_true');a=ap.parse_args()
++    global ROOT,REF,JEFF,WORK,COQC
++    ap=argparse.ArgumentParser(description=__doc__)
++    ap.add_argument('--reference',type=Path,required=True,help='Exact pinned k230-rocq checkout')
++    ap.add_argument('--jeff-reference',type=Path,required=True,help='Exact pinned busy-beaver checkout')
++    ap.add_argument('--output',type=Path,required=True,help='Private build and receipt directory')
++    ap.add_argument('--switch',default='proofs-rocq91',help='opam switch with Rocq9.1.0 and stdlib9.0.0')
++    ap.add_argument('--lock-file',type=Path,default=Path('/tmp/proveit-k215-proof-build.lock'))
++    ap.add_argument('--plan-only',action='store_true')
++    ap.add_argument('--kernel',action='store_true',help='Also recursively recheck the complete dense endpoint with coqchk')
++    a=ap.parse_args()
++    ROOT=a.output.resolve();ROOT.mkdir(parents=True,exist_ok=True)
++    REF=a.reference.resolve();JEFF=a.jeff_reference.resolve()
++    WORK=ROOT/'work';WORK.mkdir(exist_ok=True)
+     rm=json.loads((REF/'manifest.json').read_bytes()); em=json.loads((EXT/'manifest.json').read_bytes())
+     assert sha(REF/'manifest.json')==em['reference_manifest_sha256']
+     roots={n:WORK/n for n in rm['logical_roots']}; roots['K215F']=WORK/'K215F'
+@@ -85,10 +92,12 @@
+     write(ROOT/'plan.json',plan)
+     print('PLAN',plan['count'],'modules',plan['reference_count'],'reference',flush=True)
+     if a.plan_only:return
+-    env=json.loads(subprocess.check_output(['opam','exec','--switch=proofs-rocq91','--','python3','-c','import os,json; print(json.dumps(dict(os.environ)))'],text=True))
++    env=json.loads(subprocess.check_output(['opam','exec','--switch='+a.switch,'--','python3','-c','import os,json; print(json.dumps(dict(os.environ)))'],text=True))
++    compiler=shutil.which('coqc',path=env['PATH']);assert compiler,'coqc not found in selected switch'
++    COQC=Path(compiler)
+     version=subprocess.check_output([str(COQC),'--version'],env=env,text=True).strip()
+     assert 'version 9.1.0' in version,version
+-    stdlib=subprocess.check_output(['opam','list','--switch=proofs-rocq91','--installed','--short','--columns=version','--color=never','rocq-stdlib'],text=True).strip();assert stdlib=='9.0.0',stdlib
++    stdlib=subprocess.check_output(['opam','list','--switch='+a.switch,'--installed','--short','--columns=version','--color=never','rocq-stdlib'],text=True).strip();assert stdlib=='9.0.0',stdlib
+     write(ROOT/'toolchain.json',{'compiler':version,'stdlib':stdlib,'coqc_sha256':sha(COQC),'coqchk_sha256':sha(COQC.with_name('coqchk'))})
+     records=ROOT/'records';records.mkdir(exist_ok=True);attempts=ROOT/'attempts';attempts.mkdir(exist_ok=True)
+     for idx,name in enumerate(order):
+@@ -109,7 +118,7 @@
+         cmd=[str(COQC),*flags,*opts,str(dst)]
+         item={'module':name,'argv':cmd,'inputs':inputs,'source_sha256':sha(src),'source_snapshot':str(run/src.name),'started_utc':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'status':'WAITING_LOCK'}
+         write(run/'record.json',item);print('WAIT',idx+1,name,flush=True)
+-        with open('/tmp/proveit-k215-proof-build.lock','a') as lock:
++        with a.lock_file.open('a') as lock:
+             fcntl.flock(lock,fcntl.LOCK_EX); t=time.monotonic(); print('START',idx+1,name,flush=True)
+             with (run/'output.log').open('w') as log:
+                 proc=proof_process(cmd,env,WORK,log)
+@@ -127,7 +136,7 @@
+         cmd=[str(COQC.with_name('coqchk')),*flags,'-silent','-o','K215F.CorrectDense215']
+         inputs={str(Path(modules[n]['target']).with_suffix('.vo')):sha(Path(modules[n]['target']).with_suffix('.vo')) for n in order}
+         item={'argv':cmd,'inputs':inputs,'status':'WAITING_LOCK'};write(run/'record.json',item);print('WAIT coqchk',flush=True)
+-        with open('/tmp/proveit-k215-proof-build.lock','a') as lock:
++        with a.lock_file.open('a') as lock:
+             fcntl.flock(lock,fcntl.LOCK_EX);t=time.monotonic();print('START coqchk',flush=True)
+             with (run/'output.log').open('w') as log:proc=proof_process(cmd,env,WORK,log)
+         item.update(exit_code=proc.returncode,seconds=time.monotonic()-t,status='PASS' if proc.returncode==0 else 'FAIL',output_sha256=sha(run/'output.log'),post_inputs_unchanged=all(sha(p)==h for p,h in inputs.items()))

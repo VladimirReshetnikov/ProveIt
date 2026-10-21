@@ -11,7 +11,8 @@ fields itself (`L2AxiomsPerm.ax_eval`). Adapted from `L2Root222.lean`.
 
 namespace SetTheory.BusyBeaver.ZFC.L2Perm
 
-open RMDag DagPerm Code254
+open RMDag DagPerm
+open Code254 (P wim)
 open L2K (AS enc Clean upd_ac)
 
 attribute [local irreducible] Code254.P

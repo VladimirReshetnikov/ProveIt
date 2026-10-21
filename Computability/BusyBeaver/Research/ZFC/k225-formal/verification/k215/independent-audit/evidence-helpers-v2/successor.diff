@@ -1,0 +1,66 @@
+--- v1/review_actual.py
++++ v2/review_actual.py
+@@ -8,7 +8,14 @@
+  ap=argparse.ArgumentParser();ap.add_argument('--build',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);a=ap.parse_args();r=a.build.resolve()
+  plan=json.loads((r/'plan.json').read_text());tc=json.loads((r/'toolchain.json').read_text())
+  assert plan['target']=='K215F.CorrectDense215' and plan['count']==237 and plan['reference_count']==195
+- assert len(set(plan['order']))==237 and plan['order'][-1]==plan['target']
++ assert len(plan['order'])==len(set(plan['order']))==237 and plan['order'][-1]==plan['target']
++ assert set(plan['modules'])==set(plan['order'])
++ closure=set()
++ def visit(n):
++  if n in closure:return
++  closure.add(n)
++  for d in plan['modules'][n]['dependencies']:visit(d)
++ visit(plan['target']);assert closure==set(plan['order'])
+  assert 'version 9.1.0' in tc['compiler'] and tc['stdlib']=='9.0.0'
+  reports={};records={};objects={};seconds=0
+  for n in plan['order']:
+@@ -28,6 +35,9 @@
+    reports[n]={'closed_reports':2,'raw_log':str(log),'raw_log_sha256':sha(log)}
+   records[n]=sha(recpath);objects[str(obj)]=sha(obj);seconds+=rec['seconds']
+   compiler=Path(rec['argv'][0]);assert sha(compiler)==tc['coqc_sha256']
++  opts=['-w','-deprecated,-notation-overridden']
++  if n.startswith('Undecidability.'):opts+=['-set','Default Proof Using = Type']
++  assert rec['argv']==[str(compiler),*plan['flags'],*opts,m['target']],n
+  assert len(reports)==2
+  kernels=sorted((r/'kernel').glob('run*/record.json'),key=lambda p:int(p.parent.name[3:]));assert kernels
+  kp=kernels[-1];k=json.loads(kp.read_text());log=kp.parent/'output.log'
+--- v1/review_saved.py
++++ v2/review_saved.py
+@@ -18,13 +18,23 @@
+  def doc(n):return json.loads(files[n])
+  plan=doc('plan.json');tc=doc('toolchain.json');live=doc('actual-review.json');old=Path(index['historical_build_root'])
+  require(plan['count']==237 and plan['reference_count']==195 and plan['target']=='K215F.CorrectDense215','plan census')
+- require(len(set(plan['order']))==237 and live['status']=='PASS_CLOSED_KERNEL','live audit status')
++ require(len(plan['order'])==len(set(plan['order']))==237 and live['status']=='PASS_CLOSED_KERNEL','live audit status')
++ require(set(plan['modules'])==set(plan['order']),'module keys')
++ closure=set()
++ def visit(n):
++  if n in closure:return
++  closure.add(n)
++  for d in plan['modules'][n]['dependencies']:visit(d)
++ visit(plan['target']);require(closure==set(plan['order']),'target closure')
+  require(sha(files['plan.json'])==live['plan_sha256'] and sha(files['toolchain.json'])==live['toolchain_record_sha256'],'live audit binding')
+  require(json.loads((root/'actual-review.json').read_text())==live,'published live review')
+  require('version 9.1.0' in tc['compiler'] and tc['stdlib']=='9.0.0','toolchain')
+  records={n:doc('records/'+n+'.json') for n in plan['order']};objects={};closed={}
+  for n in plan['order']:
+   r=records[n];m=plan['modules'][n];require(r['module']==n and r['status']=='PASS' and r['exit_code']==0 and r['post_inputs_unchanged'] is True,'module status: '+n)
++  opts=['-w','-deprecated,-notation-overridden']
++  if n.startswith('Undecidability.'):opts+=['-set','Default Proof Using = Type']
++  require(r['argv']==[r['argv'][0],*plan['flags'],*opts,m['target']],'compiler argv: '+n)
+   snap=Path(r['source_snapshot']).relative_to(old).as_posix();log=PurePosixPath(snap).parent/'output.log'
+   require(sha(files[snap])==r['source_sha256'] and sha(files[str(log)])==r['output_sha256'],'snapshot/log: '+n)
+   expected={m['source']:r['source_sha256']}
+--- v1/publish_evidence.py
++++ v2/publish_evidence.py
+@@ -5,7 +5,7 @@
+ 
+ def sha(b): return hashlib.sha256(b).hexdigest()
+ def main():
+- ap=argparse.ArgumentParser();ap.add_argument('--build',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);a=ap.parse_args();r=a.build.resolve();out=a.output.resolve();out.mkdir(parents=True,exist_ok=True)
++ ap=argparse.ArgumentParser();ap.add_argument('--build',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);a=ap.parse_args();r=a.build.resolve();out=a.output.resolve();out.mkdir(parents=True,exist_ok=True);assert not any(out.iterdir()),'Use a fresh empty publication directory'
+  review=json.loads((r/'actual-review.json').read_text());assert review['status']=='PASS_CLOSED_KERNEL'
+  names=['plan.json','toolchain.json','actual-review.json','build_serial.py','review_actual.py','wait_build.py','wait_build_v2.py','build-run1.stdout','build-run2.stdout','build-run3.stdout','toolchain-switch.log','toolchain-install.log','toolchain-core-install.log','toolchain-stdlib-install.log','toolchain-stdlib-install-v2.log','setup-review.json','coqdep.txt','coqdep.stderr','coqdep-review.json','regeneration-first.log','regeneration-first-review.json','regeneration-opacity.log','regeneration-opacity-review.json','portable-plan-review.json','portable-driver.diff','portable-v3-from-v1.diff','check_portable_controls.py','portable-controls.json','portable-sigterm-control.log','legacy229-pin-observation.json','metadata-finalization.json','literal-check215.log','regenerated-opacity/regeneration215.json']
+  paths=[r/n for n in names]

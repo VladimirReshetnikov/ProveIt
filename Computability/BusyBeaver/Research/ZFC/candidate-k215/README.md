@@ -6,22 +6,29 @@
 ZFC proves: not Halt(K215, blank) ↔ Con(ZFC).
 ```
 
-This is an ordinary proof formalizable in ZFC. It does not assert unconditional nonhalting, a minimum-state bound, or a newly compiled exact 215 Lean/Rocq or internal PA endpoint.
+The exact machine now also has compiled Lean and Rocq correctness proofs. These external
+theorems establish halting iff ZFC has a finite refutation and nonhalting iff its
+syntactic consistency. They do not assert unconditional nonhalting, a minimum-state bound,
+or an internal PA endpoint.
 
-## Formal proofs (pending check)
+## Checked formal proofs
 
-**Status: written, not yet kernel-checked.** The sources below have not been compiled; they are to
-be built on a machine with more memory. Until both builds pass, these are unchecked proof
-scripts, not theorems.
+**Both proof lanes pass** (2026-10-21). Lean freshly compiled all 204 project dependencies
+and two explicit endpoint clients; their axiom reports use only `propext`,
+`Classical.choice`, and `Quot.sound`. Rocq compiled all 237 selected sources, printed
+four closed endpoint assumption reports, and passed recursive `coqchk`.
+The [verification page](../k225-formal/verification/k215/README.md) links the exact
+statements, raw reports, retained build history, and reproduction routes.
 
 - **Lean** (`Computability/BusyBeaver/Lean`): `KEndpoint215.blank_halts_iff_zfc_refutation :
   BlankHalts machine215 ↔ BProv ZFCax_s [] Form.fBot`, in
-  [`KEndpoint215`](../../../Lean/BusyBeaver/ZFC/KEndpoint215.lean); build with
-  `lake build BusyBeaver.ZFC.KEndpoint215`.
+  [`KEndpoint215`](../../../Lean/BusyBeaver/ZFC/KEndpoint215.lean). Use the
+  [serial Lean driver](../k225-formal/verification/k215/lean/README.md) to rebuild its
+  complete project closure and explicit endpoint clients in a fresh workspace.
 - **Rocq**: `K215F.CorrectDense215.tm215_halts_iff_ZFC_inconsistent`, the variant `215` of
-  [`rocq-extension`](../k225-formal/rocq/rocq-extension/README.md); build and `coqchk` with
-  `python3 build.py --states 215 --reference … --jeff-reference …` (its `--check-only` literal-data
-  check passes).
+  [`rocq-extension`](../k225-formal/rocq/rocq-extension/README.md). Use the
+  [serial Rocq driver](../k225-formal/verification/k215/rocq/README.md), including
+  `--kernel`, to compile the exact source closure and recursively run `coqchk`.
 
 The layers are described in [k225-formal](../k225-formal/README.md#the-215).
 

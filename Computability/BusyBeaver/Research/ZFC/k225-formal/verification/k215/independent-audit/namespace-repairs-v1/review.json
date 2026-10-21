@@ -1,0 +1,32 @@
+{
+  "status": "INDEPENDENT_SOURCE_PEER_CLEAN",
+  "scope": "Two selective namespace openings only; exact byte comparison and full relevant declarations read. No proof compiler invocation by reviewer. Actual successes reviewed separately.",
+  "checks": [
+    {
+      "module": "L2RootPerm",
+      "original_sha256": "d382b472da8f2f2deedc02da86b4c426253c04a64ab605ab1016aec67433f9b5",
+      "repaired_sha256": "8c6080966089b5b91039c8f8541f276f1f96a45452acb3e8ba6f5e855a774fab",
+      "canonical_sha256": "8c6080966089b5b91039c8f8541f276f1f96a45452acb3e8ba6f5e855a774fab",
+      "exact_only_replacement": {
+        "old": "open RMDag DagPerm Code254\n",
+        "new": "open RMDag DagPerm\nopen Code254 (P wim)\n"
+      },
+      "all_other_bytes_identical": true,
+      "failed_log_sha256": "7421be3b3e870615f1cb2dc90dacbf004167685de350d1d194125d7f12873ad3"
+    },
+    {
+      "module": "SeedPerm",
+      "original_sha256": "5355d04eea259cacfc9675593fac2e5c6a17e8229bdc98474c79498c874312ab",
+      "repaired_sha256": "4c383f6059baa1f42fd5b5f86f7fc7a5360b667ea305e40b90dd36097369233d",
+      "canonical_sha256": "4c383f6059baa1f42fd5b5f86f7fc7a5360b667ea305e40b90dd36097369233d",
+      "exact_only_replacement": {
+        "old": "open RMDag DagPerm Code254\n",
+        "new": "open RMDag DagPerm\nopen Code254 (F)\n"
+      },
+      "all_other_bytes_identical": true,
+      "failed_log_sha256": "d7f918b65117554589f768408dda110608692a157bbcc773a682b0d4cfafd2a6"
+    }
+  ],
+  "finding": "Removing broad Code254 opening leaves L2K.enc unambiguous, retaining only required P/wim or F. Seed4, command semantics, all theorem statements and proof bodies are unchanged. Failed attempts204/206 remain excluded.",
+  "generator_scope": "Both files are handwritten; no generator adaptation is part of these repairs."
+}

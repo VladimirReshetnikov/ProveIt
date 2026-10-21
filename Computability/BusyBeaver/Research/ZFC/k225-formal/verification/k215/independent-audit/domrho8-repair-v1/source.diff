@@ -1,0 +1,35 @@
+--- DomRho8-original.lean
++++ DomRho8-repaired.lean
+@@ -5423,18 +5423,25 @@
+ 
+ theorem wim00 : wim 0 0 = 0 := by simp [wim, P, Cantor.toNat, Cantor.tri]
+ 
++attribute [local irreducible] wim
++
++theorem wim_congr {a b c d : Nat} (h : a = b) (k : c = d) : wim a c = wim b d := by
++  cases h
++  cases k
++  rfl
++
+ theorem cast_T {T : Nat → Prop} {x y : Nat} (e : x = y) (h : T x) : T y := e ▸ h
+ 
+ /-! ## Conversions where a step uses `wim 0 0 = 0` -/
+ 
+-theorem c5187_41 (v : Nat → Nat) : t5187 v = t41 v := (congr (congrArg wim (rfl : t41 v = t41 v)) (rfl : t41 v = t41 v)).trans wim00
+-theorem c5193_66 (v : Nat → Nat) : t5193 v = t66 v := congr (congrArg wim (c5187_41 v)) (rfl : t65 v = t65 v)
+-theorem c5194_5188 (v : Nat → Nat) : t5194 v = t5188 v := congr (congrArg wim (c5193_66 v)) (rfl : t5187 v = t5187 v)
++theorem c5187_41 (v : Nat → Nat) : t5187 v = t41 v := (wim_congr (rfl : t41 v = t41 v) (rfl : t41 v = t41 v)).trans wim00
++theorem c5193_66 (v : Nat → Nat) : t5193 v = t66 v := wim_congr (c5187_41 v) (rfl : t65 v = t65 v)
++theorem c5194_5188 (v : Nat → Nat) : t5194 v = t5188 v := wim_congr (c5193_66 v) (rfl : t5187 v = t5187 v)
+ theorem c41_5187 (v : Nat → Nat) : t41 v = t5187 v := (c5187_41 v).symm
+-theorem c5195_5189 (v : Nat → Nat) : t5195 v = t5189 v := congr (congrArg wim (c41_5187 v)) (rfl : t5187 v = t5187 v)
+-theorem c5196_5190 (v : Nat → Nat) : t5196 v = t5190 v := congr (congrArg wim (c5194_5188 v)) (c5195_5189 v)
+-theorem c5189_41 (v : Nat → Nat) : t5189 v = t41 v := (congr (congrArg wim (c5187_41 v)) (c5187_41 v)).trans wim00
+-theorem c5197_42 (v : Nat → Nat) : t5197 v = t42 v := congr (congrArg wim (rfl : t0 v = t0 v)) (c5189_41 v)
++theorem c5195_5189 (v : Nat → Nat) : t5195 v = t5189 v := wim_congr (c41_5187 v) (rfl : t5187 v = t5187 v)
++theorem c5196_5190 (v : Nat → Nat) : t5196 v = t5190 v := wim_congr (c5194_5188 v) (c5195_5189 v)
++theorem c5189_41 (v : Nat → Nat) : t5189 v = t41 v := (wim_congr (c5187_41 v) (c5187_41 v)).trans wim00
++theorem c5197_42 (v : Nat → Nat) : t5197 v = t42 v := wim_congr (rfl : t0 v = t0 v) (c5189_41 v)
+ 
+ /-! ## Proof nodes -/
+ 

@@ -1,0 +1,57 @@
+{
+  "status": "SOURCE_REVIEW_FINDINGS",
+  "execution": "No supplied driver, proof compiler, plan generator or kernel checker invoked by reviewer. Own stdlib AST/JSON/hash inspection only.",
+  "driver_sha256": "b2a4e7bfd6ace03e0900d4b2748be6b890892ff002ee6cde4ba63717934890cf",
+  "actual_driver_sha256": "dfdcde10c8c9499d5334f78437e388fada7bc1862c3782fe23bcdc37371d357f",
+  "inputs": {
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/rocq/build.py": "b2a4e7bfd6ace03e0900d4b2748be6b890892ff002ee6cde4ba63717934890cf",
+    "/tmp/k215-rocq-complete/build_serial.py": "dfdcde10c8c9499d5334f78437e388fada7bc1862c3782fe23bcdc37371d357f",
+    "/tmp/k215-rocq-complete/portable-driver.diff": "10080bd19199bc51339d284d4b047a33a24fa94e52ed74acda97a7997919b616",
+    "/tmp/k215-rocq-complete/portable-plan-review.json": "a7b0916c17bb34f9c5605062d8dbbcd261f0524f1a24f0ecd9786416bdf0eba2",
+    "/tmp/k215-rocq-complete/portable-plan/plan.json": "10ba5cfacfa9edcc8154290d4736a2d99157470c0dd6a8d3745d99b2041c3a19",
+    "/tmp/k215-rocq-complete/plan.json": "61259bf2676846adee8140ab926a3306314d8b705243da209b65eae138580337"
+  },
+  "ordered_modules": 237,
+  "reference_modules": 195,
+  "k215_modules": 42,
+  "plan_order_sources_dependencies_equal": true,
+  "unchanged_helper_asts": {
+    "sha": true,
+    "write": true,
+    "uncomment": true,
+    "proof_process": true
+  },
+  "findings": [
+    {
+      "id": "R1",
+      "lines": [
+        109,
+        132
+      ],
+      "summary": "Endpoint assumption gate is bypassed on resume; an exit-0 record is saved before a failed assumption assertion."
+    },
+    {
+      "id": "R2",
+      "lines": [
+        95,
+        112
+      ],
+      "summary": "Toolchain record is overwritten and compiler/stdlib identity is absent from reuse keys."
+    },
+    {
+      "id": "R3",
+      "lines": [
+        21,
+        32
+      ],
+      "summary": "Default SIGTERM does not raise a Python exception, bypassing process-group cleanup."
+    }
+  ],
+  "current_proof_failure_claim": false,
+  "required_final_actual_checks": [
+    "Exact selected source/object closure",
+    "Both sparse and dense endpoint assumption reports",
+    "Recursive same-switch coqchk without admit/norec"
+  ],
+  "reviewer": "drop_contract"
+}

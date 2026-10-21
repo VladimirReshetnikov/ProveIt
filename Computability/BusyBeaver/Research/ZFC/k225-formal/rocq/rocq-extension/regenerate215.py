@@ -56,7 +56,12 @@ def ns(text):
 
 def calculus_files(output):
     for name in R217.CALCULUS + ["DomRho8", "ThmDom"]:
-        (output / f"{name}.v").write_text(ns((V217 / f"{name}.v").read_text(encoding="utf-8")),
+        body = ns((V217 / f"{name}.v").read_text(encoding="utf-8"))
+        if name == "DomRho8":
+            # Keep generated symbolic formulas opaque to arithmetic conversion.
+            # The bound and zero-alias lemmas above this point are already proved.
+            body = body.replace("Definition cast_T", "Local Opaque wim.\n\nDefinition cast_T", 1)
+        (output / f"{name}.v").write_text(body,
                                           encoding="utf-8", newline="\n")
     for name in ["EnumPerm", "L1_SoundPerm", "L1_CompPerm", "SeedPerm"]:
         src = PERM_DIR / f"{name}.v"

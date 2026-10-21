@@ -1,0 +1,18 @@
+{
+  "status": "SOURCE_REVIEW_ONE_PROVENANCE_FINDING",
+  "driver_sha256": "81841a2e13df84a66f7558eb996ed09a9a8ef1cf95c041ea4813a0ad9f4dac15",
+  "reviewer": "drop_contract",
+  "scope": "Full portable driver and both typed callers read; author noncompiler control result read, not independently replayed. No compiler or supplied driver invocation.",
+  "coherent": [
+    "Private empty-or-owned output and exclusive output lock",
+    "Exact recursive project-source selection and direct dependency gates",
+    "Shipped toolchain fingerprint pinned before reuse",
+    "Source/object/companion resume checks",
+    "Timeout and BaseException group cleanup plus SIGTERM handler",
+    "Two and eight actual axiom report gates rerun even on audit reuse",
+    "Final exact completed module set and direct edges"
+  ],
+  "finding": "Resume does not validate recorded compiler log SHA before parsing saved audit log. Require log existence and matching log_sha256 before reusing a record.",
+  "current_kernel_failure_claim": false,
+  "author_controls_sha256": "c67b9141fa7691f550f28bef84be4f1ba988d376c6fd63b5102002aa4baeb341"
+}
