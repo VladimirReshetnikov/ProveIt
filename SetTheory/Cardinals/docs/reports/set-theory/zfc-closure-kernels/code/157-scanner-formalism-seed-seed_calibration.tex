@@ -1,0 +1,208 @@
+% Include-only proof fragment for the unchanged abstract K218 source.
+% This does NOT certify the rejected shortened-scanner binary table.
+% Uses amsmath, amssymb and amsthm; theorem/lemma environments may be supplied
+% by the main article. All code constructors are numerical, not syntax tests.
+\section{Why the changed startup seed is sufficient}
+\label{sec:seed217}
+
+This section proves a theorem about the \emph{unchanged abstract source
+program} and its native proof calculus. A proposed shortened-scanner
+217-state binary table reaches a tape representing the following clean
+root seed during its blank run:
+\[
+ (N,T,W,A,D,H,X,Y,L)=(4,3,0,0,3,0,0,0,0).
+\]
+Here $N$ is the next candidate, $T$ the current formula, $W$ the theorem
+stack, $A$ the selector, $D$ the additive parameter, $H$ the cached formula,
+$X,Y$ the scratch registers, and $L$ the current proof-list pointer.
+The zero selector and scratches meet the inherited clean-root interface.
+However, that binary table subsequently fails the source simulation
+obligation. Consequently the theorem below does \emph{not} certify that
+217-state table; it isolates a startup issue which would otherwise have
+remained a separate proof obligation.
+The nonzero current formula is harmless for a precise reason: native code
+$3$ is a theorem. No assumption of consistency is used to prove this.
+
+Write $\mathcal C$ for the exact C222 numerical calculus inherited by K218.
+It uses
+\[
+ P(a,b)=\frac{(a+b)(a+b+1)}2+b,\qquad
+ I(a,b)=4P(a,b),\qquad R(a,b)=4P(a,b)+1,
+\]
+\[
+ Q(i,a)=4P(i,a)+2,\qquad E(a,b)=4P(a,b)+3.
+\]
+We write $a\to b=I(a,b)$, $Q_i a=Q(i,a)$,
+$\neg a=I(a,1)$ and $\exists_i a=\neg Q_i\neg a$.
+All parameters range over natural codes, including any values which would
+be considered junk by a separate syntax. Truth is code zero, falsum is
+code one, and the alias $I(0,0)=0$ remains literal.
+
+\subsection{A concrete proof that code three is a theorem}
+
+\begin{lemma}[Native equality reflexivity]
+For every natural $x$, $\mathcal C\vdash E(x,x)$. In particular,
+$\mathcal C\vdash 3$.
+\end{lemma}
+\begin{proof}
+The inherited unrestricted $\rho_8$ supplies the derived K and S schemata,
+and consequently the propositional deduction transformation. For closed
+theorems $a\to b$, the retained $\rho_2$ row and theorem-only generalization
+give $Q_i a\to Q_i b$. Applying this to the propositional contraposition
+of $a\to b$, then contraposing once more, gives the closed derived rule
+\[
+ \frac{\mathcal C\vdash a\to b}
+      {\mathcal C\vdash \exists_i a\to\exists_i b}.
+\]
+Every use of generalization in this argument is on a closed theorem.
+
+Put $r=R(x,x)$, $e=E(x,x)$ and $p=E(r,x)$. The merged equality row at
+$(a,b,c)=(x,x,r)$ is exactly
+\[
+ p\to(p\to Q_r e).
+\]
+By propositional contraction, $\mathcal C\vdash p\to Q_r e$.
+Existential monotonicity gives
+$\mathcal C\vdash \exists_r p\to\exists_r Q_r e$.
+The retained $\rho_1(r,x)$ is $\exists_r p$, so modus ponens yields
+$\exists_r Q_r e$. Finally $\rho_6(r,e)$ is
+$\exists_r Q_r e\to e$, proving $e$.
+For $x=0$, the arithmetic definition gives $E(0,0)=3$.
+\end{proof}
+
+This is the same ordinary argument formalized upstream as
+\texttt{G222.refl222}. The accompanying file
+\texttt{seed\_reflexivity\_proof.json} specializes it to zero and retains
+only the 79 closed nodes which are ancestors of the conclusion. Its
+independent forward checker accepts only literal K/S instances, the
+retained $\rho_1,\rho_2,\rho_6,G$ instances, modus ponens, and
+generalization of a previously closed theorem. K and S are explicitly
+identified as inherited derived schemata; this certificate does not add
+them as new machine axioms. There is no hypothesis rule in the retained
+certificate and no arbitrary object-language substitution inference.
+
+\subsection{Soundness from any theorem-valued clean seed}
+
+For a natural stack code $w$, define
+\[
+ \operatorname{Good}(w)\quad\Longleftrightarrow\quad
+ \forall k\in\mathbb N,\;
+ \mathcal C\vdash
+ \pi_1\!\left(\operatorname{unP}
+       \bigl((\pi_2\circ\operatorname{unP})^k(w)\bigr)\right).
+\]
+Thus every entry in the infinite zero-padded stack stream is a theorem.
+The inverse identities for Cantor pairing prove that pushing a theorem
+preserves Good, and that popping a Good stack produces a theorem and a
+Good tail. The stack $0$ is Good because unpairing zero gives $(0,0)$
+and zero is a native theorem. These facts include the alias $P(0,0)=0$.
+
+At a command boundary, the invariant is
+\[
+ \mathcal C\vdash T,\qquad
+ \mathcal C\vdash H,\qquad
+ \operatorname{Good}(W).
+\]
+It places no restriction on $N,D,L$. Its preservation is immediate from
+the literal command semantics, as follows. A successful MP uses the
+theorem cache $H=I(T,D+x)$ and the theorem $T$ to obtain $D+x$;
+it pushes zero and clears the cache. A failed MP replaces the current
+formula and cache by zero. DROP pushes the theorem $T$ and replaces
+it by the theorem $H$. NIP first tests whether the theorem $H$ equals
+one; if so, it halts with a native refutation. Otherwise it pops a
+theorem from the Good stack into the cache. AX pushes the old theorem
+$T$, a universal generalization of the theorem cache, and the eight
+literal native axiom rows. Its new current formula is the gated bundle
+or zero, and its cache is cleared. Thus every nonhalting command
+preserves the invariant, and every halting command proves
+$\mathcal C\vdash1$.
+
+For the displayed new startup seed, $T=3$ is covered by reflexivity,
+$H=0$ is truth, and $W=0$ is Good. Therefore a halt from that seed
+implies a native refutation. The same proof is already present as the
+generic \texttt{Inv\_step}, \texttt{Inv\_run}, and \texttt{halt\_step}
+lemmas in the inherited \texttt{L1\_Sound222.v}; only its base case is
+changed here.
+
+\subsection{Completeness above any finite candidate cutoff}
+
+The changed next-candidate value $N=4$ requires a cofinality argument;
+merely quoting a theorem for an all-zero seed would not suffice. The
+inherited proof compiler supplies, for every native derivation of a code
+$X$, a finite command block $B_X$ with the following strong contract:
+from \emph{every} retained pair $(t,w)$, execution starting at
+$(T,W,D,H)=(t,w,0,0)$ either halts early or ends exactly at
+$(X,w,0,0)$. The ordinary leaf, GEN, MP and discard proofs establishing
+this contract do not depend on the initial $t$ or $w$ being theorems.
+
+Suppose $\mathcal C\vdash1$, and fix its block $B_1$. Let
+\[
+ S=[\operatorname{DROP}(0),\operatorname{NIP}(0),
+                         \operatorname{NIP}(0)].
+\]
+For every natural $u$, use the first command
+\[
+ \operatorname{START}_u=\operatorname{AX}(0,1,1,u),
+\]
+where the three actual AX fields after the selector are the common
+additive parameter, cached-parameter increment, and unrestricted fourth
+argument. In full wire order the fields are $[3,1,1,u]$.
+Every AX command resets $D=H=0$, regardless of their incoming values.
+Consequently
+\[
+ [\operatorname{START}_u]\mathbin{+\!+}B_1\mathbin{+\!+}S
+\]
+halts from every retained tuple $(T,W,D,H)$. If $B_1$ halts, there is
+nothing further to show. If it returns normally, its current formula
+is one and its cache is zero; the three-command suffix first pushes
+one, then loads it into the cache, then halts.
+
+Let $r$ be the fixed encoded command-list tail for $B_1\mathbin{+\!+}S$.
+The corresponding initial candidate number is
+\[
+ n_u=P\bigl(3,P(1,P(1,P(u,r)))\bigr).
+\]
+Cantor pairing dominates either argument, hence $n_u\geq u$. These are
+therefore successful candidate numbers above any finite initial cutoff.
+The fact that different $u$ values change one axiom emitted by the
+initial AX does not affect the block contract; its arbitrary incoming
+top and retained stack are already quantified universally.
+
+The literal scheduler first loads candidate $n$ directly, and decodes
+every subsequent command from the predecessor of a positive proof-list
+pointer. Each unpair remainder is at most its input. Thus whenever
+$L>0$ and the command does not halt, the next pointer is at most $L-1$.
+Induction on $L$ drains each current proof list in finitely many
+commands, without changing the next-candidate register. When $L=0$,
+the scheduler loads $N$ and increments $N$. It follows by induction
+that every candidate number at or above any finite initial $N$ is
+eventually started, unless a halt occurs first. Choose $u\geq N$;
+candidate $n_u$ supplies a halt if no earlier one has occurred.
+
+\begin{theorem}[Safe clean seeds]
+At a clean source root with $A=X=Y=0$, assume
+$\mathcal C\vdash T$, $\mathcal C\vdash H$, and $\operatorname{Good}(W)$.
+Allow arbitrary natural $N,D,L$. The source halts from this seed if and
+only if $\mathcal C\vdash1$.
+\end{theorem}
+\begin{proof}
+Soundness is the invariant above. Completeness is the strong compiler,
+the resetting $\operatorname{START}_u$ family, and the cofinal scheduler
+argument. The proof uses finite syntax, natural arithmetic and induction,
+so it is formalizable in ZFC. It does not assume $\operatorname{Con}(\mathrm{ZFC})$.
+\end{proof}
+
+Applying this theorem to $(4,3,0,0,3,0,0,0,0)$ proves the required source
+calibration. The unchanged K218 source-to-calculus correspondence and
+inherited native-calculus/ZFC refutation translations then give
+\[
+ \operatorname{Halts}(\text{source},(4,3,0,0,3,0,0,0,0))
+ \quad\Longleftrightarrow\quad
+ \text{there is a finite ZFC refutation}.
+\]
+To transfer this conclusion to a physical Turing machine, both a correct
+whole-tape startup and an unbounded source-to-binary simulation are still
+required. The shortened-scanner table has a verified finite startup
+trace but fails the latter obligation: concrete primitive executions
+return to incorrect source addresses. No 217-state machine theorem
+follows from this seed result.

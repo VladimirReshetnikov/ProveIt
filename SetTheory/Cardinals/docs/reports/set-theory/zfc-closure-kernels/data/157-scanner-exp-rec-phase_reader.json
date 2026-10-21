@@ -1,0 +1,53 @@
+{
+  "status": "NO_SURVIVOR_IN_BOUNDED_LOCAL_FAMILY",
+  "baseline_sha256": "2dfaba6da09b78291e534777cd30c5f0d68bd84faa670e868e779c396aeb308f",
+  "synthesizer_sha256": "c17b75e188e16444d75c8c8716ae1a0a4bea6f20258485eb3dbede1b40d53147",
+  "fixed_changes": [
+    [
+      34,
+      0,
+      0,
+      -1,
+      75
+    ],
+    [
+      41,
+      0,
+      1,
+      1,
+      24
+    ],
+    [
+      24,
+      0,
+      0,
+      1,
+      35
+    ]
+  ],
+  "removed_state": 50,
+  "variable_rows": "41/1 and one additional row visited by a failing trial, excluding the three fixed rows and41/1",
+  "allowed_actions": "Both write symbols, both head directions, and every retained working-state target; no new state.",
+  "specifications": 6396292,
+  "first_failed_mode_survivors": 1246,
+  "all_context_survivors": 0,
+  "step_bound_per_local_case": 120,
+  "initial_state": 41,
+  "initial_head": 0,
+  "known_window": {
+    "cells_minus3_minus2": "independently arbitrary binary values",
+    "cell_minus1": 0,
+    "cell_0": 1,
+    "cell_1": "0 for worker mode;1 for cleanup mode",
+    "cells_2_through6": 1
+  },
+  "local_cases": 8,
+  "worker_goal": "Enter25 at cell2 or later through the known one-run, with firsttwo tag bits11 and every other cell preserved.",
+  "cleanup_goal": "Enter0 at cell2 or later through the known one-run, with firsttwo tag bits00 and every other cell preserved.",
+  "exit_rule": "A run that reads outside the known window is rejected; the target may be reached at cell7 before any read there.",
+  "scope": "Finite template exclusion only. Does not exclude two extra helper rows, other phase encodings, a common prepass, or larger rewrites.",
+  "reproduce": [
+    "g++ -std=c++20 -O3 experiments/discovery/phase_reader.cpp -o /tmp/phase_reader",
+    "/tmp/phase_reader inputs/primary218.native.tm"
+  ]
+}
