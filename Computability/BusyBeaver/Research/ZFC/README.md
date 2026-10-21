@@ -1,8 +1,11 @@
 # Smaller machines for Con(ZFC)
 
-The current goal is a binary, single-tape machine with **214 working states
-or fewer** whose blank-tape nonhalting is provably in **ZFC** equivalent to
-Con(ZFC). The original target was fewer than 254 states and equivalence
+The current goal is to **complete and compile both Lean and Rocq correctness
+proofs for at least one 215-state construction**. The reference is the literal
+[K215 table](candidate-k215/README.md); its draft endpoints must pass their
+respective kernels before they are described as checked. The earlier target
+of214 or fewer states remains a research direction, rather than the present
+completion criterion. The original target was fewer than254 states and equivalence
 provable in PA. An earlier search phase also permitted consistency of a
 well-understood stronger theory, as clarified on 17 October 2026. Each candidate
 must state the assumptions used for its two unprovability directions;
@@ -14,7 +17,7 @@ external Lean equivalence with Con(ZFC) is now proved for the exact
 [`BinaryConsistencyRotation240`](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/BinaryConsistencyRotation240.lean) checks
 `𝗣𝗔 ⊢ Con(𝗭𝗙𝗖) ↔ ¬Halts(M₂₄₀, blank)` (already in IΣ₂, and likewise for ZF), with
 the standard axioms only.
-All new formal work uses Lean.
+The current formal task uses both Lean and Rocq.
 An intended set-theoretic meaning is optional: any effectively presented
 theory or proof calculus is eligible once its consistency calibration is proved.
 The complete compiled search, including its data and initialization, is the
@@ -54,8 +57,8 @@ in both native and dense formats and the entire final tape.
 
 The complete ordinary proof gives
 `ZFC ⊢ (¬Halt(K215, blank) ↔ Con(ZFC))` and reaches the requested 215-state
-target. The active search now asks for **214 or fewer**. The exact-K215 Lean
-and internal PA endpoints remain open; the
+target at the ordinary mathematical level. The active task is to compile
+the draft exact-K215 Lean and Rocq endpoints. The internal PA endpoint remains open; the
 formal 240-state result above retains its separate status. See the
 [proof and reproducible evidence](candidate-k215/proof.md).
 
