@@ -12,6 +12,13 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Current pending arrivals after batch 208
+
+`K215_Automatic_Certificates_2026-10-21.zip` (`5314ca0e6b`) and
+`K215_Proof_and_Quotient_Detachment_2026-10-21.zip` (`b07002a86b`)
+are under review. They arrived after batch 208 and remain pending.
+The queue-clear statements below describe their earlier checkpoints.
+
 ## Queue status after batch 208 placement
 
 The three archives from `aa66d0a33f` are placed as Sources 176–178 in

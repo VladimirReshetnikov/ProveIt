@@ -93,7 +93,7 @@ def main():
     npath = args.nested_inventory or repo / HOST / 'data/intake208-nested-inventory.json'
     mb, nb = mpath.read_bytes(), npath.read_bytes()
     plan, ni = json.loads(mb), json.loads(nb)
-    require(plan['schema'] == 1 and plan['batch'] == 208 and plan['arrival_commit'] == ARRIVAL,
+    require(plan['schema'] == 2 and plan['batch'] == 208 and plan['arrival_commit'] == ARRIVAL,
             'Wrong intake/provenance')
     require([s['source'] for s in plan['sources']] == list(EXPECTED), 'Wrong source order')
     rows = plan['members']
@@ -147,7 +147,7 @@ def main():
     finally:
         g.close()
     require(dict(routes) == plan['route_counts'], 'Recovery-route census mismatch')
-    require(len(placed) == plan['new_file_count'] == 245, 'Placed-file census mismatch')
+    require(len(placed) == plan['new_file_count'] == 39, 'Placed-file census mismatch')
     require(ni['batch'] == 208 and actual_nested == ni['archives'] and
             len(actual_nested) == plan['nested_archive_count'] == 2, 'Nested inventory mismatch')
     require(mpath.read_bytes() == mb and npath.read_bytes() == nb, 'Metadata changed during control')
