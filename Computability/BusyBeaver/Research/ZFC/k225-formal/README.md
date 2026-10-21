@@ -3,9 +3,9 @@
 **Current state (2026-10-21).** The exact [215-state machine](../candidate-k215/README.md)
 has compiled correctness proofs in both Lean and Rocq. The original fresh Lean
 build checked 204 project modules; the current
-[proof simplification checkpoint](verification/k215/simplification/phase8/README.md)
-checks the 188-module closure and two endpoint clients with only the three
-standard foundational axioms, with exact bindings for reused predecessor objects. Its zero-offset proposal is reconciled as
+[proof simplification checkpoint](verification/k215/simplification/phase9/README.md)
+checks the 192-module endpoint closure, five decoder-prefix modules and both closed
+endpoint clients with only the three standard axioms and exact predecessor bindings. Its zero-offset proposal is reconciled as
 [Source 167](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-204.md). Rocq's
 237 sources compile with closed endpoint assumption reports and recursive `coqchk`.
 See the [215 verification record](verification/k215/README.md) for statements, evidence,
@@ -37,6 +37,12 @@ core and shares bundle semantics between both seed directions. Together these
 proof sources shrink by 9,465 bytes. The exact 188-module endpoint and fresh
 five-client legacy audit pass; selected adoption does not complete the incoming
 report reconciliation.
+
+Phase nine shares the positive Home return proof and its checked table gate, while
+retaining all 6,176 branch outcomes. All nine site batches are freshly checked in
+16.41 minutes (historical phase-six total: 27.49 minutes). The exact source-to-zipper
+decoder prefix is checked separately; primitive factoring remains open. Both closed
+endpoint clients and the original executor API controls pass.
 
 The [221](../candidate-k221/README.md) also has two closed endpoints for its exact table:
 

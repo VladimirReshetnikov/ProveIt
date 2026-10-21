@@ -1,0 +1,45 @@
+--- baseline/DominatedImplication.lean
++++ candidate/DominatedImplication.lean
+@@ -61,20 +61,14 @@
+ private theorem b10 (v0 v1 : A) : T (wim v0 (wim (wim (wim v1 v1) v1) (wim v1 v1))) :=
+   (h.mp (b4 h (wim v1 v1) v1 v1 v0) (b1 h v1 v1 v1 v1))
+ 
+-private theorem b12 (v0 : A) : T (wim (wim (wim v0 v0) v0) (wim v0 v0)) :=
+-  (h.mp (b10 h τ v0) h.truth)
+-
+ private theorem b13 (v0 v1 : A) : T (wim (wim (wim v0 v0) (wim v0 v0)) (wim v1 (wim v0 v0))) :=
+-  (h.mp (b1 h (wim v0 v0) v0 v0 v1) (b12 h v0))
++  (h.mp (b1 h (wim v0 v0) v0 v0 v1) (h.mp (b10 h τ v0) h.truth))
+ 
+ private theorem b14 (v0 v1 : A) : T (wim v0 (wim (wim v1 v1) (wim v1 v1))) :=
+   (h.mp (b13 h (wim v1 v1) v0) (b13 h v1 (wim v1 v1)))
+ 
+-private theorem b15 (v0 : A) : T (wim (wim v0 v0) (wim v0 v0)) :=
+-  (h.mp (b14 h τ v0) h.truth)
+-
+ private theorem b16 (v0 v1 : A) : T (wim v0 (wim v1 v1)) :=
+-  (h.mp (b13 h v1 v0) (b15 h v1))
++  (h.mp (b13 h v1 v0) (h.mp (b14 h τ v1) h.truth))
+ 
+ private theorem b17 (v0 : A) : T (wim v0 v0) :=
+   (h.mp (b16 h τ v0) h.truth)
+@@ -123,9 +117,6 @@
+ 
+ private theorem b25 (v0 v1 : A) : T (wim (wim (wim v0 v1) v0) v0) :=
+   (h.mp (b24 h τ v0 v1) h.truth)
+-
+-private theorem b60 (v0 v1 : A) : T (wim v0 (wim v1 v0)) :=
+-  (h.mp (b22 h v0 (wim v1 v0) v0) (b18 h v0 (wim v1 v0) v1))
+ 
+ private theorem b26 (v0 v1 v2 : A) : T (wim (wim v0 (wim v0 v1)) (wim v2 (wim v0 v1))) :=
+   (h.mp (b0 h (wim v0 v1) v0 v2) (b25 h v0 v1))
+@@ -331,7 +322,8 @@
+     T (wim (wim v0 (wim v1 v2)) (wim v1 (wim v0 v2))) :=
+   (h.mp (cd104 h (wim v1 v2) v2 v0 (wim v1 (wim v0 v2))) (cd69 h v1 v2 (wim v0 v2)))
+ 
+-private theorem basisK (a b : A) : T (wim a (wim b a)) := b60 h a b
++private theorem basisK (a b : A) : T (wim a (wim b a)) :=
++  h.mp (b22 h a (wim b a) a) (b18 h a (wim b a) b)
+ private theorem basisP (a b : A) : T (wim (wim (wim a b) a) a) := b25 h a b
+ 
+ private theorem composition_seed (a b c : A) : T (wim (wim a b) (wim (wim b c) (wim a c))) := cd91 h a b c

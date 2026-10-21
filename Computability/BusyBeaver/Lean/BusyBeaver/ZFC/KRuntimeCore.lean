@@ -162,13 +162,17 @@ def sstep (M : TMN) (br : Branch) : SConf → Option (SConf × Bool)
           | _ => none
   | (_, false, _, .box _ :: _ :: _) => none
 
-def exec (M : TMN) (br : Branch) (tgt : SConf → Bool) : Nat → SConf → Bool → Option SConf
+def execWith (next : SConf → Option (SConf × Bool)) (tgt : SConf → Bool) : Nat → SConf → Bool → Option SConf
   | 0, _, _ => none
   | f + 1, s, moved =>
       if moved && tgt s then some s
-      else match sstep M br s with
+      else match next s with
         | none => none
-        | some (s', m) => exec M br tgt f s' (moved || m)
+        | some (s', m) => execWith next tgt f s' (moved || m)
+
+/-- The original symbolic executor, with exactly its original step function. -/
+def exec (M : TMN) (br : Branch) (tgt : SConf → Bool) :
+    Nat → SConf → Bool → Option SConf := execWith (sstep M br) tgt
 
 /-! ## Basic facts -/
 
@@ -418,13 +422,16 @@ theorem sstep_sound {br : Branch} {s s' : SConf} {m : Bool} (n : Nat) {vs : List
                       exact zL hm
                     · simp at h
 
-theorem exec_sound {br : Branch} {tgt : SConf → Bool} (n : Nat) {vs : List Nat} (hv : Valid br vs) :
-    ∀ (f : Nat) (s : SConf) (m0 : Bool) (s' : SConf), exec M br tgt f s m0 = some s' →
+omit B in
+theorem execWith_sound {next : SConf → Option (SConf × Bool)} {tgt : SConf → Bool}
+    (n : Nat) (vs : List Nat)
+    (hnext : ∀ s t m, next s = some (t, m) → StepOk M n vs s t m) :
+    ∀ (f : Nat) (s : SConf) (m0 : Bool) (s' : SConf), execWith next tgt f s m0 = some s' →
       tgt s' = true ∧ Reach M (conc n vs s) (conc n vs s') ∧
         (m0 = false → Reach1 M (conc n vs s) (conc n vs s'))
-  | 0, _, _, _, h => by simp [exec] at h
+  | 0, _, _, _, h => by simp [execWith] at h
   | f + 1, s, m0, s', h => by
-      simp only [exec] at h
+      simp only [execWith] at h
       split at h
       · rename_i ht
         simp only [Option.some.injEq] at h
@@ -434,13 +441,20 @@ theorem exec_sound {br : Branch} {tgt : SConf → Bool} (n : Nat) {vs : List Nat
       · split at h
         · simp at h
         · rename_i s1 m hs
-          obtain ⟨hg, e1, p1⟩ := exec_sound n hv f s1 (m0 || m) s' h
-          obtain ⟨e0, p0⟩ := sstep_sound B n hs hv
+          obtain ⟨hg, e1, p1⟩ := execWith_sound n vs hnext f s1 (m0 || m) s' h
+          obtain ⟨e0, p0⟩ := hnext s s1 m hs
           refine ⟨hg, e0.trans e1, fun hm0 => ?_⟩
           subst hm0
           cases m with
           | true => exact (p0 rfl).trans_reach e1
           | false => exact e0.trans_reach1 (p1 rfl)
+
+/-- The old theorem is an instance of the single generic executor induction. -/
+theorem exec_sound {br : Branch} {tgt : SConf → Bool} (n : Nat) {vs : List Nat} (hv : Valid br vs) :
+    ∀ (f : Nat) (s : SConf) (m0 : Bool) (s' : SConf), exec M br tgt f s m0 = some s' →
+      tgt s' = true ∧ Reach M (conc n vs s) (conc n vs s') ∧
+        (m0 = false → Reach1 M (conc n vs s) (conc n vs s')) :=
+  execWith_sound n vs (fun _ _ _ h => sstep_sound B n h hv)
 
 end Sound
 

@@ -1,4 +1,4 @@
-import BusyBeaver.ZFC.KRuntimeCore
+import BusyBeaver.ZFC.KHomeReady
 import BusyBeaver.ZFC.RegisterPathClean
 import BusyBeaver.ZFC.SiteCoverage
 
@@ -42,11 +42,11 @@ def tgtConf (P : List Bool) (ovf : Bool) (x : BoxSt) : SConf :=
 def FUEL : Nat := 4000
 
 def runTo (M : TMN) (br : Branch) (Q : List Bool) (e : SConf) : Bool :=
-  (exec M br (fun s => sMatches s e) FUEL (start Q) false).isSome
+  (KHomeReady.exec M br (fun s => sMatches s e) FUEL (start Q) false).isSome
 
 def isHalt (s : SConf) : Bool := s.1 == 230
 
-def runHalt (M : TMN) (Q : List Bool) : Bool := (exec M none isHalt FUEL (start Q) false).isSome
+def runHalt (M : TMN) (Q : List Bool) : Bool := (KHomeReady.exec M none isHalt FUEL (start Q) false).isSome
 
 def allOnes (P : List Bool) : Bool := P.all id
 
@@ -110,20 +110,20 @@ include B
 theorem runTo_sound {br : Branch} {Q : List Bool} {e : SConf} (h : runTo M br Q e = true)
     (n : Nat) {vs : List Nat} (hv : Valid br vs) : Reach1 M (conc n vs (start Q)) (conc n vs e) := by
   unfold runTo at h
-  cases hx : exec M br (fun s => sMatches s e) FUEL (start Q) false with
+  cases hx : KHomeReady.exec M br (fun s => sMatches s e) FUEL (start Q) false with
   | none => rw [hx] at h; simp at h
   | some s =>
-      obtain ⟨hm, _, h1⟩ := exec_sound B n hv FUEL (start Q) false s hx
+      obtain ⟨hm, _, h1⟩ := KHomeReady.exec_sound B n hv FUEL (start Q) false s hx
       rw [← sMatches_conc n vs hm]
       exact h1 rfl
 
 theorem runHalt_sound (hNH : ∀ b, M 230 b = none) {Q : List Bool} (h : runHalt M Q = true)
     (n : Nat) {vs : List Nat} (hv : 10 ≤ vs.length) : Halts M (conc n vs (start Q)) := by
   unfold runHalt at h
-  cases hx : exec M none isHalt FUEL (start Q) false with
+  cases hx : KHomeReady.exec M none isHalt FUEL (start Q) false with
   | none => rw [hx] at h; simp at h
   | some s =>
-      obtain ⟨hh, h0, _⟩ := exec_sound B n (br := none) ⟨hv, trivial⟩ FUEL (start Q) false s hx
+      obtain ⟨hh, h0, _⟩ := KHomeReady.exec_sound B n (br := none) ⟨hv, trivial⟩ FUEL (start Q) false s hx
       refine ⟨_, h0, ?_⟩
       obtain ⟨q, onl, l, r⟩ := s
       simp only [isHalt, beq_iff_eq] at hh
@@ -293,6 +293,7 @@ theorem sim_step {c c' : Configuration} {T : Conf} (hc : Rel p c T) (hs : step p
         rw [conc_target] at this
         simpa [growth, boxList] using this
 
+omit B in
 theorem sim_stop {c : Configuration} (hs : step p c = none) : AtHalt p c := by
   obtain ⟨e, d, hw, hck⟩ := hcov c.path
   cases e with
@@ -335,7 +336,7 @@ theorem halts_iff (hNH : ∀ b, M 230 b = none) {c : Configuration} {T : Conf} (
     induction t using Nat.strongRecOn generalizing c T with
     | ind t ih =>
         cases hs : step p c with
-        | none => exact ⟨0, c, rfl, sim_stop B hcov hs⟩
+        | none => exact ⟨0, c, rfl, sim_stop hcov hs⟩
         | some c1 =>
             obtain ⟨T1, h1, j, hj⟩ := sim_step B hcov hc hs
             have hle : j + 1 ≤ t := by
