@@ -12,6 +12,14 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Current Lean proof checkpoint
+
+The [seventh simplification checkpoint](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/README.md)
+checks the exact K215 endpoint over 187 project modules (two fresh, 185 reused),
+both unchanged endpoint clients and a fresh five-client legacy audit. It adopts
+the independently reviewed pointwise-implication component; the report intake
+and reconciliation statuses below remain separate.
+
 ## Current queue after upstream batches 209–210
 
 `K215_Guarded_Proof_Core_and_Refinements_2026-10-21.zip` and

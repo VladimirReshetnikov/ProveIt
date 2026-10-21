@@ -2,19 +2,16 @@ import BusyBeaver.ZFC.Code254
 
 /-!
 Dominated rho8 derives unrestricted rho8, for arbitrary natural codes.
+Pointwise lifting follows the proposal in commit b07002a86b.
 
-The proof has three layers. A 58-lemma bootstrap from Source 149 gives identity,
-weakening, Peirce and the implication-transport lemma. The original CD230 lemma
-hierarchy then derives composition and distribution. We retain 59 of its 107
-schemas; 8 carry one explicit numerical dominance hypothesis. Keeping these
-hypotheses avoids expanding each schema at every substitution instance.
-Finally a small deduction theorem and Peirce's law give the unrestricted row.
+This revision retains the current upstream bootstrap and guarded implication
+schemas only through cd99. The final argument uses a pointwise implication
+lifting lemma twice. It needs neither the auxiliary syntactic Proof relation
+nor its deduction theorem nor the distribution derivation cd100 through cd106.
 
-The bootstrap shares and prunes Source 149's original nodes0..60; the CD230 templates are its
-pinned adaptation of the upstream condensed-detachment derivation. Duplicate template conclusions reuse bootstrap lemmas. Every emitted
-step is an ordinary Lean proof. The source producer is untrusted. The only code
-normalization is the proved identity `wim 0 0 = 0`; numerical injectivity,
-formula decoding and ZFC consistency are not assumptions.
+The exact numerical constructors, the dominated hypothesis, and the public
+rho8_all statement are unchanged. All inherited derivation steps below retain
+their attribution to ProveIt, Source 149, and the CD230 templates.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.DomRho8
@@ -222,9 +219,7 @@ end
 section
 variable {T : Nat → Prop} (h : DomImp T)
 include h
-private theorem basisI (a : Nat) : T (wim a a) := b17 h a
 private theorem basisK (a b : Nat) : T (wim a (wim b a)) := b60 h a b
-private theorem basisP (a b : Nat) : T (wim (wim (wim a b) a) a) := b25 h a b
 private theorem basisJ (a b c : Nat) : T (wim (wim a b) (wim (wim (wim a c) a) b)) := b57 h a b c
 
 private theorem cd0 (v0 v1 v2 v3 : Nat) (hb0 : v1 ≤ v2) :
@@ -435,83 +430,25 @@ private theorem cd99 (v0 v1 v2 : Nat)  :
     T (wim (wim v0 v1) (wim v0 (wim v2 v1))) := by
   simpa only [wim00] using (h.mp (cd98 h (wim v0 v1) v1 v2 (wim v0 (wim v2 v1))) (cd69 h v0 v1 (wim v2 v1)))
 
-private theorem cd100 (v0 v1 v2 v3 : Nat)  :
-    T (wim (wim v0 v1) (wim v2 (wim v0 (wim v3 v1)))) := by
-  simpa only [wim00] using (h.mp (cd99 h (wim v0 v1) (wim v0 (wim v3 v1)) v2) (cd99 h v0 v1 v3))
-
-private theorem cd101 (v0 v1 v2 v3 : Nat)  :
-    T (wim (wim v0 (wim v1 v2)) (wim v0 (wim v1 (wim v3 v2)))) := by
-  simpa only [wim00] using (h.mp (cd88 h (wim v1 v2) v0 (wim v1 (wim v3 v2))) (cd100 h v1 v2 v0 v3))
-
-private theorem cd102 (v0 v1 v2 v3 : Nat)  :
-    T (wim v0 (wim (wim v0 (wim v1 v2)) (wim v1 (wim v3 v2)))) := by
-  simpa only [wim00] using (h.mp (cd69 h v0 (wim v1 v2) (wim (wim v0 (wim v1 v2)) (wim v1 (wim v3 v2)))) (cd101 h (wim v0 (wim v1 v2)) v1 v2 v3))
-
-private theorem cd103 (v0 v1 v2 : Nat)  :
-    T (wim (wim v0 (wim v1 v2)) (wim v1 (wim v0 v2))) := by
-  simpa only [wim00] using (h.mp (cd35 h v0 (wim v0 (wim v1 v2)) v1 v2) (cd102 h v0 v1 v2 v0))
-
-private theorem cd104 (v0 v1 v2 v3 : Nat)  :
-    T (wim (wim (wim (wim v0 v1) (wim v2 v1)) v3) (wim (wim v2 v0) v3)) := by
-  simpa only [wim00] using (h.mp (cd91 h (wim v2 v0) (wim (wim v0 v1) (wim v2 v1)) v3) (cd91 h v2 v0 v1))
-
-private theorem cd105 (v0 v1 v2 : Nat)  :
-    T (wim (wim v0 v1) (wim (wim v0 (wim v1 v2)) (wim v0 v2))) := by
-  simpa only [wim00] using (h.mp (cd104 h v1 v2 v0 (wim (wim v0 (wim v1 v2)) (wim v0 v2))) (cd88 h (wim v1 v2) v0 v2))
-
-private theorem cd106 (v0 v1 v2 : Nat)  :
-    T (wim (wim v0 (wim v1 v2)) (wim (wim v0 v1) (wim v0 v2))) := by
-  simpa only [wim00] using (h.mp (cd103 h (wim v0 v1) (wim v0 (wim v1 v2)) (wim v0 v2)) (cd105 h v0 v1 v2))
-
 theorem composition (a b c : Nat) : T (wim (wim a b) (wim (wim b c) (wim a c))) := cd91 h a b c
-theorem distribution (a b c : Nat) : T (wim (wim a (wim b c)) (wim (wim a b) (wim a c))) := cd106 h a b c
-/-! Deduction is used only after deriving K and S from the dominated rows. -/
-private inductive Proof (T : Nat → Prop) : List Nat → Nat → Prop
-  | ax {G a} : T a → Proof T G a
-  | hyp {G a} : a ∈ G → Proof T G a
-  | mp {G a b} : Proof T G (wim a b) → Proof T G a → Proof T G b
 
-private theorem proof_sound {G : List Nat} {a : Nat} (d : Proof T G a)
-    (hG : ∀ x, x ∈ G → T x) : T a := by
-  induction d with
-  | ax ht => exact ht
-  | hyp hm => exact hG _ hm
-  | mp _ _ ih1 ih2 => exact h.mp ih1 ih2
+/-- Lift a proved implication pointwise under one arbitrary antecedent.
+This uses cd99 and cd88; the orientation of composition alone would not suffice. -/
+theorem lift_right {a b : Nat} (hab : T (wim a b)) (x : Nat) :
+    T (wim (wim x a) (wim x b)) :=
+  h.mp (cd88 h a x b) (h.mp (cd99 h a b x) hab)
 
-private theorem discharge_aux {a : Nat} {G' : List Nat} {b : Nat}
-    (d : Proof T G' b) : ∀ G : List Nat, G' = a :: G → Proof T G (wim a b) := by
-  induction d with
-  | ax hb => intro G _; exact .mp (.ax (basisK h _ a)) (.ax hb)
-  | hyp hm =>
-      intro G hG
-      subst hG
-      cases List.mem_cons.mp hm with
-      | inl he => subst he; exact .ax (basisI h _)
-      | inr hin => exact .mp (.ax (basisK h _ a)) (.hyp hin)
-  | mp _ _ ih1 ih2 =>
-      intro G hG
-      exact .mp (.mp (.ax (distribution h _ _ _)) (ih1 G hG)) (ih2 G hG)
-
-private theorem discharge {G : List Nat} {a b : Nat}
-    (d : Proof T (a :: G) b) : Proof T G (wim a b) :=
-  discharge_aux h d G rfl
-
-/-- Every unrestricted instance follows by deduction and Peirce's law. -/
+/-- Every unrestricted rho8 row follows without distribution or a deduction theorem. -/
 theorem rho8_all (a b c u : Nat) : T (Code254.rho8 a b c u) := by
+  let q := wim (wim c u) c
   let f := wim (wim c u) a
   let g := wim a c
-  have hc : Proof T [wim c u, b, g, f] c :=
-    .mp (.hyp (List.mem_cons_of_mem _ (List.mem_cons_of_mem _ (List.mem_cons_self ..))))
-      (.mp (.hyp (List.mem_cons_of_mem _ (List.mem_cons_of_mem _ (List.mem_cons_of_mem _ (List.mem_cons_self ..)))))
-        (.hyp (List.mem_cons_self ..)))
-  have closedC : Proof T [b, g, f] c :=
-    .mp (.ax (basisP h c u)) (discharge h hc)
-  have result : Proof T [] (Code254.rho8 a b c u) :=
-    discharge h (discharge h (discharge h closedC))
-  exact proof_sound h result (by intro x hx; cases hx)
+  have hqd : T (wim q (wim b c)) :=
+    h.mp (basisJ h c (wim b c) u) (basisK h c b)
+  exact h.mp (lift_right h (lift_right h hqd g) f) (composition h (wim c u) a c)
 
 end
 #print axioms rho8_all
 #print axioms composition
-#print axioms distribution
+#print axioms lift_right
 end SetTheory.BusyBeaver.ZFC.DomRho8

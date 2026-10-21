@@ -1,0 +1,23 @@
+Traceback (most recent call last):
+  File "/tmp/k215-proof-phase7-publication/controls.py", line 51, in <module>
+    check('regular_text_archive',lambda:archive_case('record.json'))
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/k215-proof-phase7-publication/controls.py", line 10, in check
+    try:fun()
+        ~~~^^
+  File "/tmp/k215-proof-phase7-publication/controls.py", line 51, in <lambda>
+    check('regular_text_archive',lambda:archive_case('record.json'))
+                                        ~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/tmp/k215-proof-phase7-publication/controls.py", line 50, in archive_case
+    return read_members(stream,{name:{'sha256':e.digest(data),'bytes':len(data)}})
+  File "/tmp/k215-proof-phase7-publication/review_saved.py", line 16, in read_members
+    with tarfile.open(archive, 'r:gz') as stream:
+         ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/tarfile.py", line 1929, in open
+    return func(name, filemode, fileobj, **kwargs)
+  File "/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/tarfile.py", line 1977, in gzopen
+    fileobj = GzipFile(name, mode + "b", compresslevel, fileobj)
+  File "/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/gzip.py", line 205, in __init__
+    fileobj = self.myfileobj = builtins.open(filename, mode or 'rb')
+                               ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: expected str, bytes or os.PathLike object, not BytesIO

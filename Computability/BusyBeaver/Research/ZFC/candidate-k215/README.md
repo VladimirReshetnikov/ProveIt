@@ -30,8 +30,8 @@ statements, raw reports, retained build history, and reproduction routes.
   [serial Rocq driver](../k225-formal/verification/k215/rocq/README.md), including
   `--kernel`, to compile the exact source closure and recursively run `coqchk`.
 
-The [current Lean simplification checkpoint](../k225-formal/verification/k215/simplification/phase6/README.md)
-checks the 187-module closure: 35 freshly compiled modules and 152 reused
+The [current Lean simplification checkpoint](../k225-formal/verification/k215/simplification/phase7/README.md)
+checks the 187-module closure: two freshly compiled modules and 185 reused
 modules with exact predecessor bindings. Both endpoint clients pass; the ten
 axiom reports use only the three standard axioms and have zero audit warnings.
 The project logs retain 22 linter warnings. The literal machine and theorem
