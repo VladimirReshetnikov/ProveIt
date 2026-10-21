@@ -1,0 +1,11 @@
+--- check_allocated-v2.py
++++ check_allocated.py
+@@ -57,7 +57,7 @@
+   for step in range(3):
+    trace.append([q,h,tape[h]]);w,d,q=tab[q,tape[h]];tape[h]=w;h+=d
+   ends.append((q,h,tape));
+- assert ends[0]==ends[1]==(123 if marker==0 else21,1,{-1:marker,0:0})
++ assert ends[0]==ends[1]==(123 if marker==0 else 21,1,{-1:marker,0:0})
+  repair.append({'marker':marker,'steps':3,'final_state':ends[0][0],'head':1,'tape_unchanged':True})
+ # Explain precisely the failed global-only gate: all8 are unchanged old108
+ # entries under101; no candidate/source bytes or interpreter rules changed.

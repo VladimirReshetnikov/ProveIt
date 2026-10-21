@@ -1,0 +1,29 @@
+--- allocate-v1.py
++++ allocate-v2.py
+@@ -6,6 +6,7 @@
+ from pathlib import Path
+ from collections import defaultdict,Counter
+ from functools import lru_cache
++from types import SimpleNamespace
+ import argparse,json,hashlib,time
+ import numpy as np
+ from scipy.optimize import milp,Bounds,LinearConstraint
+@@ -124,7 +125,7 @@
+  for i,row in enumerate(rows):
+   for j,v in row.items():A[i,j]=v
+  costs=np.array([-100*sum((q,bit)in protected for bit in(0,1))+q/1000 for n,q in choices])
+- started=time.monotonic();ans=milp(costs,integrality=np.ones(len(choices)),bounds=Bounds(0,1),constraints=LinearConstraint(A.tocsc(),lo,hi),options={'time_limit':a.limit})
++ started=time.monotonic();ans=milp(costs,integrality=np.ones(len(choices)),bounds=Bounds(0,1),constraints=LinearConstraint(A.tocsc(),lo,hi),options={'time_limit':a.limit}) if choices else SimpleNamespace(x=[],message='NO_NEW_ROLES')
+  receipt.update(solver=ans.message,solver_seconds=time.monotonic()-started,variables=len(choices),constraints=len(rows))
+  if ans.x is None:receipt['status']='NO_ALLOCATION';finish();return
+  mapped={n:set(qs)for n,qs in fixed.items()}
+@@ -154,7 +155,8 @@
+    if head==len(p):break
+    if head not in tape or(q,tape[head])not in N:break
+    w,d,q=N[q,tape[head]];tape[head]=w;head+=d
+-  if head!=len(p)or tape!=before or q not in mapped[n]:failures.append({'path':p,'state':q,'allowed':sorted(mapped[n]),'head':head,'tape_changed':tape!=before})
++  local_old = q in oldstates.get(n,()) and compatible(n,p,q) and all(N.get((q,bit))==T[q,bit] for bit,ch in enumerate(n) if s.leaf(ch))
++  if head!=len(p)or tape!=before or not(q in mapped[n] or local_old):failures.append({'path':p,'state':q,'allowed':sorted(mapped[n]),'head':head,'tape_changed':tape!=before})
+   actual[p]=q
+  receipt.update(status='PREFIX_PASS'if not failures else'PREFIX_FAIL',states=len(N)//2,removed=sorted(set(q for q,_ in T)-reach),added=sorted(reach-set(q for q,_ in T)),assignments=[{'path':occ[n][0],'q':min(mapped[n])}for n in newnodes],changed_rows=[list(k)+list(N[k])for k in N if original.get(k)!=N[k]],binding_failures=failures,prefix_count=len(actual),all_protected_rows_unchanged=True)
+  (a.output/'candidate.native.tm').write_bytes(b.table_bytes(N));(a.output/'prefix-map.json').write_text(json.dumps(actual,sort_keys=True)+'\n');finish()

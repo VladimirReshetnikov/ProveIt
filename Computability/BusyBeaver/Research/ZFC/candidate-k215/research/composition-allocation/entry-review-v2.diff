@@ -1,0 +1,37 @@
+--- check_allocated-v1.py
++++ check_allocated.py
+@@ -39,7 +39,9 @@
+  for bit,ch in enumerate(n):
+   if not s.leaf(ch):continue
+   leafentries+=1
+-  if q in oldrole.get(n,()):assert N[q,bit]==T[q,bit],(p,q,bit,'changed retained entry')
++  if q in oldrole.get(n,()):
++   if(q,bit)==(81,0):assert T[q,bit]==(0,-1,92) and N[q,bit]==(0,-1,111)
++   else:assert N[q,bit]==T[q,bit],(p,q,bit,'changed retained entry')
+   else:
+    freshentries+=1;assert N[q,bit]in acts[ch,bit],(p,q,bit,ch,N[q,bit])
+   if q==108 and bit==1:
+@@ -47,6 +49,16 @@
+    assert('1'+p+'1').endswith(suffix),(p,ch,'contextual108')
+    oldalias.append({'path':p,'state':q,'node':n,'entry':N[q,bit],'required_suffix':suffix})
+ assert leafentries==4751
++repair=[]
++for marker in(0,1):
++ ends=[]
++ for tab in(T,N):
++  tape={-1:marker,0:0};h=0;q=81;trace=[]
++  for step in range(3):
++   trace.append([q,h,tape[h]]);w,d,q=tab[q,tape[h]];tape[h]=w;h+=d
++  ends.append((q,h,tape));
++ assert ends[0]==ends[1]==(123 if marker==0 else21,1,{-1:marker,0:0})
++ repair.append({'marker':marker,'steps':3,'final_state':ends[0][0],'head':1,'tape_unchanged':True})
+ # Explain precisely the failed global-only gate: all8 are unchanged old108
+ # entries under101; no candidate/source bytes or interpreter rules changed.
+ failed={e['path']for e in rec['binding_failures']}
+@@ -59,5 +71,5 @@
+ identity=json.loads((P/'identity-run1/allocation.json').read_text())
+ assert identity['status']=='PREFIX_PASS'and identity['states']==216 and identity['new_nodes']==0
+ assert identity['changed_rows']==[[81,0,0,-1,111]]
+-result={'status':'HELD_TABLE_PREFIX_AND_LITERAL_ENTRY_PASS','scope':'Finite exact source-word/CFG composition and complete4750 internal-prefix+4751 literal primitive entry correspondence, including8 local108 aliases. No primitive runtime, blank startup, all-natural calibration composition or215candidate acceptance claimed.','states':215,'rows':430,'source_metrics':s.metrics(new),'internal_prefixes':len(paths),'leaf_entries':leafentries,'fresh_leaf_entries':freshentries,'strict_global_gate_failure_preserved':str(record),'local_alias_correction':oldalias,'identity_control':'216states, exact unchanged source and only independently justified81/0repair; no allocation.','selector_rows':[[*k,*v]for k,v in expected.items()],'inputs':{str(p):sha(p)for p in[source,machine,record,Path(__file__),P/'allocate-v1.py',P/'allocate-v2.py',P/'identity-run1/allocation.json',P/'result.json',P/'source_language.py',P/'build221.py']}}
++result={'status':'HELD_TABLE_PREFIX_AND_LITERAL_ENTRY_PASS','scope':'Finite exact source-word/CFG composition and complete4750 internal-prefix+4751 literal primitive entry correspondence, including8 local108 aliases. No primitive runtime, blank startup, all-natural calibration composition or215candidate acceptance claimed.','states':215,'rows':430,'source_metrics':s.metrics(new),'internal_prefixes':len(paths),'leaf_entries':leafentries,'fresh_leaf_entries':freshentries,'strict_global_gate_failure_preserved':str(record),'local_alias_correction':oldalias,'identity_control':'216states, exact unchanged source and only independently justified81/0repair; no allocation.','local81_three_step_whole_tape_blocks':repair,'selector_rows':[[*k,*v]for k,v in expected.items()],'inputs':{str(p):sha(p)for p in[source,machine,record,Path(__file__),P/'allocate-v1.py',P/'allocate-v2.py',P/'identity-run1/allocation.json',P/'result.json',P/'source_language.py',P/'build221.py']}}
+ (P/'held-candidate-review.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

@@ -1,0 +1,20 @@
+--- before/proof.md
++++ after/proof.md
+@@ -2,7 +2,7 @@
+ 
+ ## Exact source composition
+ 
+-Let P be the accepted partial-selector 216 source, whose ordered primitives and full register-machine control flow agree with the accepted dominated 217 source. The new submission factors the counter-field read out of common command dispatch and AX setup and into each command that actually needs it. Its explicit source recipe deletes the closed spans `[23,37)` and `[187,201)` and replaces each closed load span `[228,254)` and `[4659,4685)` by `walk11 ; (transfer3 ; load26)`. The latter is a closed 40-leaf source expression. The command bodies at paths `111`, `110101`, and `110100101` are then permuted by order `(2,1,0)`.
++Let P be the [accepted partial-selector 216 source](../candidate-k216/proof.md), whose ordered primitives and full register-machine control flow agree with the accepted dominated 217 source. The [command-permuted K216 proof](../candidate-k216/alternatives/permuted/proof.md) factors the counter-field read out of common command dispatch and AX setup and into each command that actually needs it. Its explicit source recipe deletes the closed spans `[23,37)` and `[187,201)` and replaces each closed load span `[228,254)` and `[4659,4685)` by `walk11 ; (transfer3 ; load26)`. The latter is a closed 40-leaf source expression. The command bodies at paths `111`, `110101`, and `110100101` are then permuted by order `(2,1,0)`.
+ 
+ The own composition program first applies this recipe to the unchanged accepted 217 source and reproduces the submitted `frozen202.json` and submitted primary command-permuted source byte for byte. Applying the identical recipe to P yields the held source. It checks exact equality of the 4,751 ordered opcode/register rows and all 6,175 guarded edges against that independently calibrated command-permuted reference. Two different CFG resolvers agree. This supplies an identity-on-register-values bisimulation by ordinal between the two source programs, including the initial ordinal and halt instructions. No claim that the changed field-reader commands preserve the old unpermuted command semantics is needed: that transformation is the separately reviewed submission's compiler theorem.
+ 
+@@ -53,7 +53,7 @@
+ 2. Blank execution reaches the exact calibrated frame after 95,714 transitions: native dispatcher 84, head −8, header 57, gap 1, registers `[4,0,0,0,0,0,0,0,0]`,40 one-valued spares and 95 one cells. The independent reader replays every stored transition on both the native and dense presentations, constructing the complete final frame and zero exterior separately.
+ 3. The before/after input pins, full case order, row identities and exact canonical bijection bind those results to the unchanged source/table. The ordinary command-calibration theorem applies to this root: the formula/current-stack/cache registers are zero, while the permitted enumeration counter is4. Its cofinal compiler handles the resulting finite starting cutoff.
+ 
+-Consequently, the complete source run from that frame halts exactly when the calibrated dominated calculus has a refutation. The inherited theorem identifies the existence of such a refutation with the syntactic inconsistency of ZFC. Positive-duration binary simulation and the complete finite blank prefix then give, by ordinary reasoning formalizable in ZFC,
++Consequently, the complete source run from that frame halts exactly when the calibrated dominated calculus has a refutation. The [inherited dominated-calculus theorem](../candidate-k218/alternatives/dominated/proof.md) identifies the existence of such a refutation with the syntactic inconsistency of ZFC. Positive-duration binary simulation and the complete finite blank prefix then give, by ordinary reasoning formalizable in ZFC,
+ 
+ ```text
+ ZFC proves: Halt(K215, blank) ↔ not Con(ZFC),
